@@ -1,0 +1,153 @@
+// https://material.io/guidelines/components/text-fields.html
+
+
+@import '../common/functions.scss';
+@import '../common/variables.scss';
+@import '../common/motion.scss';
+@import '../common/mixins.scss';
+
+
+$label__top-padding: dp(16);
+$label__bottom-padding: dp(8);
+$label__font-size: sp(12);
+
+$input__bottom-padding: dp(8);
+
+$bottom-line__height: dp(1);
+$bottom-line__focused__height: dp(2);
+$bottom-line__bottom-padding: dp(8);
+
+$helper-text_font-size: sp(12);
+
+$icon-signifier__width: dp(24);
+$icon-signifier__padding-end: dp(16);
+
+.mdw-text-field {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; // flex-in-flex support
+  font-size: sp(16);
+}
+
+.mdw-text-field__label {
+  order: 1;
+  padding: 0;
+  margin: 0;
+
+  padding-top: $label__top-padding;
+  padding-bottom: $label__bottom-padding;
+  height: $label__font-size;
+  font-size: inherit;
+  pointer-events: none; // allow clickthrough
+
+  // Initial state is over input box unless it has a value
+  transform: translateY($label__font-size) translateY($label__bottom-padding);
+  &[value]:not([value=""]) {
+    transform: translateY(0);
+  }
+
+  transition-property: transform font-size;
+  transition-timing-function: $motion-easing-standard;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
+}
+.mdw-text-field__input {
+  order: 2;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  outline: none;
+
+  font-size: inherit;
+  font-family: Roboto, sans-serif;
+  padding-bottom: $input__bottom-padding - $bottom-line__height; // bottom-line is inset
+  border-bottom-width: $bottom-line__height;
+  border-bottom-style: solid;
+  border-bottom-color: black;
+
+  &::placeholder {
+    color: transparent;
+    transition-property: color;
+    transition-timing-function: $motion-easing-standard;
+    transition-duration: $motion-duration-desktop-default;
+    @include allHandsets {
+      transition-duration: $motion-duration-mobile-default;
+    }
+    @include allTablets {
+      transition-duration: $motion-duration-tablet-default;
+    }
+  }
+}
+.mdw-text-field__bottom-line {
+  order: 3;
+  height: $bottom-line__height;
+  margin-top: -$bottom-line__height;
+  margin-bottom: $bottom-line__bottom-padding;
+  color: black;
+  transform: scaleX(0);
+  transition-property: transform;
+  transition-timing-function: $motion-easing-standard;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
+}
+
+.mdw-text-field__helper-text {
+  order: 4;
+  font-size: $helper-text_font-size;
+  color: gray;
+}
+
+// Behavior changes
+
+.mdw-text-field__label {
+  [mdw-state__focused='true'] > &,
+  [mdw-state__filled='true'] > &,
+  .mdw-text-field__input:not(:placeholder-shown) ~ &,
+  .mdw-text-field__input:focus ~ & {
+    transform: translateY(0);
+    font-size: $label__font-size;
+    pointer-events: auto; // revert to default
+  }
+
+  [mdw-state__focused='true'] > &,
+  .mdw-text-field__input:focus ~ & {
+    color: blue;
+  }
+}
+
+.mdw-text-field__input {
+  [mdw-state__focused='true'] > &,
+  [mdw-state__hover='true'] > &,
+  &:focus,
+  &:hover {
+    padding-bottom: $input__bottom-padding - $bottom-line__focused__height; // bottom-line is inset
+    border-bottom-width: $bottom-line__focused__height;
+  }
+  [mdw-state__focused='true'] > &,
+  &:focus {
+    &::placeholder {
+      color: gray;
+    }
+  }
+}
+
+.mdw-text-field__bottom-line {
+  [mdw-state__focused='true'] > &,
+  .mdw-text-field__input:focus ~ & { 
+    background-color: blue;
+    height: $bottom-line__focused__height;
+    margin-top: -$bottom-line__focused__height;
+    transform: scaleX(1.0);
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "extends": [
+    "airbnb-base"
+  ],
+  "globals": {
+    "google": true
+  },
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "rules": {
+    "brace-style": ["error", "1tbs", { "allowSingleLine": false }],
+    "curly": ["error", "all"],
+    "require-jsdoc": "error",
+    "valid-jsdoc": ["error", {
+      "prefer": { "arg": "param", "argument": "param", "returns": "return" },
+      "preferType": { "Boolean": "boolean", "Number": "number", "object": "Object", "String": "string" },
+      "requireReturn": true,
+      "requireReturnType": true,
+      "matchDescription": "",
+      "requireParamDescription": false,
+      "requireReturnDescription": false
+      
+    }],
+    "comma-dangle": ["error", {
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "always-multiline",
+      "exports": "always-multiline",
+      "functions": "never"
+    }]
+  }
+}
