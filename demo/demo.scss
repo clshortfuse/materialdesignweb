@@ -1,0 +1,93 @@
+@import '../components/index.scss';
+
+html {
+  font-family: 'Roboto', san-serif;
+}
+
+#comparisons {
+  position: relative;
+}
+.comparison {
+  display: flex;
+  flex-direction: row;
+}
+
+.target {
+  padding: 8px;
+  width: 360px;
+  height: 640px;
+}
+
+.render {
+  padding: 8px;
+  min-width: 360px;
+  max-width: 360px;
+  min-height: 640px;
+  display: flex;
+  flex-direction: column;
+}
+
+.androidstatusbar {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  height: 24px;
+  padding: 0 8px;
+  color: rgba(255, 255, 255, .87);
+  font-size: 14px;
+  background-color: black;
+  .material-icons {
+    font-size: 18px;
+  }
+}
+
+.content {
+  flex-grow: 1;
+  background-color: #FAFAFA;
+}
+
+.androidnavbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 48px;
+  height: 48px;
+  padding: 0 30px;
+  background-color: black;
+  color: rgba(255, 255, 255, 1);
+  .material-icons {
+    font-size: 20px;
+  }
+  .material-icons.back-button {
+   transform: rotate(90deg);
+  }
+}
+
+
+#horizontalLine {
+  position: fixed;
+  width: 100%;
+  background-color: #0FF;
+  height: 1px;
+  left: 0px;
+  z-index: 25;
+}
+
+#verticalLineLeft,
+#verticalLineRight {
+  position: fixed;
+  height: 100%;
+  background-color: #0FF;
+  width: 1px;
+  top: 0px;
+  z-index: 25;
+}
+
+#verticalLineRight {
+  left: 376px;
+}
+
+#Vintage50Input {
+  font-size: sp(34);
+}

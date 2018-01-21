@@ -1,0 +1,25 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "start:demo",
+      "isBackground": true,
+      "problemMatcher": [{
+        "pattern": {
+          "regexp": "ERROR in \\[at-loader\\] ([^:]*):(\\d+):(\\d+)",	
+          "file" : 1,
+          "line": 2,
+          "column": 3
+        },
+				"background": {
+          "activeOnStart": true,
+          "beginsPattern": "webpack output is served from \/",
+          "endsPattern": "webpack: Compiled successfully\\."
+        }
+			}]
+    }
+  ]
+}
