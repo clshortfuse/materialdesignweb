@@ -1,3 +1,6 @@
+@import './palettes';
+@import '../textfield/theming';
+
 @mixin allHandsets {
   @media
     screen
@@ -24,4 +27,95 @@
       and (max-width: $breakpoint-landscape-tablet-max - 1) {
     @content;
   }
+}
+
+@mixin buildTheme($name, $primary, $accent, $warn, $background:"grey") {
+  .mdw-theme-#{$name} {
+    @include buildPalette($name, 'primary', map-get($palettes, $primary), $primary, $accent, $warn);
+    @include buildPalette($name, 'accent', map-get($palettes, $accent), $primary, $accent, $warn);
+    @include buildPalette($name, 'warn', map-get($palettes, $warn), $primary, $accent, $warn);
+    @include buildPalette($name, 'background', map-get($palettes, $background), $primary, $accent, $warn);
+  }
+}
+
+@mixin buildPalette($theme, $color, $palette, $primary, $accent, $warn) {
+  --#{$color}-color: map-get($palette, "500");
+  & .mdw-theme-filled[mdw-color="#{$color}"],
+  &.mdw-theme-filled[mdw-color="#{$color}"] {
+    background-color: var(--#{$color}-color);
+    @if (map-has-key($palette, 'light')) {
+      @if index(map-get($palette, 'light'), "500") {
+        @include buildLightThemeVariables($primary, $accent, $warn);
+      } @else {
+        @include buildDarkThemeVariables($primary, $accent, $warn);
+      } 
+    } @else {
+      @if index(map-get($palette, 'dark'), "500") {
+        @include buildDarkThemeVariables($primary, $accent, $warn);
+      } @else {
+        @include buildLightThemeVariables($primary, $accent, $warn);
+      }
+    }
+  }
+  @each $tone in "50", "100", "200", "300", "400", "600", "700", "800", "900" {
+    --#{$color}-#{$tone}-color: map-get($palette, $tone);
+    & .mdw-theme-filled[mdw-color="#{$color}"][mdw-tone="#{$tone}"],
+    &.mdw-theme-filled[mdw-color="#{$color}"][mdw-tone="#{$tone}"] {
+      background-color: var(--#{$color}-#{$tone}-color);
+      @if (map-has-key($palette, 'light')) {
+        @if index(map-get($palette, 'light'), $tone) {
+          @include buildLightThemeVariables($primary, $accent, $warn);
+        } @else {
+          @include buildDarkThemeVariables($primary, $accent, $warn);
+        } 
+      } @else {
+        @if index(map-get($palette, 'dark'), $tone) {
+          @include buildDarkThemeVariables($primary, $accent, $warn);
+        } @else {
+          @include buildLightThemeVariables($primary, $accent, $warn);
+        }
+      }
+    }
+  }
+  @each $tone in "A100", "A200", "A400", "A700" {
+    $parsedColor: map-get($palette, $tone);
+    $parsedTone: $tone;
+    @if ($parsedColor == null) {
+      $parsedTone: str_slice($tone, 2);
+    }
+    --#{$color}-#{$tone}-color: map-get($palette, $parsedTone);
+    & .mdw-theme-filled[mdw-color="#{$color}"][mdw-tone="#{$tone}"],
+    &.mdw-theme-filled[mdw-color="#{$color}"][mdw-tone="#{$tone}"] {
+      background-color: var(--#{$color}-#{$tone}-color);
+      @if (map-has-key($palette, 'light')) {
+        @if index(map-get($palette, 'light'), $parsedTone) {
+          @include buildLightThemeVariables($primary, $accent, $warn);
+        } @else {
+          @include buildDarkThemeVariables($primary, $accent, $warn);
+        } 
+      } @else {
+        @if index(map-get($palette, 'dark'), $parsedTone) {
+          @include buildDarkThemeVariables($primary, $accent, $warn);
+        } @else {
+          @include buildLightThemeVariables($primary, $accent, $warn);
+        }
+      }
+    }
+  }
+}
+
+@mixin buildLightThemeVariables($primary, $accent, $warn) {
+  --primary-text-color: rgba(0,0,0,0.87);
+  --secondary-text-color: rgba(0,0,0,0.54);
+  --disabled-color: rgba(0,0,0,0.38);
+  --divider-color: rgba(0,0,0,0.12);
+  @include textfieldLightThemeVariables($primary, $accent, $warn);
+}
+
+@mixin buildDarkThemeVariables($primary, $accent, $warn) {
+  --primary-text-color: rgba(255,255,255,1.0);
+  --secondary-text-color: rgba(255,255,255,0.70);
+  --disabled-color: rgba(255,255,255,0.50);
+  --divider-color: rgba(255,255,255,0.12);
+  @include textfieldDarkThemeVariables($primary, $accent, $warn);
 }

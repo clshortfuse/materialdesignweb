@@ -1,3 +1,5 @@
+@import './palettes';
+
 @function sp($multiplier) {
   @return ($multiplier/16.0) * 1rem;
 };
@@ -5,3 +7,12 @@
 @function dp($multiplier) {
   @return $multiplier * 1px;
 };
+
+@function getPaletteTone($palette, $tone) {
+  $paletteMap: map-get($palettes, $palette);
+  $color: map-get($paletteMap, $tone);
+  @if ($color == null) {
+    $color: map-get($paletteMap, sub_str($tone, 2));
+  }
+  @return $color;
+}

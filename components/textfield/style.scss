@@ -39,6 +39,7 @@ $icon-signifier__padding-end: dp(16);
   height: $label__font-size;
   font-size: inherit;
   pointer-events: none; // allow clickthrough
+  color: var(--secondary-text-color);
 
   // Initial state is over input box unless it has a value
   transform: translateY($label__font-size) translateY($label__bottom-padding);
@@ -69,7 +70,8 @@ $icon-signifier__padding-end: dp(16);
   padding-bottom: $input__bottom-padding - $bottom-line__height; // bottom-line is inset
   border-bottom-width: $bottom-line__height;
   border-bottom-style: solid;
-  border-bottom-color: black;
+  border-bottom-color: var(--text-field-bottom-line-color);
+  color: var(--primary-text-color);
 
   &::placeholder {
     color: transparent;
@@ -89,23 +91,14 @@ $icon-signifier__padding-end: dp(16);
   height: $bottom-line__height;
   margin-top: -$bottom-line__height;
   margin-bottom: $bottom-line__bottom-padding;
-  color: black;
+  background-color: var(--text-field-bottom-line-color__focus);
   transform: scaleX(0);
-  transition-property: transform;
-  transition-timing-function: $motion-easing-standard;
-  transition-duration: $motion-duration-desktop-default;
-  @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
-  }
-  @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
-  }
 }
 
 .mdw-text-field__helper-text {
   order: 4;
   font-size: $helper-text_font-size;
-  color: gray;
+  color: var(--secondary-text-color);
 }
 
 // Behavior changes
@@ -122,7 +115,7 @@ $icon-signifier__padding-end: dp(16);
 
   [mdw-state__focused='true'] > &,
   .mdw-text-field__input:focus ~ & {
-    color: blue;
+    color: var(--text-field-label-color__focus);
   }
 }
 
@@ -133,11 +126,12 @@ $icon-signifier__padding-end: dp(16);
   &:hover {
     padding-bottom: $input__bottom-padding - $bottom-line__focused__height; // bottom-line is inset
     border-bottom-width: $bottom-line__focused__height;
+    border-bottom-color: var(--text-field-bottom-line-color__hover);
   }
   [mdw-state__focused='true'] > &,
   &:focus {
     &::placeholder {
-      color: gray;
+      color: var(--text-field-input-placeholder-color__focus);
     }
   }
 }
@@ -145,9 +139,17 @@ $icon-signifier__padding-end: dp(16);
 .mdw-text-field__bottom-line {
   [mdw-state__focused='true'] > &,
   .mdw-text-field__input:focus ~ & { 
-    background-color: blue;
     height: $bottom-line__focused__height;
     margin-top: -$bottom-line__focused__height;
     transform: scaleX(1.0);
+    transition-property: transform;
+    transition-timing-function: $motion-easing-standard;
+    transition-duration: $motion-duration-desktop-default;
+    @include allHandsets {
+      transition-duration: $motion-duration-mobile-default;
+    }
+    @include allTablets {
+      transition-duration: $motion-duration-tablet-default;
+    }
   }
 }

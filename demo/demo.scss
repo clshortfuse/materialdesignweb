@@ -1,5 +1,7 @@
 @import '../components/index.scss';
 
+@include buildTheme('default', 'indigo', 'pink', 'red', 'grey');
+
 html {
   font-family: 'Roboto', san-serif;
 }
@@ -43,7 +45,6 @@ html {
 
 .content {
   flex-grow: 1;
-  background-color: #FAFAFA;
 }
 
 .androidnavbar {
