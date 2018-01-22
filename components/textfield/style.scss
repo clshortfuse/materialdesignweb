@@ -56,6 +56,7 @@ $icon-signifier__padding-end: dp(16);
   @include allTablets {
     transition-duration: $motion-duration-tablet-default;
   }
+  will-change: font-size, transform;
 }
 .mdw-text-field__input {
   order: 2;
