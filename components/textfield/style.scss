@@ -170,45 +170,29 @@ textarea.mdw-text-field__input {
 
 // Behavior changes
 
-.mdw-text-field__label {
-  .mdw-text-field__input:not(:placeholder-shown) ~ &,
-  .mdw-text-field__input:focus ~ & {
+.mdw-text-field__input {
+  // Unfocused with value
+  &:not(:focus):not(:placeholder-shown) ~ .mdw-text-field__label {
     transform: translateY(0);
     font-size: $label__font-size;
-    pointer-events: auto; // revert to default
-  }
-  .mdw-text-field__input:focus ~ & {
-    color: var(--text-field-label-color__focus);
-    [mdw-color="accent"] > & {
-      color: var(--text-field-label-accent-color__focus);
-    }
-  }
-  .mdw-text-field__input[disabled] ~ & {
-    color: var(--disabled-color);
-  }
-  .mdw-text-field__input:focus:invalid ~ & {
-    color: var(--text-field-label-warn-color__focus);
-    animation-name: labelShake;
-    animation-duration: 250ms;
-    animation-delay: $motion-duration-desktop-default;
-    @include allHandsets {
-      animation-delay: $motion-duration-mobile-default;
-    }
-    @include allTablets {
-      animation-delay: $motion-duration-tablet-default;
-    }
-  }
-  .mdw-text-field__input[disabled] ~ & {
-    color: var(--disabled-color);
+    // pointer-events: auto; // revert to default
   }
 
-}
-
-.mdw-text-field__input {
+  // Focused
   &:focus {
     &::placeholder {
       color: var(--text-field-input-placeholder-color__focus);
     }
+    & ~ .mdw-text-field__label {
+      transform: translateY(0);
+      font-size: $label__font-size;
+      // pointer-events: auto; // revert to default
+      color: var(--text-field-label-color__focus);
+      [mdw-color="accent"] > & {
+        color: var(--text-field-label-accent-color__focus);
+      }
+    }
+
     &,
     & ~ .mdw-text-field__border-line::before {
       border-color: var(--text-field-border-line-color__focus);
@@ -218,11 +202,26 @@ textarea.mdw-text-field__input {
         caret-color: var(--text-field-label-accent-color__focus);
       }
     }
+
+    // Invalid
+
     &:invalid {
       caret-color: var(--text-field-label-warn-color__focus);
       &,
       & ~ .mdw-text-field__border-line::after {
         border-color: var(--warn-A400-color);
+      }
+      & ~ .mdw-text-field__label {
+        color: var(--text-field-label-warn-color__focus);
+        animation-name: labelShake;
+        animation-duration: 250ms;
+        animation-delay: $motion-duration-desktop-default;
+        @include allHandsets {
+          animation-delay: $motion-duration-mobile-default;
+        }
+        @include allTablets {
+          animation-delay: $motion-duration-tablet-default;
+        }
       }
     }
     &,
@@ -239,17 +238,25 @@ textarea.mdw-text-field__input {
       }
     }
   }
+
+  // Disabled
+
   &[disabled] {
     color: var(--disabled-color);
-    & ~ .mdw-text-field__border-line {
-      border-style: dotted;
-      border-color: var(--disabled-color);
-    }
     [mdw-textarea] > & {
       background-color: var(--divider-color);
       border-color: var(--disabled-color);
     }
+    & ~ .mdw-text-field__label {
+      color: var(--disabled-color);
+    }
+    & ~ .mdw-text-field__border-line {
+      border-style: dotted;
+      border-color: var(--disabled-color);
+    }
   }
+
+  // Hover
 
   &:hover:not(:disabled),
   &:focus {  

@@ -47,6 +47,15 @@ html {
   flex-grow: 1;
 }
 
+.horizontal-controls {
+  display:inline-flex;
+  width:100%;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
 .androidnavbar {
   display: flex;
   flex-direction: row;
