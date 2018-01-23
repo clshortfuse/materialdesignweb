@@ -1,52 +1,26 @@
-// Enabled
-
-$bottom-line-light-theme-color: rgba(0,0,0,0.42);
-$bottom-line-dark-theme-color: rgba(255,255,255,0.70);
-
-$label-light-theme-color: rgba(0,0,0,0.54); // secondary-text
-$label-dark-theme-color: rgba(255,255,255,0.70); //secondary-text
-
-$input-light-theme-color: rgba(0,0,0,0.87); // primary-text
-$input-dark-theme-color: rgba(255,255,255,1.0); // primary-text
-
-$helper-text-light-theme-color: rgba(0,0,0,0.54);
-$helper-text-dark-theme-color: rgba(255,255,255,0.70);
-
-// TODO: Disabled
-
-// Hover
-
-$bottom-line-light-theme-color__hover: rgba(0,0,0,0.87);
-$bottom-line-dark-theme-color__hover: rgba(255,255,255,1.00);
-
-// Focus
-
-$bottom-line-light-theme-color__focus: var(--primary-A700-color);
-$bottom-line-dark-theme-color__focus: var(--primary-A200-color);
-$label-light-theme-color__focus: var(--primary-A700-color); // 87% opacity
-$label-dark-theme-color__focus: var(--primary-A200-color);
-$placeholder-light-theme-color__focus: rgba(0,0,0,0.42);
-$placeholder-dark-theme-color__focus: rgba(255,255,255,0.50);
-
-
 @mixin textfieldLightThemeVariables($primary, $accent, $warn) {
-  --text-field-bottom-line-color: $bottom-line-light-theme-color;
-  --text-field-bottom-line-color__hover: $bottom-line-light-theme-color__hover;
-  --text-field-bottom-line-color__focus: $bottom-line-light-theme-color__focus;
+  --text-field-border-line-color: rgba(0,0,0,0.42);
+  --text-field-border-line-color__hover: rgba(0,0,0,0.87);
+  --text-field-border-line-color__focus: var(--primary-A700-color);
+  --text-field-border-line-accent-color__focus: var(--accent-A700-color);
 
-  --text-field-input-placeholder-color__focus: $placeholder-light-theme-color__focus;
+  --text-field-input-placeholder-color__focus: rgba(0,0,0,0.42);
 
   --text-field-label-color__focus: rgba(getPaletteTone($primary, "A700"), 0.87);
+  --text-field-label-accent-color__focus: rgba(getPaletteTone($accent, "A700"), 0.87);
+  --text-field-label-warn-color__focus: rgba(getPaletteTone($warn, "A400"), 0.87);
   
 }
 
 @mixin textfieldDarkThemeVariables($primary, $accent, $warn) {
-  --text-field-bottom-line-color: $bottom-line-dark-theme-color;
-  --text-field-bottom-line-color__hover: $bottom-line-dark-theme-color__hover;
-  --text-field-bottom-line-color__focus: $bottom-line-dark-theme-color__focus;
+  --text-field-border-line-color: rgba(255,255,255,0.70);
+  --text-field-border-line-color__hover:  rgba(255,255,255,1.0);
+  --text-field-border-line-color__focus: var(--primary-A200-color);
+  --text-field-border-line-accent-color__focus: var(--accent-A200-color);
 
-  --text-field-input-placeholder-color__focus: $placeholder-dark-theme-color__focus;
+  --text-field-input-placeholder-color__focus: rgba(255,255,255,0.50);
 
   --text-field-label-color__focus: rgba(getPaletteTone($primary, "A200"), 1.0);
-  
+  --text-field-label-accent-color__focus: rgba(getPaletteTone($accent, "A200"), 1.0);
+  --text-field-label-warn-color__focus: var(--warn-A400-color);
 }

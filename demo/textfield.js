@@ -25,8 +25,8 @@ templates.push(new Template({
   }),
 }));
 templates.push(new Template({
-  id: 'single-line-text-field-1',
-  img: 'https://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0Bzhp5Z4wHba3dUVPRTdfUXlZWnM/components_textfields_single1.png',
+  id: 'multi1',
+  img: 'https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOTjBUMXJUU3c4ZUU/multi1.png',
   statusBarColor: '#00796B',
   toolbar: new TemplateToolbar({
     color: '#009688',
@@ -35,14 +35,25 @@ templates.push(new Template({
   }),
 }));
 templates.push(new Template({
-  id: 'single-line-text-field-2',
-  img: 'https://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0Bzhp5Z4wHba3TVJMNzF0Z3BhZjQ/components_textfields_single2.png',
+  id: 'area1',
+  img: 'https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOeEhlTVhUYm53Z1U/area1.png',
+  statusBarColor: '#00796B',
+  toolbar: new TemplateToolbar({
+    color: '#009688',
+    start: 'arrow_back',
+    end: 'done',
+  }),
 }));
 
 templates.push(new Template({
-  id: 'components_textfields_multiline2',
-  img:
-      'https://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0Bzhp5Z4wHba3VktWaDEtaTZ5ZzQ/components_textfields_multiline2.png',
+  id: 'area2',
+  img: 'https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOS3ZTZld4c3JhUTQ/area2.png',
+  statusBarColor: '#00796B',
+  toolbar: new TemplateToolbar({
+    color: '#009688',
+    start: 'arrow_back',
+    end: 'done',
+  }),
 }));
 templates.push(new Template({
   id: 'components_textfields_counter1',

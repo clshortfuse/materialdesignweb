@@ -85,6 +85,9 @@ function setupOptions() {
 function start() {
   setupTemplates();
   setupOptions();
+  document.querySelectorAll('.mdw-text-field').forEach((element) => {
+    const textfield = new mdw.TextField(element);
+  });
 }
 
 start();

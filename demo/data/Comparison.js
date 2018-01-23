@@ -12,10 +12,10 @@ export default class Comparison {
         <i class="material-icons">&#xE1BA;&#xE1C8;&#xE1A4;</i>       
       `;
     const toolbarMarkUp = `
-        <div class="mdc-toolbar__row">
-          <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+        <div class="mdw-toolbar">
+          <section class="mdw-toolbar__section mdw-toolbar__section--align-start">
           </section>
-          <section class="mdc-toolbar__section mdc-toolbar__section--align-end"/>
+          <section class="mdw-toolbar__section mdw-toolbar__section--align-end"/>
           </section>
         </div>
       `;
@@ -53,40 +53,40 @@ export default class Comparison {
       render.insertBefore(element, render.querySelector('.androidnavbar'));
     }
     if (options.toolbar) {
-      if (!render.querySelector('.mdc-toolbar')) {
+      if (!render.querySelector('.mdw-toolbar')) {
         const element = document.createElement('header');
-        element.classList.add('mdc-toolbar');
+        element.classList.add('mdw-toolbar');
         element.innerHTML = toolbarMarkUp;
         render.insertBefore(element, render.querySelector('.content'));
       }
       if (options.toolbar.color) {
-        render.querySelector('.mdc-toolbar').style.backgroundColor =
+        render.querySelector('.mdw-toolbar').style.backgroundColor =
           options.toolbar.color;
       }
       if (options.toolbar.start) {
         const startIcon = document.createElement('a');
         startIcon.setAttribute('href', '#');
-        startIcon.classList.add('material-icons', 'mdc-toolbar__menu-icon');
+        startIcon.classList.add('material-icons', 'mdw-toolbar__menu-icon');
         startIcon.textContent = options.toolbar.start.join(' ');
         render
-          .querySelector('.mdc-toolbar__section--align-start')
+          .querySelector('.mdw-toolbar__section--align-start')
           .appendChild(startIcon);
       }
       if (options.toolbar.title) {
         const title = document.createElement('span');
-        title.classList.add('mdc-toolbar__title');
+        title.classList.add('mdw-toolbar__title');
         title.textContent = options.toolbar.title;
         render
-          .querySelector('.mdc-toolbar__section--align-start')
+          .querySelector('.mdw-toolbar__section--align-start')
           .appendChild(title);
       }
       if (options.toolbar.end) {
         const endIcon = document.createElement('a');
         endIcon.setAttribute('href', '#');
-        endIcon.classList.add('material-icons', 'mdc-toolbar__menu-icon');
+        endIcon.classList.add('material-icons', 'mdw-toolbar__menu-icon');
         endIcon.textContent = options.toolbar.end.join(' ');
         render
-          .querySelector('.mdc-toolbar__section--align-end')
+          .querySelector('.mdw-toolbar__section--align-end')
           .appendChild(endIcon);
       }
     }
