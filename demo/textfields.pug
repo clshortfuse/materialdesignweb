@@ -96,6 +96,10 @@
       textarea.mdw-text-field__input(placeholder=" " rows="5")
       span.mdw-text-field__label Message
       .mdw-text-field__border-line
+    label.mdw-text-field(mdw-textarea mdw-color="accent")
+      textarea.mdw-text-field__input(placeholder=" " rows="5")
+      span.mdw-text-field__label Message
+      .mdw-text-field__border-line
 #area2
   .content.mdw-theme-filled(style="padding:0 16px; margin-top:-44px" mdw-color="background" mdw-tone="900")
     label.mdw-text-field
@@ -106,6 +110,13 @@
     label.mdw-text-field(mdw-textarea)
       textarea.mdw-text-field__input(placeholder=" " rows="5" required)
         | Just wanted to let you kn
+      span.mdw-text-field__label Message *
+      .mdw-text-field__border-line
+      .mdw-text-field__helper-text Helper text.
+      .mdw-text-field__error-text Error: Required.
+    label.mdw-text-field(mdw-textarea)
+      textarea.mdw-text-field__input(placeholder=" " rows="5" disabled)
+        | This textarea is disabled.
       span.mdw-text-field__label Message *
       .mdw-text-field__border-line
       .mdw-text-field__helper-text Helper text.
