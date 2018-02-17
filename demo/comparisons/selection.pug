@@ -1,48 +1,58 @@
 include ../mixins.pug
 
-.comparison.mdw-selection.no-js
+.comparison.mdw-selection.no-js.mdw-theme-selection
   .render
     +androidstatusbar('rgb(var(--accent-700-color))')
-    .mdw-toolbar.mdw-theme__filled(mdw-color='primary' mdw-tone='500')
+    .mdw-toolbar.mdw-theme__filled(mdw-color='accent' mdw-tone='500')
       .mdw-toolbar__action
         .mdw-toolbar__title Title
     .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
       ul.mdw-list(style="margin-top:16px")
         li.mdw-list__subheader Switch
-        li.mdw-list__row Android Switch On
-        li.mdw-list__row Android Switch Off
+        li.mdw-list__row
+          .mdw-list__text Android Switch On
+          .mdw-list__end
+            label.mdw-switch
+              input(type="checkbox")
+              .mdw-switch__icon
+        li.mdw-list__row
+          .mdw-list__text Android Switch Off
+          .mdw-list__end
+            label.mdw-switch
+              input(type="checkbox")
+              .mdw-switch__icon
       ul.mdw-list(style="margin-top:24px")
         li.mdw-list__subheader Single check
-        li.mdw-list__row
+        label.mdw-list__row
           .mdw-list__text Option 1
           .mdw-list__end
             label.mdw-selection
-              input(type="radio" name="selectiontest")
+              input(type="radio" name="selectiontest" checked)
               .mdw-selection__icon
-        li.mdw-list__row
+        label.mdw-list__row
           .mdw-list__text Option 2
           .mdw-list__end
-            label.mdw-selection(mdw-color="accent" mdw-tone=700)
+            label.mdw-selection(mdw-color="primary" mdw-tone=700)
               input(type="radio" name="selectiontest")
               .mdw-selection__icon
       ul.mdw-list(style="margin-top:16px")
         li.mdw-list__subheader Multiple check
-        li.mdw-list__row(tabindex=-1)
+        label.mdw-list__row(tabindex=-1)
           .mdw-list__text Option 1
           .mdw-list__end
             label.mdw-selection
-              input(type="checkbox")
+              input(type="checkbox" checked)
               .mdw-selection__icon
-        li.mdw-list__row(tabindex=0)
+        label.mdw-list__row(tabindex=0)
           .mdw-list__text Option 2
           .mdw-list__end
-            label.mdw-selection(mdw-color="accent" mdw-tone=700)
-              input(type="checkbox")
+            .mdw-selection(mdw-color="primary" mdw-tone=700)
+              input(type="checkbox" checked)
               .mdw-selection__icon
-        li.mdw-list__row(tabindex=-1)
+        label.mdw-list__row(tabindex=-1)
           .mdw-list__text Option 3
           .mdw-list__end
-            label.mdw-selection(mdw-color="warn")
+            .mdw-selection(mdw-color="warn")
               input(type="checkbox")
               .mdw-selection__icon
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B57Y8yNEHsZPQXRHTEpLc0JXVnM/material-design.platform-adaptation-control-1.png')

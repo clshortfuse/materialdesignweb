@@ -3,6 +3,7 @@
 @include buildTheme('blue', 'pink', 'red', 'grey', 'light', 'toolbar');
 @include buildTheme('teal', 'brown', 'red', 'grey', 'light', 'bottomnav');
 @include buildTheme('teal', 'cyan', 'pink', 'grey', 'light', 'list');
+@include buildTheme('blue', 'teal', 'red', 'grey', 'light', 'selection');
 
 
 html {

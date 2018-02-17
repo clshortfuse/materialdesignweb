@@ -45,7 +45,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     transition-duration: $motion-duration-tablet-default;
   }
   &:checked {
-    background-color: unquote("rgba(var(--primary-color), 0.26)");
+    background-color: unquote("rgba(var(--accent-color), 0.26)");
   }
   &:active,
     &:focus {
@@ -90,7 +90,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     }
   }
   input:checked ~ &::before {
-    border-color: unquote("rgb(var(--primary-color))");
+    border-color: unquote("rgb(var(--accent-color))");
   }
   &::after {
     content: "";
@@ -212,7 +212,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     }
   }
   &:checked ~ .mdw-selection__icon::after {
-    background-color: unquote("rgb(var(--primary-color))");
+    background-color: unquote("rgb(var(--accent-color))");
     transform: scale(0.5);
   }
   & ~ .mdw-selection__label ~ .mdw-selection__icon {
