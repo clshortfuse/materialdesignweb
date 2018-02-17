@@ -53,12 +53,14 @@ $toolbar-right-padding: dp(16);
   justify-content: space-around;
   .mdw-toolbar__action > & {
     height: auto;
-    // Padding should be 20px from bottom including Font glyph, but is unreliable with CSS
     margin-right: 0;
     align-self: flex-end;
     justify-content: flex-end;
-    padding-bottom: calc(#{dp(20)} - 0.25em);
     font-size: sp(20);
+
+    // Padding should be 20px from bottom including Font glyph, but is unreliable with CSS
+    // Vertically centered alignment is not the same due to accessible font support.
+    padding-bottom: calc(#{dp(20)} - 0.25em);
   }
 }
 
