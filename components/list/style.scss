@@ -1,12 +1,24 @@
 // https://material.io/guidelines/components/lists.html
 // https://material.io/guidelines/components/lists-controls.html
 
+@import '../common/variables.scss';
+
+$list__divider-height: dp(1);
+
+// single     = 48dp
+// two-line   = 72dp
+// three-line = 88dp
+// 2x + y = 72 
+// 3x + y = 88
+// x = 32, y = 8 or x = 40, y = 16
+// row-height: 32px or 40px
+// base-height: 8px or 16px
+
 .mdw-list {
   display: block;
   overflow-y: scroll;
   padding: 0;
   margin: 0;
-  margin-top: dp(4);
   width: 100%;
 }
 .mdw-list__subheader {
@@ -15,9 +27,16 @@
   min-height: dp(48);
   align-items: center;
   justify-content: stretch;
+  padding-left: dp(16);
+  color: var(--secondary-text-color);
+  font-size: sp(14);
+  font-weight: $font-weight-medium;
+  &[mdw-avatar] {
+    padding-left: dp(72);
+  }
 }
 .mdw-list__row {
-  // width: 100%;
+  position: relative;
   display: flex;
   flex-direction: row;
   min-height: dp(48);
@@ -29,7 +48,7 @@
     padding: 0 dp(16);
     text-transform: none;
     color: var(--primary-text-color);
-    font-weight: normal;
+    font-weight: $font-weight-regular;
     font-size: sp(16);
   }
   
@@ -37,7 +56,13 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow-x: hidden;
+
+
   
+}
+
+.mdw-list > .mdw-list__row:first-child {
+  margin-top: dp(8);
 }
 
 .mdw-list__start {
@@ -56,38 +81,86 @@
 }
 
 .mdw-list__text {
+  position: static;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  overflow-x: hidden;
-  justify-content: center;
-  min-height: dp(72);
+  justify-content: space-between;
+  &,
+  & > span {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+  }
+  [mdw-divider] > .mdw-list__row:not(:last-child) &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: $list__divider-height;
+    background-color: var(--divider-color);
+  }
+  
+  [mdw-divider] > .mdw-list__row:not(:last-child) .mdw-list__start ~ &::after {
+    margin-left: dp(72);
+  }
 }
 
 .mdw-list__text-line {
-  &:not(:first-of-type) {
+  &,
+  & > span {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+  }
+  &:not(:first-child) {
     font-size: sp(14);
-    font-weight: 400;
+    line-height: sp(16);
   }
-  &:last-of-type:not(:first-of-type) {
-    font-weight: normal;
-    color: var(--secondary-text-color);
+  &:only-child {
+    // only of its type
+    margin: 0;
   }
+  &:first-child {
+    line-height: sp(24);
+  }
+  &:last-child {
+    margin-bottom: dp(16);
+  }
+  &:first-child:not(:only-child) {
+    margin-top: dp(16);
+  }
+  &:last-child:not(:only-child) {
+    color: var(--primary-text-color);
+    &:nth-child(3) {
+      color: var(--secondary-text-color);
+    }
+  }
+  
+}
+
+.mdw-list__text-line > span,
+.mdw-list__text-block > span {
+  color: var(--secondary-text-color);
 }
 
 .mdw-list__text-block {
+  font-size: sp(14);
   font-weight: normal;
   text-transform: none;
   text-align: start;
   text-overflow: ellipsis;
   overflow-x: hidden;
-  font-size: sp(14);
+  white-space: normal;
   &:first-of-type {
     font-size: sp(16);
   }
-}
-
-.mdw-list__start ~ .mdw-list__text {
-
+  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  margin-bottom: dp(16);
+  line-height: sp(16);
+  max-height: sp(16*2);
 }
