@@ -1,5 +1,5 @@
 @import 'palettes.scss';
-@import '../components/bottomsheet/theming.scss';
+@import '../components/bottomnav/theming.scss';
 @import '../components/button/theming.scss';
 @import '../components/textfield/theming.scss';
 
@@ -10,7 +10,7 @@ $tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900"
   --secondary-text-color: rgba(0,0,0,0.54);
   --disabled-color: rgba(0,0,0,0.38);
   --divider-color: rgba(0,0,0,0.12);
-  @include bottomsheetLightThemeVariables($color);
+  @include bottomnavLightThemeVariables($color);
   @include buttonLightThemeVariables($color);
   @include textfieldLightThemeVariables();
   
@@ -21,7 +21,7 @@ $tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900"
   --secondary-text-color: rgba(255,255,255,0.70);
   --disabled-color: rgba(255,255,255,0.50);
   --divider-color: rgba(255,255,255,0.12);
-  @include bottomsheetDarkThemeVariables($color);
+  @include bottomnavDarkThemeVariables($color);
   @include buttonDarkThemeVariables($color);
   @include textfieldDarkThemeVariables();
 }

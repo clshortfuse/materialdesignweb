@@ -1,7 +1,7 @@
 @import '../components/index.scss';
 @include buildTheme('deeppurple', 'amber', 'red', 'grey', 'light', 'textfield');
 @include buildTheme('blue', 'pink', 'red', 'grey', 'light', 'toolbar');
-@include buildTheme('teal', 'brown', 'red', 'grey', 'light', 'bottomsheet');
+@include buildTheme('teal', 'brown', 'red', 'grey', 'light', 'bottomnav');
 
 
 html {
@@ -118,7 +118,7 @@ html {
 }
 
 input[name="show-component"]:not(:checked) {
-  &[value="bottomsheet"] ~ #bottomsheet-comparisons,
+  &[value="bottomnav"] ~ #bottomnav-comparisons,
   &[value="button"] ~ #button-comparisons,
   &[value="textfield"] ~ #textfield-comparisons,
   &[value="toolbar"] ~ #toolbar-comparisons, {

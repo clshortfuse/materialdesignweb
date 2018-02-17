@@ -3,16 +3,10 @@
 @import '../common/functions.scss';
 @import '../common/motion.scss';
 
-.mdw-bottomsheet {
-  &,
-  &.mdw-button {
-    min-height: dp(56);
-    overflow-y: hidden;
-  }
-  &.mdw-button {
-    margin: 0;
-    padding: 0;
-  }
+.mdw-bottomnav {
+  
+  min-height: dp(56);
+  overflow-y: hidden;
   position: relative;
   display:flex;
   box-shadow: elevation(8);
@@ -22,43 +16,56 @@
   flex-direction:row;
 }
 
-.mdw-bottomsheet__action {
+.mdw-bottomnav__action {
   position: relative;
   display: flex;
   flex-grow: 1;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  &,
+  &.mdw-button {
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+  }
 
-  margin:0;
+  
   box-shadow: none;
   box-sizing: content-box;
-  --button__ripple-color: var(--bottomsheet__ripple-color);
-  --button__focus-overlay: var(--bottomsheet__focus-overlay);
-  --button__press-color: var(--bottomsheet__press-color);
+  --button__ripple-color: var(--bottomnav__ripple-color);
+  --button__focus-overlay: var(--bottomnav__focus-overlay);
+  --button__press-color: var(--bottomnav__press-color);
   border-radius: 0;
 }
 
-.mdw-bottomsheet__icon {
+.mdw-bottomnav__icon {
+  // Icon is top aligned and doesn't scale with font
+  position: absolute;
+  top: 0px;
   pointer-events: none;
-  padding-top: dp(8);
   transition-property: color, transform;
   transition-duration: 200ms;
   transition-timing-function: $motion-easing-standard;
-  color: var(--bottomsheet__inactive-color);
+  color: var(--bottomnav__inactive-color);
+  transform: translateY(dp(8));
+  input:checked + .mdw-bottomnav__action > &,
   input:checked ~ & {
-    color: var(--bottomsheet__active-color);
-    //transform: translateY(dp(-2));
+    color: var(--bottomnav__active-color);
+    transform: translateY(dp(6));
   }
 }
 
-.mdw-bottomsheet__label {
+.mdw-bottomnav__label {
+  display: flex;
+  justify-content: center;
   pointer-events: none;
   min-width: dp(80);
   max-width: dp(168);
+  padding-top: dp(4);
   padding-left: dp(12);
   padding-right: dp(12);
-  transition-property: color, font-size;
+  transition-property: color, font-size, transform, min-width, max-width;
+  transform: translateY(0);
   transition-duration: 200ms;
   transition-timing-function: $motion-easing-standard;
   text-overflow: ellipsis;
@@ -69,43 +76,42 @@
   font-size: sp(12);
   text-transform: none;
   font-weight: normal;
-  color: var(--bottomsheet__inactive-color);
+  color: var(--bottomnav__inactive-color);
+  input:checked + .mdw-bottomnav__action > &,
   input:checked ~ & {
-    color: var(--bottomsheet__active-color);
+    color: var(--bottomnav__active-color);
     font-size: sp(14);
   }
 }
-.mdw-bottomsheet input {
+.mdw-bottomnav input {
   // Using `display: none` breaks keyboard navigation
   opacity: 0;
   height: 0;
   width: 0;
-  position: absolute;
+  margin: 0;
+  padding: 0;
   pointer-events: none;
 }
-.mdw-bottomsheet[mdw-shifting] {
-  .mdw-bottomsheet__action{
-    justify-content: flex-end
-  }
-  .mdw-bottomsheet__label {
+
+.mdw-bottomnav[mdw-shifting] {
+  .mdw-bottomnav__label {
     font-size: sp(14);
     min-width: dp(56);
     max-width: dp(96);
-    flex-grow: 1;
   }
-  input:not(:checked) ~ .mdw-bottomsheet__label {
-    width: 0;
-    height: 0;
-    min-height: 0;
-    color: transparent;
-    transition-duration: 0s;
-  }
-  input:checked ~ .mdw-bottomsheet__label {
+  input:checked + * .mdw-bottomnav__label {
     min-width: dp(96);
     max-width: dp(168);
   }
-  input:not(:checked) ~ .mdw-bottomsheet__icon {
-    
+  input:not(:checked) + .mdw-bottomnav__action {
+    & > .mdw-bottomnav__icon {
+      transform: translateY(16px);
+    }
+    & > .mdw-bottomnav__label {
+      color: transparent;
+      transform: translateY(0.25em);
+    }
   }
+  
 }
 

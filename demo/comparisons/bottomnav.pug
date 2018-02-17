@@ -1,0 +1,45 @@
+include ../mixins.pug
+
+.comparison.clipped-300
+  .render.mdw-theme-bottomnav
+    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+      .flex-1
+      form.mdw-bottomnav
+        label.mdw-button.mdw-bottomnav__action
+          input(type="radio" name="bottomnav" value="recents")
+          .mdw-bottomnav__icon.material-icons history
+          span.mdw-bottomnav__label Recents
+        label.mdw-button.mdw-bottomnav__action
+          input(type="radio" name="bottomnav" value="favorites" checked)
+          .mdw-bottomnav__icon.material-icons favorite
+          span.mdw-bottomnav__label Favorites
+        label.mdw-button.mdw-bottomnav__action
+          input(type="radio" name="bottomnav" value="nearby")
+          .mdw-bottomnav__icon.material-icons near_me
+          span.mdw-bottomnav__label Nearby
+    +androidnavbar
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B3321sZLoP_HZjN1eld5MjRXb2s/components-bottomnavigation-usage1.png')
+
+.comparison.clipped-300
+  .render.mdw-theme-bottomnav
+    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+      .flex-1
+      form.mdw-bottomnav.mdw-theme__filled(mdw-color="primary" mdw-tone="700" mdw-shifting)
+        input(type="radio" name="shiftingbottomnav" value="movies" id='value1')
+        label.mdw-button.mdw-bottomnav__action(for='value1')
+          .mdw-bottomnav__icon.material-icons tv
+          span.mdw-bottomnav__label Movies &amp; TV
+        input(type="radio" name="shiftingbottomnav" value="music" id='value2' checked )
+        label.mdw-button.mdw-bottomnav__action(for='value2')
+          .mdw-bottomnav__icon.material-icons music_note
+          span.mdw-bottomnav__label Music
+        input(type="radio" name="shiftingbottomnav" value="books" id='value3')
+        label.mdw-button.mdw-bottomnav__action(for='value3')
+          .mdw-bottomnav__icon.material-icons book
+          span.mdw-bottomnav__label Books
+        input(type="radio" name="shiftingbottomnav" value="newsstand" id='value4')
+        label.mdw-button.mdw-bottomnav__action(for='value4')
+          .mdw-bottomnav__icon.material-icons assignment
+          span.mdw-bottomnav__label Newsstand
+    +androidnavbar
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B3321sZLoP_HZHA1UVAyRFpMVDQ/components-bottomnavigation-usage5.png')

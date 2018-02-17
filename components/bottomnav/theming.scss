@@ -1,0 +1,21 @@
+@mixin bottomnavLightThemeVariables($color) {
+  --bottomnav__active-color: unquote("rgb(var(--primary-color))");
+  --bottomnav__inactive-color: rgba(black, 0.54);
+  
+  --bottomnav__ripple-color: unquote("rgba(var(--primary-color), 0.26)");
+  --bottomnav__focus-overlay: unquote("rgba(var(--primary-color), 0.12)");
+  --bottomnav__press-color: unquote("rgba(var(--primary-color), 0.40)");
+}
+
+@mixin bottomnavDarkThemeVariables($color) {
+  --bottomnav__active-color: rgba(white, 1.0);
+  --bottomnav__inactive-color: rgba(white, 0.50);
+  --bottomnav__press-color: rgba(#CCC, 0.25);
+  @if ($color == 'background') {
+    --bottomnav__ripple-color: rgba(white, 0.20);
+    --bottomnav__focus-overlay: rgba(black, 0.12);
+  } @else {
+    --bottomnav__ripple-color: rgba(white, 0.30);
+    --bottomnav__focus-overlay: rgba(white, 0.20);
+  }
+}
