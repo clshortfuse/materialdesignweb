@@ -16,8 +16,8 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
 
 .mdw-checkbox {
   position: relative;
-  min-width: $checkbox-size - (2 * $border-size);
-  min-height: $checkbox-size - (2 * $border-size);
+  min-width: $checkbox-size;
+  min-height: $checkbox-size;
   appearance: none;
   outline: none;
   margin: 0;
@@ -26,30 +26,59 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   transition-property: background-color, border-color;
   transition-timing-function: $motion-easing-standard;
   transition-duration: 200ms;
+  background-color: transparent;
+  border-radius: dp(2);
+  border-color: transparent;
   border-width: dp(2);
   border-style: solid;
-  
-  border-radius: dp(2);
-  box-sizing: content-box;
-  
-  border-color: var(--secondary-text-color);
-  background-color: transparent;
   &:checked {
-    border-color: transparent;
-    background-color: unquote("rgb(var(--primary-color))");
+    // background-color: unquote("rgb(var(--primary-color))");
     &[mdw-color] {
-      background-color: unquote("rgb(var(--color))");
+      // background-color: unquote("rgb(var(--color))");
     }
   }
-  &:active {
-    border-color: transparent;
-    background-color: var(--secondary-text-color);
+  &::before {
+    content: "";
+    position: absolute;
+    top: dp(-2);
+    left: dp(-2);
+    width: $checkbox-size;
+    height: $checkbox-size;
+    border-color: var(--secondary-text-color);
+    border-width: dp(2);
+    border-style: solid;
+    border-radius: dp(2);
+    box-sizing: border-box;
+    transition-property: border-width, border-color, background-color;
+    transition-duration: $motion-duration-desktop-enter;
+    @include allHandsets {
+      transition-duration: $motion-duration-mobile-enter;
+    }
+    @include allTablets {
+      transition-duration: $motion-duration-tablet-enter;
+    }
+  }
+  &:checked::before,
+  &:active::before {
+    border-width: $checkbox-size / 2;
+  }
+  &:checked::before {
+    border-color: unquote("rgb(var(--primary-color))");
+    background-color: unquote("rgb(var(--primary-color))");
+  }
+  &[mdw-color]:checked::before {
+    background-color: unquote("rgb(var(--color))");
+    border-color: unquote("rgb(var(--color))");
   }
   &::after {
     content: "";
     position: absolute;
-    height: 0;
-    width: 0;
+    top: 0;
+    left: 0;
+    margin-left: $checkbox-icon-offset-x;
+    margin-top: $checkbox-icon-offset-y;
+    height: $checkbox-icon-height;
+    width: $checkbox-icon-width;
     animation-timing-function: $motion-easing-deceleration;
     animation-duration: $motion-duration-desktop-enter;
     @include allHandsets {
@@ -61,14 +90,6 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     
   }
   &:checked::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin-left: $checkbox-icon-offset-x;
-    margin-top: $checkbox-icon-offset-y;
-    height: $checkbox-icon-height;
-    width: $checkbox-icon-width;
     border-width: $checkbox-icon-thickness;
     background-color: transparent;
     box-sizing: border-box;
@@ -82,12 +103,17 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
 }
 
 @keyframes showCheck {
+  // Animation is applied to pre-rotated box;
+  // Clip box completely horizontally and vertically upto bottom border
   0% {
     clip: rect($checkbox-icon-height - $checkbox-icon-thickness, 0, auto, auto)
   }
-  31% {
+  // Remove horizontal clip
+  // % = stroke length upto corner
+  #{$checkbox-icon-width / ($checkbox-icon-width + $checkbox-icon-height) * 100%} {
     clip: rect($checkbox-icon-height - $checkbox-icon-thickness, $checkbox-icon-width, auto, auto)
   }
+  // Remove vertical clip
   100% {
     clip: rect(0, $checkbox-icon-width, auto, auto)
   }
