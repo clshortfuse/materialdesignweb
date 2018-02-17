@@ -64,8 +64,6 @@ label.mdw-text-field
 
 ## Multiline with Auto-Expand (requires-JS)
 
-Pug/HTML:
-
 ```
 label.mdw-text-field
   textarea.mdw-text-field__input(placeholder=" " mdw-multiline)
@@ -85,7 +83,6 @@ Use rows to define size. `.mdw-text-field__border-line` is not needed, but can b
 
 # Javascript
 
-JS:
 ```
   document.querySelectorAll(".mdw-text-field").forEach((element) => {
     new TextField(element);

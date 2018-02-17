@@ -60,13 +60,12 @@
       input.mdw-text-field__input(type="text" placeholder=" ")
       label.mdw-text-field__label Phone number
       .mdw-text-field__border-line
-
     span * Required fields
-#multi1
+#multi1.mdw-theme-alt
   .content(style="padding:9px 16px")
     label.mdw-text-field
       input.mdw-text-field__input(value="Vintage 50" placeholder=" ")
-      span.mdw-text-field__label Title
+      span.mdw-text-field__label() Title
       .mdw-text-field__border-line
       .mdw-text-field__helper-text Helper
     .horizontal-controls
@@ -85,14 +84,14 @@
         | Unique and rare dress from 1952. Made out of washed cotton with front pockets. Sleeveless with button closures.
       label.mdw-text-field__label Description
       .mdw-text-field__border-line
-#area1
+#area1.mdw-theme-alt
   .content.mdw-theme-filled(style="padding:18px 16px" mdw-color="background" mdw-tone="900")
-    label.mdw-text-field
+    label.mdw-text-field(mdw-color="accent")
       input.mdw-text-field__input(placeholder=" ")
       span.mdw-text-field__label Name
       .mdw-text-field__border-line
       .mdw-text-field__error-text spacer
-    label.mdw-text-field(mdw-textarea)
+    label.mdw-text-field(mdw-textarea mdw-color="accent")
       textarea.mdw-text-field__input(placeholder=" " rows="5")
       span.mdw-text-field__label Message
       .mdw-text-field__border-line
@@ -102,7 +101,7 @@
       .mdw-text-field__border-line
 #area2.mdw-theme-alt
   .content.mdw-theme-filled(style="padding:0 16px; margin-top:-44px" mdw-color="background" mdw-tone="900")
-    label.mdw-text-field
+    label.mdw-text-field(mdw-color="accent")
       input.mdw-text-field__input(placeholder=" ")
       span.mdw-text-field__label Name
       .mdw-text-field__border-line
@@ -110,12 +109,13 @@
     label.mdw-text-field(mdw-textarea mdw-color="accent")
       textarea.mdw-text-field__input(placeholder=" " rows="5" required)
         | Just wanted to let you kn
-      span.mdw-text-field__label Message *
+      span.mdw-text-field__label(mdw-color="accent") Message *
       .mdw-text-field__border-line
       .mdw-text-field__helper-text Helper text.
       .mdw-text-field__error-text Error: Required.
     label.mdw-text-field(mdw-textarea)
-      textarea.mdw-text-field__input(placeholder=" " rows="5" disabled)
+      textarea.mdw-text-field__input(placeholder=" " rows="5" disa
+      bled)
         | This textarea is disabled.
       span.mdw-text-field__label Message *
       .mdw-text-field__border-line

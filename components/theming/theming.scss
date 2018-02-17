@@ -29,6 +29,11 @@ $tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900"
 
   @if ($namespace == null) {
     @each $color in ('primary', 'accent', 'warn', 'background') {
+      .mdw-theme-filled[mdw-color="#{$color}"][mdw-tone="0"] {
+        // mdw-color required for specificity
+        background-color: white;
+        @include lightVariables();
+      }
       @each $tone in $tone-list {
         .mdw-theme-filled[mdw-color="#{$color}"] {
           background-color: unquote("rgb(var(--#{$color}-color))");
@@ -36,6 +41,10 @@ $tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900"
         .mdw-theme-filled[mdw-color="#{$color}"][mdw-tone="#{$tone}"] {
           background-color: unquote("rgb(var(--#{$color}-#{$tone}-color))");
         }
+      }
+      .mdw-theme-filled[mdw-color="#{$color}"][mdw-tone="1000"] {
+        background-color: black;
+        @include darkVariables();
       }
     }
   }
