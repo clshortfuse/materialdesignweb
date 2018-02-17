@@ -4,43 +4,66 @@
 @import '../common/variables.scss';
 
 $checkbox-size: dp(18);
+$border-size: dp(2);
+
+// svg:
+// viewbox - 24x24
+// path - M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z
+// rotated & normalized - M 0 0 V 7.92 H 16.97 V 5.94 H 1.98 V 0 
+// horizontal padding = 24 - 16.97 / 2 = 3.5
+// width = 16.97 / 24
+// vertical padding = 24-7.92 / 2 = 8.04
+// height = 7.92 /24
+
 
 .mdw-checkbox {
   position: relative;
-  min-width: $checkbox-size;
-  min-height: $checkbox-size;
+  min-width: $checkbox-size - (2 * $border-size);
+  min-height: $checkbox-size - (2 * $border-size);
   appearance: none;
   outline: none;
-  &::before {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    content: '';
-    border-width: dp(2);
-    border-style: solid;
-    border-color: var(--secondary-text-color);
-    border-radius: dp(2);
-    box-sizing: border-box;
-  }
-  &:disabled::before {
-    border-color: var(--disabled-text-color);
-  }
+  margin: 0;
+  padding: 0;
+  z-index: 0;
+  transition-property: background-color, border-color;
+  transition-timing-function: $motion-easing-standard;
+  transition-duration: 200ms;
+  border-width: dp(2);
+  border-style: solid;
   
+  border-radius: dp(2);
+  box-sizing: content-box;
   
+  border-color: var(--secondary-text-color);
+  background-color: transparent;
   &:checked {
-    &::before {
-      background-color: unquote("rgb(var(--primary-color))");
-      border-color: unquote("rgb(var(--primary-color))");
-    }
+    border-color: transparent;
+    background-color: unquote("rgb(var(--primary-color))");
     &[mdw-color] {
-      &::before {
-        background-color: unquote("rgb(var(--color))");
-        border-color: unquote("rgb(var(--color))");
-      }
+      background-color: unquote("rgb(var(--color))");
     }
+
   }
-  
+  &:active {
+    border-color: transparent;
+    background-color: var(--secondary-text-color);
+  }
+  &:checked::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: 0;
+    margin-top: 0;
+    height: 7.92px;
+    width: 16.97px;
+    border-width: 1.98px;
+    background-color: transparent;
+    box-sizing: border-box;
+    transform: rotate(-45deg);
+    border-bottom-style: solid;
+    border-left-style: solid;
+    border-color: white;
+  }
   
 }

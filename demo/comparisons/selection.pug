@@ -1,6 +1,6 @@
 include ../mixins.pug
 
-.comparison.mdw-selection
+.comparison.mdw-selection.no-js
   .render
     +androidstatusbar('rgb(var(--accent-700-color))')
     .mdw-toolbar.mdw-theme__filled(mdw-color='primary' mdw-tone='500')
@@ -9,24 +9,23 @@ include ../mixins.pug
     .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
       ul.mdw-list(style="margin-top:16px")
         li.mdw-list__subheader Switch
-        li.mdw-list__row.mdw-button Android Switch On
-          
-        li.mdw-list__row.mdw-button Android Switch Off
+        li.mdw-list__row Android Switch On
+        li.mdw-list__row Android Switch Off
       ul.mdw-list(style="margin-top:24px")
         li.mdw-list__subheader Single check
-        li.mdw-list__row.mdw-button Option 1
-        li.mdw-list__row.mdw-button Option 2
+        li.mdw-list__row Option 1
+        li.mdw-list__row Option 2
       ul.mdw-list(style="margin-top:16px")
         li.mdw-list__subheader Multiple check
-        li.mdw-list__row.mdw-button
+        li.mdw-list__row(tabindex=-1)
           .mdw-list__text Option 1
           .mdw-list__end
             input.mdw-checkbox(type="checkbox")
-        li.mdw-list__row.mdw-button
+        li.mdw-list__row(tabindex=0)
           .mdw-list__text Option 2
           .mdw-list__end
             input.mdw-checkbox(mdw-color="accent" type="checkbox")
-        li.mdw-list__row.mdw-button
+        li.mdw-list__row(tabindex=-1)
           .mdw-list__text Option 3
           .mdw-list__end
             input.mdw-checkbox(mdw-color="warn" type="checkbox")

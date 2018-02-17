@@ -158,7 +158,7 @@ $button__focus-animation-duration: 1667ms;
     content: none
   }
 
-  &[display] > .mdw-ripple,
+  &[disabled] > .mdw-ripple,
   &[disabled]::before,
   &[disabled]::after {
     content: none;

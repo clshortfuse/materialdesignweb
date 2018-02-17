@@ -40,24 +40,22 @@ $list__divider-height: dp(1);
   display: flex;
   flex-direction: row;
   min-height: dp(48);
-  &,
-  &.mdw-button {
-    align-items: center;
-    justify-content: stretch;
-    margin: 0;
-    padding: 0 dp(16);
-    text-transform: none;
-    color: var(--primary-text-color);
-    font-weight: $font-weight-regular;
-    font-size: sp(16);
-  }
-  
+  align-items: center;
+  justify-content: stretch;
+  margin: 0;
+  padding: 0 dp(16);
+  text-transform: none;
+  color: var(--primary-text-color);
+  font-weight: $font-weight-regular;
+  font-size: sp(16);
+
   text-align: start;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow-x: hidden;
-
-
+  overflow-y: hidden; // Chrome ripple overscroll workaround
+  z-index: 0;
+  outline: none;
   
 }
 
@@ -178,4 +176,48 @@ $list__divider-height: dp(1);
   line-height: sp(20);
   height: sp(20*2);
   max-height: sp(20*2);
+}
+
+.mdw-list__row {
+  /* duration | timing-function | delay | iteration-count | direction | fill-mode | play-state | name */
+  & > .mdw-ripple,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-image: radial-gradient(
+      circle at center,
+      var(--button__ripple-color) 10%,
+      transparent 10.0001%
+    );
+    transform: scale(10); // 10.0 has subpixel rendering issues
+    transition-property: transform, opacity;
+    transition-duration: 700ms;
+    opacity: 0;
+  }
+
+  &[tabindex]:active:focus {
+    & > .mdw-ripple,
+    &::after {
+      transform: scale(0);
+      transition-delay: 1ms; // Delay one cycle to allow child to get focus
+      transition-duration: 0s;
+      opacity: 1;
+    }
+  }
+
+  &:active:not(:focus-within),
+  &:active[tabindex]:focus:not(:focus-within) {
+    & > .mdw-ripple,
+    &::after {
+      transform: scale(0);
+      transition-delay: 1ms; // Delay one cycle to allow child to get focus
+      transition-duration: 0s;
+      opacity: 1;
+    }
+  }
 }
