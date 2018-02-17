@@ -6,15 +6,13 @@
 $checkbox-size: dp(18);
 $border-size: dp(2);
 
-// svg:
-// viewbox - 24x24
-// path - M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z
-// rotated & normalized - M 0 0 V 7.92 H 16.97 V 5.94 H 1.98 V 0 
-// horizontal padding = 24 - 16.97 / 2 = 3.5
-// width = 16.97 / 24
-// vertical padding = 24-7.92 / 2 = 8.04
-// height = 7.92 /24
-
+// from ic_check_black_18px.svg
+// rotated 45°
+$checkbox-icon-height: dp(12.73);
+$checkbox-icon-width: dp(5.93);
+$checkbox-icon-thickness: dp(1.5);
+$checkbox-icon-offset-y: dp(2.64) - $checkbox-icon-thickness - $border-size;
+$checkbox-icon-offset-x: dp(6.04) - $border-size;
 
 .mdw-checkbox {
   position: relative;
@@ -42,28 +40,55 @@ $border-size: dp(2);
     &[mdw-color] {
       background-color: unquote("rgb(var(--color))");
     }
-
   }
   &:active {
     border-color: transparent;
     background-color: var(--secondary-text-color);
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    height: 0;
+    width: 0;
+    animation-timing-function: $motion-easing-deceleration;
+    animation-duration: $motion-duration-desktop-enter;
+    @include allHandsets {
+      animation-duration: $motion-duration-mobile-enter;
+    }
+    @include allTablets {
+      animation-duration: $motion-duration-tablet-enter;
+    }
+    
   }
   &:checked::after {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
-    margin-left: 0;
-    margin-top: 0;
-    height: 7.92px;
-    width: 16.97px;
-    border-width: 1.98px;
+    margin-left: $checkbox-icon-offset-x;
+    margin-top: $checkbox-icon-offset-y;
+    height: $checkbox-icon-height;
+    width: $checkbox-icon-width;
+    border-width: $checkbox-icon-thickness;
     background-color: transparent;
     box-sizing: border-box;
-    transform: rotate(-45deg);
+    transform: rotate(45deg);
     border-bottom-style: solid;
-    border-left-style: solid;
+    border-right-style: solid;
     border-color: white;
+    animation-name: showCheck;
+    animation-fill-mode: forwards;
   }
-  
+}
+
+@keyframes showCheck {
+  0% {
+    clip: rect($checkbox-icon-height - $checkbox-icon-thickness, 0, auto, auto)
+  }
+  31% {
+    clip: rect($checkbox-icon-height - $checkbox-icon-thickness, $checkbox-icon-width, auto, auto)
+  }
+  100% {
+    clip: rect(0, $checkbox-icon-width, auto, auto)
+  }
 }
