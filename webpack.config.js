@@ -1,7 +1,6 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
-const cssvariables = require('postcss-css-variables');
 const cssnano = require('cssnano');
 
 const isProduction = (process.env.NODE_ENV === 'production');
@@ -63,18 +62,17 @@ function getComponentsConfig() {
 
 /** @return {Object} */
 function getDemoConfig() {
-  const extractStyles = new ExtractTextPlugin('demo.min.css');
+  const extractStyles = new ExtractTextPlugin('[name].min.css');
   const extractHtml = new ExtractTextPlugin('index.html');
   return {
-    entry: [
+    entry: {
       // 'babel-polyfill',
-      './demo/demo.js',
-      './demo/demo.scss',
-      './demo/index.pug',
-    ],
+      demo: ['./demo/demo.js', './demo/demo.scss', './demo/index.pug'],
+      'demo.ie11': ['./demo/demo.ie11.scss'],
+    },
     devtool: isProduction ? undefined : 'nosources-source-map',
     output: {
-      filename: 'demo.min.js',
+      filename: '[name].min.js',
       path: path.resolve(__dirname, DEST, 'demo'),
     },
     module: {
@@ -107,7 +105,6 @@ function getDemoConfig() {
             options: {
               sourceMap: !isProduction,
               plugins: () => [
-                // cssvariables({ preserve: true }),
                 autoprefixer(),
                 cssnano(),
               ],

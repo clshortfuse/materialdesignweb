@@ -32,7 +32,7 @@ include ../mixins.pug
         label.mdw-list__row
           .mdw-list__text Option 2
           .mdw-list__end
-            label.mdw-selection(mdw-color="primary" mdw-tone=700)
+            label.mdw-selection.mdw-theme__colored(mdw-color="primary" mdw-tone=700)
               input(type="radio" name="selectiontest")
               .mdw-selection__icon
       ul.mdw-list(style="margin-top:16px")
@@ -46,13 +46,13 @@ include ../mixins.pug
         label.mdw-list__row(tabindex=0)
           .mdw-list__text Option 2
           .mdw-list__end
-            .mdw-selection(mdw-color="primary" mdw-tone=700)
+            .mdw-selection.mdw-theme__colored(mdw-color="primary" mdw-tone=700)
               input(type="checkbox" checked)
               .mdw-selection__icon
         label.mdw-list__row(tabindex=-1)
           .mdw-list__text Option 3
           .mdw-list__end
-            .mdw-selection(mdw-color="warn")
+            .mdw-selection.mdw-theme__colored(mdw-color="warn")
               input(type="checkbox")
               .mdw-selection__icon
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B57Y8yNEHsZPQXRHTEpLc0JXVnM/material-design.platform-adaptation-control-1.png')

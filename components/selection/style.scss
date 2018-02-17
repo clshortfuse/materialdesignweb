@@ -31,7 +31,8 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   margin-right: $horizontal-margin;
   margin-top: $border-size;
   margin-bottom: 0;
-  background-color: var(--button__ripple-color);
+
+  // background-color: var(--button__ripple-color);
   border-radius: 50%;
   transform: scale(1);
   opacity: 0;
@@ -45,7 +46,14 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     transition-duration: $motion-duration-tablet-default;
   }
   &:checked {
-    background-color: unquote("rgba(var(--accent-color), 0.26)");
+    // background-color: unquote("rgba(var(--accent-color), 0.26)");
+  }
+  &::-ms-check {
+    // IE11
+    border-radius: 50%;
+    color: transparent;
+    background-color: transparent;
+    border-color: transparent;
   }
   &:active,
     &:focus {
@@ -76,7 +84,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     position: absolute;
     top: 0;
     left: 0;
-    border-color: var(--secondary-text-color);
+    // border-color: var(--secondary-text-color);
     border-width: dp(2);
     border-style: solid;
     box-sizing: border-box;
@@ -90,7 +98,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     }
   }
   input:checked ~ &::before {
-    border-color: unquote("rgb(var(--accent-color))");
+    // border-color: unquote("rgb(var(--accent-color))");
   }
   &::after {
     content: "";
@@ -100,11 +108,9 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
 
 .mdw-selection[mdw-color] {
   > input:checked {
-    background-color: unquote("rgba(var(--primary-color), 0.26)"); // cssvariables fallback
-    background-color: unquote("rgba(var(--color), 0.26)");
+    // background-color: unquote("rgba(var(--color), 0.26)");
     ~ .mdw-selection__icon::before {
-      border-color: unquote("rgb(var(--primary-color))"); // cssvariables fallback
-      border-color: unquote("rgb(var(--color))");
+      // border-color: unquote("rgb(var(--color))");
     }
   }
 }
@@ -165,7 +171,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     transform: rotate(45deg);
     border-bottom-style: solid;
     border-right-style: solid;
-    border-color: unquote("rgb(var(--background-color))");
+    // border-color: unquote("rgb(var(--background-color))");
     animation-name: showCheck;
     animation-fill-mode: forwards;
   }
@@ -201,7 +207,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     height: $radio-size;
     width: $radio-size;
     border-radius: 50%;
-    background-color: var(--secondary-text-color);
+    // background-color: var(--secondary-text-color);
     transform: scale(0);
     transition: transform, background-color;
     transition-timing-function: $motion-easing-standard;
@@ -214,7 +220,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     }
   }
   &:checked ~ .mdw-selection__icon::after {
-    background-color: unquote("rgb(var(--accent-color))");
+    // background-color: unquote("rgb(var(--accent-color))");
     transform: scale(0.5);
   }
   & ~ .mdw-selection__label ~ .mdw-selection__icon {
@@ -224,8 +230,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
 
 .mdw-selection[mdw-color] > input[type="radio"]:checked {
   & ~ .mdw-selection__icon::after {
-    background-color: unquote("rgb(var(--primary-color))"); // cssvariables fallback
-    background-color: unquote("rgb(var(--color))");
+    // background-color: unquote("rgb(var(--color))");
   }
 }
 

@@ -49,7 +49,7 @@ $icon-signifier__padding-end: dp(16);
   height: $label__font-size;
   font-size: $label__font-size;
   pointer-events: none; // allow clickthrough
-  color: var(--secondary-text-color);
+  // color: var(--secondary-text-color);
 
   will-change: transform, font-size;
   transform: translateY(0);
@@ -84,12 +84,11 @@ $icon-signifier__padding-end: dp(16);
   // Offset from top = LabelTopPadding + LabelText + LabelBottomPadding + 8dp
   // Using padding-top causes overflowed text (multiline)
   margin-top: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom});
-  
 
-  color: var(--primary-text-color);
+  // color: var(--primary-text-color);
 
   &::placeholder {
-    color: transparent;
+    // color: transparent;
     will-change: color;
     transition-property: color;
     transition-timing-function: $motion-easing-standard;
@@ -105,7 +104,7 @@ $icon-signifier__padding-end: dp(16);
   [mdw-textarea] > & {
     padding-left: $textarea__padding-start;
     border-style: solid;
-    border-color: var(--textfield-border-line-color);
+    // border-color: var(--textfield-border-line-color);
     border-width: $border-line__height;
     border-radius: dp(4);
     
@@ -138,7 +137,7 @@ textarea.mdw-textfield__input {
   box-sizing: border-box;
   pointer-events: none;
   
-  border-color: var(--textfield-border-line-color);
+  // border-color: var(--textfield-border-line-color);
   border-width: $border-line__height;
 
   &::before,
@@ -155,10 +154,10 @@ textarea.mdw-textfield__input {
 }
 
 .mdw-textfield__helper-text {
-  color: var(--secondary-text-color);
+  // color: var(--secondary-text-color);
 }
 .mdw-textfield__error-text {
-  color: transparent; // will transition when shown
+  // color: transparent; // will transition when shown
   transform: translateY(-$helper-text__font-size / 4);
   .mdw-textfield__helper-text ~ & {
     position: absolute; // spacing provided by helper-text
@@ -204,38 +203,38 @@ textarea.mdw-textfield__input {
   // Focused
   &:focus {
     &::placeholder {
-      color: var(--textfield-input-placeholder-color__focus);
+      // color: var(--textfield-input-placeholder-color__focus);
     }
     & ~ .mdw-textfield__label {
       transform: translateY(0);
       font-size: $label__font-size;
       // pointer-events: auto; // revert to default
-      color: var(--textfield-label-color__focus);
+      // color: var(--textfield-label-color__focus);
       [mdw-color="accent"] > & {
-        color: var(--textfield-label-accent-color__focus);
+        // color: var(--textfield-label-accent-color__focus);
       }
     }
 
     &,
     & ~ .mdw-textfield__border-line::before {
-      border-color: var(--textfield-border-line-color__focus);
-      caret-color: var(--textfield-label-color__focus);
+      // border-color: var(--textfield-border-line-color__focus);
+      // caret-color: var(--textfield-label-color__focus);
       [mdw-color="accent"] > & {
-        border-color: var(--textfield-border-line-accent-color__focus);
-        caret-color: var(--textfield-label-accent-color__focus);
+        // border-color: var(--textfield-border-line-accent-color__focus);
+        // caret-color: var(--textfield-label-accent-color__focus);
       }
     }
 
     // Invalid
 
     &:invalid {
-      caret-color: var(--textfield-label-warn-color__focus);
+      // caret-color: var(--textfield-label-warn-color__focus);
       &,
       & ~ .mdw-textfield__border-line::after {
-        border-color: var(--textfield-border-line-warn-color__focus);
+        // border-color: var(--textfield-border-line-warn-color__focus);
       }
       & ~ .mdw-textfield__label {
-        color: var(--textfield-label-warn-color__focus);
+        // color: var(--textfield-label-warn-color__focus);
         animation-name: labelShake;
         animation-duration: 250ms;
         animation-delay: $motion-duration-desktop-default;
@@ -265,17 +264,17 @@ textarea.mdw-textfield__input {
   // Disabled
 
   &[disabled] {
-    color: var(--disabled-color);
+    // color: var(--disabled-color);
     [mdw-textarea] > & {
-      background-color: var(--divider-color);
-      border-color: var(--disabled-color);
+      // background-color: var(--divider-color);
+      // border-color: var(--disabled-color);
     }
     & ~ .mdw-textfield__label {
-      color: var(--disabled-color);
+      // color: var(--disabled-color);
     }
     & ~ .mdw-textfield__border-line {
       border-style: dotted;
-      border-color: var(--disabled-color);
+      // border-color: var(--disabled-color);
     }
   }
 
@@ -283,13 +282,13 @@ textarea.mdw-textfield__input {
 
   &:hover:not(:focus):not(:disabled) {
     [mdw-textarea] > & {
-      border-color: var(--textfield-border-line-color__hover);
+      // border-color: var(--textfield-border-line-color__hover);
     }
   }
 
   // Hover or Focus
 
-  &:hover,
+  &:hover:not(:disabled),
   &:focus {
     [mdw-textarea] > & {
       border-width: $border-line__focused__height;
@@ -299,7 +298,7 @@ textarea.mdw-textfield__input {
       margin-top: 16px;
     }
     & ~ .mdw-textfield__border-line {
-      border-color: var(--textfield-border-line-color__hover);
+      // border-color: var(--textfield-border-line-color__hover);
       border-width: $border-line__focused__height;
       margin-top: -$border-line__focused__height;
     }
@@ -308,16 +307,16 @@ textarea.mdw-textfield__input {
 
 .mdw-textfield__helper-text {
   .mdw-textfield__input[disabled] ~ & {
-    color: var(--disabled-color);
+    // color: var(--disabled-color);
   }
   .mdw-textfield__input:focus:invalid ~ & {
-    color: transparent;
+    // color: transparent;
   }
 }
 
 .mdw-textfield__error-text {
   .mdw-textfield__input:focus:invalid ~ & {
-    color: var(--textfield-label-warn-color__focus);
+    // color: var(--textfield-label-warn-color__focus);
     transform: translateY(0);
     will-change: transform, color;
     transition-property: transform, color;

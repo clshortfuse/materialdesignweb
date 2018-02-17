@@ -22,20 +22,45 @@
   flex-grow: 1;
   flex-direction: column;
   align-items: center;
-  &,
-  &.mdw-button {
-    justify-content: space-between;
-    margin: 0;
-    padding: 0;
-  }
-
-  
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
   box-shadow: none;
   box-sizing: content-box;
-  --button__ripple-color: var(--bottomnav__ripple-color);
-  --button__focus-overlay: var(--bottomnav__focus-overlay);
-  --button__press-color: var(--bottomnav__press-color);
   border-radius: 0;
+  z-index: 0;
+  overflow: hidden;
+  
+  // If using JS ripple, destroy ::after object
+  &[mdw-js-ripple]::after {
+    content: none
+  }
+    
+  & > .mdw-ripple,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    // background-image: radial-gradient(circle at center, var(--button__ripple-color) 10%, transparent 10.0001%);
+    transform: scale(10); // 10.0 has subpixel rendering issues
+    transition-property: transform, opacity;
+    transition-duration: 700ms;
+    opacity: 0;
+  }
+  
+  &:active {
+    & > .mdw-ripple,
+    &::after {
+      transform: scale(0);
+      transition-delay: 0ms;
+      transition-duration: 0s;
+      opacity: 1;
+    }
+  }
 }
 
 .mdw-bottomnav__icon {
@@ -45,11 +70,11 @@
   transition-property: color, transform;
   transition-duration: 200ms;
   transition-timing-function: $motion-easing-standard;
-  color: var(--bottomnav__inactive-color);
+  // color: var(--bottomnav__inactive-color);
   transform: translateY(dp(8));
   input:checked + .mdw-bottomnav__action > &,
   input:checked ~ & {
-    color: var(--bottomnav__active-color);
+    // color: var(--bottomnav__active-color);
     transform: translateY(dp(6));
   }
 }
@@ -75,10 +100,10 @@
   font-size: sp(12);
   text-transform: none;
   font-weight: normal;
-  color: var(--bottomnav__inactive-color);
+  // color: var(--bottomnav__inactive-color);
   input:checked + .mdw-bottomnav__action > &,
   input:checked ~ & {
-    color: var(--bottomnav__active-color);
+    // color: var(--bottomnav__active-color);
     font-size: sp(14);
   }
 }
@@ -104,6 +129,7 @@
     min-width: dp(96);
     max-width: dp(168);
   }
+  
   input:not(:checked) + .mdw-bottomnav__action {
     & > .mdw-bottomnav__icon {
       transform: translateY(16px);

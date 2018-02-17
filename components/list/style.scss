@@ -28,7 +28,7 @@ $list__divider-height: dp(1);
   align-items: center;
   justify-content: stretch;
   padding-left: dp(16);
-  color: var(--secondary-text-color);
+  // color: var(--secondary-text-color);
   font-size: sp(14);
   font-weight: $font-weight-medium;
   &[mdw-avatar] {
@@ -45,7 +45,7 @@ $list__divider-height: dp(1);
   margin: 0;
   padding: 0 dp(16);
   text-transform: none;
-  color: var(--primary-text-color);
+  // color: var(--primary-text-color);
   font-weight: $font-weight-regular;
   font-size: sp(16);
 
@@ -57,6 +57,11 @@ $list__divider-height: dp(1);
   z-index: 0;
   outline: none;
   
+  transition-property: background-color;
+  transition-duration: 500ms;
+  transition-delay: 5ms;
+  transition-timing-function: $motion-easing-standard;
+  background-color: transparent;
 }
 
 .mdw-list > .mdw-list__row:first-child {
@@ -103,7 +108,7 @@ $list__divider-height: dp(1);
     right: 0;
     width: 100%;
     height: $list__divider-height;
-    background-color: var(--divider-color);
+    // background-color: var(--divider-color);
   }
   
   [mdw-divider] > .mdw-list__row:not(:last-child) .mdw-list__start ~ &::after {
@@ -135,9 +140,9 @@ $list__divider-height: dp(1);
     margin-top: dp(16);
   }
   &:last-child:not(:only-child) {
-    color: var(--primary-text-color);
+    // color: var(--primary-text-color);
     &:nth-child(3) {
-      color: var(--secondary-text-color);
+      // color: var(--secondary-text-color);
       line-height: 1.5rem;
       margin-bottom: sp(14);
     }
@@ -184,7 +189,6 @@ $list__divider-height: dp(1);
     content: none
   }
   
-  /* duration | timing-function | delay | iteration-count | direction | fill-mode | play-state | name */
   & > .mdw-ripple,
   &::after {
     content: '';
@@ -194,11 +198,7 @@ $list__divider-height: dp(1);
     top: 0;
     left: 0;
     z-index: -1;
-    background-image: radial-gradient(
-      circle at center,
-      var(--button__ripple-color) 10%,
-      transparent 10.0001%
-    );
+    // background-image: radial-gradient(circle at center, var(--button__ripple-color) 10%, transparent 10.0001%);
     transform: scale(10); // 10.0 has subpixel rendering issues
     transition-property: transform, opacity;
     transition-duration: 700ms;

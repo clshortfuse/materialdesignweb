@@ -1,27 +1,144 @@
-@mixin textfieldLightThemeVariables() {
-  --textfield-input-placeholder-color__focus: rgba(0,0,0,0.42);
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
 
-  --textfield-border-line-color: rgba(0,0,0,0.42);
-  --textfield-border-line-color__hover: rgba(0,0,0,0.87);
-  --textfield-border-line-color__focus: unquote("rgb(var(--primary-A700-color))");
-  --textfield-border-line-accent-color__focus: unquote("rgb(var(--accent-A700-color))");
-  --textfield-border-line-warn-color__focus: unquote("rgb(var(--warn-A400-color))");
+$textfieldColors: (
+  text-color:                      ((#000,            0.87), (#fff,            1.00)),
+  secondary-text-color:            ((#000,            0.54), (#fff,            0.70)),
+  placeholder-color__focus:        ((#000,            0.42), (#fff,            0.50)),
+  disabled-color:                  ((#000,            0.38), (#fff,            0.50)),
+  divider-color:                   ((#000,            0.12), (#fff,            0.12)),
+  border-line-color:               ((#000,            0.42), (#fff,            0.70)),
+  border-line-color__hover:        ((#000,            0.87), (#fff,            1.00)),
+  border-line-color__focus:        (('primary', 'A700', 1.00), ('primary', 'A200', 1.00)),
+  border-line-accent-color__focus: (('accent',  'A700', 1.00), ('accent',  'A200', 1.00)),
+  border-line-warn-color__focus:   (('warn',    'A400', 1.00)),
+  label-color__focus:              (('primary', 'A700', 0.87), ('primary', 'A200', 1.00)),
+  label-accent-color__focus:       (('accent',  'A700', 0.87), ('accent',  'A200', 1.00)),
+  label-warn-color__focus:         (('warn',    'A400', 0.87), ('warn',    'A400', 1.00)),
+);
 
-  --textfield-label-color__focus: unquote("rgba(var(--primary-A700-color), 0.87)");
-  --textfield-label-accent-color__focus: unquote("rgba(var(--accent-A700-color), 0.87)");
-  --textfield-label-warn-color__focus: unquote("rgba(var(--warn-A400-color), 0.87)");
+@function textfieldThemeValue($key, $type, $theme) {
+  @return themeValue('textfield', $textfieldColors, $key, $type, $theme);
 }
 
-@mixin textfieldDarkThemeVariables() {
-  --textfield-input-placeholder-color__focus: rgba(255,255,255,0.50);
+@mixin textfieldThemeVariables($color, $lightness) {
+  @include themeVariables('textfield', $textfieldColors, $color, $lightness);
+}
 
-  --textfield-border-line-color: rgba(255,255,255,0.70);
-  --textfield-border-line-color__hover:  rgba(255,255,255,1.0);
-  --textfield-border-line-color__focus: unquote("rgb(var(--primary-A200-color))");
-  --textfield-border-line-accent-color__focus: unquote("rgb(var(--accent-A200-color))");
-  --textfield-border-line-warn-color__focus: unquote("rgb(var(--warn-A400-color))");
+// Vary by contrast or theme
+@mixin textfieldContrastRules($type: 'var', $theme: null) {
+  @at-root {
+    #{&}.mdw-textfield {
+      .mdw-textfield__label {
+        color: textfieldThemeValue("secondary-text-color", $type, $theme);
+      }
+      .mdw-textfield__input {
+        color: textfieldThemeValue("text-color", $type, $theme);
+        &::placeholder {
+          color: transparent;
+        }
+        
+        &:focus {
+          &::placeholder {
+            color: textfieldThemeValue("placeholder-color__focus", $type, $theme);
+          }
 
-  --textfield-label-color__focus: unquote("rgb(var(--primary-A200-color))");
-  --textfield-label-accent-color__focus: unquote("rgb(var(--accent-A200-color))");
-  --textfield-label-warn-color__focus: unquote("rgb(var(--warn-A400-color))");
+          & ~ .mdw-textfield__label {
+            color: textfieldThemeValue("label-color__focus", $type, $theme);
+          }
+
+          &,
+          & ~ .mdw-textfield__border-line::before {
+            border-color: textfieldThemeValue("border-line-color__focus", $type, $theme);
+            caret-color: textfieldThemeValue("label-color__focus", $type, $theme);
+          }
+
+          &:invalid {
+            caret-color: textfieldThemeValue("label-warn-color__focus", $type, $theme);
+            &,
+            & ~ .mdw-textfield__border-line::after {
+              border-color: textfieldThemeValue("border-line-warn-color__focus", $type, $theme);
+            }
+            & ~ .mdw-textfield__label {
+              color: textfieldThemeValue("label-warn-color__focus", $type, $theme);
+            }
+          }
+
+          // Disabled
+
+          &:disabled {
+            color: textfieldThemeValue("disabled-color", $type, $theme);
+            & ~ .mdw-textfield__label {
+              color: textfieldThemeValue("disabled-color", $type, $theme);
+            }
+            & ~ .mdw-textfield__border-line {
+              border-color: textfieldThemeValue("disabled-color", $type, $theme);
+            }
+          }
+
+          // Hover or Focus
+
+          &:hover:not(:disabled),
+          &:focus {
+            & ~ .mdw-textfield__border-line {
+              border-color: textfieldThemeValue("border-line-color__hover", $type, $theme);
+            }
+          }
+        }
+      }
+
+      &[mdw-color="accent"] > .mdw-textfield__input:focus {
+        & ~ .mdw-textfield__label {
+            color: textfieldThemeValue("label-accent-color__focus", $type, $theme);
+        }
+        &,
+        & ~ .mdw-textfield__border-line::before {
+            border-color: textfieldThemeValue("border-line-accent-color__focus", $type, $theme);
+            caret-color: textfieldThemeValue("label-accent-color__focus", $type, $theme);
+        }
+      }
+
+      &[mdw-textarea] > .mdw-textfield__input{
+        border-color: textfieldThemeValue("border-line-color", $type, $theme);
+        &:disabled {
+          background-color: textfieldThemeValue("divider-color", $type, $theme);
+          border-color: textfieldThemeValue("disabled-color", $type, $theme);
+        }
+        &:hover:not(:focus):not(:disabled) {
+          border-color: textfieldThemeValue("border-line-color__hover", $type, $theme);
+        }
+      }
+
+      .mdw-textfield__border-line {
+        border-color: textfieldThemeValue("border-line-color", $type, $theme);
+      }
+      .mdw-textfield__helper-text {
+        color: textfieldThemeValue("secondary-text-color", $type, $theme);
+      }
+      .mdw-textfield__error-text {
+        color: transparent; // will transition when shown
+      }
+
+      .mdw-textfield__input[disabled] ~ .mdw-textfield__helper-text {
+        color: textfieldThemeValue("disabled-color", $type, $theme);
+      }
+      .mdw-textfield__input:focus:invalid ~ .mdw-textfield__helper-text {
+        color: transparent;
+      }
+
+      .mdw-textfield__input:focus:invalid ~ .mdw-textfield__error-text {
+        color: textfieldThemeValue("label-warn-color__focus", $type, $theme);
+      }
+    }
+  }
+}
+
+// Varies by current color
+@mixin textfieldColoredRules($value: "var(--color)") {
+  // none
+}
+
+// Varies by theme
+@mixin textfieldThemeRules($theme: null) {
+  // none
 }

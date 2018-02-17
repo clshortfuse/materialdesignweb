@@ -1,37 +1,138 @@
-$button__focus-light-overlay: rgba(white, 0.30);
-$button__focus-dark-overlay: rgba(black, 0.12);
-$button__dark-background-focus-overlay: rgba(white, 0.20);
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
 
-@mixin buttonLightThemeVariables($color) {
-  --button__active-color: rgba(black, 0.54);
-  --button__inactive-color: rgba(black, 0.38);
-  --button__press-color: rgba(#999, 0.40);
-  --button__ripple-color: rgba(black, 0.12);
-  --button__filled-ripple-color: rgba(black, 0.12);
-  --button__focus-overlay: $button__focus-dark-overlay;
-  --button__disabled-text-color: rgba(#000, 0.26); 
-  --button__disabled-background-color: rgba(#000, 0.12);
-  --button__colored-focus-overlay: unquote("rgba(var(--primary-color), 0.12)"); // cssvariables fallback
-  --button__colored-focus-overlay: unquote("rgba(var(--color), 0.12)");
-  --button__colored-press-color: unquote("rgba(var(--primary-color), 0.40)"); // cssvariables fallback
-  --button__colored-press-color: unquote("rgba(var(--color), 0.40)");
+$buttonColors: (
+  text-color:                 ((#000, 0.87), (#fff, 1.00)),
+  active-color:               ((#000, 0.54), (#fff, 1.00)),
+  inactive-color:             ((#000, 0.38), (#fff, 0.50)),
+  press-color:                ((#999, 0.40), (#CCC, 0.25)),
+  ripple-color:               ((#000, 0.12), (#fff, 0.30), (#fff, 0.20)),
+  focus-overlay:              ((#000, 0.12), (#000, 0.12), (#fff, 0.20)),
+  disabled-text-color:        ((#000, 0.26), (#fff, 0.30)),
+  disabled-background-color:  ((#000, 0.12), (#fff, 0.12)),
+  filled-press-primary-color: (('primary', '700', 1.0)),
+  filled-press-accent-color:  (('accent',  '700', 1.0)),
+  filled-press-warn-color:    (('warn',    '700', 1.0)),
+);
+
+@function buttonThemeValue($key, $type, $theme) {
+  @return themeValue('button', $buttonColors, $key, $type, $theme);
 }
 
-@mixin buttonDarkThemeVariables($color) {
-  --button__active-color: rgba(white, 1.0);
-  --button__inactive-color: rgba(white, 0.50);
-  --button__press-color: rgba(#CCC, 0.25);
-  @if ($color == 'background') {
-    --button__ripple-color: rgba(white, 0.20);
-    --button__focus-overlay: $button__dark-background-focus-overlay;
-  } @else {
-    --button__ripple-color: rgba(white, 0.30);
-    --button__focus-overlay: $button__focus-dark-overlay;
+@mixin buttonThemeVariables($color, $lightness) {
+  @include themeVariables('button', $buttonColors, $color, $lightness);
+}
+
+// Vary by contrast
+@mixin buttonContrastRules($type: 'var', $theme: null) {
+  @at-root {
+    #{&}.mdw-button {
+      &:not(.mdw-theme__colored):not([disabled]) {
+        color: buttonThemeValue("text-color", $type, $theme);
+      }
+      &[mdw-active] {
+        color: buttonThemeValue("active-color", $type, $theme);
+      }
+      &[mdw-inactive] {
+        color: buttonThemeValue("inactive-color", $type, $theme);
+      }
+      &:not(.mdw-theme__colored)::before {
+        background-image: radial-gradient(
+          circle at center,
+          transparent 10%,
+          buttonThemeValue("ripple-color", $type, $theme) 10.0001%);
+        background-color: transparent;
+      }
+      &:active:not(.mdw-theme__colored)::before,
+      &:active:focus:not(.mdw-theme__colored)::before {
+        background-color: buttonThemeValue("press-color", $type, $theme);
+      }
+      &:focus:not(:active):not(.mdw-theme__colored)::before {
+        background-color: buttonThemeValue("focus-overlay", $type, $theme);
+      }
+      &[mdw-icon]:focus:not(:active):not(.mdw-theme__colored)::before {
+        background-color: buttonThemeValue("ripple-color", $type, $theme);
+      }
+      & > .mdw-ripple,
+      &::after {
+        background-image: radial-gradient(
+          circle at center,
+          buttonThemeValue("ripple-color", $type, $theme) 10%,
+          transparent 10.0001%);
+      }
+      &[disabled],
+      &.mdw-theme__colored[disabled], {
+        color: buttonThemeValue("disabled-text-color", $type, $theme);
+      }
+      &.mdw-theme__filled[disabled] {
+        // Disabled filled buttons use parent's theming context
+        @if ($type == 'var') {
+          --button__disabled-text-color: inherit;
+          --button__disabled-background-color: inherit;
+          color: buttonThemeValue("disabled-text-color", 'var', $theme);
+          background-color: buttonThemeValue("disabled-background-color", 'var', $theme);
+        } @else {
+          // Average color and opacity
+          color: mix(
+            buttonThemeValue("disabled-text-color", 'light', $theme),
+            buttonThemeValue("disabled-text-color", 'dark', $theme)
+          );
+          background-color: mix(
+            buttonThemeValue("disabled-background-color", 'light', $theme),
+            buttonThemeValue("disabled-background-color", 'dark', $theme)
+          );
+        }
+        
+      }
+    }
   }
-  --button__disabled-text-color: rgba(#fff, 0.30);
-  --button__disabled-background-color: rgba(#fff, 0.12);
-  --button__colored-focus-overlay: unquote("rgba(var(--primary-color), 0.12)"); // cssvariables fallback
-  --button__colored-focus-overlay: unquote("rgba(var(--color), 0.12)");
-  --button__colored-press-color: unquote("rgba(var(--primary-color), 0.25)"); // cssvariables fallback
-  --button__colored-press-color: unquote("rgba(var(--color), 0.25)");
+}
+
+// Varies by current color
+@mixin buttonColoredRules($value: "var(--color)") {
+  @at-root {
+    #{&}.mdw-button.mdw-theme__colored {
+      &::before {
+        background-image: radial-gradient(
+          circle at center,
+          transparent 10%,
+          unquote("rgba(#{$value}, 0.26)") 10.0001%
+        );
+      }
+      &:focus:not(:active)::before {
+        background-color: unquote("rgba(#{$value}, 0.12)");
+      }
+      &[mdw-icon]:focus:not(:active)::before {
+        background-color: unquote("rgba(#{$value}, 0.26)")
+      }
+      &:active::before,
+      &:focus:active::before {
+        background-color: unquote("rgba(#{$value}, 0.20)");
+      }
+    }
+  }
+}
+
+// Varies by theme
+@mixin buttonThemeRules($theme: null) {
+  .mdw-button.mdw-theme__filled {
+    &[mdw-color="primary"] {
+      &:active::before,
+      &:active:focus::before {
+        background-color: buttonThemeValue("filled-press-primary-color", null, $theme);
+      }
+    }
+    &[mdw-color="accent"] {
+      &:active::before,
+      &:active:focus::before {
+        background-color: buttonThemeValue("filled-press-accent-color", null, $theme);
+      }
+    }
+    &[mdw-color="warn"] {
+      &:active::before,
+      &:active:focus::before {
+        background-color: buttonThemeValue("filled-press-warn-color", null, $theme);
+      }
+    }
+  }
 }

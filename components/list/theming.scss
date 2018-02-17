@@ -1,0 +1,71 @@
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
+
+$listColors: (
+  text-color:           ((#000, 0.87), (#fff, 1.00)),
+  secondary-text-color: ((#000, 0.54), (#fff, 0.70)),
+  divider-color:        ((#000, 0.12), (#fff, 0.12)),
+  press-color:          ((#999, 0.40), (#CCC, 0.25)),
+  ripple-color:         ((#000, 0.12), (#fff, 0.30), (#fff, 0.20))
+);
+
+@function listThemeValue($key, $type) {
+  @return themeValue('list', $listColors, $key, $type);
+}
+
+@mixin listThemeVariables($color, $lightness) {
+  @include themeVariables('list', $listColors, $color, $lightness);
+}
+
+// Vary by contrast
+@mixin listContrastRules($type: 'var', $theme: null) {
+  .mdw-list__subheader {
+    color: listThemeValue("secondary-text-color", $type);
+  }
+  .mdw-list__row {
+    color: listThemeValue("text-color", $type)
+  }
+  .mdw-list__text {
+    [mdw-divider] > .mdw-list__row:not(:last-child) &::after {
+      background-color: listThemeValue("divider-color", $type);
+    }
+  }
+  .mdw-list__text-line {
+    &:last-child:not(:only-child) {
+      color: listThemeValue("text-color", $type);
+      &:nth-child(3) {
+        color: listThemeValue("secondary-text-color", $type);
+      }
+    }
+  }
+  .mdw-list__text-line > span,
+  .mdw-list__text-block > span {
+    color: listThemeValue("secondary-text-color", $type);
+  }
+  .mdw-list__row {
+    &[tabindex]:active:focus {
+      background-color: listThemeValue("press-color", $type);
+    }
+    &:active:not(:focus-within),
+    &:active[tabindex]:focus:not(:focus-within) {
+      background-color: listThemeValue("press-color", $type);
+    }
+    & > .mdw-ripple,
+    &::after {
+      background-image: radial-gradient(
+        circle at center,
+        listThemeValue("ripple-color", $type) 10%,
+        transparent 10.0001%);
+    }
+  }
+}
+
+// Varies by current color
+@mixin listColoredRules($value: "var(--color)") {
+  // none
+}
+
+// Varies by theme
+@mixin listThemeRules($theme: null) {
+  // none
+}

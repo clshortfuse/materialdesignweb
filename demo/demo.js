@@ -68,11 +68,11 @@ function setupOptions() {
  * @param {string} classname
  * @return {boolean}
  */
-function hasSomeParentTheClass(element, classname) {
+function hasSomeParentHasClass(element, classname) {
   if (element.className && element.className.split(' ').indexOf(classname) >= 0) {
     return true;
   }
-  return element.parentNode && hasSomeParentTheClass(element.parentNode, classname);
+  return element.parentNode && hasSomeParentHasClass(element.parentNode, classname);
 }
 
 /**
@@ -97,7 +97,7 @@ function start() {
     new mdw.ListRow(element);
   });
   forEachNode(document.querySelectorAll('.mdw-button'), (element) => {
-    if (!hasSomeParentTheClass(element, 'no-js')) {
+    if (!hasSomeParentHasClass(element, 'no-js')) {
       new mdw.Button(element);
     }
   });

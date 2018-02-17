@@ -4,7 +4,7 @@ include ../mixins.pug
   .render
     +androidstatusbar('rgb(var(--primary-700-color))')
     +toolbar('primary', '500', ['arrow_back'], ['more_vert']) Application
-    .content(style="padding:6px 16px")
+    .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding:6px 16px")
       label.mdw-textfield(style="font-size: 2.125rem")
         input.mdw-textfield__input(value="Vintage 50" placeholder=" ")
         span.mdw-textfield__label Title
@@ -44,7 +44,7 @@ include ../mixins.pug
   .render
     +androidstatusbar('rgb(var(--accent-300-color))')
     +toolbar('accent', 'A100', ['arrow_back'], ['search'])
-    form.content(style="padding:9px 16px")
+    form.content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding:9px 16px")
       label.mdw-textfield(mdw-color="accent")
         input.mdw-textfield__input(type="text" placeholder=" " required)
         .mdw-textfield__label Name *
@@ -77,7 +77,7 @@ include ../mixins.pug
   .render.mdw-theme-textfield
     +androidstatusbar('rgb(var(--primary-A700-color))')
     +toolbar('primary', 'A200', ['arrow_back'], ['done'])
-    .content(style="padding:9px 16px")
+    .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding:9px 16px")
       label.mdw-textfield
         input.mdw-textfield__input(value="Vintage 50" placeholder=" ")
         span.mdw-textfield__label() Title
@@ -139,8 +139,7 @@ include ../mixins.pug
         .mdw-textfield__helper-text Helper text.
         .mdw-textfield__error-text Error: Required.
       label.mdw-textfield(mdw-textarea)
-        textarea.mdw-textfield__input(placeholder=" " rows="5" disa
-        bled)
+        textarea.mdw-textfield__input(placeholder=" " rows="5" disabled)
           | This textarea is disabled.
         span.mdw-textfield__label Message *
         .mdw-textfield__border-line

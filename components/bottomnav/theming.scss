@@ -1,21 +1,56 @@
-@mixin bottomnavLightThemeVariables($color) {
-  --bottomnav__active-color: unquote("rgb(var(--primary-color))");
-  --bottomnav__inactive-color: rgba(black, 0.54);
-  
-  --bottomnav__ripple-color: unquote("rgba(var(--primary-color), 0.26)");
-  --bottomnav__focus-overlay: unquote("rgba(var(--primary-color), 0.12)");
-  --bottomnav__press-color: unquote("rgba(var(--primary-color), 0.40)");
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
+
+$bottomnavColors: (
+  active-color:      (('primary', '500', 1.00), (#fff, 1.0)),  
+  inactive-color:    ((#000,           0.54), (#fff, 0.50)),
+  press-color:       (('primary', '500', 0.40), (#ccc, 0.25)),
+  ripple-color:      (('primary', '500', 0.26), (#fff, 0.30), (#fff, 0.20)),
+  focus-overlay:     (('primary', '500', 0.12), (#fff, 0.20), (#fff, 0.12))
+);
+
+@function bottomnavThemeValue($key, $type, $theme) {
+  @return themeValue('bottomnav', $bottomnavColors, $key, $type, $theme);
 }
 
-@mixin bottomnavDarkThemeVariables($color) {
-  --bottomnav__active-color: rgba(white, 1.0);
-  --bottomnav__inactive-color: rgba(white, 0.50);
-  --bottomnav__press-color: rgba(#CCC, 0.25);
-  @if ($color == 'background') {
-    --bottomnav__ripple-color: rgba(white, 0.20);
-    --bottomnav__focus-overlay: rgba(black, 0.12);
-  } @else {
-    --bottomnav__ripple-color: rgba(white, 0.30);
-    --bottomnav__focus-overlay: rgba(white, 0.20);
+@mixin bottomnavThemeVariables($color, $lightness) {
+  @include themeVariables('bottomnav', $bottomnavColors, $color, $lightness);
+}
+
+// Vary by contrast
+@mixin bottomnavContrastRules($type: 'var', $theme: null) {
+  @at-root {
+    #{&}.mdw-bottomnav {
+      .mdw-bottomnav__icon,
+      .mdw-bottomnav__label {
+        color: bottomnavThemeValue("inactive-color", $type, $theme);
+      }
+      input:checked + .mdw-bottomnav__action > .mdw-bottomnav__icon,
+      input:checked + .mdw-bottomnav__action > .mdw-bottomnav__label,
+      input:checked ~ .mdw-bottomnav__icon,
+      input:checked ~ .mdw-bottomnav__label {
+          color: bottomnavThemeValue("active-color", $type, $theme);
+      }
+      .mdw-bottomnav__action {
+        & > .mdw-ripple,
+        &::after {
+          background-image: radial-gradient(
+            circle at center,
+            bottomnavThemeValue("ripple-color", $type, $theme) 10%,
+            transparent 10.0001%
+          );
+        }
+      }
+    }
   }
+}
+
+// Varies by current color
+@mixin bottomnavColoredRules($value: "var(--color)") {
+  // none
+}
+
+// Varies by theme
+@mixin bottomnavThemeRules($theme: null) {
+  // none
 }

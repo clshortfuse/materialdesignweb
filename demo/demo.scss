@@ -1,12 +1,14 @@
-@import '../components/theming/theming.scss';
-@include addTheme('indigo', 'pink', 'red', 'grey', 'light');
-@include addTheme('deeppurple', 'amber', 'red', 'grey', 'light', 'textfield');
-@include addTheme('blue', 'pink', 'red', 'grey', 'light', 'toolbar');
-@include addTheme('teal', 'brown', 'red', 'grey', 'light', 'bottomnav');
-@include addTheme('teal', 'cyan', 'pink', 'grey', 'light', 'list');
-@include addTheme('blue', 'teal', 'red', 'grey', 'light', 'selection');
-@include buildThemes();
-@import '../components/all-components.scss';
+@import './components/theming/theming.scss';
+@include addTheme('indigo', 'pink', 'red', 'grey');
+
+@include addTheme('deeppurple', 'amber', 'red', 'grey', 'textfield');
+@include addTheme('blue', 'pink', 'red', 'grey', 'toolbar');
+@include addTheme('teal', 'brown', 'red', 'grey', 'bottomnav');
+@include addTheme('teal', 'cyan', 'pink', 'grey', 'list');
+@include addTheme('blue', 'teal', 'red', 'grey', 'selection');
+
+@include buildVariableThemes();
+@import './components/all-components.scss';
 
 html {
   font-family: 'Roboto', sans-serif;
@@ -76,6 +78,9 @@ html {
 
 .display-flex {
   display: flex;
+}
+.flex-wrap {
+  flex-wrap: wrap;
 }
 .flex-1 {
   flex: 1;

@@ -1,0 +1,40 @@
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
+
+$templateColors: (
+  text-color:    ((#000, 0.54), (#fff, 0.87), (#fff, 1.00)),
+  border-color:  (('primary', '700', 0.87), ('primary', '200', 1.0)),
+);
+
+@function templateThemeValue($key, $type, $theme) {
+  @return themeValue('template', $templateColors, $key, $type, $theme);
+}
+
+@mixin templateThemeVariables($color, $lightness) {
+  @include themeVariables('template', $templateColors, $color, $lightness);
+}
+
+// Vary by contrast
+@mixin templateContrastRules($type: 'var', $theme: null) {
+  @at-root {
+    #{&}.mdw-template {
+      color: templateThemeValue("text-color", $type, $theme);
+    }
+  }
+}
+
+// Varies by current color
+@mixin templateColoredRules($value: "var(--color)") {
+  @at-root {
+    #{&}.mdw-template.mdw-theme__colored {
+      color: unquote("rgb(#{$value})");
+    }
+  }
+}
+
+// Varies by theme
+@mixin templateThemeRules($theme: null) {
+  .mdw-template.mdw-theme__filled {
+    border-color: templateThemeValue('border-color', null, $theme);
+  }
+}

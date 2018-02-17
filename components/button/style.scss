@@ -18,13 +18,6 @@ $button__focus-animation-duration: 1667ms;
   margin: 0 8px;
   border-radius: dp(2);
 
-  color: var(--primary-text-color);
-  &[mdw-active] {
-    color: var(--button__active-color);
-  }
-  &[mdw-inactive] {
-    color: var(--button__inactive-color);
-  }
   overflow: hidden;
   transition: box-shadow 200ms $motion-easing-standard;
   z-index: 0;
@@ -59,7 +52,6 @@ $button__focus-animation-duration: 1667ms;
     min-width: 1em;
     padding: dp(8);
     font-size: dp(24); // Internal padding provided by font
-    --button__focus-overlay: var(--button__ripple-color);
   }
 
   // Button Animations
@@ -85,13 +77,8 @@ $button__focus-animation-duration: 1667ms;
     // Background-size does not animate smoothly.
     // Focus circle: inner-radius - 10% - fully transparent
     // Scale up by 10.0 to become 100% when not focused
-    background-image: radial-gradient(
-      circle at center,
-      transparent 10%,
-      var(--button__ripple-color) 10.0001%);
     background-position: center center;
     transform: scale(10.5); // 10.0 has subpixel rendering issues
-    transition: transform 200ms 0s, background-color 200ms 0s;
     transition-property: transform, background-color;
     transition-duration: 200ms;
     transition-delay: 5ms;
@@ -102,27 +89,10 @@ $button__focus-animation-duration: 1667ms;
   &:active::before,
   &:active:focus::before {
     transition-duration: $button__focus-animation-delay, 500ms;
-    background-color: var(--button__press-color);
-  }
-
-  &.mdw-theme__colored {
-    --button__ripple-color: unquote("rgba(var(--primary-color), 0.26)"); // cssvariables fallback
-    --button__ripple-color: unquote("rgba(var(--color), 0.26)");
-    &:focus:not(:active)::before {
-      background-color: unquote("rgba(var(--primary-color), 0.12)"); // cssvariables fallback
-      background-color: unquote("rgba(var(--color), 0.12)");
-    }
-    &:focus:active::before,
-    &:active::before {
-      background-color: unquote("rgba(var(--primary-color), 0.20)"); // cssvariables fallback
-      background-color: unquote("rgba(var(--color), 0.20)");
-    }
   }
 
   &:focus:not(:active)::before {
     transform: scale(7.5);
-    background-color: var(--button__focus-overlay);
-
     transition-delay: $button__focus-animation-delay, 0s;
     transition-duration: $button__focus-animation-delay, 200ms;
     animation-duration: $button__focus-animation-duration;
@@ -133,15 +103,9 @@ $button__focus-animation-duration: 1667ms;
     animation-name: focus-pulse;
   }
 
-  /* duration | timing-function | delay | iteration-count | direction | fill-mode | play-state | name */
   & > .mdw-ripple,
   &::after {
     flex-basis: 0;
-    background-image: radial-gradient(
-      circle at center,
-      var(--button__ripple-color) 10%,
-      transparent 10.0001%
-    );
     transform: scale(10); // 10.0 has subpixel rendering issues
     transition-property: transform, opacity;
     transition-duration: 700ms;
@@ -183,14 +147,10 @@ $button__focus-animation-duration: 1667ms;
   }
   */
 
-  &[disabled],
-  &.mdw-button.mdw-theme__colored[disabled], {
-    color: var(--button__disabled-text-color)
-  }
 
 }
 
-//Raised
+// Raised
 
 .mdw-button[mdw-raised]:not([disabled]) {
   box-shadow: elevation(2);
@@ -210,24 +170,6 @@ $button__focus-animation-duration: 1667ms;
         transition-duration: 0s;
       }
     }
-  }
-}
-
-.mdw-button.mdw-theme__filled {
-  &[mdw-color="primary"] {
-    --button__press-color: unquote("rgb(var(--primary-700-color))");
-  }
-  &[mdw-color="accent"] {
-    --button__press-color: unquote("rgb(var(--accent-700-color))");
-  }
-  &[mdw-color="warn"] {
-    --button__press-color: unquote("rgb(var(--warn-700-color))");
-  }
-  &[disabled] {
-    // Disabled filled buttons use parent's variables
-    --button__disabled-text-color: inherit;
-    --button__disabled-background-color: inherit;
-    background-color: var(--button__disabled-background-color);
   }
 }
 

@@ -1,3 +1,5 @@
+@import '../theming/palettes';
+
 @function sp($multiplier) {
   @return ($multiplier/16.0) * 1rem;
 }
@@ -8,6 +10,69 @@
 
 @function elevation($dp) {
   @return unquote(map-get($drop-shadow-values, $dp));
+}
+
+@function parseThemeItem($item, $theme: null) {
+  $length: length($item);
+  @if ($length == 1) {
+    @return rgb(nth($item, 1));
+  } @else if ($length == 2) {
+    @return rgba(nth($item, 1), nth($item, 2));
+  } @else {
+    $color: nth($item, 1);
+    $tone: nth($item, 2);
+    $opacity: nth($item, 3);
+    @return unquote("rgba(#{getThemePaletteColor($color, $tone, $theme)}, #{$opacity})");
+  }
+  @return null;
+}
+
+@function getThemeMapItem($colorMap, $key, $type) {
+  $list: map-get($colorMap, $key);
+  $firstItem: nth($list, 1);
+  @if (type-of($firstItem) != 'list') {
+    // List within single-length list Sass workaround
+    @return $list;
+  }
+  $length: length($list);
+  @if ($type == 'dark-background') {
+    @if ($length >= $dark-background) {
+      @return nth($list, $dark-background);
+    }
+    $type: 'dark';
+  }
+
+  @if ($type == 'dark') {
+    @if ($length >= $dark) {
+      @return nth($list, $dark);
+    }
+  }
+  @return nth($list, $light);
+}
+
+@function themeValue($component, $colorMap, $key, $type, $theme: null) {
+  @if ($type == 'var') {
+    @return unquote("var(--#{$component}__#{$key})");
+  }
+  $item: getThemeMapItem($colorMap, $key, $type);
+  @return parseThemeItem($item, $theme);
+}
+
+@function getThemePaletteColor($color, $tone, $theme: null) {
+  @if ($theme == null) {
+    @if ($tone == null) {
+      @return "var(--#{$color}-color)";
+    }
+    @return "var(--#{$color}-#{$tone}-color)";
+  }
+  @if ($tone == null) {
+    $tone: '500';
+  }
+  $name: map-get($theme, $color);
+  $palette: map-get($palettes, $name);
+  $value: map-get($palette, $tone);
+  $rgbValue: red($value), green($value), blue($value);
+  @return $rgbValue;
 }
 
 // from Sketch

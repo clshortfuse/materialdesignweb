@@ -31,12 +31,6 @@ $toolbar-right-padding: dp(16);
   }
 }
 
-.mdw-toolbar__title,
-.mdw-toolbar__start,
-.mdw-toolbar__end {
-  color: var(--primary-text-color);
-}
-
 .mdw-toolbar__content,
 .mdw-toolbar__title {
   margin-left: dp(72);
