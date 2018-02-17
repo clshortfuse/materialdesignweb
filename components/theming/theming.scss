@@ -34,7 +34,7 @@ $tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900"
     @each $color in ('primary', 'accent', 'warn', 'background') {
       [mdw-color="#{$color}"][mdw-tone="0"] {
         // mdw-color required for specificity
-        --color: "255 255 255";
+        --color: unquote("255,255,255");
         @include lightVariables($color);
       }
       @each $tone in $tone-list {
@@ -48,7 +48,7 @@ $tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900"
         }
       }
       [mdw-color="#{$color}"][mdw-tone="1000"] {
-        --color: "0 0 0";
+        --color: unquote("0,0,0");
         @include darkVariables($color);
       }
     }

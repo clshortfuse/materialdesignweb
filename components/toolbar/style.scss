@@ -25,8 +25,14 @@ $toolbar-right-padding: dp(16);
   box-shadow: elevation(4);
 }
 
+.mdw-toolbar__content,
+.mdw-toolbar__start,
+.mdw-toolbar__end {
+  color: var(--primary-text-color);
+}
 
 .mdw-toolbar__content {
+  // padding-bottom: calc(dp(20) - 0.25em);
   padding-bottom: dp(20);
   align-self: flex-end; //bottom
   flex-grow: 1;
@@ -37,25 +43,19 @@ $toolbar-right-padding: dp(16);
   font-weight: 500;
 }
 
-.mdw-toolbar__start ~ .mdw-toolbar__content {
-  
-}
-.mdw-toolbar__end {
-  padding-right: dp(8 - 6);
-}
-
-.mdw-toolbar__content,
-.mdw-toolbar__start,
-.mdw-toolbar__end {
-  color: var(--primary-text-color);
-}
-
 .mdw-toolbar__start,
 .mdw-toolbar__end {
   padding-top: dp(8);
+  @include landscapeHandsets {
+    padding-top: dp(4);
+  }
   padding-left: dp(8);
   padding-right: dp(8);
   > .mdw-button {
     margin: 0;
   }  
+}
+
+.mdw-toolbar__end {
+  padding-right: dp(8 - 6);
 }

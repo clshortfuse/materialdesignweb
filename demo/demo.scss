@@ -1,5 +1,6 @@
 @import '../components/index.scss';
-@include buildTheme('deeppurple', 'amber', 'red', 'grey', 'light', 'alt');
+@include buildTheme('deeppurple', 'amber', 'red', 'grey', 'light', 'textfield');
+@include buildTheme('blue', 'pink', 'red', 'grey', 'light', 'toolbar');
 
 
 html {
@@ -47,7 +48,7 @@ html {
 
 .target {
   margin: 8px;
-  width: 360px;
+  min-width: 360px;
   background-size: cover;
   background-repeat: no-repeat;
 }
