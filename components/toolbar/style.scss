@@ -40,7 +40,8 @@ $toolbar-right-padding: dp(16);
 .mdw-toolbar__start ~ .mdw-toolbar__content {
   
 }
-.mdw-toolbar__start {
+.mdw-toolbar__end {
+  padding-right: dp(8 - 6);
 }
 
 .mdw-toolbar__content,
@@ -51,8 +52,10 @@ $toolbar-right-padding: dp(16);
 
 .mdw-toolbar__start,
 .mdw-toolbar__end {
-  padding-top: dp(16);
-  padding-left: dp(16);
-  padding-right: dp(16);
-  
+  padding-top: dp(8);
+  padding-left: dp(8);
+  padding-right: dp(8);
+  > .mdw-button {
+    margin: 0;
+  }  
 }

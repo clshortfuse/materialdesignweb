@@ -6,11 +6,11 @@ mixin toolbar(color, tone, start, title, end)
   .mdw-toolbar.mdw-theme__filled(mdw-color=color mdw-tone=tone)
     .mdw-toolbar__start
       each icon in start
-        i.material-icons= icon
+        button.mdw-button(mdw-icon).material-icons= icon
     .mdw-toolbar__content= title
     .mdw-toolbar__end
       each icon in end
-        i.material-icons= icon
+        button.mdw-button(mdw-icon).material-icons= icon
 mixin androidnavbar
   .androidnavbar
     i.material-icons.back-button &#xE3C8;
