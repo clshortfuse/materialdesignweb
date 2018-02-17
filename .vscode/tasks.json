@@ -17,7 +17,7 @@
 				"background": {
           "activeOnStart": true,
           "beginsPattern": "webpack output is served from \/",
-          "endsPattern": "webpack: Compiled successfully\\."
+          "endsPattern": "webpack: Compiled [^\n]+\\."
         }
 			}]
     }

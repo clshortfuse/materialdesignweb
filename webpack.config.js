@@ -107,7 +107,7 @@ function getDemoConfig() {
             options: {
               sourceMap: !isProduction,
               plugins: () => [
-                cssvariables({ preserve: true }),
+                // cssvariables({ preserve: true }),
                 autoprefixer(),
                 cssnano(),
               ],

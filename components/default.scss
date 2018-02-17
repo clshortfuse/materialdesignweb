@@ -5,7 +5,7 @@ $theme-default-background: 'grey' !default;
 $theme-default-variation: 'light' !default;
 
 @import './theming/theming.scss';
-@include buildTheme(
+@include addTheme(
   $theme-default-primary,
   $theme-default-accent,
   $theme-default-warn,

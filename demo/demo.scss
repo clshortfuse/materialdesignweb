@@ -1,4 +1,4 @@
-@import './components/theming/theming.scss';
+@import '../components/theming/theming.scss';
 @include addTheme('indigo', 'pink', 'red', 'grey', 'light');
 @include addTheme('deeppurple', 'amber', 'red', 'grey', 'light', 'textfield');
 @include addTheme('blue', 'pink', 'red', 'grey', 'light', 'toolbar');
@@ -6,7 +6,7 @@
 @include addTheme('teal', 'cyan', 'pink', 'grey', 'light', 'list');
 @include addTheme('blue', 'teal', 'red', 'grey', 'light', 'selection');
 @include buildThemes();
-@import './components/all-components.scss';
+@import '../components/all-components.scss';
 
 html {
   font-family: 'Roboto', sans-serif;

@@ -1,7 +1,7 @@
 @import 'palettes.scss';
-@import '../components/bottomnav/theming.scss';
-@import '../components/button/theming.scss';
-@import '../components/textfield/theming.scss';
+@import '../bottomnav/theming.scss';
+@import '../button/theming.scss';
+@import '../textfield/theming.scss';
 
 $tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "A100", "A200", "A400", "A700");
 $added-palettes-list: ();
@@ -43,15 +43,6 @@ $theme-map: ();
   $theme-map: map-merge($theme-map, $map) !global;
 }
 
-@mixin IE11ThemeColorSupport($value) {
-  &.mdw-theme__filled {
-    background-color: $value
-  }
-  &.mdw-theme__colored {
-    color: $value
-  }
-}
-
 @mixin buildThemes() {
   @each $theme in map-values($theme-map) {
     $primary: map-get($theme, "primary");
@@ -75,24 +66,20 @@ $theme-map: ();
     [mdw-color="#{$color}"][mdw-tone="0"] {
       // mdw-color required for specificity
       --color: unquote("255,255,255");
-      @include IE11ThemeColorSupport(white);
       @include lightVariables($color);
     }
     @each $tone in $tone-list {
       @if ($tone == '500') {
         [mdw-color="#{$color}"]:not([mdw-tone]) {
           --color: unquote("var(--#{$color}-color)");
-          @include IE11ThemeColorSupport(unquote("rgb(var(--#{$color}-color))"));
         }
       }
       [mdw-color="#{$color}"][mdw-tone="#{$tone}"] {
         --color: unquote("var(--#{$color}-#{$tone}-color)");
-        @include IE11ThemeColorSupport(unquote("rgb(var(--#{$color}-#{$tone}-color))"));
       }
     }
     [mdw-color="#{$color}"][mdw-tone="1000"] {
       --color: unquote("0,0,0");
-      @include IE11ThemeColorSupport(black);
       @include darkVariables($color);
     }
   }
