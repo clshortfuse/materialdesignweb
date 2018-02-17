@@ -45,16 +45,15 @@ $button__focus-animation-duration: 1667ms;
   justify-content: center;
   align-items: center;
 
-
-  &:focus {
-    // Apply focus overlay to background (not on foreground)
-    background-image: linear-gradient(var(--button__focus-overlay), var(--button__focus-overlay));
-  }
-
   // ::before - focus ripple
   // ::after - press ripple
+  // Button Animations
+  // 
+  // ripple doesn't appear until mouse-up
+  // background color moves to 
 
-  z-index: 1; // Non-zero
+
+  z-index: 0; // Non-zero
   &::before,
   &::after {
     content: '';
@@ -76,16 +75,25 @@ $button__focus-animation-duration: 1667ms;
       var(--button__press-color) 10.00001%);
     background-position: center center;
     transform: scale(10);
-    transition-property: transform;
+    transition: transform 200ms 0s, background-color 200ms 0s;
+    transition-property: transform, background-color;
     transition-duration: 200ms;
     transition-delay: 0s;
     transition-timing-function: $motion-easing-standard;
+    background-color: transparent;
+  }
+
+  &:focus:active::before,
+  &:active::before {
+    transition-duration: $button__focus-animation-delay, 500ms;
+    background-color: var(--button__press-color);
   }
 
   &:focus:not(:active)::before {
     transform: scale(7.5);
-    transition-delay: $button__focus-animation-delay;
-    transition-duration: $button__focus-animation-delay;
+    background-color: var(--button__focus-overlay);
+    transition-delay: $button__focus-animation-delay, 0s;
+    transition-duration: $button__focus-animation-delay, 200ms;
     animation-duration: $button__focus-animation-duration;
     animation-timing-function: $motion-easing-standard;
     animation-delay: $button__focus-animation-delay * 2;
@@ -103,14 +111,14 @@ $button__focus-animation-duration: 1667ms;
     );
     background-position: center center;
     transform: scale(10);
-    transition-property: transform;
+    transition-property: transform, opacity;
     transition-duration: 1000ms;
-    animation: 1s $motion-easing-standard 0s 1 normal forwards press-fill-in,
-      1s $motion-easing-standard 0s 1 normal forwards press-fade-out;
+    opacity: 0;
   }
   &:active::after {
     transform: scale(0);
-    animation: 1s $motion-easing-standard 0s 1 normal forwards press-fill-out;
+    transition-duration: 0s;
+    opacity: 1;
   }
 
   // Extended touch target
