@@ -172,13 +172,18 @@ textarea.mdw-text-field__input {
 
 .mdw-text-field__input {
 
-  // Unfocused with placeholder
-  &:not(:focus):placeholder-shown ~ .mdw-text-field__label {
-    transform: translateY($label__font-size) translateY($label__bottom-padding);
-    font-size: inherit;
-    [mdw-textarea] > & {
-      // Eyeballed due to lack of specs
-      transform: translateY($label__font-size) translateY(-4px);
+  // Unfocused
+  &:not(:focus) {
+      &[mdw-value-empty],
+      &:placeholder-shown {
+        & ~ .mdw-text-field__label {
+        transform: translateY($label__font-size) translateY($label__bottom-padding);
+        font-size: inherit;
+        [mdw-textarea] > & {
+          // Eyeballed due to lack of specs
+          transform: translateY($label__font-size) translateY(-4px);
+        }
+      }
     }
   }
 

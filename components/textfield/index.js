@@ -1,7 +1,7 @@
 /**
  * @param {Element} element
- * @param {number=} heightHint precalculated single row height
- * @return {void}
+ * @param {number=} heightHint Precalculated single row height
+ * @return {number} Single row height
  */
 function updateTextAreaSize(element, heightHint) {
   let heightPx = heightHint;
@@ -11,6 +11,22 @@ function updateTextAreaSize(element, heightHint) {
     heightPx = parseInt(height.replace('px', ''), 10);
   }
   element.setAttribute('rows', Math.floor(element.scrollHeight / heightPx).toString());
+  return heightPx;
+}
+
+/**
+ * @param {HTMLInputElement|HTMLTextAreaElement} element
+ * @return {void}
+ */
+function updateInputEmptyState(element) {
+  const attributeName = 'mdw-value-empty';
+  if (element.value) {
+    if (element.hasAttribute(attributeName)) {
+      element.removeAttribute(attributeName);
+    }
+  } else if (!element.hasAttribute(attributeName)) {
+    element.setAttribute('mdw-value-empty', '');
+  }
 }
 
 export default class TextField {
@@ -26,5 +42,9 @@ export default class TextField {
       });
       updateTextAreaSize(this.input);
     }
+    this.input.addEventListener('input', () => {
+      updateInputEmptyState(this.input);
+    });
+    updateInputEmptyState(this.input);
   }
 }
