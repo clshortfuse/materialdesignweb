@@ -1,26 +1,39 @@
 import * as mdw from '../components/index';
 
 import Comparison from './data/Comparison';
+import { Template } from './data/Template';
 import { templates as textFieldTemplates } from './textfield';
 
-const crosshairs = new Proxy(
-  { hOffset: 0, vOffset: 0 },
-  {
-    set(obj, prop, val) {
-      Reflect.set(obj, prop, val);
-      if (prop === 'vOffset') {
-        document.getElementById('verticalLineLeft').style.left = `${val}px`;
-        document.getElementById('verticalLineRight').style.left = `${parseInt(val, 0) - 376}px`;
-      } else if (prop === 'hOffset') {
-        document.getElementById('horizontalLine').style.top = `${val}px`;
-      }
-      return true;
-    },
-    get(target, prop, receiver) {
-      return Reflect.get(target, prop, receiver);
-    },
-  }
-);
+
+const crosshairs = {
+};
+let vOffset = 0;
+let hOffset = 0;
+
+Object.defineProperty(crosshairs, 'vOffset', {
+  enumerable: true,
+  configurable: false,
+  get() {
+    return vOffset;
+  },
+  set(val) {
+    vOffset = val;
+    document.getElementById('verticalLineLeft').style.left = `${val}px`;
+    document.getElementById('verticalLineRight').style.left = `${parseInt(val, 0) - 376}px`;
+  },
+});
+
+Object.defineProperty(crosshairs, 'hOffset', {
+  enumerable: true,
+  configurable: false,
+  get() {
+    return hOffset;
+  },
+  set(val) {
+    hOffset = val;
+    document.getElementById('horizontalLine').style.top = `${val}px`;
+  },
+});
 
 const comparisonMap = new WeakMap();
 
@@ -35,8 +48,9 @@ function onTemplateImageClick(event) {
 
 /** @return {void} */
 function setupTemplates() {
-  const templates = []
-    .concat(textFieldTemplates);
+  /** @type {Template[]} */
+  const templates = [];
+  templates.push(...textFieldTemplates);
   const el = document.getElementById('comparisons');
   templates.forEach((template) => {
     const comparison = new Comparison(Object.assign(template, {

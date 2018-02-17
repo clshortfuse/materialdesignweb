@@ -1,6 +1,8 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
+const cssvariables = require('postcss-css-variables');
+const cssnano = require('cssnano');
 
 const isProduction = (process.env.NODE_ENV === 'production');
 const DEST = (isProduction ? 'dist/' : 'test/');
@@ -21,7 +23,7 @@ function getComponentsConfig() {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env'],
+            presets: ['env', 'minify'],
           },
         },
       }, {
@@ -31,13 +33,16 @@ function getComponentsConfig() {
             loader: 'css-loader',
             options: {
               sourceMap: !isProduction,
+              minimize: true,
             },
           },
           {
             loader: 'postcss-loader',
             options: {
               sourceMap: !isProduction,
-              plugins: () => autoprefixer(),
+              plugins: [
+                () => cssnano(),
+              ],
             },
           },
           {
@@ -61,7 +66,12 @@ function getDemoConfig() {
   const extractStyles = new ExtractTextPlugin('demo.min.css');
   const extractHtml = new ExtractTextPlugin('index.html');
   return {
-    entry: ['./demo/demo.js', './demo/demo.scss', './demo/index.pug'],
+    entry: [
+      // 'babel-polyfill',
+      './demo/demo.js',
+      './demo/demo.scss',
+      './demo/index.pug',
+    ],
     devtool: isProduction ? undefined : 'nosources-source-map',
     output: {
       filename: 'demo.min.js',
@@ -74,7 +84,12 @@ function getDemoConfig() {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env'],
+            presets: [
+              ['env', {
+                targets: { browsers: ['last 2 versions', 'ie 11'] },
+                useBuiltIns: true,
+              }],
+            ],
           },
         },
       }, {
@@ -84,13 +99,16 @@ function getDemoConfig() {
             loader: 'css-loader',
             options: {
               sourceMap: !isProduction,
+              // minimize: true,
             },
           },
           {
             loader: 'postcss-loader',
             options: {
               sourceMap: !isProduction,
-              plugins: () => autoprefixer(),
+              plugins: () => [
+                cssnano({ preset: 'advanced' }),
+              ],
             },
           },
           {

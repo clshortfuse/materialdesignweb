@@ -2,11 +2,11 @@
 
 @function sp($multiplier) {
   @return ($multiplier/16.0) * 1rem;
-};
+}
 
 @function dp($multiplier) {
   @return $multiplier * 1px;
-};
+}
 
 @function getPaletteTone($palette, $tone) {
   $paletteMap: map-get($palettes, $palette);
@@ -14,5 +14,24 @@
   @if ($color == null) {
     $color: map-get($paletteMap, sub_str($tone, 2));
   }
-  @return $color;
+  $light: null;
+  $dark: null;
+  @if (map-has-key($paletteMap, 'light')) {
+    @if index(map-get($paletteMap, 'light'), "500") {
+      $light: true;
+    } @else {
+      $dark: true;
+    } 
+  } @else {
+    @if index(map-get($paletteMap, 'dark'), "500") {
+      $dark: true;
+    } @else {
+      $light: true;
+    }
+  }
+  @return (
+    color: $color,
+    light: $light,
+    dark: $dark
+  );
 }

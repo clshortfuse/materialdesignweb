@@ -1,9 +1,10 @@
+@import '../components/common/mixins.scss';
+@include buildTheme('indigo', 'pink', 'red');
+
 @import '../components/index.scss';
 
-@include buildTheme('default', 'indigo', 'pink', 'red', 'grey');
-
 html {
-  font-family: 'Roboto', san-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 #comparisons {

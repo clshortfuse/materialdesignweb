@@ -1,5 +1,6 @@
 import { Template, TemplateToolbar } from './data/Template';
 
+/** @type {Template[]} */
 const templates = [];
 templates.push(new Template({
   id: 'components_textfields_labels1',

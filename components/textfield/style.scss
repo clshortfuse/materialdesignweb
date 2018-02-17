@@ -31,20 +31,23 @@ $icon-signifier__padding-end: dp(16);
 }
 
 .mdw-text-field__label {
+  // Default state is floating (ie/edge does not support placeholder-shown)
+
+  position: absolute;
   order: 1;
   padding: 0;
   margin: 0;
-  position: absolute;
   top: 0;
 
   padding-top: $label__top-padding;
   padding-bottom: $label__bottom-padding;
   height: $label__font-size;
-  font-size: inherit;
+  font-size: $label__font-size;
   pointer-events: none; // allow clickthrough
   color: var(--secondary-text-color);
 
   will-change: transform, font-size;
+  transform: translateY(0);
   transition-property: transform font-size;
   transition-timing-function: $motion-easing-standard;
   transition-duration: $motion-duration-desktop-default;
@@ -55,12 +58,8 @@ $icon-signifier__padding-end: dp(16);
     transition-duration: $motion-duration-tablet-default;
   }
   
-
-  // Initial state is over input box unless it has a value
-  transform: translateY($label__font-size) translateY($label__bottom-padding);
   [mdw-textarea] > & {
     // Eyeballed due to lack of specs
-    transform: translateY($label__font-size) translateY(-4px);
     padding-top: 26px;
     padding-bottom: 10px;
     padding-left: 16px;
@@ -155,6 +154,7 @@ textarea.mdw-text-field__input {
     position: absolute; // spacing provided by helper-text
   }
 }
+
 .mdw-text-field__helper-text,
 .mdw-text-field__error-text {
   font-size: $helper-text_font-size;
@@ -171,11 +171,15 @@ textarea.mdw-text-field__input {
 // Behavior changes
 
 .mdw-text-field__input {
-  // Unfocused with value
-  &:not(:focus):not(:placeholder-shown) ~ .mdw-text-field__label {
-    transform: translateY(0);
-    font-size: $label__font-size;
-    // pointer-events: auto; // revert to default
+
+  // Unfocused with placeholder
+  &:not(:focus):placeholder-shown ~ .mdw-text-field__label {
+    transform: translateY($label__font-size) translateY($label__bottom-padding);
+    font-size: inherit;
+    [mdw-textarea] > & {
+      // Eyeballed due to lack of specs
+      transform: translateY($label__font-size) translateY(-4px);
+    }
   }
 
   // Focused
