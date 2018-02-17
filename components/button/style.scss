@@ -1,0 +1,114 @@
+// https://material.io/guidelines/components/buttons.html#buttons-raised-buttons
+
+@import '../common/functions.scss';
+@import '../common/variables.scss';
+@import '../common/motion.scss';
+@import '../common/mixins.scss';
+
+$button__external-padding: dp(8);
+$button__minimum-click-target: dp(48);
+
+.mdw-button {
+  position: relative;
+  font-family: Roboto, sans-serif;
+  -webkit-appearance: none;
+  
+  outline: none;
+  font-size: sp(14);
+  line-height: normal;
+  text-transform: uppercase;
+  min-width: dp(64);
+  min-height: dp(36);
+  padding-left: dp(8);
+  padding-right: dp(8);
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0 8px;
+  border: none;
+  border-radius: dp(2);
+  word-spacing: normal;
+  font-weight: 500;
+  color: var(--primary-text-color);
+  box-sizing: border-box;
+  background-color: transparent;
+  overflow: hidden;
+  transition-property: box-shadow;
+  transition-timing-function: $motion-easing-standard;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
+
+  
+    display: inline-flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  
+
+  &:hover {
+    //background-color: transparent;
+  }
+
+  &:focus,
+  &:hover:focus {
+    background-color: rgba(#000, 0.12);
+  }
+
+  &:active,
+  &:hover:active {
+    background-color: rgba(#999, 0.40);
+  }
+  
+  // Extended touch target
+  @media (any-pointer: coarse) {
+    &::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: $button__minimum-click-target;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  @media (any-pointer: fine) {
+    &:hover {
+      box-shadow: elevation(2)
+    }
+    &:active,
+    &:hover:active {
+      box-shadow: elevation(8);
+    }
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 50%;
+    padding-bottom: 50%;
+    pointer-events: none;
+    background-color: transparent;
+    display: block;
+    border-radius: 50%;
+    transition: transform 1s;
+    transform: scale(0);
+  }
+  &:focus:active::before,
+  &:focus::before {
+    transform: scale(1.75);
+    background-color: rgba(#fff, 0.40);
+  }
+  
+}
+
+.mdw-button[mdw-raised] {
+  box-shadow: elevation(2);
+  &:active {
+    box-shadow: elevation(8);
+  }
+}
+

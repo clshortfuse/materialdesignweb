@@ -1,0 +1,27 @@
+mixin androidstatusbar(color)
+  .androidstatusbar(style=`background-color:${color}`)
+    div 12:30
+    i.material-icons &#xE1BA;&#xE1C8;&#xE1A4;
+mixin toolbar(color, tone, start, title, end)
+  .mdw-toolbar.mdw-theme__filled(mdw-color=color mdw-tone=tone)
+    .mdw-toolbar__start
+      each icon in start
+        i.material-icons= icon
+    .mdw-toolbar__content= title
+    .mdw-toolbar__end
+      each icon in end
+        i.material-icons= icon
+mixin androidnavbar
+  .androidnavbar
+    i.material-icons.back-button &#xE3C8;
+    i.material-icons &#xE836;</i>
+    i.material-icons &#xE835;
+
+mixin comparison(statusBarColor, toolbarColor, toolbarTone, toolbarStart, toolbarTitle, toolbarEnd, img, className)
+  .comparison
+    div(class=`render ${className}`)
+      +androidstatusbar(statusBarColor)
+      +toolbar(toolbarColor, toolbarTone, toolbarStart, toolbarTitle, toolbarEnd)
+      block
+      +androidnavbar
+    img.target(src=img)

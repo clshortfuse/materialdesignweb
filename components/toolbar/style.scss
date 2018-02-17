@@ -1,6 +1,11 @@
 // https://material.io/guidelines/layout/structure.html#structure-app-bar
 // https://material.io/guidelines/components/toolbars.html
 
+@import '../common/functions.scss';
+@import '../common/variables.scss';
+@import '../common/motion.scss';
+@import '../common/mixins.scss';
+
 $toolbar-height-mobile-landscape: dp(48);
 $toolbar-height-mobile-portrait: dp(56);
 $toolbar-height-tablet: dp(56);
@@ -8,3 +13,46 @@ $toolbar-height-desktop: dp(56);
 
 $toolbar-left-padding: dp(16);
 $toolbar-right-padding: dp(16);
+
+.mdw-toolbar {
+  position: relative;
+  display:flex;
+  min-height: dp(56);
+  @include landscapeHandsets {
+    min-height: dp(48);
+  }
+  justify-content: space-between;
+  box-shadow: elevation(4);
+}
+
+
+.mdw-toolbar__content {
+  padding-bottom: dp(20);
+  align-self: flex-end; //bottom
+  flex-grow: 1;
+  [mdw-centered] > & {
+    flex-grow: 0;
+  }
+  font-size: sp(20);
+  font-weight: 500;
+}
+
+.mdw-toolbar__start ~ .mdw-toolbar__content {
+  
+}
+.mdw-toolbar__start {
+}
+
+.mdw-toolbar__content,
+.mdw-toolbar__start,
+.mdw-toolbar__end {
+  color: var(--primary-text-color);
+}
+
+.mdw-toolbar__start,
+.mdw-toolbar__end {
+  padding-top: dp(16);
+  padding-left: dp(16);
+  padding-right: dp(16);
+  
+}

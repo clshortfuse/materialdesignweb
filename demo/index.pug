@@ -11,18 +11,33 @@ html(lang='en')
     link(rel='stylesheet' href='//fonts.googleapis.com/css?family=Roboto:300,400,500,700')
     link(rel='stylesheet' href='./demo.min.css')
   body
+    
+    span Apply fixes
+    input(type="checkbox" name="applyFixes")
     div
-      span Apply fixes
-      input(type="checkbox" name="applyFixes")
+    
+    span Debug
+    input(type="checkbox" name="debug")
     div
-      span Debug
-      input(type="checkbox" name="debug")
+    
+    span RTL
+    input(type="checkbox" name="rtl")
     div
-      span RTL
-      input(type="checkbox" name="rtl")
 
-    #comparisons.mdw-theme-default.mdw-theme-filled(mdw-color="background" mdw-tone="50")
-      include textfields.pug
+    span Button
+    input(type="radio" name="showComponent" value="button" checked=true)
+    span Text Field
+    input(type="radio" name="showComponent" value="textfield")
+    span Toolbar
+    input(type="radio" name="showComponent" value="toolbar")
+    div
+
+    #button-comparisons.comparisons.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+      include comparisons/button.pug
+    #textfield-comparisons.comparisons.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+      include comparisons/textfield.pug
+    #toolbar-comparisons.comparisons.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+      include comparisons/toolbar.pug
 
 
     #horizontalLine

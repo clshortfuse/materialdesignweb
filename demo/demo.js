@@ -1,10 +1,5 @@
 import * as mdw from '../components/index';
 
-import Comparison from './data/Comparison';
-import { Template } from './data/Template';
-import { templates as textFieldTemplates } from './textfield';
-
-
 const crosshairs = {
 };
 let vOffset = 0;
@@ -35,8 +30,6 @@ Object.defineProperty(crosshairs, 'hOffset', {
   },
 });
 
-const comparisonMap = new WeakMap();
-
 /**
  * @param {MouseEvent} event
  * @return {void}
@@ -44,21 +37,6 @@ const comparisonMap = new WeakMap();
 function onTemplateImageClick(event) {
   crosshairs.hOffset = event.clientY;
   crosshairs.vOffset = event.clientX;
-}
-
-/** @return {void} */
-function setupTemplates() {
-  /** @type {Template[]} */
-  const templates = [];
-  templates.push(...textFieldTemplates);
-  const el = document.getElementById('comparisons');
-  templates.forEach((template) => {
-    const comparison = new Comparison(Object.assign(template, {
-      onImageClick: onTemplateImageClick,
-    }));
-    comparisonMap.set(comparison, template);
-    el.appendChild(comparison.element);
-  });
 }
 
 /** @return {void} */
@@ -97,10 +75,15 @@ function setupOptions() {
 
 /** @return {void} */
 function start() {
-  setupTemplates();
   setupOptions();
-  document.querySelectorAll('.mdw-text-field').forEach((element) => {
-    const textfield = new mdw.TextField(element);
+  document.querySelectorAll('.mdw-textfield').forEach((element) => {
+    new mdw.TextField(element);
+  });
+  document.querySelectorAll('img.target').forEach((element) => {
+    element.addEventListener('click', onTemplateImageClick);
+  });
+  document.querySelectorAll('.mdw-button').forEach((element) => {
+    element.addEventListener('click', console.log);
   });
 }
 

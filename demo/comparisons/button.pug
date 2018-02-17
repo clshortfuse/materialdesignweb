@@ -1,0 +1,19 @@
+include ../mixins.pug
+
++comparison(
+  'rgb(var(--background-400-color))', 
+  'background', '100', [], '', [],
+  'https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsX0xZMnFkR1ZOVmc/components-buttons-main6.png')
+  .content.mdw-theme__filled(mdw-color="background" mdw-tone="200" style="padding: 200px 16px 0")
+    div
+      button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-tone="500") Disagree
+      button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-tone="500") Agree
+    div(style="height:48px")
+    div
+      button.mdw-button Disagree
+      button.mdw-button Agree
+    div(style="height:48px")
+    div
+      button.mdw-button(mdw-raised) Disagree
+      button.mdw-button(mdw-raised) Agree
+

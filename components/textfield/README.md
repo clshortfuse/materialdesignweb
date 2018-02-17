@@ -3,88 +3,99 @@
 
 ## Bare Minimum
 ```
-label.mdw-text-field
-  input.mdw-text-field__input(placeholder=" ")
-  span.mdw-text-field__label Title
-  .mdw-text-field__border-line
+label.mdw-textfield
+  input.mdw-textfield__input(placeholder=" ")
+  span.mdw-textfield__label Title
+  .mdw-textfield__border-line
 ```
 
 ## Pre-filled
 ```
-label.mdw-text-field
-  input.mdw-text-field__input(value="Vintage 50" placeholder=" ")
-  span.mdw-text-field__label Title
-  .mdw-text-field__border-line
+label.mdw-textfield
+  input.mdw-textfield__input(value="Vintage 50" placeholder=" ")
+  span.mdw-textfield__label Title
+  .mdw-textfield__border-line
 ```
+
+## Custom font size
+```
+label.mdw-textfield(style="font-size: 2.125rem")
+  // Do not apply font changes to the input element
+  input.mdw-textfield__input(placeholder=" ")
+  span.mdw-textfield__label Title
+  .mdw-textfield__border-line
+```
+
+
 ## Helper Text
 ```
-label.mdw-text-field
-  input.mdw-text-field__input(placeholder=" ")
-  span.mdw-text-field__label Title
-  .mdw-text-field__border-line
-  .mdw-text-field__helper-text Helper Text
+label.mdw-textfield
+  input.mdw-textfield__input(placeholder=" ")
+  span.mdw-textfield__label Title
+  .mdw-textfield__border-line
+  .mdw-textfield__helper-text Helper Text
 ```
 
 ## Error Text
 ```
-label.mdw-text-field
-  input.mdw-text-field__input(placeholder=" " required)
-  span.mdw-text-field__label Title
-  .mdw-text-field__border-line
-  .mdw-text-field__error-text Helper Text
+label.mdw-textfield
+  input.mdw-textfield__input(placeholder=" " required)
+  span.mdw-textfield__label Title
+  .mdw-textfield__border-line
+  .mdw-textfield__error-text Helper Text
 ```
 
 ## Helper and Error Text
 ```
-label.mdw-text-field
-  input.mdw-text-field__input(placeholder=" " required)
-  span.mdw-text-field__label Title
-  .mdw-text-field__border-line
-  .mdw-text-field__helper-text Helper Text
-  .mdw-text-field__error-text Helper Text
+label.mdw-textfield
+  input.mdw-textfield__input(placeholder=" " required)
+  span.mdw-textfield__label Title
+  .mdw-textfield__border-line
+  .mdw-textfield__helper-text Helper Text
+  .mdw-textfield__error-text Helper Text
 ```
 
 ## Accented
 
 ```
-.mdw-text-field(mdw-color="accent")
-  input.mdw-text-field__input(type="text" placeholder=" ")
-  label.mdw-text-field__label Phone number
-  .mdw-text-field__border-line
+.mdw-textfield(mdw-color="accent")
+  input.mdw-textfield__input(type="text" placeholder=" ")
+  label.mdw-textfield__label Phone number
+  .mdw-textfield__border-line
 ```
 
 ## Multiline
 
 ```
-label.mdw-text-field
-  textarea.mdw-text-field__input(placeholder=" ")
-  span.mdw-text-field__label Description
-  .mdw-text-field__border-line
+label.mdw-textfield
+  textarea.mdw-textfield__input(placeholder=" ")
+  span.mdw-textfield__label Description
+  .mdw-textfield__border-line
 ```
 
 ## Multiline with Auto-Expand (requires-JS)
 
 ```
-label.mdw-text-field
-  textarea.mdw-text-field__input(placeholder=" " mdw-multiline)
-  span.mdw-text-field__label Description
-  .mdw-text-field__border-line
+label.mdw-textfield
+  textarea.mdw-textfield__input(placeholder=" " mdw-multiline)
+  span.mdw-textfield__label Description
+  .mdw-textfield__border-line
 ```
 
 ## Textarea
 
 ```
-label.mdw-text-field(mdw-textarea)
-  textarea.mdw-text-field__input(placeholder=" " rows="5")
-  span.mdw-text-field__label Message
+label.mdw-textfield(mdw-textarea)
+  textarea.mdw-textfield__input(placeholder=" " rows="5")
+  span.mdw-textfield__label Message
 ```
 
-Use rows to define size. `.mdw-text-field__border-line` is not needed, but can be safely kept because it's hidden when inside a textarea.
+Use rows to define size. `.mdw-textfield__border-line` is not needed, but can be safely kept because it's hidden when inside a textarea.
 
 # Javascript
 
 ```
-  document.querySelectorAll(".mdw-text-field").forEach((element) => {
+  document.querySelectorAll(".mdw-textfield").forEach((element) => {
     new TextField(element);
   });
 ```
