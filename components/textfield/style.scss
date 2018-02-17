@@ -213,7 +213,7 @@ textarea.mdw-text-field__input {
       caret-color: var(--text-field-label-warn-color__focus);
       &,
       & ~ .mdw-text-field__border-line::after {
-        border-color: var(--warn-A400-color);
+        border-color: var(--text-field-border-line-warn-color__focus);
       }
       & ~ .mdw-text-field__label {
         color: var(--text-field-label-warn-color__focus);
