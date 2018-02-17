@@ -256,10 +256,25 @@ textarea.mdw-text-field__input {
     }
   }
 
-  // Hover
+  // Unfocused hover
 
-  &:hover:not(:disabled),
-  &:focus {  
+  &:hover:not(:focus):not(:disabled) {
+    [mdw-textarea] > & {
+      border-color: var(--text-field-border-line-color__hover);
+    }
+  }
+
+  // Hover or Focus
+
+  &:hover,
+  &:focus {
+    [mdw-textarea] > & {
+      border-width: $border-line__focused__height;
+      margin-left: -1px;
+      margin-right: -1px;
+      margin-bottom: -1px;
+      margin-top: 16px;
+    }
     & ~ .mdw-text-field__border-line {
       border-color: var(--text-field-border-line-color__hover);
       border-width: $border-line__focused__height;
