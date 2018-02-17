@@ -17,31 +17,69 @@ $toolbar-right-padding: dp(16);
 .mdw-toolbar {
   position: relative;
   display:flex;
-  min-height: dp(56);
-  @include landscapeHandsets {
-    min-height: dp(48);
-  }
-  justify-content: space-between;
+  flex-direction: column;
   box-shadow: elevation(4);
 }
 
-.mdw-toolbar__content,
+.mdw-toolbar__action {
+  display: flex;
+  flex-direction: row;
+  min-height: dp(56);
+  justify-content: space-between;
+  @include landscapeHandsets {
+    min-height: dp(48);
+  }
+}
+
+.mdw-toolbar__title,
 .mdw-toolbar__start,
 .mdw-toolbar__end {
   color: var(--primary-text-color);
 }
 
-.mdw-toolbar__content {
-  // padding-bottom: calc(dp(20) - 0.25em);
-  padding-bottom: dp(20);
-  align-self: flex-end; //bottom
+.mdw-toolbar__title {
+  // Bottom padding is 20dp from baseline
   flex-grow: 1;
+  margin-left: dp(72);
+  display: flex;
+  flex-direction: column;
+
   [mdw-centered] > & {
     flex-grow: 0;
   }
-  font-size: sp(20);
+  font-size: sp(24);
   font-weight: 500;
+  [mdw-expanded] > & {
+    margin-top: dp(56);
+    @include landscapeHandsets {
+      margin-top: dp(48);
+    }
+  }
+  height: dp(72);
+  justify-content: space-around;
+  .mdw-toolbar__action > & {
+    height: auto;
+    
+    // Padding should be 20px from bottom including Font glyph, but is unreliable with CSS
+    align-self: flex-end;
+    justify-content: flex-end;
+    padding-bottom: calc(#{dp(20)} - 0.25em);
+    font-size: sp(20);
+  }
 }
+
+.mdw-toolbar__start ~ .mdw-toolbar__title {
+  margin-left: dp(16);
+}
+
+.mdw-toolbar__start {
+  order: -1;
+}
+
+.mdw-toolbar__end {
+  order: 1;
+}
+
 
 .mdw-toolbar__start,
 .mdw-toolbar__end {

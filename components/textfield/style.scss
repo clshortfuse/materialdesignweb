@@ -11,6 +11,9 @@ $label__padding-top: dp(16);
 $label__padding-bottom: dp(8);
 $label__font-size: sp(12);
 
+$textarea__label__extra_padding-top: dp(10);
+$textarea__label__padding-bottom: dp(10);
+
 $border-line__height: dp(1);
 $border-line__focused__height: dp(2);
 $border-line__bottom-padding: dp(8);
@@ -18,6 +21,7 @@ $border-line__bottom-padding: dp(8);
 $helper-text__font-size: sp(12);
 
 $textarea__padding-start: dp(16);
+
 
 $icon-signifier__width: dp(24);
 $icon-signifier__padding-end: dp(16);
@@ -41,8 +45,7 @@ $icon-signifier__padding-end: dp(16);
   margin: 0;
   top: 0;
 
-  padding-top: $label__padding-top;
-  padding-bottom: $label__padding-bottom;
+  margin-top: $label__padding-top;
   height: $label__font-size;
   font-size: $label__font-size;
   pointer-events: none; // allow clickthrough
@@ -61,9 +64,7 @@ $icon-signifier__padding-end: dp(16);
   }
   
   [mdw-textarea] > & {
-    // Eyeballed due to lack of specs
-    padding-top: 26px;
-    padding-bottom: 10px;
+    padding-top: $textarea__label__extra_padding-top;
     padding-left: $textarea__padding-start;
   }
 }
@@ -77,9 +78,14 @@ $icon-signifier__padding-end: dp(16);
 
   font-size: inherit;
   font-family: Roboto, sans-serif;
+  
   padding-bottom: dp(8);
+
+  // Offset from top = LabelTopPadding + LabelText + LabelBottomPadding + 8dp
+  // Using padding-top causes overflowed text (multiline)
   margin-top: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom});
   
+
   color: var(--primary-text-color);
 
   &::placeholder {
@@ -102,8 +108,10 @@ $icon-signifier__padding-end: dp(16);
     border-color: var(--textfield-border-line-color);
     border-width: $border-line__height;
     border-radius: dp(4);
-    margin-top: calc(#{$label__font-size} + 5px);
-    padding-top: 30px;
+    
+    // margin-top aligns border
+    margin-top: $label__padding-top + $border-line__height;
+    padding-top: calc(#{$label__font-size} + #{$label__padding-bottom} + #{$textarea__label__extra_padding-top});
     will-change: border-color;
     transition-property: border-color;
   }
@@ -112,7 +120,7 @@ textarea.mdw-textfield__input {
   resize: none;
   overflow-y: scroll;
   &[mdw-multiline] {
-    height: auto;
+    min-height: 1em;
     padding-right: 24px;
   }
 }

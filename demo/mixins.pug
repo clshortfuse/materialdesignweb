@@ -2,27 +2,21 @@ mixin androidstatusbar(color)
   .androidstatusbar(style=`background-color:${color}`)
     div 12:30
     i.material-icons(style="letter-spacing:2px") &#xE1BA;&#xE1C8;&#xE1A4;
-mixin toolbar(color, tone, start, title, end)
+mixin toolbar(color, tone, start, end)
   .mdw-toolbar.mdw-theme__filled(mdw-color=color mdw-tone=tone)
-    .mdw-toolbar__start
-      each icon in start
-        button.mdw-button(mdw-icon).material-icons= icon
-    .mdw-toolbar__content= title
-    .mdw-toolbar__end
-      each icon in end
-        button.mdw-button(mdw-icon).material-icons= icon
+    .mdw-toolbar__action
+      .mdw-toolbar__start
+        each icon in start
+          button.mdw-button(mdw-icon).material-icons= icon
+      .mdw-toolbar__title
+        block
+      .mdw-toolbar__end
+        each icon in end
+          button.mdw-button(mdw-icon).material-icons= icon
 mixin androidnavbar
   .androidnavbar
     i.material-icons.back-button &#xE3C8;
     i.material-icons &#xE836;</i>
     i.material-icons &#xE835;
-
-mixin comparison(statusBarColor, toolbarColor, toolbarTone, toolbarStart, toolbarTitle, toolbarEnd, img, className)
-  .comparison
-    div(class=`render ${className || ''}`)
-      +androidstatusbar(statusBarColor)
-      +toolbar(toolbarColor, toolbarTone, toolbarStart, toolbarTitle, toolbarEnd)
-      block
-      +androidnavbar
-    
-    div.target(style=`background-image: url(${img})`)
+mixin target(url)
+  .target(style=`background-image: url(${url})`)

@@ -1,26 +1,42 @@
 include ../mixins.pug
 
-+comparison(
-  'rgb(var(--background-400-color))', 
-  'background', '50', ['menu'],  'Title', ['search', 'favorite', 'more_vert'],
-  'https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsU1FwTUx3cmRUNG8/layout-structure-appbar-structure2.png')
-  .content__clipped.mdw-theme__filled(mdw-color="background" mdw-tone="300")
+.comparison.clipped
+  .render
+    +androidstatusbar('rgb(var(--background-400-color))')
+    +toolbar('background', '50', ['menu'],  ['search', 'favorite', 'more_vert']) Title
+    .mdw-theme__filled(mdw-color="background" mdw-tone="300")
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsU1FwTUx3cmRUNG8/layout-structure-appbar-structure2.png')
 
-+comparison(
-  'black', 
-  'background', '900', ['menu'],  'Title', ['search', 'favorite', 'more_vert'],
-  'https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsbGREMW9BdDdnSUk/layout-structure-appbar-structure3.png')
-  .content__clipped.mdw-theme__filled(mdw-color="background" mdw-tone="300")
+.comparison.clipped
+  .render
+    +androidstatusbar('black')
+    +toolbar('background', '900', ['menu'], ['search', 'favorite', 'more_vert']) Title
+    .mdw-theme__filled(mdw-color="background" mdw-tone="300")
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsbGREMW9BdDdnSUk/layout-structure-appbar-structure3.png')
 
-+comparison(
-  'rgb(var(--primary-800-color))', 
-  'primary', 'A200', ['menu'],  'Title', ['search', 'favorite', 'more_vert'],
-  'https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsZF9VZDhtQlF5RGM/layout-structure-appbar-structure4.png',
-  'mdw-theme-toolbar')
-  .content__clipped.mdw-theme__filled(mdw-color="background" mdw-tone="300")
+.comparison.clipped
+  .render.mdw-theme-toolbar
+    +androidstatusbar('rgb(var(--primary-800-color))')
+    +toolbar('primary', 'A200', ['menu'], ['search', 'favorite', 'more_vert']) Title
+    .mdw-theme__filled(mdw-color="background" mdw-tone="300")
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsZF9VZDhtQlF5RGM/layout-structure-appbar-structure4.png')
 
-+comparison(
-  'rgb(var(--background-400-color))', 
-  'background', '50', ['menu'],  'Title', ['search', 'favorite', 'more_vert'],
-  'https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsLUFJUnFlRHVhUVU/layout-structure-appbar-metrics1.png')
-  .content__clipped.mdw-theme__filled(mdw-color="background" mdw-tone="300")
+.comparison.clipped2
+  .render
+    +androidstatusbar('rgb(var(--background-400-color))')
+    +toolbar('background', '50', ['menu'],  ['search', 'favorite', 'more_vert']) Title
+    .mdw-theme__filled(mdw-color="background" mdw-tone="300")
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsLUFJUnFlRHVhUVU/layout-structure-appbar-metrics1.png')
+
+.comparison.clipped2
+  .render
+    +androidstatusbar('rgb(var(--background-400-color))')
+    .mdw-toolbar.mdw-theme__filled(mdw-color=color mdw-tone=tone)
+      .mdw-toolbar__action
+        .mdw-toolbar__start
+          button.mdw-button(mdw-icon).material-icons arrow_back
+        .mdw-toolbar__end
+          button.mdw-button(mdw-icon).material-icons more_vert
+      .mdw-toolbar__title Title
+    .mdw-theme__filled(mdw-color="background" mdw-tone="300")
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsSDBhX3BwSURRc1U/layout-structure-appbar-metrics3.png')

@@ -42,13 +42,13 @@ function onTemplateImageClick(event) {
 /** @return {void} */
 function setupOptions() {
   document
-    .querySelector('input[name="applyFixes"]')
+    .querySelector('input[name="largeFontSize"]')
     .addEventListener('change', (event) => {
-      const el = document.getElementById('comparisons');
+      const el = document.querySelector('html');
       if (event.target.checked) {
-        el.classList.add('fixed');
+        el.style.setProperty('font-size', '24px');
       } else {
-        el.classList.remove('fixed');
+        el.style.setProperty('font-size', '');
       }
     });
   document

@@ -15,14 +15,6 @@ html {
   flex-direction: row;
 }
 
-.render {
-  padding: 8px;
-  min-width: 360px;
-  max-width: 360px;
-  display: flex;
-  flex-direction: column;
-}
-
 .androidstatusbar {
   display: flex;
   align-items: center;
@@ -38,19 +30,29 @@ html {
 }
 
 .content {
-  flex-grow: 1;
-  height: 500px;
+  flex: 1;
+  height: 0;
+  overflow-y: scroll;
 }
 
-.content__clipped {
-  height: 100px;
-}
-
+.render,
 .target {
   margin: 8px;
-  min-width: 360px;
+  width: 360px;
+  max-width: 360px;
+  height: 640px;
+  max-height: 640px;
   background-size: cover;
   background-repeat: no-repeat;
+
+  display: flex;
+  flex-direction: column;
+  .clipped & {
+    max-height: 190px;
+  }
+  .clipped2 & {
+    max-height: 304px;
+  }
 }
 
 .content__clipped ~ .androidnavbar {

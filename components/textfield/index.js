@@ -1,16 +1,16 @@
 /**
  * @param {Element} element
- * @param {number=} heightHint Precalculated single row height
  * @return {number} Single row height
  */
-function updateTextAreaSize(element, heightHint) {
-  let heightPx = heightHint;
-  if (!heightPx) {
-    element.setAttribute('rows', '1');
-    const { height } = window.getComputedStyle(element);
-    heightPx = parseInt(height.replace('px', ''), 10);
+function updateTextAreaSize(element) {
+  element.setAttribute('rows', '1');
+  const { height, paddingTop } = window.getComputedStyle(element);
+  if (height === 'auto') {
+    return -1;
   }
-  element.setAttribute('rows', Math.floor(element.scrollHeight / heightPx).toString());
+  const heightPx = parseInt(height.replace('px', ''), 10);
+  const paddingTopPx = parseInt(paddingTop.replace('px', ''), 10);
+  element.setAttribute('rows', Math.floor((element.scrollHeight - paddingTopPx) / heightPx).toString());
   return heightPx;
 }
 
