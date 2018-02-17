@@ -83,35 +83,6 @@ include ../mixins.pug
     +androidnavbar
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3ZnVLdzRHZ3FsSjQ/components-lists-keylines-single6.png')
 
-
-.comparison.mdw-theme-list
-  .render
-    +androidstatusbar('rgb(var(--primary-500-color))')
-    .mdw-toolbar.mdw-theme__filled(mdw-color="primary" )
-      .mdw-toolbar__action
-        .mdw-toolbar__start
-          button.mdw-button(mdw-icon mdw-active).material-icons menu
-        .mdw-toolbar__title(mdw-centered) New chat
-        .mdw-toolbar__end
-          button.mdw-button(mdw-icon mdw-active).material-icons search
-    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
-      ul.mdw-list
-        li.mdw-list__subheader Recent chat
-        li.mdw-list__row Abbey Christensen
-          .mdw-list__start(mdw-avatar)
-          .mdw-list__end
-        li.mdw-list__row Alex Nelson
-          .mdw-list__start(mdw-avatar)
-        li.mdw-list__row Mary Johnson
-          .mdw-list__start(mdw-avatar)
-        li.mdw-list__row Peter Carlsson
-          .mdw-list__start(mdw-avatar)
-        li.mdw-list__row Trevor Hansen
-          .mdw-list__start(mdw-avatar)
-
-  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B2AMilo_nIVFYmc3LXp4Wm1lR0U/components-lists-keylines-single9.png')
-
-
 .comparison.mdw-theme-list
   .render
     +androidstatusbar('rgb(var(--accent-700-color))')
@@ -119,44 +90,44 @@ include ../mixins.pug
     .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
       ul.mdw-list(mdw-divider)
         li.mdw-list__subheader Today
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Brunch this weekend?
             .mdw-list__text-line Ali Connors 
               span  &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to meet?
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Summer BBQ
               span  4
             .mdw-list__text-line to Alex, Scott, Jennifer
               span  &mdash; Wish I could come. but I'm out of town this weekend.
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Oui oui
             .mdw-list__text-line Sandra Adams
               span  &mdash; Do you have Paris recommendations? Have you ever been?
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Birthday gift
             .mdw-list__text-line Trevor Hansen
               span  &mdash; Have any ideas about what we should get Heidi for her birthday?
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Recipe to try
             .mdw-list__text-line Britta Holt
               span  &mdash; We should eat this: Grated Squash, Corn, and tomatillo Tacos J
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Giants game
             .mdw-list__text-line David Park
               span  &mdash; Any interest in seeing
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Montauk weekend
@@ -169,46 +140,46 @@ include ../mixins.pug
     +androidstatusbar('rgb(var(--accent-700-color))')
     +toolbar('accent', '500', ['menu'], ['search']) Inbox
     .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
-      ul.mdw-list(mdw-divider)
+      ul.mdw-list(mdw-divider mdw-rows=3)
         li.mdw-list__subheader Today
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Brunch this weekend?
             .mdw-list__text-block Ali Connors 
               span  &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to meet?
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Summer BBQ
               span  4
             .mdw-list__text-block to Alex, Scott, Jennifer
               span  &mdash; Wish I could come. but I'm out of town this weekend.
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Oui oui
             .mdw-list__text-block Sandra Adams
               span  &mdash; Do you have Paris recommendations? Have you ever been?
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Birthday gift
             .mdw-list__text-block Trevor Hansen
               span  &mdash; Have any ideas about what we should get Heidi for her birthday?
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Recipe to try
             .mdw-list__text-block Britta Holt
               span  &mdash; We should eat this: Grated Squash, Corn, and tomatillo Tacos J
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Giants game
             .mdw-list__text-block David Park
               span  &mdash; Any interest in seeing
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Montauk weekend
@@ -219,47 +190,47 @@ include ../mixins.pug
 
 .comparison.mdw-theme-list
   .render
-    +androidstatusbar('rgb(var(--accent-700-color))')
-    +toolbar('accent', '500', ['menu'], ['search']) Inbox
+    +androidstatusbar('rgb(var(--warn-700-color))')
+    +toolbar('warn', '500', ['menu'], ['search', 'check_circle']) Inbox
     .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
-      ul.mdw-list(mdw-divider)
-        li.mdw-list__row
+      ul.mdw-list(mdw-divider mdw-rows=3)
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Ali Connors
             .mdw-list__text-line Brunch this weekend?
             .mdw-list__text-line I'll be in your neighborhood doing errands this weekend. Do you want to meet?
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line me, Scott, Jennifer
             .mdw-list__text-line Summer BBQ
-            .mdw-list__text-line I could come. but I'm out of town this weekend.
-        li.mdw-list__row
+            .mdw-list__text-line Wish I could come. but I'm out of town this weekend.
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Sandra Adams
             .mdw-list__text-line Oui oui
             .mdw-list__text-line Do you have Paris recommendations? Have you ever been?
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Trevor Hansen
-            .mdw-list__text-line Birthday gift
-            .mdw-list__text-line Have any ideas about what we should get Heidi for her birthday?
-        li.mdw-list__row
+            .mdw-list__text-line Order Confirmation
+            .mdw-list__text-line Thank you for your recent order from Google.
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Britta Holt
             .mdw-list__text-line Recipe to try
             .mdw-list__text-line We should eat this: Grated Squash, Corn, and tomatillo Tacos J
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line David Park
             .mdw-list__text-line Giants game
             .mdw-list__text-line Any interest in seeing
-        li.mdw-list__row
+        li.mdw-list__row.mdw-button
           .mdw-list__start
           .mdw-list__text
             .mdw-list__text-line Montauk weekend

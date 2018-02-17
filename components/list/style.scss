@@ -82,6 +82,7 @@ $list__divider-height: dp(1);
 
 .mdw-list__text {
   position: static;
+  pointer-events: none;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -135,6 +136,14 @@ $list__divider-height: dp(1);
     color: var(--primary-text-color);
     &:nth-child(3) {
       color: var(--secondary-text-color);
+      line-height: 1.5rem;
+      margin-bottom: sp(14);
+    }
+  }
+
+  .mdw-list[mdw-rows="3"] & {
+    &:first-child {
+      margin-top: dp(10);
     }
   }
   
@@ -146,6 +155,7 @@ $list__divider-height: dp(1);
 }
 
 .mdw-list__text-block {
+  pointer-events: none;
   font-size: sp(14);
   font-weight: normal;
   text-transform: none;
@@ -160,7 +170,8 @@ $list__divider-height: dp(1);
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  margin-bottom: dp(16);
-  line-height: sp(16);
-  max-height: sp(16*2);
+  margin-bottom: sp(14);
+  line-height: sp(20);
+  height: sp(20*2);
+  max-height: sp(20*2);
 }
