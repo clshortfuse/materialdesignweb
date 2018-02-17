@@ -75,21 +75,33 @@ function hasSomeParentTheClass(element, classname) {
   return element.parentNode && hasSomeParentTheClass(element.parentNode, classname);
 }
 
+/**
+ * @param {NodeList} nodelist
+ * @param {Function} callback
+ * @param {Object} scope
+ * @return {void}
+ */
+function forEachNode(nodelist, callback, scope) {
+  for (let i = 0; i < nodelist.length; i += 1) {
+    callback.call(scope, nodelist[i], i, nodelist);
+  }
+}
+
 /** @return {void} */
 function start() {
   setupOptions();
-  document.querySelectorAll('.mdw-textfield').forEach((element) => {
+  forEachNode(document.querySelectorAll('.mdw-textfield'), (element) => {
     new mdw.TextField(element);
   });
-  document.querySelectorAll('.mdw-list__row').forEach((element) => {
+  forEachNode(document.querySelectorAll('.mdw-list__row'), (element) => {
     new mdw.ListRow(element);
   });
-  document.querySelectorAll('.mdw-button').forEach((element) => {
+  forEachNode(document.querySelectorAll('.mdw-button'), (element) => {
     if (!hasSomeParentTheClass(element, 'no-js')) {
       new mdw.Button(element);
     }
   });
-  document.querySelectorAll('.target').forEach((element) => {
+  forEachNode(document.querySelectorAll('.target'), (element) => {
     element.addEventListener('click', onTemplateImageClick);
   });
 }

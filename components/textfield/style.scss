@@ -178,21 +178,25 @@ textarea.mdw-textfield__input {
   }
 }
 
-// Behavior changes
-
+/* Behavior changes */
 .mdw-textfield__input {
-
-  // Unfocused
+  /* Unfocused */
   &:not(:focus) {
-      &[mdw-value-empty],
-      &:placeholder-shown {
-        & ~ .mdw-textfield__label {
-        transform: translateY($label__font-size) translateY($label__padding-bottom);
-        font-size: inherit;
-        [mdw-textarea] > & {
-          // Eyeballed due to lack of specs
-          transform: translateY($label__font-size) translateY(-4px);
-        }
+    /* Rules must be separated for IE11 support */
+    &:placeholder-shown ~ .mdw-textfield__label {
+      transform: translateY($label__font-size) translateY($label__padding-bottom);
+      font-size: inherit;
+      [mdw-textarea] > & {
+        // Eyeballed due to lack of specs
+        transform: translateY($label__font-size) translateY(-4px);
+      }
+    }
+    &[mdw-value-empty] ~ .mdw-textfield__label {
+      transform: translateY($label__font-size) translateY($label__padding-bottom);
+      font-size: inherit;
+      [mdw-textarea] > & {
+        // Eyeballed due to lack of specs
+        transform: translateY($label__font-size) translateY(-4px);
       }
     }
   }
