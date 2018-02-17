@@ -1,7 +1,7 @@
 # Syntax
 
 
-## Bare Minimum
+## Flat
 ```
 button.mdw-button
 ```

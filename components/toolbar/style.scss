@@ -58,8 +58,7 @@ $toolbar-right-padding: dp(16);
     justify-content: flex-end;
     font-size: sp(20);
 
-    // Padding should be 20px from bottom including Font glyph, but is unreliable with CSS
-    // Vertically centered alignment is not the same due to accessible font support.
+    // Padding should be 20px from font baseline. 0.25em is an approximation.
     padding-bottom: calc(#{dp(20)} - 0.25em);
   }
 }
@@ -70,26 +69,36 @@ $toolbar-right-padding: dp(16);
 
 .mdw-toolbar__start {
   order: -1;
+  padding-left: dp(8);
+  padding-right: dp(8);
 }
 
 .mdw-toolbar__end {
   order: 1;
+  margin-right: dp(4);
 }
 
 
 .mdw-toolbar__start,
 .mdw-toolbar__end {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
   padding-top: dp(8);
   @include landscapeHandsets {
     padding-top: dp(4);
   }
-  padding-left: dp(8);
-  padding-right: dp(8);
-  > .mdw-button {
-    margin: 0;
-  }  
 }
 
-.mdw-toolbar__end {
-  padding-right: dp(8 - 6);
+.mdw-toolbar__start > .mdw-button {
+  margin: 0;
+}
+
+.mdw-toolbar__end > .mdw-button {
+  margin-left: 4px;
+  margin-right: 4px;
+  &[mdw-more-button] {
+    margin-left: 0;
+    margin-right: -2px;
+  }
 }

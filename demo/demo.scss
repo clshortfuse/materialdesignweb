@@ -2,6 +2,7 @@
 @include buildTheme('deeppurple', 'amber', 'red', 'grey', 'light', 'textfield');
 @include buildTheme('blue', 'pink', 'red', 'grey', 'light', 'toolbar');
 @include buildTheme('teal', 'brown', 'red', 'grey', 'light', 'bottomnav');
+@include buildTheme('teal', 'cyan', 'red', 'grey', 'light', 'list');
 
 
 html {
@@ -51,13 +52,17 @@ html {
   .clipped & {
     max-height: 190px;
   }
-  .clipped2 & {
-    max-height: 304px;
+  .clipped-236 & {
+    max-height: 236px;
   }
   .clipped-300 & {
     max-height: 300px;
   }
+  .clipped-304 & {
+    max-height: 304px;
+  }
 }
+
 
 .horizontal-controls {
   display:inline-flex;
@@ -117,11 +122,12 @@ html {
   font-size: sp(34);
 }
 
+$components: ('bottomnav', 'button', 'list', 'textfield', 'toolbar');
+
 input[name="show-component"]:not(:checked) {
-  &[value="bottomnav"] ~ #bottomnav-comparisons,
-  &[value="button"] ~ #button-comparisons,
-  &[value="textfield"] ~ #textfield-comparisons,
-  &[value="toolbar"] ~ #toolbar-comparisons, {
-    display:none
+  @each $component in $components {
+    &[value="#{$component}"] ~ ##{$component}-comparisons {
+      display:none
+    }
   }
 }

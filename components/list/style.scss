@@ -1,0 +1,82 @@
+// https://material.io/guidelines/components/lists.html
+// https://material.io/guidelines/components/lists-controls.html
+
+.mdw-list {
+  display: block;
+  overflow-y: scroll;
+  padding: 0;
+  margin: 0;
+  margin-top: dp(4);
+  width: 100%;
+}
+.mdw-list__subheader {
+  display: flex;
+  flex-direction: row;
+  min-height: dp(48);
+  align-items: center;
+  justify-content: stretch;
+}
+.mdw-list__row {
+  // width: 100%;
+  display: flex;
+  flex-direction: row;
+  min-height: dp(48);
+  &,
+  &.mdw-button {
+    align-items: center;
+    justify-content: stretch;
+    margin: 0;
+    padding: 0 dp(16);
+    text-transform: none;
+    color: var(--primary-text-color);
+    font-weight: normal;
+    font-size: sp(16);
+  }
+  
+  text-align: start;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  
+}
+
+.mdw-list__start {
+  order: -1;
+  min-width: dp(72 - 16);
+  max-width: dp(72 - 16);
+}
+
+.mdw-list__text {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow-x: hidden;
+}
+
+.mdw-list__text-line {
+  &:not(:first-of-type) {
+    font-size: sp(14);
+    font-weight: 400;
+  }
+  &:last-of-type:not(:first-of-type) {
+    font-weight: normal;
+    color: var(--secondary-text-color);
+  }
+}
+
+.mdw-list__text-block {
+  font-weight: normal;
+  text-transform: none;
+  text-align: start;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  font-size: sp(14);
+  &:first-of-type {
+    font-size: sp(16);
+  }
+}
+
+.mdw-list__start ~ .mdw-list__text {
+
+}

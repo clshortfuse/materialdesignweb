@@ -1,0 +1,78 @@
+include ../mixins.pug
+
+.comparison.mdw-theme-list
+  .render
+    +androidstatusbar('rgb(var(--primary-700-color))')
+    +toolbar('primary', '500', ['menu'], ['more_vert']) Topics
+    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding-top:2px")
+      ul.mdw-list
+        li.mdw-list__row.mdw-button Attractions
+        li.mdw-list__row.mdw-button Dining
+        li.mdw-list__row.mdw-button Education
+        li.mdw-list__row.mdw-button Family
+        li.mdw-list__row.mdw-button Health
+        li.mdw-list__row.mdw-button Office
+        li.mdw-list__row.mdw-button Promotions
+        li.mdw-list__row.mdw-button Radio
+        li.mdw-list__row.mdw-button Recipes
+        li.mdw-list__row.mdw-button Sports
+        li.mdw-list__row.mdw-button Travel
+    +androidnavbar
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3V2tZaHMwSXZuS2s/components-lists-keylines-single3.png')
+
+.comparison.mdw-theme-list
+  .render
+    +androidstatusbar('rgb(var(--primary-700-color))')
+    +toolbar('primary', '500', ['menu'], ['more_vert']) Topics
+    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding-top:2px")
+      ul.mdw-list
+        li.mdw-list__row.mdw-button Attractions
+          .mdw-list__start.material-icons local_activity
+        li.mdw-list__row.mdw-button Dining
+          .mdw-list__start.material-icons local_dining
+        li.mdw-list__row.mdw-button Education
+          .mdw-list__start.material-icons school
+        li.mdw-list__row.mdw-button Family
+          .mdw-list__start.material-icons people
+        li.mdw-list__row.mdw-button Health
+          .mdw-list__start.material-icons healing
+        li.mdw-list__row.mdw-button Office
+          .mdw-list__start.material-icons business
+        li.mdw-list__row.mdw-button Promotions
+          .mdw-list__start.material-icons local_offer
+        li.mdw-list__row.mdw-button Radio
+          .mdw-list__start.material-icons radio
+        li.mdw-list__row.mdw-button Recipes
+          .mdw-list__start.material-icons book
+        li.mdw-list__row.mdw-button Sports
+          .mdw-list__start.material-icons stars
+        li.mdw-list__row.mdw-button Travel
+          .mdw-list__start.material-icons local_airport
+    +androidnavbar
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3ZnVLdzRHZ3FsSjQ/components-lists-keylines-single6.png')
+
+
+
+
+.comparison.mdw-theme-list
+  .render
+    +androidstatusbar('rgb(var(--accent-700-color))')
+    +toolbar('accent', '500', ['menu'], ['search', 'check_circle']) Inbox
+    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+      ul.mdw-list
+        li.mdw-list__subheader Today
+        li.mdw-list__row
+          .mdw-list__start
+          .mdw-list__text
+            .mdw-list__text-line Brunch this weekend?
+            .mdw-list__text-line
+              span Ali Connors
+              span I'll be in your neighborhood doing errandsOVERFLOW
+        li.mdw-list__row
+          .mdw-list__start
+          .mdw-list__text
+            .mdw-list__text-line me, Scott, Jennifer
+            .mdw-list__text-line Summer BBQ
+            .mdw-list__text-line 
+              span Wish I could come. but I'm out of townOVERFLOW
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsWGQ4OWVWREpLNkU/components-lists-keylines-two8.png')

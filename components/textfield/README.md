@@ -1,7 +1,7 @@
 # Syntax
 
 
-## Bare Minimum
+## Standard
 ```
 label.mdw-textfield
   input.mdw-textfield__input(placeholder=" ")

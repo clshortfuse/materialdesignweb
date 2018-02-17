@@ -25,22 +25,31 @@ html(lang='en')
     div
 
     span Bottom nav
-    input(type="radio" name="show-component" value="bottomnav" checked=true)
+    input(type="radio" name="show-component" value="bottomnav")
+
     span Button
     input(type="radio" name="show-component" value="button")
+
+    span List
+    input(type="radio" name="show-component" value="list" checked)
+
     span Text Field
     input(type="radio" name="show-component" value="textfield")
+
     span Toolbar
     input(type="radio" name="show-component" value="toolbar")
+
     div
 
-    #bottomnav-comparisons.comparisons.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+    #bottomnav-comparisons.comparisons
       include comparisons/bottomnav.pug
-    #button-comparisons.comparisons.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+    #button-comparisons.comparisons
       include comparisons/button.pug
-    #textfield-comparisons.comparisons.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+    #list-comparisons.comparisons
+      include comparisons/list.pug
+    #textfield-comparisons.comparisons
       include comparisons/textfield.pug
-    #toolbar-comparisons.comparisons.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+    #toolbar-comparisons.comparisons
       include comparisons/toolbar.pug
 
 
