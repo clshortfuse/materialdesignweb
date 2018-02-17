@@ -51,6 +51,9 @@ $toolbar-right-padding: dp(16);
   font-weight: 500;
   height: dp(72);
   justify-content: space-around;
+  &[mdw-centered] {
+    flex-grow: 0;
+  }
   .mdw-toolbar__action > & {
     height: auto;
     margin-right: 0;

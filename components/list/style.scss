@@ -44,6 +44,15 @@
   order: -1;
   min-width: dp(72 - 16);
   max-width: dp(72 - 16);
+  &[mdw-avatar] {
+    min-height: dp(56);
+  }
+}
+
+.mdw-list__end {
+  order: 1;
+  min-width: dp(24 + 16);
+  max-width: dp(24 + 16);
 }
 
 .mdw-list__text {
@@ -52,6 +61,8 @@
   flex-direction: column;
   align-items: stretch;
   overflow-x: hidden;
+  justify-content: center;
+  min-height: dp(72);
 }
 
 .mdw-list__text-line {

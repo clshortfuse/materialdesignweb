@@ -20,6 +20,7 @@ include ../mixins.pug
     +androidnavbar
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3V2tZaHMwSXZuS2s/components-lists-keylines-single3.png')
 
+
 .comparison.mdw-theme-list
   .render
     +androidstatusbar('rgb(var(--primary-700-color))')
@@ -52,6 +53,32 @@ include ../mixins.pug
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3ZnVLdzRHZ3FsSjQ/components-lists-keylines-single6.png')
 
 
+.comparison.mdw-theme-list
+  .render
+    +androidstatusbar('rgb(var(--primary-500-color))')
+    .mdw-toolbar.mdw-theme__filled(mdw-color="primary" )
+      .mdw-toolbar__action
+        .mdw-toolbar__start
+          button.mdw-button(mdw-icon mdw-active).material-icons menu
+        .mdw-toolbar__title(mdw-centered) New chat
+        .mdw-toolbar__end
+          button.mdw-button(mdw-icon mdw-active).material-icons search
+    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+      ul.mdw-list
+        li.mdw-list__subheader Recent chat
+        li.mdw-list__row Abbey Christensen
+          .mdw-list__start(mdw-avatar)
+          .mdw-list__end
+        li.mdw-list__row Alex Nelson
+          .mdw-list__start(mdw-avatar)
+        li.mdw-list__row Mary Johnson
+          .mdw-list__start(mdw-avatar)
+        li.mdw-list__row Peter Carlsson
+          .mdw-list__start(mdw-avatar)
+        li.mdw-list__row Trevor Hansen
+          .mdw-list__start(mdw-avatar)
+
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B2AMilo_nIVFYmc3LXp4Wm1lR0U/components-lists-keylines-single9.png')
 
 
 .comparison.mdw-theme-list
