@@ -179,6 +179,11 @@ $list__divider-height: dp(1);
 }
 
 .mdw-list__row {
+  // If using JS ripple, destroy ::after object
+  &[mdw-js-ripple]::after {
+    content: none
+  }
+  
   /* duration | timing-function | delay | iteration-count | direction | fill-mode | play-state | name */
   & > .mdw-ripple,
   &::after {

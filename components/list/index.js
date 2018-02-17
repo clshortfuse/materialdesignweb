@@ -14,7 +14,7 @@ function updateRipplePosition(element, event) {
   element.style.setProperty('top', `${y}px`);
 }
 
-export default class Button {
+export default class ListRow {
   /**
    * @param {Element} element
    */

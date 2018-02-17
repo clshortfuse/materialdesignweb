@@ -106,12 +106,15 @@ $button__focus-animation-duration: 1667ms;
   }
 
   &.mdw-theme__colored {
+    --button__ripple-color: unquote("rgba(var(--primary-color), 0.26)"); // cssvariables fallback
     --button__ripple-color: unquote("rgba(var(--color), 0.26)");
     &:focus:not(:active)::before {
+      background-color: unquote("rgba(var(--primary-color), 0.12)"); // cssvariables fallback
       background-color: unquote("rgba(var(--color), 0.12)");
     }
     &:focus:active::before,
     &:active::before {
+      background-color: unquote("rgba(var(--primary-color), 0.20)"); // cssvariables fallback
       background-color: unquote("rgba(var(--color), 0.20)");
     }
   }

@@ -1,25 +1,25 @@
 include ../mixins.pug
 
 mixin button-test
-  div
+  div.display-flex
     button.mdw-button Flat
     button.mdw-button(mdw-raised) Raised
     button.mdw-button(mdw-raised disabled) Disabled
     button.mdw-button(mdw-raised="always") +Raised
   div(style="height:24px")
-  div
+  div.display-flex
     button.mdw-button.mdw-theme__colored(mdw-color="primary") Flat
     button.mdw-button.mdw-theme__colored(mdw-color="primary" mdw-raised) Raised
     button.mdw-button.mdw-theme__colored(mdw-color="primary" mdw-raised disabled) Disabled
     button.mdw-button.mdw-theme__colored(mdw-color="accent" mdw-tone="A100") accent
   div(style="height:24px")
-  div
+  div.display-flex
     button.mdw-button.mdw-theme__filled(mdw-color="primary") Flat
     button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised) Raised
     button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised disabled) Disabled
     button.mdw-button.mdw-theme__filled(mdw-color="accent" mdw-tone="A100" mdw-raised) accent
   div(style="height:24px")
-  div
+  div.display-flex
     button.mdw-button(mdw-icon).material-icons favorite
     button.mdw-button.mdw-theme__colored(mdw-color="warn" mdw-icon).material-icons favorite
     button.mdw-button.mdw-theme__filled(mdw-color="warn" mdw-icon).material-icons favorite

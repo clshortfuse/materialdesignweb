@@ -81,6 +81,9 @@ function start() {
   document.querySelectorAll('.mdw-textfield').forEach((element) => {
     new mdw.TextField(element);
   });
+  document.querySelectorAll('.mdw-list__row').forEach((element) => {
+    new mdw.ListRow(element);
+  });
   document.querySelectorAll('.mdw-button').forEach((element) => {
     if (!hasSomeParentTheClass(element, 'no-js')) {
       new mdw.Button(element);

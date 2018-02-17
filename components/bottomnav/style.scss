@@ -24,7 +24,7 @@
   align-items: center;
   &,
   &.mdw-button {
-    justify-content: flex-end;
+    justify-content: space-between;
     margin: 0;
     padding: 0;
   }
@@ -39,9 +39,8 @@
 }
 
 .mdw-bottomnav__icon {
-  // Icon is top aligned and doesn't scale with font
-  position: absolute;
-  top: 0px;
+  padding: 0;
+  margin: 0;
   pointer-events: none;
   transition-property: color, transform;
   transition-duration: 200ms;
@@ -91,6 +90,8 @@
   margin: 0;
   padding: 0;
   pointer-events: none;
+  position: absolute;
+  display: inline;
 }
 
 .mdw-bottomnav[mdw-shifting] {

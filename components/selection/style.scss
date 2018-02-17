@@ -100,8 +100,10 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
 
 .mdw-selection[mdw-color] {
   > input:checked {
+    background-color: unquote("rgba(var(--primary-color), 0.26)"); // cssvariables fallback
     background-color: unquote("rgba(var(--color), 0.26)");
     ~ .mdw-selection__icon::before {
+      border-color: unquote("rgb(var(--primary-color))"); // cssvariables fallback
       border-color: unquote("rgb(var(--color))");
     }
   }
@@ -222,6 +224,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
 
 .mdw-selection[mdw-color] > input[type="radio"]:checked {
   & ~ .mdw-selection__icon::after {
+    background-color: unquote("rgb(var(--primary-color))"); // cssvariables fallback
     background-color: unquote("rgb(var(--color))");
   }
 }
