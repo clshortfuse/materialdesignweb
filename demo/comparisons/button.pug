@@ -4,7 +4,7 @@ include ../mixins.pug
   'rgb(var(--background-400-color))', 
   'background', '50', [], '', [],
   'https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsX0xZMnFkR1ZOVmc/components-buttons-main6.png')
-  .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding: 200px 16px 0")
+  .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding: 16px 16px 0")
     div
       button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-tone="500") Disagree
       button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-tone="500") Agree
@@ -12,6 +12,8 @@ include ../mixins.pug
     div
       button.mdw-button Disagree
       button.mdw-button(mdw-raised) Agree
+    div(style="height:48px")
+    div
       button.mdw-button(mdw-color="primary") Yes
       button.mdw-button(mdw-color="accent") No
     div(style="height:48px")

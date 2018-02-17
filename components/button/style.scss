@@ -46,9 +46,15 @@ $button__focus-animation-duration: 1667ms;
   align-items: center;
 
 
-  // ::before - focus overlay
-  // ::after - ripple effect
+  &:focus {
+    // Apply focus overlay to background (not on foreground)
+    background-image: linear-gradient(var(--button__focus-overlay), var(--button__focus-overlay));
+  }
 
+  // ::before - focus ripple
+  // ::after - press ripple
+
+  z-index: 1; // Non-zero
   &::before,
   &::after {
     content: '';
@@ -57,29 +63,29 @@ $button__focus-animation-duration: 1667ms;
     height: 100%;
     top: 0;
     left: 0;
+    z-index: -1;
   }
 
   &::before {
     // Background-size does not animate smoothly.
-    background-color: transparent;
+    // Focus circle: inner-radius - 10% - fully transparent
+    // Scale up by 10.0 to become 100% when not focused
     background-image: radial-gradient(
       circle at center,
-      transparent 0%,
       transparent 10%,
       var(--button__press-color) 10.00001%);
     background-position: center center;
     transform: scale(10);
-    transition: background-color 200ms, transform 200ms;
+    transition-property: transform;
+    transition-duration: 200ms;
+    transition-delay: 0s;
     transition-timing-function: $motion-easing-standard;
-  }
-
-  &:focus {
-    background-image: linear-gradient(var(--button__focus-overlay), var(--button__focus-overlay));
   }
 
   &:focus:not(:active)::before {
     transform: scale(7.5);
-    transition: background-color 200ms, transform ($button__focus-animation-delay) ($button__focus-animation-delay);
+    transition-delay: $button__focus-animation-delay;
+    transition-duration: $button__focus-animation-delay;
     animation-duration: $button__focus-animation-duration;
     animation-timing-function: $motion-easing-standard;
     animation-delay: $button__focus-animation-delay * 2;
@@ -88,12 +94,25 @@ $button__focus-animation-duration: 1667ms;
     animation-name: focus-pulse;
   }
 
-  &:active::before,
-  &:active:focus::before {
+  /* duration | timing-function | delay | iteration-count | direction | fill-mode | play-state | name */
+  &::after {
+    background-image: radial-gradient(
+      circle at center,
+      var(--button__press-color) 10%,
+      transparent 10.0001%
+    );
+    background-position: center center;
     transform: scale(10);
+    transition-property: transform;
+    transition-duration: 1000ms;
+    animation: 1s $motion-easing-standard 0s 1 normal forwards press-fill-in,
+      1s $motion-easing-standard 0s 1 normal forwards press-fade-out;
+  }
+  &:active::after {
+    transform: scale(0);
+    animation: 1s $motion-easing-standard 0s 1 normal forwards press-fill-out;
   }
 
-  
   // Extended touch target
   @media (any-pointer: coarse) {
     &::after {
@@ -126,6 +145,25 @@ $button__focus-animation-duration: 1667ms;
   }
 }
 
+@keyframes press-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes press-fill-in {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(10.0);
+  }
+}
+@keyframes press-fill-out {
+  to {
+    transform: scale(10.0);
+  }
+}
 @keyframes focus-pulse {
   from { transform: scale(7.5); }
   to { transform: scale(8.0) }
