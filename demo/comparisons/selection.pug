@@ -20,13 +20,19 @@ include ../mixins.pug
         li.mdw-list__row(tabindex=-1)
           .mdw-list__text Option 1
           .mdw-list__end
-            input.mdw-checkbox(type="checkbox")
+            label.mdw-checkbox
+              input(type="checkbox")
+              .mdw-checkbox__icon
         li.mdw-list__row(tabindex=0)
           .mdw-list__text Option 2
           .mdw-list__end
-            input.mdw-checkbox(mdw-color="accent" type="checkbox")
+            label.mdw-checkbox(mdw-color="accent" mdw-tone=700)
+              input(type="checkbox")
+              .mdw-checkbox__icon
         li.mdw-list__row(tabindex=-1)
           .mdw-list__text Option 3
           .mdw-list__end
-            input.mdw-checkbox(mdw-color="warn" type="checkbox")
+            label.mdw-checkbox(mdw-color="warn")
+              input(type="checkbox")
+              .mdw-checkbox__icon
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B57Y8yNEHsZPQXRHTEpLc0JXVnM/material-design.platform-adaptation-control-1.png')
