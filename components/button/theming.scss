@@ -1,7 +1,18 @@
-@mixin buttonLightThemeVariables() {
-  
+$button__focus-light-overlay: rgba(white, 0.30);
+$button__focus-dark-overlay: rgba(black, 0.12);
+$button__dark-background-focus-overlay: rgba(white, 0.20);
+// 
+
+@mixin buttonLightThemeVariables($color) {
+  --button__press-color: rgba(#999, 0.40);
+  --button__focus-overlay: $button__focus-dark-overlay;
 }
 
-@mixin buttonDarkThemeVariables() {
-  
+@mixin buttonDarkThemeVariables($color) {
+  --button__press-color: rgba(#CCC, 0.25);
+  @if ($color == 'background') {
+    --button__focus-overlay: $button__dark-background-focus-overlay;
+  } @else {
+    --button__focus-overlay: $button__focus-dark-overlay;
+  }
 }
