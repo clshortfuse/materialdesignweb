@@ -130,7 +130,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     transform: rotate(45deg);
     border-bottom-style: solid;
     border-right-style: solid;
-    border-color: white;
+    border-color: unquote("rgb(var(--background-color))");
     animation-name: showCheck;
     animation-fill-mode: forwards;
   }

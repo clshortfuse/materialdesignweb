@@ -52,16 +52,6 @@ function setupOptions() {
       }
     });
   document
-    .querySelector('input[name="debug"]')
-    .addEventListener('change', (event) => {
-      const el = document.getElementById('comparisons');
-      if (event.target.checked) {
-        el.classList.add('debug');
-      } else {
-        el.classList.remove('debug');
-      }
-    });
-  document
     .querySelector('input[name="rtl"]')
     .addEventListener('change', (event) => {
       const el = document.querySelector('html');
