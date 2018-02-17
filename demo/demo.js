@@ -79,7 +79,7 @@ function start() {
   document.querySelectorAll('.mdw-textfield').forEach((element) => {
     new mdw.TextField(element);
   });
-  document.querySelectorAll('.mdw-button').forEach((element) => {
+  document.querySelectorAll('.js .mdw-button').forEach((element) => {
     new mdw.Button(element);
   });
   document.querySelectorAll('img.target').forEach((element) => {
