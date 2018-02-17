@@ -1,6 +1,7 @@
 @import '../components/index.scss';
 @include buildTheme('deeppurple', 'amber', 'red', 'grey', 'light', 'textfield');
 @include buildTheme('blue', 'pink', 'red', 'grey', 'light', 'toolbar');
+@include buildTheme('teal', 'brown', 'red', 'grey', 'light', 'bottomsheet');
 
 
 html {
@@ -53,6 +54,9 @@ html {
   .clipped2 & {
     max-height: 304px;
   }
+  .clipped-300 & {
+    max-height: 300px;
+  }
 }
 
 .horizontal-controls {
@@ -60,6 +64,9 @@ html {
   width:100%;
 }
 
+.display-flex {
+  display: flex;
+}
 .flex-1 {
   flex: 1;
 }
@@ -111,6 +118,7 @@ html {
 }
 
 input[name="show-component"]:not(:checked) {
+  &[value="bottomsheet"] ~ #bottomsheet-comparisons,
   &[value="button"] ~ #button-comparisons,
   &[value="textfield"] ~ #textfield-comparisons,
   &[value="toolbar"] ~ #toolbar-comparisons, {

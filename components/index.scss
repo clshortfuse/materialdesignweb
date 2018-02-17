@@ -14,6 +14,7 @@ $theme-default-variation: 'light' !default;
   $theme-default-variation
 );
 
+@import './components/bottomsheet/style.scss';
 @import './components/button/style.scss';
 @import './components/textfield/style.scss';
 @import './components/toolbar/style.scss';

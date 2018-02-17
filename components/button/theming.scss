@@ -1,7 +1,6 @@
 $button__focus-light-overlay: rgba(white, 0.30);
 $button__focus-dark-overlay: rgba(black, 0.12);
 $button__dark-background-focus-overlay: rgba(white, 0.20);
-// 
 
 @mixin buttonLightThemeVariables($color) {
   --button__active-color: rgba(black, 0.54);

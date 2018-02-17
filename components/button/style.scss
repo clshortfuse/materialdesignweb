@@ -1,7 +1,6 @@
 // https://material.io/guidelines/components/buttons.html#buttons-raised-buttons
 
 @import '../common/functions.scss';
-@import '../common/variables.scss';
 @import '../common/motion.scss';
 @import '../common/mixins.scss';
 
@@ -95,7 +94,7 @@ $button__focus-animation-duration: 1667ms;
     transition: transform 200ms 0s, background-color 200ms 0s;
     transition-property: transform, background-color;
     transition-duration: 200ms;
-    transition-delay: 0s;
+    transition-delay: 5ms;
     transition-timing-function: $motion-easing-standard;
     background-color: transparent;
   }
@@ -139,12 +138,12 @@ $button__focus-animation-duration: 1667ms;
       var(--button__ripple-color) 10%,
       transparent 10.0001%
     );
-    transform: scale(10.5); // 10.0 has subpixel rendering issues
+    transform: scale(10); // 10.0 has subpixel rendering issues
     transition-property: transform, opacity;
     transition-duration: 700ms;
     opacity: 0;
   }
-  &:active:not([disabled]) {
+  &:active {
     & > .mdw-ripple,
     &::after {
       transform: scale(0);
@@ -158,9 +157,11 @@ $button__focus-animation-duration: 1667ms;
     content: none
   }
 
+  & > .mdw-ripple,
   &[disabled]::before,
   &[disabled]::after {
     content: none;
+    display: none;
   }
 
   // Extended touch target

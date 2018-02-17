@@ -1,0 +1,21 @@
+@mixin bottomsheetLightThemeVariables($color) {
+  --bottomsheet__active-color: unquote("rgb(var(--primary-color))");
+  --bottomsheet__inactive-color: rgba(black, 0.54);
+  
+  --bottomsheet__ripple-color: unquote("rgba(var(--primary-color), 0.26)");
+  --bottomsheet__focus-overlay: unquote("rgba(var(--primary-color), 0.12)");
+  --bottomsheet__press-color: unquote("rgba(var(--primary-color), 0.40)");
+}
+
+@mixin bottomsheetDarkThemeVariables($color) {
+  --bottomsheet__active-color: rgba(white, 1.0);
+  --bottomsheet__inactive-color: rgba(white, 0.50);
+  --bottomsheet__press-color: rgba(#CCC, 0.25);
+  @if ($color == 'background') {
+    --bottomsheet__ripple-color: rgba(white, 0.20);
+    --bottomsheet__focus-overlay: rgba(black, 0.12);
+  } @else {
+    --bottomsheet__ripple-color: rgba(white, 0.30);
+    --bottomsheet__focus-overlay: rgba(white, 0.20);
+  }
+}

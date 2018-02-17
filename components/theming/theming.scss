@@ -1,6 +1,7 @@
 @import 'palettes.scss';
-@import '../components/textfield/theming.scss';
+@import '../components/bottomsheet/theming.scss';
 @import '../components/button/theming.scss';
+@import '../components/textfield/theming.scss';
 
 $tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "A100", "A200", "A400", "A700");
 
@@ -9,8 +10,10 @@ $tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900"
   --secondary-text-color: rgba(0,0,0,0.54);
   --disabled-color: rgba(0,0,0,0.38);
   --divider-color: rgba(0,0,0,0.12);
-  @include textfieldLightThemeVariables();
+  @include bottomsheetLightThemeVariables($color);
   @include buttonLightThemeVariables($color);
+  @include textfieldLightThemeVariables();
+  
 }
 
 @mixin darkVariables($color:"background") {
@@ -18,8 +21,9 @@ $tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900"
   --secondary-text-color: rgba(255,255,255,0.70);
   --disabled-color: rgba(255,255,255,0.50);
   --divider-color: rgba(255,255,255,0.12);
-  @include textfieldDarkThemeVariables();
+  @include bottomsheetDarkThemeVariables($color);
   @include buttonDarkThemeVariables($color);
+  @include textfieldDarkThemeVariables();
 }
 
 @mixin buildTheme($primary, $accent, $warn, $background:"grey", $variation:'light', $name:"default") {

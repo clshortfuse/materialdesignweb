@@ -1,0 +1,61 @@
+include ../mixins.pug
+
+mixin bottomsheet
+  form.mdw-bottomsheet(class=attributes.class mdw-color=attributes.color mdw-tone=attributes.tone)
+    label.mdw-button
+      input(type="radio" name="bottomsheet" value="recents")
+      .mdw-bottomsheet__icon.material-icons history
+      span.mdw-bottomsheet__label Recents
+    label.mdw-button
+      input(type="radio" name="bottomsheet" value="favorites" checked)
+      .mdw-bottomsheet__icon.material-icons favorite
+      span.mdw-bottomsheet__label Favorites
+    label.mdw-button
+      input(type="radio" name="bottomsheet" value="nearby")
+      .mdw-bottomsheet__icon.material-icons near_me
+      span.mdw-bottomsheet__label Nearby
+
+
+.comparison.clipped-300
+  .render.mdw-theme-bottomsheet
+    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+      .flex-1
+      form.mdw-bottomsheet
+        label.mdw-button.mdw-bottomsheet__action
+          input(type="radio" name="bottomsheet" value="recents")
+          .mdw-bottomsheet__icon.material-icons history
+          span.mdw-bottomsheet__label Recents
+        label.mdw-button.mdw-bottomsheet__action
+          input(type="radio" name="bottomsheet" value="favorites" checked)
+          .mdw-bottomsheet__icon.material-icons favorite
+          span.mdw-bottomsheet__label Favorites
+        label.mdw-button.mdw-bottomsheet__action
+          input(type="radio" name="bottomsheet" value="nearby")
+          .mdw-bottomsheet__icon.material-icons near_me
+          span.mdw-bottomsheet__label Nearby
+    +androidnavbar
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B3321sZLoP_HZjN1eld5MjRXb2s/components-bottomnavigation-usage1.png')
+
+.comparison.clipped-300
+  .render.mdw-theme-bottomsheet
+    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+      .flex-1
+      form.mdw-button.mdw-bottomsheet.mdw-theme__filled(mdw-color="primary" mdw-tone="700" mdw-shifting)
+        label.mdw-bottomsheet__action
+          input(type="radio" name="bottomsheet" value="movies")
+          .mdw-bottomsheet__icon.material-icons tv
+          span.mdw-bottomsheet__label Movies &amp; TV
+        label.mdw-bottomsheet__action
+          input(type="radio" name="bottomsheet" value="music" checked)
+          .mdw-bottomsheet__icon.material-icons music_note
+          span.mdw-bottomsheet__label Music
+        label.mdw-bottomsheet__action
+          input(type="radio" name="bottomsheet" value="books")
+          .mdw-bottomsheet__icon.material-icons book
+          span.mdw-bottomsheet__label Books
+        label.mdw-bottomsheet__action
+          input(type="radio" name="bottomsheet" value="newsstand")
+          .mdw-bottomsheet__icon.material-icons assignment
+          span.mdw-bottomsheet__label Newsstand
+    +androidnavbar
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B3321sZLoP_HZHA1UVAyRFpMVDQ/components-bottomnavigation-usage5.png')
