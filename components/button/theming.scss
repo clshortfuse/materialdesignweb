@@ -14,7 +14,8 @@ $button__dark-background-focus-overlay: rgba(white, 0.20);
 }
 
 @mixin buttonDarkThemeVariables($color) {
-  --button__ripple-color: rgba(white, 0.20);
+  --button__ripple-color: rgba(white, 0.30);
+  --button__filled-ripple-color: rgba(white, 0.20);
   --button__press-color: rgba(#CCC, 0.25);
   @if ($color == 'background') {
     --button__focus-overlay: $button__dark-background-focus-overlay;

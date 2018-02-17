@@ -187,6 +187,10 @@ $button__focus-animation-duration: 1667ms;
 }
 
 .mdw-button.mdw-theme__filled {
+  &:not([disabled]) {
+    // Attribute is only to increase specificity
+    --button__ripple-color: var(--button__filled-ripple-color);
+  }
   &[mdw-color="primary"] {
     --button__press-color: unquote("rgb(var(--primary-700-color))");
   }
