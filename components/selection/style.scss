@@ -107,6 +107,17 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   }
 }
 
+.mdw-selection__label {
+  order: -1;
+  padding: 0 dp(8);
+}
+.mdw-selection__icon ~ .mdw-selection__label {
+  order: 1;
+}
+.mdw-selection__label ~ .mdw-selection__icon {
+  order: 1;
+}
+
 .mdw-selection > input[type="checkbox"] {
   min-width: $checkbox-size;
   min-height: $checkbox-size;
@@ -156,6 +167,9 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     animation-name: showCheck;
     animation-fill-mode: forwards;
   }
+  & ~ .mdw-selection__label ~ .mdw-selection__icon {
+    transform: translateX(- ($checkbox-size + $horizontal-margin) );
+  }
 }
 
 .mdw-selection > input[type="radio"] {
@@ -201,28 +215,16 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     background-color: unquote("rgb(var(--primary-color))");
     transform: scale(0.5);
   }
-}
-.mdw-selection[mdw-color] {
-  & > input[type="radio"]:checked ~ .mdw-selection__icon::after {
-    background-color: unquote("rgb(var(--color))");
+  & ~ .mdw-selection__label ~ .mdw-selection__icon {
+    transform: translateX(- ($radio-size + $horizontal-margin));
   }
 }
 
-.mdw-selection__label {
-  order: -1;
-  padding: 0 dp(8);
+.mdw-selection[mdw-color] > input[type="radio"]:checked {
+  & ~ .mdw-selection__icon::after {
+    background-color: unquote("rgb(var(--color))");
+  }
 }
-.mdw-selection__icon ~ .mdw-selection__label {
-  order: 1;
-}
-.mdw-selection__label ~ .mdw-selection__icon {
-  order: 1;
-  transform: translateX(- ($checkbox-size + $horizontal-margin) );
-}
-
-
-
-
 
 @keyframes showCheck {
   // Animation is applied to pre-rotated box;
