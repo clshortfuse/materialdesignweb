@@ -6,15 +6,7 @@
 @include addTheme('teal', 'cyan', 'pink', 'grey', 'light', 'list');
 @include addTheme('blue', 'teal', 'red', 'grey', 'light', 'selection');
 @include buildThemes();
-
-
-@import './components/bottomnav/style.scss';
-@import './components/button/style.scss';
-@import './components/list/style.scss';
-@import './components/selection/style.scss';
-@import './components/textfield/style.scss';
-@import './components/toolbar/style.scss';
-
+@import './components/all-components.scss';
 
 html {
   font-family: 'Roboto', sans-serif;

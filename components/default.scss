@@ -5,7 +5,6 @@ $theme-default-background: 'grey' !default;
 $theme-default-variation: 'light' !default;
 
 @import './components/theming/theming.scss';
-
 @include buildTheme(
   $theme-default-primary,
   $theme-default-accent,
@@ -13,10 +12,5 @@ $theme-default-variation: 'light' !default;
   $theme-default-background,
   $theme-default-variation
 );
-
-@import './components/bottomnav/style.scss';
-@import './components/button/style.scss';
-@import './components/list/style.scss';
-@import './components/selection/style.scss';
-@import './components/textfield/style.scss';
-@import './components/toolbar/style.scss';
+@include buildThemes();
+@import './all-components.scss';
