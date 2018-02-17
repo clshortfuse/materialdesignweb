@@ -1,1 +1,17 @@
+$theme-default-primary: 'indigo' !default;
+$theme-default-accent: 'pink' !default;
+$theme-default-warn: 'red' !default;
+$theme-default-background: 'grey' !default;
+$theme-default-variation: 'light' !default;
+
+@import './components/theming/theming.scss';
+
+@include buildTheme(
+  $theme-default-primary,
+  $theme-default-accent,
+  $theme-default-warn,
+  $theme-default-background,
+  $theme-default-variation
+);
+
 @import './components/textfield/style.scss';

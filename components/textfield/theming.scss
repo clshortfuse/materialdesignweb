@@ -1,26 +1,25 @@
 @mixin textfieldLightThemeVariables() {
+  --text-field-input-placeholder-color__focus: rgba(0,0,0,0.42);
+
   --text-field-border-line-color: rgba(0,0,0,0.42);
   --text-field-border-line-color__hover: rgba(0,0,0,0.87);
   --text-field-border-line-color__focus: unquote("rgb(var(--primary-A700-color))");
   --text-field-border-line-accent-color__focus: unquote("rgb(var(--accent-A700-color))");
   --text-field-border-line-warn-color__focus: unquote("rgb(var(--warn-A400-color))");
 
-  --text-field-input-placeholder-color__focus: rgba(0,0,0,0.42);
-
   --text-field-label-color__focus: unquote("rgba(var(--primary-A700-color), 0.87)");
   --text-field-label-accent-color__focus: unquote("rgba(var(--accent-A700-color), 0.87)");
   --text-field-label-warn-color__focus: unquote("rgba(var(--warn-A400-color), 0.87)");
- 
 }
 
 @mixin textfieldDarkThemeVariables() {
+  --text-field-input-placeholder-color__focus: rgba(255,255,255,0.50);
+
   --text-field-border-line-color: rgba(255,255,255,0.70);
   --text-field-border-line-color__hover:  rgba(255,255,255,1.0);
   --text-field-border-line-color__focus: unquote("rgb(var(--primary-A200-color))");
   --text-field-border-line-accent-color__focus: unquote("rgb(var(--accent-A200-color))");
   --text-field-border-line-warn-color__focus: unquote("rgb(var(--warn-A400-color))");
-
-  --text-field-input-placeholder-color__focus: rgba(255,255,255,0.50);
 
   --text-field-label-color__focus: unquote("rgb(var(--primary-A200-color))");
   --text-field-label-accent-color__focus: unquote("rgb(var(--accent-A200-color))");

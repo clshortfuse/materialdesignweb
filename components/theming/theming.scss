@@ -1,0 +1,93 @@
+@import 'palettes.scss';
+@import '../components/textfield/theming.scss';
+
+$tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "A100", "A200", "A400", "A700");
+
+@mixin lightVariables() {
+  --primary-text-color: rgba(0,0,0,0.87);
+  --secondary-text-color: rgba(0,0,0,0.54);
+  --disabled-color: rgba(0,0,0,0.38);
+  --divider-color: rgba(0,0,0,0.12);
+  @include textfieldLightThemeVariables();
+}
+
+@mixin darkVariables() {
+  --primary-text-color: rgba(255,255,255,1.0);
+  --secondary-text-color: rgba(255,255,255,0.70);
+  --disabled-color: rgba(255,255,255,0.50);
+  --divider-color: rgba(255,255,255,0.12);
+  @include textfieldDarkThemeVariables();
+}
+
+@mixin buildTheme($primary, $accent, $warn, $background:"grey", $variation:'light', $name:"default") {
+  $namespace: null;
+  @if ($name != "default") {
+    $namespace: unquote(".mdw-theme-#{$name}")
+  }
+
+  @include buildPalettes($namespace, $primary, $accent, $warn, $background);
+
+  @if ($namespace == null) {
+    @each $color in ('primary', 'accent', 'warn', 'background') {
+      @each $tone in $tone-list {
+        .mdw-theme-filled[mdw-color="#{$color}"] {
+          background-color: unquote("rgb(var(--#{$color}-color))");
+        }
+        .mdw-theme-filled[mdw-color="#{$color}"][mdw-tone="#{$tone}"] {
+          background-color: unquote("rgb(var(--#{$color}-#{$tone}-color))");
+        }
+      }
+    }
+  }
+
+  #{if($namespace, #{$namespace}, ":root")} {
+    @if($variation != 'dark') {
+        @include lightVariables();
+    } @else {
+        @include darkVariables();
+    }
+  }
+    
+  @include buildAllVariationVariables($namespace, $primary, $accent, $warn, $background, 'light') {
+    @include lightVariables();
+  }
+
+  @include buildAllVariationVariables($namespace, $primary, $accent, $warn, $background, 'dark') {
+    @include darkVariables();
+  }
+}
+  
+@mixin buildPalettes($namespace, $primary, $accent, $warn, $background) {
+  @include buildPalette($namespace, 'primary', map-get($palettes, $primary));
+  @include buildPalette($namespace, 'accent', map-get($palettes, $accent));
+  @include buildPalette($namespace, 'warn', map-get($palettes, $warn));
+  @include buildPalette($namespace, 'background', map-get($palettes, $background));
+}
+
+@mixin buildAllVariationVariables($namespace, $primary, $accent, $warn, $background, $variation) {
+  @include buildVariationVariables($namespace, 'primary', map-get($palettes, $primary), $variation) { @content; }
+  @include buildVariationVariables($namespace, 'accent', map-get($palettes, $accent), $variation) { @content; }
+  @include buildVariationVariables($namespace, 'warn', map-get($palettes, $warn), $variation) { @content; }
+  @include buildVariationVariables($namespace, 'background', map-get($palettes, $background), $variation) { @content; }
+}
+  
+@mixin buildPalette($namespace, $color, $palette) {
+  @each $tone in map-keys(map-remove($palette, "light", "dark")) {
+    @debug tone - #{$tone};
+    $value: map-get($palette, $tone);
+    #{if($namespace, #{$namespace}, ":root")} {
+      --#{$color}-#{$tone}-color: red($value),green($value),blue($value);
+      @if ($tone == "500") {
+        --#{$color}-color: red($value),green($value),blue($value);
+      } 
+    }
+  }
+}
+  
+@mixin buildVariationVariables($namespace, $color, $palette, $variation) {
+  @each $tone in map-get($palette, $variation) {
+    #{$namespace} .mdw-theme-filled[mdw-color="#{$color}"][mdw-tone="#{$tone}"]{
+      @content;  
+    }
+  }
+}

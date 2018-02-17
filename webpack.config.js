@@ -107,14 +107,10 @@ function getDemoConfig() {
             options: {
               sourceMap: !isProduction,
               plugins: () => [
-                cssvariables({
-                  preserve: true,
-                }),
                 cssnano({ preset: 'advanced' }),
               ],
             },
-          },
-          {
+          }, {
             loader: 'sass-loader',
             options: {
               sourceMap: !isProduction,
