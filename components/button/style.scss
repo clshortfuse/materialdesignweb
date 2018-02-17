@@ -20,6 +20,12 @@ $button__focus-animation-duration: 1667ms;
   border-radius: dp(2);
 
   color: var(--primary-text-color);
+  &[mdw-active] {
+    color: var(--button__active-color);
+  }
+  &[mdw-inactive] {
+    color: var(--button__inactive-color);
+  }
   overflow: hidden;
   transition: box-shadow 200ms $motion-easing-standard;
   z-index: 0;

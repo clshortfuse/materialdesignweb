@@ -4,6 +4,8 @@ $button__dark-background-focus-overlay: rgba(white, 0.20);
 // 
 
 @mixin buttonLightThemeVariables($color) {
+  --button__active-color: rgba(black, 0.54);
+  --button__inactive-color: rgba(black, 0.38);
   --button__press-color: rgba(#999, 0.40);
   --button__ripple-color: rgba(black, 0.12);
   --button__filled-ripple-color: rgba(black, 0.12);
@@ -15,6 +17,8 @@ $button__dark-background-focus-overlay: rgba(white, 0.20);
 }
 
 @mixin buttonDarkThemeVariables($color) {
+  --button__active-color: rgba(white, 1.0);
+  --button__inactive-color: rgba(white, 0.50);
   --button__press-color: rgba(#CCC, 0.25);
   @if ($color == 'background') {
     --button__ripple-color: rgba(white, 0.20);

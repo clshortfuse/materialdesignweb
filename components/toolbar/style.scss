@@ -37,30 +37,24 @@ $toolbar-right-padding: dp(16);
   color: var(--primary-text-color);
 }
 
+.mdw-toolbar__content,
 .mdw-toolbar__title {
-  // Bottom padding is 20dp from baseline
-  flex-grow: 1;
   margin-left: dp(72);
+  margin-right: dp(16);
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
+}
 
-  [mdw-centered] > & {
-    flex-grow: 0;
-  }
+.mdw-toolbar__title {
   font-size: sp(24);
   font-weight: 500;
-  [mdw-expanded] > & {
-    margin-top: dp(56);
-    @include landscapeHandsets {
-      margin-top: dp(48);
-    }
-  }
   height: dp(72);
   justify-content: space-around;
   .mdw-toolbar__action > & {
     height: auto;
-    
     // Padding should be 20px from bottom including Font glyph, but is unreliable with CSS
+    margin-right: 0;
     align-self: flex-end;
     justify-content: flex-end;
     padding-bottom: calc(#{dp(20)} - 0.25em);

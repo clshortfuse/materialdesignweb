@@ -4,28 +4,28 @@ include ../mixins.pug
   .render
     +androidstatusbar('rgb(var(--background-400-color))')
     +toolbar('background', '50', ['menu'],  ['search', 'favorite', 'more_vert']) Title
-    .mdw-theme__filled(mdw-color="background" mdw-tone="300")
+    .content.mdw-theme__filled(mdw-color="background" mdw-tone="300")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsU1FwTUx3cmRUNG8/layout-structure-appbar-structure2.png')
 
 .comparison.clipped
   .render
     +androidstatusbar('black')
     +toolbar('background', '900', ['menu'], ['search', 'favorite', 'more_vert']) Title
-    .mdw-theme__filled(mdw-color="background" mdw-tone="300")
+    .content.mdw-theme__filled(mdw-color="background" mdw-tone="300")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsbGREMW9BdDdnSUk/layout-structure-appbar-structure3.png')
 
 .comparison.clipped
   .render.mdw-theme-toolbar
     +androidstatusbar('rgb(var(--primary-800-color))')
     +toolbar('primary', 'A200', ['menu'], ['search', 'favorite', 'more_vert']) Title
-    .mdw-theme__filled(mdw-color="background" mdw-tone="300")
+    .content.mdw-theme__filled(mdw-color="background" mdw-tone="300")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsZF9VZDhtQlF5RGM/layout-structure-appbar-structure4.png')
 
 .comparison.clipped2
   .render
     +androidstatusbar('rgb(var(--background-400-color))')
     +toolbar('background', '50', ['menu'],  ['search', 'favorite', 'more_vert']) Title
-    .mdw-theme__filled(mdw-color="background" mdw-tone="300")
+    .content.mdw-theme__filled(mdw-color="background" mdw-tone="300")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsLUFJUnFlRHVhUVU/layout-structure-appbar-metrics1.png')
 
 .comparison.clipped2
@@ -34,9 +34,37 @@ include ../mixins.pug
     .mdw-toolbar.mdw-theme__filled(mdw-color=color mdw-tone=tone)
       .mdw-toolbar__action
         .mdw-toolbar__start
-          button.mdw-button(mdw-icon).material-icons arrow_back
+          button.mdw-button(mdw-icon mdw-active).material-icons menu
         .mdw-toolbar__end
-          button.mdw-button(mdw-icon).material-icons more_vert
+          button.mdw-button(mdw-icon mdw-active).material-icons search
+          button.mdw-button(mdw-icon mdw-active).material-icons favorite
+          button.mdw-button(mdw-icon mdw-active).material-icons more_vert
       .mdw-toolbar__title Title
-    .mdw-theme__filled(mdw-color="background" mdw-tone="300")
+    .content.mdw-theme__filled(mdw-color="background" mdw-tone="300")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsSDBhX3BwSURRc1U/layout-structure-appbar-metrics3.png')
+
+.comparison.clipped2
+  .render
+    +androidstatusbar('rgb(var(--background-400-color))')
+    .mdw-toolbar.mdw-theme__filled(mdw-color=color mdw-tone=tone)
+      .mdw-toolbar__action
+        .mdw-toolbar__start
+          button.mdw-button(mdw-icon mdw-active).material-icons arrow_back
+        .mdw-toolbar__end
+          button.mdw-button(mdw-icon mdw-active).material-icons more_vert
+      .mdw-toolbar__content
+        label.mdw-textfield(style="font-size: 1.5rem")
+          input.mdw-textfield__input(value="Project Properties" placeholder=" ")
+          span.mdw-textfield__label Title
+          .mdw-textfield__border-line
+        div(style="height:8px")
+        label.mdw-textfield
+          input.mdw-textfield__input(value="Sync with the team abo" placeholder=" ")
+          span.mdw-textfield__label Description
+          .mdw-textfield__border-line
+        div(style="height:24px")
+          // Spec says 16dp, but it's actually 24dp
+        div(style="height:4px")
+    .content.mdw-theme__filled(mdw-color="background" mdw-tone="300")
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsTW1zb2x5WWg5cDA/layout-structure-appbar-metrics5.png')
+  
