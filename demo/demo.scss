@@ -110,7 +110,7 @@ html {
   font-size: sp(34);
 }
 
-input[name="showComponent"]:not(:checked) {
+input[name="show-component"]:not(:checked) {
   &[value="button"] ~ #button-comparisons,
   &[value="textfield"] ~ #textfield-comparisons,
   &[value="toolbar"] ~ #toolbar-comparisons, {

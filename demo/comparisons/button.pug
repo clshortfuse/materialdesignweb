@@ -1,73 +1,49 @@
 include ../mixins.pug
 
+mixin button-test
+  div
+    button.mdw-button Flat
+    button.mdw-button(mdw-raised) Raised
+    button.mdw-button(mdw-raised disabled) Disabled
+  div(style="height:24px")
+  div
+    button.mdw-button.mdw-theme__colored(mdw-color="primary") Flat
+    button.mdw-button.mdw-theme__colored(mdw-color="primary" mdw-raised="always") Raised
+    button.mdw-button.mdw-theme__colored(mdw-color="primary" mdw-raised disabled) Disabled
+    
+  div(style="height:24px")
+  div
+    button.mdw-button.mdw-theme__filled(mdw-color="primary") Flat
+    button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised) Raised
+    button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised disabled) Disabled
+  div(style="height:24px")
+  div
+    button.mdw-button(mdw-icon).material-icons favorite
+    button.mdw-button.mdw-theme__colored(mdw-color="primary" mdw-icon).material-icons favorite
+    button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-icon).material-icons favorite
+    button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-icon mdw-raised).material-icons favorite
+    button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-icon mdw-raised disabled).material-icons favorite
+  div(style="height:24px")
+
+
 +comparison(
   'rgb(var(--background-400-color))', 
   'background', '50', [], 'Pure CSS', [],
   'https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsX0xZMnFkR1ZOVmc/components-buttons-main6.png')
-  .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding: 16px 16px 0")
+  .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding: 16px 0")
     div
-      button.mdw-button Flat
-      button.mdw-button(mdw-raised) Raised
-      button.mdw-button(mdw-raised disabled) Disabled
-    div(style="height:24px")
-    div
-      button.mdw-button.mdw-theme__colored(mdw-color="primary") Flat
-      button.mdw-button.mdw-theme__colored(mdw-color="primary" mdw-raised="always") Raised
-      button.mdw-button.mdw-theme__colored(mdw-color="primary" mdw-raised disabled) Disabled
-    div(style="height:24px")
-    div
-      button.mdw-button.mdw-theme__filled(mdw-color="primary") Flat
-      button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised) Raised
-      button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised disabled) Disabled
+      +button-test
     div(style="height:24px")
     div.mdw-theme__filled(mdw-color="background" mdw-tone="900")
-      div
-        button.mdw-button Flat
-        button.mdw-button(mdw-raised) Raised
-        button.mdw-button(mdw-raised disabled) Disabled
-      div(style="height:24px")
-      div
-        button.mdw-button.mdw-theme__colored(mdw-color="primary" mdw-tone="A100") Flat
-        button.mdw-button.mdw-theme__colored(mdw-color="primary" mdw-tone="A100" mdw-raised) Raised
-        button.mdw-button.mdw-theme__colored(mdw-color="primary" mdw-tone="A100" mdw-raised disabled) Disabled
-      div(style="height:24px")
-      div
-        button.mdw-button.mdw-theme__filled(mdw-color="primary") Flat
-        button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised) Raised
-        button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised disabled) Disabled
+      +button-test
 +comparison(
   'rgb(var(--background-400-color))', 
   'background', '50', [], 'JS+CSS', [],
   'https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsX0xZMnFkR1ZOVmc/components-buttons-main6.png',
   'js')
-  .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding: 16px 16px 0")
+  .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding: 16px 0")
     div
-      button.mdw-button Flat
-      button.mdw-button(mdw-raised) Raised
-      button.mdw-button(mdw-raised disabled) Disabled
-    div(style="height:24px")
-    div
-      button.mdw-button.mdw-theme__colored(mdw-color="primary") Flat
-      button.mdw-button.mdw-theme__colored(mdw-color="primary" mdw-raised="always") Raised
-      button.mdw-button.mdw-theme__colored(mdw-color="primary" mdw-raised disabled) Disabled
-    div(style="height:24px")
-    div
-      button.mdw-button.mdw-theme__filled(mdw-color="primary") Flat
-      button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised) Raised
-      button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised disabled) Disabled
+      +button-test
     div(style="height:24px")
     div.mdw-theme__filled(mdw-color="background" mdw-tone="900")
-      div
-        button.mdw-button Flat
-        button.mdw-button(mdw-raised) Raised
-        button.mdw-button(mdw-raised disabled) Disabled
-      div(style="height:24px")
-      div
-        button.mdw-button.mdw-theme__colored(mdw-color="primary" mdw-tone="A100") Flat
-        button.mdw-button.mdw-theme__colored(mdw-color="primary" mdw-tone="A100" mdw-raised) Raised
-        button.mdw-button.mdw-theme__colored(mdw-color="primary" mdw-tone="A100" mdw-raised disabled) Disabled
-      div(style="height:24px")
-      div
-        button.mdw-button.mdw-theme__filled(mdw-color="primary") Flat
-        button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised) Raised
-        button.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised disabled) Disabled
+      +button-test

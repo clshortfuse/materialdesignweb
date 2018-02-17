@@ -13,48 +13,55 @@ $button__focus-animation-duration: 1667ms;
 
 .mdw-button {
   position: relative;
-  font-family: Roboto, sans-serif;
-  -webkit-appearance: none;
-  
-  outline: none;
-  font-size: sp(14);
-  line-height: normal;
-  text-transform: uppercase;
   min-width: dp(64);
   min-height: dp(36);
-  padding-left: dp(8);
-  padding-right: dp(8);
-  padding-top: 0;
-  padding-bottom: 0;
+  padding: 0 dp(8);
   margin: 0 8px;
-  border: none;
   border-radius: dp(2);
-  word-spacing: normal;
-  font-weight: 500;
+
   color: var(--primary-text-color);
-  box-sizing: border-box;
   overflow: hidden;
   transition: box-shadow 200ms $motion-easing-standard;
-  
 
+  // Override browser button defaults
+  box-sizing: border-box;
   background-color: transparent;
+  outline: none;
+  -webkit-appearance: none;
+  border: none;
 
-
+  // Support any HTMLElement (not just HTMLButtonElement)
   display: inline-flex;
   text-align: center;
   justify-content: center;
   align-items: center;
 
-  // ::before - focus ripple
-  // ::after - press ripple
+  // Don't override font icon properties
+  &:not([mdw-icon]) {
+    font-family: Roboto, sans-serif;
+    font-size: sp(14);
+    line-height: normal;
+    text-transform: uppercase;
+    word-spacing: normal;
+    font-weight: 500;
+  }
+
+  // Icon properties
+  &[mdw-icon] {
+    border-radius: 50%;
+    min-height: 1em;
+    min-width: 1em;
+    padding: dp(8);
+    font-size: dp(24); // Internal padding provided by font
+  }
+
   // Button Animations
-  // 
-  // ripple doesn't appear until mouse-up
-  // background color moves to 
+  // Ripple doesn't appear until mouse-up
+  // Background color transitions from hover to press
 
+  // ::before - focus ripple
+  // ::after  - press ripple
 
-  z-index: 0; // Non-zero
-  
   & > .mdw-ripple,
   &::before,
   &::after {
