@@ -16,7 +16,7 @@ $list__divider-height: dp(1);
 
 .mdw-list {
   display: block;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding: 0;
   margin: 0;
   width: 100%;

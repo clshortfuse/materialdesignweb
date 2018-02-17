@@ -36,7 +36,7 @@ html {
 .content {
   flex: 1;
   height: 0;
-  overflow-y: scroll;
+  overflow-y: auto;
   flex-direction: column;
 }
 

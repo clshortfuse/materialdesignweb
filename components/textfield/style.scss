@@ -118,7 +118,7 @@ $icon-signifier__padding-end: dp(16);
 }
 textarea.mdw-textfield__input {
   resize: none;
-  overflow-y: scroll;
+  overflow-y: auto;
   &[mdw-multiline] {
     min-height: 1em;
     padding-right: 24px;
