@@ -1,5 +1,5 @@
 {
-  "name": "materialdesignweb",
+  "name": "@shortfuse/materialdesignweb",
   "version": "0.0.1",
   "description": "Material Design for Web",
   "main": "index.js",

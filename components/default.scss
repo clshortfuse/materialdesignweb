@@ -4,7 +4,7 @@ $theme-default-warn: 'red' !default;
 $theme-default-background: 'grey' !default;
 $theme-default-variation: 'light' !default;
 
-@import './components/theming/theming.scss';
+@import './theming/theming.scss';
 @include buildTheme(
   $theme-default-primary,
   $theme-default-accent,
