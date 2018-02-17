@@ -107,6 +107,9 @@ function getDemoConfig() {
             options: {
               sourceMap: !isProduction,
               plugins: () => [
+                cssvariables({
+                  preserve: true,
+                }),
                 cssnano({ preset: 'advanced' }),
               ],
             },
