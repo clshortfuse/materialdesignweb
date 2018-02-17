@@ -1,0 +1,33 @@
+include ../mixins.pug
+
+.comparison.mdw-selection
+  .render
+    +androidstatusbar('rgb(var(--accent-700-color))')
+    .mdw-toolbar.mdw-theme__filled(mdw-color='primary' mdw-tone='500')
+      .mdw-toolbar__action
+        .mdw-toolbar__title Title
+    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+      ul.mdw-list(style="margin-top:16px")
+        li.mdw-list__subheader Switch
+        li.mdw-list__row.mdw-button Android Switch On
+          
+        li.mdw-list__row.mdw-button Android Switch Off
+      ul.mdw-list(style="margin-top:24px")
+        li.mdw-list__subheader Single check
+        li.mdw-list__row.mdw-button Option 1
+        li.mdw-list__row.mdw-button Option 2
+      ul.mdw-list(style="margin-top:16px")
+        li.mdw-list__subheader Multiple check
+        li.mdw-list__row.mdw-button
+          .mdw-list__text Option 1
+          .mdw-list__end
+            input.mdw-checkbox(type="checkbox")
+        li.mdw-list__row.mdw-button
+          .mdw-list__text Option 2
+          .mdw-list__end
+            input.mdw-checkbox(mdw-color="accent" type="checkbox")
+        li.mdw-list__row.mdw-button
+          .mdw-list__text Option 3
+          .mdw-list__end
+            input.mdw-checkbox(mdw-color="warn" type="checkbox")
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B57Y8yNEHsZPQXRHTEpLc0JXVnM/material-design.platform-adaptation-control-1.png')

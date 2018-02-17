@@ -36,6 +36,7 @@ html {
   flex: 1;
   height: 0;
   overflow-y: scroll;
+  flex-direction: column;
 }
 
 .render,
@@ -123,7 +124,7 @@ html {
   font-size: sp(34);
 }
 
-$components: ('bottomnav', 'button', 'list', 'textfield', 'toolbar');
+$components: ('bottomnav', 'button', 'selection', 'list', 'textfield', 'toolbar');
 
 input[name="show-component"]:not(:checked) {
   @each $component in $components {

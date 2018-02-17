@@ -78,6 +78,10 @@ $list__divider-height: dp(1);
   order: 1;
   min-width: dp(24 + 16);
   max-width: dp(24 + 16);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .mdw-list__text {

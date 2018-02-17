@@ -55,6 +55,7 @@ $toolbar-right-padding: dp(16);
     flex-grow: 0;
   }
   .mdw-toolbar__action > & {
+    margin-left: dp(16);
     height: auto;
     margin-right: 0;
     align-self: flex-end;
@@ -64,10 +65,6 @@ $toolbar-right-padding: dp(16);
     // Padding should be 20px from font baseline. 0.25em is an approximation.
     padding-bottom: calc(#{dp(20)} - 0.25em);
   }
-}
-
-.mdw-toolbar__start ~ .mdw-toolbar__title {
-  margin-left: dp(16);
 }
 
 .mdw-toolbar__start {

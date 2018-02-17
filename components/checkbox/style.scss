@@ -1,0 +1,46 @@
+// https://material.io/guidelines/components/selection-controls.html#
+// https://material.io/guidelines/patterns/selection.html#selection-item-selection
+
+@import '../common/variables.scss';
+
+$checkbox-size: dp(18);
+
+.mdw-checkbox {
+  position: relative;
+  min-width: $checkbox-size;
+  min-height: $checkbox-size;
+  appearance: none;
+  outline: none;
+  &::before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    content: '';
+    border-width: dp(2);
+    border-style: solid;
+    border-color: var(--secondary-text-color);
+    border-radius: dp(2);
+    box-sizing: border-box;
+  }
+  &:disabled::before {
+    border-color: var(--disabled-text-color);
+  }
+  
+  
+  &:checked {
+    &::before {
+      background-color: unquote("rgb(var(--primary-color))");
+      border-color: unquote("rgb(var(--primary-color))");
+    }
+    &[mdw-color] {
+      &::before {
+        background-color: unquote("rgb(var(--color))");
+        border-color: unquote("rgb(var(--color))");
+      }
+    }
+  }
+  
+  
+}

@@ -30,8 +30,11 @@ html(lang='en')
     span Button
     input(type="radio" name="show-component" value="button")
 
+    span Selection
+    input(type="radio" name="show-component" value="selection" checked)
+
     span List
-    input(type="radio" name="show-component" value="list" checked)
+    input(type="radio" name="show-component" value="list")
 
     span Text Field
     input(type="radio" name="show-component" value="textfield")
@@ -47,6 +50,8 @@ html(lang='en')
       include comparisons/button.pug
     #list-comparisons.comparisons
       include comparisons/list.pug
+    #selection-comparisons.comparisons
+      include comparisons/selection.pug
     #textfield-comparisons.comparisons
       include comparisons/textfield.pug
     #toolbar-comparisons.comparisons
