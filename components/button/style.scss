@@ -7,6 +7,9 @@
 
 $button__external-padding: dp(8);
 $button__minimum-click-target: dp(48);
+$button__background-color-pressed: rgba(#999, 0.40);
+$button__focus-animation-delay: 2000ms;
+$button__focus-animation-duration: 1667ms;
 
 .mdw-button {
   position: relative;
@@ -30,38 +33,66 @@ $button__minimum-click-target: dp(48);
   font-weight: 500;
   color: var(--primary-text-color);
   box-sizing: border-box;
-  background-color: transparent;
   overflow: hidden;
-  transition-property: box-shadow;
-  transition-timing-function: $motion-easing-standard;
-  transition-duration: $motion-duration-desktop-default;
-  @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
-  }
-  @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
-  }
-
-  
-    display: inline-flex;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
+  transition: box-shadow 200ms $motion-easing-standard;
   
 
-  &:hover {
-    //background-color: transparent;
+  background-color: transparent;
+
+
+  display: inline-flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+
+  // ::before - focus overlay
+  // ::after - ripple effect
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
   }
 
-  &:focus,
-  &:hover:focus {
-    background-color: rgba(#000, 0.12);
+  &::before {
+    // Background-size does not animate smoothly.
+    background-color: transparent;
+    background-image: radial-gradient(
+      circle at center,
+      transparent 0%,
+      transparent 10%,
+      $button__background-color-pressed 10.00001%);
+    background-position: center center;
+    transform: scale(10);
+    transition: background-color 200ms, transform 200ms;
+    transition-timing-function: $motion-easing-standard;
   }
 
-  &:active,
-  &:hover:active {
-    background-color: rgba(#999, 0.40);
+  &:focus::before {
+    background-color: rgba(black, 0.12);
   }
+
+  &:focus:not(:active)::before {
+    transform: scale(7.5);
+    transition: background-color 200ms, transform ($button__focus-animation-delay) ($button__focus-animation-delay);
+    animation-duration: $button__focus-animation-duration;
+    animation-timing-function: $motion-easing-standard;
+    animation-delay: $button__focus-animation-delay * 2;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-name: focus-pulse;
+  }
+
+  &:active::before,
+  &:active:focus::before {
+    transform: scale(10);
+  }
+
   
   // Extended touch target
   @media (any-pointer: coarse) {
@@ -75,34 +106,7 @@ $button__minimum-click-target: dp(48);
       transform: translateY(-50%);
     }
   }
-  @media (any-pointer: fine) {
-    &:hover {
-      box-shadow: elevation(2)
-    }
-    &:active,
-    &:hover:active {
-      box-shadow: elevation(8);
-    }
-  }
 
-  &::before {
-    content: "";
-    position: absolute;
-    width: 50%;
-    padding-bottom: 50%;
-    pointer-events: none;
-    background-color: transparent;
-    display: block;
-    border-radius: 50%;
-    transition: transform 1s;
-    transform: scale(0);
-  }
-  &:focus:active::before,
-  &:focus::before {
-    transform: scale(1.75);
-    background-color: rgba(#fff, 0.40);
-  }
-  
 }
 
 .mdw-button[mdw-raised] {
@@ -110,5 +114,19 @@ $button__minimum-click-target: dp(48);
   &:active {
     box-shadow: elevation(8);
   }
+  @media (any-pointer: fine) {
+    box-shadow: elevation(0);
+    &:hover {
+      box-shadow: elevation(2);
+    }
+    &:active,
+    &:hover:active {
+      box-shadow: elevation(8);
+    }
+  }
 }
 
+@keyframes focus-pulse {
+  from { transform: scale(7.5); }
+  to { transform: scale(8.0) }
+}
