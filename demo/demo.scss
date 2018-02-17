@@ -18,7 +18,6 @@ html {
   padding: 8px;
   min-width: 360px;
   max-width: 360px;
-  min-height: 640px;
   display: flex;
   flex-direction: column;
 }
@@ -39,6 +38,7 @@ html {
 
 .content {
   flex-grow: 1;
+  height: 500px;
 }
 
 .content__clipped {
@@ -48,7 +48,8 @@ html {
 .target {
   margin: 8px;
   width: 360px;
-  height: 640px;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .content__clipped ~ .androidnavbar {

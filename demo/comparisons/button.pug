@@ -26,7 +26,6 @@ mixin button-test
     button.mdw-button.mdw-theme__filled(mdw-color="warn" mdw-icon mdw-raised).material-icons favorite
     button.mdw-button.mdw-theme__filled(mdw-color="warn" mdw-icon mdw-raised disabled).material-icons favorite
     button.mdw-button(mdw-icon disabled).material-icons favorite
-  div(style="height:24px")
 
 
 +comparison(
@@ -37,7 +36,7 @@ mixin button-test
     div
       +button-test
     div(style="height:24px")
-    div.mdw-theme__filled(mdw-color="background" mdw-tone="900")
+    div.mdw-theme__filled(mdw-color="background" mdw-tone="900" style="padding-bottom: 8px")
       +button-test
 +comparison(
   'rgb(var(--background-400-color))', 
@@ -48,5 +47,5 @@ mixin button-test
     div
       +button-test
     div(style="height:24px")
-    div.mdw-theme__filled(mdw-color="background" mdw-tone="900")
+    div.mdw-theme__filled(mdw-color="background" mdw-tone="900" style="padding-bottom: 8px")
       +button-test

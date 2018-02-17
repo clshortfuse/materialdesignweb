@@ -54,6 +54,7 @@ $button__focus-animation-duration: 1667ms;
     min-width: 1em;
     padding: dp(8);
     font-size: dp(24); // Internal padding provided by font
+    --button__focus-overlay: var(--button__ripple-color);
   }
 
   // Button Animations
@@ -82,9 +83,9 @@ $button__focus-animation-duration: 1667ms;
     background-image: radial-gradient(
       circle at center,
       transparent 10%,
-      var(--button__ripple-color) 10.00001%);
+      var(--button__ripple-color) 10.0001%);
     background-position: center center;
-    transform: scale(10);
+    transform: scale(10.5); // 10.0 has subpixel rendering issues
     transition: transform 200ms 0s, background-color 200ms 0s;
     transition-property: transform, background-color;
     transition-duration: 200ms;
@@ -132,7 +133,7 @@ $button__focus-animation-duration: 1667ms;
       var(--button__ripple-color) 10%,
       transparent 10.0001%
     );
-    transform: scale(10);
+    transform: scale(10.5); // 10.0 has subpixel rendering issues
     transition-property: transform, opacity;
     transition-duration: 700ms;
     opacity: 0;
@@ -202,10 +203,6 @@ $button__focus-animation-duration: 1667ms;
 }
 
 .mdw-button.mdw-theme__filled {
-  &:not([disabled]) {
-    // Attribute is only to increase specificity
-    --button__ripple-color: var(--button__filled-ripple-color);
-  }
   &[mdw-color="primary"] {
     --button__press-color: unquote("rgb(var(--primary-700-color))");
   }

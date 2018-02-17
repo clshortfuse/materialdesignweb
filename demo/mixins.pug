@@ -1,7 +1,7 @@
 mixin androidstatusbar(color)
   .androidstatusbar(style=`background-color:${color}`)
     div 12:30
-    i.material-icons &#xE1BA;&#xE1C8;&#xE1A4;
+    i.material-icons(style="letter-spacing:2px") &#xE1BA;&#xE1C8;&#xE1A4;
 mixin toolbar(color, tone, start, title, end)
   .mdw-toolbar.mdw-theme__filled(mdw-color=color mdw-tone=tone)
     .mdw-toolbar__start
@@ -19,9 +19,10 @@ mixin androidnavbar
 
 mixin comparison(statusBarColor, toolbarColor, toolbarTone, toolbarStart, toolbarTitle, toolbarEnd, img, className)
   .comparison
-    div(class=`render ${className}`)
+    div(class=`render ${className || ''}`)
       +androidstatusbar(statusBarColor)
       +toolbar(toolbarColor, toolbarTone, toolbarStart, toolbarTitle, toolbarEnd)
       block
       +androidnavbar
-    img.target(src=img)
+    
+    div.target(style=`background-image: url(${img})`)

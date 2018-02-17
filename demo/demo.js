@@ -82,7 +82,7 @@ function start() {
   document.querySelectorAll('.js .mdw-button').forEach((element) => {
     new mdw.Button(element);
   });
-  document.querySelectorAll('img.target').forEach((element) => {
+  document.querySelectorAll('.target').forEach((element) => {
     element.addEventListener('click', onTemplateImageClick);
   });
 }
