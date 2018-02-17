@@ -54,6 +54,8 @@ $button__focus-animation-duration: 1667ms;
 
 
   z-index: 0; // Non-zero
+  
+  & > .mdw-ripple,
   &::before,
   &::after {
     content: '';
@@ -72,7 +74,7 @@ $button__focus-animation-duration: 1667ms;
     background-image: radial-gradient(
       circle at center,
       transparent 10%,
-      var(--button__press-color) 10.00001%);
+      var(--button__ripple-color) 10.00001%);
     background-position: center center;
     transform: scale(10);
     transition: transform 200ms 0s, background-color 200ms 0s;
@@ -89,9 +91,21 @@ $button__focus-animation-duration: 1667ms;
     background-color: var(--button__press-color);
   }
 
+  &.mdw-theme__colored {
+    --button__ripple-color: unquote("rgba(var(--color), 0.26)");
+    &:focus:not(:active)::before {
+      background-color: unquote("rgba(var(--color), 0.12)");
+    }
+    &:focus:active::before,
+    &:active::before {
+      background-color: unquote("rgba(var(--color), 0.20)");
+    }
+  }
+
   &:focus:not(:active)::before {
     transform: scale(7.5);
     background-color: var(--button__focus-overlay);
+
     transition-delay: $button__focus-animation-delay, 0s;
     transition-duration: $button__focus-animation-delay, 200ms;
     animation-duration: $button__focus-animation-duration;
@@ -103,22 +117,30 @@ $button__focus-animation-duration: 1667ms;
   }
 
   /* duration | timing-function | delay | iteration-count | direction | fill-mode | play-state | name */
+  & > .mdw-ripple,
   &::after {
     background-image: radial-gradient(
       circle at center,
-      var(--button__press-color) 10%,
+      var(--button__ripple-color) 10%,
       transparent 10.0001%
     );
-    background-position: center center;
     transform: scale(10);
     transition-property: transform, opacity;
-    transition-duration: 1000ms;
+    transition-duration: 700ms;
     opacity: 0;
   }
-  &:active::after {
-    transform: scale(0);
-    transition-duration: 0s;
-    opacity: 1;
+  &:active:not([disabled]) {
+    & > .mdw-ripple,
+    &::after {
+      transform: scale(0);
+      transition-duration: 0s;
+      opacity: 1;
+    }
+  }
+
+  // If using JS ripple, destroy ::after object
+  &[mdw-js-ripple]::after {
+    content: none
   }
 
   // Extended touch target
@@ -134,22 +156,51 @@ $button__focus-animation-duration: 1667ms;
     }
   }
 
+  &[disabled],
+  &.mdw-button.mdw-theme__colored[disabled], {
+    color: var(--button__disabled-text-color)
+  }
+
 }
 
-.mdw-button[mdw-raised] {
+//Raised
+
+.mdw-button[mdw-raised]:not([disabled]) {
   box-shadow: elevation(2);
   &:active {
     box-shadow: elevation(8);
+    transition-duration: 0s;
   }
   @media (any-pointer: fine) {
-    box-shadow: elevation(0);
-    &:hover {
-      box-shadow: elevation(2);
+    &:not([mdw-raised="always"]) {
+      box-shadow: elevation(0);
+      &:hover {
+        box-shadow: elevation(2);
+      }
+      &:active,
+      &:hover:active {
+        box-shadow: elevation(8);
+        transition-duration: 0s;
+      }
     }
-    &:active,
-    &:hover:active {
-      box-shadow: elevation(8);
-    }
+  }
+}
+
+.mdw-button.mdw-theme__filled {
+  &[mdw-color="primary"] {
+    --button__press-color: unquote("rgb(var(--primary-700-color))");
+  }
+  &[mdw-color="accent"] {
+    --button__press-color: unquote("rgb(var(--accent-700-color))");
+  }
+  &[mdw-color="warn"] {
+    --button__press-color: unquote("rgb(var(--warn-700-color))");
+  }
+  &[disabled] {
+    // Disabled filled buttons use parent's variables
+    --button__disabled-text-color: inherit;
+    --button__disabled-background-color: inherit;
+    background-color: var(--button__disabled-background-color);
   }
 }
 

@@ -108,6 +108,7 @@ function getDemoConfig() {
               sourceMap: !isProduction,
               plugins: () => [
                 autoprefixer(),
+                cssnano(),
               ],
             },
           }, {
