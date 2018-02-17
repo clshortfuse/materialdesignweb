@@ -73,14 +73,28 @@ function setupOptions() {
     });
 }
 
+/**
+ * @param {HTMLElement} element
+ * @param {string} classname
+ * @return {boolean}
+ */
+function hasSomeParentTheClass(element, classname) {
+  if (element.className && element.className.split(' ').indexOf(classname) >= 0) {
+    return true;
+  }
+  return element.parentNode && hasSomeParentTheClass(element.parentNode, classname);
+}
+
 /** @return {void} */
 function start() {
   setupOptions();
   document.querySelectorAll('.mdw-textfield').forEach((element) => {
     new mdw.TextField(element);
   });
-  document.querySelectorAll('.js .mdw-button').forEach((element) => {
-    new mdw.Button(element);
+  document.querySelectorAll('.mdw-button').forEach((element) => {
+    if (!hasSomeParentTheClass(element, 'no-js')) {
+      new mdw.Button(element);
+    }
   });
   document.querySelectorAll('.target').forEach((element) => {
     element.addEventListener('click', onTemplateImageClick);

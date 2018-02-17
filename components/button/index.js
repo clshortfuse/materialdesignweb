@@ -4,10 +4,14 @@
  * @return {void} Single row height
  */
 function updateRipplePosition(element, event) {
+  if (!event.detail) {
+    return;
+  }
   const x = event.detail ? event.offsetX - (element.clientWidth / 2.0) : 0;
   const y = event.detail ? event.offsetY - (element.clientHeight / 2.0) : 0;
   element.style.setProperty('left', `${x}px`);
   element.style.setProperty('top', `${y}px`);
+  console.log(event);
 }
 
 export default class Button {

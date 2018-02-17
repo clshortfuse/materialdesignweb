@@ -133,6 +133,7 @@ $button__focus-animation-duration: 1667ms;
   /* duration | timing-function | delay | iteration-count | direction | fill-mode | play-state | name */
   & > .mdw-ripple,
   &::after {
+    flex-basis: 0;
     background-image: radial-gradient(
       circle at center,
       var(--button__ripple-color) 10%,
@@ -157,7 +158,7 @@ $button__focus-animation-duration: 1667ms;
     content: none
   }
 
-  & > .mdw-ripple,
+  &[display] > .mdw-ripple,
   &[disabled]::before,
   &[disabled]::after {
     content: none;

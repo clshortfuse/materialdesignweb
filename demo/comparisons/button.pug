@@ -30,7 +30,7 @@ mixin button-test
 .comparison
   .render
     +androidstatusbar('rgb(var(--background-400-color))')
-    +toolbar('background', '50', [], []) Pure CSS
+    +toolbar('background', '50', [], []) JS+CSS
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding: 16px 0")
       div
         +button-test
@@ -41,9 +41,9 @@ mixin button-test
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsX0xZMnFkR1ZOVmc/components-buttons-main6.png')
 
 .comparison
-  .render
+  .render.no-js
     +androidstatusbar('rgb(var(--background-400-color))')
-    +toolbar('background', '50', [], []) JS+CSS
+    +toolbar('background', '50', [], []) Pure CSS
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding: 16px 0")
       div
         +button-test

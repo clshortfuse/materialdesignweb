@@ -7,7 +7,7 @@
   &,
   &.mdw-button {
     min-height: dp(56);
-    overflow:hidden;
+    overflow-y: hidden;
   }
   &.mdw-button {
     margin: 0;
@@ -40,6 +40,7 @@
 }
 
 .mdw-bottomsheet__icon {
+  pointer-events: none;
   padding-top: dp(8);
   transition-property: color, transform;
   transition-duration: 200ms;
@@ -52,6 +53,7 @@
 }
 
 .mdw-bottomsheet__label {
+  pointer-events: none;
   min-width: dp(80);
   max-width: dp(168);
   padding-left: dp(12);
@@ -79,6 +81,7 @@
   height: 0;
   width: 0;
   position: absolute;
+  pointer-events: none;
 }
 .mdw-bottomsheet[mdw-shifting] {
   .mdw-bottomsheet__action{
