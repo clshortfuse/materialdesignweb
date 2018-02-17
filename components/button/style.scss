@@ -22,6 +22,7 @@ $button__focus-animation-duration: 1667ms;
   color: var(--primary-text-color);
   overflow: hidden;
   transition: box-shadow 200ms $motion-easing-standard;
+  z-index: 0;
 
   // Override browser button defaults
   box-sizing: border-box;

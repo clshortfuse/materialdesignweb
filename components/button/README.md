@@ -41,6 +41,12 @@ button.mdw-button.mdw-theme__filled(mdw-color="accent" mdw-tone="A400")
 button.mdw-button(disabled)
 ```
 
+## Icon Button
+
+```
+button.mdw-button(mdw-icon).material-icons favorite
+```
+
 # Javascript
 
 ```
