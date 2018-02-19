@@ -1,5 +1,4 @@
 @import './components/theming/theming.scss';
-@debug 'import complete';
 @include addTheme('indigo', 'pink', 'red', 'grey');
 @include addTheme('deeppurple', 'amber', 'red', 'grey', 'textfield');
 @include addTheme('blue', 'pink', 'red', 'grey', 'toolbar');
