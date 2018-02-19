@@ -50,8 +50,9 @@ $toolbar-right-padding: dp(16);
   }
   .mdw-toolbar__action > & {
     margin-left: dp(16);
+    margin-right: dp(16);
     height: auto;
-    margin-right: 0;
+    
     align-self: flex-end;
     justify-content: flex-end;
     font-size: sp(20);
