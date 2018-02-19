@@ -1,6 +1,6 @@
 include ../mixins.pug
 
-.comparison.mdw-selection.no-js.mdw-theme-selection
+.comparison.no-js.mdw-theme-selection
   .render
     +androidstatusbar('rgb(var(--accent-700-color))')
     .mdw-toolbar.mdw-theme__filled(mdw-color='accent' mdw-tone='500')
@@ -56,3 +56,22 @@ include ../mixins.pug
               input(type="checkbox")
               .mdw-selection__icon
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B57Y8yNEHsZPQXRHTEpLc0JXVnM/material-design.platform-adaptation-control-1.png')
+
+.comparison.mdw-theme-selection
+  .render
+    +androidstatusbar('rgb(var(--accent-700-color))')
+    .mdw-toolbar.mdw-theme__filled(mdw-color='accent' mdw-tone='500')
+      .mdw-toolbar__action
+        .mdw-toolbar__title Title
+    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+      
+      div(style="padding:16px")
+        label.mdw-selection.mdw-theme__colored(mdw-color="primary" mdw-tone=700)
+          input(type="checkbox" checked)
+          .mdw-selection__label Prefixed
+          .mdw-selection__icon
+      div(style="padding:16px")
+        label.mdw-selection.mdw-theme__colored
+          input(type="checkbox" checked)
+          .mdw-selection__icon
+          .mdw-selection__label Suffixed
