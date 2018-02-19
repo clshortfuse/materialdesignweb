@@ -52,6 +52,7 @@ $button__focus-animation-duration: 1667ms;
     min-width: 1em;
     padding: dp(8);
     font-size: dp(24); // Internal padding provided by font
+    box-sizing: content-box;
   }
 
   // Button Animations

@@ -30,10 +30,10 @@ $buttonColors: (
       &:not(.mdw-theme__colored):not([disabled]) {
         color: buttonThemeValue("text-color", $type, $theme);
       }
-      &[mdw-active] {
+      &[mdw-active]:not([disabled]) {
         color: buttonThemeValue("active-color", $type, $theme);
       }
-      &[mdw-inactive] {
+      &[mdw-inactive]:not([disabled]) {
         color: buttonThemeValue("inactive-color", $type, $theme);
       }
       &:not(.mdw-theme__colored)::before {
