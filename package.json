@@ -1,8 +1,8 @@
 {
   "name": "@shortfuse/materialdesignweb",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Material Design for Web",
-  "main": "index.js",
+  "main": "components/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:demo": "webpack-dev-server -w --env.target=demo",
