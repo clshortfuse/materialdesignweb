@@ -1,10 +1,10 @@
 @import 'palettes.scss';
-@import '../components/bottomnav/theming.scss';
-@import '../components/button/theming.scss';
-@import '../components/list/theming.scss';
-@import '../components/selection/theming.scss';
-@import '../components/textfield/theming.scss';
-@import '../components/toolbar/theming.scss';
+@import './components/bottomnav/theming.scss';
+@import './components/button/theming.scss';
+@import './components/list/theming.scss';
+@import './components/selection/theming.scss';
+@import './components/textfield/theming.scss';
+@import './components/toolbar/theming.scss';
 
 $ie11-tones: (
   primary: ("500", "700"),
