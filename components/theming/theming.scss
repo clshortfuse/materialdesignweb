@@ -16,6 +16,7 @@ $ie11-tones: (
 $tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "A100", "A200", "A400", "A700");
 $added-palettes-list: ();
 $theme-map: ();
+$explicit-color-list: ();
 
 @mixin lightVariables($color:"background") {
   --primary-text-color: rgba(0,0,0,0.87);
@@ -82,6 +83,12 @@ $theme-map: ();
     #{$name} : $theme
   );
   $theme-map: map-merge($theme-map, $map) !global;
+}
+
+@mixin addColors($colors...) {
+  @each $color in $colors {
+    $explicit-color-list: append($explicit-color-list, $color) !global;
+  }
 }
 
 @mixin buildThemes() {
@@ -222,12 +229,21 @@ $theme-map: ();
 }
 
 @mixin buildVariableThemes() {
+  @each $color in $explicit-color-list {
+    @include addSinglePaletteColorVariables($color);
+  }
   @each $theme in map-values($theme-map) {
-    $primary: map-get($theme, "primary");
-    $accent: map-get($theme, "accent");
-    $warn: map-get($theme, "warn");
-    $background: map-get($theme, "background");
-    @include addPaletteColorVariables($primary, $accent, $warn, $background);
+    $colors: (
+      map-get($theme, "primary"),
+      map-get($theme, "accent"),
+      map-get($theme, "warn"),
+      map-get($theme, "background")
+    );
+    @each $color in $colors {
+      @if (index($explicit-color-list, color) == null) {
+        @include addSinglePaletteColorVariables($color);
+      }
+    }
   }
 
   @each $theme in map-values($theme-map) {
@@ -265,6 +281,19 @@ $theme-map: ();
       @include darkVariables($color);
     }
   }
+  @each $color in $explicit-color-list {
+    @each $tone in $tone-list {
+      @if ($tone == '500') {
+        [mdw-color="#{$color}"]:not([mdw-tone]) {
+          --color: unquote("var(--#{$color}-color)");
+        }
+      }
+      [mdw-color="#{$color}"][mdw-tone="#{$tone}"] {
+        --color: unquote("var(--#{$color}-#{$tone}-color)");
+      }
+    }
+  }
+
 
   .mdw-theme__filled[mdw-color] {
     background-color: unquote("rgb(var(--color))");
@@ -324,14 +353,7 @@ $theme-map: ();
   @include componentThemeRules();
 }
 
-@mixin addPaletteColorVariables($primary, $accent, $warn, $background) {
-  @include addSinglePaletteColorVariables('primary', $primary);
-  @include addSinglePaletteColorVariables('accent', $accent);
-  @include addSinglePaletteColorVariables('warn', $warn);
-  @include addSinglePaletteColorVariables('background', $background);
-}
-
-@mixin addSinglePaletteColorVariables($color, $name) {
+@mixin addSinglePaletteColorVariables($name) {
   $palette: map-get($palettes, $name);
   @if (index($added-palettes-list, $name) == null) {
     @each $tone in map-keys(map-remove($palette, "light", "dark")) {

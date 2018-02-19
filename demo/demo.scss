@@ -1,12 +1,12 @@
 @import './components/theming/theming.scss';
+@debug 'import complete';
 @include addTheme('indigo', 'pink', 'red', 'grey');
-
 @include addTheme('deeppurple', 'amber', 'red', 'grey', 'textfield');
 @include addTheme('blue', 'pink', 'red', 'grey', 'toolbar');
 @include addTheme('teal', 'brown', 'red', 'grey', 'bottomnav');
 @include addTheme('teal', 'cyan', 'pink', 'grey', 'list');
 @include addTheme('blue', 'teal', 'red', 'grey', 'selection');
-
+@include addColors('red', 'green','lightblue', 'purple');
 @include buildVariableThemes();
 @import './components/all-components.scss';
 
