@@ -31,9 +31,6 @@ $list__divider-height: dp(1);
   // color: var(--secondary-text-color);
   font-size: sp(14);
   font-weight: $font-weight-medium;
-  &[mdw-avatar] {
-    padding-left: dp(72);
-  }
 }
 .mdw-list__row {
   position: relative;
@@ -69,12 +66,15 @@ $list__divider-height: dp(1);
 }
 
 .mdw-list__start {
+  display: flex;
+  flex-direction: row;
   order: -1;
   min-width: dp(72 - 16);
   max-width: dp(72 - 16);
-  &[mdw-avatar] {
-    min-height: dp(56);
-  }
+  align-self: flex-start;
+  justify-content: flex-start;
+  padding-top: dp(16);
+  // 2px from material-icon inset padding
 }
 
 .mdw-list__end {
