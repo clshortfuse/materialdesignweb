@@ -3,6 +3,7 @@
 @import '../button/theming.scss';
 @import '../list/theming.scss';
 @import '../selection/theming.scss';
+@import '../tab/theming.scss';
 @import '../textfield/theming.scss';
 @import '../toolbar/theming.scss';
 
@@ -27,6 +28,7 @@ $explicit-color-list: ();
   @include buttonThemeVariables($color, 'light');
   @include listThemeVariables($color, 'light');
   @include selectionThemeVariables($color, 'light');
+  @include tabThemeVariables($color, 'light');
   @include textfieldThemeVariables($color, 'light');
   @include toolbarThemeVariables($color, 'light');
 }
@@ -40,6 +42,7 @@ $explicit-color-list: ();
   @include buttonThemeVariables($color, 'dark');
   @include listThemeVariables($color, 'dark');
   @include selectionThemeVariables($color, 'dark');
+  @include tabThemeVariables($color, 'dark');
   @include textfieldThemeVariables($color, 'dark');
   @include toolbarThemeVariables($color, 'dark');
 }
@@ -49,6 +52,7 @@ $explicit-color-list: ();
   @include buttonContrastRules($type, $theme);
   @include listContrastRules($type, $theme);
   @include selectionContrastRules($type, $theme);
+  @include tabContrastRules($type, $theme);
   @include textfieldContrastRules($type, $theme);
   @include toolbarContrastRules($type, $theme);
 }
@@ -58,6 +62,7 @@ $explicit-color-list: ();
   @include buttonColoredRules($value);
   @include listColoredRules($value);
   @include selectionColoredRules($value);
+  @include tabColoredRules($value);
   @include textfieldColoredRules($value);
   @include toolbarColoredRules($value);
 }
@@ -67,6 +72,7 @@ $explicit-color-list: ();
   @include buttonThemeRules($theme);
   @include listThemeRules($theme);
   @include selectionThemeRules($theme);
+  @include tabThemeRules($theme);
   @include textfieldThemeRules($theme);
   @include toolbarThemeRules($theme);
 }

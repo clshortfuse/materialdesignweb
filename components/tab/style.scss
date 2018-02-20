@@ -1,4 +1,115 @@
 // https://material.io/guidelines/components/tabs.html#
 
+@import '../common/functions.scss';
+@import '../common/motion.scss';
 
+.mdw-tab {
+  min-height: dp(48);
+  overflow-y: hidden;
+  position: relative;
+  display:flex;
+  width: 100%;
+  justify-content: center;
+  align-self: flex-end;
+  flex-direction:row;
+}
 
+.mdw-tab__action {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  box-shadow: none;
+  box-sizing: content-box;
+  border-radius: 0;
+  z-index: 0;
+  overflow: hidden;
+  
+  // If using JS ripple, destroy ::after object
+  &[mdw-js-ripple]::after {
+    content: none
+  }
+    
+  & > .mdw-ripple,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    // background-image: radial-gradient(circle at center, var(--button__ripple-color) 10%, transparent 10.0001%);
+    transform: scale(10); // 10.0 has subpixel rendering issues
+    transition-property: transform, opacity;
+    transition-duration: 700ms;
+    opacity: 0;
+  }
+  
+  &:active {
+    & > .mdw-ripple,
+    &::after {
+      transform: scale(0);
+      transition-delay: 0ms;
+      transition-duration: 0s;
+      opacity: 1;
+    }
+  }
+}
+
+.mdw-tab__icon {
+  pointer-events: none;
+  transition-property: color;
+  transition-duration: 200ms;
+  transition-timing-function: $motion-easing-standard;
+  margin-top: 8px;
+  &:last-child {
+    margin-bottom: 12px;
+  }
+}
+
+.mdw-tab__label {
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  min-width: dp(80);
+  max-width: dp(168);
+  padding-left: dp(12);
+  padding-right: dp(12);
+  transition-property: color;
+  transition-duration: 200ms;
+  transition-timing-function: $motion-easing-standard;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: 1em; // Prevents stretching when using larger fonts
+  height: auto;
+  padding-top: calc(#{dp(10)} - #{$font-ascent * 1em});
+  padding-bottom: calc(#{dp(20)} - #{$font-descent * 1em});
+  font-size: sp(14);
+  text-transform: uppercase;
+  font-weight: normal;
+  // color: var(--tab__inactive-color);
+  input:checked + .mdw-tab__action > &,
+  input:checked ~ & {
+    // color: var(--tab__active-color);
+    // font-size: sp(14);
+  }
+}
+
+.mdw-tab__icon ~ .mdw-tab__label {
+  padding-bottom: calc(#{dp(16)} - #{$font-descent * 1em});
+}
+
+.mdw-tab input {
+  // Using `display: none` breaks keyboard navigation
+  opacity: 0;
+  height: 0;
+  width: 0;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+  position: absolute;
+  display: inline;
+}
