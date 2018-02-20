@@ -14,6 +14,66 @@
   flex-direction:row;
 }
 
+.mdw-tab__indicator {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  left: 0;
+  transition-property: transform;
+  transition-timing-function: $motion-easing-standard;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
+  // Indicator width
+  // Element position = 2 * number of input elements + 1 (itself)
+  // Width = 100% / number of input elements
+  @for $j from 1 through 8 {
+    &:nth-child(#{($j * 2) + 1}) {
+      width: #{100% / $j};
+    }
+  }
+
+  // Indicator offset
+  @for $i from 1 through 8 {
+    input:nth-of-type(#{$i}):checked ~ & {
+      transform: translateX(#{100% * ($i - 1)});
+    }
+  }
+  
+  &[mdw-animation="stretch"] {
+    width: auto;
+    // Stretch animation
+    transition-property: left, right;
+    transition-timing-function: $motion-easing-standard;
+    transition-delay: $motion-duration-desktop-default / 2, 0ms;
+    transition-duration: $motion-duration-desktop-default / 2;
+    @include allHandsets {
+      transition-delay: $motion-duration-mobile-default / 2, 0ms;
+      transition-duration: $motion-duration-mobile-default / 2;
+    }
+    @include allTablets {
+      transition-delay: $motion-duration-tablet-default / 2, 0ms;
+      transition-duration: $motion-duration-tablet-default / 2;
+    }
+    @for $index from 1 through 8 {
+      input:nth-of-type(#{$index}):checked ~ & {
+        @for $length from 1 through 8 {
+          &:nth-child(#{($length * 2) + 1}) {
+            left: #{(100% / $length) * ($index - 1)};
+            right: #{(100% / $length) * ($length - $index)};
+            transform: none;
+          }
+        }
+      }
+    }
+  }
+}
+
 .mdw-tab__action {
   position: relative;
   display: flex;

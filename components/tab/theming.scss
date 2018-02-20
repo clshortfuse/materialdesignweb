@@ -4,6 +4,7 @@
 $tabColors: (
   active-color:      (('primary', '500', 1.00), (#fff, 1.0)),
   inactive-color:    ((#000,           0.54), (#fff, 0.50)),
+  indicator-color:   (('primary', '500', 1.00), ('accent', '500', 1.00)),
   press-color:       (('primary', '500', 0.40), (#ccc, 0.25)),
   ripple-color:      (('primary', '500', 0.26), (#fff, 0.30), (#fff, 0.20)),
   focus-overlay:     (('primary', '500', 0.12), (#fff, 0.20), (#fff, 0.12))
@@ -24,6 +25,9 @@ $tabColors: (
       .mdw-tab__icon,
       .mdw-tab__label {
         color: tabThemeValue("inactive-color", $type, $theme);
+      }
+      .mdw-tab__indicator {
+        background-color: tabThemeValue("indicator-color", $type, $theme);
       }
       input:checked + .mdw-tab__action > .mdw-tab__icon,
       input:checked + .mdw-tab__action > .mdw-tab__label,
