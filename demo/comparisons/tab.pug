@@ -1,0 +1,10 @@
+include ../mixins.pug
+
+.comparison.clipped.mdw-theme-tab
+  .render
+    +androidstatusbar('rgb(var(--primary-700-color))')
+    .mdw-theme__filled(mdw-color='primary' mdw-tone=1000)
+      +toolbar('cyan', '500', ['menu'],  ['search', 'favorite', 'more_vert']) Page Title
+    .content.mdw-theme__filled(mdw-color="background" mdw-tone="0")
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsOUdyb0FjQTJTdlk/components-tabs-usage-mobile3.png')
+

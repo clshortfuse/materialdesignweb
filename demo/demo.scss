@@ -5,7 +5,8 @@
 @include addTheme('teal', 'brown', 'red', 'grey', 'bottomnav');
 @include addTheme('teal', 'cyan', 'pink', 'grey', 'list');
 @include addTheme('blue', 'teal', 'red', 'grey', 'selection');
-@include addColors('red', 'green','lightblue', 'purple');
+@include addTheme('cyan', 'yellow', 'red', 'grey', 'tab');
+@include addColors('cyan', 'red', 'green','lightblue', 'purple');
 @include buildVariableThemes();
 @import './components/all-components.scss';
 
