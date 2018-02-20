@@ -85,21 +85,14 @@
   white-space: nowrap;
   min-height: 1em; // Prevents stretching when using larger fonts
   height: auto;
-  padding-top: calc(#{dp(10)} - #{$font-ascent * 1em});
-  padding-bottom: calc(#{dp(20)} - #{$font-descent * 1em});
   font-size: sp(14);
   text-transform: uppercase;
   font-weight: normal;
-  // color: var(--tab__inactive-color);
-  input:checked + .mdw-tab__action > &,
-  input:checked ~ & {
-    // color: var(--tab__active-color);
-    // font-size: sp(14);
+  padding-top: calc(#{dp(10)} - #{$font-ascent * 1em});
+  padding-bottom: calc(#{dp(20)} - #{$font-descent * 1em});
+  .mdw-tab__icon ~ & {
+    padding-bottom: calc(#{dp(16)} - #{$font-descent * 1em});
   }
-}
-
-.mdw-tab__icon ~ .mdw-tab__label {
-  padding-bottom: calc(#{dp(16)} - #{$font-descent * 1em});
 }
 
 .mdw-tab input {
