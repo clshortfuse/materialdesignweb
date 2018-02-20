@@ -57,8 +57,7 @@ $toolbar-right-padding: dp(16);
     justify-content: flex-end;
     font-size: sp(20);
 
-    // Padding should be 20px from font baseline. 0.25em is an approximation.
-    padding-bottom: calc(#{dp(20)} - 0.25em);
+    padding-bottom: calc(#{dp(20)} - #{$font-descent * 1em});
   }
 }
 

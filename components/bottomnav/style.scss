@@ -2,6 +2,7 @@
 
 @import '../common/functions.scss';
 @import '../common/motion.scss';
+@import '../common/variables.scss';
 
 .mdw-bottomnav {
   
@@ -94,9 +95,9 @@
   transition-timing-function: $motion-easing-standard;
   text-overflow: ellipsis;
   white-space: nowrap;
-  min-height: sp(14); // Prevents stretching when using larger fonts
+  min-height: 1em; // Prevents stretching when using larger fonts
   height: auto;
-  padding-bottom: calc(#{dp(10)} - #{sp(14*0.25)});
+  padding-bottom: calc(#{dp(10)} - #{$font-descent * 1em});
   font-size: sp(12);
   text-transform: none;
   font-weight: normal;
@@ -136,7 +137,7 @@
     }
     & > .mdw-bottomnav__label {
       color: transparent;
-      transform: translateY(0.25em);
+      transform: translateY(#{$font-descent * 1em});
     }
   }
   
