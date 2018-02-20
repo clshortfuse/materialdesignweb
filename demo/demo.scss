@@ -9,6 +9,16 @@
 @include buildVariableThemes();
 @import './components/all-components.scss';
 
+$components: (
+  'bottomnav',
+  'button',
+  'selection',
+  'list',
+  'tab',
+  'textfield',
+  'toolbar'
+);
+
 html {
   font-family: 'Roboto', sans-serif;
 }
@@ -130,8 +140,6 @@ html {
 #Vintage50Input {
   font-size: sp(34);
 }
-
-$components: ('bottomnav', 'button', 'selection', 'list', 'textfield', 'toolbar');
 
 input[name="show-component"]:not(:checked) {
   @each $component in $components {

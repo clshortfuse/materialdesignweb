@@ -35,6 +35,9 @@ html(lang='en')
     span List
     input(type="radio" name="show-component" value="list")
 
+    span Tab
+    input(type="radio" name="show-component" value="tab")
+
     span Text Field
     input(type="radio" name="show-component" value="textfield")
 
@@ -51,6 +54,8 @@ html(lang='en')
       include comparisons/list.pug
     #selection-comparisons.comparisons
       include comparisons/selection.pug
+    #tab-comparisons.comparisons
+      include comparisons/tab.pug
     #textfield-comparisons.comparisons
       include comparisons/textfield.pug
     #toolbar-comparisons.comparisons
