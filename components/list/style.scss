@@ -125,6 +125,7 @@ $list__divider-height: dp(1);
   &:not(:first-child) {
     font-size: sp(14);
     line-height: sp(16);
+    min-height: sp(16);
   }
   &:only-child {
     // only of its type
