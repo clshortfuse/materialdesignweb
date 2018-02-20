@@ -46,12 +46,12 @@ include ../mixins.pug
 .comparison.clipped-304
   .render
     +androidstatusbar('rgb(var(--background-400-color))')
-    .mdw-toolbar.mdw-theme__filled(mdw-color=color mdw-tone=tone)
+    .mdw-toolbar
       .mdw-toolbar__action
         .mdw-toolbar__start
           button.mdw-button(mdw-icon mdw-active).material-icons arrow_back
         .mdw-toolbar__end
-          button.mdw-button(mdw-icon mdw-active).material-icons more_vert
+          button.mdw-button(mdw-icon mdw-active mdw-more-button).material-icons more_vert
       .mdw-toolbar__content
         label.mdw-textfield(style="font-size: 1.5rem")
           input.mdw-textfield__input(value="Project Properties" placeholder=" ")
@@ -64,7 +64,6 @@ include ../mixins.pug
           .mdw-textfield__border-line
         div(style="height:24px")
           // Spec says 16dp, but it's actually 24dp
-        div(style="height:4px")
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="300")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsTW1zb2x5WWg5cDA/layout-structure-appbar-metrics5.png')
   
