@@ -27,13 +27,13 @@ $buttonColors: (
 @mixin buttonContrastRules($type: 'var', $theme: null) {
   @at-root {
     #{&}.mdw-button {
-      &:not(.mdw-theme__colored):not([disabled]) {
+      &:not(.mdw-theme__colored):not(:disabled) {
         color: buttonThemeValue("text-color", $type, $theme);
       }
-      &[mdw-active]:not([disabled]) {
+      &[mdw-active]:not(:disabled) {
         color: buttonThemeValue("active-color", $type, $theme);
       }
-      &[mdw-inactive]:not([disabled]) {
+      &[mdw-inactive]:not(:disabled) {
         color: buttonThemeValue("inactive-color", $type, $theme);
       }
       &:not(.mdw-theme__colored)::before {
