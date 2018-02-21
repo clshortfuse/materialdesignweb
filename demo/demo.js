@@ -101,6 +101,12 @@ function start() {
       new mdw.Button(element);
     }
   });
+  forEachNode(document.querySelectorAll('.mdw-tab'), (element) => {
+    new mdw.Tab(element);
+  });
+  forEachNode(document.querySelectorAll('.mdw-tab__action'), (element) => {
+    new mdw.TabItem(element);
+  });
   forEachNode(document.querySelectorAll('.target'), (element) => {
     element.addEventListener('click', onTemplateImageClick);
   });

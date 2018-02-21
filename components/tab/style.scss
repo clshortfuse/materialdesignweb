@@ -33,23 +33,24 @@
   // Element position = 2 * number of input elements + 1 (itself)
   // Width = 100% / number of input elements
   @for $j from 1 through 8 {
-    &:nth-child(#{($j * 2) + 1}) {
+    &:nth-child(#{($j * 2) + 1}):not([mdw-js-indicator]) {
       width: #{100% / $j};
     }
   }
-
   // Indicator offset
   @for $i from 1 through 8 {
-    input:nth-of-type(#{$i}):checked ~ & {
+    input:nth-of-type(#{$i}):checked ~ &:not([mdw-js-indicator]) {
       transform: translateX(#{100% * ($i - 1)});
     }
   }
   
-  &[mdw-animation="stretch"] {
+  &[mdw-js-indicator] {
     width: auto;
     // Stretch animation
     transition-property: left, right;
-    transition-timing-function: $motion-easing-standard;
+    &[mdw-direction="reverse"] {
+      transition-property: right, left;
+    }
     transition-delay: $motion-duration-desktop-default / 2, 0ms;
     transition-duration: $motion-duration-desktop-default / 2;
     @include allHandsets {
@@ -60,17 +61,7 @@
       transition-delay: $motion-duration-tablet-default / 2, 0ms;
       transition-duration: $motion-duration-tablet-default / 2;
     }
-    @for $index from 1 through 8 {
-      input:nth-of-type(#{$index}):checked ~ & {
-        @for $length from 1 through 8 {
-          &:nth-child(#{($length * 2) + 1}) {
-            left: #{(100% / $length) * ($index - 1)};
-            right: #{(100% / $length) * ($length - $index)};
-            transform: none;
-          }
-        }
-      }
-    }
+    transform: none;
   }
 }
 
