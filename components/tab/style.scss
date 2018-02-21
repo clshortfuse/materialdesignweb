@@ -69,6 +69,7 @@
   position: relative;
   display: flex;
   flex-grow: 1;
+  flex-basis: 0;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
@@ -115,7 +116,7 @@
   transition-property: color;
   transition-duration: 200ms;
   transition-timing-function: $motion-easing-standard;
-  margin-top: 8px;
+  margin-top: 12px;
   &:last-child {
     margin-bottom: 12px;
   }

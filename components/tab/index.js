@@ -88,10 +88,16 @@ class Tab {
         }
         break;
       }
-      const labelElement = inputElement.nextElementSibling;
+      let labelElement = inputElement.nextElementSibling;
+      if (labelElement.tagName.toLowerCase() !== 'label') {
+        labelElement = inputElement.parentElement;
+      }
       left += labelElement.clientWidth;
     }
-    const labelElement = inputElement.nextElementSibling;
+    let labelElement = inputElement.nextElementSibling;
+    if (labelElement.tagName.toLowerCase() !== 'label') {
+      labelElement = inputElement.parentElement;
+    }
     const right = this.element.clientWidth - left - labelElement.clientWidth;
     this.indicator.style.setProperty('left', `${left}px`);
     this.indicator.style.setProperty('right', `${right}px`);
