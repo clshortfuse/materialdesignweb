@@ -79,6 +79,9 @@
   z-index: 0;
   overflow: hidden;
   cursor: pointer;
+  input:checked + & {
+    cursor: default;
+  }
   
   // If using JS ripple, destroy ::after object
   &[mdw-js-ripple]::after {
