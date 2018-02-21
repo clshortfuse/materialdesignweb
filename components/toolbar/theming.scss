@@ -17,6 +17,7 @@ $toolbarColors: (
 @mixin toolbarContrastRules($type: 'var', $theme: null) {
   @at-root {
     #{&}.mdw-toolbar {
+      .mdw-toolbar__content,
       .mdw-toolbar__title,
       .mdw-toolbar__start,
       .mdw-toolbar__end {
