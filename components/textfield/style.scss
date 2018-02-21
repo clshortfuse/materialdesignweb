@@ -263,7 +263,7 @@ textarea.mdw-textfield__input {
 
   // Disabled
 
-  &[disabled] {
+  &:disabled {
     // color: var(--disabled-color);
     [mdw-textarea] > & {
       // background-color: var(--divider-color);
@@ -306,7 +306,7 @@ textarea.mdw-textfield__input {
 }
 
 .mdw-textfield__helper-text {
-  .mdw-textfield__input[disabled] ~ & {
+  .mdw-textfield__input:disabled ~ & {
     // color: var(--disabled-color);
   }
   .mdw-textfield__input:focus:invalid ~ & {
