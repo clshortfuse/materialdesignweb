@@ -53,6 +53,8 @@ $list__divider-height: dp(1);
   overflow-y: hidden; // Chrome ripple overscroll workaround
   z-index: 0;
   outline: none;
+
+  cursor: pointer;
   
   transition-property: background-color;
   transition-duration: 500ms;
