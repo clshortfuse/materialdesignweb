@@ -25,7 +25,7 @@ export default class ListRow {
     if (!this.ripple) {
       const ripple = document.createElement('div');
       ripple.classList.add('mdw-ripple');
-      this.element.appendChild(ripple);
+      this.element.insertBefore(ripple, this.element.firstChild);
       this.ripple = ripple;
     }
     this.element.setAttribute('mdw-js-ripple', '');
