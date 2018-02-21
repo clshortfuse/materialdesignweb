@@ -119,7 +119,7 @@ $textfieldColors: (
         color: transparent; // will transition when shown
       }
 
-      .mdw-textfield__input[disabled] ~ .mdw-textfield__helper-text {
+      .mdw-textfield__input:disabled ~ .mdw-textfield__helper-text {
         color: textfieldThemeValue("disabled-color", $type, $theme);
       }
       .mdw-textfield__input:focus:invalid ~ .mdw-textfield__helper-text {
