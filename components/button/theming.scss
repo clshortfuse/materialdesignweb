@@ -60,11 +60,11 @@ $buttonColors: (
           buttonThemeValue("ripple-color", $type, $theme) 10%,
           transparent 10.0001%);
       }
-      &[disabled],
-      &.mdw-theme__colored[disabled], {
+      &:disabled,
+      &.mdw-theme__colored:disabled, {
         color: buttonThemeValue("disabled-text-color", $type, $theme);
       }
-      &.mdw-theme__filled[disabled] {
+      &.mdw-theme__filled:disabled {
         // Disabled filled buttons use parent's theming context
         @if ($type == 'var') {
           --button__disabled-text-color: inherit;
