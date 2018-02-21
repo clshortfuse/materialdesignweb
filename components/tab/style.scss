@@ -139,7 +139,7 @@
   height: auto;
   font-size: sp(14);
   text-transform: uppercase;
-  font-weight: normal;
+  font-weight: $font-weight-medium;
   padding-top: calc(#{dp(10)} - #{$font-ascent * 1em});
   padding-bottom: calc(#{dp(20)} - #{$font-descent * 1em});
   .mdw-tab__icon ~ & {
