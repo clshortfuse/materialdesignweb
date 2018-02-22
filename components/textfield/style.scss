@@ -99,7 +99,9 @@ $icon-signifier__padding-end: dp(16);
   top: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom});
   & ~ .mdw-textfield__input,
   & ~ .mdw-textfield__label,
-  & ~ .mdw-textfield__border-line {
+  & ~ .mdw-textfield__border-line,
+  & ~ .mdw-textfield__helper-text,
+  & ~ .mdw-textfield__error-text {
     margin-left: dp(43);
   }
 }
