@@ -18,14 +18,14 @@ include ../mixins.pug
           input.mdw-textfield__input(type="text" placeholder=" ")
           span.mdw-textfield__label Location (optional)
           .mdw-textfield__border-line
-      .mdw-textfield
-        input.mdw-textfield__input(type="text" placeholder=" ")
-        label.mdw-textfield__label Description
+      label.mdw-textfield
+        input.mdw-textfield__input(type="text" placeholder="text")
+        .mdw-textfield__label Description
         .mdw-textfield__border-line
-      .mdw-textfield
+      label.mdw-textfield
         .mdw-textfield__icon.material-icons security
         input.mdw-textfield__input(type="password" placeholder="••••••••" required minlength="8")
-        label.mdw-textfield__label Password *
+        .mdw-textfield__label Password *
         .mdw-textfield__border-line
         .mdw-textfield__helper-text At least 8 characters
         .mdw-textfield__error-text Error: Password of at least 8 characters required.
@@ -152,10 +152,10 @@ include ../mixins.pug
           span.mdw-textfield__label Location (optional)
           .mdw-textfield__border-line
           .mdw-textfield__helper-text Helper
-      .mdw-textfield
+      label.mdw-textfield
         textarea.mdw-textfield__input(placeholder=" " mdw-multiline rows=3)
           | Unique and rare dress from 1952. Made out of washed cotton with front pockets. Sleeveless with button closures.
-        label.mdw-textfield__label Description
+        .mdw-textfield__label Description
         .mdw-textfield__border-line
     +androidnavbar
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOTjBUMXJUU3c4ZUU/multi1.png')
