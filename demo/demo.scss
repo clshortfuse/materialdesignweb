@@ -15,6 +15,7 @@ $components: (
   'button',
   'selection',
   'list',
+  'menu',
   'tab',
   'textfield',
   'toolbar'
@@ -22,6 +23,16 @@ $components: (
 
 html {
   font-family: 'Roboto', sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+}
+
+.page > input[name="show-component"] {
+  display: none;
 }
 
 .comparisons {
@@ -89,6 +100,9 @@ html {
 .display-flex {
   display: flex;
 }
+[flex-justify-content="center"] {
+  justify-content: center;
+}
 .flex-wrap {
   flex-wrap: wrap;
 }
@@ -145,7 +159,7 @@ html {
 input[name="show-component"]:not(:checked) {
   @each $component in $components {
     &[value="#{$component}"] ~ ##{$component}-comparisons {
-      display:none
+      display:none;
     }
   }
 }

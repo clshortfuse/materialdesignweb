@@ -14,55 +14,56 @@ html(lang='en')
     link(rel='stylesheet' href='./demo.ie11.min.css')
     <![endif]-->
   body
-    
-    span Large Font Size
-    input(type="checkbox" name="largeFontSize")
-    div
+    .nav
+      ul.mdw-list
+        label.mdw-list__row(for="show-bottomnav") bottomnav
+        label.mdw-list__row(for="show-button") button
+        label.mdw-list__row(for="show-list") list
+        label.mdw-list__row(for="show-menu") menu
+        label.mdw-list__row(for="show-selection") selection
+        label.mdw-list__row(for="show-tab") tab
+        label.mdw-list__row(for="show-textfield") textfield
+        label.mdw-list__row(for="show-toolbar") toolbar
 
-    span RTL
-    input(type="checkbox" name="rtl")
-    div
+    .page
+      span Large Font Size
+      input(type="checkbox" name="largeFontSize")
+      div
 
-    span Bottom nav
-    input(type="radio" name="show-component" value="bottomnav")
+      span RTL
+      input(type="checkbox" name="rtl")
+      div
 
-    span Button
-    input(type="radio" name="show-component" value="button")
+      input(type="radio" name="show-component" value="bottomnav" id="show-bottomnav")
+      input(type="radio" name="show-component" value="button"    id="show-button")
+      input(type="radio" name="show-component" value="list"      id="show-list")
+      input(type="radio" name="show-component" value="menu"      id="show-menu" checked)
+      input(type="radio" name="show-component" value="selection" id="show-selection")
+      input(type="radio" name="show-component" value="tab"       id="show-tab")
+      input(type="radio" name="show-component" value="textfield" id="show-textfield")
+      input(type="radio" name="show-component" value="toolbar"   id="show-toolbar")
 
-    span Selection
-    input(type="radio" name="show-component" value="selection")
+      div
 
-    span List
-    input(type="radio" name="show-component" value="list")
-
-    span Tab
-    input(type="radio" name="show-component" value="tab" checked)
-
-    span Text Field
-    input(type="radio" name="show-component" value="textfield")
-
-    span Toolbar
-    input(type="radio" name="show-component" value="toolbar")
-
-    div
-
-    #bottomnav-comparisons.comparisons
-      include comparisons/bottomnav.pug
-    #button-comparisons.comparisons
-      include comparisons/button.pug
-    #list-comparisons.comparisons
-      include comparisons/list.pug
-    #selection-comparisons.comparisons
-      include comparisons/selection.pug
-    #tab-comparisons.comparisons
-      include comparisons/tab.pug
-    #textfield-comparisons.comparisons
-      include comparisons/textfield.pug
-    #toolbar-comparisons.comparisons
-      include comparisons/toolbar.pug
+      #bottomnav-comparisons.comparisons
+        include comparisons/bottomnav.pug
+      #button-comparisons.comparisons
+        include comparisons/button.pug
+      #list-comparisons.comparisons
+        include comparisons/list.pug
+      #menu-comparisons.comparisons
+        include comparisons/menu.pug
+      #selection-comparisons.comparisons
+        include comparisons/selection.pug
+      #tab-comparisons.comparisons
+        include comparisons/tab.pug
+      #textfield-comparisons.comparisons
+        include comparisons/textfield.pug
+      #toolbar-comparisons.comparisons
+        include comparisons/toolbar.pug
 
 
-    #horizontalLine
-    #verticalLineLeft
-    #verticalLineRight
+      #horizontalLine
+      #verticalLineLeft
+      #verticalLineRight
   script(src='./demo.min.js')

@@ -18,6 +18,7 @@ Object.defineProperty(crosshairs, 'vOffset', {
   },
 });
 
+
 Object.defineProperty(crosshairs, 'hOffset', {
   enumerable: true,
   configurable: false,
