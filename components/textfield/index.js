@@ -3,9 +3,11 @@
  * @return {number} Single row height
  */
 function updateTextAreaSize(element) {
+  const previousRowsValue = element.getAttribute('rows');
   element.setAttribute('rows', '1');
   const { height, paddingTop } = window.getComputedStyle(element);
   if (height === 'auto') {
+    element.setAttribute('rows', previousRowsValue);
     return -1;
   }
   const heightPx = parseInt(height.replace('px', ''), 10);
