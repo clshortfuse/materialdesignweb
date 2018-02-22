@@ -23,19 +23,22 @@ include ../mixins.pug
         label.mdw-textfield__label Description
         .mdw-textfield__border-line
       .mdw-textfield
+        .mdw-textfield__icon.material-icons security
         input.mdw-textfield__input(type="password" placeholder="••••••••" required minlength="8")
         label.mdw-textfield__label Password *
         .mdw-textfield__border-line
         .mdw-textfield__helper-text At least 8 characters
         .mdw-textfield__error-text Error: Password of at least 8 characters required.
       label.mdw-textfield
+        .mdw-textfield__prefix $
         input.mdw-textfield__input(type="text" placeholder="required" required)
-        .mdw-textfield__label No helper
+        .mdw-textfield__label Prefixed *
         .mdw-textfield__border-line
         .mdw-textfield__error-text Error: Required.
       label.mdw-textfield
         input.mdw-textfield__input(type="text" placeholder=" " disabled value="filled")
         .mdw-textfield__label Disabled Filled
+        .mdw-textfield__suffix lbs
         .mdw-textfield__border-line
         .mdw-textfield__helper-text Disabled Helper Text
     +androidnavbar
