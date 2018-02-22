@@ -50,7 +50,7 @@ $textfieldColors: (
       }
       .mdw-textfield__input {
         color: textfieldThemeValue("text-color", $type, $theme);
-        &::placeholder:not(:focus) {
+        &::placeholder {
           color: transparent;
         }
         
