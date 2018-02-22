@@ -19,7 +19,6 @@ html(lang='en')
         label.mdw-list__row(for="show-bottomnav") bottomnav
         label.mdw-list__row(for="show-button") button
         label.mdw-list__row(for="show-list") list
-        label.mdw-list__row(for="show-menu") menu
         label.mdw-list__row(for="show-selection") selection
         label.mdw-list__row(for="show-tab") tab
         label.mdw-list__row(for="show-textfield") textfield
@@ -37,10 +36,9 @@ html(lang='en')
       input(type="radio" name="show-component" value="bottomnav" id="show-bottomnav")
       input(type="radio" name="show-component" value="button"    id="show-button")
       input(type="radio" name="show-component" value="list"      id="show-list")
-      input(type="radio" name="show-component" value="menu"      id="show-menu" checked)
       input(type="radio" name="show-component" value="selection" id="show-selection")
       input(type="radio" name="show-component" value="tab"       id="show-tab")
-      input(type="radio" name="show-component" value="textfield" id="show-textfield")
+      input(type="radio" name="show-component" value="textfield" id="show-textfield" checked)
       input(type="radio" name="show-component" value="toolbar"   id="show-toolbar")
 
       div
@@ -51,8 +49,6 @@ html(lang='en')
         include comparisons/button.pug
       #list-comparisons.comparisons
         include comparisons/list.pug
-      #menu-comparisons.comparisons
-        include comparisons/menu.pug
       #selection-comparisons.comparisons
         include comparisons/selection.pug
       #tab-comparisons.comparisons

@@ -39,16 +39,29 @@ $icon-signifier__padding-end: dp(16);
   position: relative;
 }
 .mdw-textfield__prefix {
-  grid-row: 1;
   grid-column: 1;
-  padding-right: 8px;
-  margin-top: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom});
+  padding-right: 4px;
 }
 .mdw-textfield__suffix {
-  grid-row: 1;
   grid-column: 3;
-  padding-left: 8px;
+  padding-left: 4px;
+}
+.mdw-textfield__prefix,
+.mdw-textfield__suffix {
+  grid-row: 1;
   margin-top: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom});
+  
+  // color: transparent;
+  will-change: color;
+  transition-property: color;
+  transition-timing-function: $motion-easing-standard;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
 }
 
 .mdw-textfield__label {
@@ -69,15 +82,9 @@ $icon-signifier__padding-end: dp(16);
 
   will-change: transform, font-size;
   
-  &,
-  .mdw-textfield__prefix ~ .mdw-textfield__input[mdw-value-empty]:not(:focus) ~ & {
-    transform: translateY(0);
-    font-size: $label__font-size;
-  }
-  .mdw-textfield__prefix ~ .mdw-textfield__input:placeholder-shown:not(:focus) ~ & {
-    transform: translateY(0);
-    font-size: $label__font-size;
-  }
+  
+  transform: translateY(0);
+  font-size: $label__font-size;
   transition-property: transform, font-size, grid-column-start;
   transition-timing-function: $motion-easing-standard;
   transition-duration: $motion-duration-desktop-default;
@@ -121,6 +128,8 @@ $icon-signifier__padding-end: dp(16);
 
   font-size: inherit;
   font-family: Roboto, sans-serif;
+  font-weight: $font-weight-regular;
+  appearance: none;
   
   padding-bottom: dp(8);
 
@@ -164,6 +173,25 @@ textarea.mdw-textfield__input {
   &[mdw-multiline] {
     min-height: 1em;
     padding-right: 24px;
+  }
+}
+select.mdw-textfield__input {
+  // background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='16px' width='16px'> <text x='0' y='8' fill='black' font-size='16'>&#x25BE;</text></svg>");
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  option {
+    font-size: inherit;
+    font-family: Roboto, sans-serif;
+    font-weight: $font-weight-regular;
+    appearance: none;
+    &[value=""] {
+      display: none;
+    }
+  }
+  &::-ms-expand {
+    // Remove IE11 dropdown button
+    display: none;
   }
 }
 
@@ -229,6 +257,12 @@ textarea.mdw-textfield__input {
   }
 }
 
+select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
+  & ~ .mdw-textfield__label {
+    transform: translateY(0);
+    font-size: $label__font-size;
+  }
+}
 /* Behavior changes */
 .mdw-textfield__input {
   /* Unfocused */

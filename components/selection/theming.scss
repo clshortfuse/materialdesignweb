@@ -4,7 +4,7 @@
 $selectionColors: (
   text-color:            ((#000, 0.87), (#fff, 1.00)),
   color:                 ((#000, 0.54), (#fff, 0.70)),
-  color__checked:        (('accent', '500', 1.0)),
+  color__checked:        (('accent', '500', 1.0), ('accent', '500', 1.0)),
   ripple-color:          ((#000, 0.12), (#fff, 0.30), (#fff, 0.20)),
   ripple-color__checked: (('accent', '500', 0.26), ('accent', '500', 0.26))
 );

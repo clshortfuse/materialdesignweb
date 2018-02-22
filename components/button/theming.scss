@@ -10,9 +10,9 @@ $buttonColors: (
   focus-overlay:              ((#000, 0.12), (#000, 0.12), (#fff, 0.20)),
   disabled-text-color:        ((#000, 0.26), (#fff, 0.30)),
   disabled-background-color:  ((#000, 0.12), (#fff, 0.12)),
-  filled-press-primary-color: (('primary', '700', 1.0)),
-  filled-press-accent-color:  (('accent',  '700', 1.0)),
-  filled-press-warn-color:    (('warn',    '700', 1.0)),
+  filled-press-primary-color: (('primary', '700', 1.0), ('primary', '700', 1.0)),
+  filled-press-accent-color:  (('accent',  '700', 1.0), ('accent',  '700', 1.0)),
+  filled-press-warn-color:    (('warn',    '700', 1.0), ('warn',    '700', 1.0))
 );
 
 @function buttonThemeValue($key, $type, $theme) {

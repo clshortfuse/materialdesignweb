@@ -1,6 +1,10 @@
 @import '../common/functions.scss';
 @import '../common/mixins.scss';
 
+@function getDropDownBackgroundImage($color) {
+  @return inline-svg("<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='16px' width='16px'> <text x='0' y='8' fill='#{$color}' font-size='16'>&#x25BE;</text></svg>");
+}
+
 $textfieldColors: (
   text-color:                      ((#000,            0.87), (#fff,            1.00)),
   secondary-text-color:            ((#000,            0.54), (#fff,            0.70)),
@@ -11,10 +15,11 @@ $textfieldColors: (
   border-line-color__hover:        ((#000,            0.87), (#fff,            1.00)),
   border-line-color__focus:        (('primary', 'A700', 1.00), ('primary', 'A200', 1.00)),
   border-line-accent-color__focus: (('accent',  'A700', 1.00), ('accent',  'A200', 1.00)),
-  border-line-warn-color__focus:   (('warn',    'A400', 1.00)),
+  border-line-warn-color__focus:   (('warn',    'A400', 1.00), ('warn',    'A400', 1.00)),
   label-color__focus:              (('primary', 'A700', 0.87), ('primary', 'A200', 1.00)),
   label-accent-color__focus:       (('accent',  'A700', 0.87), ('accent',  'A200', 1.00)),
   label-warn-color__focus:         (('warn',    'A400', 0.87), ('warn',    'A400', 1.00)),
+  drop-down-background-image:      ((getDropDownBackgroundImage(rgba(0,0,0,0.54))), (getDropDownBackgroundImage(rgba(255,255,255,0.70)))),
 );
 
 @function textfieldThemeValue($key, $type, $theme) {
@@ -30,14 +35,22 @@ $textfieldColors: (
   @at-root {
     #{&}.mdw-textfield {
       .mdw-textfield__icon,
-      .mdw-textfield__label,
+      .mdw-textfield__label {
+        color: textfieldThemeValue("secondary-text-color", $type, $theme);
+      }
       .mdw-textfield__prefix,
       .mdw-textfield__suffix {
         color: textfieldThemeValue("secondary-text-color", $type, $theme);
       }
+      select.mdw-textfield__input[mdw-value-empty] {
+        color: textfieldThemeValue("placeholder-color__focus", $type, $theme);
+        &:focus {
+          color: textfieldThemeValue("secondary-text-color", $type, $theme);
+        }
+      }
       .mdw-textfield__input {
         color: textfieldThemeValue("text-color", $type, $theme);
-        &::placeholder {
+        &::placeholder:not(:focus) {
           color: transparent;
         }
         
@@ -88,6 +101,20 @@ $textfieldColors: (
             }
           }
         }
+        &:not(:focus) {
+          /* Rules must be separated for IE11 support */
+          &:placeholder-shown ~ .mdw-textfield__prefix,
+          &:placeholder-shown ~ .mdw-textfield__suffix {
+            color: transparent;
+          }
+          &[mdw-value-empty] ~ .mdw-textfield__prefix,
+          &[mdw-value-empty] ~ .mdw-textfield__suffix {
+            color: transparent;
+          }
+        }
+      }
+      select.mdw-textfield__input {
+        background-image: textfieldThemeValue("drop-down-background-image", $type, $theme);
       }
 
       &[mdw-color="accent"] > .mdw-textfield__input:focus {

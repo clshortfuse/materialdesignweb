@@ -30,9 +30,9 @@ include ../mixins.pug
         .mdw-textfield__helper-text At least 8 characters
         .mdw-textfield__error-text Error: Password of at least 8 characters required.
       label.mdw-textfield
-        .mdw-textfield__prefix $
         input.mdw-textfield__input(type="text" placeholder="required" required)
         .mdw-textfield__label Prefixed *
+        .mdw-textfield__prefix $
         .mdw-textfield__border-line
         .mdw-textfield__error-text Error: Required.
       label.mdw-textfield
@@ -77,6 +77,59 @@ include ../mixins.pug
       span * Required fields
     +androidnavbar
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOV21vLWJFeUFoUXc/required-example.png')
+
+.comparison
+  .render
+    +androidstatusbar('rgb(var(--accent-300-color))')
+    +toolbar('accent', 'A100', ['arrow_back'], ['search'])
+    form.content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding:9px 16px")
+      div.display-flex(style="margin-bottom:-28px;margin-top:-24px;" flex-justify-content="center")
+        i.material-icons(style="color:#ccc;font-size:256px") person
+      label.mdw-textfield(mdw-color="accent")
+        .mdw-textfield__icon.material-icons person
+        input.mdw-textfield__input(type="text" placeholder=" " value="Ali Connors")
+        .mdw-textfield__label Name
+        .mdw-textfield__border-line
+      .horizontal-controls
+        label.mdw-textfield(mdw-color="accent" style="margin-right:8px")
+          .mdw-textfield__icon.material-icons phone
+          input.mdw-textfield__input(type="phone" placeholder=" " value="65")
+          .mdw-textfield__label Name
+          .mdw-textfield__border-line
+        label.mdw-textfield(mdw-color="accent" style="margin-left:8px;width:150px;")
+          select.mdw-textfield__input(type="phone")
+            option(value="") Default
+            option(value="Mobile") Mobile
+            option(value="Home") Home
+            option(value="Work") Work
+          .mdw-textfield__label Phone Type
+          .mdw-textfield__border-line
+      .horizontal-controls
+        label.mdw-textfield(mdw-color="accent" style="margin-right:8px")
+          .mdw-textfield__icon.material-icons email
+          input.mdw-textfield__input(type="email" placeholder=" ")
+          .mdw-textfield__label Email
+          .mdw-textfield__border-line
+        label.mdw-textfield(mdw-color="accent" style="margin-left:8px;width:150px;")
+          select.mdw-textfield__input(type="phone")
+            option(value="Personal") Personal
+            option(value="Business") Business
+          .mdw-textfield__label Email type
+          .mdw-textfield__border-line
+      .horizontal-controls
+        label.mdw-textfield(mdw-color="accent" style="margin-right:8px")
+          .mdw-textfield__icon.material-icons place
+          input.mdw-textfield__input(type="address" placeholder=" ")
+          .mdw-textfield__label Address
+          .mdw-textfield__border-line
+        label.mdw-textfield(mdw-color="accent" style="margin-left:8px;width:150px;")
+          select.mdw-textfield__input(type="phone")
+            option(value="Home") Home
+            option(value="Work") Work
+          .mdw-textfield__label Address type
+          .mdw-textfield__border-line
+    +androidnavbar
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOLTFIRURTTl9mQWc/single2.png')
 
 .comparison
   .render.mdw-theme-textfield

@@ -26,7 +26,6 @@ label.mdw-textfield(style="font-size: 2.125rem")
   .mdw-textfield__border-line
 ```
 
-
 ## Helper Text
 ```
 label.mdw-textfield
@@ -55,8 +54,34 @@ label.mdw-textfield
   .mdw-textfield__error-text Helper Text
 ```
 
-## Accented
+## Prefixed text
+```
+label.mdw-textfield
+  input.mdw-textfield__input(type="text" placeholder=" ")
+  .mdw-textfield__label Amount
+  .mdw-textfield__prefix $
+  .mdw-textfield__border-line
+```
 
+## Suffixed text
+```
+label.mdw-textfield
+  input.mdw-textfield__input(type="email" placeholder=" ")
+  .mdw-textfield__label Email
+  .mdw-textfield__suffix @gmail.com
+  .mdw-textfield__border-line
+```
+
+## Icon
+```
+label.mdw-textfield
+  .mdw-textfield__icon.material-icons person
+  input.mdw-textfield__input(type="text" placeholder=" " value="Ali Connors")
+  .mdw-textfield__label Name
+  .mdw-textfield__border-line
+```
+
+## Accented
 ```
 .mdw-textfield(mdw-color="accent")
   input.mdw-textfield__input(type="text" placeholder=" ")
