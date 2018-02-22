@@ -29,7 +29,10 @@ $textfieldColors: (
 @mixin textfieldContrastRules($type: 'var', $theme: null) {
   @at-root {
     #{&}.mdw-textfield {
-      .mdw-textfield__label {
+      .mdw-textfield__icon,
+      .mdw-textfield__label,
+      .mdw-textfield__prefix,
+      .mdw-textfield__suffix {
         color: textfieldThemeValue("secondary-text-color", $type, $theme);
       }
       .mdw-textfield__input {

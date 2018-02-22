@@ -105,7 +105,7 @@ function getDemoConfig() {
             options: {
               sourceMap: !isProduction,
               plugins: () => [
-                autoprefixer(),
+                autoprefixer({ grid: true }),
                 cssnano(),
               ],
             },

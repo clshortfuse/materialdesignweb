@@ -40,6 +40,7 @@ include ../mixins.pug
         .mdw-textfield__helper-text Disabled Helper Text
     +androidnavbar
   +target('https://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0Bzhp5Z4wHba3UHZpZjVsYjRHcXc/components_textfields_labels1.png')
+
 .comparison
   .render
     +androidstatusbar('rgb(var(--accent-300-color))')
@@ -73,14 +74,15 @@ include ../mixins.pug
       span * Required fields
     +androidnavbar
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOV21vLWJFeUFoUXc/required-example.png')
+
 .comparison
   .render.mdw-theme-textfield
     +androidstatusbar('rgb(var(--primary-A700-color))')
     +toolbar('primary', 'A200', ['arrow_back'], ['done'])
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding:9px 16px")
       label.mdw-textfield
-        input.mdw-textfield__input(value="Vintage 50" placeholder=" ")
-        span.mdw-textfield__label() Title
+        input.mdw-textfield__input(value="Vintage 50's Dress" placeholder=" ")
+        span.mdw-textfield__label Title
         .mdw-textfield__border-line
         .mdw-textfield__helper-text Helper
       .horizontal-controls
