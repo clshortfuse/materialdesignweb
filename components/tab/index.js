@@ -60,7 +60,7 @@ class Tab {
       });
     }
 
-    this.indicator.setAttribute('mdw-js-indicator', '');
+    // this.indicator.setAttribute('mdw-js-indicator', '');
   }
 
   /**
@@ -68,6 +68,11 @@ class Tab {
    * @return {void}
    */
   onTabInputChanged(inputElement) {
+    if (!this.element.clientWidth) {
+      this.indicator.removeAttribute('mdw-js-indicator');
+      return;
+    }
+    this.indicator.setAttribute('mdw-js-indicator', '');
     if (this.selectedInput === inputElement) {
       return;
     }
