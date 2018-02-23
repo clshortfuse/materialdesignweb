@@ -10,21 +10,22 @@ $dropdownButtonLightTheme: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cD
 $dropdownButtonDarkTheme: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZlcnNpb249JzEuMScgaGVpZ2h0PScxNnB4JyB3aWR0aD0nMTZweCc+IDx0ZXh0IHg9JzAnIHk9JzgnIGZpbGw9J3JnYmEoMjU1LDI1NSwyNTUsMC43MCknIGZvbnQtZmFtaWx5PSdSb2JvdG8nIGZvbnQtc2l6ZT0nMTYnPiYjeDI1QkU7PC90ZXh0Pjwvc3ZnPg==");
 
 $textfieldColors: (
-  text-color:                      ((#000,            0.87), (#fff,            1.00)),
-  secondary-text-color:            ((#000,            0.54), (#fff,            0.70)),
-  placeholder-color__focus:        ((#000,            0.42), (#fff,            0.50)),
-  disabled-color:                  ((#000,            0.38), (#fff,            0.50)),
-  divider-color:                   ((#000,            0.12), (#fff,            0.12)),
-  box-fill-color:                  ((#000,            0.06), (#fff,            0.10)),
-  border-line-color:               ((#000,            0.42), (#fff,            0.70)),
-  border-line-color__hover:        ((#000,            0.87), (#fff,            1.00)),
-  border-line-color__focus:        (('primary', 'A700', 1.00), ('primary', 'A200', 1.00)),
-  border-line-accent-color__focus: (('accent',  'A700', 1.00), ('accent',  'A200', 1.00)),
-  border-line-warn-color__focus:   (('warn',    'A400', 1.00), ('warn',    'A400', 1.00)),
-  label-color__focus:              (('primary', 'A700', 0.87), ('primary', 'A200', 1.00)),
-  label-accent-color__focus:       (('accent',  'A700', 0.87), ('accent',  'A200', 1.00)),
-  label-warn-color__focus:         (('warn',    'A400', 0.87), ('warn',    'A400', 1.00)),
-  drop-down-background-image:      ($dropdownButtonLightTheme, $dropdownButtonDarkTheme),
+  text-color:                         ((#000,            0.87), (#fff,            1.00)),
+  secondary-text-color:               ((#000,            0.54), (#fff,            0.70)),
+  placeholder-color__focus:           ((#000,            0.42), (#fff,            0.50)),
+  disabled-color:                     ((#000,            0.38), (#fff,            0.50)),
+  textarea-disabled-border-color:     ((#000,            0.10), (#fff,            0.30)),
+  textarea-disabled-background-color: ((#000,            0.06), (#fff,            0.10)),
+  box-fill-color:                     ((#000,            0.06), (#fff,            0.10)),
+  border-line-color:                  ((#000,            0.42), (#fff,            0.70)),
+  border-line-color__hover:           ((#000,            0.87), (#fff,            1.00)),
+  border-line-color__focus:           (('primary', 'A700', 1.00), ('primary', 'A200', 1.00)),
+  border-line-accent-color__focus:    (('accent',  'A700', 1.00), ('accent',  'A200', 1.00)),
+  border-line-warn-color__focus:      (('warn',    'A400', 1.00), ('warn',    'A400', 1.00)),
+  label-color__focus:                 (('primary', 'A700', 0.87), ('primary', 'A200', 1.00)),
+  label-accent-color__focus:          (('accent',  'A700', 0.87), ('accent',  'A200', 1.00)),
+  label-warn-color__focus:            (('warn',    'A400', 0.87), ('warn',    'A400', 1.00)),
+  drop-down-background-image:         ($dropdownButtonLightTheme, $dropdownButtonDarkTheme),
   // drop-down-background-image:      (getDropDownBackgroundImage(rgba(0,0,0,0.54)) , getDropDownBackgroundImage(rgba(255,255,255,0.70))),
 );
 
@@ -98,28 +99,30 @@ $textfieldColors: (
               color: textfieldThemeValue("label-warn-color__focus", $type, $theme);
             }
           }
+        }
 
-          // Disabled
+        // Disabled
 
-          &:disabled {
+        &:disabled {
+          color: textfieldThemeValue("disabled-color", $type, $theme);
+          & ~ .mdw-textfield__label,
+          & ~ .mdw-textfield__prefix,
+          & ~ .mdw-textfield__suffix {
             color: textfieldThemeValue("disabled-color", $type, $theme);
-            & ~ .mdw-textfield__label {
-              color: textfieldThemeValue("disabled-color", $type, $theme);
-            }
-            & ~ .mdw-textfield__border-line {
-              border-color: textfieldThemeValue("disabled-color", $type, $theme);
-            }
           }
-
-          // Hover or Focus
-
-          &:hover:not(:disabled),
-          &:focus {
-            & ~ .mdw-textfield__border-line {
-              border-color: textfieldThemeValue("border-line-color__hover", $type, $theme);
-            }
+          & ~ .mdw-textfield__border-line {
+            border-color: textfieldThemeValue("disabled-color", $type, $theme);
           }
         }
+
+        // Hover or Focus
+        &:hover:not(:disabled),
+        &:focus {
+          & ~ .mdw-textfield__border-line {
+            border-color: textfieldThemeValue("border-line-color__hover", $type, $theme);
+          }
+        }
+        
         &:not(:focus) {
           /* Rules must be separated for IE11 support */
           &:placeholder-shown ~ .mdw-textfield__prefix,
@@ -153,12 +156,18 @@ $textfieldColors: (
           border-color: textfieldThemeValue("border-line-color", $type, $theme);
         }
         &:disabled {
-          background-color: textfieldThemeValue("divider-color", $type, $theme);
-          border-color: textfieldThemeValue("disabled-color", $type, $theme);
+          background-color: textfieldThemeValue("textarea-disabled-background-color", $type, $theme);
         }
         &:hover:not(:focus):not(:disabled) {
           border-color: textfieldThemeValue("border-line-color__hover", $type, $theme);
         }
+      }
+      
+      &[mdw-textarea] > .mdw-textfield__input:disabled {
+        border-color: textfieldThemeValue("textarea-disabled-border-color", $type, $theme);
+      }
+      &[mdw-box] > .mdw-textfield__input:disabled {
+        border-color: transparent;
       }
 
       &[mdw-box] > .mdw-textfield__input {

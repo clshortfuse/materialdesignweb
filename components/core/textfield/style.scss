@@ -140,6 +140,10 @@ $icon-signifier__padding-end: dp(16);
     padding-bottom: 0;
   }
 
+  &:disabled {
+    cursor: not-allowed;
+  }
+
   // color: var(--primary-text-color);
 
   &::placeholder {
