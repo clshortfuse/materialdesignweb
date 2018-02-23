@@ -35,8 +35,8 @@ $toolbar-right-padding: dp(16);
 .mdw-toolbar__title {
   margin-left: dp(72);
   margin-right: dp(16);
+  flex-grow: 1;
   .mdw-toolbar > & {
-    flex-grow: 1;
     flex-direction: column;
     display: flex;
   }
