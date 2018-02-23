@@ -53,29 +53,30 @@ $textfieldColors: (
           color: textfieldThemeValue("secondary-text-color", $type, $theme);
         }
       }
+      
       input.mdw-textfield__input:not(:focus)[mdw-value-empty] {
         color: transparent;
       }
       input.mdw-textfield__input:not(:focus):placeholder-shown {
         color: transparent;
       }
+      &:not([mdw-solo]) > .mdw-textfield__input:not(:focus)::placeholder {
+        color: transparent;
+      }
+      &:not([mdw-solo]) > .mdw-textfield__input:not(:focus):-ms-input-placeholder {
+        color: transparent !important;
+      }
+      .mdw-textfield__input::placeholder {
+        color: textfieldThemeValue("placeholder-color__focus", $type, $theme);
+      }
+      .mdw-textfield__input:-ms-input-placeholder {
+        color: textfieldThemeValue("placeholder-color__focus", $type, $theme) !important;
+      }
+
+
       .mdw-textfield__input {
         color: textfieldThemeValue("text-color", $type, $theme);
-        &::placeholder {
-          color: transparent;
-        }
-        &:-ms-input-placeholder {
-          color: transparent !important;
-        }
-        
         &:focus {
-          &::placeholder {
-            color: textfieldThemeValue("placeholder-color__focus", $type, $theme);
-          }
-          &:-ms-input-placeholder {
-            color: textfieldThemeValue("placeholder-color__focus", $type, $theme) !important;
-          }
-
           & ~ .mdw-textfield__label {
             color: textfieldThemeValue("label-color__focus", $type, $theme);
           }

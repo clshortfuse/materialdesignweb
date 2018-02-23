@@ -136,6 +136,10 @@ $icon-signifier__padding-end: dp(16);
   // Offset from top = LabelTopPadding + LabelText + LabelBottomPadding + 8dp
   // Using padding-top causes overflowed text (multiline)
   margin-top: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom});
+  [mdw-solo] > & {
+    margin-top: 0;
+    padding-bottom: 0;
+  }
 
   // color: var(--primary-text-color);
 
