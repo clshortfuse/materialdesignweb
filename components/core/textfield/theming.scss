@@ -15,6 +15,7 @@ $textfieldColors: (
   placeholder-color__focus:        ((#000,            0.42), (#fff,            0.50)),
   disabled-color:                  ((#000,            0.38), (#fff,            0.50)),
   divider-color:                   ((#000,            0.12), (#fff,            0.12)),
+  box-fill-color:                  ((#000,            0.06), (#fff,            0.10)),
   border-line-color:               ((#000,            0.42), (#fff,            0.70)),
   border-line-color__hover:        ((#000,            0.87), (#fff,            1.00)),
   border-line-color__focus:        (('primary', 'A700', 1.00), ('primary', 'A200', 1.00)),
@@ -135,7 +136,7 @@ $textfieldColors: (
         background-image: textfieldThemeValue("drop-down-background-image", $type, $theme);
       }
 
-      &[mdw-color="accent"] > .mdw-textfield__input:focus {
+      &[mdw-color="accent"] > .mdw-textfield__input:focus:not(:invalid) {
         & ~ .mdw-textfield__label {
             color: textfieldThemeValue("label-accent-color__focus", $type, $theme);
         }
@@ -146,8 +147,11 @@ $textfieldColors: (
         }
       }
 
-      &[mdw-textarea] > .mdw-textfield__input{
-        border-color: textfieldThemeValue("border-line-color", $type, $theme);
+      &[mdw-box] > .mdw-textfield__input,
+      &[mdw-textarea] > .mdw-textfield__input {
+        &:not(:focus) {
+          border-color: textfieldThemeValue("border-line-color", $type, $theme);
+        }
         &:disabled {
           background-color: textfieldThemeValue("divider-color", $type, $theme);
           border-color: textfieldThemeValue("disabled-color", $type, $theme);
@@ -155,6 +159,10 @@ $textfieldColors: (
         &:hover:not(:focus):not(:disabled) {
           border-color: textfieldThemeValue("border-line-color__hover", $type, $theme);
         }
+      }
+
+      &[mdw-box] > .mdw-textfield__input {
+        background-color: textfieldThemeValue("box-fill-color", $type, $theme);
       }
 
       .mdw-textfield__border-line {
