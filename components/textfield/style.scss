@@ -144,6 +144,7 @@ $icon-signifier__padding-end: dp(16);
     will-change: color;
     transition-property: color;
     transition-timing-function: $motion-easing-standard;
+    transition-delay: 1ms;
     transition-duration: $motion-duration-desktop-default;
     @include allHandsets {
       transition-duration: $motion-duration-mobile-default;
@@ -226,6 +227,7 @@ select.mdw-textfield__input {
     margin-top: -$border-line__focused__height;
     will-change: transform;
     transition-property: transform;
+    transition-delay: 1ms;
   }
 }
 
