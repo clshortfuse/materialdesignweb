@@ -5,6 +5,10 @@
   @return inline-svg("<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='16px' width='16px'> <text x='0' y='8' fill='#{$color}' font-size='16'>&#x25BE;</text></svg>");
 }
 
+
+$dropdownButtonLightTheme: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZlcnNpb249JzEuMScgaGVpZ2h0PScxNnB4JyB3aWR0aD0nMTZweCc+IDx0ZXh0IHg9JzAnIHk9JzgnIGZpbGw9J3JnYmEoMCwwLDAsMC41NCknIGZvbnQtc2l6ZT0nMTYnPiYjeDI1QkU7PC90ZXh0Pjwvc3ZnPg==");
+$dropdownButtonDarkTheme: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZlcnNpb249JzEuMScgaGVpZ2h0PScxNnB4JyB3aWR0aD0nMTZweCc+IDx0ZXh0IHg9JzAnIHk9JzgnIGZpbGw9J3JnYmEoMjU1LDI1NSwyNTUsMC43MCknIGZvbnQtc2l6ZT0nMTYnPiYjeDI1QkU7PC90ZXh0Pjwvc3ZnPg==");
+
 $textfieldColors: (
   text-color:                      ((#000,            0.87), (#fff,            1.00)),
   secondary-text-color:            ((#000,            0.54), (#fff,            0.70)),
@@ -19,7 +23,7 @@ $textfieldColors: (
   label-color__focus:              (('primary', 'A700', 0.87), ('primary', 'A200', 1.00)),
   label-accent-color__focus:       (('accent',  'A700', 0.87), ('accent',  'A200', 1.00)),
   label-warn-color__focus:         (('warn',    'A400', 0.87), ('warn',    'A400', 1.00)),
-  drop-down-background-image:      ((getDropDownBackgroundImage(rgba(0,0,0,0.54))), (getDropDownBackgroundImage(rgba(255,255,255,0.70)))),
+  drop-down-background-image:      ($dropdownButtonLightTheme, $dropdownButtonDarkTheme),
 );
 
 @function textfieldThemeValue($key, $type, $theme) {
