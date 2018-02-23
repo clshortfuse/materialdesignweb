@@ -115,7 +115,23 @@ label.mdw-textfield(mdw-textarea)
   span.mdw-textfield__label Message
 ```
 
-Use rows to define size. `.mdw-textfield__border-line` is not needed, but can be safely kept because it's hidden when inside a textarea.
+## Boxed
+```
+label.mdw-textfield(mdw-box)
+  input.mdw-textfield__input(placeholder=" ")
+  span.mdw-textfield__label Title
+```
+
+## Boxed Textarea
+```
+label.mdw-textfield(mdw-textarea mdw-box)
+  textarea.mdw-textfield__input(placeholder=" " rows="5")
+  span.mdw-textfield__label Title
+```
+
+# Notes
+
+Use `rows` attribute to define minimum size of multiline or textarea fields. `.mdw-textfield__border-line` is not needed with textarea or boxed fields, but the element does not need to be removed since it is automatically hidden.
 
 # Javascript
 
