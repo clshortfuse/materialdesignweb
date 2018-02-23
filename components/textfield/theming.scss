@@ -53,10 +53,16 @@ $textfieldColors: (
         &::placeholder {
           color: transparent;
         }
+        &:-ms-input-placeholder {
+          color: transparent !important;
+        }
         
         &:focus {
           &::placeholder {
             color: textfieldThemeValue("placeholder-color__focus", $type, $theme);
+          }
+          &:-ms-input-placeholder {
+            color: textfieldThemeValue("placeholder-color__focus", $type, $theme) !important;
           }
 
           & ~ .mdw-textfield__label {
