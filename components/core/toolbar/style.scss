@@ -1,10 +1,10 @@
 // https://material.io/guidelines/layout/structure.html#structure-app-bar
 // https://material.io/guidelines/components/toolbars.html
 
-@import '../common/functions.scss';
-@import '../common/variables.scss';
-@import '../common/motion.scss';
-@import '../common/mixins.scss';
+@import '../../common/functions.scss';
+@import '../../common/variables.scss';
+@import '../../common/motion.scss';
+@import '../../common/mixins.scss';
 
 $toolbar-height-mobile-landscape: dp(48);
 $toolbar-height-mobile-portrait: dp(56);

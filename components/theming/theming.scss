@@ -1,11 +1,11 @@
 @import 'palettes.scss';
-@import '../bottomnav/theming.scss';
-@import '../button/theming.scss';
-@import '../list/theming.scss';
-@import '../selection/theming.scss';
-@import '../tab/theming.scss';
-@import '../textfield/theming.scss';
-@import '../toolbar/theming.scss';
+@import '../core/bottomnav/theming.scss';
+@import '../core/button/theming.scss';
+@import '../core/list/theming.scss';
+@import '../core/selection/theming.scss';
+@import '../core/tab/theming.scss';
+@import '../core/textfield/theming.scss';
+@import '../core/toolbar/theming.scss';
 
 $ie11-tones: (
   primary: ("500", "700"),

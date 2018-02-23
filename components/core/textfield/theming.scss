@@ -1,5 +1,5 @@
-@import '../common/functions.scss';
-@import '../common/mixins.scss';
+@import '../../common/functions.scss';
+@import '../../common/mixins.scss';
 
 @function getDropDownBackgroundImage($color) {
   @return inline-svg("<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='16px' width='16px'> <text x='0' y='8' fill='#{$color}' font-family='Roboto' font-size='16'>&#x25BE;</text></svg>");
