@@ -129,10 +129,6 @@ label.mdw-textfield(mdw-textarea mdw-box)
   span.mdw-textfield__label Title
 ```
 
-# Notes
-
-Use `rows` attribute to define minimum size of multiline or textarea fields. `.mdw-textfield__border-line` is not needed with textarea or boxed fields, but the element does not need to be removed since it is automatically hidden.
-
 # Javascript
 
 ```
@@ -143,6 +139,6 @@ Use `rows` attribute to define minimum size of multiline or textarea fields. `.m
 
 # Notes
 
-Detection as to whether the input value is filled is based on `:placeholder-shown`. The `placeholder` attribute needs to be present and not blank. Use an empty space (`placeholder=" "`) to appear blank instead of a blank or non-existant attribute.
+Use `rows` attribute to define minimum size of multiline or textarea fields. `.mdw-textfield__border-line` is not needed with textarea or boxed fields, but the element does not need to be removed since it is automatically hidden.
 
-As a fallback, browsers that don't support support `:placeholder-shown` will have their labels permanently floated above the input box. Initializing the element with Javascript will ensure the label acts according to spec.
+Detection as to whether the input value is filled is based on `:placeholder-shown`. The `placeholder` attribute needs to be present and not blank. Use an empty space (`placeholder=" "`) to appear blank instead of a blank or non-existant attribute. As a fallback, browsers that don't support support `:placeholder-shown` will have their labels permanently floated above the input box. Initializing the element with Javascript will ensure the label acts according to spec.

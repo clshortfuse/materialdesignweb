@@ -38,7 +38,7 @@ export default class TextField {
   constructor(element) {
     this.element = element;
     this.input = element.querySelector('.mdw-textfield__input');
-    if (this.input.tagName === 'TEXTAREA' && this.input.hasAttribute('mdw-multiline')) {
+    if (this.input.tagName.toLowerCase() === 'textarea' && this.input.hasAttribute('mdw-multiline')) {
       this.input.addEventListener('input', () => {
         updateTextAreaSize(this.input);
       });
