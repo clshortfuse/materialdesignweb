@@ -179,25 +179,6 @@ $button__focus-animation-duration: 1667ms;
   }
 }
 
-@keyframes press-fade-out {
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes press-fill-in {
-  from {
-    transform: scale(0);
-  }
-  to {
-    transform: scale(10.0);
-  }
-}
-@keyframes press-fill-out {
-  to {
-    transform: scale(10.0);
-  }
-}
 @keyframes focus-pulse {
   from { transform: scale(7.5); }
   to { transform: scale(8.0) }
