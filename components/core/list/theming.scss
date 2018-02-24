@@ -43,11 +43,14 @@ $listColors: (
     color: listThemeValue("secondary-text-color", $type);
   }
   .mdw-list__row {
-    &[tabindex]:active:focus {
+    &[selected] {
       background-color: listThemeValue("press-color", $type);
     }
-    &:active:not(:focus-within),
-    &:active[tabindex]:focus:not(:focus-within) {
+    &[tabindex]:active:focus::before {
+      background-color: listThemeValue("press-color", $type);
+    }
+    &:active:not(:focus-within)::before,
+    &:active[tabindex]:focus:not(:focus-within)::before {
       background-color: listThemeValue("press-color", $type);
     }
     & > .mdw-ripple,

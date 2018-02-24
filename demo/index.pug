@@ -14,6 +14,7 @@ html(lang='en')
   body
     .nav
       ul.mdw-list
+        .mdw-list__subheader Core
         label.mdw-list__row(for="show-bottomnav") bottomnav
         label.mdw-list__row(for="show-button") button
         label.mdw-list__row(for="show-list") list
@@ -21,6 +22,8 @@ html(lang='en')
         label.mdw-list__row(for="show-tab") tab
         label.mdw-list__row(for="show-textfield") textfield
         label.mdw-list__row(for="show-toolbar") toolbar
+        .mdw-list__subheader Compound
+        label.mdw-list__row(for="show-search") search
 
     .page
       span Large Font Size
@@ -36,8 +39,9 @@ html(lang='en')
       input(type="radio" name="show-component" value="list"      id="show-list")
       input(type="radio" name="show-component" value="selection" id="show-selection")
       input(type="radio" name="show-component" value="tab"       id="show-tab")
-      input(type="radio" name="show-component" value="textfield" id="show-textfield" checked)
+      input(type="radio" name="show-component" value="textfield" id="show-textfield")
       input(type="radio" name="show-component" value="toolbar"   id="show-toolbar")
+      input(type="radio" name="show-component" value="search"    id="show-search" checked)
 
       div
 
@@ -55,6 +59,8 @@ html(lang='en')
         include comparisons/textfield.pug
       #toolbar-comparisons.comparisons
         include comparisons/toolbar.pug
+      #search-comparisons.comparisons
+        include comparisons/search.pug
 
 
       #horizontalLine

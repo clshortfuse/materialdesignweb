@@ -33,7 +33,7 @@ function updateInputEmptyState(element) {
 
 export default class TextField {
   /**
-   * @param {Element} element
+   * @param {HTMLElement} element
    */
   constructor(element) {
     this.element = element;

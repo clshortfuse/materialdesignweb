@@ -108,8 +108,15 @@ function start() {
   forEachNode(document.querySelectorAll('.mdw-tab__action'), (element) => {
     new mdw.TabItem(element);
   });
+  forEachNode(document.querySelectorAll('.mdw-search'), (element) => {
+    new mdw.Search(element);
+  });
   forEachNode(document.querySelectorAll('.target'), (element) => {
     element.addEventListener('click', onTemplateImageClick);
+  });
+  const searchDemo = new mdw.Search({
+    textfield: document.getElementById('search-textfield'),
+    list: document.getElementById('search-list'),
   });
 }
 

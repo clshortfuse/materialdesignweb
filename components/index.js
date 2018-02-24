@@ -3,6 +3,7 @@ import ListRow from './core/list/index';
 import { Tab, TabItem } from './core/tab/index';
 import TextField from './core/textfield/index';
 
+import Search from './compound/search/index';
 
 export {
   Button,
@@ -10,4 +11,5 @@ export {
   Tab,
   TabItem,
   TextField,
+  Search,
 };
