@@ -55,7 +55,9 @@ $list__divider-height: dp(1);
   outline: none;
 
   cursor: pointer;
-  
+  &[hidden] {
+    display: none;
+  }
 }
 
 .mdw-list > .mdw-list__row:first-child {

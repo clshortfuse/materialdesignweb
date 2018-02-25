@@ -7,57 +7,104 @@ include ../mixins.pug
       .mdw-toolbar__action
         .mdw-toolbar__start
           button.mdw-button(mdw-icon mdw-active).material-icons arrow_back
-        .mdw-toolbar__title.mdw-textfield#search-textfield(mdw-solo mdw-color="accent")
+        .mdw-toolbar__title.mdw-textfield#search-textfield-simple(mdw-solo mdw-color="accent")
           input.mdw-textfield__input(placeholder="Search")
         .mdw-toolbar__end
           button.mdw-button(mdw-icon mdw-active).material-icons clear
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="50")
-      ul.mdw-list#search-list
+      ul.mdw-list#search-list-simple
+        li.mdw-list__row Attractions
+        li.mdw-list__row Dining
+        li.mdw-list__row Education
+        li.mdw-list__row Family
+        li.mdw-list__row Health
+        li.mdw-list__row Office
+        li.mdw-list__row Promotions
+        li.mdw-list__row Radio
+        li.mdw-list__row Recipes
+        li.mdw-list__row Sports
+        li.mdw-list__row Travel
+    +androidnavbar
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xObnc4ZFYybVRWY2s/single-action4.png')
+
+.comparison
+  .render
+    +androidstatusbar('rgb(var(--primary-700-color))')
+    .mdw-toolbar.mdw-theme__filled(mdw-color='primary' mdw-tone='500')
+      .mdw-toolbar__action
+        .mdw-toolbar__start
+          button.mdw-button(mdw-icon mdw-active).material-icons arrow_back
+        .mdw-toolbar__title.mdw-textfield#search-textfield-multiline(mdw-solo mdw-color="accent")
+          input.mdw-textfield__input(placeholder="Search")
+        .mdw-toolbar__end
+          button.mdw-button(mdw-icon mdw-active).material-icons clear
+    .content.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+      ul.mdw-list#search-list-multiline
+        li.mdw-list__subheader Today
         li.mdw-list__row
           .mdw-list__start
-            i.material-icons access_time
-          .mdw-list__text destiny
-        li.mdw-list__row 19th amendment
+            i.material-icons(style="font-size:40px") &#xE853;
+          .mdw-list__text
+            .mdw-list__text-line Brunch this weekend?
+            .mdw-list__text-block Ali Connors 
+              span  &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to meet?
+        li.mdw-list__row
           .mdw-list__start
-            i.material-icons access_time
-        li.mdw-list__row brussels sprouts
+            i.material-icons(style="font-size:40px") &#xE853;
+          .mdw-list__text
+            .mdw-list__text-line Summer BBQ
+              span  4
+            .mdw-list__text-block to Alex, Scott, Jennifer
+              span  &mdash; Wish I could come. but I'm out of town this weekend.
+        li.mdw-list__row
           .mdw-list__start
-            i.material-icons access_time
-        li.mdw-list__row scandal
+            i.material-icons(style="font-size:40px") &#xE853;
+          .mdw-list__text
+            .mdw-list__text-line Oui oui
+            .mdw-list__text-block Sandra Adams
+              span  &mdash; Do you have Paris recommendations? Have you ever been?
+        li.mdw-list__row
           .mdw-list__start
-            i.material-icons access_time
-        li.mdw-list__row Attractions
+            i.material-icons(style="font-size:40px") &#xE853;
+          .mdw-list__text
+            .mdw-list__text-line Birthday gift
+            .mdw-list__text-block Trevor Hansen
+              span  &mdash; Have any ideas about what we should get Heidi for her birthday?
+        li.mdw-list__row
           .mdw-list__start
-            i.material-icons local_activity
-        li.mdw-list__row Dining
+            i.material-icons(style="font-size:40px") &#xE853;
+          .mdw-list__text
+            .mdw-list__text-line Recipe to try
+            .mdw-list__text-block Britta Holt
+              span  &mdash; We should eat this: Grated Squash, Corn, and tomatillo Tacos J
+        li.mdw-list__row
           .mdw-list__start
-            i.material-icons local_dining
-        li.mdw-list__row Education
+            i.material-icons(style="font-size:40px") &#xE853;
+          .mdw-list__text
+            .mdw-list__text-line Giants game
+            .mdw-list__text-block David Park
+              span  &mdash; Any interest in seeing
+        li.mdw-list__row
           .mdw-list__start
-            i.material-icons school
-        li.mdw-list__row Family
-          .mdw-list__start
-            i.material-icons people
-        li.mdw-list__row Health
-          .mdw-list__start
-            i.material-icons healing
-        li.mdw-list__row Office
-          .mdw-list__start
-            i.material-icons business
-        li.mdw-list__row Promotions
-          .mdw-list__start
-            i.material-icons local_offer
-        li.mdw-list__row Radio
-          .mdw-list__start
-            i.material-icons radio
-        li.mdw-list__row Recipes
-          .mdw-list__start
-            i.material-icons book
-        li.mdw-list__row Sports
-          .mdw-list__start
-            i.material-icons stars
-        li.mdw-list__row Travel
-          .mdw-list__start
-            i.material-icons local_airport
+            i.material-icons(style="font-size:40px") &#xE853;
+          .mdw-list__text
+            .mdw-list__text-line Montauk weekend
+            .mdw-list__text-block -----
+    +androidnavbar
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xObnc4ZFYybVRWY2s/single-action4.png')
+
+.comparison
+  .render
+    +androidstatusbar('rgb(var(--primary-700-color))')
+    .mdw-toolbar.mdw-theme__filled(mdw-color='primary' mdw-tone='500')
+      .mdw-toolbar__action
+        .mdw-toolbar__start
+          button.mdw-button(mdw-icon mdw-active).material-icons arrow_back
+        .mdw-toolbar__title.mdw-textfield#search-textfield-custom(mdw-solo mdw-color="accent")
+          input.mdw-textfield__input(placeholder="Search")
+        .mdw-toolbar__end
+          button.mdw-button(mdw-icon mdw-active).material-icons clear
+    .content.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+      ul.mdw-list#search-list-custom
     +androidnavbar
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xObnc4ZFYybVRWY2s/single-action4.png')

@@ -1,4 +1,52 @@
-import TextField from '../../core/textfield/index';
+import { TextField } from '../../core/textfield/index';
+import { List } from '../../core/list/index';
+
+
+/**
+ * @param {Object} options
+ * @param {string} options.input
+ * @param {string} options.content
+ * @return {boolean}
+ */
+function defaultFilter(options) {
+  return options.content.trim().toLocaleLowerCase()
+    .indexOf(options.input.trim().toLocaleLowerCase()) !== -1;
+}
+
+/**
+ * @param {HTMLElement} row
+ * @return {string}
+ */
+function defaultRowTextParser(row) {
+  /**
+   * @param {Node} node
+   * @return {string}
+   */
+  function getTextNodeOnly(node) {
+    let text = '';
+    for (let i = 0; i < node.childNodes.length; i += 1) {
+      const childNode = node.childNodes[i];
+      if (childNode.nodeType === Node.TEXT_NODE) {
+        text += childNode.textContent;
+      }
+    }
+    return text;
+  }
+  if (row.hasAttribute('data-mdw-search-text')) {
+    return row.getAttribute('data-mdw-search-text');
+  }
+  let textElement = row.querySelector('.mdw-list__text .mdw-list__text-line');
+  if (!textElement) {
+    textElement = row.querySelector('.mdw-list__text');
+  }
+  if (!textElement) {
+    textElement = row.querySelector('.mdw-list__text');
+  }
+  if (textElement) {
+    return getTextNodeOnly(textElement);
+  }
+  return getTextNodeOnly(row);
+}
 
 /**
  * @param {Element} list
@@ -6,10 +54,10 @@ import TextField from '../../core/textfield/index';
  * @return {Element} sibling
  */
 function selectSibling(list, backwards) {
-  const current = list.querySelector('.mdw-list__row[selected]:not([hidden])');
-  const rows = list.querySelectorAll('.mdw-list__row:not([hidden])');
+  const current = list.querySelector('.mdw-list__row[selected]');
+  const rows = list.querySelectorAll('.mdw-list__row:not([hidden]):not([disabled])');
   let sibling;
-  if (current) {
+  if (current && !current.hasAttribute('hidden')) {
     for (let i = 0; i < rows.length; i += 1) {
       const item = rows[i];
       if (item === current) {
@@ -21,13 +69,10 @@ function selectSibling(list, backwards) {
         break;
       }
     }
-  }
-  if (!sibling) {
-    if (backwards) {
-      sibling = rows[rows.length - 1];
-    } else {
-      sibling = rows[0];
-    }
+  } else if (backwards) {
+    sibling = rows[rows.length - 1];
+  } else {
+    sibling = rows[0];
   }
   if (sibling && sibling !== current) {
     if (current) {
@@ -82,36 +127,54 @@ function scrollRowIntoView(listRow) {
 export default class Search {
   /**
    * @param {Object} options
-   * @param {TextField|HTMLElement} options.textfield
-   * @param {HTMLElement=} options.list
+   * @param {TextField} options.textfield
+   * @param {List} options.list
+   * @param {(function({input:string, content:string}):boolean)=} options.textFilter
+   * @param {(function({HTMLElement}):string)=} options.rowTextParser
    */
   constructor(options) {
-    if (options.textfield instanceof TextField) {
-      this.textfield = options.textfield;
-    } else if (options.textfield && options.textfield.classList.contains('mdw-textfield')) {
-      this.textfield = new TextField(options.textfield);
-    } else {
-      /** @type {HTMLElement} */
-      const element = options.textfield.querySelector('.mdw-textfield');
-      if (!element) {
-        throw new Error('Textfield not found!');
-      }
-      this.textfield = new TextField(element);
-    }
-    if (options.list) {
-      this.list = options.list;
-    } else {
-      /** @type {HTMLElement} */
-      const element = this.textfield.element.querySelector('.mdw-list');
-      if (!element) {
-        throw new Error('List not found!');
-      }
-      this.list = element;
-    }
+    this.textfield = options.textfield;
+    this.list = options.list;
+    this.filter = defaultFilter || options.textFilter;
+    this.rowTextParser = defaultRowTextParser || options.rowTextParser;
 
     this.textfield.input.addEventListener('keydown', (event) => {
       this.onTextFieldInputEvent(event);
     });
+    this.textfield.input.addEventListener('input', (event) => {
+      this.handleInputEvent(event);
+    });
+  }
+
+  /**
+   * @param {Event|InputEvent} event
+   * @return {void}
+   */
+  handleInputEvent(event) {
+    this.filterListRows();
+  }
+
+  /**
+   * @param {function({input:string, content:string}):boolean} fnFilter
+   * @return {void}
+   */
+  filterListRows(fnFilter) {
+    const input = this.textfield.input.value;
+    const current = this.list.element.querySelector('.mdw-list__row[selected]');
+    const rows = this.list.element.querySelectorAll('.mdw-list__row');
+    for (let i = 0; i < rows.length; i += 1) {
+      const row = rows[i];
+      const content = this.rowTextParser(row);
+      const fn = fnFilter || this.filter;
+      if (fn({ input, content })) {
+        row.removeAttribute('hidden');
+      } else {
+        row.setAttribute('hidden', '');
+      }
+    }
+    if (current && current.hasAttribute('hidden')) {
+      selectSibling(this.list.element);
+    }
   }
 
   /**
@@ -127,7 +190,7 @@ export default class Search {
     }
     switch (event.key) {
       case 'ArrowUp': {
-        const sibling = selectSibling(this.list, true);
+        const sibling = selectSibling(this.list.element, true);
         if (sibling) {
           scrollRowIntoView(sibling);
         }
@@ -136,7 +199,7 @@ export default class Search {
         break;
       }
       case 'ArrowDown': {
-        const sibling = selectSibling(this.list, false);
+        const sibling = selectSibling(this.list.element, false);
         if (sibling) {
           scrollRowIntoView(sibling);
         }

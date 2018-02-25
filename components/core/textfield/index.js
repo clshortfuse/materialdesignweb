@@ -31,7 +31,7 @@ function updateInputEmptyState(element) {
   }
 }
 
-export default class TextField {
+class TextField {
   /**
    * @param {HTMLElement} element
    */
@@ -50,3 +50,7 @@ export default class TextField {
     updateInputEmptyState(this.input);
   }
 }
+
+export {
+  TextField,
+};

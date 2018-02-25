@@ -79,7 +79,7 @@ function hasSomeParentHasClass(element, classname) {
 /**
  * @param {NodeList} nodelist
  * @param {Function} callback
- * @param {Object} scope
+ * @param {Object=} scope
  * @return {void}
  */
 function forEachNode(nodelist, callback, scope) {
@@ -88,36 +88,102 @@ function forEachNode(nodelist, callback, scope) {
   }
 }
 
+const myElementMap = new WeakMap();
 /** @return {void} */
 function start() {
   setupOptions();
   forEachNode(document.querySelectorAll('.mdw-textfield'), (element) => {
-    new mdw.TextField(element);
+    myElementMap.set(element, new mdw.TextField(element));
+  });
+  forEachNode(document.querySelectorAll('.mdw-list'), (element) => {
+    myElementMap.set(element, new mdw.List(element));
   });
   forEachNode(document.querySelectorAll('.mdw-list__row'), (element) => {
-    new mdw.ListRow(element);
+    myElementMap.set(element, new mdw.ListRow(element));
   });
   forEachNode(document.querySelectorAll('.mdw-button'), (element) => {
     if (!hasSomeParentHasClass(element, 'no-js')) {
-      new mdw.Button(element);
+      myElementMap.set(element, new mdw.Button(element));
     }
   });
   forEachNode(document.querySelectorAll('.mdw-tab'), (element) => {
-    new mdw.Tab(element);
+    myElementMap.set(element, new mdw.Tab(element));
   });
   forEachNode(document.querySelectorAll('.mdw-tab__action'), (element) => {
-    new mdw.TabItem(element);
-  });
-  forEachNode(document.querySelectorAll('.mdw-search'), (element) => {
-    new mdw.Search(element);
+    myElementMap.set(element, new mdw.TabItem(element));
   });
   forEachNode(document.querySelectorAll('.target'), (element) => {
     element.addEventListener('click', onTemplateImageClick);
   });
-  const searchDemo = new mdw.Search({
-    textfield: document.getElementById('search-textfield'),
-    list: document.getElementById('search-list'),
+  const searchDemoSimple = new mdw.Search({
+    textfield: myElementMap.get(document.getElementById('search-textfield-simple')),
+    list: myElementMap.get(document.getElementById('search-list-simple')),
   });
+  const searchDemoMultiline = new mdw.Search({
+    textfield: myElementMap.get(document.getElementById('search-textfield-multiline')),
+    list: myElementMap.get(document.getElementById('search-list-multiline')),
+  });
+  buildCustomSearch();
 }
+
+/** @return {void} */
+function buildCustomSearch() {
+  const searchDemoCustom = new mdw.Search({
+    textfield: myElementMap.get(document.getElementById('search-textfield-custom')),
+    list: myElementMap.get(document.getElementById('search-list-custom')),
+  });
+  let searchEvent;
+  searchDemoCustom.handleInputEvent = (event) => {
+    /** @return {Promise} */
+    function performSearch() {
+      return new Promise((resolve, reject) => {
+        searchEvent = event;
+        const myData = [];
+        for(let key in window.navigator) {
+          myData.push({ line1: key, line2: navigator[key] });
+        }
+        setTimeout(() => {
+          if (searchEvent === event) {
+            resolve(myData);
+          } else {
+            reject(new Error('expired'));
+          }
+        }, 2000);
+      });
+    }
+    /**
+     * @param {{line1:string, line2:string}[]} items
+     * @return {void}
+     */
+    function repopulateList(items) {
+      const markup = `
+      <div class="mdw-list__text">
+        <div class="mdw-list__text-line"></div>
+        <div class="mdw-list__text-line"></div>
+      </div>
+      `.trim();
+      items.forEach((item) => {
+        const listRow = document.createElement('li');
+        listRow.classList.add('mdw-list__row');
+        listRow.innerHTML = markup;
+        const lines = listRow.querySelectorAll('.mdw-list__text-line');
+        lines[0].textContent = item.line1;
+        lines[1].textContent = item.line2;
+        myElementMap.set(listRow, new mdw.ListRow(listRow));
+        searchDemoCustom.list.element.appendChild(listRow);
+      });
+    }
+    searchDemoCustom.list.clear(myElementMap);
+    performSearch()
+      .then(repopulateList)
+      .catch((error) => {
+        if (error.message === 'expired') {
+          return;
+        }
+        console.error(error);
+      });
+  };
+}
+
 
 start();

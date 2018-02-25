@@ -14,7 +14,39 @@ function updateRipplePosition(element, event) {
   element.style.setProperty('top', `${y}px`);
 }
 
-export default class ListRow {
+class List {
+  /**
+   * @param {Element} element
+   */
+  constructor(element) {
+    this.element = element;
+  }
+
+  detach() {
+    this.element = null;
+  }
+
+  /**
+   * Clear and detach all children
+   * @param {WeakMap} elementMap
+   * @return {void}
+   */
+  clear(elementMap) {
+    const el = this.element;
+    if (!el) {
+      return;
+    }
+    while (el.firstChild) {
+      if (elementMap.has(el.firstChild)) {
+        elementMap.get(el.firstChild).detach();
+        elementMap.delete(el.firstChild);
+      }
+      el.removeChild(el.firstChild);
+    }
+  }
+}
+
+class ListRow {
   /**
    * @param {Element} element
    */
@@ -33,4 +65,18 @@ export default class ListRow {
       updateRipplePosition(this.ripple, event);
     });
   }
+
+  /**
+   * Destroys all HTML Element references for garbage collection
+   * @return {void}
+   */
+  detach() {
+    this.ripple = null;
+    this.element = null;
+  }
 }
+
+export {
+  List,
+  ListRow,
+};
