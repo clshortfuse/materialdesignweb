@@ -1,26 +1,14 @@
 include ../mixins.pug
 
 .comparison.clipped-300
-  .render.mdw-theme-bottomnav
-    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+  .render.mdw-theme-progress
+    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="100")
       .flex-1.display-flex(flex-justify-content="center" flex-align-items="center")
         .mdw-progress-circle.mdw-theme__colored(mdw-color="primary")
-          .mdw-progress-circle__rotator
-            .mdw-progress-circle__quadrants
-              .mdw-progress-circle__quadrant
-                .mdw-progress-circle__ring
-              .mdw-progress-circle__quadrant
-                .mdw-progress-circle__ring
-              .mdw-progress-circle__quadrant
-                .mdw-progress-circle__ring
-        .mdw-progress-circle.mdw-theme__colored(mdw-color="accent" style="width:72px;height:72px")
-          .mdw-progress-circle__rotator
-            .mdw-progress-circle__quadrants
-              .mdw-progress-circle__quadrant
-                .mdw-progress-circle__ring
-              .mdw-progress-circle__quadrant
-                .mdw-progress-circle__ring
-              .mdw-progress-circle__quadrant
-                .mdw-progress-circle__ring
-    +androidnavbar
-  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B3321sZLoP_HZjN1eld5MjRXb2s/components-bottomnavigation-usage1.png')
+          svg(viewBox="0 0 24 24")
+            path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12")
+            path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25")
+        .mdw-progress-circle.mdw-theme__colored(mdw-color="accent" mdw-determinate)
+          svg(viewBox="0 0 24 24")
+            path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12")
+            path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25")

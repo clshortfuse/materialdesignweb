@@ -1,129 +1,229 @@
 // https://material.io/guidelines/components/progress-activity.html#
 
-$animation-duration: 2885ms;
+$radius: 8.75;
+$pi: 3.14159265359;
+$circumference: 2 * $pi * $radius;
+$duration: 1333ms;
+
+/* Linear interpolate between $a and $b */
+@function lerp($a, $b, $p) {
+  @return ($b - $a) * $p + $a;
+}
+
+/* Linear interpolate assuming $a and $b are numeric two-item lists */
+@function lerp-point($a, $b, $p) {
+  @return ( lerp(nth($a, 1), nth($b, 1), $p), lerp(nth($a, 2), nth($b, 2), $p));
+}
+
+
+/* Reduce points to one in a beziery way */
+@function bezier-reduce($points, $p) {
+  @while length($points) > 1 {
+    $tmp: ();
+    @for $i from 1 through length($points) {
+      @if $i < length($points) {
+        $a: nth($points, $i);
+        $b: nth($points, $i + 1);
+        $tmp: append($tmp, lerp-point($a, $b, $p));
+      }
+    }
+    $points: $tmp;
+  }
+  @return nth($points, 1);
+}
+
+
+@function circlePercentage($percent, $limit: 100) {
+  @return $circumference * ((3 * ($limit/100)) - $percent/100);
+}
+
+/* Pure CSS Material Spin Animation
+ * radius = 8.75
+ * pi = 3.14159
+ * circumference = 2 * pi * r = (54.977825)
+ * dash-length = circumference * (100-x)/100 
+ *
+ * Every cycle rotates entire shape an additional -90deg (CCW)
+ * 
+ * Entire animation rotates 4x speed (CW)
+ * 
+ * 1. Start 0.072% from head
+ * 2. Increase to 75% from head
+ * 3. Reduce tail to 0.521% from tail 
+ * 4. Rotate -90 deg
+ *
+ * TODO: Confirm bezier easing
+ */
+
+
+/* Material Ease */
+$bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
+@mixin createMaterialSpinAnimation($detail:1) {
+  $totalFrames: $detail * 8;
+  /* #{$totalFrames} frames */
+  @for $iteration from 0 to 4 {
+    $iterationRotation: -90 * $iteration;
+    /* Ease-in 0-75%  */
+    @for $i from 0 to $detail +1 {
+      $rotation: ($i / $detail) * 180;
+      $keyframe: (($iteration * $detail * 2) + $i) * 100 / $totalFrames;
+      $percent: nth(bezier-reduce($bezier-points, ($i / $detail)), 1) * 75;
+      @if ($percent==0) {
+        $percent: 0.5;
+        $keyframe: $keyframe + 0.0001;
+      }
+      #{$keyframe}% {
+        /* circlePercentage(#{$percent}, 75); */
+        stroke-dashoffset: circlePercentage($percent, 75);
+        transform: rotate(#{$iterationRotation}deg) rotate(#{$rotation}deg);
+      }
+    }
+    /* Ease-out 75-150%  */
+    @for $i from 1 to $detail +1 {
+      $rotation: ($i / $detail) * 180 + 180;
+      $keyframe: (($iteration * $detail * 2) + ($detail + $i)) * 100 / $totalFrames;
+      $percent: nth(bezier-reduce($bezier-points, ($i / $detail)), 2) * 75 + 75;
+      @if ($percent==150) {
+        $percent: 149.5;
+      }
+      #{$keyframe}% {
+        /* circlePercentage(#{$percent}, 75); */
+        stroke-dashoffset: circlePercentage($percent, 75);
+        transform: rotate(#{$iterationRotation}deg) rotate(#{$rotation}deg);
+      }
+    }
+  }
+}
+
+@keyframes material-spin {
+  @include createMaterialSpinAnimation(40);
+}
+
+@keyframes ms-material-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(720deg);
+  }
+}
 .mdw-progress-circle {
-  position: relative;
   width: 48px;
   height: 48px;
+  stroke-width: 2.5;
   margin: 8px;
-  overflow: hidden;
-}
-.mdw-progress-circle__rotator {
-  width: 100%;
-  height: 100%;
-  animation-name: rotateViewport;
-  animation-duration: $animation-duration / 2;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  border-width: inherit;
-  border-color: inherit;
-}
-.mdw-progress-circle__quadrants {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  animation-name: rotateQuadrant;
-  animation-duration: $animation-duration * 4;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-.mdw-progress-circle__ring {
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  box-sizing: border-box;
-  overflow: visible;
-  animation-name: spin360;
-  animation-duration: $animation-duration;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  &::before {
-    overflow: visible;
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    border-style: solid;
-    border-width: 5px;
-    border-color: currentColor;
-    border-top-color: transparent;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    border-radius: 50%;
+  svg {
+    width:100%;
+    height:100%;
+    & > path {
+      fill: none;
+      stroke-width: inherit;
+      stroke: currentColor;
+      transform-origin: center center;
+      &:nth-child(1) {
+        stroke-linecap: square;
+        stroke-dasharray: $circumference * 0.75;
+        stroke-dashoffset: circlePercentage(33.33, 75);
+        animation: material-spin ($duration * 4) linear infinite;
+      }
+      &:nth-child(2) {
+        display: none;
+        transition-property: stroke-dashoffset;
+        transition-duration: $duration;
+        stroke-dashoffset: circlePercentage(0, 100);
+        stroke-dasharray: $circumference;
+      }
+      
+    }
+  }
+  // IE11
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    &:not([mdw-determinate]) svg {
+      animation: ms-material-spin $duration linear infinite;
+    }
+  }
+  // Edge
+  @supports (-ms-accelerator:true) {
+    &:not([mdw-determinate]) svg {
+      animation: ms-material-spin $duration linear infinite;
+    }
   }
 }
 
-.mdw-progress-circle__quadrant {
-  width: 50%;
-  height: 50%;
-  overflow: hidden;
-  transform-origin: inherit;
-  position: absolute;
-  &:nth-child(1) {
-    right: 0;
-    top: 0;
-    .mdw-progress-circle__ring {
-      width: 200%;
-      height: 200%;
-      top: 0;
-      left: -100%;
-      &::before {
-        transform: rotate(45deg);
+.mdw-progress-circle[mdw-determinate] {
+  svg {
+    animation: none;
+    & > path {
+      &:nth-child(1) {
+        display: none;
+        animation: none;
       }
-    }
-  }
-  &:nth-child(2) {
-    right: 0;
-    bottom: 0;
-    & > .mdw-progress-circle__ring {
-      animation-delay: $animation-duration/6;
-      left: -100%;
-      top: -100%;
-      &::before {
-        transform: rotate(135deg);
-      }
-    }
-  }
-  &:nth-child(3) {
-    left: 0;
-    bottom: 0;
-    & > .mdw-progress-circle__ring {
-      animation-delay: 2*$animation-duration/6;
-      left: 0;
-      top: -100%;
-      &::before {
-        transform: rotate(225deg);
+      &:nth-child(2) {
+        display: inline;
       }
     }
   }
 }
 
-
-
-@keyframes rotateViewport {
-  from { transform: rotate(0deg) }
-  to { transform: rotate(360deg) }
+.mdw-progress-circle[value='100'] {
+  svg {
+    & > path:nth-child(2) {
+      stroke-dashoffset: circlePercentage(100);
+    }
+  }
 }
 
-@keyframes rotateQuadrant {
-  0% { transform: rotate(0deg) }
-  24.999% { transform: rotate(0deg) }
-  25% { transform: rotate(-90deg) }
-  49.999% { transform: rotate(-90deg) }
-  50% { transform: rotate(-180deg) }
-  74.999% { transform: rotate(-180deg) }
-  75% { transform: rotate(-270deg) }
-  99.999% { transform: rotate(-270deg) }
-  100% { transform: rotate(-360deg) }
-}
+/* 
+ Unused linear reference
 
-// draw 4 quadrants, hold for two quadrants
-@keyframes spin360 {
-  0% {transform: rotate(0deg);}
-  66.667% {transform: rotate(360deg);}
-  100% {transform: rotate(360deg);}
+@keyframes material-spin-linear {
+  0% {
+    stroke-dashoffset: circlePercentage(0.5, 75);
+    transform: rotate(0deg) rotate(0deg);
+  }
+  12.5% {
+    stroke-dashoffset: circlePercentage(75,75);
+    transform: rotate(0deg) rotate(180deg);
+  }
+  25.0% {
+    stroke-dashoffset: circlePercentage(149.5,75);
+    transform: rotate(0deg) rotate(360deg);
+  }
+  25.001% {
+    stroke-dashoffset: circlePercentage(0.5,75);
+    transform: rotate(-90deg) rotate(0deg);
+  }
+  37.5% {
+    stroke-dashoffset: circlePercentage(75,75);
+    transform: rotate(-90deg) rotate(180deg);
+  }
+  50% {
+    stroke-dashoffset: circlePercentage(149.5,75);
+    transform: rotate(-90deg) rotate(360deg);
+  }
+  50.001% {
+    stroke-dashoffset: circlePercentage(0.5,75);
+    transform: rotate(-180deg) rotate(0deg);
+  }
+  67.5% {
+    stroke-dashoffset: circlePercentage(75,75);
+    transform: rotate(-180deg) rotate(180deg);
+  }
+  75% {
+    stroke-dashoffset: circlePercentage(149.5,75);
+    transform: rotate(-180deg) rotate(360deg);
+  }
+  75.001% {
+    stroke-dashoffset: circlePercentage(0.5,75);
+    transform: rotate(-270deg) rotate(0deg);
+  }
+  87.5% {
+    stroke-dashoffset: circlePercentage(75,75);
+    transform: rotate(-270deg) rotate(180deg);
+  }
+  100% {
+    stroke-dashoffset: circlePercentage(149.5,75);
+    transform: rotate(-270deg) rotate(360deg);
+  }
 }
-
+*/

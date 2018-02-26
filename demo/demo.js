@@ -106,6 +106,9 @@ function start() {
       myElementMap.set(element, new mdw.Button(element));
     }
   });
+  forEachNode(document.querySelectorAll('.mdw-progress-circle'), (element) => {
+    myElementMap.set(element, new mdw.ProgressCircle(element));
+  });
   forEachNode(document.querySelectorAll('.mdw-tab'), (element) => {
     myElementMap.set(element, new mdw.Tab(element));
   });
@@ -115,6 +118,11 @@ function start() {
   forEachNode(document.querySelectorAll('.target'), (element) => {
     element.addEventListener('click', onTemplateImageClick);
   });
+  const sampleProgressCircle = myElementMap.get(document.querySelector('#progress-comparisons .mdw-progress-circle[mdw-determinate]'));
+  setInterval(() => {
+    sampleProgressCircle.setValue(Math.random() * 100);
+  }, 2500);
+
   const searchDemoSimple = new mdw.Search({
     textfield: myElementMap.get(document.getElementById('search-textfield-simple')),
     list: myElementMap.get(document.getElementById('search-list-simple')),
