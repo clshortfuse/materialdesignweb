@@ -70,11 +70,11 @@ include ../mixins.pug
           input.mdw-textfield__input(type="text" placeholder=" " required)
           .mdw-textfield__label Zip code *
           .mdw-textfield__border-line
-      .mdw-textfield(mdw-color="accent")
+      label.mdw-textfield(mdw-color="accent")
         input.mdw-textfield__input(type="text" placeholder=" ")
-        label.mdw-textfield__label Phone number
+        .mdw-textfield__label Phone number
         .mdw-textfield__border-line
-      span * Required fields
+      div * Required fields
     +androidnavbar
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOV21vLWJFeUFoUXc/required-example.png')
 

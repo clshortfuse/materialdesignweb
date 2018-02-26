@@ -31,19 +31,23 @@ $icon-signifier__padding-end: dp(16);
 .mdw-textfield {
   display: grid;
   justify-content: flex-start;
-  grid-template-columns: auto minmax(88px, 1fr) auto;
+  // 1: Label
+  // 1: Icon Prefix Input Suffix
+  // 2: -----Borderline---------
+  // 3: Helper/Error
+  // 4: Dropdown
+  grid-template-columns: auto auto minmax(88px, 1fr) auto;
   grid-template-rows: auto;
   align-items: baseline;
   flex-direction: column;
   font-size: sp(16);
-  position: relative;
 }
 .mdw-textfield__prefix {
-  grid-column: 1;
+  grid-column: 2;
   padding-right: 4px;
 }
 .mdw-textfield__suffix {
-  grid-column: 3;
+  grid-column: 4;
   padding-left: 4px;
 }
 .mdw-textfield__prefix,
@@ -66,11 +70,12 @@ $icon-signifier__padding-end: dp(16);
 
 .mdw-textfield__label {
   // Default state is floating (ie/edge does not support placeholder-shown)
-  position: absolute;
-  order: 1;
   padding: 0;
   margin: 0;
-  top: 0;
+  grid-row: 1;
+  grid-column-start: 2;
+  grid-column-end: 5;
+  -ms-grid-column-span: 5 - 2 + 1;
 
   align-self: flex-start;
 
@@ -103,26 +108,22 @@ $icon-signifier__padding-end: dp(16);
 }
 
 .mdw-textfield__icon {
-  position: absolute;
-  left: 0;
-  top: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom});
-  & ~ .mdw-textfield__input,
-  & ~ .mdw-textfield__label,
-  & ~ .mdw-textfield__border-line,
-  & ~ .mdw-textfield__helper-text,
-  & ~ .mdw-textfield__error-text {
-    margin-left: dp(43);
-  }
+  grid-column: 1;
+  grid-row: 1;
+  margin-right: dp(20);
+  align-self: flex-start;
+  transform: translateY(#{$label__padding-top})
+             translateY(#{$label__font-size})
+             translateY(#{$label__padding-bottom});
 }
 
 .mdw-textfield__input {
-  order: 2;
   padding: 0;
   margin: 0;
   background: none;
   border: none;
   outline: none;
-  grid-column: 2;
+  grid-column: 3;
   grid-row: 1;
 
   font-size: inherit;
@@ -211,21 +212,19 @@ select.mdw-textfield__input {
 }
 
 .mdw-textfield__border-line {
-  grid-column-start: 1;
-  grid-column-end: 4;
-  -ms-grid-column-span: 4;
+  grid-column-start: 2;
+  grid-column-end: 5;
+  -ms-grid-column-span: 5 - 2 + 1;
   grid-row: 2;
   
   [mdw-box] > &,
   [mdw-textarea] > & {
     display: none;
   }
-  order: 3;
   height: 0;
   margin-top: -$border-line__height;
   margin-bottom: $border-line__bottom-padding;
   border-top-style: solid;
-  position: relative;
   box-sizing: border-box;
   pointer-events: none;
   
@@ -252,23 +251,18 @@ select.mdw-textfield__input {
 .mdw-textfield__error-text {
   // color: transparent; // will transition when shown
   transform: translateY(-$helper-text__font-size / 4);
-  .mdw-textfield__helper-text ~ & {
-    position: absolute; // spacing provided by helper-text
-  }
 }
 
 .mdw-textfield__helper-text,
 .mdw-textfield__error-text {
   font-size: $helper-text__font-size;
   grid-row: 3;
-  grid-column-start: 1;
-  grid-column-end: 4;
-  -ms-grid-column-span: 4;
-  order: 4;
+  grid-column-start: 2;
+  grid-column-end: 5;
+  -ms-grid-column-span: 5 - 2 + 1;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  width: 100%;
 
   [mdw-box] > &,
   [mdw-textarea] > & {
@@ -290,7 +284,7 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
     &:placeholder-shown ~ .mdw-textfield__label {
       transform: translateY($label__font-size) translateY($label__padding-bottom);
       font-size: inherit;
-      // grid-column-start: 2;
+      // grid-column-start: 3;
       [mdw-textarea] > & {
         // Eyeballed due to lack of specs
         transform: translateY($label__font-size) translateY(-4px);
@@ -302,7 +296,7 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
     &[mdw-value-empty] ~ .mdw-textfield__label {
       transform: translateY($label__font-size) translateY($label__padding-bottom);
       font-size: inherit;
-      // grid-column-start: 2;
+      // grid-column-start: 3;
       [mdw-textarea] > & {
         // Eyeballed due to lack of specs
         transform: translateY($label__font-size) translateY(-4px);
