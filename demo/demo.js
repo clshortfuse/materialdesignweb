@@ -141,7 +141,24 @@ function buildCustomSearch() {
     list: myElementMap.get(document.getElementById('search-list-custom')),
   });
   let searchEvent;
-  searchDemoCustom.handleInputEvent = (event) => {
+  const progressCircle = searchDemoCustom.textfield.element.querySelector('.mdw-progress-circle');
+  let searchPerformed = false;
+  let searchBusy = false;
+  const onEvent = (event) => {
+    /** @return {Promise} */
+    function showProgressCircle() {
+      return new Promise((resolve, reject) => {
+        progressCircle.style.setProperty('display', 'block');
+        resolve();
+      });
+    }
+    /** @return {Promise} */
+    function hideProgressCircle() {
+      return new Promise((resolve, reject) => {
+        progressCircle.style.setProperty('display', 'none');
+        resolve();
+      });
+    }
     /** @return {Promise} */
     function performSearch() {
       return new Promise((resolve, reject) => {
@@ -161,29 +178,49 @@ function buildCustomSearch() {
     }
     /**
      * @param {{line1:string, line2:string}[]} items
-     * @return {void}
+     * @return {Promise}
      */
     function repopulateList(items) {
-      const markup = `
-      <div class="mdw-list__text">
-        <div class="mdw-list__text-line"></div>
-        <div class="mdw-list__text-line"></div>
-      </div>
-      `.trim();
-      items.forEach((item) => {
-        const listRow = document.createElement('li');
-        listRow.classList.add('mdw-list__row');
-        listRow.innerHTML = markup;
-        const lines = listRow.querySelectorAll('.mdw-list__text-line');
-        lines[0].textContent = item.line1;
-        lines[1].textContent = item.line2;
-        myElementMap.set(listRow, new mdw.ListRow(listRow));
-        searchDemoCustom.list.element.appendChild(listRow);
+      return new Promise((resolve) => {
+        const markup = `
+        <div class="mdw-list__text">
+          <div class="mdw-list__text-line"></div>
+          <div class="mdw-list__text-line"></div>
+        </div>
+        `.trim();
+        items.forEach((item) => {
+          const listRow = document.createElement('li');
+          listRow.classList.add('mdw-list__row');
+          listRow.innerHTML = markup;
+          const lines = listRow.querySelectorAll('.mdw-list__text-line');
+          lines[0].textContent = item.line1;
+          lines[1].textContent = item.line2;
+          myElementMap.set(listRow, new mdw.ListRow(listRow));
+          searchDemoCustom.list.element.appendChild(listRow);
+        });
+        resolve();
       });
     }
+    if (searchPerformed) {
+      searchDemoCustom.filterListRows();
+      return;
+    }
+    if (searchBusy) {
+      return;
+    }
+    searchBusy = true;
     searchDemoCustom.list.clear(myElementMap);
-    performSearch()
+    showProgressCircle()
+      .then(performSearch)
       .then(repopulateList)
+      .then(hideProgressCircle)
+      .then(() => {
+        searchPerformed = true;
+        searchBusy = false;
+      })
+      .then(() => {
+        searchDemoCustom.filterListRows();
+      })
       .catch((error) => {
         if (error.message === 'expired') {
           return;
@@ -191,6 +228,9 @@ function buildCustomSearch() {
         console.error(error);
       });
   };
+
+  searchDemoCustom.handleInputEvent = onEvent;
+  searchDemoCustom.handleFocusEvent = onEvent;
 }
 
 

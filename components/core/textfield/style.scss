@@ -29,6 +29,7 @@ $icon-signifier__padding-end: dp(16);
 
 
 .mdw-textfield {
+  position: relative;
   display: grid;
   justify-content: flex-start;
   // 1: Label
@@ -274,6 +275,43 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
   & ~ .mdw-textfield__label {
     transform: translateY(0);
     font-size: $label__font-size;
+  }
+}
+
+.mdw-textfield__dropdown {
+  position: absolute;
+  grid-row: 3;
+  grid-column-start: 2;
+  grid-column-end: 5;
+  -ms-grid-column-span: 5 - 2 + 1;
+  box-shadow: none;
+  max-height: 0;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  transition-property: box-shadow, max-height;
+  transition-duration: $motion-duration-desktop-leave;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-leave;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-leave;
+  }
+  &[mdw-show],
+  &:focus-within,
+  &:active,
+  input:focus ~ & {
+    &:not([mdw-hide]) {
+      transition-duration: $motion-duration-desktop-enter;
+      @include allHandsets {
+        transition-duration: $motion-duration-mobile-enter;
+      }
+      @include allTablets {
+        transition-duration: $motion-duration-tablet-enter;
+      }
+      box-shadow: elevation(24);
+      max-height: calc(300px);
+    }
   }
 }
 /* Behavior changes */

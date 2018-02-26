@@ -118,9 +118,9 @@ function scrollRowIntoView(listRow) {
   }
   const visibility = getElementVisibility(listRow);
   if (visibility < 0) {
-    listRow.scrollIntoView(true);
+    listRow.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
   } else if (visibility > 0) {
-    listRow.scrollIntoView(false);
+    listRow.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
   }
 }
 
@@ -139,10 +139,13 @@ export default class Search {
     this.rowTextParser = defaultRowTextParser || options.rowTextParser;
 
     this.textfield.input.addEventListener('keydown', (event) => {
-      this.onTextFieldInputEvent(event);
+      this.onTextFieldKeydownEvent(event);
     });
     this.textfield.input.addEventListener('input', (event) => {
       this.handleInputEvent(event);
+    });
+    this.textfield.input.addEventListener('focus', (event) => {
+      this.handleFocusEvent(event);
     });
   }
 
@@ -155,7 +158,13 @@ export default class Search {
   }
 
   /**
-   * @param {function({input:string, content:string}):boolean} fnFilter
+   * @param {Event} event
+   * @return {void}
+   */
+  handleFocusEvent(event) {}
+
+  /**
+   * @param {(function({input:string, content:string}):boolean)=} fnFilter
    * @return {void}
    */
   filterListRows(fnFilter) {
@@ -181,7 +190,7 @@ export default class Search {
    * @param {KeyboardEvent} event
    * @return {void}
    */
-  onTextFieldInputEvent(event) {
+  onTextFieldKeydownEvent(event) {
     if (event.defaultPrevented) {
       return;
     }
