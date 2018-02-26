@@ -1,0 +1,129 @@
+// https://material.io/guidelines/components/progress-activity.html#
+
+$animation-duration: 2885ms;
+.mdw-progress-circle {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  overflow: hidden;
+}
+.mdw-progress-circle__rotator {
+  width: 100%;
+  height: 100%;
+  animation-name: rotateViewport;
+  animation-duration: $animation-duration / 2;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  border-width: inherit;
+  border-color: inherit;
+}
+.mdw-progress-circle__quadrants {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  animation-name: rotateQuadrant;
+  animation-duration: $animation-duration * 4;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.mdw-progress-circle__ring {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  box-sizing: border-box;
+  overflow: visible;
+  animation-name: spin360;
+  animation-duration: $animation-duration;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  &::before {
+    overflow: visible;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-style: solid;
+    border-width: 5px;
+    border-color: currentColor;
+    border-top-color: transparent;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 50%;
+  }
+}
+
+.mdw-progress-circle__quadrant {
+  width: 50%;
+  height: 50%;
+  overflow: hidden;
+  transform-origin: inherit;
+  position: absolute;
+  &:nth-child(1) {
+    right: 0;
+    top: 0;
+    .mdw-progress-circle__ring {
+      width: 200%;
+      height: 200%;
+      top: 0;
+      left: -100%;
+      &::before {
+        transform: rotate(45deg);
+      }
+    }
+  }
+  &:nth-child(2) {
+    right: 0;
+    bottom: 0;
+    & > .mdw-progress-circle__ring {
+      animation-delay: $animation-duration/6;
+      left: -100%;
+      top: -100%;
+      &::before {
+        transform: rotate(135deg);
+      }
+    }
+  }
+  &:nth-child(3) {
+    left: 0;
+    bottom: 0;
+    & > .mdw-progress-circle__ring {
+      animation-delay: 2*$animation-duration/6;
+      left: 0;
+      top: -100%;
+      &::before {
+        transform: rotate(225deg);
+      }
+    }
+  }
+}
+
+
+
+@keyframes rotateViewport {
+  from { transform: rotate(0deg) }
+  to { transform: rotate(360deg) }
+}
+
+@keyframes rotateQuadrant {
+  0% { transform: rotate(0deg) }
+  24.999% { transform: rotate(0deg) }
+  25% { transform: rotate(-90deg) }
+  49.999% { transform: rotate(-90deg) }
+  50% { transform: rotate(-180deg) }
+  74.999% { transform: rotate(-180deg) }
+  75% { transform: rotate(-270deg) }
+  99.999% { transform: rotate(-270deg) }
+  100% { transform: rotate(-360deg) }
+}
+
+// draw 4 quadrants, hold for two quadrants
+@keyframes spin360 {
+  0% {transform: rotate(0deg);}
+  66.667% {transform: rotate(360deg);}
+  100% {transform: rotate(360deg);}
+}
+

@@ -1,0 +1,26 @@
+include ../mixins.pug
+
+.comparison.clipped-300
+  .render.mdw-theme-bottomnav
+    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+      .flex-1.display-flex(flex-justify-content="center" flex-align-items="center")
+        .mdw-progress-circle.mdw-theme__colored(mdw-color="primary")
+          .mdw-progress-circle__rotator
+            .mdw-progress-circle__quadrants
+              .mdw-progress-circle__quadrant
+                .mdw-progress-circle__ring
+              .mdw-progress-circle__quadrant
+                .mdw-progress-circle__ring
+              .mdw-progress-circle__quadrant
+                .mdw-progress-circle__ring
+        .mdw-progress-circle.mdw-theme__colored(mdw-color="accent" style="width:72px;height:72px")
+          .mdw-progress-circle__rotator
+            .mdw-progress-circle__quadrants
+              .mdw-progress-circle__quadrant
+                .mdw-progress-circle__ring
+              .mdw-progress-circle__quadrant
+                .mdw-progress-circle__ring
+              .mdw-progress-circle__quadrant
+                .mdw-progress-circle__ring
+    +androidnavbar
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B3321sZLoP_HZjN1eld5MjRXb2s/components-bottomnavigation-usage1.png')

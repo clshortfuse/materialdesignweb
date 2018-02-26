@@ -15,6 +15,7 @@ $components: (
   'button',
   'selection',
   'list',
+  'progress',
   'tab',
   'textfield',
   'toolbar',
@@ -102,6 +103,9 @@ body {
 }
 [flex-justify-content="center"] {
   justify-content: center;
+}
+[flex-align-items="center"] {
+  align-items: center;
 }
 .flex-wrap {
   flex-wrap: wrap;
