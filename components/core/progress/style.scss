@@ -143,7 +143,7 @@ $bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
     }
   }
   // Edge
-  @supports (-ms-accelerator:true) {
+  @supports (-ms-ime-align:auto) {
     &:not([mdw-determinate]) svg {
       animation: ms-material-spin $duration linear infinite;
     }
