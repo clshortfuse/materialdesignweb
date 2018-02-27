@@ -37,6 +37,7 @@ class TextField {
    */
   constructor(element) {
     this.element = element;
+    /** @type {HTMLInputElement|HTMLSelectElement} */
     this.input = element.querySelector('.mdw-textfield__input');
     if (this.input.tagName.toLowerCase() === 'textarea' && this.input.hasAttribute('mdw-multiline')) {
       this.input.addEventListener('input', () => {

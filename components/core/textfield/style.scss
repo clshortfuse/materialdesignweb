@@ -287,6 +287,7 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
   box-shadow: none;
   max-height: 0;
   overflow: hidden;
+  z-index: 1;
   width: 100%;
   max-width: 100%;
   transition-property: box-shadow, max-height;
@@ -297,11 +298,17 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
   @include allTablets {
     transition-duration: $motion-duration-tablet-leave;
   }
+  &[mdw-type=list] {
+    overflow-y: scroll;
+  }
   &[mdw-show],
   &:focus-within,
   &:active,
   input:focus ~ & {
     &:not([mdw-hide]) {
+      &[mdw-type=list] {
+        max-height: calc(300px);
+      }
       transition-duration: $motion-duration-desktop-enter;
       @include allHandsets {
         transition-duration: $motion-duration-mobile-enter;
@@ -310,9 +317,9 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
         transition-duration: $motion-duration-tablet-enter;
       }
       box-shadow: elevation(24);
-      max-height: calc(300px);
     }
   }
+
 }
 /* Behavior changes */
 .mdw-textfield__input {

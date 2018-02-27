@@ -96,15 +96,34 @@ include ../mixins.pug
 .comparison
   .render
     .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="100" style="padding:8px")
-      .flex-1.display-flex
-        div#dropdownsearch
-          label.mdw-textfield#search-textfield-custom(mdw-color="accent")
+      .flex-1.display-flex(flex-column)
+        p Text field dropdown with one-time search on first input with default row filter
+        div
+          label.mdw-textfield#search-textfield-custom1(mdw-color="accent")
             input.mdw-textfield__input(placeholder=" ")
-            .mdw-textfield__label Name
+            .mdw-textfield__label Property
             .mdw-textfield__border-line
-            .mdw-textfield__dropdown
-              .mdw-progress-circle
-                svg(viewBox="0 0 24 24")
-                  path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12")
-                  path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25")
-              .mdw-list#search-list-custom
+            .mdw-textfield__dropdown(mdw-type="list" mdw-hide)
+              .custom-busy-indicator.display-flex(flex-align-items="center")
+                .mdw-progress-circle
+                  svg(viewBox="0 0 24 24")
+                    path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12")
+                    path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25")
+                span Searching...
+              .mdw-list#search-list-custom1
+        p Text field dropdown with input-based search, 1000ms search time, 300ms debounce, and no row filter
+        div
+          label.mdw-textfield#search-textfield-custom2
+            input.mdw-textfield__input(placeholder=" ")
+            .mdw-textfield__label Property
+            .mdw-textfield__border-line
+            .mdw-textfield__dropdown(mdw-type="list" mdw-hide)
+              .custom-busy-indicator.display-flex(flex-align-items="center")
+                .mdw-progress-circle
+                  svg(viewBox="0 0 24 24")
+                    path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12")
+                    path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25")
+                span Searching...
+              .mdw-list#search-list-custom2
+              .no-results-indicator.display-flex(flex-align-items="center" style="display:none")
+                p No results found.

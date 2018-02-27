@@ -131,6 +131,8 @@ export default class Search {
    * @param {List} options.list
    * @param {(function({input:string, content:string}):boolean)=} options.textFilter
    * @param {(function({HTMLElement}):string)=} options.rowTextParser
+   * @param {boolean=} options.dropdown
+   * @param {boolean=} [options.filterRows=true]
    */
   constructor(options) {
     this.textfield = options.textfield;
@@ -142,26 +144,75 @@ export default class Search {
       this.onTextFieldKeydownEvent(event);
     });
     this.textfield.input.addEventListener('input', (event) => {
-      this.handleInputEvent(event);
+      if (this.handleInputEvent) {
+        this.handleInputEvent(event);
+      }
     });
-    this.textfield.input.addEventListener('focus', (event) => {
-      this.handleFocusEvent(event);
+    this.textfield.input.addEventListener('blur', (event) => {
+      if (this.handleBlurEvent) {
+        this.handleBlurEvent(event);
+      }
     });
+    this.dropdown = options.dropdown;
+    if (options.filterRows !== false) {
+      this.filterRows = true;
+    }
   }
 
   /**
+   * Default input handler
    * @param {Event|InputEvent} event
    * @return {void}
    */
   handleInputEvent(event) {
-    this.filterListRows();
+    this.showDropDown();
+    if (this.filterRows) {
+      this.filterListRows();
+    }
+  }
+
+  /** @return {boolean} handled */
+  showDropDown() {
+    if (this.dropdown) {
+      const dropDownElement = this.textfield.element.querySelector('.mdw-textfield__dropdown');
+      let changed = false;
+      if (dropDownElement.hasAttribute('mdw-hide')) {
+        dropDownElement.removeAttribute('mdw-hide');
+        changed = true;
+      }
+      if (!dropDownElement.hasAttribute('mdw-show')) {
+        dropDownElement.setAttribute('mdw-show', '');
+        changed = true;
+      }
+      return changed;
+    }
+    return false;
+  }
+
+  /** @return {boolean} handled */
+  hideDropDown() {
+    if (this.dropdown) {
+      const dropDownElement = this.textfield.element.querySelector('.mdw-textfield__dropdown');
+      if (!dropDownElement.hasAttribute('mdw-hide')) {
+        dropDownElement.setAttribute('mdw-hide', '');
+        return true;
+      }
+    }
+    return true;
   }
 
   /**
-   * @param {Event} event
+   * @param {Event|FocusEvent} event
    * @return {void}
    */
-  handleFocusEvent(event) {}
+  handleBlurEvent(event) {
+    if (this.dropdown) {
+      const dropDownElement = this.textfield.element.querySelector('.mdw-textfield__dropdown');
+      if (dropDownElement.hasAttribute('mdw-show')) {
+        dropDownElement.removeAttribute('mdw-show');
+      }
+    }
+  }
 
   /**
    * @param {(function({input:string, content:string}):boolean)=} fnFilter
@@ -214,6 +265,13 @@ export default class Search {
         }
         event.stopPropagation();
         event.preventDefault();
+        break;
+      }
+      case 'Escape': {
+        if (this.hideDropDown()) {
+          event.stopPropagation();
+          event.preventDefault();
+        }
         break;
       }
       default:
