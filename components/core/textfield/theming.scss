@@ -79,29 +79,6 @@ $textfieldColors: (
 
       .mdw-textfield__input {
         color: textfieldThemeValue("text-color", $type, $theme);
-        &:focus {
-          & ~ .mdw-textfield__label {
-            color: textfieldThemeValue("label-color__focus", $type, $theme);
-          }
-
-          &,
-          & ~ .mdw-textfield__border-line::before {
-            border-color: textfieldThemeValue("border-line-color__focus", $type, $theme);
-            caret-color: textfieldThemeValue("label-color__focus", $type, $theme);
-          }
-
-          &:invalid {
-            caret-color: textfieldThemeValue("label-warn-color__focus", $type, $theme);
-            &,
-            & ~ .mdw-textfield__border-line::after {
-              border-color: textfieldThemeValue("border-line-warn-color__focus", $type, $theme);
-            }
-            & ~ .mdw-textfield__label {
-              color: textfieldThemeValue("label-warn-color__focus", $type, $theme);
-            }
-          }
-        }
-
         // Disabled
 
         &:disabled {
@@ -138,17 +115,6 @@ $textfieldColors: (
       }
       select.mdw-textfield__input {
         background-image: textfieldThemeValue("dropdown-caret", $type, $theme);
-      }
-
-      &[mdw-color="accent"] > .mdw-textfield__input:focus:not(:invalid) {
-        & ~ .mdw-textfield__label {
-            color: textfieldThemeValue("label-accent-color__focus", $type, $theme);
-        }
-        &,
-        & ~ .mdw-textfield__border-line::before {
-            border-color: textfieldThemeValue("border-line-accent-color__focus", $type, $theme);
-            caret-color: textfieldThemeValue("label-accent-color__focus", $type, $theme);
-        }
       }
 
       &[mdw-box] > .mdw-textfield__input,
@@ -197,6 +163,49 @@ $textfieldColors: (
       }
       .mdw-textfield__dropdown {
         background-color: textfieldThemeValue("dropdown-background-color", $type, $theme);
+      }
+
+      // Focus
+      &:focus-within > .mdw-textfield__input,
+      &:active > .mdw-textfield__input,
+      > .mdw-textfield__input:focus {
+        & ~ .mdw-textfield__label {
+          color: textfieldThemeValue("label-color__focus", $type, $theme);
+        }
+        &,
+        & ~ .mdw-textfield__border-line::before {
+          border-color: textfieldThemeValue("border-line-color__focus", $type, $theme);
+          caret-color: textfieldThemeValue("label-color__focus", $type, $theme);
+        }
+
+        &:invalid {
+          caret-color: textfieldThemeValue("label-warn-color__focus", $type, $theme);
+          &,
+          & ~ .mdw-textfield__border-line::after {
+            border-color: textfieldThemeValue("border-line-warn-color__focus", $type, $theme);
+          }
+          & ~ .mdw-textfield__label {
+            color: textfieldThemeValue("label-warn-color__focus", $type, $theme);
+          }
+        }
+      }
+
+      // Accent on focus
+      &[mdw-color="accent"] {
+        &:focus-within > .mdw-textfield__input,
+        &:active > .mdw-textfield__input,
+        > .mdw-textfield__input:focus {
+          &:not(:invalid) {
+            & ~ .mdw-textfield__label {
+                color: textfieldThemeValue("label-accent-color__focus", $type, $theme);
+            }
+            &,
+            & ~ .mdw-textfield__border-line::before {
+                border-color: textfieldThemeValue("border-line-accent-color__focus", $type, $theme);
+                caret-color: textfieldThemeValue("label-accent-color__focus", $type, $theme);
+            }
+          }
+        }
       }
     }
   }

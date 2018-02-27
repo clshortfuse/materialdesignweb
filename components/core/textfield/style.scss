@@ -84,11 +84,8 @@ $icon-signifier__padding-end: dp(16);
   height: $label__font-size;
   
   pointer-events: none; // allow clickthrough
-  // color: var(--secondary-text-color);
-
   will-change: transform, font-size;
-  
-  
+ 
   transform: translateY(0);
   font-size: $label__font-size;
   transition-property: transform, font-size, grid-column-start;
@@ -146,10 +143,7 @@ $icon-signifier__padding-end: dp(16);
     cursor: not-allowed;
   }
 
-  // color: var(--primary-text-color);
-
   &::placeholder {
-    // color: transparent;
     will-change: color;
     transition-property: color;
     transition-timing-function: $motion-easing-standard;
@@ -167,7 +161,6 @@ $icon-signifier__padding-end: dp(16);
     padding-left: $textarea__padding-start;
     padding-right: $textarea__padding-end;
     border-style: solid;
-    // border-color: var(--textfield-border-line-color);
     border-radius: dp(4);
     // margin-top aligns border
     margin-top: $label__padding-top + $border-line__height;
@@ -183,6 +176,31 @@ $icon-signifier__padding-end: dp(16);
   [mdw-textarea]:not([mdw-box]) > & {
     border-width: $border-line__height;
   }
+
+  &:placeholder-shown ~ .mdw-textfield__label {
+    transform: translateY($label__font-size) translateY($label__padding-bottom);
+    font-size: inherit;
+    // grid-column-start: 3;
+    [mdw-textarea] > & {
+      // Eyeballed due to lack of specs
+      transform: translateY($label__font-size) translateY(-4px);
+    }
+    [mdw-box]:not([mdw-textarea]) > & {
+      transform: translateY($label__font-size);
+    }
+  }
+  &[mdw-value-empty] ~ .mdw-textfield__label {
+    transform: translateY($label__font-size) translateY($label__padding-bottom);
+    font-size: inherit;
+    // grid-column-start: 3;
+    [mdw-textarea] > & {
+      // Eyeballed due to lack of specs
+      transform: translateY($label__font-size) translateY(-4px);
+    }
+    [mdw-box]:not([mdw-textarea]) > & {
+      transform: translateY($label__font-size);
+    }
+  }
 }
 textarea.mdw-textfield__input {
   resize: none;
@@ -192,6 +210,7 @@ textarea.mdw-textfield__input {
     padding-right: 24px;
   }
 }
+
 select.mdw-textfield__input {
   // background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='16px' width='16px'> <text x='0' y='8' fill='black' font-size='16'>&#x25BE;</text></svg>");
   background-position: right center;
@@ -229,8 +248,7 @@ select.mdw-textfield__input {
   border-top-style: solid;
   box-sizing: border-box;
   pointer-events: none;
-  
-  // border-color: var(--textfield-border-line-color);
+
   border-width: $border-line__height;
 
   &::before,
@@ -247,11 +265,7 @@ select.mdw-textfield__input {
   }
 }
 
-.mdw-textfield__helper-text {
-  // color: var(--secondary-text-color);
-}
 .mdw-textfield__error-text {
-  // color: transparent; // will transition when shown
   transform: translateY(-$helper-text__font-size / 4);
 }
 
@@ -322,154 +336,73 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
   }
 
 }
-/* Behavior changes */
-.mdw-textfield__input {
-  /* Unfocused */
-  &:not(:focus) {
-    /* Rules must be separated for IE11 support */
-    &:placeholder-shown ~ .mdw-textfield__label {
-      transform: translateY($label__font-size) translateY($label__padding-bottom);
-      font-size: inherit;
-      // grid-column-start: 3;
-      [mdw-textarea] > & {
-        // Eyeballed due to lack of specs
-        transform: translateY($label__font-size) translateY(-4px);
-      }
-      [mdw-box]:not([mdw-textarea]) > & {
-        transform: translateY($label__font-size);
-      }
-    }
-    &[mdw-value-empty] ~ .mdw-textfield__label {
-      transform: translateY($label__font-size) translateY($label__padding-bottom);
-      font-size: inherit;
-      // grid-column-start: 3;
-      [mdw-textarea] > & {
-        // Eyeballed due to lack of specs
-        transform: translateY($label__font-size) translateY(-4px);
-      }
-      [mdw-box]:not([mdw-textarea]) > & {
-        transform: translateY($label__font-size);
-      }
-    }
+
+// On Focus
+.mdw-textfield:focus-within .mdw-textfield__input,
+.mdw-textfield:active .mdw-textfield__input,
+.mdw-textfield__input:focus {
+  & ~ .mdw-textfield__label {
+    transform: translateY(0);
+    font-size: $label__font-size;
   }
-
-  // Focused
-  &:focus {
-    &::placeholder {
-      // color: var(--textfield-input-placeholder-color__focus);
-    }
+  // Invalid
+  &:invalid {
     & ~ .mdw-textfield__label {
-      transform: translateY(0);
-      font-size: $label__font-size;
-      // pointer-events: auto; // revert to default
-      // color: var(--textfield-label-color__focus);
-      [mdw-color="accent"] > & {
-        // color: var(--textfield-label-accent-color__focus);
-      }
-    }
-
-    &,
-    & ~ .mdw-textfield__border-line::before {
-      // border-color: var(--textfield-border-line-color__focus);
-      // caret-color: var(--textfield-label-color__focus);
-      [mdw-color="accent"] > & {
-        // border-color: var(--textfield-border-line-accent-color__focus);
-        // caret-color: var(--textfield-label-accent-color__focus);
-      }
-    }
-
-    // Invalid
-
-    &:invalid {
-      // caret-color: var(--textfield-label-warn-color__focus);
-      &,
-      & ~ .mdw-textfield__border-line::after {
-        // border-color: var(--textfield-border-line-warn-color__focus);
-      }
-      & ~ .mdw-textfield__label {
-        // color: var(--textfield-label-warn-color__focus);
-        animation-name: labelShake;
-        animation-duration: 250ms;
-        animation-delay: $motion-duration-desktop-default;
-        @include allHandsets {
-          animation-delay: $motion-duration-mobile-default;
-        }
-        @include allTablets {
-          animation-delay: $motion-duration-tablet-default;
-        }
-      }
-    }
-    &,
-    & ~ .mdw-textfield__border-line::before,
-    &:invalid ~ .mdw-textfield__border-line::after {
-      transform: scaleX(1);
-      transition-timing-function: $motion-easing-standard;
-      transition-duration: $motion-duration-desktop-default;
+      animation-name: labelShake;
+      animation-duration: 250ms;
+      animation-delay: $motion-duration-desktop-default;
       @include allHandsets {
-        transition-duration: $motion-duration-mobile-default;
+        animation-delay: $motion-duration-mobile-default;
       }
       @include allTablets {
-        transition-duration: $motion-duration-tablet-default;
+        animation-delay: $motion-duration-tablet-default;
       }
     }
   }
+  & ~ .mdw-textfield__border-line::before,
+  &:invalid ~ .mdw-textfield__border-line::after {
+    transform: scaleX(1);
+    transition-timing-function: $motion-easing-standard;
+    transition-duration: $motion-duration-desktop-default;
+    @include allHandsets {
+      transition-duration: $motion-duration-mobile-default;
+    }
+    @include allTablets {
+      transition-duration: $motion-duration-tablet-default;
+    }
+  }
+}
+
+
+// Hover or Focus
+.mdw-textfield:focus-within .mdw-textfield__input,
+.mdw-textfield:active .mdw-textfield__input,
+.mdw-textfield__input:focus,
+.mdw-textfield__input:hover:not(:disabled) {
+  [mdw-textarea]:not([mdw-box]) > & {
+    border-width: $border-line__focused__height;
+    margin-left: $border-line__height - $border-line__focused__height;
+    margin-right: $border-line__height - $border-line__focused__height;
+    margin-bottom: $border-line__height - $border-line__focused__height;
+    margin-top: 16px;
+  }
+  & ~ .mdw-textfield__border-line {
+    border-width: $border-line__focused__height;
+    margin-top: -$border-line__focused__height;
+  }
+}
 
   // Disabled
-
-  &:disabled {
-    // color: var(--disabled-color);
-    [mdw-textarea] > & {
-      // background-color: var(--divider-color);
-      // border-color: var(--disabled-color);
-    }
-    & ~ .mdw-textfield__label {
-      // color: var(--disabled-color);
-    }
-    & ~ .mdw-textfield__border-line {
-      border-style: dotted;
-      // border-color: var(--disabled-color);
-    }
-  }
-
-  // Unfocused hover
-
-  &:hover:not(:focus):not(:disabled) {
-    [mdw-textarea] > & {
-      // border-color: var(--textfield-border-line-color__hover);
-    }
-  }
-
-  // Hover or Focus
-
-  &:hover:not(:disabled),
-  &:focus {
-    [mdw-textarea]:not([mdw-box]) > & {
-      border-width: $border-line__focused__height;
-      margin-left: $border-line__height - $border-line__focused__height;
-      margin-right: $border-line__height - $border-line__focused__height;
-      margin-bottom: $border-line__height - $border-line__focused__height;
-      margin-top: 16px;
-    }
-    & ~ .mdw-textfield__border-line {
-      // border-color: var(--textfield-border-line-color__hover);
-      border-width: $border-line__focused__height;
-      margin-top: -$border-line__focused__height;
-    }
+.mdw-textfield__input:disabled {
+  & ~ .mdw-textfield__border-line {
+    border-style: dotted;
+    // border-color: var(--disabled-color);
   }
 }
 
-.mdw-textfield__helper-text {
-  .mdw-textfield__input:disabled ~ & {
-    // color: var(--disabled-color);
-  }
-  .mdw-textfield__input:focus:invalid ~ & {
-    // color: transparent;
-  }
-}
 
 .mdw-textfield__error-text {
   .mdw-textfield__input:focus:invalid ~ & {
-    // color: var(--textfield-label-warn-color__focus);
     transform: translateY(0);
     will-change: transform, color;
     transition-property: transform, color;
