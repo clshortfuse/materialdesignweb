@@ -224,20 +224,20 @@ export default class Search {
 
   /** @return {boolean} handled */
   showDropDown() {
-    if (this.dropdown) {
-      const dropDownElement = this.textfield.element.querySelector('.mdw-textfield__dropdown');
-      let changed = false;
-      if (dropDownElement.hasAttribute('mdw-hide')) {
-        dropDownElement.removeAttribute('mdw-hide');
-        changed = true;
-      }
-      if (!dropDownElement.hasAttribute('mdw-show')) {
-        dropDownElement.setAttribute('mdw-show', '');
-        changed = true;
-      }
-      return changed;
+    if (!this.dropdown) {
+      return false;
     }
-    return false;
+    const dropDownElement = this.textfield.element.querySelector('.mdw-textfield__dropdown');
+    let changed = false;
+    if (dropDownElement.hasAttribute('mdw-hide')) {
+      dropDownElement.removeAttribute('mdw-hide');
+      changed = true;
+    }
+    if (!dropDownElement.hasAttribute('mdw-show')) {
+      dropDownElement.setAttribute('mdw-show', '');
+      changed = true;
+    }
+    return changed;
   }
 
   /** @return {boolean} handled */

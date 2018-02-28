@@ -144,22 +144,22 @@ function buildCustomSearch1() {
     dropdown: true,
     textFilter: 'startsWith',
     suggestionMethod: 'append',
+    filterRows: false,
   });
-  let searchEvent;
   const busyIndicator = searchDemoCustom.textfield.element.querySelector('.custom-busy-indicator');
   let searchPerformed = false;
   let searchBusy = false;
   const onEvent = (event) => {
     /** @return {Promise} */
     function showBusyIndicator() {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         busyIndicator.style.setProperty('display', '');
         resolve();
       });
     }
     /** @return {Promise} */
     function hideBusyIndicator() {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         busyIndicator.style.setProperty('display', 'none');
         resolve();
       });
@@ -176,14 +176,13 @@ function buildCustomSearch1() {
     /** @return {Promise} */
     function performSearch() {
       return new Promise((resolve, reject) => {
-        searchEvent = event;
         const myData = [];
         for(let key in window.navigator) {
           myData.push({ line1: key, line2: navigator[key] });
         }
         setTimeout(() => {
           resolve(myData);
-        }, 1000);
+        }, 2000);
       });
     }
     /**
@@ -211,6 +210,7 @@ function buildCustomSearch1() {
         resolve();
       });
     }
+    console.log('custom1');
     if (searchPerformed) {
       // Do no extra processing
       return;
@@ -220,9 +220,11 @@ function buildCustomSearch1() {
       return;
     }
     searchBusy = true;
-    searchDemoCustom.list.clear(myElementMap);
     clearList()
       .then(showBusyIndicator)
+      .then(() => {
+        searchDemoCustom.showDropDown();
+      })
       .then(performSearch)
       .then(repopulateList)
       .then(hideBusyIndicator)
@@ -232,12 +234,7 @@ function buildCustomSearch1() {
       })
       .then(() => {
         searchDemoCustom.filterListRows();
-      })
-      .catch((error) => {
-        if (error.message === 'expired') {
-          return;
-        }
-        console.error(error);
+        searchDemoCustom.filterRows = true;
       });
   };
 
