@@ -28,7 +28,7 @@ class List {
 
   /**
    * Clear and detach all children
-   * @param {WeakMap} elementMap
+   * @param {WeakMap=} elementMap
    * @return {void}
    */
   clear(elementMap) {
@@ -37,7 +37,7 @@ class List {
       return;
     }
     while (el.firstChild) {
-      if (elementMap.has(el.firstChild)) {
+      if (elementMap && elementMap.has(el.firstChild)) {
         elementMap.get(el.firstChild).detach();
         elementMap.delete(el.firstChild);
       }
