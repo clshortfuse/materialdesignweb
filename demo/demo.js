@@ -130,6 +130,7 @@ function start() {
   const searchDemoMultiline = new mdw.Search({
     textfield: myElementMap.get(document.getElementById('search-textfield-multiline')),
     list: myElementMap.get(document.getElementById('search-list-multiline')),
+    suggestionMethod: 'none',
   });
   buildCustomSearch1();
   buildCustomSearch2();
@@ -181,12 +182,8 @@ function buildCustomSearch1() {
           myData.push({ line1: key, line2: navigator[key] });
         }
         setTimeout(() => {
-          if (searchEvent === event) {
-            resolve(myData);
-          } else {
-            reject(new Error('expired'));
-          }
-        }, 2000);
+          resolve(myData);
+        }, 1000);
       });
     }
     /**
@@ -215,6 +212,7 @@ function buildCustomSearch1() {
       });
     }
     if (searchPerformed) {
+      // Do no extra processing
       return;
     }
     event.stopPropagation();
@@ -253,11 +251,10 @@ function buildCustomSearch2() {
     list: myElementMap.get(document.getElementById('search-list-custom2')),
     dropdown: true,
     filterRows: false,
-    suggestionMethod: 'replace',
   });
   let currentSearchTerm;
   const busyIndicator = searchDemoCustom.textfield.element.querySelector('.custom-busy-indicator');
-  const noResultsIndicator = searchDemoCustom.textfield.element.querySelector('.no-results-indicator');
+  const noResultsIndicator = searchDemoCustom.textfield.element.querySelector('.custom-no-results-indicator');
   const onEvent = () => {
     /**
      * @param {string} searchTerm

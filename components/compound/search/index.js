@@ -144,7 +144,8 @@ export default class Search {
    * @param {(function(HTMLElement):string)=} options.rowTextParser
    * @param {boolean=} options.dropdown
    * @param {boolean=} [options.filterRows=true]
-   * @param {('replace'|'append'|'none')} [options.suggestionMethod='none']
+   * @param {('replace'|'append'|'none')} [options.suggestionMethod='replace']
+   * @param {(function(HTMLElement))=} options.onRowActivated
    */
   constructor(options) {
     this.textfield = options.textfield;
@@ -158,6 +159,9 @@ export default class Search {
     }
     this.rowTextParser = defaultRowTextParser || options.rowTextParser;
 
+    this.list.element.addEventListener('click', (event) => {
+      this.handleClickEvent(event);
+    });
     this.textfield.input.addEventListener('keydown', (event) => {
       this.onTextFieldKeydownEvent(event);
     });
@@ -175,10 +179,31 @@ export default class Search {
     if (options.filterRows !== false) {
       this.filterRows = true;
     }
-    this.suggestionMethod = options.suggestionMethod || 'none';
+    this.suggestionMethod = options.suggestionMethod || 'replace';
     this.previousValue = this.textfield.input.value || '';
     this.suggestedInput = '';
+    if (options.onRowActivated) {
+      this.onRowActivated = options.onRowActivated;
+    }
   }
+
+  /**
+   * @param {MouseEvent} event
+   * @return {void}
+   */
+  handleClickEvent(event) {
+    if (!event.target) {
+      return;
+    }
+    if (!event.target.classList) {
+      return;
+    }
+    if (!event.target.classList.contains('mdw-list__row')) {
+      return;
+    }
+    this.onRowActivated(event.target);
+  }
+
 
   /**
    * Default input handler
@@ -188,7 +213,7 @@ export default class Search {
   handleInputEvent(event) {
     this.showDropDown();
     const inputValue = this.textfield.input.value;
-    if (inputValue === this.suggestedInput) {
+    if (inputValue && inputValue === this.suggestedInput) {
       return;
     }
     this.previousValue = inputValue;
@@ -282,11 +307,13 @@ export default class Search {
     const input = this.textfield.input.value;
     const current = this.list.element.querySelector('.mdw-list__row[selected]');
     const rows = this.list.element.querySelectorAll('.mdw-list__row');
+    let hasRow = false;
     for (let i = 0; i < rows.length; i += 1) {
       const row = rows[i];
       const content = this.rowTextParser(row);
       const fn = fnFilter || this.filter;
       if (fn({ input, content })) {
+        hasRow = true;
         row.removeAttribute('hidden');
       } else {
         row.setAttribute('hidden', '');
@@ -297,6 +324,9 @@ export default class Search {
       if (newSelection) {
         this.onRowSelected(newSelection);
       }
+    }
+    if (!hasRow) {
+      this.hideDropDown();
     }
   }
 
@@ -334,6 +364,8 @@ export default class Search {
       }
       case 'Escape': {
         if (this.hideDropDown()) {
+          this.suggestedInput = this.previousValue;
+          this.textfield.input.value = this.previousValue;
           event.stopPropagation();
           event.preventDefault();
         }
