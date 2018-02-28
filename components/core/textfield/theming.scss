@@ -166,7 +166,6 @@ $textfieldColors: (
       }
 
       // Focus
-      &:focus-within > .mdw-textfield__input,
       &:active > .mdw-textfield__input,
       > .mdw-textfield__input:focus {
         & ~ .mdw-textfield__label {
@@ -192,7 +191,6 @@ $textfieldColors: (
 
       // Accent on focus
       &[mdw-color="accent"] {
-        &:focus-within > .mdw-textfield__input,
         &:active > .mdw-textfield__input,
         > .mdw-textfield__input:focus {
           &:not(:invalid) {

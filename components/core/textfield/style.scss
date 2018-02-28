@@ -317,7 +317,6 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
     overflow-y: scroll;
   }
   &[mdw-show],
-  &:focus-within,
   &:active,
   input:focus ~ & {
     &:not([mdw-hide]) {
@@ -338,7 +337,6 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
 }
 
 // On Focus
-.mdw-textfield:focus-within > .mdw-textfield__input,
 .mdw-textfield:active > .mdw-textfield__input,
 .mdw-textfield__input:focus {
   & ~ .mdw-textfield__label {
@@ -375,7 +373,6 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
 
 
 // Hover or Focus
-.mdw-textfield:focus-within .mdw-textfield__input,
 .mdw-textfield:active .mdw-textfield__input,
 .mdw-textfield__input:focus,
 .mdw-textfield__input:hover:not(:disabled) {
