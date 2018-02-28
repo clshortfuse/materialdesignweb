@@ -210,7 +210,6 @@ function buildCustomSearch1() {
         resolve();
       });
     }
-    console.log('custom1');
     if (searchPerformed) {
       // Do no extra processing
       return;
