@@ -59,10 +59,6 @@ $list__divider-height: dp(1);
   }
 }
 
-.mdw-list > .mdw-list__row:first-child {
-  margin-top: dp(8);
-}
-
 .mdw-list__start {
   display: flex;
   flex-direction: row;

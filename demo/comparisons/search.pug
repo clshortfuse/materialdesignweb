@@ -97,7 +97,11 @@ include ../mixins.pug
   .render
     .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="100" style="padding:8px")
       .flex-1.display-flex(flex-column)
-        p Text field dropdown with one-time search on first input with default row filter
+        p Text field dropdown with:
+        ul
+          li one-time search on first input
+          li startsWith text filter
+          li append input on selection
         div
           label.mdw-textfield#search-textfield-custom1(mdw-color="accent")
             input.mdw-textfield__input(placeholder=" ")
@@ -111,7 +115,12 @@ include ../mixins.pug
                     path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25")
                 span Searching...
               .mdw-list#search-list-custom1
-        p Text field dropdown with input-based search, 1000ms search time, 300ms debounce, and no row filter
+        p Text field dropdown with:
+        ul
+          li input-based search
+          li 300ms debounce
+          li replace input on selection
+          li disabled row filter
         div
           label.mdw-textfield#search-textfield-custom2
             input.mdw-textfield__input(placeholder=" ")

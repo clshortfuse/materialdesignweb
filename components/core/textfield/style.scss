@@ -338,8 +338,8 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
 }
 
 // On Focus
-.mdw-textfield:focus-within .mdw-textfield__input,
-.mdw-textfield:active .mdw-textfield__input,
+.mdw-textfield:focus-within > .mdw-textfield__input,
+.mdw-textfield:active > .mdw-textfield__input,
 .mdw-textfield__input:focus {
   & ~ .mdw-textfield__label {
     transform: translateY(0);

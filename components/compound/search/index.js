@@ -8,9 +8,20 @@ import { List } from '../../core/list/index';
  * @param {string} options.content
  * @return {boolean}
  */
-function defaultFilter(options) {
+function containsTextFilter(options) {
   return options.content.trim().toLocaleLowerCase()
     .indexOf(options.input.trim().toLocaleLowerCase()) !== -1;
+}
+
+/**
+ * @param {Object} options
+ * @param {string} options.input
+ * @param {string} options.content
+ * @return {boolean}
+ */
+function startsWithTextFilter(options) {
+  return options.content.trim().toLocaleLowerCase()
+    .indexOf(options.input.trim().toLocaleLowerCase()) === 0;
 }
 
 /**
@@ -129,15 +140,22 @@ export default class Search {
    * @param {Object} options
    * @param {TextField} options.textfield
    * @param {List} options.list
-   * @param {(function({input:string, content:string}):boolean)=} options.textFilter
-   * @param {(function({HTMLElement}):string)=} options.rowTextParser
+   * @param {('contains'|'startsWith'|function({input:string, content:string}):boolean)=} [options.textFilter='contains']
+   * @param {(function(HTMLElement):string)=} options.rowTextParser
    * @param {boolean=} options.dropdown
    * @param {boolean=} [options.filterRows=true]
+   * @param {('replace'|'append'|'none')} [options.suggestionMethod='none']
    */
   constructor(options) {
     this.textfield = options.textfield;
     this.list = options.list;
-    this.filter = defaultFilter || options.textFilter;
+    if (typeof options.textFilter === 'function') {
+      this.filter = options.textFilter;
+    } else if (options.textFilter === 'startsWith') {
+      this.filter = startsWithTextFilter;
+    } else {
+      this.filter = containsTextFilter;
+    }
     this.rowTextParser = defaultRowTextParser || options.rowTextParser;
 
     this.textfield.input.addEventListener('keydown', (event) => {
@@ -157,6 +175,9 @@ export default class Search {
     if (options.filterRows !== false) {
       this.filterRows = true;
     }
+    this.suggestionMethod = options.suggestionMethod || 'none';
+    this.previousValue = this.textfield.input.value || '';
+    this.suggestedInput = '';
   }
 
   /**
@@ -166,6 +187,11 @@ export default class Search {
    */
   handleInputEvent(event) {
     this.showDropDown();
+    const inputValue = this.textfield.input.value;
+    if (inputValue === this.suggestedInput) {
+      return;
+    }
+    this.previousValue = inputValue;
     if (this.filterRows) {
       this.filterListRows();
     }
@@ -215,6 +241,40 @@ export default class Search {
   }
 
   /**
+   * @param {HTMLElement} row
+   * @return {void}
+   */
+  onRowSelected(row) {
+    if (this.suggestionMethod === 'none') {
+      return;
+    }
+    let suggestion = this.rowTextParser(row);
+    if (suggestion) {
+      suggestion = suggestion.trim();
+    }
+    if (!suggestion) {
+      return;
+    }
+    this.suggestedInput = suggestion;
+    if (this.suggestionMethod === 'replace') {
+      this.textfield.input.value = suggestion;
+    } else if (this.suggestionMethod === 'append') {
+      const selectionStart = (this.previousValue || '').length;
+      const selectionEnd = suggestion.length;
+      this.textfield.input.value = suggestion;
+      this.textfield.input.setSelectionRange(selectionStart, selectionEnd);
+    }
+  }
+
+  /**
+   * @param {HTMLElement} row
+   * @return {void}
+   */
+  onRowActivated(row) {
+    // Override me
+  }
+
+  /**
    * @param {(function({input:string, content:string}):boolean)=} fnFilter
    * @return {void}
    */
@@ -233,7 +293,10 @@ export default class Search {
       }
     }
     if (current && current.hasAttribute('hidden')) {
-      selectSibling(this.list.element);
+      const newSelection = selectSibling(this.list.element);
+      if (newSelection) {
+        this.onRowSelected(newSelection);
+      }
     }
   }
 
@@ -253,6 +316,7 @@ export default class Search {
         const sibling = selectSibling(this.list.element, true);
         if (sibling) {
           scrollRowIntoView(sibling);
+          this.onRowSelected(sibling);
         }
         event.stopPropagation();
         event.preventDefault();
@@ -262,6 +326,7 @@ export default class Search {
         const sibling = selectSibling(this.list.element, false);
         if (sibling) {
           scrollRowIntoView(sibling);
+          this.onRowSelected(sibling);
         }
         event.stopPropagation();
         event.preventDefault();
@@ -271,6 +336,19 @@ export default class Search {
         if (this.hideDropDown()) {
           event.stopPropagation();
           event.preventDefault();
+        }
+        break;
+      }
+      case 'Enter': {
+        const current = this.list.element.querySelector('.mdw-list__row[selected]');
+        if (current) {
+          if (this.hideDropDown()) {
+            const inputValue = this.textfield.input.value || '';
+            this.textfield.input.setSelectionRange(inputValue.length, inputValue.length);
+            this.onRowActivated(current);
+            event.stopPropagation();
+            event.preventDefault();
+          }
         }
         break;
       }

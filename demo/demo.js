@@ -141,6 +141,8 @@ function buildCustomSearch1() {
     textfield: myElementMap.get(document.getElementById('search-textfield-custom1')),
     list: myElementMap.get(document.getElementById('search-list-custom1')),
     dropdown: true,
+    textFilter: 'startsWith',
+    suggestionMethod: 'append',
   });
   let searchEvent;
   const busyIndicator = searchDemoCustom.textfield.element.querySelector('.custom-busy-indicator');
@@ -158,6 +160,15 @@ function buildCustomSearch1() {
     function hideBusyIndicator() {
       return new Promise((resolve, reject) => {
         busyIndicator.style.setProperty('display', 'none');
+        resolve();
+      });
+    }
+    /**
+     * @return {Promise}
+     */
+    function clearList() {
+      return new Promise((resolve) => {
+        searchDemoCustom.list.clear(myElementMap);
         resolve();
       });
     }
@@ -204,17 +215,16 @@ function buildCustomSearch1() {
       });
     }
     if (searchPerformed) {
-      console.log('ignoring event');
       return;
     }
-    console.log('stopping event', event);
     event.stopPropagation();
     if (searchBusy) {
       return;
     }
     searchBusy = true;
     searchDemoCustom.list.clear(myElementMap);
-    showBusyIndicator()
+    clearList()
+      .then(showBusyIndicator)
       .then(performSearch)
       .then(repopulateList)
       .then(hideBusyIndicator)
@@ -243,6 +253,7 @@ function buildCustomSearch2() {
     list: myElementMap.get(document.getElementById('search-list-custom2')),
     dropdown: true,
     filterRows: false,
+    suggestionMethod: 'replace',
   });
   let currentSearchTerm;
   const busyIndicator = searchDemoCustom.textfield.element.querySelector('.custom-busy-indicator');
@@ -262,6 +273,15 @@ function buildCustomSearch2() {
           }
           resolve();
         }, milliseconds);
+      });
+    }
+    /**
+     * @return {Promise}
+     */
+    function clearList() {
+      return new Promise((resolve) => {
+        searchDemoCustom.list.clear(myElementMap);
+        resolve();
       });
     }
     /**
@@ -336,16 +356,19 @@ function buildCustomSearch2() {
       });
     }
     const searchTerm = searchDemoCustom.textfield.input.value;
+    if (searchTerm === searchDemoCustom.suggestedInput) {
+      return;
+    }
     if (!searchTerm) {
       currentSearchTerm = null;
       searchDemoCustom.hideDropDown();
       return;
     }
     currentSearchTerm = searchTerm;
-    searchDemoCustom.list.clear(myElementMap);
     debounce(searchTerm, 300)
-      .then(() => hideElement(noResultsIndicator))
+      .then(clearList)
       .then(() => showElement(busyIndicator))
+      .then(() => hideElement(noResultsIndicator))
       .then(() => performSearch(searchTerm))
       .then(repopulateList)
       .then(() => hideElement(busyIndicator))
