@@ -142,12 +142,13 @@ export default class Search {
    * @param {List} options.list
    * @param {('contains'|'startsWith'|function({input:string, content:string}):boolean)=} [options.textFilter='contains']
    * @param {(function(HTMLElement):string)=} options.rowTextParser
-   * @param {boolean=} options.dropdown
+   * @param {boolean=} [options.dropdown=false]
    * @param {boolean=} [options.filterRows=true]
    * @param {('replace'|'append'|'none')} [options.suggestionMethod='replace']
    * @param {(function(HTMLElement))=} options.onRowActivated
    * @param {(function(string):Promise)=} options.performSearch
    * @param {(function(any):Promise)=} options.updateList
+   * @param {boolean=} [options.searchOnFocus=true]
    * @param {number=} options.debounce Debounce time in milliseconds
    */
   constructor(options) {
@@ -178,15 +179,26 @@ export default class Search {
         this.handleBlurEvent(event);
       }
     });
+    this.textfield.input.addEventListener('focus', (event) => {
+      if (this.searchOnFocus) {
+        this.handleInputEvent(event);
+      }
+    });
+
     this.dropdown = options.dropdown;
     if (options.filterRows !== false) {
       this.filterRows = true;
     }
+    if (options.searchOnFocus !== false) {
+      this.searchOnFocus = true;
+    }
     this.debounce = options.debounce;
     this.suggestionMethod = options.suggestionMethod || 'replace';
-    this.previousValue = this.textfield.input.value || '';
     this.currentSearchTerm = this.textfield.input.value || '';
-    this.suggestedInput = '';
+    /** @type {string} */
+    this.suggestedInput = null;
+    /** @type {string} */
+    this.previousValue = null;
     if (options.onRowActivated) {
       this.onRowActivated = options.onRowActivated;
     }
@@ -222,8 +234,11 @@ export default class Search {
       return;
     }
     this.showDropDown();
-    const inputValue = this.textfield.input.value;
-    if (inputValue && inputValue === this.suggestedInput) {
+    const inputValue = this.textfield.input.value || '';
+    if (inputValue === this.suggestedInput) {
+      return;
+    }
+    if (inputValue === this.previousValue) {
       return;
     }
     this.previousValue = inputValue;
@@ -298,15 +313,34 @@ export default class Search {
   }
 
   /** @return {boolean} handled */
-  hideDropDown() {
-    if (this.dropdown) {
-      const dropDownElement = this.textfield.element.querySelector('.mdw-textfield__dropdown');
-      if (!dropDownElement.hasAttribute('mdw-hide')) {
-        dropDownElement.setAttribute('mdw-hide', '');
-        return true;
-      }
+  isDropDownShown() {
+    if (!this.dropdown) {
+      return true;
     }
-    return true;
+    const dropDownElement = this.textfield.element.querySelector('.mdw-textfield__dropdown');
+    if (dropDownElement.hasAttribute('mdw-hide')) {
+      return false;
+    }
+    if (this.textfield.input === document.activeElement) {
+      return true;
+    }
+    if (dropDownElement.hasAttribute('mdw-show')) {
+      return true;
+    }
+    return false;
+  }
+
+  /** @return {boolean} handled */
+  hideDropDown() {
+    if (!this.dropdown) {
+      return true;
+    }
+    const dropDownElement = this.textfield.element.querySelector('.mdw-textfield__dropdown');
+    if (!dropDownElement.hasAttribute('mdw-hide')) {
+      dropDownElement.setAttribute('mdw-hide', '');
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -403,20 +437,24 @@ export default class Search {
     }
     switch (event.key) {
       case 'ArrowUp': {
-        const sibling = selectSibling(this.list.element, true);
-        if (sibling) {
-          scrollRowIntoView(sibling);
-          this.onRowSelected(sibling);
+        if (this.isDropDownShown()) {
+          const sibling = selectSibling(this.list.element, true);
+          if (sibling) {
+            scrollRowIntoView(sibling);
+            this.onRowSelected(sibling);
+          }
         }
         event.stopPropagation();
         event.preventDefault();
         break;
       }
       case 'ArrowDown': {
-        const sibling = selectSibling(this.list.element, false);
-        if (sibling) {
-          scrollRowIntoView(sibling);
-          this.onRowSelected(sibling);
+        if (this.isDropDownShown()) {
+          const sibling = selectSibling(this.list.element, false);
+          if (sibling) {
+            scrollRowIntoView(sibling);
+            this.onRowSelected(sibling);
+          }
         }
         event.stopPropagation();
         event.preventDefault();

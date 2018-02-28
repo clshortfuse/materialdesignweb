@@ -193,6 +193,7 @@ function buildCustomSearch1() {
   const searchDemoCustom = new mdw.Search({
     textfield,
     list,
+    searchOnFocus: false,
     dropdown: true,
     textFilter: 'startsWith',
     suggestionMethod: 'append',
