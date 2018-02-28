@@ -138,162 +138,102 @@ function start() {
 
 /** @return {void} */
 function buildCustomSearch1() {
+  const textfield = myElementMap.get(document.getElementById('search-textfield-custom1'));
+  const list = myElementMap.get(document.getElementById('search-list-custom1'));
+  const busyIndicator = textfield.element.querySelector('.custom-busy-indicator');
+  let resultsCache;
+  let listUpdated = false;
+  const customPerformSearch = () => {
+    if (listUpdated) {
+      return Promise.resolve();
+    }
+    if (resultsCache != null) {
+      return Promise.resolve(resultsCache);
+    }
+    return new Promise((resolve) => {
+      busyIndicator.style.setProperty('display', '');
+      const myData = [];
+      for(let key in window.navigator) {
+        myData.push({ line1: key, line2: navigator[key] });
+      }
+      setTimeout(() => {
+        resultsCache = myData;
+        resolve(myData);
+      }, 2000);
+    });
+  };
+  const customUpdateList = (items) => {
+    if (listUpdated) {
+      return Promise.resolve();
+    }
+    return new Promise((resolve) => {
+      list.clear(myElementMap);
+      busyIndicator.style.setProperty('display', 'none');
+      const markup = `
+      <div class="mdw-list__text">
+        <div class="mdw-list__text-line"></div>
+        <div class="mdw-list__text-line"></div>
+      </div>
+      `.trim();
+      items.forEach((item) => {
+        const listRow = document.createElement('li');
+        listRow.classList.add('mdw-list__row');
+        listRow.innerHTML = markup;
+        const lines = listRow.querySelectorAll('.mdw-list__text-line');
+        lines[0].textContent = item.line1;
+        lines[1].textContent = item.line2;
+        myElementMap.set(listRow, new mdw.ListRow(listRow));
+        list.element.appendChild(listRow);
+      });
+      listUpdated = true;
+      resolve();
+    });
+  };
+  
   const searchDemoCustom = new mdw.Search({
-    textfield: myElementMap.get(document.getElementById('search-textfield-custom1')),
-    list: myElementMap.get(document.getElementById('search-list-custom1')),
+    textfield,
+    list,
     dropdown: true,
     textFilter: 'startsWith',
     suggestionMethod: 'append',
-    filterRows: false,
+    performSearch: customPerformSearch,
+    updateList: customUpdateList,
   });
-  const busyIndicator = searchDemoCustom.textfield.element.querySelector('.custom-busy-indicator');
-  let searchPerformed = false;
-  let searchBusy = false;
-  const onEvent = (event) => {
-    /** @return {Promise} */
-    function showBusyIndicator() {
-      return new Promise((resolve) => {
-        busyIndicator.style.setProperty('display', '');
-        resolve();
-      });
-    }
-    /** @return {Promise} */
-    function hideBusyIndicator() {
-      return new Promise((resolve) => {
-        busyIndicator.style.setProperty('display', 'none');
-        resolve();
-      });
-    }
-    /**
-     * @return {Promise}
-     */
-    function clearList() {
-      return new Promise((resolve) => {
-        searchDemoCustom.list.clear(myElementMap);
-        resolve();
-      });
-    }
-    /** @return {Promise} */
-    function performSearch() {
-      return new Promise((resolve, reject) => {
-        const myData = [];
-        for(let key in window.navigator) {
-          myData.push({ line1: key, line2: navigator[key] });
-        }
-        setTimeout(() => {
-          resolve(myData);
-        }, 2000);
-      });
-    }
-    /**
-     * @param {{line1:string, line2:string}[]} items
-     * @return {Promise}
-     */
-    function repopulateList(items) {
-      return new Promise((resolve) => {
-        const markup = `
-        <div class="mdw-list__text">
-          <div class="mdw-list__text-line"></div>
-          <div class="mdw-list__text-line"></div>
-        </div>
-        `.trim();
-        items.forEach((item) => {
-          const listRow = document.createElement('li');
-          listRow.classList.add('mdw-list__row');
-          listRow.innerHTML = markup;
-          const lines = listRow.querySelectorAll('.mdw-list__text-line');
-          lines[0].textContent = item.line1;
-          lines[1].textContent = item.line2;
-          myElementMap.set(listRow, new mdw.ListRow(listRow));
-          searchDemoCustom.list.element.appendChild(listRow);
-        });
-        resolve();
-      });
-    }
-    if (searchPerformed) {
-      // Do no extra processing
-      return;
-    }
-    event.stopPropagation();
-    if (searchBusy) {
-      return;
-    }
-    searchBusy = true;
-    clearList()
-      .then(showBusyIndicator)
-      .then(() => {
-        searchDemoCustom.showDropDown();
-      })
-      .then(performSearch)
-      .then(repopulateList)
-      .then(hideBusyIndicator)
-      .then(() => {
-        searchPerformed = true;
-        searchBusy = false;
-      })
-      .then(() => {
-        searchDemoCustom.filterListRows();
-        searchDemoCustom.filterRows = true;
-      });
-  };
-
-  searchDemoCustom.textfield.input.addEventListener('input', onEvent, true);
 }
 
 /** @return {void} */
 function buildCustomSearch2() {
-  const searchDemoCustom = new mdw.Search({
-    textfield: myElementMap.get(document.getElementById('search-textfield-custom2')),
-    list: myElementMap.get(document.getElementById('search-list-custom2')),
-    dropdown: true,
-    filterRows: false,
-  });
-  let currentSearchTerm;
-  const busyIndicator = searchDemoCustom.textfield.element.querySelector('.custom-busy-indicator');
-  const noResultsIndicator = searchDemoCustom.textfield.element.querySelector('.custom-no-results-indicator');
-  const onEvent = () => {
-    /**
-     * @param {string} searchTerm
-     * @param {number} milliseconds
-     * @return {Promise}
-     */
-    function debounce(searchTerm, milliseconds) {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          if (searchTerm !== currentSearchTerm) {
-            reject(new Error('debounce'));
-            return;
-          }
-          resolve();
-        }, milliseconds);
-      });
-    }
+  /**
+   * @param {HTMLElement} element
+   * @return {Promise}
+   */
+  function hideElement(element) {
+    return new Promise((resolve) => {
+      element.style.setProperty('display', 'none');
+      resolve();
+    });
+  }
+  /**
+   * @param {HTMLElement} element
+   * @return {Promise}
+   */
+  function showElement(element) {
+    return new Promise((resolve) => {
+      element.style.setProperty('display', '');
+      resolve();
+    });
+  }
+  const textfield = myElementMap.get(document.getElementById('search-textfield-custom2'));
+  const list = myElementMap.get(document.getElementById('search-list-custom2'));
+  const busyIndicator = textfield.element.querySelector('.custom-busy-indicator');
+  const noResultsIndicator = textfield.element.querySelector('.custom-no-results-indicator');
+  const customPerformSearch = (searchTerm) => {
     /**
      * @return {Promise}
      */
     function clearList() {
       return new Promise((resolve) => {
-        searchDemoCustom.list.clear(myElementMap);
-        resolve();
-      });
-    }
-    /**
-     * @param {HTMLElement} element
-     * @return {Promise}
-     */
-    function hideElement(element) {
-      return new Promise((resolve) => {
-        element.style.setProperty('display', 'none');
-        resolve();
-      });
-    }
-    /**
-     * @param {HTMLElement} element
-     * @return {Promise}
-     */
-    function showElement(element) {
-      return new Promise((resolve) => {
-        element.style.setProperty('display', '');
+        list.clear(myElementMap);
         resolve();
       });
     }
@@ -302,7 +242,7 @@ function buildCustomSearch2() {
      * @return {Promise}
      */
     function performSearch(searchTerm) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         const myData = [];
         for(let key in window.navigator) {
           const value = navigator[key] && navigator[key].toString();
@@ -311,73 +251,51 @@ function buildCustomSearch2() {
           }
         }
         setTimeout(() => {
-          if (searchTerm === currentSearchTerm) {
-            resolve(myData);
-          } else {
-            reject(new Error('expired'));
-          }
+          resolve(myData);
         }, 1000);
       });
     }
-    /**
-     * @param {{line1:string, line2:string}[]} items
-     * @return {Promise}
-     */
-    function repopulateList(items) {
-      return new Promise((resolve) => {
-        if (!items.length) {
-          showElement(noResultsIndicator).then(resolve);
-          return;
-        }
-        const markup = `
-        <div class="mdw-list__text">
-          <div class="mdw-list__text-line"></div>
-          <div class="mdw-list__text-line"></div>
-        </div>
-        `.trim();
-        items.forEach((item) => {
-          const listRow = document.createElement('li');
-          listRow.classList.add('mdw-list__row');
-          listRow.innerHTML = markup;
-          const lines = listRow.querySelectorAll('.mdw-list__text-line');
-          lines[0].textContent = item.line1;
-          lines[1].textContent = item.line2;
-          myElementMap.set(listRow, new mdw.ListRow(listRow));
-          searchDemoCustom.list.element.appendChild(listRow);
-        });
-        resolve();
-      });
-    }
-    const searchTerm = searchDemoCustom.textfield.input.value;
-    if (searchTerm === searchDemoCustom.suggestedInput) {
-      return;
-    }
-    if (!searchTerm) {
-      currentSearchTerm = null;
-      searchDemoCustom.hideDropDown();
-      return;
-    }
-    currentSearchTerm = searchTerm;
-    debounce(searchTerm, 300)
-      .then(clearList)
+    return clearList()
       .then(() => showElement(busyIndicator))
       .then(() => hideElement(noResultsIndicator))
       .then(() => performSearch(searchTerm))
-      .then(repopulateList)
-      .then(() => hideElement(busyIndicator))
       .catch((error) => {
-        if (error.message === 'debounce') {
-          console.log('Input debounce', searchTerm);
-          return;
-        }
-        if (error.message === 'expired') {
-          console.log('Search expired', searchTerm);
-          return;
-        }
         console.error(error);
       });
   };
-  searchDemoCustom.textfield.input.addEventListener('input', onEvent, true);
+  const customUpdateList = (items) => {
+    return hideElement(busyIndicator).then(() => {
+      if (!items.length) {
+        return showElement(noResultsIndicator);
+      }
+      const markup = `
+      <div class="mdw-list__text">
+        <div class="mdw-list__text-line"></div>
+        <div class="mdw-list__text-line"></div>
+      </div>
+      `.trim();
+      items.forEach((item) => {
+        const listRow = document.createElement('li');
+        listRow.classList.add('mdw-list__row');
+        listRow.innerHTML = markup;
+        const lines = listRow.querySelectorAll('.mdw-list__text-line');
+        lines[0].textContent = item.line1;
+        lines[1].textContent = item.line2;
+        myElementMap.set(listRow, new mdw.ListRow(listRow));
+        list.element.appendChild(listRow);
+      });
+      return Promise.resolve();
+    });
+  };
+  const searchDemoCustom = new mdw.Search({
+    textfield,
+    list,
+    debounce: 300,
+    dropdown: true,
+    filterRows: false,
+    performSearch: customPerformSearch,
+    updateList: customUpdateList,
+  });
 }
 
 

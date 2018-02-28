@@ -37,18 +37,21 @@ class TextField {
    */
   constructor(element) {
     this.element = element;
-    /** @type {HTMLInputElement|HTMLSelectElement} */
-    this.input = element.querySelector('.mdw-textfield__input');
-    if (this.input.tagName.toLowerCase() === 'textarea' && this.input.hasAttribute('mdw-multiline')) {
-      this.input.addEventListener('input', () => {
+    /** @type {HTMLInputElement} */
+    this.input = element.querySelector('input.mdw-textfield__input');
+    if (this.input) {
+      if (this.input.tagName.toLowerCase() === 'textarea' && this.input.hasAttribute('mdw-multiline')) {
+        this.input.addEventListener('input', () => {
+          updateTextAreaSize(this.input);
+        });
         updateTextAreaSize(this.input);
+      }
+      this.input.addEventListener('input', () => {
+        updateInputEmptyState(this.input);
       });
-      updateTextAreaSize(this.input);
-    }
-    this.input.addEventListener('input', () => {
       updateInputEmptyState(this.input);
-    });
-    updateInputEmptyState(this.input);
+    }
+    this.select = element.querySelector('select.mdw-textfield__input');
   }
 }
 

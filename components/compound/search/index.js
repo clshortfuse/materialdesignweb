@@ -146,6 +146,9 @@ export default class Search {
    * @param {boolean=} [options.filterRows=true]
    * @param {('replace'|'append'|'none')} [options.suggestionMethod='replace']
    * @param {(function(HTMLElement))=} options.onRowActivated
+   * @param {(function(string):Promise)=} options.performSearch
+   * @param {(function(any):Promise)=} options.updateList
+   * @param {number=} options.debounce Debounce time in milliseconds
    */
   constructor(options) {
     this.textfield = options.textfield;
@@ -179,12 +182,16 @@ export default class Search {
     if (options.filterRows !== false) {
       this.filterRows = true;
     }
+    this.debounce = options.debounce;
     this.suggestionMethod = options.suggestionMethod || 'replace';
     this.previousValue = this.textfield.input.value || '';
+    this.currentSearchTerm = this.textfield.input.value || '';
     this.suggestedInput = '';
     if (options.onRowActivated) {
       this.onRowActivated = options.onRowActivated;
     }
+    this.performSearch = options.performSearch || (() => Promise.resolve());
+    this.updateList = options.updateList || (() => Promise.resolve());
   }
 
   /**
@@ -211,15 +218,65 @@ export default class Search {
    * @return {void}
    */
   handleInputEvent(event) {
+    if (document.activeElement !== this.textfield.input) {
+      return;
+    }
     this.showDropDown();
     const inputValue = this.textfield.input.value;
     if (inputValue && inputValue === this.suggestedInput) {
       return;
     }
     this.previousValue = inputValue;
-    if (this.filterRows) {
-      this.filterListRows();
+    this.currentSearchTerm = inputValue;
+    let results = null;
+    Promise.resolve()
+      .then(() => this.performDebounce(inputValue))
+      .then(() => this.checkExpired(inputValue))
+      .then(() => this.performSearch(inputValue))
+      .then((searchResults) => {
+        results = searchResults;
+      })
+      .then(() => this.checkExpired(inputValue))
+      .then(() => this.updateList(results))
+      .then(() => this.filterListRows())
+      .catch((error) => {
+        if (error.message === 'debounced') {
+          return;
+        }
+        if (error.message === 'expired') {
+          return;
+        }
+        throw error;
+      });
+  }
+
+  checkExpired(inputValue) {
+    return new Promise((resolve, reject) => {
+      if (inputValue === this.currentSearchTerm) {
+        resolve();
+      } else {
+        reject(new Error('expired'));
+      }
+    });
+  }
+
+  /**
+   * @param {string} searchTerm
+   * @return {Promise}
+   */
+  performDebounce(searchTerm) {
+    if (!this.debounce) {
+      return Promise.resolve();
     }
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (searchTerm !== this.currentSearchTerm) {
+          reject(new Error('debounced'));
+          return;
+        }
+        resolve();
+      }, this.debounce);
+    });
   }
 
   /** @return {boolean} handled */
@@ -304,6 +361,9 @@ export default class Search {
    * @return {void}
    */
   filterListRows(fnFilter) {
+    if (!this.filterRows) {
+      return;
+    }
     const input = this.textfield.input.value;
     const current = this.list.element.querySelector('.mdw-list__row[selected]');
     const rows = this.list.element.querySelectorAll('.mdw-list__row');
