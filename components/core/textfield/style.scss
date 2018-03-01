@@ -161,7 +161,6 @@ $icon-signifier__padding-end: dp(16);
     padding-left: $textarea__padding-start;
     padding-right: $textarea__padding-end;
     border-style: solid;
-    border-radius: dp(4);
     // margin-top aligns border
     margin-top: $label__padding-top + $border-line__height;
     padding-top: calc(#{$label__font-size} + #{$label__padding-bottom} + #{$textarea__label__extra_padding-top});
@@ -169,11 +168,13 @@ $icon-signifier__padding-end: dp(16);
     transition-property: border-color;
   }
   [mdw-box] > & {
+    border-radius: dp(4);
     border-width: 0;
     border-bottom-width: $border-line__focused__height;
     margin-bottom: -$border-line__focused__height;
   }
   [mdw-textarea]:not([mdw-box]) > & {
+    border-radius: dp(2);
     border-width: $border-line__height;
   }
 
