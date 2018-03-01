@@ -3,7 +3,8 @@
 
 $buttonColors: (
   text-color:                 ((#000, 0.87), (#fff, 1.00)),
-  active-color:               ((#000, 0.54), (#fff, 1.00)),
+  active-color__focus:        ((#000, 0.87), (#fff, 1.00)),
+  active-color:               ((#000, 0.54), (#fff, 0.70)),
   inactive-color:             ((#000, 0.38), (#fff, 0.50)),
   press-color:                ((#999, 0.40), (#CCC, 0.25)),
   ripple-color:               ((#000, 0.12), (#fff, 0.30), (#fff, 0.20)),
@@ -32,6 +33,10 @@ $buttonColors: (
       }
       &[mdw-active]:not(:disabled) {
         color: buttonThemeValue("active-color", $type, $theme);
+        &:focus {
+          color: buttonThemeValue("active-color__focus", $type, $theme);
+        }
+
       }
       &[mdw-inactive]:not(:disabled) {
         color: buttonThemeValue("inactive-color", $type, $theme);
