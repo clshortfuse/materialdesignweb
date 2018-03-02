@@ -96,11 +96,12 @@ $tooltip-margin__mobile: dp(24);
   }
 
   &[mdw-position="top"] {
-    top: 0;
     &::before {
+      top: 0;
       transform: translateX(-50%) translateY(-100%) translateY(-$tooltip-margin__desktop);
     }
     &::after {
+      top: 0;
       transform: translateX(-50%) translateY(-100%) translateY(-$tooltip-margin__mobile);
     }
   }
