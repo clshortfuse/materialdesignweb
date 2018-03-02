@@ -1,7 +1,7 @@
 // https://material.io/guidelines/components/tooltips.html
 
-$tooltip-margin-top__desktop: dp(14);
-$tooltip-margin-top__mobile: dp(24);
+$tooltip-margin__desktop: dp(14);
+$tooltip-margin__mobile: dp(24);
 
 .mdw-tooltip__wrapper {
   position: relative;
@@ -11,7 +11,6 @@ $tooltip-margin-top__mobile: dp(24);
 .mdw-tooltip {
   left: 0;
   top: 0;
-  border-radius: inherit;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -22,7 +21,6 @@ $tooltip-margin-top__mobile: dp(24);
     cursor: none;
     top: 100%;
     left: 50%;
-    transform: translateX(-50%);
     display: flex;
     align-items: center;
     width: auto;
@@ -35,6 +33,7 @@ $tooltip-margin-top__mobile: dp(24);
     transition-duration: 150ms;
     transition-timing-function: $motion-easing-deceleration;
     z-index: 1;
+    border-radius: dp(2);
   }
   // Desktop
   &::before {
@@ -43,7 +42,7 @@ $tooltip-margin-top__mobile: dp(24);
     min-height: dp(22);
     padding-left: dp(8);
     padding-right: dp(8);
-    margin-top: $tooltip-margin-top__desktop;
+    transform: translateX(-50%) translateY($tooltip-margin__desktop);
   }
   // Mobile
   &::after {
@@ -51,7 +50,7 @@ $tooltip-margin-top__mobile: dp(24);
     min-height: dp(32);
     padding-left: dp(16);
     padding-right: dp(16);
-    margin-top: $tooltip-margin-top__mobile;
+    transform: translateX(-50%) translateY($tooltip-margin__mobile);
   }
   
   &:hover::before,
@@ -62,18 +61,56 @@ $tooltip-margin-top__mobile: dp(24);
     opacity: 0.9;
     transition-timing-function: $motion-easing-acceleration;
   }
+
+  &[mdw-position="start"],
+  &[mdw-position="end"],
+  &[mdw-position="left"],
+  &[mdw-position="right"] {
+    &::before,
+    &::after {
+      left: 0;
+      top: 50%;
+    }
+  }
+
+  &[mdw-position="start"],
+  &[mdw-position="left"],
+  [dir=rtl] &[mdw-position="end"] {
+    &::before {
+      transform: translateY(-50%) translateX(-100%) translateX(-$tooltip-margin__desktop);
+    }
+    &::after {
+      transform: translateY(-50%) translateX(-100%) translateX(-$tooltip-margin__mobile);
+    }
+  }
+
+  &[mdw-position="end"],
+  &[mdw-position="right"],
+  [dir=rtl] &[mdw-position="start"] {
+    &::before {
+      transform: translateY(-50%) translateX(100%) translateX($tooltip-margin__desktop);
+    }
+    &::after {
+      transform: translateY(-50%) translateX(100%) translateX($tooltip-margin__mobile);
+    }
+  }
+
+  &[mdw-position="top"] {
+    top: 0;
+    &::before {
+      transform: translateX(-50%) translateY(-100%) translateY(-$tooltip-margin__desktop);
+    }
+    &::after {
+      transform: translateX(-50%) translateY(-100%) translateY(-$tooltip-margin__mobile);
+    }
+  }
+  
 }
 
 .mdw-tooltip__wrapper > .mdw-button[mdw-icon] ~ .mdw-tooltip {
-  // Tooltip margin includes icon padding
-  &::before {
-    margin-top: $tooltip-margin-top__desktop - dp(8);
-  }
-  &::after {
-    margin-top: $tooltip-margin-top__mobile - dp(8);
-  }
+  border: 8px solid transparent;
+  box-sizing: border-box;
 }
-
 
 @media (any-pointer: coarse) {
   .mdw-tooltip::before {
