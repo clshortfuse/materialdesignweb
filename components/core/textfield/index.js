@@ -37,8 +37,8 @@ class TextField {
    */
   constructor(element) {
     this.element = element;
-    /** @type {HTMLInputElement} */
-    this.input = element.querySelector('input.mdw-textfield__input');
+    /** @type {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} */
+    this.input = element.querySelector('.mdw-textfield__input');
     if (this.input) {
       if (this.input.tagName.toLowerCase() === 'textarea' && this.input.hasAttribute('mdw-multiline')) {
         this.input.addEventListener('input', () => {
@@ -51,7 +51,6 @@ class TextField {
       });
       updateInputEmptyState(this.input);
     }
-    this.select = element.querySelector('select.mdw-textfield__input');
   }
 }
 

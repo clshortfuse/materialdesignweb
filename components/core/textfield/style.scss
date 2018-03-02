@@ -223,7 +223,7 @@ select.mdw-textfield__input {
     font-family: Roboto, sans-serif;
     font-weight: $font-weight-regular;
     appearance: none;
-    &[value=""] {
+    &[value=""]:first-of-type {
       display: none;
     }
   }
