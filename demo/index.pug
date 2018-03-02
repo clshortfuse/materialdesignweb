@@ -2,7 +2,6 @@ doctype html
 html(lang='en')
   head
     title Material Design Web Demo
-    meta(name="viewport" content="initial-scale=1")
     meta(charset='utf-8')
     meta(content='IE=edge', http-equiv='X-UA-Compatible')
     meta(content='', name='description')
@@ -23,6 +22,7 @@ html(lang='en')
         label.mdw-list__row(for="show-tab") tab
         label.mdw-list__row(for="show-textfield") textfield
         label.mdw-list__row(for="show-toolbar") toolbar
+        label.mdw-list__row(for="show-tooltip") tooltip
         .mdw-list__subheader Compound
         label.mdw-list__row(for="show-search") search
 
@@ -43,7 +43,8 @@ html(lang='en')
       input(type="radio" name="show-component" value="tab"       id="show-tab")
       input(type="radio" name="show-component" value="textfield" id="show-textfield")
       input(type="radio" name="show-component" value="toolbar"   id="show-toolbar")
-      input(type="radio" name="show-component" value="search"    id="show-search" checked)
+      input(type="radio" name="show-component" value="tooltip"   id="show-tooltip" checked)
+      input(type="radio" name="show-component" value="search"    id="show-search")
 
       div
 
@@ -63,6 +64,8 @@ html(lang='en')
         include comparisons/textfield.pug
       #toolbar-comparisons.comparisons
         include comparisons/toolbar.pug
+      #tooltip-comparisons.comparisons
+        include comparisons/tooltip.pug
       #search-comparisons.comparisons
         include comparisons/search.pug
 

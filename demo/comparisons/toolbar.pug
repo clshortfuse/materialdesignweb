@@ -49,9 +49,13 @@ include ../mixins.pug
     .mdw-toolbar
       .mdw-toolbar__action
         .mdw-toolbar__start
-          button.mdw-button(mdw-icon mdw-active).material-icons arrow_back
+          .mdw-tooltip__wrapper
+            button.mdw-button(mdw-icon mdw-active).material-icons arrow_back
+            .mdw-tooltip(mdw-text="Back")
         .mdw-toolbar__end
-          button.mdw-button(mdw-icon mdw-active mdw-more-button).material-icons more_vert
+          .mdw-tooltip__wrapper
+            button.mdw-button(mdw-icon mdw-active mdw-more-button).material-icons more_vert
+            .mdw-tooltip(mdw-text="More")
       .mdw-toolbar__content
         label.mdw-textfield(style="font-size: 1.5rem")
           input.mdw-textfield__input(value="Project Properties" placeholder=" ")

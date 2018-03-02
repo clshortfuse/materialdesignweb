@@ -86,11 +86,11 @@ $toolbar-right-padding: dp(16);
   }
 }
 
-.mdw-toolbar__start > .mdw-button {
+.mdw-toolbar__start .mdw-button {
   margin: 0;
 }
 
-.mdw-toolbar__end > .mdw-button {
+.mdw-toolbar__end .mdw-button {
   margin-left: 4px;
   margin-right: 4px;
   &[mdw-more-button] {

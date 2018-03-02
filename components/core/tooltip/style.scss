@@ -1,0 +1,91 @@
+// https://material.io/guidelines/components/tooltips.html
+
+$tooltip-margin-top__desktop: dp(14);
+$tooltip-margin-top__mobile: dp(24);
+
+.mdw-tooltip__wrapper {
+  position: relative;
+  overflow: visible;
+}
+
+.mdw-tooltip {
+  left: 0;
+  top: 0;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  pointer-events: none;
+  &::before,
+  &::after {
+    position: absolute;
+    cursor: none;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    width: auto;
+    background-color: #616161; //grey-700
+    color: white;
+    font-family: Roboto, sans-serif;
+    font-weight: $font-weight-medium;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 150ms;
+    transition-timing-function: $motion-easing-deceleration;
+  }
+  // Desktop
+  &::before {
+    content: attr(mdw-text);
+    font-size: sp(10);
+    min-height: dp(22);
+    padding-left: dp(8);
+    padding-right: dp(8);
+    margin-top: $tooltip-margin-top__desktop;
+  }
+  // Mobile
+  &::after {
+    font-size: sp(14);
+    min-height: dp(32);
+    padding-left: dp(16);
+    padding-right: dp(16);
+    margin-top: $tooltip-margin-top__mobile;
+  }
+  
+  &:hover::before,
+  *:hover > &::before,
+  *:focus > &::before,
+  .mdw-tooltip__wrapper > *:hover ~ &::before,
+  .mdw-tooltip__wrapper > *:not([tabindex="-1"]):focus ~ &::before {
+    opacity: 0.9;
+    transition-timing-function: $motion-easing-acceleration;
+  }
+}
+
+.mdw-tooltip__wrapper > .mdw-button[mdw-icon] ~ .mdw-tooltip {
+  // Tooltip margin includes icon padding
+  &::before {
+    margin-top: $tooltip-margin-top__desktop - dp(8);
+  }
+  &::after {
+    margin-top: $tooltip-margin-top__mobile - dp(8);
+  }
+}
+
+
+@media (any-pointer: coarse) {
+  .mdw-tooltip::before {
+    content: none;
+  }
+  .mdw-tooltip::after {
+    content: attr(mdw-text);
+  }
+  
+  .mdw-tooltip:active::after,
+  .mdw-tooltip__wrapper > *:active ~ .mdw-tooltip::after {
+    opacity: 0.9;
+    transition-delay: 1.5s;
+    transition-timing-function: $motion-easing-acceleration;
+  }
+}
