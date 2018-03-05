@@ -25,6 +25,10 @@ $bottomnavColors: (
       .mdw-bottomnav__label {
         color: bottomnavThemeValue("inactive-color", $type, $theme);
       }
+      &[mdw-shifting] .mdw-bottomnav__action[selected] > .mdw-bottomnav__label,
+      &[mdw-shifting] input:checked + .mdw-bottomnav__action > .mdw-bottomnav__label,
+      .mdw-bottomnav__action[selected] > .mdw-bottomnav__icon,
+      .mdw-bottomnav__action[selected] > .mdw-bottomnav__label,
       input:checked + .mdw-bottomnav__action > .mdw-bottomnav__icon,
       input:checked + .mdw-bottomnav__action > .mdw-bottomnav__label,
       input:checked ~ .mdw-bottomnav__icon,
@@ -40,6 +44,9 @@ $bottomnavColors: (
             transparent 10.0001%
           );
         }
+      }
+      &[mdw-shifting] .mdw-bottomnav__label {
+        color: transparent;
       }
     }
   }

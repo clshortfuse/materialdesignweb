@@ -67,3 +67,21 @@ include ../mixins.pug
           span.mdw-bottomnav__label Newsstand
     +androidnavbar
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B3321sZLoP_HZHA1UVAyRFpMVDQ/components-bottomnavigation-usage5.png')
+
+.comparison.clipped-300.js
+  .render.mdw-theme-bottomnav
+    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+      .flex-1
+        p Javascript version without radio buttons
+      .mdw-bottomnav
+        .mdw-bottomnav__action
+          .mdw-bottomnav__icon.material-icons history
+          .mdw-bottomnav__label Recents
+        .mdw-bottomnav__action(selected)
+          .mdw-bottomnav__icon.material-icons favorite
+          .mdw-bottomnav__label Favorites
+        .mdw-bottomnav__action
+          .mdw-bottomnav__icon.material-icons near_me
+          .mdw-bottomnav__label Nearby
+    +androidnavbar
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B3321sZLoP_HZHA1UVAyRFpMVDQ/components-bottomnavigation-usage5.png')

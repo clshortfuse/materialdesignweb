@@ -92,27 +92,31 @@ const myElementMap = new WeakMap();
 /** @return {void} */
 function start() {
   setupOptions();
-  forEachNode(document.querySelectorAll('.mdw-textfield'), (element) => {
+  forEachNode(document.querySelectorAll('.js .mdw-bottomnav'), (element) => {
+    myElementMap.set(element, new mdw.Bottomnav(element));
+  });
+  forEachNode(document.querySelectorAll('.js .mdw-bottomnav__action'), (element) => {
+    myElementMap.set(element, new mdw.BottomnavAction(element));
+  });
+  forEachNode(document.querySelectorAll('.js .mdw-textfield'), (element) => {
     myElementMap.set(element, new mdw.TextField(element));
   });
-  forEachNode(document.querySelectorAll('.mdw-list'), (element) => {
+  forEachNode(document.querySelectorAll('.js .mdw-list'), (element) => {
     myElementMap.set(element, new mdw.List(element));
   });
-  forEachNode(document.querySelectorAll('.mdw-list__row'), (element) => {
+  forEachNode(document.querySelectorAll('.js .mdw-list__row'), (element) => {
     myElementMap.set(element, new mdw.ListRow(element));
   });
-  forEachNode(document.querySelectorAll('.mdw-button'), (element) => {
-    if (!hasSomeParentHasClass(element, 'no-js')) {
-      myElementMap.set(element, new mdw.Button(element));
-    }
+  forEachNode(document.querySelectorAll('.js .mdw-button'), (element) => {
+    myElementMap.set(element, new mdw.Button(element));
   });
-  forEachNode(document.querySelectorAll('.mdw-progress-circle'), (element) => {
+  forEachNode(document.querySelectorAll('.js .mdw-progress-circle'), (element) => {
     myElementMap.set(element, new mdw.ProgressCircle(element));
   });
-  forEachNode(document.querySelectorAll('.mdw-tab'), (element) => {
+  forEachNode(document.querySelectorAll('.js .mdw-tab'), (element) => {
     myElementMap.set(element, new mdw.Tab(element));
   });
-  forEachNode(document.querySelectorAll('.mdw-tab__action'), (element) => {
+  forEachNode(document.querySelectorAll('.js .mdw-tab__action'), (element) => {
     myElementMap.set(element, new mdw.TabItem(element));
   });
   forEachNode(document.querySelectorAll('.target'), (element) => {
