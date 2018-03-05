@@ -66,6 +66,16 @@ class Bottomnav {
       selectedItem.removeAttribute('selected');
     }
     element.setAttribute('selected', '');
+    let inputElement = element.querySelector('input');
+    if (!inputElement && element.tagName.toLowerCase() === 'label') {
+      const id = element.getAttribute('for');
+      if (id) {
+        inputElement = document.getElementById('id');
+      }
+    }
+    if (inputElement) {
+      inputElement.checked = true;
+    }
   }
 }
 
