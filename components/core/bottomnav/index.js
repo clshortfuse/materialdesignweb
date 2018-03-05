@@ -48,6 +48,38 @@ class Bottomnav {
         this.onActionClicked(action);
       });
     }
+    const inputs = this.element.querySelectorAll('input');
+    for (let i = 0; i < inputs.length; i += 1) {
+      const input = inputs[i];
+      input.addEventListener('change', () => {
+        this.onInputChanged(input);
+      });
+    }
+  }
+
+  /**
+   * @param {HTMLInputElement} element
+   * @return {void}
+   */
+  onInputChanged(element) {
+    let actionElement;
+    if (element.parentElement.classList.contains('.mdw-bottomnav__action')) {
+      actionElement = element.parentElement;
+    }
+    if (element.id) {
+      actionElement = document.querySelector(`label.mdw-bottomnav__action[for="${element.id}"]`);
+    }
+    if (actionElement.hasAttribute('selected') && element.checked) {
+      return;
+    }
+    if (!actionElement.hasAttribute('selected') && !element.checked) {
+      return;
+    }
+    const selectedItem = this.element.querySelector('.mdw-bottomnav__action[selected]');
+    if (selectedItem) {
+      selectedItem.removeAttribute('selected');
+    }
+    actionElement.setAttribute('selected');
   }
 
   /**

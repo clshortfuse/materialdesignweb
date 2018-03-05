@@ -29,6 +29,8 @@ $tabColors: (
       .mdw-tab__indicator {
         background-color: tabThemeValue("indicator-color", $type, $theme);
       }
+      .mdw-tab__action[selected] > .mdw-tab__icon,
+      .mdw-tab__action[selected] > .mdw-tab__label,
       input:checked + .mdw-tab__action > .mdw-tab__icon,
       input:checked + .mdw-tab__action > .mdw-tab__label,
       input:checked ~ .mdw-tab__icon,
