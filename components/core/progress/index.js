@@ -7,8 +7,8 @@ class ProgressCircle {
    */
   constructor(element) {
     this.element = element;
-    const pathElements = this.element.querySelectorAll('path');
-    this.pathElement = pathElements[pathElements.length - 1];
+    this.pathElements = this.element.getElementsByTagName('path');
+    // this.pathElement = pathElements[pathElements.length - 1];
 
     // TODO: Upgrade IE/Edge browsers to animate with rAF
   }
@@ -24,7 +24,7 @@ class ProgressCircle {
    */
   setValue(value) {
     const dashOffset = circumference * (3 - (value / 100));
-    this.pathElement.style.setProperty('stroke-dashoffset', dashOffset.toString());
+    this.pathElements[this.pathElements.length - 1].style.setProperty('stroke-dashoffset', dashOffset.toString());
   }
 }
 
