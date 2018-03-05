@@ -41,16 +41,17 @@ class Bottomnav {
    */
   constructor(element) {
     this.element = element;
-    const actions = this.element.querySelectorAll('.mdw-bottomnav__action');
-    for (let i = 0; i < actions.length; i += 1) {
-      const action = actions[i];
+    this.actions = this.element.getElementsByClassName('mdw-bottomnav__action');
+    this.inputs = this.element.getElementsByTagName('input');
+
+    for (let i = 0; i < this.actions.length; i += 1) {
+      const action = this.actions.item(i);
       action.addEventListener('click', () => {
         this.onActionClicked(action);
       });
     }
-    const inputs = this.element.querySelectorAll('input');
-    for (let i = 0; i < inputs.length; i += 1) {
-      const input = inputs[i];
+    for (let i = 0; i < this.inputs.length; i += 1) {
+      const input = this.inputs.item(i);
       input.addEventListener('change', () => {
         this.onInputChanged(input);
       });
@@ -58,52 +59,59 @@ class Bottomnav {
   }
 
   /**
-   * @param {HTMLInputElement} element
+   * @param {HTMLInputElement} inputElement
    * @return {void}
    */
-  onInputChanged(element) {
+  onInputChanged(inputElement) {
     let actionElement;
-    if (element.parentElement.classList.contains('.mdw-bottomnav__action')) {
-      actionElement = element.parentElement;
+    if (inputElement.parentElement.classList.contains('mdw-bottomnav__action')) {
+      actionElement = inputElement.parentElement;
     }
-    if (element.id) {
-      actionElement = document.querySelector(`label.mdw-bottomnav__action[for="${element.id}"]`);
+    if (inputElement.id) {
+      actionElement = document.querySelector(`label.mdw-bottomnav__action[for="${inputElement.id}"]`);
     }
-    if (actionElement.hasAttribute('selected') && element.checked) {
+    if (actionElement.hasAttribute('selected') && inputElement.checked) {
       return;
     }
-    if (!actionElement.hasAttribute('selected') && !element.checked) {
+    if (!actionElement.hasAttribute('selected') && !inputElement.checked) {
       return;
     }
-    const selectedItem = this.element.querySelector('.mdw-bottomnav__action[selected]');
-    if (selectedItem) {
-      selectedItem.removeAttribute('selected');
-    }
-    actionElement.setAttribute('selected');
+    this.removeSelection();
+    actionElement.setAttribute('selected', '');
   }
 
+  /** @return {boolean} change */
+  removeSelection() {
+    for (let i = 0; i < this.actions.length; i += 1) {
+      const action = this.actions.item(i);
+      if (action.hasAttribute('selected')) {
+        action.removeAttribute('selected');
+        return true;
+      }
+    }
+    return false;
+  }
   /**
-   * @param {HTMLElement} element
+   * @param {Element} actionElement
    * @return {void}
    */
-  onActionClicked(element) {
-    if (element.hasAttribute('selected')) {
+  onActionClicked(actionElement) {
+    if (actionElement.hasAttribute('selected')) {
       return;
     }
-    if (element.hasAttribute('disabled')) {
+    if (actionElement.hasAttribute('disabled')) {
       return;
     }
-    const selectedItem = this.element.querySelector('.mdw-bottomnav__action[selected]');
-    if (selectedItem) {
-      selectedItem.removeAttribute('selected');
-    }
-    element.setAttribute('selected', '');
-    let inputElement = element.querySelector('input');
-    if (!inputElement && element.tagName.toLowerCase() === 'label') {
-      const id = element.getAttribute('for');
+    this.removeSelection();
+    actionElement.setAttribute('selected', '');
+    let inputElement;
+    if (actionElement.tagName.toLowerCase() === 'label' && actionElement.hasAttribute('for')) {
+      const id = actionElement.getAttribute('for');
       if (id) {
-        inputElement = document.getElementById('id');
+        inputElement = document.getElementById(id);
       }
+    } else {
+      [inputElement] = actionElement.getElementsByTagName('input');
     }
     if (inputElement) {
       inputElement.checked = true;
