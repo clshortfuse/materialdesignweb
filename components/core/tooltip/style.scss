@@ -1,7 +1,8 @@
 // https://material.io/guidelines/components/tooltips.html
 
-$tooltip-margin__desktop: dp(14);
-$tooltip-margin__mobile: dp(24);
+$tooltip__margin__desktop: dp(14);
+$tooltip__margin__mobile: dp(24);
+$tooltip__background-color: #616161; // material-grey-700
 
 .mdw-tooltip__wrapper {
   position: relative;
@@ -24,7 +25,7 @@ $tooltip-margin__mobile: dp(24);
     display: flex;
     align-items: center;
     width: auto;
-    background-color: #616161; //grey-700
+    background-color: $tooltip__background-color;
     color: white;
     font-family: Roboto, sans-serif;
     font-weight: $font-weight-medium;
@@ -42,7 +43,7 @@ $tooltip-margin__mobile: dp(24);
     min-height: dp(22);
     padding-left: dp(8);
     padding-right: dp(8);
-    transform: translateX(-50%) translateY($tooltip-margin__desktop);
+    transform: translateX(-50%) translateY($tooltip__margin__desktop);
   }
   // Mobile
   &::after {
@@ -50,7 +51,7 @@ $tooltip-margin__mobile: dp(24);
     min-height: dp(32);
     padding-left: dp(16);
     padding-right: dp(16);
-    transform: translateX(-50%) translateY($tooltip-margin__mobile);
+    transform: translateX(-50%) translateY($tooltip__margin__mobile);
   }
   
   &:hover::before,
@@ -77,10 +78,10 @@ $tooltip-margin__mobile: dp(24);
   &[mdw-position="left"],
   [dir=rtl] &[mdw-position="end"] {
     &::before {
-      transform: translateY(-50%) translateX(-100%) translateX(-$tooltip-margin__desktop);
+      transform: translateY(-50%) translateX(-100%) translateX(-$tooltip__margin__desktop);
     }
     &::after {
-      transform: translateY(-50%) translateX(-100%) translateX(-$tooltip-margin__mobile);
+      transform: translateY(-50%) translateX(-100%) translateX(-$tooltip__margin__mobile);
     }
   }
 
@@ -88,21 +89,21 @@ $tooltip-margin__mobile: dp(24);
   &[mdw-position="right"],
   [dir=rtl] &[mdw-position="start"] {
     &::before {
-      transform: translateY(-50%) translateX(100%) translateX($tooltip-margin__desktop);
+      transform: translateY(-50%) translateX(100%) translateX($tooltip__margin__desktop);
     }
     &::after {
-      transform: translateY(-50%) translateX(100%) translateX($tooltip-margin__mobile);
+      transform: translateY(-50%) translateX(100%) translateX($tooltip__margin__mobile);
     }
   }
 
   &[mdw-position="top"] {
     &::before {
       top: 0;
-      transform: translateX(-50%) translateY(-100%) translateY(-$tooltip-margin__desktop);
+      transform: translateX(-50%) translateY(-100%) translateY(-$tooltip__margin__desktop);
     }
     &::after {
       top: 0;
-      transform: translateX(-50%) translateY(-100%) translateY(-$tooltip-margin__mobile);
+      transform: translateX(-50%) translateY(-100%) translateY(-$tooltip__margin__mobile);
     }
   }
   
