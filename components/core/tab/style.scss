@@ -78,6 +78,7 @@
 }
 
 .mdw-tab__action {
+  min-height: dp(48); // Redundant but needed for IE11
   position: relative;
   display: flex;
   flex-grow: 1;
