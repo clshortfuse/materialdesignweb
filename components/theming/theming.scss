@@ -231,6 +231,26 @@ $explicit-color-list: ();
         }
       }
     }
+    @each $color in $explicit-color-list {
+      $palette: map-get($palettes, $color);
+      @each $tone in $tone-list {
+        $value: map-get($palette, $tone);
+        @if ($tone == '500') {
+          .mdw-theme__filled[mdw-color="#{$color}"]:not([mdw-tone]) {
+            background-color: $value;
+          }
+          .mdw-theme__colored[mdw-color="#{$color}"]:not([mdw-tone]) {
+            color: $value;
+          }
+        }
+        .mdw-theme__filled[mdw-color="#{$color}"][mdw-tone="#{$tone}"] {
+          background-color: $value;
+        }
+        .mdw-theme__colored[mdw-color="#{$color}"][mdw-tone="#{$tone}"] {
+          color: $value;
+        }
+      }
+    }
   }
 }
 

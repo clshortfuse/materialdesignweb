@@ -1,3 +1,4 @@
 @import './components/theming/theming.scss';
 @include addTheme('indigo', 'pink', 'red', 'grey');
+@include addColors('cyan');
 @include buildFallbackThemes();
