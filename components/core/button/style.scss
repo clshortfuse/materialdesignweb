@@ -34,6 +34,9 @@ $button__focus-animation-duration: 1667ms;
   outline: none;
   -webkit-appearance: none;
   border: none;
+  &::-moz-focus-inner {
+    border: 0;
+  }
 
   // Support any HTMLElement (not just HTMLButtonElement)
   display: inline-flex;
