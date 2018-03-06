@@ -109,11 +109,12 @@
     top: 0;
     left: 0;
     z-index: -1;
-    // background-image: radial-gradient(circle at center, var(--button__ripple-color) 10%, transparent 10.0001%);
+    pointer-events: none; // Safari improperly captures click
     transform: scale(10); // 10.0 has subpixel rendering issues
     transition-property: transform, opacity;
     transition-duration: 700ms;
     opacity: 0;
+    
   }
   
   &:active {
