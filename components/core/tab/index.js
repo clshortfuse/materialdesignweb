@@ -20,7 +20,7 @@ class TabItem {
    */
   constructor(element) {
     this.element = element;
-    const rippleElements = element.getElementsByClassName('.mdw-ripple');
+    const rippleElements = element.getElementsByClassName('mdw-ripple');
     this.ripple = rippleElements && rippleElements[0];
     if (!this.ripple) {
       const ripple = document.createElement('div');
@@ -41,6 +41,9 @@ class Tab {
    */
   constructor(element) {
     this.element = element;
+    this.inputs = element.getElementsByTagName('input');
+    this.actions = element.getElementsByClassName('mdw-tab__action');
+
     const indicatorElements = element.getElementsByClassName('mdw-tab__indicator');
     this.indicator = indicatorElements && indicatorElements[0];
     if (!this.indicator) {
@@ -49,63 +52,120 @@ class Tab {
       this.element.appendChild(indicator);
       this.indicator = indicator;
     }
-    const inputElements = element.getElementsByTagName('input');
-    for (let i = 0; i < inputElements.length; i += 1) {
-      const inputElement = inputElements[i];
+
+    for (let i = 0; i < this.inputs.length; i += 1) {
+      const inputElement = this.inputs[i];
       if (inputElement.checked) {
-        this.onTabInputChanged(inputElement);
+        this.onInputChanged(inputElement);
       }
-      inputElements[i].addEventListener('change', (event) => {
-        this.onTabInputChanged(event.target);
+      inputElement.addEventListener('change', () => {
+        this.onInputChanged(inputElement);
       });
     }
 
-    // this.indicator.setAttribute('mdw-js-indicator', '');
+    for (let i = 0; i < this.actions.length; i += 1) {
+      const actionElement = this.actions[i];
+      if (actionElement.hasAttribute('selected')) {
+        this.selectAction(actionElement);
+      }
+      actionElement.addEventListener('click', () => {
+        this.selectAction(actionElement);
+      });
+    }
+  }
+
+  /**
+   * @param {HTMLInputElement} inputElement
+   * @return {HTMLElement}
+   */
+  static getActionForInput(inputElement) {
+    let actionElement;
+    if (inputElement.parentElement.classList.contains('mdw-tab__action')) {
+      actionElement = inputElement.parentElement;
+    }
+    if (inputElement.id) {
+      actionElement = document.querySelector(`label.mdw-tab__action[for="${inputElement.id}"]`);
+    }
+    return actionElement;
+  }
+
+  static isRtl() {
+    const htmlElement = document.getElementsByTagName('html')[0];
+    if (htmlElement.hasAttribute('dir') && htmlElement.getAttribute('dir').toLowerCase() === 'rtl') {
+      return true;
+    }
+    if (!document.body.hasAttribute('dir')) {
+      return false;
+    }
+    return document.body.getAttribute('dir').toLowerCase() === 'rtl';
+  }
+
+  /**
+   * @param {HTMLElement} actionElement
+   * @return {boolean} changed
+   */
+  selectAction(actionElement) {
+    if (actionElement.hasAttribute('selected')) {
+      // return false;
+    }
+    let foundPreviousSelection = false;
+    let foundTarget = false;
+    let indicatorUpdated = false;
+    let left = 0;
+    const isRtl = Tab.isRtl();
+    for (let i = 0; i < this.actions.length; i += 1) {
+      const index = isRtl ? this.actions.length - 1 -i : i;
+      const action = this.actions.item(index);
+      if (action.hasAttribute('selected')) {
+        foundPreviousSelection = true;
+        action.removeAttribute('selected');
+        if (!indicatorUpdated) {
+          this.indicator.setAttribute('mdw-direction', 'forwards');
+          indicatorUpdated = true;
+        }
+      }
+      if (action === actionElement) {
+        foundTarget = true;
+        actionElement.setAttribute('selected', '');
+        if (!indicatorUpdated) {
+          this.indicator.setAttribute('mdw-direction', 'backwards');
+          indicatorUpdated = true;
+        }
+      }
+      if (!foundTarget) {
+        left += action.clientWidth;
+      }
+      if (foundTarget && foundPreviousSelection) {
+        break;
+      }
+    }
+
+    if (!this.element.clientWidth) {
+      this.indicator.style.setProperty('left', '');
+      this.indicator.style.setProperty('right', '');
+      this.indicator.removeAttribute('mdw-js-indicator');
+      // use CSS styling fallback
+      return false;
+    }
+    const right = this.element.clientWidth - left - actionElement.clientWidth;
+    if (!this.indicator.hasAttribute('mdw-js-indicator')) {
+      this.indicator.setAttribute('mdw-js-indicator', '');
+    }
+
+    this.indicator.style.setProperty('left', `${left}px`);
+    this.indicator.style.setProperty('right', `${right}px`);
+    return false;
   }
 
   /**
    * @param {HTMLInputElement} inputElement
    * @return {void}
    */
-  onTabInputChanged(inputElement) {
-    if (!this.element.clientWidth) {
-      this.indicator.removeAttribute('mdw-js-indicator');
-      return;
+  onInputChanged(inputElement) {
+    const actionElement = Tab.getActionForInput(inputElement);
+    if (actionElement) {
+      this.selectAction(actionElement);
     }
-    this.indicator.setAttribute('mdw-js-indicator', '');
-    if (this.selectedInput === inputElement) {
-      return;
-    }
-    const currentlySelectedInput = this.selectedInput;
-    this.selectedInput = inputElement;
-    const inputElements = this.element.getElementsByTagName('input');
-    let left = 0;
-    let attributeSet = false;
-    for (let i = 0; i < inputElements.length; i += 1) {
-      const candidate = inputElements[i];
-      if (candidate === currentlySelectedInput) {
-        this.indicator.setAttribute('mdw-direction', 'forwards');
-        attributeSet = true;
-      }
-      if (candidate === inputElement) {
-        if (!attributeSet) {
-          this.indicator.setAttribute('mdw-direction', 'reverse');
-        }
-        break;
-      }
-      let labelElement = inputElement.nextElementSibling;
-      if (labelElement.tagName.toLowerCase() !== 'label') {
-        labelElement = inputElement.parentElement;
-      }
-      left += labelElement.clientWidth;
-    }
-    let labelElement = inputElement.nextElementSibling;
-    if (labelElement.tagName.toLowerCase() !== 'label') {
-      labelElement = inputElement.parentElement;
-    }
-    const right = this.element.clientWidth - left - labelElement.clientWidth;
-    this.indicator.style.setProperty('left', `${left}px`);
-    this.indicator.style.setProperty('right', `${right}px`);
   }
 }
 

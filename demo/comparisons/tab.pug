@@ -15,13 +15,13 @@ include ../mixins.pug
         form.mdw-tab.mdw-theme__filled(mdw-color='cyan' mdw-tone=500)
           input(type="radio" name="tab" value="one" id='text-tab1' checked)
           label.mdw-tab__action(for='text-tab1')
-            span.mdw-tab__label Item One
+            .mdw-tab__label Item One
           input(type="radio" name="tab" value="two" id='text-tab2')
           label.mdw-tab__action(for='text-tab2')
-            span.mdw-tab__label Item Two
+            .mdw-tab__label Item Two
           input(type="radio" name="tab" value="three" id='text-tab3')
           label.mdw-tab__action(for='text-tab3')
-            span.mdw-tab__label Item Three
+            .mdw-tab__label Item Three
           .mdw-tab__indicator
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="0")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsOUdyb0FjQTJTdlk/components-tabs-usage-mobile3.png')
@@ -39,15 +39,15 @@ include ../mixins.pug
             button.mdw-button(mdw-icon mdw-active mdw-more-button).material-icons more_vert
         .mdw-toolbar__content(style="font-size:2.125em;height:56px") Page title
         form.mdw-tab.mdw-theme__filled(mdw-color='cyan' mdw-tone=500)
-          input(type="radio" name="tab" value="one" id='large-text-tab1' checked)
+          input#large-text-tab1(type="radio" name="tab" value="one" checked)
           label.mdw-tab__action(for='large-text-tab1')
-            span.mdw-tab__label Item One
-          input(type="radio" name="tab" value="two" id='large-text-tab2')
+            .mdw-tab__label Item One
+          input#large-text-tab2(type="radio" name="tab" value="two")
           label.mdw-tab__action(for='large-text-tab2')
-            span.mdw-tab__label Item Two
-          input(type="radio" name="tab" value="three" id='large-text-tab3')
+            .mdw-tab__label Item Two
+          input#large-text-tab3(type="radio" name="tab" value="three")
           label.mdw-tab__action(for='large-text-tab3')
-            span.mdw-tab__label Item Three
+            .mdw-tab__label Item Three
           .mdw-tab__indicator
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="0")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsc0lzb2VoMkFBNUE/components-tabs-usage-mobile1.png')
@@ -57,15 +57,15 @@ include ../mixins.pug
   .render
     .mdw-theme__filled(mdw-color='primary' mdw-tone=1000)
       form.mdw-tab.mdw-theme__filled(mdw-color='cyan' mdw-tone=500)
-        label.mdw-tab__action
-          input(type="radio" name="tab" value="one" checked)
-          span.mdw-tab__label Item One
-        label.mdw-tab__action
-          input(type="radio" name="tab" value="two")
-          span.mdw-tab__label Item Two
-        label.mdw-tab__action
-          input(type="radio" name="tab" value="three")
-          span.mdw-tab__label Item Three
+        input#no-toolbar-tab1(type="radio" name="tab" value="one" checked)
+        label.mdw-tab__action(for='no-toolbar-tab1')
+          .mdw-tab__label Item One
+        input#no-toolbar-tab2(type="radio" name="tab" value="two")
+        label.mdw-tab__action(for='no-toolbar-tab2')
+          .mdw-tab__label Item Two
+        input#no-toolbar-tab3(type="radio" name="tab" value="three")
+        label.mdw-tab__action(for='no-toolbar-tab3')
+          .mdw-tab__label Item Three
         .mdw-tab__indicator
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="0")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsbmZJbkdjeHE0RW8/components-tabs-usage-mobile6.png')
@@ -83,14 +83,14 @@ include ../mixins.pug
           button.mdw-button(mdw-icon mdw-active mdw-more-button).material-icons more_vert
       .mdw-toolbar__content
       form.mdw-tab
-        label.mdw-tab__action
-          input(type="radio" name="tab" value="one" checked)
+        input#clear-toolbar-tab1(type="radio" name="tab" value="one" checked)
+        label.mdw-tab__action(for='clear-toolbar-tab1')
           .mdw-tab__label Item One
-        label.mdw-tab__action
-          input(type="radio" name="tab" value="two")
+        input#clear-toolbar-tab2(type="radio" name="tab" value="two")
+        label.mdw-tab__action(for='clear-toolbar-tab2')
           .mdw-tab__label Item Two
-        label.mdw-tab__action
-          input(type="radio" name="tab" value="three")
+        input#clear-toolbar-tab3(type="radio" name="tab" value="three")
+        label.mdw-tab__action(for='clear-toolbar-tab3')
           .mdw-tab__label Item Three
         .mdw-tab__indicator
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="0")
@@ -113,15 +113,16 @@ include ../mixins.pug
           input(type="radio" name="tab" value="recents" id='tab-text-icon1' checked)
           label.mdw-tab__action(for='tab-text-icon1')
             .mdw-tab__icon.material-icons phone
-            span.mdw-tab__label Recents
+            .mdw-tab__label Recents
           input(type="radio" name="tab" value="favorites" id='tab-text-icon2')
           label.mdw-tab__action(for='tab-text-icon2')
             .mdw-tab__icon.material-icons favorite
-            span.mdw-tab__label Favorites
+            .mdw-tab__label Favorites
           input(type="radio" name="tab" value="nearby" id='tab-text-icon3')
           label.mdw-tab__action(for='tab-text-icon3')
             .mdw-tab__icon.material-icons person_pin
-            span.mdw-tab__label Nearby
+            .mdw-tab__label Nearby
+          .mdw-tab__indicator
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="0")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsS2pLN2MwWmUyRW8/components-tabs-usage-specs8.png')
 
@@ -150,3 +151,31 @@ include ../mixins.pug
         .mdw-tab__indicator
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="0")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsQ1Y4YXpwTkZ2MFU/components-tabs-usage-mobile8.png')
+
+
+
+.comparison.clipped.mdw-theme-tab.js
+  .render
+    +androidstatusbar('rgb(var(--primary-700-color))')
+    .mdw-theme__filled(mdw-color='primary' mdw-tone=1000)
+      .mdw-toolbar.mdw-theme__filled(mdw-color='cyan' mdw-tone='500')
+        .mdw-toolbar__action
+          .mdw-toolbar__start
+            button.mdw-button(mdw-icon mdw-active).material-icons menu
+          .mdw-toolbar__title JS version
+          .mdw-toolbar__end
+            button.mdw-button(mdw-icon mdw-active).material-icons search
+            button.mdw-button(mdw-icon mdw-active mdw-more-button).material-icons more_vert
+        .mdw-toolbar__content
+        .mdw-tab.mdw-theme__filled(mdw-color='cyan' mdw-tone=500)
+          .mdw-tab__action(selected)
+            .mdw-tab__icon.material-icons phone
+            .mdw-tab__label Recents
+          .mdw-tab__action
+            .mdw-tab__icon.material-icons favorite
+            .mdw-tab__label Favorites
+          .mdw-tab__action
+            .mdw-tab__icon.material-icons person_pin
+            .mdw-tab__label Nearby
+    .content.mdw-theme__filled(mdw-color="background" mdw-tone="0")
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsS2pLN2MwWmUyRW8/components-tabs-usage-specs8.png')

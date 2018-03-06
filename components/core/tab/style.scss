@@ -20,6 +20,11 @@
   height: 2px;
   width: 0;
   left: 0;
+  right: auto;
+  [dir=rtl] & {
+    right: 0;
+    left: auto;
+  }
   transition-property: transform;
   transition-timing-function: $motion-easing-standard;
   transition-duration: $motion-duration-desktop-default;
@@ -33,7 +38,11 @@
   // Element position = 2 * number of input elements + 1 (itself)
   // Width = 100% / number of input elements
   @for $j from 1 through 8 {
-    &:nth-child(#{($j * 2) + 1}):not([mdw-js-indicator]) {
+    // Fallback for 0 width element with JS indicator
+    &:nth-child(#{$j + 1}):not([mdw-js-indicator]) {
+      width: #{100% / $j};
+    }
+    input ~ &:nth-child(#{($j * 2) + 1}):not([mdw-js-indicator]) {
       width: #{100% / $j};
     }
   }
@@ -42,13 +51,16 @@
     input:nth-of-type(#{$i}):checked ~ &:not([mdw-js-indicator]) {
       transform: translateX(#{100% * ($i - 1)});
     }
+    [dir=rtl] input:nth-of-type(#{$i}):checked ~ &:not([mdw-js-indicator]) {
+      transform: translateX(#{-100% * ($i - 1)});
+    }
   }
   
   &[mdw-js-indicator] {
     width: auto;
     // Stretch animation
     transition-property: left, right;
-    &[mdw-direction="reverse"] {
+    &[mdw-direction="backwards"] {
       transition-property: right, left;
     }
     transition-delay: $motion-duration-desktop-default / 2, 0ms;
