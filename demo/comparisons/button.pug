@@ -29,7 +29,7 @@ mixin button-test
 
 .comparison
   .render
-    +androidstatusbar('rgb(var(--background-400-color))')
+    +androidstatusbar('background', '400')
     +toolbar('background', '50', [], []) CSS Only
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding: 16px 0")
       div
@@ -42,7 +42,7 @@ mixin button-test
 
 .comparison
   .render.js
-    +androidstatusbar('rgb(var(--background-400-color))')
+    +androidstatusbar('background', '400')
     +toolbar('background', '50', [], []) Javascript Version
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding: 16px 0")
       div

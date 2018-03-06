@@ -2,35 +2,35 @@ include ../mixins.pug
 
 .comparison.clipped
   .render
-    +androidstatusbar('rgb(var(--background-400-color))')
+    +androidstatusbar('background', '400')
     +toolbar('background', '50', ['menu'],  ['search', 'favorite', 'more_vert']) Title
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="300")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsU1FwTUx3cmRUNG8/layout-structure-appbar-structure2.png')
 
 .comparison.clipped
   .render
-    +androidstatusbar('black')
+    +androidstatusbar('background', '1000')
     +toolbar('background', '900', ['menu'], ['search', 'favorite', 'more_vert']) Title
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="300")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsbGREMW9BdDdnSUk/layout-structure-appbar-structure3.png')
 
 .comparison.clipped
   .render.mdw-theme-toolbar
-    +androidstatusbar('rgb(var(--primary-800-color))')
+    +androidstatusbar('primary', '800')
     +toolbar('primary', 'A200', ['menu'], ['search', 'favorite', 'more_vert']) Title
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="300")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsZF9VZDhtQlF5RGM/layout-structure-appbar-structure4.png')
 
 .comparison.clipped-304
   .render
-    +androidstatusbar('rgb(var(--background-400-color))')
+    +androidstatusbar('background', '400')
     +toolbar('background', '50', ['menu'],  ['search', 'favorite', 'more_vert']) Title
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="300")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsLUFJUnFlRHVhUVU/layout-structure-appbar-metrics1.png')
 
 .comparison.clipped-304
   .render
-    +androidstatusbar('rgb(var(--background-400-color))')
+    +androidstatusbar('background', '400')
     .mdw-toolbar
       .mdw-toolbar__action
         .mdw-toolbar__start
@@ -45,7 +45,7 @@ include ../mixins.pug
 
 .comparison.clipped-304
   .render
-    +androidstatusbar('rgb(var(--background-400-color))')
+    +androidstatusbar('background', '400')
     .mdw-toolbar
       .mdw-toolbar__action
         .mdw-toolbar__start

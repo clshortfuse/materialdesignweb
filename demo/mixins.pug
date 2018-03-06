@@ -1,5 +1,5 @@
-mixin androidstatusbar(color)
-  .androidstatusbar(style=`background-color:${color}`)
+mixin androidstatusbar(color, tone)
+  .androidstatusbar.mdw-theme__filled(mdw-color=color mdw-tone=tone)
     div 12:30
     i.material-icons(style="letter-spacing:2px") &#xE1BA;&#xE1C8;&#xE1A4;
 mixin toolbar(color, tone, start, end)

@@ -2,7 +2,7 @@ include ../mixins.pug
 
 .comparison.mdw-theme-list
   .render
-    +androidstatusbar('rgb(var(--primary-700-color))')
+    +androidstatusbar('primary', '700')
     +toolbar('primary', '500', ['menu'], ['more_vert']) Topics
     .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding-top:2px")
       ul.mdw-list
@@ -22,7 +22,7 @@ include ../mixins.pug
 
 .comparison.mdw-theme-list
   .render
-    +androidstatusbar('rgb(var(--primary-700-color))')
+    +androidstatusbar('primary', '700')
     +toolbar('primary', '500', ['menu'], ['more_vert']) Topics
     .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding-top:2px")
       ul.mdw-list(mdw-divider)
@@ -54,7 +54,7 @@ include ../mixins.pug
 
 .comparison.mdw-theme-list
   .render
-    +androidstatusbar('rgb(var(--primary-700-color))')
+    +androidstatusbar('primary', '700')
     +toolbar('primary', '500', ['menu'], ['more_vert']) Topics
     .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding-top:2px")
       ul.mdw-list
@@ -96,7 +96,7 @@ include ../mixins.pug
 
 .comparison.mdw-theme-list
   .render
-    +androidstatusbar('rgb(var(--accent-700-color))')
+    +androidstatusbar('accent', '700')
     +toolbar('accent', '500', ['menu'], ['search']) Inbox
     .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
       ul.mdw-list(mdw-divider)
@@ -155,7 +155,7 @@ include ../mixins.pug
 
 .comparison.mdw-theme-list
   .render
-    +androidstatusbar('rgb(var(--accent-700-color))')
+    +androidstatusbar('accent', '700')
     +toolbar('accent', '500', ['menu'], ['search']) Inbox
     .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
       ul.mdw-list(mdw-divider mdw-rows=3)
@@ -215,7 +215,7 @@ include ../mixins.pug
 
 .comparison.mdw-theme-list.js
   .render
-    +androidstatusbar('rgb(var(--warn-700-color))')
+    +androidstatusbar('warn', '700')
     +toolbar('warn', '500', ['menu'], ['search', 'check_circle']) Inbox (with JS)
     .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
       ul.mdw-list(mdw-divider mdw-rows=3)

@@ -2,7 +2,7 @@ include ../mixins.pug
 
 .comparison
   .render
-    +androidstatusbar('rgb(var(--primary-700-color))')
+    +androidstatusbar('primary', '700')
     +toolbar('primary', '500', ['arrow_back'], ['more_vert']) Application
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding:6px 16px")
       label.mdw-textfield(style="font-size: 2.125rem")
@@ -46,7 +46,7 @@ include ../mixins.pug
 
 .comparison
   .render
-    +androidstatusbar('rgb(var(--accent-300-color))')
+    +androidstatusbar('accent', '300')
     +toolbar('accent', 'A100', ['arrow_back'], ['search'])
     form.content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding:9px 16px")
       label.mdw-textfield(mdw-color="accent")
@@ -80,7 +80,7 @@ include ../mixins.pug
 
 .comparison
   .render
-    +androidstatusbar('rgb(var(--accent-300-color))')
+    +androidstatusbar('accent', '300')
     +toolbar('accent', 'A100', ['arrow_back'], ['search'])
     form.content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding:9px 16px")
       div.display-flex(style="margin-bottom:-28px;margin-top:-24px;" flex-justify-content="center")
@@ -135,7 +135,7 @@ include ../mixins.pug
 
 .comparison
   .render.mdw-theme-textfield
-    +androidstatusbar('rgb(var(--primary-A700-color))')
+    +androidstatusbar('primary', 'A700')
     +toolbar('primary', 'A200', ['arrow_back'], ['done'])
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding:9px 16px")
       label.mdw-textfield(mdw-box)
@@ -164,7 +164,7 @@ include ../mixins.pug
 
 .comparison
   .render.mdw-theme-textfield
-    +androidstatusbar('rgb(var(--accent-A700-color))')
+    +androidstatusbar('accent', 'A700')
     +toolbar('accent', 'A400', ['arrow_back'], ['done'])
     .content.mdw-theme__filled(style="padding:18px 16px" mdw-color="background" mdw-tone="900")
       label.mdw-textfield(mdw-color="accent")
@@ -184,7 +184,7 @@ include ../mixins.pug
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOeEhlTVhUYm53Z1U/area1.png')
 .comparison
   .render.mdw-theme-textfield
-    +androidstatusbar('rgb(var(--accent-A700-color))')
+    +androidstatusbar('accent', 'A700')
     +toolbar('accent', 'A400', ['arrow_back'], ['done'])
     .content.mdw-theme__filled(style="padding:0 16px; margin-top:-44px" mdw-color="background" mdw-tone="900")
       label.mdw-textfield(mdw-color="accent")
@@ -211,7 +211,7 @@ include ../mixins.pug
 
 .comparison.js
   .render.mdw-theme-textfield
-    +androidstatusbar('rgb(var(--primary-A700-color))')
+    +androidstatusbar('primary', 'A700')
     +toolbar('primary', 'A200', ['arrow_back'], ['done']) With Javascript
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding:9px 16px")
       label.mdw-textfield
