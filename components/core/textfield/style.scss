@@ -128,8 +128,10 @@ $icon-signifier__padding-end: dp(16);
   font-family: Roboto, sans-serif;
   font-weight: $font-weight-regular;
   appearance: none;
-  
+
   padding-bottom: dp(8);
+
+  min-width: 0; // Firefox CSS Grid fix
 
   // Offset from top = LabelTopPadding + LabelText + LabelBottomPadding + 8dp
   // Using padding-top causes overflowed text (multiline)
