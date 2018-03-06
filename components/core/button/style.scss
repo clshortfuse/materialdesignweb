@@ -78,6 +78,7 @@ $button__focus-animation-duration: 1667ms;
     top: 0;
     left: 0;
     z-index: -1;
+    pointer-events: none; // Safari improperly captures click
   }
 
   &::before {
