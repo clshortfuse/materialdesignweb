@@ -138,36 +138,6 @@ include ../mixins.pug
     +androidstatusbar('rgb(var(--primary-A700-color))')
     +toolbar('primary', 'A200', ['arrow_back'], ['done'])
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding:9px 16px")
-      label.mdw-textfield
-        input.mdw-textfield__input(value="Vintage 50's Dress" placeholder=" ")
-        .mdw-textfield__label Title
-        .mdw-textfield__border-line
-        .mdw-textfield__helper-text Helper
-      .horizontal-controls
-        label.mdw-textfield(style="margin-right:16px;width:88px")
-          input.mdw-textfield__input(value="10.00" placeholder=" ")
-          .mdw-textfield__label Price
-          .mdw-textfield__border-line
-          .mdw-textfield__helper-text Helper
-        label.mdw-textfield.flex-1
-          input.mdw-textfield__input(value="Hanover" placeholder=" ")
-          .mdw-textfield__label Location (optional)
-          .mdw-textfield__border-line
-          .mdw-textfield__helper-text Helper
-      label.mdw-textfield
-        textarea.mdw-textfield__input(placeholder=" " mdw-multiline rows=3)
-          | Unique and rare dress from 1952. Made out of washed cotton with front pockets. Sleeveless with button closures.
-        .mdw-textfield__label Description
-        .mdw-textfield__border-line
-    +androidnavbar
-  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOTjBUMXJUU3c4ZUU/multi1.png')
-
-
-.comparison
-  .render.mdw-theme-textfield
-    +androidstatusbar('rgb(var(--primary-A700-color))')
-    +toolbar('primary', 'A200', ['arrow_back'], ['done'])
-    .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding:9px 16px")
       label.mdw-textfield(mdw-box)
         input.mdw-textfield__input(value="Vintage 50's Dress" placeholder=" ")
         .mdw-textfield__label Title
@@ -238,3 +208,33 @@ include ../mixins.pug
         .mdw-textfield__error-text Error: Required.
     +androidnavbar
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOS3ZTZld4c3JhUTQ/area2.png')
+
+.comparison.js
+  .render.mdw-theme-textfield
+    +androidstatusbar('rgb(var(--primary-A700-color))')
+    +toolbar('primary', 'A200', ['arrow_back'], ['done']) With Javascript
+    .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding:9px 16px")
+      label.mdw-textfield
+        input.mdw-textfield__input(value="Vintage 50's Dress" placeholder=" ")
+        .mdw-textfield__label Title
+        .mdw-textfield__border-line
+        .mdw-textfield__helper-text Helper
+      .horizontal-controls
+        label.mdw-textfield(style="margin-right:16px;width:88px")
+          input.mdw-textfield__input(value="10.00" placeholder=" ")
+          .mdw-textfield__prefix $
+          .mdw-textfield__label Price
+          .mdw-textfield__border-line
+          .mdw-textfield__helper-text Helper
+        label.mdw-textfield.flex-1
+          input.mdw-textfield__input(value="Hanover" placeholder=" ")
+          .mdw-textfield__label Location (optional)
+          .mdw-textfield__border-line
+          .mdw-textfield__helper-text Helper
+      label.mdw-textfield
+        textarea.mdw-textfield__input(placeholder=" " mdw-multiline rows=4)
+          | Unique and rare dress from 1952. Made out of washed cotton with front pockets. Sleeveless with button closures. (Erase Me)
+        .mdw-textfield__label Description
+        .mdw-textfield__border-line
+    +androidnavbar
+  +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOTjBUMXJUU3c4ZUU/multi1.png')
