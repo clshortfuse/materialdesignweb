@@ -213,10 +213,10 @@ include ../mixins.pug
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsTll3U0dBTFByeUU/components-lists-keylines6.png')
 
 
-.comparison.mdw-theme-list
+.comparison.mdw-theme-list.js
   .render
     +androidstatusbar('rgb(var(--warn-700-color))')
-    +toolbar('warn', '500', ['menu'], ['search', 'check_circle']) Inbox
+    +toolbar('warn', '500', ['menu'], ['search', 'check_circle']) Inbox (with JS)
     .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="50")
       ul.mdw-list(mdw-divider mdw-rows=3)
         li.mdw-list__row
