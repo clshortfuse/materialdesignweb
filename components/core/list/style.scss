@@ -15,7 +15,8 @@ $list__divider-height: dp(1);
 // base-height: 8px or 16px
 
 .mdw-list {
-  display: block;
+  display: flex;
+  flex-direction: column;
   padding: 0;
   margin: 0;
   min-width: 100%;
@@ -110,6 +111,7 @@ $list__divider-height: dp(1);
 }
 
 .mdw-list__text-line {
+  overflow-y: hidden;
   &,
   & > span {
     overflow-x: hidden;
@@ -163,6 +165,7 @@ $list__divider-height: dp(1);
   text-align: start;
   text-overflow: ellipsis;
   overflow-x: hidden;
+  overflow-y: hidden;
   white-space: normal;
   &:first-of-type {
     font-size: sp(16);
