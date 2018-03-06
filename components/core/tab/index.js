@@ -105,9 +105,6 @@ class Tab {
    * @return {boolean} changed
    */
   selectAction(actionElement) {
-    if (actionElement.hasAttribute('selected')) {
-      // return false;
-    }
     let foundPreviousSelection = false;
     let foundTarget = false;
     let indicatorUpdated = false;
