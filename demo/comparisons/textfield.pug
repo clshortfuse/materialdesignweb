@@ -236,5 +236,19 @@ include ../mixins.pug
           | Unique and rare dress from 1952. Made out of washed cotton with front pockets. Sleeveless with button closures. (Erase Me)
         .mdw-textfield__label Description
         .mdw-textfield__border-line
+      .horizontal-controls
+        label.mdw-textfield(mdw-color="accent" style="margin-right:8px")
+          .mdw-textfield__icon.material-icons phone
+          input.mdw-textfield__input(type="phone" placeholder=" " value="65")
+          .mdw-textfield__label Name
+          .mdw-textfield__border-line
+        label.mdw-textfield(mdw-color="accent" style="margin-left:8px;width:150px;")
+          select.mdw-textfield__input(type="phone")
+            option(value="") Unknown
+            option(value="Mobile") Mobile
+            option(value="Home") Home
+            option(value="Work") Work
+          .mdw-textfield__label Phone Type
+          .mdw-textfield__border-line
     +androidnavbar
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOTjBUMXJUU3c4ZUU/multi1.png')

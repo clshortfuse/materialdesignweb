@@ -233,6 +233,11 @@ select.mdw-textfield__input {
     // Remove IE11 dropdown button
     display: none;
   }
+
+  &:-moz-focusring * {
+    color: black;
+    text-shadow: none;
+  }
 }
 
 .mdw-textfield__border-line {

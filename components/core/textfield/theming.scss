@@ -50,10 +50,27 @@ $textfieldColors: (
       .mdw-textfield__suffix {
         color: textfieldThemeValue("secondary-text-color", $type, $theme);
       }
-      select.mdw-textfield__input[mdw-value-empty] {
-        color: textfieldThemeValue("placeholder-color__focus", $type, $theme);
-        &:focus {
-          color: textfieldThemeValue("secondary-text-color", $type, $theme);
+      select.mdw-textfield__input{
+        // Firefox focusring styling workaround
+        // https://dxr.mozilla.org/mozilla-central/source/browser/components/extensions/extension.css
+        &:-moz-focusring {
+          color: transparent;
+          text-shadow: 0 0 0 textfieldThemeValue("text-color", $type, $theme);
+        }
+        background-image: textfieldThemeValue("dropdown-caret", $type, $theme);
+        &[mdw-value-empty] {
+          color: textfieldThemeValue("placeholder-color__focus", $type, $theme);
+          &:-moz-focusring {
+            color: transparent;
+            text-shadow: 0 0 0 textfieldThemeValue("placeholder-color__focus", $type, $theme);
+          }
+          &:focus {
+            color: textfieldThemeValue("secondary-text-color", $type, $theme);
+            &:-moz-focusring {
+              color: transparent;
+              text-shadow: 0 0 0 textfieldThemeValue("secondary-text-color", $type, $theme);
+            }
+          }
         }
       }
       
@@ -79,8 +96,8 @@ $textfieldColors: (
 
       .mdw-textfield__input {
         color: textfieldThemeValue("text-color", $type, $theme);
-        // Disabled
 
+        // Disabled
         &:disabled {
           color: textfieldThemeValue("disabled-color", $type, $theme);
           & ~ .mdw-textfield__label,
@@ -112,9 +129,6 @@ $textfieldColors: (
             color: transparent;
           }
         }
-      }
-      select.mdw-textfield__input {
-        background-image: textfieldThemeValue("dropdown-caret", $type, $theme);
       }
 
       &[mdw-box] > .mdw-textfield__input,
