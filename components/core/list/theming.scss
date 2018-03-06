@@ -53,6 +53,13 @@ $listColors: (
     &:active[tabindex]:focus:not(:focus-within)::before {
       background-color: listThemeValue("press-color", $type);
     }
+
+    // IE and Edge does not support :focus-within
+    @include MSOnly {
+      &:active::before {
+        background-color: listThemeValue("press-color", $type);
+      }
+    }
     & > .mdw-ripple,
     &::after {
       background-image: radial-gradient(
