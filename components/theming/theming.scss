@@ -105,8 +105,7 @@ $explicit-color-list: ();
 
 @mixin buildFallbackThemes() {
   // Special IE10-11 rule (doesn't run on Edge)
-  // @media required so variables-based rules don't conflict
-  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  @include IEOnly {
     [mdw-color][mdw-tone="0"] {
       // mdw-color required for specificity
       &.mdw-theme__colored {
