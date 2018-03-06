@@ -165,7 +165,9 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     }
   }
   &:checked ~ .mdw-selection__icon::after {
-    border-width: $checkbox-icon-thickness;
+    // border-width: $checkbox-icon-thickness;
+    // Increase visibility
+    border-width: dp(2);
     background-color: transparent;
     box-sizing: border-box;
     transform: rotate(45deg);
