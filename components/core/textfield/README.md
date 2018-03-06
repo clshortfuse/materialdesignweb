@@ -5,7 +5,7 @@
 ```
 label.mdw-textfield
   input.mdw-textfield__input(placeholder=" ")
-  span.mdw-textfield__label Title
+  .mdw-textfield__label Title
   .mdw-textfield__border-line
 ```
 
@@ -13,7 +13,7 @@ label.mdw-textfield
 ```
 label.mdw-textfield
   input.mdw-textfield__input(value="Vintage 50" placeholder=" ")
-  span.mdw-textfield__label Title
+  .mdw-textfield__label Title
   .mdw-textfield__border-line
 ```
 
@@ -22,7 +22,7 @@ label.mdw-textfield
 label.mdw-textfield(style="font-size: 2.125rem")
   // Do not apply font changes to the input element
   input.mdw-textfield__input(placeholder=" ")
-  span.mdw-textfield__label Title
+  .mdw-textfield__label Title
   .mdw-textfield__border-line
 ```
 
@@ -30,7 +30,7 @@ label.mdw-textfield(style="font-size: 2.125rem")
 ```
 label.mdw-textfield
   input.mdw-textfield__input(placeholder=" ")
-  span.mdw-textfield__label Title
+  .mdw-textfield__label Title
   .mdw-textfield__border-line
   .mdw-textfield__helper-text Helper Text
 ```
@@ -39,7 +39,7 @@ label.mdw-textfield
 ```
 label.mdw-textfield
   input.mdw-textfield__input(placeholder=" " required)
-  span.mdw-textfield__label Title
+  .mdw-textfield__label Title
   .mdw-textfield__border-line
   .mdw-textfield__error-text Helper Text
 ```
@@ -48,7 +48,7 @@ label.mdw-textfield
 ```
 label.mdw-textfield
   input.mdw-textfield__input(placeholder=" " required)
-  span.mdw-textfield__label Title
+  .mdw-textfield__label Title
   .mdw-textfield__border-line
   .mdw-textfield__helper-text Helper Text
   .mdw-textfield__error-text Helper Text
@@ -94,7 +94,7 @@ label.mdw-textfield(mdw-color="accent")
 ```
 label.mdw-textfield
   textarea.mdw-textfield__input(placeholder=" ")
-  span.mdw-textfield__label Description
+  .mdw-textfield__label Description
   .mdw-textfield__border-line
 ```
 
@@ -103,7 +103,7 @@ label.mdw-textfield
 ```
 label.mdw-textfield
   textarea.mdw-textfield__input(placeholder=" " mdw-multiline)
-  span.mdw-textfield__label Description
+  .mdw-textfield__label Description
   .mdw-textfield__border-line
 ```
 
@@ -112,21 +112,21 @@ label.mdw-textfield
 ```
 label.mdw-textfield(mdw-textarea)
   textarea.mdw-textfield__input(placeholder=" " rows="5")
-  span.mdw-textfield__label Message
+  .mdw-textfield__label Message
 ```
 
 ## Boxed
 ```
 label.mdw-textfield(mdw-box)
   input.mdw-textfield__input(placeholder=" ")
-  span.mdw-textfield__label Title
+  .mdw-textfield__label Title
 ```
 
 ## Boxed Textarea
 ```
 label.mdw-textfield(mdw-textarea mdw-box)
   textarea.mdw-textfield__input(placeholder=" " rows="5")
-  span.mdw-textfield__label Title
+  .mdw-textfield__label Title
 ```
 
 # Javascript
