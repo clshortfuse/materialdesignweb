@@ -91,6 +91,7 @@ class Bottomnav {
     }
     return false;
   }
+
   /**
    * @param {Element} actionElement
    * @return {void}
