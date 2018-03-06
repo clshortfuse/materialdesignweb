@@ -428,10 +428,10 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
     transform: translateX(0);
   }
   33% {
-    transform: translateX(dp(-2));
+    transform: translateX(1ch);
   }
   66% {
-    transform: translateX(dp(-2));
+    transform: translateX(-1ch);
   }
   100% {
     transform: translateX(0);
