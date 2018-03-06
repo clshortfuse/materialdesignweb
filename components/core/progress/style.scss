@@ -136,14 +136,9 @@ $bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
       
     }
   }
-  // IE11
-  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-    &:not([mdw-determinate]) svg {
-      animation: ms-material-spin $duration linear infinite;
-    }
-  }
-  // Edge
-  @supports (-ms-ime-align:auto) {
+  
+  // IE and Edge do not support animated SVG
+  @include MSOnly {
     &:not([mdw-determinate]) svg {
       animation: ms-material-spin $duration linear infinite;
     }
