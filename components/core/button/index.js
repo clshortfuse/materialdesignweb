@@ -1,11 +1,13 @@
 /**
  * @param {HTMLElement} element
- * @param {MouseEvent} event
- * @return {void} Single row height
+ * @param {MouseEvent|PointerEvent} event
+ * @return {void}
  */
 function updateRipplePosition(element, event) {
-  if (!event.detail) {
-    // Ripple only on mouse or touch events
+  if (!event.pointerType && !event.detail) {
+    // Ripple from center
+    element.style.setProperty('left', '0');
+    element.style.setProperty('top', '0');
     return;
   }
   const x = event.offsetX - (element.clientWidth / 2.0);
@@ -30,6 +32,7 @@ class Button {
     }
     this.element.setAttribute('mdw-js-ripple', '');
     this.element.addEventListener('click', (event) => {
+      console.log(event);
       updateRipplePosition(this.ripple, event);
     });
   }
