@@ -207,6 +207,7 @@ $list__divider-height: dp(1);
     top: 0;
     left: 0;
     z-index: -1;
+    pointer-events: none; // Safari improperly captures click
     // background-image: radial-gradient(circle at center, var(--button__ripple-color) 10%, transparent 10.0001%);
     transform: scale(10); // 10.0 has subpixel rendering issues
     transition-property: transform, opacity;
