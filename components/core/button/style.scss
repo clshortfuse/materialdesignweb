@@ -38,6 +38,9 @@ $button__focus-animation-duration: 1667ms;
     border: 0;
   }
 
+  // Override browser anchor defaults
+  text-decoration-line: none; 
+
   // Support any HTMLElement (not just HTMLButtonElement)
   display: inline-flex;
   text-align: center;
