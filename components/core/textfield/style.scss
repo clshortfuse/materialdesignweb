@@ -349,10 +349,10 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
 }
 
 // On Focus
-.mdw-textfield:active > .mdw-textfield__input,
-.mdw-textfield > .mdw-textfield__input:focus,
-.mdw-textfield[mdw-box]:active > .mdw-textfield__input,
-.mdw-textfield[mdw-box] > .mdw-textfield__input:focus {
+.mdw-textfield:active > .mdw-textfield__input:not(:disabled),
+.mdw-textfield > .mdw-textfield__input:not(:disabled):focus,
+.mdw-textfield[mdw-box]:active > .mdw-textfield__input:not(:disabled),
+.mdw-textfield[mdw-box] > .mdw-textfield__input:not(:disabled):focus {
   & ~ .mdw-textfield__label {
     transform: translateY(0);
     font-size: $label__font-size;
@@ -387,9 +387,9 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
 
 
 // Hover or Focus
-.mdw-textfield:active .mdw-textfield__input,
-.mdw-textfield__input:focus,
-.mdw-textfield__input:hover:not(:disabled) {
+.mdw-textfield:active .mdw-textfield__input:not(:disabled),
+.mdw-textfield__input:not(:disabled):focus,
+.mdw-textfield__input:not(:disabled):hover {
   [mdw-textarea]:not([mdw-box]) > & {
     border-width: $border-line__focused__height;
     margin-left: $border-line__height - $border-line__focused__height;

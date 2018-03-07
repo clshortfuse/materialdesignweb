@@ -180,8 +180,8 @@ $textfieldColors: (
       }
 
       // Focus
-      &:active > .mdw-textfield__input,
-      > .mdw-textfield__input:focus {
+      &:active > .mdw-textfield__input:not(:disabled),
+      > .mdw-textfield__input:not(:disabled):focus {
         & ~ .mdw-textfield__label {
           color: textfieldThemeValue("label-color__focus", $type, $theme);
         }
@@ -205,8 +205,8 @@ $textfieldColors: (
 
       // Accent on focus
       &[mdw-color="accent"] {
-        &:active > .mdw-textfield__input,
-        > .mdw-textfield__input:focus {
+        &:active > .mdw-textfield__input:not(:disabled),
+        > .mdw-textfield__input:not(:disabled):focus {
           &:not(:invalid) {
             & ~ .mdw-textfield__label {
                 color: textfieldThemeValue("label-accent-color__focus", $type, $theme);
