@@ -6,6 +6,7 @@ $listColors: (
   secondary-text-color: ((#000, 0.54), (#fff, 0.70)),
   divider-color:        ((#000, 0.12), (#fff, 0.12)),
   press-color:          ((#999, 0.40), (#CCC, 0.25)),
+  selected-color:       ((#999, 0.40), (#CCC, 0.25)),
   ripple-color:         ((#000, 0.12), (#fff, 0.30), (#fff, 0.20))
 );
 
@@ -44,7 +45,7 @@ $listColors: (
   }
   .mdw-list__row {
     &[selected] {
-      background-color: listThemeValue("press-color", $type);
+      background-color: listThemeValue("selected-color", $type);
     }
     &[tabindex]:active:focus::before {
       background-color: listThemeValue("press-color", $type);
