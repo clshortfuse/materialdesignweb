@@ -6,12 +6,55 @@ include ../mixins.pug
     +toolbar('primary', '500', ['menu'], ['more_vert']) Topics
     .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding:16px 8px")
       .mdw-menu__wrapper
-        a.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised href="#menu") Open
-        .mdw-menu#menu
+        a.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised href="#textmenu") Text
+        .mdw-menu#textmenu
           a.mdw-menu__close(href="#")
           .mdw-menu__box
             .mdw-menu__list
-              .mdw-menu__item Maps
-              .mdw-menu__item Books
-              .mdw-menu__item Flights
-              .mdw-menu__item Apps
+              .mdw-menu__text Maps
+              .mdw-menu__text Books
+              .mdw-menu__text Flights
+              .mdw-menu__text Apps
+      .mdw-menu__wrapper
+        a.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised href="#checkmenu") Checks
+        .mdw-menu#checkmenu
+          a.mdw-menu__close(href="#")
+          .mdw-menu__box
+            .mdw-menu__list
+              .mdw-menu__item
+                .mdw-menu__check
+                .mdw-menu__text Maps
+              .mdw-menu__item
+                .mdw-menu__check ✔
+                .mdw-menu__text Books
+              .mdw-menu__item
+                .mdw-menu__check ✔
+                .mdw-menu__text Flights
+              .mdw-menu__item
+                .mdw-menu__check
+                .mdw-menu__text Apps
+      div(style="height:40px")
+      .mdw-menu__wrapper
+        a.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised href="#infomenu") Info
+        .mdw-menu#infomenu(mdw-width-units=4)
+          a.mdw-menu__close(href="#")
+          .mdw-menu__box
+            .mdw-menu__list
+              .mdw-menu__item
+                .mdw-menu__check
+                .mdw-menu__text Bold
+                .mdw-menu__info ⌘B
+              .mdw-menu__item
+                .mdw-menu__check ✔
+                .mdw-menu__text Italic
+                .mdw-menu__info ⌘I
+              .mdw-menu__item
+                .mdw-menu__check ✔
+                .mdw-menu__text Underline
+                .mdw-menu__info ⌘U
+              .mdw-menu__item
+                .mdw-menu__check ✔
+                .mdw-menu__text Flights
+              .mdw-menu__item
+                .mdw-menu__check
+                .mdw-menu__text Apps

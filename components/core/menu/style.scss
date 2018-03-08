@@ -8,11 +8,13 @@ $menu__animation-duration: 200ms;
 .mdw-menu__wrapper {
   position: relative;
   display: inline-block;
-  z-index: 0;
   .mdw-menu[mdw-show]:not([mdw-hide]),
   .mdw-menu:target {
     pointer-events: auto;
     transition-timing-function: $motion-easing-acceleration;
+    .mdw-menu__close {
+      visibility: visible;
+    }
     .mdw-menu__box {
       transform: translateY(0);
       box-shadow: elevation(8);
@@ -25,6 +27,7 @@ $menu__animation-duration: 200ms;
 }
 
 .mdw-menu {
+  z-index: 1;
   overflow: hidden;
   position: absolute;
   pointer-events: none;
@@ -36,6 +39,14 @@ $menu__animation-duration: 200ms;
   @include allTablets {
     transition-duration: $motion-duration-tablet-default;
   }
+  @for $i from 3 to 7 {
+    &[mdw-width-units="#{$i}"] {
+      .mdw-menu__box {
+        width: calc(#{$menu__unit-width} * #{$i});
+      }
+    }
+  }
+  
 }
 
 .mdw-menu__box {
@@ -48,9 +59,14 @@ $menu__animation-duration: 200ms;
   margin-left: 8px;
   margin-right: 8px;
   margin-bottom: 14px;
+  min-width: $menu__unit-width * 2;
+  max-width: $menu__unit-width * 5;
 }
 
 .mdw-menu__list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   mask-position: 0 100%;
   mask-image: linear-gradient(white 10%, transparent);
   mask-repeat: repeat-y;
@@ -58,31 +74,49 @@ $menu__animation-duration: 200ms;
   transition-property: mask-position;
   transition-duration: inherit;
   transition-timing-function: inherit;
-  min-width: $menu__unit-width * 2;
-  max-width: $menu__unit-width * 5;
-  width: auto;
   padding-top: dp(8);
   padding-bottom: dp(8);
+  box-sizing: border-box;
 }
 
-.mdw-menu__item {
+
+.mdw-menu__text {
+  white-space: nowrap;
+  flex-grow: 1;
+}
+
+.mdw-menu__check {
+  min-width: dp(40);
+}
+
+.mdw-menu__list > * {
   display: flex;
-  flex-direction: row;
   align-items: flex-end;
   padding-left: dp(16);
-  padding-bottom: calc(#{dp(20)} - #{$font-descent * 1em});
+  padding-right: dp(16);
   font-family: Roboto, sans-serif;
   font-size: sp(16);
   cursor: pointer;
-  min-height: calc(#{dp(48)} - (#{dp(20)} - #{$font-descent * 1em}));
+  height: dp(48);
+  padding-bottom: calc(#{dp(20)} - #{$font-descent * 1em});
+  min-height: 48px;
+  box-sizing: border-box;
+  flex-direction: row;
 }
 
+.mdw-menu__info {
+  text-align: end;
+}
+
+
+
 .mdw-menu__close {
+  visibility: hidden;
   position: fixed;
   left: 0;
   top: 0;
   width: 100vw;
   height: 100vh;
   z-index: -1;
-  cursor: auto;
+  cursor: default;
 }

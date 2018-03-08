@@ -2,8 +2,9 @@
 @import '../../common/mixins.scss';
 
 $menuColors: (
-  text-color:                         ((#000,            0.87), (#fff,              1.00)),
-  background-color:                   ((#fff,            1.00), ('background', '800', 1.00)),
+  text-color:       ((#000,              0.87), (#fff,              1.00)),
+  background-color: ((#fff,              1.00), ('background', '800', 1.00)),
+  hover-color:      (('background', '200', 1.00), ('background', '700', 1.00)),
 );
 
 @function menuThemeValue($key, $type, $theme) {
@@ -20,9 +21,12 @@ $menuColors: (
     #{&}.mdw-menu {
       .mdw-menu__list {
         background-color: menuThemeValue("background-color", $type, $theme);
-      }
-      .mdw-menu__item {
-        color: menuThemeValue("text-color", $type, $theme);
+        & > * {
+          color: menuThemeValue("text-color", $type, $theme);
+          &:hover {
+            background-color: menuThemeValue("hover-color", $type, $theme);
+          }
+        }
       }
     }
   }
