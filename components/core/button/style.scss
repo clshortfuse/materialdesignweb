@@ -34,12 +34,12 @@ $button__focus-animation-duration: 1667ms;
   outline: none;
   -webkit-appearance: none;
   border: none;
+  text-decoration: none;
+  
+  // Remove Firefox inner
   &::-moz-focus-inner {
     border: 0;
   }
-
-  // Override browser anchor defaults
-  text-decoration-line: none; 
 
   // Support any HTMLElement (not just HTMLButtonElement)
   display: inline-flex;
@@ -161,7 +161,13 @@ $button__focus-animation-duration: 1667ms;
   }
   */
 
+}
 
+// Fix anchor line-height on IE11
+@include IEOnly {
+  a.mdw-button {
+    line-height: 2.5em !important;
+  }
 }
 
 // Raised
