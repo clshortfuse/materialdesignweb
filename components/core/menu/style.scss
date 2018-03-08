@@ -1,0 +1,88 @@
+// https://material.io/guidelines/components/menus.html
+
+@import '../../common/variables.scss';
+
+$menu__unit-width: dp(56);
+$menu__animation-duration: 200ms;
+
+.mdw-menu__wrapper {
+  position: relative;
+  display: inline-block;
+  z-index: 0;
+  .mdw-menu[mdw-show]:not([mdw-hide]),
+  .mdw-menu:target {
+    pointer-events: auto;
+    transition-timing-function: $motion-easing-acceleration;
+    .mdw-menu__box {
+      transform: translateY(0);
+      box-shadow: elevation(8);
+    }
+    .mdw-menu__list {
+      mask-position: 0 0;
+    }
+    
+  }
+}
+
+.mdw-menu {
+  overflow: hidden;
+  position: absolute;
+  pointer-events: none;
+  transition-timing-function: $motion-easing-deceleration;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
+}
+
+.mdw-menu__box {
+  transform: translateY(-100%) translateY(-8px);
+  box-shadow: elevation(0);
+  transition-property: transform box-shadow;
+  transition-duration: inherit;
+  transition-timing-function: inherit;
+  margin-top: 8px;
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-bottom: 14px;
+}
+
+.mdw-menu__list {
+  mask-position: 0 100%;
+  mask-image: linear-gradient(white 10%, transparent);
+  mask-repeat: repeat-y;
+  mask-size: 100% 1000%;
+  transition-property: mask-position;
+  transition-duration: inherit;
+  transition-timing-function: inherit;
+  min-width: $menu__unit-width * 2;
+  max-width: $menu__unit-width * 5;
+  width: auto;
+  padding-top: dp(8);
+  padding-bottom: dp(8);
+}
+
+.mdw-menu__item {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  padding-left: dp(16);
+  padding-bottom: calc(#{dp(20)} - #{$font-descent * 1em});
+  font-family: Roboto, sans-serif;
+  font-size: sp(16);
+  cursor: pointer;
+  min-height: calc(#{dp(48)} - (#{dp(20)} - #{$font-descent * 1em}));
+}
+
+.mdw-menu__close {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  cursor: auto;
+}
