@@ -5,6 +5,14 @@
 $menu__unit-width: dp(56);
 $menu__animation-duration: 200ms;
 
+// from ic_check_black_18px.svg
+// rotated 45°
+$checkbox-icon-height: dp(12.73);
+$checkbox-icon-width: dp(5.93);
+$checkbox-icon-thickness: dp(1.5);
+$checkbox-icon-offset-y: dp(2.64) - $checkbox-icon-thickness;
+$checkbox-icon-offset-x: dp(6.04);
+
 .mdw-menu__wrapper {
   position: relative;
   display: inline-block;
@@ -86,10 +94,37 @@ $menu__animation-duration: 200ms;
 }
 
 .mdw-menu__check {
+  position: relative;
   min-width: dp(40);
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: dp(4);
+    left: dp(4);
+    margin-left: $checkbox-icon-offset-x;
+    margin-top: $checkbox-icon-offset-y;
+    height: $checkbox-icon-height;
+    width: $checkbox-icon-width;
+  }
+  &[checked]::after {
+    // border-width: $checkbox-icon-thickness;
+    // Increase visibility
+    border-width: dp(2);
+    background-color: transparent;
+    box-sizing: border-box;
+    transform: rotate(45deg) scale(1.11);
+    border-bottom-style: solid;
+    border-right-style: solid;
+    // border-color: unquote("rgb(var(--background-color))");
+  }
 }
 
-.mdw-menu__list > * {
+.mdw-menu__list > .mdw-menu__text,
+.mdw-menu__item, {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+
   display: flex;
   align-items: flex-end;
   padding-left: dp(16);
@@ -102,13 +137,43 @@ $menu__animation-duration: 200ms;
   min-height: 48px;
   box-sizing: border-box;
   flex-direction: row;
+
+  // If using JS ripple, destroy ::after object
+  &[mdw-js-ripple]::after {
+    content: none
+  }
+    
+  & > .mdw-ripple,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    pointer-events: none; // Safari improperly captures click
+    transform: scale(10); // 10.0 has subpixel rendering issues
+    transition-property: transform, opacity;
+    transition-duration: 700ms;
+    opacity: 0;
+    
+  }
+  
+  &:active {
+    & > .mdw-ripple,
+    &::after {
+      transform: scale(0);
+      transition-delay: 0ms;
+      transition-duration: 0s;
+      opacity: 1;
+    }
+  }
 }
 
 .mdw-menu__info {
   text-align: end;
 }
-
-
 
 .mdw-menu__close {
   visibility: hidden;
@@ -120,3 +185,4 @@ $menu__animation-duration: 200ms;
   z-index: -1;
   cursor: default;
 }
+

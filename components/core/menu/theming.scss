@@ -5,6 +5,9 @@ $menuColors: (
   text-color:       ((#000,              0.87), (#fff,              1.00)),
   background-color: ((#fff,              1.00), ('background', '800', 1.00)),
   hover-color:      (('background', '200', 1.00), ('background', '700', 1.00)),
+  press-color:      ((#999,              0.40), (#CCC,              0.25)),
+  selected-color:   ((#999,              0.40), (#CCC,              0.25)),
+  ripple-color:     ((#000,              0.12), (#fff,              0.30), (#fff, 0.20))
 );
 
 @function menuThemeValue($key, $type, $theme) {
@@ -21,11 +24,20 @@ $menuColors: (
     #{&}.mdw-menu {
       .mdw-menu__list {
         background-color: menuThemeValue("background-color", $type, $theme);
-        & > * {
-          color: menuThemeValue("text-color", $type, $theme);
-          &:hover {
-            background-color: menuThemeValue("hover-color", $type, $theme);
-          }
+      }
+      .mdw-menu__list > .mdw-menu__text,
+      .mdw-menu__item {
+        color: menuThemeValue("text-color", $type, $theme);
+        &:hover {
+          background-color: menuThemeValue("hover-color", $type, $theme);
+        }
+        & > .mdw-ripple,
+        &::after {
+          background-image: radial-gradient(
+            circle at center,
+            menuThemeValue("ripple-color", $type, $theme) 10%,
+            transparent 10.0001%
+          );
         }
       }
     }
