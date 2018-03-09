@@ -4,6 +4,8 @@
 
 $menu__unit-width: dp(56);
 $menu__animation-duration: 200ms;
+$menu__margin-top: dp(8);
+$menu__margin-bottom: dp(14);
 
 // from ic_check_black_18px.svg
 // rotated 45°
@@ -13,75 +15,94 @@ $checkbox-icon-thickness: dp(1.5);
 $checkbox-icon-offset-y: dp(2.64) - $checkbox-icon-thickness;
 $checkbox-icon-offset-x: dp(6.04);
 
+
 .mdw-menu__wrapper {
   position: relative;
   display: inline-block;
-  .mdw-menu[mdw-show]:not([mdw-hide]),
-  .mdw-menu:target {
-    pointer-events: auto;
-    transition-timing-function: $motion-easing-acceleration;
-    .mdw-menu__close {
-      visibility: visible;
-    }
-    .mdw-menu__box {
-      transform: translateY(0);
-      box-shadow: elevation(8);
-    }
-    .mdw-menu__list {
-      mask-position: 0 0;
-    }
-    
-  }
+}
+
+.mdw-menu__close {
+  visibility: hidden;
+  pointer-events: inherit;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  cursor: default;
 }
 
 .mdw-menu {
   z-index: 1;
-  overflow: hidden;
   position: absolute;
   pointer-events: none;
+  transition-property: transform box-shadow opacity;
   transition-timing-function: $motion-easing-deceleration;
-  transition-duration: $motion-duration-desktop-default;
+  transition-duration: $motion-duration-desktop-leave;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
+    transition-duration: $motion-duration-mobile-leave;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
+    transition-duration: $motion-duration-tablet-leave;
   }
   @for $i from 3 to 7 {
     &[mdw-width-units="#{$i}"] {
-      .mdw-menu__box {
-        width: calc(#{$menu__unit-width} * #{$i});
-      }
+      width: calc(#{$menu__unit-width} * #{$i});
     }
   }
-  
-}
-
-.mdw-menu__box {
-  transform: translateY(-100%) translateY(-8px);
+  transform-origin: top left;
+  transform: scaleX(0) scaleY(0);
   box-shadow: elevation(0);
-  transition-property: transform box-shadow;
-  transition-duration: inherit;
-  transition-timing-function: inherit;
-  margin-top: 8px;
+  opacity: 0;
   margin-left: 8px;
   margin-right: 8px;
-  margin-bottom: 14px;
   min-width: $menu__unit-width * 2;
   max-width: $menu__unit-width * 5;
+  top: 0;
+  &[mdw-position~="top"] {
+    top: 0;
+  }
+  &[mdw-position~="left"] {
+    left: dp(4);
+  }
+  &[mdw-position~="right"] {
+    right: dp(-4);
+    transform-origin: top right;
+  }
+  &[mdw-position~="bottom"] {
+    top: auto;
+    bottom: 0;
+    transform-origin: bottom left;
+  }
+  &[mdw-position~="bottom"][mdw-position~="right"] {
+    transform-origin: bottom left;
+  }
+  &[mdw-show]:not([mdw-hide]),
+  &:target {
+    pointer-events: auto;
+    transition-timing-function: $motion-easing-acceleration;
+    transition-duration: $motion-duration-desktop-enter;
+    opacity: 1;
+    transform: none;
+    box-shadow: elevation(8);
+    @include allHandsets {
+      transition-duration: $motion-duration-mobile-enter;
+    }
+    @include allTablets {
+      transition-duration: $motion-duration-tablet-enter;
+    }
+    .mdw-menu__close {
+      visibility: visible;
+    }
+  }
 }
+
 
 .mdw-menu__list {
   display: flex;
   flex-direction: column;
   width: 100%;
-  mask-position: 0 100%;
-  mask-image: linear-gradient(white 10%, transparent);
-  mask-repeat: repeat-y;
-  mask-size: 100% 1000%;
-  transition-property: mask-position;
-  transition-duration: inherit;
-  transition-timing-function: inherit;
   padding-top: dp(8);
   padding-bottom: dp(8);
   box-sizing: border-box;
@@ -174,15 +195,3 @@ $checkbox-icon-offset-x: dp(6.04);
 .mdw-menu__info {
   text-align: end;
 }
-
-.mdw-menu__close {
-  visibility: hidden;
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-  cursor: default;
-}
-

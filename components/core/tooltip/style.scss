@@ -63,6 +63,12 @@ $tooltip__background-color: #616161; // material-grey-700
     transition-timing-function: $motion-easing-acceleration;
   }
 
+  .mdw-menu__wrapper > .mdw-menu:target ~ &,
+  .mdw-menu__wrapper > .mdw-menu[mdw-show]:not([mdw-hide]) ~ & {
+    opacity: 0;
+    transition-delay: 0;
+  }
+
   &[mdw-position="start"],
   &[mdw-position="end"],
   &[mdw-position="left"],
