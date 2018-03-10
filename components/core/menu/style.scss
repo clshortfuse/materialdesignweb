@@ -147,6 +147,7 @@ $checkbox-icon-offset-x: dp(6.04);
   font-family: Roboto, sans-serif;
   font-size: sp(16);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   height: dp(48);
   padding-bottom: calc(#{dp(20)} - #{$font-descent * 1em});
   min-height: 48px;
