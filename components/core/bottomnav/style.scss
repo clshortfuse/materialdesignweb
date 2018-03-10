@@ -33,6 +33,7 @@
   overflow: hidden;
 
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   
   // If using JS ripple, destroy ::after object
   &[mdw-js-ripple]::after {
