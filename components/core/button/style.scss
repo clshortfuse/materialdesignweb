@@ -167,7 +167,7 @@ $button__focus-animation-duration: 1667ms;
 
 // Fix anchor line-height on IE11
 @include IEOnly {
-  a.mdw-button {
+  a.mdw-button:not([mdw-icon]) {
     line-height: 2.5em !important;
   }
 }
