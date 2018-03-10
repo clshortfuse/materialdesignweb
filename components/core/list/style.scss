@@ -55,6 +55,7 @@ $list__divider-height: dp(1);
   outline: none;
 
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   &[hidden] {
     display: none;
   }
