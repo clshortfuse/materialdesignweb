@@ -58,7 +58,7 @@ $duration: 1333ms;
 
 /* Material Ease */
 $bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
-@mixin createMaterialSpinAnimation($detail:1) {
+@mixin createMaterialSpinAnimation($detail:30) {
   $totalFrames: $detail * 8;
   /* #{$totalFrames} frames */
   @for $iteration from 0 to 4 {
@@ -96,7 +96,7 @@ $bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
 }
 
 @keyframes material-spin {
-  @include createMaterialSpinAnimation(40);
+  @include createMaterialSpinAnimation(20);
 }
 
 @keyframes ms-material-spin {

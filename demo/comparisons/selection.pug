@@ -2,11 +2,11 @@ include ../mixins.pug
 
 .comparison.no-js.mdw-theme-selection
   .render
-    +androidstatusbar('accent', '700')
-    .mdw-toolbar.mdw-theme__filled(mdw-color='accent' mdw-tone='500')
+    +androidstatusbar('accent-700')
+    .mdw-toolbar(mdw-theme-fill="accent-500")
       .mdw-toolbar__action
         .mdw-toolbar__title Title
-    .content.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+    .content(mdw-theme-fill="background-50")
       ul.mdw-list(style="margin-top:16px")
         li.mdw-list__subheader Switch
         li.mdw-list__row
@@ -32,7 +32,7 @@ include ../mixins.pug
         label.mdw-list__row
           .mdw-list__text Option 2
           .mdw-list__end
-            label.mdw-selection.mdw-theme__colored(mdw-color="primary" mdw-tone=700)
+            label.mdw-selection(mdw-theme-color="primary-700")
               input(type="radio" name="selectiontest")
               .mdw-selection__icon
       ul.mdw-list(style="margin-top:16px")
@@ -46,31 +46,31 @@ include ../mixins.pug
         label.mdw-list__row(tabindex=0)
           .mdw-list__text Option 2
           .mdw-list__end
-            .mdw-selection.mdw-theme__colored(mdw-color="primary" mdw-tone=700)
+            .mdw-selection(mdw-theme-color="primary-700")
               input(type="checkbox" checked)
               .mdw-selection__icon
         label.mdw-list__row(tabindex=-1)
           .mdw-list__text Option 3
           .mdw-list__end
-            .mdw-selection.mdw-theme__colored(mdw-color="warn")
+            .mdw-selection(mdw-theme-color="warn")
               input(type="checkbox")
               .mdw-selection__icon
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B57Y8yNEHsZPQXRHTEpLc0JXVnM/material-design.platform-adaptation-control-1.png')
 
 .comparison.mdw-theme-selection
   .render
-    +androidstatusbar('accent', '700')
-    .mdw-toolbar.mdw-theme__filled(mdw-color='accent' mdw-tone='500')
+    +androidstatusbar('accent-700')
+    .mdw-toolbar(mdw-theme-fill="accent-500")
       .mdw-toolbar__action
         .mdw-toolbar__title Title
-    .content.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+    .content(mdw-theme-fill="background-50")
       div(style="padding:16px")
-        label.mdw-selection.mdw-theme__colored(mdw-color="primary" mdw-tone=700)
+        label.mdw-selection(mdw-theme-color="primary-700")
           input(type="checkbox" checked)
           .mdw-selection__label Prefixed
           .mdw-selection__icon
       div(style="padding:16px")
-        label.mdw-selection.mdw-theme__colored
+        label.mdw-selection(mdw-theme-color="accent-A700")
           input(type="checkbox" checked)
           .mdw-selection__icon
           .mdw-selection__label Suffixed

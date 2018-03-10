@@ -26,7 +26,7 @@ $templateColors: (
 // Varies by current color
 @mixin templateColoredRules($value: "var(--color)") {
   @at-root {
-    #{&}.mdw-template.mdw-theme__colored {
+    #{&}.mdw-template[mdw-theme-color] {
       color: unquote("rgb(#{$value})");
     }
   }
@@ -34,7 +34,7 @@ $templateColors: (
 
 // Varies by theme
 @mixin templateThemeRules($theme: null) {
-  .mdw-template.mdw-theme__filled {
+  .mdw-template[mdw-theme-fill] {
     border-color: templateThemeValue('border-color', null, $theme);
   }
 }

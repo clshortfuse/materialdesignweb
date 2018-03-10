@@ -109,7 +109,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   }
 }
 
-.mdw-selection[mdw-color] {
+.mdw-selection[mdw-theme-color] {
   > input:checked {
     // background-color: unquote("rgba(var(--color), 0.26)");
     ~ .mdw-selection__icon::before {
@@ -224,7 +224,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   }
 }
 
-.mdw-selection[mdw-color] > input[type="radio"]:checked {
+.mdw-selection[mdw-theme-color] > input[type="radio"]:checked {
   & ~ .mdw-selection__icon::after {
     // background-color: unquote("rgb(var(--color))");
   }

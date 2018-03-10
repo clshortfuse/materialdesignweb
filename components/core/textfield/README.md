@@ -83,7 +83,7 @@ label.mdw-textfield
 
 ## Accented
 ```
-label.mdw-textfield(mdw-color="accent")
+label.mdw-textfield(mdw-theme-color="accent")
   input.mdw-textfield__input(type="text" placeholder=" ")
   .mdw-textfield__label Phone number
   .mdw-textfield__border-line

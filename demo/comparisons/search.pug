@@ -2,16 +2,16 @@ include ../mixins.pug
 
 .comparison.js
   .render
-    +androidstatusbar('primary', '700')
-    .mdw-toolbar.mdw-theme__filled(mdw-color='primary' mdw-tone='500')
+    +androidstatusbar('primary-700')
+    .mdw-toolbar(mdw-theme-fill="primary-500")
       .mdw-toolbar__action
         .mdw-toolbar__start
           button.mdw-button(mdw-icon mdw-active).material-icons arrow_back
-        .mdw-toolbar__title.mdw-textfield#search-textfield-simple(mdw-solo mdw-color="accent")
+        .mdw-toolbar__title.mdw-textfield#search-textfield-simple(mdw-solo mdw-theme-color="accent")
           input.mdw-textfield__input(placeholder="Search")
         .mdw-toolbar__end
           button.mdw-button(mdw-icon mdw-active).material-icons clear
-    .content.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+    .content(mdw-theme-fill="background-50")
       ul.mdw-list#search-list-simple
         li.mdw-list__row Attractions
         li.mdw-list__row Dining
@@ -29,16 +29,16 @@ include ../mixins.pug
 
 .comparison.js
   .render
-    +androidstatusbar('primary', '700')
-    .mdw-toolbar.mdw-theme__filled(mdw-color='primary' mdw-tone='500')
+    +androidstatusbar('primary-700')
+    .mdw-toolbar(mdw-theme-fill="primary-500")
       .mdw-toolbar__action
         .mdw-toolbar__start
           button.mdw-button(mdw-icon mdw-active).material-icons arrow_back
-        .mdw-toolbar__title.mdw-textfield#search-textfield-multiline(mdw-solo mdw-color="accent")
+        .mdw-toolbar__title.mdw-textfield#search-textfield-multiline(mdw-solo mdw-theme-color="accent")
           input.mdw-textfield__input(placeholder="Search")
         .mdw-toolbar__end
           button.mdw-button(mdw-icon mdw-active).material-icons clear
-    .content.mdw-theme__filled(mdw-color="background" mdw-tone="50")
+    .content(mdw-theme-fill="background-50")
       ul.mdw-list#search-list-multiline
         li.mdw-list__subheader Today
         li.mdw-list__row
@@ -95,7 +95,7 @@ include ../mixins.pug
 
 .comparison.js
   .render
-    .content.display-flex.mdw-theme__filled(mdw-color="background" mdw-tone="100" style="padding:8px")
+    .content.display-flex(mdw-theme-fill="background-100" style="padding:8px")
       .flex-1.display-flex(flex-column)
         p Text field dropdown with:
         ul
@@ -103,7 +103,7 @@ include ../mixins.pug
           li startsWith text filter
           li append input on selection
         div
-          label.mdw-textfield#search-textfield-custom1(mdw-color="accent")
+          label.mdw-textfield#search-textfield-custom1(mdw-theme-color="accent")
             input.mdw-textfield__input(placeholder=" ")
             .mdw-textfield__label Property
             .mdw-textfield__border-line

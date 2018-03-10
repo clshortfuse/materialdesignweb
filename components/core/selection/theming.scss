@@ -38,7 +38,7 @@ $selectionColors: (
     }
   }
   .mdw-selection,
-  .mdw-selection.mdw-theme__colored {
+  .mdw-selection[mdw-theme-color] {
     .mdw-selection__label {
       color: selectionThemeValue("text-color", $type, $theme);
     }
@@ -48,7 +48,7 @@ $selectionColors: (
 // Varies by current color
 @mixin selectionColoredRules($value: "var(--color)") {
   @at-root {
-    #{&}.mdw-selection.mdw-theme__colored {
+    #{&}.mdw-selection[mdw-theme-color] {
       > input:checked {
         background-color: unquote("rgba(#{$value}, 0.26)");
         ~ .mdw-selection__icon::before {

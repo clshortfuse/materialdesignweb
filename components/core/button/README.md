@@ -18,22 +18,22 @@ button.mdw-button(mdw-raised="always")
 
 ## Colored
 ```
-button.mdw-button.mdw-theme__colored(mdw-color="primary")
+button.mdw-button(mdw-theme-color="primary")
 ```
 
 ## Colored (Custom Tone)
 ```
-button.mdw-button.mdw-theme__colored(mdw-color="accent" mdw-tone="A100")
+button.mdw-button(mdw-theme-color="accent-A100")
 ```
 
 ## Filled
 ```
-button.mdw-button.mdw-theme__filled(mdw-color="primary")
+button.mdw-button(mdw-theme-fill="primary")
 ```
 
 ## Filled (Custom Tone)
 ```
-button.mdw-button.mdw-theme__filled(mdw-color="accent" mdw-tone="A400")
+button.mdw-button(mdw-theme-fill="accent-A400")
 ```
 
 ## Filled (Custom Tone)

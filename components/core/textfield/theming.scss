@@ -204,7 +204,7 @@ $textfieldColors: (
       }
 
       // Accent on focus
-      &[mdw-color="accent"] {
+      &[mdw-theme-color|="accent"] {
         &:active > .mdw-textfield__input:not(:disabled),
         > .mdw-textfield__input:not(:disabled):focus {
           &:not(:invalid) {

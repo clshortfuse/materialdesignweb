@@ -2,8 +2,8 @@ include ../mixins.pug
 
 .comparison
   .render
-    +androidstatusbar('primary', '700')
-    .mdw-toolbar.mdw-theme__filled(mdw-color="primary" mdw-tone="500")
+    +androidstatusbar('primary-700')
+    .mdw-toolbar(mdw-theme-fill="primary-500")
       .mdw-toolbar__action
         .mdw-toolbar__start
           .mdw-tooltip__wrapper
@@ -12,7 +12,7 @@ include ../mixins.pug
         .mdw-toolbar__end
           .mdw-tooltip__wrapper.mdw-menu__wrapper
             a.mdw-button(mdw-icon mdw-active mdw-more-button href="#moremenu").material-icons more_vert
-            .mdw-menu#moremenu(mdw-position="top right" mdw-width-units="3")
+            .mdw-menu#moremenu(mdw-position="top right" mdw-width-units="3" mdw-theme-fill="light")
               a.mdw-menu__close(href="#")
               .mdw-menu__list
                 .mdw-menu__text Refresh
@@ -21,9 +21,9 @@ include ../mixins.pug
                 .mdw-menu__text Help
                 .mdw-menu__text Signout
             .mdw-tooltip(mdw-text="Options")
-    .content.mdw-theme__filled(mdw-color="background" mdw-tone="50" style="padding:16px 8px")
+    .content(mdw-theme-fill="background-50" style="padding:16px 8px")
       .mdw-menu__wrapper
-        a.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised href="#textmenu") Text
+        a.mdw-button(mdw-theme-fill="primary" mdw-raised href="#textmenu") Text
         .mdw-menu#textmenu
           a.mdw-menu__close(href="#")
           .mdw-menu__list
@@ -32,7 +32,7 @@ include ../mixins.pug
             .mdw-menu__text Flights
             .mdw-menu__text Apps
       .mdw-menu__wrapper
-        a.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised href="#checkmenu") Checks
+        a.mdw-button(mdw-theme-fill="primary" mdw-raised href="#checkmenu") Checks
         .mdw-menu#checkmenu
           a.mdw-menu__close(href="#")
           .mdw-menu__list
@@ -50,7 +50,7 @@ include ../mixins.pug
               .mdw-menu__text Apps
       div(style="height:400px")
       .mdw-menu__wrapper
-        a.mdw-button.mdw-theme__filled(mdw-color="primary" mdw-raised href="#infomenu") Info
+        a.mdw-button(mdw-theme-fill="primary" mdw-raised href="#infomenu") Info
         .mdw-menu#infomenu(mdw-width-units=4 mdw-position="bottom")
           a.mdw-menu__close(href="#")
           .mdw-menu__list
