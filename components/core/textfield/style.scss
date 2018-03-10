@@ -220,6 +220,7 @@ select.mdw-textfield__input {
   background-repeat: no-repeat;
   background-size: 16px 16px;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   option {
     font-size: inherit;
     font-family: Roboto, sans-serif;
