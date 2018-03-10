@@ -92,6 +92,7 @@
   z-index: 0;
   overflow: hidden;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   input:checked + & {
     cursor: default;
   }
