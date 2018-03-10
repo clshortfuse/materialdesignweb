@@ -108,6 +108,12 @@ $explicit-color-list: ();
     [mdw-theme-fill~="warn-0"],
     [mdw-theme-fill~="background-0"] {
       background-color: white;
+    }
+    [mdw-theme-fill~="primary-0"],
+    [mdw-theme-fill~="accent-0"],
+    [mdw-theme-fill~="warn-0"],
+    [mdw-theme-fill~="background-0"],
+    [mdw-theme-fill~="light"] {
       @include componentContrastRules('light');
       :not([mdw-theme-fill]) {
         @include componentContrastRules('light');
@@ -157,7 +163,7 @@ $explicit-color-list: ();
                   @include componentContrastRules('light', $theme);
                 }
               }
-              [mdw-theme-color="#{$color}-#{$tone}"] {
+              [mdw-theme-color~="#{$color}-#{$tone}"] {
                 color: $value;
                 @include componentColoredRules($rgbValue);
               }
@@ -178,21 +184,21 @@ $explicit-color-list: ();
                     @include componentContrastRules($contrastType, $theme);
                   }
                 }
-                [mdw-theme-color="#{$color}"] {
+                [mdw-theme-color~="#{$color}"] {
                   color: $value;
                   @include componentColoredRules($rgbValue);
                 }
               }
             }
             #{$namespace} {
-              [mdw-theme-fill="#{$color}-#{$tone}"] {
+              [mdw-theme-fill~="#{$color}-#{$tone}"] {
                 background-color: $value;
                 @include componentContrastRules($contrastType, $theme);
                 :not([mdw-theme-fill]) {
                   @include componentContrastRules($contrastType, $theme);
                 }
               }
-              [mdw-theme-color="#{$color}-#{$tone}"] {
+              [mdw-theme-color~="#{$color}-#{$tone}"] {
                 color: $value;
                 @include componentColoredRules($rgbValue);
               }
@@ -206,19 +212,9 @@ $explicit-color-list: ();
     }
     [mdw-theme-fill~="primary-1000"],
     [mdw-theme-fill~="accent-1000"],
-    [mdw-theme-fill~="warn-1000"] {
-      background-color: black;
-      @include componentContrastRules('background');
-      :not([mdw-theme-fill]) {
-        @include componentContrastRules('background');
-      }
-    }
+    [mdw-theme-fill~="warn-1000"],
     [mdw-theme-fill~="background-1000"] {
       background-color: black;
-      @include componentContrastRules('dark-background');
-      :not([mdw-theme-fill]) {
-        @include componentContrastRules('dark-background');
-      }
     }
     [mdw-theme-color~="primary-1000"],
     [mdw-theme-color~="accent-1000"],
@@ -227,6 +223,23 @@ $explicit-color-list: ();
       color: black;
       @include componentColoredRules("0 0 0");
     }
+    @each $color in ('primary', 'accent', 'warn') {
+      [mdw-theme-fill~="#{$color}-1000"],
+      [mdw-theme-fill|="#{$color}"][mdw-theme-fill~="dark"] {
+        @include componentContrastRules($color);
+        :not([mdw-theme-fill]) {
+          @include componentContrastRules($color);
+        }
+      }
+    }
+    [mdw-theme-fill~="background-1000"],
+    [mdw-theme-fill~="dark"] {
+      @include componentContrastRules('dark-background');
+      :not([mdw-theme-fill]) {
+        @include componentContrastRules('dark-background');
+      }
+    }
+
     @each $color in $explicit-color-list {
       $palette: map-get($palettes, $color);
       @each $tone in $tone-list {
@@ -340,6 +353,7 @@ $explicit-color-list: ();
   [mdw-theme-fill~="accent-0"],
   [mdw-theme-fill~="warn-0"],
   [mdw-theme-fill~="background-0"],
+  [mdw-theme-fill~="light"],
   :root {
     @include lightVariables();
   }
@@ -392,20 +406,11 @@ $explicit-color-list: ();
       }
     }
     @each $color in ('primary', 'accent', 'warn') {
+      [mdw-theme-fill~="#{$color}-1000"][mdw-theme-fill~="dark"],
       [mdw-theme-fill|="#{$color}"][mdw-theme-fill~="dark"] {
         @include darkVariables($color);
       }
     }
-  }
-
-  [mdw-theme-fill~="primary-1000"] {
-    @include darkVariables('primary');
-  }
-  [mdw-theme-fill~="accent-1000"] {
-    @include darkVariables('accent');
-  }
-  [mdw-theme-fill~="warn-1000"] {
-    @include darkVariables('warn');
   }
 
   // Dark Background Variables
