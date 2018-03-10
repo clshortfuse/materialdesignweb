@@ -34,8 +34,10 @@ $checkbox-icon-offset-x: dp(6.04);
 }
 
 .mdw-menu {
-  z-index: 1;
+  display: flex;
+  flex-direction: column;
   position: absolute;
+  z-index: 1;
   pointer-events: none;
   transition-property: transform box-shadow opacity;
   transition-timing-function: $motion-easing-deceleration;
@@ -55,8 +57,11 @@ $checkbox-icon-offset-x: dp(6.04);
   transform: scaleX(0) scaleY(0);
   box-shadow: elevation(0);
   opacity: 0;
-  margin-left: 8px;
-  margin-right: 8px;
+  margin-left: dp(8);
+  margin-right: dp(8);
+  padding-top: dp(8);
+  padding-bottom: dp(8);
+  border-radius: dp(2);
   min-width: $menu__unit-width * 2;
   max-width: $menu__unit-width * 5;
   top: 0;
@@ -98,17 +103,6 @@ $checkbox-icon-offset-x: dp(6.04);
   }
 }
 
-
-.mdw-menu__list {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding-top: dp(8);
-  padding-bottom: dp(8);
-  box-sizing: border-box;
-}
-
-
 .mdw-menu__text {
   white-space: nowrap;
   flex-grow: 1;
@@ -140,7 +134,7 @@ $checkbox-icon-offset-x: dp(6.04);
   }
 }
 
-.mdw-menu__list > .mdw-menu__text,
+.mdw-menu > .mdw-menu__text,
 .mdw-menu__item, {
   position: relative;
   overflow: hidden;

@@ -14,62 +14,58 @@ include ../mixins.pug
             a.mdw-button(mdw-icon mdw-active mdw-more-button href="#moremenu").material-icons more_vert
             .mdw-menu#moremenu(mdw-position="top right" mdw-width-units="3" mdw-theme-fill="light")
               a.mdw-menu__close(href="#")
-              .mdw-menu__list
-                .mdw-menu__text Refresh
-                .mdw-menu__text Settings
-                .mdw-menu__text Send feedback
-                .mdw-menu__text Help
-                .mdw-menu__text Signout
+              .mdw-menu__text Refresh
+              .mdw-menu__text Settings
+              .mdw-menu__text Send feedback
+              .mdw-menu__text Help
+              .mdw-menu__text Signout
             .mdw-tooltip(mdw-text="Options")
     .content(mdw-theme-fill="background-50" style="padding:16px 8px")
       .mdw-menu__wrapper
         a.mdw-button(mdw-theme-fill="primary" mdw-raised href="#textmenu") Text
         .mdw-menu#textmenu
           a.mdw-menu__close(href="#")
-          .mdw-menu__list
-            .mdw-menu__text Maps
-            .mdw-menu__text Books
-            .mdw-menu__text Flights
-            .mdw-menu__text Apps
+          .mdw-menu__text Maps
+          .mdw-menu__text Books
+          .mdw-menu__text Flights
+          .mdw-menu__text Apps
       .mdw-menu__wrapper
         a.mdw-button(mdw-theme-fill="primary" mdw-raised href="#checkmenu") Checks
         .mdw-menu#checkmenu
           a.mdw-menu__close(href="#")
-          .mdw-menu__list
-            .mdw-menu__item
-              .mdw-menu__check
-              .mdw-menu__text Maps
-            .mdw-menu__item
-              .mdw-menu__check(checked)
-              .mdw-menu__text Books
-            .mdw-menu__item
-              .mdw-menu__check(checked)
-              .mdw-menu__text Flights
-            .mdw-menu__item
-              .mdw-menu__check
-              .mdw-menu__text Apps
+          .mdw-menu__item
+            .mdw-menu__check
+            .mdw-menu__text Maps
+          .mdw-menu__item
+            .mdw-menu__check(checked)
+            .mdw-menu__text Books
+          .mdw-menu__item
+            .mdw-menu__check(checked)
+            .mdw-menu__text Flights
+          .mdw-menu__item
+            .mdw-menu__check
+            .mdw-menu__text Apps
       div(style="height:400px")
       .mdw-menu__wrapper
         a.mdw-button(mdw-theme-fill="primary" mdw-raised href="#infomenu") Info
         .mdw-menu#infomenu(mdw-width-units=4 mdw-position="bottom")
           a.mdw-menu__close(href="#")
-          .mdw-menu__list
-            .mdw-menu__item
-              .mdw-menu__check
-              .mdw-menu__text Bold
-              .mdw-menu__info ⌘B
-            .mdw-menu__item
-              .mdw-menu__check(checked)
-              .mdw-menu__text Italic
-              .mdw-menu__info ⌘I
-            .mdw-menu__item
-              .mdw-menu__check(checked)
-              .mdw-menu__text Underline
-              .mdw-menu__info ⌘U
-            .mdw-menu__item
-              .mdw-menu__check(checked)
-              .mdw-menu__text Flights
-            .mdw-menu__item
-              .mdw-menu__check
-              .mdw-menu__text Apps
+          .mdw-menu__item
+            .mdw-menu__check
+            .mdw-menu__text Bold
+            .mdw-menu__info ⌘B
+          .mdw-menu__item
+            .mdw-menu__check(checked)
+            .mdw-menu__text Italic
+            .mdw-menu__info ⌘I
+          .mdw-menu__item
+            .mdw-menu__check(checked)
+            .mdw-menu__text Underline
+            .mdw-menu__info ⌘U
+          .mdw-menu__item
+            .mdw-menu__check(checked)
+            .mdw-menu__text Flights
+          .mdw-menu__item
+            .mdw-menu__check
+            .mdw-menu__text Apps
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3RktrSGVxbkhFaTg/components-menus-usage2.png')

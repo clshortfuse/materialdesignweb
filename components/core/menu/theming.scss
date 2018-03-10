@@ -22,10 +22,8 @@ $menuColors: (
 @mixin menuContrastRules($type: 'var', $theme: null) {
   @at-root {
     #{&}.mdw-menu {
-      .mdw-menu__list {
-        background-color: menuThemeValue("background-color", $type, $theme);
-      }
-      .mdw-menu__list > .mdw-menu__text,
+      background-color: menuThemeValue("background-color", $type, $theme);
+      & > .mdw-menu__text,
       .mdw-menu__item {
         color: menuThemeValue("text-color", $type, $theme);
         &:hover {
