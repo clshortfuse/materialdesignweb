@@ -126,12 +126,12 @@ $tooltip__background-color: #616161; // material-grey-700
   }
   .mdw-tooltip::after {
     content: attr(mdw-text);
+    transition-delay: 1.5s;
   }
   
   .mdw-tooltip:active::after,
   .mdw-tooltip__wrapper > *:active ~ .mdw-tooltip::after {
     opacity: 0.9;
-    transition-delay: 1.5s;
     transition-timing-function: $motion-easing-acceleration;
   }
 }
