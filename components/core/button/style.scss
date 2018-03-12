@@ -68,6 +68,7 @@ $button__focus-animation-duration: 1667ms;
     padding: dp(8);
     font-size: dp(24); // Internal padding provided by font
     box-sizing: content-box;
+    user-select: none;
   }
 
   // Button Animations
@@ -87,6 +88,7 @@ $button__focus-animation-duration: 1667ms;
     top: 0;
     left: 0;
     z-index: -1;
+    user-select: none;
     pointer-events: none; // Safari improperly captures click
   }
 
