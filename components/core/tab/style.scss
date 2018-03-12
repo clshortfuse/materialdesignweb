@@ -160,10 +160,10 @@
   font-size: sp(14);
   text-transform: uppercase;
   font-weight: $font-weight-medium;
-  padding-top: calc(#{dp(10)} - #{$font-ascent * 1em});
-  padding-bottom: calc(#{dp(20)} - #{$font-descent * 1em});
+  padding-top: insetPaddingTop(dp(10));
+  padding-bottom: insetPaddingBottom(dp(20));
   .mdw-tab__icon ~ & {
-    padding-bottom: calc(#{dp(16)} - #{$font-descent * 1em});
+    padding-bottom: insetPaddingBottom(dp(16));
   }
 }
 

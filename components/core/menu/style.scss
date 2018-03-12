@@ -149,7 +149,7 @@ $checkbox-icon-offset-x: dp(6.04);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   height: dp(48);
-  padding-bottom: calc(#{dp(20)} - #{$font-descent * 1em});
+  padding-bottom: insetPaddingBottom(dp(20));
   min-height: 48px;
   box-sizing: border-box;
   flex-direction: row;

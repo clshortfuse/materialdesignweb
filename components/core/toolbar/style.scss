@@ -59,7 +59,7 @@ $toolbar-right-padding: dp(16);
     justify-content: flex-end;
     font-size: sp(20);
 
-    padding-bottom: calc(#{dp(20)} - #{$font-descent * 1em});
+    padding-bottom: insetPaddingBottom(dp(20));
   }
 }
 
