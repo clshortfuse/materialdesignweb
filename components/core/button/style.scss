@@ -105,7 +105,6 @@ $button__focus-animation-duration: 1667ms;
     background-color: transparent;
   }
 
-  &:active::before,
   &:active:focus::before {
     transition-duration: $button__focus-animation-delay, 500ms;
   }
@@ -130,7 +129,7 @@ $button__focus-animation-duration: 1667ms;
     transition-duration: 700ms;
     opacity: 0;
   }
-  &:active {
+  &:active:focus {
     & > .mdw-ripple,
     &::after {
       transform: scale(0);
@@ -179,7 +178,7 @@ $button__focus-animation-duration: 1667ms;
 
 .mdw-button[mdw-raised]:not(:disabled) {
   box-shadow: elevation(2);
-  &:active {
+  &:active:focus {
     box-shadow: elevation(8);
     transition-duration: 0s;
   }
@@ -189,8 +188,8 @@ $button__focus-animation-duration: 1667ms;
       &:hover {
         box-shadow: elevation(2);
       }
-      &:active,
-      &:hover:active {
+      &:active:focus,
+      &:hover:active:focus {
         box-shadow: elevation(8);
         transition-duration: 0s;
       }

@@ -48,7 +48,6 @@ $buttonColors: (
           buttonThemeValue("ripple-color", $type, $theme) 10.0001%);
         background-color: transparent;
       }
-      &:active:not([mdw-theme-color])::before,
       &:active:focus:not([mdw-theme-color])::before {
         background-color: buttonThemeValue("press-color", $type, $theme);
       }
@@ -111,7 +110,6 @@ $buttonColors: (
       &[mdw-icon]:focus:not(:active)::before {
         background-color: unquote("rgba(#{$value}, 0.26)")
       }
-      &:active::before,
       &:focus:active::before {
         background-color: unquote("rgba(#{$value}, 0.20)");
       }
@@ -123,19 +121,16 @@ $buttonColors: (
 @mixin buttonThemeRules($theme: null) {
   .mdw-button {
     &[mdw-theme-fill|="primary"] {
-      &:active::before,
       &:active:focus::before {
         background-color: buttonThemeValue("filled-press-primary-color", null, $theme);
       }
     }
     &[mdw-theme-fill|="accent"] {
-      &:active::before,
       &:active:focus::before {
         background-color: buttonThemeValue("filled-press-accent-color", null, $theme);
       }
     }
     &[mdw-theme-fill|="warn"] {
-      &:active::before,
       &:active:focus::before {
         background-color: buttonThemeValue("filled-press-warn-color", null, $theme);
       }
