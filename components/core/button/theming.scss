@@ -31,7 +31,7 @@ $buttonColors: (
       &:not([mdw-theme-color]):not(:disabled) {
         color: buttonThemeValue("text-color", $type, $theme);
       }
-      &[mdw-active]:not(:disabled) {
+      &[mdw-active]:not([mdw-theme-color]):not(:disabled) {
         color: buttonThemeValue("active-color", $type, $theme);
         &:focus {
           color: buttonThemeValue("active-color__focus", $type, $theme);
@@ -55,6 +55,7 @@ $buttonColors: (
       &:focus:not(:active):not([mdw-theme-color])::before {
         background-color: buttonThemeValue("focus-overlay", $type, $theme);
       }
+      &[mdw-icon]:focus:not(:active)[mdw-theme-color][mdw-inactive]::before,
       &[mdw-icon]:focus:not(:active):not([mdw-theme-color])::before {
         background-color: buttonThemeValue("ripple-color", $type, $theme);
       }
