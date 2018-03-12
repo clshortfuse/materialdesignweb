@@ -3,6 +3,7 @@
 
 $menuColors: (
   text-color:       ((#000,              0.87), (#fff,              1.00)),
+  secondary-color:  ((#000,              0.54), (#fff,              0.70)),
   background-color: ((#fff,              1.00), ('background', '800', 1.00)),
   hover-color:      (('background', '200', 1.00), ('background', '700', 1.00)),
   press-color:      ((#999,              0.40), (#CCC,              0.25)),
@@ -37,6 +38,10 @@ $menuColors: (
             transparent 10.0001%
           );
         }
+      }
+      .mdw-menu__icon,
+      .mdw-menu__check {
+        color: menuThemeValue("secondary-color", $type, $theme);
       }
     }
   }

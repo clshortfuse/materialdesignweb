@@ -68,4 +68,20 @@ include ../mixins.pug
           .mdw-menu__item
             .mdw-menu__check
             .mdw-menu__text Apps
+      .mdw-menu__wrapper
+        a.mdw-button(mdw-theme-fill="primary" mdw-raised href="#iconmenu") Icons
+        .mdw-menu#iconmenu(mdw-width-units=4 mdw-position="bottom")
+          a.mdw-menu__close(href="#")
+          .mdw-menu__item
+            .mdw-menu__icon.material-icons format_bold
+            .mdw-menu__text Bold
+            .mdw-menu__info ⌘B
+          .mdw-menu__item
+            .mdw-menu__icon.material-icons format_italic
+            .mdw-menu__text Italic
+            .mdw-menu__info ⌘I
+          .mdw-menu__item
+            .mdw-menu__icon.material-icons format_underline
+            .mdw-menu__text Underline
+            .mdw-menu__info ⌘U
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3RktrSGVxbkhFaTg/components-menus-usage2.png')

@@ -108,18 +108,28 @@ $checkbox-icon-offset-x: dp(6.04);
   flex-grow: 1;
 }
 
+.mdw-menu__item > *,
+.mdw-menu__text {
+  padding-bottom: insetPaddingBottom(dp(20));
+}
+
+.mdw-menu__check,
+.mdw-menu__icon {
+  min-width: dp(40);
+}
+
 .mdw-menu__check {
   position: relative;
-  min-width: dp(40);
   &::after {
     content: "";
     position: absolute;
-    bottom: dp(4);
+    bottom: dp(20);
     left: dp(4);
     margin-left: $checkbox-icon-offset-x;
     margin-top: $checkbox-icon-offset-y;
     height: $checkbox-icon-height;
     width: $checkbox-icon-width;
+    color: inherit;
   }
   &[checked]::after {
     // border-width: $checkbox-icon-thickness;
@@ -130,6 +140,7 @@ $checkbox-icon-offset-x: dp(6.04);
     transform: rotate(45deg) scale(1.11);
     border-bottom-style: solid;
     border-right-style: solid;
+    border-color: currentColor;
     // border-color: unquote("rgb(var(--background-color))");
   }
 }
@@ -149,7 +160,6 @@ $checkbox-icon-offset-x: dp(6.04);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   height: dp(48);
-  padding-bottom: insetPaddingBottom(dp(20));
   min-height: 48px;
   box-sizing: border-box;
   flex-direction: row;
