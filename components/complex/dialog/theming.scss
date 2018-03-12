@@ -1,0 +1,37 @@
+@import '../../common/functions.scss';
+@import '../../common/mixins.scss';
+
+$dialogColors: (
+  text-color:       ((#000,              0.87), (#fff,              1.00)),
+  background-color: ((#fff,              1.00), ('background', '800', 1.00)),
+);
+
+@function dialogThemeValue($key, $type, $theme) {
+  @return themeValue('dialog', $dialogColors, $key, $type, $theme);
+}
+
+@mixin dialogThemeVariables($color, $lightness) {
+  @include themeVariables('dialog', $dialogColors, $color, $lightness);
+}
+
+// Vary by contrast or theme
+@mixin dialogContrastRules($type: 'var', $theme: null) {
+  @at-root {
+    #{&}.mdw-dialog {
+      .mdw-dialog__popup {
+        background-color: dialogThemeValue("background-color", $type, $theme);
+        color: dialogThemeValue("text-color", $type, $theme);
+      }
+    }
+  }
+}
+
+// Varies by current color
+@mixin dialogColoredRules($value: "var(--color)") {
+  // none
+}
+
+// Varies by theme
+@mixin dialogThemeRules($theme: null) {
+  // none
+}

@@ -8,6 +8,8 @@
 @import '../core/textfield/theming.scss';
 @import '../core/toolbar/theming.scss';
 
+@import '../complex/dialog/theming.scss';
+
 $ie11-tones: (
   primary: ("500", "700"),
   accent: ("A100", "A200", "A400", "A700"),
@@ -29,6 +31,8 @@ $explicit-color-list: ();
   @include tabThemeVariables($color, 'light');
   @include textfieldThemeVariables($color, 'light');
   @include toolbarThemeVariables($color, 'light');
+  
+  @include dialogThemeVariables($color, 'light');
 }
 
 @mixin darkVariables($color:"background") {
@@ -40,6 +44,8 @@ $explicit-color-list: ();
   @include tabThemeVariables($color, 'dark');
   @include textfieldThemeVariables($color, 'dark');
   @include toolbarThemeVariables($color, 'dark');
+
+  @include dialogThemeVariables($color, 'dark');
 }
 
 @mixin componentContrastRules($type: 'var', $theme: null) {
@@ -51,6 +57,8 @@ $explicit-color-list: ();
   @include tabContrastRules($type, $theme);
   @include textfieldContrastRules($type, $theme);
   @include toolbarContrastRules($type, $theme);
+
+  @include dialogContrastRules($type, $theme);
 }
 
 @mixin componentColoredRules($value: "var(--color)") {
@@ -62,6 +70,8 @@ $explicit-color-list: ();
   @include tabColoredRules($value);
   @include textfieldColoredRules($value);
   @include toolbarColoredRules($value);
+
+  @include dialogColoredRules($value);
 }
 
 @mixin componentThemeRules($theme: null) {
@@ -73,6 +83,8 @@ $explicit-color-list: ();
   @include tabThemeRules($theme);
   @include textfieldThemeRules($theme);
   @include toolbarThemeRules($theme);
+
+  @include dialogThemeRules($theme);
 }
 
 @mixin addTheme($primary, $accent, $warn, $background:"grey", $name:"default") {

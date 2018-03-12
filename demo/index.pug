@@ -25,6 +25,7 @@ html(lang='en')
         label.mdw-list__row(for="show-toolbar") toolbar
         label.mdw-list__row(for="show-tooltip") tooltip
         .mdw-list__subheader Complex
+        label.mdw-list__row(for="show-dialog") dialog
         label.mdw-list__row(for="show-search") search
 
     .page
@@ -38,7 +39,7 @@ html(lang='en')
 
       input(type="radio" name="show-component" value="bottomnav" id="show-bottomnav")
       input(type="radio" name="show-component" value="button"    id="show-button")
-      input(type="radio" name="show-component" value="menu"      id="show-menu" checked)
+      input(type="radio" name="show-component" value="menu"      id="show-menu")
       input(type="radio" name="show-component" value="list"      id="show-list")
       input(type="radio" name="show-component" value="selection" id="show-selection")
       input(type="radio" name="show-component" value="progress"  id="show-progress")
@@ -46,6 +47,7 @@ html(lang='en')
       input(type="radio" name="show-component" value="textfield" id="show-textfield")
       input(type="radio" name="show-component" value="toolbar"   id="show-toolbar")
       input(type="radio" name="show-component" value="tooltip"   id="show-tooltip")
+      input(type="radio" name="show-component" value="dialog"    id="show-dialog" checked)
       input(type="radio" name="show-component" value="search"    id="show-search")
 
       div
@@ -70,6 +72,8 @@ html(lang='en')
         include comparisons/toolbar.pug
       #tooltip-comparisons.comparisons
         include comparisons/tooltip.pug
+      #dialog-comparisons.comparisons
+        include comparisons/dialog.pug
       #search-comparisons.comparisons
         include comparisons/search.pug
 

@@ -1,0 +1,120 @@
+// https://material.io/guidelines/components/dialogs.html
+
+// https://material.io/guidelines/components/menus.html
+
+
+$dialog__unit-width: dp(56);
+
+.mdw-dialog__close {
+  visibility: hidden;
+  pointer-events: inherit;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  cursor: default;
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(black, 0.50);
+  }
+}
+
+.mdw-dialog {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  transition-property: transform box-shadow opacity;
+  transition-timing-function: $motion-easing-deceleration;
+  transition-duration: $motion-duration-desktop-leave;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-leave;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-leave;
+  }
+  @for $i from 3 to 7 {
+    &[mdw-width-units="#{$i}"] {
+      width: calc(#{$dialog__unit-width} * #{$i});
+    }
+  }
+  transform-origin: top left;
+  transform: scaleX(0) scaleY(0);
+  box-shadow: elevation(0);
+  opacity: 0;
+  margin-left: dp(8);
+  margin-right: dp(8);
+  padding-top: dp(8);
+  padding-bottom: dp(8);
+  border-radius: dp(2);
+  min-width: $dialog__unit-width * 2;
+  width: auto;
+  max-width: $dialog__unit-width * 5;
+  top: 0;
+  &[mdw-position~="top"] {
+    top: 0;
+  }
+  &[mdw-position~="left"] {
+    left: dp(4);
+  }
+  &[mdw-position~="right"] {
+    right: dp(-4);
+    transform-origin: top right;
+  }
+  &[mdw-position~="bottom"] {
+    top: auto;
+    bottom: 0;
+    transform-origin: bottom left;
+  }
+  &[mdw-position~="bottom"][mdw-position~="right"] {
+    transform-origin: bottom left;
+  }
+  &[mdw-show]:not([mdw-hide]),
+  &:target {
+    pointer-events: auto;
+    transition-timing-function: $motion-easing-acceleration;
+    transition-duration: $motion-duration-desktop-enter;
+    opacity: 1;
+    transform: none;
+    box-shadow: elevation(24);
+    @include allHandsets {
+      transition-duration: $motion-duration-mobile-enter;
+    }
+    @include allTablets {
+      transition-duration: $motion-duration-tablet-enter;
+    }
+    .mdw-dialog__close {
+      visibility: visible;
+    }
+  }
+}
+
+.mdw-dialog__popup {
+  display: flex;
+  flex-direction: column;
+  border-radius: dp(2);
+}
+.mdw-dialog__content {
+  display: flex;
+  flex-direction: column;
+  padding: dp(24);
+}
+
+.mdw-dialog__title {
+  padding-bottom: calc(#{dp(20)} - #{$font-descent * 1em});
+}
+
+.mdw-dialog__button-area {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  .mdw-button {
+    margin: 0;
+  }
+}
