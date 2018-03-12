@@ -168,6 +168,7 @@ $checkbox-icon-offset-x: dp(6.04);
     top: 0;
     left: 0;
     z-index: -1;
+    user-select: none;
     pointer-events: none; // Safari improperly captures click
     transform: scale(10); // 10.0 has subpixel rendering issues
     transition-property: transform, opacity;
