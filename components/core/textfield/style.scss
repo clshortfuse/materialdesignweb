@@ -168,6 +168,14 @@ $icon-signifier__padding-end: dp(16);
     padding-top: calc(#{$label__font-size} + #{$label__padding-bottom} + #{$textarea__label__extra_padding-top});
     will-change: border-color;
     transition-property: border-color;
+    transition-timing-function: $motion-easing-standard;
+    transition-duration: $motion-duration-desktop-default;
+    @include allHandsets {
+      transition-duration: $motion-duration-mobile-default;
+    }
+    @include allTablets {
+      transition-duration: $motion-duration-tablet-default;
+    }
   }
   [mdw-box] > & {
     border-radius: dp(4);
