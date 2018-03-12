@@ -32,7 +32,6 @@ class Button {
     }
     this.element.setAttribute('mdw-js-ripple', '');
     this.element.addEventListener('click', (event) => {
-      console.log(event);
       updateRipplePosition(this.ripple, event);
     });
   }
