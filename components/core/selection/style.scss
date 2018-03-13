@@ -4,6 +4,7 @@
 @import '../../common/variables.scss';
 
 $ripple-size: dp(48);
+$icon-size: dp(24);
 $radio-size: dp(20);
 $checkbox-size: dp(18);
 $border-size: dp(2);
@@ -20,6 +21,8 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   display: flex;
   flex-direction: row;
   align-items: center;
+  position: relative;
+  justify-content: space-between;
 }
 .mdw-selection > input {
   display: inline-flex;
@@ -27,10 +30,11 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   appearance: none;
   outline: none;
   padding: 0;
-  margin-left: $horizontal-margin;
-  margin-right: $horizontal-margin;
-  margin-top: $border-size;
-  margin-bottom: 0;
+  margin: 0;
+  pointer-events: none;
+  position: absolute;
+  min-width: $icon-size;
+  min-height: $icon-size;
 
   // background-color: var(--button__ripple-color);
   border-radius: 50%;
@@ -56,26 +60,25 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     border-color: transparent;
   }
   &:active,
-    &:focus {
-      opacity: 1;
-    }
-  
+  &:focus {
+    opacity: 1;
+    transform: scale($ripple-size/$icon-size);
+  }
 }
 .mdw-selection__icon {
   display: inline-flex;
   pointer-events: none;
-  order: 0;
   position: relative;
   box-sizing: border-box;
-  max-width: 0px;
+  min-width: $icon-size;
+  min-height: $icon-size;
   appearance: none;
   outline: none;
   padding: 0;
   z-index: 0;
-  margin-top: $border-size;
-  transform: translateX($horizontal-margin);
+  margin: 0;
   [dir=rtl] & {
-    transform: translateX(-$horizontal-margin) scaleX(-1);
+    transform: scaleX(-1);
   }
   transition-property: background-color, border-color;
   transition-timing-function: $motion-easing-standard;
@@ -118,39 +121,45 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   }
 }
 
-.mdw-selection__label {
-  padding: 0 dp(8);
-  order: -1;
+
+.mdw-selection__label ~ input {
+  right: 0;
 }
-.mdw-selection__icon ~ .mdw-selection__label {
-  order: 2;
+.mdw-selection__label ~ input,
+.mdw-selection__label ~ .mdw-selection__icon,
+input ~ .mdw-selection__label {
+  margin-left: 8px;
 }
 
-.mdw-selection > input[type="checkbox"] {
-  min-width: $checkbox-size;
-  min-height: $checkbox-size;
-  width: $checkbox-size;
-  height: $checkbox-size;
-  &:active,
-  &:focus {
-    opacity: 1;
-    transform: scale($ripple-size/$checkbox-size);
+[dir=rtl] {
+  .mdw-selection__label ~ input {
+    right: auto;
+    left: 0;
   }
-  & ~ .mdw-selection__icon {
+  .mdw-selection__label ~ input,
+  .mdw-selection__label ~ .mdw-selection__icon,
+  input ~ .mdw-selection__label {
+    margin-left: 0;
+    margin-right: 8px;
+  }
+}
+
+
+.mdw-selection > input[type="checkbox"] {
+  & ~ .mdw-selection__icon::before {
+    left: ($icon-size - $checkbox-size) / 2;
+    top: ($icon-size - $checkbox-size) / 2;
+    width: $checkbox-size;
     height: $checkbox-size;
-    &::before {
-      width: $checkbox-size;
-      height: $checkbox-size;
-      border-radius: dp(2);
-    }
+    border-radius: dp(2);
   }
   &:checked ~ .mdw-selection__icon::before,
   &:active ~ .mdw-selection__icon::before {
     border-width: $checkbox-size / 2;
   }
   & ~ .mdw-selection__icon::after {
-    top: $border-size;
-    left: $border-size;
+    top: $border-size + (($icon-size - $checkbox-size) / 2);
+    left: $border-size + (($icon-size - $checkbox-size) / 2);
     margin-left: $checkbox-icon-offset-x;
     margin-top: $checkbox-icon-offset-y;
     height: $checkbox-icon-height;
@@ -180,29 +189,19 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
 }
 
 .mdw-selection > input[type="radio"] {
-  min-width: $radio-size;
-  min-height: $radio-size;
-  width: $radio-size;
-  height: $radio-size;
-  &:active,
-  &:focus {
-    opacity: 1;
-    transform: scale($ripple-size/$radio-size);
-  }
-  & ~ .mdw-selection__icon {
+  & ~ .mdw-selection__icon::before {
+    left: ($icon-size - $radio-size) / 2;
+    top: ($icon-size - $radio-size) / 2;
+    width: $radio-size;
     height: $radio-size;
-    &::before {
-      width: $radio-size;
-      height: $radio-size;
-      border-radius: 50%;
-    }
+    border-radius: 50%;
   }
   &:active ~ .mdw-selection__icon::before {
     border-width: $radio-size / 2;
   }
   & ~ .mdw-selection__icon::after {
-    top: 0;
-    left: 0;
+    left: ($icon-size - $radio-size) / 2;
+    top: ($icon-size - $radio-size) / 2;
     height: $radio-size;
     width: $radio-size;
     border-radius: 50%;
