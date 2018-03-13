@@ -49,8 +49,7 @@ $list__divider-height: dp(1);
   text-align: start;
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow-x: hidden;
-  overflow-y: hidden; // Chrome ripple overscroll workaround
+  overflow: hidden; // Contain ripple
   z-index: 0;
   outline: none;
 
@@ -67,15 +66,18 @@ $list__divider-height: dp(1);
   order: -1;
   min-width: dp(72 - 16);
   max-width: dp(72 - 16);
+  min-height: dp(56); 
   align-self: flex-start;
   justify-content: flex-start;
   margin-top: dp(12); // min-height - 24px / 2
   // 2px from material-icon inset padding
 }
 
-.mdw-list__end {
+.mdw-list__secondary {
+  z-index: 1;
   order: 1;
   min-width: dp(24 + 16);
+  min-height: dp(56);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -181,12 +183,24 @@ $list__divider-height: dp(1);
   max-height: sp(20*2);
 }
 
-.mdw-list__row {
-  // If using JS ripple, destroy ::after object
-  &[mdw-js-ripple]::after {
-    content: none
+.mdw-list__row > .mdw-ripple {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mdw-list__row[mdw-js-ripple] {
+  overflow-y: visible;
+  &::after {
+    // If using JS ripple, destroy ::after object
+    content: none;
   }
-  
+}
+
+.mdw-list__row {
   // Long press color
   &::before {
     content: '';
@@ -203,55 +217,30 @@ $list__divider-height: dp(1);
     pointer-events: none;
   }
 
-  & > .mdw-ripple,
+  & > .mdw-ripple > .mdw-ripple__inner,
   &::after {
     content: '';
+    background-color: currentColor;
+    border-radius: 50%;
     position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
+    left: 50%;
+    top: 50%;
     z-index: -1;
     user-select: none;
-    pointer-events: none; // Safari improperly captures click
-    // background-image: radial-gradient(circle at center, var(--button__ripple-color) 10%, transparent 10.0001%);
-    transform: scale(10); // 10.0 has subpixel rendering issues
+    pointer-events: none;
+    height: 0;
+    width: 100%;
+    padding-top: 100%;
+    transform: translateX(-50%) translateY(-50%) scale(1);
     transition-property: transform, opacity;
     transition-duration: 700ms;
     opacity: 0;
   }
 
-  &[tabindex]:active:focus {
-    & > .mdw-ripple,
-    &::after {
-      transform: scale(0);
-      transition-delay: 1ms; // Delay one cycle to allow child to get focus
-      transition-duration: 0s;
-      opacity: 1;
-    }
-  }
-
-  &:active:not(:focus-within),
-  &:active[tabindex]:focus:not(:focus-within) {
-    & > .mdw-ripple,
-    &::after {
-      transform: scale(0);
-      transition-delay: 1ms; // Delay one cycle to allow child to get focus
-      transition-duration: 0s;
-      opacity: 1;
-    }
-  }
-
-  // IE and Edge does not support :focus-within
-  @include MSOnly {
-    &:active {
-      & > .mdw-ripple,
-      &::after {
-        transform: scale(0);
-        transition-delay: 1ms; // Delay one cycle to allow child to get focus
-        transition-duration: 0s;
-        opacity: 1;
-      }
-    }
+  & > .mdw-ripple:active > .mdw-ripple__inner,
+  &:active::after {
+    transform: translateX(-50%) translateY(-50%) scale(0);
+    transition-duration: 0s;
+    opacity: 1;
   }
 }

@@ -61,12 +61,9 @@ $listColors: (
         background-color: listThemeValue("press-color", $type);
       }
     }
-    & > .mdw-ripple,
+    & > .mdw-ripple > .mdw-ripple__inner,
     &::after {
-      background-image: radial-gradient(
-        circle at center,
-        listThemeValue("ripple-color", $type) 10%,
-        transparent 10.0001%);
+      color: listThemeValue("ripple-color", $type);
     }
   }
 }
