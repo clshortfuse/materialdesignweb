@@ -1,57 +1,57 @@
 include ../mixins.pug
 
-.comparison.no-js.mdw-theme-selection
+.comparison.mdw-theme-selection.js
   .render
     +androidstatusbar('accent-700')
     .mdw-toolbar(mdw-theme-fill="accent-500")
       .mdw-toolbar__action
         .mdw-toolbar__title Title
     .content(mdw-theme-fill="background-50")
-      ul.mdw-list(style="margin-top:16px")
+      ul.mdw-list(style="margin-top:8px")
         li.mdw-list__subheader Switch
         li.mdw-list__row
           .mdw-list__text Android Switch On
-          .mdw-list__end
+          .mdw-list__secondary
             label.mdw-switch
               input(type="checkbox")
               .mdw-switch__icon
         li.mdw-list__row
           .mdw-list__text Android Switch Off
-          .mdw-list__end
+          .mdw-list__secondary
             label.mdw-switch
               input(type="checkbox")
               .mdw-switch__icon
-      ul.mdw-list(style="margin-top:24px")
+      ul.mdw-list(style="margin-top:8px")
         li.mdw-list__subheader Single check
         label.mdw-list__row
           .mdw-list__text Option 1
-          .mdw-list__end
-            label.mdw-selection
+          .mdw-list__secondary
+            .mdw-selection
               input(type="radio" name="selectiontest" checked)
               .mdw-selection__icon
         label.mdw-list__row
           .mdw-list__text Option 2
-          .mdw-list__end
-            label.mdw-selection(mdw-theme-color="primary-700")
+          .mdw-list__secondary
+            .mdw-selection(mdw-theme-color="primary-700")
               input(type="radio" name="selectiontest")
               .mdw-selection__icon
-      ul.mdw-list(style="margin-top:16px")
+      ul.mdw-list(style="margin-top:8px")
         li.mdw-list__subheader Multiple check
         label.mdw-list__row(tabindex=-1)
           .mdw-list__text Option 1
-          .mdw-list__end
-            label.mdw-selection
+          .mdw-list__secondary
+            .mdw-selection
               input(type="checkbox" checked)
               .mdw-selection__icon
         label.mdw-list__row(tabindex=0)
           .mdw-list__text Option 2
-          .mdw-list__end
+          .mdw-list__secondary
             .mdw-selection(mdw-theme-color="primary-700")
               input(type="checkbox" checked)
               .mdw-selection__icon
         label.mdw-list__row(tabindex=-1)
           .mdw-list__text Option 3
-          .mdw-list__end
+          .mdw-list__secondary
             .mdw-selection(mdw-theme-color="warn")
               input(type="checkbox")
               .mdw-selection__icon
@@ -64,12 +64,12 @@ include ../mixins.pug
       .mdw-toolbar__action
         .mdw-toolbar__title Title
     .content(mdw-theme-fill="background-50")
-      div(style="padding:16px")
+      div.display-flex(style="padding:16px")
         label.mdw-selection(mdw-theme-color="primary-700")
-          input(type="checkbox" checked)
           .mdw-selection__label Prefixed
+          input(type="checkbox" checked)
           .mdw-selection__icon
-      div(style="padding:16px")
+      div.display-flex(style="padding:16px")
         label.mdw-selection(mdw-theme-color="accent-A700")
           input(type="checkbox" checked)
           .mdw-selection__icon
