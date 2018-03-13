@@ -192,10 +192,10 @@ $list__divider-height: dp(1);
   overflow: hidden;
 }
 
-.mdw-list__row[mdw-js-ripple] {
+.mdw-list__row[mdw-ripple] {
   overflow-y: visible;
   &::after {
-    // If using JS ripple, destroy ::after object
+    // If using custom ripple, destroy ::after object
     content: none;
   }
 }
@@ -220,6 +220,7 @@ $list__divider-height: dp(1);
   & > .mdw-ripple > .mdw-ripple__inner,
   &::after {
     content: '';
+    display: table; // Fixes Safari flexbox bug
     background-color: currentColor;
     border-radius: 50%;
     position: absolute;
