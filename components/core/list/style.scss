@@ -82,6 +82,14 @@ $list__divider-height: dp(1);
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+  @include IEOnly() {
+    // Fix IE min-height flexbug
+    &::after {
+      content: '';
+      min-height: inherit;
+      width: 0;
+    }
+  }
 }
 
 .mdw-list__text {
