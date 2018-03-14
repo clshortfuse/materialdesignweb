@@ -35,10 +35,11 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   position: absolute;
   min-width: $icon-size;
   min-height: $icon-size;
+  top: 50%;
 
   // background-color: var(--button__ripple-color);
   border-radius: 50%;
-  transform: scale(1);
+  transform: translateY(-50%) scale(1);
   opacity: 0;
   transition-property: transform, opacity, background-color;
   transition-timing-function: $motion-easing-standard;
@@ -62,7 +63,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   &:active,
   &:focus {
     opacity: 1;
-    transform: scale($ripple-size/$icon-size);
+    transform: translateY(-50%) scale($ripple-size/$icon-size);
   }
 }
 .mdw-selection__icon {
