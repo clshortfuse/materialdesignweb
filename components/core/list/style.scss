@@ -60,17 +60,21 @@ $list__divider-height: dp(1);
   }
 }
 
-.mdw-list__start {
+.mdw-list__avatar,
+.mdw-list__icon {
   display: flex;
   flex-direction: row;
   order: -1;
   min-width: dp(72 - 16);
   max-width: dp(72 - 16);
-  min-height: dp(56); 
   align-self: flex-start;
   justify-content: flex-start;
   margin-top: dp(12); // min-height - 24px / 2
   // 2px from material-icon inset padding
+}
+
+.mdw-list__avatar {
+  min-height: dp(56);
 }
 
 .mdw-list__secondary {
