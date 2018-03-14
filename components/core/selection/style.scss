@@ -78,20 +78,23 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   padding: 0;
   z-index: 0;
   margin: 0;
+
   transition-property: background-color, border-color;
   transition-timing-function: $motion-easing-standard;
   transition-duration: 200ms;
   background-color: transparent;
+
 
   &::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
-    // border-color: var(--secondary-text-color);
+    border-color: currentColor;
     border-width: dp(2);
     border-style: solid;
     box-sizing: border-box;
+    background-color: transparent;
     transition-property: border-width, border-color, background-color;
     transition-duration: $motion-duration-desktop-enter;
     @include allHandsets {
@@ -101,24 +104,11 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
       transition-duration: $motion-duration-tablet-enter;
     }
   }
-  input:checked ~ &::before {
-    // border-color: unquote("rgb(var(--accent-color))");
-  }
   &::after {
     content: "";
     position: absolute;
   }
 }
-
-.mdw-selection[mdw-theme-color] {
-  > input:checked {
-    // background-color: unquote("rgba(var(--color), 0.26)");
-    ~ .mdw-selection__icon::before {
-      // border-color: unquote("rgb(var(--color))");
-    }
-  }
-}
-
 
 .mdw-selection__label ~ input {
   right: 0;
@@ -155,6 +145,10 @@ input ~ .mdw-selection__label {
   &:active ~ .mdw-selection__icon::before {
     border-width: $checkbox-size / 2;
   }
+  &:checked:not(:active) ~ .mdw-selection__icon::before {
+    background-color: currentColor;
+  }
+
   & ~ .mdw-selection__icon::after {
     top: $border-size + (($icon-size - $checkbox-size) / 2);
     left: $border-size + (($icon-size - $checkbox-size) / 2);
@@ -182,6 +176,7 @@ input ~ .mdw-selection__label {
     border-right-style: solid;
     // border-color: unquote("rgb(var(--background-color))");
     animation-name: showCheck;
+    animation-direction: normal;
     animation-fill-mode: forwards;
   }
 }
@@ -193,6 +188,7 @@ input ~ .mdw-selection__label {
     width: $radio-size;
     height: $radio-size;
     border-radius: 50%;
+    border-color: currentColor;
   }
   &:active ~ .mdw-selection__icon::before {
     border-width: $radio-size / 2;
@@ -203,7 +199,7 @@ input ~ .mdw-selection__label {
     height: $radio-size;
     width: $radio-size;
     border-radius: 50%;
-    // background-color: var(--secondary-text-color);
+    background-color: currentColor;
     transform: scale(0);
     transition: transform, background-color;
     transition-timing-function: $motion-easing-standard;
@@ -216,14 +212,7 @@ input ~ .mdw-selection__label {
     }
   }
   &:checked ~ .mdw-selection__icon::after {
-    // background-color: unquote("rgb(var(--accent-color))");
     transform: scale(0.5);
-  }
-}
-
-.mdw-selection[mdw-theme-color] > input[type="radio"]:checked {
-  & ~ .mdw-selection__icon::after {
-    // background-color: unquote("rgb(var(--color))");
   }
 }
 

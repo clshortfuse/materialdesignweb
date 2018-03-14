@@ -21,11 +21,14 @@ $selectionColors: (
 @mixin selectionContrastRules($type: 'var', $theme: null) {
   .mdw-selection > input {
     background-color: selectionThemeValue("ripple-color", $type, $theme);
-    &:not(:checked) ~ .mdw-selection__icon::before {
-      border-color: selectionThemeValue("color", $type, $theme);
+
+    &[type="checkbox"]:not(:checked) ~ .mdw-selection__icon,
+    &[type="checkbox"]:active ~ .mdw-selection__icon {
+      color: selectionThemeValue("color", $type, $theme);
     }
-    &[type="radio"]:not(:checked) ~ .mdw-selection__icon::after {
-      background-color: selectionThemeValue("color", $type, $theme);
+
+    &[type="radio"]:not(:checked) ~ .mdw-selection__icon {
+      color: selectionThemeValue("color", $type, $theme);
     }
     &[type="checkbox"]:checked ~ .mdw-selection__icon::after {
       // Checkbox color is based on currently filled background-color
@@ -49,20 +52,9 @@ $selectionColors: (
 @mixin selectionColoredRules($value: "var(--color)") {
   @at-root {
     #{&}.mdw-selection[mdw-theme-color] {
-      > input:checked {
-        background-color: unquote("rgba(#{$value}, 0.26)");
-        ~ .mdw-selection__icon::before {
-          // TODO: Move outside for IE11 size reduction
-          // Edge support for --color in psuedo elements is buggy
-          border-color: currentColor;
-        }
-      }
+      input[type="checkbox"]:checked:not(:active),
       input[type="radio"]:checked {
-        & ~ .mdw-selection__icon::after {
-          // TODO: Move outside for IE11 size reduction
-          // Edge support for --color in psuedo elements is buggy
-          background-color: currentColor;
-        }
+        background-color: unquote("rgba(#{$value}, 0.26)");
       }
     }
   }
@@ -70,19 +62,13 @@ $selectionColors: (
 
 // Varies by theme
 @mixin selectionThemeRules($theme: null) {
-  .mdw-selection > input {
-    &:checked {
+  .mdw-selection:not([mdw-theme-color]) > input {
+    &[type="radio"]:checked,
+    &[type="checkbox"]:checked:not(:active) {
       background-color: selectionThemeValue("ripple-color__checked", null, $theme);
-    }
-  }
-  .mdw-selection__icon {
-    input:checked ~ &::before {
-      border-color: selectionThemeValue("color__checked", null, $theme);
-    }
-  }
-  .mdw-selection > input[type="radio"] {
-    &:checked ~ .mdw-selection__icon::after {
-      background-color: selectionThemeValue("color__checked", null, $theme);
+      ~ .mdw-selection__icon {
+        color: selectionThemeValue("color__checked", null, $theme);
+      }
     }
   }
 }
