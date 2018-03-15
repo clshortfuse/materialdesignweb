@@ -71,6 +71,22 @@ $button__focus-animation-duration: 1667ms;
     user-select: none;
   }
 
+  &[mdw-image] {
+    border-radius: 50%;
+    min-height: dp(40);
+    min-width: dp(40);
+    padding: 0;
+    margin: 0;
+    box-sizing: content-box;
+    user-select: none;
+    > * {
+      position: absolute;
+      width: auto;
+      height: 100%;
+      z-index: -1;
+    }
+  }
+
   // Button Animations
   // Ripple doesn't appear until mouse-up
   // Background color transitions from hover to press
