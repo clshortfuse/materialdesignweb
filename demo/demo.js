@@ -122,7 +122,7 @@ function start() {
   forEachNode(document.querySelectorAll('.target'), (element) => {
     element.addEventListener('click', onTemplateImageClick);
   });
-  const sampleProgressCircle = myElementMap.get(document.querySelector('#progress-comparisons .mdw-progress-circle[mdw-determinate]'));
+  const sampleProgressCircle = myElementMap.get(document.querySelector('#comparison-progress .mdw-progress-circle[mdw-determinate]'));
   setInterval(() => {
     sampleProgressCircle.setValue(Math.random() * 100);
   }, 2500);

@@ -22,6 +22,7 @@ $components: (
   'toolbar',
   'tooltip',
   'dialog',
+  'navdrawer',
   'search'
 );
 
@@ -39,12 +40,10 @@ body {
   display: none;
 }
 
-.comparisons {
-  position: relative;
-}
 .comparison {
   display: flex;
   flex-direction: row;
+  position: relative;
 }
 
 .androidstatusbar {
@@ -172,7 +171,7 @@ body {
 
 input[name="show-component"]:not(:checked) {
   @each $component in $components {
-    &[value="#{$component}"] ~ ##{$component}-comparisons {
+    &[value="#{$component}"] ~ #comparison-#{$component} {
       display:none;
     }
   }

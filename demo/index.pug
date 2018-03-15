@@ -26,6 +26,7 @@ html(lang='en')
         label.mdw-list__row(for="show-tooltip") tooltip
         .mdw-list__subheader Complex
         label.mdw-list__row(for="show-dialog") dialog
+        label.mdw-list__row(for="show-navdrawer") navdrawer
         label.mdw-list__row(for="show-search") search
 
     .page
@@ -41,40 +42,43 @@ html(lang='en')
       input(type="radio" name="show-component" value="button"    id="show-button")
       input(type="radio" name="show-component" value="menu"      id="show-menu")
       input(type="radio" name="show-component" value="list"      id="show-list")
-      input(type="radio" name="show-component" value="selection" id="show-selection" checked)
+      input(type="radio" name="show-component" value="selection" id="show-selection")
       input(type="radio" name="show-component" value="progress"  id="show-progress")
       input(type="radio" name="show-component" value="tab"       id="show-tab")
       input(type="radio" name="show-component" value="textfield" id="show-textfield")
       input(type="radio" name="show-component" value="toolbar"   id="show-toolbar")
       input(type="radio" name="show-component" value="tooltip"   id="show-tooltip")
       input(type="radio" name="show-component" value="dialog"    id="show-dialog")
+      input(type="radio" name="show-component" value="navdrawer" id="show-navdrawer" checked)
       input(type="radio" name="show-component" value="search"    id="show-search")
 
       div
 
-      #bottomnav-comparisons.comparisons
+      #comparison-bottomnav
         include comparisons/bottomnav.pug
-      #button-comparisons.comparisons
+      #comparison-button
         include comparisons/button.pug
-      #menu-comparisons.comparisons
+      #comparison-menu
         include comparisons/menu.pug
-      #list-comparisons.comparisons
+      #comparison-list
         include comparisons/list.pug
-      #progress-comparisons.comparisons
+      #comparison-progress
         include comparisons/progress.pug
-      #selection-comparisons.comparisons
+      #comparison-selection
         include comparisons/selection.pug
-      #tab-comparisons.comparisons
+      #comparison-tab
         include comparisons/tab.pug
-      #textfield-comparisons.comparisons
+      #comparison-textfield
         include comparisons/textfield.pug
-      #toolbar-comparisons.comparisons
+      #comparison-toolbar
         include comparisons/toolbar.pug
-      #tooltip-comparisons.comparisons
+      #comparison-tooltip
         include comparisons/tooltip.pug
-      #dialog-comparisons.comparisons
+      #comparison-dialog
         include comparisons/dialog.pug
-      #search-comparisons.comparisons
+      #comparison-navdrawer
+        include comparisons/navdrawer.pug
+      #comparison-search
         include comparisons/search.pug
 
 

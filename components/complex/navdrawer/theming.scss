@@ -1,0 +1,39 @@
+@import '../../common/functions.scss';
+@import '../../common/mixins.scss';
+
+$navdrawerColors: (
+  text-color:           ((#000,              0.87), (#fff,              1.00)),
+  secondary-text-color: ((#000,              0.54), (#fff,              0.70)),
+  background-color:     ((#fff,              1.00), ('background', '900', 1.00)),
+);
+
+@function navdrawerThemeValue($key, $type, $theme) {
+  @return themeValue('navdrawer', $navdrawerColors, $key, $type, $theme);
+}
+
+@mixin navdrawerThemeVariables($color, $lightness) {
+  @include themeVariables('navdrawer', $navdrawerColors, $color, $lightness);
+}
+
+// Vary by contrast or theme
+@mixin navdrawerContrastRules($type: 'var', $theme: null) {
+  .mdw-navdrawer {
+    background-color: navdrawerThemeValue("background-color", $type, $theme);
+    .mdw-list__row:not([mdw-theme-color]) .mdw-list__text {
+      color: navdrawerThemeValue("text-color", $type, $theme);
+    }
+    .mdw-list__subheader {
+      color: navdrawerThemeValue("secondary-text-color", $type, $theme);
+    }
+  }
+}
+
+// Varies by current color
+@mixin navdrawerColoredRules($value: "var(--color)") {
+  // none
+}
+
+// Varies by theme
+@mixin navdrawerThemeRules($theme: null) {
+  // none
+}

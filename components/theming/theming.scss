@@ -9,6 +9,7 @@
 @import '../core/toolbar/theming.scss';
 
 @import '../complex/dialog/theming.scss';
+@import '../complex/navdrawer/theming.scss';
 
 $ie11-tones: (
   primary: ("500", "700"),
@@ -33,6 +34,7 @@ $explicit-color-list: ();
   @include toolbarThemeVariables($color, 'light');
   
   @include dialogThemeVariables($color, 'light');
+  @include navdrawerThemeVariables($color, 'light');
 }
 
 @mixin darkVariables($color:"background") {
@@ -46,6 +48,7 @@ $explicit-color-list: ();
   @include toolbarThemeVariables($color, 'dark');
 
   @include dialogThemeVariables($color, 'dark');
+  @include navdrawerThemeVariables($color, 'dark');
 }
 
 @mixin componentContrastRules($type: 'var', $theme: null) {
@@ -59,6 +62,7 @@ $explicit-color-list: ();
   @include toolbarContrastRules($type, $theme);
 
   @include dialogContrastRules($type, $theme);
+  @include navdrawerContrastRules($type, $theme);
 }
 
 @mixin componentColoredRules($value: "var(--color)") {
@@ -72,6 +76,7 @@ $explicit-color-list: ();
   @include toolbarColoredRules($value);
 
   @include dialogColoredRules($value);
+  @include navdrawerColoredRules($value);
 }
 
 @mixin componentThemeRules($theme: null) {
@@ -85,6 +90,7 @@ $explicit-color-list: ();
   @include toolbarThemeRules($theme);
 
   @include dialogThemeRules($theme);
+  @include navdrawerThemeRules($theme);
 }
 
 @mixin addTheme($primary, $accent, $warn, $background:"grey", $name:"default") {
