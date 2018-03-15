@@ -5,34 +5,105 @@
 @import '../../common/motion.scss';
 @import '../../common/variables.scss';
 
-.mdw-navdrawer__scrim {
+.mdw-navdrawer {
+  height: 100%;
+  width: 100%;
+  display: grid;
   position: relative;
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background-color: rgba(black, 0.50);
-    z-index: 0;
+  overflow: hidden;
+  grid-template-rows: minmax(0,auto) 1fr;
+  grid-template-columns: minmax(0,auto) 1fr;
+  transition-timing-function: $motion-easing-deceleration;
+  transition-duration: $motion-duration-desktop-leave;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-leave;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-leave;
+  }
+  &:target,
+  &[mdw-show]:not([mdw-hide]) {
+    transition-timing-function: $motion-easing-acceleration;
+    transition-duration: $motion-duration-desktop-enter;
+    @include allHandsets {
+      transition-duration: $motion-duration-mobile-enter;
+    }
+    @include allTablets {
+      transition-duration: $motion-duration-tablet-enter;
+    }
   }
 }
 
-.mdw-navdrawer {
+.mdw-navdrawer__scrim {
+  content: '';
   position: absolute;
+  left: 0;
+  right: 0;
   top: 0;
   bottom: 0;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  z-index: 2;
-  width: auto;
+  z-index: 16;
+  cursor: auto;
+  pointer-events: none;
+  background-color: transparent;
+  transition-property: background-color;
+  transition-timing-function: inherit;
+  transition-duration: inherit;
+
+  display: none;
+}
+
+.mdw-navdrawer__toolbar {
+  grid-row-start: 1;
+  grid-row-end: 2;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  .mdw-toolbar__start {
+    display: none;
+  }
+}
+
+.mdw-navdrawer__drawer {
+  position: relative;
+  align-self: flex-start;
+  max-height: 100%;
+  height: 100%;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-end: 3;
+  grid-row-start: 1;
   max-width: calc(100% - 64px); // Tablet or Desktop
   @include allHandsets {
     max-width: calc(100% - 56px);
   }
-  box-shadow: elevation(16);
+  min-width: 100%;
+  transform: translateX(0);
+  box-shadow: elevation(0);
+  transition-property: box-shadow, transform;
+  transition-timing-function: inherit;
+  transition-duration: inherit;
+  pointer-events: auto;
+  overflow-y: scroll;
+  border-style: solid;
+  border-width: 0;
+  border-right-width: 1px;
+  &::before {
+    // Used for background color. Removed with mdw-floating
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+
+}
+
+.mdw-navdrawer__content {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 2;
+  grid-column-end: 3;
 }
 
 .mdw-navdrawer .mdw-list__text {
@@ -85,6 +156,7 @@
 }
 
 .mdw-navdrawer__avatars-others {
+  display: flex;
   > .mdw-button {
     width: 40px;
     height: 40px;
@@ -164,14 +236,97 @@
   overflow-x: hidden;
   max-width: 100%;
   box-sizing: border-box;
-  padding-right: 24px;
+  padding-right: 32px;
   [dir=rtl] & {
-    padding-left: 24px;
+    padding-left: 32px;
     padding-right: 0;
   }
 }
 
-.mdw-navdrawer__scroll {
-  flex-grow: 1;
-  overflow-y: scroll;
+
+@mixin mdw-navdrawer__temporary {
+  .mdw-navdrawer__content,
+  .mdw-navdrawer__toolbar {
+    grid-column-start: 1;
+  }
+  .mdw-navdrawer__toolbar .mdw-toolbar__start {
+    display: flex;
+  }
+  .mdw-navdrawer__drawer {
+    position: absolute;
+    grid-row-start: 1;
+    grid-column-end: 3;
+    min-width: auto;
+    transform: translateX(-100%);
+    border-right-width: 0;
+    height: 100%;
+    z-index: 16;
+    margin: 0;
+    border-radius: 0px;
+    &::before {
+      content: '';
+    }
+  }
+  .mdw-navdrawer__scrim {
+    display: block;
+  }
+}
+
+@mixin mdw-navdrawer__temporary__shown {
+  .mdw-navdrawer__drawer {
+    transform: translateX(0);
+    box-shadow: elevation(16);
+  }
+  .mdw-navdrawer__scrim {
+    display: block;
+    background-color: rgba(black, 0.50);
+    cursor: pointer;
+    pointer-events: auto;
+  }
+}
+
+.mdw-navdrawer {
+  &[mdw-floating] {
+    .mdw-navdrawer__drawer {
+      border-right-width: 0;
+      &::before {
+        content: none;
+      }
+    }
+  }
+  &[mdw-floating=card] {
+    .mdw-navdrawer__drawer {
+      margin: 8px;
+      border-radius: dp(2);
+      box-shadow: elevation(8);
+    }
+  }
+  &[mdw-clipped],
+  &[mdw-floating] {
+    .mdw-navdrawer__toolbar {
+      grid-column-start: 1;
+    }
+    .mdw-navdrawer__drawer {
+      grid-row-start: 2;
+      height: auto;
+    }
+  }
+  &[mdw-temporary] {
+    @include mdw-navdrawer__temporary;
+    &:target,
+    &[mdw-show]:not([mdw-hide]) {
+      @include mdw-navdrawer__temporary__shown;
+    }
+  }
+  &,
+  &[mdw-clipped],
+  &[mdw-floating] {
+    @include allHandsetsAndTablets {
+      @include mdw-navdrawer__temporary;
+      &:target,
+      &[mdw-show]:not([mdw-hide]) {
+        @include mdw-navdrawer__temporary__shown;
+      }
+    }
+  }
 }

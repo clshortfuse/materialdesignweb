@@ -4,7 +4,9 @@
 $navdrawerColors: (
   text-color:           ((#000,              0.87), (#fff,              1.00)),
   secondary-text-color: ((#000,              0.54), (#fff,              0.70)),
+  divider-color:        ((#000,              0.12), (#fff,              0.12)),
   background-color:     ((#fff,              1.00), ('background', '900', 1.00)),
+
 );
 
 @function navdrawerThemeValue($key, $type, $theme) {
@@ -17,8 +19,11 @@ $navdrawerColors: (
 
 // Vary by contrast or theme
 @mixin navdrawerContrastRules($type: 'var', $theme: null) {
-  .mdw-navdrawer {
-    background-color: navdrawerThemeValue("background-color", $type, $theme);
+  .mdw-navdrawer__drawer {
+    &::before {
+      background-color: navdrawerThemeValue("background-color", $type, $theme);
+    }
+    border-color: navdrawerThemeValue("divider-color", $type, $theme);
     .mdw-list__row:not([mdw-theme-color]) .mdw-list__text {
       color: navdrawerThemeValue("text-color", $type, $theme);
     }

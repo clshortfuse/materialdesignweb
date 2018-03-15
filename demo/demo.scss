@@ -62,13 +62,13 @@ body {
 
 .content {
   flex: 1;
-  height: 0;
   overflow-y: auto;
   flex-direction: column;
 }
 
 .render,
 .target {
+  position: relative;
   margin: 8px;
   width: 360px;
   max-width: 360px;

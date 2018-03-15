@@ -38,6 +38,20 @@
   }
 }
 
+@mixin allHandsetsAndTablets {
+  @media
+    screen
+      and (orientation:portrait)
+      and (min-width: $breakpoint-portrait-handset-small)
+      and (max-width: $breakpoint-portrait-tablet-max - 1),
+    screen
+      and (orientation:landscape)
+      and (min-width: $breakpoint-landscape-handset-small)
+      and (max-width: $breakpoint-landscape-tablet-max - 1) {
+    @content;
+  }
+}
+
 $light: 1;
 $dark: 2;
 $dark-background: 3;

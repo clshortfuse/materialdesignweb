@@ -19,6 +19,7 @@ $toolbar-right-padding: dp(16);
   display:flex;
   flex-direction: column;
   box-shadow: elevation(4);
+  z-index: 4;
 }
 
 .mdw-toolbar__action {

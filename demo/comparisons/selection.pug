@@ -6,8 +6,8 @@ include ../mixins.pug
     .mdw-toolbar(mdw-theme-fill="accent-500")
       .mdw-toolbar__action
         .mdw-toolbar__title Title
-    .content(mdw-theme-fill="background-50")
-      ul.mdw-list(style="margin-top:8px")
+    .content(mdw-theme-fill="background-50" style="padding-top:7px")
+      ul.mdw-list
         li.mdw-list__subheader Switch
         li.mdw-list__row
           .mdw-list__text Android Switch On
@@ -21,7 +21,7 @@ include ../mixins.pug
             label.mdw-switch
               input(type="checkbox")
               .mdw-switch__icon
-      ul.mdw-list(style="margin-top:8px")
+      ul.mdw-list
         li.mdw-list__subheader Single check
         label.mdw-list__row(mdw-ripple)
           .mdw-ripple
@@ -39,7 +39,7 @@ include ../mixins.pug
             .mdw-selection(mdw-theme-color="primary-700")
               input(type="radio" name="selectiontest")
               .mdw-selection__icon
-      ul.mdw-list(style="margin-top:8px")
+      ul.mdw-list
         li.mdw-list__subheader Multiple check
         label.mdw-list__row(mdw-ripple)
           .mdw-ripple

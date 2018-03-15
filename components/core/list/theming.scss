@@ -31,6 +31,9 @@ $listColors: (
       background-color: listThemeValue("divider-color", $type);
     }
   }
+  .mdw-list__divider {
+    border-top-color: listThemeValue("divider-color", $type);
+  }
   .mdw-list__text-line {
     &:last-child:not(:only-child) {
       color: listThemeValue("text-color", $type);

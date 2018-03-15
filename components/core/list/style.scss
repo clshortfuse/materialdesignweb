@@ -21,7 +21,15 @@ $list__divider-height: dp(1);
   margin: 0;
   min-width: 100%;
   padding-top: 8px;
+  padding-bottom: 8px;
 }
+.mdw-list__divider {
+  min-width: 100%;
+  border-top-style: solid;
+  border-top-width: 1px;
+  height: 0;
+}
+
 .mdw-list__subheader {
   display: flex;
   flex-direction: row;
@@ -33,6 +41,9 @@ $list__divider-height: dp(1);
   // color: var(--secondary-text-color);
   font-size: sp(14);
   font-weight: $font-weight-medium;
+  &:first-child {
+    margin-top: -8px;
+  }
 }
 .mdw-list__row {
   position: relative;
