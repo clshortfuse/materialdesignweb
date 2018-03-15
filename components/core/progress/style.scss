@@ -75,7 +75,7 @@ $bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
       #{$keyframe}% {
         /* circlePercentage(#{$percent}, 75); */
         stroke-dashoffset: circlePercentage($percent, 75);
-        transform: rotate(#{$iterationRotation}deg) rotate(#{$rotation}deg);
+        transform: rotate(#{$iterationRotation}deg);// rotate(#{$rotation}deg);
       }
     }
     /* Ease-out 75-150%  */
@@ -89,22 +89,22 @@ $bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
       #{$keyframe}% {
         /* circlePercentage(#{$percent}, 75); */
         stroke-dashoffset: circlePercentage($percent, 75);
-        transform: rotate(#{$iterationRotation}deg) rotate(#{$rotation}deg);
+        transform: rotate(#{$iterationRotation}deg);// rotate(#{$rotation}deg);
       }
     }
   }
 }
 
-@keyframes material-spin {
+@keyframes material-spin__inner {
   @include createMaterialSpinAnimation(20);
 }
 
-@keyframes ms-material-spin {
+@keyframes material-spin__outer {
   from {
     transform: rotate(0deg);
   }
   to {
-    transform: rotate(720deg);
+    transform: rotate(360deg);
   }
 }
 .mdw-progress-circle {
@@ -115,6 +115,12 @@ $bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
   svg {
     width:100%;
     height:100%;
+    transform: rotate(0deg);
+    will-change: transform;
+    animation-name: material-spin__outer;
+    animation-duration: $duration;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
     & > path {
       fill: none;
       stroke-width: inherit;
@@ -124,7 +130,12 @@ $bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
         stroke-linecap: square;
         stroke-dasharray: $circumference * 0.75;
         stroke-dashoffset: circlePercentage(33.33, 75);
-        animation: material-spin ($duration * 4) linear infinite;
+        transform: rotate(0deg);
+        will-change: stroke-dashoffset, transform;
+        animation-name: material-spin__inner;
+        animation-duration: $duration * 4;
+        animation-timing-function: inherit;
+        animation-iteration-count: inherit;
       }
       &:nth-child(2) {
         display: none;
@@ -140,7 +151,7 @@ $bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
   // IE and Edge do not support animated SVG
   @include MSOnly {
     &:not([mdw-determinate]) svg {
-      animation: ms-material-spin $duration linear infinite;
+      animation-duration: $duration / 2;
     }
   }
 }
@@ -148,10 +159,14 @@ $bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
 .mdw-progress-circle[mdw-determinate] {
   svg {
     animation: none;
+    will-change: none;
+    transform: none;
     & > path {
       &:nth-child(1) {
         display: none;
         animation: none;
+        will-change: none;
+        transform: none;
       }
       &:nth-child(2) {
         display: inline;
