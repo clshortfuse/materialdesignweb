@@ -66,6 +66,32 @@ include ../mixins.pug
                 .material-icons report
               .mdw-list__text Spam
         .mdw-navdrawer__content(style="padding:16px 8px;")
-          div Content box
+          div
+            span Desktop options
+            div.display-flex(style="padding:16px")
+              label.mdw-selection(mdw-theme-color="accent-A700")
+                input(type="radio" checked name="mdw-navdrawer__style" value="fullheight")
+                .mdw-selection__icon
+                .mdw-selection__label Full Height (default)
+            div.display-flex(style="padding:16px")
+              label.mdw-selection(mdw-theme-color="accent-A700")
+                input(type="radio" name="mdw-navdrawer__style" value="temporary")
+                .mdw-selection__icon
+                .mdw-selection__label Temporary
+            div.display-flex(style="padding:16px")
+              label.mdw-selection(mdw-theme-color="accent-A700")
+                input(type="radio" name="mdw-navdrawer__style" value="clipped")
+                .mdw-selection__icon
+                .mdw-selection__label Clipped
+            div.display-flex(style="padding:16px")
+              label.mdw-selection(mdw-theme-color="accent-A700")
+                input(type="radio" name="mdw-navdrawer__style" value="floating")
+                .mdw-selection__icon
+                .mdw-selection__label Floating
+            div.display-flex(style="padding:16px")
+              label.mdw-selection(mdw-theme-color="accent-A700")
+                input(type="radio" name="mdw-navdrawer__style" value="floatingcard")
+                .mdw-selection__icon
+                .mdw-selection__label Floating Card
     +androidnavbar
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3eXV2RE1fQ0QtQzQ/patterns-navdrawer-metrics3.png')

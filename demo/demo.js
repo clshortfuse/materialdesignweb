@@ -138,6 +138,7 @@ function start() {
   });
   buildCustomSearch1();
   buildCustomSearch2();
+  configureNavDrawer();
 }
 
 /** @return {void} */
@@ -303,5 +304,48 @@ function buildCustomSearch2() {
   });
 }
 
+/** @return {void} */
+function configureNavDrawer() {
+  const navElement = document.querySelector('#navdrawer');
+  /**
+   * @param {Event} event
+   * @return {void}
+   */
+  function onSelected(event) {
+    console.log(event.target.value);
+    switch(event.target.value) {
+      case "temporary":
+        navElement.removeAttribute('mdw-clipped');
+        navElement.removeAttribute('mdw-floating');
+        navElement.setAttribute('mdw-temporary', '');
+        return;
+      case "clipped":
+        navElement.setAttribute('mdw-clipped', '');
+        navElement.removeAttribute('mdw-floating');
+        navElement.removeAttribute('mdw-temporary');
+        return;
+      case "floating":
+        navElement.removeAttribute('mdw-clipped');
+        navElement.setAttribute('mdw-floating', '');
+        navElement.removeAttribute('mdw-temporary');
+        return;
+      case "floatingcard":
+        navElement.removeAttribute('mdw-clipped');
+        navElement.setAttribute('mdw-floating', 'card');
+        navElement.removeAttribute('mdw-temporary');
+        return;
+      default:
+      case "fullheight":
+        navElement.removeAttribute('mdw-clipped');
+        navElement.removeAttribute('mdw-floating');
+        navElement.removeAttribute('mdw-temporary');
+    }
+  }
+  const radioElements = document.querySelectorAll('input[name="mdw-navdrawer__style"]');
+  for (let i = 0; i < radioElements.length; i += 1) {
+    const element = radioElements[i];
+    element.addEventListener('change', onSelected);
+  }
+}
 
 start();

@@ -12,7 +12,7 @@
   position: relative;
   overflow: hidden;
   grid-template-rows: minmax(0,auto) 1fr 16px;
-  grid-template-columns: minmax(0,auto) 1fr;
+  grid-template-columns: minmax(0,auto) 16px 1fr;
   transition-timing-function: $motion-easing-deceleration;
   transition-duration: $motion-duration-desktop-leave;
   @include allHandsets {
@@ -56,7 +56,7 @@
   grid-row-start: 1;
   grid-row-end: 2;
   grid-column-start: 2;
-  grid-column-end: 3;
+  grid-column-end: 4;
   .mdw-toolbar__start {
     display: none;
   }
@@ -103,7 +103,7 @@
   grid-row-start: 2;
   grid-row-end: 4;
   grid-column-start: 2;
-  grid-column-end: 3;
+  grid-column-end: 4;
 }
 
 .mdw-navdrawer .mdw-list__text {
@@ -255,7 +255,7 @@
   .mdw-navdrawer__drawer {
     position: absolute;
     grid-row-start: 1;
-    grid-column-end: 3;
+    grid-column-end: 4;
     min-width: auto;
     transform: translateX(-100%);
     border-right-width: 0;
@@ -296,11 +296,18 @@
     }
   }
   &[mdw-floating=card] {
+    .mdw-navdrawer__content {
+      grid-column-start:3;
+    }
     .mdw-navdrawer__drawer {
+      grid-column-end: 2;
       margin: 8px;
       border-radius: dp(2);
       box-shadow: elevation(8);
       grid-row-end: 3;
+      &::before {
+        content: '';
+      }
     }
   }
   &[mdw-clipped],
