@@ -19,6 +19,12 @@ $navdrawerColors: (
 
 // Vary by contrast or theme
 @mixin navdrawerContrastRules($type: 'var', $theme: null) {
+  .mdw-navdrawer__avatars-current,
+  .mdw-navdrawer__avatars-others {
+    > .mdw-button {
+      border-color: navdrawerThemeValue("divider-color", $type, $theme);
+    }
+  }
   .mdw-navdrawer__drawer {
     border-color: navdrawerThemeValue("divider-color", $type, $theme);
     .mdw-list__row:not([mdw-theme-color]) .mdw-list__text {
