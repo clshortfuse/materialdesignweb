@@ -312,8 +312,7 @@ function configureNavDrawer() {
    * @return {void}
    */
   function onSelected(event) {
-    console.log(event.target.value);
-    switch(event.target.value) {
+    switch (event.target.value) {
       case "temporary":
         navElement.removeAttribute('mdw-clipped');
         navElement.removeAttribute('mdw-floating');
@@ -346,6 +345,13 @@ function configureNavDrawer() {
     const element = radioElements[i];
     element.addEventListener('change', onSelected);
   }
+  document.querySelector('input[name="mdw-navdrawer__mini"]').addEventListener('change', (event) => {
+    if (event.target.checked) {
+      navElement.setAttribute('mdw-mini', '');
+    } else {
+      navElement.removeAttribute('mdw-mini');
+    }
+  });
 }
 
 start();

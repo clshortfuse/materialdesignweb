@@ -33,6 +33,7 @@ include ../mixins.pug
             .mdw-button.mdw-navdrawer__subtitle
               .mdw-navdrawer__name Johnathan Lee
               .mdw-navdrawer__email heyfromjonathan@gmail.com
+            a.mdw-navdrawer__close.mdw-button(mdw-icon mdw-active href="#").material-icons chevron_left
           .mdw-list
             .mdw-list__row
               .mdw-list__icon
@@ -93,5 +94,10 @@ include ../mixins.pug
                 input(type="radio" name="mdw-navdrawer__style" value="floatingcard")
                 .mdw-selection__icon
                 .mdw-selection__label Floating Card
+            div.display-flex(style="padding:16px")
+              label.mdw-selection(mdw-theme-color="accent-A700")
+                input(type="checkbox" name="mdw-navdrawer__mini")
+                .mdw-selection__icon
+                .mdw-selection__label Mini
     +androidnavbar
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3eXV2RE1fQ0QtQzQ/patterns-navdrawer-metrics3.png')
