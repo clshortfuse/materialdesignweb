@@ -35,15 +35,15 @@ include ../mixins.pug
               .mdw-navdrawer__email heyfromjonathan@gmail.com
             a.mdw-navdrawer__close.mdw-button(mdw-icon mdw-active href="#").material-icons chevron_left
           .mdw-list
-            .mdw-list__row
+            .mdw-list__row(selected mdw-theme-color="accent-A400")
               .mdw-list__icon
                 .material-icons move_to_inbox
               .mdw-list__text Inbox
-            .mdw-list__row
+            .mdw-list__row(mdw-theme-color="primary-500")
               .mdw-list__icon
                 .material-icons star
               .mdw-list__text Starred
-            .mdw-list__row
+            .mdw-list__row(mdw-theme-color="warn-500")
               .mdw-list__icon
                 .material-icons send
               .mdw-list__text Sent

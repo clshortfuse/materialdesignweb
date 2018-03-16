@@ -2,6 +2,7 @@
 @import '../../common/mixins.scss';
 
 $navdrawerColors: (
+  selected-color:       ((#000,              1.00), (#fff,              1.00)),
   text-color:           ((#000,              0.87), (#fff,              1.00)),
   secondary-text-color: ((#000,              0.54), (#fff,              0.70)),
   divider-color:        ((#000,              0.12), (#fff,              0.12)),
@@ -27,8 +28,16 @@ $navdrawerColors: (
   }
   .mdw-navdrawer__drawer {
     border-color: navdrawerThemeValue("divider-color", $type, $theme);
-    .mdw-list__row:not([mdw-theme-color]) .mdw-list__text {
-      color: navdrawerThemeValue("text-color", $type, $theme);
+    .mdw-list__row[selected]:not([mdw-theme-color]) {
+      color: navdrawerThemeValue("selected-color", $type, $theme);
+    }
+    .mdw-list__row:not([selected]) {
+      .mdw-list__icon {
+        color: navdrawerThemeValue("secondary-text-color", $type, $theme);
+      }
+      .mdw-list__text {
+        color: navdrawerThemeValue("text-color", $type, $theme);
+      }
     }
     .mdw-list__subheader {
       color: navdrawerThemeValue("secondary-text-color", $type, $theme);

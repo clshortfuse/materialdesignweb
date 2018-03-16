@@ -352,6 +352,34 @@ function configureNavDrawer() {
       navElement.removeAttribute('mdw-mini');
     }
   });
+  const navdrawerDrawer = document.querySelector('#navdrawer .mdw-navdrawer__drawer');
+  const navdrawerDrawerRows = navdrawerDrawer.getElementsByClassName('mdw-list__row');
+
+  /**
+   * @param {NodeListOf<Element>} rows
+   * @return {Element}
+   */
+  function getSelectedRow(rows) {
+    for (let i = 0; i < rows.length; i += 1) {
+      if (rows[i].hasAttribute('selected')) {
+        return rows[i];
+      }
+    }
+    return null;
+  }
+  for (let i = 0; i < navdrawerDrawerRows.length; i += 1) {
+    const row = navdrawerDrawerRows[i];
+    row.addEventListener('click', () => {
+      if (row.hasAttribute('selected')) {
+        return;
+      }
+      const currentlySelected = getSelectedRow(navdrawerDrawerRows);
+      if (currentlySelected) {
+        currentlySelected.removeAttribute('selected');
+      }
+      row.setAttribute('selected', '');
+    });
+  }
 }
 
 start();

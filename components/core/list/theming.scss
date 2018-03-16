@@ -23,7 +23,7 @@ $listColors: (
   .mdw-list__subheader {
     color: listThemeValue("secondary-text-color", $type);
   }
-  .mdw-list__row {
+  .mdw-list__row:not([mdw-theme-color]) {
     color: listThemeValue("text-color", $type)
   }
   .mdw-list__text {

@@ -114,12 +114,19 @@
   grid-column-end: 4;
 }
 
-.mdw-navdrawer .mdw-list__text {
+.mdw-navdrawer__drawer .mdw-list__row[selected] {
+  background-color: transparent;
+  .mdw-list__icon,
+  .mdw-list__text {
+    color: inherit;
+  }
+}
+.mdw-navdrawer__drawer .mdw-list__text {
   font-weight: $font-weight-medium;
   font-size: sp(14);
 }
 
-.mdw-navdrawer .mdw-list__subheader {
+.mdw-navdrawer__drawer .mdw-list__subheader {
   font-weight: $font-weight-medium;
   font-size: sp(14);
 }
