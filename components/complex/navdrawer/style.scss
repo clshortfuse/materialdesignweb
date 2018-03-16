@@ -306,6 +306,9 @@
 }
 
 @mixin mdw-navdrawer__temporary__shown {
+  .mdw-navdrawer__close {
+    display: none;
+  }
   .mdw-navdrawer__drawer {
     transform: translateX(0);
     box-shadow: elevation(16);
