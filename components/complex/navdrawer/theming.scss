@@ -20,15 +20,24 @@ $navdrawerColors: (
 // Vary by contrast or theme
 @mixin navdrawerContrastRules($type: 'var', $theme: null) {
   .mdw-navdrawer__drawer {
-    &::before {
-      background-color: navdrawerThemeValue("background-color", $type, $theme);
-    }
     border-color: navdrawerThemeValue("divider-color", $type, $theme);
     .mdw-list__row:not([mdw-theme-color]) .mdw-list__text {
       color: navdrawerThemeValue("text-color", $type, $theme);
     }
     .mdw-list__subheader {
       color: navdrawerThemeValue("secondary-text-color", $type, $theme);
+    }
+  }
+  @include allHandsetsAndTablets {
+    .mdw-navdrawer[mdw-floating] .mdw-navdrawer__drawer,
+    .mdw-navdrawer__drawer {
+      background-color: navdrawerThemeValue("background-color", $type, $theme);
+    }
+  }
+  .mdw-navdrawer[mdw-floating=card],
+  .mdw-navdrawer:not([mdw-floating]) {
+    .mdw-navdrawer__drawer {
+      background-color: navdrawerThemeValue("background-color", $type, $theme);
     }
   }
 }
