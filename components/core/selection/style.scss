@@ -31,11 +31,14 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   outline: none;
   padding: 0;
   margin: 0;
-  pointer-events: none;
   position: absolute;
   min-width: $icon-size;
   min-height: $icon-size;
   top: 50%;
+  cursor: pointer;
+  &:disabled {
+    cursor: not-allowed;
+  }
 
   // background-color: var(--button__ripple-color);
   border-radius: 50%;
@@ -68,7 +71,6 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
 }
 .mdw-selection__icon {
   display: inline-flex;
-  pointer-events: none;
   position: relative;
   box-sizing: border-box;
   min-width: $icon-size;
@@ -78,6 +80,10 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   padding: 0;
   z-index: 0;
   margin: 0;
+  cursor: pointer;
+  input:disabled ~ & {
+    cursor: not-allowed;
+  }
 
   transition-property: background-color, border-color;
   transition-timing-function: $motion-easing-standard;
