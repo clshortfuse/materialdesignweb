@@ -11,7 +11,7 @@
   display: grid;
   position: relative;
   overflow: hidden;
-  grid-template-rows: minmax(0,auto) 1fr;
+  grid-template-rows: minmax(0,auto) 1fr 16px;
   grid-template-columns: minmax(0,auto) 1fr;
   transition-timing-function: $motion-easing-deceleration;
   transition-duration: $motion-duration-desktop-leave;
@@ -69,7 +69,7 @@
   height: 100%;
   grid-column-start: 1;
   grid-column-end: 2;
-  grid-row-end: 3;
+  grid-row-end: 4;
   grid-row-start: 1;
   max-width: calc(100% - 64px); // Tablet or Desktop
   @include allHandsets {
@@ -101,7 +101,7 @@
 
 .mdw-navdrawer__content {
   grid-row-start: 2;
-  grid-row-end: 3;
+  grid-row-end: 4;
   grid-column-start: 2;
   grid-column-end: 3;
 }
@@ -276,6 +276,7 @@
   .mdw-navdrawer__drawer {
     transform: translateX(0);
     box-shadow: elevation(16);
+    grid-row-end: 4;
   }
   .mdw-navdrawer__scrim {
     display: block;
@@ -299,6 +300,7 @@
       margin: 8px;
       border-radius: dp(2);
       box-shadow: elevation(8);
+      grid-row-end: 3;
     }
   }
   &[mdw-clipped],
