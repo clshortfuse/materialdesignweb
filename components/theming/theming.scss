@@ -1,4 +1,5 @@
 @import 'palettes.scss';
+@import '../common/functions.scss';
 @import '../core/bottomnav/theming.scss';
 @import '../core/button/theming.scss';
 @import '../core/list/theming.scss';
@@ -11,301 +12,318 @@
 @import '../complex/dialog/theming.scss';
 @import '../complex/navdrawer/theming.scss';
 
-$ie11-tones: (
-  primary: ("500", "700"),
-  accent: ("A100", "A200", "A400", "A700"),
-  warn: ("500", "700"),
-  background: ("50", "100", "800", "900")
-) !default;
 
 $tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "A100", "A200", "A400", "A700");
 $added-palettes-list: ();
-$theme-map: ();
-$explicit-color-list: ();
+
 
 @mixin lightVariables($color:"background") {
-  @include bottomnavThemeVariables($color, 'light');
-  @include buttonThemeVariables($color, 'light');
-  @include listThemeVariables($color, 'light');
-  @include menuThemeVariables($color, 'light');
-  @include selectionThemeVariables($color, 'light');
-  @include tabThemeVariables($color, 'light');
-  @include textfieldThemeVariables($color, 'light');
-  @include toolbarThemeVariables($color, 'light');
+  @if (index($mdw-theme__components, 'bottomnav')) {
+    @include bottomnavThemeVariables($color, 'light');
+  }
+  @if (index($mdw-theme__components, 'button')) {
+    @include buttonThemeVariables($color, 'light');
+  }
+  @if (index($mdw-theme__components, 'list')) {
+    @include listThemeVariables($color, 'light');
+  }
+  @if (index($mdw-theme__components, 'menu')) {
+    @include menuThemeVariables($color, 'light');
+  }
+  @if (index($mdw-theme__components, 'selection')) {
+    @include selectionThemeVariables($color, 'light');
+  }
+  @if (index($mdw-theme__components, 'tab')) {
+    @include tabThemeVariables($color, 'light');
+  }
+  @if (index($mdw-theme__components, 'textfield')) {
+    @include textfieldThemeVariables($color, 'light');
+  }
+  @if (index($mdw-theme__components, 'toolbar')) {
+    @include toolbarThemeVariables($color, 'light');
+  }
   
-  @include dialogThemeVariables($color, 'light');
-  @include navdrawerThemeVariables($color, 'light');
-}
-
-@mixin darkVariables($color:"background") {
-  @include bottomnavThemeVariables($color, 'dark');
-  @include buttonThemeVariables($color, 'dark');
-  @include listThemeVariables($color, 'dark');
-  @include menuThemeVariables($color, 'dark');
-  @include selectionThemeVariables($color, 'dark');
-  @include tabThemeVariables($color, 'dark');
-  @include textfieldThemeVariables($color, 'dark');
-  @include toolbarThemeVariables($color, 'dark');
-
-  @include dialogThemeVariables($color, 'dark');
-  @include navdrawerThemeVariables($color, 'dark');
-}
-
-@mixin componentContrastRules($type: 'var', $theme: null) {
-  @include bottomnavContrastRules($type, $theme);
-  @include buttonContrastRules($type, $theme);
-  @include listContrastRules($type, $theme);
-  @include menuContrastRules($type, $theme);
-  @include selectionContrastRules($type, $theme);
-  @include tabContrastRules($type, $theme);
-  @include textfieldContrastRules($type, $theme);
-  @include toolbarContrastRules($type, $theme);
-
-  @include dialogContrastRules($type, $theme);
-  @include navdrawerContrastRules($type, $theme);
-}
-
-@mixin componentColoredRules($value: "var(--color)") {
-  @include bottomnavColoredRules($value);
-  @include buttonColoredRules($value);
-  @include listColoredRules($value);
-  @include menuColoredRules($value);
-  @include selectionColoredRules($value);
-  @include tabColoredRules($value);
-  @include textfieldColoredRules($value);
-  @include toolbarColoredRules($value);
-
-  @include dialogColoredRules($value);
-  @include navdrawerColoredRules($value);
-}
-
-@mixin componentThemeRules($theme: null) {
-  @include bottomnavThemeRules($theme);
-  @include buttonThemeRules($theme);
-  @include listThemeRules($theme);
-  @include menuThemeRules($theme);
-  @include selectionThemeRules($theme);
-  @include tabThemeRules($theme);
-  @include textfieldThemeRules($theme);
-  @include toolbarThemeRules($theme);
-
-  @include dialogThemeRules($theme);
-  @include navdrawerThemeRules($theme);
-}
-
-@mixin addTheme($primary, $accent, $warn, $background:"grey", $name:"default") {
-  $theme: (
-    "primary": $primary,
-    "accent": $accent,
-    "warn": $warn,
-    "background": $background,
-    "name": $name
-  );
-  $map: (
-    #{$name} : $theme
-  );
-  $theme-map: map-merge($theme-map, $map) !global;
-}
-
-@mixin addColors($colors...) {
-  @each $color in $colors {
-    $explicit-color-list: append($explicit-color-list, $color) !global;
+  @if (index($mdw-theme__components, 'dialog')) {
+    @include dialogThemeVariables($color, 'light');
+  }
+  @if (index($mdw-theme__components, 'navdrawer')) {
+    @include navdrawerThemeVariables($color, 'light');
   }
 }
 
+@mixin darkVariables($color:"background") {
+  @if (index($mdw-theme__components, 'bottomnav')) {
+    @include bottomnavThemeVariables($color, 'dark');
+  }
+  @if (index($mdw-theme__components, 'button')) {
+    @include buttonThemeVariables($color, 'dark');
+  }
+  @if (index($mdw-theme__components, 'list')) {
+    @include listThemeVariables($color, 'dark');
+  }
+  @if (index($mdw-theme__components, 'menu')) {
+    @include menuThemeVariables($color, 'dark');
+  }
+  @if (index($mdw-theme__components, 'selection')) {
+    @include selectionThemeVariables($color, 'dark');
+  }
+  @if (index($mdw-theme__components, 'tab')) {
+    @include tabThemeVariables($color, 'dark');
+  }
+  @if (index($mdw-theme__components, 'textfield')) {
+    @include textfieldThemeVariables($color, 'dark');
+  }
+  @if (index($mdw-theme__components, 'toolbar')) {
+    @include toolbarThemeVariables($color, 'dark');
+  }
+
+  @if (index($mdw-theme__components, 'dialog')) {
+    @include dialogThemeVariables($color, 'dark');
+  }
+  @if (index($mdw-theme__components, 'navdrawer')) {
+    @include navdrawerThemeVariables($color, 'dark');
+  }
+}
+
+@mixin componentContrastRules($type: 'var', $theme: null) {
+  @if (index($mdw-theme__components, 'bottomnav')) {
+    @include bottomnavContrastRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'button')) {
+    @include buttonContrastRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'list')) {
+    @include listContrastRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'menu')) {
+    @include menuContrastRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'selection')) {
+    @include selectionContrastRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'tab')) {
+    @include tabContrastRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'textfield')) {
+    @include textfieldContrastRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'toolbar')) {
+    @include toolbarContrastRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'dialog')) {
+    @include dialogContrastRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'navdrawer')) {
+    @include navdrawerContrastRules($type, $theme);
+  }
+}
+
+@mixin componentColoredRules($value: "var(--color)") {
+  @if (index($mdw-theme__components, 'bottomnav')) {
+    @include bottomnavColoredRules($value);
+  }
+  @if (index($mdw-theme__components, 'button')) {
+    @include buttonColoredRules($value);
+  }
+  @if (index($mdw-theme__components, 'list')) {
+    @include listColoredRules($value);
+  }
+  @if (index($mdw-theme__components, 'menu')) {
+    @include menuColoredRules($value);
+  }
+  @if (index($mdw-theme__components, 'selection')) {
+    @include selectionColoredRules($value);
+  }
+  @if (index($mdw-theme__components, 'tab')) {
+    @include tabColoredRules($value);
+  }
+  @if (index($mdw-theme__components, 'textfield')) {
+    @include textfieldColoredRules($value);
+  }
+  @if (index($mdw-theme__components, 'toolbar')) {
+    @include toolbarColoredRules($value);
+  }
+
+  @if (index($mdw-theme__components, 'dialog')) {
+    @include dialogColoredRules($value);
+  }
+  @if (index($mdw-theme__components, 'navdrawer')) {
+    @include navdrawerColoredRules($value);
+  }
+}
+
+@mixin componentThemeRules($theme: null) {
+  @if (index($mdw-theme__components, 'bottomnav')) {
+    @include bottomnavThemeRules($theme);
+  }
+  @if (index($mdw-theme__components, 'button')) {
+    @include buttonThemeRules($theme);
+  }
+  @if (index($mdw-theme__components, 'list')) {
+    @include listThemeRules($theme);
+  }
+  @if (index($mdw-theme__components, 'menu')) {
+    @include menuThemeRules($theme);
+  }
+  @if (index($mdw-theme__components, 'selection')) {
+    @include selectionThemeRules($theme);
+  }
+  @if (index($mdw-theme__components, 'tab')) {
+    @include tabThemeRules($theme);
+  }
+  @if (index($mdw-theme__components, 'textfield')) {
+    @include textfieldThemeRules($theme);
+  }
+  @if (index($mdw-theme__components, 'toolbar')) {
+    @include toolbarThemeRules($theme);
+  }
+
+  @if (index($mdw-theme__components, 'dialog')) {
+    @include dialogThemeRules($theme);
+  }
+  @if (index($mdw-theme__components, 'navdrawer')) {
+    @include navdrawerThemeRules($theme);
+  }
+}
+
+
 @mixin buildThemes() {
-  @include buildFallbackThemes();
-  @include buildVariableThemes();
+  @if ($mdw-theme__ie11-support and $mdw-theme__ie11-support != 'no' and $mdw-theme__ie11-support != false) {
+    @if ($mdw-theme__ie11-media-wrap and $mdw-theme__ie11-media-wrap != 'no' and $mdw-theme__ie11-media-wrap != false) {
+      @include IEOnly() {
+        @include buildFallbackThemes();
+      }
+    } @else {
+      @include buildFallbackThemes();
+    }
+  }
+  @if ($mdw-theme__ie11-support != 'only') {
+    @include buildVariableThemes();
+  }
 }
 
 @mixin buildFallbackThemes() {
-  // Special IE10-11 rule (doesn't run on Edge)
-  @include IEOnly {
-    [mdw-theme-fill~="primary-0"],
-    [mdw-theme-fill~="accent-0"],
-    [mdw-theme-fill~="warn-0"],
-    [mdw-theme-fill~="background-0"] {
-      background-color: white;
-    }
-    [mdw-theme-fill~="primary-0"],
-    [mdw-theme-fill~="accent-0"],
-    [mdw-theme-fill~="warn-0"],
-    [mdw-theme-fill~="background-0"],
-    [mdw-theme-fill~="light"] {
-      @include componentContrastRules('light');
-      :not([mdw-theme-fill]) {
-        @include componentContrastRules('light');
-      }
-    }
-    [mdw-theme-color~="primary-0"],
-    [mdw-theme-color~="accent-0"],
-    [mdw-theme-color~="warn-0"],
-    [mdw-theme-color~="background-0"]{
-      color: white;
-      @include componentColoredRules("255 255 255");
-    }
+  [mdw-theme-fill~="primary-0"],
+  [mdw-theme-fill~="accent-0"],
+  [mdw-theme-fill~="warn-0"],
+  [mdw-theme-fill~="background-0"] {
+    background-color: white;
+  }
 
-    @each $theme in map-values($theme-map) {
-      $name: map-get($theme, "name");
-      $namespace: if($name == 'default', '@at-root', unquote(".mdw-theme-#{$name}"));
+  [mdw-theme-fill~="light"] {
+    @include componentContrastRules('light');
+  }
+  [mdw-theme-color~="primary-0"],
+  [mdw-theme-color~="accent-0"],
+  [mdw-theme-color~="warn-0"],
+  [mdw-theme-color~="background-0"]{
+    color: white;
+    @include componentColoredRules("255 255 255");
+  }
 
-      @each $color in ('primary', 'accent', 'warn', 'background') {
-        $palette: map-get($palettes, map-get($theme, $color));
-        $tone-filter: map-get($ie11-tones, $color);
-        $lightTones: map-get($palette, 'light');
-        $darkTones: map-get($palette, 'dark');
-        @each $tone in $lightTones {
-          @if (index($tone-filter, $tone) != null) {
-            $value: map-get($palette, $tone);
-            $rgbValue: red($value), green($value), blue($value);
-            @if ($tone == '500') {
-              #{$namespace} {
-                [mdw-theme-fill~="#{$color}"] {
-                  background-color: $value;
-                  @include componentContrastRules('light', $theme);
-                  :not([mdw-theme-fill]) {
-                    @include componentContrastRules('light', $theme);
-                  }
-                }
-                [mdw-theme-color~="#{$color}"] {
-                  color: $value;
-                  @include componentColoredRules($rgbValue);
-                }
-              }
-            }
-            #{$namespace} {
-              [mdw-theme-fill~="#{$color}-#{$tone}"] {
-                background-color: $value;
-                @include componentContrastRules('light', $theme);
-                :not([mdw-theme-fill]) {
-                  @include componentContrastRules('light', $theme);
-                }
-              }
-              [mdw-theme-color~="#{$color}-#{$tone}"] {
-                color: $value;
-                @include componentColoredRules($rgbValue);
-              }
-            }
-          }
-        }
-        $contrastType: if($color == 'background', 'dark-background', 'dark');
-        @each $tone in $darkTones {
-          @if (index($tone-filter, $tone) != null) {
-            $value: map-get($palette, $tone);
-            $rgbValue: red($value),green($value),blue($value);
-            @if ($tone == '500') {
-              #{$namespace} {
-                [mdw-theme-fill~="#{$color}"] {
-                  background-color: $value;
-                  @include componentContrastRules($contrastType, $theme);
-                  :not([mdw-theme-fill]) {
-                    @include componentContrastRules($contrastType, $theme);
-                  }
-                }
-                [mdw-theme-color~="#{$color}"] {
-                  color: $value;
-                  @include componentColoredRules($rgbValue);
-                }
-              }
-            }
-            #{$namespace} {
-              [mdw-theme-fill~="#{$color}-#{$tone}"] {
-                background-color: $value;
-                @include componentContrastRules($contrastType, $theme);
-                :not([mdw-theme-fill]) {
-                  @include componentContrastRules($contrastType, $theme);
-                }
-              }
-              [mdw-theme-color~="#{$color}-#{$tone}"] {
-                color: $value;
-                @include componentColoredRules($rgbValue);
-              }
-            }
-          }
-        }
-      }
-      #{$namespace} {
-        @include componentThemeRules($theme);
-      }
-    }
-    [mdw-theme-fill~="primary-1000"],
-    [mdw-theme-fill~="accent-1000"],
-    [mdw-theme-fill~="warn-1000"],
-    [mdw-theme-fill~="background-1000"] {
-      background-color: black;
-    }
-    [mdw-theme-color~="primary-1000"],
-    [mdw-theme-color~="accent-1000"],
-    [mdw-theme-color~="warn-1000"],
-    [mdw-theme-color~="background-1000"] {
-      color: black;
-      @include componentColoredRules("0 0 0");
-    }
-    @each $color in ('primary', 'accent', 'warn') {
-      [mdw-theme-fill~="#{$color}-1000"],
-      [mdw-theme-fill|="#{$color}"][mdw-theme-fill~="dark"] {
-        @include componentContrastRules($color);
-        :not([mdw-theme-fill]) {
-          @include componentContrastRules($color);
-        }
-      }
-    }
-    [mdw-theme-fill~="background-1000"],
-    [mdw-theme-fill~="dark"] {
-      @include componentContrastRules('dark-background');
-      :not([mdw-theme-fill]) {
-        @include componentContrastRules('dark-background');
-      }
-    }
-
-    @each $color in $explicit-color-list {
-      $palette: map-get($palettes, $color);
+  @each $name in map-keys($mdw-theme__themes) {
+    // $name: map-get($theme, "name");
+    $theme: map-get($mdw-theme__themes, $name);
+    $namespace: if($name == 'default', '@at-root', unquote(".mdw-theme-#{$name}"));
+    @each $color in ('primary', 'accent', 'warn', 'background') {
+      $palette: getThemePalette($color, $theme);
+      $tone-filter: map-get($mdw-theme__ie11-tones, $color);
       @each $tone in $tone-list {
-        $value: map-get($palette, $tone);
-        @if ($tone == '500') {
-          [mdw-theme-fill~="#{$color}"] {
-            background-color: $value;
+        @if (index($tone-filter, $tone) != null) {
+          $value: map-get($palette, $tone);
+          $rgbValue: red($value), green($value), blue($value);
+          @if ($tone == '500') {
+            #{$namespace} {
+              [mdw-theme-fill~="#{$color}"] {
+                background-color: $value;
+              }
+              [mdw-theme-color~="#{$color}"] {
+                color: $value;
+              }
+            }
           }
-          [mdw-theme-color~="#{$color}"] {
-            color: $value;
+          #{$namespace} {
+            [mdw-theme-fill~="#{$color}-#{$tone}"] {
+              background-color: $value;
+            }
+            [mdw-theme-color~="#{$color}-#{$tone}"] {
+              color: $value;
+            }
           }
         }
-        [mdw-theme-fill~="#{$color}-#{$tone}"] {
+      }
+    }
+    #{$namespace} {
+      @include componentThemeRules($theme);
+    }
+  }
+  [mdw-theme-fill~="primary-1000"],
+  [mdw-theme-fill~="accent-1000"],
+  [mdw-theme-fill~="warn-1000"],
+  [mdw-theme-fill~="background-1000"] {
+    background-color: black;
+  }
+  [mdw-theme-color~="primary-1000"],
+  [mdw-theme-color~="accent-1000"],
+  [mdw-theme-color~="warn-1000"],
+  [mdw-theme-color~="background-1000"] {
+    color: black;
+    @include componentColoredRules("0 0 0");
+  }
+  [mdw-theme-fill~="dark"] {
+    @include componentContrastRules('dark');
+  }
+
+  @each $color in $mdw-theme__explicit-colors {
+    $palette: map-get($palettes, $color);
+    @each $tone in $tone-list {
+      $value: map-get($palette, $tone);
+      @if ($tone == '500') {
+        [mdw-theme-fill~="#{$color}"] {
           background-color: $value;
         }
-        [mdw-theme-color~="#{$color}-#{$tone}"] {
+        [mdw-theme-color~="#{$color}"] {
           color: $value;
         }
+      }
+      [mdw-theme-fill~="#{$color}-#{$tone}"] {
+        background-color: $value;
+      }
+      [mdw-theme-color~="#{$color}-#{$tone}"] {
+        color: $value;
       }
     }
   }
 }
 
 @mixin buildVariableThemes() {
-  @each $color in $explicit-color-list {
+  @each $color in $mdw-theme__explicit-colors {
     @include addSinglePaletteColorVariables($color);
   }
-  @each $theme in map-values($theme-map) {
-    $colors: (
-      map-get($theme, "primary"),
-      map-get($theme, "accent"),
-      map-get($theme, "warn"),
-      map-get($theme, "background")
-    );
-    @each $color in $colors {
-      @if (index($explicit-color-list, color) == null) {
+  @each $theme in map-values($mdw-theme__themes) {
+    @each $color in $theme {
+      @if (length($theme) < 4) {
+        @if (index($mdw-theme__explicit-colors, 'grey') == null) {
+          @include addSinglePaletteColorVariables('grey');
+        }
+      }
+      @if (index($mdw-theme__explicit-colors, $color) == null) {
         @include addSinglePaletteColorVariables($color);
       }
     }
   }
 
-  @each $theme in map-values($theme-map) {
-    $primary: map-get($theme, "primary");
-    $accent: map-get($theme, "accent");
-    $warn: map-get($theme, "warn");
-    $background: map-get($theme, "background");
-    $name: map-get($theme, "name");
+  @each $name in map-keys($mdw-theme__themes) {
+    // $name: map-get($theme, "name");
+    $theme: map-get($mdw-theme__themes, $name);
     $namespace: if($name == 'default', null, unquote(".mdw-theme-#{$name}"));
+    $primary: nth($theme, 1);
+    $accent: nth($theme, 2);
+    $warn: nth($theme, 3);
+    $background: 'grey';
+    @if (length($theme) > 3) {
+      $background: nth($theme, 4);
+    }
     @include buildPalettes($namespace, $primary, $accent, $warn, $background);
   }
 
@@ -339,7 +357,7 @@ $explicit-color-list: ();
       --color: unquote("0,0,0");
     }
   }
-  @each $color in $explicit-color-list {
+  @each $color in $mdw-theme__explicit-colors {
     @each $tone in $tone-list {
       @if ($tone == '500') {
         [mdw-theme-fill~="#{$color}"] {
@@ -375,12 +393,11 @@ $explicit-color-list: ();
   :root {
     @include lightVariables();
   }
-  @each $theme in map-values($theme-map) {
-    $name: map-get($theme, "name");
+  @each $name in map-keys($mdw-theme__themes) {
+    $theme: map-get($mdw-theme__themes, $name);
     $namespace: if($name == 'default', '@at-root', unquote(".mdw-theme-#{$name}"));
-
     @each $color in ('primary', 'accent', 'warn', 'background') {
-      $palette: map-get($palettes, map-get($theme, $color));
+      $palette: getThemePalette($color, $theme);
       $lightTones: map-get($palette, 'light');
       #{$namespace} {
         @each $tone in $lightTones {
@@ -403,11 +420,11 @@ $explicit-color-list: ();
   }
 
   // Dark Variables
-  @each $theme in map-values($theme-map) {
-    $name: map-get($theme, "name");
+  @each $name in map-keys($mdw-theme__themes) {
+    $theme: map-get($mdw-theme__themes, $name);
     $namespace: if($name == 'default', '@at-root', unquote(".mdw-theme-#{$name}"));
     @each $color in ('primary', 'accent', 'warn') {
-      $palette: map-get($palettes, map-get($theme, $color));
+      $palette: getThemePalette($color, $theme);
       $darkTones: map-get($palette, 'dark');
       #{$namespace} {
         @each $tone in $darkTones {
@@ -432,11 +449,11 @@ $explicit-color-list: ();
   }
 
   // Dark Background Variables
-  @each $theme in map-values($theme-map) {
-    $name: map-get($theme, "name");
+  @each $name in map-keys($mdw-theme__themes) {
+    $theme: map-get($mdw-theme__themes, $name);
     $namespace: if($name == 'default', '@at-root', unquote(".mdw-theme-#{$name}"));
     $color: 'background';
-    $palette: map-get($palettes, map-get($theme, $color));
+    $palette: getThemePalette('background', $theme);
     $darkTones: map-get($palette, 'dark');
     #{$namespace} {
       @each $tone in $darkTones {
@@ -485,7 +502,7 @@ $explicit-color-list: ();
   @include buildPalette($namespace, 'warn', $warn);
   @include buildPalette($namespace, 'background', $background);
 }
-  
+
 @mixin buildPalette($namespace, $color, $name) {
   $palette: map-get($palettes, $name);
   @each $tone in map-keys(map-remove($palette, "light", "dark")) {

@@ -1,3 +1,22 @@
-@import './components/theming/theming.scss';
-@include addTheme('indigo', 'pink', 'red', 'grey');
-@include buildFallbackThemes();
+@import "../components/_index.scss";
+$components: (
+  'bottomnav',
+  'button',
+  'menu',
+  'selection',
+  'list',
+  'progress',
+  'tab',
+  'textfield',
+  'toolbar',
+  'tooltip',
+  'dialog',
+  'navdrawer',
+  'search'
+);
+$config: (
+  theme-components: $components,
+  ie11-support: 'only',
+  ie11-media-wrap: 'no'
+);
+@include buildMDWThemes($config);

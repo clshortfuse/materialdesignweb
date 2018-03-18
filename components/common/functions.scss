@@ -53,6 +53,22 @@
   @return parseThemeItem($item, $theme);
 }
 
+@function getThemePalette($color, $theme) {
+  @if ($color == 'primary') {
+    @return map-get($palettes, nth($theme, 1));
+  } @else if ($color == 'accent') {
+    @return map-get($palettes, nth($theme, 2));
+  } @else if ($color == 'warn') {
+    @return map-get($palettes, nth($theme, 3));
+  } @else if ($color == 'background') {
+    @if (length($theme) > 3) {
+      @return map-get($palettes, nth($theme, 4));
+    }
+    @return map-get($palettes, 'grey');
+  }
+  @error "Unknown Theme Palette!";
+}
+
 @function getThemePaletteColor($color, $tone, $theme: null) {
   @if ($theme == null) {
     @if ($tone == null) {
@@ -63,8 +79,8 @@
   @if ($tone == null) {
     $tone: '500';
   }
-  $name: map-get($theme, $color);
-  $palette: map-get($palettes, $name);
+
+  $palette: getThemePalette($color, $theme);
   $value: map-get($palette, $tone);
   $rgbValue: red($value), green($value), blue($value);
   @return $rgbValue;

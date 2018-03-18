@@ -9,7 +9,7 @@ const DEST = (isProduction ? 'dist/' : 'test/');
 /** @return {Object} */
 function getComponentsConfig() {
   return {
-    entry: ['./components/index.js', './components/index.scss'],
+    entry: ['./components/index.js', './components/default.scss'],
     devtool: isProduction ? undefined : 'nosources-source-map',
     output: {
       filename: 'materialdesignweb.min.js',
@@ -96,6 +96,7 @@ function getDemoConfig() {
           use: [{
             loader: 'css-loader',
             options: {
+              import: false,
               sourceMap: !isProduction,
               // minimize: true,
             },
