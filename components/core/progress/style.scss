@@ -5,39 +5,8 @@ $pi: 3.14159265359;
 $circumference: 2 * $pi * $radius;
 $duration: 1333ms;
 
-/* Linear interpolate between $a and $b */
-@function lerp($a, $b, $p) {
-  @return ($b - $a) * $p + $a;
-}
-
-/* Linear interpolate assuming $a and $b are numeric two-item lists */
-@function lerp-point($a, $b, $p) {
-  @return ( lerp(nth($a, 1), nth($b, 1), $p), lerp(nth($a, 2), nth($b, 2), $p));
-}
-
-
-/* Reduce points to one in a beziery way */
-@function bezier-reduce($points, $p) {
-  @while length($points) > 1 {
-    $tmp: ();
-    @for $i from 1 through length($points) {
-      @if $i < length($points) {
-        $a: nth($points, $i);
-        $b: nth($points, $i + 1);
-        $tmp: append($tmp, lerp-point($a, $b, $p));
-      }
-    }
-    $points: $tmp;
-  }
-  @return nth($points, 1);
-}
-
-
-@function circlePercentage($percent, $limit: 100) {
-  @return $circumference * ((3 * ($limit/100)) - $percent/100);
-}
-
-/* Pure CSS Material Spin Animation
+/* 
+ * SVG Animated Material Spin Animation
  * radius = 8.75
  * pi = 3.14159
  * circumference = 2 * pi * r = (54.977825)
@@ -52,54 +21,15 @@ $duration: 1333ms;
  * 3. Reduce tail to 0.521% from tail 
  * 4. Rotate -90 deg
  *
- * TODO: Confirm bezier easing
+ * Animate with ease-in-out
  */
 
 
-/* Material Ease */
-$bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
-@mixin createMaterialSpinAnimation($detail:30) {
-  $totalFrames: $detail * 8;
-  /* #{$totalFrames} frames */
-  @for $iteration from 0 to 4 {
-    $iterationRotation: -90 * $iteration;
-    /* Ease-in 0-75%  */
-    @for $i from 0 to $detail +1 {
-      $rotation: ($i / $detail) * 180;
-      $keyframe: (($iteration * $detail * 2) + $i) * 100 / $totalFrames;
-      $percent: nth(bezier-reduce($bezier-points, ($i / $detail)), 1) * 75;
-      @if ($percent==0) {
-        $percent: 0.5;
-        $keyframe: $keyframe + 0.0001;
-      }
-      #{$keyframe}% {
-        /* circlePercentage(#{$percent}, 75); */
-        stroke-dashoffset: circlePercentage($percent, 75);
-        transform: rotate(#{$iterationRotation}deg);// rotate(#{$rotation}deg);
-      }
-    }
-    /* Ease-out 75-150%  */
-    @for $i from 1 to $detail +1 {
-      $rotation: ($i / $detail) * 180 + 180;
-      $keyframe: (($iteration * $detail * 2) + ($detail + $i)) * 100 / $totalFrames;
-      $percent: nth(bezier-reduce($bezier-points, ($i / $detail)), 2) * 75 + 75;
-      @if ($percent==150) {
-        $percent: 149.5;
-      }
-      #{$keyframe}% {
-        /* circlePercentage(#{$percent}, 75); */
-        stroke-dashoffset: circlePercentage($percent, 75);
-        transform: rotate(#{$iterationRotation}deg);// rotate(#{$rotation}deg);
-      }
-    }
-  }
+@function circlePercentage($percent, $limit: 100) {
+  @return $circumference * ((3 * ($limit/100)) - $percent/100);
 }
 
-@keyframes material-spin__inner {
-  @include createMaterialSpinAnimation(20);
-}
-
-@keyframes material-spin__outer {
+@keyframes rotate-clockwise {
   from {
     transform: rotate(0deg);
   }
@@ -107,6 +37,28 @@ $bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
     transform: rotate(360deg);
   }
 }
+
+@keyframes rotate-counterclockwise {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg)
+  }
+}
+
+@keyframes mdw-progress-dash {
+  0% {
+    stroke-dashoffset: circlePercentage(0.5, 75);
+  }
+  50% {
+    stroke-dashoffset: circlePercentage(75,75);
+  }
+  100% {
+    stroke-dashoffset: circlePercentage(149.5,75);
+  }
+}
+
 .mdw-progress-circle {
   width: 48px;
   height: 48px;
@@ -117,7 +69,7 @@ $bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
     height:100%;
     transform: rotate(0deg);
     will-change: transform;
-    animation-name: material-spin__outer;
+    animation-name: rotate-clockwise;
     animation-duration: $duration;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
@@ -132,10 +84,10 @@ $bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
         stroke-dashoffset: circlePercentage(33.33, 75);
         transform: rotate(0deg);
         will-change: stroke-dashoffset, transform;
-        animation-name: material-spin__inner;
-        animation-duration: $duration * 4;
-        animation-timing-function: inherit;
-        animation-iteration-count: inherit;
+        animation-name: mdw-progress-dash, rotate-counterclockwise;
+        animation-duration: $duration, $duration * 4;
+        animation-timing-function: $motion-easing-standard, steps(4,end);
+        animation-iteration-count: infinite;
       }
       &:nth-child(2) {
         display: none;
@@ -182,58 +134,3 @@ $bezier-points: (0 0, 0.4 0, 0.2 1, 1 1);
     }
   }
 }
-
-/* 
- Unused linear reference
-
-@keyframes material-spin-linear {
-  0% {
-    stroke-dashoffset: circlePercentage(0.5, 75);
-    transform: rotate(0deg) rotate(0deg);
-  }
-  12.5% {
-    stroke-dashoffset: circlePercentage(75,75);
-    transform: rotate(0deg) rotate(180deg);
-  }
-  25.0% {
-    stroke-dashoffset: circlePercentage(149.5,75);
-    transform: rotate(0deg) rotate(360deg);
-  }
-  25.001% {
-    stroke-dashoffset: circlePercentage(0.5,75);
-    transform: rotate(-90deg) rotate(0deg);
-  }
-  37.5% {
-    stroke-dashoffset: circlePercentage(75,75);
-    transform: rotate(-90deg) rotate(180deg);
-  }
-  50% {
-    stroke-dashoffset: circlePercentage(149.5,75);
-    transform: rotate(-90deg) rotate(360deg);
-  }
-  50.001% {
-    stroke-dashoffset: circlePercentage(0.5,75);
-    transform: rotate(-180deg) rotate(0deg);
-  }
-  67.5% {
-    stroke-dashoffset: circlePercentage(75,75);
-    transform: rotate(-180deg) rotate(180deg);
-  }
-  75% {
-    stroke-dashoffset: circlePercentage(149.5,75);
-    transform: rotate(-180deg) rotate(360deg);
-  }
-  75.001% {
-    stroke-dashoffset: circlePercentage(0.5,75);
-    transform: rotate(-270deg) rotate(0deg);
-  }
-  87.5% {
-    stroke-dashoffset: circlePercentage(75,75);
-    transform: rotate(-270deg) rotate(180deg);
-  }
-  100% {
-    stroke-dashoffset: circlePercentage(149.5,75);
-    transform: rotate(-270deg) rotate(360deg);
-  }
-}
-*/
