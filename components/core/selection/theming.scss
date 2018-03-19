@@ -5,7 +5,8 @@ $selectionColors: (
   text-color:            ((#000, 0.87), (#fff, 1.00)),
   color:                 ((#000, 0.54), (#fff, 0.70)),
   color__checked:        (('accent', '500', 1.0), ('accent', '500', 1.0)),
-  ripple-color:          ((#000, 0.12), (#fff, 0.30), (#fff, 0.20)),
+  ripple-color:          (black, white),
+  ripple-opacity:        (0.12, 0.30, 0.20),
   ripple-color__checked: (('accent', '500', 0.26), ('accent', '500', 0.26))
 );
 
@@ -20,8 +21,13 @@ $selectionColors: (
 // Vary by contrast
 @mixin selectionContrastRules($type: 'var', $theme: null) {
   .mdw-selection > input {
-    background-color: selectionThemeValue("ripple-color", $type, $theme);
-
+    color: selectionThemeValue("ripple-color", $type, $theme);
+    &:active,
+    &:focus {
+      opacity: selectionThemeValue("ripple-opacity", $type, $theme);
+    }
+  }
+  .mdw-selection > input {
     &[type="checkbox"]:not(:checked) ~ .mdw-selection__icon,
     &[type="checkbox"]:active ~ .mdw-selection__icon {
       color: selectionThemeValue("color", $type, $theme);
@@ -48,27 +54,7 @@ $selectionColors: (
   }
 }
 
-// Varies by current color
-@mixin selectionColoredRules($value: "var(--color)") {
-  @at-root {
-    #{&}.mdw-selection[mdw-theme-color] {
-      input[type="checkbox"]:checked:not(:active),
-      input[type="radio"]:checked {
-        background-color: unquote("rgba(#{$value}, 0.26)");
-      }
-    }
-  }
-}
-
 // Varies by theme
 @mixin selectionThemeRules($theme: null) {
-  .mdw-selection:not([mdw-theme-color]) > input {
-    &[type="radio"]:checked,
-    &[type="checkbox"]:checked:not(:active) {
-      background-color: selectionThemeValue("ripple-color__checked", null, $theme);
-      ~ .mdw-selection__icon {
-        color: selectionThemeValue("color__checked", null, $theme);
-      }
-    }
-  }
+  
 }

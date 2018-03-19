@@ -51,11 +51,6 @@ $tabColors: (
   }
 }
 
-// Varies by current color
-@mixin tabColoredRules($value: "var(--color)") {
-  // none
-}
-
 // Varies by theme
 @mixin tabThemeRules($theme: null) {
   // none

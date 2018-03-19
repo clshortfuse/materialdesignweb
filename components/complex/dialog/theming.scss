@@ -32,11 +32,6 @@ $dialogColors: (
   }
 }
 
-// Varies by current color
-@mixin dialogColoredRules($value: "var(--color)") {
-  // none
-}
-
 // Varies by theme
 @mixin dialogThemeRules($theme: null) {
   // none

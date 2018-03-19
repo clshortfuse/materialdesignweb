@@ -71,11 +71,6 @@ $listColors: (
   }
 }
 
-// Varies by current color
-@mixin listColoredRules($value: "var(--color)") {
-  // none
-}
-
 // Varies by theme
 @mixin listThemeRules($theme: null) {
   // none

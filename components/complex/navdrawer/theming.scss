@@ -57,11 +57,6 @@ $navdrawerColors: (
   }
 }
 
-// Varies by current color
-@mixin navdrawerColoredRules($value: "var(--color)") {
-  // none
-}
-
 // Varies by theme
 @mixin navdrawerThemeRules($theme: null) {
   // none

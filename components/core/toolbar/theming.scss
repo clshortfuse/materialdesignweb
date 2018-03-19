@@ -27,11 +27,6 @@ $toolbarColors: (
   }
 }
 
-// Varies by current color
-@mixin toolbarColoredRules($value: "var(--color)") {
-  // none
-}
-
 // Varies by theme
 @mixin toolbarThemeRules($theme: null) {
   // none

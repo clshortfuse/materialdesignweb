@@ -14,41 +14,41 @@ mixin button-test
     button.mdw-button(mdw-theme-color="accent-A100") accent
   div(style="height:24px")
   div.display-flex.flex-wrap
-    button.mdw-button(mdw-theme-fill="primary") Flat
-    button.mdw-button(mdw-theme-fill="primary" mdw-raised) Raised
-    button.mdw-button(mdw-theme-fill="primary" mdw-raised disabled) Disabled
-    button.mdw-button(mdw-theme-fill="accent-A100" mdw-raised) accent
+    button.mdw-button(mdw-theme-fill="primary dark") Flat
+    button.mdw-button(mdw-theme-fill="primary dark" mdw-raised) Raised
+    button.mdw-button(mdw-theme-fill="primary dark" mdw-raised disabled) Disabled
+    button.mdw-button(mdw-theme-fill="accent-A100 dark" mdw-raised) accent
   div(style="height:24px")
   div.display-flex.flex-wrap
     button.mdw-button(mdw-icon).material-icons favorite
-    button.mdw-button(mdw-theme-color="warn" mdw-icon).material-icons favorite
-    button.mdw-button(mdw-theme-fill="warn" mdw-icon).material-icons favorite
-    button.mdw-button(mdw-theme-fill="warn" mdw-icon mdw-raised).material-icons favorite
-    button.mdw-button(mdw-theme-fill="warn" mdw-icon mdw-raised disabled).material-icons favorite
+    button.mdw-button(mdw-theme-color="warn dark" mdw-icon).material-icons favorite
+    button.mdw-button(mdw-theme-fill="warn dark" mdw-icon).material-icons favorite
+    button.mdw-button(mdw-theme-fill="warn dark" mdw-icon mdw-raised).material-icons favorite
+    button.mdw-button(mdw-theme-fill="warn dark" mdw-icon mdw-raised disabled).material-icons favorite
     button.mdw-button(mdw-icon disabled).material-icons favorite
 
 .comparison
   .render
     +androidstatusbar('background-400')
     +toolbar('background-50', [], []) CSS Only
-    .content(mdw-theme-fill="background-50" style="padding: 16px 0")
+    .content(mdw-theme-fill="background-50 light" style="padding: 16px 0")
       div
         +button-test
       div(style="height:24px")
-      div(mdw-theme-fill="background-900" style="padding-bottom: 8px")
+      div(mdw-theme-fill="background-900 dark" style="padding-bottom: 8px")
         +button-test
     +androidnavbar
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsX0xZMnFkR1ZOVmc/components-buttons-main6.png')
 
 .comparison
   .render.js
-    +androidstatusbar('background-400')
+    +androidstatusbar('background-400 light')
     +toolbar('background-50', [], []) Javascript Version
-    .content(mdw-theme-fill="background-50" style="padding: 16px 0")
+    .content(mdw-theme-fill="background-50 light" style="padding: 16px 0")
       div
         +button-test
       div(style="height:24px")
-      div(mdw-theme-fill="background-900" style="padding-bottom: 8px")
+      div(mdw-theme-fill="background-900 dark" style="padding-bottom: 8px")
         +button-test
     +androidnavbar
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsX0xZMnFkR1ZOVmc/components-buttons-main6.png',

@@ -47,11 +47,6 @@ $menuColors: (
   }
 }
 
-// Varies by current color
-@mixin menuColoredRules($value: "var(--color)") {
-  // none
-}
-
 // Varies by theme
 @mixin menuThemeRules($theme: null) {
   // none

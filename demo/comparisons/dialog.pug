@@ -3,8 +3,8 @@ include ../mixins.pug
 .comparison
   .render
     div.display-flex.flex-1(flex-column style="position:relative")
-      +androidstatusbar('primary-700')
-      .mdw-toolbar(mdw-theme-fill="primary-500")
+      +androidstatusbar('primary-700 dark')
+      .mdw-toolbar(mdw-theme-fill="primary-500 dark")
         .mdw-toolbar__action
           .mdw-toolbar__start
             .mdw-tooltip__wrapper
@@ -14,7 +14,7 @@ include ../mixins.pug
             .mdw-tooltip__wrapper
               button.mdw-button(mdw-icon mdw-active mdw-more-button).material-icons more_vert
               .mdw-tooltip(mdw-text="Options")
-      .content(mdw-theme-fill="background-50" style="padding:16px 8px;")
+      .content(mdw-theme-fill="background-50 light" style="padding:16px 8px;")
         a.mdw-button(mdw-theme-fill="primary" mdw-raised href="#confirmdialog") Confirm
       .mdw-dialog#confirmdialog
         a.mdw-dialog__close(href="#")

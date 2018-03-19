@@ -22,7 +22,7 @@ include ../mixins.pug
         label.mdw-tab__action(for='text-tab3')
           .mdw-tab__label Item Three
         .mdw-tab__indicator
-    .content(mdw-theme-fill="background-0")
+    .content(mdw-theme-fill="white")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsOUdyb0FjQTJTdlk/components-tabs-usage-mobile3.png')
 
 .comparison.clipped.mdw-theme-tab
@@ -47,31 +47,30 @@ include ../mixins.pug
         label.mdw-tab__action(for='large-text-tab3')
           .mdw-tab__label Item Three
         .mdw-tab__indicator
-    .content(mdw-theme-fill="background-0")
+    .content(mdw-theme-fill="white light")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsc0lzb2VoMkFBNUE/components-tabs-usage-mobile1.png')
 
 
 .comparison.clipped.mdw-theme-tab
   .render
-    div(mdw-theme-fill="background-900")
-      form.mdw-tab(mdw-theme-fill="primary-500 dark")
-        input#no-toolbar-tab1(type="radio" name="tab" value="one" checked)
-        label.mdw-tab__action(for='no-toolbar-tab1')
-          .mdw-tab__label Item One
-        input#no-toolbar-tab2(type="radio" name="tab" value="two")
-        label.mdw-tab__action(for='no-toolbar-tab2')
-          .mdw-tab__label Item Two
-        input#no-toolbar-tab3(type="radio" name="tab" value="three")
-        label.mdw-tab__action(for='no-toolbar-tab3')
-          .mdw-tab__label Item Three
-        .mdw-tab__indicator
-    .content(mdw-theme-fill="background-0")
+    form.mdw-tab(mdw-theme-fill="primary-500 dark")
+      input#no-toolbar-tab1(type="radio" name="tab" value="one" checked)
+      label.mdw-tab__action(for='no-toolbar-tab1')
+        .mdw-tab__label Item One
+      input#no-toolbar-tab2(type="radio" name="tab" value="two")
+      label.mdw-tab__action(for='no-toolbar-tab2')
+        .mdw-tab__label Item Two
+      input#no-toolbar-tab3(type="radio" name="tab" value="three")
+      label.mdw-tab__action(for='no-toolbar-tab3')
+        .mdw-tab__label Item Three
+      .mdw-tab__indicator
+    .content(mdw-theme-fill="white light")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsbmZJbkdjeHE0RW8/components-tabs-usage-mobile6.png')
 
 .comparison.clipped.mdw-theme-tab
   .render
-    +androidstatusbar('background-600')
-    .mdw-toolbar(mdw-theme-fill="background-100")
+    +androidstatusbar('background-600 dark')
+    .mdw-toolbar(mdw-theme-fill="background-100 light")
       .mdw-toolbar__action
         .mdw-toolbar__start
           button.mdw-button(mdw-icon mdw-active).material-icons menu
@@ -91,12 +90,12 @@ include ../mixins.pug
         label.mdw-tab__action(for='clear-toolbar-tab3')
           .mdw-tab__label Item Three
         .mdw-tab__indicator
-    .content(mdw-theme-fill="background-0")
+    .content(mdw-theme-fill="white light")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsVDk4V2Nnc2U3LTQ/components-tabs-usage-mobile4.png')
 
 .comparison.clipped.mdw-theme-tab
   .render
-    +androidstatusbar('primary-700')
+    +androidstatusbar('primary-700 dark')
     .mdw-toolbar(mdw-theme-fill="primary-500 dark")
       .mdw-toolbar__action
         .mdw-toolbar__start
@@ -120,13 +119,13 @@ include ../mixins.pug
           .mdw-tab__icon.material-icons person_pin
           .mdw-tab__label Nearby
         .mdw-tab__indicator
-    .content(mdw-theme-fill="background-0")
+    .content(mdw-theme-fill="white light")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsS2pLN2MwWmUyRW8/components-tabs-usage-specs8.png')
 
 .comparison.clipped.mdw-theme-tab
   .render
-    +androidstatusbar('background-600')
-    .mdw-toolbar(mdw-theme-fill="background-100")
+    +androidstatusbar('background-600 dark')
+    .mdw-toolbar(mdw-theme-fill="background-100 light")
       .mdw-toolbar__action
         .mdw-toolbar__start
           button.mdw-button(mdw-icon mdw-active).material-icons menu
@@ -146,12 +145,12 @@ include ../mixins.pug
         label.mdw-tab__action(for='tabs-icon3')
           .mdw-tab__icon.material-icons person_pin
         .mdw-tab__indicator
-    .content(mdw-theme-fill="background-0")
+    .content(mdw-theme-fill="white light")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsQ1Y4YXpwTkZ2MFU/components-tabs-usage-mobile8.png')
 
 .comparison.clipped.mdw-theme-tab.js
   .render
-    +androidstatusbar('primary-700')
+    +androidstatusbar('primary-700 dark')
     .mdw-toolbar(mdw-theme-fill="primary-500 dark")
       .mdw-toolbar__action
         .mdw-toolbar__start
@@ -171,5 +170,5 @@ include ../mixins.pug
         .mdw-tab__action
           .mdw-tab__icon.material-icons person_pin
           .mdw-tab__label Nearby
-    .content(mdw-theme-fill="background-0")
+    .content(mdw-theme-fill="white light")
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsS2pLN2MwWmUyRW8/components-tabs-usage-specs8.png')

@@ -223,11 +223,6 @@ $textfieldColors: (
   }
 }
 
-// Varies by current color
-@mixin textfieldColoredRules($value: "var(--color)") {
-  // none
-}
-
 // Varies by theme
 @mixin textfieldThemeRules($theme: null) {
   // none

@@ -2,8 +2,8 @@ include ../mixins.pug
 
 .comparison
   .render
-    +androidstatusbar('primary-700')
-    .mdw-toolbar(mdw-theme-fill="primary-500")
+    +androidstatusbar('primary-700 dark')
+    .mdw-toolbar(mdw-theme-fill="primary-500 dark")
       .mdw-toolbar__action
         .mdw-toolbar__start
           .mdw-tooltip__wrapper
@@ -20,9 +20,9 @@ include ../mixins.pug
               .mdw-menu__text Help
               .mdw-menu__text Signout
             .mdw-tooltip(mdw-text="Options")
-    .content(mdw-theme-fill="background-50" style="padding:16px 8px")
+    .content(mdw-theme-fill="background-50 light" style="padding:16px 8px")
       .mdw-menu__wrapper
-        a.mdw-button(mdw-theme-fill="primary" mdw-raised href="#textmenu") Text
+        a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#textmenu") Text
         .mdw-menu#textmenu
           a.mdw-menu__close(href="#")
           .mdw-menu__text Maps
@@ -30,7 +30,7 @@ include ../mixins.pug
           .mdw-menu__text Flights
           .mdw-menu__text Apps
       .mdw-menu__wrapper
-        a.mdw-button(mdw-theme-fill="primary" mdw-raised href="#checkmenu") Checks
+        a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#checkmenu") Checks
         .mdw-menu#checkmenu
           a.mdw-menu__close(href="#")
           .mdw-menu__item
@@ -47,7 +47,7 @@ include ../mixins.pug
             .mdw-menu__text Apps
       div(style="height:400px")
       .mdw-menu__wrapper
-        a.mdw-button(mdw-theme-fill="primary" mdw-raised href="#infomenu") Info
+        a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#infomenu") Info
         .mdw-menu#infomenu(mdw-width-units=4 mdw-position="bottom")
           a.mdw-menu__close(href="#")
           .mdw-menu__item
@@ -69,7 +69,7 @@ include ../mixins.pug
             .mdw-menu__check
             .mdw-menu__text Apps
       .mdw-menu__wrapper
-        a.mdw-button(mdw-theme-fill="primary" mdw-raised href="#iconmenu") Icons
+        a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#iconmenu") Icons
         .mdw-menu#iconmenu(mdw-width-units=4 mdw-position="bottom")
           a.mdw-menu__close(href="#")
           .mdw-menu__item

@@ -44,7 +44,8 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   border-radius: 50%;
   transform: translateY(-50%) scale(1);
   opacity: 0;
-  transition-property: transform, opacity, background-color;
+  background-color: transparent;
+  transition-property: transform, color, opacity;
   transition-timing-function: $motion-easing-standard;
   transition-duration: $motion-duration-desktop-default;
   @include allHandsets {
@@ -65,7 +66,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   }
   &:active,
   &:focus {
-    opacity: 1;
+    background-color: currentColor;
     transform: translateY(-50%) scale($ripple-size/$icon-size);
   }
 }
@@ -219,6 +220,14 @@ input ~ .mdw-selection__label {
   }
   &:checked ~ .mdw-selection__icon::after {
     transform: scale(0.5);
+  }
+}
+
+.mdw-selection[mdw-theme-color] {
+  input[type="checkbox"]:checked:not(:active),
+  input[type="radio"]:checked {
+    color: inherit;
+    opacity: 0.26;
   }
 }
 

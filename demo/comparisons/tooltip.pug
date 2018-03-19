@@ -2,8 +2,8 @@ include ../mixins.pug
 
 .comparison.mdw-theme-list
   .render
-    +androidstatusbar('accent-700')
-    .mdw-toolbar(mdw-theme-fill="accent-500")
+    +androidstatusbar('accent-700 dark')
+    .mdw-toolbar(mdw-theme-fill="accent-500 dark")
       .mdw-toolbar__action
         .mdw-toolbar__start
           .mdw-tooltip__wrapper
@@ -14,7 +14,7 @@ include ../mixins.pug
           .mdw-tooltip__wrapper
             button.mdw-button(mdw-icon mdw-active).material-icons search
             .mdw-tooltip(mdw-text="Search")
-    .content(mdw-theme-fill="background-50")
+    .content(mdw-theme-fill="background-50 light")
       ul.mdw-list(mdw-divider)
         li.mdw-list__subheader Today
         li.mdw-list__row

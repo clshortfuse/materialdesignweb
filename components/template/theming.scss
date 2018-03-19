@@ -23,15 +23,6 @@ $templateColors: (
   }
 }
 
-// Varies by current color
-@mixin templateColoredRules($value: "var(--color)") {
-  @at-root {
-    #{&}.mdw-template[mdw-theme-color] {
-      color: unquote("rgb(#{$value})");
-    }
-  }
-}
-
 // Varies by theme
 @mixin templateThemeRules($theme: null) {
   .mdw-template[mdw-theme-fill] {

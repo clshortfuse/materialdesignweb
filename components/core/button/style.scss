@@ -4,6 +4,7 @@
 @import '../../common/functions.scss';
 @import '../../common/motion.scss';
 @import '../../common/mixins.scss';
+@import '../../common/ripple.scss';
 
 $button__external-padding: dp(8);
 $button__minimum-click-target: dp(48);
@@ -26,7 +27,9 @@ $button__focus-animation-duration: 1667ms;
   }
 
   overflow: hidden;
-  transition: box-shadow 200ms $motion-easing-standard;
+  transition-property: box-shadow, background-color;
+  transition-duration: 200ms;
+  transition-timing-function: $motion-easing-sharp;
   z-index: 0;
 
   // Override browser button defaults
@@ -91,12 +94,22 @@ $button__focus-animation-duration: 1667ms;
   // Ripple doesn't appear until mouse-up
   // Background color transitions from hover to press
 
-  // ::before - focus ripple
-  // ::after  - press ripple
+  // ::before - focus overlay
+  // ::after  - ripple
 
-  & > .mdw-ripple,
-  &::before,
-  &::after {
+  &:disabled > .mdw-ripple,
+  &:disabled > .mdw-button__focus-ring,
+  &:disabled::before,
+  &:disabled::after {
+    content: none;
+    display: none;
+  }
+
+  
+}
+
+.mdw-button {
+  &::before {
     content: '';
     position: absolute;
     width: 100%;
@@ -104,85 +117,19 @@ $button__focus-animation-duration: 1667ms;
     top: 0;
     left: 0;
     z-index: -1;
+    border-radius: inherit;
     user-select: none;
-    pointer-events: none; // Safari improperly captures click
+    pointer-events: none;
+    background-color: currentColor;
+    color: transparent;
+    opacity: 1;
+    transition-property: background-color;
+    transition-duration:  200ms;
   }
-
-  &::before {
-    // Background-size does not animate smoothly.
-    // Focus circle: inner-radius - 10% - fully transparent
-    // Scale up by 10.0 to become 100% when not focused
-    background-position: center center;
-    transform: scale(10.5); // 10.0 has subpixel rendering issues
-    transition-property: transform, background-color;
-    transition-duration: 200ms;
-    transition-delay: 5ms;
-    transition-timing-function: $motion-easing-standard;
-    background-color: transparent;
-  }
-  
   &:active::before,
   &:active:focus::before {
-    transition-duration: $button__focus-animation-delay, 500ms;
+    // opacity 12?
   }
-
-  &:focus:not(:active)::before {
-    transform: scale(7.5);
-    transition-delay: $button__focus-animation-delay, 0s;
-    transition-duration: $button__focus-animation-delay, 200ms;
-    animation-duration: $button__focus-animation-duration;
-    animation-timing-function: $motion-easing-standard;
-    animation-delay: $button__focus-animation-delay * 2;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-    animation-name: focus-pulse;
-  }
-
-  & > .mdw-ripple,
-  &::after {
-    flex-basis: 0;
-    transform: scale(10); // 10.0 has subpixel rendering issues
-    transition-property: transform, opacity;
-    transition-duration: 700ms;
-    opacity: 0;
-  }
-  &:active,
-  &:active:focus {
-    & > .mdw-ripple,
-    &::after {
-      transform: scale(0);
-      transition-duration: 0s;
-      opacity: 1;
-    }
-  }
-
-  // If using JS ripple, destroy ::after object
-  &[mdw-js-ripple]::after {
-    content: none
-  }
-
-  &:disabled > .mdw-ripple,
-  &:disabled::before,
-  &:disabled::after {
-    content: none;
-    display: none;
-  }
-
-  // Extended touch target
-  /* 
-  @media (any-pointer: coarse) {
-    &::after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: $button__minimum-click-target;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-  }
-  */
-
 }
 
 // Fix anchor line-height on IE11
@@ -192,14 +139,84 @@ $button__focus-animation-duration: 1667ms;
   }
 }
 
-// Raised
+// Extended touch target
+@mixin mdw-button__touch-target {
+  @media (any-pointer: coarse) {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: $button__minimum-click-target;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
 
+.mdw-button__focus-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  user-select: none;
+  pointer-events: none;
+
+  // Background-size does not animate smoothly.
+  // Focus circle: inner-radius - 10% - fully transparent
+  // Scale up by 10.0 to become 100% when not focused
+  background-position: center center;
+  transform: scale(10.5); // 10.0 has subpixel rendering issues
+  transition-property: transform;
+  transition-duration: 200ms;
+  transition-delay: 5ms;
+  transition-timing-function: $motion-easing-standard;
+  background-color: currentColor;
+  color: transparent;
+  .mdw-button:focus:not(:active) > & {
+    transform: scale(7.5);
+    transition-delay: $button__focus-animation-delay;
+    transition-duration: $button__focus-animation-delay;
+    animation-duration: $button__focus-animation-duration;
+    animation-timing-function: $motion-easing-standard;
+    animation-delay: $button__focus-animation-delay * 2;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-name: focus-pulse;
+  }
+}
+
+.mdw-button[mdw-ripple] {
+  overflow: visible;
+  &::after {
+    // If using custom ripple, destroy ::after object
+    content: none;
+  }
+}
+
+.mdw-button > .mdw-ripple {
+  @include mdw-ripple__container;
+}
+
+.mdw-button {
+  & > .mdw-ripple > .mdw-ripple__inner,
+  &::after {
+    @include mdw-ripple__inner;
+  }
+
+  & > .mdw-ripple:active > .mdw-ripple__inner,
+  &:active::after {
+    @include mdw-ripple__active;
+  }
+}
+
+// Raised
 .mdw-button[mdw-raised]:not(:disabled) {
   box-shadow: elevation(2);
   &:active,
   &:active:focus {
     box-shadow: elevation(8);
-    transition-duration: 0s;
+    transition-duration: 0s, 200ms;
   }
   @media (any-pointer: fine) {
     &:not([mdw-raised="always"]) {
@@ -212,7 +229,7 @@ $button__focus-animation-duration: 1667ms;
       &:hover:active,
       &:hover:active:focus {
         box-shadow: elevation(8);
-        transition-duration: 0s;
+        transition-duration: 0s, 200ms;
       }
     }
   }
@@ -221,4 +238,26 @@ $button__focus-animation-duration: 1667ms;
 @keyframes focus-pulse {
   from { transform: scale(7.5); }
   to { transform: scale(8.0) }
+}
+
+// Styling
+
+.mdw-button[mdw-theme-color] {
+  &::before {
+    background-color: currentColor;
+    color: inherit;
+    opacity: 0;
+    transition-property: opacity;
+  }
+  &:focus:not(:active)::before {
+    opacity: 0.12;
+  }
+  &:active::before,
+  &:active:focus::before {
+    opacity: 0.20;
+  }
+  &[mdw-icon]:focus::before,
+  &[mdw-icon]:active::before {
+    opacity: 0.26;
+  }
 }
