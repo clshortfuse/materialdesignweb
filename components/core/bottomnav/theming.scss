@@ -4,9 +4,7 @@
 $bottomnavColors: (
   active-color:      (('primary', '500', 1.00), (#fff, 1.0)),  
   inactive-color:    ((#000,           0.54), (#fff, 0.50)),
-  press-color:       (('primary', '500', 0.40), (#ccc, 0.25)),
   ripple-color:      (('primary', '500', 0.26), (#fff, 0.30), (#fff, 0.20)),
-  focus-overlay:     (('primary', '500', 0.12), (#fff, 0.20), (#fff, 0.12))
 );
 
 @function bottomnavThemeValue($key, $type, $theme) {
@@ -19,40 +17,21 @@ $bottomnavColors: (
 
 // Vary by contrast
 @mixin bottomnavContrastRules($type: 'var', $theme: null) {
-  @at-root {
-    #{&}.mdw-bottomnav {
-      .mdw-bottomnav__icon,
-      .mdw-bottomnav__label {
-        color: bottomnavThemeValue("inactive-color", $type, $theme);
-      }
-      &[mdw-shifting] .mdw-bottomnav__action[selected] > .mdw-bottomnav__label,
-      &[mdw-shifting] input:checked + .mdw-bottomnav__action > .mdw-bottomnav__label,
-      .mdw-bottomnav__action[selected] > .mdw-bottomnav__icon,
-      .mdw-bottomnav__action[selected] > .mdw-bottomnav__label,
-      input:checked + .mdw-bottomnav__action > .mdw-bottomnav__icon,
-      input:checked + .mdw-bottomnav__action > .mdw-bottomnav__label,
-      input:checked ~ .mdw-bottomnav__icon,
-      input:checked ~ .mdw-bottomnav__label {
-          color: bottomnavThemeValue("active-color", $type, $theme);
-      }
-      .mdw-bottomnav__action {
-        & > .mdw-ripple,
-        &::after {
-          background-image: radial-gradient(
-            circle at center,
-            bottomnavThemeValue("ripple-color", $type, $theme) 10%,
-            transparent 10.0001%
-          );
-        }
-      }
-      &[mdw-shifting] .mdw-bottomnav__label {
-        color: transparent;
-      }
+  .mdw-bottomnav:not([mdw-theme-color]) {
+    @debug $theme;
+    color: bottomnavThemeValue("active-color", $type, $theme);
+  }
+  .mdw-bottomnav__icon,
+  .mdw-bottomnav__label {
+    color: bottomnavThemeValue("inactive-color", $type, $theme);
+  }
+  .mdw-bottomnav__action {
+    & > .mdw-ripple > .mdw-ripple__inner,
+    &::after {
+      background-color: buttonThemeValue("ripple-color", $type, $theme);
     }
   }
-}
-
-// Varies by theme
-@mixin bottomnavThemeRules($theme: null) {
-  // none
+  .mdw-bottomnav[mdw-shifting] .mdw-bottomnav__label {
+    color: transparent;
+  }
 }

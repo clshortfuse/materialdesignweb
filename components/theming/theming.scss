@@ -90,6 +90,11 @@ $added-palettes-list: ();
     @include bottomnavContrastRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'button')) {
+    @if ($type != 'var') {
+      :not([mdw-theme-fill]) {
+        @include buttonContrastRules($type, $theme);
+      }
+    }
     @include buttonContrastRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'list')) {
@@ -119,9 +124,6 @@ $added-palettes-list: ();
 }
 
 @mixin componentThemeRules($theme: null) {
-  @if (index($mdw-theme__components, 'bottomnav')) {
-    @include bottomnavThemeRules($theme);
-  }
   @if (index($mdw-theme__components, 'button')) {
     @include buttonThemeRules($theme);
   }
@@ -175,9 +177,6 @@ $added-palettes-list: ();
 
   [mdw-theme-fill~="light"] {
     @include componentContrastRules('light');
-    :not([mdw-theme-fill]) {
-      @include componentContrastRules('light');
-    }
   }
   [mdw-theme-color~="white"] {
     color: white;
@@ -214,6 +213,7 @@ $added-palettes-list: ();
       }
     }
     #{$namespace} {
+      @debug $theme;
       @include componentThemeRules($theme);
     }
   }
@@ -225,9 +225,6 @@ $added-palettes-list: ();
   }
   [mdw-theme-fill~="dark"] {
     @include componentContrastRules('dark');
-    :not([mdw-theme-fill]) {
-      @include componentContrastRules('dark');
-    }
   }
 
   @each $color in $mdw-theme__explicit-colors {

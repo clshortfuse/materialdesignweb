@@ -98,6 +98,7 @@ $buttonColors: (
     &[mdw-theme-fill|="primary"] {
       &:active,
       &:active:focus {
+        @debug 'mdw-theme-fill' $theme;
         background-color: buttonThemeValue("filled-press-primary-color", null, $theme);
         &::before {
           background-color: transparent;

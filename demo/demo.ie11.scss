@@ -1,4 +1,14 @@
 @import "../components/_index.scss";
+$themes: (
+  "default": ('indigo', 'pink', 'red'),
+  "textfield": ('deeppurple', 'amber', 'red'),
+  "toolbar": ('blue', 'pink', 'red'),
+  "bottomnav": ('teal', 'brown', 'red'),
+  "list": ('teal', 'cyan', 'pink'),
+  "selection": ('blue', 'teal', 'red'),
+  "tab": ('cyan', 'yellow', 'red')
+);
+$colors: ('cyan', 'red', 'green','lightblue', 'purple');
 $components: (
   'bottomnav',
   'button',
@@ -16,6 +26,8 @@ $components: (
 );
 $config: (
   theme-components: $components,
+  themes: $themes,
+  explicit-colors: $colors,
   ie11-support: 'only',
   ie11-media-wrap: 'no'
 );

@@ -1,4 +1,4 @@
-@import "demo.ie11.min.css" (-ms-high-contrast:none), screen and (-ms-high-contrast:active);
+@import "demo.ie11.min.css"; // (-ms-high-contrast:none), screen and (-ms-high-contrast:active);
 
 @import "../components/_index.scss";
 $themes: (
@@ -33,7 +33,7 @@ $mdw-config: (
   explicit-colors: $colors,
   ie11-support: 'no'
 );
-@include buildMDWThemes($mdw-config);
+//@include buildMDWThemes($mdw-config);
 @import "../components/all-components.scss";
 
 
