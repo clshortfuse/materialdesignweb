@@ -27,8 +27,3 @@ $dialogColors: (
     color: dialogThemeValue("secondary-text-color", $type, $theme);
   }
 }
-
-// Varies by theme
-@mixin dialogThemeRules($theme: null) {
-  // none
-}

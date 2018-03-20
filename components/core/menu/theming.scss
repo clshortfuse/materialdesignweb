@@ -51,8 +51,3 @@ $menuColors: (
     color: menuThemeValue("secondary-color", $type, $theme);
   }
 }
-
-// Varies by theme
-@mixin menuThemeRules($theme: null) {
-  // none
-}

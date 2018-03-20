@@ -122,30 +122,8 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'button')) {
     @include buttonThemeRules($theme);
   }
-  @if (index($mdw-theme__components, 'list')) {
-    @include listThemeRules($theme);
-  }
-  @if (index($mdw-theme__components, 'menu')) {
-    @include menuThemeRules($theme);
-  }
-  @if (index($mdw-theme__components, 'selection')) {
-    @include selectionThemeRules($theme);
-  }
-  @if (index($mdw-theme__components, 'tab')) {
-    @include tabThemeRules($theme);
-  }
   @if (index($mdw-theme__components, 'textfield')) {
     @include textfieldThemeRules($theme);
-  }
-  @if (index($mdw-theme__components, 'toolbar')) {
-    @include toolbarThemeRules($theme);
-  }
-
-  @if (index($mdw-theme__components, 'dialog')) {
-    @include dialogThemeRules($theme);
-  }
-  @if (index($mdw-theme__components, 'navdrawer')) {
-    @include navdrawerThemeRules($theme);
   }
 }
 
