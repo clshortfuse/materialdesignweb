@@ -1,24 +1,13 @@
-@import "demo.ie11.min.css"; // (-ms-high-contrast:none), screen and (-ms-high-contrast:active);
-
-@import "../components/_index.scss";
-$themes: (
-  "default": ('indigo', 'pink', 'red'),
-  "textfield": ('deeppurple', 'amber', 'red'),
-  "toolbar": ('blue', 'pink', 'red'),
-  "bottomnav": ('teal', 'brown', 'red'),
-  "list": ('teal', 'cyan', 'pink'),
-  "selection": ('blue', 'teal', 'red'),
-  "tab": ('cyan', 'yellow', 'red')
-);
-$colors: ('cyan', 'red', 'green','lightblue', 'purple');
+@import "theming.min.css";
+@import "theming.ie11.min.css" screen and (-ms-high-contrast:none), screen and (-ms-high-contrast:active);
 
 $components: (
   'bottomnav',
   'button',
-  'menu',
-  'selection',
   'list',
+  'menu',
   'progress',
+  'selection',
   'tab',
   'textfield',
   'toolbar',
@@ -27,15 +16,7 @@ $components: (
   'navdrawer',
   'search'
 );
-$mdw-config: (
-  theme-components: $components,
-  themes: $themes,
-  explicit-colors: $colors,
-  ie11-support: 'no'
-);
-//@include buildMDWThemes($mdw-config);
 @import "../components/all-components.scss";
-
 
 html {
   font-family: 'Roboto', sans-serif;
