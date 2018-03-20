@@ -3,21 +3,33 @@ include ../mixins.pug
 mixin button-test
   div.display-flex.flex-wrap
     button.mdw-button Flat
+      .mdw-button__focus-ring
     button.mdw-button(mdw-raised) Raised
+      .mdw-button__focus-ring
     button.mdw-button(mdw-raised disabled) Disabled
+      .mdw-button__focus-ring
     button.mdw-button(mdw-raised="always") +Raised
+      .mdw-button__focus-ring
   div(style="height:24px")
   div.display-flex.flex-wrap
     button.mdw-button(mdw-theme-color="primary") Flat
+      .mdw-button__focus-ring
     button.mdw-button(mdw-theme-color="primary" mdw-raised) Raised
+      .mdw-button__focus-ring
     button.mdw-button(mdw-theme-color="primary" mdw-raised disabled) Disabled
+      .mdw-button__focus-ring
     button.mdw-button(mdw-theme-color="accent-A100") accent
+      .mdw-button__focus-ring
   div(style="height:24px")
   div.display-flex.flex-wrap
     button.mdw-button(mdw-theme-fill="primary dark") Flat
+      .mdw-button__focus-ring
     button.mdw-button(mdw-theme-fill="primary dark" mdw-raised) Raised
+      .mdw-button__focus-ring
     button.mdw-button(mdw-theme-fill="primary dark" mdw-raised disabled) Disabled
+      .mdw-button__focus-ring
     button.mdw-button(mdw-theme-fill="accent-A100 dark" mdw-raised) accent
+      .mdw-button__focus-ring
   div(style="height:24px")
   div.display-flex.flex-wrap
     button.mdw-button(mdw-icon).material-icons favorite

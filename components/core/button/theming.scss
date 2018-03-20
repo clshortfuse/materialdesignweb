@@ -8,7 +8,8 @@ $buttonColors: (
   inactive-color:             ((#000, 0.38), (#fff, 0.50)),
   press-color:                ((#999, 0.40), (#CCC, 0.25)),
   ripple-color:               ((#000, 0.12), (#fff, 0.30), (#fff, 0.20)),
-  focus-overlay:              ((#000, 0.12), (#000, 0.12), (#fff, 0.20)),
+  transparent-focus-overlay:  ((#000, 0.12), (#fff, 0.12), (#fff, 0.20)),
+  filled-focus-overlay:       ((#000, 0.12), (#000, 0.12), (#fff, 0.12)),
   disabled-text-color:        ((#000, 0.26), (#fff, 0.30)),
   disabled-background-color:  ((#000, 0.12), (#fff, 0.12)),
   filled-press-primary-color: (('primary', '700', 1.0), ('primary', '700', 1.0)),
@@ -43,8 +44,11 @@ $buttonColors: (
       }
       
       // Focus
-      &:focus:not(:active):not([mdw-theme-color])::before, {
-        background-color: buttonThemeValue("focus-overlay", $type, $theme);
+      &:not([mdw-theme-color]):focus:not(:active)::before, {
+        background-color: buttonThemeValue("transparent-focus-overlay", $type, $theme);
+      }
+      &[mdw-theme-fill]:focus:not(:active)::before, {
+        background-color: buttonThemeValue("filled-focus-overlay", $type, $theme);
       }
 
       // Press
@@ -62,6 +66,10 @@ $buttonColors: (
       & > .mdw-ripple > .mdw-ripple__inner,
       &::after {
         background-color: buttonThemeValue("ripple-color", $type, $theme);
+      }
+
+      .mdw-button__focus-ring {
+        color: buttonThemeValue("ripple-color", $type, $theme);
       }
       
       &:disabled,
@@ -94,32 +102,31 @@ $buttonColors: (
 
 // Varies by theme
 @mixin buttonThemeRules($theme: null) {
-  .mdw-button {
+  .mdw-button[mdw-theme-fill~=dark]:not(:disabled) {
+    &[mdw-theme-fill~="primary"],
     &[mdw-theme-fill|="primary"] {
       &:active,
       &:active:focus {
-        @debug 'mdw-theme-fill' $theme;
-        background-color: buttonThemeValue("filled-press-primary-color", null, $theme);
         &::before {
-          background-color: transparent;
+          background-color: buttonThemeValue("filled-press-primary-color", null, $theme);
         }
       }
     }
+    &[mdw-theme-fill~="accent"],
     &[mdw-theme-fill|="accent"] {
       &:active,
       &:active:focus {
-        background-color: buttonThemeValue("filled-press-accent-color", null, $theme);
         &::before {
-          background-color: transparent;
+          background-color: buttonThemeValue("filled-press-accent-color", null, $theme);
         }
       }
     }
+    &[mdw-theme-fill~="warn"],
     &[mdw-theme-fill|="warn"] {
       &:active,
       &:active:focus {
-        background-color: buttonThemeValue("filled-press-warn-color", null, $theme);
         &::before {
-          background-color: transparent;
+          background-color: buttonThemeValue("filled-press-warn-color", null, $theme);
         }
       }
     }

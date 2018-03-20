@@ -213,7 +213,6 @@ $added-palettes-list: ();
       }
     }
     #{$namespace} {
-      @debug $theme;
       @include componentThemeRules($theme);
     }
   }
