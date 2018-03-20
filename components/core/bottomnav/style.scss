@@ -6,7 +6,6 @@
 @import '../../common/variables.scss';
 
 .mdw-bottomnav {
-  
   min-height: dp(56);
   overflow-y: hidden;
   position: relative;
@@ -57,6 +56,8 @@
     }
   }
 }
+
+
 
 .mdw-bottomnav__icon {
   padding: 0;
@@ -122,6 +123,7 @@
     transform: translateY(dp(16));
   }
   .mdw-bottomnav__label {
+    color: transparent;
     font-size: sp(14);
     min-width: dp(56);
     max-width: dp(96);
@@ -142,14 +144,22 @@
 }
 
 .mdw-bottomnav[mdw-theme-color] {
-  &[mdw-shifting] .mdw-bottomnav__action[selected] > .mdw-bottomnav__label,
-  &[mdw-shifting] input:checked + .mdw-bottomnav__action > .mdw-bottomnav__label,
+  input:checked ~ .mdw-bottomnav__icon,
+  input:checked ~ .mdw-bottomnav__label,
   .mdw-bottomnav__action[selected] > .mdw-bottomnav__icon,
   .mdw-bottomnav__action[selected] > .mdw-bottomnav__label,
   input:checked + .mdw-bottomnav__action > .mdw-bottomnav__icon,
-  input:checked + .mdw-bottomnav__action > .mdw-bottomnav__label,
-  input:checked ~ .mdw-bottomnav__icon,
-  input:checked ~ .mdw-bottomnav__label {
+  input:checked + .mdw-bottomnav__action > .mdw-bottomnav__label {  
     color: inherit;
+  }
+  .mdw-bottomnav__action {
+    & > .mdw-ripple > .mdw-ripple__inner,
+    &::after {
+      background-color: currentColor;
+    }
+    & > .mdw-ripple:active > .mdw-ripple__inner,
+    &:active::after {
+      opacity: 0.26;
+    }
   }
 }

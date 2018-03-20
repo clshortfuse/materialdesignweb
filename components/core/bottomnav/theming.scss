@@ -2,9 +2,9 @@
 @import '../../common/mixins.scss';
 
 $bottomnavColors: (
-  active-color:      (('primary', '500', 1.00), (#fff, 1.0)),  
-  inactive-color:    ((#000,           0.54), (#fff, 0.50)),
-  ripple-color:      (('primary', '500', 0.26), (#fff, 0.30), (#fff, 0.20)),
+  active-color:      ((#000, 1.00), (#fff, 1.0)),
+  inactive-color:    ((#000, 0.54), (#fff, 0.50)),
+  ripple-color:      ((#000, 0.12), (#fff, 0.30), (#fff, 0.20)),
 );
 
 @function bottomnavThemeValue($key, $type, $theme) {
@@ -17,21 +17,24 @@ $bottomnavColors: (
 
 // Vary by contrast
 @mixin bottomnavContrastRules($type: 'var', $theme: null) {
-  .mdw-bottomnav:not([mdw-theme-color]) {
-    @debug $theme;
-    color: bottomnavThemeValue("active-color", $type, $theme);
-  }
   .mdw-bottomnav__icon,
   .mdw-bottomnav__label {
     color: bottomnavThemeValue("inactive-color", $type, $theme);
   }
+
+  input:checked ~ .mdw-bottomnav__icon,
+  input:checked ~ .mdw-bottomnav__label,
+  .mdw-bottomnav__action[selected] > .mdw-bottomnav__icon,
+  .mdw-bottomnav__action[selected] > .mdw-bottomnav__label,
+  input:checked + .mdw-bottomnav__action > .mdw-bottomnav__icon,
+  input:checked + .mdw-bottomnav__action > .mdw-bottomnav__label {
+    color: bottomnavThemeValue("active-color", $type, $theme);
+  }
+
   .mdw-bottomnav__action {
     & > .mdw-ripple > .mdw-ripple__inner,
     &::after {
       background-color: buttonThemeValue("ripple-color", $type, $theme);
     }
-  }
-  .mdw-bottomnav[mdw-shifting] .mdw-bottomnav__label {
-    color: transparent;
   }
 }
