@@ -2,7 +2,7 @@
 @import '../../common/mixins.scss';
 
 $bottomnavColors: (
-  active-color:      ((#000, 1.00), (#fff, 1.0)),
+  active-color:      (inherit,        (#fff, 1.0)),
   inactive-color:    ((#000, 0.54), (#fff, 0.50)),
   ripple-color:      ((#000, 0.12), (#fff, 0.30), (#fff, 0.20)),
 );

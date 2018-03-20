@@ -120,8 +120,9 @@
   .mdw-bottomnav__icon {
     transform: translateY(dp(16));
   }
+  
   .mdw-bottomnav__label {
-    color: transparent;
+    opacity: 0;
     font-size: sp(14);
     min-width: dp(56);
     max-width: dp(96);
@@ -130,6 +131,7 @@
   input:checked ~ .mdw-bottomnav__label,
   .mdw-bottomnav__action[selected] > .mdw-bottomnav__label,
   input:checked + .mdw-bottomnav__action > .mdw-bottomnav__label {
+    opacity: 1;
     transform: translateY(0);
     min-width: dp(96);
     max-width: dp(168);
@@ -142,15 +144,8 @@
 }
 
 .mdw-bottomnav[mdw-theme-color] {
-  input:checked ~ .mdw-bottomnav__icon,
-  input:checked ~ .mdw-bottomnav__label,
-  .mdw-bottomnav__action[selected] > .mdw-bottomnav__icon,
-  .mdw-bottomnav__action[selected] > .mdw-bottomnav__label,
-  input:checked + .mdw-bottomnav__action > .mdw-bottomnav__icon,
-  input:checked + .mdw-bottomnav__action > .mdw-bottomnav__label {  
-    color: inherit;
-  }
   .mdw-bottomnav__action {
+    color: inherit;
     & > .mdw-ripple > .mdw-ripple__inner,
     &::after {
       background-color: currentColor;
