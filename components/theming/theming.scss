@@ -329,38 +329,70 @@ $added-palettes-list: ();
   :root {
     @include lightVariables();
   }
-  @each $name in map-keys($mdw-theme__themes) {
-    $theme: map-get($mdw-theme__themes, $name);
-    $namespace: if($name == 'default', '@at-root', unquote(".mdw-theme-#{$name}"));
-    @each $color in ('primary', 'accent', 'warn', 'background') {
-      $palette: getThemePalette($color, $theme);
-      $lightTones: map-get($palette, 'light');
-      #{$namespace} {
-        @each $tone in $lightTones {
-          @if ($tone == '500') {
-            [mdw-theme-fill~="#{$color}"] {
+
+  @if ($mdw-theme__automatic-contrast != 'no' and $mdw-theme__automatic-contrast != false) {
+    @each $name in map-keys($mdw-theme__themes) {
+      $theme: map-get($mdw-theme__themes, $name);
+      $namespace: if($name == 'default', '@at-root', unquote(".mdw-theme-#{$name}"));
+      @each $color in ('primary', 'accent', 'warn', 'background') {
+        $palette: getThemePalette($color, $theme);
+        $lightTones: map-get($palette, 'light');
+        #{$namespace} {
+          @each $tone in $lightTones {
+            @if ($tone == '500') {
+              [mdw-theme-fill~="#{$color}"] {
+                @include lightVariables($color);
+              }
+            }
+            [mdw-theme-fill~="#{$color}-#{$tone}"] {
               @include lightVariables($color);
             }
           }
-          [mdw-theme-fill~="#{$color}-#{$tone}"] {
-            @include lightVariables($color);
-          }
+        }
+      }
+      @each $color in ('primary', 'accent', 'warn') {
+        [mdw-theme-fill~="#{$color}"][mdw-theme-fill~="light"],
+        [mdw-theme-fill|="#{$color}"][mdw-theme-fill~="light"] {
+          @include lightVariables($color);
         }
       }
     }
-    @each $color in ('primary', 'accent', 'warn') {
-      [mdw-theme-fill|="#{$color}"][mdw-theme-fill~="light"] {
-        @include lightVariables($color);
+
+    // Dark Variables
+    @each $name in map-keys($mdw-theme__themes) {
+      $theme: map-get($mdw-theme__themes, $name);
+      $namespace: if($name == 'default', '@at-root', unquote(".mdw-theme-#{$name}"));
+      @each $color in ('primary', 'accent', 'warn') {
+        $palette: getThemePalette($color, $theme);
+        $darkTones: map-get($palette, 'dark');
+        #{$namespace} {
+          @each $tone in $darkTones {
+            $value: map-get($palette, $tone);
+            @if ($tone == '500') {
+              [mdw-theme-fill~="#{$color}"] {
+                @include darkVariables($color);
+              }
+            }
+            [mdw-theme-fill~="#{$color}-#{$tone}"] {
+              @include darkVariables($color);
+            }
+          }
+        }
+      }
+      @each $color in ('primary', 'accent', 'warn') {
+        [mdw-theme-fill~="#{$color}"][mdw-theme-fill~="dark"],
+        [mdw-theme-fill|="#{$color}"][mdw-theme-fill~="dark"] {
+          @include darkVariables($color);
+        }
       }
     }
-  }
 
-  // Dark Variables
-  @each $name in map-keys($mdw-theme__themes) {
-    $theme: map-get($mdw-theme__themes, $name);
-    $namespace: if($name == 'default', '@at-root', unquote(".mdw-theme-#{$name}"));
-    @each $color in ('primary', 'accent', 'warn') {
-      $palette: getThemePalette($color, $theme);
+    // Dark Background Variables
+    @each $name in map-keys($mdw-theme__themes) {
+      $theme: map-get($mdw-theme__themes, $name);
+      $namespace: if($name == 'default', '@at-root', unquote(".mdw-theme-#{$name}"));
+      $color: 'background';
+      $palette: getThemePalette('background', $theme);
       $darkTones: map-get($palette, 'dark');
       #{$namespace} {
         @each $tone in $darkTones {
@@ -376,34 +408,8 @@ $added-palettes-list: ();
         }
       }
     }
-    @each $color in ('primary', 'accent', 'warn') {
-      [mdw-theme-fill|="#{$color}"][mdw-theme-fill~="dark"] {
-        @include darkVariables($color);
-      }
-    }
   }
 
-  // Dark Background Variables
-  @each $name in map-keys($mdw-theme__themes) {
-    $theme: map-get($mdw-theme__themes, $name);
-    $namespace: if($name == 'default', '@at-root', unquote(".mdw-theme-#{$name}"));
-    $color: 'background';
-    $palette: getThemePalette('background', $theme);
-    $darkTones: map-get($palette, 'dark');
-    #{$namespace} {
-      @each $tone in $darkTones {
-        $value: map-get($palette, $tone);
-        @if ($tone == '500') {
-          [mdw-theme-fill~="#{$color}"] {
-            @include darkVariables($color);
-          }
-        }
-        [mdw-theme-fill~="#{$color}-#{$tone}"] {
-          @include darkVariables($color);
-        }
-      }
-    }
-  }
 
   [mdw-theme-fill~="black"],
   [mdw-theme-fill~="dark"] {

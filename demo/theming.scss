@@ -28,6 +28,7 @@ $components: (
 $mdw-config: (
   theme-components: $components,
   themes: $themes,
+  automatic-contrast: 'no',
   explicit-colors: $colors,
   ie11-support: 'no'
 );
