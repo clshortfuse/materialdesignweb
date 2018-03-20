@@ -12,7 +12,7 @@
   @return unquote(map-get($drop-shadow-values, $dp));
 }
 
-@function parseThemeItem($item, $theme: null) {
+@function parseThemeItem($item, $type, $theme: null) {
   $length: length($item);
   @if ($length == 1) {
     @return $item;
@@ -22,7 +22,7 @@
     $color: nth($item, 1);
     $tone: nth($item, 2);
     $opacity: nth($item, 3);
-    @return unquote("rgba(#{getThemePaletteColor($color, $tone, $theme)}, #{$opacity})");
+    @return unquote("rgba(#{getThemePaletteColor($color, $tone, $type, $theme)}, #{$opacity})");
   }
   @return null;
 }
@@ -50,16 +50,25 @@
     @return unquote("var(--#{$component}__#{$key})");
   }
   $item: getThemeMapItem($colorMap, $key, $type);
-  @return parseThemeItem($item, $theme);
+  @return parseThemeItem($item, $type, $theme);
 }
 
 @function getThemePalette($color, $theme) {
   @if ($color == 'primary') {
-    @return map-get($palettes, nth($theme, 1));
+    @if ($theme != null) {
+      @return map-get($palettes, nth($theme, 1));
+    }
+    @return map-get($palettes, 'indigo');
   } @else if ($color == 'accent') {
-    @return map-get($palettes, nth($theme, 2));
+    @if (length($theme) > 1) {
+      @return map-get($palettes, nth($theme, 2));
+    }
+    @return map-get($palettes, 'pink');
   } @else if ($color == 'warn') {
-    @return map-get($palettes, nth($theme, 3));
+    @if (length($theme) > 2) {
+      @return map-get($palettes, nth($theme, 3));
+    }
+    @return map-get($palettes, 'red');
   } @else if ($color == 'background') {
     @if (length($theme) > 3) {
       @return map-get($palettes, nth($theme, 4));
@@ -69,8 +78,8 @@
   @error "Unknown Theme Palette!";
 }
 
-@function getThemePaletteColor($color, $tone, $theme: null) {
-  @if ($theme == null) {
+@function getThemePaletteColor($color, $tone, $type, $theme: null) {
+  @if ($type == 'var') {
     @if ($tone == null) {
       @return "var(--#{$color}-color)";
     }
