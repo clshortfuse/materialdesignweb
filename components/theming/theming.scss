@@ -85,6 +85,12 @@ $added-palettes-list: ();
   }
 }
 
+@mixin componentContrastAndThemeRules($type: 'var', $theme: null) {
+  @if (index($mdw-theme__components, 'textfield')) {
+    @include textfieldContrastAndThemeRules($type, $theme);
+  }
+}
+
 @mixin componentContrastRules($type: 'var', $theme: null) {
   @if (index($mdw-theme__components, 'bottomnav')) {
     @include bottomnavContrastRules($type, $theme);
@@ -121,9 +127,6 @@ $added-palettes-list: ();
 @mixin componentThemeRules($theme: null) {
   @if (index($mdw-theme__components, 'button')) {
     @include buttonThemeRules($theme);
-  }
-  @if (index($mdw-theme__components, 'textfield')) {
-    @include textfieldThemeRules($theme);
   }
 }
 
@@ -186,7 +189,18 @@ $added-palettes-list: ();
       }
     }
     #{$namespace} {
+      @debug $theme;
       @include componentThemeRules($theme);
+      [mdw-theme-fill~="light"] {
+        @debug 'light' $theme;
+        .test {content:'hello'}
+        @include componentContrastAndThemeRules('light', $theme);
+      }
+      [mdw-theme-fill~="dark"] {
+        .test {content:'hello2'}
+        @debug 'dark' $theme;
+        @include componentContrastAndThemeRules('dark', $theme);
+      }
     }
   }
   [mdw-theme-fill~="black"] {
@@ -396,6 +410,7 @@ $added-palettes-list: ();
     @include darkVariables('background');
   }
 
+  @include componentContrastAndThemeRules();
   @include componentContrastRules();
   @include componentThemeRules();
 }

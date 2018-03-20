@@ -58,12 +58,12 @@
     @if ($theme != null) {
       @return map-get($palettes, nth($theme, 1));
     }
-    @return map-get($palettes, 'indigo');
+    @error 'Missing primary color!'
   } @else if ($color == 'accent') {
     @if (length($theme) > 1) {
       @return map-get($palettes, nth($theme, 2));
     }
-    @return map-get($palettes, 'pink');
+    @error 'Missing accent color!'
   } @else if ($color == 'warn') {
     @if (length($theme) > 2) {
       @return map-get($palettes, nth($theme, 3));
@@ -75,11 +75,11 @@
     }
     @return map-get($palettes, 'grey');
   }
-  @error "Unknown Theme Palette!";
+  @error "Unrecognized Theme Palette!";
 }
 
 @function getThemePaletteColor($color, $tone, $type, $theme: null) {
-  @if ($type == 'var') {
+  @if ($theme == null) {
     @if ($tone == null) {
       @return "var(--#{$color}-color)";
     }
