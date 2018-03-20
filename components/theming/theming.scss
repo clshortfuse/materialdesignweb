@@ -189,16 +189,11 @@ $added-palettes-list: ();
       }
     }
     #{$namespace} {
-      @debug $theme;
       @include componentThemeRules($theme);
       [mdw-theme-fill~="light"] {
-        @debug 'light' $theme;
-        .test {content:'hello'}
         @include componentContrastAndThemeRules('light', $theme);
       }
       [mdw-theme-fill~="dark"] {
-        .test {content:'hello2'}
-        @debug 'dark' $theme;
         @include componentContrastAndThemeRules('dark', $theme);
       }
     }
