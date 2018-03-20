@@ -34,7 +34,7 @@ $bottomnavColors: (
   .mdw-bottomnav__action {
     & > .mdw-ripple > .mdw-ripple__inner,
     &::after {
-      background-color: buttonThemeValue("ripple-color", $type, $theme);
+      background-color: bottomnavThemeValue("ripple-color", $type, $theme);
     }
   }
 }
