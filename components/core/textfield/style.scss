@@ -223,10 +223,6 @@ textarea.mdw-textfield__input {
 }
 
 select.mdw-textfield__input {
-  // background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='16px' width='16px'> <text x='0' y='8' fill='black' font-size='16'>&#x25BE;</text></svg>");
-  background-position: right center;
-  background-repeat: no-repeat;
-  background-size: 16px 16px;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   option {
@@ -308,6 +304,23 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
     transform: translateY(0);
     font-size: $label__font-size;
   }
+}
+
+.mdw-textfield__dropdown-button {
+  &::after {
+    content: '\25BE';
+    font-size: 16px;
+  }
+  pointer-events: none;
+  align-self: flex-start;
+  justify-self: flex-end;
+  grid-row: 1;
+  grid-column: 3;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  margin-top: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom});
 }
 
 .mdw-textfield__dropdown {
