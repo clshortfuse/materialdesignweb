@@ -1,5 +1,6 @@
 // https://material.io/guidelines/components/menus.html
 
+@import '../../common/ripple.scss';
 @import '../../common/variables.scss';
 
 $menu__unit-width: dp(56);
@@ -164,36 +165,25 @@ $checkbox-icon-offset-x: dp(6.04);
   box-sizing: border-box;
   flex-direction: row;
 
-  // If using JS ripple, destroy ::after object
-  &[mdw-js-ripple]::after {
-    content: none
+  > .mdw-ripple {
+    @include mdw-ripple__container;
   }
-    
-  & > .mdw-ripple,
+
+  & > .mdw-ripple > .mdw-ripple__inner,
   &::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    user-select: none;
-    pointer-events: none; // Safari improperly captures click
-    transform: scale(10); // 10.0 has subpixel rendering issues
-    transition-property: transform, opacity;
-    transition-duration: 700ms;
-    opacity: 0;
-    
+    @include mdw-ripple__inner;
   }
-  
-  &:active {
-    & > .mdw-ripple,
+
+  & > .mdw-ripple:active > .mdw-ripple__inner,
+  &:active::after {
+    @include mdw-ripple__active;
+  }
+
+  &[mdw-ripple] {
+    overflow: visible;
     &::after {
-      transform: scale(0);
-      transition-delay: 0ms;
-      transition-duration: 0s;
-      opacity: 1;
+      // If using custom ripple, destroy ::after object
+      content: none;
     }
   }
 }

@@ -19,8 +19,7 @@ $menuColors: (
   @include themeVariables('menu', $menuColors, $color, $lightness);
 }
 
-// Vary by contrast or theme
-@mixin menuContrastRules($type: 'var', $theme: null) {
+@mixin internalMenuContrastRules($type: 'var', $theme: null) {
   @at-root {
     #{&}.mdw-menu {
       background-color: menuThemeValue("background-color", $type, $theme);
@@ -30,20 +29,26 @@ $menuColors: (
         &:hover {
           background-color: menuThemeValue("hover-color", $type, $theme);
         }
-        & > .mdw-ripple,
+        & > .mdw-ripple > .mdw-ripple__inner,
         &::after {
-          background-image: radial-gradient(
-            circle at center,
-            menuThemeValue("ripple-color", $type, $theme) 10%,
-            transparent 10.0001%
-          );
+          background-color: buttonThemeValue("ripple-color", $type, $theme);
         }
       }
-      .mdw-menu__icon,
-      .mdw-menu__check {
-        color: menuThemeValue("secondary-color", $type, $theme);
-      }
     }
+  }
+}
+
+// Vary by contrast or theme
+@mixin menuContrastRules($type: 'var', $theme: null) {
+  @include internalMenuContrastRules($type, $theme);
+  @if ($type != 'var') {
+    :not([mdw-theme-fill]) {
+      @include internalMenuContrastRules($type, $theme);
+    }
+  }
+  .mdw-menu__icon,
+  .mdw-menu__check {
+    color: menuThemeValue("secondary-color", $type, $theme);
   }
 }
 
