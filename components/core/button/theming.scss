@@ -25,8 +25,7 @@ $buttonColors: (
   @include themeVariables('button', $buttonColors, $color, $lightness);
 }
 
-// Vary by contrast
-@mixin buttonContrastRules($type: 'var', $theme: null) {
+@mixin internalButtonContrastRules($type, $theme: null) {
   @at-root {
     #{&}.mdw-button {
       &:not([mdw-theme-color]):not(:disabled) {
@@ -94,9 +93,21 @@ $buttonColors: (
             buttonThemeValue("disabled-background-color", 'dark', $theme)
           );
         }
-        
       }
     }
+  }
+}
+
+// Vary by contrast
+@mixin buttonContrastRules($type: 'var', $theme: null) {
+  @include internalButtonContrastRules($type, $theme);
+  @if ($type != 'var') {
+    :not([mdw-theme-fill]) {
+      @include internalButtonContrastRules($type, $theme);
+    }
+  }
+  .mdw-button__focus-ring {
+    color: buttonThemeValue("ripple-color", $type, $theme);
   }
 }
 

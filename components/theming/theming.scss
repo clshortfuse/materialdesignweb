@@ -90,11 +90,6 @@ $added-palettes-list: ();
     @include bottomnavContrastRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'button')) {
-    @if ($type != 'var') {
-      :not([mdw-theme-fill]) {
-        @include buttonContrastRules($type, $theme);
-      }
-    }
     @include buttonContrastRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'list')) {
