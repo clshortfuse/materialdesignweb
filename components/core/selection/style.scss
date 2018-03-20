@@ -24,7 +24,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   position: relative;
   justify-content: space-between;
 }
-.mdw-selection > input {
+.mdw-selection__input {
   display: inline-flex;
   order: 1;
   appearance: none;
@@ -82,7 +82,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   z-index: 0;
   margin: 0;
   cursor: pointer;
-  input:disabled ~ & {
+  .mdw-selection__input:disabled ~ & {
     cursor: not-allowed;
   }
 
@@ -117,30 +117,30 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   }
 }
 
-.mdw-selection__label ~ input {
+.mdw-selection__label ~ .mdw-selection__input {
   right: 0;
 }
-.mdw-selection__label ~ input,
+.mdw-selection__label ~ .mdw-selection__input,
 .mdw-selection__label ~ .mdw-selection__icon,
-input ~ .mdw-selection__label {
+.mdw-selection__input ~ .mdw-selection__label {
   margin-left: 8px;
 }
 
 [dir=rtl] {
-  .mdw-selection__label ~ input {
+  .mdw-selection__label ~ .mdw-selection__input {
     right: auto;
     left: 0;
   }
-  .mdw-selection__label ~ input,
+  .mdw-selection__label ~ .mdw-selection__input,
   .mdw-selection__label ~ .mdw-selection__icon,
-  input ~ .mdw-selection__label {
+  .mdw-selection__input ~ .mdw-selection__label {
     margin-left: 0;
     margin-right: 8px;
   }
 }
 
 
-.mdw-selection > input[type="checkbox"] {
+.mdw-selection > .mdw-selection__input[type="checkbox"] {
   & ~ .mdw-selection__icon::before {
     left: ($icon-size - $checkbox-size) / 2;
     top: ($icon-size - $checkbox-size) / 2;
@@ -188,7 +188,7 @@ input ~ .mdw-selection__label {
   }
 }
 
-.mdw-selection > input[type="radio"] {
+.mdw-selection > .mdw-selection__input[type="radio"] {
   & ~ .mdw-selection__icon::before {
     left: ($icon-size - $radio-size) / 2;
     top: ($icon-size - $radio-size) / 2;
@@ -224,8 +224,8 @@ input ~ .mdw-selection__label {
 }
 
 .mdw-selection[mdw-theme-color] {
-  input[type="checkbox"]:checked:not(:active),
-  input[type="radio"]:checked {
+  .mdw-selection__input[type="checkbox"]:checked:not(:active),
+  .mdw-selection__input[type="radio"]:checked {
     color: inherit;
     opacity: 0.26;
   }

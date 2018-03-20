@@ -19,7 +19,7 @@ include ../mixins.pug
           .mdw-list__text Android Switch Off
           .mdw-list__secondary
             label.mdw-switch
-              input(type="checkbox")
+              input.mdw-switch__input(type="checkbox")
               .mdw-switch__icon
       ul.mdw-list
         li.mdw-list__subheader Single check
@@ -29,7 +29,7 @@ include ../mixins.pug
           .mdw-list__text Option 1
           .mdw-list__secondary
             .mdw-selection(mdw-theme-color="accent-700")
-              input(type="radio" name="selectiontest" checked)
+              input.mdw-selection__input(type="radio" name="selectiontest" checked)
               .mdw-selection__icon
         label.mdw-list__row(mdw-ripple)
           .mdw-ripple
@@ -37,7 +37,7 @@ include ../mixins.pug
           .mdw-list__text Option 2
           .mdw-list__secondary
             .mdw-selection(mdw-theme-color="primary-700")
-              input(type="radio" name="selectiontest")
+              input.mdw-selection__input(type="radio" name="selectiontest")
               .mdw-selection__icon
       ul.mdw-list
         li.mdw-list__subheader Multiple check
@@ -47,7 +47,7 @@ include ../mixins.pug
           .mdw-list__text Option 1
           .mdw-list__secondary
             .mdw-selection(mdw-theme-color="accent-A400")
-              input(type="checkbox" checked)
+              input.mdw-selection__input(type="checkbox" checked)
               .mdw-selection__icon
         label.mdw-list__row(mdw-ripple)
           .mdw-ripple
@@ -55,7 +55,7 @@ include ../mixins.pug
           .mdw-list__text Option 2
           .mdw-list__secondary
             .mdw-selection(mdw-theme-color="primary-700")
-              input(type="checkbox" checked)
+              input.mdw-selection__input(type="checkbox" checked)
               .mdw-selection__icon
         label.mdw-list__row(mdw-ripple)
           .mdw-ripple
@@ -63,7 +63,7 @@ include ../mixins.pug
           .mdw-list__text Option 3
           .mdw-list__secondary
             .mdw-selection(mdw-theme-color="warn")
-              input(type="checkbox")
+              input.mdw-selection__input(type="checkbox")
               .mdw-selection__icon
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B57Y8yNEHsZPQXRHTEpLc0JXVnM/material-design.platform-adaptation-control-1.png')
 
@@ -77,10 +77,10 @@ include ../mixins.pug
       div.display-flex(style="padding:16px")
         label.mdw-selection(mdw-theme-color="primary-700")
           .mdw-selection__label Prefixed
-          input(type="checkbox" checked)
+          input.mdw-selection__input(type="checkbox" checked)
           .mdw-selection__icon
       div.display-flex(style="padding:16px")
         label.mdw-selection(mdw-theme-color="accent-A700")
-          input(type="checkbox" checked)
+          input.mdw-selection__input(type="checkbox" checked)
           .mdw-selection__icon
           .mdw-selection__label Suffixed

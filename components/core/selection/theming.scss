@@ -20,14 +20,12 @@ $selectionColors: (
 
 // Vary by contrast
 @mixin selectionContrastRules($type: 'var', $theme: null) {
-  .mdw-selection > input {
+  .mdw-selection__input {
     color: selectionThemeValue("ripple-color", $type, $theme);
     &:active,
     &:focus {
       opacity: selectionThemeValue("ripple-opacity", $type, $theme);
     }
-  }
-  .mdw-selection > input {
     &[type="checkbox"]:not(:checked) ~ .mdw-selection__icon,
     &[type="checkbox"]:active ~ .mdw-selection__icon {
       color: selectionThemeValue("color", $type, $theme);
@@ -46,11 +44,9 @@ $selectionColors: (
       }
     }
   }
-  .mdw-selection,
-  .mdw-selection[mdw-theme-color] {
-    .mdw-selection__label {
-      color: selectionThemeValue("text-color", $type, $theme);
-    }
+  .mdw-selection__label,
+  .mdw-selection[mdw-theme-color] .mdw-selection__label {
+    color: selectionThemeValue("text-color", $type, $theme);
   }
 }
 
