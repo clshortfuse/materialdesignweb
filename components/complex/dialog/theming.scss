@@ -17,18 +17,14 @@ $dialogColors: (
 
 // Vary by contrast or theme
 @mixin dialogContrastRules($type: 'var', $theme: null) {
-  @at-root {
-    #{&}.mdw-dialog {
-      .mdw-dialog__popup {
-        background-color: dialogThemeValue("background-color", $type, $theme);
-      }
-      .mdw-dialog__title {
-        color: dialogThemeValue("text-color", $type, $theme);
-      }
-      .mdw-dialog__body {
-        color: dialogThemeValue("secondary-text-color", $type, $theme);
-      }
-    }
+  .mdw-dialog__popup {
+    background-color: dialogThemeValue("background-color", $type, $theme);
+  }
+  .mdw-dialog__title {
+    color: dialogThemeValue("text-color", $type, $theme);
+  }
+  .mdw-dialog__body {
+    color: dialogThemeValue("secondary-text-color", $type, $theme);
   }
 }
 
