@@ -11,8 +11,8 @@
   display: grid;
   position: relative;
   overflow: hidden;
-  grid-template-rows: minmax(0,auto) 1fr 16px;
-  grid-template-columns: minmax(0,auto) 16px 1fr;
+  grid-template-rows: auto 1fr 16px;
+  grid-template-columns: auto 16px 1fr;
   transition-timing-function: $motion-easing-deceleration;
   transition-duration: $motion-duration-desktop-leave;
   @include allHandsets {
@@ -55,8 +55,10 @@
 .mdw-navdrawer__toolbar {
   grid-row-start: 1;
   grid-row-end: 2;
+  -ms-grid-row-span: 1;
   grid-column-start: 2;
   grid-column-end: 4;
+  -ms-grid-column-span: 2;
   .mdw-toolbar__start {
     display: none;
   }
@@ -88,8 +90,10 @@
   height: 100%;
   grid-column-start: 1;
   grid-column-end: 2;
-  grid-row-end: 4;
+  -ms-grid-column-span: 1;
   grid-row-start: 1;
+  grid-row-end: 4;
+  -ms-grid-row-span: 3;
   max-width: calc(100% - 64px); // Tablet or Desktop
   @include allHandsets {
     max-width: calc(100% - 56px);
@@ -101,7 +105,7 @@
   transition-timing-function: inherit;
   transition-duration: inherit;
   pointer-events: auto;
-  overflow-y: scroll;
+  overflow-y: auto;
   border-style: solid;
   border-width: 0;
   border-right-width: 1px;
@@ -110,8 +114,10 @@
 .mdw-navdrawer__content {
   grid-row-start: 2;
   grid-row-end: 4;
+  -ms-grid-row-span: 2;
   grid-column-start: 2;
   grid-column-end: 4;
+  -ms-grid-column-span: 2;
 }
 
 .mdw-navdrawer__drawer .mdw-list__row[selected] {
@@ -141,10 +147,10 @@
     content: '';
     grid-column-start: 1;
     grid-column-end: 3;
-    -ms-grid-column-span: 3;
+    -ms-grid-column-span: 2;
     grid-row-start: 1;
     grid-row-end: 3;
-    -ms-grid-row-span: 3;
+    -ms-grid-row-span: 2;
     width: auto;
     height: 0;
     padding-bottom: 56.25%;
@@ -154,7 +160,7 @@
 .mdw-navdrawer__avatars {
   grid-column-start: 1;
   grid-column-end: 3;
-  -ms-grid-column-span: 3;
+  -ms-grid-column-span: 2;
   grid-row: 1;
   align-self: flex-end;
   height: 64px;
@@ -197,10 +203,10 @@
 .mdw-navdrawer__image {
   grid-column-start: 1;
   grid-column-end: 3;
-  -ms-grid-column-span: 3;
+  -ms-grid-column-span: 2;
   grid-row-start: 1;
   grid-row-end: 3;
-  -ms-grid-row-span: 3;
+  -ms-grid-row-span: 2;
   position: relative;
   z-index: -1;
   overflow: hidden;
@@ -216,7 +222,7 @@
 .mdw-navdrawer__subtitle {
   grid-column-start: 1;
   grid-column-end: 3;
-  -ms-grid-column-span: 3;
+  -ms-grid-column-span: 2;
   grid-row: 2;
   position: relative;
   min-height: dp(56);
@@ -280,12 +286,14 @@
   .mdw-navdrawer__content,
   .mdw-navdrawer__toolbar {
     grid-column-start: 1;
+    -ms-grid-column-span: 4;
   }
   .mdw-navdrawer__toolbar .mdw-toolbar__start {
     display: flex;
   }
   .mdw-navdrawer__avatars {
     grid-column-end: 3;
+    -ms-grid-column-span: 2;
     padding-right: 16px;
   }
   .mdw-navdrawer__close {
@@ -295,6 +303,7 @@
     position: absolute;
     grid-row-start: 1;
     grid-column-end: 4;
+    -ms-grid-column-span: 3;
     min-width: auto;
     box-shadow: elevation(0);
     transform: translateX(-100%);
@@ -320,6 +329,7 @@
     transform: translateX(0);
     box-shadow: elevation(16);
     grid-row-end: 4;
+    -ms-grid-column-span: 3;
   }
   .mdw-navdrawer__scrim {
     display: block;
@@ -332,6 +342,7 @@
 .mdw-navdrawer[mdw-mini] {
   .mdw-navdrawer__avatars {
     grid-column-end: 2;
+    -ms-grid-column-span: 1;
     padding-right: 0;
   }
   .mdw-navdrawer__close {
@@ -355,6 +366,7 @@
       padding-right: 20px;
       justify-content: center;
       grid-column-end: 2;
+      -ms-grid-column-span: 1;
     }
     
     .mdw-navdrawer__avatars-current {
@@ -374,6 +386,7 @@
     }
     .mdw-navdrawer__toolbar {
       grid-column-start: 1;
+      -ms-grid-column-span: 3;
     }
     .mdw-navdrawer__drawer {
       grid-row-start: 2;
@@ -428,6 +441,7 @@
   &[mdw-floating] {
     .mdw-navdrawer__toolbar {
       grid-column-start: 1;
+      -ms-grid-column-span: 3;
     }
     .mdw-navdrawer__drawer {
       grid-row-start: 2;
@@ -442,6 +456,7 @@
     }
   }
   &,
+  &[mdw-mini],
   &[mdw-clipped],
   &[mdw-floating] {
     @include allHandsetsAndTablets {
