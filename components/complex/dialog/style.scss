@@ -26,7 +26,7 @@ $dialog__unit-width: dp(56);
   height: 100%;
 
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
 
@@ -68,6 +68,8 @@ $dialog__unit-width: dp(56);
 .mdw-dialog__popup {
   display: flex;
   flex-direction: column;
+  flex-shrink: 1;
+  min-width: dp(224);
   border-radius: dp(2);
   box-shadow: elevation(24);
   transition-duration: inherit;
