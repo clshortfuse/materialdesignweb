@@ -76,7 +76,7 @@ $icon-signifier__padding-end: dp(16);
   grid-row: 1;
   grid-column-start: 2;
   grid-column-end: 5;
-  -ms-grid-column-span: 5 - 2 + 1;
+  -ms-grid-column-span: 3;
 
   align-self: flex-start;
 
@@ -248,7 +248,7 @@ select.mdw-textfield__input {
 .mdw-textfield__border-line {
   grid-column-start: 2;
   grid-column-end: 5;
-  -ms-grid-column-span: 5 - 2 + 1;
+  -ms-grid-column-span: 3;
   grid-row: 2;
   
   [mdw-box] > &,
@@ -288,7 +288,7 @@ select.mdw-textfield__input {
   grid-row: 3;
   grid-column-start: 2;
   grid-column-end: 5;
-  -ms-grid-column-span: 5 - 2 + 1;
+  -ms-grid-column-span: 3;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -313,7 +313,12 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
   }
   pointer-events: none;
   align-self: flex-start;
-  justify-self: flex-end;
+  margin-left: auto;
+  margin-right: 0;
+  [dir=rtl] & {
+    margin-left: 0;
+    margin-right: auto;
+  }
   grid-row: 1;
   grid-column: 3;
   width: 24px;
@@ -332,7 +337,7 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
   }
   grid-column-start: 2;
   grid-column-end: 5;
-  -ms-grid-column-span: 5 - 2 + 1;
+  -ms-grid-column-span: 3;
   box-shadow: none;
   max-height: 0;
   overflow: hidden;
