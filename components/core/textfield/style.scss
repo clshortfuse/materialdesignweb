@@ -258,12 +258,16 @@ select.mdw-textfield__input {
     grid-row-start: 1;
     grid-row-end: 3;
     -ms-grid-row-span: 2;
-    width: calc(100% - 17px);
+    
     top: 17px;
-    position: relative;
+    position: absolute;
     bottom: 0;
+    height: calc(100% - 17px);
+    @include IEOnly {
+      position: relative;
+    }
     pointer-events: none;
-    height: auto;
+    width: 100%;
     border-color: currentColor;
     &::before,
     &::after {
