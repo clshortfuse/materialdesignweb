@@ -258,9 +258,9 @@ select.mdw-textfield__input {
     grid-row-start: 1;
     grid-row-end: 3;
     -ms-grid-row-span: 2;
-    width: 100%;
+    width: calc(100% - 17px);
     top: 17px;
-    position: absolute;
+    position: relative;
     bottom: 0;
     pointer-events: none;
     height: auto;
@@ -363,6 +363,7 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
   margin-bottom: 8px;
   pointer-events: none;
   align-self: flex-end;
+  -ms-grid-row-align: end;
   margin-left: auto;
   margin-right: 0;
   [dir=rtl] & {
