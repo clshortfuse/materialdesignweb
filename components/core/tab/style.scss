@@ -93,6 +93,7 @@
   overflow: hidden;
   cursor: pointer;
   color: black;
+  user-select: none;
   -webkit-tap-highlight-color: transparent;
   input:checked + & {
     cursor: default;
