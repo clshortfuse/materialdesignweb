@@ -84,6 +84,8 @@ $button__focus-animation-duration: 1667ms;
     user-select: none;
     > * {
       position: absolute;
+      left: 0;
+      top: 0;
       width: auto;
       height: 100%;
       z-index: -1;
