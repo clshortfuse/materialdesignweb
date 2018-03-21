@@ -6,9 +6,9 @@
     "default": ('indigo', 'pink', 'red'),
   );
   $explicit-colors: ();
-  $automatic-contrast: 'yes';
-  $ie11-support: 'yes';
-  $ie11-media-wrap: 'yes';
+  $automatic-contrast: 'no';
+  $ie11-support: 'only';
+  $ie11-media-wrap: 'no';
   @if (map-has-key($config-map, $key: "theme-components")) {
     $theme-components: map-get($config-map, "theme-components");
   }
