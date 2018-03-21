@@ -23,7 +23,9 @@ $tooltip__background-color: #616161; // material-grey-700
     top: 100%;
     left: 50%;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: auto;
     background-color: $tooltip__background-color;
     color: white;
