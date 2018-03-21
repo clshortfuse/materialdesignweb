@@ -7,8 +7,9 @@ $buttonColors: (
   active-color:               ((#000, 0.54), (#fff, 0.70)),
   inactive-color:             ((#000, 0.38), (#fff, 0.50)),
   press-color:                ((#999, 0.40), (#CCC, 0.25)),
+  icon-press-opacity:         (         0.12 ,          0.30,           0.20),
+  icon-ripple-opacity:        (         0.36 ,          0.90,           0.60), // 3x for visibility
   icon-ripple-color:          ( #000       ,  #fff       ),
-  icon-ripple-opacity:        (         0.12 ,          0.30,           0.20),
   ripple-color:               ((#000, 0.12), (#fff, 0.30), (#fff, 0.20)),
   transparent-focus-overlay:  ((#000, 0.12), (#fff, 0.12), (#fff, 0.20)),
   filled-focus-overlay:       ((#000, 0.12), (#000, 0.12), (#fff, 0.12)),
@@ -73,6 +74,10 @@ $buttonColors: (
         }
         &:active::before,
         &:focus::before {
+          opacity: buttonThemeValue("icon-press-opacity", $type, $theme);
+        }
+        &:active > .mdw-ripple > .mdw-ripple__inner,
+        &:active:after {
           opacity: buttonThemeValue("icon-ripple-opacity", $type, $theme);
         }
       }

@@ -260,6 +260,7 @@ $button__focus-animation-duration: 1667ms;
     background-color: currentColor;
     opacity: 0;
     transition-property: opacity;
+    transition-duration: 0s;
   }
   &:focus::before {
     transition-delay: 100ms;
@@ -271,10 +272,6 @@ $button__focus-animation-duration: 1667ms;
   & > .mdw-ripple > .mdw-ripple__inner,
   &::after {
     background-color: currentColor;
-  }
-  &:active > .mdw-ripple > .mdw-ripple__inner,
-  &:active::after {
-    opacity: 1;
   }
 }
 
@@ -296,6 +293,10 @@ $button__focus-animation-duration: 1667ms;
     &:focus::before,
     &:active::before {
       opacity: 0.26;
+    }
+    &:active > .mdw-ripple > .mdw-ripple__inner,
+    &:active::after {
+      opacity: 0.78; // 3x for visibility;
     }
   }
 }
