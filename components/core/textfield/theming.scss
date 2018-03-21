@@ -35,18 +35,16 @@ $textfieldColors: (
     // Focus
     &:active > .mdw-textfield__input:not(:disabled),
     > .mdw-textfield__input:not(:disabled):focus {
+      caret-color: textfieldThemeValue("label-color__focus", $type, $theme);
       & ~ .mdw-textfield__label {
         color: textfieldThemeValue("label-color__focus", $type, $theme);
       }
-      &,
       & ~ .mdw-textfield__border-line::before {
         border-color: textfieldThemeValue("border-line-color__focus", $type, $theme);
-        caret-color: textfieldThemeValue("label-color__focus", $type, $theme);
       }
 
       &:invalid {
         caret-color: textfieldThemeValue("label-warn-color__focus", $type, $theme);
-        &,
         & ~ .mdw-textfield__border-line::after {
           border-color: textfieldThemeValue("border-line-warn-color__focus", $type, $theme);
         }
@@ -59,13 +57,12 @@ $textfieldColors: (
       &:active > .mdw-textfield__input:not(:disabled),
       > .mdw-textfield__input:not(:disabled):focus {
         &:not(:invalid) {
+          caret-color: textfieldThemeValue("label-accent-color__focus", $type, $theme);
           & ~ .mdw-textfield__label {
-              color: textfieldThemeValue("label-accent-color__focus", $type, $theme);
+            color: textfieldThemeValue("label-accent-color__focus", $type, $theme);
           }
-          &,
           & ~ .mdw-textfield__border-line::before {
-              border-color: textfieldThemeValue("border-line-accent-color__focus", $type, $theme);
-              caret-color: textfieldThemeValue("label-accent-color__focus", $type, $theme);
+            border-color: textfieldThemeValue("border-line-accent-color__focus", $type, $theme);
           }
         }
       }
@@ -73,6 +70,26 @@ $textfieldColors: (
   }
   .mdw-textfield__input:focus:invalid ~ .mdw-textfield__error-text {
     color: textfieldThemeValue("label-warn-color__focus", $type, $theme);
+  }
+  .mdw-textfield[mdw-box],
+  .mdw-textfield[mdw-textarea] {
+    &:active > .mdw-textfield__input:not(:disabled),
+    > .mdw-textfield__input:not(:disabled):focus {
+      & ~ .mdw-textfield__border-line {
+        border-color: textfieldThemeValue("border-line-color__focus", $type, $theme);
+      }
+      &:invalid ~ .mdw-textfield__border-line {
+        border-color: textfieldThemeValue("border-line-warn-color__focus", $type, $theme);
+      }
+    }
+    &[mdw-theme-color|="accent"] {
+      &:active > .mdw-textfield__input:not(:disabled),
+      > .mdw-textfield__input:not(:disabled):focus {
+        &:not(:invalid) ~ .mdw-textfield__border-line {
+          border-color: textfieldThemeValue("border-line-accent-color__focus", $type, $theme);
+        }
+      }
+    }
   }
 }
 
@@ -187,25 +204,26 @@ $textfieldColors: (
     }
     &[mdw-box] > .mdw-textfield__input,
     &[mdw-textarea] > .mdw-textfield__input {
-      &:not(:focus) {
+      &:not(:focus) ~ .mdw-textfield__border-line {
         border-color: textfieldThemeValue("border-line-color", $type, $theme);
       }
-      &:disabled {
+      &:disabled ~ .mdw-textfield__border-line {
         background-color: textfieldThemeValue("textarea-disabled-background-color", $type, $theme);
       }
-      &:hover:not(:focus):not(:disabled) {
+      &:hover:not(:focus):not(:disabled) ~ .mdw-textfield__border-line {
         border-color: textfieldThemeValue("border-line-color__hover", $type, $theme);
       }
     }
     
-    &[mdw-textarea] > .mdw-textfield__input:disabled {
+    &[mdw-textarea] > .mdw-textfield__input:disabled ~ .mdw-textfield__border-line {
       border-color: textfieldThemeValue("textarea-disabled-border-color", $type, $theme);
     }
-    &[mdw-box] > .mdw-textfield__input:disabled {
+    &[mdw-textarea] > .mdw-textfield__input:disabled ~ .mdw-textfield__border-line,
+    &[mdw-box] > .mdw-textfield__input:disabled ~ .mdw-textfield__border-line {
       border-color: transparent;
     }
 
-    &[mdw-box] > .mdw-textfield__input {
+    &[mdw-box] > .mdw-textfield__border-line {
       background-color: textfieldThemeValue("box-fill-color", $type, $theme);
     }
   }

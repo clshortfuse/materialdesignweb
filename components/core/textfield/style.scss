@@ -28,21 +28,33 @@ $icon-signifier__padding-end: dp(16);
 
 
 
+// Rows (4)
+// 1: Label
+// 1: Icon Prefix Input Suffix
+// 2: -----Border-------------
+// 3: Helper/Error
+// 4: Dropdown
+
+// Columns (5)
+//      | Label------------------------------------
+// Icon | Prefix | Input | Suffix | Dropdown Button
+//      | Border-----------------------------------
+//      | Helper/Error-----------------------------
+//      | Dropdown---------------------------------
+
+// Border extends from row 1-2 when boxed
+
 .mdw-textfield {
   position: relative;
   display: grid;
   justify-content: flex-start;
-  // 1: Label
-  // 1: Icon Prefix Input Suffix
-  // 2: -----Borderline---------
-  // 3: Helper/Error
-  // 4: Dropdown
   grid-template-columns: auto auto minmax(88px, 1fr) auto;
   grid-template-rows: auto;
   align-items: baseline;
   flex-direction: column;
   font-size: sp(16);
 }
+
 .mdw-textfield__prefix {
   grid-column: 2;
   padding-right: 4px;
@@ -75,8 +87,8 @@ $icon-signifier__padding-end: dp(16);
   margin: 0;
   grid-row: 1;
   grid-column-start: 2;
-  grid-column-end: 5;
-  -ms-grid-column-span: 3;
+  grid-column-end: 6;
+  -ms-grid-column-span: 4;
 
   align-self: flex-start;
 
@@ -162,30 +174,9 @@ $icon-signifier__padding-end: dp(16);
   [mdw-textarea] > & {
     padding-left: $textarea__padding-start;
     padding-right: $textarea__padding-end;
-    border-style: solid;
     // margin-top aligns border
-    margin-top: $label__padding-top + $border-line__height;
-    padding-top: calc(#{$label__font-size} + #{$label__padding-bottom} + #{$textarea__label__extra_padding-top});
-    will-change: border-color;
-    transition-property: border-color;
-    transition-timing-function: $motion-easing-standard;
-    transition-duration: $motion-duration-desktop-default;
-    @include allHandsets {
-      transition-duration: $motion-duration-mobile-default;
-    }
-    @include allTablets {
-      transition-duration: $motion-duration-tablet-default;
-    }
-  }
-  [mdw-box] > & {
-    border-radius: dp(4);
-    border-width: 0;
-    border-bottom-width: $border-line__focused__height;
-    margin-bottom: -$border-line__focused__height;
-  }
-  [mdw-textarea]:not([mdw-box]) > & {
-    border-radius: dp(2);
-    border-width: $border-line__height;
+    margin-top: calc(#{$label__font-size} + #{$label__padding-bottom} + #{$textarea__label__extra_padding-top} + #{$label__padding-top} + #{$border-line__height});
+    padding-top: 0;
   }
 
   &:placeholder-shown ~ .mdw-textfield__label {
@@ -216,9 +207,17 @@ $icon-signifier__padding-end: dp(16);
 textarea.mdw-textfield__input {
   resize: none;
   overflow-y: auto;
+  padding-bottom: 0;
+  margin-bottom: 8px;
   &[mdw-multiline] {
     min-height: 1em;
     padding-right: 24px;
+  }
+  .mdw-textfield[mdw-textarea] > & {
+    margin-bottom: 16px;
+  }
+  .mdw-textfield[mdw-box][mdw-textarea] > & {
+    margin-bottom: dp(8);
   }
 }
 
@@ -247,34 +246,80 @@ select.mdw-textfield__input {
 
 .mdw-textfield__border-line {
   grid-column-start: 2;
-  grid-column-end: 5;
-  -ms-grid-column-span: 3;
-  grid-row: 2;
+  grid-column-end: 6;
+  -ms-grid-column-span: 4;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  -ms-grid-row-span: 1;
+  position: relative;
   
   [mdw-box] > &,
   [mdw-textarea] > & {
-    display: none;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    -ms-grid-row-span: 2;
+    width: 100%;
+    top: 17px;
+    position: absolute;
+    bottom: 0;
+    pointer-events: none;
+    height: auto;
+    border-color: currentColor;
+    &::before,
+    &::after {
+      content: none;
+    }
   }
+  [mdw-box] > & {
+    border-radius: dp(4);
+    border-width: 0;
+    border-bottom-width: $border-line__focused__height;
+    margin-bottom: -$border-line__focused__height;
+  }
+  [mdw-textarea]:not([mdw-box]) > & {
+    border-radius: dp(2);
+    border-width: $border-line__height;
+    border-style: solid;
+  }
+  
   height: 0;
   margin-top: -$border-line__height;
   margin-bottom: $border-line__bottom-padding;
-  border-top-style: solid;
+  border-style: none;
+  border-bottom-style: solid;
   box-sizing: border-box;
   pointer-events: none;
 
   border-width: $border-line__height;
+  transition-delay: 1ms;
+  transition-timing-function: $motion-easing-deceleration;
+  transition-duration: $motion-duration-desktop-leave;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-leave;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-leave;
+  }
 
   &::before,
   &::after {
     content: "";
-    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     transform: scaleX(0);
-    border-top-style: solid;
-    border-width: $border-line__focused__height;
-    margin-top: -$border-line__focused__height;
+    border-style: inherit;
+    border-radius: inherit;
+    border-bottom-style: inherit;
+    border-width: inherit;
     will-change: transform;
     transition-property: transform;
-    transition-delay: 1ms;
+    transition-delay: inherit;
+    transition-duration: inherit;
+    border-color: currentColor;
+    color: transparent;
   }
 }
 
@@ -287,8 +332,8 @@ select.mdw-textfield__input {
   font-size: $helper-text__font-size;
   grid-row: 3;
   grid-column-start: 2;
-  grid-column-end: 5;
-  -ms-grid-column-span: 3;
+  grid-column-end: 6;
+  -ms-grid-column-span: 4;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -325,7 +370,7 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
     margin-right: auto;
   }
   grid-row: 1;
-  grid-column: 3;
+  grid-column: 5;
   width: 24px;
   height: 24px;
   display: flex;
@@ -340,8 +385,8 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
     grid-row: 2;
   }
   grid-column-start: 2;
-  grid-column-end: 5;
-  -ms-grid-column-span: 3;
+  grid-column-end: 6;
+  -ms-grid-column-span: 4;
   box-shadow: none;
   max-height: 0;
   overflow: hidden;
@@ -405,41 +450,43 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
   & ~ .mdw-textfield__border-line::before,
   &:invalid ~ .mdw-textfield__border-line::after {
     transform: scaleX(1);
-    transition-timing-function: $motion-easing-standard;
-    transition-duration: $motion-duration-desktop-default;
+  }
+  & ~ .mdw-textfield__border-line {
+    transition-timing-function: $motion-easing-acceleration;
+    transition-duration: $motion-duration-desktop-enter;
     @include allHandsets {
-      transition-duration: $motion-duration-mobile-default;
+      transition-duration: $motion-duration-mobile-enter;
     }
     @include allTablets {
-      transition-duration: $motion-duration-tablet-default;
+      transition-duration: $motion-duration-tablet-enter;
     }
   }
 }
 
 
 // Hover or Focus
-.mdw-textfield:active .mdw-textfield__input:not(:disabled),
+.mdw-textfield:not([mdw-box]):not([mdw-textfield]) {
+  &:active > .mdw-textfield__input:not(:disabled),
+  > .mdw-textfield__input:not(:disabled):focus,
+  .mdw-textfield__input:not(:disabled):hover {
+    & ~ .mdw-textfield__border-line {
+      margin-top: -$border-line__focused__height;
+    }
+  }
+}
+.mdw-textfield:active > .mdw-textfield__input:not(:disabled),
 .mdw-textfield__input:not(:disabled):focus,
 .mdw-textfield__input:not(:disabled):hover {
-  [mdw-textarea]:not([mdw-box]) > & {
-    border-width: $border-line__focused__height;
-    margin-left: $border-line__height - $border-line__focused__height;
-    margin-right: $border-line__height - $border-line__focused__height;
-    margin-bottom: $border-line__height - $border-line__focused__height;
-    margin-top: 16px;
-  }
   & ~ .mdw-textfield__border-line {
     border-width: $border-line__focused__height;
-    margin-top: -$border-line__focused__height;
   }
 }
 
+
+
   // Disabled
-.mdw-textfield__input:disabled {
-  & ~ .mdw-textfield__border-line {
-    border-style: dotted;
-    // border-color: var(--disabled-color);
-  }
+.mdw-textfield__input:disabled  ~ .mdw-textfield__border-line {
+  border-style: dotted;
 }
 
 
