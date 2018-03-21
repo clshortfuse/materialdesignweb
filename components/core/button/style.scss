@@ -124,7 +124,8 @@ $button__focus-animation-duration: 1667ms;
     color: transparent;
     opacity: 1;
     transition-property: background-color;
-    transition-duration: 200ms;
+    transition-duration: 700ms;
+    transition-delay: 100ms; // Press/Click tolerance delay
   }
   &:active::before,
   &:active:focus::before {
@@ -251,7 +252,28 @@ $button__focus-animation-duration: 1667ms;
   to { transform: scale(8.0) }
 }
 
-// Styling
+.mdw-button[mdw-icon] {
+  &::before {
+    background-color: currentColor;
+    opacity: 0;
+    transition-property: opacity;
+  }
+  &:focus::before {
+    transition-delay: 100ms;
+    transition-duration: 0s;
+  }
+  &:active::before {
+    transition-duration: 700ms;
+  }
+  & > .mdw-ripple > .mdw-ripple__inner,
+  &::after {
+    background-color: currentColor;
+  }
+  &:active > .mdw-ripple > .mdw-ripple__inner,
+  &:active::after {
+    opacity: 1;
+  }
+}
 
 .mdw-button[mdw-theme-color] {
   &::before {
@@ -267,8 +289,10 @@ $button__focus-animation-duration: 1667ms;
   &:active:focus::before {
     opacity: 0.20;
   }
-  &[mdw-icon]:focus::before,
-  &[mdw-icon]:active::before {
-    opacity: 0.26;
+  &[mdw-icon] {
+    &:focus::before,
+    &:active::before {
+      opacity: 0.26;
+    }
   }
 }

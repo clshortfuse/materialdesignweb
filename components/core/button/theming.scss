@@ -7,6 +7,8 @@ $buttonColors: (
   active-color:               ((#000, 0.54), (#fff, 0.70)),
   inactive-color:             ((#000, 0.38), (#fff, 0.50)),
   press-color:                ((#999, 0.40), (#CCC, 0.25)),
+  icon-ripple-color:          ( #000       ,  #fff       ),
+  icon-ripple-opacity:        (         0.12 ,          0.30,           0.20),
   ripple-color:               ((#000, 0.12), (#fff, 0.30), (#fff, 0.20)),
   transparent-focus-overlay:  ((#000, 0.12), (#fff, 0.12), (#fff, 0.20)),
   filled-focus-overlay:       ((#000, 0.12), (#000, 0.12), (#fff, 0.12)),
@@ -51,20 +53,28 @@ $buttonColors: (
       }
 
       // Press
-      &:active:not([mdw-theme-color])::before,
-      &:active:focus:not([mdw-theme-color])::before {
+      &:active:not([mdw-icon]):not([mdw-theme-color])::before,
+      &:active:focus:not([mdw-icon]):not([mdw-theme-color])::before {
         background-color: buttonThemeValue("press-color", $type, $theme);
       }
 
-      // Icon
-      &[mdw-icon]:focus:not(:active)[mdw-theme-color][mdw-inactive]:not([mdw-theme-fill])::before,
-      &[mdw-icon]:focus:not(:active):not([mdw-theme-color]):not([mdw-theme-fill])::before {
-        background-color: buttonThemeValue("ripple-color", $type, $theme);
-      }
       // Ripple
-      & > .mdw-ripple > .mdw-ripple__inner,
-      &::after {
-        background-color: buttonThemeValue("ripple-color", $type, $theme);
+      &:not([mdw-icon]) {
+        & > .mdw-ripple > .mdw-ripple__inner,
+        &::after {
+          background-color: buttonThemeValue("ripple-color", $type, $theme);
+        }
+      }
+
+      // Icon
+      &[mdw-icon]:not([mdw-theme-color]) {
+        &::before {
+          color: buttonThemeValue("icon-ripple-color", $type, $theme);
+        }
+        &:active::before,
+        &:focus::before {
+          opacity: buttonThemeValue("icon-ripple-opacity", $type, $theme);
+        }
       }
 
       .mdw-button__focus-ring {

@@ -1,21 +1,3 @@
-/**
- * @param {HTMLElement} element
- * @param {MouseEvent|PointerEvent} event
- * @return {void}
- */
-function updateRipplePosition(element, event) {
-  if (!event.pointerType && !event.detail) {
-    // Ripple from center
-    element.style.setProperty('left', '0');
-    element.style.setProperty('top', '0');
-    return;
-  }
-  const x = event.offsetX - (element.clientWidth / 2.0);
-  const y = event.offsetY - (element.clientHeight / 2.0);
-  element.style.setProperty('left', `${x}px`);
-  element.style.setProperty('top', `${y}px`);
-}
-
 class Button {
   /**
    * @param {Element} element
@@ -49,10 +31,11 @@ class Button {
    * @return {void}
    */
   updateRipplePosition(event) {
+    console.log(event);
     if (event.target !== this.element && event.target !== this.ripple) {
       return;
     }
-    if (!event.pointerType && !event.detail) {
+    if (this.element.hasAttribute('mdw-icon') || (!event.pointerType && !event.detail)) {
       // Ripple from center
       this.rippleInner.style.removeProperty('left');
       this.rippleInner.style.removeProperty('top');
