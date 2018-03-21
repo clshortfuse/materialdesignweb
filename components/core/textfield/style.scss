@@ -308,11 +308,16 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
 
 .mdw-textfield__dropdown-button {
   &::after {
-    content: '\25BE';
-    font-size: 16px;
+    content: "";
+    width: 0;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    border-top: 5px solid currentColor;
+    margin-top: 10px;
   }
+  margin-bottom: 8px;
   pointer-events: none;
-  align-self: flex-start;
+  align-self: flex-end;
   margin-left: auto;
   margin-right: 0;
   [dir=rtl] & {
@@ -325,7 +330,6 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
   height: 24px;
   display: flex;
   justify-content: center;
-  margin-top: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom});
 }
 
 .mdw-textfield__dropdown {
