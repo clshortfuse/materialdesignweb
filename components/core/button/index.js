@@ -31,7 +31,6 @@ class Button {
    * @return {void}
    */
   updateRipplePosition(event) {
-    console.log(event);
     if (event.target !== this.element && event.target !== this.ripple) {
       return;
     }
