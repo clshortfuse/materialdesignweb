@@ -99,6 +99,10 @@ $list__divider-height: dp(1);
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+}
+
+.mdw-list__icon,
+.mdw-list__secondary {
   @include IEOnly() {
     // Fix IE min-height flexbug
     &::after {
