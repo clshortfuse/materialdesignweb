@@ -71,6 +71,9 @@ $textfieldColors: (
       }
     }
   }
+  .mdw-textfield__input:focus:invalid ~ .mdw-textfield__error-text {
+    color: textfieldThemeValue("label-warn-color__focus", $type, $theme);
+  }
 }
 
 // Vary by contrast
@@ -171,10 +174,6 @@ $textfieldColors: (
   }
   .mdw-textfield__input:focus:invalid ~ .mdw-textfield__helper-text {
     color: transparent;
-  }
-
-  .mdw-textfield__input:focus:invalid ~ .mdw-textfield__error-text {
-    color: textfieldThemeValue("label-warn-color__focus", $type, $theme);
   }
   .mdw-textfield__dropdown {
     background-color: textfieldThemeValue("dropdown-background-color", $type, $theme);
