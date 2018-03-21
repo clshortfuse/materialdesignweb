@@ -3,48 +3,53 @@
 
 ## Flat
 ```
-button.mdw-button
+.mdw-button
 ```
 
 ## Raised
 ```
-button.mdw-button(mdw-raised)
+.mdw-button(mdw-raised)
 ```
 
 ## Always Raised
 ```
-button.mdw-button(mdw-raised="always")
+.mdw-button(mdw-raised="always")
 ```
 
 ## Colored
 ```
-button.mdw-button(mdw-theme-color="primary")
+.mdw-button(mdw-theme-color="primary")
 ```
 
 ## Colored (Custom Tone)
 ```
-button.mdw-button(mdw-theme-color="accent-A100")
+.mdw-button(mdw-theme-color="accent-A100")
 ```
 
 ## Filled
 ```
-button.mdw-button(mdw-theme-fill="primary")
+.mdw-button(mdw-theme-fill="primary")
 ```
 
 ## Filled (Custom Tone)
 ```
-button.mdw-button(mdw-theme-fill="accent-A400")
+.mdw-button(mdw-theme-fill="accent-A400")
 ```
 
 ## Filled (Custom Tone)
 ```
-button.mdw-button(disabled)
+.mdw-button(disabled)
 ```
 
 ## Icon Button
-
 ```
-button.mdw-button(mdw-icon).material-icons favorite
+.mdw-button(mdw-icon).material-icons favorite
+```
+
+## Focus Ring
+```
+.mdw-button
+  .mdw-button__focus-ring
 ```
 
 # Javascript
@@ -58,3 +63,5 @@ button.mdw-button(mdw-icon).material-icons favorite
 # Notes
 
 The click ripple aftereffect is centered when using keyboard or when using only CSS. Initializing the element with Javascript will ensure the ripple will spawn from the cursor position.
+
+Use of `HTMLElementButton` or `HTMLAnchorElement` is supported, but note that using interactive content descendents violates the HTML specifications. Therefore, some browsers may not apply interactive elements such as ripples or focus rings.
