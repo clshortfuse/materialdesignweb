@@ -7,11 +7,11 @@ include ../mixins.pug
       .mdw-toolbar__action
         .mdw-toolbar__start
           .mdw-tooltip__wrapper
-            .mdw-button(mdw-icon mdw-active).material-icons menu
+            .mdw-button(mdw-icon).material-icons menu
             .mdw-tooltip(mdw-text="Menu")
         .mdw-toolbar__end
           .mdw-tooltip__wrapper.mdw-menu__wrapper
-            a.mdw-button(mdw-icon mdw-active mdw-more-button href="#moremenu").material-icons more_vert
+            a.mdw-button(mdw-icon mdw-more-button href="#moremenu").material-icons more_vert
             .mdw-menu#moremenu(mdw-position="top right" mdw-width-units="3" mdw-theme-fill="light")
               a.mdw-menu__close(href="#")
               .mdw-menu__text Refresh
