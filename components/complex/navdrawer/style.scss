@@ -85,6 +85,7 @@
 .mdw-navdrawer__drawer {
   position: relative;
   align-self: flex-start;
+  -ms-grid-row-align: start;
   z-index: 16;
   max-height: 100%;
   height: 100%;
@@ -359,6 +360,11 @@
       display:none;
     }
     
+    .mdw-navdrawer__account {
+      // IE11 Grid does not center properly
+      display: flex;
+      justify-content: center;
+    }
     .mdw-navdrawer__avatars {
       height: 32px;
       padding-top: 20px;
@@ -435,6 +441,7 @@
       border-radius: dp(2);
       box-shadow: elevation(8);
       grid-row-end: 3;
+      -ms-grid-row-span: 1;
     }
   }
   &[mdw-clipped],
