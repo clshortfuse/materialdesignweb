@@ -98,16 +98,7 @@ label.mdw-textfield
   .mdw-textfield__border-line
 ```
 
-## Multiline with Auto-Expand (requires-JS)
-
-```
-label.mdw-textfield
-  textarea.mdw-textfield__input(placeholder=" " mdw-multiline)
-  .mdw-textfield__label Description
-  .mdw-textfield__border-line
-```
-
-## Textarea
+## Text Area
 
 ```
 label.mdw-textfield(mdw-textarea)
@@ -122,11 +113,35 @@ label.mdw-textfield(mdw-box)
   .mdw-textfield__label Title
 ```
 
-## Boxed Textarea
+## Boxed Text Area
 ```
 label.mdw-textfield(mdw-textarea mdw-box)
   textarea.mdw-textfield__input(placeholder=" " rows="5")
   .mdw-textfield__label Title
+```
+
+## Multiline with Auto-Expand (requires-JS)
+```
+label.mdw-textfield(mdw-multiline)
+  textarea.mdw-textfield__input(placeholder=" ")
+  .mdw-textfield__label Description
+  .mdw-textfield__border-line
+```
+
+## Multiline Text Area with Auto-Expand (requires-JS)
+```
+label.mdw-textfield(mdw-multiline mdw-textarea)
+  textarea.mdw-textfield__input(placeholder=" ")
+  .mdw-textfield__label Description
+  .mdw-textfield__border-line
+```
+
+## Boxed Multiline Text Area with Auto-Expand (requires-JS)
+```
+label.mdw-textfield(mdw-multiline mdw-textarea mdw-box)
+  textarea.mdw-textfield__input(placeholder=" ")
+  .mdw-textfield__label Description
+  .mdw-textfield__border-line
 ```
 
 # Javascript

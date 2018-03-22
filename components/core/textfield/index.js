@@ -40,7 +40,7 @@ class TextField {
     /** @type {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} */
     this.input = element.querySelector('.mdw-textfield__input');
     if (this.input) {
-      if (this.input.tagName.toLowerCase() === 'textarea' && this.input.hasAttribute('mdw-multiline')) {
+      if (this.input.tagName.toLowerCase() === 'textarea' && this.element.hasAttribute('mdw-multiline')) {
         this.input.addEventListener('input', () => {
           updateTextAreaSize(this.input);
         });
