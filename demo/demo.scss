@@ -150,6 +150,7 @@ body {
   height: 1px;
   left: 0px;
   z-index: 25;
+  pointer-events: none;
 }
 
 .custom-no-results-indicator {
@@ -165,6 +166,7 @@ body {
   width: 1px;
   top: 0px;
   z-index: 25;
+  pointer-events: none;
 }
 
 #verticalLineRight {
