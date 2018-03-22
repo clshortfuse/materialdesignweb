@@ -12,6 +12,7 @@ $textfieldColors: (
   box-fill-color__hover:              ((#000,            0.12), (#fff,              0.20)),
   border-line-color:                  ((#000,            0.42), (#fff,              0.70)),
   border-line-color__hover:           ((#000,            0.87), (#fff,              1.00)),
+  ripple-color:                       ((#000,            0.12), (#fff,              0.30), (#fff, 0.20)),
   dropdown-button-color:              ((#000,            0.54), (#fff,              0.70)),
   dropdown-background-color:          ((#fff,            1.00), ('background', '800', 1.00)),
   border-line-color__focus:           (('primary', 'A700', 1.00), ('primary',   'A200', 1.00)),
@@ -158,11 +159,6 @@ $textfieldColors: (
     }
 
     // Hover or Focus
-    &:hover:not(:disabled) {
-      .mdw-textfield[mdw-box] > & ~ .mdw-textfield__border-line {
-        background-color: textfieldThemeValue("box-fill-color__hover", $type, $theme);
-      }
-    }
     &:hover:not(:disabled),
     &:focus {
       & ~ .mdw-textfield__border-line {
@@ -229,8 +225,22 @@ $textfieldColors: (
       border-color: transparent;
     }
 
-    &[mdw-box] > .mdw-textfield__border-line {
+    &[mdw-box] > .mdw-textfield__border-line::before {
       background-color: textfieldThemeValue("box-fill-color", $type, $theme);
+    }
+    &[mdw-box] > {
+      .mdw-textfield__input:not(:disabled) {
+        &:hover ~ .mdw-textfield__border-line::before,
+        & ~ .mdw-textfield__border-line:hover::before {
+          background-color: textfieldThemeValue("box-fill-color__hover", $type, $theme);
+        }
+        & ~ .mdw-textfield__border-line {
+          & > .mdw-ripple > .mdw-ripple__inner,
+          &::after {
+            background-color: buttonThemeValue("ripple-color", $type, $theme);
+          }
+        }
+      }
     }
   }
 }

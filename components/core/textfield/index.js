@@ -51,6 +51,53 @@ class TextField {
       });
       updateInputEmptyState(this.input);
     }
+    this.border = element.querySelector('.mdw-textfield__border-line');
+    if (!this.border) {
+      const border = document.createElement('div');
+      border.classList.add('.mdw-textfield__border-line');
+      element.appendChild(border);
+      this.border = border;
+    }
+    const rippleElements = this.border.getElementsByClassName('mdw-ripple');
+    this.ripple = rippleElements && rippleElements[0];
+    if (!this.ripple) {
+      const ripple = document.createElement('div');
+      ripple.classList.add('mdw-ripple');
+      this.border.appendChild(ripple);
+      this.ripple = ripple;
+    }
+    const innerRippleElements = this.ripple.getElementsByClassName('mdw-ripple__inner');
+    this.rippleInner = innerRippleElements && innerRippleElements[0];
+    if (!this.rippleInner) {
+      const rippleInner = document.createElement('div');
+      rippleInner.classList.add('mdw-ripple__inner');
+      this.ripple.appendChild(rippleInner);
+      this.rippleInner = rippleInner;
+    }
+    this.element.setAttribute('mdw-ripple', '');
+    this.border.addEventListener('click', (event) => {
+      this.updateRipplePosition(event);
+    });
+  }
+
+  /**
+   * @param {MouseEvent|PointerEvent} event
+   * @return {void}
+   */
+  updateRipplePosition(event) {
+    if (event.target !== this.border && event.target !== this.ripple) {
+      return;
+    }
+    if ((!event.pointerType && !event.detail)) {
+      // Ripple from center
+      this.rippleInner.style.removeProperty('left');
+      this.rippleInner.style.removeProperty('top');
+      return;
+    }
+    const x = event.offsetX;
+    const y = event.offsetY;
+    this.rippleInner.style.setProperty('left', `${x}px`);
+    this.rippleInner.style.setProperty('top', `${y}px`);
   }
 }
 

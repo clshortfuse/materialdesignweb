@@ -1,6 +1,7 @@
 // https://material.io/guidelines/components/textfields.html
 
 
+@import '../../common/ripple.scss';
 @import '../../common/functions.scss';
 @import '../../common/variables.scss';
 @import '../../common/motion.scss';
@@ -62,21 +63,40 @@ $icon-signifier__padding-end: dp(16);
     // Out-of-spec: Makes all types top-aligned
     margin-top: 8px;
   }
+  &[mdw-box] {
+    z-index: 0;
+  }
   margin-bottom: 8px;
 }
 
 .mdw-textfield__prefix {
   grid-column: 2;
   margin-right: 4px;
+  [dir=rtl] & {
+    margin-right: 0;
+    margin-left: 4px;
+  }
   .mdw-textfield[mdw-box] > & {
     margin-left: 16px;
+  }
+  [dir=rtl] .mdw-textfield[mdw-box] > & {
+    margin-right: 16px;
+    margin-left: 4px;
   }
 }
 .mdw-textfield__suffix {
   grid-column: 4;
   margin-left: 4px;
+  [dir=rtl] & {
+    margin-left: 0;
+    margin-right: 4px;
+  }
   .mdw-textfield[mdw-box] > & {
     margin-right: 16px;
+  }
+  [dir=rtl] .mdw-textfield[mdw-box] > & {
+    margin-left: 16px;
+    margin-right: 4px;
   }
 }
 .mdw-textfield__prefix,
@@ -85,6 +105,7 @@ $icon-signifier__padding-end: dp(16);
   //margin-top: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom});
   
   // color: transparent;
+  pointer-events: none;
   will-change: color;
   transition-property: color;
   transition-timing-function: $motion-easing-standard;
@@ -243,11 +264,20 @@ textarea.mdw-textfield__input {
   padding-bottom: 0;
   margin-bottom: 8px;
   padding-right: $textarea__padding-horizontal;
+  [dir=rtl] {
+    padding-left: $textarea__padding-horizontal;
+    padding-right: 0
+  }
   grid-column-end: 5;
   -ms-grid-column-span: 2;
   .mdw-textfield[mdw-multiline] > & {
     min-height: 1em;
     padding-right: 24px;
+  }
+  [dir=rtl] .mdw-textfield[mdw-multiline] > & {
+    min-height: 1em;
+    padding-left: 24px;
+    padding-right: 0;
   }
   .mdw-textfield[mdw-textarea] > & {
     margin-bottom: 16px;
@@ -281,6 +311,22 @@ select.mdw-textfield__input {
 }
 
 .mdw-textfield__border-line {
+  // Default:
+  // self     - black line
+  // ::before - colored line
+  // ::after  - warn line
+
+  // mdw-textarea:
+  // self     - border box
+  // ::before - hidden
+  // ::after  - hidden
+
+  // mdw-box:
+  // self     - bottom border
+  // ::before - background fill
+  // ::after  - ripple
+  
+
   grid-column-start: 2;
   grid-column-end: 6;
   -ms-grid-column-span: 4;
@@ -288,7 +334,8 @@ select.mdw-textfield__input {
   grid-row-end: 4;
   -ms-grid-row-span: 1;
   position: relative;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: text;
   .mdw-textfield[mdw-box] > &,
   .mdw-textfield[mdw-textarea] > & {
     grid-row-start: 1;
@@ -305,21 +352,15 @@ select.mdw-textfield__input {
     
     width: 100%;
     border-color: currentColor;
-    &::before,
-    &::after {
-      content: none;
-    }
-  }
-  .mdw-textfield[mdw-box] > & {
-    border-radius: dp(4);
-    border-width: 0;
-    border-bottom-width: $border-line__focused__height;
-    margin-top: 0;
   }
   .mdw-textfield[mdw-textarea]:not([mdw-box]) > & {
     border-radius: dp(2);
     border-width: $border-line__height;
     border-style: solid;
+    &::before,
+    &::after {
+      content: none;
+    }
   }
   
   height: 0;
@@ -327,7 +368,6 @@ select.mdw-textfield__input {
   border-style: none;
   border-bottom-style: solid;
   box-sizing: border-box;
-  pointer-events: none;
 
   border-width: $border-line__height;
   transition-delay: 1ms;
@@ -359,6 +399,50 @@ select.mdw-textfield__input {
     transition-duration: inherit;
     border-color: currentColor;
     color: transparent;
+  }
+  
+  & > .mdw-ripple {
+    @include mdw-ripple__container;
+    display: none;
+  }
+
+  .mdw-textfield[mdw-box] > & {
+    overflow: hidden;
+    border-radius: dp(4);
+    border-width: 0;
+    border-bottom-width: $border-line__focused__height;
+    margin-top: 0;
+    &::before {
+      z-index: -1;
+      transform: none;
+      border-style: none;
+      transition-delay: 0s;
+    }
+    > .mdw-ripple {
+      display: block;
+    }
+    > .mdw-ripple > .mdw-ripple__inner,
+    &::after {
+      @include mdw-ripple__inner;
+      transition-delay: 0s;
+    }
+    > .mdw-ripple:active > .mdw-ripple__inner,
+    &:active::after {
+      @include mdw-ripple__active;
+    }
+  }
+
+  .mdw-textfield[mdw-box] > .mdw-textfield__input:focus ~ & {
+    // Disable interactions when focus is received
+    pointer-events: none;
+  }
+
+  .mdw-textfield[mdw-box][mdw-ripple] > & {
+    overflow: visible;
+    &::after {
+      // If using custom ripple, destroy ::after object
+      content: none;
+    }
   }
 }
 
@@ -488,10 +572,7 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
       }
     }
   }
-  & ~ .mdw-textfield__border-line::before,
-  &:invalid ~ .mdw-textfield__border-line::after {
-    transform: scaleX(1);
-  }
+  
   & ~ .mdw-textfield__border-line {
     transition-timing-function: $motion-easing-acceleration;
     transition-duration: $motion-duration-desktop-enter;
@@ -513,6 +594,10 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
     & ~ .mdw-textfield__border-line {
       margin-top: -$border-line__focused__height;
     }
+  }
+  & ~ .mdw-textfield__border-line::before,
+  &:invalid ~ .mdw-textfield__border-line::after {
+    transform: scaleX(1);
   }
 }
 .mdw-textfield:active > .mdw-textfield__input:not(:disabled),
