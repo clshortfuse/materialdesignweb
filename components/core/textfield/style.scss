@@ -334,7 +334,7 @@ select.mdw-textfield__input {
   grid-row-end: 4;
   -ms-grid-row-span: 1;
   position: relative;
-  pointer-events: auto;
+  pointer-events: none;
   cursor: text;
   .mdw-textfield[mdw-box] > &,
   .mdw-textfield[mdw-textarea] > & {
@@ -412,6 +412,8 @@ select.mdw-textfield__input {
     border-width: 0;
     border-bottom-width: $border-line__focused__height;
     margin-top: 0;
+    pointer-events: auto;
+    cursor: pointer;
     &::before {
       z-index: -1;
       transform: none;
@@ -435,6 +437,7 @@ select.mdw-textfield__input {
   .mdw-textfield[mdw-box] > .mdw-textfield__input:focus ~ & {
     // Disable interactions when focus is received
     pointer-events: none;
+    cursor: auto;
   }
 
   .mdw-textfield[mdw-box][mdw-ripple] > & {
@@ -584,6 +587,13 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
     }
   }
 }
+.mdw-textfield:active > .mdw-textfield__input:not(:disabled),
+.mdw-textfield > .mdw-textfield__input:not(:disabled):focus {
+  & ~ .mdw-textfield__border-line::before,
+  &:invalid ~ .mdw-textfield__border-line::after {
+    transform: scaleX(1);
+  }
+}
 
 
 // Hover or Focus
@@ -594,10 +604,6 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
     & ~ .mdw-textfield__border-line {
       margin-top: -$border-line__focused__height;
     }
-  }
-  & ~ .mdw-textfield__border-line::before,
-  &:invalid ~ .mdw-textfield__border-line::after {
-    transform: scaleX(1);
   }
 }
 .mdw-textfield:active > .mdw-textfield__input:not(:disabled),
