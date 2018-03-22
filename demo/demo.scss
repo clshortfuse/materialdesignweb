@@ -1,6 +1,12 @@
 @import "theming.min.css";
 @import "theming.ie11.min.css";
 
+
+// Material Icon incorrectly changes RTL direction
+.material-icons {
+  direction: inherit;
+}
+
 $components: (
   'bottomnav',
   'button',
