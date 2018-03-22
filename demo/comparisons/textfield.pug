@@ -4,14 +4,15 @@ include ../mixins.pug
   .render
     +androidstatusbar('primary-700 dark')
     +toolbar('primary-500 dark', ['arrow_back'], ['more_vert']) Application
-    .content(mdw-theme-fill="background-50 light" style="padding:6px 16px")
+    .content(mdw-theme-fill="background-50 light" style="padding:0px 16px")
       label.mdw-textfield(style="font-size: 2.125rem")
         input.mdw-textfield__input(value="Vintage 50" placeholder=" ")
         .mdw-textfield__label Title
         .mdw-textfield__border-line
       .horizontal-controls
-        label.mdw-textfield(style="margin-right:16px;width:88px")
+        label.mdw-textfield(style="width:88px")
           input.mdw-textfield__input(type="text" placeholder=" ")
+          .mdw-textfield__prefix $
           .mdw-textfield__label Price
           .mdw-textfield__border-line
         label.mdw-textfield.flex-1
@@ -30,14 +31,8 @@ include ../mixins.pug
         .mdw-textfield__helper-text At least 8 characters
         .mdw-textfield__error-text Error: Password of at least 8 characters required.
       label.mdw-textfield
-        input.mdw-textfield__input(type="text" placeholder="required" required)
-        .mdw-textfield__label Prefixed *
-        .mdw-textfield__prefix $
-        .mdw-textfield__border-line
-        .mdw-textfield__error-text Error: Required.
-      label.mdw-textfield
         input.mdw-textfield__input(type="text" placeholder=" " disabled value="filled")
-        .mdw-textfield__label Disabled Filled
+        .mdw-textfield__label Disabled Filled with Suffix
         .mdw-textfield__suffix lbs
         .mdw-textfield__border-line
         .mdw-textfield__helper-text Disabled Helper Text
@@ -62,7 +57,7 @@ include ../mixins.pug
         .mdw-textfield__label City
         .mdw-textfield__border-line
       .horizontal-controls
-        label.mdw-textfield(mdw-theme-color="accent" style="margin-right:16px;width:88px")
+        label.mdw-textfield(mdw-theme-color="accent" style="width:88px")
           input.mdw-textfield__input(type="text" placeholder=" ")
           .mdw-textfield__label State
           .mdw-textfield__border-line
@@ -83,20 +78,21 @@ include ../mixins.pug
     +androidstatusbar('accent-800')
     +toolbar('accent-A700 dark', ['arrow_back'], ['search'])
     form.content(mdw-theme-fill="background-50 light" style="padding:9px 16px")
-      div.display-flex(style="margin-bottom:-28px;margin-top:-24px;" flex-justify-content="center")
+      div.display-flex(style="margin-bottom:-32px;margin-top:-24px;" flex-justify-content="center")
         i.material-icons(style="color:#ccc;font-size:256px") person
-      label.mdw-textfield(mdw-theme-color="accent")
-        .mdw-textfield__icon.material-icons person
-        input.mdw-textfield__input(type="text" placeholder=" " value="Ali Connors")
-        .mdw-textfield__label Name
-        .mdw-textfield__border-line
-      .horizontal-controls
-        label.mdw-textfield(mdw-theme-color="accent" style="margin-right:8px")
-          .mdw-textfield__icon.material-icons phone
-          input.mdw-textfield__input(type="phone" placeholder=" " value="65")
+      .horizontal-controls(style="margin:4px 0")
+        label.mdw-textfield.flex-1(mdw-theme-color="accent")
+          .mdw-textfield__icon.material-icons person
+          input.mdw-textfield__input(type="text" placeholder=" " value="Ali Connors")
           .mdw-textfield__label Name
           .mdw-textfield__border-line
-        label.mdw-textfield(mdw-theme-color="accent" style="margin-left:8px;width:150px;")
+      .horizontal-controls(style="margin:4px 0")
+        label.mdw-textfield(mdw-theme-color="accent")
+          .mdw-textfield__icon.material-icons phone
+          input.mdw-textfield__input(type="phone" placeholder=" " value="65")
+          .mdw-textfield__label Phone number
+          .mdw-textfield__border-line
+        label.mdw-textfield(mdw-theme-color="accent" style="width:150px;")
           select.mdw-textfield__input(type="phone")
             option(value="") Unknown
             option(value="Mobile") Mobile
@@ -105,13 +101,13 @@ include ../mixins.pug
           .mdw-textfield__dropdown-button
           .mdw-textfield__label Phone Type
           .mdw-textfield__border-line
-      .horizontal-controls
-        label.mdw-textfield(mdw-theme-color="accent" style="margin-right:8px")
+      .horizontal-controls(style="margin:4px 0")
+        label.mdw-textfield(mdw-theme-color="accent")
           .mdw-textfield__icon.material-icons email
           input.mdw-textfield__input(type="email" placeholder=" ")
           .mdw-textfield__label Email
           .mdw-textfield__border-line
-        label.mdw-textfield(mdw-theme-color="accent" style="margin-left:8px;width:150px;")
+        label.mdw-textfield(mdw-theme-color="accent" style="width:150px;")
           select.mdw-textfield__input(type="phone")
             option(value="") Unknown
             option(value="") Unknown
@@ -120,13 +116,13 @@ include ../mixins.pug
           .mdw-textfield__dropdown-button
           .mdw-textfield__label Email type
           .mdw-textfield__border-line
-      .horizontal-controls
-        label.mdw-textfield(mdw-theme-color="accent" style="margin-right:8px")
+      .horizontal-controls(style="margin:4px 0")
+        label.mdw-textfield(mdw-theme-color="accent")
           .mdw-textfield__icon.material-icons place
           input.mdw-textfield__input(type="address" placeholder=" ")
           .mdw-textfield__label Address
           .mdw-textfield__border-line
-        label.mdw-textfield(mdw-theme-color="accent" style="margin-left:8px;width:150px;")
+        label.mdw-textfield(mdw-theme-color="accent" style="width:150px;")
           select.mdw-textfield__input(type="phone")
             option(value="Home") Home
             option(value="Work") Work
@@ -139,16 +135,17 @@ include ../mixins.pug
   .render.mdw-theme-textfield
     +androidstatusbar('primary-A700')
     +toolbar('primary-A200 dark', ['arrow_back'], ['done'])
-    .content(mdw-theme-fill="background-50 light" style="padding:9px 16px")
+    .content(mdw-theme-fill="background-50 light" style="padding:24px 16px")
       label.mdw-textfield(mdw-box)
         input.mdw-textfield__input(value="Vintage 50's Dress" placeholder=" ")
         .mdw-textfield__label Title
         .mdw-textfield__border-line
         .mdw-textfield__helper-text Helper
       .horizontal-controls
-        label.mdw-textfield(mdw-box style="margin-right:16px;width:88px")
+        label.mdw-textfield(mdw-box style="width:88px")
           input.mdw-textfield__input(value="10.00" placeholder=" ")
           .mdw-textfield__label Price
+          .mdw-textfield__prefix $
           .mdw-textfield__border-line
           .mdw-textfield__helper-text Helper
         label.mdw-textfield.flex-1(mdw-box)
@@ -222,7 +219,7 @@ include ../mixins.pug
         .mdw-textfield__border-line
         .mdw-textfield__helper-text Helper
       .horizontal-controls
-        label.mdw-textfield(style="margin-right:16px;width:88px")
+        label.mdw-textfield(style="width:88px")
           input.mdw-textfield__input(value="10.00" placeholder=" ")
           .mdw-textfield__prefix $
           .mdw-textfield__label Price
@@ -239,12 +236,12 @@ include ../mixins.pug
         .mdw-textfield__label Description
         .mdw-textfield__border-line
       .horizontal-controls
-        label.mdw-textfield(mdw-theme-color="accent" style="margin-right:8px")
+        label.mdw-textfield(mdw-theme-color="accent")
           .mdw-textfield__icon.material-icons phone
           input.mdw-textfield__input(type="phone" placeholder=" " value="65")
           .mdw-textfield__label Name
           .mdw-textfield__border-line
-        label.mdw-textfield(mdw-theme-color="accent" style="margin-left:8px;width:150px;")
+        label.mdw-textfield(mdw-theme-color="accent" style="width:150px;")
           select.mdw-textfield__input(type="phone")
             option(value="") Unknown
             option(value="Mobile") Mobile

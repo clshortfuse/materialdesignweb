@@ -9,6 +9,7 @@ $textfieldColors: (
   textarea-disabled-border-color:     ((#000,            0.10), (#fff,              0.30)),
   textarea-disabled-background-color: ((#000,            0.06), (#fff,              0.10)),
   box-fill-color:                     ((#000,            0.06), (#fff,              0.10)),
+  box-fill-color__hover:              ((#000,            0.12), (#fff,              0.20)),
   border-line-color:                  ((#000,            0.42), (#fff,              0.70)),
   border-line-color__hover:           ((#000,            0.87), (#fff,              1.00)),
   dropdown-button-color:              ((#000,            0.54), (#fff,              0.70)),
@@ -157,6 +158,11 @@ $textfieldColors: (
     }
 
     // Hover or Focus
+    &:hover:not(:disabled) {
+      .mdw-textfield[mdw-box] > & ~ .mdw-textfield__border-line {
+        background-color: textfieldThemeValue("box-fill-color__hover", $type, $theme);
+      }
+    }
     &:hover:not(:disabled),
     &:focus {
       & ~ .mdw-textfield__border-line {
