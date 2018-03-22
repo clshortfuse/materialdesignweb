@@ -15,6 +15,9 @@ $textfieldColors: (
   ripple-color:                       ((#000,            0.12), (#fff,              0.30), (#fff, 0.20)),
   dropdown-button-color:              ((#000,            0.54), (#fff,              0.70)),
   dropdown-background-color:          ((#fff,            1.00), ('background', '800', 1.00)),
+  selection-color:                    (('primary', 'A200', 0.50), ('primary',   'A700', 0.50)),
+  selection-accent-color:             (('accent',  'A200', 0.50), ('accent',    'A700', 0.50)),
+  selection-warn-color:               (('warn',    'A200', 0.50), ('warn',      'A700', 0.50)),
   border-line-color__focus:           (('primary', 'A700', 1.00), ('primary',   'A200', 1.00)),
   border-line-accent-color__focus:    (('accent',  'A700', 1.00), ('accent',    'A200', 1.00)),
   border-line-warn-color__focus:      (('warn',    'A400', 1.00), ('warn',      'A400', 1.00)),
@@ -38,6 +41,10 @@ $textfieldColors: (
     &:active > .mdw-textfield__input:not(:disabled),
     > .mdw-textfield__input:not(:disabled):focus {
       caret-color: textfieldThemeValue("label-color__focus", $type, $theme);
+      &::selection {
+        background-color: textfieldThemeValue("selection-color", $type, $theme);
+        color: inherit;
+      }
       & ~ .mdw-textfield__label {
         color: textfieldThemeValue("label-color__focus", $type, $theme);
       }
@@ -47,6 +54,10 @@ $textfieldColors: (
 
       &:invalid {
         caret-color: textfieldThemeValue("label-warn-color__focus", $type, $theme);
+        &::selection {
+          background-color: textfieldThemeValue("selection-warn-color", $type, $theme);
+          color: inherit;
+        }
         & ~ .mdw-textfield__border-line::after {
           border-color: textfieldThemeValue("border-line-warn-color__focus", $type, $theme);
         }
@@ -60,6 +71,10 @@ $textfieldColors: (
       > .mdw-textfield__input:not(:disabled):focus {
         &:not(:invalid) {
           caret-color: textfieldThemeValue("label-accent-color__focus", $type, $theme);
+          &::selection {
+            background-color: textfieldThemeValue("selection-accent-color", $type, $theme);
+            color: inherit;
+          }
           & ~ .mdw-textfield__label {
             color: textfieldThemeValue("label-accent-color__focus", $type, $theme);
           }
@@ -230,7 +245,6 @@ $textfieldColors: (
     }
     &[mdw-box] > {
       .mdw-textfield__input:not(:disabled) {
-        &:hover ~ .mdw-textfield__border-line::before,
         & ~ .mdw-textfield__border-line:hover::before {
           background-color: textfieldThemeValue("box-fill-color__hover", $type, $theme);
         }
