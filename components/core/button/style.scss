@@ -22,7 +22,7 @@ $button__focus-animation-duration: 1667ms;
 
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  &:disabled {
+  &[disabled] {
     cursor: not-allowed;
   }
 
@@ -100,10 +100,10 @@ $button__focus-animation-duration: 1667ms;
   // ::before - focus overlay
   // ::after  - ripple
 
-  &:disabled > .mdw-ripple,
-  &:disabled > .mdw-button__focus-ring,
-  &:disabled::before,
-  &:disabled::after {
+  &[disabled] > .mdw-ripple,
+  &[disabled] > .mdw-button__focus-ring,
+  &[disabled]::before,
+  &[disabled]::after {
     content: none;
     display: none;
   }
@@ -226,7 +226,7 @@ $button__focus-animation-duration: 1667ms;
 }
 
 // Raised
-.mdw-button[mdw-raised]:not(:disabled) {
+.mdw-button[mdw-raised]:not([disabled]) {
   box-shadow: elevation(2);
   &:active,
   &:active:focus {
