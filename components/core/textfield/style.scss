@@ -64,22 +64,6 @@ $icon-signifier__padding-end: dp(16);
   margin-bottom: 8px;
 }
 
-.mdw-textfield__prefix {
-  grid-column: 3;
-  margin-right: 4px;
-  [dir=rtl] & {
-    margin-right: 0;
-    margin-left: 4px;
-  }
-}
-.mdw-textfield__suffix {
-  grid-column: 6;
-  margin-left: 4px;
-  [dir=rtl] & {
-    margin-left: 0;
-    margin-right: 4px;
-  }
-}
 .mdw-textfield__prefix,
 .mdw-textfield__suffix {
   grid-row: 2;
@@ -98,6 +82,22 @@ $icon-signifier__padding-end: dp(16);
     transition-duration: $motion-duration-tablet-default;
   }
 }
+.mdw-textfield__prefix {
+  grid-column: 3;
+  margin-right: 4px;
+  [dir=rtl] & {
+    margin-right: 0;
+    margin-left: 4px;
+  }
+}
+.mdw-textfield__suffix {
+  grid-column: 6;
+  margin-left: 4px;
+  [dir=rtl] & {
+    margin-left: 0;
+    margin-right: 4px;
+  }
+}
 
 .mdw-textfield__label {
   // Default state is floating
@@ -107,15 +107,12 @@ $icon-signifier__padding-end: dp(16);
   right: 0;
   @include IEOnly() {
     // IE11 positions label based on container, not grid cell
-    html[dir=rtl] .mdw-textfield[mdw-box] > .mdw-textfield__icon ~ &,
-    html[dir=rtl] .mdw-textfield[mdw-textarea] > .mdw-textfield__icon ~ & {
-      left: 0;
-      right: dp(16 + 44);
+    .mdw-textfield__icon ~ & {
+      left: dp(44);
     }
-    html[dir=rtl] .mdw-textfield[mdw-box] > &,
-    html[dir=rtl] .mdw-textfield[mdw-textarea] > & {
-      left: 0;
-      right: dp(16);
+    .mdw-textfield[mdw-box] > &,
+    .mdw-textfield[mdw-textarea] > & {
+      left: dp(16);
     }
     html[dir=rtl] .mdw-textfield__icon ~ & {
       left: 0;
@@ -125,13 +122,15 @@ $icon-signifier__padding-end: dp(16);
     .mdw-textfield[mdw-textarea] > .mdw-textfield__icon ~ & {
       left: dp(16 + 44);
     }
-    .mdw-textfield[mdw-box] > &,
-    .mdw-textfield[mdw-textarea] > & {
-      left: dp(16);
+    html[dir=rtl] .mdw-textfield[mdw-box] > &,
+    html[dir=rtl] .mdw-textfield[mdw-textarea] > & {
+      left: 0;
+      right: dp(16);
     }
-    
-    .mdw-textfield__icon ~ & {
-      left: dp(44);
+    html[dir=rtl] .mdw-textfield[mdw-box] > .mdw-textfield__icon ~ &,
+    html[dir=rtl] .mdw-textfield[mdw-textarea] > .mdw-textfield__icon ~ & {
+      left: 0;
+      right: dp(16 + 44);
     }
   }
 
@@ -212,15 +211,10 @@ $icon-signifier__padding-end: dp(16);
 
   min-width: 0; // Firefox CSS Grid fix
 
-  .mdw-textfield[mdw-solo] > & {
-    margin-top: 0;
-    padding-bottom: 0;
-  }
-
   &:disabled {
     cursor: not-allowed;
   }
-
+  
   &::placeholder {
     will-change: color;
     transition-property: color;
@@ -235,27 +229,31 @@ $icon-signifier__padding-end: dp(16);
     }
   }
 
-  &:placeholder-shown ~ .mdw-textfield__label {
-    transform: translateY($label__font-size) translateY($label__padding-bottom);
-    font-size: inherit;
-    .mdw-textfield[mdw-textarea] > & {
-      // Eyeballed due to lack of specs
-      transform: translateY($label__font-size) translateY(-4px);
-    }
-    .mdw-textfield[mdw-box]:not([mdw-textarea]) > & {
-      transform: translateY($label__padding-top__boxed__idle - $label__padding-top__boxed);
-    }
-  }
   &[mdw-value-empty] ~ .mdw-textfield__label {
     transform: translateY($label__font-size) translateY($label__padding-bottom);
     font-size: inherit;
     .mdw-textfield[mdw-textarea] > & {
-      // Eyeballed due to lack of specs
       transform: translateY($label__font-size) translateY(-4px);
     }
-    .mdw-textfield[mdw-box]:not([mdw-textarea]) > & {
+    .mdw-textfield[mdw-box] > & {
       transform: translateY($label__font-size);
     }
+  }
+  &:placeholder-shown ~ .mdw-textfield__label {
+    transform: translateY($label__font-size) translateY($label__padding-bottom);
+    font-size: inherit;
+    .mdw-textfield[mdw-textarea] > & {
+      transform: translateY($label__font-size) translateY(-4px);
+    }
+    .mdw-textfield[mdw-box] > & {
+      transform: translateY($label__padding-top__boxed__idle - $label__padding-top__boxed);
+    }
+  }
+  
+
+  .mdw-textfield[mdw-solo] > & {
+    margin-top: 0;
+    padding-bottom: 0;
   }
 }
 
@@ -302,7 +300,7 @@ select.mdw-textfield__input {
   }
   grid-column-end: 6;
   -ms-grid-column-span: 2;
-  &:-moz-focusring * {
+  &:-moz-focusring {
     color: black;
     text-shadow: none;
   }
@@ -324,6 +322,26 @@ select.mdw-textfield__input {
   // ::before - background fill
   // ::after  - ripple
   
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: scaleX(0);
+    border-style: inherit;
+    border-radius: inherit;
+    border-bottom-style: inherit;
+    border-width: inherit;
+    will-change: transform;
+    transition-property: transform;
+    transition-delay: inherit;
+    transition-duration: inherit;
+    border-color: currentColor;
+    color: transparent;
+  }
 
   grid-column-start: 2;
   grid-column-end: 8;
@@ -378,26 +396,7 @@ select.mdw-textfield__input {
     transition-duration: $motion-duration-tablet-leave;
   }
 
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transform: scaleX(0);
-    border-style: inherit;
-    border-radius: inherit;
-    border-bottom-style: inherit;
-    border-width: inherit;
-    will-change: transform;
-    transition-property: transform;
-    transition-delay: inherit;
-    transition-duration: inherit;
-    border-color: currentColor;
-    color: transparent;
-  }
+  
   
   & > .mdw-ripple {
     @include mdw-ripple__container;
