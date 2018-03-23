@@ -580,25 +580,29 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
     }
   }
 }
-.mdw-textfield:active > .mdw-textfield__input:not(:disabled),
-.mdw-textfield > .mdw-textfield__input:not(:disabled):focus {
-  & ~ .mdw-textfield__border-line::before,
-  &:invalid ~ .mdw-textfield__border-line::after {
-    transform: scaleX(1);
-  }
-}
 
-
-// Hover or Focus
-.mdw-textfield:not([mdw-box]):not([mdw-textfield]) {
+.mdw-textfield:not([mdw-box]):not([mdw-textarea]) {
+  // Focus
   &:active > .mdw-textfield__input:not(:disabled),
-  > .mdw-textfield__input:not(:disabled):focus,
+  > .mdw-textfield__input:not(:disabled):focus {
+    & ~ .mdw-textfield__border-line::before,
+    &:invalid ~ .mdw-textfield__border-line::after {
+      transform: scaleX(1);
+    }
+    & ~ .mdw-textfield__border-line {
+      margin-top: -$border-line__focused__height;
+    }
+  }
+
+  // Hover
   .mdw-textfield__input:not(:disabled):hover {
     & ~ .mdw-textfield__border-line {
       margin-top: -$border-line__focused__height;
     }
   }
 }
+
+//Hover and focus
 .mdw-textfield:active > .mdw-textfield__input:not(:disabled),
 .mdw-textfield__input:not(:disabled):focus,
 .mdw-textfield__input:not(:disabled):hover {
