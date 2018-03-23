@@ -148,12 +148,8 @@
   .mdw-bottomnav__action {
     color: inherit;
     & > .mdw-ripple > .mdw-ripple__inner,
-    &::after {
-      background-color: currentColor;
-    }
-    & > .mdw-ripple:active > .mdw-ripple__inner,
-    &:active::after {
-      opacity: 0.26;
+    &:after {
+      color: inherit;
     }
   }
 }

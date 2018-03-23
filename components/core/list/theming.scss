@@ -7,7 +7,8 @@ $listColors: (
   divider-color:        ((#000, 0.12), (#fff, 0.12)),
   press-color:          ((#999, 0.40), (#CCC, 0.25)),
   selected-color:       ((#999, 0.40), (#CCC, 0.25)),
-  ripple-color:         ((#000, 0.12), (#fff, 0.30), (#fff, 0.20))
+  ripple-color:         ( #000       ,  #fff       ),
+  ripple-opacity:       (         0.12 ,          0.30,           0.20),
 );
 
 @function listThemeValue($key, $type) {
@@ -65,8 +66,14 @@ $listColors: (
       }
     }
     & > .mdw-ripple > .mdw-ripple__inner,
-    &::after {
-      color: listThemeValue("ripple-color", $type);
+    &:after {
+      color: buttonThemeValue("ripple-color", $type, $theme);
+    }
+    &:active {
+      & > .mdw-ripple > .mdw-ripple__inner,
+      &:after {
+        opacity: buttonThemeValue("ripple-opacity", $type, $theme);
+      }
     }
   }
 }

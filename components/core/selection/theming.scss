@@ -4,8 +4,8 @@
 $selectionColors: (
   text-color:            ((#000, 0.87), (#fff, 1.00)),
   color:                 ((#000, 0.54), (#fff, 0.70)),
-  ripple-color:          (black, white),
-  ripple-opacity:        (0.12, 0.30, 0.20),
+  ripple-color:          ( #000       ,  #fff       ),
+  ripple-opacity:        (         0.12 ,          0.30  , 0.20),
 );
 
 @function selectionThemeValue($key, $type, $theme) {

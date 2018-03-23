@@ -2,10 +2,10 @@
 @import '../../common/mixins.scss';
 
 $tabColors: (
-  active-color:      (inherit,        (#fff, 1.0)),
+  active-color:      (inherit,        (#fff, 1.00)),
   inactive-color:    ((#000, 0.54), (#fff, 0.50)),
-  ripple-color:      (currentColor,   (#fff, 1.0)),
-  indicator-color:   ((#000, 1.00), (#fff, 1.0))
+  indicator-color:   ((#000, 1.00), (#fff, 1.00)),
+  ripple-opacity:    (         0.26 ,          0.30,)
 );
 
 @function tabThemeValue($key, $type, $theme) {
@@ -35,8 +35,14 @@ $tabColors: (
   }
   .mdw-tab__action {
     & > .mdw-ripple > .mdw-ripple__inner,
-    &::after {
-      background-color: tabThemeValue("ripple-color", $type, $theme);
+    &:after {
+      color: tabThemeValue("active-color", $type, $theme);
+    }
+    &:active {
+      & > .mdw-ripple > .mdw-ripple__inner,
+      &:after {
+        opacity: buttonThemeValue("ripple-opacity", $type, $theme);
+      }
     }
   }
 }

@@ -9,8 +9,10 @@
 $button__external-padding: dp(8);
 $button__minimum-click-target: dp(48);
 $button__background-color-pressed: rgba(#999, 0.40);
-$button__focus-animation-delay: 2000ms;
+$button__focus-animation-delay: 1667ms;
 $button__focus-animation-duration: 1667ms;
+$button__long-press-timeout: 500ms;
+$button__click-timeout: 100ms;
 
 .mdw-button {
   position: relative;
@@ -28,8 +30,14 @@ $button__focus-animation-duration: 1667ms;
 
   overflow: hidden;
   transition-property: box-shadow, background-color;
-  transition-duration: 200ms;
-  transition-timing-function: $motion-easing-sharp;
+  transition-duration: $button__click-timeout, $button__long-press-timeout;
+  transition-delay: 0s;
+  transition-timing-function: $motion-easing-acceleration;
+  &:active {
+    transition-duration: $button__click-timeout, $button__long-press-timeout - $button__click-timeout;
+    transition-delay: 0s, $button__click-timeout;
+    transition-timing-function: $motion-easing-deceleration;
+  }
   z-index: 0;
 
   // Override browser button defaults
@@ -124,15 +132,14 @@ $button__focus-animation-duration: 1667ms;
     user-select: none;
     pointer-events: none;
     background-color: currentColor;
-    color: transparent;
-    opacity: 1;
-    transition-property: background-color;
-    transition-duration: 700ms;
-    transition-delay: 100ms; // Press/Click tolerance delay
+    color: black;
+    opacity: 0;
+    transition-property: opacity, transform;
+    transform: scale(1);
+    transition-duration: 200ms;
   }
-  &:active::before,
-  &:active:focus::before {
-    // opacity 12?
+  &:focus:not(:active)::before {
+    opacity: 0.12;
   }
 }
 
@@ -157,7 +164,6 @@ $button__focus-animation-duration: 1667ms;
 }
 
 .mdw-button__focus-ring {
-  color: transparent;
   overflow: hidden;
   z-index: -1;
   &,
@@ -177,7 +183,7 @@ $button__focus-animation-duration: 1667ms;
     // Focus circle: inner-radius - 10% - fully transparent
     // Scale up by 10.0 to become 100% when not focused
     background-position: center center;
-    transform: scale(10.5); // 10.0 has subpixel rendering issues
+    transform: scale(10); // 10.0 has subpixel rendering issues
     transition-property: transform;
     transition-duration: 200ms;
     transition-delay: 5ms;
@@ -186,7 +192,8 @@ $button__focus-animation-duration: 1667ms;
       circle at center,
       transparent 10%,
       currentColor 10.0001%);
-    color: inherit;
+    color: black;
+    opacity: 0;
     .mdw-button:focus:not(:active) > & {
       transform: scale(7.5);
       transition-delay: $button__focus-animation-delay;
@@ -197,6 +204,7 @@ $button__focus-animation-duration: 1667ms;
       animation-iteration-count: infinite;
       animation-direction: alternate;
       animation-name: focus-pulse;
+      opacity: 0.12;
     }
   }
 }
@@ -223,15 +231,20 @@ $button__focus-animation-duration: 1667ms;
   &:active::after {
     @include mdw-ripple__active;
   }
+
+  &[mdw-icon] {
+    & > .mdw-ripple:not(:active) > .mdw-ripple__inner,
+    &:not(:active)::after {
+      transform: translateX(-50%) translateY(-50%) scale(1.5);
+    }
+  }
 }
 
 // Raised
 .mdw-button[mdw-raised]:not([disabled]) {
   box-shadow: elevation(2);
-  &:active,
-  &:active:focus {
+  &:active {
     box-shadow: elevation(8);
-    transition-duration: 0s, 200ms;
   }
   @media (any-pointer: fine) {
     &:not([mdw-raised="always"]) {
@@ -240,11 +253,8 @@ $button__focus-animation-duration: 1667ms;
         box-shadow: elevation(2);
       }
       &:active,
-      &:active:focus,
-      &:hover:active,
-      &:hover:active:focus {
+      &:hover:active {
         box-shadow: elevation(8);
-        transition-duration: 0s, 200ms;
       }
     }
   }
@@ -255,48 +265,19 @@ $button__focus-animation-duration: 1667ms;
   to { transform: scale(8.0) }
 }
 
-.mdw-button[mdw-icon] {
-  &::before {
-    background-color: currentColor;
-    opacity: 0;
-    transition-property: opacity;
-    transition-duration: 0s;
-  }
-  &:focus::before {
-    transition-delay: 100ms;
-    transition-duration: 0s;
-  }
-  &:active::before {
-    transition-duration: 700ms;
-  }
-  & > .mdw-ripple > .mdw-ripple__inner,
-  &::after {
-    background-color: currentColor;
-  }
-}
-
 .mdw-button[mdw-theme-color] {
   &::before {
-    background-color: currentColor;
     color: inherit;
-    opacity: 0;
-    transition-property: opacity;
   }
-  &:focus:not(:active)::before {
-    opacity: 0.12;
+  &:active::before {
+    // Colored buttons have undocumented press color
+    opacity: 0.26;
+    transition-delay: $button__click-timeout;
+    transition-duration: $button__long-press-timeout - $button__click-timeout;
+    transition-timing-function: $motion-easing-deceleration;
   }
-  &:active::before,
-  &:active:focus::before {
-    opacity: 0.20;
-  }
-  &[mdw-icon] {
-    &:focus::before,
-    &:active::before {
-      opacity: 0.26;
-    }
-    &:active > .mdw-ripple > .mdw-ripple__inner,
-    &:active::after {
-      opacity: 0.78; // 3x for visibility;
-    }
+  &:focus:not(:active) > .mdw-button__focus-ring::after {
+    color: inherit;
+    opacity: 0.26;
   }
 }

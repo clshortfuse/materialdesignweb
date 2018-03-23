@@ -222,14 +222,6 @@ $list__divider-height: dp(1);
   overflow: hidden;
 }
 
-.mdw-list__row[mdw-ripple] {
-  overflow-y: visible;
-  &::after {
-    // If using custom ripple, destroy ::after object
-    content: none;
-  }
-}
-
 .mdw-list__row {
   // Long press color
   &::before {
@@ -247,31 +239,25 @@ $list__divider-height: dp(1);
     pointer-events: none;
   }
 
+  > .mdw-ripple {
+    @include mdw-ripple__container;
+  }
+
   & > .mdw-ripple > .mdw-ripple__inner,
   &::after {
-    content: '';
-    display: table; // Fixes Safari flexbox bug
-    background-color: currentColor;
-    border-radius: 50%;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    z-index: -1;
-    user-select: none;
-    pointer-events: none;
-    height: 0;
-    width: 100%;
-    padding-top: 100%;
-    transform: translateX(-50%) translateY(-50%) scale(1);
-    transition-property: transform, opacity;
-    transition-duration: 700ms;
-    opacity: 0;
+    @include mdw-ripple__inner;
   }
 
   & > .mdw-ripple:active > .mdw-ripple__inner,
   &:active::after {
-    transform: translateX(-50%) translateY(-50%) scale(0);
-    transition-duration: 0s;
-    opacity: 1;
+    @include mdw-ripple__active;
+  }
+
+  &[mdw-ripple] {
+    overflow-y: visible;
+    &::after {
+      // If using custom ripple, destroy ::after object
+      content: none;
+    }
   }
 }

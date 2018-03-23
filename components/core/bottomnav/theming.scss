@@ -4,7 +4,8 @@
 $bottomnavColors: (
   active-color:      (inherit,        (#fff, 1.0)),
   inactive-color:    ((#000, 0.54), (#fff, 0.50)),
-  ripple-color:      ((#000, 0.12), (#fff, 0.30), (#fff, 0.20)),
+  ripple-color:      ( #000       ,  #fff       ),
+  ripple-opacity:    (         0.12 ,          0.30,           0.20),
 );
 
 @function bottomnavThemeValue($key, $type, $theme) {
@@ -33,8 +34,14 @@ $bottomnavColors: (
 
   .mdw-bottomnav__action {
     & > .mdw-ripple > .mdw-ripple__inner,
-    &::after {
-      background-color: bottomnavThemeValue("ripple-color", $type, $theme);
+    &:after {
+      color: buttonThemeValue("ripple-color", $type, $theme);
+    }
+    &:active {
+      & > .mdw-ripple > .mdw-ripple__inner,
+      &:after {
+        opacity: buttonThemeValue("ripple-opacity", $type, $theme);
+      }
     }
   }
 }
