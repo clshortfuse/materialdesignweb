@@ -502,11 +502,13 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
 .mdw-textfield__dropdown {
   position: absolute;
   grid-row: 4;
+  margin-top: 8px;
+  margin-bottom: 8px;
   .mdw-textfield[mdw-box] > & {
-    margin-top: 8px;
+    grid-row: 3;
   }
-  grid-column-start: 3;
-  grid-column-end: 7;
+  grid-column-start: 2;
+  grid-column-end: 8;
   -ms-grid-column-span: 4;
   box-shadow: none;
   max-height: 0;
