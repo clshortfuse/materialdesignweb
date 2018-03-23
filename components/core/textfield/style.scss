@@ -31,10 +31,10 @@ $icon-signifier__width: dp(24);
 $icon-signifier__padding-end: dp(16);
 
 // Grid Layout
-//     1   |  2  |   3    |   4   |   5    |        6        |  7
+//     1   |  2  |   3    |   4   |        5        |    6   |  7
 //   -------------------------------------------------------------
 // 1:      | Gap | Label------------------------------------ | Gap
-// 2: Icon | Gap | Prefix | Input | Suffix | Dropdown Button | Gap
+// 2: Icon | Gap | Prefix | Input | Dropdown Button | Suffix | Gap
 // 3:      | Border-----------------------------------------------
 // 4:      | Gap | Helper/Error/Dropdown-------------------- | Gap
 
@@ -73,7 +73,7 @@ $icon-signifier__padding-end: dp(16);
   }
 }
 .mdw-textfield__suffix {
-  grid-column: 5;
+  grid-column: 6;
   margin-left: 4px;
   [dir=rtl] & {
     margin-left: 0;
@@ -299,7 +299,8 @@ select.mdw-textfield__input {
     // Remove IE11 dropdown button
     display: none;
   }
-
+  grid-column-end: 6;
+  -ms-grid-column-span: 2;
   &:-moz-focusring * {
     color: black;
     text-shadow: none;
@@ -463,6 +464,7 @@ select.mdw-textfield__input {
 }
 
 select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
+  .mdw-textfield[mdw-box] > & ~ .mdw-textfield__label,
   & ~ .mdw-textfield__label {
     transform: translateY(0);
     font-size: $label__font-size;
@@ -491,7 +493,7 @@ select.mdw-textfield__input:not(:focus)[mdw-value-empty] {
   grid-row-start: 1;
   grid-row-end: 3;
   -ms-grid-row-span: 2;
-  grid-column: 6;
+  grid-column: 5;
 
   width: 24px;
   height: 24px;
