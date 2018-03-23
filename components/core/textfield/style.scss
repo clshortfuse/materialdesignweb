@@ -206,6 +206,7 @@ $icon-signifier__padding-end: dp(16);
   font-family: Roboto, sans-serif;
   font-weight: $font-weight-regular;
   appearance: none;
+  box-shadow: none; // Firefox :invalid styling
 
   padding-bottom: dp(8);
 
