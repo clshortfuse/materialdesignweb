@@ -84,20 +84,20 @@ $dialog__unit-width: dp(56);
 }
 .mdw-dialog__title {
   font-weight: $font-weight-medium;
-  line-height: sp(28);
+  line-height: dp(28);
   font-size: sp(20);
-  padding-top: insetPaddingTop(dp(24), sp(28));
-  padding-bottom: insetPaddingBottom(dp(10), sp(28));
+  padding-top: insetPaddingTop(dp(24), dp(28));
+  padding-bottom: insetPaddingBottom(dp(10), dp(28));
 }
 
 .mdw-dialog__body {
   font-weight: $font-weight-regular;
-  line-height: sp(24);
+  line-height: dp(24);
   font-size: sp(16);
-  padding-top: insetPaddingTop(dp(24), sp(24));
-  padding-bottom: insetPaddingBottom(dp(24), sp(24));
+  padding-top: insetPaddingTop(dp(24), dp(24));
+  padding-bottom: insetPaddingBottom(dp(24), dp(24));
   .mdw-dialog__title ~ & {
-    padding-top: insetPaddingTop(dp(10), sp(24));
+    padding-top: insetPaddingTop(dp(10), dp(24));
   }
 }
 
