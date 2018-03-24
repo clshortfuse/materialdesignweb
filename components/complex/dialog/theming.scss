@@ -2,9 +2,9 @@
 @import '../../common/mixins.scss';
 
 $dialogColors: (
-  text-color:           ((#000,              0.87), (#fff,              1.00)),
-  secondary-text-color: ((#000,              0.54), (#fff,              0.70)),
-  background-color:     ((#fff,              1.00), ('background', '800', 1.00)),
+  text-color:           ((#000, 0.87), (#fff,              1.00)),
+  secondary-text-color: ((#000, 0.54), (#fff,              0.70)),
+  background-color:     ((#fff, 1.00), ('background', '800', 1.00)),
 );
 
 @function dialogThemeValue($key, $type, $theme) {
