@@ -10,130 +10,117 @@ $tooltip__background-color: #616161; // material-grey-700
 }
 
 .mdw-tooltip {
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
   position: absolute;
+  cursor: none;
+  top: 100%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  background-color: $tooltip__background-color;
+  color: white;
+  font-family: Roboto, sans-serif;
+  font-weight: $font-weight-medium;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 150ms;
+  transition-timing-function: $motion-easing-deceleration;
+  z-index: 1;
+  border-radius: dp(2);
   pointer-events: none;
-  &::before,
-  &::after {
-    position: absolute;
-    cursor: none;
-    top: 100%;
-    left: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: auto;
-    background-color: $tooltip__background-color;
-    color: white;
-    font-family: Roboto, sans-serif;
-    font-weight: $font-weight-medium;
-    opacity: 0;
-    transition-property: opacity;
-    transition-duration: 150ms;
-    transition-timing-function: $motion-easing-deceleration;
-    z-index: 1;
-    border-radius: dp(2);
-  }
-  // Desktop
-  &::before {
-    content: attr(mdw-text);
-    font-size: sp(10);
-    min-height: dp(22);
-    padding-left: dp(8);
-    padding-right: dp(8);
-    transform: translateX(-50%) translateY($tooltip__margin__desktop);
-  }
-  // Mobile
-  &::after {
-    font-size: sp(14);
-    min-height: dp(32);
-    padding-left: dp(16);
-    padding-right: dp(16);
-    transform: translateX(-50%) translateY($tooltip__margin__mobile);
-  }
-  
-  &:hover::before,
-  *:hover > &::before,
-  *:focus > &::before,
-  .mdw-tooltip__wrapper > *:hover ~ &::before,
-  .mdw-tooltip__wrapper > *:not([tabindex="-1"]):focus ~ &::before {
+
+  font-size: sp(10);
+  min-height: dp(22);
+  padding-left: dp(8);
+  padding-right: dp(8);
+  transform: translateX(-50%) translateY($tooltip__margin__desktop);
+
+  *:hover > &,
+  *:focus > &,
+  .mdw-tooltip__wrapper > *:hover ~ &,
+  .mdw-tooltip__wrapper > *:not([tabindex="-1"]):focus ~ & {
     opacity: 0.9;
     transition-timing-function: $motion-easing-acceleration;
-  }
-
-  .mdw-menu__wrapper > .mdw-menu:target ~ &,
-  .mdw-menu__wrapper > .mdw-menu[mdw-show]:not([mdw-hide]) ~ & {
-    opacity: 0;
-    transition-delay: 0;
   }
 
   &[mdw-position="start"],
   &[mdw-position="end"],
   &[mdw-position="left"],
   &[mdw-position="right"] {
-    &::before,
-    &::after {
-      left: 0;
-      top: 50%;
-    }
+    left: 0;
+    top: 50%;
   }
 
   &[mdw-position="start"],
   &[mdw-position="left"],
   [dir=rtl] &[mdw-position="end"] {
-    &::before {
-      transform: translateY(-50%) translateX(-100%) translateX(-$tooltip__margin__desktop);
-    }
-    &::after {
-      transform: translateY(-50%) translateX(-100%) translateX(-$tooltip__margin__mobile);
-    }
+    transform: translateY(-50%) translateX(-100%) translateX(-$tooltip__margin__desktop);
   }
 
   &[mdw-position="end"],
   &[mdw-position="right"],
   [dir=rtl] &[mdw-position="start"] {
-    &::before {
-      transform: translateY(-50%) translateX(100%) translateX($tooltip__margin__desktop);
-    }
-    &::after {
-      transform: translateY(-50%) translateX(100%) translateX($tooltip__margin__mobile);
-    }
+    transform: translateY(-50%) translateX(100%) translateX($tooltip__margin__desktop);
   }
 
   &[mdw-position="top"] {
-    &::before {
-      top: 0;
-      transform: translateX(-50%) translateY(-100%) translateY(-$tooltip__margin__desktop);
-    }
-    &::after {
-      top: 0;
-      transform: translateX(-50%) translateY(-100%) translateY(-$tooltip__margin__mobile);
-    }
+    top: 0;
+    transform: translateX(-50%) translateY(-100%) translateY(-$tooltip__margin__desktop);
   }
   
 }
 
+// Button position fix
 .mdw-tooltip__wrapper > .mdw-button[mdw-icon] ~ .mdw-tooltip {
-  border: 8px solid transparent;
-  box-sizing: border-box;
+  margin-top: -8px;
+  margin-bottom: -8px;
+}
+
+// Menu flicker fix
+.mdw-menu__wrapper > .mdw-menu:target ~ .mdw-tooltip,
+.mdw-menu__wrapper > .mdw-menu[mdw-show]:not([mdw-hide]) ~ .mdw-tooltip {
+  opacity: 0;
+  transition-delay: 0;
 }
 
 @media (any-pointer: coarse) {
-  .mdw-tooltip::before {
-    content: none;
-  }
-  .mdw-tooltip::after {
-    content: attr(mdw-text);
+  .mdw-tooltip {
     transition-delay: 1.5s;
+    font-size: sp(14);
+    min-height: dp(32);
+    padding-left: dp(16);
+    padding-right: dp(16);
+    transform: translateX(-50%) translateY($tooltip__margin__mobile);
+
+    &[mdw-position="start"],
+    &[mdw-position="left"],
+    [dir=rtl] &[mdw-position="end"] {
+      transform: translateY(-50%) translateX(-100%) translateX(-$tooltip__margin__mobile);
+    }
+
+    &[mdw-position="end"],
+    &[mdw-position="right"],
+    [dir=rtl] &[mdw-position="start"] {
+      transform: translateY(-50%) translateX(100%) translateX($tooltip__margin__mobile);
+    }
+
+    &[mdw-position="top"] {
+      transform: translateX(-50%) translateY(-100%) translateY(-$tooltip__margin__mobile);
+    }
+
+    // Don't change opacity unless active
+    *:focus:not(:active) > &,
+    .mdw-tooltip__wrapper > *:not([tabindex="-1"]):focus:not(:active) ~ & {
+      opacity: 0;
+    }
+
+    *:active > &,
+    .mdw-tooltip__wrapper > *:active ~ .mdw-tooltip {
+      opacity: 0.9;
+      transition-timing-function: $motion-easing-acceleration;
+    }
   }
-  
-  .mdw-tooltip:active::after,
-  .mdw-tooltip__wrapper > *:active ~ .mdw-tooltip::after {
-    opacity: 0.9;
-    transition-timing-function: $motion-easing-acceleration;
-  }
+
 }
