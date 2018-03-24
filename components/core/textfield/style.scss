@@ -423,7 +423,6 @@ select.mdw-textfield__input {
     > .mdw-ripple > .mdw-ripple__inner,
     &::after {
       @include mdw-ripple__inner;
-      transition-delay: 0s;
       border-style: none;
     }
     > .mdw-ripple:active > .mdw-ripple__inner,

@@ -12,7 +12,8 @@ $textfieldColors: (
   box-fill-color__hover:              ((#000,            0.12), (#fff,              0.20)),
   border-line-color:                  ((#000,            0.42), (#fff,              0.70)),
   border-line-color__hover:           ((#000,            0.87), (#fff,              1.00)),
-  ripple-color:                       ((#000,            0.12), (#fff,              0.30), (#fff, 0.20)),
+  ripple-color:                       ( #000                  ,  #fff       ),
+  ripple-opacity:                     (                    0.12 ,                       0.30,  0.20),
   dropdown-button-color:              ((#000,            0.54), (#fff,              0.70)),
   dropdown-background-color:          ((#fff,            1.00), ('background', '800', 1.00)),
   selection-color:                    (('primary', 'A200', 0.50), ('primary',   'A700', 0.50)),
@@ -250,8 +251,14 @@ $textfieldColors: (
         }
         & ~ .mdw-textfield__border-line {
           & > .mdw-ripple > .mdw-ripple__inner,
-          &::after {
-            background-color: buttonThemeValue("ripple-color", $type, $theme);
+          &:after {
+            color: buttonThemeValue("ripple-color", $type, $theme);
+          }
+          &:active {
+            & > .mdw-ripple > .mdw-ripple__inner,
+            &:after {
+              opacity: buttonThemeValue("ripple-opacity", $type, $theme);
+            }
           }
         }
       }
