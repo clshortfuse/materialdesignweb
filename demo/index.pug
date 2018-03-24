@@ -23,6 +23,7 @@ html(lang='en')
         label.mdw-list__row(for="show-textfield") textfield
         label.mdw-list__row(for="show-toolbar") toolbar
         label.mdw-list__row(for="show-tooltip") tooltip
+        label.mdw-list__row(for="show-type") type
         .mdw-list__subheader Complex
         label.mdw-list__row(for="show-dialog") dialog
         label.mdw-list__row(for="show-navdrawer") navdrawer
@@ -47,8 +48,10 @@ html(lang='en')
       input(type="radio" name="show-component" value="textfield" id="show-textfield")
       input(type="radio" name="show-component" value="toolbar"   id="show-toolbar")
       input(type="radio" name="show-component" value="tooltip"   id="show-tooltip")
+      input(type="radio" name="show-component" value="type"      id="show-type" checked)
+
       input(type="radio" name="show-component" value="dialog"    id="show-dialog")
-      input(type="radio" name="show-component" value="navdrawer" id="show-navdrawer" checked)
+      input(type="radio" name="show-component" value="navdrawer" id="show-navdrawer")
       input(type="radio" name="show-component" value="search"    id="show-search")
 
       div
@@ -73,6 +76,8 @@ html(lang='en')
         include comparisons/toolbar.pug
       #comparison-tooltip
         include comparisons/tooltip.pug
+      #comparison-type
+        include comparisons/type.pug
       #comparison-dialog
         include comparisons/dialog.pug
       #comparison-navdrawer

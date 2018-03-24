@@ -8,6 +8,7 @@
 @import '../core/tab/theming.scss';
 @import '../core/textfield/theming.scss';
 @import '../core/toolbar/theming.scss';
+@import '../core/type/theming.scss';
 
 @import '../complex/dialog/theming.scss';
 @import '../complex/navdrawer/theming.scss';
@@ -42,6 +43,9 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'toolbar')) {
     @include toolbarThemeVariables($color, 'light');
   }
+  @if (index($mdw-theme__components, 'type')) {
+    @include typeThemeVariables($color, 'light');
+  }
   
   @if (index($mdw-theme__components, 'dialog')) {
     @include dialogThemeVariables($color, 'light');
@@ -75,6 +79,9 @@ $added-palettes-list: ();
   }
   @if (index($mdw-theme__components, 'toolbar')) {
     @include toolbarThemeVariables($color, 'dark');
+  }
+  @if (index($mdw-theme__components, 'type')) {
+    @include typeThemeVariables($color, 'dark');
   }
 
   @if (index($mdw-theme__components, 'dialog')) {
@@ -116,6 +123,10 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'toolbar')) {
     @include toolbarContrastRules($type, $theme);
   }
+  @if (index($mdw-theme__components, 'type')) {
+    @include typeContrastRules($type, $theme);
+  }
+
   @if (index($mdw-theme__components, 'dialog')) {
     @include dialogContrastRules($type, $theme);
   }

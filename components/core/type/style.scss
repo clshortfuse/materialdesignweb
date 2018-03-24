@@ -1,0 +1,74 @@
+// https://material.io/guidelines/style/typography.html
+
+@import '../../common/functions.scss';
+
+.mdw-type {
+  font-family: Roboto, sans-serif;
+  &[mdw-style|="display"] {
+    font-weight: $font-weight-regular;
+  }
+  &[mdw-style="display-4"] {
+    font-size: sp(112);
+    font-weight: $font-weight-light;
+    white-space: nowrap;
+  }
+  &[mdw-style="display-3"] {
+    font-size: sp(56);
+    white-space: nowrap;
+  }
+  &[mdw-style="display-2"] {
+    font-size: sp(45);
+    line-height: dp(48);
+  }
+  &[mdw-style="display-1"] {
+    font-size: sp(34);
+    line-height: dp(40);
+  }
+  &[mdw-style="headline"] {
+    font-size: sp(24);
+    font-weight: $font-weight-regular;
+    line-height: dp(32);
+  }
+  &[mdw-style="title"] {
+    font-size: sp(20);
+    font-weight: $font-weight-medium;
+    white-space: nowrap;
+  }
+  &[mdw-style="subheading-2"] {
+    line-height: dp(28);
+  }
+  &[mdw-style|="subheading"] {
+    font-size: sp(15);
+    @include allHandsetsAndTablets() {
+      font-size: sp(16);
+    }
+    font-weight: $font-weight-regular;
+    line-height: dp(24);
+  }
+  &[mdw-style="body-2"] {
+    font-size: sp(13);
+    @include allHandsetsAndTablets() {
+      font-size: sp(14);
+    }
+    font-weight: $font-weight-medium;
+    line-height: dp(24);
+  }
+  &[mdw-style="body-1"] {
+    font-size: sp(13);
+    @include allHandsetsAndTablets() {
+      font-size: sp(14);
+    }
+    font-weight: $font-weight-regular;
+    line-height: dp(20);
+  }
+  &[mdw-style="caption"] {
+    font-size: sp(12);
+    font-weight: $font-weight-regular;
+    white-space: nowrap;
+  }
+  &[mdw-style="button"] {
+    font-size: sp(14);
+    font-weight: $font-weight-medium;
+    text-transform: uppercase;
+  }
+}

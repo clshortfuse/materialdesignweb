@@ -14,7 +14,7 @@ Object.defineProperty(crosshairs, 'vOffset', {
   set(val) {
     vOffset = val;
     document.getElementById('verticalLineLeft').style.left = `${val}px`;
-    document.getElementById('verticalLineRight').style.left = `${parseInt(val, 0) - 376}px`;
+    document.getElementById('verticalLineRight').style.left = `${val}px`;
   },
 });
 
@@ -36,8 +36,9 @@ Object.defineProperty(crosshairs, 'hOffset', {
  * @return {void}
  */
 function onTemplateImageClick(event) {
-  crosshairs.hOffset = event.clientY;
-  crosshairs.vOffset = event.clientX;
+  document.getElementById('horizontalLine').style.top = `${event.clientY}px`;
+  document.getElementById('verticalLineLeft').style.left = `${event.layerX}px`;
+  document.getElementById('verticalLineRight').style.left = `${event.clientX}px`;
 }
 
 /** @return {void} */

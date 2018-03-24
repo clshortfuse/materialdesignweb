@@ -18,6 +18,7 @@ $components: (
   'textfield',
   'toolbar',
   'tooltip',
+  'type',
   'dialog',
   'navdrawer',
   'search'
@@ -36,6 +37,11 @@ body {
 
 .page > input[name="show-component"] {
   display: none;
+}
+
+.nav {
+  min-width: 150px;
+  max-width: 150px;
 }
 
 .comparison {
@@ -169,12 +175,32 @@ body {
   pointer-events: none;
 }
 
-#verticalLineRight {
-  left: 376px;
+#verticalLineLeft {
+  margin-left: 158px;
 }
 
 #Vintage50Input {
   font-size: sp(34);
+}
+
+.type-comparison {
+  .content {
+    margin: 8px;
+    align-items: flex-start;
+    flex-direction: column;
+    display: flex;
+  }
+  .target {
+    margin-top: 42px;
+    background-position-x: -200px;
+    min-width: 760px;
+    max-width: 760px;
+    min-height: 568px;
+    max-height: 568px;
+  }
+  .mdw-type {
+    position: relative; // For tooltip position
+  }
 }
 
 input[name="show-component"]:not(:checked) {

@@ -1,0 +1,25 @@
+@import '../../common/functions.scss';
+@import '../../common/mixins.scss';
+
+$typeColors: (
+  primary-text-color:   ((#000, 0.87), (#fff, 1.00)),
+  secondary-text-color: ((#000, 0.54), (#fff, 0.70)),
+);
+
+@function typeThemeValue($key, $type, $theme) {
+  @return themeValue('type', $typeColors, $key, $type, $theme);
+}
+
+@mixin typeThemeVariables($color, $lightness) {
+  @include themeVariables('type', $typeColors, $color, $lightness);
+}
+
+@mixin typeContrastRules($type: 'var', $theme: null) {
+  .mdw-type:not([mdw-theme-color]) {
+    color: typeThemeValue("primary-text-color", $type, $theme);
+    &[mdw-style|="display"],
+    &[mdw-style="caption"] {
+      color: typeThemeValue("secondary-text-color", $type, $theme);
+    }
+  }
+}
