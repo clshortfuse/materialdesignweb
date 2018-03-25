@@ -57,10 +57,19 @@ $toolbar-right-padding: dp(16);
     height: auto;
     
     align-self: flex-end;
-    justify-content: flex-end;
+    justify-content: flex-start;
     font-size: sp(20);
 
-    padding-bottom: insetPaddingBottom(dp(20));
+    // padding-bottom: insetPaddingBottom(dp(20));
+    display: flex;
+    align-items: baseline;
+    &::after {
+      content: '\00a0';
+      height: 1em;
+      width: 0;
+      padding-bottom: dp(20);
+      line-height: normal;
+    }
   }
 }
 
