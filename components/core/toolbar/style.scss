@@ -64,9 +64,8 @@ $toolbar-right-padding: dp(16);
     display: flex;
     align-items: baseline;
     &::after {
-      content: '\00a0';
+      content: "\200D"; // &zwj;
       height: 1em;
-      width: 0;
       padding-bottom: dp(20);
       line-height: normal;
     }
