@@ -2,15 +2,29 @@ include ../mixins.pug
 
 .comparison.type-comparison
   .content(mdw-theme-fill="background-50 light")
-    div.mdw-type(mdw-style="display-4") Display 4
-    div.mdw-type(mdw-style="display-3") Display 3
-    div.mdw-type(mdw-style="display-2") Display 2
-    div.mdw-type(mdw-style="display-1") Display 1
-    div.mdw-type(mdw-style="headline") Headline
-    div.mdw-type(mdw-style="title") Title
-    div.mdw-type(mdw-style="subheading") Subheading
-    div.mdw-type(mdw-style="body-2") Body 2
-    div.mdw-type(mdw-style="body-1") Body 1
-    div.mdw-type(mdw-style="caption") Caption
-    div.mdw-type(mdw-style="button") Button
+    .mdw-type(mdw-style="display-4") Display 4
+    .mdw-type(mdw-style="display-3") Display 3
+    .mdw-type(mdw-style="display-2") Display 2
+    .mdw-type(mdw-style="display-1") Display 1
+    .mdw-type(mdw-style="headline") Headline
+    .mdw-type(mdw-style="title") Title
+    .mdw-type(mdw-style="subheading") Subheading
+    .mdw-type(mdw-style="body-2") Body 2
+    .mdw-type(mdw-style="body-1") Body 1
+    .mdw-type(mdw-style="caption") Caption
+    .mdw-type(mdw-style="button") Button
   +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3alhXZ2pPWGk3Zjg/style-typography-styles-scale.png')
+
+.comparison.type-comparison-2
+  .render
+    div(mdw-theme-fill="background-50 light")
+      div(style="width:300px;height:208px;margin-left:40px")
+        .mdw-type(mdw-style="subheading-2") The Hatter was the first to break the silence. 'What day of the month is it?' he said, turning to Alice: he had taken his watch out of his pocket, and was looking at it uneasily, shaking it every now and then, and holding it to his ear.
+      div(style="height:8px")
+      div(style="width:300px;height:208px;margin-left:40px")
+        .mdw-type(mdw-style="display-2") Others have failed, I will not
+        .mdw-type(mdw-style="subheading-1"  style="width:260px") Science, my boy, is made up of mistakes, but they are mistakes which it is useful to make, because they lead little by little to the truth.
+  div
+    div(style="margin-top:12px")
+      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsSDJtU2ZnVDZhTGM/style-typography-styles-lineheight3.png')
+    +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3S0hlSFBQRVE0QlU/style-typography-styles-lineheight2.png')

@@ -70,14 +70,17 @@ body {
   flex-direction: column;
 }
 
+.render {
+  max-width: 360px;
+  max-height: 640px;
+}
+
 .render,
 .target {
   position: relative;
   margin: 8px;
   width: 360px;
-  max-width: 360px;
   height: 640px;
-  max-height: 640px;
   background-size: cover;
   background-repeat: no-repeat;
 
@@ -193,13 +196,17 @@ body {
   .target {
     margin-top: 42px;
     background-position-x: -200px;
-    min-width: 760px;
-    max-width: 760px;
-    min-height: 568px;
-    max-height: 568px;
+    width: 760px;
+    height: 568px;
   }
   .mdw-type {
     position: relative; // For tooltip position
+  }
+}
+.type-comparison-2 {
+  .target {
+    width: 760px;
+    height: 208px;
   }
 }
 
