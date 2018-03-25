@@ -14,135 +14,121 @@
     font-weight: $font-weight-regular;
   }
   &[mdw-style="display-4"] {
-    font-size: sp(112);
-    font-weight: $font-weight-light;
-    white-space: nowrap;
+    &,
+    & + .mdw-type::before {
+      font-size: sp(112);
+      font-weight: $font-weight-light;
+      white-space: nowrap;    
+    }
   }
   &[mdw-style="display-3"] {
-    font-size: sp(56);
-    white-space: nowrap;
+    &,
+    & + .mdw-type::before {
+      font-size: sp(56);
+      white-space: nowrap;
+    }
   }
   &[mdw-style="display-2"] {
-    font-size: sp(45);
-    line-height: dp(48);
-    & + .mdw-type {
-      &::before {
-        font-size: sp(45);
-        line-height: dp(48);
-      }
+    &,
+    & + .mdw-type::before {
+      font-size: sp(45);
+      line-height: dp(48);
     }
   }
   &[mdw-style="display-1"] {
-    font-size: sp(34);
-    line-height: dp(40);
-    & + .mdw-type {
-      &::before {
-        font-size: sp(34);
-        line-height: dp(40);
-      }
+    &,
+    & + .mdw-type::before {
+      font-size: sp(34);
+      line-height: dp(40);
     }
   }
   &[mdw-style="headline"] {
-    font-size: sp(24);
-    font-weight: $font-weight-regular;
-    line-height: dp(32);
-    & + .mdw-type {
-      &::before {
-        font-size: sp(24);
-        line-height: dp(32);
-      }
+    &,
+    & + .mdw-type::before {
+      font-size: sp(24);
+      line-height: dp(32);
+      font-weight: $font-weight-regular;
+
     }
   }
   &[mdw-style="title"] {
-    font-size: sp(20);
-    font-weight: $font-weight-medium;
-    white-space: nowrap;
-    & + .mdw-type {
-      &::before {
-        font-size: sp(24);
-      }
+    &,
+    & + .mdw-type::before {
+      font-size: sp(20);
+      font-weight: $font-weight-medium;
+      white-space: nowrap;
     }
   }
   &[mdw-style|="subheading"] {
     font-size: sp(15);
     @include allHandsetsAndTablets() {
-      font-size: sp(16);
-      & + .mdw-type {
-        &::before {
-          font-size: sp(16);
-        }
+      &,
+      & + .mdw-type::before {
+        font-size: sp(16);
       }
     }
-    font-weight: $font-weight-regular;
-    line-height: dp(24);
-    & + .mdw-type {
-      &::before {
-        font-size: sp(15);
-        line-height: dp(24);
-      }
+    &,
+    & + .mdw-type::before {
+      font-weight: $font-weight-regular;
+      line-height: dp(24);
+      font-size: sp(16);
     }
   }
   &[mdw-style="subheading-2"] {
-    line-height: dp(28);
-    & + .mdw-type {
-      &::before {
-        line-height: dp(28);
-      }
+    &,
+    & + .mdw-type::before {
+      line-height: dp(28);
     }
     @include allHandsetsAndTablets() {
-      & + .mdw-type {
-        &::before {
-          line-height: dp(28);
-        }
+      &,
+      & + .mdw-type::before {
+        line-height: dp(28);
       }
     }
   }
   &[mdw-style="body-2"] {
-    font-size: sp(13);
     @include allHandsetsAndTablets() {
-      font-size: sp(14);
-      & + .mdw-type {
-        &::before {
-          font-size: sp(14);
-        }
+      &,
+      & + .mdw-type::before {
+        font-size: sp(14);
       }
     }
-    font-weight: $font-weight-medium;
-    line-height: dp(24);
-    & + .mdw-type {
-      &::before {
-        font-size: sp(13);
-        line-height: dp(24);
-      }
+    &,
+    & + .mdw-type::before {
+      font-size: sp(13);
+      font-weight: $font-weight-medium;
+      font-size: sp(13);
+      line-height: dp(24);
     }
   }
   &[mdw-style="body-1"] {
-    font-size: sp(13);
     @include allHandsetsAndTablets() {
-      font-size: sp(14);
-      & + .mdw-type {
-        &::before {
-          font-size: sp(34);
-        }
+      &,
+      & + .mdw-type::before {
+        font-size: sp(14);
       }
     }
-    font-weight: $font-weight-regular;
-    line-height: dp(20);
-    & + .mdw-type {
-      &::before {
-        font-size: sp(13);
-        line-height: dp(20);
-      }
+    &,
+    & + .mdw-type::before {
+      font-weight: $font-weight-regular;
+      font-size: sp(13);
+      line-height: dp(20);
     }
   }
   &[mdw-style="caption"] {
-    font-size: sp(12);
-    font-weight: $font-weight-regular;
-    white-space: nowrap;
+    &,
+    & + .mdw-type::before {
+      font-size: sp(12);
+      font-weight: $font-weight-regular;
+      white-space: nowrap;
+    }
   }
   &[mdw-style="button"] {
-    font-size: sp(14);
-    font-weight: $font-weight-medium;
-    text-transform: uppercase;
+    &,
+    & + .mdw-type::before {
+      font-size: sp(14);
+      font-weight: $font-weight-medium;
+      text-transform: uppercase;
+    }
   }
 }
