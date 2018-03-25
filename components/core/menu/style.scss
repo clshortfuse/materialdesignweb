@@ -109,11 +109,6 @@ $checkbox-icon-offset-x: dp(6.04);
   flex-grow: 1;
 }
 
-.mdw-menu__item > *,
-.mdw-menu__text {
-  padding-bottom: insetPaddingBottom(dp(20));
-}
-
 .mdw-menu__check,
 .mdw-menu__icon {
   min-width: dp(40);
@@ -153,7 +148,7 @@ $checkbox-icon-offset-x: dp(6.04);
   z-index: 0;
 
   display: flex;
-  align-items: flex-end;
+  align-items: baseline;
   padding-left: dp(16);
   padding-right: dp(16);
   font-family: Roboto, sans-serif;
@@ -190,4 +185,29 @@ $checkbox-icon-offset-x: dp(6.04);
 
 .mdw-menu__info {
   text-align: end;
+}
+
+.mdw-menu__check,
+.mdw-menu__info,
+.mdw-menu__text {
+  display: flex;
+  align-items: baseline;
+  // Text is padded 20dp from baseline
+  // Min Height is 48dp
+  &::before {
+    content: '\00a0';
+    height: 1em;
+    width: 0;
+    padding-bottom: dp(20);
+    line-height: normal;
+    padding-top: calc(#{dp(48)} - 1em - #{dp(20)});
+  }
+}
+
+.mdw-menu__icon {
+  align-self: flex-end;
+  padding-bottom: dp(20);
+  &.material-icons {
+    padding-bottom: dp(16);
+  }
 }
