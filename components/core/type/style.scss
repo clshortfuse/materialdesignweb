@@ -9,7 +9,6 @@
     content: "\200D"; // &zwj;
     display: inline-block;
   }
-  font-family: Roboto, sans-serif;
   &[mdw-style|="display"] {
     font-weight: $font-weight-regular;
   }
