@@ -64,7 +64,7 @@ $button__click-timeout: 100ms;
 
   // Don't override font icon properties
   &:not([mdw-icon]) {
-    font-family: Roboto, sans-serif;
+    font-family: inherit;
     font-size: sp(14);
     line-height: normal;
     text-transform: uppercase;
