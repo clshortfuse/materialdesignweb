@@ -202,7 +202,7 @@ $icon-signifier__padding-end: dp(16);
   box-sizing: border-box;
 
   font-size: inherit;
-  font-family: Roboto, sans-serif;
+  font-family: inherit;
   font-weight: $font-weight-regular;
   appearance: none;
   box-shadow: none; // Firefox :invalid styling
@@ -287,7 +287,7 @@ select.mdw-textfield__input {
   -webkit-tap-highlight-color: transparent;
   option {
     font-size: inherit;
-    font-family: Roboto, sans-serif;
+    font-family: inherit;
     font-weight: $font-weight-regular;
     appearance: none;
     &[value=""]:first-of-type {
