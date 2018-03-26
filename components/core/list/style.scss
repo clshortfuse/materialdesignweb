@@ -82,8 +82,13 @@ $list__divider-height: dp(1);
   max-width: dp(72 - 16);
   align-self: flex-start;
   justify-content: flex-start;
-  margin-top: dp(12); // min-height - 24px / 2
-  // 2px from material-icon inset padding
+  margin-top: dp(16); // min-height - 24px / 2
+  &.material-icons {
+    // 2px from material-icon inset padding
+    // margin-top: calc(16px - (2em / 24));
+    // margin-left: calc(0 - (2em / 24));
+  }
+  
 }
 
 .mdw-list__avatar {
