@@ -135,8 +135,9 @@
 }
 
 .mdw-tab__label {
-  display: flex;
-  justify-content: center;
+  display: block;
+  text-align: center;
+
   pointer-events: none;
   min-width: dp(80);
   max-width: dp(168);
@@ -152,10 +153,33 @@
   font-size: sp(14);
   text-transform: uppercase;
   font-weight: $font-weight-medium;
-  padding-top: insetPaddingTop(dp(10));
-  padding-bottom: insetPaddingBottom(dp(20));
+
+  // 10dp top padding
+  &::before {
+    content: "\200D"; // &zwj;
+    display: inline-block;
+    margin-top: dp(10);
+    line-height: 1;
+    vertical-align: text-bottom;
+  }
+
+  // 20dp bottom padding from baseline
+  &::after {
+    content: "\200D"; // &zwj;
+    display: inline-block;
+    line-height: 1;
+    margin-bottom: dp(20);
+    vertical-align: text-top;
+  }
+
   .mdw-tab__icon ~ & {
-    padding-bottom: insetPaddingBottom(dp(16));
+    &::after {
+      content: "\200D"; // &zwj;
+      display: inline-block;
+      line-height: 1;
+      margin-bottom: dp(16);
+      vertical-align: text-top;
+    }
   }
 }
 
