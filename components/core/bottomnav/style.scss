@@ -77,12 +77,12 @@
 }
 
 .mdw-bottomnav__label {
-  display: flex;
-  justify-content: center;
+  display: block;
+  text-align: center;
   pointer-events: none;
   min-width: dp(80);
   max-width: dp(168);
-  padding-top: dp(4);
+  
   padding-left: dp(12);
   padding-right: dp(12);
   transition-property: color, font-size, transform, min-width, max-width;
@@ -93,7 +93,6 @@
   white-space: nowrap;
   min-height: 1em; // Prevents stretching when using larger fonts
   height: auto;
-  padding-bottom: insetPaddingBottom(dp(10));
   font-size: sp(12);
   text-transform: none;
   font-weight: normal;
@@ -103,6 +102,25 @@
   input:checked + .mdw-bottomnav__action > & {
     // color: var(--bottomnav__active-color);
     font-size: sp(14);
+  }
+  
+  
+  // 4dp top padding
+  &::before {
+    content: "\200D"; // &zwj;
+    display: inline-block;
+    margin-top: dp(4);
+    line-height: 1;
+    vertical-align: text-bottom;
+  }
+
+  // 10dp bottom padding from baseline
+  &::after {
+    content: "\200D"; // &zwj;
+    display: inline-block;
+    line-height: 1;
+    margin-bottom: dp(10);
+    vertical-align: text-top;
   }
 }
 .mdw-bottomnav input {
