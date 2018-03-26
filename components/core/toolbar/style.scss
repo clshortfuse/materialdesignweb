@@ -57,17 +57,15 @@ $toolbar-right-padding: dp(16);
     height: auto;
     
     align-self: flex-end;
-    justify-content: flex-start;
     font-size: sp(20);
 
-    // padding-bottom: insetPaddingBottom(dp(20));
-    display: flex;
-    align-items: baseline;
+    // 20dp bottom padding from baseline
     &::after {
       content: "\200D"; // &zwj;
-      height: 1em;
-      padding-bottom: dp(20);
-      line-height: normal;
+      display: inline-block;
+      line-height: 1;
+      margin-bottom: dp(20);
+      vertical-align: text-top;
     }
   }
 }
