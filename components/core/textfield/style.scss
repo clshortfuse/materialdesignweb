@@ -58,9 +58,6 @@ $icon-signifier__padding-end: dp(16);
     // Out-of-spec: Makes all types top-aligned
     margin-top: 8px;
   }
-  &[mdw-box] {
-    z-index: 0;
-  }
   margin-bottom: 8px;
 }
 
@@ -163,6 +160,7 @@ $icon-signifier__padding-end: dp(16);
     transition-duration: $motion-duration-tablet-default;
   }
   
+  z-index: 1;
   .mdw-textfield[mdw-box] > &,
   .mdw-textfield[mdw-textarea] > & {
     padding-top: $label__padding-top__boxed;
@@ -194,6 +192,7 @@ $icon-signifier__padding-end: dp(16);
   border: none;
   outline: none;
   
+  
   grid-row: 2;
   grid-column-start: 4;
   grid-column-end: 5;
@@ -213,6 +212,13 @@ $icon-signifier__padding-end: dp(16);
 
   &:disabled {
     cursor: not-allowed;
+  }
+
+  .mdw-textfield[mdw-box] > & {
+    z-index: 1;
+    &:not(:focus) {
+      pointer-events: none;
+    }
   }
   
   &::placeholder {
@@ -328,7 +334,7 @@ select.mdw-textfield__input {
   // self     - bottom border
   // ::before - background fill
   // ::after  - ripple
-  
+
   &::before,
   &::after {
     content: "";
@@ -367,7 +373,6 @@ select.mdw-textfield__input {
     top: 0;
     position: absolute;
     bottom: 0;
-    
     height: 100%;
     @include IEOnly {
       position: relative;
@@ -411,6 +416,7 @@ select.mdw-textfield__input {
   }
 
   .mdw-textfield[mdw-box] > & {
+    z-index: 0;
     overflow: hidden;
     border-radius: dp(4);
     border-width: 0;
