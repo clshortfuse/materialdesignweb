@@ -7,7 +7,7 @@ class TextField {
     /** @type {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} */
     this.input = element.querySelector('.mdw-textfield__input');
     if (this.input) {
-      if (this.input.tagName.toLowerCase() === 'textarea' && this.element.hasAttribute('mdw-multiline')) {
+      if (this.input instanceof HTMLTextAreaElement && this.element.hasAttribute('mdw-multiline')) {
         this.input.addEventListener('input', () => {
           this.updateTextAreaSize();
         });
@@ -92,6 +92,75 @@ class TextField {
     const y = event.offsetY;
     this.rippleInner.style.setProperty('left', `${x}px`);
     this.rippleInner.style.setProperty('top', `${y}px`);
+  }
+
+  /**
+   * @return {string|Date|number}
+   */
+  get value() {
+    if ((this.input instanceof HTMLTextAreaElement) || (this.input instanceof HTMLSelectElement)) {
+      return this.value;
+    }
+    const type = this.input.hasAttribute('type') && this.input.getAttribute('type').toLowerCase();
+    switch (type) {
+      case 'date':
+      case 'time':
+        return this.input.valueAsDate;
+      case 'datetime-local':
+      case 'number':
+      case 'range':
+        return this.input.valueAsNumber;
+      default:
+        return this.input.value;
+    }
+  }
+
+  /** @param {(string|Date|number)=} value */
+  set value(value) {
+    if (value == null) {
+      this.input.value = null;
+    } else if (this.input instanceof HTMLTextAreaElement
+            || this.input instanceof HTMLSelectElement) {
+      if (value instanceof Date) {
+        this.input.value = value.toString();
+      } else if (typeof value === 'string') {
+        this.input.value = value;
+      } else {
+        this.input.value = value.toString(10);
+      }
+    } else if (value instanceof Date) {
+      const type = this.input.hasAttribute('type') && this.input.getAttribute('type').toLowerCase();
+      switch (type) {
+        case 'date':
+        case 'time':
+        case 'datetime-local':
+          this.input.valueAsDate = value;
+          break;
+        case 'number':
+        case 'range':
+          this.input.valueAsNumber = value.getTime();
+          break;
+        default:
+          this.input.value = value.toString();
+      }
+    } else if (typeof value === 'string') {
+      this.input.value = value;
+    } else {
+      const type = this.input.hasAttribute('type') && this.input.getAttribute('type').toLowerCase();
+      switch (type) {
+        case 'date':
+        case 'time':
+        case 'datetime-local':
+        case 'number':
+        case 'range':
+          this.input.valueAsNumber = value;
+          break;
+        default:
+          this.input.value = value.toString();
+      }
+    }
+    this.updateInputEmptyState();
+    this.updateTextAreaSize();
   }
 }
 
