@@ -1,37 +1,4 @@
+@import './_index.scss';
 @import './theming/theming.scss';
-
-@mixin buildMDWThemes($config-map: ()) {
-  $theme-components: ('bottomnav', 'button', 'list', 'menu', 'selection', 'tab', 'textfield', 'toolbar', 'dialog', 'navdrawer');
-  $themes: (
-    "default": ('indigo', 'pink', 'red'),
-  );
-  $explicit-colors: ();
-  $automatic-contrast: 'no';
-  $ie11-support: 'only';
-  $ie11-media-wrap: 'no';
-  @if (map-has-key($config-map, $key: "theme-components")) {
-    $theme-components: map-get($config-map, "theme-components");
-  }
-  @if (map-has-key($config-map, $key: "themes")) {
-    $themes: map-get($config-map, "themes");
-  }
-  @if (map-has-key($map: $config-map, $key: "explicit-colors")) {
-    $explicit-colors: map-get($config-map, "explicit-colors");
-  }
-  @if (map-has-key($map: $config-map, $key: "automatic-contrast")) {
-    $automatic-contrast: map-get($config-map, "automatic-contrast");
-  }
-  @if (map-has-key($map: $config-map, $key: "ie11-support")) {
-    $ie11-support: map-get($config-map, "ie11-support");
-  }
-  @if (map-has-key($map: $config-map, $key: "ie11-media-wrap")) {
-    $ie11-media-wrap: map-get($config-map, "ie11-media-wrap");
-  }
-  $mdw-theme__components: $theme-components !global;
-  $mdw-theme__explicit-colors: $explicit-colors !global;
-  $mdw-theme__automatic-contrast: $automatic-contrast !global;
-  $mdw-theme__ie11-support: $ie11-support !global;
-  $mdw-theme__themes: $themes !global;
-  $mdw-theme__ie11-media-wrap: $ie11-media-wrap !global;
-  @include buildThemes();
-}
+@include buildMDWThemes();
+@import './all-components.scss';

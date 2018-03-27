@@ -1,11 +1,6 @@
 @import "theming.min.css";
 @import "theming.ie11.min.css";
-
-
-// Material Icon incorrectly changes RTL direction
-.material-icons {
-  direction: inherit;
-}
+@import "components.min.css";
 
 $components: (
   'bottomnav',
@@ -23,11 +18,16 @@ $components: (
   'navdrawer',
   'search'
 );
-@import "../components/all-components.scss";
 
 html {
   font-family: 'Roboto', sans-serif;
 }
+
+// Material Icon incorrectly changes RTL direction
+.material-icons {
+  direction: inherit;
+}
+
 
 body {
   display: flex;

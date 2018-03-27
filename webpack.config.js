@@ -69,6 +69,7 @@ function getDemoConfig() {
       // 'babel-polyfill',
       demo: ['./demo/demo.js', './demo/demo.scss', './demo/index.pug'],
       theming: ['./demo/theming.scss'],
+      components: ['./demo/components.scss'],
       'theming.ie11': ['./demo/theming.ie11.scss'],
     },
     devtool: isProduction ? undefined : 'nosources-source-map',
