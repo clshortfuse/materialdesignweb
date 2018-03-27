@@ -128,7 +128,7 @@ $textfieldColors: (
       color: transparent;
       text-shadow: 0 0 0 textfieldThemeValue("text-color", $type, $theme);
     }
-    &[mdw-value-empty] {
+    .mdw-textfield[mdw-value-empty] > & {
       color: textfieldThemeValue("placeholder-color__focus", $type, $theme);
       &:-moz-focusring {
         color: transparent;
@@ -146,7 +146,7 @@ $textfieldColors: (
   .mdw-textfield__dropdown-button {
     color: textfieldThemeValue("dropdown-button-color", $type, $theme);
   }
-  input.mdw-textfield__input:not(:focus)[mdw-value-empty] {
+  .mdw-textfield[mdw-value-empty] > input.mdw-textfield__input:not(:focus) {
     color: transparent;
   }
   input.mdw-textfield__input:not(:focus):placeholder-shown {
@@ -188,8 +188,8 @@ $textfieldColors: (
       &:placeholder-shown ~ .mdw-textfield__suffix {
         color: transparent;
       }
-      &[mdw-value-empty] ~ .mdw-textfield__prefix,
-      &[mdw-value-empty] ~ .mdw-textfield__suffix {
+      .mdw-textfield[mdw-value-empty] > & ~ .mdw-textfield__prefix,
+      .mdw-textfield[mdw-value-empty] > & ~ .mdw-textfield__suffix {
         color: transparent;
       }
     }

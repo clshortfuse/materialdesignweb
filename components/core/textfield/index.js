@@ -1,36 +1,3 @@
-/**
- * @param {Element} element
- * @return {number} Single row height
- */
-function updateTextAreaSize(element) {
-  const previousRowsValue = element.getAttribute('rows');
-  element.setAttribute('rows', '1');
-  const { height, paddingTop } = window.getComputedStyle(element);
-  if (height === 'auto') {
-    element.setAttribute('rows', previousRowsValue);
-    return -1;
-  }
-  const heightPx = parseInt(height.replace('px', ''), 10);
-  const paddingTopPx = parseInt(paddingTop.replace('px', ''), 10);
-  element.setAttribute('rows', Math.floor((element.scrollHeight - paddingTopPx) / heightPx).toString());
-  return heightPx;
-}
-
-/**
- * @param {HTMLInputElement|HTMLTextAreaElement} element
- * @return {void}
- */
-function updateInputEmptyState(element) {
-  const attributeName = 'mdw-value-empty';
-  if (element.value) {
-    if (element.hasAttribute(attributeName)) {
-      element.removeAttribute(attributeName);
-    }
-  } else if (!element.hasAttribute(attributeName)) {
-    element.setAttribute('mdw-value-empty', '');
-  }
-}
-
 class TextField {
   /**
    * @param {HTMLElement} element
@@ -42,14 +9,14 @@ class TextField {
     if (this.input) {
       if (this.input.tagName.toLowerCase() === 'textarea' && this.element.hasAttribute('mdw-multiline')) {
         this.input.addEventListener('input', () => {
-          updateTextAreaSize(this.input);
+          this.updateTextAreaSize();
         });
-        updateTextAreaSize(this.input);
+        this.updateTextAreaSize();
       }
       this.input.addEventListener('input', () => {
-        updateInputEmptyState(this.input);
+        this.updateInputEmptyState();
       });
-      updateInputEmptyState(this.input);
+      this.updateInputEmptyState();
     }
     this.border = element.querySelector('.mdw-textfield__border-line');
     if (!this.border) {
@@ -78,6 +45,33 @@ class TextField {
     this.border.addEventListener('click', (event) => {
       this.updateRipplePosition(event);
     });
+  }
+
+  /** @return {void} */
+  updateInputEmptyState() {
+    const attributeName = 'mdw-value-empty';
+    if (this.input.value) {
+      if (this.element.hasAttribute(attributeName)) {
+        this.element.removeAttribute(attributeName);
+      }
+    } else if (!this.element.hasAttribute(attributeName)) {
+      this.element.setAttribute('mdw-value-empty', '');
+    }
+  }
+
+  /** @return {number} Single row height */
+  updateTextAreaSize() {
+    const previousRowsValue = this.input.getAttribute('rows');
+    this.input.setAttribute('rows', '1');
+    const { height, paddingTop } = window.getComputedStyle(this.input);
+    if (height === 'auto') {
+      this.input.setAttribute('rows', previousRowsValue);
+      return -1;
+    }
+    const heightPx = parseInt(height.replace('px', ''), 10);
+    const paddingTopPx = parseInt(paddingTop.replace('px', ''), 10);
+    this.input.setAttribute('rows', Math.floor((this.input.scrollHeight - paddingTopPx) / heightPx).toString());
+    return heightPx;
   }
 
   /**
