@@ -65,15 +65,10 @@ $listColors: (
         background-color: listThemeValue("press-color", $type);
       }
     }
-    & > .mdw-ripple > .mdw-ripple__inner,
-    &:after {
+    & > .mdw-ripple:active > .mdw-ripple__inner,
+    &:active:after {
       color: buttonThemeValue("ripple-color", $type, $theme);
-    }
-    &:active {
-      & > .mdw-ripple > .mdw-ripple__inner,
-      &:after {
-        opacity: buttonThemeValue("ripple-opacity", $type, $theme);
-      }
+      opacity: buttonThemeValue("ripple-opacity", $type, $theme);
     }
   }
 }

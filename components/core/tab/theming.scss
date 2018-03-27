@@ -34,15 +34,10 @@ $tabColors: (
     color: tabThemeValue("active-color", $type, $theme);
   }
   .mdw-tab__action {
-    & > .mdw-ripple > .mdw-ripple__inner,
-    &:after {
+    & > .mdw-ripple:active > .mdw-ripple__inner,
+    &:active:after {
       color: tabThemeValue("active-color", $type, $theme);
-    }
-    &:active {
-      & > .mdw-ripple > .mdw-ripple__inner,
-      &:after {
-        opacity: buttonThemeValue("ripple-opacity", $type, $theme);
-      }
+      opacity: buttonThemeValue("ripple-opacity", $type, $theme);
     }
   }
 }

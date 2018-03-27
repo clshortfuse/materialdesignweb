@@ -25,7 +25,8 @@ $ripple-duration: 500ms;
   width: 100%;
   padding-top: 100%;
   opacity: 0;
-  background-color: transparent;
+  background-color: currentColor;
+  color: transparent;
   transform: translateX(-50%) translateY(-50%) scale(1);
   transition-delay:
     0s,
@@ -58,12 +59,12 @@ $ripple-duration: 500ms;
   transition-property:
     transform,
     opacity,
-    background-color;
+    color;
   transition-timing-function: $motion-easing-sharp;
   will-change:
     transform,
     opacity,
-    background-color;
+    color;
 }
 
 @mixin mdw-ripple__active {
@@ -71,7 +72,7 @@ $ripple-duration: 500ms;
   transition-duration: 0s;
   transition-delay: 0s;
   opacity: 0.26;
-  background-color: currentColor;
+  color: inherit;
 }
 
 
