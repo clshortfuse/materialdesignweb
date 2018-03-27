@@ -33,10 +33,10 @@ $bottomnavColors: (
   }
 
   .mdw-bottomnav__action {
-    & > .mdw-ripple:active > .mdw-ripple__inner,
-    &:active:after {
-      color: buttonThemeValue("ripple-color", $type, $theme);
+    & > .mdw-ripple > .mdw-ripple__inner,
+    &:after {
       opacity: buttonThemeValue("ripple-opacity", $type, $theme);
+      color: buttonThemeValue("ripple-color", $type, $theme);
     }
   }
 }

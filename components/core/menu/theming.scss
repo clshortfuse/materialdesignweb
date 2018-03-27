@@ -30,8 +30,8 @@ $menuColors: (
         &:hover {
           background-color: menuThemeValue("hover-color", $type, $theme);
         }
-        & > .mdw-ripple:active > .mdw-ripple__inner,
-        &:active:after {
+        & > .mdw-ripple > .mdw-ripple__inner,
+        &:after {
           color: buttonThemeValue("ripple-color", $type, $theme);
           opacity: buttonThemeValue("ripple-opacity", $type, $theme);
         }

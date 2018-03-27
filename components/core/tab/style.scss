@@ -111,7 +111,6 @@
   & > .mdw-ripple:active > .mdw-ripple__inner,
   &:active::after {
     @include mdw-ripple__active;
-    opacity: 0.26;
   }
 
   &[mdw-ripple] {

@@ -24,65 +24,60 @@ $ripple-duration: 500ms;
   height: 0;
   width: 100%;
   padding-top: 100%;
-  opacity: 0;
   background-color: transparent;
-  color: transparent;
+  color: inherit;
+  opacity: 0.26;
+  @include MSOnly() {
+    // Microsoft browsers don't handle low opacity (12%) properly
+    opacity: 0.26 !important;
+  }
   transform: translateX(-50%) translateY(-50%) scale(1);
   transition-delay:
     0s,
-    $motion-duration-desktop-max / 2,
-    $motion-duration-desktop-max / 2,
+    0s,
     $motion-duration-desktop-max / 2;
   transition-duration:
     $motion-duration-desktop-max,
-    $motion-duration-desktop-max / 2,
     $motion-duration-desktop-max / 2,
     $motion-duration-desktop-max / 2;
     
   @include allHandsets {
     transition-delay:
       0s,
-      $motion-duration-mobile-max / 2,
-      $motion-duration-mobile-max / 2,
+      0s,
       $motion-duration-mobile-max / 2;
     transition-duration:
       $motion-duration-mobile-max,
-      $motion-duration-mobile-max / 2,
       $motion-duration-mobile-max / 2,
       $motion-duration-mobile-max / 2;
   }
   @include allTablets {
     transition-delay:
       0s,
-      $motion-duration-tablet-max / 2,
-      $motion-duration-tablet-max / 2,
+      0s,
       $motion-duration-tablet-max / 2;
     transition-duration:
       $motion-duration-tablet-max,
-      $motion-duration-tablet-max / 2,
       $motion-duration-tablet-max / 2,
       $motion-duration-tablet-max / 2;
   }
   transition-property:
     transform,
     opacity,
-    background-color,
-    color;
+    background-color;
   transition-timing-function: $motion-easing-sharp;
   will-change:
     transform,
     opacity,
-    background-color,
-    color;
+    background-color;
 }
 
 @mixin mdw-ripple__active {
-  transform: translateX(-50%) translateY(-50%) scale(0);
   transition-duration: 0s;
   transition-delay: 0s;
-  opacity: 0.26;
+  transform: translateX(-50%) translateY(-50%) scale(0);
+  opacity: 0;
   background-color: currentColor;
-  color: inherit;
 }
 
 
@@ -91,7 +86,7 @@ $ripple-duration: 500ms;
 // opacity  0.000   -->   1.000   -->   0.000
 
 // Implemenation
-// scale    0.000   -->   0.500   -->   1.000
-// opacity  0.000   -->   1.000   -->   1.000
-// color    solid   -->   solid   -->   trans
+// scale   - 0.000   -->   0.500   -->   1.000 -  0% delay 100% duration
+// opacity - 0.000   -->   1.000   -->   1.000 -  0% delay  50% duration
+// color   - solid   -->   solid   -->   trans - 50% delay  50% duration
 

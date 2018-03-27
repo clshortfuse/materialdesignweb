@@ -34,8 +34,8 @@ $tabColors: (
     color: tabThemeValue("active-color", $type, $theme);
   }
   .mdw-tab__action {
-    & > .mdw-ripple:active > .mdw-ripple__inner,
-    &:active:after {
+    & > .mdw-ripple > .mdw-ripple__inner,
+    &:after {
       color: tabThemeValue("active-color", $type, $theme);
       opacity: buttonThemeValue("ripple-opacity", $type, $theme);
     }
