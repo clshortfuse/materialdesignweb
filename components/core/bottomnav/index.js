@@ -118,7 +118,7 @@ class Bottomnav {
     this.removeSelection();
     actionElement.setAttribute('selected', '');
     let inputElement;
-    if (actionElement.tagName.toLowerCase() === 'label' && actionElement.hasAttribute('for')) {
+    if (actionElement instanceof HTMLLabelElement && actionElement.hasAttribute('for')) {
       const id = actionElement.getAttribute('for');
       if (id) {
         inputElement = document.getElementById(id);
