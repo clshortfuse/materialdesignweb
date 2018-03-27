@@ -165,8 +165,8 @@
 .mdw-bottomnav[mdw-theme-color] {
   .mdw-bottomnav__action {
     color: inherit;
-    & > .mdw-ripple:active > .mdw-ripple__inner,
-    &:active:after {
+    & > .mdw-ripple > .mdw-ripple__inner,
+    &:after {
       color: inherit;
     }
   }
