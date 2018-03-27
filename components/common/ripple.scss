@@ -25,24 +25,29 @@ $ripple-duration: 500ms;
   width: 100%;
   padding-top: 100%;
   opacity: 0;
-  background-color: currentColor;
+  background-color: transparent;
   color: transparent;
   transform: translateX(-50%) translateY(-50%) scale(1);
   transition-delay:
     0s,
     $motion-duration-desktop-max / 2,
+    $motion-duration-desktop-max / 2,
     $motion-duration-desktop-max / 2;
   transition-duration:
     $motion-duration-desktop-max,
     $motion-duration-desktop-max / 2,
+    $motion-duration-desktop-max / 2,
     $motion-duration-desktop-max / 2;
+    
   @include allHandsets {
     transition-delay:
       0s,
       $motion-duration-mobile-max / 2,
+      $motion-duration-mobile-max / 2,
       $motion-duration-mobile-max / 2;
     transition-duration:
       $motion-duration-mobile-max,
+      $motion-duration-mobile-max / 2,
       $motion-duration-mobile-max / 2,
       $motion-duration-mobile-max / 2;
   }
@@ -50,20 +55,24 @@ $ripple-duration: 500ms;
     transition-delay:
       0s,
       $motion-duration-tablet-max / 2,
+      $motion-duration-tablet-max / 2,
       $motion-duration-tablet-max / 2;
     transition-duration:
       $motion-duration-tablet-max,
+      $motion-duration-tablet-max / 2,
       $motion-duration-tablet-max / 2,
       $motion-duration-tablet-max / 2;
   }
   transition-property:
     transform,
     opacity,
+    background-color,
     color;
   transition-timing-function: $motion-easing-sharp;
   will-change:
     transform,
     opacity,
+    background-color,
     color;
 }
 
@@ -72,6 +81,7 @@ $ripple-duration: 500ms;
   transition-duration: 0s;
   transition-delay: 0s;
   opacity: 0.26;
+  background-color: currentColor;
   color: inherit;
 }
 
