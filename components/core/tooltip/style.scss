@@ -74,7 +74,9 @@ $tooltip__background-color: #616161; // material-grey-700
 // Button position fix
 .mdw-tooltip__wrapper > .mdw-button[mdw-icon] ~ .mdw-tooltip {
   margin-top: -8px;
-  margin-bottom: -8px;
+  &[mdw-position="top"] {
+    margin-top: 8px;
+  }
 }
 
 // Menu flicker fix
