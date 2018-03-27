@@ -26,7 +26,7 @@ $tooltip__background-color: #616161; // material-grey-700
   transition-property: opacity;
   transition-duration: 150ms;
   transition-timing-function: $motion-easing-deceleration;
-  z-index: 1;
+  z-index: 8;
   border-radius: dp(2);
   pointer-events: none;
   line-height: normal;
