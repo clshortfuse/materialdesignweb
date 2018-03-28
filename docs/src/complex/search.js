@@ -1,4 +1,4 @@
-import { List, ListRow, TextField, Search } from '../../components/index';
+import { List, ListRow, TextField, Search } from '../../../components/index';
 
 const componentMap = new WeakMap();
 /** @return {void} */
@@ -55,7 +55,7 @@ function buildCustomSearch1() {
     });
   };
   
-  const searchDemoCustom = new Search({
+  const searchDocsCustom = new Search({
     textfield,
     list,
     searchOnFocus: false,
@@ -153,7 +153,7 @@ function buildCustomSearch2() {
       return Promise.resolve();
     });
   };
-  const searchDemoCustom = new Search({
+  const searchDocsCustom = new Search({
     textfield,
     list,
     debounce: 300,
@@ -166,11 +166,11 @@ function buildCustomSearch2() {
 
 /** @return {void} */
 function setupSearches() {
-  const searchDemoSimple = new Search({
+  const searchDocsSimple = new Search({
     textfield: componentMap.get(document.getElementById('search-textfield-simple')),
     list: componentMap.get(document.getElementById('search-list-simple')),
   });
-  const searchDemoMultiline = new Search({
+  const searchDocsMultiline = new Search({
     textfield: componentMap.get(document.getElementById('search-textfield-multiline')),
     list: componentMap.get(document.getElementById('search-list-multiline')),
     suggestionMethod: 'none',

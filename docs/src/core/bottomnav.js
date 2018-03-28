@@ -1,5 +1,5 @@
 import setupImageTargets from '../targetHandler';
-import { Bottomnav, BottomnavAction } from '../../components/index';
+import { Bottomnav, BottomnavAction } from '../../../components/index';
 
 const componentMap = new WeakMap();
 

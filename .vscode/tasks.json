@@ -3,7 +3,7 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "start:demo",
+      "script": "start:docs",
       "isBackground": true,
       "problemMatcher": [{
         "pattern": {

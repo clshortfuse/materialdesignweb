@@ -5,16 +5,16 @@ const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 
 const isProduction = (process.env.NODE_ENV === 'production');
-const DEST = (isProduction ? 'dist/' : 'test/');
 
 /** @return {Object} */
 function getComponentsConfig() {
+  const DEST = (isProduction ? 'dist' : 'test/dist');
   return {
     entry: ['./components/index.js', './components/default.scss'],
     devtool: isProduction ? undefined : 'nosources-source-map',
     output: {
       filename: 'materialdesignweb.min.js',
-      path: path.resolve(__dirname, DEST, 'components'),
+      path: path.resolve(__dirname, DEST),
     },
     module: {
       rules: [{
@@ -62,38 +62,39 @@ function getComponentsConfig() {
 }
 
 /** @return {Object} */
-function getDemoConfig() {
+function getDocsConfig() {
   const extractStyles = new ExtractTextPlugin('[name].min.css');
   const extractHtml = new ExtractTextPlugin('[name].html');
   const entries = {
-    index: ['./demo/index.pug'],
-    demo: ['./demo/demo.scss'],
-    theming: ['./demo/theming.scss'],
-    components: ['./demo/components.scss'],
-    'theming.ie11': ['./demo/theming.ie11.scss'],
+    index: ['./docs/src/index.pug'],
+    docs: ['./docs/src/docs.scss'],
+    theming: ['./docs/src/theming.scss'],
+    components: ['./docs/src/components.scss'],
+    'theming.ie11': ['./docs/src/theming.ie11.scss'],
   };
-  fs.readdirSync('./demo/core/')
+  fs.readdirSync('./docs/src/core/')
     .forEach((filename) => {
       const noExt = filename.substring(0, filename.lastIndexOf('.'));
       if (!entries[`core/${noExt}`]) {
         entries[`core/${noExt}`] = [];
       }
-      entries[`core/${noExt}`].push(`./demo/core/${filename}`);
+      entries[`core/${noExt}`].push(`./docs/src/core/${filename}`);
     });
-  fs.readdirSync('./demo/complex/')
+  fs.readdirSync('./docs/src/complex/')
     .forEach((filename) => {
       const noExt = filename.substring(0, filename.lastIndexOf('.'));
       if (!entries[`complex/${noExt}`]) {
         entries[`complex/${noExt}`] = [];
       }
-      entries[`complex/${noExt}`].push(`./demo/complex/${filename}`);
+      entries[`complex/${noExt}`].push(`./docs/src/complex/${filename}`);
     });
+  const DEST = (isProduction ? 'docs' : 'test/docs');
   return {
     entry: entries,
     devtool: isProduction ? undefined : 'nosources-source-map',
     output: {
       filename: '[name].min.js',
-      path: path.resolve(__dirname, DEST, 'demo'),
+      path: path.resolve(__dirname, DEST),
     },
     module: {
       rules: [{
@@ -166,8 +167,8 @@ function getDemoConfig() {
  * @return {Object}
  */
 function makeWebPackConfig(env = {}) {
-  if (env.target === 'demo') {
-    return getDemoConfig();
+  if (env.target === 'docs') {
+    return getDocsConfig();
   }
   return getComponentsConfig();
 }

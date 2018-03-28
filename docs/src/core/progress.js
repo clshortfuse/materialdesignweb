@@ -1,5 +1,5 @@
 import setupImageTargets from '../targetHandler';
-import { ProgressCircle } from '../../components/index';
+import { ProgressCircle } from '../../../components/index';
 
 /** @return {void} */
 function setupProgressCircleInterval() {

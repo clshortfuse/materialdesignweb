@@ -2,10 +2,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Chrome Demo Debug",
+      "name": "Chrome Docs Debug",
       "type": "chrome",
       "request": "launch",
-      "preLaunchTask": "npm: start:demo",
+      "preLaunchTask": "npm: start:docs",
       "url": "http://localhost:8080/",
       "webRoot": "${workspaceFolder}/test",
       "sourceMapPathOverrides": {

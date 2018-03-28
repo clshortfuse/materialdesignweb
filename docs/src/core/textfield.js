@@ -1,5 +1,5 @@
 import setupImageTargets from '../targetHandler';
-import { TextField } from '../../components/index';
+import { TextField } from '../../../components/index';
 
 const componentMap = new WeakMap();
 
