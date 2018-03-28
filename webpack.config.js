@@ -41,7 +41,7 @@ function getComponentsConfig() {
             options: {
               sourceMap: !isProduction,
               plugins: [
-                () => cssnano(),
+                () => cssnano({ preset: 'default' }),
               ],
             },
           },
@@ -128,7 +128,7 @@ function getDocsConfig() {
               sourceMap: !isProduction,
               plugins: () => [
                 autoprefixer({ grid: true }),
-                cssnano(),
+                cssnano({ preset: 'default', zindex: false }),
               ],
             },
           }, {
