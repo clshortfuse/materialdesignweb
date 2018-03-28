@@ -56,7 +56,7 @@ body {
 .target {
   position: relative;
   margin: 8px;
-  width: 360px;
+  min-width: 360px;
   height: 640px;
   background-size: cover;
   background-repeat: no-repeat;
