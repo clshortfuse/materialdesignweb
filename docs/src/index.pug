@@ -1,6 +1,19 @@
 include mixins.pug
 
-+header()
-  +navdrawer("Home")
-    .mdw-type(mdw-style="display-3") Material Design Web
-  script(src='/docs.min.js')
+doctype html
+html(lang='en')
+  head
+    title Material Design Web
+    meta(charset='utf-8')
+    meta(content='IE=edge', http-equiv='X-UA-Compatible')
+    meta(content='', name='description')
+    meta(content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no", name='viewport')
+    link(rel='stylesheet' href="https://fonts.googleapis.com/icon?family=Material+Icons")
+    link(rel='stylesheet' href='//fonts.googleapis.com/css?family=Roboto:300,400,500,700')
+    link(rel='stylesheet' href='docs.min.css')
+    link(rel='stylesheet' href='components.min.css')
+    link(rel='stylesheet' href='theming.min.css')
+    link(rel='stylesheet' href='theming.ie11.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
+  body(mdw-theme-fill="white light")
+    +navdrawer("Home")
+      .mdw-type(mdw-style="display-3") Material Design Web
