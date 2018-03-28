@@ -75,18 +75,18 @@ function getDocsConfig() {
   fs.readdirSync('./docs/src/core/')
     .forEach((filename) => {
       const noExt = filename.substring(0, filename.lastIndexOf('.'));
-      if (!entries[`core/${noExt}`]) {
-        entries[`core/${noExt}`] = [];
+      if (!entries[`${noExt}`]) {
+        entries[`${noExt}`] = [];
       }
-      entries[`core/${noExt}`].push(`./docs/src/core/${filename}`);
+      entries[`${noExt}`].push(`./docs/src/core/${filename}`);
     });
   fs.readdirSync('./docs/src/complex/')
     .forEach((filename) => {
       const noExt = filename.substring(0, filename.lastIndexOf('.'));
-      if (!entries[`complex/${noExt}`]) {
-        entries[`complex/${noExt}`] = [];
+      if (!entries[`${noExt}`]) {
+        entries[`${noExt}`] = [];
       }
-      entries[`complex/${noExt}`].push(`./docs/src/complex/${filename}`);
+      entries[`${noExt}`].push(`./docs/src/complex/${filename}`);
     });
   const DEST = (isProduction ? 'docs' : 'test/docs');
   return {
