@@ -20,3 +20,53 @@ mixin androidnavbar
     i.material-icons &#xE835;
 mixin target(url)
   .target(style=`background-image: url(${url})`)
+
+mixin header()
+  doctype html
+  html(lang='en')
+    head
+      title Material Design Web Demo
+      meta(charset='utf-8')
+      meta(content='IE=edge', http-equiv='X-UA-Compatible')
+      meta(content='', name='description')
+      meta(content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no", name='viewport')
+      link(rel='stylesheet' href="https://fonts.googleapis.com/icon?family=Material+Icons")
+      link(rel='stylesheet' href='//fonts.googleapis.com/css?family=Roboto:300,400,500,700')
+      link(rel='stylesheet' href='/demo.min.css')
+      link(rel='stylesheet' href='/components.min.css')
+      link(rel='stylesheet' href='/theming.min.css')
+      link(rel='stylesheet' href='/theming.ie11.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
+    body(mdw-theme-fill="white light")
+      block
+    
+
+
+- var corecomponents = ["bottomnav", "button", "list", "menu", "progress", "selection", "tab", "textfield", "toolbar", "type"]
+- var complexcomponents = ["dialog", "navdrawer", "search"]
+
+mixin navdrawer(selected)
+  .mdw-navdrawer#demo-navdrawer(mdw-theme-fill="background-100 light" mdw-floating="card")
+    a.mdw-navdrawer__scrim(href="#")
+    .mdw-navdrawer__toolbar
+      .mdw-toolbar(mdw-theme-fill="accent-500 dark")
+        .mdw-toolbar__action
+          .mdw-toolbar__start
+            .mdw-tooltip__wrapper
+              a.mdw-button(mdw-icon href="#demo-navdrawer").material-icons menu
+              .mdw-tooltip Menu
+          .mdw-toolbar__title=selected
+    .mdw-navdrawer__drawer
+      .mdw-list
+        a.mdw-list__row(selected=selected=='Home' href='/' mdw-theme-color="primary")
+          .mdw-list__text Home
+        .mdw-list__subheader Core
+        each item in corecomponents
+          a.mdw-list__row(selected=selected==item href=`/core/${item}.html` mdw-theme-color="primary")
+            .mdw-list__text=item
+        .mdw-list__subheader Complex
+        each item in complexcomponents
+          a.mdw-list__row(selected=(selected==item) href=`/complex/${item}.html` mdw-theme-color="accent")
+            .mdw-list__text=item
+    .mdw-navdrawer__content
+      block
+

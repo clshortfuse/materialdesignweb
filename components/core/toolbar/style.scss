@@ -58,6 +58,8 @@ $toolbar-right-padding: dp(16);
     
     align-self: flex-end;
     font-size: sp(20);
+    display: flex;
+    justify-content: flex-start;
 
     // 20dp bottom padding from baseline
     &::after {

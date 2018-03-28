@@ -16,7 +16,7 @@ function updateRipplePosition(element, event) {
   element.style.setProperty('top', `${y}px`);
 }
 
-class TabItem {
+class TabAction {
   /**
    * @param {Element} element
    */
@@ -170,5 +170,5 @@ class Tab {
 
 export {
   Tab,
-  TabItem,
+  TabAction,
 };

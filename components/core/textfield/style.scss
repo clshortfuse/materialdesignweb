@@ -50,7 +50,7 @@ $icon-signifier__padding-end: dp(16);
   }
   align-items: baseline;
   flex-direction: column;
-  font-size: sp(16);
+  // font-size: sp(16);
   &[mdw-textarea],
   &[mdw-box] {
     grid-template-rows: calc(#{$label__padding-top__boxed} + #{$label__font-size} + #{$label__padding-bottom}) auto;

@@ -1,0 +1,177 @@
+include ../mixins.pug
+
++header()
+  +navdrawer("tab")
+    .comparison.clipped.mdw-theme-tab
+      .render
+        +androidstatusbar('primary-700')
+        .mdw-toolbar(mdw-theme-fill="primary-500 dark")
+          .mdw-toolbar__action
+            .mdw-toolbar__start
+              .mdw-button(mdw-icon).material-icons menu
+            .mdw-toolbar__title Page title
+            .mdw-toolbar__end
+              .mdw-button(mdw-icon).material-icons search
+              .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
+          form.mdw-tab(mdw-theme-color="accent")
+            input(type="radio" name="tab" value="one" id='text-tab1' checked)
+            label.mdw-tab__action(for='text-tab1')
+              .mdw-tab__label Item One
+            input(type="radio" name="tab" value="two" id='text-tab2')
+            label.mdw-tab__action(for='text-tab2')
+              .mdw-tab__label Item Two
+            input(type="radio" name="tab" value="three" id='text-tab3')
+            label.mdw-tab__action(for='text-tab3')
+              .mdw-tab__label Item Three
+            .mdw-tab__indicator
+        .content(mdw-theme-fill="white")
+      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsOUdyb0FjQTJTdlk/components-tabs-usage-mobile3.png')
+
+    .comparison.clipped.mdw-theme-tab
+      .render
+        +androidstatusbar('primary-700')
+        .mdw-toolbar(mdw-theme-fill="primary-500 dark")
+          .mdw-toolbar__action
+            .mdw-toolbar__start
+              .mdw-button(mdw-icon).material-icons menu
+            .mdw-toolbar__end
+              .mdw-button(mdw-icon).material-icons search
+              .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
+          .mdw-toolbar__content(style="font-size:2.125em;height:56px") Page title
+          form.mdw-tab(mdw-theme-color="accent")
+            input#large-text-tab1(type="radio" name="tab" value="one" checked)
+            label.mdw-tab__action(for='large-text-tab1')
+              .mdw-tab__label Item One
+            input#large-text-tab2(type="radio" name="tab" value="two")
+            label.mdw-tab__action(for='large-text-tab2')
+              .mdw-tab__label Item Two
+            input#large-text-tab3(type="radio" name="tab" value="three")
+            label.mdw-tab__action(for='large-text-tab3')
+              .mdw-tab__label Item Three
+            .mdw-tab__indicator
+        .content(mdw-theme-fill="white light")
+      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsc0lzb2VoMkFBNUE/components-tabs-usage-mobile1.png')
+
+
+    .comparison.clipped.mdw-theme-tab
+      .render
+        form.mdw-tab(mdw-theme-fill="primary-500 dark" mdw-theme-color="accent")
+          input#no-toolbar-tab1(type="radio" name="tab" value="one" checked)
+          label.mdw-tab__action(for='no-toolbar-tab1')
+            .mdw-tab__label Item One
+          input#no-toolbar-tab2(type="radio" name="tab" value="two")
+          label.mdw-tab__action(for='no-toolbar-tab2')
+            .mdw-tab__label Item Two
+          input#no-toolbar-tab3(type="radio" name="tab" value="three")
+          label.mdw-tab__action(for='no-toolbar-tab3')
+            .mdw-tab__label Item Three
+          .mdw-tab__indicator
+        .content(mdw-theme-fill="white light")
+      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsbmZJbkdjeHE0RW8/components-tabs-usage-mobile6.png')
+
+    .comparison.clipped.mdw-theme-tab
+      .render
+        +androidstatusbar('background-600 dark')
+        .mdw-toolbar(mdw-theme-fill="background-100 light")
+          .mdw-toolbar__action
+            .mdw-toolbar__start
+              .mdw-button(mdw-icon).material-icons menu
+            .mdw-toolbar__title Page title
+            .mdw-toolbar__end
+              .mdw-button(mdw-icon).material-icons search
+              .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
+          .mdw-toolbar__content
+          form.mdw-tab(mdw-theme-color="primary")
+            input#clear-toolbar-tab1(type="radio" name="tab" value="one" checked)
+            label.mdw-tab__action(for='clear-toolbar-tab1')
+              .mdw-tab__label Item One
+            input#clear-toolbar-tab2(type="radio" name="tab" value="two")
+            label.mdw-tab__action(for='clear-toolbar-tab2')
+              .mdw-tab__label Item Two
+            input#clear-toolbar-tab3(type="radio" name="tab" value="three")
+            label.mdw-tab__action(for='clear-toolbar-tab3')
+              .mdw-tab__label Item Three
+            .mdw-tab__indicator
+        .content(mdw-theme-fill="white light")
+      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsVDk4V2Nnc2U3LTQ/components-tabs-usage-mobile4.png')
+
+    .comparison.clipped.mdw-theme-tab
+      .render
+        +androidstatusbar('primary-700 dark')
+        .mdw-toolbar(mdw-theme-fill="primary-500 dark" mdw-theme-color="accent")
+          .mdw-toolbar__action
+            .mdw-toolbar__start
+              .mdw-button(mdw-icon).material-icons menu
+            .mdw-toolbar__title Page title
+            .mdw-toolbar__end
+              .mdw-button(mdw-icon).material-icons search
+              .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
+          .mdw-toolbar__content
+          form.mdw-tab(mdw-theme-color="accent")
+            input(type="radio" name="tab" value="recents" id='tab-text-icon1' checked)
+            label.mdw-tab__action(for='tab-text-icon1')
+              .mdw-tab__icon.material-icons phone
+              .mdw-tab__label Recents
+            input(type="radio" name="tab" value="favorites" id='tab-text-icon2')
+            label.mdw-tab__action(for='tab-text-icon2')
+              .mdw-tab__icon.material-icons favorite
+              .mdw-tab__label Favorites
+            input(type="radio" name="tab" value="nearby" id='tab-text-icon3')
+            label.mdw-tab__action(for='tab-text-icon3')
+              .mdw-tab__icon.material-icons person_pin
+              .mdw-tab__label Nearby
+            .mdw-tab__indicator
+        .content(mdw-theme-fill="white light")
+      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsS2pLN2MwWmUyRW8/components-tabs-usage-specs8.png')
+
+    .comparison.clipped.mdw-theme-tab
+      .render
+        +androidstatusbar('background-600 dark')
+        .mdw-toolbar(mdw-theme-fill="background-100 light")
+          .mdw-toolbar__action
+            .mdw-toolbar__start
+              .mdw-button(mdw-icon).material-icons menu
+            .mdw-toolbar__title Page title
+            .mdw-toolbar__end
+              .mdw-button(mdw-icon).material-icons search
+              .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
+          .mdw-toolbar__content
+          form.mdw-tab(mdw-theme-color="primary")
+            input(type="radio" name="tab" value="recents" id='tabs-icon1' checked)
+            label.mdw-tab__action(for='tabs-icon1')
+              .mdw-tab__icon.material-icons phone
+            input(type="radio" name="tab" value="favorites" id='tabs-icon2')
+            label.mdw-tab__action(for='tabs-icon2')
+              .mdw-tab__icon.material-icons favorite
+            input(type="radio" name="tab" value="nearby" id='tabs-icon3')
+            label.mdw-tab__action(for='tabs-icon3')
+              .mdw-tab__icon.material-icons person_pin
+            .mdw-tab__indicator
+        .content(mdw-theme-fill="white light")
+      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsQ1Y4YXpwTkZ2MFU/components-tabs-usage-mobile8.png')
+
+    .comparison.clipped.mdw-theme-tab.js
+      .render
+        +androidstatusbar('primary-700 dark')
+        .mdw-toolbar(mdw-theme-fill="primary-500 dark")
+          .mdw-toolbar__action
+            .mdw-toolbar__start
+              .mdw-button(mdw-icon).material-icons menu
+            .mdw-toolbar__title JS version
+            .mdw-toolbar__end
+              .mdw-button(mdw-icon).material-icons search
+              .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
+          .mdw-toolbar__content
+          .mdw-tab(mdw-theme-color="accent")
+            .mdw-tab__action(selected)
+              .mdw-tab__icon.material-icons phone
+              .mdw-tab__label Recents
+            .mdw-tab__action
+              .mdw-tab__icon.material-icons favorite
+              .mdw-tab__label Favorites
+            .mdw-tab__action
+              .mdw-tab__icon.material-icons person_pin
+              .mdw-tab__label Nearby
+        .content(mdw-theme-fill="white light")
+      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsS2pLN2MwWmUyRW8/components-tabs-usage-specs8.png')
+  script(src='tab.min.js')

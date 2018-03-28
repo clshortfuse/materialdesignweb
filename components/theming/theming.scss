@@ -194,15 +194,17 @@ $added-palettes-list: ();
 }
 
 @mixin buildFallbackThemes() {
-  [mdw-theme-fill~="white"] {
-    background-color: white;
-  }
+  @if (map-has-key($mdw-theme__themes, "default")) {
+    [mdw-theme-fill~="white"] {
+      background-color: white;
+    }
 
-  [mdw-theme-fill~="light"] {
-    @include componentContrastRules('light');
-  }
-  [mdw-theme-color~="white"] {
-    color: white;
+    [mdw-theme-fill~="light"] {
+      @include componentContrastRules('light');
+    }
+    [mdw-theme-color~="white"] {
+      color: white;
+    }
   }
 
   @each $name in map-keys($mdw-theme__themes) {
@@ -245,14 +247,16 @@ $added-palettes-list: ();
       }
     }
   }
-  [mdw-theme-fill~="black"] {
-    background-color: black;
-  }
-  [mdw-theme-color~="black"] {
-    color: black;
-  }
-  [mdw-theme-fill~="dark"] {
-    @include componentContrastRules('dark');
+  @if (map-has-key($mdw-theme__themes, "default")) {
+    [mdw-theme-fill~="black"] {
+      background-color: black;
+    }
+    [mdw-theme-color~="black"] {
+      color: black;
+    }
+    [mdw-theme-fill~="dark"] {
+      @include componentContrastRules('dark');
+    }
   }
 
   @each $color in $mdw-theme__explicit-colors {

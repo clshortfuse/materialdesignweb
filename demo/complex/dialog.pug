@@ -1,0 +1,44 @@
+include ../mixins.pug
+
++header()
+  +navdrawer("dialog")
+    #horizontalLine
+    #verticalLineLeft
+    #verticalLineRight
+    .comparison
+      .render
+        div.display-flex.flex-1(mdw-theme-fill="background-50 light" flex-column style="position:relative")
+          +androidstatusbar('primary-700 dark')
+          .mdw-toolbar(mdw-theme-fill="primary-500 dark")
+            .mdw-toolbar__action
+              .mdw-toolbar__start
+                .mdw-tooltip__wrapper
+                  .mdw-button(mdw-icon).material-icons menu
+                  .mdw-tooltip Menu
+              .mdw-toolbar__end
+                .mdw-tooltip__wrapper
+                  .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
+                  .mdw-tooltip Options
+          .content(style="padding:16px 8px;")
+            a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#confirmdialog-titled") Titled
+            a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#confirmdialog-text") Text
+          .mdw-dialog#confirmdialog-titled
+            a.mdw-dialog__close(href="#")
+            .mdw-dialog__popup
+              .mdw-dialog__content
+                .mdw-dialog__title Use Google's location service?
+                .mdw-dialog__body Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
+              .mdw-dialog__button-area
+                a.mdw-button(mdw-theme-color="accent" href="#") Disagree
+                a.mdw-button(mdw-theme-color="accent" href="#") Agree
+          .mdw-dialog#confirmdialog-text
+            a.mdw-dialog__close(href="#")
+            .mdw-dialog__popup
+              .mdw-dialog__content
+                .mdw-dialog__body Discard draft?
+              .mdw-dialog__button-area
+                a.mdw-button(mdw-theme-color="accent" href="#") Cancel
+                a.mdw-button(mdw-theme-color="accent" href="#") Discard
+        +androidnavbar
+      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3ejNQaWYtOGdiUXM/components-dialogs-content1.png')
+  script(src='dialog.min.js')

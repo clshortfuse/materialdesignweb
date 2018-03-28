@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
@@ -63,15 +64,32 @@ function getComponentsConfig() {
 /** @return {Object} */
 function getDemoConfig() {
   const extractStyles = new ExtractTextPlugin('[name].min.css');
-  const extractHtml = new ExtractTextPlugin('index.html');
+  const extractHtml = new ExtractTextPlugin('[name].html');
+  const entries = {
+    index: ['./demo/index.pug'],
+    demo: ['./demo/demo.scss'],
+    theming: ['./demo/theming.scss'],
+    components: ['./demo/components.scss'],
+    'theming.ie11': ['./demo/theming.ie11.scss'],
+  };
+  fs.readdirSync('./demo/core/')
+    .forEach((filename) => {
+      const noExt = filename.substring(0, filename.lastIndexOf('.'));
+      if (!entries[`core/${noExt}`]) {
+        entries[`core/${noExt}`] = [];
+      }
+      entries[`core/${noExt}`].push(`./demo/core/${filename}`);
+    });
+  fs.readdirSync('./demo/complex/')
+    .forEach((filename) => {
+      const noExt = filename.substring(0, filename.lastIndexOf('.'));
+      if (!entries[`complex/${noExt}`]) {
+        entries[`complex/${noExt}`] = [];
+      }
+      entries[`complex/${noExt}`].push(`./demo/complex/${filename}`);
+    });
   return {
-    entry: {
-      // 'babel-polyfill',
-      demo: ['./demo/demo.js', './demo/demo.scss', './demo/index.pug'],
-      theming: ['./demo/theming.scss'],
-      components: ['./demo/components.scss'],
-      'theming.ie11': ['./demo/theming.ie11.scss'],
-    },
+    entry: entries,
     devtool: isProduction ? undefined : 'nosources-source-map',
     output: {
       filename: '[name].min.js',

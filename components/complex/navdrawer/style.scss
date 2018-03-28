@@ -113,12 +113,14 @@
 }
 
 .mdw-navdrawer__content {
+  position: relative;
   grid-row-start: 2;
   grid-row-end: 4;
   -ms-grid-row-span: 2;
   grid-column-start: 2;
   grid-column-end: 4;
   -ms-grid-column-span: 2;
+  overflow-y: scroll;
 }
 
 .mdw-navdrawer__drawer .mdw-list__row[selected] {
@@ -298,7 +300,7 @@
   .mdw-navdrawer__close {
     display: none;
   }
-  .mdw-navdrawer__drawer {
+  > .mdw-navdrawer__drawer {
     position: absolute;
     grid-row-start: 1;
     grid-column-end: 4;
@@ -315,7 +317,7 @@
     margin: 0;
     border-radius: 0px;
   }
-  .mdw-navdrawer__scrim {
+  > .mdw-navdrawer__scrim {
     display: block;
   }
 }
@@ -324,13 +326,13 @@
   .mdw-navdrawer__close {
     display: none;
   }
-  .mdw-navdrawer__drawer {
+  > .mdw-navdrawer__drawer {
     transform: translateX(0);
     box-shadow: elevation(16);
     grid-row-end: 4;
     -ms-grid-column-span: 3;
   }
-  .mdw-navdrawer__scrim {
+  > .mdw-navdrawer__scrim {
     display: block;
     background-color: rgba(black, 0.50);
     cursor: pointer;
@@ -344,11 +346,11 @@
     -ms-grid-column-span: 1;
     padding-right: 0;
   }
-  .mdw-navdrawer__close {
+  > .mdw-navdrawer__close {
     display: flex;
   }
   &:not([mdw-show]):not(:target) {
-    .mdw-navdrawer__close {
+    > .mdw-navdrawer__close {
       display: none;
     }
     .mdw-navdrawer__toolbar .mdw-toolbar__start {
@@ -392,7 +394,7 @@
       grid-column-start: 1;
       -ms-grid-column-span: 3;
     }
-    .mdw-navdrawer__drawer {
+    > .mdw-navdrawer__drawer {
       grid-row-start: 2;
       z-index: auto;
       > .mdw-list ~ .mdw-list {
@@ -424,7 +426,7 @@
 
 .mdw-navdrawer {
   &[mdw-floating] {
-    .mdw-navdrawer__drawer {
+    > .mdw-navdrawer__drawer {
       border-right-width: 0;
       height: auto;
     }
@@ -433,7 +435,7 @@
     .mdw-navdrawer__content {
       grid-column-start:3;
     }
-    .mdw-navdrawer__drawer {
+    > .mdw-navdrawer__drawer {
       grid-column-end: 2;
       margin: 8px;
       border-radius: dp(2);
@@ -444,11 +446,11 @@
   }
   &[mdw-clipped],
   &[mdw-floating] {
-    .mdw-navdrawer__toolbar {
+    > .mdw-navdrawer__toolbar {
       grid-column-start: 1;
       -ms-grid-column-span: 3;
     }
-    .mdw-navdrawer__drawer {
+    > .mdw-navdrawer__drawer {
       grid-row-start: 2;
       z-index: auto;
     }

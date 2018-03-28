@@ -1,0 +1,90 @@
+include ../mixins.pug
+
++header()
+  +navdrawer("menu")
+    .comparison
+      .render
+        +androidstatusbar('primary-700 dark')
+        .mdw-toolbar(mdw-theme-fill="primary-500 dark")
+          .mdw-toolbar__action
+            .mdw-toolbar__start
+              .mdw-tooltip__wrapper
+                .mdw-button(mdw-icon).material-icons menu
+                .mdw-tooltip Menu
+            .mdw-toolbar__end
+              .mdw-tooltip__wrapper.mdw-menu__wrapper
+                a.mdw-button(mdw-icon mdw-more-button href="#moremenu").material-icons more_vert
+                .mdw-menu#moremenu(mdw-position="top right" mdw-width-units="3" mdw-theme-fill="light")
+                  a.mdw-menu__close(href="#")
+                  .mdw-menu__text Refresh
+                  .mdw-menu__text Settings
+                  .mdw-menu__text Send feedback
+                  .mdw-menu__text Help
+                  .mdw-menu__text Signout
+                .mdw-tooltip Options
+        .content(mdw-theme-fill="background-50 light" style="padding:16px 8px")
+          .mdw-menu__wrapper
+            a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#textmenu") Text
+            .mdw-menu#textmenu
+              a.mdw-menu__close(href="#")
+              .mdw-menu__text Maps
+              .mdw-menu__text Books
+              .mdw-menu__text Flights
+              .mdw-menu__text Apps
+          .mdw-menu__wrapper
+            a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#checkmenu") Checks
+            .mdw-menu#checkmenu
+              a.mdw-menu__close(href="#")
+              .mdw-menu__item
+                .mdw-menu__check
+                .mdw-menu__text Maps
+              .mdw-menu__item
+                .mdw-menu__check(checked)
+                .mdw-menu__text Books
+              .mdw-menu__item
+                .mdw-menu__check(checked)
+                .mdw-menu__text Flights
+              .mdw-menu__item
+                .mdw-menu__check
+                .mdw-menu__text Apps
+          div(style="height:400px")
+          .mdw-menu__wrapper
+            a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#infomenu") Info
+            .mdw-menu#infomenu(mdw-width-units=4 mdw-position="bottom")
+              a.mdw-menu__close(href="#")
+              .mdw-menu__item
+                .mdw-menu__check
+                .mdw-menu__text Bold
+                .mdw-menu__info ⌘B
+              .mdw-menu__item
+                .mdw-menu__check(checked)
+                .mdw-menu__text Italic
+                .mdw-menu__info ⌘I
+              .mdw-menu__item
+                .mdw-menu__check(checked)
+                .mdw-menu__text Underline
+                .mdw-menu__info ⌘U
+              .mdw-menu__item
+                .mdw-menu__check(checked)
+                .mdw-menu__text Flights
+              .mdw-menu__item
+                .mdw-menu__check
+                .mdw-menu__text Apps
+          .mdw-menu__wrapper
+            a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#iconmenu") Icons
+            .mdw-menu#iconmenu(mdw-width-units=4 mdw-position="bottom")
+              a.mdw-menu__close(href="#")
+              .mdw-menu__item
+                .mdw-menu__icon.material-icons format_bold
+                .mdw-menu__text Bold
+                .mdw-menu__info ⌘B
+              .mdw-menu__item
+                .mdw-menu__icon.material-icons format_italic
+                .mdw-menu__text Italic
+                .mdw-menu__info ⌘I
+              .mdw-menu__item
+                .mdw-menu__icon.material-icons format_underline
+                .mdw-menu__text Underline
+                .mdw-menu__info ⌘U
+      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3RktrSGVxbkhFaTg/components-menus-usage2.png')
+  script(src='menu.min.js')

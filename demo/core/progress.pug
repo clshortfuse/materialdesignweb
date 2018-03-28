@@ -1,0 +1,17 @@
+include ../mixins.pug
+
++header()
+  +navdrawer("progress")
+    .comparison.clipped-300.js
+      .render.mdw-theme-progress
+        .content.display-flex(mdw-theme-fill="background-100 light")
+          .flex-1.display-flex(flex-justify-content="center" flex-align-items="center")
+            .mdw-progress-circle(mdw-theme-color="primary")
+              svg(viewBox="0 0 24 24")
+                path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12")
+                path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25")
+            .mdw-progress-circle(mdw-theme-color="accent-A700" mdw-determinate)
+              svg(viewBox="0 0 24 24")
+                path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12")
+                path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25")
+  script(src='progress.min.js')

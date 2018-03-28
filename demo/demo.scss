@@ -1,5 +1,3 @@
-
-
 $components: (
   'bottomnav',
   'button',
@@ -19,6 +17,7 @@ $components: (
 
 html {
   font-family: 'Roboto', sans-serif;
+  height: 100%;
 }
 
 // Material Icon incorrectly changes RTL direction
@@ -31,6 +30,7 @@ body {
   display: flex;
   flex-direction: row;
   margin: 0;
+  height: 100%;
 }
 
 .page > input[name="show-component"] {
@@ -167,7 +167,6 @@ body {
 
 #verticalLineLeft,
 #verticalLineRight {
-  position: fixed;
   height: 100%;
   background-color: #0FF;
   width: 1px;
@@ -177,8 +176,14 @@ body {
 }
 
 #verticalLineLeft {
-  margin-left: 158px;
+  position: absolute;
+  margin-left: 8px;
 }
+
+#verticalLineRight {
+  position: fixed;
+}
+
 
 #Vintage50Input {
   font-size: sp(34);
