@@ -37,7 +37,7 @@ $tabColors: (
     & > .mdw-ripple > .mdw-ripple__inner,
     &:after {
       color: tabThemeValue("active-color", $type, $theme);
-      opacity: buttonThemeValue("ripple-opacity", $type, $theme);
+      opacity: tabThemeValue("ripple-opacity", $type, $theme);
     }
   }
 }
