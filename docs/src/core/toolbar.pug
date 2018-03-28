@@ -3,6 +3,9 @@ include ../mixins.pug
 
 +header()
   +navdrawer("toolbar")
+    #horizontalLine
+    #verticalLineLeft
+    #verticalLineRight
     .comparison.clipped
       .render
         +androidstatusbar('background-400 light')
@@ -20,7 +23,7 @@ include ../mixins.pug
     .comparison.clipped
       .render.mdw-theme-toolbar
         +androidstatusbar('primary-800 dark')
-        +toolbar('primary-A200 light', ['menu'], ['search', 'favorite', 'more_vert']) Title
+        +toolbar('primary-A200 dark', ['menu'], ['search', 'favorite', 'more_vert']) Title
         .content(mdw-theme-fill="background-300 light")
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsZF9VZDhtQlF5RGM/layout-structure-appbar-structure4.png')
 
