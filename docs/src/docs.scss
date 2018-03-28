@@ -1,20 +1,3 @@
-$components: (
-  'bottomnav',
-  'button',
-  'list',
-  'menu',
-  'progress',
-  'selection',
-  'tab',
-  'textfield',
-  'toolbar',
-  'tooltip',
-  'type',
-  'dialog',
-  'navdrawer',
-  'search'
-);
-
 html {
   font-family: 'Roboto', sans-serif;
   height: 100%;
@@ -31,10 +14,6 @@ body {
   flex-direction: row;
   margin: 0;
   height: 100%;
-}
-
-.page > input[name="show-component"] {
-  display: none;
 }
 
 .nav {
@@ -213,10 +192,6 @@ body {
   }
 }
 
-input[name="show-component"]:not(:checked) {
-  @each $component in $components {
-    &[value="#{$component}"] ~ #comparison-#{$component} {
-      display:none;
-    }
-  }
+.mdw-navdrawer#docs-navdrawer > .mdw-navdrawer__drawer {
+  min-width: 200px;
 }
