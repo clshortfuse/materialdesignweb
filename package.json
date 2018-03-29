@@ -5,7 +5,7 @@
   "main": "components/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:docs": "webpack-dev-server -w --env.target=docs",
+    "start:docs": "webpack-dev-server -w --env.target=docs --host='0.0.0.0'",
     "build:docs": "webpack --env.target=docs"
   },
   "repository": {
