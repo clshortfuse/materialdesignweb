@@ -37,8 +37,9 @@ include ../mixins.pug
           .mdw-toolbar__action
             .mdw-toolbar__start
               .mdw-button(mdw-icon).material-icons arrow_back
-            .mdw-toolbar__title.mdw-textfield#search-textfield-multiline(mdw-solo mdw-theme-color="accent")
-              input.mdw-textfield__input(placeholder="Search")
+            .mdw-toolbar__title
+              .mdw-textfield#search-textfield-multiline(mdw-solo mdw-theme-color="accent")
+                input.mdw-textfield__input(placeholder="Search")
             .mdw-toolbar__end
               .mdw-button(mdw-icon).material-icons clear
         .content(mdw-theme-fill="background-50 light")
