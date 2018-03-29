@@ -3,7 +3,6 @@
 @mixin portraitHandsets {
   @media screen
     and (orientation:portrait)
-    and (min-width: $breakpoint-portrait-handset-small)
     and (max-width: $breakpoint-portrait-handset-max - 1) {
       @content;
     }
@@ -11,7 +10,6 @@
 @mixin landscapeHandsets {
   @media screen
     and (orientation:landscape)
-    and (min-width: $breakpoint-landscape-handset-small)
     and (max-width: $breakpoint-landscape-handset-max - 1) {
       @content;
     }
@@ -44,11 +42,9 @@
   @media
     screen
       and (orientation:portrait)
-      and (min-width: $breakpoint-portrait-handset-small)
       and (max-width: $breakpoint-portrait-tablet-max - 1),
     screen
       and (orientation:landscape)
-      and (min-width: $breakpoint-landscape-handset-small)
       and (max-width: $breakpoint-landscape-tablet-max - 1) {
     @content;
   }
