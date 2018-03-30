@@ -1,4 +1,6 @@
-import { List, ListItem, TextField, Search } from '../../../components/index';
+import { List, ListItem } from '../../../components/core/list/index';
+import { TextField } from '../../../components/core/textfield/index';
+import { Search } from '../../../components/complex/search/index';
 
 const componentMap = new WeakMap();
 /** @return {void} */

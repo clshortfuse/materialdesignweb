@@ -1,5 +1,5 @@
 import setupImageTargets from '../targetHandler';
-import { List, ListItem } from '../../../components/index';
+import { List, ListItem } from '../../../components/core/list/index';
 
 const componentMap = new WeakMap();
 

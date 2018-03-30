@@ -1,5 +1,5 @@
 import setupImageTargets from '../targetHandler';
-import { Tab, TabItem } from '../../../components/index';
+import { Tab, TabItem } from '../../../components/core/tab/index';
 
 const componentMap = new WeakMap();
 

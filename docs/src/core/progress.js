@@ -1,4 +1,4 @@
-import { ProgressCircle } from '../../../components/index';
+import { ProgressCircle } from '../../../components/core/progress/index';
 
 /** @return {void} */
 function setupProgressCircleInterval() {

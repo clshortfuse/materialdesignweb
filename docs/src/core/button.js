@@ -1,5 +1,5 @@
 import setupImageTargets from '../targetHandler';
-import { Button } from '../../../components/index';
+import { Button } from '../../../components/core/button/index';
 
 const componentMap = new WeakMap();
 

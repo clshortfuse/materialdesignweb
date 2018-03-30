@@ -1,5 +1,5 @@
 import setupImageTargets from '../targetHandler';
-import { Menu, MenuItem } from '../../../components/index';
+import { Menu, MenuItem } from '../../../components/core/menu/index';
 
 const componentMap = new WeakMap();
 
