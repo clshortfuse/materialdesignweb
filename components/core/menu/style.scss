@@ -66,24 +66,41 @@ $checkbox-icon-offset-x: dp(6.04);
   min-width: $menu__unit-width * 2;
   max-width: $menu__unit-width * 5;
   top: 0;
-  &[mdw-position~="top"] {
-    top: 0;
-  }
-  &[mdw-position~="left"] {
-    left: dp(4);
-  }
-  &[mdw-position~="right"] {
-    right: dp(-4);
+  left: 0;
+
+  &[mdw-position~="end"] {
+    left: auto;
+    right: 0;
     transform-origin: top right;
   }
   &[mdw-position~="bottom"] {
     top: auto;
     bottom: 0;
     transform-origin: bottom left;
+    &[mdw-position~="end"] {
+        transform-origin: bottom right;
+    }
   }
-  &[mdw-position~="bottom"][mdw-position~="right"] {
-    transform-origin: bottom left;
+
+  [dir=rtl] & {
+    left: auto;
+    right: 0;
+    transform-origin: top right;
+    &[mdw-position~="end"] {
+      left: 0;
+      right: auto;
+      transform-origin: top left;
+    }
+    &[mdw-position~="bottom"] {
+      transform-origin: bottom right;
+      &[mdw-position~="end"] {
+        left: 0;
+        right: auto;
+        transform-origin: bottom left;
+      }
+    }
   }
+
   &[mdw-show]:not([mdw-hide]),
   &:target {
     pointer-events: auto;
@@ -122,6 +139,12 @@ $checkbox-icon-offset-x: dp(6.04);
     bottom: dp(20);
     left: dp(4);
     margin-left: $checkbox-icon-offset-x;
+    [dir=rtl] & {
+      right: dp(4);
+      left: auto;
+      margin-left: 0;
+      margin-right: $checkbox-icon-offset-x;
+    }
     margin-top: $checkbox-icon-offset-y;
     height: $checkbox-icon-height;
     width: $checkbox-icon-width;
