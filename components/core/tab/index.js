@@ -16,7 +16,7 @@ function updateRipplePosition(element, event) {
   element.style.setProperty('top', `${y}px`);
 }
 
-class TabAction {
+class TabItem {
   /**
    * @param {Element} element
    */
@@ -44,7 +44,7 @@ class Tab {
   constructor(element) {
     this.element = element;
     this.inputs = element.getElementsByTagName('input');
-    this.actions = element.getElementsByClassName('mdw-tab__action');
+    this.items = element.getElementsByClassName('mdw-tab__item');
 
     const indicatorElements = element.getElementsByClassName('mdw-tab__indicator');
     this.indicator = indicatorElements && indicatorElements[0];
@@ -65,13 +65,13 @@ class Tab {
       });
     }
 
-    for (let i = 0; i < this.actions.length; i += 1) {
-      const actionElement = this.actions[i];
-      if (actionElement.hasAttribute('selected')) {
-        this.selectAction(actionElement);
+    for (let i = 0; i < this.items.length; i += 1) {
+      const itemElement = this.items[i];
+      if (itemElement.hasAttribute('selected')) {
+        this.selectItem(itemElement);
       }
-      actionElement.addEventListener('click', () => {
-        this.selectAction(actionElement);
+      itemElement.addEventListener('click', () => {
+        this.selectItem(itemElement);
       });
     }
   }
@@ -80,15 +80,15 @@ class Tab {
    * @param {HTMLInputElement} inputElement
    * @return {HTMLElement}
    */
-  static getActionForInput(inputElement) {
-    let actionElement;
-    if (inputElement.parentElement.classList.contains('mdw-tab__action')) {
-      actionElement = inputElement.parentElement;
+  static getItemForInput(inputElement) {
+    let itemElement;
+    if (inputElement.parentElement.classList.contains('mdw-tab__item')) {
+      itemElement = inputElement.parentElement;
     }
     if (inputElement.id) {
-      actionElement = document.querySelector(`label.mdw-tab__action[for="${inputElement.id}"]`);
+      itemElement = document.querySelector(`label.mdw-tab__item[for="${inputElement.id}"]`);
     }
-    return actionElement;
+    return itemElement;
   }
 
   static isRtl() {
@@ -103,36 +103,36 @@ class Tab {
   }
 
   /**
-   * @param {HTMLElement} actionElement
+   * @param {HTMLElement} itemElement
    * @return {boolean} changed
    */
-  selectAction(actionElement) {
+  selectItem(itemElement) {
     let foundPreviousSelection = false;
     let foundTarget = false;
     let indicatorUpdated = false;
     let left = 0;
     const isRtl = Tab.isRtl();
-    for (let i = 0; i < this.actions.length; i += 1) {
-      const index = isRtl ? this.actions.length - 1 -i : i;
-      const action = this.actions.item(index);
-      if (action.hasAttribute('selected')) {
+    for (let i = 0; i < this.items.length; i += 1) {
+      const index = isRtl ? this.items.length - 1 -i : i;
+      const item = this.items.item(index);
+      if (item.hasAttribute('selected')) {
         foundPreviousSelection = true;
-        action.removeAttribute('selected');
+        item.removeAttribute('selected');
         if (!indicatorUpdated) {
           this.indicator.setAttribute('mdw-direction', 'forwards');
           indicatorUpdated = true;
         }
       }
-      if (action === actionElement) {
+      if (item === itemElement) {
         foundTarget = true;
-        actionElement.setAttribute('selected', '');
+        itemElement.setAttribute('selected', '');
         if (!indicatorUpdated) {
           this.indicator.setAttribute('mdw-direction', 'backwards');
           indicatorUpdated = true;
         }
       }
       if (!foundTarget) {
-        left += action.clientWidth;
+        left += item.clientWidth;
       }
       if (foundTarget && foundPreviousSelection) {
         break;
@@ -146,7 +146,7 @@ class Tab {
       // use CSS styling fallback
       return false;
     }
-    const right = this.element.clientWidth - left - actionElement.clientWidth;
+    const right = this.element.clientWidth - left - itemElement.clientWidth;
     if (!this.indicator.hasAttribute('mdw-js-indicator')) {
       this.indicator.setAttribute('mdw-js-indicator', '');
     }
@@ -161,14 +161,14 @@ class Tab {
    * @return {void}
    */
   onInputChanged(inputElement) {
-    const actionElement = Tab.getActionForInput(inputElement);
-    if (actionElement) {
-      this.selectAction(actionElement);
+    const itemElement = Tab.getItemForInput(inputElement);
+    if (itemElement) {
+      this.selectItem(itemElement);
     }
   }
 }
 
 export {
   Tab,
-  TabAction,
+  TabItem,
 };

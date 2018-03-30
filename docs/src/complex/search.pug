@@ -16,17 +16,17 @@ include ../mixins.pug
               .mdw-button(mdw-icon).material-icons clear
         .content(mdw-theme-fill="background-50 light")
           ul.mdw-list#search-list-simple
-            li.mdw-list__row Attractions
-            li.mdw-list__row Dining
-            li.mdw-list__row Education
-            li.mdw-list__row Family
-            li.mdw-list__row Health
-            li.mdw-list__row Office
-            li.mdw-list__row Promotions
-            li.mdw-list__row Radio
-            li.mdw-list__row Recipes
-            li.mdw-list__row Sports
-            li.mdw-list__row Travel
+            li.mdw-list__item Attractions
+            li.mdw-list__item Dining
+            li.mdw-list__item Education
+            li.mdw-list__item Family
+            li.mdw-list__item Health
+            li.mdw-list__item Office
+            li.mdw-list__item Promotions
+            li.mdw-list__item Radio
+            li.mdw-list__item Recipes
+            li.mdw-list__item Sports
+            li.mdw-list__item Travel
         +androidnavbar
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xObnc4ZFYybVRWY2s/single-action4.png')
 
@@ -45,14 +45,14 @@ include ../mixins.pug
         .content(mdw-theme-fill="background-50 light")
           ul.mdw-list#search-list-multiline
             li.mdw-list__subheader Today
-            li.mdw-list__row
+            li.mdw-list__item
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Brunch this weekend?
                 .mdw-list__text-block Ali Connors 
                   span  &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to meet?
-            li.mdw-list__row
+            li.mdw-list__item
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
@@ -60,35 +60,35 @@ include ../mixins.pug
                   span  4
                 .mdw-list__text-block to Alex, Scott, Jennifer
                   span  &mdash; Wish I could come. but I'm out of town this weekend.
-            li.mdw-list__row
+            li.mdw-list__item
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Oui oui
                 .mdw-list__text-block Sandra Adams
                   span  &mdash; Do you have Paris recommendations? Have you ever been?
-            li.mdw-list__row
+            li.mdw-list__item
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Birthday gift
                 .mdw-list__text-block Trevor Hansen
                   span  &mdash; Have any ideas about what we should get Heidi for her birthday?
-            li.mdw-list__row
+            li.mdw-list__item
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Recipe to try
                 .mdw-list__text-block Britta Holt
                   span  &mdash; We should eat this: Grated Squash, Corn, and tomatillo Tacos J
-            li.mdw-list__row
+            li.mdw-list__item
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Giants game
                 .mdw-list__text-block David Park
                   span  &mdash; Any interest in seeing
-            li.mdw-list__row
+            li.mdw-list__item
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
@@ -124,7 +124,7 @@ include ../mixins.pug
               li input-based search
               li 300ms debounce
               li replace input on selection
-              li disabled row filter
+              li disabled item filter
             div
               label.mdw-textfield#search-textfield-custom2(mdw-box)
                 input.mdw-textfield__input(placeholder=" ")

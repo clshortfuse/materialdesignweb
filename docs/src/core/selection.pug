@@ -14,13 +14,13 @@ include ../mixins.pug
         .content(mdw-theme-fill="background-50 light" style="padding-top:7px")
           ul.mdw-list
             li.mdw-list__subheader Switch
-            li.mdw-list__row
+            li.mdw-list__item
               .mdw-list__text Android Switch On
               .mdw-list__secondary
                 label.mdw-switch
                   input(type="checkbox")
                   .mdw-switch__icon
-            li.mdw-list__row
+            li.mdw-list__item
               .mdw-list__text Android Switch Off
               .mdw-list__secondary
                 label.mdw-switch
@@ -28,7 +28,7 @@ include ../mixins.pug
                   .mdw-switch__icon
           ul.mdw-list
             li.mdw-list__subheader Single check
-            label.mdw-list__row(mdw-ripple)
+            label.mdw-list__item(mdw-ripple)
               .mdw-ripple
                 .mdw-ripple__inner
               .mdw-list__text Option 1
@@ -36,7 +36,7 @@ include ../mixins.pug
                 .mdw-selection(mdw-theme-color="accent-700")
                   input.mdw-selection__input(type="radio" name="selectiontest" checked)
                   .mdw-selection__icon
-            label.mdw-list__row(mdw-ripple)
+            label.mdw-list__item(mdw-ripple)
               .mdw-ripple
                 .mdw-ripple__inner
               .mdw-list__text Option 2
@@ -46,7 +46,7 @@ include ../mixins.pug
                   .mdw-selection__icon
           ul.mdw-list
             li.mdw-list__subheader Multiple check
-            label.mdw-list__row(mdw-ripple)
+            label.mdw-list__item(mdw-ripple)
               .mdw-ripple
                 .mdw-ripple__inner
               .mdw-list__text Option 1
@@ -54,7 +54,7 @@ include ../mixins.pug
                 .mdw-selection(mdw-theme-color="accent-A400")
                   input.mdw-selection__input(type="checkbox" checked)
                   .mdw-selection__icon
-            label.mdw-list__row(mdw-ripple)
+            label.mdw-list__item(mdw-ripple)
               .mdw-ripple
                 .mdw-ripple__inner
               .mdw-list__text Option 2
@@ -62,7 +62,7 @@ include ../mixins.pug
                 .mdw-selection(mdw-theme-color="primary-700")
                   input.mdw-selection__input(type="checkbox" checked)
                   .mdw-selection__icon
-            label.mdw-list__row(mdw-ripple)
+            label.mdw-list__item(mdw-ripple)
               .mdw-ripple
                 .mdw-ripple__inner
               .mdw-list__text Option 3

@@ -1,4 +1,4 @@
-class List {
+class Menu {
   /**
    * @param {Element} element
    */
@@ -30,7 +30,7 @@ class List {
   }
 }
 
-class ListItem {
+class MenuItem {
   /**
    * @param {Element} element
    */
@@ -89,6 +89,6 @@ class ListItem {
 }
 
 export {
-  List,
-  ListItem,
+  Menu,
+  MenuItem,
 };

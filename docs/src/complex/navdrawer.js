@@ -9,28 +9,28 @@ function configureNavDrawer() {
    */
   function onSelected(event) {
     switch (event.target.value) {
-      case "temporary":
+      case 'temporary':
         navElement.removeAttribute('mdw-clipped');
         navElement.removeAttribute('mdw-floating');
         navElement.setAttribute('mdw-temporary', '');
         return;
-      case "clipped":
+      case 'clipped':
         navElement.setAttribute('mdw-clipped', '');
         navElement.removeAttribute('mdw-floating');
         navElement.removeAttribute('mdw-temporary');
         return;
-      case "floating":
+      case 'floating':
         navElement.removeAttribute('mdw-clipped');
         navElement.setAttribute('mdw-floating', '');
         navElement.removeAttribute('mdw-temporary');
         return;
-      case "floatingcard":
+      case 'floatingcard':
         navElement.removeAttribute('mdw-clipped');
         navElement.setAttribute('mdw-floating', 'card');
         navElement.removeAttribute('mdw-temporary');
         return;
       default:
-      case "fullheight":
+      case 'fullheight':
         navElement.removeAttribute('mdw-clipped');
         navElement.removeAttribute('mdw-floating');
         navElement.removeAttribute('mdw-temporary');
@@ -49,31 +49,31 @@ function configureNavDrawer() {
     }
   });
   const navdrawerDrawer = document.querySelector('#navdrawer .mdw-navdrawer__drawer');
-  const navdrawerDrawerRows = navdrawerDrawer.getElementsByClassName('mdw-list__row');
+  const navdrawerDrawerListItems = navdrawerDrawer.getElementsByClassName('mdw-list__item');
 
   /**
-   * @param {NodeListOf<Element>} rows
+   * @param {NodeListOf<Element>} items
    * @return {Element}
    */
-  function getSelectedRow(rows) {
-    for (let i = 0; i < rows.length; i += 1) {
-      if (rows[i].hasAttribute('selected')) {
-        return rows[i];
+  function getSelectedListItem(items) {
+    for (let i = 0; i < items.length; i += 1) {
+      if (items[i].hasAttribute('selected')) {
+        return items[i];
       }
     }
     return null;
   }
-  for (let i = 0; i < navdrawerDrawerRows.length; i += 1) {
-    const row = navdrawerDrawerRows[i];
-    row.addEventListener('click', () => {
-      if (row.hasAttribute('selected')) {
+  for (let i = 0; i < navdrawerDrawerListItems.length; i += 1) {
+    const item = navdrawerDrawerListItems[i];
+    item.addEventListener('click', () => {
+      if (item.hasAttribute('selected')) {
         return;
       }
-      const currentlySelected = getSelectedRow(navdrawerDrawerRows);
+      const currentlySelected = getSelectedListItem(navdrawerDrawerListItems);
       if (currentlySelected) {
         currentlySelected.removeAttribute('selected');
       }
-      row.setAttribute('selected', '');
+      item.setAttribute('selected', '');
     });
   }
 }

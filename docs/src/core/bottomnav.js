@@ -1,5 +1,5 @@
 import setupImageTargets from '../targetHandler';
-import { Bottomnav, BottomnavAction } from '../../../components/index';
+import { Bottomnav, BottomnavItem } from '../../../components/index';
 
 const componentMap = new WeakMap();
 
@@ -11,9 +11,9 @@ function initializeMdwComponents() {
     componentMap.set(components[i], new Bottomnav(components[i]));
   }
 
-  components = document.querySelectorAll('.js .mdw-bottomnav__action');
+  components = document.querySelectorAll('.js .mdw-bottomnav__item');
   for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new BottomnavAction(components[i]));
+    componentMap.set(components[i], new BottomnavItem(components[i]));
   }
 }
 

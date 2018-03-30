@@ -25,10 +25,10 @@ function startsWithTextFilter(options) {
 }
 
 /**
- * @param {HTMLElement} row
+ * @param {HTMLElement} item
  * @return {string}
  */
-function defaultRowTextParser(row) {
+function defaultItemTextParser(item) {
   /**
    * @param {Node} node
    * @return {string}
@@ -43,20 +43,20 @@ function defaultRowTextParser(row) {
     }
     return text;
   }
-  if (row.hasAttribute('data-mdw-search-text')) {
-    return row.getAttribute('data-mdw-search-text');
+  if (item.hasAttribute('data-mdw-search-text')) {
+    return item.getAttribute('data-mdw-search-text');
   }
-  let textElement = row.querySelector('.mdw-list__text .mdw-list__text-line');
+  let textElement = item.querySelector('.mdw-list__text .mdw-list__text-line');
   if (!textElement) {
-    textElement = row.querySelector('.mdw-list__text');
+    textElement = item.querySelector('.mdw-list__text');
   }
   if (!textElement) {
-    textElement = row.querySelector('.mdw-list__text');
+    textElement = item.querySelector('.mdw-list__text');
   }
   if (textElement) {
     return getTextNodeOnly(textElement);
   }
-  return getTextNodeOnly(row);
+  return getTextNodeOnly(item);
 }
 
 /**
@@ -65,25 +65,25 @@ function defaultRowTextParser(row) {
  * @return {Element} sibling
  */
 function selectSibling(list, backwards) {
-  const current = list.querySelector('.mdw-list__row[selected]');
-  const rows = list.querySelectorAll('.mdw-list__row:not([hidden]):not([disabled])');
+  const current = list.querySelector('.mdw-list__item[selected]');
+  const items = list.querySelectorAll('.mdw-list__item:not([hidden]):not([disabled])');
   let sibling;
   if (current && !current.hasAttribute('hidden')) {
-    for (let i = 0; i < rows.length; i += 1) {
-      const item = rows[i];
+    for (let i = 0; i < items.length; i += 1) {
+      const item = items[i];
       if (item === current) {
         if (backwards) {
-          sibling = rows[i - 1];
+          sibling = items[i - 1];
         } else {
-          sibling = rows[i + 1];
+          sibling = items[i + 1];
         }
         break;
       }
     }
   } else if (backwards) {
-    sibling = rows[rows.length - 1];
+    sibling = items[items.length - 1];
   } else {
-    sibling = rows[0];
+    sibling = items[0];
   }
   if (sibling && sibling !== current) {
     if (current) {
@@ -96,10 +96,10 @@ function selectSibling(list, backwards) {
 }
 
 /**
- * @param {HTMLElement} listRow
+ * @param {HTMLElement} listItem
  * @return {void}
  */
-function scrollRowIntoView(listRow) {
+function scrollItemIntoView(listItem) {
   /**
    * @param {HTMLElement} el
    * @return {number}
@@ -127,11 +127,11 @@ function scrollRowIntoView(listRow) {
     }
     return 0;
   }
-  const visibility = getElementVisibility(listRow);
+  const visibility = getElementVisibility(listItem);
   if (visibility < 0) {
-    listRow.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    listItem.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
   } else if (visibility > 0) {
-    listRow.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    listItem.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
   }
 }
 
@@ -141,11 +141,11 @@ export default class Search {
    * @param {TextField} options.textfield
    * @param {List} options.list
    * @param {('contains'|'startsWith'|function({input:string, content:string}):boolean)=} [options.textFilter='contains']
-   * @param {(function(HTMLElement):string)=} options.rowTextParser
+   * @param {(function(HTMLElement):string)=} options.itemTextParser
    * @param {boolean=} [options.dropdown=false]
-   * @param {boolean=} [options.filterRows=true]
+   * @param {boolean=} [options.filterItems=true]
    * @param {('replace'|'append'|'none')} [options.suggestionMethod='replace']
-   * @param {(function(HTMLElement))=} options.onRowActivated
+   * @param {(function(HTMLElement))=} options.onItemActivated
    * @param {(function(string):Promise)=} options.performSearch
    * @param {(function(any):Promise)=} options.updateList
    * @param {boolean=} [options.searchOnFocus=true]
@@ -161,7 +161,7 @@ export default class Search {
     } else {
       this.filter = containsTextFilter;
     }
-    this.rowTextParser = defaultRowTextParser || options.rowTextParser;
+    this.itemTextParser = defaultItemTextParser || options.itemTextParser;
 
     this.list.element.addEventListener('click', (event) => {
       this.handleClickEvent(event);
@@ -186,8 +186,8 @@ export default class Search {
     });
 
     this.dropdown = options.dropdown;
-    if (options.filterRows !== false) {
-      this.filterRows = true;
+    if (options.filterItems !== false) {
+      this.filterItems = true;
     }
     if (options.searchOnFocus !== false) {
       this.searchOnFocus = true;
@@ -199,8 +199,8 @@ export default class Search {
     this.suggestedInput = null;
     /** @type {string} */
     this.previousValue = null;
-    if (options.onRowActivated) {
-      this.onRowActivated = options.onRowActivated;
+    if (options.onItemActivated) {
+      this.onItemActivated = options.onItemActivated;
     }
     this.performSearch = options.performSearch || (() => Promise.resolve());
     this.updateList = options.updateList || (() => Promise.resolve());
@@ -217,10 +217,10 @@ export default class Search {
     if (!event.target.classList) {
       return;
     }
-    if (!event.target.classList.contains('mdw-list__row')) {
+    if (!event.target.classList.contains('mdw-list__item')) {
       return;
     }
-    this.onRowActivated(event.target);
+    this.onItemActivated(event.target);
   }
 
 
@@ -253,7 +253,7 @@ export default class Search {
       })
       .then(() => this.checkExpired(inputValue))
       .then(() => this.updateList(results))
-      .then(() => this.filterListRows())
+      .then(() => this.filterListItems())
       .catch((error) => {
         if (error.message === 'debounced') {
           return;
@@ -357,14 +357,14 @@ export default class Search {
   }
 
   /**
-   * @param {HTMLElement} row
+   * @param {HTMLElement} item
    * @return {void}
    */
-  onRowSelected(row) {
+  onItemSelected(item) {
     if (this.suggestionMethod === 'none') {
       return;
     }
-    let suggestion = this.rowTextParser(row);
+    let suggestion = this.itemTextParser(item);
     if (suggestion) {
       suggestion = suggestion.trim();
     }
@@ -383,10 +383,10 @@ export default class Search {
   }
 
   /**
-   * @param {HTMLElement} row
+   * @param {HTMLElement} item
    * @return {void}
    */
-  onRowActivated(row) {
+  onItemActivated(item) {
     // Override me
   }
 
@@ -394,32 +394,32 @@ export default class Search {
    * @param {(function({input:string, content:string}):boolean)=} fnFilter
    * @return {void}
    */
-  filterListRows(fnFilter) {
-    if (!this.filterRows) {
+  filterListItems(fnFilter) {
+    if (!this.filterItems) {
       return;
     }
     const input = this.textfield.input.value;
-    const current = this.list.element.querySelector('.mdw-list__row[selected]');
-    const rows = this.list.element.querySelectorAll('.mdw-list__row');
-    let hasRow = false;
-    for (let i = 0; i < rows.length; i += 1) {
-      const row = rows[i];
-      const content = this.rowTextParser(row);
+    const current = this.list.element.querySelector('.mdw-list__item[selected]');
+    const items = this.list.element.querySelectorAll('.mdw-list__item');
+    let hasItem = false;
+    for (let i = 0; i < items.length; i += 1) {
+      const item = items[i];
+      const content = this.itemTextParser(item);
       const fn = fnFilter || this.filter;
       if (fn({ input, content })) {
-        hasRow = true;
-        row.removeAttribute('hidden');
+        hasItem = true;
+        item.removeAttribute('hidden');
       } else {
-        row.setAttribute('hidden', '');
+        item.setAttribute('hidden', '');
       }
     }
     if (current && current.hasAttribute('hidden')) {
       const newSelection = selectSibling(this.list.element);
       if (newSelection) {
-        this.onRowSelected(newSelection);
+        this.onItemSelected(newSelection);
       }
     }
-    if (!hasRow) {
+    if (!hasItem) {
       this.hideDropDown();
     }
   }
@@ -440,8 +440,8 @@ export default class Search {
         if (this.isDropDownShown()) {
           const sibling = selectSibling(this.list.element, true);
           if (sibling) {
-            scrollRowIntoView(sibling);
-            this.onRowSelected(sibling);
+            scrollItemIntoView(sibling);
+            this.onItemSelected(sibling);
           }
         }
         event.stopPropagation();
@@ -452,8 +452,8 @@ export default class Search {
         if (this.isDropDownShown()) {
           const sibling = selectSibling(this.list.element, false);
           if (sibling) {
-            scrollRowIntoView(sibling);
-            this.onRowSelected(sibling);
+            scrollItemIntoView(sibling);
+            this.onItemSelected(sibling);
           }
         }
         event.stopPropagation();
@@ -470,12 +470,12 @@ export default class Search {
         break;
       }
       case 'Enter': {
-        const current = this.list.element.querySelector('.mdw-list__row[selected]');
+        const current = this.list.element.querySelector('.mdw-list__item[selected]');
         if (current) {
           if (this.hideDropDown()) {
             const inputValue = this.textfield.input.value || '';
             this.textfield.input.setSelectionRange(inputValue.length, inputValue.length);
-            this.onRowActivated(current);
+            this.onItemActivated(current);
             event.stopPropagation();
             event.preventDefault();
           }

@@ -123,7 +123,7 @@
   overflow-y: scroll;
 }
 
-.mdw-navdrawer__drawer .mdw-list__row[selected] {
+.mdw-navdrawer__drawer .mdw-list__item[selected] {
   background-color: transparent;
   .mdw-list__icon,
   .mdw-list__text {

@@ -25,14 +25,14 @@ $bottomnavColors: (
 
   input:checked ~ .mdw-bottomnav__icon,
   input:checked ~ .mdw-bottomnav__label,
-  .mdw-bottomnav__action[selected] > .mdw-bottomnav__icon,
-  .mdw-bottomnav__action[selected] > .mdw-bottomnav__label,
-  input:checked + .mdw-bottomnav__action > .mdw-bottomnav__icon,
-  input:checked + .mdw-bottomnav__action > .mdw-bottomnav__label {
+  .mdw-bottomnav__item[selected] > .mdw-bottomnav__icon,
+  .mdw-bottomnav__item[selected] > .mdw-bottomnav__label,
+  input:checked + .mdw-bottomnav__item > .mdw-bottomnav__icon,
+  input:checked + .mdw-bottomnav__item > .mdw-bottomnav__label {
     color: bottomnavThemeValue("active-color", $type, $theme);
   }
 
-  .mdw-bottomnav__action {
+  .mdw-bottomnav__item {
     & > .mdw-ripple > .mdw-ripple__inner,
     &:after {
       opacity: buttonThemeValue("ripple-opacity", $type, $theme);

@@ -1,4 +1,4 @@
-import { List, ListRow, TextField, Search } from '../../../components/index';
+import { List, ListItem, TextField, Search } from '../../../components/index';
 
 const componentMap = new WeakMap();
 /** @return {void} */
@@ -41,14 +41,14 @@ function buildCustomSearch1() {
       </div>
       `.trim();
       items.forEach((item) => {
-        const listRow = document.createElement('li');
-        listRow.classList.add('mdw-list__row');
-        listRow.innerHTML = markup;
-        const lines = listRow.querySelectorAll('.mdw-list__text-line');
+        const listItem = document.createElement('li');
+        listItem.classList.add('mdw-list__item');
+        listItem.innerHTML = markup;
+        const lines = listItem.querySelectorAll('.mdw-list__text-line');
         lines[0].textContent = item.line1;
         lines[1].textContent = item.line2;
-        componentMap.set(listRow, new ListRow(listRow));
-        list.element.appendChild(listRow);
+        componentMap.set(listItem, new ListItem(listItem));
+        list.element.appendChild(listItem);
       });
       listUpdated = true;
       resolve();
@@ -141,14 +141,14 @@ function buildCustomSearch2() {
       </div>
       `.trim();
       items.forEach((item) => {
-        const listRow = document.createElement('li');
-        listRow.classList.add('mdw-list__row');
-        listRow.innerHTML = markup;
-        const lines = listRow.querySelectorAll('.mdw-list__text-line');
+        const listItem = document.createElement('li');
+        listItem.classList.add('mdw-list__item');
+        listItem.innerHTML = markup;
+        const lines = listItem.querySelectorAll('.mdw-list__text-line');
         lines[0].textContent = item.line1;
         lines[1].textContent = item.line2;
-        componentMap.set(listRow, new ListRow(listRow));
-        list.element.appendChild(listRow);
+        componentMap.set(listItem, new ListItem(listItem));
+        list.element.appendChild(listItem);
       });
       return Promise.resolve();
     });
@@ -158,7 +158,7 @@ function buildCustomSearch2() {
     list,
     debounce: 300,
     dropdown: true,
-    filterRows: false,
+    filterItems: false,
     performSearch: customPerformSearch,
     updateList: customUpdateList,
   });
@@ -194,9 +194,9 @@ function initializeMdwComponents() {
     componentMap.set(components[i], new List(components[i]));
   }
 
-  components = document.querySelectorAll('.js .mdw-list__row');
+  components = document.querySelectorAll('.js .mdw-list__item');
   for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new ListRow(components[i]));
+    componentMap.set(components[i], new ListItem(components[i]));
   }
 }
 

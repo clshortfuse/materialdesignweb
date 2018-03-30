@@ -11,7 +11,7 @@ $list__divider-height: dp(1);
 // 2x + y = 72 
 // 3x + y = 88
 // x = 32, y = 8 or x = 40, y = 16
-// row-height: 32px or 40px
+// item-height: 32px or 40px
 // base-height: 8px or 16px
 
 .mdw-list {
@@ -45,7 +45,7 @@ $list__divider-height: dp(1);
     margin-top: -8px;
   }
 }
-.mdw-list__row {
+.mdw-list__item {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -132,7 +132,7 @@ $list__divider-height: dp(1);
     overflow-x: hidden;
     text-overflow: ellipsis;
   }
-  [mdw-divider] > .mdw-list__row:not(:last-child) &::after {
+  [mdw-divider] > .mdw-list__item:not(:last-child) &::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -143,8 +143,8 @@ $list__divider-height: dp(1);
     // background-color: var(--divider-color);
   }
   
-  [mdw-divider] > .mdw-list__row:not(:last-child) .mdw-list__avatar ~ &::after,
-  [mdw-divider] > .mdw-list__row:not(:last-child) .mdw-list__icon ~ &::after {
+  [mdw-divider] > .mdw-list__item:not(:last-child) .mdw-list__avatar ~ &::after,
+  [mdw-divider] > .mdw-list__item:not(:last-child) .mdw-list__icon ~ &::after {
     margin-left: dp(72);
   }
 }
@@ -219,7 +219,7 @@ $list__divider-height: dp(1);
   max-height: sp(20*2);
 }
 
-.mdw-list__row > .mdw-ripple {
+.mdw-list__item > .mdw-ripple {
   position: absolute;
   left: 0;
   top: 0;
@@ -228,7 +228,7 @@ $list__divider-height: dp(1);
   overflow: hidden;
 }
 
-.mdw-list__row {
+.mdw-list__item {
   // Long press color
   &::before {
     content: '';

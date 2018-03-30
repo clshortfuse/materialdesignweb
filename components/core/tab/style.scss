@@ -77,7 +77,7 @@
   }
 }
 
-.mdw-tab__action {
+.mdw-tab__item {
   min-height: dp(48); // Redundant but needed for IE11
   position: relative;
   display: flex;
@@ -195,7 +195,7 @@
 }
 
 .mdw-tab[mdw-theme-color] {
-  .mdw-tab__action,
+  .mdw-tab__item,
   .mdw-tab__indicator {
     color: inherit;
   }

@@ -24,11 +24,11 @@ $listColors: (
   .mdw-list__subheader {
     color: listThemeValue("secondary-text-color", $type);
   }
-  .mdw-list__row:not([mdw-theme-color]) {
+  .mdw-list__item:not([mdw-theme-color]) {
     color: listThemeValue("text-color", $type)
   }
   .mdw-list__text {
-    [mdw-divider] > .mdw-list__row:not(:last-child) &::after {
+    [mdw-divider] > .mdw-list__item:not(:last-child) &::after {
       background-color: listThemeValue("divider-color", $type);
     }
   }
@@ -47,7 +47,7 @@ $listColors: (
   .mdw-list__text-block > span {
     color: listThemeValue("secondary-text-color", $type);
   }
-  .mdw-list__row {
+  .mdw-list__item {
     &[selected] {
       background-color: listThemeValue("selected-color", $type);
     }

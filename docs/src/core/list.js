@@ -1,5 +1,5 @@
 import setupImageTargets from '../targetHandler';
-import { List, ListRow } from '../../../components/index';
+import { List, ListItem } from '../../../components/index';
 
 const componentMap = new WeakMap();
 
@@ -11,9 +11,9 @@ function initializeMdwComponents() {
     componentMap.set(components[i], new List(components[i]));
   }
 
-  components = document.querySelectorAll('.js .mdw-list__row');
+  components = document.querySelectorAll('.js .mdw-list__item');
   for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new ListRow(components[i]));
+    componentMap.set(components[i], new ListItem(components[i]));
   }
 }
 
