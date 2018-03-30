@@ -89,5 +89,20 @@ include ../mixins.pug
                 .mdw-menu__icon.material-icons format_underline
                 .mdw-menu__text Underline
                 .mdw-menu__info ⌘U
+          .mdw-menu__wrapper.js
+            .mdw-button(mdw-theme-fill="primary dark" mdw-raised) JS
+            .mdw-menu#iconmenu(mdw-width-units=4 mdw-position="bottom end")
+              .mdw-menu__item
+                .mdw-menu__icon.material-icons format_bold
+                .mdw-menu__text Bold
+                .mdw-menu__info ⌘B
+              .mdw-menu__item
+                .mdw-menu__icon.material-icons format_italic
+                .mdw-menu__text Italic
+                .mdw-menu__info ⌘I
+              .mdw-menu__item
+                .mdw-menu__icon.material-icons format_underline
+                .mdw-menu__text Underline
+                .mdw-menu__info ⌘U
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3RktrSGVxbkhFaTg/components-menus-usage2.png')
   script(src='menu.min.js')

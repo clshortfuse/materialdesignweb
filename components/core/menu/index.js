@@ -4,10 +4,43 @@ class Menu {
    */
   constructor(element) {
     this.element = element;
+    let [menuCloser] = this.element.getElementsByClassName('mdw-menu__close');
+    if (!menuCloser) {
+      menuCloser = document.createElement('div');
+      menuCloser.classList.add('mdw-menu__close');
+      this.element.appendChild(menuCloser);
+    }
+    this.menuCloser = menuCloser;
+    this.menuCloser.addEventListener('click', () => {
+      this.hide();
+    });
   }
 
   detach() {
     this.element = null;
+  }
+
+  /** @return {boolean} handled */
+  show() {
+    let changed = false;
+    if (this.element.hasAttribute('mdw-hide')) {
+      this.element.removeAttribute('mdw-hide');
+      changed = true;
+    }
+    if (!this.element.hasAttribute('mdw-show')) {
+      this.element.setAttribute('mdw-show', '');
+      changed = true;
+    }
+    return changed;
+  }
+
+  /** @return {boolean} handled */
+  hide() {
+    if (!this.element.hasAttribute('mdw-hide')) {
+      this.element.setAttribute('mdw-hide', '');
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -79,7 +112,7 @@ class MenuItem {
   }
 
   /**
-   * Destroys all HTML Element references for garbage collection
+   * Destroys all HTMLElement references for garbage collection
    * @return {void}
    */
   detach() {
