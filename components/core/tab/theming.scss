@@ -33,7 +33,7 @@ $tabColors: (
   input:checked + .mdw-tab__item > .mdw-tab__label {
     color: tabThemeValue("active-color", $type, $theme);
   }
-  .mdw-tab__itemitem {
+  .mdw-tab__item {
     & > .mdw-ripple > .mdw-ripple__inner,
     &:after {
       color: tabThemeValue("active-color", $type, $theme);
