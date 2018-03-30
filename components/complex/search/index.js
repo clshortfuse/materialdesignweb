@@ -380,6 +380,7 @@ class Search {
       this.textfield.input.value = suggestion;
       this.textfield.input.setSelectionRange(selectionStart, selectionEnd);
     }
+    this.textfield.updateInputEmptyState();
   }
 
   /**
@@ -432,7 +433,7 @@ class Search {
     if (event.defaultPrevented) {
       return;
     }
-    if (event.ctrlKey || event.altKey || event.shiftKey) {
+    if (event.ctrlKey || event.altKey) {
       return;
     }
     switch (event.key) {
@@ -464,6 +465,7 @@ class Search {
         if (this.hideDropDown()) {
           this.suggestedInput = this.previousValue;
           this.textfield.input.value = this.previousValue;
+          this.textfield.updateInputEmptyState();
           event.stopPropagation();
           event.preventDefault();
         }
@@ -478,6 +480,18 @@ class Search {
             this.onItemActivated(current);
             event.stopPropagation();
             event.preventDefault();
+          }
+        }
+        break;
+      }
+      case 'Tab': {
+        const current = this.list.element.querySelector('.mdw-list__item[selected]');
+        if (current) {
+          if (this.hideDropDown()) {
+            const inputValue = this.textfield.input.value || '';
+            this.textfield.input.setSelectionRange(inputValue.length, inputValue.length);
+            this.onItemActivated(current);
+            event.stopPropagation();
           }
         }
         break;
