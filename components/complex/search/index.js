@@ -135,7 +135,7 @@ function scrollItemIntoView(listItem) {
   }
 }
 
-export default class Search {
+class Search {
   /**
    * @param {Object} options
    * @param {TextField} options.textfield
@@ -486,3 +486,7 @@ export default class Search {
     }
   }
 }
+
+export {
+  Search,
+};

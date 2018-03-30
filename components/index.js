@@ -6,7 +6,7 @@ import { ProgressCircle } from './core/progress/index';
 import { Tab, TabItem } from './core/tab/index';
 import { TextField } from './core/textfield/index';
 
-import Search from './complex/search/index';
+import { Search } from './complex/search/index';
 
 export {
   Bottomnav,
