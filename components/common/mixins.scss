@@ -16,10 +16,13 @@
 }
 
 @mixin allHandsets {
-  @include portraitHandsets {
-    @content;
-  }
-  @include landscapeHandsets {
+  @media
+    screen
+      and (orientation:portrait)
+      and (max-width: $breakpoint-portrait-handset-max - 1),
+    screen
+      and (orientation:landscape)
+      and (max-width: $breakpoint-landscape-handset-max - 1) {
     @content;
   }
 }
@@ -102,6 +105,18 @@ $dark-background: 3;
     @content;
   }
   @include EdgeOnly {
+    @content;
+  }
+}
+
+@mixin gutter16dp {
+  @media 
+    screen 
+      and (orientation:portrait)
+      and (max-width: $breakpoint-portrait-handset-max - 1),
+    screen
+      and (orientation:landscape)
+      and (max-height: $breakpoint-landscape-handset-medium - 1) {
     @content;
   }
 }
