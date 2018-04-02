@@ -1,0 +1,125 @@
+// https://material.io/guidelines/components/buttons-floating-action-button.html
+
+
+$fab-button__delay: 40ms;
+$fab-button__padding: dp(16);
+
+.mdw-fab__wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.mdw-fab {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 16px;
+  z-index: 4;
+}
+
+.mdw-fab__close {
+  visibility: hidden;
+  pointer-events: inherit;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  cursor: default;
+  z-index: -1;
+}
+
+.mdw-fab__speed-dial {
+  order: -1;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  pointer-events: none;
+  position: absolute;
+  bottom: 56px;
+  width: 56px;
+  margin: 16px 0;
+  > .mdw-button {
+    margin: 8px 0;
+    transition-property: transform, opacity;
+    transition-timing-function: $motion-easing-deceleration;
+    transition-duration: $motion-duration-desktop-leave;
+    @include allHandsets {
+      transition-duration: $motion-duration-mobile-leave;
+    }
+    @include allTablets {
+      transition-duration: $motion-duration-tablet-leave;
+    }
+    transform: scale(0);
+    opacity: 0;
+    @for $i from 1 through 6 {
+      &:nth-last-child(#{$i}) {
+        transition-delay: #{($i - 1) * $fab-button__delay};
+      }
+    }
+  }
+
+}
+
+.mdw-fab__button {
+  order: 1;
+  border-radius: 50%;
+  &,
+  &.mdw-button {
+    padding: $fab-button__padding;
+    margin: 0;
+  }
+}
+
+.mdw-fab__hidden-text,
+.mdw-fab__shown-text {
+  position: absolute;
+  left: $fab-button__padding;
+  top: $fab-button__padding;
+}
+
+.mdw-fab__shown-text {
+  display: none;
+}
+
+.mdw-fab:target > .mdw-fab__button {
+  // Hack to allow __close to capture click event
+  pointer-events: none;
+}
+
+.mdw-fab:target,
+.mdw-fab[mdw-show]:not([mdw-hide]) {
+  > .mdw-fab__button {
+    > .mdw-fab__hidden-text {
+      display: none;
+    }
+    > .mdw-fab__shown-text {
+      display: block;
+    }
+  }
+  > .mdw-fab__speed-dial {
+    pointer-events: auto;
+    > .mdw-button {
+      transform: scale(1);
+      opacity: 1;
+      transition-timing-function: $motion-easing-acceleration;
+      transition-duration: $motion-duration-desktop-enter;
+      @include allHandsets {
+        transition-duration: $motion-duration-mobile-enter;
+      }
+      @include allTablets {
+        transition-duration: $motion-duration-tablet-enter;
+      }
+      @for $i from 1 through 6 {
+        &:nth-child(#{$i}) {
+          transition-delay: #{($i - 1) * $fab-button__delay};
+        }
+      }
+    }
+  }
+  > .mdw-fab__close {
+    visibility: visible;
+  }
+}
