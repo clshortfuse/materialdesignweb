@@ -143,19 +143,20 @@
   @return url('data:image/svg+xml,#{url-encode($string)}');
 }
 
+// https://material.io/guidelines/resources/shadows.html
 // from Sketch
 $drop-shadow-values: (
-  0: "none",
-  1: "0 0 2px 0 rgba(0,0,0,0.14), 0 2px 2px 0 rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.20)",
-  2: "0 2px 4px 0 rgba(0,0,0,0.14), 0 3px 4px 0 rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.20)",
-  3: "0 3px 3px 0 rgba(0,0,0,0.14), 0 3px 4px 0 rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20)",
-  4: "0 2px 4px 0 rgba(0,0,0,0.14), 0 4px 5px 0 rgba(0,0,0,0.12), 0 1px 10px 0 rgba(0,0,0,0.20)",
-  6: "0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px 0 rgba(0,0,0,0.20)",
-  8: "0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 3px rgba(0,0,0,0.12), 0 4px 5px 0 rgba(0,0,0,0.20)",
-  9: "0 9px 12px 1px rgba(0,0,0,0.14), 0 3px 16px 2px rgba(0,0,0,0.12), 0 5px 6px 0 rgba(0,0,0,0.20)",
-  12: "0 12px 17px 2px rgba(0,0,0,0.14), 0 5px 22px 4px rgba(0,0,0,0.12), 0 7px 8px 0 rgba(0,0,0,0.20)",
-  16: "0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px 0 rgba(0,0,0,0.20)",
-  24: "0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12), 0 11px 15px 0 rgba(0,0,0,0.20)"
+   0: "none",
+   1: "0 00px 02px 0px rgba(0,0,0,0.14), 0 02px 02px 0px rgba(0,0,0,0.12), 0 01px 03px 0 rgba(0,0,0,0.20)",
+   2: "0 00px 04px 0px rgba(0,0,0,0.14), 0 03px 04px 0px rgba(0,0,0,0.12), 0 01px 05px 0 rgba(0,0,0,0.20)",
+   3: "0 03px 03px 0px rgba(0,0,0,0.14), 0 03px 04px 0px rgba(0,0,0,0.12), 0 01px 08px 0 rgba(0,0,0,0.20)",
+   4: "0 02px 04px 0px rgba(0,0,0,0.14), 0 04px 05px 0px rgba(0,0,0,0.12), 0 01px 10px 0 rgba(0,0,0,0.20)",
+   6: "0 06px 10px 0px rgba(0,0,0,0.14), 0 01px 18px 0px rgba(0,0,0,0.12), 0 03px 05px 0 rgba(0,0,0,0.20)",
+   8: "0 08px 10px 1px rgba(0,0,0,0.14), 0 03px 14px 3px rgba(0,0,0,0.12), 0 04px 15px 0 rgba(0,0,0,0.20)",
+   9: "0 09px 12px 1px rgba(0,0,0,0.14), 0 03px 16px 2px rgba(0,0,0,0.12), 0 05px 06px 0 rgba(0,0,0,0.20)",
+  12: "0 12px 17px 2px rgba(0,0,0,0.14), 0 05px 22px 4px rgba(0,0,0,0.12), 0 07px 08px 0 rgba(0,0,0,0.20)",
+  16: "0 16px 24px 2px rgba(0,0,0,0.14), 0 06px 30px 5px rgba(0,0,0,0.12), 0 08px 10px 0 rgba(0,0,0,0.20)",
+  24: "0 24px 38px 3px rgba(0,0,0,0.14), 0 09px 46px 8px rgba(0,0,0,0.12), 0 11px 15px 0 rgba(0,0,0,0.20)"
 );
 
 @function insetPaddingTop($padding, $line-height: normal) {
