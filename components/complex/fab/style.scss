@@ -12,11 +12,19 @@ $fab-button__padding: dp(16);
 .mdw-fab {
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: 0; 
   display: flex;
-  flex-direction: column;
-  margin: 16px;
+  flex-direction: column-reverse;
   z-index: 4;
+  align-items: center;
+  justify-content: center;
+  &[mdw-horizontal] {
+    flex-direction: row-reverse;
+  }
+  [dir=rtl] & {
+    left: 0;
+    right: auto;
+  }
 }
 
 .mdw-fab__close {
@@ -32,17 +40,13 @@ $fab-button__padding: dp(16);
 }
 
 .mdw-fab__speed-dial {
-  order: -1;
+  order: 1;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: inherit;
   align-items: center;
   pointer-events: none;
-  position: absolute;
-  bottom: 56px;
-  width: 56px;
-  margin: 16px 0;
   > .mdw-button {
-    margin: 8px 0;
+    margin: dp(8);
     transition-property: transform, opacity;
     transition-timing-function: $motion-easing-deceleration;
     transition-duration: $motion-duration-desktop-leave;
@@ -64,12 +68,15 @@ $fab-button__padding: dp(16);
 }
 
 .mdw-fab__button {
-  order: 1;
+  order: -1;
   border-radius: 50%;
   &,
   &.mdw-button {
     padding: $fab-button__padding;
-    margin: 0;
+    margin: dp(24);
+    @include gutter16dp {
+      margin: dp(16);
+    }
   }
 }
 

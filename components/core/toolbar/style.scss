@@ -11,9 +11,6 @@ $toolbar-height-mobile-portrait: dp(56);
 $toolbar-height-tablet: dp(56);
 $toolbar-height-desktop: dp(56);
 
-$toolbar-left-padding: dp(16);
-$toolbar-right-padding: dp(16);
-
 .mdw-toolbar {
   position: relative;
   display:flex;
@@ -34,8 +31,12 @@ $toolbar-right-padding: dp(16);
 
 .mdw-toolbar__content,
 .mdw-toolbar__title {
-  margin-left: dp(72);
-  margin-right: dp(16);
+  margin-left: dp(80);
+  margin-right: dp(24);
+  @include gutter16dp {
+    margin-left: dp(72);
+    margin-right: dp(16);
+  }
   flex-grow: 1;
   .mdw-toolbar > & {
     flex-direction: column;
@@ -52,10 +53,8 @@ $toolbar-right-padding: dp(16);
     flex-grow: 0;
   }
   .mdw-toolbar__action > & {
-    margin-left: dp(16);
-    margin-right: dp(16);
+    margin: 0 dp(16);
     height: auto;
-    
     align-self: flex-end;
     font-size: sp(20);
     display: flex;
@@ -74,13 +73,29 @@ $toolbar-right-padding: dp(16);
 
 .mdw-toolbar__start {
   order: -1;
-  padding-left: dp(8);
-  padding-right: dp(8);
+  margin-left: dp(8);
+  padding: 0 dp(8);
+  @include gutter16dp {
+    margin-left: 0;
+  }
 }
 
 .mdw-toolbar__end {
   order: 1;
-  margin-right: dp(4);
+  margin-left: 0;
+  margin-right: dp(12);
+  @include gutter16dp {
+    margin-left: 0;
+    margin-right: dp(4);
+  }
+  [dir=rtl] & {
+    margin-left: dp(12);
+    margin-right: 0;
+    @include gutter16dp {
+      margin-left: dp(4);
+      margin-right: 0;
+    }
+  }
 }
 
 
@@ -100,10 +115,13 @@ $toolbar-right-padding: dp(16);
 }
 
 .mdw-toolbar__end .mdw-button {
-  margin-left: 4px;
-  margin-right: 4px;
+  margin: 0 dp(4);
   &[mdw-more-button] {
     margin-left: 0;
-    margin-right: -2px;
+    margin-right: dp(-2);
+    [dir=rtl] & {
+      margin-left: dp(-2);
+      margin-right: 0;
+    }
   }
 }
