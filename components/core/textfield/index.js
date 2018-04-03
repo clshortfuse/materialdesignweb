@@ -134,20 +134,24 @@ class TextField {
       }
     } else if (value instanceof Date) {
       const type = this.input.hasAttribute('type') && this.input.getAttribute('type').toLowerCase();
-      switch (type) {
-        case 'date':
-        case 'datetime-local':
-          this.input.valueAsDate = value;
-          break;
-        case 'time':
-          this.input.value = `${value.getHours()}:${value.getMinutes()}:${value.getSeconds()}.${value.getMilliseconds()}`;
-          break;
-        case 'number':
-        case 'range':
-          this.input.valueAsNumber = value.getTime();
-          break;
-        default:
-          this.input.value = value.toString();
+      if (type === 'time') {
+        const hoursStr = `${value.getHours() < 10 ? '0' : ''}${value.getHours()}`;
+        const minutesStr = `${value.getMinutes() < 10 ? '0' : ''}${value.getMinutes()}`;
+        const secondsStr = `${value.getSeconds() < 10 ? '0' : ''}${value.getSeconds()}`;
+        this.input.value = `${hoursStr}:${minutesStr}:${secondsStr}.${value.getMilliseconds()}`;
+      } else {
+        switch (type) {
+          case 'date':
+          case 'datetime-local':
+            this.input.valueAsDate = value;
+            break;
+          case 'number':
+          case 'range':
+            this.input.valueAsNumber = value.getTime();
+            break;
+          default:
+            this.input.value = value.toString();
+        }
       }
     } else if (typeof value === 'string') {
       this.input.value = value;
