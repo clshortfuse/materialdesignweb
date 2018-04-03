@@ -103,15 +103,14 @@ class TextField {
     }
     const type = this.input.hasAttribute('type') && this.input.getAttribute('type').toLowerCase();
     switch (type) {
-      case 'date':
-        return this.input.valueAsDate;
-      case 'datetime-local':
       case 'number':
       case 'range':
         return this.input.valueAsNumber;
+      case 'date':
+      case 'datetime-local':
       case 'time':
-        if (!this.input.value) {
-          return this.input.value;
+        if (this.input.value == null) {
+          return null;
         }
         return new Date((this.input.valueAsDate.getTimezoneOffset() * 60 * 1000)
           + this.input.valueAsNumber);
