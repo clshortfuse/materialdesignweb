@@ -132,9 +132,11 @@ class TextField {
       const type = this.input.hasAttribute('type') && this.input.getAttribute('type').toLowerCase();
       switch (type) {
         case 'date':
-        case 'time':
         case 'datetime-local':
           this.input.valueAsDate = value;
+          break;
+        case 'time':
+          this.input.value = `${value.getHours()}:${value.getMinutes()}:${value.getSeconds()}.${value.getMilliseconds()}`;
           break;
         case 'number':
         case 'range':
