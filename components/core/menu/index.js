@@ -8,7 +8,11 @@ class Menu {
     if (!menuCloser) {
       menuCloser = document.createElement('div');
       menuCloser.classList.add('mdw-menu__close');
-      this.element.appendChild(menuCloser);
+      if (this.element.firstChild) {
+        this.element.insertBefore(menuCloser, this.element.firstChild);
+      } else {
+        this.element.appendChild(menuCloser);
+      }
     }
     this.menuCloser = menuCloser;
     this.menuCloser.addEventListener('click', () => {
