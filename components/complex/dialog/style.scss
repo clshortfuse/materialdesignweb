@@ -13,7 +13,7 @@ $dialog__unit-width: dp(56);
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  // z-index: -1; // Safari has a negative z-index bug
   cursor: default;
   background-color: rgba(black, 0.50);
 }
@@ -75,6 +75,7 @@ $dialog__unit-width: dp(56);
   transition-duration: inherit;
   transition-timing-function: inherit;
   margin: dp(40);
+  z-index: 24;
 }
 
 .mdw-dialog__content {

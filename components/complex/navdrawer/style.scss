@@ -211,7 +211,7 @@
   grid-row-end: 3;
   -ms-grid-row-span: 2;
   position: relative;
-  z-index: -1;
+  // z-index: -1; // Safari has a negative z-index bug
   overflow: hidden;
   > * {
     position: absolute;

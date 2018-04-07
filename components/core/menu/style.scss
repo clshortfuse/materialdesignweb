@@ -30,7 +30,7 @@ $checkbox-icon-offset-x: dp(6.04);
   top: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1;
+  // z-index: -1; // Safari has a negative z-index bug
   cursor: default;
 }
 

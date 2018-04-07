@@ -56,7 +56,6 @@ $list__divider-height: dp(1);
   padding: 0 dp(16);
   text-transform: none;
   text-decoration: none;
-  // color: var(--primary-text-color);
   font-weight: $font-weight-regular;
   font-size: sp(16);
 
@@ -237,7 +236,7 @@ $list__divider-height: dp(1);
     height: 100%;
     top: 0;
     left: 0;
-    z-index: -1;
+    // z-index: -1; // Safari has a negative z-index bug
     transition-property: background-color;
     transition-duration: 500ms;
     transition-delay: 5ms;

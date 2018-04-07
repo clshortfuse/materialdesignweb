@@ -431,7 +431,7 @@ select.mdw-textfield__input {
     pointer-events: auto;
     cursor: pointer;
     &::before {
-      z-index: -1;
+      // z-index: -1; // Safari has a negative z-index bug
       transform: none;
       border-style: none;
       transition-delay: 0s;

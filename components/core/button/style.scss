@@ -97,7 +97,7 @@ $button__click-timeout: 100ms;
       top: 0;
       width: auto;
       height: 100%;
-      z-index: -1;
+      // z-index: -1; // Safari has a negative z-index bug
     }
   }
 
@@ -127,7 +127,7 @@ $button__click-timeout: 100ms;
     height: 100%;
     top: 0;
     left: 0;
-    z-index: -1;
+    // z-index: -1; // Safari has a negative z-index bug
     border-radius: inherit;
     user-select: none;
     pointer-events: none;
@@ -165,7 +165,7 @@ $button__click-timeout: 100ms;
 
 .mdw-button__focus-ring {
   overflow: hidden;
-  z-index: -1;
+  // z-index: -1; // Safari has a negative z-index bug
   &,
   &::after {
     position: absolute;
@@ -230,13 +230,6 @@ $button__click-timeout: 100ms;
   & > .mdw-ripple:active > .mdw-ripple__inner,
   &:active::after {
     @include mdw-ripple__active;
-  }
-
-  &[mdw-icon] {
-    & > .mdw-ripple:not(:active) > .mdw-ripple__inner,
-    &:not(:active)::after {
-      transform: translateX(-50%) translateY(-50%) scale(1.5);
-    }
   }
 }
 
