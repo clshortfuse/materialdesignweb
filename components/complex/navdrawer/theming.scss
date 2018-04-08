@@ -28,10 +28,10 @@ $navdrawerColors: (
   }
   .mdw-navdrawer__drawer {
     border-color: navdrawerThemeValue("divider-color", $type, $theme);
-    .mdw-list__item[selected]:not([mdw-theme-color]) {
+    .mdw-list__item[mdw-selected]:not([mdw-theme-color]) {
       color: navdrawerThemeValue("selected-color", $type, $theme);
     }
-    .mdw-list__item:not([selected]) {
+    .mdw-list__item:not([mdw-selected]) {
       .mdw-list__icon {
         color: navdrawerThemeValue("secondary-text-color", $type, $theme);
       }

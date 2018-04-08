@@ -65,7 +65,7 @@ function defaultItemTextParser(item) {
  * @return {Element} sibling
  */
 function selectSibling(list, backwards) {
-  const current = list.querySelector('.mdw-list__item[selected]');
+  const current = list.querySelector('.mdw-list__item[mdw-selected]');
   const items = list.querySelectorAll('.mdw-list__item:not([hidden]):not([disabled])');
   let sibling;
   if (current && !current.hasAttribute('hidden')) {
@@ -87,9 +87,9 @@ function selectSibling(list, backwards) {
   }
   if (sibling && sibling !== current) {
     if (current) {
-      current.removeAttribute('selected');
+      current.removeAttribute('mdw-selected');
     }
-    sibling.setAttribute('selected', '');
+    sibling.setAttribute('mdw-selected', '');
     return sibling;
   }
   return null;
@@ -400,7 +400,7 @@ class Search {
       return;
     }
     const input = this.textfield.input.value;
-    const current = this.list.element.querySelector('.mdw-list__item[selected]');
+    const current = this.list.element.querySelector('.mdw-list__item[mdw-selected]');
     const items = this.list.element.querySelectorAll('.mdw-list__item');
     let hasItem = false;
     for (let i = 0; i < items.length; i += 1) {
@@ -472,7 +472,7 @@ class Search {
         break;
       }
       case 'Enter': {
-        const current = this.list.element.querySelector('.mdw-list__item[selected]');
+        const current = this.list.element.querySelector('.mdw-list__item[mdw-selected]');
         if (current) {
           if (this.hideDropDown()) {
             const inputValue = this.textfield.input.value || '';
@@ -485,7 +485,7 @@ class Search {
         break;
       }
       case 'Tab': {
-        const current = this.list.element.querySelector('.mdw-list__item[selected]');
+        const current = this.list.element.querySelector('.mdw-list__item[mdw-selected]');
         if (current) {
           if (this.hideDropDown()) {
             const inputValue = this.textfield.input.value || '';

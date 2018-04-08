@@ -48,7 +48,7 @@ $listColors: (
     color: listThemeValue("secondary-text-color", $type);
   }
   .mdw-list__item {
-    &[selected] {
+    &[mdw-selected] {
       background-color: listThemeValue("selected-color", $type);
     }
     &[tabindex]:active:focus::before {
