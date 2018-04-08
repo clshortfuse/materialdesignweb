@@ -52,6 +52,12 @@ class Table {
     for (let i = 0; i < checkboxes.length; i += 1) {
       const checkbox = checkboxes.item(i);
       checkbox.checked = value;
+      const currentRow = this.getTableRow(checkbox);
+      if (value) {
+        currentRow.setAttribute('mdw-selected', '');
+      } else {
+        currentRow.removeAttribute('mdw-selected');
+      }
     }
   }
 
