@@ -42,7 +42,7 @@ mixin header()
 
 
 - var corecomponents = ["bottomnav", "button", "elevation", "list", "menu", "progress", "selection", "tab", "textfield", "toolbar", "type"]
-- var complexcomponents = ["dialog", "fab", "navdrawer", "search"]
+- var complexcomponents = ["dialog", "fab", "navdrawer", "search", "table"]
 
 mixin navdrawer(selected)
   .mdw-navdrawer#docs-navdrawer(mdw-theme-fill="background-100 light" mdw-floating="card")
@@ -57,15 +57,15 @@ mixin navdrawer(selected)
           .mdw-toolbar__title=selected
     .mdw-navdrawer__drawer
       .mdw-list
-        a.mdw-list__item(selected=selected=='Home' href='index.html' mdw-theme-color="primary")
+        a.mdw-list__item(mdw-selected=selected=='Home' href='index.html' mdw-theme-color="primary")
           .mdw-list__text Home
         .mdw-list__subheader Core
         each item in corecomponents
-          a.mdw-list__item(selected=selected==item href=`${item}.html` mdw-theme-color="primary")
+          a.mdw-list__item(mdw-selected=selected==item href=`${item}.html` mdw-theme-color="primary")
             .mdw-list__text=item
         .mdw-list__subheader Complex
         each item in complexcomponents
-          a.mdw-list__item(selected=(selected==item) href=`${item}.html` mdw-theme-color="accent")
+          a.mdw-list__item(mdw-selected=(selected==item) href=`${item}.html` mdw-theme-color="accent")
             .mdw-list__text=item
     .mdw-navdrawer__content
       block

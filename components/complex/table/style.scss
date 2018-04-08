@@ -1,0 +1,101 @@
+// https://material.io/guidelines/components/data-tables.html
+// https://material.io/guidelines/patterns/selection.html#selection-item-selection
+
+.mdw-table {
+  border-collapse: collapse;
+  caption-side: top;
+}
+
+.mdw-table caption {
+  font-size: sp(20);
+  font-weight: $font-weight-regular;
+  text-align: left;
+  text-align: start;
+}
+
+.mdw-table__header-text,
+.mdw-table__header-actions,
+.mdw-table__header-icons {
+  display: inline-flex;
+  min-height: 64px;
+  flex-direction: row;
+  align-items: center;
+}
+.mdw-table__header-text {
+  padding-left: dp(24);
+}
+
+.mdw-table__header-actions {
+  display: none;
+  .mdw-button:not([mdw-theme-color]):not([disabled]) {
+    color: inherit;
+  }
+}
+
+.mdw-table[mdw-has-selection] {
+  .mdw-table__header-text {
+    display: none;
+  }
+  .mdw-table__header-actions {
+    display: inline-flex;
+  }
+}
+
+.mdw-table__header-icons {
+  float: right;
+  justify-content: flex-end;
+}
+
+.mdw-table tr {
+  border-bottom-style: solid;
+  border-bottom-width: dp(1);
+}
+
+.mdw-table > thead > tr {
+  font-size: sp(12);
+  font-weight: $font-weight-medium;
+  height: dp(56);
+}
+.mdw-table > tbody > tr {
+  font-size: sp(13);
+  font-weight: $font-weight-regular;
+  height: dp(48);
+}
+
+
+
+.mdw-table th,
+.mdw-table td {
+  padding: 0;
+  padding-left: 24px;
+  &:last-of-type {
+    padding-right: 24px;
+  }
+  .mdw-selection__input {
+    // Remove ripple
+    visibility: hidden;
+  }
+}
+
+.mdw-table td {
+  &[mdw-table-number] {
+    text-align: end;
+  }
+}
+
+.mdw-table th[mdw-table-primary] {
+  ~ th {
+    padding-left: 56px;
+  }
+  + th {
+    padding-left: 24px;
+  }
+}
+.mdw-table td[mdw-table-primary] {
+  ~ td {
+    padding-left: 56px;
+  }
+  + td {
+    padding-left: 24px;
+  }
+}

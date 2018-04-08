@@ -12,6 +12,7 @@
 
 @import '../complex/dialog/theming.scss';
 @import '../complex/navdrawer/theming.scss';
+@import '../complex/table/theming.scss';
 
 
 $tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "A100", "A200", "A400", "A700");
@@ -19,7 +20,7 @@ $added-palettes-list: ();
 
 
 @mixin buildMDWThemes($config-map: ()) {
-  $theme-components: ('bottomnav', 'button', 'list', 'menu', 'selection', 'tab', 'textfield', 'toolbar', 'dialog', 'navdrawer');
+  $theme-components: ('bottomnav', 'button', 'list', 'menu', 'selection', 'tab', 'textfield', 'toolbar', 'dialog', 'navdrawer', 'table');
   $themes: (
     "default": ('indigo', 'pink', 'red'),
   );
@@ -89,6 +90,9 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'navdrawer')) {
     @include navdrawerThemeVariables($color, 'light');
   }
+  @if (index($mdw-theme__components, 'table')) {
+    @include tableThemeVariables($color, 'light');
+  }
 }
 
 @mixin darkVariables($color:"background") {
@@ -126,11 +130,17 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'navdrawer')) {
     @include navdrawerThemeVariables($color, 'dark');
   }
+  @if (index($mdw-theme__components, 'table')) {
+    @include tableThemeVariables($color, 'dark');
+  }
 }
 
 @mixin componentContrastAndThemeRules($type: 'var', $theme: null) {
   @if (index($mdw-theme__components, 'textfield')) {
     @include textfieldContrastAndThemeRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'table')) {
+    @include tableContrastAndThemeRules($type, $theme);
   }
 }
 
@@ -168,6 +178,9 @@ $added-palettes-list: ();
   }
   @if (index($mdw-theme__components, 'navdrawer')) {
     @include navdrawerContrastRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'table')) {
+    @include tableContrastRules($type, $theme);
   }
 }
 

@@ -1,0 +1,60 @@
+include ../mixins.pug
+
++header()
+  +navdrawer("table")
+    .comparison(style="margin:16px").js
+      div(mdw-elevation=2 mdw-theme-fill="white light")
+        table.mdw-table(mdw-theme-color="primary")
+          caption
+            .mdw-table__header-text Nutrition
+            .mdw-table__header-actions
+              .mdw-button Add
+              .mdw-button Remove
+            .mdw-table__header-icons
+              .mdw-button.material-icons(mdw-icon) filter_list
+              .mdw-button.material-icons(mdw-icon) more_vert
+          thead
+            tr
+              th(mdw-table-checkbox)
+                label.mdw-selection
+                  input.mdw-selection__input(type="checkbox")
+                  .mdw-selection__icon
+              th(mdw-table-primary) Dessert (100g serving)
+              th
+                .mdw-tooltip__wrapper
+                  span Calories
+                  .mdw-tooltip The total amount of food energy in the given serving size.
+              th Fat (g)
+              th Carbs (g)
+              th Protein (g)
+              th Sodium (mg)
+              th Calcium (%)
+              th Iron (%)
+          tbody
+            tr
+              td(mdw-table-checkbox)
+                label.mdw-selection
+                  input.mdw-selection__input(type="checkbox")
+                  .mdw-selection__icon
+              td(mdw-table-primary) Frozen Yogurt
+              td(mdw-table-number) 159
+              td(mdw-table-number) 6.0
+              td(mdw-table-number) 24
+              td(mdw-table-number) 4.0
+              td(mdw-table-number) 87
+              td(mdw-table-number) 14%
+              td(mdw-table-number) 1%
+            tr
+              td(mdw-table-checkbox)
+                label.mdw-selection
+                  input.mdw-selection__input(type="checkbox")
+                  .mdw-selection__icon
+              td(mdw-table-primary) Ice cream sandwich
+              td(mdw-table-number) 237
+              td(mdw-table-number) 9.0
+              td(mdw-table-number) 37
+              td(mdw-table-number) 4.3
+              td(mdw-table-number) 129
+              td(mdw-table-number) 8%
+              td(mdw-table-number) 1%
+  script(src='table.min.js')

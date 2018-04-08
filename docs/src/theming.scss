@@ -9,25 +9,7 @@ $themes: (
   "tab": ('cyan', 'yellow', 'red')
 );
 $colors: ('cyan', 'red', 'green','lightblue', 'purple');
-
-$components: (
-  'bottomnav',
-  'button',
-  'list',
-  'menu',
-  'progress',
-  'selection',
-  'tab',
-  'textfield',
-  'toolbar',
-  'tooltip',
-  'type',
-  'dialog',
-  'navdrawer',
-  'search'
-);
 $mdw-config: (
-  theme-components: $components,
   themes: $themes,
   automatic-contrast: 'no',
   explicit-colors: $colors,

@@ -9,24 +9,7 @@ $themes: (
   "tab": ('cyan', 'yellow', 'red')
 );
 $colors: ('cyan', 'red', 'green','lightblue', 'purple');
-$components: (
-  'bottomnav',
-  'button',
-  'list',
-  'menu',
-  'progress',
-  'selection',
-  'tab',
-  'textfield',
-  'toolbar',
-  'tooltip',
-  'type',
-  'dialog',
-  'navdrawer',
-  'search'
-);
 $config: (
-  theme-components: $components,
   themes: $themes,
   explicit-colors: $colors,
   ie11-support: 'only',

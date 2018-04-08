@@ -8,6 +8,7 @@ import { TextField } from './core/textfield/index';
 
 import { Fab } from './complex/fab/index';
 import { Search } from './complex/search/index';
+import { Table } from './complex/table/index';
 
 export {
   Bottomnav,
@@ -23,4 +24,5 @@ export {
   TextField,
   Fab,
   Search,
+  Table,
 };
