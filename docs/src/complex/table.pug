@@ -3,16 +3,21 @@ include ../mixins.pug
 +header()
   +navdrawer("table")
     .comparison(style="margin:16px").js
-      div(mdw-elevation=2 mdw-theme-fill="white light")
-        table.mdw-table(mdw-theme-color="primary")
-          caption
-            .mdw-table__header-text Nutrition
-            .mdw-table__header-actions
-              .mdw-button Add
-              .mdw-button Remove
-            .mdw-table__header-icons
-              .mdw-button.material-icons(mdw-icon) filter_list
-              .mdw-button.material-icons(mdw-icon) more_vert
+      .mdw-table(mdw-elevation=2 mdw-theme-fill="white light" mdw-theme-color="primary")
+        .mdw-table__header
+          .mdw-table__header-text Header Text
+          .mdw-table__header-icons
+            .mdw-button.material-icons(mdw-icon) filter_list
+            .mdw-button.material-icons(mdw-icon) more_vert
+        .mdw-table__header
+          .mdw-table__header-actions
+            .mdw-button(mdw-theme-color="primary") Add
+            .mdw-button(mdw-theme-color="primary") Remove
+          .mdw-table__header-icons
+            .mdw-button.material-icons(mdw-icon) filter_list
+            .mdw-button.material-icons(mdw-icon) more_vert
+        table
+          caption HTMLTableCaptionElement Support
           thead
             tr
               th(mdw-table-checkbox)

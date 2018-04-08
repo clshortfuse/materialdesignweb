@@ -23,10 +23,11 @@ $tableColors: (
 
 // Vary by contrast or theme
 @mixin tableContrastRules($type: 'var', $theme: null) {
-  .mdw-table {
+  .mdw-table table {
     border-color: tableThemeValue("divider-color", $type, $theme);
   }
 
+  .mdw-table caption,
   .mdw-table__header-text {
     color: tableThemeValue("text-color", $type, $theme);
   }
@@ -40,7 +41,7 @@ $tableColors: (
   .mdw-table td:not([mdw-table-checkbox]) {
     color: tableThemeValue("text-color", $type, $theme);
   }
-  .mdw-table > tbody {
+  .mdw-table tbody {
     > tr {
       &:hover {
         background-color: tableThemeValue("hover-color", $type, $theme);
@@ -50,8 +51,11 @@ $tableColors: (
       }
     }
   }
-  .mdw-table[mdw-has-selection] caption {
-    color: tableThemeValue("header-fill-text", $type, $theme);
+  .mdw-table[mdw-has-selection] {
+    caption,
+    .mdw-table__header-text {
+      color: tableThemeValue("header-fill-text", $type, $theme);
+    }
   }
 }
 
@@ -60,18 +64,21 @@ $tableColors: (
   .mdw-table[mdw-has-selection] {
     &[mdw-theme-color="primary"],
     &[mdw-theme-color|="primary"] {
+      .mdw-table__header,
       caption {
         background-color: tableThemeValue("header-fill-primary", $type, $theme);
       }
     }
     &[mdw-theme-color="accent"],
     &[mdw-theme-color|="accent"] {
+      .mdw-table__header,
       caption {
         background-color: tableThemeValue("header-fill-accent", $type, $theme);
       }
     }
     &[mdw-theme-color="warn"],
     &[mdw-theme-color|="warn"] {
+      .mdw-table__header,
       caption {
         background-color: tableThemeValue("header-fill-warn", $type, $theme);
       }
