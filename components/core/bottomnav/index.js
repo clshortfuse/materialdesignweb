@@ -82,22 +82,22 @@ class Bottomnav {
     if (inputElement.id) {
       itemElement = document.querySelector(`label.mdw-bottomnav__item[for="${inputElement.id}"]`);
     }
-    if (itemElement.hasAttribute('selected') && inputElement.checked) {
+    if (itemElement.hasAttribute('mdw-selected') && inputElement.checked) {
       return;
     }
-    if (!itemElement.hasAttribute('selected') && !inputElement.checked) {
+    if (!itemElement.hasAttribute('mdw-selected') && !inputElement.checked) {
       return;
     }
     this.removeSelection();
-    itemElement.setAttribute('selected', '');
+    itemElement.setAttribute('mdw-selected', '');
   }
 
   /** @return {boolean} change */
   removeSelection() {
     for (let i = 0; i < this.items.length; i += 1) {
       const item = this.items.item(i);
-      if (item.hasAttribute('selected')) {
-        item.removeAttribute('selected');
+      if (item.hasAttribute('mdw-selected')) {
+        item.removeAttribute('mdw-selected');
         return true;
       }
     }
@@ -109,14 +109,14 @@ class Bottomnav {
    * @return {void}
    */
   onItemClicked(itemElement) {
-    if (itemElement.hasAttribute('selected')) {
+    if (itemElement.hasAttribute('mdw-selected')) {
       return;
     }
     if (itemElement.hasAttribute('disabled')) {
       return;
     }
     this.removeSelection();
-    itemElement.setAttribute('selected', '');
+    itemElement.setAttribute('mdw-selected', '');
     let inputElement;
     if (itemElement instanceof HTMLLabelElement && itemElement.hasAttribute('for')) {
       const id = itemElement.getAttribute('for');

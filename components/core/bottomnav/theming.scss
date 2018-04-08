@@ -25,8 +25,8 @@ $bottomnavColors: (
 
   input:checked ~ .mdw-bottomnav__icon,
   input:checked ~ .mdw-bottomnav__label,
-  .mdw-bottomnav__item[selected] > .mdw-bottomnav__icon,
-  .mdw-bottomnav__item[selected] > .mdw-bottomnav__label,
+  .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__icon,
+  .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__label,
   input:checked + .mdw-bottomnav__item > .mdw-bottomnav__icon,
   input:checked + .mdw-bottomnav__item > .mdw-bottomnav__label {
     color: bottomnavThemeValue("active-color", $type, $theme);
