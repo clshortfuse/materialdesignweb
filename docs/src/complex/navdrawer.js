@@ -57,7 +57,7 @@ function configureNavDrawer() {
    */
   function getSelectedListItem(items) {
     for (let i = 0; i < items.length; i += 1) {
-      if (items[i].hasAttribute('selected')) {
+      if (items[i].hasAttribute('mdw-selected')) {
         return items[i];
       }
     }
@@ -66,14 +66,14 @@ function configureNavDrawer() {
   for (let i = 0; i < navdrawerDrawerListItems.length; i += 1) {
     const item = navdrawerDrawerListItems[i];
     item.addEventListener('click', () => {
-      if (item.hasAttribute('selected')) {
+      if (item.hasAttribute('mdw-selected')) {
         return;
       }
       const currentlySelected = getSelectedListItem(navdrawerDrawerListItems);
       if (currentlySelected) {
-        currentlySelected.removeAttribute('selected');
+        currentlySelected.removeAttribute('mdw-selected');
       }
-      item.setAttribute('selected', '');
+      item.setAttribute('mdw-selected', '');
     });
   }
 }
