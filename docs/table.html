@@ -23,7 +23,7 @@
                 <div class="mdw-tooltip">Menu</div>
               </div>
             </div>
-            <div class="mdw-toolbar__title">dialog</div>
+            <div class="mdw-toolbar__title">table</div>
           </div>
         </div>
       </div>
@@ -42,65 +42,90 @@
             <div class="mdw-list__text">textfield</div></a><a class="mdw-list__item" href="toolbar.html" mdw-theme-color="primary">
             <div class="mdw-list__text">toolbar</div></a><a class="mdw-list__item" href="type.html" mdw-theme-color="primary">
             <div class="mdw-list__text">type</div></a>
-          <div class="mdw-list__subheader">Complex</div><a class="mdw-list__item" mdw-selected href="dialog.html" mdw-theme-color="accent">
+          <div class="mdw-list__subheader">Complex</div><a class="mdw-list__item" href="dialog.html" mdw-theme-color="accent">
             <div class="mdw-list__text">dialog</div></a><a class="mdw-list__item" href="fab.html" mdw-theme-color="accent">
             <div class="mdw-list__text">fab</div></a><a class="mdw-list__item" href="navdrawer.html" mdw-theme-color="accent">
             <div class="mdw-list__text">navdrawer</div></a><a class="mdw-list__item" href="search.html" mdw-theme-color="accent">
-            <div class="mdw-list__text">search</div></a><a class="mdw-list__item" href="table.html" mdw-theme-color="accent">
+            <div class="mdw-list__text">search</div></a><a class="mdw-list__item" mdw-selected href="table.html" mdw-theme-color="accent">
             <div class="mdw-list__text">table</div></a>
         </div>
       </div>
       <div class="mdw-navdrawer__content">
-        <div id="horizontalLine"></div>
-        <div id="verticalLineLeft"></div>
-        <div id="verticalLineRight"></div>
-        <div class="comparison">
-          <div class="render">
-            <div class="display-flex flex-1" mdw-theme-fill="background-50 light" flex-column style="position:relative;">
-              <div class="androidstatusbar" mdw-theme-fill="primary-700 dark">
-                <div>12:30</div><i class="material-icons" style="letter-spacing:2px;">&#xE1BA;&#xE1C8;&#xE1A4;</i>
-              </div>
-              <div class="mdw-toolbar" mdw-theme-fill="primary-500 dark">
-                <div class="mdw-toolbar__action">
-                  <div class="mdw-toolbar__start">
-                    <div class="mdw-tooltip__wrapper">
-                      <div class="mdw-button material-icons" mdw-icon>menu</div>
-                      <div class="mdw-tooltip">Menu</div>
+        <div class="comparison js" style="margin:16px;">
+          <div mdw-elevation="2" mdw-theme-fill="white light">
+            <table class="mdw-table" mdw-theme-color="primary">
+              <caption>
+                <div class="mdw-table__header-text">Nutrition</div>
+                <div class="mdw-table__header-actions">
+                  <div class="mdw-button">Add</div>
+                  <div class="mdw-button">Remove</div>
+                </div>
+                <div class="mdw-table__header-icons">
+                  <div class="mdw-button material-icons" mdw-icon>filter_list</div>
+                  <div class="mdw-button material-icons" mdw-icon>more_vert</div>
+                </div>
+              </caption>
+              <thead>
+                <tr>
+                  <th mdw-table-checkbox>
+                    <label class="mdw-selection">
+                      <input class="mdw-selection__input" type="checkbox">
+                      <div class="mdw-selection__icon"></div>
+                    </label>
+                  </th>
+                  <th mdw-table-primary>Dessert (100g serving)</th>
+                  <th>
+                    <div class="mdw-tooltip__wrapper"><span>Calories</span>
+                      <div class="mdw-tooltip">The total amount of food energy in the given serving size.</div>
                     </div>
-                  </div>
-                  <div class="mdw-toolbar__end">
-                    <div class="mdw-tooltip__wrapper">
-                      <div class="mdw-button material-icons" mdw-icon mdw-more-button>more_vert</div>
-                      <div class="mdw-tooltip">Options</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="content" style="padding:16px 8px;"><a class="mdw-button" mdw-theme-fill="primary dark" mdw-raised href="#confirmdialog-titled">Titled</a><a class="mdw-button" mdw-theme-fill="primary dark" mdw-raised href="#confirmdialog-text">Text</a></div>
-              <div class="mdw-dialog" id="confirmdialog-titled"><a class="mdw-dialog__close" href="#"></a>
-                <div class="mdw-dialog__popup">
-                  <div class="mdw-dialog__content">
-                    <div class="mdw-dialog__title">Use Google's location service?</div>
-                    <div class="mdw-dialog__body">Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</div>
-                  </div>
-                  <div class="mdw-dialog__button-area"><a class="mdw-button" mdw-theme-color="accent" href="#">Disagree</a><a class="mdw-button" mdw-theme-color="accent" href="#">Agree</a></div>
-                </div>
-              </div>
-              <div class="mdw-dialog" id="confirmdialog-text"><a class="mdw-dialog__close" href="#"></a>
-                <div class="mdw-dialog__popup">
-                  <div class="mdw-dialog__content">
-                    <div class="mdw-dialog__body">Discard draft?</div>
-                  </div>
-                  <div class="mdw-dialog__button-area"><a class="mdw-button" mdw-theme-color="accent" href="#">Cancel</a><a class="mdw-button" mdw-theme-color="accent" href="#">Discard</a></div>
-                </div>
-              </div>
-            </div>
-            <div class="androidnavbar"><i class="material-icons back-button">&#xE3C8;</i><i class="material-icons">&#xE836;</i><i class="material-icons">&#xE835;</i></div>
+                  </th>
+                  <th>Fat (g)</th>
+                  <th>Carbs (g)</th>
+                  <th>Protein (g)</th>
+                  <th>Sodium (mg)</th>
+                  <th>Calcium (%)</th>
+                  <th>Iron (%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td mdw-table-checkbox>
+                    <label class="mdw-selection">
+                      <input class="mdw-selection__input" type="checkbox">
+                      <div class="mdw-selection__icon"></div>
+                    </label>
+                  </td>
+                  <td mdw-table-primary>Frozen Yogurt</td>
+                  <td mdw-table-number>159</td>
+                  <td mdw-table-number>6.0</td>
+                  <td mdw-table-number>24</td>
+                  <td mdw-table-number>4.0</td>
+                  <td mdw-table-number>87</td>
+                  <td mdw-table-number>14%</td>
+                  <td mdw-table-number>1%</td>
+                </tr>
+                <tr>
+                  <td mdw-table-checkbox>
+                    <label class="mdw-selection">
+                      <input class="mdw-selection__input" type="checkbox">
+                      <div class="mdw-selection__icon"></div>
+                    </label>
+                  </td>
+                  <td mdw-table-primary>Ice cream sandwich</td>
+                  <td mdw-table-number>237</td>
+                  <td mdw-table-number>9.0</td>
+                  <td mdw-table-number>37</td>
+                  <td mdw-table-number>4.3</td>
+                  <td mdw-table-number>129</td>
+                  <td mdw-table-number>8%</td>
+                  <td mdw-table-number>1%</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="target" style="background-image: url(https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3ejNQaWYtOGdiUXM/components-dialogs-content1.png);"></div>
         </div>
       </div>
     </div>
-    <script src="dialog.min.js"></script>
+    <script src="table.min.js"></script>
   </body>
 </html>
