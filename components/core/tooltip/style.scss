@@ -35,6 +35,7 @@ $tooltip__background-color: #616161; // material-grey-700
   padding-left: dp(8);
   padding-right: dp(8);
   transform: translateX(-50%) translateY($tooltip__margin__desktop);
+  white-space: nowrap;
 
   *:hover > &,
   *:focus > &,
