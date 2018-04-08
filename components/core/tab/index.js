@@ -67,7 +67,7 @@ class Tab {
 
     for (let i = 0; i < this.items.length; i += 1) {
       const itemElement = this.items[i];
-      if (itemElement.hasAttribute('selected')) {
+      if (itemElement.hasAttribute('mdw-selected')) {
         this.selectItem(itemElement);
       }
       itemElement.addEventListener('click', () => {
@@ -115,9 +115,9 @@ class Tab {
     for (let i = 0; i < this.items.length; i += 1) {
       const index = isRtl ? this.items.length - 1 -i : i;
       const item = this.items.item(index);
-      if (item.hasAttribute('selected')) {
+      if (item.hasAttribute('mdw-selected')) {
         foundPreviousSelection = true;
-        item.removeAttribute('selected');
+        item.removeAttribute('mdw-selected');
         if (!indicatorUpdated) {
           this.indicator.setAttribute('mdw-direction', 'forwards');
           indicatorUpdated = true;
@@ -125,7 +125,7 @@ class Tab {
       }
       if (item === itemElement) {
         foundTarget = true;
-        itemElement.setAttribute('selected', '');
+        itemElement.setAttribute('mdw-selected', '');
         if (!indicatorUpdated) {
           this.indicator.setAttribute('mdw-direction', 'backwards');
           indicatorUpdated = true;

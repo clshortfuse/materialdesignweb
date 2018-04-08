@@ -27,8 +27,8 @@ $tabColors: (
   }
   input:checked ~ .mdw-tab__icon,
   input:checked ~ .mdw-tab__label,
-  .mdw-tab__item[selected] > .mdw-tab__icon,
-  .mdw-tab__item[selected] > .mdw-tab__label,
+  .mdw-tab__item[mdw-selected] > .mdw-tab__icon,
+  .mdw-tab__item[mdw-selected] > .mdw-tab__label,
   input:checked + .mdw-tab__item > .mdw-tab__icon,
   input:checked + .mdw-tab__item > .mdw-tab__label {
     color: tabThemeValue("active-color", $type, $theme);
