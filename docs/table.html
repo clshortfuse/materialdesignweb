@@ -52,19 +52,26 @@
       </div>
       <div class="mdw-navdrawer__content">
         <div class="comparison js" style="margin:16px;">
-          <div mdw-elevation="2" mdw-theme-fill="white light">
-            <table class="mdw-table" mdw-theme-color="primary">
-              <caption>
-                <div class="mdw-table__header-text">Nutrition</div>
-                <div class="mdw-table__header-actions">
-                  <div class="mdw-button">Add</div>
-                  <div class="mdw-button">Remove</div>
-                </div>
-                <div class="mdw-table__header-icons">
-                  <div class="mdw-button material-icons" mdw-icon>filter_list</div>
-                  <div class="mdw-button material-icons" mdw-icon>more_vert</div>
-                </div>
-              </caption>
+          <div class="mdw-table" mdw-elevation="2" mdw-theme-fill="white light" mdw-theme-color="primary">
+            <div class="mdw-table__header">
+              <div class="mdw-table__header-text">Header Text</div>
+              <div class="mdw-table__header-icons">
+                <div class="mdw-button material-icons" mdw-icon>filter_list</div>
+                <div class="mdw-button material-icons" mdw-icon>more_vert</div>
+              </div>
+            </div>
+            <div class="mdw-table__header">
+              <div class="mdw-table__header-actions">
+                <div class="mdw-button" mdw-theme-color="primary">Add</div>
+                <div class="mdw-button" mdw-theme-color="primary">Remove</div>
+              </div>
+              <div class="mdw-table__header-icons">
+                <div class="mdw-button material-icons" mdw-icon>filter_list</div>
+                <div class="mdw-button material-icons" mdw-icon>more_vert</div>
+              </div>
+            </div>
+            <table>
+              <caption>HTMLTableCaptionElement Support</caption>
               <thead>
                 <tr>
                   <th mdw-table-checkbox>
