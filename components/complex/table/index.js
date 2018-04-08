@@ -19,7 +19,6 @@ class Table {
    * @return {void}
    */
   handleClickInteraction(event) {
-    console.log(event);
     const { target } = event;
     if (target instanceof HTMLInputElement) {
       if (target.hasAttribute('type') && target.getAttribute('type') === 'checkbox') {
