@@ -301,6 +301,9 @@ select.mdw-textfield__input {
       display: none;
     }
   }
+  .mdw-textfield[mdw-solo] & {
+    align-self: center;
+  }
   &::-ms-expand {
     // Remove IE11 dropdown button
     display: none;
@@ -421,6 +424,9 @@ select.mdw-textfield__input {
     display: none;
   }
 
+  .mdw-textfield[mdw-solo]:not([mdw-box]) > & {
+    display: none;
+  }
   .mdw-textfield[mdw-box] > & {
     z-index: 0;
     overflow: hidden;
@@ -500,6 +506,9 @@ select.mdw-textfield__input:not(:focus) {
     margin-top: 10px;
   }
   margin-bottom: 8px;
+  .mdw-textfield[mdw-solo] > & {
+    margin-bottom: 0;
+  }
   pointer-events: none;
   align-self: flex-end;
   -ms-grid-row-align: end;
