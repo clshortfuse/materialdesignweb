@@ -21,7 +21,7 @@ class TextField {
     this.border = element.querySelector('.mdw-textfield__border-line');
     if (!this.border) {
       const border = document.createElement('div');
-      border.classList.add('.mdw-textfield__border-line');
+      border.classList.add('mdw-textfield__border-line');
       element.appendChild(border);
       this.border = border;
     }
