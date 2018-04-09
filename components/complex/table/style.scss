@@ -2,22 +2,20 @@
 // https://material.io/guidelines/patterns/selection.html#selection-item-selection
 
 
-
-table.mdw-table {
-  display: table;
-}
+table.mdw-table,
 .mdw-table table {
+  display: table;
   border-collapse: collapse;
-  caption-side: top;
 }
 
 .mdw-table caption,
-.mdw-table .mdw-table__header {
+.mdw-table__header {
   font-size: sp(20);
   font-weight: $font-weight-regular;
 }
 
 .mdw-table caption {
+  caption-side: top;
   line-height: dp(64);
   text-align: left;
   text-align: start;
