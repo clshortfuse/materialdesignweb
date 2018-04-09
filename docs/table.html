@@ -19,7 +19,7 @@
         <div class="mdw-toolbar" mdw-theme-fill="accent-500 dark">
           <div class="mdw-toolbar__action">
             <div class="mdw-toolbar__start">
-              <div class="mdw-tooltip__wrapper"><a class="mdw-button material-icons" mdw-icon href="#docs-navdrawer">menu</a>
+              <div class="mdw-tooltip__wrapper"><a class="mdw-tooltip__target mdw-button material-icons" mdw-icon href="#docs-navdrawer">menu</a>
                 <div class="mdw-tooltip">Menu</div>
               </div>
             </div>
@@ -40,7 +40,8 @@
             <div class="mdw-list__text">selection</div></a><a class="mdw-list__item" href="tab.html" mdw-theme-color="primary">
             <div class="mdw-list__text">tab</div></a><a class="mdw-list__item" href="textfield.html" mdw-theme-color="primary">
             <div class="mdw-list__text">textfield</div></a><a class="mdw-list__item" href="toolbar.html" mdw-theme-color="primary">
-            <div class="mdw-list__text">toolbar</div></a><a class="mdw-list__item" href="type.html" mdw-theme-color="primary">
+            <div class="mdw-list__text">toolbar</div></a><a class="mdw-list__item" href="tooltip.html" mdw-theme-color="primary">
+            <div class="mdw-list__text">tooltip</div></a><a class="mdw-list__item" href="type.html" mdw-theme-color="primary">
             <div class="mdw-list__text">type</div></a>
           <div class="mdw-list__subheader">Complex</div><a class="mdw-list__item" href="dialog.html" mdw-theme-color="accent">
             <div class="mdw-list__text">dialog</div></a><a class="mdw-list__item" href="fab.html" mdw-theme-color="accent">
@@ -51,7 +52,7 @@
         </div>
       </div>
       <div class="mdw-navdrawer__content">
-        <div class="comparison js" style="margin:16px;">
+        <div class="comparison js mdw-theme-toolbar" style="margin:16px;">
           <div class="mdw-table" mdw-elevation="2" mdw-theme-fill="white light" mdw-theme-color="primary">
             <div class="mdw-table__header">
               <div class="mdw-table__header-text">Header Text</div>
@@ -82,7 +83,7 @@
                   </th>
                   <th mdw-table-primary>Dessert (100g serving)</th>
                   <th>
-                    <div class="mdw-tooltip__wrapper"><span>Calories</span>
+                    <div class="mdw-tooltip__wrapper"><span class="mdw-tooltip__target">Calories</span>
                       <div class="mdw-tooltip">The total amount of food energy in the given serving size.</div>
                     </div>
                   </th>
@@ -90,7 +91,11 @@
                   <th>Carbs (g)</th>
                   <th>Protein (g)</th>
                   <th>Sodium (mg)</th>
-                  <th>Calcium (%)</th>
+                  <th> 
+                    <div class="mdw-tooltip__wrapper"> <span class="mdw-tooltip__target">Calcium (%)</span>
+                      <div class="mdw-tooltip">The amount of calcium as a percentage of the recommended daily amount.</div>
+                    </div>
+                  </th>
                   <th>Iron (%)</th>
                 </tr>
               </thead>
