@@ -119,7 +119,10 @@ table.mdw-table,
   align-items: center;
   select.mdw-textfield__input {
     min-width: dp(40 + 24);
-    text-align-last: right;
+    direction: rtl;
+    [dir=rtl] & {
+      direction: ltr;
+    }
   }
 }
 
