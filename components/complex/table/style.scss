@@ -26,7 +26,6 @@ table.mdw-table,
   display: flex;
   flex-direction: row;
   align-items: center;
-  min-height: 64px;
 }
 .mdw-table__header-text,
 .mdw-table__header-actions {
@@ -35,9 +34,7 @@ table.mdw-table,
 .mdw-table__header-text,
 .mdw-table__header-actions,
 .mdw-table__header-controls {
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
+  display: flex;
 }
 
 .mdw-table__header-text {
@@ -85,7 +82,8 @@ table.mdw-table,
 }
 
 .mdw-table td[mdw-table-number] {
-  text-align: end; 
+  text-align: right;
+  text-align: end;
 }
 
 .mdw-table__footer {
@@ -93,9 +91,21 @@ table.mdw-table,
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  min-height: 64px;
   font-size: sp(12);
   font-weight: $font-weight-regular;
+}
+
+.mdw-table__header,
+.mdw-table__footer {
+  min-height: 64px;
+  @include IEOnly() {
+    // Fix IE min-height flexbug
+    &::after {
+      content: '';
+      min-height: inherit;
+      width: 0;
+    }
+  }
 }
 
 .mdw-table__footer-rowcount,
