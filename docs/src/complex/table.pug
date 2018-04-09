@@ -2,7 +2,7 @@ include ../mixins.pug
 
 +header()
   +navdrawer("table")
-    .comparison(style="margin:16px").js
+    .comparison(style="margin:16px").js.mdw-theme-toolbar
       .mdw-table(mdw-elevation=2 mdw-theme-fill="white light" mdw-theme-color="primary")
         .mdw-table__header
           .mdw-table__header-text Header Text
@@ -27,13 +27,16 @@ include ../mixins.pug
               th(mdw-table-primary) Dessert (100g serving)
               th
                 .mdw-tooltip__wrapper
-                  span Calories
+                  span.mdw-tooltip__target Calories
                   .mdw-tooltip The total amount of food energy in the given serving size.
               th Fat (g)
               th Carbs (g)
               th Protein (g)
               th Sodium (mg)
-              th Calcium (%)
+              th 
+                .mdw-tooltip__wrapper 
+                  span.mdw-tooltip__target Calcium (%)
+                  .mdw-tooltip The amount of calcium as a percentage of the recommended daily amount.
               th Iron (%)
           tbody
             tr

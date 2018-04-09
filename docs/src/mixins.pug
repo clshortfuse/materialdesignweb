@@ -41,7 +41,7 @@ mixin header()
     
 
 
-- var corecomponents = ["bottomnav", "button", "elevation", "list", "menu", "progress", "selection", "tab", "textfield", "toolbar", "type"]
+- var corecomponents = ["bottomnav", "button", "elevation", "list", "menu", "progress", "selection", "tab", "textfield", "toolbar", "tooltip", "type"]
 - var complexcomponents = ["dialog", "fab", "navdrawer", "search", "table"]
 
 mixin navdrawer(selected)
@@ -52,7 +52,7 @@ mixin navdrawer(selected)
         .mdw-toolbar__action
           .mdw-toolbar__start
             .mdw-tooltip__wrapper
-              a.mdw-button(mdw-icon href="#docs-navdrawer").material-icons menu
+              a.mdw-tooltip__target.mdw-button(mdw-icon href="#docs-navdrawer").material-icons menu
               .mdw-tooltip Menu
           .mdw-toolbar__title=selected
     .mdw-navdrawer__drawer
