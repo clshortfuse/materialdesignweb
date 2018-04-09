@@ -6,14 +6,14 @@ include ../mixins.pug
       .mdw-table(mdw-elevation=2 mdw-theme-fill="white light" mdw-theme-color="primary")
         .mdw-table__header
           .mdw-table__header-text Header Text
-          .mdw-table__header-icons
+          .mdw-table__header-controls
             .mdw-button.material-icons(mdw-icon) filter_list
             .mdw-button.material-icons(mdw-icon) more_vert
         .mdw-table__header
           .mdw-table__header-actions
             .mdw-button(mdw-theme-color="primary") Add
             .mdw-button(mdw-theme-color="primary") Remove
-          .mdw-table__header-icons
+          .mdw-table__header-controls
             .mdw-button.material-icons(mdw-icon) filter_list
             .mdw-button.material-icons(mdw-icon) more_vert
         table
@@ -62,4 +62,18 @@ include ../mixins.pug
               td(mdw-table-number) 129
               td(mdw-table-number) 8%
               td(mdw-table-number) 1%
+        .mdw-table__footer
+          .mdw-table__footer-rowcount
+              span Rows per page
+              label.mdw-textfield(mdw-solo)
+                select.mdw-textfield__input
+                  option(value="10") 10
+                  option(value="25") 25
+                  option(value="50") 50
+                  option(value="100") 100
+                .mdw-textfield__dropdown-button
+          .mdw-table__footer-pagination 1-10 of 100
+          .mdw-table__footer-controls
+            .mdw-button.material-icons(mdw-icon) chevron_left
+            .mdw-button.material-icons(mdw-icon) chevron_right
   script(src='table.min.js')

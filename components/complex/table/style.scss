@@ -24,22 +24,26 @@ table.mdw-table {
   padding: 0 dp(24);
 }
 
+.mdw-table__header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 64px;
+}
+.mdw-table__header-text,
+.mdw-table__header-actions {
+  flex-grow: 1;
+}
 .mdw-table__header-text,
 .mdw-table__header-actions,
-.mdw-table__header-icons {
+.mdw-table__header-controls {
   display: inline-flex;
-  min-height: 64px;
   flex-direction: row;
   align-items: center;
 }
 
 .mdw-table__header-text {
   padding-left: dp(24);
-}
-
-.mdw-table__header-icons {
-  float: right;
-  justify-content: flex-end;
 }
 
 .mdw-table tr {
@@ -58,40 +62,66 @@ table.mdw-table {
   height: dp(48);
 }
 
-
-
 .mdw-table th,
 .mdw-table td {
-  padding: 8px 0;
-  padding-left: 24px;
-  &:last-of-type {
-    padding-right: 24px;
+  padding-top: dp(8);
+  padding-bottom: dp(8);
+  padding-right: dp(56);
+  &:first-of-type {
+    padding-left: dp(24);
   }
+  &[mdw-table-checkbox],
+  &:last-of-type {
+    padding-right: dp(24);
+  }
+
   .mdw-selection__input {
     // Remove ripple
     visibility: hidden;
   }
 }
 
-.mdw-table td {
-  &[mdw-table-number] {
-    text-align: end;
+.mdw-table th[mdw-table-checkbox] + th,
+.mdw-table td[mdw-table-checkbox] + td {
+  padding-right: dp(24);
+}
+
+.mdw-table td[mdw-table-number] {
+  text-align: end; 
+}
+
+.mdw-table__footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 64px;
+  font-size: sp(12);
+  font-weight: $font-weight-regular;
+}
+
+.mdw-table__footer-rowcount,
+.mdw-table__footer-pagination {
+  margin-left: dp(18);
+  margin-right: dp(14);
+}
+
+.mdw-table__header-controls,
+.mdw-table__footer-controls {
+  display: inline-flex;
+  margin-left: dp(2);
+  margin-right: dp(2);
+  .mdw-button {
+    margin: 0 dp(4);
   }
 }
 
-.mdw-table th[mdw-table-primary] {
-  ~ th {
-    padding-left: 56px;
-  }
-  + th {
-    padding-left: 24px;
-  }
-}
-.mdw-table td[mdw-table-primary] {
-  ~ td {
-    padding-left: 56px;
-  }
-  + td {
-    padding-left: 24px;
+.mdw-table__footer-rowcount {
+  display: flex;
+  align-items: center;
+  select.mdw-textfield__input {
+    min-width: dp(40 + 24);
+    text-align-last: right;
   }
 }
+
