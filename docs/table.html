@@ -55,7 +55,7 @@
           <div class="mdw-table" mdw-elevation="2" mdw-theme-fill="white light" mdw-theme-color="primary">
             <div class="mdw-table__header">
               <div class="mdw-table__header-text">Header Text</div>
-              <div class="mdw-table__header-icons">
+              <div class="mdw-table__header-controls">
                 <div class="mdw-button material-icons" mdw-icon>filter_list</div>
                 <div class="mdw-button material-icons" mdw-icon>more_vert</div>
               </div>
@@ -65,7 +65,7 @@
                 <div class="mdw-button" mdw-theme-color="primary">Add</div>
                 <div class="mdw-button" mdw-theme-color="primary">Remove</div>
               </div>
-              <div class="mdw-table__header-icons">
+              <div class="mdw-table__header-controls">
                 <div class="mdw-button material-icons" mdw-icon>filter_list</div>
                 <div class="mdw-button material-icons" mdw-icon>more_vert</div>
               </div>
@@ -129,6 +129,24 @@
                 </tr>
               </tbody>
             </table>
+            <div class="mdw-table__footer">
+              <div class="mdw-table__footer-rowcount"><span>Rows per page</span>
+                <label class="mdw-textfield" mdw-solo>
+                  <select class="mdw-textfield__input">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                  <div class="mdw-textfield__dropdown-button"></div>
+                </label>
+              </div>
+              <div class="mdw-table__footer-pagination">1-10 of 100</div>
+              <div class="mdw-table__footer-controls">
+                <div class="mdw-button material-icons" mdw-icon>chevron_left</div>
+                <div class="mdw-button material-icons" mdw-icon>chevron_right</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
