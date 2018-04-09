@@ -23,7 +23,7 @@ $tableColors: (
 
 // Vary by contrast or theme
 @mixin tableContrastRules($type: 'var', $theme: null) {
-  .mdw-table table {
+  .mdw-table tr {
     border-color: tableThemeValue("divider-color", $type, $theme);
   }
 
