@@ -37,10 +37,10 @@ $tooltip__background-color: #616161; // material-grey-700
   transform: translateX(-50%) translateY($tooltip__margin__desktop);
   white-space: nowrap;
 
-  *:hover > &,
-  *:focus > &,
-  .mdw-tooltip__wrapper > *:hover ~ &,
-  .mdw-tooltip__wrapper > *:not([tabindex="-1"]):focus ~ & {
+  .mdw-tooltip__target:hover > &,
+  .mdw-tooltip__target:focus > &,
+  .mdw-tooltip__wrapper > .mdw-tooltip__target:hover ~ &,
+  .mdw-tooltip__wrapper > .mdw-tooltip__target:not([tabindex="-1"]):focus ~ & {
     opacity: 0.9;
     transition-timing-function: $motion-easing-acceleration;
   }
@@ -113,13 +113,15 @@ $tooltip__background-color: #616161; // material-grey-700
     }
 
     // Don't change opacity unless active
-    *:focus:not(:active) > &,
-    .mdw-tooltip__wrapper > *:not([tabindex="-1"]):focus:not(:active) ~ & {
+    .mdw-tooltip__target:hover:not(:active) > &,
+    .mdw-tooltip__target:focus:not(:active) > &,
+    .mdw-tooltip__wrapper > .mdw-tooltip__target:hover:not(:active) ~ &,
+    .mdw-tooltip__wrapper > .mdw-tooltip__target:not([tabindex="-1"]):focus:not(:active) ~ & {
       opacity: 0;
     }
 
-    *:active > &,
-    .mdw-tooltip__wrapper > *:active ~ .mdw-tooltip {
+    .mdw-tooltip__target:active > &,
+    .mdw-tooltip__wrapper > .mdw-tooltip__target:active ~ .mdw-tooltip {
       opacity: 0.9;
       transition-timing-function: $motion-easing-acceleration;
     }
