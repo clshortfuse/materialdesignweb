@@ -58,6 +58,9 @@ $tableColors: (
       color: tableThemeValue("header-fill-text", $type, $theme);
     }
   }
+  .mdw-table th[mdw-sorted] {
+    color: tableThemeValue("text-color", $type, $theme);
+  }
 }
 
 // Varies by contrast and theme

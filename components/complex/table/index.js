@@ -5,7 +5,7 @@ class Table {
   constructor(element) {
     this.element = element;
     this.element.addEventListener('click', (event) => {
-      // Use one event listener to reduce overhead
+      // Use one event listener to reduce overhead and allow dynamic content
       this.handleClickInteraction(event);
     });
   }
@@ -19,9 +19,11 @@ class Table {
    * @return {void}
    */
   handleClickInteraction(event) {
-    const { target } = event;
+    /** @type {HTMLElement} */
+    const target = event.target;
     if (target instanceof HTMLInputElement) {
       if (target.hasAttribute('type') && target.getAttribute('type') === 'checkbox') {
+        event.stopPropagation();
         const currentCell = this.getTableCell(target);
         if (currentCell.tagName.toLowerCase() === 'th') {
           this.setCheckOnAllRows(target.checked);
@@ -39,6 +41,81 @@ class Table {
         }
       }
       return;
+    }
+    if (target instanceof HTMLTableCellElement) {
+      if (target.tagName.toLowerCase() === 'th') {
+        if (target.hasAttribute('mdw-sortable')) {
+          event.stopPropagation();
+          let ascending = true;
+          if (!target.hasAttribute('mdw-sorted')) {
+            ascending = false;
+          } else if (target.getAttribute('mdw-sorted') === 'reverse') {
+            ascending = false;
+          }
+          this.updateSortIcons(target, ascending);
+          this.updateSortColumn(target, ascending);
+        }
+      }
+    }
+  }
+
+  /**
+   * Overrideable sorting method
+   * @param {HTMLTableHeaderCellElement} tableHeaderCell
+   * @param {boolean} [ascending=false]
+   * @return {void}
+   */
+  updateSortColumn(tableHeaderCell, ascending) {
+    if (tableHeaderCell.cellIndex === -1) {
+      // Header not attached to row!
+      return;
+    }
+    /** @type {HTMLTableSectionElement} */
+    const tbody = this.element.querySelector('tbody');
+    const rows = [];
+    for (let i = 0; i < tbody.rows.length; i += 1) {
+      rows.push(tbody.rows.item(i));
+    }
+    for (let i = tbody.rows.length - 1; i >= 0; i -= 1) {
+      tbody.deleteRow(i);
+    }
+    rows.sort((a, b) => {
+      const aCell = a.cells.item(tableHeaderCell.cellIndex);
+      const bCell = b.cells.item(tableHeaderCell.cellIndex);
+      const aText = aCell.textContent;
+      const bText = bCell.textContent;
+      if (aCell.hasAttribute('mdw-table-number')) {
+        return parseFloat(aText) - parseFloat(bText);
+      }
+      return aText.localeCompare(bText);
+    });
+    if (ascending) {
+      rows.reverse();
+    }
+    rows.forEach((row) => {
+      tbody.appendChild(row);
+    });
+  }
+
+  /**
+   * @param {HTMLTableHeaderCellElement=} sortedTableHeaderCell null if none
+   * @param {boolean=} [ascending=false]
+   * @return {void}
+   */
+  updateSortIcons(sortedTableHeaderCell, ascending) {
+    if (sortedTableHeaderCell) {
+      if (ascending) {
+        sortedTableHeaderCell.setAttribute('mdw-sorted', 'reverse');
+      } else {
+        sortedTableHeaderCell.setAttribute('mdw-sorted', '');
+      }
+    }
+    const tableHeaders = this.element.querySelectorAll('th');
+    for (let i = 0; i < tableHeaders.length; i += 1) {
+      const otherTableHeader = tableHeaders.item(i);
+      if (otherTableHeader !== sortedTableHeaderCell) {
+        otherTableHeader.removeAttribute('mdw-sorted');
+      }
     }
   }
 

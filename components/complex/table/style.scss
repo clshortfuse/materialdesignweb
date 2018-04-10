@@ -57,10 +57,14 @@ table.mdw-table,
   height: dp(48);
 }
 
-.mdw-table th,
+
 .mdw-table td {
   padding-top: dp(8);
   padding-bottom: dp(8);
+}
+.mdw-table th,
+.mdw-table td {
+  box-sizing: border-box;
   padding-right: dp(56);
   &:first-of-type {
     padding-left: dp(24);
@@ -80,6 +84,41 @@ table.mdw-table,
 .mdw-table td[mdw-table-checkbox] + td {
   padding-right: dp(24);
 }
+
+.mdw-table__sort-icon {
+  position: absolute;
+  left: 0;
+  transform: translateX(-100%) rotate(0deg);
+  transition: transform 1s;
+  color: transparent;
+  pointer-events: none;
+  &.material-icons {
+    font-size: 16px;
+    vertical-align: bottom;
+  }
+}
+
+.mdw-table__column-header-text {
+  pointer-events: none;
+}
+.mdw-table th[mdw-sortable] {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  &:hover,
+  &[mdw-sorted] {
+    .mdw-table__sort-icon {
+      color: inherit;
+    }
+  }
+  &[mdw-sorted=reverse] {
+    .mdw-table__sort-icon {
+      transform: translateX(-100%) rotate(180deg);
+    }
+  }
+}
+
+
 
 .mdw-table td[mdw-table-number] {
   text-align: right;
