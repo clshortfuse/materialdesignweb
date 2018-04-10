@@ -91,16 +91,12 @@ table.mdw-table,
   transform: translateX(-100%) rotate(0deg);
   transition: transform 1s;
   color: transparent;
-  pointer-events: none;
   &.material-icons {
     font-size: 16px;
     vertical-align: bottom;
   }
 }
 
-.mdw-table__column-header-text {
-  pointer-events: none;
-}
 .mdw-table th[mdw-sortable] {
   position: relative;
   cursor: pointer;

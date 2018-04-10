@@ -24,7 +24,9 @@ include ../mixins.pug
                 label.mdw-selection
                   input.mdw-selection__input(type="checkbox")
                   .mdw-selection__icon
-              th Dessert (100g serving)
+              th(mdw-sortable)
+                .mdw-table__sort-icon.material-icons arrow_downward
+                span Dessert (100g serving)
               th(mdw-sortable)
                 .mdw-table__sort-icon.material-icons arrow_downward
                 .mdw-tooltip__wrapper
@@ -32,31 +34,31 @@ include ../mixins.pug
                   .mdw-tooltip The total amount of food energy in the given serving size.
               th(mdw-sortable)
                 .mdw-table__sort-icon.material-icons arrow_downward
-                .mdw-table__column-header-text Fat (g)
+                span Fat (g)
               th(mdw-sortable)
                 .mdw-table__sort-icon.material-icons arrow_downward
-                .mdw-table__column-header-text Carbs (g)
+                span Carbs (g)
               th(mdw-sortable)
                 .mdw-table__sort-icon.material-icons arrow_downward
-                .mdw-table__column-header-text Protein (g)
+                span Protein (g)
               th(mdw-sortable)
                 .mdw-table__sort-icon.material-icons arrow_downward
-                .mdw-table__column-header-text Sodium (mg)
+                span Sodium (mg)
               th(mdw-sortable)
                 .mdw-table__sort-icon.material-icons arrow_downward
                 .mdw-tooltip__wrapper
-                  .mdw-table__column-header-text.mdw-tooltip__target Calcium (%)
+                  .mdw-tooltip__target Calcium (%)
                   .mdw-tooltip The amount of calcium as a percentage of the recommended daily amount.
               th(mdw-sortable)
                 .mdw-table__sort-icon.material-icons arrow_downward
-                .mdw-table__column-header-text Iron (%)
+                span Iron (%)
           tbody
             tr
               td(mdw-table-checkbox)
                 label.mdw-selection
                   input.mdw-selection__input(type="checkbox")
                   .mdw-selection__icon
-              td(mdw-table-primary) Frozen Yogurt
+              td Frozen Yogurt
               td(mdw-table-number) 159
               td(mdw-table-number) 6.0
               td(mdw-table-number) 24
@@ -69,7 +71,7 @@ include ../mixins.pug
                 label.mdw-selection
                   input.mdw-selection__input(type="checkbox")
                   .mdw-selection__icon
-              td(mdw-table-primary) Ice cream sandwich
+              td Ice cream sandwich
               td(mdw-table-number) 237
               td(mdw-table-number) 9.0
               td(mdw-table-number) 37
@@ -77,6 +79,110 @@ include ../mixins.pug
               td(mdw-table-number) 129
               td(mdw-table-number) 8%
               td(mdw-table-number) 1%
+            tr
+              td(mdw-table-checkbox)
+                label.mdw-selection
+                  input.mdw-selection__input(type="checkbox")
+                  .mdw-selection__icon
+              td Eclair
+              td(mdw-table-number) 262
+              td(mdw-table-number) 16.0
+              td(mdw-table-number) 24
+              td(mdw-table-number) 6.0
+              td(mdw-table-number) 337
+              td(mdw-table-number) 6%
+              td(mdw-table-number) 7%
+            tr
+              td(mdw-table-checkbox)
+                label.mdw-selection
+                  input.mdw-selection__input(type="checkbox")
+                  .mdw-selection__icon
+              td Cupcake
+              td(mdw-table-number) 305
+              td(mdw-table-number) 3.7
+              td(mdw-table-number) 67
+              td(mdw-table-number) 4.3
+              td(mdw-table-number) 413
+              td(mdw-table-number) 3%
+              td(mdw-table-number) 8%
+            tr
+              td(mdw-table-checkbox)
+                label.mdw-selection
+                  input.mdw-selection__input(type="checkbox")
+                  .mdw-selection__icon
+              td Gingerbread
+              td(mdw-table-number) 356
+              td(mdw-table-number) 16.0
+              td(mdw-table-number) 49
+              td(mdw-table-number) 3.9
+              td(mdw-table-number) 327
+              td(mdw-table-number) 7%
+              td(mdw-table-number) 16%
+            tr
+              td(mdw-table-checkbox)
+                label.mdw-selection
+                  input.mdw-selection__input(type="checkbox")
+                  .mdw-selection__icon
+              td Jelly bean
+              td(mdw-table-number) 375
+              td(mdw-table-number) 0.0
+              td(mdw-table-number) 94
+              td(mdw-table-number) 0.0
+              td(mdw-table-number) 50
+              td(mdw-table-number) 0%
+              td(mdw-table-number) 0%
+            tr
+              td(mdw-table-checkbox)
+                label.mdw-selection
+                  input.mdw-selection__input(type="checkbox")
+                  .mdw-selection__icon
+              td Lollipop
+              td(mdw-table-number) 392
+              td(mdw-table-number) 0.2
+              td(mdw-table-number) 98
+              td(mdw-table-number) 0
+              td(mdw-table-number) 38
+              td(mdw-table-number) 0%
+              td(mdw-table-number) 2%
+            tr
+              td(mdw-table-checkbox)
+                label.mdw-selection
+                  input.mdw-selection__input(type="checkbox")
+                  .mdw-selection__icon
+              td Honeycomb
+              td(mdw-table-number) 408
+              td(mdw-table-number) 3.2
+              td(mdw-table-number) 87
+              td(mdw-table-number) 6.5
+              td(mdw-table-number) 562
+              td(mdw-table-number) 0%
+              td(mdw-table-number) 45%
+            tr
+              td(mdw-table-checkbox)
+                label.mdw-selection
+                  input.mdw-selection__input(type="checkbox")
+                  .mdw-selection__icon
+              td Donut
+              td(mdw-table-number) 452
+              td(mdw-table-number) 25.0
+              td(mdw-table-number) 51
+              td(mdw-table-number) 4.9
+              td(mdw-table-number) 326
+              td(mdw-table-number) 2%
+              td(mdw-table-number) 22%
+            tr
+              td(mdw-table-checkbox)
+                label.mdw-selection
+                  input.mdw-selection__input(type="checkbox")
+                  .mdw-selection__icon
+              td Kitkat
+              td(mdw-table-number) 518
+              td(mdw-table-number) 26.0
+              td(mdw-table-number) 65
+              td(mdw-table-number) 7
+              td(mdw-table-number) 54
+              td(mdw-table-number) 12%
+              td(mdw-table-number) 6%
         .mdw-table__footer
           .mdw-table__footer-rowcount
               span Rows per page

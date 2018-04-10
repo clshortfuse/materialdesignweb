@@ -42,19 +42,19 @@ class Table {
       }
       return;
     }
-    if (target instanceof HTMLTableCellElement) {
-      if (target.tagName.toLowerCase() === 'th') {
-        if (target.hasAttribute('mdw-sortable')) {
-          event.stopPropagation();
-          let ascending = true;
-          if (!target.hasAttribute('mdw-sorted')) {
-            ascending = false;
-          } else if (target.getAttribute('mdw-sorted') === 'reverse') {
-            ascending = false;
-          }
-          this.updateSortIcons(target, ascending);
-          this.updateSortColumn(target, ascending);
+    const currentCell = this.getTableCell(target);
+    if (currentCell) {
+      if (currentCell.tagName.toLowerCase() === 'th' && currentCell.hasAttribute('mdw-sortable')) {
+        event.stopPropagation();
+        let ascending = true;
+        if (!currentCell.hasAttribute('mdw-sorted')) {
+          ascending = false;
+        } else if (currentCell.getAttribute('mdw-sorted') === 'reverse') {
+          ascending = false;
         }
+        this.updateSortIcons(currentCell, ascending);
+        this.updateSortColumn(currentCell, ascending);
+        return;
       }
     }
   }
