@@ -7,6 +7,11 @@ $tooltip__background-color: #616161; // material-grey-700
 .mdw-tooltip__wrapper {
   position: relative;
   overflow: visible;
+  pointer-events: none;
+}
+.mdw-tooltip__target {
+  pointer-events: auto;
+  user-select: none;
 }
 
 .mdw-tooltip {
