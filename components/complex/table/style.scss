@@ -89,7 +89,15 @@ table.mdw-table,
   position: absolute;
   left: 0;
   transform: translateX(-100%) rotate(0deg);
-  transition: transform 1s;
+  transition-property: transform;
+  transition-timing-function: $motion-easing-standard;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
   color: transparent;
   &.material-icons {
     font-size: 16px;
