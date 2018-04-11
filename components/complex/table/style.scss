@@ -87,7 +87,6 @@ table.mdw-table,
 
 .mdw-table__sort-icon {
   position: absolute;
-  left: 0;
   transform: translateX(-100%) rotate(0deg);
   transition-property: transform;
   transition-timing-function: $motion-easing-standard;
@@ -101,12 +100,10 @@ table.mdw-table,
   color: transparent;
   &.material-icons {
     font-size: 16px;
-    vertical-align: bottom;
   }
 }
 
 .mdw-table th[mdw-sortable] {
-  position: relative;
   cursor: pointer;
   user-select: none;
   &:hover,
