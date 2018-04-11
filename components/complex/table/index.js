@@ -73,10 +73,8 @@ class Table {
     /** @type {HTMLTableSectionElement} */
     const tbody = this.element.querySelector('tbody');
     const rows = [];
-    for (let i = 0; i < tbody.rows.length; i += 1) {
-      rows.push(tbody.rows.item(i));
-    }
     for (let i = tbody.rows.length - 1; i >= 0; i -= 1) {
+      rows.push(tbody.rows.item(i));
       tbody.deleteRow(i);
     }
     rows.sort((a, b) => {
@@ -92,9 +90,11 @@ class Table {
     if (ascending) {
       rows.reverse();
     }
+    const fragment = document.createDocumentFragment();
     rows.forEach((row) => {
-      tbody.appendChild(row);
+      fragment.appendChild(row);
     });
+    tbody.appendChild(fragment);
   }
 
   /**
