@@ -117,32 +117,32 @@ include ../mixins.pug
                 label.mdw-selection
                   input.mdw-selection__input(type="checkbox")
                   .mdw-selection__icon
-              th(mdw-sortable)
+              th(mdw-sortable data-type="text" mdw-primary-column)
                 .mdw-table__sort-icon.material-icons arrow_downward
                 span Dessert (100g serving)
-              th(mdw-sortable)
+              th(mdw-sortable data-type="number")
                 .mdw-table__sort-icon.material-icons arrow_downward
                 span.mdw-tooltip__wrapper
                   span.mdw-tooltip__target Calories
                   .mdw-tooltip The total amount of food energy in the given serving size.
-              th(mdw-sortable)
+              th(mdw-sortable data-type="number")
                 .mdw-table__sort-icon.material-icons arrow_downward
                 span Fat (g)
-              th(mdw-sortable)
+              th(mdw-sortable data-type="number")
                 .mdw-table__sort-icon.material-icons arrow_downward
                 span Carbs (g)
-              th(mdw-sortable)
+              th(mdw-sortable data-type="number")
                 .mdw-table__sort-icon.material-icons arrow_downward
                 span Protein (g)
-              th(mdw-sortable)
+              th(mdw-sortable data-type="number")
                 .mdw-table__sort-icon.material-icons arrow_downward
                 span Sodium (mg)
-              th(mdw-sortable)
+              th(mdw-sortable data-type="number")
                 .mdw-table__sort-icon.material-icons arrow_downward
                 span.mdw-tooltip__wrapper
                   span.mdw-tooltip__target Calcium (%)
                   .mdw-tooltip The amount of calcium as a percentage of the recommended daily amount.
-              th(mdw-sortable)
+              th(mdw-sortable data-type="number")
                 .mdw-table__sort-icon.material-icons arrow_downward
                 span Iron (%)
           tbody
@@ -151,7 +151,7 @@ include ../mixins.pug
                 label.mdw-selection
                   input.mdw-selection__input(type="checkbox")
                   .mdw-selection__icon
-              td Frozen Yogurt
+              td(data-type="text") Frozen Yogurt
               td(data-type="number") 159
               td(data-type="number") 6.0
               td(data-type="number") 24
@@ -164,7 +164,7 @@ include ../mixins.pug
                 label.mdw-selection
                   input.mdw-selection__input(type="checkbox")
                   .mdw-selection__icon
-              td Ice cream sandwich
+              td(data-type="text") Ice cream sandwich
               td(data-type="number") 237
               td(data-type="number") 9.0
               td(data-type="number") 37
@@ -177,7 +177,7 @@ include ../mixins.pug
                 label.mdw-selection
                   input.mdw-selection__input(type="checkbox")
                   .mdw-selection__icon
-              td Eclair
+              td(data-type="text") Eclair
               td(data-type="number") 262
               td(data-type="number") 16.0
               td(data-type="number") 24
@@ -190,7 +190,7 @@ include ../mixins.pug
                 label.mdw-selection
                   input.mdw-selection__input(type="checkbox")
                   .mdw-selection__icon
-              td Cupcake
+              td(data-type="text") Cupcake
               td(data-type="number") 305
               td(data-type="number") 3.7
               td(data-type="number") 67
@@ -203,7 +203,7 @@ include ../mixins.pug
                 label.mdw-selection
                   input.mdw-selection__input(type="checkbox")
                   .mdw-selection__icon
-              td Gingerbread
+              td(data-type="text") Gingerbread
               td(data-type="number") 356
               td(data-type="number") 16.0
               td(data-type="number") 49
@@ -216,7 +216,7 @@ include ../mixins.pug
                 label.mdw-selection
                   input.mdw-selection__input(type="checkbox")
                   .mdw-selection__icon
-              td Jelly bean
+              td(data-type="text") Jelly bean
               td(data-type="number") 375
               td(data-type="number") 0.0
               td(data-type="number") 94
@@ -229,7 +229,7 @@ include ../mixins.pug
                 label.mdw-selection
                   input.mdw-selection__input(type="checkbox")
                   .mdw-selection__icon
-              td Lollipop
+              td(data-type="text") Lollipop
               td(data-type="number") 392
               td(data-type="number") 0.2
               td(data-type="number") 98
@@ -242,7 +242,7 @@ include ../mixins.pug
                 label.mdw-selection
                   input.mdw-selection__input(type="checkbox")
                   .mdw-selection__icon
-              td Honeycomb
+              td(data-type="text") Honeycomb
               td(data-type="number") 408
               td(data-type="number") 3.2
               td(data-type="number") 87
@@ -255,7 +255,7 @@ include ../mixins.pug
                 label.mdw-selection
                   input.mdw-selection__input(type="checkbox")
                   .mdw-selection__icon
-              td Donut
+              td(data-type="text") Donut
               td(data-type="number") 452
               td(data-type="number") 25.0
               td(data-type="number") 51
@@ -268,7 +268,7 @@ include ../mixins.pug
                 label.mdw-selection
                   input.mdw-selection__input(type="checkbox")
                   .mdw-selection__icon
-              td Kitkat
+              td(data-type="text") Kitkat
               td(data-type="number") 518
               td(data-type="number") 26.0
               td(data-type="number") 65
@@ -291,7 +291,7 @@ include ../mixins.pug
             .mdw-button.material-icons(mdw-icon disabled) chevron_left
             .mdw-button.material-icons(mdw-icon disabled) chevron_right
       .mdw-table#dynamic-table(mdw-elevation=2 mdw-theme-fill="white light" mdw-theme-color="primary" 
-      style="margin:16px;max-height:800px")
+      style="margin:16px;max-height:800px;overflow-y:auto")
         .mdw-table__header
           .mdw-table__header-text Dynamic Table
           .mdw-table__header-controls

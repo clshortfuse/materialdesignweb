@@ -1,5 +1,4 @@
-import { Button } from "../../index";
-import { AssertionError } from "assert";
+import { Button } from '../../index';
 
 /** @return {HTMLLabelElement} */
 function constructTableCheckbox() {
@@ -24,6 +23,7 @@ class TableColumn {
    * @param {boolean=} options.rowSelector
    * @param {string=} options.tooltip
    * @param {boolean=} options.sortable
+   * @param {boolean=} options.primaryColumn
    * @param {HTMLElement=} options.customSortIcon
    * @param {string=} options.innerHTML
    * @param {DocumentFragment=} options.fragment
@@ -82,6 +82,10 @@ class TableColumn {
       this.element.appendChild(node);
     }
 
+    if (options.primaryColumn) {
+      this.element.setAttribute('mdw-primary-column', '');
+    }
+
     this.rowSelector = options.rowSelector;
 
     if (this.rowSelector) {
@@ -126,10 +130,20 @@ class TableColumn {
    * @return {void}
    */
   static defaultCheckboxRenderer(cell, value) {
-    const input = cell.getElementsByTagName('input')[0];
-    if (input) {
-      input.checked = !!value;
+    let input = cell.getElementsByTagName('input')[0];
+    if (!input) {
+      const checkboxLabel = document.createElement('label');
+      checkboxLabel.classList.add('mdw-selection');
+      input = document.createElement('input');
+      input.classList.add('mdw-selection__input');
+      input.setAttribute('type', 'checkbox');
+      const icon = document.createElement('div');
+      icon.classList.add('mdw-selection__icon');
+      checkboxLabel.appendChild(input);
+      checkboxLabel.appendChild(icon);
+      cell.appendChild(checkboxLabel);
     }
+    input.checked = !!value;
   }
 
   /**
@@ -520,6 +534,7 @@ class Table {
    * @param {boolean=} options.checkbox
    * @param {string=} options.tooltip
    * @param {boolean=} options.sortable
+   * @param {boolean=} options.primaryColumn
    * @param {HTMLElement=} options.customSortIcon
    * @param {string=} options.innerHTML
    * @param {DocumentFragment=} options.fragment
@@ -925,9 +940,6 @@ class Table {
         missingCell.dataset.type = missingColumn.type;
       }
       missingCell.dataset.key = missingColumn.key;
-      if (missingColumn.type === 'checkbox') {
-        missingCell.appendChild(constructTableCheckbox());
-      }
       if (missingColumn.rowSelector) {
         missingCell.setAttribute('mdw-selector', '');
       }

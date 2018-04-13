@@ -32,13 +32,16 @@ function buildDynamicTable() {
   });
   table.addColumn({
     key: 'text',
-    name: 'Main Text field (full-width)',
+    name: 'Primary Column (full-width)',
+    primaryColumn: true,
     sortable: true,
+    type: 'text',
   });
   table.addColumn({
     key: 'text2',
     name: 'Text field',
     sortable: true,
+    type: 'text',
   });
   table.addColumn({
     key: 'check1',
