@@ -252,13 +252,15 @@ class Table {
           }
           Reflect.set(object, currentCell.dataset.key, target.checked);
         }
-        if (target.checked) {
-          currentRow.setAttribute('mdw-selected', '');
-          this.setHasSelection(true);
-        } else {
-          currentRow.removeAttribute('mdw-selected');
-          const selectedRows = this.getSelectedRows();
-          this.setHasSelection(selectedRows.length !== 0);
+        if (currentCell.hasAttribute('mdw-selector')) {
+          if (target.checked) {
+            currentRow.setAttribute('mdw-selected', '');
+            this.setHasSelection(true);
+          } else {
+            currentRow.removeAttribute('mdw-selected');
+            const selectedRows = this.getSelectedRows();
+            this.setHasSelection(selectedRows.length !== 0);
+          }
         }
       }
       return;
