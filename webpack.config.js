@@ -66,6 +66,7 @@ function getDocsConfig() {
   const extractStyles = new ExtractTextPlugin('[name].min.css');
   const extractHtml = new ExtractTextPlugin('[name].html');
   const entries = {
+    'babel-polyfill': ['babel-polyfill'],
     index: ['./docs/src/index.pug'],
     docs: ['./docs/src/docs.scss'],
     theming: ['./docs/src/theming.scss'],
