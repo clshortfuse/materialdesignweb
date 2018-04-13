@@ -906,6 +906,9 @@ class Table {
       if (missingColumn.type === 'checkbox') {
         missingCell.appendChild(constructTableCheckbox());
       }
+      if (missingColumn.rowSelector) {
+        missingCell.setAttribute('mdw-selector', '');
+      }
       len += 1;
     }
     const cell = row.cells.item(columnIndex);
