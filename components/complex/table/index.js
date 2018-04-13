@@ -27,7 +27,8 @@ class TableColumn {
    * @param {HTMLElement=} options.customSortIcon
    * @param {string=} options.innerHTML
    * @param {DocumentFragment=} options.fragment
-   * @param {(function(any):string)=} options.formatter
+   * @param {(function(HTMLTableCellElement, any))=} options.renderer
+   * @param {(function(any):any)=} options.formatter
    */
   constructor(options) {
     this.element = document.createElement('th');
@@ -95,13 +96,28 @@ class TableColumn {
       this.element.appendChild(checkboxLabel);
     }
 
+    if (options.renderer) {
+      this.renderer = options.renderer;
+    } else if (options.type === 'checkbox') {
+      this.renderer = TableColumn.defaultCheckboxRenderer;
+    } else {
+      this.renderer = TableColumn.defaultCellRenderer;
+    }
     if (options.formatter) {
       this.formatter = options.formatter;
-    } else if (options.type === 'checkbox') {
-      this.formatter = TableColumn.defaultCheckboxFormatter;
     } else {
-      this.formatter = TableColumn.defaultStringFormatter;
+      this.formatter = TableColumn.defaultValueFormatter;
     }
+  }
+
+
+  /**
+   * @param {any} value
+   * @param {any} object
+   * @return {void}
+   */
+  static defaultValueFormatter(value, object) {
+    return value;
   }
 
   /**
@@ -109,7 +125,7 @@ class TableColumn {
    * @param {any} value
    * @return {void}
    */
-  static defaultCheckboxFormatter(cell, value) {
+  static defaultCheckboxRenderer(cell, value) {
     const input = cell.getElementsByTagName('input')[0];
     if (input) {
       input.checked = !!value;
@@ -121,7 +137,7 @@ class TableColumn {
    * @param {any} value
    * @return {void}
    */
-  static defaultStringFormatter(cell, value) {
+  static defaultCellRenderer(cell, value) {
     let stringValue;
     if (value == null) {
       stringValue = '';
@@ -507,7 +523,8 @@ class Table {
    * @param {HTMLElement=} options.customSortIcon
    * @param {string=} options.innerHTML
    * @param {DocumentFragment=} options.fragment
-   * @param {(function(any):string)=} options.formatter
+   * @param {(function(HTMLTableCellElement, any))=} options.renderer
+   * @param {(function(any, any):any)=} options.formatter
    * @return {TableColumn}
    */
   addColumn(options) {
@@ -519,6 +536,9 @@ class Table {
   }
 
   updatePaginator() {
+    if (!this.pageLimit) {
+      return;
+    }
     const min = this.page * this.pageLimit;
     const total = this.getDatasource().length;
     let max = this.pageLimit + min;
@@ -901,7 +921,9 @@ class Table {
       // Generate cells
       const missingColumn = this.columns[len];
       const missingCell = row.insertCell();
-      missingCell.dataset.type = missingColumn.type;
+      if (missingColumn.type) {
+        missingCell.dataset.type = missingColumn.type;
+      }
       missingCell.dataset.key = missingColumn.key;
       if (missingColumn.type === 'checkbox') {
         missingCell.appendChild(constructTableCheckbox());
@@ -923,7 +945,8 @@ class Table {
         row.removeAttribute('mdw-selected');
       }
     }
-    tableColumn.formatter(cell, value);
+    const formattedValue = tableColumn.formatter(value, data);
+    tableColumn.renderer(cell, formattedValue);
   }
 
   /**
