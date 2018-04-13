@@ -150,7 +150,7 @@ $checkbox-icon-offset-x: dp(6.04);
     width: $checkbox-icon-width;
     color: inherit;
   }
-  &[checked]::after {
+  .mdw-menu__item[mdw-checked] > &::after {
     // border-width: $checkbox-icon-thickness;
     // Increase visibility
     border-width: dp(2);
@@ -182,8 +182,9 @@ $checkbox-icon-offset-x: dp(6.04);
   min-height: dp(48);
   box-sizing: border-box;
   flex-direction: row;
+  user-select: none;
 
-  > .mdw-ripple {
+  & > .mdw-ripple {
     @include mdw-ripple__container;
   }
 
