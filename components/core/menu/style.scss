@@ -40,7 +40,7 @@ $checkbox-icon-offset-x: dp(6.04);
   position: absolute;
   z-index: 1;
   pointer-events: none;
-  transition-property: transform box-shadow opacity;
+  transition-property: transform, box-shadow, opacity;
   transition-timing-function: $motion-easing-deceleration;
   transition-duration: $motion-duration-desktop-leave;
   @include allHandsets {

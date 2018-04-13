@@ -1,6 +1,6 @@
 class Menu {
   /**
-   * @param {Element} element
+   * @param {HTMLElement} element
    */
   constructor(element) {
     this.element = element;
@@ -24,9 +24,48 @@ class Menu {
     this.element = null;
   }
 
-  /** @return {boolean} handled */
-  show() {
+  /**
+   * @param {MouseEvent} event
+   * @return {boolean} handled
+   */
+  show(event) {
     let changed = false;
+    if (event) {
+      let top = 'auto';
+      let left = 'auto';
+      let right = 'auto';
+      let bottom = 'auto';
+      if (this.element.hasAttribute('mdw-position')) {
+        const position = this.element.getAttribute('mdw-position');
+        if (position.indexOf('bottom') !== -1) {
+          bottom = `${window.innerHeight - event.pageY}px`;
+        } else {
+          top = `${event.pageY}px`;
+        }
+        if (position.indexOf('right') !== -1) {
+          right = `${event.pageX}px`;
+        } else if (position.indexOf('end') !== -1
+          && document.documentElement.getAttribute('dir') !== 'rtl') {
+          right = `${window.innerWidth - event.pageX}px`;
+        } else {
+          left = `${event.pageX}px`;
+        }
+      } else {
+        top = `${event.pageY}px`;
+        left = `${event.pageX}px`;
+      }
+      this.element.style.top = top;
+      this.element.style.left = left;
+      this.element.style.right = right;
+      this.element.style.bottom = bottom;
+      this.element.style.position = 'fixed';
+    } else {
+      this.element.style.top = '';
+      this.element.style.left = '';
+      this.element.style.right = '';
+      this.element.style.bottom = '';
+      this.element.style.position = '';
+    }
     if (this.element.hasAttribute('mdw-hide')) {
       this.element.removeAttribute('mdw-hide');
       changed = true;
