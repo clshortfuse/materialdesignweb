@@ -35,20 +35,20 @@ $tableColors: (
   .mdw-table__header-icons {
     color: tableThemeValue("text-color", $type, $theme);
   }
-  .mdw-table th:not([mdw-table-checkbox]),
+  .mdw-table th:not([mdw-selector]),
   .mdw-table__footer {
     color: tableThemeValue("secondary-text-color", $type, $theme);
   }
-  .mdw-table td:not([mdw-table-checkbox]) {
+  .mdw-table td:not([data-type="checkbox"]) {
     color: tableThemeValue("text-color", $type, $theme);
   }
   .mdw-table tbody {
     > tr {
-      &:hover {
-        background-color: tableThemeValue("hover-color", $type, $theme);
-      }
       &[mdw-selected] {
         background-color: tableThemeValue("selected-color", $type, $theme);
+      }
+      &:hover {
+        background-color: tableThemeValue("hover-color", $type, $theme);
       }
     }
   }

@@ -2,6 +2,9 @@
 // https://material.io/guidelines/patterns/selection.html#selection-item-selection
 
 
+.mdw-table {
+  overflow-y: auto;
+}
 table.mdw-table,
 .mdw-table table {
   display: table;
@@ -59,17 +62,20 @@ table.mdw-table,
 
 
 .mdw-table td {
+  //text-align: left;
   padding-top: dp(8);
   padding-bottom: dp(8);
 }
+.mdw-table th {
+  white-space: nowrap;
+}
 .mdw-table th,
 .mdw-table td {
-  box-sizing: border-box;
   padding-right: dp(56);
   &:first-of-type {
     padding-left: dp(24);
   }
-  &[mdw-table-checkbox],
+  &[data-type="checkbox"],
   &:last-of-type {
     padding-right: dp(24);
   }
@@ -80,15 +86,22 @@ table.mdw-table,
   }
 }
 
-.mdw-table th[mdw-table-checkbox] + th,
-.mdw-table td[mdw-table-checkbox] + td {
+.mdw-table td:first-of-type:not([data-type="checkbox"]),
+.mdw-table th:first-of-type:not([data-type="checkbox"]),
+.mdw-table th[data-type="checkbox"]:first-of-type + th,
+.mdw-table td[data-type="checkbox"]:first-of-type + td {
+  text-align: left;
+  width: 100%;
   padding-right: dp(24);
 }
 
 .mdw-table__sort-icon {
-  position: absolute;
-  transform: translateX(-100%) rotate(0deg);
+  display: inline-block;
+  transform: translateX(-16px);
+  transform-origin: 8px 8px;
   transition-property: transform;
+  vertical-align: bottom;
+  max-width: 0;
   transition-timing-function: $motion-easing-standard;
   transition-duration: $motion-duration-desktop-default;
   @include allHandsets {
@@ -114,14 +127,14 @@ table.mdw-table,
   }
   &[mdw-sorted=reverse] {
     .mdw-table__sort-icon {
-      transform: translateX(-100%) rotate(180deg);
+      transform: translateX(-16px) rotate(180deg);
     }
   }
 }
 
 
 
-.mdw-table td[mdw-table-number] {
+.mdw-table td[data-type="number"] {
   text-align: right;
   text-align: end;
 }
@@ -148,8 +161,8 @@ table.mdw-table,
   }
 }
 
-.mdw-table__footer-rowcount,
-.mdw-table__footer-pagination {
+.mdw-table__footer-options,
+.mdw-table__footer-details {
   margin-left: dp(18);
   margin-right: dp(14);
 }
@@ -164,7 +177,7 @@ table.mdw-table,
   }
 }
 
-.mdw-table__footer-rowcount {
+.mdw-table__footer-options {
   display: flex;
   align-items: center;
   select.mdw-textfield__input {
