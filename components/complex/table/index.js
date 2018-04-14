@@ -27,7 +27,7 @@ class TableColumn {
    * @param {HTMLElement=} options.customSortIcon
    * @param {string=} options.innerHTML
    * @param {DocumentFragment=} options.fragment
-   * @param {(function(HTMLTableCellElement, any))=} options.renderer
+   * @param {(function(HTMLTableCellElement, any, any=):void)=} options.renderer
    * @param {(function(any):any)=} options.formatter
    */
   constructor(options) {
@@ -131,19 +131,23 @@ class TableColumn {
    */
   static defaultCheckboxRenderer(cell, value) {
     let input = cell.getElementsByTagName('input')[0];
+    const checked = !!value;
     if (!input) {
       const checkboxLabel = document.createElement('label');
       checkboxLabel.classList.add('mdw-selection');
       input = document.createElement('input');
       input.classList.add('mdw-selection__input');
       input.setAttribute('type', 'checkbox');
+      input.checked = checked;
       const icon = document.createElement('div');
       icon.classList.add('mdw-selection__icon');
       checkboxLabel.appendChild(input);
-      checkboxLabel.appendChild(icon);
+      checkboxLabel.appendChild(icon);;
       cell.appendChild(checkboxLabel);
     }
-    input.checked = !!value;
+    if (input.checked !== checked) {
+      input.checked = checked;
+    }
   }
 
   /**
@@ -163,7 +167,9 @@ class TableColumn {
     for (let i = len - 1; i >= 0; i -= 1) {
       const node = cell.childNodes.item(i);
       if (!foundTextNode && node.nodeType === Node.TEXT_NODE) {
-        node.nodeValue = stringValue;
+        if (node.nodeValue !== stringValue) {
+          node.nodeValue = stringValue;
+        }
         foundTextNode = true;
       } else {
         cell.removeChild(node);
@@ -538,8 +544,8 @@ class Table {
    * @param {HTMLElement=} options.customSortIcon
    * @param {string=} options.innerHTML
    * @param {DocumentFragment=} options.fragment
-   * @param {(function(HTMLTableCellElement, any))=} options.renderer
-   * @param {(function(any, any):any)=} options.formatter
+   * @param {(function(HTMLTableCellElement, any, any=):void)=} options.renderer
+   * @param {(function(any):any)=} options.formatter
    * @return {TableColumn}
    */
   addColumn(options) {
@@ -956,7 +962,7 @@ class Table {
       }
     }
     const formattedValue = tableColumn.formatter(value, data);
-    tableColumn.renderer(cell, formattedValue);
+    tableColumn.renderer(cell, formattedValue, data);
   }
 
   /**
