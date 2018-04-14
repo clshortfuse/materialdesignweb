@@ -839,10 +839,8 @@ class Table {
 
     if (rowDifference < 0) {
       // too many rows
-      const extraRowCount = rowDifference * -1;
-      for (let i = 0; i < extraRowCount; i += 1) {
-        const extraRowIndex = rowLength - i - 1;
-        const row = tbody.rows.item(extraRowIndex);
+      for (let i = rowLength - 1; i >= rowsToDisplay; i -= 1) {
+        const row = tbody.rows.item(i);
         tbody.removeChild(row);
       }
     }
