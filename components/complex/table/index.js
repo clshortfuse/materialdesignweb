@@ -142,7 +142,7 @@ class TableColumn {
       const icon = document.createElement('div');
       icon.classList.add('mdw-selection__icon');
       checkboxLabel.appendChild(input);
-      checkboxLabel.appendChild(icon);;
+      checkboxLabel.appendChild(icon);
       cell.appendChild(checkboxLabel);
     }
     if (input.checked !== checked) {
