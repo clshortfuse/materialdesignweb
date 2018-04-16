@@ -5,44 +5,94 @@ const darkAttribute = 'black dark';
 const lightAttribute = 'white light';
 
 /**
- * @param {Element} element
  * @param {boolean} value
+ * @param {Element=} button
  * @return {void}
  */
-function setDarkMode(element, value) {
+function setDarkMode(value, button) {
   if (value) {
-    document.body.setAttribute('mdw-theme-fill', darkAttribute);
-    element.removeAttribute('mdw-inactive');
+    document.documentElement.setAttribute('mdw-theme-fill', darkAttribute);
+    if (button) {
+      button.removeAttribute('mdw-inactive');
+    }
     // element.setAttribute('mdw-active', '');
     // Poor visibility even though spec says 70% opacity
   } else {
-    document.body.setAttribute('mdw-theme-fill', lightAttribute);
-    element.setAttribute('mdw-inactive', '');
+    document.documentElement.setAttribute('mdw-theme-fill', lightAttribute);
+    if (button) {
+      button.setAttribute('mdw-inactive', '');
+    }
     // element.removeAttribute('mdw-active');
   }
   cookies.setItem('darkmode', value ? 'true' : 'false', 365);
 }
+
+/**
+ * @param {string} value
+ * @param {Element=} button
+ * @return {void}
+ */
+function setFontSize(value, button) {
+  if (value) {
+    document.documentElement.style.setProperty('font-size', value);
+    if (button) {
+      button.removeAttribute('mdw-inactive');
+    }
+    // element.setAttribute('mdw-active', '');
+    // Poor visibility even though spec says 70% opacity
+    cookies.setItem('fontsize', value, 365);
+  } else {
+    document.documentElement.style.removeProperty('font-size');
+    if (button) {
+      button.setAttribute('mdw-inactive', '');
+    }
+    // element.removeAttribute('mdw-active');
+    cookies.removeItem('fontsize');
+  }
+}
+
 /**
  * @param {Element} element
  * @return {void}
  */
 function setupDarkMode(element) {
   if (cookies.getItem('darkmode') === 'true') {
-    setDarkMode(element, true);
+    setDarkMode(true, element);
   }
   element.addEventListener('click', () => {
-    if (document.body.getAttribute('mdw-theme-fill') === darkAttribute) {
-      setDarkMode(element, false);
+    if (document.documentElement.getAttribute('mdw-theme-fill') === darkAttribute) {
+      setDarkMode(false, element);
     } else {
-      setDarkMode(element, true);
+      setDarkMode(true, element);
+    }
+  });
+}
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
+function setupLargeFontMode(element) {
+  const fontsize = cookies.getItem('fontsize');
+  setFontSize(fontsize, element);
+  element.addEventListener('click', () => {
+    if (document.documentElement.style.getPropertyValue('font-size')) {
+      setFontSize(null, element);
+    } else {
+      setFontSize('125%', element);
     }
   });
 }
 
 /** @return {void} */
 function setupMenuOptions() {
-  const [buttonDarkMode] = document.querySelectorAll('#docs-menu-buttons .mdw-button');
+  const [buttonDarkMode, largeFontMode] = document.querySelectorAll('#docs-menu-buttons .mdw-button');
   setupDarkMode(buttonDarkMode);
+  setupLargeFontMode(largeFontMode);
 }
 
-export default setupMenuOptions;
+export {
+  setupMenuOptions,
+  setDarkMode,
+  setFontSize,
+};

@@ -1,3 +1,3 @@
-import setupMenuOptions from '../menuoptions';
+import { setupMenuOptions } from '../menuoptions';
 
 setupMenuOptions();

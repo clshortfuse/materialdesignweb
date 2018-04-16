@@ -73,8 +73,8 @@ function setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
 
 /**
  * @param {string} sKey
- * @param {string} sPath
- * @param {string} sDomain
+ * @param {string=} sPath
+ * @param {string=} sDomain
  * @return {boolean}
  */
 function removeItem(sKey, sPath, sDomain) {

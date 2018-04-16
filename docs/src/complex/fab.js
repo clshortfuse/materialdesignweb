@@ -1,4 +1,4 @@
-import setupMenuOptions from '../menuoptions';
+import { setupMenuOptions } from '../menuoptions';
 import { Button } from '../../../components/core/button/index';
 import { Fab } from '../../../components/complex/fab/index';
 

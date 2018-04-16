@@ -1,5 +1,5 @@
 import setupImageTargets from '../targetHandler';
-import setupMenuOptions from '../menuoptions';
+import { setupMenuOptions } from '../menuoptions';
 
 /** @return {void} */
 function configureNavDrawer() {

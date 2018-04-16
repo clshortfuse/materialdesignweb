@@ -1,6 +1,6 @@
 import setupImageTargets from '../targetHandler';
 import { Button } from '../../../components/core/button/index';
-import setupMenuOptions from '../menuoptions';
+import { setupMenuOptions } from '../menuoptions';
 
 const componentMap = new WeakMap();
 

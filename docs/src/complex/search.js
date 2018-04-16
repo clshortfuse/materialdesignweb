@@ -1,4 +1,4 @@
-import setupMenuOptions from '../menuoptions';
+import { setupMenuOptions } from '../menuoptions';
 import { List, ListItem } from '../../../components/core/list/index';
 import { TextField } from '../../../components/core/textfield/index';
 import { Search } from '../../../components/complex/search/index';

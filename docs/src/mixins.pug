@@ -38,7 +38,8 @@ mixin header()
       link(rel='stylesheet' href='theming.min.css')
       link(rel='stylesheet' href='theming.ie11.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
       script(src='babel-polyfill.min.js')
-    body(mdw-theme-fill="white light")
+      script(src='prerender.min.js')
+    body
       block
     
 
@@ -61,6 +62,9 @@ mixin navdrawer(selected)
             .mdw-tooltip__wrapper
               .mdw-tooltip__target.mdw-button.material-icons(mdw-icon mdw-inactive) brightness_3
               .mdw-tooltip Dark Mode
+            .mdw-tooltip__wrapper
+              .mdw-tooltip__target.mdw-button.material-icons(mdw-icon mdw-inactive) format_size
+              .mdw-tooltip Large Font
     .mdw-navdrawer__drawer
       .mdw-list
         a.mdw-list__item(mdw-selected=selected=='Home' href='index.html' mdw-theme-color="primary")

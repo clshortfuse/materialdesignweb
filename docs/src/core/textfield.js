@@ -1,6 +1,6 @@
 import setupImageTargets from '../targetHandler';
 import { TextField } from '../../../components/core/textfield/index';
-import setupMenuOptions from '../menuoptions';
+import { setupMenuOptions } from '../menuoptions';
 
 const componentMap = new WeakMap();
 
