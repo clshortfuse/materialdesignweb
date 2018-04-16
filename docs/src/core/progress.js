@@ -1,4 +1,5 @@
 import { ProgressCircle } from '../../../components/core/progress/index';
+import setupMenuOptions from '../menuoptions';
 
 /** @return {void} */
 function setupProgressCircleInterval() {
@@ -8,4 +9,5 @@ function setupProgressCircleInterval() {
   }, 2500);
 }
 
+setupMenuOptions();
 setupProgressCircleInterval();

@@ -9,7 +9,7 @@ include ../mixins.pug
       .render
         +androidstatusbar('primary-700 dark')
         +toolbar('primary-500 dark', ['menu'], ['more_vert']) Topics
-        .content(mdw-theme-fill="background-50 light" style="padding-top:2px")
+        .content(style="padding-top:2px")
           ul.mdw-list
             li.mdw-list__item Attractions
             li.mdw-list__item Dining
@@ -29,7 +29,7 @@ include ../mixins.pug
       .render
         +androidstatusbar('primary-700 dark')
         +toolbar('primary-500 dark', ['menu'], ['more_vert']) Topics
-        .content(mdw-theme-fill="background-50 light" style="padding-top:2px")
+        .content(style="padding-top:2px")
           ul.mdw-list(mdw-divider)
             li.mdw-list__item
               .mdw-list__text Attractions
@@ -61,7 +61,7 @@ include ../mixins.pug
       .render
         +androidstatusbar('primary-700 dark')
         +toolbar('primary-500 dark', ['menu'], ['more_vert']) Topics
-        .content(mdw-theme-fill="background-50 light" style="padding-top:2px")
+        .content(style="padding-top:2px")
           ul.mdw-list
             li.mdw-list__item Attractions
               .mdw-list__icon.material-icons local_activity
@@ -92,7 +92,7 @@ include ../mixins.pug
       .render
         +androidstatusbar('accent-700 dark')
         +toolbar('accent-500 dark', ['menu'], ['search']) Inbox
-        .content(mdw-theme-fill="background-50 light")
+        .content
           ul.mdw-list(mdw-divider)
             li.mdw-list__subheader Today
             li.mdw-list__item
@@ -144,7 +144,7 @@ include ../mixins.pug
       .render
         +androidstatusbar('accent-700 dark')
         +toolbar('accent-500 dark', ['menu'], ['search']) Inbox
-        .content(mdw-theme-fill="background-50 light")
+        .content
           ul.mdw-list(mdw-divider mdw-rows=3)
             li.mdw-list__subheader Today
             li.mdw-list__item
@@ -197,7 +197,7 @@ include ../mixins.pug
       .render
         +androidstatusbar('warn-700 dark')
         +toolbar('warn-500 dark', ['menu'], ['search', 'check_circle']) Inbox (with JS)
-        .content(mdw-theme-fill="background-50 light")
+        .content
           ul.mdw-list(mdw-divider mdw-rows=3)
             li.mdw-list__item
               .mdw-list__avatar.material-icons(style="font-size:48px") &#xE853;

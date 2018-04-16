@@ -1,5 +1,6 @@
 import setupImageTargets from '../targetHandler';
 import { Menu, MenuItem } from '../../../components/core/menu/index';
+import setupMenuOptions from '../menuoptions';
 
 const componentMap = new WeakMap();
 
@@ -29,5 +30,6 @@ function setupJSButton() {
 
 initializeMdwComponents();
 setupImageTargets();
+setupMenuOptions();
 setupJSButton();
 

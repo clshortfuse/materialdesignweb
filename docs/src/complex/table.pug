@@ -3,7 +3,7 @@ include ../mixins.pug
 +header()
   +navdrawer("table")
     div(display="flex" flex-direction="column").mdw-theme-toolbar.js
-      .mdw-table(mdw-elevation=2 mdw-theme-fill="white light" mdw-theme-color="primary" style="margin:16px")
+      .mdw-card.mdw-table(mdw-theme-color="primary" style="margin:16px")
         table
           caption Standard HTML Table
           thead
@@ -107,7 +107,7 @@ include ../mixins.pug
               td 54
               td 12%
               td 6%
-      .mdw-table(mdw-elevation=2 mdw-theme-fill="white light" mdw-theme-color="primary" style="margin:16px")
+      .mdw-card.mdw-table(mdw-theme-color="primary" style="margin:16px")
         .mdw-table__header
           .mdw-table__header-text Customized HTML Table
         table
@@ -290,7 +290,7 @@ include ../mixins.pug
           .mdw-table__footer-controls
             .mdw-button.material-icons(mdw-icon disabled) chevron_left
             .mdw-button.material-icons(mdw-icon disabled) chevron_right
-      .mdw-table#dynamic-table(mdw-elevation=2 mdw-theme-fill="white light" mdw-theme-color="primary" 
+      .mdw-card.mdw-table#dynamic-table(mdw-theme-color="primary" 
       style="margin:16px;max-height:800px;overflow-y:auto")
         .mdw-table__header
           .mdw-table__header-text Dynamic Table

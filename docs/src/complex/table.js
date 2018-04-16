@@ -1,6 +1,7 @@
 import { Button } from '../../../components/core/button/index';
 import { Table } from '../../../components/complex/table/index';
 import { Menu } from '../../../components/core/menu/index';
+import setupMenuOptions from '../menuoptions';
 
 const componentMap = new WeakMap();
 
@@ -171,4 +172,5 @@ function buildDynamicTable() {
 }
 
 initializeMdwComponents();
+setupMenuOptions();
 buildDynamicTable();

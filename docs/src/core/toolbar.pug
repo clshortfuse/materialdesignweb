@@ -24,19 +24,19 @@ include ../mixins.pug
       .render.mdw-theme-toolbar
         +androidstatusbar('primary-800 dark')
         +toolbar('primary-A200 dark', ['menu'], ['search', 'favorite', 'more_vert']) Title
-        .content(mdw-theme-fill="background-300 light")
+        .content
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsZF9VZDhtQlF5RGM/layout-structure-appbar-structure4.png')
 
     .comparison.clipped-304
       .render
-        +androidstatusbar('background-400 light')
-        +toolbar('background-50 light', ['menu'], ['search', 'favorite', 'more_vert']) Title
-        .content(mdw-theme-fill="background-300 light")
+        +androidstatusbar('')
+        +toolbar('', ['menu'], ['search', 'favorite', 'more_vert']) Title
+        .content
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsLUFJUnFlRHVhUVU/layout-structure-appbar-metrics1.png')
 
     .comparison.clipped-304
       .render
-        +androidstatusbar('background-400 light')
+        +androidstatusbar('')
         .mdw-toolbar
           .mdw-toolbar__action
             .mdw-toolbar__start
@@ -46,12 +46,12 @@ include ../mixins.pug
               .mdw-button(mdw-icon).material-icons favorite
               .mdw-button(mdw-icon).material-icons more_vert
           .mdw-toolbar__title Title
-        .content(mdw-theme-fill="background-300 light")
+        .content
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsSDBhX3BwSURRc1U/layout-structure-appbar-metrics3.png')
 
     .comparison.clipped-304
       .render
-        +androidstatusbar('background-400 light')
+        +androidstatusbar('')
         .mdw-toolbar
           .mdw-toolbar__action
             .mdw-toolbar__start
@@ -74,6 +74,6 @@ include ../mixins.pug
               .mdw-textfield__border-line
             div(style="height:24px")
               // Spec says 16dp, but it's actually 24dp
-        .content(mdw-theme-fill="background-300 light")
+        .content
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsTW1zb2x5WWg5cDA/layout-structure-appbar-metrics5.png')
   script(src='toolbar.min.js')

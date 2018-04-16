@@ -1,18 +1,19 @@
 mixin androidstatusbar(fillColor)
-  .androidstatusbar(mdw-theme-fill=fillColor)
+  .androidstatusbar(mdw-theme-fill=(fillColor ? fillColor : false))
     div 12:30
     i.material-icons(style="letter-spacing:2px") &#xE1BA;&#xE1C8;&#xE1A4;
+
 mixin toolbar(fillColor, start, end)
-  .mdw-toolbar(mdw-theme-fill=fillColor)
+  .mdw-toolbar(mdw-theme-fill=(fillColor ? fillColor : false))
     .mdw-toolbar__action
       .mdw-toolbar__start
         each icon in start
-          .mdw-button(mdw-icon).material-icons= icon
+          .mdw-button.material-icons(mdw-icon)= icon
       .mdw-toolbar__title
         block
       .mdw-toolbar__end
         each icon in end
-          .mdw-button(mdw-icon mdw-more-button=(icon === 'more_vert')).material-icons= icon
+          .mdw-button.material-icons(mdw-icon mdw-more-button=(icon === 'more_vert'))= icon
 mixin androidnavbar
   .androidnavbar
     i.material-icons.back-button &#xE3C8;
@@ -46,7 +47,7 @@ mixin header()
 - var complexcomponents = ["dialog", "fab", "navdrawer", "search", "table"]
 
 mixin navdrawer(selected)
-  .mdw-navdrawer#docs-navdrawer(mdw-theme-fill="background-100 light" mdw-floating="card")
+  .mdw-navdrawer#docs-navdrawer(mdw-floating="card")
     a.mdw-navdrawer__scrim(href="#")
     .mdw-navdrawer__toolbar
       .mdw-toolbar(mdw-theme-fill="accent-500 dark")
@@ -56,6 +57,10 @@ mixin navdrawer(selected)
               a.mdw-tooltip__target.mdw-button(mdw-icon href="#docs-navdrawer").material-icons menu
               .mdw-tooltip Menu
           .mdw-toolbar__title=selected
+          #docs-menu-buttons.mdw-toolbar__end
+            .mdw-tooltip__wrapper
+              .mdw-tooltip__target.mdw-button.material-icons(mdw-icon mdw-inactive) brightness_3
+              .mdw-tooltip Dark Mode
     .mdw-navdrawer__drawer
       .mdw-list
         a.mdw-list__item(mdw-selected=selected=='Home' href='index.html' mdw-theme-color="primary")

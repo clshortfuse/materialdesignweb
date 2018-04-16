@@ -1,5 +1,6 @@
 import setupImageTargets from '../targetHandler';
 import { TextField } from '../../../components/core/textfield/index';
+import setupMenuOptions from '../menuoptions';
 
 const componentMap = new WeakMap();
 
@@ -12,4 +13,5 @@ function initializeMdwComponents() {
 }
 
 initializeMdwComponents();
+setupMenuOptions();
 setupImageTargets();

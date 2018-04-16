@@ -27,7 +27,7 @@ include ../mixins.pug
             label.mdw-tab__item(for='text-tab3')
               .mdw-tab__label Item Three
             .mdw-tab__indicator
-        .content(mdw-theme-fill="white")
+        .content
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsOUdyb0FjQTJTdlk/components-tabs-usage-mobile3.png')
 
     .comparison.clipped.mdw-theme-tab
@@ -52,7 +52,7 @@ include ../mixins.pug
             label.mdw-tab__item(for='large-text-tab3')
               .mdw-tab__label Item Three
             .mdw-tab__indicator
-        .content(mdw-theme-fill="white light")
+        .content
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsc0lzb2VoMkFBNUE/components-tabs-usage-mobile1.png')
 
 
@@ -69,13 +69,13 @@ include ../mixins.pug
           label.mdw-tab__item(for='no-toolbar-tab3')
             .mdw-tab__label Item Three
           .mdw-tab__indicator
-        .content(mdw-theme-fill="white light")
+        .content
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsbmZJbkdjeHE0RW8/components-tabs-usage-mobile6.png')
 
     .comparison.clipped.mdw-theme-tab
       .render
         +androidstatusbar('background-600 dark')
-        .mdw-toolbar(mdw-theme-fill="background-100 light")
+        .mdw-toolbar
           .mdw-toolbar__action
             .mdw-toolbar__start
               .mdw-button(mdw-icon).material-icons menu
@@ -95,7 +95,7 @@ include ../mixins.pug
             label.mdw-tab__item(for='clear-toolbar-tab3')
               .mdw-tab__label Item Three
             .mdw-tab__indicator
-        .content(mdw-theme-fill="white light")
+        .content
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsVDk4V2Nnc2U3LTQ/components-tabs-usage-mobile4.png')
 
     .comparison.clipped.mdw-theme-tab
@@ -124,13 +124,13 @@ include ../mixins.pug
               .mdw-tab__icon.material-icons person_pin
               .mdw-tab__label Nearby
             .mdw-tab__indicator
-        .content(mdw-theme-fill="white light")
+        .content
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsS2pLN2MwWmUyRW8/components-tabs-usage-specs8.png')
 
     .comparison.clipped.mdw-theme-tab
       .render
         +androidstatusbar('background-600 dark')
-        .mdw-toolbar(mdw-theme-fill="background-100 light")
+        .mdw-toolbar
           .mdw-toolbar__action
             .mdw-toolbar__start
               .mdw-button(mdw-icon).material-icons menu
@@ -150,7 +150,7 @@ include ../mixins.pug
             label.mdw-tab__item(for='tabs-icon3')
               .mdw-tab__icon.material-icons person_pin
             .mdw-tab__indicator
-        .content(mdw-theme-fill="white light")
+        .content
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsQ1Y4YXpwTkZ2MFU/components-tabs-usage-mobile8.png')
 
     .comparison.clipped.mdw-theme-tab.js
@@ -175,6 +175,6 @@ include ../mixins.pug
             .mdw-tab__item
               .mdw-tab__icon.material-icons person_pin
               .mdw-tab__label Nearby
-        .content(mdw-theme-fill="white light")
+        .content
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsS2pLN2MwWmUyRW8/components-tabs-usage-specs8.png')
   script(src='tab.min.js')

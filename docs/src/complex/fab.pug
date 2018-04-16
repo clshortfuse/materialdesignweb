@@ -7,7 +7,7 @@ include ../mixins.pug
     #verticalLineRight
     .comparison.js
       .render
-        div.display-flex.flex-1(mdw-theme-fill="background-50 light" flex-column style="position:relative")
+        div.display-flex.flex-1(flex-column style="position:relative")
           +androidstatusbar('primary-700 dark')
           +toolbar('primary-500 dark', ['menu'], ['search']) JS
           .mdw-fab__wrapper.content(style="padding:16px 8px;")
@@ -24,7 +24,7 @@ include ../mixins.pug
         +androidnavbar
     .comparison
       .render
-        div.display-flex.flex-1(mdw-theme-fill="background-50 light" flex-column style="position:relative")
+        div.display-flex.flex-1(flex-column style="position:relative")
           +androidstatusbar('primary-700 dark')
           +toolbar('primary-500 dark', ['menu'], ['search']) CSS Only
           .mdw-fab__wrapper.content(style="padding:16px 8px;") 

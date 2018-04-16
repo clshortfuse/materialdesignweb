@@ -1,5 +1,6 @@
 import setupImageTargets from '../targetHandler';
 import { Bottomnav, BottomnavItem } from '../../../components/core/bottomnav/index';
+import setupMenuOptions from '../menuoptions';
 
 const componentMap = new WeakMap();
 
@@ -18,5 +19,6 @@ function initializeMdwComponents() {
 }
 
 initializeMdwComponents();
+setupMenuOptions();
 setupImageTargets();
 

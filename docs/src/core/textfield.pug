@@ -9,7 +9,7 @@ include ../mixins.pug
       .render
         +androidstatusbar('primary-700 dark')
         +toolbar('primary-500 dark', ['arrow_back'], ['more_vert']) Application
-        .content(mdw-theme-fill="background-50 light" style="padding:0px 16px")
+        .content(style="padding:0px 16px")
           label.mdw-textfield(style="font-size: 2.125rem")
             input.mdw-textfield__input(value="Vintage 50" placeholder=" ")
             .mdw-textfield__label Title
@@ -48,7 +48,7 @@ include ../mixins.pug
       .render
         +androidstatusbar('accent-300')
         +toolbar('accent-A100 dark', ['arrow_back'], ['search'])
-        form.content(mdw-theme-fill="background-50 light" style="padding:9px 16px")
+        form.content(style="padding:9px 16px")
           label.mdw-textfield(mdw-theme-color="accent")
             input.mdw-textfield__input(type="text" placeholder=" " required)
             .mdw-textfield__label Name *
@@ -82,7 +82,7 @@ include ../mixins.pug
       .render
         +androidstatusbar('accent-800')
         +toolbar('accent-A700 dark', ['arrow_back'], ['search'])
-        form.content(mdw-theme-fill="background-50 light" style="padding:9px 16px")
+        form.content(style="padding:9px 16px")
           div.display-flex(style="margin-bottom:-32px;margin-top:-24px;" flex-justify-content="center")
             i.material-icons(style="color:#ccc;font-size:256px") person
           .horizontal-controls(style="margin:4px 0")
@@ -140,7 +140,7 @@ include ../mixins.pug
       .render.mdw-theme-textfield
         +androidstatusbar('primary-A700')
         +toolbar('primary-A200 dark', ['arrow_back'], ['done'])
-        .content(mdw-theme-fill="background-50 light" style="padding:24px 16px")
+        .content(style="padding:24px 16px")
           label.mdw-textfield(mdw-box)
             input.mdw-textfield__input(value="Vintage 50's Dress" placeholder=" ")
             .mdw-textfield__label Title
@@ -183,7 +183,7 @@ include ../mixins.pug
       .render.mdw-theme-textfield
         +androidstatusbar('accent-600')
         +toolbar('accent-A400 dark', ['arrow_back'], ['done'])
-        .content(mdw-theme-fill="background-900 dark" style="padding:18px 16px")
+        .content(style="padding:18px 16px")
           label.mdw-textfield(mdw-theme-color="accent")
             input.mdw-textfield__input(placeholder=" ")
             .mdw-textfield__label Name
@@ -203,7 +203,7 @@ include ../mixins.pug
       .render.mdw-theme-textfield
         +androidstatusbar('accent-A700')
         +toolbar('accent-A400 dark', ['arrow_back'], ['done'])
-        .content(mdw-theme-fill="background-900 dark" style="padding:0 16px; margin-top:-44px")
+        .content(style="padding:0 16px; margin-top:-44px")
           label.mdw-textfield(mdw-theme-color="accent")
             input.mdw-textfield__input(placeholder=" ")
             .mdw-textfield__label Name
@@ -230,7 +230,7 @@ include ../mixins.pug
       .render.mdw-theme-textfield
         +androidstatusbar('primary-A700')
         +toolbar('primary-A200 dark', ['arrow_back'], ['done']) With Javascript
-        .content(mdw-theme-fill="background-50 light" style="padding:9px 16px")
+        .content(style="padding:9px 16px")
           label.mdw-textfield(mdw-box)
             input.mdw-textfield__input(placeholder=" ")
             .mdw-textfield__label Title

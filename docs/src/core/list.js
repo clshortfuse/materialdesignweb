@@ -1,5 +1,6 @@
 import setupImageTargets from '../targetHandler';
 import { List, ListItem } from '../../../components/core/list/index';
+import setupMenuOptions from '../menuoptions';
 
 const componentMap = new WeakMap();
 
@@ -18,4 +19,5 @@ function initializeMdwComponents() {
 }
 
 initializeMdwComponents();
+setupMenuOptions();
 setupImageTargets();

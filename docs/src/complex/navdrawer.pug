@@ -7,7 +7,7 @@ include ../mixins.pug
     #verticalLineRight
     .comparison
       .render(style="min-width:640px")
-        .mdw-navdrawer#navdrawer(mdw-theme-fill="background-100 light")
+        .mdw-navdrawer#navdrawer
             a.mdw-navdrawer__scrim(href="#")
             .mdw-navdrawer__toolbar
               +androidstatusbar('accent-700 dark')
@@ -73,7 +73,7 @@ include ../mixins.pug
                   .mdw-list__text Spam
             .mdw-navdrawer__content(style="padding:16px 8px;")
               div
-                span Desktop options
+                span.mdw-type(mdw-style="subheader") Desktop options
                 div.display-flex(style="padding:16px")
                   label.mdw-selection(mdw-theme-color="accent-A700 dark")
                     input.mdw-selection__input(type="radio" checked name="mdw-navdrawer__style" value="fullheight")

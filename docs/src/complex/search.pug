@@ -14,7 +14,7 @@ include ../mixins.pug
                 input.mdw-textfield__input(placeholder="Search")
             .mdw-toolbar__end
               .mdw-button(mdw-icon).material-icons clear
-        .content(mdw-theme-fill="background-50 light")
+        .content
           ul.mdw-list#search-list-simple
             li.mdw-list__item Attractions
             li.mdw-list__item Dining
@@ -42,7 +42,7 @@ include ../mixins.pug
                 input.mdw-textfield__input(placeholder="Search")
             .mdw-toolbar__end
               .mdw-button(mdw-icon).material-icons clear
-        .content(mdw-theme-fill="background-50 light")
+        .content
           ul.mdw-list#search-list-multiline
             li.mdw-list__subheader Today
             li.mdw-list__item
@@ -99,7 +99,7 @@ include ../mixins.pug
 
     .comparison.js
       .render
-        .content.display-flex(mdw-theme-fill="background-100 light" style="padding:8px")
+        .content.display-flex(style="padding:8px")
           .flex-1.display-flex(flex-column)
             p Text field dropdown with:
             ul

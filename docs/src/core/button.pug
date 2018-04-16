@@ -46,26 +46,20 @@ mixin button-test
     #verticalLineRight
     .comparison
       .render
-        +androidstatusbar('background-400')
-        +toolbar('background-50', [], []) CSS Only
-        .content(mdw-theme-fill="background-50 light" style="padding: 16px 0")
+        +androidstatusbar('')
+        +toolbar('', [], []) CSS Only
+        .content(style="padding: 16px 0")
           div
-            +button-test
-          div(style="height:24px")
-          div(mdw-theme-fill="background-900 dark" style="padding-bottom: 8px")
             +button-test
         +androidnavbar
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsX0xZMnFkR1ZOVmc/components-buttons-main6.png')
 
     .comparison
       .render.js
-        +androidstatusbar('background-400 light')
-        +toolbar('background-50', [], []) Javascript Version
-        .content(mdw-theme-fill="background-50 light" style="padding: 16px 0")
+        +androidstatusbar('')
+        +toolbar('', [], []) Javascript Version
+        .content(style="padding: 16px 0")
           div
-            +button-test
-          div(style="height:24px")
-          div(mdw-theme-fill="background-900 dark" style="padding-bottom: 8px")
             +button-test
         +androidnavbar
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsX0xZMnFkR1ZOVmc/components-buttons-main6.png',
