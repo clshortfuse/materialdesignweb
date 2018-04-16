@@ -10,6 +10,7 @@
 @import '../core/toolbar/theming.scss';
 @import '../core/type/theming.scss';
 
+@import '../complex/card/theming.scss';
 @import '../complex/dialog/theming.scss';
 @import '../complex/navdrawer/theming.scss';
 @import '../complex/table/theming.scss';
@@ -20,7 +21,9 @@ $added-palettes-list: ();
 
 
 @mixin buildMDWThemes($config-map: ()) {
-  $theme-components: ('bottomnav', 'button', 'list', 'menu', 'selection', 'tab', 'textfield', 'toolbar', 'dialog', 'navdrawer', 'table');
+  $theme-components: (
+    'bottomnav', 'button', 'list', 'menu', 'selection', 'tab', 'textfield', 'toolbar',
+    'card', 'dialog', 'navdrawer', 'table');
   $themes: (
     "default": ('indigo', 'pink', 'red'),
   );
@@ -83,7 +86,10 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'type')) {
     @include typeThemeVariables($color, 'light');
   }
-  
+
+  @if (index($mdw-theme__components, 'card')) {
+    @include cardThemeVariables($color, 'light');
+  }
   @if (index($mdw-theme__components, 'dialog')) {
     @include dialogThemeVariables($color, 'light');
   }
@@ -124,6 +130,9 @@ $added-palettes-list: ();
     @include typeThemeVariables($color, 'dark');
   }
 
+  @if (index($mdw-theme__components, 'card')) {
+    @include cardThemeVariables($color, 'dark');
+  }
   @if (index($mdw-theme__components, 'dialog')) {
     @include dialogThemeVariables($color, 'dark');
   }
@@ -173,6 +182,9 @@ $added-palettes-list: ();
     @include typeContrastRules($type, $theme);
   }
 
+  @if (index($mdw-theme__components, 'card')) {
+    @include cardContrastRules($type, $theme);
+  }
   @if (index($mdw-theme__components, 'dialog')) {
     @include dialogContrastRules($type, $theme);
   }
@@ -231,8 +243,10 @@ $added-palettes-list: ();
         $rgbValue: red($value), green($value), blue($value);
         @if ($tone == '500') {
           #{$namespace} {
-            [mdw-theme-fill~="#{$color}"] {
-              background-color: $value;
+            @if ($color != 'background') {
+              [mdw-theme-fill~="#{$color}"] {
+                background-color: $value;
+              }
             }
             [mdw-theme-color~="#{$color}"] {
               color: $value;
@@ -334,8 +348,10 @@ $added-palettes-list: ();
   @each $color in ('primary', 'accent', 'warn', 'background') { 
     @each $tone in $tone-list {
       @if ($tone == '500') {
-        [mdw-theme-fill~="#{$color}"] {
-          --background-color: unquote("var(--#{$color}-color)");
+        @if ($color != 'background') {
+          [mdw-theme-fill~="#{$color}"] {
+            --background-color: unquote("var(--#{$color}-color)");
+          }
         }
         [mdw-theme-color~="#{$color}"] {
           --color: unquote("var(--#{$color}-color)");
@@ -398,7 +414,7 @@ $added-palettes-list: ();
         $lightTones: map-get($palette, 'light');
         #{$namespace} {
           @each $tone in $lightTones {
-            @if ($tone == '500') {
+            @if ($tone == '500' and $color != 'background') {
               [mdw-theme-fill~="#{$color}"] {
                 @include lightVariables($color);
               }
@@ -427,7 +443,7 @@ $added-palettes-list: ();
         #{$namespace} {
           @each $tone in $darkTones {
             $value: map-get($palette, $tone);
-            @if ($tone == '500') {
+            @if ($tone == '500' and $color != 'background') {
               [mdw-theme-fill~="#{$color}"] {
                 @include darkVariables($color);
               }
@@ -456,7 +472,7 @@ $added-palettes-list: ();
       #{$namespace} {
         @each $tone in $darkTones {
           $value: map-get($palette, $tone);
-          @if ($tone == '500') {
+          @if ($tone == '500' and $color != 'background') {
             [mdw-theme-fill~="#{$color}"] {
               @include darkVariables($color);
             }
@@ -509,7 +525,7 @@ $added-palettes-list: ();
     $value: map-get($palette, $tone);
     #{if($namespace, #{$namespace}, ":root, .mdw-theme-default")} {
       --#{$color}-#{$tone}-color: var(--#{$name}-#{$tone}-color);
-      @if ($tone == "500") {
+      @if ($tone == "500" and $color != 'background') {
         --#{$color}-color: var(--#{$name}-color);
       } 
     }

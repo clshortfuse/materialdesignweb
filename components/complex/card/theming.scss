@@ -1,0 +1,21 @@
+@import '../../common/functions.scss';
+@import '../../common/mixins.scss';
+
+$cardColors: (
+  background: ((#fff, 1.00), ('background', '800', 1.00)),
+);
+
+@function cardThemeValue($key, $type, $theme) {
+  @return themeValue('card', $cardColors, $key, $type, $theme);
+}
+
+@mixin cardThemeVariables($color, $lightness) {
+  @include themeVariables('card', $cardColors, $color, $lightness);
+}
+
+// Vary by contrast or theme
+@mixin cardContrastRules($type: 'var', $theme: null) {
+  .mdw-card {
+    background-color: cardThemeValue("background", $type, $theme);
+  }
+}
