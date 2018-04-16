@@ -8,12 +8,13 @@ function setupDarkMode(element) {
   element.addEventListener('click', () => {
     if (document.body.getAttribute('mdw-theme-fill') === darkAttribute) {
       document.body.setAttribute('mdw-theme-fill', lightAttribute);
-      element.removeAttribute('mdw-active');
       element.setAttribute('mdw-inactive', '');
+      element.removeAttribute('mdw-active');
     } else {
       document.body.setAttribute('mdw-theme-fill', darkAttribute);
       element.removeAttribute('mdw-inactive');
-      element.setAttribute('mdw-active', '');
+      // element.setAttribute('mdw-active', '');
+      // Poor visibility even though spec says 70% opacity
     }
   });
 }

@@ -15,7 +15,7 @@
     <script src="babel-polyfill.min.js"></script>
   </head>
   <body mdw-theme-fill="white light">
-    <div class="mdw-navdrawer" id="docs-navdrawer" mdw-theme-fill="background-100 light" mdw-floating="card"><a class="mdw-navdrawer__scrim" href="#"></a>
+    <div class="mdw-navdrawer" id="docs-navdrawer" mdw-floating="card"><a class="mdw-navdrawer__scrim" href="#"></a>
       <div class="mdw-navdrawer__toolbar">
         <div class="mdw-toolbar" mdw-theme-fill="accent-500 dark">
           <div class="mdw-toolbar__action">
@@ -25,6 +25,12 @@
               </div>
             </div>
             <div class="mdw-toolbar__title">elevation</div>
+            <div class="mdw-toolbar__end" id="docs-menu-buttons">
+              <div class="mdw-tooltip__wrapper">
+                <div class="mdw-tooltip__target mdw-button material-icons" mdw-icon mdw-inactive>brightness_3</div>
+                <div class="mdw-tooltip">Dark Mode</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -69,5 +75,6 @@
         </div>
       </div>
     </div>
+    <script src="elevation.min.js"></script>
   </body>
 </html>

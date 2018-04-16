@@ -15,7 +15,7 @@
     <script src="babel-polyfill.min.js"></script>
   </head>
   <body mdw-theme-fill="white light">
-    <div class="mdw-navdrawer" id="docs-navdrawer" mdw-theme-fill="background-100 light" mdw-floating="card"><a class="mdw-navdrawer__scrim" href="#"></a>
+    <div class="mdw-navdrawer" id="docs-navdrawer" mdw-floating="card"><a class="mdw-navdrawer__scrim" href="#"></a>
       <div class="mdw-navdrawer__toolbar">
         <div class="mdw-toolbar" mdw-theme-fill="accent-500 dark">
           <div class="mdw-toolbar__action">
@@ -25,6 +25,12 @@
               </div>
             </div>
             <div class="mdw-toolbar__title">navdrawer</div>
+            <div class="mdw-toolbar__end" id="docs-menu-buttons">
+              <div class="mdw-tooltip__wrapper">
+                <div class="mdw-tooltip__target mdw-button material-icons" mdw-icon mdw-inactive>brightness_3</div>
+                <div class="mdw-tooltip">Dark Mode</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -58,7 +64,7 @@
         <div id="verticalLineRight"></div>
         <div class="comparison">
           <div class="render" style="min-width:640px;">
-            <div class="mdw-navdrawer" id="navdrawer" mdw-theme-fill="background-100 light"><a class="mdw-navdrawer__scrim" href="#"></a>
+            <div class="mdw-navdrawer" id="navdrawer"><a class="mdw-navdrawer__scrim" href="#"></a>
               <div class="mdw-navdrawer__toolbar">
                 <div class="androidstatusbar" mdw-theme-fill="accent-700 dark">
                   <div>12:30</div><i class="material-icons" style="letter-spacing:2px;">&#xE1BA;&#xE1C8;&#xE1A4;</i>
@@ -147,7 +153,7 @@
                 </div>
               </div>
               <div class="mdw-navdrawer__content" style="padding:16px 8px;">
-                <div><span>Desktop options</span>
+                <div><span class="mdw-type" mdw-style="subheader">Desktop options</span>
                   <div class="display-flex" style="padding:16px;">
                     <label class="mdw-selection" mdw-theme-color="accent-A700 dark">
                       <input class="mdw-selection__input" type="radio" checked name="mdw-navdrawer__style" value="fullheight">

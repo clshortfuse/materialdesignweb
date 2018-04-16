@@ -15,7 +15,7 @@
     <script src="babel-polyfill.min.js"></script>
   </head>
   <body mdw-theme-fill="white light">
-    <div class="mdw-navdrawer" id="docs-navdrawer" mdw-theme-fill="background-100 light" mdw-floating="card"><a class="mdw-navdrawer__scrim" href="#"></a>
+    <div class="mdw-navdrawer" id="docs-navdrawer" mdw-floating="card"><a class="mdw-navdrawer__scrim" href="#"></a>
       <div class="mdw-navdrawer__toolbar">
         <div class="mdw-toolbar" mdw-theme-fill="accent-500 dark">
           <div class="mdw-toolbar__action">
@@ -25,6 +25,12 @@
               </div>
             </div>
             <div class="mdw-toolbar__title">table</div>
+            <div class="mdw-toolbar__end" id="docs-menu-buttons">
+              <div class="mdw-tooltip__wrapper">
+                <div class="mdw-tooltip__target mdw-button material-icons" mdw-icon mdw-inactive>brightness_3</div>
+                <div class="mdw-tooltip">Dark Mode</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -54,7 +60,7 @@
       </div>
       <div class="mdw-navdrawer__content">
         <div class="mdw-theme-toolbar js" display="flex" flex-direction="column">
-          <div class="mdw-table" mdw-elevation="2" mdw-theme-fill="white light" mdw-theme-color="primary" style="margin:16px;">
+          <div class="mdw-card mdw-table" mdw-theme-color="primary" style="margin:16px;">
             <table>
               <caption>Standard HTML Table</caption>
               <thead>
@@ -173,7 +179,7 @@
               </tbody>
             </table>
           </div>
-          <div class="mdw-table" mdw-elevation="2" mdw-theme-fill="white light" mdw-theme-color="primary" style="margin:16px;">
+          <div class="mdw-card mdw-table" mdw-theme-color="primary" style="margin:16px;">
             <div class="mdw-table__header">
               <div class="mdw-table__header-text">Customized HTML Table</div>
             </div>
@@ -186,30 +192,30 @@
                       <div class="mdw-selection__icon"></div>
                     </label>
                   </th>
-                  <th mdw-sortable>
+                  <th mdw-sortable data-type="text" mdw-primary-column>
                     <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span>Dessert (100g serving)</span>
                   </th>
-                  <th mdw-sortable>
+                  <th mdw-sortable data-type="number">
                     <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span class="mdw-tooltip__wrapper"><span class="mdw-tooltip__target">Calories</span>
                       <div class="mdw-tooltip">The total amount of food energy in the given serving size.</div></span>
                   </th>
-                  <th mdw-sortable>
+                  <th mdw-sortable data-type="number">
                     <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span>Fat (g)</span>
                   </th>
-                  <th mdw-sortable>
+                  <th mdw-sortable data-type="number">
                     <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span>Carbs (g)</span>
                   </th>
-                  <th mdw-sortable>
+                  <th mdw-sortable data-type="number">
                     <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span>Protein (g)</span>
                   </th>
-                  <th mdw-sortable>
+                  <th mdw-sortable data-type="number">
                     <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span>Sodium (mg)</span>
                   </th>
-                  <th mdw-sortable>
+                  <th mdw-sortable data-type="number">
                     <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span class="mdw-tooltip__wrapper"><span class="mdw-tooltip__target">Calcium (%)</span>
                       <div class="mdw-tooltip">The amount of calcium as a percentage of the recommended daily amount.</div></span>
                   </th>
-                  <th mdw-sortable>
+                  <th mdw-sortable data-type="number">
                     <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span>Iron (%)</span>
                   </th>
                 </tr>
@@ -222,7 +228,7 @@
                       <div class="mdw-selection__icon"></div>
                     </label>
                   </td>
-                  <td>Frozen Yogurt</td>
+                  <td data-type="text">Frozen Yogurt</td>
                   <td data-type="number">159</td>
                   <td data-type="number">6.0</td>
                   <td data-type="number">24</td>
@@ -238,7 +244,7 @@
                       <div class="mdw-selection__icon"></div>
                     </label>
                   </td>
-                  <td>Ice cream sandwich</td>
+                  <td data-type="text">Ice cream sandwich</td>
                   <td data-type="number">237</td>
                   <td data-type="number">9.0</td>
                   <td data-type="number">37</td>
@@ -254,7 +260,7 @@
                       <div class="mdw-selection__icon"></div>
                     </label>
                   </td>
-                  <td>Eclair</td>
+                  <td data-type="text">Eclair</td>
                   <td data-type="number">262</td>
                   <td data-type="number">16.0</td>
                   <td data-type="number">24</td>
@@ -270,7 +276,7 @@
                       <div class="mdw-selection__icon"></div>
                     </label>
                   </td>
-                  <td>Cupcake</td>
+                  <td data-type="text">Cupcake</td>
                   <td data-type="number">305</td>
                   <td data-type="number">3.7</td>
                   <td data-type="number">67</td>
@@ -286,7 +292,7 @@
                       <div class="mdw-selection__icon"></div>
                     </label>
                   </td>
-                  <td>Gingerbread</td>
+                  <td data-type="text">Gingerbread</td>
                   <td data-type="number">356</td>
                   <td data-type="number">16.0</td>
                   <td data-type="number">49</td>
@@ -302,7 +308,7 @@
                       <div class="mdw-selection__icon"></div>
                     </label>
                   </td>
-                  <td>Jelly bean</td>
+                  <td data-type="text">Jelly bean</td>
                   <td data-type="number">375</td>
                   <td data-type="number">0.0</td>
                   <td data-type="number">94</td>
@@ -318,7 +324,7 @@
                       <div class="mdw-selection__icon"></div>
                     </label>
                   </td>
-                  <td>Lollipop</td>
+                  <td data-type="text">Lollipop</td>
                   <td data-type="number">392</td>
                   <td data-type="number">0.2</td>
                   <td data-type="number">98</td>
@@ -334,7 +340,7 @@
                       <div class="mdw-selection__icon"></div>
                     </label>
                   </td>
-                  <td>Honeycomb</td>
+                  <td data-type="text">Honeycomb</td>
                   <td data-type="number">408</td>
                   <td data-type="number">3.2</td>
                   <td data-type="number">87</td>
@@ -350,7 +356,7 @@
                       <div class="mdw-selection__icon"></div>
                     </label>
                   </td>
-                  <td>Donut</td>
+                  <td data-type="text">Donut</td>
                   <td data-type="number">452</td>
                   <td data-type="number">25.0</td>
                   <td data-type="number">51</td>
@@ -366,7 +372,7 @@
                       <div class="mdw-selection__icon"></div>
                     </label>
                   </td>
-                  <td>Kitkat</td>
+                  <td data-type="text">Kitkat</td>
                   <td data-type="number">518</td>
                   <td data-type="number">26.0</td>
                   <td data-type="number">65</td>
@@ -396,7 +402,7 @@
               </div>
             </div>
           </div>
-          <div class="mdw-table" id="dynamic-table" mdw-elevation="2" mdw-theme-fill="white light" mdw-theme-color="primary" style="margin:16px;max-height:800px;">
+          <div class="mdw-card mdw-table" id="dynamic-table" mdw-theme-color="primary" style="margin:16px;max-height:800px;overflow-y:auto;">
             <div class="mdw-table__header">
               <div class="mdw-table__header-text">Dynamic Table</div>
               <div class="mdw-table__header-controls">

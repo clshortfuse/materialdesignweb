@@ -15,7 +15,7 @@
     <script src="babel-polyfill.min.js"></script>
   </head>
   <body mdw-theme-fill="white light">
-    <div class="mdw-navdrawer" id="docs-navdrawer" mdw-theme-fill="background-100 light" mdw-floating="card"><a class="mdw-navdrawer__scrim" href="#"></a>
+    <div class="mdw-navdrawer" id="docs-navdrawer" mdw-floating="card"><a class="mdw-navdrawer__scrim" href="#"></a>
       <div class="mdw-navdrawer__toolbar">
         <div class="mdw-toolbar" mdw-theme-fill="accent-500 dark">
           <div class="mdw-toolbar__action">
@@ -25,6 +25,12 @@
               </div>
             </div>
             <div class="mdw-toolbar__title">menu</div>
+            <div class="mdw-toolbar__end" id="docs-menu-buttons">
+              <div class="mdw-tooltip__wrapper">
+                <div class="mdw-tooltip__target mdw-button material-icons" mdw-icon mdw-inactive>brightness_3</div>
+                <div class="mdw-tooltip">Dark Mode</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -83,7 +89,7 @@
                 </div>
               </div>
             </div>
-            <div class="content" mdw-theme-fill="background-50 light" style="padding:16px 8px;">
+            <div class="content" style="padding:16px 8px;">
               <div class="mdw-menu__wrapper"><a class="mdw-button" mdw-theme-fill="primary dark" mdw-raised href="#textmenu">Text</a>
                 <div class="mdw-menu" id="textmenu"><a class="mdw-menu__close" href="#"></a>
                   <div class="mdw-menu__text">Maps</div>
