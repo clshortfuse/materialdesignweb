@@ -82,6 +82,7 @@ class TableColumn {
       this.element.appendChild(node);
     }
 
+    this.primaryColumn = options.primaryColumn;
     if (options.primaryColumn) {
       this.element.setAttribute('mdw-primary-column', '');
     }
@@ -946,6 +947,9 @@ class Table {
       missingCell.dataset.key = missingColumn.key;
       if (missingColumn.rowSelector) {
         missingCell.setAttribute('mdw-selector', '');
+      }
+      if (missingColumn.primaryColumn) {
+        missingCell.setAttribute('mdw-primary-column', '');
       }
       len += 1;
     }
