@@ -45,17 +45,15 @@ table.mdw-table,
 .mdw-table tr {
   border-bottom-style: solid;
   border-bottom-width: dp(1);
+  font-size: sp(13);
+  font-weight: $font-weight-regular;
+  height: dp(48);
 }
 
 .mdw-table thead > tr {
   font-size: sp(12);
   font-weight: $font-weight-medium;
   height: dp(56);
-}
-.mdw-table tbody > tr {
-  font-size: sp(13);
-  font-weight: $font-weight-regular;
-  height: dp(48);
 }
 
 
