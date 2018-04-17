@@ -139,7 +139,7 @@ $tab__scrollable-max-width: dp(256);
   transition-duration: 200ms;
   transition-timing-function: $motion-easing-standard;
   margin-top: 12px;
-  &:only-child {
+  &:last-child {
     min-height: 48px;
     display: flex;
     align-items: center;
@@ -157,7 +157,7 @@ $tab__scrollable-max-width: dp(256);
 }
 
 .mdw-tab__label {
-  display: block;
+
   text-align: center;
 
   pointer-events: none;
@@ -168,28 +168,28 @@ $tab__scrollable-max-width: dp(256);
   transition-timing-function: $motion-easing-standard;
   text-overflow: ellipsis;
   white-space: nowrap;
-  min-height: 1em; // Prevents stretching when using larger fonts
   height: auto;
   font-size: sp(14);
   text-transform: uppercase;
   font-weight: $font-weight-medium;
 
-  &:only-child {
-    min-height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    @include IEOnly() {
-      // Fix IE min-height flexbug
-      &::after {
-        content: '';
-        min-height: inherit;
-        width: 0;
-      }
+  
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include IEOnly() {
+    // Fix IE min-height flexbug
+    &::after {
+      content: '';
+      min-height: inherit;
+      width: 0;
     }
   }
 
   .mdw-tab__icon ~ & {
+    min-height: 0;
+    display: block;
     // 10dp top padding
     &::before {
       content: "\200D"; // &zwj;
