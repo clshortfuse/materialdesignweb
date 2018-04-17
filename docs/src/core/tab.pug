@@ -153,14 +153,14 @@ include ../mixins.pug
         .content
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsQ1Y4YXpwTkZ2MFU/components-tabs-usage-mobile8.png')
 
-    .comparison.clipped.mdw-theme-tab.js
-      .render
+    .comparison.clipped.mdw-theme-tab
+      .display-flex(flex-column style="width:100%;padding:24px;box-sizing:border-box")
         +androidstatusbar('primary-700 dark')
         .mdw-toolbar(mdw-theme-fill="primary-500 dark")
           .mdw-toolbar__action
             .mdw-toolbar__start
               .mdw-button(mdw-icon).material-icons menu
-            .mdw-toolbar__title JS version
+            .mdw-toolbar__title Dynamic Width
             .mdw-toolbar__end
               .mdw-button(mdw-icon).material-icons search
               .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
@@ -175,6 +175,58 @@ include ../mixins.pug
             .mdw-tab__item
               .mdw-tab__icon.material-icons person_pin
               .mdw-tab__label Nearby
+
+    .comparison.clipped.mdw-theme-tab.js
+      .display-flex(flex-column style="width:100%;padding:24px;box-sizing:border-box")
+        +androidstatusbar('primary-700 dark')
+        .mdw-toolbar(mdw-theme-fill="primary-500 dark")
+          .mdw-toolbar__action
+            .mdw-toolbar__start
+              .mdw-button(mdw-icon).material-icons menu
+            .mdw-toolbar__title Scrollable (JS)
+            .mdw-toolbar__end
+              .mdw-button(mdw-icon).material-icons search
+              .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
+          .mdw-toolbar__content
+          .mdw-tab(mdw-theme-color="accent" mdw-scrollable)
+            .mdw-tab__item(mdw-selected)
+              .mdw-tab__icon.material-icons phone
+              .mdw-tab__label Recents
+            .mdw-tab__item
+              .mdw-tab__icon.material-icons favorite
+              .mdw-tab__label Favorites
+            .mdw-tab__item
+              .mdw-tab__icon.material-icons person_pin
+              .mdw-tab__label Nearby
+            .mdw-tab__item
+              .mdw-tab__icon.material-icons favorite
+              .mdw-tab__label Favorites
+            .mdw-tab__item
+              .mdw-tab__icon.material-icons person_pin
+              .mdw-tab__label Nearby
+            .mdw-tab__item
+              .mdw-tab__icon.material-icons favorite
+              .mdw-tab__label Favorites
+            .mdw-tab__item
+              .mdw-tab__icon.material-icons person_pin
+              .mdw-tab__label Nearby
+            .mdw-tab__item
+              .mdw-tab__icon.material-icons favorite
+              .mdw-tab__label Favorites
+            .mdw-tab__item
+              .mdw-tab__icon.material-icons person_pin
+              .mdw-tab__label Nearby
+            .mdw-tab__item
+              .mdw-tab__icon.material-icons favorite
+              .mdw-tab__label Favorites
+            .mdw-tab__item
+              .mdw-tab__icon.material-icons person_pin
+              .mdw-tab__label Nearby
+            .mdw-tab__item
+              .mdw-tab__icon.material-icons favorite
+              .mdw-tab__label Favorites
+            .mdw-tab__item
+              .mdw-tab__icon.material-icons person_pin
+              .mdw-tab__label Nearby
         .content
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsS2pLN2MwWmUyRW8/components-tabs-usage-specs8.png')
   script(src='tab.min.js')

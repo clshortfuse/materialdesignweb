@@ -3,14 +3,33 @@
 @import '../../common/functions.scss';
 @import '../../common/motion.scss';
 
+$tab__max-width: dp(160);
+$tab__scrollable-max-width: dp(256);
+
 .mdw-tab {
   min-height: dp(48);
   overflow-y: hidden;
   position: relative;
   display:flex;
   width: 100%;
-  justify-content: center;
-  flex-direction:row;
+  justify-content: flex-start;
+  flex-direction: row;
+  &[mdw-scrollable] {
+    overflow-x: scroll;
+    padding-left: 40px;
+    padding-right: 40px;
+    box-sizing: border-box;
+    > .mdw-tab__item {
+      min-width: dp(160);
+      max-width: $tab__scrollable-max-width;
+      flex-basis: $tab__scrollable-max-width;
+    }
+    > .mdw-tab__indicator {
+      margin-left: 40px;
+      margin-right: 40px;
+      max-width: $tab__scrollable-max-width;
+    }
+  }
 }
 
 .mdw-tab__indicator {
@@ -20,6 +39,7 @@
   width: 0;
   left: 0;
   right: auto;
+  max-width: $tab__max-width;
   [dir=rtl] & {
     right: 0;
     left: auto;
@@ -38,41 +58,29 @@
   // Element position = 2 * number of input elements + 1 (itself)
   // Width = 100% / number of input elements
   @for $j from 1 through 8 {
-    // Fallback for 0 width element with JS indicator
-    &:nth-child(#{$j + 1}):not([mdw-js-indicator]) {
+    &:nth-child(#{$j + 1}) {
       width: #{100% / $j};
     }
-    input ~ &:nth-child(#{($j * 2) + 1}):not([mdw-js-indicator]) {
+    input ~ &:nth-child(#{($j * 2) + 1}) {
       width: #{100% / $j};
     }
   }
   // Indicator offset
   @for $i from 1 through 8 {
-    input:nth-of-type(#{$i}):checked ~ &:not([mdw-js-indicator]) {
+    input:checked:nth-of-type(#{$i}) ~ &,
+    .mdw-tab__item[mdw-selected]:nth-of-type(#{$i}) ~ & {
       transform: translateX(#{100% * ($i - 1)});
     }
-    [dir=rtl] input:nth-of-type(#{$i}):checked ~ &:not([mdw-js-indicator]) {
+    [dir=rtl] input:checked:nth-of-type(#{$i}) ~ &,
+    [dir=rtl] .mdw-tab__item[mdw-selected]:nth-of-type(#{$i}) ~ & {
       transform: translateX(#{-100% * ($i - 1)});
     }
   }
   
-  &[mdw-js-indicator] {
+  .mdw-tab[mdw-scrollable] > &[mdw-js-indicator] {
     width: auto;
-    // Stretch animation
+    max-width: none;
     transition-property: left, right;
-    &[mdw-direction="backwards"] {
-      transition-property: right, left;
-    }
-    transition-delay: $motion-duration-desktop-default / 2, 0ms;
-    transition-duration: $motion-duration-desktop-default / 2;
-    @include allHandsets {
-      transition-delay: $motion-duration-mobile-default / 2, 0ms;
-      transition-duration: $motion-duration-mobile-default / 2;
-    }
-    @include allTablets {
-      transition-delay: $motion-duration-tablet-default / 2, 0ms;
-      transition-duration: $motion-duration-tablet-default / 2;
-    }
     transform: none;
   }
 }
@@ -81,8 +89,11 @@
   min-height: dp(48); // Redundant but needed for IE11
   position: relative;
   display: flex;
-  flex-grow: 1;
-  flex-basis: 0;
+  min-width: dp(72);
+  max-width: $tab__max-width;
+  flex-basis: $tab__max-width;
+  flex-grow: 0;
+  flex-shrink: 1;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
@@ -128,8 +139,20 @@
   transition-duration: 200ms;
   transition-timing-function: $motion-easing-standard;
   margin-top: 12px;
-  &:last-child {
-    margin-bottom: 12px;
+  &:only-child {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    @include IEOnly() {
+      // Fix IE min-height flexbug
+      &::after {
+        content: '';
+        min-height: inherit;
+        width: 0;
+      }
+    }
   }
 }
 
@@ -138,8 +161,6 @@
   text-align: center;
 
   pointer-events: none;
-  min-width: dp(80);
-  max-width: dp(168);
   padding-left: dp(12);
   padding-right: dp(12);
   transition-property: color;
@@ -153,25 +174,30 @@
   text-transform: uppercase;
   font-weight: $font-weight-medium;
 
-  // 10dp top padding
-  &::before {
-    content: "\200D"; // &zwj;
-    display: inline-block;
-    margin-top: dp(10);
-    line-height: 1;
-    vertical-align: text-bottom;
-  }
-
-  // 20dp bottom padding from baseline
-  &::after {
-    content: "\200D"; // &zwj;
-    display: inline-block;
-    line-height: 1;
-    margin-bottom: dp(20);
-    vertical-align: text-top;
+  &:only-child {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include IEOnly() {
+      // Fix IE min-height flexbug
+      &::after {
+        content: '';
+        min-height: inherit;
+        width: 0;
+      }
+    }
   }
 
   .mdw-tab__icon ~ & {
+    // 10dp top padding
+    &::before {
+      content: "\200D"; // &zwj;
+      display: inline-block;
+      margin-top: dp(10);
+      line-height: 1;
+      vertical-align: text-bottom;
+    }
     &::after {
       content: "\200D"; // &zwj;
       display: inline-block;

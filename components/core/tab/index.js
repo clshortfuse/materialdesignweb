@@ -46,8 +46,8 @@ class Tab {
     this.inputs = element.getElementsByTagName('input');
     this.items = element.getElementsByClassName('mdw-tab__item');
 
-    const indicatorElements = element.getElementsByClassName('mdw-tab__indicator');
-    this.indicator = indicatorElements && indicatorElements[0];
+    const [indicatorElement] = element.getElementsByClassName('mdw-tab__indicator');
+    this.indicator = indicatorElement;
     if (!this.indicator) {
       const indicator = document.createElement('div');
       indicator.classList.add('mdw-tab__indicator');
@@ -102,34 +102,32 @@ class Tab {
     return document.body.getAttribute('dir').toLowerCase() === 'rtl';
   }
 
+  useCSSAnimation() {
+    this.indicator.style.removeProperty('left');
+    this.indicator.style.removeProperty('right');
+    this.indicator.style.removeProperty('width');
+    this.indicator.removeAttribute('mdw-js-indicator');
+  }
+
   /**
    * @param {HTMLElement} itemElement
-   * @return {boolean} changed
+   * @return {void}
    */
   selectItem(itemElement) {
     let foundPreviousSelection = false;
     let foundTarget = false;
-    let indicatorUpdated = false;
     let left = 0;
     const isRtl = Tab.isRtl();
     for (let i = 0; i < this.items.length; i += 1) {
-      const index = isRtl ? this.items.length - 1 -i : i;
+      const index = isRtl ? this.items.length - 1 - i : i;
       const item = this.items.item(index);
       if (item.hasAttribute('mdw-selected')) {
         foundPreviousSelection = true;
         item.removeAttribute('mdw-selected');
-        if (!indicatorUpdated) {
-          this.indicator.setAttribute('mdw-direction', 'forwards');
-          indicatorUpdated = true;
-        }
       }
       if (item === itemElement) {
         foundTarget = true;
         itemElement.setAttribute('mdw-selected', '');
-        if (!indicatorUpdated) {
-          this.indicator.setAttribute('mdw-direction', 'backwards');
-          indicatorUpdated = true;
-        }
       }
       if (!foundTarget) {
         left += item.clientWidth;
@@ -139,13 +137,15 @@ class Tab {
       }
     }
 
-    if (!this.element.clientWidth) {
-      this.indicator.style.setProperty('left', '');
-      this.indicator.style.setProperty('right', '');
-      this.indicator.removeAttribute('mdw-js-indicator');
+    // Animation selection
+
+    // Only use explicity positioning on scrollable tabs
+    if (!this.element.hasAttribute('mdw-scrollable') || !this.element.clientWidth) {
       // use CSS styling fallback
-      return false;
+      this.useCSSAnimation();
+      return;
     }
+    const width = itemElement.clientWidth;
     const right = this.element.clientWidth - left - itemElement.clientWidth;
     if (!this.indicator.hasAttribute('mdw-js-indicator')) {
       this.indicator.setAttribute('mdw-js-indicator', '');
@@ -153,7 +153,7 @@ class Tab {
 
     this.indicator.style.setProperty('left', `${left}px`);
     this.indicator.style.setProperty('right', `${right}px`);
-    return false;
+    this.indicator.style.setProperty('width', `${width}px`);
   }
 
   /**
