@@ -1,21 +1,3 @@
-/**
- * @param {HTMLElement} element
- * @param {MouseEvent|PointerEvent} event
- * @return {void}
- */
-function updateRipplePosition(element, event) {
-  if (!event.pointerType && !event.detail) {
-    // Ripple from center
-    element.style.setProperty('left', '0');
-    element.style.setProperty('top', '0');
-    return;
-  }
-  const x = event.offsetX - (element.clientWidth / 2.0);
-  const y = event.offsetY - (element.clientHeight / 2.0);
-  element.style.setProperty('left', `${x}px`);
-  element.style.setProperty('top', `${y}px`);
-}
-
 class TabItem {
   /**
    * @param {Element} element
@@ -30,10 +12,38 @@ class TabItem {
       this.element.insertBefore(ripple, this.element.firstChild);
       this.ripple = ripple;
     }
-    this.element.setAttribute('mdw-js-ripple', '');
+    const innerRippleElements = this.ripple.getElementsByClassName('mdw-ripple__inner');
+    this.rippleInner = innerRippleElements && innerRippleElements[0];
+    if (!this.rippleInner) {
+      const rippleInner = document.createElement('div');
+      rippleInner.classList.add('mdw-ripple__inner');
+      this.ripple.appendChild(rippleInner);
+      this.rippleInner = rippleInner;
+    }
+    this.element.setAttribute('mdw-ripple', '');
     this.element.addEventListener('click', (event) => {
-      updateRipplePosition(this.ripple, event);
+      this.updateRipplePosition(event);
     });
+  }
+
+  /**
+   * @param {MouseEvent|PointerEvent} event
+   * @return {void}
+   */
+  updateRipplePosition(event) {
+    if (event.target !== this.element && event.target !== this.ripple) {
+      return;
+    }
+    if (this.element.hasAttribute('mdw-icon') || (!event.pointerType && !event.detail)) {
+      // Ripple from center
+      this.rippleInner.style.removeProperty('left');
+      this.rippleInner.style.removeProperty('top');
+      return;
+    }
+    const x = event.offsetX;
+    const y = event.offsetY;
+    this.rippleInner.style.setProperty('left', `${x}px`);
+    this.rippleInner.style.setProperty('top', `${y}px`);
   }
 }
 
