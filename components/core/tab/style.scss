@@ -6,6 +6,11 @@
 $tab__max-width: dp(160);
 $tab__scrollable-max-width: dp(256);
 
+.mdw-tab {
+  display: flex;
+  flex-direction: column;
+}
+
 .mdw-tab__items {
   min-height: dp(48);
   overflow-y: hidden;
