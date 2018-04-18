@@ -330,7 +330,7 @@
     transform: translateX(0);
     box-shadow: elevation(16);
     grid-row-end: 4;
-    -ms-grid-column-span: 3;
+    -ms-grid-row-span: 3;
   }
   > .mdw-navdrawer__scrim {
     display: block;
@@ -432,11 +432,12 @@
     }
   }
   &[mdw-floating=card] {
-    .mdw-navdrawer__content {
+    > .mdw-navdrawer__content {
       grid-column-start:3;
     }
     > .mdw-navdrawer__drawer {
       grid-column-end: 2;
+      -ms-grid-column-span: 1;
       margin: 8px;
       border-radius: dp(2);
       box-shadow: elevation(8);
