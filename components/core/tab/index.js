@@ -88,6 +88,9 @@ class Tab {
       }
       itemElement.addEventListener('click', () => {
         this.selectItem(itemElement);
+        if (this.tabItemsElement.hasAttribute('mdw-scrollable')) {
+          itemElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        }
       });
     }
   }
@@ -162,7 +165,6 @@ class Tab {
       }
     }
 
-    itemElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
     // Animate selection
     // Only use explicity positioning on scrollable tabs
     if (!this.tabItemsElement.hasAttribute('mdw-scrollable') || !this.tabItemsElement.clientWidth) {
@@ -185,7 +187,7 @@ class Tab {
   }
 
   /**
-   * @param {HTMLInputElement} itemElement
+   * @param {HTMLElement} itemElement
    * @return {void}
    */
   onItemSelected(itemElement) {
