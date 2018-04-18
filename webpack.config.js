@@ -3,6 +3,7 @@ const fs = require('fs');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const isProduction = (process.env.NODE_ENV === 'production');
 
@@ -23,7 +24,7 @@ function getComponentsConfig() {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env', 'minify'],
+            presets: ['env'],
           },
         },
       }, {
@@ -57,6 +58,7 @@ function getComponentsConfig() {
     },
     plugins: [
       new ExtractTextPlugin('materialdesignweb.min.css'),
+      new UglifyJSPlugin({ sourceMap: true }),
     ],
   };
 }
@@ -93,7 +95,7 @@ function getDocsConfig() {
   const DEST = (isProduction ? 'docs' : 'test/docs');
   return {
     entry: entries,
-    devtool: isProduction ? undefined : 'nosources-source-map',
+    devtool: isProduction ? 'source-map' : 'nosources-source-map',
     output: {
       filename: '[name].min.js',
       path: path.resolve(__dirname, DEST),
@@ -107,7 +109,6 @@ function getDocsConfig() {
           options: {
             presets: [
               ['env', {
-                targets: { browsers: ['last 2 versions', 'ie 11'] },
                 useBuiltIns: true,
               }],
             ],
@@ -160,6 +161,7 @@ function getDocsConfig() {
     plugins: [
       extractStyles,
       extractHtml,
+      new UglifyJSPlugin({ sourceMap: true }),
     ],
   };
 }
