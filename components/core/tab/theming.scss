@@ -25,14 +25,23 @@ $tabColors: (
   .mdw-tab__indicator {
     color: tabThemeValue("indicator-color", $type, $theme);
   }
-  input:checked ~ .mdw-tab__icon,
-  input:checked ~ .mdw-tab__label,
+  
   .mdw-tab__item[mdw-selected] > .mdw-tab__icon,
-  .mdw-tab__item[mdw-selected] > .mdw-tab__label,
-  input:checked + .mdw-tab__item > .mdw-tab__icon,
-  input:checked + .mdw-tab__item > .mdw-tab__label {
+  .mdw-tab__item[mdw-selected] > .mdw-tab__label {
     color: tabThemeValue("active-color", $type, $theme);
   }
+  @for $i from 1 through 8 {
+    .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items,
+    .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items-wrapper .mdw-tab__items {
+      & > .mdw-tab__item:nth-child(#{$i}) {
+        > .mdw-tab__icon,
+        > .mdw-tab__label {
+          color: tabThemeValue("active-color", $type, $theme);
+        }
+      }
+    }
+  }
+
   .mdw-tab__item {
     & > .mdw-ripple > .mdw-ripple__inner,
     &:after {

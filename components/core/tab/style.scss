@@ -6,7 +6,7 @@
 $tab__max-width: dp(160);
 $tab__scrollable-max-width: dp(256);
 
-.mdw-tab {
+.mdw-tab__items {
   min-height: dp(48);
   overflow-y: hidden;
   position: relative;
@@ -26,7 +26,6 @@ $tab__scrollable-max-width: dp(256);
     }
     > .mdw-tab__indicator {
       margin-left: 40px;
-      margin-right: 40px;
       max-width: $tab__scrollable-max-width;
     }
   }
@@ -40,7 +39,7 @@ $tab__scrollable-max-width: dp(256);
   left: 0;
   right: auto;
   max-width: $tab__max-width;
-  [dir=rtl] & {
+  html[dir=rtl] & {
     right: 0;
     left: auto;
   }
@@ -61,23 +60,22 @@ $tab__scrollable-max-width: dp(256);
     &:nth-child(#{$j + 1}) {
       width: #{100% / $j};
     }
-    input ~ &:nth-child(#{($j * 2) + 1}) {
-      width: #{100% / $j};
-    }
   }
   // Indicator offset
   @for $i from 1 through 8 {
-    input:checked:nth-of-type(#{$i}) ~ &,
+    .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items > &,
+    .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items-wrapper .mdw-tab__items > &,
     .mdw-tab__item[mdw-selected]:nth-of-type(#{$i}) ~ & {
       transform: translateX(#{100% * ($i - 1)});
     }
-    [dir=rtl] input:checked:nth-of-type(#{$i}) ~ &,
-    [dir=rtl] .mdw-tab__item[mdw-selected]:nth-of-type(#{$i}) ~ & {
+    html[dir=rtl] .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items > &,
+    html[dir=rtl] .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items-wrapper .mdw-tab__items > &,
+    html[dir=rtl] .mdw-tab__item[mdw-selected]:nth-of-type(#{$i}) ~ & {
       transform: translateX(#{-100% * ($i - 1)});
     }
   }
   
-  .mdw-tab[mdw-scrollable] > &[mdw-js-indicator] {
+  .mdw-tab__items[mdw-scrollable] > &[mdw-js-indicator] {
     width: auto;
     max-width: none;
     transition-property: left, right;
@@ -106,7 +104,7 @@ $tab__scrollable-max-width: dp(256);
   color: black;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  input:checked + & {
+  .mdw-tab__input:checked + & {
     cursor: default;
   }
 
@@ -136,8 +134,14 @@ $tab__scrollable-max-width: dp(256);
 .mdw-tab__icon {
   pointer-events: none;
   transition-property: color;
-  transition-duration: 200ms;
   transition-timing-function: $motion-easing-standard;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
   margin-top: 12px;
   &:last-child {
     min-height: 48px;
@@ -157,15 +161,19 @@ $tab__scrollable-max-width: dp(256);
 }
 
 .mdw-tab__label {
-
   text-align: center;
-
   pointer-events: none;
   padding-left: dp(12);
   padding-right: dp(12);
   transition-property: color;
-  transition-duration: 200ms;
   transition-timing-function: $motion-easing-standard;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
   text-overflow: ellipsis;
   white-space: nowrap;
   height: auto;
@@ -208,7 +216,7 @@ $tab__scrollable-max-width: dp(256);
   }
 }
 
-.mdw-tab input {
+.mdw-tab__input {
   // Using `display: none` breaks keyboard navigation
   opacity: 0;
   height: 0;
@@ -220,9 +228,50 @@ $tab__scrollable-max-width: dp(256);
   display: inline;
 }
 
-.mdw-tab[mdw-theme-color] {
+.mdw-tab__items[mdw-theme-color] {
   .mdw-tab__item,
   .mdw-tab__indicator {
     color: inherit;
+  }
+}
+
+.mdw-tab__content {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: stretch;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.mdw-tab__content-item {
+  flex-basis: 100%;
+  flex-shrink: 0;
+  transition-property: transform, opacity;
+  transition-timing-function: $motion-easing-standard;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
+  @for $j from 1 through 8 {
+    .mdw-tab__content[mdw-selected-index="#{$j - 1}"] > &,
+    .mdw-tab__input:checked:nth-of-type(#{$j}) ~ .mdw-tab__content > & {
+      transform: translateX(#{-100% * ($j - 1)});
+    }
+    html[dir=rtl] .mdw-tab__content[mdw-selected-index="#{$j - 1}"] > &,
+    html[dir=rtl] .mdw-tab__input:checked:nth-of-type(#{$j}) ~ .mdw-tab__content > & {
+      transform: translateX(#{100% * ($j - 1)});
+    }
+  }
+}
+
+.mdw-tab__content[mdw-scrollsnap] {
+  scroll-snap-type: x mandatory;
+  overflow-x: scroll;
+  .mdw-tab__content-item {
+    scroll-snap-align: start none;
   }
 }
