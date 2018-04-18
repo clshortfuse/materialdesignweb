@@ -9,12 +9,15 @@ const isProduction = (process.env.NODE_ENV === 'production');
 
 /** @return {Object} */
 function getComponentsConfig() {
+  const extractStyles = new ExtractTextPlugin('[name].min.css');
   const DEST = (isProduction ? 'dist' : 'test/dist');
   return {
-    entry: ['./components/index.js', './components/default.scss'],
+    entry: {
+      materialdesignweb: ['./components/index.js', './components/_index.scss'],
+    },
     devtool: isProduction ? undefined : 'nosources-source-map',
     output: {
-      filename: 'materialdesignweb.min.js',
+      filename: '[name].min.js',
       path: path.resolve(__dirname, DEST),
     },
     module: {
@@ -24,29 +27,32 @@ function getComponentsConfig() {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env'],
+            presets: [
+              ['env', { useBuiltIns: true }],
+            ],
           },
         },
       }, {
         test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
+        use: extractStyles.extract({
           use: [{
             loader: 'css-loader',
             options: {
+              import: false,
               sourceMap: !isProduction,
-              minimize: true,
+              // minimize: true,
             },
           },
           {
             loader: 'postcss-loader',
             options: {
               sourceMap: !isProduction,
-              plugins: [
-                () => cssnano({ preset: 'default' }),
+              plugins: () => [
+                autoprefixer({ grid: true }),
+                cssnano({ preset: 'default', zindex: false }),
               ],
             },
-          },
-          {
+          }, {
             loader: 'sass-loader',
             options: {
               sourceMap: !isProduction,
@@ -57,7 +63,7 @@ function getComponentsConfig() {
       }],
     },
     plugins: [
-      new ExtractTextPlugin('materialdesignweb.min.css'),
+      extractStyles,
       new UglifyJSPlugin({ sourceMap: true }),
     ],
   };
@@ -108,9 +114,7 @@ function getDocsConfig() {
           loader: 'babel-loader',
           options: {
             presets: [
-              ['env', {
-                useBuiltIns: true,
-              }],
+              ['env', { useBuiltIns: true }],
             ],
           },
         },

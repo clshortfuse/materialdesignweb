@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:docs": "webpack-dev-server -w --env.target=docs --host='0.0.0.0'",
-    "build:docs": "webpack --env.target=docs"
+    "build:docs": "webpack --env.target=docs",
+    "dist": "webpack"
   },
   "repository": {
     "type": "git",
