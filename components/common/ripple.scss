@@ -1,6 +1,30 @@
 @import "./mixins.scss";
 
 $ripple-duration: 500ms;
+
+/**
+ * --Issues rendering a circle inside an element--
+ * See: https://codepen.io/shortfuse/pen/VxYxYj
+ *
+ * When using block display:
+ * - Firefox incorrectly stretches ripple when inside flexbox
+ * - Safari incorrectly inherit parent's padding
+ *
+ * Using using table display:
+ * - Firefox renders correctly
+ * - Safari renders correctly
+ * - IE and Edge don't animate opacity correctly
+ * - Ripples don't show if inside actual table
+ *
+ * When using JS (wrapped with block element):
+ * - Firefox renders correctly
+ * - Safari renders correctly
+ * - IE and Edge renders correctly but still has forced 0.26 opacity
+ *
+ * Chrome works fine under all conditions
+ *
+ */
+
 @mixin mdw-ripple__container {
   position: absolute;
   left: 0;
@@ -9,26 +33,29 @@ $ripple-duration: 500ms;
   height: 100%;
   overflow: hidden;
   border-radius: inherit;
+  > .mdw-ripple__inner {
+    display: block !important;
+  }
 }
 
 @mixin mdw-ripple__inner {
   content: '';
-  display: table; // Fixes Safari flexbox bug
+  display: table; // See above
+  padding: 50%;
+  height: 0;
+  width: 0;
   border-radius: 50%;
   position: absolute;
   left: 50%;
   top: 50%;
-  // z-index: -1; // Safari has a negative z-index bug
+  // z-index: -1; // Safari has a negative z-index scrolling bug (hides elements)
   user-select: none;
   pointer-events: none;
-  height: 0;
-  width: 100%;
-  padding-top: 100%;
   background-color: transparent;
   color: inherit;
   opacity: 0.26;
   @include MSOnly() {
-    // Microsoft browsers don't handle low opacity (12%) properly
+    // Microsoft browsers don't handle low opacity (12%) properly with table display
     opacity: 0.26 !important;
   }
   transform: translateX(-50%) translateY(-50%) scale(1);
