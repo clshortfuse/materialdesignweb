@@ -71,8 +71,14 @@ function getComponentsConfig() {
 
 /** @return {Object} */
 function getDocsConfig() {
+  const plugins = [];
   const extractStyles = new ExtractTextPlugin('[name].min.css');
   const extractHtml = new ExtractTextPlugin('[name].html');
+  plugins.push(extractStyles);
+  plugins.push(extractHtml);
+  if (isProduction) {
+    plugins.push(new UglifyJSPlugin({ sourceMap: true }));
+  }
   const entries = {
     'babel-polyfill': ['babel-polyfill'],
     prerender: ['./docs/src/prerender.js'],
@@ -162,11 +168,7 @@ function getDocsConfig() {
         }),
       }],
     },
-    plugins: [
-      extractStyles,
-      extractHtml,
-      new UglifyJSPlugin({ sourceMap: true }),
-    ],
+    plugins,
   };
 }
 
