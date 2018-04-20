@@ -64,7 +64,6 @@ class Menu {
 
     const offsetLeft = (alignTarget ? event.layerX : 0);
     const offsetRight = (alignTarget ? event.target.clientWidth - event.layerX : 0);
-    console.log(event.pageX, event.layerX, event.offsetX, event.target.clientWidth, offsetRight);
     if (alignStart || alignEnd) {
       const isRtl = (document.documentElement.getAttribute('dir') === 'rtl');
       if (alignStart) {
