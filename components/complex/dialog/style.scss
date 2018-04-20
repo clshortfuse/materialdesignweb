@@ -147,14 +147,32 @@ $dialog__unit-width: dp(56);
 // 10dp top padding to complete previous item
 .mdw-dialog__button-area {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
   margin-top: dp(8);
   margin-bottom: dp(8);
+  flex-wrap: wrap;
+  &[mdw-stacked] {
+    margin-top: 0;
+    .mdw-button {
+      flex-basis: 100%;
+      min-height: dp(48);
+      padding-left: dp(16);
+      padding-right: dp(16);
+      justify-content: flex-end;
+      margin-right: 0;
+      &, html[dir=rtl] & {
+        margin-left: 0;
+      }
+    }
+  }
   .mdw-button {
-    margin: 0;
-    &:last-child {
-      margin: 0 dp(8);
+    text-align: end;
+    margin-left: 0;
+    margin-right: dp(8);
+    html[dir=rtl] & {
+      margin-right: 0;
+      margin-left: dp(8);
     }
   }
 }

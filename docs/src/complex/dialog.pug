@@ -29,16 +29,16 @@ include ../mixins.pug
                 .mdw-dialog__title Use Google's location service?
                 .mdw-dialog__body Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
               .mdw-dialog__button-area
-                a.mdw-button(mdw-theme-color="accent" href="#") Disagree
                 a.mdw-button(mdw-theme-color="accent" href="#") Agree
+                a.mdw-button(mdw-theme-color="accent" href="#") Disagree
           .mdw-dialog#confirmdialog-text
             a.mdw-dialog__close(href="#")
             .mdw-dialog__popup
               .mdw-dialog__content
                 .mdw-dialog__body Discard draft?
               .mdw-dialog__button-area
-                a.mdw-button(mdw-theme-color="accent" href="#") Cancel
                 a.mdw-button(mdw-theme-color="accent" href="#") Discard
+                a.mdw-button(mdw-theme-color="accent" href="#") Cancel
         +androidnavbar
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3ejNQaWYtOGdiUXM/components-dialogs-content1.png')
   script(src='dialog.min.js')
