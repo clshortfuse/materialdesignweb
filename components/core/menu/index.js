@@ -25,46 +25,108 @@ class Menu {
   }
 
   /**
-   * @param {MouseEvent} event
+   * @param {MouseEvent=} event
+   * @param {boolean=} alignTarget
+   * @return {void}
+   */
+  updateMenuPosition(event, alignTarget) {
+    let top = 'auto';
+    let left = 'auto';
+    let right = 'auto';
+    let bottom = 'auto';
+    let transformOrigin = '';
+    const margin = alignTarget ? '0' : '';
+    const mdwPosition = this.element.getAttribute('mdw-position') || '';
+    let alignTop = mdwPosition.indexOf('top') !== -1;
+    let alignBottom = mdwPosition.indexOf('bottom') !== -1;
+    let alignLeft = mdwPosition.indexOf('right') !== -1;
+    let alignRight = mdwPosition.indexOf('left') !== -1;
+    const alignStart = mdwPosition.indexOf('start') !== -1;
+    const alignEnd = mdwPosition.indexOf('end') !== -1;
+
+    const offsetTop = (alignTarget ? event.layerY : 0);
+    const offsetBottom = (alignTarget ? event.target.clientHeight - event.layerY : 0);
+    if (!alignTop && !alignBottom) {
+      // Dynamic vertical position
+      if (this.element.clientHeight + (event.pageY - offsetTop) > window.innerHeight) {
+        alignBottom = true;
+      } else {
+        alignTop = true;
+      }
+    }
+    if (alignTop) {
+      top = `${event.pageY - offsetTop}px`;
+      transformOrigin = 'top';
+    } else {
+      bottom = `${window.innerHeight - (event.pageY + offsetBottom)}px`;
+      transformOrigin = 'bottom';
+    }
+
+    const offsetLeft = (alignTarget ? event.layerX : 0);
+    const offsetRight = (alignTarget ? event.target.clientWidth - event.layerX : 0);
+    console.log(event.pageX, event.layerX, event.offsetX, event.target.clientWidth, offsetRight);
+    if (alignStart || alignEnd) {
+      const isRtl = (document.documentElement.getAttribute('dir') === 'rtl');
+      if (alignStart) {
+        if (isRtl) {
+          alignRight = true;
+        } else {
+          alignLeft = true;
+        }
+      } else if (isRtl) {
+        alignLeft = true;
+      } else {
+        alignRight = true;
+      }
+    }
+    if (!alignLeft && !alignRight) {
+      // Dynamic horizontal position
+      if (this.element.clientWidth + (event.pageX - offsetLeft) > window.innerWidth) {
+        // Can't open to the right
+        alignRight = true;
+      } else {
+        const isRtl = (document.documentElement.getAttribute('dir') === 'rtl');
+        if (isRtl) {
+          alignRight = true;
+        } else {
+          alignLeft = true;
+        }
+      }
+    }
+    if (alignLeft) {
+      left = `${event.pageX - offsetLeft}px`;
+      transformOrigin += ' left';
+    } else if (alignRight) {
+      right = `${window.innerWidth - (event.pageX + offsetRight)}px`;
+      transformOrigin += ' right';
+    }
+
+    this.element.style.setProperty('top', top);
+    this.element.style.setProperty('left', left);
+    this.element.style.setProperty('right', right);
+    this.element.style.setProperty('bottom', bottom);
+    this.element.style.setProperty('margin', margin);
+    this.element.style.setProperty('transform-origin', transformOrigin);
+    this.element.style.setProperty('position', 'fixed');
+  }
+
+  /**
+   * @param {MouseEvent=} event
+   * @param {boolean=} alignTarget
    * @return {boolean} handled
    */
-  show(event) {
+  show(event, alignTarget) {
     let changed = false;
     if (event) {
-      let top = 'auto';
-      let left = 'auto';
-      let right = 'auto';
-      let bottom = 'auto';
-      if (this.element.hasAttribute('mdw-position')) {
-        const position = this.element.getAttribute('mdw-position');
-        if (position.indexOf('bottom') !== -1) {
-          bottom = `${window.innerHeight - event.pageY}px`;
-        } else {
-          top = `${event.pageY}px`;
-        }
-        if (position.indexOf('right') !== -1) {
-          right = `${event.pageX}px`;
-        } else if (position.indexOf('end') !== -1
-          && document.documentElement.getAttribute('dir') !== 'rtl') {
-          right = `${window.innerWidth - event.pageX}px`;
-        } else {
-          left = `${event.pageX}px`;
-        }
-      } else {
-        top = `${event.pageY}px`;
-        left = `${event.pageX}px`;
-      }
-      this.element.style.top = top;
-      this.element.style.left = left;
-      this.element.style.right = right;
-      this.element.style.bottom = bottom;
-      this.element.style.position = 'fixed';
+      this.updateMenuPosition(event, alignTarget);
     } else {
-      this.element.style.top = '';
-      this.element.style.left = '';
-      this.element.style.right = '';
-      this.element.style.bottom = '';
-      this.element.style.position = '';
+      this.element.style.removeProperty('top');
+      this.element.style.removeProperty('left');
+      this.element.style.removeProperty('right');
+      this.element.style.removeProperty('bottom');
+      this.element.style.removeProperty('margin');
+      this.element.style.removeProperty('transform-origin');
+      this.element.style.removeProperty('position');
     }
     if (this.element.hasAttribute('mdw-hide')) {
       this.element.removeAttribute('mdw-hide');

@@ -68,6 +68,7 @@ $checkbox-icon-offset-x: dp(6.04);
   top: 0;
   left: 0;
 
+  &[mdw-position~="right"],
   &[mdw-position~="end"] {
     left: auto;
     right: 0;
@@ -77,6 +78,7 @@ $checkbox-icon-offset-x: dp(6.04);
     top: auto;
     bottom: 0;
     transform-origin: bottom left;
+    &[mdw-position~="right"],
     &[mdw-position~="end"] {
         transform-origin: bottom right;
     }
@@ -86,6 +88,7 @@ $checkbox-icon-offset-x: dp(6.04);
     left: auto;
     right: 0;
     transform-origin: top right;
+    &[mdw-position~="left"],
     &[mdw-position~="end"] {
       left: 0;
       right: auto;
@@ -93,6 +96,7 @@ $checkbox-icon-offset-x: dp(6.04);
     }
     &[mdw-position~="bottom"] {
       transform-origin: bottom right;
+      &[mdw-position~="left"],
       &[mdw-position~="end"] {
         left: 0;
         right: auto;

@@ -17,7 +17,7 @@ include ../mixins.pug
             .mdw-toolbar__end
               .mdw-tooltip__wrapper.mdw-menu__wrapper
                 a.mdw-tooltip__target.mdw-button(mdw-icon mdw-more-button href="#moremenu").material-icons more_vert
-                .mdw-menu#moremenu(mdw-position="top right" mdw-width-units="3" mdw-theme-fill="light")
+                .mdw-menu#moremenu(mdw-position="top end" mdw-width-units="3" mdw-theme-fill="light")
                   a.mdw-menu__close(href="#")
                   .mdw-menu__text Refresh
                   .mdw-menu__text Settings
@@ -92,7 +92,7 @@ include ../mixins.pug
                 .mdw-menu__info ⌘U
           .mdw-menu__wrapper.js
             .mdw-button(mdw-theme-fill="primary dark" mdw-raised) JS
-            .mdw-menu#iconmenu(mdw-width-units=4 mdw-position="bottom end")
+            .mdw-menu#iconmenu(mdw-width-units=4 mdw-position="end")
               .mdw-menu__item
                 .mdw-menu__icon.material-icons format_bold
                 .mdw-menu__text Bold

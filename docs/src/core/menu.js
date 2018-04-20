@@ -22,9 +22,9 @@ function initializeMdwComponents() {
 function setupJSButton() {
   const button = document.querySelector('.js .mdw-button');
   const menu = document.querySelector('.js .mdw-menu');
-  button.addEventListener('click', () => {
+  button.addEventListener('click', (event) => {
     const mdwMenu = componentMap.get(menu);
-    mdwMenu.show();
+    mdwMenu.show(event, true);
   });
 }
 
