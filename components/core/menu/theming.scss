@@ -34,6 +34,10 @@ $menuColors: (
         }
         &[disabled] {
           color: menuThemeValue("disabled-color", $type, $theme);
+          & > .mdw-menu__icon,
+          & > .mdw-menu__check {
+            color: inherit;
+          }
         }
         & > .mdw-ripple > .mdw-ripple__inner,
         &:after {
