@@ -44,8 +44,8 @@ class Menu {
     const alignStart = mdwPosition.indexOf('start') !== -1;
     const alignEnd = mdwPosition.indexOf('end') !== -1;
 
-    const offsetTop = (alignTarget ? event.layerY : 0);
-    const offsetBottom = (alignTarget ? event.target.clientHeight - event.layerY : 0);
+    const offsetTop = (alignTarget ? event.offsetY : 0);
+    const offsetBottom = (alignTarget ? event.target.clientHeight - event.offsetY : 0);
     if (!alignTop && !alignBottom) {
       // Dynamic vertical position
       if (this.element.clientHeight + (event.pageY - offsetTop) > window.innerHeight) {
@@ -62,8 +62,8 @@ class Menu {
       transformOrigin = 'bottom';
     }
 
-    const offsetLeft = (alignTarget ? event.layerX : 0);
-    const offsetRight = (alignTarget ? event.target.clientWidth - event.layerX : 0);
+    const offsetLeft = (alignTarget ? event.offsetX : 0);
+    const offsetRight = (alignTarget ? event.target.clientWidth - event.offsetX : 0);
     if (alignStart || alignEnd) {
       const isRtl = (document.documentElement.getAttribute('dir') === 'rtl');
       if (alignStart) {
