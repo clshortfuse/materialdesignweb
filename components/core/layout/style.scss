@@ -4,8 +4,10 @@
 $layout__margin: dp(8);
 $layout__margin: dp(16);
 $layout__gutter: dp(24);
+
 .mdw-layout {
   display: flex;
+  flex-wrap: wrap;
   margin-left: -$layout__margin;
   padding-left: $layout__gutter;
   padding-right: $layout__gutter;
@@ -13,7 +15,7 @@ $layout__gutter: dp(24);
     padding-left: dp(16);
     padding-right: dp(16);
   }
-  flex-wrap: wrap;
+  
 
   @each $value in (0, 8, 16, 24, 40) {
     &[mdw-gutter="#{$value}"] {
@@ -27,7 +29,10 @@ $layout__gutter: dp(24);
         margin-top: dp($value);
       }
     }
-    @include allHandsets {
+  }
+
+  @include allHandsets {
+    @each $value in (0, 8, 16, 24, 40) {
       &[mdw-gutter-mobile][mdw-gutter-mobile="#{$value}"] {
         padding-left: dp($value);
         padding-right: dp($value);
@@ -40,8 +45,10 @@ $layout__gutter: dp(24);
         }
       }
     }
+  }
     
-    @include allTablets {
+  @include allTablets {
+    @each $value in (0, 8, 16, 24, 40) {
       &[mdw-gutter-tablet][mdw-gutter-tablet="#{$value}"] {
         padding-left: dp($value);
         padding-right: dp($value);
@@ -54,7 +61,6 @@ $layout__gutter: dp(24);
         }
       }
     }
-    
   }
 }
 
@@ -67,24 +73,27 @@ $layout__gutter: dp(24);
   border-left-style: solid;
   border-left-color: transparent;
   flex-basis: calc(100% / 12);
-  @media screen and (max-width: dp(840) - 1) {
-    flex-basis: calc(100% / 8);
-  }
-  @media screen and (max-width: dp(600) - 1) {
-    flex-basis: calc(100% / 4);
-  }
   @for $i from 2 to 12 {
     &[mdw-span="#{$i}"] {
       flex-basis: calc((#{$i} * 100% / 12));
-      @media screen and (max-width: dp(840) - 1) {
+    }
+  }
+  @media screen and (max-width: dp(840) - 1) {
+    flex-basis: calc(100% / 8);
+    @for $i from 2 to 12 {
+      &[mdw-span="#{$i}"] {
         flex-basis: calc((#{$i} * 100% / 8));
       }
-      @media screen and (max-width: dp(600) - 1) {
+    }
+  }
+  @media screen and (max-width: dp(600) - 1) {
+    flex-basis: calc(100% / 4);
+    @for $i from 2 to 12 {
+      &[mdw-span="#{$i}"] {
         flex-basis: calc((#{$i} * 100% / 4));
       }
     }
   }
-
 
   transition-property: flex-basis;
   transition-timing-function: $motion-easing-standard;
