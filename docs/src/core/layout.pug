@@ -2,17 +2,19 @@ include ../mixins.pug
 
 +header()
   +navdrawer("layout")
-    p.mdw-type(mdw-style="body" style="text-align:center") Click on an element to change minimum span
+    p.mdw-type(mdw-style="body" style="text-align:center") Click on an element to change colspan
+    div.display-flex(style="padding:16px")
+      label.mdw-selection(mdw-theme-color="accent")
+        input.mdw-selection__input(type="checkbox")
+        .mdw-selection__icon
+        .mdw-selection__label Grid
     .mdw-layout.docs-layout(
-      mdw-margin="24"
-      mdw-margin-tablet="16"
-      mdw-margin-mobile="8"
-      mdw-gutter="24"
-      mdw-gutter-tablet="16"
-      mdw-gutter-mobile="8")
-      .mdw-layout__item
+    mdw-margin="24" mdw-gutter="24"
+    mdw-margin-tablet="16" mdw-gutter-tablet="16"
+    mdw-margin-mobile="8" mdw-gutter-mobile="8")
+      .mdw-layout__item(mdw-rowspan="2")
         .mdw-card 1
-      .mdw-layout__item(mdw-span="50%")
+      .mdw-layout__item(mdw-colspan="50%")
         .mdw-card 50%
       .mdw-layout__item
         .mdw-card 1
@@ -20,13 +22,13 @@ include ../mixins.pug
         .mdw-card 1
       .mdw-layout__item
         .mdw-card 1
-      .mdw-layout__item(mdw-span="2")
+      .mdw-layout__item(mdw-colspan="2")
         .mdw-card 2
       .mdw-layout__item
         .mdw-card 1
-      .mdw-layout__item
+      .mdw-layout__item(mdw-rowspan="3")
         .mdw-card 1
-      .mdw-layout__item(mdw-span="5")
+      .mdw-layout__item(mdw-colspan="5")
         .mdw-card 5
       .mdw-layout__item
         .mdw-card 1
@@ -34,13 +36,13 @@ include ../mixins.pug
         .mdw-card 1
       .mdw-layout__item
         .mdw-card 1
-      .mdw-layout__item(mdw-span="75%")
+      .mdw-layout__item(mdw-colspan="75%")
         .mdw-card 75%
       .mdw-layout__item
         .mdw-card 1
-      .mdw-layout__item
+      .mdw-layout__item(mdw-rowspan="5")
         .mdw-card 1
-      .mdw-layout__item(mdw-span="3")
+      .mdw-layout__item(mdw-colspan="3")
         .mdw-card 3
       .mdw-layout__item
         .mdw-card 1
@@ -48,7 +50,7 @@ include ../mixins.pug
         .mdw-card 1
       .mdw-layout__item
         .mdw-card 1
-      .mdw-layout__item(mdw-span="75%")
+      .mdw-layout__item(mdw-colspan="75%")
         .mdw-card 75%
       .mdw-layout__item
         .mdw-card 1
@@ -60,7 +62,7 @@ include ../mixins.pug
         .mdw-card 1
       .mdw-layout__item
         .mdw-card 1
-      .mdw-layout__item(mdw-span="8")
+      .mdw-layout__item(mdw-colspan="8")
         .mdw-card 8
       .mdw-layout__item
         .mdw-card 1
