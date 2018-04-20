@@ -10,6 +10,8 @@ $menuColors: (
   selected-color:   ((#999,              0.40), (#CCC,              0.25)),
   ripple-color:     ( #000                    ,  #fff                    ),
   ripple-opacity:   (                      0.12 ,                       0.30,   0.20),
+  divider-color:    ((#000,              0.12), (#fff,              0.12)),
+  disabled-color:   ((#000,              0.26), (#fff,              0.30)),
 );
 
 @function menuThemeValue($key, $type, $theme) {
@@ -27,8 +29,11 @@ $menuColors: (
       & > .mdw-menu__text,
       .mdw-menu__item {
         color: menuThemeValue("text-color", $type, $theme);
-        &:hover {
+        &:not([disabled]):hover {
           background-color: menuThemeValue("hover-color", $type, $theme);
+        }
+        &[disabled] {
+          color: menuThemeValue("disabled-color", $type, $theme);
         }
         & > .mdw-ripple > .mdw-ripple__inner,
         &:after {
@@ -51,5 +56,8 @@ $menuColors: (
   .mdw-menu__icon,
   .mdw-menu__check {
     color: menuThemeValue("secondary-color", $type, $theme);
+  }
+  .mdw-menu__divider {
+    background-color: menuThemeValue("divider-color", $type, $theme);
   }
 }

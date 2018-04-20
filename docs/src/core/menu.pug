@@ -55,7 +55,7 @@ include ../mixins.pug
             a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#infomenu") Info
             .mdw-menu#infomenu(mdw-width-units=4 mdw-position="bottom")
               a.mdw-menu__close(href="#")
-              .mdw-menu__item
+              .mdw-menu__item(disabled)
                 .mdw-menu__check
                 .mdw-menu__text Bold
                 .mdw-menu__info ⌘B
@@ -67,6 +67,7 @@ include ../mixins.pug
                 .mdw-menu__check
                 .mdw-menu__text Underline
                 .mdw-menu__info ⌘U
+              .mdw-menu__divider
               .mdw-menu__item(mdw-checked)
                 .mdw-menu__check
                 .mdw-menu__text Flights

@@ -169,6 +169,11 @@ $checkbox-icon-offset-x: dp(6.04);
   align-items: flex-end;
 }
 
+.mdw-menu__divider {
+  height: dp(1);
+  margin-top: dp(-1);
+}
+
 .mdw-menu > .mdw-menu__text,
 .mdw-menu__item, {
   position: relative;
@@ -184,6 +189,13 @@ $checkbox-icon-offset-x: dp(6.04);
   flex-direction: row;
   user-select: none;
 
+  &[disabled] {
+    cursor: not-allowed;
+    & > .mdw-ripple,
+    &::after {
+      display: none;
+    }
+  }
   & > .mdw-ripple {
     @include mdw-ripple__container;
   }
