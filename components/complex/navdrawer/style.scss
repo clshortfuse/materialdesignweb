@@ -467,7 +467,7 @@
   &[mdw-mini],
   &[mdw-clipped],
   &[mdw-floating] {
-    @include allHandsetsAndTablets {
+    @media screen and (max-width: dp(1280) - 1){
       @include mdw-navdrawer__temporary;
       &:target,
       &[mdw-show]:not([mdw-hide]) {
