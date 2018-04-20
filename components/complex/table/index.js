@@ -253,15 +253,26 @@ class Table {
   }
 
   /**
-   * Overridable event fired when value is changed
+   * Overridable event fired when value change is requested
    * Return truthy value to cancel updating object
    * @param {any} object
    * @param {string} key
    * @param {any} value
    * @return {boolean} cancel
    */
-  onValueChanged(object, key, value) {
+  onValueChangedRequested(object, key, value) {
     return false;
+  }
+
+  /**
+   * Overridable event fired when value is changed
+   * @param {any} object
+   * @param {string} key
+   * @param {any} value
+   * @return {void}
+   */
+  onValueChanged(object, key, value) {
+    return;
   }
 
   /**
@@ -283,11 +294,12 @@ class Table {
         const currentRow = this.getTableRow(target);
         if (this.hasDatasource()) {
           const object = this.getDataForTableRow(currentRow);
-          if (this.onValueChanged(object, currentCell.dataset.key, target.checked)) {
+          if (this.onValueChangedRequested(object, currentCell.dataset.key, target.checked)) {
             event.preventDefault();
             return;
           }
           Reflect.set(object, currentCell.dataset.key, target.checked);
+          this.onValueChanged(object, currentCell.dataset.key, target.checked);
         }
         if (currentCell.hasAttribute('mdw-selector')) {
           if (target.checked) {
