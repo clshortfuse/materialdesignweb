@@ -216,3 +216,12 @@ body {
 .mdw-navdrawer#docs-navdrawer > .mdw-navdrawer__drawer {
   min-width: 200px;
 }
+
+.docs-layout {
+  .mdw-card {
+    padding: 16px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

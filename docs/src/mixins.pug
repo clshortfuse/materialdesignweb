@@ -44,11 +44,11 @@ mixin header()
     
 
 
-- var corecomponents = ["bottomnav", "button", "elevation", "list", "menu", "progress", "selection", "tab", "textfield", "toolbar", "tooltip", "type"]
+- var corecomponents = ["bottomnav", "button", "elevation", "layout", "list", "menu", "progress", "selection", "tab", "textfield", "toolbar", "tooltip", "type"]
 - var complexcomponents = ["dialog", "fab", "navdrawer", "search", "table"]
 
 mixin navdrawer(selected)
-  .mdw-navdrawer#docs-navdrawer(mdw-floating="card")
+  .mdw-navdrawer#docs-navdrawer
     a.mdw-navdrawer__scrim(href="#")
     .mdw-navdrawer__toolbar
       .mdw-toolbar(mdw-theme-fill="accent-500 dark")
@@ -77,6 +77,7 @@ mixin navdrawer(selected)
         each item in complexcomponents
           a.mdw-list__item(mdw-selected=(selected==item) href=`${item}.html` mdw-theme-color="accent")
             .mdw-list__text=item
-    .mdw-navdrawer__content
+    .mdw-navdrawer__content(style="padding-bottom:24px")
       block
+      
 

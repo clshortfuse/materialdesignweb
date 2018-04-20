@@ -1,0 +1,69 @@
+include ../mixins.pug
+
++header()
+  +navdrawer("layout")
+    p.mdw-type(mdw-style="body" style="text-align:center") Click on an element to change minimum span
+    .mdw-layout.docs-layout(
+      mdw-margin="24"
+      mdw-margin-tablet="16"
+      mdw-margin-mobile="8"
+      mdw-gutter="24"
+      mdw-gutter-tablet="16"
+      mdw-gutter-mobile="8")
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item(mdw-span="50%")
+        .mdw-card 50%
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item(mdw-span="2")
+        .mdw-card 2
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item(mdw-span="5")
+        .mdw-card 5
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item(mdw-span="75%")
+        .mdw-card 75%
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item(mdw-span="3")
+        .mdw-card 3
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item(mdw-span="75%")
+        .mdw-card 75%
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item(mdw-span="8")
+        .mdw-card 8
+      .mdw-layout__item
+        .mdw-card 1
+      .mdw-layout__item
+        .mdw-card 1
+  script(src='layout.min.js')

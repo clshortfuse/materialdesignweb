@@ -1,0 +1,126 @@
+// https://material.io/guidelines/layout/responsive-ui.html
+
+
+$layout__margin: dp(8);
+$layout__margin: dp(16);
+$layout__gutter: dp(24);
+.mdw-layout {
+  display: flex;
+  margin-left: -$layout__margin;
+  padding-left: $layout__gutter;
+  padding-right: $layout__gutter;
+  @include gutter16dp() {
+    padding-left: dp(16);
+    padding-right: dp(16);
+  }
+  flex-wrap: wrap;
+
+  @each $value in (0, 8, 16, 24, 40) {
+    &[mdw-gutter="#{$value}"] {
+      padding-left: dp($value);
+      padding-right: dp($value);
+    }
+    &[mdw-margin="#{$value}"] {
+      margin-left: dp(-$value);
+      > .mdw-layout__item {
+        border-left-width: dp($value);
+        margin-top: dp($value);
+      }
+    }
+    @include allHandsets {
+      &[mdw-gutter-mobile][mdw-gutter-mobile="#{$value}"] {
+        padding-left: dp($value);
+        padding-right: dp($value);
+      }
+      &[mdw-margin-mobile][mdw-margin-mobile="#{$value}"] {
+        margin-left: dp(-$value);
+        > .mdw-layout__item {
+          border-left-width: dp($value);
+          margin-top: dp($value);
+        }
+      }
+    }
+    
+    @include allTablets {
+      &[mdw-gutter-tablet][mdw-gutter-tablet="#{$value}"] {
+        padding-left: dp($value);
+        padding-right: dp($value);
+      }
+      &[mdw-margin-tablet][mdw-margin-tablet="#{$value}"] {
+        margin-left: dp(-$value);
+        > .mdw-layout__item {
+          border-left-width: dp($value);
+          margin-top: dp($value);
+        }
+      }
+    }
+    
+  }
+}
+
+.mdw-layout__item {
+  flex-grow: 1;
+  flex-shrink: 1;
+  box-sizing: border-box;
+  margin-top: $layout__margin;
+  border-left-width: $layout__margin;
+  border-left-style: solid;
+  border-left-color: transparent;
+  flex-basis: calc(100% / 12);
+  @media screen and (max-width: dp(840) - 1) {
+    flex-basis: calc(100% / 8);
+  }
+  @media screen and (max-width: dp(600) - 1) {
+    flex-basis: calc(100% / 4);
+  }
+  @for $i from 2 to 12 {
+    &[mdw-span="#{$i}"] {
+      flex-basis: calc((#{$i} * 100% / 12));
+      @media screen and (max-width: dp(840) - 1) {
+        flex-basis: calc((#{$i} * 100% / 8));
+      }
+      @media screen and (max-width: dp(600) - 1) {
+        flex-basis: calc((#{$i} * 100% / 4));
+      }
+    }
+  }
+
+
+  transition-property: flex-basis;
+  transition-timing-function: $motion-easing-standard;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
+
+
+  
+  &[mdw-span="100%"] {
+    // Span all columns
+    flex-basis: 100%;
+  }
+
+  &[mdw-span="25%"] {
+    // Span all columns
+    flex-basis: 25%;
+  }
+
+  &[mdw-span="50%"] {
+    // Span all columns
+    flex-basis: 50%;
+  }
+
+  &[mdw-span="75%"] {
+    // Span all columns
+    flex-basis: 75%;
+  }
+
+  // Stretch children
+  display: flex;
+  > :first-child {
+    flex: 1;
+  }
+}
