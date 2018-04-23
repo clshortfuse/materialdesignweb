@@ -1,7 +1,7 @@
 mixin androidstatusbar(fillColor)
   .androidstatusbar(mdw-theme-fill=(fillColor ? fillColor : false))
     div 12:30
-    i.material-icons(style="letter-spacing:2px") &#xE1BA;&#xE1C8;&#xE1A4;
+    i.material-icons(style="letter-spacing:2px;padding:0 2px") &#xE1BA;&#xE1C8;&#xE1A4;
 
 mixin toolbar(fillColor, start, end)
   .mdw-toolbar(mdw-theme-fill=(fillColor ? fillColor : false))
@@ -59,6 +59,9 @@ mixin navdrawer(selected)
               .mdw-tooltip Menu
           .mdw-toolbar__title=selected
           #docs-menu-buttons.mdw-toolbar__end
+            .mdw-tooltip__wrapper
+              .mdw-tooltip__target.mdw-button(mdw-inactive).docs-rtl RTL
+              .mdw-tooltip Right-to-Left
             .mdw-tooltip__wrapper
               .mdw-tooltip__target.mdw-button.material-icons(mdw-icon mdw-inactive) brightness_3
               .mdw-tooltip Dark Mode

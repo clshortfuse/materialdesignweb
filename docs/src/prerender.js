@@ -1,5 +1,8 @@
 import * as cookies from './cookies';
-import { setDarkMode, setFontSize } from './menuoptions';
+import { setRTLMode, setDarkMode, setFontSize } from './menuoptions';
+
+const useRTLMode = cookies.getItem('rtlmode') === 'true';
+setRTLMode(useRTLMode);
 
 const useDarkMode = cookies.getItem('darkmode') === 'true';
 setDarkMode(useDarkMode);

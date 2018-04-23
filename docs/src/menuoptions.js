@@ -9,6 +9,30 @@ const lightAttribute = 'white light';
  * @param {Element=} button
  * @return {void}
  */
+function setRTLMode(value, button) {
+  if (value) {
+    document.documentElement.setAttribute('dir', 'rtl');
+    if (button) {
+      button.removeAttribute('mdw-inactive');
+    }
+    // element.setAttribute('mdw-active', '');
+    // Poor visibility even though spec says 70% opacity
+    cookies.setItem('rtlmode', 'true', 365);
+  } else {
+    document.documentElement.removeAttribute('dir');
+    if (button) {
+      button.setAttribute('mdw-inactive', '');
+    }
+    // element.removeAttribute('mdw-active');
+    cookies.removeItem('rtlmode');
+  }
+}
+
+/**
+ * @param {boolean} value
+ * @param {Element=} button
+ * @return {void}
+ */
 function setDarkMode(value, button) {
   if (value) {
     document.documentElement.setAttribute('mdw-theme-fill', darkAttribute);
@@ -55,6 +79,23 @@ function setFontSize(value, button) {
  * @param {Element} element
  * @return {void}
  */
+function setupRTLMode(element) {
+  if (cookies.getItem('rtlmode') === 'true') {
+    setRTLMode(true, element);
+  }
+  element.addEventListener('click', () => {
+    if (document.documentElement.getAttribute('dir') === 'rtl') {
+      setRTLMode(false, element);
+    } else {
+      setRTLMode(true, element);
+    }
+  });
+}
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
 function setupDarkMode(element) {
   if (cookies.getItem('darkmode') === 'true') {
     setDarkMode(true, element);
@@ -86,13 +127,19 @@ function setupLargeFontMode(element) {
 
 /** @return {void} */
 function setupMenuOptions() {
-  const [buttonDarkMode, largeFontMode] = document.querySelectorAll('#docs-menu-buttons .mdw-button');
+  const [
+    buttonRTLMode,
+    buttonDarkMode,
+    largeFontMode,
+  ] = document.querySelectorAll('#docs-menu-buttons .mdw-button');
+  setupRTLMode(buttonRTLMode);
   setupDarkMode(buttonDarkMode);
   setupLargeFontMode(largeFontMode);
 }
 
 export {
   setupMenuOptions,
+  setRTLMode,
   setDarkMode,
   setFontSize,
 };
