@@ -4,14 +4,15 @@ include ../mixins.pug
   +navdrawer("layout")
     p.mdw-type(mdw-style="body" style="text-align:center") Click on an element to change colspan
     div.display-flex(style="padding:16px")
-      label.mdw-selection(mdw-theme-color="accent")
+      label.mdw-selection(mdw-theme-color="accent" style="margin:0 16px")
+        input.mdw-selection__input(type="checkbox" checked)
+        .mdw-selection__icon
+        .mdw-selection__label Default Margins and Gutters
+      label.mdw-selection(mdw-theme-color="accent" style="margin:0 16px")
         input.mdw-selection__input(type="checkbox")
         .mdw-selection__icon
         .mdw-selection__label Grid
-    .mdw-layout.docs-layout(
-    mdw-margin="24" mdw-gutter="24"
-    mdw-margin-tablet="16" mdw-gutter-tablet="16"
-    mdw-margin-mobile="8" mdw-gutter-mobile="8")
+    .mdw-layout.docs-layout
       .mdw-layout__item(mdw-rowspan="2")
         .mdw-card 1
       .mdw-layout__item(mdw-colspan="50%")
