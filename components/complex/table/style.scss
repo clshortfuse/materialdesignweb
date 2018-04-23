@@ -20,6 +20,10 @@ table.mdw-table,
   line-height: dp(64);
   text-align: left;
   text-align: start;
+  html[dir=rtl] {
+    text-align: right;
+    text-align: start;
+  }
   padding: 0 dp(24);
 }
 
@@ -40,6 +44,11 @@ table.mdw-table,
 
 .mdw-table__header-text {
   padding-left: dp(24);
+  padding-right: 0;
+  html[dir=rtl] & {
+    padding-left: 0;
+    padding-right: dp(24);
+  }
 }
 
 .mdw-table tr {
@@ -75,6 +84,17 @@ table.mdw-table,
   &[data-type="checkbox"],
   &:last-of-type {
     padding-right: dp(24);
+  }
+
+  html[dir=rtl] & {
+    padding-left: dp(56);
+    &:first-of-type {
+      padding-right: dp(24);
+    }
+    &[data-type="checkbox"],
+    &:last-of-type {
+      padding-left: dp(24);
+    }
   }
 
   .mdw-selection__input {
@@ -133,12 +153,20 @@ table.mdw-table,
 .mdw-table td[data-type="text"] {
   text-align: left;
   text-align: start;
+  html[dir=rtl] & {
+    text-align: right;
+    text-align: start;
+  }
 }
 
 .mdw-table th[data-type="number"],
 .mdw-table td[data-type="number"] {
   text-align: right;
   text-align: end;
+  html[dir=rtl] & {
+    text-align: left;
+    text-align: end;
+  }
 }
 
 .mdw-table__footer {
@@ -167,6 +195,10 @@ table.mdw-table,
 .mdw-table__footer-details {
   margin-left: dp(18);
   margin-right: dp(14);
+  html[dir=rtl] & {
+    margin-left: dp(14);
+    margin-right: dp(18);
+  }
 }
 
 .mdw-table__header-controls,
@@ -179,13 +211,21 @@ table.mdw-table,
   }
 }
 
+.mdw-table__footer-controls {
+  direction: ltr;
+  html[dir=rtl] & {
+    transform: scaleX(-1);
+  }
+}
+
 .mdw-table__footer-options {
   display: flex;
   align-items: center;
+  
   select.mdw-textfield__input {
     min-width: dp(40 + 24);
     direction: rtl;
-    [dir=rtl] & {
+    html[dir=rtl] & {
       direction: ltr;
     }
   }
