@@ -75,16 +75,18 @@ function setupInteractions() {
   useFlexRadio.addEventListener('change', () => {
     if (useFlexRadio.checked) {
       layout.removeAttribute('mdw-grid');
-    } else {
-      layout.setAttribute('mdw-grid', '');
+      useStretchCheckbox.removeAttribute('disabled');
+      useCenterCheckbox.removeAttribute('disabled');
+      useDenseCheckbox.setAttribute('disabled', '');
     }
   });
 
   useGridRadio.addEventListener('change', () => {
     if (useGridRadio.checked) {
       layout.setAttribute('mdw-grid', '');
-    } else {
-      layout.removeAttribute('mdw-grid');
+      useStretchCheckbox.setAttribute('disabled', '');
+      useCenterCheckbox.setAttribute('disabled', '');
+      useDenseCheckbox.removeAttribute('disabled');
     }
   });
 
