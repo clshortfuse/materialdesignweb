@@ -2,6 +2,7 @@
 
 // https://material.io/guidelines/components/menus.html
 
+// https://material.io/guidelines/motion/choreography.html#choreography-creation
 
 $dialog__unit-width: dp(56);
 
@@ -24,6 +25,8 @@ $dialog__unit-width: dp(56);
   top: 0;
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
+  padding: dp(24) dp(40);
 
   display: flex;
   flex-direction: row;
@@ -31,7 +34,7 @@ $dialog__unit-width: dp(56);
   justify-content: center;
 
   pointer-events: none;
-  z-index: 1;
+  z-index: 24;
   transition-property: opacity;
   transition-timing-function: $motion-easing-deceleration;
   transition-duration: $motion-duration-desktop-leave;
@@ -62,6 +65,9 @@ $dialog__unit-width: dp(56);
     .mdw-dialog__close {
       visibility: visible;
     }
+    .mdw-dialog__popup {
+      transform: scale(1);
+    }
   }
 }
 
@@ -74,8 +80,9 @@ $dialog__unit-width: dp(56);
   box-shadow: elevation(24);
   transition-duration: inherit;
   transition-timing-function: inherit;
-  margin: dp(40);
   z-index: 24;
+  transform-origin: center bottom;
+  transform: scale(0);
 }
 
 .mdw-dialog__content {
