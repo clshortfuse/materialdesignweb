@@ -78,6 +78,7 @@ $dialog__unit-width: dp(56);
   min-width: dp(224);
   border-radius: dp(2);
   box-shadow: elevation(24);
+  transition-property: transform;
   transition-duration: inherit;
   transition-timing-function: inherit;
   z-index: 24;
