@@ -6,6 +6,7 @@ $selectionColors: (
   color:                 ((#000, 0.54), (#fff, 0.70)),
   ripple-color:          ( #000       ,  #fff       ),
   ripple-opacity:        (         0.12 ,          0.30  , 0.20),
+  disabled-color:        ((#000, 0.26), (#fff, 0.30)),
 );
 
 @function selectionThemeValue($key, $type, $theme) {
@@ -20,12 +21,12 @@ $selectionColors: (
 @mixin selectionContrastRules($type: 'var', $theme: null) {
   .mdw-selection__input {
     color: selectionThemeValue("ripple-color", $type, $theme);
-    &:active,
+    &:active:not(:disabled),
     &:focus {
       opacity: selectionThemeValue("ripple-opacity", $type, $theme);
     }
     &[type="checkbox"]:not(:checked) ~ .mdw-selection__icon,
-    &[type="checkbox"]:active ~ .mdw-selection__icon {
+    &[type="checkbox"]:active:not(:disabled) ~ .mdw-selection__icon {
       color: selectionThemeValue("color", $type, $theme);
     }
 
@@ -41,9 +42,15 @@ $selectionColors: (
         border-color: white;
       }
     }
+    &:disabled ~ .mdw-selection__label,
+    &:disabled ~ .mdw-selection__icon,
+    &:disabled ~ .mdw-selection__icon::before {
+      color: selectionThemeValue("disabled-color", $type, $theme);
+    }
+
   }
   .mdw-selection__label,
-  .mdw-selection[mdw-theme-color] .mdw-selection__label {
+  .mdw-selection[mdw-theme-color] .mdw-selection__input:not(:disabled) ~ .mdw-selection__label {
     color: selectionThemeValue("text-color", $type, $theme);
   }
 }

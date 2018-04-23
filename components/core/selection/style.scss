@@ -20,7 +20,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
 .mdw-selection {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: stretch;
   position: relative;
   justify-content: space-between;
   animation-duration: $motion-duration-desktop-enter;
@@ -45,10 +45,10 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   outline: none;
   padding: 0;
   margin: 0;
-  position: absolute;
-  min-width: $icon-size;
-  min-height: $icon-size;
-  top: 50%;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: $icon-size;
+  height: $icon-size;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   &:disabled {
@@ -57,7 +57,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
 
   // background-color: var(--button__ripple-color);
   border-radius: 50%;
-  transform: translateY(-50%) scale(1);
+  transform: scale(1);
   opacity: 0;
   background-color: transparent;
   transition-property: transform, color, opacity;
@@ -73,23 +73,27 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     background-color: transparent;
     border-color: transparent;
   }
-  &:active,
+  &:active:not(:disabled),
   &:focus {
     background-color: currentColor;
-    transform: translateY(-50%) scale($ripple-size/$icon-size);
+    transform: scale($ripple-size/$icon-size);
   }
 }
 .mdw-selection__icon {
   display: inline-flex;
   position: relative;
   box-sizing: border-box;
-  min-width: $icon-size;
-  min-height: $icon-size;
+  width: $icon-size;
+  height: $icon-size;
+  max-width: 0;
   appearance: none;
-  outline: none;
   padding: 0;
-  z-index: 0;
   margin: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  outline: none;
+  
+  z-index: 1;
   animation-timing-function: $motion-easing-deceleration;
   animation-duration: inherit;
   cursor: pointer;
@@ -124,25 +128,42 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   }
 }
 
-.mdw-selection__label ~ .mdw-selection__input {
-  right: 0;
+.mdw-selection__label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  order: -1;
+  padding-left: 0;
+  padding-right: dp(8);
+  z-index: 1;
+  .mdw-selection__input:disabled ~ & {
+    cursor: not-allowed;
+  }
 }
-.mdw-selection__label ~ .mdw-selection__input,
-.mdw-selection__label ~ .mdw-selection__icon,
-.mdw-selection__input ~ .mdw-selection__label {
-  margin-left: 8px;
+
+// Label comes after icon
+.mdw-selection__icon ~ .mdw-selection__label {
+  order: 1;
+  padding-left: dp(8);
+  padding-right: 0;
 }
 
 [dir=rtl] {
-  .mdw-selection__label ~ .mdw-selection__input {
-    right: auto;
-    left: 0;
+  .mdw-selection__icon {
+    order: 1;
   }
-  .mdw-selection__label ~ .mdw-selection__input,
-  .mdw-selection__label ~ .mdw-selection__icon,
-  .mdw-selection__input ~ .mdw-selection__label {
-    margin-left: 0;
-    margin-right: 8px;
+
+  .mdw-selection__label {
+    padding-left: dp(8);
+    padding-right: 0;
+  }
+  
+  // Label comes after icon
+  .mdw-selection__icon ~ .mdw-selection__label {
+    padding-left: 0;
+    padding-right: dp(8);
   }
 }
 
@@ -156,10 +177,10 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     border-radius: dp(2);
   }
   &:checked ~ .mdw-selection__icon::before,
-  &:active ~ .mdw-selection__icon::before {
+  &:active:not(:disabled) ~ .mdw-selection__icon::before {
     border-width: $checkbox-size / 2;
   }
-  &:checked:not(:active) ~ .mdw-selection__icon::before {
+  &:checked:not(:active):not(:disabled) ~ .mdw-selection__icon::before {
     background-color: currentColor;
   }
 
@@ -198,7 +219,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     border-radius: 50%;
     border-color: currentColor;
   }
-  &:active ~ .mdw-selection__icon::before {
+  &:active:not(:disabled) ~ .mdw-selection__icon::before {
     border-width: $radio-size / 2;
   }
   & ~ .mdw-selection__icon::after {

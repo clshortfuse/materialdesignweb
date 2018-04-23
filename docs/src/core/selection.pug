@@ -81,12 +81,32 @@ include ../mixins.pug
         .content
           div.display-flex(style="padding:16px")
             label.mdw-selection(mdw-theme-color="primary-700")
-              .mdw-selection__label Prefixed
               input.mdw-selection__input(type="checkbox" checked)
+              .mdw-selection__label Prefixed
               .mdw-selection__icon
           div.display-flex(style="padding:16px")
             label.mdw-selection(mdw-theme-color="accent-A700")
               input.mdw-selection__input(type="checkbox" checked)
               .mdw-selection__icon
               .mdw-selection__label Suffixed
+          div.display-flex(style="padding:16px")
+            label.mdw-selection(mdw-theme-color="accent-A700")
+              input.mdw-selection__input(type="checkbox" checked disabled)
+              .mdw-selection__icon
+              .mdw-selection__label Disabled
+          div.display-flex(style="padding:16px")
+            label.mdw-selection(mdw-theme-color="accent-A700")
+              input.mdw-selection__input(type="radio" name="test" checked)
+              .mdw-selection__icon
+              .mdw-selection__label A
+          div.display-flex(style="padding:16px")
+            label.mdw-selection(mdw-theme-color="accent-A700")
+              input.mdw-selection__input(type="radio" name="test")
+              .mdw-selection__icon
+              .mdw-selection__label B
+          div.display-flex(style="padding:16px")
+            label.mdw-selection(mdw-theme-color="accent-A700")
+              input.mdw-selection__input(type="radio" name="test" disabled)
+              .mdw-selection__icon
+              .mdw-selection__label C
   script(src='selection.min.js')
