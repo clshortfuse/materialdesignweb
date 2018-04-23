@@ -336,6 +336,7 @@
     display: block;
     background-color: rgba(black, 0.50);
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
     pointer-events: auto;
   }
 }

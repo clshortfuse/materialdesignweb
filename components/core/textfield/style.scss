@@ -436,6 +436,7 @@ select.mdw-textfield__input {
     margin-top: 0;
     pointer-events: auto;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
     &::before {
       // z-index: -1; // Safari has a negative z-index bug
       transform: none;

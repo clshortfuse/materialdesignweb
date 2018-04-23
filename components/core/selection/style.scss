@@ -50,6 +50,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   min-height: $icon-size;
   top: 50%;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   &:disabled {
     cursor: not-allowed;
   }
@@ -92,6 +93,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   animation-timing-function: $motion-easing-deceleration;
   animation-duration: inherit;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   .mdw-selection__input:disabled ~ & {
     cursor: not-allowed;
   }

@@ -112,6 +112,7 @@ table.mdw-table,
 
 .mdw-table th[mdw-sortable] {
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   user-select: none;
   &:hover,
   &[mdw-sorted] {
