@@ -7,12 +7,24 @@ $layout__gutter: dp(24);
 
 .mdw-layout {
   display: flex;
-  grid-auto-flow: row dense;
+  grid-auto-flow: row;
   grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: (100vw / 12);
+  grid-auto-rows: auto;
   &[mdw-grid] {
     // IE11 is unsupported due to lack of automatic placement
     display: grid;
+  }
+  &[mdw-dense] {
+    grid-auto-flow: row dense;
+  }
+  &[mdw-stretch] {
+    > .mdw-layout__item {
+      flex-grow: 1;
+    }
+  }
+
+  &[mdw-center] {
+    justify-content: center;
   }
   flex-wrap: wrap;
   margin-left: -$layout__margin;
@@ -42,11 +54,9 @@ $layout__gutter: dp(24);
 
   @media screen and (max-width: dp(840) - 1) {
     grid-template-columns: repeat(8, 1fr);
-    grid-auto-rows: (100vw / 8);
   }
   @media screen and (max-width: dp(600) - 1) {
     grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: (100vw / 4);
   }
 
   @include allHandsets {
@@ -85,7 +95,7 @@ $layout__gutter: dp(24);
 }
 
 .mdw-layout__item {
-  flex-grow: 1;
+  flex-grow: 0;
   flex-shrink: 1;
   box-sizing: border-box;
   margin-top: $layout__margin;

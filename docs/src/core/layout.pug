@@ -3,15 +3,33 @@ include ../mixins.pug
 +header()
   +navdrawer("layout")
     p.mdw-type(mdw-style="body" style="text-align:center") Click on an element to change colspan
-    div.display-flex(style="padding:16px")
-      label.mdw-selection(mdw-theme-color="accent" style="margin:0 16px")
+    div.display-flex(style="padding:0 16px")
+      label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
         input.mdw-selection__input(type="checkbox" checked)
         .mdw-selection__icon
         .mdw-selection__label Default Margins and Gutters
-      label.mdw-selection(mdw-theme-color="accent" style="margin:0 16px")
+    div.display-flex(style="padding:0 16px")
+      label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+        input.mdw-selection__input(type="radio" name="style" checked)
+        .mdw-selection__icon
+        .mdw-selection__label Flex
+      label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
         input.mdw-selection__input(type="checkbox")
         .mdw-selection__icon
+        .mdw-selection__label Stretch
+      label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+        input.mdw-selection__input(type="checkbox")
+        .mdw-selection__icon
+        .mdw-selection__label Center
+    div.display-flex(style="padding:0 16px")
+      label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+        input.mdw-selection__input(type="radio" name="style")
+        .mdw-selection__icon
         .mdw-selection__label Grid
+      label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+        input.mdw-selection__input(type="checkbox")
+        .mdw-selection__icon
+        .mdw-selection__label Dense
     .mdw-layout.docs-layout
       .mdw-layout__item(mdw-rowspan="2")
         .mdw-card 1

@@ -29,7 +29,14 @@ function setupInteractions() {
     });
   }
   const layout = document.querySelector('.mdw-layout.docs-layout');
-  const [useDefaultsCheckbox, useGridCheckbox ] = document.querySelectorAll('.mdw-navdrawer__content input');
+  const [
+    useDefaultsCheckbox,
+    useFlexRadio,
+    useStretchCheckbox,
+    useCenterCheckbox,
+    useGridRadio,
+    useDenseCheckbox,
+  ] = document.querySelectorAll('.mdw-navdrawer__content input');
 
   useDefaultsCheckbox.addEventListener('change', () => {
     if (useDefaultsCheckbox.checked) {
@@ -49,13 +56,47 @@ function setupInteractions() {
     }
   });
 
-  useGridCheckbox.addEventListener('change', () => {
-    if (useGridCheckbox.checked) {
+  useStretchCheckbox.addEventListener('change', () => {
+    if (useStretchCheckbox.checked) {
+      layout.setAttribute('mdw-stretch', '');
+    } else {
+      layout.removeAttribute('mdw-stretch');
+    }
+  });
+
+  useCenterCheckbox.addEventListener('change', () => {
+    if (useCenterCheckbox.checked) {
+      layout.setAttribute('mdw-center', '');
+    } else {
+      layout.removeAttribute('mdw-center');
+    }
+  });
+
+  useFlexRadio.addEventListener('change', () => {
+    if (useFlexRadio.checked) {
+      layout.removeAttribute('mdw-grid');
+    } else {
+      layout.setAttribute('mdw-grid', '');
+    }
+  });
+
+  useGridRadio.addEventListener('change', () => {
+    if (useGridRadio.checked) {
       layout.setAttribute('mdw-grid', '');
     } else {
       layout.removeAttribute('mdw-grid');
     }
   });
+
+  useDenseCheckbox.addEventListener('change', () => {
+    if (useDenseCheckbox.checked) {
+      layout.setAttribute('mdw-dense', '');
+    } else {
+      layout.removeAttribute('mdw-dense');
+    }
+  });
+
+  
 }
 
 setupInteractions();
