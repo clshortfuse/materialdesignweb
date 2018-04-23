@@ -65,12 +65,24 @@
         </div>
       </div>
       <div class="mdw-navdrawer__content" style="padding-bottom:24px">
-        <p class="mdw-type" mdw-style="body" style="text-align:center">Click on an element to change minimum span</p>
-        <div class="mdw-layout docs-layout" mdw-margin="24" mdw-margin-tablet="16" mdw-margin-mobile="8" mdw-gutter="24" mdw-gutter-tablet="16" mdw-gutter-mobile="8">
-          <div class="mdw-layout__item">
+        <p class="mdw-type" mdw-style="body" style="text-align:center">Click on an element to change colspan</p>
+        <div class="display-flex" style="padding:16px">
+          <label class="mdw-selection" mdw-theme-color="accent" style="margin:0 16px">
+            <input class="mdw-selection__input" type="checkbox" checked>
+            <div class="mdw-selection__icon"></div>
+            <div class="mdw-selection__label">Default Margins and Gutters</div>
+          </label>
+          <label class="mdw-selection" mdw-theme-color="accent" style="margin:0 16px">
+            <input class="mdw-selection__input" type="checkbox">
+            <div class="mdw-selection__icon"></div>
+            <div class="mdw-selection__label">Grid</div>
+          </label>
+        </div>
+        <div class="mdw-layout docs-layout">
+          <div class="mdw-layout__item" mdw-rowspan="2">
             <div class="mdw-card">1</div>
           </div>
-          <div class="mdw-layout__item" mdw-span="50%">
+          <div class="mdw-layout__item" mdw-colspan="50%">
             <div class="mdw-card">50%</div>
           </div>
           <div class="mdw-layout__item">
@@ -82,16 +94,16 @@
           <div class="mdw-layout__item">
             <div class="mdw-card">1</div>
           </div>
-          <div class="mdw-layout__item" mdw-span="2">
+          <div class="mdw-layout__item" mdw-colspan="2">
             <div class="mdw-card">2</div>
           </div>
           <div class="mdw-layout__item">
             <div class="mdw-card">1</div>
           </div>
-          <div class="mdw-layout__item">
+          <div class="mdw-layout__item" mdw-rowspan="3">
             <div class="mdw-card">1</div>
           </div>
-          <div class="mdw-layout__item" mdw-span="5">
+          <div class="mdw-layout__item" mdw-colspan="5">
             <div class="mdw-card">5</div>
           </div>
           <div class="mdw-layout__item">
@@ -103,16 +115,16 @@
           <div class="mdw-layout__item">
             <div class="mdw-card">1</div>
           </div>
-          <div class="mdw-layout__item" mdw-span="75%">
+          <div class="mdw-layout__item" mdw-colspan="75%">
             <div class="mdw-card">75%</div>
           </div>
           <div class="mdw-layout__item">
             <div class="mdw-card">1</div>
           </div>
-          <div class="mdw-layout__item">
+          <div class="mdw-layout__item" mdw-rowspan="5">
             <div class="mdw-card">1</div>
           </div>
-          <div class="mdw-layout__item" mdw-span="3">
+          <div class="mdw-layout__item" mdw-colspan="3">
             <div class="mdw-card">3</div>
           </div>
           <div class="mdw-layout__item">
@@ -124,7 +136,7 @@
           <div class="mdw-layout__item">
             <div class="mdw-card">1</div>
           </div>
-          <div class="mdw-layout__item" mdw-span="75%">
+          <div class="mdw-layout__item" mdw-colspan="75%">
             <div class="mdw-card">75%</div>
           </div>
           <div class="mdw-layout__item">
@@ -142,7 +154,7 @@
           <div class="mdw-layout__item">
             <div class="mdw-card">1</div>
           </div>
-          <div class="mdw-layout__item" mdw-span="8">
+          <div class="mdw-layout__item" mdw-colspan="8">
             <div class="mdw-card">8</div>
           </div>
           <div class="mdw-layout__item">
