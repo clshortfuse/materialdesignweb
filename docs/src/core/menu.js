@@ -24,7 +24,7 @@ function setupJSButton() {
   const menu = document.querySelector('.js .mdw-menu');
   button.addEventListener('click', (event) => {
     const mdwMenu = componentMap.get(menu);
-    mdwMenu.show(event, true);
+    mdwMenu.show(event);
   });
 }
 

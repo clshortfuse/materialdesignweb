@@ -26,7 +26,7 @@ class Menu {
 
   /**
    * @param {MouseEvent=} event
-   * @param {boolean=} alignTarget
+   * @param {boolean=} [alignTarget=true]
    * @return {void}
    */
   updateMenuPosition(event, alignTarget) {
@@ -35,7 +35,8 @@ class Menu {
     let right = 'auto';
     let bottom = 'auto';
     let transformOrigin = '';
-    const margin = alignTarget ? '0' : '';
+    const useAlignTarget = (alignTarget !== false);
+    const margin = useAlignTarget ? '0' : '';
     const mdwPosition = this.element.getAttribute('mdw-position') || '';
     let alignTop = mdwPosition.indexOf('top') !== -1;
     let alignBottom = mdwPosition.indexOf('bottom') !== -1;
@@ -44,8 +45,8 @@ class Menu {
     const alignStart = mdwPosition.indexOf('start') !== -1;
     const alignEnd = mdwPosition.indexOf('end') !== -1;
 
-    const offsetTop = (alignTarget ? event.offsetY : 0);
-    const offsetBottom = (alignTarget ? event.target.clientHeight - event.offsetY : 0);
+    const offsetTop = (useAlignTarget ? event.offsetY : 0);
+    const offsetBottom = (useAlignTarget ? event.target.clientHeight - event.offsetY : 0);
     if (!alignTop && !alignBottom) {
       // Dynamic vertical position
       if (this.element.clientHeight + (event.pageY - offsetTop) > window.innerHeight) {
@@ -62,8 +63,8 @@ class Menu {
       transformOrigin = 'bottom';
     }
 
-    const offsetLeft = (alignTarget ? event.offsetX : 0);
-    const offsetRight = (alignTarget ? event.target.clientWidth - event.offsetX : 0);
+    const offsetLeft = (useAlignTarget ? event.offsetX : 0);
+    const offsetRight = (useAlignTarget ? event.target.clientWidth - event.offsetX : 0);
     if (alignStart || alignEnd) {
       const isRtl = (document.documentElement.getAttribute('dir') === 'rtl');
       if (alignStart) {
@@ -111,7 +112,7 @@ class Menu {
 
   /**
    * @param {MouseEvent=} event
-   * @param {boolean=} alignTarget
+   * @param {boolean=} [alignTarget=true]
    * @return {boolean} handled
    */
   show(event, alignTarget) {
