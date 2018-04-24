@@ -85,28 +85,49 @@ class Menu {
     const menuItems = this.element.getElementsByClassName('mdw-menu__item');
     let foundTarget = false;
     let candidate = null;
+    let firstFocusableItem = null;
+    let lastFocusableElement = null;
+    const target = document.activeElement;
+
+    // Hidden elements cannot be focused
+    // Disabled elements cannot be focused on IE11
+    // Skip elements that fail to receive focus
     for (let i = 0; i < menuItems.length; i += 1) {
       const el = menuItems.item(i);
-      if (el === document.activeElement) {
+      el.focus();
+      const focusable = (document.activeElement === el);
+      if (focusable) {
+        if (!firstFocusableItem) {
+          firstFocusableItem = el;
+        }
+        lastFocusableElement = el;
+      }
+      if (el === target) {
         foundTarget = true;
-        if (backwards) {
+        if (backwards && candidate) {
           break;
         }
       } else if (backwards) {
-        candidate = el;
+        if (focusable) {
+          candidate = el;
+        }
       } else if (foundTarget) {
-        candidate = el;
-        break;
+        if (focusable) {
+          candidate = el;
+          break;
+        }
       }
     }
     if (!candidate) {
       if (backwards) {
-        candidate = menuItems[menuItems.length - 1];
+        candidate = lastFocusableElement;
       } else {
-        candidate = menuItems[0];
+        candidate = firstFocusableItem;
       }
     }
-    candidate.focus();
+    if (candidate && document.activeElement !== candidate) {
+      candidate.focus();
+    }
   }
 
   /**
