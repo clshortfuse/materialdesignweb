@@ -19,6 +19,9 @@ function initializeMdwComponents() {
     /** @type {Menu} */
     const menu = componentMap.get(component.parentElement);
     component.addEventListener('click', () => {
+      if (component.hasAttribute('disabled')) {
+        return;
+      }
       menu.hide();
     });
     componentMap.set(component, menuItem);

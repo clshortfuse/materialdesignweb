@@ -29,7 +29,7 @@ $menuColors: (
       & > .mdw-menu__text,
       .mdw-menu__item {
         color: menuThemeValue("text-color", $type, $theme);
-        &:not([disabled]):focus,
+        &:focus,
         &[mdw-selected] {
           background-color: menuThemeValue("selected-color", $type, $theme);
         }

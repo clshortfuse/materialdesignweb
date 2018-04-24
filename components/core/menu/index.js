@@ -48,25 +48,32 @@ class Menu {
       event.preventDefault();
       this.selectNextMenuItem();
     }
+    if (!document.activeElement) {
+      return;
+    }
+    if (document.activeElement === this.element) {
+      return;
+    }
+    if (document.activeElement.parentElement !== this.element) {
+      return;
+    }
+    if (document.activeElement.hasAttribute('disabled')) {
+      return;
+    }
     if (event.key === 'Spacebar' || (event.key === ' ')) {
-      if (!this.currentMenuItem) {
-        return;
-      }
-      if (this.currentMenuItem.hasAttribute('mdw-checked')) {
-        this.currentMenuItem.removeAttribute('mdw-checked');
+      event.stopPropagation();
+      event.preventDefault();
+      if (document.activeElement.hasAttribute('mdw-checked')) {
+        document.activeElement.removeAttribute('mdw-checked');
       } else {
-        this.currentMenuItem.setAttribute('mdw-checked', '');
+        document.activeElement.setAttribute('mdw-checked', '');
       }
       return;
     }
     if (event.key === 'Enter') {
-      if (!this.currentMenuItem) {
-        return;
-      }
-      if (this.currentMenuItem.hasAttribute('disabled')) {
-        return;
-      }
-      this.currentMenuItem.click();
+      event.stopPropagation();
+      event.preventDefault();
+      document.activeElement.click();
     }
   }
 
@@ -80,7 +87,7 @@ class Menu {
     let candidate = null;
     for (let i = 0; i < menuItems.length; i += 1) {
       const el = menuItems.item(i);
-      if (el === this.currentMenuItem) {
+      if (el === document.activeElement) {
         foundTarget = true;
         if (backwards) {
           break;
@@ -99,7 +106,6 @@ class Menu {
         candidate = menuItems[0];
       }
     }
-    this.currentMenuItem = candidate;
     candidate.focus();
   }
 
@@ -241,7 +247,6 @@ class Menu {
         window.addEventListener('popstate', this.onPopState);
       }
       this.refreshAttributes();
-      this.currentMenuItem = null;
       if (event && !event.pointerType && !event.detail) {
         // Triggered with keyboard event
         this.selectNextMenuItem();
