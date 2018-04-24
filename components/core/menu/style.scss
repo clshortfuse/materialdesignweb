@@ -67,6 +67,7 @@ $checkbox-icon-offset-x: dp(6.04);
   max-width: $menu__unit-width * 5;
   top: 0;
   left: 0;
+  outline: none;
 
   &[mdw-position~="right"],
   &[mdw-position~="end"] {

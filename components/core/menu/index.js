@@ -126,19 +126,25 @@ class Menu {
 
     const offsetTop = (useAlignTarget ? event.offsetY : 0);
     const offsetBottom = (useAlignTarget ? event.target.clientHeight - event.offsetY : 0);
+    let { pageX, pageY } = event;
+    if (!pageX && !pageY) {
+      const rect = event.target.getBoundingClientRect();
+      pageX = rect.x;
+      pageY = rect.y;
+    }
     if (!alignTop && !alignBottom) {
       // Dynamic vertical position
-      if (this.element.clientHeight + (event.pageY - offsetTop) > window.innerHeight) {
+      if (this.element.clientHeight + (pageY - offsetTop) > window.innerHeight) {
         alignBottom = true;
       } else {
         alignTop = true;
       }
     }
     if (alignTop) {
-      top = `${event.pageY - offsetTop}px`;
+      top = `${pageY - offsetTop}px`;
       transformOrigin = 'top';
     } else {
-      bottom = `${window.innerHeight - (event.pageY + offsetBottom)}px`;
+      bottom = `${window.innerHeight - (pageY + offsetBottom)}px`;
       transformOrigin = 'bottom';
     }
 
@@ -160,7 +166,7 @@ class Menu {
     }
     if (!alignLeft && !alignRight) {
       // Dynamic horizontal position
-      if (this.element.clientWidth + (event.pageX - offsetLeft) > window.innerWidth) {
+      if (this.element.clientWidth + (pageX - offsetLeft) > window.innerWidth) {
         // Can't open to the right
         alignRight = true;
       } else {
@@ -173,10 +179,10 @@ class Menu {
       }
     }
     if (alignLeft) {
-      left = `${event.pageX - offsetLeft}px`;
+      left = `${pageX - offsetLeft}px`;
       transformOrigin += ' left';
     } else if (alignRight) {
-      right = `${window.innerWidth - (event.pageX + offsetRight)}px`;
+      right = `${window.innerWidth - (pageX + offsetRight)}px`;
       transformOrigin += ' right';
     }
 
@@ -236,7 +242,12 @@ class Menu {
       }
       this.refreshAttributes();
       this.currentMenuItem = null;
-      this.selectNextMenuItem();
+      if (event && !event.pointerType && !event.detail) {
+        // Triggered with keyboard event
+        this.selectNextMenuItem();
+      } else {
+        this.element.focus();
+      }
     }
     return changed;
   }
