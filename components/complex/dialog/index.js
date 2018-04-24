@@ -1,3 +1,5 @@
+// https://www.w3.org/TR/wai-aria-practices/#dialog_modal
+
 import { Button } from '../../index';
 
 class Dialog {
@@ -67,6 +69,9 @@ class Dialog {
       const el = focusableElements.item(i);
       if (el === event.target) {
         foundTarget = true;
+        if (event.shiftKey) {
+          break;
+        }
       } else if (event.shiftKey) {
         candidate = el;
       } else if (foundTarget) {
