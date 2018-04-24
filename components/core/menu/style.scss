@@ -192,6 +192,7 @@ $checkbox-icon-offset-x: dp(6.04);
   box-sizing: border-box;
   flex-direction: row;
   user-select: none;
+  outline: none;
 
   &[disabled] {
     cursor: not-allowed;

@@ -1,3 +1,5 @@
+// https://www.w3.org/TR/wai-aria-practices/#menu
+
 class Menu {
   /**
    * @param {HTMLElement} element
@@ -18,10 +20,87 @@ class Menu {
     this.menuCloser.addEventListener('click', () => {
       this.hide();
     });
+    this.element.addEventListener('keydown', (event) => {
+      this.handleKeyEvent(event);
+    });
+  }
+
+  handleKeyEvent(event) {
+    if (event.key === 'Tab') {
+      this.previousFocus = null;
+      this.hide();
+      return;
+    }
+    if (event.key === 'Escape' || event.key === 'Esc') {
+      event.stopPropagation();
+      event.preventDefault();
+      this.hide();
+      return;
+    }
+    if (event.key === 'ArrowUp' || (event.key === 'Up')) {
+      event.stopPropagation();
+      event.preventDefault();
+      this.selectNextMenuItem(true);
+      return;
+    }
+    if (event.key === 'ArrowDown' || (event.key === 'Down')) {
+      event.stopPropagation();
+      event.preventDefault();
+      this.selectNextMenuItem();
+    }
+    if (event.key === 'Spacebar' || (event.key === ' ')) {
+      if (!this.currentMenuItem) {
+        return;
+      }
+      if (this.currentMenuItem.hasAttribute('mdw-checked')) {
+        this.currentMenuItem.removeAttribute('mdw-checked');
+      } else {
+        this.currentMenuItem.setAttribute('mdw-checked', '');
+      }
+      return;
+    }
+    if (event.key === 'Enter') {
+      if (!this.currentMenuItem) {
+        return;
+      }
+      if (this.currentMenuItem.hasAttribute('disabled')) {
+        return;
+      }
+      this.currentMenuItem.click();
+    }
   }
 
   detach() {
     this.element = null;
+  }
+
+  selectNextMenuItem(backwards) {
+    const menuItems = this.element.getElementsByClassName('mdw-menu__item');
+    let foundTarget = false;
+    let candidate = null;
+    for (let i = 0; i < menuItems.length; i += 1) {
+      const el = menuItems.item(i);
+      if (el === this.currentMenuItem) {
+        foundTarget = true;
+        if (backwards) {
+          break;
+        }
+      } else if (backwards) {
+        candidate = el;
+      } else if (foundTarget) {
+        candidate = el;
+        break;
+      }
+    }
+    if (!candidate) {
+      if (backwards) {
+        candidate = menuItems[menuItems.length - 1];
+      } else {
+        candidate = menuItems[0];
+      }
+    }
+    this.currentMenuItem = candidate;
+    candidate.focus();
   }
 
   /**
@@ -110,6 +189,15 @@ class Menu {
     this.element.style.setProperty('position', 'fixed');
   }
 
+  refreshAttributes() {
+    const menuItems = this.element.getElementsByClassName('mdw-menu__item');
+    for (let i = 0; i < menuItems.length; i += 1) {
+      const menuItem = menuItems.item(i);
+      menuItem.setAttribute('tabindex', '-1');
+    }
+    this.element.setAttribute('tabindex', '-1');
+  }
+
   /**
    * @param {MouseEvent=} event
    * @param {boolean=} [alignTarget=true]
@@ -136,6 +224,20 @@ class Menu {
       this.element.setAttribute('mdw-show', '');
       changed = true;
     }
+    if (changed) {
+      this.previousFocus = document.activeElement;
+      if (window.history && window.history.pushState) {
+        const title = 'Menu';
+        this.onPopState = (event) => {
+          this.hide(event);
+        };
+        window.history.pushState({}, title, '');
+        window.addEventListener('popstate', this.onPopState);
+      }
+      this.refreshAttributes();
+      this.currentMenuItem = null;
+      this.selectNextMenuItem();
+    }
     return changed;
   }
 
@@ -143,6 +245,13 @@ class Menu {
   hide() {
     if (!this.element.hasAttribute('mdw-hide')) {
       this.element.setAttribute('mdw-hide', '');
+      if (this.previousFocus) {
+        this.previousFocus.focus();
+      }
+      this.element.removeAttribute('tabindex');
+      if (this.onPopState) {
+        window.removeEventListener('popstate', this.onPopState);
+      }
       return true;
     }
     return false;

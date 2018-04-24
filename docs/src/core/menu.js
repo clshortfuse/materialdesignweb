@@ -14,7 +14,14 @@ function initializeMdwComponents() {
 
   components = document.querySelectorAll('.js .mdw-menu__item');
   for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new MenuItem(components[i]));
+    const component = components.item(i);
+    const menuItem = new MenuItem(component);
+    /** @type {Menu} */
+    const menu = componentMap.get(component.parentElement);
+    component.addEventListener('click', () => {
+      menu.hide();
+    });
+    componentMap.set(component, menuItem);
   }
 }
 
