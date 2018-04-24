@@ -17,6 +17,13 @@ $toolbar-height-desktop: dp(56);
   flex-direction: column;
   box-shadow: elevation(4);
   z-index: 4;
+  &[mdw-app-bar] {
+    html[mdw-ios][mdw-standalone] & {
+      padding-top: 20px;
+      padding-top: constant(safe-area-inset-top);
+      padding-top: env(safe-area-inset-top);
+    }
+  }
 }
 
 .mdw-toolbar__action {
