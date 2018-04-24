@@ -272,11 +272,15 @@ class Dialog {
       popupPageY += element.offsetTop;
       element = element.offsetParent;
     }
-    console.log(popupPageY);
-    const transformOriginX = `${event.pageX - popupPageX}px`;
-    const transformOriginY = `${event.pageY - popupPageY}px`;
+    let { pageX, pageY } = event;
+    if (!pageX && !pageY) {
+      const rect = event.target.getBoundingClientRect();
+      pageX = rect.x + (rect.width / 2);
+      pageY = rect.y + (rect.height / 2);
+    }
+    const transformOriginX = `${pageX - popupPageX}px`;
+    const transformOriginY = `${pageY - popupPageY}px`;
     this.popup.style.setProperty('transform-origin', `${transformOriginX} ${transformOriginY}`);
-    
   }
 
   /**
