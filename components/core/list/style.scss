@@ -127,20 +127,20 @@ $list__divider-height: dp(1);
   display: flex;
   flex-direction: column;
   & > .mdw-list__item {
-    flex-basis: 100%;
-    transition-property: flex-basis, min-height;
-    transition-delay: 0s, 0s;
-    transition-timing-function: $motion-easing-acceleration;
-    transition-duration: 0s, $motion-duration-desktop-leave;
+    flex-basis: auto;
+    animation-fill-mode: forwards;
+    animation-timing-function: $motion-easing-acceleration;
+    animation-duration: $motion-duration-desktop-leave;
     @include allHandsets {
-      transition-duration: 0s, $motion-duration-mobile-leave;
+      animation-duration: $motion-duration-mobile-leave;
     }
     @include allTablets {
-      transition-duration: 0s, $motion-duration-tablet-leave;
+      animation-duration: $motion-duration-tablet-leave;
     }
     &:not(:first-child) {
       flex-basis: 0;
-      min-height: 0;
+      animation-name: collapseRow;
+      
     }
     &:first-child .mdw-list__secondary {
       min-height: dp(48);
@@ -160,19 +160,28 @@ $list__divider-height: dp(1);
   &[mdw-expanded] > .mdw-list__item:first-child .mdw-list__secondary {
     transform: rotate(180deg);
   }
-  &[mdw-expanded] > .mdw-list__item {
-    transition-delay: $motion-duration-desktop-enter, 0s;
-    transition-duration: 0s, $motion-duration-desktop-enter;
-    transition-timing-function: $motion-easing-deceleration;
+  &[mdw-expanded] > .mdw-list__item:not(:first-child) {
+    animation-name: expandRow;
+    animation-timing-function: $motion-easing-deceleration;
+    animation-duration: $motion-duration-desktop-enter;
     @include allHandsets {
-      transition-duration: 0s, $motion-duration-mobile-enter;
+      animation-duration: $motion-duration-mobile-enter;
     }
     @include allTablets {
-      transition-duration: 0s, $motion-duration-tablet-enter;
+      animation-duration: $motion-duration-tablet-enter;
     }
-    flex-basis: 100%;
-    min-height: dp(48);
   }
+}
+
+@keyframes expandRow {
+  0%     { min-height: 0     ; flex-basis: 0    }
+  99.99% { min-height: dp(48); flex-basis: 0    }
+  100%   { min-height: dp(48); flex-basis: 100% }
+}
+
+@keyframes collapseRow {
+  0%     { min-height: dp(48); flex-basis: 0    }
+  100%   { min-height: 0     ; flex-basis: 0    }
 }
 
 .mdw-list__expand-checkbox {
@@ -219,7 +228,6 @@ $list__divider-height: dp(1);
   position: static;
   pointer-events: none;
   flex-grow: 1;
-  min-height: dp(48);
   display: flex;
   flex-direction: column;
   align-items: stretch;
