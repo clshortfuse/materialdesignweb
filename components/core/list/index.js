@@ -88,7 +88,29 @@ class ListItem {
   }
 }
 
+class ListExpander {
+  /**
+   * @param {Element} element
+   */
+  constructor(element) {
+    this.element = element;
+    this.element.firstElementChild.addEventListener('click', () => {
+      this.toggleExpander();
+    });
+  }
+
+  /** @return {void} */
+  toggleExpander() {
+    if (this.element.hasAttribute('mdw-expanded')) {
+      this.element.removeAttribute('mdw-expanded');
+    } else {
+      this.element.setAttribute('mdw-expanded', '');
+    }
+  }
+}
+
 export {
   List,
   ListItem,
+  ListExpander,
 };

@@ -195,6 +195,36 @@ include ../mixins.pug
 
     .comparison.mdw-theme-list.js
       .render
+        +androidstatusbar('primary-700 dark')
+        +toolbar('primary-500 dark', ['menu'], ['more_vert']) Topics
+        .content(style="padding-top:2px")
+          ul.mdw-list
+            li.mdw-list__item
+              .mdw-list__text Attractions
+            .mdw-list__expander(mdw-theme-color="primary")
+              .mdw-list__item
+                .mdw-list__text Dining
+                .mdw-list__secondary.material-icons expand_more
+              li.mdw-list__item
+                .mdw-list__text Breakfast &amp; brunch
+              li.mdw-list__item
+                .mdw-list__text New American
+              li.mdw-list__item 
+                .mdw-list__text Sushi bars
+            li.mdw-list__item Education
+            li.mdw-list__item Family
+            li.mdw-list__item Health
+            li.mdw-list__item Office
+            li.mdw-list__item Promotions
+            li.mdw-list__item Radio
+            li.mdw-list__item Recipes
+            li.mdw-list__item Sports
+            li.mdw-list__item Travel
+        +androidnavbar
+      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3bl8zNGVqM19TNWM/components-listcontrols-expand2.png')
+
+    .comparison.mdw-theme-list.js
+      .render
         +androidstatusbar('warn-700 dark')
         +toolbar('warn-500 dark', ['menu'], ['search', 'check_circle']) Inbox (with JS)
         .content
