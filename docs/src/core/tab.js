@@ -1,20 +1,12 @@
 import setupImageTargets from '../targetHandler';
-import { Tab, TabItem } from '../../../components/core/tab/index';
+import { Tab } from '../../../components/core/tab/index';
 import { setupMenuOptions } from '../menuoptions';
-
-const componentMap = new WeakMap();
 
 /** @return {void} */
 function initializeMdwComponents() {
-  let components;
-  components = document.querySelectorAll('.js .mdw-tab');
-  for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new Tab(components[i]));
-  }
-
-  components = document.querySelectorAll('.js .mdw-tab__item');
-  for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new TabItem(components[i]));
+  const tabs = document.querySelectorAll('.js .mdw-tab');
+  for (let i = 0; i < tabs.length; i += 1) {
+    Tab.attach(tabs.item(i));
   }
 }
 

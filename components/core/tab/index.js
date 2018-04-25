@@ -1,148 +1,141 @@
+import { Ripple } from '../ripple/index';
+import { findElementParentByClassName, isRtl } from '../../common/dom';
+
 class TabItem {
   /**
-   * @param {Element} element
+   * @param {Element} tabItemElement
+   * @param {boolean=} [attachRipple=true]
+   * @return {void}
    */
-  constructor(element) {
-    this.element = element;
-    const rippleElements = element.getElementsByClassName('mdw-ripple');
-    this.ripple = rippleElements && rippleElements[0];
-    if (!this.ripple) {
-      const ripple = document.createElement('div');
-      ripple.classList.add('mdw-ripple');
-      this.element.insertBefore(ripple, this.element.firstChild);
-      this.ripple = ripple;
+  static attach(tabItemElement, attachRipple) {
+    if (attachRipple !== false) {
+      Ripple.attach(tabItemElement);
     }
-    const innerRippleElements = this.ripple.getElementsByClassName('mdw-ripple__inner');
-    this.rippleInner = innerRippleElements && innerRippleElements[0];
-    if (!this.rippleInner) {
-      const rippleInner = document.createElement('div');
-      rippleInner.classList.add('mdw-ripple__inner');
-      this.ripple.appendChild(rippleInner);
-      this.rippleInner = rippleInner;
-    }
-    this.element.setAttribute('mdw-ripple', '');
-    this.element.addEventListener('click', (event) => {
-      this.updateRipplePosition(event);
-    });
   }
 
   /**
-   * @param {MouseEvent|PointerEvent} event
+   * @param {Element} tabItemElement
+   * @param {boolean=} [detachRipple=true]
    * @return {void}
    */
-  updateRipplePosition(event) {
-    if (event.target !== this.element && event.target !== this.ripple) {
-      return;
+  static detach(tabItemElement, detachRipple) {
+    if (detachRipple !== false) {
+      Ripple.detach(tabItemElement);
     }
-    if (this.element.hasAttribute('mdw-icon') || (!event.pointerType && !event.detail)) {
-      // Ripple from center
-      this.rippleInner.style.removeProperty('left');
-      this.rippleInner.style.removeProperty('top');
-      return;
-    }
-    const x = event.offsetX;
-    const y = event.offsetY;
-    this.rippleInner.style.setProperty('left', `${x}px`);
-    this.rippleInner.style.setProperty('top', `${y}px`);
   }
 }
 
 class Tab {
   /**
-   * @param {Element} element
+   * @param {Element} tabElement
+   * @param {boolean=} [attachRipples=true]
+   * @return {void}
    */
-  constructor(element) {
-    this.element = element;
-
-    const [tabItemsElement] = element.getElementsByClassName('mdw-tab__items');
-    this.tabItemsElement = tabItemsElement;
-    const [indicatorElement] = element.getElementsByClassName('mdw-tab__indicator');
-    this.indicator = indicatorElement;
-
-    const [tabContentElement] = element.getElementsByClassName('mdw-tab__content')
-    this.tabContent = tabContentElement;
-    if (!this.indicator) {
-      const indicator = document.createElement('div');
-      indicator.classList.add('mdw-tab__indicator');
-      tabItemsElement.appendChild(indicator);
-      this.indicator = indicator;
+  static attach(tabElement, attachRipples) {
+    const [tabItemsElement] = tabElement.getElementsByClassName('mdw-tab__items');
+    let [indicatorElement] = tabItemsElement.getElementsByClassName('mdw-tab__indicator');
+    if (!indicatorElement) {
+      indicatorElement = document.createElement('div');
+      indicatorElement.classList.add('mdw-tab__indicator');
+      tabItemsElement.appendChild(indicatorElement);
     }
 
-    const inputs = element.getElementsByClassName('mdw-tab__input');
-    const items = element.getElementsByClassName('mdw-tab__item');
+    const inputs = tabElement.getElementsByClassName('mdw-tab__input');
+    const items = tabElement.getElementsByClassName('mdw-tab__item');
 
     for (let i = 0; i < inputs.length; i += 1) {
       const inputElement = inputs[i];
       if (inputElement.checked) {
-        this.onInputChanged(inputElement);
+        Tab.onInputChanged({ target: inputElement });
       }
-      inputElement.addEventListener('change', () => {
-        this.onInputChanged(inputElement);
-      });
+      inputElement.addEventListener('change', Tab.onInputChanged);
     }
 
     for (let i = 0; i < items.length; i += 1) {
       const itemElement = items[i];
+      TabItem.attach(itemElement, attachRipples);
       if (itemElement.hasAttribute('mdw-selected')) {
-        this.selectItem(itemElement);
+        Tab.selectItem(itemElement);
       }
-      itemElement.addEventListener('click', () => {
-        this.selectItem(itemElement);
-        if (this.tabItemsElement.hasAttribute('mdw-scrollable')) {
-          itemElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-        }
-      });
+      itemElement.addEventListener('click', Tab.onItemClicked);
     }
   }
 
   /**
-   * @param {HTMLInputElement} inputElement
-   * @return {HTMLElement}
-   */
-  static getItemForInput(inputElement) {
-    let itemElement;
-    if (inputElement.id) {
-      itemElement = document.querySelector(`label.mdw-tab__item[for="${inputElement.id}"]`);
-    }
-    return itemElement;
-  }
-
-  static isRtl() {
-    return document.documentElement.hasAttribute('dir')
-      && document.documentElement.getAttribute('dir').toLowerCase() === 'rtl';
-  }
-
-  useCSSAnimation() {
-    this.indicator.style.removeProperty('left');
-    this.indicator.style.removeProperty('right');
-    this.indicator.style.removeProperty('width');
-    this.indicator.style.removeProperty('transform');
-    this.indicator.removeAttribute('mdw-js-indicator');
-  }
-
-  /**
-   * @param {HTMLElement} itemElement
+   * @param {Element} tabElement
+   * @param {boolean=} [detachRipples=true]
    * @return {void}
    */
-  selectItem(itemElement) {
+  static detach(tabElement, detachRipples) {
+    const inputs = tabElement.getElementsByClassName('mdw-tab__input');
+    const items = tabElement.getElementsByClassName('mdw-tab__item');
+    for (let i = 0; i < inputs.length; i += 1) {
+      const inputElement = inputs[i];
+      inputElement.removeEventListener('change', Tab.onInputChanged);
+    }
+
+    for (let i = 0; i < items.length; i += 1) {
+      const itemElement = items[i];
+      TabItem.detach(itemElement, detachRipples);
+      itemElement.removeEventListener('click', Tab.onItemClicked);
+    }
+  }
+
+  static onItemClicked(event) {
+    const itemElement = findElementParentByClassName(event.target, 'mdw-tab__item');
+    if (!itemElement) {
+      return;
+    }
+    Tab.selectItem(itemElement);
+    const tabItemsElement = findElementParentByClassName(event.target, 'mdw-tab__items', false);
+    if (tabItemsElement && tabItemsElement.hasAttribute('mdw-scrollable')) {
+      itemElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    }
+  }
+
+  static onInputChanged(event) {
+    const inputElement = event.target;
+    if (!inputElement.id) {
+      return;
+    }
+    const itemElement = document.querySelector(`label.mdw-tab__item[for="${inputElement.id}"]`);
+    if (itemElement) {
+      Tab.selectItem(itemElement);
+    }
+  }
+
+  /**
+   * @param {Element} itemElement
+   * @return {void}
+   */
+  static selectItem(itemElement) {
+    const tabElement = findElementParentByClassName(itemElement, 'mdw-tab');
+    if (!tabElement) {
+      return;
+    }
+    const tabItemsElement = findElementParentByClassName(itemElement, 'mdw-tab__items');
+    if (!tabItemsElement) {
+      return;
+    }
+    const tabItems = tabItemsElement.getElementsByClassName('mdw-tab__item');
+    const [tabContentElement] = tabElement.getElementsByClassName('mdw-tab__content');
     let foundPreviousSelection = false;
     let foundTarget = false;
     let left = 0;
-    const tabItems = this.tabItemsElement.getElementsByClassName('mdw-tab__item');
     let contentItems = null;
-    if (this.tabContent) {
-      contentItems = this.tabContent.getElementsByClassName('mdw-tab__content-item');
+    if (tabContentElement) {
+      contentItems = tabContentElement.getElementsByClassName('mdw-tab__content-item');
     }
-    const isRtl = Tab.isRtl();
+    const isRtlValue = isRtl();
     for (let i = 0; i < tabItems.length; i += 1) {
-      const index = isRtl ? tabItems.length - 1 - i : i;
+      const index = isRtlValue ? tabItems.length - 1 - i : i;
       const tabItem = tabItems.item(index);
       const contentItem = contentItems && contentItems.item(index);
       if (tabItem === itemElement) {
         foundTarget = true;
         itemElement.setAttribute('mdw-selected', '');
-        if (this.tabContent) {
-          this.tabContent.setAttribute('mdw-selected-index', index.toString());
+        if (tabContentElement) {
+          tabContentElement.setAttribute('mdw-selected-index', index.toString());
         }
         if (contentItem) {
           contentItem.setAttribute('mdw-selected', '');
@@ -165,44 +158,29 @@ class Tab {
       }
     }
 
+    const [indicatorElement] = tabItemsElement.getElementsByClassName('mdw-tab__indicator');
     // Animate selection
     // Only use explicity positioning on scrollable tabs
-    if (!this.tabItemsElement.hasAttribute('mdw-scrollable') || !this.tabItemsElement.clientWidth) {
+    if (!tabItemsElement.hasAttribute('mdw-scrollable') || !tabItemsElement.clientWidth) {
       // use CSS styling fallback
-      this.useCSSAnimation();
-      this.onItemSelected(itemElement);
+      indicatorElement.style.removeProperty('left');
+      indicatorElement.style.removeProperty('right');
+      indicatorElement.style.removeProperty('width');
+      indicatorElement.style.removeProperty('transform');
+      indicatorElement.removeAttribute('mdw-js-indicator');
+      // this.onItemSelected(itemElement);
       return;
     }
     const width = itemElement.clientWidth;
-    const right = this.tabItemsElement.scrollWidth - left - itemElement.clientWidth;
-    if (!this.indicator.hasAttribute('mdw-js-indicator')) {
-      this.indicator.setAttribute('mdw-js-indicator', '');
+    const right = tabItemsElement.scrollWidth - left - itemElement.clientWidth;
+    if (!indicatorElement.hasAttribute('mdw-js-indicator')) {
+      indicatorElement.setAttribute('mdw-js-indicator', '');
     }
 
-    this.indicator.style.setProperty('left', `${left}px`);
-    this.indicator.style.setProperty('right', `${right}px`);
-    this.indicator.style.setProperty('width', `${width}px`);
-    this.indicator.style.setProperty('transform', 'none');
-    this.onItemSelected(itemElement);
-  }
-
-  /**
-   * @param {HTMLElement} itemElement
-   * @return {void}
-   */
-  onItemSelected(itemElement) {
-    // Override
-  }
-
-  /**
-   * @param {HTMLInputElement} inputElement
-   * @return {void}
-   */
-  onInputChanged(inputElement) {
-    const itemElement = Tab.getItemForInput(inputElement);
-    if (itemElement) {
-      this.selectItem(itemElement);
-    }
+    indicatorElement.style.setProperty('left', `${left}px`);
+    indicatorElement.style.setProperty('right', `${right}px`);
+    indicatorElement.style.setProperty('width', `${width}px`);
+    indicatorElement.style.setProperty('transform', 'none');
   }
 }
 
