@@ -188,7 +188,10 @@ $checkbox-icon-offset-x: dp(6.04);
   z-index: 0;
   padding-left: dp(16);
   padding-right: dp(16);
-  font-size: sp(16);
+  font-size: sp(15);
+  @include allHandsetsAndTablets {
+    font-size: sp(16);
+  }
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   min-height: dp(48);
