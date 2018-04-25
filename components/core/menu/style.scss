@@ -68,6 +68,8 @@ $checkbox-icon-offset-x: dp(6.04);
   top: 0;
   left: 0;
   outline: none;
+  overflow-y: scroll;
+  max-height: 50vh;
 
   &[mdw-position~="right"],
   &[mdw-position~="end"] {
