@@ -26,14 +26,19 @@ $menuColors: (
   @at-root {
     #{&}.mdw-menu {
       background-color: menuThemeValue("background-color", $type, $theme);
+      &:not([mdw-js]) {
+        & > .mdw-menu__text,
+        .mdw-menu__item {
+          &:hover {
+            background-color: menuThemeValue("hover-color", $type, $theme);
+          }
+        }
+      }
       & > .mdw-menu__text,
       .mdw-menu__item {
         color: menuThemeValue("text-color", $type, $theme);
         &:focus,
         &[mdw-selected] {
-          background-color: menuThemeValue("selected-color", $type, $theme);
-        }
-        &:not([disabled]):hover {
           background-color: menuThemeValue("hover-color", $type, $theme);
         }
         &[disabled] {

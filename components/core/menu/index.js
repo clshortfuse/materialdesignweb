@@ -6,6 +6,7 @@ class Menu {
    */
   constructor(element) {
     this.element = element;
+    this.element.setAttribute('mdw-js', '');
     let [menuCloser] = this.element.getElementsByClassName('mdw-menu__close');
     if (!menuCloser) {
       menuCloser = document.createElement('div');
@@ -23,6 +24,26 @@ class Menu {
     this.element.addEventListener('keydown', (event) => {
       this.handleKeyEvent(event);
     });
+    this.onMenuItemMouseMove = (event) => {
+      let el = event.target;
+      while (el != null && !el.classList.contains('mdw-menu__item')) {
+        el = el.parentElement;
+      }
+      if (!el) {
+        return;
+      }
+      const previousFocus = document.activeElement;
+      if (previousFocus === el) {
+        // Already focused
+        return;
+      }
+      el.focus();
+      if (document.activeElement !== el) {
+        if (previousFocus && document.activeElement !== previousFocus) {
+          previousFocus.focus();
+        }
+      }
+    };
   }
 
   handleKeyEvent(event) {
@@ -222,11 +243,16 @@ class Menu {
     this.element.style.setProperty('position', 'fixed');
   }
 
-  refreshAttributes() {
+  refreshMenuItems() {
     const menuItems = this.element.getElementsByClassName('mdw-menu__item');
     for (let i = 0; i < menuItems.length; i += 1) {
       const menuItem = menuItems.item(i);
       menuItem.setAttribute('tabindex', '-1');
+      // If mouseover is used, an item can still lose focus via keyboard navigation.
+      // An extra event listener would need to be created to catch blur but the cursor
+      // would still remain over the element, thus needing another mousemove event.
+      // Prioritization is given to less event listeners rather than operations per second.
+      menuItem.addEventListener('mousemove', this.onMenuItemMouseMove);
     }
     this.element.setAttribute('tabindex', '-1');
   }
@@ -267,7 +293,7 @@ class Menu {
         window.history.pushState({}, title, '');
         window.addEventListener('popstate', this.onPopState);
       }
-      this.refreshAttributes();
+      this.refreshMenuItems();
       if (event && !event.pointerType && !event.detail) {
         // Triggered with keyboard event
         this.selectNextMenuItem();
