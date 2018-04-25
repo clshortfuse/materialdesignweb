@@ -11,7 +11,7 @@ class Button {
     this.element = element;
     this.element.setAttribute('mdw-js', '');
     if (!this.element.hasAttribute('mdw-icon')) {
-      Ripple.setup(this.element);
+      Ripple.attach(this.element);
     }
     if (this.element instanceof HTMLButtonElement === false
       && this.element instanceof HTMLAnchorElement === false
@@ -38,7 +38,6 @@ class Button {
       el.click();
     }
   }
-
 }
 
 export {

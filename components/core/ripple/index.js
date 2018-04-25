@@ -1,11 +1,12 @@
+import { getChildElementByClass } from '../../common/dom';
+
 class Ripple {
   /**
-   * @param {HTMLElement} element
+   * @param {Element} element
    * @return {void}
    */
-  static setup(element) {
-    const rippleElements = element.getElementsByClassName('mdw-ripple');
-    let ripple = rippleElements && rippleElements[0];
+  static attach(element) {
+    let ripple = getChildElementByClass(element, 'mdw-ripple');
     if (!ripple) {
       ripple = document.createElement('div');
       ripple.classList.add('mdw-ripple');
@@ -15,8 +16,8 @@ class Ripple {
         element.appendChild(ripple);
       }
     }
-    const innerRippleElements = ripple.getElementsByClassName('mdw-ripple__inner');
-    let rippleInner = innerRippleElements && innerRippleElements[0];
+
+    let rippleInner = getChildElementByClass(element, 'mdw-ripple__inner');
     if (!rippleInner) {
       rippleInner = document.createElement('div');
       rippleInner.classList.add('mdw-ripple__inner');
@@ -38,13 +39,7 @@ class Ripple {
       if (el.classList.contains('mdw-ripple__inner')) {
         rippleInner = el;
       } else {
-        for (let i = 0; i < el.children.length; i += 1) {
-          const child = el.children.item(i);
-          if (child.classList.contains('mdw-ripple__inner')) {
-            rippleInner = child;
-            break;
-          }
-        }
+        rippleInner = getChildElementByClass(el, 'mdw-ripple__inner');
       }
       if (rippleInner) {
         break;
@@ -62,6 +57,15 @@ class Ripple {
     }
     rippleInner.style.setProperty('left', `${event.offsetX}px`);
     rippleInner.style.setProperty('top', `${event.offsetY}px`);
+  }
+
+  static detach(element) {
+    const ripple = getChildElementByClass(element, 'mdw-ripple');
+    if (ripple) {
+      element.removeChild(ripple);
+    }
+    element.removeAttribute('mdw-ripple');
+    element.removeEventListener('click', Ripple.onClick);
   }
 }
 
