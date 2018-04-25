@@ -159,8 +159,6 @@ class Menu {
   updateMenuPosition(event, alignTarget) {
     let top = 'auto';
     let left = 'auto';
-    let right = 'auto';
-    let bottom = 'auto';
     let transformOrigin = '';
     const useAlignTarget = (alignTarget !== false);
     const margin = useAlignTarget ? '0' : '';
@@ -192,7 +190,7 @@ class Menu {
       top = `${pageY - offsetTop}px`;
       transformOrigin = 'top';
     } else {
-      bottom = `${window.innerHeight - (pageY + offsetBottom)}px`;
+      top = `${(pageY + offsetBottom) - this.element.clientHeight}px`;
       transformOrigin = 'bottom';
     }
 
@@ -230,14 +228,14 @@ class Menu {
       left = `${pageX - offsetLeft}px`;
       transformOrigin += ' left';
     } else if (alignRight) {
-      right = `${window.innerWidth - (pageX + offsetRight)}px`;
+      left = `${(pageX + offsetRight) - this.element.clientWidth}px`;
       transformOrigin += ' right';
     }
 
     this.element.style.setProperty('top', top);
     this.element.style.setProperty('left', left);
-    this.element.style.setProperty('right', right);
-    this.element.style.setProperty('bottom', bottom);
+    this.element.style.setProperty('right', 'auto');
+    this.element.style.setProperty('bottom', 'auto');
     this.element.style.setProperty('margin', margin);
     this.element.style.setProperty('transform-origin', transformOrigin);
     this.element.style.setProperty('position', 'fixed');
