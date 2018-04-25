@@ -2,21 +2,36 @@
 // https://www.w3.org/TR/wai-aria-practices/#button
 
 import { Ripple } from '../ripple/index';
+import { findElementParentByClassName } from '../../common/dom';
 
 class Button {
   /**
-   * @param {HTMLElement} element
+   * @param {Element} element
+   * @param {boolean=} [attachRipple=true]
+   * @return {void}
    */
-  constructor(element) {
-    this.element = element;
-    this.element.setAttribute('mdw-js', '');
-    if (!this.element.hasAttribute('mdw-icon')) {
-      Ripple.attach(this.element);
+  static attach(element, attachRipple) {
+    element.setAttribute('mdw-js', '');
+    if (attachRipple !== false && !element.hasAttribute('mdw-icon')) {
+      Ripple.attach(element);
     }
-    if (this.element instanceof HTMLButtonElement === false
-      && this.element instanceof HTMLAnchorElement === false
-      && this.element instanceof HTMLInputElement === false) {
-      this.element.addEventListener('keydown', Button.onKeyDown);
+    if (element instanceof HTMLButtonElement === false
+      && element instanceof HTMLAnchorElement === false
+      && element instanceof HTMLInputElement === false) {
+      element.addEventListener('keydown', Button.onKeyDown);
+    }
+  }
+
+  /**
+   * @param {Element} element
+   * @param {boolean=} [detachRipple=true]
+   * @return {void}
+   */
+  static detach(element, detachRipple) {
+    element.removeEventListener('keydown', Button.onKeyDown);
+    element.removeAttribute('mdw-js');
+    if (detachRipple !== false) {
+      Ripple.detach(element);
     }
   }
 
@@ -25,18 +40,16 @@ class Button {
    * @return {void}
    */
   static onKeyDown(event) {
-    let el = event.target;
-    while (el != null && !el.classList.contains('mdw-button')) {
-      el = el.parentElement;
-    }
-    if (!el) {
+    if (event.key !== 'Enter' && event.key !== 'Spacebar' && event.key !== ' ') {
       return;
     }
-    if (event.key === 'Enter' || event.key === 'Spacebar' || (event.key === ' ')) {
-      event.stopPropagation();
-      event.preventDefault();
-      el.click();
+    const buttonElement = findElementParentByClassName(event.target, 'mdw-button');
+    if (!buttonElement) {
+      return;
     }
+    event.stopPropagation();
+    event.preventDefault();
+    buttonElement.click();
   }
 }
 
