@@ -4,34 +4,27 @@ import { findElementParentByClassName, isRtl } from '../../common/dom';
 class TabItem {
   /**
    * @param {Element} tabItemElement
-   * @param {boolean=} [attachRipple=true]
    * @return {void}
    */
-  static attach(tabItemElement, attachRipple) {
-    if (attachRipple !== false) {
-      Ripple.attach(tabItemElement);
-    }
+  static attach(tabItemElement) {
+    Ripple.attach(tabItemElement);
   }
 
   /**
    * @param {Element} tabItemElement
-   * @param {boolean=} [detachRipple=true]
    * @return {void}
    */
-  static detach(tabItemElement, detachRipple) {
-    if (detachRipple !== false) {
-      Ripple.detach(tabItemElement);
-    }
+  static detach(tabItemElement) {
+    Ripple.detach(tabItemElement);
   }
 }
 
 class Tab {
   /**
    * @param {Element} tabElement
-   * @param {boolean=} [attachRipples=true]
    * @return {void}
    */
-  static attach(tabElement, attachRipples) {
+  static attach(tabElement) {
     const [tabItemsElement] = tabElement.getElementsByClassName('mdw-tab__items');
     let [indicatorElement] = tabItemsElement.getElementsByClassName('mdw-tab__indicator');
     if (!indicatorElement) {
@@ -53,7 +46,7 @@ class Tab {
 
     for (let i = 0; i < items.length; i += 1) {
       const itemElement = items[i];
-      TabItem.attach(itemElement, attachRipples);
+      TabItem.attach(itemElement);
       if (itemElement.hasAttribute('mdw-selected')) {
         Tab.selectItem(itemElement);
       }
@@ -63,10 +56,9 @@ class Tab {
 
   /**
    * @param {Element} tabElement
-   * @param {boolean=} [detachRipples=true]
    * @return {void}
    */
-  static detach(tabElement, detachRipples) {
+  static detach(tabElement) {
     const inputs = tabElement.getElementsByClassName('mdw-tab__input');
     const items = tabElement.getElementsByClassName('mdw-tab__item');
     for (let i = 0; i < inputs.length; i += 1) {
@@ -76,7 +68,7 @@ class Tab {
 
     for (let i = 0; i < items.length; i += 1) {
       const itemElement = items[i];
-      TabItem.detach(itemElement, detachRipples);
+      TabItem.detach(itemElement);
       itemElement.removeEventListener('click', Tab.onItemClicked);
     }
   }
