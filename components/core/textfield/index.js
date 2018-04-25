@@ -1,176 +1,178 @@
+import { getChildElementByClass } from '../../common/dom';
+import { Ripple } from '../ripple/index';
+
 class TextField {
   /**
-   * @param {HTMLElement} element
+   * @param {Element} textfieldElement
+   * @param {boolean=} [attachRipple=true]
+   * @return {void}
    */
-  constructor(element) {
-    this.element = element;
+  static attach(textfieldElement, attachRipple) {
     /** @type {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} */
-    this.input = element.querySelector('.mdw-textfield__input');
-    if (this.input) {
-      if (this.input instanceof HTMLTextAreaElement && this.element.hasAttribute('mdw-multiline')) {
-        this.input.addEventListener('input', () => {
-          this.updateTextAreaSize();
-        });
-        this.updateTextAreaSize();
-      }
-      this.input.addEventListener('input', () => {
-        this.updateInputEmptyState();
-      });
-      this.updateInputEmptyState();
+    const input = getChildElementByClass(textfieldElement, 'mdw-textfield__input');
+    if (input) {
+      input.addEventListener('input', TextField.onInput);
+      TextField.onInput({ target: input });
     }
-    this.border = element.querySelector('.mdw-textfield__border-line');
-    if (!this.border) {
-      const border = document.createElement('div');
+    let border = getChildElementByClass(textfieldElement, 'mdw-textfield__border-line');
+    if (!border) {
+      border = document.createElement('div');
       border.classList.add('mdw-textfield__border-line');
-      element.appendChild(border);
-      this.border = border;
+      textfieldElement.appendChild(border);
     }
-    const rippleElements = this.border.getElementsByClassName('mdw-ripple');
-    this.ripple = rippleElements && rippleElements[0];
-    if (!this.ripple) {
-      const ripple = document.createElement('div');
-      ripple.classList.add('mdw-ripple');
-      this.border.appendChild(ripple);
-      this.ripple = ripple;
+    if (attachRipple !== false) {
+      Ripple.attach(border);
     }
-    const innerRippleElements = this.ripple.getElementsByClassName('mdw-ripple__inner');
-    this.rippleInner = innerRippleElements && innerRippleElements[0];
-    if (!this.rippleInner) {
-      const rippleInner = document.createElement('div');
-      rippleInner.classList.add('mdw-ripple__inner');
-      this.ripple.appendChild(rippleInner);
-      this.rippleInner = rippleInner;
-    }
-    this.element.setAttribute('mdw-ripple', '');
-    this.border.addEventListener('click', (event) => {
-      this.updateRipplePosition(event);
-    });
   }
 
-  /** @return {void} */
-  updateInputEmptyState() {
-    const attributeName = 'mdw-value-empty';
-    if (this.input.value) {
-      if (this.element.hasAttribute(attributeName)) {
-        this.element.removeAttribute(attributeName);
+  /**
+   * @param {Element} textfieldElement
+   * @param {boolean=} [detachRipple=true]
+   * @return {void}
+   */
+  static detach(textfieldElement, detachRipple) {
+    const input = getChildElementByClass(textfieldElement, 'mdw-textfield__input');
+    if (input) {
+      input.removeEventListener('input', TextField.onInput);
+    }
+    if (detachRipple !== false) {
+      const border = getChildElementByClass(textfieldElement, 'mdw-textfield__border-line');
+      if (border) {
+        Ripple.detach(border);
       }
-    } else if (!this.element.hasAttribute(attributeName)) {
-      this.element.setAttribute('mdw-value-empty', '');
     }
   }
 
-  /** @return {number} Single row height */
-  updateTextAreaSize() {
-    const previousRowsValue = this.input.getAttribute('rows');
-    this.input.setAttribute('rows', '1');
-    const { height, paddingTop } = window.getComputedStyle(this.input);
+  /**
+   * @param {Event} event
+   * @return {void}
+   */
+  static onInput(event) {
+    const inputElement = event.target;
+    if (inputElement.parentElement.hasAttribute('mdw-multiline')) {
+      TextField.updateTextAreaSize(inputElement);
+    }
+    TextField.updateInputEmptyState(inputElement);
+  }
+
+  /**
+   * @param {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} inputElement
+   * @return {void} */
+  static updateInputEmptyState(inputElement) {
+    const attributeName = 'mdw-value-empty';
+    const textfieldElement = inputElement.parentElement;
+    if (inputElement.value) {
+      if (textfieldElement.hasAttribute(attributeName)) {
+        textfieldElement.removeAttribute(attributeName);
+      }
+    } else if (!textfieldElement.hasAttribute(attributeName)) {
+      textfieldElement.setAttribute('mdw-value-empty', '');
+    }
+  }
+
+  /**
+   * @param {HTMLInputElement} inputElement
+   * @return {number} Single row height */
+  static updateTextAreaSize(inputElement) {
+    const previousRowsValue = inputElement.getAttribute('rows');
+    inputElement.setAttribute('rows', '1');
+    const { height, paddingTop } = window.getComputedStyle(inputElement);
     if (height === 'auto') {
-      this.input.setAttribute('rows', previousRowsValue);
+      inputElement.setAttribute('rows', previousRowsValue);
       return -1;
     }
     const heightPx = parseInt(height.replace('px', ''), 10);
     const paddingTopPx = parseInt(paddingTop.replace('px', ''), 10);
-    this.input.setAttribute('rows', Math.floor((this.input.scrollHeight - paddingTopPx) / heightPx).toString());
+    inputElement.setAttribute('rows', Math.floor((inputElement.scrollHeight - paddingTopPx) / heightPx).toString());
     return heightPx;
   }
 
   /**
-   * @param {MouseEvent|PointerEvent} event
-   * @return {void}
-   */
-  updateRipplePosition(event) {
-    if (event.target !== this.border && event.target !== this.ripple) {
-      return;
-    }
-    if ((!event.pointerType && !event.detail)) {
-      // Ripple from center
-      this.rippleInner.style.removeProperty('left');
-      this.rippleInner.style.removeProperty('top');
-      return;
-    }
-    const x = event.offsetX;
-    const y = event.offsetY;
-    this.rippleInner.style.setProperty('left', `${x}px`);
-    this.rippleInner.style.setProperty('top', `${y}px`);
-  }
-
-  /**
+   * @param {Element} textfieldElement
    * @return {string|Date|number}
    */
-  get value() {
-    if ((this.input instanceof HTMLTextAreaElement) || (this.input instanceof HTMLSelectElement)) {
-      return this.value;
+  static getValue(textfieldElement) {
+    /** @type {HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement} */
+    const input = getChildElementByClass(textfieldElement, 'mdw-textfield__input');
+    if ((input instanceof HTMLTextAreaElement) || (input instanceof HTMLSelectElement)) {
+      return input.value;
     }
-    const type = this.input.hasAttribute('type') && this.input.getAttribute('type').toLowerCase();
+    const type = input.hasAttribute('type') && input.getAttribute('type').toLowerCase();
     switch (type) {
       case 'number':
       case 'range':
-        return this.input.valueAsNumber;
+        return input.valueAsNumber;
       case 'date':
       case 'datetime-local':
       case 'time':
-        if (this.input.value == null) {
+        if (input.value == null) {
           return null;
         }
-        return new Date((this.input.valueAsDate.getTimezoneOffset() * 60 * 1000)
-          + this.input.valueAsNumber);
+        return new Date((input.valueAsDate.getTimezoneOffset() * 60 * 1000) + input.valueAsNumber);
       default:
-        return this.input.value;
+        return input.value;
     }
   }
 
-  /** @param {(string|Date|number)=} value */
-  set value(value) {
+  /**
+   * @param {Element} textfieldElement
+   * @param {(string|Date|number)=} value
+   * @return {void}
+   */
+  static setValue(textfieldElement, value) {
+    /** @type {HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement} */
+    const input = getChildElementByClass(textfieldElement, 'mdw-textfield__input');
     if (value == null) {
-      this.input.value = null;
-    } else if (this.input instanceof HTMLTextAreaElement
-            || this.input instanceof HTMLSelectElement) {
+      input.value = null;
+    } else if (input instanceof HTMLTextAreaElement || input instanceof HTMLSelectElement) {
       if (value instanceof Date) {
-        this.input.value = value.toString();
+        input.value = value.toString();
       } else if (typeof value === 'string') {
-        this.input.value = value;
+        input.value = value;
       } else {
-        this.input.value = value.toString(10);
+        input.value = value.toString(10);
       }
     } else if (value instanceof Date) {
-      const type = this.input.hasAttribute('type') && this.input.getAttribute('type').toLowerCase();
+      const type = input.hasAttribute('type') && input.getAttribute('type').toLowerCase();
       if (type === 'time') {
         const hoursStr = `${value.getHours() < 10 ? '0' : ''}${value.getHours()}`;
         const minutesStr = `${value.getMinutes() < 10 ? '0' : ''}${value.getMinutes()}`;
         const secondsStr = `${value.getSeconds() < 10 ? '0' : ''}${value.getSeconds()}`;
-        this.input.value = `${hoursStr}:${minutesStr}:${secondsStr}.${value.getMilliseconds()}`;
+        input.value = `${hoursStr}:${minutesStr}:${secondsStr}.${value.getMilliseconds()}`;
       } else {
         switch (type) {
           case 'date':
           case 'datetime-local':
-            this.input.valueAsDate = value;
+            input.valueAsDate = value;
             break;
           case 'number':
           case 'range':
-            this.input.valueAsNumber = value.getTime();
+            input.valueAsNumber = value.getTime();
             break;
           default:
-            this.input.value = value.toString();
+            input.value = value.toString();
         }
       }
     } else if (typeof value === 'string') {
-      this.input.value = value;
+      input.value = value;
     } else {
-      const type = this.input.hasAttribute('type') && this.input.getAttribute('type').toLowerCase();
+      const type = input.hasAttribute('type') && input.getAttribute('type').toLowerCase();
       switch (type) {
         case 'date':
         case 'time':
         case 'datetime-local':
         case 'number':
         case 'range':
-          this.input.valueAsNumber = value;
+          input.valueAsNumber = value;
           break;
         default:
-          this.input.value = value.toString();
+          input.value = value.toString();
       }
     }
-    this.updateInputEmptyState();
-    this.updateTextAreaSize();
+    TextField.updateInputEmptyState(input);
+    if (textfieldElement.hasAttribute('mdw-multiline')) {
+      TextField.updateTextAreaSize(input);
+    }
   }
 }
 

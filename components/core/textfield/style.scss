@@ -463,7 +463,7 @@ select.mdw-textfield__input {
     cursor: auto;
   }
 
-  .mdw-textfield[mdw-box][mdw-ripple] > & {
+  .mdw-textfield[mdw-box] > &[mdw-ripple] {
     overflow: visible;
     &::after {
       // If using custom ripple, destroy ::after object
