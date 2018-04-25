@@ -7,12 +7,11 @@ import { findElementParentByClassName } from '../../common/dom';
 class Button {
   /**
    * @param {Element} element
-   * @param {boolean=} [attachRipple=true]
    * @return {void}
    */
-  static attach(element, attachRipple) {
+  static attach(element) {
     element.setAttribute('mdw-js', '');
-    if (attachRipple !== false && !element.hasAttribute('mdw-icon')) {
+    if (!element.hasAttribute('mdw-icon')) {
       Ripple.attach(element);
     }
     if (element instanceof HTMLButtonElement === false
@@ -24,15 +23,12 @@ class Button {
 
   /**
    * @param {Element} element
-   * @param {boolean=} [detachRipple=true]
    * @return {void}
    */
-  static detach(element, detachRipple) {
+  static detach(element) {
     element.removeEventListener('keydown', Button.onKeyDown);
     element.removeAttribute('mdw-js');
-    if (detachRipple !== false) {
-      Ripple.detach(element);
-    }
+    Ripple.detach(element);
   }
 
   /**
