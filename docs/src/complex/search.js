@@ -3,12 +3,11 @@ import { List, ListItem } from '../../../components/core/list/index';
 import { TextField } from '../../../components/core/textfield/index';
 import { Search } from '../../../components/complex/search/index';
 
-const componentMap = new WeakMap();
 /** @return {void} */
 function buildCustomSearch1() {
-  const textfield = componentMap.get(document.getElementById('search-textfield-custom1'));
-  const list = componentMap.get(document.getElementById('search-list-custom1'));
-  const busyIndicator = textfield.element.querySelector('.custom-busy-indicator');
+  const textfield = document.getElementById('search-textfield-custom1');
+  const list = document.getElementById('search-list-custom1');
+  const busyIndicator = textfield.querySelector('.custom-busy-indicator');
   let resultsCache;
   let listUpdated = false;
   const customPerformSearch = () => {
@@ -35,7 +34,9 @@ function buildCustomSearch1() {
       return Promise.resolve();
     }
     return new Promise((resolve) => {
-      list.clear(componentMap);
+      while (list.lastChild) {
+        list.removeChild(list.lastChild);
+      }
       busyIndicator.style.setProperty('display', 'none');
       const markup = `
       <div class="mdw-list__text">
@@ -50,8 +51,8 @@ function buildCustomSearch1() {
         const lines = listItem.querySelectorAll('.mdw-list__text-line');
         lines[0].textContent = item.line1;
         lines[1].textContent = item.line2;
-        componentMap.set(listItem, new ListItem(listItem));
-        list.element.appendChild(listItem);
+        ListItem.attach(listItem);
+        list.appendChild(listItem);
       });
       listUpdated = true;
       resolve();
@@ -92,17 +93,19 @@ function buildCustomSearch2() {
       resolve();
     });
   }
-  const textfield = componentMap.get(document.getElementById('search-textfield-custom2'));
-  const list = componentMap.get(document.getElementById('search-list-custom2'));
-  const busyIndicator = textfield.element.querySelector('.custom-busy-indicator');
-  const noResultsIndicator = textfield.element.querySelector('.custom-no-results-indicator');
+  const textfield = document.getElementById('search-textfield-custom2');
+  const list = document.getElementById('search-list-custom2');
+  const busyIndicator = textfield.querySelector('.custom-busy-indicator');
+  const noResultsIndicator = textfield.querySelector('.custom-no-results-indicator');
   const customPerformSearch = (searchTerm) => {
     /**
      * @return {Promise}
      */
     function clearList() {
       return new Promise((resolve) => {
-        list.clear(componentMap);
+        while (list.lastChild) {
+          list.removeChild(list.lastChild);
+        }
         resolve();
       });
     }
@@ -150,8 +153,8 @@ function buildCustomSearch2() {
         const lines = listItem.querySelectorAll('.mdw-list__text-line');
         lines[0].textContent = item.line1;
         lines[1].textContent = item.line2;
-        componentMap.set(listItem, new ListItem(listItem));
-        list.element.appendChild(listItem);
+        ListItem.attach(listItem);
+        list.appendChild(listItem);
       });
       return Promise.resolve();
     });
@@ -170,12 +173,12 @@ function buildCustomSearch2() {
 /** @return {void} */
 function setupSearches() {
   const searchDocsSimple = new Search({
-    textfield: componentMap.get(document.getElementById('search-textfield-simple')),
-    list: componentMap.get(document.getElementById('search-list-simple')),
+    textfield: document.getElementById('search-textfield-simple'),
+    list: document.getElementById('search-list-simple'),
   });
   const searchDocsMultiline = new Search({
-    textfield: componentMap.get(document.getElementById('search-textfield-multiline')),
-    list: componentMap.get(document.getElementById('search-list-multiline')),
+    textfield: document.getElementById('search-textfield-multiline'),
+    list: document.getElementById('search-list-multiline'),
     suggestionMethod: 'none',
   });
 
@@ -189,17 +192,17 @@ function initializeMdwComponents() {
 
   components = document.querySelectorAll('.js .mdw-textfield');
   for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new TextField(components[i]));
+    TextField.attach(components.item(i));
   }
 
   components = document.querySelectorAll('.js .mdw-list');
   for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new List(components[i]));
+    List.attach(components.item(i));
   }
 
   components = document.querySelectorAll('.js .mdw-list__item');
   for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new ListItem(components[i]));
+    ListItem.attach(components.item(i));
   }
 }
 

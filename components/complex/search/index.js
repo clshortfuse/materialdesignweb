@@ -138,8 +138,8 @@ function scrollItemIntoView(listItem) {
 class Search {
   /**
    * @param {Object} options
-   * @param {TextField} options.textfield
-   * @param {List} options.list
+   * @param {HTMLElement} options.textfield
+   * @param {HTMLElement} options.list
    * @param {('contains'|'startsWith'|function({input:string, content:string}):boolean)=} [options.textFilter='contains']
    * @param {(function(HTMLElement):string)=} options.itemTextParser
    * @param {boolean=} [options.dropdown=false]
@@ -163,23 +163,25 @@ class Search {
     }
     this.itemTextParser = defaultItemTextParser || options.itemTextParser;
 
-    this.list.element.addEventListener('click', (event) => {
+    this.list.addEventListener('click', (event) => {
       this.handleClickEvent(event);
     });
-    this.textfield.input.addEventListener('keydown', (event) => {
+    const [input] = this.textfield.getElementsByClassName('mdw-textfield__input');
+    this.input = input;
+    this.input.addEventListener('keydown', (event) => {
       this.onTextFieldKeydownEvent(event);
     });
-    this.textfield.input.addEventListener('input', (event) => {
+    this.input.addEventListener('input', (event) => {
       if (this.handleInputEvent) {
         this.handleInputEvent(event);
       }
     });
-    this.textfield.input.addEventListener('blur', (event) => {
+    this.input.addEventListener('blur', (event) => {
       if (this.handleBlurEvent) {
         this.handleBlurEvent(event);
       }
     });
-    this.textfield.input.addEventListener('focus', (event) => {
+    this.input.addEventListener('focus', (event) => {
       if (this.searchOnFocus) {
         this.handleInputEvent(event);
       }
@@ -194,7 +196,7 @@ class Search {
     }
     this.debounce = options.debounce;
     this.suggestionMethod = options.suggestionMethod || 'replace';
-    this.currentSearchTerm = this.textfield.input.value || '';
+    this.currentSearchTerm = this.input.value || '';
     /** @type {string} */
     this.suggestedInput = null;
     /** @type {string} */
@@ -230,11 +232,11 @@ class Search {
    * @return {void}
    */
   handleInputEvent(event) {
-    if (document.activeElement !== this.textfield.input) {
+    if (document.activeElement !== this.input) {
       return;
     }
     this.showDropDown();
-    const inputValue = this.textfield.input.value || '';
+    const inputValue = this.input.value || '';
     if (inputValue === this.suggestedInput) {
       return;
     }
@@ -299,7 +301,7 @@ class Search {
     if (!this.dropdown) {
       return false;
     }
-    const dropDownElement = this.textfield.element.querySelector('.mdw-textfield__dropdown');
+    const dropDownElement = this.textfield.querySelector('.mdw-textfield__dropdown');
     let changed = false;
     if (dropDownElement.hasAttribute('mdw-hide')) {
       dropDownElement.removeAttribute('mdw-hide');
@@ -317,11 +319,11 @@ class Search {
     if (!this.dropdown) {
       return true;
     }
-    const dropDownElement = this.textfield.element.querySelector('.mdw-textfield__dropdown');
+    const dropDownElement = this.textfield.querySelector('.mdw-textfield__dropdown');
     if (dropDownElement.hasAttribute('mdw-hide')) {
       return false;
     }
-    if (this.textfield.input === document.activeElement) {
+    if (this.input === document.activeElement) {
       return true;
     }
     if (dropDownElement.hasAttribute('mdw-show')) {
@@ -335,7 +337,7 @@ class Search {
     if (!this.dropdown) {
       return true;
     }
-    const dropDownElement = this.textfield.element.querySelector('.mdw-textfield__dropdown');
+    const dropDownElement = this.textfield.querySelector('.mdw-textfield__dropdown');
     if (!dropDownElement.hasAttribute('mdw-hide')) {
       dropDownElement.setAttribute('mdw-hide', '');
       return true;
@@ -349,7 +351,7 @@ class Search {
    */
   handleBlurEvent(event) {
     if (this.dropdown) {
-      const dropDownElement = this.textfield.element.querySelector('.mdw-textfield__dropdown');
+      const dropDownElement = this.textfield.querySelector('.mdw-textfield__dropdown');
       if (dropDownElement.hasAttribute('mdw-show')) {
         dropDownElement.removeAttribute('mdw-show');
       }
@@ -373,14 +375,13 @@ class Search {
     }
     this.suggestedInput = suggestion;
     if (this.suggestionMethod === 'replace') {
-      this.textfield.input.value = suggestion;
+      TextField.setValue(this.textfield, suggestion);
     } else if (this.suggestionMethod === 'append') {
       const selectionStart = (this.previousValue || '').length;
       const selectionEnd = suggestion.length;
-      this.textfield.input.value = suggestion;
-      this.textfield.input.setSelectionRange(selectionStart, selectionEnd);
+      TextField.setValue(this.textfield, suggestion);
+      this.input.setSelectionRange(selectionStart, selectionEnd);
     }
-    this.textfield.updateInputEmptyState();
   }
 
   /**
@@ -399,9 +400,9 @@ class Search {
     if (!this.filterItems) {
       return;
     }
-    const input = this.textfield.input.value;
-    const current = this.list.element.querySelector('.mdw-list__item[mdw-selected]');
-    const items = this.list.element.querySelectorAll('.mdw-list__item');
+    const input = this.input.value;
+    const current = this.list.querySelector('.mdw-list__item[mdw-selected]');
+    const items = this.list.querySelectorAll('.mdw-list__item');
     let hasItem = false;
     for (let i = 0; i < items.length; i += 1) {
       const item = items[i];
@@ -415,7 +416,7 @@ class Search {
       }
     }
     if (current && current.hasAttribute('hidden')) {
-      const newSelection = selectSibling(this.list.element);
+      const newSelection = selectSibling(this.list);
       if (newSelection) {
         this.onItemSelected(newSelection);
       }
@@ -437,9 +438,10 @@ class Search {
       return;
     }
     switch (event.key) {
-      case 'ArrowUp': {
+      case 'ArrowUp':
+      case 'Up': {
         if (this.isDropDownShown()) {
-          const sibling = selectSibling(this.list.element, true);
+          const sibling = selectSibling(this.list, true);
           if (sibling) {
             scrollItemIntoView(sibling);
             this.onItemSelected(sibling);
@@ -449,9 +451,10 @@ class Search {
         event.preventDefault();
         break;
       }
-      case 'ArrowDown': {
+      case 'ArrowDown':
+      case 'Down': {
         if (this.isDropDownShown()) {
-          const sibling = selectSibling(this.list.element, false);
+          const sibling = selectSibling(this.list, false);
           if (sibling) {
             scrollItemIntoView(sibling);
             this.onItemSelected(sibling);
@@ -461,22 +464,22 @@ class Search {
         event.preventDefault();
         break;
       }
+      case 'Esc':
       case 'Escape': {
         if (this.hideDropDown()) {
           this.suggestedInput = this.previousValue;
-          this.textfield.input.value = this.previousValue;
-          this.textfield.updateInputEmptyState();
+          TextField.setValue(this.textfield, this.previousValue);
           event.stopPropagation();
           event.preventDefault();
         }
         break;
       }
       case 'Enter': {
-        const current = this.list.element.querySelector('.mdw-list__item[mdw-selected]');
+        const current = this.list.querySelector('.mdw-list__item[mdw-selected]');
         if (current) {
           if (this.hideDropDown()) {
-            const inputValue = this.textfield.input.value || '';
-            this.textfield.input.setSelectionRange(inputValue.length, inputValue.length);
+            const inputValue = this.input.value || '';
+            this.input.setSelectionRange(inputValue.length, inputValue.length);
             this.onItemActivated(current);
             event.stopPropagation();
             event.preventDefault();
@@ -485,11 +488,11 @@ class Search {
         break;
       }
       case 'Tab': {
-        const current = this.list.element.querySelector('.mdw-list__item[mdw-selected]');
+        const current = this.list.querySelector('.mdw-list__item[mdw-selected]');
         if (current) {
           if (this.hideDropDown()) {
-            const inputValue = this.textfield.input.value || '';
-            this.textfield.input.setSelectionRange(inputValue.length, inputValue.length);
+            const inputValue = this.input.value || '';
+            this.input.setSelectionRange(inputValue.length, inputValue.length);
             this.onItemActivated(current);
             event.stopPropagation();
           }
