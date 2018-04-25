@@ -6,14 +6,11 @@ import { Ripple } from '../ripple/index';
 class MenuItem {
   /**
    * @param {Element} element
-   * @param {boolean=} [attachRipple=true]
    * @return {void}
    */
-  static attach(element, attachRipple) {
+  static attach(element) {
     element.setAttribute('mdw-js', '');
-    if (attachRipple !== false) {
-      Ripple.attach(element);
-    }
+    Ripple.attach(element);
     // If mouseover is used, an item can still lose focus via keyboard navigation.
     // An extra event listener would need to be created to catch blur but the cursor
     // would still remain over the element, thus needing another mousemove event.
@@ -41,15 +38,12 @@ class MenuItem {
 
   /**
    * @param {Element} element
-   * @param {boolean=} [detachRipple=true]
    * @return {void}
    */
-  static detach(element, detachRipple) {
+  static detach(element) {
     element.removeEventListener('mousemove', MenuItem.onMouseMove);
     element.removeAttribute('mdw-js');
-    if (detachRipple !== false) {
-      Ripple.detach(element);
-    }
+    Ripple.detach(element);
   }
 }
 
