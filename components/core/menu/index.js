@@ -24,26 +24,6 @@ class Menu {
     this.element.addEventListener('keydown', (event) => {
       this.handleKeyEvent(event);
     });
-    this.onMenuItemMouseMove = (event) => {
-      let el = event.target;
-      while (el != null && !el.classList.contains('mdw-menu__item')) {
-        el = el.parentElement;
-      }
-      if (!el) {
-        return;
-      }
-      const previousFocus = document.activeElement;
-      if (previousFocus === el) {
-        // Already focused
-        return;
-      }
-      el.focus();
-      if (document.activeElement !== el) {
-        if (previousFocus && document.activeElement !== previousFocus) {
-          previousFocus.focus();
-        }
-      }
-    };
   }
 
   handleKeyEvent(event) {
@@ -246,11 +226,6 @@ class Menu {
     for (let i = 0; i < menuItems.length; i += 1) {
       const menuItem = menuItems.item(i);
       menuItem.setAttribute('tabindex', '-1');
-      // If mouseover is used, an item can still lose focus via keyboard navigation.
-      // An extra event listener would need to be created to catch blur but the cursor
-      // would still remain over the element, thus needing another mousemove event.
-      // Prioritization is given to less event listeners rather than operations per second.
-      menuItem.addEventListener('mousemove', this.onMenuItemMouseMove);
     }
     this.element.setAttribute('tabindex', '-1');
   }
@@ -344,6 +319,7 @@ class MenuItem {
    */
   constructor(element) {
     this.element = element;
+    
     const rippleElements = element.getElementsByClassName('mdw-ripple');
     this.ripple = rippleElements && rippleElements[0];
     if (!this.ripple) {
@@ -360,10 +336,19 @@ class MenuItem {
       this.ripple.appendChild(rippleInner);
       this.rippleInner = rippleInner;
     }
-    this.element.setAttribute('mdw-ripple', '');
-    this.element.addEventListener('click', (event) => {
-      this.updateRipplePosition(event);
-    });
+    if (!this.element.hasAttribute('mdw-js')) {
+      this.element.setAttribute('mdw-js', '');
+      this.element.setAttribute('mdw-ripple', '');
+      this.element.addEventListener('click', (event) => {
+        this.updateRipplePosition(event);
+      });
+
+      // If mouseover is used, an item can still lose focus via keyboard navigation.
+      // An extra event listener would need to be created to catch blur but the cursor
+      // would still remain over the element, thus needing another mousemove event.
+      // Prioritization is given to less event listeners rather than operations per second.
+      this.element.addEventListener('mousemove', MenuItem.onMouseMove);
+    }
   }
 
   /**
@@ -386,11 +371,33 @@ class MenuItem {
     this.rippleInner.style.setProperty('top', `${y}px`);
   }
 
+  static onMouseMove(event) {
+    let el = event.target;
+    while (el != null && !el.classList.contains('mdw-menu__item')) {
+      el = el.parentElement;
+    }
+    if (!el) {
+      return;
+    }
+    const previousFocus = document.activeElement;
+    if (previousFocus === el) {
+      // Already focused
+      return;
+    }
+    el.focus();
+    if (document.activeElement !== el) {
+      if (previousFocus && document.activeElement !== previousFocus) {
+        previousFocus.focus();
+      }
+    }
+  }
+
   /**
    * Destroys all HTMLElement references for garbage collection
    * @return {void}
    */
   detach() {
+    this.element.removeEventListener('mousemove', MenuItem.onMouseMove);
     this.ripple = null;
     this.element = null;
   }
