@@ -11,15 +11,15 @@ include ../mixins.pug
           .flex-1
           form.mdw-bottomnav(mdw-theme-color="primary")
             label.mdw-bottomnav__item
-              input(type="radio" name="bottomnav" value="recents")
+              input.mdw-bottomnav__input(type="radio" name="bottomnav" value="recents")
               .mdw-bottomnav__icon.material-icons history
               .mdw-bottomnav__label Recents
             label.mdw-bottomnav__item
-              input(type="radio" name="bottomnav" value="favorites" checked)
+              input.mdw-bottomnav__input(type="radio" name="bottomnav" value="favorites" checked)
               .mdw-bottomnav__icon.material-icons favorite
               .mdw-bottomnav__label Favorites
             label.mdw-bottomnav__item
-              input(type="radio" name="bottomnav" value="nearby")
+              input.mdw-bottomnav__input(type="radio" name="bottomnav" value="nearby")
               .mdw-bottomnav__icon.material-icons near_me
               .mdw-bottomnav__label Nearby
         +androidnavbar
@@ -30,19 +30,19 @@ include ../mixins.pug
         .content.display-flex
           .flex-1
           form.mdw-bottomnav(mdw-theme-fill="primary-700 dark" mdw-shifting)
-            input(type="radio" name="shiftingbottomnav" value="movies" id='value1')
+            input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="movies" id='value1')
             label.mdw-bottomnav__item(for='value1')
               .mdw-bottomnav__icon.material-icons tv
               .mdw-bottomnav__label Movies &amp; TV
-            input(type="radio" name="shiftingbottomnav" value="music" id='value2' checked )
+            input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="music" id='value2' checked )
             label.mdw-bottomnav__item(for='value2')
               .mdw-bottomnav__icon.material-icons music_note
               .mdw-bottomnav__label Music
-            input(type="radio" name="shiftingbottomnav" value="books" id='value3')
+            input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="books" id='value3')
             label.mdw-bottomnav__item(for='value3')
               .mdw-bottomnav__icon.material-icons book
               .mdw-bottomnav__label Books
-            input(type="radio" name="shiftingbottomnav" value="newsstand" id='value4')
+            input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="newsstand" id='value4')
             label.mdw-bottomnav__item(for='value4')
               .mdw-bottomnav__icon.material-icons assignment
               .mdw-bottomnav__label Newsstand
@@ -55,19 +55,19 @@ include ../mixins.pug
           .flex-1
           form.mdw-bottomnav(mdw-theme-fill="primary-700 dark" mdw-shifting)
             label.mdw-bottomnav__item
-              input(type="radio" name="shiftingbottomnav" value="movies")
+              input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="movies")
               .mdw-bottomnav__icon.material-icons tv
               .mdw-bottomnav__label Movies &amp; TV
             label.mdw-bottomnav__item
-              input(type="radio" name="shiftingbottomnav" value="music" checked)
+              input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="music" checked)
               .mdw-bottomnav__icon.material-icons music_note
               .mdw-bottomnav__label Music
             label.mdw-bottomnav__item
-              input(type="radio" name="shiftingbottomnav" value="books")
+              input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="books")
               .mdw-bottomnav__icon.material-icons book
               .mdw-bottomnav__label Books
             label.mdw-bottomnav__item
-              input(type="radio" name="shiftingbottomnav" value="newsstand")
+              input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="newsstand")
               .mdw-bottomnav__icon.material-icons assignment
               .mdw-bottomnav__label Newsstand
         +androidnavbar

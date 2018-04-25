@@ -57,8 +57,8 @@ $bottomnavColors: (
   .mdw-bottomnav__item {
     & > .mdw-ripple > .mdw-ripple__inner,
     &:after {
-      opacity: buttonThemeValue("ripple-opacity", $type, $theme);
-      color: buttonThemeValue("ripple-color", $type, $theme);
+      opacity: bottomnavThemeValue("ripple-opacity", $type, $theme);
+      color: bottomnavThemeValue("ripple-color", $type, $theme);
     }
   }
 }

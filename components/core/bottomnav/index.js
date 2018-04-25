@@ -1,80 +1,65 @@
+import { Ripple } from '../ripple/index';
+import { findElementParentByClassName } from '../../common/dom';
+
 class BottomnavItem {
   /**
-   * @param {Element} element
+   * @param {Element} bottomnavItemElement
+   * @return {void}
    */
-  constructor(element) {
-    this.element = element;
-    const rippleElements = element.getElementsByClassName('mdw-ripple');
-    this.ripple = rippleElements && rippleElements[0];
-    if (!this.ripple) {
-      const ripple = document.createElement('div');
-      ripple.classList.add('mdw-ripple');
-      this.element.insertBefore(ripple, this.element.firstChild);
-      this.ripple = ripple;
-    }
-    const innerRippleElements = this.ripple.getElementsByClassName('mdw-ripple__inner');
-    this.rippleInner = innerRippleElements && innerRippleElements[0];
-    if (!this.rippleInner) {
-      const rippleInner = document.createElement('div');
-      rippleInner.classList.add('mdw-ripple__inner');
-      this.ripple.appendChild(rippleInner);
-      this.rippleInner = rippleInner;
-    }
-    this.element.setAttribute('mdw-ripple', '');
-    this.element.addEventListener('click', (event) => {
-      this.updateRipplePosition(event);
-    });
+  static attach(bottomnavItemElement) {
+    Ripple.attach(bottomnavItemElement);
   }
 
   /**
-   * @param {MouseEvent|PointerEvent} event
+   * @param {Element} bottomnavItemElement
    * @return {void}
    */
-  updateRipplePosition(event) {
-    if (event.target !== this.element && event.target !== this.ripple) {
-      return;
-    }
-    if (!event.pointerType && !event.detail) {
-      // Ripple from center
-      this.rippleInner.style.removeProperty('left');
-      this.rippleInner.style.removeProperty('top');
-      return;
-    }
-    const x = event.offsetX;
-    const y = event.offsetY;
-    this.rippleInner.style.setProperty('left', `${x}px`);
-    this.rippleInner.style.setProperty('top', `${y}px`);
+  static detach(bottomnavItemElement) {
+    Ripple.detach(bottomnavItemElement);
   }
 }
 
 class Bottomnav {
   /**
-   * @param {Element} element
+   * @param {Element} bottomnavElement
+   * @return {void}
    */
-  constructor(element) {
-    this.element = element;
-    this.items = this.element.getElementsByClassName('mdw-bottomnav__item');
-    this.inputs = this.element.getElementsByTagName('input');
+  static attach(bottomnavElement) {
+    const items = bottomnavElement.getElementsByClassName('mdw-bottomnav__item');
+    const inputs = bottomnavElement.getElementsByClassName('mdw-bottomnav__input');
 
-    for (let i = 0; i < this.items.length; i += 1) {
-      const item = this.items.item(i);
-      item.addEventListener('click', () => {
-        this.onItemClicked(item);
-      });
+    for (let i = 0; i < items.length; i += 1) {
+      const item = items.item(i);
+      BottomnavItem.attach(item);
+      item.addEventListener('click', Bottomnav.onItemClicked);
     }
-    for (let i = 0; i < this.inputs.length; i += 1) {
-      const input = this.inputs.item(i);
-      input.addEventListener('change', () => {
-        this.onInputChanged(input);
-      });
+    for (let i = 0; i < inputs.length; i += 1) {
+      const input = inputs.item(i);
+      input.addEventListener('change', Bottomnav.onInputChanged);
+    }
+  }
+
+  static detach(bottomnavElement) {
+    const items = bottomnavElement.getElementsByClassName('mdw-bottomnav__item');
+    const inputs = bottomnavElement.getElementsByClassName('mdw-bottomnav__input');
+    for (let i = 0; i < items.length; i += 1) {
+      const item = items.item(i);
+      BottomnavItem.detach(item);
+      item.removeEventListener('click', Bottomnav.onItemClicked);
+    }
+    for (let i = 0; i < inputs.length; i += 1) {
+      const input = inputs.item(i);
+      input.removeEventListener('change', Bottomnav.onInputChanged);
     }
   }
 
   /**
-   * @param {HTMLInputElement} inputElement
+   * @param {Event} event
    * @return {void}
    */
-  onInputChanged(inputElement) {
+  static onInputChanged(event) {
+    /** @type {HTMLInputElement} */
+    const inputElement = event.target;
     let itemElement;
     if (inputElement.parentElement.classList.contains('mdw-bottomnav__item')) {
       itemElement = inputElement.parentElement;
@@ -88,14 +73,21 @@ class Bottomnav {
     if (!itemElement.hasAttribute('mdw-selected') && !inputElement.checked) {
       return;
     }
-    this.removeSelection();
+    const bottomnavElement = findElementParentByClassName(inputElement, 'mdw-bottomnav');
+    if (bottomnavElement) {
+      Bottomnav.removeSelection(bottomnavElement);
+    }
     itemElement.setAttribute('mdw-selected', '');
   }
 
-  /** @return {boolean} change */
-  removeSelection() {
-    for (let i = 0; i < this.items.length; i += 1) {
-      const item = this.items.item(i);
+  /**
+   * @param {Element} bottomnavElement
+   * @return {boolean} changed
+   */
+  static removeSelection(bottomnavElement) {
+    const items = bottomnavElement.getElementsByClassName('mdw-bottomnav__item');
+    for (let i = 0; i < items.length; i += 1) {
+      const item = items.item(i);
       if (item.hasAttribute('mdw-selected')) {
         item.removeAttribute('mdw-selected');
         return true;
@@ -105,17 +97,22 @@ class Bottomnav {
   }
 
   /**
-   * @param {Element} itemElement
+   * @param {Event} event
    * @return {void}
    */
-  onItemClicked(itemElement) {
+  static onItemClicked(event) {
+    /** @type {Element} */
+    const itemElement = findElementParentByClassName(event.target, 'mdw-bottomnav__item');
     if (itemElement.hasAttribute('mdw-selected')) {
       return;
     }
     if (itemElement.hasAttribute('disabled')) {
       return;
     }
-    this.removeSelection();
+    const bottomnavElement = findElementParentByClassName(itemElement, 'mdw-bottomnav');
+    if (bottomnavElement) {
+      Bottomnav.removeSelection(bottomnavElement);
+    }
     itemElement.setAttribute('mdw-selected', '');
     let inputElement;
     if (itemElement instanceof HTMLLabelElement && itemElement.hasAttribute('for')) {
@@ -124,7 +121,7 @@ class Bottomnav {
         inputElement = document.getElementById(id);
       }
     } else {
-      [inputElement] = itemElement.getElementsByTagName('input');
+      [inputElement] = itemElement.getElementsByClassName('mdw-bottomnav__input');
     }
     if (inputElement instanceof HTMLInputElement) {
       inputElement.checked = true;

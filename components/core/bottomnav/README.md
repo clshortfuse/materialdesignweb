@@ -5,16 +5,16 @@
 
 ```
 form.mdw-bottomnav(mdw-theme-color="primary")
-  label.mdw-button.mdw-bottomnav__item
-    input(type="radio" name="bottomnav" value="recents")
+  label.mdw-bottomnav__item
+    input.mdw-bottomnav__input(type="radio" name="bottomnav" value="recents")
     .mdw-bottomnav__icon.material-icons history
     .mdw-bottomnav__label Recents
-  label.mdw-button.mdw-bottomnav__item
-    input(type="radio" name="bottomnav" value="favorites" checked)
+  label.mdw-bottomnav__item
+    input.mdw-bottomnav__input(type="radio" name="bottomnav" value="favorites" checked)
     .mdw-bottomnav__icon.material-icons favorite
     .mdw-bottomnav__label Favorites
-  label.mdw-button.mdw-bottomnav__item
-    input(type="radio" name="bottomnav" value="nearby")
+  label.mdw-bottomnav__item
+    input.mdw-bottomnav__input(type="radio" name="bottomnav" value="nearby")
     .mdw-bottomnav__icon.material-icons near_me
     .mdw-bottomnav__label Nearby
 ```
@@ -22,16 +22,16 @@ form.mdw-bottomnav(mdw-theme-color="primary")
 ## Fixed (Filled)
 ```
 form.mdw-bottomnav(mdw-theme-fill="primary-700")
-  label.mdw-button.mdw-bottomnav__item
-    input(type="radio" name="bottomnav" value="recents")
+  label.mdw-bottomnav__item
+    input.mdw-bottomnav__input(type="radio" name="bottomnav" value="recents")
     .mdw-bottomnav__icon.material-icons history
     .mdw-bottomnav__label Recents
-  label.mdw-button.mdw-bottomnav__item
-    input(type="radio" name="bottomnav" value="favorites" checked)
+  label.mdw-bottomnav__item
+    input.mdw-bottomnav__input(type="radio" name="bottomnav" value="favorites" checked)
     .mdw-bottomnav__icon.material-icons favorite
     .mdw-bottomnav__label Favorites
-  label.mdw-button.mdw-bottomnav__item
-    input(type="radio" name="bottomnav" value="nearby")
+  label.mdw-bottomnav__item
+    input.mdw-bottomnav__input(type="radio" name="bottomnav" value="nearby")
     .mdw-bottomnav__icon.material-icons near_me
     .mdw-bottomnav__label Nearby
 ```
@@ -39,20 +39,20 @@ form.mdw-bottomnav(mdw-theme-fill="primary-700")
 ## Shifting (Primary Color)
 ```
 form.mdw-bottomnav(mdw-theme-color="primary" mdw-shifting)
-  input(type="radio" name="shiftingbottomnav" value="movies" id='value1')
-  label.mdw-button.mdw-bottomnav__item(for='value1')
+  input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="movies" id='value1')
+  label.mdw-bottomnav__item(for='value1')
     .mdw-bottomnav__icon.material-icons tv
     .mdw-bottomnav__label Movies &amp; TV
-  input(type="radio" name="shiftingbottomnav" value="music" id='value2' checked )
-  label.mdw-button.mdw-bottomnav__item(for='value2')
+  input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="music" id='value2' checked )
+  label.mdw-bottomnav__item(for='value2')
     .mdw-bottomnav__icon.material-icons music_note
     .mdw-bottomnav__label Music
-  input(type="radio" name="shiftingbottomnav" value="books" id='value3')
-  label.mdw-button.mdw-bottomnav__item(for='value3')
+  input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="books" id='value3')
+  label.mdw-bottomnav__item(for='value3')
     .mdw-bottomnav__icon.material-icons book
     .mdw-bottomnav__label Books
-  input(type="radio" name="shiftingbottomnav" value="newsstand" id='value4')
-  label.mdw-button.mdw-bottomnav__item(for='value4')
+  input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="newsstand" id='value4')
+  label.mdw-bottomnav__item(for='value4')
     .mdw-bottomnav__icon.material-icons assignment
     .mdw-bottomnav__label Newsstand
 ```
@@ -60,20 +60,20 @@ form.mdw-bottomnav(mdw-theme-color="primary" mdw-shifting)
 ## Shifting (Filled)
 ```
 form.mdw-bottomnav(mdw-theme-fill="primary-700" mdw-shifting)
-  input(type="radio" name="shiftingbottomnav" value="movies" id='value1')
-  label.mdw-button.mdw-bottomnav__item(for='value1')
+  input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="movies" id='value1')
+  label.mdw-bottomnav__item(for='value1')
     .mdw-bottomnav__icon.material-icons tv
     .mdw-bottomnav__label Movies &amp; TV
-  input(type="radio" name="shiftingbottomnav" value="music" id='value2' checked )
-  label.mdw-button.mdw-bottomnav__item(for='value2')
+  input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="music" id='value2' checked )
+  label.mdw-bottomnav__item(for='value2')
     .mdw-bottomnav__icon.material-icons music_note
     .mdw-bottomnav__label Music
-  input(type="radio" name="shiftingbottomnav" value="books" id='value3')
-  label.mdw-button.mdw-bottomnav__item(for='value3')
+  input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="books" id='value3')
+  label.mdw-bottomnav__item(for='value3')
     .mdw-bottomnav__icon.material-icons book
     .mdw-bottomnav__label Books
-  input(type="radio" name="shiftingbottomnav" value="newsstand" id='value4')
-  label.mdw-button.mdw-bottomnav__item(for='value4')
+  input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="newsstand" id='value4')
+  label.mdw-bottomnav__item(for='value4')
     .mdw-bottomnav__icon.material-icons assignment
     .mdw-bottomnav__label Newsstand
 ```
