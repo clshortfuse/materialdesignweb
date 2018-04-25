@@ -1,25 +1,12 @@
 import setupImageTargets from '../targetHandler';
-import { List, ListItem, ListExpander } from '../../../components/core/list/index';
+import { List } from '../../../components/core/list/index';
 import { setupMenuOptions } from '../menuoptions';
-
-const componentMap = new WeakMap();
 
 /** @return {void} */
 function initializeMdwComponents() {
-  let components;
-  components = document.querySelectorAll('.js .mdw-list');
-  for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new List(components[i]));
-  }
-
-  components = document.querySelectorAll('.js .mdw-list__item');
-  for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new ListItem(components[i]));
-  }
-
-  components = document.querySelectorAll('.js .mdw-list__expander');
-  for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new ListExpander(components[i]));
+  const lists = document.querySelectorAll('.js .mdw-list');
+  for (let i = 0; i < lists.length; i += 1) {
+    List.attach(lists.item(i));
   }
 }
 

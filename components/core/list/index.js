@@ -1,110 +1,84 @@
-class List {
-  /**
-   * @param {Element} element
-   */
-  constructor(element) {
-    this.element = element;
-  }
-
-  detach() {
-    this.element = null;
-  }
-
-  /**
-   * Clear and detach all children
-   * @param {WeakMap=} elementMap
-   * @return {void}
-   */
-  clear(elementMap) {
-    const el = this.element;
-    if (!el) {
-      return;
-    }
-    while (el.firstChild) {
-      if (elementMap && elementMap.has(el.firstChild)) {
-        elementMap.get(el.firstChild).detach();
-        elementMap.delete(el.firstChild);
-      }
-      el.removeChild(el.firstChild);
-    }
-  }
-}
+import { Ripple } from '../ripple/index';
+import { findElementParentByClassName } from '../../common/dom';
 
 class ListItem {
   /**
-   * @param {Element} element
+   * @param {Element} tabItemElement
+   * @return {void}
    */
-  constructor(element) {
-    this.element = element;
-    const rippleElements = element.getElementsByClassName('mdw-ripple');
-    this.ripple = rippleElements && rippleElements[0];
-    if (!this.ripple) {
-      const ripple = document.createElement('div');
-      ripple.classList.add('mdw-ripple');
-      this.element.insertBefore(ripple, this.element.firstChild);
-      this.ripple = ripple;
-    }
-    const innerRippleElements = this.ripple.getElementsByClassName('mdw-ripple__inner');
-    this.rippleInner = innerRippleElements && innerRippleElements[0];
-    if (!this.rippleInner) {
-      const rippleInner = document.createElement('div');
-      rippleInner.classList.add('mdw-ripple__inner');
-      this.ripple.appendChild(rippleInner);
-      this.rippleInner = rippleInner;
-    }
-    this.element.setAttribute('mdw-ripple', '');
-    this.element.addEventListener('click', (event) => {
-      this.updateRipplePosition(event);
-    });
+  static attach(tabItemElement) {
+    Ripple.attach(tabItemElement);
   }
 
   /**
-   * @param {MouseEvent|PointerEvent} event
+   * @param {Element} tabItemElement
    * @return {void}
    */
-  updateRipplePosition(event) {
-    if (event.target !== this.element && event.target !== this.ripple) {
-      return;
-    }
-    if (!event.pointerType && !event.detail) {
-      // Ripple from center
-      this.rippleInner.style.removeProperty('left');
-      this.rippleInner.style.removeProperty('top');
-      return;
-    }
-    const x = event.offsetX;
-    const y = event.offsetY;
-    this.rippleInner.style.setProperty('left', `${x}px`);
-    this.rippleInner.style.setProperty('top', `${y}px`);
-  }
-
-  /**
-   * Destroys all HTML Element references for garbage collection
-   * @return {void}
-   */
-  detach() {
-    this.ripple = null;
-    this.element = null;
+  static detach(tabItemElement) {
+    Ripple.detach(tabItemElement);
   }
 }
 
 class ListExpander {
   /**
-   * @param {Element} element
+   * @param {Element} listExpanderElement
+   * @return {void}
    */
-  constructor(element) {
-    this.element = element;
-    this.element.firstElementChild.addEventListener('click', () => {
-      this.toggleExpander();
-    });
+  static attach(listExpanderElement) {
+    if (!listExpanderElement.firstElementChild) {
+      return;
+    }
+    listExpanderElement.firstElementChild.addEventListener('click', ListExpander.onItemClicked);
   }
 
-  /** @return {void} */
-  toggleExpander() {
-    if (this.element.hasAttribute('mdw-expanded')) {
-      this.element.removeAttribute('mdw-expanded');
+  static detach(listExpanderElement) {
+    if (!listExpanderElement.firstElementChild) {
+      return;
+    }
+    listExpanderElement.firstElementChild.removeEventListener('click', ListExpander.onItemClicked);
+  }
+
+  /**
+   * @param {Event} event
+   * @return {void}
+   */
+  static onItemClicked(event) {
+    const listExpanderElement = findElementParentByClassName(event.target, 'mdw-list__expander');
+    if (!listExpanderElement) {
+      return;
+    }
+    if (listExpanderElement.hasAttribute('mdw-expanded')) {
+      listExpanderElement.removeAttribute('mdw-expanded');
     } else {
-      this.element.setAttribute('mdw-expanded', '');
+      listExpanderElement.setAttribute('mdw-expanded', '');
+    }
+  }
+}
+
+class List {
+  /**
+   * @param {Element} listElement
+   * @return {void}
+   */
+  static attach(listElement) {
+    const items = listElement.getElementsByClassName('mdw-list__item');
+    const expanders = listElement.getElementsByClassName('mdw-list__expander');
+    for (let i = 0; i < items.length; i += 1) {
+      ListItem.attach(items.item(i));
+    }
+    for (let i = 0; i < expanders.length; i += 1) {
+      ListExpander.attach(expanders.item(i));
+    }
+  }
+
+  static detach(listElement) {
+    const items = listElement.getElementsByClassName('mdw-list__item');
+    const expanders = listElement.getElementsByClassName('mdw-list__expander');
+    for (let i = 0; i < items.length; i += 1) {
+      ListItem.detach(items.item(i));
+    }
+    for (let i = 0; i < expanders.length; i += 1) {
+      ListExpander.detach(expanders.item(i));
     }
   }
 }
