@@ -113,10 +113,10 @@ $dark-background: 3;
   @media 
     screen 
       and (orientation:portrait)
-      and (max-width: $breakpoint-portrait-handset-max - 1),
+      and (max-width: 600 - 1),
     screen
       and (orientation:landscape)
-      and (max-height: $breakpoint-landscape-handset-medium - 1) {
+      and (max-height: 600 - 1) {
     @content;
   }
 }
