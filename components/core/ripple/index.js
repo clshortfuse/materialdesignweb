@@ -17,7 +17,7 @@ class Ripple {
       }
     }
 
-    let rippleInner = getChildElementByClass(element, 'mdw-ripple__inner');
+    let rippleInner = getChildElementByClass(ripple, 'mdw-ripple__inner');
     if (!rippleInner) {
       rippleInner = document.createElement('div');
       rippleInner.classList.add('mdw-ripple__inner');
