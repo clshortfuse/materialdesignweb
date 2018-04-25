@@ -4,10 +4,9 @@ import { Ripple } from '../ripple/index';
 class TextField {
   /**
    * @param {Element} textfieldElement
-   * @param {boolean=} [attachRipple=true]
    * @return {void}
    */
-  static attach(textfieldElement, attachRipple) {
+  static attach(textfieldElement) {
     /** @type {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} */
     const input = getChildElementByClass(textfieldElement, 'mdw-textfield__input');
     if (input) {
@@ -20,26 +19,21 @@ class TextField {
       border.classList.add('mdw-textfield__border-line');
       textfieldElement.appendChild(border);
     }
-    if (attachRipple !== false) {
-      Ripple.attach(border);
-    }
+    Ripple.attach(border);
   }
 
   /**
    * @param {Element} textfieldElement
-   * @param {boolean=} [detachRipple=true]
    * @return {void}
    */
-  static detach(textfieldElement, detachRipple) {
+  static detach(textfieldElement) {
     const input = getChildElementByClass(textfieldElement, 'mdw-textfield__input');
     if (input) {
       input.removeEventListener('input', TextField.onInput);
     }
-    if (detachRipple !== false) {
-      const border = getChildElementByClass(textfieldElement, 'mdw-textfield__border-line');
-      if (border) {
-        Ripple.detach(border);
-      }
+    const border = getChildElementByClass(textfieldElement, 'mdw-textfield__border-line');
+    if (border) {
+      Ripple.detach(border);
     }
   }
 
