@@ -32,12 +32,10 @@ class Dialog {
         this.handleEscapeKeyPress(event);
       }
     });
-    /** @type {Button[]} */
-    this.buttons = [];
     const buttonElements = this.element.getElementsByClassName('mdw-button');
     for (let i = 0; i < buttonElements.length; i += 1) {
       const button = buttonElements.item(i);
-      this.buttons.push(new Button(button));
+      Button.attach(button);
     }
   }
 
@@ -124,8 +122,10 @@ class Dialog {
    * @return {void}
    */
   updateButtonText(texts) {
-    for (let i = 0; i < this.buttons.length; i += 1) {
-      this.buttons[i].element.textContent = texts[i];
+    const buttonElements = this.element.getElementsByClassName('mdw-button');
+    for (let i = 0; i < buttonElements.length; i += 1) {
+      const button = buttonElements.item(i);
+      button.textContent = texts[i];
     }
   }
 
@@ -241,17 +241,17 @@ class Dialog {
       document.body.appendChild(element);
     }
     const dialog = new Dialog(element);
-    const [confirmButton, cancelButton] = dialog.buttons;
+    const [confirmButton, cancelButton] = element.getElementsByClassName('mdw-button');
     if (options.type === 'alert' || options.type === 'confirm') {
       if (confirmButton) {
-        confirmButton.element.addEventListener('click', (event) => {
+        confirmButton.addEventListener('click', (event) => {
           dialog.confirm(event);
         });
       }
     }
     if (options.type === 'confirm') {
       if (cancelButton) {
-        cancelButton.element.addEventListener('click', (event) => {
+        cancelButton.addEventListener('click', (event) => {
           dialog.cancel(event);
         });
       }
