@@ -1,50 +1,44 @@
+
+// https://www.w3.org/TR/wai-aria-practices/#button
+
+import { Ripple } from '../ripple/index';
+
 class Button {
   /**
-   * @param {Element} element
+   * @param {HTMLElement} element
    */
   constructor(element) {
     this.element = element;
-    const rippleElements = element.getElementsByClassName('mdw-ripple');
-    this.ripple = rippleElements && rippleElements[0];
-    if (!this.ripple) {
-      const ripple = document.createElement('div');
-      ripple.classList.add('mdw-ripple');
-      this.element.insertBefore(ripple, this.element.firstChild);
-      this.ripple = ripple;
+    this.element.setAttribute('mdw-js', '');
+    if (!this.element.hasAttribute('mdw-icon')) {
+      Ripple.setup(this.element);
     }
-    const innerRippleElements = this.ripple.getElementsByClassName('mdw-ripple__inner');
-    this.rippleInner = innerRippleElements && innerRippleElements[0];
-    if (!this.rippleInner) {
-      const rippleInner = document.createElement('div');
-      rippleInner.classList.add('mdw-ripple__inner');
-      this.ripple.appendChild(rippleInner);
-      this.rippleInner = rippleInner;
+    if (this.element instanceof HTMLButtonElement === false
+      && this.element instanceof HTMLAnchorElement === false
+      && this.element instanceof HTMLInputElement === false) {
+      this.element.addEventListener('keydown', Button.onKeyDown);
     }
-    this.element.setAttribute('mdw-ripple', '');
-    this.element.addEventListener('click', (event) => {
-      this.updateRipplePosition(event);
-    });
   }
 
   /**
-   * @param {MouseEvent|PointerEvent} event
+   * @param {KeyboardEvent} event
    * @return {void}
    */
-  updateRipplePosition(event) {
-    if (event.target !== this.element && event.target !== this.ripple) {
+  static onKeyDown(event) {
+    let el = event.target;
+    while (el != null && !el.classList.contains('mdw-button')) {
+      el = el.parentElement;
+    }
+    if (!el) {
       return;
     }
-    if (this.element.hasAttribute('mdw-icon') || (!event.pointerType && !event.detail)) {
-      // Ripple from center
-      this.rippleInner.style.removeProperty('left');
-      this.rippleInner.style.removeProperty('top');
-      return;
+    if (event.key === 'Enter' || event.key === 'Spacebar' || (event.key === ' ')) {
+      event.stopPropagation();
+      event.preventDefault();
+      el.click();
     }
-    const x = event.offsetX;
-    const y = event.offsetY;
-    this.rippleInner.style.setProperty('left', `${x}px`);
-    this.rippleInner.style.setProperty('top', `${y}px`);
   }
+
 }
 
 export {
