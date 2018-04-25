@@ -1,30 +1,19 @@
 import setupImageTargets from '../targetHandler';
-import { Menu, MenuItem } from '../../../components/core/menu/index';
+import { Menu } from '../../../components/core/menu/index';
 import { setupMenuOptions } from '../menuoptions';
 
-const componentMap = new WeakMap();
-
 /** @return {void} */
-function initializeMdwComponents() {
-  let components;
-  components = document.querySelectorAll('.js .mdw-menu');
-  for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new Menu(components[i]));
-  }
-
-  components = document.querySelectorAll('.js .mdw-menu__item');
-  for (let i = 0; i < components.length; i += 1) {
-    const component = components.item(i);
-    const menuItem = new MenuItem(component);
-    /** @type {Menu} */
-    const menu = componentMap.get(component.parentElement);
-    component.addEventListener('click', () => {
-      if (component.hasAttribute('disabled')) {
+function setMenuButtons() {
+  const menuItems = document.querySelectorAll('.js .mdw-menu__item');
+  for (let i = 0; i < menuItems.length; i += 1) {
+    const menuItem = menuItems.item(i);
+    const menu = menuItem.parentElement;
+    menuItem.addEventListener('click', () => {
+      if (menuItem.hasAttribute('disabled')) {
         return;
       }
-      menu.hide();
+      Menu.hide(menu);
     });
-    componentMap.set(component, menuItem);
   }
 }
 
@@ -33,12 +22,11 @@ function setupJSButton() {
   const button = document.querySelector('.js .mdw-button');
   const menu = document.querySelector('.js .mdw-menu');
   button.addEventListener('click', (event) => {
-    const mdwMenu = componentMap.get(menu);
-    mdwMenu.show(event);
+    Menu.show(menu, event);
   });
 }
 
-initializeMdwComponents();
+setMenuButtons();
 setupImageTargets();
 setupMenuOptions();
 setupJSButton();

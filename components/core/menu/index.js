@@ -1,61 +1,145 @@
+import { getChildElementByClass, findElementParentByClassName } from '../../common/dom';
+import { Ripple } from '../ripple/index';
+
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
+class MenuItem {
+  /**
+   * @param {Element} element
+   * @param {boolean=} [attachRipple=true]
+   * @return {void}
+   */
+  static attach(element, attachRipple) {
+    element.setAttribute('mdw-js', '');
+    if (attachRipple !== false) {
+      Ripple.attach(element);
+    }
+    // If mouseover is used, an item can still lose focus via keyboard navigation.
+    // An extra event listener would need to be created to catch blur but the cursor
+    // would still remain over the element, thus needing another mousemove event.
+    // Prioritization is given to less event listeners rather than operations per second.
+    element.addEventListener('mousemove', MenuItem.onMouseMove);
+  }
+
+  static onMouseMove(event) {
+    const el = findElementParentByClassName(event.target, 'mdw-menu__item');
+    if (!el) {
+      return;
+    }
+    const previousFocus = document.activeElement;
+    if (previousFocus === el) {
+      // Already focused
+      return;
+    }
+    el.focus();
+    if (document.activeElement !== el) {
+      if (previousFocus && document.activeElement !== previousFocus) {
+        previousFocus.focus();
+      }
+    }
+  }
+
+  /**
+   * @param {Element} element
+   * @param {boolean=} [detachRipple=true]
+   * @return {void}
+   */
+  static detach(element, detachRipple) {
+    element.removeEventListener('mousemove', MenuItem.onMouseMove);
+    element.removeAttribute('mdw-js');
+    if (detachRipple !== false) {
+      Ripple.detach(element);
+    }
+  }
+}
+
+class MenuStack {
+  /**
+   * @param {Element} element
+   * @param {Element} previousFocus
+   */
+  constructor(element, previousFocus) {
+    this.element = element;
+    this.previousFocus = previousFocus;
+  }
+}
+
+/** @type {MenuStack[]} */
+const OPEN_MENUS = [];
 class Menu {
   /**
-   * @param {HTMLElement} element
+   * @param {Element} menuElement
+   * @return {void}
    */
-  constructor(element) {
-    this.element = element;
-    this.element.setAttribute('mdw-js', '');
-    let [menuCloser] = this.element.getElementsByClassName('mdw-menu__close');
+  static attach(menuElement) {
+    menuElement.setAttribute('mdw-js', '');
+    let menuCloser = getChildElementByClass(menuElement, 'mdw-menu__close');
     if (!menuCloser) {
       menuCloser = document.createElement('div');
       menuCloser.classList.add('mdw-menu__close');
-      if (this.element.firstChild) {
-        this.element.insertBefore(menuCloser, this.element.firstChild);
+      if (menuElement.firstChild) {
+        menuElement.insertBefore(menuCloser, menuElement.firstChild);
       } else {
-        this.element.appendChild(menuCloser);
+        menuElement.appendChild(menuCloser);
       }
     }
-    this.menuCloser = menuCloser;
-    this.menuCloser.addEventListener('click', () => {
-      this.hide();
-    });
-    this.element.addEventListener('keydown', (event) => {
-      this.handleKeyEvent(event);
-    });
+    menuCloser.addEventListener('click', Menu.onMenuCloserClick);
+    menuElement.addEventListener('keydown', Menu.onKeyDown);
   }
 
-  handleKeyEvent(event) {
+  static onMenuCloserClick(event) {
+    const closer = findElementParentByClassName(event.target, 'mdw-menu__close');
+    if (!closer) {
+      return;
+    }
+    const menu = findElementParentByClassName(closer, 'mdw-menu');
+    if (!menu) {
+      return;
+    }
+    Menu.hide(menu);
+  }
+
+  static onPopState(event) {
+    const lastOpenMenu = OPEN_MENUS[OPEN_MENUS.length - 1];
+    if (lastOpenMenu) {
+      Menu.hide(lastOpenMenu.element);
+    }
+  }
+
+  static onKeyDown(event) {
+    const menuElement = findElementParentByClassName(event.target, 'mdw-menu');
+    if (!menuElement) {
+      return;
+    }
     if (event.key === 'Tab') {
       this.previousFocus = null;
-      this.hide();
+      Menu.hide(menuElement);
       return;
     }
     if (event.key === 'Escape' || event.key === 'Esc') {
       event.stopPropagation();
       event.preventDefault();
-      this.hide();
+      Menu.hide(menuElement);
       return;
     }
     if (event.key === 'ArrowUp' || (event.key === 'Up')) {
       event.stopPropagation();
       event.preventDefault();
-      this.selectNextMenuItem(true);
+      Menu.selectNextMenuItem(menuElement, true);
       return;
     }
     if (event.key === 'ArrowDown' || (event.key === 'Down')) {
       event.stopPropagation();
       event.preventDefault();
-      this.selectNextMenuItem();
+      Menu.selectNextMenuItem(menuElement, false);
     }
     if (!document.activeElement) {
       return;
     }
-    if (document.activeElement === this.element) {
+    if (document.activeElement === menuElement) {
       return;
     }
-    if (document.activeElement.parentElement !== this.element) {
+    if (document.activeElement.parentElement !== menuElement) {
       return;
     }
     if (document.activeElement.hasAttribute('disabled')) {
@@ -78,12 +162,17 @@ class Menu {
     }
   }
 
-  detach() {
-    this.element = null;
+  static detach(menuElement) {
+    const menuCloser = getChildElementByClass(menuElement, 'mdw-menu__close');
+    if (menuCloser) {
+      menuCloser.removeEventListener('click', Menu.onMenuCloserClick);
+    }
+    menuElement.addEventListener('keydown', Menu.onKeyDown);
+    menuElement.removeAttribute('mdw-js');
   }
 
-  selectNextMenuItem(backwards) {
-    const menuItems = this.element.getElementsByClassName('mdw-menu__item');
+  static selectNextMenuItem(menu, backwards) {
+    const menuItems = menu.getElementsByClassName('mdw-menu__item');
     let foundTarget = false;
     let candidate = null;
     let firstFocusableItem = null;
@@ -132,17 +221,18 @@ class Menu {
   }
 
   /**
+   * @param {Element} menuElement,
    * @param {MouseEvent=} event
    * @param {boolean=} [alignTarget=true]
    * @return {void}
    */
-  updateMenuPosition(event, alignTarget) {
+  static updateMenuPosition(menuElement, event, alignTarget) {
     let top = 'auto';
     let left = 'auto';
     let transformOrigin = '';
     const useAlignTarget = (alignTarget !== false);
     const margin = useAlignTarget ? '0' : '';
-    const mdwPosition = this.element.getAttribute('mdw-position') || '';
+    const mdwPosition = menuElement.getAttribute('mdw-position') || '';
     let alignTop = mdwPosition.indexOf('top') !== -1;
     let alignBottom = mdwPosition.indexOf('bottom') !== -1;
     let alignLeft = mdwPosition.indexOf('right') !== -1;
@@ -160,7 +250,7 @@ class Menu {
     }
     if (!alignTop && !alignBottom) {
       // Dynamic vertical position
-      if (this.element.clientHeight + (pageY - offsetTop) > window.innerHeight) {
+      if (menuElement.clientHeight + (pageY - offsetTop) > window.innerHeight) {
         alignBottom = true;
       } else {
         alignTop = true;
@@ -170,7 +260,7 @@ class Menu {
       top = `${pageY - offsetTop}px`;
       transformOrigin = 'top';
     } else {
-      top = `${(pageY + offsetBottom) - this.element.clientHeight}px`;
+      top = `${(pageY + offsetBottom) - menuElement.clientHeight}px`;
       transformOrigin = 'bottom';
     }
 
@@ -192,7 +282,7 @@ class Menu {
     }
     if (!alignLeft && !alignRight) {
       // Dynamic horizontal position
-      if (this.element.clientWidth + (pageX - offsetLeft) > window.innerWidth) {
+      if (menuElement.clientWidth + (pageX - offsetLeft) > window.innerWidth) {
         // Can't open to the right
         alignRight = true;
       } else {
@@ -208,198 +298,102 @@ class Menu {
       left = `${pageX - offsetLeft}px`;
       transformOrigin += ' left';
     } else if (alignRight) {
-      left = `${(pageX + offsetRight) - this.element.clientWidth}px`;
+      left = `${(pageX + offsetRight) - menuElement.clientWidth}px`;
       transformOrigin += ' right';
     }
 
-    this.element.style.setProperty('top', top);
-    this.element.style.setProperty('left', left);
-    this.element.style.setProperty('right', 'auto');
-    this.element.style.setProperty('bottom', 'auto');
-    this.element.style.setProperty('margin', margin);
-    this.element.style.setProperty('transform-origin', transformOrigin);
-    this.element.style.setProperty('position', 'fixed');
-  }
-
-  refreshMenuItems() {
-    const menuItems = this.element.getElementsByClassName('mdw-menu__item');
-    for (let i = 0; i < menuItems.length; i += 1) {
-      const menuItem = menuItems.item(i);
-      menuItem.setAttribute('tabindex', '-1');
-    }
-    this.element.setAttribute('tabindex', '-1');
+    menuElement.style.setProperty('top', top);
+    menuElement.style.setProperty('left', left);
+    menuElement.style.setProperty('right', 'auto');
+    menuElement.style.setProperty('bottom', 'auto');
+    menuElement.style.setProperty('margin', margin);
+    menuElement.style.setProperty('transform-origin', transformOrigin);
+    menuElement.style.setProperty('position', 'fixed');
   }
 
   /**
+   * @param {Element} menuElement 
+   * @return {void}
+   */
+  static refreshMenuItems(menuElement) {
+    const menuItems = menuElement.getElementsByClassName('mdw-menu__item');
+    for (let i = 0; i < menuItems.length; i += 1) {
+      const menuItem = menuItems.item(i);
+      menuItem.setAttribute('tabindex', '-1');
+      MenuItem.attach(menuItem);
+    }
+    menuElement.setAttribute('tabindex', '-1');
+  }
+
+  /**
+   * @param {Element} menuElement
    * @param {MouseEvent=} event
    * @param {boolean=} [alignTarget=true]
    * @return {boolean} handled
    */
-  show(event, alignTarget) {
+  static show(menuElement, event, alignTarget) {
     let changed = false;
     if (event) {
-      this.updateMenuPosition(event, alignTarget);
+      Menu.updateMenuPosition(menuElement, event, alignTarget);
     } else {
-      this.element.style.removeProperty('top');
-      this.element.style.removeProperty('left');
-      this.element.style.removeProperty('right');
-      this.element.style.removeProperty('bottom');
-      this.element.style.removeProperty('margin');
-      this.element.style.removeProperty('transform-origin');
-      this.element.style.removeProperty('position');
+      menuElement.style.removeProperty('top');
+      menuElement.style.removeProperty('left');
+      menuElement.style.removeProperty('right');
+      menuElement.style.removeProperty('bottom');
+      menuElement.style.removeProperty('margin');
+      menuElement.style.removeProperty('transform-origin');
+      menuElement.style.removeProperty('position');
     }
-    if (this.element.hasAttribute('mdw-hide')) {
-      this.element.removeAttribute('mdw-hide');
+    if (menuElement.hasAttribute('mdw-hide')) {
+      menuElement.removeAttribute('mdw-hide');
       changed = true;
     }
-    if (!this.element.hasAttribute('mdw-show')) {
-      this.element.setAttribute('mdw-show', '');
+    if (!menuElement.hasAttribute('mdw-show')) {
+      menuElement.setAttribute('mdw-show', '');
       changed = true;
     }
     if (changed) {
-      this.previousFocus = document.activeElement;
+      Menu.attach(menuElement);
+      const previousFocus = document.activeElement;
       if (window.history && window.history.pushState) {
         const title = 'Menu';
-        this.onPopState = (event) => {
-          this.hide(event);
-        };
         window.history.pushState({}, title, '');
-        window.addEventListener('popstate', this.onPopState);
+        window.addEventListener('popstate', Menu.onPopState);
       }
-      this.refreshMenuItems();
+      const menuStack = new MenuStack(menuElement, previousFocus);
+      OPEN_MENUS.push(menuStack);
+      Menu.refreshMenuItems(menuElement);
       if (event && !event.pointerType && !event.detail) {
         // Triggered with keyboard event
-        this.selectNextMenuItem();
+        Menu.selectNextMenuItem(menuElement);
       } else {
-        this.element.focus();
+        menuElement.focus();
       }
     }
     return changed;
   }
 
-  /** @return {boolean} handled */
-  hide() {
-    if (!this.element.hasAttribute('mdw-hide')) {
-      this.element.setAttribute('mdw-hide', '');
-      if (this.previousFocus) {
-        this.previousFocus.focus();
+  /**
+   * @param {Element} menuElement
+   * @return {boolean} handled
+   */
+  static hide(menuElement) {
+    if (!menuElement.hasAttribute('mdw-hide')) {
+      menuElement.setAttribute('mdw-hide', '');
+      const menuStackIndex = OPEN_MENUS.findIndex(openMenu => openMenu.element === menuElement);
+      if (menuStackIndex !== -1) {
+        const menuStack = OPEN_MENUS[menuStackIndex];
+        if (menuStack.previousFocus) {
+          menuStack.previousFocus.focus();
+        }
+        OPEN_MENUS.splice(menuStackIndex, 1);
       }
-      this.element.removeAttribute('tabindex');
-      if (this.onPopState) {
+      if (!OPEN_MENUS.length) {
         window.removeEventListener('popstate', this.onPopState);
       }
       return true;
     }
     return false;
-  }
-
-  /**
-   * Clear and detach all children
-   * @param {WeakMap=} elementMap
-   * @return {void}
-   */
-  clear(elementMap) {
-    const el = this.element;
-    if (!el) {
-      return;
-    }
-    while (el.firstChild) {
-      if (elementMap && elementMap.has(el.firstChild)) {
-        elementMap.get(el.firstChild).detach();
-        elementMap.delete(el.firstChild);
-      }
-      el.removeChild(el.firstChild);
-    }
-  }
-}
-
-class MenuItem {
-  /**
-   * @param {Element} element
-   */
-  constructor(element) {
-    this.element = element;
-    
-    const rippleElements = element.getElementsByClassName('mdw-ripple');
-    this.ripple = rippleElements && rippleElements[0];
-    if (!this.ripple) {
-      const ripple = document.createElement('div');
-      ripple.classList.add('mdw-ripple');
-      this.element.insertBefore(ripple, this.element.firstChild);
-      this.ripple = ripple;
-    }
-    const innerRippleElements = this.ripple.getElementsByClassName('mdw-ripple__inner');
-    this.rippleInner = innerRippleElements && innerRippleElements[0];
-    if (!this.rippleInner) {
-      const rippleInner = document.createElement('div');
-      rippleInner.classList.add('mdw-ripple__inner');
-      this.ripple.appendChild(rippleInner);
-      this.rippleInner = rippleInner;
-    }
-    if (!this.element.hasAttribute('mdw-js')) {
-      this.element.setAttribute('mdw-js', '');
-      this.element.setAttribute('mdw-ripple', '');
-      this.element.addEventListener('click', (event) => {
-        this.updateRipplePosition(event);
-      });
-
-      // If mouseover is used, an item can still lose focus via keyboard navigation.
-      // An extra event listener would need to be created to catch blur but the cursor
-      // would still remain over the element, thus needing another mousemove event.
-      // Prioritization is given to less event listeners rather than operations per second.
-      this.element.addEventListener('mousemove', MenuItem.onMouseMove);
-    }
-  }
-
-  /**
-   * @param {MouseEvent|PointerEvent} event
-   * @return {void}
-   */
-  updateRipplePosition(event) {
-    if (event.target !== this.element && event.target !== this.ripple) {
-      return;
-    }
-    if (!event.pointerType && !event.detail) {
-      // Ripple from center
-      this.rippleInner.style.removeProperty('left');
-      this.rippleInner.style.removeProperty('top');
-      return;
-    }
-    const x = event.offsetX;
-    const y = event.offsetY;
-    this.rippleInner.style.setProperty('left', `${x}px`);
-    this.rippleInner.style.setProperty('top', `${y}px`);
-  }
-
-  static onMouseMove(event) {
-    let el = event.target;
-    while (el != null && !el.classList.contains('mdw-menu__item')) {
-      el = el.parentElement;
-    }
-    if (!el) {
-      return;
-    }
-    const previousFocus = document.activeElement;
-    if (previousFocus === el) {
-      // Already focused
-      return;
-    }
-    el.focus();
-    if (document.activeElement !== el) {
-      if (previousFocus && document.activeElement !== previousFocus) {
-        previousFocus.focus();
-      }
-    }
-  }
-
-  /**
-   * Destroys all HTMLElement references for garbage collection
-   * @return {void}
-   */
-  detach() {
-    this.element.removeEventListener('mousemove', MenuItem.onMouseMove);
-    this.ripple = null;
-    this.element = null;
   }
 }
 
