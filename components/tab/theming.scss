@@ -1,0 +1,52 @@
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
+
+$tabColors: (
+  active-color:      (inherit,        (#fff, 1.00)),
+  inactive-color:    ((#000, 0.54), (#fff, 0.70)),
+  indicator-color:   ((#000, 1.00), (#fff, 1.00)),
+  ripple-opacity:    (         0.26 ,          0.30,)
+);
+
+@function tabThemeValue($key, $type, $theme) {
+  @return themeValue('tab', $tabColors, $key, $type, $theme);
+}
+
+@mixin tabThemeVariables($color, $lightness) {
+  @include themeVariables('tab', $tabColors, $color, $lightness);
+}
+
+// Vary by contrast
+@mixin tabContrastRules($type: 'var', $theme: null) {
+  .mdw-tab__icon,
+  .mdw-tab__label {
+    color: tabThemeValue("inactive-color", $type, $theme);
+  }
+  .mdw-tab__indicator {
+    color: tabThemeValue("indicator-color", $type, $theme);
+  }
+  
+  .mdw-tab__item[mdw-selected] > .mdw-tab__icon,
+  .mdw-tab__item[mdw-selected] > .mdw-tab__label {
+    color: tabThemeValue("active-color", $type, $theme);
+  }
+  @for $i from 1 through 8 {
+    .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items,
+    .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items-wrapper .mdw-tab__items {
+      & > .mdw-tab__item:nth-child(#{$i}) {
+        > .mdw-tab__icon,
+        > .mdw-tab__label {
+          color: tabThemeValue("active-color", $type, $theme);
+        }
+      }
+    }
+  }
+
+  .mdw-tab__item {
+    & > .mdw-ripple > .mdw-ripple__inner,
+    &:after {
+      color: tabThemeValue("active-color", $type, $theme);
+      opacity: tabThemeValue("ripple-opacity", $type, $theme);
+    }
+  }
+}

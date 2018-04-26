@@ -1,0 +1,85 @@
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
+
+$listColors: (
+  text-color:           ((#000, 0.87), (#fff, 1.00)),
+  secondary-text-color: ((#000, 0.54), (#fff, 0.70)),
+  divider-color:        ((#000, 0.12), (#fff, 0.12)),
+  press-color:          ((#999, 0.40), (#CCC, 0.25)),
+  selected-color:       ((#999, 0.40), (#CCC, 0.25)),
+  ripple-color:         ( #000       ,  #fff       ),
+  ripple-opacity:       (         0.12 ,          0.30,           0.20),
+);
+
+@function listThemeValue($key, $type) {
+  @return themeValue('list', $listColors, $key, $type);
+}
+
+@mixin listThemeVariables($color, $lightness) {
+  @include themeVariables('list', $listColors, $color, $lightness);
+}
+
+// Vary by contrast
+@mixin listContrastRules($type: 'var', $theme: null) {
+  .mdw-list__subheader {
+    color: listThemeValue("secondary-text-color", $type);
+  }
+  .mdw-list__item:not([mdw-theme-color]) {
+    color: listThemeValue("text-color", $type)
+  }
+  .mdw-list__text {
+    [mdw-divider] > .mdw-list__item:not(:last-child) &::after {
+      background-color: listThemeValue("divider-color", $type);
+    }
+  }
+  .mdw-list__divider {
+    border-top-color: listThemeValue("divider-color", $type);
+  }
+  .mdw-list__expander {
+    &::before,
+    &::after {
+      background-color: listThemeValue("divider-color", $type);
+    }
+    > .mdw-list__item:first-child {
+      .mdw-list__secondary {
+        color: listThemeValue("secondary-text-color", $type);
+      }
+    } 
+  }
+  .mdw-list__text-line {
+    &:last-child:not(:only-child) {
+      color: listThemeValue("text-color", $type);
+      &:nth-child(3) {
+        color: listThemeValue("secondary-text-color", $type);
+      }
+    }
+  }
+  .mdw-list__text-line > span,
+  .mdw-list__text-block > span {
+    color: listThemeValue("secondary-text-color", $type);
+  }
+  .mdw-list__item {
+    &[mdw-selected] {
+      background-color: listThemeValue("selected-color", $type);
+    }
+    &[tabindex]:active:focus::before {
+      background-color: listThemeValue("press-color", $type);
+    }
+    &:active:not(:focus-within)::before,
+    &:active[tabindex]:focus:not(:focus-within)::before {
+      background-color: listThemeValue("press-color", $type);
+    }
+
+    // IE and Edge does not support :focus-within
+    @include MSOnly {
+      &:active::before {
+        background-color: listThemeValue("press-color", $type);
+      }
+    }
+    & > .mdw-ripple > .mdw-ripple__inner,
+    &:after {
+      opacity: buttonThemeValue("ripple-opacity", $type, $theme);
+      color: buttonThemeValue("ripple-color", $type, $theme);
+    }
+  }
+}

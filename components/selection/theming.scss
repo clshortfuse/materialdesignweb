@@ -1,0 +1,56 @@
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
+
+$selectionColors: (
+  text-color:            ((#000, 0.87), (#fff, 1.00)),
+  color:                 ((#000, 0.54), (#fff, 0.70)),
+  ripple-color:          ( #000       ,  #fff       ),
+  ripple-opacity:        (         0.12 ,          0.30  , 0.20),
+  disabled-color:        ((#000, 0.26), (#fff, 0.30)),
+);
+
+@function selectionThemeValue($key, $type, $theme) {
+  @return themeValue('selection', $selectionColors, $key, $type, $theme);
+}
+
+@mixin selectionThemeVariables($color, $lightness) {
+  @include themeVariables('selection', $selectionColors, $color, $lightness);
+}
+
+// Vary by contrast
+@mixin selectionContrastRules($type: 'var', $theme: null) {
+  .mdw-selection__input {
+    color: selectionThemeValue("ripple-color", $type, $theme);
+    &:active:not(:disabled),
+    &:focus {
+      opacity: selectionThemeValue("ripple-opacity", $type, $theme);
+    }
+    &[type="checkbox"]:not(:checked) ~ .mdw-selection__icon,
+    &[type="checkbox"]:active:not(:disabled) ~ .mdw-selection__icon {
+      color: selectionThemeValue("color", $type, $theme);
+    }
+
+    &[type="radio"]:not(:checked) ~ .mdw-selection__icon {
+      color: selectionThemeValue("color", $type, $theme);
+    }
+    &[type="checkbox"]:checked ~ .mdw-selection__icon::after {
+      // Checkbox color is based on currently filled background-color
+      @if($type == 'var') {
+        border-color: unquote("rgb(var(--background-color))");
+      } @else {
+        // IE11 Fallback
+        border-color: white;
+      }
+    }
+    &:disabled ~ .mdw-selection__label,
+    &:disabled ~ .mdw-selection__icon,
+    &:disabled ~ .mdw-selection__icon::before {
+      color: selectionThemeValue("disabled-color", $type, $theme);
+    }
+
+  }
+  .mdw-selection__label,
+  .mdw-selection[mdw-theme-color] .mdw-selection__input:not(:disabled) ~ .mdw-selection__label {
+    color: selectionThemeValue("text-color", $type, $theme);
+  }
+}

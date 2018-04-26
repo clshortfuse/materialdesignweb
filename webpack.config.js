@@ -88,22 +88,16 @@ function getDocsConfig() {
     components: ['./docs/src/components.scss'],
     'theming.ie11': ['./docs/src/theming.ie11.scss'],
   };
-  fs.readdirSync('./docs/src/core/')
+
+  fs.readdirSync('./docs/src/components/')
     .forEach((filename) => {
       const noExt = filename.substring(0, filename.lastIndexOf('.'));
       if (!entries[`${noExt}`]) {
         entries[`${noExt}`] = [];
       }
-      entries[`${noExt}`].push(`./docs/src/core/${filename}`);
+      entries[`${noExt}`].push(`./docs/src/components/${filename}`);
     });
-  fs.readdirSync('./docs/src/complex/')
-    .forEach((filename) => {
-      const noExt = filename.substring(0, filename.lastIndexOf('.'));
-      if (!entries[`${noExt}`]) {
-        entries[`${noExt}`] = [];
-      }
-      entries[`${noExt}`].push(`./docs/src/complex/${filename}`);
-    });
+
   const DEST = (isProduction ? 'docs' : 'test/docs');
   return {
     entry: entries,

@@ -1,29 +1,26 @@
 @import 'palettes.scss';
 @import '../common/functions.scss';
-@import '../core/bottomnav/theming.scss';
-@import '../core/button/theming.scss';
-@import '../core/list/theming.scss';
-@import '../core/menu/theming.scss';
-@import '../core/selection/theming.scss';
-@import '../core/tab/theming.scss';
-@import '../core/textfield/theming.scss';
-@import '../core/toolbar/theming.scss';
-@import '../core/type/theming.scss';
 
-@import '../complex/card/theming.scss';
-@import '../complex/dialog/theming.scss';
-@import '../complex/navdrawer/theming.scss';
-@import '../complex/table/theming.scss';
-
+@import '../bottomnav/theming.scss';
+@import '../button/theming.scss';
+@import '../card/theming.scss';
+@import '../dialog/theming.scss';
+@import '../list/theming.scss';
+@import '../menu/theming.scss';
+@import '../navdrawer/theming.scss';
+@import '../selection/theming.scss';
+@import '../tab/theming.scss';
+@import '../table/theming.scss';
+@import '../textfield/theming.scss';
+@import '../toolbar/theming.scss';
+@import '../type/theming.scss';
 
 $tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "A100", "A200", "A400", "A700");
 $added-palettes-list: ();
 
 
 @mixin buildMDWThemes($config-map: ()) {
-  $theme-components: (
-    'bottomnav', 'button', 'list', 'menu', 'selection', 'tab', 'textfield', 'toolbar',
-    'card', 'dialog', 'navdrawer', 'table');
+  $theme-components: ('bottomnav', 'button', 'card', 'dialog', 'list', 'menu', 'navdrawer', 'selection', 'tab', 'table', 'textfield', 'toolbar');
   $themes: (
     "default": ('indigo', 'pink', 'red'),
   );
@@ -65,17 +62,29 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'button')) {
     @include buttonThemeVariables($color, 'light');
   }
+  @if (index($mdw-theme__components, 'card')) {
+    @include cardThemeVariables($color, 'light');
+  }
+  @if (index($mdw-theme__components, 'dialog')) {
+    @include dialogThemeVariables($color, 'light');
+  }
   @if (index($mdw-theme__components, 'list')) {
     @include listThemeVariables($color, 'light');
   }
   @if (index($mdw-theme__components, 'menu')) {
     @include menuThemeVariables($color, 'light');
   }
+  @if (index($mdw-theme__components, 'navdrawer')) {
+    @include navdrawerThemeVariables($color, 'light');
+  }
   @if (index($mdw-theme__components, 'selection')) {
     @include selectionThemeVariables($color, 'light');
   }
   @if (index($mdw-theme__components, 'tab')) {
     @include tabThemeVariables($color, 'light');
+  }
+  @if (index($mdw-theme__components, 'table')) {
+    @include tableThemeVariables($color, 'light');
   }
   @if (index($mdw-theme__components, 'textfield')) {
     @include textfieldThemeVariables($color, 'light');
@@ -86,19 +95,6 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'type')) {
     @include typeThemeVariables($color, 'light');
   }
-
-  @if (index($mdw-theme__components, 'card')) {
-    @include cardThemeVariables($color, 'light');
-  }
-  @if (index($mdw-theme__components, 'dialog')) {
-    @include dialogThemeVariables($color, 'light');
-  }
-  @if (index($mdw-theme__components, 'navdrawer')) {
-    @include navdrawerThemeVariables($color, 'light');
-  }
-  @if (index($mdw-theme__components, 'table')) {
-    @include tableThemeVariables($color, 'light');
-  }
 }
 
 @mixin darkVariables($color:"background") {
@@ -108,17 +104,29 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'button')) {
     @include buttonThemeVariables($color, 'dark');
   }
+  @if (index($mdw-theme__components, 'card')) {
+    @include cardThemeVariables($color, 'dark');
+  }
+  @if (index($mdw-theme__components, 'dialog')) {
+    @include dialogThemeVariables($color, 'dark');
+  }
   @if (index($mdw-theme__components, 'list')) {
     @include listThemeVariables($color, 'dark');
   }
   @if (index($mdw-theme__components, 'menu')) {
     @include menuThemeVariables($color, 'dark');
   }
+  @if (index($mdw-theme__components, 'navdrawer')) {
+    @include navdrawerThemeVariables($color, 'dark');
+  }
   @if (index($mdw-theme__components, 'selection')) {
     @include selectionThemeVariables($color, 'dark');
   }
   @if (index($mdw-theme__components, 'tab')) {
     @include tabThemeVariables($color, 'dark');
+  }
+  @if (index($mdw-theme__components, 'table')) {
+    @include tableThemeVariables($color, 'dark');
   }
   @if (index($mdw-theme__components, 'textfield')) {
     @include textfieldThemeVariables($color, 'dark');
@@ -128,19 +136,6 @@ $added-palettes-list: ();
   }
   @if (index($mdw-theme__components, 'type')) {
     @include typeThemeVariables($color, 'dark');
-  }
-
-  @if (index($mdw-theme__components, 'card')) {
-    @include cardThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'dialog')) {
-    @include dialogThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'navdrawer')) {
-    @include navdrawerThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'table')) {
-    @include tableThemeVariables($color, 'dark');
   }
 }
 
@@ -160,17 +155,29 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'button')) {
     @include buttonContrastRules($type, $theme);
   }
+  @if (index($mdw-theme__components, 'card')) {
+    @include cardContrastRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'dialog')) {
+    @include dialogContrastRules($type, $theme);
+  }
   @if (index($mdw-theme__components, 'list')) {
     @include listContrastRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'menu')) {
     @include menuContrastRules($type, $theme);
   }
+  @if (index($mdw-theme__components, 'navdrawer')) {
+    @include navdrawerContrastRules($type, $theme);
+  }
   @if (index($mdw-theme__components, 'selection')) {
     @include selectionContrastRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'tab')) {
     @include tabContrastRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'table')) {
+    @include tableContrastRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'textfield')) {
     @include textfieldContrastRules($type, $theme);
@@ -180,19 +187,6 @@ $added-palettes-list: ();
   }
   @if (index($mdw-theme__components, 'type')) {
     @include typeContrastRules($type, $theme);
-  }
-
-  @if (index($mdw-theme__components, 'card')) {
-    @include cardContrastRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'dialog')) {
-    @include dialogContrastRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'navdrawer')) {
-    @include navdrawerContrastRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'table')) {
-    @include tableContrastRules($type, $theme);
   }
 }
 

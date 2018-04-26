@@ -1,0 +1,9 @@
+// https://material.io/guidelines/components/cards.html
+
+@import '../common/functions.scss';
+@import '../common/motion.scss';
+@import '../common/variables.scss';
+
+.mdw-card {
+  box-shadow: elevation(2);
+}

@@ -1,0 +1,276 @@
+// https://material.io/guidelines/components/buttons.html#buttons-raised-buttons
+// https://material.io/guidelines/style/icons.html#
+
+@import '../common/functions.scss';
+@import '../common/motion.scss';
+@import '../common/mixins.scss';
+@import '../common/ripple.scss';
+
+$button__external-padding: dp(8);
+$button__minimum-click-target: dp(48);
+$button__background-color-pressed: rgba(#999, 0.40);
+$button__focus-animation-delay: 1667ms;
+$button__focus-animation-duration: 1667ms;
+$button__long-press-timeout: 500ms;
+$button__click-timeout: 100ms;
+
+.mdw-button {
+  position: relative;
+  min-width: dp(64);
+  min-height: dp(36);
+  padding: 0 dp(8);
+  margin: 0 8px;
+  border-radius: dp(2);
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  &[disabled] {
+    cursor: not-allowed;
+  }
+
+  overflow: hidden;
+  transition-property: box-shadow, background-color;
+  transition-duration: $button__click-timeout, $button__long-press-timeout;
+  transition-delay: 0s;
+  transition-timing-function: $motion-easing-acceleration;
+  &:active {
+    transition-duration: $button__click-timeout, $button__long-press-timeout - $button__click-timeout;
+    transition-delay: 0s, $button__click-timeout;
+    transition-timing-function: $motion-easing-deceleration;
+  }
+  z-index: 0;
+
+  // Override browser button defaults
+  box-sizing: border-box;
+  outline: none;
+  -webkit-appearance: none;
+  border: none;
+  text-decoration: none;
+  &:not([mdw-theme-fill]) {
+    background-color: transparent;
+  }
+  
+  // Remove Firefox inner
+  &::-moz-focus-inner {
+    border: 0;
+  }
+
+  // Support any HTMLElement (not just HTMLButtonElement)
+  user-select: none;
+  display: inline-flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  // Don't override font icon properties
+  &:not([mdw-icon]) {
+    font-family: inherit;
+    font-size: sp(14);
+    line-height: normal;
+    text-transform: uppercase;
+    word-spacing: normal;
+    font-weight: $font-weight-medium;
+  }
+
+  // Icon properties
+  &[mdw-icon] {
+    border-radius: 50%;
+    min-height: 1em;
+    min-width: 1em;
+    padding: dp(8);
+    font-size: dp(24); // Internal padding provided by font
+    box-sizing: content-box;
+    user-select: none;
+  }
+
+  &[mdw-image] {
+    border-radius: 50%;
+    min-height: dp(24);
+    min-width: dp(24);
+    padding: 0;
+    margin: 0;
+    box-sizing: content-box;
+    user-select: none;
+    > * {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: auto;
+      height: 100%;
+      // z-index: -1; // Safari has a negative z-index bug
+    }
+  }
+
+  // Button Animations
+  // Ripple doesn't appear until mouse-up
+  // Background color transitions from hover to press
+
+  // ::before - focus overlay
+  // ::after  - ripple
+
+  &[disabled] > .mdw-ripple,
+  &[disabled] > .mdw-button__focus-ring,
+  &[disabled]::before,
+  &[disabled]::after {
+    content: none;
+    display: none;
+  }
+
+  
+}
+
+.mdw-button {
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    // z-index: -1; // Safari has a negative z-index bug
+    border-radius: inherit;
+    user-select: none;
+    pointer-events: none;
+    background-color: currentColor;
+    color: black;
+    opacity: 0;
+    transition-property: opacity, transform;
+    transform: scale(1);
+    transition-duration: 200ms;
+  }
+  &:focus:not(:active)::before {
+    opacity: 0.12;
+  }
+}
+
+// Fix anchor line-height on IE11
+@include IEOnly {
+  a.mdw-button:not([mdw-icon]) {
+    line-height: 2.5em !important;
+  }
+}
+
+// Extended touch target
+@mixin mdw-button__touch-target {
+  @media (any-pointer: coarse) {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: $button__minimum-click-target;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.mdw-button__focus-ring {
+  overflow: hidden;
+  // z-index: -1; // Safari has a negative z-index bug
+  &,
+  &::after {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    // Background-size does not animate smoothly.
+    // Focus circle: inner-radius - 10% - fully transparent
+    // Scale up by 10.0 to become 100% when not focused
+    background-position: center center;
+    transform: scale(10); // 10.0 has subpixel rendering issues
+    transition-property: transform;
+    transition-duration: 200ms;
+    transition-delay: 5ms;
+    transition-timing-function: $motion-easing-standard;
+    background-image: radial-gradient(
+      circle at center,
+      transparent 10%,
+      currentColor 10.0001%);
+    color: black;
+    opacity: 0;
+    .mdw-button:focus:not(:active) > & {
+      transform: scale(7.5);
+      transition-delay: $button__focus-animation-delay;
+      transition-duration: $button__focus-animation-delay;
+      animation-duration: $button__focus-animation-duration;
+      animation-timing-function: $motion-easing-standard;
+      animation-delay: $button__focus-animation-delay * 2;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+      animation-name: focus-pulse;
+      opacity: 0.12;
+    }
+  }
+}
+
+.mdw-button[mdw-ripple] {
+  overflow: visible;
+  &::after {
+    // If using custom ripple, destroy ::after object
+    content: none;
+  }
+}
+
+.mdw-button > .mdw-ripple {
+  @include mdw-ripple__container;
+}
+
+.mdw-button {
+  & > .mdw-ripple > .mdw-ripple__inner,
+  &::after {
+    @include mdw-ripple__inner;
+  }
+
+  & > .mdw-ripple:active > .mdw-ripple__inner,
+  &:active::after {
+    @include mdw-ripple__active;
+  }
+}
+
+// Raised
+.mdw-button[mdw-raised]:not([disabled]) {
+  box-shadow: elevation(2);
+  &:active {
+    box-shadow: elevation(8);
+  }
+  @media (any-pointer: fine) {
+    &:not([mdw-raised="always"]) {
+      box-shadow: elevation(0);
+      &:hover {
+        box-shadow: elevation(2);
+      }
+      &:active,
+      &:hover:active {
+        box-shadow: elevation(8);
+      }
+    }
+  }
+}
+
+@keyframes focus-pulse {
+  from { transform: scale(7.5); }
+  to { transform: scale(8.0) }
+}
+
+.mdw-button[mdw-theme-color] {
+  &::before {
+    color: inherit;
+  }
+  &:active::before {
+    // Colored buttons have undocumented press color
+    opacity: 0.26;
+    transition-delay: $button__click-timeout;
+    transition-duration: $button__long-press-timeout - $button__click-timeout;
+    transition-timing-function: $motion-easing-deceleration;
+  }
+  &:focus:not(:active) > .mdw-button__focus-ring::after {
+    color: inherit;
+    opacity: 0.26;
+  }
+}

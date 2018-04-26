@@ -44,11 +44,8 @@ mixin header()
       script(src='prerender.min.js')
     body
       block
-    
 
-
-- var corecomponents = ["bottomnav", "button", "elevation", "layout", "list", "menu", "progress", "selection", "tab", "textfield", "toolbar", "tooltip", "type"]
-- var complexcomponents = ["dialog", "fab", "navdrawer", "search", "table"]
+- var components = ["bottomnav", "button", "dialog", "elevation", "fab", "layout", "list", "menu", "navdrawer", "progress", "search", "selection", "tab", "table", "textfield", "toolbar", "tooltip", "type"]
 
 mixin navdrawer(selected)
   .mdw-navdrawer#docs-navdrawer
@@ -75,13 +72,9 @@ mixin navdrawer(selected)
       .mdw-list
         a.mdw-list__item(mdw-selected=selected=='Home' href='index.html' mdw-theme-color="primary")
           .mdw-list__text Home
-        .mdw-list__subheader Core
-        each item in corecomponents
-          a.mdw-list__item(mdw-selected=selected==item href=`${item}.html` mdw-theme-color="primary")
-            .mdw-list__text=item
-        .mdw-list__subheader Complex
-        each item in complexcomponents
-          a.mdw-list__item(mdw-selected=(selected==item) href=`${item}.html` mdw-theme-color="accent")
+        .mdw-list__subheader Components
+        each item in components
+          a.mdw-list__item(mdw-selected=selected==item href=`${item}.html` mdw-theme-color="accent")
             .mdw-list__text=item
     .mdw-navdrawer__content(style="padding-bottom:24px")
       block

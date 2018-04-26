@@ -1,0 +1,64 @@
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
+
+$bottomnavColors: (
+  active-color:         (inherit       , inherit),
+  filled-active-color:  (inherit       , (#fff, 1.0)),
+  inactive-color:       ((#000, 0.54), (#fff, 0.50)),
+  ripple-color:         ( #000       ,  #fff       ),
+  ripple-opacity:       (         0.12 ,          0.30,           0.20),
+);
+
+@function bottomnavThemeValue($key, $type, $theme) {
+  @return themeValue('bottomnav', $bottomnavColors, $key, $type, $theme);
+}
+
+@mixin bottomnavThemeVariables($color, $lightness) {
+  @include themeVariables('bottomnav', $bottomnavColors, $color, $lightness);
+}
+
+@mixin internalBottomnavContrastRules($type, $theme: null) {
+  @at-root {
+    #{&}.mdw-bottomnav[mdw-theme-fill] {
+      input:checked ~ .mdw-bottomnav__icon,
+      input:checked ~ .mdw-bottomnav__label,
+      .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__icon,
+      .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__label,
+      input:checked + .mdw-bottomnav__item > .mdw-bottomnav__icon,
+      input:checked + .mdw-bottomnav__item > .mdw-bottomnav__label {
+        color: bottomnavThemeValue("filled-active-color", $type, $theme);
+      }
+    }
+  }
+}
+
+// Vary by contrast
+@mixin bottomnavContrastRules($type: 'var', $theme: null) {
+  @include internalBottomnavContrastRules($type, $theme);
+  @if ($type != 'var') {
+    :not([mdw-theme-fill]) {
+      @include internalBottomnavContrastRules($type, $theme);
+    }
+  }
+  .mdw-bottomnav__icon,
+  .mdw-bottomnav__label {
+    color: bottomnavThemeValue("inactive-color", $type, $theme);
+  }
+
+  input:checked ~ .mdw-bottomnav__icon,
+  input:checked ~ .mdw-bottomnav__label,
+  .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__icon,
+  .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__label,
+  input:checked + .mdw-bottomnav__item > .mdw-bottomnav__icon,
+  input:checked + .mdw-bottomnav__item > .mdw-bottomnav__label {
+    color: bottomnavThemeValue("active-color", $type, $theme);
+  }
+
+  .mdw-bottomnav__item {
+    & > .mdw-ripple > .mdw-ripple__inner,
+    &:after {
+      opacity: bottomnavThemeValue("ripple-opacity", $type, $theme);
+      color: bottomnavThemeValue("ripple-color", $type, $theme);
+    }
+  }
+}

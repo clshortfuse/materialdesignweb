@@ -1,0 +1,173 @@
+// https://material.io/guidelines/components/bottom-navigation.html#bottom-navigation-specs
+
+@import '../common/ripple.scss';
+@import '../common/functions.scss';
+@import '../common/motion.scss';
+@import '../common/variables.scss';
+
+.mdw-bottomnav {
+  min-height: dp(56);
+  overflow-y: hidden;
+  position: relative;
+  display:flex;
+  box-shadow: elevation(8);
+  width: 100%;
+  justify-content: center;
+  flex-direction:row;
+}
+
+.mdw-bottomnav__item {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+  box-sizing: content-box;
+  border-radius: 0;
+  z-index: 0;
+  overflow: hidden;
+  user-select: none;
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  
+  > .mdw-ripple {
+    @include mdw-ripple__container;
+  }
+
+  & > .mdw-ripple > .mdw-ripple__inner,
+  &::after {
+    @include mdw-ripple__inner;
+  }
+
+  & > .mdw-ripple:active > .mdw-ripple__inner,
+  &:active::after {
+    @include mdw-ripple__active;
+  }
+
+  &[mdw-ripple] {
+    overflow: visible;
+    &::after {
+      // If using custom ripple, destroy ::after object
+      content: none;
+    }
+  }
+}
+
+.mdw-bottomnav__icon {
+  padding: 0;
+  margin: 0;
+  user-select: none;
+  pointer-events: none;
+  transition-property: color, transform;
+  transition-duration: 200ms;
+  transition-timing-function: $motion-easing-standard;
+  // color: var(--bottomnav__inactive-color);
+  transform: translateY(dp(8));
+  .mdw-bottomnav__input:checked ~ &,
+  .mdw-bottomnav__item[mdw-selected] > &,
+  .mdw-bottomnav__input:checked + .mdw-bottomnav__item > & {
+    // color: var(--bottomnav__active-color);
+    transform: translateY(dp(6));
+  }
+}
+
+.mdw-bottomnav__label {
+  display: block;
+  text-align: center;
+  pointer-events: none;
+  min-width: dp(80);
+  max-width: dp(168);
+  
+  padding-left: dp(12);
+  padding-right: dp(12);
+  transition-property: color, font-size, transform, min-width, max-width;
+  transform: translateY(0);
+  transition-duration: 200ms;
+  transition-timing-function: $motion-easing-standard;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: 1em; // Prevents stretching when using larger fonts
+  height: auto;
+  font-size: sp(12);
+  text-transform: none;
+  font-weight: normal;
+  // color: var(--bottomnav__inactive-color);
+  .mdw-bottomnav__input:checked ~ &,
+  .mdw-bottomnav__item[mdw-selected] > &,
+  .mdw-bottomnav__input:checked + .mdw-bottomnav__item > & {
+    // color: var(--bottomnav__active-color);
+    font-size: sp(14);
+  }
+  
+  
+  // 4dp top padding
+  &::before {
+    content: "\200D"; // &zwj;
+    display: inline-block;
+    margin-top: dp(4);
+    line-height: 1;
+    vertical-align: text-bottom;
+  }
+
+  // 10dp bottom padding from baseline
+  &::after {
+    content: "\200D"; // &zwj;
+    display: inline-block;
+    line-height: 1;
+    margin-bottom: dp(10);
+    vertical-align: text-top;
+  }
+}
+.mdw-bottomnav__input {
+  // Using `display: none` breaks keyboard navigation
+  opacity: 0;
+  height: 0;
+  width: 0;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+  position: absolute;
+  display: inline;
+}
+
+.mdw-bottomnav[mdw-shifting] {
+  .mdw-bottomnav__icon {
+    transform: translateY(dp(16));
+  }
+  
+  .mdw-bottomnav__label {
+    opacity: 0;
+    font-size: sp(14);
+    min-width: dp(56);
+    max-width: dp(96);
+    transform: translateY(#{$font-bottom-gap * 1em});
+  }
+  .mdw-bottomnav__input:checked ~ .mdw-bottomnav__label,
+  .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__label,
+  .mdw-bottomnav__input:checked + .mdw-bottomnav__item > .mdw-bottomnav__label {
+    opacity: 1;
+    transform: translateY(0);
+    min-width: dp(96);
+    max-width: dp(168);
+  }
+  .mdw-bottomnav__input:checked ~ .mdw-bottomnav__icon,
+  .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__icon,
+  .mdw-bottomnav__input:checked + .mdw-bottomnav__item > .mdw-bottomnav__icon {
+    transform: translateY(dp(6))
+  }
+}
+
+.mdw-bottomnav[mdw-theme-color] {
+  .mdw-bottomnav__item {
+    color: inherit;
+    & > .mdw-ripple > .mdw-ripple__inner,
+    &:after {
+      color: inherit;
+    }
+  }
+}

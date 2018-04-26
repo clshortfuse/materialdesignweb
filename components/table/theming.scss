@@ -1,0 +1,91 @@
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
+
+$tableColors: (
+  text-color:           ((#000,              0.87), (#fff,              1.00)),
+  secondary-text-color: ((#000,              0.54), (#fff,              0.70)),
+  divider-color:        ((#000,              0.12), (#fff,              0.12)),
+  hover-color:          (('background', '200', 1.00), (#000,              1.00)),
+  selected-color:       (('background', '100', 1.00), ('background', '900', 1.00)),
+  header-fill-text:     ((inherit                  ), (#fff,              1.00)),
+  header-fill-primary:  (('primary'   ,  '50', 1.00), ('primary',    '900', 1.00)),
+  header-fill-accent:   (('accent'    ,  '50', 1.00), ('accent',     '900', 1.00)),
+  header-fill-warn:     (('warn'      ,  '50', 1.00), ('warn',       '900', 1.00)),
+);
+
+@function tableThemeValue($key, $type, $theme) {
+  @return themeValue('table', $tableColors, $key, $type, $theme);
+}
+
+@mixin tableThemeVariables($color, $lightness) {
+  @include themeVariables('table', $tableColors, $color, $lightness);
+}
+
+// Vary by contrast or theme
+@mixin tableContrastRules($type: 'var', $theme: null) {
+  .mdw-table tr {
+    border-color: tableThemeValue("divider-color", $type, $theme);
+  }
+
+  .mdw-table caption,
+  .mdw-table__header-text {
+    color: tableThemeValue("text-color", $type, $theme);
+  }
+  
+  .mdw-table__header-icons {
+    color: tableThemeValue("text-color", $type, $theme);
+  }
+  .mdw-table th:not([mdw-selector]),
+  .mdw-table__footer {
+    color: tableThemeValue("secondary-text-color", $type, $theme);
+  }
+  .mdw-table td:not([data-type="checkbox"]) {
+    color: tableThemeValue("text-color", $type, $theme);
+  }
+  .mdw-table tbody {
+    > tr {
+      &[mdw-selected] {
+        background-color: tableThemeValue("selected-color", $type, $theme);
+      }
+      &:hover {
+        background-color: tableThemeValue("hover-color", $type, $theme);
+      }
+    }
+  }
+  .mdw-table[mdw-has-selection] {
+    caption,
+    .mdw-table__header-text {
+      color: tableThemeValue("header-fill-text", $type, $theme);
+    }
+  }
+  .mdw-table th[mdw-sorted] {
+    color: tableThemeValue("text-color", $type, $theme);
+  }
+}
+
+// Varies by contrast and theme
+@mixin tableContrastAndThemeRules($type: 'var', $theme: null) {
+  .mdw-table[mdw-has-selection] {
+    &[mdw-theme-color="primary"],
+    &[mdw-theme-color|="primary"] {
+      .mdw-table__header,
+      caption {
+        background-color: tableThemeValue("header-fill-primary", $type, $theme);
+      }
+    }
+    &[mdw-theme-color="accent"],
+    &[mdw-theme-color|="accent"] {
+      .mdw-table__header,
+      caption {
+        background-color: tableThemeValue("header-fill-accent", $type, $theme);
+      }
+    }
+    &[mdw-theme-color="warn"],
+    &[mdw-theme-color|="warn"] {
+      .mdw-table__header,
+      caption {
+        background-color: tableThemeValue("header-fill-warn", $type, $theme);
+      }
+    }
+  }
+}

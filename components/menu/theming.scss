@@ -1,0 +1,76 @@
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
+
+$menuColors: (
+  text-color:       ((#000,              0.87), (#fff,              1.00)),
+  secondary-color:  ((#000,              0.54), (#fff,              0.70)),
+  background-color: ((#fff,              1.00), ('background', '800', 1.00)),
+  hover-color:      (('background', '200', 1.00), (#000,              1.00)),
+  selected-color:   (('background', '100', 1.00), ('background', '900', 1.00)),
+  press-color:      ((#999,              0.40), (#CCC,              0.25)),
+  ripple-color:     ( #000                    ,  #fff                    ),
+  ripple-opacity:   (                      0.12 ,                       0.30,   0.20),
+  divider-color:    ((#000,              0.12), (#fff,              0.12)),
+  disabled-color:   ((#000,              0.26), (#fff,              0.30)),
+);
+
+@function menuThemeValue($key, $type, $theme) {
+  @return themeValue('menu', $menuColors, $key, $type, $theme);
+}
+
+@mixin menuThemeVariables($color, $lightness) {
+  @include themeVariables('menu', $menuColors, $color, $lightness);
+}
+
+@mixin internalMenuContrastRules($type: 'var', $theme: null) {
+  @at-root {
+    #{&}.mdw-menu {
+      background-color: menuThemeValue("background-color", $type, $theme);
+      &:not([mdw-js]) {
+        & > .mdw-menu__text,
+        .mdw-menu__item {
+          &:hover {
+            background-color: menuThemeValue("hover-color", $type, $theme);
+          }
+        }
+      }
+      & > .mdw-menu__text,
+      .mdw-menu__item {
+        color: menuThemeValue("text-color", $type, $theme);
+        &:focus,
+        &[mdw-selected] {
+          background-color: menuThemeValue("hover-color", $type, $theme);
+        }
+        &[disabled] {
+          color: menuThemeValue("disabled-color", $type, $theme);
+          & > .mdw-menu__icon,
+          & > .mdw-menu__check {
+            color: inherit;
+          }
+        }
+        & > .mdw-ripple > .mdw-ripple__inner,
+        &:after {
+          color: buttonThemeValue("ripple-color", $type, $theme);
+          opacity: buttonThemeValue("ripple-opacity", $type, $theme);
+        }
+      }
+    }
+  }
+}
+
+// Vary by contrast or theme
+@mixin menuContrastRules($type: 'var', $theme: null) {
+  @include internalMenuContrastRules($type, $theme);
+  @if ($type != 'var') {
+    :not([mdw-theme-fill]) {
+      @include internalMenuContrastRules($type, $theme);
+    }
+  }
+  .mdw-menu__icon,
+  .mdw-menu__check {
+    color: menuThemeValue("secondary-color", $type, $theme);
+  }
+  .mdw-menu__divider {
+    background-color: menuThemeValue("divider-color", $type, $theme);
+  }
+}
