@@ -193,10 +193,6 @@ class Table {
       // Use one event listener to reduce overhead and allow dynamic content
       this.handleClickInteraction(event);
     });
-    /** @type {WeakMap<Element,any>} */
-    this.elementMap = new WeakMap();
-    /** @type {WeakMap<Object, HTMLTableRowElement>} */
-    this.rowMap = new WeakMap();
     /** @type {TableColumn[]} */
     this.columns = [];
     this.page = 0;
@@ -667,15 +663,15 @@ class Table {
         this.previousPageButton.classList.add('mdw-button', 'material-icons');
         this.previousPageButton.setAttribute('mdw-icon', '');
         this.previousPageButton.textContent = 'chevron_left';
-        this.elementMap.set(this.previousPageButton, new Button(this.previousPageButton));
         this.paginationControls.appendChild(this.previousPageButton);
+        Button.attach(this.previousPageButton);
 
         this.nextPageButton = document.createElement('div');
         this.nextPageButton.classList.add('mdw-button', 'material-icons');
         this.nextPageButton.setAttribute('mdw-icon', '');
         this.nextPageButton.textContent = 'chevron_right';
-        this.elementMap.set(this.nextPageButton, new Button(this.nextPageButton));
         this.paginationControls.appendChild(this.nextPageButton);
+        Button.attach(this.nextPageButton);
       } else {
         this.previousPageButton = buttons[0];
         this.nextPageButton = buttons[1];
@@ -924,10 +920,6 @@ class Table {
     }
     const minIndex = this.page * this.pageLimit;
     return this.getTableBody().rows.item(datasourceIndex - minIndex);
-  }
-
-  clearCache() {
-    this.rowMap = new WeakMap();
   }
 
   /**

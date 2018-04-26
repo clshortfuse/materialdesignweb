@@ -10,15 +10,15 @@ function initializeMdwComponents() {
   let components;
   components = document.querySelectorAll('.js .mdw-table');
   for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new Table(components[i]));
+    componentMap.set(components[i], new Table(components.item(i)));
   }
   components = document.querySelectorAll('.js .mdw-button');
   for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new Button(components[i]));
+    Button.attach(components.item(i));
   }
   components = document.querySelectorAll('.js .mdw-menu');
   for (let i = 0; i < components.length; i += 1) {
-    componentMap.set(components[i], new Menu(components[i]));
+    Menu.attach(components.item(i));
   }
 }
 
@@ -83,13 +83,12 @@ function buildDynamicTable() {
   table.setPagination();
   table.refresh();
   const [filterButton, optionsButton] = table.element.querySelectorAll('.mdw-table__header-controls .mdw-button');
-  const [filterMenu, optionsMenu] = [...table.element.querySelectorAll('.mdw-table__header-controls .mdw-menu')]
-    .map(element => componentMap.get(element));
+  const [filterMenu, optionsMenu] = table.element.querySelectorAll('.mdw-table__header-controls .mdw-menu');
 
   filterButton.addEventListener('click', (event) => {
-    filterMenu.show(event);
+    Menu.show(filterMenu, event);
   });
-  const filterMenuItems = filterMenu.element.querySelectorAll('.mdw-menu__item');
+  const filterMenuItems = filterMenu.querySelectorAll('.mdw-menu__item');
   const [
     noFilterMenuItem,
     mdFilterMenuItem,
@@ -97,23 +96,24 @@ function buildDynamicTable() {
     checkedFilterMenuItem,
   ] = filterMenuItems;
   /**
-   * @param {HTMLElement[]} menuItems
+   * @param {NodeListOf<Element>} menuItems
    * @param {number} checkedIndex
    * @return {void}
    */
   function setMenuChecked(menuItems, checkedIndex) {
-    menuItems.forEach((value, index) => {
-      if (checkedIndex === index) {
-        value.setAttribute('mdw-checked', '');
+    for (let i = 0; i < menuItems.length; i += 1) {
+      const menuItem = menuItems.item(i);
+      if (checkedIndex === i) {
+        menuItem.setAttribute('mdw-checked', '');
       } else {
-        value.removeAttribute('mdw-checked');
+        menuItem.removeAttribute('mdw-checked');
       }
-    });
+    }
   }
   noFilterMenuItem.addEventListener('click', () => {
     table.setFilter(null);
     table.refresh();
-    filterMenu.hide();
+    Menu.hide(filterMenu);
     setMenuChecked(filterMenuItems, 0);
     filterButton.setAttribute('mdw-inactive', '');
     filterButton.removeAttribute('mdw-active');
@@ -121,7 +121,7 @@ function buildDynamicTable() {
   mdFilterMenuItem.addEventListener('click', () => {
     table.setFilter(data => data.text.indexOf('md') !== -1 || data.text2.indexOf('md') !== -1);
     table.refresh();
-    filterMenu.hide();
+    Menu.hide(filterMenu);
     setMenuChecked(filterMenuItems, 1);
     filterButton.setAttribute('mdw-active', '');
     filterButton.removeAttribute('mdw-inactive');
@@ -129,7 +129,7 @@ function buildDynamicTable() {
   randomDivBy9MenuItem.addEventListener('click', () => {
     table.setFilter(data => data.random % 9 === 0);
     table.refresh();
-    filterMenu.hide();
+    Menu.hide(filterMenu);
     setMenuChecked(filterMenuItems, 2);
     filterButton.setAttribute('mdw-active', '');
     filterButton.removeAttribute('mdw-inactive');
@@ -137,15 +137,15 @@ function buildDynamicTable() {
   checkedFilterMenuItem.addEventListener('click', () => {
     table.setFilter(data => data.check1);
     table.refresh();
-    filterMenu.hide();
+    Menu.hide(filterMenu);
     setMenuChecked(filterMenuItems, 3);
     filterButton.setAttribute('mdw-active', '');
     filterButton.removeAttribute('mdw-inactive');
   });
 
-  const [throttleMenuItem, paginateMenuItem] = optionsMenu.element.querySelectorAll('.mdw-menu__item');
+  const [throttleMenuItem, paginateMenuItem] = optionsMenu.querySelectorAll('.mdw-menu__item');
   optionsButton.addEventListener('click', (event) => {
-    optionsMenu.show(event);
+    Menu.show(optionsMenu, event);
   });
   throttleMenuItem.addEventListener('click', () => {
     if (throttleMenuItem.hasAttribute('mdw-checked')) {
@@ -155,7 +155,7 @@ function buildDynamicTable() {
       table.setUseLazyRendering(true);
       throttleMenuItem.setAttribute('mdw-checked', '');
     }
-    optionsMenu.hide();
+    Menu.hide(optionsMenu);
     table.refresh();
   });
   paginateMenuItem.addEventListener('click', () => {
@@ -166,7 +166,7 @@ function buildDynamicTable() {
       table.setPagination();
       paginateMenuItem.setAttribute('mdw-checked', '');
     }
-    optionsMenu.hide();
+    Menu.hide(optionsMenu);
     table.refresh();
   });
 }
