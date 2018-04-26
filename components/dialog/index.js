@@ -1,60 +1,191 @@
 // https://www.w3.org/TR/wai-aria-practices/#dialog_modal
 
 import { Button } from '../button/index';
+import { getChildElementByClass, findElementParentByClassName } from '../common/dom';
 
+class DialogStack {
+  /**
+   * @param {Element} element
+   * @param {Element} previousFocus
+   */
+  constructor(element, previousFocus) {
+    this.element = element;
+    this.previousFocus = previousFocus;
+  }
+}
+
+/** @type {DialogStack[]} */
+const OPEN_DIALOGS = [];
 class Dialog {
   /**
-   * @param {HTMLElement} element
+   * @param {Element} element
+   * @return {void}
    */
-  constructor(element) {
-    this.element = element;
-    let [dialogCloser] = this.element.getElementsByClassName('mdw-dialog__close');
+  static attach(element) {
+    let dialogCloser = getChildElementByClass(element, 'mdw-dialog__close');
     if (!dialogCloser) {
       dialogCloser = document.createElement('div');
       dialogCloser.classList.add('mdw-dialog__close');
-      if (this.element.firstChild) {
-        this.element.insertBefore(dialogCloser, this.element.firstChild);
+      if (element.firstChild) {
+        element.insertBefore(dialogCloser, element.firstChild);
       } else {
-        this.element.appendChild(dialogCloser);
+        element.appendChild(dialogCloser);
       }
     }
-    const [popup] = this.element.getElementsByClassName('mdw-dialog__popup');
-    this.popup = popup;
-    this.dialogCloser = dialogCloser;
-    this.dialogCloser.addEventListener('click', (event) => {
-      this.cancel(event);
-    });
-    this.element.addEventListener('keydown', (event) => {
-      if (event.key === 'Tab') {
-        this.handleTabKeyPress(event);
-      }
-      if (event.key === 'Escape' || event.key === 'Esc') {
-        this.handleEscapeKeyPress(event);
-      }
-    });
-    const buttonElements = this.element.getElementsByClassName('mdw-button');
-    for (let i = 0; i < buttonElements.length; i += 1) {
-      const button = buttonElements.item(i);
-      Button.attach(button);
+    dialogCloser.addEventListener('click', Dialog.onCancelClick);
+    element.addEventListener('keydown', Dialog.onKeyDown);
+  }
+
+  static detach(dialogElement) {
+    const dialogCloser = getChildElementByClass(dialogElement, 'mdw-dialog__close');
+    if (dialogCloser) {
+      dialogCloser.removeEventListener('click', Dialog.onCancelClick);
+    }
+    dialogElement.removeEventListener('keydown', Dialog.onKeyDown);
+  }
+
+  static onCancelClick(event) {
+    const dialogElement = findElementParentByClassName(event.target, 'mdw-dialog');
+    Dialog.cancel(dialogElement);
+  }
+
+  static onConfirmClick(event) {
+    const dialogElement = findElementParentByClassName(event.target, 'mdw-dialog');
+    Dialog.confirm(dialogElement);
+  }
+
+  static onKeyDown(event) {
+    if (event.key === 'Tab') {
+      Dialog.handleTabKeyPress(event);
+      return;
+    }
+    if (event.key === 'Escape' || event.key === 'Esc') {
+      Dialog.onEscapeKeyDown(event);
     }
   }
 
-  /**
-   * @param {KeyboardEvent} event
-   * @return {void}
-   */
-  handleEscapeKeyPress(event) {
+  static onEscapeKeyDown(event) {
     event.stopPropagation();
     event.preventDefault();
-    this.cancel(event);
+    const dialogElement = findElementParentByClassName(event.target, 'mdw-dialog');
+    Dialog.cancel(dialogElement);
+  }
+
+  /**
+   * @param {PopStateEvent} event
+   * @return {void}
+   */
+  static onPopState(event) {
+    const lastOpenDialog = OPEN_DIALOGS[OPEN_DIALOGS.length - 1];
+    if (lastOpenDialog) {
+      Dialog.hide(lastOpenDialog.element);
+    }
+  }
+
+  /**
+   * @param {Element} dialogElement
+   * @return {void}
+   */
+  static cancel(dialogElement) {
+    Dialog.hide(dialogElement);
+    Dialog.dispatchEvent(dialogElement, 'mdw:cancel');
+  }
+
+  /**
+   * @param {Element} dialogElement
+   * @return {void}
+   */
+  static confirm(dialogElement) {
+    Dialog.hide(dialogElement);
+    Dialog.dispatchEvent(dialogElement, 'mdw:confirm');
+  }
+
+  /**
+   * @param {Element} dialogElement
+   * @return {boolean} handled
+   */
+  static hide(dialogElement) {
+    if (!dialogElement.hasAttribute('mdw-hide')) {
+      dialogElement.setAttribute('mdw-hide', '');
+      const stackIndex = OPEN_DIALOGS.findIndex(stack => stack.element === dialogElement);
+      if (stackIndex !== -1) {
+        const stack = OPEN_DIALOGS[stackIndex];
+        if (stack.previousFocus) {
+          stack.previousFocus.focus();
+        }
+        OPEN_DIALOGS.splice(stackIndex, 1);
+      }
+      if (!OPEN_DIALOGS.length) {
+        window.removeEventListener('popstate', Dialog.onPopState);
+      }
+      Dialog.dispatchEvent(dialogElement, 'mdw:dismiss');
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * @param {Element} dialogElement
+   * @param {string} type
+   * @return {void}
+   */
+  static dispatchEvent(dialogElement, type) {
+    const event = document.createEvent('Event');
+    event.initEvent(type, true, true);
+    dialogElement.dispatchEvent(event);
+  }
+
+  /**
+   * @param {Element} dialogElement
+   * @param {MouseEvent=} event
+   * @return {boolean} handled
+   */
+  static show(dialogElement, event) {
+    let changed = false;
+
+    Dialog.updateTransformOrigin(dialogElement, event);
+    if (dialogElement.hasAttribute('mdw-hide')) {
+      dialogElement.removeAttribute('mdw-hide');
+      changed = true;
+    }
+    if (!dialogElement.hasAttribute('mdw-show')) {
+      dialogElement.setAttribute('mdw-show', '');
+      changed = true;
+    }
+    if (changed) {
+      Dialog.attach(dialogElement);
+      const previousFocus = document.activeElement;
+      if (window.history && window.history.pushState) {
+        let title = 'Dialog';
+        const [titleElement] = dialogElement.getElementsByClassName('mdw-dialog__title');
+        if (titleElement) {
+          title = titleElement.textContent;
+        } else {
+          const [bodyElement] = dialogElement.getElementsByClassName('mdw-dialog__body');
+          title = bodyElement.textContent;
+        }
+        window.history.pushState({}, title, '');
+        window.addEventListener('popstate', Dialog.onPopState);
+      }
+      const dialogStack = new DialogStack(dialogElement, previousFocus);
+      OPEN_DIALOGS.push(dialogStack);
+      const focusElement = dialogElement.querySelector('[mdw-autofocus]');
+      if (focusElement) {
+        focusElement.focus();
+      } else {
+        dialogElement.focus();
+      }
+    }
+    return changed;
   }
 
   /**
    * @param {KeyboardEvent} event
    * @return {void}
    */
-  handleTabKeyPress(event) {
-    const focusableElements = this.element.querySelectorAll([
+  static handleTabKeyPress(event) {
+    const dialogElement = findElementParentByClassName(event.target, 'mdw-dialog');
+    const focusableElements = dialogElement.querySelectorAll([
       'button:not(:disabled):not([tabindex="-1"])',
       '[href]:not(:disabled):not([tabindex="-1"])',
       'input:not(:disabled):not([tabindex="-1"])',
@@ -94,11 +225,12 @@ class Dialog {
   }
 
   /**
+   * @param {Element} dialogElement
    * @param {string=} text
    * @return {void}
    */
-  updateTitle(text) {
-    let [title] = this.element.getElementsByClassName('mdw-dialog__title');
+  static updateTitle(dialogElement, text) {
+    let [title] = dialogElement.getElementsByClassName('mdw-dialog__title');
     if (!text) {
       if (!title) {
         // Nothing to be done
@@ -108,7 +240,7 @@ class Dialog {
       return;
     }
     if (!title) {
-      const [content] = this.element.getElementsByClassName('mdw-dialog__content');
+      const [content] = dialogElement.getElementsByClassName('mdw-dialog__content');
       title = document.createElement('div');
       title.classList.add('mdw-dialog__title');
       content.appendChild(title);
@@ -118,11 +250,12 @@ class Dialog {
 
 
   /**
+   * @param {Element} dialogElement
    * @param {string[]} texts
    * @return {void}
    */
-  updateButtonText(texts) {
-    const buttonElements = this.element.getElementsByClassName('mdw-button');
+  static updateButtonText(dialogElement, texts) {
+    const buttonElements = dialogElement.querySelectorAll('.mdw-dialog__button-area .mdw-button');
     for (let i = 0; i < buttonElements.length; i += 1) {
       const button = buttonElements.item(i);
       button.textContent = texts[i];
@@ -130,11 +263,12 @@ class Dialog {
   }
 
   /**
+   * @param {Element} dialogElement
    * @param {string=} text
    * @return {void}
    */
-  updateBody(text) {
-    let [body] = this.element.getElementsByClassName('mdw-dialog__body');
+  static updateBody(dialogElement, text) {
+    let [body] = dialogElement.getElementsByClassName('mdw-dialog__body');
     if (!text) {
       if (!body) {
         // Nothing to be done
@@ -144,7 +278,7 @@ class Dialog {
       return;
     }
     if (!body) {
-      const [content] = this.element.getElementsByClassName('mdw-dialog__content');
+      const [content] = dialogElement.getElementsByClassName('mdw-dialog__content');
       body = document.createElement('div');
       body.classList.add('mdw-dialog__body');
       content.appendChild(body);
@@ -153,40 +287,15 @@ class Dialog {
   }
 
   /**
-   * @abstract
-   * @param {MouseEvent|PointerEvent|PopStateEvent} event
-   * @return {any}
-   */
-  onDismissListener(event) {}
-
-  /**
-   * @abstract
-   * @param {MouseEvent|PointerEvent|PopStateEvent} event
-   * @return {any}
-   */
-  onConfirmListener(event) {}
-
-  /**
-   * @abstract
-   * @param {MouseEvent|PointerEvent|PopStateEvent} event
-   * @return {any}
-   */
-  onCancelListener(event) {}
-
-  detach() {
-    this.element = null;
-  }
-
-  /**
    * @param {Object} options
    * @param {string=} options.title
    * @param {string=} options.body
    * @param {string[]=} options.buttons
    * @param {boolean=} options.stacked
-   * @param {HTMLElement=} options.parent
+   * @param {Element=} options.parent
    * @param {("confirm"|"alert"|"custom")=} [options.type="custom"]
    * @param {(string|number)=} [options.autofocus=0] Autofocus button index or text
-   * @return {Dialog}
+   * @return {Element}
    */
   static create(options) {
     const element = document.createElement('div');
@@ -217,7 +326,7 @@ class Dialog {
       buttonArea.classList.add('mdw-dialog__button-area');
       let index = 0;
       options.buttons.forEach((buttonText) => {
-        const button = document.createElement('button');
+        const button = document.createElement('div');
         button.classList.add('mdw-button');
         button.setAttribute('tabindex', '0');
         button.setAttribute('mdw-theme-color', 'accent');
@@ -228,6 +337,7 @@ class Dialog {
           || options.autofocus === index || options.autofocus === buttonText) {
           button.setAttribute('mdw-autofocus', '');
         }
+        Button.attach(button);
         index += 1;
       });
       if (options.stacked) {
@@ -240,33 +350,34 @@ class Dialog {
     } else {
       document.body.appendChild(element);
     }
-    const dialog = new Dialog(element);
-    const [confirmButton, cancelButton] = element.getElementsByClassName('mdw-button');
+    const [confirmButton, cancelButton] = element.querySelectorAll('.mdw-dialog__button-area .mdw-button');
     if (options.type === 'alert' || options.type === 'confirm') {
       if (confirmButton) {
-        confirmButton.addEventListener('click', (event) => {
-          dialog.confirm(event);
-        });
+        confirmButton.addEventListener('click', Dialog.onConfirmClick);
       }
     }
     if (options.type === 'confirm') {
       if (cancelButton) {
-        cancelButton.addEventListener('click', (event) => {
-          dialog.cancel(event);
-        });
+        cancelButton.addEventListener('click', Dialog.onCancelClick);
       }
     }
-    return dialog;
+    return element;
   }
   /**
+   * @param {Element} dialogElement
    * @param {MouseEvent=} event
    * @return {void}
    */
-  updateTransformOrigin(event) {
-    this.popup.style.removeProperty('transform-origin');
+  static updateTransformOrigin(dialogElement, event) {
+    /** @type {HTMLElement} */
+    const popup = getChildElementByClass(dialogElement, 'mdw-dialog__popup');
+    popup.style.removeProperty('transform-origin');
+    if (!event) {
+      return;
+    }
     let popupPageX = 0;
     let popupPageY = 0;
-    let element = this.popup;
+    let element = popup;
     while (element != null) {
       popupPageX += element.offsetLeft;
       popupPageY += element.offsetTop;
@@ -280,93 +391,7 @@ class Dialog {
     }
     const transformOriginX = `${pageX - popupPageX}px`;
     const transformOriginY = `${pageY - popupPageY}px`;
-    this.popup.style.setProperty('transform-origin', `${transformOriginX} ${transformOriginY}`);
-  }
-
-  /**
-   * @param {MouseEvent=} event
-   * @return {boolean} handled
-   */
-  show(event) {
-    let changed = false;
-    this.popup.style.removeProperty('transform-origin');
-    if (event) {
-      this.updateTransformOrigin(event);
-    }
-    if (this.element.hasAttribute('mdw-hide')) {
-      this.element.removeAttribute('mdw-hide');
-      changed = true;
-    }
-    if (!this.element.hasAttribute('mdw-show')) {
-      this.element.setAttribute('mdw-show', '');
-      changed = true;
-    }
-    if (changed) {
-      this.previousFocus = document.activeElement;
-      const focusElement = this.element.querySelector('[mdw-autofocus]');
-      if (focusElement) {
-        focusElement.focus();
-      }
-      if (window.history && window.history.pushState) {
-        let title = 'Dialog';
-        const [titleElement] = this.element.getElementsByClassName('mdw-dialog__title');
-        if (titleElement) {
-          title = titleElement.textContent;
-        } else {
-          const [bodyElement] = this.element.getElementsByClassName('mdw-dialog__body');
-          title = bodyElement.textContent;
-        }
-        this.onPopState = (event) => {
-          this.cancel(event);
-        };
-        window.history.pushState({}, title, '');
-        window.addEventListener('popstate', this.onPopState);
-      }
-    }
-    return changed;
-  }
-
-  /**
-   * @param {MouseEvent|PointerEvent|PopStateEvent|KeyboardEvent} event
-   * @return {void}
-   */
-  cancel(event) {
-    this.hide(event);
-    if (this.onCancelListener) {
-      this.onCancelListener(event);
-    }
-  }
-
-  /**
-   * @param {MouseEvent|PointerEvent|PopStateEvent} event
-   * @return {void}
-   */
-  confirm(event) {
-    this.hide(event);
-    if (this.onConfirmListener) {
-      this.onConfirmListener(event);
-    }
-  }
-
-  /**
-   * @param {MouseEvent|PointerEvent|PopStateEvent|KeyboardEvent} event
-   * @return {boolean} handled
-   */
-  hide(event) {
-    if (!this.element.hasAttribute('mdw-hide')) {
-      this.element.setAttribute('mdw-hide', '');
-      if (this.previousFocus) {
-        this.previousFocus.focus();
-      }
-      if (this.onPopState) {
-        window.removeEventListener('popstate', this.onPopState);
-      }
-      if (this.onDismissListener) {
-        this.onDismissListener(event);
-      }
-      return true;
-    }
-    return false;
+    popup.style.setProperty('transform-origin', `${transformOriginX} ${transformOriginY}`);
   }
 }
 

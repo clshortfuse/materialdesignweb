@@ -5,31 +5,31 @@ import setupImageTargets from '../targetHandler';
 /** @return {void} */
 function setupJSDialog() {
   const button = document.querySelector('.js .mdw-button');
-  const confirmDialog = Dialog.create({
+  const confirmDialogElement = Dialog.create({
     title: 'Feedback',
     body: 'Are you enjoying this demo?',
     buttons: ["It's great!", 'Meh.'],
     type: 'confirm',
     parent: document.querySelector('.render div'),
   });
-  const alertDialog = Dialog.create({
+  const alertDialogElement = Dialog.create({
     body: 'placeholder',
     buttons: ['K'],
     type: 'alert',
     parent: document.querySelector('.render div'),
   });
-  confirmDialog.onConfirmListener = (event) => {
-    alertDialog.updateBody('Thanks!');
-    alertDialog.updateButtonText(['K']);
-    alertDialog.show();
-  };
-  confirmDialog.onCancelListener = (event) => {
-    alertDialog.updateBody('Oh...');
-    alertDialog.updateButtonText(['Sorry!']);
-    alertDialog.show();
-  };
+  confirmDialogElement.addEventListener('mdw:confirm', () => {
+    Dialog.updateBody(alertDialogElement, 'Thanks!');
+    Dialog.updateButtonText(alertDialogElement, ['K']);
+    Dialog.show(alertDialogElement);
+  });
+  confirmDialogElement.addEventListener('mdw:cancel', () => {
+    Dialog.updateBody(alertDialogElement, 'Oh...');
+    Dialog.updateButtonText(alertDialogElement, ['Sorry!']);
+    Dialog.show(alertDialogElement);
+  });
   button.addEventListener('click', (event) => {
-    confirmDialog.show(event);
+    Dialog.show(confirmDialogElement, event);
   });
 }
 
