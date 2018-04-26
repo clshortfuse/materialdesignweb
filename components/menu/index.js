@@ -93,6 +93,10 @@ class Menu {
     Menu.hide(menu);
   }
 
+  /**
+   * @param {PopStateEvent} event
+   * @return {void}
+   */
   static onPopState(event) {
     const lastOpenMenu = OPEN_MENUS[OPEN_MENUS.length - 1];
     if (lastOpenMenu) {
@@ -383,7 +387,7 @@ class Menu {
         OPEN_MENUS.splice(menuStackIndex, 1);
       }
       if (!OPEN_MENUS.length) {
-        window.removeEventListener('popstate', this.onPopState);
+        window.removeEventListener('popstate', Menu.onPopState);
       }
       return true;
     }
