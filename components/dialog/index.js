@@ -361,6 +361,7 @@ class Dialog {
         cancelButton.addEventListener('click', Dialog.onCancelClick);
       }
     }
+    Dialog.attach(element);
     return element;
   }
   /**
