@@ -1,82 +1,90 @@
+import { findElementParentByClassName } from '../../common/dom';
+
 class Fab {
   /**
-   * @param {Element} element
+   * @param {Element} fabElement
+   * @return {void}
    */
-  constructor(element) {
-    this.element = element;
-    let [closer] = this.element.getElementsByClassName('mdw-fab__close');
+  static attach(fabElement) {
+    let [closer] = fabElement.getElementsByClassName('mdw-fab__close');
     if (!closer) {
       closer = document.createElement('div');
       closer.classList.add('mdw-fab__close');
-      this.element.appendChild(closer);
+      fabElement.appendChild(closer);
     }
-    this.menuCloser = closer;
-    this.menuCloser.addEventListener('click', () => {
-      this.hide();
-    });
-    const [fabButton] = this.element.getElementsByClassName('mdw-fab__button');
-    this.fabButton = fabButton;
-    this.fabButton.addEventListener('click', () => {
-      this.toggle();
-    });
+    closer.addEventListener('click', Fab.onCloserClicked);
+    const [fabButton] = fabElement.getElementsByClassName('mdw-fab__button');
+    fabButton.addEventListener('click', Fab.onFabButtonClicked);
   }
 
-  detach() {
-    this.element = null;
+  static detach(fabElement) {
+    const [fabButton] = fabElement.getElementsByClassName('mdw-fab__button');
+    fabButton.removeEventListener('click', Fab.onFabButtonClicked);
+    const [closer] = fabElement.getElementsByClassName('mdw-fab__close');
+    if (closer) {
+      closer.removeEventListener('click', Fab.onCloserClicked);
+    }
   }
 
-  /** @return {boolean} handled */
-  show() {
+  static onCloserClicked(event) {
+    const fabElement = findElementParentByClassName(event.target, 'mdw-fab');
+    if (!fabElement) {
+      return;
+    }
+    Fab.hide(fabElement);
+  }
+
+  static onFabButtonClicked(event) {
+    const fabElement = findElementParentByClassName(event.target, 'mdw-fab');
+    if (!fabElement) {
+      return;
+    }
+    Fab.toggle(fabElement);
+  }
+
+  /**
+   * @param {Element} fabElement
+   * @return {boolean} handled
+   */
+  static show(fabElement) {
     let changed = false;
-    if (this.element.hasAttribute('mdw-hide')) {
-      this.element.removeAttribute('mdw-hide');
+    if (fabElement.hasAttribute('mdw-hide')) {
+      fabElement.removeAttribute('mdw-hide');
       changed = true;
     }
-    if (!this.element.hasAttribute('mdw-show')) {
-      this.element.setAttribute('mdw-show', '');
+    if (!fabElement.hasAttribute('mdw-show')) {
+      fabElement.setAttribute('mdw-show', '');
       changed = true;
     }
     return changed;
   }
 
-  /** @return {boolean} handled */
-  hide() {
-    if (!this.element.hasAttribute('mdw-hide')) {
-      this.element.setAttribute('mdw-hide', '');
+  /**
+   * @param {Element} fabElement
+   * @return {boolean} handled
+   */
+  static hide(fabElement) {
+    if (!fabElement.hasAttribute('mdw-hide')) {
+      fabElement.setAttribute('mdw-hide', '');
     } else {
       return false;
     }
-    if (this.element.hasAttribute('mdw-show')) {
-      this.element.removeAttribute('mdw-show');
+    if (fabElement.hasAttribute('mdw-show')) {
+      fabElement.removeAttribute('mdw-show');
       return true;
     }
     return false;
   }
 
-  toggle() {
-    if (this.hide()) {
-      return;
-    }
-    this.show();
-  }
-
   /**
-   * Clear and detach all children
-   * @param {WeakMap=} elementMap
+   * @param {Element} fabElement
    * @return {void}
    */
-  clear(elementMap) {
-    const el = this.element;
-    if (!el) {
+  static toggle(fabElement) {
+    if (Fab.hide(fabElement)) {
       return;
     }
-    while (el.firstChild) {
-      if (elementMap && elementMap.has(el.firstChild)) {
-        elementMap.get(el.firstChild).detach();
-        elementMap.delete(el.firstChild);
-      }
-      el.removeChild(el.firstChild);
-    }
+    Fab.show(fabElement);
   }
 }
 
