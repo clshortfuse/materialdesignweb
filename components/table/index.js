@@ -294,7 +294,7 @@ class Table {
             event.preventDefault();
             return;
           }
-          Reflect.set(object, currentCell.dataset.key, target.checked);
+          object[currentCell.dataset.key] = target.checked;
           this.onValueChanged(object, currentCell.dataset.key, target.checked);
         }
         if (currentCell.hasAttribute('mdw-selector')) {
@@ -423,7 +423,7 @@ class Table {
     if (this.hasDatasource()) {
       const column = this.columns[columnIndex];
       this.datasource.forEach((object) => {
-        Reflect.set(object, column.key, value);
+        object[column.key] = value;
       });
       this.refresh();
       return;
@@ -484,7 +484,7 @@ class Table {
       if (!selectorColumn) {
         return [];
       }
-      return this.getDatasource().filter(row => Reflect.get(row, selectorColumn.key));
+      return this.getDatasource().filter(row => row[selectorColumn.key]);
     }
     const checkboxes = this.element.querySelectorAll('td[mdw-selector] input[type=checkbox]');
     const checkedRows = [];
@@ -959,7 +959,7 @@ class Table {
     }
     const cell = row.cells.item(columnIndex);
     const data = this.getDataForTableRow(row);
-    const value = Reflect.get(data, tableColumn.key);
+    const value = data[tableColumn.key];
     if (tableColumn.rowSelector) {
       if (value) {
         if (!row.hasAttribute('mdw-selected')) {
