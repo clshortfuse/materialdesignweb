@@ -80,7 +80,6 @@ function getDocsConfig() {
     plugins.push(new UglifyJSPlugin({ sourceMap: true }));
   }
   const entries = {
-    'babel-polyfill': ['babel-polyfill'],
     prerender: ['./docs/src/prerender.js'],
     index: ['./docs/src/index.pug', './docs/src/index.js'],
     docs: ['./docs/src/docs.scss'],

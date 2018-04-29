@@ -144,8 +144,8 @@ class Search {
    * @param {boolean=} [options.filterItems=true]
    * @param {('replace'|'append'|'none')} [options.suggestionMethod='replace']
    * @param {(function(HTMLElement))=} options.onItemActivated
-   * @param {(function(string):Promise)=} options.performSearch
-   * @param {(function(any):Promise)=} options.updateList
+   * @param {(function(string, Function, Function=))=} options.performSearch
+   * @param {(function(Function, Function))=} options.updateList
    * @param {boolean=} [options.searchOnFocus=true]
    * @param {number=} options.debounce Debounce time in milliseconds
    */
@@ -202,8 +202,8 @@ class Search {
     if (options.onItemActivated) {
       this.onItemActivated = options.onItemActivated;
     }
-    this.performSearch = options.performSearch || (() => Promise.resolve());
-    this.updateList = options.updateList || (() => Promise.resolve());
+    this.performSearch = options.performSearch || ((value, resolve = () => {}) => resolve());
+    this.updateList = options.updateList || ((results, resolve = () => {}) => resolve());
   }
 
   /**
@@ -244,54 +244,89 @@ class Search {
     this.previousValue = inputValue;
     this.currentSearchTerm = inputValue;
     let results = null;
-    Promise.resolve()
-      .then(() => this.performDebounce(inputValue))
-      .then(() => this.checkExpired(inputValue))
-      .then(() => this.performSearch(inputValue))
-      .then((searchResults) => {
-        results = searchResults;
-      })
-      .then(() => this.checkExpired(inputValue))
-      .then(() => this.updateList(results))
-      .then(() => this.filterListItems())
-      .catch((error) => {
-        if (error.message === 'debounced') {
-          return;
-        }
-        if (error.message === 'expired') {
-          return;
-        }
-        throw error;
-      });
+    /**
+     * @param {Error} error
+     * @return {void}
+     */
+    function onErrorCallback(error) {
+      if (error.message === 'debounced') {
+        return;
+      }
+      if (error.message === 'expired') {
+        return;
+      }
+      throw error;
+    }
+    // IE does not support ES6 Promises
+    // Using resolve/reject callbacks instead.
+    // Syntactically ugly, but removes need for a polyfill.
+    this.performDebounce(inputValue, () => {
+      this.checkExpired(inputValue, () => {
+        this.performSearch(inputValue, (searchResults) => {
+          this.checkExpired(inputValue, () => {
+            this.updateList(searchResults, () => {
+              this.filterListItems();
+            });
+          }, onErrorCallback);
+        }, onErrorCallback);
+      }, onErrorCallback);
+    }, onErrorCallback);
+
+    /**
+     * Promise.resolve()
+     *   .then(() => this.performDebounce(inputValue))
+     *   .then(() => this.checkExpired(inputValue))
+     *   .then(() => this.performSearch(inputValue))
+     *   .then((searchResults) => {
+     *     results = searchResults;
+     *   })
+     *   .then(() => this.checkExpired(inputValue))
+     *   .then(() => this.updateList(results))
+     *   .then(() => this.filterListItems())
+     *   .catch((error) => {
+     *     if (error.message === 'debounced') {
+     *       return;
+     *     }
+     *     if (error.message === 'expired') {
+     *       return;
+     *     }
+     *     throw error;
+     *   });
+     */
   }
 
-  checkExpired(inputValue) {
-    return new Promise((resolve, reject) => {
-      if (inputValue === this.currentSearchTerm) {
-        resolve();
-      } else {
-        reject(new Error('expired'));
-      }
-    });
+  /**
+   * @param {string} inputValue
+   * @param {function} resolve
+   * @param {function(Error)} reject
+   * @return {void}
+   */
+  checkExpired(inputValue, resolve, reject) {
+    if (inputValue === this.currentSearchTerm) {
+      resolve();
+    } else {
+      reject(new Error('expired'));
+    }
   }
 
   /**
    * @param {string} searchTerm
-   * @return {Promise}
+   * @param {function} resolve
+   * @param {function(Error)} reject
+   * @return {void}
    */
-  performDebounce(searchTerm) {
+  performDebounce(searchTerm, resolve, reject) {
     if (!this.debounce) {
-      return Promise.resolve();
+      resolve();
+      return;
     }
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (searchTerm !== this.currentSearchTerm) {
-          reject(new Error('debounced'));
-          return;
-        }
-        resolve();
-      }, this.debounce);
-    });
+    setTimeout(() => {
+      if (searchTerm !== this.currentSearchTerm) {
+        reject(new Error('debounced'));
+        return;
+      }
+      resolve();
+    }, this.debounce);
   }
 
   /** @return {boolean} handled */

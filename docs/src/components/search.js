@@ -10,53 +10,52 @@ function buildCustomSearch1() {
   const busyIndicator = textfield.querySelector('.custom-busy-indicator');
   let resultsCache;
   let listUpdated = false;
-  const customPerformSearch = () => {
+  const customPerformSearch = (input, resolve) => {
     if (listUpdated) {
-      return Promise.resolve();
+      resolve();
+      return;
     }
     if (resultsCache != null) {
-      return Promise.resolve(resultsCache);
+      resolve(resultsCache);
+      return;
     }
-    return new Promise((resolve) => {
-      busyIndicator.style.setProperty('display', '');
-      const myData = [];
-      for(let key in window.navigator) {
-        myData.push({ line1: key, line2: navigator[key] });
-      }
-      setTimeout(() => {
-        resultsCache = myData;
-        resolve(myData);
-      }, 2000);
-    });
+    busyIndicator.style.setProperty('display', '');
+    const myData = [];
+    for (const key in window.navigator) {
+      myData.push({ line1: key, line2: navigator[key] });
+    }
+    setTimeout(() => {
+      resultsCache = myData;
+      resolve(myData);
+    }, 2000);
   };
-  const customUpdateList = (items) => {
+  const customUpdateList = (items, resolve) => {
     if (listUpdated) {
-      return Promise.resolve();
-    }
-    return new Promise((resolve) => {
-      while (list.lastChild) {
-        list.removeChild(list.lastChild);
-      }
-      busyIndicator.style.setProperty('display', 'none');
-      const markup = `
-      <div class="mdw-list__text">
-        <div class="mdw-list__text-line"></div>
-        <div class="mdw-list__text-line"></div>
-      </div>
-      `.trim();
-      items.forEach((item) => {
-        const listItem = document.createElement('li');
-        listItem.classList.add('mdw-list__item');
-        listItem.innerHTML = markup;
-        const lines = listItem.querySelectorAll('.mdw-list__text-line');
-        lines[0].textContent = item.line1;
-        lines[1].textContent = item.line2;
-        ListItem.attach(listItem);
-        list.appendChild(listItem);
-      });
-      listUpdated = true;
       resolve();
+      return;
+    }
+    while (list.lastChild) {
+      list.removeChild(list.lastChild);
+    }
+    busyIndicator.style.setProperty('display', 'none');
+    const markup = `
+    <div class="mdw-list__text">
+      <div class="mdw-list__text-line"></div>
+      <div class="mdw-list__text-line"></div>
+    </div>
+    `.trim();
+    items.forEach((item) => {
+      const listItem = document.createElement('li');
+      listItem.classList.add('mdw-list__item');
+      listItem.innerHTML = markup;
+      const lines = listItem.querySelectorAll('.mdw-list__text-line');
+      lines[0].textContent = item.line1;
+      lines[1].textContent = item.line2;
+      ListItem.attach(listItem);
+      list.appendChild(listItem);
     });
+    listUpdated = true;
+    resolve();
   };
   
   const searchDocsCustom = new Search({
@@ -71,93 +70,71 @@ function buildCustomSearch1() {
   });
 }
 
+
+/**
+ * @param {HTMLElement} element
+ * @return {void}
+ */
+function hideElement(element) {
+  element.style.setProperty('display', 'none');
+}
+/**
+ * @param {HTMLElement} element
+ * @return {void}
+ */
+function showElement(element) {
+  element.style.setProperty('display', '');
+}
+
 /** @return {void} */
 function buildCustomSearch2() {
-  /**
-   * @param {HTMLElement} element
-   * @return {Promise}
-   */
-  function hideElement(element) {
-    return new Promise((resolve) => {
-      element.style.setProperty('display', 'none');
-      resolve();
-    });
-  }
-  /**
-   * @param {HTMLElement} element
-   * @return {Promise}
-   */
-  function showElement(element) {
-    return new Promise((resolve) => {
-      element.style.setProperty('display', '');
-      resolve();
-    });
-  }
   const textfield = document.getElementById('search-textfield-custom2');
   const list = document.getElementById('search-list-custom2');
-  const busyIndicator = textfield.querySelector('.custom-busy-indicator');
-  const noResultsIndicator = textfield.querySelector('.custom-no-results-indicator');
-  const customPerformSearch = (searchTerm) => {
-    /**
-     * @return {Promise}
-     */
-    function clearList() {
-      return new Promise((resolve) => {
-        while (list.lastChild) {
-          list.removeChild(list.lastChild);
-        }
-        resolve();
-      });
+  /** @type {HTMLElement} */
+  const [busyIndicator] = textfield.getElementsByClassName('custom-busy-indicator');
+  /** @type {HTMLElement} */
+  const [noResultsIndicator] = textfield.getElementsByClassName('custom-no-results-indicator');
+  const customPerformSearch = (searchTerm, resolve) => {
+    while (list.lastChild) {
+      list.removeChild(list.lastChild);
     }
-    /**
-     * @param {string} searchTerm
-     * @return {Promise}
-     */
-    function performSearch(searchTerm) {
-      return new Promise((resolve) => {
-        const myData = [];
-        for(let key in window.navigator) {
-          const value = navigator[key] && navigator[key].toString();
-          if (key.indexOf(searchTerm) !== -1 || (value && value.indexOf(searchTerm) !== -1)) {
-            myData.push({ line1: key, line2: navigator[key] });
-          }
-        }
-        setTimeout(() => {
-          resolve(myData);
-        }, 1000);
-      });
-    }
-    return clearList()
-      .then(() => showElement(busyIndicator))
-      .then(() => hideElement(noResultsIndicator))
-      .then(() => performSearch(searchTerm))
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-  const customUpdateList = (items) => {
-    return hideElement(busyIndicator).then(() => {
-      if (!items.length) {
-        return showElement(noResultsIndicator);
+    showElement(busyIndicator);
+    hideElement(noResultsIndicator);
+    const myData = [];
+    for (const key in window.navigator) {
+      const value = navigator[key] && navigator[key].toString();
+      if (key.indexOf(searchTerm) !== -1 || (value && value.indexOf(searchTerm) !== -1)) {
+        myData.push({ line1: key, line2: navigator[key] });
       }
-      const markup = `
-      <div class="mdw-list__text">
-        <div class="mdw-list__text-line"></div>
-        <div class="mdw-list__text-line"></div>
-      </div>
-      `.trim();
-      items.forEach((item) => {
-        const listItem = document.createElement('li');
-        listItem.classList.add('mdw-list__item');
-        listItem.innerHTML = markup;
-        const lines = listItem.querySelectorAll('.mdw-list__text-line');
-        lines[0].textContent = item.line1;
-        lines[1].textContent = item.line2;
-        ListItem.attach(listItem);
-        list.appendChild(listItem);
-      });
-      return Promise.resolve();
+    }
+    setTimeout(() => {
+      resolve(myData);
+    }, 1000);
+  };
+  const customUpdateList = (items, resolve) => {
+    hideElement(busyIndicator);
+    if (!items.length) {
+      showElement(noResultsIndicator);
+      resolve();
+      return;
+    }
+    const markup = `
+    <div class="mdw-list__text">
+      <div class="mdw-list__text-line"></div>
+      <div class="mdw-list__text-line"></div>
+    </div>
+    `.trim();
+    items.forEach((item) => {
+      const listItem = document.createElement('li');
+      listItem.classList.add('mdw-list__item');
+      listItem.innerHTML = markup;
+      const lines = listItem.querySelectorAll('.mdw-list__text-line');
+      lines[0].textContent = item.line1;
+      lines[1].textContent = item.line2;
+      ListItem.attach(listItem);
+      list.appendChild(listItem);
     });
+    resolve();
   };
   const searchDocsCustom = new Search({
     textfield,
