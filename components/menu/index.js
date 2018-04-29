@@ -378,13 +378,20 @@ class Menu {
   static hide(menuElement) {
     if (!menuElement.hasAttribute('mdw-hide')) {
       menuElement.setAttribute('mdw-hide', '');
-      const menuStackIndex = OPEN_MENUS.findIndex(openMenu => openMenu.element === menuElement);
-      if (menuStackIndex !== -1) {
-        const menuStack = OPEN_MENUS[menuStackIndex];
+      let stackIndex = -1;
+      OPEN_MENUS.some((stack, index) => {
+        if (stack.element === menuElement) {
+          stackIndex = index;
+          return true;
+        }
+        return false;
+      });
+      if (stackIndex !== -1) {
+        const menuStack = OPEN_MENUS[stackIndex];
         if (menuStack.previousFocus) {
           menuStack.previousFocus.focus();
         }
-        OPEN_MENUS.splice(menuStackIndex, 1);
+        OPEN_MENUS.splice(stackIndex, 1);
       }
       if (!OPEN_MENUS.length) {
         window.removeEventListener('popstate', Menu.onPopState);

@@ -91,9 +91,9 @@ function buildCustomSearch2() {
   const textfield = document.getElementById('search-textfield-custom2');
   const list = document.getElementById('search-list-custom2');
   /** @type {HTMLElement} */
-  const [busyIndicator] = textfield.getElementsByClassName('custom-busy-indicator');
+  const busyIndicator = textfield.getElementsByClassName('custom-busy-indicator')[0];
   /** @type {HTMLElement} */
-  const [noResultsIndicator] = textfield.getElementsByClassName('custom-no-results-indicator');
+  const noResultsIndicator = textfield.getElementsByClassName('custom-no-results-indicator')[0];
   const customPerformSearch = (searchTerm, resolve) => {
     while (list.lastChild) {
       list.removeChild(list.lastChild);

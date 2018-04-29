@@ -82,19 +82,22 @@ function buildDynamicTable() {
   table.setUseLazyRendering(true);
   table.setPagination();
   table.refresh();
-  const [filterButton, optionsButton] = table.element.querySelectorAll('.mdw-table__header-controls .mdw-button');
-  const [filterMenu, optionsMenu] = table.element.querySelectorAll('.mdw-table__header-controls .mdw-menu');
+  const buttons = table.element.querySelectorAll('.mdw-table__header-controls .mdw-button');
+  const filterButton = buttons[0];
+  const optionsButton = buttons[1];
+  const menus = table.element.querySelectorAll('.mdw-table__header-controls .mdw-menu');
+  const filterMenu = menus[0];
+  const optionsMenu = menus[1];
 
   filterButton.addEventListener('click', (event) => {
     Menu.show(filterMenu, event);
   });
   const filterMenuItems = filterMenu.querySelectorAll('.mdw-menu__item');
-  const [
-    noFilterMenuItem,
-    mdFilterMenuItem,
-    randomDivBy9MenuItem,
-    checkedFilterMenuItem,
-  ] = filterMenuItems;
+  const noFilterMenuItem = filterMenuItems[0];
+  const mdFilterMenuItem = filterMenuItems[1];
+  const randomDivBy9MenuItem = filterMenuItems[2];
+  const checkedFilterMenuItem = filterMenuItems[3];
+
   /**
    * @param {NodeListOf<Element>} menuItems
    * @param {number} checkedIndex
@@ -143,7 +146,9 @@ function buildDynamicTable() {
     filterButton.removeAttribute('mdw-inactive');
   });
 
-  const [throttleMenuItem, paginateMenuItem] = optionsMenu.querySelectorAll('.mdw-menu__item');
+  const menuItems = optionsMenu.querySelectorAll('.mdw-menu__item');
+  const throttleMenuItem = menuItems[0];
+  const paginateMenuItem = menuItems[1];
   optionsButton.addEventListener('click', (event) => {
     Menu.show(optionsMenu, event);
   });

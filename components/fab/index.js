@@ -6,21 +6,21 @@ class Fab {
    * @return {void}
    */
   static attach(fabElement) {
-    let [closer] = fabElement.getElementsByClassName('mdw-fab__close');
+    let closer = fabElement.getElementsByClassName('mdw-fab__close')[0];
     if (!closer) {
       closer = document.createElement('div');
       closer.classList.add('mdw-fab__close');
       fabElement.appendChild(closer);
     }
     closer.addEventListener('click', Fab.onCloserClicked);
-    const [fabButton] = fabElement.getElementsByClassName('mdw-fab__button');
+    const fabButton = fabElement.getElementsByClassName('mdw-fab__button')[0];
     fabButton.addEventListener('click', Fab.onFabButtonClicked);
   }
 
   static detach(fabElement) {
-    const [fabButton] = fabElement.getElementsByClassName('mdw-fab__button');
+    const fabButton = fabElement.getElementsByClassName('mdw-fab__button')[0];
     fabButton.removeEventListener('click', Fab.onFabButtonClicked);
-    const [closer] = fabElement.getElementsByClassName('mdw-fab__close');
+    const closer = fabElement.getElementsByClassName('mdw-fab__close')[0];
     if (closer) {
       closer.removeEventListener('click', Fab.onCloserClicked);
     }

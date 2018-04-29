@@ -107,7 +107,14 @@ class Dialog {
   static hide(dialogElement) {
     if (!dialogElement.hasAttribute('mdw-hide')) {
       dialogElement.setAttribute('mdw-hide', '');
-      const stackIndex = OPEN_DIALOGS.findIndex(stack => stack.element === dialogElement);
+      let stackIndex = -1;
+      OPEN_DIALOGS.some((stack, index) => {
+        if (stack.element === dialogElement) {
+          stackIndex = index;
+          return true;
+        }
+        return false;
+      });
       if (stackIndex !== -1) {
         const stack = OPEN_DIALOGS[stackIndex];
         if (stack.previousFocus) {
@@ -157,11 +164,11 @@ class Dialog {
       const previousFocus = document.activeElement;
       if (window.history && window.history.pushState) {
         let title = 'Dialog';
-        const [titleElement] = dialogElement.getElementsByClassName('mdw-dialog__title');
+        const titleElement = dialogElement.getElementsByClassName('mdw-dialog__title')[0];
         if (titleElement) {
           title = titleElement.textContent;
         } else {
-          const [bodyElement] = dialogElement.getElementsByClassName('mdw-dialog__body');
+          const bodyElement = dialogElement.getElementsByClassName('mdw-dialog__body')[0];
           title = bodyElement.textContent;
         }
         window.history.pushState({}, title, '');
@@ -230,7 +237,7 @@ class Dialog {
    * @return {void}
    */
   static updateTitle(dialogElement, text) {
-    let [title] = dialogElement.getElementsByClassName('mdw-dialog__title');
+    let title = dialogElement.getElementsByClassName('mdw-dialog__title')[0];
     if (!text) {
       if (!title) {
         // Nothing to be done
@@ -240,7 +247,7 @@ class Dialog {
       return;
     }
     if (!title) {
-      const [content] = dialogElement.getElementsByClassName('mdw-dialog__content');
+      const content = dialogElement.getElementsByClassName('mdw-dialog__content')[0];
       title = document.createElement('div');
       title.classList.add('mdw-dialog__title');
       content.appendChild(title);
@@ -268,7 +275,7 @@ class Dialog {
    * @return {void}
    */
   static updateBody(dialogElement, text) {
-    let [body] = dialogElement.getElementsByClassName('mdw-dialog__body');
+    let body = dialogElement.getElementsByClassName('mdw-dialog__body')[0];
     if (!text) {
       if (!body) {
         // Nothing to be done
@@ -278,7 +285,7 @@ class Dialog {
       return;
     }
     if (!body) {
-      const [content] = dialogElement.getElementsByClassName('mdw-dialog__content');
+      const content = dialogElement.getElementsByClassName('mdw-dialog__content')[0];
       body = document.createElement('div');
       body.classList.add('mdw-dialog__body');
       content.appendChild(body);
@@ -350,7 +357,9 @@ class Dialog {
     } else {
       document.body.appendChild(element);
     }
-    const [confirmButton, cancelButton] = element.querySelectorAll('.mdw-dialog__button-area .mdw-button');
+    const buttons = element.querySelectorAll('.mdw-dialog__button-area .mdw-button');
+    const confirmButton = buttons[0];
+    const cancelButton = buttons[1];
     if (options.type === 'alert' || options.type === 'confirm') {
       if (confirmButton) {
         confirmButton.addEventListener('click', Dialog.onConfirmClick);

@@ -121,7 +121,7 @@ class Bottomnav {
         inputElement = document.getElementById(id);
       }
     } else {
-      [inputElement] = itemElement.getElementsByClassName('mdw-bottomnav__input');
+      inputElement = itemElement.getElementsByClassName('mdw-bottomnav__input')[0];
     }
     if (inputElement instanceof HTMLInputElement) {
       inputElement.checked = true;

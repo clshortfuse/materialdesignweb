@@ -25,8 +25,8 @@ class Tab {
    * @return {void}
    */
   static attach(tabElement) {
-    const [tabItemsElement] = tabElement.getElementsByClassName('mdw-tab__items');
-    let [indicatorElement] = tabItemsElement.getElementsByClassName('mdw-tab__indicator');
+    const tabItemsElement = tabElement.getElementsByClassName('mdw-tab__items')[0];
+    let indicatorElement = tabItemsElement.getElementsByClassName('mdw-tab__indicator')[0];
     if (!indicatorElement) {
       indicatorElement = document.createElement('div');
       indicatorElement.classList.add('mdw-tab__indicator');
@@ -110,7 +110,7 @@ class Tab {
       return;
     }
     const tabItems = tabItemsElement.getElementsByClassName('mdw-tab__item');
-    const [tabContentElement] = tabElement.getElementsByClassName('mdw-tab__content');
+    const tabContentElement = tabElement.getElementsByClassName('mdw-tab__content')[0];
     let foundPreviousSelection = false;
     let foundTarget = false;
     let left = 0;
@@ -150,7 +150,7 @@ class Tab {
       }
     }
 
-    const [indicatorElement] = tabItemsElement.getElementsByClassName('mdw-tab__indicator');
+    const indicatorElement = tabItemsElement.getElementsByClassName('mdw-tab__indicator')[0];
     // Animate selection
     // Only use explicity positioning on scrollable tabs
     if (!tabItemsElement.hasAttribute('mdw-scrollable') || !tabItemsElement.clientWidth) {

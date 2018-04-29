@@ -164,7 +164,7 @@ class Search {
     this.list.addEventListener('click', (event) => {
       this.handleClickEvent(event);
     });
-    const [input] = this.textfield.getElementsByClassName('mdw-textfield__input');
+    const input = this.textfield.getElementsByClassName('mdw-textfield__input')[0];
     this.input = input;
     this.input.addEventListener('keydown', (event) => {
       this.onTextFieldKeydownEvent(event);

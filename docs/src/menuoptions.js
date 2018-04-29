@@ -127,11 +127,10 @@ function setupLargeFontMode(element) {
 
 /** @return {void} */
 function setupMenuOptions() {
-  const [
-    buttonRTLMode,
-    buttonDarkMode,
-    largeFontMode,
-  ] = document.querySelectorAll('#docs-menu-buttons .mdw-button');
+  const buttons = document.getElementById('docs-menu-buttons').getElementsByClassName('mdw-button');
+  const buttonRTLMode = buttons[0];
+  const buttonDarkMode = buttons[1];
+  const largeFontMode = buttons[2];
   setupRTLMode(buttonRTLMode);
   setupDarkMode(buttonDarkMode);
   setupLargeFontMode(largeFontMode);

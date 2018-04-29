@@ -29,14 +29,13 @@ function setupInteractions() {
     });
   }
   const layout = document.querySelector('.mdw-layout.docs-layout');
-  const [
-    useDefaultsCheckbox,
-    useFlexRadio,
-    useStretchCheckbox,
-    useCenterCheckbox,
-    useGridRadio,
-    useDenseCheckbox,
-  ] = document.querySelectorAll('.mdw-navdrawer__content input');
+  const inputs = document.querySelectorAll('.mdw-navdrawer__content input');
+  const useDefaultsCheckbox = inputs[0];
+  const useFlexRadio = inputs[1];
+  const useStretchCheckbox = inputs[2];
+  const useCenterCheckbox = inputs[3];
+  const useGridRadio = inputs[4];
+  const useDenseCheckbox = inputs[5];
 
   useDefaultsCheckbox.addEventListener('change', () => {
     if (useDefaultsCheckbox.checked) {
