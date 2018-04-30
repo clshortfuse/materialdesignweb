@@ -131,6 +131,30 @@ body {
   flex: 1;
 }
 
+.component-sample {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  [mdw-theme-fill~="light"] & {
+    background-color: #eee;
+  }
+  [mdw-theme-fill~="dark"] & {
+    background-color: #555;
+  }
+}
+
+.component-code {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px;
+  white-space: pre-wrap;
+  font-family: monospace;
+  flex-grow: 1;
+}
+
+
 .androidnavbar {
   display: flex;
   flex-direction: row;
