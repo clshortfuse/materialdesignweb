@@ -457,7 +457,8 @@ select.mdw-textfield__input {
     }
   }
 
-  .mdw-textfield[mdw-box] > .mdw-textfield__input:focus ~ & {
+  .mdw-textfield[mdw-box] > .mdw-textfield__input:focus ~ &,
+  .mdw-textfield[mdw-box] > .mdw-textfield__input[disabled] ~ & {
     // Disable interactions when focus is received
     pointer-events: none;
     cursor: auto;
