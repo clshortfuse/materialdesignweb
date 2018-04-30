@@ -18,11 +18,9 @@ $checkbox-icon-offset-y: dp(2.64) - $checkbox-icon-thickness - $border-size;
 $checkbox-icon-offset-x: dp(6.04) - $border-size;
 
 .mdw-selection {
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
-  align-items: stretch;
   position: relative;
-  justify-content: space-between;
   animation-duration: $motion-duration-desktop-enter;
   @include allHandsets {
     animation-duration: $motion-duration-mobile-enter;
