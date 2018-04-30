@@ -192,6 +192,6 @@ $layout__gutter: dp(24);
   // Stretch children
   display: flex;
   > :first-child {
-    flex: 1;
+    flex: auto;
   }
 }
