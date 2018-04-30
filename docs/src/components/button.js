@@ -2,7 +2,7 @@ import { Button } from '../../../components/button/index';
 import { setupMenuOptions } from '../menuoptions';
 
 /** @return {void} */
-function initializeMdwComponents() {
+function initializeSampleComponents() {
   const buttons = document.querySelectorAll('.js .mdw-button');
   for (let i = 0; i < buttons.length; i += 1) {
     Button.attach(buttons.item(i));
@@ -11,6 +11,7 @@ function initializeMdwComponents() {
 
 /** @type {HTMLElement} */
 let sampleComponent;
+
 /**
  * 
  * @param {Element|NodeListOf<Element>} elements
@@ -170,7 +171,7 @@ function updateSampleCode() {
   jsCodeElement.textContent = "mdw.Button.attach(element);";
 }
 
+initializeSampleComponents();
 setupMenuOptions();
-
 setupComponentOptions();
 updateSampleCode();
