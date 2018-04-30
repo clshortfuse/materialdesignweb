@@ -3,7 +3,6 @@
 @import '../common/functions.scss';
 
 .mdw-type {
-  hyphens: auto;
   // Sequential mdw-types will embed a 0-width joiner to align leading
   & + .mdw-type::before {
     content: "\200D"; // &zwj;
@@ -11,19 +10,26 @@
   }
   &[mdw-style|="display"] {
     font-weight: $font-weight-regular;
+    &,
+    & + .mdw-type::before {
+      font-size: sp(34);
+      line-height: dp(40);
+    }
   }
   &[mdw-style="display-4"] {
     &,
     & + .mdw-type::before {
       font-size: sp(112);
+      line-height: normal;
       font-weight: $font-weight-light;
-      white-space: nowrap;    
+      white-space: nowrap;
     }
   }
   &[mdw-style="display-3"] {
     &,
     & + .mdw-type::before {
       font-size: sp(56);
+      line-height: normal;
       white-space: nowrap;
     }
   }
@@ -32,13 +38,6 @@
     & + .mdw-type::before {
       font-size: sp(45);
       line-height: dp(48);
-    }
-  }
-  &[mdw-style="display-1"] {
-    &,
-    & + .mdw-type::before {
-      font-size: sp(34);
-      line-height: dp(40);
     }
   }
   &[mdw-style="headline"] {
@@ -85,22 +84,8 @@
       }
     }
   }
-  &[mdw-style="body-2"] {
-    @include allHandsetsAndTablets() {
-      &,
-      & + .mdw-type::before {
-        font-size: sp(14);
-      }
-    }
-    &,
-    & + .mdw-type::before {
-      font-size: sp(13);
-      font-weight: $font-weight-medium;
-      font-size: sp(13);
-      line-height: dp(24);
-    }
-  }
-  &[mdw-style="body-1"] {
+  &[mdw-style|="body"] {
+    hyphens: auto;
     @include allHandsetsAndTablets() {
       &,
       & + .mdw-type::before {
@@ -112,6 +97,20 @@
       font-weight: $font-weight-regular;
       font-size: sp(13);
       line-height: dp(20);
+    }
+  }
+  &[mdw-style="body-2"] {
+    @include allHandsetsAndTablets() {
+      &,
+      & + .mdw-type::before {
+        font-size: sp(14);
+      }
+    }
+    &,
+    & + .mdw-type::before {
+      font-weight: $font-weight-medium;
+      font-size: sp(13);
+      line-height: dp(24);
     }
   }
   &[mdw-style="caption"] {
