@@ -165,8 +165,10 @@ $textfieldColors: (
     &:disabled {
       color: textfieldThemeValue("disabled-color", $type, $theme);
       & ~ .mdw-textfield__label,
+      & ~ .mdw-textfield__icon,
       & ~ .mdw-textfield__prefix,
-      & ~ .mdw-textfield__suffix {
+      & ~ .mdw-textfield__suffix,
+      & ~ .mdw-textfield__dropdown-button, {
         color: textfieldThemeValue("disabled-color", $type, $theme);
       }
       & ~ .mdw-textfield__border-line {
