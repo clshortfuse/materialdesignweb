@@ -99,9 +99,9 @@ mixin button-test
           .mdw-type(mdw-style="subheading") Color
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="color" value="none" checked)
+              input.mdw-selection__input(type="radio" name="color" value="default" checked)
               .mdw-selection__icon
-              .mdw-selection__label None
+              .mdw-selection__label Default
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="color" value="primary")
               .mdw-selection__icon
@@ -114,6 +114,10 @@ mixin button-test
               input.mdw-selection__input(type="radio" name="color" value="warn")
               .mdw-selection__icon
               .mdw-selection__label Warn
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="color" value="purple-A400")
+              .mdw-selection__icon
+              .mdw-selection__label Purple-A400
           .mdw-type(mdw-style="subheading") Fill
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
@@ -132,6 +136,10 @@ mixin button-test
               input.mdw-selection__input(type="radio" name="fill" value="warn-200 light")
               .mdw-selection__icon
               .mdw-selection__label Warn 200
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="fill" value="green-700 dark")
+              .mdw-selection__icon
+              .mdw-selection__label Green 700
           .mdw-type(mdw-style="subheading") HTML Element Type
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
@@ -151,7 +159,7 @@ mixin button-test
         .display-flex(flex-column)
           .mdw-type(mdw-style="title") HTML Code
           .mdw-card.component-code.component-html
-      .mdw-layout__item(mdw-colspan="6")
+      .mdw-layout__item(mdw-colspan="2")
         .display-flex(flex-column)
           .mdw-type(mdw-style="title") Javascript Code
           .mdw-card.component-code.component-js

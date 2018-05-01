@@ -1,5 +1,6 @@
 import { Button } from '../../../components/button/index';
 import { setupMenuOptions } from '../menuoptions';
+import { convertElementToCode } from '../codegenerator';
 
 /** @return {void} */
 function initializeSampleComponents() {
@@ -9,14 +10,30 @@ function initializeSampleComponents() {
   }
 }
 
+/**
+ * @param {Element} node
+ * @return {Node}
+ */
+function getTextNode(node) {
+  for (let i = 0; i < node.childNodes.length; i += 1) {
+    const childNode = node.childNodes[i];
+    if (childNode.nodeType === Node.TEXT_NODE) {
+      return childNode;
+    }
+  }
+  const textNode = document.createTextNode('');
+  node.appendChild(textNode);
+  return textNode;
+}
+
 /** @type {HTMLElement} */
 let sampleComponent;
 
 /**
- * 
  * @param {Element|NodeListOf<Element>} elements
  * @param {string} event
- * @param {Function} listener 
+ * @param {Function} listener
+ * @return {void}
  */
 function attachEventListener(elements, event, listener) {
   let elementList;
@@ -25,18 +42,39 @@ function attachEventListener(elements, event, listener) {
   } else {
     elementList = elements;
   }
-  for (let i = 0; i < elementList.length; i++) {
+  for (let i = 0; i < elementList.length; i += 1) {
     const el = elementList[i];
     el.addEventListener(event, listener);
   }
 }
 
+/** @return {void} */
+function updateSampleCode() {
+  // Strip JS related elements and attributes
+  Button.detach(sampleComponent);
+
+  const htmlCodeElement = document.getElementsByClassName('component-html')[0];
+  htmlCodeElement.textContent = convertElementToCode(sampleComponent);
+
+  // Reattach JS if requested
+  if (document.querySelector('input[name="framework"][value="js"]').checked) {
+    Button.attach(sampleComponent);
+  }
+
+  const jsCodeElement = document.getElementsByClassName('component-js')[0];
+  jsCodeElement.textContent = 'mdw.Button.attach(element);';
+}
+
+/**
+ * @param {Event} event
+ * @return {void}
+ */
 function onOptionChange(event) {
-  const name = event.target.name;
-  const value = event.target.value;
-  const checked = event.target.checked;
+  const { name, value, checked } = event.target;
+  let focusRing;
+  let newElement;
   switch (name) {
-    case "elevation":
+    case 'elevation':
       switch (value) {
         default:
         case 'flat':
@@ -50,42 +88,41 @@ function onOptionChange(event) {
           break;
       }
       break;
-    case "disabled":
+    case 'disabled':
       if (checked) {
         sampleComponent.setAttribute('disabled', '');
       } else {
         sampleComponent.removeAttribute('disabled');
       }
       break;
-    case "focus-ring":
-      let focusRing = sampleComponent.getElementsByClassName('mdw-button__focus-ring')[0];
+    case 'focus-ring':
+      focusRing = sampleComponent.getElementsByClassName('mdw-button__focus-ring')[0];
       if (checked) {
         if (!focusRing) {
           focusRing = document.createElement('div');
           focusRing.classList.add('mdw-button__focus-ring');
           sampleComponent.insertBefore(focusRing, sampleComponent.firstChild);
         }
-      } else {
-        if (focusRing) {
-          focusRing.parentElement.removeChild(focusRing);
-        }
+      } else if (focusRing) {
+        focusRing.parentElement.removeChild(focusRing);
       }
       break;
-    case "content":
+    case 'content':
       switch (value) {
-        case "text":
+        case 'text':
           sampleComponent.removeAttribute('mdw-icon');
-          sampleComponent.classList.remove('material-icons')
-          sampleComponent.textContent = 'Button';
+          sampleComponent.classList.remove('material-icons');
+          getTextNode(sampleComponent).nodeValue = 'Button';
           break;
-        case "icon":
+        case 'icon':
           sampleComponent.setAttribute('mdw-icon', '');
-          sampleComponent.classList.add('material-icons')
-          sampleComponent.textContent = 'favorite';
+          sampleComponent.classList.add('material-icons');
+          getTextNode(sampleComponent).nodeValue = 'favorite';
           break;
+        default:
       }
       break;
-    case "color":
+    case 'color':
       switch (value) {
         case 'none':
           sampleComponent.removeAttribute('mdw-theme-color');
@@ -95,7 +132,7 @@ function onOptionChange(event) {
           break;
       }
       break;
-    case "fill":
+    case 'fill':
       switch (value) {
         case 'none':
           sampleComponent.removeAttribute('mdw-theme-fill');
@@ -105,9 +142,9 @@ function onOptionChange(event) {
           break;
       }
       break;
-    case "htmltype":
-      const newElement = document.createElement(value);
-      while(sampleComponent.firstChild) {
+    case 'htmltype':
+      newElement = document.createElement(value);
+      while (sampleComponent.firstChild) {
         newElement.appendChild(sampleComponent.firstChild);
       }
       for (let i = sampleComponent.attributes.length - 1; i >= 0; i -= 1) {
@@ -117,15 +154,17 @@ function onOptionChange(event) {
       sampleComponent.parentElement.replaceChild(newElement, sampleComponent);
       sampleComponent = newElement;
       if (value === 'a') {
-        sampleComponent.setAttribute('href', '#')
+        sampleComponent.setAttribute('href', '#');
       } else {
         sampleComponent.removeAttribute('href');
       }
       break;
+    default:
   }
   updateSampleCode();
 }
 
+/** @return {void} */
 function setupComponentOptions() {
   sampleComponent = document.querySelector('.component-sample .mdw-button');
   attachEventListener(
@@ -133,42 +172,6 @@ function setupComponentOptions() {
     'change',
     onOptionChange
   );
-}
-
-function updateSampleCode() {
-  // Strip JS related elements and attributes
-  Button.detach(sampleComponent);
-
-  const htmlCodeElement = document.getElementsByClassName('component-html')[0];
-  const htmlType = sampleComponent.tagName.toLowerCase();;
-  const attributes = [];
-  for (let i = 0; i < sampleComponent.attributes.length; i += 1) {
-    const attribute = sampleComponent.attributes.item(i);
-    if (attribute.value.length) {
-      attributes.push(`${attribute.name}="${attribute.value}"`);
-    } else {
-      attributes.push(attribute.name);
-    }
-  }
-  const syntaxItems = [htmlType, attributes.join(' ')];
-  const openingHTMLLine = `<${syntaxItems.filter(item => item).join(' ').trim()}>`;
-  const closingHTMLLine = `</${htmlType}>`;
-  const innerLines = sampleComponent.innerHTML.split('\n');
-  const lines = [openingHTMLLine];
-  innerLines
-    .filter(line => line.trim())
-    .map(line => `  ${line.trim()}`)
-    .forEach((line) => lines.push(line));
-  lines.push(closingHTMLLine);
-  htmlCodeElement.textContent = lines.join('\n');
-
-  // Reattach JS if requested
-  if (document.querySelector('input[name="framework"][value="js"]').checked) {
-    Button.attach(sampleComponent);
-  }
-
-  const jsCodeElement = document.getElementsByClassName('component-js')[0];
-  jsCodeElement.textContent = "mdw.Button.attach(element);";
 }
 
 initializeSampleComponents();

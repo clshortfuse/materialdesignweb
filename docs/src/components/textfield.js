@@ -1,4 +1,5 @@
 import { TextField } from '../../../components/textfield/index';
+import { convertElementToCode } from '../codegenerator';
 import { setupMenuOptions } from '../menuoptions';
 
 /** @return {void} */
@@ -37,27 +38,7 @@ function updateSampleCode() {
   TextField.detach(sampleComponent);
 
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
-  const htmlType = sampleComponent.tagName.toLowerCase();
-  const attributes = [];
-  for (let i = 0; i < sampleComponent.attributes.length; i += 1) {
-    const attribute = sampleComponent.attributes.item(i);
-    if (attribute.value.length) {
-      attributes.push(`${attribute.name}="${attribute.value}"`);
-    } else {
-      attributes.push(attribute.name);
-    }
-  }
-  const syntaxItems = [htmlType, attributes.join(' ')];
-  const openingHTMLLine = `<${syntaxItems.filter(item => item).join(' ').trim()}>`;
-  const closingHTMLLine = `</${htmlType}>`;
-  const innerLines = sampleComponent.innerHTML.split('\n');
-  const lines = [openingHTMLLine];
-  innerLines
-    .filter(line => line.trim())
-    .map(line => `  ${line.trim()}`)
-    .forEach((line) => lines.push(line));
-  lines.push(closingHTMLLine);
-  htmlCodeElement.textContent = lines.join('\n');
+  htmlCodeElement.textContent = convertElementToCode(sampleComponent);
 
   // Reattach JS if requested
   if (document.querySelector('input[name="framework"][value="js"]').checked) {
@@ -74,7 +55,7 @@ function updateSampleCode() {
  */
 function onOptionChange(event) {
   const { name, value, checked } = event.target;
-  const inputElement = sampleComponent.getElementsByClassName('mdw-textfield__input')[0];
+  let inputElement = sampleComponent.getElementsByClassName('mdw-textfield__input')[0];
   let desiredTagName = inputElement.tagName.toLowerCase();
   let helperText;
   let errorText;
@@ -99,6 +80,11 @@ function onOptionChange(event) {
           sampleComponent.removeAttribute('mdw-multiline');
           sampleComponent.setAttribute('mdw-textarea', '');
           desiredTagName = 'textarea';
+          break;
+        case 'dropdown':
+          sampleComponent.removeAttribute('mdw-multiline');
+          sampleComponent.removeAttribute('mdw-textarea');
+          desiredTagName = 'select';
           break;
       }
       break;
@@ -157,7 +143,11 @@ function onOptionChange(event) {
           iconElement.classList.add('mdw-textfield__icon');
           iconElement.classList.add('material-icons');
           iconElement.textContent = 'security';
-          sampleComponent.insertBefore(iconElement, inputElement);
+          if (inputElement.nextElementSibling) {
+            sampleComponent.insertBefore(iconElement, inputElement.nextElementSibling);
+          } else {
+            sampleComponent.appendChild(iconElement);
+          }
         }
       } else if (iconElement) {
         iconElement.parentElement.removeChild(iconElement);
@@ -229,14 +219,34 @@ function onOptionChange(event) {
 
   if (inputElement.tagName.toLowerCase() !== desiredTagName) {
     const newElement = document.createElement(desiredTagName);
-    while (inputElement.firstChild) {
-      newElement.appendChild(inputElement.firstChild);
-    }
     for (let i = inputElement.attributes.length - 1; i >= 0; i -= 1) {
       const attr = inputElement.attributes.item(i);
       newElement.attributes.setNamedItem(attr.cloneNode());
     }
     inputElement.parentElement.replaceChild(newElement, inputElement);
+    inputElement = newElement;
+    let dropdown = sampleComponent.getElementsByClassName('mdw-textfield__dropdown-button')[0];
+    if (desiredTagName === 'select') {
+      const option1 = document.createElement('option');
+      option1.setAttribute('value', '');
+      option1.textContent = 'Empty';
+      const option2 = document.createElement('option');
+      option2.setAttribute('value', 'option1');
+      option2.textContent = 'Option 1';
+      const option3 = document.createElement('option');
+      option3.setAttribute('value', 'option2');
+      option3.textContent = 'Option 2';
+      inputElement.appendChild(option1);
+      inputElement.appendChild(option2);
+      inputElement.appendChild(option3);
+      if (!dropdown) {
+        dropdown = document.createElement('div');
+        dropdown.classList.add('mdw-textfield__dropdown-button');
+        sampleComponent.appendChild(dropdown);
+      }
+    } else if (dropdown) {
+      dropdown.parentElement.removeChild(dropdown);
+    }
   }
   inputElement.removeAttribute('rows');
   updateSampleCode();

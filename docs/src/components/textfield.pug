@@ -40,6 +40,10 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="field-type" value="text-area")
               .mdw-selection__icon
               .mdw-selection__label Text area
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="field-type" value="dropdown")
+              .mdw-selection__icon
+              .mdw-selection__label Dropdown
           .mdw-type(mdw-style="subheading") Options
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
@@ -91,7 +95,7 @@ include ../mixins.pug
         .display-flex(flex-column)
           .mdw-type(mdw-style="title") HTML Code
           .mdw-card.component-code.component-html
-      .mdw-layout__item(mdw-colspan="6")
+      .mdw-layout__item(mdw-colspan="2")
         .display-flex(flex-column)
           .mdw-type(mdw-style="title") Javascript Code
           .mdw-card.component-code.component-js
@@ -167,7 +171,8 @@ include ../mixins.pug
             input.mdw-textfield__input(type="text" placeholder=" ")
             .mdw-textfield__label Phone number
             .mdw-textfield__border-line
-          div * Required fields
+          p.mdw-type(mdw-style="body")   
+          p.mdw-type(mdw-style="body") * Required fields
         +androidnavbar
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOV21vLWJFeUFoUXc/required-example.png')
 
@@ -224,6 +229,7 @@ include ../mixins.pug
               select.mdw-textfield__input(type="phone")
                 option(value="Home") Home
                 option(value="Work") Work
+              .mdw-textfield__dropdown-button
               .mdw-textfield__label Address type
               .mdw-textfield__border-line
         +androidnavbar
