@@ -37,7 +37,7 @@ function updateSampleCode() {
   TextField.detach(sampleComponent);
 
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
-  const htmlType = sampleComponent.tagName.toLowerCase();;
+  const htmlType = sampleComponent.tagName.toLowerCase();
   const attributes = [];
   for (let i = 0; i < sampleComponent.attributes.length; i += 1) {
     const attribute = sampleComponent.attributes.item(i);
@@ -73,11 +73,14 @@ function updateSampleCode() {
  * @return {void}
  */
 function onOptionChange(event) {
-  const name = event.target.name;
-  const value = event.target.value;
-  const checked = event.target.checked;
+  const { name, value, checked } = event.target;
   const inputElement = sampleComponent.getElementsByClassName('mdw-textfield__input')[0];
   let desiredTagName = inputElement.tagName.toLowerCase();
+  let helperText;
+  let errorText;
+  let prefixText;
+  let suffixText;
+  let iconElement;
   switch (name) {
     case 'field-type':
       switch (value) {
@@ -120,8 +123,48 @@ function onOptionChange(event) {
         sampleComponent.getElementsByClassName('mdw-textfield__input')[0].removeAttribute('required');
       }
       break;
+    case 'prefix':
+      prefixText = sampleComponent.getElementsByClassName('mdw-textfield__prefix')[0];
+      if (checked) {
+        if (!prefixText) {
+          prefixText = document.createElement('div');
+          prefixText.classList.add('mdw-textfield__prefix');
+          prefixText.textContent = '$';
+          sampleComponent.appendChild(prefixText);
+        }
+      } else if (prefixText) {
+        prefixText.parentElement.removeChild(prefixText);
+      }
+      break;
+    case 'suffix':
+      suffixText = sampleComponent.getElementsByClassName('mdw-textfield__suffix')[0];
+      if (checked) {
+        if (!suffixText) {
+          suffixText = document.createElement('div');
+          suffixText.classList.add('mdw-textfield__suffix');
+          suffixText.textContent = 'lbs';
+          sampleComponent.appendChild(suffixText);
+        }
+      } else if (suffixText) {
+        suffixText.parentElement.removeChild(suffixText);
+      }
+      break;
+    case 'icon':
+      iconElement = sampleComponent.getElementsByClassName('mdw-textfield__icon')[0];
+      if (checked) {
+        if (!iconElement) {
+          iconElement = document.createElement('div');
+          iconElement.classList.add('mdw-textfield__icon');
+          iconElement.classList.add('material-icons');
+          iconElement.textContent = 'security';
+          sampleComponent.insertBefore(iconElement, inputElement);
+        }
+      } else if (iconElement) {
+        iconElement.parentElement.removeChild(iconElement);
+      }
+      break;
     case 'helper-text':
-      let helperText = sampleComponent.getElementsByClassName('mdw-textfield__helper-text')[0];
+      helperText = sampleComponent.getElementsByClassName('mdw-textfield__helper-text')[0];
       if (checked) {
         if (!helperText) {
           helperText = document.createElement('div');
@@ -134,7 +177,7 @@ function onOptionChange(event) {
       }
       break;
     case 'error-text':
-      let errorText = sampleComponent.getElementsByClassName('mdw-textfield__error-text')[0];
+      errorText = sampleComponent.getElementsByClassName('mdw-textfield__error-text')[0];
       if (checked) {
         if (!errorText) {
           errorText = document.createElement('div');

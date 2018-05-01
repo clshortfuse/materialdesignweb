@@ -47,9 +47,17 @@ include ../mixins.pug
               .mdw-selection__icon
               .mdw-selection__label Box
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="disabled")
+              input.mdw-selection__input(type="checkbox" name="icon")
               .mdw-selection__icon
-              .mdw-selection__label Disabled
+              .mdw-selection__label Icon
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="checkbox" name="prefix")
+              .mdw-selection__icon
+              .mdw-selection__label Prefix
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="checkbox" name="suffix")
+              .mdw-selection__icon
+              .mdw-selection__label Suffix
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="checkbox" name="helper-text")
               .mdw-selection__icon
@@ -58,10 +66,6 @@ include ../mixins.pug
               input.mdw-selection__input(type="checkbox" name="error-text")
               .mdw-selection__icon
               .mdw-selection__label Error Text
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="required")
-              .mdw-selection__icon
-              .mdw-selection__label Required
           .mdw-type(mdw-style="subheading") Color
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
@@ -72,6 +76,16 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="color" value="accent")
               .mdw-selection__icon
               .mdw-selection__label Accent
+          .mdw-type(mdw-style="subheading") Attributes
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="checkbox" name="disabled")
+              .mdw-selection__icon
+              .mdw-selection__label Disabled
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="checkbox" name="required")
+              .mdw-selection__icon
+              .mdw-selection__label Required
       .mdw-layout__item(mdw-colspan="100%" style="max-height:0")
       .mdw-layout__item(mdw-colspan="6")
         .display-flex(flex-column)
