@@ -297,9 +297,6 @@ select.mdw-textfield__input {
     font-family: inherit;
     font-weight: $font-weight-regular;
     appearance: none;
-    &[value=""]:first-of-type {
-      display: none;
-    }
   }
   .mdw-textfield[mdw-solo] & {
     align-self: center;
