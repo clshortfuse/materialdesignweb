@@ -101,273 +101,262 @@ include ../mixins.pug
           .mdw-card.component-code.component-js
       .mdw-layout__item(mdw-colspan="100%")
         .mdw-type(mdw-style="title") Samples
-      .mdw-layout__item(mdw-colspan="6")
-    .comparison
-      .render
-        +androidstatusbar('primary-700 dark')
-        +toolbar('primary-500 dark', ['arrow_back'], ['more_vert']) Application
-        .content(style="padding:0px 16px")
-          label.mdw-textfield(style="font-size: 2.125rem")
-            input.mdw-textfield__input(value="Vintage 50" placeholder=" ")
-            .mdw-textfield__label Title
-            .mdw-textfield__border-line
-          .horizontal-controls
-            label.mdw-textfield(style="width:88px")
-              input.mdw-textfield__input(type="text" placeholder=" ")
-              .mdw-textfield__prefix $
-              .mdw-textfield__label Price
+      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center")
+        .render
+          +androidstatusbar('primary-700 dark')
+          +toolbar('primary-500 dark', ['arrow_back'], ['more_vert']) Application
+          .content(style="padding:0px 16px")
+            label.mdw-textfield(style="font-size: 2.125rem")
+              input.mdw-textfield__input(value="Vintage 50" placeholder=" ")
+              .mdw-textfield__label Title
               .mdw-textfield__border-line
-            label.mdw-textfield.flex-1
-              input.mdw-textfield__input(type="text" placeholder=" ")
-              .mdw-textfield__label Location (optional)
+            .horizontal-controls
+              label.mdw-textfield(style="width:88px")
+                input.mdw-textfield__input(type="text" placeholder=" ")
+                .mdw-textfield__prefix $
+                .mdw-textfield__label Price
+                .mdw-textfield__border-line
+              label.mdw-textfield.flex-1
+                input.mdw-textfield__input(type="text" placeholder=" ")
+                .mdw-textfield__label Location (optional)
+                .mdw-textfield__border-line
+            label.mdw-textfield
+              input.mdw-textfield__input(type="text" placeholder="text")
+              .mdw-textfield__label Description
               .mdw-textfield__border-line
-          label.mdw-textfield
-            input.mdw-textfield__input(type="text" placeholder="text")
-            .mdw-textfield__label Description
-            .mdw-textfield__border-line
-          label.mdw-textfield
-            .mdw-textfield__icon.material-icons security
-            input.mdw-textfield__input(type="password" placeholder="••••••••" required minlength="8")
-            .mdw-textfield__label Password field with icon and oversized label *
-            .mdw-textfield__border-line
-            .mdw-textfield__helper-text At least 8 characters
-            .mdw-textfield__error-text Error: Password of at least 8 characters required.
-          label.mdw-textfield(style="max-width:150px")
-            input.mdw-textfield__input(type="text" placeholder=" " disabled value="filled")
-            .mdw-textfield__label Disabled Filled with Suffix
-            .mdw-textfield__suffix lbs
-            .mdw-textfield__border-line
-            .mdw-textfield__helper-text Disabled Helper Text
-        +androidnavbar
-      +target('https://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0Bzhp5Z4wHba3UHZpZjVsYjRHcXc/components_textfields_labels1.png')
-
-    .comparison
-      .render
-        +androidstatusbar('accent-300')
-        +toolbar('accent-A100 dark', ['arrow_back'], ['search'])
-        form.content(style="padding:9px 16px")
-          label.mdw-textfield(mdw-theme-color="accent")
-            input.mdw-textfield__input(type="text" placeholder=" " required)
-            .mdw-textfield__label Name *
-            .mdw-textfield__border-line
-          label.mdw-textfield(mdw-theme-color="accent")
-            input.mdw-textfield__input(type="text" placeholder=" ")
-            .mdw-textfield__label Address
-            .mdw-textfield__border-line
-          label.mdw-textfield(mdw-theme-color="accent")
-            input.mdw-textfield__input(type="text" placeholder=" ")
-            .mdw-textfield__label City
-            .mdw-textfield__border-line
-          .horizontal-controls
-            label.mdw-textfield(mdw-theme-color="accent" style="width:88px")
-              input.mdw-textfield__input(type="text" placeholder=" ")
-              .mdw-textfield__label State
+            label.mdw-textfield
+              .mdw-textfield__icon.material-icons security
+              input.mdw-textfield__input(type="password" placeholder="••••••••" required minlength="8")
+              .mdw-textfield__label Password field with icon and oversized label *
               .mdw-textfield__border-line
-            label.mdw-textfield.flex-1
+              .mdw-textfield__helper-text At least 8 characters
+              .mdw-textfield__error-text Error: Password of at least 8 characters required.
+            label.mdw-textfield(style="max-width:150px")
+              input.mdw-textfield__input(type="text" placeholder=" " disabled value="filled")
+              .mdw-textfield__label Disabled Filled with Suffix
+              .mdw-textfield__suffix lbs
+              .mdw-textfield__border-line
+              .mdw-textfield__helper-text Disabled Helper Text
+          +androidnavbar
+      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center")
+        .render
+          +androidstatusbar('accent-300')
+          +toolbar('accent-A100 dark', ['arrow_back'], ['search'])
+          form.content(style="padding:9px 16px")
+            label.mdw-textfield(mdw-theme-color="accent")
               input.mdw-textfield__input(type="text" placeholder=" " required)
-              .mdw-textfield__label Zip code *
+              .mdw-textfield__label Name *
               .mdw-textfield__border-line
-          label.mdw-textfield(mdw-theme-color="accent")
-            input.mdw-textfield__input(type="text" placeholder=" ")
-            .mdw-textfield__label Phone number
-            .mdw-textfield__border-line
-          p.mdw-type(mdw-style="body")   
-          p.mdw-type(mdw-style="body") * Required fields
-        +androidnavbar
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOV21vLWJFeUFoUXc/required-example.png')
-
-    .comparison
-      .render
-        +androidstatusbar('accent-800')
-        +toolbar('accent-A700 dark', ['arrow_back'], ['search'])
-        form.content(style="padding:9px 16px")
-          div.display-flex(style="margin-bottom:-32px;margin-top:-24px;" flex-justify-content="center")
-            i.material-icons(style="color:#ccc;font-size:256px") person
-          .horizontal-controls(style="margin:4px 0")
-            label.mdw-textfield.flex-1(mdw-theme-color="accent")
-              .mdw-textfield__icon.material-icons person
-              input.mdw-textfield__input(type="text" placeholder=" " value="Ali Connors")
-              .mdw-textfield__label Name
-              .mdw-textfield__border-line
-          .horizontal-controls(style="margin:4px 0")
             label.mdw-textfield(mdw-theme-color="accent")
-              .mdw-textfield__icon.material-icons phone
-              input.mdw-textfield__input(type="phone" placeholder=" " value="65")
-              .mdw-textfield__label Phone number
-              .mdw-textfield__border-line
-            label.mdw-textfield(mdw-theme-color="accent" style="width:150px;")
-              select.mdw-textfield__input(type="phone")
-                option(value="") Unknown
-                option(value="Mobile") Mobile
-                option(value="Home") Home
-                option(value="Work") Work
-              .mdw-textfield__dropdown-button
-              .mdw-textfield__label Phone Type
-              .mdw-textfield__border-line
-          .horizontal-controls(style="margin:4px 0")
-            label.mdw-textfield(mdw-theme-color="accent")
-              .mdw-textfield__icon.material-icons email
-              input.mdw-textfield__input(type="email" placeholder=" ")
-              .mdw-textfield__label Email
-              .mdw-textfield__border-line
-            label.mdw-textfield(mdw-theme-color="accent" style="width:150px;")
-              select.mdw-textfield__input(type="phone")
-                option(value="") Unknown
-                option(value="") Unknown
-                option(value="Personal") Personal
-                option(value="Business") Business
-              .mdw-textfield__dropdown-button
-              .mdw-textfield__label Email type
-              .mdw-textfield__border-line
-          .horizontal-controls(style="margin:4px 0")
-            label.mdw-textfield(mdw-theme-color="accent")
-              .mdw-textfield__icon.material-icons place
-              input.mdw-textfield__input(type="address" placeholder=" ")
+              input.mdw-textfield__input(type="text" placeholder=" ")
               .mdw-textfield__label Address
               .mdw-textfield__border-line
-            label.mdw-textfield(mdw-theme-color="accent" style="width:150px;")
-              select.mdw-textfield__input(type="phone")
-                option(value="Home") Home
-                option(value="Work") Work
-              .mdw-textfield__dropdown-button
-              .mdw-textfield__label Address type
-              .mdw-textfield__border-line
-        +androidnavbar
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOLTFIRURTTl9mQWc/single2.png')
-
-    .comparison
-      .render.mdw-theme-textfield
-        +androidstatusbar('primary-A700')
-        +toolbar('primary-A200 dark', ['arrow_back'], ['done'])
-        .content(style="padding:24px 16px")
-          label.mdw-textfield(mdw-box)
-            input.mdw-textfield__input(value="Vintage 50's Dress" placeholder=" ")
-            .mdw-textfield__label Title
-            .mdw-textfield__border-line
-            .mdw-textfield__helper-text Helper
-          .horizontal-controls
-            label.mdw-textfield(mdw-box style="width:88px")
-              input.mdw-textfield__input(value="10.00" placeholder=" ")
-              .mdw-textfield__label Price
-              .mdw-textfield__prefix $
-              .mdw-textfield__border-line
-              .mdw-textfield__helper-text Helper
-            label.mdw-textfield.flex-1(mdw-box)
-              input.mdw-textfield__input(value="Hanover" placeholder=" ")
-              .mdw-textfield__label Location (optional)
-              .mdw-textfield__border-line
-              .mdw-textfield__helper-text Helper
-          label.mdw-textfield(mdw-box mdw-multiline)
-            textarea.mdw-textfield__input(placeholder=" " rows=3)
-              | Unique and rare dress from 1952. Made out of washed cotton with front pockets. Sleeveless with button closures.
-            .mdw-textfield__label Description
-            .mdw-textfield__border-line
-          label.mdw-textfield(mdw-box)
-            .mdw-textfield__icon.material-icons security
-            input.mdw-textfield__input(type="password" placeholder="••••••••" required minlength="8")
-            .mdw-textfield__label Password field with icon and oversized label *
-            .mdw-textfield__border-line
-            .mdw-textfield__helper-text At least 8 characters
-            .mdw-textfield__error-text Error: Password of at least 8 characters required.
-          label.mdw-textfield(mdw-box style="max-width:150px")
-            input.mdw-textfield__input(type="text" placeholder=" " disabled value="filled")
-            .mdw-textfield__label Disabled Filled with Suffix
-            .mdw-textfield__suffix lbs
-            .mdw-textfield__border-line
-            .mdw-textfield__helper-text Disabled Helper Text
-        +androidnavbar
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOS295SXBCTUZiV0U/discoverable-multi2.png')
-
-    .comparison
-      .render.mdw-theme-textfield
-        +androidstatusbar('accent-600')
-        +toolbar('accent-A400 dark', ['arrow_back'], ['done'])
-        .content(style="padding:18px 16px")
-          label.mdw-textfield(mdw-theme-color="accent")
-            input.mdw-textfield__input(placeholder=" ")
-            .mdw-textfield__label Name
-            .mdw-textfield__border-line
-            .mdw-textfield__error-text spacer
-          label.mdw-textfield(mdw-textarea mdw-theme-color="accent")
-            textarea.mdw-textfield__input(placeholder=" " rows="5")
-            .mdw-textfield__label Message
-            .mdw-textfield__border-line
-          label.mdw-textfield(mdw-textarea mdw-box)
-            textarea.mdw-textfield__input(placeholder=" " rows="5")
-            .mdw-textfield__label Message
-            .mdw-textfield__border-line
-        +androidnavbar
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOeEhlTVhUYm53Z1U/area1.png')
-    .comparison
-      .render.mdw-theme-textfield
-        +androidstatusbar('accent-A700')
-        +toolbar('accent-A400 dark', ['arrow_back'], ['done'])
-        .content(style="padding:0 16px; margin-top:-44px")
-          label.mdw-textfield(mdw-theme-color="accent")
-            input.mdw-textfield__input(placeholder=" ")
-            .mdw-textfield__label Name
-            .mdw-textfield__border-line
-            .mdw-textfield__error-text spacer
-          label.mdw-textfield(mdw-textarea mdw-theme-color="accent")
-            textarea.mdw-textfield__input(placeholder=" " rows="5" required)
-              | Just wanted to let you kn
-            .mdw-textfield__label(mdw-theme-color="accent") Message *
-            .mdw-textfield__border-line
-            .mdw-textfield__helper-text Helper text.
-            .mdw-textfield__error-text Error: Required.
-          label.mdw-textfield(mdw-textarea)
-            textarea.mdw-textfield__input(placeholder=" " rows="5" disabled)
-              | This textarea is disabled.
-            .mdw-textfield__label Message *
-            .mdw-textfield__border-line
-            .mdw-textfield__helper-text Helper text.
-            .mdw-textfield__error-text Error: Required.
-        +androidnavbar
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOS3ZTZld4c3JhUTQ/area2.png')
-
-    .comparison.js
-      .render.mdw-theme-textfield
-        +androidstatusbar('primary-A700')
-        +toolbar('primary-A200 dark', ['arrow_back'], ['done']) With Javascript
-        .content(style="padding:9px 16px")
-          label.mdw-textfield(mdw-box)
-            input.mdw-textfield__input(placeholder=" ")
-            .mdw-textfield__label Title
-            .mdw-textfield__border-line
-            .mdw-textfield__helper-text Helper
-          .horizontal-controls
-            label.mdw-textfield(style="width:88px")
-              input.mdw-textfield__input(value="10.00" placeholder=" ")
-              .mdw-textfield__prefix $
-              .mdw-textfield__label Price
-              .mdw-textfield__border-line
-              .mdw-textfield__helper-text Helper
-            label.mdw-textfield.flex-1
-              input.mdw-textfield__input(placeholder=" ")
-              .mdw-textfield__label Location (optional)
-              .mdw-textfield__border-line
-              .mdw-textfield__helper-text Helper
-          label.mdw-textfield(mdw-multiline)
-            textarea.mdw-textfield__input(placeholder=" " rows=4)
-              | Unique and rare dress from 1952. Made out of washed cotton with front pockets. Sleeveless with button closures.
-              | (Erase Me)
-            .mdw-textfield__label Description
-            .mdw-textfield__border-line
-          .horizontal-controls
             label.mdw-textfield(mdw-theme-color="accent")
-              .mdw-textfield__icon.material-icons phone
-              input.mdw-textfield__input(type="phone" placeholder=" " value="65")
+              input.mdw-textfield__input(type="text" placeholder=" ")
+              .mdw-textfield__label City
+              .mdw-textfield__border-line
+            .horizontal-controls
+              label.mdw-textfield(mdw-theme-color="accent" style="width:88px")
+                input.mdw-textfield__input(type="text" placeholder=" ")
+                .mdw-textfield__label State
+                .mdw-textfield__border-line
+              label.mdw-textfield.flex-1
+                input.mdw-textfield__input(type="text" placeholder=" " required)
+                .mdw-textfield__label Zip code *
+                .mdw-textfield__border-line
+            label.mdw-textfield(mdw-theme-color="accent")
+              input.mdw-textfield__input(type="text" placeholder=" ")
+              .mdw-textfield__label Phone number
+              .mdw-textfield__border-line
+            p.mdw-type(mdw-style="body")   
+            p.mdw-type(mdw-style="body") * Required fields
+          +androidnavbar
+
+      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center")
+        .render
+          +androidstatusbar('accent-800')
+          +toolbar('accent-A700 dark', ['arrow_back'], ['search'])
+          form.content(style="padding:9px 16px")
+            div.display-flex(style="margin-bottom:-32px;margin-top:-24px;" flex-justify-content="center")
+              i.material-icons(style="color:#ccc;font-size:256px") person
+            .horizontal-controls(style="margin:4px 0")
+              label.mdw-textfield.flex-1(mdw-theme-color="accent")
+                .mdw-textfield__icon.material-icons person
+                input.mdw-textfield__input(type="text" placeholder=" " value="Ali Connors")
+                .mdw-textfield__label Name
+                .mdw-textfield__border-line
+            .horizontal-controls(style="margin:4px 0")
+              label.mdw-textfield(mdw-theme-color="accent")
+                .mdw-textfield__icon.material-icons phone
+                input.mdw-textfield__input(type="phone" placeholder=" " value="65")
+                .mdw-textfield__label Phone number
+                .mdw-textfield__border-line
+              label.mdw-textfield(mdw-theme-color="accent" style="width:150px;")
+                select.mdw-textfield__input(type="phone")
+                  option(value="") Unknown
+                  option(value="Mobile") Mobile
+                  option(value="Home") Home
+                  option(value="Work") Work
+                .mdw-textfield__dropdown-button
+                .mdw-textfield__label Phone Type
+                .mdw-textfield__border-line
+            .horizontal-controls(style="margin:4px 0")
+              label.mdw-textfield(mdw-theme-color="accent")
+                .mdw-textfield__icon.material-icons email
+                input.mdw-textfield__input(type="email" placeholder=" ")
+                .mdw-textfield__label Email
+                .mdw-textfield__border-line
+              label.mdw-textfield(mdw-theme-color="accent" style="width:150px;")
+                select.mdw-textfield__input(type="phone")
+                  option(value="") Unknown
+                  option(value="") Unknown
+                  option(value="Personal") Personal
+                  option(value="Business") Business
+                .mdw-textfield__dropdown-button
+                .mdw-textfield__label Email type
+                .mdw-textfield__border-line
+            .horizontal-controls(style="margin:4px 0")
+              label.mdw-textfield(mdw-theme-color="accent")
+                .mdw-textfield__icon.material-icons place
+                input.mdw-textfield__input(type="address" placeholder=" ")
+                .mdw-textfield__label Address
+                .mdw-textfield__border-line
+              label.mdw-textfield(mdw-theme-color="accent" style="width:150px;")
+                select.mdw-textfield__input(type="phone")
+                  option(value="Home") Home
+                  option(value="Work") Work
+                .mdw-textfield__dropdown-button
+                .mdw-textfield__label Address type
+                .mdw-textfield__border-line
+          +androidnavbar
+      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center")
+        .render.mdw-theme-textfield
+          +androidstatusbar('primary-A700')
+          +toolbar('primary-A200 dark', ['arrow_back'], ['done'])
+          .content(style="padding:24px 16px")
+            label.mdw-textfield(mdw-box)
+              input.mdw-textfield__input(value="Vintage 50's Dress" placeholder=" ")
+              .mdw-textfield__label Title
+              .mdw-textfield__border-line
+              .mdw-textfield__helper-text Helper
+            .horizontal-controls
+              label.mdw-textfield(mdw-box style="width:88px")
+                input.mdw-textfield__input(value="10.00" placeholder=" ")
+                .mdw-textfield__label Price
+                .mdw-textfield__prefix $
+                .mdw-textfield__border-line
+                .mdw-textfield__helper-text Helper
+              label.mdw-textfield.flex-1(mdw-box)
+                input.mdw-textfield__input(value="Hanover" placeholder=" ")
+                .mdw-textfield__label Location (optional)
+                .mdw-textfield__border-line
+                .mdw-textfield__helper-text Helper
+            label.mdw-textfield(mdw-box mdw-multiline)
+              textarea.mdw-textfield__input(placeholder=" " rows=3)
+                | Unique and rare dress from 1952. Made out of washed cotton with front pockets. Sleeveless with button closures.
+              .mdw-textfield__label Description
+              .mdw-textfield__border-line
+            label.mdw-textfield(mdw-box)
+              .mdw-textfield__icon.material-icons security
+              input.mdw-textfield__input(type="password" placeholder="••••••••" required minlength="8")
+              .mdw-textfield__label Password field with icon and oversized label *
+              .mdw-textfield__border-line
+              .mdw-textfield__helper-text At least 8 characters
+              .mdw-textfield__error-text Error: Password of at least 8 characters required.
+            label.mdw-textfield(mdw-box style="max-width:150px")
+              input.mdw-textfield__input(type="text" placeholder=" " disabled value="filled")
+              .mdw-textfield__label Disabled Filled with Suffix
+              .mdw-textfield__suffix lbs
+              .mdw-textfield__border-line
+              .mdw-textfield__helper-text Disabled Helper Text
+          +androidnavbar
+      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center")
+        .render.mdw-theme-textfield
+          +androidstatusbar('accent-600')
+          +toolbar('accent-A400 dark', ['arrow_back'], ['done'])
+          .content(style="padding:0px 16px")
+            label.mdw-textfield(mdw-theme-color="accent")
+              input.mdw-textfield__input(placeholder=" ")
               .mdw-textfield__label Name
               .mdw-textfield__border-line
-            label.mdw-textfield(mdw-theme-color="accent" style="width:150px;")
-              select.mdw-textfield__input(type="phone")
-                option(value="") Unknown
-                option(value="Mobile") Mobile
-                option(value="Home") Home
-                option(value="Work") Work
-              .mdw-textfield__dropdown-button
-              .mdw-textfield__label Phone Type
+              .mdw-textfield__error-text spacer
+            label.mdw-textfield(mdw-textarea mdw-theme-color="accent")
+              textarea.mdw-textfield__input(placeholder=" " rows="5")
+              .mdw-textfield__label Message
               .mdw-textfield__border-line
-        +androidnavbar
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xOTjBUMXJUU3c4ZUU/multi1.png')
+            label.mdw-textfield(mdw-textarea mdw-box)
+              textarea.mdw-textfield__input(placeholder=" " rows="5")
+              .mdw-textfield__label Message
+              .mdw-textfield__border-line
+          +androidnavbar
+      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center")
+        .render.mdw-theme-textfield
+          +androidstatusbar('accent-A700')
+          +toolbar('accent-A400 dark', ['arrow_back'], ['done'])
+          .content(style="padding:0 16px")
+            label.mdw-textfield(mdw-theme-color="accent")
+              input.mdw-textfield__input(placeholder=" ")
+              .mdw-textfield__label Name
+              .mdw-textfield__border-line
+              .mdw-textfield__error-text spacer
+            label.mdw-textfield(mdw-textarea mdw-theme-color="accent")
+              textarea.mdw-textfield__input(placeholder=" " rows="5" required)
+                | Just wanted to let you kn
+              .mdw-textfield__label(mdw-theme-color="accent") Message *
+              .mdw-textfield__border-line
+              .mdw-textfield__helper-text Helper text.
+              .mdw-textfield__error-text Error: Required.
+            label.mdw-textfield(mdw-textarea)
+              textarea.mdw-textfield__input(placeholder=" " rows="5" disabled)
+                | This textarea is disabled.
+              .mdw-textfield__label Message *
+              .mdw-textfield__border-line
+              .mdw-textfield__helper-text Helper text.
+              .mdw-textfield__error-text Error: Required.
+          +androidnavbar
+
+      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center").js
+        .render.mdw-theme-textfield
+          +androidstatusbar('primary-A700')
+          +toolbar('primary-A200 dark', ['arrow_back'], ['done']) With Javascript
+          .content(style="padding:9px 16px")
+            label.mdw-textfield(mdw-box)
+              input.mdw-textfield__input(placeholder=" ")
+              .mdw-textfield__label Title
+              .mdw-textfield__border-line
+              .mdw-textfield__helper-text Helper
+            .horizontal-controls
+              label.mdw-textfield(style="width:88px")
+                input.mdw-textfield__input(value="10.00" placeholder=" ")
+                .mdw-textfield__prefix $
+                .mdw-textfield__label Price
+                .mdw-textfield__border-line
+                .mdw-textfield__helper-text Helper
+              label.mdw-textfield.flex-1
+                input.mdw-textfield__input(placeholder=" ")
+                .mdw-textfield__label Location (optional)
+                .mdw-textfield__border-line
+                .mdw-textfield__helper-text Helper
+            label.mdw-textfield(mdw-multiline)
+              textarea.mdw-textfield__input(placeholder=" " rows=4)
+                | Unique and rare dress from 1952. Made out of washed cotton with front pockets. Sleeveless with button closures.
+                | (Erase Me)
+              .mdw-textfield__label Description
+              .mdw-textfield__border-line
+            .horizontal-controls
+              label.mdw-textfield(mdw-theme-color="accent")
+                .mdw-textfield__icon.material-icons phone
+                input.mdw-textfield__input(type="phone" placeholder=" " value="65")
+                .mdw-textfield__label Name
+                .mdw-textfield__border-line
+              label.mdw-textfield(mdw-theme-color="accent" style="width:150px;")
+                select.mdw-textfield__input(type="phone")
+                  option(value="") Unknown
+                  option(value="Mobile") Mobile
+                  option(value="Home") Home
+                  option(value="Work") Work
+                .mdw-textfield__dropdown-button
+                .mdw-textfield__label Phone Type
+                .mdw-textfield__border-line
+          +androidnavbar
   script(src='textfield.min.js')
