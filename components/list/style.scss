@@ -85,8 +85,7 @@ $list__divider-height: dp(1);
   margin-top: dp(16); // min-height - 24px / 2
   &.material-icons {
     // 2px from material-icon inset padding
-    // margin-top: calc(16px - (2em / 24));
-    // margin-left: calc(0 - (2em / 24));
+    margin-top: dp(12);
   }
   
 }
