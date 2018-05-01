@@ -140,6 +140,12 @@ body {
   border-radius: 2px;
   border-width: 1px;
   min-height: 200px;
+  // Fix IE min-height flexbug
+  &::after {
+    content: '';
+    min-height: inherit;
+    width: 0;
+  }
   [mdw-theme-fill~="light"] & {
     border-color: rgba(0,0,0,0.12);
   }
@@ -239,10 +245,6 @@ body {
     width: 760px;
     height: 208px;
   }
-}
-
-.mdw-navdrawer#docs-navdrawer > .mdw-navdrawer__drawer {
-  min-width: 200px;
 }
 
 .docs-layout {

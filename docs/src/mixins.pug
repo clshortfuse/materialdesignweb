@@ -44,8 +44,6 @@ mixin header()
     body
       block
 
-- var components = ["bottomnav", "button", "dialog", "elevation", "fab", "layout", "list", "menu", "navdrawer", "progress", "search", "selection", "tab", "table", "textfield", "toolbar", "tooltip", "type"]
-
 mixin navdrawer(selected)
   .mdw-navdrawer#docs-navdrawer
     a.mdw-navdrawer__scrim(href="#")
@@ -72,9 +70,60 @@ mixin navdrawer(selected)
         a.mdw-list__item(mdw-selected=selected=='Home' href='index.html' mdw-theme-color="primary")
           .mdw-list__text Home
         .mdw-list__subheader Components
-        each item in components
-          a.mdw-list__item(mdw-selected=selected==item href=`${item}.html` mdw-theme-color="accent")
-            .mdw-list__text=item
+        a.mdw-list__item(mdw-selected=selected=='bottomnav' href="bottomnav.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons call_to_action
+          .mdw-list__text Bottom Navigation
+        a.mdw-list__item(mdw-selected=selected=='button' href="button.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons crop_landscape
+          .mdw-list__text Button
+        a.mdw-list__item(mdw-selected=selected=='dialog' href="dialog.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons select_all
+          .mdw-list__text Dialog
+        a.mdw-list__item(mdw-selected=selected=='elevation' href="elevation.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons layers
+          .mdw-list__text Elevation
+        a.mdw-list__item(mdw-selected=selected=='fab' href="fab.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons add_circle
+          .mdw-list__text Floating Action Button
+        a.mdw-list__item(mdw-selected=selected=='layout' href="layout.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons view_compact
+          .mdw-list__text Layout
+        a.mdw-list__item(mdw-selected=selected=='list' href="list.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons view_list
+          .mdw-list__text List
+        a.mdw-list__item(mdw-selected=selected=='menu' href="menu.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons picture_in_picture
+          .mdw-list__text Menu
+        a.mdw-list__item(mdw-selected=selected=='navdrawer' href="navdrawer.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons menu
+          .mdw-list__text Navigation Drawer
+        a.mdw-list__item(mdw-selected=selected=='progress' href="progress.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons timelapse
+          .mdw-list__text Progress
+        a.mdw-list__item(mdw-selected=selected=='search' href="search.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons search
+          .mdw-list__text Search
+        a.mdw-list__item(mdw-selected=selected=='selection' href="selection.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons check_box
+          .mdw-list__text Selection
+        a.mdw-list__item(mdw-selected=selected=='tab' href="tab.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons tab
+          .mdw-list__text Tab
+        a.mdw-list__item(mdw-selected=selected=='table' href="table.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons format_align_justify
+          .mdw-list__text Table
+        a.mdw-list__item(mdw-selected=selected=='textfield' href="textfield.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons text_fields
+          .mdw-list__text Text Field
+        a.mdw-list__item(mdw-selected=selected=='toolbar' href="toolbar.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons web_asset
+          .mdw-list__text Toolbar
+        a.mdw-list__item(mdw-selected=selected=='tooltip' href="tooltip.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons info
+          .mdw-list__text Tooltip
+        a.mdw-list__item(mdw-selected=selected=='type' href="type.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons font_download
+          .mdw-list__text Typography
     .mdw-navdrawer__content(style="padding-bottom:24px")
       block
       
