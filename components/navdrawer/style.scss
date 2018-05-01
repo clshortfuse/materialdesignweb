@@ -5,6 +5,8 @@
 @import '../common/motion.scss';
 @import '../common/variables.scss';
 
+$navdrawer__min-width: dp(256) !default;
+
 .mdw-navdrawer {
   height: 100%;
   width: 100%;
@@ -14,7 +16,7 @@
   overflow: hidden;
   grid-template-rows: auto 1fr 16px;
   -ms-grid-rows: auto 1fr 16px;
-  grid-template-columns: auto 16px 1fr;
+  grid-template-columns: minmax(#{$navdrawer__min-width}, auto) 16px 1fr;
   -ms-grid-columns: auto 16px 1fr;
   transition-timing-function: $motion-easing-deceleration;
   transition-duration: $motion-duration-desktop-leave;
@@ -117,10 +119,20 @@
   transition-timing-function: inherit;
   transition-duration: inherit;
   pointer-events: auto;
-  overflow-y: auto;
+  overflow-y: scroll;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
   border-style: solid;
   border-width: 0;
   border-right-width: 1px;
+
+  @include IEOnly() {
+    // Fix IE min-height flexbug
+    &::after {
+      content: '';
+      min-width: $navdrawer__min-width;
+      height: 0;
+    }
+  }
   html[mdw-ios][mdw-standalone] & {
     padding-left: constant(safe-area-inset-left);
     padding-left: env(safe-area-inset-left);
