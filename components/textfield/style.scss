@@ -41,11 +41,15 @@ $icon-signifier__padding-end: dp(16);
 .mdw-textfield {
   position: relative;
   display: grid;
+  display: -ms-grid;
   justify-content: flex-start;
   grid-template-columns: auto 0 auto 1fr auto auto 0;
+  -ms-grid-columns: auto 0 auto 1fr auto auto 0;
   grid-template-rows: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom}) auto;
+  -ms-grid-rows: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom}) auto;
   &[mdw-solo] {
     grid-template-rows: 0 auto;
+    -ms-grid-rows: 0 auto;
     margin-bottom: 0;
   }
   align-items: baseline;
@@ -54,7 +58,9 @@ $icon-signifier__padding-end: dp(16);
   &[mdw-textarea],
   &[mdw-box] {
     grid-template-rows: calc(#{$label__padding-top__boxed} + #{$label__font-size} + #{$label__padding-bottom}) auto;
+    -ms-grid-rows: calc(#{$label__padding-top__boxed} + #{$label__font-size} + #{$label__padding-bottom}) auto;
     grid-template-columns: auto 16px auto 1fr auto auto 16px;
+    -ms-grid-columns: auto 16px auto 1fr auto auto 16px;
     // Out-of-spec: Makes all types top-aligned
     margin-top: 8px;
   }
@@ -64,6 +70,7 @@ $icon-signifier__padding-end: dp(16);
 .mdw-textfield__prefix,
 .mdw-textfield__suffix {
   grid-row: 2;
+  -ms-grid-row: 2;
   //margin-top: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom});
   
   // color: transparent;
@@ -81,6 +88,7 @@ $icon-signifier__padding-end: dp(16);
 }
 .mdw-textfield__prefix {
   grid-column: 3;
+  -ms-grid-column: 3;
   margin-right: 4px;
   [dir=rtl] & {
     margin-right: 0;
@@ -89,6 +97,7 @@ $icon-signifier__padding-end: dp(16);
 }
 .mdw-textfield__suffix {
   grid-column: 6;
+  -ms-grid-column: 6;
   margin-left: 4px;
   [dir=rtl] & {
     margin-left: 0;
@@ -134,8 +143,10 @@ $icon-signifier__padding-end: dp(16);
   padding: 0;
   margin: 0;
   grid-row: 1;
-  grid-column-start: 3;
-  grid-column-end: 7;
+  -ms-grid-row: 1;
+  grid-column: 3;
+  -ms-grid-column: 3;
+  grid-column-end: span 4;
   -ms-grid-column-span: 4;
   
   align-self: flex-start;
@@ -193,15 +204,18 @@ $icon-signifier__padding-end: dp(16);
 .mdw-textfield__icon {
   min-width: dp(20 + 24);
   grid-column: 1;
-  grid-row-start: 2;
-  grid-row-end: 3;
+  -ms-grid-column: 1;
+  grid-row: 2;
+  -ms-grid-row: 2;
+  grid-row-end: span 1;
   -ms-grid-row-span: 1;
   align-self: flex-start;
   -ms-grid-row-align: start;
 
   .mdw-textfield[mdw-box] > &{
-    grid-row-start: 1;
-    grid-row-end: 3;
+    grid-row: 1;
+    -ms-grid-row: 1;
+    grid-row-end: span 2;
     -ms-grid-row-span: 2;
     align-self: center;
     -ms-grid-row-align: center;
@@ -214,11 +228,12 @@ $icon-signifier__padding-end: dp(16);
   background: none;
   border: none;
   outline: none;
-  
-  
+
   grid-row: 2;
-  grid-column-start: 4;
-  grid-column-end: 5;
+  -ms-grid-row: 2;
+  grid-column: 4;
+  -ms-grid-column: 4;
+  grid-column-end: span 1;
   -ms-grid-column-span: 1;
   width: 100%;
   box-sizing: border-box;
@@ -227,6 +242,8 @@ $icon-signifier__padding-end: dp(16);
   font-family: inherit;
   font-weight: $font-weight-regular;
   appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
   box-shadow: none; // Firefox :invalid styling
 
   padding-bottom: dp(8);
@@ -276,7 +293,7 @@ textarea.mdw-textfield__input {
     padding-left: $textarea__padding-horizontal;
     padding-right: 0
   }
-  grid-column-end: 8;
+  grid-column-end: span 4;
   -ms-grid-column-span: 4;
   .mdw-textfield[mdw-multiline] > & {
     min-height: 1em;
@@ -297,6 +314,8 @@ select.mdw-textfield__input {
     font-family: inherit;
     font-weight: $font-weight-regular;
     appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
   }
   .mdw-textfield[mdw-solo] & {
     align-self: center;
@@ -305,15 +324,15 @@ select.mdw-textfield__input {
     // Remove IE11 dropdown button
     display: none;
   }
-  grid-column-end: 6;
-  
+  grid-column-end: span 2;
+  -ms-grid-column-span: 2;
   [dir=rtl] & {
     padding-left: 24px;
     padding-right: 0;
   }
   padding-right: 24px;
 
-  -ms-grid-column-span: 2;
+
   &:-moz-focusring {
     color: black;
     text-shadow: none;
@@ -362,19 +381,22 @@ select.mdw-textfield__input {
     color: transparent;
   }
 
-  grid-column-start: 2;
-  grid-column-end: 8;
+  grid-column: 2;
+  -ms-grid-column: 2;
+  grid-column-end: span 6;
   -ms-grid-column-span: 6;
-  grid-row-start: 3;
-  grid-row-end: 4;
+  grid-row: 3;
+  -ms-grid-row: 3;
+  grid-row-end: span 1;
   -ms-grid-row-span: 1;
   position: relative;
   pointer-events: none;
   cursor: text;
   .mdw-textfield[mdw-box] > &,
   .mdw-textfield[mdw-textarea] > & {
-    grid-row-start: 1;
-    grid-row-end: 4;
+    grid-row: 1;
+    -ms-grid-row: 1;
+    grid-row-end: span 3;
     -ms-grid-row-span: 3;
     top: 0;
     position: absolute;
@@ -478,8 +500,10 @@ select.mdw-textfield__input {
 .mdw-textfield__error-text {
   font-size: $helper-text__font-size;
   grid-row: 4;
-  grid-column-start: 3;
-  grid-column-end: 7;
+  -ms-grid-row: 4;
+  grid-column: 3;
+  -ms-grid-column: 3;
+  grid-column-end: span 4;
   -ms-grid-column-span: 4;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -517,10 +541,12 @@ select.mdw-textfield__input:not(:focus) {
     margin-left: 0;
     margin-right: auto;
   }
-  grid-row-start: 1;
-  grid-row-end: 3;
+  grid-row: 1;
+  -ms-grid-row: 1;
+  grid-row-end: span 2;
   -ms-grid-row-span: 2;
   grid-column: 5;
+  -ms-grid-column: 5;
 
   width: 24px;
   height: 24px;
@@ -531,13 +557,16 @@ select.mdw-textfield__input:not(:focus) {
 .mdw-textfield__dropdown {
   position: absolute;
   grid-row: 4;
+  -ms-grid-row: 4;
   margin-top: 8px;
   margin-bottom: 8px;
   .mdw-textfield[mdw-box] > & {
     grid-row: 3;
+    -ms-grid-row: 3;
   }
-  grid-column-start: 2;
-  grid-column-end: 8;
+  grid-column: 2;
+  -ms-grid-column: 2;
+  grid-column-end: span 4;
   -ms-grid-column-span: 4;
   box-shadow: none;
   max-height: 0;

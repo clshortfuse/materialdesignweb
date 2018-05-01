@@ -43,6 +43,8 @@ $button__click-timeout: 100ms;
   // Override browser button defaults
   box-sizing: border-box;
   outline: none;
+  appearance: none;
+  -moz-appearance: none;
   -webkit-appearance: none;
   border: none;
   text-decoration: none;
@@ -57,6 +59,9 @@ $button__click-timeout: 100ms;
 
   // Support any HTMLElement (not just HTMLButtonElement)
   user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
   display: inline-flex;
   text-align: center;
   justify-content: center;
@@ -81,6 +86,9 @@ $button__click-timeout: 100ms;
     font-size: dp(24); // Internal padding provided by font
     box-sizing: content-box;
     user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
   }
 
   &[mdw-image] {
@@ -91,6 +99,9 @@ $button__click-timeout: 100ms;
     margin: 0;
     box-sizing: content-box;
     user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
     > * {
       position: absolute;
       left: 0;
@@ -130,6 +141,9 @@ $button__click-timeout: 100ms;
     // z-index: -1; // Safari has a negative z-index bug
     border-radius: inherit;
     user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
     pointer-events: none;
     background-color: currentColor;
     color: black;
@@ -174,6 +188,9 @@ $button__click-timeout: 100ms;
     top: 0;
     left: 0;
     user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
     pointer-events: none;
   }
 

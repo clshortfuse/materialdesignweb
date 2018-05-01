@@ -186,6 +186,8 @@ $list__divider-height: dp(1);
 
 .mdw-list__expand-checkbox {
   appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
   max-height: 0;
   max-width: 0;
   pointer-events: none;
@@ -195,8 +197,10 @@ $list__divider-height: dp(1);
 .mdw-list__secondary {
   z-index: 1;
   order: 1;
-  grid-column-start: 3;
+  grid-column: 3;
+  -ms-grid-column: 3;
   grid-column-end: span 1;
+  -ms-grid-column-span: 1;
   min-width: dp(24);
   margin-left: dp(16);
   margin-right: 0;

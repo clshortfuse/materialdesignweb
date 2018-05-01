@@ -9,10 +9,13 @@
   height: 100%;
   width: 100%;
   display: grid;
+  display: -ms-grid;
   position: relative;
   overflow: hidden;
   grid-template-rows: auto 1fr 16px;
+  -ms-grid-rows: auto 1fr 16px;
   grid-template-columns: auto 16px 1fr;
+  -ms-grid-columns: auto 16px 1fr;
   transition-timing-function: $motion-easing-deceleration;
   transition-duration: $motion-duration-desktop-leave;
   @include allHandsets {
@@ -54,10 +57,13 @@
 
 .mdw-navdrawer__toolbar {
   grid-row-start: 1;
-  grid-row-end: 2;
+  -ms-grid-row: 1;
+  grid-row-end: span 1;
   -ms-grid-row-span: 1;
-  grid-column-start: 2;
-  grid-column-end: 4;
+
+  grid-column: 2;
+  -ms-grid-column: 2;
+  grid-column-end: span 2;
   -ms-grid-column-span: 2;
   .mdw-toolbar__start {
     display: none;
@@ -67,7 +73,9 @@
 
 .mdw-navdrawer__close {
   grid-row: 1;
+  -ms-grid-row: 1;
   grid-column: 2;
+  -ms-grid-column: 2;
   display: none;
   height: 40px;
   width: 40px;
@@ -89,11 +97,14 @@
   z-index: 16;
   max-height: 100%;
   height: 100%;
-  grid-column-start: 1;
-  grid-column-end: 2;
+  grid-column: 1;
+  -ms-grid-column: 1;
+  grid-column-end: span 1;
   -ms-grid-column-span: 1;
-  grid-row-start: 1;
-  grid-row-end: 4;
+  
+  grid-row: 1;
+  -ms-grid-row: 1;
+  grid-row-end: span 3;
   -ms-grid-row-span: 3;
   max-width: calc(100% - 64px); // Tablet or Desktop
   @include allHandsets {
@@ -127,11 +138,14 @@
 
 .mdw-navdrawer__content {
   position: relative;
-  grid-row-start: 2;
-  grid-row-end: 4;
+  grid-row: 2;
+  -ms-grid-row: 2;
+  grid-row-end: span 2;
   -ms-grid-row-span: 2;
-  grid-column-start: 2;
-  grid-column-end: 4;
+  
+  grid-column: 2;
+  -ms-grid-column: 2;
+  grid-column-end: span 2;
   -ms-grid-column-span: 2;
   overflow-y: scroll;
 }
@@ -155,17 +169,24 @@
 
 .mdw-navdrawer__account {
   display: grid;
+  display: -ms-grid;
   grid-template-rows: auto minmax(64px, auto);
+  -ms-grid-rows: auto minmax(64px, auto);
   grid-template-columns: auto minmax(0, 56px);
+  -ms-grid-columns: auto minmax(0, 56px);
+
   position: relative;
   &::after {
     // Maintains a minimum 16:9 ratio
     content: '';
-    grid-column-start: 1;
-    grid-column-end: 3;
+    grid-column: 1;
+    -ms-grid-column: 1;
+    grid-column-end: span 2;
     -ms-grid-column-span: 2;
-    grid-row-start: 1;
-    grid-row-end: 3;
+
+    grid-row: 1;
+    -ms-grid-row: 1;
+    grid-row-end: span 2;
     -ms-grid-row-span: 2;
     width: auto;
     height: 0;
@@ -174,10 +195,12 @@
 }
 
 .mdw-navdrawer__avatars {
-  grid-column-start: 1;
-  grid-column-end: 3;
+  grid-column: 1;
+  -ms-grid-column: 1;
+  grid-column-end: span 2;
   -ms-grid-column-span: 2;
   grid-row: 1;
+  -ms-grid-row: 1;
   align-self: flex-end;
   height: 64px;
   padding-top: 16px;
@@ -217,12 +240,16 @@
 }
 
 .mdw-navdrawer__image {
-  grid-column-start: 1;
-  grid-column-end: 3;
+  grid-column: 1;
+  -ms-grid-column: 1;
+  grid-column-end: span 2;
   -ms-grid-column-span: 2;
-  grid-row-start: 1;
-  grid-row-end: 3;
+  
+  grid-row: 1;
+  -ms-grid-row: 1;
+  grid-row-end: span 2;
   -ms-grid-row-span: 2;
+
   position: relative;
   // z-index: -1; // Safari has a negative z-index bug
   overflow: hidden;
@@ -236,10 +263,12 @@
 }
 
 .mdw-navdrawer__subtitle {
-  grid-column-start: 1;
-  grid-column-end: 3;
+  grid-column: 1;
+  -ms-grid-column: 1;
+  grid-column-end: span 2;
   -ms-grid-column-span: 2;
   grid-row: 2;
+  -ms-grid-row: 2;
   position: relative;
   min-height: dp(56);
   display: flex;
@@ -299,14 +328,16 @@
 @mixin mdw-navdrawer__temporary {
   .mdw-navdrawer__content,
   .mdw-navdrawer__toolbar {
-    grid-column-start: 1;
+    grid-column: 1;
+    -ms-grid-column: 1;
+    grid-column-end: span 4;
     -ms-grid-column-span: 4;
   }
   .mdw-navdrawer__toolbar .mdw-toolbar__start {
     display: flex;
   }
   .mdw-navdrawer__avatars {
-    grid-column-end: 3;
+    grid-column-end: span 2;
     -ms-grid-column-span: 2;
     padding-right: 16px;
   }
@@ -315,8 +346,9 @@
   }
   > .mdw-navdrawer__drawer {
     position: absolute;
-    grid-row-start: 1;
-    grid-column-end: 4;
+    grid-row: 1;
+    -ms-grid-row: 1;
+    grid-column-end: span 3;
     -ms-grid-column-span: 3;
     min-width: auto;
     box-shadow: elevation(0);
@@ -342,7 +374,7 @@
   > .mdw-navdrawer__drawer {
     transform: translateX(0);
     box-shadow: elevation(16);
-    grid-row-end: 4;
+    grid-row-end: span 3;
     -ms-grid-row-span: 3;
   }
   > .mdw-navdrawer__scrim {
@@ -356,7 +388,7 @@
 
 .mdw-navdrawer[mdw-mini] {
   .mdw-navdrawer__avatars {
-    grid-column-end: 2;
+    grid-column-end: span 1;
     -ms-grid-column-span: 1;
     padding-right: 0;
   }
@@ -385,7 +417,7 @@
       padding-left: 20px;
       padding-right: 20px;
       justify-content: center;
-      grid-column-end: 2;
+      grid-column-end: span 1;
       -ms-grid-column-span: 1;
     }
     
@@ -405,11 +437,14 @@
       display: none;
     }
     .mdw-navdrawer__toolbar {
-      grid-column-start: 1;
+      grid-column: 1;
+      -ms-grid-column: 1;
+      grid-column-end: span 3;
       -ms-grid-column-span: 3;
     }
     > .mdw-navdrawer__drawer {
-      grid-row-start: 2;
+      grid-row: 2;
+      -ms-grid-row: 2;
       z-index: auto;
       > .mdw-list ~ .mdw-list {
         display: none;
@@ -417,7 +452,9 @@
     }
     .mdw-navdrawer__account {
       grid-template-rows: auto;
+      -ms-grid-rows: auto;
       grid-template-columns: auto;
+      -ms-grid-columns: auto;
       &::after {
         content: none;
       }
@@ -447,26 +484,30 @@
   }
   &[mdw-floating=card] {
     > .mdw-navdrawer__content {
-      grid-column-start:3;
+      grid-column: 3;
+      -ms-grid-column: 3;
     }
     > .mdw-navdrawer__drawer {
-      grid-column-end: 2;
+      grid-column-end: span 1;
       -ms-grid-column-span: 1;
       margin: 8px;
       border-radius: dp(2);
       box-shadow: elevation(8);
-      grid-row-end: 3;
+      grid-row-end: span 1;
       -ms-grid-row-span: 1;
     }
   }
   &[mdw-clipped],
   &[mdw-floating] {
     > .mdw-navdrawer__toolbar {
-      grid-column-start: 1;
+      grid-column: 1;
+      -ms-grid-column: 1;
+      grid-column-end: span 3;
       -ms-grid-column-span: 3;
     }
     > .mdw-navdrawer__drawer {
-      grid-row-start: 2;
+      grid-row: 2;
+      -ms-grid-row: 2;
       z-index: auto;
     }
   }

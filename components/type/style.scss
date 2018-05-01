@@ -86,6 +86,8 @@
   }
   &[mdw-style|="body"] {
     hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
     @include allHandsetsAndTablets() {
       &,
       & + .mdw-type::before {

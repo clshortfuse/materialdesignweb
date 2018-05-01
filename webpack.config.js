@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
@@ -48,7 +47,6 @@ function getComponentsConfig() {
             options: {
               sourceMap: !isProduction,
               plugins: () => [
-                autoprefixer({ grid: true }),
                 cssnano({ preset: 'default', zindex: false }),
               ],
             },
@@ -133,7 +131,6 @@ function getDocsConfig() {
             options: {
               sourceMap: !isProduction,
               plugins: () => [
-                autoprefixer({ grid: true }),
                 cssnano({ preset: 'default', zindex: false }),
               ],
             },

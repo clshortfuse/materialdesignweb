@@ -50,6 +50,9 @@ $ripple-duration: 500ms;
   top: 50%;
   // z-index: -1; // Safari has a negative z-index scrolling bug (hides elements)
   user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
   pointer-events: none;
   background-color: transparent;
   color: inherit;

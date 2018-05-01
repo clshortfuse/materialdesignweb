@@ -134,6 +134,9 @@ table.mdw-table,
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
   &:hover,
   &[mdw-sorted] {
     .mdw-table__sort-icon {
