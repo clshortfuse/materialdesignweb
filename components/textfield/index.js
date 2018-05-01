@@ -27,6 +27,7 @@ class TextField {
    * @return {void}
    */
   static detach(textfieldElement) {
+    textfieldElement.removeAttribute('mdw-value-empty');
     const input = getChildElementByClass(textfieldElement, 'mdw-textfield__input');
     if (input) {
       input.removeEventListener('input', TextField.onInput);
