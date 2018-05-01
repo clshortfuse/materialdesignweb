@@ -101,7 +101,7 @@ include ../mixins.pug
           .mdw-card.component-code.component-js
       .mdw-layout__item(mdw-colspan="100%")
         .mdw-type(mdw-style="title") Samples
-      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center")
+      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
         .render
           +androidstatusbar('primary-700 dark')
           +toolbar('primary-500 dark', ['arrow_back'], ['more_vert']) Application
@@ -138,7 +138,7 @@ include ../mixins.pug
               .mdw-textfield__border-line
               .mdw-textfield__helper-text Disabled Helper Text
           +androidnavbar
-      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center")
+      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
         .render
           +androidstatusbar('accent-300')
           +toolbar('accent-A100 dark', ['arrow_back'], ['search'])
@@ -172,7 +172,7 @@ include ../mixins.pug
             p.mdw-type(mdw-style="body") * Required fields
           +androidnavbar
 
-      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center")
+      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
         .render
           +androidstatusbar('accent-800')
           +toolbar('accent-A700 dark', ['arrow_back'], ['search'])
@@ -229,7 +229,7 @@ include ../mixins.pug
                 .mdw-textfield__label Address type
                 .mdw-textfield__border-line
           +androidnavbar
-      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center")
+      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
         .render.mdw-theme-textfield
           +androidstatusbar('primary-A700')
           +toolbar('primary-A200 dark', ['arrow_back'], ['done'])
@@ -270,7 +270,7 @@ include ../mixins.pug
               .mdw-textfield__border-line
               .mdw-textfield__helper-text Disabled Helper Text
           +androidnavbar
-      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center")
+      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
         .render.mdw-theme-textfield
           +androidstatusbar('accent-600')
           +toolbar('accent-A400 dark', ['arrow_back'], ['done'])
@@ -289,7 +289,7 @@ include ../mixins.pug
               .mdw-textfield__label Message
               .mdw-textfield__border-line
           +androidnavbar
-      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center")
+      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
         .render.mdw-theme-textfield
           +androidstatusbar('accent-A700')
           +toolbar('accent-A400 dark', ['arrow_back'], ['done'])
@@ -315,7 +315,7 @@ include ../mixins.pug
               .mdw-textfield__error-text Error: Required.
           +androidnavbar
 
-      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center").js
+      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center").js
         .render.mdw-theme-textfield
           +androidstatusbar('primary-A700')
           +toolbar('primary-A200 dark', ['arrow_back'], ['done']) With Javascript
@@ -359,4 +359,6 @@ include ../mixins.pug
                 .mdw-textfield__label Phone Type
                 .mdw-textfield__border-line
           +androidnavbar
+      .mdw-layout__item(mdw-colspan="4")
+      .mdw-layout__item(mdw-colspan="4")
   script(src='textfield.min.js')

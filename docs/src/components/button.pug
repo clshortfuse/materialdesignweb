@@ -165,7 +165,7 @@ mixin button-test
           .mdw-card.component-code.component-js
       .mdw-layout__item(mdw-colspan="100%")
         .mdw-type(mdw-style="title") Samples
-      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center")
+      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
         .render
           +androidstatusbar('')
           +toolbar('', [], []) CSS Only
@@ -173,7 +173,7 @@ mixin button-test
             div
               +button-test
           +androidnavbar
-      .mdw-layout__item(mdw-colspan="4").display-flex(flex-justify-content="center")
+      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
         .render.js
           +androidstatusbar('')
           +toolbar('', [], []) Javascript Version
