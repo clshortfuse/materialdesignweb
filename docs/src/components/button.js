@@ -124,7 +124,7 @@ function onOptionChange(event) {
       break;
     case 'color':
       switch (value) {
-        case 'none':
+        case 'default':
           sampleComponent.removeAttribute('mdw-theme-color');
           break;
         default:
