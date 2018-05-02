@@ -583,7 +583,8 @@ select.mdw-textfield__input:not(:focus) {
     transition-duration: $motion-duration-tablet-leave;
   }
   &[mdw-type=list] {
-    overflow-y: scroll;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
   }
   &[mdw-show],
   &:active,
