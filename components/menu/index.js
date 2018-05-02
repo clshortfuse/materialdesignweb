@@ -262,8 +262,8 @@ class Menu {
     let alignBottom = mdwPosition.indexOf('bottom') !== -1;
     let alignLeft = mdwPosition.indexOf('lef') !== -1;
     let alignRight = mdwPosition.indexOf('right') !== -1;
-    const alignStart = mdwPosition.indexOf('start') !== -1;
     const alignEnd = mdwPosition.indexOf('end') !== -1;
+    const alignStart = !alignLeft && !alignRight && !alignEnd;
     const target = event.currentTarget || event.target;
 
     const offsetTop = (useAlignTarget ? event.offsetY : 0);
