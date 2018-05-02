@@ -92,13 +92,12 @@ function onOptionChange(event) {
   switch (name) {
     case 'hposition':
       mdwPosition = mdwPosition
-        .replace('start', '')
         .replace('end', '')
         .replace('left', '')
         .replace('right', '')
         .trim();
       switch (value) {
-        case 'auto':
+        case 'start':
           break;
         default:
           mdwPosition = `${value} ${mdwPosition}`.trim();
