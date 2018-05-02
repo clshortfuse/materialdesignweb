@@ -2,7 +2,6 @@
 // https://www.w3.org/TR/wai-aria-practices/#button
 
 import { Ripple } from '../ripple/index';
-import { findElementParentByClassName } from '../common/dom';
 
 class Button {
   /**
@@ -39,7 +38,7 @@ class Button {
     if (event.key !== 'Enter' && event.key !== 'Spacebar' && event.key !== ' ') {
       return;
     }
-    const buttonElement = findElementParentByClassName(event.target, 'mdw-button');
+    const buttonElement = event.currentTarget;
     if (!buttonElement) {
       return;
     }
