@@ -19,7 +19,7 @@ $checkbox-icon-offset-x: dp(6.04);
 
 .mdw-menu__wrapper {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
 }
 
 .mdw-menu__close {
@@ -35,42 +35,37 @@ $checkbox-icon-offset-x: dp(6.04);
 }
 
 .mdw-menu {
-  display: flex;
-  flex-direction: column;
   position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
   z-index: 8;
   pointer-events: none;
-  transition-property: transform, box-shadow, opacity;
-  transition-timing-function: $motion-easing-deceleration;
-  transition-duration: $motion-duration-desktop-leave;
-  @include allHandsets {
-    transition-duration: $motion-duration-mobile-leave;
-  }
-  @include allTablets {
-    transition-duration: $motion-duration-tablet-leave;
-  }
-  @for $i from 3 to 7 {
-    &[mdw-width-units="#{$i}"] {
-      width: calc(#{$menu__unit-width} * #{$i});
+  opacity: 0;
+  &[mdw-show]:not([mdw-hide]),
+  &:target {
+    opacity: 1;
+    pointer-events: auto;
+    .mdw-menu__close {
+      visibility: visible;
+    }
+    .mdw-menu__popup {
+      transition-timing-function: $motion-easing-acceleration;
+      transition-duration: $motion-duration-desktop-enter;
+      @include allHandsets {
+        transition-duration: $motion-duration-mobile-enter;
+      }
+      @include allTablets {
+        transition-duration: $motion-duration-tablet-enter;
+      }
+      transform: scale(1);
+      opacity: 1;
+      box-shadow: elevation(8);
     }
   }
-  transform-origin: top left;
-  transform: scaleX(0) scaleY(0);
-  box-shadow: elevation(0);
-  opacity: 0;
-  margin-left: dp(8);
-  margin-right: dp(8);
-  padding-top: dp(8);
-  padding-bottom: dp(8);
-  border-radius: dp(2);
-  min-width: $menu__unit-width * 2;
-  max-width: $menu__unit-width * 5;
-  top: 0;
-  left: 0;
-  outline: none;
-  overflow-y: scroll;
-  max-height: 50vh;
 
+  transform-origin: top left;
   &[mdw-position~="right"],
   &[mdw-position~="end"] {
     left: auto;
@@ -107,25 +102,46 @@ $checkbox-icon-offset-x: dp(6.04);
       }
     }
   }
-
-  &[mdw-show]:not([mdw-hide]),
-  &:target {
-    pointer-events: auto;
-    transition-timing-function: $motion-easing-acceleration;
-    transition-duration: $motion-duration-desktop-enter;
-    opacity: 1;
-    transform: none;
-    box-shadow: elevation(8);
-    @include allHandsets {
-      transition-duration: $motion-duration-mobile-enter;
-    }
-    @include allTablets {
-      transition-duration: $motion-duration-tablet-enter;
-    }
-    .mdw-menu__close {
-      visibility: visible;
+  @for $i from 3 to 7 {
+    &[mdw-width-units="#{$i}"] {
+      .mdw-menu__popup {
+        width: calc(#{$menu__unit-width} * #{$i});
+      }
     }
   }
+}
+
+.mdw-menu__popup {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  transition-property: transform, box-shadow, opacity;
+  transition-timing-function: $motion-easing-deceleration;
+  transition-duration: $motion-duration-desktop-leave;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-leave;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-leave;
+  }
+  
+  transform-origin: inherit;
+  transform: scale(0);
+  box-shadow: elevation(0);
+  opacity: 0;
+  padding-top: dp(8);
+  padding-bottom: dp(8);
+  border-radius: dp(2);
+  min-width: $menu__unit-width * 2;
+  max-width: $menu__unit-width * 5;
+  top: inherit;
+  left: inherit;
+  right: inherit;
+  bottom: inherit;
+  outline: none;
+  overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  max-height: 50vh;
 }
 
 .mdw-menu__text {
@@ -181,7 +197,7 @@ $checkbox-icon-offset-x: dp(6.04);
   margin-top: dp(-1);
 }
 
-.mdw-menu > .mdw-menu__text,
+.mdw-menu__popup > .mdw-menu__text,
 .mdw-menu__item, {
   position: relative;
   overflow: hidden;
@@ -250,7 +266,7 @@ $checkbox-icon-offset-x: dp(6.04);
   }
 }
 
-.mdw-menu > .mdw-menu__text::before {
+.mdw-menu__popup > .mdw-menu__text::before {
   // Ensures min-height of 48dp
   // Use padding-top since negative values are ignored
   padding-top: calc(#{dp(48 - 20)} - 1em);

@@ -55,6 +55,9 @@ class MenuStack {
   constructor(element, previousFocus) {
     this.element = element;
     this.previousFocus = previousFocus;
+    if (window.history) {
+      this.historyState = window.history.state;
+    }
   }
 }
 
@@ -225,6 +228,7 @@ class Menu {
    * @return {void}
    */
   static updateMenuPosition(menuElement, event, alignTarget) {
+    const popup = getChildElementByClass(menuElement, 'mdw-menu__popup');
     let top = 'auto';
     let left = 'auto';
     let transformOrigin = '';
@@ -248,7 +252,7 @@ class Menu {
     }
     if (!alignTop && !alignBottom) {
       // Dynamic vertical position
-      if (menuElement.clientHeight + (pageY - offsetTop) > window.innerHeight) {
+      if (popup.clientHeight + (pageY - offsetTop) > window.innerHeight) {
         alignBottom = true;
       } else {
         alignTop = true;
@@ -258,7 +262,7 @@ class Menu {
       top = `${pageY - offsetTop}px`;
       transformOrigin = 'top';
     } else {
-      top = `${(pageY + offsetBottom) - menuElement.clientHeight}px`;
+      top = `${(pageY + offsetBottom) - popup.clientHeight}px`;
       transformOrigin = 'bottom';
     }
 
@@ -280,7 +284,7 @@ class Menu {
     }
     if (!alignLeft && !alignRight) {
       // Dynamic horizontal position
-      if (menuElement.clientWidth + (pageX - offsetLeft) > window.innerWidth) {
+      if (popup.clientWidth + (pageX - offsetLeft) > window.innerWidth) {
         // Can't open to the right
         alignRight = true;
       } else {
@@ -296,17 +300,17 @@ class Menu {
       left = `${pageX - offsetLeft}px`;
       transformOrigin += ' left';
     } else if (alignRight) {
-      left = `${(pageX + offsetRight) - menuElement.clientWidth}px`;
+      left = `${(pageX + offsetRight) - popup.clientWidth}px`;
       transformOrigin += ' right';
     }
 
-    menuElement.style.setProperty('top', top);
-    menuElement.style.setProperty('left', left);
-    menuElement.style.setProperty('right', 'auto');
-    menuElement.style.setProperty('bottom', 'auto');
-    menuElement.style.setProperty('margin', margin);
-    menuElement.style.setProperty('transform-origin', transformOrigin);
-    menuElement.style.setProperty('position', 'fixed');
+    popup.style.setProperty('top', top);
+    popup.style.setProperty('left', left);
+    popup.style.setProperty('right', 'auto');
+    popup.style.setProperty('bottom', 'auto');
+    popup.style.setProperty('margin', margin);
+    popup.style.setProperty('transform-origin', transformOrigin);
+    popup.style.setProperty('position', 'fixed');
   }
 
   /**
@@ -334,13 +338,14 @@ class Menu {
     if (event) {
       Menu.updateMenuPosition(menuElement, event, alignTarget);
     } else {
-      menuElement.style.removeProperty('top');
-      menuElement.style.removeProperty('left');
-      menuElement.style.removeProperty('right');
-      menuElement.style.removeProperty('bottom');
-      menuElement.style.removeProperty('margin');
-      menuElement.style.removeProperty('transform-origin');
-      menuElement.style.removeProperty('position');
+      const popup = getChildElementByClass(menuElement, 'mdw-menu__popup');
+      popup.style.removeProperty('top');
+      popup.style.removeProperty('left');
+      popup.style.removeProperty('right');
+      popup.style.removeProperty('bottom');
+      popup.style.removeProperty('margin');
+      popup.style.removeProperty('transform-origin');
+      popup.style.removeProperty('position');
     }
     if (menuElement.hasAttribute('mdw-hide')) {
       menuElement.removeAttribute('mdw-hide');
@@ -355,7 +360,7 @@ class Menu {
       const previousFocus = document.activeElement;
       if (window.history && window.history.pushState) {
         const title = 'Menu';
-        window.history.pushState({}, title, '');
+        window.history.pushState({ menuOpenTime: Date.now() }, title, '');
         window.addEventListener('popstate', Menu.onPopState);
       }
       const menuStack = new MenuStack(menuElement, previousFocus);
@@ -392,6 +397,12 @@ class Menu {
           menuStack.previousFocus.focus();
         }
         OPEN_MENUS.splice(stackIndex, 1);
+        if (menuStack.historyState && window.history && window.history.state) {
+          // IE11 returns a cloned state object, not the original
+          if (menuStack.historyState.menuOpenTime === window.history.state.menuOpenTime) {
+            window.history.back();
+          }
+        }
       }
       if (!OPEN_MENUS.length) {
         window.removeEventListener('popstate', Menu.onPopState);

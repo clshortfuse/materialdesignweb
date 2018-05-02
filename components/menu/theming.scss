@@ -25,33 +25,37 @@ $menuColors: (
 @mixin internalMenuContrastRules($type: 'var', $theme: null) {
   @at-root {
     #{&}.mdw-menu {
-      background-color: menuThemeValue("background-color", $type, $theme);
       &:not([mdw-js]) {
-        & > .mdw-menu__text,
-        .mdw-menu__item {
-          &:hover {
-            background-color: menuThemeValue("hover-color", $type, $theme);
+        .mdw-menu__popup {
+          & > .mdw-menu__text,
+          .mdw-menu__item {
+            &:hover {
+              background-color: menuThemeValue("hover-color", $type, $theme);
+            }
           }
         }
       }
-      & > .mdw-menu__text,
-      .mdw-menu__item {
-        color: menuThemeValue("text-color", $type, $theme);
-        &:focus,
-        &[mdw-selected] {
-          background-color: menuThemeValue("hover-color", $type, $theme);
-        }
-        &[disabled] {
-          color: menuThemeValue("disabled-color", $type, $theme);
-          & > .mdw-menu__icon,
-          & > .mdw-menu__check {
-            color: inherit;
+      .mdw-menu__popup {
+        background-color: menuThemeValue("background-color", $type, $theme);
+        & > .mdw-menu__text,
+        .mdw-menu__item {
+          color: menuThemeValue("text-color", $type, $theme);
+          &:focus,
+          &[mdw-selected] {
+            background-color: menuThemeValue("hover-color", $type, $theme);
           }
-        }
-        & > .mdw-ripple > .mdw-ripple__inner,
-        &:after {
-          color: buttonThemeValue("ripple-color", $type, $theme);
-          opacity: buttonThemeValue("ripple-opacity", $type, $theme);
+          &[disabled] {
+            color: menuThemeValue("disabled-color", $type, $theme);
+            & > .mdw-menu__icon,
+            & > .mdw-menu__check {
+              color: inherit;
+            }
+          }
+          & > .mdw-ripple > .mdw-ripple__inner,
+          &:after {
+            color: buttonThemeValue("ripple-color", $type, $theme);
+            opacity: buttonThemeValue("ripple-opacity", $type, $theme);
+          }
         }
       }
     }
