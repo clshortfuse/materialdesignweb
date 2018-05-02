@@ -39,7 +39,7 @@ class Tab {
     for (let i = 0; i < inputs.length; i += 1) {
       const inputElement = inputs[i];
       if (inputElement.checked) {
-        Tab.onInputChanged({ target: inputElement });
+        Tab.onInputChanged({ currentTarget: inputElement });
       }
       inputElement.addEventListener('change', Tab.onInputChanged);
     }
@@ -61,6 +61,8 @@ class Tab {
   static detach(tabElement) {
     const inputs = tabElement.getElementsByClassName('mdw-tab__input');
     const items = tabElement.getElementsByClassName('mdw-tab__item');
+    const tabContent = tabElement.getElementsByClassName('mdw-tab__content')[0];
+    const tabContentItems = tabElement.getElementsByClassName('mdw-tab__content-item');
     for (let i = 0; i < inputs.length; i += 1) {
       const inputElement = inputs[i];
       inputElement.removeEventListener('change', Tab.onInputChanged);
@@ -70,23 +72,45 @@ class Tab {
       const itemElement = items[i];
       TabItem.detach(itemElement);
       itemElement.removeEventListener('click', Tab.onItemClicked);
+      itemElement.removeAttribute('mdw-selected');
+    }
+
+    if (tabContent) {
+      tabContent.removeAttribute('mdw-selected-index');
+    }
+    for (let i = 0; i < tabContentItems.length; i += 1) {
+      const itemElement = tabContentItems[i];
+      itemElement.removeAttribute('mdw-selected');
     }
   }
 
+  /**
+   * @param {Event} event
+   * @return {void}
+   */
   static onItemClicked(event) {
-    const itemElement = findElementParentByClassName(event.target, 'mdw-tab__item');
+    /** @type {HTMLElement} */
+    const itemElement = event.currentTarget;
     if (!itemElement) {
       return;
     }
+    if (itemElement instanceof HTMLLabelElement) {
+      // Fixes ripple animation
+      const inputElement = document.getElementById(itemElement.getAttribute('for'));
+      if (inputElement) {
+        inputElement.checked = true;
+      }
+    }
+
     Tab.selectItem(itemElement);
-    const tabItemsElement = findElementParentByClassName(event.target, 'mdw-tab__items', false);
+    const tabItemsElement = findElementParentByClassName(itemElement, 'mdw-tab__items', false);
     if (tabItemsElement && tabItemsElement.hasAttribute('mdw-scrollable')) {
       itemElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
     }
   }
 
   static onInputChanged(event) {
-    const inputElement = event.target;
+    const inputElement = event.currentTarget;
     if (!inputElement.id) {
       return;
     }
