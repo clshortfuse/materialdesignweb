@@ -62,7 +62,7 @@ function updateSampleCode() {
   }
 
   const jsCodeElement = document.getElementsByClassName('component-js')[0];
-  jsCodeElement.textContent = 'mdw.Button.attach(element);';
+  jsCodeElement.textContent = 'mdw.Button.attach(buttonElement);';
 }
 
 /**
