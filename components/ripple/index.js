@@ -24,7 +24,7 @@ class Ripple {
       ripple.appendChild(rippleInner);
     }
     element.setAttribute('mdw-ripple', '');
-    element.addEventListener('click', Ripple.onClick);
+    ripple.addEventListener('click', Ripple.onClick);
   }
 
   /**
@@ -32,20 +32,9 @@ class Ripple {
    * @return {void}
    */
   static onClick(event) {
-    let rippleInner = null;
     /** @type {HTMLElement} */
-    let el = event.target;
-    while (el != null) {
-      if (el.classList.contains('mdw-ripple__inner')) {
-        rippleInner = el;
-      } else {
-        rippleInner = getChildElementByClass(el, 'mdw-ripple__inner');
-      }
-      if (rippleInner) {
-        break;
-      }
-      el = el.parentElement;
-    }
+    const el = event.currentTarget;
+    const rippleInner = getChildElementByClass(el, 'mdw-ripple__inner');
     if (!rippleInner) {
       return;
     }
