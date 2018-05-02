@@ -19,7 +19,7 @@ class MenuItem {
   }
 
   static onMouseMove(event) {
-    const el = findElementParentByClassName(event.target, 'mdw-menu__item');
+    const el = event.currentTarget;
     if (!el) {
       return;
     }
@@ -85,13 +85,16 @@ class Menu {
   }
 
   static onMenuCloserClick(event) {
-    const closer = findElementParentByClassName(event.target, 'mdw-menu__close');
+    const closer = event.currentTarget;
     if (!closer) {
       return;
     }
     const menu = findElementParentByClassName(closer, 'mdw-menu');
     if (!menu) {
       return;
+    }
+    if (closer instanceof HTMLAnchorElement) {
+      event.preventDefault();
     }
     Menu.hide(menu);
   }
@@ -108,8 +111,8 @@ class Menu {
   }
 
   static onKeyDown(event) {
-    const menuElement = findElementParentByClassName(event.target, 'mdw-menu');
-    if (!menuElement) {
+    const menuElement = event.currentTarget;
+    if (!menuElement || menuElement.hasAttribute('mdw-hide') || !menuElement.hasAttribute('mdw-show')) {
       return;
     }
     if (event.key === 'Tab') {
@@ -164,12 +167,32 @@ class Menu {
   }
 
   static detach(menuElement) {
+    Menu.hide(menuElement);
     const menuCloser = getChildElementByClass(menuElement, 'mdw-menu__close');
     if (menuCloser) {
       menuCloser.removeEventListener('click', Menu.onMenuCloserClick);
     }
     menuElement.addEventListener('keydown', Menu.onKeyDown);
     menuElement.removeAttribute('mdw-js');
+    menuElement.removeAttribute('mdw-show');
+    menuElement.removeAttribute('mdw-hide');
+    const popupElement = getChildElementByClass(menuElement, 'mdw-menu__popup');
+    if (popupElement) {
+      popupElement.style.removeProperty('top');
+      popupElement.style.removeProperty('left');
+      popupElement.style.removeProperty('right');
+      popupElement.style.removeProperty('bottom');
+      popupElement.style.removeProperty('margin');
+      popupElement.style.removeProperty('transform-origin');
+      popupElement.style.removeProperty('position');
+      if (popupElement.hasAttribute('style') && !popupElement.getAttribute('style')) {
+        popupElement.removeAttribute('style');
+      }
+    }
+    const menuItems = menuElement.getElementsByClassName('mdw-menu__item');
+    for (let i = 0; i < menuItems.length; i += 1) {
+      MenuItem.detach(menuItems.item(i));
+    }
   }
 
   static selectNextMenuItem(menu, backwards) {
@@ -222,13 +245,13 @@ class Menu {
   }
 
   /**
-   * @param {Element} menuElement,
+   * @param {Element} menuElement
+   * @param {Element} popupElement
    * @param {MouseEvent=} event
    * @param {boolean=} [alignTarget=true]
    * @return {void}
    */
-  static updateMenuPosition(menuElement, event, alignTarget) {
-    const popup = getChildElementByClass(menuElement, 'mdw-menu__popup');
+  static updateMenuPosition(menuElement, popupElement, event, alignTarget) {
     let top = 'auto';
     let left = 'auto';
     let transformOrigin = '';
@@ -237,22 +260,23 @@ class Menu {
     const mdwPosition = menuElement.getAttribute('mdw-position') || '';
     let alignTop = mdwPosition.indexOf('top') !== -1;
     let alignBottom = mdwPosition.indexOf('bottom') !== -1;
-    let alignLeft = mdwPosition.indexOf('right') !== -1;
-    let alignRight = mdwPosition.indexOf('left') !== -1;
+    let alignLeft = mdwPosition.indexOf('lef') !== -1;
+    let alignRight = mdwPosition.indexOf('right') !== -1;
     const alignStart = mdwPosition.indexOf('start') !== -1;
     const alignEnd = mdwPosition.indexOf('end') !== -1;
+    const target = event.currentTarget || event.target;
 
     const offsetTop = (useAlignTarget ? event.offsetY : 0);
-    const offsetBottom = (useAlignTarget ? event.target.clientHeight - event.offsetY : 0);
+    const offsetBottom = (useAlignTarget ? target.clientHeight - event.offsetY : 0);
     let { pageX, pageY } = event;
     if (!pageX && !pageY) {
-      const rect = event.target.getBoundingClientRect();
+      const rect = target.getBoundingClientRect();
       pageX = rect.x;
       pageY = rect.y;
     }
     if (!alignTop && !alignBottom) {
       // Dynamic vertical position
-      if (popup.clientHeight + (pageY - offsetTop) > window.innerHeight) {
+      if (popupElement.clientHeight + (pageY - offsetTop) > window.innerHeight) {
         alignBottom = true;
       } else {
         alignTop = true;
@@ -262,12 +286,12 @@ class Menu {
       top = `${pageY - offsetTop}px`;
       transformOrigin = 'top';
     } else {
-      top = `${(pageY + offsetBottom) - popup.clientHeight}px`;
+      top = `${(pageY + offsetBottom) - popupElement.clientHeight}px`;
       transformOrigin = 'bottom';
     }
 
     const offsetLeft = (useAlignTarget ? event.offsetX : 0);
-    const offsetRight = (useAlignTarget ? event.target.clientWidth - event.offsetX : 0);
+    const offsetRight = (useAlignTarget ? target.clientWidth - event.offsetX : 0);
     if (alignStart || alignEnd) {
       const isRtl = (document.documentElement.getAttribute('dir') === 'rtl');
       if (alignStart) {
@@ -284,7 +308,7 @@ class Menu {
     }
     if (!alignLeft && !alignRight) {
       // Dynamic horizontal position
-      if (popup.clientWidth + (pageX - offsetLeft) > window.innerWidth) {
+      if (popupElement.clientWidth + (pageX - offsetLeft) > window.innerWidth) {
         // Can't open to the right
         alignRight = true;
       } else {
@@ -300,17 +324,17 @@ class Menu {
       left = `${pageX - offsetLeft}px`;
       transformOrigin += ' left';
     } else if (alignRight) {
-      left = `${(pageX + offsetRight) - popup.clientWidth}px`;
+      left = `${(pageX + offsetRight) - popupElement.clientWidth}px`;
       transformOrigin += ' right';
     }
 
-    popup.style.setProperty('top', top);
-    popup.style.setProperty('left', left);
-    popup.style.setProperty('right', 'auto');
-    popup.style.setProperty('bottom', 'auto');
-    popup.style.setProperty('margin', margin);
-    popup.style.setProperty('transform-origin', transformOrigin);
-    popup.style.setProperty('position', 'fixed');
+    popupElement.style.setProperty('top', top);
+    popupElement.style.setProperty('left', left);
+    popupElement.style.setProperty('right', 'auto');
+    popupElement.style.setProperty('bottom', 'auto');
+    popupElement.style.setProperty('margin', margin);
+    popupElement.style.setProperty('transform-origin', transformOrigin);
+    popupElement.style.setProperty('position', 'fixed');
   }
 
   /**
@@ -324,7 +348,8 @@ class Menu {
       menuItem.setAttribute('tabindex', '-1');
       MenuItem.attach(menuItem);
     }
-    menuElement.setAttribute('tabindex', '-1');
+    const popupElement = getChildElementByClass(menuElement, 'mdw-menu__popup');
+    popupElement.setAttribute('tabindex', '-1');
   }
 
   /**
@@ -334,18 +359,25 @@ class Menu {
    * @return {boolean} handled
    */
   static show(menuElement, event, alignTarget) {
+    if (event.currentTarget instanceof HTMLAnchorElement) {
+      // Prevent anchor link
+      event.preventDefault();
+    }
+    const popupElement = getChildElementByClass(menuElement, 'mdw-menu__popup');
     let changed = false;
     if (event) {
-      Menu.updateMenuPosition(menuElement, event, alignTarget);
+      Menu.updateMenuPosition(menuElement, popupElement, event, alignTarget);
     } else {
-      const popup = getChildElementByClass(menuElement, 'mdw-menu__popup');
-      popup.style.removeProperty('top');
-      popup.style.removeProperty('left');
-      popup.style.removeProperty('right');
-      popup.style.removeProperty('bottom');
-      popup.style.removeProperty('margin');
-      popup.style.removeProperty('transform-origin');
-      popup.style.removeProperty('position');
+      popupElement.style.removeProperty('top');
+      popupElement.style.removeProperty('left');
+      popupElement.style.removeProperty('right');
+      popupElement.style.removeProperty('bottom');
+      popupElement.style.removeProperty('margin');
+      popupElement.style.removeProperty('transform-origin');
+      popupElement.style.removeProperty('position');
+      if (popupElement.hasAttribute('style') && !popupElement.getAttribute('style')) {
+        popupElement.removeAttribute('style');
+      }
     }
     if (menuElement.hasAttribute('mdw-hide')) {
       menuElement.removeAttribute('mdw-hide');
@@ -370,7 +402,7 @@ class Menu {
         // Triggered with keyboard event
         Menu.selectNextMenuItem(menuElement);
       } else {
-        menuElement.focus();
+        popupElement.focus();
       }
     }
     return changed;
