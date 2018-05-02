@@ -25,7 +25,7 @@ function convertElementToCode(element, linePrefix = '') {
     const child = element.childNodes.item(i);
     let lineText;
     if (child instanceof HTMLElement) {
-      lineText = linePrefix + convertElementToCode(child, '  ');
+      lineText = convertElementToCode(child, `  ${linePrefix}`);
       if (lineText.trim()) {
         onlyText = false;
       }

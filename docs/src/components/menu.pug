@@ -2,21 +2,138 @@ include ../mixins.pug
 
 +header()
   +navdrawer("menu")
-    #horizontalLine
-    #verticalLineLeft
-    #verticalLineRight
-    .comparison
-      .render
-        +androidstatusbar('primary-700 dark')
-        .mdw-toolbar(mdw-theme-fill="primary-500 dark")
-          .mdw-toolbar__action
-            .mdw-toolbar__start
-              .mdw-tooltip__wrapper
-                .mdw-tooltip__target.mdw-button(mdw-icon).material-icons menu
-                .mdw-tooltip Menu
-            .mdw-toolbar__end
-              .mdw-tooltip__wrapper.mdw-menu__wrapper
-                a.mdw-tooltip__target.mdw-button(mdw-icon mdw-more-button href="#moremenu").material-icons more_vert
+    .mdw-layout(mdw-stretch)
+      .mdw-layout__item(mdw-colspan="100%")
+        div
+          .mdw-type(mdw-style="headline") Menus display a list of choices on a transient sheet of material.
+          .mdw-type(mdw-style="body") Menus appear upon interaction with a button, action, or other control. They display a list of choices, with one choice per line.
+          .mdw-type(mdw-style="body")
+          .mdw-type(mdw-style="body") Menu items may be disabled if not applicable to a certain context. Contextual menus dynamically change their available menu items based on the current state of the app.
+          .mdw-type(mdw-style="body")
+      .mdw-layout__item(mdw-colspan="4")
+        .component-sample
+          .component-sample__container
+            .mdw-menu#sample-menu
+              a.mdw-button(href="#sample-menu") Button
+              a.mdw-menu__close(href="#")
+              .mdw-menu__popup
+                .mdw-menu__item
+                  .mdw-menu__icon.material-icons format_bold
+                  .mdw-menu__text Bold
+                  .mdw-menu__info ⌘B
+                .mdw-menu__item(disabled)
+                  .mdw-menu__icon.material-icons format_italic
+                  .mdw-menu__text Italic
+                  .mdw-menu__info ⌘I
+                .mdw-menu__item
+                  .mdw-menu__icon.material-icons format_underline
+                  .mdw-menu__text Underline
+                  .mdw-menu__info ⌘U
+                .mdw-menu__divider
+                .mdw-menu__item(mdw-checked)
+                  .mdw-menu__check
+                  .mdw-menu__text Flights
+                .mdw-menu__item
+                  .mdw-menu__check
+                  .mdw-menu__text Apps
+      .mdw-layout__item(mdw-colspan="8")
+        div
+          .mdw-type(mdw-style="subheading") Framework
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="framework" value="js" checked)
+              .mdw-selection__icon
+              .mdw-selection__label JavaScript
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="framework" value="css")
+              .mdw-selection__icon
+              .mdw-selection__label CSS Only
+          .mdw-type(mdw-style="subheading") Horizontal Position
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="hposition" value="auto" checked)
+              .mdw-selection__icon
+              .mdw-selection__label Auto
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="hposition" value="start")
+              .mdw-selection__icon
+              .mdw-selection__label Start
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="hposition" value="end")
+              .mdw-selection__icon
+              .mdw-selection__label End
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="hposition" value="left")
+              .mdw-selection__icon
+              .mdw-selection__label Left
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="hposition" value="right")
+              .mdw-selection__icon
+              .mdw-selection__label Right
+          .mdw-type(mdw-style="subheading") Vertical Position
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="vposition" value="auto" checked)
+              .mdw-selection__icon
+              .mdw-selection__label Auto
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="vposition" value="top")
+              .mdw-selection__icon
+              .mdw-selection__label Top
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="vposition" value="bottom")
+              .mdw-selection__icon
+              .mdw-selection__label Bottom
+          .mdw-type(mdw-style="subheading") Width Units
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="width" value="auto" checked)
+              .mdw-selection__icon
+              .mdw-selection__label Auto
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="width" value="3")
+              .mdw-selection__icon
+              .mdw-selection__label 3
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="width" value="4")
+              .mdw-selection__icon
+              .mdw-selection__label 4
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="width" value="5")
+              .mdw-selection__icon
+              .mdw-selection__label 5
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="width" value="6")
+              .mdw-selection__icon
+              .mdw-selection__label 6
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="width" value="7")
+              .mdw-selection__icon
+              .mdw-selection__label 7
+      .mdw-layout__item(mdw-colspan="100%" style="max-height:0")
+      .mdw-layout__item(mdw-colspan="100%")
+        .display-flex(flex-column)
+          .mdw-type(mdw-style="title") HTML Code
+          .mdw-card.component-code.component-html
+      .mdw-layout__item(mdw-colspan="100%")
+        .display-flex(flex-column)
+          .mdw-type(mdw-style="title") Javascript Code
+          .mdw-card.component-code.component-js
+      .mdw-layout__item(mdw-colspan="100%")
+        .mdw-type(mdw-style="title") Samples
+      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
+        .render
+          +androidstatusbar('primary-700 dark')
+          .mdw-toolbar(mdw-theme-fill="primary-500 dark")
+            .mdw-toolbar__action
+              .mdw-toolbar__start
+                .mdw-tooltip__wrapper
+                  .mdw-tooltip__target.mdw-button(mdw-icon).material-icons menu
+                  .mdw-tooltip Menu
+              .mdw-toolbar__end
+                .mdw-tooltip__wrapper
+                  a.mdw-tooltip__target.mdw-button(mdw-icon mdw-more-button href="#moremenu").material-icons more_vert
+                  .mdw-tooltip Options
                 .mdw-menu#moremenu(mdw-position="top end" mdw-width-units="3" mdw-theme-fill="light")
                   a.mdw-menu__close(href="#")
                   .mdw-menu__popup
@@ -25,20 +142,18 @@ include ../mixins.pug
                     .mdw-menu__text Send feedback
                     .mdw-menu__text Help
                     .mdw-menu__text Signout
-                .mdw-tooltip Options
-        .content(style="padding:16px 8px")
-          .mdw-menu__wrapper
-            a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#textmenu") Text
+                
+          .content(style="padding:16px 8px")
             .mdw-menu#textmenu
+              a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#textmenu") Text
               a.mdw-menu__close(href="#")
               .mdw-menu__popup
                 .mdw-menu__text Maps
                 .mdw-menu__text Books
                 .mdw-menu__text Flights
                 .mdw-menu__text Apps
-          .mdw-menu__wrapper
-            a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#checkmenu") Checks
             .mdw-menu#checkmenu
+              a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#checkmenu") Checks
               a.mdw-menu__close(href="#")
               .mdw-menu__popup
                 .mdw-menu__item
@@ -53,10 +168,9 @@ include ../mixins.pug
                 .mdw-menu__item
                   .mdw-menu__check
                   .mdw-menu__text Apps
-          div(style="height:400px")
-          .mdw-menu__wrapper
-            a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#infomenu") Info
+            div(style="height:400px")
             .mdw-menu#infomenu(mdw-width-units=4 mdw-position="bottom")
+              a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#infomenu") Info
               a.mdw-menu__close(href="#")
               .mdw-menu__popup
                 .mdw-menu__item(disabled)
@@ -78,9 +192,8 @@ include ../mixins.pug
                 .mdw-menu__item
                   .mdw-menu__check
                   .mdw-menu__text Apps
-          .mdw-menu__wrapper
-            a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#iconmenu") Icons
             .mdw-menu#iconmenu(mdw-width-units=4 mdw-position="bottom")
+              a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#iconmenu") Icons
               a.mdw-menu__close(href="#")
               .mdw-menu__popup
                 .mdw-menu__item
@@ -95,28 +208,27 @@ include ../mixins.pug
                   .mdw-menu__icon.material-icons format_underline
                   .mdw-menu__text Underline
                   .mdw-menu__info ⌘U
-          .mdw-menu__wrapper.js
-            button.mdw-button(mdw-theme-fill="primary dark" mdw-raised) JS
-            .mdw-menu#iconmenu(mdw-width-units=4 mdw-position="end")
-              .mdw-menu__popup
-                .mdw-menu__item
-                  .mdw-menu__icon.material-icons format_bold
-                  .mdw-menu__text Bold
-                  .mdw-menu__info ⌘B
-                .mdw-menu__item(disabled)
-                  .mdw-menu__icon.material-icons format_italic
-                  .mdw-menu__text Italic
-                  .mdw-menu__info ⌘I
-                .mdw-menu__item
-                  .mdw-menu__icon.material-icons format_underline
-                  .mdw-menu__text Underline
-                  .mdw-menu__info ⌘U
-                .mdw-menu__divider
-                .mdw-menu__item(mdw-checked)
-                  .mdw-menu__check
-                  .mdw-menu__text Flights
-                .mdw-menu__item
-                  .mdw-menu__check
-                  .mdw-menu__text Apps
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3RktrSGVxbkhFaTg/components-menus-usage2.png')
+            .mdw-menu__wrapper.js
+              .mdw-menu(mdw-width-units=4 mdw-position="end")
+                button.mdw-button(mdw-theme-fill="primary dark" mdw-raised) JS
+                .mdw-menu__popup
+                  .mdw-menu__item
+                    .mdw-menu__icon.material-icons format_bold
+                    .mdw-menu__text Bold
+                    .mdw-menu__info ⌘B
+                  .mdw-menu__item(disabled)
+                    .mdw-menu__icon.material-icons format_italic
+                    .mdw-menu__text Italic
+                    .mdw-menu__info ⌘I
+                  .mdw-menu__item
+                    .mdw-menu__icon.material-icons format_underline
+                    .mdw-menu__text Underline
+                    .mdw-menu__info ⌘U
+                  .mdw-menu__divider
+                  .mdw-menu__item(mdw-checked)
+                    .mdw-menu__check
+                    .mdw-menu__text Flights
+                  .mdw-menu__item
+                    .mdw-menu__check
+                    .mdw-menu__text Apps
   script(src='menu.min.js')

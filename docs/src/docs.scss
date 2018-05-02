@@ -55,6 +55,7 @@ body {
 .content {
   flex: 1;
   overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
   flex-direction: column;
 }
 
@@ -146,6 +147,10 @@ body {
   [mdw-theme-fill~="dark"] & {
     border-color: rgba(255,255,255,0.12);
   }
+}
+
+.component-sample__container {
+  display: inline-flex;
 }
 
 .component-code {
