@@ -51,7 +51,7 @@ $dialog__unit-width: dp(56);
   }
   opacity: 0;
   &[mdw-show]:not([mdw-hide]),
-  &:target {
+  &[id]:target {
     opacity: 1;
     pointer-events: auto;
     transition-timing-function: $motion-easing-acceleration;
