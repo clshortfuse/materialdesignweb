@@ -36,21 +36,32 @@ class Tab {
     const inputs = tabElement.getElementsByClassName('mdw-tab__input');
     const items = tabElement.getElementsByClassName('mdw-tab__item');
 
+    let foundChecked = false;
     for (let i = 0; i < inputs.length; i += 1) {
       const inputElement = inputs[i];
       if (inputElement.checked) {
+        foundChecked = true;
         Tab.onInputChanged({ currentTarget: inputElement });
       }
       inputElement.addEventListener('change', Tab.onInputChanged);
     }
+    if (!foundChecked && inputs.length) {
+      inputs[0].checked = true;
+      Tab.onInputChanged({ currentTarget: inputs[0] });
+    }
 
+    let foundSelected = false;
     for (let i = 0; i < items.length; i += 1) {
       const itemElement = items[i];
       TabItem.attach(itemElement);
       if (itemElement.hasAttribute('mdw-selected')) {
+        foundSelected = true;
         Tab.selectItem(itemElement);
       }
       itemElement.addEventListener('click', Tab.onItemClicked);
+    }
+    if (!foundSelected && items.length) {
+      Tab.selectItem(items[0]);
     }
   }
 
