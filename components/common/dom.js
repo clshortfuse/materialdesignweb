@@ -4,14 +4,11 @@
  * @return {Element}
  */
 function getChildElementByClass(element, className) {
-  let el = element.firstElementChild;
-  while (el != null) {
-    if (el.classList.contains(className)) {
-      return el;
-    }
-    el = el.nextElementSibling;
+  const child = element.getElementsByClassName(className)[0];
+  if (child && child.parentElement !== element) {
+    return null;
   }
-  return null;
+  return child;
 }
 
 /**
