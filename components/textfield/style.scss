@@ -161,7 +161,7 @@ $icon-signifier__padding-end: dp(16);
  
   transform: translateY(0);
   font-size: $label__font-size;
-  transition-property: transform, font-size;
+  transition-property: transform, font-size, color;
   transition-timing-function: $motion-easing-standard;
   transition-duration: $motion-duration-desktop-default;
   @include allHandsets {
