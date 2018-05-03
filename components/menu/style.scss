@@ -37,7 +37,7 @@ $checkbox-icon-offset-x: dp(6.04);
   position: relative;
   display: inline-flex;
   &[mdw-show]:not([mdw-hide]),
-  &:target:not([mdw-hide]) {
+  &[id]:target:not([mdw-hide]) {
     .mdw-menu__close {
       visibility: visible;
     }
