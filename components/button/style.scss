@@ -116,7 +116,7 @@ $button__click-timeout: 100ms;
   // Ripple doesn't appear until mouse-up
   // Background color transitions from hover to press
 
-  // ::before - focus overlay
+  // ::before - focus and press background
   // ::after  - ripple
 
   &[disabled] > .mdw-ripple,
@@ -138,7 +138,9 @@ $button__click-timeout: 100ms;
     height: 100%;
     top: 0;
     left: 0;
-    // z-index: -1; // Safari has a negative z-index bug
+    // Safari has a negative z-index bug
+    // Might be related to display rule
+    z-index: -1;
     border-radius: inherit;
     user-select: none;
     -moz-user-select: none;
@@ -146,14 +148,14 @@ $button__click-timeout: 100ms;
     -webkit-user-select: none;
     pointer-events: none;
     background-color: currentColor;
-    color: black;
+    color: rgba(black, 0.12);
     opacity: 0;
     transition-property: opacity, transform;
     transform: scale(1);
     transition-duration: 200ms;
   }
-  &:focus:not(:active)::before {
-    opacity: 0.12;
+  &:focus::before {
+    opacity: 1;
   }
 }
 
@@ -278,6 +280,9 @@ $button__click-timeout: 100ms;
 .mdw-button[mdw-theme-color] {
   &::before {
     color: inherit;
+  }
+  &:focus::before {
+    opacity: 0.12;
   }
   &:active::before {
     // Colored buttons have undocumented press color

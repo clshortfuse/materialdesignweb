@@ -17,8 +17,7 @@ $buttonColors: (
   icon-press-opacity:         (         0.12 ,          0.30,           0.20),
   //icon-ripple-opacity:        (         0.36 ,          0.90,           0.60), // 3x for visibility
   icon-ripple-color:          ( #000       ,  #fff       ),
-  transparent-focus-overlay:  ( #000       ,  #fff       ),
-  filled-focus-overlay:       ((#000, 0.12), (#000, 0.12), (#fff, 0.12)),
+  transparent-focus-overlay:  ((#000, 0.12), (#fff, 0.12)),
   disabled-text-color:        ((#000, 0.26), (#fff, 0.30)),
   disabled-background-color:  ((#000, 0.12), (#fff, 0.12)),
   filled-press-primary-color: (('primary', '700', 1.0), ('primary', '700', 1.0)),
@@ -75,19 +74,17 @@ $buttonColors: (
         }
       }
 
-      // Focus overlay
+      // Focus and press colors
       &:not([mdw-theme-color]):not([mdw-theme-fill]) {
         &::before {
           background-color: buttonThemeValue("transparent-focus-overlay", $type, $theme);
         }
+        &:active::before {
+          background-color: buttonThemeValue("press-color__transparent", $type, $theme);
+        }
         .mdw-button__focus-ring {
           color: buttonThemeValue("transparent-focus-overlay", $type, $theme);
         }
-      }
-
-      // Press on transparent button
-      &:active:not([mdw-theme-fill]):not([mdw-theme-color]) {
-        background-color: buttonThemeValue("press-color__transparent", $type, $theme);
       }
 
       // Can be overridden by theme-color
