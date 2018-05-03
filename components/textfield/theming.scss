@@ -50,7 +50,7 @@ $textfieldColors: (
         color: textfieldThemeValue("label-color__focus", $type, $theme);
       }
       & ~ .mdw-textfield__border-line::before {
-        border-color: textfieldThemeValue("border-line-color__focus", $type, $theme);
+        color: textfieldThemeValue("border-line-color__focus", $type, $theme);
       }
 
       &:invalid {
@@ -80,7 +80,7 @@ $textfieldColors: (
             color: textfieldThemeValue("label-accent-color__focus", $type, $theme);
           }
           & ~ .mdw-textfield__border-line::before {
-            border-color: textfieldThemeValue("border-line-accent-color__focus", $type, $theme);
+            color: textfieldThemeValue("border-line-accent-color__focus", $type, $theme);
           }
         }
       }

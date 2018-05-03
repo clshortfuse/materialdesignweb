@@ -427,7 +427,7 @@ select.mdw-textfield__input {
 
   border-width: $border-line__height;
   transition-delay: 1ms;
-  transition-property: transform, border-color, background-color;
+  transition-property: transform;
   transition-timing-function: $motion-easing-deceleration;
   transition-duration: $motion-duration-desktop-leave;
   @include allHandsets {
@@ -455,12 +455,15 @@ select.mdw-textfield__input {
     border-bottom-width: $border-line__focused__height;
     margin-top: 0;
     pointer-events: auto;
+    transition-property: transform, border-color, background-color;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     &::before {
       // z-index: -1; // Safari has a negative z-index bug
       transform: none;
-      border-style: none;
+      border-style: inherit;
+      border-width: inherit;
+      border-color: transparent;
       transition-delay: 0s;
     }
     > .mdw-ripple {
@@ -677,7 +680,10 @@ select.mdw-textfield__input:not(:focus) {
 
 // Disabled
 .mdw-textfield__input:disabled  ~ .mdw-textfield__border-line {
-  border-style: dotted;
+  border-bottom-style: dotted;
+}
+.mdw-textfield[mdw-box] > .mdw-textfield__input:disabled  ~ .mdw-textfield__border-line {
+  border-bottom-width: 0;
 }
 
 // Invalid
