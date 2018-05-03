@@ -427,6 +427,7 @@ select.mdw-textfield__input {
 
   border-width: $border-line__height;
   transition-delay: 1ms;
+  transition-property: transform, border-color, background-color;
   transition-timing-function: $motion-easing-deceleration;
   transition-duration: $motion-duration-desktop-leave;
   @include allHandsets {
@@ -575,6 +576,7 @@ select.mdw-textfield__input:not(:focus) {
   width: 100%;
   max-width: 100%;
   transition-property: box-shadow, max-height;
+  transition-timing-function: $motion-easing-deceleration;
   transition-duration: $motion-duration-desktop-leave;
   @include allHandsets {
     transition-duration: $motion-duration-mobile-leave;
@@ -593,6 +595,7 @@ select.mdw-textfield__input:not(:focus) {
       &[mdw-type=list] {
         max-height: calc(300px);
       }
+      transition-timing-function: $motion-easing-acceleration;
       transition-duration: $motion-duration-desktop-enter;
       @include allHandsets {
         transition-duration: $motion-duration-mobile-enter;
