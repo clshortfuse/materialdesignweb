@@ -1,6 +1,6 @@
 import { Button } from '../../../components/button/index';
 import { setupMenuOptions } from '../menuoptions';
-import { convertElementToCode } from '../codegenerator';
+import { convertElementToCode, getChildTextNode, attachEventListener } from '../sample-utils';
 
 /** @return {void} */
 function initializeSampleComponents() {
@@ -10,46 +10,15 @@ function initializeSampleComponents() {
   }
 }
 
-/**
- * @param {Element} node
- * @return {Node}
- */
-function getTextNode(node) {
-  for (let i = 0; i < node.childNodes.length; i += 1) {
-    const childNode = node.childNodes[i];
-    if (childNode.nodeType === Node.TEXT_NODE) {
-      return childNode;
-    }
-  }
-  const textNode = document.createTextNode('');
-  node.appendChild(textNode);
-  return textNode;
-}
-
 /** @type {HTMLElement} */
 let sampleComponent;
 
-/**
- * @param {Element|NodeListOf<Element>} elements
- * @param {string} event
- * @param {Function} listener
- * @return {void}
- */
-function attachEventListener(elements, event, listener) {
-  let elementList;
-  if (elements instanceof Element) {
-    elementList = [elementList];
-  } else {
-    elementList = elements;
-  }
-  for (let i = 0; i < elementList.length; i += 1) {
-    const el = elementList[i];
-    el.addEventListener(event, listener);
-  }
-}
-
 /** @return {void} */
 function updateSampleCode() {
+  const jsRequired = document.querySelector('input[name="javascript"][value="required"]').checked;
+  const jsOptional = document.querySelector('input[name="javascript"][value="optional"]').checked;
+  const useJS = jsRequired || jsOptional;
+
   // Strip JS related elements and attributes
   Button.detach(sampleComponent);
 
@@ -57,7 +26,7 @@ function updateSampleCode() {
   htmlCodeElement.textContent = convertElementToCode(sampleComponent);
 
   // Reattach JS if requested
-  if (document.querySelector('input[name="framework"][value="js"]').checked) {
+  if (useJS) {
     Button.attach(sampleComponent);
   }
 
@@ -112,12 +81,12 @@ function onOptionChange(event) {
         case 'text':
           sampleComponent.removeAttribute('mdw-icon');
           sampleComponent.classList.remove('material-icons');
-          getTextNode(sampleComponent).nodeValue = 'Button';
+          getChildTextNode(sampleComponent).nodeValue = 'Button';
           break;
         case 'icon':
           sampleComponent.setAttribute('mdw-icon', '');
           sampleComponent.classList.add('material-icons');
-          getTextNode(sampleComponent).nodeValue = 'favorite';
+          getChildTextNode(sampleComponent).nodeValue = 'favorite';
           break;
         default:
       }

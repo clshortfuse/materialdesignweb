@@ -2,42 +2,42 @@ include ../mixins.pug
 
 mixin button-test
   div.display-flex.flex-wrap
-    .mdw-button Flat
+    button.mdw-button Flat
       .mdw-button__focus-ring
-    .mdw-button(mdw-raised) Raised
+    button.mdw-button(mdw-raised) Raised
       .mdw-button__focus-ring
-    .mdw-button(mdw-raised disabled) Disabled
+    button.mdw-button(mdw-raised disabled) Disabled
       .mdw-button__focus-ring
-    .mdw-button(mdw-raised="always") +Raised
-      .mdw-button__focus-ring
-  div(style="height:24px")
-  div.display-flex.flex-wrap
-    .mdw-button(mdw-theme-color="primary") Flat
-      .mdw-button__focus-ring
-    .mdw-button(mdw-theme-color="primary" mdw-raised) Raised
-      .mdw-button__focus-ring
-    .mdw-button(mdw-theme-color="primary" mdw-raised disabled) Disabled
-      .mdw-button__focus-ring
-    .mdw-button(mdw-theme-color="accent-A100") accent
+    button.mdw-button(mdw-raised="always") +Raised
       .mdw-button__focus-ring
   div(style="height:24px")
   div.display-flex.flex-wrap
-    .mdw-button(mdw-theme-fill="primary dark") Flat
+    button.mdw-button(mdw-theme-color="primary") Flat
       .mdw-button__focus-ring
-    .mdw-button(mdw-theme-fill="primary dark" mdw-raised) Raised
+    button.mdw-button(mdw-theme-color="primary" mdw-raised) Raised
       .mdw-button__focus-ring
-    .mdw-button(mdw-theme-fill="primary dark" mdw-raised disabled) Disabled
+    button.mdw-button(mdw-theme-color="primary" mdw-raised disabled) Disabled
       .mdw-button__focus-ring
-    .mdw-button(mdw-theme-fill="accent-A100 light" mdw-raised) accent
+    button.mdw-button(mdw-theme-color="accent-A100") accent
       .mdw-button__focus-ring
   div(style="height:24px")
   div.display-flex.flex-wrap
-    .mdw-button(mdw-icon).material-icons favorite
-    .mdw-button(mdw-theme-color="warn dark" mdw-icon).material-icons favorite
-    .mdw-button(mdw-theme-fill="warn dark" mdw-icon).material-icons favorite
-    .mdw-button(mdw-theme-fill="warn dark" mdw-icon mdw-raised).material-icons favorite
-    .mdw-button(mdw-theme-fill="warn dark" mdw-icon mdw-raised disabled).material-icons favorite
-    .mdw-button(mdw-icon disabled).material-icons favorite
+    button.mdw-button(mdw-theme-fill="primary dark") Flat
+      .mdw-button__focus-ring
+    button.mdw-button(mdw-theme-fill="primary dark" mdw-raised) Raised
+      .mdw-button__focus-ring
+    button.mdw-button(mdw-theme-fill="primary dark" mdw-raised disabled) Disabled
+      .mdw-button__focus-ring
+    button.mdw-button(mdw-theme-fill="accent-A100 light" mdw-raised) accent
+      .mdw-button__focus-ring
+  div(style="height:24px")
+  div.display-flex.flex-wrap
+    button.mdw-button(mdw-icon).material-icons favorite
+    button.mdw-button(mdw-theme-color="warn dark" mdw-icon).material-icons favorite
+    button.mdw-button(mdw-theme-fill="warn dark" mdw-icon).material-icons favorite
+    button.mdw-button(mdw-theme-fill="warn dark" mdw-icon mdw-raised).material-icons favorite
+    button.mdw-button(mdw-theme-fill="warn dark" mdw-icon mdw-raised disabled).material-icons favorite
+    button.mdw-button(mdw-icon disabled).material-icons favorite
 
 +header()
   +navdrawer("button")
@@ -50,19 +50,23 @@ mixin button-test
       .mdw-layout__item(mdw-colspan="4")
         .component-sample
           .display-flex
-            .mdw-button Button
+            button.mdw-button(mdw-theme-color="accent-A200") Button
       .mdw-layout__item(mdw-colspan="8")
         div
-          .mdw-type(mdw-style="subheading") Framework
+          .mdw-type(mdw-style="subheading") Javascript
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="framework" value="js" checked)
+              input.mdw-selection__input(type="radio" name="javascript" value="required" disabled)
               .mdw-selection__icon
-              .mdw-selection__label JavaScript
+              .mdw-selection__label Required
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="framework" value="css")
+              input.mdw-selection__input(type="radio" name="javascript" value="optional" checked)
               .mdw-selection__icon
-              .mdw-selection__label CSS Only
+              .mdw-selection__label Optional
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="javascript" value="none")
+              .mdw-selection__icon
+              .mdw-selection__label None
           .mdw-type(mdw-style="subheading") Elevation
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
@@ -97,20 +101,20 @@ mixin button-test
               input.mdw-selection__input(type="checkbox" name="focus-ring")
               .mdw-selection__icon
               .mdw-selection__label Focus Ring
-          .mdw-type(mdw-style="subheading") Color
+          .mdw-type(mdw-style="subheading") Color (Ink)
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="color" value="default" checked)
+              input.mdw-selection__input(type="radio" name="color" value="default")
               .mdw-selection__icon
               .mdw-selection__label Default
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="color" value="primary")
+              input.mdw-selection__input(type="radio" name="color" value="primary-400")
               .mdw-selection__icon
-              .mdw-selection__label Primary
+              .mdw-selection__label Primary 400
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="color" value="accent-A100")
+              input.mdw-selection__input(type="radio" name="color" value="accent-A200" checked)
               .mdw-selection__icon
-              .mdw-selection__label Accent A100
+              .mdw-selection__label Accent A200
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="color" value="warn")
               .mdw-selection__icon
@@ -122,11 +126,11 @@ mixin button-test
           .mdw-type(mdw-style="subheading") Fill
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="fill" value="none" checked)
+              input.mdw-selection__input(type="radio" name="fill" value="none" )
               .mdw-selection__icon
               .mdw-selection__label None
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="fill" value="primary dark")
+              input.mdw-selection__input(type="radio" name="fill" value="primary dark" checked)
               .mdw-selection__icon
               .mdw-selection__label Primary
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
@@ -144,11 +148,11 @@ mixin button-test
           .mdw-type(mdw-style="subheading") HTML Element Type
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="htmltype" value="div" checked)
+              input.mdw-selection__input(type="radio" name="htmltype" value="div")
               .mdw-selection__icon
               .mdw-selection__label HTMLElement
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="htmltype" value="button")
+              input.mdw-selection__input(type="radio" name="htmltype" value="button" checked)
               .mdw-selection__icon
               .mdw-selection__label HTMLButtonElement
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")

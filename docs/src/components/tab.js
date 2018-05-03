@@ -1,36 +1,61 @@
 import { Tab } from '../../../components/tab/index';
 import { setupMenuOptions } from '../menuoptions';
-import { convertElementToCode } from '../codegenerator';
+import { convertElementToCode, attachEventListener, changeElementTagName } from '../sample-utils';
 
 /** @type {HTMLElement} */
 let sampleComponent;
 
-/**
- * @param {Element|NodeListOf<Element>} elements
- * @param {string} event
- * @param {Function} listener
- * @return {void}
- */
-function attachEventListener(elements, event, listener) {
-  let elementList;
-  if (elements instanceof Element) {
-    elementList = [elementList];
-  } else {
-    elementList = elements;
-  }
-  for (let i = 0; i < elementList.length; i += 1) {
-    const el = elementList[i];
-    el.addEventListener(event, listener);
-  }
-}
-
 /** @return {void} */
 function updateSampleCode() {
+  const jsRequired = document.querySelector('input[name="javascript"][value="required"]').checked;
+  const jsOptional = document.querySelector('input[name="javascript"][value="optional"]').checked;
+  const useJS = jsRequired || jsOptional;
+
   // Strip JS related elements and attributes
   Tab.detach(sampleComponent);
 
+  if (jsRequired && sampleComponent instanceof HTMLDivElement === false) {
+    sampleComponent = changeElementTagName(sampleComponent, 'div');
+  } else if (!jsRequired && sampleComponent instanceof HTMLFormElement === false) {
+    sampleComponent = changeElementTagName(sampleComponent, 'form');
+  }
 
-  const useJS = document.querySelector('input[name="framework"][value="js"]').checked;
+  const inputs = sampleComponent.getElementsByTagName('input');
+  const tabItems = sampleComponent.getElementsByClassName('mdw-tab__item');
+
+  if (jsRequired) {
+    for (let i = inputs.length - 1; i >= 0; i -= 1) {
+      const input = inputs.item(i);
+      input.parentElement.removeChild(input);
+    }
+    for (let i = 0; i < tabItems.length; i += 1) {
+      let item = tabItems.item(i);
+      if (item instanceof HTMLDivElement === false) {
+        item = changeElementTagName(item, 'div');
+      }
+      item.removeAttribute('for');
+    }
+  } else {
+    const tabItemsElement = sampleComponent.getElementsByClassName('mdw-tab__items')[0];
+    for (let i = 0; i < 3; i += 1) {
+      let input = inputs.item(i);
+      let tabItem = tabItems.item(i);
+      if (!input) {
+        input = document.createElement('input');
+        input.checked = (i === 0);
+        input.classList.add('mdw-tab__input');
+        input.setAttribute('id', `tab${i + 1}`);
+        input.setAttribute('name', 'tab');
+        input.setAttribute('type', 'radio');
+        sampleComponent.insertBefore(input, tabItemsElement);
+      }
+      if (tabItem instanceof HTMLLabelElement === false) {
+        tabItem = changeElementTagName(tabItem, 'label');
+      }
+      tabItem.setAttribute('for', `tab${i + 1}`);
+    }
+  }
+
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
   const sampleContainer = document.querySelector('.component-sample__container').firstElementChild;
   htmlCodeElement.textContent = convertElementToCode(sampleContainer);
@@ -61,6 +86,15 @@ function onOptionChange(event) {
   const tabItemsElement = sampleComponent.querySelector('.mdw-tab__items');
 
   switch (name) {
+    case 'framework':
+      switch (value) {
+        case 'javascript':
+          break;
+        case 'css':
+          break;
+        default:
+      }
+      break;
     case 'color':
       switch (value) {
         case 'none':

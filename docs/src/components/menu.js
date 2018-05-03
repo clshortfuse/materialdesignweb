@@ -1,28 +1,9 @@
 import { Menu } from '../../../components/menu/index';
 import { setupMenuOptions } from '../menuoptions';
-import { convertElementToCode } from '../codegenerator';
+import { convertElementToCode, attachEventListener, changeElementTagName } from '../sample-utils';
 
 /** @type {HTMLElement} */
 let sampleComponent;
-
-/**
- * @param {Element|NodeListOf<Element>} elements
- * @param {string} event
- * @param {Function} listener
- * @return {void}
- */
-function attachEventListener(elements, event, listener) {
-  let elementList;
-  if (elements instanceof Element) {
-    elementList = [elementList];
-  } else {
-    elementList = elements;
-  }
-  for (let i = 0; i < elementList.length; i += 1) {
-    const el = elementList[i];
-    el.addEventListener(event, listener);
-  }
-}
 
 /**
  * @param {MouseEvent} event
@@ -34,16 +15,48 @@ function onSampleButtonClick(event) {
 
 /** @return {void} */
 function updateSampleCode() {
+  const jsRequired = document.querySelector('input[name="javascript"][value="required"]').checked;
+  const jsOptional = document.querySelector('input[name="javascript"][value="optional"]').checked;
+  const useJS = jsRequired || jsOptional;
+
   // Strip JS related elements and attributes
   Menu.detach(sampleComponent);
-  const button = document.querySelector('.component-sample .mdw-button');
+  let button = document.querySelector('.component-sample .mdw-button');
+  let closer = document.querySelector('.component-sample .mdw-menu__close');
   button.removeEventListener('click', onSampleButtonClick);
   const tabIndexElements = sampleComponent.querySelectorAll('[tabindex]');
   for (let i = 0; i < tabIndexElements.length; i += 1) {
     tabIndexElements.item(i).removeAttribute('tabindex');
   }
 
-  const useJS = document.querySelector('input[name="framework"][value="js"]').checked;
+  if (closer) {
+    if (jsRequired || (closer instanceof HTMLAnchorElement === false)) {
+      closer.parentElement.removeChild(closer);
+      closer = null;
+    }
+  }
+
+  if (jsRequired) {
+    sampleComponent.removeAttribute('id');
+    button.removeAttribute('href');
+    if (button instanceof HTMLAnchorElement) {
+      button = changeElementTagName(button, 'button');
+    }
+  } else {
+    sampleComponent.setAttribute('id', 'sample-menu');
+    button.setAttribute('href', '#sample-menu');
+    if (button instanceof HTMLButtonElement) {
+      button = changeElementTagName(button, 'a');
+    }
+    if (!closer) {
+      closer = document.createElement('a');
+      closer.classList.add('mdw-menu__close');
+      closer.setAttribute('href', '#');
+      sampleComponent.insertBefore(closer, button.nextElementSibling);
+    }
+  }
+
+
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
   const sampleContainer = document.querySelector('.component-sample__container').firstElementChild;
   htmlCodeElement.textContent = convertElementToCode(sampleContainer);

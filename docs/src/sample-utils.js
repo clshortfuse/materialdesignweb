@@ -46,6 +46,63 @@ function convertElementToCode(element, linePrefix = '') {
   return linePrefix + lines.join('\n');
 }
 
+/**
+ * @param {Element|NodeListOf<Element>} elements
+ * @param {string} event
+ * @param {Function} listener
+ * @return {void}
+ */
+function attachEventListener(elements, event, listener) {
+  let elementList;
+  if (elements instanceof Element) {
+    elementList = [elementList];
+  } else {
+    elementList = elements;
+  }
+  for (let i = 0; i < elementList.length; i += 1) {
+    const el = elementList[i];
+    el.addEventListener(event, listener);
+  }
+}
+
+/**
+ * @param {Element} node
+ * @return {Node}
+ */
+function getChildTextNode(node) {
+  for (let i = 0; i < node.childNodes.length; i += 1) {
+    const childNode = node.childNodes[i];
+    if (childNode.nodeType === Node.TEXT_NODE) {
+      return childNode;
+    }
+  }
+  const textNode = document.createTextNode('');
+  node.appendChild(textNode);
+  return textNode;
+}
+
+/**
+ * @param {Element} element
+ * @param {string} tagname
+ * @return {Element}
+ */
+function changeElementTagName(element, tagname) {
+  const newElement = document.createElement(tagname);
+  for (let i = element.attributes.length - 1; i >= 0; i -= 1) {
+    const attr = element.attributes.item(i);
+    newElement.attributes.setNamedItem(attr.cloneNode());
+  }
+  while (element.firstChild) {
+    newElement.appendChild(element.firstChild);
+  }
+
+  element.parentElement.replaceChild(newElement, element);
+  return newElement;
+}
+
 export {
   convertElementToCode,
+  attachEventListener,
+  getChildTextNode,
+  changeElementTagName,
 };

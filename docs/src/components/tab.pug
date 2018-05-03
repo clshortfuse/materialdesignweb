@@ -15,7 +15,7 @@ include ../mixins.pug
               input.mdw-tab__input#tab1(type="radio" name="tab" checked)
               input.mdw-tab__input#tab2(type="radio" name="tab")
               input.mdw-tab__input#tab3(type="radio" name="tab")
-              .mdw-tab__items
+              .mdw-tab__items(mdw-theme-color="accent-A200" mdw-theme-fill="primary dark")
                 label.mdw-tab__item(for='tab1')
                   .mdw-tab__label Item One
                 label.mdw-tab__item(for='tab2')
@@ -29,30 +29,34 @@ include ../mixins.pug
                 .mdw-tab__content-item Sample Content Three
       .mdw-layout__item(mdw-colspan="8")
         div
-          .mdw-type(mdw-style="subheading") Framework
+          .mdw-type(mdw-style="subheading") Javascript
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="framework" value="js" checked)
+              input.mdw-selection__input(type="radio" name="javascript" value="required")
               .mdw-selection__icon
-              .mdw-selection__label JavaScript
+              .mdw-selection__label Required
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="framework" value="css")
+              input.mdw-selection__input(type="radio" name="javascript" value="optional" checked)
               .mdw-selection__icon
-              .mdw-selection__label CSS Only
+              .mdw-selection__label Optional
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="javascript" value="none")
+              .mdw-selection__icon
+              .mdw-selection__label None
           .mdw-type(mdw-style="subheading") Color
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="color" value="none" checked)
+              input.mdw-selection__input(type="radio" name="color" value="default")
               .mdw-selection__icon
-              .mdw-selection__label None
+              .mdw-selection__label Default
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="color" value="primary")
+              input.mdw-selection__input(type="radio" name="color" value="primary-400")
               .mdw-selection__icon
-              .mdw-selection__label Primary
+              .mdw-selection__label Primary 400
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="color" value="accent-A100")
+              input.mdw-selection__input(type="radio" name="color" value="accent-A200" checked)
               .mdw-selection__icon
-              .mdw-selection__label Accent A100
+              .mdw-selection__label Accent A200
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="color" value="warn")
               .mdw-selection__icon
@@ -64,11 +68,11 @@ include ../mixins.pug
           .mdw-type(mdw-style="subheading") Fill
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="fill" value="none" checked)
+              input.mdw-selection__input(type="radio" name="fill" value="none" )
               .mdw-selection__icon
               .mdw-selection__label None
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="fill" value="primary dark")
+              input.mdw-selection__input(type="radio" name="fill" value="primary dark" checked)
               .mdw-selection__icon
               .mdw-selection__label Primary
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")

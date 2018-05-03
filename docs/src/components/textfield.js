@@ -1,5 +1,5 @@
 import { TextField } from '../../../components/textfield/index';
-import { convertElementToCode } from '../codegenerator';
+import { convertElementToCode, attachEventListener } from '../sample-utils';
 import { setupMenuOptions } from '../menuoptions';
 
 /** @return {void} */
@@ -13,27 +13,12 @@ function initializeSampleComponents() {
 /** @type {HTMLElement} */
 let sampleComponent;
 
-/**
- * @param {Element|NodeListOf<Element>} elements
- * @param {string} event
- * @param {Function} listener
- * @return {void}
- */
-function attachEventListener(elements, event, listener) {
-  let elementList;
-  if (elements instanceof Element) {
-    elementList = [elementList];
-  } else {
-    elementList = elements;
-  }
-  for (let i = 0; i < elementList.length; i += 1) {
-    const el = elementList[i];
-    el.addEventListener(event, listener);
-  }
-}
-
 /** @return {void} */
 function updateSampleCode() {
+  const jsRequired = document.querySelector('input[name="javascript"][value="required"]').checked;
+  const jsOptional = document.querySelector('input[name="javascript"][value="optional"]').checked;
+  const useJS = jsRequired || jsOptional;
+
   // Strip JS related elements and attributes
   TextField.detach(sampleComponent);
 
@@ -41,7 +26,7 @@ function updateSampleCode() {
   htmlCodeElement.textContent = convertElementToCode(sampleComponent);
 
   // Reattach JS if requested
-  if (document.querySelector('input[name="framework"][value="js"]').checked) {
+  if (useJS) {
     TextField.attach(sampleComponent);
   }
 

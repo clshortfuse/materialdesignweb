@@ -38,16 +38,20 @@ include ../mixins.pug
                   .mdw-menu__text Apps
       .mdw-layout__item(mdw-colspan="8")
         div
-          .mdw-type(mdw-style="subheading") Framework
+          .mdw-type(mdw-style="subheading") Javascript
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="framework" value="js" checked)
+              input.mdw-selection__input(type="radio" name="javascript" value="required")
               .mdw-selection__icon
-              .mdw-selection__label JavaScript
+              .mdw-selection__label Required
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="framework" value="css")
+              input.mdw-selection__input(type="radio" name="javascript" value="optional" checked)
               .mdw-selection__icon
-              .mdw-selection__label CSS Only
+              .mdw-selection__label Optional
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="javascript" value="none")
+              .mdw-selection__icon
+              .mdw-selection__label None
           .mdw-type(mdw-style="subheading") Horizontal Position
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
