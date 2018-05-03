@@ -26,7 +26,7 @@ $navdrawer__min-width: dp(256) !default;
   @include allTablets {
     transition-duration: $motion-duration-tablet-leave;
   }
-  &:target,
+  &[id]:target,
   &[mdw-show]:not([mdw-hide]) {
     transition-timing-function: $motion-easing-acceleration;
     transition-duration: $motion-duration-desktop-enter;
