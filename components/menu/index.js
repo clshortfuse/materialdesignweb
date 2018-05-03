@@ -1,4 +1,3 @@
-import { getChildElementByClass, findElementParentByClassName } from '../common/dom';
 import { Ripple } from '../ripple/index';
 
 // https://www.w3.org/TR/wai-aria-practices/#menu
@@ -70,7 +69,7 @@ class Menu {
    */
   static attach(menuElement) {
     menuElement.setAttribute('mdw-js', '');
-    let menuCloser = getChildElementByClass(menuElement, 'mdw-menu__close');
+    let menuCloser = menuElement.getElementsByClassName('mdw-menu__close')[0];
     if (!menuCloser) {
       menuCloser = document.createElement('div');
       menuCloser.classList.add('mdw-menu__close');
@@ -89,7 +88,7 @@ class Menu {
     if (!closer) {
       return;
     }
-    const menu = findElementParentByClassName(closer, 'mdw-menu');
+    const menu = closer.parentElement;
     if (!menu) {
       return;
     }
@@ -168,7 +167,7 @@ class Menu {
 
   static detach(menuElement) {
     Menu.hide(menuElement);
-    const menuCloser = getChildElementByClass(menuElement, 'mdw-menu__close');
+    const menuCloser = menuElement.getElementsByClassName('mdw-menu__close')[0];
     if (menuCloser) {
       menuCloser.removeEventListener('click', Menu.onMenuCloserClick);
     }
@@ -176,7 +175,7 @@ class Menu {
     menuElement.removeAttribute('mdw-js');
     menuElement.removeAttribute('mdw-show');
     menuElement.removeAttribute('mdw-hide');
-    const popupElement = getChildElementByClass(menuElement, 'mdw-menu__popup');
+    const popupElement = menuElement.getElementsByClassName('mdw-menu__popup')[0];
     if (popupElement) {
       popupElement.style.removeProperty('top');
       popupElement.style.removeProperty('left');
@@ -348,7 +347,7 @@ class Menu {
       menuItem.setAttribute('tabindex', '-1');
       MenuItem.attach(menuItem);
     }
-    const popupElement = getChildElementByClass(menuElement, 'mdw-menu__popup');
+    const popupElement = menuElement.getElementsByClassName('mdw-menu__popup')[0];
     popupElement.setAttribute('tabindex', '-1');
   }
 
@@ -363,7 +362,7 @@ class Menu {
       // Prevent anchor link
       event.preventDefault();
     }
-    const popupElement = getChildElementByClass(menuElement, 'mdw-menu__popup');
+    const popupElement = menuElement.getElementsByClassName('mdw-menu__popup')[0];
     let changed = false;
     if (event) {
       Menu.updateMenuPosition(menuElement, popupElement, event, alignTarget);
