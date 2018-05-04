@@ -33,7 +33,18 @@ class Dialog {
       }
     }
     dialogCloser.addEventListener('click', Dialog.onCancelClick);
-    element.addEventListener('keydown', Dialog.onKeyDown);
+    const popup = getChildElementByClass(element, 'mdw-dialog__popup');
+    popup.addEventListener('keydown', Dialog.onKeyDown);
+    const buttons = popup.querySelectorAll('.mdw-dialog__button-area .mdw-button');
+    for (let i = 0; i < buttons.length; i += 1) {
+      const button = buttons.item(i);
+      Button.attach(button);
+      if (i === 0) {
+        button.addEventListener('click', Dialog.onConfirmClick);
+      } else if (i === 1) {
+        button.addEventListener('click', Dialog.onCancelClick);
+      }
+    }
   }
 
   static detach(dialogElement) {
@@ -41,16 +52,39 @@ class Dialog {
     if (dialogCloser) {
       dialogCloser.removeEventListener('click', Dialog.onCancelClick);
     }
-    dialogElement.removeEventListener('keydown', Dialog.onKeyDown);
+    dialogElement.removeAttribute('mdw-js');
+    dialogElement.removeAttribute('mdw-show');
+    dialogElement.removeAttribute('mdw-hide');
+    const popupElement = dialogElement.getElementsByClassName('mdw-dialog__popup')[0];
+    if (popupElement) {
+      popupElement.removeEventListener('keydown', Dialog.onKeyDown);
+      popupElement.style.removeProperty('transform-origin');
+      if (popupElement.hasAttribute('style') && !popupElement.getAttribute('style')) {
+        popupElement.removeAttribute('style');
+      }
+    }
+    const buttons = popupElement.querySelectorAll('.mdw-dialog__button-area .mdw-button');
+    for (let i = 0; i < buttons.length; i += 1) {
+      const button = buttons.item(i);
+      Button.detach(button);
+      button.removeEventListener('click', Dialog.onConfirmClick);
+      button.removeEventListener('click', Dialog.onCancelClick);
+    }
   }
 
   static onCancelClick(event) {
-    const dialogElement = findElementParentByClassName(event.target, 'mdw-dialog');
+    if (event && event.currentTarget instanceof HTMLAnchorElement) {
+      event.preventDefault();
+    }
+    const dialogElement = findElementParentByClassName(event.currentTarget, 'mdw-dialog');
     Dialog.cancel(dialogElement);
   }
 
   static onConfirmClick(event) {
-    const dialogElement = findElementParentByClassName(event.target, 'mdw-dialog');
+    if (event && event.currentTarget instanceof HTMLAnchorElement) {
+      event.preventDefault();
+    }
+    const dialogElement = findElementParentByClassName(event.currentTarget, 'mdw-dialog');
     Dialog.confirm(dialogElement);
   }
 
@@ -67,7 +101,7 @@ class Dialog {
   static onEscapeKeyDown(event) {
     event.stopPropagation();
     event.preventDefault();
-    const dialogElement = findElementParentByClassName(event.target, 'mdw-dialog');
+    const dialogElement = findElementParentByClassName(event.currentTarget, 'mdw-dialog');
     Dialog.cancel(dialogElement);
   }
 
@@ -148,6 +182,10 @@ class Dialog {
    * @return {boolean} handled
    */
   static show(dialogElement, event) {
+    if (event && event.currentTarget instanceof HTMLAnchorElement) {
+      // Prevent anchor link
+      event.preventDefault();
+    }
     let changed = false;
 
     Dialog.updateTransformOrigin(dialogElement, event);
@@ -191,8 +229,8 @@ class Dialog {
    * @return {void}
    */
   static handleTabKeyPress(event) {
-    const dialogElement = findElementParentByClassName(event.target, 'mdw-dialog');
-    const focusableElements = dialogElement.querySelectorAll([
+    const popupElement = event.currentTarget;
+    const focusableElements = popupElement.querySelectorAll([
       'button:not(:disabled):not([tabindex="-1"])',
       '[href]:not(:disabled):not([tabindex="-1"])',
       'input:not(:disabled):not([tabindex="-1"])',
@@ -344,7 +382,6 @@ class Dialog {
           || options.autofocus === index || options.autofocus === buttonText) {
           button.setAttribute('mdw-autofocus', '');
         }
-        Button.attach(button);
         index += 1;
       });
       if (options.stacked) {
@@ -356,19 +393,6 @@ class Dialog {
       options.parent.appendChild(element);
     } else {
       document.body.appendChild(element);
-    }
-    const buttons = element.querySelectorAll('.mdw-dialog__button-area .mdw-button');
-    const confirmButton = buttons[0];
-    const cancelButton = buttons[1];
-    if (options.type === 'alert' || options.type === 'confirm') {
-      if (confirmButton) {
-        confirmButton.addEventListener('click', Dialog.onConfirmClick);
-      }
-    }
-    if (options.type === 'confirm') {
-      if (cancelButton) {
-        cancelButton.addEventListener('click', Dialog.onCancelClick);
-      }
     }
     Dialog.attach(element);
     return element;
@@ -395,7 +419,8 @@ class Dialog {
     }
     let { pageX, pageY } = event;
     if (!pageX && !pageY) {
-      const rect = event.target.getBoundingClientRect();
+      const target = event.currentTarget || event.target;
+      const rect = target.getBoundingClientRect();
       pageX = rect.x + (rect.width / 2);
       pageY = rect.y + (rect.height / 2);
     }
