@@ -52,14 +52,23 @@ function updateSampleCode() {
       closer = document.createElement('a');
       closer.classList.add('mdw-menu__close');
       closer.setAttribute('href', '#');
-      sampleComponent.insertBefore(closer, button.nextElementSibling);
+      sampleComponent.insertBefore(closer, sampleComponent.firstElementChild);
     }
   }
 
 
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
-  const sampleContainer = document.querySelector('.component-sample__container').firstElementChild;
-  htmlCodeElement.textContent = convertElementToCode(sampleContainer);
+  const sampleContainer = document.querySelector('.component-sample__container');
+  const htmlCodeBlocks = [];
+  let el = sampleContainer.firstElementChild;
+  while (el) {
+    const htmlCode = convertElementToCode(el).trim();
+    if (htmlCode) {
+      htmlCodeBlocks.push(htmlCode);
+    }
+    el = el.nextElementSibling;
+  }
+  htmlCodeElement.textContent = htmlCodeBlocks.join('\n');
 
   // Reattach JS if requested
   if (useJS) {
