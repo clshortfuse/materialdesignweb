@@ -2,45 +2,119 @@ include ../mixins.pug
 
 +header()
   +navdrawer("dialog")
-    #horizontalLine
-    #verticalLineLeft
-    #verticalLineRight
-    .comparison
-      .render
-        div.display-flex.flex-1(flex-column style="position:relative")
-          +androidstatusbar('primary-700 dark')
-          .mdw-toolbar(mdw-theme-fill="primary-500 dark")
-            .mdw-toolbar__action
-              .mdw-toolbar__start
-                .mdw-tooltip__wrapper
-                  .mdw-tooltip__target.mdw-button(mdw-icon).material-icons menu
-                  .mdw-tooltip Menu
-              .mdw-toolbar__end
-                .mdw-tooltip__wrapper
-                  .mdw-tooltip__target.mdw-button(mdw-icon mdw-more-button).material-icons more_vert
-                  .mdw-tooltip Options
-          .content(style="padding:16px 8px;")
-            a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#confirmdialog-titled") Titled
-            a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#confirmdialog-text") Text
-            .display-flex(style="padding:16px 0").js
-              button.mdw-button(mdw-theme-fill="primary dark" mdw-raised) JS
-          .mdw-dialog#confirmdialog-titled
-            a.mdw-dialog__close(href="#")
-            .mdw-dialog__popup
-              .mdw-dialog__content
-                .mdw-dialog__title Use Google's location service?
-                .mdw-dialog__body Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
-              .mdw-dialog__button-area
-                a.mdw-button(mdw-theme-color="accent" href="#") Agree
-                a.mdw-button(mdw-theme-color="accent" href="#") Disagree
-          .mdw-dialog#confirmdialog-text
-            a.mdw-dialog__close(href="#")
-            .mdw-dialog__popup
-              .mdw-dialog__content
-                .mdw-dialog__body Discard draft?
-              .mdw-dialog__button-area
-                a.mdw-button(mdw-theme-color="accent" href="#") Discard
-                a.mdw-button(mdw-theme-color="accent" href="#") Cancel
-        +androidnavbar
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3ejNQaWYtOGdiUXM/components-dialogs-content1.png')
+    .mdw-layout(mdw-stretch)
+      .mdw-layout__item(mdw-colspan="100%")
+        div
+          .mdw-type(mdw-style="headline") Dialogs inform users about a specific task and may contain critical information, require decisions, or involve multiple tasks.
+          .mdw-type(mdw-style="body") Dialogs contain text and UI controls. They retain focus until dismissed or a required action has been taken. Use dialogs sparingly because they are interruptive.
+          .mdw-type(mdw-style="body")
+      .mdw-layout__item(mdw-colspan="4")
+        .component-sample
+          .component-sample__container
+            a.mdw-button(href="#sample-dialog") Open
+            .mdw-dialog#sample-dialog
+              a.mdw-dialog__close(href="#")
+              .mdw-dialog__popup
+                .mdw-dialog__content
+                  .mdw-dialog__title Sample title
+                  .mdw-dialog__body Sample body text
+                .mdw-dialog__button-area
+                  a.mdw-button(mdw-theme-color="accent" href="#") Agree
+                  a.mdw-button(mdw-theme-color="accent" href="#") Disagree
+      .mdw-layout__item(mdw-colspan="8")
+        div
+          .mdw-type(mdw-style="subheading") Javascript
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="javascript" value="required")
+              .mdw-selection__icon
+              .mdw-selection__label Required
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="javascript" value="optional" checked)
+              .mdw-selection__icon
+              .mdw-selection__label Optional
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="javascript" value="none")
+              .mdw-selection__icon
+              .mdw-selection__label None
+          .mdw-type(mdw-style="subheading") Options
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="checkbox" name="stacked-buttons")
+              .mdw-selection__icon
+              .mdw-selection__label Stacked Buttons
+          .mdw-type(mdw-style="subheading") Width Units
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="width" value="auto" checked)
+              .mdw-selection__icon
+              .mdw-selection__label Auto
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="width" value="3")
+              .mdw-selection__icon
+              .mdw-selection__label 3
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="width" value="4")
+              .mdw-selection__icon
+              .mdw-selection__label 4
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="width" value="5")
+              .mdw-selection__icon
+              .mdw-selection__label 5
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="width" value="6")
+              .mdw-selection__icon
+              .mdw-selection__label 6
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="width" value="7")
+              .mdw-selection__icon
+              .mdw-selection__label 7
+      .mdw-layout__item(mdw-colspan="100%" style="max-height:0")
+      .mdw-layout__item(mdw-colspan="100%")
+        .display-flex(flex-column)
+          .mdw-type(mdw-style="title") HTML Code
+          .mdw-card.component-code.component-html
+      .mdw-layout__item(mdw-colspan="100%")
+        .display-flex(flex-column)
+          .mdw-type(mdw-style="title") Javascript Code
+          .mdw-card.component-code.component-js
+      .mdw-layout__item(mdw-colspan="100%")
+        .mdw-type(mdw-style="title") Samples
+      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
+        .render
+          div.display-flex.flex-1(flex-column style="position:relative")
+            +androidstatusbar('primary-700 dark')
+            .mdw-toolbar(mdw-theme-fill="primary-500 dark")
+              .mdw-toolbar__action
+                .mdw-toolbar__start
+                  .mdw-tooltip__wrapper
+                    .mdw-tooltip__target.mdw-button(mdw-icon).material-icons menu
+                    .mdw-tooltip Menu
+                .mdw-toolbar__end
+                  .mdw-tooltip__wrapper
+                    .mdw-tooltip__target.mdw-button(mdw-icon mdw-more-button).material-icons more_vert
+                    .mdw-tooltip Options
+            .content(style="padding:16px 8px;")
+              a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#confirmdialog-titled") Titled
+              a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#confirmdialog-text") Text
+              .display-flex(style="padding:16px 0").js
+                button.mdw-button(mdw-theme-fill="primary dark" mdw-raised) JS
+            .mdw-dialog#confirmdialog-titled
+              a.mdw-dialog__close(href="#")
+              .mdw-dialog__popup
+                .mdw-dialog__content
+                  .mdw-dialog__title Use Google's location service?
+                  .mdw-dialog__body Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
+                .mdw-dialog__button-area
+                  a.mdw-button(mdw-theme-color="accent" href="#") Agree
+                  a.mdw-button(mdw-theme-color="accent" href="#") Disagree
+            .mdw-dialog#confirmdialog-text
+              a.mdw-dialog__close(href="#")
+              .mdw-dialog__popup
+                .mdw-dialog__content
+                  .mdw-dialog__body Discard draft?
+                .mdw-dialog__button-area
+                  a.mdw-button(mdw-theme-color="accent" href="#") Discard
+                  a.mdw-button(mdw-theme-color="accent" href="#") Cancel
+          +androidnavbar
   script(src='dialog.min.js')
