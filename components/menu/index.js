@@ -358,7 +358,7 @@ class Menu {
    * @return {boolean} handled
    */
   static show(menuElement, event, alignTarget) {
-    if (event.currentTarget instanceof HTMLAnchorElement) {
+    if (event && event.currentTarget instanceof HTMLAnchorElement) {
       // Prevent anchor link
       event.preventDefault();
     }
