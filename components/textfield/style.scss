@@ -459,7 +459,7 @@ select.mdw-textfield__input {
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     &::before {
-      // z-index: -1; // Safari has a negative z-index bug
+      z-index: -1; // Safari has a negative z-index bug
       transform: none;
       border-style: inherit;
       border-width: inherit;
