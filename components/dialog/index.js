@@ -389,8 +389,8 @@ class Dialog {
     let popupPageY = 0;
     let element = popup;
     while (element != null) {
-      popupPageX += element.offsetLeft;
-      popupPageY += element.offsetTop;
+      popupPageX += element.offsetLeft - element.scrollLeft;
+      popupPageY += element.offsetTop - element.scrollTop;
       element = element.offsetParent;
     }
     let { pageX, pageY } = event;
