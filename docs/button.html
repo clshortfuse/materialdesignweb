@@ -99,23 +99,28 @@
           <div class="mdw-layout__item" mdw-colspan="4">
             <div class="component-sample">
               <div class="display-flex">
-                <div class="mdw-button">Button</div>
+                <button class="mdw-button" mdw-theme-color="accent-A200">Button</button>
               </div>
             </div>
           </div>
           <div class="mdw-layout__item" mdw-colspan="8">
             <div>
-              <div class="mdw-type" mdw-style="subheading">Framework</div>
+              <div class="mdw-type" mdw-style="subheading">Javascript</div>
               <div>
                 <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
-                  <input class="mdw-selection__input" type="radio" name="framework" value="css" checked>
+                  <input class="mdw-selection__input" type="radio" name="javascript" value="required" disabled>
                   <div class="mdw-selection__icon"></div>
-                  <div class="mdw-selection__label">CSS Only</div>
+                  <div class="mdw-selection__label">Required</div>
                 </label>
                 <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
-                  <input class="mdw-selection__input" type="radio" name="framework" value="js">
+                  <input class="mdw-selection__input" type="radio" name="javascript" value="optional" checked>
                   <div class="mdw-selection__icon"></div>
-                  <div class="mdw-selection__label">JavaScript</div>
+                  <div class="mdw-selection__label">Optional</div>
+                </label>
+                <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
+                  <input class="mdw-selection__input" type="radio" name="javascript" value="none">
+                  <div class="mdw-selection__icon"></div>
+                  <div class="mdw-selection__label">None</div>
                 </label>
               </div>
               <div class="mdw-type" mdw-style="subheading">Elevation</div>
@@ -162,22 +167,22 @@
                   <div class="mdw-selection__label">Focus Ring</div>
                 </label>
               </div>
-              <div class="mdw-type" mdw-style="subheading">Color</div>
+              <div class="mdw-type" mdw-style="subheading">Color (Ink)</div>
               <div>
                 <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
-                  <input class="mdw-selection__input" type="radio" name="color" value="default" checked>
+                  <input class="mdw-selection__input" type="radio" name="color" value="default">
                   <div class="mdw-selection__icon"></div>
                   <div class="mdw-selection__label">Default</div>
                 </label>
                 <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
-                  <input class="mdw-selection__input" type="radio" name="color" value="primary">
+                  <input class="mdw-selection__input" type="radio" name="color" value="primary-400">
                   <div class="mdw-selection__icon"></div>
-                  <div class="mdw-selection__label">Primary</div>
+                  <div class="mdw-selection__label">Primary 400</div>
                 </label>
                 <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
-                  <input class="mdw-selection__input" type="radio" name="color" value="accent-A100">
+                  <input class="mdw-selection__input" type="radio" name="color" value="accent-A200" checked>
                   <div class="mdw-selection__icon"></div>
-                  <div class="mdw-selection__label">Accent A100</div>
+                  <div class="mdw-selection__label">Accent A200</div>
                 </label>
                 <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
                   <input class="mdw-selection__input" type="radio" name="color" value="warn">
@@ -193,12 +198,12 @@
               <div class="mdw-type" mdw-style="subheading">Fill</div>
               <div>
                 <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
-                  <input class="mdw-selection__input" type="radio" name="fill" value="none" checked>
+                  <input class="mdw-selection__input" type="radio" name="fill" value="none">
                   <div class="mdw-selection__icon"></div>
                   <div class="mdw-selection__label">None</div>
                 </label>
                 <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
-                  <input class="mdw-selection__input" type="radio" name="fill" value="primary dark">
+                  <input class="mdw-selection__input" type="radio" name="fill" value="primary dark" checked>
                   <div class="mdw-selection__icon"></div>
                   <div class="mdw-selection__label">Primary</div>
                 </label>
@@ -221,12 +226,12 @@
               <div class="mdw-type" mdw-style="subheading">HTML Element Type</div>
               <div>
                 <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
-                  <input class="mdw-selection__input" type="radio" name="htmltype" value="div" checked>
+                  <input class="mdw-selection__input" type="radio" name="htmltype" value="div">
                   <div class="mdw-selection__icon"></div>
                   <div class="mdw-selection__label">HTMLElement</div>
                 </label>
                 <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
-                  <input class="mdw-selection__input" type="radio" name="htmltype" value="button">
+                  <input class="mdw-selection__input" type="radio" name="htmltype" value="button" checked>
                   <div class="mdw-selection__icon"></div>
                   <div class="mdw-selection__label">HTMLButtonElement</div>
                 </label>
@@ -272,57 +277,57 @@
               <div class="content" style="padding: 16px 0">
                 <div>
                   <div class="display-flex flex-wrap">
-                    <div class="mdw-button">Flat
+                    <button class="mdw-button">Flat
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-raised>Raised
+                    </button>
+                    <button class="mdw-button" mdw-raised>Raised
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-raised disabled>Disabled
+                    </button>
+                    <button class="mdw-button" mdw-raised disabled>Disabled
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-raised="always">+Raised
+                    </button>
+                    <button class="mdw-button" mdw-raised="always">+Raised
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
+                    </button>
                   </div>
                   <div style="height:24px"></div>
                   <div class="display-flex flex-wrap">
-                    <div class="mdw-button" mdw-theme-color="primary">Flat
+                    <button class="mdw-button" mdw-theme-color="primary">Flat
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-theme-color="primary" mdw-raised>Raised
+                    </button>
+                    <button class="mdw-button" mdw-theme-color="primary" mdw-raised>Raised
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-theme-color="primary" mdw-raised disabled>Disabled
+                    </button>
+                    <button class="mdw-button" mdw-theme-color="primary" mdw-raised disabled>Disabled
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-theme-color="accent-A100">accent
+                    </button>
+                    <button class="mdw-button" mdw-theme-color="accent-A100">accent
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
+                    </button>
                   </div>
                   <div style="height:24px"></div>
                   <div class="display-flex flex-wrap">
-                    <div class="mdw-button" mdw-theme-fill="primary dark">Flat
+                    <button class="mdw-button" mdw-theme-fill="primary dark">Flat
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-theme-fill="primary dark" mdw-raised>Raised
+                    </button>
+                    <button class="mdw-button" mdw-theme-fill="primary dark" mdw-raised>Raised
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-theme-fill="primary dark" mdw-raised disabled>Disabled
+                    </button>
+                    <button class="mdw-button" mdw-theme-fill="primary dark" mdw-raised disabled>Disabled
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-theme-fill="accent-A100 light" mdw-raised>accent
+                    </button>
+                    <button class="mdw-button" mdw-theme-fill="accent-A100 light" mdw-raised>accent
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
+                    </button>
                   </div>
                   <div style="height:24px"></div>
                   <div class="display-flex flex-wrap">
-                    <div class="mdw-button material-icons" mdw-icon>favorite</div>
-                    <div class="mdw-button material-icons" mdw-theme-color="warn dark" mdw-icon>favorite</div>
-                    <div class="mdw-button material-icons" mdw-theme-fill="warn dark" mdw-icon>favorite</div>
-                    <div class="mdw-button material-icons" mdw-theme-fill="warn dark" mdw-icon mdw-raised>favorite</div>
-                    <div class="mdw-button material-icons" mdw-theme-fill="warn dark" mdw-icon mdw-raised disabled>favorite</div>
-                    <div class="mdw-button material-icons" mdw-icon disabled>favorite</div>
+                    <button class="mdw-button material-icons" mdw-icon>favorite</button>
+                    <button class="mdw-button material-icons" mdw-theme-color="warn dark" mdw-icon>favorite</button>
+                    <button class="mdw-button material-icons" mdw-theme-fill="warn dark" mdw-icon>favorite</button>
+                    <button class="mdw-button material-icons" mdw-theme-fill="warn dark" mdw-icon mdw-raised>favorite</button>
+                    <button class="mdw-button material-icons" mdw-theme-fill="warn dark" mdw-icon mdw-raised disabled>favorite</button>
+                    <button class="mdw-button material-icons" mdw-icon disabled>favorite</button>
                   </div>
                 </div>
               </div>
@@ -347,57 +352,57 @@
               <div class="content" style="padding: 16px 0">
                 <div>
                   <div class="display-flex flex-wrap">
-                    <div class="mdw-button">Flat
+                    <button class="mdw-button">Flat
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-raised>Raised
+                    </button>
+                    <button class="mdw-button" mdw-raised>Raised
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-raised disabled>Disabled
+                    </button>
+                    <button class="mdw-button" mdw-raised disabled>Disabled
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-raised="always">+Raised
+                    </button>
+                    <button class="mdw-button" mdw-raised="always">+Raised
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
+                    </button>
                   </div>
                   <div style="height:24px"></div>
                   <div class="display-flex flex-wrap">
-                    <div class="mdw-button" mdw-theme-color="primary">Flat
+                    <button class="mdw-button" mdw-theme-color="primary">Flat
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-theme-color="primary" mdw-raised>Raised
+                    </button>
+                    <button class="mdw-button" mdw-theme-color="primary" mdw-raised>Raised
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-theme-color="primary" mdw-raised disabled>Disabled
+                    </button>
+                    <button class="mdw-button" mdw-theme-color="primary" mdw-raised disabled>Disabled
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-theme-color="accent-A100">accent
+                    </button>
+                    <button class="mdw-button" mdw-theme-color="accent-A100">accent
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
+                    </button>
                   </div>
                   <div style="height:24px"></div>
                   <div class="display-flex flex-wrap">
-                    <div class="mdw-button" mdw-theme-fill="primary dark">Flat
+                    <button class="mdw-button" mdw-theme-fill="primary dark">Flat
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-theme-fill="primary dark" mdw-raised>Raised
+                    </button>
+                    <button class="mdw-button" mdw-theme-fill="primary dark" mdw-raised>Raised
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-theme-fill="primary dark" mdw-raised disabled>Disabled
+                    </button>
+                    <button class="mdw-button" mdw-theme-fill="primary dark" mdw-raised disabled>Disabled
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
-                    <div class="mdw-button" mdw-theme-fill="accent-A100 light" mdw-raised>accent
+                    </button>
+                    <button class="mdw-button" mdw-theme-fill="accent-A100 light" mdw-raised>accent
                       <div class="mdw-button__focus-ring"></div>
-                    </div>
+                    </button>
                   </div>
                   <div style="height:24px"></div>
                   <div class="display-flex flex-wrap">
-                    <div class="mdw-button material-icons" mdw-icon>favorite</div>
-                    <div class="mdw-button material-icons" mdw-theme-color="warn dark" mdw-icon>favorite</div>
-                    <div class="mdw-button material-icons" mdw-theme-fill="warn dark" mdw-icon>favorite</div>
-                    <div class="mdw-button material-icons" mdw-theme-fill="warn dark" mdw-icon mdw-raised>favorite</div>
-                    <div class="mdw-button material-icons" mdw-theme-fill="warn dark" mdw-icon mdw-raised disabled>favorite</div>
-                    <div class="mdw-button material-icons" mdw-icon disabled>favorite</div>
+                    <button class="mdw-button material-icons" mdw-icon>favorite</button>
+                    <button class="mdw-button material-icons" mdw-theme-color="warn dark" mdw-icon>favorite</button>
+                    <button class="mdw-button material-icons" mdw-theme-fill="warn dark" mdw-icon>favorite</button>
+                    <button class="mdw-button material-icons" mdw-theme-fill="warn dark" mdw-icon mdw-raised>favorite</button>
+                    <button class="mdw-button material-icons" mdw-theme-fill="warn dark" mdw-icon mdw-raised disabled>favorite</button>
+                    <button class="mdw-button material-icons" mdw-icon disabled>favorite</button>
                   </div>
                 </div>
               </div>

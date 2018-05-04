@@ -98,26 +98,33 @@
           </div>
           <div class="mdw-layout__item" mdw-colspan="4">
             <div class="component-sample">
-              <label class="mdw-textfield">
-                <input class="mdw-textfield__input" placeholder="Placeholder">
-                <div class="mdw-textfield__label">Label</div>
-                <div class="mdw-textfield__border-line"></div>
-              </label>
+              <div class="component-sample__container">
+                <label class="mdw-textfield">
+                  <input class="mdw-textfield__input" placeholder="Placeholder">
+                  <div class="mdw-textfield__label">Label</div>
+                  <div class="mdw-textfield__border-line"></div>
+                </label>
+              </div>
             </div>
           </div>
           <div class="mdw-layout__item" mdw-colspan="8">
             <div>
-              <div class="mdw-type" mdw-style="subheading">Framework</div>
+              <div class="mdw-type" mdw-style="subheading">Javascript</div>
               <div>
                 <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
-                  <input class="mdw-selection__input" type="radio" name="framework" value="css" checked>
+                  <input class="mdw-selection__input" type="radio" name="javascript" value="required" disabled>
                   <div class="mdw-selection__icon"></div>
-                  <div class="mdw-selection__label">CSS Only</div>
+                  <div class="mdw-selection__label">Required</div>
                 </label>
                 <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
-                  <input class="mdw-selection__input" type="radio" name="framework" value="js">
+                  <input class="mdw-selection__input" type="radio" name="javascript" value="optional" checked>
                   <div class="mdw-selection__icon"></div>
-                  <div class="mdw-selection__label">JavaScript</div>
+                  <div class="mdw-selection__label">Optional</div>
+                </label>
+                <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
+                  <input class="mdw-selection__input" type="radio" name="javascript" value="none">
+                  <div class="mdw-selection__icon"></div>
+                  <div class="mdw-selection__label">None</div>
                 </label>
               </div>
               <div class="mdw-type" mdw-style="subheading">Field type</div>

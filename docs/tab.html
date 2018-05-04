@@ -88,347 +88,469 @@
         </div>
       </div>
       <div class="mdw-navdrawer__content" style="padding-bottom:24px">
-        <div id="horizontalLine"></div>
-        <div id="verticalLineLeft"></div>
-        <div id="verticalLineRight"></div>
-        <div class="comparison clipped mdw-theme-tab">
-          <div class="render">
-            <form class="mdw-tab">
-              <input class="mdw-tab__input" id="no-toolbar-tab1" type="radio" name="tab" value="one" checked>
-              <input class="mdw-tab__input" id="no-toolbar-tab2" type="radio" name="tab" value="two">
-              <input class="mdw-tab__input" id="no-toolbar-tab3" type="radio" name="tab" value="three">
-              <div class="mdw-tab__items" mdw-theme-fill="primary-500 dark" mdw-theme-color="accent">
-                <label class="mdw-tab__item" for="no-toolbar-tab1">
-                  <div class="mdw-tab__label">Item One</div>
-                </label>
-                <label class="mdw-tab__item" for="no-toolbar-tab2">
-                  <div class="mdw-tab__label">Item Two</div>
-                </label>
-                <label class="mdw-tab__item" for="no-toolbar-tab3">
-                  <div class="mdw-tab__label">Item Three</div>
-                </label>
-                <div class="mdw-tab__indicator"></div>
-              </div>
-              <div class="mdw-tab__content">
-                <div class="mdw-tab__content-item">Item One</div>
-                <div class="mdw-tab__content-item">Item Two</div>
-                <div class="mdw-tab__content-item">Item Three</div>
-              </div>
-            </form>
-          </div>
-          <div class="target" style="background-image: url(https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsbmZJbkdjeHE0RW8/components-tabs-usage-mobile6.png)"></div>
-        </div>
-        <div class="comparison clipped mdw-theme-tab">
-          <div class="render">
-            <div class="androidstatusbar" mdw-theme-fill="primary-700">
-              <div>12:30</div><i class="material-icons" style="letter-spacing:2px;padding:0 2px">&#xE1BA;&#xE1C8;&#xE1A4;</i>
+        <div class="mdw-layout docs-tab" mdw-stretch>
+          <div class="mdw-layout__item" mdw-colspan="100%">
+            <div>
+              <div class="mdw-type" mdw-style="headline">Tabs make it easy to explore and switch between different views.</div>
+              <div class="mdw-type" mdw-style="body">Tabs enable content organization at a high level, such as switching between views, data sets, or functional aspects of an app.</div>
+              <div class="mdw-type" mdw-style="body"></div>
             </div>
-            <div class="mdw-toolbar" mdw-theme-fill="primary-500 dark">
-              <div class="mdw-toolbar__action">
-                <div class="mdw-toolbar__start">
-                  <div class="mdw-button material-icons" mdw-icon>menu</div>
-                </div>
-                <div class="mdw-toolbar__end">
-                  <div class="mdw-button material-icons" mdw-icon>search</div>
-                  <div class="mdw-button material-icons" mdw-icon mdw-more-button>more_vert</div>
-                </div>
+          </div>
+          <div class="mdw-layout__item" mdw-colspan="4">
+            <div class="component-sample">
+              <div class="component-sample__container">
+                <form class="mdw-tab">
+                  <input class="mdw-tab__input" id="tab1" type="radio" name="tab" checked>
+                  <input class="mdw-tab__input" id="tab2" type="radio" name="tab">
+                  <input class="mdw-tab__input" id="tab3" type="radio" name="tab">
+                  <div class="mdw-tab__items" mdw-theme-color="accent-A200" mdw-theme-fill="primary dark">
+                    <label class="mdw-tab__item" for="tab1">
+                      <div class="mdw-tab__label">Item One</div>
+                    </label>
+                    <label class="mdw-tab__item" for="tab2">
+                      <div class="mdw-tab__label">Item Two</div>
+                    </label>
+                    <label class="mdw-tab__item" for="tab3">
+                      <div class="mdw-tab__label">Item Three</div>
+                    </label>
+                    <div class="mdw-tab__indicator"></div>
+                  </div>
+                  <div class="mdw-tab__content">
+                    <div class="mdw-tab__content-item">Sample Content One</div>
+                    <div class="mdw-tab__content-item">Sample Content Two</div>
+                    <div class="mdw-tab__content-item">Sample Content Three</div>
+                  </div>
+                </form>
               </div>
-              <div class="mdw-toolbar__content" style="font-size:2.125em;height:56px">Page title</div>
+            </div>
+          </div>
+          <div class="mdw-layout__item" mdw-colspan="8">
+            <div>
+              <div class="mdw-type" mdw-style="subheading">Javascript</div>
+              <div>
+                <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
+                  <input class="mdw-selection__input" type="radio" name="javascript" value="required">
+                  <div class="mdw-selection__icon"></div>
+                  <div class="mdw-selection__label">Required</div>
+                </label>
+                <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
+                  <input class="mdw-selection__input" type="radio" name="javascript" value="optional" checked>
+                  <div class="mdw-selection__icon"></div>
+                  <div class="mdw-selection__label">Optional</div>
+                </label>
+                <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
+                  <input class="mdw-selection__input" type="radio" name="javascript" value="none">
+                  <div class="mdw-selection__icon"></div>
+                  <div class="mdw-selection__label">None</div>
+                </label>
+              </div>
+              <div class="mdw-type" mdw-style="subheading">Color</div>
+              <div>
+                <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
+                  <input class="mdw-selection__input" type="radio" name="color" value="default">
+                  <div class="mdw-selection__icon"></div>
+                  <div class="mdw-selection__label">Default</div>
+                </label>
+                <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
+                  <input class="mdw-selection__input" type="radio" name="color" value="primary-400">
+                  <div class="mdw-selection__icon"></div>
+                  <div class="mdw-selection__label">Primary 400</div>
+                </label>
+                <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
+                  <input class="mdw-selection__input" type="radio" name="color" value="accent-A200" checked>
+                  <div class="mdw-selection__icon"></div>
+                  <div class="mdw-selection__label">Accent A200</div>
+                </label>
+                <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
+                  <input class="mdw-selection__input" type="radio" name="color" value="warn">
+                  <div class="mdw-selection__icon"></div>
+                  <div class="mdw-selection__label">Warn</div>
+                </label>
+                <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
+                  <input class="mdw-selection__input" type="radio" name="color" value="purple-A400">
+                  <div class="mdw-selection__icon"></div>
+                  <div class="mdw-selection__label">Purple-A400</div>
+                </label>
+              </div>
+              <div class="mdw-type" mdw-style="subheading">Fill</div>
+              <div>
+                <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
+                  <input class="mdw-selection__input" type="radio" name="fill" value="none">
+                  <div class="mdw-selection__icon"></div>
+                  <div class="mdw-selection__label">None</div>
+                </label>
+                <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
+                  <input class="mdw-selection__input" type="radio" name="fill" value="primary dark" checked>
+                  <div class="mdw-selection__icon"></div>
+                  <div class="mdw-selection__label">Primary</div>
+                </label>
+                <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
+                  <input class="mdw-selection__input" type="radio" name="fill" value="accent-A100 light">
+                  <div class="mdw-selection__icon"></div>
+                  <div class="mdw-selection__label">Accent A100</div>
+                </label>
+                <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
+                  <input class="mdw-selection__input" type="radio" name="fill" value="warn-200 light">
+                  <div class="mdw-selection__icon"></div>
+                  <div class="mdw-selection__label">Warn 200</div>
+                </label>
+                <label class="mdw-selection" mdw-theme-color="accent" style="margin:16px 8px">
+                  <input class="mdw-selection__input" type="radio" name="fill" value="green-700 dark">
+                  <div class="mdw-selection__icon"></div>
+                  <div class="mdw-selection__label">Green 700</div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="mdw-layout__item" mdw-colspan="100%" style="max-height:0"></div>
+          <div class="mdw-layout__item" mdw-colspan="6">
+            <div class="display-flex" flex-column>
+              <div class="mdw-type" mdw-style="title">HTML Code</div>
+              <div class="mdw-card component-code component-html"></div>
+            </div>
+          </div>
+          <div class="mdw-layout__item" mdw-colspan="2">
+            <div class="display-flex" flex-column>
+              <div class="mdw-type" mdw-style="title">Javascript Code</div>
+              <div class="mdw-card component-code component-js"></div>
+            </div>
+          </div>
+          <div class="mdw-layout__item" mdw-colspan="100%">
+            <div class="mdw-type" mdw-style="title">Samples</div>
+          </div>
+          <div class="mdw-layout__item display-flex clipped" mdw-colspan="4" flex-justify-content="center">
+            <div class="render mdw-theme-tab">
               <form class="mdw-tab">
-                <input class="mdw-tab__input" id="large-text-tab1" type="radio" name="tab" value="one" checked>
-                <input class="mdw-tab__input" id="large-text-tab2" type="radio" name="tab" value="two">
-                <input class="mdw-tab__input" id="large-text-tab3" type="radio" name="tab" value="three">
-                <div class="mdw-tab__items" mdw-theme-color="accent">
-                  <label class="mdw-tab__item" for="large-text-tab1">
+                <input class="mdw-tab__input" id="no-toolbar-tab1" type="radio" name="tab" value="one" checked>
+                <input class="mdw-tab__input" id="no-toolbar-tab2" type="radio" name="tab" value="two">
+                <input class="mdw-tab__input" id="no-toolbar-tab3" type="radio" name="tab" value="three">
+                <div class="mdw-tab__items" mdw-theme-fill="primary-500 dark" mdw-theme-color="accent">
+                  <label class="mdw-tab__item" for="no-toolbar-tab1">
                     <div class="mdw-tab__label">Item One</div>
                   </label>
-                  <label class="mdw-tab__item" for="large-text-tab2">
+                  <label class="mdw-tab__item" for="no-toolbar-tab2">
                     <div class="mdw-tab__label">Item Two</div>
                   </label>
-                  <label class="mdw-tab__item" for="large-text-tab3">
+                  <label class="mdw-tab__item" for="no-toolbar-tab3">
                     <div class="mdw-tab__label">Item Three</div>
                   </label>
                   <div class="mdw-tab__indicator"></div>
                 </div>
-              </form>
-            </div>
-            <div class="content"></div>
-          </div>
-          <div class="target" style="background-image: url(https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsc0lzb2VoMkFBNUE/components-tabs-usage-mobile1.png)"></div>
-        </div>
-        <div class="comparison clipped mdw-theme-tab">
-          <div class="render">
-            <div class="androidstatusbar" mdw-theme-fill="primary-700">
-              <div>12:30</div><i class="material-icons" style="letter-spacing:2px;padding:0 2px">&#xE1BA;&#xE1C8;&#xE1A4;</i>
-            </div>
-            <form class="mdw-tab">
-              <input class="mdw-tab__input" type="radio" name="tab" value="one" id="text-tab1" checked>
-              <input class="mdw-tab__input" type="radio" name="tab" value="two" id="text-tab2">
-              <input class="mdw-tab__input" type="radio" name="tab" value="three" id="text-tab3">
-              <div class="mdw-tab__items-wrapper mdw-toolbar" mdw-theme-fill="primary-500 dark">
-                <div class="mdw-toolbar__action">
-                  <div class="mdw-toolbar__start">
-                    <div class="mdw-button material-icons" mdw-icon>menu</div>
-                  </div>
-                  <div class="mdw-toolbar__title">Page title</div>
-                  <div class="mdw-toolbar__end">
-                    <div class="mdw-button material-icons" mdw-icon>search</div>
-                    <div class="mdw-button material-icons" mdw-icon mdw-more-button>more_vert</div>
-                  </div>
-                </div>
-                <div class="mdw-tab__items" mdw-theme-color="accent">
-                  <label class="mdw-tab__item" for="text-tab1">
-                    <div class="mdw-tab__label">Item One</div>
-                  </label>
-                  <label class="mdw-tab__item" for="text-tab2">
-                    <div class="mdw-tab__label">Item Two</div>
-                  </label>
-                  <label class="mdw-tab__item" for="text-tab3">
-                    <div class="mdw-tab__label">Item Three</div>
-                  </label>
-                  <div class="mdw-tab__indicator"></div>
-                </div>
-              </div>
-              <div class="mdw-tab__content">
-                <div class="mdw-tab__content-item">Item One</div>
-                <div class="mdw-tab__content-item">Item Two</div>
-                <div class="mdw-tab__content-item">Item Three</div>
-              </div>
-            </form>
-          </div>
-          <div class="target" style="background-image: url(https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsOUdyb0FjQTJTdlk/components-tabs-usage-mobile3.png)"></div>
-        </div>
-        <div class="comparison clipped mdw-theme-tab">
-          <div class="render">
-            <div class="androidstatusbar" mdw-theme-fill="background-600 dark">
-              <div>12:30</div><i class="material-icons" style="letter-spacing:2px;padding:0 2px">&#xE1BA;&#xE1C8;&#xE1A4;</i>
-            </div>
-            <form class="mdw-tab">
-              <input class="mdw-tab__input" id="clear-toolbar-tab1" type="radio" name="tab" value="one" checked>
-              <input class="mdw-tab__input" id="clear-toolbar-tab2" type="radio" name="tab" value="two">
-              <input class="mdw-tab__input" id="clear-toolbar-tab3" type="radio" name="tab" value="three">
-              <div class="mdw-tab__items-wrapper mdw-toolbar">
-                <div class="mdw-toolbar__action">
-                  <div class="mdw-toolbar__start">
-                    <div class="mdw-button material-icons" mdw-icon>menu</div>
-                  </div>
-                  <div class="mdw-toolbar__title">Page title</div>
-                  <div class="mdw-toolbar__end">
-                    <div class="mdw-button material-icons" mdw-icon>search</div>
-                    <div class="mdw-button material-icons" mdw-icon mdw-more-button>more_vert</div>
-                  </div>
-                </div>
-                <div class="mdw-toolbar__content"></div>
-                <div class="mdw-tab__items" mdw-theme-color="primary">
-                  <label class="mdw-tab__item" for="clear-toolbar-tab1">
-                    <div class="mdw-tab__label">Item One</div>
-                  </label>
-                  <label class="mdw-tab__item" for="clear-toolbar-tab2">
-                    <div class="mdw-tab__label">Item Two</div>
-                  </label>
-                  <label class="mdw-tab__item" for="clear-toolbar-tab3">
-                    <div class="mdw-tab__label">Item Three</div>
-                  </label>
-                  <div class="mdw-tab__indicator"></div>
-                </div>
-              </div>
-              <div class="mdw-tab__content">
-                <div class="mdw-tab__content-item">Item One</div>
-                <div class="mdw-tab__content-item">Item Two</div>
-                <div class="mdw-tab__content-item">Item Three</div>
-              </div>
-            </form>
-          </div>
-          <div class="target" style="background-image: url(https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsVDk4V2Nnc2U3LTQ/components-tabs-usage-mobile4.png)"></div>
-        </div>
-        <div class="comparison clipped mdw-theme-tab">
-          <div class="render">
-            <div class="androidstatusbar" mdw-theme-fill="primary-700 dark">
-              <div>12:30</div><i class="material-icons" style="letter-spacing:2px;padding:0 2px">&#xE1BA;&#xE1C8;&#xE1A4;</i>
-            </div>
-            <div class="mdw-toolbar" mdw-theme-fill="primary-500 dark" mdw-theme-color="accent">
-              <div class="mdw-toolbar__action">
-                <div class="mdw-toolbar__start">
-                  <div class="mdw-button material-icons" mdw-icon>menu</div>
-                </div>
-                <div class="mdw-toolbar__title">Page title</div>
-                <div class="mdw-toolbar__end">
-                  <div class="mdw-button material-icons" mdw-icon>search</div>
-                  <div class="mdw-button material-icons" mdw-icon mdw-more-button>more_vert</div>
-                </div>
-              </div>
-              <div class="mdw-toolbar__content"></div>
-              <form class="mdw-tab">
-                <input class="mdw-tab__input" type="radio" name="tab" value="recents" id="tab-text-icon1" checked>
-                <input class="mdw-tab__input" type="radio" name="tab" value="favorites" id="tab-text-icon2">
-                <input class="mdw-tab__input" type="radio" name="tab" value="nearby" id="tab-text-icon3">
-                <div class="mdw-tab__items" mdw-theme-color="accent">
-                  <label class="mdw-tab__item" for="tab-text-icon1">
-                    <div class="mdw-tab__icon material-icons">phone</div>
-                    <div class="mdw-tab__label">Recents</div>
-                  </label>
-                  <label class="mdw-tab__item" for="tab-text-icon2">
-                    <div class="mdw-tab__icon material-icons">favorite</div>
-                    <div class="mdw-tab__label">Favorites</div>
-                  </label>
-                  <label class="mdw-tab__item" for="tab-text-icon3">
-                    <div class="mdw-tab__icon material-icons">person_pin</div>
-                    <div class="mdw-tab__label">Nearby</div>
-                  </label>
-                  <div class="mdw-tab__indicator"></div>
+                <div class="mdw-tab__content">
+                  <div class="mdw-tab__content-item">Item One</div>
+                  <div class="mdw-tab__content-item">Item Two</div>
+                  <div class="mdw-tab__content-item">Item Three</div>
                 </div>
               </form>
             </div>
-            <div class="content"></div>
           </div>
-          <div class="target" style="background-image: url(https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsS2pLN2MwWmUyRW8/components-tabs-usage-specs8.png)"></div>
-        </div>
-        <div class="comparison clipped mdw-theme-tab">
-          <div class="render">
-            <div class="androidstatusbar" mdw-theme-fill="background-600 dark">
-              <div>12:30</div><i class="material-icons" style="letter-spacing:2px;padding:0 2px">&#xE1BA;&#xE1C8;&#xE1A4;</i>
-            </div>
-            <div class="mdw-toolbar">
-              <div class="mdw-toolbar__action">
-                <div class="mdw-toolbar__start">
-                  <div class="mdw-button material-icons" mdw-icon>menu</div>
-                </div>
-                <div class="mdw-toolbar__title">Page title</div>
-                <div class="mdw-toolbar__end">
-                  <div class="mdw-button material-icons" mdw-icon>search</div>
-                  <div class="mdw-button material-icons" mdw-icon mdw-more-button>more_vert</div>
-                </div>
+          <div class="mdw-layout__item display-flex clipped" mdw-colspan="4" flex-justify-content="center">
+            <div class="render mdw-theme-tab">
+              <div class="androidstatusbar" mdw-theme-fill="primary-700">
+                <div>12:30</div><i class="material-icons" style="letter-spacing:2px;padding:0 2px">&#xE1BA;&#xE1C8;&#xE1A4;</i>
               </div>
-              <div class="mdw-toolbar__content"></div>
-              <form class="mdw-tab">
-                <input class="mdw-tab__input" type="radio" name="tab" value="recents" id="tabs-icon1" checked>
-                <input class="mdw-tab__input" type="radio" name="tab" value="favorites" id="tabs-icon2">
-                <input class="mdw-tab__input" type="radio" name="tab" value="nearby" id="tabs-icon3">
-                <div class="mdw-tab__items" mdw-theme-color="primary">
-                  <label class="mdw-tab__item" for="tabs-icon1">
-                    <div class="mdw-tab__icon material-icons">phone</div>
-                  </label>
-                  <label class="mdw-tab__item" for="tabs-icon2">
-                    <div class="mdw-tab__icon material-icons">favorite</div>
-                  </label>
-                  <label class="mdw-tab__item" for="tabs-icon3">
-                    <div class="mdw-tab__icon material-icons">person_pin</div>
-                  </label>
-                  <div class="mdw-tab__indicator"></div>
-                </div>
-              </form>
-            </div>
-            <div class="content"></div>
-          </div>
-          <div class="target" style="background-image: url(https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsQ1Y4YXpwTkZ2MFU/components-tabs-usage-mobile8.png)"></div>
-        </div>
-        <div class="comparison clipped mdw-theme-tab">
-          <div class="display-flex" flex-column style="width:100%;padding:24px;box-sizing:border-box">
-            <div class="androidstatusbar" mdw-theme-fill="primary-700 dark">
-              <div>12:30</div><i class="material-icons" style="letter-spacing:2px;padding:0 2px">&#xE1BA;&#xE1C8;&#xE1A4;</i>
-            </div>
-            <div class="mdw-tab">
-              <input class="mdw-tab__input" type="radio" name="tab" value="recents" id="dynamic-1" checked>
-              <input class="mdw-tab__input" type="radio" name="tab" value="favorites" id="dynamic-2">
-              <input class="mdw-tab__input" type="radio" name="tab" value="nearby" id="dynamic-3">
-              <div class="mdw-tab__items-wrapper mdw-toolbar" mdw-theme-fill="primary-500 dark">
-                <div class="mdw-toolbar__action">
-                  <div class="mdw-toolbar__start">
-                    <div class="mdw-button material-icons" mdw-icon>menu</div>
-                  </div>
-                  <div class="mdw-toolbar__title">Dynamic Width</div>
-                  <div class="mdw-toolbar__end">
-                    <div class="mdw-button material-icons" mdw-icon>search</div>
-                    <div class="mdw-button material-icons" mdw-icon mdw-more-button>more_vert</div>
-                  </div>
-                </div>
-                <div class="mdw-toolbar__content"></div>
-                <div class="mdw-tab__items" mdw-theme-color="accent">
-                  <label class="mdw-tab__item" for="dynamic-1">
-                    <div class="mdw-tab__icon material-icons">phone</div>
-                    <div class="mdw-tab__label">Recents</div>
-                  </label>
-                  <label class="mdw-tab__item" for="dynamic-2">
-                    <div class="mdw-tab__icon material-icons">favorite</div>
-                    <div class="mdw-tab__label">Favorites</div>
-                  </label>
-                  <label class="mdw-tab__item" for="dynamic-3">
-                    <div class="mdw-tab__icon material-icons">person_pin</div>
-                    <div class="mdw-tab__label">Nearby</div>
-                  </label>
-                  <div class="mdw-tab__indicator"></div>
-                </div>
-              </div>
-              <div class="mdw-tab__content">
-                <div class="mdw-tab__content-item">Recents</div>
-                <div class="mdw-tab__content-item">Favorites</div>
-                <div class="mdw-tab__content-item">Nearby</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="comparison clipped mdw-theme-tab js">
-          <div class="display-flex" flex-column style="width:100%;padding:24px;box-sizing:border-box">
-            <div class="androidstatusbar" mdw-theme-fill="primary-700 dark">
-              <div>12:30</div><i class="material-icons" style="letter-spacing:2px;padding:0 2px">&#xE1BA;&#xE1C8;&#xE1A4;</i>
-            </div>
-            <div class="mdw-tab">
               <div class="mdw-toolbar" mdw-theme-fill="primary-500 dark">
                 <div class="mdw-toolbar__action">
                   <div class="mdw-toolbar__start">
                     <div class="mdw-button material-icons" mdw-icon>menu</div>
                   </div>
-                  <div class="mdw-toolbar__title">Scrollable (JS)</div>
+                  <div class="mdw-toolbar__end">
+                    <div class="mdw-button material-icons" mdw-icon>search</div>
+                    <div class="mdw-button material-icons" mdw-icon mdw-more-button>more_vert</div>
+                  </div>
+                </div>
+                <div class="mdw-toolbar__content" style="font-size:2.125em;height:56px">Page title</div>
+                <form class="mdw-tab">
+                  <input class="mdw-tab__input" id="large-text-tab1" type="radio" name="tab" value="one" checked>
+                  <input class="mdw-tab__input" id="large-text-tab2" type="radio" name="tab" value="two">
+                  <input class="mdw-tab__input" id="large-text-tab3" type="radio" name="tab" value="three">
+                  <div class="mdw-tab__items" mdw-theme-color="accent">
+                    <label class="mdw-tab__item" for="large-text-tab1">
+                      <div class="mdw-tab__label">Item One</div>
+                    </label>
+                    <label class="mdw-tab__item" for="large-text-tab2">
+                      <div class="mdw-tab__label">Item Two</div>
+                    </label>
+                    <label class="mdw-tab__item" for="large-text-tab3">
+                      <div class="mdw-tab__label">Item Three</div>
+                    </label>
+                    <div class="mdw-tab__indicator"></div>
+                  </div>
+                </form>
+              </div>
+              <div class="content"></div>
+            </div>
+          </div>
+          <div class="mdw-layout__item display-flex clipped" mdw-colspan="4" flex-justify-content="center">
+            <div class="render mdw-theme-tab">
+              <div class="androidstatusbar" mdw-theme-fill="primary-700">
+                <div>12:30</div><i class="material-icons" style="letter-spacing:2px;padding:0 2px">&#xE1BA;&#xE1C8;&#xE1A4;</i>
+              </div>
+              <form class="mdw-tab">
+                <input class="mdw-tab__input" type="radio" name="tab" value="one" id="text-tab1" checked>
+                <input class="mdw-tab__input" type="radio" name="tab" value="two" id="text-tab2">
+                <input class="mdw-tab__input" type="radio" name="tab" value="three" id="text-tab3">
+                <div class="mdw-tab__items-wrapper mdw-toolbar" mdw-theme-fill="primary-500 dark">
+                  <div class="mdw-toolbar__action">
+                    <div class="mdw-toolbar__start">
+                      <div class="mdw-button material-icons" mdw-icon>menu</div>
+                    </div>
+                    <div class="mdw-toolbar__title">Page title</div>
+                    <div class="mdw-toolbar__end">
+                      <div class="mdw-button material-icons" mdw-icon>search</div>
+                      <div class="mdw-button material-icons" mdw-icon mdw-more-button>more_vert</div>
+                    </div>
+                  </div>
+                  <div class="mdw-tab__items" mdw-theme-color="accent">
+                    <label class="mdw-tab__item" for="text-tab1">
+                      <div class="mdw-tab__label">Item One</div>
+                    </label>
+                    <label class="mdw-tab__item" for="text-tab2">
+                      <div class="mdw-tab__label">Item Two</div>
+                    </label>
+                    <label class="mdw-tab__item" for="text-tab3">
+                      <div class="mdw-tab__label">Item Three</div>
+                    </label>
+                    <div class="mdw-tab__indicator"></div>
+                  </div>
+                </div>
+                <div class="mdw-tab__content">
+                  <div class="mdw-tab__content-item">Item One</div>
+                  <div class="mdw-tab__content-item">Item Two</div>
+                  <div class="mdw-tab__content-item">Item Three</div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="mdw-layout__item display-flex clipped" mdw-colspan="4" flex-justify-content="center">
+            <div class="render mdw-theme-tab">
+              <div class="androidstatusbar" mdw-theme-fill="background-600 dark">
+                <div>12:30</div><i class="material-icons" style="letter-spacing:2px;padding:0 2px">&#xE1BA;&#xE1C8;&#xE1A4;</i>
+              </div>
+              <form class="mdw-tab">
+                <input class="mdw-tab__input" id="clear-toolbar-tab1" type="radio" name="tab" value="one" checked>
+                <input class="mdw-tab__input" id="clear-toolbar-tab2" type="radio" name="tab" value="two">
+                <input class="mdw-tab__input" id="clear-toolbar-tab3" type="radio" name="tab" value="three">
+                <div class="mdw-tab__items-wrapper mdw-toolbar">
+                  <div class="mdw-toolbar__action">
+                    <div class="mdw-toolbar__start">
+                      <div class="mdw-button material-icons" mdw-icon>menu</div>
+                    </div>
+                    <div class="mdw-toolbar__title">Page title</div>
+                    <div class="mdw-toolbar__end">
+                      <div class="mdw-button material-icons" mdw-icon>search</div>
+                      <div class="mdw-button material-icons" mdw-icon mdw-more-button>more_vert</div>
+                    </div>
+                  </div>
+                  <div class="mdw-toolbar__content"></div>
+                  <div class="mdw-tab__items" mdw-theme-color="primary">
+                    <label class="mdw-tab__item" for="clear-toolbar-tab1">
+                      <div class="mdw-tab__label">Item One</div>
+                    </label>
+                    <label class="mdw-tab__item" for="clear-toolbar-tab2">
+                      <div class="mdw-tab__label">Item Two</div>
+                    </label>
+                    <label class="mdw-tab__item" for="clear-toolbar-tab3">
+                      <div class="mdw-tab__label">Item Three</div>
+                    </label>
+                    <div class="mdw-tab__indicator"></div>
+                  </div>
+                </div>
+                <div class="mdw-tab__content">
+                  <div class="mdw-tab__content-item">Item One</div>
+                  <div class="mdw-tab__content-item">Item Two</div>
+                  <div class="mdw-tab__content-item">Item Three</div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="mdw-layout__item display-flex clipped" mdw-colspan="4" flex-justify-content="center">
+            <div class="render mdw-theme-tab">
+              <div class="androidstatusbar" mdw-theme-fill="primary-700 dark">
+                <div>12:30</div><i class="material-icons" style="letter-spacing:2px;padding:0 2px">&#xE1BA;&#xE1C8;&#xE1A4;</i>
+              </div>
+              <div class="mdw-toolbar" mdw-theme-fill="primary-500 dark" mdw-theme-color="accent">
+                <div class="mdw-toolbar__action">
+                  <div class="mdw-toolbar__start">
+                    <div class="mdw-button material-icons" mdw-icon>menu</div>
+                  </div>
+                  <div class="mdw-toolbar__title">Page title</div>
                   <div class="mdw-toolbar__end">
                     <div class="mdw-button material-icons" mdw-icon>search</div>
                     <div class="mdw-button material-icons" mdw-icon mdw-more-button>more_vert</div>
                   </div>
                 </div>
                 <div class="mdw-toolbar__content"></div>
-                <div class="mdw-tab__items" mdw-theme-color="accent" mdw-scrollable>
-                  <div class="mdw-tab__item" mdw-selected>
-                    <div class="mdw-tab__icon material-icons">phone</div>
-                    <div class="mdw-tab__label">Recents</div>
+                <form class="mdw-tab">
+                  <input class="mdw-tab__input" type="radio" name="tab" value="recents" id="tab-text-icon1" checked>
+                  <input class="mdw-tab__input" type="radio" name="tab" value="favorites" id="tab-text-icon2">
+                  <input class="mdw-tab__input" type="radio" name="tab" value="nearby" id="tab-text-icon3">
+                  <div class="mdw-tab__items" mdw-theme-color="accent">
+                    <label class="mdw-tab__item" for="tab-text-icon1">
+                      <div class="mdw-tab__icon material-icons">phone</div>
+                      <div class="mdw-tab__label">Recents</div>
+                    </label>
+                    <label class="mdw-tab__item" for="tab-text-icon2">
+                      <div class="mdw-tab__icon material-icons">favorite</div>
+                      <div class="mdw-tab__label">Favorites</div>
+                    </label>
+                    <label class="mdw-tab__item" for="tab-text-icon3">
+                      <div class="mdw-tab__icon material-icons">person_pin</div>
+                      <div class="mdw-tab__label">Nearby</div>
+                    </label>
+                    <div class="mdw-tab__indicator"></div>
                   </div>
-                  <div class="mdw-tab__item">
-                    <div class="mdw-tab__icon material-icons">favorite</div>
-                    <div class="mdw-tab__label">Favorites</div>
+                </form>
+              </div>
+              <div class="content"></div>
+            </div>
+          </div>
+          <div class="mdw-layout__item display-flex clipped" mdw-colspan="4" flex-justify-content="center">
+            <div class="render mdw-theme-tab">
+              <div class="androidstatusbar" mdw-theme-fill="background-600 dark">
+                <div>12:30</div><i class="material-icons" style="letter-spacing:2px;padding:0 2px">&#xE1BA;&#xE1C8;&#xE1A4;</i>
+              </div>
+              <div class="mdw-toolbar">
+                <div class="mdw-toolbar__action">
+                  <div class="mdw-toolbar__start">
+                    <div class="mdw-button material-icons" mdw-icon>menu</div>
                   </div>
-                  <div class="mdw-tab__item">
-                    <div class="mdw-tab__icon material-icons">person_pin</div>
-                    <div class="mdw-tab__label">Nearby</div>
-                  </div>
-                  <div class="mdw-tab__item">
-                    <div class="mdw-tab__icon material-icons">edit</div>
-                    <div class="mdw-tab__label">Edit</div>
-                  </div>
-                  <div class="mdw-tab__item">
-                    <div class="mdw-tab__icon material-icons">clear</div>
-                    <div class="mdw-tab__label">Clear</div>
-                  </div>
-                  <div class="mdw-tab__item">
-                    <div class="mdw-tab__icon material-icons">search</div>
-                    <div class="mdw-tab__label">Search</div>
-                  </div>
-                  <div class="mdw-tab__item">
-                    <div class="mdw-tab__icon material-icons">restore</div>
-                    <div class="mdw-tab__label">Restore</div>
-                  </div>
-                  <div class="mdw-tab__item">
-                    <div class="mdw-tab__icon material-icons">stars</div>
-                    <div class="mdw-tab__label">Stars</div>
+                  <div class="mdw-toolbar__title">Page title</div>
+                  <div class="mdw-toolbar__end">
+                    <div class="mdw-button material-icons" mdw-icon>search</div>
+                    <div class="mdw-button material-icons" mdw-icon mdw-more-button>more_vert</div>
                   </div>
                 </div>
+                <div class="mdw-toolbar__content"></div>
+                <form class="mdw-tab">
+                  <input class="mdw-tab__input" type="radio" name="tab" value="recents" id="tabs-icon1" checked>
+                  <input class="mdw-tab__input" type="radio" name="tab" value="favorites" id="tabs-icon2">
+                  <input class="mdw-tab__input" type="radio" name="tab" value="nearby" id="tabs-icon3">
+                  <div class="mdw-tab__items" mdw-theme-color="primary">
+                    <label class="mdw-tab__item" for="tabs-icon1">
+                      <div class="mdw-tab__icon material-icons">phone</div>
+                    </label>
+                    <label class="mdw-tab__item" for="tabs-icon2">
+                      <div class="mdw-tab__icon material-icons">favorite</div>
+                    </label>
+                    <label class="mdw-tab__item" for="tabs-icon3">
+                      <div class="mdw-tab__icon material-icons">person_pin</div>
+                    </label>
+                    <div class="mdw-tab__indicator"></div>
+                  </div>
+                </form>
               </div>
-              <div class="mdw-tab__content">
-                <div class="mdw-tab__content-item">1</div>
-                <div class="mdw-tab__content-item">2</div>
-                <div class="mdw-tab__content-item">3</div>
-                <div class="mdw-tab__content-item">4</div>
-                <div class="mdw-tab__content-item">5</div>
-                <div class="mdw-tab__content-item">6</div>
-                <div class="mdw-tab__content-item">7</div>
-                <div class="mdw-tab__content-item">8</div>
+              <div class="content"></div>
+            </div>
+          </div>
+          <div class="mdw-layout__item display-flex" mdw-colspan="100%" flex-justify-content="center">
+            <div class="display-flex mdw-theme-tab" flex-column style="width:100%;padding:24px;box-sizing:border-box">
+              <div class="androidstatusbar" mdw-theme-fill="primary-700 dark">
+                <div>12:30</div><i class="material-icons" style="letter-spacing:2px;padding:0 2px">&#xE1BA;&#xE1C8;&#xE1A4;</i>
+              </div>
+              <div class="mdw-tab">
+                <input class="mdw-tab__input" type="radio" name="tab" value="recents" id="dynamic-1" checked>
+                <input class="mdw-tab__input" type="radio" name="tab" value="favorites" id="dynamic-2">
+                <input class="mdw-tab__input" type="radio" name="tab" value="nearby" id="dynamic-3">
+                <div class="mdw-tab__items-wrapper mdw-toolbar" mdw-theme-fill="primary-500 dark">
+                  <div class="mdw-toolbar__action">
+                    <div class="mdw-toolbar__start">
+                      <div class="mdw-button material-icons" mdw-icon>menu</div>
+                    </div>
+                    <div class="mdw-toolbar__title">Dynamic Width</div>
+                    <div class="mdw-toolbar__end">
+                      <div class="mdw-button material-icons" mdw-icon>search</div>
+                      <div class="mdw-button material-icons" mdw-icon mdw-more-button>more_vert</div>
+                    </div>
+                  </div>
+                  <div class="mdw-toolbar__content"></div>
+                  <div class="mdw-tab__items" mdw-theme-color="accent">
+                    <label class="mdw-tab__item" for="dynamic-1">
+                      <div class="mdw-tab__icon material-icons">phone</div>
+                      <div class="mdw-tab__label">Recents</div>
+                    </label>
+                    <label class="mdw-tab__item" for="dynamic-2">
+                      <div class="mdw-tab__icon material-icons">favorite</div>
+                      <div class="mdw-tab__label">Favorites</div>
+                    </label>
+                    <label class="mdw-tab__item" for="dynamic-3">
+                      <div class="mdw-tab__icon material-icons">person_pin</div>
+                      <div class="mdw-tab__label">Nearby</div>
+                    </label>
+                    <div class="mdw-tab__indicator"></div>
+                  </div>
+                </div>
+                <div class="mdw-tab__content">
+                  <div class="mdw-tab__content-item">Recents</div>
+                  <div class="mdw-tab__content-item">Favorites</div>
+                  <div class="mdw-tab__content-item">Nearby</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mdw-layout__item display-flex" mdw-colspan="100%" flex-justify-content="center">
+            <div class="display-flex mdw-theme-tab js" flex-column style="width:0;padding:24px;box-sizing:border-box">
+              <div class="androidstatusbar" mdw-theme-fill="primary-700 dark">
+                <div>12:30</div><i class="material-icons" style="letter-spacing:2px;padding:0 2px">&#xE1BA;&#xE1C8;&#xE1A4;</i>
+              </div>
+              <div class="mdw-tab">
+                <div class="mdw-toolbar" mdw-theme-fill="primary-500 dark">
+                  <div class="mdw-toolbar__action">
+                    <div class="mdw-toolbar__start">
+                      <div class="mdw-button material-icons" mdw-icon>menu</div>
+                    </div>
+                    <div class="mdw-toolbar__title">Scrollable (JS)</div>
+                    <div class="mdw-toolbar__end">
+                      <div class="mdw-button material-icons" mdw-icon>search</div>
+                      <div class="mdw-button material-icons" mdw-icon mdw-more-button>more_vert</div>
+                    </div>
+                  </div>
+                  <div class="mdw-toolbar__content"></div>
+                  <div class="mdw-tab__items" mdw-theme-color="accent" mdw-scrollable>
+                    <div class="mdw-tab__item" mdw-selected>
+                      <div class="mdw-tab__icon material-icons">phone</div>
+                      <div class="mdw-tab__label">Recents</div>
+                    </div>
+                    <div class="mdw-tab__item">
+                      <div class="mdw-tab__icon material-icons">favorite</div>
+                      <div class="mdw-tab__label">Favorites</div>
+                    </div>
+                    <div class="mdw-tab__item">
+                      <div class="mdw-tab__icon material-icons">person_pin</div>
+                      <div class="mdw-tab__label">Nearby</div>
+                    </div>
+                    <div class="mdw-tab__item">
+                      <div class="mdw-tab__icon material-icons">edit</div>
+                      <div class="mdw-tab__label">Edit</div>
+                    </div>
+                    <div class="mdw-tab__item">
+                      <div class="mdw-tab__icon material-icons">clear</div>
+                      <div class="mdw-tab__label">Clear</div>
+                    </div>
+                    <div class="mdw-tab__item">
+                      <div class="mdw-tab__icon material-icons">search</div>
+                      <div class="mdw-tab__label">Search</div>
+                    </div>
+                    <div class="mdw-tab__item">
+                      <div class="mdw-tab__icon material-icons">restore</div>
+                      <div class="mdw-tab__label">Restore</div>
+                    </div>
+                    <div class="mdw-tab__item">
+                      <div class="mdw-tab__icon material-icons">stars</div>
+                      <div class="mdw-tab__label">Stars</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mdw-tab__content">
+                  <div class="mdw-tab__content-item">1</div>
+                  <div class="mdw-tab__content-item">2</div>
+                  <div class="mdw-tab__content-item">3</div>
+                  <div class="mdw-tab__content-item">4</div>
+                  <div class="mdw-tab__content-item">5</div>
+                  <div class="mdw-tab__content-item">6</div>
+                  <div class="mdw-tab__content-item">7</div>
+                  <div class="mdw-tab__content-item">8</div>
+                </div>
               </div>
             </div>
           </div>
