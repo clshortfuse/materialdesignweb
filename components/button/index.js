@@ -14,7 +14,6 @@ class Button {
       Ripple.attach(element);
     }
     if (element instanceof HTMLButtonElement === false
-      && element instanceof HTMLAnchorElement === false
       && element instanceof HTMLInputElement === false) {
       element.addEventListener('keydown', Button.onKeyDown);
     }
@@ -44,7 +43,9 @@ class Button {
     }
     event.stopPropagation();
     event.preventDefault();
-    buttonElement.click();
+    const newEvent = document.createEvent('Event');
+    newEvent.initEvent('click', true, true);
+    buttonElement.dispatchEvent(newEvent);
   }
 }
 
