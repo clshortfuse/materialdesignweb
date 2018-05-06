@@ -84,7 +84,7 @@ $dark-background: 3;
         $value: unquote("rgba(var(--#{$color}-#{$tone}-color), #{$opacity})");
       }
     }
-    --#{$component}__#{$key}: $value;
+    --#{$component}__#{$key}: #{$value};
   }
 }
 

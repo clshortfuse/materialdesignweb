@@ -47,7 +47,7 @@
 
 @function themeValue($component, $colorMap, $key, $type, $theme: null) {
   @if ($type == 'var') {
-    @return unquote("var(--#{$component}__#{$key})");
+    @return var(--#{$component}__#{$key});
   }
   $item: getThemeMapItem($colorMap, $key, $type);
   @return parseThemeItem($item, $type, $theme);
@@ -81,9 +81,9 @@
 @function getThemePaletteColor($color, $tone, $type, $theme: null) {
   @if ($type == 'var' or $type == null) {
     @if ($tone == null) {
-      @return "var(--#{$color}-color)";
+      @return var(--#{$color}-color);
     }
-    @return "var(--#{$color}-#{$tone}-color)";
+    @return var(--#{$color}-#{$tone}-color);
   }
   @if ($tone == null) {
     $tone: '500';

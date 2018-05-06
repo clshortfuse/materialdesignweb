@@ -229,7 +229,7 @@ $added-palettes-list: ();
   @each $name in map-keys($mdw-theme__themes) {
     // $name: map-get($theme, "name");
     $theme: map-get($mdw-theme__themes, $name);
-    $namespace: if($name == 'default', null, unquote(".mdw-theme-#{$name}"));
+    $namespace: if($name == 'default', null, ".mdw-theme-#{$name}");
     @each $color in ('primary', 'accent', 'warn', 'background') {
       $palette: getThemePalette($color, $theme);
       @each $tone in $tone-list {
@@ -238,18 +238,18 @@ $added-palettes-list: ();
         @if ($tone == '500') {
           @if ($color != 'background') {
             #{$namespace} [mdw-theme-fill~="#{$color}"] {
-              background-color: $value;
+              background-color: #{$value};
             }
           }
           #{$namespace} [mdw-theme-color~="#{$color}"] {
-            color: $value;
+            color: #{$value};
           }
         }
         #{$namespace} [mdw-theme-fill~="#{$color}-#{$tone}"] {
-          background-color: $value;
+          background-color: #{$value};
         }
         #{$namespace} [mdw-theme-color~="#{$color}-#{$tone}"] {
-          color: $value;
+          color: #{$value};
         }
       }
     }
@@ -285,17 +285,17 @@ $added-palettes-list: ();
       $value: map-get($palette, $tone);
       @if ($tone == '500') {
         [mdw-theme-fill~="#{$color}"] {
-          background-color: $value;
+          background-color: #{$value};
         }
         [mdw-theme-color~="#{$color}"] {
-          color: $value;
+          color: #{$value};
         }
       }
       [mdw-theme-fill~="#{$color}-#{$tone}"] {
-        background-color: $value;
+        background-color: #{$value};
       }
       [mdw-theme-color~="#{$color}-#{$tone}"] {
-        color: $value;
+        color: #{$value};
       }
     }
   }
@@ -321,7 +321,7 @@ $added-palettes-list: ();
   @each $name in map-keys($mdw-theme__themes) {
     // $name: map-get($theme, "name");
     $theme: map-get($mdw-theme__themes, $name);
-    $namespace: if($name == 'default', null, unquote(".mdw-theme-#{$name}"));
+    $namespace: if($name == 'default', null, ".mdw-theme-#{$name}");
     $primary: nth($theme, 1);
     $accent: nth($theme, 2);
     $warn: nth($theme, 3);
@@ -333,52 +333,52 @@ $added-palettes-list: ();
   }
 
   [mdw-theme-fill~="white"] {
-    --background-color: unquote("255,255,255");
+    --background-color: 255,255,255;
   }
   [mdw-theme-color~="white"] {
-    --color: unquote("255,255,255");
+    --color: 255,255,255;
   }
   @each $color in ('primary', 'accent', 'warn', 'background') { 
     @each $tone in $tone-list {
       @if ($tone == '500') {
         @if ($color != 'background') {
           [mdw-theme-fill~="#{$color}"] {
-            --background-color: unquote("var(--#{$color}-color)");
+            --background-color: var(--#{$color}-color);
           }
         }
         [mdw-theme-color~="#{$color}"] {
-          --color: unquote("var(--#{$color}-color)");
+          --color: var(--#{$color}-color);
         }
       }
       [mdw-theme-fill~="#{$color}-#{$tone}"] {
-        --background-color: unquote("var(--#{$color}-#{$tone}-color)");
+        --background-color: var(--#{$color}-#{$tone}-color);
       }
       [mdw-theme-color~="#{$color}-#{$tone}"] {
-        --color: unquote("var(--#{$color}-#{$tone}-color)");
+        --color: var(--#{$color}-#{$tone}-color);
       }
     }
   }
   [mdw-theme-fill~="black"] {
-    --background-color: unquote("0,0,0");
+    --background-color: 0,0,0;
   }
   [mdw-theme-color~="black"] {
-    --color: unquote("0,0,0");
+    --color: 0,0,0;
   }
   @each $color in $mdw-theme__explicit-colors {
     @each $tone in $tone-list {
       @if ($tone == '500') {
         [mdw-theme-fill~="#{$color}"] {
-          --background-color: unquote("var(--#{$color}-color)");
+          --background-color: var(--#{$color}-color);
         }
         [mdw-theme-color~="#{$color}"] {
-          --color: unquote("var(--#{$color}-color)");
+          --color: var(--#{$color}-color);
         }
       }
       [mdw-theme-fill~="#{$color}-#{$tone}"] {
-        --background-color: unquote("var(--#{$color}-#{$tone}-color)");
+        --background-color: var(--#{$color}-#{$tone}-color);
       }
       [mdw-theme-color~="#{$color}-#{$tone}"] {
-        --color: unquote("var(--#{$color}-#{$tone}-color)");
+        --color: var(--#{$color}-#{$tone}-color);
       }
     }
   }
@@ -401,7 +401,7 @@ $added-palettes-list: ();
   @if ($mdw-theme__automatic-contrast != 'no' and $mdw-theme__automatic-contrast != false) {
     @each $name in map-keys($mdw-theme__themes) {
       $theme: map-get($mdw-theme__themes, $name);
-      $namespace: if($name == 'default', null, unquote(".mdw-theme-#{$name}"));
+      $namespace: if($name == 'default', null, ".mdw-theme-#{$name}");
       @each $color in ('primary', 'accent', 'warn', 'background') {
         $palette: getThemePalette($color, $theme);
         $lightTones: map-get($palette, 'light');
@@ -429,7 +429,7 @@ $added-palettes-list: ();
     // Dark Variables
     @each $name in map-keys($mdw-theme__themes) {
       $theme: map-get($mdw-theme__themes, $name);
-      $namespace: if($name == 'default', null, unquote(".mdw-theme-#{$name}"));
+      $namespace: if($name == 'default', null, ".mdw-theme-#{$name}");
       @each $color in ('primary', 'accent', 'warn') {
         $palette: getThemePalette($color, $theme);
         $darkTones: map-get($palette, 'dark');
@@ -458,7 +458,7 @@ $added-palettes-list: ();
     // Dark Background Variables
     @each $name in map-keys($mdw-theme__themes) {
       $theme: map-get($mdw-theme__themes, $name);
-      $namespace: if($name == 'default', null, unquote(".mdw-theme-#{$name}"));
+      $namespace: if($name == 'default', null, ".mdw-theme-#{$name}");
       $color: 'background';
       $palette: getThemePalette('background', $theme);
       $darkTones: map-get($palette, 'dark');
@@ -493,9 +493,9 @@ $added-palettes-list: ();
     @each $tone in map-keys(map-remove($palette, "light", "dark")) {
       $value: map-get($palette, $tone);
       :root {
-        --#{$name}-#{$tone}-color: red($value),green($value),blue($value);
+        --#{$name}-#{$tone}-color: #{red($value),green($value),blue($value)};
         @if ($tone == "500") {
-          --#{$name}-color: red($value),green($value),blue($value);
+          --#{$name}-color: #{red($value),green($value),blue($value)};
         } 
       }
       $added-palettes-list: append($added-palettes-list, $name) !global;
