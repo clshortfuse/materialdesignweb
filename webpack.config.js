@@ -47,7 +47,14 @@ function getComponentsConfig() {
             options: {
               sourceMap: !isProduction,
               plugins: () => [
-                cssnano(),
+                cssnano({
+                  preset: 'default',
+                  autoprefixer: false,
+                  discardUnused: false,
+                  reduceIdents: false,
+                  zindex: false,
+                  mergeIdents: false,
+                }),
               ],
             },
           }, {
@@ -131,7 +138,14 @@ function getDocsConfig() {
             options: {
               sourceMap: !isProduction,
               plugins: () => [
-                cssnano(),
+                cssnano({
+                  preset: 'default',
+                  autoprefixer: false,
+                  discardUnused: false,
+                  reduceIdents: false,
+                  zindex: false,
+                  mergeIdents: false,
+                }),
               ],
             },
           }, {
