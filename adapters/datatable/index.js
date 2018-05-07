@@ -186,16 +186,19 @@ class TableColumn {
 
 class DataTableAdapter {
   /**
-   * @param {HTMLElement} element
+   * @param {Object} options
+   * @param {HTMLElement} options.datatable
+   * @param {Object[]} options.datasource Object array
    */
-  constructor(element) {
-    this.element = element;
+  constructor(options) {
+    this.element = options.datatable;
+    this.datasource = options.datasource;
     this.element.addEventListener('click', (event) => {
       // Use one event listener to reduce overhead and allow dynamic content
       this.handleClickInteraction(event);
     });
-    DataTable.attach(element);
-    element.setAttribute('mdw-adapter', '');
+    DataTable.attach(this.element);
+    this.element.setAttribute('mdw-adapter', '');
     /** @type {TableColumn[]} */
     this.columns = [];
     this.page = 0;
@@ -208,6 +211,7 @@ class DataTableAdapter {
   detach() {
     this.element.removeAttribute('mdw-adapter');
     this.element = null;
+    this.datasource = null;
   }
 
   buildScrollListener() {
@@ -292,15 +296,13 @@ class DataTableAdapter {
           return;
         }
         const currentRow = this.getTableRow(target);
-        if (this.hasDatasource()) {
-          const object = this.getDataForTableRow(currentRow);
-          if (this.onValueChangedRequested(object, currentCell.dataset.key, target.checked)) {
-            event.preventDefault();
-            return;
-          }
-          object[currentCell.dataset.key] = target.checked;
-          this.onValueChanged(object, currentCell.dataset.key, target.checked);
+        const object = this.getDataForTableRow(currentRow);
+        if (this.onValueChangedRequested(object, currentCell.dataset.key, target.checked)) {
+          event.preventDefault();
+          return;
         }
+        object[currentCell.dataset.key] = target.checked;
+        this.onValueChanged(object, currentCell.dataset.key, target.checked);
         if (currentCell.hasAttribute('mdw-selector')) {
           if (target.checked) {
             currentRow.setAttribute('mdw-selected', '');
@@ -319,9 +321,7 @@ class DataTableAdapter {
       if (currentCell.tagName.toLowerCase() === 'th' && currentCell.hasAttribute('mdw-sortable')) {
         event.stopPropagation();
         let ascending = true;
-        if (!currentCell.hasAttribute('mdw-sorted')) {
-          ascending = false;
-        } else if (currentCell.getAttribute('mdw-sorted') === 'reverse') {
+        if (currentCell.hasAttribute('mdw-sorted') && !currentCell.getAttribute('mdw-sorted')) {
           ascending = false;
         }
         this.updateSortIcons(currentCell, ascending);
@@ -344,51 +344,23 @@ class DataTableAdapter {
       // Header not attached to row!
       return;
     }
-    if (this.hasDatasource()) {
-      const index = tableHeaderCell.cellIndex;
-      const tableColumn = this.columns[index];
-      this.datasource.sort((a, b) => {
-        const valueA = a[tableColumn.key];
-        const valueB = b[tableColumn.key];
-        if (tableColumn.type === 'number') {
-          return parseFloat(valueB) - parseFloat(valueA);
-        }
-        if (tableColumn.type === 'checkbox') {
-          return (valueB ? 1 : 0) - (valueA ? 1 : 0);
-        }
-        return valueA.localeCompare(valueB);
-      });
-      if (ascending) {
-        this.datasource.reverse();
+    const index = tableHeaderCell.cellIndex;
+    const tableColumn = this.columns[index];
+    this.datasource.sort((a, b) => {
+      const valueA = a[tableColumn.key];
+      const valueB = b[tableColumn.key];
+      if (tableColumn.type === 'number') {
+        return parseFloat(valueB) - parseFloat(valueA);
       }
-      this.refresh();
-      return;
-    }
-    /** @type {HTMLTableSectionElement} */
-    const tbody = this.element.querySelector('tbody');
-    const rows = [];
-    for (let i = tbody.rows.length - 1; i >= 0; i -= 1) {
-      rows.push(tbody.rows.item(i));
-      tbody.deleteRow(i);
-    }
-    rows.sort((a, b) => {
-      const aCell = a.cells.item(tableHeaderCell.cellIndex);
-      const bCell = b.cells.item(tableHeaderCell.cellIndex);
-      const aText = aCell.textContent;
-      const bText = bCell.textContent;
-      if (aCell.dataset.type === 'number') {
-        return parseFloat(bText) - parseFloat(aText);
+      if (tableColumn.type === 'checkbox') {
+        return (valueB ? 1 : 0) - (valueA ? 1 : 0);
       }
-      return aText.localeCompare(bText);
+      return valueA.localeCompare(valueB);
     });
     if (ascending) {
-      rows.reverse();
+      this.datasource.reverse();
     }
-    const fragment = document.createDocumentFragment();
-    rows.forEach((row) => {
-      fragment.appendChild(row);
-    });
-    tbody.appendChild(fragment);
+    this.refresh();
   }
 
   /**
@@ -399,9 +371,9 @@ class DataTableAdapter {
   updateSortIcons(sortedTableHeaderCell, ascending) {
     if (sortedTableHeaderCell) {
       if (ascending) {
-        sortedTableHeaderCell.setAttribute('mdw-sorted', 'reverse');
-      } else {
         sortedTableHeaderCell.setAttribute('mdw-sorted', '');
+      } else {
+        sortedTableHeaderCell.setAttribute('mdw-sorted', 'desc');
       }
     }
     const tableHeaders = this.element.querySelectorAll('th');
@@ -413,38 +385,17 @@ class DataTableAdapter {
     }
   }
 
-  /** @return {boolean} */
-  hasDatasource() {
-    return (this.datasource != null);
-  }
-
   /**
    * @param {boolean} value
    * @param {number} columnIndex
    * @return {void}
    */
   setCheckOnAllRows(value, columnIndex) {
-    if (this.hasDatasource()) {
-      const column = this.columns[columnIndex];
-      this.datasource.forEach((object) => {
-        object[column.key] = value;
-      });
-      this.refresh();
-      return;
-    }
-    const tbody = this.getTableBody();
-    const len = tbody.rows.length;
-    for (let i = 0; i < len; i += 1) {
-      const row = tbody.rows.item(i);
-      const cell = row.cells.item(columnIndex);
-      const checkbox = cell.getElementsByTagName('input')[0];
-      checkbox.checked = value;
-      if (value) {
-        row.setAttribute('mdw-selected', '');
-      } else {
-        row.removeAttribute('mdw-selected');
-      }
-    }
+    const column = this.columns[columnIndex];
+    this.datasource.forEach((object) => {
+      object[column.key] = value;
+    });
+    this.refresh();
   }
 
   /**
@@ -483,26 +434,11 @@ class DataTableAdapter {
 
   /** @return {HTMLTableRowElement[]} */
   getSelectedRows() {
-    if (this.hasDatasource()) {
-      const selectorColumn = this.columns.find(column => column.rowSelector);
-      if (!selectorColumn) {
-        return [];
-      }
-      return this.getDatasource().filter(row => row[selectorColumn.key]);
+    const selectorColumn = this.columns.find(column => column.rowSelector);
+    if (!selectorColumn) {
+      return [];
     }
-    const checkboxes = this.element.querySelectorAll('td[mdw-selector] input[type=checkbox]');
-    const checkedRows = [];
-    for (let i = 0; i < checkboxes.length; i += 1) {
-      /** @type {HTMLInputElement} */
-      const checkbox = checkboxes.item(i);
-      if (checkbox.checked) {
-        const row = this.getTableRow(checkbox);
-        if (row) {
-          checkedRows.push(row);
-        }
-      }
-    }
-    return checkedRows;
+    return this.getDatasource().filter(row => row[selectorColumn.key]);
   }
 
   /**
@@ -519,12 +455,10 @@ class DataTableAdapter {
 
   /**
    * @param {Object[]} datasource Object array
-   * @param {boolean=} [horizontal=false]
    * @return {void}
    */
-  setDatasource(datasource, horizontal) {
+  setDatasource(datasource) {
     this.datasource = datasource;
-    this.horizontalDatasource = !!horizontal;
   }
 
   /**
@@ -533,9 +467,6 @@ class DataTableAdapter {
    * @return {void}
    */
   setUseLazyRendering(value) {
-    if (!this.hasDatasource()) {
-      return;
-    }
     this.useLazyRendering = value;
     if (value) {
       this.buildScrollListener();

@@ -26,8 +26,24 @@ function initializeMdwComponents() {
 let dynamicTableAdapter = null;
 /** @return {void} */
 function buildDynamicTable() {
-  /** @type {Table} */
-  dynamicTableAdapter = new DataTableAdapter(document.getElementById('dynamic-table'));
+  const datasource = [];
+  let count = 1;
+  const addDatasourceObject = () => {
+    datasource.push({
+      text: Math.random().toString(36).substring(2),
+      text2: Math.random().toString(36).substring(2),
+      check1: Math.random() > 0.5,
+      increment: count,
+      random: Math.floor(Math.random() * 99999),
+    });
+    count += 1;
+  };
+  for (let i = 0; i < 256; i += 1) {
+    addDatasourceObject();
+  }
+
+  const datatable = document.getElementById('dynamic-table');
+  dynamicTableAdapter = new DataTableAdapter({ datatable, datasource });
   dynamicTableAdapter.addColumn({
     key: 'selected',
     type: 'checkbox',
@@ -65,22 +81,6 @@ function buildDynamicTable() {
     sortable: true,
     type: 'number',
   });
-  const datasource = [];
-  let count = 1;
-  const addDatasourceObject = () => {
-    datasource.push({
-      text: Math.random().toString(36).substring(2),
-      text2: Math.random().toString(36).substring(2),
-      check1: Math.random() > 0.5,
-      increment: count,
-      random: Math.floor(Math.random() * 99999),
-    });
-    count += 1;
-  };
-  for (let i = 0; i < 256; i += 1) {
-    addDatasourceObject();
-  }
-  dynamicTableAdapter.setDatasource(datasource);
   dynamicTableAdapter.setUseLazyRendering(true);
   dynamicTableAdapter.setPagination();
   dynamicTableAdapter.refresh();
