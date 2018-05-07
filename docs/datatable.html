@@ -27,7 +27,7 @@
                 <div class="mdw-tooltip">Menu</div>
               </div>
             </div>
-            <div class="mdw-toolbar__title">table</div>
+            <div class="mdw-toolbar__title">datatable</div>
             <div class="mdw-toolbar__end" id="docs-menu-buttons">
               <div class="mdw-tooltip__wrapper">
                 <div class="mdw-tooltip__target mdw-button docs-rtl" mdw-inactive>RTL</div>
@@ -54,7 +54,9 @@
             <div class="mdw-list__icon material-icons">crop_landscape</div>
             <div class="mdw-list__text">Button</div></a><a class="mdw-list__item" href="dialog.html" mdw-theme-color="accent">
             <div class="mdw-list__icon material-icons">select_all</div>
-            <div class="mdw-list__text">Dialog</div></a><a class="mdw-list__item" href="elevation.html" mdw-theme-color="accent">
+            <div class="mdw-list__text">Dialog</div></a><a class="mdw-list__item" mdw-selected href="datatable.html" mdw-theme-color="accent">
+            <div class="mdw-list__icon material-icons">format_align_justify</div>
+            <div class="mdw-list__text">Data Table</div></a><a class="mdw-list__item" href="elevation.html" mdw-theme-color="accent">
             <div class="mdw-list__icon material-icons">layers</div>
             <div class="mdw-list__text">Elevation</div></a><a class="mdw-list__item" href="fab.html" mdw-theme-color="accent">
             <div class="mdw-list__icon material-icons">add_circle</div>
@@ -74,9 +76,7 @@
             <div class="mdw-list__icon material-icons">check_box</div>
             <div class="mdw-list__text">Selection</div></a><a class="mdw-list__item" href="tab.html" mdw-theme-color="accent">
             <div class="mdw-list__icon material-icons">tab</div>
-            <div class="mdw-list__text">Tab</div></a><a class="mdw-list__item" mdw-selected href="table.html" mdw-theme-color="accent">
-            <div class="mdw-list__icon material-icons">format_align_justify</div>
-            <div class="mdw-list__text">Table</div></a><a class="mdw-list__item" href="textfield.html" mdw-theme-color="accent">
+            <div class="mdw-list__text">Tab</div></a><a class="mdw-list__item" href="textfield.html" mdw-theme-color="accent">
             <div class="mdw-list__icon material-icons">text_fields</div>
             <div class="mdw-list__text">Text Field</div></a><a class="mdw-list__item" href="toolbar.html" mdw-theme-color="accent">
             <div class="mdw-list__icon material-icons">web_asset</div>
@@ -89,7 +89,7 @@
       </div>
       <div class="mdw-navdrawer__content" style="padding-bottom:24px">
         <div class="mdw-theme-toolbar js" display="flex" flex-direction="column">
-          <div class="mdw-card mdw-table" mdw-theme-color="primary" style="margin:16px">
+          <div class="mdw-card mdw-datatable" mdw-theme-color="primary" style="margin:16px">
             <table>
               <caption>Standard HTML Table</caption>
               <thead>
@@ -208,9 +208,9 @@
               </tbody>
             </table>
           </div>
-          <div class="mdw-card mdw-table" mdw-theme-color="primary" style="margin:16px">
-            <div class="mdw-table__header">
-              <div class="mdw-table__header-text">Customized HTML Table</div>
+          <div class="mdw-card mdw-datatable" mdw-theme-color="primary" style="margin:16px" mdw-cell-focusable>
+            <div class="mdw-datatable__header">
+              <div class="mdw-datatable__header-text">Customized HTML Table</div>
             </div>
             <table>
               <thead>
@@ -222,30 +222,30 @@
                     </label>
                   </th>
                   <th mdw-sortable data-type="text" mdw-primary-column>
-                    <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span>Dessert (100g serving)</span>
+                    <div class="mdw-datatable__sort-icon material-icons">arrow_downward</div><span>Dessert (100g serving)</span>
                   </th>
-                  <th mdw-sortable data-type="number">
-                    <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span class="mdw-tooltip__wrapper"><span class="mdw-tooltip__target">Calories</span>
+                  <th mdw-sortable data-type="number" mdw-sorted="">
+                    <div class="mdw-datatable__sort-icon material-icons">arrow_downward</div><span class="mdw-tooltip__wrapper"><span class="mdw-tooltip__target">Calories</span>
                       <div class="mdw-tooltip">The total amount of food energy in the given serving size.</div></span>
                   </th>
                   <th mdw-sortable data-type="number">
-                    <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span>Fat (g)</span>
+                    <div class="mdw-datatable__sort-icon material-icons">arrow_downward</div><span>Fat (g)</span>
                   </th>
                   <th mdw-sortable data-type="number">
-                    <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span>Carbs (g)</span>
+                    <div class="mdw-datatable__sort-icon material-icons">arrow_downward</div><span>Carbs (g)</span>
                   </th>
                   <th mdw-sortable data-type="number">
-                    <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span>Protein (g)</span>
+                    <div class="mdw-datatable__sort-icon material-icons">arrow_downward</div><span>Protein (g)</span>
                   </th>
                   <th mdw-sortable data-type="number">
-                    <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span>Sodium (mg)</span>
+                    <div class="mdw-datatable__sort-icon material-icons">arrow_downward</div><span>Sodium (mg)</span>
                   </th>
                   <th mdw-sortable data-type="number">
-                    <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span class="mdw-tooltip__wrapper"><span class="mdw-tooltip__target">Calcium (%)</span>
+                    <div class="mdw-datatable__sort-icon material-icons">arrow_downward</div><span class="mdw-tooltip__wrapper"><span class="mdw-tooltip__target">Calcium (%)</span>
                       <div class="mdw-tooltip">The amount of calcium as a percentage of the recommended daily amount.</div></span>
                   </th>
                   <th mdw-sortable data-type="number">
-                    <div class="mdw-table__sort-icon material-icons">arrow_downward</div><span>Iron (%)</span>
+                    <div class="mdw-datatable__sort-icon material-icons">arrow_downward</div><span>Iron (%)</span>
                   </th>
                 </tr>
               </thead>
@@ -412,8 +412,8 @@
                 </tr>
               </tbody>
             </table>
-            <div class="mdw-table__footer">
-              <div class="mdw-table__footer-options"><span>Rows per page</span>
+            <div class="mdw-datatable__footer">
+              <div class="mdw-datatable__footer-options"><span>Rows per page</span>
                 <label class="mdw-textfield" mdw-solo>
                   <select class="mdw-textfield__input">
                     <option value="10">10</option>
@@ -424,19 +424,19 @@
                   <div class="mdw-textfield__dropdown-button"></div>
                 </label>
               </div>
-              <div class="mdw-table__footer-details">1-10 of 10</div>
-              <div class="mdw-table__footer-controls">
-                <div class="mdw-button material-icons" mdw-icon disabled>chevron_left</div>
-                <div class="mdw-button material-icons" mdw-icon disabled>chevron_right</div>
+              <div class="mdw-datatable__footer-details">1-10 of 10</div>
+              <div class="mdw-datatable__footer-controls">
+                <button class="mdw-button material-icons" mdw-icon disabled>chevron_left</button>
+                <button class="mdw-button material-icons" mdw-icon disabled>chevron_right</button>
               </div>
             </div>
           </div>
-          <div class="mdw-card mdw-table" id="dynamic-table" mdw-theme-color="primary" style="margin:16px;max-height:800px;overflow-y:auto">
-            <div class="mdw-table__header">
-              <div class="mdw-table__header-text">Dynamic Table</div>
-              <div class="mdw-table__header-controls">
+          <div class="mdw-card mdw-datatable" id="dynamic-table" mdw-theme-color="primary" mdw-row-focusable style="margin:16px;max-height:800px;overflow-y:auto">
+            <div class="mdw-datatable__header">
+              <div class="mdw-datatable__header-text">Dynamic Table</div>
+              <div class="mdw-datatable__header-controls">
                 <div class="mdw-menu__wrapper">
-                  <div class="mdw-button material-icons" mdw-icon mdw-inactive mdw-theme-color="primary">filter_list</div>
+                  <button class="mdw-button material-icons" mdw-icon mdw-inactive mdw-theme-color="primary">filter_list</button>
                   <div class="mdw-menu" mdw-position="end">
                     <div class="mdw-menu__popup">
                       <div class="mdw-menu__item" mdw-checked>
@@ -459,7 +459,7 @@
                   </div>
                 </div>
                 <div class="mdw-menu__wrapper">
-                  <div class="mdw-button material-icons" mdw-icon>more_vert</div>
+                  <button class="mdw-button material-icons" mdw-icon>more_vert</button>
                   <div class="mdw-menu" mdw-position="end">
                     <div class="mdw-menu__popup">
                       <div class="mdw-menu__item" mdw-checked>
@@ -479,6 +479,6 @@
         </div>
       </div>
     </div>
-    <script src="table.min.js"></script>
+    <script src="datatable.min.js"></script>
   </body>
 </html>
