@@ -142,20 +142,19 @@ class Menu {
     if (document.activeElement === menuElement) {
       return;
     }
-    if (document.activeElement.parentElement !== menuElement) {
-      return;
-    }
     if (document.activeElement.hasAttribute('disabled')) {
       return;
     }
     if (event.key === 'Spacebar' || (event.key === ' ')) {
       event.stopPropagation();
       event.preventDefault();
-      if (document.activeElement.hasAttribute('mdw-checked')) {
-        document.activeElement.removeAttribute('mdw-checked');
-      } else {
-        document.activeElement.setAttribute('mdw-checked', '');
-      }
+      /**
+       * if (document.activeElement.hasAttribute('mdw-checked')) {
+       *   document.activeElement.removeAttribute('mdw-checked');
+       * } else {
+       *   document.activeElement.setAttribute('mdw-checked', '');
+       * }
+       */
       return;
     }
     if (event.key === 'Enter') {
