@@ -23,7 +23,7 @@ function startsWithTextFilter(options) {
 }
 
 /**
- * @param {HTMLElement} item
+ * @param {Element} item
  * @return {string}
  */
 function defaultItemTextParser(item) {
@@ -94,12 +94,12 @@ function selectSibling(list, backwards) {
 }
 
 /**
- * @param {HTMLElement} listItem
+ * @param {Element} listItem
  * @return {void}
  */
 function scrollItemIntoView(listItem) {
   /**
-   * @param {HTMLElement} el
+   * @param {Element} el
    * @return {number}
    */
   function getElementVisibility(el) {
@@ -136,14 +136,14 @@ function scrollItemIntoView(listItem) {
 class SearchAdapter {
   /**
    * @param {Object} options
-   * @param {HTMLElement} options.textfield
-   * @param {HTMLElement} options.list
+   * @param {Element} options.textfield
+   * @param {Element} options.list
    * @param {('contains'|'startsWith'|function({input:string, content:string}):boolean)=} [options.textFilter='contains']
-   * @param {(function(HTMLElement):string)=} options.itemTextParser
+   * @param {(function(Element):string)=} options.itemTextParser
    * @param {boolean=} [options.dropdown=false]
    * @param {boolean=} [options.filterItems=true]
    * @param {('replace'|'append'|'none')} [options.suggestionMethod='replace']
-   * @param {(function(HTMLElement))=} options.onItemActivated
+   * @param {(function(Element))=} options.onItemActivated
    * @param {(function(string, Function, Function=))=} options.performSearch
    * @param {(function(Function, Function))=} options.updateList
    * @param {boolean=} [options.searchOnFocus=true]
@@ -392,7 +392,7 @@ class SearchAdapter {
   }
 
   /**
-   * @param {HTMLElement} item
+   * @param {Element} item
    * @return {void}
    */
   onItemSelected(item) {
@@ -418,7 +418,7 @@ class SearchAdapter {
   }
 
   /**
-   * @param {HTMLElement} item
+   * @param {Element} item
    * @return {void}
    */
   onItemActivated(item) {
