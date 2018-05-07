@@ -1,7 +1,7 @@
 import { setupMenuOptions } from '../menuoptions';
 import { List, ListItem } from '../../../components/list/index';
 import { TextField } from '../../../components/textfield/index';
-import { Search } from '../../../components/search/index';
+import { SearchAdapter } from '../../../adapters/search/index';
 
 /** @return {void} */
 function buildCustomSearch1() {
@@ -58,7 +58,7 @@ function buildCustomSearch1() {
     resolve();
   };
   
-  const searchDocsCustom = new Search({
+  const searchDocsCustom = new SearchAdapter({
     textfield,
     list,
     searchOnFocus: false,
@@ -136,7 +136,7 @@ function buildCustomSearch2() {
     });
     resolve();
   };
-  const searchDocsCustom = new Search({
+  const searchDocsCustom = new SearchAdapter({
     textfield,
     list,
     debounce: 300,
@@ -149,11 +149,11 @@ function buildCustomSearch2() {
 
 /** @return {void} */
 function setupSearches() {
-  const searchDocsSimple = new Search({
+  const searchDocsSimple = new SearchAdapter({
     textfield: document.getElementById('search-textfield-simple'),
     list: document.getElementById('search-list-simple'),
   });
-  const searchDocsMultiline = new Search({
+  const searchDocsMultiline = new SearchAdapter({
     textfield: document.getElementById('search-textfield-multiline'),
     list: document.getElementById('search-list-multiline'),
     suggestionMethod: 'none',

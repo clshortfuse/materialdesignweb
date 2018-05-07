@@ -52,6 +52,7 @@ table.mdw-table,
 }
 
 .mdw-table tr {
+  outline: none;
   border-bottom-style: solid;
   border-bottom-width: dp(1);
   font-size: sp(13);
@@ -70,6 +71,7 @@ table.mdw-table,
   //text-align: left;
   padding-top: dp(8);
   padding-bottom: dp(8);
+  outline: none;
 }
 .mdw-table th {
   white-space: nowrap;
@@ -77,23 +79,19 @@ table.mdw-table,
 .mdw-table th,
 .mdw-table td {
   text-align: center;
-  padding-right: dp(56);
+  padding-left: dp(28);
+  padding-right: dp(24);
   &:first-of-type {
     padding-left: dp(24);
-  }
-  &[data-type="checkbox"],
-  &:last-of-type {
     padding-right: dp(24);
   }
 
   html[dir=rtl] & {
-    padding-left: dp(56);
+    padding-left: dp(24);
+    padding-right: dp(28);
     &:first-of-type {
-      padding-right: dp(24);
-    }
-    &[data-type="checkbox"],
-    &:last-of-type {
       padding-left: dp(24);
+      padding-right: dp(24);
     }
   }
 

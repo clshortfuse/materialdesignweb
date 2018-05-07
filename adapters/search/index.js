@@ -1,4 +1,4 @@
-import { TextField } from '../textfield/index';
+import { TextField } from '../../components/textfield/index';
 
 /**
  * @param {Object} options
@@ -133,7 +133,7 @@ function scrollItemIntoView(listItem) {
   }
 }
 
-class Search {
+class SearchAdapter {
   /**
    * @param {Object} options
    * @param {HTMLElement} options.textfield
@@ -538,5 +538,5 @@ class Search {
 }
 
 export {
-  Search,
+  SearchAdapter,
 };

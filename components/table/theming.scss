@@ -6,7 +6,8 @@ $tableColors: (
   secondary-text-color: ((#000,              0.54), (#fff,              0.70)),
   divider-color:        ((#000,              0.12), (#fff,              0.12)),
   selected-color:       (('background', '100', 1.00), ('background', '700', 1.00)),
-  hover-color:          (('background', '200', 1.00), ('background', '600', 1.00)),
+  row-hover-color:      (('background', '200', 1.00), ('background', '600', 1.00)),
+  cell-hover-color:     (('background', '300', 1.00), ('background', '500', 1.00)),
   header-fill-text:     ((inherit                  ), (#fff,              1.00)),
   header-fill-primary:  (('primary'   ,  '50', 1.00), ('primary',    '900', 1.00)),
   header-fill-accent:   (('accent'    ,  '50', 1.00), ('accent',     '900', 1.00)),
@@ -47,8 +48,17 @@ $tableColors: (
       &[mdw-selected] {
         background-color: tableThemeValue("selected-color", $type, $theme);
       }
-      &:hover {
-        background-color: tableThemeValue("hover-color", $type, $theme);
+      &:hover,
+      &:focus {
+        background-color: tableThemeValue("row-hover-color", $type, $theme);
+      }
+    }
+  }
+  .mdw-table[mdw-cell-selection] {
+    td {
+      &:hover,
+      &:focus {
+        background-color: tableThemeValue("cell-hover-color", $type, $theme);
       }
     }
   }
