@@ -1,9 +1,9 @@
 include ../mixins.pug
 
 +header()
-  +navdrawer("table")
+  +navdrawer("datatable")
     div(display="flex" flex-direction="column").mdw-theme-toolbar.js
-      .mdw-card.mdw-table(mdw-theme-color="primary" style="margin:16px")
+      .mdw-card.mdw-datatable(mdw-theme-color="primary" style="margin:16px")
         table
           caption Standard HTML Table
           thead
@@ -107,9 +107,9 @@ include ../mixins.pug
               td 54
               td 12%
               td 6%
-      .mdw-card.mdw-table(mdw-theme-color="primary" style="margin:16px")
-        .mdw-table__header
-          .mdw-table__header-text Customized HTML Table
+      .mdw-card.mdw-datatable(mdw-theme-color="primary" style="margin:16px" mdw-cell-focusable)
+        .mdw-datatable__header
+          .mdw-datatable__header-text Customized HTML Table
         table
           thead
             tr
@@ -118,32 +118,32 @@ include ../mixins.pug
                   input.mdw-selection__input(type="checkbox")
                   .mdw-selection__icon
               th(mdw-sortable data-type="text" mdw-primary-column)
-                .mdw-table__sort-icon.material-icons arrow_downward
+                .mdw-datatable__sort-icon.material-icons arrow_downward
                 span Dessert (100g serving)
-              th(mdw-sortable data-type="number")
-                .mdw-table__sort-icon.material-icons arrow_downward
+              th(mdw-sortable data-type="number" mdw-sorted='')
+                .mdw-datatable__sort-icon.material-icons arrow_downward
                 span.mdw-tooltip__wrapper
                   span.mdw-tooltip__target Calories
                   .mdw-tooltip The total amount of food energy in the given serving size.
               th(mdw-sortable data-type="number")
-                .mdw-table__sort-icon.material-icons arrow_downward
+                .mdw-datatable__sort-icon.material-icons arrow_downward
                 span Fat (g)
               th(mdw-sortable data-type="number")
-                .mdw-table__sort-icon.material-icons arrow_downward
+                .mdw-datatable__sort-icon.material-icons arrow_downward
                 span Carbs (g)
               th(mdw-sortable data-type="number")
-                .mdw-table__sort-icon.material-icons arrow_downward
+                .mdw-datatable__sort-icon.material-icons arrow_downward
                 span Protein (g)
               th(mdw-sortable data-type="number")
-                .mdw-table__sort-icon.material-icons arrow_downward
+                .mdw-datatable__sort-icon.material-icons arrow_downward
                 span Sodium (mg)
               th(mdw-sortable data-type="number")
-                .mdw-table__sort-icon.material-icons arrow_downward
+                .mdw-datatable__sort-icon.material-icons arrow_downward
                 span.mdw-tooltip__wrapper
                   span.mdw-tooltip__target Calcium (%)
                   .mdw-tooltip The amount of calcium as a percentage of the recommended daily amount.
               th(mdw-sortable data-type="number")
-                .mdw-table__sort-icon.material-icons arrow_downward
+                .mdw-datatable__sort-icon.material-icons arrow_downward
                 span Iron (%)
           tbody
             tr
@@ -276,8 +276,8 @@ include ../mixins.pug
               td(data-type="number") 54
               td(data-type="number") 12%
               td(data-type="number") 6%
-        .mdw-table__footer
-          .mdw-table__footer-options
+        .mdw-datatable__footer
+          .mdw-datatable__footer-options
               span Rows per page
               label.mdw-textfield(mdw-solo)
                 select.mdw-textfield__input
@@ -286,17 +286,17 @@ include ../mixins.pug
                   option(value="50") 50
                   option(value="100") 100
                 .mdw-textfield__dropdown-button
-          .mdw-table__footer-details 1-10 of 10
-          .mdw-table__footer-controls
-            .mdw-button.material-icons(mdw-icon disabled) chevron_left
-            .mdw-button.material-icons(mdw-icon disabled) chevron_right
-      .mdw-card.mdw-table#dynamic-table(mdw-theme-color="primary" 
+          .mdw-datatable__footer-details 1-10 of 10
+          .mdw-datatable__footer-controls
+            button.mdw-button.material-icons(mdw-icon disabled) chevron_left
+            button.mdw-button.material-icons(mdw-icon disabled) chevron_right
+      .mdw-card.mdw-datatable#dynamic-table(mdw-theme-color="primary" mdw-row-focusable
       style="margin:16px;max-height:800px;overflow-y:auto")
-        .mdw-table__header
-          .mdw-table__header-text Dynamic Table
-          .mdw-table__header-controls
+        .mdw-datatable__header
+          .mdw-datatable__header-text Dynamic Table
+          .mdw-datatable__header-controls
             .mdw-menu__wrapper
-              .mdw-button.material-icons(mdw-icon mdw-inactive mdw-theme-color="primary") filter_list
+              button.mdw-button.material-icons(mdw-icon mdw-inactive mdw-theme-color="primary") filter_list
               .mdw-menu(mdw-position="end")
                 .mdw-menu__popup
                   .mdw-menu__item(mdw-checked)
@@ -312,7 +312,7 @@ include ../mixins.pug
                     .mdw-menu__check
                     .mdw-menu__text bool is checked
             .mdw-menu__wrapper
-              .mdw-button.material-icons(mdw-icon) more_vert
+              button.mdw-button.material-icons(mdw-icon) more_vert
               .mdw-menu(mdw-position="end")
                 .mdw-menu__popup
                   .mdw-menu__item(mdw-checked)
@@ -321,4 +321,4 @@ include ../mixins.pug
                   .mdw-menu__item(mdw-checked)
                     .mdw-menu__check
                     .mdw-menu__text Paginate
-  script(src='table.min.js')
+  script(src='datatable.min.js')

@@ -1,0 +1,117 @@
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
+
+$datatableColors: (
+  text-color:           ((#000,              0.87), (#fff,              1.00)),
+  secondary-text-color: ((#000,              0.54), (#fff,              0.70)),
+  divider-color:        ((#000,              0.12), (#fff,              0.12)),
+  selected-color:       (('background', '100', 1.00), ('background', '700', 1.00)),
+  row-hover-color:      (('background', '200', 1.00), ('background', '600', 1.00)),
+  header-fill-text:     ((inherit                  ), (#fff,              1.00)),
+  header-fill-primary:  (('primary'   ,  '50', 1.00), ('primary',    '900', 1.00)),
+  header-fill-accent:   (('accent'    ,  '50', 1.00), ('accent',     '900', 1.00)),
+  header-fill-warn:     (('warn'      ,  '50', 1.00), ('warn',       '900', 1.00)),
+  focus-primary:        (('primary'   , '100', 1.00), ('primary',    '800', 1.00)),
+  focus-accent:         (('accent'    , '100', 1.00), ('accent',     '800', 1.00)),
+  focus-warn:           (('warn'      , '100', 1.00), ('warn',       '800', 1.00)),
+);
+
+@function datatableThemeValue($key, $type, $theme) {
+  @return themeValue('datatable', $datatableColors, $key, $type, $theme);
+}
+
+@mixin datatableThemeVariables($color, $lightness) {
+  @include themeVariables('datatable', $datatableColors, $color, $lightness);
+}
+
+// Vary by contrast or theme
+@mixin datatableContrastRules($type: 'var', $theme: null) {
+  .mdw-datatable tr {
+    border-color: datatableThemeValue("divider-color", $type, $theme);
+  }
+
+  .mdw-datatable caption,
+  .mdw-datatable__header-text {
+    color: datatableThemeValue("text-color", $type, $theme);
+  }
+  
+  .mdw-datatable__header-icons {
+    color: datatableThemeValue("text-color", $type, $theme);
+  }
+  .mdw-datatable th:not([mdw-selector]),
+  .mdw-datatable__footer {
+    color: datatableThemeValue("secondary-text-color", $type, $theme);
+  }
+  .mdw-datatable td:not([data-type="checkbox"]) {
+    color: datatableThemeValue("text-color", $type, $theme);
+  }
+  .mdw-datatable tbody {
+    > tr {
+      &[mdw-selected] {
+        background-color: datatableThemeValue("selected-color", $type, $theme);
+      }
+      &:hover {
+        background-color: datatableThemeValue("row-hover-color", $type, $theme);
+      }
+    }
+  }
+  .mdw-datatable[mdw-has-selection] {
+    caption,
+    .mdw-datatable__header-text {
+      color: datatableThemeValue("header-fill-text", $type, $theme);
+    }
+  }
+  .mdw-datatable th[mdw-sorted] {
+    color: datatableThemeValue("text-color", $type, $theme);
+  }
+}
+
+// Varies by contrast and theme
+@mixin datatableContrastAndThemeRules($type: 'var', $theme: null) {
+  .mdw-datatable {
+    &[mdw-theme-color="primary"],
+    &[mdw-theme-color|="primary"] {
+      tr:focus,
+      td:focus {
+        background-color: datatableThemeValue("focus-primary", $type, $theme);
+      }
+    }
+    &[mdw-theme-color="accent"],
+    &[mdw-theme-color|="accent"] {
+      tr:focus,
+      td:focus {
+        background-color: datatableThemeValue("focus-accent", $type, $theme);
+      }
+    }
+    &[mdw-theme-color="warn"],
+    &[mdw-theme-color|="warn"] {
+      tr:focus,
+      td:focus {
+        background-color: datatableThemeValue("focus-warn", $type, $theme);
+      }
+    }
+  }
+  .mdw-datatable[mdw-has-selection] {
+    &[mdw-theme-color="primary"],
+    &[mdw-theme-color|="primary"] {
+      .mdw-datatable__header,
+      caption {
+        background-color: datatableThemeValue("header-fill-primary", $type, $theme);
+      }
+    }
+    &[mdw-theme-color="accent"],
+    &[mdw-theme-color|="accent"] {
+      .mdw-datatable__header,
+      caption {
+        background-color: datatableThemeValue("header-fill-accent", $type, $theme);
+      }
+    }
+    &[mdw-theme-color="warn"],
+    &[mdw-theme-color|="warn"] {
+      .mdw-datatable__header,
+      caption {
+        background-color: datatableThemeValue("header-fill-warn", $type, $theme);
+      }
+    }
+  }
+}

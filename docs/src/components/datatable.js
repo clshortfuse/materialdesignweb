@@ -1,5 +1,5 @@
 import { Button } from '../../../components/button/index';
-import { Table } from '../../../components/table/index';
+import { DataTable } from '../../../components/datatable/index';
 import { Menu } from '../../../components/menu/index';
 import { setupMenuOptions } from '../menuoptions';
 import { DataTableAdapter } from '../../../adapters/datatable/index';
@@ -7,15 +7,15 @@ import { DataTableAdapter } from '../../../adapters/datatable/index';
 /** @return {void} */
 function initializeMdwComponents() {
   let components;
-  components = document.querySelectorAll('.js .mdw-table');
+  components = document.querySelectorAll('.mdw-datatable');
   for (let i = 0; i < components.length; i += 1) {
-    Table.attach(components.item(i));
+    DataTable.attach(components.item(i));
   }
-  components = document.querySelectorAll('.js .mdw-button');
+  components = document.querySelectorAll('.mdw-button');
   for (let i = 0; i < components.length; i += 1) {
     Button.attach(components.item(i));
   }
-  components = document.querySelectorAll('.js .mdw-menu');
+  components = document.querySelectorAll('.mdw-menu');
   for (let i = 0; i < components.length; i += 1) {
     Menu.attach(components.item(i));
   }
@@ -84,10 +84,10 @@ function buildDynamicTable() {
   dynamicTableAdapter.setUseLazyRendering(true);
   dynamicTableAdapter.setPagination();
   dynamicTableAdapter.refresh();
-  const buttons = dynamicTableAdapter.element.querySelectorAll('.mdw-table__header-controls .mdw-button');
+  const buttons = dynamicTableAdapter.element.querySelectorAll('.mdw-datatable__header-controls .mdw-button');
   const filterButton = buttons[0];
   const optionsButton = buttons[1];
-  const menus = dynamicTableAdapter.element.querySelectorAll('.mdw-table__header-controls .mdw-menu');
+  const menus = dynamicTableAdapter.element.querySelectorAll('.mdw-datatable__header-controls .mdw-menu');
   const filterMenu = menus[0];
   const optionsMenu = menus[1];
 

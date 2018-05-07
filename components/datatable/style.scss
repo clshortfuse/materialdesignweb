@@ -2,20 +2,20 @@
 // https://material.io/guidelines/patterns/selection.html#selection-item-selection
 
 
-table.mdw-table,
-.mdw-table table {
+table.mdw-datatable,
+.mdw-datatable table {
   display: table;
   border-collapse: collapse;
   width: 100%;
 }
 
-.mdw-table caption,
-.mdw-table__header {
+.mdw-datatable caption,
+.mdw-datatable__header {
   font-size: sp(20);
   font-weight: $font-weight-regular;
 }
 
-.mdw-table caption {
+.mdw-datatable caption {
   caption-side: top;
   line-height: dp(64);
   text-align: left;
@@ -27,22 +27,22 @@ table.mdw-table,
   padding: 0 dp(24);
 }
 
-.mdw-table__header {
+.mdw-datatable__header {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-.mdw-table__header-text,
-.mdw-table__header-actions {
+.mdw-datatable__header-text,
+.mdw-datatable__header-actions {
   flex-grow: 1;
 }
-.mdw-table__header-text,
-.mdw-table__header-actions,
-.mdw-table__header-controls {
+.mdw-datatable__header-text,
+.mdw-datatable__header-actions,
+.mdw-datatable__header-controls {
   display: flex;
 }
 
-.mdw-table__header-text {
+.mdw-datatable__header-text {
   padding-left: dp(24);
   padding-right: 0;
   html[dir=rtl] & {
@@ -51,7 +51,7 @@ table.mdw-table,
   }
 }
 
-.mdw-table tr {
+.mdw-datatable tr {
   outline: none;
   border-bottom-style: solid;
   border-bottom-width: dp(1);
@@ -60,24 +60,24 @@ table.mdw-table,
   height: dp(48);
 }
 
-.mdw-table thead > tr {
+.mdw-datatable thead > tr {
   font-size: sp(12);
   font-weight: $font-weight-medium;
   height: dp(56);
 }
 
 
-.mdw-table td {
+.mdw-datatable td {
   //text-align: left;
   padding-top: dp(8);
   padding-bottom: dp(8);
   outline: none;
 }
-.mdw-table th {
+.mdw-datatable th {
   white-space: nowrap;
 }
-.mdw-table th,
-.mdw-table td {
+.mdw-datatable th,
+.mdw-datatable td {
   text-align: center;
   padding-left: dp(28);
   padding-right: dp(24);
@@ -101,15 +101,15 @@ table.mdw-table,
   }
 }
 
-.mdw-table td[mdw-primary-column],
-.mdw-table th[mdw-primary-column] {
+.mdw-datatable td[mdw-primary-column],
+.mdw-datatable th[mdw-primary-column] {
   width: 100%;
   padding-right: dp(24);
 }
 
-.mdw-table__sort-icon {
+.mdw-datatable__sort-icon {
   display: inline-block;
-  transform: translateX(-16px);
+  transform: translateX(-16px) rotate(180deg);
   transform-origin: 8px 8px;
   transition-property: transform;
   vertical-align: bottom;
@@ -128,7 +128,7 @@ table.mdw-table,
   }
 }
 
-.mdw-table th[mdw-sortable] {
+.mdw-datatable th[mdw-sortable] {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
@@ -137,21 +137,22 @@ table.mdw-table,
   -webkit-user-select: none;
   &:hover,
   &[mdw-sorted] {
-    .mdw-table__sort-icon {
+    .mdw-datatable__sort-icon {
       color: inherit;
+      transform: translateX(-16px) rotate(180deg);
     }
   }
-  &[mdw-sorted=reverse] {
-    .mdw-table__sort-icon {
-      transform: translateX(-16px) rotate(180deg);
+  &[mdw-sorted=desc] {
+    .mdw-datatable__sort-icon {
+      transform: translateX(-16px) rotate(0deg);
     }
   }
 }
 
 
 
-.mdw-table th[data-type="text"],
-.mdw-table td[data-type="text"] {
+.mdw-datatable th[data-type="text"],
+.mdw-datatable td[data-type="text"] {
   text-align: left;
   text-align: start;
   html[dir=rtl] & {
@@ -160,8 +161,8 @@ table.mdw-table,
   }
 }
 
-.mdw-table th[data-type="number"],
-.mdw-table td[data-type="number"] {
+.mdw-datatable th[data-type="number"],
+.mdw-datatable td[data-type="number"] {
   text-align: right;
   text-align: end;
   html[dir=rtl] & {
@@ -170,7 +171,7 @@ table.mdw-table,
   }
 }
 
-.mdw-table__footer {
+.mdw-datatable__footer {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -179,8 +180,8 @@ table.mdw-table,
   font-weight: $font-weight-regular;
 }
 
-.mdw-table__header,
-.mdw-table__footer {
+.mdw-datatable__header,
+.mdw-datatable__footer {
   min-height: 64px;
   @include IEOnly() {
     // Fix IE min-height flexbug
@@ -192,8 +193,8 @@ table.mdw-table,
   }
 }
 
-.mdw-table__footer-options,
-.mdw-table__footer-details {
+.mdw-datatable__footer-options,
+.mdw-datatable__footer-details {
   margin-left: dp(18);
   margin-right: dp(14);
   html[dir=rtl] & {
@@ -202,8 +203,8 @@ table.mdw-table,
   }
 }
 
-.mdw-table__header-controls,
-.mdw-table__footer-controls {
+.mdw-datatable__header-controls,
+.mdw-datatable__footer-controls {
   display: inline-flex;
   margin-left: dp(2);
   margin-right: dp(2);
@@ -212,14 +213,14 @@ table.mdw-table,
   }
 }
 
-.mdw-table__footer-controls {
+.mdw-datatable__footer-controls {
   direction: ltr;
   html[dir=rtl] & {
     transform: scaleX(-1);
   }
 }
 
-.mdw-table__footer-options {
+.mdw-datatable__footer-options {
   display: flex;
   align-items: center;
   

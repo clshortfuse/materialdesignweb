@@ -4,13 +4,13 @@
 @import '../bottomnav/theming.scss';
 @import '../button/theming.scss';
 @import '../card/theming.scss';
+@import '../datatable/theming.scss';
 @import '../dialog/theming.scss';
 @import '../list/theming.scss';
 @import '../menu/theming.scss';
 @import '../navdrawer/theming.scss';
 @import '../selection/theming.scss';
 @import '../tab/theming.scss';
-@import '../table/theming.scss';
 @import '../textfield/theming.scss';
 @import '../toolbar/theming.scss';
 @import '../type/theming.scss';
@@ -20,7 +20,7 @@ $added-palettes-list: ();
 
 
 @mixin buildMDWThemes($config-map: ()) {
-  $theme-components: ('bottomnav', 'button', 'card', 'dialog', 'list', 'menu', 'navdrawer', 'selection', 'tab', 'table', 'textfield', 'toolbar');
+  $theme-components: ('bottomnav', 'button', 'card', 'datatable', 'dialog', 'list', 'menu', 'navdrawer', 'selection', 'tab', 'textfield', 'toolbar');
   $themes: (
     "default": ('indigo', 'pink', 'red'),
   );
@@ -65,6 +65,9 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'card')) {
     @include cardThemeVariables($color, 'light');
   }
+  @if (index($mdw-theme__components, 'datatable')) {
+    @include datatableThemeVariables($color, 'light');
+  }
   @if (index($mdw-theme__components, 'dialog')) {
     @include dialogThemeVariables($color, 'light');
   }
@@ -82,9 +85,6 @@ $added-palettes-list: ();
   }
   @if (index($mdw-theme__components, 'tab')) {
     @include tabThemeVariables($color, 'light');
-  }
-  @if (index($mdw-theme__components, 'table')) {
-    @include tableThemeVariables($color, 'light');
   }
   @if (index($mdw-theme__components, 'textfield')) {
     @include textfieldThemeVariables($color, 'light');
@@ -107,6 +107,9 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'card')) {
     @include cardThemeVariables($color, 'dark');
   }
+  @if (index($mdw-theme__components, 'datatable')) {
+    @include datatableThemeVariables($color, 'dark');
+  }
   @if (index($mdw-theme__components, 'dialog')) {
     @include dialogThemeVariables($color, 'dark');
   }
@@ -125,9 +128,6 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'tab')) {
     @include tabThemeVariables($color, 'dark');
   }
-  @if (index($mdw-theme__components, 'table')) {
-    @include tableThemeVariables($color, 'dark');
-  }
   @if (index($mdw-theme__components, 'textfield')) {
     @include textfieldThemeVariables($color, 'dark');
   }
@@ -140,11 +140,11 @@ $added-palettes-list: ();
 }
 
 @mixin componentContrastAndThemeRules($type: 'var', $theme: null) {
+  @if (index($mdw-theme__components, 'datatable')) {
+    @include datatableContrastAndThemeRules($type, $theme);
+  }
   @if (index($mdw-theme__components, 'textfield')) {
     @include textfieldContrastAndThemeRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'table')) {
-    @include tableContrastAndThemeRules($type, $theme);
   }
 }
 
@@ -157,6 +157,9 @@ $added-palettes-list: ();
   }
   @if (index($mdw-theme__components, 'card')) {
     @include cardContrastRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'datatable')) {
+    @include datatableContrastRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'dialog')) {
     @include dialogContrastRules($type, $theme);
@@ -175,9 +178,6 @@ $added-palettes-list: ();
   }
   @if (index($mdw-theme__components, 'tab')) {
     @include tabContrastRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'table')) {
-    @include tableContrastRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'textfield')) {
     @include textfieldContrastRules($type, $theme);

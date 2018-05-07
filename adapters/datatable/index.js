@@ -1,5 +1,5 @@
 import { Button } from '../../components/button/index';
-import { Table } from '../../components/table/index';
+import { DataTable } from '../../components/datatable/index';
 
 /** @return {HTMLLabelElement} */
 function constructTableCheckbox() {
@@ -46,7 +46,7 @@ class TableColumn {
       let sortIcon = options.customSortIcon;
       if (!sortIcon) {
         sortIcon = document.createElement('div');
-        sortIcon.classList.add('mdw-table__sort-icon', 'material-icons');
+        sortIcon.classList.add('mdw-datatable__sort-icon', 'material-icons');
         sortIcon.textContent = 'arrow_downward';
       }
       if (this.element.hasChildNodes()) {
@@ -194,6 +194,8 @@ class DataTableAdapter {
       // Use one event listener to reduce overhead and allow dynamic content
       this.handleClickInteraction(event);
     });
+    DataTable.attach(element);
+    element.setAttribute('mdw-adapter', '');
     /** @type {TableColumn[]} */
     this.columns = [];
     this.page = 0;
@@ -204,6 +206,7 @@ class DataTableAdapter {
   }
 
   detach() {
+    this.element.removeAttribute('mdw-adapter');
     this.element = null;
   }
 
@@ -608,10 +611,10 @@ class DataTableAdapter {
       return;
     }
     footer.style.display = '';
-    let optionsElement = footer.getElementsByClassName('mdw-table__footer-options')[0];
+    let optionsElement = footer.getElementsByClassName('mdw-datatable__footer-options')[0];
     if (!optionsElement) {
       optionsElement = document.createElement('div');
-      optionsElement.classList.add('mdw-table__footer-options');
+      optionsElement.classList.add('mdw-datatable__footer-options');
       const rowsPerPageText = document.createElement('span');
       rowsPerPageText.textContent = 'Rows per page';
       const limits = options.limits || [10, 25, 50, 100];
@@ -642,32 +645,32 @@ class DataTableAdapter {
       });
     }
     if (!this.paginationDetailsElement) {
-      this.paginationDetailsElement = footer.getElementsByClassName('mdw-table__footer-details')[0];
+      this.paginationDetailsElement = footer.getElementsByClassName('mdw-datatable__footer-details')[0];
     }
     if (!this.paginationDetailsElement) {
       this.paginationDetailsElement = document.createElement('div');
-      this.paginationDetailsElement.classList.add('mdw-table__footer-details');
+      this.paginationDetailsElement.classList.add('mdw-datatable__footer-details');
       footer.appendChild(this.paginationDetailsElement);
     }
     if (!this.paginationControls) {
-      this.paginationControls = footer.getElementsByClassName('mdw-table__footer-controls')[0];
+      this.paginationControls = footer.getElementsByClassName('mdw-datatable__footer-controls')[0];
     }
     if (!this.paginationControls) {
       this.paginationControls = document.createElement('div');
-      this.paginationControls.classList.add('mdw-table__footer-controls');
+      this.paginationControls.classList.add('mdw-datatable__footer-controls');
       footer.appendChild(this.paginationControls);
     }
     if (!this.previousPageButton || !this.nextPageButton) {
       const buttons = this.paginationControls.getElementsByClassName('mdw-button');
       if (buttons.length !== 2) {
-        this.previousPageButton = document.createElement('div');
+        this.previousPageButton = document.createElement('button');
         this.previousPageButton.classList.add('mdw-button', 'material-icons');
         this.previousPageButton.setAttribute('mdw-icon', '');
         this.previousPageButton.textContent = 'chevron_left';
         this.paginationControls.appendChild(this.previousPageButton);
         Button.attach(this.previousPageButton);
 
-        this.nextPageButton = document.createElement('div');
+        this.nextPageButton = document.createElement('button');
         this.nextPageButton.classList.add('mdw-button', 'material-icons');
         this.nextPageButton.setAttribute('mdw-icon', '');
         this.nextPageButton.textContent = 'chevron_right';
@@ -707,10 +710,10 @@ class DataTableAdapter {
    * @return {HTMLElement}
    */
   getFooter(create) {
-    let footer = this.element.getElementsByClassName('mdw-table__footer')[0];
+    let footer = this.element.getElementsByClassName('mdw-datatable__footer')[0];
     if (!footer && create) {
       footer = document.createElement('div');
-      footer.classList.add('mdw-table__footer');
+      footer.classList.add('mdw-datatable__footer');
       this.element.appendChild(footer);
     }
     return footer;
@@ -864,7 +867,7 @@ class DataTableAdapter {
       const fragment = document.createDocumentFragment();
       for (let i = 0; i < rowDifference; i += 1) {
         const row = document.createElement('tr');
-        // row.setAttribute('tabindex', '-1');
+        row.setAttribute('tabindex', '-1');
         newRows.push(row);
         fragment.appendChild(row);
       }
@@ -997,8 +1000,7 @@ class DataTableAdapter {
     let table = this.element.getElementsByTagName('table')[0];
     if (!table) {
       table = document.createElement('table');
-      Table.attach(table);
-      const footer = this.element.getElementsByClassName('mdw-table__footer')[0];
+      const footer = this.element.getElementsByClassName('mdw-datatable__footer')[0];
       if (footer) {
         this.element.insertBefore(table, footer);
       } else {
