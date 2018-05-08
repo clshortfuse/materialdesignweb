@@ -391,8 +391,6 @@ class Dialog {
     }
     if (options.parent) {
       options.parent.appendChild(element);
-    } else {
-      document.body.appendChild(element);
     }
     Dialog.attach(element);
     return element;
