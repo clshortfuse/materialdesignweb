@@ -197,6 +197,16 @@ class DataTableAdapter {
       // Use one event listener to reduce overhead and allow dynamic content
       this.handleClickInteraction(event);
     });
+    /** @type {HTMLTableRowElement} */
+    this.tabindexRow = null;
+    /** @type {Object} */
+    this.tabindexRowData = null;
+    this.element.addEventListener('mdw:tabindexchanged', (event) => {
+      if (this.element.hasAttribute('mdw-row-focusable')) {
+        this.tabindexRow = event.target;
+        this.tabindexRowData = this.getDataForTableRow(this.tabindexRow);
+      }
+    });
     DataTable.attach(this.element);
     this.element.setAttribute('mdw-adapter', '');
     /** @type {TableColumn[]} */
@@ -798,7 +808,9 @@ class DataTableAdapter {
       const fragment = document.createDocumentFragment();
       for (let i = 0; i < rowDifference; i += 1) {
         const row = document.createElement('tr');
-        row.setAttribute('tabindex', '-1');
+        if (this.element.hasAttribute('mdw-row-focusable')) {
+          row.setAttribute('tabindex', '-1');
+        }
         newRows.push(row);
         fragment.appendChild(row);
       }
@@ -824,6 +836,21 @@ class DataTableAdapter {
       const len = tbody.rows.length;
       for (let i = 0; i < len; i += 1) {
         this.refreshRow(i);
+      }
+    }
+    if (this.tabindexRowData) {
+      const row = this.getTableRowForData(this.tabindexRowData);
+      if (row !== this.tabindexRow) {
+        if (this.tabindexRow) {
+          this.tabindexRow.setAttribute('tabindex', '-1');
+        }
+        if (row) {
+          row.setAttribute('tabindex', '0');
+        }
+        if (document.activeElement === this.tabindexRow) {
+          row.focus();
+        }
+        this.tabindexRow = row;
       }
     }
   }
