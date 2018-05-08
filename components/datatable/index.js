@@ -56,8 +56,10 @@ class DataTable {
     }
     if (rowFocusable && !foundTabbableRow && firstRow) {
       firstRow.setAttribute('tabindex', '0');
+      DataTable.dispatchEvent(firstRow, 'mdw:tabindexchanged');
     } else if (cellFocusable && !foundTabbableCell && firstCell) {
       firstCell.setAttribute('tabindex', '0');
+      DataTable.dispatchEvent(firstCell, 'mdw:tabindexchanged');
     }
   }
 
@@ -75,8 +77,10 @@ class DataTable {
         }
         if (cellFocusable) {
           target.setAttribute('tabindex', '0');
+          DataTable.dispatchEvent(target, 'mdw:tabindexchanged');
         } else {
           target.parentElement.setAttribute('tabindex', '0');
+          DataTable.dispatchEvent(target.parentElement, 'mdw:tabindexchanged');
         }
       }
       return;
@@ -194,6 +198,17 @@ class DataTable {
     event.stopPropagation();
   }
 
+  /**
+   * @param {Element} element
+   * @param {string} type
+   * @return {void}
+   */
+  static dispatchEvent(element, type) {
+    const event = document.createEvent('Event');
+    event.initEvent(type, true, true);
+    element.dispatchEvent(event);
+  }
+
   static onTableBodyKeyDown(event) {
     const currentSelection = document.activeElement;
     let cellIndex = 0;
@@ -224,10 +239,13 @@ class DataTable {
       if (isRow) {
         newRow.focus();
         newRow.setAttribute('tabindex', '0');
+        DataTable.dispatchEvent(newRow, 'mdw:tabindexchanged');
       } else {
         newRow.cells.item(cellIndex).focus();
         newRow.cells.item(cellIndex).setAttribute('tabindex', '0');
+        DataTable.dispatchEvent(newRow.cells.item(cellIndex), 'mdw:tabindexchanged');
       }
+      
       return;
     }
     if (event.key === 'ArrowDown' || (event.key === 'Down')) {
@@ -242,9 +260,11 @@ class DataTable {
       if (isRow) {
         newRow.focus();
         newRow.setAttribute('tabindex', '0');
+        DataTable.dispatchEvent(newRow, 'mdw:tabindexchanged');
       } else {
         newRow.cells.item(cellIndex).focus();
         newRow.cells.item(cellIndex).setAttribute('tabindex', '0');
+        DataTable.dispatchEvent(newRow.cells.item(cellIndex), 'mdw:tabindexchanged');
       }
       return;
     }
@@ -259,9 +279,11 @@ class DataTable {
       if (isRow) {
         newRow.focus();
         newRow.setAttribute('tabindex', '0');
+        DataTable.dispatchEvent(newRow, 'mdw:tabindexchanged');
       } else {
         newRow.cells.item(0).focus();
         newRow.cells.item(0).setAttribute('tabindex', '0');
+        DataTable.dispatchEvent(newRow.cells.item(0), 'mdw:tabindexchanged');
       }
       return;
     }
@@ -281,9 +303,11 @@ class DataTable {
       if (isRow) {
         newRow.focus();
         newRow.setAttribute('tabindex', '0');
+        DataTable.dispatchEvent(newRow, 'mdw:tabindexchanged');
       } else {
         newRow.cells.item(newCellIndex).focus();
         newRow.cells.item(newCellIndex).setAttribute('tabindex', '0');
+        DataTable.dispatchEvent(newRow.cells.item(newCellIndex), 'mdw:tabindexchanged');
       }
       return;
     }
@@ -301,6 +325,7 @@ class DataTable {
       currentSelection.setAttribute('tabindex', '-1');
       newCell.focus();
       newCell.setAttribute('tabindex', '0');
+      DataTable.dispatchEvent(newCell, 'mdw:tabindexchanged');
       return;
     }
     if (event.key === 'End') {
@@ -317,6 +342,7 @@ class DataTable {
       currentSelection.setAttribute('tabindex', '-1');
       newCell.focus();
       newCell.setAttribute('tabindex', '0');
+      DataTable.dispatchEvent(newCell, 'mdw:tabindexchanged');
       return;
     }
     const isRtlEnabled = isRtl();
@@ -350,6 +376,7 @@ class DataTable {
       currentSelection.setAttribute('tabindex', '-1');
       newCell.focus();
       newCell.setAttribute('tabindex', '0');
+      DataTable.dispatchEvent(newCell, 'mdw:tabindexchanged');
       return;
     }
     if (isRight) {
@@ -366,6 +393,7 @@ class DataTable {
       currentSelection.setAttribute('tabindex', '-1');
       newCell.focus();
       newCell.setAttribute('tabindex', '0');
+      DataTable.dispatchEvent(newCell, 'mdw:tabindexchanged');
     }
   }
 
