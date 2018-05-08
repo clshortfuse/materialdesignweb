@@ -64,21 +64,33 @@ class DataTable {
   }
 
   static onTableBodyClick(event) {
-    /** @type {Element} */
-    const mdwDataTable = findElementParentByClassName(event.currentTarget, 'mdw-datatable');
+    const tbody = event.currentTarget;
+    const mdwDataTable = findElementParentByClassName(tbody, 'mdw-datatable');
     const { target } = event;
     if (target instanceof HTMLTableCellElement) {
       const cellFocusable = mdwDataTable.hasAttribute('mdw-cell-focusable');
       const rowFocusable = mdwDataTable.hasAttribute('mdw-row-focusable');
-      if (cellFocusable || rowFocusable) {
-        const otherTabIndexes = event.currentTarget.querySelectorAll('[tabindex="0"]');
+      if (cellFocusable) {
+        const otherTabIndexes = tbody.querySelectorAll('[tabindex="0"]');
         for (let i = 0; i < otherTabIndexes.length; i += 1) {
-          otherTabIndexes.item(i).setAttribute('tabindex', '-1');
+          const otherTabIndexItem = otherTabIndexes.item(i);
+          if (otherTabIndexItem !== target) {
+            otherTabIndexItem.setAttribute('tabindex', '-1');
+          }
         }
-        if (cellFocusable) {
+        if (target.getAttribute('tabindex') !== '0') {
           target.setAttribute('tabindex', '0');
           DataTable.dispatchEvent(target, 'mdw:tabindexchanged');
-        } else {
+        }
+      } else if (rowFocusable) {
+        const otherTabIndexes = tbody.querySelectorAll('[tabindex="0"]');
+        for (let i = 0; i < otherTabIndexes.length; i += 1) {
+          const otherTabIndexItem = otherTabIndexes.item(i);
+          if (otherTabIndexItem !== target.parentElement) {
+            otherTabIndexItem.setAttribute('tabindex', '-1');
+          }
+        }
+        if (target.parentElement.getAttribute('tabindex') !== '0') {
           target.parentElement.setAttribute('tabindex', '0');
           DataTable.dispatchEvent(target.parentElement, 'mdw:tabindexchanged');
         }
