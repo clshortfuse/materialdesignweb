@@ -6,6 +6,7 @@
 @import '../common/variables.scss';
 
 $navdrawer__min-width: dp(256) !default;
+$navdrawer__min-width__mini: dp(56) !default;
 
 .mdw-navdrawer {
   height: 100%;
@@ -400,6 +401,7 @@ $navdrawer__min-width: dp(256) !default;
 }
 
 .mdw-navdrawer[mdw-mini] {
+  
   .mdw-navdrawer__avatars {
     grid-column-end: span 1;
     -ms-grid-column-span: 1;
@@ -409,6 +411,7 @@ $navdrawer__min-width: dp(256) !default;
     display: flex;
   }
   &:not([mdw-show]):not(:target) {
+    grid-template-columns: minmax($navdrawer__min-width__mini, auto) dp(16) 1fr;
     > .mdw-navdrawer__close {
       display: none;
     }
@@ -461,6 +464,12 @@ $navdrawer__min-width: dp(256) !default;
       z-index: auto;
       > .mdw-list ~ .mdw-list {
         display: none;
+      }
+      @include IEOnly() {
+        // Fix IE min-height flexbug
+        &::after {
+          min-width: $navdrawer__min-width__mini;
+        }
       }
     }
     .mdw-navdrawer__account {
