@@ -1,7 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const cssnano = require('cssnano');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
@@ -9,7 +7,6 @@ const isProduction = (process.env.NODE_ENV === 'production');
 
 /** @return {Object} */
 function getComponentsConfig() {
-  const extractStyles = new MiniCssExtractPlugin({ filename: '[name].min.css' });
   const DEST = (isProduction ? 'dist' : 'test/dist');
   return {
     entry: {
@@ -39,19 +36,12 @@ function getComponentsConfig() {
       }, {
         test: /\.scss$/,
         use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader',
-            options: {
-              import: false,
-              sourceMap: !isProduction,
-              // minimize: true,
-            },
-          },
+          'file-loader?name=[name].min.css',
+          'extract-loader',
+          'css-loader?import=false',
           {
             loader: 'postcss-loader',
             options: {
-              sourceMap: !isProduction,
               plugins: () => [
                 cssnano({
                   preset: 'default',
@@ -63,18 +53,13 @@ function getComponentsConfig() {
                 }),
               ],
             },
-          }, {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: !isProduction,
-            },
           },
+          'sass-loader',
         ],
       }],
     },
     plugins: [
-      extractStyles,
-      new UglifyJSPlugin({ sourceMap: true }),
+      new UglifyJSPlugin(),
     ],
   };
 }
@@ -82,8 +67,6 @@ function getComponentsConfig() {
 /** @return {Object} */
 function getDocsConfig() {
   const plugins = [];
-  const extractStyles = new MiniCssExtractPlugin({ filename: '[name].min.css' });
-  plugins.push(extractStyles);
   if (isProduction) {
     plugins.push(new UglifyJSPlugin({ sourceMap: true }));
   }
@@ -103,19 +86,6 @@ function getDocsConfig() {
       }
       entries[`${noExt}`].push(`./docs/src/components/${filename}`);
     });
-
-  Object.keys(entries).forEach((key) => {
-    const pugFile = entries[key].find(filename => filename.substr(-4) === '.pug');
-    if (!pugFile) {
-      return;
-    }
-    const extractHtml = new HtmlWebpackPlugin({
-      filename: `${key}.html`,
-      template: pugFile,
-      chunks: [key],
-    });
-    plugins.push(extractHtml);
-  });
 
   const DEST = (isProduction ? 'docs' : 'test/docs');
   return {
@@ -144,18 +114,12 @@ function getDocsConfig() {
       }, {
         test: /\.scss$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          'file-loader?name=[name].min.css',
+          'extract-loader',
+          'css-loader?import=false',
           {
-            loader: 'css-loader',
-            options: {
-              import: false,
-              sourceMap: !isProduction,
-              // minimize: true,
-            },
-          }, {
             loader: 'postcss-loader',
             options: {
-              sourceMap: !isProduction,
               plugins: () => [
                 cssnano({
                   preset: 'default',
@@ -167,20 +131,16 @@ function getDocsConfig() {
                 }),
               ],
             },
-          }, {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: !isProduction,
-            },
           },
+          'sass-loader',
         ],
       }, {
         test: /\.pug$/,
         use: [
-          {
-            loader: 'pug-loader',
-            options: { pretty: true },
-          },
+          'file-loader?name=[name].html',
+          'extract-loader',
+          'html-loader',
+          'pug-html-loader',
         ],
       }],
     },
