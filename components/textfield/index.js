@@ -72,7 +72,7 @@ class TextField {
     const previousRowsValue = inputElement.getAttribute('rows');
     inputElement.setAttribute('rows', '1');
     const { height, paddingTop } = window.getComputedStyle(inputElement);
-    if (height === 'auto') {
+    if (!height || height === 'auto') {
       inputElement.setAttribute('rows', previousRowsValue);
       return -1;
     }
