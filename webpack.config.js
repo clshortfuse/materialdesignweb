@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const cssnano = require('cssnano');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
@@ -8,12 +9,16 @@ const isProduction = (process.env.NODE_ENV === 'production');
 
 /** @return {Object} */
 function getComponentsConfig() {
-  const extractStyles = new ExtractTextPlugin('[name].min.css');
+  const extractStyles = new MiniCssExtractPlugin({ filename: '[name].min.css' });
   const DEST = (isProduction ? 'dist' : 'test/dist');
   return {
     entry: {
-      materialdesignweb: ['./components/index.js', './components/_index.scss'],
+      materialdesignweb: [
+        path.resolve(__dirname, './components/index.js'),
+        path.resolve(__dirname, './components/_index.scss'),
+      ],
     },
+    mode: process.env.NODE_ENV || 'development',
     devtool: isProduction ? undefined : 'nosources-source-map',
     output: {
       filename: '[name].min.js',
@@ -33,8 +38,9 @@ function getComponentsConfig() {
         },
       }, {
         test: /\.scss$/,
-        use: extractStyles.extract({
-          use: [{
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
             loader: 'css-loader',
             options: {
               import: false,
@@ -62,9 +68,8 @@ function getComponentsConfig() {
             options: {
               sourceMap: !isProduction,
             },
-          }],
-          fallback: 'style-loader',
-        }),
+          },
+        ],
       }],
     },
     plugins: [
@@ -77,10 +82,8 @@ function getComponentsConfig() {
 /** @return {Object} */
 function getDocsConfig() {
   const plugins = [];
-  const extractStyles = new ExtractTextPlugin('[name].min.css');
-  const extractHtml = new ExtractTextPlugin('[name].html');
+  const extractStyles = new MiniCssExtractPlugin({ filename: '[name].min.css' });
   plugins.push(extractStyles);
-  plugins.push(extractHtml);
   if (isProduction) {
     plugins.push(new UglifyJSPlugin({ sourceMap: true }));
   }
@@ -92,7 +95,6 @@ function getDocsConfig() {
     components: ['./docs/src/components.scss'],
     'theming.ie11': ['./docs/src/theming.ie11.scss'],
   };
-
   fs.readdirSync('./docs/src/components/')
     .forEach((filename) => {
       const noExt = filename.substring(0, filename.lastIndexOf('.'));
@@ -102,10 +104,27 @@ function getDocsConfig() {
       entries[`${noExt}`].push(`./docs/src/components/${filename}`);
     });
 
+  Object.keys(entries).forEach((key) => {
+    const pugFile = entries[key].find(filename => filename.substr(-4) === '.pug');
+    if (!pugFile) {
+      return;
+    }
+    const extractHtml = new HtmlWebpackPlugin({
+      filename: `${key}.html`,
+      template: pugFile,
+      chunks: [key],
+    });
+    plugins.push(extractHtml);
+  });
+
   const DEST = (isProduction ? 'docs' : 'test/docs');
   return {
     entry: entries,
     devtool: isProduction ? 'source-map' : 'nosources-source-map',
+    mode: process.env.NODE_ENV || 'development',
+    devServer: {
+      contentBase: path.resolve(__dirname, DEST),
+    },
     output: {
       filename: '[name].min.js',
       path: path.resolve(__dirname, DEST),
@@ -124,16 +143,16 @@ function getDocsConfig() {
         },
       }, {
         test: /\.scss$/,
-        use: extractStyles.extract({
-          use: [{
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
             loader: 'css-loader',
             options: {
               import: false,
               sourceMap: !isProduction,
               // minimize: true,
             },
-          },
-          {
+          }, {
             loader: 'postcss-loader',
             options: {
               sourceMap: !isProduction,
@@ -153,23 +172,16 @@ function getDocsConfig() {
             options: {
               sourceMap: !isProduction,
             },
-          }],
-          fallback: 'style-loader',
-        }),
+          },
+        ],
       }, {
         test: /\.pug$/,
-        use: extractHtml.extract({
-          use: [{
-            loader: 'html-loader',
-          },
+        use: [
           {
-            loader: 'pug-html-loader',
-            options: {
-              pretty: true,
-            },
+            loader: 'pug-loader',
+            options: { pretty: true },
           },
-          ],
-        }),
+        ],
       }],
     },
     plugins,

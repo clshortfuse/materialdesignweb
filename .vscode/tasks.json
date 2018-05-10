@@ -12,12 +12,12 @@
           "line": 2,
           "column": 3
         },
-				"background": {
+        "background": {
           "activeOnStart": true,
-          "beginsPattern": "webpack output is served from \/",
-          "endsPattern": "webpack: Compiled [^\n]+\\."
+          "beginsPattern": "^ℹ ｢wds｣: webpack output is served from \/",
+          "endsPattern": "^ℹ ｢wdm｣: Compiled [^\n]+\\."
         }
-			}]
+      }]
     }
   ]
 }
