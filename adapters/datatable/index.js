@@ -189,10 +189,12 @@ class DataTableAdapter {
    * @param {Object} options
    * @param {HTMLElement} options.datatable
    * @param {Object[]} options.datasource Object array
+   * @param {function(any, number=, any[]=)=} options.filter
    */
   constructor(options) {
     this.element = options.datatable;
     this.datasource = options.datasource;
+    this.filter = options.filter;
     this.element.addEventListener('click', (event) => {
       // Use one event listener to reduce overhead and allow dynamic content
       this.handleClickInteraction(event);
@@ -222,6 +224,7 @@ class DataTableAdapter {
     this.element.removeAttribute('mdw-adapter');
     this.element = null;
     this.datasource = null;
+    this.filteredDatasource = null;
   }
 
   buildScrollListener() {
@@ -344,7 +347,8 @@ class DataTableAdapter {
   }
 
   /**
-   * Overrideable sorting method
+   * Overridable sorting method
+   * WARNING: Sort is performed on original datasource
    * @param {HTMLTableHeaderCellElement} tableHeaderCell
    * @param {boolean} [ascending=false]
    * @return {void}
@@ -761,7 +765,7 @@ class DataTableAdapter {
    */
   getDatasource() {
     if (this.filter) {
-      if (!this.filteredDatasource) {
+      if (this.filteredDatasource == null) {
         this.refreshFilter();
       }
       return this.filteredDatasource;
@@ -846,9 +850,9 @@ class DataTableAdapter {
         }
         if (row) {
           row.setAttribute('tabindex', '0');
-        }
-        if (document.activeElement === this.tabindexRow) {
-          row.focus();
+          if (document.activeElement === this.tabindexRow) {
+            row.focus();
+          }
         }
         this.tabindexRow = row;
       }
@@ -877,7 +881,7 @@ class DataTableAdapter {
    * @return {HTMLTableRowElement} row
    */
   getTableRowForData(data) {
-    const datasourceIndex = this.datasource.indexOf(data);
+    const datasourceIndex = this.getDatasource().indexOf(data);
     if (datasourceIndex === -1) {
       return null;
     }
