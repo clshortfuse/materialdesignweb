@@ -37,8 +37,20 @@ function isRtl() {
     && document.documentElement.getAttribute('dir').toLowerCase() === 'rtl';
 }
 
+/**
+ * @param {Element} element
+ * @param {string} type
+ * @return {void}
+ */
+function dispatchDomEvent(element, type) {
+  const event = document.createEvent('Event');
+  event.initEvent(type, true, true);
+  element.dispatchEvent(event);
+}
+
 export {
-  getChildElementByClass,
+  dispatchDomEvent,
   findElementParentByClassName,
+  getChildElementByClass,
   isRtl,
 };

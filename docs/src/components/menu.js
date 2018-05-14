@@ -81,6 +81,11 @@ function updateSampleCode() {
     "buttonElement.addEventListener('click', (event) => {",
     '  mdw.Menu.show(menuElement, event);',
     '});',
+    "menuElement.addEventListener('mdw:itemactivated', (event) => {",
+    '  const menuItem = event.target;',
+    '  handleMenuItem(menuItem);',
+    '  mdw.Menu.hide(event.currentTarget)',
+    '});',
   ].join('\n');
 }
 
@@ -91,16 +96,13 @@ function initializeSampleComponents() {
   button.addEventListener('click', (event) => {
     Menu.show(menu, event);
   });
-  const menuItems = menu.querySelectorAll('.mdw-menu__item');
-  for (let i = 0; i < menuItems.length; i += 1) {
-    const menuItem = menuItems.item(i);
-    menuItem.addEventListener('click', () => {
-      if (menuItem.hasAttribute('disabled')) {
-        return;
-      }
-      Menu.hide(menu);
-    });
-  }
+  menu.addEventListener('mdw:itemactivated', (event) => {
+    const menuItem = event.target;
+    if (menuItem.hasAttribute('disabled')) {
+      return;
+    }
+    Menu.hide(event.currentTarget);
+  });
 }
 
 /**

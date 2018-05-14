@@ -1,4 +1,5 @@
 import { Ripple } from '../ripple/index';
+import { findElementParentByClassName, dispatchDomEvent } from '../common/dom';
 
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
@@ -15,6 +16,16 @@ class MenuItem {
     // would still remain over the element, thus needing another mousemove event.
     // Prioritization is given to less event listeners rather than operations per second.
     element.addEventListener('mousemove', MenuItem.onMouseMove);
+    element.addEventListener('click', MenuItem.onClick);
+  }
+
+  /**
+   * @param {MouseEvent|KeyboardEvent|PointerEvent} event
+   * @return {void}
+   */
+  static onClick(event) {
+    const el = event.currentTarget;
+    dispatchDomEvent(el, 'mdw:itemactivated');
   }
 
   static onMouseMove(event) {
@@ -404,17 +415,6 @@ class Menu {
   }
 
   /**
-   * @param {Element} dialogElement
-   * @param {string} type
-   * @return {void}
-   */
-  static dispatchEvent(dialogElement, type) {
-    const event = document.createEvent('Event');
-    event.initEvent(type, true, true);
-    dialogElement.dispatchEvent(event);
-  }
-
-  /**
    * @param {Element} menuElement
    * @return {boolean} handled
    */
@@ -445,7 +445,7 @@ class Menu {
       if (!OPEN_MENUS.length) {
         window.removeEventListener('popstate', Menu.onPopState);
       }
-      Menu.dispatchEvent(menuElement, 'mdw:dismiss');
+      dispatchDomEvent(menuElement, 'mdw:dismiss');
       return true;
     }
     return false;
