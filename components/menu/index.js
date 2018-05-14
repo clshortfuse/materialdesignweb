@@ -98,11 +98,8 @@ class Menu {
     Menu.hide(menu);
   }
 
-  /**
-   * @param {PopStateEvent} event
-   * @return {void}
-   */
-  static onPopState(event) {
+  /** @return {void} */
+  static onPopState() {
     const lastOpenMenu = OPEN_MENUS[OPEN_MENUS.length - 1];
     if (lastOpenMenu) {
       Menu.hide(lastOpenMenu.element);
@@ -407,6 +404,17 @@ class Menu {
   }
 
   /**
+   * @param {Element} dialogElement
+   * @param {string} type
+   * @return {void}
+   */
+  static dispatchEvent(dialogElement, type) {
+    const event = document.createEvent('Event');
+    event.initEvent(type, true, true);
+    dialogElement.dispatchEvent(event);
+  }
+
+  /**
    * @param {Element} menuElement
    * @return {boolean} handled
    */
@@ -437,6 +445,7 @@ class Menu {
       if (!OPEN_MENUS.length) {
         window.removeEventListener('popstate', Menu.onPopState);
       }
+      Menu.dispatchEvent(menuElement, 'mdw:dismiss');
       return true;
     }
     return false;
