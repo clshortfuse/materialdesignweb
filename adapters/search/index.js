@@ -216,11 +216,11 @@ class SearchAdapter {
     if (document.activeElement !== this.input) {
       return;
     }
-    this.showDropDown();
     const inputValue = this.input.value || '';
     if (inputValue === this.suggestedInput) {
       return;
     }
+    this.showDropDown();
     if (inputValue === this.previousValue) {
       return;
     }
