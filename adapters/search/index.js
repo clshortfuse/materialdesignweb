@@ -143,7 +143,6 @@ class SearchAdapter {
    * @param {boolean=} [options.dropdown=false]
    * @param {boolean=} [options.filterItems=true]
    * @param {('replace'|'append'|'none')} [options.suggestionMethod='replace']
-   * @param {(function(Element))=} options.onItemActivated
    * @param {(function(string, Function, Function=))=} options.performSearch
    * @param {(function(Function, Function))=} options.updateList
    * @param {boolean=} [options.searchOnFocus=true]
@@ -160,12 +159,15 @@ class SearchAdapter {
       this.filter = containsTextFilter;
     }
     this.itemTextParser = defaultItemTextParser || options.itemTextParser;
-
-    this.list.addEventListener('click', (event) => {
-      this.handleClickEvent(event);
-    });
     const input = this.textfield.getElementsByClassName('mdw-textfield__input')[0];
     this.input = input;
+    this.list.addEventListener('mdw:itemactivated', (event) => {
+      const item = event.target;
+      this.onItemSelected(item);
+      const inputValue = this.input.value || '';
+      this.input.setSelectionRange(inputValue.length, inputValue.length);
+      this.hideDropDown();
+    });
     this.input.addEventListener('keydown', (event) => {
       this.onTextFieldKeydownEvent(event);
     });
@@ -199,30 +201,9 @@ class SearchAdapter {
     this.suggestedInput = null;
     /** @type {string} */
     this.previousValue = null;
-    if (options.onItemActivated) {
-      this.onItemActivated = options.onItemActivated;
-    }
     this.performSearch = options.performSearch || ((value, resolve = () => {}) => resolve());
     this.updateList = options.updateList || ((results, resolve = () => {}) => resolve());
   }
-
-  /**
-   * @param {MouseEvent} event
-   * @return {void}
-   */
-  handleClickEvent(event) {
-    if (!event.target) {
-      return;
-    }
-    if (!event.target.classList) {
-      return;
-    }
-    if (!event.target.classList.contains('mdw-list__item')) {
-      return;
-    }
-    this.onItemActivated(event.target);
-  }
-
 
   /**
    * Default input handler
@@ -418,14 +399,6 @@ class SearchAdapter {
   }
 
   /**
-   * @param {Element} item
-   * @return {void}
-   */
-  onItemActivated(item) {
-    // Override me
-  }
-
-  /**
    * @param {(function({input:string, content:string}):boolean)=} fnFilter
    * @return {void}
    */
@@ -511,9 +484,7 @@ class SearchAdapter {
         const current = this.list.querySelector('.mdw-list__item[mdw-selected]');
         if (current) {
           if (this.hideDropDown()) {
-            const inputValue = this.input.value || '';
-            this.input.setSelectionRange(inputValue.length, inputValue.length);
-            this.onItemActivated(current);
+            current.click();
             event.stopPropagation();
             event.preventDefault();
           }
@@ -524,9 +495,7 @@ class SearchAdapter {
         const current = this.list.querySelector('.mdw-list__item[mdw-selected]');
         if (current) {
           if (this.hideDropDown()) {
-            const inputValue = this.input.value || '';
-            this.input.setSelectionRange(inputValue.length, inputValue.length);
-            this.onItemActivated(current);
+            current.click();
             event.stopPropagation();
           }
         }

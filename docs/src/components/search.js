@@ -8,6 +8,8 @@ function buildCustomSearch1() {
   const textfield = document.getElementById('search-textfield-custom1');
   const list = document.getElementById('search-list-custom1');
   const busyIndicator = textfield.querySelector('.custom-busy-indicator');
+  /** @type {WeakMap<HTMLLIElement, Object>} */
+  const myListItemMap = new WeakMap();
   let resultsCache;
   let listUpdated = false;
   const customPerformSearch = (input, resolve) => {
@@ -51,6 +53,7 @@ function buildCustomSearch1() {
       const lines = listItem.querySelectorAll('.mdw-list__text-line');
       lines[0].textContent = item.line1;
       lines[1].textContent = item.line2;
+      myListItemMap.set(listItem, item);
       ListItem.attach(listItem);
       list.appendChild(listItem);
     });
@@ -67,6 +70,11 @@ function buildCustomSearch1() {
     suggestionMethod: 'append',
     performSearch: customPerformSearch,
     updateList: customUpdateList,
+  });
+  searchDocsCustom.list.addEventListener('mdw:itemactivated', (event) => {
+    const selectedItem = myListItemMap.get(event.target);
+    const text = `${selectedItem.line1}:${selectedItem.line2}`;
+    document.getElementById('search-result-custom1').textContent = text;
   });
 }
 
@@ -94,6 +102,8 @@ function buildCustomSearch2() {
   const busyIndicator = textfield.getElementsByClassName('custom-busy-indicator')[0];
   /** @type {HTMLElement} */
   const noResultsIndicator = textfield.getElementsByClassName('custom-no-results-indicator')[0];
+  /** @type {WeakMap<HTMLLIElement, Object>} */
+  const myListItemMap = new WeakMap();
   const customPerformSearch = (searchTerm, resolve) => {
     while (list.lastChild) {
       list.removeChild(list.lastChild);
@@ -131,6 +141,7 @@ function buildCustomSearch2() {
       const lines = listItem.querySelectorAll('.mdw-list__text-line');
       lines[0].textContent = item.line1;
       lines[1].textContent = item.line2;
+      myListItemMap.set(listItem, item);
       ListItem.attach(listItem);
       list.appendChild(listItem);
     });
@@ -144,6 +155,11 @@ function buildCustomSearch2() {
     filterItems: false,
     performSearch: customPerformSearch,
     updateList: customUpdateList,
+  });
+  searchDocsCustom.list.addEventListener('mdw:itemactivated', (event) => {
+    const selectedItem = myListItemMap.get(event.target);
+    const text = `${selectedItem.line1}:${selectedItem.line2}`;
+    document.getElementById('search-result-custom2').textContent = text;
   });
 }
 
