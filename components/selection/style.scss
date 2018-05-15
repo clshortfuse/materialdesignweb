@@ -252,6 +252,56 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   }
 }
 
+.mdw-selection[mdw-switch] > .mdw-selection__input[type="checkbox"]  {
+  margin-right: 12px;
+  transform: scale(1) translateX(-2px);
+  &:checked {
+    transform: scale(1) translateX(14px);
+  }
+  &:focus,
+  &:active {
+    transform: translateX(-2px) scale(2);
+  }
+  &:focus:checked,
+  &:active:checked {
+    transform: translateX(14px) scale(2);
+  }
+  &:active:not(:disabled) ~ .mdw-selection__icon {
+    color: inherit;
+  }
+  & ~ .mdw-selection__icon::before {
+    left: 0;
+    top: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border-style: none;
+    z-index: 1;
+    transform: translateX(0);
+    box-shadow: elevation(1);
+    transition-property: background-color, transform;
+  }
+  &:checked ~ .mdw-selection__icon::before {
+    transform: translateX(16px);
+  }
+  &:checked ~ .mdw-selection__icon::before,
+  &:active ~ .mdw-selection__icon::before {
+    color: inherit;
+  }
+  & ~ .mdw-selection__icon::after {
+    top: 5px;
+    bottom: 5px;
+    width: 36px;
+    height: 14px;
+    border-radius: 7px;
+    left: 0;
+    animation-name: none;
+    border-style: none;
+    transform: none;
+    margin: 0;
+  }
+}
+
 @keyframes showCheck {
   // Animation is applied to pre-rotated box;
   // Clip box completely horizontally and vertically upto bottom border
