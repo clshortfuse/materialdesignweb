@@ -61,6 +61,9 @@ function updateSampleCode() {
   const sampleContainer = document.querySelector('.component-sample__container');
   const htmlCodeBlocks = [];
   let el = sampleContainer.firstElementChild;
+  if (jsRequired) {
+    el = el.firstElementChild;
+  }
   while (el) {
     const htmlCode = convertElementToCode(el).trim();
     if (htmlCode) {

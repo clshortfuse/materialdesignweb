@@ -34,7 +34,7 @@ $checkbox-icon-offset-x: dp(6.04);
 }
 
 .mdw-menu {
-  position: relative;
+  position: absolute;
   display: inline-flex;
   &[mdw-show]:not([mdw-hide]),
   &[id]:target:not([mdw-hide]) {
@@ -57,25 +57,24 @@ $checkbox-icon-offset-x: dp(6.04);
     }
   }
 
+  top: 0;
+  left: 0;
+  right: auto;
+  bottom: auto;
+  transform-origin: top left;
   &[mdw-position~="right"],
   &[mdw-position~="end"] {
-    .mdw-menu__popup {
-      left: auto;
-      right: 0;
-      transform-origin: top right;
-    }
+    left: auto;
+    right: 0;
+    transform-origin: top right;
   }
   &[mdw-position~="bottom"] {
-    .mdw-menu__popup {
-      top: auto;
-      bottom: 0;
-      transform-origin: bottom left;
-    }
+    top: auto;
+    bottom: 0;
+    transform-origin: bottom left;
     &[mdw-position~="right"],
     &[mdw-position~="end"] {
-      .mdw-menu__popup {
-        transform-origin: bottom right;
-      }
+      transform-origin: bottom right;
     }
   }
 
@@ -87,23 +86,17 @@ $checkbox-icon-offset-x: dp(6.04);
     }
     &[mdw-position~="left"],
     &[mdw-position~="end"] {
-      .mdw-menu__popup {
-        left: 0;
-        right: auto;
-        transform-origin: top left;
-      }
+      left: 0;
+      right: auto;
+      transform-origin: top left;
     }
     &[mdw-position~="bottom"] {
-      .mdw-menu__popup {
-        transform-origin: bottom right;
-      }
+      transform-origin: bottom right;
       &[mdw-position~="left"],
       &[mdw-position~="end"] {
-        .mdw-menu__popup {
-          left: 0;
-          right: auto;
-          transform-origin: bottom left;
-        }
+        left: 0;
+        right: auto;
+        transform-origin: bottom left;
       }
     }
   }
@@ -132,9 +125,11 @@ $checkbox-icon-offset-x: dp(6.04);
     transition-duration: $motion-duration-tablet-leave;
   }
   
-  top: 0;
-  left: 0;
-  transform-origin: top left;
+  top: inherit;
+  left: inherit;
+  bottom: inherit;
+  right: inherit;
+  transform-origin: inherit;
   transform: scale(0);
   box-shadow: elevation(0);
   opacity: 0;
