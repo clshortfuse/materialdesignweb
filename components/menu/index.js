@@ -51,6 +51,7 @@ class MenuItem {
    * @return {void}
    */
   static detach(element) {
+    element.removeEventListener('click', MenuItem.onClick);
     element.removeEventListener('mousemove', MenuItem.onMouseMove);
     element.removeAttribute('mdw-js');
     Ripple.detach(element);
