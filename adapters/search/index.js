@@ -165,7 +165,9 @@ class SearchAdapter {
       const item = event.target;
       this.onItemSelected(item);
       const inputValue = this.input.value || '';
+      this.suggestedInput = inputValue;
       this.input.setSelectionRange(inputValue.length, inputValue.length);
+      this.input.focus();
       this.hideDropDown();
     });
     this.input.addEventListener('keydown', (event) => {
