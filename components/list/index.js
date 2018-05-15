@@ -1,21 +1,32 @@
 import { Ripple } from '../ripple/index';
-import { findElementParentByClassName } from '../common/dom';
+import { findElementParentByClassName, dispatchDomEvent } from '../common/dom';
 
 class ListItem {
   /**
-   * @param {Element} tabItemElement
+   * @param {Element} listItemElement
    * @return {void}
    */
-  static attach(tabItemElement) {
-    Ripple.attach(tabItemElement);
+  static attach(listItemElement) {
+    Ripple.attach(listItemElement);
+    listItemElement.addEventListener('click', ListItem.onClick);
   }
 
   /**
-   * @param {Element} tabItemElement
+   * @param {Element} listItemElement
    * @return {void}
    */
-  static detach(tabItemElement) {
-    Ripple.detach(tabItemElement);
+  static detach(listItemElement) {
+    listItemElement.removeEventListener('click', ListItem.onClick);
+    Ripple.detach(listItemElement);
+  }
+
+  /**
+   * @param {MouseEvent|KeyboardEvent|PointerEvent} event
+   * @return {void}
+   */
+  static onClick(event) {
+    const el = event.currentTarget;
+    dispatchDomEvent(el, 'mdw:itemactivated');
   }
 }
 
