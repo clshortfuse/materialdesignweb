@@ -15,7 +15,7 @@ function constructTableCheckbox() {
   return checkboxLabel;
 }
 
-class TableColumn {
+class DataTableAdapterColumn {
   /**
    * @param {Object} options Text or options
    * @param {string} options.key
@@ -105,14 +105,14 @@ class TableColumn {
     if (options.renderer) {
       this.renderer = options.renderer;
     } else if (options.type === 'checkbox') {
-      this.renderer = TableColumn.defaultCheckboxRenderer;
+      this.renderer = DataTableAdapterColumn.defaultCheckboxRenderer;
     } else {
-      this.renderer = TableColumn.defaultCellRenderer;
+      this.renderer = DataTableAdapterColumn.defaultCellRenderer;
     }
     if (options.formatter) {
       this.formatter = options.formatter;
     } else {
-      this.formatter = TableColumn.defaultValueFormatter;
+      this.formatter = DataTableAdapterColumn.defaultValueFormatter;
     }
   }
 
@@ -211,7 +211,7 @@ class DataTableAdapter {
     });
     DataTable.attach(this.element);
     this.element.setAttribute('mdw-adapter', '');
-    /** @type {TableColumn[]} */
+    /** @type {DataTableAdapterColumn[]} */
     this.columns = [];
     this.page = 0;
     this.pageLimit = 0;
@@ -504,10 +504,10 @@ class DataTableAdapter {
    * @param {DocumentFragment=} options.fragment
    * @param {(function(HTMLTableCellElement, any, any=):void)=} options.renderer
    * @param {(function(any):any)=} options.formatter
-   * @return {TableColumn}
+   * @return {DataTableAdapterColumn}
    */
   addColumn(options) {
-    const tableColumn = new TableColumn(options);
+    const tableColumn = new DataTableAdapterColumn(options);
     const headerRow = this.getHeaderRow();
     headerRow.appendChild(tableColumn.element);
     this.columns.push(tableColumn);
@@ -941,11 +941,11 @@ class DataTableAdapter {
   }
 
   /**
-   * @param {HTMLTableCellElement|TableColumn|number|string} search
-   * @return {TableColumn}
+   * @param {HTMLTableCellElement|DataTableAdapterColumn|number|string} search
+   * @return {DataTableAdapterColumn}
    */
   getColumn(search) {
-    if (search instanceof TableColumn) {
+    if (search instanceof DataTableAdapterColumn) {
       return search;
     }
     if (search instanceof HTMLTableCellElement) {
@@ -1016,4 +1016,5 @@ class DataTableAdapter {
 
 export {
   DataTableAdapter,
+  DataTableAdapterColumn,
 };
