@@ -8,47 +8,65 @@ function configureNavDrawer() {
    * @param {Event} event
    * @return {void}
    */
-  function onSelected(event) {
+  function onStyleSelected(event) {
     switch (event.target.value) {
-      case 'temporary':
+      case 'modal':
         navElement.removeAttribute('mdw-clipped');
         navElement.removeAttribute('mdw-floating');
-        navElement.setAttribute('mdw-temporary', '');
+        navElement.setAttribute('mdw-modal', '');
         return;
       case 'clipped':
         navElement.setAttribute('mdw-clipped', '');
         navElement.removeAttribute('mdw-floating');
-        navElement.removeAttribute('mdw-temporary');
+        navElement.removeAttribute('mdw-modal');
         return;
       case 'floating':
         navElement.removeAttribute('mdw-clipped');
         navElement.setAttribute('mdw-floating', '');
-        navElement.removeAttribute('mdw-temporary');
+        navElement.removeAttribute('mdw-modal');
         return;
       case 'floatingcard':
         navElement.removeAttribute('mdw-clipped');
         navElement.setAttribute('mdw-floating', 'card');
-        navElement.removeAttribute('mdw-temporary');
+        navElement.removeAttribute('mdw-modal');
         return;
       default:
       case 'fullheight':
         navElement.removeAttribute('mdw-clipped');
         navElement.removeAttribute('mdw-floating');
-        navElement.removeAttribute('mdw-temporary');
+        navElement.removeAttribute('mdw-modal');
     }
   }
-  const radioElements = document.querySelectorAll('input[name="mdw-navdrawer__style"]');
-  for (let i = 0; i < radioElements.length; i += 1) {
-    const element = radioElements[i];
-    element.addEventListener('change', onSelected);
-  }
-  document.querySelector('input[name="mdw-navdrawer__mini"]').addEventListener('change', (event) => {
-    if (event.target.checked) {
-      navElement.setAttribute('mdw-mini', '');
-    } else {
-      navElement.removeAttribute('mdw-mini');
+  /**
+   * @param {Event} event
+   * @return {void}
+   */
+  function onToggleSelected(event) {
+    switch (event.target.value) {
+      case 'dismissible':
+        navElement.setAttribute('mdw-dismissible', '');
+        navElement.removeAttribute('mdw-mini');
+        return;
+      case 'mini':
+        navElement.removeAttribute('mdw-dismissible');
+        navElement.setAttribute('mdw-mini', '');
+        return;
+      default:
+      case 'none':
+        navElement.removeAttribute('mdw-dismissible');
+        navElement.removeAttribute('mdw-mini');
     }
-  });
+  }
+  const styleRadioElements = document.querySelectorAll('input[name="mdw-navdrawer__style"]');
+  for (let i = 0; i < styleRadioElements.length; i += 1) {
+    const element = styleRadioElements[i];
+    element.addEventListener('change', onStyleSelected);
+  }
+  const toggleRadioElements = document.querySelectorAll('input[name="mdw-navdrawer__toggle"]');
+  for (let i = 0; i < toggleRadioElements.length; i += 1) {
+    const element = toggleRadioElements[i];
+    element.addEventListener('change', onToggleSelected);
+  }
   const navdrawerDrawer = document.querySelector('#navdrawer .mdw-navdrawer__drawer');
   const navdrawerDrawerListItems = navdrawerDrawer.getElementsByClassName('mdw-list__item');
 

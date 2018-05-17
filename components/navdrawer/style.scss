@@ -17,7 +17,7 @@ $navdrawer__min-width__mini: dp(56) !default;
   overflow: hidden;
   grid-template-rows: auto 1fr 16px;
   -ms-grid-rows: auto 1fr 16px;
-  grid-template-columns: minmax(#{$navdrawer__min-width}, auto) 16px 1fr;
+  grid-template-columns: auto 16px 1fr;
   -ms-grid-columns: auto 16px 1fr;
   transition-timing-function: $motion-easing-deceleration;
   transition-duration: $motion-duration-desktop-leave;
@@ -109,14 +109,14 @@ $navdrawer__min-width__mini: dp(56) !default;
   -ms-grid-row: 1;
   grid-row-end: span 3;
   -ms-grid-row-span: 3;
-  max-width: calc(100% - 64px); // Tablet or Desktop
+  max-width: calc(100vw - 64px); // Tablet or Desktop
   @include allHandsets {
-    max-width: calc(100% - 56px);
+    max-width: calc(100vw - 56px);
   }
-  min-width: 100%;
+  min-width: $navdrawer__min-width;
   transform: translateX(0);
   box-shadow: elevation(0);
-  transition-property: box-shadow, transform;
+  transition-property: box-shadow, transform, min-width, max-width;
   transition-timing-function: inherit;
   transition-duration: inherit;
   pointer-events: auto;
@@ -130,7 +130,7 @@ $navdrawer__min-width__mini: dp(56) !default;
     // Fix IE min-height flexbug
     &::after {
       content: '';
-      min-width: $navdrawer__min-width;
+      min-width: inherit;
       height: 0;
     }
   }
@@ -339,7 +339,7 @@ $navdrawer__min-width__mini: dp(56) !default;
 }
 
 
-@mixin mdw-navdrawer__temporary {
+@mixin mdw-navdrawer__modal {
   .mdw-navdrawer__content,
   .mdw-navdrawer__toolbar {
     grid-column: 1;
@@ -354,9 +354,6 @@ $navdrawer__min-width__mini: dp(56) !default;
     grid-column-end: span 2;
     -ms-grid-column-span: 2;
     padding-right: 16px;
-  }
-  .mdw-navdrawer__close {
-    display: none;
   }
   > .mdw-navdrawer__drawer {
     position: absolute;
@@ -381,10 +378,7 @@ $navdrawer__min-width__mini: dp(56) !default;
   }
 }
 
-@mixin mdw-navdrawer__temporary__shown {
-  .mdw-navdrawer__close {
-    display: none;
-  }
+@mixin mdw-navdrawer__modal__shown {
   > .mdw-navdrawer__drawer {
     transform: translateX(0);
     box-shadow: elevation(16);
@@ -400,22 +394,47 @@ $navdrawer__min-width__mini: dp(56) !default;
   }
 }
 
-.mdw-navdrawer[mdw-mini] {
-  
-  .mdw-navdrawer__avatars {
-    grid-column-end: span 1;
-    -ms-grid-column-span: 1;
-    padding-right: 0;
-  }
-  > .mdw-navdrawer__close {
+.mdw-navdrawer[mdw-mini],
+.mdw-navdrawer[mdw-dismissible] {
+  .mdw-navdrawer__toolbar .mdw-toolbar__start {
     display: flex;
   }
+  .mdw-navdrawer__close {
+    display: flex;
+  }
+  .mdw-navdrawer__open {
+    display: none;
+  }
   &:not([mdw-show]):not(:target) {
-    grid-template-columns: minmax($navdrawer__min-width__mini, auto) dp(16) 1fr;
-    > .mdw-navdrawer__close {
+    .mdw-navdrawer__close {
       display: none;
     }
-    .mdw-navdrawer__toolbar .mdw-toolbar__start {
+    .mdw-navdrawer__open {
+      display: flex;
+    }
+  }
+}
+
+.mdw-navdrawer[mdw-dismissible] {
+  &:not([mdw-show]):not(:target) {
+    // grid-template-columns: minmax(0, auto) dp(16) 1fr;
+    > .mdw-navdrawer__drawer {
+      max-width: 0;
+      min-width: 0;
+      margin-left: 0;
+      margin-right: 0;
+      border-style: none;
+      box-shadow: none;
+    }
+  }
+}
+.mdw-navdrawer[mdw-mini] {
+  &:not([mdw-show]):not(:target) {
+    // grid-template-columns: minmax($navdrawer__min-width__mini, auto) dp(16) 1fr;
+    .mdw-navdrawer__close {
+      display: none;
+    }
+    .mdw-navdrawer__open {
       display: flex;
     }
     .mdw-navdrawer__image {
@@ -465,12 +484,7 @@ $navdrawer__min-width__mini: dp(56) !default;
       > .mdw-list ~ .mdw-list {
         display: none;
       }
-      @include IEOnly() {
-        // Fix IE min-height flexbug
-        &::after {
-          min-width: $navdrawer__min-width__mini;
-        }
-      }
+      min-width: $navdrawer__min-width__mini;
     }
     .mdw-navdrawer__account {
       grid-template-rows: auto;
@@ -533,11 +547,11 @@ $navdrawer__min-width__mini: dp(56) !default;
       z-index: auto;
     }
   }
-  &[mdw-temporary] {
-    @include mdw-navdrawer__temporary;
+  &[mdw-modal] {
+    @include mdw-navdrawer__modal;
     &:target,
     &[mdw-show]:not([mdw-hide]) {
-      @include mdw-navdrawer__temporary__shown;
+      @include mdw-navdrawer__modal__shown;
     }
   }
   &,
@@ -545,10 +559,10 @@ $navdrawer__min-width__mini: dp(56) !default;
   &[mdw-clipped],
   &[mdw-floating] {
     @media screen and (max-width: dp(1280) - 1){
-      @include mdw-navdrawer__temporary;
+      @include mdw-navdrawer__modal;
       &:target,
       &[mdw-show]:not([mdw-hide]) {
-        @include mdw-navdrawer__temporary__shown;
+        @include mdw-navdrawer__modal__shown;
       }
     }
   }
