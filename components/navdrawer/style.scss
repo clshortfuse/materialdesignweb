@@ -340,17 +340,17 @@ $navdrawer__min-width__mini: dp(56) !default;
 
 
 @mixin mdw-navdrawer__modal {
-  .mdw-navdrawer__content,
-  .mdw-navdrawer__toolbar {
+  > .mdw-navdrawer__content,
+  > .mdw-navdrawer__toolbar {
     grid-column: 1;
     -ms-grid-column: 1;
     grid-column-end: span 4;
     -ms-grid-column-span: 4;
   }
-  .mdw-navdrawer__toolbar .mdw-toolbar__start {
+  > .mdw-navdrawer__toolbar .mdw-toolbar__start {
     display: flex;
   }
-  .mdw-navdrawer__avatars {
+  > .mdw-navdrawer__drawer .mdw-navdrawer__avatars {
     grid-column-end: span 2;
     -ms-grid-column-span: 2;
     padding-right: 16px;
@@ -396,7 +396,7 @@ $navdrawer__min-width__mini: dp(56) !default;
 
 .mdw-navdrawer[mdw-mini],
 .mdw-navdrawer[mdw-dismissible] {
-  .mdw-navdrawer__toolbar .mdw-toolbar__start {
+  > .mdw-navdrawer__toolbar .mdw-toolbar__start {
     display: flex;
   }
   .mdw-navdrawer__close {
@@ -474,7 +474,7 @@ $navdrawer__min-width__mini: dp(56) !default;
     .mdw-list__divider {
       display: none;
     }
-    .mdw-navdrawer__toolbar {
+    > .mdw-navdrawer__toolbar {
       grid-column: 1;
       -ms-grid-column: 1;
       grid-column-end: span 3;
@@ -561,11 +561,20 @@ $navdrawer__min-width__mini: dp(56) !default;
   &[mdw-mini],
   &[mdw-clipped],
   &[mdw-floating] {
-    @media screen and (max-width: dp(1280) - 1){
+    @media screen and (max-width: dp(600) - 1) {
       @include mdw-navdrawer__modal;
       &[id]:target,
       &[mdw-show]:not([mdw-hide]) {
         @include mdw-navdrawer__modal__shown;
+      }
+    }
+    &:not([mdw-dismissible]) {
+      @media screen and (max-width: dp(1280) - 1) {
+        @include mdw-navdrawer__modal;
+        &[id]:target,
+        &[mdw-show]:not([mdw-hide]) {
+          @include mdw-navdrawer__modal__shown;
+        }
       }
     }
   }
