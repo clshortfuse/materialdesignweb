@@ -220,6 +220,10 @@ $icon-signifier__padding-end: dp(16);
     align-self: center;
     -ms-grid-row-align: center;
   }
+  .mdw-textfield[mdw-solo] > & {
+    align-self: flex-end;
+    -ms-grid-row-align: end;
+  }
 }
 
 .mdw-textfield__input {
