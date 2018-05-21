@@ -1,0 +1,166 @@
+// https://material.io/design/components/snackbars.html#spec
+
+// Guidelines conflict stating a background should be fully opaque
+// But says spec says to use #000000 with 87% opacity
+// Calculated against white, opaque value is #212121 (Grey-900)
+
+$snackbar__background-color: #212121;
+$snackbar__color: rgba(white, 0.87);
+
+.mdw-snackbar {
+  background: $snackbar__background-color;
+  color: $snackbar__color;
+
+  margin: dp(8);
+  padding: 0 dp(16);
+  min-height: dp(48);
+  min-width: dp(344); // 360px - margins?
+  max-width: 100%;
+
+  font-size: sp(14);
+  font-weight: $font-weight-regular;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-radius: dp(4);
+  box-shadow: elevation(6);
+
+  // Default state is shown
+  opacity: 1;
+  transition-property: opacity;
+  transition-timing-function: $motion-easing-deceleration;
+  transition-duration: $motion-duration-desktop-enter;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-enter;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-enter;
+  }
+
+  // Disable animations with explicit visibility
+  &[mdw-autohide] {
+    animation-fill-mode: forwards;
+    animation-name: showSnackbar, hideSnackbar;
+    animation-timing-function: $motion-easing-deceleration, $motion-easing-acceleration;
+    animation-delay: 0s, 4s;
+    animation-duration: $motion-duration-desktop-enter, $motion-duration-desktop-leave;
+    @include allHandsets {
+      animation-duration: $motion-duration-mobile-enter, $motion-duration-mobile-leave;
+    }
+    @include allTablets {
+      animation-duration: $motion-duration-tablet-enter, $motion-duration-tablet-leave;
+    }
+  }
+
+  // Disable animation with explicit visibility
+  &[mdw-show],
+  &[mdw-hide] {
+    animation-name: none;
+  }
+
+  &[mdw-hide] {
+    opacity: 0;
+    
+    transition-timing-function: $motion-easing-acceleration;
+    transition-duration: $motion-duration-desktop-leave;
+    @include allHandsets {
+      transition-duration: $motion-duration-mobile-leave;
+    }
+    @include allTablets {
+      transition-duration: $motion-duration-tablet-leave;
+    }
+  }
+
+  @for $seconds from 5 to 11 {
+    &[mdw-autohide="#{$seconds}"] {
+      animation-delay: 0s, #{$seconds}s;
+    }
+  }
+
+}
+
+@keyframes hideSnackbar {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes showSnackbar {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mdw-snackbar .mdw-button {
+  order: 1;
+  margin-top: dp(6);
+  margin-bottom: dp(6);
+  margin-left: dp(8);
+  margin-right: dp(-8);
+  html[dir=rtl] & {
+    margin-left: dp(-8);
+    margin-right: dp(8);
+  }
+}
+
+.mdw-snackbar > span {
+  white-space: pre-line;
+  &::before {
+    content: "\200D"; // &zwj;
+    display: inline-block;
+    margin-top: dp(16);
+    line-height: 1;
+    vertical-align: text-bottom;
+  }
+  &::after {
+    content: "\200D"; // &zwj;
+    display: inline-block;
+    line-height: 1;
+    margin-bottom: dp(16);
+    vertical-align: text-top;
+  }
+}
+
+@media screen and (max-width: $breakpoint-portrait-handset-max) {
+  .mdw-snackbar {
+    min-width: 0;
+    width: 100%;
+    &[mdw-stacked] {
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      > span {
+        width: 100%;
+      }
+      .mdw-button {
+        margin-top: dp(2);
+        margin-bottom: dp(8);
+      }
+    }
+  }
+}
+
+@include IEOnly() {
+  // Fix IE flexbug
+  .mdw-snackbar {
+    &::after {
+      content: '';
+      min-width: 0;
+      min-height: inherit;
+    }
+    @media screen and (max-width: $breakpoint-portrait-handset-max) {
+      &[mdw-stacked]::after {
+        min-width: inherit;
+        min-height: 0;
+      }
+    }
+  }
+}

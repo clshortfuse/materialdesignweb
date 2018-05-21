@@ -1,0 +1,124 @@
+include ../mixins.pug
+
++header()
+  +navdrawer("snackbar")
+    .mdw-layout(mdw-stretch)
+      .mdw-layout__item(mdw-colspan="100%")
+        div
+          .mdw-type(mdw-style="headline") Snackbars provide brief messages about app processes at the bottom of the screen.
+          .mdw-type(mdw-style="body") Snackbars inform users of a process that an app has performed or will perform. They appear temporarily, towards the bottom of the screen. They shouldn’t interrupt the user experience, and they don’t require user input to disappear.
+          .mdw-type(mdw-style="body")
+      .mdw-layout__item(mdw-colspan="8")
+        .component-sample
+          .mdw-snackbar
+            span Short message snackbar.
+      .mdw-layout__item(mdw-colspan="4")
+        div
+          .mdw-type(mdw-style="subheading") Javascript
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="javascript" value="required" disabled)
+              .mdw-selection__icon
+              .mdw-selection__label Required
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="javascript" value="optional" checked)
+              .mdw-selection__icon
+              .mdw-selection__label Optional
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="javascript" value="none")
+              .mdw-selection__icon
+              .mdw-selection__label None
+          .mdw-type(mdw-style="subheading") Text
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="text" value="short" checked)
+              .mdw-selection__icon
+              .mdw-selection__label Short
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="text" value="long")
+              .mdw-selection__icon
+              .mdw-selection__label Long
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="text" value="line-break")
+              .mdw-selection__icon
+              .mdw-selection__label Explicit line-break
+          .mdw-type(mdw-style="subheading") Button
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="button" value="none" checked)
+              .mdw-selection__icon
+              .mdw-selection__label None
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="button" value="short")
+              .mdw-selection__icon
+              .mdw-selection__label Short
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="button" value="long")
+              .mdw-selection__icon
+              .mdw-selection__label Long
+          .mdw-type(mdw-style="subheading") Visibility
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="visibility" value="auto" checked)
+              .mdw-selection__icon
+              .mdw-selection__label Auto
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="visibility" value="show")
+              .mdw-selection__icon
+              .mdw-selection__label Show
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="visibility" value="hide")
+              .mdw-selection__icon
+              .mdw-selection__label Hide
+          .mdw-type(mdw-style="subheading") Auto-Hide Time (Seconds)
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="autohide" value="none" checked)
+              .mdw-selection__icon
+              .mdw-selection__label None
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="autohide" value="4")
+              .mdw-selection__icon
+              .mdw-selection__label 4
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="autohide" value="5")
+              .mdw-selection__icon
+              .mdw-selection__label 5
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="autohide" value="6")
+              .mdw-selection__icon
+              .mdw-selection__label 6
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="autohide" value="7")
+              .mdw-selection__icon
+              .mdw-selection__label 7
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="autohide" value="8")
+              .mdw-selection__icon
+              .mdw-selection__label 8
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="autohide" value="9")
+              .mdw-selection__icon
+              .mdw-selection__label 9
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="autohide" value="10")
+              .mdw-selection__icon
+              .mdw-selection__label 10
+          .mdw-type(mdw-style="subheading") Options
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="checkbox" name="stacked")
+              .mdw-selection__icon
+              .mdw-selection__label Stacked
+      .mdw-layout__item(mdw-colspan="100%" style="max-height:0")
+      .mdw-layout__item(mdw-colspan="6")
+        .display-flex(flex-column)
+          .mdw-type(mdw-style="title") HTML Code
+          .mdw-card.component-code.component-html
+      .mdw-layout__item(mdw-colspan="2")
+        .display-flex(flex-column)
+          .mdw-type(mdw-style="title") Javascript Code
+          .mdw-card.component-code.component-js
+      .mdw-layout__item(mdw-colspan="100%")
+        .mdw-type(mdw-style="title") Samples
+  script(src='snackbar.min.js')
