@@ -40,12 +40,12 @@ function isRtl() {
 /**
  * @param {Element} element
  * @param {string} type
- * @return {void}
+ * @return {boolean}
  */
 function dispatchDomEvent(element, type) {
   const event = document.createEvent('Event');
   event.initEvent(type, true, true);
-  element.dispatchEvent(event);
+  return element.dispatchEvent(event);
 }
 
 export {

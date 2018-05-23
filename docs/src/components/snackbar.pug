@@ -8,10 +8,20 @@ include ../mixins.pug
           .mdw-type(mdw-style="headline") Snackbars provide brief messages about app processes at the bottom of the screen.
           .mdw-type(mdw-style="body") Snackbars inform users of a process that an app has performed or will perform. They appear temporarily, towards the bottom of the screen. They shouldn’t interrupt the user experience, and they don’t require user input to disappear.
           .mdw-type(mdw-style="body")
-      .mdw-layout__item(mdw-colspan="8")
-        .component-sample
-          .mdw-snackbar
-            span Short message snackbar.
+      .mdw-layout__item(mdw-colspan="100%")
+        .component-sample(style="padding:0")
+          .mdw-layout(style="width:100%;height:100%")
+            .mdw-layout__item(mdw-colspan="100%")
+              div
+                button.mdw-button(mdw-theme-color="accent") Create New
+            .mdw-layout__item(mdw-colspan="100%")
+              .mdw-snackbar__wrapper
+                .mdw-snackbar__container
+                  .mdw-snackbar
+                    span Short message snackbar.
+            .mdw-layout__item(mdw-colspan="100%")
+              .mdw-snackbar__wrapper
+                .mdw-snackbar__container.js-sample
       .mdw-layout__item(mdw-colspan="4")
         div
           .mdw-type(mdw-style="subheading") Javascript
@@ -70,6 +80,20 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="visibility" value="hide")
               .mdw-selection__icon
               .mdw-selection__label Hide
+          .mdw-type(mdw-style="subheading") Position
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="position" value="auto" checked)
+              .mdw-selection__icon
+              .mdw-selection__label Start (Default)
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="position" value="center")
+              .mdw-selection__icon
+              .mdw-selection__label Center
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="position" value="end")
+              .mdw-selection__icon
+              .mdw-selection__label End
           .mdw-type(mdw-style="subheading") Auto-Hide Time (Seconds)
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
@@ -119,6 +143,4 @@ include ../mixins.pug
         .display-flex(flex-column)
           .mdw-type(mdw-style="title") Javascript Code
           .mdw-card.component-code.component-js
-      .mdw-layout__item(mdw-colspan="100%")
-        .mdw-type(mdw-style="title") Samples
   script(src='snackbar.min.js')

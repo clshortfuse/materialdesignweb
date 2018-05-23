@@ -6,15 +6,41 @@
 
 $snackbar__background-color: #212121;
 $snackbar__color: rgba(white, 0.87);
+$snackbar__scale-up__from: 0.85;
+
+.mdw-snackbar__wrapper {
+  position: relative;
+  z-index: 6;
+}
+
+.mdw-snackbar__container {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  z-index: 6;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  justify-content: flex-start;
+  &[mdw-position="end"] {
+    justify-content: flex-end;
+  }
+  &[mdw-position="center"] {
+    justify-content: center;
+  }
+} 
 
 .mdw-snackbar {
+  position: absolute;
+  bottom: 0;
+  
   background: $snackbar__background-color;
   color: $snackbar__color;
 
-  margin: dp(8);
+  
   padding: 0 dp(16);
   min-height: dp(48);
-  min-width: dp(344); // 360px - margins?
+  
   max-width: 100%;
 
   font-size: sp(14);
@@ -29,8 +55,11 @@ $snackbar__color: rgba(white, 0.87);
 
   // Default state is shown
   opacity: 1;
-  transition-property: opacity;
+  transform: scale(1);
+  will-change: opacity, transform;
+  transition-property: opacity, transform;
   transition-timing-function: $motion-easing-deceleration;
+  transition-delay: 0s, 0s;
   transition-duration: $motion-duration-desktop-enter;
   @include allHandsets {
     transition-duration: $motion-duration-mobile-enter;
@@ -38,7 +67,6 @@ $snackbar__color: rgba(white, 0.87);
   @include allTablets {
     transition-duration: $motion-duration-tablet-enter;
   }
-
   // Disable animations with explicit visibility
   &[mdw-autohide] {
     animation-fill-mode: forwards;
@@ -60,16 +88,31 @@ $snackbar__color: rgba(white, 0.87);
     animation-name: none;
   }
 
+  &[mdw-consecutive]:not([mdw-hide]) {
+    // Delay showing consecutive snackbar equal to previous snackbar's leave time
+    transition-delay: $motion-duration-desktop-leave;
+    @include allHandsets {
+      transition-delay: $motion-duration-mobile-leave;
+    }
+    @include allTablets {
+      transition-delay: $motion-duration-tablet-leave;
+    }
+  }
+
   &[mdw-hide] {
     opacity: 0;
+    transform: scale($snackbar__scale-up__from);
     
     transition-timing-function: $motion-easing-acceleration;
     transition-duration: $motion-duration-desktop-leave;
+    transition-delay: 0s, $motion-duration-desktop-leave;
     @include allHandsets {
       transition-duration: $motion-duration-mobile-leave;
+      transition-delay: 0s, $motion-duration-mobile-leave;
     }
     @include allTablets {
       transition-duration: $motion-duration-tablet-leave;
+      transition-delay: 0s, $motion-duration-tablet-leave;
     }
   }
 
@@ -131,8 +174,8 @@ $snackbar__color: rgba(white, 0.87);
 
 @media screen and (max-width: $breakpoint-portrait-handset-max) {
   .mdw-snackbar {
-    min-width: 0;
-    width: 100%;
+    left: 0;
+    right: 0;
     &[mdw-stacked] {
       flex-direction: column;
       align-items: flex-end;
@@ -156,11 +199,29 @@ $snackbar__color: rgba(white, 0.87);
       min-width: 0;
       min-height: inherit;
     }
-    @media screen and (max-width: $breakpoint-portrait-handset-max) {
-      &[mdw-stacked]::after {
-        min-width: inherit;
-        min-height: 0;
+  }
+  .mdw-snackbar__container[mdw-position="center"] {
+    .mdw-snackbar {
+      transform: translateX(-50%);
+      &[mdw-hide] {
+        transform: translateX(-50%) scale($snackbar__scale-up__from);
+      }
+      html[dir=rtl] & {
+        transform: translateX(50%);
+        &[mdw-hide] {
+          transform: translateX(50%) scale($snackbar__scale-up__from);
+        }
       }
     }
   }
+  .mdw-snackbar__container[mdw-position="end"] {
+    .mdw-snackbar {
+      right: 0;
+      html[dir=rtl] & {
+        left: 0;
+        right: auto;
+      }
+    }
+  }
+  
 }

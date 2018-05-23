@@ -1,11 +1,12 @@
 import { setupMenuOptions } from '../menuoptions';
-import { convertElementToCode, getChildTextNode, attachEventListener } from '../sample-utils';
+import { convertElementToCode, attachEventListener } from '../sample-utils';
+import { Snackbar } from '../../../components/snackbar/index';
 
 /** @return {void} */
 function initializeSampleComponents() {
   const snackbars = document.querySelectorAll('.js .mdw-snackbar');
   for (let i = 0; i < snackbars.length; i += 1) {
-    // Snackbar.attach(snackbars.item(i));
+    Snackbar.attach(snackbars.item(i));
   }
 }
 
@@ -19,18 +20,20 @@ function updateSampleCode() {
   const useJS = jsRequired || jsOptional;
 
   // Strip JS related elements and attributes
-  // Snackbar.detach(sampleComponent);
+  Snackbar.detach(sampleComponent);
 
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
   htmlCodeElement.textContent = convertElementToCode(sampleComponent);
 
   // Reattach JS if requested
   if (useJS) {
-    // Snackbar.attach(sampleComponent);
+    Snackbar.attach(sampleComponent);
   }
 
   const jsCodeElement = document.getElementsByClassName('component-js')[0];
-  jsCodeElement.textContent = '/* None */';
+  jsCodeElement.textContent = [
+    'Snackbar.show(snackBarElement);',
+  ].join('\n');
 }
 
 /**
@@ -39,14 +42,15 @@ function updateSampleCode() {
  */
 function onOptionChange(event) {
   const { name, value, checked } = event.target;
+  const snackbar = sampleComponent.getElementsByClassName('mdw-snackbar')[0];
   const span = sampleComponent.getElementsByTagName('span')[0];
   let buttonElement = sampleComponent.getElementsByClassName('mdw-button')[0];
   switch (name) {
     case 'stacked':
       if (checked) {
-        sampleComponent.setAttribute('mdw-stacked', '');
+        snackbar.setAttribute('mdw-stacked', '');
       } else {
-        sampleComponent.removeAttribute('mdw-stacked');
+        snackbar.removeAttribute('mdw-stacked');
       }
       break;
     case 'text':
@@ -67,29 +71,43 @@ function onOptionChange(event) {
       switch (value) {
         default:
         case 'auto':
-          sampleComponent.removeAttribute('mdw-hide');
-          sampleComponent.removeAttribute('mdw-show');
+          snackbar.removeAttribute('mdw-hide');
+          snackbar.removeAttribute('mdw-show');
           break;
         case 'show':
-          sampleComponent.removeAttribute('mdw-hide');
-          sampleComponent.setAttribute('mdw-show', '');
+          snackbar.removeAttribute('mdw-hide');
+          snackbar.setAttribute('mdw-show', '');
           break;
         case 'hide':
-          sampleComponent.setAttribute('mdw-hide', '');
-          sampleComponent.removeAttribute('mdw-show');
+          snackbar.setAttribute('mdw-hide', '');
+          snackbar.removeAttribute('mdw-show');
           break;
       }
       break;
     case 'autohide':
       switch (value) {
         case 'none':
-          sampleComponent.removeAttribute('mdw-autohide');
+          snackbar.removeAttribute('mdw-autohide');
           break;
         case '4':
-          sampleComponent.setAttribute('mdw-autohide', '');
+          snackbar.setAttribute('mdw-autohide', '');
           break;
         default:
-          sampleComponent.setAttribute('mdw-autohide', value);
+          snackbar.setAttribute('mdw-autohide', value);
+          break;
+      }
+      break;
+    case 'position':
+      switch (value) {
+        default:
+        case 'start':
+          sampleComponent.removeAttribute('mdw-position');
+          break;
+        case 'center':
+          sampleComponent.setAttribute('mdw-position', 'center');
+          break;
+        case 'end':
+          sampleComponent.setAttribute('mdw-position', 'end');
           break;
       }
       break;
@@ -104,7 +122,7 @@ function onOptionChange(event) {
         buttonElement = document.createElement('button');
         buttonElement.classList.add('mdw-button');
         buttonElement.setAttribute('mdw-theme-color', 'accent');
-        sampleComponent.appendChild(buttonElement);
+        snackbar.appendChild(buttonElement);
       }
       switch (value) {
         case 'short':
@@ -123,7 +141,14 @@ function onOptionChange(event) {
 
 /** @return {void} */
 function setupComponentOptions() {
-  sampleComponent = document.querySelector('.component-sample .mdw-snackbar');
+  sampleComponent = document.querySelector('.component-sample .mdw-snackbar__container');
+  document.querySelector('.component-sample button.mdw-button').addEventListener('click', () => {
+    Snackbar.create({
+      text: `Snackbar created at: ${new Date().toLocaleTimeString()}`,
+      parent: document.querySelector('.js-sample'),
+      show: true,
+    });
+  });
   attachEventListener(
     document.querySelectorAll('input[name]'),
     'change',
