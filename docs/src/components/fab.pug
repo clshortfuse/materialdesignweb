@@ -11,16 +11,47 @@ include ../mixins.pug
           +androidstatusbar('primary-700 dark')
           +toolbar('primary-500 dark', ['menu'], ['search']) JS
           .mdw-fab__wrapper.content(style="padding:16px 8px;")
+            .mdw-type(mdw-style="subheading") Hover
+            div
+              label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+                input.mdw-selection__input(type="checkbox" name="hover" value="hover")
+                .mdw-selection__icon
+                .mdw-selection__label Open on Hover
+            .mdw-type(mdw-style="subheading") Type
+            div
+              label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+                input.mdw-selection__input(type="radio" name="type" value="regular" checked)
+                .mdw-selection__icon
+                .mdw-selection__label Regular (Default)
+              label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+                input.mdw-selection__input(type="radio" name="type" value="mini")
+                .mdw-selection__icon
+                .mdw-selection__label Mini
+              label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+                input.mdw-selection__input(type="radio" name="type" value="extended")
+                .mdw-selection__icon
+                .mdw-selection__label Extended
+              label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+                input.mdw-selection__input(type="radio" name="type" value="extended-hover")
+                .mdw-selection__icon
+                .mdw-selection__label Extended on Hover
             .mdw-fab
-              .mdw-fab__button.mdw-button(mdw-icon mdw-theme-fill="accent dark")
-                .mdw-fab__hidden-text.material-icons add
-                .mdw-fab__shown-text.material-icons clear
+              .mdw-fab__button.mdw-button(mdw-theme-fill="accent dark" mdw-extended="hover")
+                .mdw-fab__icon
+                  .mdw-fab__hidden-icon.material-icons share
+                  .mdw-fab__shown-icon.material-icons clear
+                .mdw-fab__text Share
               .mdw-fab__speed-dial
-                .mdw-button(mdw-icon).material-icons filter_1
-                .mdw-button(mdw-icon).material-icons filter_2
-                .mdw-button(mdw-icon).material-icons filter_3
-                .mdw-button(mdw-icon).material-icons filter_4
-                .mdw-button(mdw-icon).material-icons filter_5
+                .mdw-button.mdw-fab__button(mdw-mini)
+                  .mdw-fab__icon.material-icons filter_1
+                .mdw-button.mdw-fab__button(mdw-mini)
+                  .mdw-fab__icon.material-icons filter_2
+                .mdw-button.mdw-fab__button(mdw-mini)
+                  .mdw-fab__icon.material-icons filter_3
+                .mdw-button.mdw-fab__button(mdw-mini)
+                  .mdw-fab__icon.material-icons filter_4
+                .mdw-button.mdw-fab__button(mdw-mini)
+                  .mdw-fab__icon.material-icons filter_5
         +androidnavbar
     .comparison
       .render
@@ -31,13 +62,19 @@ include ../mixins.pug
             .mdw-fab#my-fab
               a.mdw-fab__close(href="#")
               a.mdw-fab__button.mdw-button(mdw-icon mdw-theme-fill="accent dark" href="#my-fab")
-                .mdw-fab__hidden-text.material-icons add
-                .mdw-fab__shown-text.material-icons clear
+                .mdw-fab__icon
+                  .mdw-fab__hidden-icon.material-icons add
+                  .mdw-fab__shown-icon.material-icons clear
               .mdw-fab__speed-dial
-                .mdw-button(mdw-icon).material-icons filter_1
-                .mdw-button(mdw-icon).material-icons filter_2
-                .mdw-button(mdw-icon).material-icons filter_3
-                .mdw-button(mdw-icon).material-icons filter_4
-                .mdw-button(mdw-icon).material-icons filter_5
+                .mdw-button.mdw-fab__button(mdw-mini)
+                  .mdw-fab__icon.material-icons filter_1
+                .mdw-button.mdw-fab__button(mdw-mini)
+                  .mdw-fab__icon.material-icons filter_2
+                .mdw-button.mdw-fab__button(mdw-mini)
+                  .mdw-fab__icon.material-icons filter_3
+                .mdw-button.mdw-fab__button(mdw-mini)
+                  .mdw-fab__icon.material-icons filter_4
+                .mdw-button.mdw-fab__button(mdw-mini)
+                  .mdw-fab__icon.material-icons filter_5
         +androidnavbar
   script(src='fab.min.js')
