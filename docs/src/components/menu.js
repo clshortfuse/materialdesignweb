@@ -19,6 +19,14 @@ function updateSampleCode() {
   const jsOptional = document.querySelector('input[name="javascript"][value="optional"]').checked;
   const useJS = jsRequired || jsOptional;
 
+  if (jsRequired) {
+    document.querySelector('[name="vdirection"][value="vcenter"]').removeAttribute('disabled');
+    document.querySelector('[name="hdirection"][value="hcenter"]').removeAttribute('disabled');
+  } else {
+    document.querySelector('[name="vdirection"][value="vcenter"]').setAttribute('disabled', '');
+    document.querySelector('[name="hdirection"][value="hcenter"]').setAttribute('disabled', '');
+  }
+
   // Strip JS related elements and attributes
   Menu.detach(sampleComponent);
   let button = document.querySelector('.component-sample .mdw-button');
@@ -114,33 +122,67 @@ function initializeSampleComponents() {
  */
 function onOptionChange(event) {
   const { name, value, checked } = event.target;
+  let mdwDirection = sampleComponent.getAttribute('mdw-direction') || '';
   let mdwPosition = sampleComponent.getAttribute('mdw-position') || '';
 
   switch (name) {
-    case 'hposition':
+    case 'vposition':
       mdwPosition = mdwPosition
-        .replace('end', '')
-        .replace('left', '')
-        .replace('right', '')
+        .replace('bottom', '')
+        .replace('top', '')
+        .replace('vcenter', '')
         .trim();
       switch (value) {
-        case 'start':
+        case 'auto':
           break;
         default:
           mdwPosition = `${value} ${mdwPosition}`.trim();
           break;
       }
       break;
-    case 'vposition':
+    case 'hposition':
       mdwPosition = mdwPosition
-        .replace('top', '')
-        .replace('bottom', '')
+        .replace('start', '')
+        .replace('end', '')
+        .replace('left', '')
+        .replace('right', '')
+        .replace('hcenter', '')
         .trim();
       switch (value) {
         case 'auto':
           break;
         default:
           mdwPosition = `${mdwPosition} ${value}`.trim();
+          break;
+      }
+      break;
+    case 'vdirection':
+      mdwDirection = mdwDirection
+        .replace('down', '')
+        .replace('up', '')
+        .replace('vcenter', '')
+        .trim();
+      switch (value) {
+        case 'auto':
+          break;
+        default:
+          mdwDirection = `${value} ${mdwDirection}`.trim();
+          break;
+      }
+      break;
+    case 'hdirection':
+      mdwDirection = mdwDirection
+        .replace('normal', '')
+        .replace('reverse', '')
+        .replace('ltr', '')
+        .replace('rtl', '')
+        .replace('hcenter', '')
+        .trim();
+      switch (value) {
+        case 'auto':
+          break;
+        default:
+          mdwDirection = `${mdwDirection} ${value}`.trim();
           break;
       }
       break;
@@ -160,6 +202,11 @@ function onOptionChange(event) {
     sampleComponent.removeAttribute('mdw-position');
   } else if (sampleComponent.getAttribute('mdw-position') !== mdwPosition) {
     sampleComponent.setAttribute('mdw-position', mdwPosition);
+  }
+  if (!mdwDirection) {
+    sampleComponent.removeAttribute('mdw-direction');
+  } else if (sampleComponent.getAttribute('mdw-direction') !== mdwDirection) {
+    sampleComponent.setAttribute('mdw-direction', mdwDirection);
   }
   updateSampleCode();
 }

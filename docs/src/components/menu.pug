@@ -14,9 +14,8 @@ include ../mixins.pug
         .component-sample
           .component-sample__container
             .mdw-menu__wrapper
-              a.mdw-button(href="#sample-menu") Open
-              .mdw-menu#sample-menu
-                a.mdw-menu__close(href="#")
+              button.mdw-button Open
+              .mdw-menu
                 .mdw-menu__popup
                   .mdw-menu__item
                     .mdw-menu__icon.material-icons format_bold
@@ -42,21 +41,43 @@ include ../mixins.pug
           .mdw-type(mdw-style="subheading") Javascript
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="javascript" value="required")
+              input.mdw-selection__input(type="radio" name="javascript" value="required" checked)
               .mdw-selection__icon
               .mdw-selection__label Required
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="javascript" value="optional" checked)
+              input.mdw-selection__input(type="radio" name="javascript" value="optional")
               .mdw-selection__icon
               .mdw-selection__label Optional
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="javascript" value="none")
               .mdw-selection__icon
               .mdw-selection__label None
+          .mdw-type(mdw-style="subheading") Vertical Position
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="vposition" value="auto" checked)
+              .mdw-selection__icon
+              .mdw-selection__label Auto
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="vposition" value="bottom")
+              .mdw-selection__icon
+              .mdw-selection__label Bottom
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="vposition" value="top")
+              .mdw-selection__icon
+              .mdw-selection__label Top
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="vposition" value="vcenter")
+              .mdw-selection__icon
+              .mdw-selection__label Center
           .mdw-type(mdw-style="subheading") Horizontal Position
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="hposition" value="start" checked)
+              input.mdw-selection__input(type="radio" name="hposition" value="auto" checked)
+              .mdw-selection__icon
+              .mdw-selection__label Auto
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="hposition" value="start")
               .mdw-selection__icon
               .mdw-selection__label Start
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
@@ -71,20 +92,54 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="hposition" value="right")
               .mdw-selection__icon
               .mdw-selection__label Right
-          .mdw-type(mdw-style="subheading") Vertical Position
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="hposition" value="hcenter")
+              .mdw-selection__icon
+              .mdw-selection__label Center
+          .mdw-type(mdw-style="subheading") Vertical Direction
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="vposition" value="auto" checked)
+              input.mdw-selection__input(type="radio" name="vdirection" value="auto" checked)
               .mdw-selection__icon
               .mdw-selection__label Auto
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="vposition" value="top")
+              input.mdw-selection__input(type="radio" name="vdirection" value="down")
               .mdw-selection__icon
-              .mdw-selection__label Top
+              .mdw-selection__label Down
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="vposition" value="bottom")
+              input.mdw-selection__input(type="radio" name="vdirection" value="up")
               .mdw-selection__icon
-              .mdw-selection__label Bottom
+              .mdw-selection__label Up
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="vdirection" value="vcenter")
+              .mdw-selection__icon
+              .mdw-selection__label Center
+          .mdw-type(mdw-style="subheading") Horizontal Direction
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="hdirection" value="auto" checked)
+              .mdw-selection__icon
+              .mdw-selection__label Auto
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="hdirection" value="normal")
+              .mdw-selection__icon
+              .mdw-selection__label Normal
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="hdirection" value="reverse")
+              .mdw-selection__icon
+              .mdw-selection__label Reverse
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="hdirection" value="ltr")
+              .mdw-selection__icon
+              .mdw-selection__label Left-to-Right
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="hdirection" value="rtl")
+              .mdw-selection__icon
+              .mdw-selection__label Right-to-Left
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="hdirection" value="hcenter")
+              .mdw-selection__icon
+              .mdw-selection__label Center
           .mdw-type(mdw-style="subheading") Width Units
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
@@ -135,7 +190,7 @@ include ../mixins.pug
                 .mdw-tooltip__wrapper.mdw-menu__wrapper
                   a.mdw-tooltip__target.mdw-button(mdw-icon mdw-more-button href="#moremenu").material-icons more_vert
                   .mdw-tooltip Options
-                  .mdw-menu#moremenu(mdw-position="top end" mdw-width-units="3" mdw-theme-fill="light")
+                  .mdw-menu#moremenu(mdw-direction="reverse" mdw-position="end" mdw-width-units="3" mdw-theme-fill="light")
                     a.mdw-menu__close(href="#")
                     .mdw-menu__popup
                       .mdw-menu__text Refresh
@@ -174,7 +229,7 @@ include ../mixins.pug
             div(style="height:400px")
             .mdw-menu__wrapper
               a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#infomenu") Info
-              .mdw-menu#infomenu(mdw-width-units=4 mdw-position="bottom")
+              .mdw-menu#infomenu(mdw-width-units=4 mdw-direction="up" mdw-position="top")
                 a.mdw-menu__close(href="#")
                 .mdw-menu__popup
                   .mdw-menu__item(disabled)
@@ -198,7 +253,7 @@ include ../mixins.pug
                     .mdw-menu__text Apps
             .mdw-menu__wrapper
               a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#iconmenu") Icons
-              .mdw-menu#iconmenu(mdw-width-units=4 mdw-position="bottom")
+              .mdw-menu#iconmenu(mdw-width-units=4 mdw-direction="up" mdw-position="top")
                 a.mdw-menu__close(href="#")
                 .mdw-menu__popup
                   .mdw-menu__item
@@ -215,7 +270,7 @@ include ../mixins.pug
                     .mdw-menu__info ⌘U
             .mdw-menu__wrapper.js
               button.mdw-button(mdw-theme-fill="primary dark" mdw-raised) JS
-              .mdw-menu(mdw-width-units=4 mdw-position="end")
+              .mdw-menu(mdw-width-units=4 mdw-direction="reverse")
                 .mdw-menu__popup
                   .mdw-menu__item
                     .mdw-menu__icon.material-icons format_bold
