@@ -1,5 +1,5 @@
 import { Ripple } from '../ripple/index';
-import { findElementParentByClassName, dispatchDomEvent } from '../common/dom';
+import { dispatchDomEvent, isRtl } from '../common/dom';
 
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
@@ -265,74 +265,316 @@ class Menu {
     const useAlignTarget = (alignTarget !== false);
     const margin = useAlignTarget ? '0' : '';
     const mdwPosition = menuElement.getAttribute('mdw-position') || '';
+    const mdwDirection = menuElement.getAttribute('mdw-direction') || '';
     let alignTop = mdwPosition.indexOf('top') !== -1;
     let alignBottom = mdwPosition.indexOf('bottom') !== -1;
-    let alignLeft = mdwPosition.indexOf('lef') !== -1;
-    let alignRight = mdwPosition.indexOf('right') !== -1;
+    let alignVCenter = mdwPosition.indexOf('vcenter') !== -1;
+
+    const alignStart = mdwPosition.indexOf('start') !== -1;
     const alignEnd = mdwPosition.indexOf('end') !== -1;
-    const alignStart = !alignLeft && !alignRight && !alignEnd;
+    let alignLeft = mdwPosition.indexOf('left') !== -1;
+    let alignRight = mdwPosition.indexOf('right') !== -1;
+    let alignHCenter = mdwPosition.indexOf('hcenter') !== -1;
+
+    let openUp = mdwDirection.indexOf('up') !== -1;
+    let openDown = mdwDirection.indexOf('down') !== -1;
+    const openNormal = mdwDirection.indexOf('normal') !== -1;
+    const openReverse = mdwDirection.indexOf('reverse') !== -1;
+    let openVCenter = mdwDirection.indexOf('vcenter') !== -1;
+    let openHCenter = mdwDirection.indexOf('hcenter') !== -1;
+    let openLtr = mdwDirection.indexOf('ltr') !== -1;
+    let openRtl = mdwDirection.indexOf('rtl') !== -1;
+
     const target = event.currentTarget || event.target;
 
-    const offsetTop = (useAlignTarget ? event.offsetY : 0);
+    let isPageRTL = null;
+    if (alignStart || alignEnd || openNormal || openReverse) {
+      // Using page-direction based values
+      isPageRTL = isRtl();
+      if (alignStart || alignEnd) {
+        if (alignStart) {
+          if (isPageRTL) {
+            alignRight = true;
+          } else {
+            alignLeft = true;
+          }
+        } else if (isPageRTL) {
+          alignLeft = true;
+        } else {
+          alignRight = true;
+        }
+      }
+      if (openNormal || openReverse) {
+        if (openNormal) {
+          if (isPageRTL) {
+            openRtl = true;
+          } else {
+            openLtr = true;
+          }
+        } else if (isPageRTL) {
+          openLtr = true;
+        } else {
+          openRtl = true;
+        }
+      }
+    }
+    const offsetTop = (useAlignTarget ? -event.offsetY : 0);
     const offsetBottom = (useAlignTarget ? target.clientHeight - event.offsetY : 0);
+    const offsetLeft = (useAlignTarget ? -event.offsetX : 0);
+    const offsetRight = (useAlignTarget ? target.clientWidth - event.offsetX : 0);
     let { pageX, pageY } = event;
     if (!pageX && !pageY) {
       const rect = target.getBoundingClientRect();
       pageX = rect.x;
       pageY = rect.y;
     }
-    if (!alignTop && !alignBottom) {
-      // Dynamic vertical position
-      if (popupElement.clientHeight + (pageY - offsetTop) > window.innerHeight) {
-        alignBottom = true;
-      } else {
-        alignTop = true;
+
+    /* Automatic Positioning
+     *
+     * 9 Positions
+     *   3      7      4
+     *     ┌─────────┐
+     *     │         │
+     *   5 │    9    │ 6
+     *     │         │
+     *     └─────────┘
+     *   1      8      2
+     *
+     * 1: Bottom Left
+     * 2: Bottom Right
+     * 3: Top Left
+     * 4: Top Right
+     * 5: VCenter Left
+     * 6: VCenter Right
+     * 7: HCenter Top
+     * 8: HCenter Bottom
+     * 9: VCenter HCenter
+     *
+     * 9 Directions:
+     * a - Down LTR
+     * b - Down RTL
+     * c - Up LTR
+     * d - Up RTL
+     * e - LTR
+     * f - RTL
+     * g - Down
+     * h - Up
+     * i - Center
+     *
+     *
+     * 16 total combos
+     * 1a 1b 1c 1d  └↘ └↙ └↗ └↖
+     * 2a 2b 2c 2d  ┘↘ ┘↙ ┘↗ ┘↖
+     * 3a 3b 3c 3d  ┌↘ ┌↙ ┌↗ ┌↖
+     * 4a 4b 4c 4d  ┐↘ ┐↙ ┐↗ ┐↖
+     *
+     * Avoid using opposite angle
+     *
+     * 1a XX 1c 1d  └↘ ██ └↗ └↖
+     * XX 2b 2c 2d  ██ ┘↙ ┘↗ ┘↖
+     * 1a 3b 3c XX  ┌↘ ┌↙ ┌↗ ██
+     * 4a 4b XX 4d  ┐↘ ┐↙ ██ ┐↖
+     *
+     *
+     * Preference Order:
+     * - Flow from corner           1a 2b 3c 4d    └↘ ┘↙ ┌↗ ┐↖
+     * - Open adjacent to target    4a 3b 2c 1d    ┐↘ ┌↙ ┘↗ └↖
+     * - Overlay target             3a 4b 1c 2d    ┌↘ ┐↙ └↗ ┘↖
+     * - Open from horizontal side  5e 6f          │→ │←
+     * - Open from center           9i             █·
+     */
+
+    popupElement.style.setProperty('max-height', 'none');
+    const popupElementHeight = popupElement.clientHeight;
+    const canOpenDownwardsFromBottom = !alignTop && !alignVCenter
+      && !openUp && !openVCenter
+      && popupElementHeight + (pageY + offsetBottom) <= window.innerHeight;
+    const canOpenDownwardsFromTop = !alignBottom && !alignVCenter
+      && !openUp && !openVCenter
+      && popupElementHeight + (pageY + offsetTop) <= window.innerHeight;
+    const canOpenUpwardsFromTop = !alignBottom && !alignVCenter && !openDown
+      && !openVCenter
+      && pageY + offsetTop >= popupElementHeight;
+    const canOpenUpwardsFromBottom = !alignTop && !alignVCenter && !openDown
+      && !openVCenter
+      && pageY + offsetBottom >= popupElementHeight;
+    const canOpenRightwardsFromLeft = !alignRight && !alignHCenter
+      && !openRtl && !openHCenter
+      && popupElement.clientWidth + (pageX + offsetLeft) <= window.innerWidth;
+    const canOpenRightwardsFromRight = !alignLeft && !alignHCenter
+      && !openRtl && !openHCenter
+      && popupElement.clientWidth + (pageX + offsetRight) <= window.innerWidth;
+    const canOpenLeftwardsFromRight = !alignLeft && !alignHCenter
+      && !openLtr && !openHCenter
+      && pageX + offsetRight >= popupElement.clientWidth;
+    const canOpenLeftwardsFromLeft = !alignRight && !alignHCenter
+      && !openLtr && !openHCenter
+      && pageX + offsetLeft >= popupElement.clientWidth;
+    const canOpenFromCenter = !alignLeft && !alignRight && !alignTop && !alignBottom
+      && !openUp && !openDown
+      && ((pageX + offsetLeft) / 2) >= (popupElement.clientWidth / 2)
+      && (popupElement.clientWidth / 2) + ((pageX + offsetLeft) / 2) <= window.innerWidth;
+    popupElement.style.removeProperty('max-height');
+    const candidates = [
+      canOpenDownwardsFromBottom && canOpenRightwardsFromLeft,  // 1a └↘
+      canOpenDownwardsFromBottom && canOpenLeftwardsFromRight,  // 2b ┘↙
+      canOpenUpwardsFromTop && canOpenRightwardsFromLeft,       // 3c ┌↗
+      canOpenUpwardsFromTop && canOpenLeftwardsFromLeft,        // 4d ┐↖
+      canOpenDownwardsFromTop && canOpenRightwardsFromRight,    // 4a ┐↘
+      canOpenDownwardsFromTop && canOpenLeftwardsFromLeft,      // 3b ┌↙
+      canOpenUpwardsFromBottom && canOpenRightwardsFromRight,   // 2c ┘↗
+      canOpenUpwardsFromBottom && canOpenLeftwardsFromLeft,     // 1d └↖
+      canOpenDownwardsFromTop && canOpenRightwardsFromLeft,     // 3a ┌↘
+      canOpenDownwardsFromTop && canOpenLeftwardsFromRight,     // 4b ┐↙
+      canOpenUpwardsFromBottom && canOpenRightwardsFromLeft,    // 1c └↗
+      canOpenUpwardsFromBottom && canOpenRightwardsFromRight,   // 2d ┘↖
+      canOpenRightwardsFromLeft,                                // 5e │→
+      canOpenLeftwardsFromRight,                                // 6f │←
+      canOpenFromCenter,                                        // 9i █·
+    ].map((value, index) => {
+      if (value) {
+        return index + 1;
       }
-    }
-    if (alignTop) {
-      top = `${pageY - offsetTop}px`;
-      transformOrigin = 'top';
-    } else {
-      top = `${(pageY + offsetBottom) - popupElement.clientHeight}px`;
-      transformOrigin = 'bottom';
+      return 0;
+    }).filter(value => value !== 0);
+    if (candidates.length) {
+      let candidateNumber;
+      if (isPageRTL === null) {
+        isPageRTL = isRtl();
+      }
+      if (isPageRTL) {
+        candidateNumber = [2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 15]
+          .find(number => candidates.indexOf(number) !== -1);
+      } else {
+        candidateNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+          .find(number => candidates.indexOf(number) !== -1);
+      }
+      if (candidateNumber == null) {
+        candidateNumber = isPageRTL ? 2 : 1;
+      }
+      switch (candidateNumber) {
+        // Position
+        default:
+        case 1:
+        case 8:
+        case 11:
+          alignBottom = true; alignLeft = true;
+          break;
+        case 2:
+        case 7:
+        case 12:
+          alignBottom = true; alignRight = true;
+          break;
+        case 3:
+        case 6:
+        case 9:
+          alignTop = true; alignLeft = true;
+          break;
+        case 4:
+        case 5:
+        case 10:
+          alignTop = true; alignRight = true;
+          break;
+        case 13:
+          alignVCenter = true; alignLeft = true;
+          break;
+        case 14:
+          alignVCenter = true; alignRight = true;
+          break;
+        case 15:
+          alignVCenter = true; alignHCenter = true;
+      }
+      switch (candidateNumber) {
+        // Direction
+        default:
+        case 1:
+        case 5:
+        case 9:
+          openDown = true; openLtr = true;
+          break;
+        case 2:
+        case 6:
+        case 10:
+          openDown = true; openRtl = true;
+          break;
+        case 3:
+        case 7:
+        case 11:
+          openUp = true; openLtr = true;
+          break;
+        case 4:
+        case 8:
+        case 12:
+          openUp = true; openRtl = true;
+          break;
+        case 13:
+          openLtr = true; openVCenter = true;
+          break;
+        case 14:
+          openRtl = true; openVCenter = true;
+          break;
+        case 15:
+          openHCenter = true; openVCenter = true;
+          break;
+      }
     }
 
-    const offsetLeft = (useAlignTarget ? event.offsetX : 0);
-    const offsetRight = (useAlignTarget ? target.clientWidth - event.offsetX : 0);
-    if (alignStart || alignEnd) {
-      const isRtl = (document.documentElement.getAttribute('dir') === 'rtl');
-      if (alignStart) {
-        if (isRtl) {
-          alignRight = true;
-        } else {
-          alignLeft = true;
-        }
-      } else if (isRtl) {
-        alignLeft = true;
+    if (openLtr) {
+      if (alignRight) {
+        left = `${pageX + offsetRight}px`;
+      } else if (alignHCenter) {
+        left = `${pageX + ((offsetLeft + offsetRight) / 2)}px`;
       } else {
-        alignRight = true;
+        left = `${pageX + offsetLeft}px`;
       }
-    }
-    if (!alignLeft && !alignRight) {
-      // Dynamic horizontal position
-      if (popupElement.clientWidth + (pageX - offsetLeft) > window.innerWidth) {
-        // Can't open to the right
-        alignRight = true;
+      transformOrigin = 'left';
+    } else if (openHCenter) {
+      if (alignLeft) {
+        left = `${(pageX + offsetLeft) - (popupElement.clientWidth / 2)}px`;
+      } else if (alignRight) {
+        left = `${(pageX + offsetRight) - (popupElement.clientWidth / 2)}px`;
       } else {
-        const isRtl = (document.documentElement.getAttribute('dir') === 'rtl');
-        if (isRtl) {
-          alignRight = true;
-        } else {
-          alignLeft = true;
-        }
+        left = `${(pageX + ((offsetLeft + offsetRight) / 2)) - (popupElement.clientWidth / 2)}px`;
       }
+      transformOrigin = 'center';
+    } else {
+      if (alignLeft) {
+        left = `${(pageX + offsetLeft) - popupElement.clientWidth}px`;
+      } else if (alignHCenter) {
+        left = `${(pageX + ((offsetLeft + offsetRight) / 2)) - popupElement.clientWidth}px`;
+      } else {
+        left = `${(pageX + offsetRight) - popupElement.clientWidth}px`;
+      }
+      transformOrigin = 'right';
     }
-    if (alignLeft) {
-      left = `${pageX - offsetLeft}px`;
-      transformOrigin += ' left';
-    } else if (alignRight) {
-      left = `${(pageX + offsetRight) - popupElement.clientWidth}px`;
-      transformOrigin += ' right';
+
+    if (openUp) {
+      if (alignBottom) {
+        top = `${(pageY + offsetBottom) - popupElement.clientHeight}px`;
+      } else if (alignVCenter) {
+        top = `${(pageY + ((offsetTop + offsetBottom) / 2)) - popupElement.clientHeight}px`;
+      } else {
+        top = `${(pageY + offsetTop) - popupElement.clientHeight}px`;
+      }
+      transformOrigin += ' bottom';
+    } else if (openVCenter) {
+      if (alignBottom) {
+        top = `${(pageY + offsetBottom) - (popupElement.clientHeight / 2)}px`;
+      } else if (alignTop) {
+        top = `${(pageY + offsetTop) - (popupElement.clientHeight / 2)}px`;
+      } else {
+        top = `${(pageY + ((offsetTop + offsetBottom) / 2)) - (popupElement.clientHeight / 2)}px`;
+      }
+      transformOrigin += ' center';
+    } else {
+      if (alignTop) {
+        top = `${pageY + offsetTop}px`;
+      } else if (alignVCenter) {
+        top = `${pageY + ((offsetTop + offsetBottom) / 2)}px`;
+      } else {
+        top = `${pageY + offsetBottom}px`;
+      }
+      transformOrigin += ' top';
     }
 
     popupElement.style.setProperty('top', top);
@@ -345,7 +587,7 @@ class Menu {
   }
 
   /**
-   * @param {Element} menuElement 
+   * @param {Element} menuElement
    * @return {void}
    */
   static refreshMenuItems(menuElement) {

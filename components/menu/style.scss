@@ -57,50 +57,83 @@ $checkbox-icon-offset-x: dp(6.04);
     }
   }
 
-  top: 0;
+  // Default position is bottom
+  // Default direction is start
+
+  top: 100%;
+  bottom: auto;
   left: 0;
   right: auto;
-  bottom: auto;
-  transform-origin: top left;
-  &[mdw-position~="right"],
-  &[mdw-position~="end"] {
+  transform-origin: left top;
+  html[dir=rtl] & {
     left: auto;
     right: 0;
-    transform-origin: top right;
+    transform-origin: right top;
   }
-  &[mdw-position~="bottom"] {
-    top: auto;
-    bottom: 0;
-    transform-origin: bottom left;
-    &[mdw-position~="right"],
-    &[mdw-position~="end"] {
-      transform-origin: bottom right;
+
+  &[mdw-position~="top"] {
+    top: 0;
+  }
+  &[mdw-position~="vcenter"] {
+    top: 50%;
+  }
+  &[mdw-position~="hcenter"] {
+    left: 50%;
+  }
+  &[mdw-position~="right"],
+  &[mdw-position~="end"] {
+    left: 100%;
+    right: auto;
+    html[dir=rtl] & {
+      left: auto;
+      right: 100%;
     }
   }
 
-  [dir=rtl] & {
-    .mdw-menu__popup {
+  &[mdw-direction~="reverse"],
+  &[mdw-direction~="rtl"] {
+    left: auto;
+    right: 100%;
+    transform-origin: right top;
+    html[dir=rtl] & {
+      left: 100%;
+      right: auto;
+      transform-origin: left top;
+    }
+    &[mdw-position~="right"],
+    &[mdw-position~="end"] {
       left: auto;
       right: 0;
-      transform-origin: top right;
-    }
-    &[mdw-position~="left"],
-    &[mdw-position~="end"] {
-      left: 0;
-      right: auto;
-      transform-origin: top left;
-    }
-    &[mdw-position~="bottom"] {
-      transform-origin: bottom right;
-      &[mdw-position~="left"],
-      &[mdw-position~="end"] {
+      html[dir=rtl] & {
         left: 0;
         right: auto;
-        transform-origin: bottom left;
       }
     }
   }
-  @for $i from 3 to 7 {
+  &[mdw-direction~="up"] {
+    top: auto;
+    bottom: 0;
+    transform-origin: left bottom;
+    html[dir=rtl] & {
+      transform-origin: right bottom;
+    }
+
+    &[mdw-position~="top"] {
+      bottom: 100%;
+    }
+    &[mdw-position~="vcenter"] {
+      bottom: 50%;
+    }
+    &[mdw-direction~="reverse"],
+    &[mdw-direction~="rtl"] {
+      transform-origin: right bottom;
+      html[dir=rtl] & {
+        transform-origin: left bottom;
+      }
+    }
+  }
+
+  @for $i from 3 to 8 {
     &[mdw-width-units="#{$i}"] {
       .mdw-menu__popup {
         width: calc(#{$menu__unit-width} * #{$i});
@@ -139,7 +172,7 @@ $checkbox-icon-offset-x: dp(6.04);
   padding-bottom: dp(8);
   border-radius: dp(2);
   min-width: $menu__unit-width * 2;
-  max-width: $menu__unit-width * 5;
+  max-width: $menu__unit-width * 7;
   outline: none;
   overflow-y: auto;
   -ms-overflow-style: -ms-autohiding-scrollbar;
