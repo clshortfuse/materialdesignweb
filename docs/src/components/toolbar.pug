@@ -65,13 +65,15 @@ include ../mixins.pug
           .mdw-toolbar__content
             label.mdw-textfield(style="font-size: 1.5rem")
               input.mdw-textfield__input(value="Project Properties" placeholder=" ")
-              .mdw-textfield__label Title
-              .mdw-textfield__border-line
+              .mdw-textfield__border
+                .mdw-textfield__outline-gap
+                  .mdw-textfield__label Title
             div(style="height:8px")
             label.mdw-textfield
               input.mdw-textfield__input(value="Sync with the team abo" placeholder=" ")
-              .mdw-textfield__label Description
-              .mdw-textfield__border-line
+              .mdw-textfield__border
+                .mdw-textfield__outline-gap
+                  .mdw-textfield__label Description
             div(style="height:24px")
               // Spec says 16dp, but it's actually 24dp
         .content

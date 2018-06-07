@@ -1,5 +1,4 @@
 import { getChildElementByClass } from '../common/dom';
-import { Ripple } from '../ripple/index';
 
 class TextField {
   /**
@@ -11,15 +10,8 @@ class TextField {
     const input = getChildElementByClass(textfieldElement, 'mdw-textfield__input');
     if (input) {
       input.addEventListener('input', TextField.onInput);
-      TextField.onInput({ target: input });
+      TextField.onInput({ currentTarget: input });
     }
-    let border = getChildElementByClass(textfieldElement, 'mdw-textfield__border-line');
-    if (!border) {
-      border = document.createElement('div');
-      border.classList.add('mdw-textfield__border-line');
-      textfieldElement.appendChild(border);
-    }
-    Ripple.attach(border);
   }
 
   /**
@@ -32,10 +24,6 @@ class TextField {
     if (input) {
       input.removeEventListener('input', TextField.onInput);
     }
-    const border = getChildElementByClass(textfieldElement, 'mdw-textfield__border-line');
-    if (border) {
-      Ripple.detach(border);
-    }
   }
 
   /**
@@ -43,8 +31,8 @@ class TextField {
    * @return {void}
    */
   static onInput(event) {
-    const inputElement = event.target;
-    if (inputElement.parentElement.hasAttribute('mdw-multiline')) {
+    const inputElement = event.currentTarget;
+    if (inputElement.parentElement.hasAttribute('mdw-autosize')) {
       TextField.updateTextAreaSize(inputElement);
     }
     TextField.updateInputEmptyState(inputElement);

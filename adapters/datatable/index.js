@@ -576,7 +576,8 @@ class DataTableAdapter {
       });
       select.setAttribute('value', (options.limit && options.limit.toString()) || '10');
       const dropdownIcon = document.createElement('div');
-      dropdownIcon.classList.add('mdw-textfield__dropdown-button');
+      dropdownIcon.classList.add('mdw-textfield__icon');
+      dropdownIcon.setAttribute('mdw-dropdown', '');
       limitsElement.appendChild(select);
       limitsElement.appendChild(dropdownIcon);
       optionsElement.appendChild(rowsPerPageText);

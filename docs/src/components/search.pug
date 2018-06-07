@@ -109,8 +109,9 @@ include ../mixins.pug
             div
               label.mdw-textfield#search-textfield-custom1(mdw-theme-color="accent")
                 input.mdw-textfield__input(placeholder=" ")
-                .mdw-textfield__label Property
-                .mdw-textfield__border-line
+                .mdw-textfield__border
+                  .mdw-textfield__outline-gap
+                    .mdw-textfield__label Property
                 .mdw-textfield__dropdown(mdw-type="list" mdw-hide)
                   .custom-busy-indicator.display-flex(flex-align-items="center")
                     .mdw-progress-circle
@@ -128,10 +129,11 @@ include ../mixins.pug
               li replace input on selection
               li disabled item filter
             div
-              label.mdw-textfield#search-textfield-custom2(mdw-box)
+              label.mdw-textfield#search-textfield-custom2(mdw-outlined)
                 input.mdw-textfield__input(placeholder=" ")
-                .mdw-textfield__label Property
-                .mdw-textfield__border-line
+                .mdw-textfield__border
+                  .mdw-textfield__outline-gap
+                    .mdw-textfield__label Property
                 .mdw-textfield__dropdown(mdw-type="list" mdw-hide)
                   .custom-busy-indicator.display-flex(flex-align-items="center")
                     .mdw-progress-circle

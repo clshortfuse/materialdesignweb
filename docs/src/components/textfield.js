@@ -17,7 +17,14 @@ let sampleComponent;
 function updateSampleCode() {
   const jsRequired = document.querySelector('input[name="javascript"][value="required"]').checked;
   const jsOptional = document.querySelector('input[name="javascript"][value="optional"]').checked;
+  const useAutoSize = document.querySelector('input[name="autosize"]').checked;
+  const isTextArea = document.querySelector('input[name="field-type"][value="text-area"]').checked;
   const useJS = jsRequired || jsOptional;
+  if (useAutoSize && useJS && isTextArea) {
+    sampleComponent.setAttribute('mdw-autosize', '');
+  } else {
+    sampleComponent.removeAttribute('mdw-autosize');
+  }
 
   // Strip JS related elements and attributes
   TextField.detach(sampleComponent);
@@ -46,30 +53,38 @@ function onOptionChange(event) {
   let errorText;
   let prefixText;
   let suffixText;
-  let iconElement;
+  let signifierElement;
   switch (name) {
     case 'field-type':
       switch (value) {
         default:
         case 'single-type':
-          sampleComponent.removeAttribute('mdw-multiline');
-          sampleComponent.removeAttribute('mdw-textarea');
+          sampleComponent.removeAttribute('mdw-autosize');
           desiredTagName = 'input';
           break;
-        case 'multi-line':
-          sampleComponent.setAttribute('mdw-multiline', '');
-          sampleComponent.removeAttribute('mdw-textarea');
-          desiredTagName = 'textarea';
-          break;
         case 'text-area':
-          sampleComponent.removeAttribute('mdw-multiline');
-          sampleComponent.setAttribute('mdw-textarea', '');
           desiredTagName = 'textarea';
           break;
         case 'dropdown':
-          sampleComponent.removeAttribute('mdw-multiline');
-          sampleComponent.removeAttribute('mdw-textarea');
+          sampleComponent.removeAttribute('mdw-autosize');
           desiredTagName = 'select';
+          break;
+      }
+      break;
+    case 'style':
+      switch (value) {
+        default:
+        case 'filled':
+          sampleComponent.removeAttribute('mdw-outlined');
+          sampleComponent.removeAttribute('mdw-solo');
+          break;
+        case 'outlined':
+          sampleComponent.setAttribute('mdw-outlined', '');
+          sampleComponent.removeAttribute('mdw-solo');
+          break;
+        case 'solo':
+          sampleComponent.removeAttribute('mdw-outlined');
+          sampleComponent.setAttribute('mdw-solo', '');
           break;
       }
       break;
@@ -78,6 +93,13 @@ function onOptionChange(event) {
         sampleComponent.setAttribute('mdw-box', '');
       } else {
         sampleComponent.removeAttribute('mdw-box');
+      }
+      break;
+    case 'outlined':
+      if (checked) {
+        sampleComponent.setAttribute('mdw-outlined', '');
+      } else {
+        sampleComponent.removeAttribute('mdw-outlined');
       }
       break;
     case 'disabled':
@@ -120,22 +142,22 @@ function onOptionChange(event) {
         suffixText.parentElement.removeChild(suffixText);
       }
       break;
-    case 'icon':
-      iconElement = sampleComponent.getElementsByClassName('mdw-textfield__icon')[0];
+    case 'signifier':
+      signifierElement = sampleComponent.getElementsByClassName('mdw-textfield__signifier')[0];
       if (checked) {
-        if (!iconElement) {
-          iconElement = document.createElement('div');
-          iconElement.classList.add('mdw-textfield__icon');
-          iconElement.classList.add('material-icons');
-          iconElement.textContent = 'security';
+        if (!signifierElement) {
+          signifierElement = document.createElement('div');
+          signifierElement.classList.add('mdw-textfield__signifier');
+          signifierElement.classList.add('material-icons');
+          signifierElement.textContent = 'security';
           if (inputElement.nextElementSibling) {
-            sampleComponent.insertBefore(iconElement, inputElement.nextElementSibling);
+            sampleComponent.insertBefore(signifierElement, inputElement.nextElementSibling);
           } else {
-            sampleComponent.appendChild(iconElement);
+            sampleComponent.appendChild(signifierElement);
           }
         }
-      } else if (iconElement) {
-        iconElement.parentElement.removeChild(iconElement);
+      } else if (signifierElement) {
+        signifierElement.parentElement.removeChild(signifierElement);
       }
       break;
     case 'helper-text':
@@ -162,21 +184,6 @@ function onOptionChange(event) {
         }
       } else if (errorText) {
         errorText.parentElement.removeChild(errorText);
-      }
-      break;
-    case 'content':
-      switch (value) {
-        case 'text':
-          sampleComponent.removeAttribute('mdw-icon');
-          sampleComponent.classList.remove('material-icons');
-          sampleComponent.textContent = 'Button';
-          break;
-        case 'icon':
-          sampleComponent.setAttribute('mdw-icon', '');
-          sampleComponent.classList.add('material-icons');
-          sampleComponent.textContent = 'favorite';
-          break;
-        default:
       }
       break;
     case 'color':
@@ -210,7 +217,7 @@ function onOptionChange(event) {
     }
     inputElement.parentElement.replaceChild(newElement, inputElement);
     inputElement = newElement;
-    let dropdown = sampleComponent.getElementsByClassName('mdw-textfield__dropdown-button')[0];
+    let dropdown = sampleComponent.getElementsByClassName('mdw-textfield__icon')[0];
     if (desiredTagName === 'select') {
       const option1 = document.createElement('option');
       option1.setAttribute('value', '');
@@ -226,7 +233,8 @@ function onOptionChange(event) {
       inputElement.appendChild(option3);
       if (!dropdown) {
         dropdown = document.createElement('div');
-        dropdown.classList.add('mdw-textfield__dropdown-button');
+        dropdown.classList.add('mdw-textfield__icon');
+        dropdown.setAttribute('mdw-dropdown', '');
         sampleComponent.appendChild(dropdown);
       }
     } else if (dropdown) {

@@ -1,7 +1,6 @@
 // https://material.io/guidelines/components/textfields.html
 
 
-@import '../common/ripple.scss';
 @import '../common/functions.scss';
 @import '../common/variables.scss';
 @import '../common/motion.scss';
@@ -33,44 +32,71 @@ $icon-signifier__padding-end: dp(16);
 // Grid Layout
 //     1   |  2  |   3    |   4   |        5        |    6   |  7
 //   -------------------------------------------------------------
-// 1:      | Gap | Label------------------------------------ | Gap
-// 2: Icon | Gap | Prefix | Input | Dropdown Button | Suffix | Gap
-// 3:      | Border-----------------------------------------------
-// 4:      | Gap | Helper/Error/Dropdown-------------------- | Gap
+// 1: Gap |      | Label ----------------------------------- | Gap
+// 1: Gap | Icon | Prefix | Input | Dropdown Button | Suffix | Gap
+// 1: Border -----------------------------------------------------
+// 2: Gap |      | Helper/Error                              | Gap
+// 2: Dropdown ---------------------------------------------------
 
 .mdw-textfield {
   position: relative;
   display: grid;
   display: -ms-grid;
-  justify-content: flex-start;
-  grid-template-columns: auto 0 auto 1fr auto auto 0;
-  -ms-grid-columns: auto 0 auto 1fr auto auto 0;
-  grid-template-rows: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom}) auto;
-  -ms-grid-rows: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom}) auto;
+  grid-template-columns: 12px auto auto 1fr auto auto 8px;
+  -ms-grid-columns: 12px auto auto 1fr auto auto 8px;
+  grid-template-rows: minmax(56px, auto) auto;
+  -ms-grid-rows: minmax(56px, 100%) auto;
   &[mdw-solo] {
-    grid-template-rows: 0 auto;
-    -ms-grid-rows: 0 auto;
+    grid-template-columns: 0 auto auto 1fr auto auto 0;
+    -ms-grid-columns: 0 auto auto 1fr auto auto 0;
+    .mdw-textfield__input {
+      align-self: center;
+      -ms-grid-row-align: center;
+      margin: 0;
+    }
+    .mdw-textfield__border {
+      display: none;
+    }
+    padding: 0;
+  }
+  padding: 8px 0;
+  align-items: flex-start;
+  // font-size: sp(16);
+  transition-timing-function: $motion-easing-standard;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
+}
+
+.mdw-textfield[mdw-solo],
+.mdw-textfield[mdw-outlined] {
+  .mdw-textfield__prefix,
+  .mdw-textfield__suffix,
+  .mdw-textfield__icon {
+    align-self: center;
+    -ms-grid-row-align: center;
+    margin-top: 0;
     margin-bottom: 0;
   }
-  align-items: baseline;
-  flex-direction: column;
-  // font-size: sp(16);
-  &[mdw-textarea],
-  &[mdw-box] {
-    grid-template-rows: calc(#{$label__padding-top__boxed} + #{$label__font-size} + #{$label__padding-bottom}) auto;
-    -ms-grid-rows: calc(#{$label__padding-top__boxed} + #{$label__font-size} + #{$label__padding-bottom}) auto;
-    grid-template-columns: auto 16px auto 1fr auto auto 16px;
-    -ms-grid-columns: auto 16px auto 1fr auto auto 16px;
-    // Out-of-spec: Makes all types top-aligned
-    margin-top: 8px;
+  textarea.mdw-textfield__input {
+    & ~ .mdw-textfield__prefix,
+    & ~ .mdw-textfield__suffix {
+      align-self: flex-start;
+      -ms-grid-row-align: start;
+      margin-top: dp(8);
+      margin-bottom: dp(8);
+    }
   }
-  margin-bottom: 8px;
 }
 
 .mdw-textfield__prefix,
 .mdw-textfield__suffix {
-  grid-row: 2;
-  -ms-grid-row: 2;
+  grid-row: 1;
+  -ms-grid-row: 1;
   //margin-top: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom});
   
   // color: transparent;
@@ -89,79 +115,114 @@ $icon-signifier__padding-end: dp(16);
 .mdw-textfield__prefix {
   grid-column: 3;
   -ms-grid-column: 3;
+  margin-left: 0;
   margin-right: 4px;
   [dir=rtl] & {
-    margin-right: 0;
     margin-left: 4px;
+    margin-right: 0;
   }
 }
 .mdw-textfield__suffix {
   grid-column: 6;
   -ms-grid-column: 6;
   margin-left: 4px;
-  [dir=rtl] & {
+  margin-right: 0;
+  html[dir=rtl] & {
     margin-left: 0;
     margin-right: 4px;
   }
 }
 
-.mdw-textfield__label {
-  // Default state is floating
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  @include IEOnly() {
-    // IE11 positions label based on container, not grid cell
-    .mdw-textfield__icon ~ & {
-      left: dp(44);
-    }
-    .mdw-textfield[mdw-box] > &,
-    .mdw-textfield[mdw-textarea] > & {
-      left: dp(16);
-    }
-    html[dir=rtl] .mdw-textfield__icon ~ & {
-      left: 0;
-      right: dp(44);
-    }
-    .mdw-textfield[mdw-box] > .mdw-textfield__icon ~ &,
-    .mdw-textfield[mdw-textarea] > .mdw-textfield__icon ~ & {
-      left: dp(16 + 44);
-    }
-    html[dir=rtl] .mdw-textfield[mdw-box] > &,
-    html[dir=rtl] .mdw-textfield[mdw-textarea] > & {
-      left: 0;
-      right: dp(16);
-    }
-    html[dir=rtl] .mdw-textfield[mdw-box] > .mdw-textfield__icon ~ &,
-    html[dir=rtl] .mdw-textfield[mdw-textarea] > .mdw-textfield__icon ~ & {
-      left: 0;
-      right: dp(16 + 44);
-    }
-  }
+.mdw-textfield__outline-gap {
+  // Transitioning with transform would require transforming adjacent elements
+  // to avoid subpixel issues from mixed 2D/3D rendering.
 
-  padding: 0;
-  margin: 0;
+  grid-column: 2;
+  -ms-grid-column: 2;
   grid-row: 1;
   -ms-grid-row: 1;
-  grid-column: 3;
-  -ms-grid-column: 3;
-  grid-column-end: span 4;
-  -ms-grid-column-span: 4;
+  position: absolute;
+  border-width: inherit;
+  border-style: none;
+  border-bottom-color: transparent;
+  margin-top: -$border-line__focused__height;
+  margin-bottom: -$border-line__height;
+  top: $border-line__focused__height;
+  bottom: 0;
+  left: 12px;
+  right: 12px;
+
+  &::before,
+  &::after {
+    content: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    border-top-width: $border-line__height;
+    border-top-style: solid;
+    border-color: inherit;
+    transition-property: width;
+    transition-delay: 1ms;
+    transition-timing-function: $motion-easing-standard;
+    transition-duration: $motion-duration-desktop-default / 2;
+    @include allHandsets {
+      transition-duration: $motion-duration-mobile-default / 2;
+    }
+    @include allTablets {
+      transition-duration: $motion-duration-tablet-default / 2;
+    }
+  }
+  &::before {
+    left: 0;
+    right: auto;
+    html[dir=rtl] & {
+      left: auto;
+      right: 0;
+    }
+  }
+  &::after {
+    left: auto;
+    right: 0;
+    html[dir=rtl] & {
+      left: 0;
+      right: auto;
+    }
+  }
+}
+
+.mdw-textfield__border {
+  position: relative;
+  grid-row: 1;
+  -ms-grid-row: 1;
+  align-self: stretch;
+  -ms-grid-row-align: stretch;
+  grid-column-start: 1;
+  -ms-grid-column: 1;
+  grid-column-end: span 7;
+  -ms-grid-column-span: 7;
+  cursor: pointer;
+
+  .mdw-textfield__input:focus ~ & {
+    pointer-events: none;
+  }
+  .mdw-textfield__input:disabled ~ & {
+    cursor: not-allowed;
+  }
+
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  display: flex;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-style: solid;
+  border-width: $border-line__height;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
   
-  align-self: flex-start;
-  overflow-x: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  padding-top: $label__padding-top;
-  padding-bottom: $label__padding-bottom;
-  
-  pointer-events: none; // allow clickthrough
-  will-change: transform, font-size;
- 
-  transform: translateY(0);
-  font-size: $label__font-size;
-  transition-property: transform, font-size, color;
+  transition-delay: 1ms;
+  transition-property: color, border-color, border-width;
   transition-timing-function: $motion-easing-standard;
   transition-duration: $motion-duration-desktop-default;
   @include allHandsets {
@@ -170,75 +231,284 @@ $icon-signifier__padding-end: dp(16);
   @include allTablets {
     transition-duration: $motion-duration-tablet-default;
   }
-  
-  z-index: 1;
-  .mdw-textfield[mdw-box] > &,
-  .mdw-textfield[mdw-textarea] > & {
-    padding-top: $label__padding-top__boxed;
-  }
 
-  /* Rules must be separated for IE11 support */
-  .mdw-textfield[mdw-value-empty] > & {
-    transform: translateY($label__font-size) translateY($label__padding-bottom);
-    font-size: inherit;
-  }
-  .mdw-textfield[mdw-value-empty][mdw-textarea] > & {
-    transform: translateY($label__font-size) translateY(-4px);
-  }
-  .mdw-textfield[mdw-value-empty][mdw-box] > & {
-    transform: translateY($label__font-size);
-  }
-
-  .mdw-textfield__input:placeholder-shown ~ & {
-    transform: translateY($label__font-size) translateY($label__padding-bottom);
-    font-size: inherit;
-  }
-  .mdw-textfield[mdw-textarea] > .mdw-textfield__input:placeholder-shown ~ & {
-    transform: translateY($label__font-size) translateY(-4px);
-  }
-  .mdw-textfield[mdw-box] > .mdw-textfield__input:placeholder-shown ~ & {
-    transform: translateY($label__padding-top__boxed__idle - $label__padding-top__boxed);
+  // box-sizing: border-box;
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -$border-line__focused__height;
+    left: 0;
+    right: 0;
+    height: 100%;
+    transform: scaleX(0) translateY(-$border-line__height/2);
+    border-style: inherit;
+    border-radius: inherit;
+    border-bottom-style: inherit;
+    border-width: $border-line__focused__height;
+    border-color: currentColor;
+    color: transparent;
+    will-change: transform;
+    transition-property: transform;
+    transition-delay: 1ms;
+    transition-timing-function: $motion-easing-acceleration;
+    transition-duration: $motion-duration-desktop-enter;
+    @include allHandsets {
+      transition-duration: $motion-duration-mobile-enter;
+    }
+    @include allTablets {
+      transition-duration: $motion-duration-tablet-enter;
+    }
   }
 }
 
-.mdw-textfield__icon {
-  min-width: dp(20 + 24);
-  grid-column: 1;
-  -ms-grid-column: 1;
-  grid-row: 2;
-  -ms-grid-row: 2;
-  grid-row-end: span 1;
-  -ms-grid-row-span: 1;
-  align-self: flex-start;
-  -ms-grid-row-align: start;
+.mdw-textfield[mdw-outlined] {
+  .mdw-textfield__border {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-style: solid;
+    border-bottom-color: currentColor;
+    transition-delay: 1ms;
+    transition-property: color, border-color;
+    transition-duration: 0ms;
 
-  .mdw-textfield[mdw-box] > &{
-    grid-row: 1;
-    -ms-grid-row: 1;
-    grid-row-end: span 2;
-    -ms-grid-row-span: 2;
+    &::before, &::after {
+      top: auto;
+      bottom: auto;
+      left: auto;
+      right: auto;
+      transition-delay: inherit;
+      transition-property: inherit;
+      transition-duration: inherit;
+      will-change: none;
+    }
+    &::before {
+      content: '';
+      position: relative;
+      width: 0;
+      border-width: inherit;
+      border-style: none;
+      border-radius: 0;
+      border-top-color: currentColor;
+      border-left-color: currentColor;
+      border-right-color: transparent;
+      border-top-style: solid;
+      border-left-style: solid;
+      border-right-style: none;
+      border-bottom-style: solid;
+      border-bottom-color: transparent;
+      border-top-left-radius: inherit;
+      border-bottom-left-radius: inherit;
+      margin-right: 0;
+      transform: none;
+      color: inherit;
+      margin-top: -$border-line__height;
+      margin-left: -$border-line__height;
+      min-width: 9px;
+      html[dir=rtl] & {
+        border-right-color: currentColor;
+        border-left-color: transparent;
+        border-right-style: solid;
+        border-left-style: none;
+        border-top-right-radius: inherit;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: inherit;
+        margin-right: -$border-line__height;
+        margin-left: 0;
+      }
+    }
+    &::after {
+      content: '';
+      position: relative;
+      order: 1;
+      flex-grow: 1;
+      margin-top: -$border-line__height;
+      margin-left: 0;
+      margin-right: -$border-line__height;
+      border-width: inherit;
+      border-style: none;
+      border-radius: 0;
+      border-top-color: currentColor;
+      border-top-style: solid;
+      border-bottom-style: solid;
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+      border-right-color: currentColor;
+      border-left-style: none;
+      border-right-style: solid;
+      border-top-right-radius: inherit;
+      border-bottom-right-radius: inherit;
+      transform: none;
+      color: inherit;
+      html[dir=rtl] & {
+        margin-right: 0;
+        margin-left: -$border-line__height;
+        border-right-color: transparent;
+        border-left-color: currentColor;
+        border-right-style: none;
+        border-left-style: solid;
+        border-top-right-radius: 0;
+        border-top-left-radius: inherit;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: inherit;
+      }
+    }
+    .mdw-textfield__outline-gap {
+      position: relative;
+      margin-top: -$border-line__height;
+      margin-bottom: -$border-line__height;
+      left: auto;
+      top: auto;
+      right: auto;
+      bottom: auto;
+      color: inherit;
+      max-width: calc(100% - 24px);
+      &::before, &::after {
+        content: '';
+        border-style: none;
+        border-radius: 0;
+        border-top-color: currentColor;
+        border-top-style: solid;
+        color: inherit;
+      }
+    }
+  }
+  .mdw-textfield__input {
     align-self: center;
     -ms-grid-row-align: center;
+    border-left: 2px solid transparent;
+    border-right: none;
+    margin: 8px 0;
+    html[dir=rtl] & {
+      border-right: 2px solid transparent;
+      border-left: none;
+    }
   }
-  .mdw-textfield[mdw-solo] > & {
-    align-self: flex-end;
-    -ms-grid-row-align: end;
+  .mdw-textfield__label {
+    padding: 0 4px;
+    top: 0;
+    transform: translateY(-50%);
+  }
+}
+
+
+.mdw-textfield[mdw-value-empty] > input.mdw-textfield__input,
+.mdw-textfield[mdw-value-empty] > textarea.mdw-textfield__input {
+  &:not(:focus) ~ .mdw-textfield__border {
+    & .mdw-textfield__label {
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: inherit;
+    }
+    & .mdw-textfield__outline-gap {
+      &::before,
+      &::after {
+        width: 50%;
+      }
+    }
+  }
+}
+.mdw-textfield > input.mdw-textfield__input,
+.mdw-textfield > textarea.mdw-textfield__input {
+  &:not(:focus):placeholder-shown ~ .mdw-textfield__border {
+    & .mdw-textfield__label {
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: inherit;
+    }
+    & .mdw-textfield__outline-gap {
+      &::before,
+      &::after {
+        width: 50%;
+      }
+    }
+  }
+}
+
+.mdw-textfield__label {
+  // Default state is floating
+  position: relative;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  top: 0;
+  transform: translateY(sp(20)) translateY(-1em);
+  pointer-events: none; // allow clickthrough
+  will-change: top, transform, font-size;
+  
+  font-size: $label__font-size;
+  transition-property: top, transform, font-size, color;
+  transition-timing-function: $motion-easing-standard;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
+}
+
+.mdw-textfield__signifier {
+  grid-column: 2;
+  -ms-grid-column: 2;
+  grid-row: 1;
+  -ms-grid-row: 1;
+  align-self: center;
+  -ms-grid-row-align: center;
+  
+  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-left: 0;
+  margin-right: 8px;
+  html[dir=rtl] & {
+    margin-left: 8px;
+    margin-right: 0;
+  }
+  
+  & ~ .mdw-textfield__border .mdw-textfield__outline-gap {
+    margin-left: 24px + 8px;
+    margin-right: 0;
+    html[dir=rtl] & {
+      margin-left: 0;
+      margin-right: 24px + 8px;
+    }
+  }
+  .mdw-textfield[mdw-outlined] & ~ .mdw-textfield__border {
+    &::before {
+      padding-left: 0;
+      padding-right: 24px + 8px;
+      html[dir=rtl] & {
+        padding-left: 24px + 8px;
+        padding-right: 0;
+      }
+    }
+    .mdw-textfield__outline-gap {
+      margin-left: 0;
+      html[dir=rtl] & {
+        margin-right: 0;
+      }
+      max-width: calc(100% - (24px + 24px + 8px));
+    }
   }
 }
 
 .mdw-textfield__input {
+  z-index: 1;
   padding: 0;
   margin: 0;
   background: none;
   border: none;
   outline: none;
 
-  grid-row: 2;
-  -ms-grid-row: 2;
-  grid-column: 4;
+  grid-row: 1;
+  -ms-grid-row: 1;
+  grid-column-start: 4;
   -ms-grid-column: 4;
-  grid-column-end: span 1;
-  -ms-grid-column-span: 1;
+  grid-column-end: span 2;
+  -ms-grid-column-span: 2;
   width: 100%;
   box-sizing: border-box;
 
@@ -250,21 +520,17 @@ $icon-signifier__padding-end: dp(16);
   -webkit-appearance: none;
   box-shadow: none; // Firefox :invalid styling
 
-  padding-bottom: dp(8);
+  //padding-bottom: dp(8);
 
   min-width: 0; // Firefox CSS Grid fix
 
+  &:not(:focus) {
+    cursor: pointer;
+  }
   &:disabled {
     cursor: not-allowed;
   }
 
-  .mdw-textfield[mdw-box] > & {
-    z-index: 1;
-    &:not(:focus) {
-      pointer-events: none;
-    }
-  }
-  
   &::placeholder {
     will-change: color;
     transition-property: color;
@@ -278,11 +544,16 @@ $icon-signifier__padding-end: dp(16);
       transition-duration: $motion-duration-tablet-default;
     }
   }
+}
 
-  .mdw-textfield[mdw-solo] > & {
-    margin-top: 0;
-    padding-bottom: 0;
-  }
+.mdw-textfield__input,
+.mdw-textfield__prefix,
+.mdw-textfield__suffix,
+.mdw-textfield__icon {
+  margin-top: calc(#{sp(20)} + #{dp(8) - $border-line__height});
+  margin-bottom: #{dp(8)};
+  align-self: flex-start;
+  -ms-grid-row-align: start;
 }
 
 textarea.mdw-textfield__input {
@@ -290,23 +561,17 @@ textarea.mdw-textfield__input {
   overflow-y: auto;
   -ms-overflow-style: -ms-autohiding-scrollbar;
   padding-bottom: 0;
-  margin-bottom: 8px;
+  // margin: 8px 0;
   padding-left: 0;
   padding-right: $textarea__padding-horizontal;
   [dir=rtl] & {
     padding-left: $textarea__padding-horizontal;
     padding-right: 0
   }
-  grid-column-end: span 4;
-  -ms-grid-column-span: 4;
-  .mdw-textfield[mdw-multiline] > & {
+  // grid-column-end: span 4;
+  // -ms-grid-column-span: 4;
+  .mdw-textfield[mdw-autosize] > & {
     min-height: 1em;
-  }
-  .mdw-textfield[mdw-textarea] > & {
-    margin-bottom: 16px;
-  }
-  .mdw-textfield[mdw-box][mdw-textarea] > & {
-    margin-bottom: dp(8);
   }
 }
 
@@ -321,184 +586,22 @@ select.mdw-textfield__input {
     -moz-appearance: none;
     -webkit-appearance: none;
   }
-  .mdw-textfield[mdw-solo] & {
-    align-self: center;
-  }
   &::-ms-expand {
     // Remove IE11 dropdown button
     display: none;
   }
-  grid-column-end: span 2;
-  -ms-grid-column-span: 2;
+  padding-left: 0;
+  padding-right: 24px;
   [dir=rtl] & {
     padding-left: 24px;
     padding-right: 0;
   }
-  padding-right: 24px;
-
-
   &:-moz-focusring {
     color: black;
     text-shadow: none;
   }
-  .mdw-textfield[mdw-box] > & {
-    &:not(:focus) {
-      pointer-events: auto;
-    }
-  }
 }
 
-.mdw-textfield__border-line {
-  // Default:
-  // self     - black line
-  // ::before - colored line
-  // ::after  - warn line
-
-  // mdw-textarea:
-  // self     - border box
-  // ::before - hidden
-  // ::after  - hidden
-
-  // mdw-box:
-  // self     - bottom border
-  // ::before - background fill
-  // ::after  - ripple
-
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transform: scaleX(0);
-    border-style: inherit;
-    border-radius: inherit;
-    border-bottom-style: inherit;
-    border-width: inherit;
-    will-change: transform;
-    transition-property: transform;
-    transition-delay: inherit;
-    transition-duration: inherit;
-    border-color: currentColor;
-    color: transparent;
-  }
-
-  grid-column: 2;
-  -ms-grid-column: 2;
-  grid-column-end: span 6;
-  -ms-grid-column-span: 6;
-  grid-row: 3;
-  -ms-grid-row: 3;
-  grid-row-end: span 1;
-  -ms-grid-row-span: 1;
-  position: relative;
-  pointer-events: none;
-  cursor: text;
-  .mdw-textfield[mdw-box] > &,
-  .mdw-textfield[mdw-textarea] > & {
-    grid-row: 1;
-    -ms-grid-row: 1;
-    grid-row-end: span 3;
-    -ms-grid-row-span: 3;
-    top: 0;
-    position: absolute;
-    bottom: 0;
-    height: 100%;
-    @include IEOnly {
-      position: relative;
-    }
-    
-    width: 100%;
-    border-color: currentColor;
-  }
-  .mdw-textfield[mdw-textarea]:not([mdw-box]) > & {
-    border-radius: dp(2);
-    border-width: $border-line__height;
-    border-style: solid;
-    &::before,
-    &::after {
-      content: none;
-    }
-  }
-  
-  height: 0;
-  margin-top: -$border-line__height;
-  border-style: none;
-  border-bottom-style: solid;
-  box-sizing: border-box;
-
-  border-width: $border-line__height;
-  transition-delay: 1ms;
-  transition-property: transform;
-  transition-timing-function: $motion-easing-deceleration;
-  transition-duration: $motion-duration-desktop-leave;
-  @include allHandsets {
-    transition-duration: $motion-duration-mobile-leave;
-  }
-  @include allTablets {
-    transition-duration: $motion-duration-tablet-leave;
-  }
-
-  
-  
-  & > .mdw-ripple {
-    @include mdw-ripple__container;
-    display: none;
-  }
-
-  .mdw-textfield[mdw-solo]:not([mdw-box]) > & {
-    display: none;
-  }
-  .mdw-textfield[mdw-box] > & {
-    z-index: 0;
-    overflow: hidden;
-    border-radius: dp(4);
-    border-width: 0;
-    border-bottom-width: $border-line__focused__height;
-    margin-top: 0;
-    pointer-events: auto;
-    transition-property: transform, border-color, background-color;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    &::before {
-      z-index: -1; // Safari has a negative z-index bug
-      transform: none;
-      border-style: inherit;
-      border-width: inherit;
-      border-color: transparent;
-      transition-delay: 0s;
-    }
-    > .mdw-ripple {
-      display: block;
-    }
-    > .mdw-ripple > .mdw-ripple__inner,
-    &::after {
-      @include mdw-ripple__inner;
-      border-style: none;
-    }
-    > .mdw-ripple:active > .mdw-ripple__inner,
-    &:active::after {
-      @include mdw-ripple__active;
-    }
-  }
-
-  .mdw-textfield[mdw-box] > .mdw-textfield__input:focus ~ &,
-  .mdw-textfield[mdw-box] > .mdw-textfield__input[disabled] ~ & {
-    // Disable interactions when focus is received
-    pointer-events: none;
-    cursor: auto;
-  }
-
-  .mdw-textfield[mdw-box] > &[mdw-ripple] {
-    overflow: visible;
-    &::after {
-      // If using custom ripple, destroy ::after object
-      content: none;
-    }
-  }
-}
 
 .mdw-textfield__error-text {
   transform: translateY(-$helper-text__font-size / 4);
@@ -506,9 +609,16 @@ select.mdw-textfield__input {
 
 .mdw-textfield__helper-text,
 .mdw-textfield__error-text {
+  &::before {
+    // Align baseline 16sp from top
+    content: "";
+    display: inline-block;
+    vertical-align: baseline;
+    margin-top: sp(16);
+  }
   font-size: $helper-text__font-size;
-  grid-row: 4;
-  -ms-grid-row: 4;
+  grid-row: 2;
+  -ms-grid-row: 2;
   grid-column: 3;
   -ms-grid-column: 3;
   grid-column-end: span 4;
@@ -516,43 +626,24 @@ select.mdw-textfield__input {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  padding-top: $helper-text__padding-top;
 }
 
-select.mdw-textfield__input:not(:focus) {
-  .mdw-textfield[mdw-box][mdw-value-empty] > & ~ .mdw-textfield__label,
-  & ~ .mdw-textfield__label {
-    transform: translateY(0);
-    font-size: $label__font-size;
-  }
-}
-
-.mdw-textfield__dropdown-button {
-  &::after {
-    content: "";
-    width: 0;
-    border-right: 5px solid transparent;
-    border-left: 5px solid transparent;
-    border-top: 5px solid currentColor;
-    margin-top: 10px;
-  }
-  margin-bottom: 8px;
-  .mdw-textfield[mdw-solo] > & {
-    margin-bottom: 0;
-  }
-  pointer-events: none;
-  align-self: flex-end;
-  -ms-grid-row-align: end;
-  margin-left: auto;
-  margin-right: 0;
-  [dir=rtl] & {
-    margin-left: 0;
-    margin-right: auto;
+.mdw-textfield__icon {
+  &[mdw-dropdown] {
+    pointer-events: none;
+    &::after {
+      content: "";
+      width: 0;
+      border-top: 5px solid currentColor;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      margin-top: 10px;
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
   grid-row: 1;
   -ms-grid-row: 1;
-  grid-row-end: span 2;
-  -ms-grid-row-span: 2;
   grid-column: 5;
   -ms-grid-column: 5;
 
@@ -564,24 +655,27 @@ select.mdw-textfield__input:not(:focus) {
 
 .mdw-textfield__dropdown {
   position: absolute;
-  grid-row: 4;
-  -ms-grid-row: 4;
-  margin-top: 8px;
+  grid-row: 2;
+  -ms-grid-row: 2;
+  margin-top: 0;
   margin-bottom: 8px;
-  .mdw-textfield[mdw-box] > & {
-    grid-row: 3;
-    -ms-grid-row: 3;
-  }
-  grid-column: 2;
-  -ms-grid-column: 2;
-  grid-column-end: span 4;
-  -ms-grid-column-span: 4;
+  grid-column: 1;
+  -ms-grid-column: 1;
+  grid-column-end: span 7;
+  -ms-grid-column-span: 7;
   box-shadow: none;
   max-height: 0;
   overflow: hidden;
   z-index: 2;
   width: 100%;
   max-width: 100%;
+  border-bottom-left-radius: dp(4);
+  border-bottom-right-radius: dp(4);
+  .mdw-textfield[mdw-outlined] & {
+    margin-top: 8px;
+    border-top-left-radius: dp(4);
+    border-top-right-radius: dp(4);
+  }
   transition-property: box-shadow, max-height;
   transition-timing-function: $motion-easing-deceleration;
   transition-duration: $motion-duration-desktop-leave;
@@ -616,18 +710,11 @@ select.mdw-textfield__input:not(:focus) {
 
 }
 
-// On Focus
 .mdw-textfield:active > .mdw-textfield__input:not(:disabled),
-.mdw-textfield > .mdw-textfield__input:not(:disabled):focus,
-.mdw-textfield[mdw-box]:active > .mdw-textfield__input:not(:disabled),
-.mdw-textfield[mdw-box] > .mdw-textfield__input:not(:disabled):focus {
-  & ~ .mdw-textfield__label {
-    transform: translateY(0);
-    font-size: $label__font-size;
-  }
+.mdw-textfield > .mdw-textfield__input:not(:disabled):focus {
   // Invalid
   &:invalid {
-    & ~ .mdw-textfield__label {
+    & ~ .mdw-textfield__border .mdw-textfield__outline-gap {
       animation-name: labelShake;
       animation-duration: 250ms;
       animation-delay: $motion-duration-desktop-default;
@@ -639,55 +726,51 @@ select.mdw-textfield__input:not(:focus) {
       }
     }
   }
-  
-  & ~ .mdw-textfield__border-line {
-    transition-timing-function: $motion-easing-acceleration;
-    transition-duration: $motion-duration-desktop-enter;
-    @include allHandsets {
-      transition-duration: $motion-duration-mobile-enter;
-    }
-    @include allTablets {
-      transition-duration: $motion-duration-tablet-enter;
-    }
-  }
 }
 
-.mdw-textfield:not([mdw-box]):not([mdw-textarea]) {
-  // Focus
+// Focus
+.mdw-textfield:not([mdw-outlined]) {
   &:active > .mdw-textfield__input:not(:disabled),
   > .mdw-textfield__input:not(:disabled):focus {
-    & ~ .mdw-textfield__border-line::before,
-    &:invalid ~ .mdw-textfield__border-line::after {
-      transform: scaleX(1);
-    }
-    & ~ .mdw-textfield__border-line {
-      margin-top: -$border-line__focused__height;
-    }
-  }
-
-  // Hover
-  .mdw-textfield__input:not(:disabled):hover {
-    & ~ .mdw-textfield__border-line {
-      margin-top: -$border-line__focused__height;
+    & ~ .mdw-textfield__border::before,
+    &:invalid ~ .mdw-textfield__border::after {
+      transform: scaleX(1) translateY(-$border-line__height/2);
     }
   }
 }
 
-//Hover and focus
-.mdw-textfield:active > .mdw-textfield__input:not(:disabled),
-.mdw-textfield__input:not(:disabled):focus,
-.mdw-textfield__input:not(:disabled):hover {
-  & ~ .mdw-textfield__border-line {
+// Border change on outlined active or focus
+.mdw-textfield[mdw-outlined] {
+  &:active > .mdw-textfield__input:not(:disabled) ~ .mdw-textfield__border,
+  .mdw-textfield__input:not(:disabled):focus ~ .mdw-textfield__border {
     border-width: $border-line__focused__height;
+    &::before {
+      margin-top: -$border-line__focused__height;
+      margin-left: -$border-line__focused__height;
+      margin-right: 0;
+      html[dir=rtl] & {
+        margin-left: 0;
+        margin-right: -$border-line__focused__height;
+      }
+      min-width: 10px - $border-line__focused__height;
+    }
+    &::after {
+      margin-top: -$border-line__focused__height;
+      margin-left: 0;
+      margin-right: -$border-line__focused__height;
+      html[dir=rtl] & {
+        margin-left: -$border-line__focused__height;
+        margin-right: 0;
+      }
+    }
+    .mdw-textfield__outline-gap {
+      margin-top: -$border-line__focused__height;
+      margin-bottom: -$border-line__focused__height;
+      &::before, &::after {
+        border-top-width: $border-line__focused__height;
+      }
+    }
   }
-}
-
-// Disabled
-.mdw-textfield__input:disabled  ~ .mdw-textfield__border-line {
-  border-bottom-style: dotted;
-}
-.mdw-textfield[mdw-box] > .mdw-textfield__input:disabled  ~ .mdw-textfield__border-line {
-  border-bottom-width: 0;
 }
 
 // Invalid
@@ -712,10 +795,10 @@ select.mdw-textfield__input:not(:focus) {
     transform: translateX(0);
   }
   33% {
-    transform: translateX(1ch);
+    transform: translateX(dp(4));
   }
   66% {
-    transform: translateX(-1ch);
+    transform: translateX(dp(-4));
   }
   100% {
     transform: translateX(0);
