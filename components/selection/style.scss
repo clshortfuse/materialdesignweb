@@ -235,7 +235,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     border-radius: 50%;
     background-color: currentColor;
     transform: scale(0);
-    transition: transform, background-color;
+    transition-property: transform, background-color;
     transition-timing-function: $motion-easing-standard;
     transition-duration: inherit;
   }
