@@ -1,7 +1,7 @@
 // https://www.w3.org/TR/wai-aria-practices/#dialog_modal
 
 import { Button } from '../button/index';
-import { getChildElementByClass, findElementParentByClassName } from '../common/dom';
+import { getChildElementByClass, findElementParentByClassName, dispatchDomEvent } from '../common/dom';
 
 class DialogStack {
   /**
@@ -36,13 +36,21 @@ class Dialog {
     const popup = getChildElementByClass(element, 'mdw-dialog__popup');
     popup.addEventListener('keydown', Dialog.onKeyDown);
     const buttons = popup.querySelectorAll('.mdw-dialog__button-area .mdw-button');
+    let foundConfirmButton = false;
+    let foundCancelButton = false;
     for (let i = 0; i < buttons.length; i += 1) {
       const button = buttons.item(i);
       Button.attach(button);
-      if (i === 0) {
+      if (button.hasAttribute('mdw-custom')) {
+        button.addEventListener('click', Dialog.onCustomButtonClick);
+      } else if (!foundConfirmButton) {
         button.addEventListener('click', Dialog.onConfirmClick);
-      } else if (i === 1) {
+        foundConfirmButton = true;
+      } else if (!foundCancelButton) {
         button.addEventListener('click', Dialog.onCancelClick);
+        foundCancelButton = true;
+      } else {
+        button.addEventListener('click', Dialog.onCustomButtonClick);
       }
     }
   }
@@ -69,6 +77,7 @@ class Dialog {
       Button.detach(button);
       button.removeEventListener('click', Dialog.onConfirmClick);
       button.removeEventListener('click', Dialog.onCancelClick);
+      button.removeEventListener('click', Dialog.onCustomButtonClick);
     }
   }
 
@@ -76,16 +85,30 @@ class Dialog {
     if (event && event.currentTarget instanceof HTMLAnchorElement) {
       event.preventDefault();
     }
-    const dialogElement = findElementParentByClassName(event.currentTarget, 'mdw-dialog');
-    Dialog.cancel(dialogElement);
+    if (dispatchDomEvent(event.currentTarget, 'mdw:cancel')) {
+      const dialogElement = findElementParentByClassName(event.currentTarget, 'mdw-dialog');
+      Dialog.hide(dialogElement);
+    }
   }
 
   static onConfirmClick(event) {
     if (event && event.currentTarget instanceof HTMLAnchorElement) {
       event.preventDefault();
     }
-    const dialogElement = findElementParentByClassName(event.currentTarget, 'mdw-dialog');
-    Dialog.confirm(dialogElement);
+    if (dispatchDomEvent(event.currentTarget, 'mdw:confirm')) {
+      const dialogElement = findElementParentByClassName(event.currentTarget, 'mdw-dialog');
+      Dialog.hide(dialogElement);
+    }
+  }
+
+  static onCustomButtonClick(event) {
+    if (event && event.currentTarget instanceof HTMLAnchorElement) {
+      event.preventDefault();
+    }
+    if (dispatchDomEvent(event.currentTarget, 'mdw:custom')) {
+      const dialogElement = findElementParentByClassName(event.currentTarget, 'mdw-dialog');
+      Dialog.hide(dialogElement);
+    }
   }
 
   static onKeyDown(event) {
@@ -121,8 +144,9 @@ class Dialog {
    * @return {void}
    */
   static cancel(dialogElement) {
-    Dialog.hide(dialogElement);
-    Dialog.dispatchEvent(dialogElement, 'mdw:cancel');
+    if (dispatchDomEvent(dialogElement, 'mdw:cancel')) {
+      Dialog.hide(dialogElement);
+    }
   }
 
   /**
@@ -130,8 +154,9 @@ class Dialog {
    * @return {void}
    */
   static confirm(dialogElement) {
-    Dialog.hide(dialogElement);
-    Dialog.dispatchEvent(dialogElement, 'mdw:confirm');
+    if (dispatchDomEvent(dialogElement, 'mdw:confirm')) {
+      Dialog.hide(dialogElement);
+    }
   }
 
   /**
@@ -139,46 +164,37 @@ class Dialog {
    * @return {boolean} handled
    */
   static hide(dialogElement) {
-    if (!dialogElement.hasAttribute('mdw-hide')) {
-      dialogElement.setAttribute('mdw-hide', '');
-      let stackIndex = -1;
-      OPEN_DIALOGS.some((stack, index) => {
-        if (stack.element === dialogElement) {
-          stackIndex = index;
-          return true;
-        }
-        return false;
-      });
-      if (stackIndex !== -1) {
-        const stack = OPEN_DIALOGS[stackIndex];
-        if (stack.previousFocus) {
-          stack.previousFocus.focus();
-        }
-        OPEN_DIALOGS.splice(stackIndex, 1);
-      }
-      if (!OPEN_DIALOGS.length) {
-        window.removeEventListener('popstate', Dialog.onPopState);
-      }
-      Dialog.dispatchEvent(dialogElement, 'mdw:dismiss');
-      return true;
+    if (dialogElement.hasAttribute('mdw-hide')) {
+      return false;
     }
-    return false;
+    if (!dispatchDomEvent(dialogElement, 'mdw:dismiss')) {
+      return false;
+    }
+    dialogElement.setAttribute('mdw-hide', '');
+    let stackIndex = -1;
+    OPEN_DIALOGS.some((stack, index) => {
+      if (stack.element === dialogElement) {
+        stackIndex = index;
+        return true;
+      }
+      return false;
+    });
+    if (stackIndex !== -1) {
+      const stack = OPEN_DIALOGS[stackIndex];
+      if (stack.previousFocus) {
+        stack.previousFocus.focus();
+      }
+      OPEN_DIALOGS.splice(stackIndex, 1);
+    }
+    if (!OPEN_DIALOGS.length) {
+      window.removeEventListener('popstate', Dialog.onPopState);
+    }
+    return true;
   }
 
   /**
    * @param {Element} dialogElement
-   * @param {string} type
-   * @return {void}
-   */
-  static dispatchEvent(dialogElement, type) {
-    const event = document.createEvent('Event');
-    event.initEvent(type, true, true);
-    dialogElement.dispatchEvent(event);
-  }
-
-  /**
-   * @param {Element} dialogElement
-   * @param {MouseEvent=} event
+   * @param {(MouseEvent|KeyboardEvent|PointerEvent)=} event
    * @return {boolean} handled
    */
   static show(dialogElement, event) {
@@ -338,8 +354,8 @@ class Dialog {
    * @param {string[]=} options.buttons
    * @param {boolean=} options.stacked
    * @param {Element=} options.parent
-   * @param {("confirm"|"alert"|"custom")=} [options.type="custom"]
-   * @param {(string|number)=} [options.autofocus=0] Autofocus button index or text
+   * @param {boolean} [options.custom=false] Use custom button events
+   * @param {(string|number)=} [options.autofocus=0] Autofocus button by index or text
    * @return {Element}
    */
   static create(options) {
@@ -375,8 +391,10 @@ class Dialog {
         button.classList.add('mdw-button');
         button.setAttribute('tabindex', '0');
         button.setAttribute('mdw-theme-color', 'accent');
+        if (options.custom) {
+          button.setAttribute('mdw-custom', '');
+        }
         button.textContent = buttonText;
-        document.createElement('div');
         buttonArea.appendChild(button);
         if ((options.autofocus == null && index === 0)
           || options.autofocus === index || options.autofocus === buttonText) {
@@ -397,7 +415,7 @@ class Dialog {
   }
   /**
    * @param {Element} dialogElement
-   * @param {MouseEvent=} event
+   * @param {(MouseEvent|KeyboardEvent|PointerEvent)=} event
    * @return {void}
    */
   static updateTransformOrigin(dialogElement, event) {
@@ -427,6 +445,9 @@ class Dialog {
     popup.style.setProperty('transform-origin', `${transformOriginX} ${transformOriginY}`);
   }
 }
+
+// Aliases
+Dialog.dismiss = Dialog.hide;
 
 export {
   Dialog,
