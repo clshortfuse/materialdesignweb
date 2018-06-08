@@ -182,7 +182,10 @@ class Dialog {
     if (stackIndex !== -1) {
       const stack = OPEN_DIALOGS[stackIndex];
       if (stack.previousFocus) {
-        stack.previousFocus.focus();
+        if (findElementParentByClassName(document.activeElement, 'mdw-dialog') === dialogElement) {
+          // Only pop focus back when hiding a dialog with focus within itself.
+          stack.previousFocus.focus();
+        }
       }
       OPEN_DIALOGS.splice(stackIndex, 1);
     }

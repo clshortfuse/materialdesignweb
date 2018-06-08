@@ -166,13 +166,11 @@ function initializeSampleComponents() {
   confirmDialogElement.addEventListener('mdw:confirm', () => {
     Dialog.updateBody(alertDialogElement, 'Thanks!');
     Dialog.updateButtonText(alertDialogElement, ['K']);
-    Dialog.hide(confirmDialogElement); // Manual hide only necessary when chaining dialogs
     Dialog.show(alertDialogElement);
   });
   confirmDialogElement.addEventListener('mdw:cancel', () => {
     Dialog.updateBody(alertDialogElement, 'Oh...');
     Dialog.updateButtonText(alertDialogElement, ['Sorry!']);
-    Dialog.hide(confirmDialogElement); // Manual hide only necessary when chaining dialogs
     Dialog.show(alertDialogElement);
   });
   button.addEventListener('click', (event) => {
