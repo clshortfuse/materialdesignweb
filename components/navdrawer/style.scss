@@ -387,7 +387,7 @@ $navdrawer__min-width__mini: dp(56) !default;
   }
   > .mdw-navdrawer__scrim {
     display: block;
-    background-color: rgba(black, 0.50);
+    background-color: rgba(0, 0, 0, 0.50);
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     pointer-events: auto;

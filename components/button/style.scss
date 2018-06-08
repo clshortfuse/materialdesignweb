@@ -148,7 +148,7 @@ $button__click-timeout: 100ms;
     -webkit-user-select: none;
     pointer-events: none;
     background-color: currentColor;
-    color: rgba(black, 0.12);
+    color: rgba(0, 0, 0, 0.12);
     opacity: 0;
     transition-property: opacity, transform;
     transform: scale(1);
