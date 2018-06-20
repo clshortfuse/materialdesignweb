@@ -328,24 +328,15 @@ $list__divider-height: dp(1);
   max-height: sp(20*2);
 }
 
-.mdw-list__item > .mdw-ripple {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
 .mdw-list__item {
   // Long press color
   &::before {
     content: '';
     position: absolute;
-    width: 100%;
-    height: 100%;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     // z-index: -1; // Safari has a negative z-index bug
     transition-property: background-color;
     transition-duration: 500ms;
