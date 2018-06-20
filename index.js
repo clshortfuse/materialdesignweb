@@ -7,6 +7,7 @@ import { List, ListItem } from './components/list/index';
 import { Menu, MenuItem } from './components/menu/index';
 import { NavDrawer } from './components/navdrawer/index';
 import { ProgressCircle } from './components/progress/index';
+import { Snackbar } from './components/snackbar/index';
 import { Tab, TabItem } from './components/tab/index';
 import { TextField } from './components/textfield/index';
 
@@ -25,6 +26,7 @@ export {
   MenuItem,
   NavDrawer,
   ProgressCircle,
+  Snackbar,
   Tab,
   TabItem,
   DataTable,
