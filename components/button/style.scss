@@ -4,7 +4,7 @@
 @import '../common/functions.scss';
 @import '../common/motion.scss';
 @import '../common/mixins.scss';
-@import '../common/ripple.scss';
+@import '../ripple/ripple.scss';
 
 $button__external-padding: dp(8);
 $button__minimum-click-target: dp(48);
