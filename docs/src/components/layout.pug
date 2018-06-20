@@ -5,29 +5,37 @@ include ../mixins.pug
     p.mdw-type(mdw-style="body" style="text-align:center") Click on an element to change colspan
     div.display-flex(style="padding:0 16px")
       label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-        input.mdw-selection__input(type="checkbox" checked)
+        input.mdw-selection__input(type="checkbox" name="default-margins" checked)
         .mdw-selection__icon
         .mdw-selection__label Default Margins and Gutters
+      label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+        input.mdw-selection__input(type="checkbox" name="top-margin")
+        .mdw-selection__icon
+        .mdw-selection__label Top Margin
+      label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+        input.mdw-selection__input(type="checkbox" name="bottom-margin")
+        .mdw-selection__icon
+        .mdw-selection__label Bottom Margin
     div.display-flex(style="padding:0 16px")
       label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-        input.mdw-selection__input(type="radio" name="style" checked)
+        input.mdw-selection__input(type="radio" name="style" value="flex" checked)
         .mdw-selection__icon
         .mdw-selection__label Flex
       label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-        input.mdw-selection__input(type="checkbox")
+        input.mdw-selection__input(type="checkbox" name="stretch")
         .mdw-selection__icon
         .mdw-selection__label Stretch
       label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-        input.mdw-selection__input(type="checkbox")
+        input.mdw-selection__input(type="checkbox" name="center")
         .mdw-selection__icon
         .mdw-selection__label Center
     div.display-flex(style="padding:0 16px")
       label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-        input.mdw-selection__input(type="radio" name="style")
+        input.mdw-selection__input(type="radio" name="style" value="grid")
         .mdw-selection__icon
         .mdw-selection__label Grid
       label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-        input.mdw-selection__input(type="checkbox" disabled)
+        input.mdw-selection__input(type="checkbox" name="dense")
         .mdw-selection__icon
         .mdw-selection__label Dense
     .mdw-layout.docs-layout
