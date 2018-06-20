@@ -1,8 +1,9 @@
 // https://material.io/guidelines/layout/responsive-ui.html
 
 
-$layout__margin: dp(8);
-$layout__margin: dp(16);
+@import '../common/mixins.scss';
+
+$layout__margin: dp(24);
 $layout__gutter: dp(24);
 
 .mdw-layout {
@@ -30,27 +31,34 @@ $layout__gutter: dp(24);
     justify-content: center;
   }
   flex-wrap: wrap;
-  margin-left: -$layout__margin;
-  margin-bottom: $layout__margin;
-  padding-left: $layout__gutter;
-  padding-right: $layout__gutter;
-  @include gutter16dp() {
-    padding-left: dp(16);
-    padding-right: dp(16);
+
+  border-width: $layout__margin;
+  border-color: transparent;
+  border-style: solid;
+
+  border-top-style: none;
+  border-bottom-style: none;
+
+  margin-left: -$layout__gutter;
+  margin-top: -$layout__gutter;
+
+  &[mdw-margin-bottom] {
+    border-bottom-style: solid;
   }
   
+  &[mdw-margin-top] {
+    border-top-style: solid;
+  }
 
   @each $value in (0, 8, 16, 24, 40) {
-    &[mdw-gutter="#{$value}"] {
-      padding-left: dp($value);
-      padding-right: dp($value);
-    }
     &[mdw-margin="#{$value}"] {
+      border-width: dp($value);
+    }
+    &[mdw-gutter="#{$value}"] {
       margin-left: dp(-$value);
-      margin-bottom: dp($value);
+      margin-top: dp(-$value);
       > .mdw-layout__item {
-        border-left-width: dp($value);
-        margin-top: dp($value);
+        border-width: dp($value);
       }
     }
   }
@@ -59,6 +67,16 @@ $layout__gutter: dp(24);
     grid-template-columns: repeat(8, 1fr);
     -ms-grid-columns: (1fr)[8];
   }
+
+  @include gutter16dp {
+    border-width: dp(16);
+    margin-left: dp(-16);
+    margin-top: dp(-16);
+    & > .mdw-layout__item {
+      border-width: dp(16);
+    }
+  }
+
   @media screen and (max-width: dp(600) - 1) {
     grid-template-columns: repeat(4, 1fr);
     -ms-grid-columns: (1fr)[4];
@@ -66,16 +84,14 @@ $layout__gutter: dp(24);
 
   @include allHandsets {
     @each $value in (0, 8, 16, 24, 40) {
-      &[mdw-gutter-mobile][mdw-gutter-mobile="#{$value}"] {
-        padding-left: dp($value);
-        padding-right: dp($value);
-      }
       &[mdw-margin-mobile][mdw-margin-mobile="#{$value}"] {
+        border-width: dp($value);
+      }
+      &[mdw-gutter-mobile][mdw-gutter-mobile="#{$value}"] {
         margin-left: dp(-$value);
-        margin-bottom: dp($value);
+        margin-top: dp(-$value);
         > .mdw-layout__item {
-          border-left-width: dp($value);
-          margin-top: dp($value);
+          border-width: dp($value);
         }
       }
     }
@@ -83,16 +99,14 @@ $layout__gutter: dp(24);
     
   @include allTablets {
     @each $value in (0, 8, 16, 24, 40) {
-      &[mdw-gutter-tablet][mdw-gutter-tablet="#{$value}"] {
-        padding-left: dp($value);
-        padding-right: dp($value);
-      }
       &[mdw-margin-tablet][mdw-margin-tablet="#{$value}"] {
+        border-width: dp($value);
+      }
+      &[mdw-gutter-tablet][mdw-gutter-tablet="#{$value}"] {
         margin-left: dp(-$value);
-        margin-bottom: dp($value);
+        margin-top: dp(-$value);
         > .mdw-layout__item {
-          border-left-width: dp($value);
-          margin-top: dp($value);
+          border-width: dp($value);
         }
       }
     }
@@ -103,10 +117,13 @@ $layout__gutter: dp(24);
   flex-grow: 0;
   flex-shrink: 1;
   box-sizing: border-box;
-  margin-top: $layout__margin;
-  border-left-width: $layout__margin;
-  border-left-style: solid;
-  border-left-color: transparent;
+  border-width: $layout__gutter;
+  border-color: transparent;
+  border-style: solid;
+
+  border-bottom-style: none;
+  border-right-style: none;
+
   flex-basis: calc(100% / 12);
   @for $i from 2 to 8 {
     &[mdw-rowspan="#{$i}"] {
