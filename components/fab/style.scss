@@ -8,26 +8,13 @@ $fab-button__mini-size: dp(40);
 $fab-button__mini-padding: dp(8);
 $fab-button__icon-size: dp(24);
 
-
-.mdw-fab__wrapper {
-  position: relative;
-  display: inline-block;
-}
-
 .mdw-fab {
-  position: absolute;
-  right: 0;
-  bottom: 0; 
   display: flex;
   flex-direction: column-reverse;
   z-index: 4;
   align-items: flex-end;
   &[mdw-horizontal] {
     flex-direction: row-reverse;
-  }
-  [dir=rtl] & {
-    left: 0;
-    right: auto;
   }
   pointer-events: none;
 }
@@ -42,6 +29,31 @@ $fab-button__icon-size: dp(24);
   right: 0;
   cursor: default;
   // z-index: -1; // Safari has a negative z-index bug
+}
+
+.mdw-fab__button.mdw-button {
+  pointer-events: auto;
+  order: -1;
+
+  border-radius: dp(56 / 2);
+  
+  min-height: 0;
+  min-width: 0;
+  box-shadow: elevation(6);
+  &:active {
+    box-shadow: elevation(12);
+  }
+  padding: dp(16);
+  margin: 0;
+  &[mdw-extended] {
+    padding: dp(12);
+    margin: 0 dp(4) dp(4) dp(4);
+  }
+  &[mdw-mini] {
+    padding: dp(8);
+    margin: 0 dp(8) dp(8) dp(8);
+  }
+  z-index: 6;
 }
 
 .mdw-fab__speed-dial {
@@ -73,32 +85,6 @@ $fab-button__icon-size: dp(24);
       }
     }
   }
-
-}
-
-.mdw-fab__button.mdw-button {
-  pointer-events: auto;
-  order: -1;
-
-  border-radius: dp(56 / 2);
-  
-  min-height: 0;
-  min-width: 0;
-  box-shadow: elevation(6);
-  &:active {
-    box-shadow: elevation(12);
-  }
-  padding: dp(16);
-  margin: 0 dp(16) dp(16) dp(16);
-  &[mdw-extended] {
-    padding: dp(12);
-    margin: 0 dp(20) dp(20) dp(20);
-  }
-  &[mdw-mini] {
-    padding: dp(8);
-    margin: 0 dp(24) dp(24) dp(24);
-  }
-  z-index: 6;
 }
 
 .mdw-fab__icon {
