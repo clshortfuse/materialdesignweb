@@ -9,9 +9,10 @@ $fab-button__mini-padding: dp(8);
 $fab-button__icon-size: dp(24);
 
 .mdw-fab {
+  position: relative;
   display: flex;
   flex-direction: column-reverse;
-  z-index: 4;
+  z-index: 6;
   align-items: flex-end;
   &[mdw-horizontal] {
     flex-direction: row-reverse;
@@ -53,15 +54,17 @@ $fab-button__icon-size: dp(24);
     padding: dp(8);
     margin: 0 dp(8) dp(8) dp(8);
   }
-  z-index: 6;
 }
 
 .mdw-fab__speed-dial {
+  position: absolute;
+  bottom: 100%;
   order: 1;
   display: flex;
   flex-direction: inherit;
   align-items: center;
   pointer-events: none;
+  z-index: inherit;
   > .mdw-fab__button.mdw-button {
     &,
     &[mdw-mini]
