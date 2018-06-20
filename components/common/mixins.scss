@@ -110,13 +110,13 @@ $dark-background: 3;
 }
 
 @mixin gutter16dp {
-  @media 
-    screen 
-      and (orientation:portrait)
-      and (max-width: 600 - 1),
-    screen
-      and (orientation:landscape)
-      and (max-height: 600 - 1) {
-    @content;
+  @media
+  screen
+  and (orientation:portrait)
+  and (max-width: dp(600 - 1)),
+screen
+  and (orientation:landscape)
+  and (max-height: dp(600 - 1)) {
+@content;
   }
 }
