@@ -1,3 +1,4 @@
+import { List } from '../../../components/list/index';
 import setupImageTargets from '../targetHandler';
 import { setupMenuOptions } from '../menuoptions';
 
@@ -97,6 +98,15 @@ function configureNavDrawer() {
   }
 }
 
+/** @return {void} */
+function initializeMdwComponents() {
+  const lists = document.querySelectorAll('#navdrawer .mdw-list');
+  for (let i = 0; i < lists.length; i += 1) {
+    List.attach(lists.item(i));
+  }
+}
+
+initializeMdwComponents();
 configureNavDrawer();
 setupImageTargets();
 setupMenuOptions();
