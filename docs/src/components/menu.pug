@@ -31,10 +31,10 @@ include ../mixins.pug
                     .mdw-menu__info ⌘U
                   .mdw-menu__divider
                   .mdw-menu__item(mdw-checked)
-                    .mdw-menu__check
+                    .mdw-menu__check.material-icons check
                     .mdw-menu__text Flights
                   .mdw-menu__item
-                    .mdw-menu__check
+                    .mdw-menu__check.material-icons check
                     .mdw-menu__text Apps
       .mdw-layout__item(mdw-colspan="8")
         div
@@ -205,26 +205,26 @@ include ../mixins.pug
               .mdw-menu#textmenu
                 a.mdw-menu__close(href="#")
                 .mdw-menu__popup
-                  .mdw-menu__text Maps
-                  .mdw-menu__text Books
-                  .mdw-menu__text Flights
-                  .mdw-menu__text Apps
+                  .mdw-menu__item Maps
+                  .mdw-menu__item Books
+                  .mdw-menu__item Flights
+                  .mdw-menu__item Apps
             .mdw-menu__wrapper
               a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#checkmenu") Checks
               .mdw-menu#checkmenu
                 a.mdw-menu__close(href="#")
                 .mdw-menu__popup
                   .mdw-menu__item
-                    .mdw-menu__check
+                    .mdw-menu__check.material-icons check
                     .mdw-menu__text Maps
                   .mdw-menu__item(mdw-checked)
-                    .mdw-menu__check
+                    .mdw-menu__check.material-icons check
                     .mdw-menu__text Books
                   .mdw-menu__item(mdw-checked)
-                    .mdw-menu__check
+                    .mdw-menu__check.material-icons check
                     .mdw-menu__text Flights
                   .mdw-menu__item
-                    .mdw-menu__check
+                    .mdw-menu__check.material-icons check
                     .mdw-menu__text Apps
             div(style="height:400px")
             .mdw-menu__wrapper
@@ -233,23 +233,23 @@ include ../mixins.pug
                 a.mdw-menu__close(href="#")
                 .mdw-menu__popup
                   .mdw-menu__item(disabled)
-                    .mdw-menu__check
+                    .mdw-menu__check.material-icons check
                     .mdw-menu__text Bold
                     .mdw-menu__info ⌘B
                   .mdw-menu__item(mdw-checked)
-                    .mdw-menu__check
+                    .mdw-menu__check.material-icons check
                     .mdw-menu__text Italic
                     .mdw-menu__info ⌘I
                   .mdw-menu__item(mdw-checked)
-                    .mdw-menu__check
+                    .mdw-menu__check.material-icons check
                     .mdw-menu__text Underline
                     .mdw-menu__info ⌘U
                   .mdw-menu__divider
                   .mdw-menu__item(mdw-checked)
-                    .mdw-menu__check
+                    .mdw-menu__check.material-icons check
                     .mdw-menu__text Flights
                   .mdw-menu__item
-                    .mdw-menu__check
+                    .mdw-menu__check.material-icons check
                     .mdw-menu__text Apps
             .mdw-menu__wrapper
               a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#iconmenu") Icons
@@ -286,9 +286,9 @@ include ../mixins.pug
                     .mdw-menu__info ⌘U
                   .mdw-menu__divider
                   .mdw-menu__item(mdw-checked)
-                    .mdw-menu__check
+                    .mdw-menu__check.material-icons check
                     .mdw-menu__text Flights
                   .mdw-menu__item
-                    .mdw-menu__check
+                    .mdw-menu__check.material-icons check
                     .mdw-menu__text Apps
   script(src='menu.min.js')
