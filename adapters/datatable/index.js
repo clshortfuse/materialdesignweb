@@ -448,7 +448,7 @@ class DataTableAdapter {
 
   /** @return {HTMLTableRowElement[]} */
   getSelectedRows() {
-    const selectorColumn = this.columns.find(column => column.rowSelector);
+    const selectorColumn = this.columns.filter(column => column.rowSelector)[0];
     if (!selectorColumn) {
       return [];
     }
@@ -950,10 +950,10 @@ class DataTableAdapter {
       return search;
     }
     if (search instanceof HTMLTableCellElement) {
-      return this.columns.find(column => column.element === search);
+      return this.columns.filter(column => column.element === search)[0];
     }
     if (typeof search === 'string') {
-      return this.columns.find(column => column.element.dataset.key === search);
+      return this.columns.filter(column => column.element.dataset.key === search)[0];
     }
     return this.columns[search];
   }
