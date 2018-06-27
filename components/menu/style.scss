@@ -4,17 +4,6 @@
 @import '../common/variables.scss';
 
 $menu__unit-width: dp(56);
-$menu__animation-duration: 200ms;
-$menu__margin-top: dp(8);
-$menu__margin-bottom: dp(14);
-
-// from ic_check_black_18px.svg
-// rotated 45°
-$checkbox-icon-height: dp(12.73);
-$checkbox-icon-width: dp(5.93);
-$checkbox-icon-thickness: dp(1.5);
-$checkbox-icon-offset-y: dp(2.64) - $checkbox-icon-thickness;
-$checkbox-icon-offset-x: dp(6.04);
 
 .mdw-menu__wrapper {
   position: relative;
@@ -170,7 +159,7 @@ $checkbox-icon-offset-x: dp(6.04);
   margin-right: dp(8);
   padding-top: dp(8);
   padding-bottom: dp(8);
-  border-radius: dp(2);
+  border-radius: dp(4);
   min-width: $menu__unit-width * 2;
   max-width: $menu__unit-width * 7;
   outline: none;
@@ -186,51 +175,22 @@ $checkbox-icon-offset-x: dp(6.04);
   text-overflow: ellipsis;
 }
 
-.mdw-menu__check,
-.mdw-menu__icon {
+
+
+
+.mdw-menu__icon,
+.mdw-menu__check {
   min-width: dp(40);
 }
 
 .mdw-menu__check {
-  position: relative;
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: dp(12);
-    @include allHandsetsAndTablets {
-      bottom: dp(20);
-    }
-    left: dp(4);
-    margin-left: $checkbox-icon-offset-x;
-    [dir=rtl] & {
-      right: dp(4);
-      left: auto;
-      margin-left: 0;
-      margin-right: $checkbox-icon-offset-x;
-    }
-    margin-top: $checkbox-icon-offset-y;
-    height: $checkbox-icon-height;
-    width: $checkbox-icon-width;
-    color: inherit;
-  }
-  .mdw-menu__item[mdw-checked] > &::after {
-    // border-width: $checkbox-icon-thickness;
-    // Increase visibility
-    border-width: dp(2);
-    background-color: transparent;
-    box-sizing: border-box;
-    transform: rotate(45deg) scale(1.11);
-    border-bottom-style: solid;
-    border-right-style: solid;
-    border-color: currentColor;
-    // border-color: unquote("rgb(var(--background-color))");
+  visibility: hidden;
+  .mdw-menu__item[mdw-checked] & {
+    visibility: visible;
   }
 }
 
-.mdw-menu__item {
-  display: flex;
-  align-items: flex-end;
-}
+
 
 .mdw-menu__divider {
   height: dp(1);
@@ -238,18 +198,18 @@ $checkbox-icon-offset-x: dp(6.04);
   margin-bottom: dp(8);
 }
 
-.mdw-menu__popup > .mdw-menu__text,
-.mdw-menu__item, {
+.mdw-menu__item {
+  display: flex;
+  align-items: center;
   position: relative;
   overflow: hidden;
   z-index: 0;
   padding-left: dp(24);
   padding-right: dp(24);
-  font-size: sp(15);
+  font-size: sp(14);
   min-height: dp(32);
   @include allHandsetsAndTablets {
     min-height: dp(48);
-    font-size: sp(16);
     padding-left: dp(16);
     padding-right: dp(16);
   }
@@ -305,41 +265,4 @@ $checkbox-icon-offset-x: dp(6.04);
     padding-right: dp(16);
   }
   
-}
-
-.mdw-menu__check,
-.mdw-menu__info,
-.mdw-menu__text {
-  // Text is padded 20dp from baseline
-  &::before {
-    content: "\200D"; // &zwj;
-    display: inline-block;
-    line-height: 1;
-    margin-bottom: dp(12);
-    @include allHandsetsAndTablets {
-      margin-bottom: dp(20);
-    }
-    vertical-align: text-top;
-  }
-}
-
-.mdw-menu__popup > .mdw-menu__text::before {
-  // Ensures min-height of 48dp
-  // Use padding-top since negative values are ignored
-  padding-top: calc(#{dp(32 - 20)} - 1em);
-  @include allHandsetsAndTablets {
-    padding-top: calc(#{dp(48 - 20)} - 1em);
-  }
-  vertical-align: baseline;
-}
-
-.mdw-menu__icon {
-  align-self: flex-end;
-  padding-bottom: dp(4);
-  @include allHandsetsAndTablets {
-    padding-bottom: dp(20);
-    &.material-icons {
-      padding-bottom: dp(14);
-    }
-  }
 }
