@@ -444,10 +444,10 @@ class Menu {
       }
       if (isPageRTL) {
         candidateNumber = [2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 15]
-          .find(number => candidates.indexOf(number) !== -1);
+          .filter(number => candidates.indexOf(number) !== -1)[0];
       } else {
         candidateNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-          .find(number => candidates.indexOf(number) !== -1);
+          .filter(number => candidates.indexOf(number) !== -1)[0];
       }
       if (candidateNumber == null) {
         candidateNumber = isPageRTL ? 2 : 1;
