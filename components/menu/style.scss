@@ -175,9 +175,6 @@ $menu__unit-width: dp(56);
   text-overflow: ellipsis;
 }
 
-
-
-
 .mdw-menu__icon,
 .mdw-menu__check {
   min-width: dp(40);
@@ -189,8 +186,6 @@ $menu__unit-width: dp(56);
     visibility: visible;
   }
 }
-
-
 
 .mdw-menu__divider {
   height: dp(1);
@@ -204,15 +199,13 @@ $menu__unit-width: dp(56);
   position: relative;
   overflow: hidden;
   z-index: 0;
-  padding-left: dp(24);
-  padding-right: dp(24);
   font-size: sp(14);
-  min-height: dp(32);
-  @include allHandsetsAndTablets {
-    min-height: dp(48);
-    padding-left: dp(16);
-    padding-right: dp(16);
-  }
+
+
+  min-height: dp(48);
+  padding-left: dp(16);
+  padding-right: dp(16);
+
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   box-sizing: border-box;
@@ -253,6 +246,25 @@ $menu__unit-width: dp(56);
   }
 }
 
+// Density based on dropdown, explicit attr, or no coarse pointer
+.mdw-menu[mdw-dense]:not([mdw-dense="never"]),
+.mdw-menu[mdw-dropdown] {
+  .mdw-menu__item {
+    min-height: dp(32);
+    padding-left: dp(24);
+    padding-right: dp(24);
+  }
+}
+@media not all and (any-pointer: coarse) {
+  .mdw-menu:not([mdw-dense="never"]) {
+    .mdw-menu__item {
+      min-height: dp(32);
+      padding-left: dp(24);
+      padding-right: dp(24);
+    }
+  }
+}
+
 .mdw-menu__info {
   text-align: right;
   text-align: end;
@@ -264,5 +276,4 @@ $menu__unit-width: dp(56);
     padding-left: 0;
     padding-right: dp(16);
   }
-  
 }
