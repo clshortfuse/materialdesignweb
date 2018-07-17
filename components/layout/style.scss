@@ -231,5 +231,7 @@ $layout__gutter: dp(24);
   display: flex;
   > :first-child {
     flex: auto;
+    max-height: 100%;
+    max-width: 100%;
   }
 }
