@@ -170,15 +170,19 @@ class Snackbar {
   }
 
   /**
-   * @param {Object} options
-   * @param {!string} options.text
-   * @param {!string=} options.buttonText
-   * @param {string=} [options.buttonThemeColor='primary']
-   * @param {boolean} [options.stacked=false]
-   * @param {number|boolean} [options.autoHide=4] Auto hide time in seconds
-   * @param {boolean} [options.autoDestroy=true] Destroy element after hide
-   * @param {HTMLElement=} options.parent Parent element to which to append
-   * @param {boolean=} options.show Show element after creation
+   * @typedef SnackbarCreateOptions
+   * @property {!string} text
+   * @property {!string=} buttonText
+   * @property {string=} [buttonThemeColor='primary']
+   * @property {boolean} [stacked=false]
+   * @property {number|boolean} [autoHide=4] Auto hide time in seconds
+   * @property {boolean} [autoDestroy=true] Destroy element after hide
+   * @property {HTMLElement=} parent Parent element to which to append
+   * @property {boolean=} show Show element after creation
+   */
+
+  /**
+   * @param {SnackbarCreateOptions} options
    * @return {HTMLElement}
    */
   static create(options) {

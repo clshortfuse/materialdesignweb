@@ -63,10 +63,6 @@ $layout__gutter: dp(24);
     }
   }
 
-  @media screen and (max-width: dp(840) - 1) {
-    grid-template-columns: repeat(8, 1fr);
-    -ms-grid-columns: (1fr)[8];
-  }
 
   @include gutter16dp {
     border-width: dp(16);
@@ -75,11 +71,6 @@ $layout__gutter: dp(24);
     & > .mdw-layout__item {
       border-width: dp(16);
     }
-  }
-
-  @media screen and (max-width: dp(600) - 1) {
-    grid-template-columns: repeat(4, 1fr);
-    -ms-grid-columns: (1fr)[4];
   }
 
   @include allHandsets {
@@ -113,6 +104,35 @@ $layout__gutter: dp(24);
   }
 }
 
+@mixin layoutItem($columnCount) {
+  flex-basis: calc(100% / #{$columnCount});
+    @for $i from 2 to 12 {
+      &[mdw-colspan="#{$i}"] {
+        flex-basis: calc((#{$i} * 100% / #{$columnCount}));
+        @if ($i > #{$columnCount}) {
+          grid-column-end: span #{$columnCount};
+          -ms-grid-column-span: span #{$columnCount};
+        }
+      }
+    }
+    &[mdw-colspan="25%"] {
+      grid-column-end: span (#{1/4 * $columnCount});
+      -ms-grid-column-span: (#{1/4 * $columnCount});
+    }
+    &[mdw-colspan="50%"] {
+      grid-column-end: span (#{2/4 * $columnCount});
+      -ms-grid-column-span: (#{2/4 * $columnCount});
+    }
+    &[mdw-colspan="75%"] {
+      grid-column-end: span (#{3/4 * $columnCount});
+      -ms-grid-column-span: (#{3/4 * $columnCount});
+    }
+    &[mdw-colspan="100%"] {
+      grid-column-end: span (#{4/4 * $columnCount});
+      -ms-grid-column-span: (#{4/4 * $columnCount});
+    }
+}
+
 .mdw-layout__item {
   flex-grow: 0;
   flex-shrink: 1;
@@ -124,97 +144,12 @@ $layout__gutter: dp(24);
   border-bottom-style: none;
   border-right-style: none;
 
-  flex-basis: calc(100% / 12);
   @for $i from 2 to 8 {
     &[mdw-rowspan="#{$i}"] {
       grid-row-end: span #{$i};
       -ms-grid-row-span: span #{$i};
     }
   }
-  @for $i from 2 to 12 {
-    &[mdw-colspan="#{$i}"] {
-      flex-basis: calc((#{$i} * 100% / 12));
-      grid-column-end: span #{$i};
-      -ms-grid-column-span: #{$i};
-    }
-  }
-  &[mdw-colspan="25%"] {
-    flex-basis: 25%;
-    grid-column-end: span (1/4 * 12);
-    -ms-grid-column-span: (1/4 * 12);
-  }
-  &[mdw-colspan="50%"] {
-    flex-basis: 50%;
-    grid-column-end: span (2/4 * 12);
-    -ms-grid-column-span: (2/4 * 12);
-  }
-  &[mdw-colspan="75%"] {
-    flex-basis: 75%;
-    grid-column-end: span (3/4 * 12);
-    -ms-grid-column-span: (3/4 * 12);
-  }
-  &[mdw-colspan="100%"] {
-    flex-basis: 100%;
-    grid-column-end: span (4/4 * 12);
-    -ms-grid-column-span: (4/4 * 12);
-  }
-  @media screen and (max-width: dp(840) - 1) {
-    flex-basis: calc(100% / 8);
-    @for $i from 2 to 12 {
-      &[mdw-colspan="#{$i}"] {
-        flex-basis: calc((#{$i} * 100% / 8));
-        @if ($i > 8) {
-          grid-column-end: span 8;
-          -ms-grid-column-span: span 8;
-        }
-      }
-    }
-    &[mdw-colspan="25%"] {
-      grid-column-end: span (1/4 * 8);
-      -ms-grid-column-span: (1/4 * 8)
-    }
-    &[mdw-colspan="50%"] {
-      grid-column-end: span (2/4 * 8);
-      -ms-grid-column-span: (2/4 * 8)
-    }
-    &[mdw-colspan="75%"] {
-      grid-column-end: span (3/4 * 8);
-      -ms-grid-column-span: (3/4 * 8)
-    }
-    &[mdw-colspan="100%"] {
-      grid-column-end: span (4/4 * 8);
-      -ms-grid-column-span: (4/4 * 8)
-    }
-  }
-  @media screen and (max-width: dp(600) - 1) {
-    flex-basis: calc(100% / 4);
-    @for $i from 2 to 12 {
-      &[mdw-colspan="#{$i}"] {
-        flex-basis: calc((#{$i} * 100% / 4));
-        @if ($i > 4) {
-          grid-column-end: span 4;
-          -ms-grid-column-span: 4;
-        }
-      }
-    }
-    &[mdw-colspan="25%"] {
-      grid-column-end: span (1/4 * 4);
-      -ms-grid-column-span: (1/4 * 4);
-    }
-    &[mdw-colspan="50%"] {
-      grid-column-end: span (2/4 * 4);
-      -ms-grid-column-span: (2/4 * 4);
-    }
-    &[mdw-colspan="75%"] {
-      grid-column-end: span (3/4 * 4);
-      -ms-grid-column-span: (3/4 * 4);
-    }
-    &[mdw-colspan="100%"] {
-      grid-column-end: span (4/4 * 4);
-      -ms-grid-column-span: (4/4 * 4);
-    }
-  }
-
   transition-property: flex-basis;
   transition-timing-function: $motion-easing-standard;
   transition-duration: $motion-duration-desktop-default;
@@ -225,13 +160,52 @@ $layout__gutter: dp(24);
     transition-duration: $motion-duration-tablet-default;
   }
 
+  @include layoutItem(12);
   
 
   // Stretch children
   display: flex;
-  > :first-child {
+  & > :first-child {
     flex: auto;
     max-height: 100%;
     max-width: 100%;
+  }
+}
+
+// 8 Columns (Explicit on Desktop + Implicit on Tablet)
+.mdw-layout[mdw-columns="8"] {
+  grid-template-columns: repeat(8, 1fr);
+  -ms-grid-columns: (1fr)[8];
+  .mdw-layout__item {
+    @include layoutItem(8);
+  }
+}
+@media screen and (max-width: dp(840) - 1) {
+  .mdw-layout {
+    grid-template-columns: repeat(8, 1fr);
+    -ms-grid-columns: (1fr)[8];
+  }
+  .mdw-layout__item {
+    @include layoutItem(8);
+  }
+}
+
+// 4 Columns (Explicit on Desktop and Tablet, Implicit on Mobile)
+.mdw-layout[mdw-columns="4"] {
+  grid-template-columns: repeat(4, 1fr);
+  -ms-grid-columns: (1fr)[4];
+  .mdw-layout__item {
+    @include layoutItem(4);
+  }
+}
+@media screen and (max-width: dp(600) - 1) {
+  .mdw-layout[mdw-columns="8"],
+  .mdw-layout {
+    grid-template-columns: repeat(4, 1fr);
+    -ms-grid-columns: (1fr)[4];
+  }
+  .mdw-layout[mdw-columns="8"] .mdw-layout__item,
+  .mdw-layout__item {
+    @include layoutItem(4);
   }
 }
