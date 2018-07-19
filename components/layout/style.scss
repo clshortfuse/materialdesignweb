@@ -161,7 +161,19 @@ $layout__gutter: dp(24);
   }
 
   @include layoutItem(12);
-  
+
+  &[mdw-colspan="25%"] {
+    flex-basis: 25%;
+  }
+  &[mdw-colspan="50%"] {
+    flex-basis: 50%;
+  }
+  &[mdw-colspan="75%"] {
+    flex-basis: 75%;
+  }
+  &[mdw-colspan="100%"] {
+    flex-basis: 100%;
+  }
 
   // Stretch children
   display: flex;
