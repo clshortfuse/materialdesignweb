@@ -135,7 +135,14 @@ class NavDrawer {
         return false;
       });
       if (stackIndex !== -1) {
+        const stack = OPEN_NAV_DRAWERS[stackIndex];
         OPEN_NAV_DRAWERS.splice(stackIndex, 1);
+        if (stack.state && window.history && window.history.state) {
+          // IE11 returns a cloned state object, not the original
+          if (stack.state.hash === window.history.state.hash) {
+            window.history.back();
+          }
+        }
       }
       if (!OPEN_NAV_DRAWERS.length) {
         window.removeEventListener('popstate', NavDrawer.onPopState);
@@ -180,7 +187,7 @@ class NavDrawer {
         window.history.pushState(newState, document.title);
         window.addEventListener('popstate', NavDrawer.onPopState);
       }
-      const navDrawerStack = new NavDrawerStack(navDrawerElement, previousState, newState);
+      const navDrawerStack = new NavDrawerStack(navDrawerElement, newState, previousState);
       OPEN_NAV_DRAWERS.push(navDrawerStack);
       dispatchDomEvent(navDrawerElement, 'mdw:open');
     }
