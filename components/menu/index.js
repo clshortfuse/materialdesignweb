@@ -62,13 +62,14 @@ class MenuStack {
   /**
    * @param {Element} element
    * @param {Element} previousFocus
+   * @param {Object=} state
+   * @param {Object=} previousState
    */
-  constructor(element, previousFocus) {
+  constructor(element, previousFocus, state, previousState) {
     this.element = element;
     this.previousFocus = previousFocus;
-    if (window.history) {
-      this.historyState = window.history.state;
-    }
+    this.state = state;
+    this.previousState = previousState;
   }
 }
 
@@ -110,10 +111,20 @@ class Menu {
     Menu.hide(menu);
   }
 
-  /** @return {void} */
-  static onPopState() {
+  /**
+   * @param {PopStateEvent} event
+   * @return {void}
+   */
+  static onPopState(event) {
+    if (!event.state) {
+      return;
+    }
     const lastOpenMenu = OPEN_MENUS[OPEN_MENUS.length - 1];
-    if (lastOpenMenu) {
+    if (!lastOpenMenu || !lastOpenMenu.previousState) {
+      return;
+    }
+    if ((lastOpenMenu.previousState === event.state) || Object.keys(event.state)
+      .every(key => event.state[key] === lastOpenMenu.previousState[key])) {
       Menu.hide(lastOpenMenu.element);
     }
   }
@@ -416,21 +427,21 @@ class Menu {
       && (popupElement.clientWidth / 2) + ((pageX + offsetLeft) / 2) <= window.innerWidth;
     popupElement.style.removeProperty('max-height');
     const candidates = [
-      canOpenDownwardsFromBottom && canOpenRightwardsFromLeft,  // 1a └↘
-      canOpenDownwardsFromBottom && canOpenLeftwardsFromRight,  // 2b ┘↙
-      canOpenUpwardsFromTop && canOpenRightwardsFromLeft,       // 3c ┌↗
-      canOpenUpwardsFromTop && canOpenLeftwardsFromLeft,        // 4d ┐↖
-      canOpenDownwardsFromTop && canOpenRightwardsFromRight,    // 4a ┐↘
-      canOpenDownwardsFromTop && canOpenLeftwardsFromLeft,      // 3b ┌↙
-      canOpenUpwardsFromBottom && canOpenRightwardsFromRight,   // 2c ┘↗
-      canOpenUpwardsFromBottom && canOpenLeftwardsFromLeft,     // 1d └↖
-      canOpenDownwardsFromTop && canOpenRightwardsFromLeft,     // 3a ┌↘
-      canOpenDownwardsFromTop && canOpenLeftwardsFromRight,     // 4b ┐↙
-      canOpenUpwardsFromBottom && canOpenRightwardsFromLeft,    // 1c └↗
-      canOpenUpwardsFromBottom && canOpenRightwardsFromRight,   // 2d ┘↖
-      canOpenRightwardsFromLeft,                                // 5e │→
-      canOpenLeftwardsFromRight,                                // 6f │←
-      canOpenFromCenter,                                        // 9i █·
+      canOpenDownwardsFromBottom && canOpenRightwardsFromLeft, // 1a └↘
+      canOpenDownwardsFromBottom && canOpenLeftwardsFromRight, // 2b ┘↙
+      canOpenUpwardsFromTop && canOpenRightwardsFromLeft, // 3c ┌↗
+      canOpenUpwardsFromTop && canOpenLeftwardsFromLeft, // 4d ┐↖
+      canOpenDownwardsFromTop && canOpenRightwardsFromRight, // 4a ┐↘
+      canOpenDownwardsFromTop && canOpenLeftwardsFromLeft, // 3b ┌↙
+      canOpenUpwardsFromBottom && canOpenRightwardsFromRight, // 2c ┘↗
+      canOpenUpwardsFromBottom && canOpenLeftwardsFromLeft, // 1d └↖
+      canOpenDownwardsFromTop && canOpenRightwardsFromLeft, // 3a ┌↘
+      canOpenDownwardsFromTop && canOpenLeftwardsFromRight, // 4b ┐↙
+      canOpenUpwardsFromBottom && canOpenRightwardsFromLeft, // 1c └↗
+      canOpenUpwardsFromBottom && canOpenRightwardsFromRight, // 2d ┘↖
+      canOpenRightwardsFromLeft, // 5e │→
+      canOpenLeftwardsFromRight, // 6f │←
+      canOpenFromCenter, // 9i █·
     ].map((value, index) => {
       if (value) {
         return index + 1;
@@ -639,12 +650,20 @@ class Menu {
     if (changed) {
       Menu.attach(menuElement);
       const previousFocus = document.activeElement;
+      const newState = { hash: Math.random().toString(36).substr(2, 16) };
+      let previousState = null;
       if (window.history && window.history.pushState) {
-        const title = 'Menu';
-        window.history.pushState({ menuOpenTime: Date.now() }, title, '');
+        if (!window.history.state) {
+          // Create new previous state
+          window.history.replaceState({
+            hash: Math.random().toString(36).substr(2, 16),
+          }, document.title);
+        }
+        previousState = window.history.state;
+        window.history.pushState(newState, document.title);
         window.addEventListener('popstate', Menu.onPopState);
       }
-      const menuStack = new MenuStack(menuElement, previousFocus);
+      const menuStack = new MenuStack(menuElement, previousFocus, newState, previousState);
       OPEN_MENUS.push(menuStack);
       Menu.refreshMenuItems(menuElement);
       if (event && !event.pointerType && !event.detail) {
@@ -678,9 +697,9 @@ class Menu {
           menuStack.previousFocus.focus();
         }
         OPEN_MENUS.splice(stackIndex, 1);
-        if (menuStack.historyState && window.history && window.history.state) {
+        if (menuStack.state && window.history && window.history.state) {
           // IE11 returns a cloned state object, not the original
-          if (menuStack.historyState.menuOpenTime === window.history.state.menuOpenTime) {
+          if (menuStack.state.hash === window.history.state.hash) {
             window.history.back();
           }
         }
