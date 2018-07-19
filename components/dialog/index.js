@@ -468,6 +468,9 @@ class Dialog {
     if (!pageX && !pageY) {
       const target = event.currentTarget || event.target;
       const rect = target.getBoundingClientRect();
+      if (!rect.width && !rect.width && !rect.x && !rect.y) {
+        return;
+      }
       pageX = rect.x + (rect.width / 2);
       pageY = rect.y + (rect.height / 2);
     }
