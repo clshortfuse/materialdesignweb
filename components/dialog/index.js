@@ -7,10 +7,14 @@ class DialogStack {
   /**
    * @param {Element} element
    * @param {Element} previousFocus
+   * @param {Object=} state
+   * @param {Object=} previousState
    */
-  constructor(element, previousFocus) {
+  constructor(element, previousFocus, state, previousState) {
     this.element = element;
     this.previousFocus = previousFocus;
+    this.state = state;
+    this.previousState = previousState;
   }
 }
 
@@ -133,8 +137,15 @@ class Dialog {
    * @return {void}
    */
   static onPopState(event) {
+    if (!event.state) {
+      return;
+    }
     const lastOpenDialog = OPEN_DIALOGS[OPEN_DIALOGS.length - 1];
-    if (lastOpenDialog) {
+    if (!lastOpenDialog || !lastOpenDialog.previousState) {
+      return;
+    }
+    if ((lastOpenDialog.previousState === event.state) || Object.keys(event.state)
+      .every(key => event.state[key] === lastOpenDialog.previousState[key])) {
       Dialog.hide(lastOpenDialog.element);
     }
   }
@@ -188,6 +199,12 @@ class Dialog {
         }
       }
       OPEN_DIALOGS.splice(stackIndex, 1);
+      if (stack.state && window.history && window.history.state) {
+        // IE11 returns a cloned state object, not the original
+        if (stack.state.hash === window.history.state.hash) {
+          window.history.back();
+        }
+      }
     }
     if (!OPEN_DIALOGS.length) {
       window.removeEventListener('popstate', Dialog.onPopState);
@@ -219,19 +236,30 @@ class Dialog {
     if (changed) {
       Dialog.attach(dialogElement);
       const previousFocus = document.activeElement;
+      const newState = { hash: Math.random().toString(36).substr(2, 16) };
+      let previousState = null;
       if (window.history && window.history.pushState) {
+        if (!window.history.state) {
+          // Create new previous state
+          window.history.replaceState({
+            hash: Math.random().toString(36).substr(2, 16),
+          }, document.title);
+        }
+        previousState = window.history.state;
         let title = 'Dialog';
         const titleElement = dialogElement.getElementsByClassName('mdw-dialog__title')[0];
         if (titleElement) {
           title = titleElement.textContent;
         } else {
           const bodyElement = dialogElement.getElementsByClassName('mdw-dialog__body')[0];
-          title = bodyElement.textContent;
+          if (bodyElement) {
+            title = bodyElement.textContent;
+          }
         }
-        window.history.pushState({}, title, '');
+        window.history.pushState(newState, title);
         window.addEventListener('popstate', Dialog.onPopState);
       }
-      const dialogStack = new DialogStack(dialogElement, previousFocus);
+      const dialogStack = new DialogStack(dialogElement, previousFocus, newState, previousState);
       OPEN_DIALOGS.push(dialogStack);
       const focusElement = dialogElement.querySelector('[mdw-autofocus]');
       if (focusElement) {
