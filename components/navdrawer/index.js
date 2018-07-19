@@ -3,9 +3,13 @@ import { getChildElementByClass, findElementParentByClassName, dispatchDomEvent 
 class NavDrawerStack {
   /**
    * @param {Element} element
+   * @param {Object=} state
+   * @param {Object=} previousState
    */
-  constructor(element) {
+  constructor(element, state, previousState) {
     this.element = element;
+    this.state = state;
+    this.previousState = previousState;
   }
 }
 
@@ -102,10 +106,16 @@ class NavDrawer {
    * @return {void}
    */
   static onPopState(event) {
+    if (!event.state) {
+      return;
+    }
     const lastOpenNavDrawer = OPEN_NAV_DRAWERS[OPEN_NAV_DRAWERS.length - 1];
-    if (lastOpenNavDrawer) {
+    if (!lastOpenNavDrawer || !lastOpenNavDrawer.previousState) {
+      return;
+    }
+    if ((lastOpenNavDrawer.previousState === event.state) || Object.keys(event.state)
+      .every(key => event.state[key] === lastOpenNavDrawer.previousState[key])) {
       NavDrawer.close(lastOpenNavDrawer.element);
-      event.stopPropagation();
     }
   }
 
@@ -157,12 +167,20 @@ class NavDrawer {
     }
     if (changed) {
       NavDrawer.attach(navDrawerElement);
+      const newState = { hash: Math.random().toString(36).substr(2, 16) };
+      let previousState = null;
       if (window.history && window.history.pushState) {
-        const title = 'NavDrawer';
-        window.history.pushState({}, title, '');
+        if (!window.history.state) {
+          // Create new previous state
+          window.history.replaceState({
+            hash: Math.random().toString(36).substr(2, 16),
+          }, document.title);
+        }
+        previousState = window.history.state;
+        window.history.pushState(newState, document.title);
         window.addEventListener('popstate', NavDrawer.onPopState);
       }
-      const navDrawerStack = new NavDrawerStack(navDrawerElement);
+      const navDrawerStack = new NavDrawerStack(navDrawerElement, previousState, newState);
       OPEN_NAV_DRAWERS.push(navDrawerStack);
       dispatchDomEvent(navDrawerElement, 'mdw:open');
     }
