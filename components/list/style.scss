@@ -273,8 +273,31 @@ $list__divider-height: dp(1);
   }
 }
 
+
+.mdw-list__text-meta {
+  align-self: flex-start;
+  font-size: sp(12);
+  margin-left: dp(28);
+  margin-right: 0;
+  html[dir=rtl] & {
+    margin-left: 0;
+    margin-right: dp(28);
+  }
+}
+
+// First line and meta baseline alignment
+.mdw-list__text-line,
+.mdw-list__text-meta {
+  &::before {
+    content: "";
+    display: inline-block;
+    vertical-align: baseline;
+  }
+}
+
 // Two-line first-line 
-.mdw-list__text-line:first-child:not(:only-child) {
+.mdw-list__text-line:first-child:not(:only-child),
+.mdw-list__meta {
   &::before {
     // Align baseline 28sp from top
     margin-top: sp(28);
@@ -298,7 +321,8 @@ $list__divider-height: dp(1);
 // Prefixed by icon or avatar
 .mdw-list__avatar ~ .mdw-list__text,
 .mdw-list__icon ~ .mdw-list__text {
-  .mdw-list__text-line:first-child:not(:only-child) {
+  .mdw-list__text-line:first-child:not(:only-child),
+  .mdw-list__meta {
     // Align baseline 32sp from top
     &::before {
       margin-top: sp(32);
@@ -310,11 +334,6 @@ $list__divider-height: dp(1);
   .mdw-list__text-block {
     padding-bottom: 0;
   }
-}
-
-.mdw-list__text-line > span,
-.mdw-list__text-block > span {
-  color: var(--secondary-text-color);
 }
 
 .mdw-list__text-block {
