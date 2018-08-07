@@ -88,7 +88,6 @@ $list__divider-height: dp(1);
     // 2px from material-icon inset padding
     margin-top: dp(12);
   }
-  
 }
 
 .mdw-list__avatar {
@@ -258,6 +257,8 @@ $list__divider-height: dp(1);
   }
 }
 
+
+
 .mdw-list__text-line {
   overflow-y: hidden;
   &,
@@ -265,39 +266,50 @@ $list__divider-height: dp(1);
     overflow-x: hidden;
     text-overflow: ellipsis;
   }
-  &:not(:first-child) {
-    font-size: sp(14);
-    line-height: sp(16);
-    min-height: sp(16);
+  &::before {
+    content: "";
+    display: inline-block;
+    vertical-align: baseline;
   }
-  &:only-child {
-    // only of its type
-    margin: 0;
-  }
-  &:first-child {
-    line-height: sp(24);
-  }
-  &:last-child {
-    margin-bottom: dp(16);
-  }
-  &:first-child:not(:only-child) {
-    margin-top: dp(16);
-  }
-  &:last-child:not(:only-child) {
-    // color: var(--primary-text-color);
-    &:nth-child(3) {
-      // color: var(--secondary-text-color);
-      line-height: 1.5rem;
-      margin-bottom: sp(14);
-    }
-  }
+}
 
-  .mdw-list[mdw-rows="3"] & {
-    &:first-child {
-      margin-top: dp(10);
+// Two-line first-line 
+.mdw-list__text-line:first-child:not(:only-child) {
+  &::before {
+    // Align baseline 28sp from top
+    margin-top: sp(28);
+  }
+}
+
+// Secondary text-line
+
+.mdw-list__text-line:not(:first-child),
+.mdw-list__text-block, {
+  font-size: sp(14);
+  line-height: sp(20);
+}
+
+.mdw-list__text-line:not(:first-child):last-child,
+.mdw-list__text-block {
+  margin-bottom: sp(12);
+}
+
+
+// Prefixed by icon or avatar
+.mdw-list__avatar ~ .mdw-list__text,
+.mdw-list__icon ~ .mdw-list__text {
+  .mdw-list__text-line:first-child:not(:only-child) {
+    // Align baseline 32sp from top
+    &::before {
+      margin-top: sp(32);
     }
   }
-  
+  .mdw-list__text-line:nth-child(2):last-child {
+    padding-bottom: sp(4);
+  }
+  .mdw-list__text-block {
+    padding-bottom: 0;
+  }
 }
 
 .mdw-list__text-line > span,
@@ -322,10 +334,12 @@ $list__divider-height: dp(1);
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  margin-bottom: sp(14);
+
+  padding-bottom: dp(4);
+
   line-height: sp(20);
-  height: sp(20*2);
-  max-height: sp(20*2);
+  height: sp(20 * 2);
+  max-height: sp(20 * 2);
 }
 
 .mdw-list__item {
