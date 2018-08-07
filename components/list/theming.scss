@@ -82,8 +82,8 @@ $listColors: (
     }
     & > .mdw-ripple > .mdw-ripple__inner,
     &:after {
-      opacity: listThemeValue("ripple-opacity", $type, $theme);
-      color: listThemeValue("ripple-color", $type, $theme);
+      opacity: listThemeValue("ripple-opacity", $type);
+      color: listThemeValue("ripple-color", $type);
     }
   }
 }
