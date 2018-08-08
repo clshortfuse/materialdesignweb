@@ -1,25 +1,23 @@
 import { TextField } from '../../components/textfield/index';
 
 /**
- * @param {Object} options
- * @param {string} options.input
- * @param {string} options.content
+ * @param {string} input
+ * @param {string} content
  * @return {boolean}
  */
-function containsTextFilter(options) {
-  return options.content.trim().toLocaleLowerCase()
-    .indexOf(options.input.trim().toLocaleLowerCase()) !== -1;
+function containsTextFilter(input, content) {
+  return content.trim().toLocaleLowerCase()
+    .indexOf(input.trim().toLocaleLowerCase()) !== -1;
 }
 
 /**
- * @param {Object} options
- * @param {string} options.input
- * @param {string} options.content
+ * @param {string} input
+ * @param {string} content
  * @return {boolean}
  */
-function startsWithTextFilter(options) {
-  return options.content.trim().toLocaleLowerCase()
-    .indexOf(options.input.trim().toLocaleLowerCase()) === 0;
+function startsWithTextFilter(input, content) {
+  return content.trim().toLocaleLowerCase()
+    .indexOf(input.trim().toLocaleLowerCase()) === 0;
 }
 
 /**
@@ -133,21 +131,30 @@ function scrollItemIntoView(listItem) {
   }
 }
 
+/**
+ * @callback SearchAdapterTextFilter
+ * @param {string} input
+ * @param {string} content
+ * @return {boolean} passes
+*/
+
+/**
+ * @typedef SearchAdapterOptions
+ * @prop {Element} textfield
+ * @prop {Element} list
+ * @prop {('contains'|'startsWith'|SearchAdapterTextFilter)=} [textFilter='contains']
+ * @prop {(function(Element):string)=} itemTextParser
+ * @prop {boolean=} [dropdown=false]
+ * @prop {boolean=} [filterItems=true]
+ * @prop {('replace'|'append'|'none')} [suggestionMethod='replace']
+ * @prop {(function(string, Function, Function=))=} performSearch
+ * @prop {(function(Function, Function))=} updateList
+ * @prop {boolean=} [searchOnFocus=true]
+ * @prop {number=} debounce Debounce time in milliseconds
+ */
+
 class SearchAdapter {
-  /**
-   * @param {Object} options
-   * @param {Element} options.textfield
-   * @param {Element} options.list
-   * @param {('contains'|'startsWith'|function({input:string, content:string}):boolean)=} [options.textFilter='contains']
-   * @param {(function(Element):string)=} options.itemTextParser
-   * @param {boolean=} [options.dropdown=false]
-   * @param {boolean=} [options.filterItems=true]
-   * @param {('replace'|'append'|'none')} [options.suggestionMethod='replace']
-   * @param {(function(string, Function, Function=))=} options.performSearch
-   * @param {(function(Function, Function))=} options.updateList
-   * @param {boolean=} [options.searchOnFocus=true]
-   * @param {number=} options.debounce Debounce time in milliseconds
-   */
+  /** @param {SearchAdapterOptions} options */
   constructor(options) {
     this.textfield = options.textfield;
     this.list = options.list;
@@ -159,10 +166,12 @@ class SearchAdapter {
       this.filter = containsTextFilter;
     }
     this.itemTextParser = defaultItemTextParser || options.itemTextParser;
-    const input = this.textfield.getElementsByClassName('mdw-textfield__input')[0];
+    /** @type {HTMLInputElement} */
+    const input = (this.textfield.getElementsByClassName('mdw-textfield__input')[0]);
     this.input = input;
     this.list.addEventListener('mdw:itemactivated', (event) => {
-      const item = event.target;
+      /** @type {HTMLElement} */
+      const item = (event.target);
       this.onItemSelected(item);
       const inputValue = this.input.value || '';
       this.suggestedInput = inputValue;
@@ -209,10 +218,10 @@ class SearchAdapter {
 
   /**
    * Default input handler
-   * @param {Event|InputEvent} event
+   * @param {Event=} event
    * @return {void}
    */
-  handleInputEvent(event) {
+  handleInputEvent(event) { // eslint-disable-line no-unused-vars
     if (document.activeElement !== this.input) {
       return;
     }
@@ -226,7 +235,7 @@ class SearchAdapter {
     }
     this.previousValue = inputValue;
     this.currentSearchTerm = inputValue;
-    let results = null;
+
     /**
      * @param {Error} error
      * @return {void}
@@ -365,7 +374,7 @@ class SearchAdapter {
    * @param {Event|FocusEvent} event
    * @return {void}
    */
-  handleBlurEvent(event) {
+  handleBlurEvent(event) { // eslint-disable-line no-unused-vars
     if (this.dropdown) {
       const dropDownElement = this.textfield.querySelector('.mdw-textfield__dropdown');
       if (dropDownElement.hasAttribute('mdw-show')) {
@@ -401,7 +410,7 @@ class SearchAdapter {
   }
 
   /**
-   * @param {(function({input:string, content:string}):boolean)=} fnFilter
+   * @param {SearchAdapterTextFilter=} fnFilter
    * @return {void}
    */
   filterListItems(fnFilter) {
@@ -416,7 +425,7 @@ class SearchAdapter {
       const item = items[i];
       const content = this.itemTextParser(item);
       const fn = fnFilter || this.filter;
-      if (fn({ input, content })) {
+      if (fn(input, content)) {
         hasItem = true;
         item.removeAttribute('hidden');
       } else {
@@ -483,6 +492,7 @@ class SearchAdapter {
         break;
       }
       case 'Enter': {
+        /** @type {HTMLElement} */
         const current = this.list.querySelector('.mdw-list__item[mdw-selected]');
         if (current) {
           if (this.hideDropDown()) {
@@ -494,6 +504,7 @@ class SearchAdapter {
         break;
       }
       case 'Tab': {
+        /** @type {HTMLElement} */
         const current = this.list.querySelector('.mdw-list__item[mdw-selected]');
         if (current) {
           if (this.hideDropDown()) {
@@ -508,6 +519,4 @@ class SearchAdapter {
   }
 }
 
-export {
-  SearchAdapter,
-};
+export { SearchAdapter }; // eslint-disable-line import/prefer-default-export
