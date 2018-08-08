@@ -15,22 +15,59 @@ function constructTableCheckbox() {
   return checkboxLabel;
 }
 
+/**
+ * @callback DataTableAdapterColumnFormatter
+ * @param {any} value
+ * @param {any=} object
+ * @return {any}
+ */
+
+/**
+ * Callback fired when value change is requested
+ * Return truthy value to cancel updating object
+ * @callback DataTableAdapterOnValueChangeRequestedCallback
+ * @param {any} object
+ * @param {string} key
+ * @param {any} value
+ * @return {boolean} cancel
+ */
+
+/**
+ * Callback fired when value is changed
+ * @callback DataTableAdapterOnValueChangedCallback
+ * @param {any} object
+ * @param {string} key
+ * @param {any} value
+ * @return {void}
+ */
+
+/**
+ * @callback DataTableAdapterFilter
+ * @param {any} element
+ * @param {number=} index
+ * @param {any[]=} array
+ * @return {any}
+ */
+
+/**
+ * Constructor options for DataTableAdapterColumn
+ * @typedef DataTableAdapterColumnOptions
+ * @property {string} key
+ * @property {(string|DocumentFragment)=} name
+ * @property {string=} type
+ * @property {boolean=} rowSelector
+ * @property {string=} tooltip
+ * @property {boolean=} sortable
+ * @property {boolean=} primaryColumn
+ * @property {HTMLElement=} customSortIcon
+ * @property {string=} innerHTML
+ * @property {DocumentFragment=} fragment
+ * @property {(function(HTMLTableCellElement, any, any=):void)=} renderer
+ * @property {DataTableAdapterColumnFormatter=} formatter
+ */
+
 class DataTableAdapterColumn {
-  /**
-   * @param {Object} options Text or options
-   * @param {string} options.key
-   * @param {(string|DocumentFragment)=} options.name
-   * @param {string=} options.type
-   * @param {boolean=} options.rowSelector
-   * @param {string=} options.tooltip
-   * @param {boolean=} options.sortable
-   * @param {boolean=} options.primaryColumn
-   * @param {HTMLElement=} options.customSortIcon
-   * @param {string=} options.innerHTML
-   * @param {DocumentFragment=} options.fragment
-   * @param {(function(HTMLTableCellElement, any, any=):void)=} options.renderer
-   * @param {(function(any):any)=} options.formatter
-   */
+  /** @param {DataTableAdapterColumnOptions} options */
   constructor(options) {
     this.element = document.createElement('th');
     if (options.innerHTML != null) {
@@ -109,21 +146,7 @@ class DataTableAdapterColumn {
     } else {
       this.renderer = DataTableAdapterColumn.defaultCellRenderer;
     }
-    if (options.formatter) {
-      this.formatter = options.formatter;
-    } else {
-      this.formatter = DataTableAdapterColumn.defaultValueFormatter;
-    }
-  }
-
-
-  /**
-   * @param {any} value
-   * @param {any} object
-   * @return {void}
-   */
-  static defaultValueFormatter(value, object) {
-    return value;
+    this.formatter = options.formatter || (value => value);
   }
 
   /**
@@ -189,12 +212,17 @@ class DataTableAdapter {
    * @param {Object} options
    * @param {HTMLElement} options.datatable
    * @param {Object[]} options.datasource Object array
-   * @param {function(any, number=, any[]=)=} options.filter
+   * @param {DataTableAdapterFilter=} options.filter
+   * @param {DataTableAdapterOnValueChangeRequestedCallback=} options.onValueChangeRequested
+   * @param {DataTableAdapterOnValueChangedCallback=} options.onValueChanged
    */
   constructor(options) {
     this.element = options.datatable;
     this.datasource = options.datasource;
     this.filter = options.filter;
+    this.onValueChangeRequested = options.onValueChangeRequested || (() => false);
+    this.onValueChanged = options.onValueChanged || (() => {});
+
     this.element.addEventListener('click', (event) => {
       // Use one event listener to reduce overhead and allow dynamic content
       this.handleClickInteraction(event);
@@ -205,7 +233,7 @@ class DataTableAdapter {
     this.tabindexRowData = null;
     this.element.addEventListener('mdw:tabindexchanged', (event) => {
       if (this.element.hasAttribute('mdw-row-focusable')) {
-        this.tabindexRow = event.target;
+        this.tabindexRow = /** @type {HTMLTableRowElement} */ (event.target);
         this.tabindexRowData = this.getDataForTableRow(this.tabindexRow);
       }
     });
@@ -270,35 +298,11 @@ class DataTableAdapter {
   }
 
   /**
-   * Overridable event fired when value change is requested
-   * Return truthy value to cancel updating object
-   * @param {any} object
-   * @param {string} key
-   * @param {any} value
-   * @return {boolean} cancel
-   */
-  onValueChangedRequested(object, key, value) {
-    return false;
-  }
-
-  /**
-   * Overridable event fired when value is changed
-   * @param {any} object
-   * @param {string} key
-   * @param {any} value
-   * @return {void}
-   */
-  onValueChanged(object, key, value) {
-    return;
-  }
-
-  /**
    * @param {PointerEvent|MouseEvent} event
    * @return {void}
    */
   handleClickInteraction(event) {
-    /** @type {HTMLElement} */
-    const target = event.target;
+    const { target } = event;
     if (target instanceof HTMLInputElement) {
       if (target.hasAttribute('type') && target.getAttribute('type') === 'checkbox') {
         event.stopPropagation();
@@ -310,7 +314,7 @@ class DataTableAdapter {
         }
         const currentRow = this.getTableRow(target);
         const object = this.getDataForTableRow(currentRow);
-        if (this.onValueChangedRequested(object, currentCell.dataset.key, target.checked)) {
+        if (this.onValueChangeRequested(object, currentCell.dataset.key, target.checked)) {
           event.preventDefault();
           return;
         }
@@ -329,7 +333,7 @@ class DataTableAdapter {
       }
       return;
     }
-    const currentCell = this.getTableCell(target);
+    const currentCell = this.getTableCell(/** @type {HTMLElement} */ (target));
     if (currentCell) {
       if (currentCell.tagName.toLowerCase() === 'th' && currentCell.hasAttribute('mdw-sortable')) {
         event.stopPropagation();
@@ -341,7 +345,6 @@ class DataTableAdapter {
         if (this.updateSortColumn) {
           this.updateSortColumn(currentCell, ascending);
         }
-        return;
       }
     }
   }
@@ -407,7 +410,7 @@ class DataTableAdapter {
   setCheckOnAllRows(value, columnIndex) {
     const column = this.columns[columnIndex];
     this.datasource.forEach((object) => {
-      object[column.key] = value;
+      object[column.key] = value; // eslint-disable-line no-param-reassign
     });
     this.refresh();
   }
@@ -656,7 +659,8 @@ class DataTableAdapter {
    * @return {HTMLElement}
    */
   getFooter(create) {
-    let footer = this.element.getElementsByClassName('mdw-datatable__footer')[0];
+    /** @type {HTMLElement} */
+    let footer = (this.element.getElementsByClassName('mdw-datatable__footer')[0]);
     if (!footer && create) {
       footer = document.createElement('div');
       footer.classList.add('mdw-datatable__footer');
@@ -744,7 +748,7 @@ class DataTableAdapter {
   }
 
   /**
-   * @param {function(any, number=, any[]=)} filter
+   * @param {DataTableAdapterFilter} filter
    * @return {void}
    */
   setFilter(filter) {
