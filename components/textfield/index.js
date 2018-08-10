@@ -7,7 +7,7 @@ class TextField {
    */
   static attach(textfieldElement) {
     /** @type {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} */
-    const input = getChildElementByClass(textfieldElement, 'mdw-textfield__input');
+    const input = (getChildElementByClass(textfieldElement, 'mdw-textfield__input'));
     if (input) {
       input.addEventListener('input', TextField.onInput);
       TextField.onInput({ currentTarget: input });
@@ -27,7 +27,7 @@ class TextField {
   }
 
   /**
-   * @param {Event} event
+   * @param {Event|{currentTarget}} event
    * @return {void}
    */
   static onInput(event) {
@@ -76,7 +76,7 @@ class TextField {
    */
   static getValue(textfieldElement) {
     /** @type {HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement} */
-    const input = getChildElementByClass(textfieldElement, 'mdw-textfield__input');
+    const input = (getChildElementByClass(textfieldElement, 'mdw-textfield__input'));
     if ((input instanceof HTMLTextAreaElement) || (input instanceof HTMLSelectElement)) {
       return input.value;
     }
@@ -91,7 +91,7 @@ class TextField {
         if (input.value == null) {
           return null;
         }
-        return new Date((input.valueAsDate.getTimezoneOffset() * 60 * 1000) + input.valueAsNumber);
+        return new Date((new Date().getTimezoneOffset() * 60 * 1000) + input.valueAsNumber);
       default:
         return input.value;
     }
@@ -104,7 +104,7 @@ class TextField {
    */
   static setValue(textfieldElement, value) {
     /** @type {HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement} */
-    const input = getChildElementByClass(textfieldElement, 'mdw-textfield__input');
+    const input = (getChildElementByClass(textfieldElement, 'mdw-textfield__input'));
     if (value == null) {
       input.value = null;
     } else if (input instanceof HTMLTextAreaElement || input instanceof HTMLSelectElement) {
@@ -125,8 +125,10 @@ class TextField {
       } else {
         switch (type) {
           case 'date':
-          case 'datetime-local':
             input.valueAsDate = value;
+            break;
+          case 'datetime-local':
+            input.valueAsNumber = value.getTime() - (new Date().getTimezoneOffset() * 60 * 1000);
             break;
           case 'number':
           case 'range':
