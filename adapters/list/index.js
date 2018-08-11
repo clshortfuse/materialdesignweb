@@ -1,83 +1,49 @@
+import { ListItem } from '../../components/list/index';
+
 /**
- * @interface
- * @template T
+ * @param {HTMLLIElement} element
+ * @param {any} data
+ * @return {void}
  */
-class IListAdapterRenderer {
-  /** @param {T} data */
-  constructor(data) {
-    this.data = data;
-    this.createElement();
-    this.render();
+function AnyListAdapterRendererFn(element, data) {
+  let primaryText = element.getElementsByClassName('mdw-list__text')[0];
+  if (!primaryText) {
+    primaryText = document.createElement('div');
+    primaryText.classList.add('mdw-list__text');
+    element.appendChild(primaryText);
+    ListItem.attach(element);
   }
-
-  /**
-   * @abstract
-   * @return {void}
-   */
-  createElement() {
-    this.element = document.createElement('li');
-    this.element.classList.add('mdw-list__item');
-  }
-
-  /**
-   * @abstract
-   * @return {void}
-   */
-  // eslint-disable-next-line class-methods-use-this
-  render() {
-    throw new Error('Not implemented.');
-  }
-}
-
-/** @extends {IListAdapterRenderer<Object>} */
-class AnyListAdapterRenderer extends IListAdapterRenderer {
-  createElement() {
-    super.createElement();
-    const markup = `
-      <div class="mdw-list__text/">
-    `.trim();
-    this.element.innerHTML = markup;
-    this.primaryText = this.element.getElementsByClassName('mdw-list__text')[0];
-  }
-
-  render() {
-    let s = '';
-    if (this.data != null) {
-      if (this.data.toString) {
-        s = this.data.toString();
-      } else {
-        s = new String(this.data).toString(); // eslint-disable-line no-new-wrappers
-      }
+  let s = '';
+  if (data != null) {
+    if (data.toString) {
+      s = data.toString();
+    } else {
+      s = new String(data).toString(); // eslint-disable-line no-new-wrappers
     }
-    if (this.primaryText.textContent !== s) {
-      this.primaryText.textContent = s;
-    }
+  }
+  if (primaryText.textContent !== s) {
+    primaryText.textContent = s;
   }
 }
 
 /**
- * @typedef ListAdapterOptions<T>
- * @prop {HTMLElement} list
- * @prop {Array<T>} datasource
- * @prop {typeof IListAdapterRenderer} renderer
- * @template T
- */
-
-
-/**
- * @interface
  * @template T
  */
 class ListAdapter {
-  /** @param {ListAdapterOptions<T>} options */
-  constructor(options) {
-    this.element = options.list;
-    this.datasource = options.datasource;
-    /** @type {Map<T, IListAdapterRenderer<T>>} */
+  /**
+   * @param {HTMLElement} element
+   * @param {Array<T>} datasource
+   * @param {function(HTMLLIElement, T)=} renderFn
+   */
+  constructor(element, datasource, renderFn) {
+    this.element = element;
+    this.datasource = datasource;
+    /** @type {Map<T, HTMLLIElement>} */
     this.map = new Map();
-    this.renderer = options.renderer || AnyListAdapterRenderer;
+    this.render = renderFn || AnyListAdapterRendererFn;
   }
 
+  /** @return {void} */
   refresh() {
     const unlinkedDataItems = [];
     this.map.forEach((element, data) => {
@@ -93,6 +59,19 @@ class ListAdapter {
     });
   }
 
+  /** @return {void} */
+  clear() {
+    this.map.clear();
+    while (this.element.lastChild) {
+      this.element.removeChild(this.element.lastChild);
+    }
+  }
+
+  /**
+   * @param {T} data
+   * @param {boolean} [checkPosition=true]
+   * @return {void}
+   */
   refreshItem(data, checkPosition = true) {
     const index = this.datasource.indexOf(data);
     if (index === -1) {
@@ -100,49 +79,57 @@ class ListAdapter {
       return;
     }
     let elementIndex = -1;
-    let item = this.map.get(data);
-    if (!item) {
-      item = new this.renderer(data); // eslint-disable-line new-cap
-      this.map.set(data, item);
+    let element = this.map.get(data);
+    if (!element) {
+      element = document.createElement('li');
+      element.classList.add('mdw-list__item');
+      this.map.set(data, element);
     } else if (checkPosition) {
       elementIndex = index;
     } else {
-      let sibling = this.element.firstElementChild;
+      let sibling = this.element.firstChild;
       let siblingIndex = -1;
       while (sibling) {
         siblingIndex += 1;
-        if (sibling === item.element) {
+        if (sibling === element) {
           elementIndex = siblingIndex;
           break;
         }
-        sibling = sibling.nextElementSibling;
+        sibling = sibling.nextSibling;
       }
     }
-    item.render();
+    this.render(element, data);
     if (elementIndex === index) {
       return;
+    }
+    if (elementIndex !== -1 && element.parentElement) {
+      element.parentElement.removeChild(element);
     }
     let idx = index;
     let nextDataObject = this.datasource[idx + 1];
     while (nextDataObject) {
-      const nextElementMap = this.map.get(nextDataObject);
-      if (nextElementMap) {
-        this.element.insertBefore(item.element, nextElementMap.element);
+      const nextElement = this.map.get(nextDataObject);
+      if (nextElement) {
+        this.element.insertBefore(element, nextElement);
         return;
       }
       idx += 1;
       nextDataObject = this.datasource[idx + 1];
     }
-    this.element.appendChild(item.element);
+    this.element.appendChild(element);
   }
 
+  /**
+   * @param {T} data
+   * @return {void}
+   */
   removeItem(data) {
-    const item = this.map.get(data);
-    if (!item) {
+    const element = this.map.get(data);
+    if (!element) {
       return;
     }
-    if (item.element.parentElement) {
-      item.element.parentElement.removeChild(item.element);
+    if (element.parentElement) {
+      element.parentElement.removeChild(element);
     }
     this.map.delete(data);
   }
@@ -156,6 +143,4 @@ class ListAdapter {
 
 export {
   ListAdapter,
-  IListAdapterRenderer,
-  AnyListAdapterRenderer,
 };
