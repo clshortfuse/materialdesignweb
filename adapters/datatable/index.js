@@ -63,6 +63,14 @@ function constructTableCheckbox() {
  */
 
 /**
+ * @callback DataTableAdapterSorter<T>
+ * @param {T} a
+ * @param {T} b
+ * @return {number}
+ * @template T
+ */
+
+/**
  * Constructor options for DataTableAdapterColumn
  * @typedef DataTableAdapterColumnOptions<T>
  * @property {string} key
@@ -235,11 +243,13 @@ class DataTableAdapter {
    * @param {DataTableAdapterFilter<T>=} options.filter
    * @param {DataTableAdapterOnValueChangeRequestedCallback<T>=} options.onValueChangeRequested
    * @param {DataTableAdapterOnValueChangedCallback<T>=} options.onValueChanged
+   * @param {DataTableAdapterSorter<T>=} options.sorter
    */
   constructor(options) {
     this.element = options.datatable;
     this.datasource = options.datasource;
     this.filter = options.filter;
+    this.sorter = options.sorter;
     this.onValueChangeRequested = options.onValueChangeRequested || (() => false);
     this.onValueChanged = options.onValueChanged || (() => {});
 
@@ -371,32 +381,40 @@ class DataTableAdapter {
 
   /**
    * Overridable sorting method
-   * WARNING: Sort is performed on original datasource
-   * @param {HTMLTableHeaderCellElement} tableHeaderCell
+   * @param {HTMLTableHeaderCellElement=} tableHeaderCell null if none
    * @param {boolean} [ascending=false]
    * @return {void}
    */
   updateSortColumn(tableHeaderCell, ascending) {
+    if (!tableHeaderCell) {
+      this.sorter = null;
+      this.refresh();
+      return;
+    }
     if (tableHeaderCell.cellIndex === -1) {
       // Header not attached to row!
       return;
     }
     const index = tableHeaderCell.cellIndex;
     const tableColumn = this.columns[index];
-    this.datasource.sort((a, b) => {
+    const direction = ascending ? 1 : -1;
+    this.sorter = ((a, b) => {
       const valueA = a[tableColumn.key];
       const valueB = b[tableColumn.key];
       if (tableColumn.type === 'number') {
-        return parseFloat(valueB) - parseFloat(valueA);
+        return (parseFloat(valueA) - parseFloat(valueB)) * direction;
       }
       if (tableColumn.type === 'checkbox') {
-        return (valueB ? 1 : 0) - (valueA ? 1 : 0);
+        return ((valueA ? 1 : 0) - (valueB ? 1 : 0)) * direction;
       }
-      return valueA.localeCompare(valueB);
+      if (valueA.localeCompare) {
+        return valueA.localeCompare(valueB) * direction;
+      }
+      if (valueA == valueB) {
+        return 0;
+      }
+      return (valueA - valueB) * direction;
     });
-    if (ascending) {
-      this.datasource.reverse();
-    }
     this.refresh();
   }
 
@@ -776,9 +794,22 @@ class DataTableAdapter {
     this.refreshFilter();
   }
 
+  /**
+   * @param {DataTableAdapterSorter<T>} sorter
+   * @return {void}
+   */
+  setSorter(sorter) {
+    this.sorter = sorter;
+    this.refreshFilter();
+  }
+
   refreshFilter() {
-    if (this.filter) {
+    if (this.filter && this.sorter) {
+      this.filteredDatasource = this.datasource.filter(this.filter).sort(this.sorter);
+    } else if (this.filter) {
       this.filteredDatasource = this.datasource.filter(this.filter);
+    } else if (this.sorter) {
+      this.filteredDatasource = this.datasource.slice(0).sort(this.sorter);
     } else {
       this.filteredDatasource = null;
     }
@@ -789,7 +820,7 @@ class DataTableAdapter {
    * @return {T[]}
    */
   getDatasource() {
-    if (this.filter) {
+    if (this.filter || this.sorter) {
       if (this.filteredDatasource == null) {
         this.refreshFilter();
       }
