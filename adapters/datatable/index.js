@@ -16,42 +16,55 @@ function constructTableCheckbox() {
 }
 
 /**
- * @callback DataTableAdapterColumnFormatter
+ * @callback DataTableAdapterColumnFormatter<T>
  * @param {any} value
- * @param {any=} object
+ * @param {T=} object
  * @return {any}
+ * @template T
+ */
+
+/**
+ * @callback DataTableAdapterColumnRenderer<T>
+ * @param {HTMLTableCellElement} cell,
+ * @param {any} value
+ * @param {T} data
+ * @return {void}
+ * @template T
  */
 
 /**
  * Callback fired when value change is requested
  * Return truthy value to cancel updating object
- * @callback DataTableAdapterOnValueChangeRequestedCallback
- * @param {any} object
+ * @callback DataTableAdapterOnValueChangeRequestedCallback<T>
+ * @param {T} object
  * @param {string} key
  * @param {any} value
  * @return {boolean} cancel
+ * @template T
  */
 
 /**
  * Callback fired when value is changed
- * @callback DataTableAdapterOnValueChangedCallback
- * @param {any} object
+ * @callback DataTableAdapterOnValueChangedCallback<T>
+ * @param {T} object
  * @param {string} key
  * @param {any} value
  * @return {void}
+ * @template T
  */
 
 /**
- * @callback DataTableAdapterFilter
- * @param {any} element
+ * @callback DataTableAdapterFilter<T>
+ * @param {T} element
  * @param {number=} index
- * @param {any[]=} array
+ * @param {T[]=} array
  * @return {any}
+ * @template T
  */
 
 /**
  * Constructor options for DataTableAdapterColumn
- * @typedef DataTableAdapterColumnOptions
+ * @typedef DataTableAdapterColumnOptions<T>
  * @property {string} key
  * @property {(string|DocumentFragment)=} name
  * @property {string=} type
@@ -62,12 +75,16 @@ function constructTableCheckbox() {
  * @property {HTMLElement=} customSortIcon
  * @property {string=} innerHTML
  * @property {DocumentFragment=} fragment
- * @property {(function(HTMLTableCellElement, any, any=):void)=} renderer
- * @property {DataTableAdapterColumnFormatter=} formatter
+ * @property {DataTableAdapterColumnRenderer<T>=} renderer
+ * @property {DataTableAdapterColumnFormatter<T>=} formatter
+ * @template T
  */
 
+/**
+ * @template T
+ */
 class DataTableAdapterColumn {
-  /** @param {DataTableAdapterColumnOptions} options */
+  /** @param {DataTableAdapterColumnOptions<T>} options */
   constructor(options) {
     this.element = document.createElement('th');
     if (options.innerHTML != null) {
@@ -207,14 +224,17 @@ class DataTableAdapterColumn {
   }
 }
 
+/**
+ * @template T
+ */
 class DataTableAdapter {
   /**
    * @param {Object} options
    * @param {HTMLElement} options.datatable
-   * @param {Object[]} options.datasource Object array
-   * @param {DataTableAdapterFilter=} options.filter
-   * @param {DataTableAdapterOnValueChangeRequestedCallback=} options.onValueChangeRequested
-   * @param {DataTableAdapterOnValueChangedCallback=} options.onValueChanged
+   * @param {T[]} options.datasource Object array
+   * @param {DataTableAdapterFilter<T>=} options.filter
+   * @param {DataTableAdapterOnValueChangeRequestedCallback<T>=} options.onValueChangeRequested
+   * @param {DataTableAdapterOnValueChangedCallback<T>=} options.onValueChanged
    */
   constructor(options) {
     this.element = options.datatable;
@@ -239,7 +259,7 @@ class DataTableAdapter {
     });
     DataTable.attach(this.element);
     this.element.setAttribute('mdw-adapter', '');
-    /** @type {DataTableAdapterColumn[]} */
+    /** @type {DataTableAdapterColumn<T>[]} */
     this.columns = [];
     this.page = 0;
     this.pageLimit = 0;
@@ -449,7 +469,7 @@ class DataTableAdapter {
     return this.getTableCell(element.parentElement);
   }
 
-  /** @return {HTMLTableRowElement[]} */
+  /** @return {T[]} */
   getSelectedRows() {
     const selectorColumn = this.columns.filter(column => column.rowSelector)[0];
     if (!selectorColumn) {
@@ -471,7 +491,7 @@ class DataTableAdapter {
   }
 
   /**
-   * @param {Object[]} datasource Object array
+   * @param {T[]} datasource Object array
    * @return {void}
    */
   setDatasource(datasource) {
@@ -505,9 +525,9 @@ class DataTableAdapter {
    * @param {HTMLElement=} options.customSortIcon
    * @param {string=} options.innerHTML
    * @param {DocumentFragment=} options.fragment
-   * @param {(function(HTMLTableCellElement, any, any=):void)=} options.renderer
-   * @param {(function(any):any)=} options.formatter
-   * @return {DataTableAdapterColumn}
+   * @param {DataTableAdapterColumnRenderer<T>=} options.renderer
+   * @param {DataTableAdapterColumnFormatter<T>=} options.formatter
+   * @return {DataTableAdapterColumn<T>}
    */
   addColumn(options) {
     const tableColumn = new DataTableAdapterColumn(options);
@@ -748,7 +768,7 @@ class DataTableAdapter {
   }
 
   /**
-   * @param {DataTableAdapterFilter} filter
+   * @param {DataTableAdapterFilter<T>} filter
    * @return {void}
    */
   setFilter(filter) {
@@ -766,7 +786,7 @@ class DataTableAdapter {
 
   /**
    * Get filtered datasource
-   * @return {any[]}
+   * @return {T[]}
    */
   getDatasource() {
     if (this.filter) {
@@ -874,7 +894,7 @@ class DataTableAdapter {
 
   /**
    * @param {HTMLTableRowElement} row
-   * @return {any}
+   * @return {T}
    */
   getDataForTableRow(row) {
     const index = (row.sectionRowIndex) + (this.page * this.pageLimit);
@@ -882,7 +902,7 @@ class DataTableAdapter {
   }
 
   /**
-   * @param {any} data
+   * @param {T} data
    * @return {HTMLTableRowElement} row
    */
   getTableRowForData(data) {
@@ -947,7 +967,7 @@ class DataTableAdapter {
 
   /**
    * @param {HTMLTableCellElement|DataTableAdapterColumn|number|string} search
-   * @return {DataTableAdapterColumn}
+   * @return {DataTableAdapterColumn<T>}
    */
   getColumn(search) {
     if (search instanceof DataTableAdapterColumn) {
