@@ -84,7 +84,7 @@ class TextField {
     switch (type) {
       case 'number':
       case 'range':
-        return input.valueAsNumber;
+        return Number.isNaN(input.valueAsNumber) ? null : input.valueAsNumber;
       case 'date':
       case 'datetime-local':
       case 'time':
