@@ -9,7 +9,7 @@ const lightAttribute = 'white light';
  * @param {Element=} button
  * @return {void}
  */
-function setRTLMode(value, button) {
+export function setRTLMode(value, button) {
   if (value) {
     document.documentElement.setAttribute('dir', 'rtl');
     if (button) {
@@ -33,7 +33,7 @@ function setRTLMode(value, button) {
  * @param {Element=} button
  * @return {void}
  */
-function setDarkMode(value, button) {
+export function setDarkMode(value, button) {
   if (value) {
     document.documentElement.setAttribute('mdw-theme-fill', darkAttribute);
     if (button) {
@@ -56,7 +56,7 @@ function setDarkMode(value, button) {
  * @param {Element=} button
  * @return {void}
  */
-function setFontSize(value, button) {
+export function setFontSize(value, button) {
   if (value) {
     document.documentElement.style.setProperty('font-size', value);
     if (button) {
@@ -126,7 +126,7 @@ function setupLargeFontMode(element) {
 }
 
 /** @return {void} */
-function setupMenuOptions() {
+export function setupMenuOptions() {
   const buttons = document.getElementById('docs-menu-buttons').getElementsByClassName('mdw-button');
   const buttonRTLMode = buttons[0];
   const buttonDarkMode = buttons[1];
@@ -135,10 +135,3 @@ function setupMenuOptions() {
   setupDarkMode(buttonDarkMode);
   setupLargeFontMode(largeFontMode);
 }
-
-export {
-  setupMenuOptions,
-  setRTLMode,
-  setDarkMode,
-  setFontSize,
-};
