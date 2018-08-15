@@ -7,7 +7,8 @@ import { SearchAdapter } from '../../../adapters/search/index';
 function buildCustomSearch1() {
   const textfield = document.getElementById('search-textfield-custom1');
   const list = document.getElementById('search-list-custom1');
-  const busyIndicator = textfield.querySelector('.custom-busy-indicator');
+  /** @type {HTMLElement} */
+  const busyIndicator = (textfield.getElementsByClassName('custom-busy-indicator')[0]);
   /** @type {WeakMap<HTMLLIElement, Object>} */
   const myListItemMap = new WeakMap();
   let resultsCache;
@@ -60,7 +61,7 @@ function buildCustomSearch1() {
     listUpdated = true;
     resolve();
   };
-  
+
   const searchDocsCustom = new SearchAdapter({
     textfield,
     list,
@@ -72,7 +73,8 @@ function buildCustomSearch1() {
     updateList: customUpdateList,
   });
   searchDocsCustom.list.addEventListener('mdw:itemactivated', (event) => {
-    const selectedItem = myListItemMap.get(event.target);
+    const el = /** @type {HTMLLIElement} */ (event.target);
+    const selectedItem = myListItemMap.get(el);
     const text = `${selectedItem.line1}:${selectedItem.line2}`;
     document.getElementById('search-result-custom1').textContent = text;
   });
@@ -99,9 +101,9 @@ function buildCustomSearch2() {
   const textfield = document.getElementById('search-textfield-custom2');
   const list = document.getElementById('search-list-custom2');
   /** @type {HTMLElement} */
-  const busyIndicator = textfield.getElementsByClassName('custom-busy-indicator')[0];
+  const busyIndicator = (textfield.getElementsByClassName('custom-busy-indicator')[0]);
   /** @type {HTMLElement} */
-  const noResultsIndicator = textfield.getElementsByClassName('custom-no-results-indicator')[0];
+  const noResultsIndicator = (textfield.getElementsByClassName('custom-no-results-indicator')[0]);
   /** @type {WeakMap<HTMLLIElement, Object>} */
   const myListItemMap = new WeakMap();
   const customPerformSearch = (searchTerm, resolve) => {
