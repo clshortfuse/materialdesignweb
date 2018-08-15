@@ -1,6 +1,9 @@
 @import 'palettes.scss';
 @import '../common/functions.scss';
 
+
+@import './globals.scss';
+
 @import '../bottomnav/theming.scss';
 @import '../button/theming.scss';
 @import '../card/theming.scss';
@@ -56,6 +59,8 @@ $added-palettes-list: ();
 }
 
 @mixin lightVariables($color:"background") {
+  @include globalThemeVariables($color, 'light');
+
   @if (index($mdw-theme__components, 'bottomnav')) {
     @include bottomnavThemeVariables($color, 'light');
   }
@@ -98,6 +103,8 @@ $added-palettes-list: ();
 }
 
 @mixin darkVariables($color:"background") {
+  @include globalThemeVariables($color, 'dark');
+
   @if (index($mdw-theme__components, 'bottomnav')) {
     @include bottomnavThemeVariables($color, 'dark');
   }
@@ -149,6 +156,7 @@ $added-palettes-list: ();
 }
 
 @mixin componentContrastRules($type: 'var', $theme: null) {
+  @include globalContrastRules($type, $theme);
   @if (index($mdw-theme__components, 'bottomnav')) {
     @include bottomnavContrastRules($type, $theme);
   }

@@ -1,0 +1,25 @@
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
+
+$globalColors: (
+  text-color:           ((#000, 0.87), (#fff, 1.00)),
+  secondary-text-color: ((#000, 0.54), (#fff, 0.70)),
+);
+
+@function globalThemeValue($key, $type) {
+  @return themeValue('', $globalColors, $key, $type);
+}
+
+@mixin globalThemeVariables($color, $lightness) {
+  @include themeVariables('', $globalColors, $color, $lightness);
+}
+
+// Vary by contrast
+@mixin globalContrastRules($type: 'var', $theme: null) {
+  .mdw__primary-text {
+    color: globalThemeValue("text-color", $type);
+  }
+  .mdw__secondary-text {
+    color: globalThemeValue("secondary-text-color", $type);
+  }
+}
