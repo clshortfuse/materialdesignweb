@@ -5,5 +5,11 @@
 @import '../common/variables.scss';
 
 .mdw-card {
-  box-shadow: elevation(2);
+  box-shadow: elevation(1);
+  display: flex;
+  border-radius: 4px;
+}
+
+.mdw-card[mdw-raised] {
+  box-shadow: elevation(8);
 }
