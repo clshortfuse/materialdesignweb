@@ -318,12 +318,12 @@ class Dialog {
 
   /**
    * @param {Element} dialogElement
-   * @param {string=} text
+   * @param {(DocumentFragment|string)=} content
    * @return {void}
    */
-  static updateTitle(dialogElement, text) {
+  static updateTitle(dialogElement, content) {
     let title = dialogElement.getElementsByClassName('mdw-dialog__title')[0];
-    if (!text) {
+    if (!content) {
       if (!title) {
         // Nothing to be done
         return;
@@ -332,12 +332,19 @@ class Dialog {
       return;
     }
     if (!title) {
-      const content = dialogElement.getElementsByClassName('mdw-dialog__content')[0];
       title = document.createElement('div');
       title.classList.add('mdw-dialog__title');
-      content.appendChild(title);
+      const popup = dialogElement.getElementsByClassName('mdw-dialog__popup')[0];
+      popup.insertBefore(title, popup.firstChild);
     }
-    title.textContent = text;
+    if (content instanceof DocumentFragment) {
+      while (title.lastChild) {
+        title.removeChild(title.lastChild);
+      }
+      title.appendChild(content);
+    } else {
+      title.textContent = content;
+    }
   }
 
 
@@ -356,12 +363,12 @@ class Dialog {
 
   /**
    * @param {Element} dialogElement
-   * @param {string=} text
+   * @param {(DocumentFragment|string)=} content
    * @return {void}
    */
-  static updateBody(dialogElement, text) {
+  static updateBody(dialogElement, content) {
     let body = dialogElement.getElementsByClassName('mdw-dialog__body')[0];
-    if (!text) {
+    if (!content) {
       if (!body) {
         // Nothing to be done
         return;
@@ -370,18 +377,30 @@ class Dialog {
       return;
     }
     if (!body) {
-      const content = dialogElement.getElementsByClassName('mdw-dialog__content')[0];
       body = document.createElement('div');
       body.classList.add('mdw-dialog__body');
-      content.appendChild(body);
+      const title = dialogElement.getElementsByClassName('mdw-dialog__title')[0];
+      if (title) {
+        title.insertAdjacentElement('afterend', body);
+      } else {
+        const popup = dialogElement.getElementsByClassName('mdw-dialog__popup')[0];
+        popup.insertBefore(body, popup.firstChild);
+      }
     }
-    body.textContent = text;
+    if (content instanceof DocumentFragment) {
+      while (body.lastChild) {
+        body.removeChild(body.lastChild);
+      }
+      body.appendChild(content);
+    } else {
+      body.textContent = content;
+    }
   }
 
   /**
    * @param {Object} options
-   * @param {string=} options.title
-   * @param {string=} options.body
+   * @param {(DocumentFragment|string)=} options.title
+   * @param {(DocumentFragment|string)=} options.body
    * @param {string[]=} options.buttons
    * @param {boolean=} options.stacked
    * @param {Element=} options.parent
@@ -397,22 +416,9 @@ class Dialog {
     popup.classList.add('mdw-dialog__popup');
     element.appendChild(popup);
 
-    const content = document.createElement('div');
-    content.classList.add('mdw-dialog__content');
-    popup.appendChild(content);
+    Dialog.updateTitle(element, options.title);
+    Dialog.updateBody(element, options.body);
 
-    if (options.title) {
-      const title = document.createElement('div');
-      title.classList.add('mdw-dialog__title');
-      title.textContent = options.title;
-      content.appendChild(title);
-    }
-    if (options.body) {
-      const body = document.createElement('div');
-      body.classList.add('mdw-dialog__body');
-      body.textContent = options.body;
-      content.appendChild(body);
-    }
     if (options.buttons) {
       const buttonArea = document.createElement('div');
       buttonArea.classList.add('mdw-dialog__button-area');
