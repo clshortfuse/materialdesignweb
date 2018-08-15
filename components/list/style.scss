@@ -6,15 +6,6 @@
 
 $list__divider-height: dp(1);
 
-// single     = 48dp
-// two-line   = 72dp
-// three-line = 88dp
-// 2x + y = 72 
-// 3x + y = 88
-// x = 32, y = 8 or x = 40, y = 16
-// item-height: 32px or 40px
-// base-height: 8px or 16px
-
 .mdw-list {
   display: flex;
   flex-direction: column;
@@ -83,15 +74,12 @@ $list__divider-height: dp(1);
   max-width: dp(72 - 16);
   align-self: flex-start;
   justify-content: flex-start;
-  margin-top: dp(16); // min-height - 24px / 2
-  &.material-icons {
-    // 2px from material-icon inset padding
-    margin-top: dp(12);
-  }
+  margin: dp(16) 0;
 }
 
+
 .mdw-list__avatar {
-  min-height: dp(56);
+  min-height: dp(40);
 }
 
 .mdw-list__expander {
@@ -235,11 +223,9 @@ $list__divider-height: dp(1);
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  &,
-  & > span {
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-  }
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  
   [mdw-divider] > .mdw-list__item:not(:last-child) &::after {
     content: '';
     position: absolute;
@@ -261,11 +247,8 @@ $list__divider-height: dp(1);
 
 .mdw-list__text-line {
   overflow-y: hidden;
-  &,
-  & > span {
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-  }
+  overflow-x: hidden;
+  text-overflow: ellipsis;
   &::before {
     content: "";
     display: inline-block;
