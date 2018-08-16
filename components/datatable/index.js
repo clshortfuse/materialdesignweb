@@ -2,7 +2,8 @@ import { isRtl, findElementParentByClassName } from '../common/dom';
 
 // https://www.w3.org/TR/wai-aria-practices/#grid
 
-class DataTable {
+// eslint-disable-next-line import/prefer-default-export
+export class DataTable {
   /**
    * @param {Element} element
    * @return {void}
@@ -114,7 +115,8 @@ class DataTable {
         hasSelection = true;
       } else {
         currentRow.removeAttribute('mdw-selected');
-        const checkboxes = mdwDataTable.querySelectorAll('td[mdw-selector] input[type=checkbox]');
+        /** @type {NodeListOf<HTMLInputElement>} */
+        const checkboxes = (mdwDataTable.querySelectorAll('td[mdw-selector] input[type=checkbox]'));
         for (let i = 0; i < checkboxes.length; i += 1) {
           if (checkboxes.item(i).checked) {
             hasSelection = true;
@@ -228,8 +230,9 @@ class DataTable {
     let row = null;
     let isRow = false;
     if (currentSelection instanceof HTMLTableCellElement) {
-      cellIndex = currentSelection.cellIndex;
-      row = currentSelection.parentElement;
+      ({ cellIndex } = currentSelection);
+      /** @type {HTMLTableRowElement} */
+      row = (currentSelection.parentElement);
     } else if (currentSelection instanceof HTMLTableRowElement) {
       isRow = true;
       row = currentSelection;
@@ -257,7 +260,6 @@ class DataTable {
         newRow.cells.item(cellIndex).setAttribute('tabindex', '0');
         DataTable.dispatchEvent(newRow.cells.item(cellIndex), 'mdw:tabindexchanged');
       }
-      
       return;
     }
     if (event.key === 'ArrowDown' || (event.key === 'Down')) {
@@ -473,7 +475,3 @@ class DataTable {
     return tbody;
   }
 }
-
-export {
-  DataTable,
-};
