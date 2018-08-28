@@ -107,8 +107,11 @@ mixin navdrawer(selected)
           .mdw-list__icon.material-icons search
           .mdw-list__text Search
         a.mdw-list__item(mdw-selected=selected=='selection' href="selection.html" mdw-theme-color="accent")
-          .mdw-list__icon.material-icons check_box
+          .mdw-list__icon.material-icons toggle_on
           .mdw-list__text Selection
+        a.mdw-list__item(mdw-selected=selected=='slider' href="slider.html" mdw-theme-color="accent")
+          .mdw-list__icon.material-icons tune
+          .mdw-list__text Slider
         a.mdw-list__item(mdw-selected=selected=='snackbar' href="snackbar.html" mdw-theme-color="accent")
           .mdw-list__icon.material-icons video_label
           .mdw-list__text Snackbar
