@@ -29,7 +29,7 @@ function getComponentsConfig() {
           loader: 'babel-loader',
           options: {
             presets: [
-              ['env', { useBuiltIns: true }],
+              ['@babel/preset-env'],
             ],
           },
         },
@@ -43,14 +43,7 @@ function getComponentsConfig() {
             loader: 'postcss-loader',
             options: {
               plugins: () => [
-                cssnano({
-                  preset: 'default',
-                  autoprefixer: false,
-                  discardUnused: false,
-                  reduceIdents: false,
-                  zindex: false,
-                  mergeIdents: false,
-                }),
+                cssnano(),
               ],
             },
           },
@@ -107,7 +100,7 @@ function getDocsConfig() {
           loader: 'babel-loader',
           options: {
             presets: [
-              ['env', { useBuiltIns: true }],
+              ['@babel/preset-env'],
             ],
           },
         },
@@ -121,14 +114,7 @@ function getDocsConfig() {
             loader: 'postcss-loader',
             options: {
               plugins: () => [
-                cssnano({
-                  preset: 'default',
-                  autoprefixer: false,
-                  discardUnused: false,
-                  reduceIdents: false,
-                  zindex: false,
-                  mergeIdents: false,
-                }),
+                cssnano(),
               ],
             },
           },
