@@ -20,7 +20,7 @@ $tab__scrollable-max-width: dp(256);
   justify-content: flex-start;
   flex-direction: row;
   &[mdw-scrollable] {
-    overflow-x: scroll;
+    overflow-x: auto;
     padding-left: 40px;
     padding-right: 40px;
     box-sizing: border-box;
