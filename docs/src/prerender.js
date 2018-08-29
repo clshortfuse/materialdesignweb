@@ -1,9 +1,9 @@
-import * as cookies from './cookies';
 import { setRTLMode, setDarkMode, setFontSize } from './menuoptions';
+import { getCookie } from './cookies';
 
-const useRTLMode = cookies.getItem('rtlmode') === 'true';
-const useDarkMode = cookies.getItem('darkmode') === 'true';
-const fontsize = cookies.getItem('fontsize');
+const useRTLMode = getCookie('rtlmode') === 'true';
+const useDarkMode = getCookie('darkmode') === 'true';
+const fontsize = getCookie('fontsize');
 
 /** @return {boolean} */
 function checkIsStandaloneIOS() {

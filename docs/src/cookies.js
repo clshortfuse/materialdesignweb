@@ -15,11 +15,11 @@
  *
  *  Syntaxes:
  *
- *  * docCookies.setItem(name, value[, end[, path[, domain[, secure]]]])
- *  * docCookies.getItem(name)
- *  * docCookies.removeItem(name[, path[, domain]])
- *  * docCookies.hasItem(name)
- *  * docCookies.keys()
+ *  * setCookie(name, value[, end[, path[, domain[, secure]]]])
+ *  * getCookie(name)
+ *  * removeCookie(name[, path[, domain]])
+ *  * hasCookie(name)
+ *  * getCookies()
  *
  */
 
@@ -27,7 +27,7 @@
  * @param {string} sKey
  * @return {string}
  */
-function getItem(sKey) {
+export function getCookie(sKey) {
   if (!sKey) {
     return null;
   }
@@ -43,7 +43,7 @@ function getItem(sKey) {
  * @param {string=} bSecure
  * @return {boolean}
  */
-function setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+export function setCookie(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
   if (!sKey || /^(?:expires|max-age|path|domain|secure)$/i.test(sKey)) {
     return false;
   }
@@ -73,42 +73,34 @@ function setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
 
 /**
  * @param {string} sKey
- * @param {string=} sPath
- * @param {string=} sDomain
  * @return {boolean}
  */
-function removeItem(sKey, sPath, sDomain) {
-  if (!this.hasItem(sKey)) {
-    return false;
-  }
-  document.cookie = `${encodeURIComponent(sKey)}=; expires=Thu, 01 Jan 1970 00:00:00 GMT${sDomain ? `; domain=${sDomain}` : ''}${sPath ? `; path=${sPath}` : ''}`;
-  return true;
-}
-
-/**
- * @param {string} sKey
- * @return {boolean}
- */
-function hasItem(sKey) {
+export function hasCookie(sKey) {
   if (!sKey || /^(?:expires|max-age|path|domain|secure)$/i.test(sKey)) {
     return false;
   }
   return (new RegExp(`(?:^|;\\s*)${encodeURIComponent(sKey).replace(/[-.+*]/g, '\\$&')}\\s*\\=`)).test(document.cookie);
 }
 
+/**
+ * @param {string} sKey
+ * @param {string=} sPath
+ * @param {string=} sDomain
+ * @return {boolean}
+ */
+export function removeCookie(sKey, sPath, sDomain) {
+  if (!hasCookie(sKey)) {
+    return false;
+  }
+  document.cookie = `${encodeURIComponent(sKey)}=; expires=Thu, 01 Jan 1970 00:00:00 GMT${sDomain ? `; domain=${sDomain}` : ''}${sPath ? `; path=${sPath}` : ''}`;
+  return true;
+}
+
 /** @return {string[]} */
-function keys() {
+export function getCookies() {
   const aKeys = document.cookie.replace(/((?:^|\s*;)[^=]+)(?=;|$)|^\s*|\s*(?:=[^;]*)?(?:\1|$)/g, '').split(/\s*(?:=[^;]*)?;\s*/);
   for (let nLen = aKeys.length, nIdx = 0; nIdx < nLen; nIdx += 1) {
     aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]);
   }
   return aKeys;
 }
-
-export {
-  getItem,
-  setItem,
-  removeItem,
-  hasItem,
-  keys,
-};
