@@ -401,6 +401,15 @@ class DataTableAdapter {
     this.sorter = ((a, b) => {
       const valueA = a[tableColumn.key];
       const valueB = b[tableColumn.key];
+      if (valueA == null) {
+        if (valueB == null) {
+          return 0;
+        }
+        return -1 * direction;
+      }
+      if (valueB == null) {
+        return direction;
+      }
       if (tableColumn.type === 'number') {
         return (parseFloat(valueA) - parseFloat(valueB)) * direction;
       }
@@ -1027,6 +1036,7 @@ class DataTableAdapter {
     }
     return table;
   }
+
   /** @return {HTMLTableRowElement} */
   getHeaderRow() {
     let thead = this.element.getElementsByTagName('thead')[0];
