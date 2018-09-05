@@ -91,7 +91,7 @@ class TextField {
         if (input.value == null) {
           return null;
         }
-        return new Date((new Date().getTimezoneOffset() * 60 * 1000) + input.valueAsNumber);
+        return new Date((new Date(input.valueAsNumber).getTimezoneOffset() * 60 * 1000) + input.valueAsNumber);
       default:
         return input.value;
     }
@@ -128,7 +128,7 @@ class TextField {
             input.valueAsDate = value;
             break;
           case 'datetime-local':
-            input.valueAsNumber = value.getTime() - (new Date().getTimezoneOffset() * 60 * 1000);
+            input.valueAsNumber = value.getTime() - (value.getTimezoneOffset() * 60 * 1000);
             break;
           case 'number':
           case 'range':
