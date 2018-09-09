@@ -253,10 +253,17 @@ class DataTableAdapter {
     this.onValueChangeRequested = options.onValueChangeRequested || (() => false);
     this.onValueChanged = options.onValueChanged || (() => {});
 
-    this.element.addEventListener('click', (event) => {
-      // Use one event listener to reduce overhead and allow dynamic content
+    this.onElementClickListener = (event) => {
       this.handleClickInteraction(event);
-    });
+    };
+    // Use one click event listener to reduce overhead and allow dynamic content
+    this.element.addEventListener('click', this.onElementClickListener);
+
+
+    this.onElementScrollListener = (event) => {
+      this.onElementScroll(event);
+    };
+
     /** @type {HTMLTableRowElement} */
     this.tabindexRow = null;
     /** @type {Object} */
@@ -285,55 +292,48 @@ class DataTableAdapter {
     this.filteredDatasource = null;
   }
 
+  performThrottledRender() {
+    this.performLazyRender();
+    if (this.throttledRenderPending) {
+      this.throttledRenderPending = false;
+      this.scheduleThrottledRender();
+    }
+  }
+
+  scheduleThrottledRender() {
+    if (this.throttleTimeMs < 17) {
+      window.requestAnimationFrame(() => this.performThrottledRender());
+    } else {
+      setTimeout(() => this.performThrottledRender(), this.throttleTimeMs);
+    }
+  }
+
+  onElementScroll() {
+    if (this.debounceTimeout) {
+      clearTimeout(this.debounceTimeout);
+      this.debounceTimeout = null;
+    }
+    if (this.throttledRenderPending) {
+      // Will perform in the future
+      return;
+    }
+    if (this.debounceTimeMs) {
+      this.debounceTimeout = setTimeout(() => {
+        this.scheduleThrottledRender();
+        this.throttledRenderPending = true;
+      }, this.debounceTimeMs);
+    } else {
+      this.scheduleThrottledRender();
+      this.throttledRenderPending = true;
+    }
+  }
+
   buildScrollListener() {
-    let debounceTimeout = null;
-    let pending = false;
-    let scheduleThrottledDraw = null;
-
-    /** @return {void} */
-    const throttle = () => {
-      this.performLazyRender();
-      if (pending) {
-        pending = false;
-        scheduleThrottledDraw();
-      }
-    };
-
-    scheduleThrottledDraw = () => {
-      if (this.throttleTimeMs < 17) {
-        window.requestAnimationFrame(throttle);
-      } else {
-        setTimeout(throttle, this.throttleTimeMs);
-      }
-    };
-
-    this.scrollListener = () => {
-      if (debounceTimeout) {
-        clearTimeout(debounceTimeout);
-        debounceTimeout = null;
-      }
-      if (pending) {
-        // Will perform in the future
-        return;
-      }
-      if (this.debounceTimeMs) {
-        debounceTimeout = setTimeout(() => {
-          scheduleThrottledDraw();
-          pending = true;
-        }, this.debounceTimeMs);
-      } else {
-        scheduleThrottledDraw();
-        pending = true;
-      }
-    };
-    this.element.addEventListener('scroll', this.scrollListener);
+    this.element.addEventListener('scroll', this.onElementScrollListener);
   }
 
   destroyScrollListener() {
-    if (this.scrollListener) {
-      this.element.removeEventListener('scroll', this.scrollListener);
-      this.scrollListener = null;
-    }
+    this.element.removeEventListener('scroll', this.onElementScrollListener);
   }
 
   /**
@@ -896,7 +896,7 @@ class DataTableAdapter {
     }
     if (refresh && rowDifference !== 0) {
       if (this.useLazyRendering) {
-        this.performLazyRender();
+        this.scheduleThrottledRender();
       } else {
         newRows.forEach((row) => {
           this.refreshRow(row.sectionRowIndex);
@@ -908,7 +908,7 @@ class DataTableAdapter {
   /** @return {void} */
   refreshRows() {
     if (this.useLazyRendering) {
-      this.performLazyRender();
+      this.scheduleThrottledRender();
     } else {
       const tbody = this.getTableBody();
       const len = tbody.rows.length;
