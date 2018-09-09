@@ -274,7 +274,7 @@ class DataTableAdapter {
     this.page = 0;
     this.pageLimit = 0;
     this.debounceTimeMs = 0;
-    this.throttleTimeMs = 100;
+    this.throttleTimeMs = 0;
     this.useLazyRendering = false;
   }
 
@@ -286,35 +286,44 @@ class DataTableAdapter {
   }
 
   buildScrollListener() {
-    let throttleTimeout = null;
     let debounceTimeout = null;
     let pending = false;
+    let scheduleThrottledDraw = null;
 
     /** @return {void} */
     const throttle = () => {
-      throttleTimeout = null;
       this.performLazyRender();
       if (pending) {
         pending = false;
-        throttleTimeout = setTimeout(throttle, this.throttleTimeMs);
+        scheduleThrottledDraw();
       }
     };
+
+    scheduleThrottledDraw = () => {
+      if (this.throttleTimeMs < 17) {
+        window.requestAnimationFrame(throttle);
+      } else {
+        setTimeout(throttle, this.throttleTimeMs);
+      }
+    };
+
     this.scrollListener = () => {
       if (debounceTimeout) {
         clearTimeout(debounceTimeout);
         debounceTimeout = null;
       }
-      if (throttleTimeout) {
+      if (pending) {
         // Will perform in the future
-        pending = true;
         return;
       }
       if (this.debounceTimeMs) {
         debounceTimeout = setTimeout(() => {
-          throttleTimeout = setTimeout(throttle, this.throttleTimeMs);
+          scheduleThrottledDraw();
+          pending = true;
         }, this.debounceTimeMs);
       } else {
-        throttleTimeout = setTimeout(throttle, this.throttleTimeMs);
+        scheduleThrottledDraw();
+        pending = true;
       }
     };
     this.element.addEventListener('scroll', this.scrollListener);
