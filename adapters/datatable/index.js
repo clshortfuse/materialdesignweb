@@ -259,9 +259,8 @@ class DataTableAdapter {
     // Use one click event listener to reduce overhead and allow dynamic content
     this.element.addEventListener('click', this.onElementClickListener);
 
-
-    this.onElementScrollListener = (event) => {
-      this.onElementScroll(event);
+    this.onElementScrollListener = () => {
+      this.onElementScroll();
     };
 
     /** @type {HTMLTableRowElement} */
@@ -292,19 +291,27 @@ class DataTableAdapter {
     this.filteredDatasource = null;
   }
 
-  performThrottledRender() {
-    this.performLazyRender();
+  /**
+   * @param {boolean=} [forceRefresh=false]
+   * @return {void}
+   */
+  performThrottledRender(forceRefresh = false) {
+    this.performLazyRender(forceRefresh);
     if (this.throttledRenderPending) {
       this.throttledRenderPending = false;
       this.scheduleThrottledRender();
     }
   }
 
-  scheduleThrottledRender() {
+  /**
+   * @param {boolean=} [forceRefresh=false]
+   * @return {void}
+   */
+  scheduleThrottledRender(forceRefresh = false) {
     if (this.throttleTimeMs < 17) {
-      window.requestAnimationFrame(() => this.performThrottledRender());
+      window.requestAnimationFrame(() => this.performThrottledRender(forceRefresh));
     } else {
-      setTimeout(() => this.performThrottledRender(), this.throttleTimeMs);
+      setTimeout(() => this.performThrottledRender(forceRefresh), this.throttleTimeMs);
     }
   }
 
@@ -749,28 +756,29 @@ class DataTableAdapter {
   }
 
   /**
-   * @param {(HTMLTableRowElement[])=} visibleRows
+   * @param {(HTMLTableRowElement[])} visibleRows
    * @return {void}
    */
   clearNonvisibleRows(visibleRows) {
-    let rows = visibleRows;
-    if (visibleRows == null) {
-      rows = this.getVisibleRows();
-    }
     const tbody = this.getTableBody();
     const len = tbody.rows.length;
-    if (rows.length === len) {
+    if (visibleRows.length === len) {
       return;
     }
     let firstRowIndex = Infinity;
     let lastRowIndex = -Infinity;
-    if (rows.length) {
-      firstRowIndex = rows[0].sectionRowIndex;
-      lastRowIndex = rows[rows.length - 1].sectionRowIndex;
+    if (visibleRows.length) {
+      firstRowIndex = visibleRows[0].sectionRowIndex;
+      lastRowIndex = visibleRows[visibleRows.length - 1].sectionRowIndex;
     }
     for (let i = 0; i < len; i += 1) {
       if (i < firstRowIndex || i > lastRowIndex) {
         const row = tbody.rows.item(i);
+        if (row.lastChild) {
+          // Store row height to prevent layout shifting
+          const rect = row.getBoundingClientRect();
+          row.style.setProperty('height', `${rect.height || 0}px`);
+        }
         while (row.lastChild) {
           row.removeChild(row.lastChild);
         }
@@ -778,27 +786,63 @@ class DataTableAdapter {
     }
   }
 
-  getVisibleRows() {
+  /**
+   * @return {HTMLTableRowElement[]}
+   */
+  getLazyRenderRows() {
     const tbody = this.getTableBody();
     const len = tbody.rows.length;
-    let foundFirstVisibleRow = false;
     const rows = [];
+    const minRowCount = window.screen.height / 48;
+    if (len <= minRowCount) {
+      for (let i = 0; i < len; i += 1) {
+        rows.push(tbody.rows.item(i));
+      }
+      return rows;
+    }
+    let foundFirstVisibleRow = false;
+    let startIndex = 0;
+    let endIndex = 0;
     for (let i = 0; i < len; i += 1) {
       const row = tbody.rows.item(i);
       if (this.isRowVisible(row)) {
-        foundFirstVisibleRow = true;
-        rows.push(row);
+        if (!foundFirstVisibleRow) {
+          foundFirstVisibleRow = true;
+          startIndex = i;
+        }
+        endIndex = i;
       } else if (foundFirstVisibleRow) {
-        return rows;
+        break;
       }
     }
+
+    while ((endIndex - startIndex) + 1 < minRowCount) {
+      if (startIndex === 0) {
+        endIndex += 1;
+      } else if (endIndex === len - 1) {
+        startIndex -= 1;
+      } else {
+        startIndex -= 1;
+        endIndex += 1;
+      }
+    }
+    for (let i = startIndex; i <= endIndex; i += 1) {
+      rows.push(tbody.rows.item(i));
+    }
+
     return rows;
   }
 
-  performLazyRender() {
-    const visibleRows = this.getVisibleRows();
+  /**
+   * @param {boolean} forceRefresh
+   * @return {void}
+   */
+  performLazyRender(forceRefresh = false) {
+    const visibleRows = this.getLazyRenderRows();
     visibleRows.forEach((row) => {
-      this.refreshRow(row.sectionRowIndex);
+      if (forceRefresh || !row.cells.length) {
+        this.refreshRow(row.sectionRowIndex);
+      }
     });
     this.clearNonvisibleRows(visibleRows);
   }
@@ -896,7 +940,7 @@ class DataTableAdapter {
     }
     if (refresh && rowDifference !== 0) {
       if (this.useLazyRendering) {
-        this.scheduleThrottledRender();
+        this.scheduleThrottledRender(true);
       } else {
         newRows.forEach((row) => {
           this.refreshRow(row.sectionRowIndex);
@@ -908,7 +952,7 @@ class DataTableAdapter {
   /** @return {void} */
   refreshRows() {
     if (this.useLazyRendering) {
-      this.scheduleThrottledRender();
+      this.performLazyRender(true);
     } else {
       const tbody = this.getTableBody();
       const len = tbody.rows.length;
@@ -930,6 +974,9 @@ class DataTableAdapter {
         }
         this.tabindexRow = row;
       }
+    }
+    if (this.useLazyRendering) {
+      this.scheduleThrottledRender();
     }
   }
 
@@ -968,6 +1015,8 @@ class DataTableAdapter {
    * @return {void}
    */
   refreshRow(rowIndex) {
+    const row = this.getTableBody().rows.item(rowIndex);
+    row.style.removeProperty('visibility');
     for (let columnIndex = 0; columnIndex < this.columns.length; columnIndex += 1) {
       this.refreshCell(columnIndex, rowIndex);
     }
