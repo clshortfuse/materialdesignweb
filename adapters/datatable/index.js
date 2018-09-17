@@ -1016,7 +1016,7 @@ class DataTableAdapter {
    */
   refreshRow(rowIndex) {
     const row = this.getTableBody().rows.item(rowIndex);
-    row.style.removeProperty('visibility');
+    row.style.removeProperty('height');
     for (let columnIndex = 0; columnIndex < this.columns.length; columnIndex += 1) {
       this.refreshCell(columnIndex, rowIndex);
     }
