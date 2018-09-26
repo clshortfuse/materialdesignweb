@@ -6,16 +6,25 @@
       "script": "start:docs",
       "isBackground": true,
       "problemMatcher": [{
-        "pattern": {
-          "regexp": "ERROR in \\[at-loader\\] ([^:]*):(\\d+):(\\d+)",	
-          "file" : 1,
-          "line": 2,
-          "column": 3
-        },
+        "owner": "webpack",
+        "source": "webpack",
+        "fileLocation": "absolute",
+        "severity": "error",
+        "pattern": [{
+          "regexp": "^ERROR in (.*)$",
+        }, {
+          "regexp": "^.*$"
+        }, {
+          "regexp": "^([^:]*): ([^:]*): ([^\\(]*) \\((\\d+):(\\d+)\\)$",
+          "file": 2,
+          "message": 3,
+          "line": 4,
+          "column": 5
+        }],
         "background": {
           "activeOnStart": true,
-          "beginsPattern": "^ℹ ｢wds｣: webpack output is served from \/",
-          "endsPattern": "^ℹ ｢wdm｣: Compiled [^\n]+\\."
+          "beginsPattern": "^.*: Hash: *$",
+          "endsPattern": "^.*(Compiled successfully)|(Failed to compile).*$"
         }
       }]
     }
