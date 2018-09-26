@@ -177,13 +177,14 @@ export class DataTable {
     } else {
       cell.setAttribute('mdw-sorted', 'desc');
     }
-    const tableHeaders = cell.parentElement.getElementsByTagName('th');
-    for (let i = 0; i < tableHeaders.length; i += 1) {
-      const otherTableHeader = tableHeaders.item(i);
-      if (otherTableHeader !== cell) {
-        otherTableHeader.removeAttribute('mdw-sorted');
+    const thItems = cell.parentElement.getElementsByTagName('th');
+    for (let i = 0; i < thItems.length; i += 1) {
+      const th = thItems[i];
+      if (th !== cell) {
+        th.removeAttribute('mdw-sorted');
       }
     }
+
     /** @type {HTMLTableSectionElement} */
     const tbody = DataTable.getTableBody(mdwTable);
     const rows = [];
