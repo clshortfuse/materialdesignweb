@@ -1,5 +1,5 @@
 import { Ripple } from '../ripple/index';
-import { findElementParentByClassName, isRtl } from '../common/dom';
+import { findElementParentByClassName, isRtl, nextTick } from '../common/dom';
 
 class TabItem {
   /**
@@ -31,6 +31,11 @@ class Tab {
       indicatorElement = document.createElement('div');
       indicatorElement.classList.add('mdw-tab__indicator');
       tabItemsElement.appendChild(indicatorElement);
+    }
+
+    const tabContentElement = tabElement.getElementsByClassName('mdw-tab__content')[0];
+    if (tabContentElement) {
+      tabContentElement.addEventListener('scroll', Tab.onTabContentScroll);
     }
 
     const inputs = tabElement.getElementsByClassName('mdw-tab__input');
@@ -72,8 +77,9 @@ class Tab {
   static detach(tabElement) {
     const inputs = tabElement.getElementsByClassName('mdw-tab__input');
     const items = tabElement.getElementsByClassName('mdw-tab__item');
-    const tabContent = tabElement.getElementsByClassName('mdw-tab__content')[0];
+    const tabContentElement = tabElement.getElementsByClassName('mdw-tab__content')[0];
     const tabContentItems = tabElement.getElementsByClassName('mdw-tab__content-item');
+
     for (let i = 0; i < inputs.length; i += 1) {
       const inputElement = inputs[i];
       inputElement.removeEventListener('change', Tab.onInputChanged);
@@ -86,8 +92,9 @@ class Tab {
       itemElement.removeAttribute('mdw-selected');
     }
 
-    if (tabContent) {
-      tabContent.removeAttribute('mdw-selected-index');
+    if (tabContentElement) {
+      tabContentElement.removeAttribute('mdw-selected-index');
+      tabContentElement.removeEventListener('scroll', Tab.onTabContentScroll);
     }
     for (let i = 0; i < tabContentItems.length; i += 1) {
       const itemElement = tabContentItems[i];
@@ -99,16 +106,31 @@ class Tab {
    * @param {Event} event
    * @return {void}
    */
+  static onTabContentScroll(event) {
+    /** @type {HTMLElement} */
+    const tabContentElement = (event.currentTarget);
+    event.preventDefault();
+    event.stopPropagation();
+    tabContentElement.scrollLeft = 0;
+    nextTick(() => {
+      tabContentElement.scrollLeft = 0;
+    });
+  }
+
+  /**
+   * @param {Event} event
+   * @return {void}
+   */
   static onItemClicked(event) {
     /** @type {HTMLElement} */
-    const itemElement = event.currentTarget;
+    const itemElement = (event.currentTarget);
     if (!itemElement) {
       return;
     }
     if (itemElement instanceof HTMLLabelElement) {
       // Fixes ripple animation
       const inputElement = document.getElementById(itemElement.getAttribute('for'));
-      if (inputElement) {
+      if (inputElement && inputElement instanceof HTMLInputElement) {
         inputElement.checked = true;
       }
     }
@@ -185,7 +207,15 @@ class Tab {
       }
     }
 
-    const indicatorElement = tabItemsElement.getElementsByClassName('mdw-tab__indicator')[0];
+    if (tabContentElement) {
+      tabContentElement.scrollLeft = 0;
+      nextTick(() => {
+        tabContentElement.scrollLeft = 0;
+      });
+    }
+
+    /** @type {HTMLElement} */
+    const indicatorElement = (tabItemsElement.getElementsByClassName('mdw-tab__indicator')[0]);
     // Animate selection
     // Only use explicity positioning on scrollable tabs
     if (!tabItemsElement.hasAttribute('mdw-scrollable') || !tabItemsElement.clientWidth) {
