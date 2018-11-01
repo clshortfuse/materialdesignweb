@@ -163,12 +163,12 @@ function initializeSampleComponents() {
     buttons: ['K'],
     parent: document.querySelector('.render div'),
   });
-  confirmDialogElement.addEventListener('mdw:confirm', () => {
+  confirmDialogElement.addEventListener(Dialog.CONFIRM_EVENT, () => {
     Dialog.updateBody(alertDialogElement, 'Thanks!');
     Dialog.updateButtonText(alertDialogElement, ['K']);
     Dialog.show(alertDialogElement);
   });
-  confirmDialogElement.addEventListener('mdw:cancel', () => {
+  confirmDialogElement.addEventListener(Dialog.CANCEL_EVENT, () => {
     Dialog.updateBody(alertDialogElement, 'Oh...');
     Dialog.updateButtonText(alertDialogElement, ['Sorry!']);
     Dialog.show(alertDialogElement);

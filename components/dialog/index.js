@@ -21,6 +21,22 @@ class DialogStack {
 /** @type {DialogStack[]} */
 const OPEN_DIALOGS = [];
 class Dialog {
+  static get CANCEL_EVENT() {
+    return 'mdw:dialog-cancel';
+  }
+
+  static get CONFIRM_EVENT() {
+    return 'mdw:dialog-confirm';
+  }
+
+  static get CUSTOM_EVENT() {
+    return 'mdw:dialog-custom';
+  }
+
+  static get DISMISS_EVENT() {
+    return 'mdw:dialog-dismiss';
+  }
+
   /**
    * @param {Element} element
    * @return {void}
@@ -89,7 +105,7 @@ class Dialog {
     if (event && event.currentTarget instanceof HTMLAnchorElement) {
       event.preventDefault();
     }
-    if (dispatchDomEvent(event.currentTarget, 'mdw:cancel')) {
+    if (dispatchDomEvent(event.currentTarget, Dialog.CANCEL_EVENT)) {
       const dialogElement = findElementParentByClassName(event.currentTarget, 'mdw-dialog');
       Dialog.hide(dialogElement);
     }
@@ -99,7 +115,7 @@ class Dialog {
     if (event && event.currentTarget instanceof HTMLAnchorElement) {
       event.preventDefault();
     }
-    if (dispatchDomEvent(event.currentTarget, 'mdw:confirm')) {
+    if (dispatchDomEvent(event.currentTarget, Dialog.CONFIRM_EVENT)) {
       const dialogElement = findElementParentByClassName(event.currentTarget, 'mdw-dialog');
       Dialog.hide(dialogElement);
     }
@@ -109,7 +125,7 @@ class Dialog {
     if (event && event.currentTarget instanceof HTMLAnchorElement) {
       event.preventDefault();
     }
-    if (dispatchDomEvent(event.currentTarget, 'mdw:custom')) {
+    if (dispatchDomEvent(event.currentTarget, Dialog.CUSTOM_EVENT)) {
       const dialogElement = findElementParentByClassName(event.currentTarget, 'mdw-dialog');
       Dialog.hide(dialogElement);
     }
@@ -155,7 +171,7 @@ class Dialog {
    * @return {void}
    */
   static cancel(dialogElement) {
-    if (dispatchDomEvent(dialogElement, 'mdw:cancel')) {
+    if (dispatchDomEvent(dialogElement, Dialog.CANCEL_EVENT)) {
       Dialog.hide(dialogElement);
     }
   }
@@ -165,7 +181,7 @@ class Dialog {
    * @return {void}
    */
   static confirm(dialogElement) {
-    if (dispatchDomEvent(dialogElement, 'mdw:confirm')) {
+    if (dispatchDomEvent(dialogElement, Dialog.CONFIRM_EVENT)) {
       Dialog.hide(dialogElement);
     }
   }
@@ -178,7 +194,7 @@ class Dialog {
     if (dialogElement.hasAttribute('mdw-hide')) {
       return false;
     }
-    if (!dispatchDomEvent(dialogElement, 'mdw:dismiss')) {
+    if (!dispatchDomEvent(dialogElement, Dialog.DISMISS_EVENT)) {
       return false;
     }
     dialogElement.setAttribute('mdw-hide', '');
@@ -450,6 +466,7 @@ class Dialog {
     Dialog.attach(element);
     return element;
   }
+
   /**
    * @param {Element} dialogElement
    * @param {(MouseEvent|KeyboardEvent|PointerEvent)=} event
