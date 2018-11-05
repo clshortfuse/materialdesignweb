@@ -162,7 +162,13 @@ class Dialog {
     }
     if ((lastOpenDialog.previousState === event.state) || Object.keys(event.state)
       .every(key => event.state[key] === lastOpenDialog.previousState[key])) {
-      Dialog.hide(lastOpenDialog.element);
+      if (dispatchDomEvent(lastOpenDialog.element, Dialog.CANCEL_EVENT)) {
+        Dialog.hide(lastOpenDialog.element);
+      } else {
+        // Revert pop state by pushing state again
+        const title = Dialog.getTitleText(lastOpenDialog.element);
+        window.history.pushState(lastOpenDialog.state, title);
+      }
     }
   }
 
@@ -184,6 +190,24 @@ class Dialog {
     if (dispatchDomEvent(dialogElement, Dialog.CONFIRM_EVENT)) {
       Dialog.hide(dialogElement);
     }
+  }
+
+  /**
+   * @param {Element} dialogElement
+   * @return {string}
+   */
+  static getTitleText(dialogElement) {
+    let title = 'Dialog';
+    const titleElement = dialogElement.getElementsByClassName('mdw-dialog__title')[0];
+    if (titleElement) {
+      title = titleElement.textContent;
+    } else {
+      const bodyElement = dialogElement.getElementsByClassName('mdw-dialog__body')[0];
+      if (bodyElement) {
+        title = bodyElement.textContent;
+      }
+    }
+    return title;
   }
 
   /**
@@ -262,16 +286,7 @@ class Dialog {
           }, document.title);
         }
         previousState = window.history.state;
-        let title = 'Dialog';
-        const titleElement = dialogElement.getElementsByClassName('mdw-dialog__title')[0];
-        if (titleElement) {
-          title = titleElement.textContent;
-        } else {
-          const bodyElement = dialogElement.getElementsByClassName('mdw-dialog__body')[0];
-          if (bodyElement) {
-            title = bodyElement.textContent;
-          }
-        }
+        const title = Dialog.getTitleText(dialogElement);
         window.history.pushState(newState, title);
         window.addEventListener('popstate', Dialog.onPopState);
       }
