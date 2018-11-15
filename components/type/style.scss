@@ -2,133 +2,202 @@
 
 @import '../common/functions.scss';
 
-.mdw-type {
-  // Sequential mdw-types will embed a 0-width joiner to align leading
-  & + .mdw-type::before {
-    content: "\200D"; // &zwj;
+// Line-heights calculated from Roboto
+
+h1.mdw-type,
+h2.mdw-type,
+h3.mdw-type,
+h4.mdw-type,
+h5.mdw-type,
+h6.mdw-type,
+p.mdw-type {
+  margin: 0;
+}
+
+h1.mdw-type {
+  font-weight: $font-weight-light;
+  letter-spacing: sp(-1.5);
+  font-size: sp(96);
+  line-height: dp(112);
+}
+
+h2.mdw-type {
+  font-weight: $font-weight-light;
+  letter-spacing: sp(-0.5);
+  font-size: sp(60);
+  line-height: dp(72);
+}
+
+h3.mdw-type {
+  font-weight: $font-weight-regular;
+  font-size: sp(48);
+  line-height: dp(56);
+}
+
+h4.mdw-type {
+  font-weight: $font-weight-regular;
+  letter-spacing: sp(0.25);
+  font-size: sp(34);
+  line-height: dp(40);
+}
+
+h5.mdw-type {
+  font-weight: $font-weight-regular;
+  font-size: sp(24);
+  line-height: dp(28);
+}
+
+h6.mdw-type {
+  font-weight: $font-weight-medium;
+  letter-spacing: sp(0.15);
+  font-size: sp(20);
+  line-height: dp(24);
+}
+
+.mdw-type[mdw-style="subtitle"] {
+  font-weight: $font-weight-regular;
+  letter-spacing: sp(0.15);
+  font-size: sp(16);
+  line-height: dp(20);
+}
+
+.mdw-type[mdw-style="subtitle-2"] {
+  font-weight: $font-weight-medium;
+  letter-spacing: sp(0.1);
+  font-size: sp(14);
+  line-height: dp(16);
+}
+
+p.mdw-type {
+  // Body
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  font-weight: $font-weight-regular;
+  letter-spacing: sp(0.5);
+  font-size: sp(16);
+  line-height: dp(20);
+}
+
+.mdw-type[mdw-style="body-2"] {
+  font-weight: $font-weight-regular;
+  letter-spacing: sp(0.25);
+  font-size: sp(14);
+  line-height: dp(16);
+}
+
+.mdw-type[mdw-style="button"] {
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: sp(1.25);
+  font-size: sp(14);
+  line-height: dp(16);
+}
+
+.mdw-type[mdw-style="caption"] {
+  font-weight: $font-weight-regular;
+  letter-spacing: sp(0.4);
+  font-size: sp(12);
+  line-height: dp(16);
+}
+
+.mdw-type[mdw-style="overline"] {
+  font-weight: $font-weight-regular;
+  letter-spacing: sp(1.5);
+  font-size: sp(10);
+  line-height: dp(12);
+}
+
+// MD-2014 Typography
+
+
+.mdw-type[mdw-style|="display"] {
+  font-weight: $font-weight-regular;
+  font-size: sp(34);
+  line-height: dp(40);
+}
+.mdw-type[mdw-style="display-4"] {
+  font-size: sp(112);
+  line-height: normal;
+  font-weight: $font-weight-light;
+  white-space: nowrap;
+}
+.mdw-type[mdw-style="display-3"] {
+  font-size: sp(56);
+  line-height: normal;
+  white-space: nowrap;
+}
+.mdw-type[mdw-style="display-2"] {
+  font-size: sp(45);
+  line-height: dp(48);
+}
+.mdw-type[mdw-style="headline"] {
+  font-size: sp(24);
+  line-height: dp(32);
+  font-weight: $font-weight-regular;
+}
+.mdw-type[mdw-style="title"] {
+  font-size: sp(20);
+  font-weight: $font-weight-medium;
+  white-space: nowrap;
+}
+.mdw-type[mdw-style|="subheading"] {
+  font-size: sp(15);
+  @include allHandsetsAndTablets() {
+      font-size: sp(16);
+  }
+  font-weight: $font-weight-regular;
+  line-height: dp(24);
+}
+.mdw-type[mdw-style="subheading-2"] {
+  line-height: dp(28);
+  @include allHandsetsAndTablets() {
+      line-height: dp(28);
+  }
+}
+
+.mdw-type[mdw-baseline-top]::before {
+  content: '';
+  display: inline-block;
+}
+
+.mdw-type[mdw-baseline-next],
+.mdw-type[mdw-baseline-bottom] {
+  &::after {
+    content: '';
     display: inline-block;
   }
-  &[mdw-style|="display"] {
-    font-weight: $font-weight-regular;
-    &,
-    & + .mdw-type::before {
-      font-size: sp(34);
-      line-height: dp(40);
-    }
-  }
-  &[mdw-style="display-4"] {
-    &,
-    & + .mdw-type::before {
-      font-size: sp(112);
-      line-height: normal;
-      font-weight: $font-weight-light;
-      white-space: nowrap;
-    }
-  }
-  &[mdw-style="display-3"] {
-    &,
-    & + .mdw-type::before {
-      font-size: sp(56);
-      line-height: normal;
-      white-space: nowrap;
-    }
-  }
-  &[mdw-style="display-2"] {
-    &,
-    & + .mdw-type::before {
-      font-size: sp(45);
-      line-height: dp(48);
-    }
-  }
-  &[mdw-style="headline"] {
-    &,
-    & + .mdw-type::before {
-      font-size: sp(24);
-      line-height: dp(32);
-      font-weight: $font-weight-regular;
+}
 
+.mdw-type[mdw-baseline-next] {
+  & + .mdw-type::before {
+    content: '';
+    display: inline-block;
+  }
+}
+
+// 4dp baselines
+@each $bl in (4, 8, 10, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92) {
+  .mdw-type[mdw-baseline-top="#{$bl}"] {
+    &::before {
+      height: dp($bl);
     }
   }
-  &[mdw-style="title"] {
-    &,
-    & + .mdw-type::before {
-      font-size: sp(20);
-      font-weight: $font-weight-medium;
-      white-space: nowrap;
+  .mdw-type[mdw-baseline-bottom="#{$bl}"] {
+    &::after {
+      vertical-align: dp(-$bl);
     }
   }
-  &[mdw-style|="subheading"] {
-    font-size: sp(15);
-    @include allHandsetsAndTablets() {
-      &,
-      & + .mdw-type::before {
-        font-size: sp(16);
-      }
+  .mdw-type[mdw-baseline-next="#{$bl}"] {
+    margin-bottom: dp(-$bl);
+    &::after {
+      vertical-align: dp(-$bl);
     }
-    &,
     & + .mdw-type::before {
-      font-weight: $font-weight-regular;
-      line-height: dp(24);
-      font-size: sp(16);
+      height: dp($bl);
     }
   }
-  &[mdw-style="subheading-2"] {
-    &,
-    & + .mdw-type::before {
-      line-height: dp(28);
-    }
-    @include allHandsetsAndTablets() {
-      &,
-      & + .mdw-type::before {
-        line-height: dp(28);
-      }
-    }
-  }
-  &[mdw-style|="body"] {
-    hyphens: auto;
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
-    @include allHandsetsAndTablets() {
-      &,
-      & + .mdw-type::before {
-        font-size: sp(14);
-      }
-    }
-    &,
-    & + .mdw-type::before {
-      font-weight: $font-weight-regular;
-      font-size: sp(13);
-      line-height: dp(20);
-    }
-  }
-  &[mdw-style="body-2"] {
-    @include allHandsetsAndTablets() {
-      &,
-      & + .mdw-type::before {
-        font-size: sp(14);
-      }
-    }
-    &,
-    & + .mdw-type::before {
-      font-weight: $font-weight-medium;
-      font-size: sp(13);
-      line-height: dp(24);
-    }
-  }
-  &[mdw-style="caption"] {
-    &,
-    & + .mdw-type::before {
-      font-size: sp(12);
-      font-weight: $font-weight-regular;
-      white-space: nowrap;
-    }
-  }
-  &[mdw-style="button"] {
-    &,
-    & + .mdw-type::before {
-      font-size: sp(14);
-      font-weight: $font-weight-medium;
-      text-transform: uppercase;
-    }
+  .mdw-type[mdw-lineheight="#{$bl}"] {
+    line-height: dp($bl);
   }
 }

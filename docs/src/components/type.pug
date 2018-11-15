@@ -5,6 +5,21 @@ include ../mixins.pug
     #horizontalLine
     #verticalLineLeft
     #verticalLineRight
+    div
+      .content
+        h1.mdw-type H1 Headline
+        h2.mdw-type H2 Headline
+        h3.mdw-type H3 Headline
+        h4.mdw-type H4 Headline
+        h5.mdw-type H5 Headline
+        h6.mdw-type H6 Headline
+        .mdw-type(mdw-style="subtitle") Subtitle 1
+        .mdw-type(mdw-style="subtitle-2") Subtitle 2
+        p.mdw-type Body 1
+        p.mdw-type(mdw-style="body-2") Body 2
+        .mdw-type(mdw-style="button") Button
+        .mdw-type(mdw-style="caption") Caption
+        .mdw-type(mdw-style="overline") Overline
     .comparison.type-comparison
       .content
         .mdw-type(mdw-style="display-4") Display 4
@@ -20,6 +35,17 @@ include ../mixins.pug
         .mdw-type(mdw-style="button") Button
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3alhXZ2pPWGk3Zjg/style-typography-styles-scale.png')
 
+    .comparison.type-comparison-3
+      .render
+        h5.mdw-type(mdw-baseline-top="64" mdw-lineheight="28" mdw-baseline-next="20") Johannes Guttenberg
+        .mdw-type(mdw-style="caption" mdw-baseline-next="36") German Printer
+        p.mdw-type(mdw-style="body-2" mdw-lineheight="20" mdw-baseline-next="32") Johannes Gensfleisch zur Laden zum Gutenberg was a German blacksmith, goldsmith, printer, and publisher who introduced printing to Europe with the printing press.
+        p.mdw-type(mdw-style="body-2" mdw-lineheight="20" mdw-baseline-next="20") Born
+        p.mdw-type(mdw-style="body-2" mdw-lineheight="20" mdw-baseline-bottom="68") c. 1400, Mainz Germany
+      div
+        div(style="margin-top:10px")
+          +target('https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1XfS9DMhlPihgJmjRFH7r9OYpLbZJGF6A%2Ftype-setting-baseline.png')
+
     .comparison.type-comparison-2
       .render
         div
@@ -27,8 +53,8 @@ include ../mixins.pug
             .mdw-type(mdw-style="subheading-2") The Hatter was the first to break the silence. 'What day of the month is it?' he said, turning to Alice: he had taken his watch out of his pocket, and was looking at it uneasily, shaking it every now and then, and holding it to his ear.
           div(style="height:8px")
           div(style="width:300px;height:208px;margin-left:40px")
-            .mdw-type(mdw-style="display-2") Others have failed, I will not
-            .mdw-type(mdw-style="subheading-1"  style="width:260px") Science, my boy, is made up of mistakes, but they are mistakes which it is useful to make, because they lead little by little to the truth.
+            h4.mdw-type(mdw-lineheight="48" mdw-baseline-next="48") Others have failed, I will not
+            .mdw-type(mdw-style="subtitle" mdw-lineheight="24" style="width:260px") Science, my boy, is made up of mistakes, but they are mistakes which it is useful to make, because they lead little by little to the truth.
       div
         div(style="margin-top:12px")
           +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsSDJtU2ZnVDZhTGM/style-typography-styles-lineheight3.png')
