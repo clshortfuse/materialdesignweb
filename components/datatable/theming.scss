@@ -26,7 +26,9 @@ $datatableColors: (
 
 // Vary by contrast or theme
 @mixin datatableContrastRules($type: 'var', $theme: null) {
-  .mdw-datatable tr {
+  .mdw-datatable tr,
+  .mdw-datatable td,
+  .mdw-datatable th, {
     border-color: datatableThemeValue("divider-color", $type, $theme);
   }
 

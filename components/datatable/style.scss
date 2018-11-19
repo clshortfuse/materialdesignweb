@@ -1,6 +1,9 @@
 // https://material.io/guidelines/components/data-tables.html
 // https://material.io/guidelines/patterns/selection.html#selection-item-selection
 
+@import '../common/type.scss';
+
+$mdw-datatable__icon-size: dp(16);
 
 table.mdw-datatable,
 .mdw-datatable table {
@@ -11,8 +14,8 @@ table.mdw-datatable,
 
 .mdw-datatable caption,
 .mdw-datatable__header {
-  font-size: sp(20);
-  font-weight: $font-weight-regular;
+  @include type-rules('h6');
+  min-height: dp(64);
 }
 
 .mdw-datatable caption {
@@ -24,7 +27,7 @@ table.mdw-datatable,
     text-align: right;
     text-align: start;
   }
-  padding: 0 dp(24);
+  padding: 0 dp(16);
 }
 
 .mdw-datatable__header {
@@ -43,11 +46,11 @@ table.mdw-datatable,
 }
 
 .mdw-datatable__header-text {
-  padding-left: dp(24);
+  padding-left: dp(16);
   padding-right: 0;
   html[dir=rtl] & {
     padding-left: 0;
-    padding-right: dp(24);
+    padding-right: dp(16);
   }
 }
 
@@ -55,15 +58,13 @@ table.mdw-datatable,
   outline: none;
   border-bottom-style: solid;
   border-bottom-width: dp(1);
-  font-size: sp(13);
-  font-weight: $font-weight-regular;
   height: dp(48);
+  @include type-rules('body-2');
 }
 
 .mdw-datatable thead > tr {
-  font-size: sp(12);
-  font-weight: $font-weight-medium;
-  height: dp(56);
+  height: dp(48);
+  @include type-rules('caption');
 }
 
 
@@ -72,45 +73,66 @@ table.mdw-datatable,
   padding-top: dp(8);
   padding-bottom: dp(8);
   outline: none;
+  &[mdw-selector] + td {
+    padding-left: dp(12);
+    padding-right: dp(16);
+    html[dir=rtl] & {
+      padding-left: dp(16);
+      padding-right: dp(12);
+    }
+  }
+  
+}
+
+.mdw-datatable th[mdw-selector],
+.mdw-datatable td[mdw-selector] {
+  padding-left: dp(16);
+  padding-right: 0;
+  html[dir=rtl] & {
+    padding-left: 0;
+    padding-right: dp(16);
+  }
+  width: dp(24);
 }
 .mdw-datatable th {
   white-space: nowrap;
+  &[mdw-selector] + th {
+    padding-left: dp(12);
+    padding-right: dp(16);
+    html[dir=rtl] & {
+      padding-left: dp(16);
+      padding-right: dp(12);
+    }
+  }
 }
+
+
 .mdw-datatable th,
 .mdw-datatable td {
   text-align: center;
-  padding-left: dp(28);
-  padding-right: dp(24);
-  &:first-of-type {
-    padding-left: dp(24);
-    padding-right: dp(24);
-  }
-
-  html[dir=rtl] & {
-    padding-left: dp(24);
-    padding-right: dp(28);
-    &:first-of-type {
-      padding-left: dp(24);
-      padding-right: dp(24);
-    }
-  }
-
+  padding-left: dp(16);
+  padding-right: dp(16);
   .mdw-selection__input {
     // Remove ripple
     visibility: hidden;
   }
 }
 
-.mdw-datatable td[mdw-primary-column],
-.mdw-datatable th[mdw-primary-column] {
+.mdw-datatable th[mdw-primary-column],
+.mdw-datatable td[mdw-primary-column] {
   width: 100%;
-  padding-right: dp(24);
+  border-width: dp(1);
+  border-right-style: solid;
+  html[dir=rtl] & {
+    border-left-style: solid;
+    border-right-style: none;
+  }
 }
 
 .mdw-datatable__sort-icon {
   display: inline-block;
-  transform: translateX(-16px) rotate(180deg);
-  transform-origin: 8px 8px;
+  transform: translateX(-$mdw-datatable__icon-size) rotate(180deg);
+  transform-origin: ($mdw-datatable__icon-size / 2) ($mdw-datatable__icon-size / 2);
   transition-property: transform;
   vertical-align: bottom;
   max-width: 0;
@@ -124,7 +146,7 @@ table.mdw-datatable,
   }
   color: transparent;
   &.material-icons {
-    font-size: 16px;
+    font-size: $mdw-datatable__icon-size;
   }
 }
 
@@ -139,12 +161,12 @@ table.mdw-datatable,
   &[mdw-sorted] {
     .mdw-datatable__sort-icon {
       color: inherit;
-      transform: translateX(-16px) rotate(180deg);
+      transform: translateX(-$mdw-datatable__icon-size) rotate(180deg);
     }
   }
   &[mdw-sorted=desc] {
     .mdw-datatable__sort-icon {
-      transform: translateX(-16px) rotate(0deg);
+      transform: translateX(-$mdw-datatable__icon-size) rotate(0deg);
     }
   }
 }
@@ -172,17 +194,16 @@ table.mdw-datatable,
 }
 
 .mdw-datatable__footer {
+  min-height: dp(56);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  font-size: sp(12);
-  font-weight: $font-weight-regular;
+  @include type-rules('caption');
 }
 
 .mdw-datatable__header,
 .mdw-datatable__footer {
-  min-height: 64px;
   @include IEOnly() {
     // Fix IE min-height flexbug
     &::after {
@@ -195,19 +216,19 @@ table.mdw-datatable,
 
 .mdw-datatable__footer-options,
 .mdw-datatable__footer-details {
-  margin-left: dp(18);
-  margin-right: dp(14);
+  margin-left: dp(2);
+  margin-right: dp(28);
   html[dir=rtl] & {
-    margin-left: dp(14);
-    margin-right: dp(18);
+    margin-left: dp(28);
+    margin-right: dp(2);
   }
 }
 
 .mdw-datatable__header-controls,
 .mdw-datatable__footer-controls {
   display: inline-flex;
-  margin-left: dp(2);
-  margin-right: dp(2);
+  margin-left: dp(4);
+  margin-right: dp(4);
   .mdw-button {
     margin: 0 dp(4);
   }
