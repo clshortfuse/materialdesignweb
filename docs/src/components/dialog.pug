@@ -96,6 +96,7 @@ include ../mixins.pug
             .content(style="padding:16px 8px;")
               a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#confirmdialog-titled") Titled
               a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#confirmdialog-text") Text
+              a.mdw-button(mdw-theme-fill="primary dark" mdw-raised href="#dialog-scrolling") Scrolling
               .display-flex(style="padding:16px 0").js
                 button.mdw-button(mdw-theme-fill="primary dark" mdw-raised) JS
             .mdw-dialog#confirmdialog-titled
@@ -103,6 +104,27 @@ include ../mixins.pug
               .mdw-dialog__popup
                 .mdw-dialog__title Use Google's location service?
                 .mdw-dialog__body Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
+                .mdw-dialog__button-area
+                  a.mdw-button(mdw-theme-color="accent" href="#") Agree
+                  a.mdw-button(mdw-theme-color="accent" href="#") Disagree
+            .mdw-dialog#dialog-scrolling
+              a.mdw-dialog__close(href="#")
+              .mdw-dialog__popup
+                .mdw-dialog__header
+                  .mdw-dialog__title Dialog header
+                .mdw-divider
+                .mdw-dialog__scrolling
+                  .mdw-list
+                    .mdw-list__item Item 1
+                    .mdw-list__item Item 2
+                    .mdw-list__item Item 3
+                    .mdw-list__item Item 4
+                    .mdw-list__item Item 5
+                    .mdw-list__item Item 6
+                    .mdw-list__item Item 7
+                    .mdw-list__item Item 8
+                    .mdw-list__item Item 9
+                .mdw-divider
                 .mdw-dialog__button-area
                   a.mdw-button(mdw-theme-color="accent" href="#") Agree
                   a.mdw-button(mdw-theme-color="accent" href="#") Disagree

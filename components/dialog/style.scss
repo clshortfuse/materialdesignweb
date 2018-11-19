@@ -28,7 +28,7 @@ $dialog__unit-width: dp(56);
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  padding: dp(24) dp(40);
+  padding: dp(84) dp(40);
 
   display: flex;
   flex-direction: row;
@@ -76,6 +76,8 @@ $dialog__unit-width: dp(56);
 }
 
 .mdw-dialog__popup {
+  max-height: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   flex-shrink: 1;
@@ -114,10 +116,17 @@ $dialog__unit-width: dp(56);
    */
 }
 
+.mdw-dialog__header {
+  min-height: dp(64);
+}
+
+.mdw-dialog__scrolling {
+  overflow-y: scroll;
+}
 
 
-// 10dp top padding to complete previous item
 .mdw-dialog__button-area {
+  flex: none;
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-start;
