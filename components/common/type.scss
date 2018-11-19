@@ -1,0 +1,102 @@
+$mdw-types: (
+  h1: (
+    font-weight: $font-weight-light,
+    letter-spacing: sp(-1.5),
+    font-size: sp(96),
+    line-height: dp(112),
+  ),
+  h2: (
+    font-weight: $font-weight-light,
+    letter-spacing: sp(-0.5),
+    font-size: sp(60),
+    line-height: dp(72),
+  ),
+  h3: (
+    font-weight: $font-weight-regular,
+    font-size: sp(48),
+    line-height: dp(56),
+  ),
+  h4: (
+    font-weight: $font-weight-regular,
+    letter-spacing: sp(0.25),
+    font-size: sp(34),
+    line-height: dp(40),
+  ),
+  h5: (
+    font-weight: $font-weight-regular,
+    font-size: sp(24),
+    line-height: dp(28),
+  ),
+  h6: (
+    font-weight: $font-weight-medium,
+    letter-spacing: sp(0.15),
+    font-size: sp(20),
+    line-height: dp(24),
+  ),
+  subtitle: (
+    font-weight: $font-weight-regular,
+    letter-spacing: sp(0.15),
+    font-size: sp(16),
+    line-height: dp(20),
+  ),
+  subtitle-2: (
+    font-weight: $font-weight-medium,
+    letter-spacing: sp(0.1),
+    font-size: sp(14),
+    line-height: dp(16),
+  ),
+  body: (
+    font-weight: $font-weight-regular,
+    letter-spacing: sp(0.5),
+    font-size: sp(16),
+    line-height: dp(24),
+  ),
+  body-2: (
+    font-weight: $font-weight-regular,
+    letter-spacing: sp(0.25),
+    font-size: sp(14),
+    line-height: dp(16),
+  ),
+  button: (
+    font-weight: $font-weight-medium,
+    text-transform: uppercase,
+    letter-spacing: sp(1.25),
+    font-size: sp(14),
+    line-height: dp(16),
+  ),
+  caption: (
+    font-weight: $font-weight-regular,
+    letter-spacing: sp(0.4),
+    font-size: sp(12),
+    line-height: dp(16),
+  ),
+  overline: (
+    font-weight: $font-weight-regular,
+    letter-spacing: sp(1.5),
+    font-size: sp(10),
+    line-height: dp(12),
+  ),
+);
+
+@mixin type-rules($type) {
+  $rules: map-get($mdw-types, $type);
+  @each $key in map-keys($rules) {
+    #{$key}: map-get($rules, $key);
+  }
+}
+
+@mixin baseline-top($dp) {
+  &::before {
+    content: '';
+    display: inline-block;
+    height: dp($dp);
+  }
+}
+
+@mixin baseline-bottom($dp) {
+  &::after {
+    content: '';
+    display: inline-block;
+    vertical-align: dp(-$dp);
+  }
+}
