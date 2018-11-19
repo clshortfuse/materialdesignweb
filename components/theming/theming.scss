@@ -9,6 +9,7 @@
 @import '../card/theming.scss';
 @import '../datatable/theming.scss';
 @import '../dialog/theming.scss';
+@import '../divider/theming.scss';
 @import '../list/theming.scss';
 @import '../menu/theming.scss';
 @import '../navdrawer/theming.scss';
@@ -23,7 +24,21 @@ $added-palettes-list: ();
 
 
 @mixin buildMDWThemes($config-map: ()) {
-  $theme-components: ('bottomnav', 'button', 'card', 'datatable', 'dialog', 'list', 'menu', 'navdrawer', 'selection', 'tab', 'textfield', 'toolbar');
+  $theme-components: (
+    'bottomnav',
+    'button',
+    'card',
+    'datatable',
+    'dialog',
+    'divider',
+    'list',
+    'menu',
+    'navdrawer',
+    'selection',
+    'tab',
+    'textfield',
+    'toolbar'
+  );
   $themes: (
     "default": ('indigo', 'pink', 'red'),
   );
@@ -76,6 +91,9 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'dialog')) {
     @include dialogThemeVariables($color, 'light');
   }
+  @if (index($mdw-theme__components, 'divider')) {
+    @include dividerThemeVariables($color, 'light');
+  }
   @if (index($mdw-theme__components, 'list')) {
     @include listThemeVariables($color, 'light');
   }
@@ -119,6 +137,9 @@ $added-palettes-list: ();
   }
   @if (index($mdw-theme__components, 'dialog')) {
     @include dialogThemeVariables($color, 'dark');
+  }
+  @if (index($mdw-theme__components, 'divider')) {
+    @include dividerThemeVariables($color, 'dark');
   }
   @if (index($mdw-theme__components, 'list')) {
     @include listThemeVariables($color, 'dark');
@@ -171,6 +192,9 @@ $added-palettes-list: ();
   }
   @if (index($mdw-theme__components, 'dialog')) {
     @include dialogContrastRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'divider')) {
+    @include dividerContrastRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'list')) {
     @include listContrastRules($type, $theme);

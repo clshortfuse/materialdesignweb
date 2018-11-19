@@ -1,0 +1,20 @@
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
+
+$dividerColors: (
+  color: ((#000, 0.12), (#fff, 0.12)),
+);
+
+@function dividerThemeValue($key, $type, $theme) {
+  @return themeValue('divider', $dividerColors, $key, $type, $theme);
+}
+
+@mixin dividerThemeVariables($color, $lightness) {
+  @include themeVariables('divider', $dividerColors, $color, $lightness);
+}
+
+@mixin dividerContrastRules($type: 'var', $theme: null) {
+  .mdw-divider {
+    color: dividerThemeValue("color", $type, $theme);
+  }
+}
