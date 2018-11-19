@@ -4,6 +4,8 @@
 
 // https://material.io/guidelines/motion/choreography.html#choreography-creation
 
+@import '../common/type.scss';
+
 $dialog__unit-width: dp(56);
 
 .mdw-dialog__close {
@@ -89,64 +91,27 @@ $dialog__unit-width: dp(56);
 }
 
 .mdw-dialog__title {
-  font-weight: $font-weight-medium;
-  line-height: dp(28);
-  font-size: sp(20);
   padding: 0 dp(24);
+  @include type-rules('h6');
+  @include baseline-top(40);
+  @include baseline-bottom(36);
+  margin-bottom: dp(-36);
   
-  // 24dp top padding
-  &::before {
-    content: "\200D"; // &zwj;
-    display: inline-block;
-    margin-top: dp(24);
-    line-height: 1;
-    vertical-align: text-bottom;
-  }
-
-  // 20dp bottom padding from baseline
-  // 10dp from self and 10dp from next
-  &::after {
-    content: "\200D"; // &zwj;
-    display: inline-block;
-    line-height: 1;
-    margin-bottom: dp(10);
-    vertical-align: text-top;
-  }
-  &:last-child::after {
-    content: "\200D"; // &zwj;
-    display: inline-block;
-    line-height: 1;
-    margin-bottom: dp(20);
-    vertical-align: text-top;
-  }
 }
 
 .mdw-dialog__body {
-  font-weight: $font-weight-regular;
-  line-height: dp(24);
-  font-size: sp(16);
   padding: 0 dp(24);
-  
-  // 24dp top padding or 10+10 if followed by title
-  &::before {
-    content: "\200D"; // &zwj;
-    display: inline-block;
-    margin-top: dp(24);
-    line-height: 1;
-    vertical-align: text-bottom;
-    .mdw-dialog__title ~ & {
-      margin-top: dp(10);
-    }
-  }
+  @include type-rules('body');
+  @include baseline-top(36);
+  @include baseline-bottom(28);
 
-  // 20dp bottom padding from baseline
-  &::after {
-    content: "\200D"; // &zwj;
-    display: inline-block;
-    line-height: 1;
-    vertical-align: text-top;
-    margin-bottom: dp(20);
-  }
+  /*
+   * Spec states 34dp baseline alignment when no title present,
+   * but that would violiate 4dp baseline grid 
+   * &:first-child {
+   *  @include baseline-top(34);
+   * }
+   */
 }
 
 
