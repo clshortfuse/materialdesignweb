@@ -20,6 +20,7 @@ $buttonColors: (
   transparent-focus-overlay:  ((#000, 0.12), (#fff, 0.12)),
   disabled-text-color:        ((#000, 0.26), (#fff, 0.30)),
   disabled-background-color:  ((#000, 0.12), (#fff, 0.12)),
+  outline-color:              ((#000, 0.12), (#fff, 0.12)),
   filled-press-primary-color: (('primary', '700', 1.0), ('primary', '700', 1.0)),
   filled-press-accent-color:  (('accent',  '700', 1.0), ('accent',  '700', 1.0)),
   filled-press-warn-color:    (('warn',    '700', 1.0), ('warn',    '700', 1.0))
@@ -94,6 +95,11 @@ $buttonColors: (
           opacity: buttonThemeValue("ripple-opacity", $type, $theme);
           color: buttonThemeValue("ripple-color", $type, $theme);
         }
+      }
+
+      // Outline colors
+      &[mdw-outline] {
+        border-color: buttonThemeValue('outline-color', $type, $theme);
       }
     }
   }

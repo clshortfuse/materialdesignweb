@@ -10,6 +10,7 @@ mixin button-test
       .mdw-button__focus-ring
     button.mdw-button(mdw-raised="always") +Raised
       .mdw-button__focus-ring
+    button.mdw-button(mdw-outline) Outlined
   div(style="height:24px")
   div.display-flex.flex-wrap
     button.mdw-button(mdw-theme-color="primary") Flat
@@ -18,8 +19,9 @@ mixin button-test
       .mdw-button__focus-ring
     button.mdw-button(mdw-theme-color="primary" mdw-raised disabled) Disabled
       .mdw-button__focus-ring
-    button.mdw-button(mdw-theme-color="accent-A100") accent
+    button.mdw-button(mdw-theme-color="accent-A100") Accent
       .mdw-button__focus-ring
+    button.mdw-button(mdw-outline mdw-theme-color="accent-A100") Outlined
   div(style="height:24px")
   div.display-flex.flex-wrap
     button.mdw-button(mdw-theme-fill="primary dark") Flat
@@ -28,7 +30,7 @@ mixin button-test
       .mdw-button__focus-ring
     button.mdw-button(mdw-theme-fill="primary dark" mdw-raised disabled) Disabled
       .mdw-button__focus-ring
-    button.mdw-button(mdw-theme-fill="accent-A100 light" mdw-raised) accent
+    button.mdw-button(mdw-theme-fill="accent-A100 light" mdw-raised) Accent
       .mdw-button__focus-ring
   div(style="height:24px")
   div.display-flex.flex-wrap
@@ -93,6 +95,10 @@ mixin button-test
               .mdw-selection__label Icon
           .mdw-type(mdw-style="subheading") Options
           div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="checkbox" name="outlined")
+              .mdw-selection__icon
+              .mdw-selection__label Outlined
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="checkbox" name="disabled")
               .mdw-selection__icon

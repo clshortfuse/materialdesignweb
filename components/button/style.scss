@@ -5,6 +5,7 @@
 @import '../common/motion.scss';
 @import '../common/mixins.scss';
 @import '../ripple/ripple.scss';
+@import '../common//type.scss';
 
 $button__external-padding: dp(8);
 $button__minimum-click-target: dp(48);
@@ -13,14 +14,21 @@ $button__focus-animation-delay: 1667ms;
 $button__focus-animation-duration: 1667ms;
 $button__long-press-timeout: 500ms;
 $button__click-timeout: 100ms;
+$button__outline-size: dp(1);
 
 .mdw-button {
   position: relative;
   min-width: dp(64);
   min-height: dp(36);
   padding: 0 dp(8);
-  margin: 0 8px;
-  border-radius: dp(2);
+
+  &[mdw-outline],
+  &[mdw-theme-fill] {
+    padding: 0 dp(16);
+  }
+
+  margin: 0 dp(8);
+  border-radius: dp(4);
 
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -70,11 +78,20 @@ $button__click-timeout: 100ms;
   // Don't override font icon properties
   &:not([mdw-icon]) {
     font-family: inherit;
-    font-size: sp(14);
-    line-height: normal;
-    text-transform: uppercase;
     word-spacing: normal;
-    font-weight: $font-weight-medium;
+    @include type-rules('button');
+  }
+
+  &[mdw-outline] {
+    border-width: $button__outline-size;
+    border-style: solid;
+    &::before,
+    & > .mdw-ripple {
+      margin-left: -$button__outline-size;
+      margin-top: -$button__outline-size;
+      padding-right: 2 * $button__outline-size;
+      padding-bottom: 2 * $button__outline-size;
+    }
   }
 
   // Icon properties

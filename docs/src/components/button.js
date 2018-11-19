@@ -57,6 +57,13 @@ function onOptionChange(event) {
           break;
       }
       break;
+    case 'outlined':
+      if (checked) {
+        sampleComponent.setAttribute('mdw-outline', '');
+      } else {
+        sampleComponent.removeAttribute('mdw-outline');
+      }
+      break;
     case 'disabled':
       if (checked) {
         sampleComponent.setAttribute('disabled', '');
