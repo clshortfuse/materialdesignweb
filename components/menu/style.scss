@@ -2,6 +2,7 @@
 
 @import '../ripple/ripple.scss';
 @import '../common/variables.scss';
+@import '../common/type.scss';
 
 $menu__unit-width: dp(56);
 
@@ -194,12 +195,12 @@ $menu__unit-width: dp(56);
 }
 
 .mdw-menu__item {
+  @include type-rules('body');
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
   z-index: 0;
-  font-size: sp(14);
 
 
   min-height: dp(48);
