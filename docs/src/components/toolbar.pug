@@ -30,22 +30,27 @@ include ../mixins.pug
     .comparison.clipped-304
       .render
         +androidstatusbar('')
-        +toolbar('', ['menu'], ['search', 'favorite', 'more_vert']) Title
+        .mdw-toolbar(mdw-dense)
+          .mdw-toolbar__action
+            .mdw-toolbar__start
+              .mdw-button(mdw-icon).material-icons menu
+            .mdw-toolbar__title Dense (Desktop)
+            .mdw-toolbar__end
+              .mdw-button(mdw-icon).material-icons more_vert
         .content
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsLUFJUnFlRHVhUVU/layout-structure-appbar-metrics1.png')
 
     .comparison.clipped-304
       .render
         +androidstatusbar('')
-        .mdw-toolbar
+        .mdw-toolbar(mdw-prominent mdw-dense)
           .mdw-toolbar__action
             .mdw-toolbar__start
               .mdw-button(mdw-icon).material-icons menu
+            .mdw-toolbar__title Prominent Dense
             .mdw-toolbar__end
               .mdw-button(mdw-icon).material-icons search
-              .mdw-button(mdw-icon).material-icons favorite
               .mdw-button(mdw-icon).material-icons more_vert
-          .mdw-toolbar__title Title
         .content
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsSDBhX3BwSURRc1U/layout-structure-appbar-metrics3.png')
 
