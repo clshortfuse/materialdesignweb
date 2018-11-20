@@ -59,16 +59,15 @@ table.mdw-datatable,
   border-bottom-style: solid;
   border-bottom-width: dp(1);
   height: dp(48);
-  @include type-rules('body-2');
 }
 
 .mdw-datatable thead > tr {
   height: dp(48);
-  @include type-rules('caption');
 }
 
 
 .mdw-datatable td {
+  @include type-rules('body-2');
   //text-align: left;
   padding-top: dp(8);
   padding-bottom: dp(8);
@@ -95,6 +94,7 @@ table.mdw-datatable,
   width: dp(24);
 }
 .mdw-datatable th {
+  @include type-rules('caption');
   white-space: nowrap;
   &[mdw-selector] + th {
     padding-left: dp(12);
