@@ -23,6 +23,7 @@ $list__divider-height: dp(1);
 }
 
 .mdw-list__subheader {
+  @include type-rules('body-2');
   display: flex;
   flex-direction: row;
   min-height: dp(48);
@@ -30,14 +31,12 @@ $list__divider-height: dp(1);
   justify-content: stretch;
   padding-left: dp(16);
   padding-right: dp(16);
-  // color: var(--secondary-text-color);
-  font-size: sp(14);
-  font-weight: $font-weight-medium;
   &:first-child {
     margin-top: -8px;
   }
 }
 .mdw-list__item {
+  @include type-rules('subtitle');
   position: relative;
   display: flex;
   flex-direction: row;
@@ -48,8 +47,6 @@ $list__divider-height: dp(1);
   padding: 0 dp(16);
   text-transform: none;
   text-decoration: none;
-  font-weight: $font-weight-regular;
-  font-size: sp(16);
 
   text-align: start;
   white-space: nowrap;
@@ -215,6 +212,8 @@ $list__divider-height: dp(1);
   }
 }
 
+// In order to render 48px, 64px, 72px and 88px heights, lines are rendered bottom-up
+
 .mdw-list__text {
   position: static;
   pointer-events: none;
@@ -222,7 +221,7 @@ $list__divider-height: dp(1);
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: center;
+  justify-content: flex-end;
   overflow-x: hidden;
   text-overflow: ellipsis;
   
@@ -234,7 +233,6 @@ $list__divider-height: dp(1);
     right: 0;
     width: 100%;
     height: $list__divider-height;
-    // background-color: var(--divider-color);
   }
   
   [mdw-divider] > .mdw-list__item:not(:last-child) .mdw-list__avatar ~ &::after,
@@ -242,24 +240,23 @@ $list__divider-height: dp(1);
     margin-left: dp(72);
   }
 }
-
-
-
 .mdw-list__text-line {
   overflow-y: hidden;
   overflow-x: hidden;
   text-overflow: ellipsis;
-  &::before {
-    content: "";
-    display: inline-block;
-    vertical-align: baseline;
-  }
 }
 
 
+
+// First line and meta baseline alignment
+.mdw-list__text-line:first-child,
 .mdw-list__meta {
+  @include baseline-top(28);
+}
+
+.mdw-list__meta {
+  @include type-rules('caption');
   align-self: flex-start;
-  font-size: sp(12);
   margin-left: dp(28);
   margin-right: 0;
   html[dir=rtl] & {
@@ -268,87 +265,55 @@ $list__divider-height: dp(1);
   }
 }
 
-// First line and meta baseline alignment
-.mdw-list__text-line,
-.mdw-list__meta {
-  &::before {
-    content: "";
-    display: inline-block;
-    vertical-align: baseline;
-  }
+
+// First line is pushed up 20dp
+.mdw-list__text-line:first-child {
+  @include baseline-bottom(20);
 }
 
-// Two-line first-line 
-.mdw-list__text-line:first-child:not(:only-child),
-.mdw-list__meta {
-  &::before {
-    // Align baseline 28sp from top
-    margin-top: sp(28);
-  }
-}
 
-// Secondary text-line
-
+// Second and third lines are pushed up 20dp and its above element is pushed 20dp
 .mdw-list__text-line:not(:first-child),
-.mdw-list__text-block, {
-  font-size: sp(14);
-  line-height: sp(20);
+.mdw-list__text-block:not(:first-child) {
+  margin-top: dp(-20);
+  @include baseline-top(20);
 }
 
-.mdw-list__text-line:not(:first-child):last-child,
-.mdw-list__text-block {
-  margin-bottom: sp(12);
+// Second line is pushed up 16dp from baseline
+.mdw-list__text-line:last-child {
+  @include baseline-bottom(16);
 }
 
 
-// Prefixed by icon or avatar
-.mdw-list__avatar ~ .mdw-list__meta,
-.mdw-list__icon ~ .mdw-list__meta {
-  // Align baseline 32sp from top
-  &::before {
-    margin-top: sp(32);
-  }
-} 
+// When 3-lines, 2nd and 3rd lines are pushed up 20dp
+.mdw-list__text-line:nth-child(3),
+.mdw-list__text-line:not(:first-child):not(:last-child) {
+  @include baseline-bottom(20);
+}
 
-.mdw-list__avatar ~ .mdw-list__text,
-.mdw-list__icon ~ .mdw-list__text {
-  .mdw-list__text-line:first-child:not(:only-child) {
-    // Align baseline 32sp from top
-    &::before {
-      margin-top: sp(32);
-    }
-  }
-  .mdw-list__text-line:nth-child(2):last-child {
-    padding-bottom: sp(4);
-  }
-  .mdw-list__text-block {
-    padding-bottom: 0;
-  }
+// Second and third line typography
+.mdw-list__text-line:not(:first-child),
+.mdw-list__text-block:not(:first-child) {
+  @include type-rules('body-2');
 }
 
 .mdw-list__text-block {
   pointer-events: none;
-  font-size: sp(14);
-  font-weight: normal;
   text-transform: none;
   text-align: start;
   text-overflow: ellipsis;
   overflow-x: hidden;
   overflow-y: hidden;
   white-space: normal;
-  &:first-of-type {
-    font-size: sp(16);
-  }
   display: block;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 
+  height: dp(20 * 2);
+  max-height: dp(20 * 2);
   padding-bottom: dp(4);
-
-  line-height: sp(20);
-  height: sp(20 * 2);
-  max-height: sp(20 * 2);
+  margin-bottom: dp(16);
 }
 
 .mdw-list__item {
