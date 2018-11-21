@@ -79,7 +79,7 @@
 }
 
 @function getThemePaletteColor($color, $tone, $type, $theme: null) {
-  @if ($type == 'var' or $type == null) {
+  @if ($type == 'var' or ($type == null and $theme == null)) {
     @if ($tone == null) {
       @return var(--#{$color}-color);
     }
