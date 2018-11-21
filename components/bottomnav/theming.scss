@@ -2,11 +2,13 @@
 @import '../common/mixins.scss';
 
 $bottomnavColors: (
-  active-color:         (inherit       , inherit),
-  filled-active-color:  (inherit       , (#fff, 1.0)),
+  active-color:         (inherit, inherit),
+  filled-active-color:  (inherit, (#fff, 1.0)),
   inactive-color:       ((#000, 0.54), (#fff, 0.50)),
-  ripple-color:         ( #000       ,  #fff       ),
-  ripple-opacity:       (         0.12 ,          0.30,           0.20),
+  ripple-color:         ( #000, #fff),
+  ripple-opacity:       (0.12, 0.30, 0.20),
+  badge-background:     (('warn', '500', 1.00), ('warn', '500', 1.00)),
+  badge-foreground:     (#fff, #fff),
 );
 
 @function bottomnavThemeValue($key, $type, $theme) {
@@ -19,7 +21,7 @@ $bottomnavColors: (
 
 @mixin internalBottomnavContrastRules($type, $theme: null) {
   @at-root {
-    #{&}.mdw-bottomnav[mdw-theme-fill] {
+    #{&}.mdw-bottomnav[mdw-theme-fill]:not([mdw-theme-color]) {
       input:checked ~ .mdw-bottomnav__icon,
       input:checked ~ .mdw-bottomnav__label,
       .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__icon,
@@ -56,9 +58,19 @@ $bottomnavColors: (
 
   .mdw-bottomnav__item {
     & > .mdw-ripple > .mdw-ripple__inner,
-    &:after {
+    &::after {
       opacity: bottomnavThemeValue("ripple-opacity", $type, $theme);
       color: bottomnavThemeValue("ripple-color", $type, $theme);
+    }
+  }
+}
+
+// Varies by theme
+@mixin bottomnavThemeRules($theme: null) {
+  .mdw-bottomnav__item {
+    &::before {
+      background-color: bottomnavThemeValue("badge-background", null, $theme);
+      color: bottomnavThemeValue("badge-foreground", null, $theme);
     }
   }
 }

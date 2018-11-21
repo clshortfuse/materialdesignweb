@@ -226,6 +226,9 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'button')) {
     @include buttonThemeRules($theme);
   }
+  @if (index($mdw-theme__components, 'bottomnav')) {
+    @include bottomnavThemeRules($theme);
+  }
 }
 
 
