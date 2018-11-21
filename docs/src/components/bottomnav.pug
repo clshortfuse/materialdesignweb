@@ -9,6 +9,10 @@ include ../mixins.pug
       .render.mdw-theme-bottomnav
         .content.display-flex
           .flex-1
+            ul
+              li CSS-Only
+              li Keyboard support
+              li Radio buttons
           form.mdw-bottomnav(mdw-theme-color="primary")
             label.mdw-bottomnav__item
               input.mdw-bottomnav__input(type="radio" name="bottomnav" value="recents")
@@ -29,6 +33,11 @@ include ../mixins.pug
       .render.mdw-theme-bottomnav
         .content.display-flex
           .flex-1
+            ul
+              li CSS-Only
+              li Keyboard support
+              li Disappearing Labels
+              li Radio buttons
           form.mdw-bottomnav(mdw-theme-fill="primary-700 dark" mdw-shifting)
             input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="movies" id='value1')
             label.mdw-bottomnav__item(for='value1')
@@ -53,6 +62,11 @@ include ../mixins.pug
       .render.mdw-theme-bottomnav
         .content.display-flex
           .flex-1
+            ul
+              li CSS-Only
+              li Keyboard support
+              li Disappearing Labels
+              li ID-less Radio buttons
           form.mdw-bottomnav(mdw-theme-fill="primary-700 dark" mdw-shifting)
             label.mdw-bottomnav__item
               input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="movies")
@@ -77,7 +91,9 @@ include ../mixins.pug
       .render.mdw-theme-bottomnav
         .content.display-flex
           .flex-1
-            p Javascript version without radio buttons
+            ul
+              li Javascript-based
+              li No radio buttons
           .mdw-bottomnav(mdw-theme-color="primary")
             .mdw-bottomnav__item
               .mdw-bottomnav__icon.material-icons history
