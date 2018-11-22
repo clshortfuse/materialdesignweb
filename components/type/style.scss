@@ -15,6 +15,12 @@ p.mdw-type {
   margin: 0;
 }
 
+p.mdw-type {
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+}
+
 h1.mdw-type {
   @include type-rules('h1');
 }
@@ -47,11 +53,10 @@ h6.mdw-type {
   @include type-rules('subtitle-2');
 }
 
-p.mdw-type {
+body.mdw-type,
+p.mdw-type,
+.mdw-type[mdw-style="body"] {
   @include type-rules('body');
-  hyphens: auto;
-  -webkit-hyphens: auto;
-  -ms-hyphens: auto;
 }
 
 .mdw-type[mdw-style="body-2"] {
