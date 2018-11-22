@@ -13,6 +13,7 @@ $mdw-types: (
   ),
   h3: (
     font-weight: $font-weight-regular,
+    letter-spacing: 0,
     font-size: sp(48),
     line-height: dp(56),
   ),
@@ -24,6 +25,7 @@ $mdw-types: (
   ),
   h5: (
     font-weight: $font-weight-regular,
+    letter-spacing: 0,
     font-size: sp(24),
     line-height: dp(28),
   ),
