@@ -1,4 +1,4 @@
-import { setCookie, removeCookie, getCookie } from './cookies';
+import { setStorageItem, removeStorageItem, getStorageItem } from './storage';
 
 const darkAttribute = 'black dark';
 const lightAttribute = 'white light';
@@ -16,14 +16,14 @@ export function setRTLMode(value, button) {
     }
     // element.setAttribute('mdw-active', '');
     // Poor visibility even though spec says 70% opacity
-    setCookie('rtlmode', 'true', 365);
+    setStorageItem('rtlmode', 'true');
   } else {
     document.documentElement.removeAttribute('dir');
     if (button) {
       button.setAttribute('mdw-inactive', '');
     }
     // element.removeAttribute('mdw-active');
-    removeCookie('rtlmode');
+    removeStorageItem('rtlmode');
   }
 }
 
@@ -47,7 +47,7 @@ export function setDarkMode(value, button) {
     }
     // element.removeAttribute('mdw-active');
   }
-  setCookie('darkmode', value ? 'true' : 'false', 365);
+  setStorageItem('darkmode', value ? 'true' : 'false');
 }
 
 /**
@@ -63,14 +63,14 @@ export function setFontSize(value, button) {
     }
     // element.setAttribute('mdw-active', '');
     // Poor visibility even though spec says 70% opacity
-    setCookie('fontsize', value, 365);
+    setStorageItem('fontsize', value);
   } else {
     document.documentElement.style.removeProperty('font-size');
     if (button) {
       button.setAttribute('mdw-inactive', '');
     }
     // element.removeAttribute('mdw-active');
-    removeCookie('fontsize');
+    removeStorageItem('fontsize');
   }
 }
 
@@ -79,7 +79,7 @@ export function setFontSize(value, button) {
  * @return {void}
  */
 function setupRTLMode(element) {
-  if (getCookie('rtlmode') === 'true') {
+  if (getStorageItem('rtlmode') === 'true') {
     setRTLMode(true, element);
   }
   element.addEventListener('click', () => {
@@ -96,7 +96,7 @@ function setupRTLMode(element) {
  * @return {void}
  */
 function setupDarkMode(element) {
-  if (getCookie('darkmode') === 'true') {
+  if (getStorageItem('darkmode') === 'true') {
     setDarkMode(true, element);
   }
   element.addEventListener('click', () => {
@@ -113,7 +113,7 @@ function setupDarkMode(element) {
  * @return {void}
  */
 function setupLargeFontMode(element) {
-  const fontsize = getCookie('fontsize');
+  const fontsize = getStorageItem('fontsize');
   setFontSize(fontsize, element);
   element.addEventListener('click', () => {
     if (document.documentElement.style.getPropertyValue('font-size')) {
