@@ -5,9 +5,8 @@ include ../mixins.pug
     .mdw-layout(mdw-margin-top mdw-margin-bottom)
       .mdw-layout__item(mdw-colspan="100%")
         div
-          .mdw-type(mdw-style="headline") Text fields allow users to input, edit, and select text.
-          .mdw-type(mdw-style="body") Text fields typically reside in forms but can appear in other places, like dialog boxes and search.
-          .mdw-type(mdw-style="body")
+          h5.mdw-type(mdw-baseline-next="36") Text fields allow users to input, edit, and select text.
+          p.mdw-type Text fields typically reside in forms but can appear in other places, like dialog boxes and search.
       .mdw-layout__item(mdw-colspan="4")
         .component-sample
           .component-sample__container
@@ -19,7 +18,7 @@ include ../mixins.pug
                 
       .mdw-layout__item(mdw-colspan="8")
         div
-          .mdw-type(mdw-style="subheading") Javascript
+          .mdw-type(mdw-style="subtitle") Javascript
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="javascript" value="required" disabled)
@@ -33,7 +32,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="javascript" value="none")
               .mdw-selection__icon
               .mdw-selection__label None
-          .mdw-type(mdw-style="subheading") Field type
+          .mdw-type(mdw-style="subtitle") Field type
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="field-type" value="single-line" checked)
@@ -47,7 +46,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="field-type" value="dropdown")
               .mdw-selection__icon
               .mdw-selection__label Dropdown
-          .mdw-type(mdw-style="subheading") Style
+          .mdw-type(mdw-style="subtitle") Style
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="style" value="filled" checked)
@@ -61,7 +60,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="style" value="solo")
               .mdw-selection__icon
               .mdw-selection__label Solo
-          .mdw-type(mdw-style="subheading") Options
+          .mdw-type(mdw-style="subtitle") Options
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="checkbox" name="signifier")
@@ -83,7 +82,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="checkbox" name="error-text")
               .mdw-selection__icon
               .mdw-selection__label Error Text
-          .mdw-type(mdw-style="subheading") Color
+          .mdw-type(mdw-style="subtitle") Color
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="color" value="none" checked)
@@ -93,7 +92,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="color" value="accent")
               .mdw-selection__icon
               .mdw-selection__label Accent
-          .mdw-type(mdw-style="subheading") Attributes
+          .mdw-type(mdw-style="subtitle") Attributes
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="checkbox" name="autosize" checked)
@@ -110,14 +109,14 @@ include ../mixins.pug
       .mdw-layout__item(mdw-colspan="100%" style="max-height:0")
       .mdw-layout__item(mdw-colspan="6")
         .display-flex(flex-column)
-          .mdw-type(mdw-style="title") HTML Code
+          h6.mdw-type HTML Code
           .mdw-card.component-code.component-html
       .mdw-layout__item(mdw-colspan="2")
         .display-flex(flex-column)
-          .mdw-type(mdw-style="title") Javascript Code
+          h6.mdw-type Javascript Code
           .mdw-card.component-code.component-js
       .mdw-layout__item(mdw-colspan="100%")
-        .mdw-type(mdw-style="title") Samples
+        h6.mdw-type Samples
       .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
         .render
           +androidstatusbar('primary-700 dark')
@@ -197,8 +196,7 @@ include ../mixins.pug
               .mdw-textfield__border
                 .mdw-textfield__outline-gap
                   .mdw-textfield__label Phone number
-            p.mdw-type(mdw-style="body")
-            p.mdw-type(mdw-style="body") * Required fields
+            p.mdw-type * Required fields
           +androidnavbar
 
       .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")

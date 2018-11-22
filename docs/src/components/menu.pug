@@ -5,11 +5,9 @@ include ../mixins.pug
     .mdw-layout(mdw-margin-top mdw-margin-bottom)
       .mdw-layout__item(mdw-colspan="100%")
         div
-          .mdw-type(mdw-style="headline") Menus display a list of choices on a transient sheet of material.
-          .mdw-type(mdw-style="body") Menus appear upon interaction with a button, action, or other control. They display a list of choices, with one choice per line.
-          .mdw-type(mdw-style="body")
-          .mdw-type(mdw-style="body") Menu items may be disabled if not applicable to a certain context. Contextual menus dynamically change their available menu items based on the current state of the app.
-          .mdw-type(mdw-style="body")
+          h5.mdw-type(mdw-baseline-next="36") Menus display a list of choices on a transient sheet of material.
+          p.mdw-type(mdw-baseline-next="36") Menus appear upon interaction with a button, action, or other control. They display a list of choices, with one choice per line.
+          p.mdw-type Menu items may be disabled if not applicable to a certain context. Contextual menus dynamically change their available menu items based on the current state of the app.
       .mdw-layout__item(mdw-colspan="4")
         .component-sample
           .component-sample__container
@@ -38,7 +36,7 @@ include ../mixins.pug
                     .mdw-menu__text Apps
       .mdw-layout__item(mdw-colspan="8")
         div
-          .mdw-type(mdw-style="subheading") Javascript
+          .mdw-type(mdw-style="subtitle") Javascript
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="javascript" value="required" checked)
@@ -52,7 +50,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="javascript" value="none")
               .mdw-selection__icon
               .mdw-selection__label None
-          .mdw-type(mdw-style="subheading") Vertical Position
+          .mdw-type(mdw-style="subtitle") Vertical Position
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="vposition" value="auto" checked)
@@ -70,7 +68,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="vposition" value="vcenter")
               .mdw-selection__icon
               .mdw-selection__label Center
-          .mdw-type(mdw-style="subheading") Horizontal Position
+          .mdw-type(mdw-style="subtitle") Horizontal Position
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="hposition" value="auto" checked)
@@ -96,7 +94,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="hposition" value="hcenter")
               .mdw-selection__icon
               .mdw-selection__label Center
-          .mdw-type(mdw-style="subheading") Vertical Direction
+          .mdw-type(mdw-style="subtitle") Vertical Direction
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="vdirection" value="auto" checked)
@@ -114,7 +112,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="vdirection" value="vcenter")
               .mdw-selection__icon
               .mdw-selection__label Center
-          .mdw-type(mdw-style="subheading") Horizontal Direction
+          .mdw-type(mdw-style="subtitle") Horizontal Direction
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="hdirection" value="auto" checked)
@@ -140,7 +138,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="hdirection" value="hcenter")
               .mdw-selection__icon
               .mdw-selection__label Center
-          .mdw-type(mdw-style="subheading") Width Units
+          .mdw-type(mdw-style="subtitle") Width Units
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="width" value="auto" checked)
@@ -169,14 +167,14 @@ include ../mixins.pug
       .mdw-layout__item(mdw-colspan="100%" style="max-height:0")
       .mdw-layout__item(mdw-colspan="100%")
         .display-flex(flex-column)
-          .mdw-type(mdw-style="title") HTML Code
+          h6.mdw-type HTML Code
           .mdw-card.component-code.component-html
       .mdw-layout__item(mdw-colspan="100%")
         .display-flex(flex-column)
-          .mdw-type(mdw-style="title") Javascript Code
+          h6.mdw-type Javascript Code
           .mdw-card.component-code.component-js
       .mdw-layout__item(mdw-colspan="100%")
-        .mdw-type(mdw-style="title") Samples
+        h6.mdw-type Samples
       .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
         .render
           +androidstatusbar('primary-700 dark')

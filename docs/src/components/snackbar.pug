@@ -5,9 +5,8 @@ include ../mixins.pug
     .mdw-layout(mdw-margin-top mdw-margin-bottom)
       .mdw-layout__item(mdw-colspan="100%")
         div
-          .mdw-type(mdw-style="headline") Snackbars provide brief messages about app processes at the bottom of the screen.
-          .mdw-type(mdw-style="body") Snackbars inform users of a process that an app has performed or will perform. They appear temporarily, towards the bottom of the screen. They shouldn’t interrupt the user experience, and they don’t require user input to disappear.
-          .mdw-type(mdw-style="body")
+          h5.mdw-type(mdw-baseline-next="36") Snackbars provide brief messages about app processes at the bottom of the screen.
+          p.mdw-type Snackbars inform users of a process that an app has performed or will perform. They appear temporarily, towards the bottom of the screen. They shouldn’t interrupt the user experience, and they don’t require user input to disappear.
       .mdw-layout__item(mdw-colspan="100%")
         .component-sample(style="padding:0")
           .mdw-layout(style="width:100%;height:100%")
@@ -24,7 +23,7 @@ include ../mixins.pug
                 .mdw-snackbar__container.js-sample
       .mdw-layout__item(mdw-colspan="4")
         div
-          .mdw-type(mdw-style="subheading") Javascript
+          .mdw-type(mdw-style="subtitle") Javascript
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="javascript" value="required" disabled)
@@ -38,7 +37,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="javascript" value="none")
               .mdw-selection__icon
               .mdw-selection__label None
-          .mdw-type(mdw-style="subheading") Text
+          .mdw-type(mdw-style="subtitle") Text
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="text" value="short" checked)
@@ -52,7 +51,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="text" value="line-break")
               .mdw-selection__icon
               .mdw-selection__label Explicit line-break
-          .mdw-type(mdw-style="subheading") Button
+          .mdw-type(mdw-style="subtitle") Button
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="button" value="none" checked)
@@ -66,7 +65,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="button" value="long")
               .mdw-selection__icon
               .mdw-selection__label Long
-          .mdw-type(mdw-style="subheading") Visibility
+          .mdw-type(mdw-style="subtitle") Visibility
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="visibility" value="auto" checked)
@@ -80,7 +79,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="visibility" value="hide")
               .mdw-selection__icon
               .mdw-selection__label Hide
-          .mdw-type(mdw-style="subheading") Position
+          .mdw-type(mdw-style="subtitle") Position
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="position" value="auto" checked)
@@ -94,7 +93,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="position" value="end")
               .mdw-selection__icon
               .mdw-selection__label End
-          .mdw-type(mdw-style="subheading") Auto-Hide Time (Seconds)
+          .mdw-type(mdw-style="subtitle") Auto-Hide Time (Seconds)
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="autohide" value="none" checked)
@@ -128,7 +127,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="autohide" value="10")
               .mdw-selection__icon
               .mdw-selection__label 10
-          .mdw-type(mdw-style="subheading") Options
+          .mdw-type(mdw-style="subtitle") Options
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="checkbox" name="stacked")
@@ -137,10 +136,10 @@ include ../mixins.pug
       .mdw-layout__item(mdw-colspan="100%" style="max-height:0")
       .mdw-layout__item(mdw-colspan="6")
         .display-flex(flex-column)
-          .mdw-type(mdw-style="title") HTML Code
+          h6.mdw-type HTML Code
           .mdw-card.component-code.component-html
       .mdw-layout__item(mdw-colspan="2")
         .display-flex(flex-column)
-          .mdw-type(mdw-style="title") Javascript Code
+          h6.mdw-type Javascript Code
           .mdw-card.component-code.component-js
   script(src='snackbar.min.js')

@@ -46,16 +46,15 @@ mixin button-test
     .mdw-layout(mdw-margin-top mdw-margin-bottom)
       .mdw-layout__item(mdw-colspan="100%")
         div
-          .mdw-type(mdw-style="headline") Buttons communicate the action that will occur when the user touches them.
-          .mdw-type(mdw-style="body") Material buttons trigger an ink reaction on press. They may display text, imagery, or both.
-          .mdw-type(mdw-style="body")
+          h5.mdw-type(mdw-baseline-next="36") Buttons communicate the action that will occur when the user touches them.
+          p.mdw-type Material buttons trigger an ink reaction on press. They may display text, imagery, or both.
       .mdw-layout__item(mdw-colspan="4")
         .component-sample
           .display-flex
             button.mdw-button(mdw-theme-color="accent-A200") Button
       .mdw-layout__item(mdw-colspan="8")
         div
-          .mdw-type(mdw-style="subheading") Javascript
+          .mdw-type(mdw-style="subtitle") Javascript
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="javascript" value="required" disabled)
@@ -69,7 +68,7 @@ mixin button-test
               input.mdw-selection__input(type="radio" name="javascript" value="none")
               .mdw-selection__icon
               .mdw-selection__label None
-          .mdw-type(mdw-style="subheading") Elevation
+          .mdw-type(mdw-style="subtitle") Elevation
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="elevation" value="flat" checked)
@@ -83,7 +82,7 @@ mixin button-test
               input.mdw-selection__input(type="radio" name="elevation" value="raised-always")
               .mdw-selection__icon
               .mdw-selection__label Always Raised
-          .mdw-type(mdw-style="subheading") Content
+          .mdw-type(mdw-style="subtitle") Content
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="content" value="text" checked)
@@ -93,7 +92,7 @@ mixin button-test
               input.mdw-selection__input(type="radio" name="content" value="icon")
               .mdw-selection__icon
               .mdw-selection__label Icon
-          .mdw-type(mdw-style="subheading") Options
+          .mdw-type(mdw-style="subtitle") Options
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="checkbox" name="outlined")
@@ -107,7 +106,7 @@ mixin button-test
               input.mdw-selection__input(type="checkbox" name="focus-ring")
               .mdw-selection__icon
               .mdw-selection__label Focus Ring
-          .mdw-type(mdw-style="subheading") Color (Ink)
+          .mdw-type(mdw-style="subtitle") Color (Ink)
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="color" value="default")
@@ -129,7 +128,7 @@ mixin button-test
               input.mdw-selection__input(type="radio" name="color" value="purple-A400")
               .mdw-selection__icon
               .mdw-selection__label Purple-A400
-          .mdw-type(mdw-style="subheading") Fill
+          .mdw-type(mdw-style="subtitle") Fill
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="fill" value="none" checked)
@@ -151,7 +150,7 @@ mixin button-test
               input.mdw-selection__input(type="radio" name="fill" value="green-700 dark")
               .mdw-selection__icon
               .mdw-selection__label Green 700
-          .mdw-type(mdw-style="subheading") HTML Element Type
+          .mdw-type(mdw-style="subtitle") HTML Element Type
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="htmltype" value="div")
@@ -168,14 +167,14 @@ mixin button-test
       .mdw-layout__item(mdw-colspan="100%" style="max-height:0")
       .mdw-layout__item(mdw-colspan="6")
         .display-flex(flex-column)
-          .mdw-type(mdw-style="title") HTML Code
+          h6.mdw-type HTML Code
           .mdw-card.component-code.component-html
       .mdw-layout__item(mdw-colspan="2")
         .display-flex(flex-column)
-          .mdw-type(mdw-style="title") Javascript Code
+          h6.mdw-type Javascript Code
           .mdw-card.component-code.component-js
       .mdw-layout__item(mdw-colspan="100%")
-        .mdw-type(mdw-style="title") Samples
+        h6.mdw-type Samples
       .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
         .render
           +androidstatusbar('')

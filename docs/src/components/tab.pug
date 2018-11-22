@@ -5,9 +5,8 @@ include ../mixins.pug
     .mdw-layout(mdw-margin-top mdw-margin-bottom).docs-tab
       .mdw-layout__item(mdw-colspan="100%")
         div
-          .mdw-type(mdw-style="headline") Tabs make it easy to explore and switch between different views.
-          .mdw-type(mdw-style="body") Tabs enable content organization at a high level, such as switching between views, data sets, or functional aspects of an app.
-          .mdw-type(mdw-style="body")
+          h5.mdw-type(mdw-baseline-next="36") Tabs make it easy to explore and switch between different views.
+          p.mdw-type Tabs enable content organization at a high level, such as switching between views, data sets, or functional aspects of an app.
       .mdw-layout__item(mdw-colspan="4")
         .component-sample
           .component-sample__container
@@ -29,7 +28,7 @@ include ../mixins.pug
                 .mdw-tab__content-item Sample Content Three
       .mdw-layout__item(mdw-colspan="8")
         div
-          .mdw-type(mdw-style="subheading") Javascript
+          .mdw-type(mdw-style="subtitle") Javascript
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="javascript" value="required")
@@ -43,7 +42,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="javascript" value="none")
               .mdw-selection__icon
               .mdw-selection__label None
-          .mdw-type(mdw-style="subheading") Color
+          .mdw-type(mdw-style="subtitle") Color
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="color" value="default")
@@ -65,7 +64,7 @@ include ../mixins.pug
               input.mdw-selection__input(type="radio" name="color" value="purple-A400")
               .mdw-selection__icon
               .mdw-selection__label Purple-A400
-          .mdw-type(mdw-style="subheading") Fill
+          .mdw-type(mdw-style="subtitle") Fill
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="fill" value="none" checked)
@@ -90,14 +89,14 @@ include ../mixins.pug
       .mdw-layout__item(mdw-colspan="100%" style="max-height:0")
       .mdw-layout__item(mdw-colspan="6")
         .display-flex(flex-column)
-          .mdw-type(mdw-style="title") HTML Code
+          h6.mdw-type HTML Code
           .mdw-card.component-code.component-html
       .mdw-layout__item(mdw-colspan="2")
         .display-flex(flex-column)
-          .mdw-type(mdw-style="title") Javascript Code
+          h6.mdw-type Javascript Code
           .mdw-card.component-code.component-js
       .mdw-layout__item(mdw-colspan="100%")
-        .mdw-type(mdw-style="title") Samples
+        h6.mdw-type Samples
       .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center").clipped
         .render.mdw-theme-tab
           form.mdw-tab
