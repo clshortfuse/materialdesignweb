@@ -33,25 +33,21 @@ $snackbar__scale-up__from: 0.85;
 .mdw-snackbar {
   position: absolute;
   bottom: 0;
+  padding: 0 dp(16);
+  min-height: dp(48);
+  max-width: 100%;
+  border-radius: dp(4);
   
+  box-shadow: elevation(6);
+
   background: $snackbar__background-color;
   color: $snackbar__color;
 
-  
-  padding: 0 dp(16);
-  min-height: dp(48);
-  
-  max-width: 100%;
-
-  font-size: sp(14);
-  font-weight: $font-weight-regular;
+  @include type-rules('body-2');
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  border-radius: dp(4);
-  box-shadow: elevation(6);
 
   // Default state is shown
   opacity: 1;
@@ -67,6 +63,7 @@ $snackbar__scale-up__from: 0.85;
   @include allTablets {
     transition-duration: $motion-duration-tablet-enter;
   }
+
   // Disable animations with explicit visibility
   &[mdw-autohide] {
     animation-fill-mode: forwards;
@@ -156,20 +153,8 @@ $snackbar__scale-up__from: 0.85;
 
 .mdw-snackbar > span {
   white-space: pre-line;
-  &::before {
-    content: "\200D"; // &zwj;
-    display: inline-block;
-    margin-top: dp(16);
-    line-height: 1;
-    vertical-align: text-bottom;
-  }
-  &::after {
-    content: "\200D"; // &zwj;
-    display: inline-block;
-    line-height: 1;
-    margin-bottom: dp(16);
-    vertical-align: text-top;
-  }
+  @include baseline-top(30);
+  @include baseline-bottom(48 - 30);
 }
 
 @media screen and (max-width: $breakpoint-portrait-handset-max) {
