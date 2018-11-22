@@ -120,14 +120,14 @@ include ../mixins.pug
       .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center").clipped
         .render.mdw-theme-tab
           +androidstatusbar('primary-700')
-          .mdw-toolbar(mdw-theme-fill="primary-500 dark")
+          .mdw-toolbar(mdw-theme-fill="primary-500 dark" mdw-prominent)
             .mdw-toolbar__action
               .mdw-toolbar__start
                 .mdw-button(mdw-icon).material-icons menu
+              .mdw-toolbar__title Page title
               .mdw-toolbar__end
                 .mdw-button(mdw-icon).material-icons search
                 .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
-            .mdw-toolbar__content(style="font-size:2.125em;height:56px") Page title
             form.mdw-tab
               input.mdw-tab__input#large-text-tab1(type="radio" name="tab" value="one" checked)
               input.mdw-tab__input#large-text-tab2(type="radio" name="tab" value="two")
@@ -185,7 +185,6 @@ include ../mixins.pug
                 .mdw-toolbar__end
                   .mdw-button(mdw-icon).material-icons search
                   .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
-              .mdw-toolbar__content
               .mdw-tab__items(mdw-theme-color="primary")
                 label.mdw-tab__item(for='clear-toolbar-tab1')
                   .mdw-tab__label Item One
@@ -210,7 +209,6 @@ include ../mixins.pug
               .mdw-toolbar__end
                 .mdw-button(mdw-icon).material-icons search
                 .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
-            .mdw-toolbar__content
             form.mdw-tab
               input.mdw-tab__input(type="radio" name="tab" value="recents" id='tab-text-icon1' checked)
               input.mdw-tab__input(type="radio" name="tab" value="favorites" id='tab-text-icon2')
@@ -239,7 +237,6 @@ include ../mixins.pug
               .mdw-toolbar__end
                 .mdw-button(mdw-icon).material-icons search
                 .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
-            .mdw-toolbar__content
             form.mdw-tab
               input.mdw-tab__input(type="radio" name="tab" value="recents" id='tabs-icon1' checked)
               input.mdw-tab__input(type="radio" name="tab" value="favorites" id='tabs-icon2')
@@ -264,12 +261,11 @@ include ../mixins.pug
               .mdw-toolbar__action
                 .mdw-toolbar__start
                   .mdw-button(mdw-icon).material-icons menu
-                .mdw-toolbar__title Dynamic Width
+                .mdw-toolbar__title Clustered
                 .mdw-toolbar__end
                   .mdw-button(mdw-icon).material-icons search
                   .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
-              .mdw-toolbar__content
-              .mdw-tab__items(mdw-theme-color="accent")
+              .mdw-tab__items(mdw-theme-color="accent" style="align-self:center")
                 label.mdw-tab__item(for='dynamic-1')
                   .mdw-tab__icon.material-icons phone
                   .mdw-tab__label Recents
@@ -297,14 +293,13 @@ include ../mixins.pug
                 .mdw-toolbar__end
                   .mdw-button(mdw-icon).material-icons search
                   .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
-              .mdw-toolbar__content
               .mdw-tab__items(mdw-theme-color="accent" mdw-scrollable)
                 .mdw-tab__item(mdw-selected)
                   .mdw-tab__icon.material-icons phone
                   .mdw-tab__label Recents
                 .mdw-tab__item
                   .mdw-tab__icon.material-icons favorite
-                  .mdw-tab__label Favorites
+                  .mdw-tab__label My Oversized Favorites Tab
                 .mdw-tab__item
                   .mdw-tab__icon.material-icons person_pin
                   .mdw-tab__label Nearby

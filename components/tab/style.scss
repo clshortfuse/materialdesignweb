@@ -1,10 +1,12 @@
-// https://material.io/guidelines/components/tabs.html#
+// https://material.io/design/components/tabs.html#spec
 
 @import '../common/functions.scss';
 @import '../common/motion.scss';
 
-$tab__max-width: dp(160);
-$tab__scrollable-max-width: dp(256);
+$tab__icon-size: 24;
+$tab__icon-margin-top: 12;
+$tab__icon-to-label-baseline: 20;
+$tab__icon-with-label-height: 72;
 
 .mdw-tab {
   display: flex;
@@ -12,26 +14,33 @@ $tab__scrollable-max-width: dp(256);
 }
 
 .mdw-tab__items {
-  min-height: dp(48);
   overflow-y: hidden;
   position: relative;
-  display:flex;
-  width: 100%;
+
+  display: flex; // IE11 doesn't support grid-auto-columns
+  display: grid;
+
+  grid-auto-columns: 1fr;
+
   justify-content: flex-start;
   flex-direction: row;
   &[mdw-scrollable] {
+    display: flex;
     overflow-x: auto;
-    padding-left: 40px;
-    padding-right: 40px;
     box-sizing: border-box;
     > .mdw-tab__item {
-      min-width: dp(160);
-      max-width: $tab__scrollable-max-width;
-      flex-basis: $tab__scrollable-max-width;
+      min-width: dp(90);
+      max-width: 100%;
+      flex: none;
     }
     > .mdw-tab__indicator {
-      margin-left: 40px;
-      max-width: $tab__scrollable-max-width;
+      margin-left: dp(52);
+    }
+    &::before,
+    &::after {
+      // Ensures 52dp blank space at end
+      content: "";
+      min-width: dp(52);
     }
   }
 }
@@ -43,12 +52,12 @@ $tab__scrollable-max-width: dp(256);
   width: 0;
   left: 0;
   right: auto;
-  max-width: $tab__max-width;
   html[dir=rtl] & {
     right: 0;
     left: auto;
   }
   background-color: currentColor;
+  transform-origin: left center;
   transition-property: transform;
   transition-timing-function: $motion-easing-standard;
   transition-duration: $motion-duration-desktop-default;
@@ -80,11 +89,9 @@ $tab__scrollable-max-width: dp(256);
     }
   }
   
-  .mdw-tab__items[mdw-scrollable] > &[mdw-js-indicator] {
-    width: auto;
-    max-width: none;
-    transition-property: left, right;
-    transform: none;
+  &[mdw-js-indicator] {
+    width: 1px;
+    transform: translateX(0);
   }
 }
 
@@ -92,14 +99,12 @@ $tab__scrollable-max-width: dp(256);
   min-height: dp(48); // Redundant but needed for IE11
   position: relative;
   display: flex;
-  min-width: dp(72);
-  max-width: $tab__max-width;
-  flex-basis: $tab__max-width;
-  flex-grow: 0;
-  flex-shrink: 1;
+  flex: auto;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+
+  grid-row: 1;
+
   box-shadow: none;
   box-sizing: content-box;
   border-radius: 0;
@@ -140,6 +145,9 @@ $tab__scrollable-max-width: dp(256);
 }
 
 .mdw-tab__icon {
+  margin-top: dp($tab__icon-margin-top);
+  @include baseline-bottom($tab__icon-to-label-baseline);
+  margin-bottom: dp(-$tab__icon-to-label-baseline);
   pointer-events: none;
   transition-property: color;
   transition-timing-function: $motion-easing-standard;
@@ -149,30 +157,19 @@ $tab__scrollable-max-width: dp(256);
   }
   @include allTablets {
     transition-duration: $motion-duration-tablet-default;
-  }
-  margin-top: 12px;
-  &:last-child {
-    min-height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    @include IEOnly() {
-      // Fix IE min-height flexbug
-      &::after {
-        content: '';
-        min-height: inherit;
-        width: 0;
-      }
-    }
   }
 }
 
 .mdw-tab__label {
-  text-align: center;
+  @include type-rules('button');
+
+  box-sizing: border-box;
+  margin-top: auto;
+  margin-bottom: auto;
   pointer-events: none;
-  padding-left: dp(12);
-  padding-right: dp(12);
+  padding: 0 dp(16);
+
+  text-align: center;
   transition-property: color;
   transition-timing-function: $motion-easing-standard;
   transition-duration: $motion-duration-desktop-default;
@@ -182,58 +179,31 @@ $tab__scrollable-max-width: dp(256);
   @include allTablets {
     transition-duration: $motion-duration-tablet-default;
   }
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  height: auto;
-  font-size: sp(14);
-  text-transform: uppercase;
-  font-weight: $font-weight-medium;
-
-  
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  @include IEOnly() {
-    // Fix IE min-height flexbug
-    &::after {
-      content: '';
-      min-height: inherit;
-      width: 0;
-    }
-  }
 
   .mdw-tab__icon ~ & {
+    margin: 0;
     min-height: 0;
     display: block;
-    // 10dp top padding
-    &::before {
-      content: "\200D"; // &zwj;
-      display: inline-block;
-      margin-top: dp(10);
-      line-height: 1;
-      vertical-align: text-bottom;
-    }
-    &::after {
-      content: "\200D"; // &zwj;
-      display: inline-block;
-      line-height: 1;
-      margin-bottom: dp(16);
-      vertical-align: text-top;
-    }
+    @include baseline-top($tab__icon-to-label-baseline);
+    @include baseline-bottom($tab__icon-with-label-height
+      - $tab__icon-margin-top
+      - $tab__icon-size
+      - $tab__icon-to-label-baseline
+    );
   }
 }
 
 .mdw-tab__input {
-  // Using `display: none` breaks keyboard navigation
-  opacity: 0;
+  display: inline-block;
   height: 0;
   width: 0;
   margin: 0;
   padding: 0;
+
+  outline: none;
   pointer-events: none;
-  position: absolute;
-  display: inline;
+  -moz-appearance: none;
+  -webkit-appearance: none;
 }
 
 .mdw-tab__items[mdw-theme-color] {

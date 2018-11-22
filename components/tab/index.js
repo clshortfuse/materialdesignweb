@@ -218,26 +218,20 @@ class Tab {
     const indicatorElement = (tabItemsElement.getElementsByClassName('mdw-tab__indicator')[0]);
     // Animate selection
     // Only use explicity positioning on scrollable tabs
-    if (!tabItemsElement.hasAttribute('mdw-scrollable') || !tabItemsElement.clientWidth) {
+    const isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
+    if (!isIE11
+      && (!tabItemsElement.hasAttribute('mdw-scrollable') || !tabItemsElement.clientWidth)) {
       // use CSS styling fallback
-      indicatorElement.style.removeProperty('left');
-      indicatorElement.style.removeProperty('right');
-      indicatorElement.style.removeProperty('width');
       indicatorElement.style.removeProperty('transform');
       indicatorElement.removeAttribute('mdw-js-indicator');
       // this.onItemSelected(itemElement);
       return;
     }
     const width = itemElement.clientWidth;
-    const right = tabItemsElement.scrollWidth - left - itemElement.clientWidth;
     if (!indicatorElement.hasAttribute('mdw-js-indicator')) {
       indicatorElement.setAttribute('mdw-js-indicator', '');
     }
-
-    indicatorElement.style.setProperty('left', `${left}px`);
-    indicatorElement.style.setProperty('right', `${right}px`);
-    indicatorElement.style.setProperty('width', `${width}px`);
-    indicatorElement.style.setProperty('transform', 'none');
+    indicatorElement.style.setProperty('transform', `translateX(${left}px) scaleX(${width})`);
   }
 }
 
