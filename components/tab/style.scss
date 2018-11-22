@@ -111,7 +111,6 @@ $tab__icon-with-label-height: 72;
   z-index: 0;
   overflow: hidden;
   cursor: pointer;
-  color: black;
   user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -206,10 +205,19 @@ $tab__icon-with-label-height: 72;
   -webkit-appearance: none;
 }
 
-.mdw-tab__items[mdw-theme-color] {
-  .mdw-tab__item,
-  .mdw-tab__indicator {
-    color: inherit;
+.mdw-tab__item[mdw-selected] > .mdw-tab__icon,
+.mdw-tab__item[mdw-selected] > .mdw-tab__label {
+  color: inherit;
+}
+@for $i from 1 through 8 {
+  .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items,
+  .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items-wrapper .mdw-tab__items {
+    & > .mdw-tab__item:nth-child(#{$i}) {
+      > .mdw-tab__icon,
+      > .mdw-tab__label {
+        color: inherit;
+      }
+    }
   }
 }
 

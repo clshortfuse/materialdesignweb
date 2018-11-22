@@ -97,7 +97,7 @@ function onOptionChange(event) {
       break;
     case 'color':
       switch (value) {
-        case 'none':
+        case 'default':
           tabItemsElement.removeAttribute('mdw-theme-color');
           break;
         default:

@@ -15,7 +15,7 @@ include ../mixins.pug
               input.mdw-tab__input#tab1(type="radio" name="tab" checked)
               input.mdw-tab__input#tab2(type="radio" name="tab")
               input.mdw-tab__input#tab3(type="radio" name="tab")
-              .mdw-tab__items(mdw-theme-color="accent-A200" mdw-theme-fill="primary dark")
+              .mdw-tab__items(mdw-theme-color="accent-A200")
                 label.mdw-tab__item(for='tab1')
                   .mdw-tab__label Item One
                 label.mdw-tab__item(for='tab2')
@@ -68,11 +68,11 @@ include ../mixins.pug
           .mdw-type(mdw-style="subheading") Fill
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="fill" value="none" )
+              input.mdw-selection__input(type="radio" name="fill" value="none" checked)
               .mdw-selection__icon
               .mdw-selection__label None
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="fill" value="primary dark" checked)
+              input.mdw-selection__input(type="radio" name="fill" value="primary dark")
               .mdw-selection__icon
               .mdw-selection__label Primary
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
