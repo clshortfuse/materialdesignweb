@@ -17,6 +17,8 @@ $tab__icon-with-label-height: 72;
   overflow-y: hidden;
   position: relative;
 
+  flex: none;
+
   display: flex; // IE11 doesn't support grid-auto-columns
   display: grid;
 
