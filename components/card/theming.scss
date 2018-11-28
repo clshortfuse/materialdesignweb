@@ -2,8 +2,10 @@
 @import '../common/mixins.scss';
 
 $cardColors: (
-  background: ((#fff, 1.00), ('background', '800', 1.00)),
-  text-color: ((#000, 0.87), (#fff,              1.00)),
+  background:   ((#fff, 1.00), ('background', '800', 1.00)),
+  text-color:   ((#000, 0.87), (#fff,              1.00)),
+  border-color: ((#000, 0.12), (#fff, 0.12)),
+  focus-color:  ((#000, 0.06), (#fff, 0.10)),
 );
 
 @function cardThemeValue($key, $type, $theme) {
@@ -22,6 +24,10 @@ $cardColors: (
       }
       &:not([mdw-theme-color]) {
         color: cardThemeValue("text-color", $type, $theme);
+      }
+      border-color: cardThemeValue("border-color", $type, $theme);
+      &:focus::before {
+        background-color: cardThemeValue("focus-color", $type, $theme);
       }
     }
   }

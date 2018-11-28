@@ -5,12 +5,171 @@
 @import '../common/variables.scss';
 
 .mdw-card {
-  box-shadow: elevation(1);
-  display: flex;
-  flex-direction: column;
-  border-radius: 4px;
+  box-shadow: elevation(0);
+  display: block;
+  outline: none;
+  @include type-rules('body-2');
+
+  position: relative;
+
+  &::before {
+    // Outline is behind content, not around it
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    border: solid dp(1);
+    border-color: inherit;
+  }
+
+  @include allHandsetsAndTablets() {
+    box-shadow: elevation(1);
+    &::before {
+      border-color: transparent;
+    }
+  }
+
+  &[mdw-elevation="1"] {
+    box-shadow: elevation(1);
+    &::before {
+      border-color: transparent;
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &:focus-within,
+  &[mdw-raised] {
+    box-shadow: elevation(8);
+  }
+
+  transition-property: box-shadow;
+  transition-timing-function: $motion-easing-standard;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
 }
 
-.mdw-card[mdw-raised] {
-  box-shadow: elevation(8);
+
+
+.mdw-card__supporting-text,
+.mdw-card > .mdw-divider {
+  padding: 0 dp(16);
+}
+
+.mdw-card__thumbnail {
+  margin-top: dp(16);
+  margin-bottom: 0;
+  margin-right: dp(16);
+  margin-left: dp(16);
+  float: left;
+  html[dir=rtl] & {
+    float: right;
+  }
+}
+
+.mdw-card__image {
+  width: 100%;
+  height: auto;
+}
+
+.mdw-card__media {
+  // In front of outline
+  line-height: 0;
+  z-index: 1;
+  position: relative;
+  &[mdw-ratio] > .mdw-card__image {
+    position: absolute;
+    height: 100%;
+    object-fit: cover;
+  }
+  &[mdw-ratio]::after {
+    content: '';
+    display: inline-block;
+    width: auto;
+    height: 0;
+  }
+  &[mdw-ratio="16:9"]::after {
+    padding-bottom: calc(100% / 16 * 9);
+  }
+  &[mdw-ratio="3:2"]::after {
+    padding-bottom: calc(100% / 3 * 2);
+  }
+  &[mdw-ratio="4:3"]::after {
+    padding-bottom: calc(100% / 4 * 3);
+  }
+  &[mdw-ratio="1:1"]::after {
+    padding-bottom: calc(100% / 1 * 1);
+  }
+}
+
+.mdw-card__header-thumbnail {
+  align-self: center;
+  min-height: 40px;
+  min-width: 40px;
+  margin-left: 0;
+  margin-right: dp(16);
+  html[dir=rtl] & {
+    margin-left: dp(16);
+    margin-right: 0;
+  }
+}
+
+.mdw-card__header {
+  white-space: nowrap;
+  margin: 0;
+}
+
+h5.mdw-card__header {
+  @include baseline-top(40);
+  @include type-rules('h5');
+  @include baseline-bottom(28);
+  margin-bottom: dp(-28);
+}
+
+h6.mdw-card__header {
+  @include baseline-top(34);
+  @include type-rules('h6');
+}
+
+.mdw-card__header[mdw-two-line] {
+  @include baseline-bottom(22);
+  margin-bottom: dp(-22);
+  & ~ .mdw-card__subheader {
+    @include baseline-top(22);
+    @include baseline-bottom(16);
+  }
+}
+
+.mdw-card__supporting-text {
+  @include baseline-top(28);
+  @include baseline-bottom(16);
+}
+
+.mdw-card__actions {
+  display: flex;
+  padding-top: dp(8);
+  padding-right: dp(4);
+  padding-left: dp(4);
+
+  > .mdw-button {
+    margin: 0 dp(4);
+  }
+  > span {
+    flex: 1;
+  }
+}
+
+.mdw-card__actions,
+.mdw-card__supporting-text {
+  &:last-child {
+    padding-bottom: dp(8);
+  }
 }
