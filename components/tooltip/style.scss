@@ -1,8 +1,10 @@
-// https://material.io/guidelines/components/tooltips.html
+// https://material.io/design/components/tooltips.html#spec
 
 $tooltip__margin__desktop: dp(14);
 $tooltip__margin__mobile: dp(24);
 $tooltip__background-color: #616161; // material-grey-700
+
+@import '../common/type.scss';
 
 .mdw-tooltip__wrapper {
   position: relative;
@@ -10,32 +12,35 @@ $tooltip__background-color: #616161; // material-grey-700
 }
 
 .mdw-tooltip {
+  
   position: absolute;
-  cursor: none;
   top: 100%;
   left: 50%;
+  width: auto;
+  padding-left: dp(8);
+  padding-right: dp(8);
+  min-height: dp(24);
+  transform: translateX(-50%) translateY($tooltip__margin__desktop);
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: auto;
+
+  @include type-rules('caption');
+
   background-color: $tooltip__background-color;
+  border-radius: dp(4);
   color: white;
-  font-weight: $font-weight-medium;
+  cursor: none;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 8;
+
   opacity: 0;
   transition-property: opacity;
   transition-duration: 150ms;
   transition-timing-function: $motion-easing-deceleration;
-  z-index: 8;
-  border-radius: dp(2);
-  pointer-events: none;
-  line-height: normal;
-  font-size: sp(10);
-  min-height: dp(22);
-  padding-left: dp(8);
-  padding-right: dp(8);
-  transform: translateX(-50%) translateY($tooltip__margin__desktop);
-  white-space: nowrap;
 
   .mdw-tooltip__target:hover > &,
   .mdw-tooltip__target:focus > &,
