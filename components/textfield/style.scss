@@ -5,29 +5,14 @@
 @import '../common/variables.scss';
 @import '../common/motion.scss';
 @import '../common/mixins.scss';
-
-
-$label__padding-top: dp(16);
-$label__padding-top__boxed: dp(8);
-$label__padding-bottom: dp(8);
-$label__padding-horizontal__boxed: dp(16);
-$label__padding-top__boxed__idle: dp(20);
-$label__font-size: sp(12);
-
-
-$textarea__label__extra_padding-top: dp(10);
-$textarea__label__padding-bottom: dp(10);
+@import '../common/type.scss';
 
 $border-line__height: dp(1);
 $border-line__focused__height: dp(2);
 
-$helper-text__padding-top: dp(8);
-$helper-text__font-size: sp(12);
-
 $textarea__padding-horizontal: dp(16);
-
-$icon-signifier__width: dp(24);
-$icon-signifier__padding-end: dp(16);
+$textfield__outline-start-width: dp(10);
+$textfield__outline-end-width: dp(8);
 
 // Grid Layout
 //     1   |  2  |   3    |   4   |        5        |    6   |  7
@@ -44,8 +29,8 @@ $icon-signifier__padding-end: dp(16);
   display: -ms-grid;
   grid-template-columns: 12px auto auto 1fr auto auto 8px;
   -ms-grid-columns: 12px auto auto 1fr auto auto 8px;
-  grid-template-rows: minmax(56px, auto) auto;
-  -ms-grid-rows: minmax(56px, 100%) auto;
+  grid-template-rows: auto auto;
+  -ms-grid-rows: auto auto;
   &[mdw-solo] {
     grid-template-columns: 0 auto auto 1fr auto auto 0;
     -ms-grid-columns: 0 auto auto 1fr auto auto 0;
@@ -60,8 +45,11 @@ $icon-signifier__padding-end: dp(16);
     padding: 0;
   }
   padding: 8px 0;
-  align-items: flex-start;
-  // font-size: sp(16);
+  align-items: baseline;
+
+  &:not([mdw-solo]) {
+    @include type-rules('subtitle');
+  }
   transition-timing-function: $motion-easing-standard;
   transition-duration: $motion-duration-desktop-default;
   @include allHandsets {
@@ -70,6 +58,21 @@ $icon-signifier__padding-end: dp(16);
   @include allTablets {
     transition-duration: $motion-duration-tablet-default;
   }
+}
+
+.mdw-textfield::before {
+  // 20 + 20dp from baseline top
+  content: "";
+  display: inline-block;
+  vertical-align: baseline;
+  grid-row: 1;
+  -ms-grid-row: 1;
+  grid-column: 4;
+  -ms-grid-column: 4;
+  height: 1em;
+  min-height: dp(20);
+  margin-top: dp(20);
+  margin-bottom: dp(56 - 20 - 20);
 }
 
 .mdw-textfield[mdw-solo],
@@ -97,9 +100,6 @@ $icon-signifier__padding-end: dp(16);
 .mdw-textfield__suffix {
   grid-row: 1;
   -ms-grid-row: 1;
-  //margin-top: calc(#{$label__padding-top} + #{$label__font-size} + #{$label__padding-bottom});
-  
-  // color: transparent;
   pointer-events: none;
   will-change: color;
   transition-property: color;
@@ -115,54 +115,47 @@ $icon-signifier__padding-end: dp(16);
 .mdw-textfield__prefix {
   grid-column: 3;
   -ms-grid-column: 3;
-  margin-left: 0;
-  margin-right: 4px;
-  [dir=rtl] & {
-    margin-left: 4px;
-    margin-right: 0;
-  }
 }
 .mdw-textfield__suffix {
   grid-column: 6;
   -ms-grid-column: 6;
-  margin-left: 4px;
-  margin-right: 0;
-  html[dir=rtl] & {
-    margin-left: 0;
-    margin-right: 4px;
-  }
+}
+.mdw-textfield__prefix::after,
+.mdw-textfield__suffix::before {
+  content: '';
+  display: inline-block;
+  width: dp(4);
 }
 
 .mdw-textfield__outline-gap {
   // Transitioning with transform would require transforming adjacent elements
   // to avoid subpixel issues from mixed 2D/3D rendering.
 
+  position: absolute;
   grid-column: 2;
   -ms-grid-column: 2;
   grid-row: 1;
   -ms-grid-row: 1;
-  position: absolute;
-  border-width: inherit;
-  border-style: none;
-  border-bottom-color: transparent;
+
+  top: $border-line__focused__height;
+  right: dp(12);
+  bottom: 0;
+  left: dp(12);
+
   margin-top: -$border-line__focused__height;
   margin-bottom: -$border-line__height;
-  top: $border-line__focused__height;
-  bottom: 0;
-  left: 12px;
-  right: 12px;
 
   &::before,
   &::after {
     content: none;
     position: absolute;
     top: 0;
-    bottom: 0;
-    width: 0;
     border-top-width: $border-line__height;
     border-top-style: solid;
     border-color: inherit;
-    transition-property: width;
+    
+    transform: scaleX(0);
+    transition-property: transform;
     transition-delay: 1ms;
     transition-timing-function: $motion-easing-standard;
     transition-duration: $motion-duration-desktop-default / 2;
@@ -173,21 +166,17 @@ $icon-signifier__padding-end: dp(16);
       transition-duration: $motion-duration-tablet-default / 2;
     }
   }
-  &::before {
+  &::before,
+  html[dir=rtl] &::after {
     left: 0;
-    right: auto;
-    html[dir=rtl] & {
-      left: auto;
-      right: 0;
-    }
+    right: 50%;
+    transform-origin: left center;
   }
-  &::after {
-    left: auto;
+  &::after,
+  html[dir=rtl] &::before {
+    left: 50%;
     right: 0;
-    html[dir=rtl] & {
-      left: 0;
-      right: auto;
-    }
+    transform-origin: right center;
   }
 }
 
@@ -210,19 +199,27 @@ $icon-signifier__padding-end: dp(16);
     cursor: not-allowed;
   }
 
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
   display: flex;
-  border-bottom-left-radius: 0;
+
+  border-top-left-radius: dp(4);
+  border-top-right-radius: dp(4);
   border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+
+  border-top-style: none;
+  border-right-style: none;
   border-bottom-style: solid;
+  border-left-style: none;
+
   border-width: $border-line__height;
+
   border-top-color: transparent;
-  border-left-color: transparent;
   border-right-color: transparent;
+  border-bottom-color: currentColor;
+  border-left-color: transparent;
   
   transition-delay: 1ms;
-  transition-property: color, border-color, border-width;
+  transition-property: color, border-color;
   transition-timing-function: $motion-easing-standard;
   transition-duration: $motion-duration-desktop-default;
   @include allHandsets {
@@ -232,7 +229,6 @@ $icon-signifier__padding-end: dp(16);
     transition-duration: $motion-duration-tablet-default;
   }
 
-  // box-sizing: border-box;
   &::before,
   &::after {
     content: "";
@@ -242,13 +238,15 @@ $icon-signifier__padding-end: dp(16);
     right: 0;
     height: 100%;
     transform: scaleX(0) translateY(-$border-line__height/2);
-    border-style: inherit;
+
     border-radius: inherit;
-    border-bottom-style: inherit;
+
+    border-bottom-style: solid;
+
     border-width: $border-line__focused__height;
-    border-color: currentColor;
+
     color: transparent;
-    will-change: transform;
+
     transition-property: transform;
     transition-delay: 1ms;
     transition-timing-function: $motion-easing-acceleration;
@@ -259,100 +257,87 @@ $icon-signifier__padding-end: dp(16);
     @include allTablets {
       transition-duration: $motion-duration-tablet-enter;
     }
+    will-change: transform;
   }
 }
 
 .mdw-textfield[mdw-outlined] {
   .mdw-textfield__border {
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-style: solid;
-    border-bottom-color: currentColor;
-    transition-delay: 1ms;
-    transition-property: color, border-color;
-    transition-duration: 0ms;
+    border-bottom-left-radius: dp(4);
+    border-bottom-right-radius: dp(4);
+    
+    border-top-style: solid;
+    border-right-style: solid;
+    border-bottom-style: solid;
+    border-left-style: solid;
+    transition: none;
 
     &::before, &::after {
+      content: '';
+      position: relative;
       top: auto;
       bottom: auto;
       left: auto;
       right: auto;
-      transition-delay: inherit;
-      transition-property: inherit;
-      transition-duration: inherit;
-      will-change: none;
-    }
-    &::before {
-      content: '';
-      position: relative;
-      width: 0;
-      border-width: inherit;
-      border-style: none;
-      border-radius: 0;
-      border-top-color: currentColor;
-      border-left-color: currentColor;
-      border-right-color: transparent;
-      border-top-style: solid;
-      border-left-style: solid;
-      border-right-style: none;
-      border-bottom-style: solid;
-      border-bottom-color: transparent;
-      border-top-left-radius: inherit;
-      border-bottom-left-radius: inherit;
-      margin-right: 0;
-      transform: none;
       color: inherit;
-      margin-top: -$border-line__height;
-      margin-left: -$border-line__height;
-      min-width: 9px;
-      html[dir=rtl] & {
-        border-right-color: currentColor;
-        border-left-color: transparent;
-        border-right-style: solid;
-        border-left-style: none;
-        border-top-right-radius: inherit;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: inherit;
-        margin-right: -$border-line__height;
-        margin-left: 0;
-      }
+      transition: none;
+      transform: none;
+      will-change: auto;
     }
     &::after {
-      content: '';
-      position: relative;
-      order: 1;
       flex-grow: 1;
-      margin-top: -$border-line__height;
-      margin-left: 0;
-      margin-right: -$border-line__height;
+    }
+
+    &::before,
+    html[dir=rtl] &::after {
       border-width: inherit;
-      border-style: none;
-      border-radius: 0;
+
       border-top-color: currentColor;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
+      border-left-color: currentColor;
+
       border-top-style: solid;
+      border-right-style: none;
       border-bottom-style: solid;
+      border-left-style: solid;
+
+      border-top-left-radius: inherit;
+      border-bottom-left-radius: inherit;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+
+      margin-top: -$border-line__height;
+      margin-right: 0;
+      margin-left: -$border-line__height;
+
+      min-width: $textfield__outline-start-width - $border-line__height;
+    }
+
+    &::after,
+    html[dir=rtl] &::before, {
+      border-width: inherit;
+
+      border-top-color: currentColor;
+      border-right-color: currentColor;
       border-bottom-color: transparent;
       border-left-color: transparent;
-      border-right-color: currentColor;
-      border-left-style: none;
+      
+      border-top-style: solid;
+      border-bottom-style: solid;
       border-right-style: solid;
+      border-left-style: none;
+
+      border-top-left-radius: 0;
       border-top-right-radius: inherit;
       border-bottom-right-radius: inherit;
-      transform: none;
-      color: inherit;
-      html[dir=rtl] & {
-        margin-right: 0;
-        margin-left: -$border-line__height;
-        border-right-color: transparent;
-        border-left-color: currentColor;
-        border-right-style: none;
-        border-left-style: solid;
-        border-top-right-radius: 0;
-        border-top-left-radius: inherit;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: inherit;
-      }
+      border-bottom-left-radius: 0;
+
+      margin-top: -$border-line__height;
+      margin-right: -$border-line__height;
+      margin-left: 0;
+
+      min-width: $textfield__outline-end-width - $border-line__height;
     }
     .mdw-textfield__outline-gap {
       position: relative;
@@ -386,25 +371,27 @@ $icon-signifier__padding-end: dp(16);
     }
   }
   .mdw-textfield__label {
+    position: relative; // reflow DOM
+    @include baseline-top(0);
     padding: 0 4px;
     top: 0;
     transform: translateY(-50%);
   }
 }
 
-
+// IE11 will ignore entire ruleset if ':placeholder-shown' psuedo is used, requiring duplication.
 .mdw-textfield[mdw-value-empty] > input.mdw-textfield__input,
 .mdw-textfield[mdw-value-empty] > textarea.mdw-textfield__input {
   &:not(:focus) ~ .mdw-textfield__border {
     & .mdw-textfield__label {
       top: 50%;
       transform: translateY(-50%);
-      font-size: inherit;
+      @include type-rules('subtitle');
     }
     & .mdw-textfield__outline-gap {
       &::before,
       &::after {
-        width: 50%;
+        transform: scaleX(1);
       }
     }
   }
@@ -415,12 +402,12 @@ $icon-signifier__padding-end: dp(16);
     & .mdw-textfield__label {
       top: 50%;
       transform: translateY(-50%);
-      font-size: inherit;
+      @include type-rules('subtitle');
     }
     & .mdw-textfield__outline-gap {
       &::before,
       &::after {
-        width: 50%;
+        transform: scaleX(1);
       }
     }
   }
@@ -428,18 +415,27 @@ $icon-signifier__padding-end: dp(16);
 
 .mdw-textfield__label {
   // Default state is floating
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   margin: 0;
   padding: 0;
+  @include baseline-top(20);
+
+  align-self: flex-start;
+  -ms-grid-row-align: start;
+
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  top: 0;
-  transform: translateY(sp(20)) translateY(-1em);
+
+  @include type-rules('caption');
+
+  transform: translateY(0);
   pointer-events: none; // allow clickthrough
   will-change: top, transform, font-size;
-  
-  font-size: $label__font-size;
+
   transition-property: top, transform, font-size, color;
   transition-timing-function: $motion-easing-standard;
   transition-duration: $motion-duration-desktop-default;
@@ -461,11 +457,10 @@ $icon-signifier__padding-end: dp(16);
   
   margin-top: 8px;
   margin-bottom: 8px;
-  margin-left: 0;
-  margin-right: 8px;
-  html[dir=rtl] & {
-    margin-left: 8px;
-    margin-right: 0;
+  &::after {
+    content: '';
+    width: dp(8);
+    display: inline-block;
   }
   
   & ~ .mdw-textfield__border .mdw-textfield__outline-gap {
@@ -514,7 +509,10 @@ $icon-signifier__padding-end: dp(16);
 
   font-size: inherit;
   font-family: inherit;
-  font-weight: $font-weight-regular;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -550,10 +548,10 @@ $icon-signifier__padding-end: dp(16);
 .mdw-textfield__prefix,
 .mdw-textfield__suffix,
 .mdw-textfield__icon {
-  margin-top: calc(#{sp(20)} + #{dp(8) - $border-line__height});
-  margin-bottom: #{dp(8)};
-  align-self: flex-start;
-  -ms-grid-row-align: start;
+  // Margins used for textarea
+  margin-top: dp(20);
+  margin-bottom: dp(8);
+  -ms-grid-row-align: center; // IE11 doesn't support baseline alignment
 }
 
 textarea.mdw-textfield__input {
@@ -581,7 +579,7 @@ select.mdw-textfield__input {
   option {
     font-size: inherit;
     font-family: inherit;
-    font-weight: $font-weight-regular;
+    font-weight: inherit;
     appearance: none;
     -moz-appearance: none;
     -webkit-appearance: none;
@@ -604,19 +602,13 @@ select.mdw-textfield__input {
 
 
 .mdw-textfield__error-text {
-  transform: translateY(-$helper-text__font-size / 4);
+  transform: translateY(-25%);
 }
 
 .mdw-textfield__helper-text,
 .mdw-textfield__error-text {
-  &::before {
-    // Align baseline 16sp from top
-    content: "";
-    display: inline-block;
-    vertical-align: baseline;
-    margin-top: sp(16);
-  }
-  font-size: $helper-text__font-size;
+  @include type-rules('caption');
+  @include baseline-top(16);
   grid-row: 2;
   -ms-grid-row: 2;
   grid-column: 3;
@@ -647,6 +639,8 @@ select.mdw-textfield__input {
   grid-column: 5;
   -ms-grid-column: 5;
 
+  margin-top: dp(16);
+  margin-bottom: dp(16);
   width: 24px;
   height: 24px;
   display: flex;
@@ -744,24 +738,19 @@ select.mdw-textfield__input {
   &:active > .mdw-textfield__input:not(:disabled) ~ .mdw-textfield__border,
   .mdw-textfield__input:not(:disabled):focus ~ .mdw-textfield__border {
     border-width: $border-line__focused__height;
-    &::before {
+    &::before,
+    html[dir=rtl] &::after {
       margin-top: -$border-line__focused__height;
       margin-left: -$border-line__focused__height;
       margin-right: 0;
-      html[dir=rtl] & {
-        margin-left: 0;
-        margin-right: -$border-line__focused__height;
-      }
-      min-width: 10px - $border-line__focused__height;
+      min-width: $textfield__outline-start-width - $border-line__focused__height;
     }
-    &::after {
+    &::after,
+    html[dir=rtl] &::before {
       margin-top: -$border-line__focused__height;
       margin-left: 0;
       margin-right: -$border-line__focused__height;
-      html[dir=rtl] & {
-        margin-left: -$border-line__focused__height;
-        margin-right: 0;
-      }
+      min-width: $textfield__outline-end-width - $border-line__focused__height;
     }
     .mdw-textfield__outline-gap {
       margin-top: -$border-line__focused__height;
