@@ -69,8 +69,9 @@ table.mdw-datatable,
 .mdw-datatable td {
   @include type-rules('body-2');
   //text-align: left;
-  padding-top: dp(8);
-  padding-bottom: dp(8);
+  // Expected line-height is 20dp. Support two lines within 48dp
+  padding-top: dp(4);
+  padding-bottom: dp(4 - 1); // Remove bottom border width
   outline: none;
   &[mdw-selector] + td {
     padding-left: dp(12);
