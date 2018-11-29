@@ -11,8 +11,8 @@ function getComponentsConfig() {
   return {
     entry: {
       materialdesignweb: [
-        path.resolve(__dirname, './components/index.js'),
-        path.resolve(__dirname, './components/_index.scss'),
+        path.resolve(__dirname, './index.js'),
+        path.resolve(__dirname, './_index.scss'),
       ],
     },
     mode: process.env.NODE_ENV || 'development',
