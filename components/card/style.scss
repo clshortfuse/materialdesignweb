@@ -26,6 +26,7 @@ $mdw-card__horizontal-padding: dp(16);
     border-radius: inherit;
     border: solid dp(1);
     border-color: inherit;
+    pointer-events: none;
   }
 
   @include allHandsetsAndTablets() {
