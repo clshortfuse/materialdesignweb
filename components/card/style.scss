@@ -5,6 +5,7 @@
 @import '../common/variables.scss';
 
 .mdw-card {
+  border-radius: dp(4);
   box-shadow: elevation(0);
   display: block;
   outline: none;
