@@ -1,8 +1,10 @@
-// https://material.io/guidelines/components/cards.html
+// https://material.io/design/components/cards.html#specs
 
 @import '../common/functions.scss';
 @import '../common/motion.scss';
 @import '../common/variables.scss';
+
+$mdw-card__horizontal-padding: dp(16);
 
 .mdw-card {
   border-radius: dp(4);
@@ -66,16 +68,20 @@
 
 
 
-.mdw-card__supporting-text,
+.mdw-card__supporting-text {
+  padding: 0 $mdw-card__horizontal-padding;
+}
 .mdw-card > .mdw-divider {
-  padding: 0 dp(16);
+  width: calc(100% - #{$mdw-card__horizontal-padding * 2});
+  margin-left: $mdw-card__horizontal-padding;
+  margin-right: $mdw-card__horizontal-padding;
 }
 
 .mdw-card__thumbnail {
   margin-top: dp(16);
   margin-bottom: 0;
-  margin-right: dp(16);
-  margin-left: dp(16);
+  margin-right: $mdw-card__horizontal-padding;
+  margin-left: $mdw-card__horizontal-padding;
   float: left;
   html[dir=rtl] & {
     float: right;
@@ -122,9 +128,9 @@
   min-height: 40px;
   min-width: 40px;
   margin-left: 0;
-  margin-right: dp(16);
+  margin-right: $mdw-card__horizontal-padding;
   html[dir=rtl] & {
-    margin-left: dp(16);
+    margin-left: $mdw-card__horizontal-padding;
     margin-right: 0;
   }
 }
