@@ -46,13 +46,31 @@ include ../mixins.pug
               .mdw-selection__icon
               .mdw-selection__label Auto
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="radio" name="elevation" value="0")
+              .mdw-selection__icon
+              .mdw-selection__label 0dp
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
               input.mdw-selection__input(type="radio" name="elevation" value="1")
               .mdw-selection__icon
               .mdw-selection__label 1dp
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="elevation" value="raised")
+              input.mdw-selection__input(type="radio" name="elevation" value="8")
               .mdw-selection__icon
-              .mdw-selection__label Raised
+              .mdw-selection__label 8dp
+          .mdw-type(mdw-style="subtitle") Raise
+          div
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="checkbox" name="raise-focus" value="focus")
+              .mdw-selection__icon
+              .mdw-selection__label On Focus
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="checkbox" name="raise-focus-within" value="focus-within")
+              .mdw-selection__icon
+              .mdw-selection__label On Focus Within
+            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+              input.mdw-selection__input(type="checkbox" name="raise-hover" value="hover")
+              .mdw-selection__icon
+              .mdw-selection__label On Hover
           .mdw-type(mdw-style="subtitle") Media Placement
           div
             label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")

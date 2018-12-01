@@ -20,20 +20,34 @@ function onOptionChange(event) {
   const { name, value, checked } = /** @type {HTMLInputElement} */ (event.target);
   let textElement;
   let actionsElement;
+  let raiseOptions;
   switch (name) {
     case 'elevation':
       sampleComponent.removeAttribute('mdw-elevation');
-      sampleComponent.removeAttribute('mdw-raised');
       switch (value) {
-        default:
         case 'auto':
           break;
-        case '1':
-          sampleComponent.setAttribute('mdw-elevation', '1');
+        default:
+          sampleComponent.setAttribute('mdw-elevation', value);
           break;
-        case 'raised':
-          sampleComponent.setAttribute('mdw-raised', '');
-          break;
+      }
+      break;
+    case 'raise-focus':
+    case 'raise-focus-within':
+    case 'raise-hover':
+      raiseOptions = (sampleComponent.getAttribute('mdw-raised') || '').split(' ');
+      if (checked) {
+        if (raiseOptions.indexOf(name.substr('raise-'.length)) === -1) {
+          raiseOptions.push(name.substr('raise-'.length));
+        }
+      } else {
+        raiseOptions = raiseOptions.filter(o => o !== name.substr('raise-'.length));
+      }
+      raiseOptions.sort();
+      if (raiseOptions.length) {
+        sampleComponent.setAttribute('mdw-raised', raiseOptions.join(' ').trim());
+      } else {
+        sampleComponent.removeAttribute('mdw-raised');
       }
       break;
     case 'focusable':
