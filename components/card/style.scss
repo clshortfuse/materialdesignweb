@@ -26,24 +26,30 @@
   }
 
   @include allHandsetsAndTablets() {
-    box-shadow: elevation(1);
-    &::before {
-      border-color: transparent;
+    &:not([mdw-elevation]) {
+      box-shadow: elevation(1);
+      &::before {
+        border-color: transparent;
+      }
     }
   }
 
   &[mdw-elevation="1"] {
     box-shadow: elevation(1);
+  }
+
+  &[mdw-elevation="8"],
+  &[mdw-raised~="hover"]:hover,
+  &[mdw-raised~="focus"]:focus,
+  &[mdw-raised~="focus-within"]:focus-within {
+    box-shadow: elevation(8);
+  }
+
+  &[mdw-elevation="1"],
+  &[mdw-elevation="8"] {
     &::before {
       border-color: transparent;
     }
-  }
-
-  &:hover,
-  &:focus,
-  &:focus-within,
-  &[mdw-raised] {
-    box-shadow: elevation(8);
   }
 
   transition-property: box-shadow;
