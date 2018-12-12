@@ -1,7 +1,6 @@
 import { Button } from '../../../components/button/index';
 import { DataTable } from '../../../components/datatable/index';
 import { Menu } from '../../../components/menu/index';
-import { setupMenuOptions } from '../menuoptions';
 import { DataTableAdapter } from '../../../adapters/datatable/index';
 
 /** @return {void} */
@@ -179,5 +178,4 @@ function buildDynamicTable() {
 }
 
 initializeMdwComponents();
-setupMenuOptions();
 buildDynamicTable();

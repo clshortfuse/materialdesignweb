@@ -1,4 +1,3 @@
-import { setupMenuOptions } from '../menuoptions';
 import { Button } from '../../../components/button/index';
 import { Fab } from '../../../components/fab/index';
 
@@ -47,4 +46,3 @@ function initializeMdwComponents() {
 }
 
 initializeMdwComponents();
-setupMenuOptions();

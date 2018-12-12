@@ -1,4 +1,3 @@
-import { setupMenuOptions } from '../menuoptions';
 import { List, ListItem } from '../../../components/list/index';
 import { TextField } from '../../../components/textfield/index';
 import { SearchAdapter } from '../../../adapters/search/index';
@@ -202,5 +201,4 @@ function initializeMdwComponents() {
 }
 
 initializeMdwComponents();
-setupMenuOptions();
 setupSearches();

@@ -1,6 +1,5 @@
 import { TextField } from '../../../components/textfield/index';
 import { convertElementToCode, attachEventListener } from '../sample-utils';
-import { setupMenuOptions } from '../menuoptions';
 
 /** @return {void} */
 function initializeSampleComponents() {
@@ -256,6 +255,5 @@ function setupComponentOptions() {
 }
 
 initializeSampleComponents();
-setupMenuOptions();
 setupComponentOptions();
 updateSampleCode();

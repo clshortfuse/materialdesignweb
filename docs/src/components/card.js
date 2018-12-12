@@ -1,4 +1,3 @@
-import { setupMenuOptions } from '../menuoptions';
 import { convertElementToCode, attachEventListener } from '../sample-utils';
 
 /** @type {HTMLElement} */
@@ -145,6 +144,5 @@ function setupComponentOptions() {
   );
 }
 
-setupMenuOptions();
 setupComponentOptions();
 updateSampleCode();

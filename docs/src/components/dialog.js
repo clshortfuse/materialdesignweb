@@ -1,5 +1,4 @@
 import { Dialog } from '../../../components/dialog/index';
-import { setupMenuOptions } from '../menuoptions';
 import { changeElementTagName, convertElementToCode, attachEventListener } from '../sample-utils';
 
 
@@ -181,7 +180,3 @@ function initializeSampleComponents() {
 initializeSampleComponents();
 setupComponentOptions();
 updateSampleCode();
-
-
-setupMenuOptions();
-

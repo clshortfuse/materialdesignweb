@@ -1,5 +1,4 @@
 import { Menu } from '../../../components/menu/index';
-import { setupMenuOptions } from '../menuoptions';
 import { convertElementToCode, attachEventListener, changeElementTagName } from '../sample-utils';
 
 /** @type {HTMLElement} */
@@ -224,6 +223,3 @@ function setupComponentOptions() {
 initializeSampleComponents();
 setupComponentOptions();
 updateSampleCode();
-
-setupMenuOptions();
-

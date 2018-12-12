@@ -1,4 +1,3 @@
-import { setupMenuOptions } from '../menuoptions';
 import { convertElementToCode, attachEventListener } from '../sample-utils';
 import { Snackbar } from '../../../components/snackbar/index';
 
@@ -157,6 +156,5 @@ function setupComponentOptions() {
 }
 
 initializeSampleComponents();
-setupMenuOptions();
 setupComponentOptions();
 updateSampleCode();

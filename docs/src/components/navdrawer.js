@@ -1,6 +1,4 @@
 import { List } from '../../../components/list/index';
-import setupImageTargets from '../targetHandler';
-import { setupMenuOptions } from '../menuoptions';
 
 /** @return {void} */
 function configureNavDrawer() {
@@ -108,5 +106,3 @@ function initializeMdwComponents() {
 
 initializeMdwComponents();
 configureNavDrawer();
-setupImageTargets();
-setupMenuOptions();

@@ -1,6 +1,4 @@
-import { setupMenuOptions } from '../menuoptions';
 import { attachEventListener } from '../sample-utils';
-
 
 const colspans = [
   '1',
@@ -113,4 +111,3 @@ function setupInteractions() {
 }
 
 setupInteractions();
-setupMenuOptions();

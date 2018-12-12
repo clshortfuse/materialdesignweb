@@ -1,5 +1,4 @@
 import { Button } from '../../../components/button/index';
-import { setupMenuOptions } from '../menuoptions';
 import { convertElementToCode, getChildTextNode, attachEventListener } from '../sample-utils';
 
 /** @return {void} */
@@ -151,6 +150,5 @@ function setupComponentOptions() {
 }
 
 initializeSampleComponents();
-setupMenuOptions();
 setupComponentOptions();
 updateSampleCode();

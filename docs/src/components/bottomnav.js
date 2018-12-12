@@ -1,6 +1,4 @@
-import setupImageTargets from '../targetHandler';
 import { Bottomnav } from '../../../components/bottomnav/index';
-import { setupMenuOptions } from '../menuoptions';
 
 /** @return {void} */
 function initializeMdwComponents() {
@@ -11,6 +9,3 @@ function initializeMdwComponents() {
 }
 
 initializeMdwComponents();
-setupMenuOptions();
-setupImageTargets();
-

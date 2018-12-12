@@ -1,5 +1,11 @@
-import { setRTLMode, setDarkMode, setFontSize } from './menuoptions';
+import {
+  setRTLMode,
+  setDarkMode,
+  setFontSize,
+  setupMenuOptions,
+} from './menuoptions';
 import { getStorageItem } from './storage';
+
 
 const useRTLMode = getStorageItem('rtlmode') === 'true';
 const useDarkMode = getStorageItem('darkmode') === 'true';
@@ -16,6 +22,12 @@ function checkIsStandaloneIOS() {
   return (isIPhone || isIPad);
 }
 
+/** @return {void} */
+function onDOMContentLoaded() {
+  document.removeEventListener('DOMContentLoaded', onDOMContentLoaded);
+  setupMenuOptions();
+}
+
 setRTLMode(useRTLMode);
 setDarkMode(useDarkMode);
 setFontSize(fontsize);
@@ -24,3 +36,5 @@ if (checkIsStandaloneIOS()) {
   document.documentElement.setAttribute('mdw-ios', '');
   document.documentElement.setAttribute('mdw-standalone', '');
 }
+
+document.addEventListener('DOMContentLoaded', onDOMContentLoaded);
