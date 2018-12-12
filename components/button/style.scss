@@ -97,11 +97,10 @@ $button__outline-size: dp(1);
   // Icon properties
   &[mdw-icon] {
     border-radius: 50%;
-    min-height: 1em;
-    min-width: 1em;
+    min-height: dp(40);
+    min-width: dp(40);
     padding: dp(8);
     font-size: dp(24); // Internal padding provided by font
-    box-sizing: content-box;
     user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -114,7 +113,6 @@ $button__outline-size: dp(1);
     min-width: dp(24);
     padding: 0;
     margin: 0;
-    box-sizing: content-box;
     user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
