@@ -272,13 +272,6 @@ body {
   }
 }
 
-.mdw-button.docs-rtl:not([mdw-icon]) {
-  border-radius: 50%;
-  box-sizing: content-box;
-  max-width: 24px;
-  max-height: 24px;
-  min-width: 24px;
-  min-height: 24px;
-  padding: 8px;
+.mdw-button.docs-rtl.docs-rtl {
   font-size: 14px; // Don't scale
 }
