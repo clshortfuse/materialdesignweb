@@ -12,7 +12,10 @@ include ../mixins.pug
         .component-sample
           .display-flex
             .mdw-card
-              .mdw-card__thumbnail.material-icons(style="font-size:40px") account_circle
+              .mdw-card__start
+                .mdw-card__thumbnail.material-icons(style="font-size:40px") account_circle
+              .mdw-card__end
+                button.mdw-button.material-icons(mdw-icon style="width:48px;height:48px;margin:0") clear
               h6.mdw-card__header(mdw-two-line) Title goes here
               .mdw-card__subheader Secondary text
               .mdw-card__media(mdw-ratio="16:9")
