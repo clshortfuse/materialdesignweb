@@ -101,6 +101,7 @@ $fab-button__icon-size: dp(24);
 
 .mdw-fab__text {
   overflow: hidden;
+  letter-spacing: 0;
   font-size: 0;
   will-change: font-size;
   transition-property: font-size, margin-left, margin-right;
@@ -111,7 +112,8 @@ $fab-button__icon-size: dp(24);
 .mdw-fab__button[mdw-extended="hover"]:hover, {
   padding: dp(12) dp(16);
   .mdw-fab__text {
-    font-size: 1em;
+    letter-spacing: inherit;
+    font-size: inherit;
   }
   .mdw-fab__icon + .mdw-fab__text {
     margin-left: 8px;
