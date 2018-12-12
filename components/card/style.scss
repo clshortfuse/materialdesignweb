@@ -68,9 +68,13 @@ $mdw-card__horizontal-padding: dp(16);
 }
 
 
-
+.mdw-card__header,
+.mdw-card__subheader,
 .mdw-card__supporting-text {
   padding: 0 $mdw-card__horizontal-padding;
+}
+
+.mdw-card__supporting-text {
   @include baseline-top(28);
   @include baseline-bottom(16);
 }
