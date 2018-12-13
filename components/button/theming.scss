@@ -1,29 +1,38 @@
-// https://material.io/guidelines/components/buttons.html
-// https://material.io/guidelines/style/icons.html
+// https://material.io/design/interaction/states.html
+// https://material.io/design/components/buttons.html
+// https://material.io/design/iconography/system-icons.html#color
 
 @import '../common/functions.scss';
 @import '../common/mixins.scss';
 
 $buttonColors: (
-  text-color:                 ((#000, 0.87), (#fff, 1.00)),
-  active-color__focus:        ((#000, 0.87), (#fff, 1.00)),
-  active-color:               ((#000, 0.54), (#fff, 0.70)),
-  inactive-color:             ((#000, 0.38), (#fff, 0.50)),
+  text-color:                         ((#000, 0.87), (#fff, 1.00)),
 
-  press-color__transparent:   ((#999, 0.40), (#CCC, 0.25)),
-  ripple-color:               ( #000       ,  #fff       ),
-  ripple-opacity:             (         0.12 ,          0.30,           0.20),
+  // icon
+  active-icon-color__focus:      ((#000, 0.87), (#fff, 1.00)),
+  active-icon-color:             ((#000, 0.54), (#fff, 0.70)),
+  inactive-icon-color:           ((#000, 0.38), (#fff, 0.50)),
 
-  icon-press-opacity:         (         0.12 ,          0.30,           0.20),
-  //icon-ripple-opacity:        (         0.36 ,          0.90,           0.60), // 3x for visibility
-  icon-ripple-color:          ( #000       ,  #fff       ),
-  transparent-focus-overlay:  ((#000, 0.12), (#fff, 0.12)),
-  disabled-text-color:        ((#000, 0.26), (#fff, 0.30)),
-  disabled-background-color:  ((#000, 0.12), (#fff, 0.12)),
-  outline-color:              ((#000, 0.12), (#fff, 0.12)),
-  filled-press-primary-color: (('primary', '700', 1.0), ('primary', '700', 1.0)),
-  filled-press-accent-color:  (('accent',  '700', 1.0), ('accent',  '700', 1.0)),
-  filled-press-warn-color:    (('warn',    '700', 1.0), ('warn',    '700', 1.0))
+  // states
+  overlay-color:                 (#000, #fff),
+
+  hover-opacity:                 (0.04, 0.08),
+  focus-opacity:                 (0.12, 0.24),
+  hover-focus-opacity:           (0.04 + 0.12, 0.08 + 0.24),
+
+  activated-opacity:             (0.12, 0.24),
+
+  activated-hover-opacity:       (0.12 + 0.04, 0.24 + 0.4),
+  activated-focus-opacity:       (0.12 + 0.12, 0.24 + 0.12),
+  activated-hover-focus-opacity: (0.12 + 0.04 + 0.12, 0.24 + 0.4 + 0.12),
+
+  pressed-opacity:               (0.16, 0.32),
+
+  // disabled
+  disabled-text-color:           ((#000, 0.26), (#fff, 0.30)),
+  disabled-background-color:     ((#000, 0.12), (#fff, 0.12)),
+  outline-color:                 ((#000, 0.12), (#fff, 0.12)),
+
 );
 
 @function buttonThemeValue($key, $type, $theme) {
@@ -37,7 +46,58 @@ $buttonColors: (
 @mixin internalButtonContrastRules($type, $theme: null) {
   @at-root {
     #{&}.mdw-button {
-      // Disabled
+      &:not([mdw-theme-color]) {
+        color: buttonThemeValue("text-color", $type, $theme);
+        &::before,
+        & > .mdw-ripple > .mdw-ripple__inner,
+        &:after {
+          color: buttonThemeValue("overlay-color", $type, $theme);
+        }
+        & > .mdw-ripple > .mdw-ripple__inner,
+        &:after {
+          opacity: buttonThemeValue("pressed-opacity", $type, $theme);
+        }
+      }
+
+      &[mdw-inactive] {
+        color: buttonThemeValue("inactive-icon-color", $type, $theme);
+      }
+      &[mdw-active]:not([mdw-theme-color]):not([disabled]) {
+        color: buttonThemeValue("active-icon-color", $type, $theme);
+        &:focus {
+          color: buttonThemeValue("active-icon-color__focus", $type, $theme);
+        }
+      }
+
+      &:hover::before {
+        opacity: buttonThemeValue("hover-opacity", $type, $theme);
+      }
+      &:focus::before {
+        opacity: buttonThemeValue("focus-opacity", $type, $theme);
+      }
+      &:hover:focus::before {
+        opacity: buttonThemeValue("hover-focus-opacity", $type, $theme);
+      }
+
+      &[mdw-activated] {
+        &::before {
+          opacity: buttonThemeValue("activated-opacity", $type, $theme);
+        }
+        &:hover::before {
+          opacity: buttonThemeValue("activated-hover-opacity", $type, $theme);
+        }
+        &:focus::before {
+          opacity: buttonThemeValue("activated-focus-opacity", $type, $theme);
+        }
+        &:hover:focus::before {
+          opacity: buttonThemeValue("activated-hover-focus-opacity", $type, $theme);
+        }
+      }
+
+      &[mdw-outline] {
+        border-color: buttonThemeValue('outline-color', $type, $theme);
+      }
+
       &[disabled] {
         color: buttonThemeValue("disabled-text-color", $type, $theme);
         &[mdw-theme-fill] {
@@ -60,47 +120,6 @@ $buttonColors: (
           }
         }
       }
-
-      // Foreground Color
-      &:not([mdw-theme-color]):not([disabled]) {
-        color: buttonThemeValue("text-color", $type, $theme);
-      }
-      &[mdw-inactive]:not([disabled]) {
-        color: buttonThemeValue("inactive-color", $type, $theme);
-      }
-      &[mdw-active]:not([mdw-theme-color]):not([disabled]) {
-        color: buttonThemeValue("active-color", $type, $theme);
-        &:focus {
-          color: buttonThemeValue("active-color__focus", $type, $theme);
-        }
-      }
-
-      // Focus and press colors
-      &:not([mdw-theme-color]):not([mdw-theme-fill]) {
-        &::before {
-          background-color: buttonThemeValue("transparent-focus-overlay", $type, $theme);
-        }
-        &:active::before {
-          background-color: buttonThemeValue("press-color__transparent", $type, $theme);
-        }
-        .mdw-button__focus-ring {
-          color: buttonThemeValue("transparent-focus-overlay", $type, $theme);
-        }
-      }
-
-      // Can be overridden by theme-color
-      &:not([mdw-theme-color]) {
-        & > .mdw-ripple > .mdw-ripple__inner,
-        &:after {
-          opacity: buttonThemeValue("ripple-opacity", $type, $theme);
-          color: buttonThemeValue("ripple-color", $type, $theme);
-        }
-      }
-
-      // Outline colors
-      &[mdw-outline] {
-        border-color: buttonThemeValue('outline-color', $type, $theme);
-      }
     }
   }
 }
@@ -111,24 +130,6 @@ $buttonColors: (
   @if ($type != 'var') {
     :not([mdw-theme-fill]) {
       @include internalButtonContrastRules($type, $theme);
-    }
-  }
-}
-
-// Varies by theme
-@mixin buttonThemeRules($theme: null) {
-  .mdw-button[mdw-theme-fill~=dark]:not([disabled]):active {
-    &[mdw-theme-fill~="primary"],
-    &[mdw-theme-fill|="primary"] {
-      background-color: buttonThemeValue("filled-press-primary-color", null, $theme);
-    }
-    &[mdw-theme-fill~="accent"],
-    &[mdw-theme-fill|="accent"] {
-      background-color: buttonThemeValue("filled-press-accent-color", null, $theme);
-    }
-    &[mdw-theme-fill~="warn"],
-    &[mdw-theme-fill|="warn"] {
-      background-color: buttonThemeValue("filled-press-warn-color", null, $theme);
     }
   }
 }

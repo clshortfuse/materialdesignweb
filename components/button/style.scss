@@ -9,11 +9,6 @@
 
 $button__external-padding: dp(8);
 $button__minimum-click-target: dp(48);
-$button__background-color-pressed: rgba(#999, 0.40);
-$button__focus-animation-delay: 1667ms;
-$button__focus-animation-duration: 1667ms;
-$button__long-press-timeout: 500ms;
-$button__click-timeout: 100ms;
 $button__outline-size: dp(1);
 
 .mdw-button {
@@ -32,20 +27,18 @@ $button__outline-size: dp(1);
 
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  &[disabled] {
-    cursor: not-allowed;
-  }
 
   overflow: hidden;
-  transition-property: box-shadow, background-color;
-  transition-duration: $button__click-timeout, $button__long-press-timeout;
-  transition-delay: 0s;
-  transition-timing-function: $motion-easing-acceleration;
-  &:active {
-    transition-duration: $button__click-timeout, $button__long-press-timeout - $button__click-timeout;
-    transition-delay: 0s, $button__click-timeout;
-    transition-timing-function: $motion-easing-deceleration;
+  transition-property: box-shadow, background-color, color;
+  transition-timing-function: $motion-easing-standard;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
   }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
+
   z-index: 0;
 
   // Override browser button defaults
@@ -131,47 +124,31 @@ $button__outline-size: dp(1);
   // Ripple doesn't appear until mouse-up
   // Background color transitions from hover to press
 
-  // ::before - focus and press background
-  // ::after  - ripple
-
-  &[disabled] > .mdw-ripple,
-  &[disabled] > .mdw-button__focus-ring,
-  &[disabled]::before,
-  &[disabled]::after {
-    content: none;
-    display: none;
-  }
-
-  
+  // ::before - hover, focus, and activated overlays
+  // ::after  - press overlay (ripple)
 }
 
-.mdw-button {
-  &::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    // Safari has a negative z-index bug
-    // Might be related to display rule
-    z-index: -1;
-    border-radius: inherit;
-    user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-user-select: none;
-    pointer-events: none;
-    background-color: currentColor;
-    color: rgba(0, 0, 0, 0.12);
-    opacity: 0;
-    transition-property: opacity, transform;
-    transform: scale(1);
-    transition-duration: 200ms;
-  }
-  &:focus::before {
-    opacity: 1;
-  }
+.mdw-button::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  // Safari has a negative z-index bug
+  // Might be related to display rule
+  z-index: 1;
+  border-radius: inherit;
+  user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+  background-color: currentColor;
+  opacity: 0;
+  transition-property: opacity;
+  transition-timing-function: inherit;
+  transition-duration: inherit;
 }
 
 // Fix anchor line-height on IE11
@@ -191,55 +168,6 @@ $button__outline-size: dp(1);
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-  }
-}
-
-.mdw-button__focus-ring {
-  overflow: hidden;
-  // z-index: -1; // Safari has a negative z-index bug
-  &,
-  &::after {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-user-select: none;
-    pointer-events: none;
-  }
-
-  &::after {
-    content: '';
-    // Background-size does not animate smoothly.
-    // Focus circle: inner-radius - 10% - fully transparent
-    // Scale up by 10.0 to become 100% when not focused
-    background-position: center center;
-    transform: scale(10); // 10.0 has subpixel rendering issues
-    transition-property: transform;
-    transition-duration: 200ms;
-    transition-delay: 5ms;
-    transition-timing-function: $motion-easing-standard;
-    background-image: radial-gradient(
-      circle at center,
-      transparent 10%,
-      currentColor 10.0001%);
-    color: black;
-    opacity: 0;
-    .mdw-button:focus:not(:active) > & {
-      transform: scale(7.5);
-      transition-delay: $button__focus-animation-delay;
-      transition-duration: $button__focus-animation-delay;
-      animation-duration: $button__focus-animation-duration;
-      animation-timing-function: $motion-easing-standard;
-      animation-delay: $button__focus-animation-delay * 2;
-      animation-iteration-count: infinite;
-      animation-direction: alternate;
-      animation-name: focus-pulse;
-      opacity: 0.12;
-    }
   }
 }
 
@@ -268,46 +196,23 @@ $button__outline-size: dp(1);
 }
 
 // Raised
-.mdw-button[mdw-raised]:not([disabled]) {
+.mdw-button[mdw-raised] {
   box-shadow: elevation(2);
   &:active {
     box-shadow: elevation(8);
   }
-  @media (any-pointer: fine) {
-    &:not([mdw-raised="always"]) {
-      box-shadow: elevation(0);
-      &:hover {
-        box-shadow: elevation(2);
-      }
-      &:active,
-      &:hover:active {
-        box-shadow: elevation(8);
-      }
-    }
-  }
 }
 
-@keyframes focus-pulse {
-  from { transform: scale(7.5); }
-  to { transform: scale(8.0) }
-}
-
-.mdw-button[mdw-theme-color] {
-  &::before {
-    color: inherit;
+.mdw-button[disabled] {
+  cursor: not-allowed;
+  &,
+  &[mdw-raised] {
+    box-shadow: elevation(0);
   }
-  &:focus::before {
-    opacity: 0.12;
-  }
-  &:active::before {
-    // Colored buttons have undocumented press color
-    opacity: 0.26;
-    transition-delay: $button__click-timeout;
-    transition-duration: $button__long-press-timeout - $button__click-timeout;
-    transition-timing-function: $motion-easing-deceleration;
-  }
-  &:focus:not(:active) > .mdw-button__focus-ring::after {
-    color: inherit;
-    opacity: 0.26;
+  & > .mdw-ripple,
+  &::before,
+  &::after {
+    content: none;
+    display: none;
   }
 }
