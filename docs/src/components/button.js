@@ -51,9 +51,6 @@ function onOptionChange(event) {
         case 'raised':
           sampleComponent.setAttribute('mdw-raised', '');
           break;
-        case 'raised-always':
-          sampleComponent.setAttribute('mdw-raised', 'always');
-          break;
       }
       break;
     case 'outlined':
@@ -63,23 +60,32 @@ function onOptionChange(event) {
         sampleComponent.removeAttribute('mdw-outline');
       }
       break;
+    case 'activated':
+      if (checked) {
+        sampleComponent.setAttribute('mdw-activated', '');
+      } else {
+        sampleComponent.removeAttribute('mdw-activated');
+      }
+      break;
+    case 'active':
+      if (checked) {
+        sampleComponent.setAttribute('mdw-active', '');
+      } else {
+        sampleComponent.removeAttribute('mdw-active');
+      }
+      break;
+    case 'inactive':
+      if (checked) {
+        sampleComponent.setAttribute('mdw-inactive', '');
+      } else {
+        sampleComponent.removeAttribute('mdw-inactive');
+      }
+      break;
     case 'disabled':
       if (checked) {
         sampleComponent.setAttribute('disabled', '');
       } else {
         sampleComponent.removeAttribute('disabled');
-      }
-      break;
-    case 'focus-ring':
-      focusRing = sampleComponent.getElementsByClassName('mdw-button__focus-ring')[0];
-      if (checked) {
-        if (!focusRing) {
-          focusRing = document.createElement('div');
-          focusRing.classList.add('mdw-button__focus-ring');
-          sampleComponent.insertBefore(focusRing, sampleComponent.firstChild);
-        }
-      } else if (focusRing) {
-        focusRing.parentElement.removeChild(focusRing);
       }
       break;
     case 'content':
