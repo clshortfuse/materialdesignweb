@@ -22,7 +22,11 @@
     $color: nth($item, 1);
     $tone: nth($item, 2);
     $opacity: nth($item, 3);
-    @return unquote("rgba(#{getThemePaletteColor($color, $tone, $type, $theme)}, #{$opacity})");
+    $value: getThemePaletteColor($color, $tone, $type, $theme);
+    @if ($opacity == null) {
+      $opacity: 1.0;
+    }
+    @return rgba($value, $opacity);
   }
   @return null;
 }
@@ -91,8 +95,7 @@
 
   $palette: getThemePalette($color, $theme);
   $value: map-get($palette, $tone);
-  $rgbValue: red($value), green($value), blue($value);
-  @return $rgbValue;
+  @return $value;
 }
 
 // Replace letters
