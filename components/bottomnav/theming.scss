@@ -4,9 +4,9 @@
 $bottomnavColors: (
   active-color:         (inherit, inherit),
   filled-active-color:  (inherit, (#fff, 1.0)),
-  inactive-color:       ((#000, 0.54), (#fff, 0.50)),
-  ripple-color:         ( #000, #fff),
-  ripple-opacity:       (0.12, 0.30, 0.20),
+  inactive-color:       ((#000, 0.54), (#fff, 0.70)),
+  overlay-color:        (#000, #fff),
+  pressed-opacity:      (0.16, 0.32),
   badge-background:     (('warn', '500', 1.00), ('warn', '500', 1.00)),
   badge-foreground:     (#fff, #fff),
 );
@@ -59,8 +59,8 @@ $bottomnavColors: (
   .mdw-bottomnav__item {
     & > .mdw-ripple > .mdw-ripple__inner,
     &::after {
-      opacity: bottomnavThemeValue("ripple-opacity", $type, $theme);
-      color: bottomnavThemeValue("ripple-color", $type, $theme);
+      color: bottomnavThemeValue("overlay-color", $type, $theme);
+      opacity: bottomnavThemeValue("pressed-opacity", $type, $theme);
     }
   }
 }
