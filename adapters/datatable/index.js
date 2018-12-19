@@ -967,10 +967,10 @@ class DataTableAdapter {
           this.tabindexRow.setAttribute('tabindex', '-1');
         }
         if (row) {
-          row.setAttribute('tabindex', '0');
           if (document.activeElement === this.tabindexRow) {
             row.focus();
           }
+          DataTable.updateTabIndex(row, false);
         }
         this.tabindexRow = row;
       }
