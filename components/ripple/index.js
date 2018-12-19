@@ -51,6 +51,9 @@ class Ripple {
       /** @type {HTMLElement} */
       ripple = (getChildElementByClass(ripple, 'mdw-ripple'));
     }
+    if (!ripple) {
+      return;
+    }
     /** @type {HTMLElement} */
     const rippleInner = (getChildElementByClass(ripple, 'mdw-ripple__inner'));
     if (!rippleInner) {
@@ -96,6 +99,9 @@ class Ripple {
       /** @type {HTMLElement} */
       ripple = (getChildElementByClass(ripple, 'mdw-ripple'));
     }
+    if (!ripple) {
+      return;
+    }
     /** @type {HTMLElement} */
     const rippleInner = (getChildElementByClass(ripple, 'mdw-ripple__inner'));
     if (!rippleInner) {
@@ -134,6 +140,9 @@ class Ripple {
     if (!ripple.classList.contains('mdw-ripple')) {
       /** @type {HTMLElement} */
       ripple = (getChildElementByClass(ripple, 'mdw-ripple'));
+    }
+    if (!ripple) {
+      return;
     }
     /** @type {HTMLElement} */
     const rippleInner = (getChildElementByClass(ripple, 'mdw-ripple__inner'));
@@ -240,6 +249,9 @@ class Ripple {
     if (!ripple.classList.contains('mdw-ripple')) {
       /** @type {HTMLElement} */
       ripple = (getChildElementByClass(ripple, 'mdw-ripple'));
+    }
+    if (!ripple) {
+      return;
     }
     /** @type {HTMLElement} */
     const rippleInner = (getChildElementByClass(ripple, 'mdw-ripple__inner'));
