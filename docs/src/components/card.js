@@ -4,6 +4,12 @@ import { convertElementToCode, attachEventListener } from '../sample-utils';
 let sampleComponent;
 /** @type {HTMLElement} */
 let mediaElement;
+/** @type {HTMLElement} */
+let actionsElement;
+/** @type {HTMLElement} */
+let closeActionElement;
+/** @type {HTMLElement} */
+let primaryButtonElement;
 
 /** @return {void} */
 function updateSampleCode() {
@@ -17,8 +23,6 @@ function updateSampleCode() {
  */
 function onOptionChange(event) {
   const { name, value, checked } = /** @type {HTMLInputElement} */ (event.target);
-  let textElement;
-  let actionsElement;
   let raiseOptions;
   switch (name) {
     case 'elevation':
@@ -31,7 +35,6 @@ function onOptionChange(event) {
           break;
       }
       break;
-    case 'raise-focus':
     case 'raise-focus-within':
     case 'raise-hover':
       raiseOptions = (sampleComponent.getAttribute('mdw-raised') || '').split(' ');
@@ -49,27 +52,19 @@ function onOptionChange(event) {
         sampleComponent.removeAttribute('mdw-raised');
       }
       break;
-    case 'focusable':
-      if (checked) {
-        sampleComponent.setAttribute('tabindex', '0');
-      } else {
-        sampleComponent.removeAttribute('tabindex');
-      }
-      break;
     case 'media-placement':
       if (mediaElement.parentElement) {
         mediaElement.parentElement.removeChild(mediaElement);
       }
-      if (value === 'none') {
-        break;
-      }
       switch (value) {
+        default:
+        case 'none':
+          break;
         case 'top':
-          sampleComponent.insertBefore(mediaElement, sampleComponent.firstChild);
+          sampleComponent.insertBefore(mediaElement, sampleComponent.getElementsByClassName('mdw-card__start')[0]);
           break;
         case 'middle':
-          textElement = sampleComponent.getElementsByClassName('mdw-card__supporting-text')[0];
-          sampleComponent.insertBefore(mediaElement, textElement);
+          sampleComponent.insertBefore(mediaElement, sampleComponent.getElementsByClassName('mdw-card__supporting-text')[0]);
           break;
         case 'bottom':
           sampleComponent.appendChild(mediaElement);
@@ -77,9 +72,6 @@ function onOptionChange(event) {
       }
       break;
     case 'media-ratio':
-      if (!mediaElement.parentElement) {
-        return;
-      }
       switch (value) {
         default:
         case 'none':
@@ -99,23 +91,31 @@ function onOptionChange(event) {
           break;
       }
       break;
-    case 'actions':
-      actionsElement = sampleComponent.getElementsByClassName('mdw-card__actions')[0];
+    case 'primary-action':
       if (checked) {
-        if (!actionsElement) {
-          textElement = sampleComponent.getElementsByClassName('mdw-card__supporting-text')[0];
-          textElement.insertAdjacentHTML('afterend',
-            `<div class="mdw-card__actions">
-              <button class="mdw-button" mdw-theme-color="accent">Action 1</button>
-              <button class="mdw-button" mdw-theme-color="accent">Action 2</button>
-              <span></span>
-              <button class="mdw-button material-icons" mdw-icon>more_vert</button>
-            </div>`);
+        if (!primaryButtonElement.parentElement) {
+          sampleComponent.insertBefore(primaryButtonElement, sampleComponent.firstChild);
         }
-      } else {
-        if (actionsElement) {
-          actionsElement.parentElement.removeChild(actionsElement);
+      } else if (primaryButtonElement.parentElement) {
+        primaryButtonElement.parentElement.removeChild(primaryButtonElement);
+      }
+      break;
+    case 'secondary-actions':
+      if (checked) {
+        if (!actionsElement.parentElement) {
+          sampleComponent.appendChild(actionsElement);
         }
+      } else if (actionsElement.parentElement) {
+        actionsElement.parentElement.removeChild(actionsElement);
+      }
+      break;
+    case 'close-action':
+      if (checked) {
+        if (!closeActionElement.parentElement) {
+          sampleComponent.insertBefore(closeActionElement, sampleComponent.getElementsByClassName('mdw-card__header')[0]);
+        }
+      } else if (closeActionElement.parentElement) {
+        closeActionElement.parentElement.removeChild(closeActionElement);
       }
       break;
     case 'fill':
@@ -136,7 +136,14 @@ function onOptionChange(event) {
 /** @return {void} */
 function setupComponentOptions() {
   sampleComponent = document.querySelector('.component-sample .mdw-card');
-  mediaElement = sampleComponent.getElementsByClassName('mdw-card__media')[0];
+  /** @type {HTMLElement} */
+  mediaElement = (sampleComponent.getElementsByClassName('mdw-card__media')[0]);
+  /** @type {HTMLElement} */
+  actionsElement = (sampleComponent.getElementsByClassName('mdw-card__actions')[0]);
+  /** @type {HTMLElement} */
+  primaryButtonElement = (sampleComponent.getElementsByClassName('mdw-card__button')[0]);
+  /** @type {HTMLElement} */
+  closeActionElement = (sampleComponent.getElementsByClassName('mdw-card__end')[0]);
   attachEventListener(
     document.querySelectorAll('input[name]'),
     'change',
