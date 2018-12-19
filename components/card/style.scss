@@ -111,9 +111,7 @@ $mdw-card__horizontal-padding: dp(16);
 }
 
 .mdw-card__media {
-  // In front of outline
   line-height: 0;
-  z-index: 1;
   position: relative;
   &[mdw-ratio] > .mdw-card__image {
     position: absolute;
@@ -182,6 +180,8 @@ h6.mdw-card__header {
   padding-right: dp(4);
   padding-left: dp(4);
 
+
+
   > .mdw-button {
     margin: 0 dp(4);
   }
@@ -195,4 +195,24 @@ h6.mdw-card__header {
   &:last-child {
     padding-bottom: dp(8);
   }
+}
+
+.mdw-button.mdw-card__button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  padding: 0;
+  margin: 0;
+  z-index: 1;
+}
+
+.mdw-card__actions,
+.mdw-card__start,
+.mdw-card__end {
+  // Position z-index higher than .mdw-card__button
+  position: relative;
+  z-index: 2;
 }
