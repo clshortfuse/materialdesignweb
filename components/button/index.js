@@ -10,9 +10,7 @@ class Button {
    */
   static attach(element) {
     element.setAttribute('mdw-js', '');
-    if (!element.hasAttribute('mdw-icon')) {
-      Ripple.attach(element);
-    }
+    Ripple.attach(element);
     if (element instanceof HTMLButtonElement === false
       && element instanceof HTMLInputElement === false) {
       element.addEventListener('keydown', Button.onKeyDown);
