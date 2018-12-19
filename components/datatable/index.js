@@ -1,4 +1,4 @@
-import { isRtl, findElementParentByClassName } from '../common/dom';
+import { isRtl, findElementParentByClassName, dispatchDomEvent } from '../common/dom';
 
 // https://www.w3.org/TR/wai-aria-practices/#grid
 
@@ -56,11 +56,9 @@ export class DataTable {
       }
     }
     if (rowFocusable && !foundTabbableRow && firstRow) {
-      firstRow.setAttribute('tabindex', '0');
-      DataTable.dispatchEvent(firstRow, 'mdw:tabindexchanged');
+      DataTable.updateTabIndex(firstRow, false);
     } else if (cellFocusable && !foundTabbableCell && firstCell) {
-      firstCell.setAttribute('tabindex', '0');
-      DataTable.dispatchEvent(firstCell, 'mdw:tabindexchanged');
+      DataTable.updateTabIndex(firstCell, false);
     }
   }
 
@@ -69,6 +67,7 @@ export class DataTable {
     const mdwDataTable = findElementParentByClassName(tbody, 'mdw-datatable');
     const { target } = event;
     let cell = null;
+    /** @type {HTMLTableRowElement} */
     let row = null;
 
     if (target instanceof HTMLInputElement && target.getAttribute('type') === 'checkbox') {
@@ -116,35 +115,52 @@ export class DataTable {
       row = cell.parentElement;
       const cellFocusable = mdwDataTable.hasAttribute('mdw-cell-focusable');
       if (cellFocusable) {
-        const otherTabIndexes = tbody.querySelectorAll('[tabindex="0"]');
-        for (let i = 0; i < otherTabIndexes.length; i += 1) {
-          const otherTabIndexItem = otherTabIndexes.item(i);
-          if (otherTabIndexItem !== cell) {
-            otherTabIndexItem.setAttribute('tabindex', '-1');
-          }
-        }
-        if (cell.getAttribute('tabindex') !== '0') {
-          cell.setAttribute('tabindex', '0');
-          DataTable.dispatchEvent(cell, 'mdw:tabindexchanged');
-        }
+        DataTable.updateTabIndex(cell);
         return;
       }
     }
     if (row) {
       const rowFocusable = mdwDataTable.hasAttribute('mdw-row-focusable');
       if (rowFocusable) {
-        const otherTabIndexes = tbody.querySelectorAll('[tabindex="0"]');
+        DataTable.updateTabIndex(row);
+      }
+    }
+  }
+
+  /**
+   * @param {HTMLTableRowElement|HTMLTableCellElement} element
+   * @param {boolean} [removeOtherTabIndexes=true]
+   * @return {void}
+   */
+  static updateTabIndex(element, removeOtherTabIndexes) {
+    if (removeOtherTabIndexes !== false) {
+      /** @type {HTMLElement} */
+      let tbody = element;
+      while (tbody != null && tbody instanceof HTMLTableSectionElement === false) {
+        tbody = tbody.parentElement;
+      }
+      if (element instanceof HTMLTableCellElement) {
+        const otherTabIndexes = tbody.querySelectorAll('td[tabindex="0"]');
         for (let i = 0; i < otherTabIndexes.length; i += 1) {
           const otherTabIndexItem = otherTabIndexes.item(i);
-          if (otherTabIndexItem !== row) {
+          if (otherTabIndexItem !== element) {
             otherTabIndexItem.setAttribute('tabindex', '-1');
           }
         }
-        if (row.getAttribute('tabindex') !== '0') {
-          row.setAttribute('tabindex', '0');
-          DataTable.dispatchEvent(row, 'mdw:tabindexchanged');
+      }
+      if (element instanceof HTMLTableRowElement) {
+        const otherTabIndexes = tbody.querySelectorAll('tr[tabindex="0"]');
+        for (let i = 0; i < otherTabIndexes.length; i += 1) {
+          const otherTabIndexItem = otherTabIndexes.item(i);
+          if (otherTabIndexItem !== element) {
+            otherTabIndexItem.setAttribute('tabindex', '-1');
+          }
         }
       }
+    }
+    if (element.getAttribute('tabindex') !== '0') {
+      element.setAttribute('tabindex', '0');
+      dispatchDomEvent(element, 'mdw:tabindexchanged');
     }
   }
 
@@ -229,23 +245,14 @@ export class DataTable {
     event.stopPropagation();
   }
 
-  /**
-   * @param {Element} element
-   * @param {string} type
-   * @return {void}
-   */
-  static dispatchEvent(element, type) {
-    const event = document.createEvent('Event');
-    event.initEvent(type, true, true);
-    element.dispatchEvent(event);
-  }
-
   static onTableBodyKeyDown(event) {
     const currentSelection = document.activeElement;
     let cellIndex = 0;
     /** @type {HTMLTableRowElement} */
     let row = null;
     let isRow = false;
+    /** @type {HTMLTableRowElement|HTMLTableCellElement} */
+    let nextSelection = null;
     if (currentSelection instanceof HTMLTableCellElement) {
       ({ cellIndex } = currentSelection);
       /** @type {HTMLTableRowElement} */
@@ -263,62 +270,34 @@ export class DataTable {
       if (row.sectionRowIndex === 0) {
         return;
       }
-      event.stopPropagation();
-      event.preventDefault();
-      const newIndex = row.sectionRowIndex - 1;
-      const newRow = tbody.rows.item(newIndex);
-      currentSelection.setAttribute('tabindex', '-1');
+      const newRow = tbody.rows.item(row.sectionRowIndex - 1);
       if (isRow) {
-        newRow.focus();
-        newRow.setAttribute('tabindex', '0');
-        DataTable.dispatchEvent(newRow, 'mdw:tabindexchanged');
+        nextSelection = newRow;
       } else {
-        newRow.cells.item(cellIndex).focus();
-        newRow.cells.item(cellIndex).setAttribute('tabindex', '0');
-        DataTable.dispatchEvent(newRow.cells.item(cellIndex), 'mdw:tabindexchanged');
+        nextSelection = newRow.cells.item(cellIndex);
       }
-      return;
-    }
-    if (event.key === 'ArrowDown' || (event.key === 'Down')) {
+    } else if (event.key === 'ArrowDown' || (event.key === 'Down')) {
       const newIndex = row.sectionRowIndex + 1;
       if (newIndex >= tbody.rows.length) {
         return;
       }
-      event.stopPropagation();
-      event.preventDefault();
       const newRow = tbody.rows.item(newIndex);
-      currentSelection.setAttribute('tabindex', '-1');
       if (isRow) {
-        newRow.focus();
-        newRow.setAttribute('tabindex', '0');
-        DataTable.dispatchEvent(newRow, 'mdw:tabindexchanged');
+        nextSelection = newRow;
       } else {
-        newRow.cells.item(cellIndex).focus();
-        newRow.cells.item(cellIndex).setAttribute('tabindex', '0');
-        DataTable.dispatchEvent(newRow.cells.item(cellIndex), 'mdw:tabindexchanged');
+        nextSelection = newRow.cells.item(cellIndex);
       }
-      return;
-    }
-    if (event.ctrlKey && event.key === 'Home') {
+    } else if (event.ctrlKey && event.key === 'Home') {
       if (row.sectionRowIndex === 0 && cellIndex === 0) {
         return;
       }
-      event.stopPropagation();
-      event.preventDefault();
       const newRow = tbody.rows.item(0);
-      currentSelection.setAttribute('tabindex', '-1');
       if (isRow) {
-        newRow.focus();
-        newRow.setAttribute('tabindex', '0');
-        DataTable.dispatchEvent(newRow, 'mdw:tabindexchanged');
+        nextSelection = newRow;
       } else {
-        newRow.cells.item(0).focus();
-        newRow.cells.item(0).setAttribute('tabindex', '0');
-        DataTable.dispatchEvent(newRow.cells.item(0), 'mdw:tabindexchanged');
+        nextSelection = newRow.cells.item(0);
       }
-      return;
-    }
-    if (event.ctrlKey && event.key === 'End') {
+    } else if (event.ctrlKey && event.key === 'End') {
       const newRowIndex = tbody.rows.length - 1;
       let newCellIndex = 0;
       if (!isRow) {
@@ -327,39 +306,21 @@ export class DataTable {
       if (row.sectionRowIndex === newRowIndex && cellIndex === newCellIndex) {
         return;
       }
-      event.stopPropagation();
-      event.preventDefault();
       const newRow = tbody.rows.item(newRowIndex);
-      currentSelection.setAttribute('tabindex', '-1');
       if (isRow) {
-        newRow.focus();
-        newRow.setAttribute('tabindex', '0');
-        DataTable.dispatchEvent(newRow, 'mdw:tabindexchanged');
+        nextSelection = newRow;
       } else {
-        newRow.cells.item(newCellIndex).focus();
-        newRow.cells.item(newCellIndex).setAttribute('tabindex', '0');
-        DataTable.dispatchEvent(newRow.cells.item(newCellIndex), 'mdw:tabindexchanged');
+        nextSelection = newRow.cells.item(newCellIndex);
       }
-      return;
-    }
-    if (event.key === 'Home') {
+    } else if (event.key === 'Home') {
       if (isRow) {
         return;
       }
       if (cellIndex === 0) {
         return;
       }
-      event.stopPropagation();
-      event.preventDefault();
-      const newIndex = 0;
-      const newCell = row.cells.item(newIndex);
-      currentSelection.setAttribute('tabindex', '-1');
-      newCell.focus();
-      newCell.setAttribute('tabindex', '0');
-      DataTable.dispatchEvent(newCell, 'mdw:tabindexchanged');
-      return;
-    }
-    if (event.key === 'End') {
+      nextSelection = row.cells.item(0);
+    } else if (event.key === 'End') {
       if (isRow) {
         return;
       }
@@ -367,64 +328,50 @@ export class DataTable {
       if (newIndex === cellIndex) {
         return;
       }
+      nextSelection = row.cells.item(newIndex);
+    } else {
+      const isRtlEnabled = isRtl();
+      let isLeft = false;
+      let isRight = false;
+      if (event.key === 'ArrowLeft' || (event.key === 'Left')) {
+        if (isRtlEnabled) {
+          isRight = true;
+        } else {
+          isLeft = true;
+        }
+      }
+      if (event.key === 'ArrowRight' || (event.key === 'Right')) {
+        if (isRtlEnabled) {
+          isLeft = true;
+        } else {
+          isRight = true;
+        }
+      }
+      if (isLeft) {
+        if (isRow) {
+          return;
+        }
+        if (cellIndex === 0) {
+          return;
+        }
+        nextSelection = row.cells.item(cellIndex - 1);
+      } else if (isRight) {
+        if (isRow) {
+          return;
+        }
+        const newIndex = cellIndex + 1;
+        if (newIndex >= row.cells.length) {
+          return;
+        }
+        nextSelection = row.cells.item(newIndex);
+      }
+    }
+    if (nextSelection) {
       event.stopPropagation();
       event.preventDefault();
-      const newCell = row.cells.item(newIndex);
       currentSelection.setAttribute('tabindex', '-1');
-      newCell.focus();
-      newCell.setAttribute('tabindex', '0');
-      DataTable.dispatchEvent(newCell, 'mdw:tabindexchanged');
-      return;
-    }
-    const isRtlEnabled = isRtl();
-    let isLeft = false;
-    let isRight = false;
-    if (event.key === 'ArrowLeft' || (event.key === 'Left')) {
-      if (isRtlEnabled) {
-        isRight = true;
-      } else {
-        isLeft = true;
-      }
-    }
-    if (event.key === 'ArrowRight' || (event.key === 'Right')) {
-      if (isRtlEnabled) {
-        isLeft = true;
-      } else {
-        isRight = true;
-      }
-    }
-    if (isLeft) {
-      if (isRow) {
-        return;
-      }
-      if (cellIndex === 0) {
-        return;
-      }
-      event.stopPropagation();
-      event.preventDefault();
-      const newIndex = cellIndex - 1;
-      const newCell = row.cells.item(newIndex);
-      currentSelection.setAttribute('tabindex', '-1');
-      newCell.focus();
-      newCell.setAttribute('tabindex', '0');
-      DataTable.dispatchEvent(newCell, 'mdw:tabindexchanged');
-      return;
-    }
-    if (isRight) {
-      if (isRow) {
-        return;
-      }
-      const newIndex = cellIndex + 1;
-      if (newIndex >= row.cells.length) {
-        return;
-      }
-      event.stopPropagation();
-      event.preventDefault();
-      const newCell = row.cells.item(newIndex);
-      currentSelection.setAttribute('tabindex', '-1');
-      newCell.focus();
-      newCell.setAttribute('tabindex', '0');
-      DataTable.dispatchEvent(newCell, 'mdw:tabindexchanged');
+      nextSelection.focus();
+      DataTable.updateTabIndex(nextSelection, false);
     }
   }
 
