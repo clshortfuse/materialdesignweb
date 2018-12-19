@@ -24,13 +24,18 @@ class Ripple {
       ripple.appendChild(rippleInner);
     }
     element.setAttribute('mdw-ripple', '');
-    element.addEventListener('click', Ripple.onClick);
-    element.addEventListener('mousedown', Ripple.onMouseEvent);
-    element.addEventListener('mouseup', Ripple.onMouseEvent);
-    element.addEventListener('mouseout', Ripple.onMouseEvent);
-    element.addEventListener('touchstart', Ripple.onTouchEvent);
-    element.addEventListener('touchend', Ripple.onTouchEvent);
-    element.addEventListener('touchcancel', Ripple.onTouchEvent);
+    let targetElement = ripple;
+    if (element instanceof HTMLButtonElement) {
+      // Firefox doesn't support listening on HTMLButtonElement children
+      targetElement = element;
+    }
+    targetElement.addEventListener('click', Ripple.onClick);
+    targetElement.addEventListener('mousedown', Ripple.onMouseEvent);
+    targetElement.addEventListener('mouseup', Ripple.onMouseEvent);
+    targetElement.addEventListener('mouseout', Ripple.onMouseEvent);
+    targetElement.addEventListener('touchstart', Ripple.onTouchEvent);
+    targetElement.addEventListener('touchend', Ripple.onTouchEvent);
+    targetElement.addEventListener('touchcancel', Ripple.onTouchEvent);
     element.addEventListener('keydown', Ripple.onKeyEvent);
     element.addEventListener('keyup', Ripple.onKeyEvent);
   }
@@ -41,9 +46,11 @@ class Ripple {
    */
   static onMouseEvent(event) {
     /** @type {HTMLElement} */
-    const el = (event.currentTarget);
-    /** @type {HTMLElement} */
-    const ripple = (getChildElementByClass(el, 'mdw-ripple'));
+    let ripple = (event.currentTarget);
+    if (!ripple.classList.contains('mdw-ripple')) {
+      /** @type {HTMLElement} */
+      ripple = (getChildElementByClass(ripple, 'mdw-ripple'));
+    }
     /** @type {HTMLElement} */
     const rippleInner = (getChildElementByClass(ripple, 'mdw-ripple__inner'));
     if (!rippleInner) {
@@ -60,7 +67,7 @@ class Ripple {
       rippleInner.removeAttribute('mdw-keyup');
       rippleInner.removeAttribute('mdw-mouseup');
       rippleInner.removeAttribute('mdw-mouseout');
-      const rect = el.getBoundingClientRect();
+      const rect = ripple.getBoundingClientRect();
       const x = event.pageX - rect.left;
       const y = event.pageY - rect.top;
       Ripple.updateRipplePosition(rippleInner, x, y);
@@ -84,9 +91,11 @@ class Ripple {
    */
   static onTouchEvent(event) {
     /** @type {HTMLElement} */
-    const el = (event.currentTarget);
-    /** @type {HTMLElement} */
-    const ripple = (getChildElementByClass(el, 'mdw-ripple'));
+    let ripple = (event.currentTarget);
+    if (!ripple.classList.contains('mdw-ripple')) {
+      /** @type {HTMLElement} */
+      ripple = (getChildElementByClass(ripple, 'mdw-ripple'));
+    }
     /** @type {HTMLElement} */
     const rippleInner = (getChildElementByClass(ripple, 'mdw-ripple__inner'));
     if (!rippleInner) {
@@ -103,7 +112,7 @@ class Ripple {
       rippleInner.removeAttribute('mdw-keyup');
       rippleInner.removeAttribute('mdw-mouseup');
       rippleInner.removeAttribute('mdw-mouseout');
-      const rect = el.getBoundingClientRect();
+      const rect = ripple.getBoundingClientRect();
       const x = touch.pageX - rect.left;
       const y = touch.pageY - rect.top;
       Ripple.updateRipplePosition(rippleInner, x, y);
@@ -121,9 +130,11 @@ class Ripple {
    */
   static onKeyEvent(event) {
     /** @type {HTMLElement} */
-    const el = (event.currentTarget);
-    /** @type {HTMLElement} */
-    const ripple = (getChildElementByClass(el, 'mdw-ripple'));
+    let ripple = (event.currentTarget);
+    if (!ripple.classList.contains('mdw-ripple')) {
+      /** @type {HTMLElement} */
+      ripple = (getChildElementByClass(ripple, 'mdw-ripple'));
+    }
     /** @type {HTMLElement} */
     const rippleInner = (getChildElementByClass(ripple, 'mdw-ripple__inner'));
     if (!rippleInner) {
@@ -144,7 +155,7 @@ class Ripple {
       return false;
     }
     nextTick(() => {
-      if (isActive(el)) {
+      if (isActive(ripple.parentElement)) {
         if (rippleInner.hasAttribute('mdw-keydown')) {
           return;
         }
@@ -225,8 +236,11 @@ class Ripple {
    */
   static onClick(event) {
     /** @type {HTMLElement} */
-    const el = (event.currentTarget);
-    const ripple = (getChildElementByClass(el, 'mdw-ripple'));
+    let ripple = (event.currentTarget);
+    if (!ripple.classList.contains('mdw-ripple')) {
+      /** @type {HTMLElement} */
+      ripple = (getChildElementByClass(ripple, 'mdw-ripple'));
+    }
     /** @type {HTMLElement} */
     const rippleInner = (getChildElementByClass(ripple, 'mdw-ripple__inner'));
     if (!rippleInner) {
@@ -268,6 +282,8 @@ class Ripple {
     element.removeEventListener('touchstart', Ripple.onTouchEvent);
     element.removeEventListener('touchend', Ripple.onTouchEvent);
     element.removeEventListener('touchcancel', Ripple.onTouchEvent);
+    element.removeEventListener('keydown', Ripple.onKeyEvent);
+    element.removeEventListener('keyup', Ripple.onKeyEvent);
   }
 }
 
