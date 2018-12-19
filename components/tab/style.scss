@@ -126,12 +126,10 @@ $tab__icon-with-label-height: 72;
     @include mdw-ripple__container;
   }
 
-  & > .mdw-ripple > .mdw-ripple__inner,
   &::after {
     @include mdw-ripple__inner;
   }
 
-  & > .mdw-ripple:active > .mdw-ripple__inner,
   &:active::after {
     @include mdw-ripple__active;
   }

@@ -53,8 +53,8 @@ $menuColors: (
           }
           & > .mdw-ripple > .mdw-ripple__inner,
           &:after {
-            color: buttonThemeValue("ripple-color", $type, $theme);
-            opacity: buttonThemeValue("ripple-opacity", $type, $theme);
+            color: menuThemeValue("ripple-color", $type, $theme);
+            opacity: menuThemeValue("ripple-opacity", $type, $theme);
           }
         }
       }

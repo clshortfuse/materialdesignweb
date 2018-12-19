@@ -1,7 +1,5 @@
 @import "../common/mixins.scss";
 
-$ripple-duration: 500ms;
-
 /**
  * --Issues rendering a circle inside an element--
  * See: https://codepen.io/shortfuse/pen/VxYxYj
@@ -29,14 +27,87 @@ $ripple-duration: 500ms;
   position: absolute;
   left: 0;
   top: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   border-radius: inherit;
-  > .mdw-ripple__inner {
-    display: block !important;
+  z-index: 1;
+  & > .mdw-ripple__inner {
+    border-radius: 50%;
+    display: block;
+    position: absolute;
+    transition: none;
+    transform: scale(0);
+    background-color: currentColor;
+    animation-name: none;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+    animation-duration: $motion-duration-desktop-default;
+    @include allHandsets {
+      animation-duration: $motion-duration-mobile-default;
+    }
+    @include allTablets {
+      animation-duration: $motion-duration-tablet-default;
+    }
+    pointer-events: none;
+
+    opacity: 0.24;
+    &[mdw-fade-in-out] {
+      animation-name: ripple-fade-in, ripple-fade-out;
+      animation-timing-function: linear, $motion-easing-acceleration;
+      animation-delay: 0s, $motion-duration-desktop-default;
+      @include allHandsets {
+        animation-delay: 0s, $motion-duration-mobile-default;
+      }
+      @include allTablets {
+        animation-delay: 0s, $motion-duration-tablet-default;
+      }
+    }
+    &[mdw-fade-in] {
+      animation-name: ripple-fade-in;
+    }
+  }
+  &:not(:active) > .mdw-ripple__inner[mdw-fade-out][mdw-mouseout],
+  &:not(:active) > .mdw-ripple__inner[mdw-fade-out][mdw-touchcancel],
+  &:not(:active) > .mdw-ripple__inner[mdw-fade-out][mdw-touchend],
+  .mdw-ripple__inner[mdw-fade-out][mdw-mouseup],
+  .mdw-ripple__inner[mdw-fade-out][mdw-keyup] {
+    animation-name: ripple-fade-out;
+    animation-timing-function: $motion-easing-acceleration;
   }
 }
+
+@keyframes ripple-idle {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(0);
+  }
+}
+
+@keyframes ripple-fade-in {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(2);
+  }
+}
+
+@keyframes ripple-fade-out {
+  from {
+    transform: scale(2);
+    background-color: currentColor;
+  }
+  to {
+    transform: scale(2);
+    background-color: transparent;
+  }
+}
+
+
 
 @mixin mdw-ripple__inner {
   content: '';
@@ -56,11 +127,7 @@ $ripple-duration: 500ms;
   pointer-events: none;
   background-color: transparent;
   color: inherit;
-  opacity: 0.26;
-  @include MSOnly() {
-    // Microsoft browsers don't handle low opacity (12%) properly with table display
-    opacity: 0.26 !important;
-  }
+  opacity: 0.24;
   transform: translateX(-50%) translateY(-50%) scale(1);
   transition-delay:
     0s,

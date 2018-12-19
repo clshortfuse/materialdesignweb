@@ -228,12 +228,10 @@ $menu__unit-width: dp(56);
     @include mdw-ripple__container;
   }
 
-  & > .mdw-ripple > .mdw-ripple__inner,
   &::after {
     @include mdw-ripple__inner;
   }
 
-  & > .mdw-ripple:active > .mdw-ripple__inner,
   &:active::after {
     @include mdw-ripple__active;
   }
