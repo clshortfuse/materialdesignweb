@@ -3,14 +3,14 @@
 @mixin portraitHandsets {
   @media screen
     and (orientation:portrait)
-    and (max-width: $breakpoint-portrait-handset-max - 1) {
+    and (max-width: $breakpoint-portrait-handset-max) {
       @content;
     }
 }
 @mixin landscapeHandsets {
   @media screen
     and (orientation:landscape)
-    and (max-width: $breakpoint-landscape-handset-max - 1) {
+    and (max-width: $breakpoint-landscape-handset-max) {
       @content;
     }
 }
@@ -19,10 +19,10 @@
   @media
     screen
       and (orientation:portrait)
-      and (max-width: $breakpoint-portrait-handset-max - 1),
+      and (max-width: $breakpoint-portrait-handset-max),
     screen
       and (orientation:landscape)
-      and (max-width: $breakpoint-landscape-handset-max - 1) {
+      and (max-width: $breakpoint-landscape-handset-max) {
     @content;
   }
 }
@@ -32,11 +32,11 @@
     screen
       and (orientation:portrait)
       and (min-width: $breakpoint-portrait-tablet-small)
-      and (max-width: $breakpoint-portrait-tablet-max - 1),
+      and (max-width: $breakpoint-portrait-tablet-max),
     screen
       and (orientation:landscape)
       and (min-width: $breakpoint-landscape-tablet-small)
-      and (max-width: $breakpoint-landscape-tablet-max - 1) {
+      and (max-width: $breakpoint-landscape-tablet-max) {
     @content;
   }
 }
@@ -45,13 +45,26 @@
   @media
     screen
       and (orientation:portrait)
-      and (max-width: $breakpoint-portrait-tablet-max - 1),
+      and (max-width: $breakpoint-portrait-tablet-max),
     screen
       and (orientation:landscape)
-      and (max-width: $breakpoint-landscape-tablet-max - 1) {
+      and (max-width: $breakpoint-landscape-tablet-max) {
     @content;
   }
 }
+
+@mixin margin16dp {
+  @media
+    screen
+      and (orientation:portrait)
+      and (max-width: dp(599)),
+    screen
+      and (orientation:landscape)
+      and (max-height: dp(599)) {
+    @content;
+  }
+}
+
 
 $light: 1;
 $dark: 2;
@@ -106,17 +119,5 @@ $dark-background: 3;
   }
   @include EdgeOnly {
     @content;
-  }
-}
-
-@mixin gutter16dp {
-  @media
-  screen
-  and (orientation:portrait)
-  and (max-width: dp(600 - 1)),
-screen
-  and (orientation:landscape)
-  and (max-height: dp(600 - 1)) {
-@content;
   }
 }
