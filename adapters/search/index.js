@@ -118,7 +118,8 @@ function scrollItemIntoView(listItem) {
     } while (next !== document.body);
     if (top < 0) {
       return -1;
-    } else if ((top + height) > document.documentElement.clientHeight) {
+    }
+    if ((top + height) > document.documentElement.clientHeight) {
       return 1;
     }
     return 0;
@@ -290,7 +291,7 @@ class SearchAdapter {
   /**
    * @param {string} inputValue
    * @param {function} resolve
-   * @param {function(Error)} reject
+   * @param {function(Error):any} reject
    * @return {void}
    */
   checkExpired(inputValue, resolve, reject) {
@@ -304,7 +305,7 @@ class SearchAdapter {
   /**
    * @param {string} searchTerm
    * @param {function} resolve
-   * @param {function(Error)} reject
+   * @param {function(Error):any} reject
    * @return {void}
    */
   performDebounce(searchTerm, resolve, reject) {
