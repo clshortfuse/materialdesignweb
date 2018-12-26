@@ -1,5 +1,7 @@
 import { attachEventListener } from '../sample-utils';
 
+const sampleComponent = document.getElementById('sample-component');
+
 const colspans = [
   '1',
   '25%', '50%', '75%', '100%',
@@ -24,7 +26,7 @@ function onLayoutItemClick(target) {
  */
 function onOptionChange(event) {
   const { name, value, checked } = event.target;
-  const layout = document.querySelector('.mdw-layout.docs-layout');
+  const layout = sampleComponent.getElementsByClassName('mdw-layout')[0];
 
   switch (name) {
     case 'default-margins':
@@ -90,13 +92,30 @@ function onOptionChange(event) {
         layout.removeAttribute('mdw-dense');
       }
       break;
+    case 'columns':
+      switch (value) {
+        default:
+        case '12':
+          layout.removeAttribute('mdw-columns');
+          break;
+        case '8':
+          layout.setAttribute('mdw-columns', '8');
+          break;
+        case '4':
+          layout.setAttribute('mdw-columns', '4');
+          break;
+        case '1':
+          layout.setAttribute('mdw-columns', '1');
+          break;
+      }
+      break;
     default:
   }
 }
 
 /** @return {void} */
 function setupInteractions() {
-  const layoutItems = document.getElementsByClassName('mdw-layout__item');
+  const layoutItems = sampleComponent.getElementsByClassName('mdw-layout__item');
   for (let i = 0; i < layoutItems.length; i += 1) {
     const item = layoutItems.item(i);
     item.addEventListener('click', () => {
@@ -104,7 +123,7 @@ function setupInteractions() {
     });
   }
   attachEventListener(
-    document.querySelectorAll('input[name]'),
+    document.querySelectorAll('[name]'),
     'change',
     onOptionChange
   );

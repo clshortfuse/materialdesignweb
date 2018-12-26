@@ -2,5 +2,7 @@ include mixins.pug
 
 +header()
   +navdrawer("Home")
-    h1.mdw-type Material Design Web
+    .mdw-layout(mdw-margin-top mdw-margin-bottom)
+      .mdw-layout__item(mdw-colspan="100%")
+        h1.mdw-type Material Design Web
   script(src='index.min.js')

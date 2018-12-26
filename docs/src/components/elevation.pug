@@ -2,16 +2,25 @@ include ../mixins.pug
 
 +header()
   +navdrawer("elevation")
-    .comparison
-      .display-flex.flex-wrap.flex-1(flex-justify-content="center" flex-align-items="center")
-        div(style="margin:32px;padding:24px" mdw-elevation=1) 1dp elevation
-        div(style="margin:32px;padding:24px" mdw-elevation=2) 2dp elevation
-        div(style="margin:32px;padding:24px" mdw-elevation=3) 3dp elevation
-        div(style="margin:32px;padding:24px" mdw-elevation=4) 4dp elevation
-        div(style="margin:32px;padding:24px" mdw-elevation=6) 6dp elevation
-        div(style="margin:32px;padding:24px" mdw-elevation=8) 8dp elevation
-        div(style="margin:32px;padding:24px" mdw-elevation=9) 9dp elevation
-        div(style="margin:32px;padding:24px" mdw-elevation=12) 12dp elevation
-        div(style="margin:32px;padding:24px" mdw-elevation=16) 16dp elevation
-        div(style="margin:32px;padding:24px" mdw-elevation=24) 24dp elevation
+    .docs-layout.mdw-layout(mdw-margin-top mdw-margin-botttom mdw-columns=4 mdw-margin="40" mdw-gutter="40")
+      .mdw-layout__item
+        .docs-elevation__item(mdw-elevation=1) 1dp
+      .mdw-layout__item
+        .docs-elevation__item(mdw-elevation=2) 3dp
+      .mdw-layout__item
+        .docs-elevation__item(mdw-elevation=2) 3dp
+      .mdw-layout__item
+        .docs-elevation__item(mdw-elevation=4) 4dp
+      .mdw-layout__item
+        .docs-elevation__item(mdw-elevation=6) 6dp
+      .mdw-layout__item
+        .docs-elevation__item(mdw-elevation=8) 8dp
+      .mdw-layout__item
+        .docs-elevation__item(mdw-elevation=9) 9dp
+      .mdw-layout__item
+        .docs-elevation__item(mdw-elevation=12) 12dp
+      .mdw-layout__item
+        .docs-elevation__item(mdw-elevation=16) 16dp
+      .mdw-layout__item
+        .docs-elevation__item(mdw-elevation=24) 24dp
   script(src='elevation.min.js')

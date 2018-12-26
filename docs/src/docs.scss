@@ -242,6 +242,14 @@ body {
   }
 }
 
+.docs-elevation__item {
+  padding: 24px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+}
+
 .mdw-button.docs-rtl.docs-rtl {
   font-size: 14px; // Don't scale
 }
