@@ -153,7 +153,11 @@ $layout__gutter: dp(24);
 }
 
 .mdw-layout__item {
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
   max-width: 100%;
+
   flex-grow: 0;
   flex-shrink: 1;
   box-sizing: border-box;
