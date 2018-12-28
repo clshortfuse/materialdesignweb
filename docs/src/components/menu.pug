@@ -2,177 +2,174 @@ include ../mixins.pug
 
 +header()
   +navdrawer("menu")
-    .mdw-layout(mdw-margin-top mdw-margin-bottom)
+    .mdw-layout(mdw-margin-top mdw-margin-bottom mdw-stretch)
       .mdw-layout__item(mdw-colspan="100%")
-        div
-          h5.mdw-type(mdw-baseline-next="36") Menus display a list of choices on a transient sheet of material.
-          p.mdw-type(mdw-baseline-next="36") Menus appear upon interaction with a button, action, or other control. They display a list of choices, with one choice per line.
-          p.mdw-type Menu items may be disabled if not applicable to a certain context. Contextual menus dynamically change their available menu items based on the current state of the app.
+        h5.mdw-type(mdw-baseline-next="36") Menus display a list of choices on a transient sheet of material.
+        p.mdw-type(mdw-baseline-next="36") Menus appear upon interaction with a button, action, or other control. They display a list of choices, with one choice per line.
+        p.mdw-type Menu items may be disabled if not applicable to a certain context. Contextual menus dynamically change their available menu items based on the current state of the app.
       .mdw-layout__item(mdw-colspan="4")
-        .component-sample
-          .component-sample__container
-            .mdw-menu__wrapper
-              button.mdw-button Open
-              .mdw-menu
-                .mdw-menu__popup
-                  .mdw-menu__item
-                    .mdw-menu__icon.material-icons format_bold
-                    .mdw-menu__text Bold
-                    .mdw-menu__info ⌘B
-                  .mdw-menu__item(disabled)
-                    .mdw-menu__icon.material-icons format_italic
-                    .mdw-menu__text Italic
-                    .mdw-menu__info ⌘I
-                  .mdw-menu__item
-                    .mdw-menu__icon.material-icons format_underline
-                    .mdw-menu__text Underline
-                    .mdw-menu__info ⌘U
-                  .mdw-menu__divider
-                  .mdw-menu__item(mdw-checked)
-                    .mdw-menu__check.material-icons check
-                    .mdw-menu__text Flights
-                  .mdw-menu__item
-                    .mdw-menu__check.material-icons check
-                    .mdw-menu__text Apps
+        .mdw-layout__content
+          .component-sample
+            .component-sample__container
+              .mdw-menu__wrapper
+                button.mdw-button Open
+                .mdw-menu
+                  .mdw-menu__popup
+                    .mdw-menu__item
+                      .mdw-menu__icon.material-icons format_bold
+                      .mdw-menu__text Bold
+                      .mdw-menu__info ⌘B
+                    .mdw-menu__item(disabled)
+                      .mdw-menu__icon.material-icons format_italic
+                      .mdw-menu__text Italic
+                      .mdw-menu__info ⌘I
+                    .mdw-menu__item
+                      .mdw-menu__icon.material-icons format_underline
+                      .mdw-menu__text Underline
+                      .mdw-menu__info ⌘U
+                    .mdw-menu__divider
+                    .mdw-menu__item(mdw-checked)
+                      .mdw-menu__check.material-icons check
+                      .mdw-menu__text Flights
+                    .mdw-menu__item
+                      .mdw-menu__check.material-icons check
+                      .mdw-menu__text Apps
       .mdw-layout__item(mdw-colspan="8")
+        .mdw-type(mdw-style="subtitle") Javascript
         div
-          .mdw-type(mdw-style="subtitle") Javascript
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="javascript" value="required" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Required
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="javascript" value="optional")
-              .mdw-selection__icon
-              .mdw-selection__label Optional
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="javascript" value="none")
-              .mdw-selection__icon
-              .mdw-selection__label None
-          .mdw-type(mdw-style="subtitle") Vertical Position
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="vposition" value="auto" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Auto
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="vposition" value="bottom")
-              .mdw-selection__icon
-              .mdw-selection__label Bottom
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="vposition" value="top")
-              .mdw-selection__icon
-              .mdw-selection__label Top
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="vposition" value="vcenter")
-              .mdw-selection__icon
-              .mdw-selection__label Center
-          .mdw-type(mdw-style="subtitle") Horizontal Position
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="hposition" value="auto" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Auto
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="hposition" value="start")
-              .mdw-selection__icon
-              .mdw-selection__label Start
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="hposition" value="end")
-              .mdw-selection__icon
-              .mdw-selection__label End
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="hposition" value="left")
-              .mdw-selection__icon
-              .mdw-selection__label Left
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="hposition" value="right")
-              .mdw-selection__icon
-              .mdw-selection__label Right
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="hposition" value="hcenter")
-              .mdw-selection__icon
-              .mdw-selection__label Center
-          .mdw-type(mdw-style="subtitle") Vertical Direction
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="vdirection" value="auto" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Auto
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="vdirection" value="down")
-              .mdw-selection__icon
-              .mdw-selection__label Down
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="vdirection" value="up")
-              .mdw-selection__icon
-              .mdw-selection__label Up
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="vdirection" value="vcenter")
-              .mdw-selection__icon
-              .mdw-selection__label Center
-          .mdw-type(mdw-style="subtitle") Horizontal Direction
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="hdirection" value="auto" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Auto
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="hdirection" value="normal")
-              .mdw-selection__icon
-              .mdw-selection__label Normal
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="hdirection" value="reverse")
-              .mdw-selection__icon
-              .mdw-selection__label Reverse
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="hdirection" value="ltr")
-              .mdw-selection__icon
-              .mdw-selection__label Left-to-Right
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="hdirection" value="rtl")
-              .mdw-selection__icon
-              .mdw-selection__label Right-to-Left
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="hdirection" value="hcenter")
-              .mdw-selection__icon
-              .mdw-selection__label Center
-          .mdw-type(mdw-style="subtitle") Width Units
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="width" value="auto" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Auto
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="width" value="3")
-              .mdw-selection__icon
-              .mdw-selection__label 3
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="width" value="4")
-              .mdw-selection__icon
-              .mdw-selection__label 4
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="width" value="5")
-              .mdw-selection__icon
-              .mdw-selection__label 5
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="width" value="6")
-              .mdw-selection__icon
-              .mdw-selection__label 6
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="width" value="7")
-              .mdw-selection__icon
-              .mdw-selection__label 7
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="javascript" value="required" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Required
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="javascript" value="optional")
+            .mdw-selection__icon
+            .mdw-selection__label Optional
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="javascript" value="none")
+            .mdw-selection__icon
+            .mdw-selection__label None
+        .mdw-type(mdw-style="subtitle") Vertical Position
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="vposition" value="auto" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Auto
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="vposition" value="bottom")
+            .mdw-selection__icon
+            .mdw-selection__label Bottom
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="vposition" value="top")
+            .mdw-selection__icon
+            .mdw-selection__label Top
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="vposition" value="vcenter")
+            .mdw-selection__icon
+            .mdw-selection__label Center
+        .mdw-type(mdw-style="subtitle") Horizontal Position
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="hposition" value="auto" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Auto
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="hposition" value="start")
+            .mdw-selection__icon
+            .mdw-selection__label Start
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="hposition" value="end")
+            .mdw-selection__icon
+            .mdw-selection__label End
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="hposition" value="left")
+            .mdw-selection__icon
+            .mdw-selection__label Left
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="hposition" value="right")
+            .mdw-selection__icon
+            .mdw-selection__label Right
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="hposition" value="hcenter")
+            .mdw-selection__icon
+            .mdw-selection__label Center
+        .mdw-type(mdw-style="subtitle") Vertical Direction
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="vdirection" value="auto" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Auto
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="vdirection" value="down")
+            .mdw-selection__icon
+            .mdw-selection__label Down
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="vdirection" value="up")
+            .mdw-selection__icon
+            .mdw-selection__label Up
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="vdirection" value="vcenter")
+            .mdw-selection__icon
+            .mdw-selection__label Center
+        .mdw-type(mdw-style="subtitle") Horizontal Direction
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="hdirection" value="auto" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Auto
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="hdirection" value="normal")
+            .mdw-selection__icon
+            .mdw-selection__label Normal
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="hdirection" value="reverse")
+            .mdw-selection__icon
+            .mdw-selection__label Reverse
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="hdirection" value="ltr")
+            .mdw-selection__icon
+            .mdw-selection__label Left-to-Right
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="hdirection" value="rtl")
+            .mdw-selection__icon
+            .mdw-selection__label Right-to-Left
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="hdirection" value="hcenter")
+            .mdw-selection__icon
+            .mdw-selection__label Center
+        .mdw-type(mdw-style="subtitle") Width Units
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="width" value="auto" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Auto
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="width" value="3")
+            .mdw-selection__icon
+            .mdw-selection__label 3
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="width" value="4")
+            .mdw-selection__icon
+            .mdw-selection__label 4
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="width" value="5")
+            .mdw-selection__icon
+            .mdw-selection__label 5
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="width" value="6")
+            .mdw-selection__icon
+            .mdw-selection__label 6
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="width" value="7")
+            .mdw-selection__icon
+            .mdw-selection__label 7
       .mdw-layout__item(mdw-colspan="100%" style="max-height:0")
-      .mdw-layout__item(mdw-colspan="100%")
-        .display-flex(flex-column)
-          h6.mdw-type HTML Code
-          .mdw-card.component-code.component-html
-      .mdw-layout__item(mdw-colspan="100%")
-        .display-flex(flex-column)
-          h6.mdw-type Javascript Code
-          .mdw-card.component-code.component-js
+      .mdw-layout__item(mdw-colspan="6")
+        h6.mdw-type HTML Code
+        .mdw-card.component-code.component-html
+      .mdw-layout__item(mdw-colspan="6")
+        h6.mdw-type Javascript Code
+        .mdw-card.component-code.component-js
       .mdw-layout__item(mdw-colspan="100%")
         h6.mdw-type Samples
       .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")

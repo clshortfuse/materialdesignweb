@@ -2,123 +2,119 @@ include ../mixins.pug
 
 +header()
   +navdrawer("textfield")
-    .mdw-layout(mdw-margin-top mdw-margin-bottom)
+    .mdw-layout(mdw-margin-top mdw-margin-bottom mdw-stretch)
       .mdw-layout__item(mdw-colspan="100%")
-        div
-          h5.mdw-type(mdw-baseline-next="36") Text fields allow users to input, edit, and select text.
-          p.mdw-type Text fields typically reside in forms but can appear in other places, like dialog boxes and search.
+        h5.mdw-type(mdw-baseline-next="36") Text fields allow users to input, edit, and select text.
+        p.mdw-type Text fields typically reside in forms but can appear in other places, like dialog boxes and search.
       .mdw-layout__item(mdw-colspan="4")
-        .component-sample
-          .component-sample__container
-            label.mdw-textfield
-              input.mdw-textfield__input(placeholder="Placeholder")
-              .mdw-textfield__border
-                .mdw-textfield__outline-gap
-                  .mdw-textfield__label Label
-                
+        .mdw-layout__content
+          .component-sample
+            .component-sample__container
+              label.mdw-textfield
+                input.mdw-textfield__input(placeholder="Placeholder")
+                .mdw-textfield__border
+                  .mdw-textfield__outline-gap
+                    .mdw-textfield__label Label
       .mdw-layout__item(mdw-colspan="8")
+        .mdw-type(mdw-style="subtitle") Javascript
         div
-          .mdw-type(mdw-style="subtitle") Javascript
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="javascript" value="required" disabled)
-              .mdw-selection__icon
-              .mdw-selection__label Required
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="javascript" value="optional" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Optional
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="javascript" value="none")
-              .mdw-selection__icon
-              .mdw-selection__label None
-          .mdw-type(mdw-style="subtitle") Field type
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="field-type" value="single-line" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Single-line
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="field-type" value="text-area")
-              .mdw-selection__icon
-              .mdw-selection__label Text area
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="field-type" value="dropdown")
-              .mdw-selection__icon
-              .mdw-selection__label Dropdown
-          .mdw-type(mdw-style="subtitle") Style
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="style" value="filled" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Filled
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="style" value="outlined")
-              .mdw-selection__icon
-              .mdw-selection__label Outlined
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="style" value="solo")
-              .mdw-selection__icon
-              .mdw-selection__label Solo
-          .mdw-type(mdw-style="subtitle") Options
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="signifier")
-              .mdw-selection__icon
-              .mdw-selection__label Signifier
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="prefix")
-              .mdw-selection__icon
-              .mdw-selection__label Prefix
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="suffix")
-              .mdw-selection__icon
-              .mdw-selection__label Suffix
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="helper-text")
-              .mdw-selection__icon
-              .mdw-selection__label Helper Text
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="error-text")
-              .mdw-selection__icon
-              .mdw-selection__label Error Text
-          .mdw-type(mdw-style="subtitle") Color
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="color" value="none" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Primary
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="color" value="accent")
-              .mdw-selection__icon
-              .mdw-selection__label Accent
-          .mdw-type(mdw-style="subtitle") Attributes
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="autosize" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Autosize
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="disabled")
-              .mdw-selection__icon
-              .mdw-selection__label Disabled
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="required")
-              .mdw-selection__icon
-              .mdw-selection__label Required
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="javascript" value="required" disabled)
+            .mdw-selection__icon
+            .mdw-selection__label Required
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="javascript" value="optional" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Optional
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="javascript" value="none")
+            .mdw-selection__icon
+            .mdw-selection__label None
+        .mdw-type(mdw-style="subtitle") Field type
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="field-type" value="single-line" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Single-line
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="field-type" value="text-area")
+            .mdw-selection__icon
+            .mdw-selection__label Text area
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="field-type" value="dropdown")
+            .mdw-selection__icon
+            .mdw-selection__label Dropdown
+        .mdw-type(mdw-style="subtitle") Style
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="style" value="filled" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Filled
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="style" value="outlined")
+            .mdw-selection__icon
+            .mdw-selection__label Outlined
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="style" value="solo")
+            .mdw-selection__icon
+            .mdw-selection__label Solo
+        .mdw-type(mdw-style="subtitle") Options
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="signifier")
+            .mdw-selection__icon
+            .mdw-selection__label Signifier
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="prefix")
+            .mdw-selection__icon
+            .mdw-selection__label Prefix
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="suffix")
+            .mdw-selection__icon
+            .mdw-selection__label Suffix
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="helper-text")
+            .mdw-selection__icon
+            .mdw-selection__label Helper Text
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="error-text")
+            .mdw-selection__icon
+            .mdw-selection__label Error Text
+        .mdw-type(mdw-style="subtitle") Color
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="color" value="none" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Primary
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="color" value="accent")
+            .mdw-selection__icon
+            .mdw-selection__label Accent
+        .mdw-type(mdw-style="subtitle") Attributes
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="autosize" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Autosize
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="disabled")
+            .mdw-selection__icon
+            .mdw-selection__label Disabled
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="required")
+            .mdw-selection__icon
+            .mdw-selection__label Required
       .mdw-layout__item(mdw-colspan="100%" style="max-height:0")
       .mdw-layout__item(mdw-colspan="6")
-        .display-flex(flex-column)
-          h6.mdw-type HTML Code
-          .mdw-card.component-code.component-html
-      .mdw-layout__item(mdw-colspan="2")
-        .display-flex(flex-column)
-          h6.mdw-type Javascript Code
-          .mdw-card.component-code.component-js
+        h6.mdw-type HTML Code
+        .mdw-card.component-code.component-html
+      .mdw-layout__item(mdw-colspan="6")
+        h6.mdw-type Javascript Code
+        .mdw-card.component-code.component-js
       .mdw-layout__item(mdw-colspan="100%")
         h6.mdw-type Samples
       .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
-        .render
+        .render-fill
           +androidstatusbar('primary-700 dark')
           +toolbar('primary-500 dark', ['arrow_back'], ['more_vert']) Application
           .content(style="padding:0px 16px")
@@ -161,7 +157,7 @@ include ../mixins.pug
               .mdw-textfield__helper-text Disabled Helper Text
           +androidnavbar
       .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
-        .render
+        .render-fill
           +androidstatusbar('accent-300')
           +toolbar('accent-A100 dark', ['arrow_back'], ['search'])
           form.content(style="padding:0px 16px")
@@ -200,7 +196,7 @@ include ../mixins.pug
           +androidnavbar
 
       .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
-        .render
+        .render-fill
           +androidstatusbar('accent-800')
           +toolbar('accent-A700 dark', ['arrow_back'], ['search'])
           form.content(style="padding:8px 16px")
@@ -264,7 +260,7 @@ include ../mixins.pug
                     .mdw-textfield__label Address type
           +androidnavbar
       .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
-        .render.mdw-theme-textfield
+        .render-fill.mdw-theme-textfield
           +androidstatusbar('primary-A700')
           +toolbar('primary-A200 dark', ['arrow_back'], ['done'])
           .content(style="padding:8px 16px")
@@ -311,7 +307,7 @@ include ../mixins.pug
               .mdw-textfield__helper-text Disabled Helper Text
           +androidnavbar
       .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
-        .render.mdw-theme-textfield
+        .render-fill.mdw-theme-textfield
           +androidstatusbar('accent-600')
           +toolbar('accent-A400 dark', ['arrow_back'], ['done'])
           .content(style="padding:0 16px")
@@ -333,7 +329,7 @@ include ../mixins.pug
                   .mdw-textfield__label Message
           +androidnavbar
       .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center")
-        .render.mdw-theme-textfield
+        .render-fill.mdw-theme-textfield
           +androidstatusbar('accent-A700')
           +toolbar('accent-A400 dark', ['arrow_back'], ['done'])
           .content(style="padding:0 16px")
@@ -362,7 +358,7 @@ include ../mixins.pug
           +androidnavbar
 
       .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center").js
-        .render.mdw-theme-textfield
+        .render-fill.mdw-theme-textfield
           +androidstatusbar('primary-A700')
           +toolbar('primary-A200 dark', ['arrow_back'], ['done']) With Javascript
           .content(style="padding:8px 16px")

@@ -2,103 +2,100 @@ include ../mixins.pug
 
 +header()
   +navdrawer("tab")
-    .mdw-layout(mdw-margin-top mdw-margin-bottom).docs-tab
+    .mdw-layout(mdw-margin-top mdw-margin-bottom mdw-stretch).docs-tab
       .mdw-layout__item(mdw-colspan="100%")
-        div
-          h5.mdw-type(mdw-baseline-next="36") Tabs make it easy to explore and switch between different views.
-          p.mdw-type Tabs enable content organization at a high level, such as switching between views, data sets, or functional aspects of an app.
+        h5.mdw-type(mdw-baseline-next="36") Tabs make it easy to explore and switch between different views.
+        p.mdw-type Tabs enable content organization at a high level, such as switching between views, data sets, or functional aspects of an app.
       .mdw-layout__item(mdw-colspan="4")
-        .component-sample
-          .component-sample__container
-            form.mdw-tab
-              input.mdw-tab__input#tab1(type="radio" name="tab" checked)
-              input.mdw-tab__input#tab2(type="radio" name="tab")
-              input.mdw-tab__input#tab3(type="radio" name="tab")
-              .mdw-tab__items(mdw-theme-color="accent-A200")
-                label.mdw-tab__item(for='tab1')
-                  .mdw-tab__label Item One
-                label.mdw-tab__item(for='tab2')
-                  .mdw-tab__label Item Two
-                label.mdw-tab__item(for='tab3')
-                  .mdw-tab__label Item Three
-                .mdw-tab__indicator
-              .mdw-tab__content
-                .mdw-tab__content-item Sample Content One
-                .mdw-tab__content-item Sample Content Two
-                .mdw-tab__content-item Sample Content Three
+        .mdw-layout__content
+          .component-sample
+            .component-sample__container
+              form.mdw-tab
+                input.mdw-tab__input#tab1(type="radio" name="tab" checked)
+                input.mdw-tab__input#tab2(type="radio" name="tab")
+                input.mdw-tab__input#tab3(type="radio" name="tab")
+                .mdw-tab__items(mdw-theme-color="accent-A200")
+                  label.mdw-tab__item(for='tab1')
+                    .mdw-tab__label Item One
+                  label.mdw-tab__item(for='tab2')
+                    .mdw-tab__label Item Two
+                  label.mdw-tab__item(for='tab3')
+                    .mdw-tab__label Item Three
+                  .mdw-tab__indicator
+                .mdw-tab__content
+                  .mdw-tab__content-item Sample Content One
+                  .mdw-tab__content-item Sample Content Two
+                  .mdw-tab__content-item Sample Content Three
       .mdw-layout__item(mdw-colspan="8")
+        .mdw-type(mdw-style="subtitle") Javascript
         div
-          .mdw-type(mdw-style="subtitle") Javascript
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="javascript" value="required")
-              .mdw-selection__icon
-              .mdw-selection__label Required
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="javascript" value="optional" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Optional
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="javascript" value="none")
-              .mdw-selection__icon
-              .mdw-selection__label None
-          .mdw-type(mdw-style="subtitle") Color
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="color" value="default")
-              .mdw-selection__icon
-              .mdw-selection__label Default
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="color" value="primary-400")
-              .mdw-selection__icon
-              .mdw-selection__label Primary 400
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="color" value="accent-A200" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Accent A200
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="color" value="warn")
-              .mdw-selection__icon
-              .mdw-selection__label Warn
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="color" value="purple-A400")
-              .mdw-selection__icon
-              .mdw-selection__label Purple-A400
-          .mdw-type(mdw-style="subtitle") Fill
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="fill" value="none" checked)
-              .mdw-selection__icon
-              .mdw-selection__label None
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="fill" value="primary dark")
-              .mdw-selection__icon
-              .mdw-selection__label Primary
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="fill" value="accent-A100 light")
-              .mdw-selection__icon
-              .mdw-selection__label Accent A100
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="fill" value="warn-200 light")
-              .mdw-selection__icon
-              .mdw-selection__label Warn 200
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="fill" value="green-700 dark")
-              .mdw-selection__icon
-              .mdw-selection__label Green 700
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="javascript" value="required")
+            .mdw-selection__icon
+            .mdw-selection__label Required
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="javascript" value="optional" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Optional
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="javascript" value="none")
+            .mdw-selection__icon
+            .mdw-selection__label None
+        .mdw-type(mdw-style="subtitle") Color
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="color" value="default")
+            .mdw-selection__icon
+            .mdw-selection__label Default
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="color" value="primary-400")
+            .mdw-selection__icon
+            .mdw-selection__label Primary 400
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="color" value="accent-A200" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Accent A200
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="color" value="warn")
+            .mdw-selection__icon
+            .mdw-selection__label Warn
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="color" value="purple-A400")
+            .mdw-selection__icon
+            .mdw-selection__label Purple-A400
+        .mdw-type(mdw-style="subtitle") Fill
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="fill" value="none" checked)
+            .mdw-selection__icon
+            .mdw-selection__label None
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="fill" value="primary dark")
+            .mdw-selection__icon
+            .mdw-selection__label Primary
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="fill" value="accent-A100 light")
+            .mdw-selection__icon
+            .mdw-selection__label Accent A100
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="fill" value="warn-200 light")
+            .mdw-selection__icon
+            .mdw-selection__label Warn 200
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="fill" value="green-700 dark")
+            .mdw-selection__icon
+            .mdw-selection__label Green 700
       .mdw-layout__item(mdw-colspan="100%" style="max-height:0")
       .mdw-layout__item(mdw-colspan="6")
-        .display-flex(flex-column)
-          h6.mdw-type HTML Code
-          .mdw-card.component-code.component-html
-      .mdw-layout__item(mdw-colspan="2")
-        .display-flex(flex-column)
-          h6.mdw-type Javascript Code
-          .mdw-card.component-code.component-js
+        h6.mdw-type HTML Code
+        .mdw-card.component-code.component-html
+      .mdw-layout__item(mdw-colspan="6")
+        h6.mdw-type Javascript Code
+        .mdw-card.component-code.component-js
       .mdw-layout__item(mdw-colspan="100%")
         h6.mdw-type Samples
-      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center").clipped
-        .render.mdw-theme-tab
+      .mdw-layout__item.display-flex(mdw-colspan="4").clipped-300
+        .render-fill.mdw-theme-tab
           form.mdw-tab
             input.mdw-tab__input#no-toolbar-tab1(type="radio" name="tab" value="one" checked)
             input.mdw-tab__input#no-toolbar-tab2(type="radio" name="tab" value="two")
@@ -116,8 +113,8 @@ include ../mixins.pug
               .mdw-tab__content-item Item Two
               .mdw-tab__content-item Item Three
 
-      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center").clipped
-        .render.mdw-theme-tab
+      .mdw-layout__item.display-flex(mdw-colspan="4").clipped-300
+        .render-fill.mdw-theme-tab
           +androidstatusbar('primary-700')
           .mdw-toolbar(mdw-theme-fill="primary-500 dark" mdw-prominent)
             .mdw-toolbar__action
@@ -141,8 +138,8 @@ include ../mixins.pug
                 .mdw-tab__indicator
           .content
 
-      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center").clipped
-        .render.mdw-theme-tab
+      .mdw-layout__item.display-flex(mdw-colspan="4").clipped-300
+        .render-fill.mdw-theme-tab
           +androidstatusbar('primary-700')
           form.mdw-tab
             input.mdw-tab__input(type="radio" name="tab" value="one" id='text-tab1' checked)
@@ -169,8 +166,8 @@ include ../mixins.pug
               .mdw-tab__content-item Item Two
               .mdw-tab__content-item Item Three
 
-      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center").clipped
-        .render.mdw-theme-tab
+      .mdw-layout__item.display-flex(mdw-colspan="4").clipped-300
+        .render-fill.mdw-theme-tab
           +androidstatusbar('background-600 dark')
           form.mdw-tab
             input.mdw-tab__input#clear-toolbar-tab1(type="radio" name="tab" value="one" checked)
@@ -197,8 +194,8 @@ include ../mixins.pug
               .mdw-tab__content-item Item Two
               .mdw-tab__content-item Item Three
 
-      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center").clipped
-        .render.mdw-theme-tab
+      .mdw-layout__item.display-flex(mdw-colspan="4").clipped-300
+        .render-fill.mdw-theme-tab
           +androidstatusbar('primary-700 dark')
           .mdw-toolbar(mdw-theme-fill="primary-500 dark" mdw-theme-color="accent")
             .mdw-toolbar__action
@@ -225,8 +222,8 @@ include ../mixins.pug
                 .mdw-tab__indicator
           .content
 
-      .mdw-layout__item.display-flex(mdw-colspan="4" flex-justify-content="center").clipped
-        .render.mdw-theme-tab
+      .mdw-layout__item.display-flex(mdw-colspan="4").clipped-300
+        .render-fill.mdw-theme-tab
           +androidstatusbar('background-600 dark')
           .mdw-toolbar
             .mdw-toolbar__action
@@ -249,7 +246,7 @@ include ../mixins.pug
                   .mdw-tab__icon.material-icons person_pin
                 .mdw-tab__indicator
           .content
-      .mdw-layout__item.display-flex(mdw-colspan="100%" flex-justify-content="center")
+      .mdw-layout__item.display-flex(mdw-colspan="100%")
         .display-flex(flex-column style="width:100%;padding:24px;box-sizing:border-box").mdw-theme-tab
           +androidstatusbar('primary-700 dark')
           .mdw-tab
@@ -280,8 +277,8 @@ include ../mixins.pug
               .mdw-tab__content-item Favorites
               .mdw-tab__content-item Nearby
 
-      .mdw-layout__item.display-flex(mdw-colspan="100%" flex-justify-content="center")
-        .display-flex(flex-column style="width:0;padding:24px;box-sizing:border-box").mdw-theme-tab.js
+      .mdw-layout__item.display-flex(mdw-colspan="100%")
+        .display-flex(flex-column style="padding:24px;box-sizing:border-box").mdw-theme-tab.js
           +androidstatusbar('primary-700 dark')
           .mdw-tab
             .mdw-toolbar(mdw-theme-fill="primary-500 dark")

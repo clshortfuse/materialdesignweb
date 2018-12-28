@@ -59,8 +59,18 @@ body {
   flex-direction: column;
 }
 
-.render {
+.render,
+.target {
+  min-width: 360px;
   max-width: 360px;
+}
+
+.render-fill {
+  flex: 1;
+}
+
+.render,
+.render-fill {
   max-height: 640px;
   border-color: #eee;
   border-width: 1px;
@@ -75,10 +85,10 @@ body {
 }
 
 .render,
+.render-fill,
 .target {
   position: relative;
   margin: 8px;
-  min-width: 360px;
   height: 640px;
   background-size: cover;
   background-repeat: no-repeat;
@@ -100,6 +110,7 @@ body {
 }
 
 
+
 .horizontal-controls {
   display:inline-flex;
   width:100%;
@@ -115,6 +126,10 @@ body {
 
 .display-flex {
   display: flex;
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
 }
 [flex-column] {
   flex-direction: column;
@@ -141,6 +156,7 @@ body {
 }
 
 .component-sample {
+  flex: 1;
   position: relative;
   display: flex;
   align-items: center;
@@ -233,6 +249,7 @@ body {
 
 .docs-layout {
   .mdw-card {
+    flex: 1;
     padding: 16px 8px;
     display: flex;
     justify-content: center;

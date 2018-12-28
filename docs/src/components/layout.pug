@@ -4,70 +4,67 @@ include ../mixins.pug
   +navdrawer("layout")
     .mdw-layout(mdw-margin-top)
       .mdw-layout__item(mdw-colspan="8")
-        div
-          h5.mdw-type(mdw-baseline-next="36") The Material Design responsive layout grid adapts to screen size and orientation, ensuring consistency across layouts.
-          p.mdw-type The Material Design layout grid is made up of three elements: columns, gutters, and margins.
+        h5.mdw-type(mdw-baseline-next="36") The Material Design responsive layout grid adapts to screen size and orientation, ensuring consistency across layouts.
+        p.mdw-type The Material Design layout grid is made up of three elements: columns, gutters, and margins.
       .mdw-layout__item(mdw-colspan="8")
+        .mdw-type(mdw-style="subtitle") Margins and Gutters
         div
-          .mdw-type(mdw-style="subtitle") Margins and Gutters
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="default-margins" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Default Margins and Gutters
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="top-margin" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Top Margin
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="bottom-margin" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Bottom Margin
-          .mdw-type(mdw-style="subtitle") Maximum Columns
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="columns" value="12" checked)
-              .mdw-selection__icon
-              .mdw-selection__label 12
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="columns" value="8")
-              .mdw-selection__icon
-              .mdw-selection__label 8
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="columns" value="4")
-              .mdw-selection__icon
-              .mdw-selection__label 4
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="columns" value="1")
-              .mdw-selection__icon
-              .mdw-selection__label 1
-          .mdw-type(mdw-style="subtitle") Style
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="style" value="flex" checked)
-              .mdw-selection__icon
-              .mdw-selection__label Flex
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="radio" name="style" value="grid")
-              .mdw-selection__icon
-              .mdw-selection__label Grid
-          .mdw-type(mdw-style="subtitle") Options
-          div
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="stretch")
-              .mdw-selection__icon
-              .mdw-selection__label Stretch
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="center")
-              .mdw-selection__icon
-              .mdw-selection__label Center
-            label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-              input.mdw-selection__input(type="checkbox" name="dense")
-              .mdw-selection__icon
-              .mdw-selection__label Dense
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="default-margins" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Default Margins and Gutters
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="top-margin" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Top Margin
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="bottom-margin" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Bottom Margin
+        .mdw-type(mdw-style="subtitle") Maximum Columns
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="columns" value="12" checked)
+            .mdw-selection__icon
+            .mdw-selection__label 12
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="columns" value="8")
+            .mdw-selection__icon
+            .mdw-selection__label 8
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="columns" value="4")
+            .mdw-selection__icon
+            .mdw-selection__label 4
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="columns" value="1")
+            .mdw-selection__icon
+            .mdw-selection__label 1
+        .mdw-type(mdw-style="subtitle") Style
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="style" value="flex" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Flex
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="style" value="grid")
+            .mdw-selection__icon
+            .mdw-selection__label Grid
+        .mdw-type(mdw-style="subtitle") Options
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="stretch")
+            .mdw-selection__icon
+            .mdw-selection__label Stretch
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="center")
+            .mdw-selection__icon
+            .mdw-selection__label Center
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="dense")
+            .mdw-selection__icon
+            .mdw-selection__label Dense
       .mdw-layout__item(mdw-colspan="100%")
-        div
-          p.mdw-type(style="text-align:center" mdw-baseline-top="36") Click on an element to change colspan
+        p.mdw-type(style="text-align:center" mdw-baseline-top="36") Click on an element to change colspan
     .docs-layout#sample-component
       .mdw-layout(mdw-margin-top mdw-margin-bottom)
         .mdw-layout__item(mdw-rowspan="2")
