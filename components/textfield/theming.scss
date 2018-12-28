@@ -167,6 +167,9 @@ $textfieldColors: (
   .mdw-textfield__input:-ms-input-placeholder {
     color: textfieldThemeValue("placeholder-color__focus", $type, $theme) !important;
   }
+  .mdw-textfield__input::-ms-input-placeholder {
+    color: textfieldThemeValue("placeholder-color__focus", $type, $theme) !important;
+  }
   .mdw-textfield__input {
     color: textfieldThemeValue("text-color", $type, $theme);
 
@@ -228,6 +231,9 @@ $textfieldColors: (
       color: transparent;
     }
     &:not([mdw-solo]) > .mdw-textfield__input:not(:focus):-ms-input-placeholder {
+      color: transparent !important;
+    }
+    &:not([mdw-solo]) > .mdw-textfield__input:not(:focus)::-ms-input-placeholder {
       color: transparent !important;
     }
     .mdw-textfield__input {
