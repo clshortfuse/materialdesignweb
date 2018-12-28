@@ -676,14 +676,16 @@ class DataTableAdapter {
       const buttons = this.paginationControls.getElementsByClassName('mdw-button');
       if (buttons.length !== 2) {
         this.previousPageButton = document.createElement('button');
-        this.previousPageButton.classList.add('mdw-button', 'material-icons');
+        this.previousPageButton.classList.add('mdw-button');
+        this.previousPageButton.classList.add('material-icons');
         this.previousPageButton.setAttribute('mdw-icon', '');
         this.previousPageButton.textContent = 'chevron_left';
         this.paginationControls.appendChild(this.previousPageButton);
         Button.attach(this.previousPageButton);
 
         this.nextPageButton = document.createElement('button');
-        this.nextPageButton.classList.add('mdw-button', 'material-icons');
+        this.nextPageButton.classList.add('mdw-button');
+        this.nextPageButton.classList.add('material-icons');
         this.nextPageButton.setAttribute('mdw-icon', '');
         this.nextPageButton.textContent = 'chevron_right';
         this.paginationControls.appendChild(this.nextPageButton);
