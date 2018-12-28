@@ -9,11 +9,14 @@ $list__divider-height: dp(1);
 .mdw-list {
   display: flex;
   flex-direction: column;
-  padding: 0;
-  margin: 0;
-  min-width: 100%;
   padding-top: 8px;
   padding-bottom: 8px;
+}
+
+ul.mdw-list {
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 .mdw-list__divider {
   min-width: 100%;
@@ -36,6 +39,7 @@ $list__divider-height: dp(1);
   }
 }
 .mdw-list__item {
+  flex: none;
   @include type-rules('subtitle');
   position: relative;
   display: flex;
@@ -201,9 +205,9 @@ $list__divider-height: dp(1);
   justify-content: center;
 }
 
-.mdw-list__icon,
-.mdw-list__secondary {
-  @include IEOnly() {
+@include IEOnly() {
+  .mdw-list__icon,
+  .mdw-list__secondary {
     // Fix IE min-height flexbug
     &::after {
       content: '';
