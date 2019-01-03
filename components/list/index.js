@@ -1,5 +1,9 @@
 import { Ripple } from '../ripple/index';
-import { findElementParentByClassName, dispatchDomEvent } from '../common/dom';
+import {
+  dispatchDomEvent,
+  findElementParentByClassName,
+  iterateArrayLike,
+} from '../common/dom';
 
 class ListItem {
   /**
@@ -72,25 +76,13 @@ class List {
    * @return {void}
    */
   static attach(listElement) {
-    const items = listElement.getElementsByClassName('mdw-list__item');
-    const expanders = listElement.getElementsByClassName('mdw-list__expander');
-    for (let i = 0; i < items.length; i += 1) {
-      ListItem.attach(items.item(i));
-    }
-    for (let i = 0; i < expanders.length; i += 1) {
-      ListExpander.attach(expanders.item(i));
-    }
+    iterateArrayLike(listElement.getElementsByClassName('mdw-list__item'), ListItem.attach);
+    iterateArrayLike(listElement.getElementsByClassName('mdw-list__expander'), ListExpander.attach);
   }
 
   static detach(listElement) {
-    const items = listElement.getElementsByClassName('mdw-list__item');
-    const expanders = listElement.getElementsByClassName('mdw-list__expander');
-    for (let i = 0; i < items.length; i += 1) {
-      ListItem.detach(items.item(i));
-    }
-    for (let i = 0; i < expanders.length; i += 1) {
-      ListExpander.detach(expanders.item(i));
-    }
+    iterateArrayLike(listElement.getElementsByClassName('mdw-list__item'), ListItem.detach);
+    iterateArrayLike(listElement.getElementsByClassName('mdw-list__expander'), ListExpander.detach);
   }
 }
 
