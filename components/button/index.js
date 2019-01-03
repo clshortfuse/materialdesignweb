@@ -1,4 +1,3 @@
-
 // https://www.w3.org/TR/wai-aria-practices/#button
 
 import { Ripple } from '../ripple/index';

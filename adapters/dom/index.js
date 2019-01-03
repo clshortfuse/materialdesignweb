@@ -14,10 +14,12 @@ function AnyDomAdapterRendererFn(element, data) {
     if (data.toString) {
       s = data.toString();
     } else {
-      s = new String(data).toString(); // eslint-disable-line no-new-wrappers
+      // eslint-disable-next-line no-new-wrappers
+      s = new String(data).toString();
     }
   }
   if (element.textContent !== s) {
+    // eslint-disable-next-line no-param-reassign
     element.textContent = s;
   }
 }

@@ -91,7 +91,9 @@ class TextField {
         if (input.value == null) {
           return null;
         }
-        return new Date((new Date(input.valueAsNumber).getTimezoneOffset() * 60 * 1000) + input.valueAsNumber);
+        return new Date(
+          (new Date(input.valueAsNumber).getTimezoneOffset() * 60 * 1000) + input.valueAsNumber
+        );
       default:
         return input.value;
     }
