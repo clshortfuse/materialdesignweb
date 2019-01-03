@@ -48,4 +48,47 @@ export function dispatchDomEvent(element, type) {
   return element.dispatchEvent(event);
 }
 
-export const nextTick = window.requestAnimationFrame || (cb => setTimeout(cb, 17));
+/**
+ * @param {ArrayLike<T>} arrayLike
+ * @param {function(T, number, ArrayLike<T>):any} fn
+ * @return {void}
+ * @template {any} T
+ */
+export function iterateArrayLike(arrayLike, fn) {
+  Array.prototype.forEach.call(arrayLike, fn);
+}
+
+/**
+ * @param {ArrayLike<T>} arrayLike
+ * @param {function(T, number, ArrayLike<T>):boolean} fn
+ * @return {boolean}
+ * @template {any} T
+ */
+export function iterateSomeOfArrayLike(arrayLike, fn) {
+  return Array.prototype.some.call(arrayLike, fn);
+}
+
+/**
+ * @param {Node} node
+ * @param {boolean=} create
+ * @return {Node}
+ */
+export function getTextNode(node, create) {
+  let textNode;
+  iterateSomeOfArrayLike(node.childNodes, (childNode) => {
+    if (childNode.nodeType !== Node.TEXT_NODE) {
+      return false;
+    }
+    textNode = childNode;
+    return true;
+  });
+  if (create && !textNode) {
+    textNode = document.createTextNode('');
+    node.appendChild(textNode);
+  }
+  return textNode;
+}
+
+export const nextTick = window.requestAnimationFrame || (cb => window.setTimeout(cb, 17));
+
+export const cancelTick = window.cancelAnimationFrame || window.clearTimeout;
