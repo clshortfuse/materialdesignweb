@@ -1,4 +1,5 @@
 import { TextField } from '../../components/textfield/index';
+import { iterateSomeOfArrayLike, iterateArrayLike, getTextNode } from '../../components/common/dom';
 
 /**
  * @param {string} input
@@ -25,20 +26,6 @@ function startsWithTextFilter(input, content) {
  * @return {string}
  */
 function defaultItemTextParser(item) {
-  /**
-   * @param {Node} node
-   * @return {string}
-   */
-  function getTextNodeOnly(node) {
-    let text = '';
-    for (let i = 0; i < node.childNodes.length; i += 1) {
-      const childNode = node.childNodes[i];
-      if (childNode.nodeType === Node.TEXT_NODE) {
-        text += childNode.textContent;
-      }
-    }
-    return text;
-  }
   if (item.hasAttribute('data-mdw-search-text')) {
     return item.getAttribute('data-mdw-search-text');
   }
@@ -49,10 +36,11 @@ function defaultItemTextParser(item) {
   if (!textElement) {
     textElement = item.querySelector('.mdw-list__text');
   }
-  if (textElement) {
-    return getTextNodeOnly(textElement);
+  const textNode = textElement ? getTextNode(textElement) : getTextNode(item);
+  if (textNode) {
+    return textNode.textContent || '';
   }
-  return getTextNodeOnly(item);
+  return '';
 }
 
 /**
@@ -65,17 +53,17 @@ function selectSibling(list, backwards) {
   const items = list.querySelectorAll('.mdw-list__item:not([hidden]):not([disabled])');
   let sibling;
   if (current && !current.hasAttribute('hidden')) {
-    for (let i = 0; i < items.length; i += 1) {
-      const item = items[i];
-      if (item === current) {
-        if (backwards) {
-          sibling = items[i - 1];
-        } else {
-          sibling = items[i + 1];
-        }
-        break;
+    iterateSomeOfArrayLike(items, (item, index) => {
+      if (item !== current) {
+        return false;
       }
-    }
+      if (backwards) {
+        sibling = items[index - 1];
+      } else {
+        sibling = items[index + 1];
+      }
+      return true;
+    });
   } else if (backwards) {
     sibling = items[items.length - 1];
   } else {
@@ -420,10 +408,9 @@ class SearchAdapter {
     }
     const input = this.input.value;
     const current = this.list.querySelector('.mdw-list__item[mdw-selected]');
-    const items = this.list.querySelectorAll('.mdw-list__item');
+    const items = this.list.getElementsByClassName('mdw-list__item');
     let hasItem = false;
-    for (let i = 0; i < items.length; i += 1) {
-      const item = items[i];
+    iterateArrayLike(items, (item) => {
       const content = this.itemTextParser(item);
       const fn = fnFilter || this.filter;
       if (fn(input, content)) {
@@ -432,7 +419,7 @@ class SearchAdapter {
       } else {
         item.setAttribute('hidden', '');
       }
-    }
+    });
     if (current && current.hasAttribute('hidden')) {
       const newSelection = selectSibling(this.list);
       if (newSelection) {
