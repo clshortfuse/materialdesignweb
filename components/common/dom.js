@@ -89,6 +89,33 @@ export function getTextNode(node, create) {
   return textNode;
 }
 
+/**
+ * @param {HTMLElement} element
+ * @param {boolean} [smooth=false]
+ * @return {void}
+ */
+export function scrollToElement(element, smooth) {
+  if (!element) {
+    return;
+  }
+  const parent = element.parentElement;
+  if (!parent) {
+    return;
+  }
+  if (parent.scrollLeft === element.offsetLeft) {
+    return;
+  }
+  if (smooth && parent.scrollTo) {
+    parent.scrollTo({
+      top: 0,
+      left: element.offsetLeft,
+      behavior: 'smooth',
+    });
+    return;
+  }
+  parent.scrollLeft = element.offsetLeft;
+}
+
 export const nextTick = window.requestAnimationFrame || (cb => window.setTimeout(cb, 17));
 
 export const cancelTick = window.cancelAnimationFrame || window.clearTimeout;

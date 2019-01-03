@@ -4,6 +4,7 @@ import {
   isRtl,
   iterateArrayLike,
   nextTick,
+  scrollToElement,
 } from '../common/dom';
 
 class TabItem {
@@ -31,6 +32,8 @@ class Tab {
    */
   static attach(tabElement) {
     const tabItemsElement = tabElement.getElementsByClassName('mdw-tab__items')[0];
+
+    tabItemsElement.setAttribute('mdw-js', '');
     let indicatorElement = tabItemsElement.getElementsByClassName('mdw-tab__indicator')[0];
     if (!indicatorElement) {
       indicatorElement = document.createElement('div');
@@ -41,6 +44,7 @@ class Tab {
     const tabContentElement = tabElement.getElementsByClassName('mdw-tab__content')[0];
     if (tabContentElement) {
       tabContentElement.addEventListener('scroll', Tab.onTabContentScroll);
+      tabContentElement.setAttribute('mdw-js', '');
     }
 
     /** @type {HTMLCollectionOf<HTMLInputElement>} */
@@ -60,17 +64,20 @@ class Tab {
       Tab.onInputChanged({ currentTarget: inputs[0] });
     }
 
-    let foundSelected = false;
+    let selectedItem;
     iterateArrayLike(items, (itemElement) => {
       TabItem.attach(itemElement);
       if (itemElement.hasAttribute('mdw-selected')) {
-        foundSelected = true;
-        Tab.selectItem(itemElement);
+        selectedItem = itemElement;
       }
       itemElement.addEventListener('click', Tab.onItemClicked);
     });
-    if (!foundSelected && items.length) {
-      Tab.selectItem(items[0]);
+    if (!selectedItem && items.length) {
+      selectedItem = items[0];
+    }
+    if (selectedItem) {
+      Tab.selectItem(selectedItem);
+      Tab.resetIndicatorPosition(tabElement, selectedItem);
     }
   }
 
@@ -79,26 +86,67 @@ class Tab {
    * @return {void}
    */
   static detach(tabElement) {
+    const tabItemsElement = tabElement.getElementsByClassName('mdw-tab__items')[0];
+    /** @type {HTMLElement} */
+    const indicatorElement = (tabItemsElement.getElementsByClassName('mdw-tab__indicator')[0]);
+    const tabContentElement = tabElement.getElementsByClassName('mdw-tab__content')[0];
+
+    tabItemsElement.removeAttribute('mdw-js');
+
     iterateArrayLike(tabElement.getElementsByClassName('mdw-tab__input'), (inputElement) => {
       inputElement.removeEventListener('change', Tab.onInputChanged);
     });
 
-    iterateArrayLike(tabElement.getElementsByClassName('mdw-tab__item'), (itemElement) => {
+    iterateArrayLike(tabItemsElement.getElementsByClassName('mdw-tab__item'), (itemElement) => {
       TabItem.detach(itemElement);
       itemElement.removeEventListener('click', Tab.onItemClicked);
       itemElement.removeAttribute('mdw-selected');
     });
 
-    const tabContentElement = tabElement.getElementsByClassName('mdw-tab__content')[0];
+    indicatorElement.style.removeProperty('transform');
 
     if (!tabContentElement) {
       return;
     }
     tabContentElement.removeAttribute('mdw-selected-index');
+    tabContentElement.removeAttribute('mdw-js');
     tabContentElement.removeEventListener('scroll', Tab.onTabContentScroll);
     iterateArrayLike(tabContentElement.getElementsByClassName('mdw-tab__content-item'), (item) => {
       item.removeAttribute('mdw-selected');
     });
+  }
+
+  static onResize(tabElement = document.getElementsByClassName('mdw-tab')[0]) {
+    let stage = 0;
+    tabElement.setAttribute('mdw-resize-stage', stage.toString());
+    /** @return {void} */
+    function performResize() {
+      if (!tabElement.hasAttribute('mdw-resize-stage')) {
+        // Skip resize
+        return;
+      }
+      const attrStage = tabElement.getAttribute('mdw-resize-stage');
+      if (attrStage !== stage.toString()) {
+        // Off-sync due to another resize event
+        return;
+      }
+      stage += 1;
+      tabElement.setAttribute('mdw-resize-stage', stage.toString());
+      if (stage === 2) {
+        const tabContentElement = tabElement.getElementsByClassName('mdw-tab__content')[0];
+        if (tabContentElement && tabContentElement.hasAttribute('mdw-scrollsnap')) {
+          const relatedContentItem = tabContentElement.querySelector('.mdw-tab__content-item[mdw-selected]');
+          scrollToElement(relatedContentItem, false);
+        }
+      } else if (stage === 4) {
+        Tab.resetIndicatorPosition(tabElement);
+      } else if (stage === 6) {
+        tabElement.removeAttribute('mdw-resize-stage');
+        return;
+      }
+      nextTick(performResize);
+    }
+    nextTick(performResize);
   }
 
   /**
@@ -108,12 +156,74 @@ class Tab {
   static onTabContentScroll(event) {
     /** @type {HTMLElement} */
     const tabContentElement = (event.currentTarget);
-    event.preventDefault();
-    event.stopPropagation();
-    tabContentElement.scrollLeft = 0;
-    nextTick(() => {
+    if (!tabContentElement.hasAttribute('mdw-scrollsnap')) {
+      event.preventDefault();
+      event.stopPropagation();
       tabContentElement.scrollLeft = 0;
-    });
+      nextTick(() => {
+        tabContentElement.scrollLeft = 0;
+      });
+      return;
+    }
+    const tabElement = findElementParentByClassName(tabContentElement, 'mdw-tab');
+    if (!tabElement) {
+      return;
+    }
+    if (tabElement.hasAttribute('mdw-resize-stage')) {
+      return;
+    }
+    const newTabItemElement = Tab.resetIndicatorPosition(tabElement);
+    if (!newTabItemElement) {
+      return;
+    }
+    if (newTabItemElement instanceof HTMLLabelElement) {
+      const inputElement = document.getElementById(newTabItemElement.getAttribute('for'));
+      if (inputElement && inputElement instanceof HTMLInputElement) {
+        inputElement.checked = true;
+      }
+    }
+    Tab.selectItem(newTabItemElement, false);
+  }
+
+  static resetIndicatorPosition(tabElement, selectedItem) {
+    const tabItemsElement = tabElement.getElementsByClassName('mdw-tab__items')[0];
+    const tabItems = tabItemsElement.getElementsByClassName('mdw-tab__item');
+    const indicatorElement = tabItemsElement.getElementsByClassName('mdw-tab__indicator')[0];
+
+    const tabContentElement = tabElement.getElementsByClassName('mdw-tab__content')[0];
+    let newTabItemElement = null;
+    let left = 0;
+    let width = 0;
+    if (tabContentElement && tabContentElement.hasAttribute('mdw-scrollsnap')) {
+      const scrollPoint = tabContentElement.scrollLeft / tabContentElement.clientWidth;
+      const leftItemIndex = Math.floor(scrollPoint);
+      const visibilityPercentage = scrollPoint - leftItemIndex;
+      const leftItem = tabItems.item(leftItemIndex);
+      const rightItem = tabItems.item(leftItemIndex + 1);
+      left = leftItem.offsetLeft;
+      let right = left + leftItem.offsetWidth;
+      if (rightItem && visibilityPercentage > 0) {
+        left += (visibilityPercentage * leftItem.offsetWidth);
+        right = rightItem.offsetLeft + (visibilityPercentage * rightItem.offsetWidth);
+      }
+      width = right - left;
+      if (visibilityPercentage < 0.5 && !leftItem.hasAttribute('mdw-selected')) {
+        newTabItemElement = leftItem;
+      } else if (rightItem && visibilityPercentage >= 0.5 && !rightItem.hasAttribute('mdw-selected')) {
+        newTabItemElement = rightItem;
+      }
+    } else if (selectedItem) {
+      left = selectedItem.offsetLeft;
+      width = selectedItem.offsetWidth;
+    } else {
+      const item = tabItemsElement.querySelector('.mdw-tab__item[mdw-selected]');
+      if (item) {
+        left = item.offsetLeft;
+        width = item.offsetWidth;
+      }
+    }
+    indicatorElement.style.setProperty('transform', `translateX(${left}px) scaleX(${width / 1000})`);
+    return newTabItemElement;
   }
 
   /**
@@ -135,10 +245,6 @@ class Tab {
     }
 
     Tab.selectItem(itemElement);
-    const tabItemsElement = findElementParentByClassName(itemElement, 'mdw-tab__items', false);
-    if (tabItemsElement && tabItemsElement.hasAttribute('mdw-scrollable')) {
-      itemElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-    }
   }
 
   static onInputChanged(event) {
@@ -154,9 +260,10 @@ class Tab {
 
   /**
    * @param {Element} itemElement
+   * @param {boolean} [scrollToContent=true]
    * @return {void}
    */
-  static selectItem(itemElement) {
+  static selectItem(itemElement, scrollToContent) {
     const tabElement = findElementParentByClassName(itemElement, 'mdw-tab');
     if (!tabElement) {
       return;
@@ -167,14 +274,15 @@ class Tab {
     }
     const tabItems = tabItemsElement.getElementsByClassName('mdw-tab__item');
     const tabContentElement = tabElement.getElementsByClassName('mdw-tab__content')[0];
-    let foundPreviousSelection = false;
-    let foundTarget = false;
-    let left = 0;
     let contentItems = null;
+    let relatedContentItem = null;
     if (tabContentElement) {
       contentItems = tabContentElement.getElementsByClassName('mdw-tab__content-item');
     }
     const isRtlValue = isRtl();
+
+    let foundPreviousSelection = false;
+    let foundTarget = false;
     for (let i = 0; i < tabItems.length; i += 1) {
       const index = isRtlValue ? tabItems.length - 1 - i : i;
       const tabItem = tabItems.item(index);
@@ -186,6 +294,7 @@ class Tab {
           tabContentElement.setAttribute('mdw-selected-index', index.toString());
         }
         if (contentItem) {
+          relatedContentItem = contentItem;
           contentItem.setAttribute('mdw-selected', '');
         }
       } else {
@@ -197,40 +306,28 @@ class Tab {
           contentItem.removeAttribute('mdw-selected');
         }
       }
-
-      if (!foundTarget) {
-        left += tabItem.clientWidth;
-      }
       if (foundTarget && foundPreviousSelection) {
         break;
       }
     }
 
     if (tabContentElement) {
-      tabContentElement.scrollLeft = 0;
-      nextTick(() => {
+      if (tabContentElement.hasAttribute('mdw-scrollsnap')) {
+        if ((scrollToContent !== false) && relatedContentItem) {
+          scrollToElement(relatedContentItem, true);
+        }
+      } else {
         tabContentElement.scrollLeft = 0;
-      });
+        nextTick(() => {
+          tabContentElement.scrollLeft = 0;
+        });
+        Tab.resetIndicatorPosition(tabElement, itemElement);
+      }
     }
 
-    /** @type {HTMLElement} */
-    const indicatorElement = (tabItemsElement.getElementsByClassName('mdw-tab__indicator')[0]);
-    // Animate selection
-    // Only use explicity positioning on scrollable tabs
-    const isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
-    if (!isIE11
-      && (!tabItemsElement.hasAttribute('mdw-scrollable') || !tabItemsElement.clientWidth)) {
-      // use CSS styling fallback
-      indicatorElement.style.removeProperty('transform');
-      indicatorElement.removeAttribute('mdw-js-indicator');
-      // this.onItemSelected(itemElement);
-      return;
+    if (tabItemsElement && tabItemsElement.hasAttribute('mdw-scrollable')) {
+      scrollToElement(itemElement, true);
     }
-    const width = itemElement.clientWidth;
-    if (!indicatorElement.hasAttribute('mdw-js-indicator')) {
-      indicatorElement.setAttribute('mdw-js-indicator', '');
-    }
-    indicatorElement.style.setProperty('transform', `translateX(${left}px) scaleX(${width})`);
   }
 }
 

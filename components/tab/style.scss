@@ -17,6 +17,15 @@ $tab__icon-with-label-height: 72;
   overflow-y: hidden;
   position: relative;
 
+  overscroll-behavior-x: none;
+
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display:none;
+  }
+  scrollbar-width: none;
+
   flex: none;
 
   display: flex; // IE11 doesn't support grid-auto-columns
@@ -26,7 +35,7 @@ $tab__icon-with-label-height: 72;
 
   justify-content: flex-start;
   flex-direction: row;
-  &[mdw-scrollable] {
+  &[mdw-js][mdw-scrollable] {
     display: flex;
     overflow-x: auto;
     box-sizing: border-box;
@@ -34,9 +43,6 @@ $tab__icon-with-label-height: 72;
       min-width: dp(90);
       max-width: 100%;
       flex: none;
-    }
-    > .mdw-tab__indicator {
-      margin-left: dp(52);
     }
     &::before,
     &::after {
@@ -59,7 +65,7 @@ $tab__icon-with-label-height: 72;
     left: auto;
   }
   background-color: currentColor;
-  transform-origin: left center;
+  transform-origin: 0 0 0;
   transition-property: transform;
   transition-timing-function: $motion-easing-standard;
   transition-duration: $motion-duration-desktop-default;
@@ -91,9 +97,13 @@ $tab__icon-with-label-height: 72;
     }
   }
   
-  &[mdw-js-indicator] {
-    width: 1px;
+  .mdw-tab__items[mdw-js] > & {
+    width: 1000px;
     transform: translateX(0);
+  }
+  .mdw-tab__items[mdw-js][mdw-scrollsnap] > & {
+    transition-timing-function: linear; // Safari lags on scroll events
+    transition: none;
   }
 }
 
@@ -135,7 +145,6 @@ $tab__icon-with-label-height: 72;
   }
 
   &[mdw-ripple] {
-    overflow: visible;
     &::after {
       // If using custom ripple, destroy ::after object
       content: none;
@@ -263,11 +272,47 @@ $tab__icon-with-label-height: 72;
   }
 }
 
-.mdw-tab__content[mdw-scrollsnap] {
-  scroll-snap-type: x mandatory;
-  -ms-scroll-snap-type: x mandatory;
+.mdw-tab__content[mdw-js][mdw-scrollsnap] {
+  display: block;
+  white-space: nowrap;
   overflow-x: scroll;
+
+  // Snap
+
+  // Firefox
+  scroll-snap-type-x: mandatory;
+  scroll-snap-points-x: repeat(100%);
+  
+  // Safari 9
+  -webkit-scroll-snap-type-x: mandatory;
+  -webkit-scroll-snap-points-x: repeat(100%);
+  
+  // IE + Edge
+  -ms-scroll-snap-x: mandatory snapInterval(0%, 100%);
+  
+  // W3C standard
+  scroll-snap-type: x mandatory;
+  
+  overscroll-behavior-x: none;
+
+  // Hide scrollbar
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display:none;
+  }
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  .mdw-tab[mdw-resize-stage] & {
+    scroll-behavior: auto;
+  }
+
   .mdw-tab__content-item {
-    scroll-snap-align: start none;
+    display: inline-block;
+    scroll-snap-align: center;
+    transform: none !important; // TODO: Refactor to remove
+    transition: none;
+    visibility: visible;
+    max-width: 100%;
+    min-width: 100%;
   }
 }
