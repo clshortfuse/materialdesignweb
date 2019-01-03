@@ -1,5 +1,6 @@
 import { Button } from '../../components/button/index';
 import { DataTable } from '../../components/datatable/index';
+import { iterateArrayLike, iterateSomeOfArrayLike } from '../../components/common/dom';
 
 /** @return {HTMLLabelElement} */
 function constructTableCheckbox() {
@@ -435,6 +436,7 @@ class DataTableAdapter {
       if (valueA.localeCompare) {
         return valueA.localeCompare(valueB) * direction;
       }
+      // eslint-disable-next-line eqeqeq
       if (valueA == valueB) {
         return 0;
       }
@@ -456,13 +458,11 @@ class DataTableAdapter {
         sortedTableHeaderCell.setAttribute('mdw-sorted', 'desc');
       }
     }
-    const tableHeaders = this.element.querySelectorAll('th');
-    for (let i = 0; i < tableHeaders.length; i += 1) {
-      const otherTableHeader = tableHeaders.item(i);
+    iterateArrayLike(this.element.getElementsByTagName('th'), (otherTableHeader) => {
       if (otherTableHeader !== sortedTableHeaderCell) {
         otherTableHeader.removeAttribute('mdw-sorted');
       }
-    }
+    });
   }
 
   /**
@@ -763,8 +763,7 @@ class DataTableAdapter {
    */
   clearNonvisibleRows(visibleRows) {
     const tbody = this.getTableBody();
-    const len = tbody.rows.length;
-    if (visibleRows.length === len) {
+    if (visibleRows.length === tbody.rows.length) {
       return;
     }
     let firstRowIndex = Infinity;
@@ -773,19 +772,19 @@ class DataTableAdapter {
       firstRowIndex = visibleRows[0].sectionRowIndex;
       lastRowIndex = visibleRows[visibleRows.length - 1].sectionRowIndex;
     }
-    for (let i = 0; i < len; i += 1) {
-      if (i < firstRowIndex || i > lastRowIndex) {
-        const row = tbody.rows.item(i);
-        if (row.lastChild) {
-          // Store row height to prevent layout shifting
-          const rect = row.getBoundingClientRect();
-          row.style.setProperty('height', `${rect.height || 0}px`);
-        }
-        while (row.lastChild) {
-          row.removeChild(row.lastChild);
-        }
+    iterateArrayLike(tbody.rows, (row, index) => {
+      if (index >= firstRowIndex && index <= lastRowIndex) {
+        return;
       }
-    }
+      if (row.lastChild) {
+        // Store row height to prevent layout shifting
+        const rect = row.getBoundingClientRect();
+        row.style.setProperty('height', `${rect.height || 0}px`);
+      }
+      while (row.lastChild) {
+        row.removeChild(row.lastChild);
+      }
+    });
   }
 
   /**
@@ -797,26 +796,26 @@ class DataTableAdapter {
     const rows = [];
     const minRowCount = window.screen.height / 48;
     if (len <= minRowCount) {
-      for (let i = 0; i < len; i += 1) {
-        rows.push(tbody.rows.item(i));
-      }
+      iterateArrayLike(tbody.rows, (row) => {
+        rows.push(row);
+      });
       return rows;
     }
     let foundFirstVisibleRow = false;
     let startIndex = 0;
     let endIndex = 0;
-    for (let i = 0; i < len; i += 1) {
-      const row = tbody.rows.item(i);
+    iterateSomeOfArrayLike(tbody.rows, (row, index) => {
       if (this.isRowVisible(row)) {
         if (!foundFirstVisibleRow) {
           foundFirstVisibleRow = true;
-          startIndex = i;
+          startIndex = index;
         }
-        endIndex = i;
+        endIndex = index;
       } else if (foundFirstVisibleRow) {
-        break;
+        return true;
       }
-    }
+      return false;
+    });
 
     while ((endIndex - startIndex) + 1 < minRowCount) {
       if (startIndex === 0) {
@@ -957,10 +956,9 @@ class DataTableAdapter {
       this.performLazyRender(true);
     } else {
       const tbody = this.getTableBody();
-      const len = tbody.rows.length;
-      for (let i = 0; i < len; i += 1) {
-        this.refreshRow(i);
-      }
+      iterateArrayLike(tbody.rows, (row, index) => {
+        this.refreshRow(index);
+      });
     }
     if (this.tabindexRowData) {
       const row = this.getTableRowForData(this.tabindexRowData);
@@ -1019,9 +1017,9 @@ class DataTableAdapter {
   refreshRow(rowIndex) {
     const row = this.getTableBody().rows.item(rowIndex);
     row.style.removeProperty('height');
-    for (let columnIndex = 0; columnIndex < this.columns.length; columnIndex += 1) {
+    this.columns.forEach((column, columnIndex) => {
       this.refreshCell(columnIndex, rowIndex);
-    }
+    });
   }
 
   /**
@@ -1133,10 +1131,9 @@ class DataTableAdapter {
    */
   refreshColumn(columnIndex) {
     const tbody = this.getTableBody();
-    const rowLen = tbody.rows.length;
-    for (let rowIndex = 0; rowIndex < rowLen; rowIndex += 1) {
+    iterateArrayLike(tbody.rows, (row, rowIndex) => {
       this.refreshCell(columnIndex, rowIndex);
-    }
+    });
   }
 }
 
