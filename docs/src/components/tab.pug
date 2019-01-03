@@ -97,9 +97,9 @@ include ../mixins.pug
       .mdw-layout__item.display-flex(mdw-colspan="4").clipped-300
         .render-fill.mdw-theme-tab
           form.mdw-tab
-            input.mdw-tab__input#no-toolbar-tab1(type="radio" name="tab" value="one" checked)
-            input.mdw-tab__input#no-toolbar-tab2(type="radio" name="tab" value="two")
-            input.mdw-tab__input#no-toolbar-tab3(type="radio" name="tab" value="three")
+            input.mdw-tab__input#no-toolbar-tab1(type="radio" name="sample-1" value="one" checked)
+            input.mdw-tab__input#no-toolbar-tab2(type="radio" name="sample-1" value="two")
+            input.mdw-tab__input#no-toolbar-tab3(type="radio" name="sample-1" value="three")
             .mdw-tab__items(mdw-theme-fill="primary-500 dark" mdw-theme-color="accent")
               label.mdw-tab__item(for='no-toolbar-tab1')
                 .mdw-tab__label Item One
@@ -125,9 +125,9 @@ include ../mixins.pug
                 .mdw-button(mdw-icon).material-icons search
                 .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
             form.mdw-tab
-              input.mdw-tab__input#large-text-tab1(type="radio" name="tab" value="one" checked)
-              input.mdw-tab__input#large-text-tab2(type="radio" name="tab" value="two")
-              input.mdw-tab__input#large-text-tab3(type="radio" name="tab" value="three")
+              input.mdw-tab__input#large-text-tab1(type="radio" name="sample-2" value="one" checked)
+              input.mdw-tab__input#large-text-tab2(type="radio" name="sample-2" value="two")
+              input.mdw-tab__input#large-text-tab3(type="radio" name="sample-2" value="three")
               .mdw-tab__items(mdw-theme-color="accent")
                 label.mdw-tab__item(for='large-text-tab1')
                   .mdw-tab__label Item One
@@ -142,9 +142,9 @@ include ../mixins.pug
         .render-fill.mdw-theme-tab
           +androidstatusbar('primary-700')
           form.mdw-tab
-            input.mdw-tab__input(type="radio" name="tab" value="one" id='text-tab1' checked)
-            input.mdw-tab__input(type="radio" name="tab" value="two" id='text-tab2')
-            input.mdw-tab__input(type="radio" name="tab" value="three" id='text-tab3')
+            input.mdw-tab__input(type="radio" name="sample-3" value="one" id='text-tab1' checked)
+            input.mdw-tab__input(type="radio" name="sample-3" value="two" id='text-tab2')
+            input.mdw-tab__input(type="radio" name="sample-3" value="three" id='text-tab3')
             .mdw-tab__items-wrapper.mdw-toolbar(mdw-theme-fill="primary-500 dark")
               .mdw-toolbar__action
                 .mdw-toolbar__start
@@ -170,9 +170,9 @@ include ../mixins.pug
         .render-fill.mdw-theme-tab
           +androidstatusbar('background-600 dark')
           form.mdw-tab
-            input.mdw-tab__input#clear-toolbar-tab1(type="radio" name="tab" value="one" checked)
-            input.mdw-tab__input#clear-toolbar-tab2(type="radio" name="tab" value="two")
-            input.mdw-tab__input#clear-toolbar-tab3(type="radio" name="tab" value="three")
+            input.mdw-tab__input#clear-toolbar-tab1(type="radio" name="sample-4" value="one" checked)
+            input.mdw-tab__input#clear-toolbar-tab2(type="radio" name="sample-4" value="two")
+            input.mdw-tab__input#clear-toolbar-tab3(type="radio" name="sample-4" value="three")
             .mdw-tab__items-wrapper.mdw-toolbar
               .mdw-toolbar__action
                 .mdw-toolbar__start
@@ -206,9 +206,9 @@ include ../mixins.pug
                 .mdw-button(mdw-icon).material-icons search
                 .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
             form.mdw-tab
-              input.mdw-tab__input(type="radio" name="tab" value="recents" id='tab-text-icon1' checked)
-              input.mdw-tab__input(type="radio" name="tab" value="favorites" id='tab-text-icon2')
-              input.mdw-tab__input(type="radio" name="tab" value="nearby" id='tab-text-icon3')
+              input.mdw-tab__input(type="radio" name="sample-5" value="recents" id='tab-text-icon1' checked)
+              input.mdw-tab__input(type="radio" name="sample-5" value="favorites" id='tab-text-icon2')
+              input.mdw-tab__input(type="radio" name="sample-5" value="nearby" id='tab-text-icon3')
               .mdw-tab__items(mdw-theme-color="accent")
                 label.mdw-tab__item(for='tab-text-icon1')
                   .mdw-tab__icon.material-icons phone
@@ -234,9 +234,9 @@ include ../mixins.pug
                 .mdw-button(mdw-icon).material-icons search
                 .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
             form.mdw-tab
-              input.mdw-tab__input(type="radio" name="tab" value="recents" id='tabs-icon1' checked)
-              input.mdw-tab__input(type="radio" name="tab" value="favorites" id='tabs-icon2')
-              input.mdw-tab__input(type="radio" name="tab" value="nearby" id='tabs-icon3')
+              input.mdw-tab__input(type="radio" name="sample-6" value="recents" id='tabs-icon1' checked)
+              input.mdw-tab__input(type="radio" name="sample-6" value="favorites" id='tabs-icon2')
+              input.mdw-tab__input(type="radio" name="sample-6" value="nearby" id='tabs-icon3')
               .mdw-tab__items(mdw-theme-color="primary")
                 label.mdw-tab__item(for='tabs-icon1')
                   .mdw-tab__icon.material-icons phone
@@ -250,9 +250,9 @@ include ../mixins.pug
         .display-flex(flex-column style="width:100%;padding:24px;box-sizing:border-box").mdw-theme-tab
           +androidstatusbar('primary-700 dark')
           .mdw-tab
-            input.mdw-tab__input(type="radio" name="tab" value="recents" id='dynamic-1' checked)
-            input.mdw-tab__input(type="radio" name="tab" value="favorites" id='dynamic-2')
-            input.mdw-tab__input(type="radio" name="tab" value="nearby" id='dynamic-3')
+            input.mdw-tab__input(type="radio" name="sample-7" value="recents" id='dynamic-1' checked)
+            input.mdw-tab__input(type="radio" name="sample-7" value="favorites" id='dynamic-2')
+            input.mdw-tab__input(type="radio" name="sample-7" value="nearby" id='dynamic-3')
             .mdw-tab__items-wrapper.mdw-toolbar(mdw-theme-fill="primary-500 dark")
               .mdw-toolbar__action
                 .mdw-toolbar__start
