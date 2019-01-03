@@ -1,4 +1,10 @@
-import { isRtl, findElementParentByClassName, dispatchDomEvent } from '../common/dom';
+import {
+  dispatchDomEvent,
+  isRtl,
+  findElementParentByClassName,
+  iterateArrayLike,
+  iterateSomeOfArrayLike,
+} from '../common/dom';
 
 // https://www.w3.org/TR/wai-aria-practices/#grid
 
@@ -25,8 +31,7 @@ export class DataTable {
     let foundTabbableRow = false;
     let firstCell = null;
     let foundTabbableCell = false;
-    for (let i = 0; i < tbody.rows.length; i += 1) {
-      const row = tbody.rows.item(i);
+    iterateArrayLike(tbody.rows, (row) => {
       if (rowFocusable) {
         if (!firstRow) {
           firstRow = row;
@@ -39,8 +44,7 @@ export class DataTable {
       } else {
         row.removeAttribute('tabindex');
       }
-      for (let j = 0; j < row.cells.length; j += 1) {
-        const cell = row.cells.item(j);
+      iterateArrayLike(row.cells, (cell) => {
         if (cellFocusable && !rowFocusable) {
           if (!firstCell) {
             firstCell = cell;
@@ -53,8 +57,8 @@ export class DataTable {
         } else {
           cell.removeAttribute('tabindex');
         }
-      }
-    }
+      });
+    });
     if (rowFocusable && !foundTabbableRow && firstRow) {
       DataTable.updateTabIndex(firstRow, false);
     } else if (cellFocusable && !foundTabbableCell && firstCell) {
@@ -80,7 +84,8 @@ export class DataTable {
         return;
       }
       event.stopPropagation();
-      row = cell.parentElement;
+      /** @type {HTMLTableRowElement} */
+      row = (cell.parentElement);
       let hasSelection = false;
       if (target.checked) {
         row.setAttribute('mdw-selected', '');
@@ -89,12 +94,7 @@ export class DataTable {
         row.removeAttribute('mdw-selected');
         /** @type {NodeListOf<HTMLInputElement>} */
         const checkboxes = (mdwDataTable.querySelectorAll('td[mdw-selector] input[type=checkbox]'));
-        for (let i = 0; i < checkboxes.length; i += 1) {
-          if (checkboxes.item(i).checked) {
-            hasSelection = true;
-            break;
-          }
-        }
+        hasSelection = iterateSomeOfArrayLike(checkboxes, checkbox => checkbox.checked);
       }
       if (hasSelection) {
         mdwDataTable.setAttribute('mdw-has-selection', '');
@@ -112,7 +112,8 @@ export class DataTable {
     }
 
     if (cell) {
-      row = cell.parentElement;
+      /** @type {HTMLTableRowElement} */
+      row = (cell.parentElement);
       const cellFocusable = mdwDataTable.hasAttribute('mdw-cell-focusable');
       if (cellFocusable) {
         DataTable.updateTabIndex(cell);
@@ -140,22 +141,18 @@ export class DataTable {
         tbody = tbody.parentElement;
       }
       if (element instanceof HTMLTableCellElement) {
-        const otherTabIndexes = tbody.querySelectorAll('td[tabindex="0"]');
-        for (let i = 0; i < otherTabIndexes.length; i += 1) {
-          const otherTabIndexItem = otherTabIndexes.item(i);
-          if (otherTabIndexItem !== element) {
-            otherTabIndexItem.setAttribute('tabindex', '-1');
+        iterateArrayLike(tbody.querySelectorAll('td[tabindex="0"]'), (td) => {
+          if (td !== element) {
+            td.setAttribute('tabindex', '-1');
           }
-        }
+        });
       }
       if (element instanceof HTMLTableRowElement) {
-        const otherTabIndexes = tbody.querySelectorAll('tr[tabindex="0"]');
-        for (let i = 0; i < otherTabIndexes.length; i += 1) {
-          const otherTabIndexItem = otherTabIndexes.item(i);
-          if (otherTabIndexItem !== element) {
-            otherTabIndexItem.setAttribute('tabindex', '-1');
+        iterateArrayLike(tbody.querySelectorAll('tr[tabindex="0"]'), (tr) => {
+          if (tr !== element) {
+            tr.setAttribute('tabindex', '-1');
           }
-        }
+        });
       }
     }
     if (element.getAttribute('tabindex') !== '0') {
@@ -209,13 +206,11 @@ export class DataTable {
     } else {
       cell.setAttribute('mdw-sorted', 'desc');
     }
-    const thItems = cell.parentElement.getElementsByTagName('th');
-    for (let i = 0; i < thItems.length; i += 1) {
-      const th = thItems[i];
+    iterateArrayLike(cell.parentElement.getElementsByTagName('th'), (th) => {
       if (th !== cell) {
         th.removeAttribute('mdw-sorted');
       }
-    }
+    });
 
     /** @type {HTMLTableSectionElement} */
     const tbody = DataTable.getTableBody(mdwTable);
