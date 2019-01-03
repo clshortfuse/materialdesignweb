@@ -1,5 +1,10 @@
 import { Ripple } from '../ripple/index';
-import { findElementParentByClassName, isRtl, nextTick } from '../common/dom';
+import {
+  findElementParentByClassName,
+  isRtl,
+  iterateArrayLike,
+  nextTick,
+} from '../common/dom';
 
 class TabItem {
   /**
@@ -38,33 +43,32 @@ class Tab {
       tabContentElement.addEventListener('scroll', Tab.onTabContentScroll);
     }
 
-    const inputs = tabElement.getElementsByClassName('mdw-tab__input');
+    /** @type {HTMLCollectionOf<HTMLInputElement>} */
+    const inputs = (tabElement.getElementsByClassName('mdw-tab__input'));
     const items = tabElement.getElementsByClassName('mdw-tab__item');
 
     let foundChecked = false;
-    for (let i = 0; i < inputs.length; i += 1) {
-      const inputElement = inputs[i];
+    iterateArrayLike(inputs, (inputElement) => {
       if (inputElement.checked) {
         foundChecked = true;
         Tab.onInputChanged({ currentTarget: inputElement });
       }
       inputElement.addEventListener('change', Tab.onInputChanged);
-    }
+    });
     if (!foundChecked && inputs.length) {
       inputs[0].checked = true;
       Tab.onInputChanged({ currentTarget: inputs[0] });
     }
 
     let foundSelected = false;
-    for (let i = 0; i < items.length; i += 1) {
-      const itemElement = items[i];
+    iterateArrayLike(items, (itemElement) => {
       TabItem.attach(itemElement);
       if (itemElement.hasAttribute('mdw-selected')) {
         foundSelected = true;
         Tab.selectItem(itemElement);
       }
       itemElement.addEventListener('click', Tab.onItemClicked);
-    }
+    });
     if (!foundSelected && items.length) {
       Tab.selectItem(items[0]);
     }
@@ -75,31 +79,26 @@ class Tab {
    * @return {void}
    */
   static detach(tabElement) {
-    const inputs = tabElement.getElementsByClassName('mdw-tab__input');
-    const items = tabElement.getElementsByClassName('mdw-tab__item');
-    const tabContentElement = tabElement.getElementsByClassName('mdw-tab__content')[0];
-    const tabContentItems = tabElement.getElementsByClassName('mdw-tab__content-item');
-
-    for (let i = 0; i < inputs.length; i += 1) {
-      const inputElement = inputs[i];
+    iterateArrayLike(tabElement.getElementsByClassName('mdw-tab__input'), (inputElement) => {
       inputElement.removeEventListener('change', Tab.onInputChanged);
-    }
+    });
 
-    for (let i = 0; i < items.length; i += 1) {
-      const itemElement = items[i];
+    iterateArrayLike(tabElement.getElementsByClassName('mdw-tab__item'), (itemElement) => {
       TabItem.detach(itemElement);
       itemElement.removeEventListener('click', Tab.onItemClicked);
       itemElement.removeAttribute('mdw-selected');
-    }
+    });
 
-    if (tabContentElement) {
-      tabContentElement.removeAttribute('mdw-selected-index');
-      tabContentElement.removeEventListener('scroll', Tab.onTabContentScroll);
+    const tabContentElement = tabElement.getElementsByClassName('mdw-tab__content')[0];
+
+    if (!tabContentElement) {
+      return;
     }
-    for (let i = 0; i < tabContentItems.length; i += 1) {
-      const itemElement = tabContentItems[i];
-      itemElement.removeAttribute('mdw-selected');
-    }
+    tabContentElement.removeAttribute('mdw-selected-index');
+    tabContentElement.removeEventListener('scroll', Tab.onTabContentScroll);
+    iterateArrayLike(tabContentElement.getElementsByClassName('mdw-tab__content-item'), (item) => {
+      item.removeAttribute('mdw-selected');
+    });
   }
 
   /**
