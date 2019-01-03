@@ -1,5 +1,10 @@
 import { Ripple } from '../ripple/index';
-import { dispatchDomEvent, isRtl } from '../common/dom';
+import {
+  dispatchDomEvent,
+  isRtl,
+  iterateArrayLike,
+  iterateSomeOfArrayLike,
+} from '../common/dom';
 
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
@@ -207,10 +212,7 @@ class Menu {
         popupElement.removeAttribute('style');
       }
     }
-    const menuItems = menuElement.getElementsByClassName('mdw-menu__item');
-    for (let i = 0; i < menuItems.length; i += 1) {
-      MenuItem.detach(menuItems.item(i));
-    }
+    iterateArrayLike(menuElement.getElementsByClassName('mdw-menu__item'), MenuItem.detach);
   }
 
   static selectNextMenuItem(menu, backwards) {
@@ -224,8 +226,7 @@ class Menu {
     // Hidden elements cannot be focused
     // Disabled elements cannot be focused on IE11
     // Skip elements that fail to receive focus
-    for (let i = 0; i < menuItems.length; i += 1) {
-      const el = menuItems.item(i);
+    iterateSomeOfArrayLike(menuItems, (el) => {
       el.focus();
       const focusable = (document.activeElement === el);
       if (focusable) {
@@ -237,19 +238,25 @@ class Menu {
       if (el === target) {
         foundTarget = true;
         if (backwards && candidate) {
-          break;
+          return true;
         }
-      } else if (backwards) {
-        if (focusable) {
-          candidate = el;
-        }
-      } else if (foundTarget) {
-        if (focusable) {
-          candidate = el;
-          break;
-        }
+        return false;
       }
-    }
+      if (backwards) {
+        if (focusable) {
+          candidate = el;
+        }
+        return false;
+      }
+      if (foundTarget) {
+        if (focusable) {
+          candidate = el;
+          return true;
+        }
+        return false;
+      }
+      return false;
+    });
     if (!candidate) {
       if (backwards) {
         candidate = lastFocusableElement;
@@ -602,12 +609,10 @@ class Menu {
    * @return {void}
    */
   static refreshMenuItems(menuElement) {
-    const menuItems = menuElement.getElementsByClassName('mdw-menu__item');
-    for (let i = 0; i < menuItems.length; i += 1) {
-      const menuItem = menuItems.item(i);
+    iterateArrayLike(menuElement.getElementsByClassName('mdw-menu__item'), (menuItem) => {
       menuItem.setAttribute('tabindex', '-1');
       MenuItem.attach(menuItem);
-    }
+    });
     const popupElement = menuElement.getElementsByClassName('mdw-menu__popup')[0];
     popupElement.setAttribute('tabindex', '-1');
   }
