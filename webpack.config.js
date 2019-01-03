@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 const cssnano = require('cssnano');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const isProduction = (process.env.NODE_ENV === 'production');
 
@@ -51,18 +50,12 @@ function getComponentsConfig() {
         ],
       }],
     },
-    plugins: [
-      new UglifyJSPlugin(),
-    ],
   };
 }
 
 /** @return {Object} */
 function getDocsConfig() {
   const plugins = [];
-  if (isProduction) {
-    plugins.push(new UglifyJSPlugin({ sourceMap: true }));
-  }
   const entries = {
     prerender: ['./docs/src/prerender.js'],
     index: ['./docs/src/index.pug', './docs/src/index.js'],
