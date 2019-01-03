@@ -1,17 +1,13 @@
 import { Button } from '../../../components/button/index';
 import { Fab } from '../../../components/fab/index';
+import { iterateArrayLike } from '../../../components/common/dom';
 
 /** @return {void} */
 function initializeMdwComponents() {
-  let components;
-  components = document.querySelectorAll('.js .mdw-fab');
-  for (let i = 0; i < components.length; i += 1) {
-    Fab.attach(components.item(i));
-  }
-  components = document.querySelectorAll('.js .mdw-button');
-  for (let i = 0; i < components.length; i += 1) {
-    Button.attach(components.item(i));
-  }
+  iterateArrayLike(document.querySelectorAll('.js .mdw-fab'), Fab.attach);
+
+  iterateArrayLike(document.querySelectorAll('.js .mdw-button'), Button.attach);
+
   document.querySelector('input[name="hover"]').addEventListener('change', (event) => {
     if (event.currentTarget.checked) {
       document.querySelector('.js .mdw-fab__speed-dial').setAttribute('mdw-hover', '');

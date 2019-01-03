@@ -1,11 +1,9 @@
 import { Bottomnav } from '../../../components/bottomnav/index';
+import { iterateArrayLike } from '../../../components/common/dom';
 
 /** @return {void} */
 function initializeMdwComponents() {
-  const bottomnavs = document.querySelectorAll('.js .mdw-bottomnav');
-  for (let i = 0; i < bottomnavs.length; i += 1) {
-    Bottomnav.attach(bottomnavs.item(i));
-  }
+  iterateArrayLike(document.querySelectorAll('.js .mdw-bottomnav'), Bottomnav.attach);
 }
 
 initializeMdwComponents();

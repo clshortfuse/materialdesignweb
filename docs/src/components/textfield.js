@@ -1,12 +1,10 @@
 import { TextField } from '../../../components/textfield/index';
-import { convertElementToCode, attachEventListener } from '../sample-utils';
+import { convertElementToCode } from '../sample-utils';
+import { iterateArrayLike } from '../../../components/common/dom';
 
 /** @return {void} */
 function initializeSampleComponents() {
-  const textfields = document.querySelectorAll('.js .mdw-textfield');
-  for (let i = 0; i < textfields.length; i += 1) {
-    TextField.attach(textfields.item(i));
-  }
+  iterateArrayLike(document.querySelectorAll('.js .mdw-textfield'), TextField.attach);
 }
 
 /** @type {HTMLElement} */
@@ -247,11 +245,9 @@ function onOptionChange(event) {
 /** @return {void} */
 function setupComponentOptions() {
   sampleComponent = document.querySelector('.component-sample .mdw-textfield');
-  attachEventListener(
-    document.querySelectorAll('input[name]'),
-    'change',
-    onOptionChange
-  );
+  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+    el.addEventListener('change', onOptionChange);
+  });
 }
 
 initializeSampleComponents();

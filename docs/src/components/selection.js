@@ -1,11 +1,9 @@
 import { List } from '../../../components/list/index';
+import { iterateArrayLike } from '../../../components/common/dom';
 
 /** @return {void} */
 function initializeMdwComponents() {
-  const lists = document.getElementsByClassName('mdw-list');
-  for (let i = 0; i < lists.length; i += 1) {
-    List.attach(lists.item(i));
-  }
+  iterateArrayLike(document.getElementsByClassName('mdw-list'), List.attach);
 }
 
 initializeMdwComponents();

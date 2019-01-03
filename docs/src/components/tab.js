@@ -1,5 +1,6 @@
 import { Tab } from '../../../components/tab/index';
-import { convertElementToCode, attachEventListener, changeElementTagName } from '../sample-utils';
+import { convertElementToCode, changeElementTagName } from '../sample-utils';
+import { iterateArrayLike } from '../../../components/common/dom';
 
 /** @type {HTMLElement} */
 let sampleComponent;
@@ -70,10 +71,7 @@ function updateSampleCode() {
 
 /** @return {void} */
 function initializeSampleComponents() {
-  const tabs = document.querySelectorAll('.js .mdw-tab');
-  for (let i = 0; i < tabs.length; i += 1) {
-    Tab.attach(tabs.item(i));
-  }
+  iterateArrayLike(document.querySelectorAll('.js .mdw-tab'), Tab.attach);
 }
 
 /**
@@ -81,7 +79,7 @@ function initializeSampleComponents() {
  * @return {void}
  */
 function onOptionChange(event) {
-  const { name, value, checked } = event.target;
+  const { name, value } = event.target;
   const tabItemsElement = sampleComponent.querySelector('.mdw-tab__items');
 
   switch (name) {
@@ -122,11 +120,9 @@ function onOptionChange(event) {
 /** @return {void} */
 function setupComponentOptions() {
   sampleComponent = document.querySelector('.component-sample .mdw-tab');
-  attachEventListener(
-    document.querySelectorAll('input[name]'),
-    'change',
-    onOptionChange
-  );
+  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+    el.addEventListener('change', onOptionChange);
+  });
 }
 
 initializeSampleComponents();

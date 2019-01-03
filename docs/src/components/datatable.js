@@ -1,3 +1,4 @@
+import { iterateArrayLike } from '../../../components/common/dom';
 import { Button } from '../../../components/button/index';
 import { DataTable } from '../../../components/datatable/index';
 import { Menu } from '../../../components/menu/index';
@@ -5,19 +6,9 @@ import { DataTableAdapter } from '../../../adapters/datatable/index';
 
 /** @return {void} */
 function initializeMdwComponents() {
-  let components;
-  components = document.querySelectorAll('.mdw-datatable');
-  for (let i = 0; i < components.length; i += 1) {
-    DataTable.attach(components.item(i));
-  }
-  components = document.querySelectorAll('.mdw-button');
-  for (let i = 0; i < components.length; i += 1) {
-    Button.attach(components.item(i));
-  }
-  components = document.querySelectorAll('.mdw-menu');
-  for (let i = 0; i < components.length; i += 1) {
-    Menu.attach(components.item(i));
-  }
+  iterateArrayLike(document.getElementsByClassName('mdw-datatable'), DataTable.attach);
+  iterateArrayLike(document.getElementsByClassName('mdw-button'), Button.attach);
+  iterateArrayLike(document.getElementsByClassName('mdw-menu'), Menu.attach);
 }
 
 
@@ -93,6 +84,8 @@ function buildDynamicTable() {
   filterButton.addEventListener('click', (event) => {
     Menu.show(filterMenu, event);
   });
+
+  // Prefer NodeList instead of HTMLCollection
   const filterMenuItems = filterMenu.querySelectorAll('.mdw-menu__item');
   const noFilterMenuItem = filterMenuItems[0];
   const mdFilterMenuItem = filterMenuItems[1];
@@ -105,14 +98,13 @@ function buildDynamicTable() {
    * @return {void}
    */
   function setMenuChecked(menuItems, checkedIndex) {
-    for (let i = 0; i < menuItems.length; i += 1) {
-      const menuItem = menuItems.item(i);
-      if (checkedIndex === i) {
+    iterateArrayLike(menuItems, (menuItem, index) => {
+      if (checkedIndex === index) {
         menuItem.setAttribute('mdw-checked', '');
       } else {
         menuItem.removeAttribute('mdw-checked');
       }
-    }
+    });
   }
   noFilterMenuItem.addEventListener('click', () => {
     dynamicTableAdapter.setFilter(null);

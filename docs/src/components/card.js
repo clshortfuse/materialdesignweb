@@ -1,4 +1,5 @@
-import { convertElementToCode, attachEventListener } from '../sample-utils';
+import { convertElementToCode } from '../sample-utils';
+import { iterateArrayLike } from '../../../components/common/dom';
 
 /** @type {HTMLElement} */
 let sampleComponent;
@@ -144,11 +145,9 @@ function setupComponentOptions() {
   primaryButtonElement = (sampleComponent.getElementsByClassName('mdw-card__button')[0]);
   /** @type {HTMLElement} */
   closeActionElement = (sampleComponent.getElementsByClassName('mdw-card__end')[0]);
-  attachEventListener(
-    document.querySelectorAll('input[name]'),
-    'change',
-    onOptionChange
-  );
+  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+    el.addEventListener('change', onOptionChange);
+  });
 }
 
 setupComponentOptions();

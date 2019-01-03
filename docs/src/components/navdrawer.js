@@ -1,4 +1,5 @@
 import { List } from '../../../components/list/index';
+import { iterateArrayLike, iterateSomeOfArrayLike } from '../../../components/common/dom';
 
 /** @return {void} */
 function configureNavDrawer() {
@@ -56,52 +57,54 @@ function configureNavDrawer() {
         navElement.removeAttribute('mdw-mini');
     }
   }
-  const styleRadioElements = document.querySelectorAll('input[name="mdw-navdrawer__style"]');
-  for (let i = 0; i < styleRadioElements.length; i += 1) {
-    const element = styleRadioElements[i];
-    element.addEventListener('change', onStyleSelected);
-  }
-  const toggleRadioElements = document.querySelectorAll('input[name="mdw-navdrawer__toggle"]');
-  for (let i = 0; i < toggleRadioElements.length; i += 1) {
-    const element = toggleRadioElements[i];
-    element.addEventListener('change', onToggleSelected);
-  }
+  iterateArrayLike(document.querySelectorAll('input[name="mdw-navdrawer__style"]'),
+    el => el.addEventListener('change', onStyleSelected));
+
+  iterateArrayLike(document.querySelectorAll('input[name="mdw-navdrawer__toggle"]'),
+    el => el.addEventListener('change', onToggleSelected));
+
   const navdrawerDrawer = document.querySelector('#navdrawer .mdw-navdrawer__drawer');
   const navdrawerDrawerListItems = navdrawerDrawer.getElementsByClassName('mdw-list__item');
 
   /**
-   * @param {NodeListOf<Element>} items
+   * @param {ArrayLike<Element>} items
    * @return {Element}
    */
   function getSelectedListItem(items) {
-    for (let i = 0; i < items.length; i += 1) {
-      if (items[i].hasAttribute('mdw-selected')) {
-        return items[i];
+    let listItem = null;
+    iterateSomeOfArrayLike(items, (item) => {
+      if (!item.hasAttribute('mdw-selected')) {
+        return false;
       }
-    }
-    return null;
-  }
-  for (let i = 0; i < navdrawerDrawerListItems.length; i += 1) {
-    const item = navdrawerDrawerListItems[i];
-    item.addEventListener('click', () => {
-      if (item.hasAttribute('mdw-selected')) {
-        return;
-      }
-      const currentlySelected = getSelectedListItem(navdrawerDrawerListItems);
-      if (currentlySelected) {
-        currentlySelected.removeAttribute('mdw-selected');
-      }
-      item.setAttribute('mdw-selected', '');
+      listItem = item;
+      return true;
     });
+    return listItem;
   }
+  /**
+   * @param {MouseEvent} event
+   * @return {void}
+   */
+  function onNavDrawerListItemClick(event) {
+    /** @type {HTMLElement} */
+    const item = (event.currentTarget);
+    if (item.hasAttribute('mdw-selected')) {
+      return;
+    }
+    const currentlySelected = getSelectedListItem(navdrawerDrawerListItems);
+    if (currentlySelected) {
+      currentlySelected.removeAttribute('mdw-selected');
+    }
+    item.setAttribute('mdw-selected', '');
+  }
+  iterateArrayLike(navdrawerDrawerListItems, (item) => {
+    item.addEventListener('click', onNavDrawerListItemClick);
+  });
 }
 
 /** @return {void} */
 function initializeMdwComponents() {
-  const lists = document.querySelectorAll('#navdrawer .mdw-list');
-  for (let i = 0; i < lists.length; i += 1) {
-    List.attach(lists.item(i));
-  }
+  iterateArrayLike(document.querySelectorAll('#navdrawer .mdw-list'), List.attach);
 }
 
 initializeMdwComponents();

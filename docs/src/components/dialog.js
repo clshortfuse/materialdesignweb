@@ -1,5 +1,6 @@
 import { Dialog } from '../../../components/dialog/index';
-import { changeElementTagName, convertElementToCode, attachEventListener } from '../sample-utils';
+import { changeElementTagName, convertElementToCode } from '../sample-utils';
+import { iterateArrayLike } from '../../../components/common/dom';
 
 
 /** @type {HTMLElement} */
@@ -26,9 +27,7 @@ function updateSampleCode() {
   const dialogButtons = sampleComponent.querySelectorAll('.mdw-dialog__button-area .mdw-button');
   button.removeEventListener('click', onSampleButtonClick);
   const tabIndexElements = sampleComponent.querySelectorAll('[tabindex]');
-  for (let i = 0; i < tabIndexElements.length; i += 1) {
-    tabIndexElements.item(i).removeAttribute('tabindex');
-  }
+  iterateArrayLike(tabIndexElements, el => el.removeAttribute('tabindex'));
 
   if (closer) {
     if (jsRequired || (closer instanceof HTMLAnchorElement === false)) {
@@ -113,8 +112,7 @@ function updateSampleCode() {
  */
 function onOptionChange(event) {
   const { name, value, checked } = event.target;
-  let mdwPosition = sampleComponent.getAttribute('mdw-position') || '';
-  const buttonArea = sampleComponent.getElementsByClassName('mdw-dialog__button-area')[0]
+  const buttonArea = sampleComponent.getElementsByClassName('mdw-dialog__button-area')[0];
   switch (name) {
     case 'stacked-buttons':
       if (checked) {
@@ -141,11 +139,9 @@ function onOptionChange(event) {
 /** @return {void} */
 function setupComponentOptions() {
   sampleComponent = document.querySelector('.component-sample .mdw-dialog');
-  attachEventListener(
-    document.querySelectorAll('input[name]'),
-    'change',
-    onOptionChange
-  );
+  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+    el.addEventListener('change', onOptionChange);
+  });
 }
 
 /** @return {void} */

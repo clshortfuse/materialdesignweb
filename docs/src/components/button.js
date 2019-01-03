@@ -1,12 +1,10 @@
 import { Button } from '../../../components/button/index';
-import { convertElementToCode, getChildTextNode, attachEventListener } from '../sample-utils';
+import { convertElementToCode } from '../sample-utils';
+import { iterateArrayLike, getTextNode } from '../../../components/common/dom';
 
 /** @return {void} */
 function initializeSampleComponents() {
-  const buttons = document.querySelectorAll('.js .mdw-button');
-  for (let i = 0; i < buttons.length; i += 1) {
-    Button.attach(buttons.item(i));
-  }
+  iterateArrayLike(document.querySelectorAll('.js .mdw-button'), Button.attach);
 }
 
 /** @type {HTMLElement} */
@@ -39,7 +37,6 @@ function updateSampleCode() {
  */
 function onOptionChange(event) {
   const { name, value, checked } = event.target;
-  let focusRing;
   let newElement;
   switch (name) {
     case 'elevation':
@@ -93,12 +90,12 @@ function onOptionChange(event) {
         case 'text':
           sampleComponent.removeAttribute('mdw-icon');
           sampleComponent.classList.remove('material-icons');
-          getChildTextNode(sampleComponent).nodeValue = 'Button';
+          getTextNode(sampleComponent, true).nodeValue = 'Button';
           break;
         case 'icon':
           sampleComponent.setAttribute('mdw-icon', '');
           sampleComponent.classList.add('material-icons');
-          getChildTextNode(sampleComponent).nodeValue = 'favorite';
+          getTextNode(sampleComponent, true).nodeValue = 'favorite';
           break;
         default:
       }
@@ -128,10 +125,9 @@ function onOptionChange(event) {
       while (sampleComponent.firstChild) {
         newElement.appendChild(sampleComponent.firstChild);
       }
-      for (let i = sampleComponent.attributes.length - 1; i >= 0; i -= 1) {
-        const attr = sampleComponent.attributes.item(i);
+      iterateArrayLike(sampleComponent.attributes, (attr) => {
         newElement.attributes.setNamedItem(attr.cloneNode());
-      }
+      });
       sampleComponent.parentElement.replaceChild(newElement, sampleComponent);
       sampleComponent = newElement;
       if (value === 'a') {
@@ -148,11 +144,9 @@ function onOptionChange(event) {
 /** @return {void} */
 function setupComponentOptions() {
   sampleComponent = document.querySelector('.component-sample .mdw-button');
-  attachEventListener(
-    document.querySelectorAll('input[name]'),
-    'change',
-    onOptionChange
-  );
+  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+    el.addEventListener('change', onOptionChange);
+  });
 }
 
 initializeSampleComponents();

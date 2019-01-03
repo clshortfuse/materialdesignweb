@@ -1,5 +1,6 @@
 import { Menu } from '../../../components/menu/index';
-import { convertElementToCode, attachEventListener, changeElementTagName } from '../sample-utils';
+import { convertElementToCode, changeElementTagName } from '../sample-utils';
+import { iterateArrayLike } from '../../../components/common/dom';
 
 /** @type {HTMLElement} */
 let sampleComponent;
@@ -31,10 +32,7 @@ function updateSampleCode() {
   let button = document.querySelector('.component-sample .mdw-button');
   let closer = document.querySelector('.component-sample .mdw-menu__close');
   button.removeEventListener('click', onSampleButtonClick);
-  const tabIndexElements = sampleComponent.querySelectorAll('[tabindex]');
-  for (let i = 0; i < tabIndexElements.length; i += 1) {
-    tabIndexElements.item(i).removeAttribute('tabindex');
-  }
+  iterateArrayLike(sampleComponent.querySelectorAll('[tabindex]'), el => el.removeAttribute('tabindex'));
 
   if (closer) {
     if (jsRequired || (closer instanceof HTMLAnchorElement === false)) {
@@ -120,7 +118,7 @@ function initializeSampleComponents() {
  * @return {void}
  */
 function onOptionChange(event) {
-  const { name, value, checked } = event.target;
+  const { name, value } = event.target;
   let mdwDirection = sampleComponent.getAttribute('mdw-direction') || '';
   let mdwPosition = sampleComponent.getAttribute('mdw-position') || '';
 
@@ -213,11 +211,9 @@ function onOptionChange(event) {
 /** @return {void} */
 function setupComponentOptions() {
   sampleComponent = document.querySelector('.component-sample .mdw-menu');
-  attachEventListener(
-    document.querySelectorAll('input[name]'),
-    'change',
-    onOptionChange
-  );
+  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+    el.addEventListener('change', onOptionChange);
+  });
 }
 
 initializeSampleComponents();

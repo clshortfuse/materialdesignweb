@@ -1,4 +1,4 @@
-import { attachEventListener } from '../sample-utils';
+import { iterateArrayLike, getTextNode } from '../../../components/common/dom';
 
 const sampleComponent = document.getElementById('sample-component');
 
@@ -17,7 +17,7 @@ function onLayoutItemClick(target) {
   const index = colspans.indexOf(colspan);
   colspan = colspans[index + 1] || '1';
   target.setAttribute('mdw-colspan', colspan.toString());
-  target.firstElementChild.textContent = colspan.toString();
+  getTextNode(target.firstElementChild, true).textContent = colspan.toString();
 }
 
 /**
@@ -115,18 +115,14 @@ function onOptionChange(event) {
 
 /** @return {void} */
 function setupInteractions() {
-  const layoutItems = sampleComponent.getElementsByClassName('mdw-layout__item');
-  for (let i = 0; i < layoutItems.length; i += 1) {
-    const item = layoutItems.item(i);
+  iterateArrayLike(sampleComponent.getElementsByClassName('mdw-layout__item'), (item) => {
     item.addEventListener('click', () => {
       onLayoutItemClick(item);
     });
-  }
-  attachEventListener(
-    document.querySelectorAll('[name]'),
-    'change',
-    onOptionChange
-  );
+  });
+  iterateArrayLike(document.querySelectorAll('[name]'), (el) => {
+    el.addEventListener('change', onOptionChange);
+  });
 }
 
 setupInteractions();

@@ -1,19 +1,20 @@
+import { iterateArrayLike } from '../../components/common/dom';
+
 /**
- * @param {HTMLElement} element
+ * @param {Element|HTMLElement} element
  * @param {string=} linePrefix
  * @return {string}
  */
 function convertElementToCode(element, linePrefix = '') {
   const htmlType = element.tagName.toLowerCase();
   const attributes = [];
-  for (let i = 0; i < element.attributes.length; i += 1) {
-    const attribute = element.attributes.item(i);
-    if (attribute.value.length) {
-      attributes.push(`${attribute.name}="${attribute.value}"`);
+  iterateArrayLike(element.attributes, (attr) => {
+    if (attr.value.length) {
+      attributes.push(`${attr.name}="${attr.value}"`);
     } else {
-      attributes.push(attribute.name);
+      attributes.push(attr.name);
     }
-  }
+  });
   attributes.sort();
   const syntaxItems = [htmlType, attributes.join(' ')];
   const openingHTMLLine = `<${syntaxItems.filter(item => item).join(' ').trim()}>`;
@@ -21,8 +22,7 @@ function convertElementToCode(element, linePrefix = '') {
   const lines = [openingHTMLLine];
   const innerLines = [];
   let onlyText = true;
-  for (let i = 0; i < element.childNodes.length; i += 1) {
-    const child = element.childNodes.item(i);
+  iterateArrayLike(element.childNodes, (child) => {
     let lineText;
     if (child instanceof HTMLElement) {
       lineText = convertElementToCode(child, `  ${linePrefix}`);
@@ -35,7 +35,7 @@ function convertElementToCode(element, linePrefix = '') {
     if (lineText && lineText.trim()) {
       innerLines.push(lineText);
     }
-  }
+  });
   if (onlyText) {
     return linePrefix + lines.join('') + innerLines.join('').trim() + closingHTMLLine;
   }
@@ -44,41 +44,6 @@ function convertElementToCode(element, linePrefix = '') {
     .forEach(line => lines.push(line));
   lines.push(linePrefix + closingHTMLLine);
   return linePrefix + lines.join('\n');
-}
-
-/**
- * @param {Element|NodeListOf<Element>} elements
- * @param {string} event
- * @param {Function} listener
- * @return {void}
- */
-function attachEventListener(elements, event, listener) {
-  let elementList;
-  if (elements instanceof Element) {
-    elementList = [elementList];
-  } else {
-    elementList = elements;
-  }
-  for (let i = 0; i < elementList.length; i += 1) {
-    const el = elementList[i];
-    el.addEventListener(event, listener);
-  }
-}
-
-/**
- * @param {Element} node
- * @return {Node}
- */
-function getChildTextNode(node) {
-  for (let i = 0; i < node.childNodes.length; i += 1) {
-    const childNode = node.childNodes[i];
-    if (childNode.nodeType === Node.TEXT_NODE) {
-      return childNode;
-    }
-  }
-  const textNode = document.createTextNode('');
-  node.appendChild(textNode);
-  return textNode;
 }
 
 /**
@@ -102,7 +67,5 @@ function changeElementTagName(element, tagname) {
 
 export {
   convertElementToCode,
-  attachEventListener,
-  getChildTextNode,
   changeElementTagName,
 };

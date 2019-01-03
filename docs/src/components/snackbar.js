@@ -1,12 +1,10 @@
-import { convertElementToCode, attachEventListener } from '../sample-utils';
+import { convertElementToCode } from '../sample-utils';
 import { Snackbar } from '../../../components/snackbar/index';
+import { iterateArrayLike } from '../../../components/common/dom';
 
 /** @return {void} */
 function initializeSampleComponents() {
-  const snackbars = document.querySelectorAll('.js .mdw-snackbar');
-  for (let i = 0; i < snackbars.length; i += 1) {
-    Snackbar.attach(snackbars.item(i));
-  }
+  iterateArrayLike(document.querySelectorAll('.js .mdw-snackbar'), Snackbar.attach);
 }
 
 /** @type {HTMLElement} */
@@ -148,11 +146,9 @@ function setupComponentOptions() {
       show: true,
     });
   });
-  attachEventListener(
-    document.querySelectorAll('input[name]'),
-    'change',
-    onOptionChange
-  );
+  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+    el.addEventListener('change', onOptionChange);
+  });
 }
 
 initializeSampleComponents();

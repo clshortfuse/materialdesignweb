@@ -1,6 +1,7 @@
 import { List, ListItem } from '../../../components/list/index';
 import { TextField } from '../../../components/textfield/index';
 import { SearchAdapter } from '../../../adapters/search/index';
+import { iterateArrayLike } from '../../../components/common/dom';
 
 /** @return {void} */
 function buildCustomSearch1() {
@@ -182,22 +183,9 @@ function setupSearches() {
 
 /** @return {void} */
 function initializeMdwComponents() {
-  let components;
-
-  components = document.querySelectorAll('.js .mdw-textfield');
-  for (let i = 0; i < components.length; i += 1) {
-    TextField.attach(components.item(i));
-  }
-
-  components = document.querySelectorAll('.js .mdw-list');
-  for (let i = 0; i < components.length; i += 1) {
-    List.attach(components.item(i));
-  }
-
-  components = document.querySelectorAll('.js .mdw-list__item');
-  for (let i = 0; i < components.length; i += 1) {
-    ListItem.attach(components.item(i));
-  }
+  iterateArrayLike(document.querySelectorAll('.js .mdw-textfield'), TextField.attach);
+  iterateArrayLike(document.querySelectorAll('.js .mdw-list'), List.attach);
+  iterateArrayLike(document.querySelectorAll('.js .mdw-list__item'), ListItem.attach);
 }
 
 initializeMdwComponents();
