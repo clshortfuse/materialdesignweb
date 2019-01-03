@@ -1,5 +1,5 @@
 import { Ripple } from '../ripple/index';
-import { findElementParentByClassName } from '../common/dom';
+import { findElementParentByClassName, iterateArrayLike, iterateSomeOfArrayLike } from '../common/dom';
 
 class BottomnavItem {
   /**
@@ -25,32 +25,24 @@ class Bottomnav {
    * @return {void}
    */
   static attach(bottomnavElement) {
-    const items = bottomnavElement.getElementsByClassName('mdw-bottomnav__item');
-    const inputs = bottomnavElement.getElementsByClassName('mdw-bottomnav__input');
-
-    for (let i = 0; i < items.length; i += 1) {
-      const item = items.item(i);
+    iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'), (item) => {
       BottomnavItem.attach(item);
       item.addEventListener('click', Bottomnav.onItemClicked);
-    }
-    for (let i = 0; i < inputs.length; i += 1) {
-      const input = inputs.item(i);
+    });
+
+    iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__input'), (input) => {
       input.addEventListener('change', Bottomnav.onInputChanged);
-    }
+    });
   }
 
   static detach(bottomnavElement) {
-    const items = bottomnavElement.getElementsByClassName('mdw-bottomnav__item');
-    const inputs = bottomnavElement.getElementsByClassName('mdw-bottomnav__input');
-    for (let i = 0; i < items.length; i += 1) {
-      const item = items.item(i);
+    iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'), (item) => {
       BottomnavItem.detach(item);
       item.removeEventListener('click', Bottomnav.onItemClicked);
-    }
-    for (let i = 0; i < inputs.length; i += 1) {
-      const input = inputs.item(i);
+    });
+    iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__input'), (input) => {
       input.removeEventListener('change', Bottomnav.onInputChanged);
-    }
+    });
   }
 
   /**
@@ -59,7 +51,7 @@ class Bottomnav {
    */
   static onInputChanged(event) {
     /** @type {HTMLInputElement} */
-    const inputElement = event.target;
+    const inputElement = (event.target);
     let itemElement;
     if (inputElement.parentElement.classList.contains('mdw-bottomnav__item')) {
       itemElement = inputElement.parentElement;
@@ -85,15 +77,14 @@ class Bottomnav {
    * @return {boolean} changed
    */
   static removeSelection(bottomnavElement) {
-    const items = bottomnavElement.getElementsByClassName('mdw-bottomnav__item');
-    for (let i = 0; i < items.length; i += 1) {
-      const item = items.item(i);
-      if (item.hasAttribute('mdw-selected')) {
-        item.removeAttribute('mdw-selected');
-        return true;
-      }
-    }
-    return false;
+    return iterateSomeOfArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'),
+      (item) => {
+        if (item.hasAttribute('mdw-selected')) {
+          item.removeAttribute('mdw-selected');
+          return true;
+        }
+        return false;
+      });
   }
 
   /**
@@ -101,8 +92,8 @@ class Bottomnav {
    * @return {void}
    */
   static onItemClicked(event) {
-    /** @type {Element} */
-    const itemElement = findElementParentByClassName(event.target, 'mdw-bottomnav__item');
+    /** @type {HTMLElement} */
+    const itemElement = (event.currentTarget);
     if (itemElement.hasAttribute('mdw-selected')) {
       return;
     }
