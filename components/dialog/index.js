@@ -1,7 +1,14 @@
 // https://www.w3.org/TR/wai-aria-practices/#dialog_modal
 
 import { Button } from '../button/index';
-import { getChildElementByClass, findElementParentByClassName, dispatchDomEvent } from '../common/dom';
+import {
+  dispatchDomEvent,
+  iterateArrayLike,
+  iterateSomeOfArrayLike,
+  findElementParentByClassName,
+  getChildElementByClass,
+  getTextNode,
+} from '../common/dom';
 
 class DialogStack {
   /**
@@ -58,21 +65,24 @@ class Dialog {
     const buttons = popup.querySelectorAll('.mdw-dialog__button-area .mdw-button');
     let foundConfirmButton = false;
     let foundCancelButton = false;
-    for (let i = 0; i < buttons.length; i += 1) {
-      const button = buttons.item(i);
+    iterateArrayLike(buttons, (button) => {
       Button.attach(button);
       if (button.hasAttribute('mdw-custom')) {
         button.addEventListener('click', Dialog.onCustomButtonClick);
-      } else if (!foundConfirmButton) {
+        return;
+      }
+      if (!foundConfirmButton) {
         button.addEventListener('click', Dialog.onConfirmClick);
         foundConfirmButton = true;
-      } else if (!foundCancelButton) {
+        return;
+      }
+      if (!foundCancelButton) {
         button.addEventListener('click', Dialog.onCancelClick);
         foundCancelButton = true;
-      } else {
-        button.addEventListener('click', Dialog.onCustomButtonClick);
+        return;
       }
-    }
+      button.addEventListener('click', Dialog.onCustomButtonClick);
+    });
   }
 
   static detach(dialogElement) {
@@ -92,13 +102,12 @@ class Dialog {
       }
     }
     const buttons = popupElement.querySelectorAll('.mdw-dialog__button-area .mdw-button');
-    for (let i = 0; i < buttons.length; i += 1) {
-      const button = buttons.item(i);
+    iterateArrayLike(buttons, (button) => {
       Button.detach(button);
       button.removeEventListener('click', Dialog.onConfirmClick);
       button.removeEventListener('click', Dialog.onCancelClick);
       button.removeEventListener('click', Dialog.onCustomButtonClick);
-    }
+    });
   }
 
   static onCancelClick(event) {
@@ -307,7 +316,8 @@ class Dialog {
    * @return {void}
    */
   static handleTabKeyPress(event) {
-    const popupElement = event.currentTarget;
+    /** @type {Element} */
+    const popupElement = (event.currentTarget);
     const focusableElements = popupElement.querySelectorAll([
       'button:not(:disabled):not([tabindex="-1"])',
       '[href]:not(:disabled):not([tabindex="-1"])',
@@ -317,20 +327,20 @@ class Dialog {
       '[tabindex]:not([tabindex="-1"])'].join(', '));
     let foundTarget = false;
     let candidate = null;
-    for (let i = 0; i < focusableElements.length; i += 1) {
-      const el = focusableElements.item(i);
+    iterateSomeOfArrayLike(focusableElements, (el) => {
       if (el === event.target) {
         foundTarget = true;
         if (event.shiftKey) {
-          break;
+          return true;
         }
       } else if (event.shiftKey) {
         candidate = el;
       } else if (foundTarget) {
         candidate = el;
-        break;
+        return true;
       }
-    }
+      return false;
+    });
     if (!candidate) {
       if (event.shiftKey) {
         // Select last item
@@ -385,11 +395,10 @@ class Dialog {
    * @return {void}
    */
   static updateButtonText(dialogElement, texts) {
-    const buttonElements = dialogElement.querySelectorAll('.mdw-dialog__button-area .mdw-button');
-    for (let i = 0; i < buttonElements.length; i += 1) {
-      const button = buttonElements.item(i);
-      button.textContent = texts[i];
-    }
+    const buttons = dialogElement.querySelectorAll('.mdw-dialog__button-area .mdw-button');
+    iterateArrayLike(buttons, (button, index) => {
+      getTextNode(button, true).textContent = texts[index];
+    });
   }
 
   /**
@@ -489,7 +498,7 @@ class Dialog {
    */
   static updateTransformOrigin(dialogElement, event) {
     /** @type {HTMLElement} */
-    const popup = getChildElementByClass(dialogElement, 'mdw-dialog__popup');
+    const popup = (getChildElementByClass(dialogElement, 'mdw-dialog__popup'));
     popup.style.removeProperty('transform-origin');
     if (!event) {
       return;
