@@ -740,12 +740,10 @@ class DataTableAdapter {
    */
   isRowVisible(el) {
     const scrollingElement = this.element;
-    const rowRect = el.getBoundingClientRect();
-    const scrollingRect = scrollingElement.getBoundingClientRect();
-    const rowTop = (rowRect.top) - (scrollingRect.top);
-    const rowBottom = rowTop + rowRect.height;
-    const viewportTop = 0;
-    const viewportBottom = scrollingRect.height;
+    const rowTop = el.offsetTop;
+    const rowBottom = rowTop + el.offsetHeight;
+    const viewportTop = scrollingElement.scrollTop;
+    const viewportBottom = viewportTop + scrollingElement.offsetHeight;
     if (rowTop > viewportTop && rowTop < viewportBottom) {
       // Top of row is visible
       return true;
@@ -778,8 +776,7 @@ class DataTableAdapter {
       }
       if (row.lastChild) {
         // Store row height to prevent layout shifting
-        const rect = row.getBoundingClientRect();
-        row.style.setProperty('height', `${rect.height || 0}px`);
+        row.style.setProperty('height', `${row.offsetHeight || 0}px`);
       }
       while (row.lastChild) {
         row.removeChild(row.lastChild);
