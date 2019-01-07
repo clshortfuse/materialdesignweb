@@ -67,8 +67,6 @@ class Ripple {
         return;
       }
       rippleInner.setAttribute('mdw-mousedown', '');
-      rippleInner.removeAttribute('mdw-keyup');
-      rippleInner.removeAttribute('mdw-mouseup');
       rippleInner.removeAttribute('mdw-mouseout');
       const rect = ripple.getBoundingClientRect();
       const x = event.pageX - rect.left;
@@ -77,12 +75,14 @@ class Ripple {
       Ripple.drawRipple(rippleInner);
     } else if (event.type === 'mouseup') {
       if (rippleInner.hasAttribute('mdw-mousedown')) {
-        rippleInner.removeAttribute('mdw-mousedown');
-        rippleInner.removeAttribute('mdw-touchstart');
         rippleInner.setAttribute('mdw-mouseup', '');
+        Ripple.clearRipple(rippleInner);
+        rippleInner.removeAttribute('mdw-mousedown');
+        rippleInner.removeAttribute('mdw-mouseup');
       }
     } else if (event.type === 'mouseout') {
       if (rippleInner.hasAttribute('mdw-mousedown')) {
+        rippleInner.removeAttribute('mdw-mousedown');
         rippleInner.setAttribute('mdw-mouseout', '');
       }
     }
@@ -113,10 +113,7 @@ class Ripple {
     }
     if (event.type === 'touchstart') {
       rippleInner.setAttribute('mdw-touchstart', '');
-      rippleInner.removeAttribute('mdw-touchend');
       rippleInner.removeAttribute('mdw-touchcancel');
-      rippleInner.removeAttribute('mdw-keyup');
-      rippleInner.removeAttribute('mdw-mouseup');
       rippleInner.removeAttribute('mdw-mouseout');
       const rect = ripple.getBoundingClientRect();
       const x = touch.pageX - rect.left;
@@ -125,8 +122,12 @@ class Ripple {
       Ripple.drawRipple(rippleInner);
     } else if (event.type === 'touchend') {
       rippleInner.setAttribute('mdw-touchend', '');
+      Ripple.clearRipple(rippleInner);
+      rippleInner.removeAttribute('mdw-touchstart');
+      rippleInner.removeAttribute('mdw-touchend');
     } else if (event.type === 'touchcancel') {
       rippleInner.setAttribute('mdw-touchcancel', '');
+      rippleInner.removeAttribute('mdw-touchstart');
     }
   }
 
@@ -150,35 +151,36 @@ class Ripple {
       return;
     }
 
-    /**
-     * @param {Element} element
-     * @return {boolean}
-     */
-    function isActive(element) {
-      if (element.matches) {
-        return element.matches(':active');
-      }
-      if (element.msMatchesSelector) {
-        element.msMatchesSelector(':active');
-      }
-      return false;
-    }
     nextTick(() => {
-      if (isActive(ripple.parentElement)) {
+      if (Ripple.isActive(ripple.parentElement)) {
         if (rippleInner.hasAttribute('mdw-keydown')) {
           return;
         }
         rippleInner.setAttribute('mdw-keydown', '');
-        rippleInner.removeAttribute('mdw-mouseup');
         rippleInner.removeAttribute('mdw-mouseout');
-        rippleInner.removeAttribute('mdw-keyup');
         Ripple.updateRipplePosition(rippleInner);
         Ripple.drawRipple(rippleInner);
       } else if (rippleInner.hasAttribute('mdw-keydown')) {
-        rippleInner.removeAttribute('mdw-keydown');
         rippleInner.setAttribute('mdw-keyup', '');
+        Ripple.clearRipple(rippleInner);
+        rippleInner.removeAttribute('mdw-keydown');
+        rippleInner.removeAttribute('mdw-keyup');
       }
     });
+  }
+
+  /**
+   * @param {Element} element
+   * @return {boolean}
+   */
+  static isActive(element) {
+    if (element.matches) {
+      return element.matches(':active');
+    }
+    if (element.msMatchesSelector) {
+      element.msMatchesSelector(':active');
+    }
+    return false;
   }
 
   /**
@@ -220,23 +222,63 @@ class Ripple {
   }
 
   static drawRipple(rippleInner) {
-    const timeLeftString = window.getComputedStyle(rippleInner).animationDuration;
-    let timeLeft = 0;
-    if (timeLeftString.indexOf('ms') !== -1) {
-      timeLeft = parseFloat(timeLeftString.replace(/[^0-9.]/g, ''));
-    } else if (timeLeftString.indexOf('s') !== -1) {
-      timeLeft = parseFloat(timeLeftString.replace(/[^0-9.]/g, '')) * 1000;
-    }
+    const duration = Ripple.getRippleDuration(rippleInner);
     rippleInner.setAttribute('mdw-fade-in', '');
+    rippleInner.removeAttribute('mdw-fade-in-complete');
     rippleInner.removeAttribute('mdw-fade-out');
+    rippleInner.removeAttribute('mdw-fade-out-ready');
     rippleInner.removeAttribute('mdw-fade-in-out');
-    if (timeLeft) {
-      setTimeout(() => {
-        if (rippleInner.hasAttribute('mdw-fade-in')) {
-          rippleInner.setAttribute('mdw-fade-out', '');
-        }
-      }, timeLeft);
+    setTimeout(() => {
+      if (rippleInner.hasAttribute('mdw-fade-in')) {
+        rippleInner.setAttribute('mdw-fade-in-complete', '');
+      }
+      if (rippleInner.hasAttribute('mdw-fade-out-ready')) {
+        Ripple.clearRipple(rippleInner);
+      }
+    }, duration);
+  }
+
+  static getRippleDuration(rippleInner) {
+    const durationString = window.getComputedStyle(rippleInner).animationDuration;
+    let duration = 0;
+    if (durationString.indexOf('ms') !== -1) {
+      duration = parseFloat(durationString.replace(/[^0-9.]/g, ''));
+    } else if (durationString.indexOf('s') !== -1) {
+      duration = parseFloat(durationString.replace(/[^0-9.]/g, '')) * 1000;
     }
+    return duration;
+  }
+
+  static clearRipple(rippleInner) {
+    const hasFadeOutReady = rippleInner.hasAttribute('mdw-fade-out-ready');
+    if (!hasFadeOutReady) {
+      if (!rippleInner.hasAttribute('mdw-fade-in')) {
+        return;
+      }
+      if (rippleInner.hasAttribute('mdw-keydown') && !rippleInner.hasAttribute('mdw-keyup')) {
+        return;
+      }
+      if (rippleInner.hasAttribute('mdw-mousedown') && !rippleInner.hasAttribute('mdw-mouseup')) {
+        return;
+      }
+      if (rippleInner.hasAttribute('mdw-touchstart') && !rippleInner.hasAttribute('mdw-touchend')) {
+        return;
+      }
+      if (!rippleInner.hasAttribute('mdw-fade-in-complete')) {
+        rippleInner.setAttribute('mdw-fade-out-ready', '');
+        return;
+      }
+    }
+    rippleInner.removeAttribute('mdw-fade-in');
+    rippleInner.removeAttribute('mdw-fade-in-complete');
+    rippleInner.removeAttribute('mdw-fade-out-ready', '');
+    rippleInner.setAttribute('mdw-fade-out', '');
+    const duration = Ripple.getRippleDuration(rippleInner);
+    setTimeout(() => {
+      if (rippleInner.hasAttribute('mdw-fade-out')) {
+        rippleInner.removeAttribute('mdw-fade-out');
+      }
+    }, duration);
   }
 
   /**
@@ -265,19 +307,10 @@ class Ripple {
       // Already handled by keydown
       return;
     }
-    rippleInner.removeAttribute('mdw-touchstart');
-    rippleInner.removeAttribute('mdw-touchend');
-    rippleInner.removeAttribute('mdw-touchcancel');
-    rippleInner.removeAttribute('mdw-mousedown');
-    rippleInner.removeAttribute('mdw-mouseup');
-    rippleInner.removeAttribute('mdw-mouseout');
-    rippleInner.removeAttribute('mdw-keyup');
-    rippleInner.removeAttribute('mdw-fade-in');
-    rippleInner.removeAttribute('mdw-fade-out');
-    rippleInner.removeAttribute('mdw-fade-in-out');
+    Ripple.updateRipplePosition(rippleInner);
+    Ripple.drawRipple(rippleInner);
     nextTick(() => {
-      Ripple.updateRipplePosition(rippleInner);
-      rippleInner.setAttribute('mdw-fade-in-out', '');
+      Ripple.clearRipple(rippleInner);
     });
   }
 

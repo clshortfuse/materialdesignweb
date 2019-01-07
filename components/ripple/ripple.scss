@@ -65,15 +65,16 @@
         animation-delay: 0s, $motion-duration-tablet-default;
       }
     }
-    &[mdw-fade-in] {
-      animation-name: ripple-fade-in;
-    }
   }
-  &:not(:active) > .mdw-ripple__inner[mdw-fade-out][mdw-mouseout],
-  &:not(:active) > .mdw-ripple__inner[mdw-fade-out][mdw-touchcancel],
-  &:not(:active) > .mdw-ripple__inner[mdw-fade-out][mdw-touchend],
-  .mdw-ripple__inner[mdw-fade-out][mdw-mouseup],
-  .mdw-ripple__inner[mdw-fade-out][mdw-keyup] {
+
+  &:active > .mdw-ripple__inner,
+  .mdw-ripple__inner[mdw-fade-in] {
+    animation-name: ripple-fade-in;
+  }
+
+  &:not(:active) > .mdw-ripple__inner[mdw-fade-in-complete][mdw-mouseout],
+  &:not(:active) > .mdw-ripple__inner[mdw-fade-in-complete][mdw-touchcancel],
+  .mdw-ripple__inner[mdw-fade-out] {
     animation-name: ripple-fade-out;
     animation-timing-function: $motion-easing-acceleration;
   }
