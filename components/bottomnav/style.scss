@@ -10,7 +10,7 @@
   position: relative;
   width: 100%;
   min-height: dp(56);
-  
+
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -116,7 +116,7 @@
 
 .mdw-bottomnav__label {
   @include type-rules('caption');
-  @include baseline-top(56-12);
+  @include texttop-to-top(32);
   @include baseline-bottom(8);
   
   // Overriding 12dp for baseline bottom with 8dp for oversized and textwrapped
