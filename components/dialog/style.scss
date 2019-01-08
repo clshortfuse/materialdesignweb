@@ -95,7 +95,7 @@ $dialog__unit-width: dp(56);
 .mdw-dialog__title {
   padding: 0 dp(24);
   @include type-rules('h6');
-  @include baseline-top(40);
+  @include texttop-to-top(20);
   @include baseline-bottom(36);
   margin-bottom: dp(-36);
   
@@ -104,16 +104,8 @@ $dialog__unit-width: dp(56);
 .mdw-dialog__body {
   padding: 0 dp(24);
   @include type-rules('body');
-  @include baseline-top(36);
+  @include texttop-to-top(20);
   @include baseline-bottom(28);
-
-  /*
-   * Spec states 34dp baseline alignment when no title present,
-   * but that would violiate 4dp baseline grid 
-   * &:first-child {
-   *  @include baseline-top(34);
-   * }
-   */
 }
 
 .mdw-dialog__header {
