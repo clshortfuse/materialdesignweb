@@ -119,7 +119,7 @@ function setupLargeFontMode(element) {
     if (document.documentElement.style.getPropertyValue('font-size')) {
       setFontSize(null, element);
     } else {
-      setFontSize('125%', element);
+      setFontSize('200%', element);
     }
   });
 }
