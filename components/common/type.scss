@@ -102,3 +102,12 @@ $mdw-types: (
     vertical-align: dp(-$dp);
   }
 }
+
+@mixin texttop-to-top($dp) {
+  &::before {
+    content: '';
+    display: inline-block;
+    height: 1em;
+    margin-top: dp($dp);
+  }
+}
