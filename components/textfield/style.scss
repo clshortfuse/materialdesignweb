@@ -608,7 +608,7 @@ select.mdw-textfield__input {
 .mdw-textfield__helper-text,
 .mdw-textfield__error-text {
   @include type-rules('caption');
-  @include baseline-top(16);
+  @include texttop-to-top(4);
   grid-row: 2;
   -ms-grid-row: 2;
   grid-column: 3;
