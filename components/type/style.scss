@@ -81,7 +81,7 @@ p.mdw-type,
 .mdw-type[mdw-style|="display"] {
   font-weight: $font-weight-regular;
   font-size: sp(34);
-  line-height: dp(40);
+  line-height: sp(40);
 }
 .mdw-type[mdw-style="display-4"] {
   font-size: sp(112);
@@ -96,11 +96,11 @@ p.mdw-type,
 }
 .mdw-type[mdw-style="display-2"] {
   font-size: sp(45);
-  line-height: dp(48);
+  line-height: sp(48);
 }
 .mdw-type[mdw-style="headline"] {
   font-size: sp(24);
-  line-height: dp(32);
+  line-height: sp(32);
   font-weight: $font-weight-regular;
 }
 .mdw-type[mdw-style="title"] {
@@ -114,12 +114,12 @@ p.mdw-type,
       font-size: sp(16);
   }
   font-weight: $font-weight-regular;
-  line-height: dp(24);
+  line-height: sp(24);
 }
 .mdw-type[mdw-style="subheading-2"] {
-  line-height: dp(28);
+  line-height: sp(28);
   @include allHandsetsAndTablets() {
-      line-height: dp(28);
+      line-height: sp(28);
   }
 }
 
