@@ -75,7 +75,7 @@ $mdw-card__horizontal-padding: dp(16);
 }
 
 .mdw-card__supporting-text {
-  @include baseline-top(28);
+  @include texttop-to-top(14);
   @include baseline-bottom(16);
 }
 .mdw-card > .mdw-divider {
@@ -154,14 +154,14 @@ $mdw-card__horizontal-padding: dp(16);
   margin: 0;
 }
 h5.mdw-card__header {
-  @include baseline-top(40);
+  @include texttop-to-top(16);
   @include type-rules('h5');
   @include baseline-bottom(28);
   margin-bottom: dp(-28);
 }
 
 h6.mdw-card__header {
-  @include baseline-top(34);
+  @include texttop-to-top(14);
   @include type-rules('h6');
 }
 
@@ -169,7 +169,7 @@ h6.mdw-card__header {
   @include baseline-bottom(22);
   margin-bottom: dp(-22);
   & ~ .mdw-card__subheader {
-    @include baseline-top(22);
+    @include texttop-to-top(8);
     @include baseline-bottom(16);
   }
 }
