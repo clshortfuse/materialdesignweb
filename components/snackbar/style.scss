@@ -153,7 +153,7 @@ $snackbar__scale-up__from: 0.85;
 
 .mdw-snackbar > span {
   white-space: pre-line;
-  @include baseline-top(30);
+  @include texttop-to-top(16);
   @include baseline-bottom(48 - 30);
 }
 
