@@ -161,17 +161,3 @@ $drop-shadow-values: (
   16: "0 16px 24px 2px rgba(0,0,0,0.14), 0 06px 30px 5px rgba(0,0,0,0.12), 0 08px 10px 0 rgba(0,0,0,0.20)",
   24: "0 24px 38px 3px rgba(0,0,0,0.14), 0 09px 46px 8px rgba(0,0,0,0.12), 0 11px 15px 0 rgba(0,0,0,0.20)"
 );
-
-@function insetPaddingTop($padding, $line-height: normal) {
-  @if ($line-height == normal) {
-    @return calc(#{$padding} - #{$font-top-gap * 1em});
-  }
-  @return calc(#{$padding} - #{$font-top-gap * 1em} - ((#{$line-height} - (#{$font-line-height * 1em})) / 2));
-}
-
-@function insetPaddingBottom($padding, $line-height: normal) {
-  @if ($line-height == normal) {
-    @return calc(#{$padding} - #{$font-bottom-gap * 1em});
-  }
-  @return calc(#{$padding} - #{$font-bottom-gap * 1em} - ((#{$line-height} - (#{$font-line-height * 1em})) / 2));
-}

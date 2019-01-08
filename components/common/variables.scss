@@ -28,19 +28,3 @@ $font-weight-regular: 400; // normal
 $font-weight-medium: 500;
 $font-weight-bold: 700;
 $font-weight-black: 900;
-
-// From Roboto fontinfo.plist
-
-$font-line-gap: 0;
-$font-em-square: 2048;
-$font-cap-height: 1456;
-$font-ascender: 2146;
-$font-descender: -555;
-
-// Calculated
-$font-line-height: ($font-ascender - $font-descender + $font-line-gap) / $font-em-square;
-$font-top-gap: ($font-ascender - $font-cap-height) / $font-em-square;
-$font-bottom-gap: -$font-descender / $font-em-square;
-
-// Temporary workaround because ascent seems incorrect
-$font-top-gap: $font-bottom-gap;
