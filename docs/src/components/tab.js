@@ -6,6 +6,11 @@ import { iterateArrayLike } from '../../../components/common/dom';
 let sampleComponent;
 
 /** @return {void} */
+function onWindowResize() {
+  Tab.onResize(sampleComponent);
+}
+
+/** @return {void} */
 function updateSampleCode() {
   const jsRequired = document.querySelector('input[name="javascript"][value="required"]').checked;
   const jsOptional = document.querySelector('input[name="javascript"][value="optional"]').checked;
@@ -62,16 +67,26 @@ function updateSampleCode() {
 
   // Reattach JS if requested
   if (useJS) {
+    window.addEventListener('resize', onWindowResize);
     Tab.attach(sampleComponent);
+  } else {
+    window.removeEventListener('resize', onWindowResize);
   }
 
   const jsCodeElement = document.getElementsByClassName('component-js')[0];
-  jsCodeElement.textContent = 'mdw.Tab.attach(tabElement);';
+  jsCodeElement.textContent = [
+    'mdw.Tab.attach(tabElement);',
+    '',
+    "window.addEventListener('resize', () => mdw.Tab.onResize(tabElement));",
+  ].join('\n');
 }
 
 /** @return {void} */
 function initializeSampleComponents() {
   iterateArrayLike(document.querySelectorAll('.js .mdw-tab'), Tab.attach);
+  iterateArrayLike(document.getElementsByTagName('form'), (formElement) => {
+    formElement.reset();
+  });
 }
 
 /**
@@ -79,7 +94,9 @@ function initializeSampleComponents() {
  * @return {void}
  */
 function onOptionChange(event) {
-  const { name, value } = event.target;
+  /** @type {HTMLInputElement} */
+  const inputElement = (event.currentTarget);
+  const { name, value, checked } = inputElement;
   const tabItemsElement = sampleComponent.querySelector('.mdw-tab__items');
 
   switch (name) {
@@ -112,6 +129,23 @@ function onOptionChange(event) {
           break;
       }
       break;
+    case 'tabs-scrollable':
+      if (checked) {
+        sampleComponent.getElementsByClassName('mdw-tab__items')[0].setAttribute('mdw-scrollable', '');
+      } else {
+        sampleComponent.getElementsByClassName('mdw-tab__items')[0].removeAttribute('mdw-scrollable');
+      }
+      break;
+    case 'content-scrollable': {
+      if (checked) {
+        sampleComponent.getElementsByClassName('mdw-tab__content')[0].setAttribute('mdw-scrollsnap', '');
+        sampleComponent.getElementsByClassName('mdw-tab__items')[0].setAttribute('mdw-scrollsnap', '');
+      } else {
+        sampleComponent.getElementsByClassName('mdw-tab__content')[0].removeAttribute('mdw-scrollsnap');
+        sampleComponent.getElementsByClassName('mdw-tab__items')[0].removeAttribute('mdw-scrollsnap');
+      }
+      break;
+    }
     default:
   }
   updateSampleCode();

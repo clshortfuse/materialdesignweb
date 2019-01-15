@@ -265,3 +265,12 @@ body {
   align-items: center;
   border-radius: 4px;
 }
+
+.docs-tab {
+  .component-sample__container {
+    width: 100%;
+    > .mdw-tab {
+      width: 100%;
+    }
+  }
+}
