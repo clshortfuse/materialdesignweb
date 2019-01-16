@@ -273,8 +273,6 @@ $tab__icon-with-label-height: 72;
 }
 
 .mdw-tab__content[mdw-js][mdw-scrollsnap] {
-  display: block;
-  white-space: nowrap;
   overflow-x: scroll;
 
   // Snap
@@ -307,7 +305,6 @@ $tab__icon-with-label-height: 72;
   }
 
   .mdw-tab__content-item {
-    display: inline-block;
     scroll-snap-align: center;
     transform: none !important; // TODO: Refactor to remove
     transition: none;
