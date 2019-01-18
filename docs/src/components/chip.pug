@@ -1,0 +1,105 @@
+include ../mixins.pug
+
++header()
+  +navdrawer("chip")
+    .mdw-layout(mdw-margin-top mdw-margin-bottom mdw-stretch).docs-chip
+      .mdw-layout__item(mdw-colspan="100%")
+        h5.mdw-type(mdw-baseline-next="36") Chips are compact elements that represent an input, attribute, or action.
+        p.mdw-type Chips allow users to enter information, make selections, filter content, or trigger actions. Chips should appear dynamically as a group of multiple interactive elements. Unlike buttons, which should be a consistent and familiar call to action, one that a user expects to appear as the same action in the same general area.
+      .mdw-layout__item(mdw-colspan="8")
+        .mdw-layout__content
+          .component-sample
+            .component-sample__container
+              div
+                p Action
+                  .mdw-chip(mdw-type="action")
+                    .mdw-chip__item
+                      .mdw-chip__input
+                      .mdw-chip__text Send Message
+                    .mdw-chip__item
+                      .mdw-chip__input
+                      .mdw-chip__text Call
+                p Input
+                .mdw-chip(mdw-type="input")
+                  .mdw-chip__item
+                    .mdw-chip__input
+                    .mdw-chip__text Portland
+                    .mdw-chip__thumbnail.material-icons place
+                    .mdw-chip__remove.material-icons cancel
+                  .mdw-chip__item
+                    .mdw-chip__input
+                    .mdw-chip__text Biking
+                    .mdw-chip__thumbnail.material-icons directions_bike
+                    .mdw-chip__remove.material-icons cancel
+                p Choice
+                form.mdw-chip(mdw-type="choice" mdw-theme-color="accent")
+                  label.mdw-chip__item
+                    input.mdw-chip__input(type="radio" name="sample" value="a")
+                    .mdw-chip__text Apple
+                  label.mdw-chip__item
+                    input.mdw-chip__input(type="radio" name="sample" value="b")
+                    .mdw-chip__text Banana
+                  label.mdw-chip__item
+                    input.mdw-chip__input(type="radio" name="sample" value="c")
+                    .mdw-chip__text Cranberry
+                  label.mdw-chip__item
+                    input.mdw-chip__input(type="radio" name="sample" value="d")
+                    .mdw-chip__text Dragon Fruit
+                p Filter
+                div
+                  .mdw-chip(mdw-type="filter")
+                    label.mdw-chip__item
+                      input.mdw-chip__input(type="checkbox")
+                      .mdw-chip__text Elevator
+                      .mdw-chip__checkmark.material-icons check
+                    label.mdw-chip__item
+                      input.mdw-chip__input(type="checkbox")
+                      .mdw-chip__text Washer/Dryer
+                      .mdw-chip__checkmark.material-icons check
+                    label.mdw-chip__item
+                      input.mdw-chip__input(type="checkbox")
+                      .mdw-chip__text Fireplace
+                      .mdw-chip__checkmark.material-icons check
+                    label.mdw-chip__item
+                      input.mdw-chip__input(type="checkbox")
+                      .mdw-chip__text Wheelchair access
+                      .mdw-chip__checkmark.material-icons check
+                    label.mdw-chip__item
+                      input.mdw-chip__input(type="checkbox")
+                      .mdw-chip__text Dogs ok
+                      .mdw-chip__checkmark.material-icons check
+                    label.mdw-chip__item
+                      input.mdw-chip__input(type="checkbox")
+                      .mdw-chip__text Cats ok
+                      .mdw-chip__checkmark.material-icons check
+      .mdw-layout__item(mdw-colspan="4").demo-options
+        .mdw-type(mdw-style="subtitle") Javascript
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="javascript" value="required" disabled)
+            .mdw-selection__icon
+            .mdw-selection__label Required
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="javascript" value="optional" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Optional
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="javascript" value="none")
+            .mdw-selection__icon
+            .mdw-selection__label None
+        .mdw-type(mdw-style="subtitle") Options
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="outlined")
+            .mdw-selection__icon
+            .mdw-selection__label Outlined
+      .mdw-layout__item(mdw-colspan="100%" style="max-height:0")
+      .mdw-layout__item(mdw-colspan="6")
+        h6.mdw-type HTML Code
+        .mdw-card.component-code.component-html
+      .mdw-layout__item(mdw-colspan="6")
+        h6.mdw-type Javascript Code
+        .mdw-card.component-code.component-js
+      .mdw-layout__item(mdw-colspan="100%")
+        h6.mdw-type Samples
+  script(src='chip.min.js')
