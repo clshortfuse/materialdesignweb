@@ -1,6 +1,6 @@
 // https://material.io/guidelines/style/typography.html
 
-@import '../common//type.scss';
+@import '../common/type.scss';
 @import '../common/functions.scss';
 
 // Line-heights calculated from Roboto
@@ -143,25 +143,25 @@ p.mdw-type,
   }
 }
 
-// 4dp baselines
+// 4sp baselines
 @each $bl in (4, 8, 10, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92) {
   .mdw-type[mdw-baseline-top="#{$bl}"] {
     &::before {
-      height: dp($bl);
+      height: sp($bl);
     }
   }
   .mdw-type[mdw-baseline-bottom="#{$bl}"] {
     &::after {
-      vertical-align: dp(-$bl);
+      vertical-align: sp(-$bl);
     }
   }
   .mdw-type[mdw-baseline-next="#{$bl}"] {
-    margin-bottom: dp(-$bl);
+    margin-bottom: sp(-$bl);
     &::after {
-      vertical-align: dp(-$bl);
+      vertical-align: sp(-$bl);
     }
     & + .mdw-type::before {
-      height: dp($bl);
+      height: sp($bl);
     }
   }
 }
