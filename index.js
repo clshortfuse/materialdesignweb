@@ -1,5 +1,6 @@
 export { Bottomnav, BottomnavItem } from './components/bottomnav/index';
 export { Button } from './components/button/index';
+export { Chip } from './components/chip/index';
 export { DataTable } from './components/datatable/index';
 export { Dialog } from './components/dialog/index';
 export { Fab } from './components/fab/index';

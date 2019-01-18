@@ -7,6 +7,7 @@
 @import '../bottomnav/theming.scss';
 @import '../button/theming.scss';
 @import '../card/theming.scss';
+@import '../chip/theming.scss';
 @import '../datatable/theming.scss';
 @import '../dialog/theming.scss';
 @import '../divider/theming.scss';
@@ -28,6 +29,7 @@ $added-palettes-list: ();
     'bottomnav',
     'button',
     'card',
+    'chip',
     'datatable',
     'dialog',
     'divider',
@@ -73,99 +75,56 @@ $added-palettes-list: ();
   @include buildThemes();
 }
 
-@mixin lightVariables($color:"background") {
-  @include globalThemeVariables($color, 'light');
+@mixin addVariables($lightness, $color:"background") {
+  @include globalThemeVariables($color, $lightness);
 
   @if (index($mdw-theme__components, 'bottomnav')) {
-    @include bottomnavThemeVariables($color, 'light');
+    @include bottomnavThemeVariables($color, $lightness);
   }
   @if (index($mdw-theme__components, 'button')) {
-    @include buttonThemeVariables($color, 'light');
+    @include buttonThemeVariables($color, $lightness);
   }
   @if (index($mdw-theme__components, 'card')) {
-    @include cardThemeVariables($color, 'light');
+    @include cardThemeVariables($color, $lightness);
+  }
+  @if (index($mdw-theme__components, 'chip')) {
+    @include chipThemeVariables($color, $lightness);
   }
   @if (index($mdw-theme__components, 'datatable')) {
-    @include datatableThemeVariables($color, 'light');
+    @include datatableThemeVariables($color, $lightness);
   }
   @if (index($mdw-theme__components, 'dialog')) {
-    @include dialogThemeVariables($color, 'light');
+    @include dialogThemeVariables($color, $lightness);
   }
   @if (index($mdw-theme__components, 'divider')) {
-    @include dividerThemeVariables($color, 'light');
+    @include dividerThemeVariables($color, $lightness);
   }
   @if (index($mdw-theme__components, 'list')) {
-    @include listThemeVariables($color, 'light');
+    @include listThemeVariables($color, $lightness);
   }
   @if (index($mdw-theme__components, 'menu')) {
-    @include menuThemeVariables($color, 'light');
+    @include menuThemeVariables($color, $lightness);
   }
   @if (index($mdw-theme__components, 'navdrawer')) {
-    @include navdrawerThemeVariables($color, 'light');
+    @include navdrawerThemeVariables($color, $lightness);
   }
   @if (index($mdw-theme__components, 'selection')) {
-    @include selectionThemeVariables($color, 'light');
+    @include selectionThemeVariables($color, $lightness);
   }
   @if (index($mdw-theme__components, 'tab')) {
-    @include tabThemeVariables($color, 'light');
+    @include tabThemeVariables($color, $lightness);
   }
   @if (index($mdw-theme__components, 'textfield')) {
-    @include textfieldThemeVariables($color, 'light');
+    @include textfieldThemeVariables($color, $lightness);
   }
   @if (index($mdw-theme__components, 'toolbar')) {
-    @include toolbarThemeVariables($color, 'light');
+    @include toolbarThemeVariables($color, $lightness);
   }
   @if (index($mdw-theme__components, 'type')) {
-    @include typeThemeVariables($color, 'light');
+    @include typeThemeVariables($color, $lightness);
   }
 }
 
-@mixin darkVariables($color:"background") {
-  @include globalThemeVariables($color, 'dark');
-
-  @if (index($mdw-theme__components, 'bottomnav')) {
-    @include bottomnavThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'button')) {
-    @include buttonThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'card')) {
-    @include cardThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'datatable')) {
-    @include datatableThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'dialog')) {
-    @include dialogThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'divider')) {
-    @include dividerThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'list')) {
-    @include listThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'menu')) {
-    @include menuThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'navdrawer')) {
-    @include navdrawerThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'selection')) {
-    @include selectionThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'tab')) {
-    @include tabThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'textfield')) {
-    @include textfieldThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'toolbar')) {
-    @include toolbarThemeVariables($color, 'dark');
-  }
-  @if (index($mdw-theme__components, 'type')) {
-    @include typeThemeVariables($color, 'dark');
-  }
-}
 
 @mixin componentContrastAndThemeRules($type: 'var', $theme: null) {
   @if (index($mdw-theme__components, 'datatable')) {
@@ -186,6 +145,9 @@ $added-palettes-list: ();
   }
   @if (index($mdw-theme__components, 'card')) {
     @include cardContrastRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'chip')) {
+    @include chipContrastRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'datatable')) {
     @include datatableContrastRules($type, $theme);
@@ -427,7 +389,7 @@ $added-palettes-list: ();
   [mdw-theme-fill~="white"],
   [mdw-theme-fill~="light"],
   :root {
-    @include lightVariables();
+    @include addVariables('light');
   }
 
   @if ($mdw-theme__automatic-contrast != 'no' and $mdw-theme__automatic-contrast != false) {
@@ -441,11 +403,11 @@ $added-palettes-list: ();
         @each $tone in $lightTones {
           @if ($tone == '500' and $color != 'background') {
             #{$namespace} [mdw-theme-fill~="#{$color}"] {
-              @include lightVariables($color);
+              @include addVariables('light', $color);
             }
           }
           #{$namespace} [mdw-theme-fill~="#{$color}-#{$tone}"] {
-            @include lightVariables($color);
+            @include addVariables('light', $color);
           }
         }
         
@@ -453,7 +415,7 @@ $added-palettes-list: ();
       @each $color in ('primary', 'accent', 'warn') {
         [mdw-theme-fill~="#{$color}"][mdw-theme-fill~="light"],
         [mdw-theme-fill|="#{$color}"][mdw-theme-fill~="light"] {
-          @include lightVariables($color);
+          @include addVariables('light', $color);
         }
       }
     }
@@ -470,11 +432,11 @@ $added-palettes-list: ();
           $value: map-get($palette, $tone);
           @if ($tone == '500' and $color != 'background') {
             #{$namespace} [mdw-theme-fill~="#{$color}"] {
-              @include darkVariables($color);
+              @include addVariables('dark', $color);
             }
           }
           #{$namespace} [mdw-theme-fill~="#{$color}-#{$tone}"] {
-            @include darkVariables($color);
+            @include addVariables('dark', $color);
           }
         }
         
@@ -482,7 +444,7 @@ $added-palettes-list: ();
       @each $color in ('primary', 'accent', 'warn') {
         [mdw-theme-fill~="#{$color}"][mdw-theme-fill~="dark"],
         [mdw-theme-fill|="#{$color}"][mdw-theme-fill~="dark"] {
-          @include darkVariables($color);
+          @include addVariables('dark', $color);
         }
       }
     }
@@ -498,11 +460,11 @@ $added-palettes-list: ();
         $value: map-get($palette, $tone);
         @if ($tone == '500' and $color != 'background') {
           #{$namespace} [mdw-theme-fill~="#{$color}"] {
-            @include darkVariables($color);
+            @include addVariables('dark', $color);
           }
         }
         #{$namespace} [mdw-theme-fill~="#{$color}-#{$tone}"] {
-          @include darkVariables($color);
+          @include addVariables('dark', $color);
         }
       }
     }
@@ -511,7 +473,7 @@ $added-palettes-list: ();
 
   [mdw-theme-fill~="black"],
   [mdw-theme-fill~="dark"] {
-    @include darkVariables('background');
+    @include addVariables('dark', 'background');
   }
 
   @include componentContrastAndThemeRules();

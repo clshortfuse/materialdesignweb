@@ -1,0 +1,159 @@
+// https://material.io/design/interaction/states.html
+// https://material.io/design/components/chips.html
+// https://material.io/design/iconography/system-icons.html#color
+
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
+
+
+$chipColors: (
+  text-color:                    ((#000, 0.87), (#fff, 1.00)),
+  background-color:              ((#000, 0.12), (#fff, 0.24)),
+
+  // icon
+  active-icon-color__focus:      ((#000, 0.87), (#fff, 1.00)),
+  active-icon-color:             ((#000, 0.54), (#fff, 0.70)),
+  inactive-icon-color:           ((#000, 0.38), (#fff, 0.50)),
+
+  // states
+  overlay-color:                 (#000, #fff),
+  overlay-rgb:                   ("0, 0, 0", "255, 255, 255"),
+
+  default-opacity:               (0.12              , 0.24),
+  hover-opacity:                 (0.12 + 0.04       , 0.24 + 0.08),
+  focus-opacity:                 (0.12 + 0.12       , 0.24 + 0.24),
+  hover-focus-opacity:           (0.12 + 0.04 + 0.12, 0.24 + 0.08 + 0.24),
+
+  selected-opacity:              (0.12 + 0.08              , 0.24 + 0.16),
+  selected-hover-opacity:        (0.12 + 0.08 + 0.04       , 0.24 + 0.16 + 0.08),
+  selected-focus-opacity:        (0.12 + 0.08 + 0.12       , 0.24 + 0.16 + 0.24),
+  selected-hover-focus-opacity:  (0.12 + 0.08 + 0.04 + 0.12, 0.24 + 0.16 + 0.08 + 0.24),
+
+  outlined-opacity:               (0.00       , 0.00),
+  outlined-hover-opacity:         (0.04       , 0.08),
+  outlined-focus-opacity:         (0.12       , 0.24),
+  outlined-hover-focus-opacity:   (0.04 + 0.12, 0.08 + 0.24),
+
+  outlined-selected-opacity:              (0.08              , 0.16),
+  outlined-selected-hover-opacity:        (0.08 + 0.04       , 0.16 + 0.08),
+  outlined-selected-focus-opacity:        (0.08 + 0.12       , 0.16 + 0.24),
+  outlined-selected-hover-focus-opacity:  (0.08 + 0.04 + 0.12, 0.16 + 0.08 + 0.24),
+
+  activated-opacity:             (0.12, 0.24),
+
+  activated-text-color:           (inherit, (#fff, 1.00)),
+
+  activated-hover-opacity:       (0.12 + 0.04, 0.24 + 0.4),
+  activated-focus-opacity:       (0.12 + 0.12, 0.24 + 0.12),
+  activated-hover-focus-opacity: (0.12 + 0.04 + 0.12, 0.24 + 0.4 + 0.12),
+
+  pressed-opacity:               (0.16, 0.32),
+
+  // disabled
+  disabled-text-color:           ((#000, 0.26), (#fff, 0.30)),
+  disabled-background-color:     ((#000, 0.12), (#fff, 0.12)),
+  outline-color:                 ((#000, 0.12), (#fff, 0.12)),
+
+);
+
+@function chipThemeValue($key, $type, $theme) {
+  @return themeValue('chip', $chipColors, $key, $type, $theme);
+}
+
+@mixin chipThemeVariables($color, $lightness) {
+  @include themeVariables('chip', $chipColors, $color, $lightness);
+}
+
+
+// Vary by contrast
+@mixin chipContrastRules($type: 'var', $theme: null) {
+  .mdw-chip__item {
+    & > .mdw-ripple > .mdw-ripple__inner,
+    &:after {
+      opacity: chipThemeValue("pressed-opacity", $type, $theme);
+    }
+  }
+  .mdw-chip__thumbnail,
+  .mdw-chip__remove,
+  .mdw-chip__text {
+    color: chipThemeValue("text-color", $type, $theme);
+  }
+  .mdw-chip__input {
+    .mdw-chip[mdw-outlined] & {
+      border-color: buttonThemeValue('outline-color', $type, $theme);
+    }
+    color: inherit;
+    &::before {
+      background-color: chipThemeValue("overlay-color", $type, $theme);
+      opacity: chipThemeValue("default-opacity", $type, $theme);
+    }
+    &:hover::before {
+      opacity: chipThemeValue("hover-opacity", $type, $theme);
+    }
+    &:focus::before {
+      opacity: chipThemeValue("focus-opacity", $type, $theme);
+    }
+    &:hover:focus::before {
+      opacity: chipThemeValue("hover-focus-opacity", $type, $theme);
+    }
+    &:checked {
+      &::before {
+        color: inherit;
+      }
+      & ~ .mdw-chip__text {
+        color: chipThemeValue("activated-text-color", $type, $theme);
+      }
+      &[type="radio"] {
+        &::before {
+          background: currentColor;
+        }
+      }
+      &[type="checkbox"] {
+        &::before {
+          opacity: chipThemeValue("selected-opacity", $type, $theme);
+        }
+        &:hover::before {
+          opacity: chipThemeValue("selected-hover-opacity", $type, $theme);
+        }
+        &:focus::before {
+          opacity: chipThemeValue("selected-focus-opacity", $type, $theme);
+        }
+        &:hover:focus::before {
+          opacity: chipThemeValue("selected-hover-focus-opacity", $type, $theme);
+        }
+      }
+    }
+  }
+  .mdw-chip[mdw-outlined] .mdw-chip__input {
+    &:not(:checked) {
+      &::before {
+        opacity: chipThemeValue("outlined-opacity", $type, $theme);
+      }
+      &:hover::before {
+        opacity: chipThemeValue("outlined-hover-opacity", $type, $theme);
+      }
+      &:focus::before {
+        opacity: chipThemeValue("outlined-focus-opacity", $type, $theme);
+      }
+      &:hover:focus::before {
+        opacity: chipThemeValue("outlined-hover-focus-opacity", $type, $theme);
+      }
+    }
+    &:checked {
+      &[type="checkbox"] {
+        &::before {
+          opacity: chipThemeValue("outlined-selected-opacity", $type, $theme);
+        }
+        &:hover::before {
+          opacity: chipThemeValue("outlined-selected-hover-opacity", $type, $theme);
+        }
+        &:focus::before {
+          opacity: chipThemeValue("outlined-selected-focus-opacity", $type, $theme);
+        }
+        &:hover:focus::before {
+          opacity: chipThemeValue("outlined-selected-hover-focus-opacity", $type, $theme);
+        }
+      }
+    }
+  }
+}

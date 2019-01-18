@@ -1,0 +1,130 @@
+// https://material.io/design/components/chips.html
+
+$mdw-chip__border-width: dp(1);
+
+.mdw-chip { 
+  transition-timing-function: $motion-easing-standard;
+  transition-duration: $motion-duration-desktop-default;
+  @include allHandsets {
+    transition-duration: $motion-duration-mobile-default;
+  }
+  @include allTablets {
+    transition-duration: $motion-duration-tablet-default;
+  }
+}
+
+.mdw-chip__item {
+  &:first-child {
+    margin-left: 0;
+  }
+  &:last-child {
+    margin-right: 0;
+  }
+  transition: inherit;
+  margin: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: dp(32); // unlikely to be taller than 64dp
+  min-height: dp(32);
+  position: relative;
+  overflow: hidden;
+}
+
+.mdw-chip__checkmark,
+.mdw-chip__thumbnail {
+  display: flex;
+  align-items: center;
+  margin-left: -8px;
+  margin-right: 8px;
+  order: -1;
+  :root[dir=rtl] & {
+    margin-left: 8px;
+    margin-right: -8px;
+  }
+  transition: inherit;
+  transition-property: max-width, opacity;
+}
+
+.mdw-chip__input {
+  border-radius: inherit;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  transition: inherit;
+  transition-property: none;
+  & ~ .mdw-chip__checkmark {
+    max-width: 0;
+    opacity: 0;
+  }
+  &:checked ~ .mdw-chip__checkmark {
+    max-width: 24px;
+    opacity: 1;
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    top: -$mdw-chip__border-width;
+    left: -$mdw-chip__border-width;
+    right: -$mdw-chip__border-width;
+    bottom: -$mdw-chip__border-width;
+    border-radius: inherit;
+    transition: inherit;
+    transition-property: background-color, opacity;
+  }
+  border-style: solid;
+  border-width: $mdw-chip__border-width;
+  border-color: transparent;
+  box-sizing: border-box;
+}
+
+.mdw-chip__text {
+  transition: inherit;
+  transition-property: color;
+}
+
+.mdw-chip__remove {
+  z-index: 1;
+  &.material-icons {
+    font-size: 18px;
+  }
+  cursor: pointer;
+  order: 1;
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  margin-right: -4px;
+  :root[dir=rtl] & {
+    margin-left: -4px;
+    margin-right: 8px;
+  }
+}
+
+.mdw-chip__item[mdw-ripple] {
+  &::after {
+    // If using custom ripple, destroy ::after object
+    content: none;
+  }
+}
+
+.mdw-chip__item > .mdw-ripple {
+  @include mdw-ripple__container;
+}
+
+.mdw-chip__item {
+  &::after {
+    @include mdw-ripple__inner;
+  }
+
+  &:active::after {
+    @include mdw-ripple__active;
+  }
+}
