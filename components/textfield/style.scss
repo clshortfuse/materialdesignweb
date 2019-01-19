@@ -128,9 +128,7 @@ $textfield__outline-end-width: dp(8);
 }
 
 .mdw-textfield__outline-gap {
-  // Transitioning with transform would require transforming adjacent elements
-  // to avoid subpixel issues from mixed 2D/3D rendering.
-
+  // Using transform would create a new composition layer and cause subpixel rendering issues
   position: absolute;
   grid-column: 2;
   -ms-grid-column: 2;
@@ -154,8 +152,7 @@ $textfield__outline-end-width: dp(8);
     border-top-style: solid;
     border-color: inherit;
     
-    transform: scaleX(0);
-    transition-property: transform;
+    transition-property: left, right;
     transition-delay: 1ms;
     transition-timing-function: $motion-easing-standard;
     transition-duration: $motion-duration-desktop-default / 2;
@@ -169,14 +166,12 @@ $textfield__outline-end-width: dp(8);
   &::before,
   html[dir=rtl] &::after {
     left: 0;
-    right: 50%;
-    transform-origin: left center;
+    right: 100%;
   }
   &::after,
   html[dir=rtl] &::before {
-    left: 50%;
+    left: 100%;
     right: 0;
-    transform-origin: right center;
   }
 }
 
@@ -356,6 +351,11 @@ $textfield__outline-end-width: dp(8);
         border-top-color: currentColor;
         border-top-style: solid;
         color: inherit;
+
+        // Height must exactly match parent to avoid subpixel rendering issues
+        bottom: 0;
+        border-bottom-style: solid;
+        border-bottom-color: transparent;
       }
     }
   }
@@ -390,8 +390,14 @@ $textfield__outline-end-width: dp(8);
     }
     & .mdw-textfield__outline-gap {
       &::before,
-      &::after {
-        transform: scaleX(1);
+      :root[dir=rtl] &::after {
+        left: 0;
+        right: 50%;
+      }
+      &::after,
+      :root[dir=rtl] &::before {
+        left: 50%;
+        right: 0;
       }
     }
   }
@@ -406,8 +412,14 @@ $textfield__outline-end-width: dp(8);
     }
     & .mdw-textfield__outline-gap {
       &::before,
-      &::after {
-        transform: scaleX(1);
+      :root[dir=rtl] &::after {
+        left: 0;
+        right: 50%;
+      }
+      &::after,
+      :root[dir=rtl] &::before {
+        left: 50%;
+        right: 0;
       }
     }
   }
