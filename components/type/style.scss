@@ -21,27 +21,33 @@ p.mdw-type {
   -ms-hyphens: auto;
 }
 
-h1.mdw-type {
+h1.mdw-type,
+.mdw-type[mdw-style="h1"] {
   @include type-rules('h1');
 }
 
-h2.mdw-type {
+h2.mdw-type,
+.mdw-type[mdw-style="h2"] {
   @include type-rules('h2');
 }
 
-h3.mdw-type {
+h3.mdw-type,
+.mdw-type[mdw-style="h3"] {
   @include type-rules('h3');
 }
 
-h4.mdw-type {
+h4.mdw-type,
+.mdw-type[mdw-style="h4"] {
   @include type-rules('h4');
 }
 
-h5.mdw-type {
+h5.mdw-type,
+.mdw-type[mdw-style="h5"] {
   @include type-rules('h5');
 }
 
-h6.mdw-type {
+h6.mdw-type,
+.mdw-type[mdw-style="h6"] {
   @include type-rules('h6');
 }
 
