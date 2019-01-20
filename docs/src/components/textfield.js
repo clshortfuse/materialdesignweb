@@ -22,6 +22,8 @@ function updateSampleCode() {
   } else {
     sampleComponent.removeAttribute('mdw-autosize');
   }
+  // Remove resize values
+  sampleComponent.getElementsByClassName('mdw-textfield__input')[0].removeAttribute('style');
 
   // Strip JS related elements and attributes
   TextField.detach(sampleComponent);
