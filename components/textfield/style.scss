@@ -61,18 +61,24 @@ $textfield__outline-end-width: dp(8);
 }
 
 .mdw-textfield::before {
-  // 20 + 20dp from baseline top
+  // 8dp margin
+  // 12sp label
+  // 4dp margin
+  // 1em input
+  // 16dp margin
+  // = 56dp at 16sp
+
   content: "";
   display: inline-block;
-  vertical-align: baseline;
   grid-row: 1;
   -ms-grid-row: 1;
   grid-column: 4;
   -ms-grid-column: 4;
   height: 1em;
-  min-height: dp(20);
-  margin-top: dp(20);
-  margin-bottom: dp(56 - 20 - 20);
+  margin-top: dp(8 + 4);
+  padding-top: sp(12);
+  margin-bottom: dp(16);
+  box-sizing: content-box; // Don't allow global override
 }
 
 .mdw-textfield[mdw-solo],
@@ -195,6 +201,8 @@ $textfield__outline-end-width: dp(8);
   }
 
   display: flex;
+  box-sizing: border-box;
+  min-width: 100%; // Fixes FireFox Grid bug
 
   border-top-left-radius: dp(4);
   border-top-right-radius: dp(4);
@@ -372,10 +380,12 @@ $textfield__outline-end-width: dp(8);
   }
   .mdw-textfield__label {
     position: relative; // reflow DOM
-    @include baseline-top(0);
     padding: 0 4px;
     top: 0;
     transform: translateY(-50%);
+    &::before {
+      content: none;
+    }
   }
 }
 
@@ -433,7 +443,19 @@ $textfield__outline-end-width: dp(8);
   right: 0;
   margin: 0;
   padding: 0;
-  @include baseline-top(20);
+  &::before {
+    // Add 8dp from text-top to top for positioning
+    // Add 8dp from baseline to keep centering
+    content: "";
+    display: inline-block;
+    @include type-rules('caption');
+    height: 1em;
+    padding-top: dp(8);
+    vertical-align: dp(-8);
+    margin-top: dp(8);
+    box-sizing: content-box; // Don't allow global override
+  }
+  
 
   align-self: flex-start;
   -ms-grid-row-align: start;
@@ -558,30 +580,29 @@ $textfield__outline-end-width: dp(8);
 
 .mdw-textfield__input,
 .mdw-textfield__prefix,
-.mdw-textfield__suffix,
-.mdw-textfield__icon {
-  // Margins used for textarea
-  margin-top: dp(20);
+.mdw-textfield__suffix {
+  margin-top: calc(#{dp(8 + 4)} + #{sp(12)});
   margin-bottom: dp(8);
-  -ms-grid-row-align: center; // IE11 doesn't support baseline alignment
+  align-self: flex-start;
+  -ms-grid-row-align: flex-start;
 }
 
 textarea.mdw-textfield__input {
-  resize: none;
+  min-height: 1em; // Avoid clipping on resize
+  min-width: 100%; // Always fill container horizontally
+  max-width: 100%; // Don't allow resize beyond bounds
   overflow-y: auto;
   -ms-overflow-style: -ms-autohiding-scrollbar;
   padding-bottom: 0;
-  // margin: 8px 0;
   padding-left: 0;
   padding-right: $textarea__padding-horizontal;
   [dir=rtl] & {
     padding-left: $textarea__padding-horizontal;
     padding-right: 0
   }
-  // grid-column-end: span 4;
-  // -ms-grid-column-span: 4;
   .mdw-textfield[mdw-autosize] > & {
     min-height: 1em;
+    resize: none;
   }
 }
 
@@ -650,13 +671,11 @@ select.mdw-textfield__input {
   -ms-grid-row: 1;
   grid-column: 5;
   -ms-grid-column: 5;
-
-  margin-top: dp(16);
-  margin-bottom: dp(16);
   width: 24px;
   height: 24px;
   display: flex;
-  justify-content: center;
+  align-self: center;
+  -ms-grid-row-align: center;
 }
 
 .mdw-textfield__dropdown {
