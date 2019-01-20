@@ -11,20 +11,22 @@ $mdw-chip__border-width: dp(1);
   @include allTablets {
     transition-duration: $motion-duration-tablet-default;
   }
+
+  margin: 0 0 dp(-8) dp(-8);
+  :root[dir=rtl] & {
+    margin: 0 dp(-8) dp(-8) 0;
+  }
 }
 
 .mdw-chip__item {
-  &:first-child {
-    margin-left: 0;
-  }
-  &:last-child {
-    margin-right: 0;
+  margin: 0 0 dp(8) dp(8);
+  :root[dir=rtl] & {
+    margin: 0 dp(8) dp(8) 0;
   }
   transition: inherit;
-  margin: 0 4px;
   display: inline-flex;
   align-items: center;
-  padding: 0 12px;
+  padding: 0 dp(12);
   border-radius: dp(32); // unlikely to be taller than 64dp
   min-height: dp(32);
   position: relative;
@@ -35,12 +37,12 @@ $mdw-chip__border-width: dp(1);
 .mdw-chip__thumbnail {
   display: flex;
   align-items: center;
-  margin-left: -8px;
-  margin-right: 8px;
+  margin-left: dp(-8);
+  margin-right: dp(8);
   order: -1;
   :root[dir=rtl] & {
-    margin-left: 8px;
-    margin-right: -8px;
+    margin-left: dp(8);
+    margin-right: dp(-8);
   }
   transition: inherit;
   transition-property: max-width, opacity;
@@ -66,7 +68,7 @@ $mdw-chip__border-width: dp(1);
     opacity: 0;
   }
   &:checked ~ .mdw-chip__checkmark {
-    max-width: 24px;
+    max-width: dp(24);
     opacity: 1;
   }
   &::before {
@@ -94,17 +96,17 @@ $mdw-chip__border-width: dp(1);
 .mdw-chip__remove {
   z-index: 1;
   &.material-icons {
-    font-size: 18px;
+    font-size: dp(18);
   }
   cursor: pointer;
   order: 1;
   display: flex;
   align-items: center;
-  margin-left: 8px;
-  margin-right: -4px;
+  margin-left: dp(8);
+  margin-right: dp(-4);
   :root[dir=rtl] & {
-    margin-left: -4px;
-    margin-right: 8px;
+    margin-left: dp(-4);
+    margin-right: dp(8);
   }
 }
 
