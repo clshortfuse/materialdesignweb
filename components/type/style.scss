@@ -129,6 +129,12 @@ p.mdw-type,
   }
 }
 
+.mdw-type[mdw-texttop-top]::before {
+  content: '';
+  display: inline-block;
+  height: 1em;
+}
+
 .mdw-type[mdw-baseline-top]::before {
   content: '';
   display: inline-block;
@@ -149,16 +155,49 @@ p.mdw-type,
   }
 }
 
-// 4sp baselines
-@each $bl in (4, 8, 10, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92) {
+// 4 dp/sp baselines
+$mdw-type__baselines: (
+  4, 8, 12, 16, 20, 24, 28, 32, 36,
+  40, 48, 56, 64) !default;
+
+@each $bl in $mdw-type__baselines {
+  .mdw-type[mdw-texttop-top="#{$bl}dp"] {
+    &::before {
+      margin-top: dp($bl);
+    }
+  }
+  .mdw-type[mdw-texttop-top="#{$bl}"] {
+    &::before {
+      margin-top: sp($bl);
+    }
+  }
+  .mdw-type[mdw-baseline-top="#{$bl}dp"] {
+    &::before {
+      height: dp($bl);
+    }
+  }
   .mdw-type[mdw-baseline-top="#{$bl}"] {
     &::before {
       height: sp($bl);
     }
   }
+  .mdw-type[mdw-baseline-bottom="#{$bl}dp"] {
+    &::after {
+      vertical-align: sp(-$bl);
+    }
+  }
   .mdw-type[mdw-baseline-bottom="#{$bl}"] {
     &::after {
       vertical-align: sp(-$bl);
+    }
+  }
+  .mdw-type[mdw-baseline-next="#{$bl}dp"] {
+    margin-bottom: dp(-$bl);
+    &::after {
+      vertical-align: dp(-$bl);
+    }
+    & + .mdw-type::before {
+      height: dp($bl);
     }
   }
   .mdw-type[mdw-baseline-next="#{$bl}"] {
