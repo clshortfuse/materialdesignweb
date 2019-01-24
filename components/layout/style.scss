@@ -58,6 +58,12 @@ $layout__gutter: dp(24);
     &[mdw-margin-bottom] {
       padding-bottom: dp(16);
     }
+    margin-top: dp(-16);
+    margin-left: dp(-16);
+    & > .mdw-layout__item {
+      padding-top: dp(16);
+      padding-left: dp(16);
+    }
   }
 
   @each $value in (0, 8, 16, 24, 40) {
