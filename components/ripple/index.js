@@ -123,11 +123,15 @@ class Ripple {
     } else if (event.type === 'touchend') {
       rippleInner.setAttribute('mdw-touchend', '');
       Ripple.clearRipple(rippleInner);
-      rippleInner.removeAttribute('mdw-touchstart');
       rippleInner.removeAttribute('mdw-touchend');
+      nextTick(() => {
+        rippleInner.removeAttribute('mdw-touchstart');
+      });
     } else if (event.type === 'touchcancel') {
       rippleInner.setAttribute('mdw-touchcancel', '');
-      rippleInner.removeAttribute('mdw-touchstart');
+      nextTick(() => {
+        rippleInner.removeAttribute('mdw-touchstart');
+      });
     }
   }
 
