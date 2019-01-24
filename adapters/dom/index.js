@@ -51,7 +51,7 @@ class DomAdapter {
         unlinkedDataItems.push(data);
       }
     });
-    unlinkedDataItems.forEach(data => () => {
+    unlinkedDataItems.forEach((data) => {
       this.removeItem(data);
     });
     this.datasource.forEach((data) => {
