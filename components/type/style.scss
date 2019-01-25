@@ -183,7 +183,7 @@ $mdw-type__baselines: (
   }
   .mdw-type[mdw-baseline-bottom="#{$bl}dp"] {
     &::after {
-      vertical-align: sp(-$bl);
+      vertical-align: dp(-$bl);
     }
   }
   .mdw-type[mdw-baseline-bottom="#{$bl}"] {
