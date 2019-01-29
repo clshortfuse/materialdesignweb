@@ -1,10 +1,12 @@
 // https://material.io/guidelines/layout/responsive-ui.html
-
+// https://material.io/archive/guidelines/layout/responsive-ui.html
 
 @import '../common/mixins.scss';
 
 $layout__margin: dp(24);
 $layout__gutter: dp(24);
+$layout__4-column-breakpoint-max: dp(600 - 1);
+$layout__8-column-breakpoint-max: dp(840 - 1);
 
 .mdw-layout {
   display: flex;
@@ -17,19 +19,10 @@ $layout__gutter: dp(24);
     // IE11 is currently unsupported due to lack of automatic placement
     display: grid;
     display: -ms-grid;
-    .mdw-layout__item {
-      min-width: 100%;
-    }
   }
   &[mdw-dense] {
     grid-auto-flow: row dense;
   }
-  &[mdw-stretch] {
-    & > .mdw-layout__item {
-      flex-grow: 1;
-    }
-  }
-
   &[mdw-center] {
     justify-content: center;
   }
@@ -47,91 +40,7 @@ $layout__gutter: dp(24);
   &[mdw-margin-bottom] {
     padding-bottom: $layout__margin;
   }
-  
 
-  @include margin16dp {
-    padding-left: dp(16);
-    padding-right: dp(16);
-    &[mdw-margin-top] {
-      padding-top: dp(16);
-    }
-    &[mdw-margin-bottom] {
-      padding-bottom: dp(16);
-    }
-    margin-top: dp(-16);
-    margin-left: dp(-16);
-    & > .mdw-layout__item {
-      padding-top: dp(16);
-      padding-left: dp(16);
-    }
-  }
-
-  @each $value in (0, 8, 16, 24, 40) {
-    &[mdw-margin="#{$value}"] {
-      padding-left: dp($value);
-      padding-right: dp($value);
-      &[mdw-margin-bottom] {
-        padding-bottom: dp($value);
-      }
-      &[mdw-margin-top] {
-        padding-top: dp($value);
-      }
-    }
-    &[mdw-gutter="#{$value}"] {
-      margin-top: dp(-$value);
-      margin-left: dp(-$value);
-      & > .mdw-layout__item {
-        padding-top: dp($value);
-        padding-left: dp($value);
-      }
-    }
-  }
-
-  @include allHandsets {
-    @each $value in (0, 8, 16, 24, 40) {
-      &[mdw-margin-mobile="#{$value}"] {
-        padding-left: dp($value);
-        padding-right: dp($value);
-        &[mdw-margin-bottom] {
-          padding-bottom: dp($value);
-        }
-        &[mdw-margin-top] {
-          padding-top: dp($value);
-        }
-      }
-      &[mdw-gutter-mobile="#{$value}"] {
-        margin-top: dp(-$value);
-        margin-left: dp(-$value);
-        > .mdw-layout__item {
-          padding-top: dp($value);
-          padding-left: dp($value);
-        }
-      }
-    }
-  }
-
-  @include allTablets {
-    @each $value in (0, 8, 16, 24, 40) {
-      &[mdw-margin-tablet="#{$value}"] {
-        padding-left: dp($value);
-        padding-right: dp($value);
-        &[mdw-margin-bottom] {
-          padding-bottom: dp($value);
-        }
-        &[mdw-margin-top] {
-          padding-top: dp($value);
-        }
-      }
-      &[mdw-gutter-tablet="#{$value}"] {
-        margin-top: dp(-$value);
-        margin-left: dp(-$value);
-        > .mdw-layout__item {
-          padding-top: dp($value);
-          padding-left: dp($value);
-        }
-      }
-    }
-  }
 }
 
 @mixin layoutItem($columnCount) {
@@ -175,6 +84,13 @@ $layout__gutter: dp(24);
   padding-top: $layout__gutter;
   padding-left: $layout__gutter;
 
+  .mdw-layout[mdw-grid] > & {
+    min-width: 100%;
+  }
+  .mdw-layout[mdw-stretch] > & {
+    flex-grow: 1;
+  }
+
   @for $i from 2 to 12 {
     &[mdw-rowspan="#{$i}"] {
       grid-row-end: span #{$i};
@@ -213,6 +129,25 @@ $layout__gutter: dp(24);
   display: block;
 }
 
+@include margin16dp {
+  .mdw-layout {
+    padding-left: dp(16);
+    padding-right: dp(16);
+    &[mdw-margin-top] {
+      padding-top: dp(16);
+    }
+    &[mdw-margin-bottom] {
+      padding-bottom: dp(16);
+    }
+    margin-top: dp(-16);
+    margin-left: dp(-16);
+    & > .mdw-layout__item {
+      padding-top: dp(16);
+      padding-left: dp(16);
+    }
+  }
+}
+
 .mdw-layout__content {
   // For IE11 flexbugs
   display: flex;
@@ -224,7 +159,7 @@ $layout__gutter: dp(24);
   box-sizing: border-box;
 }
 
-// 8 Columns (Explicit on Desktop + Implicit on Tablet)
+// 8 Columns (Explicit on >=840dp, Implicit on < 840dp)
 .mdw-layout[mdw-columns="8"] {
   grid-template-columns: repeat(8, 1fr);
   -ms-grid-columns: unquote("(1fr)[8]");
@@ -232,7 +167,7 @@ $layout__gutter: dp(24);
     @include layoutItem(8);
   }
 }
-@media screen and (max-width: dp(840) - 1) {
+@media screen and (max-width: $layout__8-column-breakpoint-max) {
   .mdw-layout {
     grid-template-columns: repeat(8, 1fr);
     -ms-grid-columns: unquote("(1fr)[8]");
@@ -242,7 +177,7 @@ $layout__gutter: dp(24);
   }
 }
 
-// 4 Columns (Explicit on Desktop and Tablet, Implicit on Mobile)
+// 4 Columns (Explicit on >=600dp, Implicit on <600dp)
 .mdw-layout[mdw-columns="4"] {
   grid-template-columns: repeat(4, 1fr);
   -ms-grid-columns: unquote("(1fr)[4]");
@@ -250,22 +185,103 @@ $layout__gutter: dp(24);
     @include layoutItem(4);
   }
 }
-@media screen and (max-width: dp(600) - 1) {
-  .mdw-layout[mdw-columns="8"],
-  .mdw-layout {
+@media screen and (max-width: $layout__4-column-breakpoint-max) {
+  .mdw-layout,
+  .mdw-layout[mdw-columns="8"] {
     grid-template-columns: repeat(4, 1fr);
     -ms-grid-columns: unquote("(1fr)[4]");
   }
-  .mdw-layout[mdw-columns="8"] > .mdw-layout__item,
-  .mdw-layout__item {
+  .mdw-layout__item,
+  .mdw-layout[mdw-columns="8"] > .mdw-layout__item {
     @include layoutItem(4);
   }
 }
 
+// 1 Column (Explicit on all)
 .mdw-layout[mdw-columns="1"] {
   grid-template-columns: 1fr;
   -ms-grid-columns: 1fr;
   & > .mdw-layout__item {
     @include layoutItem(1);
+  }
+}
+
+// 1-column uses same margin values as 12-column
+@each $value in (0, 8, 16, 24, 40) {
+  .mdw-layout[mdw-margin="#{$value}"],
+  .mdw-layout[mdw-columns="1"][mdw-margin="#{$value}"],
+  .mdw-layout[mdw-columns="8"][mdw-margin-8col="#{$value}"],
+  .mdw-layout[mdw-columns="4"][mdw-margin-4col="#{$value}"], {
+    padding-left: dp($value);
+    padding-right: dp($value);
+    &[mdw-margin-bottom] {
+      padding-bottom: dp($value);
+    }
+    &[mdw-margin-top] {
+      padding-top: dp($value);
+    }
+  }
+  .mdw-layout[mdw-gutter="#{$value}"],
+  .mdw-layout[mdw-columns="1"][mdw-gutter="#{$value}"],
+  .mdw-layout[mdw-columns="8"][mdw-gutter-8col="#{$value}"],
+  .mdw-layout[mdw-columns="4"][mdw-gutter-4col="#{$value}"] {
+    margin-top: dp(-$value);
+    margin-left: dp(-$value);
+    & > .mdw-layout__item {
+      padding-top: dp($value);
+      padding-left: dp($value);
+    }
+  }
+}
+
+// 8-col layouts use 8col variable
+@media screen and (max-width: $layout__8-column-breakpoint-max) {
+  @each $value in (0, 8, 16, 24, 40) {
+    .mdw-layout[mdw-margin-8col="#{$value}"] {
+      padding-left: dp($value);
+      padding-right: dp($value);
+      &[mdw-margin-bottom] {
+        padding-bottom: dp($value);
+      }
+      &[mdw-margin-top] {
+        padding-top: dp($value);
+      }
+    }
+    .mdw-layout[mdw-gutter-8col="#{$value}"] {
+      margin-top: dp(-$value);
+      margin-left: dp(-$value);
+      & > .mdw-layout__item {
+        padding-top: dp($value);
+        padding-left: dp($value);
+      }
+    }
+  }
+}
+
+// 4col layouts use 4col variable
+// Overrides 8col and 12col
+@media screen and (max-width: $layout__4-column-breakpoint-max) {
+  @each $value in (0, 8, 16, 24, 40) {
+    .mdw-layout,
+    .mdw-layout[mdw-columns="8"] {
+      &[mdw-margin-4col="#{$value}"] {
+        padding-left: dp($value);
+        padding-right: dp($value);
+        &[mdw-margin-bottom] {
+          padding-bottom: dp($value);
+        }
+        &[mdw-margin-top] {
+          padding-top: dp($value);
+        }
+      }
+      &[mdw-gutter-4col="#{$value}"] {
+        margin-top: dp(-$value);
+        margin-left: dp(-$value);
+        > .mdw-layout__item {
+          padding-top: dp($value);
+          padding-left: dp($value);
+        }
+      }
+    }
   }
 }
