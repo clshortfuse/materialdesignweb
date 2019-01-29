@@ -62,7 +62,7 @@
 // Viewport based mixins
 
 @mixin viewport-xsmall {
-  @media screen and (max-width: #{$breakpoint-window-xsmall - 1}) {
+  @media screen and (max-width: #{$breakpoint-window-small - 1}) {
     @content;
   }
 }
