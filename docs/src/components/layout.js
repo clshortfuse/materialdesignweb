@@ -33,17 +33,17 @@ function onOptionChange(event) {
       if (checked) {
         layout.removeAttribute('mdw-margin');
         layout.removeAttribute('mdw-gutter');
-        layout.removeAttribute('mdw-margin-tablet');
-        layout.removeAttribute('mdw-gutter-tablet');
-        layout.removeAttribute('mdw-margin-mobile');
-        layout.removeAttribute('mdw-gutter-mobile');
+        layout.removeAttribute('mdw-margin-8col');
+        layout.removeAttribute('mdw-gutter-8col');
+        layout.removeAttribute('mdw-margin-4col');
+        layout.removeAttribute('mdw-gutter-4col');
       } else {
-        layout.setAttribute('mdw-margin', '24');
-        layout.setAttribute('mdw-gutter', '24');
-        layout.setAttribute('mdw-margin-tablet', '16');
-        layout.setAttribute('mdw-gutter-tablet', '16');
-        layout.setAttribute('mdw-margin-mobile', '8');
-        layout.setAttribute('mdw-gutter-mobile', '8');
+        layout.setAttribute('mdw-margin', '40');
+        layout.setAttribute('mdw-gutter', '40');
+        layout.setAttribute('mdw-margin-8col', '8');
+        layout.setAttribute('mdw-gutter-8col', '8');
+        layout.setAttribute('mdw-margin-4col', '0');
+        layout.setAttribute('mdw-gutter-4col', '0');
       }
       break;
     case 'top-margin':
