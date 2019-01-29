@@ -3,12 +3,23 @@
 $tooltip__margin__desktop: dp(14);
 $tooltip__margin__mobile: dp(24);
 $tooltip__background-color: #616161; // material-grey-700
+$tooltip__touch-fade-out-time: 1.5s;
+$tooltip__touch-min-hold-time: 500ms;
 
 @import '../common/type.scss';
 
 .mdw-tooltip__wrapper {
   position: relative;
   overflow: visible;
+}
+
+.mdw-tooltip,
+.mdw-tooltip__target {
+  -webkit-touch-callout: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .mdw-tooltip {
@@ -94,7 +105,7 @@ $tooltip__background-color: #616161; // material-grey-700
 
 @media (any-pointer: coarse) {
   .mdw-tooltip {
-    transition-delay: 1.5s;
+    transition-delay: $tooltip__touch-min-hold-time;
     font-size: sp(14);
     min-height: dp(32);
     padding-left: dp(16);
@@ -123,6 +134,7 @@ $tooltip__background-color: #616161; // material-grey-700
     .mdw-tooltip__wrapper > .mdw-tooltip__target:hover:not(:active) ~ &,
     .mdw-tooltip__wrapper > .mdw-tooltip__target:not([tabindex="-1"]):focus:not(:active) ~ & {
       opacity: 0;
+      transition-delay: $tooltip__touch-fade-out-time;
     }
 
     .mdw-tooltip__target:active > &,
