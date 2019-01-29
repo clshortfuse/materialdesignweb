@@ -182,6 +182,7 @@ $textfield__outline-end-width: dp(8);
 }
 
 .mdw-textfield__border {
+  -webkit-tap-highlight-color: transparent;
   position: relative;
   grid-row: 1;
   -ms-grid-row: 1;
@@ -531,6 +532,7 @@ $textfield__outline-end-width: dp(8);
   background: none;
   border: none;
   outline: none;
+  -webkit-tap-highlight-color: transparent;
 
   grid-row: 1;
   -ms-grid-row: 1;
@@ -608,7 +610,6 @@ textarea.mdw-textfield__input {
 
 select.mdw-textfield__input {
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
   option {
     font-size: inherit;
     font-family: inherit;
