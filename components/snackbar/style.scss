@@ -157,7 +157,7 @@ $snackbar__scale-up__from: 0.85;
   @include baseline-bottom(48 - 30);
 }
 
-@media screen and (max-width: $breakpoint-portrait-handset-max) {
+@include viewport-xsmall {
   .mdw-snackbar {
     left: 0;
     right: 0;
