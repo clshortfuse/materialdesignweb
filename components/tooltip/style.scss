@@ -23,7 +23,6 @@ $tooltip__touch-min-hold-time: 500ms;
 }
 
 .mdw-tooltip {
-  
   position: absolute;
   top: 100%;
   left: 50%;
@@ -103,7 +102,7 @@ $tooltip__touch-min-hold-time: 500ms;
   transition-delay: 0;
 }
 
-@media (any-pointer: coarse) {
+@include supports-touch {
   .mdw-tooltip {
     transition-delay: $tooltip__touch-min-hold-time;
     font-size: sp(14);

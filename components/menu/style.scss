@@ -245,7 +245,7 @@ $menu__unit-width: dp(56);
   }
 }
 
-// Density based on dropdown, explicit attr, or no coarse pointer
+// Density based on dropdown, explicit attr, or no touch support
 .mdw-menu[mdw-dense]:not([mdw-dense="never"]),
 .mdw-menu[mdw-dropdown] {
   .mdw-menu__item {
@@ -254,7 +254,7 @@ $menu__unit-width: dp(56);
     padding-right: dp(24);
   }
 }
-@media not all and (any-pointer: coarse) {
+@include not-supports-touch {
   .mdw-menu:not([mdw-dense="never"]) {
     .mdw-menu__item {
       min-height: dp(32);

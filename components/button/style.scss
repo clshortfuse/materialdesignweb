@@ -163,7 +163,7 @@ $button__outline-size: dp(1);
 
 // Extended touch target
 @mixin mdw-button__touch-target {
-  @media (any-pointer: coarse) {
+  @include supports-touch {
     content: "";
     position: absolute;
     width: 100%;

@@ -128,6 +128,19 @@
   }
 }
 
+// Touch Support
+@mixin supports-touch {
+  @media (any-pointer: coarse) {
+    @content;
+  }
+}
+
+@mixin not-supports-touch {
+  @media not all and (any-pointer: coarse) {
+    @content;
+  }
+}
+
 // Theming mixins
 $light: 1;
 $dark: 2;
