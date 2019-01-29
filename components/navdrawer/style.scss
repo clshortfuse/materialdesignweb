@@ -110,7 +110,7 @@ $navdrawer__min-width__mini: dp(56) !default;
   grid-row-end: span 3;
   -ms-grid-row-span: 3;
   max-width: calc(100vw - 64px); // Tablet or Desktop
-  @include allHandsets {
+  @include viewport-xsmall {
     max-width: calc(100vw - 56px);
   }
   min-width: $navdrawer__min-width;
@@ -575,7 +575,7 @@ $navdrawer__min-width__mini: dp(56) !default;
   &[mdw-mini],
   &[mdw-clipped],
   &[mdw-floating] {
-    @media screen and (max-width: dp(600) - 1) {
+    @include viewport-xsmall {
       @include mdw-navdrawer__modal;
       &[id]:target,
       &[mdw-show]:not([mdw-hide]) {
@@ -583,7 +583,7 @@ $navdrawer__min-width__mini: dp(56) !default;
       }
     }
     &:not([mdw-dismissible]) {
-      @media screen and (max-width: dp(1280) - 1) {
+      @include viewport-medium {
         @include mdw-navdrawer__modal;
         &[id]:target,
         &[mdw-show]:not([mdw-hide]) {
