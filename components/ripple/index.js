@@ -69,8 +69,8 @@ class Ripple {
       rippleInner.setAttribute('mdw-mousedown', '');
       rippleInner.removeAttribute('mdw-mouseout');
       const rect = ripple.getBoundingClientRect();
-      const x = event.pageX - rect.left;
-      const y = event.pageY - rect.top;
+      const x = event.pageX - rect.left - window.pageXOffset;
+      const y = event.pageY - rect.top - window.pageYOffset;
       Ripple.updateRipplePosition(rippleInner, x, y);
       Ripple.drawRipple(rippleInner);
     } else if (event.type === 'mouseup') {
@@ -116,8 +116,8 @@ class Ripple {
       rippleInner.removeAttribute('mdw-touchcancel');
       rippleInner.removeAttribute('mdw-mouseout');
       const rect = ripple.getBoundingClientRect();
-      const x = touch.pageX - rect.left;
-      const y = touch.pageY - rect.top;
+      const x = touch.pageX - rect.left - window.pageXOffset;
+      const y = touch.pageY - rect.top - window.pageYOffset;
       Ripple.updateRipplePosition(rippleInner, x, y);
       Ripple.drawRipple(rippleInner);
     } else if (event.type === 'touchend') {
