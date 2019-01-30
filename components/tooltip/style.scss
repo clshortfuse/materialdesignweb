@@ -24,13 +24,10 @@ $tooltip__touch-min-hold-time: 500ms;
 
 .mdw-tooltip {
   position: absolute;
-  top: 100%;
-  left: 50%;
   width: auto;
   padding-left: dp(8);
   padding-right: dp(8);
   min-height: dp(24);
-  transform: translateX(-50%) translateY($tooltip__margin__desktop);
 
   display: flex;
   flex-direction: column;
@@ -60,6 +57,27 @@ $tooltip__touch-min-hold-time: 500ms;
     transition-timing-function: $motion-easing-acceleration;
   }
 
+  top: 100%;
+  left: 50%;
+  // Default Alignment is Center
+
+  transform: translateX(-50%) translateY($tooltip__margin__desktop);
+  &[mdw-align="start"],
+  :root[dir=rtl] &[mdw-align="end"] {
+    left: 0;
+    right: auto;
+  }
+  &[mdw-align="end"],
+  :root[dir=rtl] &[mdw-align="start"] {
+    left: auto;
+    right: 0;
+  }
+
+  &[mdw-align="start"],
+  &[mdw-align="end"] {
+    transform: translateY($tooltip__margin__desktop);
+  }
+
   &[mdw-position="start"],
   &[mdw-position="end"],
   &[mdw-position="left"],
@@ -70,26 +88,34 @@ $tooltip__touch-min-hold-time: 500ms;
 
   &[mdw-position="start"],
   &[mdw-position="left"],
-  [dir=rtl] &[mdw-position="end"] {
-    transform: translateY(-50%) translateX(-100%) translateX(-$tooltip__margin__desktop);
+  :root[dir=rtl] &[mdw-position="end"] {
+    margin: 0;
+    transform: translateY(-50%) translateX(-100%);
   }
 
   &[mdw-position="end"],
   &[mdw-position="right"],
-  [dir=rtl] &[mdw-position="start"] {
-    transform: translateY(-50%) translateX(100%) translateX($tooltip__margin__desktop);
+  :root[dir=rtl] &[mdw-position="start"] {
+    transform: translateY(-50%) translateX(100%);
   }
 
   &[mdw-position="top"] {
     top: 0;
     transform: translateX(-50%) translateY(-100%) translateY(-$tooltip__margin__desktop);
+    &[mdw-align="start"],
+    &[mdw-align="end"] {
+      transform: translateY(-100%) translateY(-$tooltip__margin__desktop);
+    }
   }
   
 }
 
 // Button position fix
 .mdw-tooltip__wrapper > .mdw-button[mdw-icon] ~ .mdw-tooltip {
-  margin-top: -8px;
+  &:not([mdw-position]) {
+    // Bottom
+    margin-top: -8px;
+  }
   &[mdw-position="top"] {
     margin-top: 8px;
   }
@@ -111,20 +137,17 @@ $tooltip__touch-min-hold-time: 500ms;
     padding-right: dp(16);
     transform: translateX(-50%) translateY($tooltip__margin__mobile);
 
-    &[mdw-position="start"],
-    &[mdw-position="left"],
-    [dir=rtl] &[mdw-position="end"] {
-      transform: translateY(-50%) translateX(-100%) translateX(-$tooltip__margin__mobile);
-    }
-
-    &[mdw-position="end"],
-    &[mdw-position="right"],
-    [dir=rtl] &[mdw-position="start"] {
-      transform: translateY(-50%) translateX(100%) translateX($tooltip__margin__mobile);
+    &[mdw-align="start"],
+    &[mdw-align="end"] {
+      transform: translateY($tooltip__margin__mobile);
     }
 
     &[mdw-position="top"] {
       transform: translateX(-50%) translateY(-100%) translateY(-$tooltip__margin__mobile);
+      &[mdw-align="start"],
+      &[mdw-align="end"] {
+        transform: translateY(-100%) translateY(-$tooltip__margin__mobile);
+      }
     }
 
     // Don't change opacity unless active
