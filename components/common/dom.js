@@ -1,3 +1,7 @@
+export const nextTick = window.requestAnimationFrame || (cb => window.setTimeout(cb, 17));
+
+export const cancelTick = window.cancelAnimationFrame || window.clearTimeout;
+
 /**
  * @param {Element} element
  * @param {string} className
@@ -113,9 +117,9 @@ export function scrollToElement(element, smooth) {
     });
     return;
   }
+  parent.style.setProperty('scroll-behavior', 'auto');
   parent.scrollLeft = element.offsetLeft;
+  nextTick(() => {
+    parent.style.removeProperty('scroll-behavior');
+  });
 }
-
-export const nextTick = window.requestAnimationFrame || (cb => window.setTimeout(cb, 17));
-
-export const cancelTick = window.cancelAnimationFrame || window.clearTimeout;

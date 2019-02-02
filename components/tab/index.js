@@ -135,7 +135,8 @@ class Tab {
       if (stage === 2) {
         const tabContentElement = tabElement.getElementsByClassName('mdw-tab__content')[0];
         if (tabContentElement && tabContentElement.hasAttribute('mdw-scrollsnap')) {
-          const relatedContentItem = tabContentElement.querySelector('.mdw-tab__content-item[mdw-selected]');
+          /** @type {HTMLElement} */
+          const relatedContentItem = (tabContentElement.querySelector('.mdw-tab__content-item[mdw-selected]'));
           scrollToElement(relatedContentItem, false);
         }
       } else if (stage === 4) {
@@ -261,9 +262,10 @@ class Tab {
   /**
    * @param {Element} itemElement
    * @param {boolean} [scrollToContent=true]
+   * @param {boolean} [smoothScroll=true]
    * @return {void}
    */
-  static selectItem(itemElement, scrollToContent) {
+  static selectItem(itemElement, scrollToContent, smoothScroll) {
     const tabElement = findElementParentByClassName(itemElement, 'mdw-tab');
     if (!tabElement) {
       return;
@@ -314,7 +316,7 @@ class Tab {
     if (tabContentElement) {
       if (tabContentElement.hasAttribute('mdw-scrollsnap')) {
         if ((scrollToContent !== false) && relatedContentItem) {
-          scrollToElement(relatedContentItem, true);
+          scrollToElement(relatedContentItem, smoothScroll !== false);
         }
       } else {
         tabContentElement.scrollLeft = 0;
@@ -326,7 +328,7 @@ class Tab {
     }
 
     if (tabItemsElement && tabItemsElement.hasAttribute('mdw-scrollable')) {
-      scrollToElement(itemElement, true);
+      scrollToElement(itemElement, smoothScroll !== false);
     }
   }
 }
