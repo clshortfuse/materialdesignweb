@@ -18,7 +18,8 @@ export function setRTLMode(value, button) {
     // Poor visibility even though spec says 70% opacity
     setStorageItem('rtlmode', 'true');
   } else {
-    document.documentElement.removeAttribute('dir');
+    // Explicit LTR is required for Safari to support repeated toggling
+    document.documentElement.setAttribute('dir', 'ltr');
     if (button) {
       button.setAttribute('mdw-inactive', '');
     }
