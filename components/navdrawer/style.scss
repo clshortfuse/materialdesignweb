@@ -135,7 +135,7 @@ $navdrawer__min-width__mini: dp(56) !default;
       height: 0;
     }
   }
-  html[mdw-ios][mdw-standalone] & {
+  :root[mdw-ios][mdw-standalone] & {
     padding-left: constant(safe-area-inset-left);
     padding-left: env(safe-area-inset-left);
     padding-right: 0;
@@ -143,7 +143,7 @@ $navdrawer__min-width__mini: dp(56) !default;
     padding-top: constant(safe-area-inset-top);
     padding-top: env(safe-area-inset-top);
   }
-  html[mdw-ios][mdw-standalone][dir=rtl] & {
+  :root[mdw-ios][mdw-standalone][dir=rtl] & {
     padding-right: constant(safe-area-inset-right);
     padding-right: env(safe-area-inset-right);
     padding-left: 0;
@@ -332,7 +332,7 @@ $navdrawer__min-width__mini: dp(56) !default;
     right: 24px;
     font-size: 16px;
     padding: inherit;
-    [dir=rtl] & {
+    :root[dir=rtl] & {
       right: auto;
       left: 24px;
     }
@@ -348,7 +348,7 @@ $navdrawer__min-width__mini: dp(56) !default;
   max-width: 100%;
   box-sizing: border-box;
   padding-right: 32px;
-  [dir=rtl] & {
+  :root[dir=rtl] & {
     padding-left: 32px;
     padding-right: 0;
   }
@@ -380,7 +380,7 @@ $navdrawer__min-width__mini: dp(56) !default;
     min-width: auto;
     box-shadow: elevation(0);
     transform: translateX(-100%);
-    [dir=rtl] & {
+    :root[dir=rtl] & {
       transform: translateX(100%);
     }
     border-right-width: 0;
