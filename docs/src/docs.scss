@@ -1,7 +1,6 @@
 html {
   font-family: Roboto, sans-serif;
-  height: 100%;
-
+  
   // Prefer iOS Dynamic Type for accessibility support
   font: -apple-system-body;
 }
@@ -11,12 +10,8 @@ html {
   direction: inherit;
 }
 
-
 body {
-  display: flex;
-  flex-direction: row;
   margin: 0;
-  height: 100%;
 }
 
 .nav {

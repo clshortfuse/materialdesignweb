@@ -10,12 +10,12 @@ include ../mixins.pug
             .mdw-toolbar__start
               .mdw-tooltip__wrapper
                 .mdw-tooltip__target.mdw-button(mdw-icon).material-icons menu
-                .mdw-tooltip Menu
+                .mdw-tooltip(mdw-align="start") Menu
             .mdw-toolbar__title(style="color:white") Inbox
             .mdw-toolbar__end
               .mdw-tooltip__wrapper
                 .mdw-tooltip__target.mdw-button(mdw-icon).material-icons search
-                .mdw-tooltip Search
+                .mdw-tooltip(mdw-align="end") Search
         .content
           ul.mdw-list(mdw-divider)
             li.mdw-list__subheader Today
