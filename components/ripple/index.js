@@ -38,6 +38,7 @@ class Ripple {
     targetElement.addEventListener('touchcancel', Ripple.onTouchEvent);
     element.addEventListener('keydown', Ripple.onKeyEvent);
     element.addEventListener('keyup', Ripple.onKeyEvent);
+    rippleInner.addEventListener('animationend', Ripple.onAnimationEnd);
   }
 
   /**
@@ -226,31 +227,26 @@ class Ripple {
   }
 
   static drawRipple(rippleInner) {
-    const duration = Ripple.getRippleDuration(rippleInner);
     rippleInner.setAttribute('mdw-fade-in', '');
     rippleInner.removeAttribute('mdw-fade-in-complete');
     rippleInner.removeAttribute('mdw-fade-out');
     rippleInner.removeAttribute('mdw-fade-out-ready');
     rippleInner.removeAttribute('mdw-fade-in-out');
-    setTimeout(() => {
-      if (rippleInner.hasAttribute('mdw-fade-in')) {
-        rippleInner.setAttribute('mdw-fade-in-complete', '');
-      }
-      if (rippleInner.hasAttribute('mdw-fade-out-ready')) {
-        Ripple.clearRipple(rippleInner);
-      }
-    }, duration);
   }
 
-  static getRippleDuration(rippleInner) {
-    const durationString = window.getComputedStyle(rippleInner).animationDuration;
-    let duration = 0;
-    if (durationString.indexOf('ms') !== -1) {
-      duration = parseFloat(durationString.replace(/[^0-9.]/g, ''));
-    } else if (durationString.indexOf('s') !== -1) {
-      duration = parseFloat(durationString.replace(/[^0-9.]/g, '')) * 1000;
+  static onAnimationEnd(event) {
+    /** @type {HTMLElement} */
+    const rippleInner = (event.currentTarget);
+    if (rippleInner.hasAttribute('mdw-fade-in')) {
+      rippleInner.setAttribute('mdw-fade-in-complete', '');
     }
-    return duration;
+    if (rippleInner.hasAttribute('mdw-fade-out-ready')) {
+      Ripple.clearRipple(rippleInner);
+      return;
+    }
+    if (rippleInner.hasAttribute('mdw-fade-out')) {
+      rippleInner.removeAttribute('mdw-fade-out');
+    }
   }
 
   static clearRipple(rippleInner) {
@@ -277,12 +273,6 @@ class Ripple {
     rippleInner.removeAttribute('mdw-fade-in-complete');
     rippleInner.removeAttribute('mdw-fade-out-ready', '');
     rippleInner.setAttribute('mdw-fade-out', '');
-    const duration = Ripple.getRippleDuration(rippleInner);
-    setTimeout(() => {
-      if (rippleInner.hasAttribute('mdw-fade-out')) {
-        rippleInner.removeAttribute('mdw-fade-out');
-      }
-    }, duration);
   }
 
   /**
