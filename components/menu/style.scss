@@ -11,13 +11,12 @@ $menu__unit-width: dp(56);
   display: inline-flex;
 }
 .mdw-menu__close {
-  visibility: hidden;
   pointer-events: inherit;
   position: fixed;
   left: 0;
   top: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: 8;
   // z-index: -1; // Safari has a negative z-index bug
   cursor: default;
@@ -25,14 +24,12 @@ $menu__unit-width: dp(56);
 
 .mdw-menu {
   position: absolute;
-  display: inline-flex;
+  display: block;
+  pointer-events: none;
   &[mdw-show]:not([mdw-hide]),
   &[id]:target:not([mdw-hide]) {
-    .mdw-menu__close {
-      visibility: visible;
-    }
+    pointer-events: auto;
     .mdw-menu__popup {
-      pointer-events: auto;
       transition-timing-function: $motion-easing-acceleration;
       transition-duration: $motion-duration-desktop-enter;
       @include allHandsets {
@@ -46,6 +43,24 @@ $menu__unit-width: dp(56);
       box-shadow: elevation(8);
     }
   }
+
+  // Scroll mask
+  overscroll-behavior: none;
+  overscroll-behavior: contain;
+  -ms-scroll-chaining: none;
+  &::after {
+    display: block;
+    content: '';
+    width: 200%;
+    height: 200%;
+  }
+
+  // Hide scrollbar
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display:none;
+  }
+  scrollbar-width: none;
 
   // Default position is bottom
   // Default direction is start
@@ -132,10 +147,29 @@ $menu__unit-width: dp(56);
   }
 }
 
+.mdw-menu[mdw-js] {
+  position: fixed;
+  left: 0%;
+  top: 0%;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow-y: scroll;
+  z-index: 8;
+  cursor: default;
+  .mdw-menu__close {
+    display: none;
+  }
+  .mdw-menu__popup {
+    position: relative;
+    margin: 0;
+  }
+}
+
 .mdw-menu__popup {
   z-index: 8;
-  pointer-events: none;
-  display: flex;
+  pointer-events: inherit;
+  display: inline-flex;
   flex-direction: column;
   position: absolute;
   transition-property: transform, box-shadow, opacity;
@@ -167,6 +201,9 @@ $menu__unit-width: dp(56);
   overflow-y: auto;
   -ms-overflow-style: -ms-autohiding-scrollbar;
   max-height: 50vh;
+  overscroll-behavior: none;
+  overscroll-behavior: contain;
+  -ms-scroll-chaining: none;
 }
 
 .mdw-menu__text {

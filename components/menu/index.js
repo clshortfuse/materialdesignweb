@@ -87,33 +87,37 @@ class Menu {
    */
   static attach(menuElement) {
     menuElement.setAttribute('mdw-js', '');
-    let menuCloser = menuElement.getElementsByClassName('mdw-menu__close')[0];
-    if (!menuCloser) {
-      menuCloser = document.createElement('div');
-      menuCloser.classList.add('mdw-menu__close');
-      if (menuElement.firstChild) {
-        menuElement.insertBefore(menuCloser, menuElement.firstChild);
-      } else {
-        menuElement.appendChild(menuCloser);
-      }
-    }
-    menuCloser.addEventListener('click', Menu.onMenuCloserClick);
+    menuElement.addEventListener('click', Menu.onMenuClick);
+    menuElement.addEventListener('scroll', Menu.onMenuScroll);
+    menuElement.addEventListener('touchmove', Menu.onMenuScroll);
+    menuElement.addEventListener('wheel', Menu.onMenuScroll);
     menuElement.addEventListener('keydown', Menu.onKeyDown);
   }
 
-  static onMenuCloserClick(event) {
-    const closer = event.currentTarget;
-    if (!closer) {
+  static onMenuScroll(event) {
+    // JS needed for Safari
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.type !== 'scroll') {
       return;
     }
-    const menu = closer.parentElement;
-    if (!menu) {
-      return;
+    /** @type {HTMLElement} */
+    const element = (event.currentTarget);
+    if (element.scrollTop !== element.scrollHeight / 4) {
+      element.scrollTop = element.scrollHeight / 4;
     }
-    if (closer instanceof HTMLAnchorElement) {
+    if (element.scrollLeft !== element.scrollWidth / 4) {
+      element.scrollLeft = element.scrollWidth / 4;
+    }
+  }
+
+  static onMenuClick(event) {
+    /** @type {HTMLElement} */
+    const menuElement = (event.currentTarget);
+    if (menuElement instanceof HTMLAnchorElement) {
       event.preventDefault();
     }
-    Menu.hide(menu);
+    Menu.hide(menuElement);
   }
 
   /**
@@ -191,10 +195,10 @@ class Menu {
 
   static detach(menuElement) {
     Menu.hide(menuElement);
-    const menuCloser = menuElement.getElementsByClassName('mdw-menu__close')[0];
-    if (menuCloser) {
-      menuCloser.removeEventListener('click', Menu.onMenuCloserClick);
-    }
+    menuElement.removeEventListener('click', Menu.onMenuClick);
+    menuElement.removeEventListener('scroll', Menu.onMenuScroll);
+    menuElement.removeEventListener('touchmove', Menu.onMenuScroll);
+    menuElement.removeEventListener('wheel', Menu.onMenuScroll);
     menuElement.addEventListener('keydown', Menu.onKeyDown);
     menuElement.removeAttribute('mdw-js');
     menuElement.removeAttribute('mdw-show');
@@ -303,7 +307,8 @@ class Menu {
     let openLtr = mdwDirection.indexOf('ltr') !== -1;
     let openRtl = mdwDirection.indexOf('rtl') !== -1;
 
-    const target = event.currentTarget || event.target;
+    /** @type {HTMLElement} */
+    const target = (event.currentTarget || event.target);
 
     let isPageRTL = null;
     if (alignStart || alignEnd || openNormal || openReverse) {
@@ -341,11 +346,13 @@ class Menu {
     const offsetLeft = (useAlignTarget ? -event.offsetX : 0);
     const offsetRight = (useAlignTarget ? target.clientWidth - event.offsetX : 0);
     let { pageX, pageY } = event;
+    const rect = target.getBoundingClientRect();
     if (!pageX && !pageY) {
-      const rect = target.getBoundingClientRect();
-      pageX = rect.x;
-      pageY = rect.y;
+      pageX = rect.left;
+      pageY = rect.top;
     }
+    pageX -= window.pageXOffset;
+    pageY -= window.pageYOffset;
 
     /* Automatic Positioning
      *
@@ -404,6 +411,7 @@ class Menu {
 
     popupElement.style.setProperty('max-height', 'none');
     const popupElementHeight = popupElement.clientHeight;
+    const popupElementWidth = popupElement.clientWidth;
     const canOpenDownwardsFromBottom = !alignTop && !alignVCenter
       && !openUp && !openVCenter
       && popupElementHeight + (pageY + offsetBottom) <= window.innerHeight;
@@ -418,20 +426,20 @@ class Menu {
       && pageY + offsetBottom >= popupElementHeight;
     const canOpenRightwardsFromLeft = !alignRight && !alignHCenter
       && !openRtl && !openHCenter
-      && popupElement.clientWidth + (pageX + offsetLeft) <= window.innerWidth;
+      && popupElementWidth + (pageX + offsetLeft) <= window.innerWidth;
     const canOpenRightwardsFromRight = !alignLeft && !alignHCenter
       && !openRtl && !openHCenter
-      && popupElement.clientWidth + (pageX + offsetRight) <= window.innerWidth;
+      && popupElementWidth + (pageX + offsetRight) <= window.innerWidth;
     const canOpenLeftwardsFromRight = !alignLeft && !alignHCenter
       && !openLtr && !openHCenter
-      && pageX + offsetRight >= popupElement.clientWidth;
+      && pageX + offsetRight >= popupElementWidth;
     const canOpenLeftwardsFromLeft = !alignRight && !alignHCenter
       && !openLtr && !openHCenter
-      && pageX + offsetLeft >= popupElement.clientWidth;
+      && pageX + offsetLeft >= popupElementWidth;
     const canOpenFromCenter = !alignLeft && !alignRight && !alignTop && !alignBottom
       && !openUp && !openDown
-      && ((pageX + offsetLeft) / 2) >= (popupElement.clientWidth / 2)
-      && (popupElement.clientWidth / 2) + ((pageX + offsetLeft) / 2) <= window.innerWidth;
+      && ((pageX + offsetLeft) / 2) >= (popupElementWidth / 2)
+      && (popupElementWidth / 2) + ((pageX + offsetLeft) / 2) <= window.innerWidth;
     popupElement.style.removeProperty('max-height');
     const candidates = [
       canOpenDownwardsFromBottom && canOpenRightwardsFromLeft, // 1a └↘
@@ -548,20 +556,20 @@ class Menu {
       transformOrigin = 'left';
     } else if (openHCenter) {
       if (alignLeft) {
-        left = `${(pageX + offsetLeft) - (popupElement.clientWidth / 2)}px`;
+        left = `${(pageX + offsetLeft) - (popupElementWidth / 2)}px`;
       } else if (alignRight) {
-        left = `${(pageX + offsetRight) - (popupElement.clientWidth / 2)}px`;
+        left = `${(pageX + offsetRight) - (popupElementWidth / 2)}px`;
       } else {
-        left = `${(pageX + ((offsetLeft + offsetRight) / 2)) - (popupElement.clientWidth / 2)}px`;
+        left = `${(pageX + ((offsetLeft + offsetRight) / 2)) - (popupElementWidth / 2)}px`;
       }
       transformOrigin = 'center';
     } else {
       if (alignLeft) {
-        left = `${(pageX + offsetLeft) - popupElement.clientWidth}px`;
+        left = `${(pageX + offsetLeft) - popupElementWidth}px`;
       } else if (alignHCenter) {
-        left = `${(pageX + ((offsetLeft + offsetRight) / 2)) - popupElement.clientWidth}px`;
+        left = `${(pageX + ((offsetLeft + offsetRight) / 2)) - popupElementWidth}px`;
       } else {
-        left = `${(pageX + offsetRight) - popupElement.clientWidth}px`;
+        left = `${(pageX + offsetRight) - popupElementWidth}px`;
       }
       transformOrigin = 'right';
     }
@@ -601,7 +609,6 @@ class Menu {
     popupElement.style.setProperty('bottom', 'auto');
     popupElement.style.setProperty('margin', margin);
     popupElement.style.setProperty('transform-origin', transformOrigin);
-    popupElement.style.setProperty('position', 'fixed');
   }
 
   /**
