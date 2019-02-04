@@ -5,7 +5,10 @@
 
 $mdw-datatable__icon-size: dp(16);
 
-table.mdw-datatable,
+.mdw-datatable {
+  display: flex;
+  flex-direction: column;
+}
 .mdw-datatable table {
   display: table;
   border-collapse: collapse;
@@ -31,6 +34,7 @@ table.mdw-datatable,
 }
 
 .mdw-datatable__header {
+  flex: none;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -194,7 +198,12 @@ table.mdw-datatable,
   }
 }
 
+.mdw-datatable__scroller {
+  overflow:auto;
+}
+
 .mdw-datatable__footer {
+  flex: none;
   min-height: dp(56);
   display: flex;
   flex-direction: row;

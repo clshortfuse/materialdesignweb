@@ -379,24 +379,45 @@ export class DataTable {
     tbody.removeEventListener('click', DataTable.onTableBodyClick);
   }
 
+  /**
+   * @param {Element} datatableElement
+   * @return {HTMLElement}
+   */
+  static getScroller(datatableElement) {
+    /** @type {HTMLElement} */
+    let scroller = (datatableElement.getElementsByClassName('mdw-datatable__scroller')[0]);
+    if (!scroller) {
+      scroller = document.createElement('div');
+      scroller.classList.add('mdw-datatable__scroller');
+      const footer = datatableElement.getElementsByClassName('mdw-datatable__footer')[0];
+      if (footer) {
+        datatableElement.insertBefore(scroller, footer);
+      } else {
+        datatableElement.appendChild(scroller);
+      }
+      // Move table into scroller if it exists
+      const table = datatableElement.getElementsByTagName('table')[0];
+      if (table) {
+        table.parentElement.removeChild(table);
+        scroller.appendChild(table);
+      }
+    }
+    return scroller;
+  }
 
   /**
-   * @param {Element} tableElement
+   * @param {Element} datatableElement
    * @return {HTMLTableElement}
    */
-  static getTable(tableElement) {
-    if (tableElement instanceof HTMLTableElement) {
-      return tableElement;
+  static getTable(datatableElement) {
+    if (datatableElement instanceof HTMLTableElement) {
+      return datatableElement;
     }
-    let table = tableElement.getElementsByTagName('table')[0];
+    let table = datatableElement.getElementsByTagName('table')[0];
     if (!table) {
+      const scroller = this.getScroller(datatableElement);
       table = document.createElement('table');
-      const footer = tableElement.getElementsByClassName('mdw-datatable__footer')[0];
-      if (footer) {
-        tableElement.insertBefore(table, footer);
-      } else {
-        tableElement.appendChild(table);
-      }
+      scroller.appendChild(table);
     }
     return table;
   }
@@ -421,13 +442,13 @@ export class DataTable {
   }
 
   /**
-   * @param {Element} tableElement
+   * @param {Element} datatableElement
    * @return {HTMLTableSectionElement}
    */
-  static getTableBody(tableElement) {
-    let tbody = tableElement.getElementsByTagName('tbody')[0];
+  static getTableBody(datatableElement) {
+    let tbody = datatableElement.getElementsByTagName('tbody')[0];
     if (!tbody) {
-      const table = DataTable.getTable(tableElement);
+      const table = DataTable.getTable(datatableElement);
       tbody = document.createElement('tbody');
       table.appendChild(tbody);
     }
