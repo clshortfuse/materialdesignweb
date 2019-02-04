@@ -275,6 +275,7 @@ class DataTableAdapter {
       }
     });
     DataTable.attach(this.element);
+    this.scroller = DataTable.getScroller(this.element);
     this.element.setAttribute('mdw-adapter', '');
     /** @type {DataTableAdapterColumn<T>[]} */
     this.columns = [];
@@ -337,11 +338,11 @@ class DataTableAdapter {
   }
 
   buildScrollListener() {
-    this.element.addEventListener('scroll', this.onElementScrollListener);
+    this.scroller.addEventListener('scroll', this.onElementScrollListener);
   }
 
   destroyScrollListener() {
-    this.element.removeEventListener('scroll', this.onElementScrollListener);
+    this.scroller.removeEventListener('scroll', this.onElementScrollListener);
   }
 
   /**
@@ -736,14 +737,17 @@ class DataTableAdapter {
 
   /**
    * @param {HTMLTableRowElement} el
+   * @param {?number} viewportTop
+   * @param {?number} viewportBottom
    * @return {boolean}
    */
-  isRowVisible(el) {
-    const scrollingElement = this.element;
+  isRowVisible(
+    el,
+    viewportTop = this.scroller.scrollTop,
+    viewportBottom = this.scroller.scrollTop + this.scroller.offsetHeight
+  ) {
     const rowTop = el.offsetTop;
     const rowBottom = rowTop + el.offsetHeight;
-    const viewportTop = scrollingElement.scrollTop;
-    const viewportBottom = viewportTop + scrollingElement.offsetHeight;
     if (rowTop > viewportTop && rowTop < viewportBottom) {
       // Top of row is visible
       return true;
@@ -801,8 +805,10 @@ class DataTableAdapter {
     let foundFirstVisibleRow = false;
     let startIndex = 0;
     let endIndex = 0;
+    const viewportTop = this.scroller.scrollTop;
+    const viewportBottom = viewportTop + this.scroller.offsetHeight;
     iterateSomeOfArrayLike(tbody.rows, (row, index) => {
-      if (this.isRowVisible(row)) {
+      if (this.isRowVisible(row, viewportTop, viewportBottom)) {
         if (!foundFirstVisibleRow) {
           foundFirstVisibleRow = true;
           startIndex = index;
