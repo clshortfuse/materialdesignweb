@@ -6,7 +6,7 @@ import { DataTableAdapter } from '../../../adapters/datatable/index';
 
 /** @return {void} */
 function initializeMdwComponents() {
-  iterateArrayLike(document.getElementsByClassName('mdw-datatable'), DataTable.attach);
+  iterateArrayLike(document.querySelectorAll('.mdw-datatable.js'), DataTable.attach);
   iterateArrayLike(document.getElementsByClassName('mdw-button'), Button.attach);
   iterateArrayLike(document.getElementsByClassName('mdw-menu'), Menu.attach);
 }
