@@ -131,8 +131,6 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
 }
 
 .mdw-selection__label {
-  display: flex;
-  align-items: center;
   cursor: pointer;
   user-select: none;
   -moz-user-select: none;
