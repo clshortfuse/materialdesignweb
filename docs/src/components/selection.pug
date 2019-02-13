@@ -11,52 +11,42 @@ include ../mixins.pug
         .content(style="padding-top:7px")
           ul.mdw-list
             li.mdw-list__subheader Switch
-            label.mdw-list__item
-              .mdw-list__text Android Switch On
-              .mdw-list__secondary
-                .mdw-selection(mdw-theme-color="accent" mdw-switch)
-                  input.mdw-selection__input(type="checkbox" checked)
-                  .mdw-selection__icon
-            label.mdw-list__item
-              .mdw-list__text Android Switch Off
-              .mdw-list__secondary
-                .mdw-selection(mdw-theme-color="accent-200" mdw-switch)
-                  input.mdw-selection__input(type="checkbox")
-                  .mdw-selection__icon
+            label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+              input.mdw-selection__input(type="checkbox" checked)
+              .mdw-list__text.mdw-selection__label Android Switch On
+              .mdw-selection__icon
+            label.mdw-list__item.mdw-selection(mdw-theme-color="accent-200" mdw-switch)
+              input.mdw-selection__input(type="checkbox")
+              .mdw-list__text.mdw-selection__label Android Switch Off
+              .mdw-selection__icon
           ul.mdw-list
             li.mdw-list__subheader Single check
-            label.mdw-list__item
-              .mdw-list__text Option 1
-              .mdw-list__secondary
-                .mdw-selection(mdw-theme-color="accent-700")
-                  input.mdw-selection__input(type="radio" name="selectiontest" checked)
-                  .mdw-selection__icon
-            label.mdw-list__item
-              .mdw-list__text Option 2
-              .mdw-list__secondary
-                .mdw-selection(mdw-theme-color="primary-700")
-                  input.mdw-selection__input(type="radio" name="selectiontest")
-                  .mdw-selection__icon
+            label.mdw-list__item.mdw-selection(mdw-theme-color="accent-700")
+              input.mdw-selection__input(type="radio" name="selectiontest" checked)
+              .mdw-list__text.mdw-selection__label
+                .mdw-list__text-line Option 1
+                .mdw-list__text-line Description
+              .mdw-selection__icon
+            label.mdw-list__item.mdw-selection(mdw-theme-color="primary-700")
+              input.mdw-selection__input(type="radio" name="selectiontest")
+              .mdw-list__text.mdw-selection__label
+                .mdw-list__text-line Option 2
+                .mdw-list__text-line Description
+              .mdw-selection__icon
           ul.mdw-list
             li.mdw-list__subheader Multiple check
-            label.mdw-list__item
-              .mdw-list__text Option 1
-              .mdw-list__secondary
-                .mdw-selection(mdw-theme-color="accent-A400")
-                  input.mdw-selection__input(type="checkbox" checked)
-                  .mdw-selection__icon
-            label.mdw-list__item
-              .mdw-list__text Option 2
-              .mdw-list__secondary
-                .mdw-selection(mdw-theme-color="primary-700")
-                  input.mdw-selection__input(type="checkbox" checked)
-                  .mdw-selection__icon
-            label.mdw-list__item
-              .mdw-list__text Option 3
-              .mdw-list__secondary
-                .mdw-selection(mdw-theme-color="warn")
-                  input.mdw-selection__input(type="checkbox")
-                  .mdw-selection__icon
+            label.mdw-list__item.mdw-selection(mdw-theme-color="accent-A400")
+              input.mdw-selection__input(type="checkbox" checked)
+              .mdw-list__text.mdw-selection__label Option 1
+              .mdw-selection__icon
+            label.mdw-list__item.mdw-selection(mdw-theme-color="primary-700")
+              input.mdw-selection__input(type="checkbox" checked)
+              .mdw-list__text.mdw-selection__label Option 2
+              .mdw-selection__icon
+            label.mdw-list__item.mdw-selection(mdw-theme-color="warn")
+              input.mdw-selection__input(type="checkbox")
+              .mdw-list__text.mdw-selection__label Option 3
+              .mdw-selection__icon
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B57Y8yNEHsZPQXRHTEpLc0JXVnM/material-design.platform-adaptation-control-1.png')
 
     .comparison.mdw-theme-selection
