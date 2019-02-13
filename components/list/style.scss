@@ -223,10 +223,6 @@ ul.mdw-list {
   position: static;
   pointer-events: none;
   flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-end;
   overflow-x: hidden;
   text-overflow: ellipsis;
   
@@ -351,7 +347,6 @@ ul.mdw-list {
   }
 
   &[mdw-ripple] {
-    overflow-y: visible;
     &::before,
     &::after {
       // If using custom ripple, destroy ::after object
