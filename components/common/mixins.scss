@@ -69,13 +69,19 @@
   }
 }
 
-@mixin viewport-small {
+@mixin viewport-min-small {
+  @media screen and (min-width: #{$breakpoint-window-small}) {
+    @content;
+  }
+}
+
+@mixin viewport-max-small {
   @media screen and (max-width: #{$breakpoint-window-medium - 1}) {
     @content;
   }
 }
 
-@mixin viewport-small-only {
+@mixin viewport-small {
   @media screen
     and (min-width: $breakpoint-window-small)
     and (max-width: #{$breakpoint-window-medium - 1}) {
@@ -83,13 +89,19 @@
   }
 }
 
-@mixin viewport-medium {
+@mixin viewport-min-medium {
+  @media screen and (min-width: #{$breakpoint-window-medium}) {
+    @content;
+  }
+}
+
+@mixin viewport-max-medium {
   @media screen and (max-width: #{$breakpoint-window-large - 1}) {
     @content;
   }
 }
 
-@mixin viewport-medium-only {
+@mixin viewport-medium {
   @media screen
     and (min-width: $breakpoint-window-medium)
     and (max-width: #{$breakpoint-window-large - 1}) {
@@ -97,13 +109,19 @@
   }
 }
 
-@mixin viewport-large {
+@mixin viewport-min-large {
+  @media screen and (min-width: #{$breakpoint-window-large}) {
+    @content;
+  }
+}
+
+@mixin viewport-max-large {
   @media screen and (max-width: #{$breakpoint-window-xlarge - 1}) {
     @content;
   }
 }
 
-@mixin viewport-large-only {
+@mixin viewport-large {
   @media screen
     and (min-width: $breakpoint-window-large)
     and (max-width: #{$breakpoint-window-xlarge - 1}) {
@@ -111,7 +129,7 @@
   }
 }
 
-@mixin viewport-xlarge-only {
+@mixin viewport-xlarge {
   @media screen and (min-width: $breakpoint-window-xlarge) {
     @content;
   }
