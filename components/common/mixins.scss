@@ -38,9 +38,11 @@
 @mixin allTablets {
   @media
     screen
+      and (min-width: $breakpoint-portrait-tablet-small)
       and (max-device-width: $breakpoint-portrait-tablet-max)
       and (max-device-aspect-ratio: 1/1),
     screen
+      and (min-width: $breakpoint-landscape-tablet-small)
       and (max-device-width: $breakpoint-landscape-tablet-max)
       and (min-device-aspect-ratio: 1/1) {
     @content;
