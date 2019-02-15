@@ -38,6 +38,12 @@ ul.mdw-list {
     margin-top: -8px;
   }
 }
+
+.mdw-list__item-group {
+  display: flex;
+  flex-direction: column;
+}
+
 .mdw-list__item {
   flex: none;
   @include type-rules('subtitle');
