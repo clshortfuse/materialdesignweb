@@ -70,7 +70,8 @@ $mdw-card__horizontal-padding: dp(16);
 
 .mdw-card__header,
 .mdw-card__subheader,
-.mdw-card__supporting-text {
+.mdw-card__supporting-text,
+.mdw-card__content {
   padding: 0 $mdw-card__horizontal-padding;
 }
 
