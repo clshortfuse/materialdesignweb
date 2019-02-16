@@ -7,15 +7,25 @@ $globalColors: (
 );
 
 @function globalThemeValue($key, $type) {
-  @return themeValue('', $globalColors, $key, $type);
+  @return themeValue('mdw', $globalColors, $key, $type);
 }
 
 @mixin globalThemeVariables($color, $lightness) {
-  @include themeVariables('', $globalColors, $color, $lightness);
+  @include themeVariables('mdw', $globalColors, $color, $lightness);
 }
 
 // Vary by contrast
 @mixin globalContrastRules($type: 'var', $theme: null) {
+  @if ($type != 'var') {
+    color: globalThemeValue("text-color", $type);
+  } @else {
+    @at-root {
+      *[mdw-theme-fill] {
+        color: globalThemeValue("text-color", $type);
+      }
+    }
+  }
+  // color: globalThemeValue("text-color", $type);
   .mdw__primary-text {
     color: globalThemeValue("text-color", $type);
   }
