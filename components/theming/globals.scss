@@ -2,34 +2,34 @@
 @import '../common/mixins.scss';
 
 $globalColors: (
-  text-color:           ((#000, 0.87), (#fff, 1.00)),
+  text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   secondary-text-color: ((#000, 0.54), (#fff, 0.70)),
 );
 
-@function globalThemeValue($key, $type) {
-  @return themeValue('mdw', $globalColors, $key, $type);
+@function globalThemeValue($key, $type, $theme) {
+  @return themeValue('mdw', $globalColors, $key, $type, $theme);
 }
 
 @mixin globalThemeVariables($color, $lightness) {
   @include themeVariables('mdw', $globalColors, $color, $lightness);
 }
 
-// Vary by contrast
-@mixin globalContrastRules($type: 'var', $theme: null) {
+// Vary by contrast and theme
+@mixin globalContrastAndThemeRules($type: 'var', $theme: null) {
   @if ($type != 'var') {
-    color: globalThemeValue("text-color", $type);
+    color: globalThemeValue("text-color", $type, $theme);
   } @else {
     @at-root {
       *[mdw-theme-fill] {
-        color: globalThemeValue("text-color", $type);
+        color: globalThemeValue("text-color", $type, $theme);
       }
     }
   }
   // color: globalThemeValue("text-color", $type);
   .mdw__primary-text {
-    color: globalThemeValue("text-color", $type);
+    color: globalThemeValue("text-color", $type, $theme);
   }
   .mdw__secondary-text {
-    color: globalThemeValue("secondary-text-color", $type);
+    color: globalThemeValue("secondary-text-color", $type, $theme);
   }
 }

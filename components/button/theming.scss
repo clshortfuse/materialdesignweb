@@ -6,13 +6,16 @@
 @import '../common/mixins.scss';
 
 $buttonColors: (
+  text-color:                    (('foreground-light', 0.87), ('foreground-dark', 1.00)),
+  text-opacity:                  (0.87, 1.00),
+
   // icon
-  active-icon-color__focus:      ((#000, 0.87), (#fff, 1.00)),
-  active-icon-color:             ((#000, 0.54), (#fff, 0.70)),
-  inactive-icon-color:           ((#000, 0.38), (#fff, 0.50)),
+  active-icon-color__focus:      (('foreground-light', 0.87), ('foreground-dark', 1.00)),
+  active-icon-color:             (('foreground-light', 0.54), ('foreground-dark', 0.70)),
+  inactive-icon-color:           (('foreground-light', 0.38), ('foreground-dark', 0.50)),
 
   // states
-  overlay-color:                 (#000, #fff),
+  overlay-color:                 (('foreground-light', 1.00), ('foreground-dark', 1.00)),
 
   hover-opacity:                 (0.04, 0.08),
   focus-opacity:                 (0.12, 0.24),
@@ -27,8 +30,10 @@ $buttonColors: (
   pressed-opacity:               (0.16, 0.32),
 
   // disabled
-  disabled-text-color:           ((#000, 0.26), (#fff, 0.30)),
-  disabled-background-color:     ((#000, 0.12), (#fff, 0.12)),
+  disabled-text-opacity:         (0.26, 0.30),
+  disabled-text-color:           (('foreground-light', 0.26), ('foreground-dark', 0.30)),
+  disabled-background-color:     (('foreground-light', 0.12), ('foreground-dark', 0.12)),
+
   outline-color:                 ((#000, 0.12), (#fff, 0.12)),
 
 );
@@ -41,19 +46,29 @@ $buttonColors: (
   @include themeVariables('button', $buttonColors, $color, $lightness);
 }
 
-@mixin internalButtonContrastRules($type, $theme: null) {
+@mixin internalButtonContrastAndThemeRules($type, $theme: null) {
   @at-root {
     #{&}.mdw-button {
-      &:not([mdw-theme-color]) {
+      @if ($type == 'var') {
+        color: rgba(var(--color), buttonThemeValue('text-opacity', $type, $theme));
         &::before,
         & > .mdw-ripple > .mdw-ripple__inner,
         &:after {
-          color: buttonThemeValue("overlay-color", $type, $theme);
+          color: unquote("rgb(var(--color))");
         }
-        & > .mdw-ripple > .mdw-ripple__inner,
-        &:after {
-          opacity: buttonThemeValue("pressed-opacity", $type, $theme);
+      } @else {
+        &:not([mdw-theme-color]) {
+          color: buttonThemeValue("text-color", $type, $theme);
+          &::before,
+          & > .mdw-ripple > .mdw-ripple__inner,
+          &:after {
+            color: buttonThemeValue("overlay-color", $type, $theme);
+          }
         }
+      }
+      & > .mdw-ripple > .mdw-ripple__inner,
+      &:after {
+        opacity: buttonThemeValue("pressed-opacity", $type, $theme);
       }
 
       &[mdw-inactive] {
@@ -96,14 +111,19 @@ $buttonColors: (
       }
 
       &[disabled] {
-        color: buttonThemeValue("disabled-text-color", $type, $theme);
+        @if ($type == 'var') {
+          color: rgba(var(--color), buttonThemeValue('disabled-text-opacity', $type, $theme));
+        } @else {
+          color: buttonThemeValue("disabled-text-color", $type, $theme);
+        }
+        
         &[mdw-theme-fill] {
           // Disabled filled buttons use parent's theming context
           @if ($type == 'var') {
-            --button__disabled-text-color: inherit;
+            --color: inherit;
+            --button__disabled-text-opacity: inherit;
             --button__disabled-background-color: inherit;
-            color: buttonThemeValue("disabled-text-color", 'var', $theme);
-            background-color: buttonThemeValue("disabled-background-color", 'var', $theme);
+            background-color: buttonThemeValue("disabled-background-color", $type, $theme);
           } @else {
             // Average color and opacity
             color: mix(
@@ -122,11 +142,11 @@ $buttonColors: (
 }
 
 // Vary by contrast
-@mixin buttonContrastRules($type: 'var', $theme: null) {
-  @include internalButtonContrastRules($type, $theme);
+@mixin buttonContrastAndThemeRules($type: 'var', $theme: null) {
+  @include internalButtonContrastAndThemeRules($type, $theme);
   @if ($type != 'var') {
     :not([mdw-theme-fill]) {
-      @include internalButtonContrastRules($type, $theme);
+      @include internalButtonContrastAndThemeRules($type, $theme);
     }
   }
 }

@@ -17,12 +17,17 @@
   @if ($length == 1) {
     @return $item;
   } @else if ($length == 2) {
-    @return rgba(nth($item, 1), nth($item, 2));
+    $color: nth($item, 1);
+    $opacity: nth($item, 2);
+    @if (type_of($color) == string) {
+      $color: getThemeParamColor($color, null, $type, $theme);
+    }
+    @return rgba($color, $opacity);
   } @else {
     $color: nth($item, 1);
     $tone: nth($item, 2);
     $opacity: nth($item, 3);
-    $value: getThemePaletteColor($color, $tone, $type, $theme);
+    $value: getThemeParamColor($color, $tone, $type, $theme);
     @if ($opacity == null) {
       $opacity: 1.0;
     }
@@ -57,45 +62,57 @@
   @return parseThemeItem($item, $type, $theme);
 }
 
-@function getThemePalette($color, $theme) {
-  @if ($color == 'primary') {
+@function getThemeParamValue($param, $theme) {
+  @if ($param == 'primary') {
     @if ($theme != null) {
       @return map-get($palettes, nth($theme, 1));
     }
     @error 'Missing primary color!';
-  } @else if ($color == 'accent') {
+  } @else if ($param == 'accent') {
     @if (length($theme) > 1) {
       @return map-get($palettes, nth($theme, 2));
     }
     @error 'Missing accent color!';
-  } @else if ($color == 'warn') {
+  } @else if ($param == 'warn') {
     @if (length($theme) > 2) {
       @return map-get($palettes, nth($theme, 3));
     }
     @return map-get($palettes, 'red');
-  } @else if ($color == 'background') {
+  } @else if ($param == 'background') {
     @if (length($theme) > 3) {
       @return map-get($palettes, nth($theme, 4));
     }
     @return map-get($palettes, 'grey');
+  } @else if ($param == 'foreground-light') {
+    @if (length($theme) > 4) {
+      @return nth($theme, 5);
+    }
+    @return #000000;
+  } @else if ($param == 'foreground-dark') {
+    @if (length($theme) > 5) {
+      @return nth($theme, 6);
+    }
+    @return #FFFFFF;
   }
   @error "Unrecognized Theme Palette!";
 }
 
-@function getThemePaletteColor($color, $tone, $type, $theme: null) {
+@function getThemeParamColor($param, $tone, $type, $theme: null) {
   @if ($type == 'var' or ($type == null and $theme == null)) {
     @if ($tone == null) {
-      @return var(--#{$color}-color);
+      @return var(--#{$param}-color);
     }
-    @return var(--#{$color}-#{$tone}-color);
+    @return var(--#{$param}-#{$tone}-color);
   }
   @if ($tone == null) {
     $tone: '500';
   }
 
-  $palette: getThemePalette($color, $theme);
-  $value: map-get($palette, $tone);
-  @return $value;
+  $paramValue: getThemeParamValue($param, $theme);
+  @if (($param == 'foreground-light') or ($param == 'foreground-dark')) {
+    @return $paramValue;
+  }
+  @return map-get($paramValue, $tone);
 }
 
 // https://material.io/guidelines/resources/shadows.html

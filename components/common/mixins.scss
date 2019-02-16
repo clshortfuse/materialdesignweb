@@ -182,7 +182,13 @@ $dark-background: 3;
     @if ($length == 1) {
       $value: $item;
     } @else if ($length == 2) {
-      $value: rgba(nth($item, 1), nth($item, 2));
+      $color: nth($item, 1);
+      $opacity: nth($item, 2);
+      @if (type_of($color) == string) {
+        $value: rgba(var(--#{$color}-color), #{$opacity})
+      } @else {
+        $value: rgba($color, $opacity);
+      }
     } @else {
       $color: nth($item,1);
       $tone: nth($item,2);
