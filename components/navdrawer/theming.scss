@@ -28,7 +28,6 @@ $navdrawerColors: (
   }
   .mdw-navdrawer {
     background-color: navdrawerThemeValue("content-background", $type, $theme);
-    color: navdrawerThemeValue("text-color", $type, $theme);
   }
   .mdw-navdrawer__drawer {
     border-color: navdrawerThemeValue("divider-color", $type, $theme);
