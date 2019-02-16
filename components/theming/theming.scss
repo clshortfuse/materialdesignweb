@@ -17,7 +17,6 @@
 @import '../selection/theming.scss';
 @import '../tab/theming.scss';
 @import '../textfield/theming.scss';
-@import '../toolbar/theming.scss';
 @import '../type/theming.scss';
 
 $tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "A100", "A200", "A400", "A700");
@@ -39,7 +38,6 @@ $added-palettes-list: ();
     'selection',
     'tab',
     'textfield',
-    'toolbar'
   );
   $themes: (
     "default": ('indigo', 'pink', 'red'),
@@ -117,9 +115,6 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'textfield')) {
     @include textfieldThemeVariables($color, $lightness);
   }
-  @if (index($mdw-theme__components, 'toolbar')) {
-    @include toolbarThemeVariables($color, $lightness);
-  }
   @if (index($mdw-theme__components, 'type')) {
     @include typeThemeVariables($color, $lightness);
   }
@@ -175,9 +170,6 @@ $added-palettes-list: ();
   }
   @if (index($mdw-theme__components, 'textfield')) {
     @include textfieldContrastRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'toolbar')) {
-    @include toolbarContrastRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'type')) {
     @include typeContrastRules($type, $theme);
