@@ -6,8 +6,6 @@
 @import '../common/mixins.scss';
 
 $buttonColors: (
-  text-color:                    ((#000, 0.87), (#fff, 1.00)),
-
   // icon
   active-icon-color__focus:      ((#000, 0.87), (#fff, 1.00)),
   active-icon-color:             ((#000, 0.54), (#fff, 0.70)),
@@ -47,7 +45,6 @@ $buttonColors: (
   @at-root {
     #{&}.mdw-button {
       &:not([mdw-theme-color]) {
-        color: buttonThemeValue("text-color", $type, $theme);
         &::before,
         & > .mdw-ripple > .mdw-ripple__inner,
         &:after {
