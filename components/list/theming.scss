@@ -2,13 +2,14 @@
 @import '../common/mixins.scss';
 
 $listColors: (
-  text-color:           ((#000, 0.87), (#fff, 1.00)),
-  secondary-text-color: ((#000, 0.54), (#fff, 0.70)),
-  divider-color:        ((#000, 0.12), (#fff, 0.12)),
-  press-color:          ((#999, 0.40), (#CCC, 0.25)),
-  selected-color:       ((#999, 0.40), (#CCC, 0.25)),
-  ripple-color:         ( #000       ,  #fff       ),
-  ripple-opacity:       (         0.12 ,          0.30,           0.20),
+  text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
+  secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
+  divider-color:        (('foreground-light', 0.12), ('foreground-dark', 0.12)),
+
+  pressed-opacity:      (0.16, 0.32),
+  press-color:          (('foreground-light', 0.16), ('foreground-dark', 0.32)),
+  selected-color:       (('foreground-light', 0.16), ('foreground-dark', 0.32)),
+  ripple-color:         (('foreground-light', 1.00), ('foreground-dark', 1.00)),
 );
 
 @function listThemeValue($key, $type) {
@@ -20,7 +21,7 @@ $listColors: (
 }
 
 // Vary by contrast
-@mixin listContrastRules($type: 'var', $theme: null) {
+@mixin listContrastAndThemeRules($type: 'var', $theme: null) {
   .mdw-list__item {
     &:not([mdw-theme-color]) {
       color: listThemeValue("text-color", $type)
@@ -44,7 +45,7 @@ $listColors: (
     }
     & > .mdw-ripple > .mdw-ripple__inner,
     &:after {
-      opacity: listThemeValue("ripple-opacity", $type);
+      opacity: listThemeValue("pressed-opacity", $type);
       color: listThemeValue("ripple-color", $type);
     }
   }
