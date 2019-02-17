@@ -2,23 +2,21 @@
 @import '../common/mixins.scss';
 
 $selectionColors: (
-  text-color:             ((#000, 0.87), (#fff, 1.00)),
-  color:                  ((#000, 0.54), (#fff, 0.70)),
-  ripple-color:           ( #000       ,  #fff       ),
-  ripple-opacity:         (         0.12 ,          0.30  , 0.20),
-  disabled-color:         ((#000, 0.26), (#fff, 0.30)),
-  thumb-on-color:         ( currentColor ,  currentColor ),
-  thumb-disabled-color:   (    #BDBDBD ,     #424242 ),
-  thumb-off-color:        (    #FAFAFA ,     #BDBDBD ),
+  text-color:              (('foreground-light', 0.87), ('foreground-dark', 1.00)),
+  color:                   (('foreground-light', 0.54), ('foreground-dark', 0.70)),
+  ripple-color:            (('foreground-light', 1.00), ('foreground-dark', 1.00)),
+  pressed-opacity:         (0.16, 0.32),
+  disabled-color:          (('foreground-light', 0.26), ('foreground-dark', 0.30)),
+  thumb-off-color:         (('background', '50', 1.00), ('background','400',1.0)),
+  thumb-on-color:          (currentColor, currentColor),
 
-  track-on-color:         ( currentColor ,  currentColor ),
-  track-on-opacity:       (         0.50 ,          0.50 ),
+  track-on-color:          (currentColor, currentColor),
+  track-on-opacity:        (0.50, 0.50),
   
-  track-off-color:        (    #000000 ,     #FFFFFF ),
-  track-off-opacity:      (         0.38 ,          0.30 ),
-  
-  track-disabled-color:   (    #000000 ,     #FFFFFF ),
-  track-disabled-opacity: (         0.12 ,          0.10 ),
+  track-off-color:         (('foreground-light', 1.00), ('foreground-dark', 1.00)),
+  track-off-opacity:       (0.38, 0.30),
+
+  switch-disabled-opacity: (0.38, 0.38),
 );
 
 @function selectionThemeValue($key, $type, $theme) {
@@ -30,12 +28,12 @@ $selectionColors: (
 }
 
 // Vary by contrast
-@mixin selectionContrastRules($type: 'var', $theme: null) {
+@mixin selectionContrastAndThemeRules($type: 'var', $theme: null) {
   .mdw-selection__input {
     color: selectionThemeValue("ripple-color", $type, $theme);
     &:active:not(:disabled),
     &:focus {
-      opacity: selectionThemeValue("ripple-opacity", $type, $theme);
+      opacity: selectionThemeValue("pressed-opacity", $type, $theme);
     }
     &[type="checkbox"]:not(:checked) ~ .mdw-selection__icon,
     &[type="checkbox"]:active:not(:disabled) ~ .mdw-selection__icon {
@@ -84,15 +82,7 @@ $selectionColors: (
       }
     }
     &:disabled ~ .mdw-selection__icon {
-      &::before {
-        background-color: selectionThemeValue("thumb-disabled-color", $type, $theme);
-      }
-      &::after {
-        background-color: selectionThemeValue("track-disabled-color", $type, $theme);
-        opacity: selectionThemeValue("track-disabled-opacity", $type, $theme);
-      }
+      opacity: selectionThemeValue("switch-disabled-opacity", $type, $theme);
     }
-    
-
   }
 }
