@@ -142,6 +142,9 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'datatable')) {
     @include datatableContrastAndThemeRules($type, $theme);
   }
+  @if (index($mdw-theme__components, 'dialog')) {
+    @include dialogContrastAndThemeRules($type, $theme);
+  }
   @if (index($mdw-theme__components, 'list')) {
     @include listContrastAndThemeRules($type, $theme);
   }
@@ -160,9 +163,6 @@ $added-palettes-list: ();
   }
   @if (index($mdw-theme__components, 'datatable')) {
     @include datatableContrastRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'dialog')) {
-    @include dialogContrastRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'divider')) {
     @include dividerContrastRules($type, $theme);

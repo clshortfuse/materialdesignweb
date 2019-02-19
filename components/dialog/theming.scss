@@ -2,8 +2,8 @@
 @import '../common/mixins.scss';
 
 $dialogColors: (
-  text-color:           ((#000, 0.87), (#fff,              1.00)),
-  secondary-text-color: ((#000, 0.54), (#fff,              0.70)),
+  text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
+  secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
   background-color:     ((#fff, 1.00), ('background', '800', 1.00)),
 );
 
@@ -16,7 +16,7 @@ $dialogColors: (
 }
 
 // Vary by contrast or theme
-@mixin dialogContrastRules($type: 'var', $theme: null) {
+@mixin dialogContrastAndThemeRules($type: 'var', $theme: null) {
   .mdw-dialog__popup {
     background-color: dialogThemeValue("background-color", $type, $theme);
   }
