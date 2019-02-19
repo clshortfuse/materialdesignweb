@@ -3,9 +3,9 @@
 
 $cardColors: (
   background:   ((#fff, 1.00), ('background', '800', 1.00)),
-  text-color:   ((#000, 0.87), (#fff,              1.00)),
-  border-color: ((#000, 0.12), (#fff, 0.12)),
-  focus-color:  ((#000, 0.06), (#fff, 0.10)),
+  text-color:   (('foreground-light', 0.87), ('foreground-dark', 1.00)),
+  border-color: (('foreground-light', 0.12), ('foreground-dark', 0.12)),
+  focus-color:  (('foreground-light', 0.06), ('foreground-dark', 0.10)),
 );
 
 @function cardThemeValue($key, $type, $theme) {
@@ -16,7 +16,7 @@ $cardColors: (
   @include themeVariables('card', $cardColors, $color, $lightness);
 }
 
-@mixin internalCardContrastRules($type, $theme: null) {
+@mixin internalContrastAndThemeRules($type, $theme: null) {
   @at-root {
     #{&}.mdw-card{
       &:not([mdw-theme-fill]) {
@@ -33,11 +33,11 @@ $cardColors: (
   }
 }
 // Vary by contrast or theme
-@mixin cardContrastRules($type: 'var', $theme: null) {
-  @include internalCardContrastRules($type, $theme);
+@mixin cardContrastAndThemeRules($type: 'var', $theme: null) {
+  @include internalContrastAndThemeRules($type, $theme);
   @if ($type != 'var') {
     :not([mdw-theme-fill]) {
-      @include internalCardContrastRules($type, $theme);
+      @include internalContrastAndThemeRules($type, $theme);
     }
   }
 }
