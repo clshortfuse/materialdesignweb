@@ -1,5 +1,8 @@
 // https://material.io/design/components/banners.html
 
+@import '../common/type.scss';
+@import '../common/mixins.scss';
+
 .mdw-banner {
   display: flex;
   flex-direction: row;
