@@ -130,8 +130,14 @@ $added-palettes-list: ();
 @mixin componentContrastAndThemeRules($type: 'var', $theme: null) {
   @include globalContrastAndThemeRules($type, $theme);
 
+  @if (index($mdw-theme__components, 'bottomnav')) {
+    @include bottomnavContrastAndThemeRules($type, $theme);
+  }
   @if (index($mdw-theme__components, 'button')) {
     @include buttonContrastAndThemeRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'card')) {
+    @include cardContrastAndThemeRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'datatable')) {
     @include datatableContrastAndThemeRules($type, $theme);
@@ -148,12 +154,7 @@ $added-palettes-list: ();
 }
 
 @mixin componentContrastRules($type: 'var', $theme: null) {
-  @if (index($mdw-theme__components, 'bottomnav')) {
-    @include bottomnavContrastRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'card')) {
-    @include cardContrastRules($type, $theme);
-  }
+
   @if (index($mdw-theme__components, 'chip')) {
     @include chipContrastRules($type, $theme);
   }
@@ -407,7 +408,7 @@ $added-palettes-list: ();
     @each $name in map-keys($mdw-theme__themes) {
       $theme: map-get($mdw-theme__themes, $name);
       $namespace: if($name == 'default', null, ".mdw-theme-#{$name}");
-      @each $param in ('primary', 'accent', 'warn') {
+      @each $param in ('primary', 'accent', 'warn', 'background') {
         $palette: getThemeParamValue($param, $theme);
         $darkTones: map-get($palette, 'dark');
        
