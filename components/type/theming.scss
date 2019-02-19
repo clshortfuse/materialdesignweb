@@ -2,8 +2,8 @@
 @import '../common/mixins.scss';
 
 $typeColors: (
-  primary-text-color:   ((#000, 0.87), (#fff, 1.00)),
-  secondary-text-color: ((#000, 0.54), (#fff, 0.70)),
+  primary-text-color:   (('foreground-light', 0.87), ('foreground-dark', 1.00)),
+  secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
 );
 
 @function typeThemeValue($key, $type, $theme) {
@@ -14,12 +14,8 @@ $typeColors: (
   @include themeVariables('type', $typeColors, $color, $lightness);
 }
 
-@mixin typeContrastRules($type: 'var', $theme: null) {
-  .mdw-type:not([mdw-theme-color]) {
+@mixin typeContrastAndThemeRules($type: 'var', $theme: null) {
+  .mdw-type {
     color: typeThemeValue("primary-text-color", $type, $theme);
-    &[mdw-style|="display"],
-    &[mdw-style="caption"] {
-      color: typeThemeValue("secondary-text-color", $type, $theme);
-    }
   }
 }

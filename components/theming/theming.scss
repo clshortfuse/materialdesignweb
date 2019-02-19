@@ -38,6 +38,7 @@ $added-palettes-list: ();
     'selection',
     'tab',
     'textfield',
+    'type',
   );
   $themes: (
     "default": ('indigo', 'pink', 'red', 'grey', black, white),
@@ -154,6 +155,9 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'textfield')) {
     @include textfieldContrastAndThemeRules($type, $theme);
   }
+  @if (index($mdw-theme__components, 'type')) {
+    @include typeContrastAndThemeRules($type, $theme);
+  }
 }
 
 @mixin componentContrastRules($type: 'var', $theme: null) {
@@ -178,9 +182,6 @@ $added-palettes-list: ();
   }
   @if (index($mdw-theme__components, 'textfield')) {
     @include textfieldContrastRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'type')) {
-    @include typeContrastRules($type, $theme);
   }
 }
 
