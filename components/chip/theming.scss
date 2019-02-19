@@ -7,17 +7,16 @@
 
 
 $chipColors: (
-  text-color:                    ((#000, 0.87), (#fff, 1.00)),
-  background-color:              ((#000, 0.12), (#fff, 0.24)),
+  text-color:                    (('foreground-light', 0.87), ('foreground-dark', 1.00)),
+  background-color:              (('foreground-light', 0.12), ('foreground-dark', 0.24)),
 
   // icon
-  active-icon-color__focus:      ((#000, 0.87), (#fff, 1.00)),
-  active-icon-color:             ((#000, 0.54), (#fff, 0.70)),
-  inactive-icon-color:           ((#000, 0.38), (#fff, 0.50)),
+  active-icon-color__focus:      (('foreground-light', 0.87), ('foreground-dark', 1.00)),
+  active-icon-color:             (('foreground-light', 0.54), ('foreground-dark', 0.70)),
+  inactive-icon-color:           (('foreground-light', 0.38), ('foreground-dark', 0.50)),
 
   // states
-  overlay-color:                 (#000, #fff),
-  overlay-rgb:                   ("0, 0, 0", "255, 255, 255"),
+  overlay-color:                 (('foreground-light', 1.00), ('foreground-dark', 1.00)),
 
   default-opacity:               (0.12              , 0.24),
   hover-opacity:                 (0.12 + 0.04       , 0.24 + 0.08),
@@ -41,7 +40,7 @@ $chipColors: (
 
   activated-opacity:             (0.12, 0.24),
 
-  activated-text-color:           (inherit, (#fff, 1.00)),
+  activated-text-color:           (inherit, ('foreground-dark', 1.00)),
 
   activated-hover-opacity:       (0.12 + 0.04, 0.24 + 0.4),
   activated-focus-opacity:       (0.12 + 0.12, 0.24 + 0.12),
@@ -50,9 +49,9 @@ $chipColors: (
   pressed-opacity:               (0.16, 0.32),
 
   // disabled
-  disabled-text-color:           ((#000, 0.26), (#fff, 0.30)),
-  disabled-background-color:     ((#000, 0.12), (#fff, 0.12)),
-  outline-color:                 ((#000, 0.12), (#fff, 0.12)),
+  disabled-text-color:           (('foreground-light', 0.26), ('foreground-dark', 0.30)),
+  disabled-background-color:     (('foreground-light', 0.12), ('foreground-dark', 0.12)),
+  outline-color:                 (('foreground-light', 0.12), ('foreground-dark', 0.12)),
 
 );
 
