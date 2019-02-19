@@ -50,6 +50,7 @@ $snackbar__scale-up__from: 0.85;
   justify-content: space-between;
 
   // Default state is shown
+  pointer-events: auto;
   opacity: 1;
   transform: scale(1);
   will-change: opacity, transform;
