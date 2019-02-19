@@ -1,0 +1,27 @@
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
+
+$bannerColors: (
+  background:   ((#fff, 1.00), ('background', '800', 1.00)),
+  text-color:   (('foreground-light', 0.87), ('foreground-dark', 1.00)),
+  border-color: (('foreground-light', 0.12), ('foreground-dark', 0.12)),
+);
+
+@function bannerThemeValue($key, $type, $theme) {
+  @return themeValue('banner', $bannerColors, $key, $type, $theme);
+}
+
+@mixin bannerThemeVariables($color, $lightness) {
+  @include themeVariables('banner', $bannerColors, $color, $lightness);
+}
+
+// Vary by contrast or theme
+@mixin bannerContrastAndThemeRules($type: 'var', $theme: null) {
+  .mdw-banner {
+    background-color: bannerThemeValue("background", $type, $theme);
+    border-color: bannerThemeValue("border-color", $type, $theme);
+  }
+  .mdw-banner__text {
+    color: bannerThemeValue("text-color", $type, $theme);
+  }
+}
