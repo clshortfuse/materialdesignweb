@@ -19,7 +19,6 @@ $toolbar__icon-height: 40;
   position: relative;
   display:flex;
   flex-direction: column;
-  box-shadow: elevation(4);
   z-index: 4;
   &[mdw-app-bar] {
     html[mdw-ios][mdw-standalone] & {
