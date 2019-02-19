@@ -1,0 +1,18 @@
+@mixin modal($side) {
+  .mdw-app[mdw-#{$side}-style="modal"] {
+    @content;
+  }
+  @media screen and (max-width: dp(840 - 1)) {
+    @content;
+  }
+}
+@mixin modal__shown($side) {
+  .mdw-app[mdw-#{$side}-style="modal"][mdw-#{$side}-show] {
+    @content;
+  }
+  @media screen and (max-width: dp(840 - 1)) {
+    .mdw-app[mdw-#{$side}-show] {
+      @content;
+    }
+  }
+}

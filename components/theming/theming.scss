@@ -4,6 +4,7 @@
 
 @import './globals.scss';
 
+@import '../app/theming.scss';
 @import '../banner/theming.scss';
 @import '../bottomnav/theming.scss';
 @import '../button/theming.scss';
@@ -26,6 +27,7 @@ $added-palettes-list: ();
 
 @mixin buildMDWThemes($config-map: ()) {
   $theme-components: (
+    'app',
     'banner',
     'bottomnav',
     'button',
@@ -85,6 +87,9 @@ $added-palettes-list: ();
 
   @include globalThemeVariables($color, $lightness);
 
+  @if (index($mdw-theme__components, 'app')) {
+    @include appThemeVariables($color, $lightness);
+  }
   @if (index($mdw-theme__components, 'banner')) {
     @include bannerThemeVariables($color, $lightness);
   }
@@ -136,6 +141,9 @@ $added-palettes-list: ();
 @mixin componentContrastAndThemeRules($type: 'var', $theme: null) {
   @include globalContrastAndThemeRules($type, $theme);
 
+  @if (index($mdw-theme__components, 'app')) {
+    @include appContrastAndThemeRules($type, $theme);
+  }
   @if (index($mdw-theme__components, 'banner')) {
     @include bannerContrastAndThemeRules($type, $theme);
   }
