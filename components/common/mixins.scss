@@ -135,6 +135,38 @@
   }
 }
 
+@mixin viewport-4-columns {
+  @media screen and (max-width: #{$breakpoint-columns-8 - 1}) {
+    @content;
+  }
+}
+
+@mixin viewport-min-8-columns {
+  @media screen and (min-width: $breakpoint-columns-8) {
+    @content;
+  }
+}
+
+@mixin viewport-max-8-columns {
+  @media screen and (max-width: #{$breakpoint-columns-12 - 1}) {
+    @content;
+  }
+}
+
+@mixin viewport-8-columns {
+  @media screen
+    and (min-width: $breakpoint-columns-8)
+    and (max-width: #{$breakpoint-columns-12 - 1}) {
+      @content;
+  }
+}
+
+@mixin viewport-12-columns {
+  @media screen and (min-width: $breakpoint-columns-12) {
+    @content;
+  }
+}
+
 // Smallest width less than 600dp
 @mixin margin16dp {
   @media
