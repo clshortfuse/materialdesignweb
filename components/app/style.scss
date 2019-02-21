@@ -300,7 +300,7 @@ $app__viewport-end-column: 4;
   padding-right: 0;
   padding-bottom: dp(24);
   padding-left: dp(24);
-  transition-property: transform;
+  transition-property: transform, bottom;
   transition-timing-function: inherit;
   transition-duration: inherit;
   @include margin16dp {
@@ -386,11 +386,9 @@ $app__viewport-end-column: 4;
   .mdw-app[mdw-fab-mobile] {
     .mdw-app__snackbar-anchor {
       transform: translateY(-56px);
-      // bottom: dp(56);
-      margin-bottom: dp(24);
+      bottom: dp(24);
       @include margin16dp {
-        padding: dp(16);
-        margin-bottom: dp(16);
+        bottom: dp(16);
       }
     }
     &[mdw-fab-show] {
@@ -411,7 +409,8 @@ $app__viewport-end-column: 4;
         transform: translateY(50%) scale(1);
       }
       .mdw-app__snackbar-anchor {
-        transform: translateY(0)
+        transform: translateY(-$app__fab-size / 2);
+        bottom: 0;
       }
     }
   }
@@ -654,6 +653,9 @@ $app__viewport-end-column: 4;
   &::before, &::after {
     content: '';
     min-width: dp(24);
+    @include margin16dp {
+      min-width: dp(16);
+    }
   }
   transition-property: box-shadow;
   transition-timing-function: inherit;
