@@ -47,8 +47,8 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   margin: 0;
   margin-top: auto;
   margin-bottom: auto;
-  width: $icon-size;
-  height: $icon-size;
+  min-width: $icon-size;
+  min-height: $icon-size;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   &:disabled {
