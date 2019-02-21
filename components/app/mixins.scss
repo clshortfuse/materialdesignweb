@@ -2,7 +2,7 @@
   .mdw-app[mdw-#{$side}-style="modal"] {
     @content;
   }
-  @media screen and (max-width: dp(840 - 1)) {
+  @include viewport-max-8-columns {
     @content;
   }
 }
@@ -10,9 +10,30 @@
   .mdw-app[mdw-#{$side}-style="modal"][mdw-#{$side}-show] {
     @content;
   }
-  @media screen and (max-width: dp(840 - 1)) {
+  @include viewport-max-8-columns {
     .mdw-app[mdw-#{$side}-show] {
       @content;
     }
   }
+}
+
+
+@mixin cssGridRow($top, $bottom: null) {
+  @if ($bottom == null) {
+    $bottom: $top;
+  }
+  grid-row-start: $top;
+  grid-row-end: span #{($bottom  - $top) + 1};
+  -ms-grid-row: $top;
+  -ms-grid-row-span: #{($bottom  - $top) + 1};
+}
+
+@mixin cssGridColumn($start, $end: null) {
+  @if ($end == null) {
+    $end: $start;
+  }
+  grid-column-start: $start;
+  grid-column-end: span #{($end - $start) + 1};
+  -ms-grid-column: $start;
+  -ms-grid-column-span: span #{($end - $start) + 1};
 }

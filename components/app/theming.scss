@@ -7,8 +7,7 @@ $appColors: (
   secondary-text-color:  (('foreground-light', 0.54), ('foreground-dark', 0.70)),
   divider-color:         (('foreground-light', 0.12), ('foreground-dark', 0.12)),
   drawer-background:     ((#fff, 1.00),               ('background', '800', 1.00)),
-  app-top-background:    ((#fff, 1.00),               ('background', '800', 1.00)),
-  app-bottom-background: ((#fff, 1.00),               ('background', '800', 1.00)),
+  appbar-background:     ((#fff, 1.00),               ('background', '800', 1.00)),
   content-background:    (('background', '50', 1.00), ('background', '900' , 1.00))
 );
 
@@ -26,12 +25,9 @@ $appColors: (
     color: appThemeValue("text-color", $type, $theme);
     background-color: appThemeValue("content-background", $type, $theme);
   }
-  .mdw-app__navdrawer,
-  .mdw-app__sidesheet {
-    border-color: appThemeValue("divider-color", $type, $theme);
-  }
   .mdw-app__sheet-content {
     background-color: appThemeValue("drawer-background", $type, $theme);
+    border-color: appThemeValue("divider-color", $type, $theme);
   }
   .mdw-app__navdrawer {
     .mdw-list__item[mdw-selected]:not([mdw-theme-color]) {
@@ -49,13 +45,21 @@ $appColors: (
       color: appThemeValue("secondary-text-color", $type, $theme);
     }
   }
-  .mdw-app__top {
-    background-color: appThemeValue("app-top-background", $type, $theme);
+  .mdw-app__appbar {
+    background-color: appThemeValue("appbar-background", $type, $theme);
   }
-  .mdw-app__bottom-shape {
-    color: appThemeValue("app-bottom-background", $type, $theme);
+  .mdw-app__appbar-shape {
+    color: transparent;
   }
-  @include viewport-min-small {
+  .mdw-app[mdw-fab-mobile-cut] {
+    .mdw-app__appbar {
+      background-color: transparent;
+    }
+    .mdw-app__appbar-shape {
+      color: appThemeValue("appbar-background", $type, $theme);
+    }
+  }
+  @include viewport-12-columns {
     .mdw-app[mdw-navdrawer-style~="floating"]:not([mdw-navdrawer-style~="card"]) .mdw-app__sheet-content,
     .mdw-app[mdw-sidesheet-style~="floating"]:not([mdw-sidesheet-style~="card"]) .mdw-app__sheet-content {
       background-color: appThemeValue("content-background", $type, $theme);

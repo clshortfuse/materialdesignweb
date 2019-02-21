@@ -3,13 +3,13 @@ import { nextTick, cancelTick, iterateArrayLike } from '../common/dom';
 const MIN_SCROLL_DELTA = 24; // Avoid finger bounce
 let lastScrollY = null;
 let penultimateScrollY = null;
-let isTopHidden = false;
+let isAppBarHidden = false;
 let currentScheduledTick = null;
 
 export default class App {
   static attach() {
-    const appTop = App.getAppTop();
-    if (appTop) {
+    const appBar = App.getAppBarElement();
+    if (appBar) {
       // Initialize with scroll up
       lastScrollY = 0 + MIN_SCROLL_DELTA;
       penultimateScrollY = lastScrollY;
@@ -41,12 +41,12 @@ export default class App {
 
   static onScrimClick() {
     if (document.documentElement.hasAttribute('mdw-navdrawer-show')) {
-      if (window.innerWidth < 600 || document.documentElement.getAttribute('mdw-navdrawer-style') === 'modal') {
+      if (window.innerWidth < 840 || document.documentElement.getAttribute('mdw-navdrawer-style') === 'modal') {
         App.hideNavDrawer();
       }
     }
     if (document.documentElement.hasAttribute('mdw-sidesheet-show')) {
-      if (window.innerWidth < 600 || document.documentElement.getAttribute('mdw-sidesheet-style') === 'modal') {
+      if (window.innerWidth < 840 || document.documentElement.getAttribute('mdw-sidesheet-style') === 'modal') {
         App.hideSideSheet();
       }
     }
@@ -117,7 +117,7 @@ export default class App {
   }
 
   static shouldAutoHide() {
-    const autoHide = document.documentElement.getAttribute('mdw-top-autohide');
+    const autoHide = document.documentElement.getAttribute('mdw-appbar-autohide');
     if (autoHide == null) {
       return false;
     }
@@ -140,8 +140,20 @@ export default class App {
     currentScheduledTick = nextTick(() => App.onScroll(false));
   }
 
-  static getAppTop() {
-    return document.getElementsByClassName('mdw-app__top')[0];
+  static getAppBarElement() {
+    if (App.appBarElement) {
+      return App.appBarElement;
+    }
+    App.appBarElement = document.getElementsByClassName('mdw-app__appbar')[0];
+    return App.appBarElement;
+  }
+
+  static getContentElement() {
+    if (App.contentElement) {
+      return App.contentElement;
+    }
+    App.contentElement = document.getElementsByClassName('mdw-app__content')[0];
+    return App.contentElement;
   }
 
   /**
@@ -149,35 +161,47 @@ export default class App {
    * @return {void}
    */
   static onScroll(isDocument) {
-    const currentScrollY = isDocument
-      ? document.documentElement.scrollTop
-      : document.getElementsByClassName('mdw-app__content')[0].scrollTop;
+    const contentElement = App.getContentElement();
+    if (isDocument && contentElement.scrollHeight !== contentElement.clientHeight) {
+      // Ignore overscroll on contentElement
+      return;
+    }
+    const scrollElement = isDocument ? document.documentElement : contentElement;
+    const currentScrollY = scrollElement.scrollTop;
     const change = currentScrollY - lastScrollY;
     const delta = Math.abs(change);
-    const scrollTopChange = currentScrollY <= 0 || lastScrollY <= 0;
-    if (delta < MIN_SCROLL_DELTA && !scrollTopChange) {
+
+    const scrollContentBottom = scrollElement.scrollHeight - scrollElement.clientHeight;
+    const scrollTopChange = currentScrollY <= 0
+      || lastScrollY <= 0;
+    const scrollBottomChange = currentScrollY >= scrollContentBottom
+      || lastScrollY >= scrollContentBottom;
+    if (delta < MIN_SCROLL_DELTA && !scrollTopChange && !scrollBottomChange) {
       return;
     }
     if (change < 0) {
       // Scrolled up
-      let appTop;
+      let appBar;
       if (currentScrollY <= 0) {
+        // Scrolled to top
         document.documentElement.setAttribute('mdw-scrolltop', '');
-        if (document.documentElement.hasAttribute('mdw-top-autoprominent')) {
-          appTop = App.getAppTop();
-          const toolbar = appTop.getElementsByClassName('mdw-toolbar')[0];
+        if (document.documentElement.hasAttribute('mdw-appbar-autoprominent')) {
+          appBar = App.getAppBarElement();
+          const toolbar = appBar.getElementsByClassName('mdw-toolbar')[0];
           if (toolbar) {
             toolbar.setAttribute('mdw-prominent', '');
           }
         }
       }
       if (lastScrollY >= penultimateScrollY) {
+        // Did not scroll up before
         document.documentElement.removeAttribute('mdw-scrolldown');
-        document.documentElement.removeAttribute('mdw-top-hide');
-        isTopHidden = false;
-        if (!isDocument && App.shouldAutoHide()) {
-          appTop = appTop || App.getAppTop();
-          appTop.style.removeProperty('margin-top');
+        document.documentElement.removeAttribute('mdw-appbar-hide');
+        document.documentElement.removeAttribute('mdw-scrollbottom');
+        isAppBarHidden = false;
+        if ((!isDocument) && App.shouldAutoHide()) {
+          appBar = appBar || App.getAppBarElement();
+          appBar.style.removeProperty('margin-top');
         }
       }
     } else if (change > 0) {
@@ -187,19 +211,23 @@ export default class App {
         document.documentElement.setAttribute('mdw-scrolldown', '');
         document.documentElement.removeAttribute('mdw-scrolltop');
       }
-      if (!isTopHidden) {
-        const hasAutoProminent = document.documentElement.hasAttribute('mdw-top-autoprominent');
+      console.log(currentScrollY, scrollElement.scrollHeight, scrollElement.clientHeight, scrollElement.offsetHeight);
+      if (currentScrollY >= scrollElement.scrollHeight - scrollElement.clientHeight) {
+        document.documentElement.setAttribute('mdw-scrollbottom', '');
+      }
+      if (!isAppBarHidden) {
+        const hasAutoProminent = document.documentElement.hasAttribute('mdw-appbar-autoprominent');
         const autoHide = App.shouldAutoHide();
         if (hasAutoProminent || autoHide) {
-          const appTop = App.getAppTop();
-          if (currentScrollY > appTop.clientHeight) {
-            isTopHidden = true;
-            document.documentElement.setAttribute('mdw-top-hide', '');
-            if (!isDocument && autoHide) {
-              appTop.style.setProperty('margin-top', `${-appTop.clientHeight}px`);
+          const appBar = App.getAppBarElement();
+          if (currentScrollY > appBar.clientHeight) {
+            isAppBarHidden = true;
+            document.documentElement.setAttribute('mdw-appbar-hide', '');
+            if (autoHide && (!isDocument)) {
+              appBar.style.setProperty('margin-top', `${-appBar.clientHeight}px`);
             }
             if (hasAutoProminent) {
-              const toolbar = appTop.getElementsByClassName('mdw-toolbar')[0];
+              const toolbar = appBar.getElementsByClassName('mdw-toolbar')[0];
               if (toolbar) {
                 toolbar.removeAttribute('mdw-prominent');
               }
