@@ -64,12 +64,62 @@ export function iterateArrayLike(arrayLike, fn) {
 
 /**
  * @param {ArrayLike<T>} arrayLike
- * @param {function(T, number, ArrayLike<T>):boolean} fn
+ * @param {function(T, number, ArrayLike<T>):boolean|void} fn
  * @return {boolean}
  * @template {any} T
  */
 export function iterateSomeOfArrayLike(arrayLike, fn) {
   return Array.prototype.some.call(arrayLike, fn);
+}
+
+/**
+ * @param {Element} element
+ * @param {function(Element, number):boolean|void} fn
+ * @return {boolean}
+ */
+export function iterateElementSiblings(element, fn) {
+  let distance = -1;
+  let sibling = element.previousElementSibling;
+  while (sibling) {
+    fn(sibling, distance);
+    sibling = sibling.previousElementSibling;
+    distance -= 1;
+  }
+  sibling = element.nextElementSibling;
+  distance = 1;
+  while (sibling) {
+    fn(sibling, distance);
+    sibling = sibling.nextElementSibling;
+    distance += 1;
+  }
+  return false;
+}
+
+/**
+ * @param {Element} element
+ * @param {function(Element, number):boolean|void} fn
+ * @return {boolean}
+ */
+export function iterateSomeOfElementSiblings(element, fn) {
+  let distance = -1;
+  let sibling = element.previousElementSibling;
+  while (sibling) {
+    if (fn(sibling, distance)) {
+      return true;
+    }
+    sibling = sibling.previousElementSibling;
+    distance -= 1;
+  }
+  sibling = element.nextElementSibling;
+  distance = 1;
+  while (sibling) {
+    if (fn(sibling, distance)) {
+      return true;
+    }
+    sibling = sibling.previousElementSibling;
+    distance += 1;
+  }
+  return false;
 }
 
 /**
