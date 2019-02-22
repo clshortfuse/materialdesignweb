@@ -44,10 +44,11 @@ $menuColors: (
           &[mdw-selected] {
             background-color: menuThemeValue("hover-color", $type, $theme);
           }
-          &[disabled] {
+          &[aria-disabled="true"] {
             color: menuThemeValue("disabled-color", $type, $theme);
             & > .mdw-menu__icon,
-            & > .mdw-menu__check {
+            & > .mdw-menu__check,
+            & > .mdw-menu__radio {
               color: inherit;
             }
           }
@@ -71,7 +72,8 @@ $menuColors: (
     }
   }
   .mdw-menu__icon,
-  .mdw-menu__check {
+  .mdw-menu__check,
+  .mdw-menu__radio {
     color: menuThemeValue("secondary-color", $type, $theme);
   }
   .mdw-menu__divider {

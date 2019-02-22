@@ -214,13 +214,15 @@ $menu__unit-width: dp(56);
 }
 
 .mdw-menu__icon,
-.mdw-menu__check {
+.mdw-menu__check,
+.mdw-menu__radio {
   min-width: dp(40);
 }
 
-.mdw-menu__check {
+.mdw-menu__check,
+.mdw-menu__radio {
   visibility: hidden;
-  .mdw-menu__item[mdw-checked] & {
+  .mdw-menu__item[aria-checked="true"] & {
     visibility: visible;
   }
 }
@@ -254,7 +256,7 @@ $menu__unit-width: dp(56);
   -webkit-user-select: none;
   outline: none;
 
-  &[disabled] {
+  &[aria-disabled="true"] {
     cursor: not-allowed;
     & > .mdw-ripple,
     &::after {

@@ -1,14 +1,28 @@
+// https://www.w3.org/TR/wai-aria-practices/#menu
+
 import { Ripple } from '../ripple/index';
 import {
   dispatchDomEvent,
   isRtl,
   iterateArrayLike,
   iterateSomeOfArrayLike,
+  iterateElementSiblings,
 } from '../common/dom';
 
-// https://www.w3.org/TR/wai-aria-practices/#menu
 
 class MenuItem {
+  static get ACTIVATE_EVENT() {
+    return 'mdw:menuitem-activate';
+  }
+
+  static get CHECK_EVENT() {
+    return 'mdw:menuitem-check';
+  }
+
+  static get UNCHECK_EVENT() {
+    return 'mdw:menuitem-uncheck';
+  }
+
   /**
    * @param {Element} element
    * @return {void}
@@ -22,6 +36,32 @@ class MenuItem {
     // Prioritization is given to less event listeners rather than operations per second.
     element.addEventListener('mousemove', MenuItem.onMouseMove);
     element.addEventListener('click', MenuItem.onClick);
+    element.addEventListener('keydown', MenuItem.onKeyDown);
+    MenuItem.setupARIA(element);
+  }
+
+  static setupARIA(element) {
+    if (element.hasAttribute('mdw-no-aria')) {
+      return;
+    }
+    const role = element.getAttribute('role');
+    let useAriaChecked = false;
+    if (role === 'menuitemcheckbox' || role === 'menuitemradio') {
+      useAriaChecked = true;
+    } else if (role !== 'menuitem') {
+      if (element.getElementsByClassName('mdw-menu__check').length) {
+        useAriaChecked = true;
+        element.setAttribute('role', 'menuitemcheckbox');
+      } else if (element.getElementsByClassName('mdw-menu__radio').length) {
+        useAriaChecked = true;
+        element.setAttribute('role', 'menuitemradio');
+      } else {
+        element.setAttribute('role', 'menuitem');
+      }
+    }
+    if (useAriaChecked && !element.hasAttribute('aria-checked')) {
+      element.setAttribute('aria-checked', 'false');
+    }
   }
 
   /**
@@ -29,8 +69,20 @@ class MenuItem {
    * @return {void}
    */
   static onClick(event) {
-    const el = event.currentTarget;
-    dispatchDomEvent(el, 'mdw:itemactivated');
+    event.stopPropagation();
+
+    /** @type {HTMLElement} */
+    const menuItemElement = (event.currentTarget);
+    if (menuItemElement.getAttribute('aria-disabled') === 'true') {
+      return;
+    }
+    const role = menuItemElement.getAttribute('role');
+    if (role === 'menuitemcheckbox') {
+      MenuItem.toggleChecked(menuItemElement);
+    } else if (role === 'menuitemradio') {
+      MenuItem.setChecked(menuItemElement, true);
+    }
+    dispatchDomEvent(menuItemElement, MenuItem.ACTIVATE_EVENT);
   }
 
   static onMouseMove(event) {
@@ -51,6 +103,103 @@ class MenuItem {
     }
   }
 
+  static onKeyDown(event) {
+    /** @type {HTMLElement} */
+    const menuItemElement = (event.currentTarget);
+    if (MenuItem.isDisabled(menuItemElement)) {
+      return;
+    }
+
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      MenuItem.onClick(event);
+      return;
+    }
+
+    if (event.key === 'Spacebar' || (event.key === ' ')) {
+      event.stopPropagation();
+      event.preventDefault();
+      const role = menuItemElement.getAttribute('role');
+      if (role === 'menuitemcheckbox') {
+        MenuItem.toggleChecked(menuItemElement);
+      } else if (role === 'menuitemradio') {
+        MenuItem.setChecked(menuItemElement, true);
+      } else {
+        dispatchDomEvent(menuItemElement, MenuItem.ACTIVATE_EVENT);
+      }
+    }
+  }
+
+  /**
+   * @param {Element} element
+   * @return {boolean}
+   */
+  static isChecked(element) {
+    return (element.getAttribute('aria-checked') === 'true');
+  }
+
+  /**
+   * @param {Element} element
+   * @return {boolean}
+   */
+  static isDisabled(element) {
+    return (element.getAttribute('aria-disabled') === 'true');
+  }
+
+  /**
+   * @param {Element} element
+   * @param {boolean} checked
+   * @return {boolean} uiChanged
+   */
+  static setChecked(element, checked) {
+    const role = element.getAttribute('role');
+    let isCheckable = false;
+    if (role === 'menuitemcheckbox') {
+      isCheckable = true;
+      if (!dispatchDomEvent(element, checked ? MenuItem.CHECK_EVENT : MenuItem.UNCHECK_EVENT)) {
+        return false;
+      }
+    }
+    if (role === 'menuitemradio') {
+      isCheckable = true;
+      if (checked) {
+        if (!dispatchDomEvent(element, MenuItem.CHECK_EVENT)) {
+          return false;
+        }
+        iterateElementSiblings(element, (sibling) => {
+          if (sibling.getAttribute('role') === 'menuitemradio') {
+            sibling.setAttribute('aria-checked', 'false');
+          }
+        });
+      }
+    }
+    if (!isCheckable) {
+      return false;
+    }
+    element.setAttribute('aria-checked', checked ? 'true' : 'false');
+    return true;
+  }
+
+  static toggleChecked(element) {
+    const checked = !MenuItem.isChecked(element);
+    return MenuItem.setChecked(element, checked);
+  }
+
+  /**
+   * @param {Element} element
+   * @return {boolean} handled
+   */
+
+  static openSubMenu(element) {
+    const hasPopup = element.getAttribute('aria-haspopup');
+    if (hasPopup !== 'menu' && hasPopup !== 'true') {
+      return false;
+    }
+
+    // TODO: Open new menu
+    return false;
+  }
+
   /**
    * @param {Element} element
    * @return {void}
@@ -58,6 +207,7 @@ class MenuItem {
   static detach(element) {
     element.removeEventListener('click', MenuItem.onClick);
     element.removeEventListener('mousemove', MenuItem.onMouseMove);
+    element.removeEventListener('keydown', MenuItem.onKeyDown);
     element.removeAttribute('mdw-js');
     Ripple.detach(element);
   }
@@ -92,6 +242,23 @@ class Menu {
     menuElement.addEventListener('touchmove', Menu.onMenuScroll);
     menuElement.addEventListener('wheel', Menu.onMenuScroll);
     menuElement.addEventListener('keydown', Menu.onKeyDown);
+    Menu.setupARIA(menuElement);
+  }
+
+  /**
+   * @param {Element} menuElement
+   * @return {void}
+   */
+  static setupARIA(menuElement) {
+    if (menuElement.hasAttribute('mdw-no-aria')) {
+      return;
+    }
+    iterateArrayLike(menuElement.getElementsByClassName('mdw-menu__divider'),
+      el => el.setAttribute('role', 'separator'));
+    const popupElement = menuElement.getElementsByClassName('mdw-menu__popup')[0];
+    if (popupElement) {
+      popupElement.setAttribute('role', 'menu');
+    }
   }
 
   static onMenuScroll(event) {
@@ -112,12 +279,10 @@ class Menu {
   }
 
   static onMenuClick(event) {
-    /** @type {HTMLElement} */
-    const menuElement = (event.currentTarget);
-    if (menuElement instanceof HTMLAnchorElement) {
-      event.preventDefault();
+    if (event.currentTarget === event.target) {
+      event.stopPropagation();
+      Menu.hide(event.currentTarget);
     }
-    Menu.hide(menuElement);
   }
 
   /**
@@ -138,20 +303,21 @@ class Menu {
     }
   }
 
+  /**
+   * @param {KeyboardEvent} event
+   * @return {void}
+   */
   static onKeyDown(event) {
-    const menuElement = event.currentTarget;
+    /** @type {HTMLElement} */
+    const menuElement = (event.currentTarget);
     if (!menuElement || menuElement.hasAttribute('mdw-hide') || !menuElement.hasAttribute('mdw-show')) {
       return;
     }
-    if (event.key === 'Tab') {
-      this.previousFocus = null;
-      Menu.hide(menuElement);
-      return;
-    }
-    if (event.key === 'Escape' || event.key === 'Esc') {
+
+    if (event.key === 'ArrowDown' || (event.key === 'Down')) {
       event.stopPropagation();
       event.preventDefault();
-      Menu.hide(menuElement);
+      Menu.selectNextMenuItem(menuElement, false);
       return;
     }
     if (event.key === 'ArrowUp' || (event.key === 'Up')) {
@@ -160,36 +326,20 @@ class Menu {
       Menu.selectNextMenuItem(menuElement, true);
       return;
     }
-    if (event.key === 'ArrowDown' || (event.key === 'Down')) {
+    if (event.key === 'Tab') {
+      // Hide menu allowing focus to revert to calling element
+      // To then allow browser default Tab interaction
+      // Unless menu hiding is cancelled
+      if (!Menu.hide(menuElement)) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+      return;
+    }
+    if (event.key === 'Escape' || event.key === 'Esc') {
       event.stopPropagation();
       event.preventDefault();
-      Menu.selectNextMenuItem(menuElement, false);
-    }
-    if (!document.activeElement) {
-      return;
-    }
-    if (document.activeElement === menuElement) {
-      return;
-    }
-    if (document.activeElement.hasAttribute('disabled')) {
-      return;
-    }
-    if (event.key === 'Spacebar' || (event.key === ' ')) {
-      event.stopPropagation();
-      event.preventDefault();
-      /**
-       * if (document.activeElement.hasAttribute('mdw-checked')) {
-       *   document.activeElement.removeAttribute('mdw-checked');
-       * } else {
-       *   document.activeElement.setAttribute('mdw-checked', '');
-       * }
-       */
-      return;
-    }
-    if (event.key === 'Enter') {
-      event.stopPropagation();
-      event.preventDefault();
-      document.activeElement.click();
+      Menu.hide(menuElement);
     }
   }
 
@@ -341,18 +491,13 @@ class Menu {
         }
       }
     }
-    const offsetTop = (useAlignTarget ? -event.offsetY : 0);
-    const offsetBottom = (useAlignTarget ? target.clientHeight - event.offsetY : 0);
-    const offsetLeft = (useAlignTarget ? -event.offsetX : 0);
-    const offsetRight = (useAlignTarget ? target.clientWidth - event.offsetX : 0);
-    let { pageX, pageY } = event;
+    const offsetTop = useAlignTarget ? 0 : -event.offsetY;
+    const offsetBottom = useAlignTarget ? target.clientHeight : event.offsetY;
+    const offsetLeft = useAlignTarget ? 0 : -event.offsetX;
+    const offsetRight = useAlignTarget ? target.clientWidth : event.offsetX;
     const rect = target.getBoundingClientRect();
-    if (!pageX && !pageY) {
-      pageX = rect.left;
-      pageY = rect.top;
-    }
-    pageX -= window.pageXOffset;
-    pageY -= window.pageYOffset;
+    const pageX = rect.left;
+    const pageY = rect.top;
 
     /* Automatic Positioning
      *
