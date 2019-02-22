@@ -1,7 +1,7 @@
 import { iterateArrayLike } from '../../../components/common/dom';
 import { Button } from '../../../components/button/index';
 import { DataTable } from '../../../components/datatable/index';
-import { Menu } from '../../../components/menu/index';
+import { Menu, MenuItem } from '../../../components/menu/index';
 import { DataTableAdapter } from '../../../adapters/datatable/index';
 
 /** @return {void} */
@@ -80,93 +80,72 @@ function buildDynamicTable() {
   const menus = dynamicTableAdapter.element.querySelectorAll('.mdw-datatable__header-controls .mdw-menu');
   const filterMenu = menus[0];
   const optionsMenu = menus[1];
+  Menu.attach(filterMenu);
+  Menu.attach(optionsMenu);
 
-  filterButton.addEventListener('click', (event) => {
-    Menu.show(filterMenu, event);
-  });
+  filterButton.addEventListener('click', event => Menu.show(filterMenu, event));
+  optionsButton.addEventListener('click', event => Menu.show(optionsMenu, event));
 
-  // Prefer NodeList instead of HTMLCollection
-  const filterMenuItems = filterMenu.querySelectorAll('.mdw-menu__item');
-  const noFilterMenuItem = filterMenuItems[0];
-  const mdFilterMenuItem = filterMenuItems[1];
-  const randomDivBy9MenuItem = filterMenuItems[2];
-  const checkedFilterMenuItem = filterMenuItems[3];
-
-  /**
-   * @param {NodeListOf<Element>} menuItems
-   * @param {number} checkedIndex
-   * @return {void}
-   */
-  function setMenuChecked(menuItems, checkedIndex) {
-    iterateArrayLike(menuItems, (menuItem, index) => {
-      if (checkedIndex === index) {
-        menuItem.setAttribute('mdw-checked', '');
-      } else {
-        menuItem.removeAttribute('mdw-checked');
-      }
-    });
-  }
-  noFilterMenuItem.addEventListener('click', () => {
-    dynamicTableAdapter.setFilter(null);
-    dynamicTableAdapter.refresh();
-    Menu.hide(filterMenu);
-    setMenuChecked(filterMenuItems, 0);
-    filterButton.setAttribute('mdw-inactive', '');
-    filterButton.removeAttribute('mdw-active');
-  });
-  mdFilterMenuItem.addEventListener('click', () => {
-    dynamicTableAdapter.setFilter(data => data.text.indexOf('md') !== -1 || data.text2.indexOf('md') !== -1);
-    dynamicTableAdapter.refresh();
-    Menu.hide(filterMenu);
-    setMenuChecked(filterMenuItems, 1);
-    filterButton.setAttribute('mdw-active', '');
-    filterButton.removeAttribute('mdw-inactive');
-  });
-  randomDivBy9MenuItem.addEventListener('click', () => {
-    dynamicTableAdapter.setFilter(data => data.random % 9 === 0);
-    dynamicTableAdapter.refresh();
-    Menu.hide(filterMenu);
-    setMenuChecked(filterMenuItems, 2);
-    filterButton.setAttribute('mdw-active', '');
-    filterButton.removeAttribute('mdw-inactive');
-  });
-  checkedFilterMenuItem.addEventListener('click', () => {
-    dynamicTableAdapter.setFilter(data => data.check1);
-    dynamicTableAdapter.refresh();
-    Menu.hide(filterMenu);
-    setMenuChecked(filterMenuItems, 3);
-    filterButton.setAttribute('mdw-active', '');
-    filterButton.removeAttribute('mdw-inactive');
-  });
-
-  const menuItems = optionsMenu.querySelectorAll('.mdw-menu__item');
-  const throttleMenuItem = menuItems[0];
-  const paginateMenuItem = menuItems[1];
-  optionsButton.addEventListener('click', (event) => {
-    Menu.show(optionsMenu, event);
-  });
-  throttleMenuItem.addEventListener('click', () => {
-    if (throttleMenuItem.hasAttribute('mdw-checked')) {
-      dynamicTableAdapter.setUseLazyRendering(false);
-      throttleMenuItem.removeAttribute('mdw-checked');
-    } else {
-      dynamicTableAdapter.setUseLazyRendering(true);
-      throttleMenuItem.setAttribute('mdw-checked', '');
+  filterMenu.addEventListener(MenuItem.CHECK_EVENT, (event) => {
+    /** @type {HTMLElement} */
+    const menuItem = (event.target);
+    switch (menuItem.dataset.filter) {
+      default:
+      case 'none':
+        dynamicTableAdapter.setFilter(null);
+        break;
+      case 'md':
+        dynamicTableAdapter.setFilter(data => data.text.indexOf('md') !== -1 || data.text2.indexOf('md') !== -1);
+        break;
+      case 'div9':
+        dynamicTableAdapter.setFilter(data => data.random % 9 === 0);
+        break;
+      case 'bool':
+        dynamicTableAdapter.setFilter(data => data.check1);
+        break;
     }
-    Menu.hide(optionsMenu);
     dynamicTableAdapter.refresh();
-  });
-  paginateMenuItem.addEventListener('click', () => {
-    if (paginateMenuItem.hasAttribute('mdw-checked')) {
-      dynamicTableAdapter.setPagination({ disabled: true });
-      paginateMenuItem.removeAttribute('mdw-checked');
+    if (dynamicTableAdapter.filter) {
+      filterButton.setAttribute('mdw-active', '');
+      filterButton.removeAttribute('mdw-inactive');
     } else {
-      dynamicTableAdapter.setPagination();
-      paginateMenuItem.setAttribute('mdw-checked', '');
+      filterButton.setAttribute('mdw-inactive', '');
+      filterButton.removeAttribute('mdw-active');
     }
-    Menu.hide(optionsMenu);
+  });
+  filterMenu.addEventListener(MenuItem.ACTIVATE_EVENT, () => Menu.hide(filterMenu));
+  
+  optionsMenu.addEventListener(MenuItem.CHECK_EVENT, (event) => {
+    /** @type {HTMLElement} */
+    const menuItem = (event.target);
+    switch (menuItem.dataset.option) {
+      default:
+        break;
+      case 'throttle':
+        dynamicTableAdapter.setUseLazyRendering(true);
+        break;
+      case 'paginate':
+        dynamicTableAdapter.setPagination();
+        break;
+    }
     dynamicTableAdapter.refresh();
   });
+  optionsMenu.addEventListener(MenuItem.UNCHECK_EVENT, (event) => {
+    /** @type {HTMLElement} */
+    const menuItem = (event.target);
+    switch (menuItem.dataset.option) {
+      default:
+        break;
+      case 'throttle':
+        dynamicTableAdapter.setUseLazyRendering(false);
+        break;
+      case 'paginate':
+        dynamicTableAdapter.setPagination({ disabled: true });
+        break;
+    }
+    dynamicTableAdapter.refresh();
+  });
+  optionsMenu.addEventListener(MenuItem.ACTIVATE_EVENT, () => Menu.hide(optionsMenu));
 }
 
 initializeMdwComponents();
