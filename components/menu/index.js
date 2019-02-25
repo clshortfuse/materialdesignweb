@@ -40,6 +40,10 @@ class MenuItem {
     MenuItem.setupARIA(element);
   }
 
+  /**
+   * @param {Element} element
+   * @return {void}
+   */
   static setupARIA(element) {
     if (element.hasAttribute('mdw-no-aria')) {
       return;
@@ -62,6 +66,14 @@ class MenuItem {
     if (useAriaChecked && !element.hasAttribute('aria-checked')) {
       element.setAttribute('aria-checked', 'false');
     }
+    iterateArrayLike(element.getElementsByClassName('mdw-menu__icon'),
+      el => el.setAttribute('aria-hidden', 'true'));
+    iterateArrayLike(element.getElementsByClassName('mdw-menu__text'),
+      el => el.setAttribute('role', 'text'));
+    iterateArrayLike(element.getElementsByClassName('mdw-menu__check'),
+      el => el.setAttribute('aria-hidden', 'true'));
+    iterateArrayLike(element.getElementsByClassName('mdw-menu__info'),
+      el => el.setAttribute('role', 'note'));
   }
 
   /**
@@ -253,11 +265,15 @@ class Menu {
     if (menuElement.hasAttribute('mdw-no-aria')) {
       return;
     }
+    if (!menuElement.hasAttribute('aria-hidden')) {
+      menuElement.setAttribute('aria-hidden', 'true');
+    }
     iterateArrayLike(menuElement.getElementsByClassName('mdw-menu__divider'),
       el => el.setAttribute('role', 'separator'));
+    menuElement.setAttribute('role', 'menu');
     const popupElement = menuElement.getElementsByClassName('mdw-menu__popup')[0];
     if (popupElement) {
-      popupElement.setAttribute('role', 'menu');
+      popupElement.setAttribute('role', 'none');
     }
   }
 
@@ -310,7 +326,7 @@ class Menu {
   static onKeyDown(event) {
     /** @type {HTMLElement} */
     const menuElement = (event.currentTarget);
-    if (!menuElement || menuElement.hasAttribute('mdw-hide') || !menuElement.hasAttribute('mdw-show')) {
+    if (!menuElement || menuElement.getAttribute('aria-hidden') === 'true') {
       return;
     }
 
@@ -351,8 +367,6 @@ class Menu {
     menuElement.removeEventListener('wheel', Menu.onMenuScroll);
     menuElement.addEventListener('keydown', Menu.onKeyDown);
     menuElement.removeAttribute('mdw-js');
-    menuElement.removeAttribute('mdw-show');
-    menuElement.removeAttribute('mdw-hide');
     const popupElement = menuElement.getElementsByClassName('mdw-menu__popup')[0];
     if (popupElement) {
       popupElement.style.removeProperty('top');
@@ -796,12 +810,8 @@ class Menu {
         popupElement.removeAttribute('style');
       }
     }
-    if (menuElement.hasAttribute('mdw-hide')) {
-      menuElement.removeAttribute('mdw-hide');
-      changed = true;
-    }
-    if (!menuElement.hasAttribute('mdw-show')) {
-      menuElement.setAttribute('mdw-show', '');
+    if (menuElement.getAttribute('aria-hidden') !== 'false') {
+      menuElement.setAttribute('aria-hidden', 'false');
       changed = true;
     }
     if (changed) {
@@ -838,36 +848,36 @@ class Menu {
    * @return {boolean} handled
    */
   static hide(menuElement) {
-    if (!menuElement.hasAttribute('mdw-hide')) {
-      menuElement.setAttribute('mdw-hide', '');
-      let stackIndex = -1;
-      OPEN_MENUS.some((stack, index) => {
-        if (stack.element === menuElement) {
-          stackIndex = index;
-          return true;
-        }
-        return false;
-      });
-      if (stackIndex !== -1) {
-        const menuStack = OPEN_MENUS[stackIndex];
-        if (menuStack.previousFocus) {
-          menuStack.previousFocus.focus();
-        }
-        OPEN_MENUS.splice(stackIndex, 1);
-        if (menuStack.state && window.history && window.history.state) {
-          // IE11 returns a cloned state object, not the original
-          if (menuStack.state.hash === window.history.state.hash) {
-            window.history.back();
-          }
-        }
-      }
-      if (!OPEN_MENUS.length) {
-        window.removeEventListener('popstate', Menu.onPopState);
-      }
-      dispatchDomEvent(menuElement, 'mdw:dismiss');
-      return true;
+    if (menuElement.getAttribute('aria-hidden') === 'true') {
+      return false;
     }
-    return false;
+    menuElement.setAttribute('aria-hidden', 'true');
+    let stackIndex = -1;
+    OPEN_MENUS.some((stack, index) => {
+      if (stack.element === menuElement) {
+        stackIndex = index;
+        return true;
+      }
+      return false;
+    });
+    if (stackIndex !== -1) {
+      const menuStack = OPEN_MENUS[stackIndex];
+      if (menuStack.previousFocus) {
+        menuStack.previousFocus.focus();
+      }
+      OPEN_MENUS.splice(stackIndex, 1);
+      if (menuStack.state && window.history && window.history.state) {
+        // IE11 returns a cloned state object, not the original
+        if (menuStack.state.hash === window.history.state.hash) {
+          window.history.back();
+        }
+      }
+    }
+    if (!OPEN_MENUS.length) {
+      window.removeEventListener('popstate', Menu.onPopState);
+    }
+    dispatchDomEvent(menuElement, 'mdw:dismiss');
+    return true;
   }
 }
 

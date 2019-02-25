@@ -26,9 +26,11 @@ $menu__unit-width: dp(56);
   position: absolute;
   display: block;
   pointer-events: none;
-  &[mdw-show]:not([mdw-hide]),
-  &[id]:target:not([mdw-hide]) {
+  visibility: hidden;
+  &[aria-hidden="false"],
+  &[id]:target {
     pointer-events: auto;
+    visibility: visible;
     .mdw-menu__popup {
       transition-timing-function: $motion-easing-acceleration;
       transition-duration: $motion-duration-desktop-enter;
