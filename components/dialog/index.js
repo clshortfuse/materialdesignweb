@@ -49,6 +49,8 @@ class Dialog {
    * @return {void}
    */
   static attach(element) {
+    element.setAttribute('mdw-js', '');
+
     let dialogCloser = getChildElementByClass(element, 'mdw-dialog__close');
     if (!dialogCloser) {
       dialogCloser = document.createElement('div');
@@ -83,16 +85,37 @@ class Dialog {
       }
       button.addEventListener('click', Dialog.onCustomButtonClick);
     });
+    Dialog.setupARIA(element);
+  }
+
+  static setupARIA(dialogElement) {
+    if (dialogElement.hasAttribute('mdw-no-aria')) {
+      return;
+    }
+    dialogElement.setAttribute('role', 'dialog');
+    dialogElement.setAttribute('aria-modal', 'true');
+    if (!dialogElement.hasAttribute('aria-hidden')) {
+      dialogElement.setAttribute('aria-hidden', 'true');
+    }
+    const popupElement = dialogElement.getElementsByClassName('mdw-dialog__popup')[0];
+    if (!popupElement) {
+      return;
+    }
+
+    if (!popupElement.hasAttribute('aria-label') && !popupElement.hasAttribute('aria-labelledby')) {
+      const titleElement = dialogElement.getElementsByClassName('mdw-dialog__title')[0];
+      if (titleElement) {
+        // titleElement
+      }
+    }
   }
 
   static detach(dialogElement) {
+    dialogElement.removeAttribute('mdw-js');
     const dialogCloser = getChildElementByClass(dialogElement, 'mdw-dialog__close');
     if (dialogCloser) {
       dialogCloser.removeEventListener('click', Dialog.onCancelClick);
     }
-    dialogElement.removeAttribute('mdw-js');
-    dialogElement.removeAttribute('mdw-show');
-    dialogElement.removeAttribute('mdw-hide');
     const popupElement = dialogElement.getElementsByClassName('mdw-dialog__popup')[0];
     if (popupElement) {
       popupElement.removeEventListener('keydown', Dialog.onKeyDown);
@@ -109,6 +132,7 @@ class Dialog {
       button.removeEventListener('click', Dialog.onCustomButtonClick);
     });
   }
+
 
   static onCancelClick(event) {
     if (event && event.currentTarget instanceof HTMLAnchorElement) {
@@ -224,13 +248,13 @@ class Dialog {
    * @return {boolean} handled
    */
   static hide(dialogElement) {
-    if (dialogElement.hasAttribute('mdw-hide')) {
+    if (dialogElement.getAttribute('aria-hidden') === 'true') {
       return false;
     }
     if (!dispatchDomEvent(dialogElement, Dialog.DISMISS_EVENT)) {
       return false;
     }
-    dialogElement.setAttribute('mdw-hide', '');
+    dialogElement.setAttribute('aria-hidden', 'true');
     let stackIndex = -1;
     OPEN_DIALOGS.some((stack, index) => {
       if (stack.element === dialogElement) {
@@ -244,7 +268,11 @@ class Dialog {
       if (stack.previousFocus) {
         if (findElementParentByClassName(document.activeElement, 'mdw-dialog') === dialogElement) {
           // Only pop focus back when hiding a dialog with focus within itself.
-          stack.previousFocus.focus();
+          try {
+            stack.previousFocus.focus();
+          } catch (e) {
+            // Failed to focus
+          }
         }
       }
       OPEN_DIALOGS.splice(stackIndex, 1);
@@ -274,12 +302,8 @@ class Dialog {
     let changed = false;
 
     Dialog.updateTransformOrigin(dialogElement, event);
-    if (dialogElement.hasAttribute('mdw-hide')) {
-      dialogElement.removeAttribute('mdw-hide');
-      changed = true;
-    }
-    if (!dialogElement.hasAttribute('mdw-show')) {
-      dialogElement.setAttribute('mdw-show', '');
+    if (dialogElement.getAttribute('aria-hidden') !== 'false') {
+      dialogElement.setAttribute('aria-hidden', 'false');
       changed = true;
     }
     if (changed) {
@@ -302,10 +326,14 @@ class Dialog {
       const dialogStack = new DialogStack(dialogElement, previousFocus, newState, previousState);
       OPEN_DIALOGS.push(dialogStack);
       const focusElement = dialogElement.querySelector('[mdw-autofocus]');
-      if (focusElement) {
-        focusElement.focus();
-      } else {
-        dialogElement.focus();
+      try {
+        if (focusElement) {
+          focusElement.focus();
+        } else {
+          dialogElement.focus();
+        }
+      } catch (e) {
+        // Failed to focus
       }
     }
     return changed;
@@ -353,7 +381,11 @@ class Dialog {
     event.stopPropagation();
     event.preventDefault();
     if (candidate) {
-      candidate.focus();
+      try {
+        candidate.focus();
+      } catch (e) {
+        // Failed to focus
+      }
     }
   }
 
@@ -498,20 +530,13 @@ class Dialog {
    */
   static updateTransformOrigin(dialogElement, event) {
     /** @type {HTMLElement} */
-    const popup = (getChildElementByClass(dialogElement, 'mdw-dialog__popup'));
+    const popup = (dialogElement.getElementsByClassName('mdw-dialog__popup')[0]);
     popup.style.removeProperty('transform-origin');
     if (!event) {
       return;
     }
-    let popupPageX = 0;
-    let popupPageY = 0;
-    let element = popup;
-    while (element != null) {
-      popupPageX += element.offsetLeft - element.scrollLeft;
-      popupPageY += element.offsetTop - element.scrollTop;
-      element = element.offsetParent;
-    }
     let { pageX, pageY } = event;
+    const dialogRect = dialogElement.getBoundingClientRect();
     if (!pageX && !pageY) {
       const target = event.currentTarget || event.target;
       const rect = target.getBoundingClientRect();
@@ -520,10 +545,13 @@ class Dialog {
       }
       pageX = rect.x + (rect.width / 2);
       pageY = rect.y + (rect.height / 2);
+    } else {
+      pageX -= window.pageXOffset;
+      pageY -= window.pageYOffset;
     }
-    const transformOriginX = `${pageX - popupPageX}px`;
-    const transformOriginY = `${pageY - popupPageY}px`;
-    popup.style.setProperty('transform-origin', `${transformOriginX} ${transformOriginY}`);
+    const transformOriginX = pageX - dialogRect.left - popup.offsetLeft;
+    const transformOriginY = pageY - dialogRect.top - popup.offsetTop;
+    popup.style.setProperty('transform-origin', `${transformOriginX}px ${transformOriginY}px`);
   }
 }
 
