@@ -16,7 +16,7 @@ $selectionColors: (
   track-off-color:         (('foreground-light', 1.00), ('foreground-dark', 1.00)),
   track-off-opacity:       (0.38, 0.30),
 
-  switch-disabled-opacity: (0.38, 0.38),
+  disabled-opacity: (0.38, 0.38),
 );
 
 @function selectionThemeValue($key, $type, $theme) {
@@ -52,7 +52,9 @@ $selectionColors: (
         border-color: white;
       }
     }
-    &:disabled ~ .mdw-selection__label,
+    &:disabled ~ .mdw-selection__label {
+      opacity: selectionThemeValue("disabled-opacity", $type, $theme);
+    }
     &:disabled ~ .mdw-selection__icon,
     &:disabled ~ .mdw-selection__icon::before {
       color: selectionThemeValue("disabled-color", $type, $theme);
@@ -82,7 +84,7 @@ $selectionColors: (
       }
     }
     &:disabled ~ .mdw-selection__icon {
-      opacity: selectionThemeValue("switch-disabled-opacity", $type, $theme);
+      opacity: selectionThemeValue("disabled-opacity", $type, $theme);
     }
   }
 }
