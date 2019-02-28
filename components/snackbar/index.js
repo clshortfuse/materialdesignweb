@@ -1,17 +1,35 @@
+// https://www.w3.org/TR/wai-aria-1.1/#alert
 // https://www.w3.org/TR/wai-aria-practices/#alert
 
 import { Button } from '../button/index';
-import { findElementParentByClassName, dispatchDomEvent } from '../common/dom';
+import {
+  dispatchDomEvent,
+  findElementParentByClassName,
+  nextTick,
+  setTextNode,
+} from '../common/dom';
 
-// Time to wait until hide animation finishes before destroying element
-const SNACKBAR_DESTROY_TIMEOUT_MS = 1000;
+/**
+ * @typedef SnackbarCreateOptions
+ * @property {!string} text
+ * @property {!string=} buttonText
+ * @property {string=} [buttonThemeColor='primary']
+ * @property {boolean} [stacked=false]
+ * @property {number|boolean} [autoHide=4] Auto hide time in seconds
+ * @property {boolean} [autoDestroy=true] Destroy element after hide
+ * @property {Element=} parent Parent element to which to append
+ * @property {boolean=} [show=true] Show element after creation
+ * @property {boolean=} [skipQueue=false] Skip queue
+ */
 
-class SnackbarStack {
+class SnackbarQueueItem {
   /**
    * @param {Element} element
+   * @param {SnackbarCreateOptions=} options
    */
-  constructor(element) {
+  constructor(element, options) {
     this.element = element;
+    this.options = options;
     this.hideTimeout = null;
   }
 
@@ -24,9 +42,17 @@ class SnackbarStack {
   }
 }
 
-/** @type {SnackbarStack[]} */
-const OPEN_SNACKBARS = [];
+/** @type {SnackbarQueueItem[]} */
+const SNACKBAR_QUEUE = [];
 class Snackbar {
+  static get HIDE_EVENT() {
+    return 'mdw:snackbar-hide';
+  }
+
+  static get SHOW_EVENT() {
+    return 'mdw:snackbar-show';
+  }
+
   /**
    * @param {Element} snackbarElement
    * @return {void}
@@ -38,7 +64,38 @@ class Snackbar {
       button.addEventListener('click', Snackbar.onButtonClick);
     }
     snackbarElement.setAttribute('mdw-js', '');
+    snackbarElement.addEventListener('animationend', Snackbar.onAnimationEnd);
+    snackbarElement.addEventListener('keydown', Snackbar.onKeyDown);
+    this.setupARIA(snackbarElement);
   }
+
+  /**
+   * @param {Element} snackbarElement
+   * @return {void}
+   */
+  static setupARIA(snackbarElement) {
+    if (snackbarElement.hasAttribute('mdw-no-aria')) {
+      return;
+    }
+    snackbarElement.setAttribute('role', 'alert');
+    snackbarElement.setAttribute('tabindex', '-1');
+  }
+
+  /**
+   * @param {KeyboardEvent} event
+   * @return {void}
+   */
+  static onKeyDown(event) {
+    if (event.key === 'Escape' || event.key === 'Esc') {
+      // Allow users to close snackbar with escape, for accessibilty reasons
+      event.stopPropagation();
+      event.preventDefault();
+      /** @type {Element} */
+      const snackbarElement = (event.currentTarget);
+      Snackbar.hide(snackbarElement);
+    }
+  }
+
 
   static detach(snackbarElement) {
     const button = snackbarElement.getElementsByClassName('mdw-button')[0];
@@ -47,11 +104,11 @@ class Snackbar {
       button.removeEventListener('click', Snackbar.onButtonClick);
     }
     // Remove timeouts and stacks
-    OPEN_SNACKBARS.slice().reverse().forEach((stack, reverseIndex, array) => {
-      if (stack.element === snackbarElement) {
-        stack.clearHideTimeout();
+    SNACKBAR_QUEUE.slice().reverse().forEach((queue, reverseIndex, array) => {
+      if (queue.element === snackbarElement) {
+        queue.clearHideTimeout();
         const index = array.length - reverseIndex - 1;
-        OPEN_SNACKBARS.splice(index, 1);
+        SNACKBAR_QUEUE.splice(index, 1);
       }
     });
     snackbarElement.removeAttribute('mdw-js');
@@ -65,138 +122,144 @@ class Snackbar {
     Snackbar.hide(snackbarElement);
   }
 
-  /** @return {SnackbarStack} */
-  static getNextSnackbarStack() {
-    const nextSnackbar = OPEN_SNACKBARS[0];
+  /** @return {SnackbarQueueItem} */
+  static getNextSnackbarQueueItem() {
+    const nextSnackbar = SnackbarQueueItem[0];
     if (nextSnackbar && (!nextSnackbar.element || !nextSnackbar.element.parentElement)) {
       // Item was removed from DOM externally
-      OPEN_SNACKBARS.splice(0, 1);
-      return this.getNextSnackbarStack();
+      SNACKBAR_QUEUE.splice(0, 1);
+      return this.getNextSnackbarQueueItem();
     }
     return nextSnackbar;
   }
 
-  /**
-   * @param {Element} snackbarElement
-   * @return {boolean} handled
-   */
-  static hide(snackbarElement) {
-    if (snackbarElement.hasAttribute('mdw-hide')) {
-      return false;
-    }
-    if (!dispatchDomEvent(snackbarElement, 'mdw:hide')) {
-      return false;
-    }
-    snackbarElement.setAttribute('mdw-hide', '');
-    let stackIndex = -1;
-    OPEN_SNACKBARS.some((stack, index) => {
-      if (stack.element === snackbarElement) {
-        stackIndex = index;
-        stack.clearHideTimeout();
+  static findNextQueueItem(element) {
+    let queue = null;
+    SNACKBAR_QUEUE.some((q) => {
+      if (q.element === element) {
+        queue = q;
         return true;
       }
       return false;
     });
-    if (stackIndex !== -1) {
-      OPEN_SNACKBARS.splice(stackIndex, 1);
+    return queue;
+  }
+
+  /**
+   * @param {AnimationEvent} event
+   * @return {void}
+   */
+  static onAnimationEnd(event) {
+    Snackbar.handleAnimationChange(/** @type {Element} */ (event.currentTarget));
+  }
+
+  /**
+   * @param {Element} snackbarElement
+   * @return {void}
+   */
+  static handleAnimationChange(snackbarElement) {
+    const currentQueueItem = Snackbar.findNextQueueItem(snackbarElement);
+    const showing = snackbarElement.getAttribute('aria-hidden') === 'false';
+    if (showing) {
+      if (currentQueueItem && currentQueueItem.hideTimeout) {
+        return;
+      }
+      const autoHideString = snackbarElement.getAttribute('mdw-autohide');
+      if (autoHideString == null) {
+        return;
+      }
+      const timeInSeconds = parseFloat(autoHideString) || 4;
+      if (timeInSeconds < 0) {
+        return;
+      }
+      const timeout = setTimeout(() => {
+        Snackbar.hide(snackbarElement);
+      }, timeInSeconds * 1000);
+      if (currentQueueItem) {
+        currentQueueItem.hideTimeout = timeout;
+      }
+      return;
+    }
+    if (currentQueueItem) {
+      SNACKBAR_QUEUE.splice(SNACKBAR_QUEUE.indexOf(currentQueueItem), 1);
+    }
+    const nextQueueItem = Snackbar.findNextQueueItem(snackbarElement);
+    if (nextQueueItem) {
+      Snackbar.update(snackbarElement, nextQueueItem.options);
+      Snackbar.show(snackbarElement);
+      return;
     }
     if (snackbarElement.hasAttribute('mdw-autodestroy')) {
-      setTimeout(() => {
-        if (!snackbarElement.parentElement) {
-          return;
-        }
-        if (!dispatchDomEvent(snackbarElement, 'mdw:destroy')) {
-          return;
-        }
+      if (snackbarElement.parentElement) {
         snackbarElement.parentElement.removeChild(snackbarElement);
-      }, SNACKBAR_DESTROY_TIMEOUT_MS);
+      }
     }
-    const nextSnackbar = Snackbar.getNextSnackbarStack();
-    if (nextSnackbar) {
-      nextSnackbar.element.setAttribute('mdw-consecutive', '');
-      Snackbar.show(nextSnackbar.element);
-    }
-    return true;
   }
 
   /**
    * @param {Element} snackbarElement
-   * @return {boolean} handled
+   * @return {boolean} changed
    */
-  static show(snackbarElement) {
-    if (!snackbarElement.hasAttribute('mdw-hide') && snackbarElement.hasAttribute('mdw-show')) {
-      // Already shown
+  static hide(snackbarElement) {
+    if (snackbarElement.getAttribute('aria-hidden') === 'true') {
       return false;
     }
-    if (!dispatchDomEvent(snackbarElement, 'mdw:show')) {
-      // Event was canceled
+    if (!dispatchDomEvent(snackbarElement, Snackbar.HIDE_EVENT)) {
       return false;
     }
-    let snackbarStackIndex = -1;
-    let snackbarStack;
-    OPEN_SNACKBARS.some((stack, index) => {
-      if (stack.element === snackbarElement) {
-        snackbarStack = stack;
-        snackbarStackIndex = index;
-        return true;
-      }
-      return false;
-    });
-    if (snackbarStackIndex > 0) {
-      // Stacked for later
-      return true;
-    }
-    if (!snackbarStack) {
-      snackbarStack = new SnackbarStack(snackbarElement);
-      OPEN_SNACKBARS.push(snackbarStack);
-      if (OPEN_SNACKBARS.length !== 1) {
-        // Not first, show later
-        return true;
-      }
-    }
-    snackbarElement.removeAttribute('mdw-hide');
-    snackbarElement.setAttribute('mdw-show', '');
-    Snackbar.attach(snackbarElement);
-    snackbarStack.clearHideTimeout();
-    if (snackbarElement.hasAttribute('mdw-autohide')) {
-      const timeInSeconds = parseInt(snackbarElement.getAttribute('mdw-autohide'), 10) || 4;
-      if (timeInSeconds > 0) {
-        snackbarStack.hideTimeout = setTimeout(() => {
-          Snackbar.hide(snackbarElement);
-        }, timeInSeconds * 1000);
-      }
+    snackbarElement.setAttribute('aria-hidden', 'true');
+    if (window.getComputedStyle(snackbarElement).animationName === 'none') {
+      nextTick(() => Snackbar.handleAnimationChange(snackbarElement));
     }
     return true;
   }
 
   /**
-   * @typedef SnackbarCreateOptions
-   * @property {!string} text
-   * @property {!string=} buttonText
-   * @property {string=} [buttonThemeColor='primary']
-   * @property {boolean} [stacked=false]
-   * @property {number|boolean} [autoHide=4] Auto hide time in seconds
-   * @property {boolean} [autoDestroy=true] Destroy element after hide
-   * @property {HTMLElement=} parent Parent element to which to append
-   * @property {boolean=} show Show element after creation
+   * @param {?Element} snackbarElement
+   * @return {boolean} changed
    */
+  static show(snackbarElement) {
+    if (snackbarElement.getAttribute('aria-hidden') === 'false') {
+      return false;
+    }
+    if (!dispatchDomEvent(snackbarElement, Snackbar.SHOW_EVENT)) {
+      return false;
+    }
+    snackbarElement.setAttribute('aria-hidden', 'false');
+    Snackbar.attach(snackbarElement);
+    if (window.getComputedStyle(snackbarElement).animationName === 'none') {
+      nextTick(() => Snackbar.handleAnimationChange(snackbarElement));
+    }
+    return true;
+  }
 
   /**
+   * @param {Element} element
    * @param {SnackbarCreateOptions} options
-   * @return {HTMLElement}
+   * @return {void}
    */
-  static create(options) {
-    const element = document.createElement('div');
+  static update(element, options) {
     element.classList.add('mdw-snackbar');
-    element.setAttribute('role', 'alert');
-    element.setAttribute('mdw-hide', '');
-
-    const span = document.createElement('span');
-    span.textContent = options.text;
-    element.appendChild(span);
-
+    let span = element.getElementsByTagName('span')[0];
+    if (span) {
+      // To trigger screen readers, we destroy and create a new span and textnode
+      span.parentElement.removeChild(span);
+    }
+    span = document.createElement('span');
+    if (element.firstChild) {
+      element.insertBefore(span, element.firstChild);
+    } else {
+      element.appendChild(span);
+    }
+    const textNode = document.createTextNode(options.text);
+    span.appendChild(textNode);
+    let button = element.getElementsByClassName('mdw-button')[0];
     if (options.buttonText) {
-      const button = document.createElement('button');
+      if (!button) {
+        button = document.createElement('button');
+        element.appendChild(button);
+      }
+      setTextNode(button, options.buttonText);
       button.classList.add('mdw-button');
       if (typeof options.buttonThemeColor === 'undefined') {
         button.setAttribute('mdw-theme-color', 'primary');
@@ -205,7 +268,8 @@ class Snackbar {
       } else {
         // Don't set attribute if null is passed
       }
-      element.appendChild(button);
+    } else if (button && button.parentElement) {
+      button.parentElement.removeChild(button);
     }
     if (options.stacked) {
       element.setAttribute('mdw-stacked', '');
@@ -226,20 +290,42 @@ class Snackbar {
     if (options.autoDestroy !== false) {
       element.setAttribute('mdw-autodestroy', '');
     }
+  }
+
+  /**
+   * Creates a Snackbar element if required and adds to show queue
+   * @param {SnackbarCreateOptions} options
+   * @return {HTMLElement}
+   */
+  static create(options) {
+    let element;
+    let newlyCreated = false;
     if (options.parent) {
-      options.parent.appendChild(element);
-      if (options.show) {
-        // Wait two frames before calling for, allowing animation to occur
-        const onDrawCallback = () => {
-          Snackbar.show(element);
-        };
-        if (window.requestAnimationFrame) {
-          window.requestAnimationFrame(() => {
-            window.requestAnimationFrame(onDrawCallback);
-          });
-        } else {
-          setTimeout(onDrawCallback, 2 / 60);
-        }
+      /** @type {HTMLElement} */
+      element = (options.parent.getElementsByClassName('mdw-snackbar')[0]);
+    }
+    if (!element) {
+      element = document.createElement('div');
+      if (options.parent) {
+        options.parent.appendChild(element);
+      }
+      newlyCreated = true;
+    }
+    const queue = new SnackbarQueueItem(element, options);
+    if (options.skipQueue) {
+      SNACKBAR_QUEUE.splice(0, 0, queue);
+    } else {
+      SNACKBAR_QUEUE.push(queue);
+    }
+
+    if (options.show !== false) {
+      if (newlyCreated) {
+        // Update after show to trigger a text change
+        Snackbar.update(element, options);
+        Snackbar.show(element);
+        Snackbar.update(element, options);
+      } else {
+        Snackbar.show(element);
       }
     }
     return element;

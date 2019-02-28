@@ -33,7 +33,8 @@ $snackbar__scale-up__from: 0.85;
 .mdw-snackbar {
   position: absolute;
   bottom: 0;
-  padding: 0 dp(16);
+  padding-left: dp(8);
+  padding-right: dp(8);
   min-height: dp(48);
   max-width: 100%;
   border-radius: dp(4);
@@ -49,111 +50,86 @@ $snackbar__scale-up__from: 0.85;
   align-items: center;
   justify-content: space-between;
 
-  // Default state is shown
+  // Default state is hidden
   pointer-events: auto;
-  opacity: 1;
-  transform: scale(1);
-  will-change: opacity, transform;
-  transition-property: opacity, transform;
-  transition-timing-function: $motion-easing-deceleration;
-  transition-delay: 0s, 0s;
-  transition-duration: $motion-duration-desktop-enter;
+  opacity: 0;
+  transform: scale($snackbar__scale-up__from);
+  visibility: hidden;
+  will-change: opacity, transform, visibility;
+  animation-name: none;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-timing-function: $motion-easing-acceleration;
+  animation-duration: $motion-duration-desktop-enter;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-enter;
+    animation-duration: $motion-duration-mobile-enter;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-enter;
+    animation-duration: $motion-duration-tablet-enter;
   }
 
-  // Disable animations with explicit visibility
-  &[mdw-autohide] {
-    animation-fill-mode: forwards;
-    animation-name: showSnackbar, hideSnackbar;
-    animation-timing-function: $motion-easing-deceleration, $motion-easing-acceleration;
-    animation-delay: 0s, 4s;
-    animation-duration: $motion-duration-desktop-enter, $motion-duration-desktop-leave;
+  &[aria-hidden="false"] {
+    animation-name: showSnackbar;
+
+    // Fallback if animations are disabled
+    opacity: 1;
+    transform: scale(1.0);
+    visibility: visible;
+  }
+
+  &[aria-hidden="true"] {
+    animation-name: hideSnackbar;
+    animation-timing-function: $motion-easing-deceleration;
+    animation-duration: $motion-duration-desktop-leave;
     @include allHandsets {
-      animation-duration: $motion-duration-mobile-enter, $motion-duration-mobile-leave;
+      animation-duration: $motion-duration-mobile-leave;
     }
     @include allTablets {
-      animation-duration: $motion-duration-tablet-enter, $motion-duration-tablet-leave;
+      animation-duration: $motion-duration-tablet-leave;
     }
   }
 
-  // Disable animation with explicit visibility
-  &[mdw-show],
-  &[mdw-hide] {
-    animation-name: none;
+  &:focus {
+    outline: none;
   }
-
-  &[mdw-consecutive]:not([mdw-hide]) {
-    // Delay showing consecutive snackbar equal to previous snackbar's leave time
-    transition-delay: $motion-duration-desktop-leave;
-    @include allHandsets {
-      transition-delay: $motion-duration-mobile-leave;
-    }
-    @include allTablets {
-      transition-delay: $motion-duration-tablet-leave;
-    }
-  }
-
-  &[mdw-hide] {
-    opacity: 0;
-    transform: scale($snackbar__scale-up__from);
-    
-    transition-timing-function: $motion-easing-acceleration;
-    transition-duration: $motion-duration-desktop-leave;
-    transition-delay: 0s, $motion-duration-desktop-leave;
-    @include allHandsets {
-      transition-duration: $motion-duration-mobile-leave;
-      transition-delay: 0s, $motion-duration-mobile-leave;
-    }
-    @include allTablets {
-      transition-duration: $motion-duration-tablet-leave;
-      transition-delay: 0s, $motion-duration-tablet-leave;
-    }
-  }
-
-  @for $seconds from 5 to 11 {
-    &[mdw-autohide="#{$seconds}"] {
-      animation-delay: 0s, #{$seconds}s;
-    }
-  }
-
 }
 
 @keyframes hideSnackbar {
   from {
     opacity: 1;
+    transform: scale(1.0);
+    visibility: visible;
   }
   to {
     opacity: 0;
+    transform: scale($snackbar__scale-up__from);
+    visibility: hidden;
   }
 }
 
 @keyframes showSnackbar {
   from {
     opacity: 0;
+    transform: scale($snackbar__scale-up__from);
+    visibility: hidden;
   }
   to {
     opacity: 1;
+    transform: scale(1.0);
+    visibility: visible;
   }
 }
 
 .mdw-snackbar .mdw-button {
+  flex: none;
   order: 1;
-  margin-top: dp(6);
-  margin-bottom: dp(6);
-  margin-left: dp(8);
-  margin-right: dp(-8);
-  html[dir=rtl] & {
-    margin-left: dp(-8);
-    margin-right: dp(8);
-  }
+  margin: dp(6) 0;
 }
 
 .mdw-snackbar > span {
+  box-sizing: border-box;
   white-space: pre-line;
+  padding: 0 dp(8);
   @include texttop-to-top(16);
   @include baseline-bottom(48 - 30);
 }

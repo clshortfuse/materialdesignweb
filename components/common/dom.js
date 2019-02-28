@@ -144,6 +144,34 @@ export function getTextNode(node, create) {
 }
 
 /**
+ * @param {Node} node
+ * @param {string} value
+ * @return {Node}
+ */
+export function setTextNode(node, value) {
+  /** @type {ChildNode} */
+  let textNode;
+  iterateSomeOfArrayLike(node.childNodes, (childNode) => {
+    if (childNode.nodeType !== Node.TEXT_NODE) {
+      return false;
+    }
+    textNode = childNode;
+    return true;
+  });
+  if (value) {
+    if (!textNode) {
+      textNode = document.createTextNode(value);
+      node.appendChild(textNode);
+    } else {
+      textNode.nodeValue = value;
+    }
+  } else if (textNode) {
+    node.removeChild(textNode);
+  }
+  return textNode;
+}
+
+/**
  * @param {HTMLElement} element
  * @param {boolean} [smooth=false]
  * @return {void}
