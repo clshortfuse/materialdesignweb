@@ -1,0 +1,27 @@
+@import '../common/functions.scss';
+@import '../common/mixins.scss';
+
+// Guidelines conflict stating a background should be fully opaque
+// But says spec says to use #000000 with 87% opacity
+// Calculated against white, opaque value is #212121 (Grey-900)
+
+$snackbarColors: (
+  text-color:          (('foreground-dark', 0.87), ('foreground-dark', 0.87)),
+  background-color:    (('background', '900', 1.00), ('background', '900', 1.00)),
+);
+
+@function snackbarThemeValue($key, $type, $theme) {
+  @return themeValue('snackbar', $snackbarColors, $key, $type, $theme);
+}
+
+@mixin snackbarThemeVariables($color, $lightness) {
+  @include themeVariables('snackbar', $snackbarColors, $color, $lightness);
+}
+
+// Vary by contrast or theme
+@mixin snackbarContrastAndThemeRules($type: 'var', $theme: null) {
+  .mdw-snackbar {
+    background-color: snackbarThemeValue("background-color", $type, $theme);
+    color: snackbarThemeValue("text-color", $type, $theme);
+  }
+}

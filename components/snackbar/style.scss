@@ -1,11 +1,5 @@
 // https://material.io/design/components/snackbars.html#spec
 
-// Guidelines conflict stating a background should be fully opaque
-// But says spec says to use #000000 with 87% opacity
-// Calculated against white, opaque value is #212121 (Grey-900)
-
-$snackbar__background-color: #212121;
-$snackbar__color: rgba(255, 255, 255, 0.87);
 $snackbar__scale-up__from: 0.85;
 
 .mdw-snackbar__wrapper {
@@ -40,10 +34,6 @@ $snackbar__scale-up__from: 0.85;
   border-radius: dp(4);
   
   box-shadow: elevation(6);
-
-  background: $snackbar__background-color;
-  color: $snackbar__color;
-
   @include type-rules('body-2');
 
   display: flex;

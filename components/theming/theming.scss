@@ -17,6 +17,7 @@
 @import '../menu/theming.scss';
 @import '../navdrawer/theming.scss';
 @import '../selection/theming.scss';
+@import '../snackbar/theming.scss';
 @import '../tab/theming.scss';
 @import '../textfield/theming.scss';
 @import '../type/theming.scss';
@@ -40,6 +41,7 @@ $added-palettes-list: ();
     'menu',
     'navdrawer',
     'selection',
+    'snackbar',
     'tab',
     'textfield',
     'type',
@@ -128,6 +130,9 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'selection')) {
     @include selectionThemeVariables($color, $lightness);
   }
+  @if (index($mdw-theme__components, 'selection')) {
+    @include snackbarThemeVariables($color, $lightness);
+  }
   @if (index($mdw-theme__components, 'tab')) {
     @include tabThemeVariables($color, $lightness);
   }
@@ -169,6 +174,9 @@ $added-palettes-list: ();
   }
   @if (index($mdw-theme__components, 'selection')) {
     @include selectionContrastAndThemeRules($type, $theme);
+  }
+  @if (index($mdw-theme__components, 'snackbar')) {
+    @include snackbarContrastAndThemeRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'textfield')) {
     @include textfieldContrastAndThemeRules($type, $theme);
