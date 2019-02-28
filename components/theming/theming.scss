@@ -81,8 +81,10 @@ $added-palettes-list: ();
 @mixin addVariables($lightness, $color:"background") {
   @if ($lightness == 'light') {
     --color: var(--foreground-light-color);
+    --foreground-color: var(--foreground-light-color);
   } @else {
     --color: var(--foreground-dark-color);
+    --foreground-color: var(--foreground-dark-color);
   }
 
   @include globalThemeVariables($color, $lightness);

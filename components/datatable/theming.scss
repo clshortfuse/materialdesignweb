@@ -2,9 +2,11 @@
 @import '../common/mixins.scss';
 
 $datatableColors: (
-  text-color:           ((#000,              0.87), (#fff,              1.00)),
-  secondary-text-color: ((#000,              0.54), (#fff,              0.70)),
-  divider-color:        ((#000,              0.12), (#fff,              0.12)),
+  text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
+  secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
+  divider-color:        (('foreground-light', 0.12), ('foreground-dark', 0.12)),
+
+  controls-color:       (('foreground-light', 1.00), ('foreground-dark', 1.00)),
 
   overlay-rgb:          ("0, 0, 0", "255, 255, 255"),
 
@@ -38,7 +40,7 @@ $datatableColors: (
 @mixin datatableContrastRules($type: 'var', $theme: null) {
   .mdw-datatable tr,
   .mdw-datatable td,
-  .mdw-datatable th, {
+  .mdw-datatable th {
     border-color: datatableThemeValue("divider-color", $type, $theme);
   }
 
@@ -47,8 +49,12 @@ $datatableColors: (
     color: datatableThemeValue("text-color", $type, $theme);
   }
   
-  .mdw-datatable__header-icons {
-    color: datatableThemeValue("text-color", $type, $theme);
+  .mdw-datatable__header-controls,
+  .mdw-datatable__footer-controls {
+    color: datatableThemeValue("controls-color", $type, $theme);
+    @if ($type == 'var') {
+      --color: var(--foreground-color);
+    }
   }
   .mdw-datatable th:not([mdw-selector]),
   .mdw-datatable__footer {
