@@ -156,6 +156,10 @@ $toolbar__icon-height: 40;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+}
+.mdw-toolbar__start,
+.mdw-toolbar__end,
+.mdw-toolbar__title {
   transition-property: margin-top;
   margin-top: dp(($toolbar__height - $toolbar__icon-height) / 2);
   .mdw-toolbar[mdw-dense] & {
