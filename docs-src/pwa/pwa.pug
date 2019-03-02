@@ -1,0 +1,418 @@
+doctype html
+html.mdw-app(lang='en'
+  mdw-theme-fill="white light"
+  mdw-appbar-autohide="mobile tablet"
+  mdw-sidesheet-toggle="dismissible" mdw-sidesheet-style="clipped"
+  mdw-fab-show mdw-fab-mobile mdw-fab-desktop)
+  head
+    title MDW Web App
+    meta(charset='utf-8')
+    meta(content='IE=edge', http-equiv='X-UA-Compatible')
+    meta(content='MDW Web App', name='description')
+    meta(content="width=device-width, initial-scale=1, viewport-fit=cover", name='viewport')
+    meta(name="theme-color" content="#E91E63")
+    meta(name="apple-mobile-web-app-status-bar-style" content="black-translucent")
+    meta(name="apple-mobile-web-app-capable" content="yes")
+    link(rel='stylesheet' href="//fonts.googleapis.com/icon?family=Material+Icons")
+    link(rel='stylesheet' href='//fonts.googleapis.com/css?family=Roboto:300,400,500,700')
+    link(rel='stylesheet' href='docs.min.css')
+    link(rel='stylesheet' href='components.min.css')
+    
+    // Separate default theming files for size inspection
+    link(rel='stylesheet' href='theme-colors.min.css')
+    link(rel='stylesheet' href='default-theme.min.css')
+
+    // link(rel='stylesheet' href='/themes/default-auto-contrast.min.css')
+    
+    // Alternate themes
+    link(rel='stylesheet' href='alt-colors.min.css')
+    link(rel='stylesheet' href='alt-themes.min.css')
+    
+    // Rules last
+    link(rel='stylesheet' href='theme-rules.min.css')
+
+    // Performance tweak to only load on IE11 browsers
+    link(rel='stylesheet' href='default-theme.ie11.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
+    link(rel='stylesheet' href='alt-themes.ie11.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
+
+  body.mdw-app__body
+    .mdw-app__menus
+      include ./_menus.pug
+    .mdw-app__dialogs
+      include ./_dialogs.pug
+    .mdw-app__scrim
+    .mdw-app__appbar
+      .mdw-app__appbar-shape
+        .mdw-app__fab-cut-track
+          svg
+            mask#fabMask(maskContentUnits='objectBoundingBox', x='0', y='0', width='1', height='1')
+              rect(fill='white', x='0', y='0', width='1', height='1')
+              ellipse(cx='0.5', cy='0', rx='.5', ry='1', fill='black', style='transform-origin:0.5px 0')
+            rect(x='0', y='36', width='100%', height='100%')
+            rect(x='0', y='0', width='72', height='36', mask='url(#fabMask)')
+      .mdw-toolbar
+        .mdw-toolbar__action
+          .mdw-toolbar__start
+            .mdw-button(mdw-icon).material-icons.mdw-app__navdrawer-toggle menu
+          .mdw-toolbar__title MDW Web App
+          .mdw-toolbar__end
+            .mdw-button(mdw-icon).material-icons.mdw-app__sidesheet-toggle info
+      .mdw-app__overlay-anchor
+        .mdw-app__overlay
+    .mdw-app__banner
+      .mdw-banner
+        .mdw-banner__container
+          .mdw-banner__icon
+            i.material-icons(style="font-size:40px") report_problem
+          .mdw-banner__text
+            | Your internet connection was lost.
+            | We can't upload your photos.
+          .mdw-banner__buttons
+            .mdw-button Fix it
+            .mdw-button Learn more
+    .mdw-app__navdrawer
+      .mdw-app__sheet-content
+        .mdw-list
+          li.mdw-list__item Attractions
+            .mdw-list__icon.material-icons local_activity
+          li.mdw-list__item Dining
+            .mdw-list__icon.material-icons local_dining
+          li.mdw-list__item Education
+            .mdw-list__icon.material-icons edit
+          li.mdw-list__item Family
+            .mdw-list__icon.material-icons people
+          li.mdw-list__item Health
+            .mdw-list__icon.material-icons healing
+          li.mdw-list__item Office
+            .mdw-list__icon.material-icons business
+          li.mdw-list__item Promotions
+            .mdw-list__icon.material-icons local_offer
+          li.mdw-list__item Radio
+            .mdw-list__icon.material-icons radio
+          li.mdw-list__item Recipes
+            .mdw-list__icon.material-icons book
+          li.mdw-list__item Sports
+            .mdw-list__icon.material-icons stars
+          li.mdw-list__item Travel
+            .mdw-list__icon.material-icons local_airport
+    .mdw-app__sidesheet
+      .mdw-app__sheet-content
+        h2.mdw-type Info
+        .mdw-button(mdw-icon).material-icons.mdw-app__sidesheet-hide clos
+    .mdw-app__bottomnav
+      .mdw-bottomnav(mdw-theme-color="primary")
+        .mdw-bottomnav__item(mdw-badge)
+          .mdw-bottomnav__icon.material-icons history
+          .mdw-bottomnav__label Recents
+        .mdw-bottomnav__item(mdw-selected)
+          .mdw-bottomnav__icon.material-icons favorite
+          .mdw-bottomnav__label Favorites
+        .mdw-bottomnav__item(mdw-badge="12")
+          .mdw-bottomnav__icon.material-icons near_me
+          .mdw-bottomnav__label Nearby
+    .mdw-app__fab
+      .mdw-app__fab-anchor
+        .mdw-fab
+          .mdw-fab__button.mdw-button(mdw-theme-fill="accent dark")
+            .mdw-fab__icon
+              .mdw-fab__hidden-icon.material-icons add
+              .mdw-fab__shown-icon.material-icons clear
+            .mdw-fab__text Add
+          .mdw-fab__speed-dial
+            .mdw-button.mdw-fab__button(mdw-mini)
+              .mdw-fab__icon.material-icons filter_1
+            .mdw-button.mdw-fab__button(mdw-mini)
+              .mdw-fab__icon.material-icons filter_2
+            .mdw-button.mdw-fab__button(mdw-mini)
+              .mdw-fab__icon.material-icons filter_3
+            .mdw-button.mdw-fab__button(mdw-mini)
+              .mdw-fab__icon.material-icons filter_4
+            .mdw-button.mdw-fab__button(mdw-mini)
+              .mdw-fab__icon.material-icons filter_5
+    .mdw-app__snackbar
+      .mdw-app__snackbar-anchor
+        .mdw-snackbar__container
+          .mdw-snackbar(aria-hidden="false")
+            span Extremely long snackbar action text. This should text-wrap automatically when it's too large
+            button.mdw-button(mdw-theme-color="accent") Action
+    .mdw-app__content
+      .mdw-app__content-page
+        .mdw-layout(mdw-margin-top mdw-margin-bottom)
+          .mdw-layout__item(mdw-colspan="4")
+            .mdw-layout__content.mdw-card
+                .mdw-card__start
+                  .mdw-card__thumbnail.material-icons(style="font-size:40px") web_asset
+                h6.mdw-card__header(mdw-two-line) App Bar
+                .mdw-card__subheader Informations and actions
+                .mdw-divider
+                .mdw-list
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="appbar-bottom" value="top" checked)
+                    .mdw-list__text.mdw-selection__label Top
+                    .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="appbar-bottom" value="bottom")
+                    .mdw-list__text.mdw-selection__label
+                      .mdw-list__text-line Bottom
+                      .mdw-list__text-line [mdw-appbar-bottom]
+                    .mdw-selection__icon
+                .mdw-divider
+                .mdw-list
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="checkbox" name="use-appbar-autohide" checked)
+                    .mdw-selection__label.mdw-list__text
+                      .mdw-list__text-line Auto Hide
+                      .mdw-list__text-line [mdw-appbar-autohide]
+                    .mdw-selection__icon
+                  .mdw-list__item-group
+                    label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                      input.mdw-selection__input(type="radio" name="appbar-autohide" value="mobile")
+                      .mdw-list__text.mdw-selection__label
+                        .mdw-list__text-line Mobile Only
+                        .mdw-list__text-line [mdw-appbar-autohide="mobile"]
+                      .mdw-selection__icon
+                    label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                      input.mdw-selection__input(type="radio" name="appbar-autohide" value="tablet")
+                      .mdw-list__text.mdw-selection__label
+                        .mdw-list__text-line Tablet Only
+                        .mdw-list__text-line [mdw-appbar-autohide="tablet"]
+                      .mdw-selection__icon
+                    label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                      input.mdw-selection__input(type="radio" name="appbar-autohide" value="mobile tablet" checked)
+                      .mdw-list__text.mdw-selection__label
+                        .mdw-list__text-line Mobile + Tablet
+                        .mdw-list__text-line [mdw-appbar-autohide="mobile tablet"]
+                      .mdw-selection__icon
+                    label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                      input.mdw-selection__input(type="radio" name="appbar-autohide" value="")
+                      .mdw-list__text.mdw-selection__label
+                        .mdw-list__text-line All Devices
+                        .mdw-list__text-line [mdw-appbar-autohide=""]
+                      .mdw-selection__icon
+                .mdw-divider
+                .mdw-list
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="checkbox" name="appbar-autoraise")
+                    .mdw-selection__label.mdw-list__text
+                      .mdw-list__text-line Auto Raise
+                      .mdw-list__text-line [mdw-appbar-autoraise]
+                    .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="checkbox" name="appbar-autoprominent")
+                    .mdw-selection__label.mdw-list__text
+                      .mdw-list__text-line Auto Prominent
+                      .mdw-list__text-line [mdw-appbar-autoprominent]
+                    .mdw-selection__icon
+          .mdw-layout__item(mdw-colspan="4")
+            .mdw-layout__content.mdw-card
+                .mdw-card__start
+                  .mdw-card__thumbnail.material-icons(style="font-size:40px;transform:scaleY(-1)") web_asset
+                h6.mdw-card__header(mdw-two-line) FAB
+                .mdw-card__subheader Floating Action Button
+                .mdw-list
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="checkbox" name="fab-show" checked)
+                    .mdw-selection__label.mdw-list__text
+                      .mdw-list__text-line Visible
+                      .mdw-list__text-line [mdw-fab-show]
+                    .mdw-selection__icon
+                .mdw-divider
+                .mdw-list
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="checkbox" name="use-fab-mobile" checked)
+                    .mdw-selection__label.mdw-list__text
+                      .mdw-list__text-line Mobile
+                      .mdw-list__text-line [mdw-fab-mobile]
+                    .mdw-selection__icon
+                  .mdw-list__item-group
+                    label.mdw-list__item.mdw-selection(mdw-theme-color="accent")
+                      input.mdw-selection__input(type="radio" name="fab-mobile" value="" checked)
+                      .mdw-selection__label.mdw-list__text
+                        .mdw-list__text-line End
+                        .mdw-list__text-line [mdw-fab-mobile=""]
+                      .mdw-selection__icon
+                    label.mdw-list__item.mdw-selection(mdw-theme-color="accent")
+                      input.mdw-selection__input(type="radio" name="fab-mobile" value="center")
+                      .mdw-selection__label.mdw-list__text
+                        .mdw-list__text-line Center
+                        .mdw-list__text-line [mdw-fab-mobile="center"]
+                      .mdw-selection__icon
+                    label.mdw-list__item.mdw-selection(mdw-theme-color="accent")
+                      input.mdw-selection__input(type="radio" name="fab-mobile" value="full")
+                      .mdw-selection__label.mdw-list__text
+                        .mdw-list__text-line Full
+                        .mdw-list__text-line [mdw-fab-mobile="full"]
+                      .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent")
+                    input.mdw-selection__input(type="checkbox" name="fab-mobile-cut")
+                    .mdw-selection__label.mdw-list__text
+                      .mdw-list__text-line Cut into app bar
+                      .mdw-list__text-line [fab-mobile-cut]
+                    .mdw-selection__icon
+                .mdw-divider
+                .mdw-list
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="checkbox" name="use-fab-desktop" checked)
+                    .mdw-selection__label.mdw-list__text
+                      .mdw-list__text-line Desktop
+                      .mdw-list__text-line [fab-desktop]
+                    .mdw-selection__icon
+                  .mdw-list__item-group
+                    label.mdw-list__item.mdw-selection(mdw-theme-color="accent")
+                      input.mdw-selection__input(type="radio" name="fab-desktop" value="" checked)
+                      .mdw-selection__label.mdw-list__text
+                        .mdw-list__text-line End
+                        .mdw-list__text-line [fab-desktop=""]
+                      .mdw-selection__icon
+                    label.mdw-list__item.mdw-selection(mdw-theme-color="accent")
+                      input.mdw-selection__input(type="radio" name="fab-desktop" value="appbar")
+                      .mdw-selection__label.mdw-list__text
+                        .mdw-list__text-line App Bar
+                        .mdw-list__text-line [fab-desktop="appbar"]
+                      .mdw-selection__icon
+          .mdw-layout__item(mdw-colspan="4")
+            .mdw-layout__content.mdw-card
+                .mdw-card__start
+                  .mdw-card__thumbnail.material-icons(style="font-size:40px;") vertical_split
+                h6.mdw-card__header(mdw-two-line) Navigation Drawer
+                .mdw-card__subheader App Destinations
+                .mdw-divider
+                .mdw-list
+                  .mdw-list__subheader Style (Desktop)
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="navdrawer-style" value="" checked)
+                    .mdw-list__text.mdw-selection__label Full-height
+                    .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="navdrawer-style" value="clipped")
+                    .mdw-list__text.mdw-selection__label Clipped
+                    .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="navdrawer-style" value="modal")
+                    .mdw-list__text.mdw-selection__label Modal
+                    .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="navdrawer-style" value="clipped floating")
+                    .mdw-list__text.mdw-selection__label Floating
+                    .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="navdrawer-style" value="clipped floating card")
+                    .mdw-list__text.mdw-selection__label Floating Card
+                    .mdw-selection__icon
+                .mdw-divider
+                .mdw-list
+                  .mdw-list__subheader Toggle (Desktop)
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="navdrawer-toggle" value="" checked)
+                    .mdw-list__text.mdw-selection__label None (Perminent)
+                    .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="navdrawer-toggle" value="dismissible")
+                    .mdw-list__text.mdw-selection__label Dismissible
+                    .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="navdrawer-toggle" value="mini")
+                    .mdw-list__text.mdw-selection__label Mini
+                    .mdw-selection__icon
+          .mdw-layout__item(mdw-colspan="4")
+            .mdw-layout__content.mdw-card
+                .mdw-card__start
+                  .mdw-card__thumbnail.material-icons(style="font-size:40px;transform:scaleX(-1)") vertical_split
+                h6.mdw-card__header(mdw-two-line) Side Sheet
+                .mdw-card__subheader Supplementary content
+                .mdw-divider
+                .mdw-list
+                  .mdw-list__subheader Style (Desktop)
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="sidesheet-style" value="")
+                    .mdw-list__text.mdw-selection__label Full-height
+                    .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="sidesheet-style" value="clipped" checked)
+                    .mdw-list__text.mdw-selection__label Clipped
+                    .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="sidesheet-style" value="modal")
+                    .mdw-list__text.mdw-selection__label Modal
+                    .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="sidesheet-style" value="clipped floating")
+                    .mdw-list__text.mdw-selection__label Floating
+                    .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="sidesheet-style" value="clipped floating card")
+                    .mdw-list__text.mdw-selection__label Floating Card
+                    .mdw-selection__icon
+                .mdw-divider
+                .mdw-list
+                  .mdw-list__subheader Toggle (Desktop)
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="sidesheet-toggle" value="")
+                    .mdw-list__text.mdw-selection__label None (Perminent)
+                    .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="sidesheet-toggle" value="dismissible" checked)
+                    .mdw-list__text.mdw-selection__label Dismissible
+                    .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection(mdw-theme-color="accent" mdw-switch)
+                    input.mdw-selection__input(type="radio" name="sidesheet-toggle" value="mini")
+                    .mdw-list__text.mdw-selection__label Mini
+                    .mdw-selection__icon
+          .mdw-layout__item(mdw-colspan="4")
+            .mdw-layout__content.mdw-card
+                .mdw-card__start
+                  .mdw-card__thumbnail.material-icons(style="font-size:40px;transform:scaleX(-1)") vertical_split
+                h6.mdw-card__header(mdw-two-line) Dialogs
+                .mdw-card__subheader Supplementary content
+                .mdw-card__actions
+                  #dialog-alert-button.mdw-button Show Dialog
+          .mdw-layout__item(mdw-colspan="4")
+            .mdw-layout__content.mdw-card
+                .mdw-card__start
+                  .mdw-card__thumbnail.material-icons(style="font-size:40px;transform:scaleX(-1)") vertical_split
+                h6.mdw-card__header(mdw-two-line) Menus
+                .mdw-card__subheader Supplementary content
+                .mdw-card__actions
+                  #menu-button.mdw-button Show Menu
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu vulputate turpis. Aliquam aliquet sagittis erat, non facilisis dolor auctor quis. Fusce risus diam, tincidunt in semper at, facilisis ut sapien. Integer dui tellus, condimentum rhoncus metus et, porttitor convallis erat. Proin eget dolor purus. Phasellus lorem odio, facilisis et commodo ut, aliquet non ligula. Aliquam erat volutpat. Pellentesque sollicitudin convallis dolor, non euismod ipsum maximus sit amet. Nullam sodales at tellus in rhoncus. Aliquam vel tempus nisl. Curabitur lacinia blandit orci quis pulvinar. Aliquam dignissim ex a diam volutpat, vitae vehicula tortor blandit. Aliquam laoreet mauris quis purus tempor mollis.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Quisque finibus justo et urna rutrum mollis. Duis non blandit purus. Etiam nec ante et enim molestie interdum pharetra sed dui. Pellentesque turpis tortor, dictum at congue ut, pretium eu mauris. Sed tempor lorem ac quam elementum blandit id vitae neque. Curabitur accumsan dapibus diam. Ut egestas efficitur est. Morbi ultrices metus eget turpis porta pulvinar id et justo. Pellentesque ultrices aliquet ex, non commodo sapien feugiat eget. Donec sed tincidunt purus. Maecenas scelerisque risus fringilla, posuere erat vehicula, ornare risus. Pellentesque vitae fermentum purus, molestie sollicitudin nibh. Donec auctor, lacus sed imperdiet varius, eros nisl eleifend neque, tincidunt dictum nibh metus commodo elit. Nulla facilisi.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Nam eu dui eu sem suscipit tristique. Nam in velit elementum, efficitur felis nec, aliquet mauris. Integer sit amet mattis turpis, nec ultricies elit. Mauris tristique, sem sit amet mollis egestas, purus diam luctus risus, ac dignissim diam eros ac leo. Phasellus at venenatis nisi. Sed feugiat turpis at dolor efficitur sagittis. Donec eget ornare leo, quis convallis justo. Mauris viverra, purus at sodales auctor, justo dolor semper nisl, a elementum nulla nulla vel ipsum. Mauris a dolor nec neque molestie auctor. Quisque maximus ultrices ornare. Maecenas ut fringilla dolor.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Duis in lorem dignissim, venenatis nunc in, fringilla enim. Aliquam vel ex at augue dictum ultricies eu quis lacus. Integer sodales metus tincidunt purus tristique maximus. Morbi at ante risus. Praesent ligula leo, accumsan quis semper vel, venenatis non sapien. Nullam vulputate urna id sapien pulvinar, ac laoreet mi vulputate. Morbi malesuada vehicula molestie.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Nunc aliquet ornare nulla eget vestibulum. Etiam tristique dignissim purus in sollicitudin. Aliquam a velit malesuada, fringilla justo id, tincidunt ligula. Mauris fermentum tincidunt tellus, nec scelerisque ligula pulvinar quis. Donec posuere viverra justo eu hendrerit. Nullam at vestibulum erat, eget pulvinar augue. Nunc efficitur tristique sem, lacinia tempus tortor rhoncus non. Mauris nec ligula ex. Aenean a neque nec dui commodo congue a ac risus. Nulla a dolor vel erat rutrum commodo. Fusce nec nisi suscipit, sollicitudin quam pulvinar, tristique felis. Maecenas congue suscipit massa, in imperdiet lacus dignissim non. In facilisis leo magna, at sodales dui tempus iaculis. Proin hendrerit lacinia nunc, vitae dignissim nulla cursus id. Donec in leo porttitor, accumsan dui sit amet, malesuada nunc.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Sed id sapien quis tortor feugiat luctus in id nisi. Mauris egestas posuere luctus. Quisque in augue felis. Cras vitae dapibus ex. Nunc ac diam at justo interdum auctor eget nec tortor. Nulla ac nisi ut tellus viverra blandit. Nullam eu neque a metus ullamcorper convallis. Praesent maximus erat sed arcu egestas, ut porta tortor ullamcorper. Morbi eu sodales odio. Aenean gravida volutpat iaculis.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Mauris ut imperdiet nisi. Nunc nunc metus, fringilla et felis id, porttitor feugiat magna. Morbi dignissim felis sem, non pharetra urna finibus feugiat. Maecenas quis eleifend leo, eu sagittis nulla. Quisque gravida sagittis cursus. Duis ornare, lacus nec semper posuere, eros ex rhoncus massa, eu semper purus turpis eu leo. Sed erat risus, faucibus eget condimentum vel, vestibulum sit amet elit. Nullam semper felis ac odio porttitor, ac pharetra mauris gravida. Sed convallis magna pulvinar est vestibulum commodo. Maecenas lobortis massa vel tempor gravida. Vivamus ac scelerisque orci. Ut vitae facilisis risus. Fusce imperdiet, risus at rutrum feugiat, felis dui hendrerit massa, eu feugiat leo odio quis massa. Vivamus sagittis risus quis felis volutpat, sit amet tristique orci sodales. Fusce ac iaculis ante. Phasellus facilisis, justo eget vestibulum blandit, risus mauris efficitur magna, euismod semper erat urna et eros.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur semper elit orci. Vivamus vitae diam et nisi pellentesque mattis quis sit amet neque. Maecenas massa quam, eleifend nec dapibus at, tempor id sem. Vestibulum nec est a odio porttitor commodo dapibus a odio. Nam ornare quam nunc, eu aliquet ante finibus quis. Nam vulputate aliquam lorem non luctus. Sed maximus magna vitae rutrum porta.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc ac sollicitudin dolor, in placerat dui. Pellentesque tristique hendrerit erat. Duis tincidunt consequat dignissim. Aenean elementum arcu vel dolor dignissim gravida non sit amet nisl. Fusce ut finibus leo. Curabitur consequat semper suscipit. Proin ac metus ultrices, semper odio et, imperdiet leo. Fusce tellus ligula, laoreet et massa ut, pulvinar interdum quam. Integer pellentesque a eros sit amet sollicitudin. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vivamus arcu leo, lobortis vitae dapibus in, mollis ut dolor. Curabitur porta erat accumsan lacus consequat mollis. Aliquam eget semper diam, in dictum tellus. Cras vitae ante in felis molestie efficitur. Mauris in neque eleifend, iaculis quam eget, hendrerit ex.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Proin ligula tortor, ullamcorper vel justo non, euismod consectetur augue. Sed sodales lacus id elit fermentum, non posuere dolor gravida. Nunc nec tincidunt tellus, in consequat enim. Praesent sem mauris, dictum in nisl et, mattis tincidunt quam. Sed ac dui in lacus faucibus consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sit amet magna dui. Vestibulum congue ultricies scelerisque.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Mauris vel arcu euismod, aliquet purus vitae, consectetur felis. Sed nec tincidunt risus, venenatis auctor erat. Integer et sollicitudin nibh. Cras vestibulum faucibus ante, sit amet viverra nibh cursus non. Aenean eleifend dapibus urna, non dapibus purus dapibus a. Praesent sed nisl luctus est consequat congue. Fusce quis laoreet sapien. Integer sagittis ullamcorper ipsum, sed porttitor quam consequat vitae. Pellentesque ut erat ac mauris ullamcorper molestie.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Etiam quis dolor et quam porta cursus. Ut est lacus, pellentesque sed malesuada vel, imperdiet quis lacus. Nullam sit amet ex luctus, semper nisi eget, condimentum ante. Duis nec augue varius, scelerisque dolor eget, porttitor lacus. Aliquam erat volutpat. Donec commodo, ligula et tincidunt dapibus, nunc enim ultrices augue, non placerat purus arcu eget nibh. Praesent convallis pulvinar ornare. Vivamus pellentesque tortor sit amet eros consectetur, sit amet cursus enim sodales. Vivamus quam odio, pulvinar ullamcorper molestie sit amet, interdum a nibh. Integer tristique, sapien eu facilisis interdum, nunc massa accumsan nisi, nec dictum sapien neque at neque. Proin lectus tortor, porta nec varius id, imperdiet id neque. Mauris fermentum mollis diam, vitae semper sapien egestas sit amet. In quis gravida purus. Nullam facilisis dapibus maximus. Nam maximus elit ac dapibus malesuada.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Maecenas urna sem, mattis pretium nisi quis, pellentesque tincidunt dolor. Praesent semper, tellus porttitor semper ultricies, est urna tincidunt orci, in venenatis massa est ac quam. Donec vitae pellentesque ex, in tincidunt eros. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam lacus orci, ullamcorper nec viverra sit amet, blandit quis sem. Aliquam gravida varius nulla, eget lacinia nibh sagittis at. Pellentesque sapien libero, lacinia eu erat vel, euismod porttitor eros. Aenean a rhoncus nulla, id fringilla odio. Sed pellentesque gravida consectetur. Duis ut sapien purus. Donec ac sagittis velit.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Suspendisse magna nibh, maximus in orci at, porta condimentum lacus. Aenean iaculis, risus sit amet sagittis luctus, lorem diam feugiat magna, sit amet blandit ante augue ut sapien. Curabitur tristique egestas nisi at ultricies. Nam euismod est sit amet magna ornare, at vulputate est sodales. Curabitur sed mollis turpis. Donec ultricies id justo id bibendum. Suspendisse convallis velit vitae purus vestibulum viverra. In ullamcorper volutpat gravida. Integer viverra pharetra volutpat. Morbi ut risus odio. In commodo lacinia volutpat. Maecenas imperdiet tellus at metus mollis suscipit. Cras maximus nisl eget metus placerat, eget tempor risus ornare. Pellentesque vitae elit aliquet, molestie ante in, suscipit sapien. Ut et auctor ex. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Donec cursus ex justo, at porta lacus ultricies eget. In hac habitasse platea dictumst. Aliquam erat volutpat. Sed a turpis dui. Praesent commodo, sem ut laoreet efficitur, neque mi ullamcorper nibh, elementum luctus mauris lacus et metus. Fusce accumsan lectus quis molestie accumsan. In iaculis lacus turpis, sed iaculis libero tempus commodo. Fusce dignissim viverra metus nec sollicitudin.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Fusce maximus leo sem, ac iaculis urna dictum ac. Curabitur nec urna mauris. Aenean fringilla vehicula mauris at viverra. Proin commodo lorem ligula, in dapibus nibh sagittis id. Vestibulum fringilla eleifend nunc, id pharetra ipsum hendrerit vel. Ut iaculis lobortis eleifend. Phasellus ipsum tortor, vulputate id accumsan quis, faucibus ut magna. Nulla tincidunt pharetra mauris vel tincidunt. Integer convallis sed ante sed luctus. Aliquam fermentum elit eu fermentum cursus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla ac turpis nulla.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Mauris lorem orci, pulvinar non arcu vitae, aliquam ornare nisi. Aliquam sed nunc non purus semper tincidunt et ultrices nibh. Pellentesque volutpat enim non arcu pulvinar viverra. Mauris commodo aliquam facilisis. Aliquam posuere, neque sed dignissim blandit, turpis nisi aliquet diam, ac bibendum risus odio vel dui. Mauris nisl turpis, volutpat eu augue ut, lacinia dignissim magna. Nulla in dui sit amet ligula iaculis semper. Morbi blandit eu sapien id sagittis. Fusce sit amet libero vitae lectus mattis rutrum. Duis feugiat ut justo in venenatis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Vestibulum aliquam mi scelerisque quam congue lobortis non sit amet odio. Fusce dolor erat, sollicitudin sit amet lectus non, varius luctus magna. Nam commodo ante metus, at egestas nisl faucibus consequat. Nulla sed aliquet eros. Maecenas eu justo ipsum. Aliquam orci mauris, venenatis eget ligula ut, feugiat fringilla eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed blandit felis id mauris feugiat luctus. Nulla convallis ac mauris non fringilla.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Nullam vitae luctus neque. Maecenas non ultricies ante. Nam ac dui cursus, interdum nulla ut, pharetra ante. Etiam eu ultrices libero. Fusce sed erat pellentesque, molestie odio eget, luctus elit. Vivamus ultricies tortor ut purus facilisis, sed porta mi aliquam. Integer posuere augue euismod nisl tempus, at efficitur lacus fringilla.
+          .mdw-layout__item(mdw-colspan="100%")
+            .mdw-layout__content Sed blandit diam nec nibh faucibus, a ultricies risus posuere. Vestibulum facilisis ultrices sem, eget aliquam libero fermentum id. Fusce imperdiet metus auctor feugiat tincidunt. Praesent sem elit, ullamcorper id bibendum ut, ullamcorper at diam. Ut non nulla euismod lorem facilisis eleifend et at leo. Mauris eget scelerisque libero, at porta eros. Ut vitae eros eu dui venenatis lacinia. Nulla ultricies tortor et ullamcorper ultricies. Integer placerat libero at ex euismod, vel vestibulum lacus accumsan. Suspendisse maximus id sapien et accumsan. Suspendisse porta enim tellus.
+
+    script(src='pwa.min.js')

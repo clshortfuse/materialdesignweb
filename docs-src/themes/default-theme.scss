@@ -1,0 +1,16 @@
+@import "../../components/theming/theming.scss";
+$themes: (
+  "default": ('indigo', 'pink', 'red', 'grey'),
+  // "colored": ('indigo', 'pink', 'red', 'pink', #006064, #E0F7FA),
+  // "bright": ('indigo', 'pink', 'red', 'green', blue, yellow),
+  // "textfield": ('deeppurple', 'amber', 'red'),
+  // "toolbar": ('blue', 'pink', 'red'),
+  // "selection": ('blue', 'teal', 'red'),
+  // "tab": ('cyan', 'yellow', 'red')
+);
+$mdw-config: (
+  themes: $themes,
+  fallback: 'no',
+  variables: ('themes')
+);
+@include buildMDWThemes($mdw-config);

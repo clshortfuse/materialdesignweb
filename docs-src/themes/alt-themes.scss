@@ -1,0 +1,12 @@
+@import "../../components/theming/theming.scss";
+$themes: (
+  // "default": ('indigo', 'pink', 'red', 'grey'),
+  "colored": ('green', 'orange', 'red', 'deeporange', #006064, #E0F7FA),
+  "bright": ('amber', 'cyan', 'red', 'green', blue, yellow),
+);
+$mdw-config: (
+  themes: $themes,
+  fallback: 'no',
+  variables: ('themes')
+);
+@include buildMDWThemes($mdw-config);

@@ -1,0 +1,182 @@
+include ../mixins.pug
+
+mixin button-test
+  div.display-flex.flex-wrap
+    button.mdw-button Text
+    button.mdw-button(mdw-raised) Contained
+    button.mdw-button(mdw-raised disabled) Disabled
+    button.mdw-button(mdw-outline) Outlined
+  div(style="height:24px")
+  div.display-flex.flex-wrap
+    button.mdw-button(mdw-theme-color="primary") Text
+    button.mdw-button(mdw-theme-color="primary" mdw-raised) Contained
+    button.mdw-button(mdw-theme-color="primary" mdw-raised disabled) Disabled
+    button.mdw-button(mdw-theme-color="accent A100") Accent
+    button.mdw-button(mdw-outline mdw-theme-color="accent A100") Outlined
+  div(style="height:24px")
+  div.display-flex.flex-wrap
+    button.mdw-button(mdw-theme-fill="primary dark") Text
+    button.mdw-button(mdw-theme-fill="primary dark" mdw-raised) Contained
+    button.mdw-button(mdw-theme-fill="primary dark" mdw-raised disabled) Disabled
+    button.mdw-button(mdw-theme-fill="accent A100 light" mdw-raised) Accent
+  div(style="height:24px")
+  div.display-flex.flex-wrap
+    button.mdw-button(mdw-icon).material-icons favorite
+    button.mdw-button(mdw-theme-color="warn dark" mdw-icon).material-icons favorite
+    button.mdw-button(mdw-theme-fill="warn dark" mdw-icon).material-icons favorite
+    button.mdw-button(mdw-theme-fill="warn dark" mdw-icon mdw-raised).material-icons favorite
+    button.mdw-button(mdw-theme-fill="warn dark" mdw-icon mdw-raised disabled).material-icons favorite
+    button.mdw-button(mdw-icon disabled).material-icons favorite
+
++header()
+  +navdrawer("button")
+    .mdw-layout(mdw-margin-top mdw-margin-bottom mdw-stretch)
+      .mdw-layout__item(mdw-colspan="100%")
+        h5.mdw-type(mdw-baseline-next="36") Buttons communicate the action that will occur when the user touches them.
+        p.mdw-type Material buttons trigger an ink reaction on press. They may display text, imagery, or both.
+      .mdw-layout__item(mdw-colspan="4")
+        .mdw-layout__content
+          .component-sample
+            .display-flex
+              button.mdw-button(mdw-theme-color="accent A200") Button
+      .mdw-layout__item(mdw-colspan="8")
+        .mdw-type(mdw-style="subtitle") Javascript
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="javascript" value="required" disabled)
+            .mdw-selection__icon
+            .mdw-selection__label Required
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="javascript" value="optional" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Optional
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="javascript" value="none")
+            .mdw-selection__icon
+            .mdw-selection__label None
+        .mdw-type(mdw-style="subtitle") Elevation
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="elevation" value="flat" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Flat
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="elevation" value="raised")
+            .mdw-selection__icon
+            .mdw-selection__label Raised
+        .mdw-type(mdw-style="subtitle") Content
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="content" value="text" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Text
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="content" value="icon")
+            .mdw-selection__icon
+            .mdw-selection__label Icon
+        .mdw-type(mdw-style="subtitle") Options
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="outlined")
+            .mdw-selection__icon
+            .mdw-selection__label Outlined
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="disabled")
+            .mdw-selection__icon
+            .mdw-selection__label Disabled
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="activated")
+            .mdw-selection__icon
+            .mdw-selection__label Activated
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="active")
+            .mdw-selection__icon
+            .mdw-selection__label Active
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="checkbox" name="inactive")
+            .mdw-selection__icon
+            .mdw-selection__label Inactive
+        .mdw-type(mdw-style="subtitle") Color (Ink)
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="color" value="default")
+            .mdw-selection__icon
+            .mdw-selection__label Default
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="color" value="primary 400")
+            .mdw-selection__icon
+            .mdw-selection__label Primary 400
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="color" value="accent A200" checked)
+            .mdw-selection__icon
+            .mdw-selection__label Accent A200
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="color" value="warn")
+            .mdw-selection__icon
+            .mdw-selection__label Warn
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="color" value="purple A400")
+            .mdw-selection__icon
+            .mdw-selection__label Purple A400
+        .mdw-type(mdw-style="subtitle") Fill
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="fill" value="none" checked)
+            .mdw-selection__icon
+            .mdw-selection__label None
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="fill" value="primary dark")
+            .mdw-selection__icon
+            .mdw-selection__label Primary
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="fill" value="accent A100 light")
+            .mdw-selection__icon
+            .mdw-selection__label Accent A100
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="fill" value="warn 200 light")
+            .mdw-selection__icon
+            .mdw-selection__label Warn 200
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="fill" value="green 700 dark")
+            .mdw-selection__icon
+            .mdw-selection__label Green 700
+        .mdw-type(mdw-style="subtitle") HTML Element Type
+        div
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="htmltype" value="div")
+            .mdw-selection__icon
+            .mdw-selection__label HTMLElement
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="htmltype" value="button" checked)
+            .mdw-selection__icon
+            .mdw-selection__label HTMLButtonElement
+          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="htmltype" value="a")
+            .mdw-selection__icon
+            .mdw-selection__label HTMLAnchorElement
+      .mdw-layout__item(mdw-colspan="100%" style="max-height:0")
+      .mdw-layout__item(mdw-colspan="6")
+        h6.mdw-type HTML Code
+        .mdw-card.component-code.component-html
+      .mdw-layout__item(mdw-colspan="6")
+        h6.mdw-type Javascript Code
+        .mdw-card.component-code.component-js
+      .mdw-layout__item(mdw-colspan="100%")
+        h6.mdw-type Samples
+      .mdw-layout__item.display-flex(mdw-colspan="6")
+        .render-fill
+          +androidstatusbar('')
+          +toolbar('', [], []) CSS Only
+          .content(style="padding: 16px 0")
+            div
+              +button-test
+          +androidnavbar
+      .mdw-layout__item.display-flex(mdw-colspan="6")
+        .render-fill.js
+          +androidstatusbar('')
+          +toolbar('', [], []) Javascript Version
+          .content(style="padding: 16px 0")
+            div
+              +button-test
+          +androidnavbar
+  script(src='button.min.js')

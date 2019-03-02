@@ -1,0 +1,290 @@
+include ../mixins.pug
+
++header()
+  +navdrawer("list")
+    .comparison
+      .render
+        +androidstatusbar('deeppurple 700 dark')
+        +toolbar('deeppurple 500 dark', ['menu'], ['search', 'more_vert']) Topics
+        .content(style="padding-top:2px")
+          ul.mdw-list
+            li.mdw-list__item Attractions
+            li.mdw-list__item Dining
+            li.mdw-list__item Education
+            li.mdw-list__item Family
+            li.mdw-list__item Health
+            li.mdw-list__item Office
+            li.mdw-list__item Promotions
+            li.mdw-list__item Radio
+            li.mdw-list__item Recipes
+            li.mdw-list__item Sports
+            li.mdw-list__item Travel
+      +target('https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F0B54x0KDcs5U-UHcxOFd6NnQxeFE%2Fsingle-line-example-1.png')
+
+    .comparison
+      .render
+        +androidstatusbar('teal 700 dark')
+        +toolbar('teal 500 dark', ['menu'], ['more_vert']) Topics
+        .content(style="padding-top:2px")
+          ul.mdw-list(mdw-divider)
+            li.mdw-list__item
+              .mdw-list__text Attractions
+            li.mdw-list__item
+              .mdw-list__text Dining
+            li.mdw-list__item
+              .mdw-list__text Education
+            li.mdw-list__item 
+              .mdw-list__text Family
+            li.mdw-list__item 
+              .mdw-list__text Health
+            li.mdw-list__item 
+              .mdw-list__text Office
+            li.mdw-list__item 
+              .mdw-list__text Promotions
+            li.mdw-list__item 
+              .mdw-list__text Radio
+            li.mdw-list__item 
+              .mdw-list__text Recipes
+            li.mdw-list__item 
+              .mdw-list__text Sports
+            li.mdw-list__item 
+              .mdw-list__text Travel
+        +androidnavbar
+      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3V2tZaHMwSXZuS2s/components-lists-keylines-single3.png')
+
+
+    .comparison
+      .render
+        +androidstatusbar('deeppurple 700 dark')
+        +toolbar('deeppurple 500 dark', ['menu'], ['search', 'more_vert']) Topics
+        .content(style="padding-top:2px")
+          ul.mdw-list
+            li.mdw-list__item Attractions
+              .mdw-list__icon.material-icons local_activity
+            li.mdw-list__item Dining
+              .mdw-list__icon.material-icons local_dining
+            li.mdw-list__item Education
+              .mdw-list__icon.material-icons edit
+            li.mdw-list__item Family
+              .mdw-list__icon.material-icons people
+            li.mdw-list__item Health
+              .mdw-list__icon.material-icons healing
+            li.mdw-list__item Office
+              .mdw-list__icon.material-icons business
+            li.mdw-list__item Promotions
+              .mdw-list__icon.material-icons local_offer
+            li.mdw-list__item Radio
+              .mdw-list__icon.material-icons radio
+            li.mdw-list__item Recipes
+              .mdw-list__icon.material-icons book
+            li.mdw-list__item Sports
+              .mdw-list__icon.material-icons stars
+            li.mdw-list__item Travel
+              .mdw-list__icon.material-icons local_airport
+      +target('https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F0B54x0KDcs5U-a1hzNEpSb1N0RTA%2Fsingle-line-example-2.png')
+
+    .comparison
+      .render
+        +androidstatusbar('cyan 700 dark')
+        +toolbar('cyan 500 dark', ['menu'], ['search']) Inbox
+        .content
+          ul.mdw-list(mdw-divider)
+            li.mdw-list__subheader Today
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Brunch this weekend?
+                .mdw-list__text-line
+                  span.mdw__primary-text Ali Connors
+                  |  &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to meet?
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Summer BBQ
+                  span.mdw__secondary-text  4
+                .mdw-list__text-line
+                  span.mdw__primary-text to Alex, Scott, Jennifer
+                  |  &mdash; Wish I could come. but I'm out of town this weekend.
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Oui oui
+                .mdw-list__text-line
+                  span.mdw__primary-text Sandra Adams
+                  |  &mdash; Do you have Paris recommendations? Have you ever been?
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Birthday gift
+                .mdw-list__text-line
+                  span.mdw__primary-text Trevor Hansen
+                  |  &mdash; Have any ideas about what we should get Heidi for her birthday?
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Recipe to try
+                .mdw-list__text-line
+                  span.mdw__primary-text Britta Holt
+                  |  &mdash; We should eat this: Grated Squash, Corn, and tomatillo Tacos.
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Giants game
+                .mdw-list__text-line
+                  span.mdw__primary-text David Park
+                  |  &mdash; Any interest in seeing
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Montauk weekend
+                .mdw-list__text-line
+                  span.mdw__primary-text -----
+                  |  &mdash; -----
+        +androidnavbar
+      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsWGQ4OWVWREpLNkU/components-lists-keylines-two8.png')
+
+    .comparison
+      .render
+        +androidstatusbar('deeppurple 700 dark')
+        +toolbar('deeppurple 500 dark', ['menu'], ['search']) Inbox
+        .content
+          ul.mdw-list(mdw-divider)
+            li.mdw-list__subheader Today
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Brunch this weekend?
+                .mdw-list__text-block
+                  span.mdw__primary-text Ali Connors 
+                  |  &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to meet?
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Summer BBQ
+                  span.mdw__secondary-text  4
+                .mdw-list__text-block
+                  span.mdw__primary-text to Alex, Scott, Jennifer
+                  |  &mdash; Wish I could come. but I'm out of town this weekend.
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Oui oui
+                .mdw-list__text-block
+                  span.mdw__primary-text Sandra Adams
+                  |  &mdash; Do you have Paris recommendations? Have you ever been?
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Birthday gift
+                .mdw-list__text-block
+                  span.mdw__primary-text Trevor Hansen
+                  |  &mdash; Have any ideas about what we should get Heidi for her birthday?
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Recipe to try
+                .mdw-list__text-block 
+                  span.mdw__primary-text Britta Holt
+                  |  &mdash; We should eat this: Grated Squash, Corn, and tomatillo Tacos.
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Giants game
+                .mdw-list__text-block
+                  span.mdw__primary-text David Park
+                  |  &mdash; Any interest in seeing
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Montauk weekend
+                .mdw-list__text-block
+                  span.mdw__primary-text -----
+                  |  &mdash; -----
+      +target('https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F0B54x0KDcs5U-YkJoa3JqZmZvR3c%2Fthreeline-sample-1.png')
+
+
+    .comparison.js
+      .render
+        +androidstatusbar('teal 700 dark')
+        +toolbar('teal 500 dark', ['menu'], ['more_vert']) Topics
+        .content(style="padding-top:2px")
+          ul.mdw-list
+            li.mdw-list__item
+              .mdw-list__text Attractions
+            .mdw-list__expander(mdw-theme-color="teal")
+              .mdw-list__item 
+                .mdw-list__text Dining
+                .mdw-list__secondary.material-icons expand_more
+              li.mdw-list__item Breakfast &amp; brunch
+              li.mdw-list__item New American
+              li.mdw-list__item Sushi bars
+            li.mdw-list__item Education
+            li.mdw-list__item Family
+            li.mdw-list__item Health
+            li.mdw-list__item Office
+            li.mdw-list__item Promotions
+            li.mdw-list__item Radio
+            li.mdw-list__item Recipes
+            li.mdw-list__item Sports
+            li.mdw-list__item Travel
+        +androidnavbar
+      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0Bzhp5Z4wHba3bl8zNGVqM19TNWM/components-listcontrols-expand2.png')
+
+    .comparison.js
+      .render
+        +androidstatusbar('pink 700 dark')
+        +toolbar('pink 500 dark', ['menu'], ['search', 'check_circle']) Inbox (with JS)
+        .content
+          ul.mdw-list(mdw-divider)
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Ali Connors
+                .mdw-list__text-line
+                  span.mdw__primary-text Brunch this weekend?
+                .mdw-list__text-line I'll be in your neighborhood doing errands this weekend. Do you want to meet?
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line me, Scott, Jennifer
+                .mdw-list__text-line
+                  span.mdw__primary-text Summer BBQ
+                .mdw-list__text-line Wish I could come. but I'm out of town this weekend.
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Sandra Adams
+                .mdw-list__text-line
+                  span.mdw__primary-text Oui oui
+                .mdw-list__text-line Do you have Paris recommendations? Have you ever been?
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Trevor Hansen
+                .mdw-list__text-line
+                  span.mdw__primary-text Order Confirmation
+                .mdw-list__text-line Thank you for your recent order from Google.
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Britta Holt
+                .mdw-list__text-line
+                  span.mdw__primary-text Recipe to try
+                .mdw-list__text-line We should eat this: Grated Squash, Corn, and tomatillo Tacos.
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line David Park
+                .mdw-list__text-line
+                  span.mdw__primary-text Giants game
+                .mdw-list__text-line Any interest in seeing
+            li.mdw-list__item
+              .mdw-list__avatar.material-icons(style="font-size:40px") &#xE853;
+              .mdw-list__text
+                .mdw-list__text-line Montauk weekend
+                .mdw-list__text-line
+                  span.mdw__primary-text -----
+                .mdw-list__text-line -----
+        +androidnavbar
+      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsdFNSZ1kzeXBfR1U/components-lists-keylines-three11.png')
+  script(src='list.min.js')

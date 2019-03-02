@@ -57,25 +57,26 @@ function getComponentsConfig() {
 function getDocsConfig() {
   const plugins = [];
   const entries = {
-    prerender: ['./docs/src/prerender.js'],
-    index: ['./docs/src/index.pug', './docs/src/index.js'],
-    docs: ['./docs/src/docs.scss'],
-    theming: ['./docs/src/theming.scss'],
-    components: ['./docs/src/components.scss'],
-    'theming.ie11': ['./docs/src/theming.ie11.scss'],
+    prerender: ['./prerender.js'],
+    index: ['./index.pug', './index.js'],
+    docs: ['./docs.scss'],
+    components: ['./components.scss'],
   };
-  fs.readdirSync('./docs/src/components/')
+  ['pwa', 'themes', 'components'].forEach(folder => fs.readdirSync(path.join('./docs-src', folder))
     .forEach((filename) => {
+      if (filename[0] === '_') {
+        return;
+      }
       const noExt = filename.substring(0, filename.lastIndexOf('.'));
       if (!entries[`${noExt}`]) {
         entries[`${noExt}`] = [];
       }
-      entries[`${noExt}`].push(`./docs/src/components/${filename}`);
-    });
-
+      entries[`${noExt}`].push(`./${folder}/${filename}`);
+    }));
   const DEST = (isProduction ? 'docs' : 'test/docs');
   return {
     entry: entries,
+    context: path.resolve(__dirname, 'docs-src'),
     devtool: isProduction ? 'source-map' : 'nosources-source-map',
     mode: process.env.NODE_ENV || 'development',
     devServer: {
@@ -116,7 +117,7 @@ function getDocsConfig() {
       }, {
         test: /\.pug$/,
         use: [
-          'file-loader?name=[name].html',
+          'file-loader?&name=[name].html',
           'extract-loader',
           'html-loader',
           'pug-html-loader',
