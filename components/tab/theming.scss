@@ -2,8 +2,8 @@
 @import '../common/mixins.scss';
 
 $tabColors: (
-  active-color:      ((#000, 0.87), (#fff, 1.00)),
-  inactive-color:    ((#000, 0.54), (#fff, 0.70)),
+  active-color:      (('foreground-light', 0.87), ('foreground-dark', 1.00)),
+  inactive-color:    (('foreground-light', 0.54), ('foreground-dark', 0.70)),
   ripple-opacity:    (         0.26 ,          0.30),
 );
 
@@ -11,8 +11,8 @@ $tabColors: (
   @return themeValue('tab', $tabColors, $key, $type, $theme);
 }
 
-@mixin tabThemeVariables($color, $lightness) {
-  @include themeVariables('tab', $tabColors, $color, $lightness);
+@mixin tabThemeVariables($lightness) {
+  @include themeVariables('tab', $tabColors, $lightness);
 }
 
 // Vary by contrast

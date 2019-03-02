@@ -15,8 +15,8 @@ $appColors: (
   @return themeValue('app', $appColors, $key, $type, $theme);
 }
 
-@mixin appThemeVariables($color, $lightness) {
-  @include themeVariables('app', $appColors, $color, $lightness);
+@mixin appThemeVariables($lightness: null) {
+  @include themeVariables('app', $appColors, $lightness);
 }
 
 // Vary by contrast or theme

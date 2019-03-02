@@ -198,17 +198,10 @@ $light: 1;
 $dark: 2;
 $dark-background: 3;
 
-@mixin themeVariables($component, $map, $color, $contrast) {
+
+@mixin themeVariables($component, $map, $lightness) {
   @each $key in map-keys($map) {
-    $type: 'light';
-    @if ($contrast == 'dark') {
-      @if ($color == 'background') {
-        $type: 'dark-background';
-      } @else {
-        $type: 'dark';
-      }
-    }
-    $item: getThemeMapItem($map, $key, $type);
+    $item: getThemeMapItem($map, $key, $lightness);
     $value: null;
     $length: length($item);
     @if ($length == 1) {

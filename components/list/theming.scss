@@ -16,8 +16,8 @@ $listColors: (
   @return themeValue('list', $listColors, $key, $type);
 }
 
-@mixin listThemeVariables($color, $lightness) {
-  @include themeVariables('list', $listColors, $color, $lightness);
+@mixin listThemeVariables($lightness) {
+  @include themeVariables('list', $listColors, $lightness);
 }
 
 // Vary by contrast

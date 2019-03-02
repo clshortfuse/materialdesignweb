@@ -2,20 +2,20 @@
 @import '../common/mixins.scss';
 
 $navdrawerColors: (
-  selected-color:       ((#000,             1.00), (#fff,              1.00)),
-  text-color:           ((#000,             0.87), (#fff,              1.00)),
-  secondary-text-color: ((#000,             0.54), (#fff,              0.70)),
-  divider-color:        ((#000,             0.12), (#fff,              0.12)),
+  selected-color:       (('foreground-light', 1.00), ('foreground-dark', 1.00)),
+  text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
+  secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
+  divider-color:        (('foreground-light', 0.12), ('foreground-dark', 0.12)),
   drawer-background:    ((#fff,             1.00), ('background', '800', 1.00)),
-  content-background:   (('background', '50', 1.00), (#303030          , 1.00))
+  content-background:   (('background', '50', 1.00), ('background', '900', 1.00))
 );
 
 @function navdrawerThemeValue($key, $type, $theme) {
   @return themeValue('navdrawer', $navdrawerColors, $key, $type, $theme);
 }
 
-@mixin navdrawerThemeVariables($color, $lightness) {
-  @include themeVariables('navdrawer', $navdrawerColors, $color, $lightness);
+@mixin navdrawerThemeVariables($lightness) {
+  @include themeVariables('navdrawer', $navdrawerColors, $lightness);
 }
 
 // Vary by contrast or theme

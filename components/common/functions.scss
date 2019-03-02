@@ -40,22 +40,16 @@
   @return null;
 }
 
-@function getThemeMapItem($colorMap, $key, $type) {
+@function getThemeMapItem($colorMap, $key, $lightness) {
   $list: map-get($colorMap, $key);
   $length: length($list);
-  @if ($type == 'dark-background') {
-    @if ($length >= $dark-background) {
-      @return nth($list, $dark-background);
-    }
-    $type: 'dark';
-  }
 
-  @if ($type == 'dark') {
-    @if ($length >= $dark) {
-      @return nth($list, $dark);
+  @if ($lightness == 'dark') {
+    @if ($length >= 1) {
+      @return nth($list, 2);
     }
   }
-  @return nth($list, $light);
+  @return nth($list, 1);
 }
 
 @function themeValue($component, $colorMap, $key, $type, $theme: null) {
@@ -98,7 +92,7 @@
     }
     @return #FFFFFF;
   }
-  @error "Unrecognized Theme Palette!";
+  @error "Unrecognized Theme Palette!" ;
 }
 
 @function getThemeParamColor($param, $tone, $type, $theme: null) {

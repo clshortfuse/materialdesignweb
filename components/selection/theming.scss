@@ -16,15 +16,15 @@ $selectionColors: (
   track-off-color:         (('foreground-light', 1.00), ('foreground-dark', 1.00)),
   track-off-opacity:       (0.38, 0.30),
 
-  disabled-opacity: (0.38, 0.38),
+  disabled-opacity:        (0.38, 0.38),
 );
 
 @function selectionThemeValue($key, $type, $theme) {
   @return themeValue('selection', $selectionColors, $key, $type, $theme);
 }
 
-@mixin selectionThemeVariables($color, $lightness) {
-  @include themeVariables('selection', $selectionColors, $color, $lightness);
+@mixin selectionThemeVariables($lightness) {
+  @include themeVariables('selection', $selectionColors, $lightness);
 }
 
 // Vary by contrast
@@ -46,7 +46,7 @@ $selectionColors: (
     &[type="checkbox"]:checked ~ .mdw-selection__icon::after {
       // Checkbox color is based on currently filled background-color
       @if($type == 'var') {
-        border-color: unquote("rgb(var(--background-color))");
+        border-color: unquote("rgb(var(--fill-color))");
       } @else {
         // IE11 Fallback
         border-color: white;

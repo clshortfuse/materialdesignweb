@@ -11,8 +11,8 @@ $dialogColors: (
   @return themeValue('dialog', $dialogColors, $key, $type, $theme);
 }
 
-@mixin dialogThemeVariables($color, $lightness) {
-  @include themeVariables('dialog', $dialogColors, $color, $lightness);
+@mixin dialogThemeVariables($lightness) {
+  @include themeVariables('dialog', $dialogColors, $lightness);
 }
 
 // Vary by contrast or theme

@@ -59,8 +59,8 @@ $chipColors: (
   @return themeValue('chip', $chipColors, $key, $type, $theme);
 }
 
-@mixin chipThemeVariables($color, $lightness) {
-  @include themeVariables('chip', $chipColors, $color, $lightness);
+@mixin chipThemeVariables($lightness) {
+  @include themeVariables('chip', $chipColors, $lightness);
 }
 
 

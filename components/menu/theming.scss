@@ -7,9 +7,8 @@ $menuColors: (
   background-color: ((#fff,              1.00), ('background', '800', 1.00)),
   selected-color:   (('background', '100', 1.00), ('background', '700', 1.00)),
   hover-color:      (('background', '200', 1.00), ('background', '600', 1.00)),
-  press-color:      ((#999,              0.40), (#CCC,              0.25)),
   ripple-color:     (('foreground-light', 1.00) , ('foreground-dark', 1.00)),
-  ripple-opacity:   ( 0.12 , 0.30, 0.20),
+  ripple-opacity:   ( 0.12 , 0.30),
   divider-color:    (('foreground-light', 0.12), ('foreground-dark', 0.12)),
   disabled-color:   (('foreground-light', 0.26), ('foreground-dark', 0.30)),
 );
@@ -18,8 +17,8 @@ $menuColors: (
   @return themeValue('menu', $menuColors, $key, $type, $theme);
 }
 
-@mixin menuThemeVariables($color, $lightness) {
-  @include themeVariables('menu', $menuColors, $color, $lightness);
+@mixin menuThemeVariables($lightness) {
+  @include themeVariables('menu', $menuColors, $lightness);
 }
 
 @mixin internalMenuContrastRules($type: 'var', $theme: null) {

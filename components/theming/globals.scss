@@ -10,8 +10,8 @@ $globalColors: (
   @return themeValue('mdw', $globalColors, $key, $type, $theme);
 }
 
-@mixin globalThemeVariables($color, $lightness) {
-  @include themeVariables('mdw', $globalColors, $color, $lightness);
+@mixin globalThemeVariables($lightness) {  
+  @include themeVariables('mdw', $globalColors, $lightness);
 }
 
 // Vary by contrast and theme

@@ -18,7 +18,7 @@
 
 ## Colored (Custom Tone)
 ```
-.mdw-button(mdw-theme-color="accent-A100")
+.mdw-button(mdw-theme-color="accent A100")
 ```
 
 ## Filled
@@ -28,7 +28,7 @@
 
 ## Filled (Custom Tone)
 ```
-.mdw-button(mdw-theme-fill="accent-A400")
+.mdw-button(mdw-theme-fill="accent A400")
 ```
 
 ## Filled (Custom Tone)

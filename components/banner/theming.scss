@@ -11,8 +11,8 @@ $bannerColors: (
   @return themeValue('banner', $bannerColors, $key, $type, $theme);
 }
 
-@mixin bannerThemeVariables($color, $lightness) {
-  @include themeVariables('banner', $bannerColors, $color, $lightness);
+@mixin bannerThemeVariables($lightness) {
+  @include themeVariables('banner', $bannerColors, $lightness);
 }
 
 // Vary by contrast or theme

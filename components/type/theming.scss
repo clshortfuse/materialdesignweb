@@ -10,8 +10,8 @@ $typeColors: (
   @return themeValue('type', $typeColors, $key, $type, $theme);
 }
 
-@mixin typeThemeVariables($color, $lightness) {
-  @include themeVariables('type', $typeColors, $color, $lightness);
+@mixin typeThemeVariables($lightness) {
+  @include themeVariables('type', $typeColors, $lightness);
 }
 
 @mixin typeContrastAndThemeRules($type: 'var', $theme: null) {

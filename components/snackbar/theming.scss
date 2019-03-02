@@ -14,8 +14,8 @@ $snackbarColors: (
   @return themeValue('snackbar', $snackbarColors, $key, $type, $theme);
 }
 
-@mixin snackbarThemeVariables($color, $lightness) {
-  @include themeVariables('snackbar', $snackbarColors, $color, $lightness);
+@mixin snackbarThemeVariables($lightness) {
+  @include themeVariables('snackbar', $snackbarColors, $lightness);
 }
 
 // Vary by contrast or theme

@@ -34,7 +34,7 @@ $buttonColors: (
   disabled-text-color:           (('foreground-light', 0.26), ('foreground-dark', 0.30)),
   disabled-background-color:     (('foreground-light', 0.12), ('foreground-dark', 0.12)),
 
-  outline-color:                 ((#000, 0.12), (#fff, 0.12)),
+  outline-color:                 (('foreground-light', 0.12), ('foreground-dark', 0.12)),
 
 );
 
@@ -42,8 +42,8 @@ $buttonColors: (
   @return themeValue('button', $buttonColors, $key, $type, $theme);
 }
 
-@mixin buttonThemeVariables($color, $lightness) {
-  @include themeVariables('button', $buttonColors, $color, $lightness);
+@mixin buttonThemeVariables($lightness) {
+  @include themeVariables('button', $buttonColors, $lightness);
 }
 
 @mixin internalButtonContrastAndThemeRules($type, $theme: null) {

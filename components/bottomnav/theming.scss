@@ -15,8 +15,8 @@ $bottomnavColors: (
   @return themeValue('bottomnav', $bottomnavColors, $key, $type, $theme);
 }
 
-@mixin bottomnavThemeVariables($color, $lightness) {
-  @include themeVariables('bottomnav', $bottomnavColors, $color, $lightness);
+@mixin bottomnavThemeVariables($lightness: null) {
+  @include themeVariables('bottomnav', $bottomnavColors, $lightness);
 }
 
 @mixin internalBottomnavContrastRules($type, $theme: null) {

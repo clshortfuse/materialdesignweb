@@ -12,8 +12,8 @@ $cardColors: (
   @return themeValue('card', $cardColors, $key, $type, $theme);
 }
 
-@mixin cardThemeVariables($color, $lightness) {
-  @include themeVariables('card', $cardColors, $color, $lightness);
+@mixin cardThemeVariables($lightness) {
+  @include themeVariables('card', $cardColors, $lightness);
 }
 
 @mixin internalContrastAndThemeRules($type, $theme: null) {
