@@ -5,20 +5,26 @@ let lastScrollY = null;
 let penultimateScrollY = null;
 let isAppBarHidden = false;
 let currentScheduledTick = null;
+let appBarElement = null;
+let contentElement = null;
 
 export default class App {
   static attach() {
-    const appBar = App.getAppBarElement();
-    if (appBar) {
-      // Initialize with scroll up
-      lastScrollY = 0 + MIN_SCROLL_DELTA;
-      penultimateScrollY = lastScrollY;
-      document.addEventListener('scroll', App.onDocumentScrollThrottler);
-      const content = document.getElementsByClassName('mdw-app__content')[0];
-      if (content) {
-        content.addEventListener('scroll', App.onContentScrollThrottler);
+    if (document.documentElement.hasAttribute('mdw-appbar-autoprominent')
+      || document.documentElement.hasAttribute('mdw-appbar-autoraise')
+      || document.documentElement.hasAttribute('mdw-appbar-autohide')) {
+      const appBar = App.getAppBarElement();
+      if (appBar) {
+        // Initialize with scroll up
+        lastScrollY = 0 + MIN_SCROLL_DELTA;
+        penultimateScrollY = lastScrollY;
+        document.addEventListener('scroll', App.onDocumentScrollThrottler);
+        const content = App.getContentElement();
+        if (content) {
+          content.addEventListener('scroll', App.onContentScrollThrottler);
+        }
+        App.onDocumentScrollThrottler();
       }
-      App.onDocumentScrollThrottler();
     }
 
     iterateArrayLike(document.getElementsByClassName('mdw-app__navdrawer-toggle'),
@@ -86,7 +92,7 @@ export default class App {
 
   static detach() {
     document.removeEventListener('scroll', App.onDocumentScrollThrottler);
-    const content = document.getElementsByClassName('mdw-app__content')[0];
+    const content = App.getContentElement();
     if (content) {
       content.removeEventListener('scroll', App.onContentScrollThrottler);
     }
@@ -141,19 +147,17 @@ export default class App {
   }
 
   static getAppBarElement() {
-    if (App.appBarElement) {
-      return App.appBarElement;
+    if (!appBarElement) {
+      appBarElement = document.getElementsByClassName('mdw-app__appbar')[0];
     }
-    App.appBarElement = document.getElementsByClassName('mdw-app__appbar')[0];
-    return App.appBarElement;
+    return appBarElement;
   }
 
   static getContentElement() {
-    if (App.contentElement) {
-      return App.contentElement;
+    if (!contentElement) {
+      contentElement = document.getElementsByClassName('mdw-app__content')[0];
     }
-    App.contentElement = document.getElementsByClassName('mdw-app__content')[0];
-    return App.contentElement;
+    return contentElement;
   }
 
   /**
@@ -211,8 +215,7 @@ export default class App {
         document.documentElement.setAttribute('mdw-scrolldown', '');
         document.documentElement.removeAttribute('mdw-scrolltop');
       }
-      console.log(currentScrollY, scrollElement.scrollHeight, scrollElement.clientHeight, scrollElement.offsetHeight);
-      if (currentScrollY >= scrollElement.scrollHeight - scrollElement.clientHeight) {
+      if (currentScrollY >= scrollContentBottom) {
         document.documentElement.setAttribute('mdw-scrollbottom', '');
       }
       if (!isAppBarHidden) {
