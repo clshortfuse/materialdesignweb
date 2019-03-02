@@ -35,5 +35,5 @@
   grid-column-start: $start;
   grid-column-end: span #{($end - $start) + 1};
   -ms-grid-column: $start;
-  -ms-grid-column-span: span #{($end - $start) + 1};
+  -ms-grid-column-span: #{($end - $start) + 1};
 }
