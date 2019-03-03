@@ -1,12 +1,18 @@
-import { nextTick, cancelTick, iterateArrayLike } from '../common/dom';
+import { iterateArrayLike } from '../common/dom';
+import Throttler from '../../utils/throttler';
 
 const MIN_SCROLL_DELTA = 24; // Avoid finger bounce
+
+// Throttler will execute at earliest convenience
+// Smoother than using requestAnimationFrame
+const SCROLL_THROTTLE_TIME_MS = 20;
+
 let lastScrollY = null;
 let penultimateScrollY = null;
 let isAppBarHidden = false;
-let currentScheduledTick = null;
 let appBarElement = null;
-let contentElement = null;
+let appContentElement = null;
+let scrollThrottler = null;
 
 export default class App {
   static attach() {
@@ -18,12 +24,12 @@ export default class App {
         // Initialize with scroll up
         lastScrollY = 0 + MIN_SCROLL_DELTA;
         penultimateScrollY = lastScrollY;
-        document.addEventListener('scroll', App.onDocumentScrollThrottler);
-        const content = App.getContentElement();
-        if (content) {
-          content.addEventListener('scroll', App.onContentScrollThrottler);
+        document.addEventListener('scroll', App.onDocumentScroll, { passive: true });
+        const contentElement = App.getContentElement();
+        if (contentElement) {
+          contentElement.addEventListener('scroll', App.onContentScroll, { passive: true });
         }
-        App.onDocumentScrollThrottler();
+        App.onDocumentScroll();
       }
     }
 
@@ -43,6 +49,14 @@ export default class App {
     if (scrim) {
       scrim.addEventListener('click', App.onScrimClick);
     }
+  }
+
+  /** @return {Throttler} */
+  static getScrollThrottler() {
+    if (!scrollThrottler) {
+      scrollThrottler = new Throttler(SCROLL_THROTTLE_TIME_MS);
+    }
+    return scrollThrottler;
   }
 
   static onScrimClick() {
@@ -91,19 +105,16 @@ export default class App {
   }
 
   static detach() {
-    document.removeEventListener('scroll', App.onDocumentScrollThrottler);
+    document.removeEventListener('scroll', App.onDocumentScroll);
     const content = App.getContentElement();
     if (content) {
-      content.removeEventListener('scroll', App.onContentScrollThrottler);
+      content.removeEventListener('scroll', App.onContentScroll);
     }
   }
 
-  static onDocumentScrollThrottler() {
+  static onDocumentScroll() {
     // position:sticky scrolling
-    if (currentScheduledTick) {
-      cancelTick(currentScheduledTick);
-    }
-    currentScheduledTick = nextTick(() => App.onScroll(true));
+    App.getScrollThrottler().run(() => App.onScroll(true));
   }
 
   static isMobile() {
@@ -139,11 +150,8 @@ export default class App {
     return false;
   }
 
-  static onContentScrollThrottler() {
-    if (currentScheduledTick) {
-      cancelTick(currentScheduledTick);
-    }
-    currentScheduledTick = nextTick(() => App.onScroll(false));
+  static onContentScroll() {
+    App.getScrollThrottler().run(() => App.onScroll(false));
   }
 
   static getAppBarElement() {
@@ -154,10 +162,10 @@ export default class App {
   }
 
   static getContentElement() {
-    if (!contentElement) {
-      contentElement = document.getElementsByClassName('mdw-app__content')[0];
+    if (!appContentElement) {
+      appContentElement = document.getElementsByClassName('mdw-app__content')[0];
     }
-    return contentElement;
+    return appContentElement;
   }
 
   /**
