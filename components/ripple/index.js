@@ -1,4 +1,4 @@
-import { getChildElementByClass, nextTick } from '../common/dom';
+import { getChildElementByClass, nextTick, getPassiveEventListenerOption } from '../common/dom';
 
 class Ripple {
   /**
@@ -29,16 +29,17 @@ class Ripple {
       // Firefox doesn't support listening on HTMLButtonElement children
       targetElement = element;
     }
-    targetElement.addEventListener('click', Ripple.onClick);
-    targetElement.addEventListener('mousedown', Ripple.onMouseEvent);
-    targetElement.addEventListener('mouseup', Ripple.onMouseEvent);
-    targetElement.addEventListener('mouseout', Ripple.onMouseEvent);
-    targetElement.addEventListener('touchstart', Ripple.onTouchEvent);
-    targetElement.addEventListener('touchend', Ripple.onTouchEvent);
-    targetElement.addEventListener('touchcancel', Ripple.onTouchEvent);
-    element.addEventListener('keydown', Ripple.onKeyEvent);
-    element.addEventListener('keyup', Ripple.onKeyEvent);
-    rippleInner.addEventListener('animationend', Ripple.onAnimationEnd);
+
+    targetElement.addEventListener('click', Ripple.onClick, getPassiveEventListenerOption());
+    targetElement.addEventListener('mousedown', Ripple.onMouseEvent, getPassiveEventListenerOption());
+    targetElement.addEventListener('mouseup', Ripple.onMouseEvent, getPassiveEventListenerOption());
+    targetElement.addEventListener('mouseout', Ripple.onMouseEvent, getPassiveEventListenerOption());
+    targetElement.addEventListener('touchstart', Ripple.onTouchEvent, getPassiveEventListenerOption());
+    targetElement.addEventListener('touchend', Ripple.onTouchEvent, getPassiveEventListenerOption());
+    targetElement.addEventListener('touchcancel', Ripple.onTouchEvent, getPassiveEventListenerOption());
+    element.addEventListener('keydown', Ripple.onKeyEvent, getPassiveEventListenerOption());
+    element.addEventListener('keyup', Ripple.onKeyEvent, getPassiveEventListenerOption());
+    rippleInner.addEventListener('animationend', Ripple.onAnimationEnd, getPassiveEventListenerOption());
   }
 
   /**
