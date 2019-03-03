@@ -22,14 +22,12 @@ export default class App {
       const appBar = App.getAppBarElement();
       if (appBar) {
         // Initialize with scroll up
-        lastScrollY = 0 + MIN_SCROLL_DELTA;
-        penultimateScrollY = lastScrollY;
         document.addEventListener('scroll', App.onDocumentScroll, getPassiveEventListenerOption());
         const contentElement = App.getContentElement();
         if (contentElement) {
           contentElement.addEventListener('scroll', App.onContentScroll, getPassiveEventListenerOption());
         }
-        App.onDocumentScroll();
+        App.resetScroll();
       }
     }
 
@@ -168,6 +166,15 @@ export default class App {
     return appContentElement;
   }
 
+  static resetScroll() {
+    document.documentElement.removeAttribute('mdw-appbar-hide');
+    document.documentElement.removeAttribute('mdw-scrolltop');
+    document.documentElement.removeAttribute('mdw-scrollbottom');
+    lastScrollY = 0 + MIN_SCROLL_DELTA;
+    penultimateScrollY = lastScrollY;
+    App.onScroll(true);
+  }
+
   /**
    * @param {boolean} isDocument
    * @return {void}
@@ -194,9 +201,13 @@ export default class App {
     if (change < 0) {
       // Scrolled up
       let appBar;
+      let autoRaise = null;
       if (currentScrollY <= 0) {
         // Scrolled to top
-        document.documentElement.setAttribute('mdw-scrolltop', '');
+        autoRaise = document.documentElement.hasAttribute('mdw-appbar-autoraise');
+        if (autoRaise) {
+          document.documentElement.setAttribute('mdw-scrolltop', '');
+        }
         if (document.documentElement.hasAttribute('mdw-appbar-autoprominent')) {
           appBar = App.getAppBarElement();
           const toolbar = appBar.getElementsByClassName('mdw-toolbar')[0];
@@ -207,9 +218,13 @@ export default class App {
       }
       if (lastScrollY >= penultimateScrollY) {
         // Did not scroll up before
-        document.documentElement.removeAttribute('mdw-scrolldown');
         document.documentElement.removeAttribute('mdw-appbar-hide');
-        document.documentElement.removeAttribute('mdw-scrollbottom');
+        if (autoRaise == null) {
+          autoRaise = document.documentElement.hasAttribute('mdw-appbar-autoraise');
+        }
+        if (autoRaise) {
+          document.documentElement.removeAttribute('mdw-scrollbottom');
+        }
         isAppBarHidden = false;
         if ((!isDocument) && App.shouldAutoHide()) {
           appBar = appBar || App.getAppBarElement();
@@ -217,14 +232,22 @@ export default class App {
         }
       }
     } else if (change > 0) {
+      let autoRaise = null;
       // Scrolled down
       if (lastScrollY <= penultimateScrollY) {
         // Did not scroll down before
-        document.documentElement.setAttribute('mdw-scrolldown', '');
-        document.documentElement.removeAttribute('mdw-scrolltop');
+        autoRaise = document.documentElement.hasAttribute('mdw-appbar-autoraise');
+        if (autoRaise) {
+          document.documentElement.removeAttribute('mdw-scrolltop');
+        }
       }
       if (currentScrollY >= scrollContentBottom) {
-        document.documentElement.setAttribute('mdw-scrollbottom', '');
+        if (autoRaise == null) {
+          autoRaise = document.documentElement.hasAttribute('mdw-appbar-autoraise');
+        }
+        if (autoRaise) {
+          document.documentElement.setAttribute('mdw-scrollbottom', '');
+        }
       }
       if (!isAppBarHidden) {
         const hasAutoProminent = document.documentElement.hasAttribute('mdw-appbar-autoprominent');
