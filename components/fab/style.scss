@@ -14,6 +14,8 @@ $fab-button__icon-size: dp(24);
   flex-direction: column-reverse;
   z-index: 6;
   align-items: flex-end;
+  justify-content: center;
+  min-height: dp(56);
   &[mdw-horizontal] {
     flex-direction: row-reverse;
   }
@@ -47,11 +49,9 @@ $fab-button__icon-size: dp(24);
   margin: 0;
   &[mdw-extended] {
     padding: dp(12);
-    margin: 0 dp(4) dp(4) dp(4);
   }
   &[mdw-mini] {
     padding: dp(8);
-    margin: 0 dp(8) dp(8) dp(8);
   }
 }
 
@@ -65,10 +65,15 @@ $fab-button__icon-size: dp(24);
   pointer-events: none;
   z-index: inherit;
   > .mdw-fab__button.mdw-button {
-    &,
-    &[mdw-mini]
-    &[mdw-extended] {
-      margin-bottom: dp(16);
+    margin: 0 0 dp(16) 0;
+    &[mdw-mini] {
+      margin: 0 dp(8) dp(16) dp(8);
+      .mdw-fab__button[mdw-mini] ~ & {
+        margin: 0 0 dp(16) 0;
+      }
+      .mdw-fab__button[mdw-extended] ~ & {
+        margin: 0 dp(4) dp(16) dp(4);
+      }
     }
     transition-property: transform, opacity;
     transition-timing-function: $motion-easing-deceleration;
