@@ -32,25 +32,26 @@ include ../mixins.pug
                 input.mdw-selection__input(type="radio" name="type" value="extended-hover")
                 .mdw-selection__icon
                 .mdw-selection__label Extended on Hover
-            .mdw-layout(mdw-margin-bottom).docs-render-overlay
+            .mdw-layout(mdw-margin-bottom mdw-columns="4").docs-render-overlay
               .mdw-layout__item
-                .mdw-fab
-                  .mdw-fab__button.mdw-button(mdw-theme-fill="accent dark")
-                    .mdw-fab__icon
-                      .mdw-fab__hidden-icon.material-icons add
-                      .mdw-fab__shown-icon.material-icons clear
-                    .mdw-fab__text Add
-                  .mdw-fab__speed-dial
-                    .mdw-button.mdw-fab__button(mdw-mini)
-                      .mdw-fab__icon.material-icons filter_1
-                    .mdw-button.mdw-fab__button(mdw-mini)
-                      .mdw-fab__icon.material-icons filter_2
-                    .mdw-button.mdw-fab__button(mdw-mini)
-                      .mdw-fab__icon.material-icons filter_3
-                    .mdw-button.mdw-fab__button(mdw-mini)
-                      .mdw-fab__icon.material-icons filter_4
-                    .mdw-button.mdw-fab__button(mdw-mini)
-                      .mdw-fab__icon.material-icons filter_5
+                .mdw-layout__content
+                  .mdw-fab
+                    .mdw-fab__button.mdw-button(mdw-theme-fill="accent dark")
+                      .mdw-fab__icon
+                        .mdw-fab__hidden-icon.material-icons add
+                        .mdw-fab__shown-icon.material-icons clear
+                      .mdw-fab__text Add
+                    .mdw-fab__speed-dial
+                      .mdw-button.mdw-fab__button(mdw-mini)
+                        .mdw-fab__icon.material-icons filter_1
+                      .mdw-button.mdw-fab__button(mdw-mini)
+                        .mdw-fab__icon.material-icons filter_2
+                      .mdw-button.mdw-fab__button(mdw-mini)
+                        .mdw-fab__icon.material-icons filter_3
+                      .mdw-button.mdw-fab__button(mdw-mini)
+                        .mdw-fab__icon.material-icons filter_4
+                      .mdw-button.mdw-fab__button(mdw-mini)
+                        .mdw-fab__icon.material-icons filter_5
         +androidnavbar
     .comparison
       .render
@@ -61,8 +62,8 @@ include ../mixins.pug
             .mdw-layout(mdw-margin-bottom).docs-render-overlay
               .mdw-layout__item
                 .mdw-fab#my-fab
-                  a.mdw-fab__close(href="#")
-                  a.mdw-fab__button.mdw-button(mdw-icon mdw-theme-fill="accent dark" href="#my-fab")
+                  a.mdw-fab__close(href="#my-fab-button")
+                  a.mdw-fab__button.mdw-button#my-fab-button(mdw-icon mdw-theme-fill="accent dark" href="#my-fab")
                     .mdw-fab__icon
                       .mdw-fab__hidden-icon.material-icons add
                       .mdw-fab__shown-icon.material-icons clear
