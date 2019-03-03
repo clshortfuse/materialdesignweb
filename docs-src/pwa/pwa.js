@@ -46,6 +46,7 @@ function onOptionChange(event) {
       } else {
         document.documentElement.removeAttribute('mdw-appbar-autohide');
       }
+      App.resetScroll();
       break;
     case 'use-fab-mobile':
       iterateArrayLike(document.querySelectorAll('input[name="fab-mobile"]'),
@@ -100,6 +101,9 @@ function onOptionChange(event) {
       }
       break;
     default:
+  }
+  if (name.indexOf('appbar') === 0) {
+    App.resetScroll();
   }
 }
 
