@@ -126,36 +126,21 @@ $textfieldColors: (
         & ~ .mdw-textfield__border::before {
           color: textfieldThemeValue("border-line-color__focus", $type, $theme);
         }
-
-        &:invalid {
-          caret-color: textfieldThemeValue("warn-label-color__focus", $type, $theme);
-          &::selection {
-            background-color: textfieldThemeValue("warn-selection-color", $type, $theme);
-          }
-          & ~ .mdw-textfield__border::after {
-            color: textfieldThemeValue("warn-border-line-color__focus", $type, $theme);
-          }
-          & ~ .mdw-textfield__border .mdw-textfield__label {
-            color: textfieldThemeValue("warn-label-color__focus", $type, $theme);
-          }
-        }
       }
     }
 
     &[mdw-theme-color="primary"] {
       &:active > .mdw-textfield__input:not(:disabled),
       > .mdw-textfield__input:not(:disabled):focus {
-        &:not(:invalid) {
-          caret-color: textfieldThemeValue("primary-label-color__focus", $type, $theme);
-          &::selection {
-            background-color: textfieldThemeValue("primary-selection-color", $type, $theme);
-          }
-          & ~ .mdw-textfield__border .mdw-textfield__label {
-            color: textfieldThemeValue("primary-label-color__focus", $type, $theme);
-          }
-          & ~ .mdw-textfield__border::before {
-            color: textfieldThemeValue("primary-border-line-color__focus", $type, $theme);
-          }
+        caret-color: textfieldThemeValue("primary-label-color__focus", $type, $theme);
+        &::selection {
+          background-color: textfieldThemeValue("primary-selection-color", $type, $theme);
+        }
+        & ~ .mdw-textfield__border .mdw-textfield__label {
+          color: textfieldThemeValue("primary-label-color__focus", $type, $theme);
+        }
+        & ~ .mdw-textfield__border::before {
+          color: textfieldThemeValue("primary-border-line-color__focus", $type, $theme);
         }
       }
     }
@@ -163,17 +148,31 @@ $textfieldColors: (
     &[mdw-theme-color="accent"] {
       &:active > .mdw-textfield__input:not(:disabled),
       > .mdw-textfield__input:not(:disabled):focus {
-        &:not(:invalid) {
-          caret-color: textfieldThemeValue("accent-label-color__focus", $type, $theme);
-          &::selection {
-            background-color: textfieldThemeValue("accent-selection-color", $type, $theme);
-          }
-          & ~ .mdw-textfield__border .mdw-textfield__label {
-            color: textfieldThemeValue("accent-label-color__focus", $type, $theme);
-          }
-          & ~ .mdw-textfield__border::before {
-            color: textfieldThemeValue("accent-border-line-color__focus", $type, $theme);
-          }
+        caret-color: textfieldThemeValue("accent-label-color__focus", $type, $theme);
+        &::selection {
+          background-color: textfieldThemeValue("accent-selection-color", $type, $theme);
+        }
+        & ~ .mdw-textfield__border .mdw-textfield__label {
+          color: textfieldThemeValue("accent-label-color__focus", $type, $theme);
+        }
+        & ~ .mdw-textfield__border::before {
+          color: textfieldThemeValue("accent-border-line-color__focus", $type, $theme);
+        }
+      }
+    }
+
+    &:active > .mdw-textfield__input:not(:disabled),
+    & > .mdw-textfield__input:not(:disabled):focus {
+      &:invalid {
+        caret-color: textfieldThemeValue("warn-label-color__focus", $type, $theme);
+        &::selection {
+          background-color: textfieldThemeValue("warn-selection-color", $type, $theme);
+        }
+        & ~ .mdw-textfield__border::after {
+          color: textfieldThemeValue("warn-border-line-color__focus", $type, $theme);
+        }
+        & ~ .mdw-textfield__border .mdw-textfield__label {
+          color: textfieldThemeValue("warn-label-color__focus", $type, $theme);
         }
       }
     }
