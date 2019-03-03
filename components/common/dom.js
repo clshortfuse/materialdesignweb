@@ -1,3 +1,35 @@
+let passiveEventListenerSupported = null;
+
+/** @return {void} */
+function testPassiveEventListenerOptionSupport() {
+  try {
+    passiveEventListenerSupported = false;
+    const options = {
+      get passive() {
+        passiveEventListenerSupported = true;
+        return true;
+      },
+    };
+    // @ts-ignore
+    window.addEventListener('test', options, options);
+    // @ts-ignore
+    window.removeEventListener('test', options, options);
+  } catch (err) {
+    passiveEventListenerSupported = false;
+  }
+}
+
+/** @return {Object|boolean} */
+export function getPassiveEventListenerOption() {
+  if (passiveEventListenerSupported == null) {
+    testPassiveEventListenerOptionSupport();
+  }
+  if (passiveEventListenerSupported) {
+    return { passive: true };
+  }
+  return false;
+}
+
 export const nextTick = window.requestAnimationFrame || (cb => window.setTimeout(cb, 17));
 
 export const cancelTick = window.cancelAnimationFrame || window.clearTimeout;

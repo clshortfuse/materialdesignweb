@@ -1,4 +1,4 @@
-import { iterateArrayLike } from '../common/dom';
+import { iterateArrayLike, getPassiveEventListenerOption } from '../common/dom';
 import Throttler from '../../utils/throttler';
 
 const MIN_SCROLL_DELTA = 24; // Avoid finger bounce
@@ -24,10 +24,10 @@ export default class App {
         // Initialize with scroll up
         lastScrollY = 0 + MIN_SCROLL_DELTA;
         penultimateScrollY = lastScrollY;
-        document.addEventListener('scroll', App.onDocumentScroll, { passive: true });
+        document.addEventListener('scroll', App.onDocumentScroll, getPassiveEventListenerOption());
         const contentElement = App.getContentElement();
         if (contentElement) {
-          contentElement.addEventListener('scroll', App.onContentScroll, { passive: true });
+          contentElement.addEventListener('scroll', App.onContentScroll, getPassiveEventListenerOption());
         }
         App.onDocumentScroll();
       }
