@@ -1,5 +1,10 @@
 // https://material.io/design/components/chips.html
 
+@import '../common/motion.scss';
+@import '../common/platform.scss';
+@import '../common/responsive.scss';
+@import '../ripple/ripple.scss';
+
 $mdw-chip__border-width: dp(1);
 
 .mdw-chip { 

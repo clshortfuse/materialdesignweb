@@ -1,8 +1,9 @@
 // https://material.io/design/components/cards.html#specs
 
-@import '../common/functions.scss';
 @import '../common/motion.scss';
-@import '../common/variables.scss';
+@import '../common/platform.scss';
+@import '../common/responsive.scss';
+@import '../common/type.scss';
 
 $mdw-card__horizontal-padding: dp(16);
 

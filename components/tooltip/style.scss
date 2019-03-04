@@ -1,12 +1,16 @@
 // https://material.io/design/components/tooltips.html#spec
 
+@import '../common/motion.scss';
+@import '../common/platform.scss';
+@import '../common/responsive.scss';
+@import '../common/type.scss';
+
 $tooltip__margin__desktop: dp(14);
 $tooltip__margin__mobile: dp(24);
 $tooltip__background-color: #616161; // material-grey-700
 $tooltip__touch-fade-out-time: 1.5s;
 $tooltip__touch-min-hold-time: 500ms;
 
-@import '../common/type.scss';
 
 .mdw-tooltip__wrapper {
   position: relative;

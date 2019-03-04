@@ -1,0 +1,38 @@
+@function elevation($dp, $filter:false) {
+  @if ($filter == true) {
+    @return unquote(map-get($filter-values, $dp));
+  } @else {
+    @return unquote(map-get($box-shadow-values, $dp));
+  }
+}
+
+
+// https://material.io/archive/guidelines/resources/shadows.html#shadows-sketch
+$box-shadow-values: (
+   0: "none",
+   1: "0 00px 02px 0px rgba(0,0,0,0.14), 0 02px 02px 0px rgba(0,0,0,0.12), 0 01px 03px 0 rgba(0,0,0,0.20)",
+   2: "0 00px 04px 0px rgba(0,0,0,0.14), 0 03px 04px 0px rgba(0,0,0,0.12), 0 01px 05px 0 rgba(0,0,0,0.20)",
+   3: "0 03px 03px 0px rgba(0,0,0,0.14), 0 03px 04px 0px rgba(0,0,0,0.12), 0 01px 08px 0 rgba(0,0,0,0.20)",
+   4: "0 02px 04px 0px rgba(0,0,0,0.14), 0 04px 05px 0px rgba(0,0,0,0.12), 0 01px 10px 0 rgba(0,0,0,0.20)",
+   6: "0 06px 10px 0px rgba(0,0,0,0.14), 0 01px 18px 0px rgba(0,0,0,0.12), 0 03px 05px 0 rgba(0,0,0,0.20)",
+   8: "0 08px 10px 1px rgba(0,0,0,0.14), 0 03px 14px 3px rgba(0,0,0,0.12), 0 04px 15px 0 rgba(0,0,0,0.20)",
+   9: "0 09px 12px 1px rgba(0,0,0,0.14), 0 03px 16px 2px rgba(0,0,0,0.12), 0 05px 06px 0 rgba(0,0,0,0.20)",
+  12: "0 12px 17px 2px rgba(0,0,0,0.14), 0 05px 22px 4px rgba(0,0,0,0.12), 0 07px 08px 0 rgba(0,0,0,0.20)",
+  16: "0 16px 24px 2px rgba(0,0,0,0.14), 0 06px 30px 5px rgba(0,0,0,0.12), 0 08px 10px 0 rgba(0,0,0,0.20)",
+  24: "0 24px 38px 3px rgba(0,0,0,0.14), 0 09px 46px 8px rgba(0,0,0,0.12), 0 11px 15px 0 rgba(0,0,0,0.20)"
+);
+
+// https://material.io/archive/guidelines/resources/shadows.html#shadows-illustrator
+$filter-values: (
+   0: "none",
+   1: "drop-shadow(0 00.92px 00.5px rgba(0,0,0,0.26)) drop-shadow(0 0 00.67px rgba(0,0,0,0.08))",
+   2: "drop-shadow(0 01.83px 01.0px rgba(0,0,0,0.26)) drop-shadow(0 0 01.33px rgba(0,0,0,0.08))",
+   3: "drop-shadow(0 02.75px 01.5px rgba(0,0,0,0.26)) drop-shadow(0 0 02.00px rgba(0,0,0,0.08))",
+   4: "drop-shadow(0 03.67px 02.0px rgba(0,0,0,0.26)) drop-shadow(0 0 02.67px rgba(0,0,0,0.08))",
+   6: "drop-shadow(0 05.50px 03.0px rgba(0,0,0,0.26)) drop-shadow(0 0 04.00px rgba(0,0,0,0.08))",
+   8: "drop-shadow(0 07.33px 04.0px rgba(0,0,0,0.26)) drop-shadow(0 0 05.33px rgba(0,0,0,0.08))",
+   9: "drop-shadow(0 08.25px 04.5px rgba(0,0,0,0.26)) drop-shadow(0 0 06.00px rgba(0,0,0,0.08))",
+  12: "drop-shadow(0 11.00px 06.0px rgba(0,0,0,0.26)) drop-shadow(0 0 08.00px rgba(0,0,0,0.08))",
+  16: "drop-shadow(0 14.67px 08.0px rgba(0,0,0,0.26)) drop-shadow(0 0 10.67px rgba(0,0,0,0.08))",
+  24: "drop-shadow(0 22.12px 12.0px rgba(0,0,0,0.26)) drop-shadow(0 0 16.00px rgba(0,0,0,0.08))",
+);

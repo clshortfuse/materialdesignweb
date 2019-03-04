@@ -1,6 +1,9 @@
 // https://material.io/guidelines/components/data-tables.html
 // https://material.io/guidelines/patterns/selection.html#selection-item-selection
 
+@import '../common/platform.scss';
+@import '../common/motion.scss';
+@import '../common/responsive.scss';
 @import '../common/type.scss';
 
 $mdw-datatable__icon-size: dp(16);

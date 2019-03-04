@@ -1,5 +1,8 @@
 // https://material.io/guidelines/components/progress-activity.html#
 
+@import '../common/motion.scss';
+@import '../common/platform.scss';
+
 $radius: 8.75;
 $pi: 3.14159265359;
 $circumference: 2 * $pi * $radius;

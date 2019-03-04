@@ -2,9 +2,10 @@
 // https://material.io/archive/guidelines/patterns/navigation-drawer.html
 // https://material.io/archive/guidelines/layout/metrics-keylines.html#metrics-keylines-keylines-spacing
 
-@import '../common/functions.scss';
 @import '../common/motion.scss';
-@import '../common/variables.scss';
+@import '../common/platform.scss';
+@import '../common/responsive.scss';
+@import '../common/type.scss';
 
 $navdrawer__min-width: dp(256) !default;
 $navdrawer__min-width__mini: dp(56) !default;
@@ -614,7 +615,7 @@ $navdrawer__min-width__mini: dp(56) !default;
       }
     }
     &:not([mdw-dismissible]) {
-      @include viewport-medium {
+      @include viewport-max-medium {
         @include mdw-navdrawer__modal;
         &[id]:target,
         &[mdw-show]:not([mdw-hide]) {

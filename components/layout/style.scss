@@ -1,12 +1,12 @@
 // https://material.io/guidelines/layout/responsive-ui.html
 // https://material.io/archive/guidelines/layout/responsive-ui.html
 
-@import '../common/mixins.scss';
+@import '../common/motion.scss';
+@import '../common/platform.scss';
+@import '../common/responsive.scss';
 
 $layout__margin: dp(24);
 $layout__gutter: dp(24);
-$layout__4-column-breakpoint-max: dp(600 - 1);
-$layout__8-column-breakpoint-max: dp(840 - 1);
 
 .mdw-layout {
   display: flex;
@@ -162,7 +162,7 @@ $layout__8-column-breakpoint-max: dp(840 - 1);
     @include layoutItem(8);
   }
 }
-@media screen and (max-width: $layout__8-column-breakpoint-max) {
+@include viewport-max-8-columns {
   .mdw-layout {
     grid-template-columns: repeat(8, 1fr);
     -ms-grid-columns: unquote("(1fr)[8]");
@@ -180,7 +180,8 @@ $layout__8-column-breakpoint-max: dp(840 - 1);
     @include layoutItem(4);
   }
 }
-@media screen and (max-width: $layout__4-column-breakpoint-max) {
+
+@include viewport-4-columns() {
   .mdw-layout,
   .mdw-layout[mdw-columns="8"] {
     grid-template-columns: repeat(4, 1fr);
@@ -230,7 +231,7 @@ $layout__8-column-breakpoint-max: dp(840 - 1);
 }
 
 // 8-col layouts use 8col variable
-@media screen and (max-width: $layout__8-column-breakpoint-max) {
+@include viewport-max-8-columns {
   @each $value in (0, 8, 16, 24, 40) {
     .mdw-layout[mdw-margin-8col="#{$value}"] {
       padding-left: dp($value);
@@ -255,7 +256,7 @@ $layout__8-column-breakpoint-max: dp(840 - 1);
 
 // 4col layouts use 4col variable
 // Overrides 8col and 12col
-@media screen and (max-width: $layout__4-column-breakpoint-max) {
+@include viewport-4-columns {
   @each $value in (0, 8, 16, 24, 40) {
     .mdw-layout,
     .mdw-layout[mdw-columns="8"] {

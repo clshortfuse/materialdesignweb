@@ -1,0 +1,25 @@
+@function dp($multiplier) {
+  @return $multiplier * 1px;
+}
+
+// Browser specific mixins
+@mixin IEOnly {
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    @content;
+  }
+}
+
+@mixin EdgeOnly {
+  @supports (-ms-ime-align:auto) {
+    @content;
+  }
+}
+
+@mixin MSOnly {
+  @include IEOnly {
+    @content;
+  }
+  @include EdgeOnly {
+    @content;
+  }
+}

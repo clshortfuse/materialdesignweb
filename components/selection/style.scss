@@ -1,7 +1,9 @@
 // https://material.io/guidelines/components/selection-controls.html#
 // https://material.io/guidelines/patterns/selection.html#selection-item-selection
 
-@import '../common/variables.scss';
+@import '../common/motion.scss';
+@import '../common/platform.scss';
+@import '../common/responsive.scss';
 
 $ripple-size: dp(48);
 $icon-size: dp(24);

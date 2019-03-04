@@ -1,7 +1,10 @@
 // https://material.io/design/components/tabs.html#spec
 
-@import '../common/functions.scss';
 @import '../common/motion.scss';
+@import '../common/platform.scss';
+@import '../common/responsive.scss';
+@import '../common/type.scss';
+@import '../ripple/ripple.scss';
 
 $tab__icon-size: 24;
 $tab__icon-margin-top: 12;

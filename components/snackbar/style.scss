@@ -1,5 +1,10 @@
 // https://material.io/design/components/snackbars.html#spec
 
+@import '../common/motion.scss';
+@import '../common/platform.scss';
+@import '../common/responsive.scss';
+@import '../common/type.scss';
+
 $snackbar__scale-up__from: 0.85;
 
 .mdw-snackbar__wrapper {

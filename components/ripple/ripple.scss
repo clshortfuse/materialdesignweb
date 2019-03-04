@@ -1,4 +1,6 @@
-@import "../common/mixins.scss";
+@import "../common/platform.scss";
+@import "../common/motion.scss";
+@import "../common/responsive.scss";
 
 /**
  * --Issues rendering a circle inside an element--

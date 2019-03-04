@@ -1,0 +1,226 @@
+// max-device-width is deprecated for promotion of better heuristics (touch, viewport, hover, etc)
+// https://drafts.csswg.org/mediaqueries-4/#mf-deprecated
+// min-device-width is unsafe due to older Android bugs
+// https://developers.google.com/web/fundamentals/design-and-ux/responsive/
+
+// Breakpoints
+
+$breakpoint-portrait-handset-small: dp(0);
+$breakpoint-portrait-handset-medium: dp(360);
+$breakpoint-portrait-handset-large: dp(400);
+$breakpoint-portrait-handset-max: dp(599);
+
+$breakpoint-portrait-tablet-small: dp(600);
+$breakpoint-portrait-tablet-large: dp(720);
+$breakpoint-portrait-tablet-max: dp(959);
+
+$breakpoint-landscape-handset-small: dp(480);
+$breakpoint-landscape-handset-medium: dp(600);
+$breakpoint-landscape-handset-large: dp(720);
+$breakpoint-landscape-handset-max: dp(959);
+
+$breakpoint-landscape-tablet-small: dp(960);
+$breakpoint-landscape-tablet-large: dp(1024);
+$breakpoint-landscape-tablet-max: dp(1439);
+
+$breakpoint-window-xsmall: dp(0);
+$breakpoint-window-small: dp(600);
+$breakpoint-window-medium: dp(1024);
+$breakpoint-window-large: dp(1440);
+$breakpoint-window-xlarge: dp(1920);
+
+$breakpoint-columns-4: dp(0);
+$breakpoint-columns-8: dp(600);
+$breakpoint-columns-12: dp(840);
+
+// Column-count based mixins
+
+@mixin viewport-4-columns {
+  @media screen and (max-width: #{$breakpoint-columns-8 - 1}) {
+    @content;
+  }
+}
+
+@mixin viewport-min-8-columns {
+  @media screen and (min-width: $breakpoint-columns-8) {
+    @content;
+  }
+}
+
+@mixin viewport-max-8-columns {
+  @media screen and (max-width: #{$breakpoint-columns-12 - 1}) {
+    @content;
+  }
+}
+
+@mixin viewport-8-columns {
+  @media screen
+    and (min-width: $breakpoint-columns-8)
+    and (max-width: #{$breakpoint-columns-12 - 1}) {
+      @content;
+  }
+}
+
+@mixin viewport-12-columns {
+  @media screen and (min-width: $breakpoint-columns-12) {
+    @content;
+  }
+}
+
+// Smallest width less than 600dp
+
+@mixin margin16dp {
+  @media
+    screen
+      and (orientation:portrait)
+      and (max-width: dp(599)),
+    screen
+      and (orientation:landscape)
+      and (max-height: dp(599)) {
+    @content;
+  }
+}
+
+// Touch support based mixins
+
+@mixin supports-touch {
+  @media (any-pointer: coarse) {
+    @content;
+  }
+}
+
+@mixin not-supports-touch {
+  @media not all and (any-pointer: coarse) {
+    @content;
+  }
+}
+
+// Window-size based mixins
+
+@mixin viewport-xsmall {
+  @media screen and (max-width: #{$breakpoint-window-small - 1}) {
+    @content;
+  }
+}
+
+@mixin viewport-min-small {
+  @media screen and (min-width: #{$breakpoint-window-small}) {
+    @content;
+  }
+}
+
+@mixin viewport-max-small {
+  @media screen and (max-width: #{$breakpoint-window-medium - 1}) {
+    @content;
+  }
+}
+
+@mixin viewport-small {
+  @media screen
+    and (min-width: $breakpoint-window-small)
+    and (max-width: #{$breakpoint-window-medium - 1}) {
+    @content;
+  }
+}
+
+@mixin viewport-min-medium {
+  @media screen and (min-width: #{$breakpoint-window-medium}) {
+    @content;
+  }
+}
+
+@mixin viewport-max-medium {
+  @media screen and (max-width: #{$breakpoint-window-large - 1}) {
+    @content;
+  }
+}
+
+@mixin viewport-medium {
+  @media screen
+    and (min-width: $breakpoint-window-medium)
+    and (max-width: #{$breakpoint-window-large - 1}) {
+    @content;
+  }
+}
+
+@mixin viewport-min-large {
+  @media screen and (min-width: #{$breakpoint-window-large}) {
+    @content;
+  }
+}
+
+@mixin viewport-max-large {
+  @media screen and (max-width: #{$breakpoint-window-xlarge - 1}) {
+    @content;
+  }
+}
+
+@mixin viewport-large {
+  @media screen
+    and (min-width: $breakpoint-window-large)
+    and (max-width: #{$breakpoint-window-xlarge - 1}) {
+    @content;
+  }
+}
+
+@mixin viewport-xlarge {
+  @media screen and (min-width: $breakpoint-window-xlarge) {
+    @content;
+  }
+}
+
+// Device-based mixins
+// Detect size and orientation based on window.screen variables (device-width/device-height)
+
+@mixin portraitHandsets {
+  @media screen
+    and (max-device-width: $breakpoint-portrait-handset-max)
+    and (max-device-aspect-ratio: 1/1) {
+      @content;
+    }
+}
+@mixin landscapeHandsets {
+  @media screen
+    and (max-device-width: $breakpoint-landscape-handset-max)
+    and (min-device-aspect-ratio: 1/1) {
+      @content;
+    }
+}
+
+@mixin allHandsets {
+  @media
+    screen
+      and (max-device-width: $breakpoint-portrait-handset-max)
+      and (max-device-aspect-ratio: 1/1),
+    screen
+      and (max-device-width: $breakpoint-landscape-handset-max)
+      and (min-device-aspect-ratio: 1/1) {
+    @content;
+  }
+}
+
+@mixin allTablets {
+  @media
+    screen
+      and (min-width: $breakpoint-portrait-tablet-small)
+      and (max-device-width: $breakpoint-portrait-tablet-max)
+      and (max-device-aspect-ratio: 1/1),
+    screen
+      and (min-width: $breakpoint-landscape-tablet-small)
+      and (max-device-width: $breakpoint-landscape-tablet-max)
+      and (min-device-aspect-ratio: 1/1) {
+    @content;
+  }
+}
+
+@mixin allHandsetsAndTablets {
+  @media
+    screen
+      and (max-device-width: $breakpoint-portrait-tablet-max)
+      and (max-device-aspect-ratio: 1/1),
+    screen
+      and (max-device-width: $breakpoint-landscape-tablet-max)
+      and (min-device-aspect-ratio: 1/1) {
+    @content;
+  }
+}

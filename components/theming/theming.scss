@@ -1,8 +1,7 @@
-@import 'palettes.scss';
-@import '../common/functions.scss';
-
-
+@import './palettes.scss';
 @import './globals.scss';
+
+@import '../common/theming.scss';
 
 @import '../app/theming.scss';
 @import '../banner/theming.scss';

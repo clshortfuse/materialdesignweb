@@ -1,11 +1,11 @@
 // https://material.io/guidelines/components/buttons.html#buttons-raised-buttons
 // https://material.io/guidelines/style/icons.html#
 
-@import '../common/functions.scss';
+@import '../common/platform.scss';
 @import '../common/motion.scss';
-@import '../common/mixins.scss';
+@import '../common/responsive.scss';
 @import '../ripple/ripple.scss';
-@import '../common//type.scss';
+@import '../common/type.scss';
 
 $button__external-padding: dp(8);
 $button__minimum-click-target: dp(48);

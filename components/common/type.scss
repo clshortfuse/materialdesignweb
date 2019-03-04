@@ -5,6 +5,10 @@ $font-weight-medium: 500;
 $font-weight-bold: 700;
 $font-weight-black: 900;
 
+@function sp($multiplier) {
+  @return ($multiplier/16.0) * 1rem;
+}
+
 $mdw-types: (
   h1: (
     font-weight: $font-weight-light,

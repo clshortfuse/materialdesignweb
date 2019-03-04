@@ -1,9 +1,8 @@
 // https://material.io/guidelines/style/typography.html
 
+@import '../common/platform.scss';
+@import '../common/responsive.scss';
 @import '../common/type.scss';
-@import '../common/functions.scss';
-
-// Line-heights calculated from Roboto
 
 h1.mdw-type,
 h2.mdw-type,
