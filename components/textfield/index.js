@@ -1,4 +1,4 @@
-import { getChildElementByClass } from '../common/dom';
+import { getChildElementByClass, getPassiveEventListenerOption } from '../common/dom';
 
 class TextField {
   /**
@@ -9,7 +9,7 @@ class TextField {
     /** @type {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} */
     const input = (getChildElementByClass(textfieldElement, 'mdw-textfield__input'));
     if (input) {
-      input.addEventListener('input', TextField.onInput);
+      input.addEventListener('input', TextField.onInput, getPassiveEventListenerOption());
       TextField.onInput({ currentTarget: input });
     }
   }
@@ -54,7 +54,7 @@ class TextField {
   }
 
   /**
-   * @param {HTMLInputElement} inputElement
+   * @param {HTMLTextAreaElement} inputElement
    * @return {number} Single row height */
   static updateTextAreaSize(inputElement) {
     const previousRowsValue = inputElement.getAttribute('rows');
@@ -157,7 +157,7 @@ class TextField {
       }
     }
     TextField.updateInputEmptyState(input);
-    if (textfieldElement.hasAttribute('mdw-multiline')) {
+    if (input instanceof HTMLTextAreaElement && textfieldElement.hasAttribute('mdw-multiline')) {
       TextField.updateTextAreaSize(input);
     }
   }
