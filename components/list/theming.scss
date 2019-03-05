@@ -38,7 +38,7 @@ $listColors: (
     }
 
     // IE and Edge does not support :focus-within
-    @include MSOnly {
+    @include mdw-platform__ms {
       &:active::before {
         background-color: listThemeValue("press-color", $type);
       }

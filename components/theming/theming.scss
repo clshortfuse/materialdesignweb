@@ -93,7 +93,7 @@ $added-palettes-list: ();
 @mixin buildThemes() {
   @if ($mdw-theme__fallback and $mdw-theme__fallback != 'no' and $mdw-theme__fallback != false) {
     @if ($mdw-theme__fallback == 'ieonly') {
-      @include IEOnly() {
+      @include mdw-platform__ie() {
         @include buildThemeFallback();
       }
     } @else {

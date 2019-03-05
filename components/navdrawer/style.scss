@@ -128,7 +128,7 @@ $navdrawer__min-width__mini: dp(56) !default;
   border-width: 0;
   border-right-width: 1px;
 
-  @include IEOnly() {
+  @include mdw-platform__ie() {
     // Fix IE min-height flexbug
     &::after {
       content: '';

@@ -131,7 +131,7 @@ $tooltip__touch-min-hold-time: 500ms;
   transition-delay: 0;
 }
 
-@include supports-touch {
+@include mdw-platform__has-touch-support {
   .mdw-tooltip {
     transition-delay: $tooltip__touch-min-hold-time;
     font-size: sp(14);

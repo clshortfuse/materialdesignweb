@@ -217,7 +217,7 @@ $mdw-datatable__icon-size: dp(16);
 
 .mdw-datatable__header,
 .mdw-datatable__footer {
-  @include IEOnly() {
+  @include mdw-platform__ie() {
     // Fix IE min-height flexbug
     &::after {
       content: '';

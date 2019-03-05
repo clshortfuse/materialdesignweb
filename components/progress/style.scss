@@ -104,7 +104,7 @@ $duration: 1500ms;
   }
   
   // IE and Edge do not support animated SVG
-  @include MSOnly {
+  @include mdw-platform__ms {
     &:not([mdw-determinate]) svg {
       animation-duration: $duration / 2;
     }

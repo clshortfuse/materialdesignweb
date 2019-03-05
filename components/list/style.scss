@@ -212,7 +212,7 @@ ul.mdw-list {
   justify-content: center;
 }
 
-@include IEOnly() {
+@include mdw-platform__ie() {
   .mdw-list__icon,
   .mdw-list__secondary {
     // Fix IE min-height flexbug

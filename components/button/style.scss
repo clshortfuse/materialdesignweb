@@ -156,7 +156,7 @@ $button__outline-size: dp(1);
 }
 
 // Fix anchor line-height on IE11
-@include IEOnly {
+@include mdw-platform__ie {
   a.mdw-button:not([mdw-icon]) {
     line-height: 2.5em !important;
   }
@@ -164,7 +164,7 @@ $button__outline-size: dp(1);
 
 // Extended touch target
 @mixin mdw-button__touch-target {
-  @include supports-touch {
+  @include mdw-platform__has-touch-support {
     content: "";
     position: absolute;
     width: 100%;

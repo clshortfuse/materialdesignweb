@@ -2,20 +2,20 @@
   @return $multiplier * 1px;
 }
 
-@mixin supports-touch {
+@mixin mdw-platform__has-touch-support {
   @media (any-pointer: coarse) {
     @content;
   }
 }
 
-@mixin not-supports-touch {
+@mixin mdw-platform__no-touch-support {
   @media not all and (any-pointer: coarse) {
     @content;
   }
 }
 
 // Browser specific mixins
-@mixin IEOnly {
+@mixin mdw-platform__ie {
   @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
     @content;
   }
@@ -23,17 +23,17 @@
 
 // Touch support based mixins
 
-@mixin EdgeOnly {
+@mixin mdw-platform__edge {
   @supports (-ms-ime-align:auto) {
     @content;
   }
 }
 
-@mixin MSOnly {
-  @include IEOnly {
+@mixin mdw-platform__ms {
+  @include mdw-platform__ie {
     @content;
   }
-  @include EdgeOnly {
+  @include mdw-platform__edge {
     @content;
   }
 }

@@ -148,7 +148,7 @@ $snackbar__scale-up__from: 0.85;
   }
 }
 
-@include IEOnly() {
+@include mdw-platform__ie() {
   // Fix IE flexbug
   .mdw-snackbar {
     &::after {

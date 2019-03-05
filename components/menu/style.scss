@@ -294,7 +294,7 @@ $menu__unit-width: dp(56);
     padding-right: dp(24);
   }
 }
-@include not-supports-touch {
+@include mdw-platform__no-touch-support {
   .mdw-menu:not([mdw-dense="never"]) {
     .mdw-menu__item {
       min-height: dp(32);
