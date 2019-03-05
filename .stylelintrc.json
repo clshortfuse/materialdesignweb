@@ -120,10 +120,6 @@
           "column-span",
           "column-width",
           "columns",
-          "flex",
-          "flex-grow",
-          "flex-shrink",
-          "flex-basis",
           "flex-direction",
           "flex-flow",
           "flex-wrap",
@@ -222,6 +218,11 @@
           "min-width",
           "max-width",
           "width",
+
+          "flex",
+          "flex-grow",
+          "flex-shrink",
+          "flex-basis",
 
           "margin-block",
           "margin-block-start",

@@ -20,12 +20,12 @@
   display: flex;
   position: relative;
   align-items: center;
-  flex: 1;
   flex-wrap: wrap;
   justify-content: flex-end;
-
+  
   box-sizing: border-box;
   max-width: dp(960);
+  flex: 1;
   padding-top: dp(8);
   padding-bottom: dp(7);
 }
@@ -81,12 +81,12 @@
 
 .mdw-banner__buttons {
   display: flex;
-  flex: none;
   flex-direction: row-reverse;
   flex-wrap: wrap;
   justify-content: flex-start;
-
+  
   max-width: 100%;
+  flex: none;
 
   .mdw-button {
     margin-right: dp(8);
