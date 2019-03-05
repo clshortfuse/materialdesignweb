@@ -112,8 +112,12 @@ $toolbar__icon-height: 40;
     @include type-rules('h5');
     @include baseline-bottom(28);
   }
-  &[mdw-custom]::after {
-    display: none;
+  &[mdw-custom] {
+    margin-top: 0;
+
+    &::after {
+      display: none;
+    }
   }
 
   // Animation
