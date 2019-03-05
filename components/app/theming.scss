@@ -12,11 +12,11 @@ $mdw-app__theme-values: (
 ) !default;
 
 @function mdwAppThemeValue($key, $type, $theme) {
-  @return themeValue('app', $mdw-app__theme-values, $key, $type, $theme);
+  @return mdwGetThemeValue('app', $mdw-app__theme-values, $key, $type, $theme);
 }
 
 @mixin mdw-app__theme-variables($lightness: null) {
-  @include themeVariables('app', $mdw-app__theme-values, $lightness);
+  @include mdw-theme__variables('app', $mdw-app__theme-values, $lightness);
 }
 
 // Vary by contrast or theme

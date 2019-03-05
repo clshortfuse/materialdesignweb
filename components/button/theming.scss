@@ -38,11 +38,11 @@ $mdw-button__theme-values: (
 ) !default;
 
 @function mdwButtonThemeValue($key, $type, $theme) {
-  @return themeValue('button', $mdw-button__theme-values, $key, $type, $theme);
+  @return mdwGetThemeValue('button', $mdw-button__theme-values, $key, $type, $theme);
 }
 
 @mixin mdw-button__theme-variables($lightness) {
-  @include themeVariables('button', $mdw-button__theme-values, $lightness);
+  @include mdw-theme__variables('button', $mdw-button__theme-values, $lightness);
 }
 
 @mixin __mdw-button__contrast-and-theme-rules($type, $theme: null) {

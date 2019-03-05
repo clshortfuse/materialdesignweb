@@ -11,11 +11,11 @@ $navdrawerColors: (
 );
 
 @function navdrawerThemeValue($key, $type, $theme) {
-  @return themeValue('navdrawer', $navdrawerColors, $key, $type, $theme);
+  @return mdwGetThemeValue('navdrawer', $navdrawerColors, $key, $type, $theme);
 }
 
 @mixin navdrawerThemeVariables($lightness) {
-  @include themeVariables('navdrawer', $navdrawerColors, $lightness);
+  @include mdw-theme__variables('navdrawer', $navdrawerColors, $lightness);
 }
 
 // Vary by contrast or theme

@@ -19,11 +19,11 @@ $selectionColors: (
 );
 
 @function selectionThemeValue($key, $type, $theme) {
-  @return themeValue('selection', $selectionColors, $key, $type, $theme);
+  @return mdwGetThemeValue('selection', $selectionColors, $key, $type, $theme);
 }
 
 @mixin selectionThemeVariables($lightness) {
-  @include themeVariables('selection', $selectionColors, $lightness);
+  @include mdw-theme__variables('selection', $selectionColors, $lightness);
 }
 
 // Vary by contrast

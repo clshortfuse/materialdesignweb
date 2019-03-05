@@ -1,6 +1,6 @@
 // https://material.io/guidelines/style/color.html#color-color-tool
 
-$palette-red: (
+$mdw-theme__palette__red: (
   "50" : #FFEBEE,
   "100": #FFCDD2,
   "200": #EF9A9A,
@@ -17,9 +17,9 @@ $palette-red: (
   "A700": #D50000,
   "light": ("50", "100", "200", "300", "A100"),
   "dark": ("400", "500", "600", "700", "800", "900", "A200", "A400", "A700")
-);
+) !default;
 
-$palette-pink: (
+$mdw-theme__palette__pink: (
   "50": #FCE4EC,
   "100": #F8BBD0,
   "200": #F48FB1,
@@ -36,9 +36,9 @@ $palette-pink: (
   "A700": #C51162,
   "light": ("50", "100", "200", "300", "A100"),
   "dark": ("400", "500", "600", "700", "800", "900", "A200", "A400", "A700")
-);
+) !default;
 
-$palette-purple: (
+$mdw-theme__palette__purple: (
   "50": #F3E5F5,
   "100": #E1BEE7,
   "200": #CE93D8,
@@ -55,9 +55,9 @@ $palette-purple: (
   "A700": #AA00FF,
   "light": ("50", "100", "200", "A100"),
   "dark": ("300", "400", "500", "600", "700", "800", "900", "A200", "A400", "A700")
-);
+) !default;
 
-$palette-deeppurple: (
+$mdw-theme__palette__deeppurple: (
   "50": #EDE7F6,
   "100": #D1C4E9,
   "200": #B39DDB,
@@ -74,9 +74,9 @@ $palette-deeppurple: (
   "A700": #6200EA,
   "light": ("50", "100", "200", "A100"),
   "dark": ("300", "400", "500", "600", "700", "800", "900", "A200", "A400", "A700")
-);
+) !default;
 
-$palette-indigo: (
+$mdw-theme__palette__indigo: (
   "50": #E8EAF6,
   "100": #C5CAE9,
   "200": #9FA8DA,
@@ -93,9 +93,9 @@ $palette-indigo: (
   "A700": #304FFE,
   "light": ("50", "100", "200", "A100"),
   "dark": ("300", "400", "500", "600", "700", "800", "900", "A200", "A400", "A700")
-);
+) !default;
 
-$palette-blue: (
+$mdw-theme__palette__blue: (
   "50": #E3F2FD,
   "100": #BBDEFB,
   "200": #90CAF9,
@@ -112,9 +112,9 @@ $palette-blue: (
   "A700": #2962FF,
   "light": ("50", "100", "200", "300", "400", "500", "A100"),
   "dark": ("600", "700", "800", "900", "A200", "A400", "A700")
-);
+) !default;
 
-$palette-lightblue: (
+$mdw-theme__palette__lightblue: (
   "50": #E1F5FE,
   "100": #B3E5FC,
   "200": #81D4FA,
@@ -131,9 +131,9 @@ $palette-lightblue: (
   "A700": #0091EA,
   "light": ("50", "100", "200", "300", "400", "500", "600", "A100", "A200", "A400"),
   "dark": ("700", "800", "900", "A700")
-);
+) !default;
 
-$palette-cyan: (
+$mdw-theme__palette__cyan: (
   "50": #E0F7FA,
   "100": #B2EBF2,
   "200": #80DEEA,
@@ -150,9 +150,9 @@ $palette-cyan: (
   "A700": #00B8D4,
   "light": ("50", "100", "200", "300", "400", "500", "600", "A100", "A200", "A400", "A700"),
   "dark": ("700", "800", "900")
-);
+) !default;
 
-$palette-teal: (
+$mdw-theme__palette__teal: (
   "50": #E0F2F1,
   "100": #B2DFDB,
   "200": #80CBC4,
@@ -169,9 +169,9 @@ $palette-teal: (
   "A700": #00BFA5,
   "light": ("50", "100", "200", "300", "400", "A100", "A200", "A400", "A700"),
   "dark": ("500", "600", "700", "800", "900")
-);
+) !default;
 
-$palette-green: (
+$mdw-theme__palette__green: (
   "50": #E8F5E9,
   "100": #C8E6C9,
   "200": #A5D6A7,
@@ -188,9 +188,9 @@ $palette-green: (
   "A700": #00C853,
   "light": ("50", "100", "200", "300", "400", "500", "A100", "A200", "A400", "A700"),
   "dark": ("600", "700", "800", "900")
-);
+) !default;
 
-$palette-lightgreen: (
+$mdw-theme__palette__lightgreen: (
   "50": #F1F8E9,
   "100": #DCEDC8,
   "200": #C5E1A5,
@@ -207,9 +207,9 @@ $palette-lightgreen: (
   "A700": #64DD17,
   "light": ("50", "100", "200", "300", "400", "500", "600", "700", "A100", "A200", "A400", "A700"),
   "dark": ("800", "900")
-);
+) !default;
 
-$palette-lime: (
+$mdw-theme__palette__lime: (
   "50": #F9FBE7,
   "100": #F0F4C3,
   "200": #E6EE9C,
@@ -226,9 +226,9 @@ $palette-lime: (
   "A700": #AEEA00,
   "light": ("50", "100", "200", "300", "400", "500", "600", "700", "800", "A100", "A200", "A400", "A700"),
   "dark": ("900")
-);
+) !default;
 
-$palette-yellow: (
+$mdw-theme__palette__yellow: (
   "50": #FFFDE7,
   "100": #FFF9C4,
   "200": #FFF59D,
@@ -245,9 +245,9 @@ $palette-yellow: (
   "A700": #FFD600,
   "light": ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "A100", "A200", "A400", "A700"),
   "dark": ()
-);
+) !default;
 
-$palette-amber: (
+$mdw-theme__palette__amber: (
   "50": #FFF8E1,
   "100": #FFECB3,
   "200": #FFE082,
@@ -264,9 +264,9 @@ $palette-amber: (
   "A700": #FFAB00,
   "light": ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "A100", "A200", "A400", "A700"),
   "dark": (),
-);
+) !default;
 
-$palette-orange: (
+$mdw-theme__palette__orange: (
   "50": #FFF3E0,
   "100": #FFE0B2,
   "200": #FFCC80,
@@ -283,9 +283,9 @@ $palette-orange: (
   "A700": #FF6D00,
   "light": ("50", "100", "200", "300", "400", "500", "600", "700", "800", "A100", "A200", "A400", "A700"),
   "dark": ("900")
-);
+) !default;
 
-$palette-deeporange: (
+$mdw-theme__palette__deeporange: (
   "50": #FBE9E7,
   "100": #FFCCBC,
   "200": #FFAB91,
@@ -302,9 +302,9 @@ $palette-deeporange: (
   "A700": #DD2C00,
   "light": ("50", "100", "200", "300", "400", "500", "A100", "A200"),
   "dark": ("600", "700", "800", "900", "A400", "A700")
-);
+) !default;
 
-$palette-brown: (
+$mdw-theme__palette__brown: (
   "50": #EFEBE9,
   "100": #D7CCC8,
   "200": #BCAAA4,
@@ -321,9 +321,9 @@ $palette-brown: (
   "A700": #5D4037,
   "light": ("50", "100", "200", "A100", "A200"),
   "dark": ("300", "400", "500", "600", "700", "800", "900", "A100", "A200", "A400", "A700")
-);
+) !default;
 
-$palette-grey: (
+$mdw-theme__palette__grey: (
   "50": #FAFAFA,
   "100": #F5F5F5,
   "200": #EEEEEE,
@@ -340,9 +340,9 @@ $palette-grey: (
   "A700": #616161,
   "light": ("50", "100", "200", "300", "400", "500", "A100", "A200", "A400"),
   "dark": ("600", "700", "800", "900", "A700")
-);
+) !default;
 
-$palette-bluegrey: (
+$mdw-theme__palette__bluegrey: (
   "50": #ECEFF1,
   "100": #CFD8DC,
   "200": #B0BEC5,
@@ -359,25 +359,25 @@ $palette-bluegrey: (
   "A700": #455A64, 
   "light": ("50", "100", "200", "300", "A100", "A200"),
   "dark": ("400", "500", "600", "700", "800", "900", "A400", "A700")
-);
+) !default;
 
-$palettes: (
-  "red": $palette-red,
-  "pink": $palette-pink,
-  "purple": $palette-purple,
-  "deeppurple": $palette-deeppurple,
-  "indigo": $palette-indigo,
-  "blue": $palette-blue,
-  "lightblue": $palette-lightblue,
-  "cyan": $palette-cyan,
-  "teal": $palette-teal,
-  "green": $palette-green,
-  "lightgreen": $palette-lightgreen,
-  "lime": $palette-lime,
-  "yellow": $palette-yellow,
-  "amber": $palette-amber,
-  "orange": $palette-orange,
-  "deeporange": $palette-deeporange,
-  "brown": $palette-brown,
-  "grey": $palette-grey
-);
+$mdw-theme__palettes: (
+  "red": $mdw-theme__palette__red,
+  "pink": $mdw-theme__palette__pink,
+  "purple": $mdw-theme__palette__purple,
+  "deeppurple": $mdw-theme__palette__deeppurple,
+  "indigo": $mdw-theme__palette__indigo,
+  "blue": $mdw-theme__palette__blue,
+  "lightblue": $mdw-theme__palette__lightblue,
+  "cyan": $mdw-theme__palette__cyan,
+  "teal": $mdw-theme__palette__teal,
+  "green": $mdw-theme__palette__green,
+  "lightgreen": $mdw-theme__palette__lightgreen,
+  "lime": $mdw-theme__palette__lime,
+  "yellow": $mdw-theme__palette__yellow,
+  "amber": $mdw-theme__palette__amber,
+  "orange": $mdw-theme__palette__orange,
+  "deeporange": $mdw-theme__palette__deeporange,
+  "brown": $mdw-theme__palette__brown,
+  "grey": $mdw-theme__palette__grey
+) !default;

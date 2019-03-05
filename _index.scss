@@ -1,4 +1,4 @@
 @import './components/all-components.scss';
 @import './components/theming/theming.scss';
 
-@include buildMDWThemes();
+@include mdw-theme__build();

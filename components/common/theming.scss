@@ -1,30 +1,6 @@
 @import '../theming/palettes';
 
-@function parseThemeItem($item, $type, $theme: null) {
-  $length: length($item);
-  @if ($length == 1) {
-    @return $item;
-  } @else if ($length == 2) {
-    $color: nth($item, 1);
-    $opacity: nth($item, 2);
-    @if (type_of($color) == string) {
-      $color: getThemeParamColor($color, null, $type, $theme);
-    }
-    @return rgba($color, $opacity);
-  } @else {
-    $color: nth($item, 1);
-    $tone: nth($item, 2);
-    $opacity: nth($item, 3);
-    $value: getThemeParamColor($color, $tone, $type, $theme);
-    @if ($opacity == null) {
-      $opacity: 1.0;
-    }
-    @return rgba($value, $opacity);
-  }
-  @return null;
-}
-
-@function getThemeMapItem($colorMap, $key, $lightness) {
+@function mdwGetThemeMapItem($colorMap, $key, $lightness) {
   $list: map-get($colorMap, $key);
   $length: length($list);
 
@@ -36,35 +12,55 @@
   @return nth($list, 1);
 }
 
-@function themeValue($component, $colorMap, $key, $type, $theme: null) {
+@function mdwGetThemeValue($component, $colorMap, $key, $type, $theme: null) {
   @if ($type == 'var') {
     @return var(--#{$component}__#{$key});
   }
-  $item: getThemeMapItem($colorMap, $key, $type);
-  @return parseThemeItem($item, $type, $theme);
+  $item: mdwGetThemeMapItem($colorMap, $key, $type);
+  $length: length($item);
+  @if ($length == 1) {
+    @return $item;
+  } @else if ($length == 2) {
+    $color: nth($item, 1);
+    $opacity: nth($item, 2);
+    @if (type_of($color) == string) {
+      $color: mdwGetThemeParamColor($color, null, $type, $theme);
+    }
+    @return rgba($color, $opacity);
+  } @else {
+    $color: nth($item, 1);
+    $tone: nth($item, 2);
+    $opacity: nth($item, 3);
+    $value: mdwGetThemeParamColor($color, $tone, $type, $theme);
+    @if ($opacity == null) {
+      $opacity: 1.0;
+    }
+    @return rgba($value, $opacity);
+  }
+  @return null;
 }
 
-@function getThemeParamValue($param, $theme) {
+@function mdwGetThemeParamValue($param, $theme) {
   @if ($param == 'primary') {
     @if ($theme != null) {
-      @return map-get($palettes, nth($theme, 1));
+      @return map-get($mdw-theme__palettes, nth($theme, 1));
     }
     @error 'Missing primary color!';
   } @else if ($param == 'accent') {
     @if (length($theme) > 1) {
-      @return map-get($palettes, nth($theme, 2));
+      @return map-get($mdw-theme__palettes, nth($theme, 2));
     }
     @error 'Missing accent color!';
   } @else if ($param == 'warn') {
     @if (length($theme) > 2) {
-      @return map-get($palettes, nth($theme, 3));
+      @return map-get($mdw-theme__palettes, nth($theme, 3));
     }
-    @return map-get($palettes, 'red');
+    @return map-get($mdw-theme__palettes, 'red');
   } @else if ($param == 'background') {
     @if (length($theme) > 3) {
-      @return map-get($palettes, nth($theme, 4));
+      @return map-get($mdw-theme__palettes, nth($theme, 4));
     }
-    @return map-get($palettes, 'grey');
+    @return map-get($mdw-theme__palettes, 'grey');
   } @else if ($param == 'foreground-light') {
     @if (length($theme) > 4) {
       @return nth($theme, 5);
@@ -79,7 +75,7 @@
   @error "Unrecognized Theme Palette!" ;
 }
 
-@function getThemeParamColor($param, $tone, $type, $theme: null) {
+@function mdwGetThemeParamColor($param, $tone, $type, $theme: null) {
   @if ($type == 'var' or ($type == null and $theme == null)) {
     @if ($tone == null) {
       @return var(--#{$param}-color);
@@ -90,7 +86,7 @@
     $tone: '500';
   }
 
-  $paramValue: getThemeParamValue($param, $theme);
+  $paramValue: mdwGetThemeParamValue($param, $theme);
   @if (($param == 'foreground-light') or ($param == 'foreground-dark')) {
     @return $paramValue;
   }
@@ -99,9 +95,9 @@
 
 // Theming mixins
 
-@mixin themeVariables($component, $map, $lightness) {
+@mixin mdw-theme__variables($component, $map, $lightness) {
   @each $key in map-keys($map) {
-    $item: getThemeMapItem($map, $key, $lightness);
+    $item: mdwGetThemeMapItem($map, $key, $lightness);
     $value: null;
     $length: length($item);
     @if ($length == 1) {
@@ -110,14 +106,14 @@
       $color: nth($item, 1);
       $opacity: nth($item, 2);
       @if (type_of($color) == string) {
-        $value: rgba(var(--#{$color}-color), #{$opacity})
+        $value: rgba(var(--#{$color}-color), #{$opacity});
       } @else {
         $value: rgba($color, $opacity);
       }
     } @else {
-      $color: nth($item,1);
-      $tone: nth($item,2);
-      $opacity: nth($item,3);
+      $color: nth($item, 1);
+      $tone: nth($item, 2);
+      $opacity: nth($item, 3);
       @if ($tone == null or tone == '500') {
         $value: unquote("rgba(var(--#{$color}-color), #{$opacity})");
       } @else {

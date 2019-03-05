@@ -7,11 +7,11 @@ $mdw-banner__theme-values: (
 ) !default;
 
 @function mdwBannerThemeValue($key, $type, $theme) {
-  @return themeValue('banner', $mdw-banner__theme-values, $key, $type, $theme);
+  @return mdwGetThemeValue('banner', $mdw-banner__theme-values, $key, $type, $theme);
 }
 
 @mixin mdw-banner__theme-variables($lightness) {
-  @include themeVariables('banner', $mdw-banner__theme-values, $lightness);
+  @include mdw-theme__variables('banner', $mdw-banner__theme-values, $lightness);
 }
 
 // Vary by contrast or theme

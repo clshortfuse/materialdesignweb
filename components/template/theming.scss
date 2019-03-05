@@ -6,11 +6,11 @@ $templateColors: (
 );
 
 @function templateThemeValue($key, $type, $theme) {
-  @return themeValue('template', $templateColors, $key, $type, $theme);
+  @return mdwGetThemeValue('template', $templateColors, $key, $type, $theme);
 }
 
 @mixin templateThemeVariables($lightness) {
-  @include themeVariables('template', $templateColors, $lightness);
+  @include mdw-theme__variables('template', $templateColors, $lightness);
 }
 
 // Vary by contrast

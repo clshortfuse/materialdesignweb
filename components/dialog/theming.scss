@@ -7,11 +7,11 @@ $dialogColors: (
 );
 
 @function dialogThemeValue($key, $type, $theme) {
-  @return themeValue('dialog', $dialogColors, $key, $type, $theme);
+  @return mdwGetThemeValue('dialog', $dialogColors, $key, $type, $theme);
 }
 
 @mixin dialogThemeVariables($lightness) {
-  @include themeVariables('dialog', $dialogColors, $lightness);
+  @include mdw-theme__variables('dialog', $dialogColors, $lightness);
 }
 
 // Vary by contrast or theme

@@ -7,11 +7,11 @@ $tabColors: (
 );
 
 @function tabThemeValue($key, $type, $theme) {
-  @return themeValue('tab', $tabColors, $key, $type, $theme);
+  @return mdwGetThemeValue('tab', $tabColors, $key, $type, $theme);
 }
 
 @mixin tabThemeVariables($lightness) {
-  @include themeVariables('tab', $tabColors, $lightness);
+  @include mdw-theme__variables('tab', $tabColors, $lightness);
 }
 
 // Vary by contrast

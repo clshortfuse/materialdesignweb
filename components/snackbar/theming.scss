@@ -10,11 +10,11 @@ $snackbarColors: (
 );
 
 @function snackbarThemeValue($key, $type, $theme) {
-  @return themeValue('snackbar', $snackbarColors, $key, $type, $theme);
+  @return mdwGetThemeValue('snackbar', $snackbarColors, $key, $type, $theme);
 }
 
 @mixin snackbarThemeVariables($lightness) {
-  @include themeVariables('snackbar', $snackbarColors, $lightness);
+  @include mdw-theme__variables('snackbar', $snackbarColors, $lightness);
 }
 
 // Vary by contrast or theme

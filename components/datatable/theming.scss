@@ -28,11 +28,11 @@ $datatableColors: (
 );
 
 @function datatableThemeValue($key, $type, $theme) {
-  @return themeValue('datatable', $datatableColors, $key, $type, $theme);
+  @return mdwGetThemeValue('datatable', $datatableColors, $key, $type, $theme);
 }
 
 @mixin datatableThemeVariables($lightness) {
-  @include themeVariables('datatable', $datatableColors, $lightness);
+  @include mdw-theme__variables('datatable', $datatableColors, $lightness);
 }
 
 // Vary by contrast or theme

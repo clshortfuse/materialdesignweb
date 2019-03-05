@@ -13,11 +13,11 @@ $listColors: (
 );
 
 @function listThemeValue($key, $type) {
-  @return themeValue('list', $listColors, $key, $type);
+  @return mdwGetThemeValue('list', $listColors, $key, $type);
 }
 
 @mixin listThemeVariables($lightness) {
-  @include themeVariables('list', $listColors, $lightness);
+  @include mdw-theme__variables('list', $listColors, $lightness);
 }
 
 // Vary by contrast

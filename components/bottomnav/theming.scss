@@ -11,11 +11,11 @@ $mdw-bottomnav__theme-values: (
 ) !default;
 
 @function mdwBottomnavThemeValue($key, $type, $theme) {
-  @return themeValue('bottomnav', $mdw-bottomnav__theme-values, $key, $type, $theme);
+  @return mdwGetThemeValue('bottomnav', $mdw-bottomnav__theme-values, $key, $type, $theme);
 }
 
 @mixin mdw-bottomnav__theme-variables($lightness: null) {
-  @include themeVariables('bottomnav', $mdw-bottomnav__theme-values, $lightness);
+  @include mdw-theme__variables('bottomnav', $mdw-bottomnav__theme-values, $lightness);
 }
 
 @mixin __mdw-bottomnav__contrast-and-theme-rules($type, $theme: null) {

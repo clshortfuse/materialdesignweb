@@ -8,11 +8,11 @@ $mdw-card__theme-values: (
 ) !default;
 
 @function mdwCardThemeValue($key, $type, $theme) {
-  @return themeValue('card', $mdw-card__theme-values, $key, $type, $theme);
+  @return mdwGetThemeValue('card', $mdw-card__theme-values, $key, $type, $theme);
 }
 
 @mixin mdw-card__theme-variables($lightness) {
-  @include themeVariables('card', $mdw-card__theme-values, $lightness);
+  @include mdw-theme__variables('card', $mdw-card__theme-values, $lightness);
 }
 
 @mixin __mdw-card__contrast-and-theme-rules($type, $theme: null) {

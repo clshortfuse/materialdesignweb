@@ -54,11 +54,11 @@ $mdw-chip__theme-values: (
 ) !default;
 
 @function mdwChipThemeValue($key, $type, $theme) {
-  @return themeValue('chip', $mdw-chip__theme-values, $key, $type, $theme);
+  @return mdwGetThemeValue('chip', $mdw-chip__theme-values, $key, $type, $theme);
 }
 
 @mixin mdw-chip__theme-variables($lightness) {
-  @include themeVariables('chip', $mdw-chip__theme-values, $lightness);
+  @include mdw-theme__variables('chip', $mdw-chip__theme-values, $lightness);
 }
 
 

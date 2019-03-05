@@ -39,11 +39,11 @@ $mdw-textfield__theme-values: (
 ) !default;
 
 @function mdwTextfieldThemeValue($key, $type, $theme) {
-  @return themeValue('textfield', $mdw-textfield__theme-values, $key, $type, $theme);
+  @return mdwGetThemeValue('textfield', $mdw-textfield__theme-values, $key, $type, $theme);
 }
 
 @mixin mdw-textfield__theme-variables($lightness) {
-  @include themeVariables('textfield', $mdw-textfield__theme-values, $lightness);
+  @include mdw-theme__variables('textfield', $mdw-textfield__theme-values, $lightness);
 }
 
 @mixin mdw-textfield__contrast-and-theme-rules($type: 'var', $theme: null) {

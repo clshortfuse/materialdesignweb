@@ -13,11 +13,11 @@ $menuColors: (
 );
 
 @function menuThemeValue($key, $type, $theme) {
-  @return themeValue('menu', $menuColors, $key, $type, $theme);
+  @return mdwGetThemeValue('menu', $menuColors, $key, $type, $theme);
 }
 
 @mixin menuThemeVariables($lightness) {
-  @include themeVariables('menu', $menuColors, $lightness);
+  @include mdw-theme__variables('menu', $menuColors, $lightness);
 }
 
 @mixin internalMenuContrastRules($type: 'var', $theme: null) {

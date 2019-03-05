@@ -6,11 +6,11 @@ $typeColors: (
 );
 
 @function typeThemeValue($key, $type, $theme) {
-  @return themeValue('type', $typeColors, $key, $type, $theme);
+  @return mdwGetThemeValue('type', $typeColors, $key, $type, $theme);
 }
 
 @mixin typeThemeVariables($lightness) {
-  @include themeVariables('type', $typeColors, $lightness);
+  @include mdw-theme__variables('type', $typeColors, $lightness);
 }
 
 @mixin typeContrastAndThemeRules($type: 'var', $theme: null) {

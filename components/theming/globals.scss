@@ -1,34 +1,36 @@
 @import '../common/theming.scss';
 
-$globalColors: (
+$mdw-theme__global-variables: (
   text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
-);
+) !default;
 
-@function globalThemeValue($key, $type, $theme) {
-  @return themeValue('mdw', $globalColors, $key, $type, $theme);
+@function mdwThemeGlobalValue($key, $type, $theme) {
+  @return mdwGetThemeValue('theme', $mdw-theme__global-variables, $key, $type, $theme);
 }
 
-@mixin globalThemeVariables($lightness) {  
-  @include themeVariables('mdw', $globalColors, $lightness);
+@mixin mdw-theme__global-theme-variables($lightness) {
+  @include mdw-theme__variables('theme', $mdw-theme__global-variables, $lightness);
 }
 
 // Vary by contrast and theme
-@mixin globalContrastAndThemeRules($type: 'var', $theme: null) {
+@mixin mdw-theme__global-contrast-and-theme-rules($type: 'var', $theme: null) {
   @if ($type != 'var') {
-    color: globalThemeValue("text-color", $type, $theme);
+    color: mdwThemeGlobalValue("text-color", $type, $theme);
   } @else {
     @at-root {
       *[mdw-theme-fill] {
-        color: globalThemeValue("text-color", $type, $theme);
+        color: mdwThemeGlobalValue("text-color", $type, $theme);
       }
     }
   }
+
   // color: globalThemeValue("text-color", $type);
-  .mdw__primary-text {
-    color: globalThemeValue("text-color", $type, $theme);
+  .mdw-theme__primary-text {
+    color: mdwThemeGlobalValue("text-color", $type, $theme);
   }
-  .mdw__secondary-text {
-    color: globalThemeValue("secondary-text-color", $type, $theme);
+
+  .mdw-theme__secondary-text {
+    color: mdwThemeGlobalValue("secondary-text-color", $type, $theme);
   }
 }

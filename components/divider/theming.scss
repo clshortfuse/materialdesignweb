@@ -5,11 +5,11 @@ $dividerColors: (
 );
 
 @function dividerThemeValue($key, $type, $theme) {
-  @return themeValue('divider', $dividerColors, $key, $type, $theme);
+  @return mdwGetThemeValue('divider', $dividerColors, $key, $type, $theme);
 }
 
 @mixin dividerThemeVariables($lightness) {
-  @include themeVariables('divider', $dividerColors, $lightness);
+  @include mdw-theme__variables('divider', $dividerColors, $lightness);
 }
 
 @mixin dividerContrastRules($type: 'var', $theme: null) {
