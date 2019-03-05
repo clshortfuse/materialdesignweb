@@ -13,4 +13,4 @@ $mdw-config: (
   fallback: 'no',
   variables: ('themes')
 );
-@include buildMDWThemes($mdw-config);
+@include mdw-theme__build($mdw-config);
