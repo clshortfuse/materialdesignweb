@@ -5,46 +5,42 @@
 @import '../ripple/ripple.scss';
 
 .mdw-bottomnav {
-  position: relative;
-  width: 100%;
-  min-height: dp(56);
-
   display: flex;
-  flex-direction: row;
+  position: relative;
   align-items: stretch;
+  flex-direction: row;
   justify-content: center;
-
   overflow: hidden;
+
+  min-height: dp(56);
+  width: 100%;
 }
 
 .mdw-bottomnav__item {
+  display: flex;
   position: relative;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: visible;
+  
   min-width: dp(80);
   max-width: dp(168);
+  flex: 1;
   margin: 0;
   padding: 0;
 
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  align-items: center;
-  justify-content: flex-start;
-  
-  border-radius: 0;
-  box-shadow: none;
   cursor: pointer;
-  overflow: visible;
+  -webkit-tap-highlight-color: transparent;
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
   user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  z-index: 0;
 
+  z-index: 0;
   
-  > .mdw-ripple {
-    @include mdw-ripple__container;
-  }
+  border-radius: 0;
+  box-shadow: none;
 
   &::after {
     @include mdw-ripple__inner;
@@ -60,21 +56,27 @@
       content: none;
     }
   }
+
+  & > .mdw-ripple {
+    @include mdw-ripple__container;
+  }
 }
 
 .mdw-bottomnav__icon {
   position: absolute;
   top: 0;
   left: 50%;
+  
   margin: 0;
   margin-left: dp(-12);
   padding: 0;
 
+  transition-duration: 200ms;
+  transition-property: transform, color;
+  transition-timing-function: $mdw-motion__standard-easing;
+
   pointer-events: none;
   transform: translateY(dp(8));
-  transition-property: transform, color;
-  transition-duration: 200ms;
-  transition-timing-function: $mdw-motion__standard-easing;
 
   &:last-child {
     // No label
@@ -84,27 +86,31 @@
 
 .mdw-bottomnav__item[mdw-badge]::before {
   content: attr(mdw-badge);
+
   position: absolute;
   top: 0;
   left: 50%;
+  
+  box-sizing: border-box;
+  min-height: dp(8);
+  min-width: dp(8);
   margin-left: dp(4);
   padding: dp(2);
-  min-width: dp(8);
-  min-height: dp(8);
-  border-radius: dp(8);
-  box-sizing: border-box;
-
-  font-size: dp(10);
-  font-weight: $font-weight-regular;
-  letter-spacing: normal;
-  line-height: dp(12);
-
-  transition-property: transform;
+  
   transition-duration: 200ms;
+  transition-property: transform;
   transition-timing-function: $mdw-motion__standard-easing;
-  transform: translateY(dp(8));
 
+  transform: translateY(dp(8));
   z-index: 1;
+
+  border-radius: dp(8);
+
+  font-weight: $font-weight-regular;
+  font-size: dp(10);
+  line-height: dp(12);
+  letter-spacing: normal;
+  
 }
 
 .mdw-bottomnav__item[data-mdw-badge]::before {
@@ -119,30 +125,34 @@
   // Overriding 12dp for baseline bottom with 8dp for oversized and textwrapped
   // Baseline top will ensure baseline-bottom is 12dp for standard layouts
 
-  max-width: 100%;
   box-sizing: border-box;
+  max-width: 100%;
   padding: 0 dp(12);
-  pointer-events: none;
-  transition-property: transform, opacity, color;
+  
   transition-duration: 200ms;
+  transition-property: transform, opacity, color;
   transition-timing-function: $mdw-motion__standard-easing;
-  text-align: center;
 
+  pointer-events: none;
+
+  text-align: center;
   word-break: break-all;
   word-break: break-word;
 }
 
 .mdw-bottomnav__input {
   display: inline-block;
+  
   height: 0;
   width: 0;
   margin: 0;
   padding: 0;
 
-  outline: none;
-  pointer-events: none;
   -moz-appearance: none;
   -webkit-appearance: none;
+  outline: none;
+
+  pointer-events: none;
 }
 
 .mdw-bottomnav[mdw-shifting] {
@@ -155,12 +165,14 @@
     opacity: 0;
     transform: translateY(dp(8));
   }
+
   .mdw-bottomnav__input:checked ~ .mdw-bottomnav__label,
   .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__label,
   .mdw-bottomnav__input:checked + .mdw-bottomnav__item > .mdw-bottomnav__label {
     opacity: 1;
     transform: translateY(0);
   }
+
   .mdw-bottomnav__input:checked ~ .mdw-bottomnav__icon,
   .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__icon,
   .mdw-bottomnav__input:checked + .mdw-bottomnav__item > .mdw-bottomnav__icon {
@@ -176,8 +188,9 @@
 .mdw-bottomnav[mdw-theme-color] {
   .mdw-bottomnav__item {
     color: inherit;
-    & > .mdw-ripple > .mdw-ripple__inner,
-    &:after {
+
+    &::after,
+    & > .mdw-ripple > .mdw-ripple__inner {
       color: inherit;
     }
   }

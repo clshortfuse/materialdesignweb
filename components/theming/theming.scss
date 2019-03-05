@@ -133,7 +133,7 @@ $added-palettes-list: ();
     @include mdw-banner__theme-variables($lightness);
   }
   @if (index($mdw-theme__components, 'bottomnav')) {
-    @include bottomnavThemeVariables($lightness);
+    @include mdw-bottomnav__theme-variables($lightness);
   }
   @if (index($mdw-theme__components, 'button')) {
     @include buttonThemeVariables($lightness);
@@ -190,7 +190,7 @@ $added-palettes-list: ();
     @include mdw-banner__contrast-and-theme-rules($type, $theme);
   }
   @if (index($mdw-theme__components, 'bottomnav')) {
-    @include bottomnavContrastAndThemeRules($type, $theme);
+    @include mdw-bottomnav__contrast-and-theme-rules($type, $theme);
   }
   @if (index($mdw-theme__components, 'button')) {
     @include buttonContrastAndThemeRules($type, $theme);
@@ -248,7 +248,7 @@ $added-palettes-list: ();
 
 @mixin componentThemeRules($theme: null) {
   @if (index($mdw-theme__components, 'bottomnav')) {
-    @include bottomnavThemeRules($theme);
+    @include mdw-bottomnav__theme-rules($theme);
   }
 }
 
