@@ -130,7 +130,7 @@ $added-palettes-list: ();
     @include mdw-app__theme-variables($lightness);
   }
   @if (index($mdw-theme__components, 'banner')) {
-    @include bannerThemeVariables($lightness);
+    @include mdw-banner__theme-variables($lightness);
   }
   @if (index($mdw-theme__components, 'bottomnav')) {
     @include bottomnavThemeVariables($lightness);
@@ -187,7 +187,7 @@ $added-palettes-list: ();
     @include mdw-app__contrast-and-theme-rules($type, $theme);
   }
   @if (index($mdw-theme__components, 'banner')) {
-    @include bannerContrastAndThemeRules($type, $theme);
+    @include mdw-banner__contrast-and-theme-rules($type, $theme);
   }
   @if (index($mdw-theme__components, 'bottomnav')) {
     @include bottomnavContrastAndThemeRules($type, $theme);

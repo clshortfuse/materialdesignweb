@@ -1,25 +1,26 @@
 @import '../common/theming.scss';
 
-$bannerColors: (
+$mdw-banner__theme-values: (
   background:   ((#fff, 1.00), ('background', '800', 1.00)),
   text-color:   (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   border-color: (('foreground-light', 0.12), ('foreground-dark', 0.12)),
-);
+) !default;
 
 @function bannerThemeValue($key, $type, $theme) {
-  @return themeValue('banner', $bannerColors, $key, $type, $theme);
+  @return themeValue('banner', $mdw-banner__theme-values, $key, $type, $theme);
 }
 
-@mixin bannerThemeVariables($lightness) {
-  @include themeVariables('banner', $bannerColors, $lightness);
+@mixin mdw-banner__theme-variables($lightness) {
+  @include themeVariables('banner', $mdw-banner__theme-values, $lightness);
 }
 
 // Vary by contrast or theme
-@mixin bannerContrastAndThemeRules($type: 'var', $theme: null) {
+@mixin mdw-banner__contrast-and-theme-rules($type: 'var', $theme: null) {
   .mdw-banner {
     background-color: bannerThemeValue("background", $type, $theme);
     border-color: bannerThemeValue("border-color", $type, $theme);
   }
+
   .mdw-banner__text {
     color: bannerThemeValue("text-color", $type, $theme);
   }

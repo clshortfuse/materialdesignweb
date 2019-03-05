@@ -6,80 +6,95 @@
 
 .mdw-banner {
   display: flex;
-  flex-direction: row;
   align-items: center;
+  flex-direction: row;
   justify-content: center;
+
   width: 100%;
   border-bottom: solid dp(1);
 }
+
 .mdw-banner__container {
-  position: relative;
-  box-sizing: border-box;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
   @include type-rules('body-2');
+
+  display: flex;
+  position: relative;
+  align-items: center;
   flex: 1;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  box-sizing: border-box;
   max-width: dp(960);
   padding-top: dp(8);
   padding-bottom: dp(7);
-
 }
 
 .mdw-banner__icon {
   position: absolute;
   top: dp(24);
-  left: dp(16);
   right: auto;
-  :root[dir=rtl] & {
-    left: auto;
+  left: dp(16);
+
+  :root[dir="rtl"] & {
     right: dp(16);
+    left: auto;
   }
+
   & ~ .mdw-banner__text {
-    margin-left: dp(40 + 16);
     margin-right: 0;
-    :root[dir=rtl] & {
-      margin-left: 0;
+    margin-left: dp(40 + 16);
+
+    :root[dir="rtl"] & {
       margin-right: dp(40 + 16);
+      margin-left: 0;
     }
   }
 }
 
 .mdw-banner__text {
-  flex-grow: 1;
-  white-space: pre-line;
   @include texttop-to-top(12);
   @include baseline-bottom(12);
 
-  padding-left: dp(24);
+  flex-grow: 1;
+
   padding-right: 0;
-  :root[dir=rtl] {
-    padding-left: 0;
+  padding-left: dp(24);
+
+  white-space: pre-line;
+
+  :root[dir="rtl"] {
     padding-right: dp(24);
+    padding-left: 0;
   }
+
   @include margin16dp {
-    padding-left: dp(16);
     padding-right: 0;
-    :root[dir=rtl] & {
-      padding-left: 0;
+    padding-left: dp(16);
+
+    :root[dir="rtl"] & {
       padding-right: dp(16);
+      padding-left: 0;
     }
   }
 }
 
 .mdw-banner__buttons {
-  max-width: 100%;
-  flex: none;
   display: flex;
+  flex: none;
   flex-direction: row-reverse;
-  justify-content: flex-start;
   flex-wrap: wrap;
+  justify-content: flex-start;
+
+  max-width: 100%;
+
   .mdw-button {
-    text-align: end;
-    margin-left: 0;
     margin-right: dp(8);
-    :root[dir=rtl] & {
+    margin-left: 0;
+
+    text-align: end;
+
+    :root[dir="rtl"] & {
       margin-right: 0;
       margin-left: dp(8);
     }
@@ -90,12 +105,14 @@
   .mdw-banner {
     flex-wrap: nowrap;
   }
+
   .mdw-banner__buttons {
-    margin-left: dp(90);
     margin-right: 0;
-    :root[dir=rtl] & {
-      margin-left: 0;
+    margin-left: dp(90);
+
+    :root[dir="rtl"] & {
       margin-right: dp(90);
+      margin-left: 0;
     }
   }
 }
