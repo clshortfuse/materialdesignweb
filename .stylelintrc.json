@@ -18,10 +18,12 @@
     "string-quotes": null,
     "scss/at-import-partial-extension-blacklist": null,
     "scss/selector-no-redundant-nesting-selector": null,
+    "font-family-no-missing-generic-family-keyword": null,
+    "color-hex-length": null,
+    "color-hex-case": null,
     "no-empty-source": true,
     "block-no-empty": true,
     "no-extra-semicolons": true,
-    "font-family-no-missing-generic-family-keyword": null,
     "selector-attribute-brackets-space-inside": "never",
     "selector-attribute-operator-space-after": "never",
     "selector-attribute-operator-space-before": "never",
@@ -53,8 +55,8 @@
     }],
     "order/order": [
       [
-        "custom-properties",
         "dollar-variables",
+        "custom-properties",
         {
           "type": "at-rule",
           "name": "extend"
