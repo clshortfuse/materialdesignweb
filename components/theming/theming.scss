@@ -172,7 +172,7 @@ $added-palettes-list: ();
     @include tabThemeVariables($lightness);
   }
   @if (index($mdw-theme__components, 'textfield')) {
-    @include textfieldThemeVariables($lightness);
+    @include mdw-textfield__theme-variables($lightness);
   }
   @if (index($mdw-theme__components, 'type')) {
     @include typeThemeVariables($lightness);
@@ -214,7 +214,7 @@ $added-palettes-list: ();
     @include snackbarContrastAndThemeRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'textfield')) {
-    @include textfieldContrastAndThemeRules($type, $theme);
+    @include mdw-textfield__contrast-and-theme-rules($type, $theme);
   }
   @if (index($mdw-theme__components, 'type')) {
     @include typeContrastAndThemeRules($type, $theme);
@@ -242,7 +242,7 @@ $added-palettes-list: ();
     @include tabContrastRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'textfield')) {
-    @include textfieldContrastRules($type, $theme);
+    @include mdw-textfield__contrast-rules($type, $theme);
   }
 }
 
