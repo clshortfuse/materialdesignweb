@@ -9,55 +9,54 @@
 @import '../common/responsive.scss';
 @import '../common/type.scss';
 
-$app__scrim-color: rgba(0, 0, 0, 0.50);
-$app__sheet-min-width: dp(256) !default;
-$app__sheet-max-width__mini: dp(56) !default;
+$mdw-app__scrim-color: rgba(0, 0, 0, 0.50) !default;
+$mdw-app__sheet-min-width: dp(256) !default;
+$mdw-app__sheet-max-width__mini: dp(56) !default;
 
-$app__fab-size: dp(56);
-$app__fab-cut-size: dp(72);
+$mdw-app__fab-size: dp(56) !default;
+$mdw-app__fab-cut-size: dp(72) !default;
 
-$app__top-row: 1;
-$app__banner-row: 2;
-$app__content-row: 3;
-$app__bottom-row: 4;
+$mdw-app__top-row: 1 !default;
+$mdw-app__banner-row: 2 !default;
+$mdw-app__content-row: 3 !default;
+$mdw-app__bottom-row: 4 !default;
 
-$app__navdrawer-column: 1;
-$app__content-column: 2;
-$app__sidesheet-column: 3;
-$app__viewport-end-column: 4;
+$mdw-app__navdrawer-column: 1 !default;
+$mdw-app__content-column: 2 !default;
+$mdw-app__sidesheet-column: 3 !default;
+$mdw-app__viewport-end-column: 4 !default;
 
 .mdw-app {
   min-height: 100vh;
   min-width: 100vw;
   margin: 0;
   padding: 0;
-  font-family: Roboto, sans-serif;
 
   // Prefer iOS Dynamic Type for accessibility support
   font: -apple-system-body;
+  font-family: Roboto, sans-serif;
+
 }
 
 .mdw-app__body {
-  position: relative;
+  @include type-rules('body');
+
   display: -ms-grid;
   display: grid;
-  // top | banner | content | bottom
-  grid-template-rows: auto auto 1fr auto;
-  -ms-grid-rows: auto auto 1fr auto;
+  position: relative;
   // start | main | end
   grid-template-columns: auto 1fr auto;
   -ms-grid-columns: auto 1fr auto;
+  // top | banner | content | bottom
+  grid-template-rows: auto auto 1fr auto;
+  -ms-grid-rows: auto auto 1fr auto;
+  overflow-x: hidden;
+  overflow-y: hidden; // auto if sticky
+  
+  height: 100vh; // auto if sticky
   margin: 0;
   padding: 0;
 
-  overflow-x: hidden;
-  overflow-y: hidden; // auto if sticky
-  height: 100vh; // auto if sticky
-
-  background-color: inherit;
-  @include type-rules('body');
-
-  transition-timing-function: $motion-easing-standard;
   transition-duration: $motion-duration-desktop-default;
   @include allHandsets {
     transition-duration: $motion-duration-mobile-default;
@@ -65,33 +64,39 @@ $app__viewport-end-column: 4;
   @include allTablets {
     transition-duration: $motion-duration-tablet-default;
   }
+  transition-timing-function: $motion-easing-standard;
+
+  background-color: inherit;
 }
 
 .mdw-app__appbar {
+  @include mdw-app__grid-column($mdw-app__content-column);
+  @include mdw-app__grid-row($mdw-app__top-row);
+
   position: static;
   position: -webkit-sticky;
   position: -moz-sticky;
   position: sticky;
-  margin-top: 0;
   top: 0;
+  
+  margin-top: 0;
 
-  z-index: 4;
-
-  @include cssGridRow($app__top-row);
-  @include cssGridColumn($app__content-column);
-
-  transform: translateY(0); // browser hint
-  will-change: box-shadow, transform, margin-top;
+  transition-duration: $motion-duration-desktop-default, $motion-duration-desktop-enter;
   transition-property: box-shadow, transform, margin-top;
   transition-timing-function: $motion-easing-standard, $motion-easing-acceleration;
-  .mdw-app[mdw-appbar-autohide][mdw-appbar-hide] & {
-    transition-timing-function: $motion-easing-standard, $motion-easing-deceleration;
-    transition-duration: $motion-duration-desktop-default, $motion-duration-desktop-leave;
-  }
-  transition-duration: $motion-duration-desktop-default, $motion-duration-desktop-enter;
+  will-change: box-shadow, transform, margin-top;
 
+  transform: translateY(0); // browser hint
+  z-index: 4;
+  
+  .mdw-app[mdw-appbar-autohide][mdw-appbar-hide] & {
+    transition-duration: $motion-duration-desktop-default, $motion-duration-desktop-leave;
+    transition-timing-function: $motion-easing-standard, $motion-easing-deceleration;
+  }
+  
   @include allHandsets {
     transition-duration: $motion-duration-mobile-default, $motion-duration-mobile-enter;
+
     .mdw-app[mdw-appbar-autohide][mdw-appbar-hide] & {
       transition-duration: $motion-duration-mobile-default, $motion-duration-mobile-leave;
     }
@@ -100,164 +105,182 @@ $app__viewport-end-column: 4;
   // Tablet
   @include allTablets {
     transition-duration: $motion-duration-tablet-default, $motion-duration-tablet-enter;
+
     .mdw-app[mdw-appbar-autohide][mdw-appbar-hide] & {
       transition-duration: $motion-duration-tablet-default, $motion-duration-tablet-leave;
     }
   }
 }
 
-
-
 .mdw-app__scrim {
   content: '';
+
   position: fixed;
-  left: 0;
   top: 0;
-  width: 100vw;
+  left: 0;
+
   height: 100vh;
-  z-index: 16;
+  width: 100vw;
+
   cursor: auto;
-  pointer-events: none;
-  background-color: transparent;
+
+  transition-duration: inherit;
   transition-property: background-color;
   transition-timing-function: inherit;
-  transition-duration: inherit;
+
+  pointer-events: none;
+  z-index: 16;
+
+  background-color: transparent;
 }
 
 .mdw-app__navdrawer,
 .mdw-app__sidesheet {
-  @include cssGridRow($app__top-row, $app__bottom-row);
-
-  // Match app-bar when full-height
-  z-index: 4;
+  @include mdw-app__grid-row($mdw-app__top-row, $mdw-app__bottom-row);
   
-  transform: translateX(0);
-  box-shadow: elevation(0);
-  height: 100%;
   max-height: 100vh;
-  background-color: inherit;
-  
+  height: 100%;
+  max-width: calc(100vw - #{dp(56)});
+  @mixin viewport-4-columns {
+    max-width: calc(100vw - #{dp(64)}); // Tablet or Desktop
+  }
+  width: $mdw-app__sheet-min-width;
+
+  transition-duration: inherit;
   transition-property: max-width, transform;
   transition-timing-function: inherit;
-  transition-duration: inherit;
 
-  width: $app__sheet-min-width;
-  max-width: calc(100vw - 56px);
-  @mixin viewport-4-columns {
-    max-width: calc(100vw - 64px); // Tablet or Desktop
-  }
+  transform: translateX(0);
+  z-index: 4; // Match app-bar when full-height
+
+  background-color: inherit;
+  box-shadow: elevation(0);
 }
 
 .mdw-app__sheet-content {
-  height: 100%;
-  max-height: 100%;
   overflow-y: auto;
-  border-width: dp(1);
+
   box-sizing: border-box;
+  max-height: 100%;
+  height: 100%;
+  border-width: dp(1);
 }
 
 .mdw-app__navdrawer {
-  @include cssGridColumn($app__navdrawer-column);
+  @include mdw-app__grid-column($mdw-app__navdrawer-column);
 }
 
 .mdw-app__sidesheet {
-  @include cssGridColumn($app__sidesheet-column);
+  @include mdw-app__grid-column($mdw-app__sidesheet-column);
 }
 
 .mdw-app__navdrawer,
-:root[dir=rtl] .mdw-app__sidesheet {
+:root[dir="rtl"] .mdw-app__sidesheet {
   .mdw-app__sheet-content {
-    border-left-style: none;
     border-right-style: solid;
+    border-left-style: none;
   }
 }
 
 .mdw-app__sidesheet,
-:root[dir=rtl] .mdw-app__navdrawer {
+:root[dir="rtl"] .mdw-app__navdrawer {
   .mdw-app__sheet-content {
-    border-left-style: solid;
     border-right-style: none;
+    border-left-style: solid;
   }
 }
 
 @each $side in ('navdrawer', 'sidesheet') {
-  @include modal($side) {
+  @include mdw-app__modal($side) {
     .mdw-app__#{$side}-hide {
       display: none;
+
     }
+
     .mdw-app__#{$side} {
-      z-index: 16;
       position: fixed;
       top: 0;
       bottom: 0;
+      
+      z-index: 16;
+
       .mdw-app__sheet-content {
         border-width: 0;
       }
       @if ($side == 'navdrawer') {
-        left: 0;
         right: auto;
+        left: 0;
+
         transform: translateX(-100%);
-        :root[dir=rtl] & {
-          left: auto;
+
+        :root[dir="rtl"] & {
           right: 0;
+          left: auto;
+
           transform: translateX(100%);
         }
       } @else {
-        left: auto;
         right: 0;
+        left: auto;
+
         transform: translateX(100%);
-        :root[dir=rtl] & {
-          left: 0;
+
+        :root[dir="rtl"] & {
           right: auto;
+          left: 0;
+
           transform: translateX(-100%);
         }
       }
     }
   }
-  @include modal__shown($side) {
+  @include mdw-app__modal-shown($side) {
     .mdw-app__scrim {
       pointer-events: auto;
-      background-color: $app__scrim-color;
+
+      background-color: $mdw-app__scrim-color;
     }
+
     .mdw-app__#{$side}-show {
       display: none;
     }
+
     .mdw-app__#{$side} {
-      box-shadow: elevation(16);
       transform: translateX(0);
+
+      box-shadow: elevation(16);
     }
   }
 }
 
 .mdw-app__banner {
-  @include cssGridRow($app__banner-row);
-  @include cssGridColumn($app__content-column);
+  @include mdw-app__grid-row($mdw-app__banner-row);
+  @include mdw-app__grid-column($mdw-app__content-column);
   z-index: 0;
 }
 
 .mdw-app__content {
-  position: relative;
-  overflow-y: auto;
-
-  @include cssGridRow($app__content-row);
-  @include cssGridColumn($app__content-column);
+  @include mdw-app__grid-row($mdw-app__content-row);
+  @include mdw-app__grid-column($mdw-app__content-column);
 
   display: flex;
-  flex-direction: column;
+  position: relative;
   align-items: center;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
 
 .mdw-app__content-page {
+  max-width: dp(960);
   width: 100%;
-  max-width: 960px;
 }
 
 .mdw-app__fab,
 .mdw-app__snackbar {
   // Aligned to bottom-anchor
-  @include cssGridRow($app__bottom-row);
-  @include cssGridColumn($app__content-column);
+  @include mdw-app__grid-row($mdw-app__bottom-row);
+  @include mdw-app__grid-column($mdw-app__content-column);
 
   position: static;
   position: -webkit-sticky;
@@ -265,42 +288,44 @@ $app__viewport-end-column: 4;
   position: sticky;
   top: auto;
   bottom: 0;
+
   width: auto;
-  z-index: 6;
-  transform: translateY(-100%);
+
+  transition-duration: inherit;
   transition-property: transform;
   transition-timing-function: inherit;
-  transition-duration: inherit;
+
   pointer-events: none;
+  transform: translateY(-100%);
+  z-index: 6;
+
 }
 
 .mdw-app__dialogs {
   position: fixed;
   top: 0;
-  left: 0;
   right: 0;
   bottom: 0;
+  left: 0;
+
   pointer-events: none;
+
   z-index: 24;
   
 }
 
 .mdw-app__snackbar-anchor {
   position: absolute;
-  bottom: 0;
-
-  box-sizing: border-box;
-  left: 0;
   right: auto;
+  bottom: 0;
+  left: 0;
 
   // Snackbars are not aligned with layout
+  box-sizing: border-box;
   padding-top: dp(24 / 2);
   padding-right: 0;
   padding-bottom: dp(24 / 2);
   padding-left: dp(24 / 2);
-  transition-property: transform, bottom;
-  transition-timing-function: inherit;
-  transition-duration: inherit;
   @include margin16dp {
     padding-top: dp(16 / 2);
     padding-right: 0;
@@ -308,9 +333,14 @@ $app__viewport-end-column: 4;
     padding-left: dp(16 / 2);
   }
 
-  :root[dir=rtl] & {
-    left: auto;
+  transition-duration: inherit;
+  transition-property: transform, bottom;
+  transition-timing-function: inherit;
+
+  :root[dir="rtl"] & {
     right: 0;
+    left: auto;
+
     padding-top: dp(24 / 2);
     padding-right: dp(24 / 2);
     padding-bottom: dp(24 / 2);
@@ -323,25 +353,31 @@ $app__viewport-end-column: 4;
     }
   }
 }
+
 .mdw-app__snackbar .mdw-snackbar__container {
   position: relative;
 }
 
 .mdw-app__fab-anchor {
   position: absolute;
-  padding: dp(24);
+
+  // Left aligned
+  right: 0;
   bottom: 0;
+  left: auto;
+
+  padding: dp(24);
   @include margin16dp {
     padding: dp(16);
   }
+
+  transition-duration: inherit;
   transition-property: transform, right, padding-top, padding-bottom;
   transition-timing-function: inherit;
-  transition-duration: inherit;
-  // Left aligned
-  left: auto;
-  right: 0;
-  :root[dir=rtl] & {
+
+  :root[dir="rtl"] & {
     right: 100%;
+
     transform: translateX(100%);
   }
 }
@@ -351,14 +387,18 @@ $app__viewport-end-column: 4;
     .mdw-app__appbar {
       transform: translateY(-100%);
     }
+
     .mdw-app__appbar-shape {
-      box-shadow: elevation(0);
       filter: none;
+
+      box-shadow: elevation(0);
     }
+
     &[mdw-appbar-bottom] {
       .mdw-app__appbar {
         transform: translateY(100%);
       }
+
       .mdw-app__fab,
       .mdw-app__snackbar {
         transform: translateY(0);
@@ -372,14 +412,18 @@ $app__viewport-end-column: 4;
     .mdw-app__appbar {
       transform: translateY(-100%);
     }
+
     .mdw-app__appbar-shape {
-      box-shadow: elevation(0);
       filter: none;
+
+      box-shadow: elevation(0);
     }
+
     &[mdw-appbar-bottom] {
       .mdw-app__appbar {
         transform: translateY(100%);
       }
+
       .mdw-app__fab,
       .mdw-app__snackbar {
         transform: translateY(0);
@@ -390,52 +434,68 @@ $app__viewport-end-column: 4;
 
 @include viewport-max-8-columns {
   .mdw-app[mdw-appbar-autoraise][mdw-scrolltop]:not([mdw-appbar-bottom]) .mdw-app__appbar-shape {
-    box-shadow: elevation(0);
     filter: none;
+
+    box-shadow: elevation(0);
   }
+
   .mdw-app[mdw-appbar-autohide=""][mdw-appbar-hide] {
     .mdw-app__appbar {
       transform: translateY(-100%);
     }
+
     .mdw-app__appbar-shape {
-      box-shadow: elevation(0);
       filter: none;
+
+      box-shadow: elevation(0);
     }
+
     &[mdw-appbar-bottom] {
       .mdw-app__appbar {
         transform: translateY(100%);
       }
+
       .mdw-app__fab,
       .mdw-app__snackbar {
         transform: translateY(0);
       }
     }
   }
+
   .mdw-app[mdw-appbar-bottom] {
     .mdw-app__appbar {
-      @include cssGridRow($app__bottom-row);
-      bottom: 0;
+      @include mdw-app__grid-row($mdw-app__bottom-row);
       top: auto;
+      bottom: 0;
+
       z-index: 8;
     }
+
     .mdw-app__appbar-shape {
       box-shadow: elevation(8);
     }
+
     &[mdw-fab-mobile-cut] .mdw-app__appbar-shape {
       transition-property: filter;
-      box-shadow: elevation(0);
+
       filter: elevation(8, true);
-    }
-    &[mdw-appbar-autoraise][mdw-scrollbottom] .mdw-app__appbar-shape {
+
       box-shadow: elevation(0);
+    }
+
+    &[mdw-appbar-autoraise][mdw-scrollbottom] .mdw-app__appbar-shape {
       filter: none;
+
+      box-shadow: elevation(0);
     }
   }
+
   .mdw-app__snackbar-anchor {
     &,
-    :root[dir=rtl] & {
-      left: 0;
+    :root[dir="rtl"] & {
       right: 0;
+      left: 0;
+
       padding: dp(24 / 2);
       @include margin16dp {
         padding: dp(16 / 2);
@@ -446,35 +506,43 @@ $app__viewport-end-column: 4;
   // Mobile+Tablet
   .mdw-app[mdw-fab-mobile] {
     .mdw-app__snackbar-anchor {
-      transform: translateY(-56px);
       bottom: dp(24);
       @include margin16dp {
         bottom: dp(16);
       }
+
+      transform: translateY(#{dp(-56)});
     }
+
     .mdw-app__content {
-      padding-bottom: #{$app__fab-size + dp(24)};
+      padding-bottom: #{$mdw-app__fab-size + dp(24)};
     }
+
     &[mdw-fab-show] {
-      &[mdw-fab-mobile-cut][mdw-appbar-bottom] .mdw-app__fab-cut-track #fabMask > ellipse,
+      &[mdw-fab-mobile-cut][mdw-appbar-bottom] .mdw-app__fab-cut-track mask > ellipse,
       .mdw-app__fab .mdw-fab {
         transform: scale(1);
       }
     }
+
     &[mdw-fab-mobile-cut][mdw-appbar-bottom]:not([mdw-appbar-hide]) {
       .mdw-app__fab-anchor {
         padding-top: 0;
         padding-bottom: 0;
       }
+
       .mdw-app__fab .mdw-fab {
         transform: translateY(50%) scale(0);
       }
+
       &[mdw-fab-show] .mdw-app__fab .mdw-fab {
         transform: translateY(50%) scale(1);
       }
+
       .mdw-app__snackbar-anchor {
-        transform: translateY(-$app__fab-size / 2);
         bottom: 0;
+
+        transform: translateY(-$mdw-app__fab-size / 2);
       }
     }
   }
@@ -483,13 +551,17 @@ $app__viewport-end-column: 4;
     .mdw-app__fab-cut-track,
     .mdw-app__fab-anchor {
       right: 50%;
+
       transform: translateX(50%);
     }
   }
+
   .mdw-app[mdw-fab-mobile="full"] .mdw-app__fab-anchor {
-    left: 0;
     right: 0;
+    left: 0;
+
     transform: none;
+
     .mdw-fab__button {
       width: 100%;
     }
@@ -499,88 +571,100 @@ $app__viewport-end-column: 4;
 
 @include viewport-12-columns {
   .mdw-app[mdw-appbar-autoraise][mdw-scrolltop] .mdw-app__appbar-shape {
-    box-shadow: elevation(0);
     filter: none;
+
+    box-shadow: elevation(0);
   }
+
   .mdw-app[mdw-appbar-autohide=""][mdw-appbar-hide] {
     .mdw-app__appbar {
       transform: translateY(-100%);
     }
+
     .mdw-app__appbar-shape {
-      box-shadow: elevation(0);
       filter: none;
+
+      box-shadow: elevation(0);
     }
   }
+
   .mdw-app__snackbar-anchor {
     width: 50%;
   }
+
   .mdw-app[mdw-fab-desktop] {
     &[mdw-fab-show] .mdw-app__fab .mdw-fab {
       transform: scale(1);
     }
+
     &:not([mdw-fab-desktop="appbar"]) .mdw-app__content {
-      padding-bottom: #{$app__fab-size + dp(24)};
+      padding-bottom: #{$mdw-app__fab-size + dp(24)};
     }
   }
+
   .mdw-app[mdw-fab-desktop="appbar"] {
     .mdw-app__snackbar-anchor {
       width: 75%;
     }
+
     .mdw-app__fab-anchor {
-      padding-left: dp(8);
-      padding-top: 0;
-      padding-bottom: 0;
-      padding-right: dp(8);
-      left: 0;
+      top: 0;
       right: auto;
+      bottom: auto;
+      left: 0;
+
+      padding-top: 0;
+      padding-right: dp(8);
+      padding-bottom: 0;
+      padding-left: dp(8);
+
       transform: none;
-      :root[dir=rtl] & {
-        left: auto;
+
+      :root[dir="rtl"] & {
         right: 0;
+        left: auto;
       }
     }
 
     .mdw-app__fab {
-      @include cssGridRow($app__top-row);
+      @include mdw-app__grid-row($mdw-app__top-row);
+      top: 0;
+      bottom: auto;
+
       transform: translateY(100%);
-      top: 0;
-      bottom: auto;
     }
-    .mdw-app__fab-anchor {
-      top: 0;
-      bottom: auto;
-    }
+
     .mdw-app__fab .mdw-fab,
     &[mdw-fab-show][mdw-appbar-hide] .mdw-app__fab .mdw-fab {
       transform: translateY(-50%) scale(0);
     }
+
     &[mdw-fab-show] .mdw-app__fab .mdw-fab {
       transform: translateY(-50%) scale(1);
     }
   }
 }
 
-
-
-
 .mdw-app__fab-anchor .mdw-fab {
+  transition-duration: inherit;
   transition-property: transform;
   transition-timing-function: inherit;
-  transition-duration: inherit;
+
   transform: scale(0);
 }
 
 .mdw-app__bottomnav {
+  @include mdw-app__grid-column($mdw-app__content-column);
+  @include mdw-app__grid-row($mdw-app__bottom-row);
+
   display: none;
   position: static;
   position: -webkit-sticky;
   position: -moz-sticky;
   position: sticky;
   bottom: 0;
-  z-index: 4;
 
-  @include cssGridRow($app__bottom-row);
-  @include cssGridColumn($app__content-column);
+  z-index: 4;
 }
 
 @include viewport-12-columns {
@@ -591,6 +675,7 @@ $app__viewport-end-column: 4;
       display: none;
     }
   }
+
   .mdw-app:not([mdw-sidesheet-toggle]):not([mdw-sidesheet-style="modal"]) {
     .mdw-app__sidesheet-show,
     .mdw-app__sidesheet-hide,
@@ -608,71 +693,80 @@ $app__viewport-end-column: 4;
     position: sticky;
     top: 0;
     bottom: auto;
+
     transform: none;
   }
+
   .mdw-app[mdw-navdrawer-style~="clipped"] .mdw-app__navdrawer,
   .mdw-app[mdw-sidesheet-style~="clipped"] .mdw-app__sidesheet {
-    @include cssGridRow($app__banner-row, $app__bottom-row);
+    @include mdw-app__grid-row($mdw-app__banner-row, $mdw-app__bottom-row);
     z-index: 0;
   }
   
   .mdw-app[mdw-navdrawer-style~="clipped"][mdw-fab-appbar] .mdw-app__fab,
   .mdw-app[mdw-navdrawer-style~="clipped"] .mdw-app__appbar {
-    @include cssGridColumn($app__navdrawer-column, $app__content-column);
+    @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__content-column);
   }
+
   .mdw-app[mdw-navdrawer-style~="clipped"][mdw-sidesheet-style~="clipped"][mdw-fab-appbar] .mdw-app__fab,
   .mdw-app[mdw-sidesheet-style~="clipped"] .mdw-app__appbar {
-    @include cssGridColumn($app__content-column, $app__sidesheet-column);
+    @include mdw-app__grid-column($mdw-app__content-column, $mdw-app__sidesheet-column);
   }
+
   .mdw-app[mdw-navdrawer-style~="clipped"][mdw-sidesheet-style~="clipped"][mdw-fab-appbar] .mdw-app__fab,
   .mdw-app[mdw-navdrawer-style~="clipped"][mdw-sidesheet-style~="clipped"] .mdw-app__appbar {
-    @include cssGridColumn($app__navdrawer-column, $app__sidesheet-column);
+    @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__sidesheet-column);
   }
   
   .mdw-app[mdw-navdrawer-style~="floating"] .mdw-app__navdrawer,
   .mdw-app[mdw-sidesheet-style~="floating"] .mdw-app__sidesheet {
-    @include cssGridRow($app__content-row, $app__bottom-row);
+    @include mdw-app__grid-row($mdw-app__content-row, $mdw-app__bottom-row);
+
     & .mdw-app__sheet-content {
-      border-width: 0;
       height: auto;
+      border-width: 0;
     }
   }
 
   .mdw-app[mdw-navdrawer-style~="floating"] .mdw-app__banner {
-    @include cssGridColumn($app__navdrawer-column, $app__content-column);
+    @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__content-column);
   }
+
   .mdw-app[mdw-sidesheet-style~="floating"] .mdw-app__banner {
-    @include cssGridColumn($app__content-column, $app__sidesheet-column);
+    @include mdw-app__grid-column($mdw-app__content-column, $mdw-app__sidesheet-column);
   }
+
   .mdw-app[mdw-navdrawer-style~="floating"][mdw-sidesheet-style~="floating"] .mdw-app__banner {
-    @include cssGridColumn($app__navdrawer-column, $app__sidesheet-column);
+    @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__sidesheet-column);
   }
   
   .mdw-app[mdw-navdrawer-style~="floating"] .mdw-app__bottomnav {
-    @include cssGridColumn($app__navdrawer-column, $app__content-column);
+    @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__content-column);
   }
+
   .mdw-app[mdw-sidesheet-style~="floating"] .mdw-app__bottomnav {
-    @include cssGridColumn($app__content-column, $app__sidesheet-column);
+    @include mdw-app__grid-column($mdw-app__content-column, $mdw-app__sidesheet-column);
   }
 
   .mdw-app[mdw-navdrawer-style~="floating"][mdw-sidesheet-style~="floating"] .mdw-app__bottomnav {
-    @include cssGridColumn($app__navdrawer-column, $app__sidesheet-column);
+    @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__sidesheet-column);
   }
 
   .mdw-app[mdw-navdrawer-style~="clipped"] .mdw-app__body,
   .mdw-app[mdw-sidesheet-style~="clipped"] .mdw-app__body {
-    height: 100vh;
     overflow-y: hidden;
+
+    height: 100vh;
   }
+
   .mdw-app[mdw-navdrawer-style~="card"] .mdw-app__navdrawer,
-  .mdw-app[mdw-sidesheet-style~="card"] .mdw-app__sidesheet  {
-    padding: dp(24) 0;
-    margin: 0 dp(24);
-  }
-  .mdw-app[mdw-navdrawer-style~="card"] .mdw-app__navdrawer
   .mdw-app[mdw-sidesheet-style~="card"] .mdw-app__sidesheet {
+    margin: 0 dp(24);
+    padding: dp(24) 0;
+
     z-index: 8;
-    > .mdw-app__sheet-content {
+
+    & > .mdw-app__sheet-content {
       box-shadow: elevation(8);
     }
   }
@@ -680,112 +774,137 @@ $app__viewport-end-column: 4;
   .mdw-app[mdw-navdrawer-toggle~="dismissible"]:not([mdw-navdrawer-style="modal"]):not([mdw-navdrawer-show]) {
     .mdw-app__navdrawer {
       max-width: 0;
-      padding: 0;
       margin: 0;
+      padding: 0;
+
       .mdw-app__sheet-content {
         box-shadow: elevation(0);
       }
     }
   }
+
   .mdw-app[mdw-sidesheet-toggle~="dismissible"]:not([mdw-sidesheet-style="modal"]):not([mdw-sidesheet-show]) {
     .mdw-app__sidesheet {
       max-width: 0;
-      padding: 0;
       margin: 0;
+      padding: 0;
+
       .mdw-app__sheet-content {
         box-shadow: elevation(0);
       }
     }
   }
+
   .mdw-app[mdw-navdrawer-toggle~="mini"]:not([mdw-navdrawer-style="modal"]):not([mdw-navdrawer-show]) {
     .mdw-app__navdrawer {
-      min-width: $app__sheet-max-width__mini;
-      max-width: $app__sheet-max-width__mini;
+      min-width: $mdw-app__sheet-max-width__mini;
+      max-width: $mdw-app__sheet-max-width__mini;
     }
   }
+
   .mdw-app[mdw-sidesheet-toggle~="mini"]:not([mdw-sidesheet-style="modal"]):not([mdw-sidesheet-show]) {
     .mdw-app__sidesheet {
-      min-width: $app__sheet-max-width__mini;
-      max-width: $app__sheet-max-width__mini;
+      min-width: $mdw-app__sheet-max-width__mini;
+      max-width: $mdw-app__sheet-max-width__mini;
     }
   }
-  
 }
-
 
 @supports (position: sticky) or (position: -webkit-sticky) or (position: -moz-sticky) {
   .mdw-app__body {
-    height: auto;
     overflow-y: auto;
+
+    height: auto;
   }
 }
 
 .mdw-app__appbar-shape {
-  overflow: hidden;
+  display: flex;
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  overflow: hidden;
+
   height: 100%;
-  display: flex;
-  &::before, &::after {
+  width: 100%;
+
+  transition-duration: inherit;
+  transition-property: box-shadow;
+  transition-timing-function: inherit;
+  
+  box-shadow: elevation(4);
+
+  &::before,
+  &::after {
     content: '';
+
     min-width: dp(24);
     @include margin16dp {
       min-width: dp(16);
     }
   }
-  transition-property: box-shadow;
-  transition-timing-function: inherit;
-  transition-duration: inherit;
-  box-shadow: elevation(4);
 }
 
 .mdw-app__fab-cut-track {
   display: flex;
-  flex-direction: row;
   position: relative;
   top: 0;
   left: 0;
-  width: 100%;
+  flex-direction: row;
+
   height: 100%;
-  
-  &,
-  & > svg,
-  & > svg > #fabMask,
-  & > svg > #fabMask > ellipse {
-    transition-duration: inherit;
-    transition-timing-function: inherit;
-  }
+  width: 100%;
+
   transition-property: transform;
 
-  transform: translateX(100%) translateX(-($app__fab-size / 2));
-  &::before, &::after, & > svg {
+  transform: translateX(100%) translateX(-($mdw-app__fab-size / 2));
+
+  &::before,
+  &::after,
+  & > svg {
     position: absolute;
     top: 0;
+
     height: 100%;
-    
   }
-  &::before, &::after {
+
+  &::before,
+  &::after {
     content: '';
-    background-color: currentColor;
+
     width: 100%;
-    margin-left: -$app__fab-cut-size / 2;
+    margin-left: -$mdw-app__fab-cut-size / 2;
+
+    background-color: currentColor;
   }
+
   &::before {
     left: -100%;
   }
+
   &::after {
-    left: $app__fab-cut-size;
+    left: $mdw-app__fab-cut-size;
   }
+
+  &,
+  & > svg,
+  & > svg > mask,
+  & > svg > mask > ellipse {
+    transition-duration: inherit;
+    transition-timing-function: inherit;
+  }
+
   & > svg {
-    left: -$app__fab-cut-size / 2;
+    left: -$mdw-app__fab-cut-size / 2;
+
+    width: $mdw-app__fab-cut-size;
+
     fill: currentColor;
-    width: $app__fab-cut-size;
   }
   
-  #fabMask > ellipse {
+  mask > ellipse {
     transition-property: transform;
+    
     transform: scale(0);
   }
 }

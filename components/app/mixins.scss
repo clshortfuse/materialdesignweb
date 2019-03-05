@@ -1,15 +1,20 @@
-@mixin modal($side) {
-  .mdw-app[mdw-#{$side}-style="modal"] {
+@import '../common/responsive';
+
+@mixin mdw-app__modal($side) {
+  .mdw-app[mdw-#{$side}-style='modal'] {
     @content;
   }
+
   @include viewport-max-8-columns {
     @content;
   }
 }
-@mixin modal__shown($side) {
-  .mdw-app[mdw-#{$side}-style="modal"][mdw-#{$side}-show] {
+
+@mixin mdw-app__modal-shown($side) {
+  .mdw-app[mdw-#{$side}-style='modal'][mdw-#{$side}-show] {
     @content;
   }
+
   @include viewport-max-8-columns {
     .mdw-app[mdw-#{$side}-show] {
       @content;
@@ -17,23 +22,24 @@
   }
 }
 
-
-@mixin cssGridRow($top, $bottom: null) {
-  @if ($bottom == null) {
-    $bottom: $top;
-  }
-  grid-row-start: $top;
-  grid-row-end: span #{($bottom  - $top) + 1};
-  -ms-grid-row: $top;
-  -ms-grid-row-span: #{($bottom  - $top) + 1};
-}
-
-@mixin cssGridColumn($start, $end: null) {
+@mixin mdw-app__grid-column($start, $end: null) {
   @if ($end == null) {
     $end: $start;
   }
-  grid-column-start: $start;
-  grid-column-end: span #{($end - $start) + 1};
   -ms-grid-column: $start;
+  grid-column-start: $start;
   -ms-grid-column-span: #{($end - $start) + 1};
+  grid-column-end: span #{($end - $start) + 1};
 }
+
+
+@mixin mdw-app__grid-row($top, $bottom: null) {
+  @if ($bottom == null) {
+    $bottom: $top;
+  }
+  -ms-grid-row: $top;
+  grid-row-start: $top;
+  -ms-grid-row-span: #{($bottom  - $top) + 1};
+  grid-row-end: span #{($bottom  - $top) + 1};
+}
+

@@ -127,7 +127,7 @@ $added-palettes-list: ();
   @include globalThemeVariables($lightness);
 
   @if (index($mdw-theme__components, 'app')) {
-    @include appThemeVariables($lightness);
+    @include mdw-app__theme-variables($lightness);
   }
   @if (index($mdw-theme__components, 'banner')) {
     @include bannerThemeVariables($lightness);
@@ -184,7 +184,7 @@ $added-palettes-list: ();
   @include globalContrastAndThemeRules($type, $theme);
 
   @if (index($mdw-theme__components, 'app')) {
-    @include appContrastAndThemeRules($type, $theme);
+    @include mdw-app__contrast-and-theme-rules($type, $theme);
   }
   @if (index($mdw-theme__components, 'banner')) {
     @include bannerContrastAndThemeRules($type, $theme);

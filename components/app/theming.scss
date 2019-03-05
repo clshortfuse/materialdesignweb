@@ -1,7 +1,7 @@
 @import '../common/responsive.scss';
 @import '../common/theming.scss';
 
-$appColors: (
+$mdw-app__theme-values: (
   selected-color:        (('foreground-light', 1.00), ('foreground-dark', 1.00)),
   text-color:            (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   secondary-text-color:  (('foreground-light', 0.54), ('foreground-dark', 0.70)),
@@ -9,60 +9,69 @@ $appColors: (
   drawer-background:     ((#fff, 1.00),               ('background', '800', 1.00)),
   appbar-background:     ((#fff, 1.00),               ('background', '800', 1.00)),
   content-background:    (('background', '50', 1.00), ('background', '900' , 1.00))
-);
+) !default;
 
-@function appThemeValue($key, $type, $theme) {
-  @return themeValue('app', $appColors, $key, $type, $theme);
+@function mdwAppThemeValue($key, $type, $theme) {
+  @return themeValue('app', $mdw-app__theme-values, $key, $type, $theme);
 }
 
-@mixin appThemeVariables($lightness: null) {
-  @include themeVariables('app', $appColors, $lightness);
+@mixin mdw-app__theme-variables($lightness: null) {
+  @include themeVariables('app', $mdw-app__theme-values, $lightness);
 }
 
 // Vary by contrast or theme
-@mixin appContrastAndThemeRules($type: 'var', $theme: null) {
+@mixin mdw-app__contrast-and-theme-rules($type: 'var', $theme: null) {
   .mdw-app__body {
-    color: appThemeValue("text-color", $type, $theme);
-    background-color: appThemeValue("content-background", $type, $theme);
+    background-color: mdwAppThemeValue("content-background", $type, $theme);
+    color: mdwAppThemeValue("text-color", $type, $theme);
   }
+
   .mdw-app__sheet-content {
-    background-color: appThemeValue("drawer-background", $type, $theme);
-    border-color: appThemeValue("divider-color", $type, $theme);
+    background-color: mdwAppThemeValue("drawer-background", $type, $theme);
+    border-color: mdwAppThemeValue("divider-color", $type, $theme);
   }
+
   .mdw-app__navdrawer {
     .mdw-list__item[mdw-selected]:not([mdw-theme-color]) {
-      color: appThemeValue("selected-color", $type, $theme);
+      color: mdwAppThemeValue("selected-color", $type, $theme);
     }
+
     .mdw-list__item:not([mdw-selected]) {
       .mdw-list__icon {
-        color: appThemeValue("secondary-text-color", $type, $theme);
+        color: mdwAppThemeValue("secondary-text-color", $type, $theme);
       }
+
       .mdw-list__text {
-        color: appThemeValue("text-color", $type, $theme);
+        color: mdwAppThemeValue("text-color", $type, $theme);
       }
     }
+
     .mdw-list__subheader {
-      color: appThemeValue("secondary-text-color", $type, $theme);
+      color: mdwAppThemeValue("secondary-text-color", $type, $theme);
     }
   }
+
   .mdw-app__appbar {
-    background-color: appThemeValue("appbar-background", $type, $theme);
+    background-color: mdwAppThemeValue("appbar-background", $type, $theme);
   }
+
   .mdw-app__appbar-shape {
     color: transparent;
   }
+
   .mdw-app[mdw-fab-mobile-cut] {
     .mdw-app__appbar {
       background-color: transparent;
     }
+
     .mdw-app__appbar-shape {
-      color: appThemeValue("appbar-background", $type, $theme);
+      color: mdwAppThemeValue("appbar-background", $type, $theme);
     }
   }
   @include viewport-12-columns {
     .mdw-app[mdw-navdrawer-style~="floating"]:not([mdw-navdrawer-style~="card"]) .mdw-app__sheet-content,
     .mdw-app[mdw-sidesheet-style~="floating"]:not([mdw-sidesheet-style~="card"]) .mdw-app__sheet-content {
-      background-color: appThemeValue("content-background", $type, $theme);
+      background-color: mdwAppThemeValue("content-background", $type, $theme);
     }
   }
 }
