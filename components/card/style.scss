@@ -9,7 +9,7 @@ $mdw-card__horizontal-padding: dp(16);
 
 .mdw-card {
   border-radius: dp(4);
-  box-shadow: elevation(0);
+  box-shadow: mdwElevation(0);
   display: block;
   outline: none;
   @include type-rules('body-2');
@@ -32,7 +32,7 @@ $mdw-card__horizontal-padding: dp(16);
 
   @include allHandsetsAndTablets() {
     &:not([mdw-elevation]) {
-      box-shadow: elevation(1);
+      box-shadow: mdwElevation(1);
       &::before {
         border-color: transparent;
       }
@@ -40,14 +40,14 @@ $mdw-card__horizontal-padding: dp(16);
   }
 
   &[mdw-elevation="1"] {
-    box-shadow: elevation(1);
+    box-shadow: mdwElevation(1);
   }
 
   &[mdw-elevation="8"],
   &[mdw-raised~="hover"]:hover,
   &[mdw-raised~="focus"]:focus,
   &[mdw-raised~="focus-within"]:focus-within {
-    box-shadow: elevation(8);
+    box-shadow: mdwElevation(8);
   }
 
   &[mdw-elevation="1"],

@@ -199,9 +199,9 @@ $button__outline-size: dp(1);
 
 // Raised
 .mdw-button[mdw-raised] {
-  box-shadow: elevation(2);
+  box-shadow: mdwElevation(2);
   &:active {
-    box-shadow: elevation(8);
+    box-shadow: mdwElevation(8);
   }
 }
 
@@ -209,7 +209,7 @@ $button__outline-size: dp(1);
   cursor: not-allowed;
   &,
   &[mdw-raised] {
-    box-shadow: elevation(0);
+    box-shadow: mdwElevation(0);
   }
   & > .mdw-ripple,
   &::before,

@@ -117,7 +117,7 @@ $navdrawer__min-width__mini: dp(56) !default;
   }
   min-width: $navdrawer__min-width;
   transform: translateX(0);
-  box-shadow: elevation(0);
+  box-shadow: mdwElevation(0);
   transition-property: box-shadow, transform, min-width, max-width;
   transition-timing-function: inherit;
   transition-duration: inherit;
@@ -168,12 +168,12 @@ $navdrawer__min-width__mini: dp(56) !default;
 }
 
 .mdw-navdrawer__drawer .mdw-list__item {
-  &:before,
+  &::before,
   & > .mdw-ripple {
     margin: 4px 8px;
     border-radius: dp(4);
   }
-  &:before {
+  &::before {
     transition-property: background-color, opacity;
   }
   &[mdw-selected] {
@@ -379,7 +379,7 @@ $navdrawer__min-width__mini: dp(56) !default;
     grid-column-end: span 3;
     -ms-grid-column-span: 3;
     min-width: auto;
-    box-shadow: elevation(0);
+    box-shadow: mdwElevation(0);
     transform: translateX(-100%);
     :root[dir=rtl] & {
       transform: translateX(100%);
@@ -398,7 +398,7 @@ $navdrawer__min-width__mini: dp(56) !default;
 @mixin mdw-navdrawer__modal__shown {
   > .mdw-navdrawer__drawer {
     transform: translateX(0);
-    box-shadow: elevation(16);
+    box-shadow: mdwElevation(16);
     grid-row-end: span 3;
     -ms-grid-row-span: 3;
   }
@@ -577,7 +577,7 @@ $navdrawer__min-width__mini: dp(56) !default;
       -ms-grid-column-span: 1;
       margin: 8px;
       border-radius: dp(2);
-      box-shadow: elevation(8);
+      box-shadow: mdwElevation(8);
       grid-row-end: span 1;
       -ms-grid-row-span: 1;
     }

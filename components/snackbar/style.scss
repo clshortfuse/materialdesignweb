@@ -38,7 +38,7 @@ $snackbar__scale-up__from: 0.85;
   max-width: 100%;
   border-radius: dp(4);
   
-  box-shadow: elevation(6);
+  box-shadow: mdwElevation(6);
   @include type-rules('body-2');
 
   display: flex;

@@ -154,7 +154,7 @@ $mdw-app__viewport-end-column: 4 !default;
   z-index: 4; // Match app-bar when full-height
 
   background-color: inherit;
-  box-shadow: elevation(0);
+  box-shadow: mdwElevation(0);
 }
 
 .mdw-app__sheet-content {
@@ -248,7 +248,7 @@ $mdw-app__viewport-end-column: 4 !default;
     .mdw-app__#{$side} {
       transform: translateX(0);
 
-      box-shadow: elevation(16);
+      box-shadow: mdwElevation(16);
     }
   }
 }
@@ -391,7 +391,7 @@ $mdw-app__viewport-end-column: 4 !default;
     .mdw-app__appbar-shape {
       filter: none;
 
-      box-shadow: elevation(0);
+      box-shadow: mdwElevation(0);
     }
 
     &[mdw-appbar-bottom] {
@@ -416,7 +416,7 @@ $mdw-app__viewport-end-column: 4 !default;
     .mdw-app__appbar-shape {
       filter: none;
 
-      box-shadow: elevation(0);
+      box-shadow: mdwElevation(0);
     }
 
     &[mdw-appbar-bottom] {
@@ -436,7 +436,7 @@ $mdw-app__viewport-end-column: 4 !default;
   .mdw-app[mdw-appbar-autoraise][mdw-scrolltop]:not([mdw-appbar-bottom]) .mdw-app__appbar-shape {
     filter: none;
 
-    box-shadow: elevation(0);
+    box-shadow: mdwElevation(0);
   }
 
   .mdw-app[mdw-appbar-autohide=""][mdw-appbar-hide] {
@@ -447,7 +447,7 @@ $mdw-app__viewport-end-column: 4 !default;
     .mdw-app__appbar-shape {
       filter: none;
 
-      box-shadow: elevation(0);
+      box-shadow: mdwElevation(0);
     }
 
     &[mdw-appbar-bottom] {
@@ -472,21 +472,21 @@ $mdw-app__viewport-end-column: 4 !default;
     }
 
     .mdw-app__appbar-shape {
-      box-shadow: elevation(8);
+      box-shadow: mdwElevation(8);
     }
 
     &[mdw-fab-mobile-cut] .mdw-app__appbar-shape {
       transition-property: filter;
 
-      filter: elevation(8, true);
+      filter: mdwElevation(8, true);
 
-      box-shadow: elevation(0);
+      box-shadow: mdwElevation(0);
     }
 
     &[mdw-appbar-autoraise][mdw-scrollbottom] .mdw-app__appbar-shape {
       filter: none;
 
-      box-shadow: elevation(0);
+      box-shadow: mdwElevation(0);
     }
   }
 
@@ -573,7 +573,7 @@ $mdw-app__viewport-end-column: 4 !default;
   .mdw-app[mdw-appbar-autoraise][mdw-scrolltop] .mdw-app__appbar-shape {
     filter: none;
 
-    box-shadow: elevation(0);
+    box-shadow: mdwElevation(0);
   }
 
   .mdw-app[mdw-appbar-autohide=""][mdw-appbar-hide] {
@@ -584,7 +584,7 @@ $mdw-app__viewport-end-column: 4 !default;
     .mdw-app__appbar-shape {
       filter: none;
 
-      box-shadow: elevation(0);
+      box-shadow: mdwElevation(0);
     }
   }
 
@@ -767,7 +767,7 @@ $mdw-app__viewport-end-column: 4 !default;
     z-index: 8;
 
     & > .mdw-app__sheet-content {
-      box-shadow: elevation(8);
+      box-shadow: mdwElevation(8);
     }
   }
 
@@ -778,7 +778,7 @@ $mdw-app__viewport-end-column: 4 !default;
       padding: 0;
 
       .mdw-app__sheet-content {
-        box-shadow: elevation(0);
+        box-shadow: mdwElevation(0);
       }
     }
   }
@@ -790,7 +790,7 @@ $mdw-app__viewport-end-column: 4 !default;
       padding: 0;
 
       .mdw-app__sheet-content {
-        box-shadow: elevation(0);
+        box-shadow: mdwElevation(0);
       }
     }
   }
@@ -832,7 +832,7 @@ $mdw-app__viewport-end-column: 4 !default;
   transition-property: box-shadow;
   transition-timing-function: inherit;
   
-  box-shadow: elevation(4);
+  box-shadow: mdwElevation(4);
 
   &::before,
   &::after {

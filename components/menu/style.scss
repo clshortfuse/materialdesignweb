@@ -41,7 +41,7 @@ $menu__unit-width: dp(56);
       }
       transform: scale(1);
       opacity: 1;
-      box-shadow: elevation(8);
+      box-shadow: mdwElevation(8);
     }
   }
 
@@ -189,7 +189,7 @@ $menu__unit-width: dp(56);
   right: inherit;
   transform-origin: inherit;
   transform: scale(0);
-  box-shadow: elevation(0);
+  box-shadow: mdwElevation(0);
   opacity: 0;
   margin-left: dp(8);
   margin-right: dp(8);

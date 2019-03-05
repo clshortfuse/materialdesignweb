@@ -278,7 +278,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     border-style: none;
     z-index: 1;
     transform: translateX(0);
-    box-shadow: elevation(1);
+    box-shadow: mdwElevation(1);
     transition-property: background-color, transform;
   }
   &:checked ~ .mdw-selection__icon::before {

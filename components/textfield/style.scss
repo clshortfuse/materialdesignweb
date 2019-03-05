@@ -807,7 +807,7 @@ select.mdw-textfield__input {
       }
       transition-timing-function: $motion-easing-acceleration;
 
-      box-shadow: elevation(24);
+      box-shadow: mdwElevation(24);
 
       &[mdw-type="list"] {
         max-height: calc(dp(300));

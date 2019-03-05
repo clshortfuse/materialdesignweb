@@ -45,9 +45,9 @@ $fab-button__icon-size: dp(24);
   border-radius: dp(32);
   min-height: 0;
   min-width: 0;
-  box-shadow: elevation(6);
+  box-shadow: mdwElevation(6);
   &:active {
-    box-shadow: elevation(12);
+    box-shadow: mdwElevation(12);
   }
   padding: dp(16);
   margin: 0;
@@ -186,9 +186,9 @@ $fab-button__icon-size: dp(24);
           transition-delay: #{($i - 1) * $fab-button__delay};
         }
       }
-      box-shadow: elevation(6);
+      box-shadow: mdwElevation(6);
       &:active {
-        box-shadow: elevation(12);
+        box-shadow: mdwElevation(12);
       }
     }
   }
