@@ -1,4 +1,4 @@
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 @import '../common/theming.scss';
 
 $mdw-app__theme-values: (
@@ -68,7 +68,7 @@ $mdw-app__theme-values: (
       color: mdwAppThemeValue("appbar-background", $type, $theme);
     }
   }
-  @include viewport-12-columns {
+  @include mdw-breakpoint__12-columns {
     .mdw-app[mdw-navdrawer-style~="floating"]:not([mdw-navdrawer-style~="card"]) .mdw-app__sheet-content,
     .mdw-app[mdw-sidesheet-style~="floating"]:not([mdw-sidesheet-style~="card"]) .mdw-app__sheet-content {
       background-color: mdwAppThemeValue("content-background", $type, $theme);

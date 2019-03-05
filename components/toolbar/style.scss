@@ -3,7 +3,7 @@
 
 @import '../common/motion.scss';
 @import '../common/platform.scss';
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 @import '../common/type.scss';
 
 $toolbar__height: 64;
@@ -28,10 +28,10 @@ $toolbar__icon-height: 40;
   }
   transition-timing-function: $mdw-motion__standard-easing;
   transition-duration: $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
 }
@@ -49,16 +49,16 @@ $toolbar__icon-height: 40;
   }
   .mdw-toolbar[mdw-dense][mdw-prominent] > & {
     min-height: dp($toolbar__height-prominent-dense);
-    @include allHandsetsAndTablets {
+    @include mdw-breakpoint__tablet-device__max {
       min-height: dp($toolbar__height-prominent);
     }
   }
   .mdw-toolbar[mdw-dense] > &,
   & {
-    @include allHandsetsAndTablets {
+    @include mdw-breakpoint__tablet-device__max {
       min-height: dp($toolbar__height-mobile);
     }
-    @include landscapeHandsets {
+    @include mdw-breakpoint__mobile-device__landscape {
       min-height: dp($toolbar__height-mobile-landscape);
     }
   }
@@ -70,7 +70,7 @@ $toolbar__icon-height: 40;
 .mdw-toolbar__content {
   margin-left: dp(80);
   margin-right: dp(24);
-  @include margin16dp {
+  @include mdw-breakpoint__16dp-margin {
     margin-left: dp(72);
     margin-right: dp(16);
   }
@@ -99,10 +99,10 @@ $toolbar__icon-height: 40;
   }
   .mdw-toolbar[mdw-dense] &,
   & {
-    @include allHandsetsAndTablets {
+    @include mdw-breakpoint__tablet-device__max {
       @include baseline-bottom(20);
     }
-    @include landscapeHandsets {
+    @include mdw-breakpoint__mobile-device__landscape {
       @include baseline-bottom(16);
     }
   }
@@ -126,7 +126,7 @@ $toolbar__icon-height: 40;
   order: -1;
   margin-left: dp(8);
   padding: 0 dp(8);
-  @include margin16dp {
+  @include mdw-breakpoint__16dp-margin {
     margin-left: 0;
   }
 }
@@ -135,14 +135,14 @@ $toolbar__icon-height: 40;
   order: 1;
   margin-left: 0;
   margin-right: dp(12);
-  @include margin16dp {
+  @include mdw-breakpoint__16dp-margin {
     margin-left: 0;
     margin-right: dp(4);
   }
   [dir=rtl] & {
     margin-left: dp(12);
     margin-right: 0;
-    @include margin16dp {
+    @include mdw-breakpoint__16dp-margin {
       margin-left: dp(4);
       margin-right: 0;
     }
@@ -166,10 +166,10 @@ $toolbar__icon-height: 40;
   }
   &,
   .mdw-toolbar[mdw-dense] & {
-    @include allHandsetsAndTablets {
+    @include mdw-breakpoint__tablet-device__max {
       margin-top: dp(($toolbar__height-mobile - $toolbar__icon-height) / 2);
     }
-    @include landscapeHandsets {
+    @include mdw-breakpoint__mobile-device__landscape {
       margin-top: dp(($toolbar__height-mobile-landscape - $toolbar__icon-height) / 2);
     }
   }

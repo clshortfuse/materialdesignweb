@@ -3,7 +3,7 @@
 
 @import '../common/motion.scss';
 @import '../common/platform.scss';
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 
 $layout__margin: dp(24);
 $layout__gutter: dp(24);
@@ -103,10 +103,10 @@ $layout__gutter: dp(24);
   transition-property: flex, width, padding;
   transition-timing-function: $mdw-motion__standard-easing;
   transition-duration: $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
 
@@ -126,7 +126,7 @@ $layout__gutter: dp(24);
   }
 }
 
-@include margin16dp {
+@include mdw-breakpoint__16dp-margin {
   .mdw-layout {
     padding-left: dp(16);
     padding-right: dp(16);
@@ -162,7 +162,7 @@ $layout__gutter: dp(24);
     @include layoutItem(8);
   }
 }
-@include viewport-max-8-columns {
+@include mdw-breakpoint__8-columns__max {
   .mdw-layout {
     grid-template-columns: repeat(8, 1fr);
     -ms-grid-columns: unquote("(1fr)[8]");
@@ -181,7 +181,7 @@ $layout__gutter: dp(24);
   }
 }
 
-@include viewport-4-columns() {
+@include mdw-breakpoint__4-columns() {
   .mdw-layout,
   .mdw-layout[mdw-columns="8"] {
     grid-template-columns: repeat(4, 1fr);
@@ -231,7 +231,7 @@ $layout__gutter: dp(24);
 }
 
 // 8-col layouts use 8col variable
-@include viewport-max-8-columns {
+@include mdw-breakpoint__8-columns__max {
   @each $value in (0, 8, 16, 24, 40) {
     .mdw-layout[mdw-margin-8col="#{$value}"] {
       padding-left: dp($value);
@@ -256,7 +256,7 @@ $layout__gutter: dp(24);
 
 // 4col layouts use 4col variable
 // Overrides 8col and 12col
-@include viewport-4-columns {
+@include mdw-breakpoint__4-columns {
   @each $value in (0, 8, 16, 24, 40) {
     .mdw-layout,
     .mdw-layout[mdw-columns="8"] {

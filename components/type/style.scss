@@ -1,7 +1,7 @@
 // https://material.io/guidelines/style/typography.html
 
 @import '../common/platform.scss';
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 @import '../common/type.scss';
 
 h1.mdw-type,
@@ -115,7 +115,7 @@ p.mdw-type,
 }
 .mdw-type[mdw-style|="subheading"] {
   font-size: sp(15);
-  @include allHandsetsAndTablets() {
+  @include mdw-breakpoint__tablet-device__max() {
       font-size: sp(16);
   }
   font-weight: $font-weight-regular;
@@ -123,7 +123,7 @@ p.mdw-type,
 }
 .mdw-type[mdw-style="subheading-2"] {
   line-height: sp(28);
-  @include allHandsetsAndTablets() {
+  @include mdw-breakpoint__tablet-device__max() {
       line-height: sp(28);
   }
 }

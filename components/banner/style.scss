@@ -1,7 +1,7 @@
 // https://material.io/design/components/banners.html
 
 @import '../common/platform.scss';
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 @import '../common/type.scss';
 
 .mdw-banner {
@@ -68,7 +68,7 @@
     padding-left: 0;
   }
 
-  @include margin16dp {
+  @include mdw-breakpoint__16dp-margin {
     padding-right: 0;
     padding-left: dp(16);
 
@@ -101,7 +101,7 @@
   }
 }
 
-@include viewport-min-medium {
+@include mdw-breakpoint__medium-window__min {
   .mdw-banner {
     flex-wrap: nowrap;
   }

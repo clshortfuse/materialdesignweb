@@ -1,11 +1,11 @@
-@import '../common/responsive';
+@import '../common/breakpoint.scss';
 
 @mixin mdw-app__modal($side) {
   .mdw-app[mdw-#{$side}-style='modal'] {
     @content;
   }
 
-  @include viewport-max-8-columns {
+  @include mdw-breakpoint__8-columns__max {
     @content;
   }
 }
@@ -15,7 +15,7 @@
     @content;
   }
 
-  @include viewport-max-8-columns {
+  @include mdw-breakpoint__8-columns__max {
     .mdw-app[mdw-#{$side}-show] {
       @content;
     }

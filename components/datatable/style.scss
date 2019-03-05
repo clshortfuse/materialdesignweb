@@ -3,7 +3,7 @@
 
 @import '../common/platform.scss';
 @import '../common/motion.scss';
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 @import '../common/type.scss';
 
 $mdw-datatable__icon-size: dp(16);
@@ -146,10 +146,10 @@ $mdw-datatable__icon-size: dp(16);
   max-width: 0;
   transition-timing-function: $mdw-motion__standard-easing;
   transition-duration: $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
   color: transparent;

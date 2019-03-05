@@ -3,7 +3,7 @@
 
 @import '../common/motion.scss';
 @import '../common/platform.scss';
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 @import '../common/type.scss';
 
 $dialog__unit-width: dp(56);
@@ -58,10 +58,10 @@ $dialog__unit-width: dp(56);
   transition-property: opacity, visibility;
   transition-timing-function: $mdw-motion__decelerate-easing;
   transition-duration: $mdw-motion__leave-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__leave-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__leave-duration__tablet;
   }
   @for $i from 3 to 8 {
@@ -80,10 +80,10 @@ $dialog__unit-width: dp(56);
     pointer-events: auto;
     transition-timing-function: $mdw-motion__accelerate-easing;
     transition-duration: $mdw-motion__enter-duration__desktop;
-    @include allHandsets {
+    @include mdw-breakpoint__mobile-device {
       transition-duration: $mdw-motion__enter-duration__mobile;
     }
-    @include allTablets {
+    @include mdw-breakpoint__tablet-device {
       transition-duration: $mdw-motion__enter-duration__tablet;
     }
     .mdw-dialog__popup {

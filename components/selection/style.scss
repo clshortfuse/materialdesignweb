@@ -3,7 +3,7 @@
 
 @import '../common/motion.scss';
 @import '../common/platform.scss';
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 
 $ripple-size: dp(48);
 $icon-size: dp(24);
@@ -24,17 +24,17 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   flex-direction: row;
   position: relative;
   animation-duration: $mdw-motion__enter-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     animation-duration: $mdw-motion__enter-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     animation-duration: $mdw-motion__enter-duration__tablet;
   }
   transition-duration: $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
 }

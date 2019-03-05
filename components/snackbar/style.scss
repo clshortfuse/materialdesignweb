@@ -2,7 +2,7 @@
 
 @import '../common/motion.scss';
 @import '../common/platform.scss';
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 @import '../common/type.scss';
 
 $snackbar__scale-up__from: 0.85;
@@ -56,10 +56,10 @@ $snackbar__scale-up__from: 0.85;
   animation-fill-mode: forwards;
   animation-timing-function: $mdw-motion__accelerate-easing;
   animation-duration: $mdw-motion__enter-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     animation-duration: $mdw-motion__enter-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     animation-duration: $mdw-motion__enter-duration__tablet;
   }
 
@@ -76,10 +76,10 @@ $snackbar__scale-up__from: 0.85;
     animation-name: hideSnackbar;
     animation-timing-function: $mdw-motion__decelerate-easing;
     animation-duration: $mdw-motion__leave-duration__desktop;
-    @include allHandsets {
+    @include mdw-breakpoint__mobile-device {
       animation-duration: $mdw-motion__leave-duration__mobile;
     }
-    @include allTablets {
+    @include mdw-breakpoint__tablet-device {
       animation-duration: $mdw-motion__leave-duration__tablet;
     }
   }
@@ -129,7 +129,7 @@ $snackbar__scale-up__from: 0.85;
   @include baseline-bottom(48 - 30);
 }
 
-@include viewport-xsmall {
+@include mdw-breakpoint__xsmall-window {
   .mdw-snackbar {
     left: 0;
     right: 0;

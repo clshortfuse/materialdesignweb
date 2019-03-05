@@ -1,6 +1,6 @@
 @import "../common/platform.scss";
 @import "../common/motion.scss";
-@import "../common/responsive.scss";
+@import "../common/breakpoint.scss";
 
 /**
  * --Issues rendering a circle inside an element--
@@ -47,10 +47,10 @@
     animation-fill-mode: forwards;
     animation-timing-function: linear;
     animation-duration: $mdw-motion__default-duration__desktop;
-    @include allHandsets {
+    @include mdw-breakpoint__mobile-device {
       animation-duration: $mdw-motion__default-duration__mobile;
     }
-    @include allTablets {
+    @include mdw-breakpoint__tablet-device {
       animation-duration: $mdw-motion__default-duration__tablet;
     }
     pointer-events: none;
@@ -60,10 +60,10 @@
       animation-name: ripple-fade-in, ripple-fade-out;
       animation-timing-function: linear, $mdw-motion__accelerate-easing;
       animation-delay: 0s, $mdw-motion__default-duration__desktop;
-      @include allHandsets {
+      @include mdw-breakpoint__mobile-device {
         animation-delay: 0s, $mdw-motion__default-duration__mobile;
       }
-      @include allTablets {
+      @include mdw-breakpoint__tablet-device {
         animation-delay: 0s, $mdw-motion__default-duration__tablet;
       }
     }
@@ -142,7 +142,7 @@
     $mdw-motion__max-duration__desktop / 2,
     $mdw-motion__max-duration__desktop / 2;
     
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-delay:
       0s,
       0s,
@@ -152,7 +152,7 @@
       $mdw-motion__max-duration__mobile / 2,
       $mdw-motion__max-duration__mobile / 2;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-delay:
       0s,
       0s,

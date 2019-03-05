@@ -4,7 +4,7 @@
 
 @import '../common/motion.scss';
 @import '../common/platform.scss';
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 @import '../common/type.scss';
 
 $navdrawer__min-width: dp(256) !default;
@@ -23,20 +23,20 @@ $navdrawer__min-width__mini: dp(56) !default;
   -ms-grid-columns: auto 16px 1fr;
   transition-timing-function: $mdw-motion__decelerate-easing;
   transition-duration: $mdw-motion__leave-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__leave-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__leave-duration__tablet;
   }
   &[id]:target,
   &[mdw-show]:not([mdw-hide]) {
     transition-timing-function: $mdw-motion__accelerate-easing;
     transition-duration: $mdw-motion__enter-duration__desktop;
-    @include allHandsets {
+    @include mdw-breakpoint__mobile-device {
       transition-duration: $mdw-motion__enter-duration__mobile;
     }
-    @include allTablets {
+    @include mdw-breakpoint__tablet-device {
       transition-duration: $mdw-motion__enter-duration__tablet;
     }
   }
@@ -112,7 +112,7 @@ $navdrawer__min-width__mini: dp(56) !default;
   grid-row-end: span 3;
   -ms-grid-row-span: 3;
   max-width: calc(100vw - 64px); // Tablet or Desktop
-  @include viewport-xsmall {
+  @include mdw-breakpoint__xsmall-window {
     max-width: calc(100vw - 56px);
   }
   min-width: $navdrawer__min-width;
@@ -607,7 +607,7 @@ $navdrawer__min-width__mini: dp(56) !default;
   &[mdw-mini],
   &[mdw-clipped],
   &[mdw-floating] {
-    @include viewport-xsmall {
+    @include mdw-breakpoint__xsmall-window {
       @include mdw-navdrawer__modal;
       &[id]:target,
       &[mdw-show]:not([mdw-hide]) {
@@ -615,7 +615,7 @@ $navdrawer__min-width__mini: dp(56) !default;
       }
     }
     &:not([mdw-dismissible]) {
-      @include viewport-max-medium {
+      @include mdw-breakpoint__medium-window__max {
         @include mdw-navdrawer__modal;
         &[id]:target,
         &[mdw-show]:not([mdw-hide]) {

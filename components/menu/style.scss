@@ -33,10 +33,10 @@ $menu__unit-width: dp(56);
     .mdw-menu__popup {
       transition-timing-function: $mdw-motion__accelerate-easing;
       transition-duration: $mdw-motion__enter-duration__desktop;
-      @include allHandsets {
+      @include mdw-breakpoint__mobile-device {
         transition-duration: $mdw-motion__enter-duration__mobile;
       }
-      @include allTablets {
+      @include mdw-breakpoint__tablet-device {
         transition-duration: $mdw-motion__enter-duration__tablet;
       }
       transform: scale(1);
@@ -176,10 +176,10 @@ $menu__unit-width: dp(56);
   transition-property: transform, box-shadow, opacity;
   transition-timing-function: $mdw-motion__decelerate-easing;
   transition-duration: $mdw-motion__leave-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__leave-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__leave-duration__tablet;
   }
   

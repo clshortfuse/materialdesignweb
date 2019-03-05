@@ -126,10 +126,10 @@ ul.mdw-list {
     animation-fill-mode: forwards;
     animation-timing-function: $mdw-motion__accelerate-easing;
     animation-duration: $mdw-motion__leave-duration__desktop;
-    @include allHandsets {
+    @include mdw-breakpoint__mobile-device {
       animation-duration: $mdw-motion__leave-duration__mobile;
     }
-    @include allTablets {
+    @include mdw-breakpoint__tablet-device {
       animation-duration: $mdw-motion__leave-duration__tablet;
     }
     &:not(:first-child) {
@@ -144,10 +144,10 @@ ul.mdw-list {
       transition-property: transform;
       transition-timing-function: $mdw-motion__standard-easing;
       transition-duration: $mdw-motion__default-duration__desktop;
-      @include allHandsets {
+      @include mdw-breakpoint__mobile-device {
         transition-duration: $mdw-motion__default-duration__mobile;
       }
-      @include allTablets {
+      @include mdw-breakpoint__tablet-device {
         transition-duration: $mdw-motion__default-duration__tablet;
       }
     }
@@ -160,10 +160,10 @@ ul.mdw-list {
     animation-name: expandRow;
     animation-timing-function: $mdw-motion__decelerate-easing;
     animation-duration: $mdw-motion__enter-duration__desktop;
-    @include allHandsets {
+    @include mdw-breakpoint__mobile-device {
       animation-duration: $mdw-motion__enter-duration__mobile;
     }
-    @include allTablets {
+    @include mdw-breakpoint__tablet-device {
       animation-duration: $mdw-motion__enter-duration__tablet;
     }
   }

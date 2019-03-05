@@ -3,7 +3,7 @@
 @import '../common/elevation.scss';
 @import '../common/motion.scss';
 @import '../common/platform.scss';
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 
 $fab-button__delay: 40ms;
 $fab-button__padding: dp(16);
@@ -82,10 +82,10 @@ $fab-button__icon-size: dp(24);
     transition-property: transform, opacity;
     transition-timing-function: $mdw-motion__decelerate-easing;
     transition-duration: $mdw-motion__leave-duration__desktop;
-    @include allHandsets {
+    @include mdw-breakpoint__mobile-device {
       transition-duration: $mdw-motion__leave-duration__mobile;
     }
-    @include allTablets {
+    @include mdw-breakpoint__tablet-device {
       transition-duration: $mdw-motion__leave-duration__tablet;
     }
     transform: scale(0);
@@ -175,10 +175,10 @@ $fab-button__icon-size: dp(24);
       opacity: 1;
       transition-timing-function: $mdw-motion__accelerate-easing;
       transition-duration: $mdw-motion__enter-duration__desktop;
-      @include allHandsets {
+      @include mdw-breakpoint__mobile-device {
         transition-duration: $mdw-motion__enter-duration__mobile;
       }
-      @include allTablets {
+      @include mdw-breakpoint__tablet-device {
         transition-duration: $mdw-motion__enter-duration__tablet;
       }
       @for $i from 1 through 6 {

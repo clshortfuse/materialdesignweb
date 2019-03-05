@@ -2,7 +2,7 @@
 
 @import '../common/motion.scss';
 @import '../common/platform.scss';
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 @import '../common/type.scss';
 
 $mdw-card__horizontal-padding: dp(16);
@@ -30,7 +30,7 @@ $mdw-card__horizontal-padding: dp(16);
     pointer-events: none;
   }
 
-  @include allHandsetsAndTablets() {
+  @include mdw-breakpoint__tablet-device__max() {
     &:not([mdw-elevation]) {
       box-shadow: mdwElevation(1);
       &::before {
@@ -60,10 +60,10 @@ $mdw-card__horizontal-padding: dp(16);
   transition-property: box-shadow;
   transition-timing-function: $mdw-motion__standard-easing;
   transition-duration: $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
 }

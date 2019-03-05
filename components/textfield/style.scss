@@ -4,7 +4,7 @@
 
 @import '../common/motion.scss';
 @import '../common/platform.scss';
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 @import '../common/type.scss';
 
 $mdw-textfield__border-line-height: dp(1) !default;
@@ -36,10 +36,10 @@ $mdw-textfield__outline-end-width: dp(8) !default;
   padding: dp(8) 0;
 
   transition-duration: $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
   transition-timing-function: $mdw-motion__standard-easing;
@@ -122,10 +122,10 @@ $mdw-textfield__outline-end-width: dp(8) !default;
   grid-row: 1;
   
   transition-duration: $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
   transition-property: color;
@@ -181,10 +181,10 @@ $mdw-textfield__outline-end-width: dp(8) !default;
 
     transition-delay: 1ms;
     transition-duration: $mdw-motion__default-duration__desktop / 2;
-    @include allHandsets {
+    @include mdw-breakpoint__mobile-device {
       transition-duration: $mdw-motion__default-duration__mobile / 2;
     }
-    @include allTablets {
+    @include mdw-breakpoint__tablet-device {
       transition-duration: $mdw-motion__default-duration__tablet / 2;
     }
     transition-property: left, right;
@@ -231,10 +231,10 @@ $mdw-textfield__outline-end-width: dp(8) !default;
 
   transition-delay: 1ms;
   transition-duration: $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
   transition-property: color, border-color;
@@ -272,10 +272,10 @@ $mdw-textfield__outline-end-width: dp(8) !default;
 
     transition-delay: 1ms;
     transition-duration: $mdw-motion__enter-duration__desktop;
-    @include allHandsets {
+    @include mdw-breakpoint__mobile-device {
       transition-duration: $mdw-motion__enter-duration__mobile;
     }
-    @include allTablets {
+    @include mdw-breakpoint__tablet-device {
       transition-duration: $mdw-motion__enter-duration__tablet;
     }
     transition-property: transform;
@@ -498,10 +498,10 @@ $mdw-textfield__outline-end-width: dp(8) !default;
   padding: 0;
 
   transition-duration: $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
   transition-property: top, transform, font-size, color;
@@ -619,11 +619,11 @@ $mdw-textfield__outline-end-width: dp(8) !default;
   &::placeholder {
     transition-delay: 1ms;
     transition-duration: $mdw-motion__default-duration__desktop;
-    @include allHandsets {
+    @include mdw-breakpoint__mobile-device {
       transition-duration: $mdw-motion__default-duration__mobile;
     }
 
-    @include allTablets {
+    @include mdw-breakpoint__tablet-device {
       transition-duration: $mdw-motion__default-duration__tablet;
     }
     transition-property: color;
@@ -771,10 +771,10 @@ select.mdw-textfield__input {
   margin-bottom: dp(8);
 
   transition-duration: $mdw-motion__leave-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__leave-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__leave-duration__tablet;
   }
   transition-property: box-shadow, max-height;
@@ -799,10 +799,10 @@ select.mdw-textfield__input {
   input:focus ~ & {
     &:not([mdw-hide]) {
       transition-duration: $mdw-motion__enter-duration__desktop;
-      @include allHandsets {
+      @include mdw-breakpoint__mobile-device {
         transition-duration: $mdw-motion__enter-duration__mobile;
       }
-      @include allTablets {
+      @include mdw-breakpoint__tablet-device {
         transition-duration: $mdw-motion__enter-duration__tablet;
       }
       transition-timing-function: $mdw-motion__accelerate-easing;
@@ -831,10 +831,10 @@ select.mdw-textfield__input {
       animation-name: labelShake;
       animation-duration: 250ms;
       animation-delay: $mdw-motion__default-duration__desktop;
-      @include allHandsets {
+      @include mdw-breakpoint__mobile-device {
         animation-delay: $mdw-motion__default-duration__mobile;
       }
-      @include allTablets {
+      @include mdw-breakpoint__tablet-device {
         animation-delay: $mdw-motion__default-duration__tablet;
       }
     }
@@ -888,10 +888,10 @@ select.mdw-textfield__input {
 // Invalid
 .mdw-textfield__input:focus:invalid ~ .mdw-textfield__error-text {
   transition-duration: $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
   transition-property: transform, color;

@@ -2,7 +2,7 @@
 
 @import '../common/motion.scss';
 @import '../common/platform.scss';
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 @import '../common/type.scss';
 @import '../ripple/ripple.scss';
 
@@ -72,10 +72,10 @@ $tab__icon-with-label-height: 72;
   transition-property: transform;
   transition-timing-function: $mdw-motion__standard-easing;
   transition-duration: $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
   // Indicator width
@@ -163,10 +163,10 @@ $tab__icon-with-label-height: 72;
   transition-property: color;
   transition-timing-function: $mdw-motion__standard-easing;
   transition-duration: $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
 }
@@ -184,10 +184,10 @@ $tab__icon-with-label-height: 72;
   transition-property: color;
   transition-timing-function: $mdw-motion__standard-easing;
   transition-duration: $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
 
@@ -251,11 +251,11 @@ $tab__icon-with-label-height: 72;
   transition-timing-function: $mdw-motion__standard-easing;
   transition-duration: $mdw-motion__default-duration__desktop, 0s;
   transition-delay: 0s, $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile, 0s;
     transition-delay: 0s, $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet, 0s;
     transition-delay: 0s, $mdw-motion__default-duration__tablet;
   }

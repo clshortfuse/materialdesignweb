@@ -1,4 +1,4 @@
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 @import '../common/theming.scss';
 
 $navdrawerColors: (
@@ -46,7 +46,7 @@ $navdrawerColors: (
       color: navdrawerThemeValue("secondary-text-color", $type, $theme);
     }
   }
-  @include allHandsetsAndTablets {
+  @include mdw-breakpoint__tablet-device__max {
     .mdw-navdrawer[mdw-floating] .mdw-navdrawer__drawer,
     .mdw-navdrawer__drawer {
       background-color: navdrawerThemeValue("drawer-background", $type, $theme);

@@ -3,7 +3,7 @@
 
 @import '../common/platform.scss';
 @import '../common/motion.scss';
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 @import '../ripple/ripple.scss';
 @import '../common/type.scss';
 
@@ -32,10 +32,10 @@ $button__outline-size: dp(1);
   transition-property: box-shadow, background-color, color;
   transition-timing-function: $mdw-motion__standard-easing;
   transition-duration: $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
 

@@ -6,7 +6,7 @@
 @import '../common/elevation.scss';
 @import '../common/motion.scss';
 @import '../common/platform.scss';
-@import '../common/responsive.scss';
+@import '../common/breakpoint.scss';
 @import '../common/type.scss';
 
 $mdw-app__scrim-color: rgba(0, 0, 0, 0.50) !default;
@@ -58,10 +58,10 @@ $mdw-app__viewport-end-column: 4 !default;
   padding: 0;
 
   transition-duration: $mdw-motion__default-duration__desktop;
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
   }
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
   transition-timing-function: $mdw-motion__standard-easing;
@@ -94,7 +94,7 @@ $mdw-app__viewport-end-column: 4 !default;
     transition-timing-function: $mdw-motion__standard-easing, $mdw-motion__decelerate-easing;
   }
   
-  @include allHandsets {
+  @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile, $mdw-motion__enter-duration__mobile;
 
     .mdw-app[mdw-appbar-autohide][mdw-appbar-hide] & {
@@ -103,7 +103,7 @@ $mdw-app__viewport-end-column: 4 !default;
   }
 
   // Tablet
-  @include allTablets {
+  @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet, $mdw-motion__enter-duration__tablet;
 
     .mdw-app[mdw-appbar-autohide][mdw-appbar-hide] & {
@@ -141,7 +141,7 @@ $mdw-app__viewport-end-column: 4 !default;
   max-height: 100vh;
   height: 100%;
   max-width: calc(100vw - #{dp(56)});
-  @mixin viewport-4-columns {
+  @mixin mdw-breakpoint__4-columns {
     max-width: calc(100vw - #{dp(64)}); // Tablet or Desktop
   }
   width: $mdw-app__sheet-min-width;
@@ -326,7 +326,7 @@ $mdw-app__viewport-end-column: 4 !default;
   padding-right: 0;
   padding-bottom: dp(24 / 2);
   padding-left: dp(24 / 2);
-  @include margin16dp {
+  @include mdw-breakpoint__16dp-margin {
     padding-top: dp(16 / 2);
     padding-right: 0;
     padding-bottom: dp(16 / 2);
@@ -345,7 +345,7 @@ $mdw-app__viewport-end-column: 4 !default;
     padding-right: dp(24 / 2);
     padding-bottom: dp(24 / 2);
     padding-left: 0;
-    @include margin16dp {
+    @include mdw-breakpoint__16dp-margin {
       padding-top: dp(16 / 2);
       padding-right: dp(16 / 2);
       padding-bottom: dp(16 / 2);
@@ -367,7 +367,7 @@ $mdw-app__viewport-end-column: 4 !default;
   left: auto;
 
   padding: dp(24);
-  @include margin16dp {
+  @include mdw-breakpoint__16dp-margin {
     padding: dp(16);
   }
 
@@ -382,7 +382,7 @@ $mdw-app__viewport-end-column: 4 !default;
   }
 }
 
-@include viewport-4-columns {
+@include mdw-breakpoint__4-columns {
   .mdw-app[mdw-appbar-autohide~="mobile"][mdw-appbar-hide] {
     .mdw-app__appbar {
       transform: translateY(-100%);
@@ -407,7 +407,7 @@ $mdw-app__viewport-end-column: 4 !default;
   }
 }
 
-@include viewport-8-columns {
+@include mdw-breakpoint__8-columns {
   .mdw-app[mdw-appbar-autohide~="tablet"][mdw-appbar-hide] {
     .mdw-app__appbar {
       transform: translateY(-100%);
@@ -432,7 +432,7 @@ $mdw-app__viewport-end-column: 4 !default;
   }
 }
 
-@include viewport-max-8-columns {
+@include mdw-breakpoint__8-columns__max {
   .mdw-app[mdw-appbar-autoraise][mdw-scrolltop]:not([mdw-appbar-bottom]) .mdw-app__appbar-shape {
     filter: none;
 
@@ -497,7 +497,7 @@ $mdw-app__viewport-end-column: 4 !default;
       left: 0;
 
       padding: dp(24 / 2);
-      @include margin16dp {
+      @include mdw-breakpoint__16dp-margin {
         padding: dp(16 / 2);
       }
     }
@@ -507,7 +507,7 @@ $mdw-app__viewport-end-column: 4 !default;
   .mdw-app[mdw-fab-mobile] {
     .mdw-app__snackbar-anchor {
       bottom: dp(24);
-      @include margin16dp {
+      @include mdw-breakpoint__16dp-margin {
         bottom: dp(16);
       }
 
@@ -569,7 +569,7 @@ $mdw-app__viewport-end-column: 4 !default;
 
 }
 
-@include viewport-12-columns {
+@include mdw-breakpoint__12-columns {
   .mdw-app[mdw-appbar-autoraise][mdw-scrolltop] .mdw-app__appbar-shape {
     filter: none;
 
@@ -667,7 +667,7 @@ $mdw-app__viewport-end-column: 4 !default;
   z-index: 4;
 }
 
-@include viewport-12-columns {
+@include mdw-breakpoint__12-columns {
   .mdw-app:not([mdw-navdrawer-toggle]):not([mdw-navdrawer-style="modal"]) {
     .mdw-app__navdrawer-show,
     .mdw-app__navdrawer-hide,
@@ -839,7 +839,7 @@ $mdw-app__viewport-end-column: 4 !default;
     content: '';
 
     min-width: dp(24);
-    @include margin16dp {
+    @include mdw-breakpoint__16dp-margin {
       min-width: dp(16);
     }
   }
