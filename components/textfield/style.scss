@@ -120,8 +120,7 @@ $mdw-textfield__outline-end-width: dp(8) !default;
 .mdw-textfield__suffix {
   -ms-grid-row: 1;
   grid-row: 1;
-  pointer-events: none;
-
+  
   transition-duration: $motion-duration-desktop-default;
   @include allHandsets {
     transition-duration: $motion-duration-mobile-default;
@@ -132,6 +131,8 @@ $mdw-textfield__outline-end-width: dp(8) !default;
   transition-property: color;
   transition-timing-function: $motion-easing-standard;
   will-change: color;
+
+  pointer-events: none;
 }
 
 .mdw-textfield__prefix {
@@ -175,7 +176,6 @@ $mdw-textfield__outline-end-width: dp(8) !default;
     position: absolute;
     top: 0;
 
-    border-color: inherit;
     border-top-style: solid;
     border-top-width: $mdw-textfield__border-line-height;
 
@@ -189,6 +189,8 @@ $mdw-textfield__outline-end-width: dp(8) !default;
     }
     transition-property: left, right;
     transition-timing-function: $motion-easing-standard;
+
+    border-color: inherit;
   }
 
   &::before,
@@ -218,10 +220,6 @@ $mdw-textfield__outline-end-width: dp(8) !default;
 
   box-sizing: border-box;
   min-width: 100%; // Fixes FireFox Grid bug
-  border-top-color: transparent;
-  border-right-color: transparent;
-  border-bottom-color: currentColor;
-  border-left-color: transparent;
   border-top-style: none;
   border-right-style: none;
   border-bottom-style: solid;
@@ -242,6 +240,10 @@ $mdw-textfield__outline-end-width: dp(8) !default;
   transition-property: color, border-color;
   transition-timing-function: $motion-easing-standard;
 
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: currentColor;
+  border-left-color: transparent;
   border-top-left-radius: dp(4);
   border-top-right-radius: dp(4);
   border-bottom-right-radius: 0;
@@ -327,16 +329,16 @@ $mdw-textfield__outline-end-width: dp(8) !default;
       margin-top: -$mdw-textfield__border-line-height;
       margin-right: 0;
       margin-left: -$mdw-textfield__border-line-height;
-      border-top-color: currentColor;
-      border-right-color: transparent;
-      border-bottom-color: transparent;
-      border-left-color: currentColor;
       border-top-style: solid;
       border-right-style: none;
       border-bottom-style: solid;
       border-left-style: solid;
       border-width: inherit;
 
+      border-top-color: currentColor;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
+      border-left-color: currentColor;
       border-top-left-radius: inherit;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
@@ -349,16 +351,16 @@ $mdw-textfield__outline-end-width: dp(8) !default;
       margin-top: -$mdw-textfield__border-line-height;
       margin-right: -$mdw-textfield__border-line-height;
       margin-left: 0;
-      border-top-color: currentColor;
-      border-right-color: currentColor;
-      border-bottom-color: transparent;
-      border-left-color: transparent;
       border-top-style: solid;
       border-right-style: solid;
       border-bottom-style: solid;
       border-left-style: none;
       border-width: inherit;
 
+      border-top-color: currentColor;
+      border-right-color: currentColor;
+      border-bottom-color: transparent;
+      border-left-color: transparent;
       border-top-left-radius: 0;
       border-top-right-radius: inherit;
       border-bottom-right-radius: inherit;
@@ -384,13 +386,13 @@ $mdw-textfield__outline-end-width: dp(8) !default;
 
         // Height must exactly match parent to avoid subpixel rendering issues
         bottom: 0;
-
-        border-top-color: currentColor;
-        border-bottom-color: transparent;
+        
         border-style: none;
         border-top-style: solid;
         border-bottom-style: solid;
         
+        border-top-color: currentColor;
+        border-bottom-color: transparent;
         border-radius: 0;
         color: inherit;
       }
@@ -506,12 +508,12 @@ $mdw-textfield__outline-end-width: dp(8) !default;
   transition-timing-function: $motion-easing-standard;
   will-change: top, transform, font-size;
 
+  pointer-events: none; // allow clickthrough
   transform: translateY(0);
 
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  pointer-events: none; // allow clickthrough
 
   &::before {
     // Add 8dp from text-top to top for positioning
@@ -614,14 +616,6 @@ $mdw-textfield__outline-end-width: dp(8) !default;
   font-family: inherit;
   letter-spacing: inherit;
 
-  &:not(:focus) {
-    cursor: pointer;
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-  }
-
   &::placeholder {
     transition-delay: 1ms;
     transition-duration: $motion-duration-desktop-default;
@@ -636,6 +630,16 @@ $mdw-textfield__outline-end-width: dp(8) !default;
     transition-timing-function: $motion-easing-standard;
     will-change: color;
   }
+
+  &:not(:focus) {
+    cursor: pointer;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  
 }
 
 .mdw-textfield__input,

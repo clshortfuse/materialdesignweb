@@ -21,6 +21,7 @@
     "no-empty-source": true,
     "block-no-empty": true,
     "no-extra-semicolons": true,
+    "font-family-no-missing-generic-family-keyword": null,
     "selector-attribute-brackets-space-inside": "never",
     "selector-attribute-operator-space-after": "never",
     "selector-attribute-operator-space-before": "never",
@@ -64,6 +65,10 @@
           "hasBlock": false
         },
         "declarations",
+        {
+          "type": "rule",
+          "selector": "^&$"
+        },
         {
           "type": "rule",
           "selector": "^.+ &$"
@@ -237,9 +242,7 @@
           "border-block-start",
           "border-block-end",
 
-          "border-block-color",
-          "border-block-start-color",
-          "border-block-end-color",
+          
 
           "border-block-style",
           "border-block-start-style",
@@ -300,12 +303,6 @@
           "border-left",
           "border-left-image",
 
-          "border-color",
-          "border-top-color",
-          "border-right-color",
-          "border-bottom-color",
-          "border-left-color",
-
           "border-style",
           "border-top-style",
           "border-right-style",
@@ -327,15 +324,15 @@
           "border-end-start-radius",
           "border-end-end-radius",
           "border-inline",
-          "border-inline-color",
+
           "border-inline-style",
           "border-inline-width",
           "border-inline-start",
-          "border-inline-start-color",
+          
           "border-inline-start-style",
           "border-inline-start-width",
           "border-inline-end",
-          "border-inline-end-color",
+          
           "border-inline-end-style",
           "border-inline-end-width",
 
@@ -438,6 +435,7 @@
           "mask-type",
           "mix-blend-mode",
           "opacity",
+          "pointer-events",
           "perspective",
           "perspective-origin",
           "transform",
@@ -461,6 +459,17 @@
           "background-repeat",
           "background-size",
           "background-attachment",
+          "border-block-color",
+          "border-block-start-color",
+          "border-block-end-color",
+          "border-color",
+          "border-top-color",
+          "border-right-color",
+          "border-bottom-color",
+          "border-left-color",
+          "border-inline-color",
+          "border-inline-start-color",
+          "border-inline-end-color",
           "border-radius",
           "border-top-left-radius",
           "border-top-right-radius",
@@ -470,6 +479,8 @@
           "color",
           "color-adjust",
           "color-interpolation-filters",
+          "text-decoration-color",
+          "text-emphasis-color",
           "text-shadow"
         ]
       },
@@ -528,14 +539,12 @@
           "text-align-last",
           "text-combine-upright",
           "text-decoration",
-          "text-decoration-color",
           "text-decoration-line",
           "text-decoration-skip",
           "text-decoration-skip-ink",
           "text-decoration-style",
           "text-decoration-width",
           "text-emphasis",
-          "text-emphasis-color",
           "text-emphasis-position",
           "text-emphasis-skip",
           "text-emphasis-style",
