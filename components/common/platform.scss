@@ -2,12 +2,26 @@
   @return $multiplier * 1px;
 }
 
+@mixin supports-touch {
+  @media (any-pointer: coarse) {
+    @content;
+  }
+}
+
+@mixin not-supports-touch {
+  @media not all and (any-pointer: coarse) {
+    @content;
+  }
+}
+
 // Browser specific mixins
 @mixin IEOnly {
   @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
     @content;
   }
 }
+
+// Touch support based mixins
 
 @mixin EdgeOnly {
   @supports (-ms-ime-align:auto) {

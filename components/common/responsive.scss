@@ -81,20 +81,6 @@ $breakpoint-columns-12: dp(840);
   }
 }
 
-// Touch support based mixins
-
-@mixin supports-touch {
-  @media (any-pointer: coarse) {
-    @content;
-  }
-}
-
-@mixin not-supports-touch {
-  @media not all and (any-pointer: coarse) {
-    @content;
-  }
-}
-
 // Window-size based mixins
 
 @mixin viewport-xsmall {
