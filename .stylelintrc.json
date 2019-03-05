@@ -43,8 +43,8 @@
     }],
     "unit-blacklist": "px",
     "selector-class-pattern": "^mdw-[a-z]+(__[a-z-]+)?$",
-    "scss/at-function-pattern": "^[a-z]+((\\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$",
-    "scss/at-mixin-pattern": "^mdw-[a-z]+__[a-z0-9-]+(__[a-z0-9-]+)?$",
+    "scss/at-function-pattern": "^(__)?mdw((\\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$",
+    "scss/at-mixin-pattern": "^(__)?mdw-[a-z]+__[a-z0-9-]+(__[a-z0-9-]+)?$",
     "scss/dollar-variable-default": [true, {
       "ignore": "local"
     }],
@@ -233,11 +233,11 @@
           "margin-inline-end",
           "margin-trim",
 
+          "margin",
           "margin-top",
           "margin-right",
           "margin-bottom",
           "margin-left",
-          "margin",
 
           "border-block",
           "border-block-start",

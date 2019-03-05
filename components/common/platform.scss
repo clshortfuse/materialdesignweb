@@ -1,3 +1,4 @@
+/* stylelint-disable-next-line scss/at-function-pattern */
 @function dp($multiplier) {
   @return $multiplier * 1px;
 }

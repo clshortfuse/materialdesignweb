@@ -6,7 +6,7 @@ $mdw-banner__theme-values: (
   border-color: (('foreground-light', 0.12), ('foreground-dark', 0.12)),
 ) !default;
 
-@function bannerThemeValue($key, $type, $theme) {
+@function mdwBannerThemeValue($key, $type, $theme) {
   @return themeValue('banner', $mdw-banner__theme-values, $key, $type, $theme);
 }
 
@@ -17,11 +17,11 @@ $mdw-banner__theme-values: (
 // Vary by contrast or theme
 @mixin mdw-banner__contrast-and-theme-rules($type: 'var', $theme: null) {
   .mdw-banner {
-    background-color: bannerThemeValue("background", $type, $theme);
-    border-color: bannerThemeValue("border-color", $type, $theme);
+    background-color: mdwBannerThemeValue("background", $type, $theme);
+    border-color: mdwBannerThemeValue("border-color", $type, $theme);
   }
 
   .mdw-banner__text {
-    color: bannerThemeValue("text-color", $type, $theme);
+    color: mdwBannerThemeValue("text-color", $type, $theme);
   }
 }
