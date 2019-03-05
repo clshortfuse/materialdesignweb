@@ -136,7 +136,7 @@ $added-palettes-list: ();
     @include mdw-bottomnav__theme-variables($lightness);
   }
   @if (index($mdw-theme__components, 'button')) {
-    @include buttonThemeVariables($lightness);
+    @include mdw-button__theme-variables($lightness);
   }
   @if (index($mdw-theme__components, 'card')) {
     @include cardThemeVariables($lightness);
@@ -193,7 +193,7 @@ $added-palettes-list: ();
     @include mdw-bottomnav__contrast-and-theme-rules($type, $theme);
   }
   @if (index($mdw-theme__components, 'button')) {
-    @include buttonContrastAndThemeRules($type, $theme);
+    @include mdw-button__contrast-and-theme-rules($type, $theme);
   }
   @if (index($mdw-theme__components, 'card')) {
     @include cardContrastAndThemeRules($type, $theme);

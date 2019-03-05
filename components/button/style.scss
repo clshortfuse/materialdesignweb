@@ -7,30 +7,35 @@
 @import '../ripple/ripple.scss';
 @import '../common/type.scss';
 
-$button__external-padding: dp(8);
-$button__minimum-click-target: dp(48);
-$button__outline-size: dp(1);
+$mdw-button__external-padding: dp(8) !default;
+$mdw-button__minimum-click-target: dp(48) !default;
+$mdw-button__outline-size: dp(1) !default;
 
 .mdw-button {
+  display: inline-flex;
   position: relative;
-  min-width: dp(64);
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  box-sizing: border-box;
   min-height: dp(36);
+  min-width: dp(64);
+  margin: 0 dp(8);
+  border: none;
   padding: 0 dp(8);
 
-  &[mdw-outline],
-  &[mdw-theme-fill] {
-    padding: 0 dp(16);
-  }
-
-  margin: 0 dp(8);
-  border-radius: dp(4);
-
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
   cursor: pointer;
+  outline: none;
   -webkit-tap-highlight-color: transparent;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 
-  overflow: hidden;
-  transition-property: box-shadow, background-color, color;
-  transition-timing-function: $mdw-motion__standard-easing;
   transition-duration: $mdw-motion__default-duration__desktop;
   @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__default-duration__mobile;
@@ -38,121 +43,128 @@ $button__outline-size: dp(1);
   @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__default-duration__tablet;
   }
+  transition-property: box-shadow, background-color, color;
+  transition-timing-function: $mdw-motion__standard-easing;
 
   z-index: 0;
 
-  // Override browser button defaults
+  border-radius: dp(4);
   color: inherit;
-  box-sizing: border-box;
-  outline: none;
-  appearance: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  border: none;
+
+  text-align: center;
   text-decoration: none;
-  &:not([mdw-theme-fill]) {
-    background-color: transparent;
-  }
   
   // Remove Firefox inner
   &::-moz-focus-inner {
     border: 0;
   }
 
-  // Support any HTMLElement (not just HTMLButtonElement)
-  user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -webkit-user-select: none;
-  display: inline-flex;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
+  &[mdw-outline],
+  &[mdw-theme-fill] {
+    padding: 0 dp(16);
+  }
+
+  &:not([mdw-theme-fill]) {
+    background-color: transparent;
+  }
 
   // Don't override font icon properties
   &:not([mdw-icon]) {
+    @include type-rules('button');
     font-family: inherit;
     word-spacing: normal;
-    @include type-rules('button');
   }
 
   &[mdw-outline] {
-    border-width: $button__outline-size;
     border-style: solid;
+    border-width: $mdw-button__outline-size;
+
     &::before,
     & > .mdw-ripple {
-      margin-left: -$button__outline-size;
-      margin-top: -$button__outline-size;
-      padding-right: 2 * $button__outline-size;
-      padding-bottom: 2 * $button__outline-size;
-      width: 100%;
-      height: 100%;
       box-sizing: content-box;
+      height: 100%;
+      width: 100%;
+      margin-top: -$mdw-button__outline-size;
+      margin-left: -$mdw-button__outline-size;
+      padding-right: 2 * $mdw-button__outline-size;
+      padding-bottom: 2 * $mdw-button__outline-size;
     }
   }
 
   // Icon properties
   &[mdw-icon] {
-    border-radius: 50%;
     min-height: dp(40);
     min-width: dp(40);
     padding: dp(8);
-    font-size: dp(24); // Internal padding provided by font
-    user-select: none;
+
     -moz-user-select: none;
     -ms-user-select: none;
     -webkit-user-select: none;
+    user-select: none;
+
+    border-radius: 50%;
+
+    font-size: dp(24); // Internal padding provided by font
   }
 
   &[mdw-image] {
-    border-radius: 50%;
     min-height: dp(24);
     min-width: dp(24);
-    padding: 0;
     margin: 0;
-    user-select: none;
-    -moz-user-select: none;
+    padding: 0;
+
     -ms-user-select: none;
+    -moz-user-select: none;
     -webkit-user-select: none;
-    > * {
+    user-select: none;
+
+    border-radius: 50%;
+
+    & > * {
       position: absolute;
-      left: 0;
       top: 0;
-      width: auto;
+      left: 0;
+      
       height: 100%;
-      // z-index: -1; // Safari has a negative z-index bug
+      width: auto;
     }
   }
-
-  // Button Animations
-  // Ripple doesn't appear until mouse-up
-  // Background color transitions from hover to press
-
-  // ::before - hover, focus, and activated overlays
-  // ::after  - press overlay (ripple)
 }
+
+// Button Animations
+// Ripple doesn't appear until mouse-up
+// Background color transitions from hover to press
+
+// ::before - hover, focus, and activated overlays
+// ::after  - press overlay (ripple)}
 
 .mdw-button::before {
   content: '';
+  
   position: absolute;
-  width: 100%;
-  height: 100%;
   top: 0;
   left: 0;
-  // Safari has a negative z-index bug
-  // Might be related to display rule
-  z-index: 1;
-  border-radius: inherit;
-  user-select: none;
+
+  height: 100%;
+  width: 100%;
+
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
-  pointer-events: none;
-  background-color: currentColor;
-  opacity: 0;
+  user-select: none;
+  
+  transition-duration: inherit;
   transition-property: opacity;
   transition-timing-function: inherit;
-  transition-duration: inherit;
+
+  opacity: 0;
+  pointer-events: none;
+  // Safari has a negative z-index bug
+  // Might be related to display rule
+  z-index: 1;
+
+  background-color: currentColor;
+  border-radius: inherit;
 }
 
 // Fix anchor line-height on IE11
@@ -166,17 +178,21 @@ $button__outline-size: dp(1);
 @mixin mdw-button__touch-target {
   @include mdw-platform__has-touch-support {
     content: "";
+
     position: absolute;
-    width: 100%;
-    height: $button__minimum-click-target;
-    left: 0;
     top: 50%;
+    left: 0;
+    
+    height: $mdw-button__minimum-click-target;
+    width: 100%;
+
     transform: translateY(-50%);
   }
 }
 
 .mdw-button[mdw-ripple] {
   overflow: visible;
+
   &::after {
     // If using custom ripple, destroy ::after object
     content: none;
@@ -187,19 +203,18 @@ $button__outline-size: dp(1);
   @include mdw-ripple__container;
 }
 
-.mdw-button {
-  &::after {
-    @include mdw-ripple__inner;
-  }
+.mdw-button::after {
+  @include mdw-ripple__inner;
+}
 
-  &:active::after {
-    @include mdw-ripple__active;
-  }
+.mdw-button:active::after {
+  @include mdw-ripple__active;
 }
 
 // Raised
 .mdw-button[mdw-raised] {
   box-shadow: mdwElevation(2);
+
   &:active {
     box-shadow: mdwElevation(8);
   }
@@ -207,14 +222,17 @@ $button__outline-size: dp(1);
 
 .mdw-button[disabled] {
   cursor: not-allowed;
+
   &,
   &[mdw-raised] {
     box-shadow: mdwElevation(0);
   }
+
   & > .mdw-ripple,
   &::before,
   &::after {
     content: none;
+
     display: none;
   }
 }

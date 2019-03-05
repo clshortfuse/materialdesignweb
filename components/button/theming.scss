@@ -4,7 +4,7 @@
 
 @import '../common/theming.scss';
 
-$buttonColors: (
+$mdw-button__theme-values: (
   text-color:                    (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   text-opacity:                  (0.87, 1.00),
 
@@ -35,85 +35,97 @@ $buttonColors: (
 
   outline-color:                 (('foreground-light', 0.12), ('foreground-dark', 0.12)),
 
-);
+) !default;
 
-@function buttonThemeValue($key, $type, $theme) {
-  @return themeValue('button', $buttonColors, $key, $type, $theme);
+@function mdwButtonThemeValue($key, $type, $theme) {
+  @return themeValue('button', $mdw-button__theme-values, $key, $type, $theme);
 }
 
-@mixin buttonThemeVariables($lightness) {
-  @include themeVariables('button', $buttonColors, $lightness);
+@mixin mdw-button__theme-variables($lightness) {
+  @include themeVariables('button', $mdw-button__theme-values, $lightness);
 }
 
-@mixin internalButtonContrastAndThemeRules($type, $theme: null) {
+@mixin __mdw-button__contrast-and-theme-rules($type, $theme: null) {
   @at-root {
     #{&}.mdw-button {
       @if ($type == 'var') {
-        color: rgba(var(--color), buttonThemeValue('text-opacity', $type, $theme));
+        color: rgba(var(--color), mdwButtonThemeValue('text-opacity', $type, $theme));
+
         &::before,
         & > .mdw-ripple > .mdw-ripple__inner,
-        &:after {
+
+        &::after {
           color: unquote("rgb(var(--color))");
         }
       } @else {
         &:not([mdw-theme-color]) {
-          color: buttonThemeValue("text-color", $type, $theme);
+          color: mdwButtonThemeValue("text-color", $type, $theme);
+
           &::before,
           & > .mdw-ripple > .mdw-ripple__inner,
-          &:after {
-            color: buttonThemeValue("overlay-color", $type, $theme);
+
+          &::after {
+            color: mdwButtonThemeValue("overlay-color", $type, $theme);
           }
         }
       }
+
       & > .mdw-ripple > .mdw-ripple__inner,
-      &:after {
-        opacity: buttonThemeValue("pressed-opacity", $type, $theme);
+      &::after {
+        opacity: mdwButtonThemeValue("pressed-opacity", $type, $theme);
       }
 
       &[mdw-inactive] {
-        color: buttonThemeValue("inactive-icon-color", $type, $theme);
+        color: mdwButtonThemeValue("inactive-icon-color", $type, $theme);
       }
+
       &[mdw-active]:not([mdw-theme-color]):not([disabled]) {
-        color: buttonThemeValue("active-icon-color", $type, $theme);
+        color: mdwButtonThemeValue("active-icon-color", $type, $theme);
+
         &:focus {
-          color: buttonThemeValue("active-icon-color__focus", $type, $theme);
+          color: mdwButtonThemeValue("active-icon-color__focus", $type, $theme);
         }
       }
 
       &:hover::before {
-        opacity: buttonThemeValue("hover-opacity", $type, $theme);
+        opacity: mdwButtonThemeValue("hover-opacity", $type, $theme);
       }
+
       &:focus::before {
-        opacity: buttonThemeValue("focus-opacity", $type, $theme);
+        opacity: mdwButtonThemeValue("focus-opacity", $type, $theme);
       }
+
       &:hover:focus::before {
-        opacity: buttonThemeValue("hover-focus-opacity", $type, $theme);
+        opacity: mdwButtonThemeValue("hover-focus-opacity", $type, $theme);
       }
 
       &[mdw-activated] {
         &::before {
-          opacity: buttonThemeValue("activated-opacity", $type, $theme);
+          opacity: mdwButtonThemeValue("activated-opacity", $type, $theme);
         }
+
         &:hover::before {
-          opacity: buttonThemeValue("activated-hover-opacity", $type, $theme);
+          opacity: mdwButtonThemeValue("activated-hover-opacity", $type, $theme);
         }
+
         &:focus::before {
-          opacity: buttonThemeValue("activated-focus-opacity", $type, $theme);
+          opacity: mdwButtonThemeValue("activated-focus-opacity", $type, $theme);
         }
+
         &:hover:focus::before {
-          opacity: buttonThemeValue("activated-hover-focus-opacity", $type, $theme);
+          opacity: mdwButtonThemeValue("activated-hover-focus-opacity", $type, $theme);
         }
       }
 
       &[mdw-outline] {
-        border-color: buttonThemeValue('outline-color', $type, $theme);
+        border-color: mdwButtonThemeValue('outline-color', $type, $theme);
       }
 
       &[disabled] {
         @if ($type == 'var') {
-          color: rgba(var(--color), buttonThemeValue('disabled-text-opacity', $type, $theme));
+          color: rgba(var(--color), mdwButtonThemeValue('disabled-text-opacity', $type, $theme));
         } @else {
-          color: buttonThemeValue("disabled-text-color", $type, $theme);
+          color: mdwButtonThemeValue("disabled-text-color", $type, $theme);
         }
         
         &[mdw-theme-fill] {
@@ -122,17 +134,15 @@ $buttonColors: (
             --color: inherit;
             --button__disabled-text-opacity: inherit;
             --button__disabled-background-color: inherit;
-            background-color: buttonThemeValue("disabled-background-color", $type, $theme);
+            background-color: mdwButtonThemeValue("disabled-background-color", $type, $theme);
           } @else {
-            // Average color and opacity
-            color: mix(
-              buttonThemeValue("disabled-text-color", 'light', $theme),
-              buttonThemeValue("disabled-text-color", 'dark', $theme)
-            );
-            background-color: mix(
-              buttonThemeValue("disabled-background-color", 'light', $theme),
-              buttonThemeValue("disabled-background-color", 'dark', $theme)
-            );
+            $bgLight: mdwButtonThemeValue("disabled-background-color", 'light', $theme);
+            $bgDark: mdwButtonThemeValue("disabled-background-color", 'dark', $theme);
+            $colorLight: mdwButtonThemeValue("disabled-text-color", 'light', $theme);
+            $colorDark: mdwButtonThemeValue("disabled-text-color", 'dark', $theme);
+
+            background-color: mix($bgLight, $bgDark);
+            color: mix($colorLight, $colorDark);
           }
         }
       }
@@ -141,11 +151,11 @@ $buttonColors: (
 }
 
 // Vary by contrast
-@mixin buttonContrastAndThemeRules($type: 'var', $theme: null) {
-  @include internalButtonContrastAndThemeRules($type, $theme);
+@mixin mdw-button__contrast-and-theme-rules($type: 'var', $theme: null) {
+  @include __mdw-button__contrast-and-theme-rules($type, $theme);
   @if ($type != 'var') {
     :not([mdw-theme-fill]) {
-      @include internalButtonContrastAndThemeRules($type, $theme);
+      @include __mdw-button__contrast-and-theme-rules($type, $theme);
     }
   }
 }
