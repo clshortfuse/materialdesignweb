@@ -24,9 +24,8 @@ class Chip {
    * @return {void}
    */
   static attach(element) {
-    iterateArrayLike(element.getElementsByClassName('mdw-chip__item'), (item) => {
-      ChipItem.attach(item);
-    });
+    iterateArrayLike(element.getElementsByClassName('mdw-chip__item'),
+      item => ChipItem.attach(/** @type {HTMLElement} */ (item)));
   }
 
 

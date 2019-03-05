@@ -142,7 +142,7 @@ $added-palettes-list: ();
     @include mdw-card__theme-variables($lightness);
   }
   @if (index($mdw-theme__components, 'chip')) {
-    @include chipThemeVariables($lightness);
+    @include mdw-chip__theme-variables($lightness);
   }
   @if (index($mdw-theme__components, 'datatable')) {
     @include datatableThemeVariables($lightness);
@@ -198,6 +198,9 @@ $added-palettes-list: ();
   @if (index($mdw-theme__components, 'card')) {
     @include mdw-card__contrast-and-theme-rules($type, $theme);
   }
+  @if (index($mdw-theme__components, 'chip')) {
+    @include mdw-chip__contrast-and-theme-rules($type, $theme);
+  }
   @if (index($mdw-theme__components, 'datatable')) {
     @include datatableContrastAndThemeRules($type, $theme);
   }
@@ -222,10 +225,6 @@ $added-palettes-list: ();
 }
 
 @mixin componentContrastRules($type: 'var', $theme: null) {
-
-  @if (index($mdw-theme__components, 'chip')) {
-    @include chipContrastRules($type, $theme);
-  }
   @if (index($mdw-theme__components, 'datatable')) {
     @include datatableContrastRules($type, $theme);
   }
