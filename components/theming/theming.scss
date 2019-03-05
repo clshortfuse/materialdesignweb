@@ -139,7 +139,7 @@ $added-palettes-list: ();
     @include mdw-button__theme-variables($lightness);
   }
   @if (index($mdw-theme__components, 'card')) {
-    @include cardThemeVariables($lightness);
+    @include mdw-card__theme-variables($lightness);
   }
   @if (index($mdw-theme__components, 'chip')) {
     @include chipThemeVariables($lightness);
@@ -196,7 +196,7 @@ $added-palettes-list: ();
     @include mdw-button__contrast-and-theme-rules($type, $theme);
   }
   @if (index($mdw-theme__components, 'card')) {
-    @include cardContrastAndThemeRules($type, $theme);
+    @include mdw-card__contrast-and-theme-rules($type, $theme);
   }
   @if (index($mdw-theme__components, 'datatable')) {
     @include datatableContrastAndThemeRules($type, $theme);
