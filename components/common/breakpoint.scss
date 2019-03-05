@@ -1,5 +1,7 @@
 // https://material.io/design/layout/responsive-layout-grid.html#breakpoints
 
+@import './platform.scss';
+
 $mdw-breakpoint__portrait__small-handset: dp(0) !default;
 $mdw-breakpoint__portrait__medium-handset: dp(360) !default;
 $mdw-breakpoint__portrait__large-handset: dp(400) !default;
