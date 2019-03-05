@@ -7,7 +7,7 @@ import {
   iterateSomeOfArrayLike,
   findElementParentByClassName,
   getChildElementByClass,
-  getTextNode,
+  setTextNode,
 } from '../common/dom';
 
 class DialogStack {
@@ -429,7 +429,7 @@ class Dialog {
   static updateButtonText(dialogElement, texts) {
     const buttons = dialogElement.querySelectorAll('.mdw-dialog__button-area .mdw-button');
     iterateArrayLike(buttons, (button, index) => {
-      getTextNode(button, true).textContent = texts[index];
+      setTextNode(button, texts[index]);
     });
   }
 
