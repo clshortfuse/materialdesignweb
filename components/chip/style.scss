@@ -8,13 +8,13 @@
 $mdw-chip__border-width: dp(1);
 
 .mdw-chip { 
-  transition-timing-function: $motion-easing-standard;
-  transition-duration: $motion-duration-desktop-default;
+  transition-timing-function: $mdw-motion__standard-easing;
+  transition-duration: $mdw-motion__default-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
+    transition-duration: $mdw-motion__default-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
+    transition-duration: $mdw-motion__default-duration__tablet;
   }
 
   margin: 0 0 dp(-8) dp(-8);

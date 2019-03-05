@@ -35,14 +35,14 @@ $mdw-textfield__outline-end-width: dp(8) !default;
 
   padding: dp(8) 0;
 
-  transition-duration: $motion-duration-desktop-default;
+  transition-duration: $mdw-motion__default-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
+    transition-duration: $mdw-motion__default-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
+    transition-duration: $mdw-motion__default-duration__tablet;
   }
-  transition-timing-function: $motion-easing-standard;
+  transition-timing-function: $mdw-motion__standard-easing;
 
 
   &[mdw-solo] {
@@ -121,15 +121,15 @@ $mdw-textfield__outline-end-width: dp(8) !default;
   -ms-grid-row: 1;
   grid-row: 1;
   
-  transition-duration: $motion-duration-desktop-default;
+  transition-duration: $mdw-motion__default-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
+    transition-duration: $mdw-motion__default-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
+    transition-duration: $mdw-motion__default-duration__tablet;
   }
   transition-property: color;
-  transition-timing-function: $motion-easing-standard;
+  transition-timing-function: $mdw-motion__standard-easing;
   will-change: color;
 
   pointer-events: none;
@@ -180,15 +180,15 @@ $mdw-textfield__outline-end-width: dp(8) !default;
     border-top-width: $mdw-textfield__border-line-height;
 
     transition-delay: 1ms;
-    transition-duration: $motion-duration-desktop-default / 2;
+    transition-duration: $mdw-motion__default-duration__desktop / 2;
     @include allHandsets {
-      transition-duration: $motion-duration-mobile-default / 2;
+      transition-duration: $mdw-motion__default-duration__mobile / 2;
     }
     @include allTablets {
-      transition-duration: $motion-duration-tablet-default / 2;
+      transition-duration: $mdw-motion__default-duration__tablet / 2;
     }
     transition-property: left, right;
-    transition-timing-function: $motion-easing-standard;
+    transition-timing-function: $mdw-motion__standard-easing;
 
     border-color: inherit;
   }
@@ -230,15 +230,15 @@ $mdw-textfield__outline-end-width: dp(8) !default;
   -webkit-tap-highlight-color: transparent;
 
   transition-delay: 1ms;
-  transition-duration: $motion-duration-desktop-default;
+  transition-duration: $mdw-motion__default-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
+    transition-duration: $mdw-motion__default-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
+    transition-duration: $mdw-motion__default-duration__tablet;
   }
   transition-property: color, border-color;
-  transition-timing-function: $motion-easing-standard;
+  transition-timing-function: $mdw-motion__standard-easing;
 
   border-top-color: transparent;
   border-right-color: transparent;
@@ -271,15 +271,15 @@ $mdw-textfield__outline-end-width: dp(8) !default;
     border-width: $mdw-textfield__border-line-height__focused;
 
     transition-delay: 1ms;
-    transition-duration: $motion-duration-desktop-enter;
+    transition-duration: $mdw-motion__enter-duration__desktop;
     @include allHandsets {
-      transition-duration: $motion-duration-mobile-enter;
+      transition-duration: $mdw-motion__enter-duration__mobile;
     }
     @include allTablets {
-      transition-duration: $motion-duration-tablet-enter;
+      transition-duration: $mdw-motion__enter-duration__tablet;
     }
     transition-property: transform;
-    transition-timing-function: $motion-easing-acceleration;
+    transition-timing-function: $mdw-motion__accelerate-easing;
     will-change: transform;
 
     transform: scaleX(0) translateY(-$mdw-textfield__border-line-height/2);
@@ -497,15 +497,15 @@ $mdw-textfield__outline-end-width: dp(8) !default;
   margin: 0;
   padding: 0;
 
-  transition-duration: $motion-duration-desktop-default;
+  transition-duration: $mdw-motion__default-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
+    transition-duration: $mdw-motion__default-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
+    transition-duration: $mdw-motion__default-duration__tablet;
   }
   transition-property: top, transform, font-size, color;
-  transition-timing-function: $motion-easing-standard;
+  transition-timing-function: $mdw-motion__standard-easing;
   will-change: top, transform, font-size;
 
   pointer-events: none; // allow clickthrough
@@ -618,16 +618,16 @@ $mdw-textfield__outline-end-width: dp(8) !default;
 
   &::placeholder {
     transition-delay: 1ms;
-    transition-duration: $motion-duration-desktop-default;
+    transition-duration: $mdw-motion__default-duration__desktop;
     @include allHandsets {
-      transition-duration: $motion-duration-mobile-default;
+      transition-duration: $mdw-motion__default-duration__mobile;
     }
 
     @include allTablets {
-      transition-duration: $motion-duration-tablet-default;
+      transition-duration: $mdw-motion__default-duration__tablet;
     }
     transition-property: color;
-    transition-timing-function: $motion-easing-standard;
+    transition-timing-function: $mdw-motion__standard-easing;
     will-change: color;
   }
 
@@ -770,15 +770,15 @@ select.mdw-textfield__input {
   margin-top: 0;
   margin-bottom: dp(8);
 
-  transition-duration: $motion-duration-desktop-leave;
+  transition-duration: $mdw-motion__leave-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-leave;
+    transition-duration: $mdw-motion__leave-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-leave;
+    transition-duration: $mdw-motion__leave-duration__tablet;
   }
   transition-property: box-shadow, max-height;
-  transition-timing-function: $motion-easing-deceleration;
+  transition-timing-function: $mdw-motion__decelerate-easing;
 
   z-index: 2;
 
@@ -798,14 +798,14 @@ select.mdw-textfield__input {
   &[mdw-show],
   input:focus ~ & {
     &:not([mdw-hide]) {
-      transition-duration: $motion-duration-desktop-enter;
+      transition-duration: $mdw-motion__enter-duration__desktop;
       @include allHandsets {
-        transition-duration: $motion-duration-mobile-enter;
+        transition-duration: $mdw-motion__enter-duration__mobile;
       }
       @include allTablets {
-        transition-duration: $motion-duration-tablet-enter;
+        transition-duration: $mdw-motion__enter-duration__tablet;
       }
-      transition-timing-function: $motion-easing-acceleration;
+      transition-timing-function: $mdw-motion__accelerate-easing;
 
       box-shadow: mdwElevation(24);
 
@@ -830,12 +830,12 @@ select.mdw-textfield__input {
     & ~ .mdw-textfield__border .mdw-textfield__outline-gap {
       animation-name: labelShake;
       animation-duration: 250ms;
-      animation-delay: $motion-duration-desktop-default;
+      animation-delay: $mdw-motion__default-duration__desktop;
       @include allHandsets {
-        animation-delay: $motion-duration-mobile-default;
+        animation-delay: $mdw-motion__default-duration__mobile;
       }
       @include allTablets {
-        animation-delay: $motion-duration-tablet-default;
+        animation-delay: $mdw-motion__default-duration__tablet;
       }
     }
   }
@@ -887,15 +887,15 @@ select.mdw-textfield__input {
 
 // Invalid
 .mdw-textfield__input:focus:invalid ~ .mdw-textfield__error-text {
-  transition-duration: $motion-duration-desktop-default;
+  transition-duration: $mdw-motion__default-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
+    transition-duration: $mdw-motion__default-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
+    transition-duration: $mdw-motion__default-duration__tablet;
   }
   transition-property: transform, color;
-  transition-timing-function: $motion-easing-standard;
+  transition-timing-function: $mdw-motion__standard-easing;
   will-change: transform, color;
 
   transform: translateY(0);

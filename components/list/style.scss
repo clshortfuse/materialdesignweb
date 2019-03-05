@@ -124,13 +124,13 @@ ul.mdw-list {
   & > .mdw-list__item {
     flex-basis: auto;
     animation-fill-mode: forwards;
-    animation-timing-function: $motion-easing-acceleration;
-    animation-duration: $motion-duration-desktop-leave;
+    animation-timing-function: $mdw-motion__accelerate-easing;
+    animation-duration: $mdw-motion__leave-duration__desktop;
     @include allHandsets {
-      animation-duration: $motion-duration-mobile-leave;
+      animation-duration: $mdw-motion__leave-duration__mobile;
     }
     @include allTablets {
-      animation-duration: $motion-duration-tablet-leave;
+      animation-duration: $mdw-motion__leave-duration__tablet;
     }
     &:not(:first-child) {
       flex-basis: 0;
@@ -142,13 +142,13 @@ ul.mdw-list {
       min-height: dp(48);
       transform: rotate(0deg);
       transition-property: transform;
-      transition-timing-function: $motion-easing-standard;
-      transition-duration: $motion-duration-desktop-default;
+      transition-timing-function: $mdw-motion__standard-easing;
+      transition-duration: $mdw-motion__default-duration__desktop;
       @include allHandsets {
-        transition-duration: $motion-duration-mobile-default;
+        transition-duration: $mdw-motion__default-duration__mobile;
       }
       @include allTablets {
-        transition-duration: $motion-duration-tablet-default;
+        transition-duration: $mdw-motion__default-duration__tablet;
       }
     }
   }
@@ -158,13 +158,13 @@ ul.mdw-list {
   }
   &[mdw-expanded] > .mdw-list__item:not(:first-child) {
     animation-name: expandRow;
-    animation-timing-function: $motion-easing-deceleration;
-    animation-duration: $motion-duration-desktop-enter;
+    animation-timing-function: $mdw-motion__decelerate-easing;
+    animation-duration: $mdw-motion__enter-duration__desktop;
     @include allHandsets {
-      animation-duration: $motion-duration-mobile-enter;
+      animation-duration: $mdw-motion__enter-duration__mobile;
     }
     @include allTablets {
-      animation-duration: $motion-duration-tablet-enter;
+      animation-duration: $mdw-motion__enter-duration__tablet;
     }
   }
 }
@@ -337,7 +337,7 @@ ul.mdw-list {
     transition-property: background-color;
     transition-duration: 500ms;
     transition-delay: 5ms;
-    transition-timing-function: $motion-easing-standard;
+    transition-timing-function: $mdw-motion__standard-easing;
     pointer-events: none;
   }
 

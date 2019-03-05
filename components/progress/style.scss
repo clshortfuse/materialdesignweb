@@ -89,7 +89,7 @@ $duration: 1500ms;
         will-change: stroke-dashoffset, transform;
         animation-name: mdw-progress-dash, rotate-counterclockwise;
         animation-duration: $duration, $duration * 4;
-        animation-timing-function: $motion-easing-standard, steps(4,end);
+        animation-timing-function: $mdw-motion__standard-easing, steps(4,end);
         animation-iteration-count: infinite;
       }
       &:nth-child(2) {

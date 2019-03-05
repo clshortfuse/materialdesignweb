@@ -1,36 +1,36 @@
 // Motion Durations
 // https://material.io/guidelines/motion/duration-easing.html#duration-easing-dynamic-durations
 
-$motion-duration-mobile-default: 300ms;
-$motion-duration-mobile-complex: 375ms;
-$motion-duration-mobile-enter: 225ms;
-$motion-duration-mobile-leave: 195ms;
-$motion-duration-mobile-max: 400ms;
+$mdw-motion__default-duration__mobile: 300ms !default;
+$mdw-motion__complex-duration__mobile: 375ms !default;
+$mdw-motion__enter-duration__mobile: 225ms !default;
+$mdw-motion__leave-duration__mobile: 195ms !default;
+$mdw-motion__max-duration__mobile: 400ms !default;
 
-$motion-duration-tablet-default: $motion-duration-mobile-default * 1.30;
-$motion-duration-tablet-complex: $motion-duration-mobile-complex * 1.30;
-$motion-duration-tablet-enter: $motion-duration-mobile-enter * 1.30;
-$motion-duration-tablet-leave: $motion-duration-mobile-leave * 1.30;
-$motion-duration-tablet-max: $motion-duration-mobile-max * 1.30;
+$mdw-motion__default-duration__tablet: $mdw-motion__default-duration__mobile * 1.30 !default;
+$mdw-motion__complex-duration__tablet: $mdw-motion__complex-duration__mobile * 1.30 !default;
+$mdw-motion__enter-duration__tablet: $mdw-motion__enter-duration__mobile * 1.30 !default;
+$mdw-motion__leave-duration__tablet: $mdw-motion__leave-duration__mobile * 1.30 !default;
+$mdw-motion__max-duration__tablet: $mdw-motion__max-duration__mobile * 1.30 !default;
 
-$motion-duration-wearable-default: $motion-duration-mobile-default * 0.70;
-$motion-duration-wearable-complex: $motion-duration-mobile-complex * 0.70;
-$motion-duration-wearable-enter: $motion-duration-mobile-enter * 0.70;
-$motion-duration-wearable-leave: $motion-duration-mobile-leave * 0.70;
-$motion-duration-wearable-max: $motion-duration-mobile-max * 0.70;
+$mdw-motion__default-duration__wearable: $mdw-motion__default-duration__mobile * 0.70 !default;
+$mdw-motion__complex-duration__wearable: $mdw-motion__complex-duration__mobile * 0.70 !default;
+$mdw-motion__enter-duration__wearable: $mdw-motion__enter-duration__mobile * 0.70 !default;
+$mdw-motion__leave-duration__wearable: $mdw-motion__leave-duration__mobile * 0.70 !default;
+$mdw-motion__max-duration__wearable: $mdw-motion__max-duration__mobile * 0.70 !default;
 
 // Self-estimated
-$motion-duration-desktop-default: 175ms;
-$motion-duration-desktop-complex: 200ms;
-$motion-duration-desktop-enter: 185ms;
-$motion-duration-desktop-leave: 150ms;
-$motion-duration-desktop-max: 300ms;
+$mdw-motion__default-duration__desktop: 175ms !default;
+$mdw-motion__complex-duration__desktop: 200ms !default;
+$mdw-motion__enter-duration__desktop: 185ms !default;
+$mdw-motion__leave-duration__desktop: 150ms !default;
+$mdw-motion__max-duration__desktop: 300ms !default;
 
 // Motion Easing Curves
 // https://material.io/guidelines/motion/duration-easing.html#duration-easing-natural-easing-curves
 
-$motion-easing-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
-$motion-easing-deceleration: cubic-bezier(0.0, 0.0, 0.2, 1);
-$motion-easing-acceleration: cubic-bezier(0.4, 0.0, 1, 1);
-$motion-easing-sharp: cubic-bezier(0.4, 0.0, 0.6, 1);
+$mdw-motion__standard-easing: cubic-bezier(0.4, 0.0, 0.2, 1) !default;
+$mdw-motion__decelerate-easing: cubic-bezier(0.0, 0.0, 0.2, 1) !default;
+$mdw-motion__accelerate-easing: cubic-bezier(0.4, 0.0, 1, 1) !default;
+$mdw-motion__sharp-easing: cubic-bezier(0.4, 0.0, 0.6, 1) !default;
 

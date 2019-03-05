@@ -101,13 +101,13 @@ $layout__gutter: dp(24);
     }
   }
   transition-property: flex, width, padding;
-  transition-timing-function: $motion-easing-standard;
-  transition-duration: $motion-duration-desktop-default;
+  transition-timing-function: $mdw-motion__standard-easing;
+  transition-duration: $mdw-motion__default-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
+    transition-duration: $mdw-motion__default-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
+    transition-duration: $mdw-motion__default-duration__tablet;
   }
 
   @include layoutItem(12);

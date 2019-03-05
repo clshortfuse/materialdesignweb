@@ -70,13 +70,13 @@ $tab__icon-with-label-height: 72;
   background-color: currentColor;
   transform-origin: 0 0 0;
   transition-property: transform;
-  transition-timing-function: $motion-easing-standard;
-  transition-duration: $motion-duration-desktop-default;
+  transition-timing-function: $mdw-motion__standard-easing;
+  transition-duration: $mdw-motion__default-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
+    transition-duration: $mdw-motion__default-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
+    transition-duration: $mdw-motion__default-duration__tablet;
   }
   // Indicator width
   // Element position = 2 * number of input elements + 1 (itself)
@@ -161,13 +161,13 @@ $tab__icon-with-label-height: 72;
   margin-bottom: dp(-$tab__icon-to-label-baseline);
   pointer-events: none;
   transition-property: color;
-  transition-timing-function: $motion-easing-standard;
-  transition-duration: $motion-duration-desktop-default;
+  transition-timing-function: $mdw-motion__standard-easing;
+  transition-duration: $mdw-motion__default-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
+    transition-duration: $mdw-motion__default-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
+    transition-duration: $mdw-motion__default-duration__tablet;
   }
 }
 
@@ -182,13 +182,13 @@ $tab__icon-with-label-height: 72;
 
   text-align: center;
   transition-property: color;
-  transition-timing-function: $motion-easing-standard;
-  transition-duration: $motion-duration-desktop-default;
+  transition-timing-function: $mdw-motion__standard-easing;
+  transition-duration: $mdw-motion__default-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
+    transition-duration: $mdw-motion__default-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
+    transition-duration: $mdw-motion__default-duration__tablet;
   }
 
   .mdw-tab__icon ~ & {
@@ -248,16 +248,16 @@ $tab__icon-with-label-height: 72;
   flex-basis: 100%;
   flex-shrink: 0;
   transition-property: transform, visibility;
-  transition-timing-function: $motion-easing-standard;
-  transition-duration: $motion-duration-desktop-default, 0s;
-  transition-delay: 0s, $motion-duration-desktop-default;
+  transition-timing-function: $mdw-motion__standard-easing;
+  transition-duration: $mdw-motion__default-duration__desktop, 0s;
+  transition-delay: 0s, $mdw-motion__default-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default, 0s;
-    transition-delay: 0s, $motion-duration-mobile-default;
+    transition-duration: $mdw-motion__default-duration__mobile, 0s;
+    transition-delay: 0s, $mdw-motion__default-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default, 0s;
-    transition-delay: 0s, $motion-duration-tablet-default;
+    transition-duration: $mdw-motion__default-duration__tablet, 0s;
+    transition-delay: 0s, $mdw-motion__default-duration__tablet;
   }
   @for $j from 1 through 8 {
     .mdw-tab__content[mdw-selected-index="#{$j - 1}"] > &,

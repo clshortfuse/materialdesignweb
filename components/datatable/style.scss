@@ -144,13 +144,13 @@ $mdw-datatable__icon-size: dp(16);
   transition-property: transform;
   vertical-align: bottom;
   max-width: 0;
-  transition-timing-function: $motion-easing-standard;
-  transition-duration: $motion-duration-desktop-default;
+  transition-timing-function: $mdw-motion__standard-easing;
+  transition-duration: $mdw-motion__default-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
+    transition-duration: $mdw-motion__default-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
+    transition-duration: $mdw-motion__default-duration__tablet;
   }
   color: transparent;
   &.material-icons {

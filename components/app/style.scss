@@ -57,14 +57,14 @@ $mdw-app__viewport-end-column: 4 !default;
   margin: 0;
   padding: 0;
 
-  transition-duration: $motion-duration-desktop-default;
+  transition-duration: $mdw-motion__default-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
+    transition-duration: $mdw-motion__default-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
+    transition-duration: $mdw-motion__default-duration__tablet;
   }
-  transition-timing-function: $motion-easing-standard;
+  transition-timing-function: $mdw-motion__standard-easing;
 
   background-color: inherit;
 }
@@ -81,33 +81,33 @@ $mdw-app__viewport-end-column: 4 !default;
   
   margin-top: 0;
 
-  transition-duration: $motion-duration-desktop-default, $motion-duration-desktop-enter;
+  transition-duration: $mdw-motion__default-duration__desktop, $mdw-motion__enter-duration__desktop;
   transition-property: box-shadow, transform, margin-top;
-  transition-timing-function: $motion-easing-standard, $motion-easing-acceleration;
+  transition-timing-function: $mdw-motion__standard-easing, $mdw-motion__accelerate-easing;
   will-change: box-shadow, transform, margin-top;
 
   transform: translateY(0); // browser hint
   z-index: 4;
   
   .mdw-app[mdw-appbar-autohide][mdw-appbar-hide] & {
-    transition-duration: $motion-duration-desktop-default, $motion-duration-desktop-leave;
-    transition-timing-function: $motion-easing-standard, $motion-easing-deceleration;
+    transition-duration: $mdw-motion__default-duration__desktop, $mdw-motion__leave-duration__desktop;
+    transition-timing-function: $mdw-motion__standard-easing, $mdw-motion__decelerate-easing;
   }
   
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default, $motion-duration-mobile-enter;
+    transition-duration: $mdw-motion__default-duration__mobile, $mdw-motion__enter-duration__mobile;
 
     .mdw-app[mdw-appbar-autohide][mdw-appbar-hide] & {
-      transition-duration: $motion-duration-mobile-default, $motion-duration-mobile-leave;
+      transition-duration: $mdw-motion__default-duration__mobile, $mdw-motion__leave-duration__mobile;
     }
   }
 
   // Tablet
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default, $motion-duration-tablet-enter;
+    transition-duration: $mdw-motion__default-duration__tablet, $mdw-motion__enter-duration__tablet;
 
     .mdw-app[mdw-appbar-autohide][mdw-appbar-hide] & {
-      transition-duration: $motion-duration-tablet-default, $motion-duration-tablet-leave;
+      transition-duration: $mdw-motion__default-duration__tablet, $mdw-motion__leave-duration__tablet;
     }
   }
 }

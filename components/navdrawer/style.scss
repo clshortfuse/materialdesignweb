@@ -21,23 +21,23 @@ $navdrawer__min-width__mini: dp(56) !default;
   -ms-grid-rows: auto 1fr 16px;
   grid-template-columns: auto 0 1fr;
   -ms-grid-columns: auto 16px 1fr;
-  transition-timing-function: $motion-easing-deceleration;
-  transition-duration: $motion-duration-desktop-leave;
+  transition-timing-function: $mdw-motion__decelerate-easing;
+  transition-duration: $mdw-motion__leave-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-leave;
+    transition-duration: $mdw-motion__leave-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-leave;
+    transition-duration: $mdw-motion__leave-duration__tablet;
   }
   &[id]:target,
   &[mdw-show]:not([mdw-hide]) {
-    transition-timing-function: $motion-easing-acceleration;
-    transition-duration: $motion-duration-desktop-enter;
+    transition-timing-function: $mdw-motion__accelerate-easing;
+    transition-duration: $mdw-motion__enter-duration__desktop;
     @include allHandsets {
-      transition-duration: $motion-duration-mobile-enter;
+      transition-duration: $mdw-motion__enter-duration__mobile;
     }
     @include allTablets {
-      transition-duration: $motion-duration-tablet-enter;
+      transition-duration: $mdw-motion__enter-duration__tablet;
     }
   }
 }

@@ -74,7 +74,7 @@
   transform: translateY(dp(8));
   transition-property: transform, color;
   transition-duration: 200ms;
-  transition-timing-function: $motion-easing-standard;
+  transition-timing-function: $mdw-motion__standard-easing;
 
   &:last-child {
     // No label
@@ -101,7 +101,7 @@
 
   transition-property: transform;
   transition-duration: 200ms;
-  transition-timing-function: $motion-easing-standard;
+  transition-timing-function: $mdw-motion__standard-easing;
   transform: translateY(dp(8));
 
   z-index: 1;
@@ -125,7 +125,7 @@
   pointer-events: none;
   transition-property: transform, opacity, color;
   transition-duration: 200ms;
-  transition-timing-function: $motion-easing-standard;
+  transition-timing-function: $mdw-motion__standard-easing;
   text-align: center;
 
   word-break: break-all;

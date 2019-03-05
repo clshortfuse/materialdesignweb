@@ -54,13 +54,13 @@ $snackbar__scale-up__from: 0.85;
   animation-name: none;
   animation-direction: normal;
   animation-fill-mode: forwards;
-  animation-timing-function: $motion-easing-acceleration;
-  animation-duration: $motion-duration-desktop-enter;
+  animation-timing-function: $mdw-motion__accelerate-easing;
+  animation-duration: $mdw-motion__enter-duration__desktop;
   @include allHandsets {
-    animation-duration: $motion-duration-mobile-enter;
+    animation-duration: $mdw-motion__enter-duration__mobile;
   }
   @include allTablets {
-    animation-duration: $motion-duration-tablet-enter;
+    animation-duration: $mdw-motion__enter-duration__tablet;
   }
 
   &[aria-hidden="false"] {
@@ -74,13 +74,13 @@ $snackbar__scale-up__from: 0.85;
 
   &[aria-hidden="true"] {
     animation-name: hideSnackbar;
-    animation-timing-function: $motion-easing-deceleration;
-    animation-duration: $motion-duration-desktop-leave;
+    animation-timing-function: $mdw-motion__decelerate-easing;
+    animation-duration: $mdw-motion__leave-duration__desktop;
     @include allHandsets {
-      animation-duration: $motion-duration-mobile-leave;
+      animation-duration: $mdw-motion__leave-duration__mobile;
     }
     @include allTablets {
-      animation-duration: $motion-duration-tablet-leave;
+      animation-duration: $mdw-motion__leave-duration__tablet;
     }
   }
 

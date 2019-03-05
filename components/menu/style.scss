@@ -31,13 +31,13 @@ $menu__unit-width: dp(56);
     pointer-events: auto;
     visibility: visible;
     .mdw-menu__popup {
-      transition-timing-function: $motion-easing-acceleration;
-      transition-duration: $motion-duration-desktop-enter;
+      transition-timing-function: $mdw-motion__accelerate-easing;
+      transition-duration: $mdw-motion__enter-duration__desktop;
       @include allHandsets {
-        transition-duration: $motion-duration-mobile-enter;
+        transition-duration: $mdw-motion__enter-duration__mobile;
       }
       @include allTablets {
-        transition-duration: $motion-duration-tablet-enter;
+        transition-duration: $mdw-motion__enter-duration__tablet;
       }
       transform: scale(1);
       opacity: 1;
@@ -174,13 +174,13 @@ $menu__unit-width: dp(56);
   flex-direction: column;
   position: absolute;
   transition-property: transform, box-shadow, opacity;
-  transition-timing-function: $motion-easing-deceleration;
-  transition-duration: $motion-duration-desktop-leave;
+  transition-timing-function: $mdw-motion__decelerate-easing;
+  transition-duration: $mdw-motion__leave-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-leave;
+    transition-duration: $mdw-motion__leave-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-leave;
+    transition-duration: $mdw-motion__leave-duration__tablet;
   }
   
   top: inherit;

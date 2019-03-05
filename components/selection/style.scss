@@ -23,19 +23,19 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   display: inline-flex;
   flex-direction: row;
   position: relative;
-  animation-duration: $motion-duration-desktop-enter;
+  animation-duration: $mdw-motion__enter-duration__desktop;
   @include allHandsets {
-    animation-duration: $motion-duration-mobile-enter;
+    animation-duration: $mdw-motion__enter-duration__mobile;
   }
   @include allTablets {
-    animation-duration: $motion-duration-tablet-enter;
+    animation-duration: $mdw-motion__enter-duration__tablet;
   }
-  transition-duration: $motion-duration-desktop-default;
+  transition-duration: $mdw-motion__default-duration__desktop;
   @include allHandsets {
-    transition-duration: $motion-duration-mobile-default;
+    transition-duration: $mdw-motion__default-duration__mobile;
   }
   @include allTablets {
-    transition-duration: $motion-duration-tablet-default;
+    transition-duration: $mdw-motion__default-duration__tablet;
   }
 }
 .mdw-selection__input {
@@ -63,7 +63,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   opacity: 0;
   background-color: transparent;
   transition-property: transform, color, opacity;
-  transition-timing-function: $motion-easing-standard;
+  transition-timing-function: $mdw-motion__standard-easing;
   transition-duration: inherit;
   &:checked {
     // background-color: unquote("rgba(var(--accent-color), 0.26)");
@@ -98,7 +98,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   outline: none;
   
   z-index: 1;
-  animation-timing-function: $motion-easing-deceleration;
+  animation-timing-function: $mdw-motion__decelerate-easing;
   animation-duration: inherit;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -107,7 +107,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   }
 
   transition-property: background-color, border-color;
-  transition-timing-function: $motion-easing-standard;
+  transition-timing-function: $mdw-motion__standard-easing;
   transition-duration: inherit;
   background-color: transparent;
 
@@ -124,7 +124,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     background-color: transparent;
     transition-property: border-width, border-color, background-color;
     transition-duration: inherit;
-    transition-timing-function: $motion-easing-standard;
+    transition-timing-function: $mdw-motion__standard-easing;
   }
   &::after {
     content: "";
@@ -196,7 +196,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     margin-top: $checkbox-icon-offset-y;
     height: $checkbox-icon-height;
     width: $checkbox-icon-width;
-    animation-timing-function: $motion-easing-deceleration;
+    animation-timing-function: $mdw-motion__decelerate-easing;
     animation-duration: inherit;
   }
   &:checked ~ .mdw-selection__icon::after {
@@ -236,7 +236,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     background-color: currentColor;
     transform: scale(0);
     transition-property: transform, background-color;
-    transition-timing-function: $motion-easing-standard;
+    transition-timing-function: $mdw-motion__standard-easing;
     transition-duration: inherit;
   }
   &:checked ~ .mdw-selection__icon::after {
