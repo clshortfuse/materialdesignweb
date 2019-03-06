@@ -81,33 +81,33 @@ $mdw-app__viewport-end-column: 4 !default;
   
   margin-top: 0;
 
-  transition-duration: $mdw-motion__default-duration__desktop, $mdw-motion__enter-duration__desktop;
-  transition-property: box-shadow, transform, margin-top;
-  transition-timing-function: $mdw-motion__standard-easing, $mdw-motion__accelerate-easing;
-  will-change: box-shadow, transform, margin-top;
+  transition-duration: $mdw-motion__enter-duration__desktop;
+  transition-property: transform, margin-top;
+  transition-timing-function: $mdw-motion__accelerate-easing;
+  will-change: transform, margin-top;
 
-  transform: translateY(0); // browser hint
+  transform: translateZ(0); // browser hint
   z-index: 4;
   
   .mdw-app[mdw-appbar-autohide][mdw-appbar-hide] & {
-    transition-duration: $mdw-motion__default-duration__desktop, $mdw-motion__leave-duration__desktop;
-    transition-timing-function: $mdw-motion__standard-easing, $mdw-motion__decelerate-easing;
+    transition-duration: $mdw-motion__leave-duration__desktop;
+    transition-timing-function: $mdw-motion__decelerate-easing;
   }
   
   @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__default-duration__mobile, $mdw-motion__enter-duration__mobile;
+    transition-duration: $mdw-motion__enter-duration__mobile;
 
     .mdw-app[mdw-appbar-autohide][mdw-appbar-hide] & {
-      transition-duration: $mdw-motion__default-duration__mobile, $mdw-motion__leave-duration__mobile;
+      transition-duration: $mdw-motion__leave-duration__mobile;
     }
   }
 
   // Tablet
   @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__default-duration__tablet, $mdw-motion__enter-duration__tablet;
+    transition-duration: $mdw-motion__enter-duration__tablet;
 
     .mdw-app[mdw-appbar-autohide][mdw-appbar-hide] & {
-      transition-duration: $mdw-motion__default-duration__tablet, $mdw-motion__leave-duration__tablet;
+      transition-duration: $mdw-motion__leave-duration__tablet;
     }
   }
 }
