@@ -109,7 +109,8 @@ class DataTableAdapterColumn {
       let sortIcon = options.customSortIcon;
       if (!sortIcon) {
         sortIcon = document.createElement('div');
-        sortIcon.classList.add('mdw-datatable__sort-icon', 'material-icons');
+        sortIcon.classList.add('mdw-datatable__sort-icon');
+        sortIcon.classList.add('material-icons');
         sortIcon.textContent = 'arrow_downward';
       }
       if (this.element.hasChildNodes()) {
