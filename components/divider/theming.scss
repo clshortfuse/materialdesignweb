@@ -1,19 +1,19 @@
 @import '../common/theming.scss';
 
-$dividerColors: (
+$mdw-divider__theme-values: (
   color: (('foreground-light', 0.12), ('foreground-dark', 0.12)),
-);
+) !default;
 
-@function dividerThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('divider', $dividerColors, $key, $type, $theme);
+@function mdwDividerThemeValue($key, $type, $theme) {
+  @return mdwGetThemeValue('divider', $mdw-divider__theme-values, $key, $type, $theme);
 }
 
-@mixin dividerThemeVariables($lightness) {
-  @include mdw-theme__variables('divider', $dividerColors, $lightness);
+@mixin mdw-divider__theme-variables($lightness) {
+  @include mdw-theme__variables('divider', $mdw-divider__theme-values, $lightness);
 }
 
-@mixin dividerContrastRules($type: 'var', $theme: null) {
+@mixin mdw-divider__theme-rules($type: 'var', $theme: null) {
   .mdw-divider {
-    color: dividerThemeValue("color", $type, $theme);
+    color: mdwDividerThemeValue("color", $type, $theme);
   }
 }

@@ -1,9 +1,11 @@
 @import '../common/platform.scss';
 
 .mdw-divider {
-  width: 100%;
+  
   min-height: dp(1);
   height: dp(1);
+  width: 100%;
   margin-top: dp(-1);
+  
   background-color: currentColor;
 }
