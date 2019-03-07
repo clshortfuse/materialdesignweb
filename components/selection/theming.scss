@@ -60,7 +60,7 @@ $selectionColors: (
     }
   }
   .mdw-selection__label,
-  .mdw-selection[mdw-theme-color] .mdw-selection__input:not(:disabled) ~ .mdw-selection__label {
+  .mdw-selection[mdw-color] .mdw-selection__input:not(:disabled) ~ .mdw-selection__label {
     color: selectionThemeValue("text-color", $type, $theme);
   }
   .mdw-selection[mdw-switch] .mdw-selection__input[type="checkbox"] {

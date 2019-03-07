@@ -23,7 +23,7 @@ $listColors: (
 // Vary by contrast
 @mixin listContrastAndThemeRules($type: 'var', $theme: null) {
   .mdw-list__item {
-    &:not([mdw-theme-color]) {
+    &:not([mdw-color]) {
       color: listThemeValue("text-color", $type)
     }
     &[mdw-selected] {

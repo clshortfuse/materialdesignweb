@@ -61,7 +61,7 @@ $mdw-textfield__theme-values: (
       }
     }
 
-    &[mdw-theme-color="primary"] {
+    &[mdw-color="primary"] {
       &:active > .mdw-textfield__input:not(:disabled),
       & > .mdw-textfield__input:not(:disabled):focus {
         & ~ .mdw-textfield__border {
@@ -70,7 +70,7 @@ $mdw-textfield__theme-values: (
       }
     }
 
-    &[mdw-theme-color="accent"] {
+    &[mdw-color="accent"] {
       &:active > .mdw-textfield__input:not(:disabled),
       & > .mdw-textfield__input:not(:disabled):focus {
         & ~ .mdw-textfield__border {
@@ -80,7 +80,7 @@ $mdw-textfield__theme-values: (
     }
 
     &,
-    &[mdw-theme-color] {
+    &[mdw-color] {
       &:active > .mdw-textfield__input:not(:disabled),
       & > .mdw-textfield__input:not(:disabled):focus {
         &:invalid {
@@ -136,7 +136,7 @@ $mdw-textfield__theme-values: (
       }
     }
 
-    &[mdw-theme-color="primary"] {
+    &[mdw-color="primary"] {
       &:active > .mdw-textfield__input:not(:disabled),
       & > .mdw-textfield__input:not(:disabled):focus {
         caret-color: mdwTextfieldThemeValue("primary-label-color__focus", $type, $theme);
@@ -155,7 +155,7 @@ $mdw-textfield__theme-values: (
       }
     }
 
-    &[mdw-theme-color="accent"] {
+    &[mdw-color="accent"] {
       &:active > .mdw-textfield__input:not(:disabled),
       & > .mdw-textfield__input:not(:disabled):focus {
         caret-color: mdwTextfieldThemeValue("accent-label-color__focus", $type, $theme);

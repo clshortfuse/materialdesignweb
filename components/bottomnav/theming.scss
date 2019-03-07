@@ -18,27 +18,16 @@ $mdw-bottomnav__theme-values: (
   @include mdw-theme__variables('bottomnav', $mdw-bottomnav__theme-values, $lightness);
 }
 
-@mixin __mdw-bottomnav__contrast-and-theme-rules($type, $theme: null) {
-  @at-root {
-    #{&}.mdw-bottomnav[mdw-theme-fill]:not([mdw-theme-color]) {
-      input:checked ~ .mdw-bottomnav__icon,
-      input:checked ~ .mdw-bottomnav__label,
-      .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__icon,
-      .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__label,
-      input:checked + .mdw-bottomnav__item > .mdw-bottomnav__icon,
-      input:checked + .mdw-bottomnav__item > .mdw-bottomnav__label {
-        color: mdwBottomnavThemeValue("filled-active-color", $type, $theme);
-      }
-    }
-  }
-}
-
 // Vary by contrast and theme
 @mixin mdw-bottomnav__contrast-and-theme-rules($type: 'var', $theme: null) {
-  @include __mdw-bottomnav__contrast-and-theme-rules($type, $theme);
-  @if ($type != 'var') {
-    :not([mdw-theme-fill]) {
-      @include __mdw-bottomnav__contrast-and-theme-rules($type, $theme);
+  .mdw-bottomnav[mdw-fill]:not([mdw-color]) {
+    input:checked ~ .mdw-bottomnav__icon,
+    input:checked ~ .mdw-bottomnav__label,
+    .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__icon,
+    .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__label,
+    input:checked + .mdw-bottomnav__item > .mdw-bottomnav__icon,
+    input:checked + .mdw-bottomnav__item > .mdw-bottomnav__label {
+      color: mdwBottomnavThemeValue("filled-active-color", $type, $theme);
     }
   }
 
@@ -57,21 +46,16 @@ $mdw-bottomnav__theme-values: (
   }
 
   .mdw-bottomnav__item {
+    &::before {
+      background-color: mdwBottomnavThemeValue("badge-background", null, $theme);
+      color: mdwBottomnavThemeValue("badge-foreground", null, $theme);
+    }
+
     & > .mdw-ripple > .mdw-ripple__inner,
     &::after {
       opacity: mdwBottomnavThemeValue("pressed-opacity", $type, $theme);
 
       color: mdwBottomnavThemeValue("overlay-color", $type, $theme);
-    }
-  }
-}
-
-// Varies by theme
-@mixin mdw-bottomnav__theme-rules($theme: null) {
-  .mdw-bottomnav__item {
-    &::before {
-      background-color: mdwBottomnavThemeValue("badge-background", null, $theme);
-      color: mdwBottomnavThemeValue("badge-foreground", null, $theme);
     }
   }
 }

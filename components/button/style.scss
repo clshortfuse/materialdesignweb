@@ -60,11 +60,11 @@ $mdw-button__outline-size: dp(1) !default;
   }
 
   &[mdw-outline],
-  &[mdw-theme-fill] {
+  &[mdw-fill] {
     padding: 0 dp(16);
   }
 
-  &:not([mdw-theme-fill]) {
+  &:not([mdw-fill]) {
     background-color: transparent;
   }
 
@@ -120,7 +120,7 @@ $mdw-button__outline-size: dp(1) !default;
 
     border-radius: 50%;
 
-    & > * {
+    & > {
       position: absolute;
       top: 0;
       left: 0;

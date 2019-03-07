@@ -2,7 +2,6 @@
 
 $mdw-card__theme-values: (
   background:   ((#fff, 1.00), ('background', '800', 1.00)),
-  text-color:   (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   border-color: (('foreground-light', 0.12), ('foreground-dark', 0.12)),
   focus-color:  (('foreground-light', 0.06), ('foreground-dark', 0.10)),
 ) !default;
@@ -15,32 +14,17 @@ $mdw-card__theme-values: (
   @include mdw-theme__variables('card', $mdw-card__theme-values, $lightness);
 }
 
-@mixin __mdw-card__contrast-and-theme-rules($type, $theme: null) {
-  @at-root {
-    #{&}.mdw-card {
-      border-color: mdwCardThemeValue("border-color", $type, $theme);
-
-      &:not([mdw-theme-fill]) {
-        background-color: mdwCardThemeValue("background", $type, $theme);
-      }
-      
-      &:not([mdw-theme-color]) {
-        color: mdwCardThemeValue("text-color", $type, $theme);
-      }
-      
-      &:focus::before {
-        background-color: mdwCardThemeValue("focus-color", $type, $theme);
-      }
-    }
-  }
-}
-
 // Vary by contrast or theme
 @mixin mdw-card__contrast-and-theme-rules($type: 'var', $theme: null) {
-  @include __mdw-card__contrast-and-theme-rules($type, $theme);
-  @if ($type != 'var') {
-    :not([mdw-theme-fill]) {
-      @include __mdw-card__contrast-and-theme-rules($type, $theme);
+  .mdw-card {
+    border-color: mdwCardThemeValue("border-color", $type, $theme);
+
+    &:not([mdw-fill]) {
+      background-color: mdwCardThemeValue("background", $type, $theme);
+    }
+
+    &:focus::before {
+      background-color: mdwCardThemeValue("focus-color", $type, $theme);
     }
   }
 }

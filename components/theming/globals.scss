@@ -15,15 +15,14 @@ $mdw-theme__global-variables: (
 
 // Vary by contrast and theme
 @mixin mdw-theme__global-contrast-and-theme-rules($type: 'var', $theme: null) {
-  @if ($type != 'var') {
-    color: mdwThemeGlobalValue("text-color", $type, $theme);
-  } @else {
+  @if ($type == 'var') {
     @at-root {
-      *[mdw-theme-fill] {
+      .mdw-theme[mdw-fill] {
         color: mdwThemeGlobalValue("text-color", $type, $theme);
       }
     }
   }
+
 
   // color: globalThemeValue("text-color", $type);
   .mdw-theme__primary-text {

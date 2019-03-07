@@ -20,55 +20,46 @@ $menuColors: (
   @include mdw-theme__variables('menu', $menuColors, $lightness);
 }
 
-@mixin internalMenuContrastRules($type: 'var', $theme: null) {
-  @at-root {
-    #{&}.mdw-menu {
-      &:not([mdw-js]) {
-        .mdw-menu__popup {
-          & > .mdw-menu__text,
-          .mdw-menu__item {
-            &:hover {
-              background-color: menuThemeValue("hover-color", $type, $theme);
-            }
-          }
-        }
-      }
-      .mdw-menu__popup {
-        background-color: menuThemeValue("background-color", $type, $theme);
-        & > .mdw-menu__text,
-        .mdw-menu__item {
-          color: menuThemeValue("text-color", $type, $theme);
-          &:focus,
-          &[mdw-selected] {
-            background-color: menuThemeValue("hover-color", $type, $theme);
-          }
-          &[aria-disabled="true"] {
-            color: menuThemeValue("disabled-color", $type, $theme);
-            & > .mdw-menu__icon,
-            & > .mdw-menu__check,
-            & > .mdw-menu__radio {
-              color: inherit;
-            }
-          }
-          & > .mdw-ripple > .mdw-ripple__inner,
-          &:after {
-            color: menuThemeValue("ripple-color", $type, $theme);
-            opacity: menuThemeValue("ripple-opacity", $type, $theme);
-          }
-        }
-      }
-    }
-  }
-}
-
 // Vary by contrast or theme
 @mixin menuContrastRules($type: 'var', $theme: null) {
-  @include internalMenuContrastRules($type, $theme);
-  @if ($type != 'var') {
-    :not([mdw-theme-fill]) {
-      @include internalMenuContrastRules($type, $theme);
+  .mdw-menu {
+    &:not([mdw-js]) {
+      .mdw-menu__popup {
+        & > .mdw-menu__text,
+        .mdw-menu__item {
+          &:hover {
+            background-color: menuThemeValue("hover-color", $type, $theme);
+          }
+        }
+      }
+    }
+
+    .mdw-menu__popup {
+      background-color: menuThemeValue("background-color", $type, $theme);
+      & > .mdw-menu__text,
+      .mdw-menu__item {
+        color: menuThemeValue("text-color", $type, $theme);
+        &:focus,
+        &[mdw-selected] {
+          background-color: menuThemeValue("hover-color", $type, $theme);
+        }
+        &[aria-disabled="true"] {
+          color: menuThemeValue("disabled-color", $type, $theme);
+          & > .mdw-menu__icon,
+          & > .mdw-menu__check,
+          & > .mdw-menu__radio {
+            color: inherit;
+          }
+        }
+        & > .mdw-ripple > .mdw-ripple__inner,
+        &:after {
+          color: menuThemeValue("ripple-color", $type, $theme);
+          opacity: menuThemeValue("ripple-opacity", $type, $theme);
+        }
+      }
     }
   }
+
   .mdw-menu__icon,
   .mdw-menu__check,
   .mdw-menu__radio {

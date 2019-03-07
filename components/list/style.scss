@@ -113,7 +113,7 @@ ul.mdw-list {
     }
   }
 
-  &[mdw-theme-color][mdw-expanded] {
+  &[mdw-color][mdw-expanded] {
     .mdw-list__item:first-child {
       color: inherit;
     }

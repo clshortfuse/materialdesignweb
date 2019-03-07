@@ -126,7 +126,7 @@ $datatableColors: (
 // Varies by contrast and theme
 @mixin datatableContrastAndThemeRules($type: 'var', $theme: null) {
   @if ($type != 'var') {
-    .mdw-datatable[mdw-theme-color~="primary"] {
+    .mdw-datatable[mdw-color^="primary"] {
       &[mdw-has-selection] {
         .mdw-datatable__header,
         caption {
@@ -157,7 +157,7 @@ $datatableColors: (
         }
       }
     }
-    .mdw-datatable[mdw-theme-color~="accent"] {
+    .mdw-datatable[mdw-color^="accent"] {
       &[mdw-has-selection] {
         .mdw-datatable__header,
         caption {
@@ -188,7 +188,7 @@ $datatableColors: (
         }
       }
     }
-    .mdw-datatable[mdw-theme-color~="warn"] {
+    .mdw-datatable[mdw-color^="warn"] {
       &[mdw-has-selection] {
         .mdw-datatable__header,
         caption {

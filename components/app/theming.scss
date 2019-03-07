@@ -32,7 +32,7 @@ $mdw-app__theme-values: (
   }
 
   .mdw-app__navdrawer {
-    .mdw-list__item[mdw-selected]:not([mdw-theme-color]) {
+    .mdw-list__item[mdw-selected]:not([mdw-color]) {
       color: mdwAppThemeValue("selected-color", $type, $theme);
     }
 

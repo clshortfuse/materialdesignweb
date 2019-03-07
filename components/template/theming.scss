@@ -24,7 +24,7 @@ $templateColors: (
 
 // Varies by theme
 @mixin templateThemeRules($theme: null) {
-  .mdw-template[mdw-theme-fill] {
+  .mdw-template[mdw-fill] {
     border-color: templateThemeValue('border-color', null, $theme);
   }
 }

@@ -498,8 +498,9 @@ class Dialog {
       options.buttons.forEach((buttonText) => {
         const button = document.createElement('div');
         button.classList.add('mdw-button');
+        button.classList.add('mdw-theme');
         button.setAttribute('tabindex', '0');
-        button.setAttribute('mdw-theme-color', 'accent');
+        button.setAttribute('mdw-color', 'accent');
         if (options.custom) {
           button.setAttribute('mdw-custom', '');
         }

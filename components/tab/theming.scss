@@ -16,7 +16,7 @@ $tabColors: (
 
 // Vary by contrast
 @mixin tabContrastRules($type: 'var', $theme: null) {
-  .mdw-tab__items:not([mdw-theme-color]) {
+  .mdw-tab__items:not([mdw-color]) {
     color: tabThemeValue("active-color", $type, $theme);
   }
   .mdw-tab__icon,

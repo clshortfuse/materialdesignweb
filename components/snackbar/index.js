@@ -262,9 +262,11 @@ class Snackbar {
       setTextNode(button, options.buttonText);
       button.classList.add('mdw-button');
       if (typeof options.buttonThemeColor === 'undefined') {
-        button.setAttribute('mdw-theme-color', 'primary');
+        button.classList.add('mdw-theme');
+        button.setAttribute('mdw-color', 'primary');
       } else if (typeof options.buttonThemeColor === 'string') {
-        button.setAttribute('mdw-theme-color', options.buttonThemeColor);
+        button.classList.add('mdw-theme');
+        button.setAttribute('mdw-color', options.buttonThemeColor);
       } else {
         // Don't set attribute if null is passed
       }
