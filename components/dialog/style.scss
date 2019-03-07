@@ -6,57 +6,56 @@
 @import '../common/breakpoint.scss';
 @import '../common/type.scss';
 
-$dialog__unit-width: dp(56);
+$mdw-dialog__unit-width: dp(56) !default;
 
 .mdw-dialog__close {
-  pointer-events: inherit;
   position: absolute;
-  left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 8;
-  cursor: default;
-
-  overflow-y: scroll;
+  left: 0;
   // Scroll mask
+  -ms-overflow-style: none;
+  overflow-y: scroll;
   overscroll-behavior: none;
   overscroll-behavior: contain;
   -ms-scroll-chaining: none;
+  scrollbar-width: none;
+  
+  height: 100%;
+  width: 100%;
+  
+  cursor: default;
+  
+  pointer-events: inherit;
+  z-index: 8;
 
   // Hide scrollbar
-  -ms-overflow-style: none;
   &::-webkit-scrollbar {
-    display:none;
+    display: none;
   }
-  scrollbar-width: none;
+
   &::after {
     display: block;
     content: '';
-    width: 200%;
+
     height: 200%;
+    width: 200%;
   }
 }
 
 .mdw-dialog {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  padding: dp(84) dp(40);
-  background-color: rgba(0, 0, 0, 0.50);
-
   display: flex;
-  flex-direction: row;
+  position: absolute;
+  top: 0;
+  left: 0;
   align-items: center;
+  flex-direction: row;
   justify-content: center;
-
-  pointer-events: none;
-  z-index: 24;
-  transition-property: opacity, visibility;
-  transition-timing-function: $mdw-motion__decelerate-easing;
+  
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  padding: dp(84) dp(40);
+  
   transition-duration: $mdw-motion__leave-duration__desktop;
   @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__leave-duration__mobile;
@@ -64,21 +63,32 @@ $dialog__unit-width: dp(56);
   @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__leave-duration__tablet;
   }
+  transition-property: opacity, visibility;
+  transition-timing-function: $mdw-motion__decelerate-easing;
+  
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  
+  z-index: 24;
+
+  background-color: rgba(0, 0, 0, 0.50);
+
+  &:not([aria-hidden]) {
+    // Initial state
+    transition: none;
+  }
+
   @for $i from 3 to 8 {
     &[mdw-width-units="#{$i}"] {
       .mdw-dialog__popup {
-        min-width: calc(#{$dialog__unit-width} * #{$i});
+        min-width: calc(#{$mdw-dialog__unit-width} * #{$i});
       }
     }
   }
-  visibility: hidden;
-  opacity: 0;
+
   &[aria-hidden="false"],
   &[id]:target {
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
-    transition-timing-function: $mdw-motion__accelerate-easing;
     transition-duration: $mdw-motion__enter-duration__desktop;
     @include mdw-breakpoint__mobile-device {
       transition-duration: $mdw-motion__enter-duration__mobile;
@@ -86,6 +96,12 @@ $dialog__unit-width: dp(56);
     @include mdw-breakpoint__tablet-device {
       transition-duration: $mdw-motion__enter-duration__tablet;
     }
+    transition-timing-function: $mdw-motion__accelerate-easing;
+
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+
     .mdw-dialog__popup {
       transform: scale(1);
     }
@@ -93,45 +109,47 @@ $dialog__unit-width: dp(56);
 }
 
 .mdw-dialog__popup {
-  position: relative;
-  
-
-  max-height: 100%;
-  max-width: 100%;
   display: flex;
+  position: relative;
   flex-direction: column;
-  flex-shrink: 1;
-  min-width: dp(224);
-  border-radius: dp(4);
-  box-shadow: mdwElevation(24);
-  transition-property: transform;
-  transition-duration: inherit;
-  transition-timing-function: inherit;
-  transform-origin: bottom center;
-  transform: scale(0);
-  z-index: 24;
   overflow-y: auto;
   overscroll-behavior: none;
   overscroll-behavior: contain;
   -ms-scroll-chaining: none;
+  
+  max-height: 100%;
+  min-width: dp(224);
+  max-width: 100%;
+  flex-shrink: 1;
 
+  transition-duration: inherit;
+  transition-property: transform;
+  transition-timing-function: inherit;
+
+  transform: scale(0);
+  transform-origin: bottom center;
+  z-index: 24;
+
+  border-radius: dp(4);
+  box-shadow: mdwElevation(24);
 }
 
 
 .mdw-dialog__title {
-  padding: 0 dp(24);
-  @include type-rules('h6');
   @include texttop-to-top(20);
+  @include type-rules('h6');
   @include baseline-bottom(36);
+
   margin-bottom: dp(-36);
-  
+  padding: 0 dp(24);
 }
 
 .mdw-dialog__body {
-  padding: 0 dp(24);
-  @include type-rules('body');
   @include texttop-to-top(20);
+  @include type-rules('body');
   @include baseline-bottom(28);
+
+  padding: 0 dp(24);
 }
 
 .mdw-dialog__header {
@@ -143,32 +161,41 @@ $dialog__unit-width: dp(56);
 }
 
 .mdw-dialog__button-area {
-  flex: none;
   display: flex;
   flex-direction: row-reverse;
+  flex-wrap: wrap;
   justify-content: flex-start;
+  
+  flex: none;
   margin-top: dp(8);
   margin-bottom: dp(8);
-  flex-wrap: wrap;
+
   &[mdw-stacked] {
     margin-top: 0;
+
     .mdw-button {
-      flex-basis: 100%;
-      min-height: dp(48);
-      padding-left: dp(16);
-      padding-right: dp(16);
       justify-content: flex-end;
+      
+      min-height: dp(48);
+      flex-basis: 100%;
       margin-right: 0;
-      &, html[dir=rtl] & {
+      padding-right: dp(16);
+      padding-left: dp(16);
+      
+      &,
+      :root[dir="rtl"] & {
         margin-left: 0;
       }
     }
   }
+
   .mdw-button {
-    text-align: end;
-    margin-left: 0;
     margin-right: dp(8);
-    html[dir=rtl] & {
+    margin-left: 0;
+
+    text-align: end;
+
+    :root[dir="rtl"] & {
       margin-right: 0;
       margin-left: dp(8);
     }

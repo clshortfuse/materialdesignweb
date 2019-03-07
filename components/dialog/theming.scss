@@ -1,28 +1,29 @@
 @import '../common/theming.scss';
 
-$dialogColors: (
+$mdw-dialog__theme-values: (
   text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
   background-color:     ((#fff, 1.00), ('background', '800', 1.00)),
-);
+) !default;
 
-@function dialogThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('dialog', $dialogColors, $key, $type, $theme);
+@function mdwDialogThemeValue($key, $type, $theme) {
+  @return mdwGetThemeValue('dialog', $mdw-dialog__theme-values, $key, $type, $theme);
 }
 
-@mixin dialogThemeVariables($lightness) {
-  @include mdw-theme__variables('dialog', $dialogColors, $lightness);
+@mixin mdw-dialog__theme-variables($lightness) {
+  @include mdw-theme__variables('dialog', $mdw-dialog__theme-values, $lightness);
 }
 
-// Vary by contrast or theme
-@mixin dialogContrastAndThemeRules($type: 'var', $theme: null) {
+@mixin mdw-dialog__theme-rules($type: 'var', $theme: null) {
   .mdw-dialog__popup {
-    background-color: dialogThemeValue("background-color", $type, $theme);
+    background-color: mdwDialogThemeValue("background-color", $type, $theme);
   }
+  
   .mdw-dialog__title {
-    color: dialogThemeValue("text-color", $type, $theme);
+    color: mdwDialogThemeValue("text-color", $type, $theme);
   }
+  
   .mdw-dialog__body {
-    color: dialogThemeValue("secondary-text-color", $type, $theme);
+    color: mdwDialogThemeValue("secondary-text-color", $type, $theme);
   }
 }

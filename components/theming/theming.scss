@@ -144,7 +144,7 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
     @include datatableThemeVariables($lightness);
   }
   @if (index($mdw-theme__components, 'dialog')) {
-    @include dialogThemeVariables($lightness);
+    @include mdw-dialog__theme-variables($lightness);
   }
   @if (index($mdw-theme__components, 'divider')) {
     @include dividerThemeVariables($lightness);
@@ -201,7 +201,7 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
     @include datatableContrastAndThemeRules($type, $theme);
   }
   @if (index($mdw-theme__components, 'dialog')) {
-    @include dialogContrastAndThemeRules($type, $theme);
+    @include mdw-dialog__theme-rules($type, $theme);
   }
   @if (index($mdw-theme__components, 'list')) {
     @include listContrastAndThemeRules($type, $theme);
