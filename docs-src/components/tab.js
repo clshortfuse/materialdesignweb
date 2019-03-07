@@ -112,20 +112,32 @@ function onOptionChange(event) {
     case 'color':
       switch (value) {
         case 'default':
-          tabItemsElement.removeAttribute('mdw-theme-color');
+          tabItemsElement.removeAttribute('mdw-color');
           break;
         default:
-          tabItemsElement.setAttribute('mdw-theme-color', value);
+          tabItemsElement.setAttribute('mdw-color', value);
           break;
       }
       break;
     case 'fill':
       switch (value) {
         case 'none':
-          tabItemsElement.removeAttribute('mdw-theme-fill');
+          tabItemsElement.removeAttribute('mdw-fill');
+          tabItemsElement.removeAttribute('mdw-light');
+          tabItemsElement.removeAttribute('mdw-dark');
           break;
         default:
-          tabItemsElement.setAttribute('mdw-theme-fill', value);
+          tabItemsElement.setAttribute('mdw-fill', value.replace(/ (light|dark)/, ''));
+          if (value.indexOf(' light') === -1) {
+            tabItemsElement.removeAttribute('mdw-light');
+          } else {
+            tabItemsElement.setAttribute('mdw-light', '');
+          }
+          if (value.indexOf(' dark') === -1) {
+            tabItemsElement.removeAttribute('mdw-dark');
+          } else {
+            tabItemsElement.setAttribute('mdw-dark', '');
+          }
           break;
       }
       break;

@@ -120,7 +120,8 @@ function onOptionChange(event) {
       if (!buttonElement) {
         buttonElement = document.createElement('button');
         buttonElement.classList.add('mdw-button');
-        buttonElement.setAttribute('mdw-theme-color', 'accent');
+        buttonElement.classList.add('mdw-theme');
+        buttonElement.setAttribute('mdw-color', 'accent');
         snackbar.appendChild(buttonElement);
       }
       switch (value) {

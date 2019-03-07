@@ -11,7 +11,7 @@ include ../mixins.pug
               li Keyboard support
               li Radio buttons
               li Badges
-          form.mdw-bottomnav(mdw-theme-color="teal")
+          form.mdw-bottomnav.mdw-theme(mdw-color="teal")
             label.mdw-bottomnav__item
               input.mdw-bottomnav__input(type="radio" name="bottomnav" value="recents")
               .mdw-bottomnav__icon.material-icons history
@@ -37,7 +37,7 @@ include ../mixins.pug
               li Disappearing Labels
               li Radio buttons
               li Badges
-          form.mdw-bottomnav(mdw-theme-fill="teal 700 dark" mdw-shifting)
+          form.mdw-bottomnav.mdw-theme(mdw-fill="teal 700" mdw-dark mdw-shifting)
             input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="movies" id='value1')
             label.mdw-bottomnav__item(for='value1')
               .mdw-bottomnav__icon.material-icons tv
@@ -66,7 +66,7 @@ include ../mixins.pug
               li Keyboard support
               li Disappearing Labels
               li ID-less Radio buttons
-          form.mdw-bottomnav(mdw-theme-fill="teal 700 dark" mdw-shifting)
+          form.mdw-bottomnav.mdw-theme(mdw-fill="teal 700" mdw-dark mdw-shifting)
             label.mdw-bottomnav__item
               input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="movies")
               .mdw-bottomnav__icon.material-icons tv
@@ -94,7 +94,7 @@ include ../mixins.pug
               li Javascript-based
               li No radio buttons
               li Badges
-          .mdw-bottomnav(mdw-theme-color="teal")
+          .mdw-bottomnav.mdw-theme(mdw-color="teal")
             .mdw-bottomnav__item(mdw-badge)
               .mdw-bottomnav__icon.material-icons history
               .mdw-bottomnav__label Recents

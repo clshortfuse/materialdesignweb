@@ -11,7 +11,7 @@ include ../mixins.pug
         .mdw-layout__content
           .component-sample
             .display-flex
-              .mdw-card(mdw-raised="focus-within")
+              .mdw-card.mdw-theme(mdw-raised="focus-within")
                 button.mdw-button.mdw-card__button
                 .mdw-card__start
                   .mdw-card__thumbnail.material-icons(style="font-size:40px") account_circle
@@ -23,126 +23,126 @@ include ../mixins.pug
                   img.mdw-card__image(src="https://free-images.com/md/f673/sunset_sky_red_gold_0.jpg")
                 .mdw-card__supporting-text Greyhound divisively hello coldly wonderfully marginally far upon excluding.
                 .mdw-card__actions
-                    button.mdw-button(mdw-theme-color="accent") Action 1
-                    button.mdw-button(mdw-theme-color="accent") Action 2
+                    button.mdw-button.mdw-theme(mdw-color="accent") Action 1
+                    button.mdw-button.mdw-theme(mdw-color="accent") Action 2
                     span
                     button.mdw-button.material-icons(mdw-icon) more_vert
       .mdw-layout__item(mdw-colspan="8")
         .mdw-type(mdw-style="subtitle") Javascript
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="javascript" value="required" disabled)
             .mdw-selection__icon
             .mdw-selection__label Required
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="javascript" value="optional" disabled)
             .mdw-selection__icon
             .mdw-selection__label Optional
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="javascript" value="none" checked)
             .mdw-selection__icon
             .mdw-selection__label None
         .mdw-type(mdw-style="subtitle") Elevation
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="elevation" value="auto" checked)
             .mdw-selection__icon
             .mdw-selection__label Auto
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="elevation" value="0")
             .mdw-selection__icon
             .mdw-selection__label 0dp
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="elevation" value="1")
             .mdw-selection__icon
             .mdw-selection__label 1dp
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="elevation" value="8")
             .mdw-selection__icon
             .mdw-selection__label 8dp
         .mdw-type(mdw-style="subtitle") Raise
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="checkbox" name="raise-focus-within" value="focus-within" checked)
             .mdw-selection__icon
             .mdw-selection__label On Focus Within
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="checkbox" name="raise-hover" value="hover")
             .mdw-selection__icon
             .mdw-selection__label On Hover
         .mdw-type(mdw-style="subtitle") Media Placement
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="media-placement" value="none")
             .mdw-selection__icon
             .mdw-selection__label None
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="media-placement" value="top")
             .mdw-selection__icon
             .mdw-selection__label Top
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="media-placement" value="middle" checked)
             .mdw-selection__icon
             .mdw-selection__label Middle
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="media-placement" value="bottom")
             .mdw-selection__icon
             .mdw-selection__label Bottom
         .mdw-type(mdw-style="subtitle") Media Ratio
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="media-ratio" value="none")
             .mdw-selection__icon
             .mdw-selection__label None
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="media-ratio" value="16:9" checked)
             .mdw-selection__icon
             .mdw-selection__label 16:9
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="media-ratio" value="3:2")
             .mdw-selection__icon
             .mdw-selection__label 3:2
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="media-ratio" value="4:3")
             .mdw-selection__icon
             .mdw-selection__label 4:3
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="media-ratio" value="1:1")
             .mdw-selection__icon
             .mdw-selection__label 1:1
         .mdw-type(mdw-style="subtitle") Actions
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="checkbox" name="primary-action" checked)
             .mdw-selection__icon
             .mdw-selection__label Primary
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="checkbox" name="secondary-actions" checked)
             .mdw-selection__icon
             .mdw-selection__label Secondary
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="checkbox" name="close-action" checked)
             .mdw-selection__icon
             .mdw-selection__label Close
         .mdw-type(mdw-style="subtitle") Fill
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="fill" value="none" checked)
             .mdw-selection__icon
             .mdw-selection__label None
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="fill" value="primary dark")
             .mdw-selection__icon
             .mdw-selection__label Primary
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="fill" value="accent A100 light")
             .mdw-selection__icon
             .mdw-selection__label Accent A100
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="fill" value="warn 200 light")
             .mdw-selection__icon
             .mdw-selection__label Warn 200
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="fill" value="green 700 dark")
             .mdw-selection__icon
             .mdw-selection__label Green 700

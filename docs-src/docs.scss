@@ -36,14 +36,23 @@ body {
   padding: 0 8px;
   font-size: 14px;
   color: white;
-  [mdw-theme-fill~="light"] &:not([mdw-theme-fill]) {
-    background-color: #E0E0E0;
-    color: rgba(0, 0, 0, 0.87);
+
+  .mdw-theme[mdw-light] &,
+  .mdw-theme[mdw-dark] .mdw-theme[mdw-light] & {
+    &:not([mdw-fill]) {
+      background-color: #E0E0E0;
+      color: rgba(0, 0, 0, 0.87);
+    }
   }
-  [mdw-theme-fill~="dark"] &:not([mdw-theme-fill]) {
-    background-color: black;
-    color: rgba(255, 255, 255, 1);
+
+  .mdw-theme[mdw-dark] &,
+  .mdw-theme[mdw-light] .mdw-theme[mdw-dark] & {
+    &:not([mdw-fill]) {
+      background-color: black;
+      color: rgba(255, 255, 255, 1);
+    }
   }
+
   .material-icons {
     font-size: 18px;
   }
@@ -73,10 +82,10 @@ body {
   border-width: 1px;
   border-style: solid;
   box-sizing: border-box;
-  [mdw-theme-fill~="light"] & {
+  .mdw-theme[mdw-light] & {
     border-color: rgba(0,0,0,0.12);
   }
-  [mdw-theme-fill~="dark"] & {
+  .mdw-theme[mdw-dark] & {
     border-color: rgba(255,255,255,0.12);
   }
 }
@@ -142,10 +151,10 @@ body {
   border-radius: 2px;
   border-width: 1px;
   min-height: 360px;
-  [mdw-theme-fill~="light"] & {
+  .mdw-theme[mdw-light] & {
     border-color: rgba(0,0,0,0.12);
   }
-  [mdw-theme-fill~="dark"] & {
+  .mdw-theme[mdw-dark] & {
     border-color: rgba(255,255,255,0.12);
   }
 }

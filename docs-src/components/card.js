@@ -122,10 +122,22 @@ function onOptionChange(event) {
     case 'fill':
       switch (value) {
         case 'none':
-          sampleComponent.removeAttribute('mdw-theme-fill');
+          sampleComponent.removeAttribute('mdw-fill');
+          sampleComponent.removeAttribute('mdw-light');
+          sampleComponent.removeAttribute('mdw-dark');
           break;
         default:
-          sampleComponent.setAttribute('mdw-theme-fill', value);
+          sampleComponent.setAttribute('mdw-fill', value.replace(/ (light|dark)/, ''));
+          if (value.indexOf(' light') === -1) {
+            sampleComponent.removeAttribute('mdw-light');
+          } else {
+            sampleComponent.setAttribute('mdw-light', '');
+          }
+          if (value.indexOf(' dark') === -1) {
+            sampleComponent.removeAttribute('mdw-dark');
+          } else {
+            sampleComponent.setAttribute('mdw-dark', '');
+          }
           break;
       }
       break;

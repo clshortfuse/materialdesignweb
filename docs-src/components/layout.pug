@@ -9,57 +9,57 @@ include ../mixins.pug
       .mdw-layout__item(mdw-colspan="8")
         .mdw-type(mdw-style="subtitle") Margins and Gutters
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="checkbox" name="default-margins" checked)
             .mdw-selection__icon
             .mdw-selection__label Default Margins and Gutters
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="checkbox" name="top-margin" checked)
             .mdw-selection__icon
             .mdw-selection__label Top Margin
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="checkbox" name="bottom-margin" checked)
             .mdw-selection__icon
             .mdw-selection__label Bottom Margin
         .mdw-type(mdw-style="subtitle") Maximum Columns
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="columns" value="12" checked)
             .mdw-selection__icon
             .mdw-selection__label 12
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="columns" value="8")
             .mdw-selection__icon
             .mdw-selection__label 8
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="columns" value="4")
             .mdw-selection__icon
             .mdw-selection__label 4
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="columns" value="1")
             .mdw-selection__icon
             .mdw-selection__label 1
         .mdw-type(mdw-style="subtitle") Style
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="style" value="flex" checked)
             .mdw-selection__icon
             .mdw-selection__label Flex
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="style" value="grid")
             .mdw-selection__icon
             .mdw-selection__label Grid
         .mdw-type(mdw-style="subtitle") Options
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="checkbox" name="stretch")
             .mdw-selection__icon
             .mdw-selection__label Stretch
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="checkbox" name="center")
             .mdw-selection__icon
             .mdw-selection__label Center
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="checkbox" name="dense")
             .mdw-selection__icon
             .mdw-selection__label Dense
@@ -68,65 +68,65 @@ include ../mixins.pug
     .docs-layout#sample-component
       .mdw-layout(mdw-margin-top mdw-margin-bottom)
         .mdw-layout__item(mdw-rowspan="2")
-          .mdw-layout__content.mdw-card(mdw-theme-fill="cyan A100 light") 1
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="cyan A100" mdw-light) 1
         .mdw-layout__item
           .mdw-layout__content.mdw-card 1
         .mdw-layout__item
-          .mdw-layout__content.mdw-card(mdw-theme-fill="cyan A200 light") 1
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="cyan A200" mdw-light) 1
         .mdw-layout__item
           .mdw-layout__content.mdw-card 1
         .mdw-layout__item
-          .mdw-layout__content.mdw-card(mdw-theme-fill="cyan A400 dark") 1
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="cyan A400" mdw-dark) 1
         .mdw-layout__item
           .mdw-layout__content.mdw-card 1
         .mdw-layout__item
-          .mdw-layout__content.mdw-card(mdw-theme-fill="cyan A700 dark") 1
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="cyan A700" mdw-dark) 1
         .mdw-layout__item(mdw-rowspan="3")
           .mdw-layout__content.mdw-card 1
         .mdw-layout__item
-          .mdw-layout__content.mdw-card(mdw-theme-fill="red A100 light") 1
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="red A100" mdw-light) 1
         .mdw-layout__item
           .mdw-layout__content.mdw-card 1
         .mdw-layout__item
-          .mdw-layout__content.mdw-card(mdw-theme-fill="red A200 light") 1
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="red A200" mdw-light) 1
         .mdw-layout__item
           .mdw-layout__content.mdw-card 1
         .mdw-layout__item(mdw-colspan="2")
-          .mdw-layout__content.mdw-card(mdw-theme-fill="red A400 dark") 2
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="red A400" mdw-dark) 2
         .mdw-layout__item
           .mdw-layout__content.mdw-card 1
         .mdw-layout__item(mdw-rowspan="5" mdw-colspan="25%")
-          .mdw-layout__content.mdw-card(mdw-theme-fill="red A700 dark") 25%
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="red A700" mdw-dark) 25%
         .mdw-layout__item(mdw-colspan="3")
           .mdw-layout__content.mdw-card 3
         .mdw-layout__item
-          .mdw-layout__content.mdw-card(mdw-theme-fill="green A100 light") 1
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="green A100" mdw-light) 1
         .mdw-layout__item
           .mdw-layout__content.mdw-card 1
         .mdw-layout__item
-          .mdw-layout__content.mdw-card(mdw-theme-fill="green A200 light") 1
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="green A200" mdw-light) 1
         .mdw-layout__item(mdw-colspan="75%")
           .mdw-layout__content.mdw-card 75%
         .mdw-layout__item
-          .mdw-layout__content.mdw-card(mdw-theme-fill="green A400 dark") 1
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="green A400" mdw-dark) 1
         .mdw-layout__item
           .mdw-layout__content.mdw-card 1
         .mdw-layout__item
-          .mdw-layout__content.mdw-card(mdw-theme-fill="green A700 dark") 1
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="green A700" mdw-dark) 1
         .mdw-layout__item
           .mdw-layout__content.mdw-card 1
         .mdw-layout__item
-          .mdw-layout__content.mdw-card(mdw-theme-fill="purple A100 light") 1
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="purple A100" mdw-light) 1
         .mdw-layout__item(mdw-colspan="8")
           .mdw-layout__content.mdw-card 8
         .mdw-layout__item
-          .mdw-layout__content.mdw-card(mdw-theme-fill="purple A200 light") 1
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="purple A200" mdw-light) 1
         .mdw-layout__item
           .mdw-layout__content.mdw-card 1
         .mdw-layout__item
-          .mdw-layout__content.mdw-card(mdw-theme-fill="purple A400 dark") 1
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="purple A400" mdw-dark) 1
         .mdw-layout__item(mdw-colspan="2")
           .mdw-layout__content.mdw-card 2
         .mdw-layout__item
-          .mdw-layout__content.mdw-card(mdw-theme-fill="purple A700 dark") 1
+          .mdw-layout__content.mdw-card.mdw-theme(mdw-fill="purple A700" mdw-dark) 1
   script(src='layout.min.js')

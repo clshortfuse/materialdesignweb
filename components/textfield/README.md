@@ -92,7 +92,7 @@ label.mdw-textfield
 
 ## Accented
 ```
-label.mdw-textfield(mdw-theme-color="accent")
+label.mdw-textfield.mdw-theme(mdw-color="accent")
   input.mdw-textfield__input(type="text" placeholder=" ")
   .mdw-textfield__border
     .mdw-textfield__outline-gap

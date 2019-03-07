@@ -5,7 +5,7 @@ include ../mixins.pug
     .mdw-layout(mdw-margin-top mdw-margin-bottom)
       .mdw-layout__item(mdw-colspan="100%")
         .mdw-card
-          .mdw-datatable(mdw-theme-color="primary")
+          .mdw-datatable.mdw-theme(mdw-color="primary")
             table
               caption Standard HTML Table (CSS Only)
               thead
@@ -111,7 +111,7 @@ include ../mixins.pug
                   td 6%
       .mdw-layout__item(mdw-colspan="100%")
         .mdw-card
-          .mdw-datatable.js(mdw-theme-color="primary" mdw-cell-focusable)
+          .mdw-datatable.js.mdw-theme(mdw-color="primary" mdw-cell-focusable)
             .mdw-datatable__header
               .mdw-datatable__header-text Customized HTML Table
             .mdw-datatable__scroller
@@ -294,12 +294,12 @@ include ../mixins.pug
                 button.mdw-button.material-icons(mdw-icon disabled) chevron_right
       .mdw-layout__item(mdw-colspan="100%")
         .mdw-card
-          .mdw-datatable.js#dynamic-table(mdw-theme-color="primary" mdw-row-focusable style="max-height:80vh")
+          .mdw-datatable.js#dynamic-table.mdw-theme(mdw-color="primary" mdw-row-focusable style="max-height:80vh")
             .mdw-datatable__header
               .mdw-datatable__header-text Dynamic Table
               .mdw-datatable__header-controls
                 .mdw-menu__wrapper
-                  button.mdw-button.material-icons(mdw-icon mdw-inactive mdw-theme-color="primary") filter_list
+                  button.mdw-button.material-icons.mdw-theme(mdw-icon mdw-inactive mdw-color="primary") filter_list
                   .mdw-menu(mdw-position="end")
                     .mdw-menu__popup
                       .mdw-menu__item(aria-checked="true" data-filter="none")

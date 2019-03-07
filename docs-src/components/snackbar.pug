@@ -11,7 +11,7 @@ include ../mixins.pug
             .mdw-layout(style="width:100%;height:100%")
               .mdw-layout__item(mdw-colspan="100%")
                 div
-                  button.mdw-button(mdw-theme-color="accent") Create New
+                  button.mdw-button.mdw-theme(mdw-color="accent") Create New
               .mdw-layout__item(mdw-colspan="100%")
                 .mdw-snackbar__wrapper
                   .mdw-snackbar__container
@@ -23,107 +23,107 @@ include ../mixins.pug
       .mdw-layout__item(mdw-colspan="4")
         .mdw-type(mdw-style="subtitle") Javascript
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="javascript" value="required" disabled)
             .mdw-selection__icon
             .mdw-selection__label Required
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="javascript" value="optional" checked)
             .mdw-selection__icon
             .mdw-selection__label Optional
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="javascript" value="none")
             .mdw-selection__icon
             .mdw-selection__label None
         .mdw-type(mdw-style="subtitle") Text
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="text" value="short" checked)
             .mdw-selection__icon
             .mdw-selection__label Short
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="text" value="long")
             .mdw-selection__icon
             .mdw-selection__label Long
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="text" value="line-break")
             .mdw-selection__icon
             .mdw-selection__label Explicit line-break
         .mdw-type(mdw-style="subtitle") Button
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="button" value="none" checked)
             .mdw-selection__icon
             .mdw-selection__label None
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="button" value="short")
             .mdw-selection__icon
             .mdw-selection__label Short
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="button" value="long")
             .mdw-selection__icon
             .mdw-selection__label Long
         .mdw-type(mdw-style="subtitle") Visibility
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="visibility" value="show" checked)
             .mdw-selection__icon
             .mdw-selection__label Show
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="visibility" value="hide")
             .mdw-selection__icon
             .mdw-selection__label Hide
         .mdw-type(mdw-style="subtitle") Position
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="position" value="auto" checked)
             .mdw-selection__icon
             .mdw-selection__label Start (Default)
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="position" value="center")
             .mdw-selection__icon
             .mdw-selection__label Center
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="position" value="end")
             .mdw-selection__icon
             .mdw-selection__label End
         .mdw-type(mdw-style="subtitle") Auto-Hide Time (Seconds)
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="autohide" value="none" checked)
             .mdw-selection__icon
             .mdw-selection__label None
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="autohide" value="4")
             .mdw-selection__icon
             .mdw-selection__label 4
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="autohide" value="5")
             .mdw-selection__icon
             .mdw-selection__label 5
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="autohide" value="6")
             .mdw-selection__icon
             .mdw-selection__label 6
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="autohide" value="7")
             .mdw-selection__icon
             .mdw-selection__label 7
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="autohide" value="8")
             .mdw-selection__icon
             .mdw-selection__label 8
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="autohide" value="9")
             .mdw-selection__icon
             .mdw-selection__label 9
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="autohide" value="10")
             .mdw-selection__icon
             .mdw-selection__label 10
         .mdw-type(mdw-style="subtitle") Options
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="checkbox" name="stacked")
             .mdw-selection__icon
             .mdw-selection__label Stacked

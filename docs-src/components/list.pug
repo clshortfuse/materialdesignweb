@@ -4,8 +4,8 @@ include ../mixins.pug
   +navdrawer("list")
     .comparison
       .render
-        +androidstatusbar('deeppurple 700 dark')
-        +toolbar('deeppurple 500 dark', ['menu'], ['search', 'more_vert']) Topics
+        +androidstatusbar('deeppurple 700', 'dark')
+        +toolbar('deeppurple 500', 'dark', ['menu'], ['search', 'more_vert']) Topics
         .content(style="padding-top:2px")
           ul.mdw-list
             li.mdw-list__item Attractions
@@ -23,8 +23,8 @@ include ../mixins.pug
 
     .comparison
       .render
-        +androidstatusbar('teal 700 dark')
-        +toolbar('teal 500 dark', ['menu'], ['more_vert']) Topics
+        +androidstatusbar('teal 700', 'dark')
+        +toolbar('teal 500', 'dark', ['menu'], ['more_vert']) Topics
         .content(style="padding-top:2px")
           ul.mdw-list(mdw-divider)
             li.mdw-list__item
@@ -55,8 +55,8 @@ include ../mixins.pug
 
     .comparison
       .render
-        +androidstatusbar('deeppurple 700 dark')
-        +toolbar('deeppurple 500 dark', ['menu'], ['search', 'more_vert']) Topics
+        +androidstatusbar('deeppurple 700', 'dark')
+        +toolbar('deeppurple 500', 'dark', ['menu'], ['search', 'more_vert']) Topics
         .content(style="padding-top:2px")
           ul.mdw-list
             li.mdw-list__item Attractions
@@ -85,8 +85,8 @@ include ../mixins.pug
 
     .comparison
       .render
-        +androidstatusbar('cyan 700 dark')
-        +toolbar('cyan 500 dark', ['menu'], ['search']) Inbox
+        +androidstatusbar('cyan 700', 'dark')
+        +toolbar('cyan 500', 'dark', ['menu'], ['search']) Inbox
         .content
           ul.mdw-list(mdw-divider)
             li.mdw-list__subheader Today
@@ -145,8 +145,8 @@ include ../mixins.pug
 
     .comparison
       .render
-        +androidstatusbar('deeppurple 700 dark')
-        +toolbar('deeppurple 500 dark', ['menu'], ['search']) Inbox
+        +androidstatusbar('deeppurple 700', 'dark')
+        +toolbar('deeppurple 500', 'dark', ['menu'], ['search']) Inbox
         .content
           ul.mdw-list(mdw-divider)
             li.mdw-list__subheader Today
@@ -205,13 +205,13 @@ include ../mixins.pug
 
     .comparison.js
       .render
-        +androidstatusbar('teal 700 dark')
-        +toolbar('teal 500 dark', ['menu'], ['more_vert']) Topics
+        +androidstatusbar('teal 700', 'dark')
+        +toolbar('teal 500', 'dark', ['menu'], ['more_vert']) Topics
         .content(style="padding-top:2px")
           ul.mdw-list
             li.mdw-list__item
               .mdw-list__text Attractions
-            .mdw-list__expander(mdw-theme-color="teal")
+            .mdw-list__expander.mdw-theme(mdw-color="teal")
               .mdw-list__item 
                 .mdw-list__text Dining
                 .mdw-list__secondary.material-icons expand_more
@@ -232,8 +232,8 @@ include ../mixins.pug
 
     .comparison.js
       .render
-        +androidstatusbar('pink 700 dark')
-        +toolbar('pink 500 dark', ['menu'], ['search', 'check_circle']) Inbox (with JS)
+        +androidstatusbar('pink 700', 'dark')
+        +toolbar('pink 500', 'dark', ['menu'], ['search', 'check_circle']) Inbox (with JS)
         .content
           ul.mdw-list(mdw-divider)
             li.mdw-list__item

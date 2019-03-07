@@ -14,7 +14,7 @@ include ../mixins.pug
                 input.mdw-tab__input#tab1(type="radio" name="tab" checked)
                 input.mdw-tab__input#tab2(type="radio" name="tab")
                 input.mdw-tab__input#tab3(type="radio" name="tab")
-                .mdw-tab__items(mdw-theme-color="accent A200")
+                .mdw-tab__items.mdw-theme(mdw-color="accent A200")
                   label.mdw-tab__item(for='tab1')
                     .mdw-tab__label Tab Item One
                   label.mdw-tab__item(for='tab2')
@@ -32,70 +32,70 @@ include ../mixins.pug
       .mdw-layout__item(mdw-colspan="4")
         .mdw-type(mdw-style="subtitle") Javascript
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="javascript" value="required")
             .mdw-selection__icon
             .mdw-selection__label Required
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="javascript" value="optional" checked)
             .mdw-selection__icon
             .mdw-selection__label Optional
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="javascript" value="none")
             .mdw-selection__icon
             .mdw-selection__label None
         .mdw-type(mdw-style="subtitle") Color
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="color" value="default")
             .mdw-selection__icon
             .mdw-selection__label Default
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="color" value="primary 400")
             .mdw-selection__icon
             .mdw-selection__label Primary 400
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="color" value="accent A200" checked)
             .mdw-selection__icon
             .mdw-selection__label Accent A200
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="color" value="warn")
             .mdw-selection__icon
             .mdw-selection__label Warn
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="color" value="purple A400")
             .mdw-selection__icon
             .mdw-selection__label Purple A400
         .mdw-type(mdw-style="subtitle") Fill
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="radio" name="fill" value="none" checked)
             .mdw-selection__icon
             .mdw-selection__label None
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input(type="radio" name="fill" value="primary dark")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="fill" value="primary" mdw-dark)
             .mdw-selection__icon
             .mdw-selection__label Primary
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input(type="radio" name="fill" value="accent A100 light")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="fill" value="accent A100" mdw-light)
             .mdw-selection__icon
             .mdw-selection__label Accent A100
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input(type="radio" name="fill" value="warn 200 light")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="fill" value="warn 200" mdw-light)
             .mdw-selection__icon
             .mdw-selection__label Warn 200
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input(type="radio" name="fill" value="green 700 dark")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+            input.mdw-selection__input(type="radio" name="fill" value="green 700" mdw-dark)
             .mdw-selection__icon
             .mdw-selection__label Green 700
         .mdw-type(mdw-style="subtitle") Scrollable
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="checkbox" name="tabs-scrollable")
             .mdw-selection__icon
             .mdw-selection__label Tabs
         div
-          label.mdw-selection(mdw-theme-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
             input.mdw-selection__input(type="checkbox" name="content-scrollable")
             .mdw-selection__icon
             .mdw-selection__label Content
@@ -114,7 +114,7 @@ include ../mixins.pug
             input.mdw-tab__input#no-toolbar-tab1(type="radio" name="sample-1" value="one" checked)
             input.mdw-tab__input#no-toolbar-tab2(type="radio" name="sample-1" value="two")
             input.mdw-tab__input#no-toolbar-tab3(type="radio" name="sample-1" value="three")
-            .mdw-tab__items(mdw-theme-fill="cyan 500 dark" mdw-theme-color="yellow")
+            .mdw-tab__items.mdw-theme(mdw-fill="cyan 500" mdw-dark mdw-color="yellow")
               label.mdw-tab__item(for='no-toolbar-tab1')
                 .mdw-tab__label Item One
               label.mdw-tab__item(for='no-toolbar-tab2')
@@ -129,8 +129,8 @@ include ../mixins.pug
 
       .mdw-layout__item.display-flex(mdw-colspan="4").clipped-300
         .render-fill
-          +androidstatusbar('cyan 700 dark')
-          .mdw-toolbar(mdw-theme-fill="cyan 500 dark" mdw-prominent)
+          +androidstatusbar('cyan 700', 'dark')
+          .mdw-toolbar.mdw-theme(mdw-fill="cyan 500" mdw-dark mdw-prominent)
             .mdw-toolbar__action
               .mdw-toolbar__start
                 .mdw-button(mdw-icon).material-icons menu
@@ -142,7 +142,7 @@ include ../mixins.pug
               input.mdw-tab__input#large-text-tab1(type="radio" name="sample-2" value="one" checked)
               input.mdw-tab__input#large-text-tab2(type="radio" name="sample-2" value="two")
               input.mdw-tab__input#large-text-tab3(type="radio" name="sample-2" value="three")
-              .mdw-tab__items(mdw-theme-color="yellow")
+              .mdw-tab__items.mdw-theme(mdw-color="yellow")
                 label.mdw-tab__item(for='large-text-tab1')
                   .mdw-tab__label Item One
                 label.mdw-tab__item(for='large-text-tab2')
@@ -154,12 +154,12 @@ include ../mixins.pug
 
       .mdw-layout__item.display-flex(mdw-colspan="4").clipped-300
         .render-fill
-          +androidstatusbar('cyan 700 dark')
+          +androidstatusbar('cyan 700', 'dark')
           form.mdw-tab
             input.mdw-tab__input(type="radio" name="sample-3" value="one" id='text-tab1' checked)
             input.mdw-tab__input(type="radio" name="sample-3" value="two" id='text-tab2')
             input.mdw-tab__input(type="radio" name="sample-3" value="three" id='text-tab3')
-            .mdw-tab__items-wrapper.mdw-toolbar(mdw-theme-fill="cyan 500 dark")
+            .mdw-tab__items-wrapper.mdw-toolbar.mdw-theme(mdw-fill="cyan 500" mdw-dark)
               .mdw-toolbar__action
                 .mdw-toolbar__start
                   .mdw-button(mdw-icon).material-icons menu
@@ -167,7 +167,7 @@ include ../mixins.pug
                 .mdw-toolbar__end
                   .mdw-button(mdw-icon).material-icons search
                   .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
-              .mdw-tab__items(mdw-theme-color="yellow")
+              .mdw-tab__items.mdw-theme(mdw-color="yellow")
                 label.mdw-tab__item(for='text-tab1')
                   .mdw-tab__label Item One
                 label.mdw-tab__item(for='text-tab2')
@@ -182,7 +182,7 @@ include ../mixins.pug
 
       .mdw-layout__item.display-flex(mdw-colspan="4").clipped-300
         .render-fill
-          +androidstatusbar('background 600 dark')
+          +androidstatusbar('background 600', 'dark')
           form.mdw-tab
             input.mdw-tab__input#clear-toolbar-tab1(type="radio" name="sample-4" value="one" checked)
             input.mdw-tab__input#clear-toolbar-tab2(type="radio" name="sample-4" value="two")
@@ -195,7 +195,7 @@ include ../mixins.pug
                 .mdw-toolbar__end
                   .mdw-button(mdw-icon).material-icons search
                   .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
-              .mdw-tab__items(mdw-theme-color="cyan")
+              .mdw-tab__items.mdw-theme(mdw-color="cyan")
                 label.mdw-tab__item(for='clear-toolbar-tab1')
                   .mdw-tab__label Item One
                 label.mdw-tab__item(for='clear-toolbar-tab2')
@@ -210,8 +210,8 @@ include ../mixins.pug
 
       .mdw-layout__item.display-flex(mdw-colspan="4").clipped-300
         .render-fill
-          +androidstatusbar('cyan 700 dark')
-          .mdw-toolbar(mdw-theme-fill="cyan 500 dark")
+          +androidstatusbar('cyan 700', 'dark')
+          .mdw-toolbar.mdw-theme(mdw-fill="cyan 500" mdw-dark)
             .mdw-toolbar__action
               .mdw-toolbar__start
                 .mdw-button(mdw-icon).material-icons menu
@@ -223,7 +223,7 @@ include ../mixins.pug
               input.mdw-tab__input(type="radio" name="sample-5" value="recents" id='tab-text-icon1' checked)
               input.mdw-tab__input(type="radio" name="sample-5" value="favorites" id='tab-text-icon2')
               input.mdw-tab__input(type="radio" name="sample-5" value="nearby" id='tab-text-icon3')
-              .mdw-tab__items(mdw-theme-color="yellow")
+              .mdw-tab__items.mdw-theme(mdw-color="yellow")
                 label.mdw-tab__item(for='tab-text-icon1')
                   .mdw-tab__icon.material-icons phone
                   .mdw-tab__label Recents
@@ -238,7 +238,7 @@ include ../mixins.pug
 
       .mdw-layout__item.display-flex(mdw-colspan="4").clipped-300
         .render-fill
-          +androidstatusbar('background 600 dark')
+          +androidstatusbar('background 600', 'dark')
           .mdw-toolbar
             .mdw-toolbar__action
               .mdw-toolbar__start
@@ -251,7 +251,7 @@ include ../mixins.pug
               input.mdw-tab__input(type="radio" name="sample-6" value="recents" id='tabs-icon1' checked)
               input.mdw-tab__input(type="radio" name="sample-6" value="favorites" id='tabs-icon2')
               input.mdw-tab__input(type="radio" name="sample-6" value="nearby" id='tabs-icon3')
-              .mdw-tab__items(mdw-theme-color="cyan")
+              .mdw-tab__items.mdw-theme(mdw-color="cyan")
                 label.mdw-tab__item(for='tabs-icon1')
                   .mdw-tab__icon.material-icons phone
                 label.mdw-tab__item(for='tabs-icon2')
@@ -262,12 +262,12 @@ include ../mixins.pug
           .content
       .mdw-layout__item.display-flex(mdw-colspan="100%")
         .display-flex(flex-column style="width:100%;padding:24px;box-sizing:border-box")
-          +androidstatusbar('cyan 700 dark')
+          +androidstatusbar('cyan 700', 'dark')
           .mdw-tab
             input.mdw-tab__input(type="radio" name="sample-7" value="recents" id='dynamic-1' checked)
             input.mdw-tab__input(type="radio" name="sample-7" value="favorites" id='dynamic-2')
             input.mdw-tab__input(type="radio" name="sample-7" value="nearby" id='dynamic-3')
-            .mdw-tab__items-wrapper.mdw-toolbar(mdw-theme-fill="cyan 500 dark")
+            .mdw-tab__items-wrapper.mdw-toolbar.mdw-theme(mdw-fill="cyan 500" mdw-dark)
               .mdw-toolbar__action
                 .mdw-toolbar__start
                   .mdw-button(mdw-icon).material-icons menu
@@ -275,7 +275,7 @@ include ../mixins.pug
                 .mdw-toolbar__end
                   .mdw-button(mdw-icon).material-icons search
                   .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
-              .mdw-tab__items(mdw-theme-color="yellow" style="align-self:center")
+              .mdw-tab__items.mdw-theme(mdw-color="yellow" style="align-self:center")
                 label.mdw-tab__item(for='dynamic-1')
                   .mdw-tab__icon.material-icons phone
                   .mdw-tab__label Recents
@@ -293,9 +293,9 @@ include ../mixins.pug
 
       .mdw-layout__item(mdw-colspan="100%")
         .mdw-layout__content.display-flex(flex-column style="padding:24px;box-sizing:border-box").js
-          +androidstatusbar('cyan 700 dark')
+          +androidstatusbar('cyan 700', 'dark')
           .mdw-tab
-            .mdw-toolbar(mdw-theme-fill="cyan 500 dark")
+            .mdw-toolbar.mdw-theme(mdw-fill="cyan 500" mdw-dark)
               .mdw-toolbar__action
                 .mdw-toolbar__start
                   .mdw-button(mdw-icon).material-icons menu
@@ -303,7 +303,7 @@ include ../mixins.pug
                 .mdw-toolbar__end
                   .mdw-button(mdw-icon).material-icons search
                   .mdw-button(mdw-icon mdw-more-button).material-icons more_vert
-              .mdw-tab__items(mdw-theme-color="yellow" mdw-scrollable)
+              .mdw-tab__items.mdw-theme(mdw-color="yellow" mdw-scrollable)
                 .mdw-tab__item(mdw-selected)
                   .mdw-tab__icon.material-icons phone
                   .mdw-tab__label Recents

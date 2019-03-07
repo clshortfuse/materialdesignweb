@@ -5,23 +5,23 @@ include ../mixins.pug
   +navdrawer("toolbar")
     .comparison.clipped
       .render
-        +androidstatusbar('background 400 light')
-        +toolbar('background 50 light', ['menu'],  ['search', 'favorite', 'more_vert']) Title
-        .content(mdw-theme-fill="background 300 light")
+        +androidstatusbar('background 400', 'light')
+        +toolbar('background 50', 'light', ['menu'], ['search', 'favorite', 'more_vert']) Title
+        .content.mdw-theme(mdw-fill="background 300" mdw-light)
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsU1FwTUx3cmRUNG8/layout-structure-appbar-structure2.png')
 
     .comparison.clipped
       .render
-        +androidstatusbar('black dark')
-        +toolbar('background 900 dark', ['menu'], ['search', 'favorite', 'more_vert']) Title
-        .content(mdw-theme-fill="background 300 light")
+        +androidstatusbar('black', 'dark')
+        +toolbar('background 900', 'dark', ['menu'], ['search', 'favorite', 'more_vert']) Title
+        .content.mdw-theme(mdw-fill="background 300" mdw-light)
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsbGREMW9BdDdnSUk/layout-structure-appbar-structure3.png')
 
     .comparison.clipped
       .render
-        +androidstatusbar('blue 800 dark')
-        +toolbar('blue A200 dark', ['menu'], ['search', 'favorite', 'more_vert']) Title
-        .content(mdw-theme-fill="background 300 light")
+        +androidstatusbar('blue 800', 'dark')
+        +toolbar('blue A200', 'dark', ['menu'], ['search', 'favorite', 'more_vert']) Title
+        .content.mdw-theme(mdw-fill="background 300" mdw-light)
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsZF9VZDhtQlF5RGM/layout-structure-appbar-structure4.png')
 
     .comparison.clipped-304
@@ -34,7 +34,7 @@ include ../mixins.pug
             .mdw-toolbar__title Dense (Desktop)
             .mdw-toolbar__end
               .mdw-button(mdw-icon).material-icons more_vert
-        .content(mdw-theme-fill="background 300 light")
+        .content.mdw-theme(mdw-fill="background 300" mdw-light)
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsLUFJUnFlRHVhUVU/layout-structure-appbar-metrics1.png')
 
     .comparison.clipped-304
@@ -48,7 +48,7 @@ include ../mixins.pug
             .mdw-toolbar__end
               .mdw-button(mdw-icon).material-icons search
               .mdw-button(mdw-icon).material-icons more_vert
-        .content(mdw-theme-fill="background 300 light")
+        .content.mdw-theme(mdw-fill="background 300" mdw-light)
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsSDBhX3BwSURRc1U/layout-structure-appbar-metrics3.png')
 
     .comparison.clipped-304
@@ -65,7 +65,7 @@ include ../mixins.pug
                 .mdw-tooltip__target.mdw-button(mdw-icon mdw-more-button).material-icons more_vert
                 .mdw-tooltip More
           .mdw-toolbar__content
-            label.mdw-textfield(mdw-theme-color="primary" style="font-size: 1.5rem")
+            label.mdw-textfield.mdw-theme(mdw-color="primary" style="font-size: 1.5rem")
               input.mdw-textfield__input(value="Project Properties" placeholder=" ")
               .mdw-textfield__border
                 .mdw-textfield__outline-gap
@@ -78,6 +78,6 @@ include ../mixins.pug
                   .mdw-textfield__label Description
             div(style="height:24px")
               // Spec says 16dp, but it's actually 24dp
-        .content(mdw-theme-fill="background 300 light")
+        .content.mdw-theme(mdw-fill="background 300" mdw-light)
       +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsTW1zb2x5WWg5cDA/layout-structure-appbar-metrics5.png')
   script(src='toolbar.min.js')

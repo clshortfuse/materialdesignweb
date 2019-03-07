@@ -35,14 +35,18 @@ export function setRTLMode(value, button) {
  */
 export function setDarkMode(value, button) {
   if (value) {
-    document.documentElement.setAttribute('mdw-theme-fill', darkAttribute);
+    document.documentElement.setAttribute('mdw-dark', '');
+    document.documentElement.setAttribute('mdw-fill', 'black');
+    document.documentElement.removeAttribute('mdw-light');
     if (button) {
       button.removeAttribute('mdw-inactive');
     }
     // element.setAttribute('mdw-active', '');
     // Poor visibility even though spec says 70% opacity
   } else {
-    document.documentElement.setAttribute('mdw-theme-fill', lightAttribute);
+    document.documentElement.setAttribute('mdw-light', '');
+    document.documentElement.setAttribute('mdw-fill', 'white');
+    document.documentElement.removeAttribute('mdw-dark');
     if (button) {
       button.setAttribute('mdw-inactive', '');
     }
@@ -101,7 +105,7 @@ function setupDarkMode(element) {
     setDarkMode(true, element);
   }
   element.addEventListener('click', () => {
-    if (document.documentElement.getAttribute('mdw-theme-fill') === darkAttribute) {
+    if (document.documentElement.hasAttribute('mdw-dark')) {
       setDarkMode(false, element);
     } else {
       setDarkMode(true, element);

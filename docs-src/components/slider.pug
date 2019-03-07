@@ -9,9 +9,9 @@ include ../mixins.pug
       .mdw-layout__item(mdw-colspan="4")
         .component-sample
           .component-sample__container
-            label.mdw-slider(mdw-theme-color="accent")
+            label.mdw-slider.mdw-theme(mdw-color="accent")
               input.mdw-slider__input(type="range" list="sample-list")
-              datalist#sample-list 
+              datalist#sample-list
                 option(value=0 label="None")
                 option(value=50 label="Half")
                 option(value=100 label="All")

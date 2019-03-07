@@ -4,30 +4,30 @@ include ../mixins.pug
   +navdrawer("selection")
     .comparison
       .render
-        +androidstatusbar('teal 700 dark')
-        .mdw-toolbar(mdw-theme-fill="teal 500 dark")
+        +androidstatusbar('teal 700', 'dark')
+        .mdw-toolbar.mdw-theme(mdw-fill="teal 500" mdw-dark)
           .mdw-toolbar__action
             .mdw-toolbar__title Title
         .content(style="padding-top:7px")
           ul.mdw-list
             li.mdw-list__subheader Switch
-            label.mdw-list__item.mdw-selection(mdw-theme-color="teal" mdw-switch)
+            label.mdw-list__item.mdw-selection.mdw-theme(mdw-color="teal" mdw-switch)
               input.mdw-selection__input(type="checkbox" checked)
               .mdw-list__text.mdw-selection__label Android Switch On
               .mdw-selection__icon
-            label.mdw-list__item.mdw-selection(mdw-theme-color="teal 200" mdw-switch)
+            label.mdw-list__item.mdw-selection.mdw-theme(mdw-color="teal 200" mdw-switch)
               input.mdw-selection__input(type="checkbox")
               .mdw-list__text.mdw-selection__label Android Switch Off
               .mdw-selection__icon
           ul.mdw-list
             li.mdw-list__subheader Single check
-            label.mdw-list__item.mdw-selection(mdw-theme-color="teal 700")
+            label.mdw-list__item.mdw-selection.mdw-theme(mdw-color="teal 700")
               input.mdw-selection__input(type="radio" name="selectiontest" checked)
               .mdw-list__text.mdw-selection__label
                 .mdw-list__text-line Option 1
                 .mdw-list__text-line Description
               .mdw-selection__icon
-            label.mdw-list__item.mdw-selection(mdw-theme-color="blue 700")
+            label.mdw-list__item.mdw-selection.mdw-theme(mdw-color="blue 700")
               input.mdw-selection__input(type="radio" name="selectiontest")
               .mdw-list__text.mdw-selection__label
                 .mdw-list__text-line Option 2
@@ -35,15 +35,15 @@ include ../mixins.pug
               .mdw-selection__icon
           ul.mdw-list
             li.mdw-list__subheader Multiple check
-            label.mdw-list__item.mdw-selection(mdw-theme-color="teal A400")
+            label.mdw-list__item.mdw-selection.mdw-theme(mdw-color="teal A400")
               input.mdw-selection__input(type="checkbox" checked)
               .mdw-list__text.mdw-selection__label Option 1
               .mdw-selection__icon
-            label.mdw-list__item.mdw-selection(mdw-theme-color="blue 700")
+            label.mdw-list__item.mdw-selection.mdw-theme(mdw-color="blue 700")
               input.mdw-selection__input(type="checkbox" checked)
               .mdw-list__text.mdw-selection__label Option 2
               .mdw-selection__icon
-            label.mdw-list__item.mdw-selection(mdw-theme-color="warn")
+            label.mdw-list__item.mdw-selection.mdw-theme(mdw-color="warn")
               input.mdw-selection__input(type="checkbox")
               .mdw-list__text.mdw-selection__label Option 3
               .mdw-selection__icon
@@ -51,38 +51,38 @@ include ../mixins.pug
 
     .comparison
       .render
-        +androidstatusbar('teal 700 dark')
-        .mdw-toolbar(mdw-theme-fill="teal 500 dark")
+        +androidstatusbar('teal 700', 'dark')
+        .mdw-toolbar.mdw-theme(mdw-fill="teal 500" mdw-dark)
           .mdw-toolbar__action
             .mdw-toolbar__title Title
         .content
           div.display-flex(style="padding:16px")
-            label.mdw-selection(mdw-theme-color="blue 700")
+            label.mdw-selection.mdw-theme(mdw-color="blue 700")
               input.mdw-selection__input(type="checkbox" checked)
               .mdw-selection__label Prefixed
               .mdw-selection__icon
           div.display-flex(style="padding:16px")
-            label.mdw-selection(mdw-theme-color="teal A700")
+            label.mdw-selection.mdw-theme(mdw-color="teal A700")
               input.mdw-selection__input(type="checkbox" checked)
               .mdw-selection__icon
               .mdw-selection__label Suffixed
           div.display-flex(style="padding:16px")
-            label.mdw-selection(mdw-theme-color="teal A700")
+            label.mdw-selection.mdw-theme(mdw-color="teal A700")
               input.mdw-selection__input(type="checkbox" checked disabled)
               .mdw-selection__icon
               .mdw-selection__label Disabled
           div.display-flex(style="padding:16px")
-            label.mdw-selection(mdw-theme-color="teal A700")
+            label.mdw-selection.mdw-theme(mdw-color="teal A700")
               input.mdw-selection__input(type="radio" name="test" checked)
               .mdw-selection__icon
               .mdw-selection__label A
           div.display-flex(style="padding:16px")
-            label.mdw-selection(mdw-theme-color="teal A700")
+            label.mdw-selection.mdw-theme(mdw-color="teal A700")
               input.mdw-selection__input(type="radio" name="test")
               .mdw-selection__icon
               .mdw-selection__label B
           div.display-flex(style="padding:16px")
-            label.mdw-selection(mdw-theme-color="teal A700")
+            label.mdw-selection.mdw-theme(mdw-color="teal A700")
               input.mdw-selection__input(type="radio" name="test" disabled)
               .mdw-selection__icon
               .mdw-selection__label C

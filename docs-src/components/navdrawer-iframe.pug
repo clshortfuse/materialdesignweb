@@ -7,28 +7,14 @@ html(lang='en' )
     link(rel='stylesheet' href='docs.min.css')
     link(rel='stylesheet' href='components.min.css')
     
-    // Separate default theming files for size inspection
-    link(rel='stylesheet' href='theme-colors.min.css')
     link(rel='stylesheet' href='default-theme.min.css')
-
-    // link(rel='stylesheet' href='/themes/default-auto-contrast.min.css')
-    
-    // Alternate themes
-    link(rel='stylesheet' href='alt-colors.min.css')
     link(rel='stylesheet' href='alt-themes.min.css')
-    
-    // Rules last
-    link(rel='stylesheet' href='theme-rules.min.css')
-
-    // Performance tweak to only load on IE11 browsers
-    link(rel='stylesheet' href='default-theme.ie11.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
-    link(rel='stylesheet' href='alt-themes.ie11.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
 
   body.mdw-type.mdw-navdrawer#navdrawer
     a.mdw-navdrawer__scrim(href="#")
     .mdw-navdrawer__toolbar
-      +androidstatusbar('accent 700 dark')
-      .mdw-toolbar(mdw-theme-fill="accent 500 dark")
+      +androidstatusbar('accent 700', 'dark')
+      .mdw-toolbar.mdw-theme(mdw-fill="accent 500" mdw-dark)
         .mdw-toolbar__action
           .mdw-toolbar__start
             .mdw-tooltip__wrapper
@@ -57,13 +43,13 @@ html(lang='en' )
           .mdw-navdrawer__name Johnathan Lee
           .mdw-navdrawer__email heyfromjonathan@gmail.com
       .mdw-list
-        .mdw-list__item(mdw-selected mdw-theme-color="accent A400 light")
+        .mdw-list__item.mdw-theme(mdw-selected mdw-color="accent A400" mdw-light)
           .mdw-list__icon.material-icons move_to_inbox
           .mdw-list__text Inbox
-        .mdw-list__item(mdw-theme-color="primary 500 dark")
+        .mdw-list__item.mdw-theme(mdw-color="primary 500" mdw-dark)
           .mdw-list__icon.material-icons star
           .mdw-list__text Starred
-        .mdw-list__item(mdw-theme-color="warn 500 dark")
+        .mdw-list__item.mdw-theme(mdw-color="warn 500" mdw-dark)
           .mdw-list__icon.material-icons send
           .mdw-list__text Sent
         .mdw-list__item
@@ -85,43 +71,43 @@ html(lang='en' )
       div
         .mdw-type(mdw-style="subtitle") Style
         div.display-flex(style="padding:16px")
-          label.mdw-selection(mdw-theme-color="accent A700 dark")
+          label.mdw-selection.mdw-theme(mdw-color="accent A700" mdw-dark)
             input.mdw-selection__input(type="radio" checked name="mdw-navdrawer__style" value="fullheight")
             .mdw-selection__icon
             .mdw-selection__label Full-height (Default)
         div.display-flex(style="padding:16px")
-          label.mdw-selection(mdw-theme-color="accent A700 dark")
+          label.mdw-selection.mdw-theme(mdw-color="accent A700" mdw-dark)
             input.mdw-selection__input(type="radio" name="mdw-navdrawer__style" value="clipped")
             .mdw-selection__icon
             .mdw-selection__label Clipped
         div.display-flex(style="padding:16px")
-          label.mdw-selection(mdw-theme-color="accent A700 dark")
+          label.mdw-selection.mdw-theme(mdw-color="accent A700" mdw-dark)
             input.mdw-selection__input(type="radio" name="mdw-navdrawer__style" value="modal")
             .mdw-selection__icon
             .mdw-selection__label Modal
         div.display-flex(style="padding:16px")
-          label.mdw-selection(mdw-theme-color="accent A700 dark")
+          label.mdw-selection.mdw-theme(mdw-color="accent A700" mdw-dark)
             input.mdw-selection__input(type="radio" name="mdw-navdrawer__style" value="floating")
             .mdw-selection__icon
             .mdw-selection__label Floating (Deprecated)
         div.display-flex(style="padding:16px")
-          label.mdw-selection(mdw-theme-color="accent A700 dark")
+          label.mdw-selection.mdw-theme(mdw-color="accent A700" mdw-dark)
             input.mdw-selection__input(type="radio" name="mdw-navdrawer__style" value="floatingcard")
             .mdw-selection__icon
             .mdw-selection__label Floating Card (Deprecated)
         .mdw-type(mdw-style="subtitle") Toggle
         div.display-flex(style="padding:16px")
-          label.mdw-selection(mdw-theme-color="accent A700 dark")
+          label.mdw-selection.mdw-theme(mdw-color="accent A700" mdw-dark)
             input.mdw-selection__input(type="radio" name="mdw-navdrawer__toggle" value="none" checked)
             .mdw-selection__icon
             .mdw-selection__label Permanent (Default)
         div.display-flex(style="padding:16px")
-          label.mdw-selection(mdw-theme-color="accent A700 dark")
+          label.mdw-selection.mdw-theme(mdw-color="accent A700" mdw-dark)
             input.mdw-selection__input(type="radio" name="mdw-navdrawer__toggle" value="dismissible")
             .mdw-selection__icon
             .mdw-selection__label Dismissible
         div.display-flex(style="padding:16px")
-          label.mdw-selection(mdw-theme-color="accent A700 dark")
+          label.mdw-selection.mdw-theme(mdw-color="accent A700" mdw-dark)
             input.mdw-selection__input(type="radio" name="mdw-navdrawer__toggle" value="mini")
             .mdw-selection__icon
             .mdw-selection__label Mini (Deprecated)

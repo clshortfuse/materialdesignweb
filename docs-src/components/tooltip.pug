@@ -4,8 +4,8 @@ include ../mixins.pug
   +navdrawer("tooltip")
     .comparison
       .render
-        +androidstatusbar('cyan 700 dark')
-        .mdw-toolbar(mdw-theme-fill="cyan 500 dark")
+        +androidstatusbar('cyan 700', 'dark')
+        .mdw-toolbar.mdw-theme(mdw-fill="cyan 500" mdw-dark)
           .mdw-toolbar__action
             .mdw-toolbar__start
               .mdw-tooltip__wrapper
