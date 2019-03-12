@@ -59,18 +59,17 @@ $mdw-app__theme-values: (
     color: transparent;
   }
 
-  .mdw-app[mdw-fab-mobile-cut] {
-    .mdw-app__appbar {
-      background-color: transparent;
-    }
+  .mdw-app__appbar[mdw-fab-cut] {
+    background-color: transparent;
 
     .mdw-app__appbar-shape {
       color: mdwAppThemeValue("appbar-background", $type, $theme);
     }
   }
+
   @include mdw-breakpoint__12-columns {
-    .mdw-app[mdw-navdrawer-style~="floating"]:not([mdw-navdrawer-style~="card"]) .mdw-app__sheet-content,
-    .mdw-app[mdw-sidesheet-style~="floating"]:not([mdw-sidesheet-style~="card"]) .mdw-app__sheet-content {
+    .mdw-app[mdw-navdrawer-style~="floating"]:not([mdw-navdrawer-style~="card"]) .mdw-app__navdrawer .mdw-app__sheet-content,
+    .mdw-app[mdw-sidesheet-style~="floating"]:not([mdw-sidesheet-style~="card"]) .mdw-app__sidesheet .mdw-app__sheet-content {
       background-color: mdwAppThemeValue("content-background", $type, $theme);
     }
   }
