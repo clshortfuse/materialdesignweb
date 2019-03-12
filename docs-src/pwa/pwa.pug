@@ -1,9 +1,7 @@
 doctype html
 html.mdw-app.mdw-theme(lang='en'
   mdw-fill="white" mdw-light mdw-theme="colored"
-  mdw-appbar-autohide="mobile tablet"
-  mdw-sidesheet-toggle="dismissible" mdw-sidesheet-style="clipped"
-  mdw-fab-show mdw-fab-mobile mdw-fab-desktop)
+  mdw-sidesheet-toggle="dismissible" mdw-sidesheet-style="clipped")
   head
     title MDW Web App
     meta(charset='utf-8')
@@ -26,8 +24,39 @@ html.mdw-app.mdw-theme(lang='en'
       include ./_menus.pug
     .mdw-app__dialogs
       include ./_dialogs.pug
+    .mdw-app__navdrawer
+      .mdw-app__sheet-content
+        .mdw-list
+          li.mdw-list__item Attractions
+            .mdw-list__icon.material-icons local_activity
+          li.mdw-list__item Dining
+            .mdw-list__icon.material-icons local_dining
+          li.mdw-list__item Education
+            .mdw-list__icon.material-icons edit
+          li.mdw-list__item Family
+            .mdw-list__icon.material-icons people
+          li.mdw-list__item Health
+            .mdw-list__icon.material-icons healing
+          li.mdw-list__item Office
+            .mdw-list__icon.material-icons business
+          li.mdw-list__item Promotions
+            .mdw-list__icon.material-icons local_offer
+          li.mdw-list__item Radio
+            .mdw-list__icon.material-icons radio
+          li.mdw-list__item Recipes
+            .mdw-list__icon.material-icons book
+          li.mdw-list__item Sports
+            .mdw-list__icon.material-icons stars
+          li.mdw-list__item Travel
+            .mdw-list__icon.material-icons local_airport
+    .mdw-app__sidesheet(mdw-toggle="dismissible" mdw-style="clipped")
+      .mdw-app__sheet-content
+        div
+          span
+            span.mdw-type(mdw-style="h2") Info
+            .mdw-button(mdw-icon).material-icons.mdw-app__sidesheet-hide close
     .mdw-app__scrim
-    .mdw-app__appbar
+    .mdw-app__appbar(mdw-autohide="mobile tablet")
       .mdw-app__appbar-shape
         .mdw-app__fab-cut-track
           svg
@@ -56,36 +85,7 @@ html.mdw-app.mdw-theme(lang='en'
           .mdw-banner__buttons
             .mdw-button Fix it
             .mdw-button Learn more
-    .mdw-app__navdrawer
-      .mdw-app__sheet-content
-        .mdw-list
-          li.mdw-list__item Attractions
-            .mdw-list__icon.material-icons local_activity
-          li.mdw-list__item Dining
-            .mdw-list__icon.material-icons local_dining
-          li.mdw-list__item Education
-            .mdw-list__icon.material-icons edit
-          li.mdw-list__item Family
-            .mdw-list__icon.material-icons people
-          li.mdw-list__item Health
-            .mdw-list__icon.material-icons healing
-          li.mdw-list__item Office
-            .mdw-list__icon.material-icons business
-          li.mdw-list__item Promotions
-            .mdw-list__icon.material-icons local_offer
-          li.mdw-list__item Radio
-            .mdw-list__icon.material-icons radio
-          li.mdw-list__item Recipes
-            .mdw-list__icon.material-icons book
-          li.mdw-list__item Sports
-            .mdw-list__icon.material-icons stars
-          li.mdw-list__item Travel
-            .mdw-list__icon.material-icons local_airport
-    .mdw-app__sidesheet
-      .mdw-app__sheet-content
-        h2.mdw-type Info
-        .mdw-button(mdw-icon).material-icons.mdw-app__sidesheet-hide clos
-    .mdw-app__bottomnav
+    // .mdw-app__bottomnav
       .mdw-bottomnav.mdw-theme(mdw-color="primary")
         .mdw-bottomnav__item(mdw-badge)
           .mdw-bottomnav__icon.material-icons history
@@ -96,7 +96,7 @@ html.mdw-app.mdw-theme(lang='en'
         .mdw-bottomnav__item(mdw-badge="12")
           .mdw-bottomnav__icon.material-icons near_me
           .mdw-bottomnav__label Nearby
-    .mdw-app__fab
+    .mdw-app__fab(mdw-mobile mdw-desktop aria-hidden="false")
       .mdw-app__fab-anchor
         .mdw-fab
           .mdw-fab__button.mdw-button.mdw-theme(mdw-fill="accent" mdw-dark)
@@ -140,7 +140,13 @@ html.mdw-app.mdw-theme(lang='en'
                     input.mdw-selection__input(type="radio" name="appbar-bottom" value="bottom")
                     .mdw-list__text.mdw-selection__label
                       .mdw-list__text-line Bottom
-                      .mdw-list__text-line [mdw-appbar-bottom]
+                      .mdw-list__text-line [mdw-bottom]
+                    .mdw-selection__icon
+                  label.mdw-list__item.mdw-selection.mdw-theme(mdw-color="accent")
+                    input.mdw-selection__input(type="checkbox" name="fab-cut" disabled)
+                    .mdw-selection__label.mdw-list__text
+                      .mdw-list__text-line FAB Cutout
+                      .mdw-list__text-line [mdw-fab-cut]
                     .mdw-selection__icon
                 .mdw-divider
                 .mdw-list
@@ -148,32 +154,32 @@ html.mdw-app.mdw-theme(lang='en'
                     input.mdw-selection__input(type="checkbox" name="use-appbar-autohide" checked)
                     .mdw-selection__label.mdw-list__text
                       .mdw-list__text-line Auto Hide
-                      .mdw-list__text-line [mdw-appbar-autohide]
+                      .mdw-list__text-line [mdw-autohide]
                     .mdw-selection__icon
                   .mdw-list__item-group
                     label.mdw-list__item.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
                       input.mdw-selection__input(type="radio" name="appbar-autohide" value="mobile")
                       .mdw-list__text.mdw-selection__label
                         .mdw-list__text-line Mobile Only
-                        .mdw-list__text-line [mdw-appbar-autohide="mobile"]
+                        .mdw-list__text-line [mdw-autohide="mobile"]
                       .mdw-selection__icon
                     label.mdw-list__item.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
                       input.mdw-selection__input(type="radio" name="appbar-autohide" value="tablet")
                       .mdw-list__text.mdw-selection__label
                         .mdw-list__text-line Tablet Only
-                        .mdw-list__text-line [mdw-appbar-autohide="tablet"]
+                        .mdw-list__text-line [mdw-autohide="tablet"]
                       .mdw-selection__icon
                     label.mdw-list__item.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
                       input.mdw-selection__input(type="radio" name="appbar-autohide" value="mobile tablet" checked)
                       .mdw-list__text.mdw-selection__label
                         .mdw-list__text-line Mobile + Tablet
-                        .mdw-list__text-line [mdw-appbar-autohide="mobile tablet"]
+                        .mdw-list__text-line [mdw-autohide="mobile tablet"]
                       .mdw-selection__icon
                     label.mdw-list__item.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
                       input.mdw-selection__input(type="radio" name="appbar-autohide" value="")
                       .mdw-list__text.mdw-selection__label
                         .mdw-list__text-line All Devices
-                        .mdw-list__text-line [mdw-appbar-autohide=""]
+                        .mdw-list__text-line [mdw-autohide=""]
                       .mdw-selection__icon
                 .mdw-divider
                 .mdw-list
@@ -181,13 +187,13 @@ html.mdw-app.mdw-theme(lang='en'
                     input.mdw-selection__input(type="checkbox" name="appbar-autoraise")
                     .mdw-selection__label.mdw-list__text
                       .mdw-list__text-line Auto Raise
-                      .mdw-list__text-line [mdw-appbar-autoraise]
+                      .mdw-list__text-line [mdw-autoraise]
                     .mdw-selection__icon
                   label.mdw-list__item.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
                     input.mdw-selection__input(type="checkbox" name="appbar-autoprominent")
                     .mdw-selection__label.mdw-list__text
                       .mdw-list__text-line Auto Prominent
-                      .mdw-list__text-line [mdw-appbar-autoprominent]
+                      .mdw-list__text-line [mdw-autoprominent]
                     .mdw-selection__icon
           .mdw-layout__item(mdw-colspan="4")
             .mdw-layout__content.mdw-card
@@ -229,12 +235,6 @@ html.mdw-app.mdw-theme(lang='en'
                         .mdw-list__text-line Full
                         .mdw-list__text-line [mdw-fab-mobile="full"]
                       .mdw-selection__icon
-                  label.mdw-list__item.mdw-selection.mdw-theme(mdw-color="accent")
-                    input.mdw-selection__input(type="checkbox" name="fab-mobile-cut")
-                    .mdw-selection__label.mdw-list__text
-                      .mdw-list__text-line Cut into app bar
-                      .mdw-list__text-line [fab-mobile-cut]
-                    .mdw-selection__icon
                 .mdw-divider
                 .mdw-list
                   label.mdw-list__item.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)

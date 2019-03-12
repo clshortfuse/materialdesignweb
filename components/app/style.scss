@@ -86,18 +86,18 @@ $mdw-app__viewport-end-column: 4 !default;
   transition-timing-function: $mdw-motion__accelerate-easing;
   will-change: transform, margin-top;
 
-  transform: translateZ(0); // browser hint
+  transform: translateY(0); // browser hint
   z-index: 4;
-  
-  .mdw-app[mdw-appbar-autohide][mdw-appbar-hide] & {
+
+  &[mdw-hide] {
     transition-duration: $mdw-motion__leave-duration__desktop;
     transition-timing-function: $mdw-motion__decelerate-easing;
   }
-  
+
   @include mdw-breakpoint__mobile-device {
     transition-duration: $mdw-motion__enter-duration__mobile;
 
-    .mdw-app[mdw-appbar-autohide][mdw-appbar-hide] & {
+    &[mdw-hide] {
       transition-duration: $mdw-motion__leave-duration__mobile;
     }
   }
@@ -106,9 +106,15 @@ $mdw-app__viewport-end-column: 4 !default;
   @include mdw-breakpoint__tablet-device {
     transition-duration: $mdw-motion__enter-duration__tablet;
 
-    .mdw-app[mdw-appbar-autohide][mdw-appbar-hide] & {
+    &[mdw-appbar-hide] {
       transition-duration: $mdw-motion__leave-duration__tablet;
     }
+  }
+
+  &[mdw-autoraise]:not([mdw-raise]) .mdw-app__appbar-shape {
+    filter: none;
+
+    box-shadow: mdwElevation(0);
   }
 }
 
@@ -118,6 +124,13 @@ $mdw-app__viewport-end-column: 4 !default;
   position: fixed;
   top: 0;
   left: 0;
+  // Scroll mask
+  -ms-overflow-style: none;
+  overflow-y: scroll;
+  overscroll-behavior: none;
+  overscroll-behavior: contain;
+  -ms-scroll-chaining: none;
+  scrollbar-width: none;
 
   height: 100vh;
   width: 100vw;
@@ -132,6 +145,19 @@ $mdw-app__viewport-end-column: 4 !default;
   z-index: 16;
 
   background-color: transparent;
+
+  // Hide scrollbar
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &::after {
+    display: block;
+    content: '';
+
+    height: 200%;
+    width: 200%;
+  }
 }
 
 .mdw-app__navdrawer,
@@ -151,7 +177,7 @@ $mdw-app__viewport-end-column: 4 !default;
   transition-timing-function: inherit;
 
   transform: translateX(0);
-  z-index: 4; // Match app-bar when full-height
+  z-index: 5; // Above appbar shadow
 
   background-color: inherit;
   box-shadow: mdwElevation(0);
@@ -194,7 +220,6 @@ $mdw-app__viewport-end-column: 4 !default;
   @include mdw-app__modal($side) {
     .mdw-app__#{$side}-hide {
       display: none;
-
     }
 
     .mdw-app__#{$side} {
@@ -202,7 +227,7 @@ $mdw-app__viewport-end-column: 4 !default;
       top: 0;
       bottom: 0;
       
-      z-index: 16;
+      z-index: 17; // Above scrim
 
       .mdw-app__sheet-content {
         border-width: 0;
@@ -232,23 +257,26 @@ $mdw-app__viewport-end-column: 4 !default;
           transform: translateX(-100%);
         }
       }
-    }
-  }
-  @include mdw-app__modal-shown($side) {
-    .mdw-app__scrim {
-      pointer-events: auto;
 
-      background-color: $mdw-app__scrim-color;
-    }
+      // Shown
+      &[aria-hidden="false"] {
+        transform: translateX(0);
 
-    .mdw-app__#{$side}-show {
-      display: none;
-    }
+        box-shadow: mdwElevation(16);
 
-    .mdw-app__#{$side} {
-      transform: translateX(0);
+        & ~ .mdw-app__scrim {
+          pointer-events: auto;
+    
+          background-color: $mdw-app__scrim-color;
+        }
 
-      box-shadow: mdwElevation(16);
+        &,
+        &.mdw-app__appbar {
+          .mdw-app__#{$side}-show {
+            display: none;
+          }
+        }
+      }
     }
   }
 }
@@ -297,7 +325,7 @@ $mdw-app__viewport-end-column: 4 !default;
 
   pointer-events: none;
   transform: translateY(-100%);
-  z-index: 6;
+  z-index: 8;
 
 }
 
@@ -382,66 +410,82 @@ $mdw-app__viewport-end-column: 4 !default;
   }
 }
 
-@include mdw-breakpoint__4-columns {
-  .mdw-app[mdw-appbar-autohide~="mobile"][mdw-appbar-hide] {
-    .mdw-app__appbar {
-      transform: translateY(-100%);
-    }
 
+.mdw-app__fab-anchor .mdw-fab {
+  transition-duration: inherit;
+  transition-property: transform;
+  transition-timing-function: inherit;
+
+  transform: scale(0);
+}
+
+.mdw-app__bottomnav {
+  @include mdw-app__grid-column($mdw-app__content-column);
+  @include mdw-app__grid-row($mdw-app__bottom-row);
+
+  position: static;
+  position: -webkit-sticky;
+  position: -moz-sticky;
+  position: sticky;
+  bottom: 0;
+
+  z-index: 4;
+}
+
+@include mdw-breakpoint__4-columns {
+  .mdw-app__appbar[mdw-autohide~="mobile"][mdw-hide] {
+    transform: translateY(-100%);
+
+    &[mdw-bottom] {
+      transform: translateY(100%);
+
+      & ~ .mdw-app__fab,
+
+      & ~ .mdw-app__snackbar {
+        transform: translateY(0);
+      }
+    }
+    
     .mdw-app__appbar-shape {
       filter: none;
 
       box-shadow: mdwElevation(0);
-    }
-
-    &[mdw-appbar-bottom] {
-      .mdw-app__appbar {
-        transform: translateY(100%);
-      }
-
-      .mdw-app__fab,
-      .mdw-app__snackbar {
-        transform: translateY(0);
-      }
     }
   }
 }
 
 @include mdw-breakpoint__8-columns {
-  .mdw-app[mdw-appbar-autohide~="tablet"][mdw-appbar-hide] {
-    .mdw-app__appbar {
-      transform: translateY(-100%);
+  .mdw-app__appbar[mdw-autohide~="tablet"][mdw-hide] {
+    transform: translateY(-100%);
+
+    &[mdw-bottom] {
+      transform: translateY(100%);
+
+      & ~ .mdw-app__fab,
+      & ~ .mdw-app__snackbar {
+        transform: translateY(0);
+      }
     }
 
     .mdw-app__appbar-shape {
       filter: none;
 
       box-shadow: mdwElevation(0);
-    }
-
-    &[mdw-appbar-bottom] {
-      .mdw-app__appbar {
-        transform: translateY(100%);
-      }
-
-      .mdw-app__fab,
-      .mdw-app__snackbar {
-        transform: translateY(0);
-      }
     }
   }
 }
 
 @include mdw-breakpoint__8-columns__max {
-  .mdw-app[mdw-appbar-autoraise][mdw-scrolltop]:not([mdw-appbar-bottom]) .mdw-app__appbar-shape {
-    filter: none;
+  .mdw-app__appbar[mdw-autohide=""][mdw-hide] {
+    transform: translateY(-100%);
 
-    box-shadow: mdwElevation(0);
-  }
+    &[mdw-bottom] {
+      transform: translateY(100%);
 
-  .mdw-app[mdw-appbar-autohide=""][mdw-appbar-hide] {
-    .mdw-app__appbar {
-      transform: translateY(-100%);
+      & ~ .mdw-app__fab,
+      & ~ .mdw-app__snackbar {
+        transform: translateY(0);
+      }
     }
 
     .mdw-app__appbar-shape {
@@ -450,45 +494,40 @@ $mdw-app__viewport-end-column: 4 !default;
       box-shadow: mdwElevation(0);
     }
 
-    &[mdw-appbar-bottom] {
-      .mdw-app__appbar {
-        transform: translateY(100%);
-      }
-
-      .mdw-app__fab,
-      .mdw-app__snackbar {
-        transform: translateY(0);
-      }
-    }
   }
 
-  .mdw-app[mdw-appbar-bottom] {
-    .mdw-app__appbar {
-      @include mdw-app__grid-row($mdw-app__bottom-row);
-      top: auto;
-      bottom: 0;
+  .mdw-app__appbar[mdw-bottom] {
+    @include mdw-app__grid-row($mdw-app__bottom-row);
+    top: auto;
+    bottom: 0;
 
-      z-index: 8;
-    }
+    z-index: 8;
 
     .mdw-app__appbar-shape {
       box-shadow: mdwElevation(8);
     }
 
-    &[mdw-fab-mobile-cut] .mdw-app__appbar-shape {
-      transition-property: filter;
+    &[mdw-fab-cut] {
+      .mdw-app__appbar-shape {
+        transition-property: filter;
 
-      filter: mdwElevation(8, true);
-
-      box-shadow: mdwElevation(0);
+        filter: mdwElevation(8, true);
+        
+        box-shadow: mdwElevation(0);
+      }
+      
+      .mdw-app__fab-cut-track mask > ellipse {
+        transform: scale(0);
+      }
     }
 
-    &[mdw-appbar-autoraise][mdw-scrollbottom] .mdw-app__appbar-shape {
-      filter: none;
-
-      box-shadow: mdwElevation(0);
+    &[mdw-fab-cut~="open"] {
+      .mdw-app__fab-cut-track mask > ellipse {
+        transform: scale(1);
+      }
     }
   }
+
 
   .mdw-app__snackbar-anchor {
     &,
@@ -503,9 +542,8 @@ $mdw-app__viewport-end-column: 4 !default;
     }
   }
 
-  // Mobile+Tablet
-  .mdw-app[mdw-fab-mobile] {
-    .mdw-app__snackbar-anchor {
+  .mdw-app__fab[mdw-mobile] {
+    & ~ .mdw-app__snackbar .mdw-app__snackbar-anchor {
       bottom: dp(24);
       @include mdw-breakpoint__16dp-margin {
         bottom: dp(16);
@@ -514,157 +552,56 @@ $mdw-app__viewport-end-column: 4 !default;
       transform: translateY(#{dp(-56)});
     }
 
-    .mdw-app__content {
+    & ~ .mdw-app__content {
       padding-bottom: #{$mdw-app__fab-size + dp(24)};
     }
 
-    &[mdw-fab-show] {
-      &[mdw-fab-mobile-cut][mdw-appbar-bottom] .mdw-app__fab-cut-track mask > ellipse,
-      .mdw-app__fab .mdw-fab {
-        transform: scale(1);
-      }
+    &[aria-hidden="false"] .mdw-fab {
+      transform: scale(1);
     }
+  }
 
-    &[mdw-fab-mobile-cut][mdw-appbar-bottom]:not([mdw-appbar-hide]) {
+  .mdw-app__appbar[mdw-fab-cut][mdw-bottom]:not([mdw-hide]) {
+    & ~ .mdw-app__fab {
+      .mdw-fab {
+        transform: translateY(50%) scale(0);
+      }
+
+      &[aria-hidden="false"] .mdw-fab {
+        transform: translateY(50%) scale(1);
+      }
+
       .mdw-app__fab-anchor {
         padding-top: 0;
         padding-bottom: 0;
       }
+    }
 
-      .mdw-app__fab .mdw-fab {
-        transform: translateY(50%) scale(0);
-      }
+    & ~ .mdw-app__snackbar .mdw-app__snackbar-anchor {
+      bottom: 0;
 
-      &[mdw-fab-show] .mdw-app__fab .mdw-fab {
-        transform: translateY(50%) scale(1);
-      }
-
-      .mdw-app__snackbar-anchor {
-        bottom: 0;
-
-        transform: translateY(-$mdw-app__fab-size / 2);
-      }
+      transform: translateY(-$mdw-app__fab-size / 2);
     }
   }
 
-  .mdw-app[mdw-fab-mobile="center"] {
-    .mdw-app__fab-cut-track,
-    .mdw-app__fab-anchor {
-      right: 50%;
+  .mdw-app__appbar[mdw-fab-cut~="center"] .mdw-app__fab-cut-track,
+  .mdw-app__fab[mdw-mobile="center"] .mdw-app__fab-anchor {
+    right: 50%;
 
-      transform: translateX(50%);
-    }
+    transform: translateX(50%);
   }
 
-  .mdw-app[mdw-fab-mobile="full"] .mdw-app__fab-anchor {
+  .mdw-app__appbar[mdw-fab-cut~="full"] .mdw-app__fab-cut-track,
+  .mdw-app__fab[mdw-mobile="full"] .mdw-app__fab-anchor {
     right: 0;
     left: 0;
 
     transform: none;
-
-    .mdw-fab__button {
-      width: 100%;
-    }
   }
 
-}
-
-@include mdw-breakpoint__12-columns {
-  .mdw-app[mdw-appbar-autoraise][mdw-scrolltop] .mdw-app__appbar-shape {
-    filter: none;
-
-    box-shadow: mdwElevation(0);
+  .mdw-app__fab[mdw-mobile="full"] .mdw-fab__button {
+    width: 100%;
   }
-
-  .mdw-app[mdw-appbar-autohide=""][mdw-appbar-hide] {
-    .mdw-app__appbar {
-      transform: translateY(-100%);
-    }
-
-    .mdw-app__appbar-shape {
-      filter: none;
-
-      box-shadow: mdwElevation(0);
-    }
-  }
-
-  .mdw-app__snackbar-anchor {
-    width: 50%;
-  }
-
-  .mdw-app[mdw-fab-desktop] {
-    &[mdw-fab-show] .mdw-app__fab .mdw-fab {
-      transform: scale(1);
-    }
-
-    &:not([mdw-fab-desktop="appbar"]) .mdw-app__content {
-      padding-bottom: #{$mdw-app__fab-size + dp(24)};
-    }
-  }
-
-  .mdw-app[mdw-fab-desktop="appbar"] {
-    .mdw-app__snackbar-anchor {
-      width: 75%;
-    }
-
-    .mdw-app__fab-anchor {
-      top: 0;
-      right: auto;
-      bottom: auto;
-      left: 0;
-
-      padding-top: 0;
-      padding-right: dp(8);
-      padding-bottom: 0;
-      padding-left: dp(8);
-
-      transform: none;
-
-      :root[dir="rtl"] & {
-        right: 0;
-        left: auto;
-      }
-    }
-
-    .mdw-app__fab {
-      @include mdw-app__grid-row($mdw-app__top-row);
-      top: 0;
-      bottom: auto;
-
-      transform: translateY(100%);
-    }
-
-    .mdw-app__fab .mdw-fab,
-    &[mdw-fab-show][mdw-appbar-hide] .mdw-app__fab .mdw-fab {
-      transform: translateY(-50%) scale(0);
-    }
-
-    &[mdw-fab-show] .mdw-app__fab .mdw-fab {
-      transform: translateY(-50%) scale(1);
-    }
-  }
-}
-
-.mdw-app__fab-anchor .mdw-fab {
-  transition-duration: inherit;
-  transition-property: transform;
-  transition-timing-function: inherit;
-
-  transform: scale(0);
-}
-
-.mdw-app__bottomnav {
-  @include mdw-app__grid-column($mdw-app__content-column);
-  @include mdw-app__grid-row($mdw-app__bottom-row);
-
-  display: none;
-  position: static;
-  position: -webkit-sticky;
-  position: -moz-sticky;
-  position: sticky;
-  bottom: 0;
-
-  z-index: 4;
 }
 
 @include mdw-breakpoint__12-columns {
@@ -703,19 +640,25 @@ $mdw-app__viewport-end-column: 4 !default;
     z-index: 0;
   }
   
-  .mdw-app[mdw-navdrawer-style~="clipped"][mdw-fab-appbar] .mdw-app__fab,
-  .mdw-app[mdw-navdrawer-style~="clipped"] .mdw-app__appbar {
-    @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__content-column);
+  .mdw-app[mdw-navdrawer-style~="clipped"] {
+    .mdw-app__appbar,
+    .mdw-app__fab[mdw-desktop="appbar"] {
+      @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__content-column);
+    }
   }
 
-  .mdw-app[mdw-navdrawer-style~="clipped"][mdw-sidesheet-style~="clipped"][mdw-fab-appbar] .mdw-app__fab,
-  .mdw-app[mdw-sidesheet-style~="clipped"] .mdw-app__appbar {
-    @include mdw-app__grid-column($mdw-app__content-column, $mdw-app__sidesheet-column);
+  .mdw-app[mdw-sidesheet-style~="clipped"] {
+    .mdw-app__appbar,
+    .mdw-app__fab[mdw-desktop="appbar"] {
+      @include mdw-app__grid-column($mdw-app__content-column, $mdw-app__sidesheet-column);
+    }
   }
 
-  .mdw-app[mdw-navdrawer-style~="clipped"][mdw-sidesheet-style~="clipped"][mdw-fab-appbar] .mdw-app__fab,
-  .mdw-app[mdw-navdrawer-style~="clipped"][mdw-sidesheet-style~="clipped"] .mdw-app__appbar {
-    @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__sidesheet-column);
+  .mdw-app[mdw-navdrawer-style~="clipped"][mdw-sidesheet-style~="clipped"] {
+    .mdw-app__appbar,
+    .mdw-app__fab[mdw-desktop="appbar"] {
+      @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__sidesheet-column);
+    }
   }
   
   .mdw-app[mdw-navdrawer-style~="floating"] .mdw-app__navdrawer,
@@ -728,28 +671,25 @@ $mdw-app__viewport-end-column: 4 !default;
     }
   }
 
-  .mdw-app[mdw-navdrawer-style~="floating"] .mdw-app__banner {
-    @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__content-column);
+  .mdw-app[mdw-navdrawer-style~="floating"] {
+    .mdw-app__banner,
+    .mdw-app__bottomnav {
+      @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__content-column);
+    }
   }
 
-  .mdw-app[mdw-sidesheet-style~="floating"] .mdw-app__banner {
-    @include mdw-app__grid-column($mdw-app__content-column, $mdw-app__sidesheet-column);
+  .mdw-app[mdw-sidesheet-style~="floating"] {
+    .mdw-app__banner,
+    .mdw-app__bottomnav {
+      @include mdw-app__grid-column($mdw-app__content-column, $mdw-app__sidesheet-column);
+    }
   }
 
-  .mdw-app[mdw-navdrawer-style~="floating"][mdw-sidesheet-style~="floating"] .mdw-app__banner {
-    @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__sidesheet-column);
-  }
-  
-  .mdw-app[mdw-navdrawer-style~="floating"] .mdw-app__bottomnav {
-    @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__content-column);
-  }
-
-  .mdw-app[mdw-sidesheet-style~="floating"] .mdw-app__bottomnav {
-    @include mdw-app__grid-column($mdw-app__content-column, $mdw-app__sidesheet-column);
-  }
-
-  .mdw-app[mdw-navdrawer-style~="floating"][mdw-sidesheet-style~="floating"] .mdw-app__bottomnav {
-    @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__sidesheet-column);
+  .mdw-app[mdw-navdrawer-style~="floating"][mdw-sidesheet-style~="floating"] {
+    .mdw-app__banner,
+    .mdw-app__bottomnav {
+      @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__sidesheet-column);
+    }
   }
 
   .mdw-app[mdw-navdrawer-style~="clipped"] .mdw-app__body,
@@ -771,42 +711,95 @@ $mdw-app__viewport-end-column: 4 !default;
     }
   }
 
-  .mdw-app[mdw-navdrawer-toggle~="dismissible"]:not([mdw-navdrawer-style="modal"]):not([mdw-navdrawer-show]) {
-    .mdw-app__navdrawer {
-      max-width: 0;
-      margin: 0;
-      padding: 0;
+  .mdw-app[mdw-navdrawer-toggle~="dismissible"]:not([mdw-navdrawer-style="modal"]) .mdw-app__navdrawer:not([aria-hidden="false"]),
+  .mdw-app[mdw-sidesheet-toggle~="dismissible"]:not([mdw-sidesheet-style="modal"]) .mdw-app__sidesheet:not([aria-hidden="false"]) {
+    max-width: 0;
+    margin-right: 0;
+    margin-left: 0;
+    padding-right: 0;
+    padding-left: 0;
 
-      .mdw-app__sheet-content {
-        box-shadow: mdwElevation(0);
-      }
+    .mdw-app__sheet-content {
+      box-shadow: mdwElevation(0);
     }
   }
 
-  .mdw-app[mdw-sidesheet-toggle~="dismissible"]:not([mdw-sidesheet-style="modal"]):not([mdw-sidesheet-show]) {
-    .mdw-app__sidesheet {
-      max-width: 0;
-      margin: 0;
-      padding: 0;
-
-      .mdw-app__sheet-content {
-        box-shadow: mdwElevation(0);
-      }
-    }
-  }
-
-  .mdw-app[mdw-navdrawer-toggle~="mini"]:not([mdw-navdrawer-style="modal"]):not([mdw-navdrawer-show]) {
-    .mdw-app__navdrawer {
+  .mdw-app[mdw-navdrawer-toggle~="mini"]:not([mdw-navdrawer-style="modal"]) {
+    .mdw-app__navdrawer:not([aria-hidden="false"]) {
       min-width: $mdw-app__sheet-max-width__mini;
       max-width: $mdw-app__sheet-max-width__mini;
     }
   }
 
-  .mdw-app[mdw-sidesheet-toggle~="mini"]:not([mdw-sidesheet-style="modal"]):not([mdw-sidesheet-show]) {
-    .mdw-app__sidesheet {
+  .mdw-app[mdw-sidesheet-toggle~="mini"]:not([mdw-sidesheet-style="modal"]) {
+    .mdw-app__sidesheet:not([aria-hidden="false"]) {
       min-width: $mdw-app__sheet-max-width__mini;
       max-width: $mdw-app__sheet-max-width__mini;
     }
+  }
+
+  .mdw-app__appbar[mdw-autohide=""][mdw-hide] {
+    transform: translateY(-100%);
+
+    .mdw-app__appbar-shape {
+      filter: none;
+
+      box-shadow: mdwElevation(0);
+    }
+  }
+
+  .mdw-app__snackbar-anchor {
+    width: 50%;
+  }
+
+  .mdw-app__fab[mdw-desktop] {
+    &[aria-hidden="false"] .mdw-fab {
+      transform: scale(1);
+    }
+
+    &:not([mdw-desktop="appbar"]) ~ .mdw-app__content {
+      padding-bottom: #{$mdw-app__fab-size + dp(24)};
+    }
+  }
+
+  .mdw-app__fab[mdw-desktop="appbar"] {
+    @include mdw-app__grid-row($mdw-app__top-row);
+    top: 0;
+    bottom: auto;
+
+    transform: translateY(100%);
+
+    &[aria-hidden="false"] .mdw-fab {
+      transform: translateY(-50%) scale(1);
+    }
+
+    & ~ .mdw-app__snackbar .mdw-app__snackbar-anchor {
+      width: 75%;
+    }
+
+    .mdw-app__fab-anchor {
+      top: 0;
+      right: auto;
+      bottom: auto;
+      left: 0;
+
+      padding-top: 0;
+      padding-right: dp(8);
+      padding-bottom: 0;
+      padding-left: dp(8);
+
+      transform: none;
+
+      :root[dir="rtl"] & {
+        right: 0;
+        left: auto;
+      }
+    }
+  }
+
+  .mdw-app__fab[mdw-desktop="appbar"][aria-hidden="true"] .mdw-fab,
+  .mdw-app__appbar[mdw-hide] ~ .mdw-app__fab[mdw-desktop="appbar"] .mdw-fab {
+    transform: translateY(-50%) scale(0);
   }
 }
 

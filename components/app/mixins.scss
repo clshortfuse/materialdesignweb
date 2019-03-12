@@ -10,18 +10,6 @@
   }
 }
 
-@mixin mdw-app__modal-shown($side) {
-  .mdw-app[mdw-#{$side}-style='modal'][mdw-#{$side}-show] {
-    @content;
-  }
-
-  @include mdw-breakpoint__8-columns__max {
-    .mdw-app[mdw-#{$side}-show] {
-      @content;
-    }
-  }
-}
-
 @mixin mdw-app__grid-column($start, $end: null) {
   @if ($end == null) {
     $end: $start;
