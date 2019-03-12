@@ -17,7 +17,7 @@ function getComponentsConfig() {
     mode: process.env.NODE_ENV || 'development',
     devtool: isProduction ? undefined : 'nosources-source-map',
     output: {
-      filename: '[name].min.js',
+      filename: 'materialdesignweb.min.js',
       path: path.resolve(__dirname, DEST),
     },
     module: {
@@ -35,7 +35,7 @@ function getComponentsConfig() {
       }, {
         test: /\.scss$/,
         use: [
-          'file-loader?name=[name].min.css',
+          'file-loader?name=materialdesignweb.min.css',
           'extract-loader',
           'css-loader?import=false',
           {
@@ -81,6 +81,7 @@ function getDocsConfig() {
     mode: process.env.NODE_ENV || 'development',
     devServer: {
       contentBase: path.resolve(__dirname, DEST),
+      compress: true,
     },
     output: {
       filename: '[name].min.js',
