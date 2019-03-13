@@ -72,7 +72,7 @@ $menu__unit-width: dp(56);
   left: 0;
   right: auto;
   transform-origin: left top;
-  html[dir=rtl] & {
+  :root[dir="rtl"] & {
     left: auto;
     right: 0;
     transform-origin: right top;
@@ -91,7 +91,7 @@ $menu__unit-width: dp(56);
   &[mdw-position~="end"] {
     left: 100%;
     right: auto;
-    html[dir=rtl] & {
+    :root[dir="rtl"] & {
       left: auto;
       right: 100%;
     }
@@ -102,7 +102,7 @@ $menu__unit-width: dp(56);
     left: auto;
     right: 100%;
     transform-origin: right top;
-    html[dir=rtl] & {
+    :root[dir="rtl"] & {
       left: 100%;
       right: auto;
       transform-origin: left top;
@@ -111,7 +111,7 @@ $menu__unit-width: dp(56);
     &[mdw-position~="end"] {
       left: auto;
       right: 0;
-      html[dir=rtl] & {
+      :root[dir="rtl"] & {
         left: 0;
         right: auto;
       }
@@ -121,7 +121,7 @@ $menu__unit-width: dp(56);
     top: auto;
     bottom: 0;
     transform-origin: left bottom;
-    html[dir=rtl] & {
+    :root[dir="rtl"] & {
       transform-origin: right bottom;
     }
 
@@ -134,7 +134,7 @@ $menu__unit-width: dp(56);
     &[mdw-direction~="reverse"],
     &[mdw-direction~="rtl"] {
       transform-origin: right bottom;
-      html[dir=rtl] & {
+      :root[dir="rtl"] & {
         transform-origin: left bottom;
       }
     }
@@ -151,19 +151,30 @@ $menu__unit-width: dp(56);
 
 .mdw-menu[mdw-js] {
   position: fixed;
-  left: 0%;
-  top: 0%;
-  width: 100%;
-  height: 100%;
-  margin: 0;
+  top: 0;
+  right: auto;
+  bottom: auto;
+  left: 0;
   overflow-y: scroll;
-  z-index: 8;
+  
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  
   cursor: default;
+  
+  z-index: 8;
+
+  :root[dir="rtl"] & {
+    right: 0;
+    left: auto;
+  }
+
   .mdw-menu__close {
     display: none;
   }
+
   .mdw-menu__popup {
-    position: relative;
     margin: 0;
   }
 }
@@ -310,7 +321,7 @@ $menu__unit-width: dp(56);
   text-align: end;
   padding-left: dp(16);
   padding-right: 0;
-  html[dir=rtl] & {
+  :root[dir="rtl"] & {
     text-align: left;
     text-align: end;
     padding-left: 0;
