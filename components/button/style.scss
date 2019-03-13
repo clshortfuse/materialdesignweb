@@ -155,7 +155,7 @@ $mdw-button__outline-size: dp(1) !default;
   user-select: none;
   
   transition-duration: inherit;
-  transition-property: opacity;
+  transition-property: opacity, color;
   transition-timing-function: inherit;
 
   opacity: 0;
@@ -230,7 +230,6 @@ $mdw-button__outline-size: dp(1) !default;
   }
 
   & > .mdw-ripple,
-  &::before,
   &::after {
     content: none;
 

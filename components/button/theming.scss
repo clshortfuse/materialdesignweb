@@ -8,30 +8,26 @@ $mdw-button__theme-values: (
   text-color:                    (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   text-opacity:                  (0.87, 1.00),
 
-  // icon
-  active-icon-color__focus:      (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  active-icon-color:             (('foreground-light', 0.54), ('foreground-dark', 0.70)),
-  inactive-icon-color:           (('foreground-light', 0.38), ('foreground-dark', 0.50)),
-
   // states
   overlay-color:                 (('foreground-light', 1.00), ('foreground-dark', 1.00)),
 
+  activated-opacity:             (0.12, 0.24),
   hover-opacity:                 (0.04, 0.08),
   focus-opacity:                 (0.12, 0.24),
   hover-focus-opacity:           (0.04 + 0.12, 0.08 + 0.24),
 
-  activated-opacity:             (0.12, 0.24),
 
-  activated-hover-opacity:       (0.12 + 0.04, 0.24 + 0.4),
-  activated-focus-opacity:       (0.12 + 0.12, 0.24 + 0.12),
-  activated-hover-focus-opacity: (0.12 + 0.04 + 0.12, 0.24 + 0.4 + 0.12),
+  activated-hover-opacity:       (0.12 + 0.04, 0.24 + 0.08),
+  activated-focus-opacity:       (0.12 + 0.12, 0.24 + 0.24),
+  activated-hover-focus-opacity: (0.12 + 0.04 + 0.12, 0.24 + 0.08 + 0.24),
 
   pressed-opacity:               (0.16, 0.32),
 
   // disabled
-  disabled-text-opacity:         (0.26, 0.30),
-  disabled-text-color:           (('foreground-light', 0.26), ('foreground-dark', 0.30)),
-  disabled-background-color:     (('foreground-light', 0.12), ('foreground-dark', 0.12)),
+  disabled-opacity:              (0.38, 0.38),
+  
+  disabled-text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
+  disabled-background-color:     (('foreground-light', 0.38), ('foreground-dark', 0.62)),
 
   outline-color:                 (('foreground-light', 0.12), ('foreground-dark', 0.12)),
 
@@ -56,13 +52,19 @@ $mdw-button__theme-values: (
       &::after {
         color: unquote("rgb(var(--color))");
       }
+
+      &[aria-pressed="false"],
+      &[aria-pressed="false"][mdw-color] {
+        --color: var(--foreground-color);
+      }
     } @else {
+      &[aria-pressed="false"],
+      &[aria-pressed="false"][mdw-color],
       &:not([mdw-color]):not([mdw-fill]) {
         color: mdwButtonThemeValue("text-color", $type, $theme);
 
         &::before,
         & > .mdw-ripple > .mdw-ripple__inner,
-
         &::after {
           color: mdwButtonThemeValue("overlay-color", $type, $theme);
         }
@@ -74,45 +76,41 @@ $mdw-button__theme-values: (
       opacity: mdwButtonThemeValue("pressed-opacity", $type, $theme);
     }
 
-    &[mdw-inactive] {
-      color: mdwButtonThemeValue("inactive-icon-color", $type, $theme);
-    }
-
-    &[mdw-active]:not([mdw-color]):not([disabled]) {
-      color: mdwButtonThemeValue("active-icon-color", $type, $theme);
-
-      &:focus {
-        color: mdwButtonThemeValue("active-icon-color__focus", $type, $theme);
-      }
-    }
-
-    &:hover::before {
-      opacity: mdwButtonThemeValue("hover-opacity", $type, $theme);
-    }
-
     &:focus::before {
       opacity: mdwButtonThemeValue("focus-opacity", $type, $theme);
     }
 
-    &:hover:focus::before {
-      opacity: mdwButtonThemeValue("hover-focus-opacity", $type, $theme);
-    }
-
-    &[mdw-activated] {
-      &::before {
-        opacity: mdwButtonThemeValue("activated-opacity", $type, $theme);
+    &:not([disabled]) {
+      &:hover::before {
+        opacity: mdwButtonThemeValue("hover-opacity", $type, $theme);
       }
 
-      &:hover::before {
-        opacity: mdwButtonThemeValue("activated-hover-opacity", $type, $theme);
+      &:hover:focus::before {
+        opacity: mdwButtonThemeValue("hover-focus-opacity", $type, $theme);
+      }
+    }
+
+   
+
+    
+
+    &[aria-pressed="true"] {
+      &::before {
+        opacity: mdwButtonThemeValue("activated-opacity", $type, $theme);
       }
 
       &:focus::before {
         opacity: mdwButtonThemeValue("activated-focus-opacity", $type, $theme);
       }
 
-      &:hover:focus::before {
-        opacity: mdwButtonThemeValue("activated-hover-focus-opacity", $type, $theme);
+      &:not([disabled]) {
+        &:hover::before {
+          opacity: mdwButtonThemeValue("activated-hover-opacity", $type, $theme);
+        }
+
+        &:hover:focus::before {
+          opacity: mdwButtonThemeValue("activated-hover-focus-opacity", $type, $theme);
+        }
       }
     }
 
@@ -121,29 +119,19 @@ $mdw-button__theme-values: (
     }
 
     &[disabled] {
-      @if ($type == 'var') {
-        color: rgba(var(--color), mdwButtonThemeValue('disabled-text-opacity', $type, $theme));
-      } @else {
-        &:not([mdw-fill]) {
-          color: mdwButtonThemeValue("disabled-text-color", $type, $theme);
-        }
-      }
-      
+      opacity: mdwButtonThemeValue("disabled-opacity", $type, $theme);
+
       &[mdw-fill] {
+        background-color: mdwButtonThemeValue("disabled-background-color", $type, $theme);
+        color: mdwButtonThemeValue("disabled-text-color", $type, $theme);
+
         // Disabled filled buttons use parent's theming context
         @if ($type == 'var') {
-          --color: inherit;
-          --button__disabled-text-opacity: inherit;
-          --button__disabled-background-color: inherit;
-          background-color: mdwButtonThemeValue("disabled-background-color", $type, $theme);
-        } @else {
-          $bgLight: mdwButtonThemeValue("disabled-background-color", 'light', $theme);
-          $bgDark: mdwButtonThemeValue("disabled-background-color", 'dark', $theme);
-          $colorLight: mdwButtonThemeValue("disabled-text-color", 'light', $theme);
-          $colorDark: mdwButtonThemeValue("disabled-text-color", 'dark', $theme);
-
-          background-color: mix($bgLight, $bgDark);
-          color: mix($colorLight, $colorDark);
+          &[mdw-dark],
+          &[mdw-light] {
+            --button__disabled-text-color: inherit;
+            --button__disabled-background-color: inherit;
+          }
         }
       }
     }
