@@ -2,9 +2,10 @@
 // https://material.io/archive/guidelines/components/text-fields.html
 
 
+@import '../common/breakpoint.scss';
+@import '../common/elevation.scss';
 @import '../common/motion.scss';
 @import '../common/platform.scss';
-@import '../common/breakpoint.scss';
 @import '../common/type.scss';
 
 $mdw-textfield__border-line-height: dp(1) !default;

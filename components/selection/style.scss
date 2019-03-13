@@ -1,9 +1,10 @@
 // https://material.io/guidelines/components/selection-controls.html#
 // https://material.io/guidelines/patterns/selection.html#selection-item-selection
 
+@import '../common/breakpoint.scss';
+@import '../common/elevation.scss';
 @import '../common/motion.scss';
 @import '../common/platform.scss';
-@import '../common/breakpoint.scss';
 
 $ripple-size: dp(48);
 $icon-size: dp(24);

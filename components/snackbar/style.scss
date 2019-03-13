@@ -1,8 +1,9 @@
 // https://material.io/design/components/snackbars.html#spec
 
+@import '../common/breakpoint.scss';
+@import '../common/elevation.scss';
 @import '../common/motion.scss';
 @import '../common/platform.scss';
-@import '../common/breakpoint.scss';
 @import '../common/type.scss';
 
 $snackbar__scale-up__from: 0.85;

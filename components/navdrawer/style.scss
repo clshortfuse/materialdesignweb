@@ -2,9 +2,10 @@
 // https://material.io/archive/guidelines/patterns/navigation-drawer.html
 // https://material.io/archive/guidelines/layout/metrics-keylines.html#metrics-keylines-keylines-spacing
 
+@import '../common/breakpoint.scss';
+@import '../common/elevation.scss';
 @import '../common/motion.scss';
 @import '../common/platform.scss';
-@import '../common/breakpoint.scss';
 @import '../common/type.scss';
 
 $navdrawer__min-width: dp(256) !default;
