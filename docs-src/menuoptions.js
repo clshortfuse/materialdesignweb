@@ -12,7 +12,7 @@ export function setRTLMode(value, button) {
   if (value) {
     document.documentElement.setAttribute('dir', 'rtl');
     if (button) {
-      button.removeAttribute('mdw-inactive');
+      button.setAttribute('aria-pressed', 'true');
     }
     // element.setAttribute('mdw-active', '');
     // Poor visibility even though spec says 70% opacity
@@ -21,7 +21,7 @@ export function setRTLMode(value, button) {
     // Explicit LTR is required for Safari to support repeated toggling
     document.documentElement.setAttribute('dir', 'ltr');
     if (button) {
-      button.setAttribute('mdw-inactive', '');
+      button.setAttribute('aria-pressed', 'false');
     }
     // element.removeAttribute('mdw-active');
     removeStorageItem('rtlmode');
@@ -39,7 +39,7 @@ export function setDarkMode(value, button) {
     document.documentElement.setAttribute('mdw-fill', 'black');
     document.documentElement.removeAttribute('mdw-light');
     if (button) {
-      button.removeAttribute('mdw-inactive');
+      button.setAttribute('aria-pressed', 'true');
     }
     // element.setAttribute('mdw-active', '');
     // Poor visibility even though spec says 70% opacity
@@ -48,7 +48,7 @@ export function setDarkMode(value, button) {
     document.documentElement.setAttribute('mdw-fill', 'white');
     document.documentElement.removeAttribute('mdw-dark');
     if (button) {
-      button.setAttribute('mdw-inactive', '');
+      button.setAttribute('aria-pressed', 'false');
     }
     // element.removeAttribute('mdw-active');
   }
@@ -64,7 +64,7 @@ export function setFontSize(value, button) {
   if (value) {
     document.documentElement.style.setProperty('font-size', value);
     if (button) {
-      button.removeAttribute('mdw-inactive');
+      button.setAttribute('aria-pressed', 'true');
     }
     // element.setAttribute('mdw-active', '');
     // Poor visibility even though spec says 70% opacity
@@ -72,7 +72,7 @@ export function setFontSize(value, button) {
   } else {
     document.documentElement.style.removeProperty('font-size');
     if (button) {
-      button.setAttribute('mdw-inactive', '');
+      button.setAttribute('aria-pressed', 'false');
     }
     // element.removeAttribute('mdw-active');
     removeStorageItem('fontsize');

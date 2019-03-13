@@ -71,11 +71,11 @@ function onOptionChange(event) {
         sampleComponent.removeAttribute('mdw-active');
       }
       break;
-    case 'inactive':
-      if (checked) {
-        sampleComponent.setAttribute('mdw-inactive', '');
+    case 'toggle':
+      if (!value) {
+        sampleComponent.removeAttribute('aria-pressed');
       } else {
-        sampleComponent.removeAttribute('mdw-inactive');
+        sampleComponent.setAttribute('aria-pressed', value);
       }
       break;
     case 'disabled':

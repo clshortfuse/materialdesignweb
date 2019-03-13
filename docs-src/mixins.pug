@@ -64,13 +64,13 @@ mixin navdrawer(selected)
         .mdw-toolbar__title=selected
         #docs-menu-buttons.mdw-toolbar__end
           .mdw-tooltip__wrapper
-            .mdw-tooltip__target.mdw-button.material-icons(mdw-icon mdw-inactive)#docs-rtl format_align_right
+            button.mdw-tooltip__target.mdw-button.material-icons(mdw-icon aria-pressed="false") format_align_right
             .mdw-tooltip(mdw-align="end") Right-to-Left
           .mdw-tooltip__wrapper
-            .mdw-tooltip__target.mdw-button.material-icons(mdw-icon mdw-inactive) brightness_3
+            button.mdw-tooltip__target.mdw-button.material-icons(mdw-icon aria-pressed="false") brightness_3
             .mdw-tooltip(mdw-align="end") Dark Mode
           .mdw-tooltip__wrapper
-            .mdw-tooltip__target.mdw-button.material-icons(mdw-icon mdw-inactive) format_size
+            button.mdw-tooltip__target.mdw-button.material-icons(mdw-icon aria-pressed="false") format_size
             .mdw-tooltip(mdw-align="end") Large Font
   .mdw-navdrawer__drawer
     .mdw-list

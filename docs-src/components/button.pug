@@ -84,18 +84,20 @@ mixin button-test
             input.mdw-selection__input(type="checkbox" name="disabled")
             .mdw-selection__icon
             .mdw-selection__label Disabled
+        .mdw-type(mdw-style="subtitle") Activated Toggle
+        div
           label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input(type="checkbox" name="activated")
+            input.mdw-selection__input(type="radio" name="toggle" value="" checked)
             .mdw-selection__icon
-            .mdw-selection__label Activated
+            .mdw-selection__label None
           label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input(type="checkbox" name="active")
+            input.mdw-selection__input(type="radio" name="toggle" value="false")
             .mdw-selection__icon
-            .mdw-selection__label Active
+            .mdw-selection__label Off
           label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input(type="checkbox" name="inactive")
+            input.mdw-selection__input(type="radio" name="toggle" value="true")
             .mdw-selection__icon
-            .mdw-selection__label Inactive
+            .mdw-selection__label On
         .mdw-type(mdw-style="subtitle") Color (Ink)
         div
           label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")

@@ -106,11 +106,9 @@ function buildDynamicTable() {
     }
     dynamicTableAdapter.refresh();
     if (dynamicTableAdapter.filter) {
-      filterButton.setAttribute('mdw-active', '');
-      filterButton.removeAttribute('mdw-inactive');
+      filterButton.setAttribute('aria-pressed', 'true');
     } else {
-      filterButton.setAttribute('mdw-inactive', '');
-      filterButton.removeAttribute('mdw-active');
+      filterButton.setAttribute('aria-pressed', 'false');
     }
   });
   filterMenu.addEventListener(MenuItem.ACTIVATE_EVENT, () => Menu.hide(filterMenu));
