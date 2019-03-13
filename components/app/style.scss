@@ -325,8 +325,14 @@ $mdw-app__viewport-end-column: 4 !default;
 
   pointer-events: none;
   transform: translateY(-100%);
-  z-index: 8;
+  z-index: 6;
 
+}
+
+.mdw-app__menus {
+  position: absolute;
+
+  z-index: 8;
 }
 
 .mdw-app__dialogs {
@@ -339,7 +345,6 @@ $mdw-app__viewport-end-column: 4 !default;
   pointer-events: none;
 
   z-index: 24;
-  
 }
 
 .mdw-app__snackbar-anchor {
