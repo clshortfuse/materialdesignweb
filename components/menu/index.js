@@ -7,6 +7,8 @@ import {
   iterateArrayLike,
   iterateSomeOfArrayLike,
   iterateElementSiblings,
+  nextTick,
+  cancelTick,
 } from '../common/dom';
 
 
@@ -231,12 +233,15 @@ class MenuStack {
    * @param {Element} previousFocus
    * @param {Object=} state
    * @param {Object=} previousState
+   * @param {MouseEvent=} originalEvent
    */
-  constructor(element, previousFocus, state, previousState) {
+  constructor(element, previousFocus, state, previousState, originalEvent) {
     this.element = element;
     this.previousFocus = previousFocus;
     this.state = state;
     this.previousState = previousState;
+    this.originalEvent = originalEvent;
+    this.pendingResizeOperation = null;
   }
 }
 
@@ -299,6 +304,27 @@ class Menu {
       event.stopPropagation();
       Menu.hide(event.currentTarget);
     }
+  }
+
+  /**
+   * @return {void}
+   */
+  static onWindowResize() {
+    const lastOpenMenu = OPEN_MENUS[OPEN_MENUS.length - 1];
+    if (!lastOpenMenu || !lastOpenMenu.originalEvent) {
+      return;
+    }
+    if (lastOpenMenu.pendingResizeOperation) {
+      cancelTick(lastOpenMenu.pendingResizeOperation);
+    }
+    lastOpenMenu.pendingResizeOperation = nextTick(() => {
+      Menu.updateMenuPosition(
+        lastOpenMenu.element,
+        lastOpenMenu.element.getElementsByClassName('mdw-menu__popup')[0],
+        lastOpenMenu.originalEvent
+      );
+      lastOpenMenu.pendingResizeOperation = null;
+    });
   }
 
   /**
@@ -829,8 +855,9 @@ class Menu {
         previousState = window.history.state;
         window.history.pushState(newState, document.title);
         window.addEventListener('popstate', Menu.onPopState);
+        window.addEventListener('resize', Menu.onWindowResize);
       }
-      const menuStack = new MenuStack(menuElement, previousFocus, newState, previousState);
+      const menuStack = new MenuStack(menuElement, previousFocus, newState, previousState, event);
       OPEN_MENUS.push(menuStack);
       Menu.refreshMenuItems(menuElement);
       if (event && !event.pointerType && !event.detail) {
@@ -875,6 +902,7 @@ class Menu {
     }
     if (!OPEN_MENUS.length) {
       window.removeEventListener('popstate', Menu.onPopState);
+      window.removeEventListener('resize', Menu.onWindowResize);
     }
     dispatchDomEvent(menuElement, 'mdw:dismiss');
     return true;
