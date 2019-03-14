@@ -158,9 +158,9 @@ class Snackbar {
    * @return {void}
    */
   static handleAnimationChange(snackbarElement) {
-    const currentQueueItem = Snackbar.findNextQueueItem(snackbarElement);
     const showing = snackbarElement.getAttribute('aria-hidden') === 'false';
     if (showing) {
+      const currentQueueItem = Snackbar.findNextQueueItem(snackbarElement);
       if (currentQueueItem && currentQueueItem.hideTimeout) {
         return;
       }
@@ -180,9 +180,7 @@ class Snackbar {
       }
       return;
     }
-    if (currentQueueItem) {
-      SNACKBAR_QUEUE.splice(SNACKBAR_QUEUE.indexOf(currentQueueItem), 1);
-    }
+
     const nextQueueItem = Snackbar.findNextQueueItem(snackbarElement);
     if (nextQueueItem) {
       Snackbar.update(snackbarElement, nextQueueItem.options);
@@ -208,6 +206,10 @@ class Snackbar {
       return false;
     }
     snackbarElement.setAttribute('aria-hidden', 'true');
+    const currentQueueItem = Snackbar.findNextQueueItem(snackbarElement);
+    if (currentQueueItem) {
+      SNACKBAR_QUEUE.splice(SNACKBAR_QUEUE.indexOf(currentQueueItem), 1);
+    }
     if (window.getComputedStyle(snackbarElement).animationName === 'none') {
       nextTick(() => Snackbar.handleAnimationChange(snackbarElement));
     }
