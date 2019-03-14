@@ -248,6 +248,10 @@ class MenuStack {
 /** @type {MenuStack[]} */
 const OPEN_MENUS = [];
 class Menu {
+  static get HIDE_EVENT() {
+    return 'mdw:menu-hide';
+  }
+
   /**
    * @param {Element} menuElement
    * @return {void}
@@ -904,7 +908,7 @@ class Menu {
       window.removeEventListener('popstate', Menu.onPopState);
       window.removeEventListener('resize', Menu.onWindowResize);
     }
-    dispatchDomEvent(menuElement, 'mdw:dismiss');
+    dispatchDomEvent(menuElement, Menu.HIDE_EVENT);
     return true;
   }
 }
