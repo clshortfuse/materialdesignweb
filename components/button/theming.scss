@@ -6,7 +6,16 @@
 
 $mdw-button__theme-values: (
   text-color:                    (('foreground-light', 0.87), ('foreground-dark', 1.00)),
+
   text-opacity:                  (0.87, 1.00),
+  
+  // Instead of using active+unfocused icon opacity, use active+focus opacity with focus ripple
+  icon-opacity:                  (0.60, 0.70),
+  icon-opacity__inactive:        (0.38, 0.50),
+
+  // icon
+  active-icon-color:             (('foreground-light', 0.60), ('foreground-dark', 0.70)),
+  inactive-icon-color:           (('foreground-light', 0.38), ('foreground-dark', 0.50)),
 
   // states
   overlay-color:                 (('foreground-light', 1.00), ('foreground-dark', 1.00)),
@@ -16,7 +25,6 @@ $mdw-button__theme-values: (
   focus-opacity:                 (0.12, 0.24),
   hover-focus-opacity:           (0.04 + 0.12, 0.08 + 0.24),
 
-
   activated-hover-opacity:       (0.12 + 0.04, 0.24 + 0.08),
   activated-focus-opacity:       (0.12 + 0.12, 0.24 + 0.24),
   activated-hover-focus-opacity: (0.12 + 0.04 + 0.12, 0.24 + 0.08 + 0.24),
@@ -24,10 +32,10 @@ $mdw-button__theme-values: (
   pressed-opacity:               (0.16, 0.32),
 
   // disabled
-  disabled-opacity:              (0.38, 0.38),
+  disabled-opacity:              (0.38, 0.50),
   
   disabled-text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  disabled-background-color:     (('foreground-light', 0.38), ('foreground-dark', 0.62)),
+  disabled-background-color:     (('foreground-light', 0.38), ('foreground-dark', 0.50)),
 
   outline-color:                 (('foreground-light', 0.12), ('foreground-dark', 0.12)),
 
@@ -48,7 +56,6 @@ $mdw-button__theme-values: (
 
       &::before,
       & > .mdw-ripple > .mdw-ripple__inner,
-
       &::after {
         color: unquote("rgb(var(--color))");
       }
@@ -57,6 +64,11 @@ $mdw-button__theme-values: (
       &[aria-pressed="false"][mdw-color] {
         --color: var(--foreground-color);
       }
+
+      &[mdw-icon][aria-pressed="false"] {
+        color: rgba(var(--color), mdwButtonThemeValue('icon-opacity__inactive', $type, $theme));
+      }
+
     } @else {
       &[aria-pressed="false"],
       &[aria-pressed="false"][mdw-color],
@@ -67,6 +79,13 @@ $mdw-button__theme-values: (
         & > .mdw-ripple > .mdw-ripple__inner,
         &::after {
           color: mdwButtonThemeValue("overlay-color", $type, $theme);
+        }
+      }
+      
+      &[aria-pressed="false"][mdw-icon] {
+        &,
+        &[mdw-color] {
+          color: mdwButtonThemeValue('inactive-icon-color', $type, $theme);
         }
       }
     }
@@ -90,11 +109,7 @@ $mdw-button__theme-values: (
       }
     }
 
-   
-
-    
-
-    &[aria-pressed="true"] {
+    &[aria-pressed="true"]:not([mdw-icon]) {
       &::before {
         opacity: mdwButtonThemeValue("activated-opacity", $type, $theme);
       }
