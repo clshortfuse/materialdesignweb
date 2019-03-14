@@ -87,7 +87,7 @@ class MenuItem {
 
     /** @type {HTMLElement} */
     const menuItemElement = (event.currentTarget);
-    if (menuItemElement.getAttribute('aria-disabled') === 'true') {
+    if (MenuItem.isDisabled(menuItemElement)) {
       return;
     }
     const role = menuItemElement.getAttribute('role');
@@ -120,12 +120,12 @@ class MenuItem {
   static onKeyDown(event) {
     /** @type {HTMLElement} */
     const menuItemElement = (event.currentTarget);
-    if (MenuItem.isDisabled(menuItemElement)) {
-      return;
-    }
 
     if (event.key === 'Enter') {
-      event.preventDefault();
+      event.stopPropagation();
+      if (MenuItem.isDisabled(menuItemElement)) {
+        return;
+      }
       MenuItem.onClick(event);
       return;
     }
@@ -133,6 +133,9 @@ class MenuItem {
     if (event.key === 'Spacebar' || (event.key === ' ')) {
       event.stopPropagation();
       event.preventDefault();
+      if (MenuItem.isDisabled(menuItemElement)) {
+        return;
+      }
       const role = menuItemElement.getAttribute('role');
       if (role === 'menuitemcheckbox') {
         MenuItem.toggleChecked(menuItemElement);
