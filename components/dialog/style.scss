@@ -97,6 +97,7 @@ $mdw-dialog__unit-width: dp(56) !default;
     @include mdw-breakpoint__tablet-device {
       transition-duration: $mdw-motion__enter-duration__tablet;
     }
+    transition-property: opacity; // Immediate visibility required for autofocus
     transition-timing-function: $mdw-motion__accelerate-easing;
 
     opacity: 1;
