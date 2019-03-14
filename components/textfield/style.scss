@@ -811,7 +811,7 @@ select.mdw-textfield__input {
       box-shadow: mdwElevation(24);
 
       &[mdw-type="list"] {
-        max-height: calc(dp(300));
+        max-height: dp(300);
       }
     }
   }
