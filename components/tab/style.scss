@@ -249,23 +249,21 @@ $tab__icon-with-label-height: 72;
   flex-shrink: 0;
   transition-property: transform, visibility;
   transition-timing-function: $mdw-motion__standard-easing;
-  transition-duration: $mdw-motion__default-duration__desktop, 0s;
-  transition-delay: 0s, $mdw-motion__default-duration__desktop;
+  transition-duration: $mdw-motion__default-duration__desktop;
   @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__default-duration__mobile, 0s;
-    transition-delay: 0s, $mdw-motion__default-duration__mobile;
+    transition-duration: $mdw-motion__default-duration__mobile;
   }
   @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__default-duration__tablet, 0s;
-    transition-delay: 0s, $mdw-motion__default-duration__tablet;
+    transition-duration: $mdw-motion__default-duration__tablet;
   }
   @for $j from 1 through 8 {
     .mdw-tab__content[mdw-selected-index="#{$j - 1}"] > &,
     .mdw-tab__input:checked:nth-of-type(#{$j}) ~ .mdw-tab__content > & {
       transform: translateX(#{-100% * ($j - 1)});
       &:nth-child(#{$j}) {
+        transition-property: transform;
+        
         visibility: visible;
-        transition-delay: 0s, 0s;
       }
     }
     html[dir=rtl] .mdw-tab__content[mdw-selected-index="#{$j - 1}"] > &,
