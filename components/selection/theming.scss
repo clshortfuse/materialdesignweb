@@ -15,7 +15,7 @@ $selectionColors: (
   track-off-color:         (('foreground-light', 1.00), ('foreground-dark', 1.00)),
   track-off-opacity:       (0.38, 0.30),
 
-  disabled-opacity:        (0.38, 0.38),
+  disabled-opacity:        (0.38, 0.50),
 );
 
 @function selectionThemeValue($key, $type, $theme) {
