@@ -27,7 +27,7 @@ function AnyDomAdapterRendererFn(element, data) {
 /**
  * @template T
  */
-class DomAdapter {
+export default class DomAdapter {
   /**
    * @param {HTMLElement} element
    * @param {Array<T>} datasource
@@ -139,7 +139,3 @@ class DomAdapter {
     this.datasource = null;
   }
 }
-
-export {
-  DomAdapter,
-};

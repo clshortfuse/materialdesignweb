@@ -48,13 +48,13 @@ export function getChildElementByClass(element, className) {
 }
 
 /**
- * @param {Element} element
+ * @param {HTMLElement} element
  * @param {string} className
  * @param {boolean=} [includeSelf=true]
- * @return {Element}
+ * @return {HTMLElement}
  */
 export function findElementParentByClassName(element, className, includeSelf) {
-  /** @type {Element} */
+  /** @type {HTMLElement} */
   let el;
   if (includeSelf === false) {
     el = element.parentElement;

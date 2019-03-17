@@ -1,5 +1,5 @@
-import { ListItem } from '../../components/list/index';
-import { DomAdapter } from '../dom/index';
+import DomAdapter from '../dom/index';
+import * as ListItem from '../../components/list/item';
 
 /**
  * @param {HTMLLIElement} element
@@ -31,7 +31,7 @@ function AnyListAdapterRendererFn(element, data) {
  * @template T
  * @extends {DomAdapter<T>}
  * */
-class ListAdapter extends DomAdapter {
+export default class ListAdapter extends DomAdapter {
   /**
    * @param {HTMLElement} element
    * @param {Array<T>} datasource
@@ -50,7 +50,3 @@ class ListAdapter extends DomAdapter {
     return element;
   }
 }
-
-export {
-  ListAdapter,
-};

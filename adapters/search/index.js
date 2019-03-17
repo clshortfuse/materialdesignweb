@@ -1,5 +1,6 @@
-import { TextField } from '../../components/textfield/index';
 import { iterateSomeOfArrayLike, iterateArrayLike, getTextNode } from '../../components/common/dom';
+
+import * as TextField from '../../components/textfield/index';
 
 /**
  * @param {string} input
@@ -142,7 +143,7 @@ function scrollItemIntoView(listItem) {
  * @prop {number=} debounce Debounce time in milliseconds
  */
 
-class SearchAdapter {
+export default class SearchAdapter {
   /** @param {SearchAdapterOptions} options */
   constructor(options) {
     this.textfield = options.textfield;
@@ -506,5 +507,3 @@ class SearchAdapter {
     }
   }
 }
-
-export { SearchAdapter }; // eslint-disable-line import/prefer-default-export
