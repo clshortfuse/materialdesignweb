@@ -4,23 +4,35 @@
 // But says spec says to use #000000 with 87% opacity
 // Calculated against white, opaque value is #212121 (Grey-900)
 
-$snackbarColors: (
+$mdw-snackbar__theme-values: (
   text-color:          (('foreground-dark', 0.87), ('foreground-dark', 0.87)),
   background-color:    (('background', '900', 1.00), ('background', '900', 1.00)),
-);
+) !default;
 
-@function snackbarThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('snackbar', $snackbarColors, $key, $type, $theme);
+@function mdwSnackbarThemeValue($key, $type, $theme) {
+  @return mdwGetThemeValue('snackbar', $mdw-snackbar__theme-values, $key, $type, $theme);
 }
 
-@mixin snackbarThemeVariables($lightness) {
-  @include mdw-theme__variables('snackbar', $snackbarColors, $lightness);
-}
 
 // Vary by contrast or theme
-@mixin snackbarContrastAndThemeRules($type: 'var', $theme: null) {
+@mixin mdw-snackbar__theme-rules($type: 'var', $theme: null) {
   .mdw-snackbar {
-    background-color: snackbarThemeValue("background-color", $type, $theme);
-    color: snackbarThemeValue("text-color", $type, $theme);
+    background-color: mdwSnackbarThemeValue("background-color", $type, $theme);
+    color: mdwSnackbarThemeValue("text-color", $type, $theme);
   }
+}
+
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-snackbar__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-snackbar__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('snackbar', $mdw-snackbar__theme-values) {
+  @include mdw-snackbar__theme-rules();
 }

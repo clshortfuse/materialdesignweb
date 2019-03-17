@@ -15,12 +15,7 @@ $mdw-app__theme-values: (
   @return mdwGetThemeValue('app', $mdw-app__theme-values, $key, $type, $theme);
 }
 
-@mixin mdw-app__theme-variables($lightness: null) {
-  @include mdw-theme__variables('app', $mdw-app__theme-values, $lightness);
-}
-
-// Vary by contrast or theme
-@mixin mdw-app__contrast-and-theme-rules($type: 'var', $theme: null) {
+@mixin mdw-app__theme-rules($type: 'var', $theme: null) {
   .mdw-app__body {
     background-color: mdwAppThemeValue("content-background", $type, $theme);
     color: mdwAppThemeValue("text-color", $type, $theme);
@@ -74,3 +69,18 @@ $mdw-app__theme-values: (
     }
   }
 }
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-app__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-app__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('app', $mdw-app__theme-values) {
+  @include mdw-app__theme-rules();
+}
+

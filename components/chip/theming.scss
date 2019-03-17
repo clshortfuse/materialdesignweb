@@ -57,13 +57,8 @@ $mdw-chip__theme-values: (
   @return mdwGetThemeValue('chip', $mdw-chip__theme-values, $key, $type, $theme);
 }
 
-@mixin mdw-chip__theme-variables($lightness) {
-  @include mdw-theme__variables('chip', $mdw-chip__theme-values, $lightness);
-}
-
-
 // Vary by contrast
-@mixin mdw-chip__contrast-and-theme-rules($type: 'var', $theme: null) {
+@mixin mdw-chip__theme-rules($type: 'var', $theme: null) {
   .mdw-chip__item {
     & > .mdw-ripple > .mdw-ripple__inner,
     &::after {
@@ -174,4 +169,18 @@ $mdw-chip__theme-values: (
       }
     }
   }
+}
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-chip__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-chip__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('chip', $mdw-chip__theme-values) {
+  @include mdw-chip__theme-rules();
 }

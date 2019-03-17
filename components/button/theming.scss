@@ -45,11 +45,7 @@ $mdw-button__theme-values: (
   @return mdwGetThemeValue('button', $mdw-button__theme-values, $key, $type, $theme);
 }
 
-@mixin mdw-button__theme-variables($lightness) {
-  @include mdw-theme__variables('button', $mdw-button__theme-values, $lightness);
-}
-
-@mixin mdw-button__contrast-and-theme-rules($type: 'var', $theme: null) {
+@mixin mdw-button__theme-rules($type: 'var', $theme: null) {
   .mdw-button {
     @if ($type == 'var') {
       color: rgba(var(--color), mdwButtonThemeValue('text-opacity', $type, $theme));
@@ -151,4 +147,18 @@ $mdw-button__theme-values: (
       }
     }
   }
+}
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-button__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-button__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('button', $mdw-button__theme-values) {
+  @include mdw-button__theme-rules();
 }

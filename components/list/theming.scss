@@ -1,7 +1,7 @@
 @import '../common/platform.scss';
 @import '../common/theming.scss';
 
-$listColors: (
+$mdw-list__theme-values: (
   text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
   divider-color:        (('foreground-light', 0.12), ('foreground-dark', 0.12)),
@@ -10,75 +10,97 @@ $listColors: (
   press-color:          (('foreground-light', 0.16), ('foreground-dark', 0.32)),
   selected-color:       (('foreground-light', 0.16), ('foreground-dark', 0.32)),
   ripple-color:         (('foreground-light', 1.00), ('foreground-dark', 1.00)),
-);
+) !default;
 
-@function listThemeValue($key, $type) {
-  @return mdwGetThemeValue('list', $listColors, $key, $type);
+@function mdwListThemeValue($key, $type) {
+  @return mdwGetThemeValue('list', $mdw-list__theme-values, $key, $type);
 }
 
-@mixin listThemeVariables($lightness) {
-  @include mdw-theme__variables('list', $listColors, $lightness);
-}
 
 // Vary by contrast
-@mixin listContrastAndThemeRules($type: 'var', $theme: null) {
+@mixin mdw-list__theme-rules($type: 'var', $theme: null) {
   .mdw-list__item {
     &:not([mdw-color]) {
-      color: listThemeValue("text-color", $type)
+      color: mdwListThemeValue("text-color", $type);
     }
+
     &[mdw-selected] {
-      background-color: listThemeValue("selected-color", $type);
+      background-color: mdwListThemeValue("selected-color", $type);
     }
+
     &[tabindex]:active:focus::before {
-      background-color: listThemeValue("press-color", $type);
+      background-color: mdwListThemeValue("press-color", $type);
     }
+
     &:active:not(:focus-within)::before,
     &:active[tabindex]:focus:not(:focus-within)::before {
-      background-color: listThemeValue("press-color", $type);
+      background-color: mdwListThemeValue("press-color", $type);
+    }
+
+    & > .mdw-ripple > .mdw-ripple__inner,
+    &::after {
+      opacity: mdwListThemeValue("pressed-opacity", $type);
+      
+      color: mdwListThemeValue("ripple-color", $type);
     }
 
     // IE and Edge does not support :focus-within
     @include mdw-platform__ms {
       &:active::before {
-        background-color: listThemeValue("press-color", $type);
+        background-color: mdwListThemeValue("press-color", $type);
       }
-    }
-    & > .mdw-ripple > .mdw-ripple__inner,
-    &:after {
-      opacity: listThemeValue("pressed-opacity", $type);
-      color: listThemeValue("ripple-color", $type);
     }
   }
   
   .mdw-list__meta {
-    color: listThemeValue("secondary-text-color", $type);
+    color: mdwListThemeValue("secondary-text-color", $type);
   }
-  .mdw-list__text {
-    [mdw-divider] > .mdw-list__item:not(:last-child) &::after {
-      background-color: listThemeValue("divider-color", $type);
+
+  .mdw-list[mdw-divider] {
+    & > .mdw-list__item:not(:last-child) .mdw-list__text::after {
+      background-color: mdwListThemeValue("divider-color", $type);
     }
   }
+
   .mdw-list__divider {
-    border-top-color: listThemeValue("divider-color", $type);
+    border-top-color: mdwListThemeValue("divider-color", $type);
   }
+
   .mdw-list__icon {
-    color: listThemeValue("secondary-text-color", $type);
+    color: mdwListThemeValue("secondary-text-color", $type);
   }
+
   .mdw-list__expander {
     &::before,
     &::after {
-      background-color: listThemeValue("divider-color", $type);
+      background-color: mdwListThemeValue("divider-color", $type);
     }
-    > .mdw-list__item:first-child {
+
+    & > .mdw-list__item:first-child {
       .mdw-list__secondary {
-        color: listThemeValue("secondary-text-color", $type);
+        color: mdwListThemeValue("secondary-text-color", $type);
       }
     } 
   }
+  
   .mdw-list__text-line,
   .mdw-list__text-block {
     &:not(:first-child) {
-      color: listThemeValue("secondary-text-color", $type);
+      color: mdwListThemeValue("secondary-text-color", $type);
     }
   }
+}
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-list__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-list__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('list', $mdw-list__theme-values) {
+  @include mdw-list__theme-rules();
 }

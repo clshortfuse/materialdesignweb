@@ -1,20 +1,32 @@
 @import '../common/theming.scss';
 
-$typeColors: (
+$mdw-type__theme-values: (
   primary-text-color:   (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
-);
+) !default;
 
-@function typeThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('type', $typeColors, $key, $type, $theme);
+@function mdwTypeThemeValue($key, $type, $theme) {
+  @return mdwGetThemeValue('type', $mdw-type__theme-values, $key, $type, $theme);
 }
 
-@mixin typeThemeVariables($lightness) {
-  @include mdw-theme__variables('type', $typeColors, $lightness);
-}
 
-@mixin typeContrastAndThemeRules($type: 'var', $theme: null) {
+@mixin mdw-type__theme-rules($type: 'var', $theme: null) {
   .mdw-type {
-    color: typeThemeValue("primary-text-color", $type, $theme);
+    color: mdwTypeThemeValue("primary-text-color", $type, $theme);
   }
+}
+
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-type__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-type__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('type', $mdw-type__theme-values) {
+  @include mdw-type__theme-rules();
 }

@@ -1,4 +1,66 @@
 @import '../theming/palettes';
+@import '../common/platform';
+
+$mdw-theme__themes: (
+  "default": ('indigo', 'pink', 'red', 'grey', black, white),
+) !default;
+$mdw-theme__colors: () !default;
+$mdw-theme__fallbacks: ('rules', 'colors', 'themes', 'ieonly') !default;
+$mdw-theme__variables: ('rules', 'colors', 'themes', 'auto-contrast') !default;
+
+
+@mixin mdw-theme__add-component-variable-rules($component, $values) {
+  @if index($mdw-theme__variables, 'rules') {
+    @supports(--var: var) {
+      :root,
+      .mdw-theme[mdw-light] {
+        @include mdw-theme__variables($component, $values, 'light');
+      }
+
+      .mdw-theme[mdw-dark] {
+        @include mdw-theme__variables($component, $values, 'dark');
+      }
+
+      @content;
+    }
+  }
+}
+
+@mixin __mdw-theme__fallbacks($lightness, $name) {
+  $theme: map-get($mdw-theme__themes, $name);
+  $namespace: '.mdw-theme[mdw-theme="#{$name}"]';
+  @if ($lightness == 'light') {
+    #{$namespace}[mdw-light],
+    #{$namespace}[mdw-dark] .mdw-theme[mdw-light],
+    #{$namespace} .mdw-theme[mdw-light],
+    #{$namespace} .mdw-theme[mdw-dark] .mdw-theme[mdw-light] {
+      @content;
+    }
+  } @else if ($lightness == 'dark') {
+    #{$namespace}[mdw-dark],
+    #{$namespace}[mdw-light] .mdw-theme[mdw-dark],
+    #{$namespace} .mdw-theme[mdw-dark],
+    #{$namespace} .mdw-theme[mdw-light] .mdw-theme[mdw-dark] {
+      @content;
+    }
+  }
+}
+
+@mixin mdw-theme__add-component-fallback-rules($lightness, $name) {
+  @if index($mdw-theme__fallbacks, 'rules') {
+    @if (index($mdw-theme__fallbacks, 'ieonly')) {
+      @include mdw-platform__ie() {
+        @include __mdw-theme__fallbacks($lightness, $name) {
+          @content;
+        }
+      }
+    } @else {
+      @include __mdw-theme__fallbacks($lightness, $name) {
+        @content;
+      }
+    }
+  }
+}
 
 @function mdwGetThemeMapItem($colorMap, $key, $lightness) {
   $list: map-get($colorMap, $key);

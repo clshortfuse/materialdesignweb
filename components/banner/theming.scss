@@ -10,12 +10,8 @@ $mdw-banner__theme-values: (
   @return mdwGetThemeValue('banner', $mdw-banner__theme-values, $key, $type, $theme);
 }
 
-@mixin mdw-banner__theme-variables($lightness) {
-  @include mdw-theme__variables('banner', $mdw-banner__theme-values, $lightness);
-}
-
 // Vary by contrast or theme
-@mixin mdw-banner__contrast-and-theme-rules($type: 'var', $theme: null) {
+@mixin mdw-banner__theme-rules($type: 'var', $theme: null) {
   .mdw-banner {
     background-color: mdwBannerThemeValue("background", $type, $theme);
     border-color: mdwBannerThemeValue("border-color", $type, $theme);
@@ -24,4 +20,18 @@ $mdw-banner__theme-values: (
   .mdw-banner__text {
     color: mdwBannerThemeValue("text-color", $type, $theme);
   }
+}
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-banner__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-banner__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('banner', $mdw-banner__theme-values) {
+  @include mdw-banner__theme-rules();
 }

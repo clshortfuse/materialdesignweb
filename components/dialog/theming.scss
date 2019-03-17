@@ -10,10 +10,6 @@ $mdw-dialog__theme-values: (
   @return mdwGetThemeValue('dialog', $mdw-dialog__theme-values, $key, $type, $theme);
 }
 
-@mixin mdw-dialog__theme-variables($lightness) {
-  @include mdw-theme__variables('dialog', $mdw-dialog__theme-values, $lightness);
-}
-
 @mixin mdw-dialog__theme-rules($type: 'var', $theme: null) {
   .mdw-dialog__popup {
     background-color: mdwDialogThemeValue("background-color", $type, $theme);
@@ -26,4 +22,18 @@ $mdw-dialog__theme-values: (
   .mdw-dialog__body {
     color: mdwDialogThemeValue("secondary-text-color", $type, $theme);
   }
+}
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-dialog__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-dialog__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('dialog', $mdw-dialog__theme-values) {
+  @include mdw-dialog__theme-rules();
 }

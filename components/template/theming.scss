@@ -1,30 +1,30 @@
 @import '../common/theming.scss';
 
-$templateColors: (
+$mdw-template__theme-values: (
   text-color:    (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   border-color:  (('primary', '700', 0.87), ('primary', '200', 1.0)),
-);
+) !default;
 
-@function templateThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('template', $templateColors, $key, $type, $theme);
+@function mdwTemplateThemeValue($key, $type, $theme) {
+  @return mdwGetThemeValue('template', $mdw-template__theme-values, $key, $type, $theme);
 }
 
-@mixin templateThemeVariables($lightness) {
-  @include mdw-theme__variables('template', $templateColors, $lightness);
-}
-
-// Vary by contrast
-@mixin templateContrastRules($type: 'var', $theme: null) {
-  @at-root {
-    #{&}.mdw-template {
-      color: templateThemeValue("text-color", $type, $theme);
-    }
-  }
-}
-
-// Varies by theme
-@mixin templateThemeRules($theme: null) {
+@mixin mdw-template__theme-rules($theme: null) {
   .mdw-template[mdw-fill] {
     border-color: templateThemeValue('border-color', null, $theme);
   }
+}
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-template__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-template__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('template', $mdw-template__theme-values) {
+  @include mdw-template__theme-rules();
 }

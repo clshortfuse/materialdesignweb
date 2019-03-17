@@ -1,6 +1,6 @@
 @import '../common/theming.scss';
 
-$datatableColors: (
+$mdw-datatable__theme-values: (
   text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
   divider-color:        (('foreground-light', 0.12), ('foreground-dark', 0.12)),
@@ -25,199 +25,231 @@ $datatableColors: (
   selected-primary-ie:    (('primary'   , '500', 1.00), ('primary',    '500', 1.00)),
   selected-accent-ie:     (('accent'    , '500', 1.00), ('accent',     '500', 1.00)),
   selected-warn-ie:       (('warn'      , '500', 1.00), ('warn',       '500', 1.00)),
-);
+) !default;
 
-@function datatableThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('datatable', $datatableColors, $key, $type, $theme);
-}
-
-@mixin datatableThemeVariables($lightness) {
-  @include mdw-theme__variables('datatable', $datatableColors, $lightness);
+@function mdwDatatableThemeValue($key, $type, $theme) {
+  @return mdwGetThemeValue('datatable', $mdw-datatable__theme-values, $key, $type, $theme);
 }
 
 // Vary by contrast or theme
-@mixin datatableContrastRules($type: 'var', $theme: null) {
+@mixin mdw-datatable__theme-rules($type: 'var', $theme: null) {
   .mdw-datatable tr,
   .mdw-datatable td,
   .mdw-datatable th {
-    border-color: datatableThemeValue("divider-color", $type, $theme);
+    border-color: mdwDatatableThemeValue("divider-color", $type, $theme);
   }
 
   .mdw-datatable caption,
   .mdw-datatable__header-text {
-    color: datatableThemeValue("text-color", $type, $theme);
+    color: mdwDatatableThemeValue("text-color", $type, $theme);
   }
   
   .mdw-datatable__header-controls,
   .mdw-datatable__footer-controls {
-    color: datatableThemeValue("controls-color", $type, $theme);
+    color: mdwDatatableThemeValue("controls-color", $type, $theme);
     @if ($type == 'var') {
       --color: var(--foreground-color);
     }
   }
+
   .mdw-datatable th:not([mdw-selector]),
   .mdw-datatable__footer {
-    color: datatableThemeValue("secondary-text-color", $type, $theme);
+    color: mdwDatatableThemeValue("secondary-text-color", $type, $theme);
   }
+
   .mdw-datatable td:not([data-type="checkbox"]) {
-    color: datatableThemeValue("text-color", $type, $theme);
+    color: mdwDatatableThemeValue("text-color", $type, $theme);
   }
+
   .mdw-datatable tbody {
     > tr {
       &:hover {
         background-color: unquote("rgba(")
-            #{datatableThemeValue("overlay-rgb", $type, $theme)},
-            #{datatableThemeValue("hover-opacity", $type, $theme)}
+          #{mdwDatatableThemeValue("overlay-rgb", $type, $theme)},
+          #{mdwDatatableThemeValue("hover-opacity", $type, $theme)}
           unquote(")");
       }
+
       &:focus,
       > td:focus {
         background-color: unquote("rgba(")
-            #{datatableThemeValue("overlay-rgb", $type, $theme)},
-            #{datatableThemeValue("focus-opacity", $type, $theme)}
+          #{mdwDatatableThemeValue("overlay-rgb", $type, $theme)},
+          #{mdwDatatableThemeValue("focus-opacity", $type, $theme)}
           unquote(")");
       }
+
       &:hover:focus,
       & > td:hover:focus {
         background-color: unquote("rgba(")
-            #{datatableThemeValue("overlay-rgb", $type, $theme)},
-            #{datatableThemeValue("hover-focus-opacity", $type, $theme)}
+          #{mdwDatatableThemeValue("overlay-rgb", $type, $theme)},
+          #{mdwDatatableThemeValue("hover-focus-opacity", $type, $theme)}
           unquote(")");
       }
     }
   }
+
   .mdw-datatable[mdw-has-selection] {
     caption,
     .mdw-datatable__header-text {
       @if ($type == 'light') {
         color: inherit;
       } @else {
-        color: datatableThemeValue("header-fill-text", $type, $theme);
+        color: mdwDatatableThemeValue("header-fill-text", $type, $theme);
       }
       
     }
   }
+
   .mdw-datatable th[mdw-sorted] {
-    color: datatableThemeValue("text-color", $type, $theme);
+    color: mdwDatatableThemeValue("text-color", $type, $theme);
   }
 
   @if ($type == 'var') {
     .mdw-datatable tbody tr[mdw-selected] {
-      background-color: rgba(var(--color), datatableThemeValue("selected-opacity", $type, $theme));
+      background-color: rgba(var(--color), mdwDatatableThemeValue("selected-opacity", $type, $theme));
+
       &:hover {
-        background-color: rgba(var(--color), datatableThemeValue("selected-hover-opacity", $type, $theme));
+        background-color: rgba(var(--color), mdwDatatableThemeValue("selected-hover-opacity", $type, $theme));
       }
+
       &:focus {
-        background-color: rgba(var(--color), datatableThemeValue("selected-focus-opacity", $type, $theme));
+        background-color: rgba(var(--color), mdwDatatableThemeValue("selected-focus-opacity", $type, $theme));
       }
+
       &:hover:focus {
-        background-color: rgba(var(--color), datatableThemeValue("selected-hover-focus-opacity", $type, $theme));
+        background-color: rgba(var(--color), mdwDatatableThemeValue("selected-hover-focus-opacity", $type, $theme));
       }
     }
+
     .mdw-datatable[mdw-has-selection] {
       .mdw-datatable__header,
       caption {
-        background-color: rgba(var(--color), datatableThemeValue("selected-opacity", $type, $theme));
+        background-color: rgba(var(--color), mdwDatatableThemeValue("selected-opacity", $type, $theme));
       }
     }
   }
-}
 
-// Varies by contrast and theme
-@mixin datatableContrastAndThemeRules($type: 'var', $theme: null) {
   @if ($type != 'var') {
     .mdw-datatable[mdw-color^="primary"] {
       &[mdw-has-selection] {
         .mdw-datatable__header,
         caption {
           background-color: rgba(
-            datatableThemeValue("selected-primary-ie", $type, $theme),
-            datatableThemeValue("selected-opacity", $type, $theme)
+            mdwDatatableThemeValue("selected-primary-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-opacity", $type, $theme)
           );
         }
       }
+
       tbody tr[mdw-selected] {
         background-color: rgba(
-          datatableThemeValue("selected-primary-ie", $type, $theme),
-          datatableThemeValue("selected-opacity", $type, $theme));
-        &:hover {
+          mdwDatatableThemeValue("selected-primary-ie", $type, $theme),
+          mdwDatatableThemeValue("selected-opacity", $type, $theme));
+
+          &:hover {
           background-color: rgba(
-            datatableThemeValue("selected-primary-ie", $type, $theme),
-            datatableThemeValue("selected-hover-opacity", $type, $theme));
+            mdwDatatableThemeValue("selected-primary-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-hover-opacity", $type, $theme));
         }
+
         &:focus {
           background-color: rgba(
-            datatableThemeValue("selected-primary-ie", $type, $theme),
-            datatableThemeValue("selected-focus-opacity", $type, $theme));
+            mdwDatatableThemeValue("selected-primary-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-focus-opacity", $type, $theme));
         }
+
         &:hover:focus {
           background-color: rgba(
-            datatableThemeValue("selected-primary-ie", $type, $theme),
-            datatableThemeValue("selected-hover-focus-opacity", $type, $theme));
+            mdwDatatableThemeValue("selected-primary-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-hover-focus-opacity", $type, $theme));
         }
       }
     }
+
     .mdw-datatable[mdw-color^="accent"] {
       &[mdw-has-selection] {
         .mdw-datatable__header,
         caption {
           background-color: rgba(
-            datatableThemeValue("selected-accent-ie", $type, $theme),
-            datatableThemeValue("selected-opacity", $type, $theme)
+            mdwDatatableThemeValue("selected-accent-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-opacity", $type, $theme)
           );
         }
       }
+
       tbody tr[mdw-selected] {
         background-color: rgba(
-          datatableThemeValue("selected-accent-ie", $type, $theme),
-          datatableThemeValue("selected-opacity", $type, $theme));
+          mdwDatatableThemeValue("selected-accent-ie", $type, $theme),
+          mdwDatatableThemeValue("selected-opacity", $type, $theme));
+
         &:hover {
           background-color: rgba(
-            datatableThemeValue("selected-accent-ie", $type, $theme),
-            datatableThemeValue("selected-hover-opacity", $type, $theme));
+            mdwDatatableThemeValue("selected-accent-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-hover-opacity", $type, $theme));
         }
+
         &:focus {
           background-color: rgba(
-            datatableThemeValue("selected-accent-ie", $type, $theme),
-            datatableThemeValue("selected-focus-opacity", $type, $theme));
+            mdwDatatableThemeValue("selected-accent-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-focus-opacity", $type, $theme));
         }
+
         &:hover:focus {
           background-color: rgba(
-            datatableThemeValue("selected-accent-ie", $type, $theme),
-            datatableThemeValue("selected-hover-focus-opacity", $type, $theme));
+            mdwDatatableThemeValue("selected-accent-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-hover-focus-opacity", $type, $theme));
         }
       }
     }
+
     .mdw-datatable[mdw-color^="warn"] {
       &[mdw-has-selection] {
         .mdw-datatable__header,
         caption {
           background-color: rgba(
-            datatableThemeValue("selected-warn-ie", $type, $theme),
-            datatableThemeValue("selected-opacity", $type, $theme)
+            mdwDatatableThemeValue("selected-warn-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-opacity", $type, $theme)
           );
         }
       }
+
       tbody tr[mdw-selected] {
         background-color: rgba(
-          datatableThemeValue("selected-warn-ie", $type, $theme),
-          datatableThemeValue("selected-opacity", $type, $theme));
-        &:hover {
+          mdwDatatableThemeValue("selected-warn-ie", $type, $theme),
+          mdwDatatableThemeValue("selected-opacity", $type, $theme));
+
+          &:hover {
           background-color: rgba(
-            datatableThemeValue("selected-warn-ie", $type, $theme),
-            datatableThemeValue("selected-hover-opacity", $type, $theme));
+            mdwDatatableThemeValue("selected-warn-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-hover-opacity", $type, $theme));
         }
+
         &:focus {
           background-color: rgba(
-            datatableThemeValue("selected-warn-ie", $type, $theme),
-            datatableThemeValue("selected-focus-opacity", $type, $theme));
+            mdwDatatableThemeValue("selected-warn-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-focus-opacity", $type, $theme));
         }
+
         &:hover:focus {
           background-color: rgba(
-            datatableThemeValue("selected-warn-ie", $type, $theme),
-            datatableThemeValue("selected-hover-focus-opacity", $type, $theme));
+            mdwDatatableThemeValue("selected-warn-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-hover-focus-opacity", $type, $theme));
         }
       }
     }
   }
+}
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-datatable__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-datatable__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('datatable', $mdw-datatable__theme-values) {
+  @include mdw-datatable__theme-rules();
 }

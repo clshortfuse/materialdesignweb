@@ -3,64 +3,24 @@
 
 @import '../common/theming.scss';
 
-@import '../app/theming.scss';
-@import '../banner/theming.scss';
-@import '../bottomnav/theming.scss';
-@import '../button/theming.scss';
-@import '../card/theming.scss';
-@import '../chip/theming.scss';
-@import '../datatable/theming.scss';
-@import '../dialog/theming.scss';
-@import '../divider/theming.scss';
-@import '../list/theming.scss';
-@import '../menu/theming.scss';
-@import '../navdrawer/theming.scss';
-@import '../selection/theming.scss';
-@import '../snackbar/theming.scss';
-@import '../tab/theming.scss';
-@import '../textfield/theming.scss';
-@import '../type/theming.scss';
-
 $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "A100", "A200", "A400", "A700") !default;
 
-@mixin mdw-theme__build($config-map: ()) {
-  $components: (
-    'app',
-    'banner',
-    'bottomnav',
-    'button',
-    'card',
-    'chip',
-    'datatable',
-    'dialog',
-    'divider',
-    'list',
-    'menu',
-    'navdrawer',
-    'selection',
-    'snackbar',
-    'tab',
-    'textfield',
-    'type',
-  );
+@mixin mdw-theme__configure($config-map: ()) {
   $themes: (
     "default": ('indigo', 'pink', 'red', 'grey', black, white),
   );
   $colors: ();
-  $fallback: ('rules', 'colors', 'themes', 'ieonly');
-  $variables: ('rules', 'colors', 'themes', 'auto-contrast');
+  $fallbacks: ('rules', 'colors', 'themes', 'ieonly');
+  $variables: ('rules', 'colors', 'themes');
 
-  @if (map-has-key($config-map, $key: "components")) {
-    $components: map-get($config-map, "components");
-  }
   @if (map-has-key($config-map, $key: "themes")) {
     $themes: map-get($config-map, "themes");
   }
   @if (map-has-key($map: $config-map, $key: "colors")) {
     $colors: map-get($config-map, "colors");
   }
-  @if (map-has-key($map: $config-map, $key: "fallback")) {
-    $fallback: map-get($config-map, "fallback");
+  @if (map-has-key($map: $config-map, $key: "fallbacks")) {
+    $fallbacks: map-get($config-map, "fallbacks");
   }
   @if (map-has-key($map: $config-map, $key: "variables")) {
     $variables: map-get($config-map, "variables");
@@ -81,14 +41,18 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
   }
 
   $mdw-theme__themes: $themes !global;
-  $mdw-theme__components: $components !global;
   $mdw-theme__colors: $colors !global;
-  $mdw-theme__fallback: $fallback !global;
+  $mdw-theme__fallbacks: $fallbacks !global;
   $mdw-theme__variables: $variables !global;
-  
-  
-  @if ($mdw-theme__fallback and $mdw-theme__fallback != 'no' and $mdw-theme__fallback != false) {
-    @if (index($mdw-theme__fallback, 'ieonly')) {
+}
+
+@mixin mdw-theme__build($config-map: null) {
+  @if ($config-map != null) {
+    @include mdw-theme__configure($config-map);
+  }
+
+  @if ($mdw-theme__fallbacks and $mdw-theme__fallbacks != 'no' and $mdw-theme__fallbacks != false) {
+    @if (index($mdw-theme__fallbacks, 'ieonly')) {
       @include mdw-platform__ie() {
         @include __mdw-theme__build-fallbacks();
       }
@@ -98,17 +62,16 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
   }
 
   @if ($mdw-theme__variables and $mdw-theme__variables != 'no' and $mdw-theme__variables != false) {
-    @if (index($mdw-theme__variables, 'rules')) {
-      @include __mdw-theme__build-rules();
-    }
-    @if (index($mdw-theme__variables, 'colors')) {
-      @include __mdw-theme__build-colors();
-    }
-    @if (index($mdw-theme__variables, 'themes')) {
-      @include __mdw-theme__build-themes();
-    }
-    @if (index($mdw-theme__variables, 'auto-contrast')) {
-      @include __mdw-theme__build-auto-contrast();
+    @supports (--var: var) {
+      @if (index($mdw-theme__variables, 'rules')) {
+        @include __mdw-theme__build-rules();
+      }
+      @if (index($mdw-theme__variables, 'colors')) {
+        @include __mdw-theme__build-colors();
+      }
+      @if (index($mdw-theme__variables, 'themes')) {
+        @include __mdw-theme__build-themes();
+      }
     }
   }
 }
@@ -121,124 +84,11 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
   }
 
   @include mdw-theme__global-theme-variables($lightness);
-
-  @if (index($mdw-theme__components, 'app')) {
-    @include mdw-app__theme-variables($lightness);
-  }
-  @if (index($mdw-theme__components, 'banner')) {
-    @include mdw-banner__theme-variables($lightness);
-  }
-  @if (index($mdw-theme__components, 'bottomnav')) {
-    @include mdw-bottomnav__theme-variables($lightness);
-  }
-  @if (index($mdw-theme__components, 'button')) {
-    @include mdw-button__theme-variables($lightness);
-  }
-  @if (index($mdw-theme__components, 'card')) {
-    @include mdw-card__theme-variables($lightness);
-  }
-  @if (index($mdw-theme__components, 'chip')) {
-    @include mdw-chip__theme-variables($lightness);
-  }
-  @if (index($mdw-theme__components, 'datatable')) {
-    @include datatableThemeVariables($lightness);
-  }
-  @if (index($mdw-theme__components, 'dialog')) {
-    @include mdw-dialog__theme-variables($lightness);
-  }
-  @if (index($mdw-theme__components, 'divider')) {
-    @include mdw-divider__theme-variables($lightness);
-  }
-  @if (index($mdw-theme__components, 'list')) {
-    @include listThemeVariables($lightness);
-  }
-  @if (index($mdw-theme__components, 'menu')) {
-    @include menuThemeVariables($lightness);
-  }
-  @if (index($mdw-theme__components, 'navdrawer')) {
-    @include navdrawerThemeVariables($lightness);
-  }
-  @if (index($mdw-theme__components, 'selection')) {
-    @include selectionThemeVariables($lightness);
-  }
-  @if (index($mdw-theme__components, 'selection')) {
-    @include snackbarThemeVariables($lightness);
-  }
-  @if (index($mdw-theme__components, 'tab')) {
-    @include tabThemeVariables($lightness);
-  }
-  @if (index($mdw-theme__components, 'textfield')) {
-    @include mdw-textfield__theme-variables($lightness);
-  }
-  @if (index($mdw-theme__components, 'type')) {
-    @include typeThemeVariables($lightness);
-  }
 }
 
 
 @mixin __mdw-theme__add-contrast-and-theme-rules($type: 'var', $theme: null) {
   @include mdw-theme__global-contrast-and-theme-rules($type, $theme);
-
-  @if (index($mdw-theme__components, 'app')) {
-    @include mdw-app__contrast-and-theme-rules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'banner')) {
-    @include mdw-banner__contrast-and-theme-rules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'bottomnav')) {
-    @include mdw-bottomnav__contrast-and-theme-rules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'button')) {
-    @include mdw-button__contrast-and-theme-rules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'card')) {
-    @include mdw-card__contrast-and-theme-rules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'chip')) {
-    @include mdw-chip__contrast-and-theme-rules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'datatable')) {
-    @include datatableContrastAndThemeRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'dialog')) {
-    @include mdw-dialog__theme-rules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'divider')) {
-    @include mdw-divider__theme-rules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'list')) {
-    @include listContrastAndThemeRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'selection')) {
-    @include selectionContrastAndThemeRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'snackbar')) {
-    @include snackbarContrastAndThemeRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'textfield')) {
-    @include mdw-textfield__contrast-and-theme-rules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'type')) {
-    @include typeContrastAndThemeRules($type, $theme);
-  }
-}
-
-@mixin __mdw-theme__add-component-contrast-rules($type: 'var', $theme: null) {
-  @if (index($mdw-theme__components, 'datatable')) {
-    @include datatableContrastRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'menu')) {
-    @include menuContrastRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'navdrawer')) {
-    @include navdrawerContrastRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'tab')) {
-    @include tabContrastRules($type, $theme);
-  }
-  @if (index($mdw-theme__components, 'textfield')) {
-    @include mdw-textfield__contrast-rules($type, $theme);
-  }
 }
 
 @mixin __mdw-theme__build-fallbacks() {
@@ -290,16 +140,6 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
       .mdw-theme[mdw-fill="#{$color} #{$tone}"] {
         background-color: #{$value};
       }
-    }
-  }
-
-  @if (map-has-key($mdw-theme__themes, "default")) {
-    .mdw-theme[mdw-light] {
-      @include __mdw-theme__add-component-contrast-rules('light');
-    }
-
-    .mdw-theme[mdw-dark] {
-      @include __mdw-theme__add-component-contrast-rules('dark');
     }
   }
 
@@ -399,10 +239,6 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
     --color: var(--500-color);
   }
 
-  /* stylelint-disable-next-line order/order */
-  @include __mdw-theme__add-contrast-and-theme-rules();
-  @include __mdw-theme__add-component-contrast-rules();
-
   .mdw-theme[mdw-fill="white"] {
     --fill-color: 255,255,255;
   }
@@ -463,6 +299,9 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
   .mdw-theme[mdw-dark] {
     @include __mdw-theme__add-component-variables('dark');
   }
+
+  /* stylelint-disable-next-line order/order */
+  @include __mdw-theme__add-contrast-and-theme-rules();
 }
 
 @mixin __mdw-theme__build-colors() {
@@ -496,7 +335,6 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
 
 @mixin __mdw-theme__build-themes() {
   @each $name in map-keys($mdw-theme__themes) {
-    // $name: map-get($theme, "name");
     $theme: map-get($mdw-theme__themes, $name);
     $namespace: if($name == 'default', null, '.mdw-theme[mdw-theme="#{$name}"]');
     $params: ('indigo', 'pink', 'red', 'grey', black, white);
@@ -516,64 +354,6 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
     #{if($namespace, #{$namespace}, ':root, .mdw-theme[mdw-theme="default"]')} {
       --foreground-light-color: #{red($foreground-light),green($foreground-light),blue($foreground-light)};
       --foreground-dark-color: #{red($foreground-dark),green($foreground-dark),blue($foreground-dark)};
-    }
-  }
-}
-
-@mixin __mdw-theme__build-auto-contrast() {
-  @each $name in map-keys($mdw-theme__themes) {
-    $theme: map-get($mdw-theme__themes, $name);
-    $namespace: if($name == 'default', null, '.mdw-theme[mdw-theme="#{$name}"]');
-    @each $param in ('primary', 'accent', 'warn', 'background') {
-      $palette: mdwGetThemeParamValue($param, $theme);
-      $lightTones: map-get($palette, 'light');
-
-      @each $tone in $lightTones {
-        @if ($tone == '500') {
-          #{$namespace} .mdw-theme[mdw-fill~="#{$param}"] {
-            @include __mdw-theme__add-component-variables('light');
-          }
-        }
-
-        #{$namespace} .mdw-theme[mdw-fill~="#{$param}"][mdw-fill~="#{$tone}"] {
-          @include __mdw-theme__add-component-variables('light');
-        }
-      }
-      
-    }
-    @each $param in ('primary', 'accent', 'warn', 'background') {
-      .mdw-theme[mdw-fill~="#{$param}"][mdw-light] {
-        @include __mdw-theme__add-component-variables('light');
-      }
-    }
-  }
-
-  // Dark Variables
-  @each $name in map-keys($mdw-theme__themes) {
-    $theme: map-get($mdw-theme__themes, $name);
-    $namespace: if($name == 'default', null, '.mdw-theme[mdw-theme="#{$name}"]');
-    @each $param in ('primary', 'accent', 'warn', 'background') {
-      $palette: mdwGetThemeParamValue($param, $theme);
-      $darkTones: map-get($palette, 'dark');
-      
-      @each $tone in $darkTones {
-        $value: map-get($palette, $tone);
-        @if ($tone == '500') {
-          #{$namespace} .mdw-theme[mdw-fill~="#{$param}"] {
-            @include __mdw-theme__add-component-variables('dark');
-          }
-        }
-
-        #{$namespace} .mdw-theme[mdw-fill~="#{$param}"][mdw-fill~="#{$tone}"] {
-          @include __mdw-theme__add-component-variables('dark');
-        }
-      }
-      
-    }
-    @each $param in ('primary', 'accent', 'warn', 'background') {
-      .mdw-theme[mdw-fill~="#{$param}"][mdw-dark] {
-        @include __mdw-theme__add-component-variables('dark');
-      }
     }
   }
 }

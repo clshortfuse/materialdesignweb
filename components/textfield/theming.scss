@@ -42,11 +42,7 @@ $mdw-textfield__theme-values: (
   @return mdwGetThemeValue('textfield', $mdw-textfield__theme-values, $key, $type, $theme);
 }
 
-@mixin mdw-textfield__theme-variables($lightness) {
-  @include mdw-theme__variables('textfield', $mdw-textfield__theme-values, $lightness);
-}
-
-@mixin mdw-textfield__contrast-and-theme-rules($type: 'var', $theme: null) {
+@mixin mdw-textfield__theme-rules($type: 'var', $theme: null) {
   .mdw-textfield[mdw-outlined] {
     &:active > .mdw-textfield__input:not(:disabled),
     & > .mdw-textfield__input:not(:disabled):focus {
@@ -195,10 +191,7 @@ $mdw-textfield__theme-values: (
   .mdw-textfield__input:focus:invalid ~ .mdw-textfield__error-text {
     color: mdwTextfieldThemeValue("warn-label-color__focus", $type, $theme);
   }
-}
 
-// Vary by contrast
-@mixin mdw-textfield__contrast-rules($type: 'var', $theme: null) {
   .mdw-textfield__signifier,
   .mdw-textfield__label {
     color: mdwTextfieldThemeValue("secondary-text-color", $type, $theme);
@@ -363,4 +356,19 @@ $mdw-textfield__theme-values: (
       }
     }
   }
+}
+
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-textfield__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-textfield__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('textfield', $mdw-textfield__theme-values) {
+  @include mdw-textfield__theme-rules();
 }

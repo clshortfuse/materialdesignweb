@@ -1,61 +1,79 @@
 @import '../common/breakpoint.scss';
 @import '../common/theming.scss';
 
-$navdrawerColors: (
+$mdw-navdrawer__theme-values: (
   selected-color:       (('foreground-light', 1.00), ('foreground-dark', 1.00)),
   text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
   divider-color:        (('foreground-light', 0.12), ('foreground-dark', 0.12)),
   drawer-background:    ((#fff,             1.00), ('background', '800', 1.00)),
   content-background:   (('background', '50', 1.00), ('background', '900', 1.00))
-);
+) !default;
 
-@function navdrawerThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('navdrawer', $navdrawerColors, $key, $type, $theme);
-}
-
-@mixin navdrawerThemeVariables($lightness) {
-  @include mdw-theme__variables('navdrawer', $navdrawerColors, $lightness);
+@function mdwNavdrawerThemeValue($key, $type, $theme) {
+  @return mdwGetThemeValue('navdrawer', $mdw-navdrawer__theme-values, $key, $type, $theme);
 }
 
 // Vary by contrast or theme
-@mixin navdrawerContrastRules($type: 'var', $theme: null) {
+@mixin mdw-navdrawer__theme-rules($type: 'var', $theme: null) {
   .mdw-navdrawer__avatars-current,
   .mdw-navdrawer__avatars-others {
     > .mdw-button {
-      border-color: navdrawerThemeValue("divider-color", $type, $theme);
+      border-color: mdwNavdrawerThemeValue("divider-color", $type, $theme);
     }
   }
+
   .mdw-navdrawer {
-    background-color: navdrawerThemeValue("content-background", $type, $theme);
+    background-color: mdwNavdrawerThemeValue("content-background", $type, $theme);
   }
+
   .mdw-navdrawer__drawer {
-    border-color: navdrawerThemeValue("divider-color", $type, $theme);
+    border-color: mdwNavdrawerThemeValue("divider-color", $type, $theme);
+
     .mdw-list__item[mdw-selected]:not([mdw-color]) {
-      color: navdrawerThemeValue("selected-color", $type, $theme);
+      color: mdwNavdrawerThemeValue("selected-color", $type, $theme);
     }
+
     .mdw-list__item:not([mdw-selected]) {
       .mdw-list__icon {
-        color: navdrawerThemeValue("secondary-text-color", $type, $theme);
+        color: mdwNavdrawerThemeValue("secondary-text-color", $type, $theme);
       }
+
       .mdw-list__text {
-        color: navdrawerThemeValue("text-color", $type, $theme);
+        color: mdwNavdrawerThemeValue("text-color", $type, $theme);
       }
     }
+
     .mdw-list__subheader {
-      color: navdrawerThemeValue("secondary-text-color", $type, $theme);
+      color: mdwNavdrawerThemeValue("secondary-text-color", $type, $theme);
     }
   }
+
   @include mdw-breakpoint__tablet-device__max {
     .mdw-navdrawer[mdw-floating] .mdw-navdrawer__drawer,
     .mdw-navdrawer__drawer {
-      background-color: navdrawerThemeValue("drawer-background", $type, $theme);
+      background-color: mdwNavdrawerThemeValue("drawer-background", $type, $theme);
     }
   }
-  .mdw-navdrawer[mdw-floating=card],
+
+  .mdw-navdrawer[mdw-floating="card"],
   .mdw-navdrawer:not([mdw-floating]) {
     .mdw-navdrawer__drawer {
-      background-color: navdrawerThemeValue("drawer-background", $type, $theme);
+      background-color: mdwNavdrawerThemeValue("drawer-background", $type, $theme);
     }
   }
+}
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-navdrawer__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-navdrawer__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('navdrawer', $mdw-navdrawer__theme-values) {
+  @include mdw-navdrawer__theme-rules();
 }

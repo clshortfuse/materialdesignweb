@@ -14,12 +14,8 @@ $mdw-bottomnav__theme-values: (
   @return mdwGetThemeValue('bottomnav', $mdw-bottomnav__theme-values, $key, $type, $theme);
 }
 
-@mixin mdw-bottomnav__theme-variables($lightness: null) {
-  @include mdw-theme__variables('bottomnav', $mdw-bottomnav__theme-values, $lightness);
-}
-
 // Vary by contrast and theme
-@mixin mdw-bottomnav__contrast-and-theme-rules($type: 'var', $theme: null) {
+@mixin mdw-bottomnav__theme-rules($type: 'var', $theme: null) {
   .mdw-bottomnav[mdw-fill]:not([mdw-color]) {
     input:checked ~ .mdw-bottomnav__icon,
     input:checked ~ .mdw-bottomnav__label,
@@ -58,4 +54,18 @@ $mdw-bottomnav__theme-values: (
       color: mdwBottomnavThemeValue("overlay-color", $type, $theme);
     }
   }
+}
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-bottomnav__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-bottomnav__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('bottomnav', $mdw-bottomnav__theme-values) {
+  @include mdw-bottomnav__theme-rules();
 }

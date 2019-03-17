@@ -1,6 +1,6 @@
 @import '../common/theming.scss';
 
-$selectionColors: (
+$mdw-selection__theme-values: (
   text-color:              (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   color:                   (('foreground-light', 0.54), ('foreground-dark', 0.70)),
   ripple-color:            (('foreground-light', 1.00), ('foreground-dark', 1.00)),
@@ -16,74 +16,94 @@ $selectionColors: (
   track-off-opacity:       (0.38, 0.30),
 
   disabled-opacity:        (0.38, 0.50),
-);
+) !default;
 
-@function selectionThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('selection', $selectionColors, $key, $type, $theme);
+@function mdwSelectionThemeValue($key, $type, $theme) {
+  @return mdwGetThemeValue('selection', $mdw-selection__theme-values, $key, $type, $theme);
 }
 
-@mixin selectionThemeVariables($lightness) {
-  @include mdw-theme__variables('selection', $selectionColors, $lightness);
-}
-
-// Vary by contrast
-@mixin selectionContrastAndThemeRules($type: 'var', $theme: null) {
+@mixin mdw-selection__theme-rules($type: 'var', $theme: null) {
   .mdw-selection__input {
-    color: selectionThemeValue("ripple-color", $type, $theme);
+    color: mdwSelectionThemeValue("ripple-color", $type, $theme);
+    
     &:active:not(:disabled),
     &:focus {
-      opacity: selectionThemeValue("pressed-opacity", $type, $theme);
+      opacity: mdwSelectionThemeValue("pressed-opacity", $type, $theme);
     }
+    
     &[type="checkbox"]:not(:checked) ~ .mdw-selection__icon,
     &[type="checkbox"]:active:not(:disabled) ~ .mdw-selection__icon {
-      color: selectionThemeValue("color", $type, $theme);
+      color: mdwSelectionThemeValue("color", $type, $theme);
     }
 
     &[type="radio"]:not(:checked) ~ .mdw-selection__icon {
-      color: selectionThemeValue("color", $type, $theme);
+      color: mdwSelectionThemeValue("color", $type, $theme);
     }
+    
     &[type="checkbox"]:checked ~ .mdw-selection__icon::after {
       // Checkbox color is based on currently filled background-color
       @if($type == 'var') {
         border-color: unquote("rgb(var(--fill-color))");
       } @else {
         // IE11 Fallback
-        border-color: white;
+        border-color: #fff;
       }
     }
+
     &:disabled ~ .mdw-selection__label {
-      opacity: selectionThemeValue("disabled-opacity", $type, $theme);
+      opacity: mdwSelectionThemeValue("disabled-opacity", $type, $theme);
     }
+    
     &:disabled ~ .mdw-selection__icon,
     &:disabled ~ .mdw-selection__icon::before {
-      color: selectionThemeValue("disabled-color", $type, $theme);
+      color: mdwSelectionThemeValue("disabled-color", $type, $theme);
     }
   }
+
   .mdw-selection__label,
   .mdw-selection[mdw-color] .mdw-selection__input:not(:disabled) ~ .mdw-selection__label {
-    color: selectionThemeValue("text-color", $type, $theme);
+    color: mdwSelectionThemeValue("text-color", $type, $theme);
   }
-  .mdw-selection[mdw-switch] .mdw-selection__input[type="checkbox"] {
 
+  .mdw-selection[mdw-switch] .mdw-selection__input[type="checkbox"] {
     & ~ .mdw-selection__icon {
       &::before {
-        background-color: selectionThemeValue("thumb-off-color", $type, $theme);
+        background-color: mdwSelectionThemeValue("thumb-off-color", $type, $theme);
       }
+
       &::after {
-        background-color: selectionThemeValue("track-off-color", $type, $theme);
-        opacity: selectionThemeValue("track-off-opacity", $type, $theme);  
+        opacity: mdwSelectionThemeValue("track-off-opacity", $type, $theme);
+
+        background-color: mdwSelectionThemeValue("track-off-color", $type, $theme);
       }
     }
+
     &:checked ~ .mdw-selection__icon {
       &::before {
-        background-color: selectionThemeValue("thumb-on-color", $type, $theme);
+        background-color: mdwSelectionThemeValue("thumb-on-color", $type, $theme);
       }
+
       &::after {
-        background-color: selectionThemeValue("track-on-color", $type, $theme);
+        background-color: mdwSelectionThemeValue("track-on-color", $type, $theme);
       }
     }
+
     &:disabled ~ .mdw-selection__icon {
-      opacity: selectionThemeValue("disabled-opacity", $type, $theme);
+      opacity: mdwSelectionThemeValue("disabled-opacity", $type, $theme);
     }
   }
+}
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-selection__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-selection__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('selection', $mdw-selection__theme-values) {
+  @include mdw-selection__theme-rules();
 }

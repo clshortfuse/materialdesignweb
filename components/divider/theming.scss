@@ -8,12 +8,22 @@ $mdw-divider__theme-values: (
   @return mdwGetThemeValue('divider', $mdw-divider__theme-values, $key, $type, $theme);
 }
 
-@mixin mdw-divider__theme-variables($lightness) {
-  @include mdw-theme__variables('divider', $mdw-divider__theme-values, $lightness);
-}
-
 @mixin mdw-divider__theme-rules($type: 'var', $theme: null) {
   .mdw-divider {
     color: mdwDividerThemeValue("color", $type, $theme);
   }
+}
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-divider__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-divider__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('divider', $mdw-divider__theme-values) {
+  @include mdw-divider__theme-rules();
 }
