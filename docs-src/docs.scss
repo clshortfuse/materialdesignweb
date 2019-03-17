@@ -7,6 +7,10 @@ html {
   font: -apple-system-body;
 }
 
+.mdw-theme[mdw-theme="colored"] {
+  font-family: Merriweather, sans-serif;
+}
+
 // Material Icon incorrectly changes RTL direction
 .material-icons {
   direction: inherit;

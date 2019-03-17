@@ -1,4 +1,4 @@
-import { Tab } from '../../components/tab/index';
+import * as Tab from '../../components/tab/index';
 import { convertElementToCode, changeElementTagName } from '../sample-utils';
 import { iterateArrayLike } from '../../components/common/dom';
 

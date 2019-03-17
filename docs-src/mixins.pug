@@ -41,12 +41,13 @@ mixin header()
       meta(name="apple-mobile-web-app-status-bar-style" content="black-translucent")
       meta(name="apple-mobile-web-app-capable" content="yes")
       link(rel='stylesheet' href="https://fonts.googleapis.com/icon?family=Material+Icons")
-      link(rel='stylesheet' href='//fonts.googleapis.com/css?family=Roboto:300,400,500,700')
+      link(rel='stylesheet' href='//fonts.googleapis.com/css?family=Roboto:300,400,500')
+      link(rel='stylesheet' href='//fonts.googleapis.com/css?family=Merriweather:300,400,500')
       link(rel='stylesheet' href='docs.min.css')
       link(rel='stylesheet' href='components.min.css')
 
-      link(rel='stylesheet' href='default-theme.min.css')
-      link(rel='stylesheet' href='alt-themes.min.css')
+      link(rel='stylesheet' href='theme-fallbacks.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
+      link(rel='stylesheet' href='theme-variables.min.css')
 
       script(src='prerender.min.js')
     body.mdw-type.mdw-navdrawer#docs-navdrawer
@@ -64,13 +65,16 @@ mixin navdrawer(selected)
         .mdw-toolbar__title=selected
         #docs-menu-buttons.mdw-toolbar__end
           .mdw-tooltip__wrapper
-            button.mdw-tooltip__target.mdw-button.material-icons(mdw-icon aria-pressed="false") format_align_right
-            .mdw-tooltip(mdw-align="end") Right-to-Left
+            button#altThemeButton.mdw-tooltip__target.mdw-button.material-icons(mdw-icon aria-pressed="false") palette
+            .mdw-tooltip(mdw-align="end") Alt Theme
           .mdw-tooltip__wrapper
-            button.mdw-tooltip__target.mdw-button.material-icons(mdw-icon aria-pressed="false") brightness_3
+            button#darkModeButton.mdw-tooltip__target.mdw-button.material-icons(mdw-icon aria-pressed="false") brightness_3
             .mdw-tooltip(mdw-align="end") Dark Mode
           .mdw-tooltip__wrapper
-            button.mdw-tooltip__target.mdw-button.material-icons(mdw-icon aria-pressed="false") format_size
+            button#rtlButton.mdw-tooltip__target.mdw-button.material-icons(mdw-icon aria-pressed="false") format_align_right
+            .mdw-tooltip(mdw-align="end") Right-to-Left
+          .mdw-tooltip__wrapper
+            button#largeFontButton.mdw-tooltip__target.mdw-button.material-icons(mdw-icon aria-pressed="false") format_size
             .mdw-tooltip(mdw-align="end") Large Font
   .mdw-navdrawer__drawer
     .mdw-list

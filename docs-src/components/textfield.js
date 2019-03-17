@@ -1,5 +1,5 @@
 import { iterateArrayLike } from '../../components/common/dom';
-import { TextField } from '../../components/textfield/index';
+import * as TextField from '../../components/textfield/index';
 
 import { convertElementToCode } from '../sample-utils';
 

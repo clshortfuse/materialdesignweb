@@ -1,8 +1,5 @@
 import { setStorageItem, removeStorageItem, getStorageItem } from './storage';
 
-const darkAttribute = 'black dark';
-const lightAttribute = 'white light';
-
 /**
  * @param {boolean} value
  * @param {Element=} button
@@ -28,6 +25,15 @@ export function setRTLMode(value, button) {
   }
 }
 
+/** @return {boolean} */
+export function isDarkMode() {
+  const userPreference = getStorageItem('darkmode');
+  if (userPreference == null) {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  return userPreference === 'true';
+}
+
 /**
  * @param {boolean} value
  * @param {Element=} button
@@ -38,21 +44,30 @@ export function setDarkMode(value, button) {
     document.documentElement.setAttribute('mdw-dark', '');
     document.documentElement.setAttribute('mdw-fill', 'black');
     document.documentElement.removeAttribute('mdw-light');
-    if (button) {
-      button.setAttribute('aria-pressed', 'true');
-    }
-    // element.setAttribute('mdw-active', '');
-    // Poor visibility even though spec says 70% opacity
   } else {
     document.documentElement.setAttribute('mdw-light', '');
     document.documentElement.setAttribute('mdw-fill', 'white');
     document.documentElement.removeAttribute('mdw-dark');
-    if (button) {
-      button.setAttribute('aria-pressed', 'false');
-    }
-    // element.removeAttribute('mdw-active');
   }
-  setStorageItem('darkmode', value ? 'true' : 'false');
+  const stringValue = (value ? 'true' : 'false');
+  if (button) {
+    button.setAttribute('aria-pressed', stringValue);
+  }
+  setStorageItem('darkmode', stringValue);
+}
+
+/**
+ * @param {boolean} value
+ * @param {Element=} button
+ * @return {void}
+ */
+export function setAltTheme(value, button) {
+  document.documentElement.setAttribute('mdw-theme', value ? 'colored' : 'default');
+  const stringValue = (value ? 'true' : 'false');
+  if (button) {
+    button.setAttribute('aria-pressed', stringValue);
+  }
+  setStorageItem('alttheme', stringValue);
 }
 
 /**
@@ -100,8 +115,25 @@ function setupRTLMode(element) {
  * @param {Element} element
  * @return {void}
  */
+function setupAltTheme(element) {
+  if (getStorageItem('alttheme') === 'true') {
+    setAltTheme(true, element);
+  }
+  element.addEventListener('click', () => {
+    if (document.documentElement.getAttribute('mdw-theme') === 'colored') {
+      setAltTheme(false, element);
+    } else {
+      setAltTheme(true, element);
+    }
+  });
+}
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
 function setupDarkMode(element) {
-  if (getStorageItem('darkmode') === 'true') {
+  if (isDarkMode()) {
     setDarkMode(true, element);
   }
   element.addEventListener('click', () => {
@@ -131,11 +163,8 @@ function setupLargeFontMode(element) {
 
 /** @return {void} */
 export function setupMenuOptions() {
-  const buttons = document.getElementById('docs-menu-buttons').getElementsByClassName('mdw-button');
-  const buttonRTLMode = buttons[0];
-  const buttonDarkMode = buttons[1];
-  const largeFontMode = buttons[2];
-  setupRTLMode(buttonRTLMode);
-  setupDarkMode(buttonDarkMode);
-  setupLargeFontMode(largeFontMode);
+  setupAltTheme(document.getElementById('altThemeButton'));
+  setupRTLMode(document.getElementById('rtlButton'));
+  setupDarkMode(document.getElementById('darkModeButton'));
+  setupLargeFontMode(document.getElementById('largeFontButton'));
 }

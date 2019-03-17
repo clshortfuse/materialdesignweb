@@ -1,6 +1,7 @@
-import { List, ListItem } from '../../components/list/index';
-import { TextField } from '../../components/textfield/index';
-import { SearchAdapter } from '../../adapters/search/index';
+import * as List from '../../components/list/index';
+import * as ListItem from '../../components/list/item';
+import * as TextField from '../../components/textfield/index';
+import SearchAdapter from '../../adapters/search/index';
 import { iterateArrayLike } from '../../components/common/dom';
 
 /** @return {void} */

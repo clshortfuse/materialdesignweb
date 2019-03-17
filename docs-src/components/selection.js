@@ -1,4 +1,4 @@
-import { List } from '../../components/list/index';
+import * as List from '../../components/list/index';
 import { iterateArrayLike } from '../../components/common/dom';
 
 /** @return {void} */

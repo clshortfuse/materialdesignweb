@@ -1,9 +1,9 @@
-import App from '../../components/app/index';
-import { Button } from '../../components/button/index';
 import { iterateArrayLike, iterateSomeOfArrayLike } from '../../components/common/dom';
-import { List } from '../../components/list/index';
-import { Dialog } from '../../components/dialog/index';
-import { Menu } from '../../components/menu/index';
+import * as App from '../../components/app/index';
+import * as Button from '../../components/button/index';
+import * as Dialog from '../../components/dialog/index';
+import * as List from '../../components/list/index';
+import * as Menu from '../../components/menu/index';
 
 App.attach();
 

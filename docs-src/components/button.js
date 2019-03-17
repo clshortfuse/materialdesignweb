@@ -1,4 +1,4 @@
-import { Button } from '../../components/button/index';
+import * as Button from '../../components/button/index';
 import { convertElementToCode } from '../sample-utils';
 import { iterateArrayLike, setTextNode } from '../../components/common/dom';
 

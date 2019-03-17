@@ -1,8 +1,9 @@
 import { iterateArrayLike } from '../../components/common/dom';
-import { Button } from '../../components/button/index';
-import { DataTable } from '../../components/datatable/index';
-import { Menu, MenuItem } from '../../components/menu/index';
-import { DataTableAdapter } from '../../adapters/datatable/index';
+import * as Button from '../../components/button/index';
+import * as DataTable from '../../components/datatable/index';
+import * as Menu from '../../components/menu/index';
+import * as MenuItem from '../../components/menu/item';
+import DataTableAdapter from '../../adapters/datatable/index';
 
 /** @return {void} */
 function initializeMdwComponents() {

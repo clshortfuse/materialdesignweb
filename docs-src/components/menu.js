@@ -1,4 +1,5 @@
-import { Menu, MenuItem } from '../../components/menu/index';
+import * as Menu from '../../components/menu/index';
+import * as MenuItem from '../../components/menu/item';
 import { convertElementToCode, changeElementTagName } from '../sample-utils';
 import { iterateArrayLike } from '../../components/common/dom';
 

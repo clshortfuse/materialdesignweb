@@ -1,4 +1,4 @@
-import { Dialog } from '../../components/dialog/index';
+import * as Dialog from '../../components/dialog/index';
 import { iterateArrayLike } from '../../components/common/dom';
 import { changeElementTagName, convertElementToCode } from '../sample-utils';
 

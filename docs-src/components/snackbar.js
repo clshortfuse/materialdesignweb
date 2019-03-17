@@ -1,5 +1,5 @@
 import { convertElementToCode } from '../sample-utils';
-import { Snackbar } from '../../components/snackbar/index';
+import * as Snackbar from '../../components/snackbar/index';
 import { iterateArrayLike } from '../../components/common/dom';
 
 /** @type {HTMLElement} */

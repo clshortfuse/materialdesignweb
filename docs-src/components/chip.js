@@ -1,5 +1,5 @@
 
-import { Chip } from '../../components/chip/index';
+import * as Chip from '../../components/chip/index';
 import { iterateArrayLike } from '../../components/common/dom';
 import { convertElementToCode } from '../sample-utils';
 

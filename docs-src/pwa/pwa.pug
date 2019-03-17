@@ -15,9 +15,9 @@ html.mdw-app.mdw-theme(lang='en'
     link(rel='stylesheet' href='//fonts.googleapis.com/css?family=Roboto:300,400,500,700')
     link(rel='stylesheet' href='docs.min.css')
     link(rel='stylesheet' href='components.min.css')
-    
-    link(rel='stylesheet' href='default-theme.min.css')
-    link(rel='stylesheet' href='alt-themes.min.css')
+
+    link(rel='stylesheet' href='theme-fallbacks.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
+    link(rel='stylesheet' href='theme-variables.min.css')
 
   body.mdw-app__body
     .mdw-app__menus
