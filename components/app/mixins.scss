@@ -1,7 +1,7 @@
 @import '../common/breakpoint.scss';
 
 @mixin mdw-app__modal($side) {
-  .mdw-app[mdw-#{$side}-style='modal'] {
+  .mdw-app__body[mdw-#{$side}-style='modal'] {
     @content;
   }
 

@@ -22,7 +22,7 @@ export function attach() {
   const appBar = getAppBarElement();
   if (appBar) {
     // Initialize with scroll up
-    document.addEventListener('scroll', onDocumentScroll, getPassiveEventListenerOption());
+    document.body.addEventListener('scroll', onBodyScroll, getPassiveEventListenerOption());
     const contentElement = getContentElement();
     if (contentElement) {
       contentElement.addEventListener('scroll', onContentScroll, getPassiveEventListenerOption());
@@ -59,6 +59,10 @@ export function getScrollThrottler() {
   return scrollThrottler;
 }
 
+/**
+ * @param {Event} event
+ * @return {void}
+ */
 export function onScrimScroll(event) {
   // JS needed for Safari
   event.preventDefault();
@@ -76,29 +80,34 @@ export function onScrimScroll(event) {
   }
 }
 
+
+/** @return {void} */
 export function onScrimClick() {
   const navdrawer = document.getElementsByClassName('mdw-app__navdrawer')[0];
   if (navdrawer && navdrawer.getAttribute('aria-hidden') === 'false') {
-    if (window.innerWidth < 840 || document.documentElement.getAttribute('mdw-navdrawer-style') === 'modal') {
+    if (window.innerWidth < 840 || document.body.getAttribute('mdw-navdrawer-style') === 'modal') {
       hideNavDrawer();
     }
   }
   const sidesheet = document.getElementsByClassName('mdw-app__sidesheet')[0];
   if (sidesheet && sidesheet.getAttribute('aria-hidden') === 'false') {
-    if (window.innerWidth < 840 || document.documentElement.getAttribute('mdw-sidesheet-style') === 'modal') {
+    if (window.innerWidth < 840 || document.body.getAttribute('mdw-sidesheet-style') === 'modal') {
       hideSideSheet();
     }
   }
 }
 
+/** @return {void} */
 export function showNavDrawer() {
   document.getElementsByClassName('mdw-app__navdrawer')[0].setAttribute('aria-hidden', 'false');
 }
 
+/** @return {void} */
 export function hideNavDrawer() {
   document.getElementsByClassName('mdw-app__navdrawer')[0].setAttribute('aria-hidden', 'true');
 }
 
+/** @return {void} */
 export function toggleNavDrawer() {
   if (document.getElementsByClassName('mdw-app__navdrawer')[0].getAttribute('aria-hidden') === 'false') {
     hideNavDrawer();
@@ -107,14 +116,17 @@ export function toggleNavDrawer() {
   }
 }
 
+/** @return {void} */
 export function showSideSheet() {
   document.getElementsByClassName('mdw-app__sidesheet')[0].setAttribute('aria-hidden', 'false');
 }
 
+/** @return {void} */
 export function hideSideSheet() {
   document.getElementsByClassName('mdw-app__sidesheet')[0].setAttribute('aria-hidden', 'true');
 }
 
+/** @return {void} */
 export function toggleSideSheet() {
   if (document.getElementsByClassName('mdw-app__sidesheet')[0].getAttribute('aria-hidden') === 'false') {
     hideSideSheet();
@@ -123,8 +135,9 @@ export function toggleSideSheet() {
   }
 }
 
+/** @return {void} */
 export function detach() {
-  document.removeEventListener('scroll', onDocumentScroll);
+  document.removeEventListener('scroll', onBodyScroll);
   const content = getContentElement();
   if (content) {
     content.removeEventListener('scroll', onContentScroll);
@@ -138,20 +151,24 @@ export function detach() {
   }
 }
 
-export function onDocumentScroll() {
+/** @return {void} */
+export function onBodyScroll() {
   // position:sticky scrolling
   getScrollThrottler().run(() => onScroll(true));
 }
 
+/** @return {boolean} */
 export function isMobile() {
   return window.innerWidth < EIGHT_COLUMN_BREAKPOINT;
 }
 
+/** @return {boolean} */
 export function isTablet() {
   return window.innerWidth >= EIGHT_COLUMN_BREAKPOINT
     && window.innerWidth < TWELVE_COLUMN_BREAKPOINT;
 }
 
+/** @return {boolean} */
 export function shouldAutoHideAppBar() {
   const appBar = getAppBarElement();
   if (!appBar) {
@@ -173,10 +190,12 @@ export function shouldAutoHideAppBar() {
   return false;
 }
 
+/** @return {void} */
 export function onContentScroll() {
   getScrollThrottler().run(() => onScroll(false));
 }
 
+/** @return {HTMLElement} */
 export function getAppBarElement() {
   if (!appBarElement) {
     appBarElement = document.getElementsByClassName('mdw-app__appbar')[0];
@@ -199,6 +218,7 @@ export function showFab(changeFabCut) {
   }
 }
 
+/** @return {void} */
 export function openAppBarFabCut() {
   const appBar = getAppBarElement();
   if (!appBar) {
@@ -213,6 +233,7 @@ export function openAppBarFabCut() {
   }
 }
 
+/** @return {void} */
 export function closeAppBarFabCut() {
   const appBar = getAppBarElement();
   if (!appBar) {
@@ -242,6 +263,7 @@ export function hideFab(changeFabCut) {
   }
 }
 
+/** @return {boolean} */
 export function isFabShown() {
   const fabElement = document.getElementsByClassName('mdw-app__fab')[0];
   if (!fabElement) {
@@ -250,6 +272,7 @@ export function isFabShown() {
   return fabElement.getAttribute('aria-hidden') !== 'true';
 }
 
+/** @return {HTMLElement} */
 export function getContentElement() {
   if (!appContentElement) {
     appContentElement = document.getElementsByClassName('mdw-app__content')[0];
@@ -257,6 +280,7 @@ export function getContentElement() {
   return appContentElement;
 }
 
+/** @return {void} */
 export function resetScroll() {
   const appBar = getAppBarElement();
   if (appBar) {
@@ -270,16 +294,12 @@ export function resetScroll() {
 }
 
 /**
- * @param {boolean} isDocument
+ * @param {boolean} isBody
  * @return {void}
  */
-export function onScroll(isDocument) {
+export function onScroll(isBody) {
   const contentElement = getContentElement();
-  if (isDocument && contentElement.scrollHeight !== contentElement.clientHeight) {
-    // Ignore overscroll on contentElement
-    return;
-  }
-  const scrollElement = isDocument ? document.documentElement : contentElement;
+  const scrollElement = isBody ? document.body : contentElement;
   const currentScrollY = scrollElement.scrollTop;
   const change = currentScrollY - lastScrollY;
   const delta = Math.abs(change);
@@ -320,7 +340,7 @@ export function onScroll(isDocument) {
   const newScrollAway = scrolledAway && (bottomAppBar ? newScrollUp : newScrollDown);
 
   // For code readability
-  const scrolledBack = !scrolledAway; // For code readability
+  const scrolledBack = !scrolledAway;
   const newScrollBack = scrolledBack && (bottomAppBar ? newScrollDown : newScrollUp);
 
   const isAtRest = (bottomAppBar ? isAtScrollBottom : isAtScrollTop);
@@ -363,7 +383,7 @@ export function onScroll(isDocument) {
   if (scrolledAway && scrolledPastAppBar) {
     if (shouldAutoHideAppBar()) {
       appBar.setAttribute('mdw-hide', '');
-      if (!isDocument) {
+      if (!isBody) {
         appBar.style.setProperty('margin-top', `${-appBar.clientHeight}px`);
       }
     }
@@ -381,4 +401,3 @@ export function onScroll(isDocument) {
     }
   }
 }
-

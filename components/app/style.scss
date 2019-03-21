@@ -26,8 +26,16 @@ $mdw-app__content-column: 2 !default;
 $mdw-app__sidesheet-column: 3 !default;
 $mdw-app__viewport-end-column: 4 !default;
 
+$mdw-app__body-overflow-y: hidden !default;
+$mdw-app__body-overflow-y__sticky: auto !default;
+$mdw-app__content-overflow-y: auto !default;
+$mdw-app__content-overflow-y__sticky: visible !default;
+
 .mdw-app {
+  overflow-y: hidden;
+
   min-height: 100vh;
+  height: 100vh;
   min-width: 100vw;
   margin: 0;
   padding: 0;
@@ -51,9 +59,9 @@ $mdw-app__viewport-end-column: 4 !default;
   grid-template-rows: auto auto 1fr auto;
   -ms-grid-rows: auto auto 1fr auto;
   overflow-x: hidden;
-  overflow-y: hidden; // auto if sticky
-  
-  height: 100vh; // auto if sticky
+  overflow-y: $mdw-app__body-overflow-y;
+
+  height: 100vh;
   margin: 0;
   padding: 0;
 
@@ -610,7 +618,7 @@ $mdw-app__viewport-end-column: 4 !default;
 }
 
 @include mdw-breakpoint__12-columns {
-  .mdw-app:not([mdw-navdrawer-toggle]):not([mdw-navdrawer-style="modal"]) {
+  .mdw-app__body:not([mdw-navdrawer-toggle]):not([mdw-navdrawer-style="modal"]) {
     .mdw-app__navdrawer-show,
     .mdw-app__navdrawer-hide,
     .mdw-app__navdrawer-toggle {
@@ -618,7 +626,7 @@ $mdw-app__viewport-end-column: 4 !default;
     }
   }
 
-  .mdw-app:not([mdw-sidesheet-toggle]):not([mdw-sidesheet-style="modal"]) {
+  .mdw-app__body:not([mdw-sidesheet-toggle]):not([mdw-sidesheet-style="modal"]) {
     .mdw-app__sidesheet-show,
     .mdw-app__sidesheet-hide,
     .mdw-app__sidesheet-toggle {
@@ -639,35 +647,35 @@ $mdw-app__viewport-end-column: 4 !default;
     transform: none;
   }
 
-  .mdw-app[mdw-navdrawer-style~="clipped"] .mdw-app__navdrawer,
-  .mdw-app[mdw-sidesheet-style~="clipped"] .mdw-app__sidesheet {
+  .mdw-app__body[mdw-navdrawer-style~="clipped"] .mdw-app__navdrawer,
+  .mdw-app__body[mdw-sidesheet-style~="clipped"] .mdw-app__sidesheet {
     @include mdw-app__grid-row($mdw-app__banner-row, $mdw-app__bottom-row);
     z-index: 0;
   }
   
-  .mdw-app[mdw-navdrawer-style~="clipped"] {
+  .mdw-app__body[mdw-navdrawer-style~="clipped"] {
     .mdw-app__appbar,
     .mdw-app__fab[mdw-desktop="appbar"] {
       @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__content-column);
     }
   }
 
-  .mdw-app[mdw-sidesheet-style~="clipped"] {
+  .mdw-app__body[mdw-sidesheet-style~="clipped"] {
     .mdw-app__appbar,
     .mdw-app__fab[mdw-desktop="appbar"] {
       @include mdw-app__grid-column($mdw-app__content-column, $mdw-app__sidesheet-column);
     }
   }
 
-  .mdw-app[mdw-navdrawer-style~="clipped"][mdw-sidesheet-style~="clipped"] {
+  .mdw-app__body[mdw-navdrawer-style~="clipped"][mdw-sidesheet-style~="clipped"] {
     .mdw-app__appbar,
     .mdw-app__fab[mdw-desktop="appbar"] {
       @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__sidesheet-column);
     }
   }
   
-  .mdw-app[mdw-navdrawer-style~="floating"] .mdw-app__navdrawer,
-  .mdw-app[mdw-sidesheet-style~="floating"] .mdw-app__sidesheet {
+  .mdw-app__body[mdw-navdrawer-style~="floating"] .mdw-app__navdrawer,
+  .mdw-app__body[mdw-sidesheet-style~="floating"] .mdw-app__sidesheet {
     @include mdw-app__grid-row($mdw-app__content-row, $mdw-app__bottom-row);
 
     & .mdw-app__sheet-content {
@@ -676,48 +684,48 @@ $mdw-app__viewport-end-column: 4 !default;
     }
   }
 
-  .mdw-app[mdw-navdrawer-style~="floating"] {
+  .mdw-app__body[mdw-navdrawer-style~="floating"] {
     .mdw-app__banner,
     .mdw-app__bottomnav {
       @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__content-column);
     }
   }
 
-  .mdw-app[mdw-sidesheet-style~="floating"] {
+  .mdw-app__body[mdw-sidesheet-style~="floating"] {
     .mdw-app__banner,
     .mdw-app__bottomnav {
       @include mdw-app__grid-column($mdw-app__content-column, $mdw-app__sidesheet-column);
     }
   }
 
-  .mdw-app[mdw-navdrawer-style~="floating"][mdw-sidesheet-style~="floating"] {
+  .mdw-app__body[mdw-navdrawer-style~="floating"][mdw-sidesheet-style~="floating"] {
     .mdw-app__banner,
     .mdw-app__bottomnav {
       @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__sidesheet-column);
     }
   }
 
-  .mdw-app[mdw-navdrawer-style~="clipped"] .mdw-app__body,
-  .mdw-app[mdw-sidesheet-style~="clipped"] .mdw-app__body {
-    overflow-y: hidden;
+  .mdw-app__body[mdw-navdrawer-style~="clipped"],
+  .mdw-app__body[mdw-sidesheet-style~="clipped"] {
+    overflow-y: $mdw-app__body-overflow-y;
 
-    height: 100vh;
+    & > .mdw-app__content {
+      overflow-y: $mdw-app__content-overflow-y;
+    }
   }
 
-  .mdw-app[mdw-navdrawer-style~="card"] .mdw-app__navdrawer,
-  .mdw-app[mdw-sidesheet-style~="card"] .mdw-app__sidesheet {
+  .mdw-app__body[mdw-navdrawer-style~="card"] .mdw-app__navdrawer,
+  .mdw-app__body[mdw-sidesheet-style~="card"] .mdw-app__sidesheet {
     margin: 0 dp(24);
     padding: dp(24) 0;
-
-    z-index: 8;
 
     & > .mdw-app__sheet-content {
       box-shadow: mdwElevation(8);
     }
   }
 
-  .mdw-app[mdw-navdrawer-toggle~="dismissible"]:not([mdw-navdrawer-style="modal"]) .mdw-app__navdrawer:not([aria-hidden="false"]),
-  .mdw-app[mdw-sidesheet-toggle~="dismissible"]:not([mdw-sidesheet-style="modal"]) .mdw-app__sidesheet:not([aria-hidden="false"]) {
+  .mdw-app__body[mdw-navdrawer-toggle~="dismissible"]:not([mdw-navdrawer-style="modal"]) .mdw-app__navdrawer:not([aria-hidden="false"]),
+  .mdw-app__body[mdw-sidesheet-toggle~="dismissible"]:not([mdw-sidesheet-style="modal"]) .mdw-app__sidesheet:not([aria-hidden="false"]) {
     max-width: 0;
     margin-right: 0;
     margin-left: 0;
@@ -729,14 +737,14 @@ $mdw-app__viewport-end-column: 4 !default;
     }
   }
 
-  .mdw-app[mdw-navdrawer-toggle~="mini"]:not([mdw-navdrawer-style="modal"]) {
+  .mdw-app__body[mdw-navdrawer-toggle~="mini"]:not([mdw-navdrawer-style="modal"]) {
     .mdw-app__navdrawer:not([aria-hidden="false"]) {
       min-width: $mdw-app__sheet-max-width__mini;
       max-width: $mdw-app__sheet-max-width__mini;
     }
   }
 
-  .mdw-app[mdw-sidesheet-toggle~="mini"]:not([mdw-sidesheet-style="modal"]) {
+  .mdw-app__body[mdw-sidesheet-toggle~="mini"]:not([mdw-sidesheet-style="modal"]) {
     .mdw-app__sidesheet:not([aria-hidden="false"]) {
       min-width: $mdw-app__sheet-max-width__mini;
       max-width: $mdw-app__sheet-max-width__mini;
@@ -810,9 +818,11 @@ $mdw-app__viewport-end-column: 4 !default;
 
 @supports (position: sticky) or (position: -webkit-sticky) or (position: -moz-sticky) {
   .mdw-app__body {
-    overflow-y: auto;
+    overflow-y: $mdw-app__body-overflow-y__sticky;
 
-    height: auto;
+    & > .mdw-app__content {
+      overflow-y: $mdw-app__content-overflow-y__sticky;
+    }
   }
 }
 
