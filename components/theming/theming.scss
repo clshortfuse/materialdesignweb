@@ -11,7 +11,7 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
   );
   $colors: ();
   $fallbacks: ('rules', 'colors', 'themes', 'ieonly');
-  $variables: ('rules', 'colors', 'themes');
+  $variables: ('rules', 'colors', 'themes', 'supports');
 
   @if (map-has-key($config-map, $key: "themes")) {
     $themes: map-get($config-map, "themes");
@@ -62,17 +62,25 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
   }
 
   @if ($mdw-theme__variables and $mdw-theme__variables != 'no' and $mdw-theme__variables != false) {
-    @supports (--var: var) {
-      @if (index($mdw-theme__variables, 'rules')) {
-        @include __mdw-theme__build-rules();
+    @if (index($mdw-theme__variables, 'supports')) {
+      @supports(--v:v) {
+        @include __mdw-theme__build-variables();
       }
-      @if (index($mdw-theme__variables, 'colors')) {
-        @include __mdw-theme__build-colors();
-      }
-      @if (index($mdw-theme__variables, 'themes')) {
-        @include __mdw-theme__build-themes();
-      }
+    } @else {
+      @include __mdw-theme__build-variables();
     }
+  }
+}
+
+@mixin __mdw-theme__build-variables() {
+  @if (index($mdw-theme__variables, 'rules')) {
+    @include __mdw-theme__build-rules();
+  }
+  @if (index($mdw-theme__variables, 'colors')) {
+    @include __mdw-theme__build-colors();
+  }
+  @if (index($mdw-theme__variables, 'themes')) {
+    @include __mdw-theme__build-themes();
   }
 }
 

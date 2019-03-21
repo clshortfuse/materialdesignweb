@@ -6,21 +6,28 @@ $mdw-theme__themes: (
 ) !default;
 $mdw-theme__colors: () !default;
 $mdw-theme__fallbacks: ('rules', 'colors', 'themes', 'ieonly') !default;
-$mdw-theme__variables: ('rules', 'colors', 'themes', 'auto-contrast') !default;
+$mdw-theme__variables: ('rules', 'colors', 'themes', 'supports') !default;
 
+@mixin __mdw-theme__add-component-variable-rules($component, $values) {
+  :root,
+  .mdw-theme[mdw-light] {
+    @include mdw-theme__variables($component, $values, 'light');
+  }
+
+  .mdw-theme[mdw-dark] {
+    @include mdw-theme__variables($component, $values, 'dark');
+  }
+}
 
 @mixin mdw-theme__add-component-variable-rules($component, $values) {
   @if index($mdw-theme__variables, 'rules') {
-    @supports(--var: var) {
-      :root,
-      .mdw-theme[mdw-light] {
-        @include mdw-theme__variables($component, $values, 'light');
+    @if index($mdw-theme__variables, 'supports') {
+      @supports(--v:v) {
+        @include __mdw-theme__add-component-variable-rules($component, $values);
+        @content;
       }
-
-      .mdw-theme[mdw-dark] {
-        @include mdw-theme__variables($component, $values, 'dark');
-      }
-
+    } @else {
+      @include __mdw-theme__add-component-variable-rules($component, $values);
       @content;
     }
   }
