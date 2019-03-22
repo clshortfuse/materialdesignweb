@@ -51,6 +51,34 @@ export function attach() {
   }
 }
 
+/**
+ * Run before document has loaded
+ * @return {void}
+ */
+export function onPrerender() {
+  if ('standalone' in navigator && navigator.standalone) {
+    document.documentElement.setAttribute('mdw-standalone', '');
+  }
+
+  const ua = navigator.userAgent.toLowerCase();
+  if (/iphone/.test(ua) || /ipad/.test(ua)) {
+    document.documentElement.setAttribute('mdw-ios', '');
+  }
+
+  // Auto lightness and fill
+  if (!document.documentElement.hasAttribute('mdw-fill')
+    && !document.documentElement.hasAttribute('mdw-light')
+    && !document.documentElement.hasAttribute('mdw-dark')) {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.setAttribute('mdw-dark', '');
+      document.documentElement.setAttribute('mdw-fill', 'black');
+    } else {
+      document.documentElement.setAttribute('mdw-light', '');
+      document.documentElement.setAttribute('mdw-fill', 'white');
+    }
+  }
+}
+
 /** @return {Throttler} */
 export function getScrollThrottler() {
   if (!scrollThrottler) {
