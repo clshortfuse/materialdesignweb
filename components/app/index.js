@@ -303,6 +303,10 @@ export function onScroll(isBody) {
   const currentScrollY = scrollElement.scrollTop;
   const change = currentScrollY - lastScrollY;
   const delta = Math.abs(change);
+  if (currentScrollY < 0 && lastScrollY <= 0) {
+    // Repeated overscroll event
+    return;
+  }
 
   const scrollContentBottom = scrollElement.scrollHeight - scrollElement.clientHeight;
   const scrollTopChange = currentScrollY <= 0
@@ -368,10 +372,7 @@ export function onScroll(isBody) {
 
   if (isAtRest) {
     if (appBar.hasAttribute('mdw-autoprominent')) {
-      const toolbar = appBar.getElementsByClassName('mdw-toolbar')[0];
-      if (toolbar) {
-        toolbar.setAttribute('mdw-prominent', '');
-      }
+      appBar.setAttribute('mdw-prominent', '');
     }
     if (appBar.hasAttribute('mdw-autoraise')) {
       appBar.removeAttribute('mdw-raise');
@@ -388,10 +389,7 @@ export function onScroll(isBody) {
       }
     }
     if (appBar.hasAttribute('mdw-autoprominent')) {
-      const toolbar = appBar.getElementsByClassName('mdw-toolbar')[0];
-      if (toolbar) {
-        toolbar.removeAttribute('mdw-prominent');
-      }
+      appBar.removeAttribute('mdw-prominent');
     }
   }
 

@@ -97,6 +97,12 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   transform: translateY(0); // browser hint
   z-index: 4;
 
+  .mdw-app[mdw-ios][mdw-standalone] & {
+    padding-top: dp(20);
+    padding-top: constant(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
+  }
+
   &[mdw-hide] {
     transition-duration: $mdw-motion__leave-duration__desktop;
     transition-timing-function: $mdw-motion__decelerate-easing;
@@ -171,7 +177,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
 .mdw-app__navdrawer,
 .mdw-app__sidesheet {
   @include mdw-app__grid-row($mdw-app__top-row, $mdw-app__bottom-row);
-  
+
   max-height: 100vh;
   height: 100%;
   max-width: calc(100vw - #{dp(56)});
@@ -183,6 +189,8 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   transition-duration: inherit;
   transition-property: max-width, transform;
   transition-timing-function: inherit;
+  
+  will-change: max-width, transform, position;
 
   transform: translateX(0);
   z-index: 5; // Above appbar shadow
@@ -231,10 +239,22 @@ $mdw-app__content-overflow-y__sticky: visible !default;
     }
 
     .mdw-app__#{$side} {
+      // Safari bug prevents using position:fixed with grid on resize
+      // Switching between display:block and display:flex will force Safari to rerender
+      // https://codepen.io/shortfuse/pen/pYqLbQ
+      
+      display: flex;
       position: fixed;
       top: 0;
       bottom: 0;
-      
+
+      flex-direction: column;
+
+      // Transition visibility
+      transition-property: max-width, transform, visibility;
+
+      // Prevent tabbing
+      visibility: hidden;
       z-index: 17; // Above scrim
 
       .mdw-app__sheet-content {
@@ -268,7 +288,11 @@ $mdw-app__content-overflow-y__sticky: visible !default;
 
       // Shown
       &[aria-hidden="false"] {
+        // Change visibility immediately
+        transition-property: max-width, transform;
+
         transform: translateX(0);
+        visibility: visible;
 
         box-shadow: mdwElevation(16);
 
@@ -731,6 +755,10 @@ $mdw-app__content-overflow-y__sticky: visible !default;
     margin-left: 0;
     padding-right: 0;
     padding-left: 0;
+
+    transition-property: max-width, transform, visibility;
+    
+    visibility: hidden;
 
     .mdw-app__sheet-content {
       box-shadow: mdwElevation(0);
