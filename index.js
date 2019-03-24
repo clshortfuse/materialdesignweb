@@ -12,7 +12,6 @@ import * as ListItem from './components/list/item';
 import * as ListExpander from './components/list/expander';
 import * as Menu from './components/menu/index';
 import * as MenuItem from './components/menu/item';
-import * as NavDrawer from './components/navdrawer/index';
 import * as ProgressCircle from './components/progress/index';
 import * as Snackbar from './components/snackbar/index';
 import * as Tab from './components/tab/index';
@@ -34,7 +33,6 @@ export {
   ListExpander,
   Menu,
   MenuItem,
-  NavDrawer,
   ProgressCircle,
   Snackbar,
   Tab,
