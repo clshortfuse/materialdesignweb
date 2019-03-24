@@ -5,10 +5,10 @@
 @import '../common/platform.scss';
 @import '../common/breakpoint.scss';
 
-$layout__margin: dp(24);
-$layout__gutter: dp(24);
+$grid__margin: dp(24);
+$grid__gutter: dp(24);
 
-.mdw-layout {
+.mdw-grid {
   display: flex;
   grid-auto-flow: row;
   grid-template-columns: repeat(12, 1fr);
@@ -28,22 +28,22 @@ $layout__gutter: dp(24);
   }
   flex-wrap: wrap;
 
-  padding-left: $layout__margin;
-  padding-right: $layout__margin;
+  padding-left: $grid__margin;
+  padding-right: $grid__margin;
 
-  margin-left: -$layout__gutter;
-  margin-top: -$layout__gutter;
+  margin-left: -$grid__gutter;
+  margin-top: -$grid__gutter;
 
   &[mdw-margin-top] {
-    padding-top: $layout__margin;
+    padding-top: $grid__margin;
   }
   &[mdw-margin-bottom] {
-    padding-bottom: $layout__margin;
+    padding-bottom: $grid__margin;
   }
 
 }
 
-@mixin layoutItem($columnCount) {
+@mixin gridItem($columnCount) {
   &[mdw-colspan="1"],
   &:not([mdw-colspan]) {
     width: calc(100% / #{$columnCount});
@@ -75,18 +75,18 @@ $layout__gutter: dp(24);
   }
 }
 
-.mdw-layout__item {
+.mdw-grid__item {
   max-width: 100%;
   flex-grow: 0;
   flex-shrink: 1;
   box-sizing: border-box;
-  padding-top: $layout__gutter;
-  padding-left: $layout__gutter;
+  padding-top: $grid__gutter;
+  padding-left: $grid__gutter;
 
-  .mdw-layout[mdw-grid] > & {
+  .mdw-grid[mdw-grid] > & {
     min-width: 100%;
   }
-  .mdw-layout[mdw-stretch] > & {
+  .mdw-grid[mdw-stretch] > & {
     flex-grow: 1;
   }
 
@@ -110,7 +110,7 @@ $layout__gutter: dp(24);
     transition-duration: $mdw-motion__default-duration__tablet;
   }
 
-  @include layoutItem(12);
+  @include gridItem(12);
 
   &[mdw-colspan="25%"] {
     width: 25%;
@@ -127,7 +127,7 @@ $layout__gutter: dp(24);
 }
 
 @include mdw-breakpoint__16dp-margin {
-  .mdw-layout {
+  .mdw-grid {
     padding-left: dp(16);
     padding-right: dp(16);
     &[mdw-margin-top] {
@@ -138,14 +138,14 @@ $layout__gutter: dp(24);
     }
     margin-top: dp(-16);
     margin-left: dp(-16);
-    & > .mdw-layout__item {
+    & > .mdw-grid__item {
       padding-top: dp(16);
       padding-left: dp(16);
     }
   }
 }
 
-.mdw-layout__content {
+.mdw-grid__content {
   flex: 100%;
   height: 100%;
   width: 100%;
@@ -155,59 +155,59 @@ $layout__gutter: dp(24);
 }
 
 // 8 Columns (Explicit on >=840dp, Implicit on < 840dp)
-.mdw-layout[mdw-columns="8"] {
+.mdw-grid[mdw-columns="8"] {
   grid-template-columns: repeat(8, 1fr);
   -ms-grid-columns: unquote("(1fr)[8]");
-  & > .mdw-layout__item {
-    @include layoutItem(8);
+  & > .mdw-grid__item {
+    @include gridItem(8);
   }
 }
 @include mdw-breakpoint__8-columns__max {
-  .mdw-layout {
+  .mdw-grid {
     grid-template-columns: repeat(8, 1fr);
     -ms-grid-columns: unquote("(1fr)[8]");
   }
-  .mdw-layout__item {
-    @include layoutItem(8);
+  .mdw-grid__item {
+    @include gridItem(8);
   }
 }
 
 // 4 Columns (Explicit on >=600dp, Implicit on <600dp)
-.mdw-layout[mdw-columns="4"] {
+.mdw-grid[mdw-columns="4"] {
   grid-template-columns: repeat(4, 1fr);
   -ms-grid-columns: unquote("(1fr)[4]");
-  & > .mdw-layout__item {
-    @include layoutItem(4);
+  & > .mdw-grid__item {
+    @include gridItem(4);
   }
 }
 
 @include mdw-breakpoint__4-columns() {
-  .mdw-layout,
-  .mdw-layout[mdw-columns="8"] {
+  .mdw-grid,
+  .mdw-grid[mdw-columns="8"] {
     grid-template-columns: repeat(4, 1fr);
     -ms-grid-columns: unquote("(1fr)[4]");
   }
-  .mdw-layout__item,
-  .mdw-layout[mdw-columns="8"] > .mdw-layout__item {
-    @include layoutItem(4);
+  .mdw-grid__item,
+  .mdw-grid[mdw-columns="8"] > .mdw-grid__item {
+    @include gridItem(4);
   }
 }
 
 // 1 Column (Explicit on all)
-.mdw-layout[mdw-columns="1"] {
+.mdw-grid[mdw-columns="1"] {
   grid-template-columns: 1fr;
   -ms-grid-columns: 1fr;
-  & > .mdw-layout__item {
-    @include layoutItem(1);
+  & > .mdw-grid__item {
+    @include gridItem(1);
   }
 }
 
 // 1-column uses same margin values as 12-column
 @each $value in (0, 8, 16, 24, 40) {
-  .mdw-layout[mdw-margin="#{$value}"],
-  .mdw-layout[mdw-columns="1"][mdw-margin="#{$value}"],
-  .mdw-layout[mdw-columns="8"][mdw-margin-8col="#{$value}"],
-  .mdw-layout[mdw-columns="4"][mdw-margin-4col="#{$value}"], {
+  .mdw-grid[mdw-margin="#{$value}"],
+  .mdw-grid[mdw-columns="1"][mdw-margin="#{$value}"],
+  .mdw-grid[mdw-columns="8"][mdw-margin-8col="#{$value}"],
+  .mdw-grid[mdw-columns="4"][mdw-margin-4col="#{$value}"], {
     padding-left: dp($value);
     padding-right: dp($value);
     &[mdw-margin-bottom] {
@@ -217,23 +217,23 @@ $layout__gutter: dp(24);
       padding-top: dp($value);
     }
   }
-  .mdw-layout[mdw-gutter="#{$value}"],
-  .mdw-layout[mdw-columns="1"][mdw-gutter="#{$value}"],
-  .mdw-layout[mdw-columns="8"][mdw-gutter-8col="#{$value}"],
-  .mdw-layout[mdw-columns="4"][mdw-gutter-4col="#{$value}"] {
+  .mdw-grid[mdw-gutter="#{$value}"],
+  .mdw-grid[mdw-columns="1"][mdw-gutter="#{$value}"],
+  .mdw-grid[mdw-columns="8"][mdw-gutter-8col="#{$value}"],
+  .mdw-grid[mdw-columns="4"][mdw-gutter-4col="#{$value}"] {
     margin-top: dp(-$value);
     margin-left: dp(-$value);
-    & > .mdw-layout__item {
+    & > .mdw-grid__item {
       padding-top: dp($value);
       padding-left: dp($value);
     }
   }
 }
 
-// 8-col layouts use 8col variable
+// 8-col grids use 8col variable
 @include mdw-breakpoint__8-columns__max {
   @each $value in (0, 8, 16, 24, 40) {
-    .mdw-layout[mdw-margin-8col="#{$value}"] {
+    .mdw-grid[mdw-margin-8col="#{$value}"] {
       padding-left: dp($value);
       padding-right: dp($value);
       &[mdw-margin-bottom] {
@@ -243,10 +243,10 @@ $layout__gutter: dp(24);
         padding-top: dp($value);
       }
     }
-    .mdw-layout[mdw-gutter-8col="#{$value}"] {
+    .mdw-grid[mdw-gutter-8col="#{$value}"] {
       margin-top: dp(-$value);
       margin-left: dp(-$value);
-      & > .mdw-layout__item {
+      & > .mdw-grid__item {
         padding-top: dp($value);
         padding-left: dp($value);
       }
@@ -254,12 +254,12 @@ $layout__gutter: dp(24);
   }
 }
 
-// 4col layouts use 4col variable
+// 4col grids use 4col variable
 // Overrides 8col and 12col
 @include mdw-breakpoint__4-columns {
   @each $value in (0, 8, 16, 24, 40) {
-    .mdw-layout,
-    .mdw-layout[mdw-columns="8"] {
+    .mdw-grid,
+    .mdw-grid[mdw-columns="8"] {
       &[mdw-margin-4col="#{$value}"] {
         padding-left: dp($value);
         padding-right: dp($value);
@@ -273,7 +273,7 @@ $layout__gutter: dp(24);
       &[mdw-gutter-4col="#{$value}"] {
         margin-top: dp(-$value);
         margin-left: dp(-$value);
-        > .mdw-layout__item {
+        > .mdw-grid__item {
           padding-top: dp($value);
           padding-left: dp($value);
         }
