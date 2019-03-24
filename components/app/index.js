@@ -15,6 +15,7 @@ let penultimateScrollY = null;
 let scrolledPastAppBar = false;
 let appBarElement = null;
 let appContentElement = null;
+let lastScrollBottomDistance = null;
 let scrollThrottler = null;
 
 /** @return {void} */
@@ -327,29 +328,39 @@ export function resetScroll() {
  */
 export function onScroll(isBody) {
   const contentElement = getContentElement();
+  if (isBody && contentElement.scrollHeight !== contentElement.offsetHeight) {
+    // Content is oversized!
+    return;
+  }
   const scrollElement = isBody ? document.body : contentElement;
   const currentScrollY = scrollElement.scrollTop;
   const change = currentScrollY - lastScrollY;
   const delta = Math.abs(change);
+  if (delta === 0) {
+    // Horizontal scroll?
+    return;
+  }
   if (currentScrollY < 0 && lastScrollY <= 0) {
     // Repeated overscroll event
     return;
   }
 
-  const scrollContentBottom = scrollElement.scrollHeight - scrollElement.clientHeight;
+  const scrollBottom = scrollElement.scrollHeight - scrollElement.clientHeight;
+  const scrollBottomDistance = scrollBottom - currentScrollY;
   const scrollTopChange = currentScrollY <= 0
     || lastScrollY <= 0;
-  const scrollBottomChange = currentScrollY >= scrollContentBottom
-    || lastScrollY >= scrollContentBottom;
+  const scrollBottomChange = scrollBottomDistance === 0 && lastScrollBottomDistance !== 0;
+
+  lastScrollBottomDistance = scrollBottomDistance;
   if (delta < MIN_SCROLL_DELTA && !scrollTopChange && !scrollBottomChange) {
     return;
   }
 
-  const didScrollUp = (change < 0);
+  const didScrollUp = (scrollBottomDistance > 0) && (change < 0);
   const isAtScrollTop = didScrollUp && currentScrollY <= 0;
   const newScrollUp = didScrollUp && lastScrollY >= penultimateScrollY;
   const didScrollDown = (change > 0);
-  const isAtScrollBottom = didScrollDown && (currentScrollY >= scrollContentBottom);
+  const isAtScrollBottom = didScrollDown && (scrollBottomDistance <= 0);
   const newScrollDown = didScrollDown && lastScrollY <= penultimateScrollY;
 
   penultimateScrollY = lastScrollY;
@@ -392,7 +403,7 @@ export function onScroll(isBody) {
 
   if (!scrolledPastAppBar) {
     if (bottomAppBar) {
-      scrolledPastAppBar = currentScrollY <= scrollContentBottom - appBar.clientHeight;
+      scrolledPastAppBar = currentScrollY <= scrollBottom - appBar.clientHeight;
     } else {
       scrolledPastAppBar = currentScrollY > appBar.clientHeight;
     }
