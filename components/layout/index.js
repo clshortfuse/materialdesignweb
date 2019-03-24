@@ -14,7 +14,7 @@ let lastScrollY = null;
 let penultimateScrollY = null;
 let scrolledPastAppBar = false;
 let appBarElement = null;
-let appContentElement = null;
+let layoutContentElement = null;
 let lastScrollBottomDistance = null;
 let scrollThrottler = null;
 
@@ -31,19 +31,19 @@ export function attach() {
     resetScroll();
   }
 
-  iterateArrayLike(document.getElementsByClassName('mdw-app__navdrawer-toggle'),
+  iterateArrayLike(document.getElementsByClassName('mdw-layout__navdrawer-toggle'),
     el => el.addEventListener('click', toggleNavDrawer));
-  iterateArrayLike(document.getElementsByClassName('mdw-app__navdrawer-show'),
+  iterateArrayLike(document.getElementsByClassName('mdw-layout__navdrawer-show'),
     el => el.addEventListener('click', showNavDrawer));
-  iterateArrayLike(document.getElementsByClassName('mdw-app__navdrawer-hide'),
+  iterateArrayLike(document.getElementsByClassName('mdw-layout__navdrawer-hide'),
     el => el.addEventListener('click', hideNavDrawer));
-  iterateArrayLike(document.getElementsByClassName('mdw-app__sidesheet-toggle'),
+  iterateArrayLike(document.getElementsByClassName('mdw-layout__sidesheet-toggle'),
     el => el.addEventListener('click', toggleSideSheet));
-  iterateArrayLike(document.getElementsByClassName('mdw-app__sidesheet-show'),
+  iterateArrayLike(document.getElementsByClassName('mdw-layout__sidesheet-show'),
     el => el.addEventListener('click', showSideSheet));
-  iterateArrayLike(document.getElementsByClassName('mdw-app__sidesheet-hide'),
+  iterateArrayLike(document.getElementsByClassName('mdw-layout__sidesheet-hide'),
     el => el.addEventListener('click', hideSideSheet));
-  const scrim = document.getElementsByClassName('mdw-app__scrim')[0];
+  const scrim = document.getElementsByClassName('mdw-layout__scrim')[0];
   if (scrim) {
     scrim.addEventListener('click', onScrimClick);
     scrim.addEventListener('scroll', onScrimScroll);
@@ -112,13 +112,13 @@ export function onScrimScroll(event) {
 
 /** @return {void} */
 export function onScrimClick() {
-  const navdrawer = document.getElementsByClassName('mdw-app__navdrawer')[0];
+  const navdrawer = document.getElementsByClassName('mdw-layout__navdrawer')[0];
   if (navdrawer && navdrawer.getAttribute('aria-hidden') === 'false') {
     if (window.innerWidth < 840 || document.body.getAttribute('mdw-navdrawer-style') === 'modal') {
       hideNavDrawer();
     }
   }
-  const sidesheet = document.getElementsByClassName('mdw-app__sidesheet')[0];
+  const sidesheet = document.getElementsByClassName('mdw-layout__sidesheet')[0];
   if (sidesheet && sidesheet.getAttribute('aria-hidden') === 'false') {
     if (window.innerWidth < 840 || document.body.getAttribute('mdw-sidesheet-style') === 'modal') {
       hideSideSheet();
@@ -128,17 +128,17 @@ export function onScrimClick() {
 
 /** @return {void} */
 export function showNavDrawer() {
-  document.getElementsByClassName('mdw-app__navdrawer')[0].setAttribute('aria-hidden', 'false');
+  document.getElementsByClassName('mdw-layout__navdrawer')[0].setAttribute('aria-hidden', 'false');
 }
 
 /** @return {void} */
 export function hideNavDrawer() {
-  document.getElementsByClassName('mdw-app__navdrawer')[0].setAttribute('aria-hidden', 'true');
+  document.getElementsByClassName('mdw-layout__navdrawer')[0].setAttribute('aria-hidden', 'true');
 }
 
 /** @return {void} */
 export function toggleNavDrawer() {
-  if (document.getElementsByClassName('mdw-app__navdrawer')[0].getAttribute('aria-hidden') === 'false') {
+  if (document.getElementsByClassName('mdw-layout__navdrawer')[0].getAttribute('aria-hidden') === 'false') {
     hideNavDrawer();
   } else {
     showNavDrawer();
@@ -147,17 +147,17 @@ export function toggleNavDrawer() {
 
 /** @return {void} */
 export function showSideSheet() {
-  document.getElementsByClassName('mdw-app__sidesheet')[0].setAttribute('aria-hidden', 'false');
+  document.getElementsByClassName('mdw-layout__sidesheet')[0].setAttribute('aria-hidden', 'false');
 }
 
 /** @return {void} */
 export function hideSideSheet() {
-  document.getElementsByClassName('mdw-app__sidesheet')[0].setAttribute('aria-hidden', 'true');
+  document.getElementsByClassName('mdw-layout__sidesheet')[0].setAttribute('aria-hidden', 'true');
 }
 
 /** @return {void} */
 export function toggleSideSheet() {
-  if (document.getElementsByClassName('mdw-app__sidesheet')[0].getAttribute('aria-hidden') === 'false') {
+  if (document.getElementsByClassName('mdw-layout__sidesheet')[0].getAttribute('aria-hidden') === 'false') {
     hideSideSheet();
   } else {
     showSideSheet();
@@ -171,7 +171,7 @@ export function detach() {
   if (content) {
     content.removeEventListener('scroll', onContentScroll);
   }
-  const scrim = document.getElementsByClassName('mdw-app__scrim')[0];
+  const scrim = document.getElementsByClassName('mdw-layout__scrim')[0];
   if (scrim) {
     scrim.removeEventListener('click', onScrimClick);
     scrim.removeEventListener('scroll', onScrimScroll);
@@ -227,7 +227,7 @@ export function onContentScroll() {
 /** @return {HTMLElement} */
 export function getAppBarElement() {
   if (!appBarElement) {
-    appBarElement = document.getElementsByClassName('mdw-app__appbar')[0];
+    appBarElement = document.getElementsByClassName('mdw-layout__appbar')[0];
   }
   return appBarElement;
 }
@@ -237,7 +237,7 @@ export function getAppBarElement() {
  * @return {void}
  */
 export function showFab(changeFabCut) {
-  const fabElement = document.getElementsByClassName('mdw-app__fab')[0];
+  const fabElement = document.getElementsByClassName('mdw-layout__fab')[0];
   if (!fabElement) {
     return;
   }
@@ -282,7 +282,7 @@ export function closeAppBarFabCut() {
  * @return {void}
  */
 export function hideFab(changeFabCut) {
-  const fabElement = document.getElementsByClassName('mdw-app__fab')[0];
+  const fabElement = document.getElementsByClassName('mdw-layout__fab')[0];
   if (!fabElement) {
     return;
   }
@@ -294,7 +294,7 @@ export function hideFab(changeFabCut) {
 
 /** @return {boolean} */
 export function isFabShown() {
-  const fabElement = document.getElementsByClassName('mdw-app__fab')[0];
+  const fabElement = document.getElementsByClassName('mdw-layout__fab')[0];
   if (!fabElement) {
     return false;
   }
@@ -303,10 +303,10 @@ export function isFabShown() {
 
 /** @return {HTMLElement} */
 export function getContentElement() {
-  if (!appContentElement) {
-    appContentElement = document.getElementsByClassName('mdw-app__content')[0];
+  if (!layoutContentElement) {
+    layoutContentElement = document.getElementsByClassName('mdw-layout__content')[0];
   }
-  return appContentElement;
+  return layoutContentElement;
 }
 
 /** @return {void} */

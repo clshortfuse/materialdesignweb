@@ -1,7 +1,7 @@
 @import '../common/breakpoint.scss';
 
-@mixin mdw-app__modal($side) {
-  .mdw-app__body[mdw-#{$side}-style='modal'] {
+@mixin mdw-layout__modal($side) {
+  .mdw-layout__body[mdw-#{$side}-style='modal'] {
     @content;
   }
 
@@ -10,7 +10,7 @@
   }
 }
 
-@mixin mdw-app__grid-column($start, $end: null) {
+@mixin mdw-layout__grid-column($start, $end: null) {
   @if ($end == null) {
     $end: $start;
   }
@@ -21,7 +21,7 @@
 }
 
 
-@mixin mdw-app__grid-row($top, $bottom: null) {
+@mixin mdw-layout__grid-row($top, $bottom: null) {
   @if ($bottom == null) {
     $bottom: $top;
   }

@@ -9,29 +9,29 @@
 @import '../common/breakpoint.scss';
 @import '../common/type.scss';
 
-$mdw-app__scrim-color: rgba(0, 0, 0, 0.50) !default;
-$mdw-app__sheet-min-width: dp(256) !default;
-$mdw-app__sheet-max-width__mini: dp(56) !default;
+$mdw-layout__scrim-color: rgba(0, 0, 0, 0.50) !default;
+$mdw-layout__sheet-min-width: dp(256) !default;
+$mdw-layout__sheet-max-width__mini: dp(56) !default;
 
-$mdw-app__fab-size: dp(56) !default;
-$mdw-app__fab-cut-size: dp(72) !default;
+$mdw-layout__fab-size: dp(56) !default;
+$mdw-layout__fab-cut-size: dp(72) !default;
 
-$mdw-app__top-row: 1 !default;
-$mdw-app__banner-row: 2 !default;
-$mdw-app__content-row: 3 !default;
-$mdw-app__bottom-row: 4 !default;
+$mdw-layout__top-row: 1 !default;
+$mdw-layout__banner-row: 2 !default;
+$mdw-layout__content-row: 3 !default;
+$mdw-layout__bottom-row: 4 !default;
 
-$mdw-app__navdrawer-column: 1 !default;
-$mdw-app__content-column: 2 !default;
-$mdw-app__sidesheet-column: 3 !default;
-$mdw-app__viewport-end-column: 4 !default;
+$mdw-layout__navdrawer-column: 1 !default;
+$mdw-layout__content-column: 2 !default;
+$mdw-layout__sidesheet-column: 3 !default;
+$mdw-layout__viewport-end-column: 4 !default;
 
-$mdw-app__body-overflow-y: hidden !default;
-$mdw-app__body-overflow-y__sticky: auto !default;
-$mdw-app__content-overflow-y: auto !default;
-$mdw-app__content-overflow-y__sticky: visible !default;
+$mdw-layout__body-overflow-y: hidden !default;
+$mdw-layout__body-overflow-y__sticky: auto !default;
+$mdw-layout__content-overflow-y: auto !default;
+$mdw-layout__content-overflow-y__sticky: visible !default;
 
-.mdw-app {
+.mdw-layout {
   overflow-y: hidden;
 
   min-height: 100vh;
@@ -46,7 +46,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
 }
 
-.mdw-app__body {
+.mdw-layout__body {
   @include type-rules('body');
 
   display: -ms-grid;
@@ -59,7 +59,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   grid-template-rows: auto auto 1fr auto;
   -ms-grid-rows: auto auto 1fr auto;
   overflow-x: hidden;
-  overflow-y: $mdw-app__body-overflow-y;
+  overflow-y: $mdw-layout__body-overflow-y;
 
   height: 100vh;
   max-width: 100vw;
@@ -78,9 +78,9 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   background-color: inherit;
 }
 
-.mdw-app__appbar {
-  @include mdw-app__grid-column($mdw-app__content-column);
-  @include mdw-app__grid-row($mdw-app__top-row);
+.mdw-layout__appbar {
+  @include mdw-layout__grid-column($mdw-layout__content-column);
+  @include mdw-layout__grid-row($mdw-layout__top-row);
 
   position: static;
   position: -webkit-sticky;
@@ -98,7 +98,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   transform: translateY(0); // browser hint
   z-index: 4;
 
-  .mdw-app[mdw-ios][mdw-standalone] & {
+  .mdw-layout[mdw-ios][mdw-standalone] & {
     padding-top: dp(20);
     padding-top: constant(safe-area-inset-top);
     padding-top: env(safe-area-inset-top);
@@ -126,14 +126,14 @@ $mdw-app__content-overflow-y__sticky: visible !default;
     }
   }
 
-  &[mdw-autoraise]:not([mdw-raise]) .mdw-app__appbar-shape {
+  &[mdw-autoraise]:not([mdw-raise]) .mdw-layout__appbar-shape {
     filter: none;
 
     box-shadow: mdwElevation(0);
   }
 }
 
-.mdw-app__scrim {
+.mdw-layout__scrim {
   content: '';
 
   position: fixed;
@@ -175,9 +175,9 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   }
 }
 
-.mdw-app__navdrawer,
-.mdw-app__sidesheet {
-  @include mdw-app__grid-row($mdw-app__top-row, $mdw-app__bottom-row);
+.mdw-layout__navdrawer,
+.mdw-layout__sidesheet {
+  @include mdw-layout__grid-row($mdw-layout__top-row, $mdw-layout__bottom-row);
 
   max-height: 100vh;
   height: 100%;
@@ -185,7 +185,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   @mixin mdw-breakpoint__xsmall-window {
     max-width: calc(100vw - #{dp(64)}); // Tablet or Desktop
   }
-  width: $mdw-app__sheet-min-width;
+  width: $mdw-layout__sheet-min-width;
 
   transition-duration: inherit;
   transition-property: max-width, transform;
@@ -200,7 +200,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   box-shadow: mdwElevation(0);
 }
 
-.mdw-app__sheet-content {
+.mdw-layout__sheet-content {
   overflow-y: auto;
 
   box-sizing: border-box;
@@ -209,37 +209,37 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   border-width: dp(1);
 }
 
-.mdw-app__navdrawer {
-  @include mdw-app__grid-column($mdw-app__navdrawer-column);
+.mdw-layout__navdrawer {
+  @include mdw-layout__grid-column($mdw-layout__navdrawer-column);
 }
 
-.mdw-app__sidesheet {
-  @include mdw-app__grid-column($mdw-app__sidesheet-column);
+.mdw-layout__sidesheet {
+  @include mdw-layout__grid-column($mdw-layout__sidesheet-column);
 }
 
-.mdw-app__navdrawer,
-:root[dir="rtl"] .mdw-app__sidesheet {
-  .mdw-app__sheet-content {
+.mdw-layout__navdrawer,
+:root[dir="rtl"] .mdw-layout__sidesheet {
+  .mdw-layout__sheet-content {
     border-right-style: solid;
     border-left-style: none;
   }
 }
 
-.mdw-app__sidesheet,
-:root[dir="rtl"] .mdw-app__navdrawer {
-  .mdw-app__sheet-content {
+.mdw-layout__sidesheet,
+:root[dir="rtl"] .mdw-layout__navdrawer {
+  .mdw-layout__sheet-content {
     border-right-style: none;
     border-left-style: solid;
   }
 }
 
 @each $side in ('navdrawer', 'sidesheet') {
-  @include mdw-app__modal($side) {
-    .mdw-app__#{$side}-hide {
+  @include mdw-layout__modal($side) {
+    .mdw-layout__#{$side}-hide {
       display: none;
     }
 
-    .mdw-app__#{$side} {
+    .mdw-layout__#{$side} {
       // Safari bug prevents using position:fixed with grid on resize
       // Switching between display:block and display:flex will force Safari to rerender
       // https://codepen.io/shortfuse/pen/pYqLbQ
@@ -258,7 +258,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
       visibility: hidden;
       z-index: 17; // Above scrim
 
-      .mdw-app__sheet-content {
+      .mdw-layout__sheet-content {
         border-width: 0;
       }
       @if ($side == 'navdrawer') {
@@ -297,15 +297,15 @@ $mdw-app__content-overflow-y__sticky: visible !default;
 
         box-shadow: mdwElevation(16);
 
-        & ~ .mdw-app__scrim {
+        & ~ .mdw-layout__scrim {
           pointer-events: auto;
     
-          background-color: $mdw-app__scrim-color;
+          background-color: $mdw-layout__scrim-color;
         }
 
         &,
-        &.mdw-app__appbar {
-          .mdw-app__#{$side}-show {
+        &.mdw-layout__appbar {
+          .mdw-layout__#{$side}-show {
             display: none;
           }
         }
@@ -314,34 +314,34 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   }
 }
 
-.mdw-app__banner {
-  @include mdw-app__grid-row($mdw-app__banner-row);
-  @include mdw-app__grid-column($mdw-app__content-column);
+.mdw-layout__banner {
+  @include mdw-layout__grid-row($mdw-layout__banner-row);
+  @include mdw-layout__grid-column($mdw-layout__content-column);
   z-index: 0;
 }
 
-.mdw-app__content {
-  @include mdw-app__grid-row($mdw-app__content-row);
-  @include mdw-app__grid-column($mdw-app__content-column);
+.mdw-layout__content {
+  @include mdw-layout__grid-row($mdw-layout__content-row);
+  @include mdw-layout__grid-column($mdw-layout__content-column);
 
   display: flex;
   position: relative;
   align-items: center;
   flex-direction: column;
   overflow-x: visible;
-  overflow-y: $mdw-app__content-overflow-y;
+  overflow-y: $mdw-layout__content-overflow-y;
 }
 
 
-.mdw-app__content-page {
+.mdw-layout__content-page {
   width: 100%;
 }
 
-.mdw-app__fab,
-.mdw-app__snackbar {
+.mdw-layout__fab,
+.mdw-layout__snackbar {
   // Aligned to bottom-anchor
-  @include mdw-app__grid-row($mdw-app__bottom-row);
-  @include mdw-app__grid-column($mdw-app__content-column);
+  @include mdw-layout__grid-row($mdw-layout__bottom-row);
+  @include mdw-layout__grid-column($mdw-layout__content-column);
 
   position: static;
   position: -webkit-sticky;
@@ -362,13 +362,13 @@ $mdw-app__content-overflow-y__sticky: visible !default;
 
 }
 
-.mdw-app__menus {
+.mdw-layout__menus {
   position: absolute;
 
   z-index: 8;
 }
 
-.mdw-app__dialogs {
+.mdw-layout__dialogs {
   position: fixed;
   top: 0;
   right: 0;
@@ -380,7 +380,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   z-index: 24;
 }
 
-.mdw-app__snackbar-anchor {
+.mdw-layout__snackbar-anchor {
   position: absolute;
   right: auto;
   bottom: 0;
@@ -420,11 +420,11 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   }
 }
 
-.mdw-app__snackbar .mdw-snackbar__container {
+.mdw-layout__snackbar .mdw-snackbar__container {
   position: relative;
 }
 
-.mdw-app__fab-anchor {
+.mdw-layout__fab-anchor {
   position: absolute;
 
   // Left aligned
@@ -449,7 +449,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
 }
 
 
-.mdw-app__fab-anchor .mdw-fab {
+.mdw-layout__fab-anchor .mdw-fab {
   transition-duration: inherit;
   transition-property: transform;
   transition-timing-function: inherit;
@@ -457,9 +457,9 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   transform: scale(0);
 }
 
-.mdw-app__bottomnav {
-  @include mdw-app__grid-column($mdw-app__content-column);
-  @include mdw-app__grid-row($mdw-app__bottom-row);
+.mdw-layout__bottomnav {
+  @include mdw-layout__grid-column($mdw-layout__content-column);
+  @include mdw-layout__grid-row($mdw-layout__bottom-row);
 
   position: static;
   position: -webkit-sticky;
@@ -471,20 +471,20 @@ $mdw-app__content-overflow-y__sticky: visible !default;
 }
 
 @include mdw-breakpoint__xsmall-window {
-  .mdw-app__appbar[mdw-autohide~="mobile"][mdw-hide] {
+  .mdw-layout__appbar[mdw-autohide~="mobile"][mdw-hide] {
     transform: translateY(-100%);
 
     &[mdw-bottom] {
       transform: translateY(100%);
 
-      & ~ .mdw-app__fab,
+      & ~ .mdw-layout__fab,
 
-      & ~ .mdw-app__snackbar {
+      & ~ .mdw-layout__snackbar {
         transform: translateY(0);
       }
     }
     
-    .mdw-app__appbar-shape {
+    .mdw-layout__appbar-shape {
       filter: none;
 
       box-shadow: mdwElevation(0);
@@ -493,19 +493,19 @@ $mdw-app__content-overflow-y__sticky: visible !default;
 }
 
 @include mdw-breakpoint__small-window {
-  .mdw-app__appbar[mdw-autohide~="tablet"][mdw-hide] {
+  .mdw-layout__appbar[mdw-autohide~="tablet"][mdw-hide] {
     transform: translateY(-100%);
 
     &[mdw-bottom] {
       transform: translateY(100%);
 
-      & ~ .mdw-app__fab,
-      & ~ .mdw-app__snackbar {
+      & ~ .mdw-layout__fab,
+      & ~ .mdw-layout__snackbar {
         transform: translateY(0);
       }
     }
 
-    .mdw-app__appbar-shape {
+    .mdw-layout__appbar-shape {
       filter: none;
 
       box-shadow: mdwElevation(0);
@@ -514,19 +514,19 @@ $mdw-app__content-overflow-y__sticky: visible !default;
 }
 
 @include mdw-breakpoint__small-window__max {
-  .mdw-app__appbar[mdw-autohide=""][mdw-hide] {
+  .mdw-layout__appbar[mdw-autohide=""][mdw-hide] {
     transform: translateY(-100%);
 
     &[mdw-bottom] {
       transform: translateY(100%);
 
-      & ~ .mdw-app__fab,
-      & ~ .mdw-app__snackbar {
+      & ~ .mdw-layout__fab,
+      & ~ .mdw-layout__snackbar {
         transform: translateY(0);
       }
     }
 
-    .mdw-app__appbar-shape {
+    .mdw-layout__appbar-shape {
       filter: none;
 
       box-shadow: mdwElevation(0);
@@ -534,19 +534,19 @@ $mdw-app__content-overflow-y__sticky: visible !default;
 
   }
 
-  .mdw-app__appbar[mdw-bottom] {
-    @include mdw-app__grid-row($mdw-app__bottom-row);
+  .mdw-layout__appbar[mdw-bottom] {
+    @include mdw-layout__grid-row($mdw-layout__bottom-row);
     top: auto;
     bottom: 0;
 
     z-index: 8;
 
-    .mdw-app__appbar-shape {
+    .mdw-layout__appbar-shape {
       box-shadow: mdwElevation(8);
     }
 
     &[mdw-fab-cut] {
-      .mdw-app__appbar-shape {
+      .mdw-layout__appbar-shape {
         transition-property: filter;
 
         filter: mdwElevation(8, true);
@@ -554,20 +554,20 @@ $mdw-app__content-overflow-y__sticky: visible !default;
         box-shadow: mdwElevation(0);
       }
       
-      .mdw-app__fab-cut-track mask > ellipse {
+      .mdw-layout__fab-cut-track mask > ellipse {
         transform: scale(0);
       }
     }
 
     &[mdw-fab-cut~="open"] {
-      .mdw-app__fab-cut-track mask > ellipse {
+      .mdw-layout__fab-cut-track mask > ellipse {
         transform: scale(1);
       }
     }
   }
 
 
-  .mdw-app__snackbar-anchor {
+  .mdw-layout__snackbar-anchor {
     &,
     :root[dir="rtl"] & {
       right: 0;
@@ -580,8 +580,8 @@ $mdw-app__content-overflow-y__sticky: visible !default;
     }
   }
 
-  .mdw-app__fab[mdw-mobile] {
-    & ~ .mdw-app__snackbar .mdw-app__snackbar-anchor {
+  .mdw-layout__fab[mdw-mobile] {
+    & ~ .mdw-layout__snackbar .mdw-layout__snackbar-anchor {
       bottom: dp(24);
       @include mdw-breakpoint__16dp-margin {
         bottom: dp(16);
@@ -590,8 +590,8 @@ $mdw-app__content-overflow-y__sticky: visible !default;
       transform: translateY(#{dp(-56)});
     }
 
-    & ~ .mdw-app__content {
-      padding-bottom: #{$mdw-app__fab-size + dp(24)};
+    & ~ .mdw-layout__content {
+      padding-bottom: #{$mdw-layout__fab-size + dp(24)};
     }
 
     &[aria-hidden="false"] .mdw-fab {
@@ -599,8 +599,8 @@ $mdw-app__content-overflow-y__sticky: visible !default;
     }
   }
 
-  .mdw-app__appbar[mdw-fab-cut][mdw-bottom]:not([mdw-hide]) {
-    & ~ .mdw-app__fab {
+  .mdw-layout__appbar[mdw-fab-cut][mdw-bottom]:not([mdw-hide]) {
+    & ~ .mdw-layout__fab {
       .mdw-fab {
         transform: translateY(50%) scale(0);
       }
@@ -609,58 +609,58 @@ $mdw-app__content-overflow-y__sticky: visible !default;
         transform: translateY(50%) scale(1);
       }
 
-      .mdw-app__fab-anchor {
+      .mdw-layout__fab-anchor {
         padding-top: 0;
         padding-bottom: 0;
       }
     }
 
-    & ~ .mdw-app__snackbar .mdw-app__snackbar-anchor {
+    & ~ .mdw-layout__snackbar .mdw-layout__snackbar-anchor {
       bottom: 0;
 
-      transform: translateY(-$mdw-app__fab-size / 2);
+      transform: translateY(-$mdw-layout__fab-size / 2);
     }
   }
 
-  .mdw-app__appbar[mdw-fab-cut~="center"] .mdw-app__fab-cut-track,
-  .mdw-app__fab[mdw-mobile="center"] .mdw-app__fab-anchor {
+  .mdw-layout__appbar[mdw-fab-cut~="center"] .mdw-layout__fab-cut-track,
+  .mdw-layout__fab[mdw-mobile="center"] .mdw-layout__fab-anchor {
     right: 50%;
 
     transform: translateX(50%);
   }
 
-  .mdw-app__appbar[mdw-fab-cut~="full"] .mdw-app__fab-cut-track,
-  .mdw-app__fab[mdw-mobile="full"] .mdw-app__fab-anchor {
+  .mdw-layout__appbar[mdw-fab-cut~="full"] .mdw-layout__fab-cut-track,
+  .mdw-layout__fab[mdw-mobile="full"] .mdw-layout__fab-anchor {
     right: 0;
     left: 0;
 
     transform: none;
   }
 
-  .mdw-app__fab[mdw-mobile="full"] .mdw-fab__button {
+  .mdw-layout__fab[mdw-mobile="full"] .mdw-fab__button {
     width: 100%;
   }
 }
 
 @include mdw-breakpoint__medium-window__min {
-  .mdw-app__body:not([mdw-navdrawer-toggle]):not([mdw-navdrawer-style="modal"]) {
-    .mdw-app__navdrawer-show,
-    .mdw-app__navdrawer-hide,
-    .mdw-app__navdrawer-toggle {
+  .mdw-layout__body:not([mdw-navdrawer-toggle]):not([mdw-navdrawer-style="modal"]) {
+    .mdw-layout__navdrawer-show,
+    .mdw-layout__navdrawer-hide,
+    .mdw-layout__navdrawer-toggle {
       display: none;
     }
   }
 
-  .mdw-app__body:not([mdw-sidesheet-toggle]):not([mdw-sidesheet-style="modal"]) {
-    .mdw-app__sidesheet-show,
-    .mdw-app__sidesheet-hide,
-    .mdw-app__sidesheet-toggle {
+  .mdw-layout__body:not([mdw-sidesheet-toggle]):not([mdw-sidesheet-style="modal"]) {
+    .mdw-layout__sidesheet-show,
+    .mdw-layout__sidesheet-hide,
+    .mdw-layout__sidesheet-toggle {
       display: none;
     }
   }
 
-  .mdw-app__navdrawer,
-  .mdw-app__sidesheet {
+  .mdw-layout__navdrawer,
+  .mdw-layout__sidesheet {
     // Full-height
     position: static;
     position: -webkit-sticky;
@@ -672,85 +672,85 @@ $mdw-app__content-overflow-y__sticky: visible !default;
     transform: none;
   }
 
-  .mdw-app__body[mdw-navdrawer-style~="clipped"] .mdw-app__navdrawer,
-  .mdw-app__body[mdw-sidesheet-style~="clipped"] .mdw-app__sidesheet {
-    @include mdw-app__grid-row($mdw-app__banner-row, $mdw-app__bottom-row);
+  .mdw-layout__body[mdw-navdrawer-style~="clipped"] .mdw-layout__navdrawer,
+  .mdw-layout__body[mdw-sidesheet-style~="clipped"] .mdw-layout__sidesheet {
+    @include mdw-layout__grid-row($mdw-layout__banner-row, $mdw-layout__bottom-row);
     z-index: 0;
   }
   
-  .mdw-app__body[mdw-navdrawer-style~="clipped"] {
-    .mdw-app__appbar,
-    .mdw-app__fab[mdw-desktop="appbar"] {
-      @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__content-column);
+  .mdw-layout__body[mdw-navdrawer-style~="clipped"] {
+    .mdw-layout__appbar,
+    .mdw-layout__fab[mdw-desktop="appbar"] {
+      @include mdw-layout__grid-column($mdw-layout__navdrawer-column, $mdw-layout__content-column);
     }
   }
 
-  .mdw-app__body[mdw-sidesheet-style~="clipped"] {
-    .mdw-app__appbar,
-    .mdw-app__fab[mdw-desktop="appbar"] {
-      @include mdw-app__grid-column($mdw-app__content-column, $mdw-app__sidesheet-column);
+  .mdw-layout__body[mdw-sidesheet-style~="clipped"] {
+    .mdw-layout__appbar,
+    .mdw-layout__fab[mdw-desktop="appbar"] {
+      @include mdw-layout__grid-column($mdw-layout__content-column, $mdw-layout__sidesheet-column);
     }
   }
 
-  .mdw-app__body[mdw-navdrawer-style~="clipped"][mdw-sidesheet-style~="clipped"] {
-    .mdw-app__appbar,
-    .mdw-app__fab[mdw-desktop="appbar"] {
-      @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__sidesheet-column);
+  .mdw-layout__body[mdw-navdrawer-style~="clipped"][mdw-sidesheet-style~="clipped"] {
+    .mdw-layout__appbar,
+    .mdw-layout__fab[mdw-desktop="appbar"] {
+      @include mdw-layout__grid-column($mdw-layout__navdrawer-column, $mdw-layout__sidesheet-column);
     }
   }
   
-  .mdw-app__body[mdw-navdrawer-style~="floating"] .mdw-app__navdrawer,
-  .mdw-app__body[mdw-sidesheet-style~="floating"] .mdw-app__sidesheet {
-    @include mdw-app__grid-row($mdw-app__content-row, $mdw-app__bottom-row);
+  .mdw-layout__body[mdw-navdrawer-style~="floating"] .mdw-layout__navdrawer,
+  .mdw-layout__body[mdw-sidesheet-style~="floating"] .mdw-layout__sidesheet {
+    @include mdw-layout__grid-row($mdw-layout__content-row, $mdw-layout__bottom-row);
 
-    & .mdw-app__sheet-content {
+    & .mdw-layout__sheet-content {
       height: auto;
       border-width: 0;
     }
   }
 
-  .mdw-app__body[mdw-navdrawer-style~="floating"] {
-    .mdw-app__banner,
-    .mdw-app__bottomnav {
-      @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__content-column);
+  .mdw-layout__body[mdw-navdrawer-style~="floating"] {
+    .mdw-layout__banner,
+    .mdw-layout__bottomnav {
+      @include mdw-layout__grid-column($mdw-layout__navdrawer-column, $mdw-layout__content-column);
     }
   }
 
-  .mdw-app__body[mdw-sidesheet-style~="floating"] {
-    .mdw-app__banner,
-    .mdw-app__bottomnav {
-      @include mdw-app__grid-column($mdw-app__content-column, $mdw-app__sidesheet-column);
+  .mdw-layout__body[mdw-sidesheet-style~="floating"] {
+    .mdw-layout__banner,
+    .mdw-layout__bottomnav {
+      @include mdw-layout__grid-column($mdw-layout__content-column, $mdw-layout__sidesheet-column);
     }
   }
 
-  .mdw-app__body[mdw-navdrawer-style~="floating"][mdw-sidesheet-style~="floating"] {
-    .mdw-app__banner,
-    .mdw-app__bottomnav {
-      @include mdw-app__grid-column($mdw-app__navdrawer-column, $mdw-app__sidesheet-column);
+  .mdw-layout__body[mdw-navdrawer-style~="floating"][mdw-sidesheet-style~="floating"] {
+    .mdw-layout__banner,
+    .mdw-layout__bottomnav {
+      @include mdw-layout__grid-column($mdw-layout__navdrawer-column, $mdw-layout__sidesheet-column);
     }
   }
 
-  .mdw-app__body[mdw-navdrawer-style~="clipped"],
-  .mdw-app__body[mdw-sidesheet-style~="clipped"] {
-    overflow-y: $mdw-app__body-overflow-y;
+  .mdw-layout__body[mdw-navdrawer-style~="clipped"],
+  .mdw-layout__body[mdw-sidesheet-style~="clipped"] {
+    overflow-y: $mdw-layout__body-overflow-y;
 
-    & > .mdw-app__content {
-      overflow-y: $mdw-app__content-overflow-y;
+    & > .mdw-layout__content {
+      overflow-y: $mdw-layout__content-overflow-y;
     }
   }
 
-  .mdw-app__body[mdw-navdrawer-style~="card"] .mdw-app__navdrawer,
-  .mdw-app__body[mdw-sidesheet-style~="card"] .mdw-app__sidesheet {
+  .mdw-layout__body[mdw-navdrawer-style~="card"] .mdw-layout__navdrawer,
+  .mdw-layout__body[mdw-sidesheet-style~="card"] .mdw-layout__sidesheet {
     margin: 0 dp(24);
     padding: dp(24) 0;
 
-    & > .mdw-app__sheet-content {
+    & > .mdw-layout__sheet-content {
       box-shadow: mdwElevation(8);
     }
   }
 
-  .mdw-app__body[mdw-navdrawer-toggle~="dismissible"]:not([mdw-navdrawer-style="modal"]) .mdw-app__navdrawer:not([aria-hidden="false"]),
-  .mdw-app__body[mdw-sidesheet-toggle~="dismissible"]:not([mdw-sidesheet-style="modal"]) .mdw-app__sidesheet:not([aria-hidden="false"]) {
+  .mdw-layout__body[mdw-navdrawer-toggle~="dismissible"]:not([mdw-navdrawer-style="modal"]) .mdw-layout__navdrawer:not([aria-hidden="false"]),
+  .mdw-layout__body[mdw-sidesheet-toggle~="dismissible"]:not([mdw-sidesheet-style="modal"]) .mdw-layout__sidesheet:not([aria-hidden="false"]) {
     max-width: 0;
     margin-right: 0;
     margin-left: 0;
@@ -761,51 +761,51 @@ $mdw-app__content-overflow-y__sticky: visible !default;
     
     visibility: hidden;
 
-    .mdw-app__sheet-content {
+    .mdw-layout__sheet-content {
       box-shadow: mdwElevation(0);
     }
   }
 
-  .mdw-app__body[mdw-navdrawer-toggle~="mini"]:not([mdw-navdrawer-style="modal"]) {
-    .mdw-app__navdrawer:not([aria-hidden="false"]) {
-      min-width: $mdw-app__sheet-max-width__mini;
-      max-width: $mdw-app__sheet-max-width__mini;
+  .mdw-layout__body[mdw-navdrawer-toggle~="mini"]:not([mdw-navdrawer-style="modal"]) {
+    .mdw-layout__navdrawer:not([aria-hidden="false"]) {
+      min-width: $mdw-layout__sheet-max-width__mini;
+      max-width: $mdw-layout__sheet-max-width__mini;
     }
   }
 
-  .mdw-app__body[mdw-sidesheet-toggle~="mini"]:not([mdw-sidesheet-style="modal"]) {
-    .mdw-app__sidesheet:not([aria-hidden="false"]) {
-      min-width: $mdw-app__sheet-max-width__mini;
-      max-width: $mdw-app__sheet-max-width__mini;
+  .mdw-layout__body[mdw-sidesheet-toggle~="mini"]:not([mdw-sidesheet-style="modal"]) {
+    .mdw-layout__sidesheet:not([aria-hidden="false"]) {
+      min-width: $mdw-layout__sheet-max-width__mini;
+      max-width: $mdw-layout__sheet-max-width__mini;
     }
   }
 
-  .mdw-app__appbar[mdw-autohide=""][mdw-hide] {
+  .mdw-layout__appbar[mdw-autohide=""][mdw-hide] {
     transform: translateY(-100%);
 
-    .mdw-app__appbar-shape {
+    .mdw-layout__appbar-shape {
       filter: none;
 
       box-shadow: mdwElevation(0);
     }
   }
 
-  .mdw-app__snackbar-anchor {
+  .mdw-layout__snackbar-anchor {
     width: 50%;
   }
 
-  .mdw-app__fab[mdw-desktop] {
+  .mdw-layout__fab[mdw-desktop] {
     &[aria-hidden="false"] .mdw-fab {
       transform: scale(1);
     }
 
-    &:not([mdw-desktop="appbar"]) ~ .mdw-app__content {
-      padding-bottom: #{$mdw-app__fab-size + dp(24)};
+    &:not([mdw-desktop="appbar"]) ~ .mdw-layout__content {
+      padding-bottom: #{$mdw-layout__fab-size + dp(24)};
     }
   }
 
-  .mdw-app__fab[mdw-desktop="appbar"] {
-    @include mdw-app__grid-row($mdw-app__top-row);
+  .mdw-layout__fab[mdw-desktop="appbar"] {
+    @include mdw-layout__grid-row($mdw-layout__top-row);
     top: 0;
     bottom: auto;
 
@@ -815,11 +815,11 @@ $mdw-app__content-overflow-y__sticky: visible !default;
       transform: translateY(-50%) scale(1);
     }
 
-    & ~ .mdw-app__snackbar .mdw-app__snackbar-anchor {
+    & ~ .mdw-layout__snackbar .mdw-layout__snackbar-anchor {
       width: 75%;
     }
 
-    .mdw-app__fab-anchor {
+    .mdw-layout__fab-anchor {
       top: 0;
       right: auto;
       bottom: auto;
@@ -839,23 +839,23 @@ $mdw-app__content-overflow-y__sticky: visible !default;
     }
   }
 
-  .mdw-app__fab[mdw-desktop="appbar"][aria-hidden="true"] .mdw-fab,
-  .mdw-app__appbar[mdw-hide] ~ .mdw-app__fab[mdw-desktop="appbar"] .mdw-fab {
+  .mdw-layout__fab[mdw-desktop="appbar"][aria-hidden="true"] .mdw-fab,
+  .mdw-layout__appbar[mdw-hide] ~ .mdw-layout__fab[mdw-desktop="appbar"] .mdw-fab {
     transform: translateY(-50%) scale(0);
   }
 }
 
 @supports (position: sticky) or (position: -webkit-sticky) or (position: -moz-sticky) {
-  .mdw-app__body {
-    overflow-y: $mdw-app__body-overflow-y__sticky;
+  .mdw-layout__body {
+    overflow-y: $mdw-layout__body-overflow-y__sticky;
 
-    & > .mdw-app__content {
-      overflow-y: $mdw-app__content-overflow-y__sticky;
+    & > .mdw-layout__content {
+      overflow-y: $mdw-layout__content-overflow-y__sticky;
     }
   }
 }
 
-.mdw-app__appbar-shape {
+.mdw-layout__appbar-shape {
   display: flex;
   position: absolute;
   top: 0;
@@ -882,7 +882,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   }
 }
 
-.mdw-app__fab-cut-track {
+.mdw-layout__fab-cut-track {
   display: flex;
   position: relative;
   top: 0;
@@ -894,7 +894,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
 
   transition-property: transform;
 
-  transform: translateX(100%) translateX(-($mdw-app__fab-size / 2));
+  transform: translateX(100%) translateX(-($mdw-layout__fab-size / 2));
 
   &::before,
   &::after,
@@ -910,7 +910,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
     content: '';
 
     width: 100%;
-    margin-left: -$mdw-app__fab-cut-size / 2;
+    margin-left: -$mdw-layout__fab-cut-size / 2;
 
     background-color: currentColor;
   }
@@ -920,7 +920,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   }
 
   &::after {
-    left: $mdw-app__fab-cut-size;
+    left: $mdw-layout__fab-cut-size;
   }
 
   &,
@@ -932,9 +932,9 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   }
 
   & > svg {
-    left: -$mdw-app__fab-cut-size / 2;
+    left: -$mdw-layout__fab-cut-size / 2;
 
-    width: $mdw-app__fab-cut-size;
+    width: $mdw-layout__fab-cut-size;
 
     fill: currentColor;
   }
