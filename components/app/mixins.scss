@@ -5,7 +5,7 @@
     @content;
   }
 
-  @include mdw-breakpoint__8-columns__max {
+  @include mdw-breakpoint__small-window__max {
     @content;
   }
 }

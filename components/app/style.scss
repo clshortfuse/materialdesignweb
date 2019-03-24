@@ -180,7 +180,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   max-height: 100vh;
   height: 100%;
   max-width: calc(100vw - #{dp(56)});
-  @mixin mdw-breakpoint__4-columns {
+  @mixin mdw-breakpoint__xsmall-window {
     max-width: calc(100vw - #{dp(64)}); // Tablet or Desktop
   }
   width: $mdw-app__sheet-min-width;
@@ -468,7 +468,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   z-index: 4;
 }
 
-@include mdw-breakpoint__4-columns {
+@include mdw-breakpoint__xsmall-window {
   .mdw-app__appbar[mdw-autohide~="mobile"][mdw-hide] {
     transform: translateY(-100%);
 
@@ -490,7 +490,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   }
 }
 
-@include mdw-breakpoint__8-columns {
+@include mdw-breakpoint__small-window {
   .mdw-app__appbar[mdw-autohide~="tablet"][mdw-hide] {
     transform: translateY(-100%);
 
@@ -511,7 +511,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   }
 }
 
-@include mdw-breakpoint__8-columns__max {
+@include mdw-breakpoint__small-window__max {
   .mdw-app__appbar[mdw-autohide=""][mdw-hide] {
     transform: translateY(-100%);
 
@@ -640,7 +640,7 @@ $mdw-app__content-overflow-y__sticky: visible !default;
   }
 }
 
-@include mdw-breakpoint__12-columns {
+@include mdw-breakpoint__medium-window__min {
   .mdw-app__body:not([mdw-navdrawer-toggle]):not([mdw-navdrawer-style="modal"]) {
     .mdw-app__navdrawer-show,
     .mdw-app__navdrawer-hide,
