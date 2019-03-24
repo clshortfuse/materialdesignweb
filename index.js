@@ -14,6 +14,7 @@ import * as Menu from './components/menu/index';
 import * as MenuItem from './components/menu/item';
 import * as Overlay from './components/overlay/index';
 import * as ProgressCircle from './components/progress/index';
+import * as Ripple from './components/ripple/index';
 import * as Snackbar from './components/snackbar/index';
 import * as Tab from './components/tab/index';
 import * as TabItem from './components/tab/item';
@@ -36,6 +37,7 @@ export {
   MenuItem,
   Overlay,
   ProgressCircle,
+  Ripple,
   Snackbar,
   Tab,
   TabItem,

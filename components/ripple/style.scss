@@ -25,61 +25,84 @@
  *
  */
 
-@mixin mdw-ripple__container {
+.mdw-ripple:not([mdw-ripple-js]) {
+  overflow: hidden;
+  // Do not override any declarations
+}
+
+.mdw-ripple[disabled],
+.mdw-ripple[aria-disabled=true] {
+  & > .mdw-ripple__container,
+  &::after {
+    display: none;
+  }
+}
+
+
+.mdw-ripple__container {
   position: absolute;
-  left: 0;
   top: 0;
   right: 0;
   bottom: 0;
-  box-sizing: border-box;
+  left: 0;
   overflow: hidden;
-  border-radius: inherit;
+  
+  box-sizing: border-box;
+
   z-index: 1;
-  & > .mdw-ripple__inner {
-    border-radius: 50%;
-    display: block;
-    position: absolute;
-    transition: none;
-    transform: scale(0);
-    background-color: currentColor;
-    animation-name: none;
-    animation-direction: normal;
-    animation-fill-mode: forwards;
-    animation-timing-function: linear;
-    animation-duration: $mdw-motion__default-duration__desktop;
+
+  border-radius: inherit;
+
+
+}
+
+.mdw-ripple__inner {
+  display: block;
+  position: absolute;
+  
+  border-radius: 50%;
+  transition: none;
+  transform: scale(0);
+  background-color: currentColor;
+  animation-name: none;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+  animation-duration: $mdw-motion__default-duration__desktop;
+  @include mdw-breakpoint__mobile-device {
+    animation-duration: $mdw-motion__default-duration__mobile;
+  }
+  @include mdw-breakpoint__tablet-device {
+    animation-duration: $mdw-motion__default-duration__tablet;
+  }
+  pointer-events: none;
+
+  opacity: 0.24;
+  &[mdw-fade-in-out] {
+    animation-name: ripple-fade-in, ripple-fade-out;
+    animation-timing-function: linear, $mdw-motion__accelerate-easing;
+    animation-delay: 0s, $mdw-motion__default-duration__desktop;
     @include mdw-breakpoint__mobile-device {
-      animation-duration: $mdw-motion__default-duration__mobile;
+      animation-delay: 0s, $mdw-motion__default-duration__mobile;
     }
     @include mdw-breakpoint__tablet-device {
-      animation-duration: $mdw-motion__default-duration__tablet;
-    }
-    pointer-events: none;
-
-    opacity: 0.24;
-    &[mdw-fade-in-out] {
-      animation-name: ripple-fade-in, ripple-fade-out;
-      animation-timing-function: linear, $mdw-motion__accelerate-easing;
-      animation-delay: 0s, $mdw-motion__default-duration__desktop;
-      @include mdw-breakpoint__mobile-device {
-        animation-delay: 0s, $mdw-motion__default-duration__mobile;
-      }
-      @include mdw-breakpoint__tablet-device {
-        animation-delay: 0s, $mdw-motion__default-duration__tablet;
-      }
+      animation-delay: 0s, $mdw-motion__default-duration__tablet;
     }
   }
+}
 
-  &:active > .mdw-ripple__inner,
-  .mdw-ripple__inner[mdw-fade-in] {
-    animation-name: ripple-fade-in;
-  }
+.mdw-ripple__inner[mdw-fade-in] {
+  animation-name: ripple-fade-in;
+}
 
-  &:not(:active) > .mdw-ripple__inner[mdw-fade-in-complete][mdw-mouseout],
-  &:not(:active) > .mdw-ripple__inner[mdw-fade-in-complete][mdw-touchcancel],
-  .mdw-ripple__inner[mdw-fade-out] {
-    animation-name: ripple-fade-out;
-    animation-timing-function: $mdw-motion__accelerate-easing;
-  }
+.mdw-ripple__inner[mdw-fade-in-repeat] {
+  animation-name: ripple-fade-in-repeat;
+}
+
+.mdw-ripple:not(:active) > .mdw-ripple__container > .mdw-ripple__inner[mdw-fade-in-complete][mdw-fade-in],
+.mdw-ripple__inner[mdw-fade-out] {
+  animation-name: ripple-fade-out;
+  animation-timing-function: $mdw-motion__accelerate-easing;
 }
 
 @keyframes ripple-idle {
@@ -100,20 +123,29 @@
   }
 }
 
-@keyframes ripple-fade-out {
+@keyframes ripple-fade-in-repeat {
   from {
-    transform: scale(2);
-    background-color: currentColor;
+    transform: scale(0);
   }
   to {
     transform: scale(2);
-    background-color: transparent;
   }
 }
 
+@keyframes ripple-fade-out {
+  from {
+    background-color: currentColor;
 
+    transform: scale(2);
+  }
+  to {
+    background-color: transparent;
 
-@mixin mdw-ripple__inner {
+    transform: scale(2);
+  }
+}
+
+.mdw-ripple::after {
   content: '';
   display: table; // See above
   padding: 50%;
@@ -173,12 +205,16 @@
     background-color;
 }
 
-@mixin mdw-ripple__active {
+.mdw-ripple:active::after {
   transition-duration: 0s;
   transition-delay: 0s;
   transform: translateX(-50%) translateY(-50%) scale(0);
   opacity: 0;
   background-color: currentColor;
+}
+
+.mdw-ripple[mdw-ripple-js]::after {
+  display: none;
 }
 
 

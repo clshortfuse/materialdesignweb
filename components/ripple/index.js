@@ -5,39 +5,36 @@ import { getChildElementByClass, nextTick, getPassiveEventListenerOption } from 
  * @return {void}
  */
 export function attach(element) {
-  let ripple = getChildElementByClass(element, 'mdw-ripple');
-  if (!ripple) {
-    ripple = document.createElement('div');
-    ripple.classList.add('mdw-ripple');
+  let rippleContainer = getChildElementByClass(element, 'mdw-ripple__container');
+  if (!rippleContainer) {
+    rippleContainer = document.createElement('div');
+    rippleContainer.classList.add('mdw-ripple__container');
+    rippleContainer.setAttribute('role', 'presentation');
     if (element.firstChild) {
-      element.insertBefore(ripple, element.firstChild);
+      element.insertBefore(rippleContainer, element.firstChild);
     } else {
-      element.appendChild(ripple);
+      element.appendChild(rippleContainer);
     }
   }
 
-  let rippleInner = getChildElementByClass(ripple, 'mdw-ripple__inner');
+  let rippleInner = getChildElementByClass(rippleContainer, 'mdw-ripple__inner');
   if (!rippleInner) {
     rippleInner = document.createElement('div');
     rippleInner.classList.add('mdw-ripple__inner');
-    ripple.appendChild(rippleInner);
+    rippleInner.setAttribute('role', 'presentation');
+    rippleContainer.appendChild(rippleInner);
   }
-  element.setAttribute('mdw-ripple', '');
-  let targetElement = ripple;
-  if (element instanceof HTMLButtonElement) {
+  element.setAttribute('mdw-ripple-js', '');
+  let targetElement = rippleContainer;
+  if (element instanceof HTMLButtonElement || element instanceof HTMLAnchorElement) {
     // Firefox doesn't support listening on HTMLButtonElement children
     targetElement = element;
   }
 
   targetElement.addEventListener('click', onClick, getPassiveEventListenerOption());
-  targetElement.addEventListener('mousedown', onMouseEvent, getPassiveEventListenerOption());
-  targetElement.addEventListener('mouseup', onMouseEvent, getPassiveEventListenerOption());
-  targetElement.addEventListener('mouseout', onMouseEvent, getPassiveEventListenerOption());
-  targetElement.addEventListener('touchstart', onTouchEvent, getPassiveEventListenerOption());
-  targetElement.addEventListener('touchend', onTouchEvent, getPassiveEventListenerOption());
-  targetElement.addEventListener('touchcancel', onTouchEvent, getPassiveEventListenerOption());
-  element.addEventListener('keydown', onKeyEvent, getPassiveEventListenerOption());
-  element.addEventListener('keyup', onKeyEvent, getPassiveEventListenerOption());
+  targetElement.addEventListener('mousedown', onMouseDown, getPassiveEventListenerOption());
+  targetElement.addEventListener('touchstart', onTouchStart, getPassiveEventListenerOption());
+  element.addEventListener('keydown', onKeyDown, getPassiveEventListenerOption());
   rippleInner.addEventListener('animationend', onAnimationEnd, getPassiveEventListenerOption());
 }
 
@@ -45,66 +42,47 @@ export function attach(element) {
  * @param {PointerEvent|MouseEvent} event
  * @return {void}
  */
-export function onMouseEvent(event) {
+export function onMouseDown(event) {
   /** @type {HTMLElement} */
-  let ripple = (event.currentTarget);
-  if (!ripple.classList.contains('mdw-ripple')) {
+  let rippleContainer = (event.currentTarget);
+  if (!rippleContainer.classList.contains('mdw-ripple__container')) {
     /** @type {HTMLElement} */
-    ripple = (getChildElementByClass(ripple, 'mdw-ripple'));
+    rippleContainer = (getChildElementByClass(rippleContainer, 'mdw-ripple__container'));
   }
-  if (!ripple) {
+  if (!rippleContainer) {
     return;
   }
   /** @type {HTMLElement} */
-  const rippleInner = (getChildElementByClass(ripple, 'mdw-ripple__inner'));
+  const rippleInner = (getChildElementByClass(rippleContainer, 'mdw-ripple__inner'));
   if (!rippleInner) {
     return;
   }
-  if (event.type === 'mousedown') {
-    if (!('pointerType' in event) && !event.detail) {
-      return;
-    }
-    if (rippleInner.hasAttribute('mdw-touchstart')) {
-      return;
-    }
-    rippleInner.setAttribute('mdw-mousedown', '');
-    rippleInner.removeAttribute('mdw-mouseout');
-    const rect = ripple.getBoundingClientRect();
-    const x = event.pageX - rect.left - window.pageXOffset;
-    const y = event.pageY - rect.top - window.pageYOffset;
-    updateRipplePosition(rippleInner, x, y);
-    drawRipple(rippleInner);
-  } else if (event.type === 'mouseup') {
-    if (rippleInner.hasAttribute('mdw-mousedown')) {
-      rippleInner.setAttribute('mdw-mouseup', '');
-      clearRipple(rippleInner);
-      rippleInner.removeAttribute('mdw-mousedown');
-      rippleInner.removeAttribute('mdw-mouseup');
-    }
-  } else if (event.type === 'mouseout') {
-    if (rippleInner.hasAttribute('mdw-mousedown')) {
-      rippleInner.removeAttribute('mdw-mousedown');
-      rippleInner.setAttribute('mdw-mouseout', '');
-    }
+  if (!event.pointerType && !event.detail) {
+    return;
   }
+  const rect = rippleContainer.getBoundingClientRect();
+  const x = event.pageX - rect.left - window.pageXOffset;
+  const y = event.pageY - rect.top - window.pageYOffset;
+  updateRipplePosition(rippleInner, x, y);
+  drawRipple(rippleInner, 'mouse');
 }
 
 /**
  * @param {TouchEvent} event
  * @return {void}
  */
-export function onTouchEvent(event) {
+export function onTouchStart(event) {
   /** @type {HTMLElement} */
-  let ripple = (event.currentTarget);
-  if (!ripple.classList.contains('mdw-ripple')) {
+  let rippleContainer = (event.currentTarget);
+  if (!rippleContainer.classList.contains('mdw-ripple__container')) {
     /** @type {HTMLElement} */
-    ripple = (getChildElementByClass(ripple, 'mdw-ripple'));
+    rippleContainer = (getChildElementByClass(rippleContainer, 'mdw-ripple__container'));
   }
-  if (!ripple) {
+  if (!rippleContainer) {
     return;
   }
   /** @type {HTMLElement} */
-  const rippleInner = (getChildElementByClass(ripple, 'mdw-ripple__inner'));
+  const rippleInner = (getChildElementByClass(rippleContainer, 'mdw-ripple__inner'));
   if (!rippleInner) {
     return;
   }
@@ -112,64 +90,40 @@ export function onTouchEvent(event) {
   if (!touch) {
     return;
   }
-  if (event.type === 'touchstart') {
-    rippleInner.setAttribute('mdw-touchstart', '');
-    rippleInner.removeAttribute('mdw-touchcancel');
-    rippleInner.removeAttribute('mdw-mouseout');
-    const rect = ripple.getBoundingClientRect();
-    const x = touch.pageX - rect.left - window.pageXOffset;
-    const y = touch.pageY - rect.top - window.pageYOffset;
-    updateRipplePosition(rippleInner, x, y);
-    drawRipple(rippleInner);
-  } else if (event.type === 'touchend') {
-    rippleInner.setAttribute('mdw-touchend', '');
-    clearRipple(rippleInner);
-    rippleInner.removeAttribute('mdw-touchend');
-    nextTick(() => {
-      rippleInner.removeAttribute('mdw-touchstart');
-    });
-  } else if (event.type === 'touchcancel') {
-    rippleInner.setAttribute('mdw-touchcancel', '');
-    nextTick(() => {
-      rippleInner.removeAttribute('mdw-touchstart');
-    });
-  }
+  const rect = rippleContainer.getBoundingClientRect();
+  const x = touch.pageX - rect.left - window.pageXOffset;
+  const y = touch.pageY - rect.top - window.pageYOffset;
+  updateRipplePosition(rippleInner, x, y);
+  drawRipple(rippleInner, 'touch');
 }
 
 /**
  * @param {TouchEvent} event
  * @return {void}
  */
-export function onKeyEvent(event) {
+export function onKeyDown(event) {
   /** @type {HTMLElement} */
-  let ripple = (event.currentTarget);
-  if (!ripple.classList.contains('mdw-ripple')) {
+  let rippleContainer = (event.currentTarget);
+  if (!rippleContainer.classList.contains('mdw-ripple__container')) {
     /** @type {HTMLElement} */
-    ripple = (getChildElementByClass(ripple, 'mdw-ripple'));
+    rippleContainer = (getChildElementByClass(rippleContainer, 'mdw-ripple__container'));
   }
-  if (!ripple) {
+  if (!rippleContainer) {
     return;
   }
   /** @type {HTMLElement} */
-  const rippleInner = (getChildElementByClass(ripple, 'mdw-ripple__inner'));
+  const rippleInner = (getChildElementByClass(rippleContainer, 'mdw-ripple__inner'));
   if (!rippleInner) {
     return;
   }
 
   nextTick(() => {
-    if (isActive(ripple.parentElement)) {
-      if (rippleInner.hasAttribute('mdw-keydown')) {
+    if (isActive(rippleContainer.parentElement)) {
+      if (rippleInner.getAttribute('mdw-fade-in') === 'key') {
         return;
       }
-      rippleInner.setAttribute('mdw-keydown', '');
-      rippleInner.removeAttribute('mdw-mouseout');
       updateRipplePosition(rippleInner);
-      drawRipple(rippleInner);
-    } else if (rippleInner.hasAttribute('mdw-keydown')) {
-      rippleInner.setAttribute('mdw-keyup', '');
-      clearRipple(rippleInner);
-      rippleInner.removeAttribute('mdw-keydown');
-      rippleInner.removeAttribute('mdw-keyup');
+      drawRipple(rippleInner, 'key');
     }
   });
 }
@@ -228,13 +182,24 @@ export function updateRipplePosition(rippleInner, x, y) {
 
 /**
  * @param {Element} rippleInner
+ * @param {string} initiator
  * @return {void}
  */
-export function drawRipple(rippleInner) {
-  rippleInner.setAttribute('mdw-fade-in', '');
-  rippleInner.removeAttribute('mdw-fade-in-complete');
-  rippleInner.removeAttribute('mdw-fade-out');
-  rippleInner.removeAttribute('mdw-fade-out-ready');
+export function drawRipple(rippleInner, initiator) {
+  const currentInitiator = rippleInner.getAttribute('mdw-fade-in');
+  if (currentInitiator && currentInitiator !== initiator) {
+    // Only allow repeat interactions from same initiator
+    return;
+  }
+  rippleInner.setAttribute('mdw-fade-in', initiator);
+  if (currentInitiator === initiator) {
+    // Repeat the animation
+    if (rippleInner.hasAttribute('mdw-fade-in-repeat')) {
+      rippleInner.removeAttribute('mdw-fade-in-repeat');
+    } else {
+      rippleInner.setAttribute('mdw-fade-in-repeat', '');
+    }
+  }
   rippleInner.removeAttribute('mdw-fade-in-out');
 }
 
@@ -245,14 +210,14 @@ export function drawRipple(rippleInner) {
 export function onAnimationEnd(event) {
   /** @type {HTMLElement} */
   const rippleInner = (event.currentTarget);
-  if (rippleInner.hasAttribute('mdw-fade-in')) {
+  if (event.animationName === 'ripple-fade-in' || event.animationName === 'ripple-fade-in-repeat') {
     rippleInner.setAttribute('mdw-fade-in-complete', '');
-  }
-  if (rippleInner.hasAttribute('mdw-fade-out-ready')) {
-    clearRipple(rippleInner);
     return;
   }
-  if (rippleInner.hasAttribute('mdw-fade-out')) {
+  if (event.animationName === 'ripple-fade-out') {
+    rippleInner.removeAttribute('mdw-fade-in');
+    rippleInner.removeAttribute('mdw-fade-in-repeat');
+    rippleInner.removeAttribute('mdw-fade-in-complete');
     rippleInner.removeAttribute('mdw-fade-out');
   }
 }
@@ -262,28 +227,18 @@ export function onAnimationEnd(event) {
  * @return {void}
  */
 export function clearRipple(rippleInner) {
-  const hasFadeOutReady = rippleInner.hasAttribute('mdw-fade-out-ready');
-  if (!hasFadeOutReady) {
-    if (!rippleInner.hasAttribute('mdw-fade-in')) {
-      return;
-    }
-    if (rippleInner.hasAttribute('mdw-keydown') && !rippleInner.hasAttribute('mdw-keyup')) {
-      return;
-    }
-    if (rippleInner.hasAttribute('mdw-mousedown') && !rippleInner.hasAttribute('mdw-mouseup')) {
-      return;
-    }
-    if (rippleInner.hasAttribute('mdw-touchstart') && !rippleInner.hasAttribute('mdw-touchend')) {
-      return;
-    }
-    if (!rippleInner.hasAttribute('mdw-fade-in-complete')) {
-      rippleInner.setAttribute('mdw-fade-out-ready', '');
-      return;
-    }
+  if (!rippleInner.hasAttribute('mdw-fade-in')) {
+    return;
+  }
+  if (rippleInner.hasAttribute('mdw-keydown') && !rippleInner.hasAttribute('mdw-keyup')) {
+    return;
+  }
+  if (!rippleInner.hasAttribute('mdw-fade-in-complete')) {
+    return;
   }
   rippleInner.removeAttribute('mdw-fade-in');
+  rippleInner.removeAttribute('mdw-fade-in-repeat');
   rippleInner.removeAttribute('mdw-fade-in-complete');
-  rippleInner.removeAttribute('mdw-fade-out-ready');
   rippleInner.setAttribute('mdw-fade-out', '');
 }
 
@@ -293,28 +248,28 @@ export function clearRipple(rippleInner) {
  */
 export function onClick(event) {
   /** @type {HTMLElement} */
-  let ripple = (event.currentTarget);
-  if (!ripple.classList.contains('mdw-ripple')) {
+  let rippleContainer = (event.currentTarget);
+  if (!rippleContainer.classList.contains('mdw-ripple__container')) {
     /** @type {HTMLElement} */
-    ripple = (getChildElementByClass(ripple, 'mdw-ripple'));
+    rippleContainer = (getChildElementByClass(rippleContainer, 'mdw-ripple__container'));
   }
-  if (!ripple) {
+  if (!rippleContainer) {
     return;
   }
   /** @type {HTMLElement} */
-  const rippleInner = (getChildElementByClass(ripple, 'mdw-ripple__inner'));
+  const rippleInner = (getChildElementByClass(rippleContainer, 'mdw-ripple__inner'));
   if (!rippleInner) {
     return;
   }
-  if ('pointerType' in event || event.detail) {
+  if (event.pointerType || event.detail) {
     return;
   }
-  if (rippleInner.hasAttribute('mdw-keydown')) {
+  if (rippleInner.getAttribute('mdw-fade-in') === 'key') {
     // Already handled by keydown
     return;
   }
   updateRipplePosition(rippleInner);
-  drawRipple(rippleInner);
+  drawRipple(rippleInner, 'key');
   nextTick(() => {
     clearRipple(rippleInner);
   });
@@ -325,18 +280,13 @@ export function onClick(event) {
  * @return {void}
  */
 export function detach(element) {
-  const ripple = getChildElementByClass(element, 'mdw-ripple');
-  if (ripple) {
-    element.removeChild(ripple);
+  const rippleContainer = getChildElementByClass(element, 'mdw-ripple__container');
+  if (rippleContainer) {
+    element.removeChild(rippleContainer);
   }
-  element.removeAttribute('mdw-ripple');
+  element.removeAttribute('mdw-ripple-js');
   element.removeEventListener('click', onClick);
-  element.removeEventListener('mousedown', onMouseEvent);
-  element.removeEventListener('mouseup', onMouseEvent);
-  element.removeEventListener('mouseout', onMouseEvent);
-  element.removeEventListener('touchstart', onTouchEvent);
-  element.removeEventListener('touchend', onTouchEvent);
-  element.removeEventListener('touchcancel', onTouchEvent);
-  element.removeEventListener('keydown', onKeyEvent);
-  element.removeEventListener('keyup', onKeyEvent);
+  element.removeEventListener('mousedown', onMouseDown);
+  element.removeEventListener('touchstart', onTouchStart);
+  element.removeEventListener('keydown', onKeyDown);
 }
