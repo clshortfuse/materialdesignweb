@@ -1,0 +1,129 @@
+// https://material.io/design/interaction/states.html
+
+@import '../common/theming.scss';
+
+$mdw-overlay__theme-values: (
+  // states
+  overlay-color:                 (('foreground-light', 1.00), ('foreground-dark', 1.00)),
+
+
+  hover-opacity:                 (0.04, 0.08),
+  focus-opacity:                 (0.12, 0.24),
+  selected-opacity:              (0.08, 0.16),
+  activated-opacity:             (0.12, 0.24),
+  
+  hover-focus-opacity:           (0.04 + 0.12, 0.08 + 0.24),
+
+  selected-hover-opacity:        (0.08 + 0.04, 0.16 + 0.08),
+  selected-focus-opacity:        (0.08 + 0.12, 0.16 + 0.24),
+  selected-hover-focus-opacity:  (0.08 + 0.04 + 0.12, 0.16 + 0.08 + 0.24),
+
+  activated-hover-opacity:       (0.12 + 0.04, 0.24 + 0.08),
+  activated-focus-opacity:       (0.12 + 0.12, 0.24 + 0.24),
+  activated-hover-focus-opacity: (0.12 + 0.04 + 0.12, 0.24 + 0.08 + 0.24),
+) !default;
+
+@function mdwOverlayThemeValue($key, $type, $theme) {
+  @return mdwGetThemeValue('overlay', $mdw-overlay__theme-values, $key, $type, $theme);
+}
+
+@mixin mdw-overlay__theme-rules($type: 'var', $theme: null) {
+  .mdw-overlay {
+    @if ($type == 'var') {
+      &::before {
+        color: unquote("rgb(var(--color))");
+      }
+
+      &[aria-pressed="false"]:not(:active)::before,
+      &[aria-pressed="false"][mdw-color]:not(:active)::before {
+        --color: var(--foreground-color);
+      }
+    } @else {
+      &[aria-pressed="false"],
+      &[aria-pressed="false"][mdw-color],
+      &:not([mdw-color]):not([mdw-fill]) {
+        &::before {
+          color: mdwOverlayThemeValue("overlay-color", $type, $theme);
+        }
+      }
+      
+    }
+
+    &:not([mdw-overlay-touch="true"]) {
+      &:focus:not([mdw-overlay-off~="focus"]):not([mdw-overlay-touch="true"])::before {
+        opacity: mdwOverlayThemeValue("focus-opacity", $type, $theme);
+      }
+
+      &:not([disabled]):not([aria-disabled="true"]):not([mdw-overlay-touch="true"]) {
+        &:hover:not([mdw-overlay-off~="hover"])::before {
+          opacity: mdwOverlayThemeValue("hover-opacity", $type, $theme);
+        }
+
+        &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
+          opacity: mdwOverlayThemeValue("hover-focus-opacity", $type, $theme);
+        }
+      }
+    }
+
+    // Selected
+    &[aria-selected="true"]:not([mdw-overlay-off~="selected"]) {
+      &::before {
+        opacity: mdwOverlayThemeValue("selected-opacity", $type, $theme);
+      }
+
+      &:not([mdw-overlay-touch="true"]) {
+        &:focus:not([mdw-overlay-off~="focus"])::before {
+          opacity: mdwOverlayThemeValue("selected-focus-opacity", $type, $theme);
+        }
+
+        &:not([disabled]):not([aria-disabled="true"]) {
+          &:hover:not([mdw-overlay-off~="hover"])::before {
+            opacity: mdwOverlayThemeValue("selected-hover-opacity", $type, $theme);
+          }
+
+          &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
+            opacity: mdwOverlayThemeValue("selected-hover-focus-opacity", $type, $theme);
+          }
+        }
+      }
+    }
+
+    // Activated
+    .mdw-overlay__group[aria-multiselectable="false"] > &[aria-selected="true"]:not([mdw-overlay-off~="selected"])
+    &[aria-pressed="true"]:not([mdw-overlay-off~="activated"]) {
+      &::before {
+        opacity: mdwOverlayThemeValue("activated-opacity", $type, $theme);
+      }
+
+      &:not([mdw-overlay-touch="true"]) {
+        &:focus:not([mdw-overlay-off~="focus"])::before {
+          opacity: mdwOverlayThemeValue("activated-focus-opacity", $type, $theme);
+        }
+
+        &:not([disabled]):not([aria-disabled="true"]) {
+          &:hover:not([mdw-overlay-off~="hover"])::before {
+            opacity: mdwOverlayThemeValue("activated-hover-opacity", $type, $theme);
+          }
+
+          &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
+            opacity: mdwOverlayThemeValue("activated-hover-focus-opacity", $type, $theme);
+          }
+        }
+      }
+    }
+  }
+}
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-overlay__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-overlay__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('overlay', $mdw-overlay__theme-values) {
+  @include mdw-overlay__theme-rules();
+}
