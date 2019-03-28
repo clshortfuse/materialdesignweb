@@ -1,6 +1,6 @@
 
 import * as Chip from '../../components/chip/index';
-import { iterateArrayLike } from '../../components/common/dom';
+import { iterateArrayLike } from '../../core/dom';
 import { convertElementToCode } from '../sample-utils';
 
 /** @type {ArrayLike<HTMLElement>} */

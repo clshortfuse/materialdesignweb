@@ -1,6 +1,6 @@
 import { convertElementToCode } from '../sample-utils';
 import * as Snackbar from '../../components/snackbar/index';
-import { iterateArrayLike } from '../../components/common/dom';
+import { iterateArrayLike } from '../../core/dom';
 
 /** @type {HTMLElement} */
 let sampleComponent;
@@ -112,7 +112,6 @@ function onOptionChange(event) {
     case 'button':
       if (value === 'none') {
         if (buttonElement) {
-          console.log('destroying button');
           buttonElement.parentElement.removeChild(buttonElement);
         }
         break;

@@ -1,26 +1,25 @@
 include ../mixins.pug
 
-+header()
-  +navdrawer("elevation")
-    .docs-layout.mdw-layout(mdw-margin-top mdw-margin-botttom mdw-columns=4 mdw-margin-4col="40" mdw-gutter-4col="40")
-      .mdw-layout__item
-        .docs-elevation__item.mdw-elevation(mdw-elevation=1) 1dp
-      .mdw-layout__item
-        .docs-elevation__item.mdw-elevation(mdw-elevation=2) 2dp
-      .mdw-layout__item
-        .docs-elevation__item.mdw-elevation(mdw-elevation=3) 3dp
-      .mdw-layout__item
-        .docs-elevation__item.mdw-elevation(mdw-elevation=4) 4dp
-      .mdw-layout__item
-        .docs-elevation__item.mdw-elevation(mdw-elevation=6) 6dp
-      .mdw-layout__item
-        .docs-elevation__item.mdw-elevation(mdw-elevation=8) 8dp
-      .mdw-layout__item
-        .docs-elevation__item.mdw-elevation(mdw-elevation=9) 9dp
-      .mdw-layout__item
-        .docs-elevation__item.mdw-elevation(mdw-elevation=12) 12dp
-      .mdw-layout__item
-        .docs-elevation__item.mdw-elevation(mdw-elevation=16) 16dp
-      .mdw-layout__item
-        .docs-elevation__item.mdw-elevation(mdw-elevation=24) 24dp
++header("elevation")
+  .docs-grid.mdw-grid(mdw-margin-top mdw-margin-botttom mdw-columns=4 mdw-margin-4col="40" mdw-gutter-4col="40")
+    .mdw-grid__item
+      .docs-elevation__item.mdw-elevation(mdw-elevation=1) 1dp
+    .mdw-grid__item
+      .docs-elevation__item.mdw-elevation(mdw-elevation=2) 2dp
+    .mdw-grid__item
+      .docs-elevation__item.mdw-elevation(mdw-elevation=3) 3dp
+    .mdw-grid__item
+      .docs-elevation__item.mdw-elevation(mdw-elevation=4) 4dp
+    .mdw-grid__item
+      .docs-elevation__item.mdw-elevation(mdw-elevation=6) 6dp
+    .mdw-grid__item
+      .docs-elevation__item.mdw-elevation(mdw-elevation=8) 8dp
+    .mdw-grid__item
+      .docs-elevation__item.mdw-elevation(mdw-elevation=9) 9dp
+    .mdw-grid__item
+      .docs-elevation__item.mdw-elevation(mdw-elevation=12) 12dp
+    .mdw-grid__item
+      .docs-elevation__item.mdw-elevation(mdw-elevation=16) 16dp
+    .mdw-grid__item
+      .docs-elevation__item.mdw-elevation(mdw-elevation=24) 24dp
   script(src='elevation.min.js')

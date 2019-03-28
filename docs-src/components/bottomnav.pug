@@ -1,109 +1,167 @@
 include ../mixins.pug
 
-+header()
-  +navdrawer("bottomnav")
-    .comparison.clipped-300
-      .render
-        .content.display-flex
-          .flex-1
-            ul
-              li CSS-Only
-              li Keyboard support
-              li Radio buttons
-              li Badges
-          form.mdw-bottomnav.mdw-theme(mdw-color="teal")
-            label.mdw-bottomnav__item
-              input.mdw-bottomnav__input(type="radio" name="bottomnav" value="recents")
-              .mdw-bottomnav__icon.material-icons history
++header("bottomnav")
+  .mdw-grid(mdw-margin-top mdw-margin-bottom mdw-stretch)
+    .mdw-grid__item(mdw-colspan="100%")
+      h5.mdw-type(mdw-baseline-next="36") Bottom navigation bars allow movement between primary destinations in an app.
+      p.mdw-typeBottom navigation bars display three to five destinations at the bottom of a screen. Each destination is represented by an icon and an optional text label. When a bottom navigation icon is tapped, the user is taken to the top-level navigation destination associated with that icon.
+    .mdw-grid__item(mdw-colspan="6")
+      .mdw-grid__content.component-sample
+        .render-fill.mdw-theme
+          +androidstatusbar('background 900', 'dark')
+          +appbar('background 800', 'dark', [], []) Bottom Navigation
+          .content
+          nav.mdw-bottomnav.mdw-theme(mdw-color="primary 400")
+            a.mdw-bottomnav__item(aria-selected="true")
+              .mdw-bottomnav__icon
+                i.material-icons history
               .mdw-bottomnav__label Recents
-            label.mdw-bottomnav__item(mdw-badge="")
-              input.mdw-bottomnav__input(type="radio" name="bottomnav" value="favorites" checked)
-              .mdw-bottomnav__icon.material-icons favorite
+            a.mdw-bottomnav__item(aria-selected="false")
+              .mdw-bottomnav__icon(mdw-badge="")
+                i.material-icons favorite
               .mdw-bottomnav__label Favorites
-            label.mdw-bottomnav__item
-              input.mdw-bottomnav__input(type="radio" name="bottomnav" value="nearby")
-              .mdw-bottomnav__icon.material-icons near_me
+            a.mdw-bottomnav__item(aria-selected="false")
+              .mdw-bottomnav__icon(mdw-badge="99+")
+                i.material-icons near_me
               .mdw-bottomnav__label Nearby
+          +androidnavbar
+    .mdw-grid__item(mdw-colspan="4")
+      .mdw-type(mdw-style="subtitle") Javascript
+      div
+        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="required" checked)
+          .mdw-selection__icon
+          .mdw-selection__label Required
+        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="optional" disabled)
+          .mdw-selection__icon
+          .mdw-selection__label Optional
+        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="none" disabled)
+          .mdw-selection__icon
+          .mdw-selection__label None
+      .mdw-type(mdw-style="subtitle") Color (Ink)
+      div
+        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          input.mdw-selection__input.mdw-overlay(type="radio" name="color" value="default")
+          .mdw-selection__icon
+          .mdw-selection__label Default
+        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          input.mdw-selection__input.mdw-overlay(type="radio" name="color" value="primary 400" checked)
+          .mdw-selection__icon
+          .mdw-selection__label Primary 400
+        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          input.mdw-selection__input.mdw-overlay(type="radio" name="color" value="accent A200")
+          .mdw-selection__icon
+          .mdw-selection__label Accent A200
+        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          input.mdw-selection__input.mdw-overlay(type="radio" name="color" value="warn")
+          .mdw-selection__icon
+          .mdw-selection__label Warn
+        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          input.mdw-selection__input.mdw-overlay(type="radio" name="color" value="purple A400")
+          .mdw-selection__icon
+          .mdw-selection__label Purple A400
+      .mdw-type(mdw-style="subtitle") Fill
+      div
+        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          input.mdw-selection__input.mdw-overlay(type="radio" name="fill" value="none" checked)
+          .mdw-selection__icon
+          .mdw-selection__label None
+        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          input.mdw-selection__input.mdw-overlay(type="radio" name="fill" value="primary dark")
+          .mdw-selection__icon
+          .mdw-selection__label Primary
+        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          input.mdw-selection__input.mdw-overlay(type="radio" name="fill" value="accent A100 light")
+          .mdw-selection__icon
+          .mdw-selection__label Accent A100
+        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          input.mdw-selection__input.mdw-overlay(type="radio" name="fill" value="warn 200 light")
+          .mdw-selection__icon
+          .mdw-selection__label Warn 200
+        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          input.mdw-selection__input.mdw-overlay(type="radio" name="fill" value="green 700 dark")
+          .mdw-selection__icon
+          .mdw-selection__label Green 700
+    .mdw-grid__item(mdw-colspan="100%" style="max-height:0")
+    .mdw-grid__item(mdw-colspan="6")
+      h6.mdw-type HTML Code
+      .mdw-card.component-code.component-html
+        #usePug.mdw-button.mdw-theme(mdw-color="accent" aria-pressed="false" mdw-overlay-off="activated" mdw-icon) PUG
+    .mdw-grid__item(mdw-colspan="4")
+      h6.mdw-type Javascript Code
+      .mdw-card.component-code.component-js
+    .mdw-grid__item(mdw-colspan="100%")
+      h6.mdw-type Samples
+    .mdw-grid__item.display-flex(mdw-colspan="6")
+      .mdw-theme.render-fill.mdw-theme(mdw-fill="white" mdw-light)
+        +androidstatusbar('')
+        +appbar('', '', [], []) Light Theme
+        .content(style="padding: 16px 0")
+          ul
+            li Radio buttons
+            li Badges
+        nav.mdw-bottomnav.mdw-theme(mdw-color="primary")
+          a.mdw-bottomnav__item(aria-selected="true")
+            .mdw-bottomnav__icon.material-icons history
+            .mdw-bottomnav__label Recents
+          a.mdw-bottomnav__item(aria-selected="false")
+            .mdw-bottomnav__icon(mdw-badge="")
+              .material-icons favorite
+            .mdw-bottomnav__label Favorites
+          a.mdw-bottomnav__item(aria-selected="false")
+            .mdw-bottomnav__icon.material-icons near_me
+            .mdw-bottomnav__label Nearby
         +androidnavbar
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B3321sZLoP_HZjN1eld5MjRXb2s/components-bottomnavigation-usage1.png')
-
-    .comparison.clipped-300
-      .render
-        .content.display-flex
-          .flex-1
-            ul
-              li CSS-Only
-              li Keyboard support
-              li Disappearing Labels
-              li Radio buttons
-              li Badges
-          form.mdw-bottomnav.mdw-theme(mdw-fill="teal 700" mdw-dark mdw-shifting)
-            input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="movies" id='value1')
-            label.mdw-bottomnav__item(for='value1')
-              .mdw-bottomnav__icon.material-icons tv
-              .mdw-bottomnav__label Movies
-            input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="music" id='value2' checked )
-            label.mdw-bottomnav__item(for='value2' mdw-badge)
-              .mdw-bottomnav__icon.material-icons music_note
-              .mdw-bottomnav__label Music
-            input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="books" id='value3')
-            label.mdw-bottomnav__item(for='value3' mdw-badge="88")
-              .mdw-bottomnav__icon.material-icons book
-              .mdw-bottomnav__label Books
-            input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="newsstand" id='value4')
-            label.mdw-bottomnav__item(for='value4' mdw-badge="888+")
-              .mdw-bottomnav__icon.material-icons assignment
-              .mdw-bottomnav__label Newsstand
+    .mdw-grid__item.display-flex(mdw-colspan="6")
+      .mdw-theme.render-fill.js.mdw-theme(mdw-fill="black" mdw-dark)
+        +androidstatusbar('')
+        +appbar('', '', [], []) Dark Theme
+        .content(style="padding: 16px 0")
+          ul
+            li Disappearing Labels
+            li Badges
+            li Shifting labels
+        nav.mdw-bottomnav.mdw-theme(mdw-shifting)
+          a.mdw-bottomnav__item
+            .mdw-bottomnav__icon.material-icons tv
+            .mdw-bottomnav__label Movies
+          a.mdw-bottomnav__item(aria-selected="true")
+            .mdw-bottomnav__icon(mdw-badge)
+              .material-icons music_note
+            .mdw-bottomnav__label Music
+          a.mdw-bottomnav__item(aria-selected="false")
+            .mdw-bottomnav__icon(mdw-badge="88")
+              .material-icons book
+            .mdw-bottomnav__label Books
+          a.mdw-bottomnav__item(aria-selected="false")
+            .mdw-bottomnav__icon(mdw-badge="888+")
+              .material-icons assignment
+            .mdw-bottomnav__label Newsstand
         +androidnavbar
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B3321sZLoP_HZHA1UVAyRFpMVDQ/components-bottomnavigation-usage5.png')
-
-    .comparison.clipped-300
-      .render
-        .content.display-flex
-          .flex-1
-            ul
-              li CSS-Only
-              li Keyboard support
-              li Disappearing Labels
-              li ID-less Radio buttons
-          form.mdw-bottomnav.mdw-theme(mdw-fill="teal 700" mdw-dark mdw-shifting)
-            label.mdw-bottomnav__item
-              input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="movies")
-              .mdw-bottomnav__icon.material-icons tv
-              .mdw-bottomnav__label Movies
-            label.mdw-bottomnav__item
-              input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="music" checked)
-              .mdw-bottomnav__icon.material-icons music_note
-              .mdw-bottomnav__label Music
-            label.mdw-bottomnav__item
-              input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="books")
-              .mdw-bottomnav__icon.material-icons book
-              .mdw-bottomnav__label Books
-            label.mdw-bottomnav__item
-              input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="newsstand")
-              .mdw-bottomnav__icon.material-icons assignment
-              .mdw-bottomnav__label Newsstand
+    .mdw-grid__item.display-flex(mdw-colspan="6")
+      .mdw-theme.render-fill.js.mdw-theme
+        +androidstatusbar('')
+        +appbar('', '', [], []) Tablet
+        .content(style="padding: 16px 0")
+          ul
+            li Disappearing Labels
+            li Badges
+        nav.mdw-bottomnav.mdw-theme(mdw-fill="teal 700" mdw-dark mdw-shifting)
+          a.mdw-bottomnav__item(aria-selected="true")
+            .mdw-bottomnav__icon(mdw-badge="4")
+              .material-icons tv
+            .mdw-bottomnav__label Movies
+          a.mdw-bottomnav__item(aria-selected="false")
+            .mdw-bottomnav__icon(mdw-badge)
+              .material-icons music_note
+            .mdw-bottomnav__label Music
+          a.mdw-bottomnav__item(aria-selected="false")
+            .mdw-bottomnav__icon.material-icons book
+            .mdw-bottomnav__label Books
+          a.mdw-bottomnav__item(aria-selected="false")
+            .mdw-bottomnav__icon.material-icons assignment
+            .mdw-bottomnav__label Newsstand
         +androidnavbar
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B3321sZLoP_HZHA1UVAyRFpMVDQ/components-bottomnavigation-usage5.png')
-
-    .comparison.clipped-300.js
-      .render
-        .content.display-flex
-          .flex-1
-            ul
-              li Javascript-based
-              li No radio buttons
-              li Badges
-          .mdw-bottomnav.mdw-theme(mdw-color="teal")
-            .mdw-bottomnav__item(mdw-badge)
-              .mdw-bottomnav__icon.material-icons history
-              .mdw-bottomnav__label Recents
-            .mdw-bottomnav__item(mdw-selected)
-              .mdw-bottomnav__icon.material-icons favorite
-              .mdw-bottomnav__label Favorites
-            .mdw-bottomnav__item(mdw-badge="12")
-              .mdw-bottomnav__icon.material-icons near_me
-              .mdw-bottomnav__label Nearby
-        +androidnavbar
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B3321sZLoP_HZHA1UVAyRFpMVDQ/components-bottomnavigation-usage5.png')
   script(src='bottomnav.min.js')

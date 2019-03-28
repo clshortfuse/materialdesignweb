@@ -1,8 +1,9 @@
 include mixins.pug
 
-+header()
-  +navdrawer("Home")
-    .mdw-layout(mdw-margin-top mdw-margin-bottom mdw-stretch)
-      .mdw-layout__item(mdw-colspan="100%")
++header("Home")
+  .mdw-grid(mdw-margin-top mdw-margin-bottom mdw-stretch)
+    .mdw-grid__item(mdw-colspan="100%")
+      .mdw-grid__content
         h1.mdw-type Material Design Web
+        a.mdw-button.mdw-overlay.mdw-ripple(href="https://github.com/clshortfuse/materialdesignweb") GitHub
   script(src='index.min.js')

@@ -1,58 +1,70 @@
 include ../mixins.pug
 
-+header()
-  +navdrawer("search")
-    .comparison.js
-      .render
-        +androidstatusbar('primary 700', 'dark')
-        .mdw-toolbar.mdw-theme.mdw-theme(mdw-fill="primary 500" mdw-dark)
-          .mdw-toolbar__action
-            .mdw-toolbar__start
-              .mdw-button(mdw-icon).material-icons arrow_back
-            .mdw-toolbar__title(mdw-custom)
-              .mdw-textfield#search-textfield-simple.mdw-theme(mdw-solo mdw-color="accent")
-                input.mdw-textfield__input(placeholder="Search")
-            .mdw-toolbar__end
-              .mdw-button(mdw-icon).material-icons clear
-        .content
-          ul.mdw-list#search-list-simple
-            li.mdw-list__item Attractions
-            li.mdw-list__item Dining
-            li.mdw-list__item Education
-            li.mdw-list__item Family
-            li.mdw-list__item Health
-            li.mdw-list__item Office
-            li.mdw-list__item Promotions
-            li.mdw-list__item Radio
-            li.mdw-list__item Recipes
-            li.mdw-list__item Sports
-            li.mdw-list__item Travel
-        +androidnavbar
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xObnc4ZFYybVRWY2s/single-action4.png')
++header("search")
+  .comparison.js
+    .render
+      +androidstatusbar('primary 700', 'dark')
+      .mdw-appbar.mdw-theme.mdw-theme(mdw-fill="primary 500" mdw-dark)
+        .mdw-appbar__action
+          .mdw-appbar__start
+            .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) arrow_back
+          .mdw-appbar__title(mdw-custom)
+            .mdw-textfield#search-textfield-simple.mdw-theme(mdw-solo mdw-color="accent")
+              input.mdw-textfield__input(placeholder="Search")
+          .mdw-appbar__end
+            .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) clear
+      .content
+        ul.mdw-list#search-list-simple
+          li.mdw-list__item
+            .mdw-list__content Attractions
+          li.mdw-list__item
+            .mdw-list__content Dining
+          li.mdw-list__item
+            .mdw-list__content Education
+          li.mdw-list__item
+            .mdw-list__content Family
+          li.mdw-list__item
+            .mdw-list__content Health
+          li.mdw-list__item
+            .mdw-list__content Office
+          li.mdw-list__item
+            .mdw-list__content Promotions
+          li.mdw-list__item
+            .mdw-list__content Radio
+          li.mdw-list__item
+            .mdw-list__content Recipes
+          li.mdw-list__item
+            .mdw-list__content Sports
+          li.mdw-list__item
+            .mdw-list__content Travel
+      +androidnavbar
+    +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xObnc4ZFYybVRWY2s/single-action4.png')
 
-    .comparison.js
-      .render
-        +androidstatusbar('primary 700', 'dark')
-        .mdw-toolbar.mdw-theme(mdw-fill="primary 500" mdw-dark)
-          .mdw-toolbar__action
-            .mdw-toolbar__start
-              .mdw-button(mdw-icon).material-icons arrow_back
-            .mdw-toolbar__title(mdw-custom)
-              .mdw-textfield#search-textfield-multiline.mdw-theme(mdw-solo mdw-color="accent")
-                input.mdw-textfield__input(placeholder="Search")
-            .mdw-toolbar__end
-              .mdw-button(mdw-icon).material-icons clear
-        .content
-          ul.mdw-list#search-list-multiline
-            li.mdw-list__subheader Today
-            li.mdw-list__item
+  .comparison.js
+    .render
+      +androidstatusbar('primary 700', 'dark')
+      .mdw-appbar.mdw-theme(mdw-fill="primary 500" mdw-dark)
+        .mdw-appbar__action
+          .mdw-appbar__start
+            .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) arrow_back
+          .mdw-appbar__title(mdw-custom)
+            .mdw-textfield#search-textfield-multiline.mdw-theme(mdw-solo mdw-color="accent")
+              input.mdw-textfield__input(placeholder="Search")
+          .mdw-appbar__end
+            .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) clear
+      .content
+        ul.mdw-list#search-list-multiline
+          li.mdw-list__subheader Today
+          li.mdw-list__item
+            .mdw-list__content.mdw-overlay.mdw-ripple
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Brunch this weekend?
                 .mdw-list__text-block Ali Connors 
                   span  &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to meet?
-            li.mdw-list__item
+          li.mdw-list__item
+            .mdw-list__content
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
@@ -60,90 +72,95 @@ include ../mixins.pug
                   span  4
                 .mdw-list__text-block to Alex, Scott, Jennifer
                   span  &mdash; Wish I could come. but I'm out of town this weekend.
-            li.mdw-list__item
+          li.mdw-list__item
+            .mdw-list__content
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Oui oui
                 .mdw-list__text-block Sandra Adams
                   span  &mdash; Do you have Paris recommendations? Have you ever been?
-            li.mdw-list__item
+          li.mdw-list__item
+            .mdw-list__content
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Birthday gift
                 .mdw-list__text-block Trevor Hansen
                   span  &mdash; Have any ideas about what we should get Heidi for her birthday?
-            li.mdw-list__item
+          li.mdw-list__item
+            .mdw-list__content
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Recipe to try
                 .mdw-list__text-block Britta Holt
                   span  &mdash; We should eat this: Grated Squash, Corn, and tomatillo Tacos J
-            li.mdw-list__item
+          li.mdw-list__item
+            .mdw-list__content
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Giants game
                 .mdw-list__text-block David Park
                   span  &mdash; Any interest in seeing
-            li.mdw-list__item
+          li.mdw-list__item
+            .mdw-list__content
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Montauk weekend
                 .mdw-list__text-block -----
-        +androidnavbar
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xObnc4ZFYybVRWY2s/single-action4.png')
+      +androidnavbar
+    +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B5ZSepuCX1xObnc4ZFYybVRWY2s/single-action4.png')
 
-    .comparison.js
-      .render
-        .content.display-flex(style="padding:8px")
-          .flex-1.display-flex(flex-column)
-            p Text field dropdown with:
-            ul
-              li one-time search on first input
-              li startsWith text filter
-              li append input on selection
-            div
-              label.mdw-textfield#search-textfield-custom1.mdw-theme(mdw-color="accent")
-                input.mdw-textfield__input(placeholder=" ")
-                .mdw-textfield__border
-                  .mdw-textfield__outline-gap
-                    .mdw-textfield__label Property
-                .mdw-textfield__dropdown(mdw-type="list" mdw-hide)
-                  .custom-busy-indicator.display-flex(flex-align-items="center")
-                    .mdw-progress-circle
-                      svg(viewBox="0 0 24 24")
-                        path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12")
-                        path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25")
-                    span Searching...
-                  .mdw-list#search-list-custom1
-            p Current Selection: 
-              span#search-result-custom1
-            p Text field dropdown with:
-            ul
-              li input-based search
-              li 300ms debounce
-              li replace input on selection
-              li disabled item filter
-            div
-              label.mdw-textfield#search-textfield-custom2.mdw-theme(mdw-color="primary" mdw-outlined)
-                input.mdw-textfield__input(placeholder=" ")
-                .mdw-textfield__border
-                  .mdw-textfield__outline-gap
-                    .mdw-textfield__label Property
-                .mdw-textfield__dropdown(mdw-type="list" mdw-hide)
-                  .custom-busy-indicator.display-flex(flex-align-items="center")
-                    .mdw-progress-circle
-                      svg(viewBox="0 0 24 24")
-                        path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12")
-                        path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25")
-                    span Searching...
-                  .custom-no-results-indicator.display-flex(flex-align-items="center" style="display:none")
-                    span No results found.
-                  .mdw-list#search-list-custom2
-            p Current Selection: 
-              span#search-result-custom2
+  .comparison.js
+    .render
+      .content.display-flex(style="padding:8px")
+        .flex-1.display-flex(flex-column)
+          p Text field dropdown with:
+          ul
+            li one-time search on first input
+            li startsWith text filter
+            li append input on selection
+          div
+            label.mdw-textfield#search-textfield-custom1.mdw-theme(mdw-color="accent")
+              input.mdw-textfield__input(placeholder=" ")
+              .mdw-textfield__border
+                .mdw-textfield__outline-gap
+                  .mdw-textfield__label Property
+              .mdw-textfield__dropdown(mdw-type="list" mdw-hide)
+                .custom-busy-indicator.display-flex(flex-align-items="center")
+                  .mdw-progress-circle
+                    svg(viewBox="0 0 24 24")
+                      path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12")
+                      path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25")
+                  span Searching...
+                .mdw-list#search-list-custom1
+          p Current Selection: 
+            span#search-result-custom1
+          p Text field dropdown with:
+          ul
+            li input-based search
+            li 300ms debounce
+            li replace input on selection
+            li disabled item filter
+          div
+            label.mdw-textfield#search-textfield-custom2.mdw-theme(mdw-color="primary" mdw-outlined)
+              input.mdw-textfield__input(placeholder=" ")
+              .mdw-textfield__border
+                .mdw-textfield__outline-gap
+                  .mdw-textfield__label Property
+              .mdw-textfield__dropdown(mdw-type="list" mdw-hide)
+                .custom-busy-indicator.display-flex(flex-align-items="center")
+                  .mdw-progress-circle
+                    svg(viewBox="0 0 24 24")
+                      path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12")
+                      path(d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25")
+                  span Searching...
+                .custom-no-results-indicator.display-flex(flex-align-items="center" style="display:none")
+                  span No results found.
+                .mdw-list#search-list-custom2
+          p Current Selection: 
+            span#search-result-custom2
   script(src='search.min.js')

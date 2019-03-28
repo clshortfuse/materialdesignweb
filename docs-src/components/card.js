@@ -1,5 +1,5 @@
 import { convertElementToCode } from '../sample-utils';
-import { iterateArrayLike } from '../../components/common/dom';
+import { iterateArrayLike, setTextNode } from '../../core/dom';
 
 /** @type {HTMLElement} */
 let sampleComponent;
@@ -15,7 +15,21 @@ let primaryButtonElement;
 /** @return {void} */
 function updateSampleCode() {
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
-  htmlCodeElement.textContent = convertElementToCode(sampleComponent);
+  setTextNode(htmlCodeElement, convertElementToCode(sampleComponent,
+    document.getElementById('usePug').getAttribute('aria-pressed') === 'true'));
+}
+
+/** @return {void} */
+function setupPugButton() {
+  const pugButton = document.getElementById('usePug');
+  pugButton.addEventListener('click', () => {
+    if (pugButton.getAttribute('aria-pressed') === 'true') {
+      pugButton.setAttribute('aria-pressed', 'false');
+    } else {
+      pugButton.setAttribute('aria-pressed', 'true');
+    }
+    updateSampleCode();
+  });
 }
 
 /**
@@ -163,4 +177,5 @@ function setupComponentOptions() {
 }
 
 setupComponentOptions();
+setupPugButton();
 updateSampleCode();

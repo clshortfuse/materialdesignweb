@@ -1,14 +1,25 @@
-import { iterateArrayLike } from '../components/common/dom';
+import { iterateArrayLike } from '../core/dom';
+
 
 /**
  * @param {Element|HTMLElement} element
- * @param {string=} linePrefix
+ * @param {boolean} [pug=false]
+ * @param {string} [linePrefix='']
  * @return {string}
  */
-function convertElementToCode(element, linePrefix = '') {
+function convertElementToCode(element, pug = false, linePrefix = '') {
   const htmlType = element.tagName.toLowerCase();
+  /** @type {string[]} */
   const attributes = [];
+  /** @type {string[]} */
+  const classes = [];
+  iterateArrayLike(element.classList, (c) => {
+    classes.push(c);
+  });
   iterateArrayLike(element.attributes, (attr) => {
+    if (attr.name === 'class') {
+      return;
+    }
     if (attr.value.length) {
       attributes.push(`${attr.name}="${attr.value}"`);
     } else {
@@ -16,34 +27,43 @@ function convertElementToCode(element, linePrefix = '') {
     }
   });
   attributes.sort();
-  const syntaxItems = [htmlType, attributes.join(' ')];
-  const openingHTMLLine = `<${syntaxItems.filter(item => item).join(' ').trim()}>`;
-  const closingHTMLLine = `</${htmlType}>`;
+  const syntaxItems = [
+    htmlType,
+    classes.length ? `class="${classes.join(' ')}"` : '',
+    attributes.join(' '),
+  ];
+  const openingHTMLLine = pug
+    ? `${htmlType === 'div' && classes.length ? '' : htmlType}${classes.length ? `.${classes.join('.')}` : ''}${attributes.length ? `(${attributes.join(' ')})` : ''}`
+    : `<${syntaxItems.filter(item => item).join(' ').trim()}>`;
+  const closingHTMLLine = pug ? '' : `</${htmlType}>`;
   const lines = [openingHTMLLine];
   const innerLines = [];
   let onlyText = true;
   iterateArrayLike(element.childNodes, (child) => {
     let lineText;
     if (child instanceof HTMLElement) {
-      lineText = convertElementToCode(child, `  ${linePrefix}`);
+      lineText = convertElementToCode(child, pug, `  ${linePrefix}`);
       if (lineText.trim()) {
         onlyText = false;
       }
     } else if (child.nodeValue) {
-      lineText = `  ${child.nodeValue}`;
+      if (pug) {
+        lineText = `  ${child.nodeValue}`;
+      }
     }
     if (lineText && lineText.trim()) {
       innerLines.push(lineText);
     }
   });
   if (onlyText) {
+    if (pug) {
+      return `${linePrefix + lines.join('')} ${innerLines.join('').trim()}`;
+    }
     return linePrefix + lines.join('') + innerLines.join('').trim() + closingHTMLLine;
   }
-  innerLines
-    .filter(line => line.trim())
-    .forEach(line => lines.push(line));
+  innerLines.forEach(line => lines.push(line));
   lines.push(linePrefix + closingHTMLLine);
-  return linePrefix + lines.join('\n');
+  return linePrefix + lines.filter(line => line.trim()).join('\n');
 }
 
 /**

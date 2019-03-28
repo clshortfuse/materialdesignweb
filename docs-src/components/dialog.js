@@ -1,5 +1,6 @@
+import * as Button from '../../components/button/index';
 import * as Dialog from '../../components/dialog/index';
-import { iterateArrayLike } from '../../components/common/dom';
+import { iterateArrayLike } from '../../core/dom';
 import { changeElementTagName, convertElementToCode } from '../sample-utils';
 
 
@@ -25,6 +26,7 @@ function updateSampleCode() {
   let button = document.querySelector('.component-sample .mdw-button');
   let closer = document.querySelector('.component-sample .mdw-dialog__close');
   const dialogButtons = sampleComponent.querySelectorAll('.mdw-dialog__button-area .mdw-button');
+  Button.detach(button);
   button.removeEventListener('click', onSampleButtonClick);
   const tabIndexElements = sampleComponent.querySelectorAll('[tabindex]');
   iterateArrayLike(tabIndexElements, el => el.removeAttribute('tabindex'));
@@ -95,6 +97,7 @@ function updateSampleCode() {
   // Reattach JS if requested
   if (useJS) {
     Dialog.attach(sampleComponent);
+    Button.attach(button);
     button.addEventListener('click', onSampleButtonClick);
   }
 
@@ -147,6 +150,7 @@ function setupComponentOptions() {
 /** @return {void} */
 function initializeSampleComponents() {
   const button = document.querySelector('.js .mdw-button');
+  Button.attach(button);
   const confirmDialogElement = Dialog.create({
     title: 'Feedback',
     body: 'Are you enjoying this demo?',

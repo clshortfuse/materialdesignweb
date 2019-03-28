@@ -5,36 +5,27 @@ import {
   setupMenuOptions,
 } from './menuoptions';
 import { getStorageItem } from './storage';
+import * as Layout from '../components/layout/index';
+import * as List from '../components/list/index';
 
 
 const useRTLMode = getStorageItem('rtlmode') === 'true';
 const useDarkMode = getStorageItem('darkmode') === 'true';
 const fontsize = getStorageItem('fontsize');
 
-/** @return {boolean} */
-function checkIsStandaloneIOS() {
-  if (!navigator.standalone) {
-    return false;
-  }
-  const ua = navigator.userAgent.toLowerCase();
-  const isIPhone = /iphone/.test(ua);
-  const isIPad = /ipad/.test(ua);
-  return (isIPhone || isIPad);
-}
 
 /** @return {void} */
 function onDOMContentLoaded() {
   document.removeEventListener('DOMContentLoaded', onDOMContentLoaded);
   setupMenuOptions();
+  Layout.attach();
+  List.attachAll(document.getElementsByClassName('mdw-layout__navdrawer')[0]);
 }
 
 setRTLMode(useRTLMode);
 setDarkMode(useDarkMode);
 setFontSize(fontsize);
 
-if (checkIsStandaloneIOS()) {
-  document.documentElement.setAttribute('mdw-ios', '');
-  document.documentElement.setAttribute('mdw-standalone', '');
-}
+Layout.onPrerender();
 
 document.addEventListener('DOMContentLoaded', onDOMContentLoaded);

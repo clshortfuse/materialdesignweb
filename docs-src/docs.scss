@@ -1,13 +1,10 @@
 @import './flex.scss';
 
-html {
+html.mdw-theme[mdw-theme="default"] {
   font-family: Roboto, sans-serif;
-  
-  // Prefer iOS Dynamic Type for accessibility support
-  font: -apple-system-body;
 }
 
-.mdw-theme[mdw-theme="colored"] {
+html.mdw-theme[mdw-theme="colored"] {
   font-family: Merriweather, sans-serif;
 }
 
@@ -16,14 +13,6 @@ html {
   direction: inherit;
 }
 
-body {
-  margin: 0;
-}
-
-.nav {
-  min-width: 150px;
-  max-width: 150px;
-}
 
 .comparison {
   display: flex;
@@ -71,7 +60,7 @@ body {
 
 .render,
 .target {
-  min-width: 360px;
+  width: 360px;
   max-width: 360px;
 }
 
@@ -173,8 +162,23 @@ body {
   justify-content: center;
   padding: 24px;
   white-space: pre-wrap;
+  word-break: break-word;
   font-family: monospace;
   flex-grow: 1;
+  position: relative;
+}
+
+#usePug {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  left: auto;
+  font-size: 12px;
+  margin: 0;
+  :root[dir="rtl"] {
+    right: auto;
+    left: 4px;
+  }
 }
 
 
@@ -236,7 +240,7 @@ body {
   }
 }
 
-.docs-layout {
+.docs-grid {
   .mdw-card {
     padding: 16px 8px;
     display: flex;

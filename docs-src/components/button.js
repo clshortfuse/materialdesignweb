@@ -1,14 +1,57 @@
 import * as Button from '../../components/button/index';
+import * as Overlay from '../../core/overlay/index';
+import * as Ripple from '../../core/ripple/index';
 import { convertElementToCode } from '../sample-utils';
-import { iterateArrayLike, setTextNode } from '../../components/common/dom';
+import { iterateArrayLike, setTextNode } from '../../core/dom';
 
 /** @return {void} */
 function initializeSampleComponents() {
   iterateArrayLike(document.querySelectorAll('.js .mdw-button'), Button.attach);
 }
 
+/** @return {void} */
+function setupPugButton() {
+  const pugButton = document.getElementById('usePug');
+  Button.attach(pugButton);
+  pugButton.addEventListener('click', () => {
+    if (pugButton.getAttribute('aria-pressed') === 'true') {
+      pugButton.setAttribute('aria-pressed', 'false');
+    } else {
+      pugButton.setAttribute('aria-pressed', 'true');
+    }
+    updateSampleCode();
+  });
+}
+
 /** @type {HTMLElement} */
 let sampleComponent;
+
+/**
+ * @param {string} name
+ * @param {boolean} value
+ * @return {void}
+ */
+function toggleOverlayOption(name, value) {
+  const attr = sampleComponent.getAttribute('mdw-overlay-off') || '';
+  if (!attr) {
+    if (!value) {
+      return;
+    }
+    sampleComponent.setAttribute('mdw-overlay-off', name);
+    return;
+  }
+  if (value) {
+    if (attr.indexOf(name) !== -1) {
+      return;
+    }
+    sampleComponent.setAttribute('mdw-overlay-off', `${attr} ${name}`);
+    return;
+  }
+  if (attr.indexOf(name) === -1) {
+    return;
+  }
+  sampleComponent.setAttribute('mdw-overlay-off', attr.replace(name, '').trim());
+}
 
 /** @return {void} */
 function updateSampleCode() {
@@ -20,11 +63,18 @@ function updateSampleCode() {
   Button.detach(sampleComponent);
 
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
-  htmlCodeElement.textContent = convertElementToCode(sampleComponent);
+  setTextNode(htmlCodeElement, convertElementToCode(sampleComponent,
+    document.getElementById('usePug').getAttribute('aria-pressed') === 'true'));
 
   // Reattach JS if requested
   if (useJS) {
-    Button.attach(sampleComponent);
+    Button.attachCore(sampleComponent);
+    if (sampleComponent.classList.contains('mdw-ripple')) {
+      Ripple.attach(sampleComponent);
+    }
+    if (sampleComponent.classList.contains('mdw-overlay')) {
+      Overlay.attach(sampleComponent);
+    }
   }
 
   const jsCodeElement = document.getElementsByClassName('component-js')[0];
@@ -80,9 +130,9 @@ function onOptionChange(event) {
       break;
     case 'disabled':
       if (checked) {
-        sampleComponent.setAttribute('disabled', '');
+        sampleComponent.setAttribute('aria-disabled', 'true');
       } else {
-        sampleComponent.removeAttribute('disabled');
+        sampleComponent.removeAttribute('aria-disabled');
       }
       break;
     case 'content':
@@ -109,6 +159,18 @@ function onOptionChange(event) {
           sampleComponent.setAttribute('mdw-color', value);
           break;
       }
+      break;
+    case 'ripple':
+      if (checked) {
+        sampleComponent.classList.add('mdw-ripple');
+      } else {
+        sampleComponent.classList.remove('mdw-ripple');
+      }
+      break;
+    case 'overlay-hover':
+    case 'overlay-focus':
+    case 'overlay-activated':
+      toggleOverlayOption(name.replace('overlay-', ''), !checked);
       break;
     case 'fill':
       switch (value) {
@@ -156,6 +218,7 @@ function onOptionChange(event) {
 /** @return {void} */
 function setupComponentOptions() {
   sampleComponent = document.querySelector('.component-sample .mdw-button');
+  Button.attach(sampleComponent);
   iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
     el.addEventListener('change', onOptionChange);
   });
@@ -163,4 +226,5 @@ function setupComponentOptions() {
 
 initializeSampleComponents();
 setupComponentOptions();
+setupPugButton();
 updateSampleCode();

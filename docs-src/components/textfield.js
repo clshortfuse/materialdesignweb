@@ -1,4 +1,4 @@
-import { iterateArrayLike } from '../../components/common/dom';
+import { iterateArrayLike } from '../../core/dom';
 import * as TextField from '../../components/textfield/index';
 
 import { convertElementToCode } from '../sample-utils';

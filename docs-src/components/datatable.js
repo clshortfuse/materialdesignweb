@@ -1,4 +1,4 @@
-import { iterateArrayLike } from '../../components/common/dom';
+import { iterateArrayLike } from '../../core/dom';
 import * as Button from '../../components/button/index';
 import * as DataTable from '../../components/datatable/index';
 import * as Menu from '../../components/menu/index';

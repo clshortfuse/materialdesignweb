@@ -1,32 +1,33 @@
 include ../mixins.pug
 
-+header()
-  +navdrawer("tooltip")
-    .comparison
-      .render
-        +androidstatusbar('cyan 700', 'dark')
-        .mdw-toolbar.mdw-theme(mdw-fill="cyan 500" mdw-dark)
-          .mdw-toolbar__action
-            .mdw-toolbar__start
-              .mdw-tooltip__wrapper
-                .mdw-tooltip__target.mdw-button(mdw-icon).material-icons menu
-                .mdw-tooltip(mdw-align="start") Menu
-            .mdw-toolbar__title(style="color:white") Inbox
-            .mdw-toolbar__end
-              .mdw-tooltip__wrapper
-                .mdw-tooltip__target.mdw-button(mdw-icon).material-icons search
-                .mdw-tooltip(mdw-align="end") Search
-        .content
-          ul.mdw-list(mdw-divider)
-            li.mdw-list__subheader Today
-            li.mdw-list__item
++header("tooltip")
+  .comparison
+    .render
+      +androidstatusbar('cyan 700', 'dark')
+      .mdw-appbar.mdw-theme(mdw-fill="cyan 500" mdw-dark)
+        .mdw-appbar__action
+          .mdw-appbar__start
+            .mdw-tooltip__wrapper
+              .mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) menu
+              .mdw-tooltip(mdw-align="start") Menu
+          .mdw-appbar__title(style="color:white") Inbox
+          .mdw-appbar__end
+            .mdw-tooltip__wrapper
+              .mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) search
+              .mdw-tooltip(mdw-align="end") Search
+      .content
+        ul.mdw-list(mdw-divider)
+          li.mdw-list__subheader Today
+          li.mdw-list__item
+            .mdw-list__content
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Brunch this weekend?
                 .mdw-list__text-line Ali Connors 
                   span  &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to meet?
-            li.mdw-list__item
+          li.mdw-list__item
+            .mdw-list__content
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
@@ -34,40 +35,45 @@ include ../mixins.pug
                   span  4
                 .mdw-list__text-line to Alex, Scott, Jennifer
                   span  &mdash; Wish I could come. but I'm out of town this weekend.
-            li.mdw-list__item
+          li.mdw-list__item
+            .mdw-list__content
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Oui oui
                 .mdw-list__text-line Sandra Adams
                   span  &mdash; Do you have Paris recommendations? Have you ever been?
-            li.mdw-list__item
+          li.mdw-list__item
+            .mdw-list__content
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Birthday gift
                 .mdw-list__text-line Trevor Hansen
                   span  &mdash; Have any ideas about what we should get Heidi for her birthday?
-            li.mdw-list__item
+          li.mdw-list__item
+            .mdw-list__content
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Recipe to try
                 .mdw-list__text-line Britta Holt
                   span  &mdash; We should eat this: Grated Squash, Corn, and tomatillo Tacos J
-            li.mdw-list__item
+          li.mdw-list__item
+            .mdw-list__content
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Giants game
                 .mdw-list__text-line David Park
                   span  &mdash; Any interest in seeing
-            li.mdw-list__item
+          li.mdw-list__item
+            .mdw-list__content
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Montauk weekend
                 .mdw-list__text-line -----
-        +androidnavbar
-      +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsV0g5bVFHeEpxenc/components-tooltips-touch2.png')
+      +androidnavbar
+    +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsV0g5bVFHeEpxenc/components-tooltips-touch2.png')
   script(src='tooltip.min.js')

@@ -1,8 +1,51 @@
-import * as List from '../../components/list/index';
 import * as ListItem from '../../components/list/item';
 import * as TextField from '../../components/textfield/index';
 import SearchAdapter from '../../adapters/search/index';
-import { iterateArrayLike } from '../../components/common/dom';
+import { iterateArrayLike, setTextNode } from '../../core/dom';
+import { ListAdapter } from '../../index';
+
+/** @typedef {{line1:string, line2:string}} CustomSearchResult */
+
+
+/**
+ * @param {string} [filter]
+ * @return {CustomSearchResult[]}
+ */
+function performFakeSearch(filter) {
+  const results = [];
+  // eslint-disable-next-line guard-for-in, no-restricted-syntax
+  for (const key in window.navigator) {
+    const value = navigator[key] && navigator[key].toString();
+    if (!filter || key.indexOf(filter) !== -1 || (value && value.indexOf(filter) !== -1)) {
+      results.push({ line1: key, line2: navigator[key] });
+    }
+  }
+  return results;
+}
+
+/**
+ * @param {HTMLLIElement} listItemElement
+ * @param {CustomSearchResult} result
+ * @return {void}
+ */
+function searchResultRenderer(listItemElement, result) {
+  if (!listItemElement.children.length) {
+    listItemElement.setAttribute('role', 'option'); // Important!
+    const markup = `
+    <div class="mdw-list__content">
+      <div class="mdw-list__text">
+        <div class="mdw-list__text-line"></div>
+        <div class="mdw-list__text-line"></div>
+      </div>
+    </div>`;
+    // eslint-disable-next-line no-param-reassign
+    listItemElement.innerHTML = markup;
+    ListItem.attach(listItemElement);
+  }
+  const lines = listItemElement.getElementsByClassName('mdw-list__text-line');
+  setTextNode(lines[0], result.line1);
+  setTextNode(lines[1], result.line2);
+}
 
 /** @return {void} */
 function buildCustomSearch1() {
@@ -10,59 +53,18 @@ function buildCustomSearch1() {
   const list = document.getElementById('search-list-custom1');
   /** @type {HTMLElement} */
   const busyIndicator = (textfield.getElementsByClassName('custom-busy-indicator')[0]);
-  /** @type {WeakMap<HTMLLIElement, Object>} */
-  const myListItemMap = new WeakMap();
-  let resultsCache;
-  let listUpdated = false;
-  const customPerformSearch = (input, resolve) => {
-    if (listUpdated) {
-      resolve();
-      return;
-    }
-    if (resultsCache != null) {
-      resolve(resultsCache);
-      return;
-    }
-    busyIndicator.style.setProperty('display', '');
-    const myData = [];
-    for (const key in window.navigator) {
-      myData.push({ line1: key, line2: navigator[key] });
-    }
-    setTimeout(() => {
-      resultsCache = myData;
-      resolve(myData);
-    }, 2000);
-  };
-  const customUpdateList = (items, resolve) => {
-    if (listUpdated) {
-      resolve();
-      return;
-    }
-    while (list.lastChild) {
-      list.removeChild(list.lastChild);
-    }
-    busyIndicator.style.setProperty('display', 'none');
-    const markup = `
-    <div class="mdw-list__text">
-      <div class="mdw-list__text-line"></div>
-      <div class="mdw-list__text-line"></div>
-    </div>
-    `.trim();
-    items.forEach((item) => {
-      const listItem = document.createElement('li');
-      listItem.classList.add('mdw-list__item');
-      listItem.innerHTML = markup;
-      const lines = listItem.querySelectorAll('.mdw-list__text-line');
-      lines[0].textContent = item.line1;
-      lines[1].textContent = item.line2;
-      myListItemMap.set(listItem, item);
-      ListItem.attach(listItem);
-      list.appendChild(listItem);
-    });
-    listUpdated = true;
-    resolve();
-  };
 
+  // For purpose of this demo results are cached.
+  // Actual filter is performed by SearchAdapter
+
+  /** @type {ListAdapter<CustomSearchResult>} */
+  const customListAdapter = new ListAdapter(list, [], searchResultRenderer);
+
+  /** @type {CustomSearchResult[]} */
+  let myCachedResults = null;
+
+
+  /** @type {SearchAdapter<CustomSearchResult>} */
   const searchDocsCustom = new SearchAdapter({
     textfield,
     list,
@@ -70,12 +72,50 @@ function buildCustomSearch1() {
     dropdown: true,
     textFilter: 'startsWith',
     suggestionMethod: 'append',
-    performSearch: customPerformSearch,
-    updateList: customUpdateList,
+    performSearch(input, resolve) {
+      // Use precached results
+      if (myCachedResults != null) {
+        resolve(myCachedResults);
+        return;
+      }
+
+      // Display a busy indicator
+      busyIndicator.style.setProperty('display', '');
+
+      // Add results to a cached search adapter
+      myCachedResults = performFakeSearch();
+
+      // Let busy indicator spin to illustrate loading
+      setTimeout(() => {
+        // Send back the search results
+        resolve(myCachedResults);
+      }, 2000);
+    },
+    updateList(searchResults, resolve) {
+      // SearchAdapter signaling the UI is ready to update with search results
+
+      if (customListAdapter.datasource === searchResults) {
+        // Search results have already been mapped. Nothing to do.
+        // SearchAdapter handles item filtering.
+        resolve();
+        return;
+      }
+
+      // Directly assign search results as ListAdapter's data source
+      customListAdapter.datasource = searchResults;
+
+      // Remove busy indicator
+      busyIndicator.style.setProperty('display', 'none');
+
+      // Tell ListAdapter to perform a full refresh
+      customListAdapter.refresh();
+      resolve();
+    },
   });
-  searchDocsCustom.list.addEventListener('mdw:itemactivated', (event) => {
+
+  searchDocsCustom.list.addEventListener(ListItem.ACTIVATE_EVENT, (event) => {
     const el = /** @type {HTMLLIElement} */ (event.target);
-    const selectedItem = myListItemMap.get(el);
+    const selectedItem = customListAdapter.elementMap.get(el);
     const text = `${selectedItem.line1}:${selectedItem.line2}`;
     document.getElementById('search-result-custom1').textContent = text;
   });
@@ -105,62 +145,50 @@ function buildCustomSearch2() {
   const busyIndicator = (textfield.getElementsByClassName('custom-busy-indicator')[0]);
   /** @type {HTMLElement} */
   const noResultsIndicator = (textfield.getElementsByClassName('custom-no-results-indicator')[0]);
-  /** @type {WeakMap<HTMLLIElement, Object>} */
-  const myListItemMap = new WeakMap();
-  const customPerformSearch = (searchTerm, resolve) => {
-    while (list.lastChild) {
-      list.removeChild(list.lastChild);
-    }
-    showElement(busyIndicator);
-    hideElement(noResultsIndicator);
-    const myData = [];
-    for (const key in window.navigator) {
-      const value = navigator[key] && navigator[key].toString();
-      if (key.indexOf(searchTerm) !== -1 || (value && value.indexOf(searchTerm) !== -1)) {
-        myData.push({ line1: key, line2: navigator[key] });
-      }
-    }
-    setTimeout(() => {
-      resolve(myData);
-    }, 1000);
-  };
-  const customUpdateList = (items, resolve) => {
-    hideElement(busyIndicator);
-    if (!items.length) {
-      showElement(noResultsIndicator);
-      resolve();
-      return;
-    }
-    const markup = `
-    <div class="mdw-list__text">
-      <div class="mdw-list__text-line"></div>
-      <div class="mdw-list__text-line"></div>
-    </div>
-    `.trim();
-    items.forEach((item) => {
-      const listItem = document.createElement('li');
-      listItem.classList.add('mdw-list__item');
-      listItem.innerHTML = markup;
-      const lines = listItem.querySelectorAll('.mdw-list__text-line');
-      lines[0].textContent = item.line1;
-      lines[1].textContent = item.line2;
-      myListItemMap.set(listItem, item);
-      ListItem.attach(listItem);
-      list.appendChild(listItem);
-    });
-    resolve();
-  };
+
+  /** @type {ListAdapter<CustomSearchResult>} */
+  const customListAdapter = new ListAdapter(list, [], searchResultRenderer);
+
+  // For purpose of this query is "searched" every time with no cache.
+  // SearchAdapter performs no filter
+
   const searchDocsCustom = new SearchAdapter({
     textfield,
     list,
     debounce: 300,
     dropdown: true,
     filterItems: false,
-    performSearch: customPerformSearch,
-    updateList: customUpdateList,
+    performSearch(searchTerm, resolve) {
+      // Clear ListAdapter
+      customListAdapter.clear();
+
+      showElement(busyIndicator);
+      hideElement(noResultsIndicator);
+
+      const myData = performFakeSearch(searchTerm);
+      setTimeout(() => {
+        // Spin for 1000ms
+        resolve(myData);
+      }, 1000);
+    },
+    updateList(items, resolve) {
+      hideElement(busyIndicator);
+
+      if (!items.length) {
+        showElement(noResultsIndicator);
+        resolve();
+        return;
+      }
+
+      // Assign results to ListAdapter
+      customListAdapter.datasource = items;
+      customListAdapter.refresh();
+
+      resolve();
+    },
   });
-  searchDocsCustom.list.addEventListener('mdw:itemactivated', (event) => {
-    const selectedItem = myListItemMap.get(event.target);
+  searchDocsCustom.list.addEventListener(ListItem.ACTIVATE_EVENT, (event) => {
+    const selectedItem = customListAdapter.elementMap.get(event.target);
     const text = `${selectedItem.line1}:${selectedItem.line2}`;
     document.getElementById('search-result-custom2').textContent = text;
   });
@@ -185,8 +213,6 @@ function setupSearches() {
 /** @return {void} */
 function initializeMdwComponents() {
   iterateArrayLike(document.querySelectorAll('.js .mdw-textfield'), TextField.attach);
-  iterateArrayLike(document.querySelectorAll('.js .mdw-list'), List.attach);
-  iterateArrayLike(document.querySelectorAll('.js .mdw-list__item'), ListItem.attach);
 }
 
 initializeMdwComponents();

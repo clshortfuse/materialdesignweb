@@ -67,6 +67,11 @@ export function setAltTheme(value, button) {
   if (button) {
     button.setAttribute('aria-pressed', stringValue);
   }
+  const statusBarAttribute = document.head.getElementsByTagName('meta')['theme-color'];
+  if (statusBarAttribute) {
+    statusBarAttribute.setAttribute('content', value ? '#FF9800' : '#E91E63');
+  }
+
   setStorageItem('alttheme', stringValue);
 }
 

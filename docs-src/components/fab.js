@@ -1,6 +1,6 @@
 import * as Button from '../../components/button/index';
 import * as Fab from '../../components/fab/index';
-import { iterateArrayLike } from '../../components/common/dom';
+import { iterateArrayLike } from '../../core/dom';
 
 /** @return {void} */
 function initializeMdwComponents() {

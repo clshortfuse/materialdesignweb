@@ -1,77 +1,64 @@
+import * as Button from '../../components/button/index';
 import * as Tab from '../../components/tab/index';
 import { convertElementToCode, changeElementTagName } from '../sample-utils';
-import { iterateArrayLike } from '../../components/common/dom';
+import { iterateArrayLike, setTextNode } from '../../core/dom';
 
 /** @type {HTMLElement} */
 let sampleComponent;
 
 /** @return {void} */
 function onWindowResize() {
-  Tab.onResize(sampleComponent);
+  iterateArrayLike(document.getElementsByClassName('mdw-tab'), Tab.onResize);
+}
+
+/** @return {void} */
+function setupPugButton() {
+  const pugButton = document.getElementById('usePug');
+  Button.attach(pugButton);
+  pugButton.addEventListener('click', () => {
+    if (pugButton.getAttribute('aria-pressed') === 'true') {
+      pugButton.setAttribute('aria-pressed', 'false');
+    } else {
+      pugButton.setAttribute('aria-pressed', 'true');
+    }
+    updateSampleCode();
+  });
 }
 
 /** @return {void} */
 function updateSampleCode() {
-  const jsRequired = document.querySelector('input[name="javascript"][value="required"]').checked;
-  const jsOptional = document.querySelector('input[name="javascript"][value="optional"]').checked;
-  const useJS = jsRequired || jsOptional;
-
-  // Strip JS related elements and attributes
+  // Strip automatic attributes and classes
   Tab.detach(sampleComponent);
-
-  if (jsRequired && sampleComponent instanceof HTMLDivElement === false) {
-    sampleComponent = changeElementTagName(sampleComponent, 'div');
-  } else if (!jsRequired && sampleComponent instanceof HTMLFormElement === false) {
-    sampleComponent = changeElementTagName(sampleComponent, 'form');
-  }
-
-  const inputs = sampleComponent.getElementsByTagName('input');
-  const tabItems = sampleComponent.getElementsByClassName('mdw-tab__item');
-
-  if (jsRequired) {
-    for (let i = inputs.length - 1; i >= 0; i -= 1) {
-      const input = inputs.item(i);
-      input.parentElement.removeChild(input);
-    }
-    for (let i = 0; i < tabItems.length; i += 1) {
-      let item = tabItems.item(i);
-      if (item instanceof HTMLDivElement === false) {
-        item = changeElementTagName(item, 'div');
-      }
-      item.removeAttribute('for');
-    }
-  } else {
-    const tabItemsElement = sampleComponent.getElementsByClassName('mdw-tab__items')[0];
-    for (let i = 0; i < 3; i += 1) {
-      let input = inputs.item(i);
-      let tabItem = tabItems.item(i);
-      if (!input) {
-        input = document.createElement('input');
-        input.checked = (i === 0);
-        input.classList.add('mdw-tab__input');
-        input.setAttribute('id', `tab${i + 1}`);
-        input.setAttribute('name', 'tab');
-        input.setAttribute('type', 'radio');
-        sampleComponent.insertBefore(input, tabItemsElement);
-      }
-      if (tabItem instanceof HTMLLabelElement === false) {
-        tabItem = changeElementTagName(tabItem, 'label');
-      }
-      tabItem.setAttribute('for', `tab${i + 1}`);
-    }
-  }
+  const tabList = sampleComponent.getElementsByClassName('mdw-tab__list')[0];
+  tabList.removeAttribute('role');
+  tabList.classList.remove('mdw-overlay__group');
+  tabList.removeAttribute('aria-orientation');
+  tabList.removeAttribute('aria-multiselectable');
+  iterateArrayLike(sampleComponent.getElementsByClassName('mdw-tab__item'), (el) => {
+    el.classList.remove('mdw-overlay');
+    el.classList.remove('mdw-ripple');
+    el.removeAttribute('mdw-overlay-off');
+    el.removeAttribute('role');
+    el.removeAttribute('tabindex');
+    el.removeAttribute('aria-selected');
+  });
+  iterateArrayLike(sampleComponent.getElementsByClassName('mdw-tab__icon'), (el) => {
+    el.removeAttribute('aria-hidden');
+  });
+  const indicator = sampleComponent.getElementsByClassName('mdw-tab__indicator')[0];
+  indicator.removeAttribute('role');
+  indicator.removeAttribute('style');
+  iterateArrayLike(sampleComponent.getElementsByClassName('mdw-tab__panel'), (el) => {
+    el.removeAttribute('role');
+    el.removeAttribute('aria-expanded');
+    el.removeAttribute('aria-hidden');
+  });
 
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
-  const sampleContainer = document.querySelector('.component-sample__container').firstElementChild;
-  htmlCodeElement.textContent = convertElementToCode(sampleContainer);
+  setTextNode(htmlCodeElement, convertElementToCode(sampleComponent,
+    document.getElementById('usePug').getAttribute('aria-pressed') === 'true'));
 
-  // Reattach JS if requested
-  if (useJS) {
-    window.addEventListener('resize', onWindowResize);
-    Tab.attach(sampleComponent);
-  } else {
-    window.removeEventListener('resize', onWindowResize);
-  }
+  Tab.attach(sampleComponent);
 
   const jsCodeElement = document.getElementsByClassName('component-js')[0];
   jsCodeElement.textContent = [
@@ -83,7 +70,8 @@ function updateSampleCode() {
 
 /** @return {void} */
 function initializeSampleComponents() {
-  iterateArrayLike(document.querySelectorAll('.js .mdw-tab'), Tab.attach);
+  iterateArrayLike(document.getElementsByClassName('mdw-tab'), Tab.attach);
+  window.addEventListener('resize', onWindowResize);
   iterateArrayLike(document.getElementsByTagName('form'), (formElement) => {
     formElement.reset();
   });
@@ -97,7 +85,7 @@ function onOptionChange(event) {
   /** @type {HTMLInputElement} */
   const inputElement = (event.currentTarget);
   const { name, value, checked } = inputElement;
-  const tabItemsElement = sampleComponent.querySelector('.mdw-tab__items');
+  const tabListElement = sampleComponent.querySelector('.mdw-tab__list');
 
   switch (name) {
     case 'framework':
@@ -112,49 +100,47 @@ function onOptionChange(event) {
     case 'color':
       switch (value) {
         case 'default':
-          tabItemsElement.removeAttribute('mdw-color');
+          tabListElement.removeAttribute('mdw-color');
           break;
         default:
-          tabItemsElement.setAttribute('mdw-color', value);
+          tabListElement.setAttribute('mdw-color', value);
           break;
       }
       break;
     case 'fill':
       switch (value) {
         case 'none':
-          tabItemsElement.removeAttribute('mdw-fill');
-          tabItemsElement.removeAttribute('mdw-light');
-          tabItemsElement.removeAttribute('mdw-dark');
+          tabListElement.removeAttribute('mdw-fill');
+          tabListElement.removeAttribute('mdw-light');
+          tabListElement.removeAttribute('mdw-dark');
           break;
         default:
-          tabItemsElement.setAttribute('mdw-fill', value.replace(/ (light|dark)/, ''));
+          tabListElement.setAttribute('mdw-fill', value.replace(/ (light|dark)/, ''));
           if (value.indexOf(' light') === -1) {
-            tabItemsElement.removeAttribute('mdw-light');
+            tabListElement.removeAttribute('mdw-light');
           } else {
-            tabItemsElement.setAttribute('mdw-light', '');
+            tabListElement.setAttribute('mdw-light', '');
           }
           if (value.indexOf(' dark') === -1) {
-            tabItemsElement.removeAttribute('mdw-dark');
+            tabListElement.removeAttribute('mdw-dark');
           } else {
-            tabItemsElement.setAttribute('mdw-dark', '');
+            tabListElement.setAttribute('mdw-dark', '');
           }
           break;
       }
       break;
     case 'tabs-scrollable':
       if (checked) {
-        sampleComponent.getElementsByClassName('mdw-tab__items')[0].setAttribute('mdw-scrollable', '');
+        sampleComponent.getElementsByClassName('mdw-tab__list')[0].setAttribute('mdw-scrollable', '');
       } else {
-        sampleComponent.getElementsByClassName('mdw-tab__items')[0].removeAttribute('mdw-scrollable');
+        sampleComponent.getElementsByClassName('mdw-tab__list')[0].removeAttribute('mdw-scrollable');
       }
       break;
     case 'content-scrollable': {
       if (checked) {
-        sampleComponent.getElementsByClassName('mdw-tab__content')[0].setAttribute('mdw-scrollsnap', '');
-        sampleComponent.getElementsByClassName('mdw-tab__items')[0].setAttribute('mdw-scrollsnap', '');
+        sampleComponent.getElementsByClassName('mdw-tab__content')[0].removeAttribute('mdw-no-scroll');
       } else {
-        sampleComponent.getElementsByClassName('mdw-tab__content')[0].removeAttribute('mdw-scrollsnap');
-        sampleComponent.getElementsByClassName('mdw-tab__items')[0].removeAttribute('mdw-scrollsnap');
+        sampleComponent.getElementsByClassName('mdw-tab__content')[0].setAttribute('mdw-no-scroll', '');
       }
       break;
     }
@@ -165,6 +151,7 @@ function onOptionChange(event) {
 
 /** @return {void} */
 function setupComponentOptions() {
+  setupPugButton();
   sampleComponent = document.querySelector('.component-sample .mdw-tab');
   iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
     el.addEventListener('change', onOptionChange);

@@ -1,31 +1,30 @@
 include ../mixins.pug
 
-+header()
-  +navdrawer("type")
-    div
-      .content
-        h1.mdw-type H1 Headline
-        h2.mdw-type H2 Headline
-        h3.mdw-type H3 Headline
-        h4.mdw-type H4 Headline
-        h5.mdw-type H5 Headline
-        h6.mdw-type H6 Headline
-        .mdw-type(mdw-style="subtitle") Subtitle 1
-        .mdw-type(mdw-style="subtitle-2") Subtitle 2
-        p.mdw-type Body 1
-        p.mdw-type(mdw-style="body-2") Body 2
-        .mdw-type(mdw-style="button") Button
-        .mdw-type(mdw-style="caption") Caption
-        .mdw-type(mdw-style="overline") Overline
++header("type")
+  div
+    .content
+      h1.mdw-type H1 Headline
+      h2.mdw-type H2 Headline
+      h3.mdw-type H3 Headline
+      h4.mdw-type H4 Headline
+      h5.mdw-type H5 Headline
+      h6.mdw-type H6 Headline
+      .mdw-type(mdw-style="subtitle") Subtitle 1
+      .mdw-type(mdw-style="subtitle-2") Subtitle 2
+      p.mdw-type Body 1
+      p.mdw-type(mdw-style="body-2") Body 2
+      .mdw-type(mdw-style="button") Button
+      .mdw-type(mdw-style="caption") Caption
+      .mdw-type(mdw-style="overline") Overline
 
-    .comparison.type-comparison-3
-      .render
-        h5.mdw-type(mdw-baseline-top="64" mdw-baseline-next="20") Johannes Guttenberg
-        .mdw-type(mdw-style="caption" mdw-baseline-next="36") German Printer
-        p.mdw-type(mdw-style="body-2" mdw-baseline-next="32") Johannes Gensfleisch zur Laden zum Gutenberg was a German blacksmith, goldsmith, printer, and publisher who introduced printing to Europe with the printing press.
-        p.mdw-type(mdw-style="body-2" mdw-baseline-next="20") Born
-        p.mdw-type(mdw-style="body-2" mdw-baseline-bottom="68") c. 1400, Mainz Germany
-      div
-        div(style="margin-top:10px")
-          +target('https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1XfS9DMhlPihgJmjRFH7r9OYpLbZJGF6A%2Ftype-setting-baseline.png')
+  .comparison.type-comparison-3
+    .render
+      h5.mdw-type(mdw-baseline-top="64" mdw-baseline-next="20") Johannes Guttenberg
+      .mdw-type(mdw-style="caption" mdw-baseline-next="36") German Printer
+      p.mdw-type(mdw-style="body-2" mdw-baseline-next="32") Johannes Gensfleisch zur Laden zum Gutenberg was a German blacksmith, goldsmith, printer, and publisher who introduced printing to Europe with the printing press.
+      p.mdw-type(mdw-style="body-2" mdw-baseline-next="20") Born
+      p.mdw-type(mdw-style="body-2" mdw-baseline-bottom="68") c. 1400, Mainz Germany
+    div
+      div(style="margin-top:10px")
+        +target('https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1XfS9DMhlPihgJmjRFH7r9OYpLbZJGF6A%2Ftype-setting-baseline.png')
   script(src='type.min.js')

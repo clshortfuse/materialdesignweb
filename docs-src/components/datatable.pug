@@ -1,327 +1,326 @@
 include ../mixins.pug
 
-+header()
-  +navdrawer("datatable")
-    .mdw-layout(mdw-margin-top mdw-margin-bottom)
-      .mdw-layout__item(mdw-colspan="100%")
-        .mdw-card
-          .mdw-datatable.mdw-theme(mdw-color="primary")
++header("datatable")
+  .mdw-grid(mdw-margin-top mdw-margin-bottom)
+    .mdw-grid__item(mdw-colspan="100%")
+      .mdw-card
+        .mdw-datatable.mdw-theme(mdw-color="primary" style="overflow-x:auto")
+          table
+            caption Standard HTML Table (CSS Only)
+            thead
+              tr
+                th Dessert (100g serving)
+                th Calories
+                th Fat (g)
+                th Carbs (g)
+                th Protein (g)
+                th Sodium (mg)
+                th Calcium (%)
+                th Iron (%)
+            tbody
+              tr
+                td Frozen Yogurt
+                td 159
+                td 6.0
+                td 24
+                td 4.0
+                td 87
+                td 14%
+                td 1%
+              tr
+                td Ice cream sandwich
+                td 237
+                td 9.0
+                td 37
+                td 4.3
+                td 129
+                td 8%
+                td 1%
+              tr
+                td Eclair
+                td 262
+                td 16.0
+                td 24
+                td 6.0
+                td 337
+                td 6%
+                td 7%
+              tr
+                td Cupcake
+                td 305
+                td 3.7
+                td 67
+                td 4.3
+                td 413
+                td 3%
+                td 8%
+              tr
+                td Gingerbread
+                td 356
+                td 16.0
+                td 49
+                td 3.9
+                td 327
+                td 7%
+                td 16%
+              tr
+                td Jelly bean
+                td 375
+                td 0.0
+                td 94
+                td 0.0
+                td 50
+                td 0%
+                td 0%
+              tr
+                td Lollipop
+                td 392
+                td 0.2
+                td 98
+                td 0
+                td 38
+                td 0%
+                td 2%
+              tr
+                td Honeycomb
+                td 408
+                td 3.2
+                td 87
+                td 6.5
+                td 562
+                td 0%
+                td 45%
+              tr
+                td Donut
+                td 452
+                td 25.0
+                td 51
+                td 4.9
+                td 326
+                td 2%
+                td 22%
+              tr
+                td Kitkat
+                td 518
+                td 26.0
+                td 65
+                td 7
+                td 54
+                td 12%
+                td 6%
+    .mdw-grid__item(mdw-colspan="100%")
+      .mdw-card
+        .mdw-datatable.js.mdw-theme(mdw-color="primary" mdw-cell-focusable)
+          .mdw-datatable__header
+            .mdw-datatable__header-text Customized HTML Table
+          .mdw-datatable__scroller
             table
-              caption Standard HTML Table (CSS Only)
               thead
                 tr
-                  th Dessert (100g serving)
-                  th Calories
-                  th Fat (g)
-                  th Carbs (g)
-                  th Protein (g)
-                  th Sodium (mg)
-                  th Calcium (%)
-                  th Iron (%)
+                  th(data-type="checkbox" mdw-selector)
+                    label.mdw-selection
+                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      .mdw-selection__icon
+                  th(mdw-sortable data-type="text" mdw-primary-column)
+                    .mdw-datatable__sort-icon.material-icons arrow_downward
+                    span Dessert (100g serving)
+                  th(mdw-sortable data-type="number" mdw-sorted='')
+                    .mdw-datatable__sort-icon.material-icons arrow_downward
+                    span.mdw-tooltip__wrapper
+                      span.mdw-tooltip__target Calories
+                      .mdw-tooltip The total amount of food energy in the given serving size.
+                  th(mdw-sortable data-type="number")
+                    .mdw-datatable__sort-icon.material-icons arrow_downward
+                    span Fat (g)
+                  th(mdw-sortable data-type="number")
+                    .mdw-datatable__sort-icon.material-icons arrow_downward
+                    span Carbs (g)
+                  th(mdw-sortable data-type="number")
+                    .mdw-datatable__sort-icon.material-icons arrow_downward
+                    span Protein (g)
+                  th(mdw-sortable data-type="number")
+                    .mdw-datatable__sort-icon.material-icons arrow_downward
+                    span Sodium (mg)
+                  th(mdw-sortable data-type="number")
+                    .mdw-datatable__sort-icon.material-icons arrow_downward
+                  th(mdw-sortable data-type="number")
+                    .mdw-datatable__sort-icon.material-icons arrow_downward
+                    span Iron (%)
               tbody
                 tr
-                  td Frozen Yogurt
-                  td 159
-                  td 6.0
-                  td 24
-                  td 4.0
-                  td 87
-                  td 14%
-                  td 1%
+                  td(data-type="checkbox" mdw-selector)
+                    label.mdw-selection
+                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      .mdw-selection__icon
+                  td(data-type="text" mdw-primary-column) Frozen Yogurt
+                  td(data-type="number") 159
+                  td(data-type="number") 6.0
+                  td(data-type="number") 24
+                  td(data-type="number") 4.0
+                  td(data-type="number") 87
+                  td(data-type="number") 14%
+                  td(data-type="number") 1%
                 tr
-                  td Ice cream sandwich
-                  td 237
-                  td 9.0
-                  td 37
-                  td 4.3
-                  td 129
-                  td 8%
-                  td 1%
+                  td(data-type="checkbox" mdw-selector)
+                    label.mdw-selection
+                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      .mdw-selection__icon
+                  td(data-type="text" mdw-primary-column) Ice cream sandwich
+                  td(data-type="number") 237
+                  td(data-type="number") 9.0
+                  td(data-type="number") 37
+                  td(data-type="number") 4.3
+                  td(data-type="number") 129
+                  td(data-type="number") 8%
+                  td(data-type="number") 1%
                 tr
-                  td Eclair
-                  td 262
-                  td 16.0
-                  td 24
-                  td 6.0
-                  td 337
-                  td 6%
-                  td 7%
+                  td(data-type="checkbox" mdw-selector)
+                    label.mdw-selection
+                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      .mdw-selection__icon
+                  td(data-type="text" mdw-primary-column) Eclair
+                  td(data-type="number") 262
+                  td(data-type="number") 16.0
+                  td(data-type="number") 24
+                  td(data-type="number") 6.0
+                  td(data-type="number") 337
+                  td(data-type="number") 6%
+                  td(data-type="number") 7%
                 tr
-                  td Cupcake
-                  td 305
-                  td 3.7
-                  td 67
-                  td 4.3
-                  td 413
-                  td 3%
-                  td 8%
+                  td(data-type="checkbox" mdw-selector)
+                    label.mdw-selection
+                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      .mdw-selection__icon
+                  td(data-type="text" mdw-primary-column) Cupcake
+                  td(data-type="number") 305
+                  td(data-type="number") 3.7
+                  td(data-type="number") 67
+                  td(data-type="number") 4.3
+                  td(data-type="number") 413
+                  td(data-type="number") 3%
+                  td(data-type="number") 8%
                 tr
-                  td Gingerbread
-                  td 356
-                  td 16.0
-                  td 49
-                  td 3.9
-                  td 327
-                  td 7%
-                  td 16%
+                  td(data-type="checkbox" mdw-selector)
+                    label.mdw-selection
+                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      .mdw-selection__icon
+                  td(data-type="text" mdw-primary-column) Gingerbread
+                  td(data-type="number") 356
+                  td(data-type="number") 16.0
+                  td(data-type="number") 49
+                  td(data-type="number") 3.9
+                  td(data-type="number") 327
+                  td(data-type="number") 7%
+                  td(data-type="number") 16%
                 tr
-                  td Jelly bean
-                  td 375
-                  td 0.0
-                  td 94
-                  td 0.0
-                  td 50
-                  td 0%
-                  td 0%
+                  td(data-type="checkbox" mdw-selector)
+                    label.mdw-selection
+                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      .mdw-selection__icon
+                  td(data-type="text" mdw-primary-column) Jelly bean
+                  td(data-type="number") 375
+                  td(data-type="number") 0.0
+                  td(data-type="number") 94
+                  td(data-type="number") 0.0
+                  td(data-type="number") 50
+                  td(data-type="number") 0%
+                  td(data-type="number") 0%
                 tr
-                  td Lollipop
-                  td 392
-                  td 0.2
-                  td 98
-                  td 0
-                  td 38
-                  td 0%
-                  td 2%
+                  td(data-type="checkbox" mdw-selector)
+                    label.mdw-selection
+                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      .mdw-selection__icon
+                  td(data-type="text" mdw-primary-column) Lollipop
+                  td(data-type="number") 392
+                  td(data-type="number") 0.2
+                  td(data-type="number") 98
+                  td(data-type="number") 0
+                  td(data-type="number") 38
+                  td(data-type="number") 0%
+                  td(data-type="number") 2%
                 tr
-                  td Honeycomb
-                  td 408
-                  td 3.2
-                  td 87
-                  td 6.5
-                  td 562
-                  td 0%
-                  td 45%
+                  td(data-type="checkbox" mdw-selector)
+                    label.mdw-selection
+                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      .mdw-selection__icon
+                  td(data-type="text" mdw-primary-column) Honeycomb
+                  td(data-type="number") 408
+                  td(data-type="number") 3.2
+                  td(data-type="number") 87
+                  td(data-type="number") 6.5
+                  td(data-type="number") 562
+                  td(data-type="number") 0%
+                  td(data-type="number") 45%
                 tr
-                  td Donut
-                  td 452
-                  td 25.0
-                  td 51
-                  td 4.9
-                  td 326
-                  td 2%
-                  td 22%
+                  td(data-type="checkbox" mdw-selector)
+                    label.mdw-selection
+                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      .mdw-selection__icon
+                  td(data-type="text" mdw-primary-column) Donut
+                  td(data-type="number") 452
+                  td(data-type="number") 25.0
+                  td(data-type="number") 51
+                  td(data-type="number") 4.9
+                  td(data-type="number") 326
+                  td(data-type="number") 2%
+                  td(data-type="number") 22%
                 tr
-                  td Kitkat
-                  td 518
-                  td 26.0
-                  td 65
-                  td 7
-                  td 54
-                  td 12%
-                  td 6%
-      .mdw-layout__item(mdw-colspan="100%")
-        .mdw-card
-          .mdw-datatable.js.mdw-theme(mdw-color="primary" mdw-cell-focusable)
-            .mdw-datatable__header
-              .mdw-datatable__header-text Customized HTML Table
-            .mdw-datatable__scroller
-              table
-                thead
-                  tr
-                    th(data-type="checkbox" mdw-selector)
-                      label.mdw-selection
-                        input.mdw-selection__input(type="checkbox")
-                        .mdw-selection__icon
-                    th(mdw-sortable data-type="text" mdw-primary-column)
-                      .mdw-datatable__sort-icon.material-icons arrow_downward
-                      span Dessert (100g serving)
-                    th(mdw-sortable data-type="number" mdw-sorted='')
-                      .mdw-datatable__sort-icon.material-icons arrow_downward
-                      span.mdw-tooltip__wrapper
-                        span.mdw-tooltip__target Calories
-                        .mdw-tooltip The total amount of food energy in the given serving size.
-                    th(mdw-sortable data-type="number")
-                      .mdw-datatable__sort-icon.material-icons arrow_downward
-                      span Fat (g)
-                    th(mdw-sortable data-type="number")
-                      .mdw-datatable__sort-icon.material-icons arrow_downward
-                      span Carbs (g)
-                    th(mdw-sortable data-type="number")
-                      .mdw-datatable__sort-icon.material-icons arrow_downward
-                      span Protein (g)
-                    th(mdw-sortable data-type="number")
-                      .mdw-datatable__sort-icon.material-icons arrow_downward
-                      span Sodium (mg)
-                    th(mdw-sortable data-type="number")
-                      .mdw-datatable__sort-icon.material-icons arrow_downward
-                    th(mdw-sortable data-type="number")
-                      .mdw-datatable__sort-icon.material-icons arrow_downward
-                      span Iron (%)
-                tbody
-                  tr
-                    td(data-type="checkbox" mdw-selector)
-                      label.mdw-selection
-                        input.mdw-selection__input(type="checkbox")
-                        .mdw-selection__icon
-                    td(data-type="text" mdw-primary-column) Frozen Yogurt
-                    td(data-type="number") 159
-                    td(data-type="number") 6.0
-                    td(data-type="number") 24
-                    td(data-type="number") 4.0
-                    td(data-type="number") 87
-                    td(data-type="number") 14%
-                    td(data-type="number") 1%
-                  tr
-                    td(data-type="checkbox" mdw-selector)
-                      label.mdw-selection
-                        input.mdw-selection__input(type="checkbox")
-                        .mdw-selection__icon
-                    td(data-type="text" mdw-primary-column) Ice cream sandwich
-                    td(data-type="number") 237
-                    td(data-type="number") 9.0
-                    td(data-type="number") 37
-                    td(data-type="number") 4.3
-                    td(data-type="number") 129
-                    td(data-type="number") 8%
-                    td(data-type="number") 1%
-                  tr
-                    td(data-type="checkbox" mdw-selector)
-                      label.mdw-selection
-                        input.mdw-selection__input(type="checkbox")
-                        .mdw-selection__icon
-                    td(data-type="text" mdw-primary-column) Eclair
-                    td(data-type="number") 262
-                    td(data-type="number") 16.0
-                    td(data-type="number") 24
-                    td(data-type="number") 6.0
-                    td(data-type="number") 337
-                    td(data-type="number") 6%
-                    td(data-type="number") 7%
-                  tr
-                    td(data-type="checkbox" mdw-selector)
-                      label.mdw-selection
-                        input.mdw-selection__input(type="checkbox")
-                        .mdw-selection__icon
-                    td(data-type="text" mdw-primary-column) Cupcake
-                    td(data-type="number") 305
-                    td(data-type="number") 3.7
-                    td(data-type="number") 67
-                    td(data-type="number") 4.3
-                    td(data-type="number") 413
-                    td(data-type="number") 3%
-                    td(data-type="number") 8%
-                  tr
-                    td(data-type="checkbox" mdw-selector)
-                      label.mdw-selection
-                        input.mdw-selection__input(type="checkbox")
-                        .mdw-selection__icon
-                    td(data-type="text" mdw-primary-column) Gingerbread
-                    td(data-type="number") 356
-                    td(data-type="number") 16.0
-                    td(data-type="number") 49
-                    td(data-type="number") 3.9
-                    td(data-type="number") 327
-                    td(data-type="number") 7%
-                    td(data-type="number") 16%
-                  tr
-                    td(data-type="checkbox" mdw-selector)
-                      label.mdw-selection
-                        input.mdw-selection__input(type="checkbox")
-                        .mdw-selection__icon
-                    td(data-type="text" mdw-primary-column) Jelly bean
-                    td(data-type="number") 375
-                    td(data-type="number") 0.0
-                    td(data-type="number") 94
-                    td(data-type="number") 0.0
-                    td(data-type="number") 50
-                    td(data-type="number") 0%
-                    td(data-type="number") 0%
-                  tr
-                    td(data-type="checkbox" mdw-selector)
-                      label.mdw-selection
-                        input.mdw-selection__input(type="checkbox")
-                        .mdw-selection__icon
-                    td(data-type="text" mdw-primary-column) Lollipop
-                    td(data-type="number") 392
-                    td(data-type="number") 0.2
-                    td(data-type="number") 98
-                    td(data-type="number") 0
-                    td(data-type="number") 38
-                    td(data-type="number") 0%
-                    td(data-type="number") 2%
-                  tr
-                    td(data-type="checkbox" mdw-selector)
-                      label.mdw-selection
-                        input.mdw-selection__input(type="checkbox")
-                        .mdw-selection__icon
-                    td(data-type="text" mdw-primary-column) Honeycomb
-                    td(data-type="number") 408
-                    td(data-type="number") 3.2
-                    td(data-type="number") 87
-                    td(data-type="number") 6.5
-                    td(data-type="number") 562
-                    td(data-type="number") 0%
-                    td(data-type="number") 45%
-                  tr
-                    td(data-type="checkbox" mdw-selector)
-                      label.mdw-selection
-                        input.mdw-selection__input(type="checkbox")
-                        .mdw-selection__icon
-                    td(data-type="text" mdw-primary-column) Donut
-                    td(data-type="number") 452
-                    td(data-type="number") 25.0
-                    td(data-type="number") 51
-                    td(data-type="number") 4.9
-                    td(data-type="number") 326
-                    td(data-type="number") 2%
-                    td(data-type="number") 22%
-                  tr
-                    td(data-type="checkbox" mdw-selector)
-                      label.mdw-selection
-                        input.mdw-selection__input(type="checkbox")
-                        .mdw-selection__icon
-                    td(data-type="text" mdw-primary-column) Kitkat
-                    td(data-type="number") 518
-                    td(data-type="number") 26.0
-                    td(data-type="number") 65
-                    td(data-type="number") 7
-                    td(data-type="number") 54
-                    td(data-type="number") 12%
-                    td(data-type="number") 6%
-            .mdw-datatable__footer
-              .mdw-datatable__footer-options
-                  span Rows per page
-                  label.mdw-textfield(mdw-solo)
-                    select.mdw-textfield__input
-                      option(value="10") 10
-                      option(value="25") 25
-                      option(value="50") 50
-                      option(value="100") 100
-                    .mdw-textfield__icon(mdw-dropdown)
-              .mdw-datatable__footer-details 1-10 of 10
-              .mdw-datatable__footer-controls
-                button.mdw-button.material-icons(mdw-icon disabled) chevron_left
-                button.mdw-button.material-icons(mdw-icon disabled) chevron_right
-      .mdw-layout__item(mdw-colspan="100%")
-        .mdw-card
-          .mdw-datatable.js#dynamic-table.mdw-theme(mdw-color="primary" mdw-row-focusable style="max-height:80vh")
-            .mdw-datatable__header
-              .mdw-datatable__header-text Dynamic Table
-              .mdw-datatable__header-controls
-                .mdw-menu__wrapper
-                  button.mdw-button.material-icons.mdw-theme(mdw-icon mdw-color="primary" aria-pressed="false") filter_list
-                  .mdw-menu(mdw-position="end")
-                    .mdw-menu__popup
-                      .mdw-menu__item(aria-checked="true" data-filter="none")
-                        .mdw-menu__radio.material-icons check
-                        .mdw-menu__text No filter
-                      .mdw-menu__item(data-filter="md")
-                        .mdw-menu__radio.material-icons check
-                        .mdw-menu__text Contains 'md'
-                      .mdw-menu__item(data-filter="div9")
-                        .mdw-menu__radio.material-icons check
-                        .mdw-menu__text Random divisible by 9
-                      .mdw-menu__item(data-filter="bool")
-                        .mdw-menu__radio.material-icons check
-                        .mdw-menu__text bool is checked
-                .mdw-menu__wrapper
-                  button.mdw-button.material-icons(mdw-icon) more_vert
-                  .mdw-menu(mdw-position="end")
-                    .mdw-menu__popup
-                      .mdw-menu__item(aria-checked="true" data-option="throttle")
-                        .mdw-menu__check.material-icons check
-                        .mdw-menu__text Throttle
-                      .mdw-menu__item(aria-checked="true" data-option="paginate")
-                        .mdw-menu__check.material-icons check
-                        .mdw-menu__text Paginate
+                  td(data-type="checkbox" mdw-selector)
+                    label.mdw-selection
+                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      .mdw-selection__icon
+                  td(data-type="text" mdw-primary-column) Kitkat
+                  td(data-type="number") 518
+                  td(data-type="number") 26.0
+                  td(data-type="number") 65
+                  td(data-type="number") 7
+                  td(data-type="number") 54
+                  td(data-type="number") 12%
+                  td(data-type="number") 6%
+          .mdw-datatable__footer
+            .mdw-datatable__footer-options
+                span Rows per page
+                label.mdw-textfield(mdw-solo)
+                  select.mdw-textfield__input
+                    option(value="10") 10
+                    option(value="25") 25
+                    option(value="50") 50
+                    option(value="100") 100
+                  .mdw-textfield__icon(mdw-dropdown)
+            .mdw-datatable__footer-details 1-10 of 10
+            .mdw-datatable__footer-controls
+              button.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon disabled) chevron_left
+              button.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon disabled) chevron_right
+    .mdw-grid__item(mdw-colspan="100%")
+      .mdw-card
+        .mdw-datatable.js#dynamic-table.mdw-theme(mdw-color="primary" mdw-row-focusable style="max-height:80vh")
+          .mdw-datatable__header
+            .mdw-datatable__header-text Data Table Adapter
+            .mdw-datatable__header-controls
+              .mdw-menu__wrapper
+                button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme.material-icons(mdw-icon mdw-color="primary" aria-pressed="false") filter_list
+                .mdw-menu(mdw-position="end")
+                  .mdw-menu__popup
+                    .mdw-menu__item(aria-checked="true" data-filter="none")
+                      .mdw-menu__radio.material-icons check
+                      .mdw-menu__text No filter
+                    .mdw-menu__item(data-filter="md")
+                      .mdw-menu__radio.material-icons check
+                      .mdw-menu__text Contains 'md'
+                    .mdw-menu__item(data-filter="div9")
+                      .mdw-menu__radio.material-icons check
+                      .mdw-menu__text Random divisible by 9
+                    .mdw-menu__item(data-filter="bool")
+                      .mdw-menu__radio.material-icons check
+                      .mdw-menu__text bool is checked
+              .mdw-menu__wrapper
+                button.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) more_vert
+                .mdw-menu(mdw-position="end")
+                  .mdw-menu__popup
+                    .mdw-menu__item(aria-checked="true" data-option="throttle")
+                      .mdw-menu__check.material-icons check
+                      .mdw-menu__text Throttle
+                    .mdw-menu__item(aria-checked="true" data-option="paginate")
+                      .mdw-menu__check.material-icons check
+                      .mdw-menu__text Paginate
   script(src='datatable.min.js')
