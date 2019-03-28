@@ -14,7 +14,7 @@ import * as Button from '../button/index';
  * @typedef SnackbarCreateOptions
  * @property {!string} text
  * @property {!string=} buttonText
- * @property {string=} [buttonThemeColor='primary']
+ * @property {string=} [buttonInk='primary']
  * @property {boolean} [stacked=false]
  * @property {number|boolean} [autoHide=4] Auto hide time in seconds
  * @property {boolean} [autoDestroy=true] Destroy element after hide
@@ -270,12 +270,12 @@ export function update(element, options) {
     }
     setTextNode(button, options.buttonText);
     button.classList.add('mdw-button');
-    if (typeof options.buttonThemeColor === 'undefined') {
+    if (typeof options.buttonInk === 'undefined') {
       button.classList.add('mdw-theme');
-      button.setAttribute('mdw-color', 'primary');
-    } else if (typeof options.buttonThemeColor === 'string') {
+      button.setAttribute('mdw-ink', 'primary');
+    } else if (typeof options.buttonInk === 'string') {
       button.classList.add('mdw-theme');
-      button.setAttribute('mdw-color', options.buttonThemeColor);
+      button.setAttribute('mdw-ink', options.buttonInk);
     } else {
       // Don't set attribute if null is passed
     }

@@ -18,13 +18,13 @@ $mdw-ripple__theme-values: (
     @if ($type == 'var') {
       & > .mdw-ripple__container > .mdw-ripple__inner,
       &::after {
-        color: unquote("rgb(var(--color))");
+        color: unquote("rgb(var(--ink-color))");
       }
 
     } @else {
       &[aria-pressed="false"],
-      &[aria-pressed="false"][mdw-color],
-      &:not([mdw-color]):not([mdw-fill]) {
+      &[aria-pressed="false"][mdw-ink],
+      &:not([mdw-ink]):not([mdw-surface]) {
         & > .mdw-ripple__container > .mdw-ripple__inner,
         &::after {
           color: mdwRippleThemeValue("overlay-color", $type, $theme);

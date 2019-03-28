@@ -536,7 +536,7 @@ export function create(options) {
       button.classList.add('mdw-button');
       button.classList.add('mdw-theme');
       button.setAttribute('tabindex', '0');
-      button.setAttribute('mdw-color', 'accent');
+      button.setAttribute('mdw-ink', 'accent');
       if (options.custom) {
         button.setAttribute('mdw-custom', '');
       }

@@ -4,7 +4,7 @@
 ## Fixed (Primary Color)
 
 ```
-form.mdw-bottomnav.mdw-theme(mdw-color="primary")
+form.mdw-bottomnav.mdw-theme(mdw-ink="primary")
   label.mdw-bottomnav__item
     input.mdw-bottomnav__input(type="radio" name="bottomnav" value="recents")
     .mdw-bottomnav__icon.material-icons history
@@ -21,7 +21,7 @@ form.mdw-bottomnav.mdw-theme(mdw-color="primary")
 
 ## Fixed (Filled)
 ```
-form.mdw-bottomnav.mdw-theme(mdw-fill="primary 700")
+form.mdw-bottomnav.mdw-theme(mdw-surface="primary 700")
   label.mdw-bottomnav__item
     input.mdw-bottomnav__input(type="radio" name="bottomnav" value="recents")
     .mdw-bottomnav__icon.material-icons history
@@ -38,7 +38,7 @@ form.mdw-bottomnav.mdw-theme(mdw-fill="primary 700")
 
 ## Shifting (Primary Color)
 ```
-form.mdw-bottomnav.mdw-theme(mdw-color="primary" mdw-shifting)
+form.mdw-bottomnav.mdw-theme(mdw-ink="primary" mdw-shifting)
   input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="movies" id='value1')
   label.mdw-bottomnav__item(for='value1')
     .mdw-bottomnav__icon.material-icons tv
@@ -59,7 +59,7 @@ form.mdw-bottomnav.mdw-theme(mdw-color="primary" mdw-shifting)
 
 ## Shifting (Filled)
 ```
-form.mdw-bottomnav.mdw-theme(mdw-fill="primary 700" mdw-shifting)
+form.mdw-bottomnav.mdw-theme(mdw-surface="primary 700" mdw-shifting)
   input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="movies" id='value1')
   label.mdw-bottomnav__item(for='value1')
     .mdw-bottomnav__icon.material-icons tv

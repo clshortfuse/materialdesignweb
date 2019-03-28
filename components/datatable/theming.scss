@@ -47,7 +47,7 @@ $mdw-datatable__theme-values: (
   .mdw-datatable__footer-controls {
     color: mdwDatatableThemeValue("controls-color", $type, $theme);
     @if ($type == 'var') {
-      --color: var(--foreground-color);
+      --ink-color: var(--foreground-color);
     }
   }
 
@@ -105,31 +105,31 @@ $mdw-datatable__theme-values: (
 
   @if ($type == 'var') {
     .mdw-datatable tbody tr[aria-selected="true"] {
-      background-color: rgba(var(--color), mdwDatatableThemeValue("selected-opacity", $type, $theme));
+      background-color: rgba(var(--ink-color), mdwDatatableThemeValue("selected-opacity", $type, $theme));
 
       &:hover {
-        background-color: rgba(var(--color), mdwDatatableThemeValue("selected-hover-opacity", $type, $theme));
+        background-color: rgba(var(--ink-color), mdwDatatableThemeValue("selected-hover-opacity", $type, $theme));
       }
 
       &:focus {
-        background-color: rgba(var(--color), mdwDatatableThemeValue("selected-focus-opacity", $type, $theme));
+        background-color: rgba(var(--ink-color), mdwDatatableThemeValue("selected-focus-opacity", $type, $theme));
       }
 
       &:hover:focus {
-        background-color: rgba(var(--color), mdwDatatableThemeValue("selected-hover-focus-opacity", $type, $theme));
+        background-color: rgba(var(--ink-color), mdwDatatableThemeValue("selected-hover-focus-opacity", $type, $theme));
       }
     }
 
     .mdw-datatable[mdw-has-selection] {
       .mdw-datatable__header,
       caption {
-        background-color: rgba(var(--color), mdwDatatableThemeValue("selected-opacity", $type, $theme));
+        background-color: rgba(var(--ink-color), mdwDatatableThemeValue("selected-opacity", $type, $theme));
       }
     }
   }
 
   @if ($type != 'var') {
-    .mdw-datatable[mdw-color^="primary"] {
+    .mdw-datatable[mdw-ink^="primary"] {
       &[mdw-has-selection] {
         .mdw-datatable__header,
         caption {
@@ -165,7 +165,7 @@ $mdw-datatable__theme-values: (
       }
     }
 
-    .mdw-datatable[mdw-color^="accent"] {
+    .mdw-datatable[mdw-ink^="accent"] {
       &[mdw-has-selection] {
         .mdw-datatable__header,
         caption {
@@ -201,7 +201,7 @@ $mdw-datatable__theme-values: (
       }
     }
 
-    .mdw-datatable[mdw-color^="warn"] {
+    .mdw-datatable[mdw-ink^="warn"] {
       &[mdw-has-selection] {
         .mdw-datatable__header,
         caption {

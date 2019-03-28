@@ -28,7 +28,7 @@ $mdw-selection__theme-values: (
     &:not(:checked),
     &:active:not(:disabled) {
       color: mdwSelectionThemeValue("ripple-color", $type, $theme);
-      --color: --foreground-color;
+      --ink-color: --foreground-color;
     }
     &[type="checkbox"]:not(:checked) ~ .mdw-selection__icon,
     &[type="checkbox"]:active:not(:disabled) ~ .mdw-selection__icon {
@@ -42,7 +42,7 @@ $mdw-selection__theme-values: (
     &[type="checkbox"]:checked ~ .mdw-selection__icon::after {
       // Checkbox color is based on currently filled background-color
       @if($type == 'var') {
-        border-color: unquote("rgb(var(--fill-color))");
+        border-color: unquote("rgb(var(--surface-color))");
       } @else {
         // IE11 Fallback
         border-color: #fff;
@@ -60,7 +60,7 @@ $mdw-selection__theme-values: (
   }
 
   .mdw-selection__label,
-  .mdw-selection[mdw-color] .mdw-selection__input:not(:disabled) ~ .mdw-selection__label {
+  .mdw-selection[mdw-ink] .mdw-selection__input:not(:disabled) ~ .mdw-selection__label {
     color: mdwSelectionThemeValue("text-color", $type, $theme);
   }
 

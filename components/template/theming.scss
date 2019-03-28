@@ -10,7 +10,7 @@ $mdw-template__theme-values: (
 }
 
 @mixin mdw-template__theme-rules($theme: null) {
-  .mdw-template[mdw-fill] {
+  .mdw-template[mdw-surface] {
     border-color: templateThemeValue('border-color', null, $theme);
   }
 }

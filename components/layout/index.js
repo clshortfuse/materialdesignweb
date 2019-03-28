@@ -67,15 +67,15 @@ export function onPrerender() {
   }
 
   // Auto lightness and fill
-  if (!document.documentElement.hasAttribute('mdw-fill')
+  if (!document.documentElement.hasAttribute('mdw-surface')
     && !document.documentElement.hasAttribute('mdw-light')
     && !document.documentElement.hasAttribute('mdw-dark')) {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       document.documentElement.setAttribute('mdw-dark', '');
-      document.documentElement.setAttribute('mdw-fill', 'black');
+      document.documentElement.setAttribute('mdw-surface', 'black');
     } else {
       document.documentElement.setAttribute('mdw-light', '');
-      document.documentElement.setAttribute('mdw-fill', 'white');
+      document.documentElement.setAttribute('mdw-surface', 'white');
     }
   }
 }

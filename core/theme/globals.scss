@@ -17,7 +17,7 @@ $mdw-theme__global-variables: (
 @mixin mdw-theme__global-contrast-and-theme-rules($type: 'var', $theme: null) {
   @if ($type == 'var') {
     @at-root {
-      .mdw-theme[mdw-fill]:not([mdw-color]) {
+      .mdw-theme[mdw-surface]:not([mdw-ink]) {
         color: mdwThemeGlobalValue("text-color", $type, $theme);
       }
     }

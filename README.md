@@ -49,7 +49,7 @@ Material Design for Web
 | :-------- | :-: | :- | :- |
 | [overlay](core/overlay/) | :white_check_mark: | Applies overlay states to components | RC
 | [ripple](core/ripple/) | :white_check_mark: | Applies press ripple on interactions | preRC
-| [theme](core/ripple/) | :white_check_mark: | Applies color and fill based on light/dark context | preRC
+| [theme](core/theme/) | :white_check_mark: | Applies ink and surface colors based on light/dark context | preRC
 
 # adapter classes
 | Adapter | Components | Status

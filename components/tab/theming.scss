@@ -12,7 +12,7 @@ $mdw-tab__theme-values: (
 
 // Vary by contrast
 @mixin mdw-tab__theme-rules($type: 'var', $theme: null) {
-  .mdw-tab__list:not([mdw-color]) {
+  .mdw-tab__list:not([mdw-ink]) {
     color: mdwTabThemeValue("active-color", $type, $theme);
   }
 

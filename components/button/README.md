@@ -13,22 +13,22 @@
 
 ## Colored
 ```
-.mdw-button.mdw-theme(mdw-color="primary")
+.mdw-button.mdw-theme(mdw-ink="primary")
 ```
 
 ## Colored (Custom Tone)
 ```
-.mdw-button.mdw-theme(mdw-color="accent A100")
+.mdw-button.mdw-theme(mdw-ink="accent A100")
 ```
 
 ## Filled
 ```
-.mdw-button.mdw-theme(mdw-fill="primary")
+.mdw-button.mdw-theme(mdw-surface="primary")
 ```
 
 ## Filled (Custom Tone)
 ```
-.mdw-button.mdw-theme(mdw-fill="accent A400")
+.mdw-button.mdw-theme(mdw-surface="accent A400")
 ```
 
 ## Filled (Custom Tone)

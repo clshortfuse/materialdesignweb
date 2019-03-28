@@ -27,7 +27,7 @@ $mdw-list__theme-values: (
     color: mdwListThemeValue("text-color", $type);  
   }
   .mdw-list__content {
-    &[mdw-color][aria-current] {
+    &[mdw-ink][aria-current] {
       .mdw-list__icon,
       .mdw-list__text,
       .mdw-list__content {
@@ -59,7 +59,7 @@ $mdw-list__theme-values: (
         color: mdwListThemeValue("secondary-text-color", $type);
       }
     } 
-    &[mdw-color][aria-expanded="true"] {
+    &[mdw-ink][aria-expanded="true"] {
       & > .mdw-list__item:first-child {
         .mdw-list__content,
         .mdw-list__text {

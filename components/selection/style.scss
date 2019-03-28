@@ -250,7 +250,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   }
 }
 
-.mdw-selection[mdw-color] {
+.mdw-selection[mdw-ink] {
   .mdw-selection__input[type="checkbox"]:checked:not(:active),
   .mdw-selection__input[type="radio"]:checked {
     // color: inherit;

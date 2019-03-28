@@ -34,27 +34,27 @@ $mdw-button__theme-values: (
 @mixin mdw-button__theme-rules($type: 'var', $theme: null) {
   .mdw-button {
     @if ($type == 'var') {
-      color: rgba(var(--color), mdwButtonThemeValue('text-opacity', $type, $theme));
+      color: rgba(var(--ink-color), mdwButtonThemeValue('text-opacity', $type, $theme));
 
       &[aria-pressed="false"],
-      &[aria-pressed="false"][mdw-color] {
-        --color: var(--foreground-color);
+      &[aria-pressed="false"][mdw-ink] {
+        --ink-color: var(--foreground-color);
       }
 
       &[mdw-icon][aria-pressed="false"] {
-        color: rgba(var(--color), mdwButtonThemeValue('icon-opacity__inactive', $type, $theme));
+        color: rgba(var(--ink-color), mdwButtonThemeValue('icon-opacity__inactive', $type, $theme));
       }
 
     } @else {
       &[aria-pressed="false"],
-      &[aria-pressed="false"][mdw-color],
-      &:not([mdw-color]):not([mdw-fill]) {
+      &[aria-pressed="false"][mdw-ink],
+      &:not([mdw-ink]):not([mdw-surface]) {
         color: mdwButtonThemeValue("text-color", $type, $theme);
       }
       
       &[aria-pressed="false"][mdw-icon] {
         &,
-        &[mdw-color] {
+        &[mdw-ink] {
           color: mdwButtonThemeValue('inactive-icon-color', $type, $theme);
         }
       }
@@ -68,7 +68,7 @@ $mdw-button__theme-values: (
     &[disabled] {
       opacity: mdwButtonThemeValue("disabled-opacity", $type, $theme);
 
-      &[mdw-fill] {
+      &[mdw-surface] {
         background-color: mdwButtonThemeValue("disabled-background-color", $type, $theme);
         color: mdwButtonThemeValue("disabled-text-color", $type, $theme);
 

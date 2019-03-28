@@ -48,7 +48,7 @@ $mdw-textfield__theme-values: (
     & > .mdw-textfield__input:not(:disabled):focus {
       & ~ .mdw-textfield__border {
         @if ($type == 'var') {
-          color: unquote("rgba(var(--color),")
+          color: unquote("rgba(var(--ink-color),")
             mdwTextfieldThemeValue("border-line-opacity__focus", $type, $theme)
             unquote(")");
         } @else {
@@ -57,7 +57,7 @@ $mdw-textfield__theme-values: (
       }
     }
 
-    &[mdw-color="primary"] {
+    &[mdw-ink="primary"] {
       &:active > .mdw-textfield__input:not(:disabled),
       & > .mdw-textfield__input:not(:disabled):focus {
         & ~ .mdw-textfield__border {
@@ -66,7 +66,7 @@ $mdw-textfield__theme-values: (
       }
     }
 
-    &[mdw-color="accent"] {
+    &[mdw-ink="accent"] {
       &:active > .mdw-textfield__input:not(:disabled),
       & > .mdw-textfield__input:not(:disabled):focus {
         & ~ .mdw-textfield__border {
@@ -76,7 +76,7 @@ $mdw-textfield__theme-values: (
     }
 
     &,
-    &[mdw-color] {
+    &[mdw-ink] {
       &:active > .mdw-textfield__input:not(:disabled),
       & > .mdw-textfield__input:not(:disabled):focus {
         &:invalid {
@@ -94,24 +94,24 @@ $mdw-textfield__theme-values: (
     &:active > .mdw-textfield__input:not(:disabled),
     & > .mdw-textfield__input:not(:disabled):focus {
       @if($type == 'var') {
-        caret-color: unquote("rgba(var(--color),")
+        caret-color: unquote("rgba(var(--ink-color),")
           mdwTextfieldThemeValue("label-opacity__focus", $type, $theme)
           unquote(")");
 
         &::selection {
-          background-color: unquote("rgba(var(--color),")
+          background-color: unquote("rgba(var(--ink-color),")
             mdwTextfieldThemeValue("selection-opacity", $type, $theme)
             unquote(")");
         }
 
         & ~ .mdw-textfield__border .mdw-textfield__label {
-          color: unquote("rgba(var(--color),")
+          color: unquote("rgba(var(--ink-color),")
             mdwTextfieldThemeValue("label-opacity__focus", $type, $theme)
             unquote(")");
         }
 
         & ~ .mdw-textfield__border::before {
-          color: unquote("rgba(var(--color),")
+          color: unquote("rgba(var(--ink-color),")
             mdwTextfieldThemeValue("border-line-opacity__focus", $type, $theme)
             unquote(")");
         }
@@ -132,7 +132,7 @@ $mdw-textfield__theme-values: (
       }
     }
 
-    &[mdw-color="primary"] {
+    &[mdw-ink="primary"] {
       &:active > .mdw-textfield__input:not(:disabled),
       & > .mdw-textfield__input:not(:disabled):focus {
         caret-color: mdwTextfieldThemeValue("primary-label-color__focus", $type, $theme);
@@ -151,7 +151,7 @@ $mdw-textfield__theme-values: (
       }
     }
 
-    &[mdw-color="accent"] {
+    &[mdw-ink="accent"] {
       &:active > .mdw-textfield__input:not(:disabled),
       & > .mdw-textfield__input:not(:disabled):focus {
         caret-color: mdwTextfieldThemeValue("accent-label-color__focus", $type, $theme);
@@ -321,7 +321,7 @@ $mdw-textfield__theme-values: (
   .mdw-textfield__dropdown {
     background-color: mdwTextfieldThemeValue("dropdown-background-color", $type, $theme);
     color: mdwTextfieldThemeValue("text-color", $type, $theme);
-    --color: --foreground-color;
+    --ink-color: --foreground-color;
   }
 
   .mdw-textfield {

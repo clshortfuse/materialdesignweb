@@ -31,17 +31,17 @@ $mdw-overlay__theme-values: (
   .mdw-overlay {
     @if ($type == 'var') {
       &::before {
-        color: unquote("rgb(var(--color))");
+        color: unquote("rgb(var(--ink-color))");
       }
 
       &[aria-pressed="false"]:not(:active)::before,
-      &[aria-pressed="false"][mdw-color]:not(:active)::before {
-        // --color: var(--foreground-color);
+      &[aria-pressed="false"][mdw-ink]:not(:active)::before {
+        // --ink-color: var(--foreground-color);
       }
     } @else {
       &[aria-pressed="false"],
-      &[aria-pressed="false"][mdw-color],
-      &:not([mdw-color]):not([mdw-fill]) {
+      &[aria-pressed="false"][mdw-ink],
+      &:not([mdw-ink]):not([mdw-surface]) {
         &::before {
           // color: mdwOverlayThemeValue("overlay-color", $type, $theme);
         }

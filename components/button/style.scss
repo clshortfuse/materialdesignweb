@@ -59,11 +59,11 @@ $mdw-button__outline-size: dp(1) !default;
   }
 
   &[mdw-outline],
-  &[mdw-fill] {
+  &[mdw-surface] {
     padding: 0 dp(16);
   }
 
-  &:not([mdw-fill]) {
+  &:not([mdw-surface]) {
     background-color: transparent;
   }
 

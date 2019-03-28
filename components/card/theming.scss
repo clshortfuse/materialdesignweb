@@ -14,7 +14,7 @@ $mdw-card__theme-values: (
   .mdw-card {
     border-color: mdwCardThemeValue("border-color", $type, $theme);
 
-    &:not([mdw-fill]) {
+    &:not([mdw-surface]) {
       background-color: mdwCardThemeValue("background", $type, $theme);
     }
 
