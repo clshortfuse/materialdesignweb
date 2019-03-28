@@ -2,11 +2,11 @@
 // https://material.io/archive/guidelines/components/text-fields.html
 
 
-@import '../common/breakpoint.scss';
-@import '../common/elevation.scss';
-@import '../common/motion.scss';
-@import '../common/platform.scss';
-@import '../common/type.scss';
+@import '../../core/breakpoint.scss';
+@import '../../core/elevation.scss';
+@import '../../core/motion.scss';
+@import '../../core/platform.scss';
+@import '../../core/type.scss';
 
 $mdw-textfield__border-line-height: dp(1) !default;
 $mdw-textfield__border-line-height__focused: dp(2) !default;
@@ -15,7 +15,7 @@ $mdw-textfield__textarea-padding-horizontal: dp(16) !default;
 $mdw-textfield__outline-start-width: dp(10) !default;
 $mdw-textfield__outline-end-width: dp(8) !default;
 
-// Grid Layout
+// CSS Grid Layout
 //     1   |  2  |   3    |   4   |        5        |    6   |  7
 //   -------------------------------------------------------------
 // 1: Gap |      | Label ----------------------------------- | Gap

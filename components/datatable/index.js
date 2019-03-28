@@ -6,7 +6,7 @@ import {
   findElementParentByClassName,
   iterateArrayLike,
   iterateSomeOfArrayLike,
-} from '../common/dom';
+} from '../../core/dom';
 
 /**
  * @param {Element} element
@@ -78,7 +78,7 @@ export function onTableBodyClick(event) {
   let row = null;
 
   if (target instanceof HTMLInputElement && target.getAttribute('type') === 'checkbox') {
-    if (mdwDataTable.hasAttribute('mdw-adapter')) {
+    if (mdwDataTable.hasAttribute('mdw-datatable-adapter')) {
       return;
     }
     // Checkbox clicked
@@ -91,10 +91,10 @@ export function onTableBodyClick(event) {
     row = (cell.parentElement);
     let hasSelection = false;
     if (target.checked) {
-      row.setAttribute('mdw-selected', '');
+      row.setAttribute('aria-selected', 'true');
       hasSelection = true;
     } else {
-      row.removeAttribute('mdw-selected');
+      row.setAttribute('aria-selected', 'false');
       /** @type {NodeListOf<HTMLInputElement>} */
       const checkboxes = (mdwDataTable.querySelectorAll('td[mdw-selector] input[type=checkbox]'));
       hasSelection = iterateSomeOfArrayLike(checkboxes, checkbox => checkbox.checked);
@@ -205,7 +205,7 @@ export function onHeaderRowClick(event) {
   if (!mdwTable) {
     return;
   }
-  if (mdwTable.hasAttribute('mdw-adapter')) {
+  if (mdwTable.hasAttribute('mdw-datatable-adapter')) {
     return;
   }
   let ascending = true;

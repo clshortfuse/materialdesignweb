@@ -1,18 +1,35 @@
 // https://www.w3.org/TR/wai-aria-practices/#button
 
-import * as Ripple from '../ripple/index';
+import * as Ripple from '../../core/ripple/index';
+import * as Overlay from '../../core/overlay/index';
+import * as AriaButton from '../../core/aria/button';
 
 /**
  * @param {Element} element
  * @return {void}
  */
 export function attach(element) {
-  element.setAttribute('mdw-js', '');
+  element.classList.add('mdw-overlay');
   Ripple.attach(element);
-  if (element instanceof HTMLButtonElement === false
-    && element instanceof HTMLInputElement === false) {
-    element.addEventListener('keydown', onKeyDown);
-  }
+  element.classList.add('mdw-ripple');
+  Overlay.attach(element);
+  attachCore(element);
+}
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
+export function attachCore(element) {
+  AriaButton.attach(element);
+}
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
+export function detachCore(element) {
+  AriaButton.detach(element);
 }
 
 /**
@@ -20,26 +37,7 @@ export function attach(element) {
  * @return {void}
  */
 export function detach(element) {
-  element.removeEventListener('keydown', onKeyDown);
-  element.removeAttribute('mdw-js');
+  detachCore(element);
   Ripple.detach(element);
-}
-
-/**
- * @param {KeyboardEvent} event
- * @return {void}
- */
-export function onKeyDown(event) {
-  if (event.key !== 'Enter' && event.key !== 'Spacebar' && event.key !== ' ') {
-    return;
-  }
-  const buttonElement = event.currentTarget;
-  if (!buttonElement) {
-    return;
-  }
-  event.stopPropagation();
-  event.preventDefault();
-  const newEvent = document.createEvent('Event');
-  newEvent.initEvent('click', true, true);
-  buttonElement.dispatchEvent(newEvent);
+  Overlay.detach(element);
 }

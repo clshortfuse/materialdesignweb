@@ -1,4 +1,4 @@
-import { iterateArrayLike, iterateSomeOfArrayLike } from '../../components/common/dom';
+import { iterateArrayLike, iterateSomeOfArrayLike } from '../../core/dom';
 
 import * as Button from '../../components/button/index';
 import * as DataTable from '../../components/datatable/index';
@@ -90,7 +90,7 @@ export default class DataTableAdapter {
     });
     DataTable.attach(this.element);
     this.scroller = DataTable.getScroller(this.element);
-    this.element.setAttribute('mdw-adapter', '');
+    this.element.setAttribute('mdw-datatable-adapter', '');
     /** @type {DataTableAdapterColumn<T>[]} */
     this.columns = [];
     this.page = 0;
@@ -101,7 +101,7 @@ export default class DataTableAdapter {
   }
 
   detach() {
-    this.element.removeAttribute('mdw-adapter');
+    this.element.removeAttribute('mdw-datatable-adapter');
     this.element = null;
     this.datasource = null;
     this.filteredDatasource = null;
@@ -184,10 +184,10 @@ export default class DataTableAdapter {
         this.onValueChanged(object, currentCell.dataset.key, target.checked);
         if (currentCell.hasAttribute('mdw-selector')) {
           if (target.checked) {
-            currentRow.setAttribute('mdw-selected', '');
+            currentRow.setAttribute('aria-selected', 'true');
             this.setHasSelection(true);
           } else {
-            currentRow.removeAttribute('mdw-selected');
+            currentRow.removeAttribute('aria-selected');
             const selectedRows = this.getSelectedRows();
             this.setHasSelection(selectedRows.length !== 0);
           }
@@ -393,16 +393,8 @@ export default class DataTableAdapter {
       max = total;
     }
     this.paginationDetailsElement.textContent = `${min + 1}-${max} of ${total}`;
-    if (min === 0) {
-      this.previousPageButton.setAttribute('disabled', '');
-    } else {
-      this.previousPageButton.removeAttribute('disabled');
-    }
-    if (max === total) {
-      this.nextPageButton.setAttribute('disabled', '');
-    } else {
-      this.nextPageButton.removeAttribute('disabled');
-    }
+    this.previousPageButton.setAttribute('aria-disabled', (min === 0 ? 'true' : 'false'));
+    this.nextPageButton.setAttribute('aria-disabled', (max === total ? 'true' : 'false'));
   }
 
   /**
@@ -497,7 +489,7 @@ export default class DataTableAdapter {
         this.nextPageButton = buttons[1];
       }
       this.previousPageButton.addEventListener('click', () => {
-        if (this.previousPageButton.hasAttribute('disabled')) {
+        if (this.previousPageButton.getAttribute('aria-disabled') === 'true') {
           return;
         }
         this.page -= 1;
@@ -506,7 +498,7 @@ export default class DataTableAdapter {
         this.refreshRows();
       });
       this.nextPageButton.addEventListener('click', () => {
-        if (this.nextPageButton.hasAttribute('disabled')) {
+        if (this.nextPageButton.getAttribute('aria-disabled') === 'true') {
           return;
         }
         this.page += 1;
@@ -855,12 +847,8 @@ export default class DataTableAdapter {
     const data = this.getDataForTableRow(row);
     const value = data[tableColumn.key];
     if (tableColumn.rowSelector) {
-      if (value) {
-        if (!row.hasAttribute('mdw-selected')) {
-          row.setAttribute('mdw-selected', '');
-        }
-      } else if (row.hasAttribute('mdw-selected')) {
-        row.removeAttribute('mdw-selected');
+      if (row.getAttribute('aria-selected') !== (value ? 'true' : 'false')) {
+        row.setAttribute('aria-selected', (value ? 'true' : 'false'));
       }
     }
     const formattedValue = tableColumn.formatter(value, data);

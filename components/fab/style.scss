@@ -1,9 +1,9 @@
 // https://material.io/guidelines/components/buttons-floating-action-button.html
 
-@import '../common/breakpoint.scss';
-@import '../common/elevation.scss';
-@import '../common/motion.scss';
-@import '../common/platform.scss';
+@import '../../core/breakpoint.scss';
+@import '../../core/elevation.scss';
+@import '../../core/motion.scss';
+@import '../../core/platform.scss';
 
 $fab-button__delay: 40ms;
 $fab-button__padding: dp(16);

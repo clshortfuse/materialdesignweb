@@ -1,11 +1,11 @@
 // https://material.io/guidelines/components/dialogs.html
 // https://material.io/guidelines/motion/choreography.html#choreography-creation
 
-@import '../common/breakpoint.scss';
-@import '../common/elevation.scss';
-@import '../common/motion.scss';
-@import '../common/platform.scss';
-@import '../common/type.scss';
+@import '../../core/breakpoint.scss';
+@import '../../core/elevation.scss';
+@import '../../core/motion.scss';
+@import '../../core/platform.scss';
+@import '../../core/type.scss';
 
 $mdw-dialog__unit-width: dp(56) !default;
 

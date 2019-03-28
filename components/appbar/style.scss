@@ -1,10 +1,10 @@
 // https://material.io/guidelines/layout/structure.html#structure-app-bar
 // https://material.io/archive/guidelines/components/toolbars.html
 
-@import '../common/motion.scss';
-@import '../common/platform.scss';
-@import '../common/breakpoint.scss';
-@import '../common/type.scss';
+@import '../../core/breakpoint.scss';
+@import '../../core/motion.scss';
+@import '../../core/platform.scss';
+@import '../../core/type.scss';
 
 $mdw-appbar__height: 64 !default;
 $mdw-appbar__height-dense: 48 !default;
@@ -23,13 +23,16 @@ $mdw-appbar__icon-height: 40 !default;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
+  
   min-height: dp($mdw-appbar__height);
-
+  
+  
   transition-duration: inherit;
   transition-property: min-height;
   transition-timing-function: inherit;
-  
+
+  z-index: 1;
+
   .mdw-appbar[mdw-prominent] > & {
     min-height: dp($mdw-appbar__height-prominent);
   }

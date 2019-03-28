@@ -1,4 +1,4 @@
-import { findElementParentByClassName } from '../common/dom';
+import { findElementParentByClassName } from '../../core/dom';
 
 /**
  * @param {Element} fabElement

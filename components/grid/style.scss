@@ -1,9 +1,9 @@
 // https://material.io/guidelines/layout/responsive-ui.html
 // https://material.io/archive/guidelines/layout/responsive-ui.html
 
-@import '../common/motion.scss';
-@import '../common/platform.scss';
-@import '../common/breakpoint.scss';
+@import '../../core/motion.scss';
+@import '../../core/platform.scss';
+@import '../../core/breakpoint.scss';
 
 $grid__margin: dp(24);
 $grid__gutter: dp(24);

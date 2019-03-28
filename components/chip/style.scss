@@ -1,9 +1,8 @@
 // https://material.io/design/components/chips.html
 
-@import '../common/motion.scss';
-@import '../common/platform.scss';
-@import '../common/breakpoint.scss';
-@import '../ripple/ripple.scss';
+@import '../../core/motion.scss';
+@import '../../core/platform.scss';
+@import '../../core/breakpoint.scss';
 
 $mdw-chip__border-width: dp(1) !default;
 
@@ -143,23 +142,4 @@ $mdw-chip__border-width: dp(1) !default;
   &.material-icons {
     font-size: dp(18);
   }
-}
-
-.mdw-chip__item[mdw-ripple] {
-  &::after {
-    // If using custom ripple, destroy ::after object
-    content: none;
-  }
-}
-
-.mdw-chip__item > .mdw-ripple {
-  @include mdw-ripple__container;
-}
-
-.mdw-chip__item::after {
-  @include mdw-ripple__inner;
-}
-
-.mdw-chip__item:active::after {
-  @include mdw-ripple__active;
 }

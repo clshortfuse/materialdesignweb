@@ -6,7 +6,7 @@ import {
   findElementParentByClassName,
   nextTick,
   setTextNode,
-} from '../common/dom';
+} from '../../core/dom';
 
 import * as Button from '../button/index';
 
@@ -62,7 +62,7 @@ export function attach(snackbarElement) {
   snackbarElement.setAttribute('mdw-js', '');
   snackbarElement.addEventListener('animationend', onAnimationEnd);
   snackbarElement.addEventListener('keydown', onKeyDown);
-  this.setupARIA(snackbarElement);
+  setupARIA(snackbarElement);
 }
 
 /**
@@ -131,7 +131,7 @@ export function getNextSnackbarQueueItem() {
   if (nextSnackbar && (!nextSnackbar.element || !nextSnackbar.element.parentElement)) {
     // Item was removed from DOM externally
     SNACKBAR_QUEUE.splice(0, 1);
-    return this.getNextSnackbarQueueItem();
+    return getNextSnackbarQueueItem();
   }
   return nextSnackbar;
 }

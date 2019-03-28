@@ -1,4 +1,4 @@
-@import '../common/theming.scss';
+@import './exports.scss';
 
 $mdw-theme__global-variables: (
   text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
@@ -17,7 +17,7 @@ $mdw-theme__global-variables: (
 @mixin mdw-theme__global-contrast-and-theme-rules($type: 'var', $theme: null) {
   @if ($type == 'var') {
     @at-root {
-      .mdw-theme[mdw-fill] {
+      .mdw-theme[mdw-fill]:not([mdw-color]) {
         color: mdwThemeGlobalValue("text-color", $type, $theme);
       }
     }

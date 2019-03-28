@@ -1,8 +1,8 @@
 // https://material.io/design/components/tooltips.html#spec
 
-@import '../common/motion.scss';
-@import '../common/platform.scss';
-@import '../common/type.scss';
+@import '../../core/motion.scss';
+@import '../../core/platform.scss';
+@import '../../core/type.scss';
 
 $tooltip__margin__desktop: dp(14);
 $tooltip__margin__mobile: dp(24);

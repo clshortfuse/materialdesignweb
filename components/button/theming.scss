@@ -2,7 +2,7 @@
 // https://material.io/design/components/buttons.html
 // https://material.io/design/iconography/system-icons.html#color
 
-@import '../common/theming.scss';
+@import '../../core/theme/exports.scss';
 
 $mdw-button__theme-values: (
   text-color:                    (('foreground-light', 0.87), ('foreground-dark', 1.00)),
@@ -16,20 +16,6 @@ $mdw-button__theme-values: (
   // icon
   active-icon-color:             (('foreground-light', 0.60), ('foreground-dark', 0.70)),
   inactive-icon-color:           (('foreground-light', 0.38), ('foreground-dark', 0.50)),
-
-  // states
-  overlay-color:                 (('foreground-light', 1.00), ('foreground-dark', 1.00)),
-
-  activated-opacity:             (0.12, 0.24),
-  hover-opacity:                 (0.04, 0.08),
-  focus-opacity:                 (0.12, 0.24),
-  hover-focus-opacity:           (0.04 + 0.12, 0.08 + 0.24),
-
-  activated-hover-opacity:       (0.12 + 0.04, 0.24 + 0.08),
-  activated-focus-opacity:       (0.12 + 0.12, 0.24 + 0.24),
-  activated-hover-focus-opacity: (0.12 + 0.04 + 0.12, 0.24 + 0.08 + 0.24),
-
-  pressed-opacity:               (0.16, 0.32),
 
   // disabled
   disabled-opacity:              (0.38, 0.50),
@@ -50,12 +36,6 @@ $mdw-button__theme-values: (
     @if ($type == 'var') {
       color: rgba(var(--color), mdwButtonThemeValue('text-opacity', $type, $theme));
 
-      &::before,
-      & > .mdw-ripple > .mdw-ripple__inner,
-      &::after {
-        color: unquote("rgb(var(--color))");
-      }
-
       &[aria-pressed="false"],
       &[aria-pressed="false"][mdw-color] {
         --color: var(--foreground-color);
@@ -70,12 +50,6 @@ $mdw-button__theme-values: (
       &[aria-pressed="false"][mdw-color],
       &:not([mdw-color]):not([mdw-fill]) {
         color: mdwButtonThemeValue("text-color", $type, $theme);
-
-        &::before,
-        & > .mdw-ripple > .mdw-ripple__inner,
-        &::after {
-          color: mdwButtonThemeValue("overlay-color", $type, $theme);
-        }
       }
       
       &[aria-pressed="false"][mdw-icon] {
@@ -86,49 +60,11 @@ $mdw-button__theme-values: (
       }
     }
 
-    & > .mdw-ripple > .mdw-ripple__inner,
-    &::after {
-      opacity: mdwButtonThemeValue("pressed-opacity", $type, $theme);
-    }
-
-    &:focus::before {
-      opacity: mdwButtonThemeValue("focus-opacity", $type, $theme);
-    }
-
-    &:not([disabled]) {
-      &:hover::before {
-        opacity: mdwButtonThemeValue("hover-opacity", $type, $theme);
-      }
-
-      &:hover:focus::before {
-        opacity: mdwButtonThemeValue("hover-focus-opacity", $type, $theme);
-      }
-    }
-
-    &[aria-pressed="true"]:not([mdw-icon]) {
-      &::before {
-        opacity: mdwButtonThemeValue("activated-opacity", $type, $theme);
-      }
-
-      &:focus::before {
-        opacity: mdwButtonThemeValue("activated-focus-opacity", $type, $theme);
-      }
-
-      &:not([disabled]) {
-        &:hover::before {
-          opacity: mdwButtonThemeValue("activated-hover-opacity", $type, $theme);
-        }
-
-        &:hover:focus::before {
-          opacity: mdwButtonThemeValue("activated-hover-focus-opacity", $type, $theme);
-        }
-      }
-    }
-
     &[mdw-outline] {
       border-color: mdwButtonThemeValue('outline-color', $type, $theme);
     }
 
+    &[aria-disabled="true"],
     &[disabled] {
       opacity: mdwButtonThemeValue("disabled-opacity", $type, $theme);
 

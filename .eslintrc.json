@@ -10,6 +10,7 @@
     "es6": true
   },
   "rules": {
+    "no-use-before-define": ["error", { "functions": false }],
     "brace-style": ["error", "1tbs", { "allowSingleLine": false }],
     "curly": ["error", "all"],
     "require-jsdoc": "error",

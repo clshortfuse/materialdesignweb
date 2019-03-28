@@ -1,10 +1,10 @@
-@import '../common/theming.scss';
+@import '../../core/theme/exports.scss';
 
 $mdw-selection__theme-values: (
   text-color:              (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   color:                   (('foreground-light', 0.54), ('foreground-dark', 0.70)),
+
   ripple-color:            (('foreground-light', 1.00), ('foreground-dark', 1.00)),
-  pressed-opacity:         (0.16, 0.32),
   disabled-color:          (('foreground-light', 0.26), ('foreground-dark', 0.30)),
   thumb-off-color:         (('background', '50', 1.00), ('background','400',1.0)),
   thumb-on-color:          (currentColor, currentColor),
@@ -24,13 +24,12 @@ $mdw-selection__theme-values: (
 
 @mixin mdw-selection__theme-rules($type: 'var', $theme: null) {
   .mdw-selection__input {
-    color: mdwSelectionThemeValue("ripple-color", $type, $theme);
-    
-    &:active:not(:disabled),
-    &:focus {
-      opacity: mdwSelectionThemeValue("pressed-opacity", $type, $theme);
+
+    &:not(:checked),
+    &:active:not(:disabled) {
+      color: mdwSelectionThemeValue("ripple-color", $type, $theme);
+      --color: --foreground-color;
     }
-    
     &[type="checkbox"]:not(:checked) ~ .mdw-selection__icon,
     &[type="checkbox"]:active:not(:disabled) ~ .mdw-selection__icon {
       color: mdwSelectionThemeValue("color", $type, $theme);

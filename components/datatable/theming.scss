@@ -1,4 +1,4 @@
-@import '../common/theming.scss';
+@import '../../core/theme/exports.scss';
 
 $mdw-datatable__theme-values: (
   text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
@@ -11,16 +11,15 @@ $mdw-datatable__theme-values: (
 
   hover-opacity:                 (0.04, 0.08),
   focus-opacity:                 (0.12, 0.24),
-  hover-focus-opacity:           (0.04 + 0.12, 0.08 + 0.24),
-
   selected-opacity:              (0.08, 0.16),
 
-  selected-hover-opacity:        (0.08 + 0.04, 0.16 + 0.4),
-  selected-focus-opacity:        (0.08 + 0.12, 0.16 + 0.12),
-  selected-hover-focus-opacity:  (0.08 + 0.04 + 0.12, 0.16 + 0.4 + 0.12),
-  
-  selected-color:         (('background', '100', 1.00), ('background', '700', 1.00)),
-  row-hover-color:        (('background', '200', 1.00), ('background', '600', 1.00)),
+  hover-focus-opacity:           (0.04 + 0.12, 0.08 + 0.24),
+
+  selected-hover-opacity:        (0.08 + 0.04, 0.16 + 0.08),
+  selected-focus-opacity:        (0.08 + 0.12, 0.16 + 0.24),
+  selected-hover-focus-opacity:  (0.08 + 0.04 + 0.12, 0.16 + 0.08 + 0.24),
+
+
   header-fill-text:       ((invalid                  ), (#fff,              1.00)),
   selected-primary-ie:    (('primary'   , '500', 1.00), ('primary',    '500', 1.00)),
   selected-accent-ie:     (('accent'    , '500', 1.00), ('accent',     '500', 1.00)),
@@ -105,7 +104,7 @@ $mdw-datatable__theme-values: (
   }
 
   @if ($type == 'var') {
-    .mdw-datatable tbody tr[mdw-selected] {
+    .mdw-datatable tbody tr[aria-selected="true"] {
       background-color: rgba(var(--color), mdwDatatableThemeValue("selected-opacity", $type, $theme));
 
       &:hover {
@@ -141,7 +140,7 @@ $mdw-datatable__theme-values: (
         }
       }
 
-      tbody tr[mdw-selected] {
+      tbody tr[aria-selected="true"] {
         background-color: rgba(
           mdwDatatableThemeValue("selected-primary-ie", $type, $theme),
           mdwDatatableThemeValue("selected-opacity", $type, $theme));
@@ -177,7 +176,7 @@ $mdw-datatable__theme-values: (
         }
       }
 
-      tbody tr[mdw-selected] {
+      tbody tr[aria-selected="true"] {
         background-color: rgba(
           mdwDatatableThemeValue("selected-accent-ie", $type, $theme),
           mdwDatatableThemeValue("selected-opacity", $type, $theme));
@@ -213,7 +212,7 @@ $mdw-datatable__theme-values: (
         }
       }
 
-      tbody tr[mdw-selected] {
+      tbody tr[aria-selected="true"] {
         background-color: rgba(
           mdwDatatableThemeValue("selected-warn-ie", $type, $theme),
           mdwDatatableThemeValue("selected-opacity", $type, $theme));

@@ -7,7 +7,7 @@ import {
   findElementParentByClassName,
   getChildElementByClass,
   setTextNode,
-} from '../common/dom';
+} from '../../core/dom';
 
 import * as Button from '../button/index';
 
@@ -357,11 +357,18 @@ export function show(dialogElement, event) {
     const focusElement = dialogElement.querySelector('[mdw-autofocus]');
     try {
       if (focusElement) {
+        if (event && event.target instanceof Element) {
+          const callerOverlayTouch = event.target.getAttribute('mdw-overlay-touch');
+          if (callerOverlayTouch != null) {
+            focusElement.setAttribute('mdw-overlay-touch', callerOverlayTouch);
+          }
+        }
         focusElement.focus();
       } else {
         dialogElement.focus();
       }
     } catch (e) {
+      console.error(e);
       // Failed to focus
     }
   }

@@ -2,7 +2,7 @@
 // https://material.io/design/components/chips.html
 // https://material.io/design/iconography/system-icons.html#color
 
-@import '../common/theming.scss';
+@import '../../core/theme/exports.scss';
 
 $mdw-chip__theme-values: (
   text-color:                    (('foreground-light', 0.87), ('foreground-dark', 1.00)),
@@ -59,13 +59,6 @@ $mdw-chip__theme-values: (
 
 // Vary by contrast
 @mixin mdw-chip__theme-rules($type: 'var', $theme: null) {
-  .mdw-chip__item {
-    & > .mdw-ripple > .mdw-ripple__inner,
-    &::after {
-      opacity: mdwChipThemeValue("pressed-opacity", $type, $theme);
-    }
-  }
-
   .mdw-chip__thumbnail,
   .mdw-chip__remove,
   .mdw-chip__text {

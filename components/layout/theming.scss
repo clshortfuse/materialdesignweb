@@ -1,5 +1,5 @@
-@import '../common/breakpoint.scss';
-@import '../common/theming.scss';
+@import '../../core/breakpoint.scss';
+@import '../../core/theme/exports.scss';
 
 $mdw-layout__theme-values: (
   selected-color:        (('foreground-light', 1.00), ('foreground-dark', 1.00)),
@@ -27,26 +27,12 @@ $mdw-layout__theme-values: (
   }
 
   .mdw-layout__navdrawer {
-    .mdw-list__item[mdw-selected]:not([mdw-color]) {
-      color: mdwLayoutThemeValue("selected-color", $type, $theme);
-    }
-
-    .mdw-list__item:not([mdw-selected]) {
-      .mdw-list__icon {
-        color: mdwLayoutThemeValue("secondary-text-color", $type, $theme);
-      }
-
-      .mdw-list__text {
-        color: mdwLayoutThemeValue("text-color", $type, $theme);
-      }
-    }
-
     .mdw-list__subheader {
       color: mdwLayoutThemeValue("secondary-text-color", $type, $theme);
     }
   }
 
-  .mdw-layout__appbar {
+  .mdw-layout__appbar:not([mdw-fill]) {
     background-color: mdwLayoutThemeValue("appbar-background", $type, $theme);
   }
 
@@ -63,9 +49,11 @@ $mdw-layout__theme-values: (
   }
 
   @include mdw-breakpoint__12-columns {
-    .mdw-layout__body[mdw-navdrawer-style~="floating"]:not([mdw-navdrawer-style~="card"]) > .mdw-layout__navdrawer > .mdw-layout__sheet-content,
-    .mdw-layout__body[mdw-sidesheet-style~="floating"]:not([mdw-sidesheet-style~="card"]) > .mdw-layout__sidesheet > .mdw-layout__sheet-content {
-      background-color: mdwLayoutThemeValue("content-background", $type, $theme);
+    .mdw-layout__body[mdw-navdrawer-style~="floating"]:not([mdw-navdrawer-style~="card"]) > .mdw-layout__navdrawer,
+    .mdw-layout__body[mdw-sidesheet-style~="floating"]:not([mdw-sidesheet-style~="card"]) > .mdw-layout__sidesheet {
+      & > .mdw-layout__sheet-content:not([mdw-fill]) {
+        background-color: mdwLayoutThemeValue("content-background", $type, $theme);
+      }
     }
   }
 }

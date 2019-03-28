@@ -1,5 +1,9 @@
-import { findElementParentByClassName, iterateArrayLike, iterateSomeOfArrayLike } from '../common/dom';
+// https://www.w3.org/TR/wai-aria-practices/#tabpanel
 
+import { iterateArrayLike, iterateElementSiblings } from '../../core/dom';
+
+import * as AriaAttributes from '../../core/aria/attributes';
+import * as RovingTabIndex from '../../core/aria/rovingtabindex';
 import * as BottomNavItem from './item';
 
 /**
@@ -7,14 +11,24 @@ import * as BottomNavItem from './item';
  * @return {void}
  */
 export function attach(bottomnavElement) {
-  iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'), (item) => {
-    BottomNavItem.attach(item);
-    item.addEventListener('click', onItemClicked);
-  });
+  bottomnavElement.classList.add('mdw-overlay__group');
+  iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'), BottomNavItem.attach);
+  bottomnavElement.addEventListener(AriaAttributes.SELECTED_CHANGED_EVENT, onSelectedChangedEvent);
+  setupARIA(bottomnavElement);
+  RovingTabIndex.attach(bottomnavElement, 'mdw-bottomnav__item');
+}
 
-  iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__input'), (input) => {
-    input.addEventListener('change', onInputChanged);
-  });
+/**
+ * @param {Element} bottomnavElement
+ * @return {void}
+ */
+export function setupARIA(bottomnavElement) {
+  if (bottomnavElement.hasAttribute('mdw-no-aria')) {
+    return;
+  }
+  bottomnavElement.setAttribute('role', 'tablist');
+  bottomnavElement.setAttribute('aria-multiselectable', 'false');
+  bottomnavElement.setAttribute('aria-orientation', 'horizontal');
 }
 
 /**
@@ -22,87 +36,32 @@ export function attach(bottomnavElement) {
  * @return {void}
  */
 export function detach(bottomnavElement) {
-  iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'), (item) => {
-    BottomNavItem.attach(item);
-    item.removeEventListener('click', onItemClicked);
-  });
-  iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__input'), (input) => {
-    input.removeEventListener('change', onInputChanged);
-  });
+  iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'), BottomNavItem.detach);
+  bottomnavElement.removeEventListener(AriaAttributes.SELECTED_CHANGED_EVENT, onSelectedChangedEvent);
+  RovingTabIndex.detach(bottomnavElement, 'mdw-bottomnav__item');
 }
 
-/**
- * @param {Event} event
- * @return {void}
- */
-export function onInputChanged(event) {
-  /** @type {HTMLInputElement} */
-  const inputElement = (event.target);
-  let itemElement;
-  if (inputElement.parentElement.classList.contains('mdw-bottomnav__item')) {
-    itemElement = inputElement.parentElement;
-  }
-  if (inputElement.id) {
-    itemElement = document.querySelector(`label.mdw-bottomnav__item[for="${inputElement.id}"]`);
-  }
-  if (itemElement.hasAttribute('mdw-selected') && inputElement.checked) {
-    return;
-  }
-  if (!itemElement.hasAttribute('mdw-selected') && !inputElement.checked) {
-    return;
-  }
-  const bottomnavElement = findElementParentByClassName(inputElement, 'mdw-bottomnav');
-  if (bottomnavElement) {
-    removeSelection(bottomnavElement);
-  }
-  itemElement.setAttribute('mdw-selected', '');
-}
 
 /**
  * @param {Element} bottomnavElement
- * @return {boolean} changed
+ * @return {void}
  */
 export function removeSelection(bottomnavElement) {
-  return iterateSomeOfArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'),
-    (item) => {
-      if (item.hasAttribute('mdw-selected')) {
-        item.removeAttribute('mdw-selected');
-        return true;
-      }
-      return false;
-    });
+  return iterateArrayLike(
+    bottomnavElement.querySelectorAll('mdw-bottomnav__item[aria-selected="true"]'),
+    item => item.setAttribute('aria-selected', 'false')
+  );
 }
 
 /**
  * @param {Event} event
  * @return {void}
  */
-export function onItemClicked(event) {
+export function onSelectedChangedEvent(event) {
   /** @type {HTMLElement} */
-  const itemElement = (event.currentTarget);
-  if (itemElement.hasAttribute('mdw-selected')) {
+  const itemElement = (event.target);
+  if (itemElement.getAttribute('aria-selected') !== 'true') {
     return;
   }
-  if (itemElement.hasAttribute('disabled')) {
-    return;
-  }
-  const bottomnavElement = findElementParentByClassName(itemElement, 'mdw-bottomnav');
-  if (bottomnavElement) {
-    removeSelection(bottomnavElement);
-  }
-  itemElement.setAttribute('mdw-selected', '');
-  let inputElement;
-  if (itemElement instanceof HTMLLabelElement && itemElement.hasAttribute('for')) {
-    const id = itemElement.getAttribute('for');
-    if (id) {
-      inputElement = document.getElementById(id);
-    }
-  } else {
-    inputElement = itemElement.getElementsByClassName('mdw-bottomnav__input')[0];
-  }
-  if (inputElement instanceof HTMLInputElement) {
-    inputElement.checked = true;
-  } else if (inputElement) {
-    throw new Error('Unexpected inputElement type');
-  }
+  iterateElementSiblings(itemElement, sibling => sibling.setAttribute('aria-selected', 'false'));
 }

@@ -1,6 +1,6 @@
-@import './components/theming/theming.scss';
+@import './core/theme/index.scss';
 
 @include mdw-theme__build();
 
-@import './components/style.scss';
-@import './components/theming.scss';
+@import './style.scss';
+@import './theming.scss';

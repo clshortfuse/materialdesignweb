@@ -1,10 +1,11 @@
-import { findElementParentByClassName } from '../common/dom';
+import { findElementParentByClassName } from '../../core/dom';
 
 /**
  * @param {Element} listExpanderElement
  * @return {void}
  */
 export function attach(listExpanderElement) {
+  listExpanderElement.setAttribute('role', 'treeitem');
   if (!listExpanderElement.firstElementChild) {
     return;
   }
@@ -23,6 +24,23 @@ export function detach(listExpanderElement) {
 }
 
 /**
+ * @param {Element} listExpanderElement 
+ * @return {boolean}
+ */
+export function isExpanded(listExpanderElement) {
+  return (listExpanderElement.getAttribute('aria-expanded') === "true");
+}
+
+/**
+ * @param {Element} listExpanderElement
+ * @param {boolean} value
+ * @return {void}
+ */
+export function setExpanded(listExpanderElement, value) {
+  listExpanderElement.setAttribute('aria-expanded', value ? 'true' : 'false');
+}
+
+/**
  * @param {Event} event
  * @return {void}
  */
@@ -33,9 +51,5 @@ export function onItemClicked(event) {
   if (!listExpanderElement) {
     return;
   }
-  if (listExpanderElement.hasAttribute('mdw-expanded')) {
-    listExpanderElement.removeAttribute('mdw-expanded');
-  } else {
-    listExpanderElement.setAttribute('mdw-expanded', '');
-  }
+  setExpanded(listExpanderElement, !isExpanded(listExpanderElement));
 }

@@ -1,12 +1,13 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
+import * as Overlay from '../../core/overlay/index';
+import * as Ripple from '../../core/ripple/index';
+
 import {
   dispatchDomEvent,
   iterateArrayLike,
   iterateElementSiblings,
-} from '../common/dom';
-
-import * as Ripple from '../ripple/index';
+} from '../../core/dom';
 
 export const ACTIVATE_EVENT = 'mdw:menuitem-activate';
 export const CHECK_EVENT = 'mdw:menuitem-check';
@@ -17,8 +18,20 @@ export const UNCHECK_EVENT = 'mdw:menuitem-uncheck';
  * @return {void}
  */
 export function attach(element) {
-  element.setAttribute('mdw-js', '');
+  element.classList.add('mdw-overlay');
+  Overlay.attach(element);
+
+  element.classList.add('mdw-ripple');
   Ripple.attach(element);
+
+  attachCore(element);
+}
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
+export function attachCore(element) {
   // If mouseover is used, an item can still lose focus via keyboard navigation.
   // An extra event listener would need to be created to catch blur but the cursor
   // would still remain over the element, thus needing another mousemove event.
@@ -91,13 +104,17 @@ export function onClick(event) {
  * @return {void}
  */
 export function onMouseMove(event) {
-  const el = event.currentTarget;
+  /** @type {HTMLElement} */
+  const el = (event.currentTarget);
   if (!el) {
     return;
   }
   const previousFocus = document.activeElement;
   if (previousFocus === el) {
     // Already focused
+    return;
+  }
+  if (el.getAttribute('aria-disabled') === 'true') {
     return;
   }
   el.focus();
@@ -219,10 +236,19 @@ export function openSubMenu(element) {
  * @param {Element} element
  * @return {void}
  */
-export function detach(element) {
+export function detachCore(element) {
   element.removeEventListener('click', onClick);
   element.removeEventListener('mousemove', onMouseMove);
   element.removeEventListener('keydown', onKeyDown);
   element.removeAttribute('mdw-js');
+}
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
+export function detach(element) {
+  detachCore(element);
   Ripple.detach(element);
+  Overlay.detach(element);
 }

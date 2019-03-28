@@ -1,5 +1,9 @@
-import { iterateSomeOfArrayLike, iterateArrayLike, getTextNode } from '../../components/common/dom';
+// https://www.w3.org/TR/wai-aria-practices/#combobox
 
+import { iterateSomeOfArrayLike, iterateArrayLike, getTextNode } from '../../core/dom';
+
+import * as List from '../../components/list/index';
+import * as ListItem from '../../components/list/item';
 import * as TextField from '../../components/textfield/index';
 
 /**
@@ -30,13 +34,16 @@ function defaultItemTextParser(item) {
   if (item.hasAttribute('data-mdw-search-text')) {
     return item.getAttribute('data-mdw-search-text');
   }
-  let textElement = item.querySelector('.mdw-list__text .mdw-list__text-line');
-  if (!textElement) {
-    textElement = item.querySelector('.mdw-list__text');
-  }
-  if (!textElement) {
-    textElement = item.querySelector('.mdw-list__text');
-  }
+  let textElement;
+  [
+    'mdw-list__text-line',
+    'mdw-list__text',
+    'mdw-list__content',
+  ].some((className) => {
+    textElement = item.getElementsByClassName(className)[0];
+    return textElement != null;
+  });
+
   const textNode = textElement ? getTextNode(textElement) : getTextNode(item);
   if (textNode) {
     return textNode.textContent || '';
@@ -46,14 +53,14 @@ function defaultItemTextParser(item) {
 
 /**
  * @param {Element} list
- * @param {boolean=} backwards
+ * @param {boolean} [backwards=false]
  * @return {Element} sibling
  */
 function selectSibling(list, backwards) {
-  const current = list.querySelector('.mdw-list__item[mdw-selected]');
-  const items = list.querySelectorAll('.mdw-list__item:not([hidden]):not([disabled])');
+  const current = list.querySelector('.mdw-list__item[aria-selected="true"]');
+  const items = list.querySelectorAll('.mdw-list__item:not([aria-hidden="true"]):not([disabled])');
   let sibling;
-  if (current && !current.hasAttribute('hidden')) {
+  if (current && current.getAttribute('aria-hidden') !== 'true') {
     iterateSomeOfArrayLike(items, (item, index) => {
       if (item !== current) {
         return false;
@@ -72,9 +79,9 @@ function selectSibling(list, backwards) {
   }
   if (sibling && sibling !== current) {
     if (current) {
-      current.removeAttribute('mdw-selected');
+      current.setAttribute('aria-selected', 'false');
     }
-    sibling.setAttribute('mdw-selected', '');
+    sibling.setAttribute('aria-selected', 'true');
     return sibling;
   }
   return null;
@@ -129,25 +136,32 @@ function scrollItemIntoView(listItem) {
 */
 
 /**
+ * @template T
  * @typedef SearchAdapterOptions
  * @prop {Element} textfield
  * @prop {Element} list
- * @prop {('contains'|'startsWith'|SearchAdapterTextFilter)=} [textFilter='contains']
- * @prop {(function(Element):string)=} itemTextParser
- * @prop {boolean=} [dropdown=false]
- * @prop {boolean=} [filterItems=true]
+ * @prop {('contains'|'startsWith'|SearchAdapterTextFilter)} [textFilter='contains']
+ * @prop {function(Element):string} [itemTextParser]
+ * @prop {boolean} [dropdown=false]
+ * @prop {boolean} [filterItems=true]
  * @prop {('replace'|'append'|'none')} [suggestionMethod='replace']
- * @prop {(function(string, Function, Function=))=} performSearch
- * @prop {(function(Function, Function))=} updateList
- * @prop {boolean=} [searchOnFocus=true]
- * @prop {number=} debounce Debounce time in milliseconds
+ * @prop {function(string, function(T[]=), function(Error=)=):void} [performSearch]
+ * @prop {function(T[], function(), function(Error=)):void} [updateList]
+ * @prop {boolean} [searchOnFocus=true]
+ * @prop {number} [debounce=null] Debounce time in milliseconds
  */
 
+/** @template T */
 export default class SearchAdapter {
-  /** @param {SearchAdapterOptions} options */
+  /** @param {SearchAdapterOptions<T>} options */
   constructor(options) {
     this.textfield = options.textfield;
     this.list = options.list;
+    this.list.setAttribute('role', 'listbox');
+    iterateArrayLike(this.list.getElementsByClassName('mdw-list__item'), (item) => {
+      item.setAttribute('role', 'option');
+    });
+    List.attach(this.list);
     if (typeof options.textFilter === 'function') {
       this.filter = options.textFilter;
     } else if (options.textFilter === 'startsWith') {
@@ -159,7 +173,7 @@ export default class SearchAdapter {
     /** @type {HTMLInputElement} */
     const input = (this.textfield.getElementsByClassName('mdw-textfield__input')[0]);
     this.input = input;
-    this.list.addEventListener('mdw:itemactivated', (event) => {
+    this.list.addEventListener(ListItem.ACTIVATE_EVENT, (event) => {
       /** @type {HTMLElement} */
       const item = (event.target);
       this.onItemSelected(item);
@@ -208,7 +222,7 @@ export default class SearchAdapter {
 
   /**
    * Default input handler
-   * @param {Event=} event
+   * @param {Event} [event]
    * @return {void}
    */
   handleInputEvent(event) { // eslint-disable-line no-unused-vars
@@ -239,20 +253,21 @@ export default class SearchAdapter {
       }
       throw error;
     }
+
     // IE does not support ES6 Promises
     // Using resolve/reject callbacks instead.
     // Syntactically ugly, but removes need for a polyfill.
-    this.performDebounce(inputValue, () => {
-      this.checkExpired(inputValue, () => {
-        this.performSearch(inputValue, (searchResults) => {
-          this.checkExpired(inputValue, () => {
-            this.updateList(searchResults, () => {
-              this.filterListItems();
-            });
-          }, onErrorCallback);
-        }, onErrorCallback);
-      }, onErrorCallback);
-    }, onErrorCallback);
+    this.performDebounce(inputValue,
+      () => this.checkExpired(inputValue,
+        () => this.performSearch(inputValue,
+          searchResults => this.checkExpired(inputValue,
+            () => this.updateList(searchResults,
+              () => this.filterListItems(),
+              onErrorCallback),
+            onErrorCallback),
+          onErrorCallback),
+        onErrorCallback),
+      onErrorCallback);
 
     /**
      * Promise.resolve()
@@ -400,7 +415,7 @@ export default class SearchAdapter {
   }
 
   /**
-   * @param {SearchAdapterTextFilter=} fnFilter
+   * @param {SearchAdapterTextFilter} [fnFilter]
    * @return {void}
    */
   filterListItems(fnFilter) {
@@ -408,7 +423,7 @@ export default class SearchAdapter {
       return;
     }
     const input = this.input.value;
-    const current = this.list.querySelector('.mdw-list__item[mdw-selected]');
+    const current = this.list.querySelector('.mdw-list__item[aria-selected="true"]');
     const items = this.list.getElementsByClassName('mdw-list__item');
     let hasItem = false;
     iterateArrayLike(items, (item) => {
@@ -416,12 +431,12 @@ export default class SearchAdapter {
       const fn = fnFilter || this.filter;
       if (fn(input, content)) {
         hasItem = true;
-        item.removeAttribute('hidden');
+        item.setAttribute('aria-hidden', 'false');
       } else {
-        item.setAttribute('hidden', '');
+        item.setAttribute('aria-hidden', 'true');
       }
     });
-    if (current && current.hasAttribute('hidden')) {
+    if (current && current.getAttribute('aria-hidden') === 'true') {
       const newSelection = selectSibling(this.list);
       if (newSelection) {
         this.onItemSelected(newSelection);
@@ -482,7 +497,7 @@ export default class SearchAdapter {
       }
       case 'Enter': {
         /** @type {HTMLElement} */
-        const current = this.list.querySelector('.mdw-list__item[mdw-selected]');
+        const current = this.list.querySelector('.mdw-list__item[aria-selected="true"]');
         if (current) {
           if (this.hideDropDown()) {
             current.click();
@@ -494,7 +509,7 @@ export default class SearchAdapter {
       }
       case 'Tab': {
         /** @type {HTMLElement} */
-        const current = this.list.querySelector('.mdw-list__item[mdw-selected]');
+        const current = this.list.querySelector('.mdw-list__item[aria-selected="true"]');
         if (current) {
           if (this.hideDropDown()) {
             current.click();

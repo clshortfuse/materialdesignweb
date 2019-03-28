@@ -1,5 +1,5 @@
-@import '../theming/palettes';
-@import '../common/platform';
+@import '../platform.scss';
+@import './palettes.scss';
 
 $mdw-theme__themes: (
   "default": ('indigo', 'pink', 'red', 'grey', black, white),

@@ -1,10 +1,10 @@
 // https://material.io/design/components/cards.html#specs
 
-@import '../common/breakpoint.scss';
-@import '../common/elevation.scss';
-@import '../common/motion.scss';
-@import '../common/platform.scss';
-@import '../common/type.scss';
+@import '../../core/breakpoint.scss';
+@import '../../core/elevation.scss';
+@import '../../core/motion.scss';
+@import '../../core/platform.scss';
+@import '../../core/type.scss';
 
 $mdw-card__horizontal-padding: dp(16) !default;
 

@@ -2,7 +2,7 @@
 // https://material.io/design/components/buttons.html
 // https://material.io/design/iconography/system-icons.html#color
 
-@import '../common/theming.scss';
+@import '../theme/exports.scss';
 
 $mdw-ripple__theme-values: (
   overlay-color:                 (('foreground-light', 1.00), ('foreground-dark', 1.00)),

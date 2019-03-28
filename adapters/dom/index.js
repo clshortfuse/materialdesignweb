@@ -25,20 +25,23 @@ function AnyDomAdapterRendererFn(element, data) {
 }
 
 /**
- * @template T
+ * @template T1
+ * @template {HTMLElement} T2
  */
 export default class DomAdapter {
   /**
    * @param {HTMLElement} element
-   * @param {Array<T>} datasource
-   * @param {function(HTMLElement, T)=} renderFn
-   * @param {function():HTMLElement=} createFn
+   * @param {Array<T1>} datasource
+   * @param {function(T2, T1)=} renderFn
+   * @param {function():T2=} createFn
    */
   constructor(element, datasource, renderFn, createFn) {
     this.element = element;
     this.datasource = datasource;
-    /** @type {Map<T, HTMLElement>} */
+    /** @type {Map<T1, T2>} */
     this.map = new Map();
+    /** @type {WeakMap<T2, T1>} */
+    this.elementMap = new Map();
     this.render = renderFn || AnyDomAdapterRendererFn;
     this.create = createFn || AnyDomAdapterCreatorFn;
   }
@@ -62,13 +65,14 @@ export default class DomAdapter {
   /** @return {void} */
   clear() {
     this.map.clear();
+    this.elementMap = new WeakMap();
     while (this.element.lastChild) {
       this.element.removeChild(this.element.lastChild);
     }
   }
 
   /**
-   * @param {T} data
+   * @param {T1} data
    * @param {boolean} [checkPosition=true]
    * @return {void}
    */
@@ -83,6 +87,7 @@ export default class DomAdapter {
     if (!element) {
       element = this.create();
       this.map.set(data, element);
+      this.elementMap.set(element, data);
     } else if (checkPosition) {
       elementIndex = index;
     } else {
@@ -103,6 +108,7 @@ export default class DomAdapter {
     }
     if (elementIndex !== -1 && element.parentElement) {
       element.parentElement.removeChild(element);
+      this.elementMap.delete(element);
     }
     let idx = index;
     let nextDataObject = this.datasource[idx + 1];
@@ -119,7 +125,7 @@ export default class DomAdapter {
   }
 
   /**
-   * @param {T} data
+   * @param {T1} data
    * @return {void}
    */
   removeItem(data) {
@@ -131,10 +137,10 @@ export default class DomAdapter {
       element.parentElement.removeChild(element);
     }
     this.map.delete(data);
+    this.elementMap.delete(element);
   }
 
   detach() {
-    this.element.removeAttribute('mdw-adapter');
     this.element = null;
     this.datasource = null;
   }

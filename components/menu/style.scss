@@ -1,9 +1,8 @@
 // https://material.io/guidelines/components/menus.html
 
-@import '../common/elevation.scss';
-@import '../common/platform.scss';
-@import '../common/type.scss';
-@import '../ripple/ripple.scss';
+@import '../../core/elevation.scss';
+@import '../../core/platform.scss';
+@import '../../core/type.scss';
 
 $menu__unit-width: dp(56);
 
@@ -26,20 +25,30 @@ $menu__unit-width: dp(56);
   position: absolute;
   display: block;
   pointer-events: none;
-  visibility: hidden;
+  visibility: visible;
+  transition-property: none;
+  transition-timing-function: $mdw-motion__decelerate-easing;
+  transition-duration: $mdw-motion__leave-duration__desktop;
+  @include mdw-breakpoint__mobile-device {
+    transition-duration: $mdw-motion__leave-duration__mobile;
+  }
+  @include mdw-breakpoint__tablet-device {
+    transition-duration: $mdw-motion__leave-duration__tablet;
+  }
   &[aria-hidden="false"],
   &[id]:target {
+    transition-property: visibility;
+    transition-timing-function: $mdw-motion__accelerate-easing;
+    transition-duration: $mdw-motion__enter-duration__desktop;
+    @include mdw-breakpoint__mobile-device {
+      transition-duration: $mdw-motion__enter-duration__mobile;
+    }
+    @include mdw-breakpoint__tablet-device {
+      transition-duration: $mdw-motion__enter-duration__tablet;
+    }
     pointer-events: auto;
     visibility: visible;
     .mdw-menu__popup {
-      transition-timing-function: $mdw-motion__accelerate-easing;
-      transition-duration: $mdw-motion__enter-duration__desktop;
-      @include mdw-breakpoint__mobile-device {
-        transition-duration: $mdw-motion__enter-duration__mobile;
-      }
-      @include mdw-breakpoint__tablet-device {
-        transition-duration: $mdw-motion__enter-duration__tablet;
-      }
       transform: scale(1);
       opacity: 1;
       box-shadow: mdwElevation(8);
@@ -149,7 +158,7 @@ $menu__unit-width: dp(56);
   }
 }
 
-.mdw-menu[mdw-js] {
+.mdw-menu[mdw-menu-js] {
   position: fixed;
   top: 0;
   right: auto;
@@ -186,15 +195,8 @@ $menu__unit-width: dp(56);
   flex-direction: column;
   position: absolute;
   transition-property: transform, box-shadow, opacity;
-  transition-timing-function: $mdw-motion__decelerate-easing;
-  transition-duration: $mdw-motion__leave-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__leave-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__leave-duration__tablet;
-  }
-  
+  transition-duration: inherit;
+  transition-timing-function: inherit;
   top: inherit;
   left: inherit;
   bottom: inherit;
@@ -240,7 +242,7 @@ $menu__unit-width: dp(56);
   }
 }
 
-.mdw-menu__divider {
+.mdw-menu__popup > .mdw-divider {
   height: dp(1);
   margin-top: dp(7);
   margin-bottom: dp(8);
@@ -271,29 +273,6 @@ $menu__unit-width: dp(56);
 
   &[aria-disabled="true"] {
     cursor: not-allowed;
-    & > .mdw-ripple,
-    &::after {
-      display: none;
-    }
-  }
-  & > .mdw-ripple {
-    @include mdw-ripple__container;
-  }
-
-  &::after {
-    @include mdw-ripple__inner;
-  }
-
-  &:active::after {
-    @include mdw-ripple__active;
-  }
-
-  &[mdw-ripple] {
-    overflow: visible;
-    &::after {
-      // If using custom ripple, destroy ::after object
-      content: none;
-    }
   }
 }
 

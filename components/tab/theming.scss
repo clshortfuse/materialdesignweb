@@ -1,9 +1,8 @@
-@import '../common/theming.scss';
+@import '../../core/theme/exports.scss';
 
 $mdw-tab__theme-values: (
   active-color:      (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   inactive-color:    (('foreground-light', 0.54), ('foreground-dark', 0.70)),
-  ripple-opacity:    (         0.26 ,          0.30),
 ) !default;
 
 @function mdwTabThemeValue($key, $type, $theme) {
@@ -13,21 +12,20 @@ $mdw-tab__theme-values: (
 
 // Vary by contrast
 @mixin mdw-tab__theme-rules($type: 'var', $theme: null) {
-  .mdw-tab__items:not([mdw-color]) {
+  .mdw-tab__list:not([mdw-color]) {
     color: mdwTabThemeValue("active-color", $type, $theme);
   }
 
-  .mdw-tab__icon,
-  .mdw-tab__label {
+  .mdw-tab__item[aria-selected="false"] {
     color: mdwTabThemeValue("inactive-color", $type, $theme);
   }
 
-  .mdw-tab__item {
-    & > .mdw-ripple > .mdw-ripple__inner,
-    &::after {
-      opacity: mdwTabThemeValue("ripple-opacity", $type, $theme);
+  @if ($type != 'var') {
+    .mdw-tab__item.mdw-overlay::before {
+      color: inherit;
     }
   }
+
 }
 
 @each $name in map-keys($mdw-theme__themes) {

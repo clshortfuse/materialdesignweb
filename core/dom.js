@@ -50,7 +50,7 @@ export function getChildElementByClass(element, className) {
 /**
  * @param {HTMLElement} element
  * @param {string} className
- * @param {boolean=} [includeSelf=true]
+ * @param {boolean} [includeSelf=true]
  * @return {HTMLElement}
  */
 export function findElementParentByClassName(element, className, includeSelf) {
@@ -76,11 +76,31 @@ export function isRtl() {
 /**
  * @param {Element} element
  * @param {string} type
+ * @param {Object} [detail]
  * @return {boolean}
  */
-export function dispatchDomEvent(element, type) {
-  const event = document.createEvent('Event');
-  event.initEvent(type, true, true);
+export function dispatchDomEvent(element, type, detail) {
+  let event;
+  if (typeof CustomEvent === 'function') {
+    event = new CustomEvent(type, {
+      bubbles: true,
+      cancelable: true,
+      detail,
+    });
+  } else if (detail == null) {
+    if (typeof Event === 'function') {
+      event = new Event(type, {
+        bubbles: true,
+        cancelable: true,
+      });
+    } else {
+      event = document.createEvent('Event');
+      event.initEvent(type, true, true);
+    }
+  } else {
+    event = document.createEvent('CustomEvent');
+    event.initCustomEvent(type, true, true, detail);
+  }
   return element.dispatchEvent(event);
 }
 
@@ -156,7 +176,7 @@ export function iterateSomeOfElementSiblings(element, fn) {
 
 /**
  * @param {Node} node
- * @param {boolean=} create
+ * @param {boolean} [create]
  * @return {Node}
  */
 export function getTextNode(node, create) {
@@ -206,9 +226,10 @@ export function setTextNode(node, value) {
 /**
  * @param {HTMLElement} element
  * @param {boolean} [smooth=false]
+ * @param {boolean} [rtl=false]
  * @return {void}
  */
-export function scrollToElement(element, smooth) {
+export function scrollToElement(element, smooth, rtl) {
   if (!element) {
     return;
   }
@@ -216,19 +237,34 @@ export function scrollToElement(element, smooth) {
   if (!parent) {
     return;
   }
-  if (parent.scrollLeft === element.offsetLeft) {
+
+  let targetScrollLeft = rtl
+    ? parent.scrollWidth + element.offsetLeft - element.offsetWidth
+    : element.offsetLeft;
+
+  const elementRect = element.getBoundingClientRect();
+  const parentRect = parent.getBoundingClientRect();
+  let subPixelScrollPosition = elementRect.left - parentRect.left;
+  if (subPixelScrollPosition < 0) {
+    subPixelScrollPosition = 0;
+  }
+  if (Math.abs(subPixelScrollPosition - targetScrollLeft) < 2) {
+    targetScrollLeft = subPixelScrollPosition;
+  }
+  if (parent.scrollLeft === targetScrollLeft) {
     return;
   }
-  if (smooth && parent.scrollTo) {
+
+  if (parent.scrollTo) {
     parent.scrollTo({
       top: 0,
-      left: element.offsetLeft,
-      behavior: 'smooth',
+      left: targetScrollLeft,
+      behavior: smooth ? 'smooth' : 'auto',
     });
     return;
   }
   parent.style.setProperty('scroll-behavior', 'auto');
-  parent.scrollLeft = element.offsetLeft;
+  parent.scrollLeft = targetScrollLeft;
   nextTick(() => {
     parent.style.removeProperty('scroll-behavior');
   });

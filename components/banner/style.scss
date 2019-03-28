@@ -1,8 +1,8 @@
 // https://material.io/design/components/banners.html
 
-@import '../common/platform.scss';
-@import '../common/breakpoint.scss';
-@import '../common/type.scss';
+@import '../../core/platform.scss';
+@import '../../core/breakpoint.scss';
+@import '../../core/type.scss';
 
 .mdw-banner {
   display: flex;

@@ -1,4 +1,12 @@
-import { getChildElementByClass, nextTick, getPassiveEventListenerOption } from '../common/dom';
+import { getChildElementByClass, nextTick, getPassiveEventListenerOption, iterateArrayLike } from '../dom';
+
+/**
+ * @param {Element|Document} [root=document]
+ * @return {void}
+ */
+export function attachAll(root = document) {
+  iterateArrayLike(root.getElementsByClassName('mdw-ripple'), attach);
+}
 
 /**
  * @param {Element} element
@@ -25,18 +33,13 @@ export function attach(element) {
     rippleContainer.appendChild(rippleInner);
   }
   element.setAttribute('mdw-ripple-js', '');
-  let targetElement = rippleContainer;
-  if (element instanceof HTMLButtonElement || element instanceof HTMLAnchorElement) {
-    // Firefox doesn't support listening on HTMLButtonElement children
-    targetElement = element;
-  }
-
-  targetElement.addEventListener('click', onClick, getPassiveEventListenerOption());
-  targetElement.addEventListener('mousedown', onMouseDown, getPassiveEventListenerOption());
-  targetElement.addEventListener('touchstart', onTouchStart, getPassiveEventListenerOption());
+  element.addEventListener('click', onClick, getPassiveEventListenerOption());
+  element.addEventListener('mousedown', onMouseDown, getPassiveEventListenerOption());
+  element.addEventListener('touchstart', onTouchStart, getPassiveEventListenerOption());
   element.addEventListener('keydown', onKeyDown, getPassiveEventListenerOption());
   rippleInner.addEventListener('animationend', onAnimationEnd, getPassiveEventListenerOption());
 }
+
 
 /**
  * @param {PointerEvent|MouseEvent} event
@@ -44,11 +47,9 @@ export function attach(element) {
  */
 export function onMouseDown(event) {
   /** @type {HTMLElement} */
-  let rippleContainer = (event.currentTarget);
-  if (!rippleContainer.classList.contains('mdw-ripple__container')) {
-    /** @type {HTMLElement} */
-    rippleContainer = (getChildElementByClass(rippleContainer, 'mdw-ripple__container'));
-  }
+  const element = (event.currentTarget);
+  /** @type {HTMLElement} */
+  const rippleContainer = (getChildElementByClass(element, 'mdw-ripple__container'));
   if (!rippleContainer) {
     return;
   }
@@ -57,6 +58,7 @@ export function onMouseDown(event) {
   if (!rippleInner) {
     return;
   }
+  // @ts-ignore
   if (!event.pointerType && !event.detail) {
     return;
   }
@@ -73,11 +75,9 @@ export function onMouseDown(event) {
  */
 export function onTouchStart(event) {
   /** @type {HTMLElement} */
-  let rippleContainer = (event.currentTarget);
-  if (!rippleContainer.classList.contains('mdw-ripple__container')) {
-    /** @type {HTMLElement} */
-    rippleContainer = (getChildElementByClass(rippleContainer, 'mdw-ripple__container'));
-  }
+  const element = (event.currentTarget);
+  /** @type {HTMLElement} */
+  const rippleContainer = (getChildElementByClass(element, 'mdw-ripple__container'));
   if (!rippleContainer) {
     return;
   }
@@ -103,11 +103,9 @@ export function onTouchStart(event) {
  */
 export function onKeyDown(event) {
   /** @type {HTMLElement} */
-  let rippleContainer = (event.currentTarget);
-  if (!rippleContainer.classList.contains('mdw-ripple__container')) {
-    /** @type {HTMLElement} */
-    rippleContainer = (getChildElementByClass(rippleContainer, 'mdw-ripple__container'));
-  }
+  const element = (event.currentTarget);
+  /** @type {HTMLElement} */
+  const rippleContainer = (getChildElementByClass(element, 'mdw-ripple__container'));
   if (!rippleContainer) {
     return;
   }
@@ -136,7 +134,9 @@ export function isActive(element) {
   if (element.matches) {
     return element.matches(':active');
   }
+  // @ts-ignore
   if (element.msMatchesSelector) {
+    // @ts-ignore
     element.msMatchesSelector(':active');
   }
   return false;
@@ -248,11 +248,9 @@ export function clearRipple(rippleInner) {
  */
 export function onClick(event) {
   /** @type {HTMLElement} */
-  let rippleContainer = (event.currentTarget);
-  if (!rippleContainer.classList.contains('mdw-ripple__container')) {
-    /** @type {HTMLElement} */
-    rippleContainer = (getChildElementByClass(rippleContainer, 'mdw-ripple__container'));
-  }
+  const element = (event.currentTarget);
+  /** @type {HTMLElement} */
+  const rippleContainer = (getChildElementByClass(element, 'mdw-ripple__container'));
   if (!rippleContainer) {
     return;
   }
@@ -261,6 +259,7 @@ export function onClick(event) {
   if (!rippleInner) {
     return;
   }
+  // @ts-ignore
   if (event.pointerType || event.detail) {
     return;
   }

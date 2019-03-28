@@ -1,59 +1,73 @@
 // https://material.io/design/components/tabs.html#spec
 
-@import '../common/motion.scss';
-@import '../common/platform.scss';
-@import '../common/breakpoint.scss';
-@import '../common/type.scss';
-@import '../ripple/ripple.scss';
+@import '../../core/motion.scss';
+@import '../../core/platform.scss';
+@import '../../core/breakpoint.scss';
+@import '../../core/type.scss';
 
-$tab__icon-size: 24;
-$tab__icon-margin-top: 12;
-$tab__icon-to-label-baseline: 20;
-$tab__icon-with-label-height: 72;
+$mdw-tab__icon-size: 24 !default;
+$mdw-tab__icon-margin-top: 12 !default;
+$mdw-tab__icon-to-label-baseline: 20 !default;
+$mdw-tab__icon-with-label-height: 72 !default;
 
 .mdw-tab {
   display: flex;
   flex-direction: column;
 }
 
-.mdw-tab__items {
-  overflow-y: hidden;
+.mdw-tab__list {
+  display: flex; // IE11 doesn't support grid-auto-columns
+  display: grid;
   position: relative;
 
-  overscroll-behavior-x: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex: none;
 
-  overflow-x: scroll;
   -ms-overflow-style: none;
+  overscroll-behavior-x: none;
+  scrollbar-width: none;
+
   &::-webkit-scrollbar {
     display:none;
   }
-  scrollbar-width: none;
-
-  flex: none;
-
-  display: flex; // IE11 doesn't support grid-auto-columns
-  display: grid;
 
   grid-auto-columns: 1fr;
 
   justify-content: flex-start;
   flex-direction: row;
-  &[mdw-js][mdw-scrollable] {
+  &[mdw-scrollable] {
     display: flex;
     overflow-x: auto;
+    
     box-sizing: border-box;
-    > .mdw-tab__item {
+    & > .mdw-tab__item {
       min-width: dp(90);
       max-width: 100%;
       flex: none;
     }
+    
     &::before,
     &::after {
       // Ensures 52dp blank space at end
-      content: "";
+      content: '';
+
       min-width: dp(52);
     }
   }
+}
+
+.mdw-tab__icon,
+.mdw-tab__label,
+.mdw-tab__indicator {
+  transition-duration: $mdw-motion__default-duration__desktop;
+  @include mdw-breakpoint__mobile-device {
+    transition-duration: $mdw-motion__default-duration__mobile;
+  }
+  @include mdw-breakpoint__tablet-device {
+    transition-duration: $mdw-motion__default-duration__tablet;
+  }
+  transition-timing-function: $mdw-motion__standard-easing;
 }
 
 .mdw-tab__indicator {
@@ -63,51 +77,15 @@ $tab__icon-with-label-height: 72;
   width: 0;
   left: 0;
   right: auto;
-  html[dir=rtl] & {
-    right: 0;
-    left: auto;
-  }
   background-color: currentColor;
   transform-origin: 0 0 0;
-  transition-property: transform;
-  transition-timing-function: $mdw-motion__standard-easing;
-  transition-duration: $mdw-motion__default-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__default-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__default-duration__tablet;
-  }
-  // Indicator width
-  // Element position = 2 * number of input elements + 1 (itself)
-  // Width = 100% / number of input elements
-  @for $j from 1 through 8 {
-    &:nth-child(#{$j + 1}) {
-      width: #{100% / $j};
-    }
-  }
-  // Indicator offset
-  @for $i from 1 through 8 {
-    .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items > &,
-    .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items-wrapper .mdw-tab__items > &,
-    .mdw-tab__item[mdw-selected]:nth-of-type(#{$i}) ~ & {
-      transform: translateX(#{100% * ($i - 1)});
-    }
-    html[dir=rtl] .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items > &,
-    html[dir=rtl] .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items-wrapper .mdw-tab__items > &,
-    html[dir=rtl] .mdw-tab__item[mdw-selected]:nth-of-type(#{$i}) ~ & {
-      transform: translateX(#{-100% * ($i - 1)});
-    }
+  width: 1000px;
+  transform: translateX(0) scaleX(0);
+  transition-property: none;
+  &[mdw-animate] {
+    transition-property: transform;
   }
   
-  .mdw-tab__items[mdw-js] > & {
-    width: 1000px;
-    transform: translateX(0);
-  }
-  .mdw-tab__items[mdw-js][mdw-scrollsnap] > & {
-    transition-timing-function: linear; // Safari lags on scroll events
-    transition: none;
-  }
 }
 
 .mdw-tab__item {
@@ -131,44 +109,16 @@ $tab__icon-with-label-height: 72;
   -ms-user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
-  .mdw-tab__input:checked + & {
-    cursor: default;
-  }
 
-  > .mdw-ripple {
-    @include mdw-ripple__container;
-  }
-
-  &::after {
-    @include mdw-ripple__inner;
-  }
-
-  &:active::after {
-    @include mdw-ripple__active;
-  }
-
-  &[mdw-ripple] {
-    &::after {
-      // If using custom ripple, destroy ::after object
-      content: none;
-    }
-  }
+  
 }
 
 .mdw-tab__icon {
-  margin-top: dp($tab__icon-margin-top);
-  @include baseline-bottom($tab__icon-to-label-baseline);
-  margin-bottom: dp(-$tab__icon-to-label-baseline);
+  margin-top: dp($mdw-tab__icon-margin-top);
+  @include baseline-bottom($mdw-tab__icon-to-label-baseline);
+  margin-bottom: dp(-$mdw-tab__icon-to-label-baseline);
   pointer-events: none;
   transition-property: color;
-  transition-timing-function: $mdw-motion__standard-easing;
-  transition-duration: $mdw-motion__default-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__default-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__default-duration__tablet;
-  }
 }
 
 .mdw-tab__label {
@@ -182,54 +132,17 @@ $tab__icon-with-label-height: 72;
 
   text-align: center;
   transition-property: color;
-  transition-timing-function: $mdw-motion__standard-easing;
-  transition-duration: $mdw-motion__default-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__default-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__default-duration__tablet;
-  }
 
   .mdw-tab__icon ~ & {
     margin: 0;
     min-height: 0;
     display: block;
-    @include baseline-top($tab__icon-to-label-baseline);
-    @include baseline-bottom($tab__icon-with-label-height
-      - $tab__icon-margin-top
-      - $tab__icon-size
-      - $tab__icon-to-label-baseline
+    @include baseline-top($mdw-tab__icon-to-label-baseline);
+    @include baseline-bottom($mdw-tab__icon-with-label-height
+      - $mdw-tab__icon-margin-top
+      - $mdw-tab__icon-size
+      - $mdw-tab__icon-to-label-baseline
     );
-  }
-}
-
-.mdw-tab__input {
-  display: inline-block;
-  height: 0;
-  width: 0;
-  margin: 0;
-  padding: 0;
-
-  outline: none;
-  pointer-events: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-}
-
-.mdw-tab__item[mdw-selected] > .mdw-tab__icon,
-.mdw-tab__item[mdw-selected] > .mdw-tab__label {
-  color: inherit;
-}
-@for $i from 1 through 8 {
-  .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items,
-  .mdw-tab__input:checked:nth-of-type(#{$i}) ~ .mdw-tab__items-wrapper .mdw-tab__items {
-    & > .mdw-tab__item:nth-child(#{$i}) {
-      > .mdw-tab__icon,
-      > .mdw-tab__label {
-        color: inherit;
-      }
-    }
   }
 }
 
@@ -240,40 +153,6 @@ $tab__icon-with-label-height: 72;
   align-items: stretch;
   overflow-x: hidden;
   position: relative;
-}
-
-.mdw-tab__content-item {
-  max-width: 100%;
-  visibility: hidden;
-  flex-basis: 100%;
-  flex-shrink: 0;
-  transition-property: transform, visibility;
-  transition-timing-function: $mdw-motion__standard-easing;
-  transition-duration: $mdw-motion__default-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__default-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__default-duration__tablet;
-  }
-  @for $j from 1 through 8 {
-    .mdw-tab__content[mdw-selected-index="#{$j - 1}"] > &,
-    .mdw-tab__input:checked:nth-of-type(#{$j}) ~ .mdw-tab__content > & {
-      transform: translateX(#{-100% * ($j - 1)});
-      &:nth-child(#{$j}) {
-        transition-property: transform;
-        
-        visibility: visible;
-      }
-    }
-    html[dir=rtl] .mdw-tab__content[mdw-selected-index="#{$j - 1}"] > &,
-    html[dir=rtl] .mdw-tab__input:checked:nth-of-type(#{$j}) ~ .mdw-tab__content > & {
-      transform: translateX(#{100% * ($j - 1)});
-    }
-  }
-}
-
-.mdw-tab__content[mdw-js][mdw-scrollsnap] {
   overflow-x: scroll;
 
   // Snap
@@ -304,13 +183,44 @@ $tab__icon-with-label-height: 72;
   .mdw-tab[mdw-resize-stage] & {
     scroll-behavior: auto;
   }
+}
 
-  .mdw-tab__content-item {
-    scroll-snap-align: center;
-    transform: none !important; // TODO: Refactor to remove
-    transition: none;
-    visibility: visible;
-    max-width: 100%;
-    min-width: 100%;
+.mdw-tab__panel {
+  max-width: 100%;
+  visibility: visible;
+  flex-basis: 100%;
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  visibility: visible;
+  max-width: 100%;
+  min-width: 100%;
+  will-change: visibility;
+
+  &[aria-hidden="true"] {
+    visibility: hidden;
+  }
+
+
+  &[aria-expanded="false"] .mdw-tabs__panel__inactive-hide,
+  &[aria-expanded="true"] .mdw-tabs__panel__active-hide {
+    visibility: hidden;
+  }
+
+  &[aria-expanded="false"] .mdw-tabs__panel__inactive-remove,
+  &[aria-expanded="true"] .mdw-tabs__panel__active-remove {
+    display: none;
+  }
+  
+}
+
+.mdw-tab__content[mdw-no-scroll] {
+  overflow-x: hidden;
+  scroll-behavior: auto;
+  .mdw-tab__panel[aria-expanded="false"] {
+    // flex-basis: 0px;
+    // max-width: 0;
+    // min-width: 0;
+    // height: 0;
+    // visibility: collapse;
   }
 }

@@ -4,6 +4,8 @@ const cssnano = require('cssnano');
 
 const isProduction = (process.env.NODE_ENV === 'production');
 
+/** @typedef {import('webpack').Configuration} WebpackConfiguration */
+
 /** @return {Object} */
 function getComponentsConfig() {
   const DEST = (isProduction ? 'dist' : 'test/dist');
@@ -16,6 +18,9 @@ function getComponentsConfig() {
     },
     mode: process.env.NODE_ENV || 'development',
     devtool: isProduction ? undefined : 'nosources-source-map',
+    optimization: {
+      usedExports: false,
+    },
     output: {
       filename: 'materialdesignweb.min.js',
       path: path.resolve(__dirname, DEST),
@@ -53,7 +58,7 @@ function getComponentsConfig() {
   };
 }
 
-/** @return {Object} */
+/** @return {WebpackConfiguration} */
 function getDocsConfig() {
   const plugins = [];
   const entries = {
@@ -74,7 +79,8 @@ function getDocsConfig() {
       entries[`${noExt}`].push(`./${folder}/${filename}`);
     }));
   const DEST = (isProduction ? 'docs' : 'test/docs');
-  return {
+  /** @type {WebpackConfiguration} */
+  const webpackConfig = {
     entry: entries,
     context: path.resolve(__dirname, 'docs-src'),
     devtool: isProduction ? 'source-map' : 'nosources-source-map',
@@ -82,23 +88,53 @@ function getDocsConfig() {
     devServer: {
       contentBase: path.resolve(__dirname, DEST),
       compress: true,
+      inline: false,
     },
     output: {
       filename: '[name].min.js',
+      chunkFilename: '[name].min.js',
       path: path.resolve(__dirname, DEST),
+    },
+    optimization: {
+      usedExports: true,
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          prerender: {
+            test: /prerender/,
+            name: 'prerender.common',
+            minSize: 0,
+            minChunks: 2,
+            priority: -10,
+            chunks: 'all',
+          },
+          vendors: false,
+          default: {
+            test(module, chunks) {
+              if (module && module.resource && module.resource.indexOf('prerender') !== -1) {
+                return false;
+              }
+              if (chunks && chunks.some(chunk => chunk.name.indexOf('prerender') !== -1)) {
+                return false;
+              }
+              return true;
+            },
+            name: 'default.common',
+            minSize: 0,
+            minChunks: 2,
+            chunks: 'all',
+            reuseExistingChunk: true,
+          },
+        },
+      },
     },
     module: {
       rules: [{
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              ['@babel/preset-env'],
-            ],
-          },
-        },
+        use: [
+          'babel-loader?{"presets":["@babel/preset-env"]}',
+        ],
       }, {
         test: /\.scss$/,
         use: [
@@ -127,11 +163,12 @@ function getDocsConfig() {
     },
     plugins,
   };
+  return webpackConfig;
 }
 
 /**
  * @param {Object} env
- * @return {Object}
+ * @return {WebpackConfiguration}
  */
 function makeWebPackConfig(env = {}) {
   if (env.target === 'docs') {

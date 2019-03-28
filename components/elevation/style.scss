@@ -1,4 +1,4 @@
-@import '../common/elevation.scss';
+@import '../../core/elevation.scss';
 
 .mdw-elevation {
   @each $value in (1, 2, 3, 4, 6, 8, 9, 12, 16, 24) {

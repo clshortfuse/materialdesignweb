@@ -9,9 +9,15 @@ import * as ListItem from '../../components/list/item';
 function AnyListAdapterRendererFn(element, data) {
   let primaryText = element.getElementsByClassName('mdw-list__text')[0];
   if (!primaryText) {
+    let contentElement = element.getElementsByClassName('mdw-list__content')[0];
+    if (!contentElement) {
+      contentElement = document.createElement('div');
+      contentElement.className = 'mdw-list__content';
+      element.appendChild(contentElement);
+    }
     primaryText = document.createElement('div');
-    primaryText.classList.add('mdw-list__text');
-    element.appendChild(primaryText);
+    primaryText.className = 'mdw-list__text';
+    contentElement.appendChild(primaryText);
     ListItem.attach(element);
   }
   let s = '';
@@ -29,7 +35,7 @@ function AnyListAdapterRendererFn(element, data) {
 
 /**
  * @template T
- * @extends {DomAdapter<T>}
+ * @extends {DomAdapter<T, HTMLLIElement>}
  * */
 export default class ListAdapter extends DomAdapter {
   /**
@@ -39,8 +45,6 @@ export default class ListAdapter extends DomAdapter {
    */
   constructor(element, datasource, renderFn) {
     super(element, datasource, renderFn, ListAdapter.create);
-    /** @type {Map<T, HTMLLIElement>} */
-    this.map = new Map();
     this.render = renderFn || AnyListAdapterRendererFn;
   }
 

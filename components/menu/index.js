@@ -7,7 +7,7 @@ import {
   iterateSomeOfArrayLike,
   nextTick,
   cancelTick,
-} from '../common/dom';
+} from '../../core/dom';
 
 import * as MenuItem from './item';
 
@@ -39,7 +39,7 @@ export const HIDE_EVENT = 'mdw:menu-hide';
  * @return {void}
  */
 export function attach(menuElement) {
-  menuElement.setAttribute('mdw-js', '');
+  menuElement.setAttribute('mdw-menu-js', '');
   menuElement.addEventListener('click', onMenuClick);
   menuElement.addEventListener('scroll', onMenuScroll);
   menuElement.addEventListener('touchmove', onMenuScroll);
@@ -59,7 +59,7 @@ export function setupARIA(menuElement) {
   if (!menuElement.hasAttribute('aria-hidden')) {
     menuElement.setAttribute('aria-hidden', 'true');
   }
-  iterateArrayLike(menuElement.getElementsByClassName('mdw-menu__divider'),
+  iterateArrayLike(menuElement.getElementsByClassName('mdw-divider'),
     el => el.setAttribute('role', 'separator'));
   menuElement.setAttribute('role', 'menu');
   const popupElement = menuElement.getElementsByClassName('mdw-menu__popup')[0];
@@ -186,7 +186,7 @@ export function detach(menuElement) {
   menuElement.removeEventListener('touchmove', onMenuScroll);
   menuElement.removeEventListener('wheel', onMenuScroll);
   menuElement.addEventListener('keydown', onKeyDown);
-  menuElement.removeAttribute('mdw-js');
+  menuElement.removeAttribute('mdw-menu-js');
   const popupElement = menuElement.getElementsByClassName('mdw-menu__popup')[0];
   if (popupElement) {
     popupElement.style.removeProperty('top');

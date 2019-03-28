@@ -1,12 +1,11 @@
 // https://material.io/guidelines/components/buttons.html#buttons-raised-buttons
 // https://material.io/guidelines/style/icons.html#
 
-@import '../common/breakpoint.scss';
-@import '../common/elevation.scss';
-@import '../common/motion.scss';
-@import '../common/platform.scss';
-@import '../common/type.scss';
-@import '../ripple/ripple.scss';
+@import '../../core/breakpoint.scss';
+@import '../../core/elevation.scss';
+@import '../../core/motion.scss';
+@import '../../core/platform.scss';
+@import '../../core/type.scss';
 
 $mdw-button__external-padding: dp(8) !default;
 $mdw-button__minimum-click-target: dp(48) !default;
@@ -30,7 +29,6 @@ $mdw-button__outline-size: dp(1) !default;
   -webkit-appearance: none;
   appearance: none;
   cursor: pointer;
-  outline: none;
   -webkit-tap-highlight-color: transparent;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -132,42 +130,6 @@ $mdw-button__outline-size: dp(1) !default;
   }
 }
 
-// Button Animations
-// Ripple doesn't appear until mouse-up
-// Background color transitions from hover to press
-
-// ::before - hover, focus, and activated overlays
-// ::after  - press overlay (ripple)}
-
-.mdw-button::before {
-  content: '';
-  
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  height: 100%;
-  width: 100%;
-
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
-  
-  transition-duration: inherit;
-  transition-property: opacity, color;
-  transition-timing-function: inherit;
-
-  opacity: 0;
-  pointer-events: none;
-  // Safari has a negative z-index bug
-  // Might be related to display rule
-  z-index: 1;
-
-  background-color: currentColor;
-  border-radius: inherit;
-}
-
 // Fix anchor line-height on IE11
 @include mdw-platform__ie {
   a.mdw-button:not([mdw-icon]) {
@@ -191,27 +153,6 @@ $mdw-button__outline-size: dp(1) !default;
   }
 }
 
-.mdw-button[mdw-ripple] {
-  overflow: visible;
-
-  &::after {
-    // If using custom ripple, destroy ::after object
-    content: none;
-  }
-}
-
-.mdw-button > .mdw-ripple {
-  @include mdw-ripple__container;
-}
-
-.mdw-button::after {
-  @include mdw-ripple__inner;
-}
-
-.mdw-button:active::after {
-  @include mdw-ripple__active;
-}
-
 // Raised
 .mdw-button[mdw-raised] {
   box-shadow: mdwElevation(2);
@@ -221,18 +162,12 @@ $mdw-button__outline-size: dp(1) !default;
   }
 }
 
-.mdw-button[disabled] {
+.mdw-button[disabled],
+.mdw-button[aria-disabled="true"] {
   cursor: not-allowed;
 
   &,
   &[mdw-raised] {
     box-shadow: mdwElevation(0);
-  }
-
-  & > .mdw-ripple,
-  &::after {
-    content: none;
-
-    display: none;
   }
 }

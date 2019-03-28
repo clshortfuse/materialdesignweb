@@ -1,4 +1,12 @@
-import { getPassiveEventListenerOption } from '../common/dom';
+import { getPassiveEventListenerOption, iterateArrayLike } from '../dom';
+
+/**
+ * @param {Element|Document} [root=document]
+ * @return {void}
+ */
+export function attachAll(root = document) {
+  iterateArrayLike(root.getElementsByClassName('mdw-overlay'), attach);
+}
 
 /**
  * @param {Element} element

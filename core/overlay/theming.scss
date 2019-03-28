@@ -1,6 +1,6 @@
 // https://material.io/design/interaction/states.html
 
-@import '../common/theming.scss';
+@import '../theme/exports.scss';
 
 $mdw-overlay__theme-values: (
   // states
@@ -36,14 +36,14 @@ $mdw-overlay__theme-values: (
 
       &[aria-pressed="false"]:not(:active)::before,
       &[aria-pressed="false"][mdw-color]:not(:active)::before {
-        --color: var(--foreground-color);
+        // --color: var(--foreground-color);
       }
     } @else {
       &[aria-pressed="false"],
       &[aria-pressed="false"][mdw-color],
       &:not([mdw-color]):not([mdw-fill]) {
         &::before {
-          color: mdwOverlayThemeValue("overlay-color", $type, $theme);
+          // color: mdwOverlayThemeValue("overlay-color", $type, $theme);
         }
       }
       
@@ -89,7 +89,8 @@ $mdw-overlay__theme-values: (
     }
 
     // Activated
-    .mdw-overlay__group[aria-multiselectable="false"] > &[aria-selected="true"]:not([mdw-overlay-off~="selected"])
+    .mdw-overlay__group[aria-multiselectable="false"] > &[aria-selected="true"]:not([mdw-overlay-off~="selected"]),
+    &[aria-current]:not([mdw-overlay-off~="current"]),
     &[aria-pressed="true"]:not([mdw-overlay-off~="activated"]) {
       &::before {
         opacity: mdwOverlayThemeValue("activated-opacity", $type, $theme);

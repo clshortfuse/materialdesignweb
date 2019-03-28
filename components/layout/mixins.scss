@@ -1,4 +1,4 @@
-@import '../common/breakpoint.scss';
+@import '../../core/breakpoint.scss';
 
 @mixin mdw-layout__modal($side) {
   .mdw-layout__body[mdw-#{$side}-style='modal'] {

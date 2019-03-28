@@ -1,10 +1,10 @@
 // https://material.io/guidelines/components/data-tables.html
 // https://material.io/guidelines/patterns/selection.html#selection-item-selection
 
-@import '../common/platform.scss';
-@import '../common/motion.scss';
-@import '../common/breakpoint.scss';
-@import '../common/type.scss';
+@import '../../core/platform.scss';
+@import '../../core/motion.scss';
+@import '../../core/breakpoint.scss';
+@import '../../core/type.scss';
 
 $mdw-datatable__icon-size: dp(16);
 

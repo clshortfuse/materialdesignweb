@@ -1,8 +1,7 @@
 // https://material.io/design/components/bottom-navigation.html#specs
 
-@import '../common/platform.scss';
-@import '../common/type.scss';
-@import '../ripple/ripple.scss';
+@import '../../core/platform.scss';
+@import '../../core/type.scss';
 
 .mdw-bottomnav {
   display: flex;
@@ -41,25 +40,6 @@
   
   border-radius: 0;
   box-shadow: none;
-
-  &::after {
-    @include mdw-ripple__inner;
-  }
-
-  &:active::after {
-    @include mdw-ripple__active;
-  }
-
-  &[mdw-ripple] {
-    &::after {
-      // If using custom ripple, destroy ::after object
-      content: none;
-    }
-  }
-
-  & > .mdw-ripple {
-    @include mdw-ripple__container;
-  }
 }
 
 .mdw-bottomnav__icon {
@@ -84,24 +64,26 @@
   }
 }
 
-.mdw-bottomnav__item[mdw-badge]::before {
+.mdw-bottomnav__icon[mdw-badge]::before {
+  font: inherit;
   content: attr(mdw-badge);
 
   position: absolute;
   top: 0;
-  left: 50%;
+  left: dp(16);
+  right: auto;
+
+  :root[dir="rtl"] & {
+    left: auto;
+    right: dp(16);
+  }
+
   
   box-sizing: border-box;
   min-height: dp(8);
   min-width: dp(8);
-  margin-left: dp(4);
   padding: dp(2);
-  
-  transition-duration: 200ms;
-  transition-property: transform;
-  transition-timing-function: $mdw-motion__standard-easing;
 
-  transform: translateY(dp(8));
   z-index: 1;
 
   border-radius: dp(8);
@@ -113,7 +95,7 @@
   
 }
 
-.mdw-bottomnav__item[data-mdw-badge]::before {
+.mdw-bottomnav__icon[data-mdw-badge]::before {
   content: attr(data-mdw-badge);
 }
 
@@ -140,24 +122,8 @@
   word-break: break-word;
 }
 
-.mdw-bottomnav__input {
-  display: inline-block;
-  
-  height: 0;
-  width: 0;
-  margin: 0;
-  padding: 0;
-
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  outline: none;
-
-  pointer-events: none;
-}
-
 .mdw-bottomnav[mdw-shifting] {
-  .mdw-bottomnav__icon,
-  .mdw-bottomnav__item::before {
+  .mdw-bottomnav__icon {
     transform: translateY(dp(16));
   }
 
@@ -166,32 +132,12 @@
     transform: translateY(dp(8));
   }
 
-  .mdw-bottomnav__input:checked ~ .mdw-bottomnav__label,
-  .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__label,
-  .mdw-bottomnav__input:checked + .mdw-bottomnav__item > .mdw-bottomnav__label {
+  .mdw-bottomnav__item[aria-selected="true"] > .mdw-bottomnav__label {
     opacity: 1;
     transform: translateY(0);
   }
 
-  .mdw-bottomnav__input:checked ~ .mdw-bottomnav__icon,
-  .mdw-bottomnav__item[mdw-selected] > .mdw-bottomnav__icon,
-  .mdw-bottomnav__input:checked + .mdw-bottomnav__item > .mdw-bottomnav__icon {
+  .mdw-bottomnav__item[aria-selected="true"] > .mdw-bottomnav__icon {
     transform: translateY(dp(8));
-  }
-
-  .mdw-bottomnav__item[mdw-selected]::before,
-  .mdw-bottomnav__input:checked + .mdw-bottomnav__item::before {
-    transform: translateY(dp(8));
-  }
-}
-
-.mdw-bottomnav[mdw-color] {
-  .mdw-bottomnav__item {
-    color: inherit;
-
-    &::after,
-    & > .mdw-ripple > .mdw-ripple__inner {
-      color: inherit;
-    }
   }
 }

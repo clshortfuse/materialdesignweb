@@ -1,4 +1,4 @@
-import { getPassiveEventListenerOption } from '../common/dom';
+import { getPassiveEventListenerOption } from '../../core/dom';
 
 /**
  * @param {Element} textfieldElement
@@ -156,7 +156,7 @@ export function setValue(textfieldElement, value) {
     }
   }
   updateInputEmptyState(input);
-  if (input instanceof HTMLTextAreaElement && textfieldElement.hasAttribute('mdw-multiline')) {
+  if (input instanceof HTMLTextAreaElement && textfieldElement.hasAttribute('mdw-autosize')) {
     updateTextAreaSize(input);
   }
 }

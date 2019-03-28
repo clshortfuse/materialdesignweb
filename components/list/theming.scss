@@ -1,5 +1,5 @@
-@import '../common/platform.scss';
-@import '../common/theming.scss';
+@import '../../core/platform.scss';
+@import '../../core/theme/exports.scss';
 
 $mdw-list__theme-values: (
   text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
@@ -9,7 +9,7 @@ $mdw-list__theme-values: (
   pressed-opacity:      (0.16, 0.32),
   press-color:          (('foreground-light', 0.16), ('foreground-dark', 0.32)),
   selected-color:       (('foreground-light', 0.16), ('foreground-dark', 0.32)),
-  ripple-color:         (('foreground-light', 1.00), ('foreground-dark', 1.00)),
+
 ) !default;
 
 @function mdwListThemeValue($key, $type) {
@@ -19,38 +19,24 @@ $mdw-list__theme-values: (
 
 // Vary by contrast
 @mixin mdw-list__theme-rules($type: 'var', $theme: null) {
-  .mdw-list__item {
-    &:not([mdw-color]) {
-      color: mdwListThemeValue("text-color", $type);
-    }
-
-    &[mdw-selected] {
-      background-color: mdwListThemeValue("selected-color", $type);
-    }
-
-    &[tabindex]:active:focus::before {
-      background-color: mdwListThemeValue("press-color", $type);
-    }
-
-    &:active:not(:focus-within)::before,
-    &:active[tabindex]:focus:not(:focus-within)::before {
-      background-color: mdwListThemeValue("press-color", $type);
-    }
-
-    & > .mdw-ripple > .mdw-ripple__inner,
-    &::after {
-      opacity: mdwListThemeValue("pressed-opacity", $type);
-      
-      color: mdwListThemeValue("ripple-color", $type);
-    }
-
-    // IE and Edge does not support :focus-within
-    @include mdw-platform__ms {
-      &:active::before {
-        background-color: mdwListThemeValue("press-color", $type);
+  .mdw-list__icon {
+    color: mdwListThemeValue("secondary-text-color", $type);
+  }
+  .mdw-list__text,
+  .mdw-list__content {
+    color: mdwListThemeValue("text-color", $type);  
+  }
+  .mdw-list__content {
+    &[mdw-color][aria-current] {
+      .mdw-list__icon,
+      .mdw-list__text,
+      .mdw-list__content {
+        color: inherit;
       }
     }
   }
+
+  
   
   .mdw-list__meta {
     color: mdwListThemeValue("secondary-text-color", $type);
@@ -60,14 +46,6 @@ $mdw-list__theme-values: (
     & > .mdw-list__item:not(:last-child) .mdw-list__text::after {
       background-color: mdwListThemeValue("divider-color", $type);
     }
-  }
-
-  .mdw-list__divider {
-    border-top-color: mdwListThemeValue("divider-color", $type);
-  }
-
-  .mdw-list__icon {
-    color: mdwListThemeValue("secondary-text-color", $type);
   }
 
   .mdw-list__expander {
@@ -81,6 +59,14 @@ $mdw-list__theme-values: (
         color: mdwListThemeValue("secondary-text-color", $type);
       }
     } 
+    &[mdw-color][aria-expanded="true"] {
+      & > .mdw-list__item:first-child {
+        .mdw-list__content,
+        .mdw-list__text {
+          color: inherit;
+        }
+      }
+    }
   }
   
   .mdw-list__text-line,

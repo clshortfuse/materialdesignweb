@@ -1,10 +1,10 @@
-import { iterateArrayLike, getPassiveEventListenerOption } from '../common/dom';
-import Throttler from '../../utils/throttler';
+import { iterateArrayLike, getPassiveEventListenerOption } from '../../core/dom';
+import Throttler from '../../core/throttler';
 
 const MIN_SCROLL_DELTA = 24; // Avoid finger bounce
 
-const EIGHT_COLUMN_BREAKPOINT = 600;
-const TWELVE_COLUMN_BREAKPOINT = 840;
+const MOBILE_BREAKPOINT = 600;
+const TABLET_BREAKPOINT = 1024;
 
 // Throttler will execute at earliest convenience
 // Smoother than using requestAnimationFrame
@@ -114,13 +114,13 @@ export function onScrimScroll(event) {
 export function onScrimClick() {
   const navdrawer = document.getElementsByClassName('mdw-layout__navdrawer')[0];
   if (navdrawer && navdrawer.getAttribute('aria-hidden') === 'false') {
-    if (window.innerWidth < 840 || document.body.getAttribute('mdw-navdrawer-style') === 'modal') {
+    if (window.innerWidth < TABLET_BREAKPOINT || document.body.getAttribute('mdw-navdrawer-style') === 'modal') {
       hideNavDrawer();
     }
   }
   const sidesheet = document.getElementsByClassName('mdw-layout__sidesheet')[0];
   if (sidesheet && sidesheet.getAttribute('aria-hidden') === 'false') {
-    if (window.innerWidth < 840 || document.body.getAttribute('mdw-sidesheet-style') === 'modal') {
+    if (window.innerWidth < TABLET_BREAKPOINT || document.body.getAttribute('mdw-sidesheet-style') === 'modal') {
       hideSideSheet();
     }
   }
@@ -188,13 +188,13 @@ export function onBodyScroll() {
 
 /** @return {boolean} */
 export function isMobile() {
-  return window.innerWidth < EIGHT_COLUMN_BREAKPOINT;
+  return window.innerWidth < MOBILE_BREAKPOINT;
 }
 
 /** @return {boolean} */
 export function isTablet() {
-  return window.innerWidth >= EIGHT_COLUMN_BREAKPOINT
-    && window.innerWidth < TWELVE_COLUMN_BREAKPOINT;
+  return window.innerWidth >= MOBILE_BREAKPOINT
+    && window.innerWidth < TABLET_BREAKPOINT;
 }
 
 /** @return {boolean} */
@@ -328,10 +328,6 @@ export function resetScroll() {
  */
 export function onScroll(isBody) {
   const contentElement = getContentElement();
-  if (isBody && contentElement.scrollHeight !== contentElement.offsetHeight) {
-    // Content is oversized!
-    return;
-  }
   const scrollElement = isBody ? document.body : contentElement;
   const currentScrollY = scrollElement.scrollTop;
   const change = currentScrollY - lastScrollY;
@@ -394,7 +390,7 @@ export function onScroll(isBody) {
   }
 
   // Don't perform on each scroll back, only on first
-  if (newScrollBack) {
+  if (newScrollBack || isAtRest) {
     if (appBar.hasAttribute('mdw-autohide')) {
       appBar.removeAttribute('mdw-hide');
       appBar.style.removeProperty('margin-top');

@@ -1,4 +1,4 @@
-@import '../common/theming.scss';
+@import '../../core/theme/exports.scss';
 
 $mdw-textfield__theme-values: (
   text-color:                         (('foreground-light', 0.87), ('foreground-dark', 1.00)),
@@ -321,6 +321,7 @@ $mdw-textfield__theme-values: (
   .mdw-textfield__dropdown {
     background-color: mdwTextfieldThemeValue("dropdown-background-color", $type, $theme);
     color: mdwTextfieldThemeValue("text-color", $type, $theme);
+    --color: --foreground-color;
   }
 
   .mdw-textfield {

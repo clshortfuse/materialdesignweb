@@ -1,15 +1,10 @@
-@import '../common/theming.scss';
+@import '../../core/theme/exports.scss';
 
 $mdw-menu__theme-values: (
   text-color:       (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   secondary-color:  (('foreground-light', 0.54), ('foreground-dark', 0.70)),
   background-color: ((#fff,              1.00), ('background', '800', 1.00)),
-  selected-color:   (('background', '100', 1.00), ('background', '700', 1.00)),
-  hover-color:      (('background', '200', 1.00), ('background', '600', 1.00)),
-  ripple-color:     (('foreground-light', 1.00) , ('foreground-dark', 1.00)),
-  ripple-opacity:   ( 0.12 , 0.30),
-  divider-color:    (('foreground-light', 0.12), ('foreground-dark', 0.12)),
-  disabled-color:   (('foreground-light', 0.26), ('foreground-dark', 0.30)),
+  disabled-opacity: (0.38, 0.50),
 ) !default;
 
 @function mdwMenuThemeValue($key, $type, $theme) {
@@ -18,58 +13,22 @@ $mdw-menu__theme-values: (
 
 // Vary by contrast or theme
 @mixin mdw-menu__theme-rules($type: 'var', $theme: null) {
-  .mdw-menu {
-    &:not([mdw-js]) {
-      .mdw-menu__popup {
-        & > .mdw-menu__text,
-        .mdw-menu__item {
-          &:hover {
-            background-color: mdwMenuThemeValue("hover-color", $type, $theme);
-          }
-        }
-      }
-    }
-
-    .mdw-menu__popup {
-      background-color: mdwMenuThemeValue("background-color", $type, $theme);
-
-      & > .mdw-menu__text,
-      .mdw-menu__item {
-        color: mdwMenuThemeValue("text-color", $type, $theme);
-        
-        &:focus,
-        &[mdw-selected] {
-          background-color: mdwMenuThemeValue("hover-color", $type, $theme);
-        }
-        
-        &[aria-disabled="true"] {
-          color: mdwMenuThemeValue("disabled-color", $type, $theme);
-
-          & > .mdw-menu__icon,
-          & > .mdw-menu__check,
-          & > .mdw-menu__radio {
-            color: inherit;
-          }
-        }
-
-        & > .mdw-ripple > .mdw-ripple__inner,
-        &::after {
-          opacity: mdwMenuThemeValue("ripple-opacity", $type, $theme);
-          
-          color: mdwMenuThemeValue("ripple-color", $type, $theme);
-        }
-      }
-    }
+  .mdw-menu__popup {
+    background-color: mdwMenuThemeValue("background-color", $type, $theme);
   }
+
 
   .mdw-menu__icon,
   .mdw-menu__check,
   .mdw-menu__radio {
     color: mdwMenuThemeValue("secondary-color", $type, $theme);
   }
-  
-  .mdw-menu__divider {
-    background-color: mdwMenuThemeValue("divider-color", $type, $theme);
+
+  .mdw-menu__item {
+    color: mdwMenuThemeValue("text-color", $type, $theme);
+    &[aria-disabled="true"] {
+      opacity: mdwMenuThemeValue("disabled-opacity", $type, $theme);
+    }
   }
 }
 

@@ -1,10 +1,10 @@
 // https://material.io/guidelines/components/selection-controls.html#
 // https://material.io/guidelines/patterns/selection.html#selection-item-selection
 
-@import '../common/breakpoint.scss';
-@import '../common/elevation.scss';
-@import '../common/motion.scss';
-@import '../common/platform.scss';
+@import '../../core/breakpoint.scss';
+@import '../../core/elevation.scss';
+@import '../../core/motion.scss';
+@import '../../core/platform.scss';
 
 $ripple-size: dp(48);
 $icon-size: dp(24);
@@ -58,9 +58,10 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     cursor: not-allowed;
   }
 
+  color: inherit;
   // background-color: var(--button__ripple-color);
   border-radius: 50%;
-  transform: scale(1);
+  transform: scale(0);
   opacity: 0;
   background-color: transparent;
   transition-property: transform, color, opacity;
@@ -76,12 +77,16 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
     background-color: transparent;
     border-color: transparent;
   }
+  .mdw-selection:active:not(:disabled) > &,
+  .mdw-selection:hover:not(:disabled) > &,
   &:active:not(:disabled),
+  &:hover:not(:disabled),
   &:focus {
-    background-color: currentColor;
+    opacity: 1;
     transform: scale($ripple-size/$icon-size);
   }
 }
+
 .mdw-selection__icon {
   display: inline-flex;
   position: relative;
@@ -248,8 +253,8 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
 .mdw-selection[mdw-color] {
   .mdw-selection__input[type="checkbox"]:checked:not(:active),
   .mdw-selection__input[type="radio"]:checked {
-    color: inherit;
-    opacity: 0.26;
+    // color: inherit;
+    // opacity: 0.26;
   }
 }
 

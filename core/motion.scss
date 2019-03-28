@@ -20,11 +20,11 @@ $mdw-motion__leave-duration__wearable: $mdw-motion__leave-duration__mobile * 0.7
 $mdw-motion__max-duration__wearable: $mdw-motion__max-duration__mobile * 0.70 !default;
 
 // Self-estimated
-$mdw-motion__default-duration__desktop: 175ms !default;
-$mdw-motion__complex-duration__desktop: 200ms !default;
-$mdw-motion__enter-duration__desktop: 185ms !default;
-$mdw-motion__leave-duration__desktop: 150ms !default;
-$mdw-motion__max-duration__desktop: 300ms !default;
+$mdw-motion__default-duration__desktop: $mdw-motion__default-duration__mobile * 0.50 !default;
+$mdw-motion__complex-duration__desktop: $mdw-motion__complex-duration__mobile * 0.50 !default;
+$mdw-motion__enter-duration__desktop: $mdw-motion__enter-duration__mobile * 0.50 !default;
+$mdw-motion__leave-duration__desktop: $mdw-motion__leave-duration__mobile * 0.50 !default;
+$mdw-motion__max-duration__desktop: $mdw-motion__max-duration__mobile * 0.50 !default;
 
 // Motion Easing Curves
 // https://material.io/guidelines/motion/duration-easing.html#duration-easing-natural-easing-curves
