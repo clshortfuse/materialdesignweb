@@ -9,25 +9,25 @@ include ../mixins.pug
         .content(style="padding:16px 8px;")
           .mdw-type(mdw-style="subtitle") Hover
           div
-            label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+            label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
               input.mdw-selection__input.mdw-overlay(type="checkbox" name="hover" value="hover")
               .mdw-selection__icon
               .mdw-selection__label Open on Hover
           .mdw-type(mdw-style="subtitle") Type
           div
-            label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+            label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
               input.mdw-selection__input.mdw-overlay(type="radio" name="type" value="regular" checked)
               .mdw-selection__icon
               .mdw-selection__label Regular (Default)
-            label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+            label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
               input.mdw-selection__input.mdw-overlay(type="radio" name="type" value="mini")
               .mdw-selection__icon
               .mdw-selection__label Mini
-            label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+            label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
               input.mdw-selection__input.mdw-overlay(type="radio" name="type" value="extended")
               .mdw-selection__icon
               .mdw-selection__label Extended
-            label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+            label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
               input.mdw-selection__input.mdw-overlay(type="radio" name="type" value="extended-hover")
               .mdw-selection__icon
               .mdw-selection__label Extended on Hover
@@ -35,7 +35,7 @@ include ../mixins.pug
             .mdw-grid__item
               .mdw-grid__content
                 .mdw-fab
-                  .mdw-fab__button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-fill="accent" mdw-dark)
+                  .mdw-fab__button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="accent" mdw-dark)
                     .mdw-fab__icon
                       .mdw-fab__hidden-icon.material-icons add
                       .mdw-fab__shown-icon.material-icons clear
@@ -62,7 +62,7 @@ include ../mixins.pug
             .mdw-grid__item
               .mdw-fab#my-fab
                 a.mdw-fab__close(href="#my-fab-button")
-                a#my-fab-button.mdw-fab__button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-icon mdw-fill="accent" mdw-dark href="#my-fab")
+                a#my-fab-button.mdw-fab__button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-icon mdw-surface="accent" mdw-dark href="#my-fab")
                   .mdw-fab__icon
                     .mdw-fab__hidden-icon.material-icons add
                     .mdw-fab__shown-icon.material-icons clear

@@ -189,22 +189,22 @@ function onOptionChange(event) {
     case 'color':
       switch (value) {
         case 'none':
-          sampleComponent.removeAttribute('mdw-color');
+          sampleComponent.removeAttribute('mdw-ink');
           break;
         default:
-          sampleComponent.setAttribute('mdw-color', value);
+          sampleComponent.setAttribute('mdw-ink', value);
           break;
       }
       break;
-    case 'fill':
+    case 'surface':
       switch (value) {
         case 'none':
-          sampleComponent.removeAttribute('mdw-fill');
+          sampleComponent.removeAttribute('mdw-surface');
           sampleComponent.removeAttribute('mdw-light');
           sampleComponent.removeAttribute('mdw-dark');
           break;
         default:
-          sampleComponent.setAttribute('mdw-fill', value.replace(/ (light|dark)/, ''));
+          sampleComponent.setAttribute('mdw-surface', value.replace(/ (light|dark)/, ''));
           if (value.indexOf(' light') === -1) {
             sampleComponent.removeAttribute('mdw-light');
           } else {

@@ -29,7 +29,7 @@ function updateSampleCode() {
     'Snackbar.create({',
     "  text: 'Required text.',",
     "  buttonText: 'Optional button text',",
-    "  buttonThemeColor: 'accent',",
+    "  buttonInk: 'accent',",
     '  stacked: false,',
     '  autoHide: 4,',
     '  autoDestroy: true,',
@@ -120,7 +120,7 @@ function onOptionChange(event) {
         buttonElement = document.createElement('button');
         buttonElement.classList.add('mdw-button');
         buttonElement.classList.add('mdw-theme');
-        buttonElement.setAttribute('mdw-color', 'accent');
+        buttonElement.setAttribute('mdw-ink', 'accent');
         snackbar.appendChild(buttonElement);
       }
       switch (value) {

@@ -30,7 +30,7 @@ include ../mixins.pug
                 .mdw-chip__thumbnail.material-icons directions_bike
                 .mdw-chip__remove.material-icons cancel
             p Choice
-            form.mdw-chip.mdw-theme(mdw-type="choice" mdw-color="accent")
+            form.mdw-chip.mdw-theme(mdw-type="choice" mdw-ink="accent")
               label.mdw-chip__item
                 input.mdw-chip__input(type="radio" name="sample" value="a")
                 .mdw-chip__text Apple
@@ -73,21 +73,21 @@ include ../mixins.pug
     .mdw-grid__item(mdw-colspan="4").demo-options
       .mdw-type(mdw-style="subtitle") Javascript
       div
-        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
           input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="required" disabled)
           .mdw-selection__icon
           .mdw-selection__label Required
-        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
           input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="optional" checked)
           .mdw-selection__icon
           .mdw-selection__label Optional
-        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
           input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="none")
           .mdw-selection__icon
           .mdw-selection__label None
       .mdw-type(mdw-style="subtitle") Options
       div
-        label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
           input.mdw-selection__input.mdw-overlay(type="checkbox" name="outlined")
           .mdw-selection__icon
           .mdw-selection__label Outlined

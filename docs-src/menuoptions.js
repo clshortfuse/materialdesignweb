@@ -42,11 +42,11 @@ export function isDarkMode() {
 export function setDarkMode(value, button) {
   if (value) {
     document.documentElement.setAttribute('mdw-dark', '');
-    document.documentElement.setAttribute('mdw-fill', 'black');
+    document.documentElement.setAttribute('mdw-surface', 'black');
     document.documentElement.removeAttribute('mdw-light');
   } else {
     document.documentElement.setAttribute('mdw-light', '');
-    document.documentElement.setAttribute('mdw-fill', 'white');
+    document.documentElement.setAttribute('mdw-surface', 'white');
     document.documentElement.removeAttribute('mdw-dark');
   }
   const stringValue = (value ? 'true' : 'false');
@@ -100,12 +100,15 @@ export function setFontSize(value, button) {
 }
 
 /**
- * @param {Element} element
+ * @param {Element} [element]
  * @return {void}
  */
 function setupRTLMode(element) {
   if (getStorageItem('rtlmode') === 'true') {
     setRTLMode(true, element);
+  }
+  if (!element) {
+    return;
   }
   element.addEventListener('click', () => {
     if (document.documentElement.getAttribute('dir') === 'rtl') {
@@ -117,12 +120,15 @@ function setupRTLMode(element) {
 }
 
 /**
- * @param {Element} element
+ * @param {Element} [element]
  * @return {void}
  */
 function setupAltTheme(element) {
   if (getStorageItem('alttheme') === 'true') {
     setAltTheme(true, element);
+  }
+  if (!element) {
+    return;
   }
   element.addEventListener('click', () => {
     if (document.documentElement.getAttribute('mdw-theme') === 'colored') {
@@ -134,12 +140,15 @@ function setupAltTheme(element) {
 }
 
 /**
- * @param {Element} element
+ * @param {Element} [element]
  * @return {void}
  */
 function setupDarkMode(element) {
   if (isDarkMode()) {
     setDarkMode(true, element);
+  }
+  if (!element) {
+    return;
   }
   element.addEventListener('click', () => {
     if (document.documentElement.hasAttribute('mdw-dark')) {
@@ -157,6 +166,9 @@ function setupDarkMode(element) {
 function setupLargeFontMode(element) {
   const fontsize = getStorageItem('fontsize');
   setFontSize(fontsize, element);
+  if (!element) {
+    return;
+  }
   element.addEventListener('click', () => {
     if (document.documentElement.style.getPropertyValue('font-size')) {
       setFontSize(null, element);

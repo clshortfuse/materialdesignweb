@@ -4,7 +4,7 @@ include ../mixins.pug
   .mdw-grid(mdw-margin-top mdw-margin-bottom)
     .mdw-grid__item(mdw-colspan="100%")
       .mdw-card
-        .mdw-datatable.mdw-theme(mdw-color="primary" style="overflow-x:auto")
+        .mdw-datatable.mdw-theme(mdw-ink="primary" style="overflow-x:auto")
           table
             caption Standard HTML Table (CSS Only)
             thead
@@ -110,7 +110,7 @@ include ../mixins.pug
                 td 6%
     .mdw-grid__item(mdw-colspan="100%")
       .mdw-card
-        .mdw-datatable.js.mdw-theme(mdw-color="primary" mdw-cell-focusable)
+        .mdw-datatable.js.mdw-theme(mdw-ink="primary" mdw-cell-focusable)
           .mdw-datatable__header
             .mdw-datatable__header-text Customized HTML Table
           .mdw-datatable__scroller
@@ -293,12 +293,12 @@ include ../mixins.pug
               button.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon disabled) chevron_right
     .mdw-grid__item(mdw-colspan="100%")
       .mdw-card
-        .mdw-datatable.js#dynamic-table.mdw-theme(mdw-color="primary" mdw-row-focusable style="max-height:80vh")
+        .mdw-datatable.js#dynamic-table.mdw-theme(mdw-ink="primary" mdw-row-focusable style="max-height:80vh")
           .mdw-datatable__header
             .mdw-datatable__header-text Data Table Adapter
             .mdw-datatable__header-controls
               .mdw-menu__wrapper
-                button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme.material-icons(mdw-icon mdw-color="primary" aria-pressed="false") filter_list
+                button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme.material-icons(mdw-icon mdw-ink="primary" aria-pressed="false") filter_list
                 .mdw-menu(mdw-position="end")
                   .mdw-menu__popup
                     .mdw-menu__item(aria-checked="true" data-filter="none")

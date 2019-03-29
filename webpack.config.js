@@ -67,7 +67,7 @@ function getDocsConfig() {
     docs: ['./docs.scss'],
     components: ['./components.scss'],
   };
-  ['pwa', 'themes', 'components'].forEach(folder => fs.readdirSync(path.join('./docs-src', folder))
+  ['pwa', 'themes', 'core', 'components'].forEach(folder => fs.readdirSync(path.join('./docs-src', folder))
     .forEach((filename) => {
       if (filename[0] === '_') {
         return;

@@ -88,7 +88,7 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
             .mdw-button.mdw-overlay.mdw-ripple Fix it
             .mdw-button.mdw-overlay.mdw-ripple Learn more
     // .mdw-layout__bottomnav
-      .mdw-bottomnav.mdw-theme(mdw-color="primary")
+      .mdw-bottomnav.mdw-theme(mdw-ink="primary")
         .mdw-bottomnav__item(mdw-badge)
           .mdw-bottomnav__icon.material-icons history
           .mdw-bottomnav__label Recents
@@ -101,7 +101,7 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
     .mdw-layout__fab(mdw-mobile="center" mdw-desktop aria-hidden="false")
       .mdw-layout__fab-anchor
         .mdw-fab
-          .mdw-fab__button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-fill="accent" mdw-dark)
+          .mdw-fab__button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="accent" mdw-dark)
             .mdw-fab__icon
               .mdw-fab__hidden-icon.material-icons add
               .mdw-fab__shown-icon.material-icons clear
@@ -111,7 +111,7 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
         .mdw-snackbar__container
           .mdw-snackbar(aria-hidden="false")
             span Extremely long snackbar action text. This should text-wrap automatically when it's too large
-            button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-color="accent") Action
+            button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent") Action
     .mdw-layout__content
       .mdw-layout__content-page
         .mdw-grid(mdw-margin-top mdw-margin-bottom)
@@ -124,19 +124,19 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
                 .mdw-divider
                 ul.mdw-list
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="appbar-bottom" value="top" checked)
                       .mdw-list__text.mdw-selection__label Top
                       .mdw-selection__icon
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="appbar-bottom" value="bottom")
                       .mdw-list__text.mdw-selection__label
                         .mdw-list__text-line Bottom
                         .mdw-list__text-line [mdw-bottom]
                       .mdw-selection__icon
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent")
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent")
                       input.mdw-selection__input.mdw-overlay(type="checkbox" name="fab-cut" disabled)
                       .mdw-selection__label.mdw-list__text
                         .mdw-list__text-line FAB Cutout
@@ -145,7 +145,7 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
                 .mdw-divider
                 ul.mdw-list
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="checkbox" name="use-appbar-autohide" checked)
                       .mdw-selection__label.mdw-list__text
                         .mdw-list__text-line Auto Hide
@@ -153,28 +153,28 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
                       .mdw-selection__icon
                   .mdw-list__item-group
                     li.mdw-list__item
-                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                         input.mdw-selection__input.mdw-overlay(type="radio" name="appbar-autohide" value="mobile")
                         .mdw-list__text.mdw-selection__label
                           .mdw-list__text-line Mobile Only
                           .mdw-list__text-line [mdw-autohide="mobile"]
                         .mdw-selection__icon
                     li.mdw-list__item
-                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                         input.mdw-selection__input.mdw-overlay(type="radio" name="appbar-autohide" value="tablet")
                         .mdw-list__text.mdw-selection__label
                           .mdw-list__text-line Tablet Only
                           .mdw-list__text-line [mdw-autohide="tablet"]
                         .mdw-selection__icon
                     li.mdw-list__item
-                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                         input.mdw-selection__input.mdw-overlay(type="radio" name="appbar-autohide" value="mobile tablet" checked)
                         .mdw-list__text.mdw-selection__label
                           .mdw-list__text-line Mobile + Tablet
                           .mdw-list__text-line [mdw-autohide="mobile tablet"]
                         .mdw-selection__icon
                     li.mdw-list__item
-                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                         input.mdw-selection__input.mdw-overlay(type="radio" name="appbar-autohide" value="")
                         .mdw-list__text.mdw-selection__label
                           .mdw-list__text-line All Devices
@@ -183,14 +183,14 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
                 .mdw-divider
                 ul.mdw-list
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="checkbox" name="appbar-autoraise")
                       .mdw-selection__label.mdw-list__text
                         .mdw-list__text-line Auto Raise
                         .mdw-list__text-line [mdw-autoraise]
                       .mdw-selection__icon
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="checkbox" name="appbar-autoprominent")
                       .mdw-selection__label.mdw-list__text
                         .mdw-list__text-line Auto Prominent
@@ -204,7 +204,7 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
                 .mdw-card__subheader Floating Action Button
                 ul.mdw-list
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="checkbox" name="fab-show" checked)
                       .mdw-selection__label.mdw-list__text
                         .mdw-list__text-line Visible
@@ -213,7 +213,7 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
                 .mdw-divider
                 ul.mdw-list
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="checkbox" name="use-fab-mobile" checked)
                       .mdw-selection__label.mdw-list__text
                         .mdw-list__text-line Mobile
@@ -221,21 +221,21 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
                       .mdw-selection__icon
                   .mdw-list__item-group
                     li.mdw-list__item
-                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent")
+                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent")
                         input.mdw-selection__input.mdw-overlay(type="radio" name="fab-mobile" value="")
                         .mdw-selection__label.mdw-list__text
                           .mdw-list__text-line End
                           .mdw-list__text-line [mdw-fab-mobile=""]
                         .mdw-selection__icon
                     li.mdw-list__item
-                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent")
+                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent")
                         input.mdw-selection__input.mdw-overlay(type="radio" name="fab-mobile" value="center" checked)
                         .mdw-selection__label.mdw-list__text
                           .mdw-list__text-line Center
                           .mdw-list__text-line [mdw-fab-mobile="center"]
                         .mdw-selection__icon
                     li.mdw-list__item
-                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent")
+                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent")
                         input.mdw-selection__input.mdw-overlay(type="radio" name="fab-mobile" value="full")
                         .mdw-selection__label.mdw-list__text
                           .mdw-list__text-line Full
@@ -244,7 +244,7 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
                 .mdw-divider
                 ul.mdw-list
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="checkbox" name="use-fab-desktop" checked)
                       .mdw-selection__label.mdw-list__text
                         .mdw-list__text-line Desktop
@@ -252,14 +252,14 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
                       .mdw-selection__icon
                   .mdw-list__item-group
                     li.mdw-list__item
-                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent")
+                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent")
                         input.mdw-selection__input.mdw-overlay(type="radio" name="fab-desktop" value="" checked)
                         .mdw-selection__label.mdw-list__text
                           .mdw-list__text-line End
                           .mdw-list__text-line [fab-desktop=""]
                         .mdw-selection__icon
                     li.mdw-list__item
-                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent")
+                      label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent")
                         input.mdw-selection__input.mdw-overlay(type="radio" name="fab-desktop" value="appbar")
                         .mdw-selection__label.mdw-list__text
                           .mdw-list__text-line App Bar
@@ -275,27 +275,27 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
                 .mdw-list
                   .mdw-list__subheader Style (Desktop)
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="navdrawer-style" value="" checked)
                       .mdw-list__text.mdw-selection__label Full-height
                       .mdw-selection__icon
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="navdrawer-style" value="modal")
                       .mdw-list__text.mdw-selection__label Modal
                       .mdw-selection__icon
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="navdrawer-style" value="clipped")
                       .mdw-list__text.mdw-selection__label Clipped
                       .mdw-selection__icon
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="navdrawer-style" value="clipped floating")
                       .mdw-list__text.mdw-selection__label Clipped Floating
                       .mdw-selection__icon
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="navdrawer-style" value="clipped floating card")
                       .mdw-list__text.mdw-selection__label Clipped Floating Card
                       .mdw-selection__icon
@@ -303,17 +303,17 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
                 .mdw-list
                   .mdw-list__subheader Toggle (Desktop)
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="navdrawer-toggle" value="" checked)
                       .mdw-list__text.mdw-selection__label None (Perminent)
                       .mdw-selection__icon
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="navdrawer-toggle" value="dismissible")
                       .mdw-list__text.mdw-selection__label Dismissible
                       .mdw-selection__icon
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="navdrawer-toggle" value="mini")
                       .mdw-list__text.mdw-selection__label Mini
                       .mdw-selection__icon
@@ -327,27 +327,27 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
                 .mdw-list
                   .mdw-list__subheader Style (Desktop)
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="sidesheet-style" value="")
                       .mdw-list__text.mdw-selection__label Full-height
                       .mdw-selection__icon
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="sidesheet-style" value="modal")
                       .mdw-list__text.mdw-selection__label Modal
                       .mdw-selection__icon
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="sidesheet-style" value="clipped" checked)
                       .mdw-list__text.mdw-selection__label Clipped
                       .mdw-selection__icon
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="sidesheet-style" value="clipped floating")
                       .mdw-list__text.mdw-selection__label Clipped Floating
                       .mdw-selection__icon
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="sidesheet-style" value="clipped floating card")
                       .mdw-list__text.mdw-selection__label Clipped Floating Card
                       .mdw-selection__icon
@@ -355,17 +355,17 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
                 .mdw-list
                   .mdw-list__subheader Toggle (Desktop)
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="sidesheet-toggle" value="")
                       .mdw-list__text.mdw-selection__label None (Perminent)
                       .mdw-selection__icon
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="sidesheet-toggle" value="dismissible" checked)
                       .mdw-list__text.mdw-selection__label Dismissible
                       .mdw-selection__icon
                   li.mdw-list__item
-                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-color="accent" mdw-switch)
+                    label.mdw-list__content.mdw-selection.mdw-theme(mdw-ink="accent" mdw-switch)
                       input.mdw-selection__input.mdw-overlay(type="radio" name="sidesheet-toggle" value="mini")
                       .mdw-list__text.mdw-selection__label Mini
                       .mdw-selection__icon

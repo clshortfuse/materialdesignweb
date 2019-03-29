@@ -32,7 +32,7 @@ html.mdw-theme[mdw-theme="colored"] {
 
   .mdw-theme[mdw-light] &,
   .mdw-theme[mdw-dark] .mdw-theme[mdw-light] & {
-    &:not([mdw-fill]) {
+    &:not([mdw-surface]) {
       background-color: #E0E0E0;
       color: rgba(0, 0, 0, 0.87);
     }
@@ -40,7 +40,7 @@ html.mdw-theme[mdw-theme="colored"] {
 
   .mdw-theme[mdw-dark] &,
   .mdw-theme[mdw-light] .mdw-theme[mdw-dark] & {
-    &:not([mdw-fill]) {
+    &:not([mdw-surface]) {
       background-color: black;
       color: rgba(255, 255, 255, 1);
     }
@@ -265,5 +265,29 @@ html.mdw-theme[mdw-theme="colored"] {
     > .mdw-tab {
       width: 100%;
     }
+  }
+}
+
+.demo-ink-item,
+.demo-surface-item {
+  border-radius: 8px;
+  min-width: 4em;
+  min-height: 4em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px;
+  cursor: pointer;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.demo-ink-item {
+  background-color: black;
+  .mdw-theme[mdw-light] &,
+  .mdw-theme[mdw-dark] .mdw-theme[mdw-light] & {
+    background-color: white;
   }
 }

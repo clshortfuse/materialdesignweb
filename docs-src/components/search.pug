@@ -4,12 +4,12 @@ include ../mixins.pug
   .comparison.js
     .render
       +androidstatusbar('primary 700', 'dark')
-      .mdw-appbar.mdw-theme.mdw-theme(mdw-fill="primary 500" mdw-dark)
+      .mdw-appbar.mdw-theme.mdw-theme(mdw-surface="primary 500" mdw-dark)
         .mdw-appbar__action
           .mdw-appbar__start
             .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) arrow_back
           .mdw-appbar__title(mdw-custom)
-            .mdw-textfield#search-textfield-simple.mdw-theme(mdw-solo mdw-color="accent")
+            .mdw-textfield#search-textfield-simple.mdw-theme(mdw-solo mdw-ink="accent")
               input.mdw-textfield__input(placeholder="Search")
           .mdw-appbar__end
             .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) clear
@@ -43,12 +43,12 @@ include ../mixins.pug
   .comparison.js
     .render
       +androidstatusbar('primary 700', 'dark')
-      .mdw-appbar.mdw-theme(mdw-fill="primary 500" mdw-dark)
+      .mdw-appbar.mdw-theme(mdw-surface="primary 500" mdw-dark)
         .mdw-appbar__action
           .mdw-appbar__start
             .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) arrow_back
           .mdw-appbar__title(mdw-custom)
-            .mdw-textfield#search-textfield-multiline.mdw-theme(mdw-solo mdw-color="accent")
+            .mdw-textfield#search-textfield-multiline.mdw-theme(mdw-solo mdw-ink="accent")
               input.mdw-textfield__input(placeholder="Search")
           .mdw-appbar__end
             .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) clear
@@ -124,7 +124,7 @@ include ../mixins.pug
             li startsWith text filter
             li append input on selection
           div
-            label.mdw-textfield#search-textfield-custom1.mdw-theme(mdw-color="accent")
+            label.mdw-textfield#search-textfield-custom1.mdw-theme(mdw-ink="accent")
               input.mdw-textfield__input(placeholder=" ")
               .mdw-textfield__border
                 .mdw-textfield__outline-gap
@@ -146,7 +146,7 @@ include ../mixins.pug
             li replace input on selection
             li disabled item filter
           div
-            label.mdw-textfield#search-textfield-custom2.mdw-theme(mdw-color="primary" mdw-outlined)
+            label.mdw-textfield#search-textfield-custom2.mdw-theme(mdw-ink="primary" mdw-outlined)
               input.mdw-textfield__input(placeholder=" ")
               .mdw-textfield__border
                 .mdw-textfield__outline-gap

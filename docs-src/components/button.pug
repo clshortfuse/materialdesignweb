@@ -8,24 +8,24 @@ mixin button-test
     button.mdw-button.mdw-overlay.mdw-ripple(mdw-outline) Outlined
   div(style="height:24px")
   .display-flex.flex-wrap
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-color="primary") Text
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-color="primary" mdw-raised) Contained
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-color="primary" mdw-raised aria-disabled="true") Disabled
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-color="accent A100") Accent
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-outline mdw-color="accent A100") Outlined
+    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="primary") Text
+    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="primary" mdw-raised) Contained
+    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="primary" mdw-raised aria-disabled="true") Disabled
+    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent A100") Accent
+    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-outline mdw-ink="accent A100") Outlined
   div(style="height:24px")
   .display-flex.flex-wrap
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-fill="primary" mdw-dark) Text
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-fill="primary" mdw-dark mdw-raised) Contained
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-fill="primary" mdw-dark mdw-raised aria-disabled="true") Disabled
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-fill="accent A100" mdw-light mdw-raised) Accent
+    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="primary" mdw-dark) Text
+    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="primary" mdw-dark mdw-raised) Contained
+    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="primary" mdw-dark mdw-raised aria-disabled="true") Disabled
+    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="accent A100" mdw-light mdw-raised) Accent
   div(style="height:24px")
   .display-flex.flex-wrap
     button.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) favorite
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-color="warn" mdw-dark mdw-icon).material-icons favorite
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-fill="warn" mdw-dark mdw-icon).material-icons favorite
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-fill="warn" mdw-dark mdw-icon mdw-raised).material-icons favorite
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-fill="warn" mdw-dark mdw-icon mdw-raised aria-disabled="true").material-icons favorite
+    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="warn" mdw-dark mdw-icon).material-icons favorite
+    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="warn" mdw-dark mdw-icon).material-icons favorite
+    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="warn" mdw-dark mdw-icon mdw-raised).material-icons favorite
+    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="warn" mdw-dark mdw-icon mdw-raised aria-disabled="true").material-icons favorite
     button.mdw-button.mdw-overlay.mdw-ripple(mdw-icon aria-disabled="true").material-icons favorite
 
 +header("button")
@@ -38,140 +38,140 @@ mixin button-test
       .mdw-grid__content
         .component-sample
           .display-flex
-            button.mdw-button.mdw-theme(mdw-color="accent A200") Button
+            button.mdw-button.mdw-theme(mdw-ink="accent A200") Button
     .mdw-grid__item(mdw-colspan="6")
       .mdw-grid__content
         .mdw-type(mdw-style="subtitle") Javascript
         div
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="required" disabled)
             .mdw-selection__icon
             .mdw-selection__label Required
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="optional" checked)
             .mdw-selection__icon
             .mdw-selection__label Optional
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="none")
             .mdw-selection__icon
             .mdw-selection__label None
         .mdw-type(mdw-style="subtitle") Overlay
         div
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="checkbox" name="overlay-hover" checked)
             .mdw-selection__icon
             .mdw-selection__label Hover
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="checkbox" name="overlay-focus" checked)
             .mdw-selection__icon
             .mdw-selection__label Focus
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="checkbox" name="overlay-activated" checked)
             .mdw-selection__icon
             .mdw-selection__label Activated
         .mdw-type(mdw-style="subtitle") Elevation
         div
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="radio" name="elevation" value="flat" checked)
             .mdw-selection__icon
             .mdw-selection__label Flat
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="radio" name="elevation" value="raised")
             .mdw-selection__icon
             .mdw-selection__label Raised
         .mdw-type(mdw-style="subtitle") Content
         div
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="radio" name="content" value="text" checked)
             .mdw-selection__icon
             .mdw-selection__label Text
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="radio" name="content" value="icon")
             .mdw-selection__icon
             .mdw-selection__label Icon
         .mdw-type(mdw-style="subtitle") Options
         div
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="checkbox" name="ripple" checked)
             .mdw-selection__icon
             .mdw-selection__label Ripple
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="checkbox" name="outlined")
             .mdw-selection__icon
             .mdw-selection__label Outlined
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="checkbox" name="disabled")
             .mdw-selection__icon
             .mdw-selection__label Disabled
         .mdw-type(mdw-style="subtitle") Activated Toggle
         div
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="radio" name="toggle" value="" checked)
             .mdw-selection__icon
             .mdw-selection__label None
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="radio" name="toggle" value="false")
             .mdw-selection__icon
             .mdw-selection__label Off
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="radio" name="toggle" value="true")
             .mdw-selection__icon
             .mdw-selection__label On
-        .mdw-type(mdw-style="subtitle") Color (Ink)
+        .mdw-type(mdw-style="subtitle") Ink
         div
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="color" value="default")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
+            input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="default")
             .mdw-selection__icon
             .mdw-selection__label Default
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="color" value="primary 400")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
+            input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="primary 400")
             .mdw-selection__icon
             .mdw-selection__label Primary 400
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="color" value="accent A200" checked)
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
+            input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="accent A200" checked)
             .mdw-selection__icon
             .mdw-selection__label Accent A200
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="color" value="warn")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
+            input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="warn")
             .mdw-selection__icon
             .mdw-selection__label Warn
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="color" value="purple A400")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
+            input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="purple A400")
             .mdw-selection__icon
             .mdw-selection__label Purple A400
-        .mdw-type(mdw-style="subtitle") Fill
+        .mdw-type(mdw-style="subtitle") Surface
         div
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="fill" value="none" checked)
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
+            input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="none" checked)
             .mdw-selection__icon
             .mdw-selection__label None
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="fill" value="primary dark dark")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
+            input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="primary dark")
             .mdw-selection__icon
             .mdw-selection__label Primary
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="fill" value="accent A100 light")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
+            input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="accent A100 light")
             .mdw-selection__icon
             .mdw-selection__label Accent A100
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="fill" value="warn 200 light")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
+            input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="warn 200 light")
             .mdw-selection__icon
             .mdw-selection__label Warn 200
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="fill" value="green 700 dark")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
+            input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="green 700 dark")
             .mdw-selection__icon
             .mdw-selection__label Green 700
         .mdw-type(mdw-style="subtitle") HTML Element Type
         div
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="radio" name="htmltype" value="div")
             .mdw-selection__icon
             .mdw-selection__label HTMLElement
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="radio" name="htmltype" value="button" checked)
             .mdw-selection__icon
             .mdw-selection__label HTMLButtonElement
-          label.mdw-selection.mdw-theme(mdw-color="accent" style="margin:16px 8px")
+          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
             input.mdw-selection__input.mdw-overlay(type="radio" name="htmltype" value="a")
             .mdw-selection__icon
             .mdw-selection__label HTMLAnchorElement
@@ -180,7 +180,7 @@ mixin button-test
       .mdw-grid__content
         h6.mdw-type HTML Code
         .mdw-card.component-code.component-html
-          #usePug.mdw-button.mdw-theme(mdw-color="accent" aria-pressed="false" mdw-overlay-off="activated" mdw-icon) PUG
+          #usePug.mdw-button.mdw-theme(mdw-ink="accent" aria-pressed="false" mdw-overlay-off="activated" mdw-icon) PUG
     .mdw-grid__item(mdw-colspan="6")
       .mdw-grid__content
         h6.mdw-type Javascript Code
@@ -190,7 +190,7 @@ mixin button-test
         h6.mdw-type Samples
     .mdw-grid__item(mdw-colspan="6")
       .mdw-grid__content
-        .render-fill.mdw-theme(mdw-fill="white" mdw-light)
+        .render-fill.mdw-theme(mdw-surface="white" mdw-light)
           +androidstatusbar('')
           +appbar('', '', [], []) CSS Only
           .content(style="padding: 16px 0")
@@ -199,7 +199,7 @@ mixin button-test
           +androidnavbar
     .mdw-grid__item(mdw-colspan="6")
       .mdw-grid__content
-        .render-fill.js.mdw-theme(mdw-fill="black" mdw-dark)
+        .render-fill.js.mdw-theme(mdw-surface="black" mdw-dark)
           +androidstatusbar('')
           +appbar('', '', [], []) Javascript Version
           .content(style="padding: 16px 0")

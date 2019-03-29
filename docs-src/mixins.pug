@@ -1,14 +1,14 @@
-mixin androidstatusbar(fillColor, lightness)
+mixin androidstatusbar(surfaceColor, lightness)
   .androidstatusbar.mdw-theme(
-  mdw-fill=(fillColor ? fillColor : false)
+  mdw-surface=(surfaceColor ? surfaceColor : false)
   mdw-light=(lightness=='light' ? '' : false)
   mdw-dark=(lightness=='dark' ? '' : false))
     div 12:30
     i.material-icons(style="letter-spacing:2px;padding:0 2px") &#xE1BA;&#xE1C8;&#xE1A4;
 
-mixin appbar(fillColor, lightness, start, end)
+mixin appbar(surfaceColor, lightness, start, end)
   .mdw-appbar.mdw-theme(
-  mdw-fill=(fillColor ? fillColor : false)
+  mdw-surface=(surfaceColor ? surfaceColor : false)
   mdw-light=(lightness=='light' ? '' : false)
   mdw-dark=(lightness=='dark' ? '' : false))
     .mdw-appbar__action
@@ -30,7 +30,7 @@ mixin target(url)
 
 mixin navListItem(key, icon, name, activatedKey)
   li.mdw-list__item(role="none")
-    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(aria-current=(activatedKey==key ? 'page' : false) href=(key + ".html") mdw-color="accent")
+    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(aria-current=(activatedKey==key ? 'page' : false) href=(key + ".html") mdw-ink="accent")
       .mdw-list__icon.material-icons=icon
       .mdw-list__text
         .mdw-list__text-block=name
@@ -66,8 +66,11 @@ mixin header(activated)
         .mdw-layout__sheet-content
           ul.mdw-list
             li.mdw-list__item(role="none")
-              a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(aria-current=activated=='Home' href='index.html' mdw-color="primary")
+              a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(aria-current=activated=='Home' href='index.html' mdw-ink="primary")
                 .mdw-list__text Home
+            .mdw-list__subheader Theme
+            +navListItem('ink', 'border_color', 'Ink', activated)
+            +navListItem('surface', 'format_color_fill', 'Surface', activated)
             .mdw-list__subheader Components
             +navListItem('appbar', 'web_asset', 'App Bar', activated)
             +navListItem('bottomnav', 'call_to_action', 'Bottom Navigation', activated)
@@ -92,7 +95,7 @@ mixin header(activated)
             +navListItem('tooltip', 'info', 'Tooltip', activated)
             +navListItem('type', 'font_download', 'Typography', activated)
       .mdw-layout__scrim
-      .mdw-layout__appbar.mdw-appbar.mdw-theme(mdw-autohide="mobile tablet" mdw-fill="accent 500" mdw-dark)
+      .mdw-layout__appbar.mdw-appbar.mdw-theme(mdw-autohide="mobile tablet" mdw-surface="accent 500" mdw-dark)
         .mdw-layout__appbar-shape
         .mdw-appbar__action
           .mdw-appbar__start

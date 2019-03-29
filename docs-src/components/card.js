@@ -133,15 +133,15 @@ function onOptionChange(event) {
         closeActionElement.parentElement.removeChild(closeActionElement);
       }
       break;
-    case 'fill':
+    case 'surface':
       switch (value) {
         case 'none':
-          sampleComponent.removeAttribute('mdw-fill');
+          sampleComponent.removeAttribute('mdw-surface');
           sampleComponent.removeAttribute('mdw-light');
           sampleComponent.removeAttribute('mdw-dark');
           break;
         default:
-          sampleComponent.setAttribute('mdw-fill', value.replace(/ (light|dark)/, ''));
+          sampleComponent.setAttribute('mdw-surface', value.replace(/ (light|dark)/, ''));
           if (value.indexOf(' light') === -1) {
             sampleComponent.removeAttribute('mdw-light');
           } else {

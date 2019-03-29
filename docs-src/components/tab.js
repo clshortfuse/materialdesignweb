@@ -97,25 +97,25 @@ function onOptionChange(event) {
         default:
       }
       break;
-    case 'color':
+    case 'ink':
       switch (value) {
         case 'default':
-          tabListElement.removeAttribute('mdw-color');
+          tabListElement.removeAttribute('mdw-ink');
           break;
         default:
-          tabListElement.setAttribute('mdw-color', value);
+          tabListElement.setAttribute('mdw-ink', value);
           break;
       }
       break;
-    case 'fill':
+    case 'surface':
       switch (value) {
         case 'none':
-          tabListElement.removeAttribute('mdw-fill');
+          tabListElement.removeAttribute('mdw-surface');
           tabListElement.removeAttribute('mdw-light');
           tabListElement.removeAttribute('mdw-dark');
           break;
         default:
-          tabListElement.setAttribute('mdw-fill', value.replace(/ (light|dark)/, ''));
+          tabListElement.setAttribute('mdw-surface', value.replace(/ (light|dark)/, ''));
           if (value.indexOf(' light') === -1) {
             tabListElement.removeAttribute('mdw-light');
           } else {
