@@ -1,8 +1,7 @@
 @import '../../core/theme/exports.scss';
 
 $mdw-type__theme-values: (
-  primary-text-color:   (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
+  color:   $mdw-theme__default-ink,
 ) !default;
 
 @function mdwTypeThemeValue($key, $type, $theme) {
@@ -12,7 +11,7 @@ $mdw-type__theme-values: (
 
 @mixin mdw-type__theme-rules($type: 'var', $theme: null) {
   .mdw-type {
-    color: mdwTypeThemeValue("primary-text-color", $type, $theme);
+    color: mdwTypeThemeValue("color", $type, $theme);
   }
 }
 

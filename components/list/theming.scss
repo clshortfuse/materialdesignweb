@@ -2,13 +2,11 @@
 @import '../../core/theme/exports.scss';
 
 $mdw-list__theme-values: (
-  text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
-  divider-color:        (('foreground-light', 0.12), ('foreground-dark', 0.12)),
-
-  pressed-opacity:      (0.16, 0.32),
-  press-color:          (('foreground-light', 0.16), ('foreground-dark', 0.32)),
-  selected-color:       (('foreground-light', 0.16), ('foreground-dark', 0.32)),
+  text-color:           $mdw-theme__default-ink,
+  secondary-text-color: $mdw-theme__medium-ink,
+  icon-color:           $mdw-theme__medium-ink,
+  meta-color:           $mdw-theme__medium-ink,
+  divider-color:        $mdw-theme__divider-ink,
 
 ) !default;
 
@@ -16,15 +14,13 @@ $mdw-list__theme-values: (
   @return mdwGetThemeValue('list', $mdw-list__theme-values, $key, $type);
 }
 
-
-// Vary by contrast
 @mixin mdw-list__theme-rules($type: 'var', $theme: null) {
   .mdw-list__icon {
-    color: mdwListThemeValue("secondary-text-color", $type);
+    color: mdwListThemeValue("icon-color", $type);
   }
   .mdw-list__text,
   .mdw-list__content {
-    color: mdwListThemeValue("text-color", $type);  
+    color: mdwListThemeValue("text-color", $type);
   }
   .mdw-list__content {
     &[mdw-ink][aria-current] {
@@ -36,10 +32,8 @@ $mdw-list__theme-values: (
     }
   }
 
-  
-  
   .mdw-list__meta {
-    color: mdwListThemeValue("secondary-text-color", $type);
+    color: mdwListThemeValue("meta-color", $type);
   }
 
   .mdw-list[mdw-divider] {

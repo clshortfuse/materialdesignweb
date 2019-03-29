@@ -1,19 +1,18 @@
 @import '../../core/theme/exports.scss';
 
 $mdw-banner__theme-values: (
-  background:   ((#fff, 1.00), ('background', '800', 1.00)),
-  text-color:   (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  border-color: (('foreground-light', 0.12), ('foreground-dark', 0.12)),
+  background-color: $mdw-theme__card-surface,
+  text-color:       $mdw-theme__default-ink,
+  border-color:     $mdw-theme__divider-ink,
 ) !default;
 
 @function mdwBannerThemeValue($key, $type, $theme) {
   @return mdwGetThemeValue('banner', $mdw-banner__theme-values, $key, $type, $theme);
 }
 
-// Vary by contrast or theme
 @mixin mdw-banner__theme-rules($type: 'var', $theme: null) {
   .mdw-banner {
-    background-color: mdwBannerThemeValue("background", $type, $theme);
+    background-color: mdwBannerThemeValue("background-color", $type, $theme);
     border-color: mdwBannerThemeValue("border-color", $type, $theme);
   }
 

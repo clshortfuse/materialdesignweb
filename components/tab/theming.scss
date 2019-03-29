@@ -1,16 +1,14 @@
 @import '../../core/theme/exports.scss';
 
 $mdw-tab__theme-values: (
-  active-color:      (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  inactive-color:    (('foreground-light', 0.54), ('foreground-dark', 0.70)),
+  active-color:      $mdw-theme__default-ink,
+  inactive-color:    $mdw-theme__medium-ink,
 ) !default;
 
 @function mdwTabThemeValue($key, $type, $theme) {
   @return mdwGetThemeValue('tab', $mdw-tab__theme-values, $key, $type, $theme);
 }
 
-
-// Vary by contrast
 @mixin mdw-tab__theme-rules($type: 'var', $theme: null) {
   .mdw-tab__list:not([mdw-ink]) {
     color: mdwTabThemeValue("active-color", $type, $theme);

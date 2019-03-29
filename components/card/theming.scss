@@ -1,9 +1,8 @@
 @import '../../core/theme/exports.scss';
 
 $mdw-card__theme-values: (
-  background:   ((#fff, 1.00), ('background', '800', 1.00)),
-  border-color: (('foreground-light', 0.12), ('foreground-dark', 0.12)),
-  focus-color:  (('foreground-light', 0.06), ('foreground-dark', 0.10)),
+  background:   $mdw-theme__card-surface,
+  border-color: $mdw-theme__divider-ink,
 ) !default;
 
 @function mdwCardThemeValue($key, $type, $theme) {
@@ -16,10 +15,6 @@ $mdw-card__theme-values: (
 
     &:not([mdw-surface]) {
       background-color: mdwCardThemeValue("background", $type, $theme);
-    }
-
-    &:focus::before {
-      background-color: mdwCardThemeValue("focus-color", $type, $theme);
     }
   }
 }

@@ -1,11 +1,11 @@
 @import '../../core/theme/exports.scss';
 
 $mdw-selection__theme-values: (
-  text-color:              (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  color:                   (('foreground-light', 0.54), ('foreground-dark', 0.70)),
-
+  text-color:              $mdw-theme__default-ink,
+  icon-color:              $mdw-theme__medium-ink,
+  disabled-color:          $mdw-theme__inactive-ink,
   ripple-color:            (('foreground-light', 1.00), ('foreground-dark', 1.00)),
-  disabled-color:          (('foreground-light', 0.26), ('foreground-dark', 0.30)),
+
   thumb-off-color:         (('background', '50', 1.00), ('background','400',1.0)),
   thumb-on-color:          (currentColor, currentColor),
 
@@ -32,11 +32,11 @@ $mdw-selection__theme-values: (
     }
     &[type="checkbox"]:not(:checked) ~ .mdw-selection__icon,
     &[type="checkbox"]:active:not(:disabled) ~ .mdw-selection__icon {
-      color: mdwSelectionThemeValue("color", $type, $theme);
+      color: mdwSelectionThemeValue("icon-color", $type, $theme);
     }
 
     &[type="radio"]:not(:checked) ~ .mdw-selection__icon {
-      color: mdwSelectionThemeValue("color", $type, $theme);
+      color: mdwSelectionThemeValue("icon-color", $type, $theme);
     }
     
     &[type="checkbox"]:checked ~ .mdw-selection__icon::after {

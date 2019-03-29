@@ -5,26 +5,12 @@
 @import '../../core/theme/exports.scss';
 
 $mdw-button__theme-values: (
-  text-color:                    (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-
-  text-opacity:                  (0.87, 1.00),
-  
-  // Instead of using active+unfocused icon opacity, use active+focus opacity with focus ripple
-  icon-opacity:                  (0.60, 0.70),
-  icon-opacity__inactive:        (0.38, 0.50),
-
-  // icon
-  active-icon-color:             (('foreground-light', 0.60), ('foreground-dark', 0.70)),
-  inactive-icon-color:           (('foreground-light', 0.38), ('foreground-dark', 0.50)),
-
-  // disabled
+  text-color:                    $mdw-theme__default-ink,
+  inactive-color:                $mdw-theme__inactive-ink,
+  disabled-text-color:           $mdw-theme__default-ink,
+  disabled-background-color:     $mdw-theme__inactive-ink,
   disabled-opacity:              (0.38, 0.50),
-  
-  disabled-text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  disabled-background-color:     (('foreground-light', 0.38), ('foreground-dark', 0.50)),
-
-  outline-color:                 (('foreground-light', 0.12), ('foreground-dark', 0.12)),
-
+  outline-color:                 $mdw-theme__divider-ink,
 ) !default;
 
 @function mdwButtonThemeValue($key, $type, $theme) {
@@ -33,31 +19,15 @@ $mdw-button__theme-values: (
 
 @mixin mdw-button__theme-rules($type: 'var', $theme: null) {
   .mdw-button {
-    @if ($type == 'var') {
-      color: rgba(var(--ink-color), mdwButtonThemeValue('text-opacity', $type, $theme));
+    &:not([mdw-ink]),
+    &[aria-pressed="false"],
+    &[aria-pressed="false"][mdw-ink] {
+      color: mdwButtonThemeValue('text-color', $type, $theme);
+      --ink-color: var(--foreground-color);
+    }
 
-      &[aria-pressed="false"],
-      &[aria-pressed="false"][mdw-ink] {
-        --ink-color: var(--foreground-color);
-      }
-
-      &[mdw-icon][aria-pressed="false"] {
-        color: rgba(var(--ink-color), mdwButtonThemeValue('icon-opacity__inactive', $type, $theme));
-      }
-
-    } @else {
-      &[aria-pressed="false"],
-      &[aria-pressed="false"][mdw-ink],
-      &:not([mdw-ink]):not([mdw-surface]) {
-        color: mdwButtonThemeValue("text-color", $type, $theme);
-      }
-      
-      &[aria-pressed="false"][mdw-icon] {
-        &,
-        &[mdw-ink] {
-          color: mdwButtonThemeValue('inactive-icon-color', $type, $theme);
-        }
-      }
+    &[mdw-icon][aria-pressed="false"] {
+      color: mdwButtonThemeValue('inactive-color', $type, $theme);
     }
 
     &[mdw-outline] {

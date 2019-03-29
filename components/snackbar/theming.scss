@@ -13,8 +13,6 @@ $mdw-snackbar__theme-values: (
   @return mdwGetThemeValue('snackbar', $mdw-snackbar__theme-values, $key, $type, $theme);
 }
 
-
-// Vary by contrast or theme
 @mixin mdw-snackbar__theme-rules($type: 'var', $theme: null) {
   .mdw-snackbar {
     background-color: mdwSnackbarThemeValue("background-color", $type, $theme);

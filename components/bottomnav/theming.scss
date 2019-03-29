@@ -1,8 +1,8 @@
 @import '../../core/theme/exports.scss';
 
 $mdw-bottomnav__theme-values: (
-  active-color:         (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  inactive-color:       (('foreground-light', 0.54), ('foreground-dark', 0.70)),
+  active-color:         $mdw-theme__default-ink,
+  inactive-color:       $mdw-theme__medium-ink,
   badge-background:     (('warn', '500', 1.00), ('warn', '500', 1.00)),
   badge-foreground:     (('foreground-dark', 1.00), ('foreground-dark', 1.00)),
 ) !default;
@@ -11,7 +11,6 @@ $mdw-bottomnav__theme-values: (
   @return mdwGetThemeValue('bottomnav', $mdw-bottomnav__theme-values, $key, $type, $theme);
 }
 
-// Vary by contrast and theme
 @mixin mdw-bottomnav__theme-rules($type: 'var', $theme: null) {
   .mdw-bottomnav:not([mdw-ink]) {
     color: mdwBottomnavThemeValue("active-color", $type, $theme);

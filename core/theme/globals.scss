@@ -1,8 +1,12 @@
 @import './exports.scss';
 
 $mdw-theme__global-variables: (
-  text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
+  default-ink:     $mdw-theme__default-ink,
+  medium-ink:      $mdw-theme__medium-ink,
+  inactive-ink:    $mdw-theme__inactive-ink,
+  divider-ink:     $mdw-theme__divider-ink,
+  card-surface:    $mdw-theme__card-surface,
+  content-surface: $mdw-theme__content-surface,
 ) !default;
 
 @function mdwThemeGlobalValue($key, $type, $theme) {
@@ -13,23 +17,37 @@ $mdw-theme__global-variables: (
   @include mdw-theme__variables('theme', $mdw-theme__global-variables, $lightness);
 }
 
-// Vary by contrast and theme
 @mixin mdw-theme__global-contrast-and-theme-rules($type: 'var', $theme: null) {
   @if ($type == 'var') {
     @at-root {
+      .mdw-theme[mdw-ink="default"],
+      .mdw-theme[mdw-ink="medium"],
+      .mdw-theme[mdw-ink="inactive"],
+      .mdw-theme[mdw-ink="divider"] {
+        --ink-color: var(--foreground-color);
+      }
       .mdw-theme[mdw-surface]:not([mdw-ink]) {
-        color: mdwThemeGlobalValue("text-color", $type, $theme);
+        color: mdwThemeGlobalValue("default-ink", $type, $theme);
       }
     }
   }
 
-
-  // color: globalThemeValue("text-color", $type);
-  .mdw-theme__primary-text {
-    color: mdwThemeGlobalValue("text-color", $type, $theme);
+  .mdw-theme[mdw-surface="card"] {
+    background-color: mdwThemeGlobalValue("card-surface", $type, $theme);
   }
-
-  .mdw-theme__secondary-text {
-    color: mdwThemeGlobalValue("secondary-text-color", $type, $theme);
+  .mdw-theme[mdw-surface="content"] {
+    background-color: mdwThemeGlobalValue("content-surface", $type, $theme);
+  }
+  .mdw-theme[mdw-ink="default"] {
+    color: mdwThemeGlobalValue("default-ink", $type, $theme);
+  }
+  .mdw-theme[mdw-ink="medium"] {
+    color: mdwThemeGlobalValue("medium-ink", $type, $theme);
+  }
+  .mdw-theme[mdw-ink="inactive"] {
+    color: mdwThemeGlobalValue("inactive-ink", $type, $theme);
+  }
+  .mdw-theme[mdw-ink="divider"] {
+    color: mdwThemeGlobalValue("divider-ink", $type, $theme);
   }
 }

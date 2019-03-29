@@ -157,13 +157,13 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
 
     #{$namespace}[mdw-light][mdw-surface],
     #{$namespace} .mdw-theme[mdw-light][mdw-surface] {
-      color: mdwThemeGlobalValue("text-color", 'light', $theme);
+      color: mdwThemeGlobalValue("default-ink", 'light', $theme);
     }
 
 
     #{$namespace}[mdw-dark][mdw-surface],
     #{$namespace} .mdw-theme[mdw-dark][mdw-surface] {
-      color: mdwThemeGlobalValue("text-color", 'dark', $theme);
+      color: mdwThemeGlobalValue("default-ink", 'dark', $theme);
     }
     
     #{$namespace}[mdw-light],

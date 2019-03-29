@@ -1,11 +1,11 @@
 @import '../../core/theme/exports.scss';
 
 $mdw-datatable__theme-values: (
-  text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
-  divider-color:        (('foreground-light', 0.12), ('foreground-dark', 0.12)),
+  text-color:           $mdw-theme__default-ink,
+  secondary-text-color: $mdw-theme__medium-ink,
+  divider-color:        $mdw-theme__divider-ink,
 
-  controls-color:       (('foreground-light', 1.00), ('foreground-dark', 1.00)),
+  controls-color:       $mdw-theme__default-ink,
 
   overlay-rgb:          ("0, 0, 0", "255, 255, 255"),
 
@@ -30,7 +30,6 @@ $mdw-datatable__theme-values: (
   @return mdwGetThemeValue('datatable', $mdw-datatable__theme-values, $key, $type, $theme);
 }
 
-// Vary by contrast or theme
 @mixin mdw-datatable__theme-rules($type: 'var', $theme: null) {
   .mdw-datatable tr,
   .mdw-datatable td,

@@ -1,7 +1,7 @@
 @import '../../core/theme/exports.scss';
 
 $mdw-divider__theme-values: (
-  color: (('foreground-light', 0.12), ('foreground-dark', 0.12)),
+  color: $mdw-theme__divider-ink,
 ) !default;
 
 @function mdwDividerThemeValue($key, $type, $theme) {

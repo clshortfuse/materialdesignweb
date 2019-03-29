@@ -1,18 +1,18 @@
+// https://material.io/archive/guidelines/components/text-fields.html#text-fields-states
+
 @import '../../core/theme/exports.scss';
 
 $mdw-textfield__theme-values: (
-  text-color:                         (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  secondary-text-color:               (('foreground-light', 0.54), ('foreground-dark', 0.70)),
+  text-color:                         $mdw-theme__default-ink,
+  secondary-text-color:               $mdw-theme__medium-ink,
   placeholder-color__focus:           (('foreground-light', 0.42), ('foreground-dark', 0.50)),
-  disabled-color:                     (('foreground-light', 0.38), ('foreground-dark', 0.50)),
+  disabled-color:                     $mdw-theme__inactive-ink,
   filled-disabled-border-color:       (('foreground-light', 0.10), ('foreground-dark', 0.30)),
   filled-disabled-background-color:   (('foreground-light', 0.03), ('foreground-dark', 0.05)),
   fill-color:                         (('foreground-light', 0.06), ('foreground-dark', 0.10)),
   fill-color__hover:                  (('foreground-light', 0.12), ('foreground-dark', 0.20)),
   border-line-color:                  (('foreground-light', 0.42), ('foreground-dark', 0.70)),
   border-line-color__hover:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  ripple-color:                       ('foreground-light', 'foreground-dark'),
-  ripple-opacity:                     (0.16, 0.32 ),
   dropdown-icon-color:                (('foreground-light', 0.54), ('foreground-dark', 0.70)),
   
   dropdown-background-color:          ((#fff, 1.00), ('background', '800', 1.00)),

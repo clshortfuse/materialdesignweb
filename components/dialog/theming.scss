@@ -1,9 +1,9 @@
 @import '../../core/theme/exports.scss';
 
 $mdw-dialog__theme-values: (
-  text-color:           (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  secondary-text-color: (('foreground-light', 0.54), ('foreground-dark', 0.70)),
-  background-color:     ((#fff, 1.00), ('background', '800', 1.00)),
+  title-color:        $mdw-theme__default-ink,
+  body-color:         $mdw-theme__medium-ink,
+  background-color:   $mdw-theme__card-surface,
 ) !default;
 
 @function mdwDialogThemeValue($key, $type, $theme) {
@@ -16,11 +16,11 @@ $mdw-dialog__theme-values: (
   }
   
   .mdw-dialog__title {
-    color: mdwDialogThemeValue("text-color", $type, $theme);
+    color: mdwDialogThemeValue("title-color", $type, $theme);
   }
   
   .mdw-dialog__body {
-    color: mdwDialogThemeValue("secondary-text-color", $type, $theme);
+    color: mdwDialogThemeValue("body-color", $type, $theme);
   }
 }
 

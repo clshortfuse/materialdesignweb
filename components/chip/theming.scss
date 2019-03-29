@@ -57,7 +57,6 @@ $mdw-chip__theme-values: (
   @return mdwGetThemeValue('chip', $mdw-chip__theme-values, $key, $type, $theme);
 }
 
-// Vary by contrast
 @mixin mdw-chip__theme-rules($type: 'var', $theme: null) {
   .mdw-chip__thumbnail,
   .mdw-chip__remove,

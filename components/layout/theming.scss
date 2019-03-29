@@ -2,13 +2,12 @@
 @import '../../core/theme/exports.scss';
 
 $mdw-layout__theme-values: (
-  selected-color:        (('foreground-light', 1.00), ('foreground-dark', 1.00)),
-  text-color:            (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  secondary-text-color:  (('foreground-light', 0.54), ('foreground-dark', 0.70)),
-  divider-color:         (('foreground-light', 0.12), ('foreground-dark', 0.12)),
-  drawer-background:     ((#fff, 1.00),               ('background', '800', 1.00)),
-  appbar-background:     ((#fff, 1.00),               ('background', '800', 1.00)),
-  content-background:    (('background', '50', 1.00), ('background', '900' , 1.00))
+  text-color:            $mdw-theme__default-ink,
+  secondary-text-color:  $mdw-theme__medium-ink,
+  divider-color:         $mdw-theme__divider-ink,
+  drawer-background:     $mdw-theme__card-surface,
+  appbar-background:     $mdw-theme__card-surface,
+  content-background:    $mdw-theme__content-surface,
 ) !default;
 
 @function mdwLayoutThemeValue($key, $type, $theme) {
