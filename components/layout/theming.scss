@@ -47,7 +47,7 @@ $mdw-layout__theme-values: (
     }
   }
 
-  @include mdw-breakpoint__12-columns {
+  @include mdw-breakpoint__medium-window__min {
     .mdw-layout__body[mdw-navdrawer-style~="floating"]:not([mdw-navdrawer-style~="card"]) > .mdw-layout__navdrawer,
     .mdw-layout__body[mdw-sidesheet-style~="floating"]:not([mdw-sidesheet-style~="card"]) > .mdw-layout__sidesheet {
       & > .mdw-layout__sheet-content:not([mdw-surface]) {
