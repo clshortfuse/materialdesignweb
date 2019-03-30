@@ -1,7 +1,7 @@
 /**
  * @callback DataTableAdapterColumnFormatter<T>
  * @param {any} value
- * @param {T=} object
+ * @param {T} [object]
  * @return {any}
  * @template T
  */
@@ -19,17 +19,17 @@
  * Constructor options for DataTableAdapterColumn
  * @typedef DataTableAdapterColumnOptions<T>
  * @property {string} key
- * @property {(string|DocumentFragment)=} name
- * @property {string=} type
- * @property {boolean=} rowSelector
- * @property {string=} tooltip
- * @property {boolean=} sortable
- * @property {boolean=} primaryColumn
- * @property {HTMLElement=} customSortIcon
- * @property {string=} innerHTML
- * @property {DocumentFragment=} fragment
- * @property {DataTableAdapterColumnRenderer<T>=} renderer
- * @property {DataTableAdapterColumnFormatter<T>=} formatter
+ * @property {(string|DocumentFragment)} [name='']
+ * @property {'checkbox'|string} [type]
+ * @property {boolean} [rowSelector]
+ * @property {string} [tooltip]
+ * @property {boolean} [sortable]
+ * @property {boolean} [primaryColumn]
+ * @property {HTMLElement} [customSortIcon]
+ * @property {string} [innerHTML]
+ * @property {DocumentFragment} [fragment]
+ * @property {DataTableAdapterColumnRenderer<T>} [renderer]
+ * @property {DataTableAdapterColumnFormatter<T>} [formatter]
  * @template T
  */
 

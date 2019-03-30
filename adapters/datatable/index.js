@@ -33,8 +33,8 @@ import DataTableAdapterColumn from './column';
 /**
  * @callback DataTableAdapterFilter<T>
  * @param {T} element
- * @param {number=} index
- * @param {T[]=} array
+ * @param {number} [index]
+ * @param {T[]} array
  * @return {any}
  * @template T
  */
@@ -55,10 +55,10 @@ export default class DataTableAdapter {
    * @param {Object} options
    * @param {HTMLElement} options.datatable
    * @param {T[]} options.datasource Object array
-   * @param {DataTableAdapterFilter<T>=} options.filter
-   * @param {DataTableAdapterOnValueChangeRequestedCallback<T>=} options.onValueChangeRequested
-   * @param {DataTableAdapterOnValueChangedCallback<T>=} options.onValueChanged
-   * @param {DataTableAdapterSorter<T>=} options.sorter
+   * @param {DataTableAdapterFilter<T>} [options.filter]
+   * @param {DataTableAdapterOnValueChangeRequestedCallback<T>} [options.onValueChangeRequested]
+   * @param {DataTableAdapterOnValueChangedCallback<T>} [options.onValueChanged]
+   * @param {DataTableAdapterSorter<T>} [options.sorter]
    */
   constructor(options) {
     this.element = options.datatable;
@@ -108,7 +108,7 @@ export default class DataTableAdapter {
   }
 
   /**
-   * @param {boolean=} [forceRefresh=false]
+   * @param {boolean} [forceRefresh=false]
    * @return {void}
    */
   performThrottledRender(forceRefresh = false) {
@@ -120,7 +120,7 @@ export default class DataTableAdapter {
   }
 
   /**
-   * @param {boolean=} [forceRefresh=false]
+   * @param {boolean} [forceRefresh=false]
    * @return {void}
    */
   scheduleThrottledRender(forceRefresh = false) {
@@ -213,7 +213,7 @@ export default class DataTableAdapter {
 
   /**
    * Overridable sorting method
-   * @param {HTMLTableHeaderCellElement=} tableHeaderCell null if none
+   * @param {HTMLTableHeaderCellElement} [tableHeaderCell] null if none
    * @param {boolean} [ascending=false]
    * @return {void}
    */
@@ -261,8 +261,8 @@ export default class DataTableAdapter {
   }
 
   /**
-   * @param {HTMLTableHeaderCellElement=} sortedTableHeaderCell null if none
-   * @param {boolean=} [ascending=false]
+   * @param {HTMLTableHeaderCellElement} [sortedTableHeaderCell] null if none
+   * @param {boolean} [ascending=false]
    * @return {void}
    */
   updateSortIcons(sortedTableHeaderCell, ascending) {
@@ -371,7 +371,7 @@ export default class DataTableAdapter {
   }
 
   /**
-   * @param {DataTableAdapterColumn<T>} options
+   * @param {DataTableAdapterColumnOptions<T>} options
    * @return {DataTableAdapterColumn<T>}
    */
   addColumn(options) {
@@ -399,9 +399,9 @@ export default class DataTableAdapter {
 
   /**
    * @param {Object} options
-   * @param {boolean=} [options.disabled=false]
-   * @param {number=} [options.limit=10]
-   * @param {number[]=} [options.limits=[10,25,50,100]]
+   * @param {boolean} [options.disabled=false]
+   * @param {number} [options.limit=10]
+   * @param {number[]} [options.limits=[10,25,50,100]]
    * @return {void}
    */
   setPagination(options = {}) {
@@ -690,7 +690,7 @@ export default class DataTableAdapter {
 
   /**
    * Update number of rows in table
-   * @param {boolean=} refresh Refresh new rows
+   * @param {boolean} [refresh=false] Refresh new rows
    * @return {void}
    */
   updateRowCount(refresh) {
