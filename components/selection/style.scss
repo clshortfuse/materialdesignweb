@@ -91,6 +91,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   display: inline-flex;
   position: relative;
   box-sizing: border-box;
+  pointer-events: none;
   width: $icon-size;
   height: $icon-size;
   max-width: 0;
@@ -264,14 +265,17 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   &:checked {
     transform: scale(1) translateX(14px);
   }
-  &:focus,
-  &:active {
+  .mdw-selection:active:not(:disabled) > &,
+  .mdw-selection:hover:not(:disabled) > &,
+  &:active:not(:disabled),
+  &:hover:not(:disabled),
+  &:focus {
     transform: translateX(-2px) scale(2);
+    &:checked {
+      transform: translateX(14px) scale(2);
+    }
   }
-  &:focus:checked,
-  &:active:checked {
-    transform: translateX(14px) scale(2);
-  }
+
   &:active:not(:disabled) ~ .mdw-selection__icon {
     color: inherit;
   }
