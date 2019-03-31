@@ -19,7 +19,7 @@ $mdw-button__theme-values: (
 
 @mixin mdw-button__theme-rules($type: 'var', $theme: null) {
   .mdw-button {
-    &:not([mdw-ink]),
+    &:not(.mdw-theme),
     &[aria-pressed="false"],
     &[aria-pressed="false"][mdw-ink] {
       color: mdwButtonThemeValue('text-color', $type, $theme);
