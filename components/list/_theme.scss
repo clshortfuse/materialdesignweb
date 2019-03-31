@@ -20,7 +20,7 @@ $mdw-list__theme-values: (
   }
 
   .mdw-list__text,
-  .mdw-list__content {
+  .mdw-list__content:not(.mdw-theme) {
     color: mdwListThemeValue("text-color", $type);
   }
 
