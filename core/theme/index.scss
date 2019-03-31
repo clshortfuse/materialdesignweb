@@ -25,20 +25,6 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
     $variables: map-get($config-map, "variables");
   }
 
-  @each $theme in map-values($themes) {
-    $palettes: ('indigo', 'pink', 'red', 'grey');
-    @for $i from 1 to 5 {
-      @if (length($theme) >= $i) {
-        $palettes: set-nth($palettes, $i, nth($theme, $i));
-      }
-    }
-    @each $palette in $palettes {
-      @if (index($colors, $palette) == null) {
-        $colors: append($colors, $palette);
-      }
-    }
-  }
-
   $mdw-theme__themes: $themes !global;
   $mdw-theme__colors: $colors !global;
   $mdw-theme__fallbacks: $fallbacks !global;
@@ -48,6 +34,20 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
 @mixin mdw-theme__build($config-map: null) {
   @if ($config-map != null) {
     @include mdw-theme__configure($config-map);
+  }
+
+  @each $theme in map-values($mdw-theme__themes) {
+    $palettes: ('indigo', 'pink', 'red', 'grey');
+    @for $i from 1 to 5 {
+      @if (length($theme) >= $i) {
+        $palettes: set-nth($palettes, $i, nth($theme, $i));
+      }
+    }
+    @each $palette in $palettes {
+      @if (index($mdw-theme__colors, $palette) == null) {
+        $mdw-theme__colors: append($mdw-theme__colors, $palette) !global;
+      }
+    }
   }
 
   @if ($mdw-theme__fallbacks and $mdw-theme__fallbacks != 'no' and $mdw-theme__fallbacks != false) {
