@@ -122,6 +122,8 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
         color: __mdwThemeGlobalValue("default-ink", $type, $theme);
       }
     }
+  } @else {
+    // Fallbacks handled by __mdw-theme__build-fallbacks()
   }
 
   .mdw-theme[mdw-surface="card"] {
