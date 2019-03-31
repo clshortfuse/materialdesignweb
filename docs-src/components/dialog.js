@@ -1,7 +1,7 @@
 import * as Button from '../../components/button/index';
 import * as Dialog from '../../components/dialog/index';
 import { iterateArrayLike } from '../../core/dom';
-import { changeElementTagName, convertElementToCode } from '../sample-utils';
+import { changeElementTagName, convertElementToCode } from '../_sample-utils';
 
 
 /** @type {HTMLElement} */

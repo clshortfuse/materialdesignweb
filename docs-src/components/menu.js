@@ -1,6 +1,6 @@
 import * as Menu from '../../components/menu/index';
 import * as MenuItem from '../../components/menu/item';
-import { convertElementToCode, changeElementTagName } from '../sample-utils';
+import { convertElementToCode, changeElementTagName } from '../_sample-utils';
 import { iterateArrayLike } from '../../core/dom';
 
 /** @type {HTMLElement} */

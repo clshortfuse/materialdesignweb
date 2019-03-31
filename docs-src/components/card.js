@@ -1,4 +1,4 @@
-import { convertElementToCode } from '../sample-utils';
+import { convertElementToCode } from '../_sample-utils';
 import { iterateArrayLike, setTextNode } from '../../core/dom';
 
 /** @type {HTMLElement} */

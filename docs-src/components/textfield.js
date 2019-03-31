@@ -1,7 +1,7 @@
 import { iterateArrayLike } from '../../core/dom';
 import * as TextField from '../../components/textfield/index';
 
-import { convertElementToCode } from '../sample-utils';
+import { convertElementToCode } from '../_sample-utils';
 
 /** @return {void} */
 function initializeSampleComponents() {

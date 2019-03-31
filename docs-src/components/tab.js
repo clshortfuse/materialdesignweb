@@ -1,6 +1,6 @@
 import * as Button from '../../components/button/index';
 import * as Tab from '../../components/tab/index';
-import { convertElementToCode, changeElementTagName } from '../sample-utils';
+import { convertElementToCode, changeElementTagName } from '../_sample-utils';
 import { iterateArrayLike, setTextNode } from '../../core/dom';
 
 /** @type {HTMLElement} */

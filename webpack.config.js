@@ -61,22 +61,21 @@ function getComponentsConfig() {
 /** @return {WebpackConfiguration} */
 function getDocsConfig() {
   const plugins = [];
-  const entries = {
-    prerender: ['./prerender.js'],
-    index: ['./index.pug', './index.js'],
-    docs: ['./docs.scss'],
-    components: ['./components.scss'],
-  };
-  ['pwa', 'themes', 'core', 'components'].forEach(folder => fs.readdirSync(path.join('./docs-src', folder))
-    .forEach((filename) => {
+  /** @type {Object.<string, string[]>} */
+  const entries = {};
+  ['.', 'pwa', 'core', 'components'].map(folder => path.join('./docs-src', folder))
+    .forEach(folderPath => fs.readdirSync(folderPath).forEach((filename) => {
       if (filename[0] === '_') {
+        return;
+      }
+      if (fs.statSync(path.join(folderPath, filename)).isDirectory()) {
         return;
       }
       const noExt = filename.substring(0, filename.lastIndexOf('.'));
       if (!entries[`${noExt}`]) {
         entries[`${noExt}`] = [];
       }
-      entries[`${noExt}`].push(`./${folder}/${filename}`);
+      entries[`${noExt}`].push(path.resolve(`${folderPath}/${filename}`));
     }));
   const DEST = (isProduction ? 'docs' : 'test/docs');
   /** @type {WebpackConfiguration} */

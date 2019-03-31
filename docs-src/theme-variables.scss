@@ -1,4 +1,4 @@
-@import "../../core/theme/index.scss";
+@import "../core/theme/index.scss";
 
 $mdw-config: (
   themes: (
@@ -10,4 +10,4 @@ $mdw-config: (
 );
 
 @include mdw-theme__build($mdw-config);
-@import "../../theming.scss";
+@import "../_theme.scss";

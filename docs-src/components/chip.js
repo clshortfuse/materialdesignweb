@@ -1,7 +1,7 @@
 
 import * as Chip from '../../components/chip/index';
 import { iterateArrayLike } from '../../core/dom';
-import { convertElementToCode } from '../sample-utils';
+import { convertElementToCode } from '../_sample-utils';
 
 /** @type {ArrayLike<HTMLElement>} */
 let sampleComponents;

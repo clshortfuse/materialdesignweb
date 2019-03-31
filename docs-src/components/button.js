@@ -1,7 +1,7 @@
 import * as Button from '../../components/button/index';
 import * as Overlay from '../../core/overlay/index';
 import * as Ripple from '../../core/ripple/index';
-import { convertElementToCode } from '../sample-utils';
+import { convertElementToCode } from '../_sample-utils';
 import { iterateArrayLike, setTextNode } from '../../core/dom';
 
 /** @return {void} */

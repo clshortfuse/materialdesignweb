@@ -1,6 +1,6 @@
 import {
   setupMenuOptions,
-} from './menuoptions';
+} from './_menuoptions';
 import * as Layout from '../components/layout/index';
 import * as List from '../components/list/index';
 

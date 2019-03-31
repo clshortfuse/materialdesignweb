@@ -1,4 +1,4 @@
-import { convertElementToCode } from '../sample-utils';
+import { convertElementToCode } from '../_sample-utils';
 import * as Snackbar from '../../components/snackbar/index';
 import { iterateArrayLike } from '../../core/dom';
 

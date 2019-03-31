@@ -1,5 +1,5 @@
 doctype html
-html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
+html.mdw-layout.mdw-theme(lang='en' mdw-theme="default")
   head
     title MDW PWA
     meta(charset='utf-8')
@@ -12,7 +12,7 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
     link(rel='stylesheet' href="//fonts.googleapis.com/icon?family=Material+Icons")
     link(rel='stylesheet' href='pwa.min.css')
     script(src='prerender.common.min.js')
-    script(src='pwa.prerender.min.js')
+    script(src='pwa-prerender.min.js')
   body.mdw-layout__body(mdw-sidesheet-toggle="dismissible" mdw-sidesheet-style="clipped")
     .mdw-layout__menus
       include ./_menus.pug
@@ -20,39 +20,50 @@ html.mdw-layout.mdw-theme(lang='en' mdw-theme="colored")
       include ./_dialogs.pug
     .mdw-layout__navdrawer
       .mdw-layout__sheet-content
-        .mdw-list
-          li.mdw-list__item
-            a.mdw-list__content Attractions
+        ul.mdw-list
+          li.mdw-list__item(role="none")
+            a.mdw-list__content
+              .mdw-list__text Attractions
               .mdw-list__icon.material-icons local_activity
-          li.mdw-list__item
-            a.mdw-list__content Dining
+          li.mdw-list__item(role="none")
+            a.mdw-list__content
+              .mdw-list__text Dining
               .mdw-list__icon.material-icons local_dining
-          li.mdw-list__item
-            a.mdw-list__content Education
+          li.mdw-list__item(role="none")
+            a.mdw-list__content
+              .mdw-list__text Education
               .mdw-list__icon.material-icons edit
-          li.mdw-list__item
-            a.mdw-list__content Family
+          li.mdw-list__item(role="none")
+            a.mdw-list__content
+              .mdw-list__text Family
               .mdw-list__icon.material-icons people
-          li.mdw-list__item
-            a.mdw-list__content Health
+          li.mdw-list__item(role="none")
+            a.mdw-list__content
+              .mdw-list__text Health
               .mdw-list__icon.material-icons healing
-          li.mdw-list__item
-            a.mdw-list__content Office
+          li.mdw-list__item(role="none")
+            a.mdw-list__content
+              .mdw-list__text Office
               .mdw-list__icon.material-icons business
-          li.mdw-list__item
-            a.mdw-list__content Promotions
+          li.mdw-list__item(role="none")
+            a.mdw-list__content
+              .mdw-list__text Promotions
               .mdw-list__icon.material-icons local_offer
-          li.mdw-list__item
-            a.mdw-list__content Radio
+          li.mdw-list__item(role="none")
+            a.mdw-list__content
+              .mdw-list__text Radio
               .mdw-list__icon.material-icons radio
-          li.mdw-list__item
-            a.mdw-list__content Recipes
+          li.mdw-list__item(role="none")
+            a.mdw-list__content
+              .mdw-list__text Recipes
               .mdw-list__icon.material-icons book
-          li.mdw-list__item
-            a.mdw-list__content Sports
+          li.mdw-list__item(role="none")
+            a.mdw-list__content
+              .mdw-list__text Sports
               .mdw-list__icon.material-icons stars
-          li.mdw-list__item
-            a.mdw-list__content Travel
+          li.mdw-list__item(role="none")
+            a.mdw-list__content
+              .mdw-list__text Travel
               .mdw-list__icon.material-icons local_airport
     .mdw-layout__sidesheet(mdw-toggle="dismissible" mdw-style="clipped")
       .mdw-layout__sheet-content
