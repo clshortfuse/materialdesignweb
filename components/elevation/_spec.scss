@@ -1,0 +1,9 @@
+@import '../../core/_elevation.scss';
+
+.mdw-elevation {
+  @each $value in (1, 2, 3, 4, 6, 8, 9, 12, 16, 24) {
+    &[mdw-elevation="#{$value}"] {
+      box-shadow: mdwElevation($value);
+    }
+  }
+}

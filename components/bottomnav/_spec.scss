@@ -1,0 +1,143 @@
+// https://material.io/design/components/bottom-navigation.html#specs
+
+@import '../../core/_platform.scss';
+@import '../../core/_type.scss';
+
+.mdw-bottomnav {
+  display: flex;
+  position: relative;
+  align-items: stretch;
+  flex-direction: row;
+  justify-content: center;
+  overflow: hidden;
+
+  min-height: dp(56);
+  width: 100%;
+}
+
+.mdw-bottomnav__item {
+  display: flex;
+  position: relative;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: visible;
+  
+  min-width: dp(80);
+  max-width: dp(168);
+  flex: 1;
+  margin: 0;
+  padding: 0;
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+
+  z-index: 0;
+  
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.mdw-bottomnav__icon {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  
+  margin: 0;
+  margin-left: dp(-12);
+  padding: 0;
+
+  transition-duration: 200ms;
+  transition-property: transform, color;
+  transition-timing-function: $mdw-motion__standard-easing;
+
+  pointer-events: none;
+  transform: translateY(dp(8));
+
+  &:last-child {
+    // No label
+    transform: translateY(dp(16));
+  }
+}
+
+.mdw-bottomnav__icon[mdw-badge]::before {
+  font: inherit;
+  content: attr(mdw-badge);
+
+  position: absolute;
+  top: 0;
+  left: dp(16);
+  right: auto;
+
+  :root[dir="rtl"] & {
+    left: auto;
+    right: dp(16);
+  }
+
+  
+  box-sizing: border-box;
+  min-height: dp(8);
+  min-width: dp(8);
+  padding: dp(2);
+
+  z-index: 1;
+
+  border-radius: dp(8);
+
+  font-weight: $font-weight-regular;
+  font-size: dp(10);
+  line-height: dp(12);
+  letter-spacing: normal;
+  
+}
+
+.mdw-bottomnav__icon[data-mdw-badge]::before {
+  content: attr(data-mdw-badge);
+}
+
+.mdw-bottomnav__label {
+  @include type-rules('caption');
+  @include texttop-to-top(32);
+  @include baseline-bottom(8);
+  
+  // Overriding 12dp for baseline bottom with 8dp for oversized and textwrapped
+  // Baseline top will ensure baseline-bottom is 12dp for standard layouts
+
+  box-sizing: border-box;
+  max-width: 100%;
+  padding: 0 dp(12);
+  
+  transition-duration: 200ms;
+  transition-property: transform, opacity, color;
+  transition-timing-function: $mdw-motion__standard-easing;
+
+  pointer-events: none;
+
+  text-align: center;
+  word-break: break-all;
+  word-break: break-word;
+}
+
+.mdw-bottomnav[mdw-shifting] {
+  .mdw-bottomnav__icon {
+    transform: translateY(dp(16));
+  }
+
+  .mdw-bottomnav__label {
+    opacity: 0;
+    transform: translateY(dp(8));
+  }
+
+  .mdw-bottomnav__item[aria-selected="true"] > .mdw-bottomnav__label {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .mdw-bottomnav__item[aria-selected="true"] > .mdw-bottomnav__icon {
+    transform: translateY(dp(8));
+  }
+}

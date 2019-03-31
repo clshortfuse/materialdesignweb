@@ -1,0 +1,6 @@
+@import './core/theme/index.scss';
+
+@include mdw-theme__build();
+
+@import './_spec.scss';
+@import './_theme.scss';

@@ -1,0 +1,34 @@
+@import '../../core/theme/index.scss';
+
+$mdw-card__theme-values: (
+  background:   $mdw-theme__card-surface,
+  border-color: $mdw-theme__divider-ink,
+) !default;
+
+@function mdwCardThemeValue($key, $type, $theme) {
+  @return mdwGetThemeValue('card', $mdw-card__theme-values, $key, $type, $theme);
+}
+
+@mixin mdw-card__theme-rules($type: 'var', $theme: null) {
+  .mdw-card {
+    border-color: mdwCardThemeValue("border-color", $type, $theme);
+
+    &:not([mdw-surface]) {
+      background-color: mdwCardThemeValue("background", $type, $theme);
+    }
+  }
+}
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-card__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-card__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('card', $mdw-card__theme-values) {
+  @include mdw-card__theme-rules();
+}

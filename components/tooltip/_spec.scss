@@ -1,0 +1,172 @@
+// https://material.io/design/components/tooltips.html#spec
+
+@import '../../core/_motion.scss';
+@import '../../core/_platform.scss';
+@import '../../core/_type.scss';
+
+$tooltip__margin__desktop: dp(14);
+$tooltip__margin__mobile: dp(24);
+$tooltip__background-color: #616161; // material-grey-700
+$tooltip__touch-fade-out-time: 1.5s;
+$tooltip__touch-min-hold-time: 500ms;
+
+
+.mdw-tooltip__wrapper {
+  position: relative;
+  overflow: visible;
+}
+
+.mdw-tooltip,
+.mdw-tooltip__target {
+  -webkit-touch-callout: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.mdw-tooltip {
+  position: absolute;
+  width: auto;
+  padding-left: dp(8);
+  padding-right: dp(8);
+  min-height: dp(24);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  @include type-rules('caption');
+
+  background-color: $tooltip__background-color;
+  border-radius: dp(4);
+  color: white;
+  cursor: none;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 8;
+
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 150ms;
+  transition-timing-function: $mdw-motion__decelerate-easing;
+
+  .mdw-tooltip__target:hover > &,
+  .mdw-tooltip__target:focus > &,
+  .mdw-tooltip__wrapper > .mdw-tooltip__target:hover ~ &,
+  .mdw-tooltip__wrapper > .mdw-tooltip__target:not([tabindex="-1"]):focus ~ & {
+    opacity: 0.9;
+    transition-timing-function: $mdw-motion__accelerate-easing;
+  }
+
+  top: 100%;
+  left: 50%;
+  // Default Alignment is Center
+
+  transform: translateX(-50%) translateY($tooltip__margin__desktop);
+  &[mdw-align="start"],
+  :root[dir=rtl] &[mdw-align="end"] {
+    left: 0;
+    right: auto;
+  }
+  &[mdw-align="end"],
+  :root[dir=rtl] &[mdw-align="start"] {
+    left: auto;
+    right: 0;
+  }
+
+  &[mdw-align="start"],
+  &[mdw-align="end"] {
+    transform: translateY($tooltip__margin__desktop);
+  }
+
+  &[mdw-position="start"],
+  &[mdw-position="end"],
+  &[mdw-position="left"],
+  &[mdw-position="right"] {
+    left: 0;
+    top: 50%;
+  }
+
+  &[mdw-position="start"],
+  &[mdw-position="left"],
+  :root[dir=rtl] &[mdw-position="end"] {
+    margin: 0;
+    transform: translateY(-50%) translateX(-100%);
+  }
+
+  &[mdw-position="end"],
+  &[mdw-position="right"],
+  :root[dir=rtl] &[mdw-position="start"] {
+    transform: translateY(-50%) translateX(100%);
+  }
+
+  &[mdw-position="top"] {
+    top: 0;
+    transform: translateX(-50%) translateY(-100%) translateY(-$tooltip__margin__desktop);
+    &[mdw-align="start"],
+    &[mdw-align="end"] {
+      transform: translateY(-100%) translateY(-$tooltip__margin__desktop);
+    }
+  }
+  
+}
+
+// Button position fix
+.mdw-tooltip__wrapper > .mdw-button[mdw-icon] ~ .mdw-tooltip {
+  &:not([mdw-position]) {
+    // Bottom
+    margin-top: -8px;
+  }
+  &[mdw-position="top"] {
+    margin-top: 8px;
+  }
+}
+
+// Menu flicker fix
+.mdw-menu__wrapper > .mdw-menu:target ~ .mdw-tooltip,
+.mdw-menu__wrapper > .mdw-menu[mdw-show]:not([mdw-hide]) ~ .mdw-tooltip {
+  opacity: 0;
+  transition-delay: 0;
+}
+
+@include mdw-platform__has-touch-support {
+  .mdw-tooltip {
+    transition-delay: $tooltip__touch-min-hold-time;
+    font-size: sp(14);
+    min-height: dp(32);
+    padding-left: dp(16);
+    padding-right: dp(16);
+    transform: translateX(-50%) translateY($tooltip__margin__mobile);
+
+    &[mdw-align="start"],
+    &[mdw-align="end"] {
+      transform: translateY($tooltip__margin__mobile);
+    }
+
+    &[mdw-position="top"] {
+      transform: translateX(-50%) translateY(-100%) translateY(-$tooltip__margin__mobile);
+      &[mdw-align="start"],
+      &[mdw-align="end"] {
+        transform: translateY(-100%) translateY(-$tooltip__margin__mobile);
+      }
+    }
+
+    // Don't change opacity unless active
+    .mdw-tooltip__target:hover:not(:active) > &,
+    .mdw-tooltip__target:focus:not(:active) > &,
+    .mdw-tooltip__wrapper > .mdw-tooltip__target:hover:not(:active) ~ &,
+    .mdw-tooltip__wrapper > .mdw-tooltip__target:not([tabindex="-1"]):focus:not(:active) ~ & {
+      opacity: 0;
+      transition-delay: $tooltip__touch-fade-out-time;
+    }
+
+    .mdw-tooltip__target:active > &,
+    .mdw-tooltip__wrapper > .mdw-tooltip__target:active ~ .mdw-tooltip {
+      opacity: 0.9;
+      transition-timing-function: $mdw-motion__accelerate-easing;
+    }
+  }
+
+}

@@ -1,0 +1,88 @@
+@import '../../core/_platform.scss';
+@import '../../core/theme/index.scss';
+
+$mdw-list__theme-values: (
+  text-color:           $mdw-theme__default-ink,
+  secondary-text-color: $mdw-theme__medium-ink,
+  icon-color:           $mdw-theme__medium-ink,
+  meta-color:           $mdw-theme__medium-ink,
+  divider-color:        $mdw-theme__divider-ink,
+
+) !default;
+
+@function mdwListThemeValue($key, $type) {
+  @return mdwGetThemeValue('list', $mdw-list__theme-values, $key, $type);
+}
+
+@mixin mdw-list__theme-rules($type: 'var', $theme: null) {
+  .mdw-list__icon {
+    color: mdwListThemeValue("icon-color", $type);
+  }
+
+  .mdw-list__text,
+  .mdw-list__content {
+    color: mdwListThemeValue("text-color", $type);
+  }
+
+  .mdw-list__content {
+    &[mdw-ink][aria-current] {
+      .mdw-list__icon,
+      .mdw-list__text,
+      .mdw-list__content {
+        color: inherit;
+      }
+    }
+  }
+
+  .mdw-list__meta {
+    color: mdwListThemeValue("meta-color", $type);
+  }
+
+  .mdw-list[mdw-divider] {
+    & > .mdw-list__item:not(:last-child) .mdw-list__text::after {
+      background-color: mdwListThemeValue("divider-color", $type);
+    }
+  }
+
+  .mdw-list__expander {
+    &::before,
+    &::after {
+      background-color: mdwListThemeValue("divider-color", $type);
+    }
+
+    & > .mdw-list__item:first-child {
+      .mdw-list__secondary {
+        color: mdwListThemeValue("secondary-text-color", $type);
+      }
+    } 
+    &[mdw-ink][aria-expanded="true"] {
+      & > .mdw-list__item:first-child {
+        .mdw-list__content,
+        .mdw-list__text {
+          color: inherit;
+        }
+      }
+    }
+  }
+  
+  .mdw-list__text-line,
+  .mdw-list__text-block {
+    &:not(:first-child) {
+      color: mdwListThemeValue("secondary-text-color", $type);
+    }
+  }
+}
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-list__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-list__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('list', $mdw-list__theme-values) {
+  @include mdw-list__theme-rules();
+}

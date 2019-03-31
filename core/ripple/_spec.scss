@@ -1,0 +1,234 @@
+@import "../_breakpoint.scss";
+@import "../_platform.scss";
+@import "../_motion.scss";
+
+/**
+ * --Issues rendering a circle inside an element--
+ * See: https://codepen.io/shortfuse/pen/VxYxYj
+ *
+ * When using block display:
+ * - Firefox incorrectly stretches ripple when inside flexbox
+ * - Safari incorrectly inherit parent's padding
+ *
+ * Using using table display:
+ * - Firefox renders correctly
+ * - Safari renders correctly
+ * - IE and Edge don't animate opacity correctly
+ * - Ripples don't show if inside actual table
+ *
+ * When using JS (wrapped with block element):
+ * - Firefox renders correctly
+ * - Safari renders correctly
+ * - IE and Edge renders correctly but still has forced 0.26 opacity
+ *
+ * Chrome works fine under all conditions
+ *
+ */
+
+.mdw-ripple {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mdw-ripple:not([mdw-ripple-js]) {
+  overflow: hidden;
+  // Do not override any declarations
+}
+
+.mdw-ripple[disabled],
+.mdw-ripple[aria-disabled=true] {
+  & > .mdw-ripple__container,
+  &::after {
+    display: none;
+  }
+}
+
+
+.mdw-ripple__container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  
+  box-sizing: border-box;
+
+  z-index: 1;
+  pointer-events: none;
+
+  border-radius: inherit;
+
+
+}
+
+.mdw-ripple__inner {
+  display: block;
+  position: absolute;
+  
+  border-radius: 50%;
+  transition: none;
+  transform: scale(0);
+  background-color: currentColor;
+  animation-name: none;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+  animation-duration: $mdw-motion__default-duration__desktop;
+  @include mdw-breakpoint__mobile-device {
+    animation-duration: $mdw-motion__default-duration__mobile;
+  }
+  @include mdw-breakpoint__tablet-device {
+    animation-duration: $mdw-motion__default-duration__tablet;
+  }
+  pointer-events: none;
+
+  opacity: 0;
+  &[mdw-fade-in-out] {
+    animation-name: ripple-fade-in, ripple-fade-out;
+    animation-timing-function: linear, $mdw-motion__accelerate-easing;
+    animation-delay: 0s, $mdw-motion__default-duration__desktop;
+    @include mdw-breakpoint__mobile-device {
+      animation-delay: 0s, $mdw-motion__default-duration__mobile;
+    }
+    @include mdw-breakpoint__tablet-device {
+      animation-delay: 0s, $mdw-motion__default-duration__tablet;
+    }
+  }
+}
+
+.mdw-ripple__inner[mdw-fade-in] {
+  animation-name: ripple-fade-in;
+}
+
+.mdw-ripple__inner[mdw-fade-in-repeat] {
+  animation-name: ripple-fade-in-repeat;
+}
+
+.mdw-ripple:not(:active) > .mdw-ripple__container > .mdw-ripple__inner[mdw-fade-in-complete][mdw-fade-in],
+.mdw-ripple__inner[mdw-fade-out] {
+  animation-name: ripple-fade-out;
+  animation-timing-function: $mdw-motion__accelerate-easing;
+}
+
+@keyframes ripple-idle {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(0);
+  }
+}
+
+@keyframes ripple-fade-in {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(2);
+  }
+}
+
+@keyframes ripple-fade-in-repeat {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(2);
+  }
+}
+
+@keyframes ripple-fade-out {
+  from {
+    background-color: currentColor;
+
+    transform: scale(2);
+  }
+  to {
+    background-color: transparent;
+
+    transform: scale(2);
+  }
+}
+
+.mdw-ripple::after {
+  content: '';
+  display: table; // See above
+  padding: 50%;
+  height: 0;
+  width: 0;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  // z-index: -1; // Safari has a negative z-index scrolling bug (hides elements)
+  user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+  background-color: transparent;
+  color: inherit;
+  opacity: 0;
+  transform: translateX(-50%) translateY(-50%) scale(1);
+  transition-delay:
+    0s,
+    0s,
+    $mdw-motion__max-duration__desktop / 2;
+  transition-duration:
+    $mdw-motion__max-duration__desktop,
+    $mdw-motion__max-duration__desktop / 2,
+    $mdw-motion__max-duration__desktop / 2;
+    
+  @include mdw-breakpoint__mobile-device {
+    transition-delay:
+      0s,
+      0s,
+      $mdw-motion__max-duration__mobile / 2;
+    transition-duration:
+      $mdw-motion__max-duration__mobile,
+      $mdw-motion__max-duration__mobile / 2,
+      $mdw-motion__max-duration__mobile / 2;
+  }
+  @include mdw-breakpoint__tablet-device {
+    transition-delay:
+      0s,
+      0s,
+      $mdw-motion__max-duration__tablet / 2;
+    transition-duration:
+      $mdw-motion__max-duration__tablet,
+      $mdw-motion__max-duration__tablet / 2,
+      $mdw-motion__max-duration__tablet / 2;
+  }
+  transition-property:
+    transform,
+    opacity,
+    background-color;
+  transition-timing-function: $mdw-motion__sharp-easing;
+  will-change:
+    transform,
+    opacity,
+    background-color;
+}
+
+.mdw-ripple:active::after {
+  transition-duration: 0s;
+  transition-delay: 0s;
+  transform: translateX(-50%) translateY(-50%) scale(0);
+  opacity: 0;
+  background-color: currentColor;
+}
+
+.mdw-ripple[mdw-ripple-js]::after {
+  display: none;
+}
+
+
+// Target
+// size     0.000   -->   0.500   -->   1.000
+// opacity  0.000   -->   1.000   -->   0.000
+
+// Implemenation
+// scale   - 0.000   -->   0.500   -->   1.000 -  0% delay 100% duration
+// opacity - 0.000   -->   1.000   -->   1.000 -  0% delay  50% duration
+// color   - solid   -->   solid   -->   trans - 50% delay  50% duration
+

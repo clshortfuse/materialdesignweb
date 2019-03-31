@@ -1,0 +1,145 @@
+// https://material.io/design/components/chips.html
+
+@import '../../core/_motion.scss';
+@import '../../core/_platform.scss';
+@import '../../core/_breakpoint.scss';
+
+$mdw-chip__border-width: dp(1) !default;
+
+.mdw-chip {
+  margin: 0 0 dp(-8) dp(-8);
+  
+  transition-duration: $mdw-motion__default-duration__desktop;
+  @include mdw-breakpoint__mobile-device {
+    transition-duration: $mdw-motion__default-duration__mobile;
+  }
+  @include mdw-breakpoint__tablet-device {
+    transition-duration: $mdw-motion__default-duration__tablet;
+  }
+  transition-timing-function: $mdw-motion__standard-easing;
+
+  :root[dir="rtl"] & {
+    margin: 0 dp(-8) dp(-8) 0;
+  }
+}
+
+.mdw-chip__item {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  overflow: hidden;
+
+  min-height: dp(32);
+  margin: 0 0 dp(8) dp(8);
+  padding: 0 dp(12);
+
+  transition: inherit;
+
+  border-radius: dp(32); // unlikely to be taller than 64dp
+
+  :root[dir="rtl"] & {
+    margin: 0 dp(8) dp(8) 0;
+  }
+}
+
+.mdw-chip__checkmark,
+.mdw-chip__thumbnail {
+  display: flex;
+  align-items: center;
+  order: -1;
+
+  margin-right: dp(8);
+  margin-left: dp(-8);
+
+  transition: inherit;
+  transition-property: max-width, opacity;
+
+
+  :root[dir="rtl"] & {
+    margin-right: dp(-8);
+    margin-left: dp(8);
+  }
+  
+}
+
+.mdw-chip__input {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  border-style: solid;
+  border-width: $mdw-chip__border-width;
+
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+
+  transition: inherit;
+  transition-property: none;
+
+  border-color: transparent;
+  border-radius: inherit;
+
+  &::before {
+    content: '';
+
+    position: absolute;
+    top: -$mdw-chip__border-width;
+    right: -$mdw-chip__border-width;
+    bottom: -$mdw-chip__border-width;
+    left: -$mdw-chip__border-width;
+
+    transition: inherit;
+    transition-property: background-color, opacity;
+
+    border-radius: inherit;
+  }
+
+  & ~ .mdw-chip__checkmark {
+    max-width: 0;
+
+    opacity: 0;
+  }
+
+  &:checked ~ .mdw-chip__checkmark {
+    max-width: dp(24);
+
+    opacity: 1;
+  }
+
+ 
+}
+
+.mdw-chip__text {
+  transition: inherit;
+  transition-property: color;
+}
+
+.mdw-chip__remove {
+  display: flex;
+  align-items: center;
+  order: 1;
+
+  margin-right: dp(-4);
+  margin-left: dp(8);
+  
+  cursor: pointer;
+
+  z-index: 1;
+
+  :root[dir="rtl"] & {
+    margin-right: dp(8);
+    margin-left: dp(-4);
+  }
+
+  /* stylelint-disable-next-line selector-class-pattern */
+  &.material-icons {
+    font-size: dp(18);
+  }
+}

@@ -1,0 +1,50 @@
+@import '../_breakpoint.scss';
+@import '../_motion.scss';
+
+.mdw-overlay {
+  position: relative;
+
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  // Remove Firefox inner
+  &::-moz-focus-inner {
+    border: 0;
+  }
+
+  
+  &::before {
+    content: '';
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    
+    transition-duration: $mdw-motion__default-duration__desktop;
+    @include mdw-breakpoint__mobile-device {
+      transition-duration: $mdw-motion__default-duration__mobile;
+    }
+    @include mdw-breakpoint__tablet-device {
+      transition-duration: $mdw-motion__default-duration__tablet;
+    }
+    // TODO: test
+    // transition-duration: 1ms;
+    transition-property: opacity, color;
+    transition-timing-function: $mdw-motion__standard-easing;
+
+    opacity: 0;
+    pointer-events: none;
+    // Safari has a negative z-index bug
+    // Might be related to display rule
+    z-index: 1;
+
+    background-color: currentColor;
+    border-radius: inherit;
+  }
+}

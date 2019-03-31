@@ -1,0 +1,203 @@
+// https://material.io/guidelines/layout/structure.html#structure-app-bar
+// https://material.io/archive/guidelines/components/toolbars.html
+
+@import '../../core/_breakpoint.scss';
+@import '../../core/_motion.scss';
+@import '../../core/_platform.scss';
+@import '../../core/_type.scss';
+
+$mdw-appbar__height: 64 !default;
+$mdw-appbar__height-dense: 48 !default;
+$mdw-appbar__height-mobile: 56 !default;
+$mdw-appbar__height-mobile-landscape: 48 !default;
+$mdw-appbar__height-prominent: 128 !default;
+$mdw-appbar__height-prominent-dense: 96 !default;
+$mdw-appbar__icon-height: 40 !default;
+
+.mdw-appbar {
+  display: flex;
+  flex-direction: column;
+}
+
+.mdw-appbar__action {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  
+  min-height: dp($mdw-appbar__height);
+  
+  
+  transition-duration: inherit;
+  transition-property: min-height;
+  transition-timing-function: inherit;
+
+  z-index: 1;
+
+  .mdw-appbar[mdw-prominent] > & {
+    min-height: dp($mdw-appbar__height-prominent);
+  }
+  
+  .mdw-appbar[mdw-dense] > & {
+    min-height: dp($mdw-appbar__height-dense);
+  }
+  
+  .mdw-appbar[mdw-dense][mdw-prominent] > & {
+    min-height: dp($mdw-appbar__height-prominent-dense);
+    @include mdw-breakpoint__tablet-device__max {
+      min-height: dp($mdw-appbar__height-prominent);
+    }
+  }
+  
+  &,
+  .mdw-appbar[mdw-dense] > & {
+    @include mdw-breakpoint__tablet-device__max {
+      min-height: dp($mdw-appbar__height-mobile);
+    }
+    @include mdw-breakpoint__mobile-device__landscape {
+      min-height: dp($mdw-appbar__height-mobile-landscape);
+    }
+  }
+}
+
+.mdw-appbar__content {
+  display: flex;
+  flex-direction: column;
+
+  flex-grow: 1;
+
+  margin-right: dp(24);
+  margin-left: dp(80);
+  @include mdw-breakpoint__16dp-margin {
+    margin-right: dp(16);
+    margin-left: dp(72);
+  }
+}
+
+.mdw-appbar__title {
+  @include type-rules('h6');
+  @include baseline-bottom(24);
+
+  align-self: flex-end;
+  justify-content: space-around;
+  overflow-x: hidden;
+  
+  height: auto;
+  flex-grow: 1;
+  margin: 0 dp(16);
+  
+
+  transition-duration: inherit;
+  transition-property: font, letter-spacing;
+  transition-timing-function: inherit;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &[mdw-centered] {
+    flex-grow: 0;
+  }
+
+  .mdw-appbar[mdw-dense] & {
+    @include baseline-bottom(16);
+  }
+  
+  .mdw-appbar[mdw-dense] &,
+  & {
+    @include mdw-breakpoint__tablet-device__max {
+      @include baseline-bottom(20);
+    }
+    @include mdw-breakpoint__mobile-device__landscape {
+      @include baseline-bottom(16);
+    }
+  }
+
+  .mdw-appbar[mdw-prominent] & {
+    white-space: normal;
+    @include type-rules('h5');
+    @include baseline-bottom(28);
+  }
+  &[mdw-custom] {
+    margin-top: 0;
+
+    &::after {
+      display: none;
+    }
+  }
+}
+
+.mdw-appbar__start {
+  order: -1;
+
+  margin-left: dp(8);
+
+  padding: 0 dp(8);
+  @include mdw-breakpoint__16dp-margin {
+    margin-left: 0;
+  }
+}
+
+.mdw-appbar__end {
+  order: 1;
+  margin-left: 0;
+  margin-right: dp(12);
+  @include mdw-breakpoint__16dp-margin {
+    margin-left: 0;
+    margin-right: dp(4);
+  }
+  [dir=rtl] & {
+    margin-left: dp(12);
+    margin-right: 0;
+    @include mdw-breakpoint__16dp-margin {
+      margin-left: dp(4);
+      margin-right: 0;
+    }
+  }
+}
+
+
+.mdw-appbar__start,
+.mdw-appbar__end {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+}
+
+.mdw-appbar__start,
+.mdw-appbar__end,
+.mdw-appbar__title {
+  margin-top: dp(($mdw-appbar__height - $mdw-appbar__icon-height) / 2);
+  
+  transition-property: margin-top;
+  
+  .mdw-appbar[mdw-dense] & {
+    margin-top: dp(($mdw-appbar__height-dense - $mdw-appbar__icon-height) / 2);
+  }
+  
+  &,
+  .mdw-appbar[mdw-dense] & {
+    @include mdw-breakpoint__tablet-device__max {
+      margin-top: dp(($mdw-appbar__height-mobile - $mdw-appbar__icon-height) / 2);
+    }
+    @include mdw-breakpoint__mobile-device__landscape {
+      margin-top: dp(($mdw-appbar__height-mobile-landscape - $mdw-appbar__icon-height) / 2);
+    }
+  }
+}
+
+.mdw-appbar__start .mdw-button {
+  margin: 0;
+}
+
+.mdw-appbar__end .mdw-button {
+  margin: 0 dp(4);
+
+  &[mdw-more-button] {
+    margin-right: dp(-2);
+    margin-left: 0;
+
+    :root[dir="rtl"] & {
+      margin-right: 0;
+      margin-left: dp(-2);
+    }
+  }
+}

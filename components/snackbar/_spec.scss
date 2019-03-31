@@ -1,0 +1,185 @@
+// https://material.io/design/components/snackbars.html#spec
+
+@import '../../core/_breakpoint.scss';
+@import '../../core/_elevation.scss';
+@import '../../core/_motion.scss';
+@import '../../core/_platform.scss';
+@import '../../core/_type.scss';
+
+$snackbar__scale-up__from: 0.85;
+
+.mdw-snackbar__wrapper {
+  position: relative;
+  z-index: 6;
+}
+
+.mdw-snackbar__container {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  z-index: 6;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  justify-content: flex-start;
+  &[mdw-position="end"] {
+    justify-content: flex-end;
+  }
+  &[mdw-position="center"] {
+    justify-content: center;
+  }
+} 
+
+.mdw-snackbar {
+  position: absolute;
+  bottom: 0;
+  padding-left: dp(8);
+  padding-right: dp(8);
+  min-height: dp(48);
+  max-width: 100%;
+  border-radius: dp(4);
+  
+  box-shadow: mdwElevation(6);
+  @include type-rules('body-2');
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  // Default state is hidden
+  pointer-events: auto;
+  opacity: 0;
+  transform: scale($snackbar__scale-up__from);
+  visibility: hidden;
+  will-change: opacity, transform, visibility;
+  animation-name: none;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-timing-function: $mdw-motion__accelerate-easing;
+  animation-duration: $mdw-motion__enter-duration__desktop;
+  @include mdw-breakpoint__mobile-device {
+    animation-duration: $mdw-motion__enter-duration__mobile;
+  }
+  @include mdw-breakpoint__tablet-device {
+    animation-duration: $mdw-motion__enter-duration__tablet;
+  }
+
+  &[aria-hidden="false"] {
+    animation-name: showSnackbar;
+
+    // Fallback if animations are disabled
+    opacity: 1;
+    transform: scale(1.0);
+    visibility: visible;
+  }
+
+  &[aria-hidden="true"] {
+    animation-name: hideSnackbar;
+    animation-timing-function: $mdw-motion__decelerate-easing;
+    animation-duration: $mdw-motion__leave-duration__desktop;
+    @include mdw-breakpoint__mobile-device {
+      animation-duration: $mdw-motion__leave-duration__mobile;
+    }
+    @include mdw-breakpoint__tablet-device {
+      animation-duration: $mdw-motion__leave-duration__tablet;
+    }
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+@keyframes hideSnackbar {
+  from {
+    opacity: 1;
+    transform: scale(1.0);
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    transform: scale($snackbar__scale-up__from);
+    visibility: hidden;
+  }
+}
+
+@keyframes showSnackbar {
+  from {
+    opacity: 0;
+    transform: scale($snackbar__scale-up__from);
+    visibility: hidden;
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.0);
+    visibility: visible;
+  }
+}
+
+.mdw-snackbar .mdw-button {
+  flex: none;
+  order: 1;
+  margin: dp(6) 0;
+}
+
+.mdw-snackbar > span {
+  box-sizing: border-box;
+  white-space: pre-line;
+  padding: 0 dp(8);
+  @include texttop-to-top(16);
+  @include baseline-bottom(48 - 30);
+}
+
+@include mdw-breakpoint__xsmall-window {
+  .mdw-snackbar {
+    left: 0;
+    right: 0;
+    &[mdw-stacked] {
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      > span {
+        width: 100%;
+      }
+      .mdw-button {
+        margin-top: dp(2);
+        margin-bottom: dp(8);
+      }
+    }
+  }
+}
+
+@include mdw-platform__ie() {
+  // Fix IE flexbug
+  .mdw-snackbar {
+    &::after {
+      content: '';
+      min-width: 0;
+      min-height: inherit;
+    }
+  }
+  .mdw-snackbar__container[mdw-position="center"] {
+    .mdw-snackbar {
+      transform: translateX(-50%);
+      &[mdw-hide] {
+        transform: translateX(-50%) scale($snackbar__scale-up__from);
+      }
+      html[dir=rtl] & {
+        transform: translateX(50%);
+        &[mdw-hide] {
+          transform: translateX(50%) scale($snackbar__scale-up__from);
+        }
+      }
+    }
+  }
+  .mdw-snackbar__container[mdw-position="end"] {
+    .mdw-snackbar {
+      right: 0;
+      html[dir=rtl] & {
+        left: 0;
+        right: auto;
+      }
+    }
+  }
+  
+}

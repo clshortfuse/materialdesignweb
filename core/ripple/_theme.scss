@@ -1,0 +1,54 @@
+// https://material.io/design/interaction/states.html
+// https://material.io/design/components/buttons.html
+// https://material.io/design/iconography/system-icons.html#color
+
+@import '../theme/index.scss';
+
+$mdw-ripple__theme-values: (
+  overlay-color:                 (('foreground-light', 1.00), ('foreground-dark', 1.00)),
+  pressed-opacity:               (0.16, 0.32),
+) !default;
+
+@function mdwRippleThemeValue($key, $type, $theme) {
+  @return mdwGetThemeValue('ripple', $mdw-ripple__theme-values, $key, $type, $theme);
+}
+
+@mixin mdw-ripple__theme-rules($type: 'var', $theme: null) {
+  .mdw-ripple {
+    @if ($type == 'var') {
+      & > .mdw-ripple__container > .mdw-ripple__inner,
+      &::after {
+        color: unquote("rgb(var(--ink-color))");
+      }
+
+    } @else {
+      &[aria-pressed="false"],
+      &[aria-pressed="false"][mdw-ink],
+      &:not([mdw-ink]):not([mdw-surface]) {
+        & > .mdw-ripple__container > .mdw-ripple__inner,
+        &::after {
+          color: mdwRippleThemeValue("overlay-color", $type, $theme);
+        }
+      }
+    }
+
+    & > .mdw-ripple__container > .mdw-ripple__inner,
+    &::after {
+      opacity: mdwRippleThemeValue("pressed-opacity", $type, $theme);
+    }
+  }
+}
+
+@each $name in map-keys($mdw-theme__themes) {
+  $theme: map-get($mdw-theme__themes, $name);
+  @include mdw-theme__add-component-fallback-rules('light', $name) {
+    @include mdw-ripple__theme-rules('light', $theme);
+  }
+  @include mdw-theme__add-component-fallback-rules('dark', $name) {
+    @include mdw-ripple__theme-rules('dark', $theme);
+  }
+}
+
+@include mdw-theme__add-component-variable-rules('ripple', $mdw-ripple__theme-values) {
+  @include mdw-ripple__theme-rules();
+}
