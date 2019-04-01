@@ -1,6 +1,5 @@
 // https://material.io/design/components/chips.html
 
-@import '../../core/_motion.scss';
 @import '../../core/_platform.scss';
 @import '../../core/_breakpoint.scss';
 
@@ -8,15 +7,6 @@ $mdw-chip__border-width: dp(1) !default;
 
 .mdw-chip {
   margin: 0 0 dp(-8) dp(-8);
-  
-  transition-duration: $mdw-motion__default-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__default-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__default-duration__tablet;
-  }
-  transition-timing-function: $mdw-motion__standard-easing;
 
   :root[dir="rtl"] & {
     margin: 0 dp(-8) dp(-8) 0;

@@ -5,94 +5,105 @@
 @import '../../core/_motion.scss';
 @import '../../core/_platform.scss';
 
-$fab-button__delay: 40ms;
-$fab-button__padding: dp(16);
-$fab-button__size: dp(56);
-$fab-button__mini-size: dp(40);
-$fab-button__mini-padding: dp(8);
-$fab-button__icon-size: dp(24);
+$mdw-fab__delay: 40ms !default;
+$mdw-fab__padding: dp(16) !default;
+$mdw-fab__size: dp(56) !default;
+$mdw-fab__mini-size: dp(40) !default;
+$mdw-fab__mini-padding: dp(8) !default;
+$mdw-fab__icon-size: dp(24) !default;
 
 .mdw-fab {
-  position: relative;
   display: flex;
-  flex-direction: column-reverse;
-  z-index: 6;
+  position: relative;
   align-items: flex-end;
+  flex-direction: column-reverse;
   justify-content: center;
+
   min-height: dp(56);
+
+  pointer-events: none;
+  z-index: 6;
+
   &[mdw-horizontal] {
     flex-direction: row-reverse;
   }
-  pointer-events: none;
 }
 
 .mdw-fab__close {
-  visibility: hidden;
-  pointer-events: auto;
   position: fixed;
-  left: 0;
   top: 0;
-  bottom: 0;
   right: 0;
+  bottom: 0;
+  left: 0;
+
   cursor: default;
+
+  pointer-events: auto;
+  visibility: hidden;
   // z-index: -1; // Safari has a negative z-index bug
 }
 
 .mdw-fab__button.mdw-button {
-  pointer-events: auto;
   order: -1;
 
-  border-radius: dp(32);
   min-height: 0;
   min-width: 0;
+  margin: 0;
+  padding: dp(16);
+
+  pointer-events: auto;
+
+  border-radius: dp(32);
   box-shadow: mdwElevation(6);
+
   &:active {
     box-shadow: mdwElevation(12);
   }
-  padding: dp(16);
-  margin: 0;
+
   &[mdw-extended] {
     padding: dp(12);
   }
+
   &[mdw-mini] {
     padding: dp(8);
   }
 }
 
 .mdw-fab__speed-dial {
+  display: flex;
   position: absolute;
   bottom: 100%;
-  order: 1;
-  display: flex;
-  flex-direction: inherit;
   align-items: center;
+  flex-direction: inherit;
+  order: 1;
+
   pointer-events: none;
   z-index: inherit;
+
   > .mdw-fab__button.mdw-button {
     margin: 0 0 dp(16) 0;
+
+    transition-duration: $mdw-motion__collapse-duration;
+    transition-property: transform, opacity;
+    transition-timing-function: $mdw-motion__accelerate-easing;
+
+    opacity: 0;
+    transform: scale(0);
+
     &[mdw-mini] {
       margin: 0 dp(8) dp(16) dp(8);
+
       .mdw-fab__button[mdw-mini] ~ & {
         margin: 0 0 dp(16) 0;
       }
+
       .mdw-fab__button[mdw-extended] ~ & {
         margin: 0 dp(4) dp(16) dp(4);
       }
     }
-    transition-property: transform, opacity;
-    transition-timing-function: $mdw-motion__decelerate-easing;
-    transition-duration: $mdw-motion__leave-duration__desktop;
-    @include mdw-breakpoint__mobile-device {
-      transition-duration: $mdw-motion__leave-duration__mobile;
-    }
-    @include mdw-breakpoint__tablet-device {
-      transition-duration: $mdw-motion__leave-duration__tablet;
-    }
-    transform: scale(0);
-    opacity: 0;
     @for $i from 1 through 7 {
       &:nth-last-child(#{$i}) {
-        transition-delay: #{($i - 1) * $fab-button__delay};
+        transition-delay: #{($i - 1) * $mdw-fab__delay};
       }
     }
   }
@@ -100,35 +111,43 @@ $fab-button__icon-size: dp(24);
 
 .mdw-fab__icon {
   position: relative;
-  min-width: $fab-button__icon-size;
-  min-height: $fab-button__icon-size;
-  transition-property: margin;
+
+  min-height: $mdw-fab__icon-size;
+  min-width: $mdw-fab__icon-size;
+
   transition-duration: 200ms;
+  transition-property: margin;
   transition-timing-function: linear;
 }
 
 .mdw-fab__text {
   overflow: hidden;
-  letter-spacing: 0;
-  font-size: 0;
-  will-change: font-size;
-  transition-property: font-size, margin-left, margin-right;
+
   transition-duration: 200ms;
+  transition-property: font-size, margin-left, margin-right;
   transition-timing-function: linear;
+  will-change: font-size;
+
+  font-size: 0;
+  letter-spacing: 0;
 }
+
 .mdw-fab__button[mdw-extended]:not([mdw-extended="hover"]),
 .mdw-fab__button[mdw-extended="hover"]:hover, {
   padding: dp(12) dp(16);
+
   .mdw-fab__text {
-    letter-spacing: inherit;
     font-size: inherit;
+    letter-spacing: inherit;
   }
+
   .mdw-fab__icon + .mdw-fab__text {
-    margin-left: 8px;
-    margin-right: 4px;
-    html[dir=rtl] & {
-      margin-left: 4px;
-      margin-right: 8px;
+    margin-right: dp(4);
+    margin-left: dp(8);
+
+    :root[dir="rtl"] & {
+      margin-right: dp(8);
+      margin-left: dp(4);
     }
   }
 }
@@ -136,8 +155,8 @@ $fab-button__icon-size: dp(24);
 .mdw-fab__hidden-icon,
 .mdw-fab__shown-icon {
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
 }
 
 .mdw-fab__shown-icon {
@@ -156,39 +175,40 @@ $fab-button__icon-size: dp(24);
     .mdw-fab__hidden-icon {
       display: none;
     }
+
     .mdw-fab__shown-icon {
       display: block;
     }
   }
+
   > .mdw-fab__close {
     visibility: visible;
   }
 }
+
 .mdw-fab__speed-dial {
   .mdw-fab:target > &,
   .mdw-fab[mdw-show]:not([mdw-hide]) > &,
   .mdw-fab__button:hover + &[mdw-hover],
   &[mdw-hover]:hover {
     pointer-events: auto;
+
     > .mdw-fab__button.mdw-button {
-      transform: scale(1);
+      transition-duration: $mdw-motion__expand-duration;
+      transition-timing-function: $mdw-motion__decelerate-easing;
+
       opacity: 1;
-      transition-timing-function: $mdw-motion__accelerate-easing;
-      transition-duration: $mdw-motion__enter-duration__desktop;
-      @include mdw-breakpoint__mobile-device {
-        transition-duration: $mdw-motion__enter-duration__mobile;
-      }
-      @include mdw-breakpoint__tablet-device {
-        transition-duration: $mdw-motion__enter-duration__tablet;
+      transform: scale(1);
+
+      box-shadow: mdwElevation(6);
+
+      &:active {
+        box-shadow: mdwElevation(12);
       }
       @for $i from 1 through 6 {
         &:nth-child(#{$i}) {
-          transition-delay: #{($i - 1) * $fab-button__delay};
+          transition-delay: #{($i - 1) * $mdw-fab__delay};
         }
-      }
-      box-shadow: mdwElevation(6);
-      &:active {
-        box-shadow: mdwElevation(12);
       }
     }
   }

@@ -1,5 +1,4 @@
 @import '../_breakpoint.scss';
-@import '../_motion.scss';
 
 .mdw-overlay {
   position: relative;
@@ -26,17 +25,9 @@
     -webkit-user-select: none;
     user-select: none;
     
-    transition-duration: $mdw-motion__default-duration__desktop;
-    @include mdw-breakpoint__mobile-device {
-      transition-duration: $mdw-motion__default-duration__mobile;
-    }
-    @include mdw-breakpoint__tablet-device {
-      transition-duration: $mdw-motion__default-duration__tablet;
-    }
-    // TODO: test
-    // transition-duration: 1ms;
+    transition-duration: 1ms;
     transition-property: opacity, color;
-    transition-timing-function: $mdw-motion__standard-easing;
+    transition-timing-function: linear;
 
     opacity: 0;
     pointer-events: none;

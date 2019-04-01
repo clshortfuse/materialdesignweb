@@ -6,150 +6,164 @@
 @import '../../core/_motion.scss';
 @import '../../core/_platform.scss';
 
-$ripple-size: dp(48);
-$icon-size: dp(24);
-$radio-size: dp(20);
-$checkbox-size: dp(18);
-$border-size: dp(2);
-$horizontal-margin: dp(2);
+$mdw-selection__ripple-size: dp(48) !default;
+$mdw-selection__icon-size: dp(24) !default;
+$mdw-selection__radio-size: dp(20) !default;
+$mdw-selection__checkbox-size: dp(18) !default;
+$mdw-selection__border-size: dp(2) !default;
+$mdw-selection__horizontal-margin: dp(2) !default;
 // from ic_check_black_18px.svg
 // rotated 45°
-$checkbox-icon-height: dp(12.73);
-$checkbox-icon-width: dp(5.93);
-$checkbox-icon-thickness: dp(1.5);
-$checkbox-icon-offset-y: dp(2.64) - $checkbox-icon-thickness - $border-size;
-$checkbox-icon-offset-x: dp(6.04) - $border-size;
+$mdw-selection__checkbox-icon-height: dp(12.73) !default;
+$mdw-selection__checkbox-icon-width: dp(5.93) !default;
+$mdw-selection__checkbox-icon-thickness: dp(1.5) !default;
+$mdw-selection__checkbox-icon-offset-y: dp(2.64) - $mdw-selection__checkbox-icon-thickness - $mdw-selection__border-size !default;
+$mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !default;
 
 .mdw-selection {
   display: inline-flex;
-  flex-direction: row;
   position: relative;
-  animation-duration: $mdw-motion__enter-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    animation-duration: $mdw-motion__enter-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    animation-duration: $mdw-motion__enter-duration__tablet;
-  }
-  transition-duration: $mdw-motion__default-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__default-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__default-duration__tablet;
-  }
+  flex-direction: row;
+
+  animation-duration: $mdw-motion__simple-duration;
+  
+  transition-duration: $mdw-motion__simple-duration;
 }
+
 .mdw-selection__input {
   display: inline-flex;
   order: 1;
-  appearance: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  outline: none;
-  padding: 0;
+
+  min-height: $mdw-selection__icon-size;
+  min-width: $mdw-selection__icon-size;
   margin: 0;
   margin-top: auto;
   margin-bottom: auto;
-  min-width: $icon-size;
-  min-height: $icon-size;
+  padding: 0;
+
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
   cursor: pointer;
+  outline: none;
   -webkit-tap-highlight-color: transparent;
+
+  transition-duration: inherit;
+  transition-property: transform, color, opacity;
+  transition-timing-function: inherit;
+
+  opacity: 0;
+  transform: scale(0);
+
+  background-color: transparent;
+  // background-color: var(--button__ripple-color);
+  border-radius: 50%;
+
+  color: inherit;
+
+  &::-ms-check {
+    background-color: transparent;
+    border-color: transparent;
+    // IE11
+    border-radius: 50%;
+    color: transparent;
+  }
+
   &:disabled {
     cursor: not-allowed;
   }
 
-  color: inherit;
-  // background-color: var(--button__ripple-color);
-  border-radius: 50%;
-  transform: scale(0);
-  opacity: 0;
-  background-color: transparent;
-  transition-property: transform, color, opacity;
-  transition-timing-function: $mdw-motion__standard-easing;
-  transition-duration: inherit;
   &:checked {
     // background-color: unquote("rgba(var(--accent-color), 0.26)");
   }
-  &::-ms-check {
-    // IE11
-    border-radius: 50%;
-    color: transparent;
-    background-color: transparent;
-    border-color: transparent;
-  }
+
   .mdw-selection:active:not(:disabled) > &,
   .mdw-selection:hover:not(:disabled) > &,
   &:active:not(:disabled),
   &:hover:not(:disabled),
   &:focus {
     opacity: 1;
-    transform: scale($ripple-size/$icon-size);
+    transform: scale($mdw-selection__ripple-size/$mdw-selection__icon-size);
   }
 }
 
 .mdw-selection__icon {
   display: inline-flex;
   position: relative;
+
   box-sizing: border-box;
-  pointer-events: none;
-  width: $icon-size;
-  height: $icon-size;
+  height: $mdw-selection__icon-size;
   max-width: 0;
-  appearance: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  padding: 0;
+  width: $mdw-selection__icon-size;
   margin: 0;
   margin-top: auto;
   margin-bottom: auto;
+  padding: 0;
+
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
   outline: none;
+  -webkit-tap-highlight-color: transparent;
+
+  animation-duration: inherit;
+  animation-timing-function: inherit;
+  transition-duration: inherit;
+
+  transition-property: background-color, border-color;
+  transition-timing-function: inherit;
+
+  pointer-events: none;
   
   z-index: 1;
-  animation-timing-function: $mdw-motion__decelerate-easing;
-  animation-duration: inherit;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
+
+  background-color: transparent;
+
   .mdw-selection__input:disabled ~ & {
     cursor: not-allowed;
   }
 
-  transition-property: background-color, border-color;
-  transition-timing-function: $mdw-motion__standard-easing;
-  transition-duration: inherit;
-  background-color: transparent;
-
 
   &::before {
-    content: "";
     position: absolute;
     top: 0;
     left: 0;
-    border-color: currentColor;
-    border-width: dp(2);
-    border-style: solid;
+
     box-sizing: border-box;
-    background-color: transparent;
-    transition-property: border-width, border-color, background-color;
+    border-style: solid;
+    border-width: dp(2);
+
     transition-duration: inherit;
-    transition-timing-function: $mdw-motion__standard-easing;
-  }
-  &::after {
+    transition-property: border-width, border-color, background-color;
+    transition-timing-function: inherit;
+
+    background-color: transparent;
+    border-color: currentColor;
     content: "";
+  }
+
+  &::after {
     position: absolute;
+    content: "";
   }
 }
 
 .mdw-selection__label {
+  order: -1;
+
+  padding-right: dp(8);
+  padding-left: 0;
+
   cursor: pointer;
-  user-select: none;
+  -webkit-tap-highlight-color: transparent;
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  order: -1;
-  padding-left: 0;
-  padding-right: dp(8);
+  user-select: none;
+
   z-index: 1;
+
   .mdw-selection__input:disabled ~ & {
     cursor: not-allowed;
   }
@@ -158,94 +172,113 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
 // Label comes after icon
 .mdw-selection__icon ~ .mdw-selection__label {
   order: 1;
-  padding-left: dp(8);
+
   padding-right: 0;
+  padding-left: dp(8);
 }
 
-[dir=rtl] {
+:root[dir="rtl"] {
   .mdw-selection__icon {
     order: 1;
   }
 
   .mdw-selection__label {
-    padding-left: dp(8);
     padding-right: 0;
+    padding-left: dp(8);
   }
   
   // Label comes after icon
   .mdw-selection__icon ~ .mdw-selection__label {
-    padding-left: 0;
     padding-right: dp(8);
+    padding-left: 0;
   }
 }
 
 
 .mdw-selection > .mdw-selection__input[type="checkbox"] {
   & ~ .mdw-selection__icon::before {
-    left: ($icon-size - $checkbox-size) / 2;
-    top: ($icon-size - $checkbox-size) / 2;
-    width: $checkbox-size;
-    height: $checkbox-size;
+    top: ($mdw-selection__icon-size - $mdw-selection__checkbox-size) / 2;
+    left: ($mdw-selection__icon-size - $mdw-selection__checkbox-size) / 2;
+
+    height: $mdw-selection__checkbox-size;
+    width: $mdw-selection__checkbox-size;
+
     border-radius: dp(2);
   }
+
   &:checked ~ .mdw-selection__icon::before,
   &:active:not(:disabled) ~ .mdw-selection__icon::before {
-    border-width: $checkbox-size / 2;
+    border-width: $mdw-selection__checkbox-size / 2;
   }
+
   &:checked:not(:active):not(:disabled) ~ .mdw-selection__icon::before {
     background-color: currentColor;
   }
 
   & ~ .mdw-selection__icon::after {
-    top: $border-size + (($icon-size - $checkbox-size) / 2);
-    left: $border-size + (($icon-size - $checkbox-size) / 2);
-    margin-left: $checkbox-icon-offset-x;
-    margin-top: $checkbox-icon-offset-y;
-    height: $checkbox-icon-height;
-    width: $checkbox-icon-width;
-    animation-timing-function: $mdw-motion__decelerate-easing;
+    top: $mdw-selection__border-size + (($mdw-selection__icon-size - $mdw-selection__checkbox-size) / 2);
+    left: $mdw-selection__border-size + (($mdw-selection__icon-size - $mdw-selection__checkbox-size) / 2);
+
+    height: $mdw-selection__checkbox-icon-height;
+    width: $mdw-selection__checkbox-icon-width;
+    margin-top: $mdw-selection__checkbox-icon-offset-y;
+    margin-left: $mdw-selection__checkbox-icon-offset-x;
+
     animation-duration: inherit;
+    animation-timing-function: inherit;
   }
+
   &:checked ~ .mdw-selection__icon::after {
-    // border-width: $checkbox-icon-thickness;
+    box-sizing: border-box;
+    border-right-style: solid;
+    border-bottom-style: solid;
+    // border-width: $mdw-selection__checkbox-icon-thickness;
     // Increase visibility
     border-width: dp(2);
-    background-color: transparent;
-    box-sizing: border-box;
-    transform: rotate(45deg);
-    border-bottom-style: solid;
-    border-right-style: solid;
     // border-color: unquote("rgb(var(--background-color))");
     animation-name: showCheck;
     animation-direction: normal;
     animation-fill-mode: forwards;
+
+    transform: rotate(45deg);
+
+    background-color: transparent;
   }
 }
 
 .mdw-selection > .mdw-selection__input[type="radio"] {
   & ~ .mdw-selection__icon::before {
-    left: ($icon-size - $radio-size) / 2;
-    top: ($icon-size - $radio-size) / 2;
-    width: $radio-size;
-    height: $radio-size;
-    border-radius: 50%;
+    top: ($mdw-selection__icon-size - $mdw-selection__radio-size) / 2;
+    left: ($mdw-selection__icon-size - $mdw-selection__radio-size) / 2;
+
+    height: $mdw-selection__radio-size;
+    width: $mdw-selection__radio-size;
+
     border-color: currentColor;
-  }
-  &:active:not(:disabled) ~ .mdw-selection__icon::before {
-    border-width: $radio-size / 2;
-  }
-  & ~ .mdw-selection__icon::after {
-    left: ($icon-size - $radio-size) / 2;
-    top: ($icon-size - $radio-size) / 2;
-    height: $radio-size;
-    width: $radio-size;
     border-radius: 50%;
-    background-color: currentColor;
-    transform: scale(0);
-    transition-property: transform, background-color;
-    transition-timing-function: $mdw-motion__standard-easing;
-    transition-duration: inherit;
   }
+
+  &:active:not(:disabled) ~ .mdw-selection__icon::before {
+    border-width: $mdw-selection__radio-size / 2;
+  }
+
+  & ~ .mdw-selection__icon::after {
+    top: ($mdw-selection__icon-size - $mdw-selection__radio-size) / 2;
+    left: ($mdw-selection__icon-size - $mdw-selection__radio-size) / 2;
+
+    height: $mdw-selection__radio-size;
+    width: $mdw-selection__radio-size;
+
+    transition-duration: inherit;
+    transition-property: transform, background-color;
+    transition-timing-function: inherit;
+
+    transform: scale(0);
+
+    background-color: currentColor;
+    border-radius: 50%;
+  }
+
   &:checked ~ .mdw-selection__icon::after {
     transform: scale(0.5);
   }
@@ -259,56 +292,72 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   }
 }
 
-.mdw-selection[mdw-switch] > .mdw-selection__input[type="checkbox"]  {
-  margin-right: 12px;
-  transform: scale(1) translateX(-2px);
+.mdw-selection[mdw-switch] > .mdw-selection__input[type="checkbox"] {
+  margin-right: dp(12);
+
+  transform: scale(1) translateX(#{dp(-2)});
+
   &:checked {
-    transform: scale(1) translateX(14px);
+    transform: scale(1) translateX(#{dp(14)});
   }
+
   .mdw-selection:active:not(:disabled) > &,
   .mdw-selection:hover:not(:disabled) > &,
   &:active:not(:disabled),
   &:hover:not(:disabled),
   &:focus {
-    transform: translateX(-2px) scale(2);
+    transform: translateX(#{dp(-2)}) scale(2);
+
     &:checked {
-      transform: translateX(14px) scale(2);
+      transform: translateX(#{dp(14)}) scale(2);
     }
   }
 
   &:active:not(:disabled) ~ .mdw-selection__icon {
     color: inherit;
   }
+
   & ~ .mdw-selection__icon::before {
+    top: dp(2);
     left: 0;
-    top: 2px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
+
+    height: dp(20);
+    width: dp(20);
     border-style: none;
-    z-index: 1;
-    transform: translateX(0);
-    box-shadow: mdwElevation(1);
+
     transition-property: background-color, transform;
+
+    transform: translateX(0);
+    z-index: 1;
+
+    border-radius: 50%;
+    box-shadow: mdwElevation(1);
   }
+
   &:checked ~ .mdw-selection__icon::before {
-    transform: translateX(16px);
+    transform: translateX(#{dp(16)});
   }
+
   &:checked ~ .mdw-selection__icon::before,
   &:active ~ .mdw-selection__icon::before {
     color: inherit;
   }
+
   & ~ .mdw-selection__icon::after {
-    top: 5px;
-    bottom: 5px;
-    width: 36px;
-    height: 14px;
-    border-radius: 7px;
+    top: dp(5);
+    bottom: dp(5);
     left: 0;
-    animation-name: none;
-    border-style: none;
-    transform: none;
+
+    height: dp(14);
+    width: dp(36);
     margin: 0;
+    border-style: none;
+
+    animation-name: none;
+
+    transform: none;
+
+    border-radius: dp(7);
   }
 }
 
@@ -316,15 +365,15 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size;
   // Animation is applied to pre-rotated box;
   // Clip box completely horizontally and vertically upto bottom border
   0% {
-    clip: rect($checkbox-icon-height - $checkbox-icon-thickness, 0, auto, auto)
+    clip: rect($mdw-selection__checkbox-icon-height - $mdw-selection__checkbox-icon-thickness, 0, auto, auto);
   }
   // Remove horizontal clip
   // % = stroke length upto corner
-  #{$checkbox-icon-width / ($checkbox-icon-width + $checkbox-icon-height) * 100%} {
-    clip: rect($checkbox-icon-height - $checkbox-icon-thickness, $checkbox-icon-width, auto, auto)
+  #{$mdw-selection__checkbox-icon-width / ($mdw-selection__checkbox-icon-width + $mdw-selection__checkbox-icon-height) * 100%} {
+    clip: rect($mdw-selection__checkbox-icon-height - $mdw-selection__checkbox-icon-thickness, $mdw-selection__checkbox-icon-width, auto, auto);
   }
   // Remove vertical clip
   100% {
-    clip: rect(0, $checkbox-icon-width, auto, auto)
+    clip: rect(0, $mdw-selection__checkbox-icon-width, auto, auto);
   }
 }

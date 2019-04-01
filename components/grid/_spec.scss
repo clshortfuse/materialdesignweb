@@ -5,54 +5,64 @@
 @import '../../core/_platform.scss';
 @import '../../core/_breakpoint.scss';
 
-$grid__margin: dp(24);
-$grid__gutter: dp(24);
+$mdw-grid__margin: dp(24) !default;
+$mdw-grid__gutter: dp(24) !default;
 
 .mdw-grid {
   display: flex;
+  flex-wrap: wrap;
   grid-auto-flow: row;
-  grid-template-columns: repeat(12, 1fr);
-  -ms-grid-columns: unquote("(1fr)[12]");
   grid-auto-rows: auto;
+  grid-template-columns: repeat(12, 1fr);
+
+  margin-top: -$mdw-grid__gutter;
+
+  margin-left: -$mdw-grid__gutter;
+  padding-right: $mdw-grid__margin;
+
+  padding-left: $mdw-grid__margin;
+  -ms-grid-columns: unquote("(1fr)[12]");
   -ms-grid-rows: auto;
+
   &[mdw-grid] {
     // IE11 is currently unsupported due to lack of automatic placement
     display: grid;
     display: -ms-grid;
   }
+
   &[mdw-dense] {
     grid-auto-flow: row dense;
   }
+
   &[mdw-center] {
     justify-content: center;
   }
-  flex-wrap: wrap;
-
-  padding-left: $grid__margin;
-  padding-right: $grid__margin;
-
-  margin-left: -$grid__gutter;
-  margin-top: -$grid__gutter;
 
   &[mdw-margin-top] {
-    padding-top: $grid__margin;
+    padding-top: $mdw-grid__margin;
   }
+
   &[mdw-margin-bottom] {
-    padding-bottom: $grid__margin;
+    padding-bottom: $mdw-grid__margin;
   }
 
 }
 
-@mixin gridItem($columnCount) {
+@mixin mdw-grid__item($columnCount) {
   &[mdw-colspan="1"],
   &:not([mdw-colspan]) {
     width: calc(100% / #{$columnCount});
   }
+
+  &[mdw-stretch] {
+    max-width: none;
+  }
   @for $i from 2 to 12 {
     &[mdw-colspan="#{$i}"] {
       @if ($i > $columnCount) {
-        grid-column-end: span #{$columnCount};
         -ms-grid-column-span: #{$columnCount};
+        grid-column-end: span #{$columnCount};
+
         width: 100%;
       } @else {
         width: calc((#{$i} * 100% / #{$columnCount}));
@@ -62,82 +72,82 @@ $grid__gutter: dp(24);
   @each $percent in (25, 50, 75, 100) {
     &[mdw-colspan="#{$percent}%"] {
       $value: $percent / 100 * $columnCount;
+      -ms-grid-column-span: #{$value};
+      grid-column-end: span #{$value};
       @if ($value < 1) {
         $value: $columnCount;
         width: 100%;
       }
-      grid-column-end: span #{$value};
-      -ms-grid-column-span: #{$value};
     }
-  }
-  &[mdw-stretch] {
-    max-width: none;
   }
 }
 
 .mdw-grid__item {
+
+  @include mdw-grid__item(12);
+  box-sizing: border-box;
   max-width: 100%;
   flex-grow: 0;
   flex-shrink: 1;
-  box-sizing: border-box;
-  padding-top: $grid__gutter;
-  padding-left: $grid__gutter;
+  padding-top: $mdw-grid__gutter;
+  padding-left: $mdw-grid__gutter;
+
+  transition-duration: $mdw-motion__shape-change-duration;
+  transition-property: flex, width, padding;
+  transition-timing-function: $mdw-motion__standard-easing;
 
   .mdw-grid[mdw-grid] > & {
     min-width: 100%;
   }
+
   .mdw-grid[mdw-stretch] > & {
     flex-grow: 1;
   }
 
-  @for $i from 2 to 12 {
-    &[mdw-rowspan="#{$i}"] {
-      grid-row-end: span #{$i};
-      -ms-grid-row-span: #{$i};
-    }
-    &[mdw-colspan="#{$i}"] {
-      grid-column-end: span #{$i};
-      -ms-grid-column-span: #{$i};
-    }
-  }
-  transition-property: flex, width, padding;
-  transition-timing-function: $mdw-motion__standard-easing;
-  transition-duration: $mdw-motion__default-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__default-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__default-duration__tablet;
-  }
-
-  @include gridItem(12);
-
   &[mdw-colspan="25%"] {
     width: 25%;
   }
+
   &[mdw-colspan="50%"] {
     width: 50%;
   }
+
   &[mdw-colspan="75%"] {
     width: 75%;
   }
+
   &[mdw-colspan="100%"] {
     width: 100%;
+  }
+
+  @for $i from 2 to 12 {
+    &[mdw-rowspan="#{$i}"] {
+      -ms-grid-row-span: #{$i};
+      grid-row-end: span #{$i};
+    }
+
+    &[mdw-colspan="#{$i}"] {
+      -ms-grid-column-span: #{$i};
+      grid-column-end: span #{$i};
+    }
   }
 }
 
 @include mdw-breakpoint__16dp-margin {
   .mdw-grid {
-    padding-left: dp(16);
+    margin-top: dp(-16);
+    margin-left: dp(-16);
     padding-right: dp(16);
+    padding-left: dp(16);
+
     &[mdw-margin-top] {
       padding-top: dp(16);
     }
+
     &[mdw-margin-bottom] {
       padding-bottom: dp(16);
     }
-    margin-top: dp(-16);
-    margin-left: dp(-16);
+
     & > .mdw-grid__item {
       padding-top: dp(16);
       padding-left: dp(16);
@@ -146,20 +156,21 @@ $grid__gutter: dp(24);
 }
 
 .mdw-grid__content {
-  flex: 100%;
-  height: 100%;
-  width: 100%;
-  max-height: 100%;
-  max-width: 100%;
   box-sizing: border-box;
+  max-height: 100%;
+  height: 100%;
+  max-width: 100%;
+  width: 100%;
+  flex: 100%;
 }
 
 // 8 Columns (Explicit on >=840dp, Implicit on < 840dp)
 .mdw-grid[mdw-columns="8"] {
   grid-template-columns: repeat(8, 1fr);
   -ms-grid-columns: unquote("(1fr)[8]");
+
   & > .mdw-grid__item {
-    @include gridItem(8);
+    @include mdw-grid__item(8);
   }
 }
 @include mdw-breakpoint__8-columns__max {
@@ -167,8 +178,9 @@ $grid__gutter: dp(24);
     grid-template-columns: repeat(8, 1fr);
     -ms-grid-columns: unquote("(1fr)[8]");
   }
+
   .mdw-grid__item {
-    @include gridItem(8);
+    @include mdw-grid__item(8);
   }
 }
 
@@ -176,8 +188,9 @@ $grid__gutter: dp(24);
 .mdw-grid[mdw-columns="4"] {
   grid-template-columns: repeat(4, 1fr);
   -ms-grid-columns: unquote("(1fr)[4]");
+
   & > .mdw-grid__item {
-    @include gridItem(4);
+    @include mdw-grid__item(4);
   }
 }
 
@@ -187,9 +200,10 @@ $grid__gutter: dp(24);
     grid-template-columns: repeat(4, 1fr);
     -ms-grid-columns: unquote("(1fr)[4]");
   }
+
   .mdw-grid__item,
   .mdw-grid[mdw-columns="8"] > .mdw-grid__item {
-    @include gridItem(4);
+    @include mdw-grid__item(4);
   }
 }
 
@@ -197,8 +211,9 @@ $grid__gutter: dp(24);
 .mdw-grid[mdw-columns="1"] {
   grid-template-columns: 1fr;
   -ms-grid-columns: 1fr;
+
   & > .mdw-grid__item {
-    @include gridItem(1);
+    @include mdw-grid__item(1);
   }
 }
 
@@ -208,21 +223,25 @@ $grid__gutter: dp(24);
   .mdw-grid[mdw-columns="1"][mdw-margin="#{$value}"],
   .mdw-grid[mdw-columns="8"][mdw-margin-8col="#{$value}"],
   .mdw-grid[mdw-columns="4"][mdw-margin-4col="#{$value}"], {
-    padding-left: dp($value);
     padding-right: dp($value);
+    padding-left: dp($value);
+
     &[mdw-margin-bottom] {
       padding-bottom: dp($value);
     }
+
     &[mdw-margin-top] {
       padding-top: dp($value);
     }
   }
+
   .mdw-grid[mdw-gutter="#{$value}"],
   .mdw-grid[mdw-columns="1"][mdw-gutter="#{$value}"],
   .mdw-grid[mdw-columns="8"][mdw-gutter-8col="#{$value}"],
   .mdw-grid[mdw-columns="4"][mdw-gutter-4col="#{$value}"] {
     margin-top: dp(-$value);
     margin-left: dp(-$value);
+
     & > .mdw-grid__item {
       padding-top: dp($value);
       padding-left: dp($value);
@@ -234,18 +253,22 @@ $grid__gutter: dp(24);
 @include mdw-breakpoint__8-columns__max {
   @each $value in (0, 8, 16, 24, 40) {
     .mdw-grid[mdw-margin-8col="#{$value}"] {
-      padding-left: dp($value);
       padding-right: dp($value);
+      padding-left: dp($value);
+
       &[mdw-margin-bottom] {
         padding-bottom: dp($value);
       }
+
       &[mdw-margin-top] {
         padding-top: dp($value);
       }
     }
+
     .mdw-grid[mdw-gutter-8col="#{$value}"] {
       margin-top: dp(-$value);
       margin-left: dp(-$value);
+
       & > .mdw-grid__item {
         padding-top: dp($value);
         padding-left: dp($value);
@@ -261,18 +284,22 @@ $grid__gutter: dp(24);
     .mdw-grid,
     .mdw-grid[mdw-columns="8"] {
       &[mdw-margin-4col="#{$value}"] {
-        padding-left: dp($value);
         padding-right: dp($value);
+        padding-left: dp($value);
+
         &[mdw-margin-bottom] {
           padding-bottom: dp($value);
         }
+
         &[mdw-margin-top] {
           padding-top: dp($value);
         }
       }
+
       &[mdw-gutter-4col="#{$value}"] {
         margin-top: dp(-$value);
         margin-left: dp(-$value);
+
         > .mdw-grid__item {
           padding-top: dp($value);
           padding-left: dp($value);

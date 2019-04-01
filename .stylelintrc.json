@@ -47,6 +47,7 @@
     }],
     "unit-blacklist": "px",
     "selector-class-pattern": "^mdw-[a-z]+(__[a-z-]+)?$",
+    "scss/at-import-no-partial-leading-underscore": null,
     "scss/at-function-pattern": "^(__)?mdw((\\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$",
     "scss/at-mixin-pattern": "^(__)?mdw-[a-z]+__[a-z0-9-]+(__[a-z0-9-]+)?$",
     "scss/dollar-variable-default": [true, {

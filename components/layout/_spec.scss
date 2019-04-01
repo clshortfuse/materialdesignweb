@@ -15,6 +15,7 @@ $mdw-layout__sheet-max-width__mini: dp(72) !default;
 
 $mdw-layout__fab-size: dp(56) !default;
 $mdw-layout__fab-cut-size: dp(72) !default;
+$mdw-layout__fab-cut-delay: 100ms !default;
 
 $mdw-layout__top-row: 1 !default;
 $mdw-layout__banner-row: 2 !default;
@@ -68,13 +69,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   margin: 0;
   padding: 0;
 
-  transition-duration: $mdw-motion__default-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__default-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__default-duration__tablet;
-  }
+  transition-duration: $mdw-motion__simple-duration;
   transition-timing-function: $mdw-motion__standard-easing;
 
   background-color: inherit;
@@ -92,9 +87,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   
   margin-top: 0;
 
-  transition-duration: $mdw-motion__enter-duration__desktop;
+  transition-duration: $mdw-motion__expand-duration;
   transition-property: transform, margin-top;
-  transition-timing-function: $mdw-motion__accelerate-easing;
+  transition-timing-function: $mdw-motion__decelerate-easing;
   will-change: transform, margin-top;
 
   transform: translateY(0); // browser hint
@@ -107,25 +102,8 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   }
 
   &[mdw-hide] {
-    transition-duration: $mdw-motion__leave-duration__desktop;
-    transition-timing-function: $mdw-motion__decelerate-easing;
-  }
-
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__enter-duration__mobile;
-
-    &[mdw-hide] {
-      transition-duration: $mdw-motion__leave-duration__mobile;
-    }
-  }
-
-  // Tablet
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__enter-duration__tablet;
-
-    &[mdw-appbar-hide] {
-      transition-duration: $mdw-motion__leave-duration__tablet;
-    }
+    transition-duration: $mdw-motion__collapse-duration;
+    transition-timing-function: $mdw-motion__accelerate-easing;
   }
 
   &[mdw-autoraise]:not([mdw-raise]) .mdw-layout__appbar-shape {
@@ -154,9 +132,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
   cursor: auto;
 
-  transition-duration: inherit;
+  transition-duration: $mdw-motion__fade-out-duration;
   transition-property: background-color;
-  transition-timing-function: inherit;
+  transition-timing-function: $mdw-motion__accelerate-easing;
 
   pointer-events: none;
   z-index: 16;
@@ -189,10 +167,10 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   }
   width: $mdw-layout__sheet-min-width;
 
-  transition-duration: inherit;
-  transition-property: max-width, transform;
-  transition-timing-function: inherit;
-  
+  transition-duration: $mdw-motion__expand-duration;
+  transition-property: width, max-width, transform;
+  transition-timing-function: $mdw-motion__decelerate-easing;
+
   will-change: max-width, transform, position;
 
   transform: translateX(0);
@@ -263,7 +241,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
       flex-direction: column;
 
       // Transition visibility
+      transition-duration: $mdw-motion__collapse-duration;
       transition-property: max-width, transform, visibility;
+      transition-timing-function: $mdw-motion__accelerate-easing;
 
       // Prevent tabbing
       visibility: hidden;
@@ -301,7 +281,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
       // Shown
       &[aria-hidden="false"] {
         // Change visibility immediately
+        transition-duration: $mdw-motion__expand-duration;
         transition-property: max-width, transform;
+        transition-timing-function: $mdw-motion__decelerate-easing;
 
         transform: translateX(0);
         visibility: visible;
@@ -363,9 +345,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
   width: auto;
 
-  transition-duration: inherit;
+  transition-duration: $mdw-motion__expand-duration;
   transition-property: transform;
-  transition-timing-function: inherit;
+  transition-timing-function: $mdw-motion__decelerate-easing;
 
   pointer-events: none;
   transform: translateY(-100%);
@@ -459,11 +441,10 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   }
 }
 
-
 .mdw-layout__fab-anchor .mdw-fab {
-  transition-duration: inherit;
+  transition-duration: $mdw-motion__collapse-duration;
   transition-property: transform;
-  transition-timing-function: inherit;
+  transition-timing-function: $mdw-motion__accelerate-easing;
 
   transform: scale(0);
 }
@@ -489,8 +470,11 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
       transform: translateY(100%);
 
       & ~ .mdw-layout__fab,
-
       & ~ .mdw-layout__snackbar {
+        transition-duration: $mdw-motion__collapse-duration;
+        transition-property: transform;
+        transition-timing-function: $mdw-motion__accelerate-easing;
+
         transform: translateY(0);
       }
     }
@@ -512,6 +496,10 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
       & ~ .mdw-layout__fab,
       & ~ .mdw-layout__snackbar {
+        transition-duration: $mdw-motion__collapse-duration;
+        transition-property: transform;
+        transition-timing-function: $mdw-motion__accelerate-easing;
+
         transform: translateY(0);
       }
     }
@@ -533,6 +521,10 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
       & ~ .mdw-layout__fab,
       & ~ .mdw-layout__snackbar {
+        transition-duration: $mdw-motion__collapse-duration;
+        transition-property: transform;
+        transition-timing-function: $mdw-motion__accelerate-easing;
+
         transform: translateY(0);
       }
     }
@@ -572,6 +564,10 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
     &[mdw-fab-cut~="open"] {
       .mdw-layout__fab-cut-track mask > ellipse {
+        transition-delay: 0s;
+        transition-duration: $mdw-motion__expand-duration;
+        transition-timing-function: $mdw-motion__decelerate-easing;
+
         transform: scale(1);
       }
     }
@@ -606,17 +602,26 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     }
 
     &[aria-hidden="false"] .mdw-fab {
+      transition-duration: $mdw-motion__expand-duration;
+      transition-timing-function: $mdw-motion__decelerate-easing;
+
       transform: scale(1);
     }
   }
 
   .mdw-layout__appbar[mdw-fab-cut][mdw-bottom]:not([mdw-hide]) {
     & ~ .mdw-layout__fab {
+      z-index: 8; // Fab is cut into appbar, therefore elevation must match or be above
+
       .mdw-fab {
         transform: translateY(50%) scale(0);
       }
 
       &[aria-hidden="false"] .mdw-fab {
+        transition-delay: $mdw-layout__fab-cut-delay;
+        transition-duration: $mdw-motion__expand-duration;
+        transition-timing-function: $mdw-motion__decelerate-easing;
+
         transform: translateY(50%) scale(1);
       }
 
@@ -763,12 +768,15 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   .mdw-layout__body[mdw-navdrawer-toggle~="dismissible"]:not([mdw-navdrawer-style="modal"]) .mdw-layout__navdrawer:not([aria-hidden="false"]),
   .mdw-layout__body[mdw-sidesheet-toggle~="dismissible"]:not([mdw-sidesheet-style="modal"]) .mdw-layout__sidesheet:not([aria-hidden="false"]) {
     max-width: 0;
+    width: 0;
     margin-right: 0;
     margin-left: 0;
     padding-right: 0;
     padding-left: 0;
 
-    transition-property: max-width, transform, visibility;
+    transition-duration: $mdw-motion__collapse-duration;
+    transition-property: width, max-width, transform, visibility;
+    transition-timing-function: $mdw-motion__accelerate-easing;
     
     visibility: hidden;
 
@@ -779,15 +787,21 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
   .mdw-layout__body[mdw-navdrawer-toggle~="mini"]:not([mdw-navdrawer-style="modal"]) {
     .mdw-layout__navdrawer:not([aria-hidden="false"]) {
-      min-width: $mdw-layout__sheet-max-width__mini;
       max-width: $mdw-layout__sheet-max-width__mini;
+      width: $mdw-layout__sheet-max-width__mini;
+
+      transition-duration: $mdw-motion__collapse-duration;
+      transition-timing-function: $mdw-motion__accelerate-easing;
     }
   }
 
   .mdw-layout__body[mdw-sidesheet-toggle~="mini"]:not([mdw-sidesheet-style="modal"]) {
     .mdw-layout__sidesheet:not([aria-hidden="false"]) {
-      min-width: $mdw-layout__sheet-max-width__mini;
       max-width: $mdw-layout__sheet-max-width__mini;
+      width: $mdw-layout__sheet-max-width__mini;
+
+      transition-duration: $mdw-motion__collapse-duration;
+      transition-timing-function: $mdw-motion__accelerate-easing;
     }
   }
 
@@ -807,6 +821,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
   .mdw-layout__fab[mdw-desktop] {
     &[aria-hidden="false"] .mdw-fab {
+      transition-duration: $mdw-motion__expand-duration;
+      transition-timing-function: $mdw-motion__decelerate-easing;
+
       transform: scale(1);
     }
 
@@ -823,6 +840,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     transform: translateY(100%);
 
     &[aria-hidden="false"] .mdw-fab {
+      transition-duration: $mdw-motion__expand-duration;
+      transition-timing-function: $mdw-motion__decelerate-easing;
+
       transform: translateY(-50%) scale(1);
     }
 
@@ -934,14 +954,6 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     left: $mdw-layout__fab-cut-size;
   }
 
-  &,
-  & > svg,
-  & > svg > mask,
-  & > svg > mask > ellipse {
-    transition-duration: inherit;
-    transition-timing-function: inherit;
-  }
-
   & > svg {
     left: -$mdw-layout__fab-cut-size / 2;
 
@@ -951,8 +963,12 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   }
   
   mask > ellipse {
+    transition-delay: $mdw-layout__fab-cut-delay;
+    transition-duration: $mdw-motion__collapse-duration;
     transition-property: transform;
-    
+    transition-timing-function: $mdw-motion__accelerate-easing;
+
+    // Closed
     transform: scale(0);
   }
 }

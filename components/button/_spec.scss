@@ -35,13 +35,7 @@ $mdw-button__outline-size: dp(1) !default;
   -webkit-user-select: none;
   user-select: none;
 
-  transition-duration: $mdw-motion__default-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__default-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__default-duration__tablet;
-  }
+  transition-duration: $mdw-motion__shape-change-duration, $mdw-motion__simple-duration;
   transition-property: box-shadow, background-color, color;
   transition-timing-function: $mdw-motion__standard-easing;
 

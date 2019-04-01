@@ -61,10 +61,10 @@ li.mdw-list__item {
   align-content: flex-start;
   flex-direction: row;
   overflow: hidden;
+
   &[aria-hidden="true"] {
     display: none;
   }
-
 }
 
 a.mdw-list__content {
@@ -148,13 +148,7 @@ a.mdw-list__content {
   & > .mdw-list__item {
     flex-basis: auto;
 
-    animation-duration: $mdw-motion__leave-duration__desktop;
-    @include mdw-breakpoint__mobile-device {
-      animation-duration: $mdw-motion__leave-duration__mobile;
-    }
-    @include mdw-breakpoint__tablet-device {
-      animation-duration: $mdw-motion__leave-duration__tablet;
-    }
+    animation-duration: $mdw-motion__collapse-duration;
     animation-timing-function: $mdw-motion__accelerate-easing;
     animation-fill-mode: forwards;
     
@@ -167,13 +161,7 @@ a.mdw-list__content {
     &:first-child .mdw-list__secondary {
       min-height: dp(48);
 
-      transition-duration: $mdw-motion__default-duration__desktop;
-      @include mdw-breakpoint__mobile-device {
-        transition-duration: $mdw-motion__default-duration__mobile;
-      }
-      @include mdw-breakpoint__tablet-device {
-        transition-duration: $mdw-motion__default-duration__tablet;
-      }
+      transition-duration: $mdw-motion__shape-change-duration;
       transition-property: transform;
       transition-timing-function: $mdw-motion__standard-easing;
 
@@ -188,13 +176,7 @@ a.mdw-list__content {
 
   &[aria-expanded="true"] > .mdw-list__item:not(:first-child) {
     animation-name: expandRow;
-    animation-duration: $mdw-motion__enter-duration__desktop;
-    @include mdw-breakpoint__mobile-device {
-      animation-duration: $mdw-motion__enter-duration__mobile;
-    }
-    @include mdw-breakpoint__tablet-device {
-      animation-duration: $mdw-motion__enter-duration__tablet;
-    }
+    animation-duration: $mdw-motion__expand-duration;
     animation-timing-function: $mdw-motion__decelerate-easing;
   }
 }

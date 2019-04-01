@@ -57,15 +57,9 @@ $mdw-dialog__unit-width: dp(56) !default;
   width: 100%;
   padding: dp(84) dp(40);
   
-  transition-duration: $mdw-motion__leave-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__leave-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__leave-duration__tablet;
-  }
+  transition-duration: $mdw-motion__fade-out-duration;
   transition-property: opacity, visibility;
-  transition-timing-function: $mdw-motion__decelerate-easing;
+  transition-timing-function: $mdw-motion__accelerate-easing;
   
   opacity: 0;
   pointer-events: none;
@@ -90,15 +84,9 @@ $mdw-dialog__unit-width: dp(56) !default;
 
   &[aria-hidden="false"],
   &[id]:target {
-    transition-duration: $mdw-motion__enter-duration__desktop;
-    @include mdw-breakpoint__mobile-device {
-      transition-duration: $mdw-motion__enter-duration__mobile;
-    }
-    @include mdw-breakpoint__tablet-device {
-      transition-duration: $mdw-motion__enter-duration__tablet;
-    }
+    transition-duration: $mdw-motion__fade-in-duration;
     transition-property: opacity; // Immediate visibility required for autofocus
-    transition-timing-function: $mdw-motion__accelerate-easing;
+    transition-timing-function: $mdw-motion__decelerate-easing;
 
     opacity: 1;
     pointer-events: auto;

@@ -1,6 +1,25 @@
+// https://android.googlesource.com/platform/frameworks/base/+/dbcbca4/graphics/java/android/graphics/drawable/Ripple.java
+
 @import "../_breakpoint.scss";
 @import "../_platform.scss";
 @import "../_motion.scss";
+
+$mdw-ripple__enter-delay: 80ms !default;
+
+$mdw-ripple__fade-out-duration: 1000ms / 3.0 !default;
+$mdw-ripple__touch-down-acceleration: 1024 !default;
+$mdw-ripple__touch-up-acceleration: 3400 !default;
+
+// Ripple starts at 100% opacity
+// Ripple fills linearly
+// Ripple fills on touch down with duration: 1000ms * √(radius / 1024)
+// Ripple fills on touch up with duration: 1000ms * √(Δradius / (1024 + 3400)
+// Ripple opacity down to 0 on touch-up event with deceleration and duration: 1000ms / 3.0
+
+// Use $mdw-motion__expand-duration temporarily
+
+// TODO: Use variable ripple scale durations
+// TODO: Use enter-delay with JS Ripple
 
 /**
  * --Issues rendering a circle inside an element--
@@ -34,15 +53,6 @@
   // Do not override any declarations
 }
 
-.mdw-ripple[disabled],
-.mdw-ripple[aria-disabled=true] {
-  & > .mdw-ripple__container,
-  &::after {
-    display: none;
-  }
-}
-
-
 .mdw-ripple__container {
   position: absolute;
   top: 0;
@@ -53,46 +63,36 @@
   
   box-sizing: border-box;
 
-  z-index: 1;
   pointer-events: none;
+  z-index: 1;
 
   border-radius: inherit;
-
-
 }
 
 .mdw-ripple__inner {
   display: block;
   position: absolute;
-  
-  border-radius: 50%;
-  transition: none;
-  transform: scale(0);
-  background-color: currentColor;
+
   animation-name: none;
+  animation-duration: $mdw-motion__expand-duration;
+  animation-timing-function: linear;
   animation-direction: normal;
   animation-fill-mode: forwards;
-  animation-timing-function: linear;
-  animation-duration: $mdw-motion__default-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    animation-duration: $mdw-motion__default-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    animation-duration: $mdw-motion__default-duration__tablet;
-  }
-  pointer-events: none;
+  transition: none;
 
-  opacity: 0;
+  opacity: 0.16;
+  pointer-events: none;
+  transform: scale(0);
+  
+  background-color: currentColor;
+  
+  border-radius: 50%;
+
   &[mdw-fade-in-out] {
     animation-name: ripple-fade-in, ripple-fade-out;
-    animation-timing-function: linear, $mdw-motion__accelerate-easing;
-    animation-delay: 0s, $mdw-motion__default-duration__desktop;
-    @include mdw-breakpoint__mobile-device {
-      animation-delay: 0s, $mdw-motion__default-duration__mobile;
-    }
-    @include mdw-breakpoint__tablet-device {
-      animation-delay: 0s, $mdw-motion__default-duration__tablet;
-    }
+    animation-duration: $mdw-motion__expand-duration, $mdw-ripple__fade-out-duration;
+    animation-timing-function: linear, $mdw-motion__decelerate-easing;
+    animation-delay: 0ms, $mdw-motion__expand-duration;
   }
 }
 
@@ -107,13 +107,15 @@
 .mdw-ripple:not(:active) > .mdw-ripple__container > .mdw-ripple__inner[mdw-fade-in-complete][mdw-fade-in],
 .mdw-ripple__inner[mdw-fade-out] {
   animation-name: ripple-fade-out;
-  animation-timing-function: $mdw-motion__accelerate-easing;
+  animation-duration: $mdw-ripple__fade-out-duration;
+  animation-timing-function: $mdw-motion__decelerate-easing;
 }
 
 @keyframes ripple-idle {
   from {
     transform: scale(0);
   }
+
   to {
     transform: scale(0);
   }
@@ -123,6 +125,7 @@
   from {
     transform: scale(0);
   }
+
   to {
     transform: scale(2);
   }
@@ -132,6 +135,7 @@
   from {
     transform: scale(0);
   }
+
   to {
     transform: scale(2);
   }
@@ -139,82 +143,69 @@
 
 @keyframes ripple-fade-out {
   from {
+
+    transform: scale(2);
+
     background-color: currentColor;
-
-    transform: scale(2);
   }
+
   to {
-    background-color: transparent;
 
     transform: scale(2);
+
+    background-color: transparent;
   }
 }
 
 .mdw-ripple::after {
-  content: '';
   display: table; // See above
-  padding: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
   height: 0;
   width: 0;
-  border-radius: 50%;
-  position: absolute;
-  left: 50%;
-  top: 50%;
+  padding: 50%;
   // z-index: -1; // Safari has a negative z-index scrolling bug (hides elements)
-  user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
-  pointer-events: none;
-  background-color: transparent;
-  color: inherit;
-  opacity: 0;
-  transform: translateX(-50%) translateY(-50%) scale(1);
+  user-select: none;
+
   transition-delay:
-    0s,
-    0s,
-    $mdw-motion__max-duration__desktop / 2;
+    $mdw-ripple__enter-delay,
+    $mdw-ripple__enter-delay + $mdw-motion__expand-duration;
   transition-duration:
-    $mdw-motion__max-duration__desktop,
-    $mdw-motion__max-duration__desktop / 2,
-    $mdw-motion__max-duration__desktop / 2;
-    
-  @include mdw-breakpoint__mobile-device {
-    transition-delay:
-      0s,
-      0s,
-      $mdw-motion__max-duration__mobile / 2;
-    transition-duration:
-      $mdw-motion__max-duration__mobile,
-      $mdw-motion__max-duration__mobile / 2,
-      $mdw-motion__max-duration__mobile / 2;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-delay:
-      0s,
-      0s,
-      $mdw-motion__max-duration__tablet / 2;
-    transition-duration:
-      $mdw-motion__max-duration__tablet,
-      $mdw-motion__max-duration__tablet / 2,
-      $mdw-motion__max-duration__tablet / 2;
-  }
+    $mdw-motion__expand-duration + $mdw-ripple__fade-out-duration,
+    $mdw-ripple__fade-out-duration;
   transition-property:
     transform,
-    opacity,
     background-color;
+  transition-timing-function:
+    linear,
+    $mdw-motion__decelerate-easing;
   transition-timing-function: $mdw-motion__sharp-easing;
   will-change:
     transform,
-    opacity,
     background-color;
+
+  opacity: 0.16;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(-50%) scale(1);
+
+  background-color: transparent;
+  border-radius: 50%;
+  color: inherit;
+  content: '';
 }
 
+// On active, pop up initial state
 .mdw-ripple:active::after {
-  transition-duration: 0s;
   transition-delay: 0s;
+  transition-duration: 0s;
+
   transform: translateX(-50%) translateY(-50%) scale(0);
-  opacity: 0;
+
   background-color: currentColor;
 }
 
@@ -222,13 +213,11 @@
   display: none;
 }
 
-
-// Target
-// size     0.000   -->   0.500   -->   1.000
-// opacity  0.000   -->   1.000   -->   0.000
-
-// Implemenation
-// scale   - 0.000   -->   0.500   -->   1.000 -  0% delay 100% duration
-// opacity - 0.000   -->   1.000   -->   1.000 -  0% delay  50% duration
-// color   - solid   -->   solid   -->   trans - 50% delay  50% duration
+.mdw-ripple[disabled],
+.mdw-ripple[aria-disabled="true"] {
+  & > .mdw-ripple__container,
+  &::after {
+    display: none;
+  }
+}
 

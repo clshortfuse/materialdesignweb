@@ -16,13 +16,7 @@ $mdw-card__horizontal-padding: dp(16) !default;
 
   outline: none;
 
-  transition-duration: $mdw-motion__default-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__default-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__default-duration__tablet;
-  }
+  transition-duration: $mdw-motion__shape-change-duration;
   transition-property: box-shadow;
   transition-timing-function: $mdw-motion__standard-easing;
 

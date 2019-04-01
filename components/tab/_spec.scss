@@ -19,40 +19,43 @@ $mdw-tab__icon-with-label-height: 72 !default;
   display: flex; // IE11 doesn't support grid-auto-columns
   display: grid;
   position: relative;
-
-  overflow-x: auto;
-  overflow-y: hidden;
-  flex: none;
-
-  -ms-overflow-style: none;
-  overscroll-behavior-x: none;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display:none;
-  }
+  flex-direction: row;
 
   grid-auto-columns: 1fr;
 
   justify-content: flex-start;
-  flex-direction: row;
+
+  -ms-overflow-style: none;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+
+  flex: none;
+  overscroll-behavior-x: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   &[mdw-scrollable] {
     display: flex;
     overflow-x: auto;
     
     box-sizing: border-box;
+    
+    &::before,
+    &::after {
+
+      min-width: dp(52);
+      // Ensures 52dp blank space at end
+      content: '';
+    }
+
     & > .mdw-tab__item {
       min-width: dp(90);
       max-width: 100%;
       flex: none;
-    }
-    
-    &::before,
-    &::after {
-      // Ensures 52dp blank space at end
-      content: '';
-
-      min-width: dp(52);
     }
   }
 }
@@ -60,28 +63,27 @@ $mdw-tab__icon-with-label-height: 72 !default;
 .mdw-tab__icon,
 .mdw-tab__label,
 .mdw-tab__indicator {
-  transition-duration: $mdw-motion__default-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__default-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__default-duration__tablet;
-  }
+  transition-duration: $mdw-motion__simple-duration;
   transition-timing-function: $mdw-motion__standard-easing;
 }
 
 .mdw-tab__indicator {
   position: absolute;
-  bottom: 0;
-  height: 2px;
-  width: 0;
-  left: 0;
   right: auto;
-  background-color: currentColor;
-  transform-origin: 0 0 0;
-  width: 1000px;
-  transform: translateX(0) scaleX(0);
+  bottom: 0;
+  left: 0;
+
+  height: dp(2);
+  width: 0;
+  width: dp(1000);
+
   transition-property: none;
+
+  transform: translateX(0) scaleX(0);
+  transform-origin: 0 0 0;
+
+  background-color: currentColor;
+
   &[mdw-animate] {
     transition-property: transform;
   }
@@ -89,36 +91,42 @@ $mdw-tab__icon-with-label-height: 72 !default;
 }
 
 .mdw-tab__item {
-  min-height: dp(48); // Redundant but needed for IE11
-  position: relative;
   display: flex;
-  flex: auto;
-  flex-direction: column;
+  position: relative;
   align-items: center;
+  flex-direction: column;
 
   grid-row: 1;
-
-  box-shadow: none;
-  box-sizing: content-box;
-  border-radius: 0;
-  z-index: 0;
   overflow: hidden;
+
+  box-sizing: content-box;
+  min-height: dp(48); // Redundant but needed for IE11
+  flex: auto;
+
   cursor: pointer;
-  user-select: none;
+  -webkit-tap-highlight-color: transparent;
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+
+  z-index: 0;
+
+  border-radius: 0;
+
+  box-shadow: none;
 
   
 }
 
 .mdw-tab__icon {
-  margin-top: dp($mdw-tab__icon-margin-top);
   @include baseline-bottom($mdw-tab__icon-to-label-baseline);
+  margin-top: dp($mdw-tab__icon-margin-top);
   margin-bottom: dp(-$mdw-tab__icon-to-label-baseline);
-  pointer-events: none;
+
   transition-property: color;
+
+  pointer-events: none;
 }
 
 .mdw-tab__label {
@@ -127,74 +135,81 @@ $mdw-tab__icon-with-label-height: 72 !default;
   box-sizing: border-box;
   margin-top: auto;
   margin-bottom: auto;
-  pointer-events: none;
   padding: 0 dp(16);
 
-  text-align: center;
   transition-property: color;
 
+  pointer-events: none;
+
+  text-align: center;
+
   .mdw-tab__icon ~ & {
-    margin: 0;
-    min-height: 0;
-    display: block;
     @include baseline-top($mdw-tab__icon-to-label-baseline);
     @include baseline-bottom($mdw-tab__icon-with-label-height
-      - $mdw-tab__icon-margin-top
-      - $mdw-tab__icon-size
-      - $mdw-tab__icon-to-label-baseline
-    );
+    - $mdw-tab__icon-margin-top
+    - $mdw-tab__icon-size
+    - $mdw-tab__icon-to-label-baseline);
+
+    display: block;
+
+    min-height: 0;
+    margin: 0;
   }
 }
 
 .mdw-tab__content {
   display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  align-items: stretch;
-  overflow-x: hidden;
   position: relative;
+  align-items: stretch;
+  flex-direction: row;
+
+  // Hide scrollbar
+  -ms-overflow-style: none;
+  overflow-x: hidden;
   overflow-x: scroll;
+  scroll-behavior: smooth;
+  
+  // W3C standard
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+
+  flex-grow: 1;
 
   // Snap
 
   // Firefox
+  -webkit-scroll-snap-type-x: mandatory;
   scroll-snap-type-x: mandatory;
+  -webkit-scroll-snap-points-x: repeat(100%);
   scroll-snap-points-x: repeat(100%);
   
   // Safari 9
-  -webkit-scroll-snap-type-x: mandatory;
-  -webkit-scroll-snap-points-x: repeat(100%);
   
   // IE + Edge
   -ms-scroll-snap-x: mandatory snapInterval(0%, 100%);
   
-  // W3C standard
-  scroll-snap-type: x mandatory;
-  
   overscroll-behavior-x: none;
 
-  // Hide scrollbar
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display:none;
-  }
-  scrollbar-width: none;
-  scroll-behavior: smooth;
   .mdw-tab[mdw-resize-stage] & {
     scroll-behavior: auto;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 
 .mdw-tab__panel {
-  max-width: 100%;
-  visibility: visible;
-  flex-basis: 100%;
-  flex-shrink: 0;
   scroll-snap-align: center;
-  visibility: visible;
-  max-width: 100%;
+
   min-width: 100%;
+  max-width: 100%;
+  flex-shrink: 0;
+  flex-basis: 100%;
+
   will-change: visibility;
+
+  visibility: visible;
 
   &[aria-hidden="true"] {
     visibility: hidden;
@@ -216,11 +231,4 @@ $mdw-tab__icon-with-label-height: 72 !default;
 .mdw-tab__content[mdw-no-scroll] {
   overflow-x: hidden;
   scroll-behavior: auto;
-  .mdw-tab__panel[aria-expanded="false"] {
-    // flex-basis: 0px;
-    // max-width: 0;
-    // min-width: 0;
-    // height: 0;
-    // visibility: collapse;
-  }
 }

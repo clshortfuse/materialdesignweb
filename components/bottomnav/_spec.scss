@@ -1,5 +1,6 @@
 // https://material.io/design/components/bottom-navigation.html#specs
 
+@import '../../core/_motion.scss';
 @import '../../core/_platform.scss';
 @import '../../core/_type.scss';
 
@@ -51,7 +52,7 @@
   margin-left: dp(-12);
   padding: 0;
 
-  transition-duration: 200ms;
+  transition-duration: $mdw-motion__shape-change-duration, $mdw-motion__simple-duration;
   transition-property: transform, color;
   transition-timing-function: $mdw-motion__standard-easing;
 
@@ -65,18 +66,10 @@
 }
 
 .mdw-bottomnav__icon[mdw-badge]::before {
-  font: inherit;
-  content: attr(mdw-badge);
-
   position: absolute;
   top: 0;
-  left: dp(16);
   right: auto;
-
-  :root[dir="rtl"] & {
-    left: auto;
-    right: dp(16);
-  }
+  left: dp(16);
 
   
   box-sizing: border-box;
@@ -88,10 +81,18 @@
 
   border-radius: dp(8);
 
+  font: inherit;
+
   font-weight: $font-weight-regular;
   font-size: dp(10);
   line-height: dp(12);
   letter-spacing: normal;
+  content: attr(mdw-badge);
+
+  :root[dir="rtl"] & {
+    right: dp(16);
+    left: auto;
+  }
   
 }
 
@@ -111,7 +112,7 @@
   max-width: 100%;
   padding: 0 dp(12);
   
-  transition-duration: 200ms;
+  transition-duration: $mdw-motion__shape-change-duration;
   transition-property: transform, opacity, color;
   transition-timing-function: $mdw-motion__standard-easing;
 

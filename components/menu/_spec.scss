@@ -4,132 +4,156 @@
 @import '../../core/_platform.scss';
 @import '../../core/_type.scss';
 
-$menu__unit-width: dp(56);
+$mdw-menu__unit-width: dp(56) !default;
 
 .mdw-menu__wrapper {
-  position: relative;
   display: inline-flex;
+  position: relative;
 }
+
 .mdw-menu__close {
-  pointer-events: inherit;
   position: fixed;
-  left: 0;
   top: 0;
-  width: 100%;
+  left: 0;
+
   height: 100%;
-  z-index: 8;
+  width: 100%;
+
   cursor: default;
+
+  pointer-events: inherit;
+  z-index: 8;
 }
 
 .mdw-menu {
-  position: absolute;
   display: block;
-  pointer-events: none;
-  visibility: visible;
-  transition-property: none;
-  transition-timing-function: $mdw-motion__decelerate-easing;
-  transition-duration: $mdw-motion__leave-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__leave-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__leave-duration__tablet;
-  }
-  &[aria-hidden="false"],
-  &[id]:target {
-    transition-property: visibility;
-    transition-timing-function: $mdw-motion__accelerate-easing;
-    transition-duration: $mdw-motion__enter-duration__desktop;
-    @include mdw-breakpoint__mobile-device {
-      transition-duration: $mdw-motion__enter-duration__mobile;
-    }
-    @include mdw-breakpoint__tablet-device {
-      transition-duration: $mdw-motion__enter-duration__tablet;
-    }
-    pointer-events: auto;
-    visibility: visible;
-    .mdw-menu__popup {
-      transform: scale(1);
-      opacity: 1;
-      box-shadow: mdwElevation(8);
-    }
-  }
-
-  // Scroll mask
-  overscroll-behavior: none;
-  overscroll-behavior: contain;
-  -ms-scroll-chaining: none;
-  &::after {
-    display: block;
-    content: '';
-    width: 200%;
-    height: 200%;
-  }
-
-  // Hide scrollbar
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display:none;
-  }
-  scrollbar-width: none;
+  position: absolute;
 
   // Default position is bottom
   // Default direction is start
 
   top: 100%;
+  right: auto;
   bottom: auto;
   left: 0;
-  right: auto;
+
+  // Hide scrollbar
+  -ms-overflow-style: none;
+
+  // Scroll mask
+  overscroll-behavior: none;
+  overscroll-behavior: contain;
+  -ms-scroll-chaining: none;
+  scrollbar-width: none;
+
+  transition-duration: $mdw-motion__fade-out-duration;
+  transition-property: none;
+  transition-timing-function: $mdw-motion__decelerate-easing;
+
+  pointer-events: none;
   transform-origin: left top;
+  // visibility: visible;
+
   :root[dir="rtl"] & {
-    left: auto;
     right: 0;
+    left: auto;
+
     transform-origin: right top;
+  }
+
+  &::after {
+    display: block;
+
+    height: 200%;
+    width: 200%;
+    content: '';
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &[aria-hidden="false"],
+  &[id]:target {
+    
+
+    pointer-events: auto;
+
+    .mdw-menu__popup {
+      // Instant on desktop
+      transition-delay: 0s;
+      transition-duration: 0s;
+      transition-property: box-shadow, opacity, transform;
+      transition-timing-function: $mdw-motion__accelerate-easing;
+
+      opacity: 1;
+      transform: scale(1);
+
+      visibility: visible;
+
+      box-shadow: mdwElevation(8);
+      @include mdw-breakpoint__tablet-device__max {
+        transition-duration: $mdw-motion__expand-duration;
+      }
+    }
+    
   }
 
   &[mdw-position~="top"] {
     top: 0;
   }
+
   &[mdw-position~="vcenter"] {
     top: 50%;
   }
+
   &[mdw-position~="hcenter"] {
     left: 50%;
   }
+
   &[mdw-position~="right"],
   &[mdw-position~="end"] {
-    left: 100%;
     right: auto;
+    left: 100%;
+
     :root[dir="rtl"] & {
-      left: auto;
       right: 100%;
+      left: auto;
     }
   }
 
   &[mdw-direction~="reverse"],
   &[mdw-direction~="rtl"] {
-    left: auto;
     right: 100%;
+    left: auto;
+
     transform-origin: right top;
+
     :root[dir="rtl"] & {
-      left: 100%;
       right: auto;
+      left: 100%;
+
       transform-origin: left top;
     }
+
     &[mdw-position~="right"],
     &[mdw-position~="end"] {
-      left: auto;
       right: 0;
+      left: auto;
+
       :root[dir="rtl"] & {
-        left: 0;
         right: auto;
+        left: 0;
       }
     }
   }
+
   &[mdw-direction~="up"] {
     top: auto;
     bottom: 0;
+
     transform-origin: left bottom;
+
     :root[dir="rtl"] & {
       transform-origin: right bottom;
     }
@@ -137,22 +161,24 @@ $menu__unit-width: dp(56);
     &[mdw-position~="top"] {
       bottom: 100%;
     }
+
     &[mdw-position~="vcenter"] {
       bottom: 50%;
     }
+
     &[mdw-direction~="reverse"],
     &[mdw-direction~="rtl"] {
       transform-origin: right bottom;
+
       :root[dir="rtl"] & {
         transform-origin: left bottom;
       }
     }
   }
-
   @for $i from 3 to 8 {
     &[mdw-width-units="#{$i}"] {
       .mdw-menu__popup {
-        width: calc(#{$menu__unit-width} * #{$i});
+        width: calc(#{$mdw-menu__unit-width} * #{$i});
       }
     }
   }
@@ -189,43 +215,51 @@ $menu__unit-width: dp(56);
 }
 
 .mdw-menu__popup {
-  z-index: 8;
-  pointer-events: inherit;
   display: inline-flex;
-  flex-direction: column;
   position: absolute;
-  transition-property: transform, box-shadow, opacity;
-  transition-duration: inherit;
-  transition-timing-function: inherit;
   top: inherit;
-  left: inherit;
-  bottom: inherit;
   right: inherit;
-  transform-origin: inherit;
-  transform: scale(0);
-  box-shadow: mdwElevation(0);
-  opacity: 0;
-  margin-left: dp(8);
-  margin-right: dp(8);
-  padding-top: dp(8);
-  padding-bottom: dp(8);
-  border-radius: dp(4);
-  min-width: $menu__unit-width * 2;
-  max-width: $menu__unit-width * 7;
-  outline: none;
-  overflow-y: auto;
+  bottom: inherit;
+  left: inherit;
+  flex-direction: column;
   -ms-overflow-style: -ms-autohiding-scrollbar;
-  max-height: 50vh;
+  overflow-y: auto;
   overscroll-behavior: none;
   overscroll-behavior: contain;
   -ms-scroll-chaining: none;
+
+  max-height: 50vh;
+  min-width: $mdw-menu__unit-width * 2;
+  max-width: $mdw-menu__unit-width * 7;
+  margin-right: dp(8);
+  margin-left: dp(8);
+  padding-top: dp(8);
+  padding-bottom: dp(8);
+
+  outline: none;
+
+  transition-delay: 0s, 0s, $mdw-motion__fade-out-duration, $mdw-motion__fade-out-duration;
+  transition-duration: $mdw-motion__fade-out-duration;
+  transition-property: box-shadow, opacity, transform, visibility;
+  transition-timing-function: $mdw-motion__accelerate-easing;
+
+  opacity: 0;
+  pointer-events: inherit;
+  transform: scale(0);
+  transform-origin: inherit;
+  z-index: 8;
+
+  border-radius: dp(4);
+  box-shadow: mdwElevation(0);
 }
 
 .mdw-menu__text {
-  white-space: nowrap;
-  flex: auto;
   overflow-x: hidden;
+
+  flex: auto;
+
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mdw-menu__icon,
@@ -237,6 +271,7 @@ $menu__unit-width: dp(56);
 .mdw-menu__check,
 .mdw-menu__radio {
   visibility: hidden;
+
   .mdw-menu__item[aria-checked="true"] & {
     visibility: visible;
   }
@@ -251,25 +286,27 @@ $menu__unit-width: dp(56);
 .mdw-menu__item {
   @include type-rules('body');
   display: flex;
-  align-items: center;
   position: relative;
+  align-items: center;
+  flex-direction: row;
   overflow: hidden;
-  z-index: 0;
+
+  box-sizing: border-box;
 
 
   min-height: dp(48);
-  padding-left: dp(16);
   padding-right: dp(16);
+  padding-left: dp(16);
 
   cursor: pointer;
+  outline: none;
   -webkit-tap-highlight-color: transparent;
-  box-sizing: border-box;
-  flex-direction: row;
-  user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
-  outline: none;
+  user-select: none;
+
+  z-index: 0;
 
   &[aria-disabled="true"] {
     cursor: not-allowed;
@@ -281,29 +318,32 @@ $menu__unit-width: dp(56);
 .mdw-menu[mdw-dropdown] {
   .mdw-menu__item {
     min-height: dp(32);
-    padding-left: dp(24);
     padding-right: dp(24);
+    padding-left: dp(24);
   }
 }
 @include mdw-platform__no-touch-support {
   .mdw-menu:not([mdw-dense="never"]) {
     .mdw-menu__item {
       min-height: dp(32);
-      padding-left: dp(24);
       padding-right: dp(24);
+      padding-left: dp(24);
     }
   }
 }
 
 .mdw-menu__info {
+  padding-right: 0;
+  padding-left: dp(16);
+
   text-align: right;
   text-align: end;
-  padding-left: dp(16);
-  padding-right: 0;
+
   :root[dir="rtl"] & {
+    padding-right: dp(16);
+    padding-left: 0;
+
     text-align: left;
     text-align: end;
-    padding-left: 0;
-    padding-right: dp(16);
   }
 }

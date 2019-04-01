@@ -4,11 +4,11 @@
 @import '../../core/_platform.scss';
 @import '../../core/_type.scss';
 
-$tooltip__margin__desktop: dp(14);
-$tooltip__margin__mobile: dp(24);
-$tooltip__background-color: #616161; // material-grey-700
-$tooltip__touch-fade-out-time: 1.5s;
-$tooltip__touch-min-hold-time: 500ms;
+$mdw-tooltip__desktop-margin: dp(14) !default;
+$mdw-tooltip__mobile-margin: dp(24) !default;
+$mdw-tooltip__background-color: #616161 !default; // material-grey-700
+$mdw-tooltip__touch-fade-out-time: 1.5s !default;
+$mdw-tooltip__touch-min-hold-time: 500ms !default;
 
 
 .mdw-tooltip__wrapper {
@@ -18,96 +18,107 @@ $tooltip__touch-min-hold-time: 500ms;
 
 .mdw-tooltip,
 .mdw-tooltip__target {
-  -webkit-touch-callout: none;
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
   user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .mdw-tooltip {
-  position: absolute;
-  width: auto;
-  padding-left: dp(8);
-  padding-right: dp(8);
-  min-height: dp(24);
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 
   @include type-rules('caption');
 
-  background-color: $tooltip__background-color;
-  border-radius: dp(4);
-  color: white;
+  display: flex;
+  position: absolute;
+
+  top: 100%;
+  left: 50%;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  min-height: dp(24);
+  width: auto;
+  padding-right: dp(8);
+  padding-left: dp(8);
+
   cursor: none;
-  white-space: nowrap;
-  pointer-events: none;
-  z-index: 8;
+
+  transition-duration: $mdw-motion__fade-out-duration;
+  transition-property: opacity;
+  transition-timing-function: $mdw-motion__accelerate-easing;
 
   opacity: 0;
-  transition-property: opacity;
-  transition-duration: 150ms;
-  transition-timing-function: $mdw-motion__decelerate-easing;
+  pointer-events: none;
+  // Default Alignment is Center
+
+  transform: translateX(-50%) translateY($mdw-tooltip__desktop-margin);
+  z-index: 8;
+
+  background-color: $mdw-tooltip__background-color;
+  border-radius: dp(4);
+  color: #fff;
+
+  white-space: nowrap;
 
   .mdw-tooltip__target:hover > &,
   .mdw-tooltip__target:focus > &,
   .mdw-tooltip__wrapper > .mdw-tooltip__target:hover ~ &,
   .mdw-tooltip__wrapper > .mdw-tooltip__target:not([tabindex="-1"]):focus ~ & {
-    opacity: 0.9;
+    transition-duration: $mdw-motion__fade-in-duration;
     transition-timing-function: $mdw-motion__accelerate-easing;
+    
+    opacity: 0.9;
   }
 
-  top: 100%;
-  left: 50%;
-  // Default Alignment is Center
-
-  transform: translateX(-50%) translateY($tooltip__margin__desktop);
   &[mdw-align="start"],
-  :root[dir=rtl] &[mdw-align="end"] {
-    left: 0;
+  :root[dir="rtl"] &[mdw-align="end"] {
     right: auto;
+    left: 0;
   }
+
   &[mdw-align="end"],
-  :root[dir=rtl] &[mdw-align="start"] {
-    left: auto;
+  :root[dir="rtl"] &[mdw-align="start"] {
     right: 0;
+    left: auto;
   }
 
   &[mdw-align="start"],
   &[mdw-align="end"] {
-    transform: translateY($tooltip__margin__desktop);
+    transform: translateY($mdw-tooltip__desktop-margin);
   }
 
   &[mdw-position="start"],
   &[mdw-position="end"],
   &[mdw-position="left"],
   &[mdw-position="right"] {
-    left: 0;
     top: 50%;
+    left: 0;
   }
 
   &[mdw-position="start"],
   &[mdw-position="left"],
-  :root[dir=rtl] &[mdw-position="end"] {
+  :root[dir="rtl"] &[mdw-position="end"] {
     margin: 0;
+
     transform: translateY(-50%) translateX(-100%);
   }
 
   &[mdw-position="end"],
   &[mdw-position="right"],
-  :root[dir=rtl] &[mdw-position="start"] {
+  :root[dir="rtl"] &[mdw-position="start"] {
     transform: translateY(-50%) translateX(100%);
   }
 
   &[mdw-position="top"] {
     top: 0;
-    transform: translateX(-50%) translateY(-100%) translateY(-$tooltip__margin__desktop);
+
+    transform: translateX(-50%) translateY(-100%) translateY(-$mdw-tooltip__desktop-margin);
+
     &[mdw-align="start"],
     &[mdw-align="end"] {
-      transform: translateY(-100%) translateY(-$tooltip__margin__desktop);
+      transform: translateY(-100%) translateY(-$mdw-tooltip__desktop-margin);
     }
   }
   
@@ -117,39 +128,45 @@ $tooltip__touch-min-hold-time: 500ms;
 .mdw-tooltip__wrapper > .mdw-button[mdw-icon] ~ .mdw-tooltip {
   &:not([mdw-position]) {
     // Bottom
-    margin-top: -8px;
+    margin-top: dp(-8);
   }
+
   &[mdw-position="top"] {
-    margin-top: 8px;
+    margin-top: dp(8);
   }
 }
 
 // Menu flicker fix
 .mdw-menu__wrapper > .mdw-menu:target ~ .mdw-tooltip,
 .mdw-menu__wrapper > .mdw-menu[mdw-show]:not([mdw-hide]) ~ .mdw-tooltip {
-  opacity: 0;
   transition-delay: 0;
+
+  opacity: 0;
 }
 
 @include mdw-platform__has-touch-support {
   .mdw-tooltip {
-    transition-delay: $tooltip__touch-min-hold-time;
-    font-size: sp(14);
     min-height: dp(32);
-    padding-left: dp(16);
     padding-right: dp(16);
-    transform: translateX(-50%) translateY($tooltip__margin__mobile);
+    padding-left: dp(16);
+
+    transition-delay: $mdw-tooltip__touch-min-hold-time;
+
+    transform: translateX(-50%) translateY($mdw-tooltip__mobile-margin);
+
+    font-size: sp(14);
 
     &[mdw-align="start"],
     &[mdw-align="end"] {
-      transform: translateY($tooltip__margin__mobile);
+      transform: translateY($mdw-tooltip__mobile-margin);
     }
 
     &[mdw-position="top"] {
-      transform: translateX(-50%) translateY(-100%) translateY(-$tooltip__margin__mobile);
+      transform: translateX(-50%) translateY(-100%) translateY(-$mdw-tooltip__mobile-margin);
+
       &[mdw-align="start"],
       &[mdw-align="end"] {
-        transform: translateY(-100%) translateY(-$tooltip__margin__mobile);
+        transform: translateY(-100%) translateY(-$mdw-tooltip__mobile-margin);
       }
     }
 
@@ -158,14 +175,17 @@ $tooltip__touch-min-hold-time: 500ms;
     .mdw-tooltip__target:focus:not(:active) > &,
     .mdw-tooltip__wrapper > .mdw-tooltip__target:hover:not(:active) ~ &,
     .mdw-tooltip__wrapper > .mdw-tooltip__target:not([tabindex="-1"]):focus:not(:active) ~ & {
+      transition-delay: $mdw-tooltip__touch-fade-out-time;
+
       opacity: 0;
-      transition-delay: $tooltip__touch-fade-out-time;
     }
 
     .mdw-tooltip__target:active > &,
     .mdw-tooltip__wrapper > .mdw-tooltip__target:active ~ .mdw-tooltip {
-      opacity: 0.9;
+      transition-duration: $mdw-motion__fade-in-duration;
       transition-timing-function: $mdw-motion__accelerate-easing;
+
+      opacity: 0.9;
     }
   }
 

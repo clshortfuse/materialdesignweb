@@ -6,15 +6,18 @@
 @import '../../core/_breakpoint.scss';
 @import '../../core/_type.scss';
 
-$mdw-datatable__icon-size: dp(16);
+$mdw-datatable__icon-size: dp(16) !default;
 
 .mdw-datatable {
   display: flex;
   flex-direction: column;
 }
+
 .mdw-datatable table {
   display: table;
+
   border-collapse: collapse;
+
   width: 100%;
 }
 
@@ -26,26 +29,32 @@ $mdw-datatable__icon-size: dp(16);
 
 .mdw-datatable caption {
   caption-side: top;
+
+  padding: 0 dp(16);
+
   line-height: dp(64);
   text-align: left;
   text-align: start;
-  html[dir=rtl] {
+
+  :root[dir="rtl"] & {
     text-align: right;
     text-align: start;
   }
-  padding: 0 dp(16);
 }
 
 .mdw-datatable__header {
-  flex: none;
   display: flex;
-  flex-direction: row;
   align-items: center;
+  flex-direction: row;
+
+  flex: none;
 }
+
 .mdw-datatable__header-text,
 .mdw-datatable__header-actions {
   flex-grow: 1;
 }
+
 .mdw-datatable__header-text,
 .mdw-datatable__header-actions,
 .mdw-datatable__header-controls {
@@ -53,19 +62,21 @@ $mdw-datatable__icon-size: dp(16);
 }
 
 .mdw-datatable__header-text {
-  padding-left: dp(16);
   padding-right: 0;
-  html[dir=rtl] & {
-    padding-left: 0;
+  padding-left: dp(16);
+
+  :root[dir="rtl"] & {
     padding-right: dp(16);
+    padding-left: 0;
   }
 }
 
 .mdw-datatable tr {
-  outline: none;
+  height: dp(48);
   border-bottom-style: solid;
   border-bottom-width: dp(1);
-  height: dp(48);
+
+  outline: none;
 }
 
 .mdw-datatable thead > tr {
@@ -79,13 +90,16 @@ $mdw-datatable__icon-size: dp(16);
   // Expected line-height is 20dp. Support two lines within 48dp
   padding-top: dp(4);
   padding-bottom: dp(4 - 1); // Remove bottom border width
+
   outline: none;
+
   &[mdw-selector] + td {
-    padding-left: dp(12);
     padding-right: dp(16);
-    html[dir=rtl] & {
-      padding-left: dp(16);
+    padding-left: dp(12);
+
+    :root[dir="rtl"] & {
       padding-right: dp(12);
+      padding-left: dp(16);
     }
   }
   
@@ -93,23 +107,27 @@ $mdw-datatable__icon-size: dp(16);
 
 .mdw-datatable th[mdw-selector],
 .mdw-datatable td[mdw-selector] {
-  padding-left: dp(16);
-  padding-right: 0;
-  html[dir=rtl] & {
-    padding-left: 0;
-    padding-right: dp(16);
-  }
   width: dp(24);
+  padding-right: 0;
+  padding-left: dp(16);
+
+  :root[dir="rtl"] & {
+    padding-right: dp(16);
+    padding-left: 0;
+  }
 }
+
 .mdw-datatable th {
   @include type-rules('caption');
   white-space: nowrap;
+
   &[mdw-selector] + th {
-    padding-left: dp(12);
     padding-right: dp(16);
-    html[dir=rtl] & {
-      padding-left: dp(16);
+    padding-left: dp(12);
+
+    :root[dir="rtl"] & {
       padding-right: dp(12);
+      padding-left: dp(16);
     }
   }
 }
@@ -117,9 +135,11 @@ $mdw-datatable__icon-size: dp(16);
 
 .mdw-datatable th,
 .mdw-datatable td {
-  text-align: center;
-  padding-left: dp(16);
   padding-right: dp(16);
+  padding-left: dp(16);
+
+  text-align: center;
+
   .mdw-selection__input {
     // Remove ripple
     visibility: hidden;
@@ -129,30 +149,30 @@ $mdw-datatable__icon-size: dp(16);
 .mdw-datatable th[mdw-primary-column],
 .mdw-datatable td[mdw-primary-column] {
   width: 100%;
-  border-width: dp(1);
   border-right-style: solid;
-  html[dir=rtl] & {
-    border-left-style: solid;
+  border-width: dp(1);
+
+  :root[dir="rtl"] & {
     border-right-style: none;
+    border-left-style: solid;
   }
 }
 
 .mdw-datatable__sort-icon {
   display: inline-block;
+  vertical-align: bottom;
+
+  max-width: 0;
+
+  transition-duration: $mdw-motion__shape-change-duration;
+  transition-property: transform;
+  transition-timing-function: $mdw-motion__standard-easing;
+
   transform: translateX(-$mdw-datatable__icon-size) rotate(180deg);
   transform-origin: ($mdw-datatable__icon-size / 2) ($mdw-datatable__icon-size / 2);
-  transition-property: transform;
-  vertical-align: bottom;
-  max-width: 0;
-  transition-timing-function: $mdw-motion__standard-easing;
-  transition-duration: $mdw-motion__default-duration__desktop;
-  @include mdw-breakpoint__mobile-device {
-    transition-duration: $mdw-motion__default-duration__mobile;
-  }
-  @include mdw-breakpoint__tablet-device {
-    transition-duration: $mdw-motion__default-duration__tablet;
-  }
+
   color: transparent;
+
   &.material-icons {
     font-size: $mdw-datatable__icon-size;
   }
@@ -161,18 +181,21 @@ $mdw-datatable__icon-size: dp(16);
 .mdw-datatable th[mdw-sortable] {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
+  user-select: none;
+
   &:hover,
   &[mdw-sorted] {
     .mdw-datatable__sort-icon {
-      color: inherit;
       transform: translateX(-$mdw-datatable__icon-size) rotate(180deg);
+
+      color: inherit;
     }
   }
-  &[mdw-sorted=desc] {
+
+  &[mdw-sorted="desc"] {
     .mdw-datatable__sort-icon {
       transform: translateX(-$mdw-datatable__icon-size) rotate(0deg);
     }
@@ -185,7 +208,8 @@ $mdw-datatable__icon-size: dp(16);
 .mdw-datatable td[data-type="text"] {
   text-align: left;
   text-align: start;
-  html[dir=rtl] & {
+
+  :root[dir="rtl"] & {
     text-align: right;
     text-align: start;
   }
@@ -195,24 +219,26 @@ $mdw-datatable__icon-size: dp(16);
 .mdw-datatable td[data-type="number"] {
   text-align: right;
   text-align: end;
-  html[dir=rtl] & {
+
+  :root[dir="rtl"] & {
     text-align: left;
     text-align: end;
   }
 }
 
 .mdw-datatable__scroller {
-  overflow:auto;
+  overflow: auto;
 }
 
 .mdw-datatable__footer {
-  flex: none;
-  min-height: dp(56);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
   @include type-rules('caption');
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: flex-end;
+
+  min-height: dp(56);
+  flex: none;
 }
 
 .mdw-datatable__header,
@@ -221,6 +247,7 @@ $mdw-datatable__icon-size: dp(16);
     // Fix IE min-height flexbug
     &::after {
       content: '';
+
       min-height: inherit;
       width: 0;
     }
@@ -229,19 +256,22 @@ $mdw-datatable__icon-size: dp(16);
 
 .mdw-datatable__footer-options,
 .mdw-datatable__footer-details {
-  margin-left: dp(2);
   margin-right: dp(28);
-  html[dir=rtl] & {
-    margin-left: dp(28);
+  margin-left: dp(2);
+
+  :root[dir="rtl"] & {
     margin-right: dp(2);
+    margin-left: dp(28);
   }
 }
 
 .mdw-datatable__header-controls,
 .mdw-datatable__footer-controls {
   display: inline-flex;
-  margin-left: dp(4);
+
   margin-right: dp(4);
+  margin-left: dp(4);
+
   .mdw-button {
     margin: 0 dp(4);
   }
@@ -249,7 +279,8 @@ $mdw-datatable__icon-size: dp(16);
 
 .mdw-datatable__footer-controls {
   direction: ltr;
-  html[dir=rtl] & {
+
+  :root[dir="rtl"] & {
     transform: scaleX(-1);
   }
 }
@@ -260,8 +291,10 @@ $mdw-datatable__icon-size: dp(16);
   
   select.mdw-textfield__input {
     min-width: dp(40 + 24);
+
     direction: rtl;
-    html[dir=rtl] & {
+
+    :root[dir="rtl"] & {
       direction: ltr;
     }
   }
