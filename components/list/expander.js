@@ -24,11 +24,11 @@ export function detach(listExpanderElement) {
 }
 
 /**
- * @param {Element} listExpanderElement 
+ * @param {Element} listExpanderElement
  * @return {boolean}
  */
 export function isExpanded(listExpanderElement) {
-  return (listExpanderElement.getAttribute('aria-expanded') === "true");
+  return (listExpanderElement.getAttribute('aria-expanded') === 'true');
 }
 
 /**
