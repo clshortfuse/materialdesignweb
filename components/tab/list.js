@@ -26,7 +26,42 @@ export function attach(tabListElement) {
   iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.attach);
   tabListElement.addEventListener(AriaAttributes.SELECTED_CHANGED_EVENT, onSelectedChangedEvent, getPassiveEventListenerOption());
   setupARIA(tabListElement);
-  RovingTabIndex.attach(tabListElement, 'mdw-tab__item');
+  RovingTabIndex.setupTabIndexes(tabListElement, '[role="tab"]');
+  RovingTabIndex.setupTabIndexes(tabListElement, '[role="tab"]');
+  tabListElement.addEventListener(RovingTabIndex.FORWARDS_REQUESTED, onForwardsRequested);
+  tabListElement.addEventListener(RovingTabIndex.BACKWARDS_REQUESTED, onBackwardsRequested);
+  tabListElement.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
+}
+
+/**
+ * @param {Event} event
+ * @return {void}
+ */
+function onTabIndexZeroed(event) {
+  /** @type {HTMLElement} */
+  const tabListElement = (event.currentTarget);
+  /** @type {HTMLElement} */
+  const currentItem = (event.target);
+  RovingTabIndex.removeTabIndex(tabListElement.querySelectorAll('[role="tab"]'), [currentItem]);
+}
+/**
+ * @param {Event} event
+ * @return {void}
+ */
+function onForwardsRequested(event) {
+  /** @type {HTMLElement} */
+  const tabListElement = (event.currentTarget);
+  RovingTabIndex.selectNext(tabListElement.querySelectorAll('[role="tab"]'));
+}
+
+/**
+ * @param {Event} event
+ * @return {void}
+ */
+function onBackwardsRequested(event) {
+  /** @type {HTMLElement} */
+  const tabListElement = (event.currentTarget);
+  RovingTabIndex.selectPrevious(tabListElement.querySelectorAll('[role="tab"]'));
 }
 
 /**
