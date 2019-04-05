@@ -54,7 +54,7 @@ export function onKeyDown(event) {
 }
 
 /**
- * @param {TouchEvent} event
+ * @param {FocusEvent} event
  * @return {void}
  */
 export function onBlur(event) {
