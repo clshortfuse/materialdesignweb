@@ -26,6 +26,7 @@ export function attach(bottomnavElement) {
  * @return {void}
  */
 function onTabIndexZeroed(event) {
+  event.stopPropagation();
   /** @type {HTMLElement} */
   const bottomnavElement = (event.currentTarget);
   /** @type {HTMLElement} */
@@ -37,6 +38,7 @@ function onTabIndexZeroed(event) {
  * @return {void}
  */
 function onForwardsRequested(event) {
+  event.stopPropagation();
   /** @type {HTMLElement} */
   const bottomnavElement = (event.currentTarget);
   RovingTabIndex.selectNext(bottomnavElement.querySelectorAll('[role="tab"]'));
@@ -47,6 +49,7 @@ function onForwardsRequested(event) {
  * @return {void}
  */
 function onBackwardsRequested(event) {
+  event.stopPropagation();
   /** @type {HTMLElement} */
   const bottomnavElement = (event.currentTarget);
   RovingTabIndex.selectPrevious(bottomnavElement.querySelectorAll('[role="tab"]'));
@@ -73,9 +76,9 @@ export function detach(bottomnavElement) {
   iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'), BottomNavItem.detach);
   bottomnavElement.removeEventListener(AriaAttributes.SELECTED_CHANGED_EVENT, onSelectedChangedEvent);
   RovingTabIndex.detach(bottomnavElement, '[role="tab"]');
-  bottomnavElement.ventListener(RovingTabIndex.FORWARDS_REQUESTED, onForwardsRequested);
-  bottomnavElement.ventListener(RovingTabIndex.BACKWARDS_REQUESTED, onBackwardsRequested);
-  bottomnavElement.ventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
+  bottomnavElement.removeEventListener(RovingTabIndex.FORWARDS_REQUESTED, onForwardsRequested);
+  bottomnavElement.removeEventListener(RovingTabIndex.BACKWARDS_REQUESTED, onBackwardsRequested);
+  bottomnavElement.removeEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
 }
 
 
