@@ -15,26 +15,14 @@ $mdw-ripple__theme-values: (
 
 @mixin mdw-ripple__theme-rules($type: 'var', $theme: null) {
   .mdw-ripple {
-    @if ($type == 'var') {
-      & > .mdw-ripple__container > .mdw-ripple__inner,
-      &::after {
-        color: unquote("rgb(var(--ink-color))");
-      }
-
-    } @else {
-      &[aria-pressed="false"],
-      &[aria-pressed="false"][mdw-ink],
-      &:not([mdw-ink]):not([mdw-surface]) {
-        & > .mdw-ripple__container > .mdw-ripple__inner,
-        &::after {
-          color: mdwRippleThemeValue("overlay-color", $type, $theme);
-        }
-      }
-    }
-
     & > .mdw-ripple__container > .mdw-ripple__inner,
     &::after {
       opacity: mdwRippleThemeValue("pressed-opacity", $type, $theme);
+      color: inherit;
+      @if ($type == 'var') {
+        // Fallback handed by previous inherit rule
+        color: unquote("rgb(var(--ink-color))");
+      }
     }
   }
 }

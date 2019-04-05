@@ -80,7 +80,7 @@ $mdw-ripple__touch-up-acceleration: 3400 !default;
   animation-fill-mode: forwards;
   transition-delay: 0s;
   transition-duration: $mdw-motion__simple-duration;
-  transition-property: color;
+  transition-property: background-color, color;
   transition-timing-function: $mdw-motion__standard-easing;
 
   opacity: 0.16;
