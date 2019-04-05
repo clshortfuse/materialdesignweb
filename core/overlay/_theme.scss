@@ -29,8 +29,8 @@ $mdw-overlay__theme-values: (
 @mixin mdw-overlay__theme-rules($type: 'var', $theme: null) {
   .mdw-overlay {
     &,
-    &[mdw-ink][aria-selected="false"],
-    &[mdw-ink][aria-pressed="false"] {
+    &[mdw-ink][aria-selected="false"]:not(:active),
+    &[mdw-ink][aria-pressed="false"]:not(:active) {
       &::before {
         color: mdwOverlayThemeValue("overlay-color", $type, $theme);
       }
