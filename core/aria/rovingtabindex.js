@@ -185,26 +185,6 @@ export function onKeyDownHandler(event) {
   } else {
     dispatchDomEvent(childElement, BACKWARDS_REQUESTED);
   }
-
-  let candidate = childElement;
-
-  do {
-    if (moveForwards) {
-      candidate = candidate.nextElementSibling || candidate.parentElement.firstElementChild;
-    } else {
-      candidate = candidate.previousElementSibling || candidate.parentElement.lastElementChild;
-    }
-    if (candidate.hasAttribute('tabindex') && candidate.getAttribute('aria-hidden') !== 'true') {
-      try {
-        // @ts-ignore
-        candidate.focus();
-      } catch (e) {
-        // Ignore error.
-      }
-    }
-    // Abort if we've looped all the way back to original element
-    // Abort if candidate reserved focus
-  } while (candidate !== childElement && document.activeElement !== candidate);
 }
 
 /**
