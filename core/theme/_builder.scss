@@ -226,14 +226,14 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
     $theme: map-get($mdw-theme__themes, $name);
     $namespace: '.mdw-theme[mdw-theme="#{$name}"]';
 
-    #{$namespace}[mdw-light][mdw-surface],
-    #{$namespace} .mdw-theme[mdw-light][mdw-surface] {
+    #{$namespace}[mdw-light][mdw-surface]:not([mdw-ink]),
+    #{$namespace} .mdw-theme[mdw-light][mdw-surface]:not([mdw-ink]) {
       color: __mdwThemeGlobalValue("default-ink", 'light', $theme);
     }
 
 
-    #{$namespace}[mdw-dark][mdw-surface],
-    #{$namespace} .mdw-theme[mdw-dark][mdw-surface] {
+    #{$namespace}[mdw-dark][mdw-surface]:not([mdw-ink]),
+    #{$namespace} .mdw-theme[mdw-dark][mdw-surface]:not([mdw-ink]) {
       color: __mdwThemeGlobalValue("default-ink", 'dark', $theme);
     }
     
