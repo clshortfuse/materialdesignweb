@@ -1,4 +1,8 @@
-import { findElementParentByClassName, iterateArrayLike, nextTick } from '../../core/dom';
+import {
+  findElementParentByClassName,
+  iterateArrayLike,
+  nextTick,
+} from '../../core/dom';
 
 import * as Overlay from '../../core/overlay/index';
 import * as Ripple from '../../core/ripple/index';
@@ -37,6 +41,14 @@ export function attach(listExpanderElement) {
   setExpanded(listExpanderElement, isExpanded(listExpanderElement));
   listExpanderElement.addEventListener('blur', onBlur);
   listExpanderElement.addEventListener('keydown', onKeyDown);
+
+  listExpanderElement.setAttribute('mdw-pre-expander-js', '');
+  setTimeout(() => {
+    if (listExpanderElement.hasAttribute('mdw-pre-expander-js')) {
+      listExpanderElement.removeAttribute('mdw-pre-expander-js');
+      listExpanderElement.setAttribute('mdw-expander-js', '');
+    }
+  }, 500);
 }
 
 /**
@@ -85,6 +97,8 @@ function onBlur(event) {
  * @return {void}
  */
 export function detach(listExpanderElement) {
+  listExpanderElement.removeAttribute('mdw-pre-extender-js');
+  listExpanderElement.removeAttribute('mdw-extender-js');
   listExpanderElement.removeEventListener('keydown', onKeyDown);
   listExpanderElement.removeEventListener('blur', onBlur);
   const listExpanderContent = listExpanderElement.getElementsByClassName('mdw-list__expander-content')[0];

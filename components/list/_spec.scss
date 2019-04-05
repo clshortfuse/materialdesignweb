@@ -175,6 +175,10 @@ a.mdw-list__expander-content {
     animation-duration: $mdw-motion__expand-duration;
     animation-timing-function: $mdw-motion__decelerate-easing;
   }
+
+  &:not([mdw-expander-js]) > .mdw-list__item-group .mdw-list__item {
+    animation-duration: 0s;
+  }
 }
 
 
