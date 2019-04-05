@@ -22,10 +22,11 @@ Material Design for Web
 | [grid](components/grid/) |  | :white_check_mark:| | :x: | :x: | preRC
 | imagelist | | | | | | *use grid*
 | [layout](components/layout/) | | :white_check_mark: | :x: |:x: | :x: | beta
-| [list](components/list/) | listitem† listexpander | :white_check_mark: | :x: | list listbox | :x: | preRC
-| [listcontent](components/list/content.js) | overlay ripple | | :x: | link‡ | :x: | preRC
-| [listexpander](components/list/expander.js) | | :x: | :x: | :x: | aria-expanded | beta
-| [listitem](components/list/item.js) | overlay ripple | :white_check_mark: | :x: | listitem option‡ | aria-selected | preRC
+| [list](components/list/) | listitem† listexpander | :white_check_mark: | :white_check_mark: | list listbox tree | aria-orientation | preRC
+| [listcontent](components/list/content.js) | overlay ripple | :white_check_mark: | :white_check_mark: | listitem link option treeitem | | preRC
+| [listexpander](components/list/expander.js) | overlay ripple | | :white_check_mark: | treeitem | aria-expanded | beta
+| [listitem](components/list/item.js) | | :white_check_mark: | :white_check_mark: | none | aria-hidden | preRC
+| [listitemgroup](components/list/group.js) | | :white_check_mark: | :white_check_mark: | group | | preRC
 | [menu](components/menu/) | divider menuitem† | :white_check_mark: | :white_check_mark: | menu | aria-hidden | preRC
 | [menuitem](components/menu/item.js) | overlay ripple | :white_check_mark: | :white_check_mark:| menuitem menuitemradio menuitemcheckbox | aria-disabled aria-checked | stable
 | navdrawer | | | | | | *use layout*
@@ -38,7 +39,7 @@ Material Design for Web
 | [tabcontent](components/tab/content.js) | tabpanel† | :x: | :white_check_mark: | | | RC
 | [tabitem](components/tab/item.js) | overlay ripple | :x: | :white_check_mark: | [tab](utils/aria/tab.js) | aria-selected | RC
 | [tablist](components/tab/list.js) | tabitem† overlay | :x: | :white_check_mark: | tablist | aria-multiselectable aria-orientation | RC
-| [tabpanel](components/tab/panel.js) | | | tabpanel | :white_check_mark: | aria-expanded aria-hidden | RC
+| [tabpanel](components/tab/panel.js) | | :x: | :white_check_mark: | tabpanel | aria-expanded aria-hidden | RC
 | [textfield](components/textfield/) | list | :white_check_mark: | :white_check_mark: | :x: | :x: | preRC
 | [tooltip](components/tooltip/) | | :white_check_mark: | | :x: | :x: | beta
 | [type](components/type/) | | :white_check_mark: | | | | RC
