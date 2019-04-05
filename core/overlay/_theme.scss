@@ -28,9 +28,25 @@ $mdw-overlay__theme-values: (
 
 @mixin mdw-overlay__theme-rules($type: 'var', $theme: null) {
   .mdw-overlay {
-    @if ($type == 'var') {
+    &,
+    &[mdw-ink][aria-selected="false"],
+    &[mdw-ink][aria-pressed="false"] {
       &::before {
-        color: unquote("rgb(var(--ink-color))");
+        color: mdwOverlayThemeValue("overlay-color", $type, $theme);
+      }
+    }
+    
+    &:active,
+    &[mdw-ink],
+    &[aria-selected="true"],
+    &[aria-pressed="true"],
+    &[aria-current] {
+      &::before {
+        @if ($type == 'var') {
+          color: var(--ink-color, inherit);
+        } @else {
+          color: inherit;
+        }
       }
     }
 

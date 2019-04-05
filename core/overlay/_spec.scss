@@ -21,9 +21,9 @@
     bottom: 0;
     left: 0;
     
-    transition-duration: 1ms, $mdw-motion__simple-duration;
-    transition-property: opacity, color;
-    transition-timing-function: linear, $mdw-motion__standard-easing;
+    transition-delay: 1ms;
+    transition-duration: 0ms;
+    transition-property: opacity, color, background-color;
 
     opacity: 0;
     pointer-events: none;
