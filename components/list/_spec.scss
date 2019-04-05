@@ -16,8 +16,6 @@ $mdw-list__divider-height: dp(1) !default;
   flex-direction: column;
 }
 
-
-
 ul.mdw-list,
 ul.mdw-list__item-group {
   margin: 0;
@@ -64,16 +62,14 @@ li.mdw-list__item {
   align-content: flex-start;
   flex-direction: row;
   overflow: hidden;
-
-  &[aria-hidden="true"] {
-    display: none;
-  }
 }
 
-a.mdw-list__content {
+a.mdw-list__content,
+a.mdw-list__expander-content {
   text-decoration: none;
 }
 
+.mdw-list__expander-content,
 .mdw-list__content {
   @include type-rules('subtitle');
 
@@ -90,12 +86,15 @@ a.mdw-list__content {
     padding: 0 dp(16);
   }
 
-  // Handled by HTMLAnchorElement
-  // cursor: pointer;
+  cursor: pointer;
 
   text-align: start;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  &[aria-hidden="true"] {
+    display: none;
+  }
 }
 
 .mdw-list__avatar,
@@ -120,15 +119,20 @@ a.mdw-list__content {
   display: flex;
   position: relative;
   flex-direction: column;
-  
+  outline: none;
+
   &::before,
   &::after {
-    content: none;
+    content: '';
     
     position: absolute;
     right: 0;
     left: 0;
-    
+    background-color: transparent;
+
+    transition-property: background-color;
+    transition-duration: $mdw-motion__shape-change-duration;
+    transition-timing-function: $mdw-motion__standard-easing;
     height: dp(1);
   }
 
@@ -140,29 +144,15 @@ a.mdw-list__content {
     bottom: 0;
   }
 
-  &[aria-expanded="true"] {
-    &::before,
-    &::after {
-      content: '';
-    }
-  }
+  & > .mdw-list__expander-content .mdw-list__secondary {
+    min-height: dp(48);
 
-  
-  & > .mdw-list__item {
-    
-    
-    
-    
-    &:first-child .mdw-list__secondary {
-      min-height: dp(48);
+    transition-duration: $mdw-motion__shape-change-duration;
+    transition-property: transform;
+    transition-timing-function: $mdw-motion__standard-easing;
 
-      transition-duration: $mdw-motion__shape-change-duration;
-      transition-property: transform;
-      transition-timing-function: $mdw-motion__standard-easing;
-
-      pointer-events: none;
-      transform: rotate(0deg);
-    }
+    pointer-events: none;
+    transform: rotate(0deg);
   }
 
   & > .mdw-list__item-group .mdw-list__item {

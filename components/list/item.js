@@ -1,9 +1,5 @@
 import * as ListContent from './content';
-import * as Overlay from '../../core/overlay/index';
-import * as Ripple from '../../core/ripple/index';
-import { dispatchDomEvent, iterateArrayLike } from '../../core/dom';
-
-export const ACTIVATE_EVENT = 'mdw:listitem-activate';
+import { iterateArrayLike } from '../../core/dom';
 
 /**
  * @param {Element} listItemElement
@@ -11,16 +7,6 @@ export const ACTIVATE_EVENT = 'mdw:listitem-activate';
  */
 export function attach(listItemElement) {
   iterateArrayLike(listItemElement.getElementsByClassName('mdw-list__content'), ListContent.attach);
-  if (listItemElement.getAttribute('role') === 'option') {
-    if (!listItemElement.hasAttribute('mdw-no-overlay')) {
-      listItemElement.classList.add('mdw-overlay');
-      Overlay.attach(listItemElement);
-    }
-    if (!listItemElement.hasAttribute('mdw-no-ripple')) {
-      listItemElement.classList.add('mdw-ripple');
-      Ripple.attach(listItemElement);
-    }
-  }
   attachCore(listItemElement);
 }
 
@@ -29,10 +15,17 @@ export function attach(listItemElement) {
  * @return {void}
  */
 export function attachCore(listItemElement) {
+  setupAria(listItemElement);
+}
+
+/**
+ * @param {Element} listItemElement
+ * @return {void}
+ */
+export function setupAria(listItemElement) {
   if (!listItemElement.hasAttribute('role')) {
-    listItemElement.setAttribute('role', 'listitem');
+    listItemElement.setAttribute('role', 'none');
   }
-  listItemElement.addEventListener('click', onClick);
 }
 
 /**
@@ -40,17 +33,6 @@ export function attachCore(listItemElement) {
  * @return {void}
  */
 export function detachCore(listItemElement) {
-  listItemElement.removeEventListener('click', onClick);
-}
-
-/**
- * @param {MouseEvent|KeyboardEvent|PointerEvent} event
- * @return {void}
- */
-export function onClick(event) {
-  /** @type {HTMLElement} */
-  const listItemElement = (event.currentTarget);
-  dispatchDomEvent(listItemElement, ACTIVATE_EVENT);
 }
 
 
