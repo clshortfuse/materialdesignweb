@@ -26,10 +26,8 @@ $mdw-tooltip__touch-min-hold-time: 500ms !default;
 }
 
 .mdw-tooltip {
-
   @include type-rules('caption');
 
-  display: flex;
   position: absolute;
 
   top: 100%;
@@ -38,28 +36,27 @@ $mdw-tooltip__touch-min-hold-time: 500ms !default;
   flex-direction: column;
   justify-content: center;
 
-  min-height: dp(24);
   width: auto;
-  padding-right: dp(8);
-  padding-left: dp(8);
-
+  padding: dp(6) dp(8);
+  
   cursor: none;
-
+  
   transition-duration: $mdw-motion__fade-out-duration;
   transition-property: opacity;
   transition-timing-function: $mdw-motion__accelerate-easing;
-
+  
   opacity: 0;
   pointer-events: none;
   // Default Alignment is Center
-
+  
   transform: translateX(-50%) translateY($mdw-tooltip__desktop-margin);
   z-index: 8;
-
+  
   background-color: $mdw-tooltip__background-color;
   border-radius: dp(4);
   color: #fff;
 
+  line-height: 1;
   white-space: nowrap;
 
   .mdw-tooltip__target:hover > &,
@@ -146,9 +143,7 @@ $mdw-tooltip__touch-min-hold-time: 500ms !default;
 
 @include mdw-platform__has-touch-support {
   .mdw-tooltip {
-    min-height: dp(32);
-    padding-right: dp(16);
-    padding-left: dp(16);
+    padding: dp(10) dp(16);
 
     transition-delay: $mdw-tooltip__touch-min-hold-time;
 
