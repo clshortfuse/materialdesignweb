@@ -12,16 +12,14 @@ $mdw-tab__theme-values: (
 @mixin mdw-tab__theme-rules($type: 'var', $theme: null) {
   .mdw-tab__list:not([mdw-ink]) {
     color: mdwTabThemeValue("active-color", $type, $theme);
-  }
-
-  .mdw-tab__item[aria-selected="false"] {
-    color: mdwTabThemeValue("inactive-color", $type, $theme);
-  }
-
-  @if ($type != 'var') {
-    .mdw-tab__item.mdw-overlay::before {
-      color: inherit;
+    @if ($type == 'var') {
+      --ink-color: var(--foreground-color);
     }
+  }
+
+  .mdw-tab__item[aria-selected="false"] > .mdw-tab__icon,
+  .mdw-tab__item[aria-selected="false"] > .mdw-tab__label {
+    color: mdwTabThemeValue("inactive-color", $type, $theme);
   }
 
 }
