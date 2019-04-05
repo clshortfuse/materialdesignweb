@@ -2,3 +2,4 @@
 dist/*
 build/*
 test/*
+**/**/.DS_Store
