@@ -469,7 +469,7 @@ export default class DataTableAdapter {
     if (!this.previousPageButton || !this.nextPageButton) {
       const buttons = this.paginationControls.getElementsByClassName('mdw-button');
       if (buttons.length !== 2) {
-        this.previousPageButton = document.createElement('button');
+        this.previousPageButton = document.createElement('a');
         this.previousPageButton.classList.add('mdw-button');
         this.previousPageButton.classList.add('material-icons');
         this.previousPageButton.setAttribute('mdw-icon', '');
@@ -477,7 +477,7 @@ export default class DataTableAdapter {
         this.paginationControls.appendChild(this.previousPageButton);
         Button.attach(this.previousPageButton);
 
-        this.nextPageButton = document.createElement('button');
+        this.nextPageButton = document.createElement('a');
         this.nextPageButton.classList.add('mdw-button');
         this.nextPageButton.classList.add('material-icons');
         this.nextPageButton.setAttribute('mdw-icon', '');
