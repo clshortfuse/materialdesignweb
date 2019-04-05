@@ -78,7 +78,10 @@ $mdw-ripple__touch-up-acceleration: 3400 !default;
   animation-timing-function: linear;
   animation-direction: normal;
   animation-fill-mode: forwards;
-  transition: none;
+  transition-delay: 0s;
+  transition-duration: $mdw-motion__simple-duration;
+  transition-property: color;
+  transition-timing-function: $mdw-motion__standard-easing;
 
   opacity: 0.16;
   pointer-events: none;
@@ -111,15 +114,6 @@ $mdw-ripple__touch-up-acceleration: 3400 !default;
   animation-timing-function: $mdw-motion__decelerate-easing;
 }
 
-@keyframes ripple-idle {
-  from {
-    transform: scale(0);
-  }
-
-  to {
-    transform: scale(0);
-  }
-}
 
 @keyframes ripple-fade-in {
   from {
@@ -143,17 +137,14 @@ $mdw-ripple__touch-up-acceleration: 3400 !default;
 
 @keyframes ripple-fade-out {
   from {
-
     transform: scale(2);
-
-    background-color: currentColor;
   }
 
   to {
 
     transform: scale(2);
 
-    background-color: transparent;
+    opacity: 0;
   }
 }
 
@@ -184,14 +175,13 @@ $mdw-ripple__touch-up-acceleration: 3400 !default;
   transition-timing-function:
     linear,
     $mdw-motion__decelerate-easing;
-  transition-timing-function: $mdw-motion__sharp-easing;
   will-change:
     transform,
     background-color;
 
   opacity: 0.16;
   pointer-events: none;
-  transform: translateX(-50%) translateY(-50%) scale(1);
+  transform: translateX(-50%) translateY(-50%) scale(2);
 
   background-color: transparent;
   border-radius: 50%;
