@@ -265,7 +265,7 @@ export function update(element, options) {
   let button = element.getElementsByClassName('mdw-button')[0];
   if (options.buttonText) {
     if (!button) {
-      button = document.createElement('button');
+      button = document.createElement('a');
       element.appendChild(button);
     }
     setTextNode(button, options.buttonText);
