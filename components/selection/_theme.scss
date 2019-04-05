@@ -16,6 +16,17 @@ $mdw-selection__theme-values: (
   track-off-opacity:       (0.38, 0.30),
 
   disabled-opacity:        (0.38, 0.50),
+
+  hover-opacity:                 (0.04, 0.08),
+  focus-opacity:                 (0.12, 0.24),
+  selected-opacity:              (0.08, 0.16),
+  
+  hover-focus-opacity:           (0.04 + 0.12, 0.08 + 0.24),
+
+  selected-hover-opacity:        (0.08 + 0.04, 0.16 + 0.08),
+  selected-focus-opacity:        (0.08 + 0.12, 0.16 + 0.24),
+  selected-hover-focus-opacity:  (0.08 + 0.04 + 0.12, 0.16 + 0.08 + 0.24),
+
 ) !default;
 
 @function mdwSelectionThemeValue($key, $type, $theme) {
@@ -26,17 +37,49 @@ $mdw-selection__theme-values: (
   .mdw-selection__input {
 
     &:not(:checked),
-    &:active:not(:disabled) {
+    &:checked:active {
       color: mdwSelectionThemeValue("ripple-color", $type, $theme);
-      --ink-color: --foreground-color;
-    }
-    &[type="checkbox"]:not(:checked) ~ .mdw-selection__icon,
-    &[type="checkbox"]:active:not(:disabled) ~ .mdw-selection__icon {
-      color: mdwSelectionThemeValue("icon-color", $type, $theme);
+      --ink-color: var(--foreground-color);
+      & ~ .mdw-selection__icon {
+        color: mdwSelectionThemeValue("icon-color", $type, $theme);
+      }
     }
 
-    &[type="radio"]:not(:checked) ~ .mdw-selection__icon {
-      color: mdwSelectionThemeValue("icon-color", $type, $theme);
+    &:not([mdw-overlay-touch="true"]) {
+      &:focus:not([mdw-overlay-off~="focus"]):not([mdw-overlay-touch="true"]) {
+        opacity: mdwOverlayThemeValue("focus-opacity", $type, $theme);
+      }
+
+      &:not([disabled]):not([aria-disabled="true"]):not([mdw-overlay-touch="true"]) {
+        &:hover:not([mdw-overlay-off~="hover"]) {
+          opacity: mdwOverlayThemeValue("hover-opacity", $type, $theme);
+        }
+
+        &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"]) {
+          opacity: mdwOverlayThemeValue("hover-focus-opacity", $type, $theme);
+        }
+      }
+    }
+
+    // Selected
+    &:checked:not([mdw-overlay-off~="selected"]) {
+      opacity: mdwOverlayThemeValue("selected-opacity", $type, $theme);
+
+      &:not([mdw-overlay-touch="true"]) {
+        &:focus:not([mdw-overlay-off~="focus"]) {
+          opacity: mdwOverlayThemeValue("selected-focus-opacity", $type, $theme);
+        }
+
+        &:not([disabled]):not([aria-disabled="true"]) {
+          &:hover:not([mdw-overlay-off~="hover"]) {
+            opacity: mdwOverlayThemeValue("selected-hover-opacity", $type, $theme);
+          }
+
+          &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"]) {
+            opacity: mdwOverlayThemeValue("selected-hover-focus-opacity", $type, $theme);
+          }
+        }
+      }
     }
     
     &[type="checkbox"]:checked ~ .mdw-selection__icon::after {
