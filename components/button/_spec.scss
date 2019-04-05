@@ -19,7 +19,7 @@ $mdw-button__outline-size: dp(1) !default;
   overflow: hidden;
 
   box-sizing: border-box;
-  min-height: dp(36);
+  height: dp(36);
   min-width: dp(64);
   margin: 0 dp(8);
   border: none;
@@ -86,7 +86,7 @@ $mdw-button__outline-size: dp(1) !default;
 
   // Icon properties
   &[mdw-icon] {
-    min-height: dp(40);
+    height: dp(40);
     min-width: dp(40);
     padding: dp(8);
 
@@ -101,7 +101,7 @@ $mdw-button__outline-size: dp(1) !default;
   }
 
   &[mdw-image] {
-    min-height: dp(24);
+    height: dp(24);
     min-width: dp(24);
     margin: 0;
     padding: 0;
@@ -121,13 +121,6 @@ $mdw-button__outline-size: dp(1) !default;
       height: 100%;
       width: auto;
     }
-  }
-}
-
-// Fix anchor line-height on IE11
-@include mdw-platform__ie {
-  a.mdw-button:not([mdw-icon]) {
-    line-height: 2.5em !important;
   }
 }
 
