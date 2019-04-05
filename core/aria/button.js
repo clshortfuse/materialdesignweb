@@ -7,7 +7,6 @@
 export function attach(element) {
   element.setAttribute('role', 'button');
   if (element instanceof HTMLButtonElement === false
-      && element instanceof HTMLAnchorElement === false
       && !element.hasAttribute('tabindex')) {
     element.setAttribute('tabindex', '0');
   }
