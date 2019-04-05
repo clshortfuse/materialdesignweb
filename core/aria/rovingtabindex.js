@@ -227,6 +227,9 @@ export function selectNext(list, current = null, reverse = false) {
     if (candidate.getAttribute('aria-hidden') === 'true') {
       return false;
     }
+    if (candidate.getAttribute('mdw-skip-tab') === 'true') {
+      return false;
+    }
     return attemptFocus(candidate);
   });
   if (iterateResult) {
@@ -238,6 +241,9 @@ export function selectNext(list, current = null, reverse = false) {
       return false;
     }
     if (candidate.getAttribute('aria-hidden') === 'true') {
+      return false;
+    }
+    if (candidate.getAttribute('mdw-skip-tab') === 'true') {
       return false;
     }
     // Abort if we've looped all the way back to original element
