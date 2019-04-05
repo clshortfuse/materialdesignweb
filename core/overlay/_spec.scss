@@ -1,4 +1,5 @@
 @import '../_breakpoint.scss';
+@import '../_motion.scss';
 
 .mdw-overlay {
   position: relative;
@@ -19,21 +20,13 @@
     right: 0;
     bottom: 0;
     left: 0;
-
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-user-select: none;
-    user-select: none;
     
-    transition-duration: 1ms;
+    transition-duration: 1ms, $mdw-motion__simple-duration;
     transition-property: opacity, color;
-    transition-timing-function: linear;
+    transition-timing-function: linear, $mdw-motion__standard-easing;
 
     opacity: 0;
     pointer-events: none;
-    // Safari has a negative z-index bug
-    // Might be related to display rule
-    z-index: 1;
 
     background-color: currentColor;
     border-radius: inherit;
