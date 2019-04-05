@@ -1,4 +1,4 @@
-import { findElementParentByClassName, iterateArrayLike } from '../../core/dom';
+import { findElementParentByClassName, iterateArrayLike, nextTick } from '../../core/dom';
 
 import * as Overlay from '../../core/overlay/index';
 import * as Ripple from '../../core/ripple/index';
@@ -34,7 +34,6 @@ export function attach(listExpanderElement) {
     });
     listExpanderContent.addEventListener('click', onItemClicked);
   }
-  console.log('init expanded');
   setExpanded(listExpanderElement, isExpanded(listExpanderElement));
   listExpanderElement.addEventListener('blur', onBlur);
   listExpanderElement.addEventListener('keydown', onKeyDown);
