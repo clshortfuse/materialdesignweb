@@ -45,6 +45,7 @@ $mdw-ripple__touch-up-acceleration: 3400 !default;
  */
 
 .mdw-ripple {
+  position: relative;
   -webkit-tap-highlight-color: transparent;
 }
 
