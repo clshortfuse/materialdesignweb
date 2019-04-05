@@ -19,7 +19,7 @@ $mdw-fab__icon-size: dp(24) !default;
   flex-direction: column-reverse;
   justify-content: center;
 
-  min-height: dp(56);
+  height: dp(56);
 
   pointer-events: none;
   z-index: 6;
@@ -46,8 +46,9 @@ $mdw-fab__icon-size: dp(24) !default;
 .mdw-fab__button.mdw-button {
   order: -1;
 
-  min-height: 0;
-  min-width: 0;
+  box-sizing: content-box;
+  height: dp(24);
+  min-width: dp(24);
   margin: 0;
   padding: dp(16);
 
@@ -72,7 +73,9 @@ $mdw-fab__icon-size: dp(24) !default;
 .mdw-fab__speed-dial {
   display: flex;
   position: absolute;
+  right: 0;
   bottom: 100%;
+  left: auto;
   align-items: center;
   flex-direction: inherit;
   order: 1;
@@ -80,7 +83,12 @@ $mdw-fab__icon-size: dp(24) !default;
   pointer-events: none;
   z-index: inherit;
 
-  > .mdw-fab__button.mdw-button {
+  :root[dir="rtl"] & {
+    right: auto;
+    left: 0;
+  }
+
+  & > .mdw-fab__button.mdw-button {
     margin: 0 0 dp(16) 0;
 
     transition-duration: $mdw-motion__collapse-duration;
@@ -112,8 +120,8 @@ $mdw-fab__icon-size: dp(24) !default;
 .mdw-fab__icon {
   position: relative;
 
-  min-height: $mdw-fab__icon-size;
-  min-width: $mdw-fab__icon-size;
+  height: $mdw-fab__icon-size;
+  width: $mdw-fab__icon-size;
 
   transition-duration: 200ms;
   transition-property: margin;
