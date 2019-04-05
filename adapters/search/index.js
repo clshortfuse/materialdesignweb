@@ -3,7 +3,7 @@
 import { iterateSomeOfArrayLike, iterateArrayLike, getTextNode } from '../../core/dom';
 
 import * as List from '../../components/list/index';
-import * as ListItem from '../../components/list/item';
+import * as ListContent from '../../components/list/content';
 import * as TextField from '../../components/textfield/index';
 
 /**
@@ -57,8 +57,8 @@ function defaultItemTextParser(item) {
  * @return {Element} sibling
  */
 function selectSibling(list, backwards) {
-  const current = list.querySelector('.mdw-list__item[aria-selected="true"]');
-  const items = list.querySelectorAll('.mdw-list__item:not([aria-hidden="true"]):not([disabled])');
+  const current = list.querySelector('[role="option"][aria-selected="true"]');
+  const items = list.querySelectorAll('[role="option"]:not([aria-hidden="true"]):not([disabled])');
   let sibling;
   if (current && current.getAttribute('aria-hidden') !== 'true') {
     iterateSomeOfArrayLike(items, (item, index) => {
@@ -158,9 +158,6 @@ export default class SearchAdapter {
     this.textfield = options.textfield;
     this.list = options.list;
     this.list.setAttribute('role', 'listbox');
-    iterateArrayLike(this.list.getElementsByClassName('mdw-list__item'), (item) => {
-      item.setAttribute('role', 'option');
-    });
     List.attach(this.list);
     if (typeof options.textFilter === 'function') {
       this.filter = options.textFilter;
@@ -173,7 +170,7 @@ export default class SearchAdapter {
     /** @type {HTMLInputElement} */
     const input = (this.textfield.getElementsByClassName('mdw-textfield__input')[0]);
     this.input = input;
-    this.list.addEventListener(ListItem.ACTIVATE_EVENT, (event) => {
+    this.list.addEventListener(ListContent.ACTIVATE_EVENT, (event) => {
       /** @type {HTMLElement} */
       const item = (event.target);
       this.onItemSelected(item);
@@ -423,8 +420,8 @@ export default class SearchAdapter {
       return;
     }
     const input = this.input.value;
-    const current = this.list.querySelector('.mdw-list__item[aria-selected="true"]');
-    const items = this.list.getElementsByClassName('mdw-list__item');
+    const current = this.list.querySelector('[role="option"][aria-selected="true"]');
+    const items = this.list.querySelectorAll('[role="option"]');
     let hasItem = false;
     iterateArrayLike(items, (item) => {
       const content = this.itemTextParser(item);
@@ -497,7 +494,7 @@ export default class SearchAdapter {
       }
       case 'Enter': {
         /** @type {HTMLElement} */
-        const current = this.list.querySelector('.mdw-list__item[aria-selected="true"]');
+        const current = this.list.querySelector('[role="option"][aria-selected="true"]');
         if (current) {
           if (this.hideDropDown()) {
             current.click();
@@ -509,7 +506,7 @@ export default class SearchAdapter {
       }
       case 'Tab': {
         /** @type {HTMLElement} */
-        const current = this.list.querySelector('.mdw-list__item[aria-selected="true"]');
+        const current = this.list.querySelector('[role="option"][aria-selected="true"]');
         if (current) {
           if (this.hideDropDown()) {
             current.click();
