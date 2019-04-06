@@ -118,10 +118,12 @@ export function detach(snackbarElement) {
  * @return {void}
  */
 export function onButtonClick(event) {
-  if (event && event.currentTarget instanceof HTMLAnchorElement) {
+  /** @type {HTMLElement} */
+  const buttonElement = (event.currentTarget);
+  if (buttonElement instanceof HTMLAnchorElement) {
     event.preventDefault();
   }
-  const snackbarElement = findElementParentByClassName(event.currentTarget, 'mdw-snackbar');
+  const snackbarElement = findElementParentByClassName(buttonElement, 'mdw-snackbar');
   hide(snackbarElement);
 }
 
@@ -249,6 +251,14 @@ export function show(snackbarElement) {
  */
 export function update(element, options) {
   element.classList.add('mdw-snackbar');
+  element.classList.add('mdw-theme');
+  if (!element.hasAttribute('mdw-surface')) {
+    // Guidelines conflict stating a background should be fully opaque
+    // But says spec says to use #000000 with 87% opacity
+    // Calculated against white, opaque value is #212121 (Grey-900)
+    element.setAttribute('mdw-surface', 'background 900');
+    element.setAttribute('mdw-dark', '');
+  }
   let span = element.getElementsByTagName('span')[0];
   if (span) {
     // To trigger screen readers, we destroy and create a new span and textnode
