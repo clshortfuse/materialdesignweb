@@ -126,6 +126,9 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
     // Fallbacks handled by __mdw-theme__build-fallbacks()
   }
 
+  .mdw-theme[mdw-surface="monochrome"] {
+    background-color: __mdwThemeGlobalValue("monochrome-surface", $type, $theme);
+  }
   .mdw-theme[mdw-surface="card"] {
     background-color: __mdwThemeGlobalValue("card-surface", $type, $theme);
   }
