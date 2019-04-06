@@ -5,16 +5,16 @@ $mdw-theme__colors: () !default;
 $mdw-theme__fallbacks: ('rules', 'colors', 'themes', 'ieonly') !default;
 $mdw-theme__variables: ('rules', 'colors', 'themes', 'supports') !default;
 
-$mdw-theme__default-ink:         (('foreground-light', 0.87), ('foreground-dark', 1.00)) !default;
-$mdw-theme__medium-ink:          (('foreground-light', 0.60), ('foreground-dark', 0.70)) !default;
-$mdw-theme__inactive-ink:        (('foreground-light', 0.38), ('foreground-dark', 0.50)) !default;
-$mdw-theme__divider-ink:         (('foreground-light', 0.12), ('foreground-dark', 0.24)) !default;
-$mdw-theme__card-surface:        ((#fff, 1.00), ('background', '800', 1.00)) !default;
-$mdw-theme__content-surface:     (('background', '50', 1.00), ('background', '900', 1.00)) !default;
-$mdw-theme__monochrome-surface:  ((#fff, 1.00), (#000, 1.00)) !default;
-$mdw-theme__primary-contrast-ink: (('primary', 'A700', 1.00), ('primary', 'A200', 1.00)) !default;
-$mdw-theme__accent-contrast-ink:  (('accent', 'A700', 1.00), ('accent', 'A200', 1.00)) !default;
-$mdw-theme__warn-contrast-ink:    (('warn', 'A700', 1.00), ('warn', 'A200', 1.00)) !default;
+$mdw-theme__default-ink:          (('foreground-light', 0.87), ('foreground-dark', 1.00)) !default;
+$mdw-theme__medium-ink:           (('foreground-light', 0.60), ('foreground-dark', 0.70)) !default;
+$mdw-theme__inactive-ink:         (('foreground-light', 0.38), ('foreground-dark', 0.50)) !default;
+$mdw-theme__divider-ink:          (('foreground-light', 0.12), ('foreground-dark', 0.24)) !default;
+$mdw-theme__card-surface:         ((#fff, 1.00), ('background', '800', 1.00)) !default;
+$mdw-theme__content-surface:      (('background', '50', 1.00), ('background', '900', 1.00)) !default;
+$mdw-theme__monochrome-surface:   ((#fff, 1.00), (#000, 1.00)) !default;
+$mdw-theme__primary-contrast-ink: (('primary', 'A700', 1.00), ('primary', 'A100', 1.00)) !default;
+$mdw-theme__accent-contrast-ink:  (('accent', 'A700', 1.00), ('accent', 'A100', 1.00)) !default;
+$mdw-theme__warn-contrast-ink:    (('warn', 'A700', 1.00), ('warn', 'A100', 1.00)) !default;
 
 $mdw-theme__global-variables: (
   default-ink:           $mdw-theme__default-ink,
