@@ -4,9 +4,10 @@
 @import '../../core/_platform.scss';
 @import '../../core/_type.scss';
 
+// Guidelines state background is #616161, which is Grey 700
+
 $mdw-tooltip__desktop-margin: dp(14) !default;
 $mdw-tooltip__mobile-margin: dp(24) !default;
-$mdw-tooltip__background-color: #616161 !default; // material-grey-700
 $mdw-tooltip__touch-fade-out-time: 1.5s !default;
 $mdw-tooltip__touch-min-hold-time: 500ms !default;
 
@@ -51,10 +52,8 @@ $mdw-tooltip__touch-min-hold-time: 500ms !default;
   
   transform: translateX(-50%) translateY($mdw-tooltip__desktop-margin);
   z-index: 8;
-  
-  background-color: $mdw-tooltip__background-color;
+
   border-radius: dp(4);
-  color: #fff;
 
   line-height: 1;
   white-space: nowrap;
