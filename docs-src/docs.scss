@@ -268,11 +268,10 @@ html.mdw-theme[mdw-theme="colored"] {
   }
 }
 
-.demo-ink-item,
-.demo-surface-item {
+.demo-core-item {
   border-radius: 8px;
-  min-width: 4em;
-  min-height: 4em;
+  min-width: 5em;
+  height: 5em;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -282,12 +281,14 @@ html.mdw-theme[mdw-theme="colored"] {
   -ms-user-select: none;
   -webkit-user-select: none;
   user-select: none;
-}
-
-.demo-ink-item {
-  background-color: black;
-  .mdw-theme[mdw-light] &,
-  .mdw-theme[mdw-dark] .mdw-theme[mdw-light] & {
-    background-color: white;
+  &[demo-round] {
+    border-radius: 50%;
+    max-width: 5em;
+    max-height: 5em;
+  }
+  &[demo-square] {
+    border-radius: 0;
+    max-width: 5em;
+    max-height: 5em;
   }
 }

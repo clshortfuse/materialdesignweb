@@ -117,7 +117,7 @@ function onOptionChange(event) {
         break;
       }
       if (!buttonElement) {
-        buttonElement = document.createElement('button');
+        buttonElement = document.createElement('a');
         buttonElement.classList.add('mdw-button');
         buttonElement.classList.add('mdw-theme');
         buttonElement.setAttribute('mdw-ink', 'accent');

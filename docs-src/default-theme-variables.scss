@@ -1,0 +1,12 @@
+@import "../core/theme/index.scss";
+
+$mdw-config: (
+  themes: (
+    default: ('indigo', 'pink', 'red', 'grey', black, white),
+  ),
+  colors: ('amber', 'cyan', 'red', 'green', 'deeppurple', 'purple', 'blue', 'yellow', 'teal'),
+  fallbacks: false,
+);
+
+@include mdw-theme__build($mdw-config);
+@import "../_theme.scss";

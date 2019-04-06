@@ -1,0 +1,52 @@
+include ../_mixins.pug
+
++header("overlay")
+  .mdw-grid(mdw-margin-top mdw-margin-bottom mdw-stretch)
+    .mdw-grid__item(mdw-colspan="100%")
+      .mdw-grid__content
+        h2.mdw-type CSS Only
+        p.mdw-type No touch detection
+    .mdw-grid__item(mdw-colspan="4")
+      .mdw-grid__content
+        h6.mdw-type Default Ink
+        .display-flex.flex-column
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome") Normal
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-selected="false") [aria-checked="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-pressed="false") [aria-pressed="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-selected="true") [aria-checked="true"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-pressed="true") [aria-pressed="true"]
+    .mdw-grid__item(mdw-colspan="4")
+      .mdw-grid__content
+        h6.mdw-type Accent Ink
+        .display-flex.flex-column
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome") Normal
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-selected="false") [aria-checked="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-pressed="false") [aria-pressed="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-selected="true") [aria-checked="true"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-pressed="true") [aria-pressed="true"]
+    .mdw-grid__item(mdw-colspan="100%")
+      .mdw-grid__content
+        h2.mdw-type JS
+        p.mdw-type No hover or focus overlay on touch
+    .mdw-grid__item(mdw-colspan="4")
+      .mdw-grid__content
+        h6.mdw-type Default Ink
+        .display-flex.flex-column.js
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome") Normal
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-selected="false") [aria-checked="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-pressed="false") [aria-pressed="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-selected="true") [aria-checked="true"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-pressed="true") [aria-pressed="true"]
+    .mdw-grid__item(mdw-colspan="4")
+      .mdw-grid__content
+        h6.mdw-type Accent Ink
+        .display-flex.flex-column.js
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome") Normal
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-selected="false") [aria-checked="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-pressed="false") [aria-pressed="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-selected="true") [aria-checked="true"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-pressed="true") [aria-pressed="true"]
+
+      
+
+  script(src='overlay.min.js')

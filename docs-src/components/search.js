@@ -1,4 +1,5 @@
 import * as ListItem from '../../components/list/item';
+import * as ListContent from '../../components/list/content';
 import * as TextField from '../../components/textfield/index';
 import SearchAdapter from '../../adapters/search/index';
 import { iterateArrayLike, setTextNode } from '../../core/dom';
@@ -30,7 +31,6 @@ function performFakeSearch(filter) {
  */
 function searchResultRenderer(listItemElement, result) {
   if (!listItemElement.children.length) {
-    listItemElement.setAttribute('role', 'option'); // Important!
     const markup = `
     <div class="mdw-list__content">
       <div class="mdw-list__text">
@@ -113,9 +113,12 @@ function buildCustomSearch1() {
     },
   });
 
-  searchDocsCustom.list.addEventListener(ListItem.ACTIVATE_EVENT, (event) => {
-    const el = /** @type {HTMLLIElement} */ (event.target);
-    const selectedItem = customListAdapter.elementMap.get(el);
+  searchDocsCustom.list.addEventListener(ListContent.ACTIVATE_EVENT, (event) => {
+    /** @type {HTMLElement} */
+    const listContentElement = (event.target);
+    /** @type {HTMLLIElement} */
+    const listItemElement = (listContentElement.parentElement);
+    const selectedItem = customListAdapter.elementMap.get(listItemElement);
     const text = `${selectedItem.line1}:${selectedItem.line2}`;
     document.getElementById('search-result-custom1').textContent = text;
   });
@@ -187,8 +190,12 @@ function buildCustomSearch2() {
       resolve();
     },
   });
-  searchDocsCustom.list.addEventListener(ListItem.ACTIVATE_EVENT, (event) => {
-    const selectedItem = customListAdapter.elementMap.get(event.target);
+  searchDocsCustom.list.addEventListener(ListContent.ACTIVATE_EVENT, (event) => {
+    /** @type {HTMLElement} */
+    const listContentElement = (event.target);
+    /** @type {HTMLLIElement} */
+    const listItemElement = (listContentElement.parentElement);
+    const selectedItem = customListAdapter.elementMap.get(listItemElement);
     const text = `${selectedItem.line1}:${selectedItem.line2}`;
     document.getElementById('search-result-custom2').textContent = text;
   });

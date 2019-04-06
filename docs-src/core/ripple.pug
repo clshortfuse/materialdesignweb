@@ -1,0 +1,21 @@
+include ../_mixins.pug
+
++header("ripple")
+  .mdw-grid(mdw-margin-top mdw-margin-bottom mdw-stretch)
+    .mdw-grid__item(mdw-colspan="4")
+      .mdw-grid__content
+        h6.mdw-type CSS Only
+        .display-flex.flex-column
+          .demo-core-item.mdw-elevation.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="default" mdw-surface="monochrome") Default Ink
+          .demo-core-item.mdw-elevation.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary-contrast" mdw-surface="monochrome") Primary Contrast Ink
+          .demo-core-item.mdw-elevation.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="accent-contrast" mdw-surface="monochrome") Accent Contrast Ink
+          .demo-core-item.mdw-elevation.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn-contrast" mdw-surface="monochrome") Warn Contrast Ink
+    .mdw-grid__item(mdw-colspan="4")
+      .mdw-grid__content
+        h6.mdw-type Javascript
+        .display-flex.flex-column.js
+          .demo-core-item.mdw-elevation.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="default" mdw-surface="monochrome") Default Ink
+          .demo-core-item.mdw-elevation.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary-contrast" mdw-surface="monochrome") Primary Contrast Ink
+          .demo-core-item.mdw-elevation.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="accent-contrast" mdw-surface="monochrome") Accent Contrast Ink
+          .demo-core-item.mdw-elevation.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn-contrast" mdw-surface="monochrome") Warn Contrast Ink
+  script(src='ripple.min.js')

@@ -28,9 +28,14 @@ mixin androidnavbar
 mixin target(url)
   .target(style=`background-image: url(${url})`)
 
-mixin navListItem(key, icon, name, activatedKey)
-  li.mdw-list__item(role="none")
-    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(aria-current=(activatedKey==key ? 'page' : false) href=(key + ".html") mdw-ink="accent")
+mixin navListItem(key, icon, name, activatedKey, color="accent-contrast")
+  li.mdw-list__item
+    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(
+    aria-current=(activatedKey==key ? 'page' : false)
+    aria-selected=(activatedKey==key ? 'true' : 'false')
+    href=(key + ".html")
+    mdw-ink=color
+    )
       .mdw-list__icon.material-icons=icon
       .mdw-list__text
         .mdw-list__text-block=name
@@ -53,8 +58,10 @@ mixin header(activated)
       link(rel='stylesheet' href='//fonts.googleapis.com/css?family=Merriweather:300,400,500')
       link(rel='stylesheet' href='docs.min.css')
       link(rel='stylesheet' href='spec.min.css')
-      link(rel='stylesheet' href='theme-fallbacks.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
-      link(rel='stylesheet' href='theme-variables.min.css')
+      link(rel='stylesheet' href='default-theme-fallbacks.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
+      link(rel='stylesheet' href='default-theme-variables.min.css')
+      link(rel='stylesheet' href='alt-theme-fallbacks.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
+      link(rel='stylesheet' href='alt-theme-variables.min.css')
 
       script(src='prerender.common.min.js')
       script(src='prerender.min.js')
@@ -63,13 +70,21 @@ mixin header(activated)
       .mdw-layout__dialogs
       nav.mdw-layout__navdrawer
         .mdw-layout__sheet-content
-          ul.mdw-list
-            li.mdw-list__item(role="none")
+          ul.mdw-list(role="tree")
+            li.mdw-list__item
               a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(aria-current=activated=='Home' href='index.html' mdw-ink="primary")
                 .mdw-list__text Home
-            .mdw-list__subheader Theme
-            +navListItem('ink', 'border_color', 'Ink', activated)
-            +navListItem('surface', 'format_color_fill', 'Surface', activated)
+            .mdw-list__subheader Core
+            +navListItem('overlay', 'tonality', 'Overlay', activated, 'primary-contrast')
+            +navListItem('ripple', 'center_focus_strong', 'Ripple', activated, 'primary-contrast')
+            li.mdw-list__expander.mdw-theme(aria-expanded="true")
+              span.mdw-list__expander-content
+                .mdw-list__text Theme
+                .mdw-list__secondary.material-icons expand_more
+              ul.mdw-list__item-group(role="group")
+                +navListItem('ink', 'border_color', 'Ink', activated, 'primary-contrast')
+                +navListItem('surface', 'format_color_fill', 'Surface', activated, 'primary-contrast')
+            +navListItem('transition', 'open_in_new', 'Transition', activated, 'primary-contrast')
             .mdw-list__subheader Components
             +navListItem('appbar', 'web_asset', 'App Bar', activated)
             +navListItem('bottomnav', 'call_to_action', 'Bottom Navigation', activated)

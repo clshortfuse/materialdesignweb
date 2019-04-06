@@ -1,0 +1,76 @@
+include ../_mixins.pug
+
++header("transition")
+  .mdw-grid(mdw-margin-top mdw-margin-bottom mdw-stretch)
+    .mdw-grid__item(mdw-colspan="100%")
+      .mdw-grid__content
+        .display-flex(flex-align-items="center")
+          h5.mdw-type Select two items.
+    .mdw-grid__item(mdw-colspan="25%")
+      .mdw-grid__content
+        .display-flex.flex-column
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="white" mdw-light)
+            span Small
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="black" mdw-dark)
+            span Small
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary 500" mdw-dark)
+            span Small
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="accent 500" mdw-dark)
+            span Small
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn 500" mdw-dark)
+            span Small
+    .mdw-grid__item(mdw-colspan="50%")
+      .mdw-grid__content
+        .display-flex.flex-column
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="white" mdw-light)
+            span Medium
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="black" mdw-dark)
+            span Medium
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary 500" mdw-dark)
+            span Medium
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="accent 500" mdw-dark)
+            span Medium
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn 500" mdw-dark)
+            span Medium
+    .mdw-grid__item(mdw-colspan="25%")
+      .mdw-grid__content
+        .display-flex.flex-column(flex-align-items="center")
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="white" mdw-light demo-round)
+            span Round
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="black" mdw-dark demo-round)
+            span Round
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary 500" mdw-dark demo-round)
+            span Round
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="accent 500" mdw-dark demo-round)
+            span Round
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn 500" mdw-dark demo-round)
+            span Round
+    .mdw-grid__item(mdw-colspan="25%")
+      .mdw-grid__content
+        .display-flex.flex-column(flex-align-items="center")
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="white" mdw-light demo-square)
+            span Square
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="black" mdw-dark demo-square)
+            span Square
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary 500" mdw-dark demo-square)
+            span Square
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="accent 500" mdw-dark demo-square)
+            span Square
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn 500" mdw-dark demo-square)
+            span Square
+    .mdw-grid__item(mdw-colspan="75%")
+      .mdw-grid__content
+        .display-flex.flex-column
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="white" mdw-light)
+            span Wide
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="black" mdw-dark)
+            span Wide
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary 500" mdw-dark)
+            span Wide
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="accent 500" mdw-dark)
+            span Wide
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn 500" mdw-dark)
+            span Wide
+    
+    
+  script(src='transition.min.js')

@@ -2,31 +2,31 @@ include ../_mixins.pug
 
 mixin button-test
   .display-flex.flex-wrap
-    button.mdw-button.mdw-overlay.mdw-ripple Text
-    button.mdw-button.mdw-overlay.mdw-ripple(mdw-raised) Contained
-    button.mdw-button.mdw-overlay.mdw-ripple(mdw-raised aria-disabled="true") Disabled
-    button.mdw-button.mdw-overlay.mdw-ripple(mdw-outline) Outlined
+    a.mdw-button.mdw-overlay.mdw-ripple Text
+    a.mdw-button.mdw-overlay.mdw-ripple(mdw-raised) Contained
+    a.mdw-button.mdw-overlay.mdw-ripple(mdw-raised aria-disabled="true") Disabled
+    a.mdw-button.mdw-overlay.mdw-ripple(mdw-outline) Outlined
   div(style="height:24px")
   .display-flex.flex-wrap
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="primary") Text
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="primary" mdw-raised) Contained
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="primary" mdw-raised aria-disabled="true") Disabled
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent A100") Accent
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-outline mdw-ink="accent A100") Outlined
+    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="primary") Text
+    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="primary" mdw-raised) Contained
+    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="primary" mdw-raised aria-disabled="true") Disabled
+    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent A100") Accent
+    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-outline mdw-ink="accent A100") Outlined
   div(style="height:24px")
   .display-flex.flex-wrap
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="primary" mdw-dark) Text
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="primary" mdw-dark mdw-raised) Contained
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="primary" mdw-dark mdw-raised aria-disabled="true") Disabled
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="accent A100" mdw-light mdw-raised) Accent
+    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="primary" mdw-dark) Text
+    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="primary" mdw-dark mdw-raised) Contained
+    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="primary" mdw-dark mdw-raised aria-disabled="true") Disabled
+    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="accent A100" mdw-light mdw-raised) Accent
   div(style="height:24px")
   .display-flex.flex-wrap
-    button.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) favorite
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="warn" mdw-dark mdw-icon).material-icons favorite
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="warn" mdw-dark mdw-icon).material-icons favorite
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="warn" mdw-dark mdw-icon mdw-raised).material-icons favorite
-    button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="warn" mdw-dark mdw-icon mdw-raised aria-disabled="true").material-icons favorite
-    button.mdw-button.mdw-overlay.mdw-ripple(mdw-icon aria-disabled="true").material-icons favorite
+    a.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) favorite
+    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="warn" mdw-dark mdw-icon).material-icons favorite
+    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="warn" mdw-dark mdw-icon).material-icons favorite
+    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="warn" mdw-dark mdw-icon mdw-raised).material-icons favorite
+    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="warn" mdw-dark mdw-icon mdw-raised aria-disabled="true").material-icons favorite
+    a.mdw-button.mdw-overlay.mdw-ripple(mdw-icon aria-disabled="true").material-icons favorite
 
 +header("button")
   .mdw-grid(mdw-margin-top mdw-margin-bottom mdw-stretch)
@@ -38,7 +38,7 @@ mixin button-test
       .mdw-grid__content
         .component-sample
           .display-flex
-            button.mdw-button.mdw-theme(mdw-ink="accent A200") Button
+            a.mdw-button.mdw-theme(mdw-ink="accent A200") Button
     .mdw-grid__item(mdw-colspan="6")
       .mdw-grid__content
         .mdw-type(mdw-style="subtitle") Javascript
@@ -164,17 +164,17 @@ mixin button-test
         .mdw-type(mdw-style="subtitle") HTML Element Type
         div
           label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="htmltype" value="div")
+            input.mdw-selection__input.mdw-overlay(type="radio" name="htmltype" value="a" checked)
             .mdw-selection__icon
-            .mdw-selection__label HTMLElement
+            .mdw-selection__label HTMLAnchorElement
           label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="htmltype" value="button" checked)
+            input.mdw-selection__input.mdw-overlay(type="radio" name="htmltype" value="button")
             .mdw-selection__icon
             .mdw-selection__label HTMLButtonElement
           label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="htmltype" value="a")
+            input.mdw-selection__input.mdw-overlay(type="radio" name="htmltype" value="div")
             .mdw-selection__icon
-            .mdw-selection__label HTMLAnchorElement
+            .mdw-selection__label HTMLElement
     .mdw-grid__item(mdw-colspan="100%" style="max-height:0")
     .mdw-grid__item(mdw-colspan="6")
       .mdw-grid__content

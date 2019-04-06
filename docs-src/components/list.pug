@@ -9,17 +9,17 @@ include ../_mixins.pug
         ul.mdw-list
           li.mdw-list__item
             a.mdw-list__content Attractions
-          .mdw-list__expander.mdw-theme(mdw-ink="teal")
-            li.mdw-list__item
-              a.mdw-list__content
-                .mdw-list__text Dining
-                .mdw-list__secondary.material-icons expand_more
-            li.mdw-list__item
-              a.mdw-list__content Breakfast &amp; brunch
-            li.mdw-list__item
-              a.mdw-list__content New American
-            li.mdw-list__item
-              a.mdw-list__content Sushi bars
+          li.mdw-list__expander.mdw-theme(mdw-ink="teal")
+            span.mdw-list__expander-content
+              .mdw-list__text Dining
+              .mdw-list__secondary.material-icons expand_more
+            ul.mdw-list__item-group(role="group")
+              li.mdw-list__item
+                a.mdw-list__content Breakfast &amp; brunch
+              li.mdw-list__item
+                a.mdw-list__content New American
+              li.mdw-list__item
+                a.mdw-list__content Sushi bars
           li.mdw-list__item
             a.mdw-list__content Education
           li.mdw-list__item
