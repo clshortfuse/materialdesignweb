@@ -193,24 +193,28 @@ function buildTransitionEndListener(element, property, callback, expectedDuratio
 }
 
 /**
- * @param {HTMLElement} fromShapeElement
- * @param {HTMLElement} toShapeElement
- * @param {HTMLElement} fromContentElement
- * @param {HTMLElement} toContentElement
- * @param {number} [duration=250|300] (250ms collapse or 300ms expand)
- * @param {boolean} [revertFrom=false] Revert from elements on completion
+ * @typedef {Object} TransitionElementOptions
+ * @prop {HTMLElement} fromShapeElement
+ * @prop {HTMLElement} toShapeElement
+ * @prop {HTMLElement} fromContentElement
+ * @prop {HTMLElement} toContentElement
+ * @prop {number} [duration=250|300] (250ms collapse or 300ms expand)
+ * @prop {boolean} [revertFrom=false] Revert from elements on completion
+ * @prop {function(TransitionElementOptions)} [onTransitionEnd]
+ * @prop {function(TransitionElementOptions)} [onComplete]
+ */
+
+/**
+ * @param {TransitionElementOptions} options
  * @return {function():void} revertAllElements()
  */
-export function transitionElement(
-  fromShapeElement, toShapeElement,
-  fromContentElement, toContentElement,
-  duration,
-  revertFrom = false
-) {
-  const toStyleSyle = window.getComputedStyle(toShapeElement);
+export function transitionElement(options) {
+  const toStyleSyle = window.getComputedStyle(options.toShapeElement);
 
-  const shapeTransform = getShapeTransform(fromShapeElement, toShapeElement, toStyleSyle);
-  const contentTransform = getShapeTransform(toContentElement, fromContentElement);
+  const shapeTransform = getShapeTransform(
+    options.fromShapeElement, options.toShapeElement, toStyleSyle
+  );
+  const contentTransform = getShapeTransform(options.toContentElement, options.fromContentElement);
 
   const transitionProperties = [
     'transition',
@@ -231,10 +235,10 @@ export function transitionElement(
   const oldToContentProperties = {};
   const newFromShapeProperties = {};
   transitionProperties.forEach((prop) => {
-    oldFromShapeProperties[prop] = fromShapeElement.style.getPropertyValue(prop);
-    oldToShapeProperties[prop] = toShapeElement.style.getPropertyValue(prop);
-    oldFromContentProperties[prop] = fromContentElement.style.getPropertyValue(prop);
-    oldToContentProperties[prop] = toContentElement.style.getPropertyValue(prop);
+    oldFromShapeProperties[prop] = options.fromShapeElement.style.getPropertyValue(prop);
+    oldToShapeProperties[prop] = options.toShapeElement.style.getPropertyValue(prop);
+    oldFromContentProperties[prop] = options.fromContentElement.style.getPropertyValue(prop);
+    oldToContentProperties[prop] = options.toContentElement.style.getPropertyValue(prop);
     if (prop === 'box-shadow') {
       newFromShapeProperties[prop] = convertBoxShadow(
         toStyleSyle.getPropertyValue(prop),
@@ -280,57 +284,59 @@ export function transitionElement(
     }
   });
 
-  fromShapeElement.setAttribute('mdw-transition-busy', '');
-  toShapeElement.setAttribute('mdw-transition-busy', '');
-  toContentElement.setAttribute('mdw-transition-busy', '');
-  fromContentElement.setAttribute('mdw-transition-busy', '');
+  options.fromShapeElement.setAttribute('mdw-transition-busy', '');
+  options.toShapeElement.setAttribute('mdw-transition-busy', '');
+  options.toContentElement.setAttribute('mdw-transition-busy', '');
+  options.fromContentElement.setAttribute('mdw-transition-busy', '');
 
   // Hide toContentElement and overlay over fromContentElement immediately
-  toContentElement.style.setProperty('opacity', '0');
-  toContentElement.style.setProperty('transition', 'none');
-  toContentElement.style.setProperty('transform-origin', '0 0 0');
-  toContentElement.style.setProperty('transform', contentTransform);
-  toContentElement.style.setProperty('z-index', '9');
+  options.toContentElement.style.setProperty('opacity', '0');
+  options.toContentElement.style.setProperty('transition', 'none');
+  options.toContentElement.style.setProperty('transform-origin', '0 0 0');
+  options.toContentElement.style.setProperty('transform', contentTransform);
+  options.toContentElement.style.setProperty('z-index', '9');
+  options.toContentElement.style.setProperty('visibility', 'visible');
 
-  fromContentElement.style.setProperty('opacity', '1');
+  options.fromContentElement.style.setProperty('opacity', '1');
 
-  fromShapeElement.style.setProperty('transition', 'none');
-  fromShapeElement.style.setProperty('transform-origin', '0 0 0');
-  fromShapeElement.style.setProperty('transform', 'none');
-  fromShapeElement.style.setProperty('z-index', '8');
+  options.fromShapeElement.style.setProperty('transition', 'none');
+  options.fromShapeElement.style.setProperty('transform-origin', '0 0 0');
+  options.fromShapeElement.style.setProperty('transform', 'none');
+  options.fromShapeElement.style.setProperty('z-index', '8');
 
-  toShapeElement.style.setProperty('background-color', 'transparent');
-  toShapeElement.style.setProperty('filter', 'none');
-  toShapeElement.style.setProperty('box-shadow', 'none');
+  options.toShapeElement.style.setProperty('background-color', 'transparent');
+  options.toShapeElement.style.setProperty('filter', 'none');
+  options.toShapeElement.style.setProperty('box-shadow', 'none');
+  options.toShapeElement.style.setProperty('visibility', 'visible');
 
   const revertFunction = () => {
     transitionProperties.forEach((prop) => {
       if (oldFromShapeProperties[prop] == null) {
-        fromShapeElement.style.removeProperty(prop);
+        options.fromShapeElement.style.removeProperty(prop);
       } else {
-        fromShapeElement.style.setProperty(prop, oldFromShapeProperties[prop]);
+        options.fromShapeElement.style.setProperty(prop, oldFromShapeProperties[prop]);
       }
       if (oldToShapeProperties[prop] == null) {
-        toShapeElement.style.removeProperty(prop);
+        options.toShapeElement.style.removeProperty(prop);
       } else {
-        toShapeElement.style.setProperty(prop, oldToShapeProperties[prop]);
+        options.toShapeElement.style.setProperty(prop, oldToShapeProperties[prop]);
       }
       if (oldFromContentProperties[prop] == null) {
-        fromContentElement.style.removeProperty(prop);
+        options.fromContentElement.style.removeProperty(prop);
       } else {
-        fromContentElement.style.setProperty(prop, oldFromContentProperties[prop]);
+        options.fromContentElement.style.setProperty(prop, oldFromContentProperties[prop]);
       }
       if (oldToContentProperties[prop] == null) {
-        toContentElement.style.removeProperty(prop);
+        options.toContentElement.style.removeProperty(prop);
       } else {
-        toContentElement.style.setProperty(prop, oldToContentProperties[prop]);
+        options.toContentElement.style.setProperty(prop, oldToContentProperties[prop]);
       }
     });
   };
 
   nextTick(() => {
     nextTick(() => {
-      let calculatedDuration = duration;
+      let calculatedDuration = options.duration;
       if (calculatedDuration == null) {
         if (shapeTransform.scaleX * shapeTransform.scaleY >= 1) {
           calculatedDuration = 300; // expand
@@ -351,89 +357,94 @@ export function transitionElement(
         `visibility ${fadeOutTime}ms cubic-bezier(0.0, 0.0, 0.2, 1) 0ms`,
       ].join(', ');
 
-      fromShapeElement.style.setProperty('transition', transformTransition);
+      options.fromShapeElement.style.setProperty('transition', transformTransition);
       transitionProperties.forEach((prop) => {
         if (prop === 'transform') {
-          fromShapeElement.style.setProperty('transform', shapeTransform);
+          options.fromShapeElement.style.setProperty('transform', shapeTransform);
         } else if (prop === 'transition') {
           // noop;
         } else if (prop === 'transform-origin') {
-          fromShapeElement.style.setProperty('transform-origin', '0 0 0');
+          options.fromShapeElement.style.setProperty('transform-origin', '0 0 0');
         } else if (prop === 'z-index') {
-          fromShapeElement.style.setProperty('z-index', '8');
+          options.fromShapeElement.style.setProperty('z-index', '8');
         } else if (prop === 'visibility') {
-          fromShapeElement.style.setProperty('visibility', 'hidden');
+          options.fromShapeElement.style.setProperty('visibility', 'hidden');
         } else if (newFromShapeProperties[prop] == null) {
-          fromShapeElement.style.removeProperty(prop);
+          options.fromShapeElement.style.removeProperty(prop);
         } else {
-          fromShapeElement.style.setProperty(prop, newFromShapeProperties[prop]);
+          options.fromShapeElement.style.setProperty(prop, newFromShapeProperties[prop]);
         }
       });
 
       nextTick(() => {
-        buildTransitionEndListener(fromShapeElement, 'transform', () => {
+        buildTransitionEndListener(options.fromShapeElement, 'transform', () => {
           transitionProperties.forEach((prop) => {
             if (prop === 'transition') {
-              toShapeElement.style.setProperty('transition', 'none');
-              toContentElement.style.setProperty('transition', 'none');
+              options.toShapeElement.style.setProperty('transition', 'none');
+              options.toContentElement.style.setProperty('transition', 'none');
             } else {
               if (oldToShapeProperties[prop] == null) {
-                toShapeElement.style.removeProperty(prop);
+                options.toShapeElement.style.removeProperty(prop);
               } else {
-                toShapeElement.style.setProperty(prop, oldToShapeProperties[prop]);
+                options.toShapeElement.style.setProperty(prop, oldToShapeProperties[prop]);
               }
               if (oldToContentProperties[prop] == null) {
-                toContentElement.style.removeProperty(prop);
+                options.toContentElement.style.removeProperty(prop);
               } else {
-                toContentElement.style.setProperty(prop, oldToContentProperties[prop]);
+                options.toContentElement.style.setProperty(prop, oldToContentProperties[prop]);
               }
             }
 
-            if (prop === 'visibility' && !revertFrom) {
+            if (prop === 'visibility' && !options.revertFrom) {
               return;
             }
             if (oldFromContentProperties[prop] == null) {
-              fromContentElement.style.removeProperty(prop);
+              options.fromContentElement.style.removeProperty(prop);
             } else {
-              fromContentElement.style.setProperty(prop, oldFromContentProperties[prop]);
+              options.fromContentElement.style.setProperty(prop, oldFromContentProperties[prop]);
             }
             if (oldFromShapeProperties[prop] == null) {
-              fromShapeElement.style.removeProperty(prop);
+              options.fromShapeElement.style.removeProperty(prop);
             } else {
-              fromShapeElement.style.setProperty(prop, oldFromShapeProperties[prop]);
+              options.fromShapeElement.style.setProperty(prop, oldFromShapeProperties[prop]);
             }
           });
-
+          if (options.onTransitionEnd) {
+            options.onTransitionEnd(options);
+          }
           nextTick(() => {
             if (oldToShapeProperties.transition == null) {
-              toShapeElement.style.removeProperty('transition');
+              options.toShapeElement.style.removeProperty('transition');
             } else {
-              toShapeElement.style.setProperty('transition', oldToShapeProperties.transition);
+              options.toShapeElement.style.setProperty('transition', oldToShapeProperties.transition);
             }
             if (oldToContentProperties.transition == null) {
-              toContentElement.style.removeProperty('transition');
+              options.toContentElement.style.removeProperty('transition');
             } else {
-              toContentElement.style.setProperty('transition', oldToContentProperties.transition);
+              options.toContentElement.style.setProperty('transition', oldToContentProperties.transition);
             }
-            fromShapeElement.removeAttribute('mdw-transition-busy');
-            toShapeElement.removeAttribute('mdw-transition-busy');
-            toContentElement.removeAttribute('mdw-transition-busy');
-            fromContentElement.removeAttribute('mdw-transition-busy');
+            options.fromShapeElement.removeAttribute('mdw-transition-busy');
+            options.toShapeElement.removeAttribute('mdw-transition-busy');
+            options.toContentElement.removeAttribute('mdw-transition-busy');
+            options.fromContentElement.removeAttribute('mdw-transition-busy');
+            if (options.onComplete) {
+              options.onComplete(options);
+            }
           });
         }, calculatedDuration);
       });
 
       // Fade out fromContent while shaping into new content
-      fromContentElement.style.setProperty('transition', fadeOutTransition);
-      fromContentElement.style.setProperty('opacity', '0');
-      fromContentElement.style.setProperty('visibility', 'hidden');
+      options.fromContentElement.style.setProperty('transition', fadeOutTransition);
+      options.fromContentElement.style.setProperty('opacity', '0');
+      options.fromContentElement.style.setProperty('visibility', 'hidden');
 
-      toContentElement.style.setProperty('transition', [
+      options.toContentElement.style.setProperty('transition', [
         transformTransition,
         fadeInTransition,
       ].join(', '));
-      toContentElement.style.setProperty('opacity', '1');
-      toContentElement.style.setProperty('transform', 'none');
+      options.toContentElement.style.setProperty('opacity', '1');
+      options.toContentElement.style.setProperty('transform', 'none');
     });
   });
 
