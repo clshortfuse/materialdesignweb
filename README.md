@@ -1,7 +1,24 @@
 # materialdesignweb
 Material Design for Web
 
-# component modules
+# Demo
+
+https://clshortfuse.github.io/materialdesignweb/
+
+# Getting started
+
+npm: `npm install @shortfuse/materialdesignweb`
+
+# Core modules
+
+| Module | CSS-Only Support | Description | status
+| :-------- | :-: | :- | :- |
+| [overlay](core/overlay/) | :white_check_mark: | Applies overlay states to components | RC
+| [ripple](core/ripple/) | :white_check_mark: | Applies press ripple on interactions | preRC
+| [theme](core/theme/) | :white_check_mark: | Applies ink and surface colors based on light/dark context | preRC
+| [transition](core/transition/) | :x: | Transitions shape and content between elements | preRC
+
+# Component Modules
 
 | Component | Integrations | CSS-Only Support | Keyboard Support | ARIA Role | ARIA Attributes | Status
 | :-------- | :----------: | :--------------: | :--------------: | :------:  | :-------------: | :-----
@@ -44,15 +61,7 @@ Material Design for Web
 | [tooltip](components/tooltip/) | | :white_check_mark: | | :x: | :x: | beta
 | [type](components/type/) | | :white_check_mark: | | | | RC
 
-# core modules
-
-| Module | CSS-Only Support | Description | status
-| :-------- | :-: | :- | :- |
-| [overlay](core/overlay/) | :white_check_mark: | Applies overlay states to components | RC
-| [ripple](core/ripple/) | :white_check_mark: | Applies press ripple on interactions | preRC
-| [theme](core/theme/) | :white_check_mark: | Applies ink and surface colors based on light/dark context | preRC
-
-# adapter classes
+# Adapter classes
 | Adapter | Components | Status
 | :-------- | :-- | :-
 | [datatable](adapters/datatable/) | button datatable† | preRC
@@ -60,13 +69,7 @@ Material Design for Web
 | [list](adapters/list/) | listitem† | preRC
 | [search](adapters/search/) | list† textfield† | preRC
 
-† Required
-
-‡ Apply manually
-
-----------
-
-## Code Statuses
+## Legend
 
 * planned - Planned for later
 * draft - Not yet functional
@@ -76,8 +79,7 @@ Material Design for Web
 * RC - Needs testing as-is
 * stable - Production-ready
 
-----
 
-Demo: https://clshortfuse.github.io/materialdesignweb/
+* † - Required
 
-npm: `npm install @shortfuse/materialdesignweb`
+* ‡ - Apply manually
