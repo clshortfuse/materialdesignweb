@@ -147,6 +147,27 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
   .mdw-theme[mdw-ink="divider"] {
     color: __mdwThemeGlobalValue("divider-ink", $type, $theme);
   }
+
+  .mdw-theme[mdw-ink="primary-contrast"] {
+    color: __mdwThemeGlobalValue("primary-contrast-ink", $type, $theme);
+    @if ($type == 'var') {
+      --ink-color: var(--primary-contrast-ink);
+    }
+  }
+
+  .mdw-theme[mdw-ink="accent-contrast"] {
+    color: __mdwThemeGlobalValue("accent-contrast-ink", $type, $theme);
+    @if ($type == 'var') {
+      --ink-color: var(--accent-contrast-ink);
+    }
+  }
+
+  .mdw-theme[mdw-ink="warn-contrast"] {
+    color: __mdwThemeGlobalValue("warn-contrast-ink", $type, $theme);
+    @if ($type == 'var') {
+      --ink-color: var(--warn-contrast-ink);
+    }
+  }
 }
 
 @mixin __mdw-theme__build-variables() {
