@@ -15,6 +15,70 @@ function pxToInteger(px) {
 
 /**
  * @param {string} stringValue
+ * @param {number} scaleX
+ * @param {number} scaleY
+ * @return {string}
+ */
+function convertBoxShadow(stringValue, scaleX, scaleY) {
+  /**
+   * @param {string} shadow
+   * @return {string}
+   */
+  function convertShadow(shadow) {
+    let inset = '';
+    let offsetX = '';
+    let offsetY = '';
+    let blurRadius = '';
+    let spreadRadius = '';
+    let color = '';
+    shadow.split(' ').forEach((value) => {
+      if (value.toLowerCase() === 'inset') {
+        inset = value;
+        return;
+      }
+      if (value.indexOf('(') !== -1 || !value.match(/\d/).length) {
+        color = value;
+        return;
+      }
+      const numberValue = pxToInteger(value);
+      if (!offsetX) {
+        offsetX = `${numberValue / scaleX}${value.replace(/[0-9\\-\\.]/g, '')}`;
+      } else if (!offsetY) {
+        offsetY = `${numberValue / scaleY}${value.replace(/[0-9\\-\\.]/g, '')}`;
+      } else if (!blurRadius) {
+        blurRadius = `${numberValue / (scaleX * scaleY)}${value.replace(/[0-9\-\\.]/g, '')}`;
+      } else {
+        spreadRadius = `${numberValue / (scaleX * scaleY)}${value.replace(/[0-9\-\\.]/g, '')}`;
+      }
+    });
+    return [
+      inset,
+      offsetX,
+      offsetY,
+      blurRadius,
+      spreadRadius,
+      color,
+    ].filter(v => v).join(' ');
+  }
+
+  if (!stringValue) {
+    return '';
+  }
+  return stringValue
+    // Strip spaces from anything parenthesized
+    .replace(/\([^)]+\)/g, substring => substring.replace(/ /g, ''))
+    // Split shadows by commas no inside parentheses
+    .match(/[^,(]+\([^)]+\)?[^,]*(|$)/g)
+    // Trim empty spaces
+    .map(shadow => shadow.trim())
+    // Convert values
+    .map(convertShadow)
+    // Rejoin shadows
+    .join(', ');
+}
+
+/**
+ * @param {string} stringValue
  * @param {number} width
  * @param {number} height
  * @return {{horizontal:number, vertical:number}}
@@ -171,8 +235,13 @@ export function transitionElement(
     oldToShapeProperties[prop] = toShapeElement.style.getPropertyValue(prop);
     oldFromContentProperties[prop] = fromContentElement.style.getPropertyValue(prop);
     oldToContentProperties[prop] = toContentElement.style.getPropertyValue(prop);
-    if (prop === 'border-radius') {
-      // Border-radius has to be scaled
+    if (prop === 'box-shadow') {
+      newFromShapeProperties[prop] = convertBoxShadow(
+        toStyleSyle.getPropertyValue(prop),
+        shapeTransform.scaleX,
+        shapeTransform.scaleY
+      );
+    } else if (prop === 'border-radius') {
       const topLeft = convertBorderRadius(
         toStyleSyle.getPropertyValue('border-top-left-radius'),
         shapeTransform.originWidth,
