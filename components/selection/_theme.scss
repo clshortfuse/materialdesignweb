@@ -1,3 +1,5 @@
+// https://material.io/archive/guidelines/components/selection-controls.html#selection-controls-switch
+
 @import '../../core/theme/index.scss';
 
 $mdw-selection__theme-values: (
@@ -15,7 +17,10 @@ $mdw-selection__theme-values: (
   track-off-color:         (('foreground-light', 1.00), ('foreground-dark', 1.00)),
   track-off-opacity:       (0.38, 0.30),
 
-  disabled-opacity:        (0.38, 0.50),
+  thumb-disabled-color:          (('background', '400', 1.00), ('background','800',1.00)),
+  track-disabled-opacity:        (0.12, 0.10),
+
+  disabled-opacity:              (0.38, 0.50),
 
   hover-opacity:                 (0.04, 0.08),
   focus-opacity:                 (0.12, 0.24),
@@ -36,7 +41,7 @@ $mdw-selection__theme-values: (
 @mixin mdw-selection__theme-rules($type: 'var', $theme: null) {
   .mdw-selection__input {
     &:not(:checked),
-    &:checked:active {
+    &:checked:active:not(:disabled) {
       --ink-color: var(--foreground-color);
       color: mdwSelectionThemeValue("ripple-color", $type, $theme);
       
@@ -107,7 +112,7 @@ $mdw-selection__theme-values: (
     color: mdwSelectionThemeValue("text-color", $type, $theme);
   }
 
-  .mdw-selection[mdw-switch] .mdw-selection__input[type="checkbox"] {
+  .mdw-selection[mdw-switch] .mdw-selection__input {
     & ~ .mdw-selection__icon {
       &::before {
         background-color: mdwSelectionThemeValue("thumb-off-color", $type, $theme);
@@ -130,8 +135,11 @@ $mdw-selection__theme-values: (
       }
     }
 
-    &:disabled ~ .mdw-selection__icon {
-      opacity: mdwSelectionThemeValue("disabled-opacity", $type, $theme);
+    &:disabled ~ .mdw-selection__icon::before {
+      background-color: mdwSelectionThemeValue("thumb-disabled-color", $type, $theme);
+    }
+    &:disabled ~ .mdw-selection__icon::after {
+      opacity: mdwSelectionThemeValue("track-disabled-opacity", $type, $theme);
     }
   }
 }
