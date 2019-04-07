@@ -67,10 +67,6 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
     cursor: not-allowed;
   }
 
-  &:checked {
-    // background-color: unquote("rgba(var(--accent-color), 0.26)");
-  }
-
   .mdw-selection:active > &:not([disabled]),
   .mdw-selection:hover > &:not([disabled]),
   &:active:not([disabled]),
@@ -275,10 +271,10 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
 .mdw-selection[mdw-switch] > .mdw-selection__input[type="checkbox"] {
   margin-right: dp(12);
 
-  transform: scale(1) translateX(#{dp(-2)});
+  transform: scale(0) translateX(#{dp(-2)});
 
   &:checked {
-    transform: scale(1) translateX(#{dp(14)});
+    transform: scale(0) translateX(#{dp(14)});
   }
 
   .mdw-selection:active:not(:disabled) > &,
@@ -345,13 +341,13 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
 .mdw-selection__icon::before,
 .mdw-selection__icon::after,
 .mdw-selection__input {
-  animation-delay: 0s;
   animation-duration: $mdw-motion__simple-duration;
   animation-timing-function: $mdw-motion__standard-easing;
+  animation-delay: 0s;
 
   transition-delay: 0s;
-  transition-timing-function: $mdw-motion__standard-easing;
   transition-duration: $mdw-motion__simple-duration;
+  transition-timing-function: $mdw-motion__standard-easing;
 }
 
 @keyframes showCheck {
