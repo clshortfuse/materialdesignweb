@@ -1,7 +1,6 @@
 @import '../../core/theme/index.scss';
 
 $mdw-card__theme-values: (
-  background:   $mdw-theme__card-surface,
   border-color: $mdw-theme__divider-ink,
 ) !default;
 
@@ -12,10 +11,6 @@ $mdw-card__theme-values: (
 @mixin mdw-card__theme-rules($type: 'var', $theme: null) {
   .mdw-card {
     border-color: mdwCardThemeValue("border-color", $type, $theme);
-
-    &:not([mdw-surface]) {
-      background-color: mdwCardThemeValue("background", $type, $theme);
-    }
   }
 }
 

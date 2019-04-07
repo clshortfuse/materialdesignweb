@@ -219,7 +219,7 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
     // border-width: $mdw-selection__checkbox-icon-thickness;
     // Increase visibility
     border-width: dp(2);
-    // border-color: unquote("rgb(var(--background-color))");
+    // border-color: unquote("rgba(var(--background-color))");
     animation-name: showCheck;
     animation-direction: normal;
     animation-fill-mode: forwards;

@@ -3,9 +3,6 @@
 
 $mdw-list__theme-values: (
   text-color:           $mdw-theme__default-ink,
-  secondary-text-color: $mdw-theme__medium-ink,
-  icon-color:           $mdw-theme__medium-ink,
-  meta-color:           $mdw-theme__medium-ink,
   divider-color:        $mdw-theme__divider-ink,
 
   focus-opacity:                 (0.12, 0.24),
@@ -23,11 +20,6 @@ $mdw-list__theme-values: (
 }
 
 @mixin mdw-list__theme-rules($type: 'var', $theme: null) {
-  .mdw-list__expander-content > .mdw-list__secondary,
-  .mdw-list__icon {
-    color: mdwListThemeValue("icon-color", $type, $theme);
-  }
-
   .mdw-list__text,
   .mdw-list__content:not(.mdw-theme) {
     color: mdwListThemeValue("text-color", $type, $theme);
@@ -42,10 +34,6 @@ $mdw-list__theme-values: (
         color: inherit;
       }
     }
-  }
-
-  .mdw-list__meta {
-    color: mdwListThemeValue("meta-color", $type, $theme);
   }
 
   .mdw-list[mdw-divider] {
@@ -107,12 +95,6 @@ $mdw-list__theme-values: (
       background-color: mdwListThemeValue("divider-color", $type, $theme);
     }
 
-    & > .mdw-list__expander-content {
-      .mdw-list__secondary {
-        color: mdwListThemeValue("secondary-text-color", $type, $theme);
-      }
-    }
-
     &[mdw-ink][aria-expanded="true"] {
       & > .mdw-list__expander-content,
       & > .mdw-list__expander-content::before,
@@ -122,12 +104,6 @@ $mdw-list__theme-values: (
     }
   }
   
-  .mdw-list__text-line,
-  .mdw-list__text-block {
-    &:not(:first-child) {
-      color: mdwListThemeValue("secondary-text-color", $type, $theme);
-    }
-  }
 }
 
 @each $name in map-keys($mdw-theme__themes) {

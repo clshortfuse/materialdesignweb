@@ -1,8 +1,6 @@
 @import '../../core/theme/index.scss';
 
 $mdw-banner__theme-values: (
-  background-color: $mdw-theme__card-surface,
-  text-color:       $mdw-theme__default-ink,
   border-color:     $mdw-theme__divider-ink,
 ) !default;
 
@@ -12,12 +10,7 @@ $mdw-banner__theme-values: (
 
 @mixin mdw-banner__theme-rules($type: 'var', $theme: null) {
   .mdw-banner {
-    background-color: mdwBannerThemeValue("background-color", $type, $theme);
     border-color: mdwBannerThemeValue("border-color", $type, $theme);
-  }
-
-  .mdw-banner__text {
-    color: mdwBannerThemeValue("text-color", $type, $theme);
   }
 }
 

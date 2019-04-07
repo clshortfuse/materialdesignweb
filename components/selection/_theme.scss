@@ -35,11 +35,11 @@ $mdw-selection__theme-values: (
 
 @mixin mdw-selection__theme-rules($type: 'var', $theme: null) {
   .mdw-selection__input {
-
     &:not(:checked),
     &:checked:active {
-      color: mdwSelectionThemeValue("ripple-color", $type, $theme);
       --ink-color: var(--foreground-color);
+      color: mdwSelectionThemeValue("ripple-color", $type, $theme);
+      
       & ~ .mdw-selection__icon {
         color: mdwSelectionThemeValue("icon-color", $type, $theme);
       }
@@ -85,7 +85,7 @@ $mdw-selection__theme-values: (
     &[type="checkbox"]:checked ~ .mdw-selection__icon::after {
       // Checkbox color is based on currently filled background-color
       @if($type == 'var') {
-        border-color: unquote("rgb(var(--surface-color))");
+        border-color: unquote("rgba(var(--surface-color))");
       } @else {
         // IE11 Fallback
         border-color: #fff;

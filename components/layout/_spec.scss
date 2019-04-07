@@ -466,8 +466,10 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   transition-duration: inherit;
   transition-property: box-shadow;
   transition-timing-function: inherit;
-  
+
   box-shadow: mdwElevation(4);
+  
+  color: transparent;
 
   .mdw-layout__appbar[mdw-autoraise]:not([mdw-raise]) & {
     filter: none;

@@ -62,26 +62,26 @@ $mdw-datatable__theme-values: (
   .mdw-datatable tbody {
     > tr {
       &:hover {
-        background-color: unquote("rgba(")
+        background-color: RGBA(
           #{mdwDatatableThemeValue("overlay-rgb", $type, $theme)},
           #{mdwDatatableThemeValue("hover-opacity", $type, $theme)}
-          unquote(")");
+        );
       }
 
       &:focus,
       > td:focus {
-        background-color: unquote("rgba(")
+        background-color: RGBA(
           #{mdwDatatableThemeValue("overlay-rgb", $type, $theme)},
           #{mdwDatatableThemeValue("focus-opacity", $type, $theme)}
-          unquote(")");
+        );
       }
 
       &:hover:focus,
       & > td:hover:focus {
-        background-color: unquote("rgba(")
+        background-color: RGBA(
           #{mdwDatatableThemeValue("overlay-rgb", $type, $theme)},
           #{mdwDatatableThemeValue("hover-focus-opacity", $type, $theme)}
-          unquote(")");
+        );
       }
     }
   }

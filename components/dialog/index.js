@@ -47,7 +47,7 @@ export function attach(element) {
   let dialogCloser = getChildElementByClass(element, 'mdw-dialog__close');
   if (!dialogCloser) {
     dialogCloser = document.createElement('div');
-    dialogCloser.classList.add('mdw-dialog__close');
+    dialogCloser.className = 'mdw-dialog__close';
     if (element.firstChild) {
       element.insertBefore(dialogCloser, element.firstChild);
     } else {
@@ -442,7 +442,7 @@ export function updateTitle(dialogElement, content) {
   }
   if (!title) {
     title = document.createElement('div');
-    title.classList.add('mdw-dialog__title');
+    title.className = 'mdw-dialog__title';
     const popup = dialogElement.getElementsByClassName('mdw-dialog__popup')[0];
     popup.insertBefore(title, popup.firstChild);
   }
@@ -486,7 +486,8 @@ export function updateBody(dialogElement, content) {
   }
   if (!body) {
     body = document.createElement('div');
-    body.classList.add('mdw-dialog__body');
+    body.className = 'mdw-dialog__body mdw-theme';
+    body.setAttribute('mdw-ink', 'medium');
     const title = dialogElement.getElementsByClassName('mdw-dialog__title')[0];
     if (title) {
       title.insertAdjacentElement('afterend', body);
@@ -518,10 +519,11 @@ export function updateBody(dialogElement, content) {
  */
 export function create(options) {
   const element = document.createElement('div');
-  element.classList.add('mdw-dialog');
+  element.className = 'mdw-dialog';
 
   const popup = document.createElement('div');
-  popup.classList.add('mdw-dialog__popup');
+  popup.className = 'mdw-dialog__popup mdw-theme';
+  popup.setAttribute('mdw-surface', 'card');
   element.appendChild(popup);
 
   updateTitle(element, options.title);
@@ -529,12 +531,11 @@ export function create(options) {
 
   if (options.buttons) {
     const buttonArea = document.createElement('div');
-    buttonArea.classList.add('mdw-dialog__button-area');
+    buttonArea.className = 'mdw-dialog__button-area';
     let index = 0;
     options.buttons.forEach((buttonText) => {
       const button = document.createElement('div');
-      button.classList.add('mdw-button');
-      button.classList.add('mdw-theme');
+      button.className = 'mdw-button mdw-theme';
       button.setAttribute('tabindex', '0');
       button.setAttribute('mdw-ink', 'accent');
       if (options.custom) {

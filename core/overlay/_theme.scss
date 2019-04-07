@@ -42,10 +42,10 @@ $mdw-overlay__theme-values: (
     &[aria-pressed="true"],
     &[aria-current] {
       &::before {
+        color: inherit;
         @if ($type == 'var') {
-          color: var(--ink-color, inherit);
+          color: RGB(var(--ink-color));
         } @else {
-          color: inherit;
         }
       }
     }

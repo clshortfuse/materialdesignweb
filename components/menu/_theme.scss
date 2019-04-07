@@ -1,9 +1,6 @@
 @import '../../core/theme/index.scss';
 
 $mdw-menu__theme-values: (
-  text-color:           $mdw-theme__default-ink,
-  icon-color:           $mdw-theme__medium-ink,
-  background-color:     $mdw-theme__card-surface,
   disabled-opacity:     (0.38, 0.50),
 ) !default;
 
@@ -12,21 +9,8 @@ $mdw-menu__theme-values: (
 }
 
 @mixin mdw-menu__theme-rules($type: 'var', $theme: null) {
-  .mdw-menu__popup {
-    background-color: mdwMenuThemeValue("background-color", $type, $theme);
-  }
-
-  .mdw-menu__icon,
-  .mdw-menu__check,
-  .mdw-menu__radio {
-    color: mdwMenuThemeValue("icon-color", $type, $theme);
-  }
-
-  .mdw-menu__item {
-    color: mdwMenuThemeValue("text-color", $type, $theme);
-    &[aria-disabled="true"] {
-      opacity: mdwMenuThemeValue("disabled-opacity", $type, $theme);
-    }
+  .mdw-menu__item[aria-disabled="true"] {
+    opacity: mdwMenuThemeValue("disabled-opacity", $type, $theme);
   }
 }
 

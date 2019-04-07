@@ -2,11 +2,8 @@
 @import '../../core/theme/index.scss';
 
 $mdw-layout__theme-values: (
-  text-color:            $mdw-theme__default-ink,
-  secondary-text-color:  $mdw-theme__medium-ink,
   divider-color:         $mdw-theme__divider-ink,
-  drawer-background:     $mdw-theme__card-surface,
-  appbar-background:     $mdw-theme__card-surface,
+  
   content-background:    $mdw-theme__content-surface,
 ) !default;
 
@@ -15,43 +12,25 @@ $mdw-layout__theme-values: (
 }
 
 @mixin mdw-layout__theme-rules($type: 'var', $theme: null) {
-  .mdw-layout__body {
-    background-color: mdwLayoutThemeValue("content-background", $type, $theme);
-    color: mdwLayoutThemeValue("text-color", $type, $theme);
-  }
-
   .mdw-layout__sheet-content {
-    background-color: mdwLayoutThemeValue("drawer-background", $type, $theme);
     border-color: mdwLayoutThemeValue("divider-color", $type, $theme);
   }
-
-  .mdw-layout__navdrawer {
-    .mdw-list__subheader {
-      color: mdwLayoutThemeValue("secondary-text-color", $type, $theme);
+  @if ($type == 'var') {
+    .mdw-layout__appbar[mdw-fab-cut],
+    .mdw-layout__appbar.mdw-theme[mdw-fab-cut] {
+      background-color: transparent;
     }
-  }
-
-  .mdw-layout__appbar:not([mdw-surface]) {
-    background-color: mdwLayoutThemeValue("appbar-background", $type, $theme);
-  }
-
-  .mdw-layout__appbar-shape {
-    color: transparent;
-  }
-
-  .mdw-layout__appbar[mdw-fab-cut] {
-    background-color: transparent;
 
     .mdw-layout__appbar-shape {
-      color: mdwLayoutThemeValue("appbar-background", $type, $theme);
+      color: RGB(var(--surface-color));
     }
   }
 
   @include mdw-breakpoint__medium-window__min {
     .mdw-layout__body[mdw-navdrawer-style~="floating"]:not([mdw-navdrawer-style~="card"]) > .mdw-layout__navdrawer,
     .mdw-layout__body[mdw-sidesheet-style~="floating"]:not([mdw-sidesheet-style~="card"]) > .mdw-layout__sidesheet {
-      & > .mdw-layout__sheet-content:not([mdw-surface]) {
-        background-color: mdwLayoutThemeValue("content-background", $type, $theme);
+      & > .mdw-layout__sheet-content {
+        background-color: transparent
       }
     }
   }

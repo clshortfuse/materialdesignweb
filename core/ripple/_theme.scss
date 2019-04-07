@@ -21,7 +21,7 @@ $mdw-ripple__theme-values: (
       color: inherit;
       @if ($type == 'var') {
         // Fallback handed by previous inherit rule
-        color: unquote("rgb(var(--ink-color))");
+        color: RGB(var(--ink-color));
       }
     }
   }
