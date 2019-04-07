@@ -9,15 +9,15 @@ include ../_mixins.pug
           .mdw-appbar__start
             .mdw-tooltip__wrapper
               .mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) menu
-              .mdw-tooltip(mdw-align="start") Menu
+              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark mdw-align="start") Menu
           .mdw-appbar__title(style="color:white") Inbox
           .mdw-appbar__end
             .mdw-tooltip__wrapper
               .mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) search
-              .mdw-tooltip(mdw-align="end") Search
+              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark mdw-align="end") Search
       .content
         ul.mdw-list(mdw-divider)
-          li.mdw-list__subheader Today
+          li.mdw-list__subheader.mdw-theme(mdw-ink="medium") Today
           li.mdw-list__item
             .mdw-list__content
               .mdw-list__avatar
@@ -25,16 +25,16 @@ include ../_mixins.pug
               .mdw-list__text
                 .mdw-list__text-line Brunch this weekend?
                 .mdw-list__text-line Ali Connors 
-                  span  &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to meet?
+                  span.mdw-theme(mdw-ink="medium")  &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to meet?
           li.mdw-list__item
             .mdw-list__content
               .mdw-list__avatar
                 i.material-icons(style="font-size:40px") &#xE853;
               .mdw-list__text
                 .mdw-list__text-line Summer BBQ
-                  span  4
+                  span.mdw-theme(mdw-ink="medium")  4
                 .mdw-list__text-line to Alex, Scott, Jennifer
-                  span  &mdash; Wish I could come. but I'm out of town this weekend.
+                  span.mdw-theme(mdw-ink="medium")  &mdash; Wish I could come. but I'm out of town this weekend.
           li.mdw-list__item
             .mdw-list__content
               .mdw-list__avatar
@@ -42,7 +42,7 @@ include ../_mixins.pug
               .mdw-list__text
                 .mdw-list__text-line Oui oui
                 .mdw-list__text-line Sandra Adams
-                  span  &mdash; Do you have Paris recommendations? Have you ever been?
+                  span.mdw-theme(mdw-ink="medium")  &mdash; Do you have Paris recommendations? Have you ever been?
           li.mdw-list__item
             .mdw-list__content
               .mdw-list__avatar
@@ -50,7 +50,7 @@ include ../_mixins.pug
               .mdw-list__text
                 .mdw-list__text-line Birthday gift
                 .mdw-list__text-line Trevor Hansen
-                  span  &mdash; Have any ideas about what we should get Heidi for her birthday?
+                  span.mdw-theme(mdw-ink="medium")  &mdash; Have any ideas about what we should get Heidi for her birthday?
           li.mdw-list__item
             .mdw-list__content
               .mdw-list__avatar
@@ -58,7 +58,7 @@ include ../_mixins.pug
               .mdw-list__text
                 .mdw-list__text-line Recipe to try
                 .mdw-list__text-line Britta Holt
-                  span  &mdash; We should eat this: Grated Squash, Corn, and tomatillo Tacos J
+                  span.mdw-theme(mdw-ink="medium")  &mdash; We should eat this: Grated Squash, Corn, and tomatillo Tacos J
           li.mdw-list__item
             .mdw-list__content
               .mdw-list__avatar
@@ -66,7 +66,7 @@ include ../_mixins.pug
               .mdw-list__text
                 .mdw-list__text-line Giants game
                 .mdw-list__text-line David Park
-                  span  &mdash; Any interest in seeing
+                  span.mdw-theme(mdw-ink="medium")  &mdash; Any interest in seeing
           li.mdw-list__item
             .mdw-list__content
               .mdw-list__avatar

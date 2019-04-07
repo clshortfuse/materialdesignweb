@@ -9,7 +9,7 @@ include ../_mixins.pug
           .mdw-appbar__title Title
       .content(style="padding-top:7px")
         ul.mdw-list
-          li.mdw-list__subheader Switch
+          li.mdw-list__subheader.mdw-theme(mdw-ink="medium") Switch
           li.mdw-list__item
             label.mdw-list__content.mdw-selection.mdw-overlay.mdw-theme(mdw-no-ripple mdw-ink="teal" mdw-switch)
               input.mdw-selection__input.mdw-overlay(type="checkbox" checked)
@@ -21,23 +21,23 @@ include ../_mixins.pug
               .mdw-list__text.mdw-selection__label Android Switch Off
               .mdw-selection__icon
         ul.mdw-list
-          li.mdw-list__subheader Single check
+          li.mdw-list__subheader.mdw-theme(mdw-ink="medium") Single check
           li.mdw-list__item
             label.mdw-list__content.mdw-selection.mdw-overlay.mdw-theme(mdw-no-ripple mdw-ink="teal 700")
               input.mdw-selection__input.mdw-overlay(type="radio" name="selectiontest" checked)
               .mdw-list__text.mdw-selection__label
                 .mdw-list__text-line Option 1
-                .mdw-list__text-line Description
+                .mdw-list__text-line.mdw-theme(mdw-ink="medium") Description
               .mdw-selection__icon
           li.mdw-list__item
             label.mdw-list__content.mdw-selection.mdw-overlay.mdw-theme(mdw-no-ripple mdw-ink="blue 700")
               input.mdw-selection__input.mdw-overlay(type="radio" name="selectiontest")
               .mdw-list__text.mdw-selection__label
                 .mdw-list__text-line Option 2
-                .mdw-list__text-line Description
+                .mdw-list__text-line.mdw-theme(mdw-ink="medium") Description
               .mdw-selection__icon
         ul.mdw-list
-          li.mdw-list__subheader Multiple check
+          li.mdw-list__subheader.mdw-theme(mdw-ink="medium") Multiple check
           li.mdw-list__item
             label.mdw-list__content.mdw-selection.mdw-overlay.mdw-theme(mdw-no-ripple mdw-ink="teal A400")
               input.mdw-selection__input.mdw-overlay(type="checkbox" checked)

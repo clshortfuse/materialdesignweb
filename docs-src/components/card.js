@@ -134,25 +134,16 @@ function onOptionChange(event) {
       }
       break;
     case 'surface':
-      switch (value) {
-        case 'none':
-          sampleComponent.removeAttribute('mdw-surface');
-          sampleComponent.removeAttribute('mdw-light');
-          sampleComponent.removeAttribute('mdw-dark');
-          break;
-        default:
-          sampleComponent.setAttribute('mdw-surface', value.replace(/ (light|dark)/, ''));
-          if (value.indexOf(' light') === -1) {
-            sampleComponent.removeAttribute('mdw-light');
-          } else {
-            sampleComponent.setAttribute('mdw-light', '');
-          }
-          if (value.indexOf(' dark') === -1) {
-            sampleComponent.removeAttribute('mdw-dark');
-          } else {
-            sampleComponent.setAttribute('mdw-dark', '');
-          }
-          break;
+      sampleComponent.setAttribute('mdw-surface', value.replace(/ (light|dark)/, ''));
+      if (value.indexOf(' light') === -1) {
+        sampleComponent.removeAttribute('mdw-light');
+      } else {
+        sampleComponent.setAttribute('mdw-light', '');
+      }
+      if (value.indexOf(' dark') === -1) {
+        sampleComponent.removeAttribute('mdw-dark');
+      } else {
+        sampleComponent.setAttribute('mdw-dark', '');
       }
       break;
     default:

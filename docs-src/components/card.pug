@@ -9,7 +9,7 @@ include ../_mixins.pug
     .mdw-grid__item(mdw-colspan="6")
       .mdw-grid__content.component-sample
         .display-flex
-          .mdw-card.mdw-theme(mdw-raised="focus-within")
+          .mdw-card.mdw-theme(mdw-raised="focus-within" mdw-surface="card")
             button.mdw-button.mdw-overlay.mdw-ripple.mdw-card__button
             .mdw-card__start
               .mdw-card__thumbnail.material-icons(style="font-size:40px") account_circle
@@ -125,9 +125,9 @@ include ../_mixins.pug
       .mdw-type(mdw-style="subtitle") Surface
       div
         label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="none" checked)
+          input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="card" checked)
           .mdw-selection__icon
-          .mdw-selection__label None
+          .mdw-selection__label Card
         label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
           input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="primary dark")
           .mdw-selection__icon
@@ -147,6 +147,6 @@ include ../_mixins.pug
     .mdw-grid__item(mdw-colspan="100%" style="max-height:0")
     .mdw-grid__item(mdw-colspan="6")
       h6.mdw-type HTML Code
-      .mdw-card.component-code.component-html
+      .mdw-card.mdw-theme.component-code.component-html(mdw-surface="card")
         #usePug.mdw-button.mdw-theme(mdw-ink="accent" aria-pressed="false" mdw-overlay-off="activated" mdw-icon) PUG
   script(src='card.min.js')

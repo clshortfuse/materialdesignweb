@@ -37,12 +37,14 @@ function onItemClick(event) {
   }
   target2.blur();
   target1.setAttribute('aria-pressed', 'false');
-  Transition.transitionElement(
-    target1, target2,
-    target1.getElementsByTagName('span')[0], target2.getElementsByTagName('span')[0],
-    1500,
-    true
-  );
+  Transition.transitionElement({
+    fromShapeElement: target1,
+    toShapeElement: target2,
+    fromContentElement: target1.getElementsByTagName('span')[0],
+    toContentElement: target2.getElementsByTagName('span')[0],
+    duration: 3000,
+    revertFrom: true,
+  });
   target1 = null;
   target2 = null;
 }

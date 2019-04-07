@@ -14,7 +14,7 @@ include ../_mixins.pug
             .mdw-grid__item(mdw-colspan="100%")
               .mdw-snackbar__wrapper
                 .mdw-snackbar__container
-                  .mdw-snackbar(aria-hidden="false")
+                  .mdw-snackbar.mdw-theme(aria-hidden="false" mdw-surface="background 900" mdw-dark)
                     span Short message snackbar.
             .mdw-grid__item(mdw-colspan="100%")
               .mdw-snackbar__wrapper
@@ -130,9 +130,9 @@ include ../_mixins.pug
     .mdw-grid__item(mdw-colspan="6")
       .display-flex(flex-column)
         h6.mdw-type HTML Code
-        .mdw-card.component-code.component-html
+        .mdw-card.mdw-theme.component-code.component-html(mdw-surface="card")
     .mdw-grid__item(mdw-colspan="6")
       .display-flex(flex-column)
         h6.mdw-type Javascript Code
-        .mdw-card.component-code.component-js
+        .mdw-card.mdw-theme.component-code.component-js(mdw-surface="card")
   script(src='snackbar.min.js')

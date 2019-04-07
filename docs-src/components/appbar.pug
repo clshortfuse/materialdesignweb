@@ -57,11 +57,11 @@ include ../_mixins.pug
           .mdw-appbar__start
             .mdw-tooltip__wrapper
               .mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple(mdw-icon).material-icons arrow_back
-              .mdw-tooltip Back
+              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark) Back
           .mdw-appbar__end
             .mdw-tooltip__wrapper
               .mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple(mdw-icon mdw-more-button).material-icons more_vert
-              .mdw-tooltip More
+              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark) More
         .mdw-appbar__content
           label.mdw-textfield.mdw-theme(mdw-ink="primary" style="font-size: 1.5rem")
             input.mdw-textfield__input(value="Project Properties" placeholder=" ")

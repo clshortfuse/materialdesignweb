@@ -12,9 +12,9 @@ include ../_mixins.pug
             a.mdw-button.mdw-overlay.mdw-ripple(href="#sample-dialog") Open
             .mdw-dialog#sample-dialog
               a.mdw-dialog__close(href="#")
-              .mdw-dialog__popup
+              .mdw-dialog__popup.mdw-theme(mdw-surface="card")
                 .mdw-dialog__title Sample title
-                .mdw-dialog__body Sample body text
+                .mdw-dialog__body.mdw-theme(mdw-ink="medium") Sample body text
                 .mdw-dialog__button-area
                   a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent" href="#") Agree
                   a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent" href="#") Disagree
@@ -68,10 +68,10 @@ include ../_mixins.pug
     .mdw-grid__item(mdw-colspan="100%" style="max-height:0")
     .mdw-grid__item(mdw-colspan="100%")
       h6.mdw-type HTML Code
-      .mdw-card.component-code.component-html
+      .mdw-card.mdw-theme.component-code.component-html(mdw-surface="card")
     .mdw-grid__item(mdw-colspan="100%")
       h6.mdw-type Javascript Code
-      .mdw-card.component-code.component-js
+      .mdw-card.mdw-theme.component-code.component-js(mdw-surface="card")
     .mdw-grid__item(mdw-colspan="100%")
       h6.mdw-type Samples
     .mdw-grid__item.display-flex(mdw-colspan="4" flex-justify-content="center")
@@ -83,11 +83,11 @@ include ../_mixins.pug
               .mdw-appbar__start
                 .mdw-tooltip__wrapper
                   .mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple(mdw-icon).material-icons menu
-                  .mdw-tooltip Menu
+                  .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark) Menu
               .mdw-appbar__end
                 .mdw-tooltip__wrapper
                   .mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple(mdw-icon mdw-more-button).material-icons more_vert
-                  .mdw-tooltip Options
+                  .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark) Options
           .content(style="padding:16px 8px;")
             a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="primary" mdw-dark mdw-raised href="#confirmdialog-titled") Titled
             a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="primary" mdw-dark mdw-raised href="#confirmdialog-text") Text
@@ -96,18 +96,18 @@ include ../_mixins.pug
               button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="primary" mdw-dark mdw-raised) JS
           .mdw-dialog#confirmdialog-titled
             a.mdw-dialog__close(href="#")
-            .mdw-dialog__popup
+            .mdw-dialog__popup.mdw-theme(mdw-surface="card")
               .mdw-dialog__title Use Google's location service?
-              .mdw-dialog__body Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
+              .mdw-dialog__body.mdw-theme(mdw-ink="medium") Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
               .mdw-dialog__button-area
                 a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent" href="#") Agree
                 a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent" href="#") Disagree
           .mdw-dialog#dialog-scrolling
             a.mdw-dialog__close(href="#")
-            .mdw-dialog__popup
+            .mdw-dialog__popup.mdw-theme(mdw-surface="card")
               .mdw-dialog__header
                 .mdw-dialog__title Dialog header
-              .mdw-divider
+              .mdw-divider.mdw-theme(mdw-ink="divider")
               .mdw-dialog__scrolling
                 ul.mdw-list
                   li.mdw-list__item
@@ -128,14 +128,14 @@ include ../_mixins.pug
                     .mdw-list__content Item 8
                   li.mdw-list__item
                     .mdw-list__content Item 9
-              .mdw-divider
+              .mdw-divider.mdw-theme(mdw-ink="divider")
               .mdw-dialog__button-area
                 a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent" href="#") Agree
                 a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent" href="#") Disagree
           .mdw-dialog#confirmdialog-text
             a.mdw-dialog__close(href="#")
-            .mdw-dialog__popup
-              .mdw-dialog__body Discard draft?
+            .mdw-dialog__popup.mdw-theme(mdw-surface="card")
+              .mdw-dialog__body.mdw-theme(mdw-ink="medium") Discard draft?
               .mdw-dialog__button-area
                 a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent" href="#") Discard
                 a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent" href="#") Cancel

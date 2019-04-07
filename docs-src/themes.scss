@@ -3,9 +3,10 @@
 $mdw-config: (
   themes: (
     default: ('indigo', 'pink', 'red', 'grey', black, white),
+    colored: ('green', 'orange', 'red', 'bluegrey', #006064, #E0F7FA)
   ),
   colors: ('amber', 'cyan', 'red', 'green', 'deeppurple', 'purple', 'blue', 'yellow', 'teal'),
-  variables: false,
+  fallbacks: false,
 );
 
 @include mdw-theme__build($mdw-config);

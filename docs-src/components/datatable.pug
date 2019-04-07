@@ -3,7 +3,7 @@ include ../_mixins.pug
 +header("datatable")
   .mdw-grid(mdw-margin-top mdw-margin-bottom)
     .mdw-grid__item(mdw-colspan="100%")
-      .mdw-card
+      .mdw-card.mdw-theme(mdw-surface="card")
         .mdw-datatable.mdw-theme(mdw-ink="primary" style="overflow-x:auto")
           table
             caption Standard HTML Table (CSS Only)
@@ -109,7 +109,7 @@ include ../_mixins.pug
                 td 12%
                 td 6%
     .mdw-grid__item(mdw-colspan="100%")
-      .mdw-card
+      .mdw-card.mdw-theme(mdw-surface="card")
         .mdw-datatable.js.mdw-theme(mdw-ink="primary" mdw-cell-focusable)
           .mdw-datatable__header
             .mdw-datatable__header-text Customized HTML Table
@@ -128,7 +128,7 @@ include ../_mixins.pug
                     .mdw-datatable__sort-icon.material-icons arrow_downward
                     span.mdw-tooltip__wrapper
                       span.mdw-tooltip__target Calories
-                      .mdw-tooltip The total amount of food energy in the given serving size.
+                      .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark) The total amount of food energy in the given serving size.
                   th(mdw-sortable data-type="number")
                     .mdw-datatable__sort-icon.material-icons arrow_downward
                     span Fat (g)
@@ -293,7 +293,7 @@ include ../_mixins.pug
               button.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon disabled) chevron_left
               button.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon disabled) chevron_right
     .mdw-grid__item(mdw-colspan="100%")
-      .mdw-card
+      .mdw-card.mdw-theme(mdw-surface="card")
         .mdw-datatable.js#dynamic-table.mdw-theme(mdw-ink="primary" mdw-row-focusable style="max-height:80vh")
           .mdw-datatable__header
             .mdw-datatable__header-text Data Table Adapter
@@ -301,27 +301,27 @@ include ../_mixins.pug
               .mdw-menu__wrapper
                 button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme.material-icons(mdw-icon mdw-ink="primary" aria-pressed="false") filter_list
                 .mdw-menu(mdw-position="end")
-                  .mdw-menu__popup
+                  .mdw-menu__popup.mdw-theme(mdw-surface="card")
                     .mdw-menu__item(aria-checked="true" data-filter="none")
-                      .mdw-menu__radio.material-icons check
+                      .mdw-menu__radio.mdw-theme.material-icons(mdw-ink="medium") check
                       .mdw-menu__text No filter
                     .mdw-menu__item(data-filter="md")
-                      .mdw-menu__radio.material-icons check
+                      .mdw-menu__radio.mdw-theme.material-icons(mdw-ink="medium") check
                       .mdw-menu__text Contains 'md'
                     .mdw-menu__item(data-filter="div9")
-                      .mdw-menu__radio.material-icons check
+                      .mdw-menu__radio.mdw-theme.material-icons(mdw-ink="medium") check
                       .mdw-menu__text Random divisible by 9
                     .mdw-menu__item(data-filter="bool")
-                      .mdw-menu__radio.material-icons check
+                      .mdw-menu__radio.mdw-theme.material-icons(mdw-ink="medium") check
                       .mdw-menu__text bool is checked
               .mdw-menu__wrapper
                 button.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) more_vert
                 .mdw-menu(mdw-position="end")
-                  .mdw-menu__popup
+                  .mdw-menu__popup.mdw-theme(mdw-surface="card")
                     .mdw-menu__item(aria-checked="true" data-option="throttle")
-                      .mdw-menu__check.material-icons check
+                      .mdw-menu__check.mdw-theme.material-icons(mdw-ink="medium") check
                       .mdw-menu__text Throttle
                     .mdw-menu__item(aria-checked="true" data-option="paginate")
-                      .mdw-menu__check.material-icons check
+                      .mdw-menu__check.mdw-theme.material-icons(mdw-ink="medium") check
                       .mdw-menu__text Paginate
   script(src='datatable.min.js')

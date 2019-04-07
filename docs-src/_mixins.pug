@@ -36,7 +36,7 @@ mixin navListItem(key, icon, name, activatedKey, color="accent-contrast")
     href=(key + ".html")
     mdw-ink=color
     )
-      .mdw-list__icon.material-icons=icon
+      .mdw-list__icon.mdw-theme.material-icons(mdw-ink="medium")=icon
       .mdw-list__text
         .mdw-list__text-block=name
 
@@ -58,34 +58,32 @@ mixin header(activated)
       link(rel='stylesheet' href='//fonts.googleapis.com/css?family=Merriweather:300,400,500')
       link(rel='stylesheet' href='docs.min.css')
       link(rel='stylesheet' href='spec.min.css')
-      link(rel='stylesheet' href='default-theme-fallbacks.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
-      link(rel='stylesheet' href='default-theme-variables.min.css')
-      link(rel='stylesheet' href='alt-theme-fallbacks.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
-      link(rel='stylesheet' href='alt-theme-variables.min.css')
+      link(rel='stylesheet' href='themes-fallbacks.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
+      link(rel='stylesheet' href='themes.min.css')
 
       script(src='prerender.common.min.js')
       script(src='prerender.min.js')
-    body.mdw-layout__body(mdw-sidesheet-toggle="dismissible" mdw-sidesheet-style="modal")
+    body.mdw-layout__body.mdw-theme(mdw-surface="content" mdw-sidesheet-toggle="dismissible" mdw-sidesheet-style="modal")
       .mdw-layout__menus
       .mdw-layout__dialogs
       nav.mdw-layout__navdrawer
-        .mdw-layout__sheet-content
+        .mdw-layout__sheet-content.mdw-theme(mdw-surface="card")
           ul.mdw-list(role="tree")
             li.mdw-list__item
               a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(aria-current=activated=='Home' href='index.html' mdw-ink="primary")
                 .mdw-list__text Home
-            .mdw-list__subheader Core
+            .mdw-list__subheader.mdw-theme(mdw-ink="medium") Core
             +navListItem('overlay', 'tonality', 'Overlay', activated, 'primary-contrast')
             +navListItem('ripple', 'center_focus_strong', 'Ripple', activated, 'primary-contrast')
             li.mdw-list__expander.mdw-theme(aria-expanded="true")
               span.mdw-list__expander-content
                 .mdw-list__text Theme
-                .mdw-list__secondary.material-icons expand_more
+                .mdw-list__secondary.mdw-theme.material-icons(mdw-ink="medium") expand_more
               ul.mdw-list__item-group(role="group")
                 +navListItem('ink', 'border_color', 'Ink', activated, 'primary-contrast')
                 +navListItem('surface', 'format_color_fill', 'Surface', activated, 'primary-contrast')
             +navListItem('transition', 'open_in_new', 'Transition', activated, 'primary-contrast')
-            .mdw-list__subheader Components
+            .mdw-list__subheader.mdw-theme(mdw-ink="medium") Components
             +navListItem('appbar', 'web_asset', 'App Bar', activated)
             +navListItem('bottomnav', 'call_to_action', 'Bottom Navigation', activated)
             +navListItem('button', 'crop_landscape', 'Button', activated)
@@ -115,21 +113,21 @@ mixin header(activated)
           .mdw-appbar__start
             .mdw-tooltip__wrapper
               a.mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.mdw-layout__navdrawer-toggle(mdw-icon href="#docs-navdrawer").material-icons menu
-              .mdw-tooltip(mdw-align="start") Menu
+              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-align="start") Menu
           .mdw-appbar__title=activated
           #docs-menu-buttons.mdw-appbar__end
             .mdw-tooltip__wrapper
               button#altThemeButton.mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-overlay-off="activated" aria-pressed="false") palette
-              .mdw-tooltip(mdw-align="end") Alt Theme
+              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-align="end") Alt Theme
             .mdw-tooltip__wrapper
               button#darkModeButton.mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-overlay-off="activated" aria-pressed="false") brightness_3
-              .mdw-tooltip(mdw-align="end") Dark Mode
+              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-align="end") Dark Mode
             .mdw-tooltip__wrapper
               button#rtlButton.mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-overlay-off="activated" aria-pressed="false") format_align_right
-              .mdw-tooltip(mdw-align="end") Right-to-Left
+              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-align="end") Right-to-Left
             .mdw-tooltip__wrapper
               button#largeFontButton.mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-overlay-off="activated" aria-pressed="false") format_size
-              .mdw-tooltip(mdw-align="end") 200% Text
+              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-align="end") 200% Text
       .mdw-layout__fab
       .mdw-layout__snackbar
       .mdw-layout__content
