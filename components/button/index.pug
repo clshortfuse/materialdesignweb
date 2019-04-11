@@ -1,0 +1,18 @@
+mixin mdwButton(options={})
+  a.mdw-button(class=([
+  options.overlay != false ? 'mdw-overlay' : '',
+  options.ripple != false ? 'mdw-ripple' : '',
+  options.ink || options.surface || options.light || options.dark || options.borderInk ? 'mdw-theme' : '',
+  ].filter(v=>v).join(' '))
+  mdw-ink=(options.ink)
+  mdw-surface=(options.surface)
+  mdw-border-ink=(options.borderInk === true ? '' : options.borderInk)
+  mdw-light=(options.light ? '' : false)
+  mdw-dark=(options.dark ? '' : false)
+  mdw-icon=(options.icon ? '' : false)
+  mdw-raised=(options.raised ? '' : false)
+  disabled=(options.disabled ? '' : false)
+  aria-disabled=(options.disabled ? 'true' : false)
+  tabindex=(options.tabindex == null ? '0' : options.tabindex)
+  )&attributes(attributes)
+    block
