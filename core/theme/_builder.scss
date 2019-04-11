@@ -36,7 +36,7 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
     $value: null;
     $length: length($item);
     @if ($length == 1) {
-      @if ($rgbOnly) {
+      @if ($rgbOnly and type_of(item) == color) {
         $value: red($item),green($item),blue($item);
       } @else {
         $value: $item;
@@ -61,18 +61,13 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
       $color: nth($item, 1);
       $tone: nth($item, 2);
       $opacity: nth($item, 3);
-      @if ($tone == null or tone == '500') {
-        @if ($rgbOnly) {
-          $value: var(--#{$color}-color);
-        } @else {
-          $value: RGBA(var(--#{$color}-color),#{$opacity});
-        }
+      @if ($tone == null) {
+        @error '$tone cannot be null';
+      }
+      @if ($rgbOnly) {
+        $value: var(--#{$color}-#{$tone}-color);
       } @else {
-        @if ($rgbOnly) {
-          $value: var(--#{$color}-#{$tone}-color);
-        } @else {
-          $value: RGBA(var(--#{$color}-#{$tone}-color),#{$opacity});
-        }
+        $value: RGBA(var(--#{$color}-#{$tone}-color),#{$opacity});
       }
     }
     --#{$component}__#{$key}: #{$value};
@@ -93,129 +88,37 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
   @return nth($list, 1);
 }
 
-@mixin __mdw-theme__add-component-variable-rules($component, $values) {
+@mixin __mdw-theme__add-component-variable-rules($component, $values, $rgbOnly: false) {
   :root,
   .mdw-theme[mdw-light] {
-    @include __add-mdw-theme__variables($component, $values, 'light');
+    @include __add-mdw-theme__variables($component, $values, 'light', $rgbOnly);
   }
 
   .mdw-theme[mdw-dark] {
-    @include __add-mdw-theme__variables($component, $values, 'dark');
+    @include __add-mdw-theme__variables($component, $values, 'dark', $rgbOnly);
   }
 }
 
-@mixin __mdw-theme__fallbacks($lightness, $name) {
+@mixin __mdw-theme__fallbacks($scope, $name) {
   $theme: map-get($mdw-theme__themes, $name);
   $namespace: '.mdw-theme[mdw-theme="#{$name}"]';
-  @if ($lightness == 'light') {
+  @if ($scope == 'global') {
+    #{$namespace} {
+      @content;
+    }
+  } @else if ($scope == 'light') {
     #{$namespace}[mdw-light],
     #{$namespace}[mdw-dark] .mdw-theme[mdw-light],
     #{$namespace} .mdw-theme[mdw-light],
     #{$namespace} .mdw-theme[mdw-dark] .mdw-theme[mdw-light] {
       @content;
     }
-  } @else if ($lightness == 'dark') {
+  } @else if ($scope == 'dark') {
     #{$namespace}[mdw-dark],
     #{$namespace}[mdw-light] .mdw-theme[mdw-dark],
     #{$namespace} .mdw-theme[mdw-dark],
     #{$namespace} .mdw-theme[mdw-light] .mdw-theme[mdw-dark] {
       @content;
-    }
-  }
-}
-
-
-@function __mdwThemeGlobalInkValue($key, $type, $theme) {
-  @return __mdwGetThemeValue('theme', $mdw-theme__global-inks, $key, $type, $theme);
-}
-
-@function __mdwThemeGlobalSurfaceValue($key, $type, $theme) {
-  @return __mdwGetThemeValue('theme', $mdw-theme__global-surfaces, $key, $type, $theme);
-}
-
-@mixin __mdw-theme__global-contrast-and-theme-rules($type: 'var', $theme: null) {
-  @if ($type == 'var') {
-    @at-root {
-      .mdw-theme[mdw-ink="default"],
-      .mdw-theme[mdw-ink="medium"],
-      .mdw-theme[mdw-ink="inactive"],
-      .mdw-theme[mdw-ink="divider"] {
-        --ink-color: var(--foreground-color);
-      }
-
-      .mdw-theme[mdw-surface]:not([mdw-ink]) {
-        color: #{__mdwThemeGlobalInkValue("default-ink", $type, $theme)};
-      }
-    }
-  } @else {
-    // Fallbacks handled by __mdw-theme__build-fallbacks()
-  }
-
-  .mdw-theme[mdw-surface="monochrome"] {
-    @if ($type == 'var') {
-      --surface-color: #{__mdwThemeGlobalSurfaceValue("monochrome-surface", $type, $theme)};
-    } @else {
-      background-color: __mdwThemeGlobalSurfaceValue("monochrome-surface", $type, $theme);
-    }
-  }
-
-  .mdw-theme[mdw-surface="card"] {
-    @if ($type == 'var') {
-      --surface-color: #{__mdwThemeGlobalSurfaceValue("card-surface", $type, $theme)};
-    } @else {
-      background-color: __mdwThemeGlobalSurfaceValue("card-surface", $type, $theme);
-    }
-  }
-
-  .mdw-theme[mdw-surface="content"] {
-    @if ($type == 'var') {
-      --surface-color: #{__mdwThemeGlobalSurfaceValue("content-surface", $type, $theme)};
-    } @else {
-      background-color: __mdwThemeGlobalSurfaceValue("content-surface", $type, $theme);
-    }
-  }
-
-  .mdw-theme[mdw-ink="default"] {
-    color: __mdwThemeGlobalInkValue("default-ink", $type, $theme);
-  }
-
-  .mdw-theme[mdw-ink="medium"] {
-    color: __mdwThemeGlobalInkValue("medium-ink", $type, $theme);
-  }
-
-  .mdw-theme[mdw-ink="inactive"] {
-    color: __mdwThemeGlobalInkValue("inactive-ink", $type, $theme);
-  }
-
-  .mdw-theme[mdw-ink="divider"] {
-    color: __mdwThemeGlobalInkValue("divider-ink", $type, $theme);
-  }
-
-  .mdw-theme[mdw-ink="primary-contrast"] {
-    color: __mdwThemeGlobalInkValue("primary-contrast-ink", $type, $theme);
-    @if ($type == 'var') {
-      --ink-color: var(--primary-contrast-ink);
-    }
-  }
-
-  .mdw-theme[mdw-ink="accent-contrast"] {
-    color: __mdwThemeGlobalInkValue("accent-contrast-ink", $type, $theme);
-    @if ($type == 'var') {
-      --ink-color: var(--accent-contrast-ink);
-    }
-  }
-
-  .mdw-theme[mdw-ink="warn-contrast"] {
-    color: __mdwThemeGlobalInkValue("warn-contrast-ink", $type, $theme);
-    @if ($type == 'var') {
-      --ink-color: var(--warn-contrast-ink);
-    }
-  }
-
-  .mdw-theme[mdw-ink="background-contrast"] {
-    color: __mdwThemeGlobalInkValue("background-contrast-ink", $type, $theme);
-    @if ($type == 'var') {
-      --ink-color: var(--background-contrast-ink);
     }
   }
 }
@@ -238,9 +141,6 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
   } @else if($lightness == 'dark') {
     --foreground-color: var(--foreground-dark-color);
   }
-
-  @include __add-mdw-theme__variables('theme', $mdw-theme__global-inks, $lightness);
-  @include __add-mdw-theme__variables('theme', $mdw-theme__global-surfaces, $lightness, true);
 }
 
 
@@ -260,18 +160,11 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
   @each $name in map-keys($mdw-theme__themes) {
     $theme: map-get($mdw-theme__themes, $name);
     $namespace: if($name == 'default', null, '.mdw-theme[mdw-theme="#{$name}"]');
-    @each $param in ('primary', 'accent', 'warn', 'background') {
+
+    @each $param in ('primary', 'secondary', 'warn', 'background') {
       $palette: mdwGetThemeParamValue($param, $theme);
       @each $tone in $mdw-theme__tone-list {
         $value: map-get($palette, $tone);
-        @if ($tone == '500') {
-          @if ($param != 'background') {
-            #{$namespace} .mdw-theme[mdw-surface="#{$param}"] {
-              background-color: #{$value};
-            }
-          }
-        }
-
         #{$namespace} .mdw-theme[mdw-surface="#{$param} #{$tone}"] {
           background-color: #{$value};
         }
@@ -283,12 +176,6 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
     $palette: map-get($mdw-theme__palettes, $color);
     @each $tone in $mdw-theme__tone-list {
       $value: map-get($palette, $tone);
-      @if ($tone == '500') {
-        .mdw-theme[mdw-surface="#{$color}"] {
-          background-color: #{$value};
-        }
-      }
-
       .mdw-theme[mdw-surface="#{$color} #{$tone}"] {
         background-color: #{$value};
       }
@@ -302,27 +189,27 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
 
     #{$namespace}[mdw-light][mdw-surface]:not([mdw-ink]),
     #{$namespace} .mdw-theme[mdw-light][mdw-surface]:not([mdw-ink]) {
-      color: __mdwThemeGlobalInkValue("default-ink", 'light', $theme);
+      // color: __mdwThemeGlobalInkValue("default-ink", 'light', $theme);
     }
 
 
     #{$namespace}[mdw-dark][mdw-surface]:not([mdw-ink]),
     #{$namespace} .mdw-theme[mdw-dark][mdw-surface]:not([mdw-ink]) {
-      color: __mdwThemeGlobalInkValue("default-ink", 'dark', $theme);
+      // color: __mdwThemeGlobalInkValue("default-ink", 'dark', $theme);
     }
     
     #{$namespace}[mdw-light],
     #{$namespace}[mdw-dark] .mdw-theme[mdw-light],
     #{$namespace} .mdw-theme[mdw-light],
     #{$namespace} .mdw-theme[mdw-dark] .mdw-theme[mdw-light] {
-      @include __mdw-theme__global-contrast-and-theme-rules('light', $theme);
+      // @include __mdw-theme__global-contrast-and-theme-rules('light', $theme);
     }
 
     #{$namespace}[mdw-dark],
     #{$namespace}[mdw-light] .mdw-theme[mdw-dark],
     #{$namespace} .mdw-theme[mdw-dark],
     #{$namespace} .mdw-theme[mdw-light] .mdw-theme[mdw-dark] {
-      @include __mdw-theme__global-contrast-and-theme-rules('dark', $theme);
+      // @include __mdw-theme__global-contrast-and-theme-rules('dark', $theme);
     }
   }
 
@@ -339,17 +226,10 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
   @each $name in map-keys($mdw-theme__themes) {
     $theme: map-get($mdw-theme__themes, $name);
     $namespace: '.mdw-theme[mdw-theme="#{$name}"]';
-    @each $param in ('primary', 'accent', 'warn', 'background') {
+    @each $param in ('primary', 'secondary', 'warn', 'background') {
       $palette: mdwGetThemeParamValue($param, $theme);
       @each $tone in $mdw-theme__tone-list {
         $value: map-get($palette, $tone);
-        @if ($tone == '500') {
-          #{$namespace}[mdw-ink="#{$param}"],
-          #{$namespace} .mdw-theme[mdw-ink="#{$param}"] {
-            color: #{$value};
-          }
-        }
-
         #{$namespace}[mdw-ink="#{$param} #{$tone}"],
         #{$namespace} .mdw-theme[mdw-ink="#{$param} #{$tone}"] {
           color: #{$value};
@@ -362,12 +242,6 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
     $palette: map-get($mdw-theme__palettes, $color);
     @each $tone in $mdw-theme__tone-list {
       $value: map-get($palette, $tone);
-      @if ($tone == '500') {
-        .mdw-theme[mdw-ink="#{$color}"] {
-          color: #{$value};
-        }
-      }
-
       .mdw-theme[mdw-ink="#{$color} #{$tone}"] {
         color: #{$value};
       }
@@ -377,78 +251,6 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
 
 @mixin __mdw-theme__build-rules() {
   :root,
-  .mdw-theme[mdw-theme],
-  .mdw-theme[mdw-surface] {
-    --ink-color: var(--foreground-color);
-  }
-
-  .mdw-theme[mdw-surface] {
-    --surface-color: var(--500-surface);
-  }
-
-  .mdw-theme[mdw-ink] {
-    --ink-color: var(--500-color);
-  }
-
-  .mdw-theme[mdw-surface="white"] {
-    --surface-color: 255,255,255;
-  }
-
-  .mdw-theme[mdw-ink="white"] {
-    --ink-color: 255,255,255;
-  }
-
-  .mdw-theme[mdw-surface="black"] {
-    --surface-color: 0,0,0;
-  }
-
-  .mdw-theme[mdw-ink="black"] {
-    --ink-color: 0,0,0;
-  }
-
-  @each $color in ('primary', 'accent', 'warn', 'background') {
-    @each $tone in $mdw-theme__tone-list {
-      .mdw-theme[mdw-surface~="#{$color}"] {
-        @each $tone in $mdw-theme__tone-list {
-          --#{$tone}-surface: var(--#{$color}-#{$tone}-color);
-        }
-      }
-
-      .mdw-theme[mdw-ink~="#{$color}"] {
-        @each $tone in $mdw-theme__tone-list {
-          --#{$tone}-color: var(--#{$color}-#{$tone}-color);
-        }
-      }
-    }
-  }
-
-  @each $tone in $mdw-theme__tone-list {
-    .mdw-theme[mdw-surface~="#{$tone}"] {
-      --surface-color: var(--#{$tone}-surface);
-    }
-
-    .mdw-theme[mdw-ink~="#{$tone}"] {
-      --ink-color: var(--#{$tone}-color);
-    }
-  }
-
-  /* stylelint-disable-next-line no-duplicate-selectors */
-  .mdw-theme[mdw-surface] {
-    background-color: RGB(var(--surface-color));
-  }
-
-  /* stylelint-disable-next-line no-duplicate-selectors */
-  .mdw-theme[mdw-ink] {
-    color: RGB(var(--ink-color));
-  }
-
-  svg.mdw-theme[mdw-surface] {
-    background-color: transparent;
-
-    fill: RGBA(var(--surface-color));
-  }
-
-  :root,
   .mdw-theme[mdw-light] {
     @include __mdw-theme__add-component-variables('light');
   }
@@ -457,8 +259,7 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
     @include __mdw-theme__add-component-variables('dark');
   }
 
-  /* stylelint-disable-next-line order/order */
-  @include __mdw-theme__global-contrast-and-theme-rules();
+  
 }
 
 @mixin __mdw-theme__build-colors() {
@@ -469,9 +270,6 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
 
       :root {
         --#{$color}-#{$tone}-color: #{red($value),green($value),blue($value)};
-        @if ($tone == "500") {
-          --#{$color}-color: #{red($value),green($value),blue($value)};
-        } 
       }
     }
   }
@@ -501,12 +299,12 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
       }
     }
     $primary: nth($params, 1);
-    $accent: nth($params, 2);
+    $secondary: nth($params, 2);
     $warn: nth($params, 3);
     $background: nth($params, 4);
     $foreground-light: nth($params, 5);
     $foreground-dark: nth($params, 6);
-    @include __mdw-theme__build-palettes($namespace, $primary, $accent, $warn, $background);
+    @include __mdw-theme__build-palettes($namespace, $primary, $secondary, $warn, $background);
 
     #{if($namespace, #{$namespace}, ':root, .mdw-theme[mdw-theme="default"]')} {
       --foreground-light-color: #{red($foreground-light),green($foreground-light),blue($foreground-light)};
@@ -515,9 +313,9 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
   }
 }
 
-@mixin __mdw-theme__build-palettes($namespace, $primary, $accent, $warn, $background) {
+@mixin __mdw-theme__build-palettes($namespace, $primary, $secondary, $warn, $background) {
   @include __mdw-theme__build-palette($namespace, 'primary', $primary);
-  @include __mdw-theme__build-palette($namespace, 'accent', $accent);
+  @include __mdw-theme__build-palette($namespace, 'secondary', $secondary);
   @include __mdw-theme__build-palette($namespace, 'warn', $warn);
   @include __mdw-theme__build-palette($namespace, 'background', $background);
 }
@@ -529,9 +327,6 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
 
     #{if($namespace, #{$namespace}, ':root, .mdw-theme[mdw-theme="default"]')} {
       --#{$color}-#{$tone}-color: var(--#{$name}-#{$tone}-color);
-      @if ($tone == "500" and $color != 'background') {
-        --#{$color}-color: var(--#{$name}-color);
-      }
     }
   }
 }
