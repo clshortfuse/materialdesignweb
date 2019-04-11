@@ -153,6 +153,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 .mdw-layout__sidesheet {
   @include mdw-layout__grid-row($mdw-layout__top-row, $mdw-layout__bottom-row);
 
+  box-sizing: border-box;
   max-height: 100vh;
   height: 100%;
   max-width: calc(100vw - #{dp(56)});
@@ -927,11 +928,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     width: 0;
     margin-right: 0;
     margin-left: 0;
-    padding-right: 0;
-    padding-left: 0;
 
     transition-duration: $mdw-motion__collapse-duration;
-    transition-property: width, max-width, transform, visibility;
+    transition-property: width, max-width, margin, transform, visibility;
     transition-timing-function: $mdw-motion__accelerate-easing;
     
     visibility: hidden;
