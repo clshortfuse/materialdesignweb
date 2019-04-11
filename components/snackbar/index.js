@@ -251,11 +251,11 @@ export function show(snackbarElement) {
  */
 export function update(element, options) {
   element.classList.add('mdw-snackbar');
-  element.classList.add('mdw-theme');
-  if (!element.hasAttribute('mdw-surface')) {
+  if (!element.classList.contains('mdw-theme')) {
     // Guidelines conflict stating a background should be fully opaque
     // But says spec says to use #000000 with 87% opacity
     // Calculated against white, opaque value is #212121 (Grey-900)
+    element.classList.add('mdw-theme');
     element.setAttribute('mdw-surface', 'background 900');
     element.setAttribute('mdw-dark', '');
   }
@@ -282,7 +282,7 @@ export function update(element, options) {
     button.classList.add('mdw-button');
     if (typeof options.buttonInk === 'undefined') {
       button.classList.add('mdw-theme');
-      button.setAttribute('mdw-ink', 'primary');
+      button.setAttribute('mdw-ink', 'secondary');
     } else if (typeof options.buttonInk === 'string') {
       button.classList.add('mdw-theme');
       button.setAttribute('mdw-ink', options.buttonInk);

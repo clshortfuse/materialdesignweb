@@ -21,9 +21,9 @@ $mdw-datatable__theme-values: (
 
 
   header-fill-text:       ((invalid                  ), (#fff,              1.00)),
-  selected-primary-ie:    (('primary'   , '500', 1.00), ('primary',    '500', 1.00)),
-  selected-accent-ie:     (('accent'    , '500', 1.00), ('accent',     '500', 1.00)),
-  selected-warn-ie:       (('warn'      , '500', 1.00), ('warn',       '500', 1.00)),
+  selected-primary-ie:    (('primary'  , '500', 1.00), ('primary',   '500', 1.00)),
+  selected-secondary-ie:  (('secondary', '500', 1.00), ('secondary', '500', 1.00)),
+  selected-warn-ie:       (('warn'     , '500', 1.00), ('warn',      '500', 1.00)),
 ) !default;
 
 @function mdwDatatableThemeValue($key, $type, $theme) {
@@ -164,12 +164,12 @@ $mdw-datatable__theme-values: (
       }
     }
 
-    .mdw-datatable[mdw-ink^="accent"] {
+    .mdw-datatable[mdw-ink^="secondary"] {
       &[mdw-has-selection] {
         .mdw-datatable__header,
         caption {
           background-color: rgba(
-            mdwDatatableThemeValue("selected-accent-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-secondary-ie", $type, $theme),
             mdwDatatableThemeValue("selected-opacity", $type, $theme)
           );
         }
@@ -177,24 +177,24 @@ $mdw-datatable__theme-values: (
 
       tbody tr[aria-selected="true"] {
         background-color: rgba(
-          mdwDatatableThemeValue("selected-accent-ie", $type, $theme),
+          mdwDatatableThemeValue("selected-secondary-ie", $type, $theme),
           mdwDatatableThemeValue("selected-opacity", $type, $theme));
 
         &:hover {
           background-color: rgba(
-            mdwDatatableThemeValue("selected-accent-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-secondary-ie", $type, $theme),
             mdwDatatableThemeValue("selected-hover-opacity", $type, $theme));
         }
 
         &:focus {
           background-color: rgba(
-            mdwDatatableThemeValue("selected-accent-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-secondary-ie", $type, $theme),
             mdwDatatableThemeValue("selected-focus-opacity", $type, $theme));
         }
 
         &:hover:focus {
           background-color: rgba(
-            mdwDatatableThemeValue("selected-accent-ie", $type, $theme),
+            mdwDatatableThemeValue("selected-secondary-ie", $type, $theme),
             mdwDatatableThemeValue("selected-hover-focus-opacity", $type, $theme));
         }
       }

@@ -5,11 +5,9 @@
 @import '../../core/theme/index.scss';
 
 $mdw-button__theme-values: (
-  text-color:                    $mdw-theme__default-ink,
   inactive-color:                $mdw-theme__inactive-ink,
   disabled-text-color:           $mdw-theme__default-ink,
   disabled-background-color:     $mdw-theme__inactive-ink,
-  disabled-opacity:              (0.38, 0.50),
   outline-color:                 $mdw-theme__divider-ink,
 ) !default;
 
@@ -19,25 +17,8 @@ $mdw-button__theme-values: (
 
 @mixin mdw-button__theme-rules($type: 'var', $theme: null) {
   .mdw-button {
-    &:not(.mdw-theme),
-    &[aria-pressed="false"],
-    &[aria-pressed="false"][mdw-ink] {
-      --ink-color: var(--foreground-color);
-      color: mdwButtonThemeValue('text-color', $type, $theme);
-    }
-
-    &[mdw-icon][aria-pressed="false"] {
-      color: mdwButtonThemeValue('inactive-color', $type, $theme);
-    }
-
-    &[mdw-outline] {
-      border-color: mdwButtonThemeValue('outline-color', $type, $theme);
-    }
-
-    &[aria-disabled="true"],
-    &[disabled] {
-      opacity: mdwButtonThemeValue("disabled-opacity", $type, $theme);
-
+    &[disabled],
+    &[aria-disabled="true"] {
       &[mdw-surface] {
         background-color: mdwButtonThemeValue("disabled-background-color", $type, $theme);
         color: mdwButtonThemeValue("disabled-text-color", $type, $theme);

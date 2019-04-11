@@ -65,7 +65,8 @@
   }
 }
 
-.mdw-bottomnav__icon[mdw-badge]::before {
+.mdw-bottomnav__badge {
+  visibility: hidden;
   position: absolute;
   top: 0;
   right: auto;
@@ -87,17 +88,24 @@
   font-size: dp(10);
   line-height: dp(12);
   letter-spacing: normal;
-  content: attr(mdw-badge);
 
   :root[dir="rtl"] & {
     right: dp(16);
     left: auto;
   }
   
-}
-
-.mdw-bottomnav__icon[data-mdw-badge]::before {
-  content: attr(data-mdw-badge);
+  &[mdw-badge] {
+    visibility: visible;
+    &::before {
+      content: attr(mdw-badge);
+    }
+  }
+  &[data-mdw-badge] {
+    visibility: visible;
+    &::before {
+      content: attr(data-mdw-badge);
+    }
+  }
 }
 
 .mdw-bottomnav__label {

@@ -22,6 +22,7 @@ export function attachAll(root = document) {
  * @return {void}
  */
 export function attach(listElement) {
+  listElement.classList.add('mdw-overlay__group');
   const expanders = listElement.getElementsByClassName('mdw-list__expander');
   const defaultRole = (expanders.length ? 'tree' : 'listbox');
 
@@ -111,6 +112,9 @@ export function setupAria(listElement, role = 'tree') {
     listElement.setAttribute('role', role);
   }
   listElement.setAttribute('aria-orientation', 'vertical');
+  if (!listElement.hasAttribute('aria-multiselectable')) {
+    listElement.setAttribute('aria-multiselectable', 'false');
+  }
 }
 
 /**

@@ -537,7 +537,7 @@ export function create(options) {
       const button = document.createElement('div');
       button.className = 'mdw-button mdw-theme';
       button.setAttribute('tabindex', '0');
-      button.setAttribute('mdw-ink', 'accent');
+      button.setAttribute('mdw-ink', 'secondary');
       if (options.custom) {
         button.setAttribute('mdw-custom', '');
       }

@@ -15,6 +15,9 @@ export function attach(element) {
   if (!element.hasAttribute('mdw-overlay-off')) {
     element.setAttribute('mdw-overlay-off', 'selected');
   }
+  if (!element.hasAttribute('mdw-overlay-default')) {
+    element.setAttribute('mdw-overlay-default', 'medium');
+  }
   Overlay.attach(element);
 
   element.classList.add('mdw-ripple');

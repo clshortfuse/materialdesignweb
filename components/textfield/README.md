@@ -90,9 +90,9 @@ label.mdw-textfield
       .mdw-textfield__label Name
 ```
 
-## Accented
+## Secondary Color
 ```
-label.mdw-textfield.mdw-theme(mdw-ink="accent")
+label.mdw-textfield.mdw-theme(mdw-ink="secondary")
   input.mdw-textfield__input(type="text" placeholder=" ")
   .mdw-textfield__border
     .mdw-textfield__outline-gap

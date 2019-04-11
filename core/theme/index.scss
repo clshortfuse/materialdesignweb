@@ -3,20 +3,19 @@
 @import './_builder.scss';
 @import './_variables.scss';
 
-@mixin mdw-theme__add-component-variable-rules($component, $values) {
+@mixin mdw-theme__add-component-variable-rules($component, $values, $rgbOnly: false) {
   @if index($mdw-theme__variables, 'rules') {
     @if index($mdw-theme__variables, 'supports') {
       @supports(--v:v) {
-        @include __mdw-theme__add-component-variable-rules($component, $values);
+        @include __mdw-theme__add-component-variable-rules($component, $values, $rgbOnly);
         @content;
       }
     } @else {
-      @include __mdw-theme__add-component-variable-rules($component, $values);
+      @include __mdw-theme__add-component-variable-rules($component, $values, $rgbOnly);
       @content;
     }
   }
 }
-
 
 @mixin mdw-theme__add-component-fallback-rules($lightness, $name) {
   @if index($mdw-theme__fallbacks, 'rules') {
@@ -44,11 +43,11 @@
       @return map-get($mdw-theme__palettes, nth($theme, 1));
     }
     @error 'Missing primary color!';
-  } @else if ($param == 'accent') {
+  } @else if ($param == 'secondary') {
     @if (length($theme) > 1) {
       @return map-get($mdw-theme__palettes, nth($theme, 2));
     }
-    @error 'Missing accent color!';
+    @error 'Missing secondary color!';
   } @else if ($param == 'warn') {
     @if (length($theme) > 2) {
       @return map-get($mdw-theme__palettes, nth($theme, 3));

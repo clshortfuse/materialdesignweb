@@ -20,11 +20,6 @@ $mdw-list__theme-values: (
 }
 
 @mixin mdw-list__theme-rules($type: 'var', $theme: null) {
-  .mdw-list__text,
-  .mdw-list__content:not(.mdw-theme) {
-    color: mdwListThemeValue("text-color", $type, $theme);
-    --ink-color: var(--foreground-color);
-  }
 
   .mdw-list__content {
     &[mdw-ink][aria-current],

@@ -3,8 +3,6 @@
 
 $mdw-layout__theme-values: (
   divider-color:         $mdw-theme__divider-ink,
-  
-  content-background:    $mdw-theme__content-surface,
 ) !default;
 
 @function mdwLayoutThemeValue($key, $type, $theme) {
@@ -12,9 +10,6 @@ $mdw-layout__theme-values: (
 }
 
 @mixin mdw-layout__theme-rules($type: 'var', $theme: null) {
-  .mdw-layout__sheet-content {
-    border-color: mdwLayoutThemeValue("divider-color", $type, $theme);
-  }
   @if ($type == 'var') {
     .mdw-layout__appbar[mdw-fab-cut],
     .mdw-layout__appbar.mdw-theme[mdw-fab-cut] {
@@ -30,7 +25,7 @@ $mdw-layout__theme-values: (
     .mdw-layout__body[mdw-navdrawer-style~="floating"]:not([mdw-navdrawer-style~="card"]) > .mdw-layout__navdrawer,
     .mdw-layout__body[mdw-sidesheet-style~="floating"]:not([mdw-sidesheet-style~="card"]) > .mdw-layout__sidesheet {
       & > .mdw-layout__sheet-content {
-        background-color: transparent
+        background-color: transparent;
       }
     }
   }

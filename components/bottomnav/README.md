@@ -4,7 +4,7 @@
 ## Fixed (Primary Color)
 
 ```
-form.mdw-bottomnav.mdw-theme(mdw-ink="primary")
+form.mdw-bottomnav.mdw-theme(mdw-ink="primary 500")
   label.mdw-bottomnav__item
     input.mdw-bottomnav__input(type="radio" name="bottomnav" value="recents")
     .mdw-bottomnav__icon.material-icons history
@@ -38,7 +38,7 @@ form.mdw-bottomnav.mdw-theme(mdw-surface="primary 700")
 
 ## Shifting (Primary Color)
 ```
-form.mdw-bottomnav.mdw-theme(mdw-ink="primary" mdw-shifting)
+form.mdw-bottomnav.mdw-theme(mdw-ink="primary 500" mdw-shifting)
   input.mdw-bottomnav__input(type="radio" name="shiftingbottomnav" value="movies" id='value1')
   label.mdw-bottomnav__item(for='value1')
     .mdw-bottomnav__icon.material-icons tv

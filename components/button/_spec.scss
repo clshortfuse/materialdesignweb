@@ -52,7 +52,7 @@ $mdw-button__outline-size: dp(1) !default;
     border: 0;
   }
 
-  &[mdw-outline],
+  &[mdw-border-ink],
   &[mdw-surface] {
     padding: 0 dp(16);
   }
@@ -68,7 +68,7 @@ $mdw-button__outline-size: dp(1) !default;
     word-spacing: normal;
   }
 
-  &[mdw-outline] {
+  &[mdw-border-ink] {
     border-style: solid;
     border-width: $mdw-button__outline-size;
 
