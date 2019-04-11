@@ -1,0 +1,23 @@
+mixin mdwSelection(options={})
+  label.mdw-selection(class=([
+  options.ink ? 'mdw-theme' : '',
+  ].filter(v=>v).join(' '))
+  mdw-ink=(options.ink)
+  mdw-switch=(options.type === 'switch' ? '' : false)
+  )
+    input.mdw-selection__input.mdw-overlay(
+    type=(options.type === 'radio' ? 'radio' : 'checkbox')
+    checked=(options.checked ? '' : false)
+    disabled=(options.disabled ? '' : false)
+    aria-disabled=(options.disabled ? 'true' : false)
+    name=(options.name)
+    value=(options.value)
+    )&attributes(attributes)
+    if (options.prefix)
+      .mdw-selection__label
+        block
+      .mdw-selection__icon
+    else
+      .mdw-selection__icon
+      .mdw-selection__label
+        block
