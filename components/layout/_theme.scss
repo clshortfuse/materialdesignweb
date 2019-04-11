@@ -5,11 +5,11 @@ $mdw-layout__theme-values: (
   divider-color:         $mdw-theme__divider-ink,
 ) !default;
 
-@function mdwLayoutThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('layout', $mdw-layout__theme-values, $key, $type, $theme);
+@function mdwLayoutThemeValue($key, $type) {
+  @return mdwGetThemeValue('layout', $mdw-layout__theme-values, $key, $type);
 }
 
-@mixin mdw-layout__theme-rules($type: 'var', $theme: null) {
+@mixin mdw-layout__theme-rules($type: 'var') {
   @if ($type == 'var') {
     .mdw-layout__appbar[mdw-fab-cut],
     .mdw-layout__appbar.mdw-theme[mdw-fab-cut] {
@@ -31,15 +31,14 @@ $mdw-layout__theme-values: (
   }
 }
 
-@each $name in map-keys($mdw-theme__themes) {
-  $theme: map-get($mdw-theme__themes, $name);
-  @include mdw-theme__add-component-fallback-rules('light', $name) {
-    @include mdw-layout__theme-rules('light', $theme);
-  }
-  @include mdw-theme__add-component-fallback-rules('dark', $name) {
-    @include mdw-layout__theme-rules('dark', $theme);
-  }
+
+@include mdw-theme__add-component-fallback-rules('light') {
+  @include mdw-layout__theme-rules('light');
 }
+@include mdw-theme__add-component-fallback-rules('dark') {
+  @include mdw-layout__theme-rules('dark');
+}
+
 
 @include mdw-theme__add-component-variable-rules('layout', $mdw-layout__theme-values) {
   @include mdw-layout__theme-rules();

@@ -4,76 +4,53 @@
 @import './_variables.scss';
 
 @mixin mdw-theme__add-component-variable-rules($component, $values, $rgbOnly: false) {
-  @if index($mdw-theme__variables, 'rules') {
-    @if index($mdw-theme__variables, 'supports') {
-      @supports(--v:v) {
-        @include __mdw-theme__add-component-variable-rules($component, $values, $rgbOnly);
+  @if ($mdw-theme__variables == 'supports') {
+    @supports(--v:v) {
+      @include __mdw-theme__add-component-variable-rules($component, $values, $rgbOnly);
+      @content;
+    }
+  } @else if ($mdw-theme__variables != false) {
+    @include __mdw-theme__add-component-variable-rules($component, $values, $rgbOnly);
+    @content;
+  }
+}
+
+@mixin mdw-theme__add-component-fallback-rules($lightness) {
+  @if ($mdw-theme__fallbacks == 'ieonly') {
+    @include mdw-platform__ie() {
+      @include __mdw-theme__fallbacks($lightness) {
         @content;
       }
-    } @else {
-      @include __mdw-theme__add-component-variable-rules($component, $values, $rgbOnly);
+    }
+  } @else if ($mdw-theme__fallbacks != false) {
+    @include __mdw-theme__fallbacks($lightness) {
       @content;
     }
   }
 }
 
-@mixin mdw-theme__add-component-fallback-rules($lightness, $name) {
-  @if index($mdw-theme__fallbacks, 'rules') {
-    @if (index($mdw-theme__fallbacks, 'ieonly')) {
-      @include mdw-platform__ie() {
-        @include __mdw-theme__fallbacks($lightness, $name) {
-          @content;
-        }
-      }
-    } @else {
-      @include __mdw-theme__fallbacks($lightness, $name) {
-        @content;
-      }
-    }
-  }
+@function mdwGetThemeValue($component, $colorMap, $key, $type) {
+  @return __mdwGetThemeValue($component, $colorMap, $key, $type);
 }
 
-@function mdwGetThemeValue($component, $colorMap, $key, $type, $theme: null) {
-  @return __mdwGetThemeValue($component, $colorMap, $key, $type, $theme);
-}
-
-@function mdwGetThemeParamValue($param, $theme) {
+@function mdwGetThemeParamValue($param) {
   @if ($param == 'primary') {
-    @if ($theme != null) {
-      @return map-get($mdw-theme__palettes, nth($theme, 1));
-    }
-    @error 'Missing primary color!';
+    @return map-get($mdw-theme__palettes, $mdw-theme__primary);
   } @else if ($param == 'secondary') {
-    @if (length($theme) > 1) {
-      @return map-get($mdw-theme__palettes, nth($theme, 2));
-    }
-    @error 'Missing secondary color!';
+    @return map-get($mdw-theme__palettes, $mdw-theme__secondary);
   } @else if ($param == 'warn') {
-    @if (length($theme) > 2) {
-      @return map-get($mdw-theme__palettes, nth($theme, 3));
-    }
-    @return map-get($mdw-theme__palettes, 'red');
+    @return map-get($mdw-theme__palettes, $mdw-theme__warn);
   } @else if ($param == 'background') {
-    @if (length($theme) > 3) {
-      @return map-get($mdw-theme__palettes, nth($theme, 4));
-    }
-    @return map-get($mdw-theme__palettes, 'grey');
+    @return map-get($mdw-theme__palettes, $mdw-theme__background);
   } @else if ($param == 'foreground-light') {
-    @if (length($theme) > 4) {
-      @return nth($theme, 5);
-    }
-    @return #000000;
+    @return $mdw-theme__foreground-light;
   } @else if ($param == 'foreground-dark') {
-    @if (length($theme) > 5) {
-      @return nth($theme, 6);
-    }
-    @return #FFFFFF;
+    @return $mdw-theme__foreground-dark;
   }
-  @error "Unrecognized Theme Palette!" ;
 }
 
-@function mdwGetThemeParamColor($param, $tone, $type, $theme: null) {
-  @if ($type == 'var' or ($type == null and $theme == null)) {
+@function mdwGetThemeParamColor($param, $tone, $type) {
+  @if ($type == 'var' or ($type == null)) {
     @if ($tone == null) {
       @return var(--#{$param}-color);
     }
@@ -83,78 +60,9 @@
     $tone: '500';
   }
 
-  $paramValue: mdwGetThemeParamValue($param, $theme);
+  $paramValue: mdwGetThemeParamValue($param);
   @if (($param == 'foreground-light') or ($param == 'foreground-dark')) {
     @return $paramValue;
   }
   @return map-get($paramValue, $tone);
-}
-
-// Builder exports
-
-@mixin mdw-theme__configure($config-map: ()) {
-  $themes: (
-    "default": ('indigo', 'pink', 'red', 'grey', black, white),
-  );
-  $colors: ();
-  $fallbacks: ('rules', 'colors', 'themes', 'ieonly');
-  $variables: ('rules', 'colors', 'themes', 'supports');
-
-  @if (map-has-key($config-map, $key: "themes")) {
-    $themes: map-get($config-map, "themes");
-  }
-  @if (map-has-key($map: $config-map, $key: "colors")) {
-    $colors: map-get($config-map, "colors");
-  }
-  @if (map-has-key($map: $config-map, $key: "fallbacks")) {
-    $fallbacks: map-get($config-map, "fallbacks");
-  }
-  @if (map-has-key($map: $config-map, $key: "variables")) {
-    $variables: map-get($config-map, "variables");
-  }
-
-  $mdw-theme__themes: $themes !global;
-  $mdw-theme__colors: $colors !global;
-  $mdw-theme__fallbacks: $fallbacks !global;
-  $mdw-theme__variables: $variables !global;
-}
-
-@mixin mdw-theme__build($config-map: null) {
-  @if ($config-map != null) {
-    @include mdw-theme__configure($config-map);
-  }
-
-  @each $theme in map-values($mdw-theme__themes) {
-    $palettes: ('indigo', 'pink', 'red', 'grey');
-    @for $i from 1 to 5 {
-      @if (length($theme) >= $i) {
-        $palettes: set-nth($palettes, $i, nth($theme, $i));
-      }
-    }
-    @each $palette in $palettes {
-      @if (index($mdw-theme__colors, $palette) == null) {
-        $mdw-theme__colors: append($mdw-theme__colors, $palette) !global;
-      }
-    }
-  }
-
-  @if ($mdw-theme__fallbacks and $mdw-theme__fallbacks != 'no' and $mdw-theme__fallbacks != false) {
-    @if (index($mdw-theme__fallbacks, 'ieonly')) {
-      @include mdw-platform__ie() {
-        @include __mdw-theme__build-fallbacks();
-      }
-    } @else {
-      @include __mdw-theme__build-fallbacks();
-    }
-  }
-
-  @if ($mdw-theme__variables and $mdw-theme__variables != 'no' and $mdw-theme__variables != false) {
-    @if (index($mdw-theme__variables, 'supports')) {
-      @supports(--v:v) {
-        @include __mdw-theme__build-variables();
-      }
-    } @else {
-      @include __mdw-theme__build-variables();
-    }
-  }
 }

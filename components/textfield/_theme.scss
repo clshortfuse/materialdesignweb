@@ -21,11 +21,11 @@ $mdw-textfield__theme-values: (
   selection-opacity:                  (0.08 + 0.12, 0.16 + 0.24),
 ) !default;
 
-@function mdwTextfieldThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('textfield', $mdw-textfield__theme-values, $key, $type, $theme);
+@function mdwTextfieldThemeValue($key, $type) {
+  @return mdwGetThemeValue('textfield', $mdw-textfield__theme-values, $key, $type);
 }
 
-@mixin mdw-textfield__theme-rules($type: 'var', $theme: null) {
+@mixin mdw-textfield__theme-rules($type: 'var') {
   .mdw-textfield[mdw-outlined] {
     &:active > .mdw-textfield__input:not(:disabled),
     & > .mdw-textfield__input:not(:disabled):focus {
@@ -41,7 +41,7 @@ $mdw-textfield__theme-values: (
         &:invalid {
           & ~ .mdw-textfield__border,
           & ~ .mdw-textfield__border::before {
-            color: mdwTextfieldThemeValue("warn-color", $type, $theme);
+            color: mdwTextfieldThemeValue("warn-color", $type);
           }
         }
       }
@@ -49,7 +49,7 @@ $mdw-textfield__theme-values: (
   }
 
   .mdw-textfield__error-text {
-    color: mdwTextfieldThemeValue("warn-color", $type, $theme);
+    color: mdwTextfieldThemeValue("warn-color", $type);
   }
 
   .mdw-textfield {
@@ -59,7 +59,7 @@ $mdw-textfield__theme-values: (
     & > .mdw-textfield__input:not(:disabled):focus {
       @if($type == 'var') {
         &::selection {
-          background-color: RGBA(var(--ink-color), mdwTextfieldThemeValue("selection-opacity", $type, $theme));
+          background-color: RGBA(var(--ink-color), mdwTextfieldThemeValue("selection-opacity", $type));
         }
       }
 
@@ -78,22 +78,22 @@ $mdw-textfield__theme-values: (
 
     &:active > .mdw-textfield__input:not(:disabled):invalid,
     & > .mdw-textfield__input:not(:disabled):focus:invalid {
-      caret-color: mdwTextfieldThemeValue("warn-color", $type, $theme);
+      caret-color: mdwTextfieldThemeValue("warn-color", $type);
 
       &::selection {
-        background-color: mdwTextfieldThemeValue("warn-color__selection", $type, $theme);
+        background-color: mdwTextfieldThemeValue("warn-color__selection", $type);
       }
       & ~ .mdw-textfield__border {
-        color: mdwTextfieldThemeValue("warn-color", $type, $theme);
+        color: mdwTextfieldThemeValue("warn-color", $type);
         border-bottom-color: currentColor;
         
       }
       & ~ .mdw-textfield__border .mdw-textfield__label {
-        // color: mdwTextfieldThemeValue("warn-color", $type, $theme);
+        // color: mdwTextfieldThemeValue("warn-color", $type);
       }
 
       & ~ .mdw-textfield__border::after {
-        color: mdwTextfieldThemeValue("warn-color", $type, $theme);
+        color: mdwTextfieldThemeValue("warn-color", $type);
       }
 
     }
@@ -101,44 +101,44 @@ $mdw-textfield__theme-values: (
 
   .mdw-textfield__signifier,
   .mdw-textfield__label {
-    color: mdwTextfieldThemeValue("secondary-text-color", $type, $theme);
+    color: mdwTextfieldThemeValue("secondary-text-color", $type);
   }
 
   .mdw-textfield__prefix,
   .mdw-textfield__suffix {
-    color: mdwTextfieldThemeValue("secondary-text-color", $type, $theme);
+    color: mdwTextfieldThemeValue("secondary-text-color", $type);
   }
 
   select.mdw-textfield__input {
     // Firefox focusring styling workaround
     // https://dxr.mozilla.org/mozilla-central/source/browser/components/extensions/extension.css
     .mdw-textfield[mdw-value-empty] > & {
-      color: mdwTextfieldThemeValue("placeholder-color__focus", $type, $theme);
+      color: mdwTextfieldThemeValue("placeholder-color__focus", $type);
 
       &:focus {
-        color: mdwTextfieldThemeValue("secondary-text-color", $type, $theme);
+        color: mdwTextfieldThemeValue("secondary-text-color", $type);
       }
 
       &:-moz-focusring {
         color: transparent;
-        text-shadow: 0 0 0 mdwTextfieldThemeValue("placeholder-color__focus", $type, $theme);
+        text-shadow: 0 0 0 mdwTextfieldThemeValue("placeholder-color__focus", $type);
       }
 
       &:focus:-moz-focusring {
         color: transparent;
-        text-shadow: 0 0 0 mdwTextfieldThemeValue("secondary-text-color", $type, $theme);
+        text-shadow: 0 0 0 mdwTextfieldThemeValue("secondary-text-color", $type);
       }
     }
 
     &:-moz-focusring {
       color: transparent;
-      text-shadow: 0 0 0 mdwTextfieldThemeValue("text-color", $type, $theme);
+      text-shadow: 0 0 0 mdwTextfieldThemeValue("text-color", $type);
     }
 
   }
 
   .mdw-textfield__icon[mdw-dropdown] {
-    color: mdwTextfieldThemeValue("secondary-text-color", $type, $theme);
+    color: mdwTextfieldThemeValue("secondary-text-color", $type);
   }
 
   .mdw-textfield[mdw-value-empty] > input.mdw-textfield__input:not(:focus) {
@@ -154,19 +154,19 @@ $mdw-textfield__theme-values: (
   }
 
   .mdw-textfield__input::placeholder {
-    color: mdwTextfieldThemeValue("placeholder-color__focus", $type, $theme);
+    color: mdwTextfieldThemeValue("placeholder-color__focus", $type);
   }
 
   .mdw-textfield__input:-ms-input-placeholder {
-    color: mdwTextfieldThemeValue("placeholder-color__focus", $type, $theme) !important;
+    color: mdwTextfieldThemeValue("placeholder-color__focus", $type) !important;
   }
 
   .mdw-textfield__input::-ms-input-placeholder {
-    color: mdwTextfieldThemeValue("placeholder-color__focus", $type, $theme) !important;
+    color: mdwTextfieldThemeValue("placeholder-color__focus", $type) !important;
   }
 
   .mdw-textfield__input {
-    color: mdwTextfieldThemeValue("text-color", $type, $theme);
+    color: mdwTextfieldThemeValue("text-color", $type);
     @if ($type == 'var') {
       caret-color: RGBA(var(--ink-color));
     } @else {
@@ -183,14 +183,14 @@ $mdw-textfield__theme-values: (
       & ~ .mdw-textfield__prefix,
       & ~ .mdw-textfield__suffix,
       & ~ .mdw-textfield__icon {
-        color: mdwTextfieldThemeValue("disabled-color", $type, $theme);
+        color: mdwTextfieldThemeValue("disabled-color", $type);
       }
     }
 
     // Hover
     &:not(:focus):hover:not(:disabled):not(:active) ~ .mdw-textfield__border,
     &:not(:focus):not(:disabled):not(:active) ~ .mdw-textfield__border:hover {
-      color: mdwTextfieldThemeValue("border-line-color__hover", $type, $theme);
+      color: mdwTextfieldThemeValue("border-line-color__hover", $type);
     }
     
     &:not(:focus) {
@@ -208,11 +208,11 @@ $mdw-textfield__theme-values: (
   }
   
   .mdw-textfield__border {
-    color: mdwTextfieldThemeValue("border-line-color", $type, $theme);
+    color: mdwTextfieldThemeValue("border-line-color", $type);
   }
 
   .mdw-textfield__helper-text {
-    color: mdwTextfieldThemeValue("secondary-text-color", $type, $theme);
+    color: mdwTextfieldThemeValue("secondary-text-color", $type);
   }
 
   .mdw-textfield__error-text {
@@ -220,7 +220,7 @@ $mdw-textfield__theme-values: (
   }
 
   .mdw-textfield__input:disabled ~ .mdw-textfield__helper-text {
-    color: mdwTextfieldThemeValue("disabled-color", $type, $theme);
+    color: mdwTextfieldThemeValue("disabled-color", $type);
   }
 
   .mdw-textfield__input:focus:invalid ~ .mdw-textfield__helper-text {
@@ -245,36 +245,33 @@ $mdw-textfield__theme-values: (
     }
 
     .mdw-textfield__input:not(:focus) ~ .mdw-textfield__border {
-      color: mdwTextfieldThemeValue("border-line-color", $type, $theme);
+      color: mdwTextfieldThemeValue("border-line-color", $type);
     }
     
     .mdw-textfield__input:disabled ~ .mdw-textfield__border {
-      background-color: mdwTextfieldThemeValue("filled-disabled-background-color", $type, $theme);
-      color: mdwTextfieldThemeValue("filled-disabled-border-color", $type, $theme);
+      background-color: mdwTextfieldThemeValue("filled-disabled-background-color", $type);
+      color: mdwTextfieldThemeValue("filled-disabled-border-color", $type);
     }
 
     &:not([mdw-outlined]) > .mdw-textfield__border {
-      background-color: mdwTextfieldThemeValue("fill-color", $type, $theme);
+      background-color: mdwTextfieldThemeValue("fill-color", $type);
     }
 
     &:not([mdw-outlined]) > .mdw-textfield__input:not(:disabled) {
       & ~ .mdw-textfield__border:hover,
       &:hover ~ .mdw-textfield__border {
-        background-color: mdwTextfieldThemeValue("fill-color__hover", $type, $theme);
+        background-color: mdwTextfieldThemeValue("fill-color__hover", $type);
       }
     }
   }
 }
 
 
-@each $name in map-keys($mdw-theme__themes) {
-  $theme: map-get($mdw-theme__themes, $name);
-  @include mdw-theme__add-component-fallback-rules('light', $name) {
-    @include mdw-textfield__theme-rules('light', $theme);
-  }
-  @include mdw-theme__add-component-fallback-rules('dark', $name) {
-    @include mdw-textfield__theme-rules('dark', $theme);
-  }
+@include mdw-theme__add-component-fallback-rules('light') {
+  @include mdw-textfield__theme-rules('light');
+}
+@include mdw-theme__add-component-fallback-rules('dark') {
+  @include mdw-textfield__theme-rules('dark');
 }
 
 @include mdw-theme__add-component-variable-rules('textfield', $mdw-textfield__theme-values) {

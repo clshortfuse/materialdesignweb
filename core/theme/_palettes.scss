@@ -323,7 +323,7 @@ $mdw-theme__palette__brown: (
   "dark": ("300", "400", "500", "600", "700", "800", "900", "A100", "A200", "A400", "A700")
 ) !default;
 
-$mdw-theme__palette__grey: (
+$mdw-theme__palette__gray: (
   "50": #FAFAFA,
   "100": #F5F5F5,
   "200": #EEEEEE,
@@ -342,7 +342,7 @@ $mdw-theme__palette__grey: (
   "dark": ("600", "700", "800", "900", "A700")
 ) !default;
 
-$mdw-theme__palette__bluegrey: (
+$mdw-theme__palette__bluegray: (
   "50": #ECEFF1,
   "100": #CFD8DC,
   "200": #B0BEC5,
@@ -379,6 +379,8 @@ $mdw-theme__palettes: (
   "orange": $mdw-theme__palette__orange,
   "deeporange": $mdw-theme__palette__deeporange,
   "brown": $mdw-theme__palette__brown,
-  "grey": $mdw-theme__palette__grey,
-  "bluegrey": $mdw-theme__palette__bluegrey
+  "gray": $mdw-theme__palette__gray,
+  "grey": $mdw-theme__palette__gray,
+  "bluegray": $mdw-theme__palette__bluegray,
+  "bluegrey": $mdw-theme__palette__bluegray
 ) !default;

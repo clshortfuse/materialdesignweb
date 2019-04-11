@@ -5,24 +5,21 @@ $mdw-template__theme-values: (
   border-color:  (('primary', '700', 0.87), ('primary', '200', 1.0)),
 ) !default;
 
-@function mdwTemplateThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('template', $mdw-template__theme-values, $key, $type, $theme);
+@function mdwTemplateThemeValue($key, $type) {
+  @return mdwGetThemeValue('template', $mdw-template__theme-values, $key, $type);
 }
 
 @mixin mdw-template__theme-rules($theme: null) {
   .mdw-template[mdw-surface] {
-    border-color: templateThemeValue('border-color', null, $theme);
+    border-color: templateThemeValue('border-color', null);
   }
 }
 
-@each $name in map-keys($mdw-theme__themes) {
-  $theme: map-get($mdw-theme__themes, $name);
-  @include mdw-theme__add-component-fallback-rules('light', $name) {
-    @include mdw-template__theme-rules('light', $theme);
-  }
-  @include mdw-theme__add-component-fallback-rules('dark', $name) {
-    @include mdw-template__theme-rules('dark', $theme);
-  }
+@include mdw-theme__add-component-fallback-rules('light') {
+  @include mdw-template__theme-rules('light');
+}
+@include mdw-theme__add-component-fallback-rules('dark') {
+  @include mdw-template__theme-rules('dark');
 }
 
 @include mdw-theme__add-component-variable-rules('template', $mdw-template__theme-values) {

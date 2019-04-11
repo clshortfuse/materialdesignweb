@@ -34,54 +34,53 @@ $mdw-selection__theme-values: (
 
 ) !default;
 
-@function mdwSelectionThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('selection', $mdw-selection__theme-values, $key, $type, $theme);
+@function mdwSelectionThemeValue($key, $type) {
+  @return mdwGetThemeValue('selection', $mdw-selection__theme-values, $key, $type);
 }
 
-@mixin mdw-selection__theme-rules($type: 'var', $theme: null) {
+@mixin mdw-selection__theme-rules($type: 'var') {
   .mdw-selection__input {
     &:not(:checked),
     &:checked:active:not(:disabled) {
-      --ink-color: var(--foreground-color);
-      color: mdwSelectionThemeValue("ripple-color", $type, $theme);
+      color: mdwSelectionThemeValue("ripple-color", $type);
       
       & ~ .mdw-selection__icon {
-        color: mdwSelectionThemeValue("icon-color", $type, $theme);
+        color: mdwSelectionThemeValue("icon-color", $type);
       }
     }
 
     &:not([mdw-overlay-touch="true"]) {
       &:focus:not([mdw-overlay-off~="focus"]):not([mdw-overlay-touch="true"]) {
-        opacity: mdwOverlayThemeValue("focus-opacity", $type, $theme);
+        opacity: mdwOverlayThemeValue("focus-opacity", $type);
       }
 
       &:not([disabled]):not([aria-disabled="true"]):not([mdw-overlay-touch="true"]) {
         &:hover:not([mdw-overlay-off~="hover"]) {
-          opacity: mdwOverlayThemeValue("hover-opacity", $type, $theme);
+          opacity: mdwOverlayThemeValue("hover-opacity", $type);
         }
 
         &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"]) {
-          opacity: mdwOverlayThemeValue("hover-focus-opacity", $type, $theme);
+          opacity: mdwOverlayThemeValue("hover-focus-opacity", $type);
         }
       }
     }
 
     // Selected
     &:checked:not([mdw-overlay-off~="selected"]) {
-      opacity: mdwOverlayThemeValue("selected-opacity", $type, $theme);
+      opacity: mdwOverlayThemeValue("selected-opacity", $type);
 
       &:not([mdw-overlay-touch="true"]) {
         &:focus:not([mdw-overlay-off~="focus"]) {
-          opacity: mdwOverlayThemeValue("selected-focus-opacity", $type, $theme);
+          opacity: mdwOverlayThemeValue("selected-focus-opacity", $type);
         }
 
         &:not([disabled]):not([aria-disabled="true"]) {
           &:hover:not([mdw-overlay-off~="hover"]) {
-            opacity: mdwOverlayThemeValue("selected-hover-opacity", $type, $theme);
+            opacity: mdwOverlayThemeValue("selected-hover-opacity", $type);
           }
 
           &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"]) {
-            opacity: mdwOverlayThemeValue("selected-hover-focus-opacity", $type, $theme);
+            opacity: mdwOverlayThemeValue("selected-hover-focus-opacity", $type);
           }
         }
       }
@@ -100,63 +99,61 @@ $mdw-selection__theme-values: (
     &[disabled],
     &[aria-disabled="true"] {
       & ~ .mdw-selection__label {
-        opacity: mdwSelectionThemeValue("disabled-opacity", $type, $theme);
+        opacity: mdwSelectionThemeValue("disabled-opacity", $type);
       }
       & ~ .mdw-selection__icon,
       & ~ .mdw-selection__icon::before {
-        color: mdwSelectionThemeValue("disabled-color", $type, $theme);
+        color: mdwSelectionThemeValue("disabled-color", $type);
       }
     }
   }
 
   .mdw-selection__label,
   .mdw-selection[mdw-ink] .mdw-selection__input:not([disabled]):not([aria-disabled="true"]) ~ .mdw-selection__label {
-    color: mdwSelectionThemeValue("text-color", $type, $theme);
+    color: mdwSelectionThemeValue("text-color", $type);
   }
 
   .mdw-selection[mdw-switch] .mdw-selection__input {
     & ~ .mdw-selection__icon {
       &::before {
-        background-color: mdwSelectionThemeValue("thumb-off-color", $type, $theme);
+        background-color: mdwSelectionThemeValue("thumb-off-color", $type);
       }
 
       &::after {
-        opacity: mdwSelectionThemeValue("track-off-opacity", $type, $theme);
+        opacity: mdwSelectionThemeValue("track-off-opacity", $type);
 
-        background-color: mdwSelectionThemeValue("track-off-color", $type, $theme);
+        background-color: mdwSelectionThemeValue("track-off-color", $type);
       }
     }
 
     &:checked ~ .mdw-selection__icon {
       &::before {
-        background-color: mdwSelectionThemeValue("thumb-on-color", $type, $theme);
+        background-color: mdwSelectionThemeValue("thumb-on-color", $type);
       }
 
       &::after {
-        background-color: mdwSelectionThemeValue("track-on-color", $type, $theme);
+        background-color: mdwSelectionThemeValue("track-on-color", $type);
       }
     }
 
     &[disabled],
     &[aria-disabled="true"] {
       & ~ .mdw-selection__icon::before {
-        background-color: mdwSelectionThemeValue("thumb-disabled-color", $type, $theme);
+        background-color: mdwSelectionThemeValue("thumb-disabled-color", $type);
       }
       &  ~ .mdw-selection__icon::after {
-        opacity: mdwSelectionThemeValue("track-disabled-opacity", $type, $theme);
+        opacity: mdwSelectionThemeValue("track-disabled-opacity", $type);
       }
     }
   }
 }
 
-@each $name in map-keys($mdw-theme__themes) {
-  $theme: map-get($mdw-theme__themes, $name);
-  @include mdw-theme__add-component-fallback-rules('light', $name) {
-    @include mdw-selection__theme-rules('light', $theme);
-  }
-  @include mdw-theme__add-component-fallback-rules('dark', $name) {
-    @include mdw-selection__theme-rules('dark', $theme);
-  }
+
+@include mdw-theme__add-component-fallback-rules('light') {
+  @include mdw-selection__theme-rules('light');
+}
+@include mdw-theme__add-component-fallback-rules('dark') {
+  @include mdw-selection__theme-rules('dark');
 }
 
 @include mdw-theme__add-component-variable-rules('selection', $mdw-selection__theme-values) {

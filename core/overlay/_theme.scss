@@ -30,11 +30,11 @@ $mdw-overlay__theme-values: (
   activated-hover-focus-opacity: (0.12 + 0.04 + 0.12, 0.24 + 0.08 + 0.24),
 ) !default;
 
-@function mdwOverlayThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('overlay', $mdw-overlay__theme-values, $key, $type, $theme);
+@function mdwOverlayThemeValue($key, $type) {
+  @return mdwGetThemeValue('overlay', $mdw-overlay__theme-values, $key, $type);
 }
 
-@mixin mdw-overlay__theme-rules($type: 'var', $theme: null) {
+@mixin mdw-overlay__theme-rules($type: 'var') {
   .mdw-overlay {
     &,
     &:active,
@@ -57,13 +57,13 @@ $mdw-overlay__theme-values: (
     &[disabled]:active,
     &[aria-disabled="true"]:active {
       &::before {
-        color: mdwOverlayThemeValue("overlay-color", $type, $theme);
+        color: mdwOverlayThemeValue("overlay-color", $type);
       }
     }
 
     @if ($type == 'var') {
       .mdw-overlay__group[aria-multiselectable="true"] &[aria-selected="true"] {
-        color: mdwOverlayThemeValue("off-color", $type, $theme);
+        color: mdwOverlayThemeValue("off-color", $type);
       }
     }
 
@@ -72,33 +72,33 @@ $mdw-overlay__theme-values: (
     &[disabled],
     &[aria-disabled="true"] {
       @if ($type == 'var') {
-        color: mdwOverlayThemeValue("off-color", $type, $theme);
+        color: mdwOverlayThemeValue("off-color", $type);
         &[mdw-border-ink] {
-          border-color: mdwOverlayThemeValue("off-divider-color", $type, $theme);
+          border-color: mdwOverlayThemeValue("off-divider-color", $type);
         }
         &[mdw-overlay-default="medium"] {
-          color: mdwOverlayThemeValue("off-medium-color", $type, $theme);
+          color: mdwOverlayThemeValue("off-medium-color", $type);
         }
         &[mdw-overlay-default="inactive"] {
-          color: mdwOverlayThemeValue("off-inactive-color", $type, $theme);
+          color: mdwOverlayThemeValue("off-inactive-color", $type);
         }
         &[mdw-overlay-default="divider"] {
-          color: mdwOverlayThemeValue("off-divider-color", $type, $theme);
+          color: mdwOverlayThemeValue("off-divider-color", $type);
         }
       } @else {
         &,&.mdw-theme {
-          color: mdwOverlayThemeValue("off-color", $type, $theme);
+          color: mdwOverlayThemeValue("off-color", $type);
           &[mdw-border-ink] {
-            border-color: mdwOverlayThemeValue("off-divider-color", $type, $theme);
+            border-color: mdwOverlayThemeValue("off-divider-color", $type);
           }
           &[mdw-overlay-default="medium"] {
-            color: mdwOverlayThemeValue("off-medium-color", $type, $theme);
+            color: mdwOverlayThemeValue("off-medium-color", $type);
           }
           &[mdw-overlay-default="inactive"] {
-            color: mdwOverlayThemeValue("off-inactive-color", $type, $theme);
+            color: mdwOverlayThemeValue("off-inactive-color", $type);
           }
           &[mdw-overlay-default="divider"] {
-            color: mdwOverlayThemeValue("off-divider-color", $type, $theme);
+            color: mdwOverlayThemeValue("off-divider-color", $type);
           }
         }
       }  
@@ -107,21 +107,21 @@ $mdw-overlay__theme-values: (
 
     &[disabled],
     &[aria-disabled="true"] {
-      opacity: mdwOverlayThemeValue("disabled-opacity", $type, $theme);
+      opacity: mdwOverlayThemeValue("disabled-opacity", $type);
     }
 
     &:not([mdw-overlay-touch="true"]) {
       &:focus:not([mdw-overlay-off~="focus"]):not([mdw-overlay-touch="true"])::before {
-        opacity: mdwOverlayThemeValue("focus-opacity", $type, $theme);
+        opacity: mdwOverlayThemeValue("focus-opacity", $type);
       }
 
       &:not([disabled]):not([aria-disabled="true"]):not([mdw-overlay-touch="true"]) {
         &:hover:not([mdw-overlay-off~="hover"])::before {
-          opacity: mdwOverlayThemeValue("hover-opacity", $type, $theme);
+          opacity: mdwOverlayThemeValue("hover-opacity", $type);
         }
 
         &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-          opacity: mdwOverlayThemeValue("hover-focus-opacity", $type, $theme);
+          opacity: mdwOverlayThemeValue("hover-focus-opacity", $type);
         }
       }
     }
@@ -129,21 +129,21 @@ $mdw-overlay__theme-values: (
     // Selected
     &[aria-selected="true"]:not([mdw-overlay-off~="selected"]) {
       &::before {
-        opacity: mdwOverlayThemeValue("selected-opacity", $type, $theme);
+        opacity: mdwOverlayThemeValue("selected-opacity", $type);
       }
 
       &:not([mdw-overlay-touch="true"]) {
         &:focus:not([mdw-overlay-off~="focus"])::before {
-          opacity: mdwOverlayThemeValue("selected-focus-opacity", $type, $theme);
+          opacity: mdwOverlayThemeValue("selected-focus-opacity", $type);
         }
 
         &:not([disabled]):not([aria-disabled="true"]) {
           &:hover:not([mdw-overlay-off~="hover"])::before {
-            opacity: mdwOverlayThemeValue("selected-hover-opacity", $type, $theme);
+            opacity: mdwOverlayThemeValue("selected-hover-opacity", $type);
           }
 
           &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-            opacity: mdwOverlayThemeValue("selected-hover-focus-opacity", $type, $theme);
+            opacity: mdwOverlayThemeValue("selected-hover-focus-opacity", $type);
           }
         }
       }
@@ -154,21 +154,21 @@ $mdw-overlay__theme-values: (
     &[aria-current]:not([mdw-overlay-off~="current"]),
     &[aria-pressed="true"]:not([mdw-overlay-off~="activated"]) {
       &::before {
-        opacity: mdwOverlayThemeValue("activated-opacity", $type, $theme);
+        opacity: mdwOverlayThemeValue("activated-opacity", $type);
       }
 
       &:not([mdw-overlay-touch="true"]) {
         &:focus:not([mdw-overlay-off~="focus"])::before {
-          opacity: mdwOverlayThemeValue("activated-focus-opacity", $type, $theme);
+          opacity: mdwOverlayThemeValue("activated-focus-opacity", $type);
         }
 
         &:not([disabled]):not([aria-disabled="true"]) {
           &:hover:not([mdw-overlay-off~="hover"])::before {
-            opacity: mdwOverlayThemeValue("activated-hover-opacity", $type, $theme);
+            opacity: mdwOverlayThemeValue("activated-hover-opacity", $type);
           }
 
           &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-            opacity: mdwOverlayThemeValue("activated-hover-focus-opacity", $type, $theme);
+            opacity: mdwOverlayThemeValue("activated-hover-focus-opacity", $type);
           }
         }
       }
@@ -176,15 +176,13 @@ $mdw-overlay__theme-values: (
   }
 }
 
-@each $name in map-keys($mdw-theme__themes) {
-  $theme: map-get($mdw-theme__themes, $name);
-  @include mdw-theme__add-component-fallback-rules('light', $name) {
-    @include mdw-overlay__theme-rules('light', $theme);
-  }
-  @include mdw-theme__add-component-fallback-rules('dark', $name) {
-    @include mdw-overlay__theme-rules('dark', $theme);
-  }
+@include mdw-theme__add-component-fallback-rules('light') {
+  @include mdw-overlay__theme-rules('light');
 }
+@include mdw-theme__add-component-fallback-rules('dark') {
+  @include mdw-overlay__theme-rules('dark');
+}
+
 
 @include mdw-theme__add-component-variable-rules('overlay', $mdw-overlay__theme-values) {
   @include mdw-overlay__theme-rules();

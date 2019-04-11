@@ -254,7 +254,7 @@ export function update(element, options) {
   if (!element.classList.contains('mdw-theme')) {
     // Guidelines conflict stating a background should be fully opaque
     // But says spec says to use #000000 with 87% opacity
-    // Calculated against white, opaque value is #212121 (Grey-900)
+    // Calculated against white, opaque value is #212121 (Gray-900)
     element.classList.add('mdw-theme');
     element.setAttribute('mdw-surface', 'background 900');
     element.setAttribute('mdw-dark', '');

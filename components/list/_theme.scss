@@ -15,11 +15,11 @@ $mdw-list__theme-values: (
 
 ) !default;
 
-@function mdwListThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('list', $mdw-list__theme-values, $key, $type, $theme);
+@function mdwListThemeValue($key, $type) {
+  @return mdwGetThemeValue('list', $mdw-list__theme-values, $key, $type);
 }
 
-@mixin mdw-list__theme-rules($type: 'var', $theme: null) {
+@mixin mdw-list__theme-rules($type: 'var') {
 
   .mdw-list__content {
     &[mdw-ink][aria-current],
@@ -33,7 +33,7 @@ $mdw-list__theme-values: (
 
   .mdw-list[mdw-divider] {
     & > .mdw-list__item:not(:last-child) .mdw-list__text::after {
-      background-color: mdwListThemeValue("divider-color", $type, $theme);
+      background-color: mdwListThemeValue("divider-color", $type);
     }
   }
 
@@ -41,12 +41,12 @@ $mdw-list__theme-values: (
     & > .mdw-list__expander-content {
       &:not([mdw-overlay-touch="true"]) {
         &:not([mdw-overlay-off~="focus"]):not([mdw-overlay-touch="true"])::before {
-          opacity: mdwListThemeValue("focus-opacity", $type, $theme);
+          opacity: mdwListThemeValue("focus-opacity", $type);
         }
   
         &:not([disabled]):not([aria-disabled="true"]):not([mdw-overlay-touch="true"]) {
           &:hover:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-            opacity: mdwListThemeValue("hover-focus-opacity", $type, $theme);
+            opacity: mdwListThemeValue("hover-focus-opacity", $type);
           }
         }
       }
@@ -55,12 +55,12 @@ $mdw-list__theme-values: (
       &[aria-selected="true"]:not([mdw-overlay-off~="selected"]) {
         &:not([mdw-overlay-touch="true"]) {
           &:focus:not([mdw-overlay-off~="focus"])::before {
-            opacity: mdwListThemeValue("selected-focus-opacity", $type, $theme);
+            opacity: mdwListThemeValue("selected-focus-opacity", $type);
           }
   
           &:not([disabled]):not([aria-disabled="true"]) {
             &:hover:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-              opacity: mdwListThemeValue("selected-hover-focus-opacity", $type, $theme);
+              opacity: mdwListThemeValue("selected-hover-focus-opacity", $type);
             }
           }
         }
@@ -71,12 +71,12 @@ $mdw-list__theme-values: (
       &[aria-pressed="true"]:not([mdw-overlay-off~="activated"]) {
         &:not([mdw-overlay-touch="true"]) {
           &:not([mdw-overlay-off~="focus"])::before {
-            opacity: mdwListThemeValue("activated-focus-opacity", $type, $theme);
+            opacity: mdwListThemeValue("activated-focus-opacity", $type);
           }
   
           &:not([disabled]):not([aria-disabled="true"]) {
             &:hover:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-              opacity: mdwListThemeValue("activated-hover-focus-opacity", $type, $theme);
+              opacity: mdwListThemeValue("activated-hover-focus-opacity", $type);
             }
           }
         }
@@ -87,7 +87,7 @@ $mdw-list__theme-values: (
   .mdw-list__expander[aria-expanded="true"] {
     &::before,
     &::after {
-      background-color: mdwListThemeValue("divider-color", $type, $theme);
+      background-color: mdwListThemeValue("divider-color", $type);
     }
 
     &[mdw-ink][aria-expanded="true"] {
@@ -101,14 +101,12 @@ $mdw-list__theme-values: (
   
 }
 
-@each $name in map-keys($mdw-theme__themes) {
-  $theme: map-get($mdw-theme__themes, $name);
-  @include mdw-theme__add-component-fallback-rules('light', $name) {
-    @include mdw-list__theme-rules('light', $theme);
-  }
-  @include mdw-theme__add-component-fallback-rules('dark', $name) {
-    @include mdw-list__theme-rules('dark', $theme);
-  }
+
+@include mdw-theme__add-component-fallback-rules('light') {
+  @include mdw-list__theme-rules('light');
+}
+@include mdw-theme__add-component-fallback-rules('dark') {
+  @include mdw-list__theme-rules('dark');
 }
 
 @include mdw-theme__add-component-variable-rules('list', $mdw-list__theme-values) {

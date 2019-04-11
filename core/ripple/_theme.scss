@@ -9,15 +9,15 @@ $mdw-ripple__theme-values: (
   pressed-opacity:               (0.16, 0.32),
 ) !default;
 
-@function mdwRippleThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('ripple', $mdw-ripple__theme-values, $key, $type, $theme);
+@function mdwRippleThemeValue($key, $type) {
+  @return mdwGetThemeValue('ripple', $mdw-ripple__theme-values, $key, $type);
 }
 
-@mixin mdw-ripple__theme-rules($type: 'var', $theme: null) {
+@mixin mdw-ripple__theme-rules($type: 'var') {
   .mdw-ripple {
     & > .mdw-ripple__container > .mdw-ripple__inner,
     &::after {
-      opacity: mdwRippleThemeValue("pressed-opacity", $type, $theme);
+      opacity: mdwRippleThemeValue("pressed-opacity", $type);
       color: inherit;
       @if ($type == 'var') {
         // Fallback handed by previous inherit rule
@@ -27,14 +27,12 @@ $mdw-ripple__theme-values: (
   }
 }
 
-@each $name in map-keys($mdw-theme__themes) {
-  $theme: map-get($mdw-theme__themes, $name);
-  @include mdw-theme__add-component-fallback-rules('light', $name) {
-    @include mdw-ripple__theme-rules('light', $theme);
-  }
-  @include mdw-theme__add-component-fallback-rules('dark', $name) {
-    @include mdw-ripple__theme-rules('dark', $theme);
-  }
+
+@include mdw-theme__add-component-fallback-rules('light') {
+  @include mdw-ripple__theme-rules('light');
+}
+@include mdw-theme__add-component-fallback-rules('dark') {
+  @include mdw-ripple__theme-rules('dark');
 }
 
 @include mdw-theme__add-component-variable-rules('ripple', $mdw-ripple__theme-values) {

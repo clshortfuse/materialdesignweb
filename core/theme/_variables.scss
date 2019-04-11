@@ -1,9 +1,13 @@
-$mdw-theme__themes: (
-  "default": ('blue', 'pink', 'red', 'grey', black, white),
-) !default;
 $mdw-theme__colors: () !default;
-$mdw-theme__fallbacks: ('rules', 'colors', 'themes', 'ieonly') !default;
-$mdw-theme__variables: ('rules', 'colors', 'themes', 'supports') !default;
+$mdw-theme__primary: 'blue' !default;
+$mdw-theme__secondary: 'pink' !default;
+$mdw-theme__warn: 'red' !default;
+$mdw-theme__background: 'gray' !default;
+$mdw-theme__foreground-light: #fff !default;
+$mdw-theme__foreground-dark: #000 !default;
+
+$mdw-theme__fallbacks: 'ieonly' !default;
+$mdw-theme__variables: 'supports' !default;
 
 $mdw-theme__default-ink: (('foreground-light', 0.87), ('foreground-dark', 1.00)) !default;
 $mdw-theme__medium-ink: (('foreground-light', 0.60), ('foreground-dark', 0.70)) !default;

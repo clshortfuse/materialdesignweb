@@ -11,17 +11,17 @@ $mdw-button__theme-values: (
   outline-color:                 $mdw-theme__divider-ink,
 ) !default;
 
-@function mdwButtonThemeValue($key, $type, $theme) {
-  @return mdwGetThemeValue('button', $mdw-button__theme-values, $key, $type, $theme);
+@function mdwButtonThemeValue($key, $type) {
+  @return mdwGetThemeValue('button', $mdw-button__theme-values, $key, $type);
 }
 
-@mixin mdw-button__theme-rules($type: 'var', $theme: null) {
+@mixin mdw-button__theme-rules($type: 'var') {
   .mdw-button {
     &[disabled],
     &[aria-disabled="true"] {
       &[mdw-surface] {
-        background-color: mdwButtonThemeValue("disabled-background-color", $type, $theme);
-        color: mdwButtonThemeValue("disabled-text-color", $type, $theme);
+        background-color: mdwButtonThemeValue("disabled-background-color", $type);
+        color: mdwButtonThemeValue("disabled-text-color", $type);
 
         // Disabled filled buttons use parent's theming context
         @if ($type == 'var') {
@@ -36,14 +36,12 @@ $mdw-button__theme-values: (
   }
 }
 
-@each $name in map-keys($mdw-theme__themes) {
-  $theme: map-get($mdw-theme__themes, $name);
-  @include mdw-theme__add-component-fallback-rules('light', $name) {
-    @include mdw-button__theme-rules('light', $theme);
-  }
-  @include mdw-theme__add-component-fallback-rules('dark', $name) {
-    @include mdw-button__theme-rules('dark', $theme);
-  }
+
+@include mdw-theme__add-component-fallback-rules('light') {
+  @include mdw-button__theme-rules('light');
+}
+@include mdw-theme__add-component-fallback-rules('dark') {
+  @include mdw-button__theme-rules('dark');
 }
 
 @include mdw-theme__add-component-variable-rules('button', $mdw-button__theme-values) {
