@@ -70,7 +70,7 @@ export function onPrerender() {
   if (!document.documentElement.hasAttribute('mdw-surface')
     && !document.documentElement.hasAttribute('mdw-light')
     && !document.documentElement.hasAttribute('mdw-dark')) {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (window.matchMedia('(prefers-color-scheme:dark)').matches) {
       document.documentElement.setAttribute('mdw-dark', '');
       document.documentElement.setAttribute('mdw-surface', 'black');
     } else {
