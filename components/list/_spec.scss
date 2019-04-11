@@ -25,22 +25,7 @@ ul.mdw-list__item-group {
   list-style-type: none;
 }
 
-.mdw-list__subheader {
-  @include type-rules('body-2');
 
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: stretch;
-
-  min-height: dp(48);
-  padding-right: dp(16);
-  padding-left: dp(16);
-
-  &:first-child {
-    margin-top: dp(-8);
-  }
-}
 
 li.mdw-list__item {
   position: relative;
@@ -95,6 +80,19 @@ a.mdw-list__expander-content {
   &[aria-hidden="true"] {
     display: none;
   }
+}
+
+.mdw-list__subheader {
+  @include type-rules('body-2');
+
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: stretch;
+
+  min-height: dp(48);
+  padding-right: dp(16);
+  padding-left: dp(16);
 }
 
 .mdw-list__avatar,
@@ -179,6 +177,10 @@ a.mdw-list__expander-content {
   &:not([mdw-expander-js]) > .mdw-list__item-group .mdw-list__item {
     animation-duration: 0s;
   }
+
+  &[aria-expanded="true"] + .mdw-list__expander[aria-expanded="true"]::before {
+    display: none;
+  }
 }
 
 
@@ -244,10 +246,13 @@ a.mdw-list__expander-content {
 
   z-index: 1;
 
+  pointer-events: none;
+
   :root[dir="rtl"] & {
     margin-right: dp(16);
     margin-left: 0;
   }
+
 }
 
 @include mdw-platform__ie() {
