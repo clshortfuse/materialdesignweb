@@ -248,9 +248,9 @@ $mdw-textfield__outline-end-width: dp(8) !default;
     border-width: $mdw-textfield__border-line-height__focused;
 
     transition-delay: 1ms;
-    transition-duration: $mdw-motion__fade-in-duration;
+    transition-duration: $mdw-motion__collapse-duration;
     transition-property: transform;
-    transition-timing-function: $mdw-motion__decelerate-easing;
+    transition-timing-function: $mdw-motion__accelerate-easing;
     will-change: transform;
 
     transform: scaleX(0) translateY(-$mdw-textfield__border-line-height/2);
@@ -468,8 +468,8 @@ $mdw-textfield__outline-end-width: dp(8) !default;
   margin: 0;
   padding: 0;
 
-  transition-duration: $mdw-motion__simple-duration;
-  transition-property: top, transform, font-size, color;
+  transition-duration: $mdw-motion__shape-change-duration;
+  transition-property: top, transform, font-size;
   transition-timing-function: $mdw-motion__standard-easing;
   will-change: top, transform, font-size;
 
@@ -788,6 +788,8 @@ select.mdw-textfield__input {
   & > .mdw-textfield__input:not(:disabled):focus {
     & ~ .mdw-textfield__border::before,
     &:invalid ~ .mdw-textfield__border::after {
+      transition-duration: $mdw-motion__expand-duration;
+      transition-timing-function: $mdw-motion__decelerate-easing;
       transform: scaleX(1) translateY(-$mdw-textfield__border-line-height/2);
     }
   }
