@@ -663,6 +663,7 @@ select.mdw-textfield__input {
 
 
 .mdw-textfield__error-text {
+  opacity: 0;
   transform: translateY(-25%);
 }
 
@@ -831,10 +832,11 @@ select.mdw-textfield__input {
 // Invalid
 .mdw-textfield__input:focus:invalid ~ .mdw-textfield__error-text {
   transition-duration: $mdw-motion__fade-in-duration;
-  transition-property: transform, color;
+  transition-property: transform, opacity;
   transition-timing-function: $mdw-motion__decelerate-easing;
-  will-change: transform, color;
+  will-change: transform, opacity;
 
+  opacity: 1;
   transform: translateY(0);
 }
 

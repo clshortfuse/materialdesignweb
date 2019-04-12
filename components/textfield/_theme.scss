@@ -215,9 +215,6 @@ $mdw-textfield__theme-values: (
     color: mdwTextfieldThemeValue("secondary-text-color", $type);
   }
 
-  .mdw-textfield__error-text {
-    color: transparent; // will transition when shown
-  }
 
   .mdw-textfield__input:disabled ~ .mdw-textfield__helper-text {
     color: mdwTextfieldThemeValue("disabled-color", $type);
