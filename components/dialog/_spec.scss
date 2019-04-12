@@ -103,6 +103,7 @@ $mdw-dialog__unit-width: dp(56) !default;
   position: relative;
   flex-direction: column;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   overscroll-behavior: none;
   overscroll-behavior: contain;
   -ms-scroll-chaining: none;

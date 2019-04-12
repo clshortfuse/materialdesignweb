@@ -167,6 +167,7 @@ $mdw-tab__icon-with-label-height: 72 !default;
   -ms-overflow-style: none;
   overflow-x: hidden;
   overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   
   // W3C standard

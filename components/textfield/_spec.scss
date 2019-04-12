@@ -612,6 +612,7 @@ $mdw-textfield__outline-end-width: dp(8) !default;
 
 textarea.mdw-textfield__input {
   -ms-overflow-style: -ms-autohiding-scrollbar;
+  -webkit-overflow-scrolling: touch;
   overflow-y: auto;
 
   min-height: 1em; // Avoid clipping on resize
