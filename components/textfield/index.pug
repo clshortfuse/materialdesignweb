@@ -1,0 +1,30 @@
+mixin mdwTextField(options={})
+  label.mdw-textfield(class=([
+  options.ink ? 'mdw-theme' : '',
+  ].filter(v=>v).join(' '))
+  mdw-outlined=(options.outlined)
+  mdw-autosize=(options.autosize)
+  mdw-ink=(options.ink)
+  )
+    if (options.signifierClass || options.signifier)
+      .mdw-textfield__signifier(class=options.signifierClass)= options.signifier
+    input.mdw-textfield__input(
+    disabled=(options.disabled ? '' : false)
+    minlength=(options.minlength ? `${options.minlength}` : false)
+    placeholder=(options.placeholder ? options.placeholder: ' ')
+    required=(options.required ? '' : false)
+    type=(options.type ? options.type : 'text')
+    value=(options.value)
+    )&attributes(attributes)
+    .mdw-textfield__border
+      .mdw-textfield__outline-gap
+        .mdw-textfield__label
+          block
+    if (options.prefix)
+      .mdw-textfield__prefix= options.prefix
+    if (options.suffix)
+      .mdw-textfield__suffix= options.suffix
+    if (options.helperText)
+      .mdw-textfield__helper-text= options.helperText
+    if (options.errorText)
+      .mdw-textfield__error-text= options.errorText
