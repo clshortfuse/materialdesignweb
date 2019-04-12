@@ -40,10 +40,9 @@ $mdw-selection__theme-values: (
 
 @mixin mdw-selection__theme-rules($type: 'var') {
   .mdw-selection__input {
-    &:not(:checked),
-    &:checked:active:not(:disabled) {
+    &:not(:checked) {
       color: mdwSelectionThemeValue("ripple-color", $type);
-      
+
       & ~ .mdw-selection__icon {
         color: mdwSelectionThemeValue("icon-color", $type);
       }
