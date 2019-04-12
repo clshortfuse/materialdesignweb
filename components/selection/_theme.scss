@@ -6,6 +6,8 @@ $mdw-selection__theme-values: (
   text-color:              $mdw-theme__default-ink,
   icon-color:              $mdw-theme__medium-ink,
   disabled-color:          $mdw-theme__inactive-ink,
+  
+  fallback-check-color:    (('background', '50', 1.00), ('background','900',1.0)),
   ripple-color:            (('foreground-light', 1.00), ('foreground-dark', 1.00)),
 
   thumb-off-color:         (('background', '50', 1.00), ('background','400',1.0)),
@@ -39,64 +41,60 @@ $mdw-selection__theme-values: (
 }
 
 @mixin mdw-selection__theme-rules($type: 'var') {
+  .mdw-selection__label {
+    color: mdwSelectionThemeValue("text-color", $type);
+  }
+
   .mdw-selection__input {
     &:not(:checked) {
-      color: mdwSelectionThemeValue("ripple-color", $type);
-
+      &,
       & ~ .mdw-selection__icon {
         color: mdwSelectionThemeValue("icon-color", $type);
       }
     }
 
     &:not([mdw-overlay-touch="true"]) {
-      &:focus:not([mdw-overlay-off~="focus"]):not([mdw-overlay-touch="true"]) {
-        opacity: mdwOverlayThemeValue("focus-opacity", $type);
+      &:checked:not([mdw-overlay-off~="selected"]) {
+        // opacity: mdwSelectionThemeValue("selected-opacity", $type);
       }
 
-      &:not([disabled]):not([aria-disabled="true"]):not([mdw-overlay-touch="true"]) {
+      &:focus:not([mdw-overlay-off~="focus"]) {
+        opacity: mdwSelectionThemeValue("focus-opacity", $type);
+        &:checked:not([mdw-overlay-off~="selected"]) {
+          opacity: mdwSelectionThemeValue("selected-focus-opacity", $type);
+        }
+      }
+
+      &:not([disabled]):not([aria-disabled="true"]) {
         &:hover:not([mdw-overlay-off~="hover"]) {
-          opacity: mdwOverlayThemeValue("hover-opacity", $type);
+          opacity: mdwSelectionThemeValue("hover-opacity", $type);
+          &:checked:not([mdw-overlay-off~="selected"]) {
+            opacity: mdwSelectionThemeValue("selected-hover-opacity", $type);
+          }
         }
 
         &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"]) {
-          opacity: mdwOverlayThemeValue("hover-focus-opacity", $type);
-        }
-      }
-    }
-
-    // Selected
-    &:checked:not([mdw-overlay-off~="selected"]) {
-      opacity: mdwOverlayThemeValue("selected-opacity", $type);
-
-      &:not([mdw-overlay-touch="true"]) {
-        &:focus:not([mdw-overlay-off~="focus"]) {
-          opacity: mdwOverlayThemeValue("selected-focus-opacity", $type);
-        }
-
-        &:not([disabled]):not([aria-disabled="true"]) {
-          &:hover:not([mdw-overlay-off~="hover"]) {
-            opacity: mdwOverlayThemeValue("selected-hover-opacity", $type);
-          }
-
-          &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"]) {
-            opacity: mdwOverlayThemeValue("selected-hover-focus-opacity", $type);
+          opacity: mdwSelectionThemeValue("hover-focus-opacity", $type);
+          &:checked:not([mdw-overlay-off~="selected"]) {
+            opacity: mdwSelectionThemeValue("selected-hover-focus-opacity", $type);
           }
         }
       }
     }
+
     
     &[type="checkbox"]:checked ~ .mdw-selection__icon::after {
       // Checkbox color is based on currently filled background-color
       @if($type == 'var') {
         border-color: unquote("rgba(var(--surface-color))");
       } @else {
-        // IE11 Fallback
-        border-color: #fff;
+        border-color: mdwSelectionThemeValue("fallback-check-color", $type);
       }
     }
 
     &[disabled],
     &[aria-disabled="true"] {
+      opacity: 0;
       & ~ .mdw-selection__label {
         opacity: mdwSelectionThemeValue("disabled-opacity", $type);
       }
@@ -107,12 +105,7 @@ $mdw-selection__theme-values: (
     }
   }
 
-  .mdw-selection__label,
-  .mdw-selection[mdw-ink] .mdw-selection__input:not([disabled]):not([aria-disabled="true"]) ~ .mdw-selection__label {
-    color: mdwSelectionThemeValue("text-color", $type);
-  }
-
-  .mdw-selection[mdw-switch] .mdw-selection__input {
+  .mdw-selection__input[role="switch"] {
     & ~ .mdw-selection__icon {
       &::before {
         background-color: mdwSelectionThemeValue("thumb-off-color", $type);
@@ -137,6 +130,7 @@ $mdw-selection__theme-values: (
 
     &[disabled],
     &[aria-disabled="true"] {
+      opacity: 0;
       & ~ .mdw-selection__icon::before {
         background-color: mdwSelectionThemeValue("thumb-disabled-color", $type);
       }

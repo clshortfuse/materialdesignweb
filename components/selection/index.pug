@@ -3,9 +3,9 @@ mixin mdwSelection(options={})
   options.ink ? 'mdw-theme' : '',
   ].filter(v=>v).join(' '))
   mdw-ink=(options.ink)
-  mdw-switch=(options.type === 'switch' ? '' : false)
   )
     input.mdw-selection__input.mdw-overlay(
+    role=(options.type === 'switch' ? 'switch' : false)
     type=(options.type === 'radio' ? 'radio' : 'checkbox')
     checked=(options.checked ? '' : false)
     disabled=(options.disabled ? '' : false)
