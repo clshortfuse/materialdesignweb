@@ -221,6 +221,7 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
     animation-fill-mode: forwards;
 
     transform: rotate(45deg);
+    transition: none;
 
     background-color: transparent;
   }
