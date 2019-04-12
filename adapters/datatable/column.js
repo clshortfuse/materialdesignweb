@@ -37,12 +37,12 @@
 /** @return {HTMLLabelElement} */
 function constructTableCheckbox() {
   const checkboxLabel = document.createElement('label');
-  checkboxLabel.classList.add('mdw-selection');
+  checkboxLabel.className = 'mdw-selection';
   const input = document.createElement('input');
-  input.classList.add('mdw-selection__input');
+  input.className = 'mdw-selection__input';
   input.setAttribute('type', 'checkbox');
   const icon = document.createElement('div');
-  icon.classList.add('mdw-selection__icon');
+  icon.className = 'mdw-selection__icon';
   checkboxLabel.appendChild(input);
   checkboxLabel.appendChild(icon);
   return checkboxLabel;
@@ -146,13 +146,13 @@ export default class DataTableAdapterColumn {
     const checked = !!value;
     if (!input) {
       const checkboxLabel = document.createElement('label');
-      checkboxLabel.classList.add('mdw-selection');
+      checkboxLabel.className = 'mdw-selection';
       input = document.createElement('input');
-      input.classList.add('mdw-selection__input');
+      input.className = 'mdw-selection__input';
       input.setAttribute('type', 'checkbox');
       input.checked = checked;
       const icon = document.createElement('div');
-      icon.classList.add('mdw-selection__icon');
+      icon.className = 'mdw-selection__icon';
       checkboxLabel.appendChild(input);
       checkboxLabel.appendChild(icon);
       cell.appendChild(checkboxLabel);
