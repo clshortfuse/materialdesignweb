@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const cssnano = require('cssnano');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const isProduction = (process.env.NODE_ENV === 'production');
 
@@ -13,11 +14,11 @@ function getComponentsConfig() {
     entry: {
       materialdesignweb: [
         path.resolve(__dirname, './index.js'),
-        path.resolve(__dirname, './_index.scss'),
+        path.resolve(__dirname, './index.scss'),
       ],
     },
     mode: process.env.NODE_ENV || 'development',
-    devtool: isProduction ? undefined : 'nosources-source-map',
+    devtool: 'nosources-source-map',
     optimization: {
       usedExports: false,
     },
@@ -25,6 +26,13 @@ function getComponentsConfig() {
       filename: 'materialdesignweb.min.js',
       path: path.resolve(__dirname, DEST),
     },
+    plugins: [
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        openAnalyzer: false,
+        generateStatsFile: true,
+      }),
+    ],
     module: {
       rules: [{
         test: /\.js$/,
@@ -63,7 +71,7 @@ function getDocsConfig() {
   const plugins = [];
   /** @type {Object.<string, string[]>} */
   const entries = {};
-  ['.', 'pwa', 'core', 'components'].map(folder => path.join('./docs-src', folder))
+  ['.', 'pwa', 'core', 'components', 'themes'].map(folder => path.join('./docs-src', folder))
     .forEach(folderPath => fs.readdirSync(folderPath).forEach((filename) => {
       if (filename[0] === '_') {
         return;
