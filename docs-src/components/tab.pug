@@ -10,22 +10,22 @@ include ../_mixins.pug
         .component-sample
           .component-sample__container
             .mdw-tab
-              .mdw-tab__list.mdw-theme(mdw-ink="accent A200")
-                .mdw-tab__item
+              .mdw-tab__list
+                .mdw-tab__item.mdw-theme(mdw-ink="secondary A200" mdw-overlay-default="medium")
                   .mdw-tab__icon.material-icons looks_one
                   .mdw-tab__label Tab Item One
-                .mdw-tab__item
+                .mdw-tab__item.mdw-theme(mdw-ink="secondary A200" mdw-overlay-default="medium")
                   .mdw-tab__icon.material-icons looks_two
                   .mdw-tab__label Tab Item Two
-                .mdw-tab__item
+                .mdw-tab__item.mdw-theme(mdw-ink="secondary A200" mdw-overlay-default="medium")
                   .mdw-tab__icon.material-icons looks_3
                   .mdw-tab__label Tab Item Three
-                .mdw-tab__indicator
-              .mdw-tab__content.mdw-theme(mdw-surface="grey 800" mdw-dark)
+                .mdw-tab__indicator.mdw-theme(mdw-ink="secondary A200")
+              .mdw-tab__content.mdw-theme(mdw-surface="gray 800" mdw-dark)
                 .mdw-tab__panel
                   div(style="min-height:200px;padding:20px")
                     p Sample Content One
-                    button.mdw-button.mdw-overlay.mdw-ripple(mdw-outline) Unfocusable when inactive
+                    +mdwButton({ borderInk:true }) Unfocusable when inactive
                     p HTML Ordered List with (#) representing DOM position
                     ol
                       li.mdw-tabs__panel__active-hide (1) Layer hidden when active (peek only)
@@ -37,7 +37,7 @@ include ../_mixins.pug
                 .mdw-tab__panel
                   div(style="min-height:200px;padding:20px")
                     p Sample Content Two
-                    button.mdw-button.mdw-overlay.mdw-ripple(mdw-outline) Unfocusable when inactive
+                    +mdwButton({ borderInk:true }) Unfocusable when inactive
                     p HTML Ordered List with (#) representing DOM position
                     ol
                       li.mdw-tabs__panel__active-hide (1) Layer hidden when active (peek only)
@@ -49,7 +49,7 @@ include ../_mixins.pug
                 .mdw-tab__panel
                   div(style="min-height:200px;padding:20px")
                     p Sample Content Three
-                    button.mdw-button.mdw-overlay.mdw-ripple(mdw-outline) Unfocusable when inactive
+                    +mdwButton({ borderInk:true }) Unfocusable when inactive
                     p HTML Ordered List with (#) representing DOM position
                     ol
                       li.mdw-tabs__panel__active-hide (1) Layer hidden when active (peek only)
@@ -60,94 +60,49 @@ include ../_mixins.pug
                       li (6) Always visible
     .mdw-grid__item(mdw-colspan="4")
       .mdw-type(mdw-style="subtitle") Javascript
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="required" checked)
-          .mdw-selection__icon
-          .mdw-selection__label Required
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="optional" disabled)
-          .mdw-selection__icon
-          .mdw-selection__label Optional
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="none" disabled)
-          .mdw-selection__icon
-          .mdw-selection__label None
+      .docs-option-list
+        +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'required', checked:true}) Required
+        +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'optional', disabled:true}) Optional
+        +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'none', disabled:true}) None
       .mdw-type(mdw-style="subtitle") Ink
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="default")
-          .mdw-selection__icon
-          .mdw-selection__label Default
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="primary 400")
-          .mdw-selection__icon
-          .mdw-selection__label Primary 400
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="accent A200" checked)
-          .mdw-selection__icon
-          .mdw-selection__label Accent A200
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="warn")
-          .mdw-selection__icon
-          .mdw-selection__label Warn
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="purple A400")
-          .mdw-selection__icon
-          .mdw-selection__label Purple A400
+      .docs-option-list
+        +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'default'}) Default
+        +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'primary 400'}) Primary A400
+        +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'secondary A200', checked:true}) Secondary A200
+        +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'warn'}) Warn
+        +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'purple A400'}) Purple A400
       .mdw-type(mdw-style="subtitle") Surface
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="none" checked)
-          .mdw-selection__icon
-          .mdw-selection__label None
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="primary dark" )
-          .mdw-selection__icon
-          .mdw-selection__label Primary
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="accent A100 dark")
-          .mdw-selection__icon
-          .mdw-selection__label Accent A100
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="warn 200 light")
-          .mdw-selection__icon
-          .mdw-selection__label Warn 200
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="green 700 dark")
-          .mdw-selection__icon
-          .mdw-selection__label Green 700
+      .docs-option-list
+        +mdwSelection({ink:'secondary', name:'surface', type:'radio', value:'none', checked:true}) None
+        +mdwSelection({ink:'secondary', name:'surface', type:'radio', value:'primary dark'}) Primary (Dark)
+        +mdwSelection({ink:'secondary', name:'surface', type:'radio', value:'secondary 100 dark'}) Secondary 100 (Dark)
+        +mdwSelection({ink:'secondary', name:'surface', type:'radio', value:'warn 200 light'}) Warn 200 (Light)
+        +mdwSelection({ink:'secondary', name:'surface', type:'radio', value:'dark 700 dark'}) Green 700 (Dark)
       .mdw-type(mdw-style="subtitle") Scrollable
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="content-scrollable" checked)
-          .mdw-selection__icon
-          .mdw-selection__label Content
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="tabs-scrollable")
-          .mdw-selection__icon
-          .mdw-selection__label Tabs
+      .docs-option-list
+        +mdwSelection({ink:'secondary', name:'content-scrollable', checked:true}) Content
+        +mdwSelection({ink:'secondary', name:'tabs-scrollable'}) Tabs
     .mdw-grid__item(mdw-colspan="100%" style="max-height:0")
     .mdw-grid__item(mdw-colspan="8")
       h6.mdw-type HTML Code
-      .mdw-card.mdw-theme.component-code.component-html(mdw-surface="card")
-        #usePug.mdw-button.mdw-theme(mdw-ink="accent" aria-pressed="false" mdw-overlay-off="activated" mdw-icon) PUG
+      .mdw-card.mdw-theme.component-code.component-html(mdw-surface="card" mdw-border-ink)
+        +mdwButton({ icon:true, ink:'secondary' })#usePug(aria-pressed="false" mdw-overlay-off="activated") PUG
     .mdw-grid__item(mdw-colspan="4")
       h6.mdw-type Javascript Code
-      .mdw-card.mdw-theme.component-code.component-js(mdw-surface="card")
+      .mdw-card.mdw-theme.component-code.component-js(mdw-surface="card" mdw-border-ink)
     .mdw-grid__item(mdw-colspan="100%")
       h6.mdw-type Samples
     .mdw-grid__item.display-flex(mdw-colspan="4").clipped-300
       .render-fill
         .mdw-tab
-          .mdw-tab__list.mdw-theme(mdw-surface="cyan 500" mdw-dark mdw-ink="yellow")
-            .mdw-tab__item
+          .mdw-tab__list.mdw-theme(mdw-surface="cyan 500" mdw-dark)
+            .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
               .mdw-tab__label Item One
-            .mdw-tab__item
+            .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
               .mdw-tab__label Item Two
-            .mdw-tab__item
+            .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
               .mdw-tab__label Item Three
-            .mdw-tab__indicator
+            .mdw-tab__indicator.mdw-theme(mdw-ink="yellow A400")
           .mdw-tab__content
             .mdw-tab__panel Item One
             .mdw-tab__panel Item Two
@@ -159,20 +114,20 @@ include ../_mixins.pug
         .mdw-appbar.mdw-theme(mdw-surface="cyan 500" mdw-dark mdw-prominent)
           .mdw-appbar__action
             .mdw-appbar__start
-              .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) menu
+              +mdwButton({ icon:true }).material-icons menu
             .mdw-appbar__title Page title
             .mdw-appbar__end
-              .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) search
-              .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-more-button) more_vert
+              +mdwButton({ icon:true }).material-icons search
+              +mdwButton({ icon:true }).material-icons(mdw-more-button) more_vert
           .mdw-tab
-            .mdw-tab__list.mdw-theme(mdw-ink="yellow")
-              .mdw-tab__item
+            .mdw-tab__list
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__label Item One
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__label Item Two
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__label Item Three
-              .mdw-tab__indicator
+              .mdw-tab__indicator.mdw-theme(mdw-ink="yellow A400")
         .content
 
     .mdw-grid__item.display-flex(mdw-colspan="4").clipped-300
@@ -182,19 +137,19 @@ include ../_mixins.pug
           .mdw-tab__list-wrapper.mdw-appbar.mdw-theme(mdw-surface="cyan 500" mdw-dark)
             .mdw-appbar__action
               .mdw-appbar__start
-                .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) menu
+                +mdwButton({ icon:true }).material-icons menu
               .mdw-appbar__title Page title
               .mdw-appbar__end
-                .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) search
-                .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-more-button) more_vert
-            .mdw-tab__list.mdw-theme(mdw-ink="yellow")
-              .mdw-tab__item
+                +mdwButton({ icon:true }).material-icons search
+                +mdwButton({ icon:true }).material-icons(mdw-more-button) more_vert
+            .mdw-tab__list
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__label Item One
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__label Item Two
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__label Item Three
-              .mdw-tab__indicator
+              .mdw-tab__indicator.mdw-theme(mdw-ink="yellow A400")
           .mdw-tab__content
             .mdw-tab__panel Item One
             .mdw-tab__panel Item Two
@@ -207,19 +162,19 @@ include ../_mixins.pug
           .mdw-tab__list-wrapper.mdw-appbar
             .mdw-appbar__action
               .mdw-appbar__start
-                .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) menu
+                +mdwButton({ icon:true }).material-icons menu
               .mdw-appbar__title Page title
               .mdw-appbar__end
-                .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) search
-                .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-more-button) more_vert
-            .mdw-tab__list.mdw-theme(mdw-ink="cyan")
-              .mdw-tab__item
+                +mdwButton({ icon:true }).material-icons search
+                +mdwButton({ icon:true }).material-icons(mdw-more-button) more_vert
+            .mdw-tab__list
+              .mdw-tab__item.mdw-theme(mdw-ink="cyan A700" mdw-overlay-default="medium")
                 .mdw-tab__label Item One
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="cyan A700" mdw-overlay-default="medium")
                 .mdw-tab__label Item Two
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="cyan A700" mdw-overlay-default="medium")
                 .mdw-tab__label Item Three
-              .mdw-tab__indicator
+              .mdw-tab__indicator.mdw-theme(mdw-ink="cyan A700")
           .mdw-tab__content
             .mdw-tab__panel Item One
             .mdw-tab__panel Item Two
@@ -231,23 +186,23 @@ include ../_mixins.pug
         .mdw-appbar.mdw-theme(mdw-surface="cyan 500" mdw-dark)
           .mdw-appbar__action
             .mdw-appbar__start
-              .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) menu
+              +mdwButton({ icon:true }).material-icons menu
             .mdw-appbar__title Page title
             .mdw-appbar__end
-              .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) search
-              .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-more-button) more_vert
+              +mdwButton({ icon:true }).material-icons search
+              +mdwButton({ icon:true }).material-icons(mdw-more-button) more_vert
           .mdw-tab
-            .mdw-tab__list.mdw-theme(mdw-ink="yellow")
-              .mdw-tab__item
+            .mdw-tab__list
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons phone
                 .mdw-tab__label Recents
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons favorite
                 .mdw-tab__label Favorites
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons person_pin
                 .mdw-tab__label Nearby
-              .mdw-tab__indicator
+              .mdw-tab__indicator.mdw-theme(mdw-ink="yellow A400")
         .content
 
     .mdw-grid__item.display-flex(mdw-colspan="4").clipped-300
@@ -256,20 +211,20 @@ include ../_mixins.pug
         .mdw-appbar
           .mdw-appbar__action
             .mdw-appbar__start
-              .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) menu
+              +mdwButton({ icon:true }).material-icons menu
             .mdw-appbar__title Page title
             .mdw-appbar__end
-              .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) search
-              .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-more-button) more_vert
+              +mdwButton({ icon:true }).material-icons search
+              +mdwButton({ icon:true }).material-icons(mdw-more-button) more_vert
           .mdw-tab
-            .mdw-tab__list.mdw-theme(mdw-ink="cyan")
-              .mdw-tab__item
+            .mdw-tab__list
+              .mdw-tab__item.mdw-theme(mdw-ink="cyan A700" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons phone
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="cyan A700" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons favorite
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="cyan A700" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons person_pin
-              .mdw-tab__indicator
+              .mdw-tab__indicator.mdw-theme(mdw-ink="cyan A700")
         .content
     .mdw-grid__item.display-flex(mdw-colspan="100%")
       .display-flex(flex-column style="width:100%;padding:24px;box-sizing:border-box")
@@ -278,22 +233,22 @@ include ../_mixins.pug
           .mdw-tab__list-wrapper.mdw-appbar.mdw-theme(mdw-surface="cyan 500" mdw-dark)
             .mdw-appbar__action
               .mdw-appbar__start
-                .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) menu
+                +mdwButton({ icon:true }).material-icons menu
               .mdw-appbar__title Clustered
               .mdw-appbar__end
-                .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) search
-                .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-more-button) more_vert
-            .mdw-tab__list.mdw-theme(mdw-ink="yellow" style="align-self:center")
-              .mdw-tab__item
+                +mdwButton({ icon:true }).material-icons search
+                +mdwButton({ icon:true }).material-icons(mdw-more-button) more_vert
+            .mdw-tab__list(style="align-self:center")
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons phone
                 .mdw-tab__label Recents
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons favorite
                 .mdw-tab__label Favorites
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons person_pin
                 .mdw-tab__label Nearby
-              .mdw-tab__indicator
+              .mdw-tab__indicator.mdw-theme(mdw-ink="yellow A400")
           .mdw-tab__content
             .mdw-tab__panel Recents
             .mdw-tab__panel Favorites
@@ -306,36 +261,37 @@ include ../_mixins.pug
           .mdw-appbar.mdw-theme(mdw-surface="cyan 500" mdw-dark)
             .mdw-appbar__action
               .mdw-appbar__start
-                .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) menu
+                +mdwButton({ icon:true }).material-icons menu
               .mdw-appbar__title Scrollable
               .mdw-appbar__end
-                .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) search
-                .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-more-button) more_vert
-            .mdw-tab__list.mdw-theme(mdw-ink="yellow" mdw-scrollable)
-              .mdw-tab__item
+                +mdwButton({ icon:true }).material-icons search
+                +mdwButton({ icon:true }).material-icons(mdw-more-button) more_vert
+            .mdw-tab__list(mdw-scrollable)
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons phone
                 .mdw-tab__label Recents
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons favorite
                 .mdw-tab__label My Oversized Favorites Tab
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons person_pin
                 .mdw-tab__label Nearby
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons edit
                 .mdw-tab__label Edit
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons clear
                 .mdw-tab__label Clear
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons search
                 .mdw-tab__label Search
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons restore
                 .mdw-tab__label Restore
-              .mdw-tab__item
+              .mdw-tab__item.mdw-theme(mdw-ink="yellow A400" mdw-overlay-default="medium")
                 .mdw-tab__icon.material-icons stars
                 .mdw-tab__label Stars
+              .mdw-tab__indicator.mdw-theme(mdw-ink="yellow A400")
           .mdw-tab__content
             .mdw-tab__panel 1
             .mdw-tab__panel 2

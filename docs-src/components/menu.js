@@ -30,7 +30,7 @@ function updateSampleCode() {
 
   // Strip JS related elements and attributes
   Menu.detach(sampleComponent);
-  let button = document.querySelector('.component-sample .mdw-button');
+  const button = document.querySelector('.component-sample .mdw-button');
   let closer = document.querySelector('.component-sample .mdw-menu__close');
   button.removeEventListener('click', onSampleButtonClick);
   iterateArrayLike(sampleComponent.querySelectorAll('[tabindex]'), el => el.removeAttribute('tabindex'));
@@ -45,16 +45,10 @@ function updateSampleCode() {
   if (jsRequired) {
     sampleComponent.removeAttribute('id');
     button.removeAttribute('href');
-    if (button instanceof HTMLAnchorElement) {
-      button = changeElementTagName(button, 'button');
-    }
   } else {
     sampleComponent.setAttribute('id', 'sample-menu');
     button.setAttribute('id', '#sample-menu-button');
     button.setAttribute('href', '#sample-menu');
-    if (button instanceof HTMLButtonElement) {
-      button = changeElementTagName(button, 'a');
-    }
     if (!closer) {
       closer = document.createElement('a');
       closer.classList.add('mdw-menu__close');

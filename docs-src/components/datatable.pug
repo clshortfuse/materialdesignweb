@@ -3,7 +3,7 @@ include ../_mixins.pug
 +header("datatable")
   .mdw-grid(mdw-margin-top mdw-margin-bottom)
     .mdw-grid__item(mdw-colspan="100%")
-      .mdw-card.mdw-theme(mdw-surface="card")
+      .mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink)
         .mdw-datatable.mdw-theme(mdw-ink="primary" style="overflow-x:auto")
           table
             caption Standard HTML Table (CSS Only)
@@ -109,7 +109,7 @@ include ../_mixins.pug
                 td 12%
                 td 6%
     .mdw-grid__item(mdw-colspan="100%")
-      .mdw-card.mdw-theme(mdw-surface="card")
+      .mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink)
         .mdw-datatable.js.mdw-theme(mdw-ink="primary" mdw-cell-focusable)
           .mdw-datatable__header
             .mdw-datatable__header-text Customized HTML Table
@@ -119,7 +119,7 @@ include ../_mixins.pug
                 tr
                   th(data-type="checkbox" mdw-selector)
                     label.mdw-selection
-                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      input.mdw-selection__input(type="checkbox")
                       .mdw-selection__icon
                   th(mdw-sortable data-type="text" mdw-primary-column)
                     .mdw-datatable__sort-icon.material-icons arrow_downward
@@ -151,7 +151,7 @@ include ../_mixins.pug
                 tr
                   td(data-type="checkbox" mdw-selector)
                     label.mdw-selection
-                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      input.mdw-selection__input(type="checkbox")
                       .mdw-selection__icon
                   td(data-type="text" mdw-primary-column) Frozen Yogurt
                   td(data-type="number") 159
@@ -164,7 +164,7 @@ include ../_mixins.pug
                 tr
                   td(data-type="checkbox" mdw-selector)
                     label.mdw-selection
-                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      input.mdw-selection__input(type="checkbox")
                       .mdw-selection__icon
                   td(data-type="text" mdw-primary-column) Ice cream sandwich
                   td(data-type="number") 237
@@ -177,7 +177,7 @@ include ../_mixins.pug
                 tr
                   td(data-type="checkbox" mdw-selector)
                     label.mdw-selection
-                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      input.mdw-selection__input(type="checkbox")
                       .mdw-selection__icon
                   td(data-type="text" mdw-primary-column) Eclair
                   td(data-type="number") 262
@@ -190,7 +190,7 @@ include ../_mixins.pug
                 tr
                   td(data-type="checkbox" mdw-selector)
                     label.mdw-selection
-                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      input.mdw-selection__input(type="checkbox")
                       .mdw-selection__icon
                   td(data-type="text" mdw-primary-column) Cupcake
                   td(data-type="number") 305
@@ -203,7 +203,7 @@ include ../_mixins.pug
                 tr
                   td(data-type="checkbox" mdw-selector)
                     label.mdw-selection
-                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      input.mdw-selection__input(type="checkbox")
                       .mdw-selection__icon
                   td(data-type="text" mdw-primary-column) Gingerbread
                   td(data-type="number") 356
@@ -216,7 +216,7 @@ include ../_mixins.pug
                 tr
                   td(data-type="checkbox" mdw-selector)
                     label.mdw-selection
-                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      input.mdw-selection__input(type="checkbox")
                       .mdw-selection__icon
                   td(data-type="text" mdw-primary-column) Jelly bean
                   td(data-type="number") 375
@@ -229,7 +229,7 @@ include ../_mixins.pug
                 tr
                   td(data-type="checkbox" mdw-selector)
                     label.mdw-selection
-                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      input.mdw-selection__input(type="checkbox")
                       .mdw-selection__icon
                   td(data-type="text" mdw-primary-column) Lollipop
                   td(data-type="number") 392
@@ -242,7 +242,7 @@ include ../_mixins.pug
                 tr
                   td(data-type="checkbox" mdw-selector)
                     label.mdw-selection
-                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      input.mdw-selection__input(type="checkbox")
                       .mdw-selection__icon
                   td(data-type="text" mdw-primary-column) Honeycomb
                   td(data-type="number") 408
@@ -255,7 +255,7 @@ include ../_mixins.pug
                 tr
                   td(data-type="checkbox" mdw-selector)
                     label.mdw-selection
-                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      input.mdw-selection__input(type="checkbox")
                       .mdw-selection__icon
                   td(data-type="text" mdw-primary-column) Donut
                   td(data-type="number") 452
@@ -268,7 +268,7 @@ include ../_mixins.pug
                 tr
                   td(data-type="checkbox" mdw-selector)
                     label.mdw-selection
-                      input.mdw-selection__input.mdw-overlay(type="checkbox")
+                      input.mdw-selection__input(type="checkbox")
                       .mdw-selection__icon
                   td(data-type="text" mdw-primary-column) Kitkat
                   td(data-type="number") 518
@@ -290,16 +290,16 @@ include ../_mixins.pug
                   .mdw-textfield__icon(mdw-dropdown)
             .mdw-datatable__footer-details 1-10 of 10
             .mdw-datatable__footer-controls
-              button.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon disabled) chevron_left
-              button.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon disabled) chevron_right
+              +mdwButton({ icon:true, disabled:true }).material-icons chevron_left
+              +mdwButton({ icon: true, disabled:true }).material-icons chevron_right
     .mdw-grid__item(mdw-colspan="100%")
-      .mdw-card.mdw-theme(mdw-surface="card")
+      .mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink)
         .mdw-datatable.js#dynamic-table.mdw-theme(mdw-ink="primary" mdw-row-focusable style="max-height:80vh")
           .mdw-datatable__header
             .mdw-datatable__header-text Data Table Adapter
             .mdw-datatable__header-controls
               .mdw-menu__wrapper
-                button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme.material-icons(mdw-icon mdw-ink="primary" aria-pressed="false") filter_list
+                +mdwButton({ icon:true, ink:'primary' }).material-icons(mdw-overlay-default="medium" aria-pressed="false") filter_list
                 .mdw-menu(mdw-position="end")
                   .mdw-menu__popup.mdw-theme(mdw-surface="card")
                     .mdw-menu__item(aria-checked="true" data-filter="none")
@@ -315,7 +315,7 @@ include ../_mixins.pug
                       .mdw-menu__radio.mdw-theme.material-icons(mdw-ink="medium") check
                       .mdw-menu__text bool is checked
               .mdw-menu__wrapper
-                button.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) more_vert
+                +mdwButton({ icon:true, ink:'medium' }).material-icons more_vert
                 .mdw-menu(mdw-position="end")
                   .mdw-menu__popup.mdw-theme(mdw-surface="card")
                     .mdw-menu__item(aria-checked="true" data-option="throttle")

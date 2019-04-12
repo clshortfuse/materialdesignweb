@@ -145,6 +145,11 @@ function onOptionChange(event) {
       } else {
         sampleComponent.setAttribute('mdw-dark', '');
       }
+      if (value === 'card') {
+        sampleComponent.classList.remove('mdw-theme');
+      } else {
+        sampleComponent.classList.add('mdw-theme');
+      }
       break;
     default:
   }

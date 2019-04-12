@@ -8,12 +8,12 @@ include ../_mixins.pug
         .mdw-appbar__action
           .mdw-appbar__start
             .mdw-tooltip__wrapper
-              .mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) menu
+              +mdwButton({ icon:true }).mdw-tooltip__target.material-icons menu
               .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark mdw-align="start") Menu
           .mdw-appbar__title(style="color:white") Inbox
           .mdw-appbar__end
             .mdw-tooltip__wrapper
-              .mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) search
+              +mdwButton({ icon:true }).mdw-tooltip__target.material-icons search
               .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark mdw-align="end") Search
       .content
         ul.mdw-list(mdw-divider)

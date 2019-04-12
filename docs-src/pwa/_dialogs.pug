@@ -1,13 +1,15 @@
+include ../_mixins.pug
+
 #dialog-alert.mdw-dialog(mdw-width-units="5")
   .mdw-dialog__popup.mdw-theme(mdw-surface="card")
     .mdw-dialog__title title
     .mdw-dialog__body.mdw-theme(mdw-ink="medium") body
     .mdw-dialog__button-area
-      button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent" tabindex="0" mdw-autofocus) OK
+      +mdwButton({ ink:'secondary' })(mdw-autofocus) OK
 #dialog-confirm.mdw-dialog(mdw-width-units="5")
   .mdw-dialog__popup.mdw-theme(mdw-surface="card")
     .mdw-dialog__title title
     .mdw-dialog__body.mdw-theme(mdw-ink="medium") body
     .mdw-dialog__button-area
-      button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent" tabindex="0" mdw-autofocus) Yes
-      button.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent" tabindex="0") No
+      +mdwButton({ ink:'secondary' })(mdw-autofocus) Yes
+      +mdwButton({ ink:'secondary' }) No

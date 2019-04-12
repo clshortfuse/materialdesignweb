@@ -1,0 +1,14 @@
+$mdw-theme__primary: 'green';
+$mdw-theme__secondary: 'deeporange';
+$mdw-theme__warn: 'red';
+$mdw-theme__background: 'bluegray';
+$mdw-theme__foreground-light: #006064;
+$mdw-theme__foreground-dark: #E0F7FA;
+$mdw-theme__colors: ('amber', 'blue', 'cyan', 'red', 'green', 'deeppurple', 'purple', 'yellow', 'teal');
+$mdw-theme__fallbacks: false;
+
+@import "../../_theme.scss";
+
+:root {
+  font-family: Merriweather, sans-serif;
+}

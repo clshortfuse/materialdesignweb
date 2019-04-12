@@ -126,6 +126,11 @@ function onOptionChange(event) {
           } else {
             tabListElement.setAttribute('mdw-dark', '');
           }
+          if (value === 'none') {
+            tabListElement.classList.remove('mdw-theme');
+          } else {
+            tabListElement.classList.add('mdw-theme');
+          }
           break;
       }
       break;

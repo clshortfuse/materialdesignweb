@@ -29,7 +29,7 @@ function updateSampleCode() {
     'Snackbar.create({',
     "  text: 'Required text.',",
     "  buttonText: 'Optional button text',",
-    "  buttonInk: 'accent',",
+    "  buttonInk: 'secondary',",
     '  stacked: false,',
     '  autoHide: 4,',
     '  autoDestroy: true,',
@@ -120,7 +120,7 @@ function onOptionChange(event) {
         buttonElement = document.createElement('a');
         buttonElement.classList.add('mdw-button');
         buttonElement.classList.add('mdw-theme');
-        buttonElement.setAttribute('mdw-ink', 'accent');
+        buttonElement.setAttribute('mdw-ink', 'secondary');
         snackbar.appendChild(buttonElement);
       }
       switch (value) {
@@ -143,7 +143,7 @@ function setupComponentOptions() {
   sampleComponent = document.querySelector('.mdw-snackbar__container');
   /** @type {HTMLElement} */
   const jsSnackbarContainer = (document.querySelector('.mdw-snackbar__container.js-sample'));
-  document.querySelector('.component-sample button.mdw-button').addEventListener('click', () => {
+  document.querySelector('.component-sample .mdw-button').addEventListener('click', () => {
     Snackbar.create({
       text: `Snackbar created at: ${new Date().toLocaleTimeString()}`,
       parent: jsSnackbarContainer,

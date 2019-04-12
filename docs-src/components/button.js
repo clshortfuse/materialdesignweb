@@ -89,22 +89,20 @@ function onOptionChange(event) {
   const { name, value, checked } = event.target;
   let newElement;
   switch (name) {
-    case 'elevation':
-      switch (value) {
-        default:
-        case 'flat':
-          sampleComponent.removeAttribute('mdw-raised');
-          break;
-        case 'raised':
-          sampleComponent.setAttribute('mdw-raised', '');
-          break;
+    case 'raised':
+      if (checked) {
+        sampleComponent.setAttribute('mdw-raised', '');
+      } else {
+        sampleComponent.removeAttribute('mdw-raised');
       }
       break;
-    case 'outlined':
-      if (checked) {
-        sampleComponent.setAttribute('mdw-outline', '');
-      } else {
-        sampleComponent.removeAttribute('mdw-outline');
+    case 'outline':
+      switch (value) {
+        case 'none':
+          sampleComponent.removeAttribute('mdw-border-ink');
+          break;
+        default:
+          sampleComponent.setAttribute('mdw-border-ink', value);
       }
       break;
     case 'activated':
@@ -135,19 +133,15 @@ function onOptionChange(event) {
         sampleComponent.removeAttribute('aria-disabled');
       }
       break;
-    case 'content':
-      switch (value) {
-        case 'text':
-          sampleComponent.removeAttribute('mdw-icon');
-          sampleComponent.classList.remove('material-icons');
-          setTextNode(sampleComponent, 'Button');
-          break;
-        case 'icon':
-          sampleComponent.setAttribute('mdw-icon', '');
-          sampleComponent.classList.add('material-icons');
-          setTextNode(sampleComponent, 'favorite');
-          break;
-        default:
+    case 'icon':
+      if (checked) {
+        sampleComponent.setAttribute('mdw-icon', '');
+        sampleComponent.classList.add('material-icons');
+        setTextNode(sampleComponent, 'favorite');
+      } else {
+        sampleComponent.removeAttribute('mdw-icon');
+        sampleComponent.classList.remove('material-icons');
+        setTextNode(sampleComponent, 'Button');
       }
       break;
     case 'ink':
@@ -191,6 +185,11 @@ function onOptionChange(event) {
           } else {
             sampleComponent.setAttribute('mdw-dark', '');
           }
+          if (value === 'none') {
+            sampleComponent.classList.remove('mdw-theme');
+          } else {
+            sampleComponent.classList.add('mdw-theme');
+          }
           break;
       }
       break;
@@ -204,11 +203,6 @@ function onOptionChange(event) {
       });
       sampleComponent.parentElement.replaceChild(newElement, sampleComponent);
       sampleComponent = newElement;
-      if (value === 'a') {
-        sampleComponent.setAttribute('href', '#');
-      } else {
-        sampleComponent.removeAttribute('href');
-      }
       break;
     default:
   }

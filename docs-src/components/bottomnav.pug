@@ -7,107 +7,72 @@ include ../_mixins.pug
       p.mdw-typeBottom navigation bars display three to five destinations at the bottom of a screen. Each destination is represented by an icon and an optional text label. When a bottom navigation icon is tapped, the user is taken to the top-level navigation destination associated with that icon.
     .mdw-grid__item(mdw-colspan="6")
       .mdw-grid__content.component-sample
-        .render-fill.mdw-theme
+        .render-fill
           +androidstatusbar('background 900', 'dark')
           +appbar('background 800', 'dark', [], []) Bottom Navigation
           .content
-          nav.mdw-bottomnav.mdw-theme(mdw-ink="primary 400")
-            a.mdw-bottomnav__item(aria-selected="true")
+          nav.mdw-bottomnav
+            a.mdw-bottomnav__item.mdw-theme(mdw-ink="primary" aria-selected="true")
               .mdw-bottomnav__icon
                 i.material-icons history
               .mdw-bottomnav__label Recents
-            a.mdw-bottomnav__item(aria-selected="false")
-              .mdw-bottomnav__icon(mdw-badge="")
+            a.mdw-bottomnav__item.mdw-theme(mdw-ink="primary" aria-selected="false")
+              .mdw-bottomnav__icon
+                .mdw-bottomnav__badge.mdw-theme(mdw-surface="warn 500" mdw-ink="white" mdw-badge="")
                 i.material-icons favorite
               .mdw-bottomnav__label Favorites
-            a.mdw-bottomnav__item(aria-selected="false")
-              .mdw-bottomnav__icon(mdw-badge="99+")
+            a.mdw-bottomnav__item.mdw-theme(mdw-ink="primary" aria-selected="false")
+              .mdw-bottomnav__icon
+                .mdw-bottomnav__badge.mdw-theme(mdw-surface="warn 500" mdw-ink="white" mdw-badge="99+")
                 i.material-icons near_me
               .mdw-bottomnav__label Nearby
           +androidnavbar
     .mdw-grid__item(mdw-colspan="4")
       .mdw-type(mdw-style="subtitle") Javascript
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="required" checked)
-          .mdw-selection__icon
-          .mdw-selection__label Required
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="optional" disabled)
-          .mdw-selection__icon
-          .mdw-selection__label Optional
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="none" disabled)
-          .mdw-selection__icon
-          .mdw-selection__label None
+      div.docs-option-list
+        +mdwSelection({ink:'secondary', type:'radio', name:'javascript', value:'required', checked:true}) Required
+        +mdwSelection({ink:'secondary', type:'radio', name:'javascript', value:'optional', disabled:true}) Optional
+        +mdwSelection({ink:'secondary', type:'radio', name:'javascript', value:'none', disabled:true}) None
       .mdw-type(mdw-style="subtitle") Ink
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="default")
-          .mdw-selection__icon
-          .mdw-selection__label Default
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="primary 400" checked)
-          .mdw-selection__icon
-          .mdw-selection__label Primary 400
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="accent A200")
-          .mdw-selection__icon
-          .mdw-selection__label Accent A200
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="warn")
-          .mdw-selection__icon
-          .mdw-selection__label Warn
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="purple A400")
-          .mdw-selection__icon
-          .mdw-selection__label Purple A400
+      div.docs-option-list
+        +mdwSelection({ink:'secondary', type:'radio', name:'ink', value:'default'}) Default
+        +mdwSelection({ink:'secondary', type:'radio', name:'ink', value:'primary', checked:true}) Primary
+        +mdwSelection({ink:'secondary', type:'radio', name:'ink', value:'secondary'}) Secondary
+        +mdwSelection({ink:'secondary', type:'radio', name:'ink', value:'warn'}) Warn
+        +mdwSelection({ink:'secondary', type:'radio', name:'ink', value:'purple A400'}) Purple A400
       .mdw-type(mdw-style="subtitle") Surface
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="none" checked)
-          .mdw-selection__icon
-          .mdw-selection__label None
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="primary dark")
-          .mdw-selection__icon
-          .mdw-selection__label Primary
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="accent A100 light")
-          .mdw-selection__icon
-          .mdw-selection__label Accent A100
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="warn 200 light")
-          .mdw-selection__icon
-          .mdw-selection__label Warn 200
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="green 700 dark")
-          .mdw-selection__icon
-          .mdw-selection__label Green 700
-    .mdw-grid__item(mdw-colspan="100%" style="max-height:0")
+      div.docs-option-list
+        +mdwSelection({ink:'secondary', type:'radio', name:'surface', value:'none', checked:true}) None
+        +mdwSelection({ink:'secondary', type:'radio', name:'surface', value:'card'}) Card
+        +mdwSelection({ink:'secondary', type:'radio', name:'surface', value:'primary 500 dark'}) Primary 500 (Dark)
+        +mdwSelection({ink:'secondary', type:'radio', name:'surface', value:'secondary 100 light'}) Secondary 100 (Light)
+        +mdwSelection({ink:'secondary', type:'radio', name:'surface', value:'warn 200 light'}) Warn 200 (Light)
+        +mdwSelection({ink:'secondary', type:'radio', name:'surface', value:'green 700 dark'}) Green 700 (Dark)
+    .mdw-grid__item(mdw-colspan="100%")
     .mdw-grid__item(mdw-colspan="6")
       h6.mdw-type HTML Code
-      .mdw-card.mdw-theme.component-code.component-html(mdw-surface="card")
-        #usePug.mdw-button.mdw-theme(mdw-ink="accent" aria-pressed="false" mdw-overlay-off="activated" mdw-icon) PUG
+      .mdw-card.mdw-theme.component-code.component-html(mdw-surface="card" mdw-border-ink)
+        +mdwButton({ icon: true, ink:'secondary' })#usePug(aria-pressed="false" mdw-overlay-off="activated") PUG
     .mdw-grid__item(mdw-colspan="4")
       h6.mdw-type Javascript Code
-      .mdw-card.mdw-theme.component-code.component-js(mdw-surface="card")
+      .mdw-card.mdw-theme.component-code.component-js(mdw-surface="card" mdw-border-ink)
     .mdw-grid__item(mdw-colspan="100%")
       h6.mdw-type Samples
     .mdw-grid__item.display-flex(mdw-colspan="6")
-      .mdw-theme.render-fill.mdw-theme(mdw-surface="white" mdw-light)
+      .render-fill.mdw-theme(mdw-surface="white" mdw-light)
         +androidstatusbar('')
         +appbar('', '', [], []) Light Theme
         .content(style="padding: 16px 0")
           ul
             li Radio buttons
             li Badges
-        nav.mdw-bottomnav.mdw-theme(mdw-ink="primary")
+        nav.mdw-bottomnav.mdw-theme(mdw-ink="primary medium")
           a.mdw-bottomnav__item(aria-selected="true")
             .mdw-bottomnav__icon.material-icons history
             .mdw-bottomnav__label Recents
           a.mdw-bottomnav__item(aria-selected="false")
-            .mdw-bottomnav__icon(mdw-badge="")
+            .mdw-bottomnav__icon
+              .mdw-bottomnav__badge.mdw-theme(mdw-surface="warn 500" mdw-ink="white" mdw-badge="")
               .material-icons favorite
             .mdw-bottomnav__label Favorites
           a.mdw-bottomnav__item(aria-selected="false")
@@ -115,7 +80,7 @@ include ../_mixins.pug
             .mdw-bottomnav__label Nearby
         +androidnavbar
     .mdw-grid__item.display-flex(mdw-colspan="6")
-      .mdw-theme.render-fill.js.mdw-theme(mdw-surface="black" mdw-dark)
+      .render-fill.js.mdw-theme(mdw-surface="black" mdw-dark)
         +androidstatusbar('')
         +appbar('', '', [], []) Dark Theme
         .content(style="padding: 16px 0")
@@ -123,25 +88,28 @@ include ../_mixins.pug
             li Disappearing Labels
             li Badges
             li Shifting labels
-        nav.mdw-bottomnav.mdw-theme(mdw-shifting)
+        nav.mdw-bottomnav(mdw-shifting)
           a.mdw-bottomnav__item
             .mdw-bottomnav__icon.material-icons tv
             .mdw-bottomnav__label Movies
           a.mdw-bottomnav__item(aria-selected="true")
-            .mdw-bottomnav__icon(mdw-badge)
+            .mdw-bottomnav__icon
+              .mdw-bottomnav__badge.mdw-theme(mdw-surface="warn 500" mdw-ink="white" mdw-badge)
               .material-icons music_note
             .mdw-bottomnav__label Music
           a.mdw-bottomnav__item(aria-selected="false")
-            .mdw-bottomnav__icon(mdw-badge="88")
+            .mdw-bottomnav__icon
+              .mdw-bottomnav__badge.mdw-theme(mdw-surface="warn 500" mdw-ink="white" mdw-badge="88")
               .material-icons book
             .mdw-bottomnav__label Books
           a.mdw-bottomnav__item(aria-selected="false")
-            .mdw-bottomnav__icon(mdw-badge="888+")
+            .mdw-bottomnav__icon
+              .mdw-bottomnav__badge.mdw-theme(mdw-surface="warn 500" mdw-ink="white" mdw-badge="888+")
               .material-icons assignment
             .mdw-bottomnav__label Newsstand
         +androidnavbar
     .mdw-grid__item.display-flex(mdw-colspan="6")
-      .mdw-theme.render-fill.js.mdw-theme
+      .render-fill.js.mdw-theme
         +androidstatusbar('')
         +appbar('', '', [], []) Tablet
         .content(style="padding: 16px 0")
@@ -150,11 +118,13 @@ include ../_mixins.pug
             li Badges
         nav.mdw-bottomnav.mdw-theme(mdw-surface="teal 700" mdw-dark mdw-shifting)
           a.mdw-bottomnav__item(aria-selected="true")
-            .mdw-bottomnav__icon(mdw-badge="4")
+            .mdw-bottomnav__icon
+              .mdw-bottomnav__badge.mdw-theme(mdw-surface="warn 500" mdw-ink="white" mdw-badge="4")
               .material-icons tv
             .mdw-bottomnav__label Movies
           a.mdw-bottomnav__item(aria-selected="false")
-            .mdw-bottomnav__icon(mdw-badge)
+            .mdw-bottomnav__icon
+              .mdw-bottomnav__badge.mdw-theme(mdw-surface="warn 500" mdw-ink="white" mdw-badge)
               .material-icons music_note
             .mdw-bottomnav__label Music
           a.mdw-bottomnav__item(aria-selected="false")

@@ -47,31 +47,13 @@ function updateSampleCode() {
   if (jsRequired) {
     sampleComponent.removeAttribute('id');
     button.removeAttribute('href');
-    if (button instanceof HTMLAnchorElement) {
-      button = changeElementTagName(button, 'button');
-    }
     dialogButtons[0].removeAttribute('href');
-    if (dialogButtons[0] instanceof HTMLAnchorElement) {
-      changeElementTagName(dialogButtons[0], 'button');
-    }
     dialogButtons[1].removeAttribute('href');
-    if (dialogButtons[1] instanceof HTMLAnchorElement) {
-      changeElementTagName(dialogButtons[1], 'button');
-    }
   } else {
     sampleComponent.setAttribute('id', 'sample-dialog');
     button.setAttribute('href', '#sample-dialog');
-    if (button instanceof HTMLButtonElement) {
-      button = changeElementTagName(button, 'a');
-    }
     dialogButtons[0].setAttribute('href', '#');
-    if (dialogButtons[0] instanceof HTMLButtonElement) {
-      changeElementTagName(dialogButtons[0], 'a');
-    }
     dialogButtons[1].setAttribute('href', '#');
-    if (dialogButtons[1] instanceof HTMLButtonElement) {
-      changeElementTagName(dialogButtons[1], 'a');
-    }
     if (!closer) {
       closer = document.createElement('a');
       closer.classList.add('mdw-dialog__close');

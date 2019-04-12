@@ -16,108 +16,46 @@ include ../_mixins.pug
                   .mdw-textfield__label Label
     .mdw-grid__item(mdw-colspan="8")
       .mdw-type(mdw-style="subtitle") Javascript
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="required" disabled)
-          .mdw-selection__icon
-          .mdw-selection__label Required
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="optional" checked)
-          .mdw-selection__icon
-          .mdw-selection__label Optional
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="none")
-          .mdw-selection__icon
-          .mdw-selection__label None
+      .docs-option-list
+        +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'required', disabled:true}) Required
+        +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'optional', checked:true}) Optional
+        +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'none'}) None
       .mdw-type(mdw-style="subtitle") Field type
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="field-type" value="single-line" checked)
-          .mdw-selection__icon
-          .mdw-selection__label Single-line
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="field-type" value="text-area")
-          .mdw-selection__icon
-          .mdw-selection__label Text area
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="field-type" value="dropdown")
-          .mdw-selection__icon
-          .mdw-selection__label Dropdown
+      .docs-option-list
+        +mdwSelection({ink:'secondary', name:'field-type', type:'radio', value:'single-line', checked:true}) Single-line
+        +mdwSelection({ink:'secondary', name:'field-type', type:'radio', value:'text-area'}) Text area
+        +mdwSelection({ink:'secondary', name:'field-type', type:'radio', value:'dropdown'}) Dropdown
       .mdw-type(mdw-style="subtitle") Style
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="style" value="filled" checked)
-          .mdw-selection__icon
-          .mdw-selection__label Filled
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="style" value="outlined")
-          .mdw-selection__icon
-          .mdw-selection__label Outlined
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="style" value="solo")
-          .mdw-selection__icon
-          .mdw-selection__label Solo
+      .docs-option-list
+        +mdwSelection({ink:'secondary', name:'style', type:'radio', value:'filled', checked:true}) Filled
+        +mdwSelection({ink:'secondary', name:'style', type:'radio', value:'outlined'}) Outlined
+        +mdwSelection({ink:'secondary', name:'style', type:'radio', value:'solo'}) Solo
       .mdw-type(mdw-style="subtitle") Options
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="signifier")
-          .mdw-selection__icon
-          .mdw-selection__label Signifier
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="prefix")
-          .mdw-selection__icon
-          .mdw-selection__label Prefix
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="suffix")
-          .mdw-selection__icon
-          .mdw-selection__label Suffix
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="helper-text")
-          .mdw-selection__icon
-          .mdw-selection__label Helper Text
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="error-text")
-          .mdw-selection__icon
-          .mdw-selection__label Error Text
+      .docs-option-list
+        +mdwSelection({ink:'secondary', name:'signifier'}) Signifier
+        +mdwSelection({ink:'secondary', name:'prefix'}) Prefix
+        +mdwSelection({ink:'secondary', name:'suffix'}) Suffix
+        +mdwSelection({ink:'secondary', name:'helper-text'}) Helper Text
+        +mdwSelection({ink:'secondary', name:'error-text'}) Error Text
       .mdw-type(mdw-style="subtitle") Ink
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="none")
-          .mdw-selection__icon
-          .mdw-selection__label Default
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="primary" checked)
-          .mdw-selection__icon
-          .mdw-selection__label Primary
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="accent")
-          .mdw-selection__icon
-          .mdw-selection__label Accent
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="green A700")
-          .mdw-selection__icon
-          .mdw-selection__label Green A700
+      .docs-option-list
+        +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'none'}) Default
+        +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'primary', checked:true}) Primary
+        +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'secondary'}) Secondary
+        +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'green A700'}) Green A700
       .mdw-type(mdw-style="subtitle") Attributes
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="autosize" checked)
-          .mdw-selection__icon
-          .mdw-selection__label Autosize
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="disabled")
-          .mdw-selection__icon
-          .mdw-selection__label Disabled
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="required")
-          .mdw-selection__icon
-          .mdw-selection__label Required
+      .docs-option-list
+        +mdwSelection({ink:'secondary', name:'autosize', checked:true}) Autosize
+        +mdwSelection({ink:'secondary', name:'disabled'}) Disabled
+        +mdwSelection({ink:'secondary', name:'4minlength'}) 4 Min Length
+        +mdwSelection({ink:'secondary', name:'required'}) Required
     .mdw-grid__item(mdw-colspan="100%" style="max-height:0")
     .mdw-grid__item(mdw-colspan="6")
       h6.mdw-type HTML Code
-      .mdw-card.mdw-theme.component-code.component-html(mdw-surface="card")
+      .mdw-card.mdw-theme.component-code.component-html(mdw-surface="card" mdw-border-ink)
     .mdw-grid__item(mdw-colspan="6")
       h6.mdw-type Javascript Code
-      .mdw-card.mdw-theme.component-code.component-js(mdw-surface="card")
+      .mdw-card.mdw-theme.component-code.component-js(mdw-surface="card" mdw-border-ink)
     .mdw-grid__item(mdw-colspan="100%")
       h6.mdw-type Samples
     .mdw-grid__item(mdw-colspan="4" flex-justify-content="center")
@@ -142,49 +80,23 @@ include ../_mixins.pug
               .mdw-textfield__border
                 .mdw-textfield__outline-gap
                   .mdw-textfield__label Location (optional)
-          label.mdw-textfield.mdw-theme(mdw-ink="primary")
-            input.mdw-textfield__input(type="text" placeholder="text")
-            .mdw-textfield__border
-              .mdw-textfield__outline-gap
-                .mdw-textfield__label Description
-          label.mdw-textfield.mdw-theme(mdw-ink="primary")
-            .mdw-textfield__signifier.material-icons security
-            input.mdw-textfield__input(type="password" placeholder="••••••••" required minlength="8")
-            .mdw-textfield__border
-              .mdw-textfield__outline-gap
-                .mdw-textfield__label Password text field with signifier and overflowing label *
-            .mdw-textfield__helper-text At least 8 characters
-            .mdw-textfield__error-text Error: Password of at least 8 characters required.
-          label.mdw-textfield.mdw-theme(mdw-ink="primary")
-            input.mdw-textfield__input(type="text" placeholder=" " disabled value="filled")
-            .mdw-textfield__border
-              .mdw-textfield__outline-gap
-                .mdw-textfield__label Disabled Filled with Suffix
-            .mdw-textfield__suffix lbs
-            .mdw-textfield__helper-text Disabled Helper Text
+          +mdwTextField({ink:'primary', placeholder:'text'}) Description
+          +mdwTextField({ink:'primary', placeholder:'••••••••', required:true, minlength:8,
+          signifier:'security', signifierClass:'material-icons', type:'password',
+          helperText: 'At least 8 characters', errorText: 'Error: Password of at least 8 characters required.'})
+            | Password text field with signifier and overflowing label *
+          +mdwTextField({ink:'primary', disabled:true, value:'filled', suffix:'lbs', helperText:'Disabled Helper Text'}) Disabled Filled with Suffix
         +androidnavbar
     .mdw-grid__item(mdw-colspan="4" flex-justify-content="center")
       .render-fill
-        +androidstatusbar('accent 300', 'light')
-        +appbar('accent A100', 'light', ['arrow_back'], ['search'])
+        +androidstatusbar('secondary 300', 'light')
+        +appbar('secondary A100', 'light', ['arrow_back'], ['search'])
         form.content(style="padding:0px 16px")
-          label.mdw-textfield.mdw-theme(mdw-ink="accent")
-            input.mdw-textfield__input(type="text" placeholder=" " required)
-            .mdw-textfield__border
-              .mdw-textfield__outline-gap
-                .mdw-textfield__label Name *
-          label.mdw-textfield.mdw-theme(mdw-ink="accent")
-            input.mdw-textfield__input(type="text" placeholder=" ")
-            .mdw-textfield__border
-              .mdw-textfield__outline-gap
-                .mdw-textfield__label Address
-          label.mdw-textfield.mdw-theme(mdw-ink="accent")
-            input.mdw-textfield__input(type="text" placeholder=" ")
-            .mdw-textfield__border
-              .mdw-textfield__outline-gap
-                .mdw-textfield__label City
+          +mdwTextField({ink:'secondary', required:true}) Name *
+          +mdwTextField({ink:'secondary'}) Address
+          +mdwTextField({ink:'secondary'}) City
           .horizontal-controls
-            label.mdw-textfield.mdw-theme(mdw-ink="accent" style="width:88px")
+            label.mdw-textfield.mdw-theme(mdw-ink="secondary" style="width:88px")
               input.mdw-textfield__input(type="text" placeholder=" ")
               .mdw-textfield__border
                 .mdw-textfield__outline-gap
@@ -194,36 +106,28 @@ include ../_mixins.pug
               .mdw-textfield__border
                 .mdw-textfield__outline-gap
                   .mdw-textfield__label Zip code *
-          label.mdw-textfield.mdw-theme(mdw-ink="accent")
-            input.mdw-textfield__input(type="text" placeholder=" ")
-            .mdw-textfield__border
-              .mdw-textfield__outline-gap
-                .mdw-textfield__label Phone number
+          +mdwTextField({ink:'secondary'}) Phone number
           p.mdw-type * Required fields
         +androidnavbar
 
     .mdw-grid__item(mdw-colspan="4" flex-justify-content="center")
       .render-fill
-        +androidstatusbar('accent 800', 'dark')
-        +appbar('accent A700', 'dark', ['arrow_back'], ['search'])
+        +androidstatusbar('secondary 800', 'dark')
+        +appbar('secondary A700', 'dark', ['arrow_back'], ['search'])
         form.content(style="padding:8px 16px")
           div.display-flex(style="margin-bottom:-32px;margin-top:-24px;" flex-justify-content="center")
             i.material-icons(style="color:#ccc;font-size:256px") person
           .horizontal-controls
-            label.mdw-textfield.flex-1.mdw-theme(mdw-ink="accent")
+            label.mdw-textfield.flex-1.mdw-theme(mdw-ink="secondary")
               .mdw-textfield__signifier.material-icons person
               input.mdw-textfield__input(type="text" placeholder=" " value="Ali Connors")
               .mdw-textfield__border
                 .mdw-textfield__outline-gap
                   .mdw-textfield__label Name
           .horizontal-controls
-            label.mdw-textfield.mdw-theme(mdw-ink="accent")
-              .mdw-textfield__signifier.material-icons phone
-              input.mdw-textfield__input(type="phone" placeholder=" " value="65")
-              .mdw-textfield__border
-                .mdw-textfield__outline-gap
-                  .mdw-textfield__label Phone number
-            label.mdw-textfield.mdw-theme(mdw-ink="accent" style="width:150px;")
+            +mdwTextField({ink:'secondary', value:'65', type:'phone', signifier:'phone', signifierClass:'material-icons'})
+              | Phone number
+            label.mdw-textfield.mdw-theme(mdw-ink="secondary" style="width:150px;")
               select.mdw-textfield__input(type="phone")
                 option(value="") Unknown
                 option(value="Mobile") Mobile
@@ -234,13 +138,8 @@ include ../_mixins.pug
                 .mdw-textfield__outline-gap
                   .mdw-textfield__label Phone Type
           .horizontal-controls
-            label.mdw-textfield.mdw-theme(mdw-ink="accent")
-              .mdw-textfield__signifier.material-icons email
-              input.mdw-textfield__input(type="email" placeholder=" ")
-              .mdw-textfield__border
-                .mdw-textfield__outline-gap
-                  .mdw-textfield__label Email
-            label.mdw-textfield.mdw-theme(mdw-ink="accent" style="width:150px;")
+            +mdwTextField({ink:'secondary', type:'email', signifier:'email', signifierClass:'material-icons'}) Email
+            label.mdw-textfield.mdw-theme(mdw-ink="secondary" style="width:150px;")
               select.mdw-textfield__input(type="phone")
                 option(value="") Unknown
                 option(value="") Unknown
@@ -251,13 +150,8 @@ include ../_mixins.pug
                 .mdw-textfield__outline-gap
                   .mdw-textfield__label Email type
           .horizontal-controls
-            label.mdw-textfield.mdw-theme(mdw-ink="accent")
-              .mdw-textfield__signifier.material-icons place
-              input.mdw-textfield__input(type="address" placeholder=" ")
-              .mdw-textfield__border
-                .mdw-textfield__outline-gap
-                  .mdw-textfield__label Address
-            label.mdw-textfield.mdw-theme(mdw-ink="accent" style="width:150px")
+            +mdwTextField({ink:'secondary', type:'address', signifier:'place', signifierClass:'material-icons'}) Address
+            label.mdw-textfield.mdw-theme(mdw-ink="secondary" style="width:150px")
               select.mdw-textfield__input(type="phone")
                 option(value="Home") Home
                 option(value="Work") Work
@@ -268,15 +162,10 @@ include ../_mixins.pug
         +androidnavbar
     .mdw-grid__item(mdw-colspan="4" flex-justify-content="center")
       .render-fill
-        +androidstatusbar('primary A700', 'dark')
-        +appbar('primary A200', 'dark', ['arrow_back'], ['done'])
+        +androidstatusbar('primary 700', 'dark')
+        +appbar('primary 500', 'dark', ['arrow_back'], ['done'])
         .content(style="padding:8px 16px")
-          label.mdw-textfield.mdw-theme(mdw-ink="primary" mdw-outlined)
-            input.mdw-textfield__input(value="Vintage 50's Dress" placeholder=" ")
-            .mdw-textfield__border
-              .mdw-textfield__outline-gap
-                .mdw-textfield__label Title
-            .mdw-textfield__helper-text Helper
+          +mdwTextField({ink:'primary', value:"Vintage 50's Dress", outlined:true, helperText:'Helper'}) Title
           .horizontal-controls
             label.mdw-textfield.mdw-theme(mdw-ink="primary" mdw-outlined style="width:88px")
               input.mdw-textfield__input(value="10.00" placeholder=" ")
@@ -366,8 +255,8 @@ include ../_mixins.pug
 
     .mdw-grid__item(mdw-colspan="4").js
       .render-fill
-        +androidstatusbar('primary A700', 'dark')
-        +appbar('primary A200', 'dark', ['arrow_back'], ['done']) With Javascript
+        +androidstatusbar('primary 700', 'dark')
+        +appbar('primary 500', 'dark', ['arrow_back'], ['done']) With Javascript
         .content(style="padding:8px 16px")
           label.mdw-textfield.mdw-theme(mdw-ink="primary" mdw-outlined)
             input.mdw-textfield__input(placeholder=" ")
@@ -397,13 +286,13 @@ include ../_mixins.pug
               .mdw-textfield__outline-gap
                 .mdw-textfield__label Description
           .horizontal-controls
-            label.mdw-textfield.mdw-theme(mdw-ink="accent")
+            label.mdw-textfield.mdw-theme(mdw-ink="secondary")
               input.mdw-textfield__input(type="phone" placeholder=" " value="65")
               .mdw-textfield__signifier.material-icons phone
               .mdw-textfield__border
                 .mdw-textfield__outline-gap
                   .mdw-textfield__label Name
-            label.mdw-textfield.mdw-theme(mdw-ink="accent" style="width:150px")
+            label.mdw-textfield.mdw-theme(mdw-ink="secondary" style="width:150px")
               select.mdw-textfield__input(type="phone")
                 option(value="") Unknown
                 option(value="Mobile") Mobile

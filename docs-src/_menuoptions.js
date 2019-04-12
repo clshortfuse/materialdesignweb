@@ -1,4 +1,5 @@
 import { setStorageItem, removeStorageItem, getStorageItem } from './_storage';
+import { iterateArrayLike } from '../core/dom';
 
 /**
  * @param {boolean} value
@@ -62,14 +63,22 @@ export function setDarkMode(value, button) {
  * @return {void}
  */
 export function setAltTheme(value, button) {
-  document.documentElement.setAttribute('mdw-theme', value ? 'colored' : 'default');
+  iterateArrayLike(document.head.getElementsByTagName('link'), (stylesheet) => {
+    if (stylesheet.href.indexOf(value ? 'theme-colored' : 'theme-default') !== -1) {
+      stylesheet.removeAttribute('disabled');
+    }
+    if (stylesheet.href.indexOf(value ? 'theme-default' : 'theme-colored') !== -1) {
+      stylesheet.setAttribute('disabled', '');
+    }
+  });
+
   const stringValue = (value ? 'true' : 'false');
   if (button) {
     button.setAttribute('aria-pressed', stringValue);
   }
   const statusBarAttribute = document.head.getElementsByTagName('meta')['theme-color'];
   if (statusBarAttribute) {
-    statusBarAttribute.setAttribute('content', value ? '#FF9800' : '#E91E63');
+    statusBarAttribute.setAttribute('content', value ? '#FF5722' : '#E91E63');
   }
 
   setStorageItem('alttheme', stringValue);
@@ -131,10 +140,10 @@ function setupAltTheme(element) {
     return;
   }
   element.addEventListener('click', () => {
-    if (document.documentElement.getAttribute('mdw-theme') === 'colored') {
-      setAltTheme(false, element);
-    } else {
+    if (getStorageItem('alttheme') !== 'true') {
       setAltTheme(true, element);
+    } else {
+      setAltTheme(false, element);
     }
   });
 }

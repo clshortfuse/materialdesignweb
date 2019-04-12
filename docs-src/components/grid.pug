@@ -7,125 +7,89 @@ include ../_mixins.pug
       p.mdw-type The Material Design layout grid is made up of three elements: columns, gutters, and margins.
     .mdw-grid__item(mdw-colspan="8")
       .mdw-type(mdw-style="subtitle") Margins and Gutters
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="default-margins" checked)
-          .mdw-selection__icon
-          .mdw-selection__label Default Margins and Gutters
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="top-margin" checked)
-          .mdw-selection__icon
-          .mdw-selection__label Top Margin
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="bottom-margin" checked)
-          .mdw-selection__icon
-          .mdw-selection__label Bottom Margin
+      .docs-option-list
+        +mdwSelection({ink:'secondary', name:'default-margins', checked:true}) Default Margins and Gutters
+        +mdwSelection({ink:'secondary', name:'top-margin', checked:true}) Top Margin
+        +mdwSelection({ink:'secondary', name:'bottom-margin', checked:true}) Bottom Margin
       .mdw-type(mdw-style="subtitle") Maximum Columns
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="columns" value="12" checked)
-          .mdw-selection__icon
-          .mdw-selection__label 12
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="columns" value="8")
-          .mdw-selection__icon
-          .mdw-selection__label 8
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="columns" value="4")
-          .mdw-selection__icon
-          .mdw-selection__label 4
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="columns" value="1")
-          .mdw-selection__icon
-          .mdw-selection__label 1
+      .docs-option-list
+        +mdwSelection({ink:'secondary', name:'columns', type:'radio', value:'12', checked:true}) 12
+        +mdwSelection({ink:'secondary', name:'columns', type:'radio', value:'8'}) 8
+        +mdwSelection({ink:'secondary', name:'columns', type:'radio', value:'4'}) 4
+        +mdwSelection({ink:'secondary', name:'columns', type:'radio', value:'1'}) 1
       .mdw-type(mdw-style="subtitle") Style
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="style" value="flex" checked)
-          .mdw-selection__icon
-          .mdw-selection__label Flex
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="radio" name="style" value="grid")
-          .mdw-selection__icon
-          .mdw-selection__label Grid
+      .docs-option-list
+        +mdwSelection({ink:'secondary', name:'style', type:'radio', value:'flex', checked:true}) Flex
+        +mdwSelection({ink:'secondary', name:'style', type:'radio', value:'grid'}) 8
       .mdw-type(mdw-style="subtitle") Options
-      div
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="stretch")
-          .mdw-selection__icon
-          .mdw-selection__label Stretch
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="center")
-          .mdw-selection__icon
-          .mdw-selection__label Center
-        label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-          input.mdw-selection__input.mdw-overlay(type="checkbox" name="dense")
-          .mdw-selection__icon
-          .mdw-selection__label Dense
+      .docs-option-list
+        +mdwSelection({ink:'secondary', name:'stretch'}) Stretch
+        +mdwSelection({ink:'secondary', name:'center'}) Center
+        +mdwSelection({ink:'secondary', name:'dense'}) Dense
     .mdw-grid__item(mdw-colspan="100%")
       p.mdw-type(style="text-align:center" mdw-textop-top="16dp" mdw-baseline-bottom="16dp") Click on an element to change colspan
   .docs-grid#sample-component
     .mdw-grid(mdw-margin-top mdw-margin-bottom)
       .mdw-grid__item(mdw-rowspan="2")
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="cyan A100" mdw-light) 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="cyan 100" mdw-light mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card") 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="cyan A200" mdw-light) 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="cyan 200" mdw-light mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card") 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="cyan A400" mdw-dark) 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="cyan 400" mdw-dark mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card") 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="cyan A700" mdw-dark) 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="cyan 700" mdw-dark mdw-border-ink) 1
       .mdw-grid__item(mdw-rowspan="3")
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card") 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="red A100" mdw-light) 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="red 100" mdw-light mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card") 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="red A200" mdw-light) 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="red 200" mdw-light mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card") 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink) 1
       .mdw-grid__item(mdw-colspan="2")
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="red A400" mdw-dark) 2
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="red 400" mdw-dark mdw-border-ink) 2
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card") 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink) 1
       .mdw-grid__item(mdw-rowspan="5" mdw-colspan="25%")
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="red A700" mdw-dark) 25%
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="red 700" mdw-dark mdw-border-ink) 25%
       .mdw-grid__item(mdw-colspan="3")
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card") 3
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink) 3
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="green A100" mdw-light) 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="green 100" mdw-light mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card") 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="green A200" mdw-light) 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="green 200" mdw-light mdw-border-ink) 1
       .mdw-grid__item(mdw-colspan="75%")
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card") 75%
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink) 75%
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="green A400" mdw-dark) 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="green 400" mdw-dark mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card") 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="green A700" mdw-dark) 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="green 700" mdw-dark mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card") 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="purple A100" mdw-light) 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="purple 100" mdw-light mdw-border-ink) 1
       .mdw-grid__item(mdw-colspan="8")
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card") 8
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink) 8
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="purple A200" mdw-light) 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="purple 200" mdw-light mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card") 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink) 1
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="purple A400" mdw-dark) 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="purple 400" mdw-dark mdw-border-ink) 1
       .mdw-grid__item(mdw-colspan="2")
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card") 2
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="card" mdw-border-ink) 2
       .mdw-grid__item
-        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="purple A700" mdw-dark) 1
+        .mdw-grid__content.mdw-card.mdw-theme(mdw-surface="purple 700" mdw-dark mdw-border-ink) 1
   script(src='grid.min.js')

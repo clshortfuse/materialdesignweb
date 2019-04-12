@@ -1,3 +1,5 @@
+include ../templates/index.pug
+
 mixin androidstatusbar(surfaceColor, lightness)
   .androidstatusbar.mdw-theme(
   mdw-surface=(surfaceColor ? surfaceColor : false)
@@ -14,12 +16,12 @@ mixin appbar(surfaceColor, lightness, start, end)
     .mdw-appbar__action
       .mdw-appbar__start
         each icon in start
-          .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon)= icon
+          +mdwButton({ icon:true }).material-icons= icon
       .mdw-appbar__title
         block
       .mdw-appbar__end
         each icon in end
-          .mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-more-button=(icon === 'more_vert'))= icon
+          +mdwButton({ icon:true })(mdw-more-button=(icon === 'more_vert')).material-icons= icon
 mixin androidnavbar
   .androidnavbar
     i.material-icons.back-button &#xE3C8;
@@ -28,7 +30,7 @@ mixin androidnavbar
 mixin target(url)
   .target(style=`background-image: url(${url})`)
 
-mixin navListItem(key, icon, name, activatedKey, color="accent-contrast")
+mixin navListItem(key, icon, name, activatedKey, color="secondary contrast")
   li.mdw-list__item
     a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(
     aria-current=(activatedKey==key ? 'page' : false)
@@ -43,14 +45,14 @@ mixin navListItem(key, icon, name, activatedKey, color="accent-contrast")
 
 mixin header(activated)
   doctype html
-  html.mdw-layout.mdw-theme(lang='en' mdw-theme="default")
+  html.mdw-layout.mdw-theme(lang='en')
     head
       title Material Design Web
       meta(charset='utf-8')
       meta(content='IE=edge', http-equiv='X-UA-Compatible')
       meta(content='Material Design Web - CSS/JS Framework', name='description')
       meta(content="width=device-width, initial-scale=1, viewport-fit=cover", name='viewport')
-      meta(name="theme-color" content="#E91E63")
+      meta(name="theme-color" content="#C2185B")
       meta(name="apple-mobile-web-app-status-bar-style" content="black-translucent")
       meta(name="apple-mobile-web-app-capable" content="yes")
       link(rel='stylesheet' href="https://fonts.googleapis.com/icon?family=Material+Icons")
@@ -58,76 +60,80 @@ mixin header(activated)
       link(rel='stylesheet' href='//fonts.googleapis.com/css?family=Merriweather:300,400,500')
       link(rel='stylesheet' href='docs.min.css')
       link(rel='stylesheet' href='spec.min.css')
-      link(rel='stylesheet' href='themes-fallbacks.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
-      link(rel='stylesheet' href='themes.min.css')
+      link(rel='stylesheet' href='theme-default.min.css')
+      link(rel='stylesheet' href='theme-default-fallbacks.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
+      link(rel='stylesheet' disabled href='theme-colored.min.css' title="alt")
+      link(rel='stylesheet' disabled href='theme-colored-fallbacks.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)" title="alt")
 
       script(src='prerender.common.min.js')
       script(src='prerender.min.js')
-    body.mdw-layout__body.mdw-theme(mdw-surface="content" mdw-sidesheet-toggle="dismissible" mdw-sidesheet-style="modal")
+    body.mdw-layout__body.mdw-theme(mdw-surface="background" mdw-sidesheet-toggle="dismissible" mdw-sidesheet-style="modal")
       .mdw-layout__menus
       .mdw-layout__dialogs
       nav.mdw-layout__navdrawer
-        .mdw-layout__sheet-content.mdw-theme(mdw-surface="card")
+        .mdw-layout__sheet-content.mdw-theme(mdw-surface="background" mdw-border-ink)
           ul.mdw-list(role="tree")
             li.mdw-list__item
-              a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(aria-current=activated=='Home' href='index.html' mdw-ink="primary")
+              a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(aria-current=activated=='Home' href='index.html' mdw-ink="default")
                 .mdw-list__text Home
-            .mdw-list__subheader.mdw-theme(mdw-ink="medium") Core
-            +navListItem('overlay', 'tonality', 'Overlay', activated, 'primary-contrast')
-            +navListItem('ripple', 'center_focus_strong', 'Ripple', activated, 'primary-contrast')
             li.mdw-list__expander.mdw-theme(aria-expanded="true")
-              span.mdw-list__expander-content
-                .mdw-list__text Theme
+              span.mdw-list__expander-content.mdw-list__subheader
+                .mdw-list__text.mdw-theme(mdw-ink="medium") Core
                 .mdw-list__secondary.mdw-theme.material-icons(mdw-ink="medium") expand_more
               ul.mdw-list__item-group(role="group")
-                +navListItem('ink', 'border_color', 'Ink', activated, 'primary-contrast')
-                +navListItem('surface', 'format_color_fill', 'Surface', activated, 'primary-contrast')
-            +navListItem('transition', 'open_in_new', 'Transition', activated, 'primary-contrast')
-            .mdw-list__subheader.mdw-theme(mdw-ink="medium") Components
-            +navListItem('appbar', 'web_asset', 'App Bar', activated)
-            +navListItem('bottomnav', 'call_to_action', 'Bottom Navigation', activated)
-            +navListItem('button', 'crop_landscape', 'Button', activated)
-            +navListItem('card', 'crop_square', 'Card', activated)
-            +navListItem('chip', 'check_circle', 'Chip', activated)
-            +navListItem('datatable', 'format_align_justify', 'Data Table', activated)
-            +navListItem('dialog', 'select_all', 'Dialog', activated)
-            +navListItem('elevation', 'layers', 'Elevation', activated)
-            +navListItem('fab', 'add_circle', 'Floating Action Button', activated)
-            +navListItem('grid', 'view_compact', 'Grid', activated)
-            +navListItem('layout', 'view_quilt', 'Layout', activated)
-            +navListItem('list', 'view_list', 'List', activated)
-            +navListItem('menu', 'picture_in_picture', 'Menu', activated)
-            +navListItem('progress', 'timelapse', 'Progress', activated)
-            +navListItem('search', 'search', 'Search', activated)
-            +navListItem('selection', 'toggle_on', 'Selection', activated)
-            +navListItem('slider', 'tune', 'Slider', activated)
-            +navListItem('snackbar', 'video_label', 'Snackbar', activated)
-            +navListItem('tab', 'tab', 'Tab', activated)
-            +navListItem('textfield', 'text_fields', 'Text Field', activated)
-            +navListItem('tooltip', 'info', 'Tooltip', activated)
-            +navListItem('type', 'font_download', 'Typography', activated)
+                +navListItem('color', 'compare', 'Color', activated, 'primary contrast')
+                +navListItem('overlay', 'tonality', 'Overlay', activated, 'primary contrast')
+                +navListItem('ripple', 'center_focus_strong', 'Ripple', activated, 'primary contrast')
+                +navListItem('transition', 'open_in_new', 'Transition', activated, 'primary contrast')
+            li.mdw-list__expander.mdw-theme(aria-expanded="true")
+              span.mdw-list__expander-content.mdw-list__subheader
+                .mdw-list__text.mdw-theme(mdw-ink="medium") Components
+                .mdw-list__secondary.mdw-theme.material-icons(mdw-ink="medium") expand_more
+              ul.mdw-list__item-group(role="group")
+                +navListItem('appbar', 'web_asset', 'App Bar', activated)
+                +navListItem('bottomnav', 'call_to_action', 'Bottom Navigation', activated)
+                +navListItem('button', 'crop_landscape', 'Button', activated)
+                +navListItem('card', 'crop_square', 'Card', activated)
+                +navListItem('chip', 'check_circle', 'Chip', activated)
+                +navListItem('datatable', 'format_align_justify', 'Data Table', activated)
+                +navListItem('dialog', 'select_all', 'Dialog', activated)
+                +navListItem('elevation', 'layers', 'Elevation', activated)
+                +navListItem('fab', 'add_circle', 'Floating Action Button', activated)
+                +navListItem('grid', 'view_compact', 'Grid', activated)
+                +navListItem('layout', 'view_quilt', 'Layout', activated)
+                +navListItem('list', 'view_list', 'List', activated)
+                +navListItem('menu', 'picture_in_picture', 'Menu', activated)
+                +navListItem('progress', 'timelapse', 'Progress', activated)
+                +navListItem('search', 'search', 'Search', activated)
+                +navListItem('selection', 'toggle_on', 'Selection', activated)
+                +navListItem('slider', 'tune', 'Slider', activated)
+                +navListItem('snackbar', 'video_label', 'Snackbar', activated)
+                +navListItem('tab', 'tab', 'Tab', activated)
+                +navListItem('textfield', 'text_fields', 'Text Field', activated)
+                +navListItem('tooltip', 'info', 'Tooltip', activated)
+                +navListItem('type', 'font_download', 'Typography', activated)
       .mdw-layout__scrim
-      .mdw-layout__appbar.mdw-appbar.mdw-theme(mdw-autohide="mobile tablet" mdw-surface="accent 500" mdw-dark)
+      .mdw-layout__appbar.mdw-appbar.mdw-theme(mdw-autohide="mobile tablet" mdw-surface="secondary 500" mdw-dark)
         .mdw-layout__appbar-shape
         .mdw-appbar__action
           .mdw-appbar__start
             .mdw-tooltip__wrapper
-              a.mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.mdw-layout__navdrawer-toggle(mdw-icon href="#docs-navdrawer").material-icons menu
-              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-align="start") Menu
+              +mdwButton({ icon:true }).mdw-tooltip__target.material-icons.mdw-layout__navdrawer-toggle(href="#docs-navdrawer") menu
+              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark mdw-align="start") Menu
           .mdw-appbar__title=activated
           #docs-menu-buttons.mdw-appbar__end
             .mdw-tooltip__wrapper
-              button#altThemeButton.mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-overlay-off="activated" aria-pressed="false") palette
-              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-align="end") Alt Theme
+              +mdwButton({ icon: true })#altThemeButton.mdw-tooltip__target.material-icons(mdw-overlay-default="medium" mdw-overlay-activated="off" aria-pressed="false") palette
+              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark mdw-align="end") Alt Theme
             .mdw-tooltip__wrapper
-              button#darkModeButton.mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-overlay-off="activated" aria-pressed="false") brightness_3
-              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-align="end") Dark Mode
+              +mdwButton({ icon: true })#darkModeButton.mdw-tooltip__target.material-icons(mdw-overlay-default="medium" mdw-overlay-activated="off" aria-pressed="false") brightness_3
+              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark mdw-align="end") Dark Mode
             .mdw-tooltip__wrapper
-              button#rtlButton.mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-overlay-off="activated" aria-pressed="false") format_align_right
-              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-align="end") Right-to-Left
+              +mdwButton({ icon: true })#rtlButton.mdw-tooltip__target.material-icons(mdw-overlay-default="medium" mdw-overlay-activated="off" aria-pressed="false") format_align_right
+              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark mdw-align="end") Right-to-Left
             .mdw-tooltip__wrapper
-              button#largeFontButton.mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon mdw-overlay-off="activated" aria-pressed="false") format_size
-              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-align="end") 200% Text
+              +mdwButton({ icon: true })#largeFontButton.mdw-tooltip__target.material-icons(mdw-overlay-default="medium" mdw-overlay-activated="off" aria-pressed="false") format_size
+              .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark mdw-align="end") 200% Text
       .mdw-layout__fab
       .mdw-layout__snackbar
       .mdw-layout__content

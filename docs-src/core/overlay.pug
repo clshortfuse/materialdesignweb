@@ -9,21 +9,21 @@ include ../_mixins.pug
     .mdw-grid__item(mdw-colspan="4")
       .mdw-grid__content
         h6.mdw-type Default Ink
-        .display-flex.flex-column
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome") Normal
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-selected="false") [aria-checked="false"]
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-pressed="false") [aria-pressed="false"]
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-selected="true") [aria-checked="true"]
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-pressed="true") [aria-pressed="true"]
+        .display-flex.flex-column.mdw-overlay__group(aria-multiselectable="true")
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary") Normal
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-selected="false") [aria-selected="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-pressed="false") [aria-pressed="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-selected="true") [aria-selected="true"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-pressed="true") [aria-pressed="true"]
     .mdw-grid__item(mdw-colspan="4")
       .mdw-grid__content
-        h6.mdw-type Accent Ink
-        .display-flex.flex-column
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome") Normal
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-selected="false") [aria-checked="false"]
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-pressed="false") [aria-pressed="false"]
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-selected="true") [aria-checked="true"]
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-pressed="true") [aria-pressed="true"]
+        h6.mdw-type Secondary Ink
+        .display-flex.flex-column.mdw-overlay__group(aria-multiselectable="true")
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary") Normal
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-selected="false") [aria-selected="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-pressed="false") [aria-pressed="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-selected="true") [aria-selected="true"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-pressed="true") [aria-pressed="true"]
     .mdw-grid__item(mdw-colspan="100%")
       .mdw-grid__content
         h2.mdw-type JS
@@ -31,21 +31,21 @@ include ../_mixins.pug
     .mdw-grid__item(mdw-colspan="4")
       .mdw-grid__content
         h6.mdw-type Default Ink
-        .display-flex.flex-column.js
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome") Normal
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-selected="false") [aria-checked="false"]
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-pressed="false") [aria-pressed="false"]
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-selected="true") [aria-checked="true"]
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="monochrome" aria-pressed="true") [aria-pressed="true"]
+        .display-flex.flex-column.mdw-overlay__group(aria-multiselectable="true").js
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary") Normal
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-selected="false") [aria-selected="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-pressed="false") [aria-pressed="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-selected="true") [aria-selected="true"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-pressed="true") [aria-pressed="true"]
     .mdw-grid__item(mdw-colspan="4")
       .mdw-grid__content
-        h6.mdw-type Accent Ink
-        .display-flex.flex-column.js
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome") Normal
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-selected="false") [aria-checked="false"]
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-pressed="false") [aria-pressed="false"]
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-selected="true") [aria-checked="true"]
-          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="accent-contrast" mdw-surface="monochrome" aria-pressed="true") [aria-pressed="true"]
+        h6.mdw-type Secondary Ink
+        .display-flex.flex-column.mdw-overlay__group(aria-multiselectable="true").js
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary") Normal
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-selected="false") [aria-selected="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-pressed="false") [aria-pressed="false"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-selected="true") [aria-selected="true"]
+          .demo-core-item.mdw-elevation.mdw-overlay.mdw-theme(mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-pressed="true") [aria-pressed="true"]
 
       
 

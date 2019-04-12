@@ -109,6 +109,13 @@ function onOptionChange(event) {
         sampleComponent.getElementsByClassName('mdw-textfield__input')[0].removeAttribute('disabled');
       }
       break;
+    case '4minlength':
+      if (checked) {
+        sampleComponent.getElementsByClassName('mdw-textfield__input')[0].setAttribute('minlength', '4');
+      } else {
+        sampleComponent.getElementsByClassName('mdw-textfield__input')[0].removeAttribute('minlength');
+      }
+      break;
     case 'required':
       if (checked) {
         sampleComponent.getElementsByClassName('mdw-textfield__input')[0].setAttribute('required', '');
@@ -186,35 +193,13 @@ function onOptionChange(event) {
         errorText.parentElement.removeChild(errorText);
       }
       break;
-    case 'color':
+    case 'ink':
       switch (value) {
         case 'none':
           sampleComponent.removeAttribute('mdw-ink');
           break;
         default:
           sampleComponent.setAttribute('mdw-ink', value);
-          break;
-      }
-      break;
-    case 'surface':
-      switch (value) {
-        case 'none':
-          sampleComponent.removeAttribute('mdw-surface');
-          sampleComponent.removeAttribute('mdw-light');
-          sampleComponent.removeAttribute('mdw-dark');
-          break;
-        default:
-          sampleComponent.setAttribute('mdw-surface', value.replace(/ (light|dark)/, ''));
-          if (value.indexOf(' light') === -1) {
-            sampleComponent.removeAttribute('mdw-light');
-          } else {
-            sampleComponent.setAttribute('mdw-light', '');
-          }
-          if (value.indexOf(' dark') === -1) {
-            sampleComponent.removeAttribute('mdw-dark');
-          } else {
-            sampleComponent.setAttribute('mdw-dark', '');
-          }
           break;
       }
       break;

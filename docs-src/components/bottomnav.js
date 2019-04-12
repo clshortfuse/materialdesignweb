@@ -62,10 +62,10 @@ function onOptionChange(event) {
     case 'ink':
       switch (value) {
         case 'default':
-          sampleComponent.removeAttribute('mdw-ink');
+          iterateArrayLike(sampleComponent.getElementsByClassName('mdw-bottomnav__item'), el => el.removeAttribute('mdw-ink'));
           break;
         default:
-          sampleComponent.setAttribute('mdw-ink', value);
+          iterateArrayLike(sampleComponent.getElementsByClassName('mdw-bottomnav__item'), el => el.setAttribute('mdw-ink', value));
           break;
       }
       break;
@@ -87,6 +87,11 @@ function onOptionChange(event) {
             sampleComponent.removeAttribute('mdw-dark');
           } else {
             sampleComponent.setAttribute('mdw-dark', '');
+          }
+          if (value === 'none') {
+            sampleComponent.classList.remove('mdw-theme');
+          } else {
+            sampleComponent.classList.add('mdw-theme');
           }
           break;
       }

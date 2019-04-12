@@ -1,32 +1,33 @@
+include ../../templates/index.pug
 include ../_mixins.pug
 
 mixin button-test
   .display-flex.flex-wrap
-    a.mdw-button.mdw-overlay.mdw-ripple Text
-    a.mdw-button.mdw-overlay.mdw-ripple(mdw-raised) Contained
-    a.mdw-button.mdw-overlay.mdw-ripple(mdw-raised aria-disabled="true") Disabled
-    a.mdw-button.mdw-overlay.mdw-ripple(mdw-outline) Outlined
+    +mdwButton Text
+    +mdwButton({ raised:true }) Contained
+    +mdwButton({ raised:true, disabled:true }) Disabled
+    +mdwButton({ borderInk:'default'}) Outlined
   div(style="height:24px")
   .display-flex.flex-wrap
-    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="primary") Text
-    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="primary" mdw-raised) Contained
-    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="primary" mdw-raised aria-disabled="true") Disabled
-    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="accent A100") Accent
-    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-outline mdw-ink="accent A100") Outlined
+    +mdwButton({ ink:'primary' }) Text
+    +mdwButton({ ink:'primary', raised:true }) Contained
+    +mdwButton({ ink:'primary', raised:true, disabled:true }) Disabled
+    +mdwButton({ ink:'secondary' }) Secondary
+    +mdwButton({ ink:'secondary', borderInk:true }) Outlined
   div(style="height:24px")
   .display-flex.flex-wrap
-    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="primary" mdw-dark) Text
-    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="primary" mdw-dark mdw-raised) Contained
-    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="primary" mdw-dark mdw-raised aria-disabled="true") Disabled
-    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="accent A100" mdw-light mdw-raised) Accent
+    +mdwButton({ surface:'primary 500', dark:true }) Text
+    +mdwButton({ surface:'primary 500', dark:true, raised:true }) Contained
+    +mdwButton({ surface:'primary 500', dark:true, raised:true, disabled:true }) Disabled
+    +mdwButton({ surface:'secondary 100', light:true, raised:true }) Outlined
   div(style="height:24px")
   .display-flex.flex-wrap
-    a.mdw-button.mdw-overlay.mdw-ripple.material-icons(mdw-icon) favorite
-    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-ink="warn" mdw-dark mdw-icon).material-icons favorite
-    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="warn" mdw-dark mdw-icon).material-icons favorite
-    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="warn" mdw-dark mdw-icon mdw-raised).material-icons favorite
-    a.mdw-button.mdw-overlay.mdw-ripple.mdw-theme(mdw-surface="warn" mdw-dark mdw-icon mdw-raised aria-disabled="true").material-icons favorite
-    a.mdw-button.mdw-overlay.mdw-ripple(mdw-icon aria-disabled="true").material-icons favorite
+    +mdwButton({ icon:true }).material-icons favorite
+    +mdwButton({ ink:"warn", dark:true, icon:true }).material-icons favorite
+    +mdwButton({ surface:"warn 500", dark:true, icon:true }).material-icons favorite
+    +mdwButton({ surface:"warn 500", dark:true, icon:true, raised:true }).material-icons favorite
+    +mdwButton({ surface:"warn 500", dark:true, icon:true, raised:true, disabled:true }).material-icons favorite
+    +mdwButton({ icon:true, disabled:true }).material-icons favorite
 
 +header("button")
   .mdw-grid(mdw-margin-top mdw-margin-bottom mdw-stretch)
@@ -38,153 +39,64 @@ mixin button-test
       .mdw-grid__content
         .component-sample
           .display-flex
-            a.mdw-button.mdw-theme(mdw-ink="accent A200") Button
+            a.mdw-button.mdw-theme(mdw-ink="secondary A200") Button
     .mdw-grid__item(mdw-colspan="6")
       .mdw-grid__content
         .mdw-type(mdw-style="subtitle") Javascript
-        div
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="required" disabled)
-            .mdw-selection__icon
-            .mdw-selection__label Required
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="optional" checked)
-            .mdw-selection__icon
-            .mdw-selection__label Optional
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="javascript" value="none")
-            .mdw-selection__icon
-            .mdw-selection__label None
+        div.docs-option-list
+          +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'required', disabled:true}) Required
+          +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'optional', checked:true}) Optional
+          +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'none'}) None
         .mdw-type(mdw-style="subtitle") Overlay
-        div
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="checkbox" name="overlay-hover" checked)
-            .mdw-selection__icon
-            .mdw-selection__label Hover
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="checkbox" name="overlay-focus" checked)
-            .mdw-selection__icon
-            .mdw-selection__label Focus
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="checkbox" name="overlay-activated" checked)
-            .mdw-selection__icon
-            .mdw-selection__label Activated
-        .mdw-type(mdw-style="subtitle") Elevation
-        div
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="elevation" value="flat" checked)
-            .mdw-selection__icon
-            .mdw-selection__label Flat
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="elevation" value="raised")
-            .mdw-selection__icon
-            .mdw-selection__label Raised
-        .mdw-type(mdw-style="subtitle") Content
-        div
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="content" value="text" checked)
-            .mdw-selection__icon
-            .mdw-selection__label Text
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="content" value="icon")
-            .mdw-selection__icon
-            .mdw-selection__label Icon
+        div.docs-option-list
+          +mdwSelection({ink:'secondary', name:'overlay-hover', checked:true}) Hover
+          +mdwSelection({ink:'secondary', name:'overlay-focus', checked:true}) Focus
+          +mdwSelection({ink:'secondary', name:'overlay-activated', checked:true}) Activated
         .mdw-type(mdw-style="subtitle") Options
-        div
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="checkbox" name="ripple" checked)
-            .mdw-selection__icon
-            .mdw-selection__label Ripple
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="checkbox" name="outlined")
-            .mdw-selection__icon
-            .mdw-selection__label Outlined
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="checkbox" name="disabled")
-            .mdw-selection__icon
-            .mdw-selection__label Disabled
+        div.docs-option-list
+          +mdwSelection({ink:'secondary', name:'icon'}) Icon
+          +mdwSelection({ink:'secondary', name:'raised'}) Raised
+          +mdwSelection({ink:'secondary', name:'ripple', checked:true}) Ripple
+          +mdwSelection({ink:'secondary', name:'disabled'}) Disabled
+        .mdw-type(mdw-style="subtitle") Outline
+        div.docs-option-list
+          +mdwSelection({ink:'secondary', name:'outline', type:'radio', value:'none', checked:true}) None
+          +mdwSelection({ink:'secondary', name:'outline', type:'radio', value:'default'}) Default
+          +mdwSelection({ink:'secondary', name:'outline', type:'radio', value:''}) Ink
         .mdw-type(mdw-style="subtitle") Activated Toggle
-        div
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="toggle" value="" checked)
-            .mdw-selection__icon
-            .mdw-selection__label None
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="toggle" value="false")
-            .mdw-selection__icon
-            .mdw-selection__label Off
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="toggle" value="true")
-            .mdw-selection__icon
-            .mdw-selection__label On
+        div.docs-option-list
+          +mdwSelection({ink:'secondary', name:'toggle', type:'radio', value:'', checked:true}) None
+          +mdwSelection({ink:'secondary', name:'toggle', type:'radio', value:'false'}) Off
+          +mdwSelection({ink:'secondary', name:'toggle', type:'radio', value:'true'}) On
         .mdw-type(mdw-style="subtitle") Ink
-        div
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="default")
-            .mdw-selection__icon
-            .mdw-selection__label Default
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="primary 400")
-            .mdw-selection__icon
-            .mdw-selection__label Primary 400
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="accent A200" checked)
-            .mdw-selection__icon
-            .mdw-selection__label Accent A200
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="warn")
-            .mdw-selection__icon
-            .mdw-selection__label Warn
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="ink" value="purple A400")
-            .mdw-selection__icon
-            .mdw-selection__label Purple A400
+        div.docs-option-list
+          +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'default'}) Default
+          +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'primary'}) Primary
+          +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'secondary', checked:true}) Secondary
+          +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'warn alt'}) Warn Alt
+          +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'purple A400'}) Purple A400
         .mdw-type(mdw-style="subtitle") Surface
-        div
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="none" checked)
-            .mdw-selection__icon
-            .mdw-selection__label None
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="primary dark")
-            .mdw-selection__icon
-            .mdw-selection__label Primary
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="accent A100 light")
-            .mdw-selection__icon
-            .mdw-selection__label Accent A100
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="warn 200 light")
-            .mdw-selection__icon
-            .mdw-selection__label Warn 200
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="surface" value="green 700 dark")
-            .mdw-selection__icon
-            .mdw-selection__label Green 700
+        div.docs-option-list
+          +mdwSelection({ink:'secondary', name:'surface', type:'radio', value:'none', checked:true}) Default
+          +mdwSelection({ink:'secondary', name:'surface', type:'radio', value:'primary 500 dark'}) Primary (Dark)
+          +mdwSelection({ink:'secondary', name:'surface', type:'radio', value:'secondary 100 light'}) Secondary (Light)
+          +mdwSelection({ink:'secondary', name:'surface', type:'radio', value:'warn 200 light'}) Warn 200 (Light)
+          +mdwSelection({ink:'secondary', name:'surface', type:'radio', value:'green 700 dark'}) Green 700 (Dark)
         .mdw-type(mdw-style="subtitle") HTML Element Type
-        div
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="htmltype" value="a" checked)
-            .mdw-selection__icon
-            .mdw-selection__label HTMLAnchorElement
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="htmltype" value="button")
-            .mdw-selection__icon
-            .mdw-selection__label HTMLButtonElement
-          label.mdw-selection.mdw-theme(mdw-ink="accent" style="margin:16px 8px")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="htmltype" value="div")
-            .mdw-selection__icon
-            .mdw-selection__label HTMLElement
+        div.docs-option-list
+          +mdwSelection({ink:'secondary', name:'htmltype', type:'radio', value:'a', checked:true}) HTMLAnchorElement
+          +mdwSelection({ink:'secondary', name:'htmltype', type:'radio', value:'button'}) HTMLButtonElement
+          +mdwSelection({ink:'secondary', name:'htmltype', type:'radio', value:'div'}) HTMLDivElement
     .mdw-grid__item(mdw-colspan="100%" style="max-height:0")
     .mdw-grid__item(mdw-colspan="6")
       .mdw-grid__content
         h6.mdw-type HTML Code
-        .mdw-card.mdw-theme.component-code.component-html(mdw-surface="card")
-          #usePug.mdw-button.mdw-theme(mdw-ink="accent" aria-pressed="false" mdw-overlay-off="activated" mdw-icon) PUG
+        .mdw-card.mdw-theme.component-code.component-html(mdw-surface="card" mdw-border-ink)
+          +mdwButton({ icon:true, ink:'secondary' })#usePug(aria-pressed="false" mdw-overlay-off="activated") PUG
     .mdw-grid__item(mdw-colspan="6")
       .mdw-grid__content
         h6.mdw-type Javascript Code
-        .mdw-card.mdw-theme.component-code.component-js(mdw-surface="card")
+        .mdw-card.mdw-theme.component-code.component-js(mdw-surface="card" mdw-border-ink)
     .mdw-grid__item(mdw-colspan="100%")
       .mdw-grid__content
         h6.mdw-type Samples

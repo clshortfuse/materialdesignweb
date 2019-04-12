@@ -28,10 +28,10 @@ include ../_mixins.pug
       .mdw-appbar(mdw-dense)
         .mdw-appbar__action
           .mdw-appbar__start
-            .mdw-button.mdw-overlay.mdw-ripple(mdw-icon).material-icons menu
+            +mdwButton({ icon: true }).material-icons menu
           .mdw-appbar__title Dense (Desktop)
           .mdw-appbar__end
-            .mdw-button.mdw-overlay.mdw-ripple(mdw-icon).material-icons more_vert
+            +mdwButton({ icon: true }).material-icons more_vert
       .content.mdw-theme(mdw-surface="background 300" mdw-light)
     +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsLUFJUnFlRHVhUVU/layout-structure-appbar-metrics1.png')
 
@@ -41,11 +41,11 @@ include ../_mixins.pug
       .mdw-appbar(mdw-prominent mdw-dense)
         .mdw-appbar__action
           .mdw-appbar__start
-            .mdw-button.mdw-overlay.mdw-ripple(mdw-icon).material-icons menu
+            +mdwButton({ icon: true }).material-icons menu
           .mdw-appbar__title Prominent Dense
           .mdw-appbar__end
-            .mdw-button.mdw-overlay.mdw-ripple(mdw-icon).material-icons search
-            .mdw-button.mdw-overlay.mdw-ripple(mdw-icon).material-icons more_vert
+            +mdwButton({ icon: true }).material-icons search
+            +mdwButton({ icon: true }).material-icons more_vert
       .content.mdw-theme(mdw-surface="background 300" mdw-light)
     +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsSDBhX3BwSURRc1U/layout-structure-appbar-metrics3.png')
 
@@ -56,11 +56,11 @@ include ../_mixins.pug
         .mdw-appbar__action
           .mdw-appbar__start
             .mdw-tooltip__wrapper
-              .mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple(mdw-icon).material-icons arrow_back
+              +mdwButton({ icon: true }).mdw-tooltip__target.material-icons arrow_back
               .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark) Back
           .mdw-appbar__end
             .mdw-tooltip__wrapper
-              .mdw-tooltip__target.mdw-button.mdw-overlay.mdw-ripple(mdw-icon mdw-more-button).material-icons more_vert
+              +mdwButton({ icon: true }).mdw-tooltip__target(mdw-more-button).material-icons more_vert
               .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark) More
         .mdw-appbar__content
           label.mdw-textfield.mdw-theme(mdw-ink="primary" style="font-size: 1.5rem")

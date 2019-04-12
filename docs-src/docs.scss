@@ -1,13 +1,5 @@
 @import './_flex.scss';
 
-html.mdw-theme[mdw-theme="default"] {
-  font-family: Roboto, sans-serif;
-}
-
-html.mdw-theme[mdw-theme="colored"] {
-  font-family: Merriweather, sans-serif;
-}
-
 // Material Icon incorrectly changes RTL direction
 .material-icons {
   direction: inherit;
@@ -80,6 +72,12 @@ html.mdw-theme[mdw-theme="colored"] {
   }
   .mdw-theme[mdw-dark] & {
     border-color: rgba(255,255,255,0.12);
+  }
+}
+
+.docs-option-list {
+  & > .mdw-selection {
+    margin:16px 8px;
   }
 }
 

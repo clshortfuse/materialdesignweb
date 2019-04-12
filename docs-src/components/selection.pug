@@ -11,26 +11,26 @@ include ../_mixins.pug
         ul.mdw-list
           li.mdw-list__subheader.mdw-theme(mdw-ink="medium") Switch
           li.mdw-list__item
-            label.mdw-list__content.mdw-selection.mdw-overlay.mdw-theme(mdw-no-ripple mdw-ink="teal" mdw-switch)
+            label.mdw-list__content.mdw-selection.mdw-overlay.mdw-theme(mdw-no-ripple mdw-ink="teal A700" mdw-switch)
               input.mdw-selection__input.mdw-overlay(type="checkbox" checked)
               .mdw-list__text.mdw-selection__label Android Switch On
               .mdw-selection__icon
           li.mdw-list__item
-            label.mdw-list__content.mdw-selection.mdw-overlay.mdw-theme(mdw-no-ripple mdw-ink="teal 200" mdw-switch)
+            label.mdw-list__content.mdw-selection.mdw-overlay.mdw-theme(mdw-no-ripple mdw-ink="teal A200" mdw-switch)
               input.mdw-selection__input.mdw-overlay(type="checkbox")
               .mdw-list__text.mdw-selection__label Android Switch Off
               .mdw-selection__icon
         ul.mdw-list
           li.mdw-list__subheader.mdw-theme(mdw-ink="medium") Single check
           li.mdw-list__item
-            label.mdw-list__content.mdw-selection.mdw-overlay.mdw-theme(mdw-no-ripple mdw-ink="teal 700")
+            label.mdw-list__content.mdw-selection.mdw-overlay.mdw-theme(mdw-no-ripple mdw-ink="teal A700")
               input.mdw-selection__input.mdw-overlay(type="radio" name="selectiontest" checked)
               .mdw-list__text.mdw-selection__label
                 .mdw-list__text-line Option 1
                 .mdw-list__text-line.mdw-theme(mdw-ink="medium") Description
               .mdw-selection__icon
           li.mdw-list__item
-            label.mdw-list__content.mdw-selection.mdw-overlay.mdw-theme(mdw-no-ripple mdw-ink="blue 700")
+            label.mdw-list__content.mdw-selection.mdw-overlay.mdw-theme(mdw-no-ripple mdw-ink="blue A700")
               input.mdw-selection__input.mdw-overlay(type="radio" name="selectiontest")
               .mdw-list__text.mdw-selection__label
                 .mdw-list__text-line Option 2
@@ -44,7 +44,7 @@ include ../_mixins.pug
               .mdw-list__text.mdw-selection__label Option 1
               .mdw-selection__icon
           li.mdw-list__item
-            label.mdw-list__content.mdw-selection.mdw-overlay.mdw-theme(mdw-no-ripple mdw-ink="blue 700")
+            label.mdw-list__content.mdw-selection.mdw-overlay.mdw-theme(mdw-no-ripple mdw-ink="blue A700")
               input.mdw-selection__input.mdw-overlay(type="checkbox" checked)
               .mdw-list__text.mdw-selection__label Option 2
               .mdw-selection__icon
@@ -63,33 +63,15 @@ include ../_mixins.pug
           .mdw-appbar__title Title
       .content
         div.display-flex(style="padding:16px")
-          label.mdw-selection.mdw-theme(mdw-ink="blue 700")
-            input.mdw-selection__input.mdw-overlay(type="checkbox" checked)
-            .mdw-selection__label Prefixed
-            .mdw-selection__icon
+          +mdwSelection({ink:'blue A700', checked:true, prefix:true }) Prefixed
         div.display-flex(style="padding:16px")
-          label.mdw-selection.mdw-theme(mdw-ink="teal A700")
-            input.mdw-selection__input.mdw-overlay(type="checkbox" checked)
-            .mdw-selection__icon
-            .mdw-selection__label Suffixed
+          +mdwSelection({ink:'teal A700', checked:true }) Suffixed
         div.display-flex(style="padding:16px")
-          label.mdw-selection.mdw-theme(mdw-ink="teal A700")
-            input.mdw-selection__input.mdw-overlay(type="checkbox" checked disabled)
-            .mdw-selection__icon
-            .mdw-selection__label Disabled
+          +mdwSelection({ink:'teal A700', checked:true, disabled:true}) Disabled
         div.display-flex(style="padding:16px")
-          label.mdw-selection.mdw-theme(mdw-ink="teal A700")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="test" checked)
-            .mdw-selection__icon
-            .mdw-selection__label A
+          +mdwSelection({ink:'teal A700', type:'radio', name:'test', checked:true }) Option A
         div.display-flex(style="padding:16px")
-          label.mdw-selection.mdw-theme(mdw-ink="teal A700")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="test")
-            .mdw-selection__icon
-            .mdw-selection__label B
+          +mdwSelection({ink:'teal A700', type:'radio', name:'test' }) Option B
         div.display-flex(style="padding:16px")
-          label.mdw-selection.mdw-theme(mdw-ink="teal A700")
-            input.mdw-selection__input.mdw-overlay(type="radio" name="test" disabled)
-            .mdw-selection__icon
-            .mdw-selection__label C
+          +mdwSelection({ink:'teal A700', type:'radio', name:'test', disabled:true }) Option C
   script(src='selection.min.js')
