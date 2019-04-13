@@ -103,8 +103,8 @@ $duration: 1500ms;
     }
   }
   
-  // IE and Edge do not support animated SVG
-  @include mdw-platform__ms {
+  // IE does not support animated SVG
+  @include mdw-platform__ie {
     &:not([mdw-determinate]) svg {
       animation-duration: $duration / 2;
     }
