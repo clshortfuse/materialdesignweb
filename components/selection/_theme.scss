@@ -86,7 +86,11 @@ $mdw-selection__theme-values: (
     &[type="checkbox"]:checked ~ .mdw-selection__icon::after {
       // Checkbox color is based on currently filled background-color
       @if($type == 'var') {
-        border-color: unquote("rgba(var(--surface-color))");
+        @include mdw-platform__edge {
+          // Edge will not inherit css variables for border in psuedos
+          border-color: mdwSelectionThemeValue("fallback-check-color", $type);
+        }
+        border-color: RGB(var(--surface-color));
       } @else {
         border-color: mdwSelectionThemeValue("fallback-check-color", $type);
       }
