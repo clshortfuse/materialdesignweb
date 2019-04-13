@@ -3,6 +3,7 @@
   @return $multiplier * 1px;
 }
 
+// Touch support based mixins
 @mixin mdw-platform__has-touch-support {
   @media (any-pointer: coarse) {
     @content;
@@ -21,8 +22,6 @@
     @content;
   }
 }
-
-// Touch support based mixins
 
 @mixin mdw-platform__edge {
   @supports (-ms-ime-align:auto) {
