@@ -7,8 +7,6 @@
 .mdw-bottomnav {
   display: flex;
   position: relative;
-  align-items: stretch;
-  flex-direction: row;
   justify-content: center;
   overflow: hidden;
 
@@ -25,8 +23,10 @@
   overflow: visible;
   
   min-width: dp(80);
-  max-width: dp(168);
-  flex: 1;
+  flex: dp(168);
+  flex-grow: 0;
+  // flex-shrink: 1;
+  // flex-basis: dp(168);
   margin: 0;
   padding: 0;
 
@@ -45,6 +45,7 @@
 
 .mdw-bottomnav__icon {
   position: absolute;
+  display: flex;
   top: 0;
   left: 50%;
   
