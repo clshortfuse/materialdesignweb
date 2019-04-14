@@ -166,7 +166,7 @@ export default class DataTableAdapter {
   handleClickInteraction(event) {
     const { target } = event;
     if (target instanceof HTMLInputElement) {
-      if (target.hasAttribute('type') && target.getAttribute('type') === 'checkbox') {
+      if (target.type === 'checkbox') {
         event.stopPropagation();
         const currentCell = this.getTableCell(target);
         if (currentCell.tagName.toLowerCase() === 'th') {
@@ -434,7 +434,7 @@ export default class DataTableAdapter {
         option.textContent = limit.toString();
         select.appendChild(option);
       });
-      select.setAttribute('value', (options.limit && options.limit.toString()) || '10');
+      select.value = (options.limit && options.limit.toString()) || '10';
       const dropdownIcon = document.createElement('div');
       dropdownIcon.classList.add('mdw-textfield__icon');
       dropdownIcon.setAttribute('mdw-dropdown', '');

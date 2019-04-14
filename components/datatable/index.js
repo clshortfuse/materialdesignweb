@@ -77,7 +77,7 @@ export function onTableBodyClick(event) {
   /** @type {HTMLTableRowElement} */
   let row = null;
 
-  if (target instanceof HTMLInputElement && target.getAttribute('type') === 'checkbox') {
+  if (target instanceof HTMLInputElement && target.type === 'checkbox') {
     if (mdwDataTable.hasAttribute('mdw-datatable-adapter')) {
       return;
     }
