@@ -109,11 +109,16 @@ export function onScrimScroll(event) {
   }
 }
 
-
-/** @return {void} */
-export function onScrimClick() {
-  const navdrawer = document.getElementsByClassName('mdw-layout__navdrawer')[0];
-  if (navdrawer && navdrawer.getAttribute('aria-hidden') === 'false') {
+/**
+ * @param {MouseEvent} [event]
+ * @return {void}
+ */
+export function onScrimClick(event) {
+  if (event && event.target instanceof HTMLAnchorElement) {
+    event.preventDefault();
+  }
+  const navDrawer = document.getElementsByClassName('mdw-layout__navdrawer')[0];
+  if (navDrawer && (window.location.hash === `#${navDrawer.id}` || navDrawer.getAttribute('aria-hidden') === 'false')) {
     if (window.innerWidth < TABLET_BREAKPOINT || document.body.getAttribute('mdw-navdrawer-style') === 'modal') {
       hideNavDrawer();
     }
@@ -126,41 +131,75 @@ export function onScrimClick() {
   }
 }
 
-/** @return {void} */
-export function showNavDrawer() {
+/**
+ * @param {MouseEvent} [event]
+ * @return {void}
+ */
+export function showNavDrawer(event) {
+  if (event && event.target instanceof HTMLAnchorElement) {
+    event.preventDefault();
+  }
   document.getElementsByClassName('mdw-layout__navdrawer')[0].setAttribute('aria-hidden', 'false');
 }
 
-/** @return {void} */
-export function hideNavDrawer() {
-  document.getElementsByClassName('mdw-layout__navdrawer')[0].setAttribute('aria-hidden', 'true');
-}
-
-/** @return {void} */
-export function toggleNavDrawer() {
-  if (document.getElementsByClassName('mdw-layout__navdrawer')[0].getAttribute('aria-hidden') === 'false') {
-    hideNavDrawer();
-  } else {
-    showNavDrawer();
+/**
+ * @param {MouseEvent} [event]
+ * @return {void}
+ */
+export function hideNavDrawer(event) {
+  if (event && event.target instanceof HTMLAnchorElement) {
+    event.preventDefault();
+  }
+  const navDrawer = document.getElementsByClassName('mdw-layout__navdrawer')[0];
+  navDrawer.setAttribute('aria-hidden', 'true');
+  if (window.location.hash === `#${navDrawer.id}`) {
+    window.location.hash = '';
   }
 }
 
-/** @return {void} */
-export function showSideSheet() {
+/**
+ * @param {MouseEvent} [event]
+ * @return {void}
+ */
+export function toggleNavDrawer(event) {
+  if (document.getElementsByClassName('mdw-layout__navdrawer')[0].getAttribute('aria-hidden') === 'false') {
+    hideNavDrawer(event);
+  } else {
+    showNavDrawer(event);
+  }
+}
+
+/**
+ * @param {MouseEvent} [event]
+ * @return {void}
+ */
+export function showSideSheet(event) {
+  if (event && event.target instanceof HTMLAnchorElement) {
+    event.preventDefault();
+  }
   document.getElementsByClassName('mdw-layout__sidesheet')[0].setAttribute('aria-hidden', 'false');
 }
 
-/** @return {void} */
-export function hideSideSheet() {
+/**
+ * @param {MouseEvent} [event]
+ * @return {void}
+ */
+export function hideSideSheet(event) {
+  if (event && event.target instanceof HTMLAnchorElement) {
+    event.preventDefault();
+  }
   document.getElementsByClassName('mdw-layout__sidesheet')[0].setAttribute('aria-hidden', 'true');
 }
 
-/** @return {void} */
-export function toggleSideSheet() {
+/**
+ * @param {MouseEvent} [event]
+ * @return {void}
+ */
+export function toggleSideSheet(event) {
   if (document.getElementsByClassName('mdw-layout__sidesheet')[0].getAttribute('aria-hidden') === 'false') {
-    hideSideSheet();
+    hideSideSheet(event);
   } else {
-    showSideSheet();
+    showSideSheet(event);
   }
 }
 

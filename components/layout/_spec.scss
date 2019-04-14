@@ -273,6 +273,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
       }
 
       // Shown
+      &[id]:target,
       &[aria-hidden="false"] {
         // Change visibility immediately
         transition-duration: $mdw-motion__expand-duration;
