@@ -30,7 +30,8 @@ function getComponentsConfig() {
       new BundleAnalyzerPlugin({
         analyzerMode: 'static',
         openAnalyzer: false,
-        generateStatsFile: true,
+        generateStatsFile: false,
+        defaultSizes: 'gzip',
       }),
     ],
     module: {
@@ -68,10 +69,17 @@ function getComponentsConfig() {
 
 /** @return {WebpackConfiguration} */
 function getDocsConfig() {
-  const plugins = [];
+  const plugins = [
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: false,
+      generateStatsFile: false,
+      defaultSizes: 'gzip',
+    }),
+  ];
   /** @type {Object.<string, string[]>} */
   const entries = {};
-  ['.', 'pwa', 'core', 'components', 'themes'].map(folder => path.join('./docs-src', folder))
+  ['.', 'pwa', 'pages', 'themes'].map(folder => path.join('./docs-src', folder))
     .forEach(folderPath => fs.readdirSync(folderPath).forEach((filename) => {
       if (filename[0] === '_') {
         return;
@@ -107,28 +115,46 @@ function getDocsConfig() {
       splitChunks: {
         chunks: 'all',
         cacheGroups: {
-          prerender: {
-            test: /prerender/,
-            name: 'prerender.common',
+          framework: {
+            test(module, chunks) {
+              if (module && module.resource && module.resource.match(/prerender/)) {
+                return false;
+              }
+              if (chunks && chunks.some(chunk => chunk.name.match(/prerender/))) {
+                return false;
+              }
+              if (module && module.resource && module.resource.match(/[\\/]docs-src[\\/]/)) {
+                return false;
+              }
+              if (module && module.resource && module.resource.match(/[\\/](components|core|adapters)[\\/]/)) {
+                return true;
+              }
+              return false;
+            },
+            name: 'entire-framework',
             minSize: 0,
-            minChunks: 2,
-            priority: -10,
+            minChunks: 1,
+            priority: 20,
             chunks: 'all',
+            reuseExistingChunk: true,
           },
-          vendors: false,
           default: {
             test(module, chunks) {
-              if (module && module.resource && module.resource.indexOf('prerender') !== -1) {
+              if (module && module.resource && module.resource.match(/prerender/)) {
                 return false;
               }
-              if (chunks && chunks.some(chunk => chunk.name.indexOf('prerender') !== -1)) {
+              if (chunks && chunks.some(chunk => chunk.name.match(/prerender/))) {
                 return false;
               }
-              return true;
+              if (module && module.resource && module.resource.match(/[\\/]docs-src[\\/]/)) {
+                return true;
+              }
+              return false;
             },
-            name: 'default.common',
+            name: 'docs.common',
             minSize: 0,
             minChunks: 2,
+            priority: 0,
             chunks: 'all',
             reuseExistingChunk: true,
           },
