@@ -41,14 +41,14 @@ export function onInput(event) {
  * @param {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} inputElement
  * @return {void} */
 export function updateInputEmptyState(inputElement) {
-  const attributeName = 'mdw-value-empty';
+  const attrName = 'mdw-value-empty';
   const textfieldElement = inputElement.parentElement;
   if (inputElement.value) {
-    if (textfieldElement.hasAttribute(attributeName)) {
-      textfieldElement.removeAttribute(attributeName);
+    if (textfieldElement.hasAttribute(attrName)) {
+      textfieldElement.removeAttribute(attrName);
     }
-  } else if (!textfieldElement.hasAttribute(attributeName)) {
-    textfieldElement.setAttribute('mdw-value-empty', '');
+  } else if (!textfieldElement.hasAttribute(attrName)) {
+    textfieldElement.setAttribute(attrName, '');
   }
 }
 
@@ -56,16 +56,22 @@ export function updateInputEmptyState(inputElement) {
  * @param {HTMLTextAreaElement} inputElement
  * @return {number} Single row height */
 export function updateTextAreaSize(inputElement) {
-  const previousRowsValue = inputElement.getAttribute('rows');
-  inputElement.setAttribute('rows', '1');
+  const previousRowsAttrValue = inputElement.getAttribute('rows');
+  // eslint-disable-next-line no-param-reassign
+  inputElement.rows = 1;
   const { height, paddingTop } = window.getComputedStyle(inputElement);
   if (!height || height === 'auto') {
-    inputElement.setAttribute('rows', previousRowsValue);
+    if (previousRowsAttrValue == null) {
+      inputElement.removeAttribute('rows');
+    } else {
+      inputElement.setAttribute('rows', previousRowsAttrValue);
+    }
     return -1;
   }
   const heightPx = parseInt(height.replace('px', ''), 10);
   const paddingTopPx = parseInt(paddingTop.replace('px', ''), 10);
-  inputElement.setAttribute('rows', Math.floor((inputElement.scrollHeight - paddingTopPx) / heightPx).toString());
+  // eslint-disable-next-line no-param-reassign
+  inputElement.rows = Math.floor((inputElement.scrollHeight - paddingTopPx) / heightPx);
   return heightPx;
 }
 
@@ -79,8 +85,7 @@ export function getValue(textfieldElement) {
   if ((input instanceof HTMLTextAreaElement) || (input instanceof HTMLSelectElement)) {
     return input.value;
   }
-  const type = input.hasAttribute('type') && input.getAttribute('type').toLowerCase();
-  switch (type) {
+  switch (input.type) {
     case 'number':
     case 'range':
       return Number.isNaN(input.valueAsNumber) ? null : input.valueAsNumber;
@@ -117,14 +122,13 @@ export function setValue(textfieldElement, value) {
       input.value = value.toString(10);
     }
   } else if (value instanceof Date) {
-    const type = input.hasAttribute('type') && input.getAttribute('type').toLowerCase();
-    if (type === 'time') {
+    if (input.type === 'time') {
       const hoursStr = `${value.getHours() < 10 ? '0' : ''}${value.getHours()}`;
       const minutesStr = `${value.getMinutes() < 10 ? '0' : ''}${value.getMinutes()}`;
       const secondsStr = `${value.getSeconds() < 10 ? '0' : ''}${value.getSeconds()}`;
       input.value = `${hoursStr}:${minutesStr}:${secondsStr}.${value.getMilliseconds()}`;
     } else {
-      switch (type) {
+      switch (input.type) {
         case 'date':
           input.valueAsDate = value;
           break;
@@ -142,8 +146,7 @@ export function setValue(textfieldElement, value) {
   } else if (typeof value === 'string') {
     input.value = value;
   } else {
-    const type = input.hasAttribute('type') && input.getAttribute('type').toLowerCase();
-    switch (type) {
+    switch (input.type) {
       case 'date':
       case 'time':
       case 'datetime-local':
