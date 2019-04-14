@@ -72,10 +72,8 @@ export function onPrerender() {
     && !document.documentElement.hasAttribute('mdw-dark')) {
     if (window.matchMedia('(prefers-color-scheme:dark)').matches) {
       document.documentElement.setAttribute('mdw-dark', '');
-      document.documentElement.setAttribute('mdw-surface', 'black');
     } else {
       document.documentElement.setAttribute('mdw-light', '');
-      document.documentElement.setAttribute('mdw-surface', 'white');
     }
   }
 }
