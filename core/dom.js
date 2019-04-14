@@ -69,8 +69,7 @@ export function findElementParentByClassName(element, className, includeSelf) {
 
 /** @return {boolean} */
 export function isRtl() {
-  return document.documentElement.hasAttribute('dir')
-    && document.documentElement.getAttribute('dir').toLowerCase() === 'rtl';
+  return document.documentElement.dir === 'rtl';
 }
 
 /**
