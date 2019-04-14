@@ -92,7 +92,9 @@ export default class DataTableAdapterColumn {
         target.appendChild(options.name);
       }
       const tooltip = document.createElement('div');
-      tooltip.classList.add('mdw-tooltip');
+      tooltip.className = 'mdw-tooltip mdw-theme';
+      tooltip.setAttribute('mdw-surface', 'background 700');
+      tooltip.setAttribute('mdw-dark', '');
       tooltip.textContent = options.tooltip;
       wrapper.appendChild(target);
       wrapper.appendChild(tooltip);
