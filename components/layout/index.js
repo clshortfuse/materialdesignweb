@@ -52,32 +52,6 @@ export function attach() {
   }
 }
 
-/**
- * Run before document has loaded
- * @return {void}
- */
-export function onPrerender() {
-  if ('standalone' in navigator && navigator.standalone) {
-    document.documentElement.setAttribute('mdw-standalone', '');
-  }
-
-  const ua = navigator.userAgent.toLowerCase();
-  if (/iphone/.test(ua) || /ipad/.test(ua)) {
-    document.documentElement.setAttribute('mdw-ios', '');
-  }
-
-  // Auto lightness and fill
-  if (!document.documentElement.hasAttribute('mdw-surface')
-    && !document.documentElement.hasAttribute('mdw-light')
-    && !document.documentElement.hasAttribute('mdw-dark')) {
-    if (window.matchMedia('(prefers-color-scheme:dark)').matches) {
-      document.documentElement.setAttribute('mdw-dark', '');
-    } else {
-      document.documentElement.setAttribute('mdw-light', '');
-    }
-  }
-}
-
 /** @return {Throttler} */
 export function getScrollThrottler() {
   if (!scrollThrottler) {

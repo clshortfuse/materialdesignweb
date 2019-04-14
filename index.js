@@ -1,3 +1,7 @@
+import * as Document from './core/document/index';
+import * as Overlay from './core/overlay/index';
+import * as Ripple from './core/ripple/index';
+
 import * as BottomNav from './components/bottomnav/index';
 import * as BottomNavItem from './components/bottomnav/item';
 import * as Button from './components/button/index';
@@ -12,15 +16,16 @@ import * as ListItem from './components/list/item';
 import * as ListExpander from './components/list/expander';
 import * as Menu from './components/menu/index';
 import * as MenuItem from './components/menu/item';
-import * as Overlay from './core/overlay/index';
 import * as ProgressCircle from './components/progress/index';
-import * as Ripple from './core/ripple/index';
 import * as Snackbar from './components/snackbar/index';
 import * as Tab from './components/tab/index';
 import * as TabItem from './components/tab/item';
 import * as TextField from './components/textfield/index';
 
 export {
+  Document,
+  Overlay,
+  Ripple,
   BottomNav,
   BottomNavItem,
   Button,
@@ -35,9 +40,7 @@ export {
   ListExpander,
   Menu,
   MenuItem,
-  Overlay,
   ProgressCircle,
-  Ripple,
   Snackbar,
   Tab,
   TabItem,
