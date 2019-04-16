@@ -5,7 +5,6 @@
 import { iterateArrayLike } from '../../core/dom';
 import * as RovingTabIndex from '../../core/aria/rovingtabindex';
 
-import * as ListExpander from './expander';
 import * as ListItem from './item';
 import * as ListItemGroup from './itemgroup';
 
@@ -23,9 +22,9 @@ export function attachAll(root = document) {
  */
 export function attach(listElement) {
   listElement.classList.add('mdw-overlay__group');
-  const expanders = listElement.getElementsByClassName('mdw-list__expander');
-  const defaultRole = (expanders.length ? 'tree' : 'listbox');
 
+  const hasExpanders = listElement.querySelector('mdw-list__item[aria-expanded]') == null;
+  const defaultRole = (hasExpanders ? 'tree' : 'listbox');
   const role = listElement.getAttribute('role') || defaultRole;
 
   iterateArrayLike(listElement.getElementsByClassName('mdw-list__content'), (content) => {
@@ -33,7 +32,11 @@ export function attach(listElement) {
       switch (role) {
         default:
         case 'tree':
-          content.setAttribute('role', 'treeitem');
+          if (content.parentElement.hasAttribute('aria-expanded')) {
+            content.setAttribute('role', 'none');
+          } else {
+            content.setAttribute('role', 'treeitem');
+          }
           break;
         case 'listbox':
           content.setAttribute('role', 'option');
@@ -50,7 +53,6 @@ export function attach(listElement) {
   });
   iterateArrayLike(listElement.getElementsByClassName('mdw-list__item'), ListItem.attach);
   iterateArrayLike(listElement.getElementsByClassName('mdw-list__item-group'), ListItemGroup.attach);
-  iterateArrayLike(expanders, ListExpander.attach);
   setupAria(listElement, defaultRole);
   if (role !== 'listbox' && role !== 'tree') {
     return;
@@ -123,5 +125,4 @@ export function setupAria(listElement, role = 'tree') {
  */
 export function detach(listElement) {
   iterateArrayLike(listElement.getElementsByClassName('mdw-list__item'), ListItem.detach);
-  iterateArrayLike(listElement.getElementsByClassName('mdw-list__expander'), ListExpander.detach);
 }

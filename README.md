@@ -41,8 +41,7 @@ npm: `npm install @shortfuse/materialdesignweb`
 | [layout](components/layout/) | | :white_check_mark: | :x: |:x: | :x: | beta
 | [list](components/list/) | listitem† listexpander | :white_check_mark: | :white_check_mark: | list listbox tree | aria-orientation | preRC
 | [listcontent](components/list/content.js) | overlay ripple | :white_check_mark: | :white_check_mark: | listitem link option treeitem | | preRC
-| [listexpander](components/list/expander.js) | overlay ripple | | :white_check_mark: | treeitem | aria-expanded | beta
-| [listitem](components/list/item.js) | | :white_check_mark: | :white_check_mark: | none | aria-hidden | preRC
+| [listitem](components/list/item.js) | | :white_check_mark: | :white_check_mark: | treeitem none | aria-expanded aria-hidden | preRC
 | [listitemgroup](components/list/group.js) | | :white_check_mark: | :white_check_mark: | group | | preRC
 | [menu](components/menu/) | divider menuitem† | :white_check_mark: | :white_check_mark: | menu | aria-hidden | preRC
 | [menuitem](components/menu/item.js) | overlay ripple | :white_check_mark: | :white_check_mark:| menuitem menuitemradio menuitemcheckbox | aria-disabled aria-checked | stable

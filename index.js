@@ -12,8 +12,8 @@ import * as Dialog from './components/dialog/index';
 import * as Fab from './components/fab/index';
 import * as Layout from './components/layout/index';
 import * as List from './components/list/index';
+import * as ListContent from './components/list/content';
 import * as ListItem from './components/list/item';
-import * as ListExpander from './components/list/expander';
 import * as Menu from './components/menu/index';
 import * as MenuItem from './components/menu/item';
 import * as ProgressCircle from './components/progress/index';
@@ -36,8 +36,8 @@ export {
   Fab,
   Layout,
   List,
+  ListContent,
   ListItem,
-  ListExpander,
   Menu,
   MenuItem,
   ProgressCircle,

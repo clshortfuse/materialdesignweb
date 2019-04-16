@@ -37,8 +37,8 @@ $mdw-list__theme-values: (
     }
   }
 
-  .mdw-list__expander:focus {
-    & > .mdw-list__expander-content {
+  .mdw-list__item[aria-expanded]:focus {
+    & > .mdw-list__content {
       &:not([mdw-overlay-touch="true"]) {
         &:not([mdw-overlay-off~="focus"]):not([mdw-overlay-touch="true"])::before {
           opacity: mdwListThemeValue("focus-opacity", $type);
@@ -84,16 +84,16 @@ $mdw-list__theme-values: (
     }
   }
 
-  .mdw-list__expander[aria-expanded="true"] {
+  .mdw-list__item[aria-expanded="true"] {
     &::before,
     &::after {
       background-color: mdwListThemeValue("divider-color", $type);
     }
 
     &[mdw-ink][aria-expanded="true"] {
-      & > .mdw-list__expander-content,
-      & > .mdw-list__expander-content::before,
-      & > .mdw-list__expander-content > .mdw-list__text {
+      & > .mdw-list__content,
+      & > .mdw-list__content::before,
+      & > .mdw-list__content > .mdw-list__text {
         color: inherit;
       }
     }

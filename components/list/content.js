@@ -31,6 +31,7 @@ function onKeyDown(event) {
   if (event.key !== 'Enter' && event.key !== 'Spacebar' && event.key !== ' ') {
     return;
   }
+  console.log(document.activeElement);
   if (document.activeElement !== event.currentTarget) {
     return;
   }
@@ -52,7 +53,9 @@ function onKeyDown(event) {
  */
 export function attachCore(listContentElement) {
   if (!listContentElement.hasAttribute('role')) {
-    listContentElement.setAttribute('role', 'option');
+    if (listContentElement.parentElement.getAttribute('role') === 'none') {
+      listContentElement.setAttribute('role', 'option');
+    }
   }
   iterateArrayLike(listContentElement.getElementsByClassName('mdw-list__icon'), (el) => {
     el.setAttribute('aria-hidden', 'true');
@@ -69,6 +72,7 @@ export function attachCore(listContentElement) {
  * @return {void}
  */
 export function onClick(event) {
+  event.preventDefault();
   /** @type {HTMLElement} */
   const listContentElement = (event.currentTarget);
   dispatchDomEvent(listContentElement, ACTIVATE_EVENT);
