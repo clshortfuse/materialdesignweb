@@ -400,13 +400,13 @@ $mdw-color__theme-values: (
     }
 
     .mdw-theme[mdw-surface~="#{$color}"] {
-      @each $tone in $mdw-theme__tone-list {
+      @each $tone in map-keys(map-remove($palette, "light", "dark")) {
         --#{$tone}-surface: var(--#{$color}-#{$tone}-color);
       }
     }
 
     .mdw-theme[mdw-ink~="#{$color}"] {
-      @each $tone in $mdw-theme__tone-list {
+      @each $tone in map-keys(map-remove($palette, "light", "dark")) {
         --#{$tone}-color: var(--#{$color}-#{$tone}-color);
       }
     }
