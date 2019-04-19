@@ -1,10 +1,9 @@
 mixin mdwSelection(options={})
-  label.mdw-selection(class=([
-  options.ink ? 'mdw-theme' : '',
-  ].filter(v=>v).join(' '))
-  mdw-ink=(options.ink)
-  )
+  label.mdw-selection
     input.mdw-selection__input.mdw-overlay(
+    mdw-overlay-disabled="none"
+    class=(options.ink ? 'mdw-theme' : false)
+    mdw-ink=(options.ink)
     role=(options.type === 'switch' ? 'switch' : false)
     type=(options.type === 'radio' ? 'radio' : 'checkbox')
     checked=(options.checked ? '' : false)
@@ -16,8 +15,16 @@ mixin mdwSelection(options={})
     if (options.prefix)
       .mdw-selection__label
         block
-      .mdw-selection__icon
+      .mdw-selection__icon(class=(options.ink ? 'mdw-theme' : false)
+      mdw-ink=(options.ink)
+      mdw-radio=(options.type === 'radio' ? '' : false)
+      mdw-switch=(options.type === 'switch' ? '' : false)
+      mdw-checkbox=(options.type !== 'radio' && options.type !== 'switch' ? '' : false))
     else
-      .mdw-selection__icon
+      .mdw-selection__icon(class=(options.ink ? 'mdw-theme' : false)
+      mdw-ink=(options.ink)
+      mdw-radio=(options.type === 'radio' ? '' : false)
+      mdw-switch=(options.type === 'switch' ? '' : false)
+      mdw-checkbox=(options.type !== 'radio' && options.type !== 'switch' ? '' : false))
       .mdw-selection__label
         block

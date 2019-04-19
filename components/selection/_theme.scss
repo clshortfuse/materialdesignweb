@@ -11,9 +11,6 @@ $mdw-selection__theme-values: (
   ripple-color:            (('foreground-light', 1.00), ('foreground-dark', 1.00)),
 
   thumb-off-color:         (('background', '50', 1.00), ('background','400',1.0)),
-  thumb-on-color:          (currentColor, currentColor),
-
-  track-on-color:          (currentColor, currentColor),
   track-on-opacity:        (0.50, 0.50),
   
   track-off-color:         (('foreground-light', 1.00), ('foreground-dark', 1.00)),
@@ -47,10 +44,7 @@ $mdw-selection__theme-values: (
 
   .mdw-selection__input {
     &:not(:checked) {
-      &,
-      & ~ .mdw-selection__icon {
-        color: mdwSelectionThemeValue("icon-color", $type);
-      }
+      color: mdwSelectionThemeValue("icon-color", $type);
     }
 
     &:not([mdw-overlay-touch="true"]) {
@@ -81,65 +75,72 @@ $mdw-selection__theme-values: (
         }
       }
     }
+    &:disabled {
+      opacity: 0;
+    }
+  }
 
-    
-    &[type="checkbox"]:checked ~ .mdw-selection__icon::after {
-      // Checkbox color is based on currently filled background-color
-      @if($type == 'var') {
-        @include mdw-platform__edge {
-          // Edge will not inherit css variables for border in psuedos
-          border-color: mdwSelectionThemeValue("fallback-check-color", $type);
-        }
-        border-color: RGB(var(--surface-color));
-      } @else {
+  // Disabled label
+  .mdw-selection[aria-disabled="true"] .mdw-selection__label,
+  .mdw-selection__input:disabled ~ .mdw-selection__label {
+    opacity: mdwSelectionThemeValue("disabled-opacity", $type);
+  }
+
+  // Checkbox check default
+  .mdw-selection__icon[mdw-checkbox]::after {
+    // Checkbox color is based on currently filled background-color
+    @if($type == 'var') {
+      @include mdw-platform__edge {
+        // Edge will not inherit css variables for border in psuedos
         border-color: mdwSelectionThemeValue("fallback-check-color", $type);
       }
+      border-color: RGB(var(--surface-color));
+    } @else {
+      border-color: mdwSelectionThemeValue("fallback-check-color", $type);
     }
+  }
 
-    &[disabled],
-    &[aria-disabled="true"] {
-      opacity: 0;
-      & ~ .mdw-selection__label {
-        opacity: mdwSelectionThemeValue("disabled-opacity", $type);
+  // Switch track default
+  .mdw-selection__icon[mdw-switch]::after {
+    opacity: mdwSelectionThemeValue("track-on-opacity", $type);
+  }
+
+  // Unchecked
+  .mdw-selection[aria-checked="false"] .mdw-selection__icon,
+  .mdw-selection__input:not(:checked) ~ .mdw-selection__icon {
+    &[mdw-checkbox],
+    &[mdw-radio] {
+      color: mdwSelectionThemeValue("icon-color", $type);
+    }
+    &[mdw-switch] {
+      // Thumb
+      &::before {
+        background-color: mdwSelectionThemeValue("thumb-off-color", $type);
       }
-      & ~ .mdw-selection__icon,
-      & ~ .mdw-selection__icon::before {
-        color: mdwSelectionThemeValue("disabled-color", $type);
+      // Track
+      &::after {
+        opacity: mdwSelectionThemeValue("track-off-opacity", $type);
+        background-color: mdwSelectionThemeValue("track-off-color", $type);
       }
     }
   }
 
-  .mdw-selection__input[role="switch"] {
-    & ~ .mdw-selection__icon {
-      &::before {
-        background-color: mdwSelectionThemeValue("thumb-off-color", $type);
-      }
-
-      &::after {
-        opacity: mdwSelectionThemeValue("track-off-opacity", $type);
-
-        background-color: mdwSelectionThemeValue("track-off-color", $type);
-      }
+  // Disabled
+  .mdw-selection[aria-disabled="true"] .mdw-selection__icon,
+  .mdw-selection__input:disabled ~ .mdw-selection__icon {
+    &[mdw-checkbox],
+    &[mdw-radio] {
+      color: mdwSelectionThemeValue("disabled-color", $type);
     }
-
-    &:checked ~ .mdw-selection__icon {
+    &[mdw-switch] {
+      // Thumb
       &::before {
-        background-color: mdwSelectionThemeValue("thumb-on-color", $type);
-      }
-
-      &::after {
-        background-color: mdwSelectionThemeValue("track-on-color", $type);
-      }
-    }
-
-    &[disabled],
-    &[aria-disabled="true"] {
-      opacity: 0;
-      & ~ .mdw-selection__icon::before {
         background-color: mdwSelectionThemeValue("thumb-disabled-color", $type);
       }
-      &  ~ .mdw-selection__icon::after {
+      // Track
+      &::after {
         opacity: mdwSelectionThemeValue("track-disabled-opacity", $type);
+        background-color: mdwSelectionThemeValue("track-off-color", $type);
       }
     }
   }
