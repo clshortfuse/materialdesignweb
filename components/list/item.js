@@ -76,13 +76,16 @@ export function onChildContentActivate(event) {
  */
 export function setupAria(listItemElement) {
   let isTreeItem = null;
+  let roleIsNone = false;
   if (!listItemElement.hasAttribute('role')) {
     if (listItemElement.hasAttribute('aria-expanded')) {
       listItemElement.setAttribute('role', 'treeitem');
       isTreeItem = true;
+      roleIsNone = false;
     } else {
       listItemElement.setAttribute('role', 'none');
       isTreeItem = false;
+      roleIsNone = true;
     }
   }
   if (isTreeItem !== false || listItemElement.getAttribute('role') === 'treeitem') {
@@ -90,6 +93,35 @@ export function setupAria(listItemElement) {
     if (activatorContent && !activatorContent.hasAttribute('role')) {
       activatorContent.setAttribute('role', 'none');
     }
+  }
+  if (!roleIsNone) {
+    return;
+  }
+  const parentRole = listItemElement.parentElement && listItemElement.parentElement.getAttribute('role');
+  if (!parentRole) {
+    return;
+  }
+  const contentChild = getChildElementByClass(listItemElement, 'mdw-list__content');
+  if (!contentChild) {
+    return;
+  }
+  if (contentChild.hasAttribute('role')) {
+    return;
+  }
+  switch (parentRole) {
+    case 'listbox':
+      contentChild.setAttribute('role', 'option');
+      break;
+    case 'radiogroup':
+      contentChild.setAttribute('role', 'radio');
+      break;
+    case 'group':
+    case 'tree':
+    case 'treeitem':
+      contentChild.setAttribute('role', 'treeitem');
+      break;
+    default:
+    case 'list':
   }
 }
 

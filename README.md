@@ -39,10 +39,10 @@ npm: `npm install @shortfuse/materialdesignweb`
 | [grid](components/grid/) |  | :white_check_mark:| | :x: | :x: | preRC
 | imagelist | | | | | | *use grid*
 | [layout](components/layout/) | | :white_check_mark: | :x: |:x: | :x: | beta
-| [list](components/list/) | listitem† listexpander | :white_check_mark: | :white_check_mark: | list listbox tree | aria-orientation | preRC
-| [listcontent](components/list/content.js) | overlay ripple | :white_check_mark: | :white_check_mark: | listitem link option treeitem | | preRC
+| [list](components/list/) | listitem† listexpander | :white_check_mark: | :white_check_mark: | group list listbox radiogroup tree | aria-orientation | preRC
+| [listcontent](components/list/content.js) | overlay ripple | :white_check_mark: | :white_check_mark: | listitem link option radio treeitem | aria-checked aria-selected | preRC
 | [listitem](components/list/item.js) | | :white_check_mark: | :white_check_mark: | treeitem none | aria-expanded aria-hidden | preRC
-| [listitemgroup](components/list/group.js) | | :white_check_mark: | :white_check_mark: | group | | preRC
+| [listsecondary](components/list/secondary.js) |  | :white_check_mark: | :white_check_mark: | none‡ | | preRC
 | [menu](components/menu/) | divider menuitem† | :white_check_mark: | :white_check_mark: | menu | aria-hidden | preRC
 | [menuitem](components/menu/item.js) | overlay ripple | :white_check_mark: | :white_check_mark:| menuitem menuitemradio menuitemcheckbox | aria-disabled aria-checked | stable
 | navdrawer | | | | | | *use layout*

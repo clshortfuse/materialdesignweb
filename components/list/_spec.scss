@@ -7,22 +7,21 @@
 $mdw-list__divider-height: dp(1) !default;
 
 .mdw-list {
-  padding-top: dp(8);
-  padding-bottom: dp(8);
-}
-
-ul.mdw-list,
-ul.mdw-list__item-group {
-  margin: 0;
-  padding-right: 0;
-  padding-left: 0;
-
-  list-style-type: none;
-}
-
-.mdw-list__item-group {
   display: flex;
   flex-direction: column;
+
+  margin: 0;
+  padding: 0;
+
+  list-style-type: none;
+
+  &[mdw-margin-top] {
+    margin-top: dp(8);
+  }
+
+  &[mdw-margin-bottom] {
+    margin-bottom: dp(8);
+  }
 }
 
 
@@ -42,6 +41,10 @@ li.mdw-list__item {
 
 a.mdw-list__content {
   text-decoration: none;
+}
+
+.mdw-list__content > .mdw-divider__vertical {
+  height: dp(40);
 }
 
 .mdw-list__subheader,
@@ -97,8 +100,9 @@ a.mdw-list__content {
 
 .mdw-list__item {
   display: flex;
-  outline: none;
   flex-direction: column;
+
+  outline: none;
 }
 
 .mdw-list__item[aria-expanded] {
@@ -106,17 +110,20 @@ a.mdw-list__content {
 
   &::before,
   &::after {
-    content: '';
     
     position: absolute;
     right: 0;
     left: 0;
-    background-color: transparent;
+
+    height: dp(1);
+
+    transition-duration: $mdw-motion__shape-change-duration;
 
     transition-property: background-color;
-    transition-duration: $mdw-motion__shape-change-duration;
     transition-timing-function: $mdw-motion__standard-easing;
-    height: dp(1);
+
+    background-color: transparent;
+    content: '';
   }
 
   &::before {
@@ -138,25 +145,28 @@ a.mdw-list__content {
     transform: rotate(0deg);
   }
 
-  & > .mdw-list__item-group > .mdw-list__item {
+  & > .mdw-list > .mdw-list__item {
     overflow: hidden;
+
     flex-basis: 0;
+
     animation-duration: $mdw-motion__collapse-duration;
     animation-timing-function: $mdw-motion__accelerate-easing;
     animation-fill-mode: forwards;
   }
 
   &[aria-expanded="false"] {
-    & > .mdw-list__item-group > .mdw-list__item {
+    & > .mdw-list > .mdw-list__item {
       animation-name: collapseRow;
     }
   }
+
   &[aria-expanded="true"] {
     & > .mdw-list__content .mdw-list__secondary {
       transform: rotate(180deg);
     }
 
-   & > .mdw-list__item-group > .mdw-list__item {
+    & > .mdw-list > .mdw-list__item {
       animation-name: expandRow;
       animation-duration: $mdw-motion__expand-duration;
       animation-timing-function: $mdw-motion__decelerate-easing;
@@ -167,13 +177,10 @@ a.mdw-list__content {
     }
   }
 
-  &:not([mdw-expander-js]) > .mdw-list__item-group .mdw-list__item {
+  &:not([mdw-expander-js]) > .mdw-list .mdw-list__item {
     animation-duration: 0s;
   }
-
 }
-
-
 
 @keyframes expandRow {
   0% {
@@ -220,29 +227,40 @@ a.mdw-list__content {
 
 .mdw-list__secondary {
   display: flex;
+  position: relative;
   align-items: center;
+  align-self: stretch;
   flex-direction: row;
-  -ms-grid-column: 3;
-  grid-column: 3;
-  -ms-grid-column-span: 1;
-  grid-column-end: span 1;
   justify-content: center;
   order: 1;
-
-  min-height: dp(56);
+  
   min-width: dp(24);
-  margin-right: 0;
-  margin-left: dp(16);
-
-  z-index: 1;
+  margin-right: dp(-24);
+  margin-left: 0;
+  border-width: dp(1);
+  padding: 0 dp(24);
 
   pointer-events: none;
 
-  :root[dir="rtl"] & {
-    margin-right: dp(16);
+  z-index: 1;
+  @include mdw-breakpoint__16dp-margin() {
+    margin-right: dp(-16);
     margin-left: 0;
+    padding: 0 dp(16);
   }
 
+  :root[dir="rtl"] & {
+    margin-right: 0;
+    margin-left: dp(-24);
+    @include mdw-breakpoint__16dp-margin() {
+      margin-right: 0;
+      margin-left: dp(-16);
+    }
+  }
+
+  &[mdw-action] {
+    pointer-events: auto;
+  }
 }
 
 @include mdw-platform__ie() {
@@ -269,7 +287,6 @@ a.mdw-list__content {
   text-overflow: ellipsis;
 }
 
-
 .mdw-list[mdw-divider] .mdw-list__item:not(:last-child) {
   .mdw-list__text::after {
     content: '';
@@ -282,11 +299,11 @@ a.mdw-list__content {
     height: $mdw-list__divider-height;
     width: 100%;
   }
+}
 
-  .mdw-list__avatar ~ .mdw-list__text::after,
-  .mdw-list[mdw-divider] > .mdw-list__item:not(:last-child) .mdw-list__icon ~ .mdw-list__text::after {
-    margin-left: dp(72);
-  }
+.mdw-list__avatar ~ .mdw-list__text::after,
+.mdw-list[mdw-divider] > .mdw-list__item:not(:last-child) .mdw-list__icon ~ .mdw-list__text::after {
+  margin-left: dp(72);
 }
 
 .mdw-list__text-line {
