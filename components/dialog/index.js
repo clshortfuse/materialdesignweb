@@ -145,10 +145,8 @@ export function onCancelClick(event) {
   }
   /** @type {HTMLElement} */
   const cancelElement = (event.currentTarget);
-  if (dispatchDomEvent(cancelElement, CANCEL_EVENT)) {
-    const dialogElement = findElementParentByClassName(cancelElement, 'mdw-dialog');
-    hide(dialogElement);
-  }
+  const dialogElement = findElementParentByClassName(cancelElement, 'mdw-dialog');
+  cancel(dialogElement);
 }
 
 /**
@@ -161,10 +159,8 @@ export function onConfirmClick(event) {
   }
   /** @type {HTMLElement} */
   const button = (event.currentTarget);
-  if (dispatchDomEvent(button, CONFIRM_EVENT)) {
-    const dialogElement = findElementParentByClassName(button, 'mdw-dialog');
-    hide(dialogElement);
-  }
+  const dialogElement = findElementParentByClassName(button, 'mdw-dialog');
+  confirm(dialogElement);
 }
 
 /**
@@ -177,8 +173,8 @@ export function onCustomButtonClick(event) {
   }
   /** @type {HTMLElement} */
   const button = (event.currentTarget);
-  if (dispatchDomEvent(button, CUSTOM_EVENT)) {
-    const dialogElement = findElementParentByClassName(button, 'mdw-dialog');
+  const dialogElement = findElementParentByClassName(button, 'mdw-dialog');
+  if (dispatchDomEvent(dialogElement, CUSTOM_EVENT)) {
     hide(dialogElement);
   }
 }
@@ -320,11 +316,11 @@ export function hide(dialogElement) {
 
 /**
  * @param {Element} dialogElement
- * @param {(MouseEvent|KeyboardEvent|PointerEvent)=} event
+ * @param {Event} event
  * @return {boolean} handled
  */
 export function show(dialogElement, event) {
-  if (event && event.currentTarget instanceof HTMLAnchorElement) {
+  if (event && event.type === 'click' && event.currentTarget instanceof HTMLAnchorElement) {
     // Prevent anchor link
     event.preventDefault();
   }
@@ -357,12 +353,6 @@ export function show(dialogElement, event) {
     const focusElement = dialogElement.querySelector('[mdw-autofocus]');
     try {
       if (focusElement) {
-        if (event && event.target instanceof Element) {
-          const callerOverlayTouch = event.target.getAttribute('mdw-overlay-touch');
-          if (callerOverlayTouch != null) {
-            focusElement.setAttribute('mdw-overlay-touch', callerOverlayTouch);
-          }
-        }
         focusElement.focus();
       } else {
         dialogElement.focus();
@@ -563,7 +553,7 @@ export function create(options) {
 
 /**
  * @param {Element} dialogElement
- * @param {(MouseEvent|KeyboardEvent|PointerEvent)=} event
+ * @param {Event} [event]
  * @return {void}
  */
 export function updateTransformOrigin(dialogElement, event) {
@@ -582,7 +572,10 @@ export function updateTransformOrigin(dialogElement, event) {
     pageY -= window.pageYOffset;
   } else {
     /** @type {Element} */
-    const target = (event.currentTarget || event.target);
+    const target = (event.target || event.currentTarget);
+    if (target instanceof Element === false) {
+      return;
+    }
     const rect = target.getBoundingClientRect();
     if (!rect.width && !rect.width && !rect.left && !rect.top) {
       return;
