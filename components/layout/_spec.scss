@@ -96,15 +96,19 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   transform: translateY(0); // browser hint
   z-index: 4;
 
-  .mdw-layout[mdw-ios][mdw-standalone] & {
-    padding-top: dp(20);
-    padding-top: constant(safe-area-inset-top);
-    padding-top: env(safe-area-inset-top);
-  }
-
   &[mdw-hide] {
     transition-duration: $mdw-motion__collapse-duration;
     transition-timing-function: $mdw-motion__accelerate-easing;
+  }
+}
+
+.mdw-layout[mdw-ios][mdw-standalone] {
+  .mdw-layout__appbar,
+  .mdw-layout__navdrawer,
+  .mdw-layout__sidesheet {
+    padding-top: dp(20);
+    padding-top: constant(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
   }
 }
 
