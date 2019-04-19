@@ -15,7 +15,7 @@ export function attach(bottomnavElement) {
   iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'), BottomNavItem.attach);
   bottomnavElement.addEventListener(AriaAttributes.SELECTED_CHANGED_EVENT, onSelectedChangedEvent);
   setupARIA(bottomnavElement);
-  RovingTabIndex.setupTabIndexes(bottomnavElement, '[role="tab"]');
+  RovingTabIndex.setupTabIndexes(bottomnavElement, bottomnavElement.querySelectorAll('[role="tab"]'));
   bottomnavElement.addEventListener(RovingTabIndex.FORWARDS_REQUESTED, onForwardsRequested);
   bottomnavElement.addEventListener(RovingTabIndex.BACKWARDS_REQUESTED, onBackwardsRequested);
   bottomnavElement.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
@@ -75,7 +75,7 @@ export function setupARIA(bottomnavElement) {
 export function detach(bottomnavElement) {
   iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'), BottomNavItem.detach);
   bottomnavElement.removeEventListener(AriaAttributes.SELECTED_CHANGED_EVENT, onSelectedChangedEvent);
-  RovingTabIndex.detach(bottomnavElement, '[role="tab"]');
+  RovingTabIndex.detach(bottomnavElement, bottomnavElement.querySelectorAll('[role="tab"]'));
   bottomnavElement.removeEventListener(RovingTabIndex.FORWARDS_REQUESTED, onForwardsRequested);
   bottomnavElement.removeEventListener(RovingTabIndex.BACKWARDS_REQUESTED, onBackwardsRequested);
   bottomnavElement.removeEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
