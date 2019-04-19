@@ -42,6 +42,7 @@ function constructTableCheckbox() {
   input.type = 'checkbox';
   const icon = document.createElement('div');
   icon.className = 'mdw-selection__icon';
+  icon.setAttribute('mdw-checkbox', '');
   checkboxLabel.appendChild(input);
   checkboxLabel.appendChild(icon);
   return checkboxLabel;
@@ -153,6 +154,7 @@ export default class DataTableAdapterColumn {
       input.checked = checked;
       const icon = document.createElement('div');
       icon.className = 'mdw-selection__icon';
+      icon.setAttribute('mdw-checkbox', '');
       checkboxLabel.appendChild(input);
       checkboxLabel.appendChild(icon);
       cell.appendChild(checkboxLabel);
