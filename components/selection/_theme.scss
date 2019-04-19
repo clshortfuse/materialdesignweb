@@ -3,21 +3,17 @@
 @import '../../core/theme/index.scss';
 
 $mdw-selection__theme-values: (
-  text-color:              $mdw-theme__default-ink,
   icon-color:              $mdw-theme__medium-ink,
-  disabled-color:          $mdw-theme__inactive-ink,
   
   fallback-check-color:    (('background', '50', 1.00), ('background','900',1.0)),
   ripple-color:            (('foreground-light', 1.00), ('foreground-dark', 1.00)),
 
-  thumb-off-color:         (('background', '50', 1.00), ('background','400',1.0)),
   track-on-opacity:        (0.50, 0.50),
-  
   track-off-color:         (('foreground-light', 1.00), ('foreground-dark', 1.00)),
   track-off-opacity:       (0.38, 0.30),
 
-  thumb-disabled-color:          (('background', '400', 1.00), ('background','800',1.00)),
-  track-disabled-opacity:        (0.12, 0.10),
+  thumb-off-color:         (('background', '50', 1.00), ('background','400',1.0)),
+  thumb-disabled-color:    (('background', '400', 1.00), ('background','800',1.00)),
 
   disabled-opacity:              (0.38, 0.50),
 
@@ -38,10 +34,6 @@ $mdw-selection__theme-values: (
 }
 
 @mixin mdw-selection__theme-rules($type: 'var') {
-  .mdw-selection__label {
-    color: mdwSelectionThemeValue("text-color", $type);
-  }
-
   .mdw-selection__input {
     &:not(:checked) {
       color: mdwSelectionThemeValue("icon-color", $type);
@@ -80,11 +72,6 @@ $mdw-selection__theme-values: (
     }
   }
 
-  // Disabled label
-  .mdw-selection[aria-disabled="true"] .mdw-selection__label,
-  .mdw-selection__input:disabled ~ .mdw-selection__label {
-    opacity: mdwSelectionThemeValue("disabled-opacity", $type);
-  }
 
   // Checkbox check default
   .mdw-selection__icon[mdw-checkbox]::after {
@@ -105,9 +92,10 @@ $mdw-selection__theme-values: (
     opacity: mdwSelectionThemeValue("track-on-opacity", $type);
   }
 
-  // Unchecked
+  // Unchecked or disabled HTMLInputElement
   .mdw-selection[aria-checked="false"] .mdw-selection__icon,
-  .mdw-selection__input:not(:checked) ~ .mdw-selection__icon {
+  .mdw-selection__input:not(:checked) ~ .mdw-selection__icon,
+  .mdw-selection__input:disabled ~ .mdw-selection__icon {
     &[mdw-checkbox],
     &[mdw-radio] {
       color: mdwSelectionThemeValue("icon-color", $type);
@@ -125,23 +113,22 @@ $mdw-selection__theme-values: (
     }
   }
 
-  // Disabled
-  .mdw-selection[aria-disabled="true"] .mdw-selection__icon,
+  // Disabled HTMLInputElement
+  .mdw-selection__input:disabled ~ .mdw-selection__label,
   .mdw-selection__input:disabled ~ .mdw-selection__icon {
-    &[mdw-checkbox],
-    &[mdw-radio] {
-      color: mdwSelectionThemeValue("disabled-color", $type);
+    opacity: mdwSelectionThemeValue("disabled-opacity", $type);
+  }
+
+  // Disabled switch colors
+  .mdw-selection__input:disabled ~ .mdw-selection__icon[mdw-switch],
+  .mdw-selection[aria-disabled="true"] .mdw-selection__icon[mdw-switch] {
+    // Thumb
+    &::before {
+      background-color: mdwSelectionThemeValue("thumb-disabled-color", $type);
     }
-    &[mdw-switch] {
-      // Thumb
-      &::before {
-        background-color: mdwSelectionThemeValue("thumb-disabled-color", $type);
-      }
-      // Track
-      &::after {
-        opacity: mdwSelectionThemeValue("track-disabled-opacity", $type);
-        background-color: mdwSelectionThemeValue("track-off-color", $type);
-      }
+    // Track
+    &::after {
+      background-color: mdwSelectionThemeValue("track-off-color", $type);
     }
   }
 }
