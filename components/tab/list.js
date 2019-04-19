@@ -26,8 +26,7 @@ export function attach(tabListElement) {
   iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.attach);
   tabListElement.addEventListener(AriaAttributes.SELECTED_CHANGED_EVENT, onSelectedChangedEvent, getPassiveEventListenerOption());
   setupARIA(tabListElement);
-  RovingTabIndex.setupTabIndexes(tabListElement, '[role="tab"]');
-  RovingTabIndex.setupTabIndexes(tabListElement, '[role="tab"]');
+  RovingTabIndex.setupTabIndexes(tabListElement, tabListElement.querySelectorAll('[role="tab"]'));
   tabListElement.addEventListener(RovingTabIndex.FORWARDS_REQUESTED, onForwardsRequested);
   tabListElement.addEventListener(RovingTabIndex.BACKWARDS_REQUESTED, onBackwardsRequested);
   tabListElement.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
@@ -88,7 +87,7 @@ export function setupARIA(tabListElement) {
 export function detach(tabListElement) {
   iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.detach);
   tabListElement.removeEventListener(AriaAttributes.SELECTED_CHANGED_EVENT, onSelectedChangedEvent);
-  RovingTabIndex.detach(tabListElement, 'mdw-tab__item');
+  RovingTabIndex.detach(tabListElement, tabListElement.querySelectorAll('[role="tab"]'));
 }
 
 

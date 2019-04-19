@@ -1,6 +1,5 @@
 import {
   iterateArrayLike,
-  nextTick,
   scrollToElement,
   dispatchDomEvent,
   getPassiveEventListenerOption,
