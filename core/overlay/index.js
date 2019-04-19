@@ -1,5 +1,11 @@
 import { getPassiveEventListenerOption, iterateArrayLike } from '../dom';
 
+let lastInteractionWasTouch = false;
+
+if (window && window.matchMedia) {
+  lastInteractionWasTouch = window.matchMedia('(any-pointer: coarse)').matches;
+}
+
 /**
  * @param {Element|Document} [root=document]
  * @return {void}
@@ -18,6 +24,7 @@ export function attach(element) {
   element.addEventListener('touchstart', onTouchStart, getPassiveEventListenerOption());
   element.addEventListener('keydown', onKeyDown, getPassiveEventListenerOption());
   element.addEventListener('blur', onBlur, getPassiveEventListenerOption());
+  element.addEventListener('focus', onFocus, getPassiveEventListenerOption());
 }
 
 /**
@@ -60,7 +67,31 @@ export function onKeyDown(event) {
 export function onBlur(event) {
   /** @type {HTMLElement} */
   const element = (event.currentTarget);
+  const value = element.getAttribute('mdw-overlay-touch');
+  if (value == null) {
+    return;
+  }
+  if (value === 'true') {
+    lastInteractionWasTouch = true;
+  } else {
+    lastInteractionWasTouch = false;
+  }
   element.removeAttribute('mdw-overlay-touch');
+}
+
+/**
+ * @param {FocusEvent} event
+ * @return {void}
+ */
+export function onFocus(event) {
+  /** @type {HTMLElement} */
+  const element = (event.currentTarget);
+  if (!element.hasAttribute('mdw-overlay-touch')) {
+    // Element was focused without a mouse or touch event (keyboard or programmatic)
+    if (lastInteractionWasTouch) {
+      element.setAttribute('mdw-overlay-touch', 'true');
+    }
+  }
 }
 
 /**
