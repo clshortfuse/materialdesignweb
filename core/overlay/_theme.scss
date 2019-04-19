@@ -109,11 +109,10 @@ $mdw-overlay__theme-values: (
       }
     }
 
-    &:not([mdw-overlay-disabled="ink"]):not([mdw-overlay-disabled="none"]) {
+    &:not([mdw-overlay-disabled]) {
       &[disabled],
       &[aria-disabled="true"] {
         opacity: mdwOverlayThemeValue("disabled-opacity", $type);
-        color: mdwOverlayThemeValue("off-color", $type);
       }
     }
 
