@@ -55,6 +55,10 @@ function onKeyDown(event) {
   event.stopPropagation();
   event.preventDefault();
 
+  if (isDisabled(listContentElement)) {
+    return;
+  }
+
   if (event.key === 'Spacebar' || event.key === ' ') {
     if (onCheckRequest(listContentElement)) {
       return;
@@ -160,6 +164,11 @@ export function onFocus(event) {
 export function onSecondaryAction(event) {
   /** @type {HTMLElement} */
   const listContentElement = (event.currentTarget);
+  if (isDisabled(listContentElement)) {
+    event.stopPropagation();
+    event.preventDefault();
+    return;
+  }
   if (onCheckRequest(listContentElement)) {
     return;
   }
