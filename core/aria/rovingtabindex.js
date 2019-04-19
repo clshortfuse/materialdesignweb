@@ -13,18 +13,18 @@ export const BACKWARDS_REQUESTED = 'mdw:rovingtabindex-backwardsrequested';
 
 /**
  * @param {Element} parentElement
- * @param {string} querySelectorString
+ * @param {ArrayLike<Element>} items
  * @param {boolean} [focusableWhenDisabled=true]
  * @return {void}
  */
-export function setupTabIndexes(parentElement, querySelectorString, focusableWhenDisabled = true) {
+export function setupTabIndexes(parentElement, items, focusableWhenDisabled = true) {
   /** @type {Element} */
   let currentlyFocusedChild = null;
   /** @type {Element} */
   let currentTabIndexChild = null;
   /** @type {Element} */
   let firstFocusableChild = null;
-  iterateArrayLike(parentElement.querySelectorAll(querySelectorString), (child) => {
+  iterateArrayLike(items, (child) => {
     if (!currentlyFocusedChild && document.activeElement === child) {
       currentlyFocusedChild = child;
     } else if (!currentTabIndexChild && child.getAttribute('tabindex') === '0') {
@@ -53,11 +53,11 @@ export function setupTabIndexes(parentElement, querySelectorString, focusableWhe
 
 /**
  * @param {Element} parentElement
- * @param {string} querySelectorString
+ * @param {ArrayLike<Element>} items
  * @return {void}
  */
-export function detach(parentElement, querySelectorString) {
-  iterateArrayLike(parentElement.querySelectorAll(querySelectorString), (child) => {
+export function detach(parentElement, items) {
+  iterateArrayLike(items, (child) => {
     child.removeEventListener('focus', onChildFocus);
   });
   parentElement.removeEventListener('keydown', onKeyDownHandler);
