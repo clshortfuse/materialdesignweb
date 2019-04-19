@@ -29,6 +29,7 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
 
 .mdw-selection__input {
   display: inline-flex;
+  align-self: center;
   order: 1;
 
   min-height: $mdw-selection__icon-size;
