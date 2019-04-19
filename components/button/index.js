@@ -10,7 +10,6 @@ import * as AriaButton from '../../core/aria/button';
  */
 export function attach(element) {
   element.classList.add('mdw-overlay');
-  element.setAttribute('mdw-overlay-disabled', 'ink');
   Ripple.attach(element);
   element.classList.add('mdw-ripple');
   Overlay.attach(element);

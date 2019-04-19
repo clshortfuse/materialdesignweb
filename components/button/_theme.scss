@@ -5,10 +5,9 @@
 @import '../../core/theme/index.scss';
 
 $mdw-button__theme-values: (
-  inactive-color:                $mdw-theme__inactive-ink,
-  disabled-text-color:           $mdw-theme__default-ink,
-  disabled-background-color:     $mdw-theme__inactive-ink,
-  outline-color:                 $mdw-theme__divider-ink,
+  disabled-surface-background-color: $mdw-theme__inactive-ink,
+  disabled-surface-text-color:       $mdw-theme__default-ink,
+  disabled-text-color:               $mdw-theme__default-ink,
 ) !default;
 
 @function mdwButtonThemeValue($key, $type) {
@@ -19,16 +18,17 @@ $mdw-button__theme-values: (
   .mdw-button {
     &[disabled],
     &[aria-disabled="true"] {
+      color: mdwButtonThemeValue("disabled-text-color", $type);
       &[mdw-surface] {
-        background-color: mdwButtonThemeValue("disabled-background-color", $type);
-        color: mdwButtonThemeValue("disabled-text-color", $type);
+        background-color: mdwButtonThemeValue("disabled-surface-background-color", $type);
+        color: mdwButtonThemeValue("disabled-surface-text-color", $type);
 
         // Disabled filled buttons use parent's theming context
         @if ($type == 'var') {
           &[mdw-dark],
           &[mdw-light] {
-            --button__disabled-text-color: inherit;
-            --button__disabled-background-color: inherit;
+            --button__disabled-surface-text-color: inherit;
+            --button__disabled-surface-background-color: inherit;
           }
         }
       }

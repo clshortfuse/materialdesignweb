@@ -1,7 +1,6 @@
 mixin mdwButton(options={})
   a.mdw-button(class=([
   options.overlay != false ? 'mdw-overlay' : '',
-  options.overlay != false ? 'mdw-overlay-disabled="ink"' : '',
   options.ripple != false ? 'mdw-ripple' : '',
   options.ink || options.surface || options.light || options.dark || options.borderInk ? 'mdw-theme' : '',
   ].filter(v=>v).join(' '))
