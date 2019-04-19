@@ -38,7 +38,6 @@ $mdw-overlay__theme-values: (
   .mdw-overlay {
     &,
     &:active,
-    &:active,
     &[aria-selected="true"],
     &[aria-pressed="true"],
     &[aria-current] {
@@ -68,9 +67,7 @@ $mdw-overlay__theme-values: (
     }
 
     &[aria-selected="false"],
-    &[aria-pressed="false"],
-    &[disabled],
-    &[aria-disabled="true"] {
+    &[aria-pressed="false"] {
       @if ($type == 'var') {
         color: mdwOverlayThemeValue("off-color", $type);
         &[mdw-border-ink] {
@@ -105,9 +102,19 @@ $mdw-overlay__theme-values: (
       
     }
 
-    &[disabled],
-    &[aria-disabled="true"] {
-      opacity: mdwOverlayThemeValue("disabled-opacity", $type);
+    &[mdw-overlay-disabled="ink"] {
+      &[disabled],
+      &[aria-disabled="true"] {
+        color: mdwOverlayThemeValue("off-inactive-color", $type);
+      }
+    }
+
+    &:not([mdw-overlay-disabled="ink"]):not([mdw-overlay-disabled="none"]) {
+      &[disabled],
+      &[aria-disabled="true"] {
+        opacity: mdwOverlayThemeValue("disabled-opacity", $type);
+        color: mdwOverlayThemeValue("off-color", $type);
+      }
     }
 
     &:not([mdw-overlay-touch="true"]) {
