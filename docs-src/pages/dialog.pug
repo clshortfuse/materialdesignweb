@@ -78,7 +78,7 @@ include ../_mixins.pug
             .mdw-dialog__popup.mdw-theme(mdw-surface="card")
               .mdw-dialog__header
                 .mdw-dialog__title Dialog header
-              .mdw-divider.mdw-theme(mdw-ink="divider")
+              .mdw-divider.mdw-theme(mdw-border-ink="divider")
               .mdw-dialog__scrolling
                 ul.mdw-list
                   li.mdw-list__item
@@ -99,7 +99,7 @@ include ../_mixins.pug
                     a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#' mdw-ink="default") Item 8
                   li.mdw-list__item
                     a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#' mdw-ink="default") Item 9
-              .mdw-divider.mdw-theme(mdw-ink="divider")
+              .mdw-divider.mdw-theme(mdw-border-ink="divider")
               .mdw-dialog__button-area
                 +mdwButton({ ink:'secondary' })(href="#") Agree
                 +mdwButton({ ink:'secondary' })(href="#") Disagree

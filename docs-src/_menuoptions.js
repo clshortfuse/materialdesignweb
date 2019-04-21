@@ -1,5 +1,4 @@
 import { setStorageItem, removeStorageItem, getStorageItem } from './_storage';
-import { iterateArrayLike } from '../core/dom';
 
 /**
  * @param {boolean} value
@@ -8,21 +7,15 @@ import { iterateArrayLike } from '../core/dom';
  */
 export function setRTLMode(value, button) {
   if (value) {
-    document.documentElement.setAttribute('dir', 'rtl');
-    if (button) {
-      button.setAttribute('aria-pressed', 'true');
-    }
-    // element.setAttribute('mdw-active', '');
-    // Poor visibility even though spec says 70% opacity
+    document.documentElement.dir = 'rtl';
     setStorageItem('rtlmode', 'true');
   } else {
     // Explicit LTR is required for Safari to support repeated toggling
-    document.documentElement.setAttribute('dir', 'ltr');
-    if (button) {
-      button.setAttribute('aria-pressed', 'false');
-    }
-    // element.removeAttribute('mdw-active');
+    document.documentElement.dir = 'ltr';
     removeStorageItem('rtlmode');
+  }
+  if (button) {
+    button.setAttribute('aria-pressed', value ? 'true' : 'false');
   }
 }
 
@@ -43,11 +36,9 @@ export function isDarkMode() {
 export function setDarkMode(value, button) {
   if (value) {
     document.documentElement.setAttribute('mdw-dark', '');
-    document.documentElement.setAttribute('mdw-surface', 'black');
     document.documentElement.removeAttribute('mdw-light');
   } else {
     document.documentElement.setAttribute('mdw-light', '');
-    document.documentElement.setAttribute('mdw-surface', 'white');
     document.documentElement.removeAttribute('mdw-dark');
   }
   const stringValue = (value ? 'true' : 'false');
@@ -63,14 +54,16 @@ export function setDarkMode(value, button) {
  * @return {void}
  */
 export function setAltTheme(value, button) {
-  iterateArrayLike(document.head.getElementsByTagName('link'), (stylesheet) => {
+  const items = document.head.getElementsByTagName('link');
+  for (let i = 0; i < items.length; i += 1) {
+    const stylesheet = items.item(i);
     if (stylesheet.href.indexOf(value ? 'theme-colored' : 'theme-default') !== -1) {
       stylesheet.removeAttribute('disabled');
     }
     if (stylesheet.href.indexOf(value ? 'theme-default' : 'theme-colored') !== -1) {
       stylesheet.setAttribute('disabled', '');
     }
-  });
+  }
 
   const stringValue = (value ? 'true' : 'false');
   if (button) {
@@ -92,19 +85,13 @@ export function setAltTheme(value, button) {
 export function setFontSize(value, button) {
   if (value) {
     document.documentElement.style.setProperty('font-size', value);
-    if (button) {
-      button.setAttribute('aria-pressed', 'true');
-    }
-    // element.setAttribute('mdw-active', '');
-    // Poor visibility even though spec says 70% opacity
     setStorageItem('fontsize', value);
   } else {
     document.documentElement.style.removeProperty('font-size');
-    if (button) {
-      button.setAttribute('aria-pressed', 'false');
-    }
-    // element.removeAttribute('mdw-active');
     removeStorageItem('fontsize');
+  }
+  if (button) {
+    button.setAttribute('aria-pressed', value ? 'true' : 'false');
   }
 }
 
@@ -120,7 +107,7 @@ function setupRTLMode(element) {
     return;
   }
   element.addEventListener('click', () => {
-    if (document.documentElement.getAttribute('dir') === 'rtl') {
+    if (document.documentElement.dir === 'rtl') {
       setRTLMode(false, element);
     } else {
       setRTLMode(true, element);

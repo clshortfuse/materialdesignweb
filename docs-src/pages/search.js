@@ -1,9 +1,9 @@
 import * as ListItem from '../../components/list/item';
 import * as ListContent from '../../components/list/content';
 import * as TextField from '../../components/textfield/index';
+import ListAdapter from '../../adapters/list/index';
 import SearchAdapter from '../../adapters/search/index';
 import { iterateArrayLike, setTextNode } from '../../core/dom';
-import { ListAdapter } from '../../index';
 
 /** @typedef {{line1:string, line2:string}} CustomSearchResult */
 

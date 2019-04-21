@@ -11,13 +11,13 @@ include ../_mixins.pug
           .component-sample__container
             .mdw-tab
               .mdw-tab__list
-                .mdw-tab__item.mdw-theme(mdw-ink="secondary A200" mdw-overlay-default="medium")
+                .mdw-tab__item.mdw-theme.mdw-overlay(mdw-ink="secondary A200" mdw-overlay-default="medium" aria-selected="true")
                   .mdw-tab__icon.material-icons looks_one
                   .mdw-tab__label Tab Item One
-                .mdw-tab__item.mdw-theme(mdw-ink="secondary A200" mdw-overlay-default="medium")
+                .mdw-tab__item.mdw-theme.mdw-overlay(mdw-ink="secondary A200" mdw-overlay-default="medium" aria-selected="false")
                   .mdw-tab__icon.material-icons looks_two
                   .mdw-tab__label Tab Item Two
-                .mdw-tab__item.mdw-theme(mdw-ink="secondary A200" mdw-overlay-default="medium")
+                .mdw-tab__item.mdw-theme.mdw-overlay(mdw-ink="secondary A200" mdw-overlay-default="medium" aria-selected="false")
                   .mdw-tab__icon.material-icons looks_3
                   .mdw-tab__label Tab Item Three
                 .mdw-tab__indicator.mdw-theme(mdw-ink="secondary A200")

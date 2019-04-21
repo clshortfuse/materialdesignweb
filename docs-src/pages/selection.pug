@@ -1,0 +1,74 @@
+include ../_mixins.pug
+
++header("selection")
+  .mdw-grid(mdw-stretch)
+    .mdw-grid__item(mdw-colspan="4")
+      .mdw-grid__content
+        .render-fill
+          +androidstatusbar('teal 700', 'dark')
+          .mdw-appbar.mdw-theme(mdw-surface="teal 500" mdw-dark)
+            .mdw-appbar__action
+              .mdw-appbar__title Styled HTMLInputElement
+          .content
+            div.display-flex(style="padding:16px")
+              +mdwSelection({ink:'blue A700', checked:true, prefix:true, type:'switch' }) Switch
+            div.display-flex(style="padding:16px")
+              +mdwSelection({ink:'blue A700', checked:true, prefix:true }) Prefixed
+            div.display-flex(style="padding:16px")
+              +mdwSelection({ink:'teal A700', checked:true }) Suffixed
+            div.display-flex(style="padding:16px")
+              +mdwSelection({ink:'teal A700', checked:true, disabled:true}) Disabled
+            div.display-flex(style="padding:16px")
+              +mdwSelection({ink:'teal A700', type:'radio', name:'test', checked:true }) Option A
+            div.display-flex(style="padding:16px")
+              +mdwSelection({ink:'teal A700', type:'radio', name:'test' }) Option B
+            div.display-flex(style="padding:16px")
+              +mdwSelection({ink:'teal A700', type:'radio', name:'test', disabled:true }) Option C
+    .mdw-grid__item(mdw-colspan="4")
+      .mdw-grid__content
+        .render-fill
+          +androidstatusbar('teal 700', 'dark')
+          .mdw-appbar.mdw-theme(mdw-surface="teal 500" mdw-dark)
+            .mdw-appbar__action
+              .mdw-appbar__title aria-checked (JS)
+          .content
+            span#docs-selection-subheader1.mdw-list__subheader.mdw-theme(mdw-ink="medium") Switch
+            ul.mdw-list(role="listbox" aria-labelledby='docs-selection-subheader1')
+              li.mdw-list__item
+                a.mdw-list__content.mdw-selection.mdw-overlay(aria-checked="true")
+                  .mdw-list__text.mdw-selection__label Android Switch
+                  .mdw-list__secondary.mdw-selection__icon.mdw-theme(mdw-ink="teal A700" mdw-switch)
+              li.mdw-list__item
+                a.mdw-list__content.mdw-selection.mdw-overlay(aria-checked="false" aria-disabled="true")
+                  .mdw-list__text.mdw-selection__label Android Switch Disabled
+                  .mdw-list__secondary.mdw-selection__icon.mdw-theme(mdw-ink="teal A200" mdw-switch)
+            span.mdw-list__subheader.mdw-theme(mdw-ink="medium") .mdw-list[role="radiogroup"]
+            ul.mdw-list(role="radiogroup")
+              li.mdw-list__item
+                a.mdw-list__content.mdw-selection.mdw-overlay(aria-checked="true")
+                  .mdw-list__text.mdw-selection__label
+                    .mdw-list__text-line Option 1
+                    .mdw-list__text-line.mdw-theme(mdw-ink="medium") Description
+                  .mdw-list__secondary.mdw-selection__icon.mdw-theme(mdw-ink="teal A700" mdw-radio)
+              li.mdw-list__item
+                a.mdw-list__content.mdw-selection.mdw-overlay(aria-checked="false")
+                  .mdw-list__text.mdw-selection__label
+                    .mdw-list__text-line Option 2
+                    .mdw-list__text-line.mdw-theme(mdw-ink="medium") Description
+                  .mdw-list__secondary.mdw-selection__icon.mdw-theme(mdw-ink="blue A700" mdw-radio)
+            span.mdw-list__subheader.mdw-theme(mdw-ink="medium") Multiple check
+            ul.mdw-list(role="listbox" aria-multiselectable="true")
+              li.mdw-list__item
+                a.mdw-list__content.mdw-selection.mdw-overlay(aria-checked="true")
+                  .mdw-list__text.mdw-selection__label Option 1
+                  .mdw-list__secondary.mdw-selection__icon.mdw-theme(mdw-ink="teal A400" mdw-checkbox)
+              li.mdw-list__item
+                a.mdw-list__content.mdw-selection.mdw-overlay(aria-checked="true")
+                  .mdw-list__text.mdw-selection__label Option 2
+                  .mdw-list__secondary.mdw-selection__icon.mdw-theme(mdw-ink="blue A700" mdw-checkbox)
+              li.mdw-list__item
+                a.mdw-list__content.mdw-selection.mdw-overlay(aria-checked="false")
+                  .mdw-list__text.mdw-selection__label Option 3
+                  .mdw-list__secondary.mdw-selection__icon.mdw-theme(mdw-ink="warn" mdw-checkbox)
+
+  script(src='selection.min.js')

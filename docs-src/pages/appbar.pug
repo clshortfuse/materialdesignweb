@@ -6,21 +6,18 @@ include ../_mixins.pug
       +androidstatusbar('background 400', 'light')
       +appbar('background 50', 'light', ['menu'], ['search', 'favorite', 'more_vert']) Title
       .content.mdw-theme(mdw-surface="background 300" mdw-light)
-    +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsU1FwTUx3cmRUNG8/layout-structure-appbar-structure2.png')
 
   .comparison.clipped
     .render
       +androidstatusbar('black', 'dark')
       +appbar('background 900', 'dark', ['menu'], ['search', 'favorite', 'more_vert']) Title
       .content.mdw-theme(mdw-surface="background 300" mdw-light)
-    +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsbGREMW9BdDdnSUk/layout-structure-appbar-structure3.png')
 
   .comparison.clipped
     .render
       +androidstatusbar('blue 800', 'dark')
       +appbar('blue A200', 'dark', ['menu'], ['search', 'favorite', 'more_vert']) Title
       .content.mdw-theme(mdw-surface="background 300" mdw-light)
-    +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsZF9VZDhtQlF5RGM/layout-structure-appbar-structure4.png')
 
   .comparison.clipped-304
     .render
@@ -33,7 +30,6 @@ include ../_mixins.pug
           .mdw-appbar__end
             +mdwButton({ icon: true }).material-icons more_vert
       .content.mdw-theme(mdw-surface="background 300" mdw-light)
-    +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsLUFJUnFlRHVhUVU/layout-structure-appbar-metrics1.png')
 
   .comparison.clipped-304
     .render
@@ -47,7 +43,6 @@ include ../_mixins.pug
             +mdwButton({ icon: true }).material-icons search
             +mdwButton({ icon: true }).material-icons more_vert
       .content.mdw-theme(mdw-surface="background 300" mdw-light)
-    +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsSDBhX3BwSURRc1U/layout-structure-appbar-metrics3.png')
 
   .comparison.clipped-304
     .render
@@ -77,5 +72,5 @@ include ../_mixins.pug
           div(style="height:24px")
             // Spec says 16dp, but it's actually 24dp
       .content.mdw-theme(mdw-surface="background 300" mdw-light)
-    +target('https://storage.googleapis.com/material-design/publish/material_v_12/assets/0B6Okdz75tqQsTW1zb2x5WWg5cDA/layout-structure-appbar-metrics5.png')
+
   script(src='appbar.min.js')

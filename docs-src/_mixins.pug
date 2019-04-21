@@ -38,14 +38,15 @@ mixin navListItem(key, icon, name, activatedKey, color="secondary contrast")
     href=(key + ".html")
     mdw-ink=color
     )
-      .mdw-list__icon.mdw-theme.material-icons(mdw-ink="medium")=icon
+      if (icon)
+        .mdw-list__icon.mdw-theme.material-icons(mdw-ink="medium")=icon
       .mdw-list__text
         .mdw-list__text-block=name
 
 
 mixin header(activated)
   doctype html
-  html.mdw-layout.mdw-theme(lang='en')
+  html.mdw-layout.mdw-theme(lang='en' mdw-surface="binary" mdw-light)
     head
       title Material Design Web
       meta(charset='utf-8')
@@ -64,32 +65,34 @@ mixin header(activated)
       link(rel='stylesheet' href='theme-default-fallbacks.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)")
       link(rel='stylesheet' disabled href='theme-colored.min.css' title="alt")
       link(rel='stylesheet' disabled href='theme-colored-fallbacks.min.css' media="screen and (-ms-high-contrast: active), (-ms-high-contrast: none)" title="alt")
-
-      script(src='prerender.common.min.js')
       script(src='prerender.min.js')
     body.mdw-layout__body.mdw-theme(mdw-surface="background" mdw-sidesheet-toggle="dismissible" mdw-sidesheet-style="modal")
       .mdw-layout__menus
       .mdw-layout__dialogs
-      nav.mdw-layout__navdrawer
+      nav#docs-navdrawer.mdw-layout__navdrawer
         .mdw-layout__sheet-content.mdw-theme(mdw-surface="background" mdw-border-ink)
-          ul.mdw-list(role="tree")
+          ul.mdw-list
             li.mdw-list__item
-              a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(aria-current=activated=='Home' href='index.html' mdw-ink="default")
+              a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(
+              aria-current=activated=='Home'
+              aria-selected=(activatedKey=='Home' ? 'true' : 'false')
+              href='index.html'
+              mdw-ink="default")
                 .mdw-list__text Home
-            li.mdw-list__expander.mdw-theme(aria-expanded="true")
-              span.mdw-list__expander-content.mdw-list__subheader
+            li.mdw-list__item(aria-expanded="true")
+              span.mdw-list__content.mdw-list__subheader
                 .mdw-list__text.mdw-theme(mdw-ink="medium") Core
                 .mdw-list__secondary.mdw-theme.material-icons(mdw-ink="medium") expand_more
-              ul.mdw-list__item-group(role="group")
+              ul.mdw-list
                 +navListItem('color', 'compare', 'Color', activated, 'primary contrast')
                 +navListItem('overlay', 'tonality', 'Overlay', activated, 'primary contrast')
                 +navListItem('ripple', 'center_focus_strong', 'Ripple', activated, 'primary contrast')
                 +navListItem('transition', 'open_in_new', 'Transition', activated, 'primary contrast')
-            li.mdw-list__expander.mdw-theme(aria-expanded="true")
-              span.mdw-list__expander-content.mdw-list__subheader
+            li.mdw-list__item.mdw-theme(aria-expanded="true")
+              span.mdw-list__content.mdw-list__subheader
                 .mdw-list__text.mdw-theme(mdw-ink="medium") Components
                 .mdw-list__secondary.mdw-theme.material-icons(mdw-ink="medium") expand_more
-              ul.mdw-list__item-group(role="group")
+              ul.mdw-list
                 +navListItem('appbar', 'web_asset', 'App Bar', activated)
                 +navListItem('bottomnav', 'call_to_action', 'Bottom Navigation', activated)
                 +navListItem('button', 'crop_landscape', 'Button', activated)
@@ -112,7 +115,7 @@ mixin header(activated)
                 +navListItem('textfield', 'text_fields', 'Text Field', activated)
                 +navListItem('tooltip', 'info', 'Tooltip', activated)
                 +navListItem('type', 'font_download', 'Typography', activated)
-      .mdw-layout__scrim
+      a.mdw-layout__scrim(href='#' tabindex="-1")
       .mdw-layout__appbar.mdw-appbar.mdw-theme(mdw-autohide="mobile tablet" mdw-surface="secondary 500" mdw-dark)
         .mdw-layout__appbar-shape
         .mdw-appbar__action
@@ -123,20 +126,22 @@ mixin header(activated)
           .mdw-appbar__title=activated
           #docs-menu-buttons.mdw-appbar__end
             .mdw-tooltip__wrapper
-              +mdwButton({ icon: true })#altThemeButton.mdw-tooltip__target.material-icons(mdw-overlay-default="medium" mdw-overlay-activated="off" aria-pressed="false") palette
+              +mdwButton({ icon: true })#altThemeButton.mdw-tooltip__target.material-icons(mdw-overlay-default="medium" mdw-overlay-off="activated" aria-pressed="false") palette
               .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark mdw-align="end") Alt Theme
             .mdw-tooltip__wrapper
-              +mdwButton({ icon: true })#darkModeButton.mdw-tooltip__target.material-icons(mdw-overlay-default="medium" mdw-overlay-activated="off" aria-pressed="false") brightness_3
+              +mdwButton({ icon: true })#darkModeButton.mdw-tooltip__target.material-icons(mdw-overlay-default="medium" mdw-overlay-off="activated" aria-pressed="false") brightness_3
               .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark mdw-align="end") Dark Mode
             .mdw-tooltip__wrapper
-              +mdwButton({ icon: true })#rtlButton.mdw-tooltip__target.material-icons(mdw-overlay-default="medium" mdw-overlay-activated="off" aria-pressed="false") format_align_right
+              +mdwButton({ icon: true })#rtlButton.mdw-tooltip__target.material-icons(mdw-overlay-default="medium" mdw-overlay-off="activated" aria-pressed="false") format_align_right
               .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark mdw-align="end") Right-to-Left
             .mdw-tooltip__wrapper
-              +mdwButton({ icon: true })#largeFontButton.mdw-tooltip__target.material-icons(mdw-overlay-default="medium" mdw-overlay-activated="off" aria-pressed="false") format_size
+              +mdwButton({ icon: true })#largeFontButton.mdw-tooltip__target.material-icons(mdw-overlay-default="medium" mdw-overlay-off="activated" aria-pressed="false") format_size
               .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark mdw-align="end") 200% Text
       .mdw-layout__fab
       .mdw-layout__snackbar
       .mdw-layout__content
         .mdw-layout__content-page
           block
-    script(src='default.common.min.js')
+    script(src='postrender.min.js')
+    script(src='entire-framework.min.js')
+    script(src='docs.common.min.js')

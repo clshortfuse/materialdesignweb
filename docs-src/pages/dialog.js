@@ -23,7 +23,7 @@ function updateSampleCode() {
 
   // Strip JS related elements and attributes
   Dialog.detach(sampleComponent);
-  let button = document.querySelector('.component-sample .mdw-button');
+  const button = document.querySelector('.component-sample .mdw-button');
   let closer = document.querySelector('.component-sample .mdw-dialog__close');
   const dialogButtons = sampleComponent.querySelectorAll('.mdw-dialog__button-area .mdw-button');
   Button.detach(button);
@@ -50,7 +50,7 @@ function updateSampleCode() {
     dialogButtons[0].removeAttribute('href');
     dialogButtons[1].removeAttribute('href');
   } else {
-    sampleComponent.setAttribute('id', 'sample-dialog');
+    sampleComponent.id = 'sample-dialog';
     button.setAttribute('href', '#sample-dialog');
     dialogButtons[0].setAttribute('href', '#');
     dialogButtons[1].setAttribute('href', '#');
