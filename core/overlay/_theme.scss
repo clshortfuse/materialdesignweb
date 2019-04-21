@@ -66,7 +66,7 @@ $mdw-overlay__theme-values: (
     // Off color
     &[aria-selected="false"],
     &[aria-pressed="false"],
-    &[aria-selected="true"]:not([aria-current]):not([mdw-overlay-active~="selected"]) {
+    &[aria-selected="true"]:not([aria-current]) {
       #{if($type == 'var', '&', '&,&.mdw-theme')} {
         color: mdwOverlayThemeValue("off-color", $type);
         &[mdw-border-ink] {
@@ -133,8 +133,7 @@ $mdw-overlay__theme-values: (
     }
 
     // Activated
-    &[aria-selected="true"][mdw-overlay-activated~="selected"]:not([mdw-overlay-off~="selected"]),
-    &[aria-current]:not([mdw-overlay-off~="current"]),
+    &[aria-current]:not([mdw-overlay-off~="activated"]),
     &[aria-pressed="true"]:not([mdw-overlay-off~="activated"]) {
       &::before {
         opacity: mdwOverlayThemeValue("activated-opacity", $type);
