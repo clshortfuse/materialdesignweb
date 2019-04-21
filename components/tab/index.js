@@ -7,6 +7,7 @@ import {
 
 import * as TabContent from './content';
 import * as TabList from './list';
+import * as TabPanel from './panel';
 import * as TabItem from './item';
 
 const RESIZE_WAIT_FRAMES = 5;
@@ -29,21 +30,29 @@ export function attach(tabElement) {
   tabElement.addEventListener(TabContent.SCROLL_EVENT, onTabContentScroll, getPassiveEventListenerOption());
   tabElement.addEventListener(TabItem.SELECTED_CHANGE_EVENT, onTabItemSelectedChange, getPassiveEventListenerOption());
 
-  const items = tabElement.getElementsByClassName('mdw-tab__item');
+  const items = (tabListElement && tabListElement.getElementsByClassName('mdw-tab__item')) || [];
+  const panels = (tabContentElement && tabContentElement.getElementsByClassName('mdw-tab__panel')) || [];
 
   let selectedItem;
-  iterateArrayLike(items, (itemElement) => {
+  let selectedPanel;
+  iterateArrayLike(items, (itemElement, index) => {
     if (itemElement.getAttribute('aria-selected') === 'true') {
       selectedItem = itemElement;
+      selectedPanel = panels[index];
     }
   });
   if (!selectedItem && items.length) {
     selectedItem = items[0];
+    selectedPanel = panels[0];
   }
   if (selectedItem) {
-    TabItem.setSelected(selectedItem, true, TabItem.SELECTED_CHANGE_EVENT);
-    onResize(tabElement);
+    TabItem.setSelected(selectedItem, true);
   }
+  if (selectedPanel) {
+    TabPanel.setHidden(selectedPanel, false);
+    TabPanel.setExpanded(selectedPanel, true);
+  }
+  onResize(tabElement);
 }
 
 /**
@@ -51,6 +60,9 @@ export function attach(tabElement) {
  * @return {void}
  */
 export function onTabItemSelectedChange(event) {
+  if (event.detail.value !== 'true') {
+    return;
+  }
   /** @type {HTMLElement} */
   const tabElement = (event.currentTarget);
   /** @type {HTMLElement} */

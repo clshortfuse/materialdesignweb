@@ -11,7 +11,21 @@ import * as BottomNavItem from './item';
  */
 export function attach(bottomnavElement) {
   setupARIA(bottomnavElement);
-  iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'), BottomNavItem.attach);
+  let selectedItem;
+  const items = bottomnavElement.getElementsByClassName('mdw-bottomnav__item');
+
+  iterateArrayLike(items, (item) => {
+    BottomNavItem.attach(item);
+    if (!selectedItem && item.getAttribute('aria-selected') === 'true') {
+      selectedItem = item;
+    }
+  });
+  if (!selectedItem) {
+    selectedItem = items[0];
+  }
+  if (selectedItem) {
+    BottomNavItem.setSelected(selectedItem, true, true);
+  }
   bottomnavElement.addEventListener(BottomNavItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
   bottomnavElement.addEventListener(RovingTabIndex.FORWARDS_REQUESTED, onForwardsRequested);
   bottomnavElement.addEventListener(RovingTabIndex.BACKWARDS_REQUESTED, onBackwardsRequested);
@@ -81,7 +95,7 @@ export function detach(bottomnavElement) {
 export function onSelectedChangeEvent(event) {
   /** @type {HTMLElement} */
   const itemElement = (event.target);
-  if (event.detail.value === false) {
+  if (event.detail.value !== 'true') {
     return;
   }
   /** @type {HTMLElement} */

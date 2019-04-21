@@ -1,11 +1,14 @@
 import { iterateArrayLike, dispatchDomEvent } from '../../core/dom';
-import * as ListSecondary from './secondary';
 import * as Overlay from '../../core/overlay/index';
 import * as Ripple from '../../core/ripple/index';
+import * as Attributes from '../../core/aria/attributes';
+
+import * as ListSecondary from './secondary';
 
 export const ACTIVATE_EVENT = 'mdw:listcontent-activate';
-export const SELECT_CHANGE_EVENT = 'mdw:listcontent-selectchanged';
-export const CHECK_CHANGE_EVENT = 'mdw:listcontent-checkchanged';
+export const SELECTED_CHANGE_EVENT = 'mdw:listcontent-selectedchange';
+export const CHECKED_CHANGE_EVENT = 'mdw:listcontent-checkedchange';
+export const FOCUS_EVENT = 'mdw:listcontent-focus';
 
 /**
  * @param {Element} listContentElement
@@ -60,7 +63,7 @@ function onKeyDown(event) {
   }
 
   if (event.key === 'Spacebar' || event.key === ' ') {
-    if (onCheckRequest(listContentElement)) {
+    if (onCheckToggleRequest(listContentElement)) {
       return;
     }
   }
@@ -75,26 +78,7 @@ function onKeyDown(event) {
  * @param {Element} listContentElement
  * @return {boolean} handled
  */
-function onSelectRequest(listContentElement) {
-  const currentValue = listContentElement.getAttribute('aria-selected');
-  if (currentValue == null) {
-    // Attribute does not exist
-    return false;
-  }
-  const newValue = currentValue === 'true' ? 'false' : 'true';
-  listContentElement.setAttribute('aria-selected', newValue);
-  if (!dispatchDomEvent(listContentElement, SELECT_CHANGE_EVENT, { value: newValue })) {
-    // Revert on cancel
-    listContentElement.setAttribute('aria-selected', currentValue);
-  }
-  return true;
-}
-
-/**
- * @param {Element} listContentElement
- * @return {boolean} handled
- */
-function onCheckRequest(listContentElement) {
+function onCheckToggleRequest(listContentElement) {
   const currentValue = listContentElement.getAttribute('aria-checked');
   if (currentValue == null) {
     // Attribute does not exist
@@ -104,11 +88,7 @@ function onCheckRequest(listContentElement) {
   if (newValue === 'false' && listContentElement.getAttribute('role') === 'radio') {
     newValue = 'true';
   }
-  listContentElement.setAttribute('aria-checked', newValue);
-  if (!dispatchDomEvent(listContentElement, CHECK_CHANGE_EVENT, { value: newValue })) {
-    // Revert on cancel
-    listContentElement.setAttribute('aria-checked', currentValue);
-  }
+  Attributes.setChecked(listContentElement, newValue, CHECKED_CHANGE_EVENT);
   return true;
 }
 
@@ -141,20 +121,7 @@ export function attachCore(listContentElement) {
 export function onFocus(event) {
   /** @type {HTMLElement} */
   const listContentElement = (event.currentTarget);
-  if (isDisabled(listContentElement)) {
-    return;
-  }
-  if (listContentElement.getAttribute('role') !== 'radio') {
-    return;
-  }
-  const currentCheckValue = listContentElement.getAttribute('aria-checked');
-  if (currentCheckValue === 'true') {
-    return;
-  }
-  listContentElement.setAttribute('aria-checked', 'true');
-  if (!dispatchDomEvent(listContentElement, CHECK_CHANGE_EVENT, { value: 'true' })) {
-    listContentElement.setAttribute('aria-checked', currentCheckValue);
-  }
+  dispatchDomEvent(listContentElement, FOCUS_EVENT);
 }
 
 /**
@@ -169,10 +136,9 @@ export function onSecondaryAction(event) {
     event.preventDefault();
     return;
   }
-  if (onCheckRequest(listContentElement)) {
-    return;
-  }
-  onSelectRequest(listContentElement);
+  onCheckToggleRequest(listContentElement);
+
+  // Regardless if checkable, event is propagated up
 }
 
 /**
@@ -188,12 +154,9 @@ export function onClick(event) {
   }
   const secondaryElement = listContentElement.getElementsByClassName('mdw-list__secondary')[0];
   if (!secondaryElement || !secondaryElement.hasAttribute('mdw-action')) {
-    if (onCheckRequest(listContentElement)) {
+    if (onCheckToggleRequest(listContentElement)) {
       return;
     }
-  }
-  if (onSelectRequest(listContentElement)) {
-    return;
   }
   dispatchDomEvent(listContentElement, ACTIVATE_EVENT);
 }
@@ -229,3 +192,26 @@ export function detach(listContentElement) {
   Ripple.detach(listContentElement);
   Overlay.detach(listContentElement);
 }
+
+/**
+ * @param {Element} element
+ * @param {string|boolean} value
+ * @param {boolean} [dispatchEvent=true]
+ * @return {boolean} successful
+ */
+export function setSelected(element, value, dispatchEvent = true) {
+  return Attributes.setSelected(element, value, dispatchEvent ? SELECTED_CHANGE_EVENT : null);
+}
+
+/**
+ * @param {Element} element
+ * @param {string|boolean} value
+ * @param {boolean} [dispatchEvent=true]
+ * @return {boolean} successful
+ */
+export function setChecked(element, value, dispatchEvent = true) {
+  return Attributes.setChecked(element, value, dispatchEvent ? CHECKED_CHANGE_EVENT : null);
+}
+
+// Alias
+export const { setCurrent } = Attributes;

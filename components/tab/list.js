@@ -143,18 +143,18 @@ export function selectItemAtIndex(tabListElement, tabItemIndex, dispatchEvents =
   if (dispatchEvents) {
     const item = items.item(tabItemIndex);
     if (item) {
-      TabItem.setSelected(item, true, TabItem.SELECTED_CHANGE_EVENT);
+      TabItem.setSelected(item, true, true);
     }
     return;
   }
   iterateArrayLike(items, (el, index) => {
     if (tabItemIndex === index) {
-      TabItem.setSelected(el, true);
+      TabItem.setSelected(el, true, false);
       if (tabListElement.hasAttribute('mdw-scrollable')) {
         scrollToElement(el, true);
       }
     } else {
-      TabItem.setSelected(el, false);
+      TabItem.setSelected(el, false, false);
     }
   });
 }
@@ -166,14 +166,14 @@ export function selectItemAtIndex(tabListElement, tabItemIndex, dispatchEvents =
 export function onSelectedChangeEvent(event) {
   /** @type {HTMLElement} */
   const itemElement = (event.target);
-  if (event.detail.value === false) {
+  if (event.detail.value !== 'true') {
     return;
   }
   /** @type {HTMLElement} */
   const tabListElement = (event.currentTarget);
   iterateArrayLike(tabListElement.querySelectorAll('[role="tab"]'), (item) => {
     if (item !== itemElement) {
-      TabItem.setSelected(item, false);
+      TabItem.setSelected(item, false, false);
     }
   });
 }

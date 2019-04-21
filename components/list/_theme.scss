@@ -19,10 +19,8 @@ $mdw-list__theme-values: (
 }
 
 @mixin mdw-list__theme-rules($type: 'var') {
-
   .mdw-list__content {
-    &[mdw-ink][aria-current],
-    &[mdw-ink][aria-selected="true"] {
+    &[mdw-ink][aria-current] {
       .mdw-list__icon,
       .mdw-list__text {
         color: inherit;
@@ -43,7 +41,7 @@ $mdw-list__theme-values: (
           opacity: mdwListThemeValue("focus-opacity", $type);
         }
   
-        &:not([disabled]):not([aria-disabled="true"]):not([mdw-overlay-touch="true"]) {
+        &:not([aria-disabled="true"]):not([mdw-overlay-touch="true"]) {
           &:hover:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
             opacity: mdwListThemeValue("hover-focus-opacity", $type);
           }
@@ -57,7 +55,7 @@ $mdw-list__theme-values: (
             opacity: mdwListThemeValue("selected-focus-opacity", $type);
           }
   
-          &:not([disabled]):not([aria-disabled="true"]) {
+          &:not([aria-disabled="true"]) {
             &:hover:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
               opacity: mdwListThemeValue("selected-hover-focus-opacity", $type);
             }
@@ -73,7 +71,7 @@ $mdw-list__theme-values: (
             opacity: mdwListThemeValue("activated-focus-opacity", $type);
           }
   
-          &:not([disabled]):not([aria-disabled="true"]) {
+          &:not([aria-disabled="true"]) {
             &:hover:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
               opacity: mdwListThemeValue("activated-hover-focus-opacity", $type);
             }

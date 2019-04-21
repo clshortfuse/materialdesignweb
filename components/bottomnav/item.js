@@ -75,8 +75,15 @@ function onClick(event) {
   if (element.getAttribute('aria-disabled') === 'true') {
     return;
   }
-  AriaTab.setSelected(element, true, SELECTED_CHANGE_EVENT);
+  setSelected(element, true);
 }
 
-// Alias
-export const { setSelected } = AriaTab;
+/**
+ * @param {Element} element
+ * @param {string|boolean} value
+ * @param {boolean} [dispatchEvent=true]
+ * @return {boolean} successful
+ */
+export function setSelected(element, value, dispatchEvent = true) {
+  return AriaTab.setSelected(element, value, dispatchEvent ? SELECTED_CHANGE_EVENT : null);
+}

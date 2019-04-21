@@ -1,6 +1,6 @@
 // https://www.w3.org/TR/wai-aria-1.1/#tab
 
-import { dispatchDomEvent } from '../dom';
+import * as Attributes from './attributes';
 
 /**
  * @param {Element} element
@@ -23,48 +23,16 @@ export function detach(element) {
 
 /**
  * @param {Element} element
- * @param {boolean} value
+ * @param {string|boolean} value
  * @param {string} [dispatchEventName]
- * @return {boolean} changed
+ * @return {boolean} successful
  */
 export function setSelected(element, value, dispatchEventName) {
-  const originalSelectedAttr = element.getAttribute('aria-selected');
-  const originalCurrentAttr = element.getAttribute('aria-current');
-  if (value === true) {
-    if (originalSelectedAttr === 'true' && originalCurrentAttr != null) {
-      return false;
-    }
-    element.setAttribute('aria-selected', 'true');
-    element.setAttribute('aria-current', 'true');
-  } else {
-    if (originalSelectedAttr === 'false' && originalCurrentAttr == null) {
-      return false;
-    }
-    if ((!originalSelectedAttr || originalSelectedAttr !== 'false') && originalCurrentAttr == null) {
-      element.setAttribute('aria-selected', 'false');
-      return false;
-    }
-    element.setAttribute('aria-selected', 'false');
-    element.removeAttribute('aria-current');
-  }
-  if (!dispatchEventName) {
+  if (Attributes.setSelected(element, value, dispatchEventName)) {
+    Attributes.setCurrent(element, value);
     return true;
   }
-  if (!dispatchDomEvent(element, dispatchEventName, { value })) {
-    // Revert
-    if (originalSelectedAttr == null) {
-      element.removeAttribute('aria-selected');
-    } else {
-      element.setAttribute('aria-selected', originalSelectedAttr);
-    }
-    if (originalCurrentAttr == null) {
-      element.removeAttribute('aria-current');
-    } else {
-      element.setAttribute('aria-current', originalCurrentAttr);
-    }
-    return false;
-  }
-  return true;
+  return false;
 }
 
 /**
