@@ -1,6 +1,6 @@
 // https://www.w3.org/TR/wai-aria-1.1/#tab
 
-import { setSelected } from './attributes';
+import { dispatchDomEvent } from '../dom';
 
 /**
  * @param {Element} element
@@ -9,7 +9,6 @@ import { setSelected } from './attributes';
 export function attach(element) {
   element.setAttribute('role', 'tab');
   element.setAttribute('mdw-aria-tab-js', '');
-  element.addEventListener('click', onClick);
   element.addEventListener('keydown', onKeyDown);
 }
 
@@ -23,16 +22,49 @@ export function detach(element) {
 }
 
 /**
- * @param {MouseEvent} event
- * @return {void}
+ * @param {Element} element
+ * @param {boolean} value
+ * @param {string} [dispatchEventName]
+ * @return {boolean} changed
  */
-function onClick(event) {
-  /** @type {HTMLElement} */
-  const element = (event.currentTarget);
-  if (element.getAttribute('aria-disabled') === 'true') {
-    return;
+export function setSelected(element, value, dispatchEventName) {
+  const originalSelectedAttr = element.getAttribute('aria-selected');
+  const originalCurrentAttr = element.getAttribute('aria-current');
+  if (value === true) {
+    if (originalSelectedAttr === 'true' && originalCurrentAttr != null) {
+      return false;
+    }
+    element.setAttribute('aria-selected', 'true');
+    element.setAttribute('aria-current', 'true');
+  } else {
+    if (originalSelectedAttr === 'false' && originalCurrentAttr == null) {
+      return false;
+    }
+    if ((!originalSelectedAttr || originalSelectedAttr !== 'false') && originalCurrentAttr == null) {
+      element.setAttribute('aria-selected', 'false');
+      return false;
+    }
+    element.setAttribute('aria-selected', 'false');
+    element.removeAttribute('aria-current');
   }
-  setSelected(element, 'true');
+  if (!dispatchEventName) {
+    return true;
+  }
+  if (!dispatchDomEvent(element, dispatchEventName, { value })) {
+    // Revert
+    if (originalSelectedAttr == null) {
+      element.removeAttribute('aria-selected');
+    } else {
+      element.setAttribute('aria-selected', originalSelectedAttr);
+    }
+    if (originalCurrentAttr == null) {
+      element.removeAttribute('aria-current');
+    } else {
+      element.setAttribute('aria-current', originalCurrentAttr);
+    }
+    return false;
+  }
+  return true;
 }
 
 /**

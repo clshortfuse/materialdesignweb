@@ -1,14 +1,11 @@
 // https://www.w3.org/TR/wai-aria-practices/#tabpanel
 
 import {
-  iterateArrayLike, dispatchDomEvent, getPassiveEventListenerOption, scrollToElement,
+  iterateArrayLike, getPassiveEventListenerOption, scrollToElement,
 } from '../../core/dom';
 
-import * as AriaAttributes from '../../core/aria/attributes';
 import * as RovingTabIndex from '../../core/aria/rovingtabindex';
 import * as TabItem from './item';
-
-export const SELECTION_CHANGED_EVENT = 'mdw:tablistselectionchanged';
 
 /**
  * @param {Element} tabListElement
@@ -22,11 +19,10 @@ export function attach(tabListElement) {
     tabListElement.appendChild(indicatorElement);
   }
 
-  tabListElement.classList.add('mdw-overlay__group');
-  iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.attach);
-  tabListElement.addEventListener(AriaAttributes.SELECTED_CHANGED_EVENT, onSelectedChangedEvent, getPassiveEventListenerOption());
   setupARIA(tabListElement);
+  iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.attach);
   RovingTabIndex.setupTabIndexes(tabListElement, tabListElement.querySelectorAll('[role="tab"]'));
+  tabListElement.addEventListener(TabItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent, getPassiveEventListenerOption());
   tabListElement.addEventListener(RovingTabIndex.FORWARDS_REQUESTED, onForwardsRequested);
   tabListElement.addEventListener(RovingTabIndex.BACKWARDS_REQUESTED, onBackwardsRequested);
   tabListElement.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
@@ -85,21 +81,9 @@ export function setupARIA(tabListElement) {
  * @return {void}
  */
 export function detach(tabListElement) {
-  iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.detach);
-  tabListElement.removeEventListener(AriaAttributes.SELECTED_CHANGED_EVENT, onSelectedChangedEvent);
+  tabListElement.removeEventListener(TabItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
   RovingTabIndex.detach(tabListElement, tabListElement.querySelectorAll('[role="tab"]'));
-}
-
-
-/**
- * @param {Element} tabListElement
- * @return {void}
- */
-export function removeSelection(tabListElement) {
-  return iterateArrayLike(
-    tabListElement.querySelectorAll('mdw-tab__item[aria-selected="true"]'),
-    item => item.setAttribute('aria-selected', 'false')
-  );
+  iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.detach);
 }
 
 /**
@@ -144,28 +128,33 @@ export function setIndicatorPosition(tabListElement, item, percentage, animate =
 /**
  * @param {Element} tabListElement
  * @param {number} tabItemIndex
- * @param {boolean} [deselectSiblings=true]
+ * @return {Element}
+ */
+
+/**
+ * @param {Element} tabListElement
+ * @param {number} tabItemIndex
  * @param {boolean} [dispatchEvents=false]
  * @return {void}
  */
-export function selectItemAtIndex(tabListElement, tabItemIndex, deselectSiblings = true, dispatchEvents = false) {
+export function selectItemAtIndex(tabListElement, tabItemIndex, dispatchEvents = false) {
   tabListElement.setAttribute('mdw-selected-index', tabItemIndex.toString(10));
   const items = tabListElement.getElementsByClassName('mdw-tab__item');
-  if (!deselectSiblings) {
+  if (dispatchEvents) {
     const item = items.item(tabItemIndex);
     if (item) {
-      TabItem.selectTabItem(item, false, dispatchEvents);
+      TabItem.setSelected(item, true, TabItem.SELECTED_CHANGE_EVENT);
     }
     return;
   }
   iterateArrayLike(items, (el, index) => {
     if (tabItemIndex === index) {
-      TabItem.selectTabItem(el, false, dispatchEvents);
+      TabItem.setSelected(el, true);
       if (tabListElement.hasAttribute('mdw-scrollable')) {
         scrollToElement(el, true);
       }
     } else {
-      TabItem.deselectTabItem(el, dispatchEvents);
+      TabItem.setSelected(el, false);
     }
   });
 }
@@ -174,12 +163,17 @@ export function selectItemAtIndex(tabListElement, tabItemIndex, deselectSiblings
  * @param {Event} event
  * @return {void}
  */
-export function onSelectedChangedEvent(event) {
+export function onSelectedChangeEvent(event) {
   /** @type {HTMLElement} */
   const itemElement = (event.target);
-  if (itemElement.getAttribute('aria-selected') !== 'true') {
+  if (event.detail.value === false) {
     return;
   }
-  TabItem.deselectTabItemSiblings(itemElement, false);
-  dispatchDomEvent(itemElement, SELECTION_CHANGED_EVENT);
+  /** @type {HTMLElement} */
+  const tabListElement = (event.currentTarget);
+  iterateArrayLike(tabListElement.querySelectorAll('[role="tab"]'), (item) => {
+    if (item !== itemElement) {
+      TabItem.setSelected(item, false);
+    }
+  });
 }

@@ -2,6 +2,7 @@ import {
   iterateArrayLike,
   nextTick,
   getPassiveEventListenerOption,
+  iterateSomeOfArrayLike,
 } from '../../core/dom';
 
 import * as TabContent from './content';
@@ -26,7 +27,7 @@ export function attach(tabElement) {
   }
 
   tabElement.addEventListener(TabContent.SCROLL_EVENT, onTabContentScroll, getPassiveEventListenerOption());
-  tabElement.addEventListener(TabList.SELECTION_CHANGED_EVENT, onTabListSelectionChanged, getPassiveEventListenerOption());
+  tabElement.addEventListener(TabItem.SELECTED_CHANGE_EVENT, onTabItemSelectedChange, getPassiveEventListenerOption());
 
   const items = tabElement.getElementsByClassName('mdw-tab__item');
 
@@ -40,7 +41,7 @@ export function attach(tabElement) {
     selectedItem = items[0];
   }
   if (selectedItem) {
-    TabItem.selectTabItem(selectedItem, true, true);
+    TabItem.setSelected(selectedItem, true, TabItem.SELECTED_CHANGE_EVENT);
     onResize(tabElement);
   }
 }
@@ -49,7 +50,7 @@ export function attach(tabElement) {
  * @param {Event} event
  * @return {void}
  */
-export function onTabListSelectionChanged(event) {
+export function onTabItemSelectedChange(event) {
   /** @type {HTMLElement} */
   const tabElement = (event.currentTarget);
   /** @type {HTMLElement} */
@@ -57,17 +58,20 @@ export function onTabListSelectionChanged(event) {
   /** @type {HTMLElement} */
   const tabContentElement = (tabElement.getElementsByClassName('mdw-tab__content')[0]);
   if (tabContentElement) {
-    let index = 0;
-    let previous = tabItemElement.previousElementSibling;
-    while (previous) {
-      previous = previous.previousElementSibling;
-      index += 1;
-    }
+    let tabItemIndex = -1;
+    const tabItems = tabElement.querySelectorAll('.mdw-tab__list [role="tab"]');
+    iterateSomeOfArrayLike(tabItems, (el, index) => {
+      if (el === tabItemElement) {
+        tabItemIndex = index;
+        return true;
+      }
+      return false;
+    });
     if (!tabContentElement.hasAttribute('mdw-no-scroll')) {
-      TabContent.selectPanel(tabContentElement, index, 'smooth');
+      TabContent.selectPanel(tabContentElement, tabItemIndex, 'smooth');
       return;
     }
-    TabContent.selectPanel(tabContentElement, index, true);
+    TabContent.selectPanel(tabContentElement, tabItemIndex, true);
   }
 
   const tabListElement = tabElement.getElementsByClassName('mdw-tab__list')[0];
@@ -92,7 +96,7 @@ export function detach(tabElement) {
   }
 
   tabElement.removeEventListener(TabContent.SCROLL_EVENT, onTabContentScroll);
-  tabElement.removeEventListener(TabList.SELECTION_CHANGED_EVENT, onTabListSelectionChanged);
+  tabElement.removeEventListener(TabItem.SELECTED_CHANGE_EVENT, onTabItemSelectedChange);
   tabElement.removeAttribute('mdw-resize-stage');
 }
 
@@ -162,6 +166,6 @@ export function onTabContentScroll(event) {
   }
   TabList.setIndicatorPosition(tabListElement, detail.leftPanelIndex, detail.visibilityPercentage);
   if (detail.newSelectedIndex != null) {
-    TabList.selectItemAtIndex(tabListElement, detail.newSelectedIndex, true);
+    TabList.selectItemAtIndex(tabListElement, detail.newSelectedIndex, false);
   }
 }

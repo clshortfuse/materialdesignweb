@@ -1,10 +1,11 @@
 // https://www.w3.org/TR/wai-aria-1.1/#tab
 
 import * as AriaTab from '../../core/aria/tab';
-import { iterateArrayLike, iterateElementSiblings } from '../../core/dom';
+import { iterateArrayLike } from '../../core/dom';
 import * as Overlay from '../../core/overlay/index';
 import * as Ripple from '../../core/ripple/index';
-import { setSelected } from '../../core/aria/attributes';
+
+export const SELECTED_CHANGE_EVENT = 'mdw:tabitem-selectedchange';
 
 /**
  * @param {Element} element
@@ -13,7 +14,7 @@ import { setSelected } from '../../core/aria/attributes';
 export function attach(element) {
   element.classList.add('mdw-overlay');
   if (!element.hasAttribute('mdw-overlay-off')) {
-    element.setAttribute('mdw-overlay-off', 'selected');
+    element.setAttribute('mdw-overlay-off', 'selected activated');
   }
   if (!element.hasAttribute('mdw-overlay-default')) {
     element.setAttribute('mdw-overlay-default', 'medium');
@@ -27,46 +28,12 @@ export function attach(element) {
 }
 
 /**
- * @param {Element} tabItemElement
- * @param {boolean} [deselectSiblings=true]
- * @param {boolean} [dispatchEvents=false]
- * @return {void}
- */
-export function selectTabItem(tabItemElement, deselectSiblings = true, dispatchEvents = false) {
-  setSelected(tabItemElement, 'true', dispatchEvents);
-  if (deselectSiblings) {
-    deselectTabItemSiblings(tabItemElement, dispatchEvents);
-  }
-}
-
-/**
- * @param {Element} tabItemElement
- * @param {boolean} [dispatchEvent=false]
- * @return {void}
- */
-export function deselectTabItem(tabItemElement, dispatchEvent) {
-  setSelected(tabItemElement, 'false', dispatchEvent);
-}
-
-/**
- * @param {Element} selectedTabItemElement
- * @param {boolean} [dispatchEvents=false]
- * @return {void}
- */
-export function deselectTabItemSiblings(selectedTabItemElement, dispatchEvents = false) {
-  iterateElementSiblings(selectedTabItemElement, (sibling) => {
-    if (sibling.classList.contains('mdw-tab__item')) {
-      setSelected(sibling, 'false', dispatchEvents);
-    }
-  });
-}
-
-/**
  * @param {Element} element
  * @return {void}
  */
 export function attachCore(element) {
   attachAria(element);
+  element.addEventListener('click', onClick);
 }
 
 /**
@@ -83,16 +50,9 @@ export function attachAria(element) {
  * @param {Element} element
  * @return {void}
  */
-export function detachAria(element) {
-  AriaTab.attach(element);
-}
-
-/**
- * @param {Element} element
- * @return {void}
- */
 export function detachCore(element) {
   AriaTab.detach(element);
+  element.removeEventListener('click', onClick);
 }
 
 /**
@@ -104,3 +64,19 @@ export function detach(element) {
   Ripple.detach(element);
   Overlay.detach(element);
 }
+
+/**
+ * @param {MouseEvent} event
+ * @return {void}
+ */
+function onClick(event) {
+  /** @type {HTMLElement} */
+  const element = (event.currentTarget);
+  if (element.getAttribute('aria-disabled') === 'true') {
+    return;
+  }
+  AriaTab.setSelected(element, true, SELECTED_CHANGE_EVENT);
+}
+
+// Alias
+export const { setSelected } = AriaTab;
