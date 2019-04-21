@@ -51,7 +51,7 @@ $mdw-selection__theme-values: (
         }
       }
 
-      &:not([disabled]):not([aria-disabled="true"]) {
+      &:not(:disabled) {
         &:hover:not([mdw-overlay-off~="hover"]) {
           opacity: mdwSelectionThemeValue("hover-opacity", $type);
           &:checked:not([mdw-overlay-off~="selected"]) {
