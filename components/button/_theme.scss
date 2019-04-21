@@ -7,7 +7,8 @@
 $mdw-button__theme-values: (
   disabled-surface-background-color: $mdw-theme__inactive-ink,
   disabled-surface-text-color:       $mdw-theme__default-ink,
-  disabled-text-color:               $mdw-theme__default-ink,
+  default-text-color:                $mdw-theme__default-ink,
+  disabled-text-color:               $mdw-theme__inactive-ink,
 ) !default;
 
 @function mdwButtonThemeValue($key, $type) {
@@ -16,9 +17,15 @@ $mdw-button__theme-values: (
 
 @mixin mdw-button__theme-rules($type: 'var') {
   .mdw-button {
-    &[disabled],
-    &[aria-disabled="true"] {
+    &:disabled:not([aria-disabled="true"]) {
       color: mdwButtonThemeValue("disabled-text-color", $type);
+      &.mdw-overlay::before {
+        display: none;
+      }
+    }
+    &.mdw-overlay[aria-disabled="true"] {
+      // Sets foreground to default ink color
+      color: mdwButtonThemeValue("default-text-color", $type);
       &[mdw-surface] {
         background-color: mdwButtonThemeValue("disabled-surface-background-color", $type);
         color: mdwButtonThemeValue("disabled-surface-text-color", $type);
