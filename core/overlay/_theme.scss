@@ -52,8 +52,6 @@ $mdw-overlay__theme-values: (
 
     &[aria-selected="false"],
     &[aria-pressed="false"],
-    &[disabled],
-    &[disabled]:active,
     &[aria-disabled="true"],
     &[aria-disabled="true"]:active {
       &::before {
@@ -86,7 +84,6 @@ $mdw-overlay__theme-values: (
       }
     }
 
-    &[disabled],
     &[aria-disabled="true"] {
       &[mdw-overlay-disabled="ink"] {
         color: mdwOverlayThemeValue("off-inactive-color", $type);
@@ -101,7 +98,7 @@ $mdw-overlay__theme-values: (
         opacity: mdwOverlayThemeValue("focus-opacity", $type);
       }
 
-      &:not([disabled]):not([aria-disabled="true"]):not([mdw-overlay-touch="true"]) {
+      &:not([aria-disabled="true"]):not([mdw-overlay-touch="true"]) {
         &:hover:not([mdw-overlay-off~="hover"])::before {
           opacity: mdwOverlayThemeValue("hover-opacity", $type);
         }
@@ -123,7 +120,7 @@ $mdw-overlay__theme-values: (
           opacity: mdwOverlayThemeValue("selected-focus-opacity", $type);
         }
 
-        &:not([disabled]):not([aria-disabled="true"]) {
+        &:not([aria-disabled="true"]) {
           &:hover:not([mdw-overlay-off~="hover"])::before {
             opacity: mdwOverlayThemeValue("selected-hover-opacity", $type);
           }
@@ -148,7 +145,7 @@ $mdw-overlay__theme-values: (
           opacity: mdwOverlayThemeValue("activated-focus-opacity", $type);
         }
 
-        &:not([disabled]):not([aria-disabled="true"]) {
+        &:not([aria-disabled="true"]) {
           &:hover:not([mdw-overlay-off~="hover"])::before {
             opacity: mdwOverlayThemeValue("activated-hover-opacity", $type);
           }
