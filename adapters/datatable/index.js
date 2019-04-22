@@ -48,18 +48,20 @@ import DataTableAdapterColumn from './column';
  */
 
 /**
- * @template {Object} T
+ * Constructor options for DataTableAdapter
+ * @typedef DataTableAdapterOptions<T>
+ * @prop {HTMLElement} options.datatable
+ * @prop {T[]} options.datasource Object array
+ * @prop {DataTableAdapterFilter<T>} [options.filter]
+ * @prop {DataTableAdapterOnValueChangeRequestedCallback<T>} [options.onValueChangeRequested]
+ * @prop {DataTableAdapterOnValueChangedCallback<T>} [options.onValueChanged]
+ * @prop {DataTableAdapterSorter<T>} [options.sorter]
+ * @template T
  */
+
+/** @template {Object} T */
 export default class DataTableAdapter {
-  /**
-   * @param {Object} options
-   * @param {HTMLElement} options.datatable
-   * @param {T[]} options.datasource Object array
-   * @param {DataTableAdapterFilter<T>} [options.filter]
-   * @param {DataTableAdapterOnValueChangeRequestedCallback<T>} [options.onValueChangeRequested]
-   * @param {DataTableAdapterOnValueChangedCallback<T>} [options.onValueChanged]
-   * @param {DataTableAdapterSorter<T>} [options.sorter]
-   */
+  /** @param {DataTableAdapterOptions<T>} options */
   constructor(options) {
     this.element = options.datatable;
     this.datasource = options.datasource;
