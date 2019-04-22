@@ -119,7 +119,7 @@ export function onMouseMove(event) {
   }
   el.focus();
   if (document.activeElement !== el) {
-    if (previousFocus && document.activeElement !== previousFocus) {
+    if (document.activeElement !== previousFocus && previousFocus instanceof HTMLElement) {
       previousFocus.focus();
     }
   }

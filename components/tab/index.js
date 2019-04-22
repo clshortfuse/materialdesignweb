@@ -27,10 +27,14 @@ export function attach(tabElement) {
     TabContent.attach(tabContentElement);
   }
 
-  tabElement.addEventListener(TabContent.SCROLL_EVENT, onTabContentScroll, getPassiveEventListenerOption());
-  tabElement.addEventListener(TabItem.SELECTED_CHANGE_EVENT, onTabItemSelectedChange, getPassiveEventListenerOption());
+  tabElement.addEventListener(TabContent.SCROLL_EVENT, onTabContentScroll,
+    getPassiveEventListenerOption());
+  tabElement.addEventListener(TabItem.SELECTED_CHANGE_EVENT, onTabItemSelectedChange,
+    getPassiveEventListenerOption());
 
+  /** @type {ArrayLike<Element>} */
   const items = (tabListElement && tabListElement.getElementsByClassName('mdw-tab__item')) || [];
+  /** @type {ArrayLike<Element>} */
   const panels = (tabContentElement && tabContentElement.getElementsByClassName('mdw-tab__panel')) || [];
 
   let selectedItem;
@@ -56,7 +60,7 @@ export function attach(tabElement) {
 }
 
 /**
- * @param {Event} event
+ * @param {CustomEvent} event
  * @return {void}
  */
 export function onTabItemSelectedChange(event) {
@@ -162,7 +166,7 @@ export function onResize(tabElement) {
 }
 
 /**
- * @param {Event} event
+ * @param {CustomEvent} event
  * @return {void}
  */
 export function onTabContentScroll(event) {

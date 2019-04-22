@@ -107,7 +107,7 @@ function onContentFocusEvent(event) {
 }
 
 /**
- * @param {Event} event
+ * @param {CustomEvent} event
  * @return {void}
  */
 function onSelectedChangeEvent(event) {
@@ -156,7 +156,7 @@ function onSelectedChangeEvent(event) {
 }
 
 /**
- * @param {Event} event
+ * @param {CustomEvent} event
  * @return {void}
  */
 function onCheckedChangeEvent(event) {
@@ -263,7 +263,7 @@ function onBackwardsRequested(event) {
 
 /**
  * @param {Element} listElement
- * @param {'listbox'|'tree'|'list'} role
+ * @param {string} role
  * @return {void}
  */
 export function setupAria(listElement, role = 'tree') {

@@ -11,6 +11,7 @@ import * as BottomNavItem from './item';
  */
 export function attach(bottomnavElement) {
   setupARIA(bottomnavElement);
+  /** @type {Element} */
   let selectedItem;
   const items = bottomnavElement.getElementsByClassName('mdw-bottomnav__item');
 
@@ -89,7 +90,7 @@ export function detach(bottomnavElement) {
 }
 
 /**
- * @param {Event} event
+ * @param {CustomEvent} event
  * @return {void}
  */
 export function onSelectedChangeEvent(event) {

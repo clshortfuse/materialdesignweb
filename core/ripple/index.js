@@ -1,4 +1,6 @@
-import { getChildElementByClass, nextTick, getPassiveEventListenerOption, iterateArrayLike } from '../dom';
+import {
+  getChildElementByClass, nextTick, getPassiveEventListenerOption, iterateArrayLike,
+} from '../dom';
 
 /**
  * @param {Element|Document} [root=document]

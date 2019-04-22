@@ -10,12 +10,18 @@ const TABLET_BREAKPOINT = 1024;
 // Smoother than using requestAnimationFrame
 const SCROLL_THROTTLE_TIME_MS = 20;
 
+/** @type {number} */
 let lastScrollY = null;
+/** @type {number} */
 let penultimateScrollY = null;
 let scrolledPastAppBar = false;
+/** @type {HTMLElement} */
 let appBarElement = null;
+/** @type {HTMLElement} */
 let layoutContentElement = null;
+/** @type {number} */
 let lastScrollBottomDistance = null;
+/** @type {Throttler} */
 let scrollThrottler = null;
 
 /** @return {void} */
@@ -238,7 +244,8 @@ export function onContentScroll() {
 /** @return {HTMLElement} */
 export function getAppBarElement() {
   if (!appBarElement) {
-    appBarElement = document.getElementsByClassName('mdw-layout__appbar')[0];
+    /** @type {HTMLElement} */
+    appBarElement = (document.getElementsByClassName('mdw-layout__appbar')[0]);
   }
   return appBarElement;
 }
@@ -315,7 +322,8 @@ export function isFabShown() {
 /** @return {HTMLElement} */
 export function getContentElement() {
   if (!layoutContentElement) {
-    layoutContentElement = document.getElementsByClassName('mdw-layout__content')[0];
+    /** @type {HTMLElement} */
+    layoutContentElement = (document.getElementsByClassName('mdw-layout__content')[0]);
   }
   return layoutContentElement;
 }
