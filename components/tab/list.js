@@ -22,7 +22,8 @@ export function attach(tabListElement) {
   setupARIA(tabListElement);
   iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.attach);
   RovingTabIndex.setupTabIndexes(tabListElement, tabListElement.querySelectorAll('[role="tab"]'));
-  tabListElement.addEventListener(TabItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent, getPassiveEventListenerOption());
+  tabListElement.addEventListener(TabItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent,
+    getPassiveEventListenerOption());
   tabListElement.addEventListener(RovingTabIndex.FORWARDS_REQUESTED, onForwardsRequested);
   tabListElement.addEventListener(RovingTabIndex.BACKWARDS_REQUESTED, onBackwardsRequested);
   tabListElement.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
@@ -99,7 +100,7 @@ export function setIndicatorPosition(tabListElement, item, percentage, animate =
   if (!indicatorElement) {
     return;
   }
-  const items = tabListElement.getElementsByClassName('mdw-tab__item');
+  const items = (tabListElement.getElementsByClassName('mdw-tab__item'));
   /** @type {HTMLElement} */
   const leftItem = (item instanceof Element ? item : items.item(item));
   let left = leftItem.offsetLeft;
@@ -107,10 +108,12 @@ export function setIndicatorPosition(tabListElement, item, percentage, animate =
 
   if (percentage > 0) {
     left += (percentage * leftItem.offsetWidth);
+    /** @type {HTMLElement} */
     let nextItem = (leftItem.nextElementSibling);
     if (!nextItem.classList.contains('mdw-tab__item')) {
       // RTL
-      nextItem = leftItem.previousElementSibling;
+      /** @type {HTMLElement} */
+      nextItem = (leftItem.previousElementSibling);
     }
     right = nextItem.offsetLeft + (percentage * nextItem.offsetWidth);
   }
@@ -139,7 +142,8 @@ export function setIndicatorPosition(tabListElement, item, percentage, animate =
  */
 export function selectItemAtIndex(tabListElement, tabItemIndex, dispatchEvents = false) {
   tabListElement.setAttribute('mdw-selected-index', tabItemIndex.toString(10));
-  const items = tabListElement.getElementsByClassName('mdw-tab__item');
+  /** @type {HTMLCollectionOf<HTMLElement>} */
+  const items = (tabListElement.getElementsByClassName('mdw-tab__item'));
   if (dispatchEvents) {
     const item = items.item(tabItemIndex);
     if (item) {
@@ -160,7 +164,7 @@ export function selectItemAtIndex(tabListElement, tabItemIndex, dispatchEvents =
 }
 
 /**
- * @param {Event} event
+ * @param {CustomEvent} event
  * @return {void}
  */
 export function onSelectedChangeEvent(event) {

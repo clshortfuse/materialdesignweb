@@ -26,13 +26,14 @@ export function detach(textfieldElement) {
 }
 
 /**
- * @param {Event|{currentTarget}} event
+ * @param {Event|{currentTarget:HTMLElement}} event
  * @return {void}
  */
 export function onInput(event) {
-  const inputElement = event.currentTarget;
+  /** @type {HTMLInputElement|HTMLTextAreaElement} */
+  const inputElement = (event.currentTarget);
   if (inputElement.parentElement.hasAttribute('mdw-autosize')) {
-    updateTextAreaSize(inputElement);
+    updateTextAreaSize(/** @type {HTMLTextAreaElement} */ (inputElement));
   }
   updateInputEmptyState(inputElement);
 }

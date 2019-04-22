@@ -170,7 +170,7 @@ export function getShapeTransform(targetElement, originElement, originStyle) {
  */
 function buildTransitionEndListener(element, property, callback, expectedDuration) {
   let hasEnded = false;
-  const onTransitionEnd = (event) => {
+  const onTransitionEnd = (/** @type {TransitionEvent} */ event) => {
     if (event.propertyName !== property) {
       return;
     }
@@ -229,10 +229,15 @@ export function transitionElement(options) {
     'visibility',
   ];
 
+  /** @type {Object.<string,string>} */
   const oldFromShapeProperties = {};
+  /** @type {Object.<string,string>} */
   const oldToShapeProperties = {};
+  /** @type {Object.<string,string>} */
   const oldFromContentProperties = {};
+  /** @type {Object.<string,string>} */
   const oldToContentProperties = {};
+  /** @type {Object.<string,string>} */
   const newFromShapeProperties = {};
   transitionProperties.forEach((prop) => {
     oldFromShapeProperties[prop] = options.fromShapeElement.style.getPropertyValue(prop);

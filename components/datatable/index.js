@@ -25,8 +25,10 @@ export function attach(element) {
   headerRow.addEventListener('click', onHeaderRowClick);
   tbody.addEventListener('keydown', onTableBodyKeyDown);
   tbody.addEventListener('click', onTableBodyClick);
+  /** @type {HTMLTableRowElement} */
   let firstRow = null;
   let foundTabbableRow = false;
+  /** @type {HTMLTableCellElement} */
   let firstCell = null;
   let foundTabbableCell = false;
   iterateArrayLike(tbody.rows, (row) => {

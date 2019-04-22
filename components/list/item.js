@@ -162,15 +162,6 @@ function onKeyDown(event) {
  * @param {Element} listItemElement
  * @return {void}
  */
-export function detachCore(listItemElement) {
-}
-
-
-/**
- * @param {Element} listItemElement
- * @return {void}
- */
 export function detach(listItemElement) {
-  detachCore(listItemElement);
   iterateArrayLike(listItemElement.getElementsByClassName('mdw-list__content'), ListContent.detach);
 }

@@ -69,7 +69,7 @@ export function onTabContentScroll(event) {
 
   // Percentage may be incorrect due to floating point rounding errors
   // Compare of integer values provided by browser
-  iterateSomeOfArrayLike(tabContentElement.children, ((panel, index) => {
+  iterateSomeOfArrayLike(tabContentElement.children, ((/** @type {HTMLElement} */ panel, index) => {
     if (tabContentElement.scrollLeft === panel.offsetLeft) {
       visibleIndex = index;
       visibilityPercentage = 0;
@@ -162,6 +162,7 @@ export function selectPanel(tabContentElement, panel, scrollToPanel = 'smooth') 
   let currentSelectedIndex = null;
   /** @type {number} */
   let panelIndex = null;
+  /** @type {Element[]} */
   const otherPanels = [];
   iterateArrayLike(tabContentElement.getElementsByClassName('mdw-tab__panel'), (el, index) => {
     if (currentSelectedIndex == null && TabPanel.isExpanded(el)) {

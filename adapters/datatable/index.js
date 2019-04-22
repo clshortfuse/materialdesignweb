@@ -48,7 +48,7 @@ import DataTableAdapterColumn from './column';
  */
 
 /**
- * @template T
+ * @template {Object} T
  */
 export default class DataTableAdapter {
   /**
@@ -68,7 +68,7 @@ export default class DataTableAdapter {
     this.onValueChangeRequested = options.onValueChangeRequested || (() => false);
     this.onValueChanged = options.onValueChanged || (() => {});
 
-    this.onElementClickListener = (event) => {
+    this.onElementClickListener = (/** @type {MouseEvent|PointerEvent} */ event) => {
       this.handleClickInteraction(event);
     };
     // Use one click event listener to reduce overhead and allow dynamic content
@@ -230,7 +230,7 @@ export default class DataTableAdapter {
     const index = tableHeaderCell.cellIndex;
     const tableColumn = this.columns[index];
     const direction = ascending ? 1 : -1;
-    this.sorter = ((a, b) => {
+    this.sorter = ((/** @type {T} */ a, /** @type {T} */ b) => {
       const valueA = a[tableColumn.key];
       const valueB = b[tableColumn.key];
       if (valueA == null) {
@@ -587,6 +587,7 @@ export default class DataTableAdapter {
   getLazyRenderRows() {
     const tbody = this.getTableBody();
     const len = tbody.rows.length;
+    /** @type {HTMLTableRowElement[]} */
     const rows = [];
     const minRowCount = window.screen.height / 48;
     if (len <= minRowCount) {
@@ -856,7 +857,7 @@ export default class DataTableAdapter {
   }
 
   /**
-   * @param {HTMLTableCellElement|DataTableAdapterColumn|number|string} search
+   * @param {HTMLTableCellElement|DataTableAdapterColumn<T>|number|string} search
    * @return {DataTableAdapterColumn<T>}
    */
   getColumn(search) {

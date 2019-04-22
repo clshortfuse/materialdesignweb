@@ -15,9 +15,9 @@ class MenuStack {
   /**
    * @param {Element} element
    * @param {Element} previousFocus
-   * @param {Object=} state
-   * @param {Object=} previousState
-   * @param {MouseEvent=} originalEvent
+   * @param {Object} [state]
+   * @param {Object} [previousState]
+   * @param {MouseEvent|PointerEvent} [originalEvent]
    */
   constructor(element, previousFocus, state, previousState, originalEvent) {
     this.element = element;
@@ -89,10 +89,14 @@ export function onMenuScroll(event) {
   }
 }
 
+/**
+ * @param {MouseEvent|PointerEvent} event
+ * @return {void}
+ */
 export function onMenuClick(event) {
-  if (event.currentTarget === event.target) {
+  if (event.currentTarget === event.target && event.target instanceof HTMLElement) {
     event.stopPropagation();
-    hide(event.currentTarget);
+    hide(event.target);
   }
 }
 
@@ -110,7 +114,7 @@ export function onWindowResize() {
   lastOpenMenu.pendingResizeOperation = nextTick(() => {
     updateMenuPosition(
       lastOpenMenu.element,
-      lastOpenMenu.element.getElementsByClassName('mdw-menu__popup')[0],
+      /** @type {HTMLElement} */ (lastOpenMenu.element.getElementsByClassName('mdw-menu__popup')[0]),
       lastOpenMenu.originalEvent
     );
     lastOpenMenu.pendingResizeOperation = null;
@@ -187,7 +191,8 @@ export function detach(menuElement) {
   menuElement.removeEventListener('wheel', onMenuScroll);
   menuElement.addEventListener('keydown', onKeyDown);
   menuElement.removeAttribute('mdw-menu-js');
-  const popupElement = menuElement.getElementsByClassName('mdw-menu__popup')[0];
+  /** @type {HTMLElement} */
+  const popupElement = (menuElement.getElementsByClassName('mdw-menu__popup')[0]);
   if (popupElement) {
     popupElement.style.removeProperty('top');
     popupElement.style.removeProperty('left');
@@ -209,9 +214,12 @@ export function detach(menuElement) {
  * @return {void}
  */
 export function selectNextMenuItem(menu, backwards) {
-  const menuItems = menu.getElementsByClassName('mdw-menu__item');
+  /** @type {HTMLCollectionOf<HTMLElement>} */
+  const menuItems = (menu.getElementsByClassName('mdw-menu__item'));
   let foundTarget = false;
+  /** @type {HTMLElement} */
   let candidate = null;
+  /** @type {HTMLElement} */
   let firstFocusableItem = null;
   let lastFocusableElement = null;
   const target = document.activeElement;
@@ -264,9 +272,9 @@ export function selectNextMenuItem(menu, backwards) {
 
 /**
  * @param {Element} menuElement
- * @param {Element} popupElement
- * @param {MouseEvent=} event
- * @param {boolean=} [alignTarget=true]
+ * @param {HTMLElement} popupElement
+ * @param {MouseEvent|PointerEvent} [event]
+ * @param {boolean} [alignTarget=true]
  * @return {void}
  */
 export function updateMenuPosition(menuElement, popupElement, event, alignTarget) {
@@ -610,8 +618,8 @@ export function refreshMenuItems(menuElement) {
 
 /**
  * @param {Element} menuElement
- * @param {MouseEvent=} event
- * @param {boolean=} [alignTarget=true]
+ * @param {MouseEvent|PointerEvent} [event]
+ * @param {boolean} [alignTarget=true]
  * @return {boolean} handled
  */
 export function show(menuElement, event, alignTarget) {
@@ -619,7 +627,8 @@ export function show(menuElement, event, alignTarget) {
     // Prevent anchor link
     event.preventDefault();
   }
-  const popupElement = menuElement.getElementsByClassName('mdw-menu__popup')[0];
+  /** @type {HTMLElement} */
+  const popupElement = (menuElement.getElementsByClassName('mdw-menu__popup')[0]);
   let changed = false;
   if (event) {
     updateMenuPosition(menuElement, popupElement, event, alignTarget);
@@ -659,7 +668,7 @@ export function show(menuElement, event, alignTarget) {
     const menuStack = new MenuStack(menuElement, previousFocus, newState, previousState, event);
     OPEN_MENUS.push(menuStack);
     refreshMenuItems(menuElement);
-    if (event && !event.pointerType && !event.detail) {
+    if (event && !event.detail && ('pointerType' in event) && !event.pointerType) {
       // Triggered with keyboard event
       selectNextMenuItem(menuElement);
     } else {
@@ -688,7 +697,7 @@ export function hide(menuElement) {
   });
   if (stackIndex !== -1) {
     const menuStack = OPEN_MENUS[stackIndex];
-    if (menuStack.previousFocus) {
+    if (menuStack.previousFocus && menuStack.previousFocus instanceof HTMLElement) {
       menuStack.previousFocus.focus();
     }
     OPEN_MENUS.splice(stackIndex, 1);

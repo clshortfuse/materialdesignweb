@@ -1,3 +1,4 @@
+/** @type {?boolean} */
 let passiveEventListenerSupported = null;
 
 /** @return {void} */
@@ -48,18 +49,18 @@ export function getChildElementByClass(element, className) {
 }
 
 /**
- * @param {HTMLElement} element
+ * @param {Element} element
  * @param {string} className
  * @param {boolean} [includeSelf=true]
  * @return {HTMLElement}
  */
 export function findElementParentByClassName(element, className, includeSelf) {
-  /** @type {HTMLElement} */
   let el;
   if (includeSelf === false) {
     el = element.parentElement;
   } else {
-    el = element;
+    /** @type {HTMLElement} */
+    el = (element);
   }
   while (el != null && !el.classList.contains(className)) {
     el = el.parentElement;

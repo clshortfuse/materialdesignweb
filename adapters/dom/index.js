@@ -32,8 +32,8 @@ export default class DomAdapter {
   /**
    * @param {HTMLElement} element
    * @param {Array<T1>} datasource
-   * @param {function(T2, T1)=} renderFn
-   * @param {function():T2=} createFn
+   * @param {function(T2, T1):void} [renderFn={function(HTMLElement,T1):void}]
+   * @param {function():T2} [createFn={function():HTMLElement}]
    */
   constructor(element, datasource, renderFn, createFn) {
     this.element = element;
@@ -48,6 +48,7 @@ export default class DomAdapter {
 
   /** @return {void} */
   refresh() {
+    /** @type {T1[]} */
     const unlinkedDataItems = [];
     this.map.forEach((element, data) => {
       if (this.datasource.indexOf(data) === -1) {
@@ -85,6 +86,7 @@ export default class DomAdapter {
     let elementIndex = -1;
     let element = this.map.get(data);
     if (!element) {
+      // @ts-ignore
       element = this.create();
       this.map.set(data, element);
       this.elementMap.set(element, data);

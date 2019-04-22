@@ -19,8 +19,8 @@ class DialogStack {
    * @param {Object=} previousState
    */
   constructor(element, previousFocus, state, previousState) {
-    this.element = element;
-    this.previousFocus = previousFocus;
+    this.element = (element);
+    this.previousFocus = (previousFocus);
     this.state = state;
     this.previousState = previousState;
   }
@@ -290,7 +290,7 @@ export function hide(dialogElement) {
   });
   if (stackIndex !== -1) {
     const stack = OPEN_DIALOGS[stackIndex];
-    if (stack.previousFocus) {
+    if (stack.previousFocus && stack.previousFocus instanceof HTMLElement) {
       if (findElementParentByClassName(document.activeElement, 'mdw-dialog') === dialogElement) {
         // Only pop focus back when hiding a dialog with focus within itself.
         try {
@@ -352,13 +352,12 @@ export function show(dialogElement, event) {
     OPEN_DIALOGS.push(dialogStack);
     const focusElement = dialogElement.querySelector('[mdw-autofocus]');
     try {
-      if (focusElement) {
+      if (focusElement && focusElement instanceof HTMLElement) {
         focusElement.focus();
-      } else {
+      } else if (dialogElement instanceof HTMLElement) {
         dialogElement.focus();
       }
     } catch (e) {
-      console.error(e);
       // Failed to focus
     }
   }
@@ -406,7 +405,7 @@ export function handleTabKeyPress(event) {
   }
   event.stopPropagation();
   event.preventDefault();
-  if (candidate) {
+  if (candidate && candidate instanceof HTMLElement) {
     try {
       candidate.focus();
     } catch (e) {
