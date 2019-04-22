@@ -127,17 +127,6 @@ export function onButtonClick(event) {
   hide(snackbarElement);
 }
 
-/** @return {SnackbarQueueItem} */
-export function getNextSnackbarQueueItem() {
-  const nextSnackbar = SnackbarQueueItem[0];
-  if (nextSnackbar && (!nextSnackbar.element || !nextSnackbar.element.parentElement)) {
-    // Item was removed from DOM externally
-    SNACKBAR_QUEUE.splice(0, 1);
-    return getNextSnackbarQueueItem();
-  }
-  return nextSnackbar;
-}
-
 /**
  * @param {Element} element
  * @return {SnackbarQueueItem}
