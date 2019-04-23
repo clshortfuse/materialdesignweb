@@ -34,6 +34,10 @@ export function attach(element) {
     rippleInner.setAttribute('role', 'presentation');
     rippleContainer.appendChild(rippleInner);
   }
+  rippleInner.removeAttribute('mdw-fade-in');
+  rippleInner.removeAttribute('mdw-fade-in-repeat');
+  rippleInner.removeAttribute('mdw-fade-in-complete');
+  rippleInner.removeAttribute('mdw-fade-out');
   element.setAttribute('mdw-ripple-js', '');
   element.addEventListener('click', onClick, getPassiveEventListenerOption());
   element.addEventListener('mousedown', onMouseDown, getPassiveEventListenerOption());
@@ -146,8 +150,8 @@ export function isActive(element) {
 
 /**
  * @param {HTMLElement} rippleInner
- * @param {number=} x
- * @param {number=} y
+ * @param {number} [x]
+ * @param {number} [y]
  * @return {void}
  */
 export function updateRipplePosition(rippleInner, x, y) {
@@ -202,7 +206,6 @@ export function drawRipple(rippleInner, initiator) {
       rippleInner.setAttribute('mdw-fade-in-repeat', '');
     }
   }
-  rippleInner.removeAttribute('mdw-fade-in-out');
 }
 
 /**
