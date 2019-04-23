@@ -1,3 +1,3 @@
-import * as Layout from '../../components/layout/index';
+import * as Document from '../../core/document/index';
 
-Layout.onPrerender();
+Document.onPrerender();

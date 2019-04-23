@@ -2,14 +2,95 @@ include ../_mixins.pug
 
 #dialog-alert.mdw-dialog(mdw-width-units="5")
   .mdw-dialog__popup.mdw-theme(mdw-surface="card")
-    .mdw-dialog__title title
-    .mdw-dialog__body.mdw-theme(mdw-ink="medium") body
+    .mdw-dialog__title Alert Dialog
+    .mdw-dialog__body.mdw-theme(mdw-ink="medium") Alert dialog body text.
     .mdw-dialog__button-area
       +mdwButton({ ink:'secondary' })(mdw-autofocus) OK
 #dialog-confirm.mdw-dialog(mdw-width-units="5")
   .mdw-dialog__popup.mdw-theme(mdw-surface="card")
-    .mdw-dialog__title title
-    .mdw-dialog__body.mdw-theme(mdw-ink="medium") body
+    .mdw-dialog__title Confirm Dialog
+    .mdw-dialog__body.mdw-theme(mdw-ink="medium") Confirm dialog body text.
     .mdw-dialog__button-area
       +mdwButton({ ink:'secondary' })(mdw-autofocus) Yes
       +mdwButton({ ink:'secondary' }) No
+#dialog-autohide-options.mdw-dialog
+  .mdw-dialog__popup.mdw-theme(mdw-surface="card")
+    .mdw-dialog__header
+      .mdw-dialog__title App Bar Auto Hide
+    ul.mdw-dialog__scrolling.mdw-list(role="radiogroup")
+      li.mdw-list__item
+        a.mdw-list__content.mdw-selection(aria-checked="false" data-name="appbar-autohide" data-value="mobile")
+          .mdw-list__text.mdw-selection__label
+            .mdw-list__text-line Mobile Only
+            .mdw-list__text-line.mdw-theme(mdw-ink="medium") [mdw-autohide="mobile"]
+          .mdw-selection__icon.mdw-theme(mdw-ink="secondary" mdw-radio)
+      li.mdw-list__item
+        a.mdw-list__content.mdw-selection(aria-checked="false" data-name="appbar-autohide" data-value="tablet")
+          .mdw-list__text.mdw-selection__label
+            .mdw-list__text-line Tablet Only
+            .mdw-list__text-line.mdw-theme(mdw-ink="medium") [mdw-autohide="tablet"]
+          .mdw-selection__icon.mdw-theme(mdw-ink="secondary" mdw-radio)
+      li.mdw-list__item
+        a.mdw-list__content.mdw-selection(aria-checked="true" data-name="appbar-autohide" data-value="mobile tablet")
+          .mdw-list__text.mdw-selection__label
+            .mdw-list__text-line Mobile and Tablet
+            .mdw-list__text-line.mdw-theme(mdw-ink="medium") [mdw-autohide="mobile tablet"]
+          .mdw-selection__icon.mdw-theme(mdw-ink="secondary" mdw-radio)
+      li.mdw-list__item
+        a.mdw-list__content.mdw-selection(aria-checked="false" data-name="appbar-autohide" data-value="")
+          .mdw-list__text.mdw-selection__label
+            .mdw-list__text-line All Devices
+            .mdw-list__text-line.mdw-theme(mdw-ink="medium") [mdw-autohide=""]
+          .mdw-selection__icon.mdw-theme(mdw-ink="secondary" mdw-radio)
+    // While it is possible to close on CHECK_EVENT, this would cause accessibility issues for keyboard users
+    .mdw-dialog__button-area
+      +mdwButton({ ink:'secondary' })(mdw-autofocus) Change
+      +mdwButton({ ink:'secondary' }) Keep
+#dialog-fabmobile-options.mdw-dialog
+  .mdw-dialog__popup.mdw-theme(mdw-surface="card")
+    .mdw-dialog__header
+      .mdw-dialog__title Mobile Fab Option
+    ul.mdw-dialog__scrolling.mdw-list(role="radiogroup")
+      li.mdw-list__item
+        a.mdw-list__content.mdw-selection(aria-checked="false" data-name="fab-mobile" data-value="")
+          .mdw-selection__label.mdw-list__text
+            .mdw-list__text-line End
+            .mdw-list__text-line.mdw-theme(mdw-ink="medium") [mdw-fab-mobile=""]
+          .mdw-selection__icon.mdw-theme(mdw-ink="secondary" mdw-radio)
+      li.mdw-list__item
+        a.mdw-list__content.mdw-selection(aria-checked="true" data-name="fab-mobile" data-value="center")
+          .mdw-selection__label.mdw-list__text
+            .mdw-list__text-line Center
+            .mdw-list__text-line.mdw-theme(mdw-ink="medium") [mdw-fab-mobile="center"]
+          .mdw-selection__icon.mdw-theme(mdw-ink="secondary" mdw-radio)
+      li.mdw-list__item
+        a.mdw-list__content.mdw-selection(aria-checked="false" data-name="fab-mobile" data-value="full")
+          .mdw-selection__label.mdw-list__text
+            .mdw-list__text-line Full
+            .mdw-list__text-line.mdw-theme(mdw-ink="medium") [mdw-fab-mobile="full"]
+          .mdw-selection__icon.mdw-theme(mdw-ink="secondary" mdw-radio)
+    // While it is possible to close on CHECK_EVENT, this would cause accessibility issues for keyboard users
+    .mdw-dialog__button-area
+      +mdwButton({ ink:'secondary' })(mdw-autofocus) Change
+      +mdwButton({ ink:'secondary' }) Keep
+#dialog-fabdesktop-options.mdw-dialog
+  .mdw-dialog__popup.mdw-theme(mdw-surface="card")
+    .mdw-dialog__header
+      .mdw-dialog__title Mobile Fab Option
+    ul.mdw-dialog__scrolling.mdw-list(role="radiogroup")
+      li.mdw-list__item
+        a.mdw-list__content.mdw-selection(aria-checked="true" data-name="fab-desktop" data-value="")
+          .mdw-selection__label.mdw-list__text
+            .mdw-list__text-line End
+            .mdw-list__text-line.mdw-theme(mdw-ink="medium") [fab-desktop=""]
+          .mdw-selection__icon.mdw-theme(mdw-ink="secondary" mdw-radio)
+      li.mdw-list__item
+        a.mdw-list__content.mdw-selection(aria-checked="false" data-name="fab-desktop" data-value="appbar")
+          .mdw-selection__label.mdw-list__text
+            .mdw-list__text-line App Bar
+            .mdw-list__text-line.mdw-theme(mdw-ink="medium") [fab-desktop="appbar"]
+          .mdw-selection__icon.mdw-theme(mdw-ink="secondary" mdw-radio)
+    // While it is possible to close on CHECK_EVENT, this would cause accessibility issues for keyboard users
+    .mdw-dialog__button-area
+      +mdwButton({ ink:'secondary' })(mdw-autofocus) Change
+      +mdwButton({ ink:'secondary' }) Keep

@@ -1,7 +1,7 @@
 import * as Button from '../../components/button/index';
 import * as Dialog from '../../components/dialog/index';
 import { iterateArrayLike } from '../../core/dom';
-import { changeElementTagName, convertElementToCode } from '../_sample-utils';
+import { convertElementToCode } from '../_sample-utils';
 
 
 /** @type {HTMLElement} */
@@ -23,7 +23,7 @@ function updateSampleCode() {
 
   // Strip JS related elements and attributes
   Dialog.detach(sampleComponent);
-  let button = document.querySelector('.component-sample .mdw-button');
+  const button = document.querySelector('.component-sample .mdw-button');
   let closer = document.querySelector('.component-sample .mdw-dialog__close');
   const dialogButtons = sampleComponent.querySelectorAll('.mdw-dialog__button-area .mdw-button');
   Button.detach(button);
@@ -50,7 +50,7 @@ function updateSampleCode() {
     dialogButtons[0].removeAttribute('href');
     dialogButtons[1].removeAttribute('href');
   } else {
-    sampleComponent.setAttribute('id', 'sample-dialog');
+    sampleComponent.id = 'sample-dialog';
     button.setAttribute('href', '#sample-dialog');
     dialogButtons[0].setAttribute('href', '#');
     dialogButtons[1].setAttribute('href', '#');
@@ -96,7 +96,7 @@ function updateSampleCode() {
  * @return {void}
  */
 function onOptionChange(event) {
-  const { name, value, checked } = event.target;
+  const { name, value, checked } = /** @type {HTMLInputElement} */ (event.target);
   const buttonArea = sampleComponent.getElementsByClassName('mdw-dialog__button-area')[0];
   switch (name) {
     case 'stacked-buttons':
@@ -130,7 +130,7 @@ function setupComponentOptions() {
 }
 
 /** @return {void} */
-function initializeSampleComponents() {
+function setupJSSample1() {
   const button = document.querySelector('.js .mdw-button');
   Button.attach(button);
   const confirmDialogElement = Dialog.create({
@@ -157,6 +157,21 @@ function initializeSampleComponents() {
   button.addEventListener('click', (event) => {
     Dialog.show(confirmDialogElement, event);
   });
+}
+
+/** @return {void} */
+function setupJSSample2() {
+  const button = document.querySelectorAll('.js .mdw-button')[1];
+  Button.attach(button);
+  button.addEventListener('click', (event) => {
+    Dialog.show(document.getElementById('dialog-textfield'), event);
+  });
+}
+
+/** @return {void} */
+function initializeSampleComponents() {
+  setupJSSample1();
+  setupJSSample2();
 }
 
 initializeSampleComponents();

@@ -3,7 +3,7 @@ import { iterateArrayLike } from '../../core/dom';
 
 /** @return {void} */
 function initializeMdwComponents() {
-  // iterateArrayLike(document.getElementsByClassName('mdw-list'), List.attach);
+  iterateArrayLike(document.getElementsByClassName('mdw-list'), List.attach);
 }
 
 initializeMdwComponents();

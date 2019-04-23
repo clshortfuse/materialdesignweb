@@ -1,9 +1,9 @@
 import * as ListItem from '../../components/list/item';
 import * as ListContent from '../../components/list/content';
 import * as TextField from '../../components/textfield/index';
+import ListAdapter from '../../adapters/list/index';
 import SearchAdapter from '../../adapters/search/index';
 import { iterateArrayLike, setTextNode } from '../../core/dom';
-import { ListAdapter } from '../../index';
 
 /** @typedef {{line1:string, line2:string}} CustomSearchResult */
 
@@ -32,7 +32,7 @@ function performFakeSearch(filter) {
 function searchResultRenderer(listItemElement, result) {
   if (!listItemElement.children.length) {
     const markup = `
-    <div class="mdw-list__content">
+    <div class="mdw-list__content mdw-theme" mdw-ink="secondary" aria-selected="false">
       <div class="mdw-list__text">
         <div class="mdw-list__text-line"></div>
         <div class="mdw-list__text-line"></div>
@@ -80,7 +80,7 @@ function buildCustomSearch1() {
       }
 
       // Display a busy indicator
-      busyIndicator.style.setProperty('display', '');
+      showElement(busyIndicator);
 
       // Add results to a cached search adapter
       myCachedResults = performFakeSearch();
@@ -105,7 +105,7 @@ function buildCustomSearch1() {
       customListAdapter.datasource = searchResults;
 
       // Remove busy indicator
-      busyIndicator.style.setProperty('display', 'none');
+      hideElement(busyIndicator);
 
       // Tell ListAdapter to perform a full refresh
       customListAdapter.refresh();
@@ -155,6 +155,7 @@ function buildCustomSearch2() {
   // For purpose of this query is "searched" every time with no cache.
   // SearchAdapter performs no filter
 
+  /** @type {SearchAdapter<CustomSearchResult>} */
   const searchDocsCustom = new SearchAdapter({
     textfield,
     list,

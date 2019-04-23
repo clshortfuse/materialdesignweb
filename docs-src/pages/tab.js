@@ -29,30 +29,14 @@ function setupPugButton() {
 function updateSampleCode() {
   // Strip automatic attributes and classes
   Tab.detach(sampleComponent);
-  const tabList = sampleComponent.getElementsByClassName('mdw-tab__list')[0];
-  tabList.removeAttribute('role');
-  tabList.classList.remove('mdw-overlay__group');
-  tabList.removeAttribute('aria-orientation');
-  tabList.removeAttribute('aria-multiselectable');
   iterateArrayLike(sampleComponent.getElementsByClassName('mdw-tab__item'), (el) => {
     el.classList.remove('mdw-overlay');
     el.classList.remove('mdw-ripple');
     el.removeAttribute('mdw-overlay-off');
-    el.removeAttribute('role');
-    el.removeAttribute('tabindex');
-    el.removeAttribute('aria-selected');
-  });
-  iterateArrayLike(sampleComponent.getElementsByClassName('mdw-tab__icon'), (el) => {
-    el.removeAttribute('aria-hidden');
   });
   const indicator = sampleComponent.getElementsByClassName('mdw-tab__indicator')[0];
-  indicator.removeAttribute('role');
   indicator.removeAttribute('style');
-  iterateArrayLike(sampleComponent.getElementsByClassName('mdw-tab__panel'), (el) => {
-    el.removeAttribute('role');
-    el.removeAttribute('aria-expanded');
-    el.removeAttribute('aria-hidden');
-  });
+  
 
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
   setTextNode(htmlCodeElement, convertElementToCode(sampleComponent,

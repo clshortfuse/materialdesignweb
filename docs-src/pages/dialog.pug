@@ -60,55 +60,73 @@ include ../_mixins.pug
                   +mdwButton({ icon:true }).mdw-tooltip__target.material-icons(mdw-more-button) more_vert
                   .mdw-tooltip.mdw-theme(mdw-surface="background 700" mdw-dark) Options
           .content(style="padding:16px 8px;")
-            +mdwButton({ surface:'primary 500', dark:true, raised:true })(href="#confirmdialog-titled") Titled
-            +mdwButton({ surface:'primary 500', dark:true, raised:true })(href="#confirmdialog-text") Text
-            +mdwButton({ surface:'primary 500', dark:true, raised:true })(href="#dialog-scrolling") Scrolling
+            h6.mdw-type Javascript
             .display-flex(style="padding:16px 0").js
-              +mdwButton({ surface:'primary 500', dark:true, raised:true }) JS
+              +mdwButton({ surface:'primary 500', dark:true, raised:true }) Chained
+              +mdwButton({ surface:'primary 500', dark:true, raised:true }) Input Autofocus
+            h6.mdw-type CSS-Only
+            .display-flex(style="padding:16px 0").js
+              +mdwButton({ surface:'primary 500', dark:true, raised:true })(href="#confirmdialog-titled")#titled-button Titled
+              +mdwButton({ surface:'primary 500', dark:true, raised:true })(href="#confirmdialog-text")#text-button Text
+              +mdwButton({ surface:'primary 500', dark:true, raised:true })(href="#dialog-scrolling")#scrolling-button Scrolling
           .mdw-dialog#confirmdialog-titled
-            a.mdw-dialog__close(href="#")
+            a.mdw-dialog__close(href="#titled-button")
             .mdw-dialog__popup.mdw-theme(mdw-surface="card")
               .mdw-dialog__title Use Google's location service?
               .mdw-dialog__body.mdw-theme(mdw-ink="medium") Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
               .mdw-dialog__button-area
-                +mdwButton({ ink:'secondary' })(href="#") Agree
-                +mdwButton({ ink:'secondary' })(href="#") Disagree
+                +mdwButton({ ink:'secondary' })(href="#titled-button") Agree
+                +mdwButton({ ink:'secondary' })(href="#titled-button") Disagree
           .mdw-dialog#dialog-scrolling
-            a.mdw-dialog__close(href="#")
+            a.mdw-dialog__close(href="#scrolling-button")
             .mdw-dialog__popup.mdw-theme(mdw-surface="card")
               .mdw-dialog__header
                 .mdw-dialog__title Dialog header
-              .mdw-divider.mdw-theme(mdw-ink="divider")
+              .mdw-divider.mdw-theme(mdw-border-ink="divider")
               .mdw-dialog__scrolling
                 ul.mdw-list
                   li.mdw-list__item
-                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#' mdw-ink="default") Item 1
+                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#scrolling-button' mdw-ink="default") Item 1
                   li.mdw-list__item
-                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#' mdw-ink="default") Item 2
+                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#scrolling-button' mdw-ink="default") Item 2
                   li.mdw-list__item
-                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#' mdw-ink="default") Item 3
+                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#scrolling-button' mdw-ink="default") Item 3
                   li.mdw-list__item
-                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#' mdw-ink="default") Item 4
+                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#scrolling-button' mdw-ink="default") Item 4
                   li.mdw-list__item
-                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#' mdw-ink="default") Item 5
+                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#scrolling-button' mdw-ink="default") Item 5
                   li.mdw-list__item
-                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#' mdw-ink="default") Item 6
+                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#scrolling-button' mdw-ink="default") Item 6
                   li.mdw-list__item
-                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#' mdw-ink="default") Item 7
+                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#scrolling-button' mdw-ink="default") Item 7
                   li.mdw-list__item
-                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#' mdw-ink="default") Item 8
+                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#scrolling-button' mdw-ink="default") Item 8
                   li.mdw-list__item
-                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#' mdw-ink="default") Item 9
-              .mdw-divider.mdw-theme(mdw-ink="divider")
+                    a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(href='#scrolling-button' mdw-ink="default") Item 9
+              .mdw-divider.mdw-theme(mdw-border-ink="divider")
               .mdw-dialog__button-area
-                +mdwButton({ ink:'secondary' })(href="#") Agree
-                +mdwButton({ ink:'secondary' })(href="#") Disagree
+                +mdwButton({ ink:'secondary' })(href="#scrolling-button") Agree
+                +mdwButton({ ink:'secondary' })(href="#scrolling-button") Disagree
           .mdw-dialog#confirmdialog-text
-            a.mdw-dialog__close(href="#")
+            a.mdw-dialog__close(href="#text-button")
             .mdw-dialog__popup.mdw-theme(mdw-surface="card")
               .mdw-dialog__body.mdw-theme(mdw-ink="medium") Discard draft?
               .mdw-dialog__button-area
-                +mdwButton({ ink:'secondary' })(href="#") Discard
-                +mdwButton({ ink:'secondary' })(href="#") Cancel
+                +mdwButton({ ink:'secondary' })(href="#text-button") Discard
+                +mdwButton({ ink:'secondary' })(href="#text-button") Cancel
+          #dialog-textfield.mdw-dialog(mdw-width-units="5")
+            form.mdw-dialog__popup.mdw-theme(mdw-surface="card")
+              .mdw-dialog__header
+                .mdw-dialog__title Dialog Title
+              label.mdw-textfield.mdw-theme(mdw-ink="secondary" style="padding:0 24px")
+                .mdw-textfield__signifier.material-icons security
+                input.mdw-textfield__input(placeholder=" " name="input" mdw-autofocus)
+                .mdw-textfield__border
+                  .mdw-textfield__outline-gap
+                    .mdw-textfield__label Text Field Label
+                .mdw-textfield__error-text This field is required
+              .mdw-dialog__button-area
+                button.mdw-button.mdw-theme(mdw-ink="secondary" tabindex="0" type="submit") Change
+                button.mdw-button.mdw-theme(mdw-ink="secondary" tabindex="0" type="button") Cancel
         +androidnavbar
   script(src='dialog.min.js')
