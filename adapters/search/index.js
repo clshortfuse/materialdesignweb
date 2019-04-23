@@ -133,7 +133,7 @@ function scrollItemIntoView(listItem) {
  * @param {string} input
  * @param {string} content
  * @return {boolean} passes
-*/
+ */
 
 /**
  * @template T

@@ -13,20 +13,20 @@ import * as Button from '../button/index';
 /**
  * @typedef SnackbarCreateOptions
  * @property {!string} text
- * @property {!string=} buttonText
- * @property {string=} [buttonInk='primary']
+ * @property {!string} [buttonText]
+ * @property {string} [buttonInk='primary']
  * @property {boolean} [stacked=false]
  * @property {number|boolean} [autoHide=4] Auto hide time in seconds
  * @property {boolean} [autoDestroy=true] Destroy element after hide
- * @property {Element=} parent Parent element to which to append
- * @property {boolean=} [show=true] Show element after creation
- * @property {boolean=} [skipQueue=false] Skip queue
+ * @property {Element} [parent] Parent element to which to append
+ * @property {boolean} [show=true] Show element after creation
+ * @property {boolean} [skipQueue=false] Skip queue
  */
 
 class SnackbarQueueItem {
   /**
    * @param {Element} element
-   * @param {SnackbarCreateOptions=} options
+   * @param {SnackbarCreateOptions} [options]
    */
   constructor(element, options) {
     this.element = element;

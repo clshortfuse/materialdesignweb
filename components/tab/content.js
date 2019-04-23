@@ -68,7 +68,7 @@ export function onTabContentScroll(event) {
   let visibilityPercentage = scrollPoint - visibleIndex;
 
   // Percentage may be incorrect due to floating point rounding errors
-  // Compare of integer values provided by browser
+  // Compare integer values provided by browser to check for 0
   iterateSomeOfArrayLike(tabContentElement.children, ((/** @type {HTMLElement} */ panel, index) => {
     if (tabContentElement.scrollLeft === panel.offsetLeft) {
       visibleIndex = index;

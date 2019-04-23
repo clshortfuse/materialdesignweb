@@ -340,7 +340,7 @@ export function hide(dialogElement) {
 
 /**
  * @param {Element} dialogElement
- * @param {Event} event
+ * @param {Event} [event]
  * @return {boolean} handled
  */
 export function show(dialogElement, event) {

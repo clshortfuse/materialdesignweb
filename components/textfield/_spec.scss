@@ -612,8 +612,8 @@ $mdw-textfield__outline-end-width: dp(8) !default;
 
 textarea.mdw-textfield__input {
   -ms-overflow-style: -ms-autohiding-scrollbar;
-  -webkit-overflow-scrolling: touch;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 
   min-height: 1em; // Avoid clipping on resize
   min-width: 100%; // Always fill container horizontally
@@ -736,6 +736,8 @@ select.mdw-textfield__input {
 
   z-index: 2;
 
+  border-top-left-radius: dp(0);
+  border-top-right-radius: dp(0);
   border-bottom-right-radius: dp(4);
   border-bottom-left-radius: dp(4);
 
@@ -792,6 +794,7 @@ select.mdw-textfield__input {
     &:invalid ~ .mdw-textfield__border::after {
       transition-duration: $mdw-motion__expand-duration;
       transition-timing-function: $mdw-motion__decelerate-easing;
+
       transform: scaleX(1) translateY(-$mdw-textfield__border-line-height/2);
     }
   }

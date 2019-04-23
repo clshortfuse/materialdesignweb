@@ -106,7 +106,7 @@ export function getValue(textfieldElement) {
 
 /**
  * @param {Element} textfieldElement
- * @param {(string|Date|number)=} value
+ * @param {string|Date|number} [value]
  * @return {void}
  */
 export function setValue(textfieldElement, value) {

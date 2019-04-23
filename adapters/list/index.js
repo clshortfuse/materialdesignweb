@@ -41,7 +41,7 @@ export default class ListAdapter extends DomAdapter {
   /**
    * @param {HTMLElement} element
    * @param {Array<T>} datasource
-   * @param {function(HTMLLIElement, T)=} renderFn
+   * @param {function(HTMLLIElement, T):void} [renderFn]
    */
   constructor(element, datasource, renderFn) {
     super(element, datasource, renderFn, ListAdapter.create);
