@@ -21,12 +21,15 @@ $mdw-dialog__unit-width: dp(56) !default;
   -ms-scroll-chaining: none;
   scrollbar-width: none;
   
+  
   height: 100%;
   width: 100%;
   
   cursor: default;
+  -webkit-tap-highlight-color: transparent;
   
   pointer-events: inherit;
+  visibility: hidden;
   z-index: 8;
 
   // Hide scrollbar
@@ -58,13 +61,13 @@ $mdw-dialog__unit-width: dp(56) !default;
   padding: dp(84) dp(40);
   
   transition-duration: $mdw-motion__fade-out-duration;
-  transition-property: opacity, visibility;
+  transition-property: opacity;
   transition-timing-function: $mdw-motion__accelerate-easing;
+  will-change: opacity;
   
   opacity: 0;
   pointer-events: none;
-  visibility: hidden;
-  
+
   z-index: 24;
 
   background-color: rgba(0, 0, 0, 0.50);
@@ -81,25 +84,10 @@ $mdw-dialog__unit-width: dp(56) !default;
       }
     }
   }
-
-  &[aria-hidden="false"],
-  &[id]:target {
-    transition-duration: $mdw-motion__fade-in-duration;
-    transition-property: opacity; // Immediate visibility required for autofocus
-    transition-timing-function: $mdw-motion__decelerate-easing;
-
-    opacity: 1;
-    pointer-events: auto;
-    visibility: visible;
-
-    .mdw-dialog__popup {
-      transform: scale(1);
-    }
-  }
 }
 
 .mdw-dialog__popup {
-  display: flex;
+  display: none;
   position: relative;
   flex-direction: column;
   overflow-y: auto;
@@ -113,11 +101,9 @@ $mdw-dialog__unit-width: dp(56) !default;
   max-width: 100%;
   flex-shrink: 1;
 
-  transition-duration: inherit;
-  transition-property: transform;
-  transition-timing-function: inherit;
-
-  transform: scale(0);
+  will-change: transform;
+  
+  transform: scale(1);
   transform-origin: bottom center;
   z-index: 24;
 
@@ -125,6 +111,39 @@ $mdw-dialog__unit-width: dp(56) !default;
   box-shadow: mdwElevation(24);
 }
 
+.mdw-dialog[aria-hidden="false"],
+.mdw-dialog[id]:target {
+  transition-duration: $mdw-motion__fade-in-duration;
+  transition-property: opacity; // Immediate visibility required for autofocus
+  transition-timing-function: $mdw-motion__decelerate-easing;
+
+  opacity: 1;
+  pointer-events: auto;
+
+  .mdw-dialog__close {
+    visibility: visible;
+  }
+
+  .mdw-dialog__popup {
+    animation-name: scaleUpAnimation;
+    animation-duration: $mdw-motion__fade-in-duration;
+    animation-direction: forwards;
+  }
+
+  &:not([mdw-dialog-js]) .mdw-dialog__popup {
+    display: flex;
+  }
+}
+
+@keyframes scaleUpAnimation {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
 
 .mdw-dialog__title {
   @include texttop-to-top(20);

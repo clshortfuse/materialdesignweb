@@ -15,8 +15,8 @@ class DialogStack {
   /**
    * @param {Element} element
    * @param {Element} previousFocus
-   * @param {Object=} state
-   * @param {Object=} previousState
+   * @param {Object} [state]
+   * @param {Object} [previousState]
    */
   constructor(element, previousFocus, state, previousState) {
     this.element = (element);
@@ -42,7 +42,8 @@ export const DISMISS_EVENT = 'mdw:dialog-dismiss';
  * @return {void}
  */
 export function attach(element) {
-  element.setAttribute('mdw-js', '');
+  element.setAttribute('mdw-dialog-js', '');
+  element.addEventListener('transitionend', onTransitionEnd);
 
   let dialogCloser = getChildElementByClass(element, 'mdw-dialog__close');
   if (!dialogCloser) {
@@ -82,6 +83,27 @@ export function attach(element) {
 }
 
 /**
+ * @param {TransitionEvent} event
+ * @return {void}
+ */
+export function onTransitionEnd(event) {
+  if (event.propertyName !== 'opacity') {
+    return;
+  }
+  /** @type {HTMLElement} */
+  const dialogElement = (event.currentTarget);
+  if (dialogElement.getAttribute('aria-hidden') !== 'true') {
+    return;
+  }
+  /** @type {HTMLElement} */
+  const popupElement = (dialogElement.getElementsByClassName('mdw-dialog__popup')[0]);
+  if (!popupElement) {
+    return;
+  }
+  popupElement.style.removeProperty('display');
+}
+
+/**
  * @param {Element} dialogElement
  * @return {void}
  */
@@ -112,7 +134,8 @@ export function setupARIA(dialogElement) {
  * @return {void}
  */
 export function detach(dialogElement) {
-  dialogElement.removeAttribute('mdw-js');
+  dialogElement.removeEventListener('transitionend', onTransitionEnd);
+  dialogElement.removeAttribute('mdw-dialog-js');
   const dialogCloser = getChildElementByClass(dialogElement, 'mdw-dialog__close');
   if (dialogCloser) {
     dialogCloser.removeEventListener('click', onCancelClick);
@@ -280,6 +303,7 @@ export function hide(dialogElement) {
     return false;
   }
   dialogElement.setAttribute('aria-hidden', 'true');
+  // .mdw-dialog__popup hidden by transitionEnd event
   let stackIndex = -1;
   OPEN_DIALOGS.some((stack, index) => {
     if (stack.element === dialogElement) {
@@ -326,42 +350,51 @@ export function show(dialogElement, event) {
   }
   let changed = false;
 
-  updateTransformOrigin(dialogElement, event);
   if (dialogElement.getAttribute('aria-hidden') !== 'false') {
     dialogElement.setAttribute('aria-hidden', 'false');
+    /** @type {HTMLElement} */
+    const popupElement = (dialogElement.getElementsByClassName('mdw-dialog__popup')[0]);
+    popupElement.style.setProperty('display', 'flex');
     changed = true;
   }
-  if (changed) {
-    attach(dialogElement);
-    const previousFocus = document.activeElement;
-    const newState = { hash: Math.random().toString(36).substr(2, 16) };
-    let previousState = null;
-    if (window.history && window.history.pushState) {
-      if (!window.history.state) {
-        // Create new previous state
-        window.history.replaceState({
-          hash: Math.random().toString(36).substr(2, 16),
-        }, document.title);
-      }
-      previousState = window.history.state;
-      const title = getTitleText(dialogElement);
-      window.history.pushState(newState, title);
-      window.addEventListener('popstate', onPopState);
-    }
-    const dialogStack = new DialogStack(dialogElement, previousFocus, newState, previousState);
-    OPEN_DIALOGS.push(dialogStack);
-    const focusElement = dialogElement.querySelector('[mdw-autofocus]');
-    try {
-      if (focusElement && focusElement instanceof HTMLElement) {
-        focusElement.focus();
-      } else if (dialogElement instanceof HTMLElement) {
-        dialogElement.focus();
-      }
-    } catch (e) {
-      // Failed to focus
-    }
+
+  updateTransformOrigin(dialogElement, event);
+
+  if (!changed) {
+    return false;
   }
-  return changed;
+  attach(dialogElement);
+  const previousFocus = document.activeElement;
+  const newState = { hash: Math.random().toString(36).substr(2, 16) };
+  let previousState = null;
+  if (window.history && window.history.pushState) {
+    if (!window.history.state) {
+      // Create new previous state
+      window.history.replaceState({
+        hash: Math.random().toString(36).substr(2, 16),
+      }, document.title);
+    }
+    previousState = window.history.state;
+    const title = getTitleText(dialogElement);
+    window.history.pushState(newState, title);
+    window.addEventListener('popstate', onPopState);
+  }
+  const dialogStack = new DialogStack(dialogElement, previousFocus, newState, previousState);
+  OPEN_DIALOGS.push(dialogStack);
+  const focusElement = dialogElement.querySelector('[mdw-autofocus]');
+  try {
+    if (focusElement && focusElement instanceof HTMLElement) {
+      if (focusElement.scrollIntoView) {
+        focusElement.scrollIntoView();
+      }
+      focusElement.focus();
+    } else if (dialogElement instanceof HTMLElement) {
+      dialogElement.focus();
+    }
+  } catch (e) {
+    // Failed to focus
+  }
+  return true;
 }
 
 /**
@@ -416,7 +449,7 @@ export function handleTabKeyPress(event) {
 
 /**
  * @param {Element} dialogElement
- * @param {(DocumentFragment|string)=} content
+ * @param {(DocumentFragment|string)} [content]
  * @return {void}
  */
 export function updateTitle(dialogElement, content) {
@@ -460,7 +493,7 @@ export function updateButtonText(dialogElement, texts) {
 
 /**
  * @param {Element} dialogElement
- * @param {(DocumentFragment|string)=} content
+ * @param {(DocumentFragment|string)} [content]
  * @return {void}
  */
 export function updateBody(dialogElement, content) {
@@ -497,13 +530,13 @@ export function updateBody(dialogElement, content) {
 
 /**
  * @param {Object} options
- * @param {(DocumentFragment|string)=} options.title
- * @param {(DocumentFragment|string)=} options.body
- * @param {string[]=} options.buttons
- * @param {boolean=} options.stacked
- * @param {Element=} options.parent
+ * @param {(DocumentFragment|string)} [options.title]
+ * @param {(DocumentFragment|string)} [options.body]
+ * @param {string[]} [options.buttons]
+ * @param {boolean} [options.stacked=false]
+ * @param {Element} [options.parent]
  * @param {boolean} [options.custom=false] Use custom button events
- * @param {(string|number)=} [options.autofocus=0] Autofocus button by index or text
+ * @param {(string|number)} [options.autofocus=0] Autofocus button by index or text
  * @return {Element}
  */
 export function create(options) {
@@ -562,6 +595,10 @@ export function updateTransformOrigin(dialogElement, event) {
   if (!event) {
     return;
   }
+  const hadLayer = popup.style.getPropertyValue('display') != null;
+  if (!hadLayer) {
+    popup.style.setProperty('display', 'flex');
+  }
   let pageX;
   let pageY;
   const dialogRect = dialogElement.getBoundingClientRect();
@@ -585,6 +622,9 @@ export function updateTransformOrigin(dialogElement, event) {
   const transformOriginX = pageX - dialogRect.left - popup.offsetLeft;
   const transformOriginY = pageY - dialogRect.top - popup.offsetTop;
   popup.style.setProperty('transform-origin', `${transformOriginX}px ${transformOriginY}px`);
+  if (!hadLayer) {
+    popup.style.removeProperty('display');
+  }
 }
 
 // Aliases
