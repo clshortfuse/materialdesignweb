@@ -46,6 +46,7 @@ $mdw-ripple__touch-up-acceleration: 3400 !default;
 
 .mdw-ripple {
   position: relative;
+
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -91,13 +92,6 @@ $mdw-ripple__touch-up-acceleration: 3400 !default;
   background-color: currentColor;
   
   border-radius: 50%;
-
-  &[mdw-fade-in-out] {
-    animation-name: ripple-fade-in, ripple-fade-out;
-    animation-duration: $mdw-motion__expand-duration, $mdw-ripple__fade-out-duration;
-    animation-timing-function: linear, $mdw-motion__decelerate-easing;
-    animation-delay: 0ms, $mdw-motion__expand-duration;
-  }
 }
 
 .mdw-ripple__inner[mdw-fade-in] {
@@ -142,10 +136,8 @@ $mdw-ripple__touch-up-acceleration: 3400 !default;
   }
 
   to {
-
-    transform: scale(2);
-
     opacity: 0;
+    transform: scale(2);
   }
 }
 
