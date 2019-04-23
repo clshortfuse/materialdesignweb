@@ -7,9 +7,6 @@
 $mdw-list__divider-height: dp(1) !default;
 
 .mdw-list {
-  display: flex;
-  flex-direction: column;
-
   margin: 0;
   padding: 0;
 
@@ -145,14 +142,19 @@ a.mdw-list__content {
     transform: rotate(0deg);
   }
 
-  & > .mdw-list > .mdw-list__item {
-    overflow: hidden;
+  & > .mdw-list {
+    display: flex;
+    flex-direction: column;
 
-    flex-basis: 0;
+    & > .mdw-list__item {
+      overflow: hidden;
 
-    animation-duration: $mdw-motion__collapse-duration;
-    animation-timing-function: $mdw-motion__accelerate-easing;
-    animation-fill-mode: forwards;
+      flex-basis: 0;
+
+      animation-duration: $mdw-motion__collapse-duration;
+      animation-timing-function: $mdw-motion__accelerate-easing;
+      animation-fill-mode: forwards;
+    }
   }
 
   &[aria-expanded="false"] {
