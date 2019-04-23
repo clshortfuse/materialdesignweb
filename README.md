@@ -72,7 +72,7 @@ npm: `npm install @shortfuse/materialdesignweb`
 
 * planned - Planned for later
 * draft - Not yet functional
-* alpha - Parially working
+* alpha - Partially working
 * beta - Working but incomplete
 * preRC - Needs minor changes
 * RC - Needs testing as-is
