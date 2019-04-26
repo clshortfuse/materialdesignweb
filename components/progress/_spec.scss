@@ -13,15 +13,15 @@ $duration: 1500ms;
  * radius = 8.75
  * pi = 3.14159
  * circumference = 2 * pi * r = (54.977825)
- * dash-length = circumference * (100-x)/100 
+ * dash-length = circumference * (100-x)/100
  *
  * Every cycle rotates entire shape an additional -90deg (CCW)
  * 
  * Entire animation rotates 4x speed (CW)
  * 
- * 1. Start 0.072% from head
- * 2. Increase to 75% from head
- * 3. Reduce tail to 0.521% from tail 
+ * 1. Start head at: 0.5%
+ * 2. Ease in head: to 75%
+ * 3. Ease out tail: to 74.5%
  * 4. Rotate -90 deg
  *
  * Animate with ease-in-out
@@ -54,7 +54,7 @@ $duration: 1500ms;
   0% {
     stroke-dashoffset: circlePercentage(0.5, 75);
   }
-  50% {
+  #{$mdw-motion__standard-peak-velocity * 100%} {
     stroke-dashoffset: circlePercentage(75,75);
   }
   100% {
@@ -82,7 +82,7 @@ $duration: 1500ms;
       stroke: currentColor;
       transform-origin: center center;
       &:nth-child(1) {
-        stroke-linecap: square;
+        stroke-linecap: round;
         stroke-dasharray: $circumference * 0.75;
         stroke-dashoffset: circlePercentage(33.33, 75);
         transform: rotate(0deg);
