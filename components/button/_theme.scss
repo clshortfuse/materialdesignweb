@@ -5,10 +5,14 @@
 @import '../../core/theme/index.scss';
 
 $mdw-button__theme-values: (
-  disabled-surface-background-color: $mdw-theme__inactive-ink,
-  disabled-surface-text-color:       $mdw-theme__default-ink,
-  default-text-color:                $mdw-theme__default-ink,
-  disabled-text-color:               $mdw-theme__inactive-ink,
+  default-text-rgb:                    $mdw-theme__foreground,
+  disabled-text-rgb:                   $mdw-theme__foreground,
+  disabled-surface-text-rgb:           $mdw-theme__foreground,
+  disabled-surface-background-rgb:     $mdw-theme__foreground,
+  default-text-alpha:                  $mdw-theme__high-opacity,
+  disabled-text-alpha:                 $mdw-theme__inactive-opacity,
+  disabled-surface-text-alpha:         $mdw-theme__high-opacity,
+  disabled-surface-background-alpha:   $mdw-theme__inactive-opacity,
 ) !default;
 
 @function mdwButtonThemeValue($key, $type) {
@@ -18,24 +22,29 @@ $mdw-button__theme-values: (
 @mixin mdw-button__theme-rules($type: 'var') {
   .mdw-button {
     &:disabled:not([aria-disabled="true"]) {
-      color: mdwButtonThemeValue("disabled-text-color", $type);
+      color: RGBA(mdwButtonThemeValue("disabled-text-rgb", $type), mdwButtonThemeValue("disabled-text-alpha", $type));
+
       &.mdw-overlay::before {
         display: none;
       }
     }
+
     &.mdw-overlay[aria-disabled="true"] {
       // Sets foreground to default ink color
-      color: mdwButtonThemeValue("default-text-color", $type);
+      color: RGBA(mdwButtonThemeValue("default-text-rgb", $type), mdwButtonThemeValue("default-text-alpha", $type));
+
       &[mdw-surface] {
-        background-color: mdwButtonThemeValue("disabled-surface-background-color", $type);
-        color: mdwButtonThemeValue("disabled-surface-text-color", $type);
+        background-color: RGBA(mdwButtonThemeValue("disabled-surface-background-rgb", $type), mdwButtonThemeValue("disabled-surface-background-alpha", $type));
+        color: RGBA(mdwButtonThemeValue("disabled-surface-text-rgb", $type), mdwButtonThemeValue("disabled-surface-text-alpha", $type));
 
         // Disabled filled buttons use parent's theming context
         @if ($type == 'var') {
           &[mdw-dark],
           &[mdw-light] {
-            --button__disabled-surface-text-color: inherit;
-            --button__disabled-surface-background-color: inherit;
+            --button__disabled-surface-text-rgb: inherit;
+            --button__disabled-surface-text-opacity: inherit;
+            --button__disabled-surface-background-rgb: inherit;
+            --button__disabled-surface-background-opacity: inherit;
           }
         }
       }

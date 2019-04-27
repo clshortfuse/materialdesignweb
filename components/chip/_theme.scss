@@ -61,7 +61,7 @@ $mdw-chip__theme-values: (
   .mdw-chip__thumbnail,
   .mdw-chip__remove,
   .mdw-chip__text {
-    color: mdwChipThemeValue("text-color", $type);
+    color: RGBA(mdwChipThemeValue("text-color", $type));
   }
 
   .mdw-chip__input {
@@ -70,7 +70,7 @@ $mdw-chip__theme-values: (
     &::before {
       opacity: mdwChipThemeValue("default-opacity", $type);
 
-      background-color: mdwChipThemeValue("overlay-color", $type);
+      background-color: RGBA(mdwChipThemeValue("overlay-color", $type));
     }
 
     &:checked::before {
@@ -91,7 +91,7 @@ $mdw-chip__theme-values: (
 
     &:checked {
       & ~ .mdw-chip__text {
-        color: mdwChipThemeValue("activated-text-color", $type);
+        color: RGBA(mdwChipThemeValue("activated-text-color", $type));
       }
 
       &[type="radio"] {
@@ -121,7 +121,7 @@ $mdw-chip__theme-values: (
   }
 
   .mdw-chip[mdw-outlined] .mdw-chip__input {
-    border-color: mdwChipThemeValue('outline-color', $type);
+    border-color: RGBA(mdwChipThemeValue('outline-color', $type));
 
     &:not(:checked) {
       &::before {

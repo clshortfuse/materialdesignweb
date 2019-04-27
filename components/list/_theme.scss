@@ -2,7 +2,8 @@
 @import '../../core/theme/index.scss';
 
 $mdw-list__theme-values: (
-  divider-color:        $mdw-theme__divider-ink,
+  divider-color:                 $mdw-theme__foreground,
+  divider-opacity:               $mdw-theme__divider-opacity,
 
   focus-opacity:                 (0.12, 0.24),
   hover-focus-opacity:           (0.04 + 0.12, 0.08 + 0.24),
@@ -30,7 +31,7 @@ $mdw-list__theme-values: (
 
   .mdw-list[mdw-divider] {
     & > .mdw-list__item:not(:last-child) .mdw-list__text::after {
-      background-color: mdwListThemeValue("divider-color", $type);
+      background-color: RGBA(mdwListThemeValue("divider-color", $type), mdwListThemeValue("divider-opacity", $type));
     }
   }
 
@@ -84,7 +85,7 @@ $mdw-list__theme-values: (
   .mdw-list__item[aria-expanded="true"] {
     &::before,
     &::after {
-      background-color: mdwListThemeValue("divider-color", $type);
+      background-color: RGBA(mdwListThemeValue("divider-color", $type), mdwListThemeValue("divider-opacity", $type));
     }
 
     &[mdw-ink][aria-expanded="true"] {

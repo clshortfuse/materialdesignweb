@@ -1,15 +1,21 @@
+$mdw-theme__fallbacks: 'ieonly' !default;
+$mdw-theme__variables: 'supports' !default;
+
 $mdw-theme__colors: () !default;
 $mdw-theme__primary: 'blue' !default;
 $mdw-theme__secondary: 'pink' !default;
 $mdw-theme__warn: 'red' !default;
 $mdw-theme__background: 'gray' !default;
-$mdw-theme__foreground-light: #000 !default;
-$mdw-theme__foreground-dark: #fff !default;
+$mdw-theme__foreground: (#000, #fff) !default;
 
-$mdw-theme__fallbacks: 'ieonly' !default;
-$mdw-theme__variables: 'supports' !default;
+$mdw-theme__high-opacity: (0.87, 1.00) !default;
+$mdw-theme__medium-opacity: (0.60, 0.70) !default;
+$mdw-theme__inactive-opacity: (0.38, 0.50) !default;
+$mdw-theme__divider-opacity: (0.12, 0.24) !default;
 
-$mdw-theme__default-ink: (('foreground-light', 0.87), ('foreground-dark', 1.00)) !default;
-$mdw-theme__medium-ink: (('foreground-light', 0.60), ('foreground-dark', 0.70)) !default;
-$mdw-theme__inactive-ink: (('foreground-light', 0.38), ('foreground-dark', 0.50)) !default;
-$mdw-theme__divider-ink: (('foreground-light', 0.12), ('foreground-dark', 0.24)) !default;
+$mdw-theme__default-color-surface: ('50', '900') !default;
+$mdw-theme__alt-color-surface: ('100', '800') !default;
+
+$mdw-theme__default-color-ink: ('A700', 'A200') !default;
+$mdw-theme__contrast-color-ink: ('A700', 'A100') !default;
+$mdw-theme__light-color-ink: ('A400', 'A100') !default;

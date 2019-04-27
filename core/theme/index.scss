@@ -3,15 +3,15 @@
 @import './_builder.scss';
 @import './_variables.scss';
 
-@mixin mdw-theme__add-component-variable-rules($component, $values, $rgbOnly: false) {
+@mixin mdw-theme__add-component-variable-rules($component, $values) {
   @if ($mdw-theme__variables == 'supports') {
     @supports(--v:v) {
-      @include __mdw-theme__add-component-variable-rules($component, $values, $rgbOnly);
       @content;
+      @include __mdw-theme__add-component-variable-rules($component, $values);
     }
   } @else if ($mdw-theme__variables != false) {
-    @include __mdw-theme__add-component-variable-rules($component, $values, $rgbOnly);
     @content;
+    @include __mdw-theme__add-component-variable-rules($component, $values);
   }
 }
 
@@ -43,23 +43,15 @@
   } @else if ($param == 'background') {
     @return map-get($mdw-theme__palettes, $mdw-theme__background);
   } @else if ($param == 'foreground-light') {
-    @return $mdw-theme__foreground-light;
+    @return nth($mdw-theme__foreground, 1);
   } @else if ($param == 'foreground-dark') {
-    @return $mdw-theme__foreground-dark;
+    @return nth($mdw-theme__foreground, length($mdw-theme__foreground));
+  } @else {
+    @return map-get($mdw-theme__palettes, $param);
   }
 }
 
-@function mdwGetThemeParamColor($param, $tone, $type) {
-  @if ($type == 'var' or ($type == null)) {
-    @if ($tone == null) {
-      @return var(--#{$param}-color);
-    }
-    @return var(--#{$param}-#{$tone}-color);
-  }
-  @if ($tone == null) {
-    $tone: '500';
-  }
-
+@function mdwGetThemeParamColor($param, $tone: null) {
   $paramValue: mdwGetThemeParamValue($param);
   @if (($param == 'foreground-light') or ($param == 'foreground-dark')) {
     @return $paramValue;

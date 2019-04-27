@@ -1,9 +1,7 @@
 @import '../../core/_breakpoint.scss';
 @import '../../core/theme/index.scss';
 
-$mdw-layout__theme-values: (
-  divider-color:         $mdw-theme__divider-ink,
-) !default;
+$mdw-layout__theme-values: () !default;
 
 @function mdwLayoutThemeValue($key, $type) {
   @return mdwGetThemeValue('layout', $mdw-layout__theme-values, $key, $type);
@@ -17,7 +15,7 @@ $mdw-layout__theme-values: (
     }
 
     .mdw-layout__appbar-shape {
-      color: RGB(var(--surface-color));
+      color: RGB(var(--mdw-surface));
     }
   }
 

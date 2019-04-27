@@ -4,39 +4,42 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
 
 @function __mdwGetThemeValue($component, $colorMap, $key, $type) {
   @if ($type == 'var') {
-    @return var(--#{$component}__#{$key});
+    @return var(--mdw-#{$component}__#{$key});
   }
   $item: __mdwGetThemeMapItem($colorMap, $key, $type);
   $length: length($item);
   @if ($length == 1) {
+    @if (type_of($item) == color) {
+      @return red($item),green($item),blue($item);
+    }
     @return $item;
   } @else if ($length == 2) {
     $color: nth($item, 1);
     $opacity: nth($item, 2);
     @if (type_of($color) == string) {
-      $color: mdwGetThemeParamColor($color, null, $type);
+      $color: mdwGetThemeParamColor($color);
     }
-    @return rgba($color, $opacity);
+    @return red($color),green($color),blue($color),$opacity;
   } @else {
     $color: nth($item, 1);
     $tone: nth($item, 2);
     $opacity: nth($item, 3);
-    $value: mdwGetThemeParamColor($color, $tone, $type);
+    $value: mdwGetThemeParamColor($color, $tone);
     @if ($opacity == null) {
       $opacity: 1.0;
     }
-    @return rgba($value, $opacity);
+    @return red($value),green($value),blue($value),$opacity;
   }
   @return null;
 }
 
-@mixin __mdw-theme__add-variables($component, $map, $lightness, $rgbOnly: false) {
+@mixin __mdw-theme__add-variables($component, $map, $lightness) {
   @each $key in map-keys($map) {
     $item: __mdwGetThemeMapItem($map, $key, $lightness);
     $value: null;
     $length: length($item);
     @if ($length == 1) {
-      @if ($rgbOnly and type_of(item) == color) {
+      @if (type_of($item) == color) {
         $value: red($item),green($item),blue($item);
       } @else {
         $value: $item;
@@ -45,18 +48,9 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
       $color: nth($item, 1);
       $opacity: nth($item, 2);
       @if (type_of($color) == string) {
-        @if ($rgbOnly) {
-          $value: var(--#{$color}-color);
-        } @else {
-          $value: RGBA(var(--#{$color}-color),#{$opacity});
-        }
-      } @else {
-        @if ($rgbOnly) {
-          $value: red($color),green($color),blue($color);
-        } @else {
-          $value: rgba($color,$opacity);
-        }
+        $color: mdwGetThemeParamColor($color);
       }
+      $value: red($color),green($color),blue($color),$opacity;
     } @else {
       $color: nth($item, 1);
       $tone: nth($item, 2);
@@ -64,13 +58,20 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
       @if ($tone == null) {
         @error '$tone cannot be null';
       }
-      @if ($rgbOnly) {
-        $value: var(--#{$color}-#{$tone}-color);
+      @if ($color == null) {
+        $value: var(--#{$tone}-color);
       } @else {
-        $value: RGBA(var(--#{$color}-#{$tone}-color),#{$opacity});
+        @if (type_of($color) == string) {
+          $color: mdwGetThemeParamColor($color, $tone);
+        }
+        @if ($opacity == null) {
+          $value: red($color),green($color),blue($color);
+        } @else {
+          $value: red($color),green($color),blue($color),$opacity;
+        }
       }
     }
-    --#{$component}__#{$key}: #{$value};
+    --mdw-#{$component}__#{$key}: #{$value};
   }
 }
 
@@ -88,14 +89,14 @@ $mdw-theme__tone-list: ("50", "100", "200", "300", "400", "500", "600", "700", "
   @return nth($list, 1);
 }
 
-@mixin __mdw-theme__add-component-variable-rules($component, $values, $rgbOnly: false) {
+@mixin __mdw-theme__add-component-variable-rules($component, $values) {
   :root,
   .mdw-theme[mdw-light] {
-    @include __mdw-theme__add-variables($component, $values, 'light', $rgbOnly);
+    @include __mdw-theme__add-variables($component, $values, 'light');
   }
 
   .mdw-theme[mdw-dark] {
-    @include __mdw-theme__add-variables($component, $values, 'dark', $rgbOnly);
+    @include __mdw-theme__add-variables($component, $values, 'dark');
   }
 }
 

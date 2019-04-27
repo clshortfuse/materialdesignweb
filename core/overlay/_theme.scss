@@ -3,16 +3,16 @@
 @import '../theme/index.scss';
 
 $mdw-overlay__theme-values: (
-  
-  off-color:                     $mdw-theme__default-ink,
-  off-medium-color:              $mdw-theme__medium-ink,
-  off-inactive-color:            $mdw-theme__inactive-ink,
-  off-divider-color:             $mdw-theme__divider-ink,
+  overlay-color:                 $mdw-theme__foreground,
 
+  high-opacity:                  $mdw-theme__high-opacity,
+  medium-opacity:                $mdw-theme__medium-opacity,
+  inactive-opacity:              $mdw-theme__inactive-opacity,
+  divider-opacity:               $mdw-theme__divider-opacity,
+  
   disabled-opacity:              (0.38, 0.50),
   
   // states   
-  overlay-color:                 (('foreground-light', 1.00), ('foreground-dark', 1.00)),
 
   hover-opacity:                 (0.04, 0.08),
   focus-opacity:                 (0.12, 0.24),
@@ -43,7 +43,7 @@ $mdw-overlay__theme-values: (
     &[aria-current] {
       &::before {
         @if ($type == 'var') {
-          color: RGB(var(--ink-color));
+          color: RGB(var(--mdw-ink));
         } @else {
           // Handled by mdw-color
         }
@@ -56,9 +56,9 @@ $mdw-overlay__theme-values: (
     &[aria-disabled="true"]:active {
       &::before {
         @if ($type == 'var') {
-          color: mdwOverlayThemeValue("overlay-color", $type);
+          color: RGB(mdwOverlayThemeValue("overlay-color", $type));
         } @else {
-          background-color: mdwOverlayThemeValue("overlay-color", $type);
+          background-color: RGB(mdwOverlayThemeValue("overlay-color", $type));
         }
       }
     }
@@ -68,25 +68,25 @@ $mdw-overlay__theme-values: (
     &[aria-pressed="false"],
     &[aria-selected="true"]:not([aria-current]) {
       #{if($type == 'var', '&', '&,&.mdw-theme')} {
-        color: mdwOverlayThemeValue("off-color", $type);
+        color: RGBA(mdwOverlayThemeValue("overlay-color", $type), mdwOverlayThemeValue("high-opacity", $type));
         &[mdw-border-ink] {
-          border-color: mdwOverlayThemeValue("off-divider-color", $type);
+          border-color: RGBA(mdwOverlayThemeValue("overlay-color", $type), mdwOverlayThemeValue("divider-opacity", $type));
         }
         &[mdw-overlay-default="medium"] {
-          color: mdwOverlayThemeValue("off-medium-color", $type);
+          color: RGBA(mdwOverlayThemeValue("overlay-color", $type), mdwOverlayThemeValue("medium-opacity", $type));
         }
         &[mdw-overlay-default="inactive"] {
-          color: mdwOverlayThemeValue("off-inactive-color", $type);
+          color: RGBA(mdwOverlayThemeValue("overlay-color", $type), mdwOverlayThemeValue("inactive-opacity", $type));
         }
         &[mdw-overlay-default="divider"] {
-          color: mdwOverlayThemeValue("off-divider-color", $type);
+          color: RGBA(mdwOverlayThemeValue("overlay-color", $type), mdwOverlayThemeValue("divider-opacity", $type));
         }
       }
     }
 
     &[aria-disabled="true"] {
       &[mdw-overlay-disabled="ink"] {
-        color: mdwOverlayThemeValue("off-inactive-color", $type);
+        color: RGBA(mdwOverlayThemeValue("overlay-color", $type), mdwOverlayThemeValue("inactive-opacity", $type));
       }
       &:not([mdw-overlay-disabled]) {
         opacity: mdwOverlayThemeValue("disabled-opacity", $type);
