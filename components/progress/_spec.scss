@@ -1,12 +1,15 @@
 // https://material.io/guidelines/components/progress-activity.html#
 
+// https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/anim/progress_indeterminate_rotation_material.xml
+// https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/anim/progress_indeterminate_material.xml
+// https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/drawable/vector_drawable_progress_bar_medium.xml
+
 @import '../../core/_motion.scss';
 @import '../../core/_platform.scss';
 
-$radius: 8.75;
-$pi: 3.14159265359;
-$circumference: 2 * $pi * $radius;
-$duration: 1500ms;
+
+$mdw-progress__duration: 1333ms;
+
 
 /* 
  * SVG Animated Material Spin Animation
@@ -27,9 +30,11 @@ $duration: 1500ms;
  * Animate with ease-in-out
  */
 
-
 @function circlePercentage($percent, $limit: 100) {
-  @return $circumference * ((3 * ($limit/100)) - $percent/100);
+  $radius: 8.75;
+  $pi: 3.14159265359;
+  $circumference: 2 * $pi * $radius;
+  @return $circumference * (($limit/100) - ($percent/100));
 }
 
 @keyframes rotate-clockwise {
@@ -73,7 +78,7 @@ $duration: 1500ms;
     transform: rotate(0deg);
     will-change: transform;
     animation-name: rotate-clockwise;
-    animation-duration: $duration;
+    animation-duration: $mdw-progress__duration;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     & > path {
@@ -82,31 +87,36 @@ $duration: 1500ms;
       stroke: currentColor;
       transform-origin: center center;
       &:nth-child(1) {
-        stroke-linecap: round;
-        stroke-dasharray: $circumference * 0.75;
-        stroke-dashoffset: circlePercentage(33.33, 75);
-        transform: rotate(0deg);
-        will-change: stroke-dashoffset, transform;
         animation-name: mdw-progress-dash, rotate-counterclockwise;
-        animation-duration: $duration, $duration * 4;
+        animation-duration: $mdw-progress__duration, $mdw-progress__duration * 4;
         animation-timing-function: $mdw-motion__standard-easing, steps(4,end);
         animation-iteration-count: infinite;
+
+        stroke-dasharray: circlePercentage(25, 100);
+        stroke-dashoffset: circlePercentage(100/3, 75); // Fallback 33% length for IE
+        stroke-linecap: round;
+
       }
       &:nth-child(2) {
         display: none;
+
         transition-property: stroke-dashoffset;
-        transition-duration: $duration;
+        transition-duration: $mdw-motion__shape-change-duration;
+        transition-timing-function: $mdw-motion__standard-easing;
+
+        stroke-dasharray: circlePercentage(0, 100);
         stroke-dashoffset: circlePercentage(0, 100);
-        stroke-dasharray: $circumference;
+        stroke-linecap: square;
       }
       
     }
   }
   
   // IE does not support animated SVG
+  // Double rotation speed
   @include mdw-platform__ie {
     &:not([mdw-determinate]) svg {
-      animation-duration: $duration / 2;
+      animation-duration: $mdw-progress__duration / 2;
     }
   }
 }
@@ -115,13 +125,10 @@ $duration: 1500ms;
   svg {
     animation: none;
     will-change: none;
-    transform: none;
     & > path {
       &:nth-child(1) {
         display: none;
         animation: none;
-        will-change: none;
-        transform: none;
       }
       &:nth-child(2) {
         display: inline;
