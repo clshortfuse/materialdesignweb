@@ -42,7 +42,7 @@ include ../_mixins.pug
         +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'none'}) Default
         +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'primary', checked:true}) Primary
         +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'secondary'}) Secondary
-        +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'green A700'}) Green A700
+        +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'green'}) Green
       .mdw-type(mdw-style="subtitle") Attributes
       .docs-option-list
         +mdwSelection({ink:'secondary', name:'autosize', checked:true}) Autosize
@@ -207,18 +207,18 @@ include ../_mixins.pug
         +androidstatusbar('amber 600', 'dark')
         +appbar('amber A400', 'dark', ['arrow_back'], ['done'])
         .content(style="padding:0 16px")
-          label.mdw-textfield.mdw-theme(mdw-ink="amber A700")
+          label.mdw-textfield.mdw-theme(mdw-ink="amber")
             input.mdw-textfield__input(placeholder=" ")
             .mdw-textfield__border
               .mdw-textfield__outline-gap
                 .mdw-textfield__label Name
             .mdw-textfield__error-text spacer
-          label.mdw-textfield.mdw-theme(mdw-ink="amber A700")
+          label.mdw-textfield.mdw-theme(mdw-ink="amber")
             textarea.mdw-textfield__input(placeholder=" " rows="5")
             .mdw-textfield__border
               .mdw-textfield__outline-gap
                 .mdw-textfield__label Message
-          label.mdw-textfield.mdw-theme(mdw-ink="deeppurple A400" mdw-outlined)
+          label.mdw-textfield.mdw-theme(mdw-ink="deeppurple" mdw-outlined)
             textarea.mdw-textfield__input(placeholder=" " rows="5")
             .mdw-textfield__border
               .mdw-textfield__outline-gap
@@ -229,13 +229,13 @@ include ../_mixins.pug
         +androidstatusbar('amber A700', 'dark')
         +appbar('amber A400', 'dark', ['arrow_back'], ['done'])
         .content(style="padding:0 16px")
-          label.mdw-textfield.mdw-theme(mdw-ink="amber A700")
+          label.mdw-textfield.mdw-theme(mdw-ink="amber")
             input.mdw-textfield__input(placeholder=" ")
             .mdw-textfield__border
               .mdw-textfield__outline-gap
                 .mdw-textfield__label Name
             .mdw-textfield__error-text spacer
-          label.mdw-textfield.mdw-theme(mdw-ink="amber A700")
+          label.mdw-textfield.mdw-theme(mdw-ink="amber")
             textarea.mdw-textfield__input(placeholder=" " rows="5" required)
               | Just wanted to let you kn
             .mdw-textfield__border
@@ -243,8 +243,8 @@ include ../_mixins.pug
                 .mdw-textfield__label Message *
             .mdw-textfield__helper-text Helper text.
             .mdw-textfield__error-text Error: Required.
-          label.mdw-textfield
-            textarea.mdw-textfield__input.mdw-theme(mdw-ink="amber A700" placeholder=" " rows="5" disabled)
+          label.mdw-textfield.mdw-theme(mdw-ink="amber")
+            textarea.mdw-textfield__input(placeholder=" " rows="5" disabled)
               | This textarea is disabled.
             .mdw-textfield__border
               .mdw-textfield__outline-gap

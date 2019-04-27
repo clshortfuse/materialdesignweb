@@ -39,7 +39,7 @@ mixin button-test
       .mdw-grid__content
         .component-sample
           .display-flex
-            a.mdw-button.mdw-theme(mdw-ink="secondary A200") Button
+            a.mdw-button.mdw-theme(mdw-ink="secondary") Button
     .mdw-grid__item(mdw-colspan="6")
       .mdw-grid__content
         .mdw-type(mdw-style="subtitle") Javascript
@@ -73,8 +73,8 @@ mixin button-test
           +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'default'}) Default
           +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'primary'}) Primary
           +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'secondary', checked:true}) Secondary
-          +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'warn alt'}) Warn Alt
-          +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'purple A400'}) Purple A400
+          +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'warn contrast'}) Warn Contrast
+          +mdwSelection({ink:'secondary', name:'ink', type:'radio', value:'purple'}) Purple
         .mdw-type(mdw-style="subtitle") Surface
         div.docs-option-list
           +mdwSelection({ink:'secondary', name:'surface', type:'radio', value:'none', checked:true}) Default

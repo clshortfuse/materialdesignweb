@@ -1,185 +1,10 @@
 include ../_mixins.pug
 
 +header("color")
-  .mdw-grid(mdw-margin-top mdw-margin-bottom)
-    .mdw-grid__item(mdw-colspan="50%")
-      .mdw-grid__content
-        .mdw-grid(mdw-columns="1" mdw-margin="0")
-          .mdw-grid__item
-            .mdw-grid__content
-              h3.mdw-type Ink
-          .mdw-grid__item
-            .mdw-grid__content
-              h6.mdw-type Standard
-              div
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="default" mdw-surface="binary") Default
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="black" mdw-surface="white") Black
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="white" mdw-surface="black") White
-          .mdw-grid__item
-            .mdw-grid__content
-              h6.mdw-type Opacity
-              div
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="high" mdw-surface="binary") High
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="medium" mdw-surface="binary") Medium
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="inactive" mdw-surface="binary") Inactive
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="divider" mdw-surface="binary") Divider
-          .mdw-grid__item(mdw-colspan="100%")
-            .mdw-grid__content
-              h6.mdw-type Primary
-              div
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary" mdw-surface="binary") Default
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary light" mdw-surface="binary") Light
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary contrast" mdw-surface="binary") Contrast
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary A100" mdw-surface="binary") A100
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary A200" mdw-surface="binary") A200
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary A400" mdw-surface="binary") A400
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary A700" mdw-surface="binary") A700
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary 50" mdw-surface="binary") 50
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary 100" mdw-surface="binary") 100
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary 200" mdw-surface="binary") 200
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary 300" mdw-surface="binary") 300
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary 400" mdw-surface="binary") 400
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary 500" mdw-surface="binary") 500
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary 600" mdw-surface="binary") 600
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary 700" mdw-surface="binary") 700
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary 800" mdw-surface="binary") 800
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="primary 900" mdw-surface="binary") 900
-          .mdw-grid__item(mdw-colspan="100%")
-            .mdw-grid__content
-              h6.mdw-type Secondary
-              div
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary" mdw-surface="binary") Default
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary light" mdw-surface="binary") Light
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary contrast" mdw-surface="binary") Contrast
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary A100" mdw-surface="binary") A100
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary A200" mdw-surface="binary") A200
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary A400" mdw-surface="binary") A400
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary A700" mdw-surface="binary") A700
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary 50" mdw-surface="binary") 50
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary 100" mdw-surface="binary") 100
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary 200" mdw-surface="binary") 200
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary 300" mdw-surface="binary") 300
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary 400" mdw-surface="binary") 400
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary 500" mdw-surface="binary") 500
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary 600" mdw-surface="binary") 600
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary 700" mdw-surface="binary") 700
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary 800" mdw-surface="binary") 800
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="secondary 900" mdw-surface="binary") 900
-          .mdw-grid__item
-            .mdw-grid__content
-              h6.mdw-type Warn
-              div
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn" mdw-surface="binary") Default
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn light" mdw-surface="binary") Light
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn contrast" mdw-surface="binary") Contrast
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn A100" mdw-surface="binary") A100
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn A200" mdw-surface="binary") A200
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn A400" mdw-surface="binary") A400
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn A700" mdw-surface="binary") A700
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn 50" mdw-surface="binary") 50
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn 100" mdw-surface="binary") 100
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn 200" mdw-surface="binary") 200
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn 300" mdw-surface="binary") 300
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn 400" mdw-surface="binary") 400
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn 500" mdw-surface="binary") 500
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn 600" mdw-surface="binary") 600
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn 700" mdw-surface="binary") 700
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn 800" mdw-surface="binary") 800
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-ink="warn 900" mdw-surface="binary") 900
-    .mdw-grid__item(mdw-colspan="50%")
-      .mdw-grid__content
-        .mdw-grid(mdw-columns="1" mdw-margin="0")
-          .mdw-grid__item
-            .mdw-grid__content
-              h3.mdw-type Surface
-          .mdw-grid__item
-            .mdw-grid__content
-              h6.mdw-type Standard
-              div
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="card") Card
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="binary") Binary
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="black" mdw-dark) Black
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="white" mdw-light) White
-          .mdw-grid__item
-            .mdw-grid__content
-              h6.mdw-type Background
-              div
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="background") Default
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="background alt") Alternate
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="background 50" mdw-light) 50
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="background 100" mdw-light) 100
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="background 200" mdw-light) 200
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="background 300" mdw-light) 300
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="background 400" mdw-light) 400
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="background 500" mdw-dark) 500
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="background 600" mdw-dark) 600
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="background 700" mdw-dark) 700
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="background 800" mdw-dark) 800
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="background 900" mdw-dark) 900
-          .mdw-grid__item
-            .mdw-grid__content
-              h6.mdw-type Primary
-              div
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary") Default
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary alt") Alternate
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary 50" mdw-light) 50
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary 100" mdw-light) 100
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary 200" mdw-light) 200
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary 300" mdw-light) 300
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary 400" mdw-light) 400
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary 500" mdw-dark) 500
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary 600" mdw-dark) 600
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary 700" mdw-dark) 700
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary 800" mdw-dark) 800
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary 900" mdw-dark) 900
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary A100" mdw-light) A100
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary A200" mdw-light) A200
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary A400" mdw-light) A400
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="primary A700" mdw-dark) A700
-          .mdw-grid__item
-            .mdw-grid__content
-              h6.mdw-type Secondary
-              div
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary") Default
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary alt") Alternate
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary 50" mdw-light) 50
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary 100" mdw-light) 100
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary 200" mdw-light) 200
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary 300" mdw-light) 300
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary 400" mdw-light) 400
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary 500" mdw-dark) 500
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary 600" mdw-dark) 600
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary 700" mdw-dark) 700
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary 800" mdw-dark) 800
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary 900" mdw-dark) 900
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary A100" mdw-light) A100
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary A200" mdw-light) A200
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary A400" mdw-light) A400
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="secondary A700" mdw-dark) A700
-          .mdw-grid__item
-            .mdw-grid__content
-              h6.mdw-type Warn
-              div
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn") Default
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn alt") Alternate
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn 50" mdw-light) 50
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn 100" mdw-light) 100
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn 200" mdw-light) 200
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn 300" mdw-light) 300
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn 400" mdw-light) 400
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn 500" mdw-dark) 500
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn 600" mdw-dark) 600
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn 700" mdw-dark) 700
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn 800" mdw-dark) 800
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn 900" mdw-dark) 900
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn A100" mdw-light) A100
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn A200" mdw-light) A200
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn A400" mdw-light) A400
-                .demo-core-item.mdw-elevation.mdw-overlay.mdw-ripple.mdw-theme(mdw-elevation="1" mdw-surface="warn A700" mdw-dark) A700
-  .mdw-grid.mdw-elevation.mdw-theme(mdw-elevation="8" mdw-margin-bottom mdw-stretch mdw-surface="card" style="position:-webkit-sticky;position:sticky;bottom:0;z-index:1")
-    .mdw-grid__item(mdw-colspan="100%")
-      .mdw-grid__content
-        .display-flex.flex-wrap
+  .mdw-grid(mdw-margin-top mdw-margin-bottom mdw-columns="4")#color-page-options
+    .mdw-grid__item(mdw-colspan="4")
+      .mdw-grid__content.mdw-theme(mdw-elevation="8")
+        #color-sample-area
           a#sample-button.demo-core-item.mdw-overlay.mdw-elevation.mdw-ripple.mdw-theme(tabindex="0" mdw-elevation="1" mdw-surface="binary" mdw-ink="secondary contrast") Enabled
           a#sample-button__selected.demo-core-item.mdw-overlay.mdw-elevation.mdw-ripple.mdw-theme(tabindex="0" mdw-elevation="1" mdw-surface="binary" mdw-ink="secondary contrast" aria-selected="true") Selected
           a#sample-button__activated.demo-core-item.mdw-overlay.mdw-elevation.mdw-ripple.mdw-theme(tabindex="0" mdw-elevation="1" mdw-surface="binary" mdw-ink="secondary contrast" aria-pressed="true") Activated
@@ -198,4 +23,109 @@ include ../_mixins.pug
             p.mdw-type Activated Contrast:
               span#sample-contrast__activated.mdw-theme(mdw-ink="medium")   test
               span  / 4.5
+    .mdw-grid__item(mdw-colspan="2")
+      .mdw-grid__content
+        .mdw-type(mdw-style="subtitle") Ink
+        div
+          label.mdw-textfield.mdw-theme(mdw-ink="secondary" mdw-outlined)
+            select.mdw-textfield__input(name="ink-color")
+              option(value="default") Default
+              option(value="black") Black
+              option(value="white") White
+              option(value="primary") Primary
+              option(value="secondary" selected) Secondary
+              option(value="warn") Warn
+              option(value="amber") Amber
+              option(value="blue") Blue
+              option(value="cyan") Cyan
+              option(value="red") Red
+              option(value="green") Green
+              option(value="deeppurple") Deeppurple
+              option(value="purple") Purple
+              option(value="yellow") Yellow
+              option(value="teal") Teal
+            .mdw-textfield__icon(mdw-dropdown)
+            .mdw-textfield__border
+              .mdw-textfield__outline-gap
+                .mdw-textfield__label Color
+          label.mdw-textfield.mdw-theme(mdw-ink="secondary" mdw-outlined)
+            select.mdw-textfield__input(name="ink-tone")
+              option(value="" selected) Auto
+              option(value="light") Light
+              option(value="contrast" selected) Contrast
+              option(value="A100") A100
+              option(value="A200") A200
+              option(value="A400") A400
+              option(value="A700") A700
+              option(value="50") 50
+              option(value="100") 100
+              option(value="200") 200
+              option(value="300") 300
+              option(value="400") 400
+              option(value="500") 500
+              option(value="600") 600
+              option(value="700") 700
+              option(value="800") 800
+              option(value="900") 900
+            .mdw-textfield__icon(mdw-dropdown)
+            .mdw-textfield__border
+              .mdw-textfield__outline-gap
+                .mdw-textfield__label Tone
+          label.mdw-textfield.mdw-theme(mdw-ink="secondary" mdw-outlined)
+            select.mdw-textfield__input(name="ink-opacity")
+              option(value="" selected) Auto
+              option(value="solid") Solid
+              option(value="high") High
+              option(value="medium") Medium
+              option(value="inactive") Inactive
+              option(value="divider") Divider
+            .mdw-textfield__icon(mdw-dropdown)
+            .mdw-textfield__border
+              .mdw-textfield__outline-gap
+                .mdw-textfield__label Opacity
+    .mdw-grid__item(mdw-colspan="2")
+      .mdw-grid__content
+        .mdw-type(mdw-style="subtitle") Surface
+        #color-page-options
+          label.mdw-textfield.mdw-theme(mdw-ink="secondary" mdw-outlined)
+            select.mdw-textfield__input(name="surface-color")
+              option(value="card") Card
+              option(value="binary" selected) Binary
+              option(value="black") Black
+              option(value="white") White
+              option(value="background") Background
+              option(value="primary") Primary
+              option(value="secondary") Secondary
+              option(value="warn") Warn
+              option(value="amber") Amber
+              option(value="blue") Blue
+              option(value="cyan") Cyan
+              option(value="red") Red
+              option(value="green") Green
+              option(value="deeppurple") Deeppurple
+              option(value="purple") Purple
+              option(value="yellow") Yellow
+              option(value="teal") Teal
+            .mdw-textfield__icon(mdw-dropdown)
+            .mdw-textfield__border
+              .mdw-textfield__outline-gap
+                .mdw-textfield__label Color
+          label.mdw-textfield.mdw-theme(mdw-ink="secondary" mdw-outlined)
+            select.mdw-textfield__input(name="surface-tone")
+              option(value="" selected) Default
+              option(value="alt") Alternate
+              option(value="50") 50
+              option(value="100") 100
+              option(value="200") 200
+              option(value="300") 300
+              option(value="400") 400
+              option(value="500") 500
+              option(value="600") 600
+              option(value="700") 700
+              option(value="800") 800
+              option(value="900") 900
+            .mdw-textfield__icon(mdw-dropdown)
+            .mdw-textfield__border
+              .mdw-textfield__outline-gap
+                .mdw-textfield__label Tone
   script(src='color.min.js')

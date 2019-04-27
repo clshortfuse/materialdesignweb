@@ -174,6 +174,75 @@ function onItemClick(event) {
   calculateContrast();
 }
 
+const currentInkOptions = {
+  color: 'secondary',
+  tone: 'contrast',
+  opacity: '',
+};
+
+const currentSurfaceOptions = {
+  color: 'binary',
+  tone: '',
+};
+
+/** @return {void} */
+function refresh() {
+  const inkProperties = [
+    currentInkOptions.color,
+    currentInkOptions.tone,
+    currentInkOptions.opacity,
+  ].filter(v => v).join(' ');
+  const surfaceProperties = [
+    currentSurfaceOptions.color,
+    currentSurfaceOptions.tone,
+  ].filter(v => v).join(' ');
+  iterateArrayLike(document.querySelectorAll('#color-sample-area .demo-core-item'), (el) => {
+    el.setAttribute('mdw-ink', inkProperties);
+    el.setAttribute('mdw-surface', surfaceProperties);
+  });
+  calculateContrast();
+}
+
+/**
+ * @param {Event} event
+ * @return {void}
+ */
+function onOptionChange(event) {
+  /** @type {HTMLSelectElement} */
+  const selectElement = (event.target);
+  const { name, value } = selectElement;
+  console.log('onOptionChange', name, value);
+  switch (name) {
+    case 'ink-color':
+      currentInkOptions.color = value;
+      break;
+    case 'ink-tone':
+      currentInkOptions.tone = value;
+      break;
+    case 'ink-opacity':
+      currentInkOptions.opacity = value;
+      break;
+    case 'surface-color':
+      currentSurfaceOptions.color = value;
+      break;
+    case 'surface-tone':
+      currentSurfaceOptions.tone = value;
+      break;
+    default:
+      return;
+  }
+  refresh();
+}
+
+/** @return {void} */
+function setupComponentOptions() {
+  // sampleComponent = document.querySelector('.component-sample .mdw-button');
+  // Button.attach(sampleComponent);
+  iterateArrayLike(document.querySelectorAll('#color-page-options [name]'), (el) => {
+    el.addEventListener('change', onOptionChange);
+  });
+}
+
 iterateArrayLike(
   document.getElementsByClassName('demo-core-item'),
   item => item.addEventListener('click', onItemClick)
@@ -184,4 +253,5 @@ iterateArrayLike(
   document.getElementById('altThemeButton'),
 ].forEach(button => button.addEventListener('click', calculateContrast));
 
-calculateContrast();
+setupComponentOptions();
+refresh();
