@@ -15,6 +15,9 @@ $mdw-textfield__textarea-padding-horizontal: dp(16) !default;
 $mdw-textfield__outline-start-width: dp(10) !default;
 $mdw-textfield__outline-end-width: dp(8) !default;
 
+$mdw-textfield__input-top-alignment: calc(#{dp(8 + 4)} + #{sp(12)} + 0.125em) !default; // Extra 1/8em for font alignment
+$mdw-textfield__input-bottom-alignment: dp(8) !default;
+
 // CSS Grid Layout
 //     1   |  2  |   3    |   4   |        5        |    6   |  7
 //   -------------------------------------------------------------
@@ -51,6 +54,8 @@ $mdw-textfield__outline-end-width: dp(8) !default;
       align-self: center;
 
       margin: 0;
+      padding-top: 0;
+      padding-bottom: 0;
     }
 
     .mdw-textfield__border {
@@ -95,8 +100,8 @@ $mdw-textfield__outline-end-width: dp(8) !default;
     -ms-grid-row-align: center;
     align-self: center;
 
-    margin-top: 0;
-    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   textarea.mdw-textfield__input {
@@ -374,9 +379,13 @@ $mdw-textfield__outline-end-width: dp(8) !default;
     -ms-grid-row-align: center;
     align-self: center;
 
-    margin: dp(8) 0;
+    min-height: calc(100% - #{sp(12)} - #{dp(4)});
+    margin-top: calc(#{sp(6)} + #{dp(2)}); // Half of label + 2px
+    margin-bottom: calc(#{sp(6)} + #{dp(2)}); // Equidistant from border
     border-right: none;
     border-left: dp(2) solid transparent;
+    padding-top: 0;
+    padding-bottom: 0;
 
     :root[dir="rtl"] & {
       border-right: dp(2) solid transparent;
@@ -481,14 +490,14 @@ $mdw-textfield__outline-end-width: dp(8) !default;
 
 
   &::before {
-    // Add 8dp from text-top to top for positioning
-    // Add 8dp from baseline to keep centering
+    // Add upper 8dp from text-top to top for positioning
+    // Add lower 8dp from baseline to keep vertically centered
     @include type-rules('caption');
     content: "";
     
     display: inline-block;
     vertical-align: dp(-8);
-    
+
     box-sizing: content-box; // Don't allow global override
     height: 1em;
     margin-top: dp(8);
@@ -559,10 +568,7 @@ $mdw-textfield__outline-end-width: dp(8) !default;
   box-sizing: border-box;
   min-width: 0; // Firefox CSS Grid fix
   width: 100%;
-  margin: 0;
   border: none;
-  padding: 0;
-  //padding-bottom: dp(8);
 
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -606,8 +612,8 @@ $mdw-textfield__outline-end-width: dp(8) !default;
   -ms-grid-row-align: flex-start;
   align-self: flex-start;
 
-  margin-top: calc(#{dp(8 + 4)} + #{sp(12)});
-  margin-bottom: dp(8);
+  padding-top: $mdw-textfield__input-top-alignment;
+  padding-bottom: $mdw-textfield__input-bottom-alignment;
 }
 
 textarea.mdw-textfield__input {
@@ -618,6 +624,9 @@ textarea.mdw-textfield__input {
   min-height: 1em; // Avoid clipping on resize
   min-width: 100%; // Always fill container horizontally
   max-width: 100%; // Don't allow resize beyond bounds
+  margin-top: $mdw-textfield__input-top-alignment;
+  margin-bottom: $mdw-textfield__input-bottom-alignment;
+  padding-top: 0;
   padding-right: $mdw-textfield__textarea-padding-horizontal;
   padding-bottom: 0;
   padding-left: 0;
