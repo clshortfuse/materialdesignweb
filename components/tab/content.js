@@ -2,7 +2,6 @@ import {
   iterateArrayLike,
   scrollToElement,
   dispatchDomEvent,
-  getPassiveEventListenerOption,
   isRtl,
   iterateSomeOfArrayLike,
 } from '../../core/dom';
@@ -15,7 +14,7 @@ export const SCROLL_EVENT = 'mdw:tabcontent-scroll';
  * @return {void}
  */
 export function attach(tabContentElement) {
-  tabContentElement.addEventListener('scroll', onTabContentScroll, getPassiveEventListenerOption());
+  tabContentElement.addEventListener('scroll', onTabContentScroll);
   iterateArrayLike(tabContentElement.getElementsByClassName('mdw-tab__panel'), TabPanel.attach);
   tabContentElement.addEventListener('keydown', onKeyDown);
 }
