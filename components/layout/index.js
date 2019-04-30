@@ -87,6 +87,18 @@ export function onScrimScroll(event) {
   }
 }
 
+/** @return {boolean} */
+export function isNavDrawerModalShowing() {
+  const navDrawer = document.getElementsByClassName('mdw-layout__navdrawer')[0];
+  if (!navDrawer) {
+    return false;
+  }
+  if (window.location.hash !== `#${navDrawer.id}` && navDrawer.getAttribute('aria-hidden') !== 'false') {
+    return false;
+  }
+  return (window.innerWidth < TABLET_BREAKPOINT || document.body.getAttribute('mdw-navdrawer-style') === 'modal');
+}
+
 /**
  * @param {MouseEvent} [event]
  * @return {void}
@@ -95,11 +107,8 @@ export function onScrimClick(event) {
   if (event && event.target instanceof HTMLAnchorElement) {
     event.preventDefault();
   }
-  const navDrawer = document.getElementsByClassName('mdw-layout__navdrawer')[0];
-  if (navDrawer && (window.location.hash === `#${navDrawer.id}` || navDrawer.getAttribute('aria-hidden') === 'false')) {
-    if (window.innerWidth < TABLET_BREAKPOINT || document.body.getAttribute('mdw-navdrawer-style') === 'modal') {
-      hideNavDrawer();
-    }
+  if (isNavDrawerModalShowing()) {
+    hideNavDrawer();
   }
   const sidesheet = document.getElementsByClassName('mdw-layout__sidesheet')[0];
   if (sidesheet && sidesheet.getAttribute('aria-hidden') === 'false') {
