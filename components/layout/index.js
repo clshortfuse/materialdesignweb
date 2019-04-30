@@ -1,4 +1,4 @@
-import { iterateArrayLike, getPassiveEventListenerOption } from '../../core/dom';
+import { iterateArrayLike } from '../../core/dom';
 import Throttler from '../../core/throttler';
 
 const MIN_SCROLL_DELTA = 24; // Avoid finger bounce
@@ -29,10 +29,10 @@ export function attach() {
   const appBar = getAppBarElement();
   if (appBar) {
     // Initialize with scroll up
-    document.body.addEventListener('scroll', onBodyScroll, getPassiveEventListenerOption());
+    document.body.addEventListener('scroll', onBodyScroll);
     const contentElement = getContentElement();
     if (contentElement) {
-      contentElement.addEventListener('scroll', onContentScroll, getPassiveEventListenerOption());
+      contentElement.addEventListener('scroll', onContentScroll);
     }
     resetScroll();
   }
@@ -72,9 +72,9 @@ export function getScrollThrottler() {
  */
 export function onScrimScroll(event) {
   // JS needed for Safari
-  event.preventDefault();
   event.stopPropagation();
   if (event.type !== 'scroll') {
+    event.preventDefault();
     return;
   }
   /** @type {HTMLElement} */
