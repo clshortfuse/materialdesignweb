@@ -130,6 +130,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   width: 100%;
 
   cursor: auto;
+  outline: none;
 
   transition-duration: $mdw-motion__fade-out-duration;
   transition-property: background-color;
