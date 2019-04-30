@@ -101,7 +101,7 @@ $mdw-dialog__unit-width: dp(56) !default;
   max-width: 100%;
   flex-shrink: 1;
 
-  will-change: transform;
+  will-change: display, transform;
   
   transform: scale(1);
   transform-origin: bottom center;
@@ -114,7 +114,7 @@ $mdw-dialog__unit-width: dp(56) !default;
 .mdw-dialog[aria-hidden="false"],
 .mdw-dialog[id]:target {
   transition-duration: $mdw-motion__fade-in-duration;
-  transition-property: opacity; // Immediate visibility required for autofocus
+  transition-property: opacity;
   transition-timing-function: $mdw-motion__decelerate-easing;
 
   opacity: 1;
