@@ -7,9 +7,9 @@
       "request": "launch",
       "preLaunchTask": "npm: start:docs",
       "url": "http://localhost:8080/",
-      "webRoot": "${workspaceFolder}/test",
+      "webRoot": "${workspaceFolder}/docs-src",
       "sourceMapPathOverrides": {
-        "webpack:///./*":"${workspaceRoot}/*",
+        "webpack:///*":"${webRoot}/*",
       }
   },
   ]
