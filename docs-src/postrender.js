@@ -31,7 +31,10 @@ navDrawer.addEventListener(ListContent.ACTIVATE_EVENT, (event) => {
     }
     clearCurrentPage();
     item.setAttribute('aria-current', 'page');
-    Layout.hideNavDrawer();
+    // Auto close if modal
+    if (Layout.isNavDrawerModalShowing()) {
+      Layout.hideNavDrawer();
+    }
     window.location.href = item.href;
   }
 });

@@ -1,0 +1,18 @@
+include ../_mixins.pug
+
++header("dom")
+  .mdw-grid(mdw-margin-top mdw-margin-bottom mdw-stretch)
+    .mdw-grid__item(mdw-colspan="6")
+      .mdw-grid__content.component-sample
+        .display-flex(style="flex:1;height:400px;max-height:400px;overflow-y:auto")
+          ul.mdw-list.mdw-theme(style="flex:1;width:100%;" mdw-surface="primary alt")
+
+    .mdw-grid__item(mdw-colspan="100%")
+      .mdw-type(mdw-style="subtitle") Options
+      div.docs-option-list
+        +mdwSelection({ink:'secondary', name:'fastMeasure', checked:true}) Fast Measure
+        +mdwSelection({ink:'secondary', name:'equalSize', checked:true}) Equal Size
+        +mdwSelection({ink:'secondary', name:'block', checked:true}) Block-level
+        +mdwSelection({ink:'secondary', name:'deferRender', checked:true}) Defer Render
+      +mdwButton() Reset
+  script(src='dom.min.js')

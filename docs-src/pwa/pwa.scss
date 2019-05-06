@@ -1,9 +1,8 @@
-$mdw-theme__primary: 'green';
+$mdw-theme__primary: 'deeppurple';
 $mdw-theme__secondary: 'deeporange';
 $mdw-theme__warn: 'red';
 $mdw-theme__background: 'bluegray';
-$mdw-theme__foreground-light: #006064;
-$mdw-theme__foreground-dark: #E0F7FA;
+$mdw-theme__foreground: (#006064, #E0F7FA);
 
 @import "../../core/color/index.scss";
 @import "../../core/overlay/index.scss";

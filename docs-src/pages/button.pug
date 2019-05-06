@@ -102,19 +102,19 @@ mixin button-test
         h6.mdw-type Samples
     .mdw-grid__item(mdw-colspan="6")
       .mdw-grid__content
-        .render-fill.mdw-theme(mdw-surface="white" mdw-light)
+        .render-fill.mdw-theme
           +androidstatusbar('')
           +appbar('', '', [], []) CSS Only
-          .content(style="padding: 16px 0")
+          .content.mdw-theme(style="padding: 16px 0" mdw-surface="binary")
             div
               +button-test
           +androidnavbar
     .mdw-grid__item(mdw-colspan="6")
       .mdw-grid__content
-        .render-fill.js.mdw-theme(mdw-surface="black" mdw-dark)
+        .render-fill.js.mdw-theme
           +androidstatusbar('')
           +appbar('', '', [], []) Javascript Version
-          .content(style="padding: 16px 0")
+          .content.mdw-theme(style="padding: 16px 0" mdw-surface="binary")
             div
               +button-test
           +androidnavbar

@@ -13,7 +13,7 @@
 }
 
 .androidstatusbar {
-  z-index: 1;
+  z-index: 16;
   display: flex;
   align-items: center;
   flex-direction: row-reverse;
@@ -63,6 +63,8 @@
 
 .render,
 .render-fill {
+  z-index: 1;
+  overflow-x: hidden;
   max-height: 640px;
   border-color: #eee;
   border-width: 1px;

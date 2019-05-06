@@ -58,7 +58,11 @@ function buildCustomSearch1() {
   // Actual filter is performed by SearchAdapter
 
   /** @type {ListAdapter<CustomSearchResult>} */
-  const customListAdapter = new ListAdapter(list, [], searchResultRenderer);
+  const customListAdapter = new ListAdapter({
+    element: list,
+    datasource: [],
+    render: searchResultRenderer,
+  });
 
   /** @type {CustomSearchResult[]} */
   let myCachedResults = null;
@@ -118,7 +122,7 @@ function buildCustomSearch1() {
     const listContentElement = (event.target);
     /** @type {HTMLLIElement} */
     const listItemElement = (listContentElement.parentElement);
-    const selectedItem = customListAdapter.elementMap.get(listItemElement);
+    const selectedItem = customListAdapter.elementDataMap.get(listItemElement);
     const text = `${selectedItem.line1}:${selectedItem.line2}`;
     document.getElementById('search-result-custom1').textContent = text;
   });
@@ -150,7 +154,11 @@ function buildCustomSearch2() {
   const noResultsIndicator = (textfield.getElementsByClassName('custom-no-results-indicator')[0]);
 
   /** @type {ListAdapter<CustomSearchResult>} */
-  const customListAdapter = new ListAdapter(list, [], searchResultRenderer);
+  const customListAdapter = new ListAdapter({
+    element: list,
+    datasource: [],
+    render: searchResultRenderer,
+  });
 
   // For purpose of this query is "searched" every time with no cache.
   // SearchAdapter performs no filter
@@ -196,7 +204,7 @@ function buildCustomSearch2() {
     const listContentElement = (event.target);
     /** @type {HTMLLIElement} */
     const listItemElement = (listContentElement.parentElement);
-    const selectedItem = customListAdapter.elementMap.get(listItemElement);
+    const selectedItem = customListAdapter.elementDataMap.get(listItemElement);
     const text = `${selectedItem.line1}:${selectedItem.line2}`;
     document.getElementById('search-result-custom2').textContent = text;
   });

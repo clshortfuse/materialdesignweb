@@ -9,7 +9,9 @@ mixin androidstatusbar(surfaceColor, lightness)
     i.material-icons(style="letter-spacing:2px;padding:0 2px") &#xE1BA;&#xE1C8;&#xE1A4;
 
 mixin appbar(surfaceColor, lightness, start, end)
-  .mdw-appbar.mdw-theme(
+  .mdw-appbar.mdw-elevation.mdw-theme(
+  style="z-index:4"
+  mdw-elevation="4"
   mdw-surface=(surfaceColor ? surfaceColor : false)
   mdw-light=(lightness=='light' ? '' : false)
   mdw-dark=(lightness=='dark' ? '' : false))
@@ -71,7 +73,7 @@ mixin header(activated)
       .mdw-layout__dialogs
       nav#docs-navdrawer.mdw-layout__navdrawer
         .mdw-layout__sheet-content.mdw-theme(mdw-surface="background" mdw-border-ink)
-          ul.mdw-list
+          ul.mdw-list(style="padding-bottom:64px")
             li.mdw-list__item
               a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(
               aria-current=activated=='Home'
@@ -107,7 +109,6 @@ mixin header(activated)
                 +navListItem('list', 'view_list', 'List', activated)
                 +navListItem('menu', 'picture_in_picture', 'Menu', activated)
                 +navListItem('progress', 'timelapse', 'Progress', activated)
-                +navListItem('search', 'search', 'Search', activated)
                 +navListItem('selection', 'toggle_on', 'Selection', activated)
                 +navListItem('slider', 'tune', 'Slider', activated)
                 +navListItem('snackbar', 'video_label', 'Snackbar', activated)
@@ -115,6 +116,13 @@ mixin header(activated)
                 +navListItem('textfield', 'text_fields', 'Text Field', activated)
                 +navListItem('tooltip', 'info', 'Tooltip', activated)
                 +navListItem('type', 'font_download', 'Typography', activated)
+            li.mdw-list__item(aria-expanded="true")
+              span.mdw-list__content.mdw-list__subheader
+                .mdw-list__text.mdw-theme(mdw-ink="medium") Adapters
+                .mdw-list__secondary.mdw-theme.material-icons(mdw-ink="medium") expand_more
+              ul.mdw-list
+                +navListItem('dom', 'calendar_view_day', 'DOM', activated)
+                +navListItem('search', 'search', 'Search', activated)
       a.mdw-layout__scrim(href='#' tabindex="-1")
       .mdw-layout__appbar.mdw-appbar.mdw-theme(mdw-autohide="mobile tablet" mdw-surface="secondary 500" mdw-dark)
         .mdw-layout__appbar-shape
