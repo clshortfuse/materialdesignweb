@@ -412,12 +412,12 @@ export default class DataTableAdapter {
       this.pageLimit = 0;
       this.page = 0;
       if (footer) {
-        footer.style.display = 'none';
+        footer.style.setProperty('display', 'none');
       }
       this.needsDraw = true;
       return;
     }
-    footer.style.display = '';
+    footer.style.removeProperty('display');
     let optionsElement = footer.getElementsByClassName('mdw-datatable__footer-options')[0];
     if (!optionsElement) {
       optionsElement = document.createElement('div');
