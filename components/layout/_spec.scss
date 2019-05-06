@@ -131,6 +131,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
   cursor: auto;
   outline: none;
+  -webkit-tap-highlight-color: transparent;
 
   transition-duration: $mdw-motion__fade-out-duration;
   transition-property: background-color;
