@@ -11,34 +11,36 @@
 .mdw-button(mdw-raised)
 ```
 
-## Colored
+## Colored (Primary)
 ```
-.mdw-button.mdw-theme(mdw-ink="primary A200")
+.mdw-button.mdw-theme(mdw-ink="primary contrast")
 ```
 
 ## Colored (Custom)
 ```
-.mdw-button.mdw-theme(mdw-ink="green A100")
+.mdw-button.mdw-theme(mdw-ink="green contrast")
 ```
 
-## Colored (Dark Themed)
+## Filled Light
 ```
-.mdw-button.mdw-theme(mdw-ink="primary A200" mdw-dark)
-```
-
-## Filled
-```
-.mdw-button.mdw-theme(mdw-surface="primary 500")
+.mdw-button.mdw-theme(mdw-surface="primary 100" mdw-light)
 ```
 
-## Filled (Custom Tone)
+## Filled Dark
 ```
-.mdw-button.mdw-theme(mdw-surface="secondary 500")
+.mdw-button.mdw-theme(mdw-surface="secondary 600" mdw-dark)
 ```
 
-## Filled (Custom Tone)
+## Toggled
 ```
-.mdw-button(disabled)
+.mdw-button(aria-pressed="true")
+```
+
+## Disabled
+```
+a.mdw-button(disabled)
+button.mdw-button(disabled)
+.mdw-button(aria-disabled="true")
 ```
 
 ## Icon Button
@@ -49,9 +51,7 @@
 # Javascript
 
 ```
-  [...document.getElementsByClassName("mdw-button")].forEach((element) => {
-    Button.attach(element);  
-  });
+  [...document.getElementsByClassName("mdw-button")].forEach(Button.attach);
 ```
 
 # Notes
