@@ -2,11 +2,17 @@ import DomAdapter from '../dom/index';
 import * as ListItem from '../../components/list/item';
 
 /**
+ * @template T1
+ * @template T2
+ * @typedef {import('../dom/index').DomAdapterCreateOptions<T1,T2>} DomAdapterCreateOptions<T1,T2>
+ */
+
+/**
  * @param {HTMLLIElement} element
  * @param {any} data
  * @return {void}
  */
-function AnyListAdapterRendererFn(element, data) {
+function AnyListAdapterRenderer(element, data) {
   let primaryText = element.getElementsByClassName('mdw-list__text')[0];
   if (!primaryText) {
     let contentElement = element.getElementsByClassName('mdw-list__content')[0];
@@ -35,17 +41,24 @@ function AnyListAdapterRendererFn(element, data) {
 
 /**
  * @template T
+ * @typedef {Object} ListAdapterCreateOptions
+ * @prop {HTMLElement} element
+ * @prop {Array<T>} datasource
+ * @prop {function(HTMLLIElement, T):void} [render={function(HTMLIElement,T):void}]
+ */
+
+/**
+ * @template T
  * @extends {DomAdapter<T, HTMLLIElement>}
  * */
 export default class ListAdapter extends DomAdapter {
-  /**
-   * @param {HTMLElement} element
-   * @param {Array<T>} datasource
-   * @param {function(HTMLLIElement, T):void} [renderFn]
-   */
-  constructor(element, datasource, renderFn) {
-    super(element, datasource, renderFn, ListAdapter.create);
-    this.render = renderFn || AnyListAdapterRendererFn;
+  /** @param {ListAdapterCreateOptions<T>} options */
+  constructor(options) {
+    super(options);
+    if (!options.render) {
+      this.render = AnyListAdapterRenderer;
+    }
+    this.create = ListAdapter.create;
   }
 
   static create() {
