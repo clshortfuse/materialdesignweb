@@ -205,13 +205,17 @@ $mdw-textfield__theme-values: (
       text-shadow: 0 0 0 RGBA(mdwTextfieldThemeValue("text-color", $type), mdwTextfieldThemeValue("secondary-text-opacity", $type));
     }
 
-    // On IE, color rule represents the dropdown popup's foreground color
-    @media screen and (-ms-high-contrast: active) {
-      color: #fff;
+    // On MS Browsers, color rule represents the dropdown popup's foreground color
+    @include mdw-platform__edge() {
+      color: #000;
     }
     @media screen and (-ms-high-contrast: none) {
       color: #000;
     }
+    @media screen and (-ms-high-contrast: active) {
+      color: #fff;
+    }
+    
 
     // ::ms-value represents the closed state color
     &::-ms-value {
