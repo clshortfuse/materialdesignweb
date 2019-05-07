@@ -18,7 +18,7 @@
 
 // Browser specific mixins
 @mixin mdw-platform__ie {
-  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  @media all\0 {
     @content;
   }
 }
