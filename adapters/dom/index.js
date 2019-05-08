@@ -41,17 +41,17 @@ function AnyDomAdapterRenderer(element, data) {
  * @prop {Array<T1>} datasource
  * @prop {DomAdapterRecycleOptions} [recycle]
  * @prop {function(T1):T2} [create={function(T1):HTMLElement}]
- * @prop {function(T2, T1):void} [render={function(HTMLElement,T1):void}]
+ * @prop {function(T2, T1, number):void} [render={function(HTMLElement,T1):void}]
  */
 
 /**
- * @typedef {Object} DomAdapterBoundsCache
+ * @typedef {Object} DomAdapterBounds
  * @prop {number} top
- * @prop {number} right
- * @prop {number} bottom
- * @prop {number} left
- * @prop {number} height
- * @prop {number} width
+ * @prop {number=} right
+ * @prop {number=} bottom
+ * @prop {number=} left
+ * @prop {number=} height
+ * @prop {number=} width
  */
 
 /**
@@ -67,7 +67,7 @@ export default class DomAdapter {
     this.dataElementMap = new Map();
     /** @type {WeakMap<T2, T1>} */
     this.elementDataMap = new WeakMap();
-    /** @type {WeakMap<any, DomAdapterBoundsCache>} */
+    /** @type {WeakMap<any, DomAdapterBounds>} */
     this.dataBoundsMap = new WeakMap();
     this.create = options.create || AnyDomAdapterCreator;
     this.render = options.render || AnyDomAdapterRenderer;
@@ -148,43 +148,78 @@ export default class DomAdapter {
 
 
   /**
-   * @param {boolean} [idle=false]
+   * @param {boolean} [idle=true]
    * @return {void}
    */
-  drawViewport(idle = false) {
+  drawViewport(idle = true) {
     if (!this.recycle || !this.recycle.scroller) {
       return;
     }
     const itemsToDraw = [];
     let foundVisibleItem = false;
+    let expectedTop = null;
+    let paddingTopSet = false;
+    let lastBottom = 0;
     const additionalPrerenderSize = (window.screen.height - this.recycle.scroller.clientHeight) / 2;
     const viewportTop = this.recycle.scroller.scrollTop;
     const viewportBottom = (this.recycle.scroller.scrollTop + this.recycle.scroller.offsetHeight);
     const preRenderTop = viewportTop - additionalPrerenderSize;
     const preRenderBottom = viewportBottom + additionalPrerenderSize;
     for (let i = 0; i < this.datasource.length; i += 1) {
-      const item = this.datasource[i];
-      let cachedBounds = this.dataBoundsMap.get(item);
+      const data = this.datasource[i];
+      let dataBounds = this.getBounds(data, i);
       let newBounds = false;
-      if (!cachedBounds) {
-        const el = this.refreshItem(item, {
+      let element = null;
+      if (!dataBounds || dataBounds.top == null || dataBounds.bottom == null) {
+        if (!this.recycle.block && !paddingTopSet) {
+          if (expectedTop != null) {
+            this.element.style.setProperty('padding-top', `${expectedTop}px`);
+          } else {
+            this.element.style.setProperty('padding-top', `${lastBottom}px`);
+          }
+          paddingTopSet = true;
+        }
+        element = this.refreshItem(data, {
+          create: true,
           render: !this.recycle.deferRender,
+          invalidate: false,
         });
-        cachedBounds = this.storeBoundsCache(item, el);
+        dataBounds = this.storeBoundsCache(data, element);
         newBounds = true;
       }
-      if ((cachedBounds.top >= viewportTop && cachedBounds.top <= viewportBottom)
-          || (cachedBounds.bottom >= viewportTop && cachedBounds.bottom <= viewportBottom)) {
-        itemsToDraw.push(item);
-        foundVisibleItem = true;
-      } else if ((cachedBounds.top >= preRenderTop && cachedBounds.top <= preRenderBottom)
-              || (cachedBounds.bottom >= preRenderTop && cachedBounds.bottom <= preRenderBottom)) {
-        itemsToDraw.push(item);
-      } else if (foundVisibleItem) {
-        if (newBounds) {
-          this.dataBoundsMap.delete(item);
+      lastBottom = dataBounds.bottom;
+      const isBottomInPrerender = (dataBounds.bottom >= preRenderTop
+        && dataBounds.bottom <= preRenderBottom);
+      const isTopInPrerender = (dataBounds.top >= preRenderTop
+          && dataBounds.top <= preRenderBottom);
+      if (isBottomInPrerender || isTopInPrerender) {
+        if (expectedTop == null) {
+          expectedTop = dataBounds.top;
         }
-        break;
+        itemsToDraw.push({
+          data,
+          index: i,
+        });
+        if (!foundVisibleItem) {
+          const isBottomVisible = (dataBounds.bottom >= viewportTop
+            && dataBounds.bottom <= viewportBottom);
+          const isTopVisible = (dataBounds.top >= viewportTop
+            && dataBounds.top <= viewportBottom);
+          foundVisibleItem = (isBottomVisible || isTopVisible);
+        }
+      } else {
+        if (!element && !paddingTopSet) {
+          element = this.dataElementMap.get(data);
+          if (element && element.parentElement) {
+            this.removeElement(element);
+          }
+        }
+        if (foundVisibleItem) {
+          if (newBounds) {
+            this.dataBoundsMap.delete(data);
+          }
+          break;
+        }
       }
     }
     const renderedElements = [];
@@ -192,17 +227,19 @@ export default class DomAdapter {
     let lastRenderedBounds;
     for (let i = 0; i < itemsToDraw.length; i += 1) {
       const item = itemsToDraw[i];
-      let element = this.dataElementMap.get(item);
+      let element = this.dataElementMap.get(item.data);
 
       if (!element) {
-        element = this.refreshItem(item, {
+        element = this.refreshItem(item.data, {
+          create: true,
           render: (this.recycle.deferRender ? idle : true),
+          invalidate: false,
         });
       } else if (this.recycle.deferRender && idle) {
-        this.render(element, item);
+        this.render(element, item.data, item.index);
       }
-      const cachedBounds = this.dataBoundsMap.get(item);
-      if (i === 0) {
+      const cachedBounds = this.getBounds(item.data);
+      if (i === 0 && !this.recycle.block) {
         newPaddingTop = cachedBounds.top;
       }
       if (i === itemsToDraw.length - 1) {
@@ -241,16 +278,73 @@ export default class DomAdapter {
 
   /**
    * @param {T1} data
-   * @param {T2} element
-   * @return {DomAdapterBoundsCache} bounds
+   * @param {number} [indexHint]
+   * @return {DomAdapterBounds}
    */
-  storeBoundsCache(data, element) {
-    if (!this.recycle) {
+  getBounds(data, indexHint) {
+    const cached = this.dataBoundsMap.get(data);
+    if (cached) {
+      return cached;
+    }
+    let index = -1;
+    if (indexHint === -1 || indexHint == null) {
+      index = this.datasource.indexOf(data);
+    } else {
+      index = indexHint;
+    }
+    if (index === -1) {
       return null;
     }
-
-    if (this.recycle.fastMeasure) {
+    let top = null;
+    if (index === 0) {
       const cache = {
+        top: 0,
+      };
+      this.dataBoundsMap.set(data, cache);
+      return cache;
+    }
+    if (!this.recycle.block) {
+      return null;
+    }
+    let height = null;
+    const previousBounds = this.dataBoundsMap.get(this.datasource[index - 1]);
+    if (previousBounds && previousBounds.bottom) {
+      top = previousBounds.bottom;
+    } else if (this.recycle.equalSize) {
+      const firstBounds = this.dataBoundsMap.get(this.datasource[0]);
+      if (firstBounds && firstBounds.height) {
+        top = firstBounds.height * index;
+        // eslint-disable-next-line prefer-destructuring
+        height = firstBounds.height;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+    if (height == null) {
+      const cache = {
+        top,
+      };
+      this.dataBoundsMap.set(data, cache);
+      return cache;
+    }
+    const cache = {
+      top,
+      height,
+      bottom: top + height,
+    };
+    this.dataBoundsMap.set(data, cache);
+    return cache;
+  }
+
+  /**
+   * @param {T2} element
+   * @return {DomAdapterBounds} bounds
+   */
+  measureElementBounds(element) {
+    if (this.recycle.fastMeasure) {
+      return {
         top: element.offsetTop,
         right: element.offsetWidth + element.offsetLeft,
         bottom: element.offsetHeight + element.offsetTop,
@@ -258,15 +352,12 @@ export default class DomAdapter {
         height: element.clientHeight,
         width: element.clientWidth,
       };
-      this.dataBoundsMap.set(data, cache);
-      return cache;
     }
-
     const offsetParentRect = element.offsetParent.getBoundingClientRect();
     const elementRect = element.getBoundingClientRect();
     const top = elementRect.top - offsetParentRect.top + element.offsetParent.scrollTop;
     const left = elementRect.left - offsetParentRect.left + element.offsetParent.scrollLeft;
-    const subpixelCache = {
+    return {
       top,
       right: elementRect.width + left,
       bottom: elementRect.height + top,
@@ -274,16 +365,35 @@ export default class DomAdapter {
       height: elementRect.height,
       width: elementRect.width,
     };
-    this.dataBoundsMap.set(data, subpixelCache);
-    return subpixelCache;
   }
+
+  /**
+   * @param {T1} data
+   * @param {T2} element
+   * @return {DomAdapterBounds} bounds
+   */
+  storeBoundsCache(data, element) {
+    if (!this.recycle) {
+      return null;
+    }
+    const cache = this.measureElementBounds(element);
+    this.dataBoundsMap.set(data, cache);
+    return cache;
+  }
+
+  invalidateAll() {
+    /** @type {WeakMap<any, DomAdapterBounds>} */
+    this.dataBoundsMap = new WeakMap();
+  }
+
 
   /**
    * @param {T1} data
    * @param {Object} [options]
    * @param {boolean} [options.checkPosition=true]
-   * @param {boolean} [options.create=true]
-   * @param {boolean} [options.render=true]
+   * @param {boolean} [options.create] Automatic
+   * @param {boolean} [options.render] Automatic based on deferRender
+   * @param {boolean} [options.invalidate] Automatic
    * @return {T2} element
    */
   refreshItem(data, options = {}) {
@@ -295,43 +405,33 @@ export default class DomAdapter {
     }
     let elementIndex = -1;
     let element = this.dataElementMap.get(data);
+    let invalidate = false;
     if (!element) {
-      if (options.create === false) {
-        this.dataBoundsMap.delete(data);
-        return null;
-      }
+      // Element does not exist, assume size changed
+      invalidate = true;
       /** @type {T2} */
       element = (this.create(data));
-      element.setAttribute('aria-posinset', dataIndex.toString(10));
       this.dataElementMap.set(data, element);
       this.elementDataMap.set(element, data);
     }
-    if (this.recycle && this.recycle.block) {
-      const bounds = this.dataBoundsMap.get(data);
+    if (element && this.recycle && this.recycle.block) {
+      const bounds = this.getBounds(data, dataIndex);
       element.style.setProperty('position', 'absolute');
       element.style.setProperty('left', '0');
       element.style.setProperty('right', '0');
       if (bounds) {
         element.style.setProperty('top', `${bounds.top}px`);
-      } else if (dataIndex === 0) {
-        element.style.setProperty('top', '0');
-      } else if (this.recycle.equalSize) {
-        element.style.setProperty('top', `${this.element.firstElementChild.clientHeight * dataIndex}px`);
       } else {
-        const previousBounds = this.dataBoundsMap.get(this.datasource[dataIndex - 1]);
-        if (!previousBounds) {
-          throw new Error('No bounds!');
-        }
-        element.style.setProperty('top', `${previousBounds.bottom}px`);
+        this.removeElement(element);
+        element = null;
+        invalidate = true;
       }
+    }
+    if (element && options.checkPosition === false) {
       if (!element.parentElement) {
         this.element.appendChild(element);
       }
-    } else if (options.checkPosition === false) {
-      if (!element.parentElement) {
-        this.element.appendChild(element);
-      }
-    } else {
+    } else if (element) {
       if (element.parentElement === this.element) {
         // Element is in DOM
         let sibling = this.element.firstElementChild;
@@ -346,11 +446,10 @@ export default class DomAdapter {
         }
       }
       if (elementIndex !== dataIndex) {
-        if (elementIndex !== -1) {
-          // Element exists in wrong position and needs to be removed
-          this.removeElement(element);
-        }
         if (!this.element.children.length) {
+          if (element.parentElement) {
+            element.parentElement.removeChild(element);
+          }
           this.element.appendChild(element);
         } else {
           // Iterate through datasource to previous sibling element
@@ -361,13 +460,21 @@ export default class DomAdapter {
             previousDataObject = this.datasource[siblingIndex];
             const previousElement = this.dataElementMap.get(previousDataObject);
             if (previousElement) {
-              previousElement.insertAdjacentElement('afterend', element);
+              if (element.previousElementSibling !== previousElement) {
+                if (element.parentElement) {
+                  element.parentElement.removeChild(element);
+                }
+                previousElement.insertAdjacentElement('afterend', element);
+              }
               inserted = true;
             } else {
               siblingIndex -= 1;
             }
           } while (previousDataObject && !inserted);
           if (!inserted) {
+            if (element.parentElement) {
+              element.parentElement.removeChild(element);
+            }
             this.element.insertBefore(element, this.element.firstElementChild);
           }
         }
@@ -375,10 +482,28 @@ export default class DomAdapter {
     }
     if (options.render === false) {
       if (this.recycle && !this.recycle.deferRender) {
-        this.dataBoundsMap.delete(data);
+        invalidate = true;
       }
-    } else {
-      this.render(element, data);
+    } else if (element
+      && (options.render === true || (!this.recycle || !this.recycle.deferRender))) {
+      let prevClientWidth;
+      let prevClientHeight;
+      if (!invalidate && options.invalidate !== false) {
+        // Store width and height for later comparison
+        prevClientWidth = element.clientWidth;
+        prevClientHeight = element.clientHeight;
+      }
+      this.render(element, data, dataIndex);
+      if (!invalidate && options.invalidate !== false) {
+        if (element.clientWidth !== prevClientWidth || element.clientHeight !== prevClientHeight) {
+          // Element width or height has changed
+          invalidate = true;
+        }
+      }
+    }
+    if (options.invalidate === true || (invalidate && options.invalidate !== false)) {
+      console.log('invalidate', dataIndex);
+      this.invalidateItem(data, dataIndex);
     }
     return element;
   }
@@ -400,9 +525,50 @@ export default class DomAdapter {
 
   /**
    * @param {T1} data
+   * @param {number} [indexHint]
+   * @return {boolean} change
+   */
+  invalidateItem(data, indexHint) {
+    if (!this.recycle || this.recycle.equalSize) {
+      return false;
+    }
+    // Don't auto-create on non-block layouts
+    // Invalidate in case of size change
+    const currentBounds = this.dataBoundsMap.get(data);
+    if (!currentBounds) {
+      return false;
+    }
+    this.dataBoundsMap.delete(data);
+    const dataIndex = (indexHint != null ? indexHint : this.datasource.indexOf(data));
+    if (dataIndex === -1) {
+      // Item was removed
+      return true;
+    }
+    // Invalidate previous items at same Y position
+    for (let j = dataIndex - 1; j >= 0; j -= 1) {
+      const previousBounds = this.dataBoundsMap.get(this.datasource[j]);
+      if (!previousBounds || previousBounds.top < currentBounds.top) {
+        break;
+      }
+      this.dataBoundsMap.delete(this.datasource[j]);
+    }
+    // Invalidate next items
+    for (let j = dataIndex + 1; j < this.datasource.length; j += 1) {
+      if (!this.dataBoundsMap.delete(this.datasource[j])) {
+        break;
+      }
+    }
+    return true;
+  }
+
+
+  /**
+   * @param {T1} data
+   * @param {number} [previousIndex]
    * @return {void}
    */
-  removeItem(data) {
+  removeItem(data, previousIndex) {
+    this.invalidateItem(data, previousIndex);
     this.dataElementMap.delete(data);
     const element = this.dataElementMap.get(data);
     if (element) {
