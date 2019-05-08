@@ -29,33 +29,31 @@ $mdw-breakpoint__columns__12: dp(840) !default;
 // Column-count based mixins
 
 @mixin mdw-breakpoint__4-columns {
-  @media screen and (max-width: #{$mdw-breakpoint__columns__8 - 1}) {
+  @media (max-width: #{$mdw-breakpoint__columns__8 - 1}) {
     @content;
   }
 }
 
 @mixin mdw-breakpoint__8-columns__min {
-  @media screen and (min-width: $mdw-breakpoint__columns__8) {
+  @media (min-width: $mdw-breakpoint__columns__8) {
     @content;
   }
 }
 
 @mixin mdw-breakpoint__8-columns__max {
-  @media screen and (max-width: #{$mdw-breakpoint__columns__12 - 1}) {
+  @media (max-width: #{$mdw-breakpoint__columns__12 - 1}) {
     @content;
   }
 }
 
 @mixin mdw-breakpoint__8-columns {
-  @media screen
-    and (min-width: $mdw-breakpoint__columns__8)
-    and (max-width: #{$mdw-breakpoint__columns__12 - 1}) {
+  @media (min-width: $mdw-breakpoint__columns__8) and (max-width: #{$mdw-breakpoint__columns__12 - 1}) {
     @content;
   }
 }
 
 @mixin mdw-breakpoint__12-columns {
-  @media screen and (min-width: $mdw-breakpoint__columns__12) {
+  @media (min-width: $mdw-breakpoint__columns__12) {
     @content;
   }
 }
@@ -64,8 +62,8 @@ $mdw-breakpoint__columns__12: dp(840) !default;
 
 @mixin mdw-breakpoint__16dp-margin {
   @media
-    screen and (orientation:portrait) and (max-width: dp(599)),
-    screen and (orientation:landscape) and (max-height: dp(599)) {
+    (orientation:portrait) and (max-width: dp(599)),
+    (orientation:landscape) and (max-height: dp(599)) {
     @content;
   }
 }
@@ -73,73 +71,67 @@ $mdw-breakpoint__columns__12: dp(840) !default;
 // Window-size based mixins
 
 @mixin mdw-breakpoint__xsmall-window {
-  @media screen and (max-width: #{$mdw-breakpoint__window__small - 1}) {
+  @media (max-width: #{$mdw-breakpoint__window__small - 1}) {
     @content;
   }
 }
 
 @mixin mdw-breakpoint__small-window__min {
-  @media screen and (min-width: #{$mdw-breakpoint__window__small}) {
+  @media (min-width: #{$mdw-breakpoint__window__small}) {
     @content;
   }
 }
 
 @mixin mdw-breakpoint__small-window__max {
-  @media screen and (max-width: #{$mdw-breakpoint__window__medium - 1}) {
+  @media (max-width: #{$mdw-breakpoint__window__medium - 1}) {
     @content;
   }
 }
 
 @mixin mdw-breakpoint__small-window {
-  @media screen
-    and (min-width: $mdw-breakpoint__window__small)
-    and (max-width: #{$mdw-breakpoint__window__medium - 1}) {
+  @media (min-width: $mdw-breakpoint__window__small) and (max-width: #{$mdw-breakpoint__window__medium - 1}) {
     @content;
   }
 }
 
 @mixin mdw-breakpoint__medium-window__min {
-  @media screen and (min-width: #{$mdw-breakpoint__window__medium}) {
+  @media (min-width: #{$mdw-breakpoint__window__medium}) {
     @content;
   }
 }
 
 @mixin mdw-breakpoint__medium-window__max {
-  @media screen and (max-width: #{$mdw-breakpoint__window__large - 1}) {
+  @media (max-width: #{$mdw-breakpoint__window__large - 1}) {
     @content;
   }
 }
 
 @mixin mdw-breakpoint__medium-window {
-  @media screen
-    and (min-width: $mdw-breakpoint__window__medium)
-    and (max-width: #{$mdw-breakpoint__window__large - 1}) {
+  @media (min-width: $mdw-breakpoint__window__medium) and (max-width: #{$mdw-breakpoint__window__large - 1}) {
     @content;
   }
 }
 
 @mixin mdw-breakpoint__large-window__min {
-  @media screen and (min-width: #{$mdw-breakpoint__window__large}) {
+  @media (min-width: #{$mdw-breakpoint__window__large}) {
     @content;
   }
 }
 
 @mixin mdw-breakpoint__large-window__max {
-  @media screen and (max-width: #{$mdw-breakpoint__window__xlarge - 1}) {
+  @media (max-width: #{$mdw-breakpoint__window__xlarge - 1}) {
     @content;
   }
 }
 
 @mixin mdw-breakpoint__large-window {
-  @media screen
-    and (min-width: $mdw-breakpoint__window__large)
-    and (max-width: #{$mdw-breakpoint__window__xlarge - 1}) {
+  @media (min-width: $mdw-breakpoint__window__large) and (max-width: #{$mdw-breakpoint__window__xlarge - 1}) {
     @content;
   }
 }
 
 @mixin mdw-breakpoint__xlarge-window {
-  @media screen and (min-width: $mdw-breakpoint__window__xlarge) {
+  @media (min-width: $mdw-breakpoint__window__xlarge) {
     @content;
   }
 }
@@ -152,15 +144,13 @@ $mdw-breakpoint__columns__12: dp(840) !default;
 // https://developers.google.com/web/fundamentals/design-and-ux/responsive/
 
 @mixin mdw-breakpoint__mobile-device__portrait {
-  @media screen
-    and (max-device-width: #{$mdw-breakpoint__portrait__small-tablet - 1})
+  @media (max-device-width: #{$mdw-breakpoint__portrait__small-tablet - 1})
     and (max-device-aspect-ratio: 1/1) {
     @content;
   }
 }
 @mixin mdw-breakpoint__mobile-device__landscape {
-  @media screen
-    and (max-device-width: #{$mdw-breakpoint__landscape__small-tablet - 1})
+  @media (max-device-width: #{$mdw-breakpoint__landscape__small-tablet - 1})
     and (min-device-aspect-ratio: 1/1) {
     @content;
   }
@@ -168,11 +158,9 @@ $mdw-breakpoint__columns__12: dp(840) !default;
 
 @mixin mdw-breakpoint__mobile-device {
   @media
-    screen
-    and (max-device-width: #{$mdw-breakpoint__portrait__small-tablet - 1})
+    (max-device-width: #{$mdw-breakpoint__portrait__small-tablet - 1})
     and (max-device-aspect-ratio: 1/1),
-    screen
-    and (max-device-width: #{$mdw-breakpoint__landscape__small-tablet - 1})
+    (max-device-width: #{$mdw-breakpoint__landscape__small-tablet - 1})
     and (min-device-aspect-ratio: 1/1) {
     @content;
   }
@@ -180,12 +168,10 @@ $mdw-breakpoint__columns__12: dp(840) !default;
 
 @mixin mdw-breakpoint__tablet-device {
   @media
-    screen
-    and (min-width: $mdw-breakpoint__portrait__small-tablet)
+    (min-width: $mdw-breakpoint__portrait__small-tablet)
     and (max-device-width: #{$mdw-breakpoint__portrait__desktop - 1})
     and (max-device-aspect-ratio: 1/1),
-    screen
-    and (min-width: $mdw-breakpoint__landscape__small-tablet)
+    (min-width: $mdw-breakpoint__landscape__small-tablet)
     and (max-device-width: #{$mdw-breakpoint__landscape__desktop - 1})
     and (min-device-aspect-ratio: 1/1) {
     @content;
@@ -194,11 +180,9 @@ $mdw-breakpoint__columns__12: dp(840) !default;
 
 @mixin mdw-breakpoint__tablet-device__max {
   @media
-    screen
-    and (max-device-width: #{$mdw-breakpoint__portrait__desktop - 1})
+    (max-device-width: #{$mdw-breakpoint__portrait__desktop - 1})
     and (max-device-aspect-ratio: 1/1),
-    screen
-    and (max-device-width: #{$mdw-breakpoint__landscape__desktop - 1})
+    (max-device-width: #{$mdw-breakpoint__landscape__desktop - 1})
     and (min-device-aspect-ratio: 1/1) {
     @content;
   }
