@@ -1,11 +1,14 @@
 import DomAdapter from '../../adapters/dom/index';
 import * as ListItem from '../../components/list/item';
 import { iterateArrayLike } from '../../core/dom';
+import { ListContent } from '../../index';
 
 class CustomDataSourceItem {
   /** @param {number} i */
   constructor(i) {
     this.itemnumber = i;
+    this.clickCount = 0;
+    this.expanded = false;
   }
 }
 
@@ -19,8 +22,9 @@ let sampleComponent;
 let domAdapter;
 
 /** @return {void} */
-function fillDatasource() {
-  for (let i = 0; i < 100; i += 1) {
+function resetDatasource() {
+  datasource.splice(0, datasource.length);
+  for (let i = 0; i < 500; i += 1) {
     datasource.push(new CustomDataSourceItem(i));
   }
 }
@@ -32,7 +36,6 @@ function onOptionChange(event) {
   const { name, value, checked } = /** @type {HTMLInputElement} */ (event.target);
   domAdapter.recycle[name] = checked;
   domAdapter.refresh();
-  console.log(name, checked);
 }
 /** @return {void} */
 function setupComponentOptions() {
@@ -40,21 +43,29 @@ function setupComponentOptions() {
     el.addEventListener('change', onOptionChange);
   });
   sampleComponent = document.querySelector('.component-sample .mdw-list');
-  fillDatasource();
+  resetDatasource();
   domAdapter = new DomAdapter({
     element: sampleComponent,
     datasource,
     recycle: {
       scroller: sampleComponent.parentElement,
       fastMeasure: true,
-      equalSize: true,
       block: true,
       deferRender: true,
+      equalSize: false,
     },
-    render(child, sourceItem) {
+    render(child, data, index) {
       const textLines = child.getElementsByClassName('mdw-list__text-line');
-      textLines[0].textContent = `Item ${sourceItem.itemnumber}`;
-      textLines[1].textContent = `Description for item #${sourceItem.itemnumber}`;
+      textLines[0].textContent = `Item ${data.itemnumber}`;
+      textLines[1].textContent = `Click count: #${data.clickCount}`;
+      if (data.expanded) {
+        child.style.setProperty('height', '128px');
+        child.style.setProperty('background-color', 'red');
+      } else {
+        child.style.setProperty('height', '64px');
+        child.style.removeProperty('background-color');
+      }
+      child.firstElementChild.setAttribute('aria-posinset', index.toString(10));
     },
     create(data) {
       // Create placeholder UI
@@ -64,8 +75,10 @@ function setupComponentOptions() {
         listItem.style.setProperty('width', '33.333%');
       }
       if (domAdapter.recycle.deferRender) {
-        listItem.style.setProperty('height', '64px');
-        listItem.style.setProperty('max-height', '64px');
+        listItem.style.setProperty('min-height', '64px');
+        if (data.expanded) {
+          listItem.style.setProperty('height', '128px');
+        }
       }
       listItem.className = 'mdw-list__item';
       listItem.innerHTML = `
@@ -81,18 +94,48 @@ function setupComponentOptions() {
     },
   });
   domAdapter.refresh();
-  const button = document.querySelector('.mdw-layout__content-page .mdw-button');
-  window.addEventListener('resize', () => {
-    // Pre-draw resize event
-    requestAnimationFrame(() => {
-      // Fires on same frame as pre-resize
-      requestAnimationFrame(() => {
-        // First Post resize frame
-        domAdapter.refresh();
-      });
-    });
+  const buttons = document.querySelectorAll('.mdw-layout__content-page .mdw-button');
+  buttons[0].addEventListener('click', () => {
+    buttons[1].removeAttribute('aria-disabled');
+    resetDatasource();
+    domAdapter.refresh();
   });
-  button.addEventListener('click', () => domAdapter.refresh());
+  buttons[1].addEventListener('click', () => {
+    if (buttons[1].getAttribute('aria-disabled') === 'true') {
+      return;
+    }
+    const item = datasource[10];
+    domAdapter.removeItem(item);
+    datasource.splice(10, 1);
+
+    // Alternatively, we can remove from datasource first and call invalidateAll()
+
+    domAdapter.drawViewport();
+    buttons[1].setAttribute('aria-disabled', 'true');
+  });
+  buttons[2].addEventListener('click', () => {
+    const item = datasource.filter(d => d.itemnumber === 50)[0];
+    item.clickCount += 1;
+    // Element will not change size, therefore avoid possible invalidation
+    // (When element is refreshed and not in DOM, adapter may assume sized change)
+    domAdapter.refreshItem(item, { invalidate: false });
+  });
+  buttons[3].addEventListener('click', () => {
+    const item = datasource.filter(d => d.itemnumber === 80)[0];
+    item.expanded = !item.expanded;
+    domAdapter.refreshItem(item);
+    // Size changed
+    domAdapter.drawViewport();
+  });
+  sampleComponent.addEventListener(ListContent.ACTIVATE_EVENT, (event) => {
+    /** @type {HTMLElement} */
+    const listContent = (event.target);
+    /** @type {HTMLLIElement} */
+    const listItem = (listContent.parentElement);
+    const dataItem = domAdapter.elementDataMap.get(listItem);
+    dataItem.clickCount += 1;
+    domAdapter.refreshItem(dataItem);
+  });
 }
 
 setupComponentOptions();

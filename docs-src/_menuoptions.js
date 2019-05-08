@@ -58,10 +58,10 @@ export function setAltTheme(value, button) {
   for (let i = 0; i < items.length; i += 1) {
     const stylesheet = items.item(i);
     if (stylesheet.href.indexOf(value ? 'theme-colored' : 'theme-default') !== -1) {
-      stylesheet.removeAttribute('disabled');
+      stylesheet.disabled = false;
     }
     if (stylesheet.href.indexOf(value ? 'theme-default' : 'theme-colored') !== -1) {
-      stylesheet.setAttribute('disabled', '');
+      stylesheet.disabled = true;
     }
   }
 

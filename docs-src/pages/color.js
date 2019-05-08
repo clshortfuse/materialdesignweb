@@ -211,7 +211,6 @@ function onOptionChange(event) {
   /** @type {HTMLSelectElement} */
   const selectElement = (event.target);
   const { name, value } = selectElement;
-  console.log('onOptionChange', name, value);
   switch (name) {
     case 'ink-color':
       currentInkOptions.color = value;

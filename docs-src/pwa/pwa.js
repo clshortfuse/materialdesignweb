@@ -1,6 +1,5 @@
 import {
   iterateArrayLike,
-  iterateSomeOfArrayLike,
 } from '../../core/dom';
 import * as Layout from '../../components/layout/index';
 import * as Button from '../../components/button/index';
@@ -12,8 +11,11 @@ import * as Menu from '../../components/menu/index';
 import * as Snackbar from '../../components/snackbar/index';
 import { ListContent } from '../../index';
 
+/** @type {Element} */
 let checkedAutoHideItem;
+/** @type {Element} */
 let checkedFabMobileItem;
+/** @type {Element} */
 let checkedFabDesktopItem;
 
 Layout.attach();
@@ -65,7 +67,7 @@ function refreshFabCut() {
 }
 
 /**
- * @param {Event} event
+ * @param {CustomEvent} event
  * @return {void}
  */
 function onCheckChange(event) {
@@ -138,7 +140,7 @@ function onCheckChange(event) {
 
 /** @return {void} */
 function setupComponentOptions() {
-  document.addEventListener(ListContent.CHECK_CHANGE_EVENT, onCheckChange);
+  document.addEventListener(ListContent.CHECKED_CHANGE_EVENT, onCheckChange);
   document.getElementById('dialog-alert-button').addEventListener('click', (event) => {
     Dialog.show(document.getElementById('dialog-alert'), event);
   });
