@@ -10,7 +10,7 @@ $mdw-color__theme-values: (
   inactive-ink-opacity:       $mdw-theme__inactive-opacity,
   divider-ink-opacity:        $mdw-theme__divider-opacity,
 
-  card-surface:           ((#fff, null),               ('background', '800', null)),
+  card-surface:           ((#fff, null),               (#121212, null)),
   binary-surface:         ((#fff, null),               (#000, null)),
 ) !default;
 
