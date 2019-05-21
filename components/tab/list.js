@@ -5,6 +5,7 @@ import {
 } from '../../core/dom';
 
 import * as RovingTabIndex from '../../core/aria/rovingtabindex';
+import * as Keyboard from '../../core/aria/keyboard';
 import * as TabItem from './item';
 
 /**
@@ -21,11 +22,11 @@ export function attach(tabListElement) {
 
   setupARIA(tabListElement);
   iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.attach);
-  RovingTabIndex.setupTabIndexes(tabListElement, tabListElement.querySelectorAll('[role="tab"]'));
+  RovingTabIndex.setupTabIndexes(tabListElement.querySelectorAll('[role="tab"]'));
   tabListElement.addEventListener(TabItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent,
     getPassiveEventListenerOption());
-  tabListElement.addEventListener(RovingTabIndex.FORWARDS_REQUESTED, onForwardsRequested);
-  tabListElement.addEventListener(RovingTabIndex.BACKWARDS_REQUESTED, onBackwardsRequested);
+  tabListElement.addEventListener(Keyboard.FORWARD_ARROW_KEY, onForwardArrowKey);
+  tabListElement.addEventListener(Keyboard.BACK_ARROW_KEY, onBackArrowKey);
   tabListElement.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
 }
 
@@ -41,20 +42,32 @@ function onTabIndexZeroed(event) {
   RovingTabIndex.removeTabIndex(tabListElement.querySelectorAll('[role="tab"]'), [currentItem]);
 }
 /**
- * @param {Event} event
+ * @param {CustomEvent} event
  * @return {void}
  */
-function onForwardsRequested(event) {
+function onForwardArrowKey(event) {
+  if (event.detail.ctrlKey || event.detail.altKey
+    || event.detail.shiftKey || event.detail.metaKey) {
+    return;
+  }
+  event.preventDefault();
+  event.stopPropagation();
   /** @type {HTMLElement} */
   const tabListElement = (event.currentTarget);
   RovingTabIndex.selectNext(tabListElement.querySelectorAll('[role="tab"]'));
 }
 
 /**
- * @param {Event} event
+ * @param {CustomEvent} event
  * @return {void}
  */
-function onBackwardsRequested(event) {
+function onBackArrowKey(event) {
+  if (event.detail.ctrlKey || event.detail.altKey
+    || event.detail.shiftKey || event.detail.metaKey) {
+    return;
+  }
+  event.preventDefault();
+  event.stopPropagation();
   /** @type {HTMLElement} */
   const tabListElement = (event.currentTarget);
   RovingTabIndex.selectPrevious(tabListElement.querySelectorAll('[role="tab"]'));
@@ -83,7 +96,9 @@ export function setupARIA(tabListElement) {
  */
 export function detach(tabListElement) {
   tabListElement.removeEventListener(TabItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
-  RovingTabIndex.detach(tabListElement, tabListElement.querySelectorAll('[role="tab"]'));
+  tabListElement.removeEventListener(Keyboard.FORWARD_ARROW_KEY, onForwardArrowKey);
+  tabListElement.removeEventListener(Keyboard.BACK_ARROW_KEY, onBackArrowKey);
+  iterateArrayLike(tabListElement.querySelectorAll('[role="tab"]'), RovingTabIndex.detach);
   iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.detach);
 }
 

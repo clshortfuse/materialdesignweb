@@ -1,5 +1,6 @@
-import * as ListContent from './content';
+import * as Keyboard from '../../core/aria/keyboard';
 import { iterateArrayLike, getChildElementByClass } from '../../core/dom';
+import * as ListContent from './content';
 
 /**
  * @param {Element} listItemElement
@@ -22,6 +23,7 @@ export function attach(listItemElement) {
   }
   listItemElement.addEventListener(ListContent.ACTIVATE_EVENT, onChildContentActivate);
   listItemElement.addEventListener('keydown', onKeyDown);
+  Keyboard.attach(listItemElement);
 }
 
 /**
@@ -163,5 +165,6 @@ function onKeyDown(event) {
  * @return {void}
  */
 export function detach(listItemElement) {
+  Keyboard.detach(listItemElement);
   iterateArrayLike(listItemElement.getElementsByClassName('mdw-list__content'), ListContent.detach);
 }

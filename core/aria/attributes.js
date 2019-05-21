@@ -78,6 +78,15 @@ export function setSelected(element, value, dispatchEventName) {
   return setAttribute('aria-selected', element, value, dispatchEventName);
 }
 
+
+/**
+ * @param {Element} element
+ * @return {boolean}
+ */
+export function isChecked(element) {
+  return element.getAttribute('aria-checked') === 'true';
+}
+
 /**
  * @param {Element} element
  * @param {string|boolean} value
@@ -86,4 +95,20 @@ export function setSelected(element, value, dispatchEventName) {
  */
 export function setChecked(element, value, dispatchEventName) {
   return setAttribute('aria-checked', element, value, dispatchEventName);
+}
+
+/**
+ * @param {Element} element
+ * @return {boolean}
+ */
+export function isDisabled(element) {
+  return element.getAttribute('aria-disabled') === 'true';
+}
+
+/**
+ * @param {Element} element
+ * @return {boolean}
+ */
+export function isReadonly(element) {
+  return element.getAttribute('aria-readonly') === 'true';
 }

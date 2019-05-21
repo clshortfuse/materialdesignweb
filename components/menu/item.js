@@ -1,5 +1,6 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
+import * as Attributes from '../../core/aria/attributes';
 import * as Overlay from '../../core/overlay/index';
 import * as Ripple from '../../core/ripple/index';
 
@@ -87,7 +88,7 @@ export function onClick(event) {
 
   /** @type {HTMLElement} */
   const menuItemElement = (event.currentTarget);
-  if (isDisabled(menuItemElement)) {
+  if (Attributes.isDisabled(menuItemElement)) {
     return;
   }
   const role = menuItemElement.getAttribute('role');
@@ -161,22 +162,6 @@ export function onKeyDown(event) {
 
 /**
  * @param {Element} element
- * @return {boolean}
- */
-export function isChecked(element) {
-  return (element.getAttribute('aria-checked') === 'true');
-}
-
-/**
- * @param {Element} element
- * @return {boolean}
- */
-export function isDisabled(element) {
-  return (element.getAttribute('aria-disabled') === 'true');
-}
-
-/**
- * @param {Element} element
  * @param {boolean} checked
  * @return {boolean} uiChanged
  */
@@ -214,7 +199,7 @@ export function setChecked(element, checked) {
  * @return {boolean}
  */
 export function toggleChecked(element) {
-  const checked = !isChecked(element);
+  const checked = !Attributes.isChecked(element);
   return setChecked(element, checked);
 }
 

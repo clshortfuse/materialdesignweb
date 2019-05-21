@@ -2,22 +2,18 @@
 
 import {
   iterateArrayLike,
-  isRtl,
   dispatchDomEvent,
   iterateSomeOfArrayLike,
 } from '../dom';
 
 export const TABINDEX_ZEROED = 'mdw:rovingtabindex-tabindexzeroed';
-export const FORWARDS_REQUESTED = 'mdw:rovingtabindex-forwardsrequested';
-export const BACKWARDS_REQUESTED = 'mdw:rovingtabindex-backwardsrequested';
 
 /**
- * @param {Element} parentElement
  * @param {ArrayLike<Element>} items
  * @param {boolean} [focusableWhenDisabled=true]
  * @return {void}
  */
-export function setupTabIndexes(parentElement, items, focusableWhenDisabled = true) {
+export function setupTabIndexes(items, focusableWhenDisabled = true) {
   /** @type {Element} */
   let currentlyFocusedChild = null;
   /** @type {Element} */
@@ -36,7 +32,7 @@ export function setupTabIndexes(parentElement, items, focusableWhenDisabled = tr
       }
       child.setAttribute('tabindex', '-1');
     }
-    child.addEventListener('focus', onChildFocus);
+    attach(child);
   });
   if (currentlyFocusedChild) {
     currentlyFocusedChild.setAttribute('tabindex', '0');
@@ -47,20 +43,25 @@ export function setupTabIndexes(parentElement, items, focusableWhenDisabled = tr
   } else if (firstFocusableChild) {
     firstFocusableChild.setAttribute('tabindex', '0');
   }
-  parentElement.addEventListener('keydown', onKeyDownHandler);
 }
 
-
 /**
- * @param {Element} parentElement
- * @param {ArrayLike<Element>} items
+ * @param {Element} element
  * @return {void}
  */
-export function detach(parentElement, items) {
-  iterateArrayLike(items, (child) => {
-    child.removeEventListener('focus', onChildFocus);
-  });
-  parentElement.removeEventListener('keydown', onKeyDownHandler);
+export function attach(element) {
+  if (!element.hasAttribute('tabindex')) {
+    element.setAttribute('tabindex', (document.activeElement === element) ? '0' : '-1');
+  }
+  element.addEventListener('focus', onChildFocus);
+}
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
+export function detach(element) {
+  element.removeEventListener('focus', onChildFocus);
 }
 
 /**
@@ -94,100 +95,6 @@ export function removeTabIndex(items, excludeItems = []) {
 }
 
 /**
- * @param {KeyboardEvent} event
- * @return {void}
- */
-export function onKeyDownHandler(event) {
-  if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
-    return;
-  }
-
-  /** @type {Element} */
-  const parentElement = (event.currentTarget);
-  /** @type {Element} */
-  const childElement = (event.target);
-
-  let moveHorizontal = false;
-  let moveVertical = false;
-  switch (event.key) {
-    case 'ArrowLeft':
-    case 'ArrowRight':
-    case 'Left':
-    case 'Right':
-      moveHorizontal = true;
-      break;
-    case 'ArrowDown':
-    case 'ArrowUp':
-    case 'Down':
-    case 'Up':
-      moveVertical = true;
-      break;
-    default:
-      return;
-  }
-
-  let verticalOrientation = true;
-  // DOM Read
-  const ariaOrientation = parentElement.getAttribute('aria-orientation');
-  if (ariaOrientation === 'horizontal') {
-    verticalOrientation = false;
-  } else if (ariaOrientation !== 'vertical') {
-    switch (parentElement.getAttribute('role')) {
-      case 'listbox':
-      case 'tablist':
-      case 'tree':
-        verticalOrientation = true;
-        break;
-      default:
-        verticalOrientation = false;
-    }
-  }
-  let moveForwards = false;
-  if (verticalOrientation) {
-    if (!moveVertical) {
-      return;
-    }
-    switch (event.key) {
-      case 'ArrowDown':
-      case 'Down':
-        moveForwards = true;
-        break;
-      case 'ArrowUp':
-      case 'Up':
-        // moveForwards = false;
-        break;
-      default:
-        return;
-    }
-  } else {
-    if (!moveHorizontal) {
-      return;
-    }
-    const isPageRTL = isRtl();
-    switch (event.key) {
-      case 'ArrowLeft':
-      case 'Left':
-        moveForwards = isPageRTL;
-        break;
-      case 'ArrowRight':
-      case 'Right':
-        moveForwards = !isPageRTL;
-        break;
-      default:
-        return;
-    }
-  }
-  event.stopPropagation();
-  event.preventDefault();
-
-  if (moveForwards) {
-    dispatchDomEvent(childElement, FORWARDS_REQUESTED);
-  } else {
-    dispatchDomEvent(childElement, BACKWARDS_REQUESTED);
-  }
-}
-
-/**
  * @param {HTMLElement} element
  * @return {boolean}
  */
@@ -203,10 +110,11 @@ function attemptFocus(element) {
 /**
  * @param {ArrayLike<HTMLElement>} list
  * @param {Element} [current]
+ * @param {boolean} [loop=true]
  * @param {boolean} [reverse]
  * @return {void}
  */
-export function selectNext(list, current = null, reverse = false) {
+export function selectNext(list, current = null, loop = true, reverse = false) {
   let foundCurrent = false;
 
   const iterateResult = iterateSomeOfArrayLike(list, (item, index, array) => {
@@ -235,6 +143,12 @@ export function selectNext(list, current = null, reverse = false) {
   if (iterateResult) {
     return;
   }
+  if (!loop) {
+    if (document.activeElement !== current && current instanceof HTMLElement) {
+      current.focus();
+    }
+    return;
+  }
   iterateSomeOfArrayLike(list, (item, index, array) => {
     const candidate = reverse ? (array[array.length - 1 - index]) : item;
     if (!candidate.hasAttribute('tabindex')) {
@@ -256,8 +170,9 @@ export function selectNext(list, current = null, reverse = false) {
  * Alias for selectNext(list, current, true);
  * @param {ArrayLike<HTMLElement>} list
  * @param {Element} [current]
+ * @param {boolean} [loop=true]
  * @return {void}
  */
-export function selectPrevious(list, current) {
-  return selectNext(list, current, true);
+export function selectPrevious(list, current, loop = true) {
+  return selectNext(list, current, loop, true);
 }

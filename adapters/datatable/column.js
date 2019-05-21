@@ -1,3 +1,8 @@
+import * as Attributes from '../../core/aria/attributes';
+import * as DataTableColumnHeader from '../../components/datatable/columnheader';
+import * as Selection from '../../components/selection/index';
+import { setTextNode } from '../../core/dom';
+
 /**
  * @callback DataTableAdapterColumnFormatter<T>
  * @param {any} value
@@ -20,7 +25,7 @@
  * @typedef DataTableAdapterColumnOptions<T>
  * @property {string} key
  * @property {(string|DocumentFragment)} [name='']
- * @property {'checkbox'|string} [type]
+ * @property {'checkbox'|'text'|'number'} [type]
  * @property {boolean} [rowSelector]
  * @property {string} [tooltip]
  * @property {boolean} [sortable]
@@ -33,19 +38,20 @@
  * @template T
  */
 
-/** @return {HTMLLabelElement} */
+/** @return {HTMLElement} */
 function constructTableCheckbox() {
-  const checkboxLabel = document.createElement('label');
-  checkboxLabel.className = 'mdw-selection';
-  const input = document.createElement('input');
-  input.className = 'mdw-selection__input';
-  input.type = 'checkbox';
+  const element = document.createElement('div');
+  element.className = 'mdw-selection';
+  element.setAttribute('aria-checked', 'false');
+  const input = document.createElement('div');
+  input.className = 'mdw-selection__input mdw-datatable__widget';
   const icon = document.createElement('div');
   icon.className = 'mdw-selection__icon';
   icon.setAttribute('mdw-checkbox', '');
-  checkboxLabel.appendChild(input);
-  checkboxLabel.appendChild(icon);
-  return checkboxLabel;
+  element.appendChild(input);
+  element.appendChild(icon);
+  Selection.attach(element);
+  return element;
 }
 
 /**
@@ -64,7 +70,7 @@ export default class DataTableAdapterColumn {
     this.element.dataset.key = options.key;
 
     if (options.sortable) {
-      this.element.setAttribute('mdw-sortable', '');
+      this.element.setAttribute('aria-sort', 'none');
       let sortIcon = options.customSortIcon;
       if (!sortIcon) {
         sortIcon = document.createElement('div');
@@ -118,13 +124,23 @@ export default class DataTableAdapterColumn {
     if (this.rowSelector) {
       this.element.setAttribute('mdw-selector', '');
     }
-    if (options.type) {
-      this.element.dataset.type = options.type;
-      this.type = options.type;
+
+    this.type = options.type;
+    switch (options.type) {
+      case 'number':
+        this.element.setAttribute('mdw-number', '');
+        break;
+      case 'text':
+        this.element.setAttribute('mdw-text', '');
+        break;
+      case 'checkbox':
+      default:
     }
+
     if (this.rowSelector && this.type === 'checkbox') {
       const checkboxLabel = constructTableCheckbox();
       this.element.appendChild(checkboxLabel);
+      this.element.classList.add('mdw-autofocus-widget');
     }
 
     if (options.renderer) {
@@ -135,6 +151,7 @@ export default class DataTableAdapterColumn {
       this.renderer = DataTableAdapterColumn.defaultCellRenderer;
     }
     this.formatter = options.formatter || (value => value);
+    DataTableColumnHeader.attach(this.element);
   }
 
   /**
@@ -143,25 +160,16 @@ export default class DataTableAdapterColumn {
    * @return {void}
    */
   static defaultCheckboxRenderer(cell, value) {
-    let input = cell.getElementsByTagName('input')[0];
+    if (!cell.classList.contains('mdw-autofocus-widget')) {
+      cell.classList.add('mdw-autofocus-widget');
+    }
+    let selectionElement = cell.getElementsByClassName('mdw-selection')[0];
     const checked = !!value;
-    if (!input) {
-      const checkboxLabel = document.createElement('label');
-      checkboxLabel.className = 'mdw-selection';
-      input = document.createElement('input');
-      input.className = 'mdw-selection__input';
-      input.type = 'checkbox';
-      input.checked = checked;
-      const icon = document.createElement('div');
-      icon.className = 'mdw-selection__icon';
-      icon.setAttribute('mdw-checkbox', '');
-      checkboxLabel.appendChild(input);
-      checkboxLabel.appendChild(icon);
-      cell.appendChild(checkboxLabel);
+    if (!selectionElement) {
+      selectionElement = constructTableCheckbox();
+      cell.appendChild(selectionElement);
     }
-    if (input.checked !== checked) {
-      input.checked = checked;
-    }
+    Attributes.setChecked(selectionElement, checked);
   }
 
   /**
@@ -176,22 +184,6 @@ export default class DataTableAdapterColumn {
     } else {
       stringValue = value.toString();
     }
-    const len = cell.childNodes.length;
-    let foundTextNode = false;
-    for (let i = len - 1; i >= 0; i -= 1) {
-      const node = cell.childNodes.item(i);
-      if (!foundTextNode && node.nodeType === Node.TEXT_NODE) {
-        if (node.nodeValue !== stringValue) {
-          node.nodeValue = stringValue;
-        }
-        foundTextNode = true;
-      } else {
-        cell.removeChild(node);
-      }
-    }
-    if (!foundTextNode) {
-      const node = document.createTextNode(stringValue);
-      cell.appendChild(node);
-    }
+    setTextNode(cell, stringValue);
   }
 }

@@ -3,6 +3,7 @@
 import { iterateArrayLike } from '../../core/dom';
 
 import * as RovingTabIndex from '../../core/aria/rovingtabindex';
+import * as Keyboard from '../../core/aria/keyboard';
 import * as BottomNavItem from './item';
 
 /**
@@ -27,9 +28,10 @@ export function attach(bottomnavElement) {
   if (selectedItem) {
     BottomNavItem.setSelected(selectedItem, true, true);
   }
+  RovingTabIndex.setupTabIndexes(bottomnavElement.querySelectorAll('[role="tab"]'));
   bottomnavElement.addEventListener(BottomNavItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
-  bottomnavElement.addEventListener(RovingTabIndex.FORWARDS_REQUESTED, onForwardsRequested);
-  bottomnavElement.addEventListener(RovingTabIndex.BACKWARDS_REQUESTED, onBackwardsRequested);
+  bottomnavElement.addEventListener(Keyboard.FORWARD_ARROW_KEY, onForwardsRequested);
+  bottomnavElement.addEventListener(Keyboard.BACK_ARROW_KEY, onBackwardsRequested);
   bottomnavElement.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
 }
 
@@ -45,11 +47,17 @@ function onTabIndexZeroed(event) {
   const currentItem = (event.target);
   RovingTabIndex.removeTabIndex(bottomnavElement.querySelectorAll('[role="tab"]'), [currentItem]);
 }
+
 /**
- * @param {Event} event
+ * @param {CustomEvent} event
  * @return {void}
  */
 function onForwardsRequested(event) {
+  if (event.detail.ctrlKey || event.detail.altKey
+    || event.detail.shiftKey || event.detail.metaKey) {
+    return;
+  }
+  event.preventDefault();
   event.stopPropagation();
   /** @type {HTMLElement} */
   const bottomnavElement = (event.currentTarget);
@@ -57,10 +65,15 @@ function onForwardsRequested(event) {
 }
 
 /**
- * @param {Event} event
+ * @param {CustomEvent} event
  * @return {void}
  */
 function onBackwardsRequested(event) {
+  if (event.detail.ctrlKey || event.detail.altKey
+    || event.detail.shiftKey || event.detail.metaKey) {
+    return;
+  }
+  event.preventDefault();
   event.stopPropagation();
   /** @type {HTMLElement} */
   const bottomnavElement = (event.currentTarget);
@@ -83,8 +96,8 @@ export function setupARIA(bottomnavElement) {
  */
 export function detach(bottomnavElement) {
   bottomnavElement.removeEventListener(BottomNavItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
-  bottomnavElement.removeEventListener(RovingTabIndex.FORWARDS_REQUESTED, onForwardsRequested);
-  bottomnavElement.removeEventListener(RovingTabIndex.BACKWARDS_REQUESTED, onBackwardsRequested);
+  bottomnavElement.removeEventListener(Keyboard.FORWARD_ARROW_KEY, onForwardsRequested);
+  bottomnavElement.removeEventListener(Keyboard.BACK_ARROW_KEY, onBackwardsRequested);
   bottomnavElement.removeEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
   iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'), BottomNavItem.detach);
 }

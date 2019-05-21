@@ -49,11 +49,11 @@ $mdw-datatable__theme-values: (
     color: RGBA(mdwDatatableThemeValue("text-color", $type), mdwDatatableThemeValue("text-opacity", $type));
   }
 
-  .mdw-datatable td:not([data-type="checkbox"]) {
+  .mdw-datatable td:not([mdw-checkbox]) {
     color: RGBA(mdwDatatableThemeValue("text-color", $type), mdwDatatableThemeValue("text-opacity", $type));
   }
 
-  .mdw-datatable th[mdw-sorted] {
+  .mdw-datatable th[aria-sort]:not([aria-sort="none"]) {
     color: RGBA(mdwDatatableThemeValue("text-color", $type), mdwDatatableThemeValue("text-opacity", $type));
   }
 
@@ -122,7 +122,8 @@ $mdw-datatable__theme-values: (
 
         tbody tr[aria-selected="true"] {
           background-color: RGBA(mdwDatatableThemeValue("selected-#{$color}-ie", $type), mdwDatatableThemeValue("selected-opacity", $type));
-            &:hover {
+
+          &:hover {
             background-color: RGBA(mdwDatatableThemeValue("selected-#{$color}-ie", $type), mdwDatatableThemeValue("selected-hover-opacity", $type));
           }
 

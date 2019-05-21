@@ -3,7 +3,9 @@
 // https://www.w3.org/TR/wai-aria-practices/examples/landmarks/navigation.html
 
 import { iterateArrayLike, iterateSomeOfArrayLike } from '../../core/dom';
+import * as Attributes from '../../core/aria/attributes';
 import * as RovingTabIndex from '../../core/aria/rovingtabindex';
+import * as Keyboard from '../../core/aria/keyboard';
 
 import * as ListItem from './item';
 import * as ListContent from './content';
@@ -41,11 +43,6 @@ export function attach(listElement) {
       ListItem.attach(child);
     }
   });
-  if (role === 'radiogroup') {
-    if (!listElement.hasAttribute('mdw-on-focus')) {
-      listElement.setAttribute('mdw-on-focus', 'check');
-    }
-  }
   iterateArrayLike(listElement.getElementsByClassName('mdw-list'), attach);
   if (listElement.hasAttribute('mdw-list-js')) {
     return;
@@ -56,23 +53,22 @@ export function attach(listElement) {
 
   switch (role) {
     case 'tree':
-      RovingTabIndex.setupTabIndexes(listElement, listElement.querySelectorAll('[role="treeitem"]'));
+      RovingTabIndex.setupTabIndexes(listElement.querySelectorAll('[role="treeitem"]'));
       break;
     case 'listbox':
-      RovingTabIndex.setupTabIndexes(listElement, listElement.querySelectorAll('[role="option"]'));
+      RovingTabIndex.setupTabIndexes(listElement.querySelectorAll('[role="option"]'));
       break;
     case 'radiogroup':
-      RovingTabIndex.setupTabIndexes(listElement, listElement.querySelectorAll('[role="radio"]'));
+      RovingTabIndex.setupTabIndexes(listElement.querySelectorAll('[role="radio"]'));
       break;
     default:
       return;
   }
 
-  listElement.addEventListener(RovingTabIndex.FORWARDS_REQUESTED, onForwardsRequested);
-  listElement.addEventListener(RovingTabIndex.BACKWARDS_REQUESTED, onBackwardsRequested);
+  listElement.addEventListener(Keyboard.DOWN_ARROW_KEY, onDownArrowKey);
+  listElement.addEventListener(Keyboard.UP_ARROW_KEY, onUpArrowKey);
   listElement.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
   listElement.addEventListener(ListContent.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
-  listElement.addEventListener(ListContent.CHECKED_CHANGE_EVENT, onCheckedChangeEvent);
   listElement.addEventListener(ListContent.FOCUS_EVENT, onContentFocusEvent);
   listElement.setAttribute('mdw-list-js', '');
 }
@@ -90,16 +86,13 @@ function onContentFocusEvent(event) {
   }
   /** @type {HTMLElement} */
   const listContentElement = (event.target);
-  if (ListContent.isDisabled(listContentElement)) {
+  if (Attributes.isDisabled(listContentElement)) {
     return;
   }
   onFocusInteraction.split(' ').forEach((interaction) => {
     switch (interaction) {
       case 'select':
         ListContent.setSelected(listContentElement, true);
-        break;
-      case 'check':
-        ListContent.setChecked(listContentElement, true);
         break;
       default:
     }
@@ -156,45 +149,6 @@ function onSelectedChangeEvent(event) {
 }
 
 /**
- * @param {CustomEvent} event
- * @return {void}
- */
-function onCheckedChangeEvent(event) {
-  /** @type {HTMLElement} */
-  const listElement = (event.currentTarget);
-  if (listElement.getAttribute('aria-readonly') === 'true') {
-    event.stopPropagation();
-    event.preventDefault();
-    return;
-  }
-  const listElementRole = listElement.getAttribute('role');
-  if (listElementRole !== 'radiogroup') {
-    // Bubble up
-    return;
-  }
-
-  const { detail } = event;
-  if (detail.value === 'false') {
-    return;
-  }
-  /** @type {HTMLElement} */
-  const itemElement = (event.target);
-  setTimeout(() => {
-    // Wait to see if event is cancelled
-    if (event.defaultPrevented) {
-      return;
-    }
-    iterateArrayLike(listElement.querySelectorAll('[role="radio"][aria-checked="true"]'),
-      (item) => {
-        if (item === itemElement) {
-          return;
-        }
-        item.setAttribute('aria-checked', 'false');
-      });
-  });
-}
-
-/**
  * @param {Event} event
  * @return {void}
  */
@@ -218,10 +172,15 @@ function onTabIndexZeroed(event) {
   }
 }
 /**
- * @param {Event} event
+ * @param {CustomEvent} event
  * @return {void}
  */
-function onForwardsRequested(event) {
+function onDownArrowKey(event) {
+  if (event.detail.ctrlKey || event.detail.altKey
+    || event.detail.shiftKey || event.detail.metaKey) {
+    return;
+  }
+  event.preventDefault();
   event.stopPropagation();
   /** @type {HTMLElement} */
   const listElement = (event.currentTarget);
@@ -240,10 +199,15 @@ function onForwardsRequested(event) {
 }
 
 /**
- * @param {Event} event
+ * @param {CustomEvent} event
  * @return {void}
  */
-function onBackwardsRequested(event) {
+function onUpArrowKey(event) {
+  if (event.detail.ctrlKey || event.detail.altKey
+    || event.detail.shiftKey || event.detail.metaKey) {
+    return;
+  }
+  event.preventDefault();
   event.stopPropagation();
   /** @type {HTMLElement} */
   const listElement = (event.currentTarget);
@@ -286,14 +250,11 @@ export function detach(listElement) {
       ListItem.detach(child);
     }
   });
-  RovingTabIndex.detach(
-    listElement,
-    listElement.querySelectorAll(`[role="${listElement.getAttribute('role') === 'tree' ? 'treeitem' : 'option'}"]`)
-  );
+  iterateArrayLike(listElement.querySelectorAll(`[role="${listElement.getAttribute('role') === 'tree' ? 'treeitem' : 'option'}"]`),
+    RovingTabIndex.detach);
   listElement.removeEventListener(ListContent.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
-  listElement.removeEventListener(ListContent.CHECKED_CHANGE_EVENT, onCheckedChangeEvent);
-  listElement.removeEventListener(RovingTabIndex.FORWARDS_REQUESTED, onForwardsRequested);
-  listElement.removeEventListener(RovingTabIndex.BACKWARDS_REQUESTED, onBackwardsRequested);
+  listElement.removeEventListener(Keyboard.DOWN_ARROW_KEY, onDownArrowKey);
+  listElement.removeEventListener(Keyboard.UP_ARROW_KEY, onUpArrowKey);
   listElement.removeEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
   listElement.removeAttribute('mdw-list-js');
 }

@@ -1,5 +1,6 @@
 // https://www.w3.org/TR/wai-aria-1.1/#tab
 
+import * as Keyboard from './keyboard';
 import * as Attributes from './attributes';
 
 /**
@@ -10,6 +11,7 @@ export function attach(element) {
   element.setAttribute('role', 'tab');
   element.setAttribute('mdw-aria-tab-js', '');
   element.addEventListener('keydown', onKeyDown);
+  Keyboard.attach(element);
 }
 
 /**
@@ -17,6 +19,7 @@ export function attach(element) {
  * @return {void}
  */
 export function detach(element) {
+  Keyboard.detach(element);
   element.removeEventListener('keydown', onKeyDown);
   element.removeAttribute('mdw-aria-tab-js');
 }
