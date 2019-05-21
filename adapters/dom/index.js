@@ -406,6 +406,12 @@ export default class DomAdapter {
     let elementIndex = -1;
     let element = this.dataElementMap.get(data);
     let invalidate = false;
+    if (element && this.recycle && this.recycle.deferRender && options.invalidate === true) {
+      // Deferred Render has a forced invalidation
+      // Item should be recreated
+      this.removeElement(element);
+      element = null;
+    }
     if (!element) {
       // Element does not exist, assume size changed
       invalidate = true;
@@ -480,10 +486,9 @@ export default class DomAdapter {
         }
       }
     }
-    if (options.render === false) {
-      if (this.recycle && !this.recycle.deferRender) {
-        invalidate = true;
-      }
+    if ((options.render === false)
+        || (options.render !== true && this.recycle && this.recycle.deferRender)) {
+      invalidate = true;
     } else if (element
       && (options.render === true || (!this.recycle || !this.recycle.deferRender))) {
       let prevClientWidth;
@@ -502,7 +507,6 @@ export default class DomAdapter {
       }
     }
     if (options.invalidate === true || (invalidate && options.invalidate !== false)) {
-      console.log('invalidate', dataIndex);
       this.invalidateItem(data, dataIndex);
     }
     return element;
