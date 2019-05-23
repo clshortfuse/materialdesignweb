@@ -63,6 +63,7 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
     color: transparent;
   }
 
+  .mdw-selection[aria-disabled="true"] &,
   &:disabled {
     cursor: not-allowed;
   }
@@ -99,17 +100,9 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
 .mdw-selection__icon {
   display: inline-flex;
   position: relative;
-  :root[dir="rtl"] & {
-    order: 1;
-  }
 
   box-sizing: border-box;
   height: $mdw-selection__icon-size;
-
-  .mdw-selection__input ~ & {
-    // width is represented by input element
-    max-width: 0;
-  }
   width: $mdw-selection__icon-size;
   margin: 0;
   margin-top: auto;
@@ -131,8 +124,13 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
 
   background-color: transparent;
 
-  .mdw-selection__input:disabled ~ & {
-    cursor: not-allowed;
+  :root[dir="rtl"] & {
+    order: 1;
+  }
+
+  .mdw-selection__input ~ & {
+    // width is represented by input element
+    max-width: 0;
   }
 
 
@@ -159,6 +157,11 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
     position: absolute;
   }
 
+  .mdw-selection[aria-disabled="true"] &,
+  .mdw-selection__input:disabled ~ & {
+    cursor: not-allowed;
+  }
+
   &[mdw-checkbox] {
     // Box outline
     &::before {
@@ -179,7 +182,7 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
       }
   
       // Checked not
-      .mdw-selection[aria-checked="true"]:not(:active):not[aria-disabled="true"] &,
+      .mdw-selection[aria-checked="true"]:not(:active):not([aria-disabled="true"]) &,
       .mdw-selection__input[type="checkbox"]:checked:not(:active):not(:disabled) ~ & {
         background-color: currentColor;
       }
@@ -230,7 +233,7 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
       border-radius: 50%;
   
       // Active, not disabled
-      .mdw-selection:active:not([aris-disabled="true"]) &,
+      .mdw-selection:active:not([aria-disabled="true"]) &,
       .mdw-selection__input:active:not(:disabled) ~ & {
         border-width: $mdw-selection__radio-size / 2;
       }
@@ -260,6 +263,7 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
 
   &[mdw-switch] {
     width: dp(36);
+
     &::before {
       top: dp(2);
       left: 0;
@@ -273,10 +277,10 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
       transform: translateX(0);
       z-index: 1;
   
+      background-color: currentColor;
+  
       border-radius: 50%;
       box-shadow: mdwElevation(1);
-  
-      background-color: currentColor;
   
       .mdw-selection[aria-checked="true"] &,
       .mdw-selection__input:checked ~ & {
@@ -297,9 +301,10 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
       animation-name: none;
   
       transform: none;
+
+      background-color: currentColor;
   
       border-radius: dp(7);
-      background-color: currentColor;
     }
   
     .mdw-selection:active:not([aria-disabled="true"]) &,
@@ -324,10 +329,6 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
 
   z-index: 1;
 
-  .mdw-selection__input:disabled ~ & {
-    cursor: not-allowed;
-  }
-
   :root[dir="rtl"] & {
     padding-right: 0;
     padding-left: dp(8);
@@ -339,10 +340,16 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
 
     padding-right: 0;
     padding-left: dp(8);
+
     :root[dir="rtl"] & {
       padding-right: dp(8);
       padding-left: 0;
     }
+  }
+
+  .mdw-selection[aria-disabled="true"] &,
+  .mdw-selection__input:disabled ~ & {
+    cursor: not-allowed;
   }
 }
 

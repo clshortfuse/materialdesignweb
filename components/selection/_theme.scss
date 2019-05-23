@@ -36,6 +36,8 @@ $mdw-selection__theme-values: (
 
 @mixin mdw-selection__theme-rules($type: 'var') {
   .mdw-selection__input {
+    opacity: 0;
+
     &:not(:checked) {
       color: RGBA(mdwSelectionThemeValue("icon-color", $type), mdwSelectionThemeValue("icon-opacity", $type));
     }
@@ -47,29 +49,29 @@ $mdw-selection__theme-values: (
 
       &:focus:not([mdw-overlay-off~="focus"]) {
         opacity: mdwSelectionThemeValue("focus-opacity", $type);
+
         &:checked:not([mdw-overlay-off~="selected"]) {
           opacity: mdwSelectionThemeValue("selected-focus-opacity", $type);
         }
       }
+    }
+  }
 
-      &:not(:disabled) {
-        &:hover:not([mdw-overlay-off~="hover"]) {
-          opacity: mdwSelectionThemeValue("hover-opacity", $type);
-          &:checked:not([mdw-overlay-off~="selected"]) {
-            opacity: mdwSelectionThemeValue("selected-hover-opacity", $type);
-          }
-        }
+  .mdw-selection:not([aria-disabled="true"]) .mdw-selection__input:not(:disabled) {
+    &:hover:not([mdw-overlay-off~="hover"]) {
+      opacity: mdwSelectionThemeValue("hover-opacity", $type);
 
-        &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"]) {
-          opacity: mdwSelectionThemeValue("hover-focus-opacity", $type);
-          &:checked:not([mdw-overlay-off~="selected"]) {
-            opacity: mdwSelectionThemeValue("selected-hover-focus-opacity", $type);
-          }
-        }
+      &:checked:not([mdw-overlay-off~="selected"]) {
+        opacity: mdwSelectionThemeValue("selected-hover-opacity", $type);
       }
     }
-    &:disabled {
-      opacity: 0;
+
+    &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"]) {
+      opacity: mdwSelectionThemeValue("hover-focus-opacity", $type);
+
+      &:checked:not([mdw-overlay-off~="selected"]) {
+        opacity: mdwSelectionThemeValue("selected-hover-focus-opacity", $type);
+      }
     }
   }
 
@@ -95,12 +97,14 @@ $mdw-selection__theme-values: (
 
   // Unchecked or disabled HTMLInputElement
   .mdw-selection[aria-checked="false"] .mdw-selection__icon,
+  .mdw-selection[aria-disabled="true"] .mdw-selection__icon,
   .mdw-selection__input:not(:checked) ~ .mdw-selection__icon,
   .mdw-selection__input:disabled ~ .mdw-selection__icon {
     &[mdw-checkbox],
     &[mdw-radio] {
       color: RGBA(mdwSelectionThemeValue("icon-color", $type), mdwSelectionThemeValue("icon-opacity", $type));
     }
+
     &[mdw-switch] {
       // Thumb
       &::before {
@@ -109,20 +113,23 @@ $mdw-selection__theme-values: (
       // Track
       &::after {
         opacity: mdwSelectionThemeValue("track-off-opacity", $type);
+
         background-color: RGBA(mdwSelectionThemeValue("track-off-color", $type));
       }
     }
   }
 
   // Disabled HTMLInputElement
+  .mdw-selection[aria-disabled="true"] .mdw-selection__label,
+  .mdw-selection[aria-disabled="true"] .mdw-selection__icon,
   .mdw-selection__input:disabled ~ .mdw-selection__label,
   .mdw-selection__input:disabled ~ .mdw-selection__icon {
     opacity: mdwSelectionThemeValue("disabled-opacity", $type);
   }
 
   // Disabled switch colors
-  .mdw-selection__input:disabled ~ .mdw-selection__icon[mdw-switch],
-  .mdw-selection[aria-disabled="true"] .mdw-selection__icon[mdw-switch] {
+  .mdw-selection[aria-disabled="true"] .mdw-selection__icon[mdw-switch],
+  .mdw-selection__input:disabled ~ .mdw-selection__icon[mdw-switch] {
     // Thumb
     &::before {
       background-color: RGBA(mdwSelectionThemeValue("thumb-disabled-color", $type));
