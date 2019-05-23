@@ -37,40 +37,51 @@ $mdw-selection__theme-values: (
 @mixin mdw-selection__theme-rules($type: 'var') {
   .mdw-selection__input {
     opacity: 0;
+  }
 
-    &:not(:checked) {
-      color: RGBA(mdwSelectionThemeValue("icon-color", $type), mdwSelectionThemeValue("icon-opacity", $type));
+  // Unchecked
+  .mdw-selection:not([aria-checked="true"]) .mdw-selection__input:not(:checked) {
+    color: RGBA(mdwSelectionThemeValue("icon-color", $type), mdwSelectionThemeValue("icon-opacity", $type));
+  }
+
+  // Default Focus
+  .mdw-selection__input:not([mdw-overlay-touch="true"]):focus:not([mdw-overlay-off~="focus"]) {
+    opacity: mdwSelectionThemeValue("focus-opacity", $type);
+  }
+
+  // Checked Focus
+  .mdw-selection[aria-checked="true"] .mdw-selection__input,
+  .mdw-selection__input:checked {
+    &:not([mdw-overlay-touch="true"]):focus:not([mdw-overlay-off~="focus"]):not([mdw-overlay-off~="selected"]) {
+      opacity: mdwSelectionThemeValue("selected-focus-opacity", $type);
     }
+  }
 
+  // Default Hover (only when not disabled)
+  .mdw-selection:not([aria-disabled="true"]) .mdw-selection__input:not(:disabled) {
     &:not([mdw-overlay-touch="true"]) {
-      &:checked:not([mdw-overlay-off~="selected"]) {
-        // opacity: mdwSelectionThemeValue("selected-opacity", $type);
-      }
+      &:hover:not([mdw-overlay-off~="hover"]) {
+        opacity: mdwSelectionThemeValue("hover-opacity", $type);
 
-      &:focus:not([mdw-overlay-off~="focus"]) {
-        opacity: mdwSelectionThemeValue("focus-opacity", $type);
-
-        &:checked:not([mdw-overlay-off~="selected"]) {
-          opacity: mdwSelectionThemeValue("selected-focus-opacity", $type);
+        &:focus:not([mdw-overlay-off~="focus"]) {
+          opacity: mdwSelectionThemeValue("hover-focus-opacity", $type);
         }
       }
     }
   }
 
-  .mdw-selection:not([aria-disabled="true"]) .mdw-selection__input:not(:disabled) {
-    &:hover:not([mdw-overlay-off~="hover"]) {
-      opacity: mdwSelectionThemeValue("hover-opacity", $type);
+  // Checked Hover (only when not disabled)
+  .mdw-selection:not([aria-disabled="true"])[aria-checked="true"] .mdw-selection__input:not(:disabled),
+  .mdw-selection__input:not(:disabled):checked {
+    &:not([mdw-overlay-touch="true"]) {
+      &:not([mdw-overlay-off~="selected"]) {
+        &:hover:not([mdw-overlay-off~="hover"]) {
+          opacity: mdwSelectionThemeValue("selected-hover-opacity", $type);
 
-      &:checked:not([mdw-overlay-off~="selected"]) {
-        opacity: mdwSelectionThemeValue("selected-hover-opacity", $type);
-      }
-    }
-
-    &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"]) {
-      opacity: mdwSelectionThemeValue("hover-focus-opacity", $type);
-
-      &:checked:not([mdw-overlay-off~="selected"]) {
-        opacity: mdwSelectionThemeValue("selected-hover-focus-opacity", $type);
+          &:focus:not([mdw-overlay-off~="focus"]) {
+            opacity: mdwSelectionThemeValue("selected-hover-focus-opacity", $type);
+          }
+        }
       }
     }
   }
@@ -98,7 +109,7 @@ $mdw-selection__theme-values: (
   // Unchecked or disabled HTMLInputElement
   .mdw-selection[aria-checked="false"] .mdw-selection__icon,
   .mdw-selection[aria-disabled="true"] .mdw-selection__icon,
-  .mdw-selection__input:not(:checked) ~ .mdw-selection__icon,
+  input.mdw-selection__input:not(:checked) ~ .mdw-selection__icon,
   .mdw-selection__input:disabled ~ .mdw-selection__icon {
     &[mdw-checkbox],
     &[mdw-radio] {
