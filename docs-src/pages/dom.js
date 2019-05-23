@@ -119,12 +119,13 @@ function setupComponentOptions() {
     // Element will not change size, therefore avoid possible invalidation
     // (When element is refreshed and not in DOM, adapter may assume sized change)
     domAdapter.refreshItem(item, { invalidate: false });
+    domAdapter.drawViewport();
   });
   buttons[3].addEventListener('click', () => {
     const item = datasource.filter(d => d.itemnumber === 80)[0];
     item.expanded = !item.expanded;
-    domAdapter.refreshItem(item);
-    // Size changed
+    // Force invalidation from height change
+    domAdapter.refreshItem(item, { invalidate: true });
     domAdapter.drawViewport();
   });
   sampleComponent.addEventListener(ListContent.ACTIVATE_EVENT, (event) => {

@@ -131,7 +131,7 @@ html.mdw-layout.mdw-theme(lang='en')
               .mdw-divider.mdw-theme(mdw-ink="divider")
               ul.mdw-list(mdw-margin-top)
                 li.mdw-list__item
-                  a.mdw-list__content.mdw-selection.mdw-list__subheader(aria-checked="true" data-name="use-appbar-autohide")
+                  a.mdw-list__content.mdw-selection.mdw-list__subheader(aria-checked="true" mdw-no-autocheck data-name="use-appbar-autohide")
                     .mdw-list__text
                       .mdw-list__text-line Auto Hide
                       .mdw-list__text-line.mdw-theme(mdw-ink="medium") Mobile and Tablet
@@ -179,7 +179,7 @@ html.mdw-layout.mdw-theme(lang='en')
                       .mdw-list__text-line.mdw-theme(mdw-ink="medium") [mdw-fab-show]
                     .mdw-selection__icon.mdw-theme(mdw-ink="secondary" mdw-switch)
                 li.mdw-list__item
-                  a.mdw-list__content.mdw-selection(aria-checked="true" data-name="use-fab-mobile")
+                  a.mdw-list__content.mdw-selection(aria-checked="true" mdw-no-autocheck data-name="use-fab-mobile")
                     .mdw-selection__label.mdw-list__text
                       .mdw-list__text-line Mobile
                       .mdw-list__text-line.mdw-theme(mdw-ink="medium") Center
@@ -187,7 +187,7 @@ html.mdw-layout.mdw-theme(lang='en')
                     .mdw-list__secondary(mdw-action)
                       .mdw-selection__icon.mdw-theme(mdw-ink="secondary" mdw-switch)
                 li.mdw-list__item
-                  a.mdw-list__content.mdw-selection(aria-checked="true" data-name="use-fab-desktop")
+                  a.mdw-list__content.mdw-selection(aria-checked="true" mdw-no-autocheck data-name="use-fab-desktop")
                     .mdw-selection__label.mdw-list__text
                       .mdw-list__text-line Desktop
                       .mdw-list__text-line.mdw-theme(mdw-ink="medium") End
@@ -202,7 +202,7 @@ html.mdw-layout.mdw-theme(lang='en')
               .mdw-card__subheader App Destinations
               .mdw-divider.mdw-theme(mdw-ink="divider")
               .mdw-list__subheader.mdw-theme(mdw-ink="medium") Style (Desktop)
-              ul.mdw-list(role="radiogroup")
+              ul.mdw-list.mdw-selection__radio-group(role="radiogroup")
                 li.mdw-list__item
                   a.mdw-list__content.mdw-selection(aria-checked="true" data-name="navdrawer-style" data-value="")
                     .mdw-list__text.mdw-selection__label Full-height
@@ -224,7 +224,7 @@ html.mdw-layout.mdw-theme(lang='en')
                     .mdw-list__text.mdw-selection__label Clipped Floating Card
                     .mdw-selection__icon.mdw-theme(mdw-ink="secondary" mdw-radio)
               .mdw-list__subheader.mdw-theme(mdw-ink="medium") Toggle (Desktop)
-              ul.mdw-list(role="radiogroup" mdw-margin-bottom)
+              ul.mdw-list.mdw-selection__radio-group(role="radiogroup" mdw-margin-bottom)
                 li.mdw-list__item
                   a.mdw-list__content.mdw-selection(aria-checked="true" data-name="navdrawer-toggle" data-value="")
                       .mdw-list__text.mdw-selection__label None (Perminent)
@@ -245,7 +245,7 @@ html.mdw-layout.mdw-theme(lang='en')
               .mdw-card__subheader Supplementary content
               .mdw-divider.mdw-theme(mdw-ink="divider")
               .mdw-list__subheader.mdw-theme(mdw-ink="medium") Style (Desktop)
-              ul.mdw-list(role="radiogroup")
+              ul.mdw-list.mdw-selection__radio-group(role="radiogroup")
                 li.mdw-list__item
                   a.mdw-list__content.mdw-selection(aria-checked="false" data-name="sidesheet-style" data-value="")
                     .mdw-list__text.mdw-selection__label Full-height
@@ -267,7 +267,7 @@ html.mdw-layout.mdw-theme(lang='en')
                     .mdw-list__text.mdw-selection__label Clipped Floating Card
                     .mdw-selection__icon.mdw-theme(mdw-ink="secondary" mdw-radio)
               .mdw-list__subheader.mdw-theme(mdw-ink="medium") Toggle (Desktop)
-              ul.mdw-list(role="radiogroup" mdw-margin-bottom)
+              ul.mdw-list.mdw-selection__radio-group(role="radiogroup" mdw-margin-bottom)
                 li.mdw-list__item
                   a.mdw-list__content.mdw-selection(aria-checked="false" data-name="sidesheet-toggle" data-value="")
                       .mdw-list__text.mdw-selection__label None (Perminent)

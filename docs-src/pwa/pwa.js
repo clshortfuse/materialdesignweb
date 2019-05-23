@@ -1,15 +1,20 @@
 import {
   iterateArrayLike,
 } from '../../core/dom';
+import * as Attributes from '../../core/aria/attributes';
+import * as Overlay from '../../core/overlay/index';
+import * as Ripple from '../../core/ripple/index';
 import * as Layout from '../../components/layout/index';
 import * as Button from '../../components/button/index';
 import * as Dialog from '../../components/dialog/index';
-import * as Overlay from '../../core/overlay/index';
-import * as Ripple from '../../core/ripple/index';
 import * as List from '../../components/list/index';
+import * as ListContent from '../../components/list/content';
+import * as ListSecondary from '../../components/list/secondary';
 import * as Menu from '../../components/menu/index';
+import * as Selection from '../../components/selection/index';
+import * as SelectionRadioGroup from '../../components/selection/radiogroup';
 import * as Snackbar from '../../components/snackbar/index';
-import { ListContent } from '../../index';
+
 
 /** @type {Element} */
 let checkedAutoHideItem;
@@ -25,6 +30,8 @@ function initializeSampleComponents() {
   iterateArrayLike(document.getElementsByClassName('mdw-overlay'), Overlay.attach);
   iterateArrayLike(document.getElementsByClassName('mdw-ripple'), Ripple.attach);
   iterateArrayLike(document.getElementsByClassName('mdw-button'), Button.attach);
+  iterateArrayLike(document.getElementsByClassName('mdw-selection__radio-group'), SelectionRadioGroup.attach);
+  iterateArrayLike(document.getElementsByClassName('mdw-selection'), Selection.attach);
   iterateArrayLike(document.getElementsByClassName('mdw-list'), List.attach);
   iterateArrayLike(document.getElementsByClassName('mdw-dialog'), Dialog.attach);
   iterateArrayLike(document.getElementsByClassName('mdw-menu'), Menu.attach);
@@ -51,7 +58,7 @@ function getCheckedValue(name) {
  * @return {boolean}
  */
 function getIsChecked(name) {
-  return getListContentElementByName(name).getAttribute('aria-checked') === 'true';
+  return Attributes.isChecked(getListContentElementByName(name));
 }
 
 /** @return {void} */
@@ -140,7 +147,15 @@ function onCheckChange(event) {
 
 /** @return {void} */
 function setupComponentOptions() {
-  document.addEventListener(ListContent.CHECKED_CHANGE_EVENT, onCheckChange);
+  document.addEventListener(ListSecondary.SECONDARY_ACTION_EVENT, (event) => {
+    /** @type {HTMLElement} */
+    const secondaryElement = (event.target);
+    const selectionElement = secondaryElement.parentElement;
+    // inverse check
+    const newValue = !Attributes.isChecked(selectionElement);
+    Selection.setChecked(selectionElement, newValue, true);
+  });
+  document.addEventListener(Selection.CHECKED_CHANGE_EVENT, onCheckChange);
   document.getElementById('dialog-alert-button').addEventListener('click', (event) => {
     Dialog.show(document.getElementById('dialog-alert'), event);
   });

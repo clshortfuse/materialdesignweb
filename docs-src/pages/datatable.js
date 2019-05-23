@@ -1,6 +1,7 @@
 import { iterateArrayLike } from '../../core/dom';
 import * as Button from '../../components/button/index';
 import * as DataTable from '../../components/datatable/index';
+import * as Selection from '../../components/selection/index';
 import * as Menu from '../../components/menu/index';
 import * as MenuItem from '../../components/menu/item';
 import DataTableAdapter from '../../adapters/datatable/index';
@@ -9,6 +10,7 @@ import DataTableAdapter from '../../adapters/datatable/index';
 function initializeMdwComponents() {
   iterateArrayLike(document.querySelectorAll('.mdw-datatable.js'), DataTable.attach);
   iterateArrayLike(document.getElementsByClassName('mdw-button'), Button.attach);
+  iterateArrayLike(document.getElementsByClassName('mdw-selection'), Selection.attach);
   iterateArrayLike(document.getElementsByClassName('mdw-menu'), Menu.attach);
 }
 
