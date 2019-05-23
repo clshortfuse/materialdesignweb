@@ -21,7 +21,7 @@
     "font-family-no-missing-generic-family-keyword": null,
     "color-hex-length": null,
     "color-hex-case": null,
-    "selector-nested-pattern": "^(\\s+|((:root|&|[a-z0-9A-Z._-])(\\[[^\\]]*\\])*([^\\s>~+])*)|&::?|[&+~>])*$",
+    "selector-nested-pattern": "^(\\s+|((:root|&|[a-z0-9A-Z._-])(:not\\([^\\)]*\\))*(\\[[^\\]]*\\])*([^\\s>~+])*)|&::?|[&+~>])*$",
     "no-empty-source": true,
     "block-no-empty": true,
     "no-extra-semicolons": true,
