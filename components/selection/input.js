@@ -1,4 +1,3 @@
-import * as Keyboard from '../../core/aria/keyboard';
 import { dispatchDomEvent } from '../../core/dom';
 
 export const CLICK_EVENT = 'mdw:selectioninput-click';
@@ -9,20 +8,21 @@ export const FOCUS_EVENT = 'mdw:selectioninput-focus';
  * @return {void}
  */
 export function attach(element) {
-  Keyboard.attach(element);
-  element.addEventListener(Keyboard.SPACEBAR_KEY, onSpacebarKey);
+  element.addEventListener('keydown', onKeyDown);
   element.addEventListener('click', onClick);
   element.addEventListener('focus', onFocus);
 }
 
 /**
- * @param {MouseEvent} event
+ * @param {KeyboardEvent} event
  * @return {void}
  */
-function onSpacebarKey(event) {
+function onKeyDown(event) {
   if (event.target instanceof HTMLInputElement) {
-    // Don't pass up Spacebar on native input elements
-    event.stopPropagation();
+    if (event.key === ' ' || event.key === 'Spacebar') {
+      // Don't pass up Spacebar on native input elements
+      event.stopPropagation();
+    }
   }
 }
 
@@ -49,5 +49,7 @@ function onFocus(event) {
  * @return {void}
  */
 export function detach(element) {
-  Keyboard.detach(element);
+  element.removeEventListener('keydown', onKeyDown);
+  element.removeEventListener('click', onClick);
+  element.removeEventListener('focus', onFocus);
 }
