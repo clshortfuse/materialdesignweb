@@ -13,6 +13,8 @@ npm: `npm install @shortfuse/materialdesignweb`
 
 | Module | CSS-Only Support | Description | status
 | :-------- | :-: | :- | :- |
+| [aria](core/aria/) | :x: | Handles ARIA attributes, ARIA roles, tabindexes, and keyboard interaction | preRC
+| [document](core/document/) | :white_check_mark: | Applies color-scheme, standalone-window, and user agents detection | RC
 | [overlay](core/overlay/) | :white_check_mark: | Applies overlay states to components | RC
 | [ripple](core/ripple/) | :white_check_mark: | Applies press ripple on interactions | preRC
 | [theme](core/theme/) | :white_check_mark: | Applies ink and surface colors based on light/dark context | preRC
@@ -47,7 +49,7 @@ npm: `npm install @shortfuse/materialdesignweb`
 | [menuitem](components/menu/item.js) | overlay ripple | :white_check_mark: | :white_check_mark:| menuitem menuitemradio menuitemcheckbox | aria-disabled aria-checked | stable
 | navdrawer | | | | | | *use layout*
 | [progress](components/progress/) |  | :white_check_mark:| | :x: | :x: | beta
-| [selection](components/selection/) | | :white_check_mark: | | checkbox‡ radio‡ | :x: | preRC
+| [selection](components/selection/) | | :white_check_mark: | :white_check_mark: | checkbox‡ radio‡ | aria-checked aria-disabled | preRC
 | sidesheet | | | | | | *use layout*
 | [slider](components/slider/) | | :white_check_mark: | :x: | :x: | :x: | alpha
 | [snackbar](components/snackbar/) | button | :white_check_mark: | :white_check_mark: | alert | aria-hidden | RC
@@ -65,7 +67,7 @@ npm: `npm install @shortfuse/materialdesignweb`
 | :-------- | :-- | :-
 | [datatable](adapters/datatable/) | button datatable† | preRC
 | [dom](adapters/dom/) | | preRC
-| [list](adapters/list/) | listitem† | preRC
+| [list](adapters/list/) | domadapter† listitem† | preRC
 | [search](adapters/search/) | list† textfield† | preRC
 
 ## Legend
