@@ -460,8 +460,10 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   position: -moz-sticky;
   position: sticky;
   bottom: 0;
-
+  
   z-index: 4;
+
+  box-shadow: mdwElevation(8);
 }
 
 .mdw-layout__appbar-shape {
