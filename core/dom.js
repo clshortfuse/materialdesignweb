@@ -74,12 +74,12 @@ export function isRtl() {
 }
 
 /**
- * @param {Element} element
+ * @param {EventTarget} eventTarget
  * @param {string} type
  * @param {Object} [detail]
  * @return {boolean}
  */
-export function dispatchDomEvent(element, type, detail) {
+export function dispatchDomEvent(eventTarget, type, detail) {
   let event;
   if (typeof CustomEvent === 'function') {
     event = new CustomEvent(type, {
@@ -101,7 +101,7 @@ export function dispatchDomEvent(element, type, detail) {
     event = document.createEvent('CustomEvent');
     event.initCustomEvent(type, true, true, detail);
   }
-  return element.dispatchEvent(event);
+  return eventTarget.dispatchEvent(event);
 }
 
 /**
