@@ -1,0 +1,50 @@
+@mixin mdw-textfield__center-label {
+  .mdw-textfield__label {
+    @include type-rules('subtitle');
+
+    top: 50%;
+
+    transform: translateY(-50%);
+  }
+
+  .mdw-textfield__outline-gap {
+    &::before,
+    :root[dir="rtl"] &::after {
+      right: 50%;
+      left: 0;
+    }
+
+    &::after,
+    :root[dir="rtl"] &::before {
+      right: 0;
+      left: 50%;
+    }
+  }
+}
+
+@mixin mdw-textfield__float-label {
+  .mdw-textfield__label {
+    @include type-rules('caption');
+    top: 0;
+    
+    transform: translateY(0);
+    
+    .mdw-textfield[mdw-outlined] & {
+      transform: translateY(-50%);
+    }
+  }
+  
+  .mdw-textfield__outline-gap {
+    &::before,
+    :root[dir="rtl"] &::after {
+      right: 100%;
+      left: 0;
+    }
+
+    &::after,
+    :root[dir="rtl"] &::before {
+      right: 0;
+      left: 100%;
+    }
+  }
+}

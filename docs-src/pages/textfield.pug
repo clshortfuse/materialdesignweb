@@ -90,23 +90,75 @@ include ../_mixins.pug
     .mdw-grid__item(mdw-colspan="4" flex-justify-content="center")
       .render-fill
         +androidstatusbar('secondary 300', 'light')
-        +appbar('secondary A100', 'light', ['arrow_back'], ['search'])
+        +appbar('secondary A100', 'light', ['arrow_back'], ['search']) Auto-fill styling
         form.content(style="padding:0px 16px")
-          +mdwTextField({ink:'secondary', required:true}) Name *
-          +mdwTextField({ink:'secondary'}) Address
-          +mdwTextField({ink:'secondary'}) City
+          +mdwTextField({ink:'secondary', required:true})(name="name") Name *
+          +mdwTextField({ink:'secondary'})(name="address") Address
+          +mdwTextField({ink:'secondary'})(name="city") City
           .horizontal-controls
-            label.mdw-textfield.mdw-theme(mdw-ink="secondary" style="width:88px")
-              input.mdw-textfield__input(type="text" placeholder=" ")
+            label.mdw-textfield.mdw-theme(mdw-ink="secondary" style="width:88px;")
+              select.mdw-textfield__input(name="state")
+                option(value="") --
+                option(value="AL") AL
+                option(value="AK") AK
+                option(value="AZ") AZ
+                option(value="AR") AR
+                option(value="CA") CA
+                option(value="CO") CO
+                option(value="CT") CT
+                option(value="DE") DE
+                option(value="FL") FL
+                option(value="GA") GA
+                option(value="HI") HI
+                option(value="ID") ID
+                option(value="IL") IL
+                option(value="IN") IN
+                option(value="IA") IA
+                option(value="KS") KS
+                option(value="KY") KY
+                option(value="LA") LA
+                option(value="ME") ME
+                option(value="MD") MD
+                option(value="MA") MA
+                option(value="MI") MI
+                option(value="MN") MN
+                option(value="MS") MS
+                option(value="MO") MO
+                option(value="MT") MT
+                option(value="NE") NE
+                option(value="NV") NV
+                option(value="NH") NH
+                option(value="NJ") NJ
+                option(value="NM") NM
+                option(value="NY") NY
+                option(value="NC") NC
+                option(value="ND") ND
+                option(value="OH") OH
+                option(value="OK") OK
+                option(value="OR") OR
+                option(value="PA") PA
+                option(value="RI") RI
+                option(value="SC") SC
+                option(value="SD") SD
+                option(value="TN") TN
+                option(value="TX") TX
+                option(value="UT") UT
+                option(value="VT") VT
+                option(value="VA") VA
+                option(value="WA") WA
+                option(value="WV") WV
+                option(value="WI") WI
+                option(value="WY") WY
+              .mdw-textfield__icon(mdw-dropdown)
               .mdw-textfield__border
                 .mdw-textfield__outline-gap
                   .mdw-textfield__label State
             label.mdw-textfield.flex-1.mdw-theme(mdw-ink="primary")
-              input.mdw-textfield__input(type="text" placeholder=" " required)
+              input.mdw-textfield__input(type="text" placeholder=" " name="zip" required)
               .mdw-textfield__border
                 .mdw-textfield__outline-gap
                   .mdw-textfield__label Zip code *
-          +mdwTextField({ink:'secondary'}) Phone number
+          +mdwTextField({ink:'secondary'})(name="phone") Phone number
           p.mdw-type * Required fields
         +androidnavbar
 

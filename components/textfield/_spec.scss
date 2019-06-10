@@ -1,12 +1,12 @@
 // https://material.io/design/components/text-fields.html
 // https://material.io/archive/guidelines/components/text-fields.html
 
-
 @import '../../core/_breakpoint.scss';
 @import '../../core/_elevation.scss';
 @import '../../core/_motion.scss';
 @import '../../core/_platform.scss';
 @import '../../core/_type.scss';
+@import './_mixins.scss';
 
 $mdw-textfield__border-line-height: dp(1) !default;
 $mdw-textfield__border-line-height__focused: dp(2) !default;
@@ -54,8 +54,6 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
       align-self: center;
 
       margin: 0;
-      padding-top: 0;
-      padding-bottom: 0;
     }
 
     .mdw-textfield__border {
@@ -100,8 +98,8 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
     -ms-grid-row-align: center;
     align-self: center;
 
-    padding-top: 0;
-    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 
   textarea.mdw-textfield__input {
@@ -179,18 +177,6 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
     transition-timing-function: $mdw-motion__standard-easing;
 
     border-color: inherit;
-  }
-
-  &::before,
-  :root[dir="rtl"] &::after {
-    right: 100%;
-    left: 0;
-  }
-
-  &::after,
-  :root[dir="rtl"] &::before {
-    right: 0;
-    left: 100%;
   }
 }
 
@@ -384,8 +370,6 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
     margin-bottom: calc(#{sp(6)} + #{dp(2)}); // Equidistant from border
     border-right: none;
     border-left: dp(2) solid transparent;
-    padding-top: 0;
-    padding-bottom: 0;
 
     :root[dir="rtl"] & {
       border-right: dp(2) solid transparent;
@@ -395,69 +379,14 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
 
   .mdw-textfield__label {
     position: relative; // reflow DOM
-    top: 0;
+    // top: 0;
 
     padding: 0 dp(4);
 
-    transform: translateY(-50%);
+    // transform: translateY(-50%);
 
     &::before {
       content: none;
-    }
-  }
-}
-
-// IE11 will ignore entire ruleset if ':placeholder-shown' psuedo is used, requiring duplication.
-.mdw-textfield[mdw-value-empty] > input.mdw-textfield__input,
-.mdw-textfield[mdw-value-empty] > textarea.mdw-textfield__input {
-  &:not(:focus) ~ .mdw-textfield__border {
-    .mdw-textfield__label {
-      @include type-rules('subtitle');
-
-      top: 50%;
-
-      transform: translateY(-50%);
-    }
-
-    .mdw-textfield__outline-gap {
-      &::before,
-      :root[dir="rtl"] &::after {
-        right: 50%;
-        left: 0;
-      }
-
-      &::after,
-      :root[dir="rtl"] &::before {
-        right: 0;
-        left: 50%;
-      }
-    }
-  }
-}
-
-.mdw-textfield > input.mdw-textfield__input,
-.mdw-textfield > textarea.mdw-textfield__input {
-  &:not(:focus):placeholder-shown ~ .mdw-textfield__border {
-    .mdw-textfield__label {
-      @include type-rules('subtitle');
-
-      top: 50%;
-
-      transform: translateY(-50%);
-    }
-
-    .mdw-textfield__outline-gap {
-      &::before,
-      :root[dir="rtl"] &::after {
-        right: 50%;
-        left: 0;
-      }
-
-      &::after,
-      :root[dir="rtl"] &::before {
-        right: 0;
-        left: 50%;
-      }
     }
   }
 }
@@ -569,15 +498,15 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
   min-width: 0; // Firefox CSS Grid fix
   width: 100%;
   border: none;
-
+  
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-
+  
   z-index: 1;
-
+  
   background: none;
   box-shadow: none; // Firefox :invalid styling
 
@@ -602,8 +531,6 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
   &:disabled {
     cursor: not-allowed;
   }
-
-  
 }
 
 .mdw-textfield__input,
@@ -612,8 +539,8 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
   -ms-grid-row-align: flex-start;
   align-self: flex-start;
 
-  padding-top: $mdw-textfield__input-top-alignment;
-  padding-bottom: $mdw-textfield__input-bottom-alignment;
+  margin-top: $mdw-textfield__input-top-alignment;
+  margin-bottom: $mdw-textfield__input-bottom-alignment;
 }
 
 textarea.mdw-textfield__input {
@@ -626,9 +553,7 @@ textarea.mdw-textfield__input {
   max-width: 100%; // Don't allow resize beyond bounds
   margin-top: $mdw-textfield__input-top-alignment;
   margin-bottom: $mdw-textfield__input-bottom-alignment;
-  padding-top: 0;
   padding-right: $mdw-textfield__textarea-padding-horizontal;
-  padding-bottom: 0;
   padding-left: 0;
 
   :root[dir="rtl"] & {
@@ -781,10 +706,34 @@ select.mdw-textfield__input {
 
 }
 
+// Default state of centered or when [mdw-value-empty] is present (IE)
+@include mdw-textfield__center-label();
+
+.mdw-textfield[mdw-value-empty] {
+  @include mdw-textfield__center-label();
+}
+
+// Floating states:
+// IE/Edge, HTMLSelectElement, :focus, :autofill, or has texted (unfocused with placeholder)
+
+@include mdw-platform__ms() {
+  @include mdw-textfield__float-label();
+}
+
+select.mdw-textfield__input ~ .mdw-textfield__border,
+.mdw-textfield__input:focus ~ .mdw-textfield__border {
+  @include mdw-textfield__float-label();
+}
+
+// Rules are intentionally separated because IE won't parse rules with unknown psuedos
+.mdw-textfield__input:-webkit-autofill ~ .mdw-textfield__border,
+.mdw-textfield__input:not(:placeholder-shown):not(:focus) ~ .mdw-textfield__border {
+  @include mdw-textfield__float-label();
+}
+
+// Invalid state
 .mdw-textfield:active > .mdw-textfield__input:not(:disabled),
 .mdw-textfield > .mdw-textfield__input:not(:disabled):focus {
-
-  // Invalid
   &:invalid {
     & ~ .mdw-textfield__border .mdw-textfield__outline-gap {
       animation-name: labelShake;
