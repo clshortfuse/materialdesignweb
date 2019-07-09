@@ -41,10 +41,10 @@ $mdw-button__theme-values: (
         @if ($type == 'var') {
           &[mdw-dark],
           &[mdw-light] {
-            --button__disabled-surface-text-rgb: inherit;
-            --button__disabled-surface-text-opacity: inherit;
-            --button__disabled-surface-background-rgb: inherit;
-            --button__disabled-surface-background-opacity: inherit;
+            --mdw-button__disabled-surface-text-rgb: inherit;
+            --mdw-button__disabled-surface-text-opacity: inherit;
+            --mdw-button__disabled-surface-background-rgb: inherit;
+            --mdw-button__disabled-surface-background-opacity: inherit;
           }
         }
       }
