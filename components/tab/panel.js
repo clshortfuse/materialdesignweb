@@ -1,5 +1,11 @@
 // https://www.w3.org/TR/wai-aria-1.1/#tabpanel
 
+import * as Attributes from '../../core/aria/attributes';
+
+export const EXPANDED_CHANGE_EVENT = 'mdw:tabpanel-expandedchange';
+
+export const { isExpanded } = Attributes;
+
 /**
  * @param {Element} tabPanelElement
  * @return {void}
@@ -28,20 +34,13 @@ export function detach(tabPanelElement) {
 }
 
 /**
- * @param {Element} tabPanelElement
- * @return {boolean}
+ * @param {Element} element
+ * @param {string|boolean} value
+ * @param {boolean} [dispatchEvent=true]
+ * @return {boolean} successful
  */
-export function isExpanded(tabPanelElement) {
-  return tabPanelElement.getAttribute('aria-expanded') === 'true';
-}
-
-/**
- * @param {Element} tabPanelElement
- * @param {boolean} value
- * @return {void}
- */
-export function setExpanded(tabPanelElement, value) {
-  tabPanelElement.setAttribute('aria-expanded', value ? 'true' : 'false');
+export function setExpanded(element, value, dispatchEvent = true) {
+  return Attributes.setExpanded(element, value, dispatchEvent ? EXPANDED_CHANGE_EVENT : null);
 }
 
 /**

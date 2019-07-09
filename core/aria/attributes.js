@@ -107,6 +107,34 @@ export function isDisabled(element) {
 
 /**
  * @param {Element} element
+ * @param {string|boolean} value
+ * @param {string} [dispatchEventName]
+ * @return {boolean} successful
+ */
+export function setDisabled(element, value, dispatchEventName) {
+  return setAttribute('aria-disabled', element, value, dispatchEventName);
+}
+
+/**
+ * @param {Element} element
+ * @return {boolean}
+ */
+export function isExpanded(element) {
+  return element.getAttribute('aria-expanded') === 'true';
+}
+
+/**
+ * @param {Element} element
+ * @param {string|boolean} value
+ * @param {string} [dispatchEventName]
+ * @return {boolean} successful
+ */
+export function setExpanded(element, value, dispatchEventName) {
+  return setAttribute('aria-expanded', element, value, dispatchEventName);
+}
+
+/**
+ * @param {Element} element
  * @return {boolean}
  */
 export function isReadonly(element) {

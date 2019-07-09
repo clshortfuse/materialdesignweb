@@ -2,6 +2,7 @@ import {
   iterateArrayLike,
   nextTick,
   getPassiveEventListenerOption,
+  dispatchDomEvent,
   iterateSomeOfArrayLike,
 } from '../../core/dom';
 
@@ -11,6 +12,8 @@ import * as TabPanel from './panel';
 import * as TabItem from './item';
 
 const RESIZE_WAIT_FRAMES = 5;
+
+export const SELECTED_INDEX_CHANGE_EVENT = 'mdw:tab-selectedindexchange';
 
 /**
  * @param {Element} tabElement
@@ -31,6 +34,8 @@ export function attach(tabElement) {
     getPassiveEventListenerOption());
   tabElement.addEventListener(TabItem.SELECTED_CHANGE_EVENT, onTabItemSelectedChange,
     getPassiveEventListenerOption());
+  tabElement.addEventListener(TabPanel.EXPANDED_CHANGE_EVENT, onTabPanelExpandedChange,
+    getPassiveEventListenerOption());
 
   /** @type {ArrayLike<Element>} */
   const items = (tabListElement && tabListElement.getElementsByClassName('mdw-tab__item')) || [];
@@ -39,15 +44,34 @@ export function attach(tabElement) {
 
   let selectedItem;
   let selectedPanel;
-  iterateArrayLike(items, (itemElement, index) => {
+  let selectedIndex;
+  iterateSomeOfArrayLike(items, (itemElement, index) => {
     if (itemElement.getAttribute('aria-selected') === 'true') {
       selectedItem = itemElement;
       selectedPanel = panels[index];
+      selectedIndex = index;
+      return true;
     }
+    return false;
   });
+  if (selectedIndex == null) {
+    iterateSomeOfArrayLike(panels, (panelElement, index) => {
+      if (panelElement.getAttribute('aria-expanded') === 'true') {
+        selectedPanel = panelElement;
+        selectedItem = items[index];
+        selectedIndex = index;
+        return true;
+      }
+      return false;
+    });
+  }
   if (!selectedItem && items.length) {
     selectedItem = items[0];
+    selectedIndex = 0;
+  }
+  if (!selectedPanel && panels.length) {
     selectedPanel = panels[0];
+    selectedIndex = 0;
   }
   if (selectedItem) {
     TabItem.setSelected(selectedItem, true);
@@ -55,6 +79,9 @@ export function attach(tabElement) {
   if (selectedPanel) {
     TabPanel.setHidden(selectedPanel, false);
     TabPanel.setExpanded(selectedPanel, true);
+  }
+  if (selectedIndex != null) {
+    tabElement.setAttribute('mdw-selected-index', selectedIndex.toString());
   }
   onResize(tabElement);
 }
@@ -72,27 +99,28 @@ export function onTabItemSelectedChange(event) {
   /** @type {HTMLElement} */
   const tabItemElement = (event.target);
   /** @type {HTMLElement} */
+  const tabListElement = (tabElement.getElementsByClassName('mdw-tab__list')[0]);
+  if (!tabListElement) {
+    return;
+  }
+
+  /** @type {HTMLElement} */
   const tabContentElement = (tabElement.getElementsByClassName('mdw-tab__content')[0]);
+  const tabItemIndex = TabList.getTabItemIndex(tabListElement, tabItemElement);
+  if (tabItemIndex === -1) {
+    return;
+  }
   if (tabContentElement) {
-    let tabItemIndex = -1;
-    const tabItems = tabElement.querySelectorAll('.mdw-tab__list [role="tab"]');
-    iterateSomeOfArrayLike(tabItems, (el, index) => {
-      if (el === tabItemElement) {
-        tabItemIndex = index;
-        return true;
-      }
-      return false;
-    });
-    if (!tabContentElement.hasAttribute('mdw-no-scroll')) {
+    const hasNoScroll = tabContentElement.hasAttribute('mdw-no-scroll');
+    if (!hasNoScroll) {
       TabContent.selectPanel(tabContentElement, tabItemIndex, 'smooth');
       return;
     }
     TabContent.selectPanel(tabContentElement, tabItemIndex, true);
   }
-
-  const tabListElement = tabElement.getElementsByClassName('mdw-tab__list')[0];
-  if (tabListElement) {
-    TabList.setIndicatorPosition(tabListElement, tabItemElement, 0, true);
+  TabList.setIndicatorPosition(tabListElement, tabItemElement, 0, true);
+  if (!tabContentElement) {
+    updateSelectedIndex(tabElement, tabItemIndex);
   }
 }
 
@@ -111,9 +139,11 @@ export function detach(tabElement) {
     TabContent.detach(tabContentElement);
   }
 
+  tabElement.removeEventListener(TabPanel.EXPANDED_CHANGE_EVENT, onTabPanelExpandedChange);
   tabElement.removeEventListener(TabContent.SCROLL_EVENT, onTabContentScroll);
   tabElement.removeEventListener(TabItem.SELECTED_CHANGE_EVENT, onTabItemSelectedChange);
   tabElement.removeAttribute('mdw-resize-stage');
+  tabElement.removeAttribute('mdw-selected-index');
 }
 
 /**
@@ -181,7 +211,46 @@ export function onTabContentScroll(event) {
     return;
   }
   TabList.setIndicatorPosition(tabListElement, detail.leftPanelIndex, detail.visibilityPercentage);
-  if (detail.newSelectedIndex != null) {
-    TabList.selectItemAtIndex(tabListElement, detail.newSelectedIndex, false);
+}
+
+/**
+ * @param {CustomEvent} event
+ * @return {void}
+ */
+export function onTabPanelExpandedChange(event) {
+  if (event.detail.value !== 'true') {
+    return;
   }
+  /** @type {HTMLElement} */
+  const tabElement = (event.currentTarget);
+  if (tabElement.hasAttribute('mdw-resize-stage')) {
+    return;
+  }
+  let index = 0;
+  /** @type {HTMLElement} */
+  const tabPanelElement = (event.target);
+  let sibling = tabPanelElement.previousElementSibling;
+  while (sibling) {
+    index += 1;
+    sibling = sibling.previousElementSibling;
+  }
+  const tabListElement = tabElement.getElementsByClassName('mdw-tab__list')[0];
+  if (tabListElement) {
+    TabList.selectItemAtIndex(tabListElement, index, false);
+  }
+  updateSelectedIndex(tabElement, index);
+}
+
+/**
+ * @param {HTMLElement} tabElement
+ * @param {number} index
+ * @return {void}
+ */
+function updateSelectedIndex(tabElement, index) {
+  const currentIndex = tabElement.getAttribute('mdw-selected-index');
+  if (currentIndex == null || currentIndex === index.toString()) {
+    return;
+  }
+  tabElement.setAttribute('mdw-selected-index', index.toString());
+  dispatchDomEvent(tabElement, SELECTED_INDEX_CHANGE_EVENT, { value: index });
 }

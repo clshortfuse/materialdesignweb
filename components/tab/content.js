@@ -25,7 +25,6 @@ export function attach(tabContentElement) {
  */
 export function detach(tabContentElement) {
   tabContentElement.removeEventListener('keydown', onKeyDown);
-  tabContentElement.removeAttribute('mdw-selected-index');
   tabContentElement.removeEventListener('scroll', onTabContentScroll);
   iterateArrayLike(tabContentElement.getElementsByClassName('mdw-tab__panel'), TabPanel.detach);
 }
@@ -118,17 +117,14 @@ export function onTabContentScroll(event) {
   const currentTargetIndex = currentTargetIndexString == null
     ? null : parseInt(currentTargetIndexString, 10);
 
-  let newSelectedIndex = null;
   if (currentTargetIndex == null) {
     TabPanel.setExpanded(leftPanel, leftSelected);
     if (rightPanel) {
       TabPanel.setExpanded(rightPanel, rightSelected);
     }
-    newSelectedIndex = selectedIndex;
   } else if (currentTargetIndex === selectedIndex) {
     tabContentElement.removeAttribute('mdw-target-index');
   }
-
 
   TabPanel.setHidden(leftPanel, false);
   if (leftPeekPanel) {
@@ -142,7 +138,6 @@ export function onTabContentScroll(event) {
   }
 
   dispatchDomEvent(tabContentElement, SCROLL_EVENT, {
-    newSelectedIndex,
     leftPanelIndex,
     visibilityPercentage,
   });

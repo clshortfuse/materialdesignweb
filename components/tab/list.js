@@ -1,7 +1,7 @@
 // https://www.w3.org/TR/wai-aria-practices/#tabpanel
 
 import {
-  iterateArrayLike, getPassiveEventListenerOption, scrollToElement,
+  iterateArrayLike, getPassiveEventListenerOption, scrollToElement, iterateSomeOfArrayLike,
 } from '../../core/dom';
 
 import * as RovingTabIndex from '../../core/aria/rovingtabindex';
@@ -144,10 +144,23 @@ export function setIndicatorPosition(tabListElement, item, percentage, animate =
 }
 
 /**
- * @param {Element} tabListElement
- * @param {number} tabItemIndex
- * @return {Element}
+ * @param {HTMLElement} tabListElement
+ * @param {HTMLElement} tabItemElement
+ * @return {number}
  */
+export function getTabItemIndex(tabListElement, tabItemElement) {
+  /** @type {HTMLCollectionOf<HTMLElement>} */
+  const items = (tabListElement.getElementsByClassName('mdw-tab__item'));
+  let tabItemIndex = -1;
+  iterateSomeOfArrayLike(items, (el, index) => {
+    if (el === tabItemElement) {
+      tabItemIndex = index;
+      return true;
+    }
+    return false;
+  });
+  return tabItemIndex;
+}
 
 /**
  * @param {Element} tabListElement
@@ -156,7 +169,6 @@ export function setIndicatorPosition(tabListElement, item, percentage, animate =
  * @return {void}
  */
 export function selectItemAtIndex(tabListElement, tabItemIndex, dispatchEvents = false) {
-  tabListElement.setAttribute('mdw-selected-index', tabItemIndex.toString(10));
   /** @type {HTMLCollectionOf<HTMLElement>} */
   const items = (tabListElement.getElementsByClassName('mdw-tab__item'));
   if (dispatchEvents) {
@@ -183,11 +195,11 @@ export function selectItemAtIndex(tabListElement, tabItemIndex, dispatchEvents =
  * @return {void}
  */
 export function onSelectedChangeEvent(event) {
-  /** @type {HTMLElement} */
-  const itemElement = (event.target);
   if (event.detail.value !== 'true') {
     return;
   }
+  /** @type {HTMLElement} */
+  const itemElement = (event.target);
   /** @type {HTMLElement} */
   const tabListElement = (event.currentTarget);
   iterateArrayLike(tabListElement.querySelectorAll('[role="tab"]'), (item) => {
