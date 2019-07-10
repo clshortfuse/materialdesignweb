@@ -200,7 +200,7 @@ $mdw-ripple__touch-up-acceleration: 3400 !default;
 .mdw-ripple[aria-disabled="true"] {
   & > .mdw-ripple__container,
   &::after {
-    display: none;
+    visibility: hidden;
   }
 }
 
