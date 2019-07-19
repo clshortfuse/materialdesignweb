@@ -1,7 +1,10 @@
 $mdw-theme__fallbacks: 'ieonly' !default;
 $mdw-theme__variables: 'supports' !default;
 
-$mdw-theme__colors: () !default;
+$mdw-theme__inks: ('primary', 'secondary', 'warn') !default;
+$mdw-theme__surfaces: ('primary', 'secondary', 'warn', 'background') !default;
+$mdw-theme__ink-tones: ("A100", "A200", "A400", "A700") !default;
+$mdw-theme__surface-tones: ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900") !default;
 $mdw-theme__primary: 'blue' !default;
 $mdw-theme__secondary: 'pink' !default;
 $mdw-theme__warn: 'red' !default;
