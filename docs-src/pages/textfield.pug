@@ -90,7 +90,7 @@ include ../_mixins.pug
     .mdw-grid__item(mdw-colspan="4" flex-justify-content="center")
       .render-fill
         +androidstatusbar('secondary 300', 'light')
-        +appbar('secondary A100', 'light', ['arrow_back'], ['search']) Auto-fill styling
+        +appbar('secondary 100', 'light', ['arrow_back'], ['search']) Auto-fill styling
         form.content(style="padding:0px 16px")
           +mdwTextField({ink:'secondary', required:true})(name="name") Name *
           +mdwTextField({ink:'secondary'})(name="address") Address
@@ -165,7 +165,7 @@ include ../_mixins.pug
     .mdw-grid__item(mdw-colspan="4" flex-justify-content="center")
       .render-fill
         +androidstatusbar('secondary 800', 'dark')
-        +appbar('secondary A700', 'dark', ['arrow_back'], ['search'])
+        +appbar('secondary 700', 'dark', ['arrow_back'], ['search'])
         form.content(style="padding:8px 16px")
           div.display-flex(style="margin-bottom:-32px;margin-top:-24px;" flex-justify-content="center")
             i.material-icons(style="color:#ccc;font-size:256px") person
@@ -257,7 +257,7 @@ include ../_mixins.pug
     .mdw-grid__item(mdw-colspan="4" flex-justify-content="center")
       .render-fill
         +androidstatusbar('amber 600', 'dark')
-        +appbar('amber A400', 'dark', ['arrow_back'], ['done'])
+        +appbar('amber 400', 'dark', ['arrow_back'], ['done'])
         .content(style="padding:0 16px")
           label.mdw-textfield.mdw-theme(mdw-ink="amber")
             input.mdw-textfield__input(placeholder=" ")
@@ -278,8 +278,8 @@ include ../_mixins.pug
         +androidnavbar
     .mdw-grid__item(mdw-colspan="4" flex-justify-content="center")
       .render-fill
-        +androidstatusbar('amber A700', 'dark')
-        +appbar('amber A400', 'dark', ['arrow_back'], ['done'])
+        +androidstatusbar('amber 700', 'dark')
+        +appbar('amber 400', 'dark', ['arrow_back'], ['done'])
         .content(style="padding:0 16px")
           label.mdw-textfield.mdw-theme(mdw-ink="amber")
             input.mdw-textfield__input(placeholder=" ")

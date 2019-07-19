@@ -3,7 +3,8 @@ $mdw-theme__secondary: 'pink';
 $mdw-theme__warn: 'red';
 $mdw-theme__background: 'gray';
 $mdw-theme__foreground: (#000, #fff);
-$mdw-theme__colors: ('amber', 'blue', 'cyan', 'red', 'green', 'deeppurple', 'purple', 'yellow', 'teal');
+$mdw-theme__inks: ('primary', 'secondary', 'warn', 'amber', 'blue', 'cyan', 'red', 'green', 'deeppurple', 'purple', 'yellow', 'teal');
+$mdw-theme__surfaces: ('primary', 'secondary', 'warn', 'background', 'amber', 'blue', 'cyan', 'red', 'green', 'deeppurple', 'purple', 'yellow', 'teal');
 $mdw-theme__fallbacks: false;
 
 @import "../../_theme.scss";
