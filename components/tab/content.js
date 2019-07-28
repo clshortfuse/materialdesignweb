@@ -57,18 +57,15 @@ function onKeyDown(event) {
 export function onTabContentScroll(event) {
   /** @type {HTMLElement} */
   const tabContentElement = (event.currentTarget);
-  if (tabContentElement.hasAttribute('mdw-no-scroll')) {
-    return;
-  }
   const isPageRtl = isRtl();
   const scrollPoint = tabContentElement.scrollLeft / tabContentElement.clientWidth;
   let visibleIndex = Math.floor(scrollPoint);
   let visibilityPercentage = scrollPoint - visibleIndex;
 
   // Percentage may be incorrect due to floating point rounding errors
-  // Compare integer values provided by browser to check for 0
+  // Compare integer values provided by browser to check if within 1px
   iterateSomeOfArrayLike(tabContentElement.children, ((/** @type {HTMLElement} */ panel, index) => {
-    if (tabContentElement.scrollLeft === panel.offsetLeft) {
+    if (Math.abs(tabContentElement.scrollLeft - panel.offsetLeft) <= 1) {
       visibleIndex = index;
       visibilityPercentage = 0;
       return true;
@@ -117,13 +114,18 @@ export function onTabContentScroll(event) {
   const currentTargetIndex = currentTargetIndexString == null
     ? null : parseInt(currentTargetIndexString, 10);
 
+  let updateSelected = false;
   if (currentTargetIndex == null) {
     TabPanel.setExpanded(leftPanel, leftSelected);
     if (rightPanel) {
       TabPanel.setExpanded(rightPanel, rightSelected);
     }
+    updateSelected = visibilityPercentage === 0;
   } else if (currentTargetIndex === selectedIndex) {
-    tabContentElement.removeAttribute('mdw-target-index');
+    if (visibilityPercentage === 0) {
+      updateSelected = true;
+      tabContentElement.removeAttribute('mdw-target-index');
+    }
   }
 
   TabPanel.setHidden(leftPanel, false);
@@ -140,6 +142,7 @@ export function onTabContentScroll(event) {
   dispatchDomEvent(tabContentElement, SCROLL_EVENT, {
     leftPanelIndex,
     visibilityPercentage,
+    updateSelected,
   });
 }
 

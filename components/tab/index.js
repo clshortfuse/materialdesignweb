@@ -1,5 +1,4 @@
 import {
-  iterateArrayLike,
   nextTick,
   getPassiveEventListenerOption,
   dispatchDomEvent,
@@ -169,7 +168,7 @@ export function onResize(tabElement) {
     if (stage === RESIZE_WAIT_FRAMES) {
       /** @type {HTMLElement} */
       const tabContentElement = (tabElement.getElementsByClassName('mdw-tab__content')[0]);
-      if (tabContentElement && !tabContentElement.hasAttribute('mdw-no-scroll')) {
+      if (tabContentElement) {
         /** @type {HTMLElement} */
         const relatedPanel = (tabContentElement.querySelector('.mdw-tab__panel[aria-expanded="true"]'));
         if (relatedPanel) {
@@ -207,10 +206,16 @@ export function onTabContentScroll(event) {
   }
   const { detail } = event;
   const tabListElement = tabElement.getElementsByClassName('mdw-tab__list')[0];
-  if (!tabListElement) {
-    return;
+  if (tabListElement) {
+    TabList.setIndicatorPosition(
+      tabListElement,
+      detail.leftPanelIndex,
+      detail.visibilityPercentage
+    );
   }
-  TabList.setIndicatorPosition(tabListElement, detail.leftPanelIndex, detail.visibilityPercentage);
+  if (detail.updateSelected) {
+    updateSelectedIndex(tabElement, detail.leftPanelIndex);
+  }
 }
 
 /**
@@ -238,7 +243,6 @@ export function onTabPanelExpandedChange(event) {
   if (tabListElement) {
     TabList.selectItemAtIndex(tabListElement, index, false);
   }
-  updateSelectedIndex(tabElement, index);
 }
 
 /**
