@@ -201,10 +201,10 @@ export function onResize(tabElement) {
 export function onTabContentScroll(event) {
   /** @type {HTMLElement} */
   const tabElement = (event.currentTarget);
-  if (tabElement.hasAttribute('mdw-resize-stage')) {
+  const { detail } = event;
+  if (!detail.forceSelection && tabElement.hasAttribute('mdw-resize-stage')) {
     return;
   }
-  const { detail } = event;
   const tabListElement = tabElement.getElementsByClassName('mdw-tab__list')[0];
   if (tabListElement) {
     TabList.setIndicatorPosition(

@@ -115,6 +115,7 @@ export function onTabContentScroll(event) {
     ? null : parseInt(currentTargetIndexString, 10);
 
   let updateSelected = false;
+  let forceSelection = false;
   if (currentTargetIndex == null) {
     TabPanel.setExpanded(leftPanel, leftSelected);
     if (rightPanel) {
@@ -124,6 +125,7 @@ export function onTabContentScroll(event) {
   } else if (currentTargetIndex === selectedIndex) {
     if (visibilityPercentage === 0) {
       updateSelected = true;
+      forceSelection = true;
       tabContentElement.removeAttribute('mdw-target-index');
     }
   }
@@ -143,6 +145,7 @@ export function onTabContentScroll(event) {
     leftPanelIndex,
     visibilityPercentage,
     updateSelected,
+    forceSelection,
   });
 }
 
