@@ -38,17 +38,17 @@ export function attach() {
   }
 
   iterateArrayLike(document.getElementsByClassName('mdw-layout__navdrawer-toggle'),
-    el => el.addEventListener('click', toggleNavDrawer));
+    (el) => el.addEventListener('click', toggleNavDrawer));
   iterateArrayLike(document.getElementsByClassName('mdw-layout__navdrawer-show'),
-    el => el.addEventListener('click', showNavDrawer));
+    (el) => el.addEventListener('click', showNavDrawer));
   iterateArrayLike(document.getElementsByClassName('mdw-layout__navdrawer-hide'),
-    el => el.addEventListener('click', hideNavDrawer));
+    (el) => el.addEventListener('click', hideNavDrawer));
   iterateArrayLike(document.getElementsByClassName('mdw-layout__sidesheet-toggle'),
-    el => el.addEventListener('click', toggleSideSheet));
+    (el) => el.addEventListener('click', toggleSideSheet));
   iterateArrayLike(document.getElementsByClassName('mdw-layout__sidesheet-show'),
-    el => el.addEventListener('click', showSideSheet));
+    (el) => el.addEventListener('click', showSideSheet));
   iterateArrayLike(document.getElementsByClassName('mdw-layout__sidesheet-hide'),
-    el => el.addEventListener('click', hideSideSheet));
+    (el) => el.addEventListener('click', hideSideSheet));
   const scrim = document.getElementsByClassName('mdw-layout__scrim')[0];
   if (scrim) {
     scrim.addEventListener('click', onScrimClick);

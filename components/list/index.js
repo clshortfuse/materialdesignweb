@@ -30,7 +30,7 @@ export function attach(listElement) {
     if (parentRole === 'treeitem') {
       newRole = 'group';
     } else if (iterateSomeOfArrayLike(listElement.children,
-      child => child.hasAttribute('aria-expanded') && child.classList.contains('mdw-list__item'))) {
+      (child) => child.hasAttribute('aria-expanded') && child.classList.contains('mdw-list__item'))) {
       newRole = 'tree';
     }
     listElement.setAttribute('role', newRole);

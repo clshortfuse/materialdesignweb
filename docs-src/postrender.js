@@ -17,7 +17,7 @@ navDrawer.querySelector('[aria-current]').scrollIntoView({
 
 /** @return {void} */
 function clearCurrentPage() {
-  iterateArrayLike(navDrawer.querySelectorAll('[aria-current]'), item => item.removeAttribute('aria-current'));
+  iterateArrayLike(navDrawer.querySelectorAll('[aria-current]'), (item) => item.removeAttribute('aria-current'));
 }
 
 

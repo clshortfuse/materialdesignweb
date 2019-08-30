@@ -70,13 +70,13 @@ export function setupARIA(element) {
     element.setAttribute('aria-checked', 'false');
   }
   iterateArrayLike(element.getElementsByClassName('mdw-menu__icon'),
-    el => el.setAttribute('aria-hidden', 'true'));
+    (el) => el.setAttribute('aria-hidden', 'true'));
   iterateArrayLike(element.getElementsByClassName('mdw-menu__text'),
-    el => el.setAttribute('role', 'text'));
+    (el) => el.setAttribute('role', 'text'));
   iterateArrayLike(element.getElementsByClassName('mdw-menu__check'),
-    el => el.setAttribute('aria-hidden', 'true'));
+    (el) => el.setAttribute('aria-hidden', 'true'));
   iterateArrayLike(element.getElementsByClassName('mdw-menu__info'),
-    el => el.setAttribute('role', 'note'));
+    (el) => el.setAttribute('role', 'note'));
 }
 
 /**

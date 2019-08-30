@@ -7,11 +7,7 @@ import * as DataTableRow from './row';
 import * as RovingTabIndex from '../../core/aria/rovingtabindex';
 import * as Keyboard from '../../core/aria/keyboard';
 
-import {
-  findElementParentByClassName,
-  iterateArrayLike,
-  iterateSomeOfArrayLike,
-} from '../../core/dom';
+import { iterateArrayLike } from '../../core/dom';
 
 export const CELL_TABINDEX_QUERIES = [
   'td:not([mdw-autofocus-widget])',
@@ -250,7 +246,7 @@ export function onKeyboard(event) {
         }
         if (cell) {
           searchElements = getTableBody(dataTableElement).querySelectorAll(
-            CELL_TABINDEX_QUERIES.map(q => `${q}:nth-child(${cell.cellIndex + 1})`).join(',')
+            CELL_TABINDEX_QUERIES.map((q) => `${q}:nth-child(${cell.cellIndex + 1})`).join(',')
           );
         } else {
           searchElements = getTableBody(dataTableElement).getElementsByTagName('tr');

@@ -1,6 +1,6 @@
 import * as Button from '../../components/button/index';
 import * as Tab from '../../components/tab/index';
-import { convertElementToCode, changeElementTagName } from '../_sample-utils';
+import { convertElementToCode } from '../_sample-utils';
 import { iterateArrayLike, setTextNode } from '../../core/dom';
 
 /** @type {HTMLElement} */
@@ -36,7 +36,7 @@ function updateSampleCode() {
   });
   const indicator = sampleComponent.getElementsByClassName('mdw-tab__indicator')[0];
   indicator.removeAttribute('style');
-  
+
 
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
   setTextNode(htmlCodeElement, convertElementToCode(sampleComponent,

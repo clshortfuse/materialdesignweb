@@ -33,7 +33,8 @@ function resetDatasource() {
  * @return {void}
  */
 function onOptionChange(event) {
-  const { name, value, checked } = /** @type {HTMLInputElement} */ (event.target);
+  const { name, checked } = /** @type {HTMLInputElement} */ (event.target);
+  // @ts-ignore
   domAdapter.recycle[name] = checked;
   domAdapter.refresh();
 }
@@ -114,7 +115,7 @@ function setupComponentOptions() {
     buttons[1].setAttribute('aria-disabled', 'true');
   });
   buttons[2].addEventListener('click', () => {
-    const item = datasource.filter(d => d.itemnumber === 50)[0];
+    const item = datasource.filter((d) => d.itemnumber === 50)[0];
     item.clickCount += 1;
     // Element will not change size, therefore avoid possible invalidation
     // (When element is refreshed and not in DOM, adapter may assume sized change)
@@ -122,7 +123,7 @@ function setupComponentOptions() {
     domAdapter.drawViewport();
   });
   buttons[3].addEventListener('click', () => {
-    const item = datasource.filter(d => d.itemnumber === 80)[0];
+    const item = datasource.filter((d) => d.itemnumber === 80)[0];
     item.expanded = !item.expanded;
     // Force invalidation from height change
     domAdapter.refreshItem(item, { invalidate: true });

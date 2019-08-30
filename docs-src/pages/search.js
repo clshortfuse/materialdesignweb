@@ -7,6 +7,10 @@ import { iterateArrayLike, setTextNode } from '../../core/dom';
 
 /** @typedef {{line1:string, line2:string}} CustomSearchResult */
 
+/** @type {SearchAdapter<any>} */
+let searchDocsSimple;
+/** @type {SearchAdapter<any>} */
+let searchDocsMultiline;
 
 /**
  * @param {string} [filter]
@@ -16,8 +20,10 @@ function performFakeSearch(filter) {
   const results = [];
   // eslint-disable-next-line guard-for-in, no-restricted-syntax
   for (const key in window.navigator) {
+    // @ts-ignore
     const value = navigator[key] && navigator[key].toString();
     if (!filter || key.indexOf(filter) !== -1 || (value && value.indexOf(filter) !== -1)) {
+      // @ts-ignore
       results.push({ line1: key, line2: navigator[key] });
     }
   }
@@ -212,15 +218,19 @@ function buildCustomSearch2() {
 
 /** @return {void} */
 function setupSearches() {
-  const searchDocsSimple = new SearchAdapter({
-    textfield: document.getElementById('search-textfield-simple'),
-    list: document.getElementById('search-list-simple'),
-  });
-  const searchDocsMultiline = new SearchAdapter({
-    textfield: document.getElementById('search-textfield-multiline'),
-    list: document.getElementById('search-list-multiline'),
-    suggestionMethod: 'none',
-  });
+  if (!searchDocsSimple) {
+    searchDocsSimple = new SearchAdapter({
+      textfield: document.getElementById('search-textfield-simple'),
+      list: document.getElementById('search-list-simple'),
+    });
+  }
+  if (!searchDocsMultiline) {
+    searchDocsMultiline = new SearchAdapter({
+      textfield: document.getElementById('search-textfield-multiline'),
+      list: document.getElementById('search-list-multiline'),
+      suggestionMethod: 'none',
+    });
+  }
 
   buildCustomSearch1();
   buildCustomSearch2();

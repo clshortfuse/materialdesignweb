@@ -58,7 +58,7 @@ function onOptionChange(event) {
           raiseOptions.push(name.substr('raise-'.length));
         }
       } else {
-        raiseOptions = raiseOptions.filter(o => o !== name.substr('raise-'.length));
+        raiseOptions = raiseOptions.filter((o) => o !== name.substr('raise-'.length));
       }
       raiseOptions.sort();
       if (raiseOptions.length) {

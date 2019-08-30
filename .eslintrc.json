@@ -1,10 +1,8 @@
 {
   "extends": [
-    "airbnb-base"
+    "airbnb-base",
+    "plugin:jsdoc/recommended"
   ],
-  "globals": {
-    "google": true
-  },
   "env": {
     "browser": true,
     "es6": true
@@ -13,17 +11,6 @@
     "no-use-before-define": ["error", { "functions": false }],
     "brace-style": ["error", "1tbs", { "allowSingleLine": false }],
     "curly": ["error", "all"],
-    "require-jsdoc": "error",
-    "valid-jsdoc": ["error", {
-      "prefer": { "arg": "param", "argument": "param", "returns": "return" },
-      "preferType": { "Boolean": "boolean", "Number": "number", "object": "Object", "String": "string" },
-      "requireReturn": true,
-      "requireReturnType": true,
-      "matchDescription": "",
-      "requireParamDescription": false,
-      "requireReturnDescription": false
-      
-    }],
     "comma-dangle": ["error", {
       "arrays": "always-multiline",
       "objects": "always-multiline",
@@ -42,6 +29,49 @@
       }
     }, {
       "enforceForRenamedProperties": false
+    }],
+    "max-len": ["error", 100, 2, {
+      "ignoreUrls": true,
+      "ignoreComments": true,
+      "ignoreRegExpLiterals": true,
+      "ignoreStrings": true,
+      "ignoreTemplateLiterals": true
+    }],
+    "spaced-comment": ["error", "always", {
+      "line": {
+        "exceptions": ["-", "+"],
+        "markers": ["=", "!", "/"]
+      },
+      "block": {
+        "exceptions": ["-", "+"],
+        "markers": ["=", "!", ":", "::"],
+        "balanced": true
+      }
+    }],
+    "jsdoc/require-param-description": 0,
+    "jsdoc/require-returns-description": 0,
+    "jsdoc/no-undefined-types": 0,
+    "jsdoc/valid-types": 0,
+    "jsdoc/newline-after-description": ["warn", "never"],
+    "jsdoc/require-returns": ["warn", {
+      "forceReturnsWithAsync": true,
+      "forceRequireReturn": true
     }]
+  },
+  "settings": {
+    "jsdoc": {
+      "preferredTypes": {
+        "Function": "function",
+        "object.": "Object.<>",
+        "object<>": "Object.<>",
+        "object": "Object"
+      },
+      "tagNamePreference": {
+        "augment": "extends",
+        "returns": "return",
+        "property": "prop",
+        "constant": "const"
+      }
+    }
   }
 }

@@ -17,8 +17,8 @@ function onSampleButtonClick(event) {
 
 /** @return {void} */
 function updateSampleCode() {
-  const jsRequired = document.querySelector('input[name="javascript"][value="required"]').checked;
-  const jsOptional = document.querySelector('input[name="javascript"][value="optional"]').checked;
+  const jsRequired = /** @type {HTMLInputElement} */ (document.querySelector('input[name="javascript"][value="required"]')).checked;
+  const jsOptional = /** @type {HTMLInputElement} */ (document.querySelector('input[name="javascript"][value="optional"]')).checked;
   const useJS = jsRequired || jsOptional;
 
   // Strip JS related elements and attributes
@@ -29,7 +29,7 @@ function updateSampleCode() {
   Button.detach(button);
   button.removeEventListener('click', onSampleButtonClick);
   const tabIndexElements = sampleComponent.querySelectorAll('[tabindex]');
-  iterateArrayLike(tabIndexElements, el => el.removeAttribute('tabindex'));
+  iterateArrayLike(tabIndexElements, (el) => el.removeAttribute('tabindex'));
 
   if (closer) {
     if (jsRequired || (closer instanceof HTMLAnchorElement === false)) {

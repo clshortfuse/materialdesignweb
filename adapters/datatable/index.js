@@ -79,8 +79,16 @@ export default class DataTableAdapter {
 
     this.onElementScrollListener = () => this.onElementScroll();
 
-    this.onDataTableColumnHeaderSortListener = event => this.onDataTableColumnHeaderSort(event);
-    this.onCheckedChangeEventListener = event => this.onCheckedChangeEvent(event);
+    /**
+     * @param {CustomEvent} event
+     * @return {void}
+     */
+    this.onDataTableColumnHeaderSortListener = (event) => this.onDataTableColumnHeaderSort(event);
+    /**
+     * @param {CustomEvent} event
+     * @return {void}
+     */
+    this.onCheckedChangeEventListener = (event) => this.onCheckedChangeEvent(event);
 
     this.element.addEventListener(
       DataTableColumnHeader.SORT_EVENT,
@@ -338,11 +346,11 @@ export default class DataTableAdapter {
 
   /** @return {T[]} */
   getSelectedRows() {
-    const selectorColumn = this.columns.filter(column => column.rowSelector)[0];
+    const selectorColumn = this.columns.filter((column) => column.rowSelector)[0];
     if (!selectorColumn) {
       return [];
     }
-    return this.getDatasource().filter(row => row[selectorColumn.key]);
+    return this.getDatasource().filter((row) => row[selectorColumn.key]);
   }
 
   /**
@@ -884,10 +892,10 @@ export default class DataTableAdapter {
       return search;
     }
     if (search instanceof HTMLTableCellElement) {
-      return this.columns.filter(column => column.element === search)[0];
+      return this.columns.filter((column) => column.element === search)[0];
     }
     if (typeof search === 'string') {
-      return this.columns.filter(column => column.element.dataset.key === search)[0];
+      return this.columns.filter((column) => column.element.dataset.key === search)[0];
     }
     return this.columns[search];
   }

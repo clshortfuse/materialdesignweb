@@ -40,7 +40,7 @@ function parseColor(colorString) {
   return colorString
     .match(/\(([^)]+)\)/)[1]
     .split(',')
-    .map(value => (value == null ? 1.0 : parseFloat(value)))
+    .map((value) => (value == null ? 1.0 : parseFloat(value)))
     .reduce((prev, curr, index) => {
       if (index > 3) {
         throw new Error('Unexpected 5th value');
@@ -76,13 +76,20 @@ function overlayColor(color, overlay) {
  * @return {number}
  */
 function getLuminance(color) {
-  // L = 0.2126 * R + 0.7152 * G + 0.0722 * B
-  return 0.2126
-    * (color.r <= (0.03928 * 255) ? color.r / 255 / 12.92 : ((color.r / 255 + 0.055) / 1.055) ** 2.4)
-    + 0.7152
-    * (color.g <= (0.03928 * 255) ? color.g / 255 / 12.92 : ((color.g / 255 + 0.055) / 1.055) ** 2.4)
-    + 0.0722
-    * (color.b <= (0.03928 * 255) ? color.b / 255 / 12.92 : ((color.b / 255 + 0.055) / 1.055) ** 2.4);
+  /**
+   * @param {number} colorValue
+   * @return {number}
+   */
+  function sRGBMapping(colorValue) {
+    if (colorValue <= (0.03928 * 255)) {
+      return colorValue / 255 / 12.92;
+    }
+    return ((colorValue / 255 + 0.055) / 1.055) ** 2.4;
+  }
+  const R = 0.2126 * sRGBMapping(color.r);
+  const G = 0.7152 * sRGBMapping(color.g);
+  const B = 0.0722 * sRGBMapping(color.b);
+  return (R + G + B);
 }
 
 /**
@@ -191,11 +198,11 @@ function refresh() {
     currentInkOptions.color,
     currentInkOptions.tone,
     currentInkOptions.opacity,
-  ].filter(v => v).join(' ');
+  ].filter((v) => v).join(' ');
   const surfaceProperties = [
     currentSurfaceOptions.color,
     currentSurfaceOptions.tone,
-  ].filter(v => v).join(' ');
+  ].filter((v) => v).join(' ');
   iterateArrayLike(document.querySelectorAll('#color-sample-area .demo-core-item'), (el) => {
     el.setAttribute('mdw-ink', inkProperties);
     el.setAttribute('mdw-surface', surfaceProperties);
@@ -244,13 +251,13 @@ function setupComponentOptions() {
 
 iterateArrayLike(
   document.getElementsByClassName('demo-core-item'),
-  item => item.addEventListener('click', onItemClick)
+  (item) => item.addEventListener('click', onItemClick)
 );
 
 [
   document.getElementById('darkModeButton'),
   document.getElementById('altThemeButton'),
-].forEach(button => button.addEventListener('click', calculateContrast));
+].forEach((button) => button.addEventListener('click', calculateContrast));
 
 setupComponentOptions();
 refresh();

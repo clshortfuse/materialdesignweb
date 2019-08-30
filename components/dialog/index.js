@@ -242,7 +242,7 @@ export function onPopState(event) {
     return;
   }
   if ((lastOpenDialog.previousState === event.state) || Object.keys(event.state)
-    .every(key => event.state[key] === lastOpenDialog.previousState[key])) {
+    .every((key) => event.state[key] === lastOpenDialog.previousState[key])) {
     if (dispatchDomEvent(lastOpenDialog.element, CANCEL_EVENT)) {
       hide(lastOpenDialog.element);
     } else {

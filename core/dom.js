@@ -31,7 +31,7 @@ export function getPassiveEventListenerOption() {
   return false;
 }
 
-export const nextTick = window.requestAnimationFrame || (cb => window.setTimeout(cb, 17));
+export const nextTick = window.requestAnimationFrame || ((cb) => window.setTimeout(cb, 17));
 
 export const cancelTick = window.cancelAnimationFrame || window.clearTimeout;
 

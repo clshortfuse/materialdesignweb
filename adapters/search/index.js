@@ -257,7 +257,7 @@ export default class SearchAdapter {
     this.performDebounce(inputValue,
       () => this.checkExpired(inputValue,
         () => this.performSearch(inputValue,
-          searchResults => this.checkExpired(inputValue,
+          (searchResults) => this.checkExpired(inputValue,
             () => this.updateList(searchResults,
               () => this.filterListItems(),
               onErrorCallback),

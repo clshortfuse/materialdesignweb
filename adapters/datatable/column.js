@@ -23,18 +23,18 @@ import { setTextNode } from '../../core/dom';
 /**
  * Constructor options for DataTableAdapterColumn
  * @typedef DataTableAdapterColumnOptions<T>
- * @property {string} key
- * @property {(string|DocumentFragment)} [name='']
- * @property {'checkbox'|'text'|'number'} [type]
- * @property {boolean} [rowSelector]
- * @property {string} [tooltip]
- * @property {boolean} [sortable]
- * @property {boolean} [primaryColumn]
- * @property {HTMLElement} [customSortIcon]
- * @property {string} [innerHTML]
- * @property {DocumentFragment} [fragment]
- * @property {DataTableAdapterColumnRenderer<T>} [renderer]
- * @property {DataTableAdapterColumnFormatter<T>} [formatter]
+ * @prop {string} key
+ * @prop {(string|DocumentFragment)} [name='']
+ * @prop {'checkbox'|'text'|'number'} [type]
+ * @prop {boolean} [rowSelector]
+ * @prop {string} [tooltip]
+ * @prop {boolean} [sortable]
+ * @prop {boolean} [primaryColumn]
+ * @prop {HTMLElement} [customSortIcon]
+ * @prop {string} [innerHTML]
+ * @prop {DocumentFragment} [fragment]
+ * @prop {DataTableAdapterColumnRenderer<T>} [renderer]
+ * @prop {DataTableAdapterColumnFormatter<T>} [formatter]
  * @template T
  */
 
@@ -150,7 +150,7 @@ export default class DataTableAdapterColumn {
     } else {
       this.renderer = DataTableAdapterColumn.defaultCellRenderer;
     }
-    this.formatter = options.formatter || (value => value);
+    this.formatter = options.formatter || ((value) => value);
     DataTableColumnHeader.attach(this.element);
   }
 

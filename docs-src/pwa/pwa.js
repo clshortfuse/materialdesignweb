@@ -50,7 +50,9 @@ function getListContentElementByName(name) {
  * @return {string}
  */
 function getCheckedValue(name) {
-  return document.querySelector(`[data-name="${name}"][aria-checked="true"]`).dataset.value;
+  /** @type {HTMLElement} */
+  const el = document.querySelector(`[data-name="${name}"][aria-checked="true"]`);
+  return el.dataset.value;
 }
 
 /**
@@ -177,6 +179,7 @@ function updateAutoHideOption() {
   const oldDescription = descriptionElement.textContent;
   let newDescription = 'Off';
   if (switchItem.getAttribute('aria-checked') === 'true') {
+    /** @type {HTMLElement} */
     const checkedItem = document.querySelector('[data-name="appbar-autohide"][aria-checked="true"]');
     newDescription = checkedItem.querySelector('.mdw-list__text-line').textContent;
     Layout.getAppBarElement().setAttribute('mdw-autohide', checkedItem.dataset.value);
@@ -200,6 +203,7 @@ function updateFabMobileOption() {
   const oldDescription = descriptionElement.textContent;
   let newDescription = 'Off';
   if (switchItem.getAttribute('aria-checked') === 'true') {
+    /** @type {HTMLElement} */
     const checkedItem = document.querySelector('[data-name="fab-mobile"][aria-checked="true"]');
     newDescription = checkedItem.querySelector('.mdw-list__text-line').textContent;
     document.getElementsByClassName('mdw-layout__fab')[0].setAttribute('mdw-mobile', checkedItem.dataset.value);
@@ -223,6 +227,7 @@ function updateFabDesktopOption() {
   const oldDescription = descriptionElement.textContent;
   let newDescription = 'Off';
   if (switchItem.getAttribute('aria-checked') === 'true') {
+    /** @type {HTMLElement} */
     const checkedItem = document.querySelector('[data-name="fab-desktop"][aria-checked="true"]');
     newDescription = checkedItem.querySelector('.mdw-list__text-line').textContent;
     document.getElementsByClassName('mdw-layout__fab')[0].setAttribute('mdw-desktop', checkedItem.dataset.value);

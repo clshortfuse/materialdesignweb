@@ -34,9 +34,10 @@ function convertElementToCode(element, pug = false, linePrefix = '') {
   ];
   const openingHTMLLine = pug
     ? `${htmlType === 'div' && classes.length ? '' : htmlType}${classes.length ? `.${classes.join('.')}` : ''}${attributes.length ? `(${attributes.join(' ')})` : ''}`
-    : `<${syntaxItems.filter(item => item).join(' ').trim()}>`;
+    : `<${syntaxItems.filter((item) => item).join(' ').trim()}>`;
   const closingHTMLLine = pug ? '' : `</${htmlType}>`;
   const lines = [openingHTMLLine];
+  /** @type {string[]} */
   const innerLines = [];
   let onlyText = true;
   iterateArrayLike(element.childNodes, (child) => {
@@ -61,9 +62,9 @@ function convertElementToCode(element, pug = false, linePrefix = '') {
     }
     return linePrefix + lines.join('') + innerLines.join('').trim() + closingHTMLLine;
   }
-  innerLines.forEach(line => lines.push(line));
+  innerLines.forEach((line) => lines.push(line));
   lines.push(linePrefix + closingHTMLLine);
-  return linePrefix + lines.filter(line => line.trim()).join('\n');
+  return linePrefix + lines.filter((line) => line.trim()).join('\n');
 }
 
 /**
@@ -75,7 +76,9 @@ function changeElementTagName(element, tagname) {
   const newElement = document.createElement(tagname);
   for (let i = element.attributes.length - 1; i >= 0; i -= 1) {
     const attr = element.attributes.item(i);
-    newElement.attributes.setNamedItem(attr.cloneNode());
+    /** @type {Attr} */
+    const clonedAttr = (attr.cloneNode());
+    newElement.attributes.setNamedItem(clonedAttr);
   }
   while (element.firstChild) {
     newElement.appendChild(element.firstChild);

@@ -182,7 +182,7 @@ export function selectPanel(tabContentElement, panel, scrollToPanel = 'smooth') 
     // Invalid index or panel not in tabcontent
     return;
   }
-  otherPanels.forEach(sibling => TabPanel.setExpanded(sibling, false));
+  otherPanels.forEach((sibling) => TabPanel.setExpanded(sibling, false));
 
   const isPageRtl = isRtl();
   const targetScrollLeft = isPageRtl
@@ -190,7 +190,7 @@ export function selectPanel(tabContentElement, panel, scrollToPanel = 'smooth') 
     : panelElement.offsetLeft;
   if (!scrollToPanel || panelElement.parentElement.scrollLeft === targetScrollLeft) {
     // No scrolling, hide others
-    otherPanels.forEach(sibling => TabPanel.setHidden(sibling, true));
+    otherPanels.forEach((sibling) => TabPanel.setHidden(sibling, true));
     return;
   }
   if (scrollToPanel && panelElement) {

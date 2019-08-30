@@ -60,7 +60,7 @@ export function setupARIA(menuElement) {
     menuElement.setAttribute('aria-hidden', 'true');
   }
   iterateArrayLike(menuElement.getElementsByClassName('mdw-divider'),
-    el => el.setAttribute('role', 'separator'));
+    (el) => el.setAttribute('role', 'separator'));
   menuElement.setAttribute('role', 'menu');
   const popupElement = menuElement.getElementsByClassName('mdw-menu__popup')[0];
   if (popupElement) {
@@ -134,7 +134,7 @@ export function onPopState(event) {
     return;
   }
   if ((lastOpenMenu.previousState === event.state) || Object.keys(event.state)
-    .every(key => event.state[key] === lastOpenMenu.previousState[key])) {
+    .every((key) => event.state[key] === lastOpenMenu.previousState[key])) {
     hide(lastOpenMenu.element);
   }
 }
@@ -454,7 +454,7 @@ export function updateMenuPosition(menuElement, popupElement, event, alignTarget
       return index + 1;
     }
     return 0;
-  }).filter(value => value !== 0);
+  }).filter((value) => value !== 0);
   if (candidates.length) {
     let candidateNumber;
     if (isPageRTL === null) {
@@ -462,10 +462,10 @@ export function updateMenuPosition(menuElement, popupElement, event, alignTarget
     }
     if (isPageRTL) {
       candidateNumber = [2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 15]
-        .filter(number => candidates.indexOf(number) !== -1)[0];
+        .filter((number) => candidates.indexOf(number) !== -1)[0];
     } else {
       candidateNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-        .filter(number => candidates.indexOf(number) !== -1)[0];
+        .filter((number) => candidates.indexOf(number) !== -1)[0];
     }
     if (candidateNumber == null) {
       candidateNumber = isPageRTL ? 2 : 1;

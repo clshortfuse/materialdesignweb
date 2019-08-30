@@ -1,6 +1,6 @@
 import * as Menu from '../../components/menu/index';
 import * as MenuItem from '../../components/menu/item';
-import { convertElementToCode, changeElementTagName } from '../_sample-utils';
+import { convertElementToCode } from '../_sample-utils';
 import { iterateArrayLike } from '../../core/dom';
 
 /** @type {HTMLElement} */
@@ -16,7 +16,9 @@ function onSampleButtonClick(event) {
 
 /** @return {void} */
 function updateSampleCode() {
+  // @ts-ignore
   const jsRequired = document.querySelector('input[name="javascript"][value="required"]').checked;
+  // @ts-ignore
   const jsOptional = document.querySelector('input[name="javascript"][value="optional"]').checked;
   const useJS = jsRequired || jsOptional;
 
@@ -33,7 +35,7 @@ function updateSampleCode() {
   const button = document.querySelector('.component-sample .mdw-button');
   let closer = document.querySelector('.component-sample .mdw-menu__close');
   button.removeEventListener('click', onSampleButtonClick);
-  iterateArrayLike(sampleComponent.querySelectorAll('[tabindex]'), el => el.removeAttribute('tabindex'));
+  iterateArrayLike(sampleComponent.querySelectorAll('[tabindex]'), (el) => el.removeAttribute('tabindex'));
 
   if (closer) {
     if (jsRequired || (closer instanceof HTMLAnchorElement === false)) {
@@ -97,7 +99,7 @@ function updateSampleCode() {
 function initializeSampleComponents() {
   const button = document.querySelector('.js .mdw-button');
   const menu = document.querySelector('.js .mdw-menu');
-  button.addEventListener('click', (event) => {
+  button.addEventListener('click', (/** @type {MouseEvent|PointerEvent} */ event) => {
     Menu.show(menu, event);
   });
 
@@ -110,7 +112,8 @@ function initializeSampleComponents() {
  * @return {void}
  */
 function onOptionChange(event) {
-  const { name, value } = event.target;
+  /** @type {HTMLInputElement} */
+  const { name, value } = (event.target);
   let mdwDirection = sampleComponent.getAttribute('mdw-direction') || '';
   let mdwPosition = sampleComponent.getAttribute('mdw-position') || '';
 

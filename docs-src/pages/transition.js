@@ -51,5 +51,5 @@ function onItemClick(event) {
 
 iterateArrayLike(
   document.getElementsByClassName('demo-core-item'),
-  item => item.addEventListener('click', onItemClick)
+  (item) => item.addEventListener('click', onItemClick)
 );

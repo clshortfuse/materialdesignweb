@@ -12,15 +12,15 @@ import * as Button from '../button/index';
 
 /**
  * @typedef SnackbarCreateOptions
- * @property {!string} text
- * @property {!string} [buttonText]
- * @property {string} [buttonInk='primary']
- * @property {boolean} [stacked=false]
- * @property {number|boolean} [autoHide=4] Auto hide time in seconds
- * @property {boolean} [autoDestroy=true] Destroy element after hide
- * @property {Element} [parent] Parent element to which to append
- * @property {boolean} [show=true] Show element after creation
- * @property {boolean} [skipQueue=false] Skip queue
+ * @prop {!string} text
+ * @prop {!string} [buttonText]
+ * @prop {string} [buttonInk='primary']
+ * @prop {boolean} [stacked=false]
+ * @prop {number|boolean} [autoHide=4] Auto hide time in seconds
+ * @prop {boolean} [autoDestroy=true] Destroy element after hide
+ * @prop {Element} [parent] Parent element to which to append
+ * @prop {boolean} [show=true] Show element after creation
+ * @prop {boolean} [skipQueue=false] Skip queue
  */
 
 class SnackbarQueueItem {

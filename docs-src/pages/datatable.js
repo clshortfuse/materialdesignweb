@@ -15,10 +15,20 @@ function initializeMdwComponents() {
 }
 
 
-/** @type {DataTableAdapter} */
+/**
+ * @typedef {Object} CustomData
+ * @prop {string} text
+ * @prop {string} text2
+ * @prop {boolean} check1
+ * @prop {number} increment
+ * @prop {number} random
+ */
+
+/** @type {DataTableAdapter<CustomData>} */
 let dynamicTableAdapter = null;
 /** @return {void} */
 function buildDynamicTable() {
+  /** @type {CustomData[]} */
   const datasource = [];
   let count = 1;
   const addDatasourceObject = () => {
@@ -86,8 +96,8 @@ function buildDynamicTable() {
   Menu.attach(filterMenu);
   Menu.attach(optionsMenu);
 
-  filterButton.addEventListener('click', event => Menu.show(filterMenu, event));
-  optionsButton.addEventListener('click', event => Menu.show(optionsMenu, event));
+  filterButton.addEventListener('click', (/** @type {MouseEvent} */ event) => Menu.show(filterMenu, event));
+  optionsButton.addEventListener('click', (/** @type {MouseEvent} */ event) => Menu.show(optionsMenu, event));
 
   filterMenu.addEventListener(MenuItem.CHECK_EVENT, (event) => {
     /** @type {HTMLElement} */
@@ -98,13 +108,13 @@ function buildDynamicTable() {
         dynamicTableAdapter.setFilter(null);
         break;
       case 'md':
-        dynamicTableAdapter.setFilter(data => data.text.indexOf('md') !== -1 || data.text2.indexOf('md') !== -1);
+        dynamicTableAdapter.setFilter((data) => data.text.indexOf('md') !== -1 || data.text2.indexOf('md') !== -1);
         break;
       case 'div9':
-        dynamicTableAdapter.setFilter(data => data.random % 9 === 0);
+        dynamicTableAdapter.setFilter((data) => data.random % 9 === 0);
         break;
       case 'bool':
-        dynamicTableAdapter.setFilter(data => data.check1);
+        dynamicTableAdapter.setFilter((data) => data.check1);
         break;
     }
     dynamicTableAdapter.refresh();
@@ -115,7 +125,7 @@ function buildDynamicTable() {
     }
   });
   filterMenu.addEventListener(MenuItem.ACTIVATE_EVENT, () => Menu.hide(filterMenu));
-  
+
   optionsMenu.addEventListener(MenuItem.CHECK_EVENT, (event) => {
     /** @type {HTMLElement} */
     const menuItem = (event.target);

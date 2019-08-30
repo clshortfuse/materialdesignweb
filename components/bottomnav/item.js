@@ -43,7 +43,7 @@ export function attachCore(element) {
 export function attachAria(element) {
   AriaTab.attach(element);
   iterateArrayLike(element.getElementsByClassName('mdw-bottomnav__icon'),
-    el => el.setAttribute('aria-hidden', 'true'));
+    (el) => el.setAttribute('aria-hidden', 'true'));
 }
 
 /**

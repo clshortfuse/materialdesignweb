@@ -58,7 +58,7 @@ function convertBoxShadow(stringValue, scaleX, scaleY) {
       blurRadius,
       spreadRadius,
       color,
-    ].filter(v => v).join(' ');
+    ].filter((v) => v).join(' ');
   }
 
   if (!stringValue) {
@@ -66,11 +66,11 @@ function convertBoxShadow(stringValue, scaleX, scaleY) {
   }
   return stringValue
     // Strip spaces from anything parenthesized
-    .replace(/\([^)]+\)/g, substring => substring.replace(/ /g, ''))
+    .replace(/\([^)]+\)/g, (substring) => substring.replace(/ /g, ''))
     // Split shadows by commas no inside parentheses
     .match(/[^,(]+\([^)]+\)?[^,]*(|$)/g)
     // Trim empty spaces
-    .map(shadow => shadow.trim())
+    .map((shadow) => shadow.trim())
     // Convert values
     .map(convertShadow)
     // Rejoin shadows
@@ -94,7 +94,7 @@ function convertBorderRadius(stringValue, width, height) {
     if (value.indexOf('%') === -1) {
       return numValue;
     }
-    return (numValue * length / 100.0);
+    return ((numValue * length) / 100.0);
   }
 
   if (!stringValue) {
@@ -353,8 +353,8 @@ export function transitionElement(options) {
       const fadeInTime = (calculatedDuration * 0.70).toString(10);
       const fadeOutTime = (calculatedDuration * 0.30).toString(10);
       const transformTransition = transitionProperties
-        .filter(prop => prop !== 'transform-origin' && prop !== 'opacity' && prop !== 'transition')
-        .map(prop => `${prop} ${totalDuration}ms cubic-bezier(0.4, 0.0, 0.2, 1) 0s`)
+        .filter((prop) => prop !== 'transform-origin' && prop !== 'opacity' && prop !== 'transition')
+        .map((prop) => `${prop} ${totalDuration}ms cubic-bezier(0.4, 0.0, 0.2, 1) 0s`)
         .join(', ');
       const fadeInTransition = `opacity ${fadeInTime}ms cubic-bezier(0.0, 0.0, 0.2, 1) ${fadeOutTime}ms`;
       const fadeOutTransition = [

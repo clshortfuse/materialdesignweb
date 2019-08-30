@@ -56,16 +56,16 @@ function updateSampleCode() {
  * @return {void}
  */
 function onOptionChange(event) {
-  const { name, value, checked } = event.target;
-  let newElement;
+  /** @type {HTMLInputElement} */
+  const { name, value } = (event.target);
   switch (name) {
     case 'ink':
       switch (value) {
         case 'default':
-          iterateArrayLike(sampleComponent.getElementsByClassName('mdw-bottomnav__item'), el => el.removeAttribute('mdw-ink'));
+          iterateArrayLike(sampleComponent.getElementsByClassName('mdw-bottomnav__item'), (el) => el.removeAttribute('mdw-ink'));
           break;
         default:
-          iterateArrayLike(sampleComponent.getElementsByClassName('mdw-bottomnav__item'), el => el.setAttribute('mdw-ink', value));
+          iterateArrayLike(sampleComponent.getElementsByClassName('mdw-bottomnav__item'), (el) => el.setAttribute('mdw-ink', value));
           break;
       }
       break;
