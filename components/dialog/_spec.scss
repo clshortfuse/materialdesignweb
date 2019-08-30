@@ -80,7 +80,7 @@ $mdw-dialog__unit-width: dp(56) !default;
   @for $i from 3 to 8 {
     &[mdw-width-units="#{$i}"] {
       .mdw-dialog__popup {
-        min-width: calc(#{$mdw-dialog__unit-width} * #{$i});
+        min-width: #{$mdw-dialog__unit-width * $i};
       }
     }
   }

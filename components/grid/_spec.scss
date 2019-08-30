@@ -51,7 +51,7 @@ $mdw-grid__gutter: dp(24) !default;
 @mixin mdw-grid__item($columnCount) {
   &[mdw-colspan="1"],
   &:not([mdw-colspan]) {
-    width: calc(100% / #{$columnCount});
+    width: #{100% / $columnCount};
   }
 
   &[mdw-stretch] {
@@ -65,7 +65,7 @@ $mdw-grid__gutter: dp(24) !default;
 
         width: 100%;
       } @else {
-        width: calc((#{$i} * 100% / #{$columnCount}));
+        width: #{$i * 100% / $columnCount};
       }
     }
   }
@@ -222,7 +222,7 @@ $mdw-grid__gutter: dp(24) !default;
   .mdw-grid[mdw-margin="#{$value}"],
   .mdw-grid[mdw-columns="1"][mdw-margin="#{$value}"],
   .mdw-grid[mdw-columns="8"][mdw-margin-8col="#{$value}"],
-  .mdw-grid[mdw-columns="4"][mdw-margin-4col="#{$value}"], {
+  .mdw-grid[mdw-columns="4"][mdw-margin-4col="#{$value}"] {
     padding-right: dp($value);
     padding-left: dp($value);
 

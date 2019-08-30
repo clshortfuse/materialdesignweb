@@ -178,7 +178,7 @@ $mdw-menu__unit-width: dp(56) !default;
   @for $i from 3 to 8 {
     &[mdw-width-units="#{$i}"] {
       .mdw-menu__popup {
-        width: calc(#{$mdw-menu__unit-width} * #{$i});
+        width: #{$mdw-menu__unit-width * $i};
       }
     }
   }
