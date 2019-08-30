@@ -24,7 +24,7 @@
     $opacity: nth($item, 3);
     $value: mdwGetThemeParamColor($color, $tone);
     @if ($opacity == null) {
-      $opacity: 1.0;
+      @return red($value),green($value),blue($value);
     }
     @return red($value),green($value),blue($value),$opacity;
   }
