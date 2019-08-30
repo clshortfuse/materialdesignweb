@@ -66,13 +66,15 @@ $mdw-color__theme-values: (
       &[mdw-surface] {
         background-color: RGB(var(--mdw-surface));
       }
+    }
 
-      &[mdw-surface]svg {
-        background-color: transparent;
+    svg.mdw-theme[mdw-surface] {
+      background-color: transparent;
 
-        fill: RGB(var(--mdw-surface));
-      }
+      fill: RGB(var(--mdw-surface));
+    }
 
+    .mdw-theme {
       &[mdw-surface]:not([mdw-ink]) {
         --mdw-ink: #{mdwColorThemeValue("default-ink", $type)};
         --mdw-ink-opacity: #{mdwColorThemeValue("high-ink-opacity", $type)};
