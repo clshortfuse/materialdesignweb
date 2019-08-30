@@ -86,7 +86,7 @@ $mdw-appbar__icon-height: 40 !default;
   
 
   transition-duration: inherit;
-  transition-property: font, letter-spacing;
+  transition-property: font, letter-spacing, margin-top;
   transition-timing-function: inherit;
 
   text-overflow: ellipsis;
@@ -159,14 +159,13 @@ $mdw-appbar__icon-height: 40 !default;
   display: flex;
   align-items: flex-start;
   flex-direction: row;
+  transition-property: margin-top;
 }
 
 .mdw-appbar__start,
 .mdw-appbar__end,
 .mdw-appbar__title {
   margin-top: dp(($mdw-appbar__height - $mdw-appbar__icon-height) / 2);
-  
-  transition-property: margin-top;
   
   .mdw-appbar[mdw-dense] & {
     margin-top: dp(($mdw-appbar__height-dense - $mdw-appbar__icon-height) / 2);
