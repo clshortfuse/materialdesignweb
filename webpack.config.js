@@ -1,11 +1,13 @@
 const path = require('path');
 const fs = require('fs');
-const cssnano = require('cssnano');
+const sass = require('sass');
+const fibers = require('fibers');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const isProduction = (process.env.NODE_ENV === 'production');
 
 /** @typedef {import('webpack').Configuration} WebpackConfiguration */
+/** @typedef {import('webpack').compilation.Chunk} WebpackChunk */
 
 /** @return {Object} */
 function getComponentsConfig() {
@@ -52,15 +54,14 @@ function getComponentsConfig() {
           'file-loader?name=materialdesignweb.min.css',
           'extract-loader',
           'css-loader?import=false',
+          'clean-css-loader?{"level":{2:{"restructureRules":true}}}',
           {
-            loader: 'postcss-loader',
+            loader: 'sass-loader',
             options: {
-              plugins: () => [
-                cssnano(),
-              ],
+              implementation: sass,
+              fiber: fibers,
             },
           },
-          'sass-loader',
         ],
       }],
     },
@@ -79,8 +80,8 @@ function getDocsConfig() {
   ];
   /** @type {Object.<string, string[]>} */
   const entries = {};
-  ['.', 'pwa', 'pages', 'themes'].map(folder => path.join('./docs-src', folder))
-    .forEach(folderPath => fs.readdirSync(folderPath).forEach((filename) => {
+  ['.', 'pwa', 'pages', 'themes'].map((folder) => path.join('./docs-src', folder))
+    .forEach((folderPath) => fs.readdirSync(folderPath).forEach((filename) => {
       if (filename[0] === '_') {
         return;
       }
@@ -99,7 +100,7 @@ function getDocsConfig() {
     entry: entries,
     context: path.resolve(__dirname, 'docs-src'),
     devtool: isProduction ? 'source-map' : 'nosources-source-map',
-    mode: process.env.NODE_ENV || 'development',
+    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     devServer: {
       contentBase: path.resolve(__dirname, DEST),
       compress: true,
@@ -116,11 +117,11 @@ function getDocsConfig() {
         chunks: 'all',
         cacheGroups: {
           framework: {
-            test(module, chunks) {
+            test(module, /** @type {WebpackChunk[]} */chunks) {
               if (module && module.resource && module.resource.match(/prerender/)) {
                 return false;
               }
-              if (chunks && chunks.some(chunk => chunk.name.match(/prerender/))) {
+              if (chunks && chunks.some((chunk) => chunk.name.match(/prerender/))) {
                 return false;
               }
               if (module && module.resource && module.resource.match(/[\\/]docs-src[\\/]/)) {
@@ -139,11 +140,11 @@ function getDocsConfig() {
             reuseExistingChunk: true,
           },
           default: {
-            test(module, chunks) {
+            test(module, /** @type {WebpackChunk[]} */ chunks) {
               if (module && module.resource && module.resource.match(/prerender/)) {
                 return false;
               }
-              if (chunks && chunks.some(chunk => chunk.name.match(/prerender/))) {
+              if (chunks && chunks.some((chunk) => chunk.name.match(/prerender/))) {
                 return false;
               }
               if (module && module.resource && module.resource.match(/[\\/]docs-src[\\/]/)) {
@@ -174,15 +175,14 @@ function getDocsConfig() {
           'file-loader?name=[name].min.css',
           'extract-loader',
           'css-loader?import=false',
+          'clean-css-loader?level=2',
           {
-            loader: 'postcss-loader',
+            loader: 'sass-loader',
             options: {
-              plugins: () => [
-                cssnano(),
-              ],
+              implementation: sass,
+              fiber: fibers,
             },
           },
-          'sass-loader',
         ],
       }, {
         test: /\.pug$/,
