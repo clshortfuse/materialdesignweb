@@ -167,7 +167,7 @@ $mdw-dialog__unit-width: dp(56) !default;
 }
 
 .mdw-dialog__scrolling {
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .mdw-dialog__button-area {
