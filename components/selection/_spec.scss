@@ -100,10 +100,11 @@ $mdw-selection__checkbox-icon-offset-x: dp(6.04) - $mdw-selection__border-size !
 .mdw-selection__icon {
   display: inline-flex;
   position: relative;
-
+  
   box-sizing: border-box;
   height: $mdw-selection__icon-size;
   width: $mdw-selection__icon-size;
+  flex: none;
   margin: 0;
   margin-top: auto;
   margin-bottom: auto;
