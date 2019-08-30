@@ -136,7 +136,7 @@ export function onKeyDown(event) {
 
   if (event.key === 'Enter') {
     event.stopPropagation();
-    if (isDisabled(menuItemElement)) {
+    if (Attributes.isDisabled(menuItemElement)) {
       return;
     }
     onClick(event);
@@ -146,7 +146,7 @@ export function onKeyDown(event) {
   if (event.key === 'Spacebar' || (event.key === ' ')) {
     event.stopPropagation();
     event.preventDefault();
-    if (isDisabled(menuItemElement)) {
+    if (Attributes.isDisabled(menuItemElement)) {
       return;
     }
     const role = menuItemElement.getAttribute('role');
