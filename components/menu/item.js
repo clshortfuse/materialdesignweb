@@ -136,6 +136,7 @@ export function onKeyDown(event) {
 
   if (event.key === 'Enter') {
     event.stopPropagation();
+    event.preventDefault();
     if (Attributes.isDisabled(menuItemElement)) {
       return;
     }
