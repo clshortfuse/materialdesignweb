@@ -18,9 +18,9 @@ $mdw-datatable__theme-values: (
 
 
   header-fill-text:       ((invalid                  ), (#fff,              1.00)),
-  selected-primary-ie:    (('primary'  , '500', 1.00), ('primary',   '500', 1.00)),
-  selected-secondary-ie:  (('secondary', '500', 1.00), ('secondary', '500', 1.00)),
-  selected-warn-ie:       (('warn'     , '500', 1.00), ('warn',      '500', 1.00)),
+  selected-primary-ie:    (('primary'  , '500', null), ('primary',   '500', null)),
+  selected-secondary-ie:  (('secondary', '500', null), ('secondary', '500', null)),
+  selected-warn-ie:       (('warn'     , '500', null), ('warn',      '500', null)),
 ) !default;
 
 @function mdwDatatableThemeValue($key, $type) {
