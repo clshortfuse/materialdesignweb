@@ -19,34 +19,44 @@ $mdw-appbar__icon-height: 40 !default;
 }
 
 .mdw-appbar__action {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: -ms-grid;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  -ms-grid-columns: auto 1fr auto;
   
   min-height: dp($mdw-appbar__height);
-  
-  
+  -ms-grid-rows: minmax(dp($mdw-appbar__height), 1fr) auto;
+
   transition-duration: inherit;
   transition-property: min-height;
   transition-timing-function: inherit;
 
   z-index: 1;
 
+  &[mdw-centered] {
+    grid-template-columns: minmax(auto, 1fr) minmax(0, auto) minmax(auto, 1fr);
+    -ms-grid-columns: minmax(max-content, 1fr) minmax(0, max-content) minmax(max-content, 1fr);
+  }
+
   .mdw-appbar[mdw-prominent] > & {
     min-height: dp($mdw-appbar__height-prominent);
+    -ms-grid-rows: minmax(dp($mdw-appbar__height-prominent), 1fr) auto;
   }
   
   .mdw-appbar[mdw-dense] > & {
     min-height: dp($mdw-appbar__height-dense);
+    -ms-grid-rows: minmax(dp($mdw-appbar__height-dense), 1fr) auto;
   }
   
   .mdw-appbar[mdw-dense][mdw-prominent] > & {
     min-height: dp($mdw-appbar__height-prominent-dense);
+    -ms-grid-rows: minmax(dp($mdw-appbar__height-prominent-dense), 1fr) auto;
     @include mdw-breakpoint__tablet-device__max {
       min-height: dp($mdw-appbar__height-prominent);
+      -ms-grid-rows: minmax(dp($mdw-appbar__height-prominent), 1fr) auto;
     }
   }
-  
+
   &,
   .mdw-appbar[mdw-dense] > & {
     @include mdw-breakpoint__tablet-device__max {
@@ -62,7 +72,12 @@ $mdw-appbar__icon-height: 40 !default;
   display: flex;
   flex-direction: column;
 
-  flex-grow: 1;
+  -ms-grid-column: 1;
+  grid-column: 1;
+  -ms-grid-column-span: 3;
+  grid-column-end: span 3;
+  -ms-grid-row: 2;
+  grid-row: 2;
 
   margin-right: dp(24);
   margin-left: dp(80);
@@ -76,14 +91,19 @@ $mdw-appbar__icon-height: 40 !default;
   @include type-rules('h6');
   @include baseline-bottom(24);
 
+  -ms-grid-row-align: end;
   align-self: flex-end;
+
+  -ms-grid-column: 2;
+  grid-column: 2;
+  -ms-grid-row: 1;
+  grid-row: 1;
+
   justify-content: space-around;
   overflow-x: hidden;
   
   height: auto;
-  flex-grow: 1;
   margin: 0 dp(16);
-  
 
   transition-duration: inherit;
   transition-property: font, letter-spacing, margin-top;
@@ -92,14 +112,11 @@ $mdw-appbar__icon-height: 40 !default;
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  &[mdw-centered] {
-    flex-grow: 0;
-  }
 
   .mdw-appbar[mdw-dense] & {
     @include baseline-bottom(16);
   }
-  
+
   .mdw-appbar[mdw-dense] &,
   & {
     @include mdw-breakpoint__tablet-device__max {
@@ -125,7 +142,8 @@ $mdw-appbar__icon-height: 40 !default;
 }
 
 .mdw-appbar__start {
-  order: -1;
+  -ms-grid-column: 1;
+  grid-column: 1;
 
   margin-left: dp(8);
 
@@ -136,19 +154,23 @@ $mdw-appbar__icon-height: 40 !default;
 }
 
 .mdw-appbar__end {
-  order: 1;
-  margin-left: 0;
+  -ms-grid-column: 3;
+  grid-column: 3;
+  justify-content: flex-end;
+
   margin-right: dp(12);
+  margin-left: 0;
   @include mdw-breakpoint__16dp-margin {
-    margin-left: 0;
     margin-right: dp(4);
+    margin-left: 0;
   }
-  [dir=rtl] & {
-    margin-left: dp(12);
+
+  :root[dir="rtl"] & {
     margin-right: 0;
+    margin-left: dp(12);
     @include mdw-breakpoint__16dp-margin {
-      margin-left: dp(4);
       margin-right: 0;
+      margin-left: dp(4);
     }
   }
 }
@@ -159,6 +181,7 @@ $mdw-appbar__icon-height: 40 !default;
   display: flex;
   align-items: flex-start;
   flex-direction: row;
+
   transition-property: margin-top;
 }
 
@@ -170,7 +193,7 @@ $mdw-appbar__icon-height: 40 !default;
   .mdw-appbar[mdw-dense] & {
     margin-top: dp(($mdw-appbar__height-dense - $mdw-appbar__icon-height) / 2);
   }
-  
+
   &,
   .mdw-appbar[mdw-dense] & {
     @include mdw-breakpoint__tablet-device__max {
