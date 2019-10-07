@@ -134,10 +134,11 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   -webkit-tap-highlight-color: transparent;
 
   transition-duration: $mdw-motion__fade-out-duration;
-  transition-property: background-color;
+  transition-property: background-color, visibility;
   transition-timing-function: $mdw-motion__accelerate-easing;
 
   pointer-events: none;
+  visibility: hidden;
   z-index: 16;
 
   background-color: transparent;
@@ -293,6 +294,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
         & ~ .mdw-layout__scrim {
           pointer-events: auto;
+          visibility: visible;
     
           background-color: $mdw-layout__scrim-color;
         }
