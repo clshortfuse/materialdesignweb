@@ -74,6 +74,13 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   transition-timing-function: $mdw-motion__standard-easing;
 
   background-color: inherit;
+
+  // Chrome v78 fix scrolling bug
+  // https://bugs.chromium.org/p/chromium/issues/detail?id=1011866
+  // Apply to Chrome v76+
+  @media screen and (prefers-color-scheme) and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) {
+    opacity: 0.999;
+  }
 }
 
 .mdw-layout__appbar {
