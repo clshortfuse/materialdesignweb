@@ -112,13 +112,26 @@ export default class DomAdapter {
     if (checkForRemovedItems) {
       /** @type {T1[]} */
       const unlinkedDataItems = [];
+      /** @type {T2[]} */
+      const orphanedElements = [];
       this.dataElementMap.forEach((element, data) => {
         if (this.datasource.indexOf(data) === -1) {
           unlinkedDataItems.push(data);
         }
       });
+      for (let i = this.element.children.length - 1; i >= 0; i -= 1) {
+        /** @type {T2} */
+        const child = (this.element.children.item(i));
+        const data = this.elementDataMap.get(child);
+        if (data && this.datasource.indexOf(data) === -1) {
+          orphanedElements.push(child);
+        }
+      }
       unlinkedDataItems.forEach((data) => {
         this.removeItem(data);
+      });
+      orphanedElements.forEach((el) => {
+        this.removeElement(el);
       });
     }
     if (this.recycle) {
@@ -248,7 +261,8 @@ export default class DomAdapter {
       renderedElements.push(element);
     }
     for (let i = this.element.children.length - 1; i >= 0; i -= 1) {
-      const child = this.element.children.item(i);
+      /** @type {T2} */
+      const child = (this.element.children.item(i));
       if (renderedElements.indexOf(child) === -1) {
         this.removeElement(child);
       }
