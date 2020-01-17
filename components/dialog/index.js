@@ -196,8 +196,8 @@ export function onCustomButtonClick(event) {
   }
   /** @type {HTMLElement} */
   const button = (event.currentTarget);
-  const dialogElement = findElementParentByClassName(button, 'mdw-dialog');
-  if (dispatchDomEvent(dialogElement, CUSTOM_EVENT)) {
+  if (dispatchDomEvent(button, CUSTOM_EVENT)) {
+    const dialogElement = findElementParentByClassName(button, 'mdw-dialog');
     hide(dialogElement);
   }
 }
