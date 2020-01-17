@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 const sass = require('sass');
-const fibers = require('fibers');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const isProduction = (process.env.NODE_ENV === 'production');
@@ -59,7 +58,6 @@ function getComponentsConfig() {
             loader: 'sass-loader',
             options: {
               implementation: sass,
-              fiber: fibers,
             },
           },
         ],
@@ -180,7 +178,6 @@ function getDocsConfig() {
             loader: 'sass-loader',
             options: {
               implementation: sass,
-              fiber: fibers,
             },
           },
         ],
