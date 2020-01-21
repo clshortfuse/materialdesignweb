@@ -280,7 +280,8 @@ export default class DomAdapter {
       this.element.style.setProperty('height', `${lastRenderedBounds.height * this.datasource.length}px`);
       this.element.style.removeProperty('padding-bottom');
     } else {
-      if (!this.maxBottomBounds || lastRenderedBounds.bottom > this.maxBottomBounds) {
+      if (this.maxBottomBounds && lastRenderedBounds
+          && lastRenderedBounds.bottom <= this.maxBottomBounds) {
         this.maxBottomBounds = lastRenderedBounds.bottom;
       }
       const height = this.maxBottomBounds - newPaddingTop;
