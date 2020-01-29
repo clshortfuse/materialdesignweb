@@ -156,21 +156,10 @@ $mdw-ripple__touch-up-acceleration: 3400 !default;
   -webkit-user-select: none;
   user-select: none;
 
-  transition-delay:
-    $mdw-ripple__enter-delay,
-    $mdw-ripple__enter-delay + $mdw-motion__expand-duration;
-  transition-duration:
-    $mdw-motion__expand-duration + $mdw-ripple__fade-out-duration,
-    $mdw-ripple__fade-out-duration;
-  transition-property:
-    transform,
-    background-color;
-  transition-timing-function:
-    linear,
-    $mdw-motion__decelerate-easing;
-  will-change:
-    transform,
-    background-color;
+  transition: 
+    transform #{$mdw-motion__expand-duration + $mdw-ripple__fade-out-duration} linear $mdw-ripple__enter-delay,
+    background-color $mdw-ripple__fade-out-duration $mdw-motion__decelerate-easing #{$mdw-ripple__enter-delay + $mdw-motion__expand-duration};
+  will-change: transform, background-color;
 
   opacity: 0.16;
   pointer-events: none;
