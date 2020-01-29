@@ -1,5 +1,4 @@
 **/**/node_modules/*
 dist/*
-build/*
 test/*
 **/**/.DS_Store

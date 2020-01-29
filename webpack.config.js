@@ -10,7 +10,7 @@ const isProduction = (process.env.NODE_ENV === 'production');
 
 /** @return {Object} */
 function getComponentsConfig() {
-  const DEST = (isProduction ? 'dist' : 'test/dist');
+  const DEST = (isProduction ? 'dist/full' : 'test/full');
   return {
     entry: {
       materialdesignweb: [
@@ -78,7 +78,7 @@ function getDocsConfig() {
   ];
   /** @type {Object.<string, string[]>} */
   const entries = {};
-  ['.', 'pwa', 'pages', 'themes'].map((folder) => path.join('./docs-src', folder))
+  ['.', 'pwa', 'pages', 'themes'].map((folder) => path.join('./docs', folder))
     .forEach((folderPath) => fs.readdirSync(folderPath).forEach((filename) => {
       if (filename[0] === '_') {
         return;
@@ -92,11 +92,11 @@ function getDocsConfig() {
       }
       entries[`${noExt}`].push(path.resolve(`${folderPath}/${filename}`));
     }));
-  const DEST = (isProduction ? 'docs' : 'test/docs');
+  const DEST = (isProduction ? 'dist/docs' : 'test/docs');
   /** @type {WebpackConfiguration} */
   const webpackConfig = {
     entry: entries,
-    context: path.resolve(__dirname, 'docs-src'),
+    context: path.resolve(__dirname, 'docs'),
     devtool: isProduction ? 'source-map' : 'nosources-source-map',
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     devServer: {
@@ -122,7 +122,7 @@ function getDocsConfig() {
               if (chunks && chunks.some((chunk) => chunk.name.match(/prerender/))) {
                 return false;
               }
-              if (module && module.resource && module.resource.match(/[\\/]docs-src[\\/]/)) {
+              if (module && module.resource && module.resource.match(/[\\/]docs[\\/]/)) {
                 return false;
               }
               if (module && module.resource && module.resource.match(/[\\/](components|core|adapters)[\\/]/)) {
@@ -145,7 +145,7 @@ function getDocsConfig() {
               if (chunks && chunks.some((chunk) => chunk.name.match(/prerender/))) {
                 return false;
               }
-              if (module && module.resource && module.resource.match(/[\\/]docs-src[\\/]/)) {
+              if (module && module.resource && module.resource.match(/[\\/]docs[\\/]/)) {
                 return true;
               }
               return false;

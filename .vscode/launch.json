@@ -6,7 +6,7 @@
       "request": "launch",
       "preLaunchTask": "npm: start:docs",
       "url": "http://localhost:8080/",
-      "webRoot": "${workspaceFolder}/docs-src",
+      "webRoot": "${workspaceFolder}/docs",
       "sourceMapPathOverrides": {
         "webpack:///*": "${webRoot}/*",
       }
@@ -22,7 +22,7 @@
         "--remote-debugging-port=9222",
         "--user-data-dir=remote-profile"
       ],
-      "webRoot": "${workspaceFolder}/docs-src",
+      "webRoot": "${workspaceFolder}/docs",
       "sourceMapPathOverrides": {
         "webpack:///*": "${webRoot}/*",
       }

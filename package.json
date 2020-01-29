@@ -9,6 +9,7 @@
     "build:docs": "webpack --env.target=docs",
     "stats:docs": "webpack --env.target=docs --profile --json > stats.json",
     "analyze:docs": "webpack-bundle-analyzer stats.json",
+    "deploy:docs": "scripts/deploy-docs.sh",
     "dist": "webpack"
   },
   "repository": {
