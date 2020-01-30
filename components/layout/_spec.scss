@@ -54,11 +54,12 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   display: grid;
   position: relative;
   // start | main | end
-  // Use minmax(0, 1fr) to clamp horizontally oversized grid-items
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  // Use minmax(0, 1fr) to clamp horizontally oversized grid-items~~
+  // Use minmax everywhere to solve Chrome v80 grid bugs
+  grid-template-columns: minmax(0, auto) minmax(0, 100%) minmax(0, auto);
   -ms-grid-columns: auto minmax(0, 1fr) auto;
   // top | banner | content | bottom
-  grid-template-rows: auto auto 1fr auto;
+  grid-template-rows: minmax(0, auto) minmax(0, auto) minmax(0, 100%) minmax(0, auto);
   -ms-grid-rows: auto auto 1fr auto;
   overflow-x: hidden;
   overflow-y: $mdw-layout__body-overflow-y;
