@@ -81,11 +81,11 @@ export function onMenuScroll(event) {
   }
   /** @type {HTMLElement} */
   const element = (event.currentTarget);
-  if (element.scrollTop !== element.scrollHeight / 4) {
-    element.scrollTop = element.scrollHeight / 4;
+  if (element.scrollTop !== 0) {
+    element.scrollTop = 0;
   }
-  if (element.scrollLeft !== element.scrollWidth / 4) {
-    element.scrollLeft = element.scrollWidth / 4;
+  if (element.scrollLeft !== 0) {
+    element.scrollLeft = 0;
   }
 }
 
