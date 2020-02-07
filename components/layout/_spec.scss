@@ -59,7 +59,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   grid-template-columns: minmax(0, auto) minmax(0, 100%) minmax(0, auto);
   -ms-grid-columns: auto minmax(0, 1fr) auto;
   // top | banner | content | bottom
-  grid-template-rows: minmax(0, auto) minmax(0, auto) minmax(0, 100%) minmax(0, auto);
+  grid-template-rows: auto auto minmax(auto, 1fr) auto;
   -ms-grid-rows: auto auto 1fr auto;
   overflow-x: hidden;
   overflow-y: $mdw-layout__body-overflow-y;
