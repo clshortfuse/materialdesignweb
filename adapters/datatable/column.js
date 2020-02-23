@@ -12,6 +12,14 @@ import { setTextNode } from '../../core/dom';
  */
 
 /**
+ * @callback DataTableAdapterColumnSorter<T>
+ * @param {T} a
+ * @param {T} b
+ * @return {number}
+ * @template T
+ */
+
+/**
  * @callback DataTableAdapterColumnRenderer<T>
  * @param {HTMLTableCellElement} cell,
  * @param {any} value
@@ -35,6 +43,7 @@ import { setTextNode } from '../../core/dom';
  * @prop {DocumentFragment} [fragment]
  * @prop {DataTableAdapterColumnRenderer<T>} [renderer]
  * @prop {DataTableAdapterColumnFormatter<T>} [formatter]
+ * @prop {DataTableAdapterColumnSorter<T>} [sorter]
  * @template T
  */
 
@@ -151,6 +160,7 @@ export default class DataTableAdapterColumn {
       this.renderer = DataTableAdapterColumn.defaultCellRenderer;
     }
     this.formatter = options.formatter || ((value) => value);
+    this.sorter = options.sorter;
     DataTableColumnHeader.attach(this.element);
   }
 

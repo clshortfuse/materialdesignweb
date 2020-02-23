@@ -250,6 +250,9 @@ export default class DataTableAdapter {
     this.sorter = ((/** @type {T} */ a, /** @type {T} */ b) => {
       const valueA = a[tableColumn.key];
       const valueB = b[tableColumn.key];
+      if (tableColumn.sorter) {
+        return tableColumn.sorter(a, b) * direction;
+      }
       if (valueA == null) {
         if (valueB == null) {
           return 0;
