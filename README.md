@@ -1,4 +1,6 @@
 # materialdesignweb
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fclshortfuse%2Fmaterialdesignweb.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fclshortfuse%2Fmaterialdesignweb?ref=badge_shield)
+
 Material Design for Web
 
 # Demo
@@ -84,3 +86,6 @@ npm: `npm install @shortfuse/materialdesignweb`
 * † - Required
 
 * ‡ - Apply manually
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fclshortfuse%2Fmaterialdesignweb.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fclshortfuse%2Fmaterialdesignweb?ref=badge_large)
