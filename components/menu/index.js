@@ -74,8 +74,10 @@ export function setupARIA(menuElement) {
  */
 export function onMenuScroll(event) {
   // JS needed for Safari
-  event.preventDefault();
-  event.stopPropagation();
+  if (event.target === event.currentTarget) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
   if (event.type !== 'scroll') {
     return;
   }
