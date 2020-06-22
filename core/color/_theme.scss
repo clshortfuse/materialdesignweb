@@ -1,16 +1,17 @@
 // https://material.io/design/interaction/states.html
 
-@import '../theme/index.scss';
+@use '../theme/index.scss' as theme;
+@use "../_platform.scss" as platform;
 
-@function resortColors($list) {
+@function _resortColors($list) {
   $newList: ();
   @each $color in $list {
     @if (index($newList, $color) == null) {
       $newList: append($newList, $color);
-      $palette: mdwGetThemeParamValue($color);
+      $palette: theme.getThemeParamValue($color);
       @each $color2 in $list {
         @if (index($newList, $color2) == null) {
-          $palette2: mdwGetThemeParamValue($color2);
+          $palette2: theme.getThemeParamValue($color2);
           @if ($palette == $palette2) {
             $newList: append($newList, $color2);
           }
@@ -22,43 +23,43 @@
 }
 
 // Resort colors with aliases for CSS rule merging
-$mdw-theme__inks: resortColors($mdw-theme__inks);
-$mdw-theme__surfaces: resortColors($mdw-theme__surfaces);
+$sortedInks: _resortColors(theme.$inks);
+$sortedSurfaces: _resortColors(theme.$surfaces);
 
-$mdw-color__theme-values: (
-  default-ink:                $mdw-theme__foreground,
+$themeValues: (
+  default-ink:                theme.$foreground,
 
-  high-ink-opacity:           $mdw-theme__high-opacity,
-  medium-ink-opacity:         $mdw-theme__medium-opacity,
-  inactive-ink-opacity:       $mdw-theme__inactive-opacity,
-  divider-ink-opacity:        $mdw-theme__divider-opacity,
+  high-ink-opacity:           theme.$high-opacity,
+  medium-ink-opacity:         theme.$medium-opacity,
+  inactive-ink-opacity:       theme.$inactive-opacity,
+  divider-ink-opacity:        theme.$divider-opacity,
 
   card-surface:           ((#fff, null),               (#121212, null)),
   binary-surface:         ((#fff, null),               (#000, null)),
 ) !default;
 
-@each $color in $mdw-theme__inks {
+@each $color in $sortedInks {
   $newInkMap: (
-    #{$color}-default-ink: (($color, nth($mdw-theme__default-color-ink, 1),null), ($color, nth($mdw-theme__default-color-ink, 2), null)),
-    #{$color}-contrast-ink: (($color, nth($mdw-theme__contrast-color-ink, 1),null), ($color, nth($mdw-theme__contrast-color-ink, 2), null)),
-    #{$color}-light-ink: (($color, nth($mdw-theme__light-color-ink, 1),null), ($color, nth($mdw-theme__light-color-ink, 2), null)),
+    #{$color}-default-ink: (($color, nth(theme.$default-color-ink, 1),null), ($color, nth(theme.$default-color-ink, 2), null)),
+    #{$color}-contrast-ink: (($color, nth(theme.$contrast-color-ink, 1),null), ($color, nth(theme.$contrast-color-ink, 2), null)),
+    #{$color}-light-ink: (($color, nth(theme.$light-color-ink, 1),null), ($color, nth(theme.$light-color-ink, 2), null)),
   );
-  $mdw-color__theme-values: map-merge($mdw-color__theme-values, $newInkMap);
+  $themeValues: map-merge($themeValues, $newInkMap);
 }
 
-@each $color in $mdw-theme__surfaces {
+@each $color in $sortedSurfaces {
   $newSurfaceMap: (
-    #{$color}-default-surface: (($color, nth($mdw-theme__default-color-surface, 1),null), ($color, nth($mdw-theme__default-color-surface, 2), null)),
-    #{$color}-alt-surface: (($color, nth($mdw-theme__alt-color-surface, 1),null), ($color, nth($mdw-theme__alt-color-surface, 2), null)),
+    #{$color}-default-surface: (($color, nth(theme.$default-color-surface, 1),null), ($color, nth(theme.$default-color-surface, 2), null)),
+    #{$color}-alt-surface: (($color, nth(theme.$alt-color-surface, 1),null), ($color, nth(theme.$alt-color-surface, 2), null)),
   );
-  $mdw-color__theme-values: map-merge($mdw-color__theme-values, $newSurfaceMap);
+  $themeValues: map-merge($themeValues, $newSurfaceMap);
 }
 
-@function mdwColorThemeValue($key, $type) {
-  @return mdwGetThemeValue('color', $mdw-color__theme-values, $key, $type);
+@function getThemeValue($key, $type) {
+  @return theme.getThemeValue('color', $themeValues, $key, $type);
 }
 
-@mixin mdw-color__theme-rules($type: 'var') {
+@mixin addThemeRules($type: 'var') {
   @if ($type == 'var') {
     .mdw-theme {
       /** Surface Colors **/
@@ -76,8 +77,8 @@ $mdw-color__theme-values: (
 
     .mdw-theme {
       &[mdw-surface]:not([mdw-ink]) {
-        --mdw-ink: #{mdwColorThemeValue("default-ink", $type)};
-        --mdw-ink-opacity: #{mdwColorThemeValue("high-ink-opacity", $type)};
+        --mdw-ink: #{getThemeValue("default-ink", $type)};
+        --mdw-ink-opacity: #{getThemeValue("high-ink-opacity", $type)};
         color: RGBA(var(--mdw-ink),var(--mdw-ink-opacity));
       }
 
@@ -90,36 +91,36 @@ $mdw-color__theme-values: (
       }
 
       &[mdw-surface="binary"] {
-        --mdw-surface: #{mdwColorThemeValue("binary-surface", $type)};
+        --mdw-surface: #{getThemeValue("binary-surface", $type)};
       }
     
       &[mdw-surface="card"] {
-        --mdw-surface: #{mdwColorThemeValue("card-surface", $type)};
+        --mdw-surface: #{getThemeValue("card-surface", $type)};
       }
 
-      @each $surface in $mdw-theme__surfaces {
+      @each $surface in $sortedSurfaces {
         &[mdw-surface~="#{$surface}"] {
-          --mdw-surface: #{mdwColorThemeValue("#{$surface}-default-surface", $type)};
+          --mdw-surface: #{getThemeValue("#{$surface}-default-surface", $type)};
         }
       }
       
-      @each $surface in $mdw-theme__surfaces {
+      @each $surface in $sortedSurfaces {
         &[mdw-surface~="#{$surface}"] {
-          $palette: mdwGetThemeParamValue($surface);
-          @each $tone in $mdw-theme__surface-tones {
+          $palette: theme.getThemeParamValue($surface);
+          @each $tone in theme.$surface-tones {
             $value: map-get($palette, $tone);
             --#{$tone}-surface: #{red($value),green($value),blue($value)};
           }
         }
       }
 
-      @each $surface in $mdw-theme__surfaces {
+      @each $surface in $sortedSurfaces {
         &[mdw-surface="#{$surface} alt"] {
-          --mdw-surface: #{mdwColorThemeValue("#{$surface}-alt-surface", $type)};
+          --mdw-surface: #{getThemeValue("#{$surface}-alt-surface", $type)};
         }
       }
 
-      @each $tone in $mdw-theme__surface-tones {
+      @each $tone in theme.$surface-tones {
         &[mdw-surface~="#{$tone}"] {
           --mdw-surface: var(--#{$tone}-surface);
         }
@@ -128,15 +129,15 @@ $mdw-color__theme-values: (
       /** Ink Color **/
 
       &[mdw-ink] {
-        --mdw-ink: #{mdwColorThemeValue("default-ink", $type)};
+        --mdw-ink: #{getThemeValue("default-ink", $type)};
         --mdw-ink-opacity: 1;
         color: RGBA(var(--mdw-ink),var(--mdw-ink-opacity));
       }
 
       &[mdw-ink=""],
       &[mdw-ink~="default"] {
-        --mdw-ink: #{mdwColorThemeValue("default-ink", $type)};
-        --mdw-ink-opacity: #{mdwColorThemeValue("high-ink-opacity", $type)};
+        --mdw-ink: #{getThemeValue("default-ink", $type)};
+        --mdw-ink-opacity: #{getThemeValue("high-ink-opacity", $type)};
       }
 
       &[mdw-ink~="white"] {
@@ -147,37 +148,37 @@ $mdw-color__theme-values: (
         --mdw-ink: 0,0,0;
       }
 
-      @each $ink in $mdw-theme__inks {
+      @each $ink in $sortedInks {
         &[mdw-ink~="#{$ink}"] {
-          --mdw-ink: #{mdwColorThemeValue("#{$ink}-default-ink", $type)};
+          --mdw-ink: #{getThemeValue("#{$ink}-default-ink", $type)};
         }
       }
 
-      @each $ink in $mdw-theme__inks {
+      @each $ink in $sortedInks {
         &[mdw-ink~="#{$ink}"] {
-          $palette: mdwGetThemeParamValue($ink);
-          @each $tone in $mdw-theme__ink-tones {
+          $palette: theme.getThemeParamValue($ink);
+          @each $tone in theme.$ink-tones {
             $value: map-get($palette, $tone);
             --mdw-ink-#{$tone}: #{red($value),green($value),blue($value)};
           }
         }
       }
 
-      @each $ink in $mdw-theme__inks {
+      @each $ink in $sortedInks {
         &[mdw-ink^="#{$ink} contrast"] {
-          --mdw-ink: #{mdwColorThemeValue("#{$ink}-contrast-ink", $type)};
+          --mdw-ink: #{getThemeValue("#{$ink}-contrast-ink", $type)};
         }
       }
 
-      @each $ink in $mdw-theme__inks {
+      @each $ink in $sortedInks {
         @if ($ink != 'background') {
           &[mdw-ink^="#{$ink} light"] {
-            --mdw-ink: #{mdwColorThemeValue("#{$ink}-light-ink", $type)};
+            --mdw-ink: #{getThemeValue("#{$ink}-light-ink", $type)};
           }
         }
       }
 
-      @each $tone in $mdw-theme__ink-tones {
+      @each $tone in theme.$ink-tones {
         &[mdw-ink~="#{$tone}"] {
           --mdw-ink: var(--mdw-ink-#{$tone});
         }
@@ -190,29 +191,29 @@ $mdw-color__theme-values: (
       }
 
       &[mdw-ink~="high"] {
-        --mdw-ink-opacity: #{mdwColorThemeValue("high-ink-opacity", $type)};
+        --mdw-ink-opacity: #{getThemeValue("high-ink-opacity", $type)};
       }
     
       &[mdw-ink~="medium"] {
-        --mdw-ink-opacity: #{mdwColorThemeValue("medium-ink-opacity", $type)};
+        --mdw-ink-opacity: #{getThemeValue("medium-ink-opacity", $type)};
       }
     
       &[mdw-ink~="inactive"] {
-        --mdw-ink-opacity: #{mdwColorThemeValue("inactive-ink-opacity", $type)};
+        --mdw-ink-opacity: #{getThemeValue("inactive-ink-opacity", $type)};
       }
     
       &[mdw-ink~="divider"] {
-        --mdw-ink-opacity: #{mdwColorThemeValue("divider-ink-opacity", $type)};
+        --mdw-ink-opacity: #{getThemeValue("divider-ink-opacity", $type)};
       }
 
       /** Border Ink **/
 
       &[mdw-border-ink] {
-        border-color: #{RGBA(var(--mdw-ink), mdwColorThemeValue("divider-ink-opacity", $type))};
+        border-color: #{RGBA(var(--mdw-ink), getThemeValue("divider-ink-opacity", $type))};
       }
 
       &[mdw-border-ink="default"] {
-        border-color: #{RGBA(mdwColorThemeValue("default-ink", $type), mdwColorThemeValue("divider-ink-opacity", $type))};
+        border-color: #{RGBA(getThemeValue("default-ink", $type), getThemeValue("divider-ink-opacity", $type))};
       }
 
       &[mdw-border-ink="none"] {
@@ -223,79 +224,79 @@ $mdw-color__theme-values: (
     & {
       &[mdw-ink="default"],
       &[mdw-surface]:not([mdw-ink]) {
-        color: RGBA(mdwColorThemeValue("default-ink", $type),mdwColorThemeValue("high-ink-opacity", $type));
+        color: RGBA(getThemeValue("default-ink", $type),getThemeValue("high-ink-opacity", $type));
       }
       
       &[mdw-surface="binary"] {
-        background-color: RGB(mdwColorThemeValue("binary-surface", $type));
+        background-color: RGB(getThemeValue("binary-surface", $type));
       }
     
       &[mdw-surface="card"] {
-        background-color: RGB(mdwColorThemeValue("card-surface", $type));
+        background-color: RGB(getThemeValue("card-surface", $type));
       }
 
-      @each $surface in $mdw-theme__surfaces {
+      @each $surface in $sortedSurfaces {
         &[mdw-surface="#{$surface}"] {
-          background-color: RGB(mdwColorThemeValue("#{$surface}-default-surface", $type));
+          background-color: RGB(getThemeValue("#{$surface}-default-surface", $type));
         }
       }
 
-      @each $surface in $mdw-theme__surfaces {
+      @each $surface in $sortedSurfaces {
         &[mdw-surface="#{$surface} alt"] {
-          background-color: RGB(mdwColorThemeValue("#{$surface}-alt-surface", $type));
+          background-color: RGB(getThemeValue("#{$surface}-alt-surface", $type));
         }
       }
 
       &[mdw-ink~="solid"] {
-        color: RGB(mdwColorThemeValue("default-ink", $type));
+        color: RGB(getThemeValue("default-ink", $type));
       }
 
       &[mdw-ink~="high"] {
-        color: RGBA(mdwColorThemeValue("default-ink", $type),mdwColorThemeValue("high-ink-opacity", $type));
+        color: RGBA(getThemeValue("default-ink", $type),getThemeValue("high-ink-opacity", $type));
       }
     
       &[mdw-ink~="medium"] {
-        color: RGBA(mdwColorThemeValue("default-ink", $type),mdwColorThemeValue("medium-ink-opacity", $type));
+        color: RGBA(getThemeValue("default-ink", $type),getThemeValue("medium-ink-opacity", $type));
       }
     
       &[mdw-ink~="inactive"] {
-        color: RGBA(mdwColorThemeValue("default-ink", $type),mdwColorThemeValue("inactive-ink-opacity", $type));
+        color: RGBA(getThemeValue("default-ink", $type),getThemeValue("inactive-ink-opacity", $type));
       }
     
       &[mdw-ink~="divider"] {
-        color: RGBA(mdwColorThemeValue("default-ink", $type),mdwColorThemeValue("divider-ink-opacity", $type));
+        color: RGBA(getThemeValue("default-ink", $type),getThemeValue("divider-ink-opacity", $type));
       }
 
-      @each $ink in $mdw-theme__inks {
+      @each $ink in $sortedInks {
         &[mdw-ink="#{$ink}"] {
           &,
           &.mdw-overlay::before {
-            color: RGB(mdwColorThemeValue("#{$ink}-default-ink", $type));
+            color: RGB(getThemeValue("#{$ink}-default-ink", $type));
           }
         }
       }
 
-      @each $ink in $mdw-theme__inks {
+      @each $ink in $sortedInks {
         &[mdw-ink="#{$ink} contrast"] {
           &,
           &.mdw-overlay::before {
-            color: RGB(mdwColorThemeValue("#{$ink}-contrast-ink", $type));
+            color: RGB(getThemeValue("#{$ink}-contrast-ink", $type));
           }
         }
       }
 
-      @each $ink in $mdw-theme__inks {
+      @each $ink in $sortedInks {
         &[mdw-ink="#{$ink} light"] {
           &,
           &.mdw-overlay::before {
-            color: RGB(mdwColorThemeValue("#{$ink}-light-ink", $type));
+            color: RGB(getThemeValue("#{$ink}-light-ink", $type));
           }
         }
       }
 
       &[mdw-border-ink],
       &[mdw-border-ink="default"] {
-        border-color: RGBA(mdwColorThemeValue("default-ink", $type), mdwColorThemeValue("divider-ink-opacity", $type));
+        border-color: RGBA(getThemeValue("default-ink", $type), getThemeValue("divider-ink-opacity", $type));
       }
 
       &[mdw-border-ink="none"] {
@@ -305,7 +306,7 @@ $mdw-color__theme-values: (
   }
 }
 
-@mixin __mdw-color__add-fallbacks() {
+@mixin addThemeFallbackRules() {
   .mdw-theme[mdw-surface="white"] {
     background-color: #fff;
   }
@@ -314,9 +315,9 @@ $mdw-color__theme-values: (
     background-color: #000;
   }
 
-  @each $surface in $mdw-theme__surfaces {
-    $palette: mdwGetThemeParamValue($surface);
-    @each $tone in $mdw-theme__surface-tones {
+  @each $surface in $sortedSurfaces {
+    $palette: theme.getThemeParamValue($surface);
+    @each $tone in theme.$surface-tones {
       $value: map-get($palette, $tone);
 
       .mdw-theme[mdw-surface="#{$surface} #{$tone}"] {
@@ -341,9 +342,9 @@ $mdw-color__theme-values: (
     }
   }
 
-  @each $tone in $mdw-theme__surface-tones {
-    @each $surface in $mdw-theme__surfaces {
-      $palette: mdwGetThemeParamValue($surface);
+  @each $tone in theme.$surface-tones {
+    @each $surface in $sortedSurfaces {
+      $palette: theme.getThemeParamValue($surface);
       $value: map-get($palette, $tone);
 
       .mdw-theme[mdw-surface^="#{$surface} #{$tone}"] {
@@ -352,9 +353,9 @@ $mdw-color__theme-values: (
     }
   }
 
-  @each $tone in $mdw-theme__ink-tones {
-    @each $ink in $mdw-theme__inks {
-      $palette: mdwGetThemeParamValue($ink);
+  @each $tone in theme.$ink-tones {
+    @each $ink in $sortedInks {
+      $palette: theme.getThemeParamValue($ink);
       $value: map-get($palette, $tone);
       .mdw-theme[mdw-ink^="#{$ink} #{$tone}"] {
         &,
@@ -367,23 +368,23 @@ $mdw-color__theme-values: (
 
   .mdw-theme[mdw-light],
   .mdw-theme[mdw-light] .mdw-theme:not([mdw-dark]) {
-    @include mdw-color__theme-rules('light');
+    @include addThemeRules('light');
   }
 
   .mdw-theme[mdw-dark],
   .mdw-theme[mdw-dark] .mdw-theme:not([mdw-light]) {
-    @include mdw-color__theme-rules('dark');
+    @include addThemeRules('dark');
   }
 }
 
-@if ($mdw-theme__fallbacks == 'ieonly') {
-  @include mdw-platform__ie() {
-    @include __mdw-color__add-fallbacks();
+@if (theme.$fallbacks == 'ieonly') {
+  @include platform.ifIE() {
+    @include addThemeFallbackRules();
   }
-} @else if ($mdw-theme__fallbacks != false) {
-  @include __mdw-color__add-fallbacks();
+} @else if (theme.$fallbacks != false) {
+  @include addThemeFallbackRules();
 }
 
-@include mdw-theme__add-component-variable-rules('color', $mdw-color__theme-values) {
-  @include mdw-color__theme-rules();
+@include theme.addComponentCSSVariableRules('color', $themeValues) {
+  @include addThemeRules();
 }

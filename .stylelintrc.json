@@ -22,7 +22,7 @@
     "color-hex-length": null,
     "color-hex-case": null,
     "selector-nested-pattern": "^(\\s+|((:root|&|[a-z0-9A-Z._-])(:not\\([^\\)]*\\))*(\\[[^\\]]*\\])*([^\\s>~+])*)|&::?|[&+~>])*$",
-    "no-empty-source": true,
+    "no-empty-source": null,
     "block-no-empty": true,
     "no-extra-semicolons": true,
     "selector-max-universal": 0,
@@ -48,47 +48,13 @@
     "unit-blacklist": "px",
     "selector-class-pattern": "^mdw-[a-z]+(__[a-z-]+)?$",
     "scss/at-import-no-partial-leading-underscore": null,
-    "scss/at-function-pattern": "^(__)?mdw((\\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$",
-    "scss/at-mixin-pattern": "^(__)?mdw-[a-z]+__[a-z0-9-]+(__[a-z0-9-]+)?$",
+    "scss/at-function-pattern": "^[a-z][a-zA-Z0-9]*$",
+    "scss/at-mixin-pattern": "^[a-z][a-zA-Z0-9]*$",
     "scss/dollar-variable-default": [true, {
       "ignore": "local"
     }],
-    "scss/dollar-variable-pattern": ["^mdw-[a-z]+__[a-z0-9-]+(__[a-z0-9-]+)?$", {
-      "ignore": "local"
-    }],
-    "order/order": [
-      [
-        "dollar-variables",
-        "custom-properties",
-        {
-          "type": "at-rule",
-          "name": "extend"
-        },
-        {
-          "type": "at-rule",
-          "name": "include",
-          "hasBlock": false
-        },
-        "declarations",
-        {
-          "type": "rule",
-          "selector": "^&$"
-        },
-        {
-          "type": "rule",
-          "selector": "^.+ &$"
-        },
-        {
-          "type": "rule",
-          "selector": "^&(:[^:]|\\[|-)[\\s]+$"
-        },
-        {
-          "type": "rule",
-          "selector": "^&::.+"
-        },
-        "rules"
-      ]
-    ],
+    "scss/dollar-variable-pattern": "^[a-z][a-zA-Z0-9]*$",
+    "order/order": null,
     "order/properties-alphabetical-order": null,
     "order/properties-order": [{
         "groupName": "layout",

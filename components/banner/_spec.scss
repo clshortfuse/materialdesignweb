@@ -1,8 +1,8 @@
 // https://material.io/design/components/banners.html
 
-@import '../../core/_platform.scss';
-@import '../../core/_breakpoint.scss';
-@import '../../core/_type.scss';
+@use '../../core/_breakpoint.scss' as breakpoint;
+@use '../../core/_length.scss' as *;
+@use '../../core/_type.scss' as type;
 
 .mdw-banner {
   display: flex;
@@ -15,7 +15,7 @@
 }
 
 .mdw-banner__container {
-  @include type-rules('body-2');
+  @include type.addRules('body-2');
 
   display: flex;
   position: relative;
@@ -53,8 +53,8 @@
 }
 
 .mdw-banner__text {
-  @include texttop-to-top(12);
-  @include baseline-bottom(12);
+  @include type.textTopToTop(12);
+  @include type.baselineToBottom(12);
 
   flex-grow: 1;
 
@@ -68,7 +68,7 @@
     padding-left: 0;
   }
 
-  @include mdw-breakpoint__16dp-margin {
+  @include breakpoint.has16DPMargin() {
     padding-right: 0;
     padding-left: dp(16);
 
@@ -101,7 +101,7 @@
   }
 }
 
-@include mdw-breakpoint__medium-window__min {
+@include breakpoint.minMediumWindow {
   .mdw-banner {
     flex-wrap: nowrap;
   }

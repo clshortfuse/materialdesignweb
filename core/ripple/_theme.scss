@@ -2,22 +2,22 @@
 // https://material.io/design/components/buttons.html
 // https://material.io/design/iconography/system-icons.html#color
 
-@import '../theme/index.scss';
+@use '../theme/index.scss' as theme;
 
-$mdw-ripple__theme-values: (
+$themeValues: (
   overlay-color:                 (('foreground-light', 1.00), ('foreground-dark', 1.00)),
   pressed-opacity:               (0.16, 0.32),
 ) !default;
 
-@function mdwRippleThemeValue($key, $type) {
-  @return mdwGetThemeValue('ripple', $mdw-ripple__theme-values, $key, $type);
+@function getThemeValue($key, $type) {
+  @return theme.getThemeValue('ripple', $themeValues, $key, $type);
 }
 
-@mixin mdw-ripple__theme-rules($type: 'var') {
+@mixin addThemeRules($type: 'var') {
   .mdw-ripple {
     & > .mdw-ripple__container > .mdw-ripple__inner,
     &::after {
-      opacity: mdwRippleThemeValue("pressed-opacity", $type);
+      opacity: getThemeValue("pressed-opacity", $type);
       color: inherit;
       @if ($type == 'var') {
         // Fallback handed by previous inherit rule
@@ -28,13 +28,13 @@ $mdw-ripple__theme-values: (
 }
 
 
-@include mdw-theme__add-component-fallback-rules('light') {
-  @include mdw-ripple__theme-rules('light');
+@include theme.addComponentFallbackRules('light') {
+  @include addThemeRules('light');
 }
-@include mdw-theme__add-component-fallback-rules('dark') {
-  @include mdw-ripple__theme-rules('dark');
+@include theme.addComponentFallbackRules('dark') {
+  @include addThemeRules('dark');
 }
 
-@include mdw-theme__add-component-variable-rules('ripple', $mdw-ripple__theme-values) {
-  @include mdw-ripple__theme-rules();
+@include theme.addComponentCSSVariableRules('ripple', $themeValues) {
+  @include addThemeRules();
 }

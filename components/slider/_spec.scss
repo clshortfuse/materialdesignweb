@@ -1,6 +1,8 @@
 // https://material.io/design/components/sliders.html#spec
 
-@mixin mdw-slider__track {
+@use '../../core/_length.scss' as *;
+
+@mixin track {
   width: 100%;
   height: dp(2);
   background-color: currentColor;
@@ -8,7 +10,7 @@
   color: inherit;
 }
 
-@mixin mdw-slider__thumb {
+@mixin thumb {
   height: dp(12);
   width: dp(12);
   border-radius: 50%;
@@ -39,22 +41,22 @@
   }
   
   &::-moz-range-track {
-    @include mdw-slider__track;
+    @include track;
   }
   &::-ms-track {
-    @include mdw-slider__track;
+    @include track;
   }
   &::-webkit-slider-runnable-track {
-    @include mdw-slider__track;
+    @include track;
   }
   &::-ms-thumb {
-    @include mdw-slider__thumb;
+    @include thumb;
   }
   &::-moz-range-thumb {
-    @include mdw-slider__thumb;
+    @include thumb;
   }
   &::-webkit-slider-thumb {
-    @include mdw-slider__thumb;
+    @include thumb;
     -webkit-appearance: none;
     margin-top: dp(-5);
   }

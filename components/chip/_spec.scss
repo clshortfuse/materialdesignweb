@@ -1,9 +1,8 @@
 // https://material.io/design/components/chips.html
 
-@import '../../core/_platform.scss';
-@import '../../core/_breakpoint.scss';
+@use '../../core/_length.scss' as *;
 
-$mdw-chip__border-width: dp(1) !default;
+$borderWidth: dp(1) !default;
 
 .mdw-chip {
   margin: 0 0 dp(-8) dp(-8);
@@ -62,7 +61,7 @@ $mdw-chip__border-width: dp(1) !default;
   width: 100%;
   margin: 0;
   border-style: solid;
-  border-width: $mdw-chip__border-width;
+  border-width: $borderWidth;
 
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -80,10 +79,10 @@ $mdw-chip__border-width: dp(1) !default;
     content: '';
 
     position: absolute;
-    top: -$mdw-chip__border-width;
-    right: -$mdw-chip__border-width;
-    bottom: -$mdw-chip__border-width;
-    left: -$mdw-chip__border-width;
+    top: -$borderWidth;
+    right: -$borderWidth;
+    bottom: -$borderWidth;
+    left: -$borderWidth;
 
     transition: inherit;
     transition-property: background-color, opacity;

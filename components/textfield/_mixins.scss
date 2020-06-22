@@ -1,6 +1,8 @@
-@mixin mdw-textfield__center-label {
+@use '../../core/_type.scss' as type;
+
+@mixin centerLabel {
   .mdw-textfield__label {
-    @include type-rules('subtitle');
+    @include type.addRules('subtitle');
 
     top: 50%;
 
@@ -22,9 +24,9 @@
   }
 }
 
-@mixin mdw-textfield__float-label {
+@mixin floatLabel {
   .mdw-textfield__label {
-    @include type-rules('caption');
+    @include type.addRules('caption');
     top: 0;
     
     transform: translateY(0);

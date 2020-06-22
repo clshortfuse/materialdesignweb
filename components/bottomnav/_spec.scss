@@ -1,8 +1,8 @@
 // https://material.io/design/components/bottom-navigation.html#specs
 
-@import '../../core/_motion.scss';
-@import '../../core/_platform.scss';
-@import '../../core/_type.scss';
+@use '../../core/_length.scss' as *;
+@use '../../core/_motion.scss' as motion;
+@use '../../core/_type.scss' as type;
 
 .mdw-bottomnav {
   display: flex;
@@ -44,8 +44,8 @@
 }
 
 .mdw-bottomnav__icon {
-  position: absolute;
   display: flex;
+  position: absolute;
   top: 0;
   left: 50%;
   
@@ -53,9 +53,9 @@
   margin-left: dp(-12);
   padding: 0;
 
-  transition-duration: $mdw-motion__shape-change-duration, $mdw-motion__simple-duration;
+  transition-duration: motion.$shapeChangeDuration, motion.$simpleDuration;
   transition-property: transform, color;
-  transition-timing-function: $mdw-motion__standard-easing;
+  transition-timing-function: motion.$standardEasing;
 
   pointer-events: none;
   transform: translateY(dp(8));
@@ -67,7 +67,6 @@
 }
 
 .mdw-bottomnav__badge {
-  visibility: hidden;
   position: absolute;
   top: 0;
   right: auto;
@@ -79,13 +78,15 @@
   min-width: dp(8);
   padding: dp(2);
 
+  visibility: hidden;
+
   z-index: 1;
 
   border-radius: dp(8);
 
   font: inherit;
 
-  font-weight: $font-weight-regular;
+  font-weight: type.$weightRegular;
   font-size: dp(10);
   line-height: dp(12);
   letter-spacing: normal;
@@ -97,12 +98,15 @@
   
   &[mdw-badge] {
     visibility: visible;
+
     &::before {
       content: attr(mdw-badge);
     }
   }
+
   &[data-mdw-badge] {
     visibility: visible;
+
     &::before {
       content: attr(data-mdw-badge);
     }
@@ -110,20 +114,20 @@
 }
 
 .mdw-bottomnav__label {
-  @include type-rules('caption');
-  @include texttop-to-top(32);
-  @include baseline-bottom(8);
+  @include type.addRules('caption');
+  @include type.textTopToTop(32);
+  @include type.baselineToBottom(8);
   
   // Overriding 12dp for baseline bottom with 8dp for oversized and textwrapped
-  // Baseline top will ensure baseline-bottom is 12dp for standard layouts
+  // Baseline top will ensure type.baselineToBottom is 12dp for standard layouts
 
   box-sizing: border-box;
   max-width: 100%;
   padding: 0 dp(12);
   
-  transition-duration: $mdw-motion__shape-change-duration;
+  transition-duration: motion.$shapeChangeDuration;
   transition-property: transform, opacity, color;
-  transition-timing-function: $mdw-motion__standard-easing;
+  transition-timing-function: motion.$standardEasing;
 
   pointer-events: none;
 

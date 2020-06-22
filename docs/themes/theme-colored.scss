@@ -1,13 +1,13 @@
-$mdw-theme__primary: 'deeppurple';
-$mdw-theme__secondary: 'deeporange';
-$mdw-theme__warn: 'red';
-$mdw-theme__background: 'bluegray';
-$mdw-theme__foreground: (#006064, #E0F7FA);
-$mdw-theme__inks: ('primary', 'secondary', 'warn', 'amber', 'blue', 'cyan', 'red', 'green', 'deeppurple', 'purple', 'yellow', 'teal');
-$mdw-theme__surfaces: ('primary', 'secondary', 'warn', 'background', 'amber', 'blue', 'cyan', 'red', 'green', 'deeppurple', 'purple', 'yellow', 'teal');
-$mdw-theme__fallbacks: false;
-
-@import "../../_theme.scss";
+@use "../../_theme.scss" with (
+  $primary: 'deeppurple',
+  $secondary: 'deeporange',
+  $warn: 'red',
+  $background: 'bluegray',
+  $foreground: (#006064, #E0F7FA),
+  $inks: ('primary', 'secondary', 'warn', 'amber', 'blue', 'cyan', 'red', 'green', 'deeppurple', 'purple', 'yellow', 'teal'),
+  $surfaces: ('primary', 'secondary', 'warn', 'background', 'amber', 'blue', 'cyan', 'red', 'green', 'deeppurple', 'purple', 'yellow', 'teal'),
+  $fallbacks: false,
+);
 
 :root {
   font-family: Merriweather, sans-serif;

@@ -1,17 +1,17 @@
 // https://material.io/guidelines/layout/structure.html#structure-app-bar
 // https://material.io/archive/guidelines/components/toolbars.html
 
-@import '../../core/_breakpoint.scss';
-@import '../../core/_platform.scss';
-@import '../../core/_type.scss';
+@use '../../core/_breakpoint.scss' as breakpoint;
+@use '../../core/_length.scss' as *;
+@use '../../core/_type.scss' as type;
 
-$mdw-appbar__height: 64 !default;
-$mdw-appbar__height-dense: 48 !default;
-$mdw-appbar__height-mobile: 56 !default;
-$mdw-appbar__height-mobile-landscape: 48 !default;
-$mdw-appbar__height-prominent: 128 !default;
-$mdw-appbar__height-prominent-dense: 96 !default;
-$mdw-appbar__icon-height: 40 !default;
+$height: 64 !default;
+$heightDense: 48 !default;
+$heightMobile: 56 !default;
+$heightMobileLandscape: 48 !default;
+$heightProminent: 128 !default;
+$heightProminentDense: 96 !default;
+$iconHeight: 40 !default;
 
 .mdw-appbar {
   display: flex;
@@ -24,8 +24,8 @@ $mdw-appbar__icon-height: 40 !default;
   grid-template-columns: auto 1fr auto;
   -ms-grid-columns: auto 1fr auto;
   
-  min-height: dp($mdw-appbar__height);
-  -ms-grid-rows: minmax(dp($mdw-appbar__height), 1fr) auto;
+  min-height: dp($height);
+  -ms-grid-rows: minmax(dp($height), 1fr) auto;
 
   transition-duration: inherit;
   transition-property: min-height;
@@ -39,31 +39,31 @@ $mdw-appbar__icon-height: 40 !default;
   }
 
   .mdw-appbar[mdw-prominent] > & {
-    min-height: dp($mdw-appbar__height-prominent);
-    -ms-grid-rows: minmax(dp($mdw-appbar__height-prominent), 1fr) auto;
+    min-height: dp($heightProminent);
+    -ms-grid-rows: minmax(dp($heightProminent), 1fr) auto;
   }
   
   .mdw-appbar[mdw-dense] > & {
-    min-height: dp($mdw-appbar__height-dense);
-    -ms-grid-rows: minmax(dp($mdw-appbar__height-dense), 1fr) auto;
+    min-height: dp($heightDense);
+    -ms-grid-rows: minmax(dp($heightDense), 1fr) auto;
   }
   
   .mdw-appbar[mdw-dense][mdw-prominent] > & {
-    min-height: dp($mdw-appbar__height-prominent-dense);
-    -ms-grid-rows: minmax(dp($mdw-appbar__height-prominent-dense), 1fr) auto;
-    @include mdw-breakpoint__tablet-device__max {
-      min-height: dp($mdw-appbar__height-prominent);
-      -ms-grid-rows: minmax(dp($mdw-appbar__height-prominent), 1fr) auto;
+    min-height: dp($heightProminentDense);
+    -ms-grid-rows: minmax(dp($heightProminentDense), 1fr) auto;
+    @include breakpoint.maxTabletDevice {
+      min-height: dp($heightProminent);
+      -ms-grid-rows: minmax(dp($heightProminent), 1fr) auto;
     }
   }
 
   &,
   .mdw-appbar[mdw-dense] > & {
-    @include mdw-breakpoint__tablet-device__max {
-      min-height: dp($mdw-appbar__height-mobile);
+    @include breakpoint.maxTabletDevice {
+      min-height: dp($heightMobile);
     }
-    @include mdw-breakpoint__mobile-device__landscape {
-      min-height: dp($mdw-appbar__height-mobile-landscape);
+    @include breakpoint.isMobileDeviceLandscape {
+      min-height: dp($heightMobileLandscape);
     }
   }
 }
@@ -81,15 +81,15 @@ $mdw-appbar__icon-height: 40 !default;
 
   margin-right: dp(24);
   margin-left: dp(80);
-  @include mdw-breakpoint__16dp-margin {
+  @include breakpoint.has16DPMargin() {
     margin-right: dp(16);
     margin-left: dp(72);
   }
 }
 
 .mdw-appbar__title {
-  @include type-rules('h6');
-  @include baseline-bottom(24);
+  @include type.addRules('h6');
+  @include type.baselineToBottom(24);
 
   -ms-grid-row-align: end;
   align-self: flex-end;
@@ -114,24 +114,25 @@ $mdw-appbar__icon-height: 40 !default;
 
 
   .mdw-appbar[mdw-dense] & {
-    @include baseline-bottom(16);
+    @include type.baselineToBottom(16);
   }
 
   .mdw-appbar[mdw-dense] &,
   & {
-    @include mdw-breakpoint__tablet-device__max {
-      @include baseline-bottom(20);
+    @include breakpoint.maxTabletDevice {
+      @include type.baselineToBottom(20);
     }
-    @include mdw-breakpoint__mobile-device__landscape {
-      @include baseline-bottom(16);
+    @include breakpoint.isMobileDeviceLandscape {
+      @include type.baselineToBottom(16);
     }
   }
 
   .mdw-appbar[mdw-prominent] & {
     white-space: normal;
-    @include type-rules('h5');
-    @include baseline-bottom(28);
+    @include type.addRules('h5');
+    @include type.baselineToBottom(28);
   }
+
   &[mdw-custom] {
     margin-top: 0;
 
@@ -148,7 +149,7 @@ $mdw-appbar__icon-height: 40 !default;
   margin-left: dp(8);
 
   padding: 0 dp(8);
-  @include mdw-breakpoint__16dp-margin {
+  @include breakpoint.has16DPMargin() {
     margin-left: 0;
   }
 }
@@ -160,7 +161,7 @@ $mdw-appbar__icon-height: 40 !default;
 
   margin-right: dp(12);
   margin-left: 0;
-  @include mdw-breakpoint__16dp-margin {
+  @include breakpoint.has16DPMargin() {
     margin-right: dp(4);
     margin-left: 0;
   }
@@ -168,7 +169,7 @@ $mdw-appbar__icon-height: 40 !default;
   :root[dir="rtl"] & {
     margin-right: 0;
     margin-left: dp(12);
-    @include mdw-breakpoint__16dp-margin {
+    @include breakpoint.has16DPMargin() {
       margin-right: 0;
       margin-left: dp(4);
     }
@@ -188,19 +189,19 @@ $mdw-appbar__icon-height: 40 !default;
 .mdw-appbar__start,
 .mdw-appbar__end,
 .mdw-appbar__title {
-  margin-top: dp(($mdw-appbar__height - $mdw-appbar__icon-height) / 2);
+  margin-top: dp(($height - $iconHeight) / 2);
   
   .mdw-appbar[mdw-dense] & {
-    margin-top: dp(($mdw-appbar__height-dense - $mdw-appbar__icon-height) / 2);
+    margin-top: dp(($heightDense - $iconHeight) / 2);
   }
 
   &,
   .mdw-appbar[mdw-dense] & {
-    @include mdw-breakpoint__tablet-device__max {
-      margin-top: dp(($mdw-appbar__height-mobile - $mdw-appbar__icon-height) / 2);
+    @include breakpoint.maxTabletDevice {
+      margin-top: dp(($heightMobile - $iconHeight) / 2);
     }
-    @include mdw-breakpoint__mobile-device__landscape {
-      margin-top: dp(($mdw-appbar__height-mobile-landscape - $mdw-appbar__icon-height) / 2);
+    @include breakpoint.isMobileDeviceLandscape {
+      margin-top: dp(($heightMobileLandscape - $iconHeight) / 2);
     }
   }
 }

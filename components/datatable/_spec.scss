@@ -1,12 +1,12 @@
 // https://material.io/guidelines/components/data-tables.html
 // https://material.io/guidelines/patterns/selection.html#selection-item-selection
 
-@import '../../core/_platform.scss';
-@import '../../core/_motion.scss';
-@import '../../core/_breakpoint.scss';
-@import '../../core/_type.scss';
+@use '../../core/_length.scss' as *;
+@use '../../core/_motion.scss' as motion;
+@use '../../core/_platform.scss' as platform;
+@use '../../core/_type.scss' as type;
 
-$mdw-datatable__icon-size: dp(16) !default;
+$iconSize: dp(16) !default;
 
 .mdw-datatable {
   display: flex;
@@ -23,7 +23,7 @@ $mdw-datatable__icon-size: dp(16) !default;
 
 .mdw-datatable caption,
 .mdw-datatable__header {
-  @include type-rules('h6');
+  @include type.addRules('h6');
   min-height: dp(64);
 }
 
@@ -85,7 +85,7 @@ $mdw-datatable__icon-size: dp(16) !default;
 
 
 .mdw-datatable td {
-  @include type-rules('body-2');
+  @include type.addRules('body-2');
   // text-align: left;
   // Expected line-height is 20dp. Support two lines within 48dp
   padding-top: dp(4);
@@ -96,7 +96,7 @@ $mdw-datatable__icon-size: dp(16) !default;
 }
 
 .mdw-datatable th {
-  @include type-rules('caption');
+  @include type.addRules('caption');
   white-space: nowrap;
 }
 
@@ -171,17 +171,18 @@ $mdw-datatable__icon-size: dp(16) !default;
 
   max-width: 0;
 
-  transition-duration: $mdw-motion__shape-change-duration;
+  transition-duration: motion.$shapeChangeDuration;
   transition-property: transform;
-  transition-timing-function: $mdw-motion__standard-easing;
+  transition-timing-function: motion.$standardEasing;
 
-  transform: translateX(-$mdw-datatable__icon-size) rotate(180deg);
-  transform-origin: ($mdw-datatable__icon-size / 2) ($mdw-datatable__icon-size / 2);
+  transform: translateX(-$iconSize) rotate(180deg);
+  transform-origin: ($iconSize / 2) ($iconSize / 2);
 
   color: transparent;
 
+  /* stylelint-disable-next-line selector-class-pattern */
   &.material-icons {
-    font-size: $mdw-datatable__icon-size;
+    font-size: $iconSize;
   }
 }
 
@@ -196,7 +197,7 @@ $mdw-datatable__icon-size: dp(16) !default;
   &:hover,
   &[aria-sort="ascending"] {
     .mdw-datatable__sort-icon {
-      transform: translateX(-$mdw-datatable__icon-size) rotate(180deg);
+      transform: translateX(-$iconSize) rotate(180deg);
 
       color: inherit;
     }
@@ -204,7 +205,7 @@ $mdw-datatable__icon-size: dp(16) !default;
 
   &[aria-sort="descending"] {
     .mdw-datatable__sort-icon {
-      transform: translateX(-$mdw-datatable__icon-size) rotate(0deg);
+      transform: translateX(-$iconSize) rotate(0deg);
 
       color: inherit;
     }
@@ -216,7 +217,7 @@ $mdw-datatable__icon-size: dp(16) !default;
 }
 
 .mdw-datatable__footer {
-  @include type-rules('caption');
+  @include type.addRules('caption');
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -228,7 +229,7 @@ $mdw-datatable__icon-size: dp(16) !default;
 
 .mdw-datatable__header,
 .mdw-datatable__footer {
-  @include mdw-platform__ie() {
+  @include platform.ifIE() {
     // Fix IE min-height flexbug
     &::after {
       content: '';

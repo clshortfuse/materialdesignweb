@@ -1,16 +1,15 @@
 // https://material.io/guidelines/components/buttons-floating-action-button.html
 
-@import '../../core/_breakpoint.scss';
-@import '../../core/_elevation.scss';
-@import '../../core/_motion.scss';
-@import '../../core/_platform.scss';
+@use '../../core/_elevation.scss' as elevation;
+@use '../../core/_length.scss' as *;
+@use '../../core/_motion.scss' as motion;
 
-$mdw-fab__delay: 40ms !default;
-$mdw-fab__padding: dp(16) !default;
-$mdw-fab__size: dp(56) !default;
-$mdw-fab__mini-size: dp(40) !default;
-$mdw-fab__mini-padding: dp(8) !default;
-$mdw-fab__icon-size: dp(24) !default;
+$delay: 40ms !default;
+$padding: dp(16) !default;
+$size: dp(56) !default;
+$miniSize: dp(40) !default;
+$miniPadding: dp(8) !default;
+$iconSize: dp(24) !default;
 
 .mdw-fab {
   display: flex;
@@ -55,10 +54,10 @@ $mdw-fab__icon-size: dp(24) !default;
   pointer-events: auto;
 
   border-radius: dp(32);
-  box-shadow: mdwElevation(6);
+  box-shadow: elevation.boxShadow(6);
 
   &:active {
-    box-shadow: mdwElevation(12);
+    box-shadow: elevation.boxShadow(12);
   }
 
   &[mdw-extended] {
@@ -91,9 +90,9 @@ $mdw-fab__icon-size: dp(24) !default;
   & > .mdw-fab__button.mdw-button {
     margin: 0 0 dp(16) 0;
 
-    transition-duration: $mdw-motion__collapse-duration;
+    transition-duration: motion.$collapseDuration;
     transition-property: transform, opacity;
-    transition-timing-function: $mdw-motion__accelerate-easing;
+    transition-timing-function: motion.$accelerateEasing;
 
     opacity: 0;
     transform: scale(0);
@@ -111,7 +110,7 @@ $mdw-fab__icon-size: dp(24) !default;
     }
     @for $i from 1 through 7 {
       &:nth-last-child(#{$i}) {
-        transition-delay: #{($i - 1) * $mdw-fab__delay};
+        transition-delay: #{($i - 1) * $delay};
       }
     }
   }
@@ -120,8 +119,8 @@ $mdw-fab__icon-size: dp(24) !default;
 .mdw-fab__icon {
   position: relative;
 
-  height: $mdw-fab__icon-size;
-  width: $mdw-fab__icon-size;
+  height: $iconSize;
+  width: $iconSize;
 
   transition-duration: 200ms;
   transition-property: margin;
@@ -141,7 +140,7 @@ $mdw-fab__icon-size: dp(24) !default;
 }
 
 .mdw-fab__button[mdw-extended]:not([mdw-extended="hover"]),
-.mdw-fab__button[mdw-extended="hover"]:hover, {
+.mdw-fab__button[mdw-extended="hover"]:hover {
   padding: dp(12) dp(16);
 
   .mdw-fab__text {
@@ -202,20 +201,20 @@ $mdw-fab__icon-size: dp(24) !default;
     pointer-events: auto;
 
     > .mdw-fab__button.mdw-button {
-      transition-duration: $mdw-motion__expand-duration;
-      transition-timing-function: $mdw-motion__decelerate-easing;
+      transition-duration: motion.$expandDuration;
+      transition-timing-function: motion.$decelerateEasing;
 
       opacity: 1;
       transform: scale(1);
 
-      box-shadow: mdwElevation(6);
+      box-shadow: elevation.boxShadow(6);
 
       &:active {
-        box-shadow: mdwElevation(12);
+        box-shadow: elevation.boxShadow(12);
       }
       @for $i from 1 through 6 {
         &:nth-child(#{$i}) {
-          transition-delay: #{($i - 1) * $mdw-fab__delay};
+          transition-delay: #{($i - 1) * $delay};
         }
       }
     }

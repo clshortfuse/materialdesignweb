@@ -2,27 +2,27 @@
 // https://material.io/design/components/buttons.html
 // https://material.io/design/iconography/system-icons.html#color
 
-@import '../../core/theme/index.scss';
+@use '../../core/theme/index.scss' as theme;
 
-$mdw-button__theme-values: (
-  default-text-rgb:                    $mdw-theme__foreground,
-  disabled-text-rgb:                   $mdw-theme__foreground,
-  disabled-surface-text-rgb:           $mdw-theme__foreground,
-  disabled-surface-background-rgb:     $mdw-theme__foreground,
-  default-text-alpha:                  $mdw-theme__high-opacity,
-  disabled-text-alpha:                 $mdw-theme__inactive-opacity,
-  disabled-surface-text-alpha:         $mdw-theme__high-opacity,
-  disabled-surface-background-alpha:   $mdw-theme__inactive-opacity,
+$themeValues: (
+  default-text-rgb:                    theme.$foreground,
+  disabled-text-rgb:                   theme.$foreground,
+  disabled-surface-text-rgb:           theme.$foreground,
+  disabled-surface-background-rgb:     theme.$foreground,
+  default-text-alpha:                  theme.$high-opacity,
+  disabled-text-alpha:                 theme.$inactive-opacity,
+  disabled-surface-text-alpha:         theme.$high-opacity,
+  disabled-surface-background-alpha:   theme.$inactive-opacity,
 ) !default;
 
-@function mdwButtonThemeValue($key, $type) {
-  @return mdwGetThemeValue('button', $mdw-button__theme-values, $key, $type);
+@function getThemeValue($key, $type) {
+  @return theme.getThemeValue('button', $themeValues, $key, $type);
 }
 
-@mixin mdw-button__theme-rules($type: 'var') {
+@mixin addThemeRules($type: 'var') {
   .mdw-button {
     &:disabled:not([aria-disabled="true"]) {
-      color: RGBA(mdwButtonThemeValue("disabled-text-rgb", $type), mdwButtonThemeValue("disabled-text-alpha", $type));
+      color: RGBA(getThemeValue("disabled-text-rgb", $type), getThemeValue("disabled-text-alpha", $type));
 
       &.mdw-overlay::before {
         display: none;
@@ -31,11 +31,11 @@ $mdw-button__theme-values: (
 
     &.mdw-overlay[aria-disabled="true"] {
       // Sets foreground to default ink color
-      color: RGBA(mdwButtonThemeValue("default-text-rgb", $type), mdwButtonThemeValue("default-text-alpha", $type));
+      color: RGBA(getThemeValue("default-text-rgb", $type), getThemeValue("default-text-alpha", $type));
 
       &[mdw-surface] {
-        background-color: RGBA(mdwButtonThemeValue("disabled-surface-background-rgb", $type), mdwButtonThemeValue("disabled-surface-background-alpha", $type));
-        color: RGBA(mdwButtonThemeValue("disabled-surface-text-rgb", $type), mdwButtonThemeValue("disabled-surface-text-alpha", $type));
+        background-color: RGBA(getThemeValue("disabled-surface-background-rgb", $type), getThemeValue("disabled-surface-background-alpha", $type));
+        color: RGBA(getThemeValue("disabled-surface-text-rgb", $type), getThemeValue("disabled-surface-text-alpha", $type));
 
         // Disabled filled buttons use parent's theming context
         @if ($type == 'var') {
@@ -53,13 +53,13 @@ $mdw-button__theme-values: (
 }
 
 
-@include mdw-theme__add-component-fallback-rules('light') {
-  @include mdw-button__theme-rules('light');
+@include theme.addComponentFallbackRules('light') {
+  @include addThemeRules('light');
 }
-@include mdw-theme__add-component-fallback-rules('dark') {
-  @include mdw-button__theme-rules('dark');
+@include theme.addComponentFallbackRules('dark') {
+  @include addThemeRules('dark');
 }
 
-@include mdw-theme__add-component-variable-rules('button', $mdw-button__theme-values) {
-  @include mdw-button__theme-rules();
+@include theme.addComponentCSSVariableRules('button', $themeValues) {
+  @include addThemeRules();
 }

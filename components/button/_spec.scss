@@ -1,15 +1,16 @@
 // https://material.io/guidelines/components/buttons.html#buttons-raised-buttons
 // https://material.io/guidelines/style/icons.html#
 
-@import '../../core/_breakpoint.scss';
-@import '../../core/_elevation.scss';
-@import '../../core/_motion.scss';
-@import '../../core/_platform.scss';
-@import '../../core/_type.scss';
+@use '../../core/_breakpoint.scss' as breakpoint;
+@use '../../core/_elevation.scss' as elevation;
+@use '../../core/_length.scss' as *;
+@use '../../core/_motion.scss' as motion;
+@use '../../core/_platform.scss' as platform;
+@use '../../core/_type.scss' as type;
 
-$mdw-button__external-padding: dp(8) !default;
-$mdw-button__minimum-click-target: dp(48) !default;
-$mdw-button__outline-size: dp(1) !default;
+$externalPadding: dp(8) !default;
+$minimumClickTarget: dp(48) !default;
+$outlineSize: dp(1) !default;
 
 .mdw-button {
   display: inline-flex;
@@ -35,9 +36,9 @@ $mdw-button__outline-size: dp(1) !default;
   -webkit-user-select: none;
   user-select: none;
 
-  transition-duration: $mdw-motion__shape-change-duration, $mdw-motion__simple-duration;
+  transition-duration: motion.$shapeChangeDuration, motion.$simpleDuration;
   transition-property: box-shadow, background-color, color;
-  transition-timing-function: $mdw-motion__standard-easing;
+  transition-timing-function: motion.$standardEasing;
 
   z-index: 0;
 
@@ -63,24 +64,24 @@ $mdw-button__outline-size: dp(1) !default;
 
   // Don't override font icon properties
   &:not([mdw-icon]) {
-    @include type-rules('button');
+    @include type.addRules('button');
     font-family: inherit;
     word-spacing: normal;
   }
 
   &[mdw-border-ink] {
     border-style: solid;
-    border-width: $mdw-button__outline-size;
+    border-width: $outlineSize;
 
     &::before,
     & > .mdw-ripple {
       box-sizing: content-box;
       height: 100%;
       width: 100%;
-      margin-top: -$mdw-button__outline-size;
-      margin-left: -$mdw-button__outline-size;
-      padding-right: 2 * $mdw-button__outline-size;
-      padding-bottom: 2 * $mdw-button__outline-size;
+      margin-top: -$outlineSize;
+      margin-left: -$outlineSize;
+      padding-right: 2 * $outlineSize;
+      padding-bottom: 2 * $outlineSize;
     }
   }
 
@@ -125,15 +126,15 @@ $mdw-button__outline-size: dp(1) !default;
 }
 
 // Extended touch target
-@mixin mdw-button__touch-target {
-  @include mdw-platform__has-touch-support {
+@mixin touchTarget {
+  @include platform.ifHasTouch() {
     content: "";
 
     position: absolute;
     top: 50%;
     left: 0;
     
-    height: $mdw-button__minimum-click-target;
+    height: $minimumClickTarget;
     width: 100%;
 
     transform: translateY(-50%);
@@ -142,10 +143,10 @@ $mdw-button__outline-size: dp(1) !default;
 
 // Raised
 .mdw-button[mdw-raised] {
-  box-shadow: mdwElevation(2);
+  box-shadow: elevation.boxShadow(2);
 
   &:active {
-    box-shadow: mdwElevation(8);
+    box-shadow: elevation.boxShadow(8);
   }
 }
 
@@ -155,6 +156,6 @@ $mdw-button__outline-size: dp(1) !default;
 
   &,
   &[mdw-raised] {
-    box-shadow: mdwElevation(0);
+    box-shadow: elevation.boxShadow(0);
   }
 }

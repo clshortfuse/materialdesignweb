@@ -1,24 +1,26 @@
-$mdw-theme__primary: 'deeppurple';
-$mdw-theme__secondary: 'deeporange';
-$mdw-theme__warn: 'red';
-$mdw-theme__background: 'bluegray';
-$mdw-theme__foreground: (#006064, #E0F7FA);
+@use "../../core/theme" with (
+  $primary: 'deeppurple',
+  $secondary: 'deeporange',
+  $warn: 'red',
+  $background: 'bluegray',
+  $foreground: (#006064, #E0F7FA),
+);
 
-@import "../../core/color/index.scss";
-@import "../../core/overlay/index.scss";
-@import "../../core/ripple/index.scss";
+@use "../../core/color";
+@use "../../core/overlay";
+@use "../../core/ripple";
 
-@import "../../components/appbar/index.scss";
-@import "../../components/banner/index.scss";
-@import "../../components/button/index.scss";
-@import "../../components/card/index.scss";
-@import "../../components/dialog/index.scss";
-@import "../../components/divider/index.scss";
-@import "../../components/fab/index.scss";
-@import "../../components/grid/index.scss";
-@import "../../components/layout/index.scss";
-@import "../../components/list/index.scss";
-@import "../../components/menu/index.scss";
-@import "../../components/selection/index.scss";
-@import "../../components/snackbar/index.scss";
-@import "../../components/type/index.scss";
+@use "../../components/appbar";
+@use "../../components/banner";
+@use "../../components/button";
+@use "../../components/card";
+@use "../../components/dialog";
+@use "../../components/divider";
+@use "../../components/fab";
+@use "../../components/grid";
+@use "../../components/layout";
+@use "../../components/list";
+@use "../../components/menu";
+@use "../../components/selection";
+@use "../../components/snackbar";
+@use "../../components/type";

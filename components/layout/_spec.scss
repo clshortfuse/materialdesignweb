@@ -2,35 +2,36 @@
 // https://material.io/archive/guidelines/patterns/navigation-drawer.html
 // https://material.io/archive/guidelines/layout/metrics-keylines.html#metrics-keylines-keylines-spacing
 
-@import '../../core/_elevation.scss';
-@import '../../core/_motion.scss';
-@import '../../core/_platform.scss';
-@import '../../core/_breakpoint.scss';
-@import '../../core/_type.scss';
-@import './_mixins.scss';
+@use '../../core/_breakpoint.scss' as breakpoint;
+@use '../../core/_elevation.scss' as elevation;
+@use '../../core/_length.scss' as *;
+@use '../../core/_motion.scss' as motion;
+@use '../../core/_type.scss' as type;
 
-$mdw-layout__scrim-color: rgba(0, 0, 0, 0.50) !default;
-$mdw-layout__sheet-min-width: dp(256) !default;
-$mdw-layout__sheet-max-width__mini: dp(72) !default;
+@use './_mixins.scss' as *;
 
-$mdw-layout__fab-size: dp(56) !default;
-$mdw-layout__fab-cut-size: dp(72) !default;
-$mdw-layout__fab-cut-delay: 100ms !default;
+$scrimColor: rgba(0, 0, 0, 0.50) !default;
+$sheetMinWidth: dp(256) !default;
+$sheetMaxWidthMini: dp(72) !default;
 
-$mdw-layout__top-row: 1 !default;
-$mdw-layout__banner-row: 2 !default;
-$mdw-layout__content-row: 3 !default;
-$mdw-layout__bottom-row: 4 !default;
+$fabSize: dp(56) !default;
+$fabCutSize: dp(72) !default;
+$fabCutDelay: 100ms !default;
 
-$mdw-layout__navdrawer-column: 1 !default;
-$mdw-layout__content-column: 2 !default;
-$mdw-layout__sidesheet-column: 3 !default;
-$mdw-layout__viewport-end-column: 4 !default;
+$rowTop: 1 !default;
+$rowBanner: 2 !default;
+$rowContent: 3 !default;
+$rowBottom: 4 !default;
 
-$mdw-layout__body-overflow-y: hidden !default;
-$mdw-layout__body-overflow-y__sticky: auto !default;
-$mdw-layout__content-overflow-y: auto !default;
-$mdw-layout__content-overflow-y__sticky: visible !default;
+$columnNavDrawer: 1 !default;
+$columnContent: 2 !default;
+$columnSideSheet: 3 !default;
+$columnViewportEnd: 4 !default;
+
+$bodyOverflowY: hidden !default;
+$bodyOverflowYSticky: auto !default;
+$contentOverflowY: auto !default;
+$contentOverflowYSticky: visible !default;
 
 .mdw-layout {
   overflow-y: hidden;
@@ -48,7 +49,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 }
 
 .mdw-layout__body {
-  @include type-rules('body');
+  @include type.addRules('body');
 
   display: -ms-grid;
   display: grid;
@@ -61,8 +62,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   // top | banner | content | bottom
   grid-template-rows: auto auto minmax(auto, 1fr) auto;
   -ms-grid-rows: auto auto 1fr auto;
+
   overflow-x: hidden;
-  overflow-y: $mdw-layout__body-overflow-y;
+  overflow-y: $bodyOverflowY;
   -webkit-overflow-scrolling: touch;
 
   height: 100%;
@@ -71,22 +73,23 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   margin: 0;
   padding: 0;
 
-  transition-duration: $mdw-motion__simple-duration;
-  transition-timing-function: $mdw-motion__standard-easing;
+  transition-duration: motion.$simpleDuration;
+  transition-timing-function: motion.$standardEasing;
 
   background-color: inherit;
 
   // Chrome v78 fix scrolling bug
   // https://bugs.chromium.org/p/chromium/issues/detail?id=1011866
   // Apply to Chrome v76+
-  @media screen and (prefers-color-scheme) and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) {
+  /* stylelint-disable-next-line media-feature-name-no-vendor-prefix */
+  @media screen and (prefers-color-scheme) and (-webkit-min-device-pixel-ratio:0) and (min-resolution: 0.001dpcm) {
     opacity: 0.999;
   }
 }
 
 .mdw-layout__appbar {
-  @include mdw-layout__grid-column($mdw-layout__content-column);
-  @include mdw-layout__grid-row($mdw-layout__top-row);
+  @include gridColumn($columnContent);
+  @include gridRow($rowTop);
 
   position: static;
   position: -webkit-sticky;
@@ -96,17 +99,17 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   
   margin-top: 0;
 
-  transition-duration: $mdw-motion__expand-duration;
+  transition-duration: motion.$expandDuration;
   transition-property: transform, margin-top;
-  transition-timing-function: $mdw-motion__decelerate-easing;
+  transition-timing-function: motion.$decelerateEasing;
   will-change: transform, margin-top;
 
   transform: translateY(0); // browser hint
   z-index: 4;
 
   &[mdw-hide] {
-    transition-duration: $mdw-motion__collapse-duration;
-    transition-timing-function: $mdw-motion__accelerate-easing;
+    transition-duration: motion.$collapseDuration;
+    transition-timing-function: motion.$accelerateEasing;
   }
 }
 
@@ -141,9 +144,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   outline: none;
   -webkit-tap-highlight-color: transparent;
 
-  transition-duration: $mdw-motion__fade-out-duration;
+  transition-duration: motion.$fadeOutDuration;
   transition-property: background-color, visibility;
-  transition-timing-function: $mdw-motion__accelerate-easing;
+  transition-timing-function: motion.$accelerateEasing;
 
   pointer-events: none;
   visibility: hidden;
@@ -167,20 +170,20 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
 .mdw-layout__navdrawer,
 .mdw-layout__sidesheet {
-  @include mdw-layout__grid-row($mdw-layout__top-row, $mdw-layout__bottom-row);
+  @include gridRow($rowTop, $rowBottom);
 
   box-sizing: border-box;
   max-height: 100vh;
   height: 100%;
   max-width: calc(100vw - #{dp(56)});
-  @mixin mdw-breakpoint__xsmall-window {
+  @include breakpoint.isXSmallWindow() {
     max-width: calc(100vw - #{dp(64)}); // Tablet or Desktop
   }
-  width: $mdw-layout__sheet-min-width;
+  width: $sheetMinWidth;
 
-  transition-duration: $mdw-motion__expand-duration;
+  transition-duration: motion.$expandDuration;
   transition-property: width, max-width, transform;
-  transition-timing-function: $mdw-motion__decelerate-easing;
+  transition-timing-function: motion.$decelerateEasing;
 
   will-change: max-width, transform, position;
 
@@ -188,7 +191,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   z-index: 5; // Above appbar shadow
 
   background-color: inherit;
-  box-shadow: mdwElevation(0);
+  box-shadow: elevation.boxShadow(0);
 }
 
 .mdw-layout__sheet-content {
@@ -202,7 +205,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 }
 
 .mdw-layout__navdrawer {
-  @include mdw-layout__grid-column($mdw-layout__navdrawer-column);
+  @include gridColumn($columnNavDrawer);
 
   .mdw-list__content.mdw-overlay {
     &::before,
@@ -215,7 +218,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 }
 
 .mdw-layout__sidesheet {
-  @include mdw-layout__grid-column($mdw-layout__sidesheet-column);
+  @include gridColumn($columnSideSheet);
 }
 
 .mdw-layout__navdrawer .mdw-layout__sheet-content,
@@ -232,7 +235,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 }
 
 @each $side in ('navdrawer', 'sidesheet') {
-  @include mdw-layout__modal($side) {
+  @include modal($side) {
     .mdw-layout__#{$side}-hide {
       display: none;
     }
@@ -250,9 +253,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
       flex-direction: column;
 
       // Transition visibility
-      transition-duration: $mdw-motion__collapse-duration;
+      transition-duration: motion.$collapseDuration;
       transition-property: max-width, transform, visibility;
-      transition-timing-function: $mdw-motion__accelerate-easing;
+      transition-timing-function: motion.$accelerateEasing;
 
       // Prevent tabbing
       visibility: hidden;
@@ -291,20 +294,20 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
       &[id]:target,
       &[aria-hidden="false"] {
         // Change visibility immediately
-        transition-duration: $mdw-motion__expand-duration;
+        transition-duration: motion.$expandDuration;
         transition-property: max-width, transform;
-        transition-timing-function: $mdw-motion__decelerate-easing;
+        transition-timing-function: motion.$decelerateEasing;
 
         transform: translateX(0);
         visibility: visible;
 
-        box-shadow: mdwElevation(16);
+        box-shadow: elevation.boxShadow(16);
 
         & ~ .mdw-layout__scrim {
           pointer-events: auto;
           visibility: visible;
     
-          background-color: $mdw-layout__scrim-color;
+          background-color: $scrimColor;
         }
 
         &,
@@ -319,21 +322,21 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 }
 
 .mdw-layout__banner {
-  @include mdw-layout__grid-row($mdw-layout__banner-row);
-  @include mdw-layout__grid-column($mdw-layout__content-column);
+  @include gridRow($rowBanner);
+  @include gridColumn($columnContent);
   z-index: 0;
 }
 
 .mdw-layout__content {
-  @include mdw-layout__grid-row($mdw-layout__content-row);
-  @include mdw-layout__grid-column($mdw-layout__content-column);
+  @include gridRow($rowContent);
+  @include gridColumn($columnContent);
 
   display: flex;
   position: relative;
   align-items: center;
   flex-direction: column;
   overflow-x: visible;
-  overflow-y: $mdw-layout__content-overflow-y;
+  overflow-y: $contentOverflowY;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -345,8 +348,8 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 .mdw-layout__fab,
 .mdw-layout__snackbar {
   // Aligned to bottom-anchor
-  @include mdw-layout__grid-row($mdw-layout__bottom-row);
-  @include mdw-layout__grid-column($mdw-layout__content-column);
+  @include gridRow($rowBottom);
+  @include gridColumn($columnContent);
 
   position: static;
   position: -webkit-sticky;
@@ -357,9 +360,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
   width: auto;
 
-  transition-duration: $mdw-motion__expand-duration;
+  transition-duration: motion.$expandDuration;
   transition-property: transform;
-  transition-timing-function: $mdw-motion__decelerate-easing;
+  transition-timing-function: motion.$decelerateEasing;
 
   pointer-events: none;
   transform: translateY(-100%);
@@ -397,7 +400,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   padding-right: 0;
   padding-bottom: dp(24 / 2);
   padding-left: dp(24 / 2);
-  @include mdw-breakpoint__16dp-margin {
+  @include breakpoint.has16DPMargin() {
     padding-top: dp(16 / 2);
     padding-right: 0;
     padding-bottom: dp(16 / 2);
@@ -416,7 +419,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     padding-right: dp(24 / 2);
     padding-bottom: dp(24 / 2);
     padding-left: 0;
-    @include mdw-breakpoint__16dp-margin {
+    @include breakpoint.has16DPMargin() {
       padding-top: dp(16 / 2);
       padding-right: dp(16 / 2);
       padding-bottom: dp(16 / 2);
@@ -438,7 +441,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   left: auto;
 
   padding: dp(24);
-  @include mdw-breakpoint__16dp-margin {
+  @include breakpoint.has16DPMargin() {
     padding: dp(16);
   }
 
@@ -454,16 +457,16 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 }
 
 .mdw-layout__fab-anchor .mdw-fab {
-  transition-duration: $mdw-motion__collapse-duration;
+  transition-duration: motion.$collapseDuration;
   transition-property: transform;
-  transition-timing-function: $mdw-motion__accelerate-easing;
+  transition-timing-function: motion.$accelerateEasing;
 
   transform: scale(0);
 }
 
 .mdw-layout__bottomnav {
-  @include mdw-layout__grid-column($mdw-layout__content-column);
-  @include mdw-layout__grid-row($mdw-layout__bottom-row);
+  @include gridColumn($columnContent);
+  @include gridRow($rowBottom);
 
   position: static;
   position: -webkit-sticky;
@@ -473,7 +476,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   
   z-index: 4;
 
-  box-shadow: mdwElevation(8);
+  box-shadow: elevation.boxShadow(8);
 }
 
 .mdw-layout__appbar-shape {
@@ -490,14 +493,14 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   transition-property: box-shadow;
   transition-timing-function: inherit;
 
-  box-shadow: mdwElevation(4);
+  box-shadow: elevation.boxShadow(4);
   
   color: transparent;
 
   .mdw-layout__appbar[mdw-autoraise]:not([mdw-raise]) & {
     filter: none;
 
-    box-shadow: mdwElevation(0);
+    box-shadow: elevation.boxShadow(0);
   }
 
   &::before,
@@ -505,7 +508,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     content: '';
 
     min-width: dp(24);
-    @include mdw-breakpoint__16dp-margin {
+    @include breakpoint.has16DPMargin() {
       min-width: dp(16);
     }
   }
@@ -521,11 +524,11 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   height: 100%;
   width: 100%;
 
-  transition-duration: $mdw-motion__shape-change-duration;
+  transition-duration: motion.$shapeChangeDuration;
   transition-property: transform;
-  transition-timing-function: $mdw-motion__standard-easing;
+  transition-timing-function: motion.$standardEasing;
 
-  transform: translateX(100%) translateX(-($mdw-layout__fab-size / 2));
+  transform: translateX(100%) translateX(-($fabSize / 2));
 
   &::before,
   &::after,
@@ -541,7 +544,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     content: '';
 
     width: 100%;
-    margin-left: -$mdw-layout__fab-cut-size / 2;
+    margin-left: -$fabCutSize / 2;
 
     background-color: currentColor;
   }
@@ -551,29 +554,29 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   }
 
   &::after {
-    left: $mdw-layout__fab-cut-size;
+    left: $fabCutSize;
   }
 
   & > svg {
-    left: -$mdw-layout__fab-cut-size / 2;
+    left: -$fabCutSize / 2;
 
-    width: $mdw-layout__fab-cut-size;
+    width: $fabCutSize;
 
     fill: currentColor;
   }
 }
 
 .mdw-layout__fab-mask-shape {
-  transition-delay: $mdw-layout__fab-cut-delay;
-  transition-duration: $mdw-motion__collapse-duration;
+  transition-delay: $fabCutDelay;
+  transition-duration: motion.$collapseDuration;
   transition-property: transform;
-  transition-timing-function: $mdw-motion__accelerate-easing;
+  transition-timing-function: motion.$accelerateEasing;
 
   // Closed
   transform: scale(0);
 }
 
-@include mdw-breakpoint__xsmall-window {
+@include breakpoint.isXSmallWindow() {
   .mdw-layout__appbar[mdw-autohide~="mobile"][mdw-hide] {
     transform: translateY(-100%);
 
@@ -582,9 +585,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
       & ~ .mdw-layout__fab,
       & ~ .mdw-layout__snackbar {
-        transition-duration: $mdw-motion__collapse-duration;
+        transition-duration: motion.$collapseDuration;
         transition-property: transform;
-        transition-timing-function: $mdw-motion__accelerate-easing;
+        transition-timing-function: motion.$accelerateEasing;
 
         transform: translateY(0);
       }
@@ -593,12 +596,12 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     .mdw-layout__appbar-shape {
       filter: none;
 
-      box-shadow: mdwElevation(0);
+      box-shadow: elevation.boxShadow(0);
     }
   }
 }
 
-@include mdw-breakpoint__small-window {
+@include breakpoint.isSmallWindow() {
   .mdw-layout__appbar[mdw-autohide~="tablet"][mdw-hide] {
     transform: translateY(-100%);
 
@@ -607,9 +610,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
       & ~ .mdw-layout__fab,
       & ~ .mdw-layout__snackbar {
-        transition-duration: $mdw-motion__collapse-duration;
+        transition-duration: motion.$collapseDuration;
         transition-property: transform;
-        transition-timing-function: $mdw-motion__accelerate-easing;
+        transition-timing-function: motion.$accelerateEasing;
 
         transform: translateY(0);
       }
@@ -618,34 +621,34 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     .mdw-layout__appbar-shape {
       filter: none;
 
-      box-shadow: mdwElevation(0);
+      box-shadow: elevation.boxShadow(0);
     }
   }
 }
 
-@include mdw-breakpoint__small-window__max {
+@include breakpoint.maxSmallWindow {
   .mdw-layout__appbar[mdw-bottom] {
-    @include mdw-layout__grid-row($mdw-layout__bottom-row);
+    @include gridRow($rowBottom);
     top: auto;
     bottom: 0;
 
     z-index: 8;
 
     .mdw-layout__appbar-shape {
-      box-shadow: mdwElevation(8);
+      box-shadow: elevation.boxShadow(8);
     }
 
     &[mdw-fab-cut] {
       & ~ .mdw-layout__fab {
-        transform: translateY(-100%) translateY(#{$mdw-layout__fab-size / 2});
+        transform: translateY(-100%) translateY(#{$fabSize / 2});
       }
   
       .mdw-layout__appbar-shape {
         transition-property: filter;
   
-        filter: mdwElevation(8, true);
+        filter: elevation.filter(8);
         
-        box-shadow: mdwElevation(0);
+        box-shadow: elevation.boxShadow(0);
       }
       
       .mdw-layout__fab-mask-shape {
@@ -656,8 +659,8 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     &[mdw-fab-cut~="open"] {
       .mdw-layout__fab-mask-shape {
         transition-delay: 0s;
-        transition-duration: $mdw-motion__expand-duration;
-        transition-timing-function: $mdw-motion__decelerate-easing;
+        transition-duration: motion.$expandDuration;
+        transition-timing-function: motion.$decelerateEasing;
 
         transform: scale(1);
       }
@@ -672,9 +675,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
       & ~ .mdw-layout__fab,
       & ~ .mdw-layout__snackbar {
-        transition-duration: $mdw-motion__collapse-duration;
+        transition-duration: motion.$collapseDuration;
         transition-property: transform;
-        transition-timing-function: $mdw-motion__accelerate-easing;
+        transition-timing-function: motion.$accelerateEasing;
 
         transform: translateY(0);
       }
@@ -683,7 +686,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     .mdw-layout__appbar-shape {
       filter: none;
 
-      box-shadow: mdwElevation(0);
+      box-shadow: elevation.boxShadow(0);
     }
 
   }
@@ -695,7 +698,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
       left: 0;
 
       padding: dp(24 / 2);
-      @include mdw-breakpoint__16dp-margin {
+      @include breakpoint.has16DPMargin() {
         padding: dp(16 / 2);
       }
     }
@@ -704,7 +707,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   .mdw-layout__fab[mdw-mobile] {
     & ~ .mdw-layout__snackbar .mdw-layout__snackbar-anchor {
       bottom: dp(24);
-      @include mdw-breakpoint__16dp-margin {
+      @include breakpoint.has16DPMargin() {
         bottom: dp(16);
       }
 
@@ -712,12 +715,12 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     }
 
     & ~ .mdw-layout__content {
-      padding-bottom: #{$mdw-layout__fab-size + dp(24)};
+      padding-bottom: #{$fabSize + dp(24)};
     }
 
     &[aria-hidden="false"] .mdw-fab {
-      transition-duration: $mdw-motion__expand-duration;
-      transition-timing-function: $mdw-motion__decelerate-easing;
+      transition-duration: motion.$expandDuration;
+      transition-timing-function: motion.$decelerateEasing;
 
       transform: scale(1);
     }
@@ -753,9 +756,9 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
       }
 
       &[aria-hidden="false"] .mdw-fab {
-        transition-delay: $mdw-layout__fab-cut-delay;
-        transition-duration: $mdw-motion__expand-duration;
-        transition-timing-function: $mdw-motion__decelerate-easing;
+        transition-delay: $fabCutDelay;
+        transition-duration: motion.$expandDuration;
+        transition-timing-function: motion.$decelerateEasing;
 
         transform: scale(1);
       }
@@ -769,12 +772,12 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     & ~ .mdw-layout__snackbar .mdw-layout__snackbar-anchor {
       bottom: 0;
 
-      transform: translateY(-$mdw-layout__fab-size / 2);
+      transform: translateY(-$fabSize / 2);
     }
   }
 }
 
-@include mdw-breakpoint__medium-window__min {
+@include breakpoint.minMediumWindow {
   .mdw-layout__body:not([mdw-navdrawer-toggle]):not([mdw-navdrawer-style="modal"]) {
     .mdw-layout__navdrawer-show,
     .mdw-layout__navdrawer-hide,
@@ -810,36 +813,36 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
   .mdw-layout__body[mdw-navdrawer-style~="clipped"],
   .mdw-layout__body[mdw-sidesheet-style~="clipped"] {
-    overflow-y: $mdw-layout__body-overflow-y;
+    overflow-y: $bodyOverflowY;
 
     & > .mdw-layout__content {
-      overflow-y: $mdw-layout__content-overflow-y;
+      overflow-y: $contentOverflowY;
     }
   }
 
   .mdw-layout__fab[mdw-desktop] {
     &[aria-hidden="false"] .mdw-fab {
-      transition-duration: $mdw-motion__expand-duration;
-      transition-timing-function: $mdw-motion__decelerate-easing;
+      transition-duration: motion.$expandDuration;
+      transition-timing-function: motion.$decelerateEasing;
 
       transform: scale(1);
     }
 
     &:not([mdw-desktop="appbar"]) ~ .mdw-layout__content {
-      padding-bottom: #{$mdw-layout__fab-size + dp(24)};
+      padding-bottom: #{$fabSize + dp(24)};
     }
   }
 
   .mdw-layout__fab[mdw-desktop="appbar"] {
-    @include mdw-layout__grid-row($mdw-layout__top-row);
+    @include gridRow($rowTop);
     top: 0;
     bottom: auto;
 
     transform: translateY(100%);
 
     &[aria-hidden="false"] .mdw-fab {
-      transition-duration: $mdw-motion__expand-duration;
-      transition-timing-function: $mdw-motion__decelerate-easing;
+      transition-duration: motion.$expandDuration;
+      transition-timing-function: motion.$decelerateEasing;
 
       transform: translateY(-50%) scale(1);
     }
@@ -875,34 +878,34 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
 
   .mdw-layout__body[mdw-navdrawer-style~="clipped"] .mdw-layout__navdrawer,
   .mdw-layout__body[mdw-sidesheet-style~="clipped"] .mdw-layout__sidesheet {
-    @include mdw-layout__grid-row($mdw-layout__banner-row, $mdw-layout__bottom-row);
+    @include gridRow($rowBanner, $rowBottom);
     z-index: 0;
   }
   
   .mdw-layout__body[mdw-navdrawer-style~="clipped"] {
     .mdw-layout__appbar,
     .mdw-layout__fab[mdw-desktop="appbar"] {
-      @include mdw-layout__grid-column($mdw-layout__navdrawer-column, $mdw-layout__content-column);
+      @include gridColumn($columnNavDrawer, $columnContent);
     }
   }
 
   .mdw-layout__body[mdw-sidesheet-style~="clipped"] {
     .mdw-layout__appbar,
     .mdw-layout__fab[mdw-desktop="appbar"] {
-      @include mdw-layout__grid-column($mdw-layout__content-column, $mdw-layout__sidesheet-column);
+      @include gridColumn($columnContent, $columnSideSheet);
     }
   }
 
   .mdw-layout__body[mdw-navdrawer-style~="clipped"][mdw-sidesheet-style~="clipped"] {
     .mdw-layout__appbar,
     .mdw-layout__fab[mdw-desktop="appbar"] {
-      @include mdw-layout__grid-column($mdw-layout__navdrawer-column, $mdw-layout__sidesheet-column);
+      @include gridColumn($columnNavDrawer, $columnSideSheet);
     }
   }
   
   .mdw-layout__body[mdw-navdrawer-style~="floating"] .mdw-layout__navdrawer,
   .mdw-layout__body[mdw-sidesheet-style~="floating"] .mdw-layout__sidesheet {
-    @include mdw-layout__grid-row($mdw-layout__content-row, $mdw-layout__bottom-row);
+    @include gridRow($rowContent, $rowBottom);
 
     & .mdw-layout__sheet-content {
       height: auto;
@@ -913,21 +916,21 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
   .mdw-layout__body[mdw-navdrawer-style~="floating"] {
     .mdw-layout__banner,
     .mdw-layout__bottomnav {
-      @include mdw-layout__grid-column($mdw-layout__navdrawer-column, $mdw-layout__content-column);
+      @include gridColumn($columnNavDrawer, $columnContent);
     }
   }
 
   .mdw-layout__body[mdw-sidesheet-style~="floating"] {
     .mdw-layout__banner,
     .mdw-layout__bottomnav {
-      @include mdw-layout__grid-column($mdw-layout__content-column, $mdw-layout__sidesheet-column);
+      @include gridColumn($columnContent, $columnSideSheet);
     }
   }
 
   .mdw-layout__body[mdw-navdrawer-style~="floating"][mdw-sidesheet-style~="floating"] {
     .mdw-layout__banner,
     .mdw-layout__bottomnav {
-      @include mdw-layout__grid-column($mdw-layout__navdrawer-column, $mdw-layout__sidesheet-column);
+      @include gridColumn($columnNavDrawer, $columnSideSheet);
     }
   }
 
@@ -937,7 +940,7 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     padding: dp(24) 0;
 
     & > .mdw-layout__sheet-content {
-      box-shadow: mdwElevation(8);
+      box-shadow: elevation.boxShadow(8);
     }
   }
 
@@ -948,34 +951,34 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     margin-right: 0;
     margin-left: 0;
 
-    transition-duration: $mdw-motion__collapse-duration;
+    transition-duration: motion.$collapseDuration;
     transition-property: width, max-width, margin, transform, visibility;
-    transition-timing-function: $mdw-motion__accelerate-easing;
+    transition-timing-function: motion.$accelerateEasing;
     
     visibility: hidden;
 
     .mdw-layout__sheet-content {
-      box-shadow: mdwElevation(0);
+      box-shadow: elevation.boxShadow(0);
     }
   }
 
   .mdw-layout__body[mdw-navdrawer-toggle~="mini"]:not([mdw-navdrawer-style="modal"]) {
     .mdw-layout__navdrawer:not([aria-hidden="false"]) {
-      max-width: $mdw-layout__sheet-max-width__mini;
-      width: $mdw-layout__sheet-max-width__mini;
+      max-width: $sheetMaxWidthMini;
+      width: $sheetMaxWidthMini;
 
-      transition-duration: $mdw-motion__collapse-duration;
-      transition-timing-function: $mdw-motion__accelerate-easing;
+      transition-duration: motion.$collapseDuration;
+      transition-timing-function: motion.$accelerateEasing;
     }
   }
 
   .mdw-layout__body[mdw-sidesheet-toggle~="mini"]:not([mdw-sidesheet-style="modal"]) {
     .mdw-layout__sidesheet:not([aria-hidden="false"]) {
-      max-width: $mdw-layout__sheet-max-width__mini;
-      width: $mdw-layout__sheet-max-width__mini;
+      max-width: $sheetMaxWidthMini;
+      width: $sheetMaxWidthMini;
 
-      transition-duration: $mdw-motion__collapse-duration;
-      transition-timing-function: $mdw-motion__accelerate-easing;
+      transition-duration: motion.$collapseDuration;
+      transition-timing-function: motion.$accelerateEasing;
     }
   }
 
@@ -985,17 +988,17 @@ $mdw-layout__content-overflow-y__sticky: visible !default;
     .mdw-layout__appbar-shape {
       filter: none;
 
-      box-shadow: mdwElevation(0);
+      box-shadow: elevation.boxShadow(0);
     }
   }
 }
 
 @supports (position: sticky) or (position: -webkit-sticky) or (position: -moz-sticky) {
   .mdw-layout__body {
-    overflow-y: $mdw-layout__body-overflow-y__sticky;
+    overflow-y: $bodyOverflowYSticky;
 
     & > .mdw-layout__content {
-      overflow-y: $mdw-layout__content-overflow-y__sticky;
+      overflow-y: $contentOverflowYSticky;
     }
   }
 }

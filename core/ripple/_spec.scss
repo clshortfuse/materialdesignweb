@@ -1,14 +1,14 @@
 // https://android.googlesource.com/platform/frameworks/base/+/dbcbca4/graphics/java/android/graphics/drawable/Ripple.java
 
-@import "../_breakpoint.scss";
-@import "../_platform.scss";
-@import "../_motion.scss";
+@use "../_breakpoint.scss" as breakpoint;
+@use "../_platform.scss" as platform;
+@use "../_motion.scss" as motion;
 
-$mdw-ripple__enter-delay: 80ms !default;
+$enterDelay: 80ms !default;
 
-$mdw-ripple__fade-out-duration: 1000ms / 3.0 !default;
-$mdw-ripple__touch-down-acceleration: 1024 !default;
-$mdw-ripple__touch-up-acceleration: 3400 !default;
+$fadeOutDuration: 1000ms / 3.0 !default;
+$touchDownAcceleration: 1024 !default;
+$touchUpAcceleration: 3400 !default;
 
 // Ripple starts at 100% opacity
 // Ripple fills linearly
@@ -16,7 +16,7 @@ $mdw-ripple__touch-up-acceleration: 3400 !default;
 // Ripple fills on touch up with duration: 1000ms * √(Δradius / (1024 + 3400)
 // Ripple opacity down to 0 on touch-up event with deceleration and duration: 1000ms / 3.0
 
-// Use $mdw-motion__expand-duration temporarily
+// Use motion.$expandDuration temporarily
 
 // TODO: Use variable ripple scale durations
 // TODO: Use enter-delay with JS Ripple
@@ -76,14 +76,14 @@ $mdw-ripple__touch-up-acceleration: 3400 !default;
   position: absolute;
 
   animation-name: none;
-  animation-duration: $mdw-motion__expand-duration;
+  animation-duration: motion.$expandDuration;
   animation-timing-function: linear;
   animation-direction: normal;
   animation-fill-mode: forwards;
   transition-delay: 0s;
-  transition-duration: $mdw-motion__simple-duration;
+  transition-duration: motion.$simpleDuration;
   transition-property: background-color, color;
-  transition-timing-function: $mdw-motion__standard-easing;
+  transition-timing-function: motion.$standardEasing;
 
   opacity: 0.16;
   pointer-events: none;
@@ -105,8 +105,8 @@ $mdw-ripple__touch-up-acceleration: 3400 !default;
 .mdw-ripple:not(:active) > .mdw-ripple__container > .mdw-ripple__inner[mdw-fade-in-complete][mdw-fade-in],
 .mdw-ripple__inner[mdw-fade-out] {
   animation-name: ripple-fade-out;
-  animation-duration: $mdw-ripple__fade-out-duration;
-  animation-timing-function: $mdw-motion__decelerate-easing;
+  animation-duration: $fadeOutDuration;
+  animation-timing-function: motion.$decelerateEasing;
 }
 
 
@@ -157,8 +157,8 @@ $mdw-ripple__touch-up-acceleration: 3400 !default;
   user-select: none;
 
   transition: 
-    transform #{$mdw-motion__expand-duration + $mdw-ripple__fade-out-duration} linear $mdw-ripple__enter-delay,
-    background-color $mdw-ripple__fade-out-duration $mdw-motion__decelerate-easing #{$mdw-ripple__enter-delay + $mdw-motion__expand-duration};
+    transform #{motion.$expandDuration + $fadeOutDuration} linear $enterDelay,
+    background-color $fadeOutDuration motion.$decelerateEasing #{$enterDelay + motion.$expandDuration};
   will-change: transform, background-color;
 
   opacity: 0.16;

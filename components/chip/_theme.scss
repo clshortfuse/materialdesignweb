@@ -2,9 +2,9 @@
 // https://material.io/design/components/chips.html
 // https://material.io/design/iconography/system-icons.html#color
 
-@import '../../core/theme/index.scss';
+@use '../../core/theme/index.scss' as theme;
 
-$mdw-chip__theme-values: (
+$themeValues: (
   text-color:                    (('foreground-light', 0.87), ('foreground-dark', 1.00)),
   background-color:              (('foreground-light', 0.12), ('foreground-dark', 0.24)),
 
@@ -53,24 +53,24 @@ $mdw-chip__theme-values: (
 
 ) !default;
 
-@function mdwChipThemeValue($key, $type) {
-  @return mdwGetThemeValue('chip', $mdw-chip__theme-values, $key, $type);
+@function getThemeValue($key, $type) {
+  @return theme.getThemeValue('chip', $themeValues, $key, $type);
 }
 
-@mixin mdw-chip__theme-rules($type: 'var') {
+@mixin addThemeRules($type: 'var') {
   .mdw-chip__thumbnail,
   .mdw-chip__remove,
   .mdw-chip__text {
-    color: RGBA(mdwChipThemeValue("text-color", $type));
+    color: RGBA(getThemeValue("text-color", $type));
   }
 
   .mdw-chip__input {
     color: inherit;
 
     &::before {
-      opacity: mdwChipThemeValue("default-opacity", $type);
+      opacity: getThemeValue("default-opacity", $type);
 
-      background-color: RGBA(mdwChipThemeValue("overlay-color", $type));
+      background-color: RGBA(getThemeValue("overlay-color", $type));
     }
 
     &:checked::before {
@@ -78,20 +78,20 @@ $mdw-chip__theme-values: (
     }
 
     &:hover::before {
-      opacity: mdwChipThemeValue("hover-opacity", $type);
+      opacity: getThemeValue("hover-opacity", $type);
     }
 
     &:focus::before {
-      opacity: mdwChipThemeValue("focus-opacity", $type);
+      opacity: getThemeValue("focus-opacity", $type);
     }
 
     &:hover:focus::before {
-      opacity: mdwChipThemeValue("hover-focus-opacity", $type);
+      opacity: getThemeValue("hover-focus-opacity", $type);
     }
 
     &:checked {
       & ~ .mdw-chip__text {
-        color: RGBA(mdwChipThemeValue("activated-text-color", $type));
+        color: RGBA(getThemeValue("activated-text-color", $type));
       }
 
       &[type="radio"] {
@@ -102,61 +102,61 @@ $mdw-chip__theme-values: (
 
       &[type="checkbox"] {
         &::before {
-          opacity: mdwChipThemeValue("selected-opacity", $type);
+          opacity: getThemeValue("selected-opacity", $type);
         }
 
         &:hover::before {
-          opacity: mdwChipThemeValue("selected-hover-opacity", $type);
+          opacity: getThemeValue("selected-hover-opacity", $type);
         }
 
         &:focus::before {
-          opacity: mdwChipThemeValue("selected-focus-opacity", $type);
+          opacity: getThemeValue("selected-focus-opacity", $type);
         }
 
         &:hover:focus::before {
-          opacity: mdwChipThemeValue("selected-hover-focus-opacity", $type);
+          opacity: getThemeValue("selected-hover-focus-opacity", $type);
         }
       }
     }
   }
 
   .mdw-chip[mdw-outlined] .mdw-chip__input {
-    border-color: RGBA(mdwChipThemeValue('outline-color', $type));
+    border-color: RGBA(getThemeValue('outline-color', $type));
 
     &:not(:checked) {
       &::before {
-        opacity: mdwChipThemeValue("outlined-opacity", $type);
+        opacity: getThemeValue("outlined-opacity", $type);
       }
 
       &:hover::before {
-        opacity: mdwChipThemeValue("outlined-hover-opacity", $type);
+        opacity: getThemeValue("outlined-hover-opacity", $type);
       }
 
       &:focus::before {
-        opacity: mdwChipThemeValue("outlined-focus-opacity", $type);
+        opacity: getThemeValue("outlined-focus-opacity", $type);
       }
 
       &:hover:focus::before {
-        opacity: mdwChipThemeValue("outlined-hover-focus-opacity", $type);
+        opacity: getThemeValue("outlined-hover-focus-opacity", $type);
       }
     }
 
     &:checked {
       &[type="checkbox"] {
         &::before {
-          opacity: mdwChipThemeValue("outlined-selected-opacity", $type);
+          opacity: getThemeValue("outlined-selected-opacity", $type);
         }
 
         &:hover::before {
-          opacity: mdwChipThemeValue("outlined-selected-hover-opacity", $type);
+          opacity: getThemeValue("outlined-selected-hover-opacity", $type);
         }
 
         &:focus::before {
-          opacity: mdwChipThemeValue("outlined-selected-focus-opacity", $type);
+          opacity: getThemeValue("outlined-selected-focus-opacity", $type);
         }
 
         &:hover:focus::before {
-          opacity: mdwChipThemeValue("outlined-selected-hover-focus-opacity", $type);
+          opacity: getThemeValue("outlined-selected-hover-focus-opacity", $type);
         }
       }
     }
@@ -164,14 +164,14 @@ $mdw-chip__theme-values: (
 }
 
 
-@include mdw-theme__add-component-fallback-rules('light') {
-  @include mdw-chip__theme-rules('light');
+@include theme.addComponentFallbackRules('light') {
+  @include addThemeRules('light');
 }
 
-@include mdw-theme__add-component-fallback-rules('dark') {
-  @include mdw-chip__theme-rules('dark');
+@include theme.addComponentFallbackRules('dark') {
+  @include addThemeRules('dark');
 }
 
-@include mdw-theme__add-component-variable-rules('chip', $mdw-chip__theme-values) {
-  @include mdw-chip__theme-rules();
+@include theme.addComponentCSSVariableRules('chip', $themeValues) {
+  @include addThemeRules();
 }

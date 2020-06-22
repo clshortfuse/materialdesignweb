@@ -1,12 +1,13 @@
-@import '../../core/_platform.scss';
+@use '../../core/_length.scss' as *;
 
 .mdw-divider {
   width: 100%;
-  border-bottom: dp(1) solid;
   margin-top: dp(-1);
+  border-bottom: dp(1) solid;
 }
+
 .mdw-divider__vertical {
   height: 100%;
-  border-left: dp(1) solid;
   margin-right: dp(-1);
+  border-left: dp(1) solid;
 }

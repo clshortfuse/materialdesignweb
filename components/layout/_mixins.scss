@@ -1,16 +1,16 @@
-@import '../../core/_breakpoint.scss';
+@use '../../core/_breakpoint.scss' as breakpoint;
 
-@mixin mdw-layout__modal($side) {
+@mixin modal($side) {
   .mdw-layout__body[mdw-#{$side}-style='modal'] {
     @content;
   }
 
-  @include mdw-breakpoint__small-window__max {
+  @include breakpoint.maxSmallWindow {
     @content;
   }
 }
 
-@mixin mdw-layout__grid-column($start, $end: null) {
+@mixin gridColumn($start, $end: null) {
   @if ($end == null) {
     $end: $start;
   }
@@ -21,7 +21,7 @@
 }
 
 
-@mixin mdw-layout__grid-row($top, $bottom: null) {
+@mixin gridRow($top, $bottom: null) {
   @if ($bottom == null) {
     $bottom: $top;
   }

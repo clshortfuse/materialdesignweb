@@ -1,14 +1,6 @@
-@function mdwElevation($dp, $filter:false) {
-  @if ($filter == true) {
-    @return unquote(map-get($mdw-elevation__filter-values, $dp));
-  } @else {
-    @return unquote(map-get($mdw-elevation__box-shadow-values, $dp));
-  }
-}
-
 
 // https://material.io/archive/guidelines/resources/shadows.html#shadows-sketch
-$mdw-elevation__box-shadow-values: (
+$shadowValues: (
   0:  "none",
   1:  "0 00px 02px 0px rgba(0,0,0,0.14), 0 02px 02px 0px rgba(0,0,0,0.12), 0 01px 03px 0 rgba(0,0,0,0.20)",
   2:  "0 00px 04px 0px rgba(0,0,0,0.14), 0 03px 04px 0px rgba(0,0,0,0.12), 0 01px 05px 0 rgba(0,0,0,0.20)",
@@ -23,7 +15,7 @@ $mdw-elevation__box-shadow-values: (
 ) !default;
 
 // https://material.io/archive/guidelines/resources/shadows.html#shadows-illustrator
-$mdw-elevation__filter-values: (
+$filterValues: (
   0:  "none",
   1:  "drop-shadow(0 00.92px 00.5px rgba(0,0,0,0.26)) drop-shadow(0 0 00.67px rgba(0,0,0,0.08))",
   2:  "drop-shadow(0 01.83px 01.0px rgba(0,0,0,0.26)) drop-shadow(0 0 01.33px rgba(0,0,0,0.08))",
@@ -36,3 +28,11 @@ $mdw-elevation__filter-values: (
   16: "drop-shadow(0 14.67px 08.0px rgba(0,0,0,0.26)) drop-shadow(0 0 10.67px rgba(0,0,0,0.08))",
   24: "drop-shadow(0 22.12px 12.0px rgba(0,0,0,0.26)) drop-shadow(0 0 16.00px rgba(0,0,0,0.08))",
 ) !default;
+
+@function boxShadow($dp) {
+  @return unquote(map-get($shadowValues, $dp));
+}
+
+@function filter($dp) {
+  @return unquote(map-get($filterValues, $dp));
+}

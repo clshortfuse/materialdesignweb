@@ -1,27 +1,29 @@
 // https://material.io/design/components/cards.html#specs
 
-@import '../../core/_breakpoint.scss';
-@import '../../core/_elevation.scss';
-@import '../../core/_motion.scss';
-@import '../../core/_platform.scss';
-@import '../../core/_type.scss';
+@use '../../core/_breakpoint.scss' as breakpoint;
+@use '../../core/_elevation.scss' as elevation;
+@use '../../core/_length.scss' as *;
+@use '../../core/_motion.scss' as motion;
+@use '../../core/_platform.scss' as platform;
+@use '../../core/_type.scss' as type;
 
-$mdw-card__horizontal-padding: dp(16) !default;
+
+$horizontalPadding: dp(16) !default;
 
 .mdw-card {
-  @include type-rules('body-2');
+  @include type.addRules('body-2');
 
   display: block;
   position: relative;
 
   outline: none;
 
-  transition-duration: $mdw-motion__shape-change-duration;
+  transition-duration: motion.$shapeChangeDuration;
   transition-property: box-shadow;
-  transition-timing-function: $mdw-motion__standard-easing;
+  transition-timing-function: motion.$standardEasing;
 
   border-radius: dp(4);
-  box-shadow: mdwElevation(0);
+  box-shadow: elevation.boxShadow(0);
 
   &::before {
     // Outline is behind content, not around it
@@ -41,9 +43,9 @@ $mdw-card__horizontal-padding: dp(16) !default;
     border-radius: inherit;
   }
 
-  @include mdw-breakpoint__tablet-device__max() {
+  @include breakpoint.maxTabletDevice() {
     &:not([mdw-elevation]) {
-      box-shadow: mdwElevation(1);
+      box-shadow: elevation.boxShadow(1);
 
       &::before {
         border-color: transparent;
@@ -52,14 +54,14 @@ $mdw-card__horizontal-padding: dp(16) !default;
   }
 
   &[mdw-elevation="1"] {
-    box-shadow: mdwElevation(1);
+    box-shadow: elevation.boxShadow(1);
   }
 
   &[mdw-elevation="8"],
   &[mdw-raised~="hover"]:hover,
   &[mdw-raised~="focus"]:focus,
   &[mdw-raised~="focus-within"]:focus-within {
-    box-shadow: mdwElevation(8);
+    box-shadow: elevation.boxShadow(8);
   }
 
   &[mdw-elevation="1"],
@@ -84,25 +86,25 @@ $mdw-card__horizontal-padding: dp(16) !default;
 .mdw-card__subheader,
 .mdw-card__supporting-text,
 .mdw-card__content {
-  padding: 0 $mdw-card__horizontal-padding;
+  padding: 0 $horizontalPadding;
 }
 
 .mdw-card__supporting-text {
-  @include texttop-to-top(14);
-  @include baseline-bottom(16);
+  @include type.textTopToTop(14);
+  @include type.baselineToBottom(16);
 }
 
 .mdw-card > .mdw-divider {
-  width: calc(100% - #{$mdw-card__horizontal-padding * 2});
-  margin-right: $mdw-card__horizontal-padding;
-  margin-left: $mdw-card__horizontal-padding;
+  width: calc(100% - #{$horizontalPadding * 2});
+  margin-right: $horizontalPadding;
+  margin-left: $horizontalPadding;
 }
 
 .mdw-card__thumbnail {
   margin-top: dp(16);
-  margin-right: $mdw-card__horizontal-padding;
+  margin-right: $horizontalPadding;
   margin-bottom: 0;
-  margin-left: $mdw-card__horizontal-padding;
+  margin-left: $horizontalPadding;
 }
 
 .mdw-card__start {
@@ -170,12 +172,12 @@ $mdw-card__horizontal-padding: dp(16) !default;
 
   min-height: dp(40);
   min-width: dp(40);
-  margin-right: $mdw-card__horizontal-padding;
+  margin-right: $horizontalPadding;
   margin-left: 0;
 
   :root[dir="rtl"] & {
     margin-right: 0;
-    margin-left: $mdw-card__horizontal-padding;
+    margin-left: $horizontalPadding;
   }
 }
 
@@ -184,24 +186,24 @@ $mdw-card__horizontal-padding: dp(16) !default;
 }
 
 h5.mdw-card__header {
-  @include texttop-to-top(16);
-  @include type-rules('h5');
-  @include baseline-bottom(28);
+  @include type.textTopToTop(16);
+  @include type.addRules('h5');
+  @include type.baselineToBottom(28);
   margin-bottom: dp(-28);
 }
 
 h6.mdw-card__header {
-  @include texttop-to-top(14);
-  @include type-rules('h6');
+  @include type.textTopToTop(14);
+  @include type.addRules('h6');
 }
 
 .mdw-card__header[mdw-two-line] {
-  @include baseline-bottom(22);
+  @include type.baselineToBottom(22);
   margin-bottom: dp(-22);
 
   & ~ .mdw-card__subheader {
-    @include texttop-to-top(8);
-    @include baseline-bottom(16);
+    @include type.textTopToTop(8);
+    @include type.baselineToBottom(16);
   }
 }
 

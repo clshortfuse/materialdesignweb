@@ -1,22 +1,22 @@
 // https://material.io/design/components/text-fields.html
 // https://material.io/archive/guidelines/components/text-fields.html
 
-@import '../../core/_breakpoint.scss';
-@import '../../core/_elevation.scss';
-@import '../../core/_motion.scss';
-@import '../../core/_platform.scss';
-@import '../../core/_type.scss';
-@import './_mixins.scss';
+@use '../../core/_elevation.scss' as elevation;
+@use '../../core/_length.scss' as *;
+@use '../../core/_motion.scss' as motion;
+@use '../../core/_platform.scss' as platform;
+@use '../../core/_type.scss' as type;
+@use './_mixins.scss' as *;
 
-$mdw-textfield__border-line-height: dp(1) !default;
-$mdw-textfield__border-line-height__focused: dp(2) !default;
+$border-line-height: dp(1) !default;
+$border-line-height__focused: dp(2) !default;
 
-$mdw-textfield__textarea-padding-horizontal: dp(16) !default;
-$mdw-textfield__outline-start-width: dp(10) !default;
-$mdw-textfield__outline-end-width: dp(8) !default;
+$textarea-padding-horizontal: dp(16) !default;
+$outline-start-width: dp(10) !default;
+$outline-end-width: dp(8) !default;
 
-$mdw-textfield__input-top-alignment: calc(#{dp(8 + 4)} + #{sp(12)} + 0.125em) !default; // Extra 1/8em for font alignment
-$mdw-textfield__input-bottom-alignment: dp(8) !default;
+$input-top-alignment: calc(#{dp(8 + 4)} + #{sp(12)} + 0.125em) !default; // Extra 1/8em for font alignment
+$input-bottom-alignment: dp(8) !default;
 
 // CSS Grid Layout
 //     1   |  2  |   3    |   4   |        5        |    6   |  7
@@ -39,8 +39,8 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
 
   padding: dp(8) 0;
 
-  transition-duration: $mdw-motion__simple-duration;
-  transition-timing-function: $mdw-motion__standard-easing;
+  transition-duration: motion.$simpleDuration;
+  transition-timing-function: motion.$standardEasing;
 
 
   &[mdw-solo] {
@@ -62,7 +62,7 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
   }
 
   &:not([mdw-solo]) {
-    @include type-rules('subtitle');
+    @include type.addRules('subtitle');
   }
 }
 
@@ -119,9 +119,9 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
   -ms-grid-row: 1;
   grid-row: 1;
   
-  transition-duration: $mdw-motion__simple-duration;
+  transition-duration: motion.$simpleDuration;
   transition-property: color;
-  transition-timing-function: $mdw-motion__standard-easing;
+  transition-timing-function: motion.$standardEasing;
   will-change: color;
 
   pointer-events: none;
@@ -149,7 +149,7 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
 .mdw-textfield__outline-gap {
   // Using transform would create a new composition layer and cause subpixel rendering issues
   position: absolute;
-  top: $mdw-textfield__border-line-height__focused;
+  top: $border-line-height__focused;
   right: dp(12);
   bottom: 0;
   left: dp(12);
@@ -158,8 +158,8 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
   -ms-grid-row: 1;
   grid-row: 1;
 
-  margin-top: -$mdw-textfield__border-line-height__focused;
-  margin-bottom: -$mdw-textfield__border-line-height;
+  margin-top: -$border-line-height__focused;
+  margin-bottom: -$border-line-height;
 
   .mdw-textfield[mdw-outlined] & {
     position: relative;
@@ -169,8 +169,8 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
     left: auto;
 
     max-width: calc(100% - #{dp(24)});
-    margin-top: -$mdw-textfield__border-line-height;
-    margin-bottom: -$mdw-textfield__border-line-height;
+    margin-top: -$border-line-height;
+    margin-bottom: -$border-line-height;
     
     color: inherit;
   }
@@ -183,12 +183,12 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
     top: 0;
 
     border-top-style: solid;
-    border-top-width: $mdw-textfield__border-line-height;
+    border-top-width: $border-line-height;
 
     transition-delay: 1ms;
-    transition-duration: $mdw-motion__simple-duration / 2;
+    transition-duration: motion.$simpleDuration / 2;
     transition-property: left, right;
-    transition-timing-function: $mdw-motion__standard-easing;
+    transition-timing-function: motion.$standardEasing;
 
     border-color: inherit;
 
@@ -228,15 +228,15 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
   border-right-style: none;
   border-bottom-style: solid;
   border-left-style: none;
-  border-width: $mdw-textfield__border-line-height;
+  border-width: $border-line-height;
 
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 
   transition-delay: 1ms;
-  transition-duration: $mdw-motion__simple-duration;
+  transition-duration: motion.$simpleDuration;
   transition-property: color, border-color;
-  transition-timing-function: $mdw-motion__standard-easing;
+  transition-timing-function: motion.$standardEasing;
 
   border-top-color: transparent;
   border-right-color: transparent;
@@ -273,20 +273,20 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
 
     position: absolute;
     right: 0;
-    bottom: -$mdw-textfield__border-line-height__focused;
+    bottom: -$border-line-height__focused;
     left: 0;
 
     height: 100%;
     border-bottom-style: solid;
-    border-width: $mdw-textfield__border-line-height__focused;
+    border-width: $border-line-height__focused;
 
     transition-delay: 1ms;
-    transition-duration: $mdw-motion__collapse-duration;
+    transition-duration: motion.$collapseDuration;
     transition-property: transform;
-    transition-timing-function: $mdw-motion__accelerate-easing;
+    transition-timing-function: motion.$accelerateEasing;
     will-change: transform;
 
-    transform: scaleX(0) translateY(-$mdw-textfield__border-line-height/2);
+    transform: scaleX(0) translateY(-$border-line-height/2);
 
     border-radius: inherit;
     color: transparent;
@@ -315,10 +315,10 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
 
   .mdw-textfield[mdw-outlined] &::before,
   :root[dir="rtl"] .mdw-textfield[mdw-outlined] &::after {
-    min-width: $mdw-textfield__outline-start-width - $mdw-textfield__border-line-height;
-    margin-top: -$mdw-textfield__border-line-height;
+    min-width: $outline-start-width - $border-line-height;
+    margin-top: -$border-line-height;
     margin-right: 0;
-    margin-left: -$mdw-textfield__border-line-height;
+    margin-left: -$border-line-height;
     border-top-style: solid;
     border-right-style: none;
     border-bottom-style: solid;
@@ -337,9 +337,9 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
 
   .mdw-textfield[mdw-outlined] &::after,
   :root[dir="rtl"] .mdw-textfield[mdw-outlined] &::before {
-    min-width: $mdw-textfield__outline-end-width - $mdw-textfield__border-line-height;
-    margin-top: -$mdw-textfield__border-line-height;
-    margin-right: -$mdw-textfield__border-line-height;
+    min-width: $outline-end-width - $border-line-height;
+    margin-top: -$border-line-height;
+    margin-right: -$border-line-height;
     margin-left: 0;
     border-top-style: solid;
     border-right-style: solid;
@@ -370,9 +370,9 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
   margin: 0;
   padding: 0;
 
-  transition-duration: $mdw-motion__shape-change-duration;
+  transition-duration: motion.$shapeChangeDuration;
   transition-property: top, transform, font-size;
-  transition-timing-function: $mdw-motion__standard-easing;
+  transition-timing-function: motion.$standardEasing;
   will-change: top, transform, font-size;
 
   pointer-events: none; // allow clickthrough
@@ -390,7 +390,7 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
   &::before {
     // Add upper 8dp from text-top to top for positioning
     // Add lower 8dp from baseline to keep vertically centered
-    @include type-rules('caption');
+    @include type.addRules('caption');
     content: "";
     
     display: inline-block;
@@ -507,9 +507,9 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
 
   &::placeholder {
     transition-delay: 1ms;
-    transition-duration: $mdw-motion__simple-duration;
+    transition-duration: motion.$simpleDuration;
     transition-property: color;
-    transition-timing-function: $mdw-motion__standard-easing;
+    transition-timing-function: motion.$standardEasing;
     will-change: color;
   }
 
@@ -528,8 +528,8 @@ $mdw-textfield__input-bottom-alignment: dp(8) !default;
   -ms-grid-row-align: flex-start;
   align-self: flex-start;
 
-  margin-top: $mdw-textfield__input-top-alignment;
-  margin-bottom: $mdw-textfield__input-bottom-alignment;
+  margin-top: $input-top-alignment;
+  margin-bottom: $input-bottom-alignment;
 }
 
 textarea.mdw-textfield__input {
@@ -540,14 +540,14 @@ textarea.mdw-textfield__input {
   min-height: 1em; // Avoid clipping on resize
   min-width: 100%; // Always fill container horizontally
   max-width: 100%; // Don't allow resize beyond bounds
-  margin-top: $mdw-textfield__input-top-alignment;
-  margin-bottom: $mdw-textfield__input-bottom-alignment;
-  padding-right: $mdw-textfield__textarea-padding-horizontal;
+  margin-top: $input-top-alignment;
+  margin-bottom: $input-bottom-alignment;
+  padding-right: $textarea-padding-horizontal;
   padding-left: 0;
 
   :root[dir="rtl"] & {
     padding-right: 0;
-    padding-left: $mdw-textfield__textarea-padding-horizontal;
+    padding-left: $textarea-padding-horizontal;
   }
 
   .mdw-textfield[mdw-autosize] > & {
@@ -591,8 +591,8 @@ select.mdw-textfield__input {
 
 .mdw-textfield__helper-text,
 .mdw-textfield__error-text {
-  @include texttop-to-top(4);
-  @include type-rules('caption');
+  @include type.textTopToTop(4);
+  @include type.addRules('caption');
   -ms-grid-column: 3;
   grid-column: 3;
   -ms-grid-column-span: 4;
@@ -651,9 +651,9 @@ select.mdw-textfield__input {
   margin-top: 0;
   margin-bottom: dp(8);
 
-  transition-duration: $mdw-motion__collapse-duration;
+  transition-duration: motion.$collapseDuration;
   transition-property: box-shadow, max-height;
-  transition-timing-function: $mdw-motion__accelerate-easing;
+  transition-timing-function: motion.$accelerateEasing;
 
   z-index: 2;
 
@@ -675,10 +675,10 @@ select.mdw-textfield__input {
   &[mdw-show],
   input:focus ~ & {
     &:not([mdw-hide]) {
-      transition-duration: $mdw-motion__expand-duration;
-      transition-timing-function: $mdw-motion__decelerate-easing;
+      transition-duration: motion.$expandDuration;
+      transition-timing-function: motion.$decelerateEasing;
 
-      box-shadow: mdwElevation(24);
+      box-shadow: elevation.boxShadow(24);
 
       &[mdw-type="list"] {
         max-height: dp(300);
@@ -694,28 +694,28 @@ select.mdw-textfield__input {
 }
 
 // Default state of centered or when [mdw-value-empty] is present (IE)
-@include mdw-textfield__center-label();
+@include centerLabel();
 
 .mdw-textfield[mdw-value-empty] {
-  @include mdw-textfield__center-label();
+  @include centerLabel();
 }
 
 // Floating states:
 // IE/Edge, HTMLSelectElement, :focus, :autofill, or has texted (unfocused with placeholder)
 
-@include mdw-platform__ms() {
-  @include mdw-textfield__float-label();
+@include platform.ifMS() {
+  @include floatLabel();
 }
 
 select.mdw-textfield__input ~ .mdw-textfield__border,
 .mdw-textfield__input:focus ~ .mdw-textfield__border {
-  @include mdw-textfield__float-label();
+  @include floatLabel();
 }
 
 // Rules are intentionally separated because IE won't parse rules with unknown psuedos
 .mdw-textfield__input:-webkit-autofill ~ .mdw-textfield__border,
 .mdw-textfield__input:not(:placeholder-shown):not(:focus) ~ .mdw-textfield__border {
-  @include mdw-textfield__float-label();
+  @include floatLabel();
 }
 
 // Invalid state
@@ -724,9 +724,9 @@ select.mdw-textfield__input ~ .mdw-textfield__border,
   &:invalid {
     & ~ .mdw-textfield__border .mdw-textfield__outline-gap {
       animation-name: labelShake;
-      animation-duration: $mdw-motion__shape-change-duration;
+      animation-duration: motion.$shapeChangeDuration;
       animation-timing-function: linear;
-      animation-delay: $mdw-motion__simple-duration;
+      animation-delay: motion.$simpleDuration;
     }
   }
 }
@@ -737,10 +737,10 @@ select.mdw-textfield__input ~ .mdw-textfield__border,
   & > .mdw-textfield__input:not(:disabled):focus {
     & ~ .mdw-textfield__border::before,
     &:invalid ~ .mdw-textfield__border::after {
-      transition-duration: $mdw-motion__expand-duration;
-      transition-timing-function: $mdw-motion__decelerate-easing;
+      transition-duration: motion.$expandDuration;
+      transition-timing-function: motion.$decelerateEasing;
 
-      transform: scaleX(1) translateY(-$mdw-textfield__border-line-height/2);
+      transform: scaleX(1) translateY(-$border-line-height/2);
     }
   }
 }
@@ -748,31 +748,31 @@ select.mdw-textfield__input ~ .mdw-textfield__border,
 // Border change on outlined active or focus
 .mdw-textfield[mdw-outlined]:active > .mdw-textfield__input:not(:disabled) ~ .mdw-textfield__border,
 .mdw-textfield[mdw-outlined] > .mdw-textfield__input:not(:disabled):focus ~ .mdw-textfield__border {
-  border-width: $mdw-textfield__border-line-height__focused;
+  border-width: $border-line-height__focused;
 
   &::before,
   html[dir="rtl"] &::after {
-    min-width: $mdw-textfield__outline-start-width - $mdw-textfield__border-line-height__focused;
-    margin-top: -$mdw-textfield__border-line-height__focused;
+    min-width: $outline-start-width - $border-line-height__focused;
+    margin-top: -$border-line-height__focused;
     margin-right: 0;
-    margin-left: -$mdw-textfield__border-line-height__focused;
+    margin-left: -$border-line-height__focused;
   }
 
   &::after,
   html[dir="rtl"] &::before {
-    min-width: $mdw-textfield__outline-end-width - $mdw-textfield__border-line-height__focused;
-    margin-top: -$mdw-textfield__border-line-height__focused;
-    margin-right: -$mdw-textfield__border-line-height__focused;
+    min-width: $outline-end-width - $border-line-height__focused;
+    margin-top: -$border-line-height__focused;
+    margin-right: -$border-line-height__focused;
     margin-left: 0;
   }
 
   .mdw-textfield__outline-gap {
-    margin-top: -$mdw-textfield__border-line-height__focused;
-    margin-bottom: -$mdw-textfield__border-line-height__focused;
+    margin-top: -$border-line-height__focused;
+    margin-bottom: -$border-line-height__focused;
 
     &::before,
     &::after {
-      border-top-width: $mdw-textfield__border-line-height__focused;
+      border-top-width: $border-line-height__focused;
     }
   }
 }
@@ -780,9 +780,9 @@ select.mdw-textfield__input ~ .mdw-textfield__border,
 
 // Invalid
 .mdw-textfield__input:focus:invalid ~ .mdw-textfield__error-text {
-  transition-duration: $mdw-motion__fade-in-duration;
+  transition-duration: motion.$fadeInDuration;
   transition-property: transform, opacity;
-  transition-timing-function: $mdw-motion__decelerate-easing;
+  transition-timing-function: motion.$decelerateEasing;
   will-change: transform, opacity;
 
   opacity: 1;

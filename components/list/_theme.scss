@@ -1,9 +1,8 @@
-@import '../../core/_platform.scss';
-@import '../../core/theme/index.scss';
+@use '../../core/theme/index.scss' as theme;
 
-$mdw-list__theme-values: (
-  divider-color:                 $mdw-theme__foreground,
-  divider-opacity:               $mdw-theme__divider-opacity,
+$themeValues: (
+  divider-color:                 theme.$foreground,
+  divider-opacity:               theme.$divider-opacity,
 
   focus-opacity:                 (0.12, 0.24),
   hover-focus-opacity:           (0.04 + 0.12, 0.08 + 0.24),
@@ -15,11 +14,11 @@ $mdw-list__theme-values: (
 
 ) !default;
 
-@function mdwListThemeValue($key, $type) {
-  @return mdwGetThemeValue('list', $mdw-list__theme-values, $key, $type);
+@function getThemeValue($key, $type) {
+  @return theme.getThemeValue('list', $themeValues, $key, $type);
 }
 
-@mixin mdw-list__theme-rules($type: 'var') {
+@mixin addThemeRules($type: 'var') {
   .mdw-list__content {
     &[mdw-ink][aria-current] {
       .mdw-list__icon,
@@ -31,7 +30,7 @@ $mdw-list__theme-values: (
 
   .mdw-list[mdw-divider] {
     & > .mdw-list__item:not(:last-child) .mdw-list__text::after {
-      background-color: RGBA(mdwListThemeValue("divider-color", $type), mdwListThemeValue("divider-opacity", $type));
+      background-color: RGBA(getThemeValue("divider-color", $type), getThemeValue("divider-opacity", $type));
     }
   }
 
@@ -39,12 +38,12 @@ $mdw-list__theme-values: (
     & > .mdw-list__content {
       &:not([mdw-overlay-touch="true"]) {
         &:not([mdw-overlay-off~="focus"]):not([mdw-overlay-touch="true"])::before {
-          opacity: mdwListThemeValue("focus-opacity", $type);
+          opacity: getThemeValue("focus-opacity", $type);
         }
   
         &:not([aria-disabled="true"]):not([mdw-overlay-touch="true"]) {
           &:hover:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-            opacity: mdwListThemeValue("hover-focus-opacity", $type);
+            opacity: getThemeValue("hover-focus-opacity", $type);
           }
         }
       }
@@ -53,12 +52,12 @@ $mdw-list__theme-values: (
       &[aria-selected="true"]:not([mdw-overlay-off~="selected"]) {
         &:not([mdw-overlay-touch="true"]) {
           &:focus:not([mdw-overlay-off~="focus"])::before {
-            opacity: mdwListThemeValue("selected-focus-opacity", $type);
+            opacity: getThemeValue("selected-focus-opacity", $type);
           }
   
           &:not([aria-disabled="true"]) {
             &:hover:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-              opacity: mdwListThemeValue("selected-hover-focus-opacity", $type);
+              opacity: getThemeValue("selected-hover-focus-opacity", $type);
             }
           }
         }
@@ -69,12 +68,12 @@ $mdw-list__theme-values: (
       &[aria-pressed="true"]:not([mdw-overlay-off~="activated"]) {
         &:not([mdw-overlay-touch="true"]) {
           &:not([mdw-overlay-off~="focus"])::before {
-            opacity: mdwListThemeValue("activated-focus-opacity", $type);
+            opacity: getThemeValue("activated-focus-opacity", $type);
           }
   
           &:not([aria-disabled="true"]) {
             &:hover:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-              opacity: mdwListThemeValue("activated-hover-focus-opacity", $type);
+              opacity: getThemeValue("activated-hover-focus-opacity", $type);
             }
           }
         }
@@ -85,7 +84,7 @@ $mdw-list__theme-values: (
   .mdw-list__item[aria-expanded="true"] {
     &::before,
     &::after {
-      background-color: RGBA(mdwListThemeValue("divider-color", $type), mdwListThemeValue("divider-opacity", $type));
+      background-color: RGBA(getThemeValue("divider-color", $type), getThemeValue("divider-opacity", $type));
     }
 
     &[mdw-ink][aria-expanded="true"] {
@@ -100,13 +99,13 @@ $mdw-list__theme-values: (
 }
 
 
-@include mdw-theme__add-component-fallback-rules('light') {
-  @include mdw-list__theme-rules('light');
+@include theme.addComponentFallbackRules('light') {
+  @include addThemeRules('light');
 }
-@include mdw-theme__add-component-fallback-rules('dark') {
-  @include mdw-list__theme-rules('dark');
+@include theme.addComponentFallbackRules('dark') {
+  @include addThemeRules('dark');
 }
 
-@include mdw-theme__add-component-variable-rules('list', $mdw-list__theme-values) {
-  @include mdw-list__theme-rules();
+@include theme.addComponentCSSVariableRules('list', $themeValues) {
+  @include addThemeRules();
 }

@@ -1,39 +1,34 @@
-/* stylelint-disable-next-line scss/at-function-pattern */
-@function dp($multiplier) {
-  @return $multiplier * 1px;
-}
-
 // Touch support based mixins
-@mixin mdw-platform__has-touch-support {
+@mixin ifHasTouch {
   @media (any-pointer: coarse) {
     @content;
   }
 }
 
-@mixin mdw-platform__no-touch-support {
+@mixin ifNoTouch {
   @media not all and (any-pointer: coarse) {
     @content;
   }
 }
 
 // Browser specific mixins
-@mixin mdw-platform__ie {
+@mixin ifIE {
   @media all\0 {
     @content;
   }
 }
 
-@mixin mdw-platform__edge {
+@mixin ifEdge {
   @supports (-ms-ime-align:auto) {
     @content;
   }
 }
 
-@mixin mdw-platform__ms {
-  @include mdw-platform__ie {
+@mixin ifMS {
+  @include ifIE {
     @content;
   }
-  @include mdw-platform__edge {
+  @include ifEdge {
     @content;
   }
 }

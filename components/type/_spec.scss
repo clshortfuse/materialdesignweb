@@ -1,8 +1,12 @@
 // https://material.io/guidelines/style/typography.html
 
-@import '../../core/_breakpoint.scss';
-@import '../../core/_platform.scss';
-@import '../../core/_type.scss';
+@use '../../core/_breakpoint.scss' as breakpoint;
+@use '../../core/_length.scss' as *;
+@use '../../core/_type.scss' as type;
+
+// 4 dp/sp baselines
+$baselines: (4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 48, 56, 64) !default;
+
 
 h1.mdw-type,
 h2.mdw-type,
@@ -22,76 +26,76 @@ p.mdw-type {
 
 h1.mdw-type,
 .mdw-type[mdw-style="h1"] {
-  @include type-rules('h1');
+  @include type.addRules('h1');
 }
 
 h2.mdw-type,
 .mdw-type[mdw-style="h2"] {
-  @include type-rules('h2');
+  @include type.addRules('h2');
 }
 
 h3.mdw-type,
 .mdw-type[mdw-style="h3"] {
-  @include type-rules('h3');
+  @include type.addRules('h3');
 }
 
 h4.mdw-type,
 .mdw-type[mdw-style="h4"] {
-  @include type-rules('h4');
+  @include type.addRules('h4');
 }
 
 h5.mdw-type,
 .mdw-type[mdw-style="h5"] {
-  @include type-rules('h5');
+  @include type.addRules('h5');
 }
 
 h6.mdw-type,
 .mdw-type[mdw-style="h6"] {
-  @include type-rules('h6');
+  @include type.addRules('h6');
 }
 
 .mdw-type[mdw-style="subtitle"] {
-  @include type-rules('subtitle');
+  @include type.addRules('subtitle');
 }
 
 .mdw-type[mdw-style="subtitle-2"] {
-  @include type-rules('subtitle-2');
+  @include type.addRules('subtitle-2');
 }
 
 body.mdw-type,
 p.mdw-type,
 .mdw-type[mdw-style="body"] {
-  @include type-rules('body');
+  @include type.addRules('body');
 }
 
 .mdw-type[mdw-style="body-2"] {
-  @include type-rules('body-2');
+  @include type.addRules('body-2');
 }
 
 .mdw-type[mdw-style="button"] {
-  @include type-rules('button');
+  @include type.addRules('button');
 }
 
 .mdw-type[mdw-style="caption"] {
-  @include type-rules('caption');
+  @include type.addRules('caption');
 }
 
 .mdw-type[mdw-style="overline"] {
-  @include type-rules('overline');
+  @include type.addRules('overline');
 }
 
 // MD-2014 Typography
 
 
 .mdw-type[mdw-style|="display"] {
-  font-weight: $font-weight-regular;
+  font-weight: type.$weightRegular;
   font-size: sp(34);
   line-height: sp(40);
 }
 .mdw-type[mdw-style="display-4"] {
   font-size: sp(112);
   line-height: normal;
-  font-weight: $font-weight-light;
+  font-weight: type.$weightLight;
   white-space: nowrap;
 }
 .mdw-type[mdw-style="display-3"] {
@@ -106,24 +110,24 @@ p.mdw-type,
 .mdw-type[mdw-style="headline"] {
   font-size: sp(24);
   line-height: sp(32);
-  font-weight: $font-weight-regular;
+  font-weight: type.$weightRegular;
 }
 .mdw-type[mdw-style="title"] {
   font-size: sp(20);
-  font-weight: $font-weight-medium;
+  font-weight: type.$weightMedium;
   white-space: nowrap;
 }
 .mdw-type[mdw-style|="subheading"] {
   font-size: sp(15);
-  @include mdw-breakpoint__tablet-device__max() {
+  @include breakpoint.maxTabletDevice() {
       font-size: sp(16);
   }
-  font-weight: $font-weight-regular;
+  font-weight: type.$weightRegular;
   line-height: sp(24);
 }
 .mdw-type[mdw-style="subheading-2"] {
   line-height: sp(28);
-  @include mdw-breakpoint__tablet-device__max() {
+  @include breakpoint.maxTabletDevice() {
       line-height: sp(28);
   }
 }
@@ -154,12 +158,7 @@ p.mdw-type,
   }
 }
 
-// 4 dp/sp baselines
-$mdw-type__baselines: (
-  4, 8, 12, 16, 20, 24, 28, 32, 36,
-  40, 48, 56, 64) !default;
-
-@each $bl in $mdw-type__baselines {
+@each $bl in $baselines {
   .mdw-type[mdw-texttop-top="#{$bl}dp"] {
     &::before {
       margin-top: dp($bl);

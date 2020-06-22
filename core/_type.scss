@@ -1,106 +1,102 @@
-@import './platform.scss';
+@use './_length.scss' as *;
 
-$font-weight-thin: 100;
-$font-weight-light: 300;
-$font-weight-regular: 400; // normal
-$font-weight-medium: 500;
-$font-weight-bold: 700;
-$font-weight-black: 900;
+$weightThin: 100;
+$weightLight: 300;
+$weightRegular: 400; // normal
+$weightMedium: 500;
+$weightBold: 700;
+$weightBlack: 900;
 
-@function sp($multiplier) {
-  @return ($multiplier/16.0) * 1rem;
-}
-
-$mdw-types: (
+$types: (
   h1: (
-    font-weight: $font-weight-light,
+    font-weight: $weightLight,
     letter-spacing: sp(-1.5),
     font-size: sp(96),
     line-height: sp(112),
   ),
   h2: (
-    font-weight: $font-weight-light,
+    font-weight: $weightLight,
     letter-spacing: sp(-0.5),
     font-size: sp(60),
     line-height: sp(72),
   ),
   h3: (
-    font-weight: $font-weight-regular,
+    font-weight: $weightRegular,
     letter-spacing: 0,
     font-size: sp(48),
     line-height: sp(56),
   ),
   h4: (
-    font-weight: $font-weight-regular,
+    font-weight: $weightRegular,
     letter-spacing: sp(0.25),
     font-size: sp(34),
     line-height: sp(40),
   ),
   h5: (
-    font-weight: $font-weight-regular,
+    font-weight: $weightRegular,
     letter-spacing: 0,
     font-size: sp(24),
     line-height: sp(28),
   ),
   h6: (
-    font-weight: $font-weight-medium,
+    font-weight: $weightMedium,
     letter-spacing: sp(0.15),
     font-size: sp(20),
     line-height: sp(24),
   ),
   subtitle: (
-    font-weight: $font-weight-regular,
+    font-weight: $weightRegular,
     letter-spacing: sp(0.15),
     font-size: sp(16),
     line-height: sp(20),
   ),
   subtitle-2: (
-    font-weight: $font-weight-medium,
+    font-weight: $weightMedium,
     letter-spacing: sp(0.1),
     font-size: sp(14),
     line-height: sp(16),
   ),
   body: (
-    font-weight: $font-weight-regular,
+    font-weight: $weightRegular,
     letter-spacing: sp(0.5),
     font-size: sp(16),
     line-height: sp(24),
   ),
   body-2: (
-    font-weight: $font-weight-regular,
+    font-weight: $weightRegular,
     letter-spacing: sp(0.25),
     font-size: sp(14),
     line-height: sp(20),
   ),
   button: (
-    font-weight: $font-weight-medium,
+    font-weight: $weightMedium,
     text-transform: uppercase,
     letter-spacing: sp(1.25),
     font-size: sp(14),
     line-height: sp(16),
   ),
   caption: (
-    font-weight: $font-weight-regular,
+    font-weight: $weightRegular,
     letter-spacing: sp(0.4),
     font-size: sp(12),
     line-height: sp(16),
   ),
   overline: (
-    font-weight: $font-weight-regular,
+    font-weight: $weightRegular,
     letter-spacing: sp(1.5),
     font-size: sp(10),
     line-height: sp(12),
   ),
 );
 
-@mixin type-rules($type) {
-  $rules: map-get($mdw-types, $type);
+@mixin addRules($type) {
+  $rules: map-get($types, $type);
   @each $key in map-keys($rules) {
     #{$key}: map-get($rules, $key);
   }
 }
 
-@mixin baseline-top($dp) {
+@mixin baselineToTop($dp) {
   &::before {
     content: '';
     display: inline-block;
@@ -108,7 +104,7 @@ $mdw-types: (
   }
 }
 
-@mixin baseline-bottom($dp) {
+@mixin baselineToBottom($dp) {
   &::after {
     content: '';
     display: inline-block;
@@ -116,7 +112,7 @@ $mdw-types: (
   }
 }
 
-@mixin texttop-to-top($dp) {
+@mixin textTopToTop($dp) {
   &::before {
     content: '';
     display: inline-block;

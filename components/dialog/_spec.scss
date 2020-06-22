@@ -1,13 +1,12 @@
 // https://material.io/guidelines/components/dialogs.html
 // https://material.io/guidelines/motion/choreography.html#choreography-creation
 
-@import '../../core/breakpoint.scss';
-@import '../../core/elevation.scss';
-@import '../../core/motion.scss';
-@import '../../core/platform.scss';
-@import '../../core/type.scss';
+@use '../../core/_elevation.scss' as elevation;
+@use '../../core/_length.scss' as *;
+@use '../../core/_motion.scss' as motion;
+@use '../../core/_type.scss' as type;
 
-$mdw-dialog__unit-width: dp(56) !default;
+$unitWidth: dp(56) !default;
 
 .mdw-dialog__close {
   position: absolute;
@@ -60,9 +59,9 @@ $mdw-dialog__unit-width: dp(56) !default;
   width: 100%;
   padding: dp(84) dp(40);
   
-  transition-duration: $mdw-motion__fade-out-duration;
+  transition-duration: motion.$fadeOutDuration;
   transition-property: opacity;
-  transition-timing-function: $mdw-motion__accelerate-easing;
+  transition-timing-function: motion.$accelerateEasing;
   will-change: opacity;
   
   opacity: 0;
@@ -80,7 +79,7 @@ $mdw-dialog__unit-width: dp(56) !default;
   @for $i from 3 to 8 {
     &[mdw-width-units="#{$i}"] {
       .mdw-dialog__popup {
-        min-width: #{$mdw-dialog__unit-width * $i};
+        min-width: #{$unitWidth * $i};
       }
     }
   }
@@ -92,6 +91,7 @@ $mdw-dialog__unit-width: dp(56) !default;
   flex-direction: column;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+
   overscroll-behavior: none;
   overscroll-behavior: contain;
   -ms-scroll-chaining: none;
@@ -108,14 +108,14 @@ $mdw-dialog__unit-width: dp(56) !default;
   z-index: 24;
 
   border-radius: dp(4);
-  box-shadow: mdwElevation(24);
+  box-shadow: elevation.boxShadow(24);
 }
 
 .mdw-dialog[aria-hidden="false"],
 .mdw-dialog[id]:target {
-  transition-duration: $mdw-motion__fade-in-duration;
+  transition-duration: motion.$fadeInDuration;
   transition-property: opacity;
-  transition-timing-function: $mdw-motion__decelerate-easing;
+  transition-timing-function: motion.$decelerateEasing;
 
   opacity: 1;
   pointer-events: auto;
@@ -126,7 +126,7 @@ $mdw-dialog__unit-width: dp(56) !default;
 
   .mdw-dialog__popup {
     animation-name: scaleUpAnimation;
-    animation-duration: $mdw-motion__fade-in-duration;
+    animation-duration: motion.$fadeInDuration;
     animation-direction: forwards;
   }
 
@@ -146,18 +146,18 @@ $mdw-dialog__unit-width: dp(56) !default;
 }
 
 .mdw-dialog__title {
-  @include texttop-to-top(20);
-  @include type-rules('h6');
-  @include baseline-bottom(36);
+  @include type.textTopToTop(20);
+  @include type.addRules('h6');
+  @include type.baselineToBottom(36);
 
   margin-bottom: dp(-36);
   padding: 0 dp(24);
 }
 
 .mdw-dialog__body {
-  @include texttop-to-top(20);
-  @include type-rules('body');
-  @include baseline-bottom(28);
+  @include type.textTopToTop(20);
+  @include type.addRules('body');
+  @include type.baselineToBottom(28);
 
   padding: 0 dp(24);
 }

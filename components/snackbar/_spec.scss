@@ -1,12 +1,13 @@
 // https://material.io/design/components/snackbars.html#spec
 
-@import '../../core/_breakpoint.scss';
-@import '../../core/_elevation.scss';
-@import '../../core/_motion.scss';
-@import '../../core/_platform.scss';
-@import '../../core/_type.scss';
+@use '../../core/_breakpoint.scss' as breakpoint;
+@use '../../core/_elevation.scss' as elevation;
+@use '../../core/_length.scss' as *;
+@use '../../core/_motion.scss' as motion;
+@use '../../core/_platform.scss' as platform;
+@use '../../core/_type.scss' as type;
 
-$mdw-snackbar__scale-initial: 0.85 !default;
+$scale-initial: 0.85 !default;
 
 .mdw-snackbar__wrapper {
   position: relative;
@@ -35,7 +36,7 @@ $mdw-snackbar__scale-initial: 0.85 !default;
 } 
 
 .mdw-snackbar {
-  @include type-rules('body-2');
+  @include type.addRules('body-2');
 
   display: flex;
   position: absolute;
@@ -49,8 +50,8 @@ $mdw-snackbar__scale-initial: 0.85 !default;
   padding-left: dp(8);
 
   animation-name: none;
-  animation-duration: $mdw-motion__fade-in-duration;
-  animation-timing-function: $mdw-motion__decelerate-easing;
+  animation-duration: motion.$fadeInDuration;
+  animation-timing-function: motion.$decelerateEasing;
   animation-direction: normal;
   animation-fill-mode: forwards;
   will-change: opacity, transform, visibility;
@@ -59,12 +60,12 @@ $mdw-snackbar__scale-initial: 0.85 !default;
 
   // Default state is hidden
   pointer-events: auto;
-  transform: scale($mdw-snackbar__scale-initial);
+  transform: scale($scale-initial);
   visibility: hidden;
 
   border-radius: dp(4);
   
-  box-shadow: mdwElevation(6);
+  box-shadow: elevation.boxShadow(6);
 
   &[aria-hidden="false"] {
     animation-name: showSnackbar;
@@ -77,8 +78,8 @@ $mdw-snackbar__scale-initial: 0.85 !default;
 
   &[aria-hidden="true"] {
     animation-name: hideSnackbar;
-    animation-duration: $mdw-motion__fade-out-duration;
-    animation-timing-function: $mdw-motion__accelerate-easing;
+    animation-duration: motion.$fadeOutDuration;
+    animation-timing-function: motion.$accelerateEasing;
   }
 
   &:focus {
@@ -95,7 +96,7 @@ $mdw-snackbar__scale-initial: 0.85 !default;
 
   to {
     opacity: 0;
-    transform: scale($mdw-snackbar__scale-initial);
+    transform: scale($scale-initial);
     visibility: hidden;
   }
 }
@@ -103,7 +104,7 @@ $mdw-snackbar__scale-initial: 0.85 !default;
 @keyframes showSnackbar {
   from {
     opacity: 0;
-    transform: scale($mdw-snackbar__scale-initial);
+    transform: scale($scale-initial);
     visibility: hidden;
   }
 
@@ -122,15 +123,15 @@ $mdw-snackbar__scale-initial: 0.85 !default;
 }
 
 .mdw-snackbar > span {
-  @include texttop-to-top(16);
-  @include baseline-bottom(48 - 30);
+  @include type.textTopToTop(16);
+  @include type.baselineToBottom(48 - 30);
   box-sizing: border-box;
   padding: 0 dp(8);
 
   white-space: pre-line;
 }
 
-@include mdw-breakpoint__xsmall-window {
+@include breakpoint.isXSmallWindow() {
   .mdw-snackbar {
     right: 0;
     left: 0;
@@ -152,7 +153,7 @@ $mdw-snackbar__scale-initial: 0.85 !default;
   }
 }
 
-@include mdw-platform__ie() {
+@include platform.ifIE() {
   // Fix IE flexbug
   .mdw-snackbar {
     &::after {
@@ -170,12 +171,12 @@ $mdw-snackbar__scale-initial: 0.85 !default;
         transform: translateX(50%);
 
         &[mdw-hide] {
-          transform: translateX(50%) scale($mdw-snackbar__scale-initial);
+          transform: translateX(50%) scale($scale-initial);
         }
       }
 
       &[mdw-hide] {
-        transform: translateX(-50%) scale($mdw-snackbar__scale-initial);
+        transform: translateX(-50%) scale($scale-initial);
       }
     }
   }

@@ -1,15 +1,17 @@
 // https://material.io/design/components/tooltips.html#spec
 
-@import '../../core/_motion.scss';
-@import '../../core/_platform.scss';
-@import '../../core/_type.scss';
+@use '../../core/_length.scss' as *;
+@use '../../core/_motion.scss' as motion;
+@use '../../core/_platform.scss' as platform;
+@use '../../core/_type.scss' as type;
+
 
 // Guidelines state background is #616161, which is Gray 700
 
-$mdw-tooltip__desktop-margin: dp(14) !default;
-$mdw-tooltip__mobile-margin: dp(24) !default;
-$mdw-tooltip__touch-fade-out-time: 1.5s !default;
-$mdw-tooltip__touch-min-hold-time: 500ms !default;
+$desktop-margin: dp(14) !default;
+$mobile-margin: dp(24) !default;
+$touch-fade-out-time: 1.5s !default;
+$touch-min-hold-time: 500ms !default;
 
 
 .mdw-tooltip__wrapper {
@@ -27,7 +29,7 @@ $mdw-tooltip__touch-min-hold-time: 500ms !default;
 }
 
 .mdw-tooltip {
-  @include type-rules('caption');
+  @include type.addRules('caption');
 
   position: absolute;
 
@@ -42,15 +44,15 @@ $mdw-tooltip__touch-min-hold-time: 500ms !default;
   
   cursor: none;
   
-  transition-duration: $mdw-motion__fade-out-duration;
+  transition-duration: motion.$fadeOutDuration;
   transition-property: opacity;
-  transition-timing-function: $mdw-motion__accelerate-easing;
+  transition-timing-function: motion.$accelerateEasing;
   
   opacity: 0;
   pointer-events: none;
   // Default Alignment is Center
   
-  transform: translateX(-50%) translateY($mdw-tooltip__desktop-margin);
+  transform: translateX(-50%) translateY($desktop-margin);
   z-index: 8;
 
   border-radius: dp(4);
@@ -62,8 +64,8 @@ $mdw-tooltip__touch-min-hold-time: 500ms !default;
   .mdw-tooltip__target:focus > &,
   .mdw-tooltip__wrapper > .mdw-tooltip__target:hover ~ &,
   .mdw-tooltip__wrapper > .mdw-tooltip__target:not([tabindex="-1"]):focus ~ & {
-    transition-duration: $mdw-motion__fade-in-duration;
-    transition-timing-function: $mdw-motion__accelerate-easing;
+    transition-duration: motion.$fadeInDuration;
+    transition-timing-function: motion.$accelerateEasing;
     
     opacity: 0.9;
   }
@@ -82,7 +84,7 @@ $mdw-tooltip__touch-min-hold-time: 500ms !default;
 
   &[mdw-align="start"],
   &[mdw-align="end"] {
-    transform: translateY($mdw-tooltip__desktop-margin);
+    transform: translateY($desktop-margin);
   }
 
   &[mdw-position="start"],
@@ -110,11 +112,11 @@ $mdw-tooltip__touch-min-hold-time: 500ms !default;
   &[mdw-position="top"] {
     top: 0;
 
-    transform: translateX(-50%) translateY(-100%) translateY(-$mdw-tooltip__desktop-margin);
+    transform: translateX(-50%) translateY(-100%) translateY(-$desktop-margin);
 
     &[mdw-align="start"],
     &[mdw-align="end"] {
-      transform: translateY(-100%) translateY(-$mdw-tooltip__desktop-margin);
+      transform: translateY(-100%) translateY(-$desktop-margin);
     }
   }
   
@@ -140,27 +142,27 @@ $mdw-tooltip__touch-min-hold-time: 500ms !default;
   opacity: 0;
 }
 
-@include mdw-platform__has-touch-support {
+@include platform.ifHasTouch() {
   .mdw-tooltip {
     padding: dp(10) dp(16);
 
-    transition-delay: $mdw-tooltip__touch-min-hold-time;
+    transition-delay: $touch-min-hold-time;
 
-    transform: translateX(-50%) translateY($mdw-tooltip__mobile-margin);
+    transform: translateX(-50%) translateY($mobile-margin);
 
     font-size: sp(14);
 
     &[mdw-align="start"],
     &[mdw-align="end"] {
-      transform: translateY($mdw-tooltip__mobile-margin);
+      transform: translateY($mobile-margin);
     }
 
     &[mdw-position="top"] {
-      transform: translateX(-50%) translateY(-100%) translateY(-$mdw-tooltip__mobile-margin);
+      transform: translateX(-50%) translateY(-100%) translateY(-$mobile-margin);
 
       &[mdw-align="start"],
       &[mdw-align="end"] {
-        transform: translateY(-100%) translateY(-$mdw-tooltip__mobile-margin);
+        transform: translateY(-100%) translateY(-$mobile-margin);
       }
     }
 
@@ -169,15 +171,15 @@ $mdw-tooltip__touch-min-hold-time: 500ms !default;
     .mdw-tooltip__target:focus:not(:active) > &,
     .mdw-tooltip__wrapper > .mdw-tooltip__target:hover:not(:active) ~ &,
     .mdw-tooltip__wrapper > .mdw-tooltip__target:not([tabindex="-1"]):focus:not(:active) ~ & {
-      transition-delay: $mdw-tooltip__touch-fade-out-time;
+      transition-delay: $touch-fade-out-time;
 
       opacity: 0;
     }
 
     .mdw-tooltip__target:active > &,
     .mdw-tooltip__wrapper > .mdw-tooltip__target:active ~ .mdw-tooltip {
-      transition-duration: $mdw-motion__fade-in-duration;
-      transition-timing-function: $mdw-motion__accelerate-easing;
+      transition-duration: motion.$fadeInDuration;
+      transition-timing-function: motion.$accelerateEasing;
 
       opacity: 0.9;
     }

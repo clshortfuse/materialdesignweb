@@ -1,31 +1,31 @@
 // Motion Durations
 // https://material.io/guidelines/motion/duration-easing.html#duration-easing-dynamic-durations
 
-$mdw-motion__simple-duration: 100ms !default;
-$mdw-motion__fade-in-duration: 150ms !default;
-$mdw-motion__fade-out-duration: 75ms !default;
+$simpleDuration: 100ms !default;
+$fadeInDuration: 150ms !default;
+$fadeOutDuration: 75ms !default;
 
-$mdw-motion__shape-change-duration: 200ms !default;
-$mdw-motion__icon-duration: 500ms !default;
+$shapeChangeDuration: 200ms !default;
+$iconDuration: 500ms !default;
 
-$mdw-motion__expand-duration: 250ms !default;
-$mdw-motion__collapse-duration: 200ms !default;
+$expandDuration: 250ms !default;
+$collapseDuration: 200ms !default;
 
-$mdw-motion__expand-duration__full: 300ms !default;
-$mdw-motion__collapse-duration__full: 250ms !default;
+$expandDurationFull: 300ms !default;
+$collapseDurationFull: 250ms !default;
 
 // Motion Easing Curves
 // https://material.io/guidelines/motion/duration-easing.html#duration-easing-natural-easing-curves
 
 // FastOutSlowInInterpolator
-$mdw-motion__standard-easing: cubic-bezier(0.4, 0.0, 0.2, 1) !default;
-$mdw-motion__standard-peak-velocity: 0.30 !default;
+$standardEasing: cubic-bezier(0.4, 0.0, 0.2, 1) !default;
+$standardPeakVelocity: 0.30 !default;
 
 // LinearOutSlowInInterpolator
-$mdw-motion__decelerate-easing: cubic-bezier(0.0, 0.0, 0.2, 1) !default;
+$decelerateEasing: cubic-bezier(0.0, 0.0, 0.2, 1) !default;
 
 // FastOutLinearInInterpolator
-$mdw-motion__accelerate-easing: cubic-bezier(0.4, 0.0, 1, 1) !default;
+$accelerateEasing: cubic-bezier(0.4, 0.0, 1, 1) !default;
 
 // FastOutLinearInInterpolator
-$mdw-motion__sharp-easing: cubic-bezier(0.4, 0.0, 0.6, 1) !default;
+$sharpEasing: cubic-bezier(0.4, 0.0, 0.6, 1) !default;

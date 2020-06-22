@@ -1,14 +1,14 @@
 // https://material.io/design/components/tabs.html#spec
 
-@import '../../core/_breakpoint.scss';
-@import '../../core/_motion.scss';
-@import '../../core/_platform.scss';
-@import '../../core/_type.scss';
+@use '../../core/_elevation.scss' as elevation;
+@use '../../core/_length.scss' as *;
+@use '../../core/_motion.scss' as motion;
+@use '../../core/_type.scss' as type;
 
-$mdw-tab__icon-size: 24 !default;
-$mdw-tab__icon-margin-top: 12 !default;
-$mdw-tab__icon-to-label-baseline: 20 !default;
-$mdw-tab__icon-with-label-height: 72 !default;
+$icon-size: 24 !default;
+$icon-margin-top: 12 !default;
+$icon-to-label-baseline: 20 !default;
+$icon-with-label-height: 72 !default;
 
 .mdw-tab {
   display: flex;
@@ -63,8 +63,8 @@ $mdw-tab__icon-with-label-height: 72 !default;
 .mdw-tab__icon,
 .mdw-tab__label,
 .mdw-tab__indicator {
-  transition-duration: $mdw-motion__simple-duration;
-  transition-timing-function: $mdw-motion__standard-easing;
+  transition-duration: motion.$simpleDuration;
+  transition-timing-function: motion.$standardEasing;
 }
 
 .mdw-tab__indicator {
@@ -120,9 +120,9 @@ $mdw-tab__icon-with-label-height: 72 !default;
 }
 
 .mdw-tab__icon {
-  @include baseline-bottom($mdw-tab__icon-to-label-baseline);
-  margin-top: dp($mdw-tab__icon-margin-top);
-  margin-bottom: dp(-$mdw-tab__icon-to-label-baseline);
+  @include type.baselineToBottom($icon-to-label-baseline);
+  margin-top: dp($icon-margin-top);
+  margin-bottom: dp(-$icon-to-label-baseline);
 
   transition-property: color;
 
@@ -130,7 +130,7 @@ $mdw-tab__icon-with-label-height: 72 !default;
 }
 
 .mdw-tab__label {
-  @include type-rules('button');
+  @include type.addRules('button');
 
   box-sizing: border-box;
   margin-top: auto;
@@ -144,11 +144,11 @@ $mdw-tab__icon-with-label-height: 72 !default;
   text-align: center;
 
   .mdw-tab__icon ~ & {
-    @include baseline-top($mdw-tab__icon-to-label-baseline);
-    @include baseline-bottom($mdw-tab__icon-with-label-height
-    - $mdw-tab__icon-margin-top
-    - $mdw-tab__icon-size
-    - $mdw-tab__icon-to-label-baseline);
+    @include type.baselineToTop($icon-to-label-baseline);
+    @include type.baselineToBottom($icon-with-label-height
+    - $icon-margin-top
+    - $icon-size
+    - $icon-to-label-baseline);
 
     display: block;
 

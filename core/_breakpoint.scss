@@ -1,66 +1,66 @@
 // https://material.io/design/layout/responsive-layout-grid.html#breakpoints
 
-@import './_platform.scss';
+@use "./_length.scss" as *;
 
-$mdw-breakpoint__portrait__small-handset: dp(0) !default;
-$mdw-breakpoint__portrait__medium-handset: dp(360) !default;
-$mdw-breakpoint__portrait__large-handset: dp(400) !default;
-$mdw-breakpoint__portrait__small-tablet: dp(600) !default;
-$mdw-breakpoint__portrait__large-tablet: dp(720) !default;
-$mdw-breakpoint__portrait__desktop: dp(960) !default;
+$portraitSmallHandset: dp(0) !default;
+$portraitMediumHandset: dp(360) !default;
+$portraitLargeHandset: dp(400) !default;
+$portraitSmallTablet: dp(600) !default;
+$portraitLargeTablet: dp(720) !default;
+$portraitDesktop: dp(960) !default;
 
-$mdw-breakpoint__landscape__small-handset: dp(480) !default;
-$mdw-breakpoint__landscape__medium-handset: dp(600) !default;
-$mdw-breakpoint__landscape__large-handset: dp(720) !default;
-$mdw-breakpoint__landscape__small-tablet: dp(960) !default;
-$mdw-breakpoint__landscape__large-tablet: dp(1024) !default;
-$mdw-breakpoint__landscape__desktop: dp(1440) !default;
+$landscapeSmallHandset: dp(480) !default;
+$landscapeMediumHandset: dp(600) !default;
+$landscapeLargeHandset: dp(720) !default;
+$landscapeSmallTablet: dp(960) !default;
+$landscapeLargeTablet: dp(1024) !default;
+$landscapeDesktop: dp(1440) !default;
 
-$mdw-breakpoint__window__xsmall: dp(0) !default;
-$mdw-breakpoint__window__small: dp(600) !default;
-$mdw-breakpoint__window__medium: dp(1024) !default;
-$mdw-breakpoint__window__large: dp(1440) !default;
-$mdw-breakpoint__window__xlarge: dp(1920) !default;
+$windowXSmall: dp(0) !default;
+$windowSmall: dp(600) !default;
+$windowMedium: dp(1024) !default;
+$windowLarge: dp(1440) !default;
+$windowXLarge: dp(1920) !default;
 
-$mdw-breakpoint__columns__4: dp(0) !default;
-$mdw-breakpoint__columns__8: dp(600) !default;
-$mdw-breakpoint__columns__12: dp(840) !default;
+$columns4: dp(0) !default;
+$columns8: dp(600) !default;
+$columns12: dp(840) !default;
 
 // Column-count based mixins
 
-@mixin mdw-breakpoint__4-columns {
-  @media (max-width: #{$mdw-breakpoint__columns__8 - 1}) {
+@mixin is4Columns {
+  @media (max-width: #{$columns8 - 1}) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__8-columns__min {
-  @media (min-width: $mdw-breakpoint__columns__8) {
+@mixin min8Columns {
+  @media (min-width: $columns8) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__8-columns__max {
-  @media (max-width: #{$mdw-breakpoint__columns__12 - 1}) {
+@mixin max8Columns {
+  @media (max-width: #{$columns12 - 1}) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__8-columns {
-  @media (min-width: $mdw-breakpoint__columns__8) and (max-width: #{$mdw-breakpoint__columns__12 - 1}) {
+@mixin is8Columns {
+  @media (min-width: $columns8) and (max-width: #{$columns12 - 1}) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__12-columns {
-  @media (min-width: $mdw-breakpoint__columns__12) {
+@mixin is12Columns {
+  @media (min-width: $columns12) {
     @content;
   }
 }
 
 // Smallest width less than 600dp
 
-@mixin mdw-breakpoint__16dp-margin {
+@mixin has16DPMargin {
   @media
     (orientation:portrait) and (max-width: dp(599)),
     (orientation:landscape) and (max-height: dp(599)) {
@@ -70,68 +70,68 @@ $mdw-breakpoint__columns__12: dp(840) !default;
 
 // Window-size based mixins
 
-@mixin mdw-breakpoint__xsmall-window {
-  @media (max-width: #{$mdw-breakpoint__window__small - 1}) {
+@mixin isXSmallWindow {
+  @media (max-width: #{$windowSmall - 1}) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__small-window__min {
-  @media (min-width: #{$mdw-breakpoint__window__small}) {
+@mixin minSmallWindow {
+  @media (min-width: #{$windowSmall}) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__small-window__max {
-  @media (max-width: #{$mdw-breakpoint__window__medium - 1}) {
+@mixin maxSmallWindow {
+  @media (max-width: #{$windowMedium - 1}) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__small-window {
-  @media (min-width: $mdw-breakpoint__window__small) and (max-width: #{$mdw-breakpoint__window__medium - 1}) {
+@mixin isSmallWindow {
+  @media (min-width: $windowSmall) and (max-width: #{$windowMedium - 1}) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__medium-window__min {
-  @media (min-width: #{$mdw-breakpoint__window__medium}) {
+@mixin minMediumWindow {
+  @media (min-width: #{$windowMedium}) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__medium-window__max {
-  @media (max-width: #{$mdw-breakpoint__window__large - 1}) {
+@mixin maxMediumWindow {
+  @media (max-width: #{$windowLarge - 1}) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__medium-window {
-  @media (min-width: $mdw-breakpoint__window__medium) and (max-width: #{$mdw-breakpoint__window__large - 1}) {
+@mixin isMediumWindow {
+  @media (min-width: $windowMedium) and (max-width: #{$windowLarge - 1}) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__large-window__min {
-  @media (min-width: #{$mdw-breakpoint__window__large}) {
+@mixin minLargeWindow {
+  @media (min-width: #{$windowLarge}) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__large-window__max {
-  @media (max-width: #{$mdw-breakpoint__window__xlarge - 1}) {
+@mixin maxLargeWindow {
+  @media (max-width: #{$windowXLarge - 1}) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__large-window {
-  @media (min-width: $mdw-breakpoint__window__large) and (max-width: #{$mdw-breakpoint__window__xlarge - 1}) {
+@mixin isLargeWindow {
+  @media (min-width: $windowLarge) and (max-width: #{$windowXLarge - 1}) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__xlarge-window {
-  @media (min-width: $mdw-breakpoint__window__xlarge) {
+@mixin isXLargeWindow {
+  @media (min-width: $windowXLarge) {
     @content;
   }
 }
@@ -143,46 +143,46 @@ $mdw-breakpoint__columns__12: dp(840) !default;
 // min-device-width is unsafe due to older Android bugs
 // https://developers.google.com/web/fundamentals/design-and-ux/responsive/
 
-@mixin mdw-breakpoint__mobile-device__portrait {
-  @media (max-device-width: #{$mdw-breakpoint__portrait__small-tablet - 1})
+@mixin isMobileDevicePortrait {
+  @media (max-device-width: #{$portraitSmallTablet - 1})
     and (max-device-aspect-ratio: 1/1) {
     @content;
   }
 }
-@mixin mdw-breakpoint__mobile-device__landscape {
-  @media (max-device-width: #{$mdw-breakpoint__landscape__small-tablet - 1})
+@mixin isMobileDeviceLandscape {
+  @media (max-device-width: #{$landscapeSmallTablet - 1})
     and (min-device-aspect-ratio: 1/1) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__mobile-device {
+@mixin isMobileDevice {
   @media
-    (max-device-width: #{$mdw-breakpoint__portrait__small-tablet - 1})
+    (max-device-width: #{$portraitSmallTablet - 1})
     and (max-device-aspect-ratio: 1/1),
-    (max-device-width: #{$mdw-breakpoint__landscape__small-tablet - 1})
+    (max-device-width: #{$landscapeSmallTablet - 1})
     and (min-device-aspect-ratio: 1/1) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__tablet-device {
+@mixin isTabletDevice {
   @media
-    (min-width: $mdw-breakpoint__portrait__small-tablet)
-    and (max-device-width: #{$mdw-breakpoint__portrait__desktop - 1})
+    (min-width: $portraitSmallTablet)
+    and (max-device-width: #{$portraitDesktop - 1})
     and (max-device-aspect-ratio: 1/1),
-    (min-width: $mdw-breakpoint__landscape__small-tablet)
-    and (max-device-width: #{$mdw-breakpoint__landscape__desktop - 1})
+    (min-width: $landscapeSmallTablet)
+    and (max-device-width: #{$landscapeDesktop - 1})
     and (min-device-aspect-ratio: 1/1) {
     @content;
   }
 }
 
-@mixin mdw-breakpoint__tablet-device__max {
+@mixin maxTabletDevice {
   @media
-    (max-device-width: #{$mdw-breakpoint__portrait__desktop - 1})
+    (max-device-width: #{$portraitDesktop - 1})
     and (max-device-aspect-ratio: 1/1),
-    (max-device-width: #{$mdw-breakpoint__landscape__desktop - 1})
+    (max-device-width: #{$landscapeDesktop - 1})
     and (min-device-aspect-ratio: 1/1) {
     @content;
   }

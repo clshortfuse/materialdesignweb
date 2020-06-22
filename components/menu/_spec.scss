@@ -1,10 +1,13 @@
 // https://material.io/guidelines/components/menus.html
 
-@import '../../core/_elevation.scss';
-@import '../../core/_platform.scss';
-@import '../../core/_type.scss';
+@use '../../core/_breakpoint.scss' as breakpoint;
+@use '../../core/_elevation.scss' as elevation;
+@use '../../core/_length.scss' as *;
+@use '../../core/_motion.scss' as motion;
+@use '../../core/_platform.scss' as platform;
+@use '../../core/_type.scss' as type;
 
-$mdw-menu__unit-width: dp(56) !default;
+$unit-width: dp(56) !default;
 
 .mdw-menu__wrapper {
   display: inline-flex;
@@ -46,9 +49,9 @@ $mdw-menu__unit-width: dp(56) !default;
   -ms-scroll-chaining: none;
   scrollbar-width: none;
 
-  transition-duration: $mdw-motion__fade-out-duration;
+  transition-duration: motion.$fadeOutDuration;
   transition-property: none;
-  transition-timing-function: $mdw-motion__decelerate-easing;
+  transition-timing-function: motion.$decelerateEasing;
 
   pointer-events: none;
   transform-origin: left top;
@@ -84,16 +87,16 @@ $mdw-menu__unit-width: dp(56) !default;
       transition-delay: 0s;
       transition-duration: 0s;
       transition-property: box-shadow, opacity, transform;
-      transition-timing-function: $mdw-motion__accelerate-easing;
+      transition-timing-function: motion.$accelerateEasing;
 
       opacity: 1;
       transform: scale(1);
 
       visibility: visible;
 
-      box-shadow: mdwElevation(8);
-      @include mdw-breakpoint__tablet-device__max {
-        transition-duration: $mdw-motion__expand-duration;
+      box-shadow: elevation.boxShadow(8);
+      @include breakpoint.maxTabletDevice {
+        transition-duration: motion.$expandDuration;
       }
     }
     
@@ -178,7 +181,7 @@ $mdw-menu__unit-width: dp(56) !default;
   @for $i from 3 to 8 {
     &[mdw-width-units="#{$i}"] {
       .mdw-menu__popup {
-        width: #{$mdw-menu__unit-width * $i};
+        width: #{$unit-width * $i};
       }
     }
   }
@@ -229,8 +232,8 @@ $mdw-menu__unit-width: dp(56) !default;
   -ms-scroll-chaining: none;
 
   max-height: 50vh;
-  min-width: $mdw-menu__unit-width * 2;
-  max-width: $mdw-menu__unit-width * 7;
+  min-width: $unit-width * 2;
+  max-width: $unit-width * 7;
   margin-right: dp(8);
   margin-left: dp(8);
   padding-top: dp(8);
@@ -238,10 +241,10 @@ $mdw-menu__unit-width: dp(56) !default;
 
   outline: none;
 
-  transition-delay: 0s, 0s, $mdw-motion__fade-out-duration, $mdw-motion__fade-out-duration;
-  transition-duration: $mdw-motion__fade-out-duration;
+  transition-delay: 0s, 0s, motion.$fadeOutDuration, motion.$fadeOutDuration;
+  transition-duration: motion.$fadeOutDuration;
   transition-property: box-shadow, opacity, transform, visibility;
-  transition-timing-function: $mdw-motion__accelerate-easing;
+  transition-timing-function: motion.$accelerateEasing;
 
   opacity: 0;
   pointer-events: inherit;
@@ -250,7 +253,7 @@ $mdw-menu__unit-width: dp(56) !default;
   z-index: 8;
 
   border-radius: dp(4);
-  box-shadow: mdwElevation(0);
+  box-shadow: elevation.boxShadow(0);
 }
 
 .mdw-menu__text {
@@ -284,7 +287,7 @@ $mdw-menu__unit-width: dp(56) !default;
 }
 
 .mdw-menu__item {
-  @include type-rules('body');
+  @include type.addRules('body');
   display: flex;
   position: relative;
   align-items: center;
@@ -322,7 +325,7 @@ $mdw-menu__unit-width: dp(56) !default;
     padding-left: dp(24);
   }
 }
-@include mdw-platform__no-touch-support {
+@include platform.ifNoTouch() {
   .mdw-menu:not([mdw-dense="never"]) {
     .mdw-menu__item {
       min-height: dp(32);

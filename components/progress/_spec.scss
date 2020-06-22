@@ -4,11 +4,10 @@
 // https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/anim/progress_indeterminate_material.xml
 // https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/drawable/vector_drawable_progress_bar_medium.xml
 
-@import '../../core/_motion.scss';
-@import '../../core/_platform.scss';
+@use '../../core/_motion.scss' as motion;
+@use '../../core/_platform.scss' as platform;
 
-
-$mdw-progress__duration: 1333ms;
+$duration: 1333ms;
 
 
 /* 
@@ -59,7 +58,7 @@ $mdw-progress__duration: 1333ms;
   0% {
     stroke-dashoffset: circlePercentage(0.5, 75);
   }
-  #{$mdw-motion__standard-peak-velocity * 100%} {
+  #{motion.$standardPeakVelocity * 100%} {
     stroke-dashoffset: circlePercentage(75,75);
   }
   100% {
@@ -78,7 +77,7 @@ $mdw-progress__duration: 1333ms;
     transform: rotate(0deg);
     will-change: transform;
     animation-name: rotate-clockwise;
-    animation-duration: $mdw-progress__duration;
+    animation-duration: $duration;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     & > path {
@@ -88,8 +87,8 @@ $mdw-progress__duration: 1333ms;
       transform-origin: center center;
       &:nth-child(1) {
         animation-name: mdw-progress-dash, rotate-counterclockwise;
-        animation-duration: $mdw-progress__duration, $mdw-progress__duration * 4;
-        animation-timing-function: $mdw-motion__standard-easing, steps(4,end);
+        animation-duration: $duration, $duration * 4;
+        animation-timing-function: motion.$standardEasing, steps(4,end);
         animation-iteration-count: infinite;
 
         stroke-dasharray: circlePercentage(25, 100);
@@ -101,8 +100,8 @@ $mdw-progress__duration: 1333ms;
         display: none;
 
         transition-property: stroke-dashoffset;
-        transition-duration: $mdw-motion__shape-change-duration;
-        transition-timing-function: $mdw-motion__standard-easing;
+        transition-duration: motion.$shapeChangeDuration;
+        transition-timing-function: motion.$standardEasing;
 
         stroke-dasharray: circlePercentage(0, 100);
         stroke-dashoffset: circlePercentage(0, 100);
@@ -114,9 +113,9 @@ $mdw-progress__duration: 1333ms;
   
   // IE does not support animated SVG
   // Double rotation speed
-  @include mdw-platform__ie {
+  @include platform.ifIE() {
     &:not([mdw-determinate]) svg {
-      animation-duration: $mdw-progress__duration / 2;
+      animation-duration: $duration / 2;
     }
   }
 }

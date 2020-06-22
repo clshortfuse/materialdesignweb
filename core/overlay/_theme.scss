@@ -1,14 +1,14 @@
 // https://material.io/design/interaction/states.html
 
-@import '../theme/index.scss';
+@use '../theme/index.scss' as theme;
 
-$mdw-overlay__theme-values: (
-  overlay-color:                 $mdw-theme__foreground,
+$themeValues: (
+  overlay-color:                 theme.$foreground,
 
-  high-opacity:                  $mdw-theme__high-opacity,
-  medium-opacity:                $mdw-theme__medium-opacity,
-  inactive-opacity:              $mdw-theme__inactive-opacity,
-  divider-opacity:               $mdw-theme__divider-opacity,
+  high-opacity:                  theme.$high-opacity,
+  medium-opacity:                theme.$medium-opacity,
+  inactive-opacity:              theme.$inactive-opacity,
+  divider-opacity:               theme.$divider-opacity,
   
   disabled-opacity:              (0.38, 0.50),
   
@@ -30,11 +30,11 @@ $mdw-overlay__theme-values: (
   activated-hover-focus-opacity: (0.12 + 0.04 + 0.12, 0.24 + 0.08 + 0.24),
 ) !default;
 
-@function mdwOverlayThemeValue($key, $type) {
-  @return mdwGetThemeValue('overlay', $mdw-overlay__theme-values, $key, $type);
+@function getThemeValue($key, $type) {
+  @return theme.getThemeValue('overlay', $themeValues, $key, $type);
 }
 
-@mixin mdw-overlay__theme-rules($type: 'var') {
+@mixin addThemeRules($type: 'var') {
   .mdw-overlay {
     &,
     &[aria-pressed="false"]:active,
@@ -56,9 +56,9 @@ $mdw-overlay__theme-values: (
     &[aria-disabled="true"]:active {
       &::before {
         @if ($type == 'var') {
-          color: RGB(mdwOverlayThemeValue("overlay-color", $type));
+          color: RGB(getThemeValue("overlay-color", $type));
         } @else {
-          background-color: RGB(mdwOverlayThemeValue("overlay-color", $type));
+          background-color: RGB(getThemeValue("overlay-color", $type));
         }
       }
     }
@@ -68,43 +68,43 @@ $mdw-overlay__theme-values: (
     &[aria-pressed="false"],
     &[aria-selected="true"]:not([aria-current]) {
       #{if($type == 'var', '&', '&,&.mdw-theme')} {
-        color: RGBA(mdwOverlayThemeValue("overlay-color", $type), mdwOverlayThemeValue("high-opacity", $type));
+        color: RGBA(getThemeValue("overlay-color", $type), getThemeValue("high-opacity", $type));
         &[mdw-border-ink] {
-          border-color: RGBA(mdwOverlayThemeValue("overlay-color", $type), mdwOverlayThemeValue("divider-opacity", $type));
+          border-color: RGBA(getThemeValue("overlay-color", $type), getThemeValue("divider-opacity", $type));
         }
         &[mdw-overlay-default="medium"] {
-          color: RGBA(mdwOverlayThemeValue("overlay-color", $type), mdwOverlayThemeValue("medium-opacity", $type));
+          color: RGBA(getThemeValue("overlay-color", $type), getThemeValue("medium-opacity", $type));
         }
         &[mdw-overlay-default="inactive"] {
-          color: RGBA(mdwOverlayThemeValue("overlay-color", $type), mdwOverlayThemeValue("inactive-opacity", $type));
+          color: RGBA(getThemeValue("overlay-color", $type), getThemeValue("inactive-opacity", $type));
         }
         &[mdw-overlay-default="divider"] {
-          color: RGBA(mdwOverlayThemeValue("overlay-color", $type), mdwOverlayThemeValue("divider-opacity", $type));
+          color: RGBA(getThemeValue("overlay-color", $type), getThemeValue("divider-opacity", $type));
         }
       }
     }
 
     &[aria-disabled="true"] {
       &[mdw-overlay-disabled="ink"] {
-        color: RGBA(mdwOverlayThemeValue("overlay-color", $type), mdwOverlayThemeValue("inactive-opacity", $type));
+        color: RGBA(getThemeValue("overlay-color", $type), getThemeValue("inactive-opacity", $type));
       }
       &:not([mdw-overlay-disabled]) {
-        opacity: mdwOverlayThemeValue("disabled-opacity", $type);
+        opacity: getThemeValue("disabled-opacity", $type);
       }
     }
 
     &:not([mdw-overlay-touch="true"]) {
       &:focus:not([mdw-overlay-off~="focus"]):not([mdw-overlay-touch="true"])::before {
-        opacity: mdwOverlayThemeValue("focus-opacity", $type);
+        opacity: getThemeValue("focus-opacity", $type);
       }
 
       &:not([aria-disabled="true"]):not([mdw-overlay-touch="true"]) {
         &:hover:not([mdw-overlay-off~="hover"])::before {
-          opacity: mdwOverlayThemeValue("hover-opacity", $type);
+          opacity: getThemeValue("hover-opacity", $type);
         }
 
         &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-          opacity: mdwOverlayThemeValue("hover-focus-opacity", $type);
+          opacity: getThemeValue("hover-focus-opacity", $type);
         }
       }
     }
@@ -112,21 +112,21 @@ $mdw-overlay__theme-values: (
     // Selected
     &[aria-selected="true"]:not([mdw-overlay-off~="selected"]) {
       &::before {
-        opacity: mdwOverlayThemeValue("selected-opacity", $type);
+        opacity: getThemeValue("selected-opacity", $type);
       }
 
       &:not([mdw-overlay-touch="true"]) {
         &:focus:not([mdw-overlay-off~="focus"])::before {
-          opacity: mdwOverlayThemeValue("selected-focus-opacity", $type);
+          opacity: getThemeValue("selected-focus-opacity", $type);
         }
 
         &:not([aria-disabled="true"]) {
           &:hover:not([mdw-overlay-off~="hover"])::before {
-            opacity: mdwOverlayThemeValue("selected-hover-opacity", $type);
+            opacity: getThemeValue("selected-hover-opacity", $type);
           }
 
           &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-            opacity: mdwOverlayThemeValue("selected-hover-focus-opacity", $type);
+            opacity: getThemeValue("selected-hover-focus-opacity", $type);
           }
         }
       }
@@ -136,21 +136,21 @@ $mdw-overlay__theme-values: (
     &[aria-current]:not([mdw-overlay-off~="activated"]),
     &[aria-pressed="true"]:not([mdw-overlay-off~="activated"]) {
       &::before {
-        opacity: mdwOverlayThemeValue("activated-opacity", $type);
+        opacity: getThemeValue("activated-opacity", $type);
       }
 
       &:not([mdw-overlay-touch="true"]) {
         &:focus:not([mdw-overlay-off~="focus"])::before {
-          opacity: mdwOverlayThemeValue("activated-focus-opacity", $type);
+          opacity: getThemeValue("activated-focus-opacity", $type);
         }
 
         &:not([aria-disabled="true"]) {
           &:hover:not([mdw-overlay-off~="hover"])::before {
-            opacity: mdwOverlayThemeValue("activated-hover-opacity", $type);
+            opacity: getThemeValue("activated-hover-opacity", $type);
           }
 
           &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-            opacity: mdwOverlayThemeValue("activated-hover-focus-opacity", $type);
+            opacity: getThemeValue("activated-hover-focus-opacity", $type);
           }
         }
       }
@@ -158,14 +158,14 @@ $mdw-overlay__theme-values: (
   }
 }
 
-@include mdw-theme__add-component-fallback-rules('light') {
-  @include mdw-overlay__theme-rules('light');
+@include theme.addComponentFallbackRules('light') {
+  @include addThemeRules('light');
 }
-@include mdw-theme__add-component-fallback-rules('dark') {
-  @include mdw-overlay__theme-rules('dark');
+@include theme.addComponentFallbackRules('dark') {
+  @include addThemeRules('dark');
 }
 
 
-@include mdw-theme__add-component-variable-rules('overlay', $mdw-overlay__theme-values) {
-  @include mdw-overlay__theme-rules();
+@include theme.addComponentCSSVariableRules('overlay', $themeValues) {
+  @include addThemeRules();
 }
