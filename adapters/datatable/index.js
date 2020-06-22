@@ -452,6 +452,8 @@ export default class DataTableAdapter {
         const option = document.createElement('option');
         option.value = limit.toString();
         option.textContent = limit.toString();
+        option.className = 'mdw-theme';
+        option.setAttribute('mdw-surface', 'card');
         select.appendChild(option);
       });
       select.value = (options.limit && options.limit.toString()) || '10';
