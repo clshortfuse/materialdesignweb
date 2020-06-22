@@ -29,46 +29,46 @@ include ../_mixins.pug
         div
           label.mdw-textfield.mdw-theme(mdw-ink="secondary" mdw-outlined)
             select.mdw-textfield__input(name="ink-color")
-              option(value="default") Default
-              option(value="black") Black
-              option(value="white") White
-              option(value="primary") Primary
-              option(value="secondary" selected) Secondary
-              option(value="warn") Warn
-              option(value="amber") Amber
-              option(value="blue") Blue
-              option(value="cyan") Cyan
-              option(value="red") Red
-              option(value="green") Green
-              option(value="deeppurple") Deeppurple
-              option(value="purple") Purple
-              option(value="yellow") Yellow
-              option(value="teal") Teal
+              option.mdw-theme(mdw-surface="card" value="default") Default
+              option.mdw-theme(mdw-surface="card" value="black") Black
+              option.mdw-theme(mdw-surface="card" value="white") White
+              option.mdw-theme(mdw-surface="card" value="primary") Primary
+              option.mdw-theme(mdw-surface="card" value="secondary" selected) Secondary
+              option.mdw-theme(mdw-surface="card" value="warn") Warn
+              option.mdw-theme(mdw-surface="card" value="amber") Amber
+              option.mdw-theme(mdw-surface="card" value="blue") Blue
+              option.mdw-theme(mdw-surface="card" value="cyan") Cyan
+              option.mdw-theme(mdw-surface="card" value="red") Red
+              option.mdw-theme(mdw-surface="card" value="green") Green
+              option.mdw-theme(mdw-surface="card" value="deeppurple") Deeppurple
+              option.mdw-theme(mdw-surface="card" value="purple") Purple
+              option.mdw-theme(mdw-surface="card" value="yellow") Yellow
+              option.mdw-theme(mdw-surface="card" value="teal") Teal
             .mdw-textfield__icon(mdw-dropdown)
             .mdw-textfield__border
               .mdw-textfield__outline-gap
                 .mdw-textfield__label Color
           label.mdw-textfield.mdw-theme(mdw-ink="secondary" mdw-outlined)
             select.mdw-textfield__input(name="ink-tone")
-              option(value="" selected) Auto
-              option(value="light") Light
-              option(value="contrast" selected) Contrast
-              option(value="A100") A100
-              option(value="A200") A200
-              option(value="A400") A400
-              option(value="A700") A700
+              option.mdw-theme(mdw-surface="card" value="" selected) Auto
+              option.mdw-theme(mdw-surface="card" value="light") Light
+              option.mdw-theme(mdw-surface="card" value="contrast" selected) Contrast
+              option.mdw-theme(mdw-surface="card" value="A100") A100
+              option.mdw-theme(mdw-surface="card" value="A200") A200
+              option.mdw-theme(mdw-surface="card" value="A400") A400
+              option.mdw-theme(mdw-surface="card" value="A700") A700
             .mdw-textfield__icon(mdw-dropdown)
             .mdw-textfield__border
               .mdw-textfield__outline-gap
                 .mdw-textfield__label Tone
           label.mdw-textfield.mdw-theme(mdw-ink="secondary" mdw-outlined)
             select.mdw-textfield__input(name="ink-opacity")
-              option(value="" selected) Auto
-              option(value="solid") Solid
-              option(value="high") High
-              option(value="medium") Medium
-              option(value="inactive") Inactive
-              option(value="divider") Divider
+              option.mdw-theme(mdw-surface="card" value="" selected) Auto
+              option.mdw-theme(mdw-surface="card" value="solid") Solid
+              option.mdw-theme(mdw-surface="card" value="high") High
+              option.mdw-theme(mdw-surface="card" value="medium") Medium
+              option.mdw-theme(mdw-surface="card" value="inactive") Inactive
+              option.mdw-theme(mdw-surface="card" value="divider") Divider
             .mdw-textfield__icon(mdw-dropdown)
             .mdw-textfield__border
               .mdw-textfield__outline-gap
@@ -79,41 +79,41 @@ include ../_mixins.pug
         #color-page-options
           label.mdw-textfield.mdw-theme(mdw-ink="secondary" mdw-outlined)
             select.mdw-textfield__input(name="surface-color")
-              option(value="card") Card
-              option(value="binary" selected) Binary
-              option(value="black") Black
-              option(value="white") White
-              option(value="background") Background
-              option(value="primary") Primary
-              option(value="secondary") Secondary
-              option(value="warn") Warn
-              option(value="amber") Amber
-              option(value="blue") Blue
-              option(value="cyan") Cyan
-              option(value="red") Red
-              option(value="green") Green
-              option(value="deeppurple") Deeppurple
-              option(value="purple") Purple
-              option(value="yellow") Yellow
-              option(value="teal") Teal
+              option.mdw-theme(mdw-surface="card" value="card") Card
+              option.mdw-theme(mdw-surface="card" value="binary" selected) Binary
+              option.mdw-theme(mdw-surface="card" value="black") Black
+              option.mdw-theme(mdw-surface="card" value="white") White
+              option.mdw-theme(mdw-surface="card" value="background") Background
+              option.mdw-theme(mdw-surface="card" value="primary") Primary
+              option.mdw-theme(mdw-surface="card" value="secondary") Secondary
+              option.mdw-theme(mdw-surface="card" value="warn") Warn
+              option.mdw-theme(mdw-surface="card" value="amber") Amber
+              option.mdw-theme(mdw-surface="card" value="blue") Blue
+              option.mdw-theme(mdw-surface="card" value="cyan") Cyan
+              option.mdw-theme(mdw-surface="card" value="red") Red
+              option.mdw-theme(mdw-surface="card" value="green") Green
+              option.mdw-theme(mdw-surface="card" value="deeppurple") Deeppurple
+              option.mdw-theme(mdw-surface="card" value="purple") Purple
+              option.mdw-theme(mdw-surface="card" value="yellow") Yellow
+              option.mdw-theme(mdw-surface="card" value="teal") Teal
             .mdw-textfield__icon(mdw-dropdown)
             .mdw-textfield__border
               .mdw-textfield__outline-gap
                 .mdw-textfield__label Color
           label.mdw-textfield.mdw-theme(mdw-ink="secondary" mdw-outlined)
             select.mdw-textfield__input(name="surface-tone")
-              option(value="" selected) Default
-              option(value="alt") Alternate
-              option(value="50") 50
-              option(value="100") 100
-              option(value="200") 200
-              option(value="300") 300
-              option(value="400") 400
-              option(value="500") 500
-              option(value="600") 600
-              option(value="700") 700
-              option(value="800") 800
-              option(value="900") 900
+              option.mdw-theme(mdw-surface="card" value="" selected) Default
+              option.mdw-theme(mdw-surface="card" value="alt") Alternate
+              option.mdw-theme(mdw-surface="card" value="50") 50
+              option.mdw-theme(mdw-surface="card" value="100") 100
+              option.mdw-theme(mdw-surface="card" value="200") 200
+              option.mdw-theme(mdw-surface="card" value="300") 300
+              option.mdw-theme(mdw-surface="card" value="400") 400
+              option.mdw-theme(mdw-surface="card" value="500") 500
+              option.mdw-theme(mdw-surface="card" value="600") 600
+              option.mdw-theme(mdw-surface="card" value="700") 700
+              option.mdw-theme(mdw-surface="card" value="800") 800
+              option.mdw-theme(mdw-surface="card" value="900") 900
             .mdw-textfield__icon(mdw-dropdown)
             .mdw-textfield__border
               .mdw-textfield__outline-gap
