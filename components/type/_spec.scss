@@ -19,9 +19,9 @@ p.mdw-type {
 }
 
 p.mdw-type {
-  hyphens: auto;
-  -webkit-hyphens: auto;
   -ms-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
 h1.mdw-type,
@@ -92,69 +92,77 @@ p.mdw-type,
   font-size: sp(34);
   line-height: sp(40);
 }
+
 .mdw-type[mdw-style="display-4"] {
+  font-weight: type.$weightLight;
   font-size: sp(112);
   line-height: normal;
-  font-weight: type.$weightLight;
   white-space: nowrap;
 }
+
 .mdw-type[mdw-style="display-3"] {
   font-size: sp(56);
   line-height: normal;
   white-space: nowrap;
 }
+
 .mdw-type[mdw-style="display-2"] {
   font-size: sp(45);
   line-height: sp(48);
 }
+
 .mdw-type[mdw-style="headline"] {
+  font-weight: type.$weightRegular;
   font-size: sp(24);
   line-height: sp(32);
-  font-weight: type.$weightRegular;
 }
+
 .mdw-type[mdw-style="title"] {
-  font-size: sp(20);
   font-weight: type.$weightMedium;
+  font-size: sp(20);
   white-space: nowrap;
 }
+
 .mdw-type[mdw-style|="subheading"] {
+  font-weight: type.$weightRegular;
   font-size: sp(15);
   @include breakpoint.maxTabletDevice() {
-      font-size: sp(16);
+    font-size: sp(16);
   }
-  font-weight: type.$weightRegular;
   line-height: sp(24);
 }
+
 .mdw-type[mdw-style="subheading-2"] {
   line-height: sp(28);
   @include breakpoint.maxTabletDevice() {
-      line-height: sp(28);
+    line-height: sp(28);
   }
 }
 
 .mdw-type[mdw-texttop-top]::before {
-  content: '';
   display: inline-block;
+  content: '';
+
   height: 1em;
 }
 
 .mdw-type[mdw-baseline-top]::before {
-  content: '';
   display: inline-block;
+  content: '';
 }
 
 .mdw-type[mdw-baseline-next],
 .mdw-type[mdw-baseline-bottom] {
   &::after {
-    content: '';
     display: inline-block;
+    content: '';
   }
 }
 
 .mdw-type[mdw-baseline-next] {
   & + .mdw-type::before {
-    content: '';
     display: inline-block;
+    content: '';
   }
 }
 
@@ -191,18 +199,22 @@ p.mdw-type,
   }
   .mdw-type[mdw-baseline-next="#{$bl}dp"] {
     margin-bottom: dp(-$bl);
+
     &::after {
       vertical-align: dp(-$bl);
     }
+
     & + .mdw-type::before {
       height: dp($bl);
     }
   }
   .mdw-type[mdw-baseline-next="#{$bl}"] {
     margin-bottom: sp(-$bl);
+
     &::after {
       vertical-align: sp(-$bl);
     }
+
     & + .mdw-type::before {
       height: sp($bl);
     }

@@ -1,11 +1,11 @@
 @use './_length.scss' as *;
 
-$weightThin: 100;
-$weightLight: 300;
-$weightRegular: 400; // normal
-$weightMedium: 500;
-$weightBold: 700;
-$weightBlack: 900;
+$weightThin: 100 !default;
+$weightLight: 300 !default;
+$weightRegular: 400 !default;
+$weightMedium: 500 !default;
+$weightBold: 700 !default;
+$weightBlack: 900 !default;
 
 $types: (
   h1: (
@@ -87,7 +87,7 @@ $types: (
     font-size: sp(10),
     line-height: sp(12),
   ),
-);
+) !default;
 
 @mixin addRules($type) {
   $rules: map-get($types, $type);
@@ -99,7 +99,9 @@ $types: (
 @mixin baselineToTop($dp) {
   &::before {
     content: '';
+
     display: inline-block;
+
     height: dp($dp);
   }
 }
@@ -107,6 +109,7 @@ $types: (
 @mixin baselineToBottom($dp) {
   &::after {
     content: '';
+
     display: inline-block;
     vertical-align: dp(-$dp);
   }
@@ -114,8 +117,10 @@ $types: (
 
 @mixin textTopToTop($dp) {
   &::before {
-    content: '';
+    content: "\200B";
+
     display: inline-block;
+
     height: 1em;
     margin-top: dp($dp);
   }
