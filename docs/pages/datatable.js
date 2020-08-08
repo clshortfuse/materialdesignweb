@@ -17,6 +17,7 @@ function initializeMdwComponents() {
 
 /**
  * @typedef {Object} CustomData
+ * @prop {boolean} selected
  * @prop {string} text
  * @prop {string} text2
  * @prop {boolean} check1
@@ -33,6 +34,7 @@ function buildDynamicTable() {
   let count = 1;
   const addDatasourceObject = () => {
     datasource.push({
+      selected: false,
       text: Math.random().toString(36).substring(2),
       text2: Math.random().toString(36).substring(2),
       check1: Math.random() > 0.5,

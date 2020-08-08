@@ -1,13 +1,28 @@
 {
+  "ignorePatterns": ["*.min.js"],
   "extends": [
     "airbnb-base",
-    "plugin:jsdoc/recommended"
+    "plugin:jsdoc/recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "env": {
     "browser": true,
     "es6": true
   },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "impliedStrict": true
+    }
+  },
   "rules": {
+    "@typescript-eslint/explicit-module-boundary-types": 0, // Doesn't support templates
+    "import/prefer-default-export": 0,
+    "@typescript-eslint/ban-ts-comment": ["warn", {
+      "ts-ignore": "allow-with-description"
+    }],
     "no-use-before-define": ["error", { "functions": false }],
     "brace-style": ["error", "1tbs", { "allowSingleLine": false }],
     "curly": ["error", "all"],
@@ -48,6 +63,7 @@
         "balanced": true
       }
     }],
+    "jsdoc/require-property-description": 0,
     "jsdoc/require-param-description": 0,
     "jsdoc/require-returns-description": 0,
     "jsdoc/no-undefined-types": 0,
@@ -62,15 +78,16 @@
     "jsdoc": {
       "preferredTypes": {
         "Function": "function",
-        "object.": "Object.<>",
-        "object<>": "Object.<>",
+        "object.": "Object<>",
+        "object<>": "Object<>",
         "object": "Object"
       },
       "tagNamePreference": {
         "augment": "extends",
         "returns": "return",
         "property": "prop",
-        "constant": "const"
+        "constant": "const",
+        "template": "template"
       }
     }
   }

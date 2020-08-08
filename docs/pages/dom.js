@@ -34,7 +34,7 @@ function resetDatasource() {
  */
 function onOptionChange(event) {
   const { name, checked } = /** @type {HTMLInputElement} */ (event.target);
-  // @ts-ignore
+  // @ts-ignore: Optimization
   domAdapter.recycle[name] = checked;
   domAdapter.refresh();
 }

@@ -19,12 +19,12 @@ let searchDocsMultiline;
 function performFakeSearch(filter) {
   const results = [];
   // eslint-disable-next-line guard-for-in, no-restricted-syntax
-  for (const key in window.navigator) {
-    // @ts-ignore
-    const value = navigator[key] && navigator[key].toString();
+  for (const key in navigator) {
+    /** @type {keyof Navigator} */
+    const navKey = (key);
+    const value = navigator[navKey] && navigator[navKey].toString();
     if (!filter || key.indexOf(filter) !== -1 || (value && value.indexOf(filter) !== -1)) {
-      // @ts-ignore
-      results.push({ line1: key, line2: navigator[key] });
+      results.push({ line1: key, line2: value });
     }
   }
   return results;

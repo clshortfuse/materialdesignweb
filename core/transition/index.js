@@ -3,6 +3,17 @@
 import { nextTick } from '../dom';
 
 /**
+ * @typedef {Object} ShapeTranformDetails
+ * @prop {number} originWidth
+ * @prop {number} originHeight
+ * @prop {number} translateX
+ * @prop {number} translateY
+ * @prop {number} scaleX
+ * @prop {number} scaleY
+ * @prop {function():string} toString
+ */
+
+/**
  * @param {string} px
  * @return {number}
  */
@@ -121,7 +132,7 @@ function convertBorderRadius(stringValue, width, height) {
  * @param {HTMLElement} targetElement
  * @param {HTMLElement} originElement
  * @param {CSSStyleDeclaration} [originStyle]
- * @return {Object}
+ * @return {ShapeTranformDetails}
  */
 export function getShapeTransform(targetElement, originElement, originStyle) {
   const originRect = originElement.getBoundingClientRect();
@@ -200,8 +211,8 @@ function buildTransitionEndListener(element, property, callback, expectedDuratio
  * @prop {HTMLElement} toContentElement
  * @prop {number} [duration=250|300] (250ms collapse or 300ms expand)
  * @prop {boolean} [revertFrom=false] Revert from elements on completion
- * @prop {function(TransitionElementOptions)} [onTransitionEnd]
- * @prop {function(TransitionElementOptions)} [onComplete]
+ * @prop {function(TransitionElementOptions):any} [onTransitionEnd]
+ * @prop {function(TransitionElementOptions):any} [onComplete]
  */
 
 /**
@@ -298,7 +309,7 @@ export function transitionElement(options) {
   options.toContentElement.style.setProperty('opacity', '0');
   options.toContentElement.style.setProperty('transition', 'none');
   options.toContentElement.style.setProperty('transform-origin', '0 0 0');
-  options.toContentElement.style.setProperty('transform', contentTransform);
+  options.toContentElement.style.setProperty('transform', contentTransform.toString());
   options.toContentElement.style.setProperty('z-index', '9');
   options.toContentElement.style.setProperty('visibility', 'visible');
 
@@ -365,7 +376,7 @@ export function transitionElement(options) {
       options.fromShapeElement.style.setProperty('transition', transformTransition);
       transitionProperties.forEach((prop) => {
         if (prop === 'transform') {
-          options.fromShapeElement.style.setProperty('transform', shapeTransform);
+          options.fromShapeElement.style.setProperty('transform', shapeTransform.toString());
         } else if (prop === 'transition') {
           // noop;
         } else if (prop === 'transform-origin') {

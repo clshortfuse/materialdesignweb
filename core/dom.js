@@ -11,9 +11,9 @@ function testPassiveEventListenerOptionSupport() {
         return true;
       },
     };
-    // @ts-ignore
+    // @ts-ignore: Custom test event
     window.addEventListener('test', options, options);
-    // @ts-ignore
+    // @ts-ignore: Custom test event
     window.removeEventListener('test', options, options);
   } catch (err) {
     passiveEventListenerSupported = false;

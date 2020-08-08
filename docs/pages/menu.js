@@ -16,10 +16,12 @@ function onSampleButtonClick(event) {
 
 /** @return {void} */
 function updateSampleCode() {
-  // @ts-ignore
-  const jsRequired = document.querySelector('input[name="javascript"][value="required"]').checked;
-  // @ts-ignore
-  const jsOptional = document.querySelector('input[name="javascript"][value="optional"]').checked;
+  /** @type {HTMLInputElement} */
+  const jsRequiredElement = (document.querySelector('input[name="javascript"][value="required"]'));
+  const jsRequired = jsRequiredElement.checked;
+  /** @type {HTMLInputElement} */
+  const jsOptionalElement = (document.querySelector('input[name="javascript"][value="optional"]'));
+  const jsOptional = jsOptionalElement.checked;
   const useJS = jsRequired || jsOptional;
 
   if (jsRequired) {

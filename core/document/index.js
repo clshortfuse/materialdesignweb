@@ -1,7 +1,6 @@
 /** @return {void} */
 export function detectStandalone() {
-  // Safari uses navigator.standalone
-  // @ts-ignore
+  // @ts-ignore: Safari uses navigator.standalone
   if (navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches) {
     document.documentElement.setAttribute('mdw-standalone', '');
   }

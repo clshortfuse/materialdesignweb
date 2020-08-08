@@ -4,36 +4,40 @@ import * as Selection from '../../components/selection/index';
 import { setTextNode } from '../../core/dom';
 
 /**
- * @callback DataTableAdapterColumnFormatter<T>
- * @param {any} value
+ * @template {Record<string, any>} T
+ * @template {keyof T & string} K
+ * @callback DataTableAdapterColumnFormatter<T,K>
+ * @param {T[K]} value
  * @param {T} [object]
  * @return {any}
- * @template T
  */
 
 /**
+ * @template {Record<string, any>} T
  * @callback DataTableAdapterColumnSorter<T>
  * @param {T} a
  * @param {T} b
  * @return {number}
- * @template T
  */
 
 /**
- * @callback DataTableAdapterColumnRenderer<T>
- * @param {HTMLTableCellElement} cell,
- * @param {any} value
+ * @template {Record<string, any>} T
+ * @template {keyof T & string} K
+ * @callback DataTableAdapterColumnRenderer<T,K>
+ * @param {HTMLTableCellElement} cell
+ * @param {T[K]} value
  * @param {T} data
  * @return {void}
- * @template T
  */
 
 /**
  * Constructor options for DataTableAdapterColumn
- * @typedef DataTableAdapterColumnOptions<T>
- * @prop {string} key
+ * @template {Record<string, any>} T
+ * @template {keyof T & string} K
+ * @typedef DataTableAdapterColumnOptions<T,K>
+ * @prop {K} key
  * @prop {(string|DocumentFragment)} [name='']
- * @prop {'checkbox'|'text'|'number'} [type]
+ * @prop {'number'|'text'|'checkbox'} [type]
  * @prop {boolean} [rowSelector]
  * @prop {string} [tooltip]
  * @prop {boolean} [sortable]
@@ -41,10 +45,9 @@ import { setTextNode } from '../../core/dom';
  * @prop {HTMLElement} [customSortIcon]
  * @prop {string} [innerHTML]
  * @prop {DocumentFragment} [fragment]
- * @prop {DataTableAdapterColumnRenderer<T>} [renderer]
- * @prop {DataTableAdapterColumnFormatter<T>} [formatter]
+ * @prop {DataTableAdapterColumnRenderer<T,K>} [renderer]
+ * @prop {DataTableAdapterColumnFormatter<T,K>} [formatter]
  * @prop {DataTableAdapterColumnSorter<T>} [sorter]
- * @template T
  */
 
 /** @return {HTMLElement} */
@@ -64,10 +67,11 @@ function constructTableCheckbox() {
 }
 
 /**
- * @template T
+ * @template {Record<string, any>} T
+ * @template {keyof T & string} K
  */
 export default class DataTableAdapterColumn {
-  /** @param {DataTableAdapterColumnOptions<T>} options */
+  /** @param {DataTableAdapterColumnOptions<T,K>} options */
   constructor(options) {
     this.element = document.createElement('th');
     if (options.innerHTML != null) {
@@ -159,7 +163,7 @@ export default class DataTableAdapterColumn {
     } else {
       this.renderer = DataTableAdapterColumn.defaultCellRenderer;
     }
-    this.formatter = options.formatter || ((value) => value);
+    this.formatter = options.formatter || ((/** @type {any} */ value) => value);
     this.sorter = options.sorter;
     DataTableColumnHeader.attach(this.element);
   }

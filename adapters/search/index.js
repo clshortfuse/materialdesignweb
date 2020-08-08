@@ -5,6 +5,7 @@ import { iterateSomeOfArrayLike, iterateArrayLike, getTextNode } from '../../cor
 import * as List from '../../components/list/index';
 import * as ListContent from '../../components/list/content';
 import * as TextField from '../../components/textfield/index';
+import { noop } from '../../utils/function';
 
 /**
  * @param {string} input
@@ -213,8 +214,8 @@ export default class SearchAdapter {
     this.suggestedInput = null;
     /** @type {string} */
     this.previousValue = null;
-    this.performSearch = options.performSearch || ((value, resolve = () => {}) => resolve());
-    this.updateList = options.updateList || ((results, resolve = () => {}) => resolve());
+    this.performSearch = options.performSearch || ((value, resolve = noop) => resolve());
+    this.updateList = options.updateList || ((results, resolve = noop) => resolve());
   }
 
   /**
@@ -222,7 +223,7 @@ export default class SearchAdapter {
    * @param {Event} [event]
    * @return {void}
    */
-  handleInputEvent(event) { // eslint-disable-line no-unused-vars
+  handleInputEvent(event) { // eslint-disable-line @typescript-eslint/no-unused-vars
     if (document.activeElement !== this.input) {
       return;
     }
@@ -376,7 +377,7 @@ export default class SearchAdapter {
    * @param {Event|FocusEvent} event
    * @return {void}
    */
-  handleBlurEvent(event) { // eslint-disable-line no-unused-vars
+  handleBlurEvent(event) { // eslint-disable-line @typescript-eslint/no-unused-vars
     if (this.dropdown) {
       const dropDownElement = this.textfield.querySelector('.mdw-textfield__dropdown');
       if (dropDownElement.hasAttribute('mdw-show')) {

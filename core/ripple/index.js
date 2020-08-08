@@ -64,7 +64,7 @@ export function onMouseDown(event) {
   if (!rippleInner) {
     return;
   }
-  // @ts-ignore
+  // @ts-ignore: Optimization
   if (!event.pointerType && !event.detail) {
     return;
   }
@@ -140,9 +140,8 @@ export function isActive(element) {
   if (element.matches) {
     return element.matches(':active');
   }
-  // @ts-ignore
-  if (element.msMatchesSelector) {
-    // @ts-ignore
+  if ('msMatchesSelector' in element) {
+    // @ts-ignore: Compatibility
     element.msMatchesSelector(':active');
   }
   return false;
@@ -264,7 +263,7 @@ export function onClick(event) {
   if (!rippleInner) {
     return;
   }
-  // @ts-ignore
+  // @ts-ignore: Optimization
   if (event.pointerType || event.detail) {
     return;
   }

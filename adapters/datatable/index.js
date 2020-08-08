@@ -9,63 +9,67 @@ import * as DataTableRowHeader from '../../components/datatable/rowheader';
 import * as DataTableCell from '../../components/datatable/cell';
 import * as Selection from '../../components/selection/index';
 import DataTableAdapterColumn from './column';
+import { noop } from '../../utils/function';
 
 /**
- * @typedef {import('./column').DataTableAdapterColumnOptions<T>} DataTableAdapterColumnOptions<T>
- * @template T
+ * @template {Record<string, any>} T
+ * @template {keyof T & string} K
+ * @typedef {import('./column').DataTableAdapterColumnOptions<T,K>} DataTableAdapterColumnOptions<T,K>
  */
 
 /**
  * Callback fired when value change is requested
  * Return truthy value to cancel updating object
+ * @template {Record<string, any>} T
+ * @template {keyof T & string} K
  * @callback DataTableAdapterOnValueChangeRequestedCallback<T>
  * @param {T} object
- * @param {string} key
- * @param {any} value
+ * @param {K} key
+ * @param {T[K]} value
  * @return {boolean} cancel
- * @template T
  */
 
 /**
  * Callback fired when value is changed
+ * @template {Record<string, any>} T
+ * @template {keyof T & string} K
  * @callback DataTableAdapterOnValueChangedCallback<T>
  * @param {T} object
- * @param {string} key
- * @param {any} value
+ * @param {K} key
+ * @param {T[K]} value
  * @return {void}
- * @template T
  */
 
 /**
+ * @template {Record<string, any>} T
  * @callback DataTableAdapterFilter<T>
  * @param {T} element
  * @param {number} [index]
  * @param {T[]} array
  * @return {any}
- * @template T
  */
 
 /**
+ * @template {Record<string, any>} T
  * @callback DataTableAdapterSorter<T>
  * @param {T} a
  * @param {T} b
  * @return {number}
- * @template T
  */
 
 /**
  * Constructor options for DataTableAdapter
- * @typedef DataTableAdapterOptions<T>
- * @prop {HTMLElement} options.datatable
- * @prop {T[]} options.datasource Object array
- * @prop {DataTableAdapterFilter<T>} [options.filter]
- * @prop {DataTableAdapterOnValueChangeRequestedCallback<T>} [options.onValueChangeRequested]
- * @prop {DataTableAdapterOnValueChangedCallback<T>} [options.onValueChanged]
- * @prop {DataTableAdapterSorter<T>} [options.sorter]
  * @template T
+ * @typedef DataTableAdapterOptions<T>
+ * @prop {HTMLElement} datatable
+ * @prop {T[]} datasource Object array
+ * @prop {DataTableAdapterFilter<T>} [filter]
+ * @prop {DataTableAdapterOnValueChangeRequestedCallback<T,keyof T & string>} [onValueChangeRequested]
+ * @prop {DataTableAdapterOnValueChangedCallback<T,keyof T & string>} [onValueChanged]
+ * @prop {DataTableAdapterSorter<T>} [sorter]
  */
 
-/** @template {Object} T */
+/** @template {Record<string, any>} T */
 export default class DataTableAdapter {
   /** @param {DataTableAdapterOptions<T>} options */
   constructor(options) {
@@ -74,7 +78,7 @@ export default class DataTableAdapter {
     this.filter = options.filter;
     this.sorter = options.sorter;
     this.onValueChangeRequested = options.onValueChangeRequested || (() => false);
-    this.onValueChanged = options.onValueChanged || (() => {});
+    this.onValueChanged = options.onValueChanged || noop;
     DataTable.attach(this.element);
 
     this.onElementScrollListener = () => this.onElementScroll();
@@ -105,7 +109,7 @@ export default class DataTableAdapter {
 
     this.scroller = DataTable.getScroller(this.element);
     this.element.setAttribute('mdw-datatable-adapter', '');
-    /** @type {DataTableAdapterColumn<T>[]} */
+    /** @type {DataTableAdapterColumn<T,any>[]} */
     this.columns = [];
     this.page = 0;
     this.pageLimit = 0;
@@ -217,12 +221,15 @@ export default class DataTableAdapter {
     }
     const currentRow = this.getTableRow(selectionElement);
     const object = this.getDataForTableRow(currentRow);
-    if (this.onValueChangeRequested(object, currentCell.dataset.key, checked)) {
+    /** @type {keyof T & string} */
+    // eslint-disable-next-line prefer-destructuring
+    const key = (currentCell.dataset.key);
+    if (this.onValueChangeRequested(object, key, checked)) {
       event.preventDefault();
       return;
     }
-    object[currentCell.dataset.key] = checked;
-    this.onValueChanged(object, currentCell.dataset.key, checked);
+    object[key] = checked;
+    this.onValueChanged(object, key, checked);
     if (currentCell.hasAttribute('mdw-selector')) {
       DataTableRow.setSelected(currentRow, event.detail.value, true);
     }
@@ -268,7 +275,7 @@ export default class DataTableAdapter {
       if (tableColumn.type === 'checkbox') {
         return ((valueA ? 1 : 0) - (valueB ? 1 : 0)) * direction;
       }
-      if (valueA.localeCompare) {
+      if ('localeCompare' in valueA) {
         return valueA.localeCompare(valueB) * direction;
       }
       // eslint-disable-next-line eqeqeq
@@ -391,8 +398,9 @@ export default class DataTableAdapter {
   }
 
   /**
-   * @param {DataTableAdapterColumnOptions<T>} options
-   * @return {DataTableAdapterColumn<T>}
+   * @template {keyof T & string} K
+   * @param {DataTableAdapterColumnOptions<T,K>} options
+   * @return {DataTableAdapterColumn<T,K>}
    */
   addColumn(options) {
     const tableColumn = new DataTableAdapterColumn(options);
@@ -889,8 +897,9 @@ export default class DataTableAdapter {
   }
 
   /**
-   * @param {HTMLTableCellElement|DataTableAdapterColumn<T>|number|string} search
-   * @return {DataTableAdapterColumn<T>}
+   * @template {keyof T & string} K
+   * @param {HTMLTableCellElement|DataTableAdapterColumn<T,K>|number|string} search
+   * @return {DataTableAdapterColumn<T,K>}
    */
   getColumn(search) {
     if (search instanceof DataTableAdapterColumn) {
