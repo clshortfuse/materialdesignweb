@@ -1,9 +1,9 @@
-import * as ListItem from '../../components/list/item';
-import * as ListContent from '../../components/list/content';
-import * as TextField from '../../components/textfield/index';
-import ListAdapter from '../../adapters/list/index';
-import SearchAdapter from '../../adapters/search/index';
-import { iterateArrayLike, setTextNode } from '../../core/dom';
+import ListAdapter from '../../adapters/list/index.js';
+import SearchAdapter from '../../adapters/search/index.js';
+import * as ListContent from '../../components/list/content.js';
+import * as ListItem from '../../components/list/item.js';
+import * as TextField from '../../components/textfield/index.js';
+import { iterateArrayLike, setTextNode } from '../../core/dom.js';
 
 /** @typedef {{line1:string, line2:string}} CustomSearchResult */
 
@@ -28,6 +28,21 @@ function performFakeSearch(filter) {
     }
   }
   return results;
+}
+
+/**
+ * @param {HTMLElement} element
+ * @return {void}
+ */
+function hideElement(element) {
+  element.style.setProperty('display', 'none');
+}
+/**
+ * @param {HTMLElement} element
+ * @return {void}
+ */
+function showElement(element) {
+  element.style.setProperty('display', '');
 }
 
 /**
@@ -72,7 +87,6 @@ function buildCustomSearch1() {
 
   /** @type {CustomSearchResult[]} */
   let myCachedResults = null;
-
 
   /** @type {SearchAdapter<CustomSearchResult>} */
   const searchDocsCustom = new SearchAdapter({
@@ -132,22 +146,6 @@ function buildCustomSearch1() {
     const text = `${selectedItem.line1}:${selectedItem.line2}`;
     document.getElementById('search-result-custom1').textContent = text;
   });
-}
-
-
-/**
- * @param {HTMLElement} element
- * @return {void}
- */
-function hideElement(element) {
-  element.style.setProperty('display', 'none');
-}
-/**
- * @param {HTMLElement} element
- * @return {void}
- */
-function showElement(element) {
-  element.style.setProperty('display', '');
 }
 
 /** @return {void} */

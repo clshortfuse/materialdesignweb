@@ -1,5 +1,7 @@
 // https://material.io/design/components/cards.html#specs
 
+@use "sass:math";
+
 @use '../../core/_breakpoint.scss' as breakpoint;
 @use '../../core/_elevation.scss' as elevation;
 @use '../../core/_length.scss' as *;
@@ -151,19 +153,19 @@ $horizontalPadding: dp(16) !default;
   }
 
   &[mdw-ratio="16:9"]::after {
-    padding-bottom: #{100% / 16 * 9};
+    padding-bottom: #{math.div(100%, 16) * 9};
   }
 
   &[mdw-ratio="3:2"]::after {
-    padding-bottom: #{100% / 3 * 2};
+    padding-bottom: #{math.div(100%, 3) * 2};
   }
 
   &[mdw-ratio="4:3"]::after {
-    padding-bottom: #{100% / 4 * 3};
+    padding-bottom: #{math.div(100%, 4) * 3};
   }
 
   &[mdw-ratio="1:1"]::after {
-    padding-bottom: #{100% / 1 * 1};
+    padding-bottom: #{math.div(100%, 1) * 1};
   }
 }
 

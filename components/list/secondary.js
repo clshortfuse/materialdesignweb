@@ -1,20 +1,6 @@
-import { dispatchDomEvent, getPassiveEventListenerOption } from '../../core/dom';
+import { dispatchDomEvent, getPassiveEventListenerOption } from '../../core/dom.js';
 
 export const SECONDARY_ACTION_EVENT = 'mdw:listsecondary-action';
-
-/**
- * @param {Element} listSecondaryElement
- * @return {void}
- */
-export function attach(listSecondaryElement) {
-  if (!listSecondaryElement.hasAttribute('mdw-action')) {
-    return;
-  }
-  listSecondaryElement.addEventListener('click', onClick);
-  listSecondaryElement.addEventListener('mousedown', onInteraction, getPassiveEventListenerOption());
-  listSecondaryElement.addEventListener('touchstart', onInteraction, getPassiveEventListenerOption());
-  listSecondaryElement.addEventListener('keydown', onInteraction, getPassiveEventListenerOption());
-}
 
 /**
  * @param {Event} event
@@ -35,6 +21,19 @@ export function onClick(event) {
   dispatchDomEvent(listSecondaryElement, SECONDARY_ACTION_EVENT);
 }
 
+/**
+ * @param {Element} listSecondaryElement
+ * @return {void}
+ */
+export function attach(listSecondaryElement) {
+  if (!listSecondaryElement.hasAttribute('mdw-action')) {
+    return;
+  }
+  listSecondaryElement.addEventListener('click', onClick);
+  listSecondaryElement.addEventListener('mousedown', onInteraction, getPassiveEventListenerOption());
+  listSecondaryElement.addEventListener('touchstart', onInteraction, getPassiveEventListenerOption());
+  listSecondaryElement.addEventListener('keydown', onInteraction, getPassiveEventListenerOption());
+}
 /**
  * @param {Element} listSecondaryElement
  * @return {void}

@@ -1,6 +1,6 @@
 // https://material.io/design/navigation/navigation-transitions.html
 
-import { nextTick } from '../dom';
+import { nextTick } from '../dom.js';
 
 /**
  * @typedef {Object} ShapeTranformDetails
@@ -177,7 +177,7 @@ export function getShapeTransform(targetElement, originElement, originStyle) {
  * @param {string} property
  * @param {function(TransitionEvent):void} callback
  * @param {number} [expectedDuration]
- * @return {function} removeListener
+ * @return {Function} removeListener
  */
 function buildTransitionEndListener(element, property, callback, expectedDuration) {
   let hasEnded = false;
@@ -223,7 +223,7 @@ export function transitionElement(options) {
   const toStyleSyle = window.getComputedStyle(options.toShapeElement);
 
   const shapeTransform = getShapeTransform(
-    options.fromShapeElement, options.toShapeElement, toStyleSyle
+    options.fromShapeElement, options.toShapeElement, toStyleSyle,
   );
   const contentTransform = getShapeTransform(options.toContentElement, options.fromContentElement);
 
@@ -259,28 +259,28 @@ export function transitionElement(options) {
       newFromShapeProperties[prop] = convertBoxShadow(
         toStyleSyle.getPropertyValue(prop),
         shapeTransform.scaleX,
-        shapeTransform.scaleY
+        shapeTransform.scaleY,
       );
     } else if (prop === 'border-radius') {
       const topLeft = convertBorderRadius(
         toStyleSyle.getPropertyValue('border-top-left-radius'),
         shapeTransform.originWidth,
-        shapeTransform.originHeight
+        shapeTransform.originHeight,
       );
       const topRight = convertBorderRadius(
         toStyleSyle.getPropertyValue('border-top-right-radius'),
         shapeTransform.originWidth,
-        shapeTransform.originHeight
+        shapeTransform.originHeight,
       );
       const bottomLeft = convertBorderRadius(
         toStyleSyle.getPropertyValue('border-bottom-left-radius'),
         shapeTransform.originWidth,
-        shapeTransform.originHeight
+        shapeTransform.originHeight,
       );
       const bottomRight = convertBorderRadius(
         toStyleSyle.getPropertyValue('border-bottom-right-radius'),
         shapeTransform.originWidth,
-        shapeTransform.originHeight
+        shapeTransform.originHeight,
       );
       const horizontalRadii = [
         `${topLeft.horizontal / shapeTransform.scaleX}px`,

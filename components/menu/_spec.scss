@@ -9,6 +9,7 @@
 
 $unit-width: dp(56) !default;
 
+/* @deprecated */
 .mdw-menu__wrapper {
   display: inline-flex;
   position: relative;
@@ -217,6 +218,11 @@ $unit-width: dp(56) !default;
   }
 }
 
+.mdw-menu__item-group {
+  display: flex;
+  flex-direction: column;
+}
+
 .mdw-menu__popup {
   display: inline-flex;
   position: absolute;
@@ -273,6 +279,10 @@ $unit-width: dp(56) !default;
 
 .mdw-menu__check,
 .mdw-menu__radio {
+  &[aria-hidden="true"] {
+    display: none;
+  }
+  
   visibility: hidden;
 
   .mdw-menu__item[aria-checked="true"] & {

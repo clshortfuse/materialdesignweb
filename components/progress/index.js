@@ -17,7 +17,7 @@ export function attach(progressCircleElement) {
   }
   const paths = svg.getElementsByTagName('path');
   if (paths.length !== 2) {
-    svg.innerHTML = `
+    svg.innerHTML = /* html */ `
       <path d="M12 3.25A8.75 8.75 0 1 1 3.25 12"/>
       <path d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25"/>
     `;

@@ -177,7 +177,7 @@ export function iterateSomeOfElementSiblings(element, fn) {
 /**
  * @param {Node} node
  * @param {boolean} [create]
- * @return {Node}
+ * @return {Text}
  */
 export function getTextNode(node, create) {
   let textNode;

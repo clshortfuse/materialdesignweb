@@ -1,7 +1,7 @@
-import * as Attributes from '../../core/aria/attributes';
-import * as DataTableColumnHeader from '../../components/datatable/columnheader';
-import * as Selection from '../../components/selection/index';
-import { setTextNode } from '../../core/dom';
+import * as DataTableColumnHeader from '../../components/datatable/columnheader.js';
+import * as Selection from '../../components/selection/index.js';
+import * as Attributes from '../../core/aria/attributes.js';
+import { setTextNode } from '../../core/dom.js';
 
 /**
  * @template {Record<string, any>} T
@@ -86,7 +86,7 @@ export default class DataTableAdapterColumn {
       this.element.setAttribute('aria-sort', 'none');
       let sortIcon = options.customSortIcon;
       if (!sortIcon) {
-        sortIcon = document.createElement('div');
+        sortIcon = document.createElement('span');
         sortIcon.classList.add('mdw-datatable__sort-icon');
         sortIcon.classList.add('material-icons');
         sortIcon.textContent = 'arrow_downward';

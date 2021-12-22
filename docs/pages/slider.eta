@@ -1,0 +1,23 @@
+<% var T = '../../templates/index.eta' %>
+<% layout('../_partials/_header.eta', {page: 'slider'}) %>
+<div class="mdw-grid" mdw-margin-top mdw-margin-bottom mdw-stretch>
+  <div class="mdw-grid__item" mdw-colspan="100%">
+    <h5 class="mdw-type" mdw-baseline-next="36">Sliders allow users to make selections from a range of values.</h5>
+    <p class="mdw-type">Sliders reflect a range of values along a bar, from which users may select a single value. They are ideal for adjusting settings such as volume, brightness, or applying image filters.</p>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="4">
+    <div class="component-sample">
+      <div class="component-sample__container">
+        <label class="mdw-slider mdw-theme" mdw-ink="secondary">
+          <input class="mdw-slider__input" type="range" list="sample-list" />
+          <datalist id="sample-list">
+            <option value="0" label="None"></option>
+            <option value="50" label="Half"></option>
+            <option value="100" label="All"></option>
+          </datalist>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="slider.min.js"></script>

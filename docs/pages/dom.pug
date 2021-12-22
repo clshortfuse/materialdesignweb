@@ -9,7 +9,7 @@ include ../_mixins.pug
 
     .mdw-grid__item(mdw-colspan="100%")
       .mdw-type(mdw-style="subtitle") Optimizations
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', name:'fastMeasure', checked:true}) Fast Measure
         +mdwSelection({ink:'secondary', name:'block', checked:true}) Block-level
         +mdwSelection({ink:'secondary', name:'deferRender', checked:true}) Defer Render

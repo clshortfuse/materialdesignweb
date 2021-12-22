@@ -1,4 +1,4 @@
-import { dispatchDomEvent } from '../dom';
+import { dispatchDomEvent } from '../dom.js';
 
 /**
  * @param {string} name Attribute Name
@@ -77,7 +77,6 @@ export function setCurrent(element, value, dispatchEventName) {
 export function setSelected(element, value, dispatchEventName) {
   return setAttribute('aria-selected', element, value, dispatchEventName);
 }
-
 
 /**
  * @param {Element} element

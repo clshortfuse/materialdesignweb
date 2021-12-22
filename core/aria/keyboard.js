@@ -1,6 +1,6 @@
 // Keyboard Navigation
 
-import { dispatchDomEvent, isRtl } from '../dom';
+import { dispatchDomEvent, isRtl } from '../dom.js';
 
 export const FORWARD_ARROW_KEY = 'mdw:keyboard-forwardarrowkey';
 export const BACK_ARROW_KEY = 'mdw:keyboard-backarrowkey';
@@ -12,23 +12,6 @@ export const PAGEUP_KEY = 'mdw:keyboard-pageupkey';
 export const PAGEDOWN_KEY = 'mdw:keyboard-pagedownkey';
 export const SPACEBAR_KEY = 'mdw:keyboard-spacebarkey';
 export const ENTER_KEY = 'mdw:keyboard-enterkey';
-
-/**
- * @param {Element} element
- * @return {void}
- */
-export function attach(element) {
-  element.addEventListener('keydown', onKeyDownHandler);
-}
-
-/**
- * @param {Element} element
- * @return {void}
- */
-export function detach(element) {
-  element.removeEventListener('keydown', onKeyDownHandler);
-}
-
 
 /**
  * @param {KeyboardEvent} event
@@ -91,4 +74,20 @@ function onKeyDownHandler(event) {
     event.stopPropagation();
     event.preventDefault();
   }
+}
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
+export function attach(element) {
+  element.addEventListener('keydown', onKeyDownHandler);
+}
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
+export function detach(element) {
+  element.removeEventListener('keydown', onKeyDownHandler);
 }

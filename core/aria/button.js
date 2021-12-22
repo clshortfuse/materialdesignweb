@@ -1,6 +1,29 @@
 // https://www.w3.org/TR/wai-aria-practices/#button
 
 /**
+ * @param {KeyboardEvent} event
+ * @return {void}
+ */
+function onKeyDown(event) {
+  if (event.key !== 'Enter' && event.key !== 'Spacebar' && event.key !== ' ') {
+    return;
+  }
+  /** @type {HTMLElement} */
+  const buttonElement = (event.currentTarget);
+  if (!buttonElement) {
+    return;
+  }
+  if (buttonElement.getAttribute('aria-disabled') === 'true') {
+    return;
+  }
+  event.stopPropagation();
+  event.preventDefault();
+  const newEvent = document.createEvent('Event');
+  newEvent.initEvent('click', true, true);
+  buttonElement.dispatchEvent(newEvent);
+}
+
+/**
  * @param {Element} element
  * @return {void}
  */
@@ -24,27 +47,4 @@ export function attach(element) {
 export function detach(element) {
   element.removeEventListener('keydown', onKeyDown);
   element.removeAttribute('mdw-aria-button-js');
-}
-
-/**
- * @param {KeyboardEvent} event
- * @return {void}
- */
-function onKeyDown(event) {
-  if (event.key !== 'Enter' && event.key !== 'Spacebar' && event.key !== ' ') {
-    return;
-  }
-  /** @type {HTMLElement} */
-  const buttonElement = (event.currentTarget);
-  if (!buttonElement) {
-    return;
-  }
-  if (buttonElement.getAttribute('aria-disabled') === 'true') {
-    return;
-  }
-  event.stopPropagation();
-  event.preventDefault();
-  const newEvent = document.createEvent('Event');
-  newEvent.initEvent('click', true, true);
-  buttonElement.dispatchEvent(newEvent);
 }

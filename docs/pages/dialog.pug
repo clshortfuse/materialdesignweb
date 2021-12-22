@@ -21,15 +21,15 @@ include ../_mixins.pug
                   +mdwButton({ ink:'secondary' })(href="#") Disagree
     .mdw-grid__item(mdw-colspan="8")
       .mdw-type(mdw-style="subtitle") Javascript
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'required'}) Required
         +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'optional', checked:true}) Optional
         +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'none'}) None
       .mdw-type(mdw-style="subtitle") Options
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', name:'stacked-buttons'}) Stacked Buttons
       .mdw-type(mdw-style="subtitle") Width Units
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', name:'width', type:'radio', value:'auto', checked:true}) Auto
         +mdwSelection({ink:'secondary', name:'width', type:'radio', value:'3'}) 3
         +mdwSelection({ink:'secondary', name:'width', type:'radio', value:'4'}) 4
@@ -47,7 +47,7 @@ include ../_mixins.pug
       h6.mdw-type Samples
     .mdw-grid__item.display-flex(mdw-colspan="4" flex-justify-content="center")
       .render
-        div.display-flex.flex-1(flex-column style="position:relative")
+        .display-flex.flex-1(flex-column style="position:relative")
           +androidstatusbar('primary 700', 'dark')
           .mdw-appbar.mdw-theme(mdw-surface="primary 500" mdw-dark)
             .mdw-appbar__action

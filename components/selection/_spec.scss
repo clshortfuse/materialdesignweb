@@ -1,13 +1,15 @@
 // https://material.io/guidelines/components/selection-controls.html#
 // https://material.io/guidelines/patterns/selection.html#selection-item-selection
 
+@use "sass:math";
+
 @use '../../core/_elevation.scss' as elevation;
 @use '../../core/_length.scss' as *;
 @use '../../core/_motion.scss' as motion;
 
 $ripple-size: dp(40) !default;
 $icon-size: dp(24) !default;
-$scale-size: ($ripple-size/$icon-size) !default;
+$scale-size: math.div($ripple-size, $icon-size) !default;
 $radio-size: dp(20) !default;
 $checkbox-size: dp(18) !default;
 $border-size: dp(2) !default;
@@ -165,8 +167,8 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
   &[mdw-checkbox] {
     // Box outline
     &::before {
-      top: ($icon-size - $checkbox-size) / 2;
-      left: ($icon-size - $checkbox-size) / 2;
+      top: ($icon-size - $checkbox-size) * 0.5;
+      left: ($icon-size - $checkbox-size) * 0.5;
   
       height: $checkbox-size;
       width: $checkbox-size;
@@ -178,7 +180,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
       .mdw-selection[aria-checked]:not([aria-disabled="true"]):active &,
       .mdw-selection__input[type="checkbox"]:checked ~ &,
       .mdw-selection__input[type="checkbox"]:not(:disabled):active ~ & {
-        border-width: $checkbox-size / 2;
+        border-width: $checkbox-size * 0.5;
       }
   
       // Checked not
@@ -190,8 +192,8 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
   
     // Check stencil
     &::after {
-      top: $border-size + (($icon-size - $checkbox-size) / 2);
-      left: $border-size + (($icon-size - $checkbox-size) / 2);
+      top: $border-size + (($icon-size - $checkbox-size) * 0.5);
+      left: $border-size + (($icon-size - $checkbox-size) * 0.5);
       
       height: $checkbox-icon-height;
       width: $checkbox-icon-width;
@@ -223,8 +225,8 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
   &[mdw-radio] {
     // Outer ring
     &::before {
-      top: ($icon-size - $radio-size) / 2;
-      left: ($icon-size - $radio-size) / 2;
+      top: ($icon-size - $radio-size) * 0.5;
+      left: ($icon-size - $radio-size) * 0.5;
   
       height: $radio-size;
       width: $radio-size;
@@ -235,14 +237,14 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
       // Active, not disabled
       .mdw-selection:active:not([aria-disabled="true"]) &,
       .mdw-selection__input:active:not(:disabled) ~ & {
-        border-width: $radio-size / 2;
+        border-width: $radio-size * 0.5;
       }
     }
   
     // Center dot
     &::after {
-      top: ($icon-size - $radio-size) / 2;
-      left: ($icon-size - $radio-size) / 2;
+      top: ($icon-size - $radio-size) * 0.5;
+      left: ($icon-size - $radio-size) * 0.5;
   
       height: $radio-size;
       width: $radio-size;
@@ -374,7 +376,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
   }
   // Remove horizontal clip
   // % = stroke length upto corner
-  #{$checkbox-icon-width / ($checkbox-icon-width + $checkbox-icon-height) * 100%} {
+  #{math.div($checkbox-icon-width, $checkbox-icon-width + $checkbox-icon-height) * 100%} {
     clip: rect($checkbox-icon-height - $checkbox-icon-thickness, $checkbox-icon-width, auto, auto);
   }
   // Remove vertical clip

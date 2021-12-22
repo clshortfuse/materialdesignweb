@@ -1,6 +1,6 @@
 // https://material.io/design/interaction/states.html
 
-@use '../theme/index.scss' as theme;
+@use '../theme/_mixins.scss' as theme;
 
 $themeValues: (
   overlay-color:                 theme.$foreground,

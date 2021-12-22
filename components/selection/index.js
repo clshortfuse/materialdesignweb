@@ -1,27 +1,23 @@
-import * as Keyboard from '../../core/aria/keyboard';
-import * as Attributes from '../../core/aria/attributes';
-import * as SelectionInput from './input';
+import * as Attributes from '../../core/aria/attributes.js';
+import * as Keyboard from '../../core/aria/keyboard.js';
+
+import * as SelectionInput from './input.js';
 
 export const CHECKED_CHANGE_EVENT = 'mdw:selection-checkedchange';
 
 /**
- * @param {HTMLElement} element
- * @return {void}
+ * @param {Element} selectionElement
+ * @param {boolean|string} newValue
+ * @param {boolean} [dispatchEvent=false]
+ * @return {boolean} successful
  */
-export function attach(element) {
-  /** @type {HTMLElement} */
-  const inputElement = (element.getElementsByClassName('mdw-selection__input')[0]);
-  if (inputElement) {
-    SelectionInput.attach(inputElement);
-  }
-  Keyboard.attach(element);
-  element.addEventListener('focus', onActivateEvent);
-  element.addEventListener('click', onActivateEvent);
-  element.addEventListener(Keyboard.SPACEBAR_KEY, onActivateEvent);
-  element.addEventListener(SelectionInput.FOCUS_EVENT, onActivateEvent);
-  element.addEventListener(SelectionInput.CLICK_EVENT, onActivateEvent);
+export function setChecked(selectionElement, newValue, dispatchEvent) {
+  return Attributes.setChecked(
+    selectionElement,
+    newValue,
+    dispatchEvent ? CHECKED_CHANGE_EVENT : null,
+  );
 }
-
 
 /**
  * @param {CustomEvent} event
@@ -61,17 +57,20 @@ function onActivateEvent(event) {
   setChecked(selectionElement, newValue, true);
 }
 
-
 /**
- * @param {Element} selectionElement
- * @param {boolean|string} newValue
- * @param {boolean} [dispatchEvent=false]
- * @return {boolean} successful
+ * @param {HTMLElement} element
+ * @return {void}
  */
-export function setChecked(selectionElement, newValue, dispatchEvent) {
-  return Attributes.setChecked(
-    selectionElement,
-    newValue,
-    dispatchEvent ? CHECKED_CHANGE_EVENT : null
-  );
+export function attach(element) {
+  /** @type {HTMLElement} */
+  const inputElement = (element.getElementsByClassName('mdw-selection__input')[0]);
+  if (inputElement) {
+    SelectionInput.attach(inputElement);
+  }
+  Keyboard.attach(element);
+  element.addEventListener('focus', onActivateEvent);
+  element.addEventListener('click', onActivateEvent);
+  element.addEventListener(Keyboard.SPACEBAR_KEY, onActivateEvent);
+  element.addEventListener(SelectionInput.FOCUS_EVENT, onActivateEvent);
+  element.addEventListener(SelectionInput.CLICK_EVENT, onActivateEvent);
 }

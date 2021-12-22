@@ -1,4 +1,4 @@
-import { iterateArrayLike, setTextNode } from '../../core/dom';
+import { iterateArrayLike, setTextNode } from '../../core/dom.js';
 
 const sampleComponent = document.getElementById('sample-component');
 

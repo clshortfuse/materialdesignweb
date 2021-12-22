@@ -2,7 +2,7 @@
 // https://material.io/design/components/chips.html
 // https://material.io/design/iconography/system-icons.html#color
 
-@use '../../core/theme/index.scss' as theme;
+@use '../../core/theme/_mixins.scss' as theme;
 
 $themeValues: (
   text-color:                    (('foreground-light', 0.87), ('foreground-dark', 1.00)),

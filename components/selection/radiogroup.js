@@ -1,21 +1,6 @@
-import * as Selection from './index';
-import { iterateArrayLike } from '../../core/dom';
+import { iterateArrayLike } from '../../core/dom.js';
 
-/**
- * @param {HTMLElement} element
- * @return {void}
- */
-export function attach(element) {
-  element.addEventListener(Selection.CHECKED_CHANGE_EVENT, onCheckedChange);
-}
-
-/**
- * @param {HTMLElement} element
- * @return {void}
- */
-export function detach(element) {
-  element.removeEventListener(Selection.CHECKED_CHANGE_EVENT, onCheckedChange);
-}
+import * as Selection from './index.js';
 
 /**
  * @param {CustomEvent} event
@@ -43,4 +28,20 @@ function onCheckedChange(event) {
         item.setAttribute('aria-checked', 'false');
       });
   });
+}
+
+/**
+ * @param {HTMLElement} element
+ * @return {void}
+ */
+export function attach(element) {
+  element.addEventListener(Selection.CHECKED_CHANGE_EVENT, onCheckedChange);
+}
+
+/**
+ * @param {HTMLElement} element
+ * @return {void}
+ */
+export function detach(element) {
+  element.removeEventListener(Selection.CHECKED_CHANGE_EVENT, onCheckedChange);
 }

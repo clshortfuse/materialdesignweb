@@ -1,7 +1,7 @@
-import DomAdapter from '../../adapters/dom/index';
-import * as ListItem from '../../components/list/item';
-import { iterateArrayLike } from '../../core/dom';
-import { ListContent } from '../../index';
+import DomAdapter from '../../adapters/dom/index.js';
+import * as ListContent from '../../components/list/content.js';
+import * as ListItem from '../../components/list/item.js';
+import { iterateArrayLike } from '../../core/dom.js';
 
 class CustomDataSourceItem {
   /** @param {number} i */

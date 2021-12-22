@@ -1,20 +1,19 @@
+import * as Button from '../../components/button/index.js';
+import * as Dialog from '../../components/dialog/index.js';
+import * as Layout from '../../components/layout/index.js';
+import * as ListContent from '../../components/list/content.js';
+import * as List from '../../components/list/index.js';
+import * as ListSecondary from '../../components/list/secondary.js';
+import * as Menu from '../../components/menu/index.js';
+import * as Selection from '../../components/selection/index.js';
+import * as SelectionRadioGroup from '../../components/selection/radiogroup.js';
+import * as Snackbar from '../../components/snackbar/index.js';
+import * as Attributes from '../../core/aria/attributes.js';
 import {
   iterateArrayLike,
-} from '../../core/dom';
-import * as Attributes from '../../core/aria/attributes';
-import * as Overlay from '../../core/overlay/index';
-import * as Ripple from '../../core/ripple/index';
-import * as Layout from '../../components/layout/index';
-import * as Button from '../../components/button/index';
-import * as Dialog from '../../components/dialog/index';
-import * as List from '../../components/list/index';
-import * as ListContent from '../../components/list/content';
-import * as ListSecondary from '../../components/list/secondary';
-import * as Menu from '../../components/menu/index';
-import * as Selection from '../../components/selection/index';
-import * as SelectionRadioGroup from '../../components/selection/radiogroup';
-import * as Snackbar from '../../components/snackbar/index';
-
+} from '../../core/dom.js';
+import * as Overlay from '../../core/overlay/index.js';
+import * as Ripple from '../../core/ripple/index.js';
 
 /** @type {Element} */
 let checkedAutoHideItem;
@@ -73,6 +72,77 @@ function refreshFabCut() {
   const shown = getIsChecked('fab-show');
   const alignment = getCheckedValue('fab-mobile');
   Layout.getAppBarElement().setAttribute('mdw-fab-cut', [shown ? 'open' : '', alignment].join(' ').trim());
+}
+
+/** @return {void} */
+function updateAutoHideOption() {
+  const switchItem = document.querySelector('[data-name="use-appbar-autohide"]');
+  const descriptionElement = switchItem.querySelector('.mdw-list__text-line:nth-child(2)');
+  const oldDescription = descriptionElement.textContent;
+  let newDescription = 'Off';
+  if (switchItem.getAttribute('aria-checked') === 'true') {
+    /** @type {HTMLElement} */
+    const checkedItem = document.querySelector('[data-name="appbar-autohide"][aria-checked="true"]');
+    newDescription = checkedItem.querySelector('.mdw-list__text-line').textContent;
+    Layout.getAppBarElement().setAttribute('mdw-autohide', checkedItem.dataset.value);
+  } else {
+    Layout.getAppBarElement().removeAttribute('mdw-autohide');
+  }
+  if (newDescription !== oldDescription) {
+    Layout.resetScroll();
+    descriptionElement.textContent = newDescription;
+    Snackbar.create({
+      text: `Auto hide is set to: ${newDescription}.`,
+      parent: document.getElementsByClassName('mdw-snackbar__container')[0],
+    });
+  }
+}
+
+/** @return {void} */
+function updateFabMobileOption() {
+  const switchItem = document.querySelector('[data-name="use-fab-mobile"]');
+  const descriptionElement = switchItem.querySelector('.mdw-list__text-line:nth-child(2)');
+  const oldDescription = descriptionElement.textContent;
+  let newDescription = 'Off';
+  if (switchItem.getAttribute('aria-checked') === 'true') {
+    /** @type {HTMLElement} */
+    const checkedItem = document.querySelector('[data-name="fab-mobile"][aria-checked="true"]');
+    newDescription = checkedItem.querySelector('.mdw-list__text-line').textContent;
+    document.getElementsByClassName('mdw-layout__fab')[0].setAttribute('mdw-mobile', checkedItem.dataset.value);
+  } else {
+    document.getElementsByClassName('mdw-layout__fab')[0].removeAttribute('mdw-mobile');
+  }
+  if (newDescription !== oldDescription) {
+    refreshFabCut();
+    descriptionElement.textContent = newDescription;
+    Snackbar.create({
+      text: `Mobile Fab is set to: ${newDescription}.`,
+      parent: document.getElementsByClassName('mdw-snackbar__container')[0],
+    });
+  }
+}
+
+/** @return {void} */
+function updateFabDesktopOption() {
+  const switchItem = document.querySelector('[data-name="use-fab-desktop"]');
+  const descriptionElement = switchItem.querySelector('.mdw-list__text-line:nth-child(2)');
+  const oldDescription = descriptionElement.textContent;
+  let newDescription = 'Off';
+  if (switchItem.getAttribute('aria-checked') === 'true') {
+    /** @type {HTMLElement} */
+    const checkedItem = document.querySelector('[data-name="fab-desktop"][aria-checked="true"]');
+    newDescription = checkedItem.querySelector('.mdw-list__text-line').textContent;
+    document.getElementsByClassName('mdw-layout__fab')[0].setAttribute('mdw-desktop', checkedItem.dataset.value);
+  } else {
+    document.getElementsByClassName('mdw-layout__fab')[0].removeAttribute('mdw-desktop');
+  }
+  if (newDescription !== oldDescription) {
+    descriptionElement.textContent = newDescription;
+    Snackbar.create({
+      text: `Desktop Fab is set to: ${newDescription}.`,
+      parent: document.getElementsByClassName('mdw-snackbar__container')[0],
+    });
+  }
 }
 
 /**
@@ -171,77 +241,6 @@ function setupComponentOptions() {
 
 initializeSampleComponents();
 setupComponentOptions();
-
-/** @return {void} */
-function updateAutoHideOption() {
-  const switchItem = document.querySelector('[data-name="use-appbar-autohide"]');
-  const descriptionElement = switchItem.querySelector('.mdw-list__text-line:nth-child(2)');
-  const oldDescription = descriptionElement.textContent;
-  let newDescription = 'Off';
-  if (switchItem.getAttribute('aria-checked') === 'true') {
-    /** @type {HTMLElement} */
-    const checkedItem = document.querySelector('[data-name="appbar-autohide"][aria-checked="true"]');
-    newDescription = checkedItem.querySelector('.mdw-list__text-line').textContent;
-    Layout.getAppBarElement().setAttribute('mdw-autohide', checkedItem.dataset.value);
-  } else {
-    Layout.getAppBarElement().removeAttribute('mdw-autohide');
-  }
-  if (newDescription !== oldDescription) {
-    Layout.resetScroll();
-    descriptionElement.textContent = newDescription;
-    Snackbar.create({
-      text: `Auto hide is set to: ${newDescription}.`,
-      parent: document.getElementsByClassName('mdw-snackbar__container')[0],
-    });
-  }
-}
-
-/** @return {void} */
-function updateFabMobileOption() {
-  const switchItem = document.querySelector('[data-name="use-fab-mobile"]');
-  const descriptionElement = switchItem.querySelector('.mdw-list__text-line:nth-child(2)');
-  const oldDescription = descriptionElement.textContent;
-  let newDescription = 'Off';
-  if (switchItem.getAttribute('aria-checked') === 'true') {
-    /** @type {HTMLElement} */
-    const checkedItem = document.querySelector('[data-name="fab-mobile"][aria-checked="true"]');
-    newDescription = checkedItem.querySelector('.mdw-list__text-line').textContent;
-    document.getElementsByClassName('mdw-layout__fab')[0].setAttribute('mdw-mobile', checkedItem.dataset.value);
-  } else {
-    document.getElementsByClassName('mdw-layout__fab')[0].removeAttribute('mdw-mobile');
-  }
-  if (newDescription !== oldDescription) {
-    refreshFabCut();
-    descriptionElement.textContent = newDescription;
-    Snackbar.create({
-      text: `Mobile Fab is set to: ${newDescription}.`,
-      parent: document.getElementsByClassName('mdw-snackbar__container')[0],
-    });
-  }
-}
-
-/** @return {void} */
-function updateFabDesktopOption() {
-  const switchItem = document.querySelector('[data-name="use-fab-desktop"]');
-  const descriptionElement = switchItem.querySelector('.mdw-list__text-line:nth-child(2)');
-  const oldDescription = descriptionElement.textContent;
-  let newDescription = 'Off';
-  if (switchItem.getAttribute('aria-checked') === 'true') {
-    /** @type {HTMLElement} */
-    const checkedItem = document.querySelector('[data-name="fab-desktop"][aria-checked="true"]');
-    newDescription = checkedItem.querySelector('.mdw-list__text-line').textContent;
-    document.getElementsByClassName('mdw-layout__fab')[0].setAttribute('mdw-desktop', checkedItem.dataset.value);
-  } else {
-    document.getElementsByClassName('mdw-layout__fab')[0].removeAttribute('mdw-desktop');
-  }
-  if (newDescription !== oldDescription) {
-    descriptionElement.textContent = newDescription;
-    Snackbar.create({
-      text: `Desktop Fab is set to: ${newDescription}.`,
-      parent: document.getElementsByClassName('mdw-snackbar__container')[0],
-    });
-  }
-}
 
 document.addEventListener(Dialog.CONFIRM_EVENT, (event) => {
   /** @type {HTMLElement} */

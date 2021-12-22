@@ -1,5 +1,4 @@
-import { iterateArrayLike } from '../core/dom';
-
+import { iterateArrayLike } from '../core/dom.js';
 
 /**
  * @param {Element|HTMLElement} element

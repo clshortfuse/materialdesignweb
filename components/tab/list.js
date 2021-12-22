@@ -1,34 +1,12 @@
 // https://www.w3.org/TR/wai-aria-practices/#tabpanel
 
+import * as Keyboard from '../../core/aria/keyboard.js';
+import * as RovingTabIndex from '../../core/aria/rovingtabindex.js';
 import {
-  iterateArrayLike, getPassiveEventListenerOption, scrollToElement, iterateSomeOfArrayLike,
-} from '../../core/dom';
+  getPassiveEventListenerOption, iterateArrayLike, iterateSomeOfArrayLike, scrollToElement,
+} from '../../core/dom.js';
 
-import * as RovingTabIndex from '../../core/aria/rovingtabindex';
-import * as Keyboard from '../../core/aria/keyboard';
-import * as TabItem from './item';
-
-/**
- * @param {Element} tabListElement
- * @return {void}
- */
-export function attach(tabListElement) {
-  let indicatorElement = tabListElement.getElementsByClassName('mdw-tab__indicator')[0];
-  if (!indicatorElement) {
-    indicatorElement = document.createElement('div');
-    indicatorElement.classList.add('mdw-tab__indicator');
-    tabListElement.appendChild(indicatorElement);
-  }
-
-  setupARIA(tabListElement);
-  iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.attach);
-  RovingTabIndex.setupTabIndexes(tabListElement.querySelectorAll('[role="tab"]'));
-  tabListElement.addEventListener(TabItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent,
-    getPassiveEventListenerOption());
-  tabListElement.addEventListener(Keyboard.FORWARD_ARROW_KEY, onForwardArrowKey);
-  tabListElement.addEventListener(Keyboard.BACK_ARROW_KEY, onBackArrowKey);
-  tabListElement.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
-}
+import * as TabItem from './item.js';
 
 /**
  * @param {Event} event
@@ -88,18 +66,6 @@ export function setupARIA(tabListElement) {
   if (indicatorElement) {
     indicatorElement.setAttribute('role', 'presentation');
   }
-}
-
-/**
- * @param {Element} tabListElement
- * @return {void}
- */
-export function detach(tabListElement) {
-  tabListElement.removeEventListener(TabItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
-  tabListElement.removeEventListener(Keyboard.FORWARD_ARROW_KEY, onForwardArrowKey);
-  tabListElement.removeEventListener(Keyboard.BACK_ARROW_KEY, onBackArrowKey);
-  iterateArrayLike(tabListElement.querySelectorAll('[role="tab"]'), RovingTabIndex.detach);
-  iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.detach);
 }
 
 /**
@@ -207,4 +173,38 @@ export function onSelectedChangeEvent(event) {
       TabItem.setSelected(item, false, false);
     }
   });
+}
+
+/**
+ * @param {Element} tabListElement
+ * @return {void}
+ */
+export function attach(tabListElement) {
+  let indicatorElement = tabListElement.getElementsByClassName('mdw-tab__indicator')[0];
+  if (!indicatorElement) {
+    indicatorElement = document.createElement('div');
+    indicatorElement.classList.add('mdw-tab__indicator');
+    tabListElement.appendChild(indicatorElement);
+  }
+
+  setupARIA(tabListElement);
+  iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.attach);
+  RovingTabIndex.setupTabIndexes(tabListElement.querySelectorAll('[role="tab"]'));
+  tabListElement.addEventListener(TabItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent,
+    getPassiveEventListenerOption());
+  tabListElement.addEventListener(Keyboard.FORWARD_ARROW_KEY, onForwardArrowKey);
+  tabListElement.addEventListener(Keyboard.BACK_ARROW_KEY, onBackArrowKey);
+  tabListElement.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
+}
+
+/**
+ * @param {Element} tabListElement
+ * @return {void}
+ */
+export function detach(tabListElement) {
+  tabListElement.removeEventListener(TabItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
+  tabListElement.removeEventListener(Keyboard.FORWARD_ARROW_KEY, onForwardArrowKey);
+  tabListElement.removeEventListener(Keyboard.BACK_ARROW_KEY, onBackArrowKey);
+  iterateArrayLike(tabListElement.querySelectorAll('[role="tab"]'), RovingTabIndex.detach);
+  iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.detach);
 }

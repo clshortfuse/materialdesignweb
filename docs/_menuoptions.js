@@ -1,4 +1,4 @@
-import { setStorageItem, removeStorageItem, getStorageItem } from './_storage';
+import { getStorageItem, removeStorageItem, setStorageItem } from './_storage.js';
 
 /**
  * @param {boolean} value

@@ -1,22 +1,11 @@
+import * as Attributes from '../../core/aria/attributes.js';
+import * as Keyboard from '../../core/aria/keyboard.js';
+import { dispatchDomEvent, iterateArrayLike } from '../../core/dom.js';
 
-import * as Attributes from '../../core/aria/attributes';
-import * as Keyboard from '../../core/aria/keyboard';
-import * as DataTableCell from './cell';
-import { dispatchDomEvent, iterateArrayLike } from '../../core/dom';
+import * as DataTableCell from './cell.js';
 
 export const FOCUS_EVENT = 'mdw:datatablerow-focus';
 export const SELECTED_CHANGE_EVENT = 'mdw:datatablerow-selectedchange';
-
-/**
- * @param {HTMLTableRowElement} element
- * @return {void}
- */
-export function attach(element) {
-  Keyboard.attach(element);
-  element.setAttribute('role', 'row');
-  element.addEventListener('focus', onFocus);
-  iterateArrayLike(element.cells, DataTableCell.attach);
-}
 
 /**
  * @param {FocusEvent} event
@@ -36,6 +25,17 @@ export function onFocus(event) {
  */
 export function setSelected(element, value, dispatchEvent = true) {
   return Attributes.setSelected(element, value, dispatchEvent ? SELECTED_CHANGE_EVENT : null);
+}
+
+/**
+ * @param {HTMLTableRowElement} element
+ * @return {void}
+ */
+export function attach(element) {
+  Keyboard.attach(element);
+  element.setAttribute('role', 'row');
+  element.addEventListener('focus', onFocus);
+  iterateArrayLike(element.cells, DataTableCell.attach);
 }
 
 /**

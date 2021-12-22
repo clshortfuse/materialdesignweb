@@ -1,17 +1,22 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
+
+const eta = require('eta');
 const sass = require('sass');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const isProduction = (process.env.NODE_ENV === 'production');
 
 /** @typedef {import('webpack').Configuration} WebpackConfiguration */
-/** @typedef {import('webpack').compilation.Chunk} WebpackChunk */
 
-/** @return {Object} */
-function getComponentsConfig() {
+/**
+ * @param {Object<string,string>} env
+ * @return {Object}
+ */
+function getComponentsConfig(env) {
   const DEST = (isProduction ? 'dist/full' : 'test/full');
   return {
     entry: {
@@ -35,6 +40,7 @@ function getComponentsConfig() {
         openAnalyzer: false,
         generateStatsFile: false,
         defaultSizes: 'gzip',
+        logLevel: 'error',
       }),
     ],
     module: {
@@ -68,14 +74,18 @@ function getComponentsConfig() {
   };
 }
 
-/** @return {WebpackConfiguration} */
-function getDocsConfig() {
+/**
+ * @param {Object<string,string>} env
+ * @return {WebpackConfiguration}
+ */
+function getDocsConfig(env) {
   const plugins = [
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,
       generateStatsFile: false,
       defaultSizes: 'gzip',
+      logLevel: 'error',
     }),
   ];
   /** @type {Object.<string, string[]>} */
@@ -85,6 +95,7 @@ function getDocsConfig() {
       if (filename[0] === '_') {
         return;
       }
+      if (filename.endsWith('.pug')) return;
       if (fs.statSync(path.join(folderPath, filename)).isDirectory()) {
         return;
       }
@@ -95,6 +106,12 @@ function getDocsConfig() {
       entries[`${noExt}`].push(path.resolve(`${folderPath}/${filename}`));
     }));
   const DEST = (isProduction ? 'dist/docs' : 'test/docs');
+
+  let port = parseInt(env.port ?? process.env.port, 10);
+  if (Number.isNaN(port)) {
+    port = 8080;
+  }
+
   /** @type {WebpackConfiguration} */
   const webpackConfig = {
     entry: entries,
@@ -102,9 +119,13 @@ function getDocsConfig() {
     devtool: isProduction ? 'source-map' : 'nosources-source-map',
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     devServer: {
-      contentBase: path.resolve(__dirname, DEST),
+      host: '0.0.0.0',
+      port,
+      // static: path.resolve(__dirname, DEST),
       compress: true,
-      inline: false,
+      hot: false,
+      liveReload: false,
+      client: false,
     },
     output: {
       filename: '[name].min.js',
@@ -117,11 +138,14 @@ function getDocsConfig() {
         chunks: 'all',
         cacheGroups: {
           framework: {
-            test(module, /** @type {WebpackChunk[]} */chunks) {
+            test(module, chunks) {
               if (module && module.resource && module.resource.match(/prerender/)) {
                 return false;
               }
-              if (chunks && chunks.some((chunk) => chunk.name.match(/prerender/))) {
+              /** @type {import('webpack').ChunkGraph} */
+              const { chunkGraph } = chunks;
+
+              if (chunkGraph && [...chunkGraph.getModuleChunksIterable(module)]?.some((chunk) => chunk.name.match(/prerender/))) {
                 return false;
               }
               if (module && module.resource && module.resource.match(/[\\/]docs[\\/]/)) {
@@ -140,11 +164,13 @@ function getDocsConfig() {
             reuseExistingChunk: true,
           },
           default: {
-            test(module, /** @type {WebpackChunk[]} */ chunks) {
+            test(module, chunks) {
               if (module && module.resource && module.resource.match(/prerender/)) {
                 return false;
               }
-              if (chunks && chunks.some((chunk) => chunk.name.match(/prerender/))) {
+              /** @type {import('webpack').ChunkGraph} */
+              const { chunkGraph } = chunks;
+              if (chunkGraph && [...chunkGraph.getModuleChunksIterable(module)]?.some((chunk) => chunk.name.match(/prerender/))) {
                 return false;
               }
               if (module && module.resource && module.resource.match(/[\\/]docs[\\/]/)) {
@@ -174,8 +200,15 @@ function getDocsConfig() {
         use: [
           'file-loader?name=[name].min.css',
           'extract-loader',
-          'css-loader?import=false',
-          'clean-css-loader?level=2',
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: ['cssnano'],
+              },
+            },
+          },
           {
             loader: 'sass-loader',
             options: {
@@ -184,12 +217,23 @@ function getDocsConfig() {
           },
         ],
       }, {
-        test: /\.pug$/,
+        test: /\.eta$/,
         use: [
           'file-loader?&name=[name].html',
           'extract-loader',
-          'html-loader',
-          'pug-html-loader',
+          {
+            loader: 'html-loader',
+            options: {
+              minimize: {
+                collapseBooleanAttributes: true,
+                minifyCSS: true,
+              },
+              attributes: false,
+              preprocessor(content, loaderContext) {
+                return eta.render(content, {}, { filename: loaderContext.resourcePath });
+              },
+            },
+          },
         ],
       }],
     },
@@ -199,14 +243,15 @@ function getDocsConfig() {
 }
 
 /**
- * @param {Object} env
+ * @param {Object<string,string>} env
  * @return {WebpackConfiguration}
  */
 function makeWebPackConfig(env = {}) {
-  if (env.target === 'docs') {
-    return getDocsConfig();
+  const target = env.target || process.env.target;
+  if (target === 'docs') {
+    return getDocsConfig(env);
   }
-  return getComponentsConfig();
+  return getComponentsConfig(env);
 }
 
 module.exports = makeWebPackConfig;

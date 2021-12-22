@@ -1,7 +1,7 @@
 // https://material.io/archive/guidelines/components/text-fields.html#text-fields-states
 
-@use '../../core/theme/index.scss' as theme;
-@use '../../core/platform.scss' as platform;
+@use '../../core/theme/_mixins.scss' as theme;
+@use '../../core/_platform.scss' as platform;
 
 $themeValues: (
   

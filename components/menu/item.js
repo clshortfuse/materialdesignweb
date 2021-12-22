@@ -1,47 +1,17 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
-import * as Attributes from '../../core/aria/attributes';
-import * as Overlay from '../../core/overlay/index';
-import * as Ripple from '../../core/ripple/index';
-
+import * as Attributes from '../../core/aria/attributes.js';
 import {
   dispatchDomEvent,
   iterateArrayLike,
   iterateElementSiblings,
-} from '../../core/dom';
+} from '../../core/dom.js';
+import * as Overlay from '../../core/overlay/index.js';
+import * as Ripple from '../../core/ripple/index.js';
 
 export const ACTIVATE_EVENT = 'mdw:menuitem-activate';
 export const CHECK_EVENT = 'mdw:menuitem-check';
 export const UNCHECK_EVENT = 'mdw:menuitem-uncheck';
-
-/**
- * @param {Element} element
- * @return {void}
- */
-export function attach(element) {
-  element.classList.add('mdw-overlay');
-  Overlay.attach(element);
-
-  element.classList.add('mdw-ripple');
-  Ripple.attach(element);
-
-  attachCore(element);
-}
-
-/**
- * @param {Element} element
- * @return {void}
- */
-export function attachCore(element) {
-  // If mouseover is used, an item can still lose focus via keyboard navigation.
-  // An extra event listener would need to be created to catch blur but the cursor
-  // would still remain over the element, thus needing another mousemove event.
-  // Prioritization is given to less event listeners rather than operations per second.
-  element.addEventListener('mousemove', onMouseMove);
-  element.addEventListener('click', onClick);
-  element.addEventListener('keydown', onKeyDown);
-  setupARIA(element);
-}
 
 /**
  * @param {Element} element
@@ -80,27 +50,6 @@ export function setupARIA(element) {
 }
 
 /**
- * @param {MouseEvent|KeyboardEvent|PointerEvent} event
- * @return {void}
- */
-export function onClick(event) {
-  event.stopPropagation();
-
-  /** @type {HTMLElement} */
-  const menuItemElement = (event.currentTarget);
-  if (Attributes.isDisabled(menuItemElement)) {
-    return;
-  }
-  const role = menuItemElement.getAttribute('role');
-  if (role === 'menuitemcheckbox') {
-    toggleChecked(menuItemElement);
-  } else if (role === 'menuitemradio') {
-    setChecked(menuItemElement, true);
-  }
-  dispatchDomEvent(menuItemElement, ACTIVATE_EVENT);
-}
-
-/**
  * @param {MouseEvent} event
  * @return {void}
  */
@@ -122,41 +71,6 @@ export function onMouseMove(event) {
   if (document.activeElement !== el) {
     if (document.activeElement !== previousFocus && previousFocus instanceof HTMLElement) {
       previousFocus.focus();
-    }
-  }
-}
-
-/**
- * @param {KeyboardEvent} event
- * @return {void}
- */
-export function onKeyDown(event) {
-  /** @type {HTMLElement} */
-  const menuItemElement = (event.currentTarget);
-
-  if (event.key === 'Enter') {
-    event.stopPropagation();
-    event.preventDefault();
-    if (Attributes.isDisabled(menuItemElement)) {
-      return;
-    }
-    onClick(event);
-    return;
-  }
-
-  if (event.key === 'Spacebar' || (event.key === ' ')) {
-    event.stopPropagation();
-    event.preventDefault();
-    if (Attributes.isDisabled(menuItemElement)) {
-      return;
-    }
-    const role = menuItemElement.getAttribute('role');
-    if (role === 'menuitemcheckbox') {
-      toggleChecked(menuItemElement);
-    } else if (role === 'menuitemradio') {
-      setChecked(menuItemElement, true);
-    } else {
-      dispatchDomEvent(menuItemElement, ACTIVATE_EVENT);
     }
   }
 }
@@ -216,6 +130,91 @@ export function openSubMenu(element) {
 
   // TODO: Open new menu
   return false;
+}
+
+/**
+ * @param {MouseEvent|KeyboardEvent|PointerEvent} event
+ * @return {void}
+ */
+export function onClick(event) {
+  event.stopPropagation();
+
+  /** @type {HTMLElement} */
+  const menuItemElement = (event.currentTarget);
+  if (Attributes.isDisabled(menuItemElement)) {
+    return;
+  }
+  const role = menuItemElement.getAttribute('role');
+  if (role === 'menuitemcheckbox') {
+    toggleChecked(menuItemElement);
+  } else if (role === 'menuitemradio') {
+    setChecked(menuItemElement, true);
+  }
+  dispatchDomEvent(menuItemElement, ACTIVATE_EVENT);
+}
+
+/**
+ * @param {KeyboardEvent} event
+ * @return {void}
+ */
+export function onKeyDown(event) {
+  /** @type {HTMLElement} */
+  const menuItemElement = (event.currentTarget);
+
+  if (event.key === 'Enter') {
+    event.stopPropagation();
+    event.preventDefault();
+    if (Attributes.isDisabled(menuItemElement)) {
+      return;
+    }
+    onClick(event);
+    return;
+  }
+
+  if (event.key === 'Spacebar' || (event.key === ' ')) {
+    event.stopPropagation();
+    event.preventDefault();
+    if (Attributes.isDisabled(menuItemElement)) {
+      return;
+    }
+    const role = menuItemElement.getAttribute('role');
+    if (role === 'menuitemcheckbox') {
+      toggleChecked(menuItemElement);
+    } else if (role === 'menuitemradio') {
+      setChecked(menuItemElement, true);
+    } else {
+      dispatchDomEvent(menuItemElement, ACTIVATE_EVENT);
+    }
+  }
+}
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
+export function attachCore(element) {
+  // If mouseover is used, an item can still lose focus via keyboard navigation.
+  // An extra event listener would need to be created to catch blur but the cursor
+  // would still remain over the element, thus needing another mousemove event.
+  // Prioritization is given to less event listeners rather than operations per second.
+  element.addEventListener('mousemove', onMouseMove);
+  element.addEventListener('click', onClick);
+  element.addEventListener('keydown', onKeyDown);
+  setupARIA(element);
+}
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
+export function attach(element) {
+  element.classList.add('mdw-overlay');
+  Overlay.attach(element);
+
+  element.classList.add('mdw-ripple');
+  Ripple.attach(element);
+
+  attachCore(element);
 }
 
 /**

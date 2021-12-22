@@ -1,0 +1,31 @@
+<% var T = '../../templates/index.eta'; %>
+<div class="display-flex flex-wrap">
+  <%~ includeFile(T, {button: { text: 'Text' }}) %>
+  <%~ includeFile(T, {button: { raised:true, text: 'Contained' }}) %>
+  <%~ includeFile(T, {button: { raised:true, disabled:true, text: 'Disabled' }}) %>
+  <%~ includeFile(T, {button: { borderInk:'default', text: 'Outlined' }}) %>
+</div>
+<div style="height:24px;"></div>
+<div class="display-flex flex-wrap">
+  <%~ includeFile(T, {button: { ink:'primary', text:'Text' }})  %>
+  <%~ includeFile(T, {button: { ink:'primary', raised:true, text: 'Contained' }})  %>
+  <%~ includeFile(T, {button: { ink:'primary', raised:true, disabled:true, text:'Disabled' }})  %>
+  <%~ includeFile(T, {button: { ink:'secondary', text:'Secondary' }})  %>
+  <%~ includeFile(T, {button: { ink:'secondary', borderInk:true, text:'Outlined' }})  %>
+</div>
+<div style="height:24px;"></div>
+<div class="display-flex flex-wrap">
+  <%~ includeFile(T, { button: { surface:'primary 500', dark:true, text:'Text' }}) %>
+  <%~ includeFile(T, { button: { surface:'primary 500', dark:true, raised:true, text:'Contained' }}) %>
+  <%~ includeFile(T, { button: { surface:'primary 500', dark:true, raised:true, disabled:true, text:'Disabled' }}) %>
+  <%~ includeFile(T, { button: { surface:'secondary 100', light:true, raised:true, text:'Outlined' }}) %>
+</div>
+<div style="height:24px;"></div>
+<div class="display-flex flex-wrap">
+  <%~ includeFile(T, { button: { class:'material-icons', text:'favorite', icon:true }}) %>
+  <%~ includeFile(T, { button: { class:'material-icons', text:'favorite', ink:"warn", dark:true, icon:true }}) %>
+  <%~ includeFile(T, { button: { class:'material-icons', text:'favorite', surface:"warn 500", dark:true, icon:true }}) %>
+  <%~ includeFile(T, { button: { class:'material-icons', text:'favorite', surface:"warn 500", dark:true, icon:true, raised:true }}) %>
+  <%~ includeFile(T, { button: { class:'material-icons', text:'favorite', surface:"warn 500", dark:true, icon:true, raised:true, disabled:true }}) %>
+  <%~ includeFile(T, { button: { class:'material-icons', text:'favorite', icon:true, disabled:true }}) %>
+</div>

@@ -6,9 +6,8 @@ import {
   findElementParentByClassName,
   nextTick,
   setTextNode,
-} from '../../core/dom';
-
-import * as Button from '../button/index';
+} from '../../core/dom.js';
+import * as Button from '../button/index.js';
 
 /**
  * @typedef SnackbarCreateOptions
@@ -53,78 +52,12 @@ export const SHOW_EVENT = 'mdw:snackbar-show';
  * @param {Element} snackbarElement
  * @return {void}
  */
-export function attach(snackbarElement) {
-  const button = snackbarElement.getElementsByClassName('mdw-button')[0];
-  if (button) {
-    Button.attach(button);
-    button.addEventListener('click', onButtonClick);
-  }
-  snackbarElement.setAttribute('mdw-js', '');
-  snackbarElement.addEventListener('animationend', onAnimationEnd);
-  snackbarElement.addEventListener('keydown', onKeyDown);
-  setupARIA(snackbarElement);
-}
-
-/**
- * @param {Element} snackbarElement
- * @return {void}
- */
 export function setupARIA(snackbarElement) {
   if (snackbarElement.hasAttribute('mdw-no-aria')) {
     return;
   }
   snackbarElement.setAttribute('role', 'alert');
   snackbarElement.setAttribute('tabindex', '-1');
-}
-
-/**
- * @param {KeyboardEvent} event
- * @return {void}
- */
-export function onKeyDown(event) {
-  if (event.key === 'Escape' || event.key === 'Esc') {
-    // Allow users to close snackbar with escape, for accessibilty reasons
-    event.stopPropagation();
-    event.preventDefault();
-    /** @type {Element} */
-    const snackbarElement = (event.currentTarget);
-    hide(snackbarElement);
-  }
-}
-
-/**
- * @param {Element} snackbarElement
- * @return {void}
- */
-export function detach(snackbarElement) {
-  const button = snackbarElement.getElementsByClassName('mdw-button')[0];
-  if (button) {
-    Button.detach(button);
-    button.removeEventListener('click', onButtonClick);
-  }
-  // Remove timeouts and stacks
-  SNACKBAR_QUEUE.slice().reverse().forEach((queue, reverseIndex, array) => {
-    if (queue.element === snackbarElement) {
-      queue.clearHideTimeout();
-      const index = array.length - reverseIndex - 1;
-      SNACKBAR_QUEUE.splice(index, 1);
-    }
-  });
-  snackbarElement.removeAttribute('mdw-js');
-}
-
-/**
- * @param {MouseEvent} event
- * @return {void}
- */
-export function onButtonClick(event) {
-  /** @type {HTMLElement} */
-  const buttonElement = (event.currentTarget);
-  if (buttonElement instanceof HTMLAnchorElement) {
-    event.preventDefault();
-  }
-  const snackbarElement = findElementParentByClassName(buttonElement, 'mdw-snackbar');
-  hide(snackbarElement);
 }
 
 /**
@@ -141,14 +74,6 @@ export function findNextQueueItem(element) {
     return false;
   });
   return queue;
-}
-
-/**
- * @param {AnimationEvent} event
- * @return {void}
- */
-export function onAnimationEnd(event) {
-  handleAnimationChange(/** @type {Element} */ (event.currentTarget));
 }
 
 /**
@@ -171,6 +96,7 @@ export function handleAnimationChange(snackbarElement) {
       return;
     }
     const timeout = setTimeout(() => {
+      // eslint-disable-next-line no-use-before-define
       hide(snackbarElement);
     }, timeInSeconds * 1000);
     if (currentQueueItem) {
@@ -181,7 +107,9 @@ export function handleAnimationChange(snackbarElement) {
 
   const nextQueueItem = findNextQueueItem(snackbarElement);
   if (nextQueueItem) {
+    // eslint-disable-next-line no-use-before-define
     update(snackbarElement, nextQueueItem.options);
+    // eslint-disable-next-line no-use-before-define
     show(snackbarElement);
     return;
   }
@@ -190,6 +118,14 @@ export function handleAnimationChange(snackbarElement) {
       snackbarElement.parentElement.removeChild(snackbarElement);
     }
   }
+}
+
+/**
+ * @param {AnimationEvent} event
+ * @return {void}
+ */
+export function onAnimationEnd(event) {
+  handleAnimationChange(/** @type {Element} */ (event.currentTarget));
 }
 
 /**
@@ -215,22 +151,32 @@ export function hide(snackbarElement) {
 }
 
 /**
- * @param {?Element} snackbarElement
- * @return {boolean} changed
+ * @param {KeyboardEvent} event
+ * @return {void}
  */
-export function show(snackbarElement) {
-  if (snackbarElement.getAttribute('aria-hidden') === 'false') {
-    return false;
+export function onKeyDown(event) {
+  if (event.key === 'Escape' || event.key === 'Esc') {
+    // Allow users to close snackbar with escape, for accessibilty reasons
+    event.stopPropagation();
+    event.preventDefault();
+    /** @type {Element} */
+    const snackbarElement = (event.currentTarget);
+    hide(snackbarElement);
   }
-  if (!dispatchDomEvent(snackbarElement, SHOW_EVENT)) {
-    return false;
+}
+
+/**
+ * @param {MouseEvent} event
+ * @return {void}
+ */
+export function onButtonClick(event) {
+  /** @type {HTMLElement} */
+  const buttonElement = (event.currentTarget);
+  if (buttonElement instanceof HTMLAnchorElement) {
+    event.preventDefault();
   }
-  snackbarElement.setAttribute('aria-hidden', 'false');
-  attach(snackbarElement);
-  if (window.getComputedStyle(snackbarElement).animationName === 'none') {
-    nextTick(() => handleAnimationChange(snackbarElement));
-  }
-  return true;
+  const snackbarElement = findElementParentByClassName(buttonElement, 'mdw-snackbar');
+  hide(snackbarElement);
 }
 
 /**
@@ -300,6 +246,62 @@ export function update(element, options) {
   if (options.autoDestroy !== false) {
     element.setAttribute('mdw-autodestroy', '');
   }
+}
+
+/**
+ * @param {Element} snackbarElement
+ * @return {void}
+ */
+export function attach(snackbarElement) {
+  const button = snackbarElement.getElementsByClassName('mdw-button')[0];
+  if (button) {
+    Button.attach(button);
+    button.addEventListener('click', onButtonClick);
+  }
+  snackbarElement.setAttribute('mdw-js', '');
+  snackbarElement.addEventListener('animationend', onAnimationEnd);
+  snackbarElement.addEventListener('keydown', onKeyDown);
+  setupARIA(snackbarElement);
+}
+
+/**
+ * @param {Element} snackbarElement
+ * @return {void}
+ */
+export function detach(snackbarElement) {
+  const button = snackbarElement.getElementsByClassName('mdw-button')[0];
+  if (button) {
+    Button.detach(button);
+    button.removeEventListener('click', onButtonClick);
+  }
+  // Remove timeouts and stacks
+  SNACKBAR_QUEUE.slice().reverse().forEach((queue, reverseIndex, array) => {
+    if (queue.element === snackbarElement) {
+      queue.clearHideTimeout();
+      const index = array.length - reverseIndex - 1;
+      SNACKBAR_QUEUE.splice(index, 1);
+    }
+  });
+  snackbarElement.removeAttribute('mdw-js');
+}
+
+/**
+ * @param {?Element} snackbarElement
+ * @return {boolean} changed
+ */
+export function show(snackbarElement) {
+  if (snackbarElement.getAttribute('aria-hidden') === 'false') {
+    return false;
+  }
+  if (!dispatchDomEvent(snackbarElement, SHOW_EVENT)) {
+    return false;
+  }
+  snackbarElement.setAttribute('aria-hidden', 'false');
+  attach(snackbarElement);
+  if (window.getComputedStyle(snackbarElement).animationName === 'none') {
+    nextTick(() => handleAnimationChange(snackbarElement));
+  }
+  return true;
 }
 
 /**

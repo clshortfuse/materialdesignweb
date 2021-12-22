@@ -1,0 +1,83 @@
+<% var T = '../../templates/index.eta' %>
+<% layout('../_partials/_header.eta', {page: 'snackbar'}) %>
+<div class="mdw-grid" mdw-margin-top mdw-margin-bottom>
+  <div class="mdw-grid__item" mdw-colspan="100%">
+    <h5 class="mdw-type" mdw-baseline-next="36">Snackbars provide brief messages about app processes at the bottom of the screen.</h5>
+    <p class="mdw-type">Snackbars inform users of a process that an app has performed or will perform. They appear temporarily, towards the bottom of the screen. They shouldn’t interrupt the user experience, and they don’t require user input to disappear.</p>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="100%">
+    <div class="mdw-grid__content component-sample" style="padding:0;">
+      <div class="mdw-grid" style="width:100%;height:100%;">
+        <div class="mdw-grid__item" mdw-colspan="100%">
+          <div>
+            <%~ includeFile(T, { button: {  ink:'secondary' , text:'Create New' }}) %>
+          </div>
+        </div>
+        <div class="mdw-grid__item" mdw-colspan="100%">
+          <div class="mdw-snackbar__wrapper">
+            <div class="mdw-snackbar__container">
+              <div class="mdw-snackbar mdw-theme" aria-hidden="false" mdw-surface="background 900" mdw-dark>
+                <span>Short message snackbar.</span>
+                <%~ includeFile(T, { button: { ink:'secondary', text:'Action' }}) %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mdw-grid__item" mdw-colspan="100%">
+          <div class="mdw-snackbar__wrapper">
+            <div class="mdw-snackbar__container js-sample"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="4">
+    <div class="mdw-type" mdw-style="subtitle">Javascript</div>
+    <div class="docs-option-list">
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'javascript', type:'radio', value:'required', disabled:true, text:'Required' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'javascript', type:'radio', value:'optional', checked:true, text:'Optional' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'javascript', type:'radio', value:'none' , text:'None' }}) %>
+    </div>
+    <div class="mdw-type" mdw-style="subtitle">Text</div>
+    <div class="docs-option-list">
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'text', type:'radio', value:'short', checked:true, text:'Short' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'text', type:'radio', value:'long', text:'Long' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'text', type:'radio', value:'line-break' , text:'Explicit line-break' }}) %>
+    </div>
+    <div class="mdw-type" mdw-style="subtitle">Button</div>
+    <div class="docs-option-list">
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'button', type:'radio', value:'none', text:'None' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'button', type:'radio', value:'short', checked:true, text:'Short' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'button', type:'radio', value:'long' , text:'Long' }}) %>
+    </div>
+    <div class="mdw-type" mdw-style="subtitle">Visibility</div>
+    <div class="docs-option-list">
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'visibility', type:'radio', value:'show', checked:true, text:'Show' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'visibility', type:'radio', value:'hide', text:'Hide' }}) %>
+    </div>
+    <div class="mdw-type" mdw-style="subtitle">Position</div>
+    <div class="docs-option-list">
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'position', type:'radio', value:'auto', checked:true, text:'Start (Default)' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'position', type:'radio', value:'center', text:'Center' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'position', type:'radio', value:'end', text:'End' }}) %>
+    </div>
+    <div class="mdw-type" mdw-style="subtitle">Options</div>
+    <div class="docs-option-list">
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'stacked', text:'Stacked' }}) %>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="100%" style="max-height:0"></div>
+  <div class="mdw-grid__item" mdw-colspan="6">
+    <div class="display-flex" flex-column>
+      <h6 class="mdw-type">HTML Code</h6>
+      <div class="mdw-card mdw-theme component-code component-html" mdw-surface="card" mdw-border-ink></div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="6">
+    <div class="display-flex" flex-column>
+      <h6 class="mdw-type">Javascript Code</h6>
+      <div class="mdw-card mdw-theme component-code component-js" mdw-surface="card" mdw-border-ink></div>
+    </div>
+  </div>
+</div>
+<script src="snackbar.min.js"></script>

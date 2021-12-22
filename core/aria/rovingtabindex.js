@@ -1,68 +1,12 @@
 // https://www.w3.org/TR/wai-aria-practices/#kbd_roving_tabindex
 
 import {
-  iterateArrayLike,
   dispatchDomEvent,
+  iterateArrayLike,
   iterateSomeOfArrayLike,
-} from '../dom';
+} from '../dom.js';
 
 export const TABINDEX_ZEROED = 'mdw:rovingtabindex-tabindexzeroed';
-
-/**
- * @param {ArrayLike<Element>} items
- * @param {boolean} [focusableWhenDisabled=true]
- * @return {void}
- */
-export function setupTabIndexes(items, focusableWhenDisabled = true) {
-  /** @type {Element} */
-  let currentlyFocusedChild = null;
-  /** @type {Element} */
-  let currentTabIndexChild = null;
-  /** @type {Element} */
-  let firstFocusableChild = null;
-  iterateArrayLike(items, (child) => {
-    if (!currentlyFocusedChild && document.activeElement === child) {
-      currentlyFocusedChild = child;
-    } else if (!currentTabIndexChild && child.getAttribute('tabindex') === '0') {
-      currentTabIndexChild = child;
-    } else {
-      if (!firstFocusableChild && child.getAttribute('aria-hidden') !== 'true'
-        && (focusableWhenDisabled || child.getAttribute('aria-disabled') !== 'true')) {
-        firstFocusableChild = child;
-      }
-      child.setAttribute('tabindex', '-1');
-    }
-    attach(child);
-  });
-  if (currentlyFocusedChild) {
-    currentlyFocusedChild.setAttribute('tabindex', '0');
-  } else if (currentTabIndexChild) {
-    if (currentlyFocusedChild) {
-      currentTabIndexChild.setAttribute('tabindex', '-1');
-    }
-  } else if (firstFocusableChild) {
-    firstFocusableChild.setAttribute('tabindex', '0');
-  }
-}
-
-/**
- * @param {Element} element
- * @return {void}
- */
-export function attach(element) {
-  if (!element.hasAttribute('tabindex')) {
-    element.setAttribute('tabindex', (document.activeElement === element) ? '0' : '-1');
-  }
-  element.addEventListener('focus', onChildFocus);
-}
-
-/**
- * @param {Element} element
- * @return {void}
- */
-export function detach(element) {
-  element.removeEventListener('focus', onChildFocus);
-}
 
 /**
  * @param {FocusEvent} event
@@ -175,4 +119,60 @@ export function selectNext(list, current = null, loop = true, reverse = false) {
  */
 export function selectPrevious(list, current, loop = true) {
   return selectNext(list, current, loop, true);
+}
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
+export function attach(element) {
+  if (!element.hasAttribute('tabindex')) {
+    element.setAttribute('tabindex', (document.activeElement === element) ? '0' : '-1');
+  }
+  element.addEventListener('focus', onChildFocus);
+}
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
+export function detach(element) {
+  element.removeEventListener('focus', onChildFocus);
+}
+
+/**
+ * @param {ArrayLike<Element>} items
+ * @param {boolean} [focusableWhenDisabled=true]
+ * @return {void}
+ */
+export function setupTabIndexes(items, focusableWhenDisabled = true) {
+  /** @type {Element} */
+  let currentlyFocusedChild = null;
+  /** @type {Element} */
+  let currentTabIndexChild = null;
+  /** @type {Element} */
+  let firstFocusableChild = null;
+  iterateArrayLike(items, (child) => {
+    if (!currentlyFocusedChild && document.activeElement === child) {
+      currentlyFocusedChild = child;
+    } else if (!currentTabIndexChild && child.getAttribute('tabindex') === '0') {
+      currentTabIndexChild = child;
+    } else {
+      if (!firstFocusableChild && child.getAttribute('aria-hidden') !== 'true'
+        && (focusableWhenDisabled || child.getAttribute('aria-disabled') !== 'true')) {
+        firstFocusableChild = child;
+      }
+      child.setAttribute('tabindex', '-1');
+    }
+    attach(child);
+  });
+  if (currentlyFocusedChild) {
+    currentlyFocusedChild.setAttribute('tabindex', '0');
+  } else if (currentTabIndexChild) {
+    if (currentlyFocusedChild) {
+      currentTabIndexChild.setAttribute('tabindex', '-1');
+    }
+  } else if (firstFocusableChild) {
+    firstFocusableChild.setAttribute('tabindex', '0');
+  }
 }

@@ -2,7 +2,7 @@
 // https://material.io/design/components/buttons.html
 // https://material.io/design/iconography/system-icons.html#color
 
-@use '../theme/index.scss' as theme;
+@use '../theme/_mixins.scss' as theme;
 
 $themeValues: (
   overlay-color:                 (('foreground-light', 1.00), ('foreground-dark', 1.00)),

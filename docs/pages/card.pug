@@ -27,40 +27,40 @@ include ../_mixins.pug
                 +mdwButton({ icon: true }).material-icons more_vert
     .mdw-grid__item(mdw-colspan="4")
       .mdw-type(mdw-style="subtitle") Javascript
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'required', disabled:true}) Required
         +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'optional', disabled:true}) Optional
         +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'none', checked:true}) None
       .mdw-type(mdw-style="subtitle") Elevation
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', name:'elevation', type:'radio', value:'auto', checked:true}) Auto
         +mdwSelection({ink:'secondary', name:'elevation', type:'radio', value:'0'}) 0dp
         +mdwSelection({ink:'secondary', name:'elevation', type:'radio', value:'1'}) 1dp
         +mdwSelection({ink:'secondary', name:'elevation', type:'radio', value:'8'}) 8dp
       .mdw-type(mdw-style="subtitle") Raise
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', name:'raise-focus-within', value:'focus-within', checked:true}) On Focus Within
         +mdwSelection({ink:'secondary', name:'raise-hover', value:'hover'}) On Hover
       .mdw-type(mdw-style="subtitle") Media Placement
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', name:'media-placement', type:'radio', value:'none'}) None
         +mdwSelection({ink:'secondary', name:'media-placement', type:'radio', value:'top'}) Top
         +mdwSelection({ink:'secondary', name:'media-placement', type:'radio', value:'middle', checked:true}) Middle
         +mdwSelection({ink:'secondary', name:'media-placement', type:'radio', value:'bottom'}) Bottom
       .mdw-type(mdw-style="subtitle") Media Ratio
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', name:'media-ratio', type:'radio', value:'none'}) None
         +mdwSelection({ink:'secondary', name:'media-ratio', type:'radio', value:'16:9', checked:true}) 16:9
         +mdwSelection({ink:'secondary', name:'media-ratio', type:'radio', value:'3:2'}) 3:2
         +mdwSelection({ink:'secondary', name:'media-ratio', type:'radio', value:'4:3'}) 4:3
         +mdwSelection({ink:'secondary', name:'media-ratio', type:'radio', value:'1:1'}) 1:1
       .mdw-type(mdw-style="subtitle") Actions
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', name:'primary-action', checked:true}) Primary
         +mdwSelection({ink:'secondary', name:'secondary-actions', checked:true}) Secondary
         +mdwSelection({ink:'secondary', name:'close-action', checked:true}) Close
       .mdw-type(mdw-style="subtitle") Surface
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', name:'surface', type:'radio', value:'card'}) Card
         +mdwSelection({ink:'secondary', name:'surface', type:'radio', value:'primary dark', checked:true}) Primary (Dark)
         +mdwSelection({ink:'secondary', name:'surface', type:'radio', value:'secondary 100 light'}) Secondary 100 (Light)

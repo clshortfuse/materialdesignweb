@@ -1,0 +1,276 @@
+<% var T = '../../templates/index.eta' %>
+<% layout('../_partials/_header.eta', {page: 'menu'}) %>
+<div class="mdw-grid" mdw-margin-top mdw-margin-bottom mdw-stretch>
+  <div class="mdw-grid__item" mdw-colspan="100%">
+    <div class="mdw-grid__content">
+      <h5 class="mdw-type" mdw-baseline-next="36">Menus display a list of choices on a transient sheet of material.</h5>
+      <p class="mdw-type" mdw-baseline-next="36">Menus appear upon interaction with a button, action, or other control. They display a list of choices, with one choice per line.</p>
+      <p class="mdw-type">Menu items may be disabled if not applicable to a certain context. Contextual menus dynamically change their available menu items based on the current state of the app.</p>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="4">
+    <div class="mdw-grid__content">
+      <div class="component-sample">
+        <div class="component-sample__container">
+          <div class="mdw-menu__wrapper">
+            <%~ includeFile(T, { button: { text:'Open' }}) %>
+            <div class="mdw-menu">
+              <div class="mdw-menu__popup mdw-theme" mdw-surface="card">
+                <div class="mdw-menu__item">
+                  <div class="mdw-menu__icon mdw-theme material-icons" mdw-ink="medium">format_bold</div>
+                  <div class="mdw-menu__text">Bold</div>
+                  <div class="mdw-menu__info">⌘B</div>
+                </div>
+                <div class="mdw-menu__item" aria-disabled="true">
+                  <div class="mdw-menu__icon mdw-theme material-icons" mdw-ink="medium">format_italic</div>
+                  <div class="mdw-menu__text">Italic</div>
+                  <div class="mdw-menu__info">⌘I</div>
+                </div>
+                <div class="mdw-menu__item">
+                  <div class="mdw-menu__icon mdw-theme material-icons" mdw-ink="medium">format_underline</div>
+                  <div class="mdw-menu__text">Underline</div>
+                  <div class="mdw-menu__info">⌘U</div>
+                </div>
+                <div class="mdw-divider mdw-theme" mdw-ink="divider"></div>
+                <div class="mdw-menu__item" aria-checked="true">
+                  <div class="mdw-menu__check mdw-theme material-icons" mdw-ink="medium">check</div>
+                  <div class="mdw-menu__text">Flights</div>
+                </div>
+                <div class="mdw-menu__item">
+                  <div class="mdw-menu__check mdw-theme material-icons" mdw-ink="medium">check</div>
+                  <div class="mdw-menu__text">Apps</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="8">
+    <div class="mdw-grid__content">
+      <div class="mdw-type" mdw-style="subtitle">Javascript</div>
+      <div class="docs-option-list">
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'javascript', type:'radio', value:'required', checked:true, text:'Required' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'javascript', type:'radio', value:'optional', text:'Optional' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'javascript', type:'radio', value:'none' , text:'None' }}) %>
+      </div>
+      <div class="mdw-type" mdw-style="subtitle">Vertical Position</div>
+      <div class="docs-option-list">
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'vposition', type:'radio', value:'auto', checked:true, text:'Auto' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'vposition', type:'radio', value:'bottom', text:'Bottom' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'vposition', type:'radio', value:'top' , text:'Top' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'vposition', type:'radio', value:'vcenter' , text:'Center' }}) %>
+      </div>
+      <div class="mdw-type" mdw-style="subtitle">Horizontal Position</div>
+      <div class="docs-option-list">
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'hposition', type:'radio', value:'auto', checked:true, text:'Auto' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'hposition', type:'radio', value:'start', text:'Start' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'hposition', type:'radio', value:'end' , text:'End' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'hposition', type:'radio', value:'left' , text:'Left' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'hposition', type:'radio', value:'right' , text:'Right' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'hposition', type:'radio', value:'hcenter' , text:'Center' }}) %>
+      </div>
+      <div class="mdw-type" mdw-style="subtitle">Vertical Direction</div>
+      <div class="docs-option-list">
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'vdirection', type:'radio', value:'auto', checked:true, text:'Auto' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'vdirection', type:'radio', value:'down', text:'Down' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'vdirection', type:'radio', value:'up' , text:'Up' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'vdirection', type:'radio', value:'vcenter' , text:'Center' }}) %>
+      </div>
+      <div class="mdw-type" mdw-style="subtitle">Horizontal Direction</div>
+      <div class="docs-option-list">
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'hdirection', type:'radio', value:'auto', checked:true, text:'Auto' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'hdirection', type:'radio', value:'normal', text:'Normal' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'hdirection', type:'radio', value:'reverse' , text:'Reverse' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'hdirection', type:'radio', value:'ltr', text:'Left-to-Right' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'hdirection', type:'radio', value:'rtl' , text:'Right-to-Left' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'hdirection', type:'radio', value:'hcenter' , text:'Center' }}) %>
+      </div>
+      <div class="mdw-type" mdw-style="subtitle">Width Units</div>
+      <div class="docs-option-list">
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'width', type:'radio', value:'auto', checked:true, text:'Auto' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'width', type:'radio', value:'3' , text:'3' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'width', type:'radio', value:'4' , text:'4' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'width', type:'radio', value:'5' , text:'5' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'width', type:'radio', value:'6' , text:'6' }}) %>
+        <%~ includeFile(T, { selection: { ink:'secondary', name:'width', type:'radio', value:'7' , text:'7' }}) %>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="100%" style="max-height:0;"></div>
+  <div class="mdw-grid__item" mdw-colspan="6">
+    <div class="mdw-grid__content">
+      <h6 class="mdw-type">HTML Code</h6>
+      <div class="mdw-card mdw-theme component-code component-html" mdw-surface="card" mdw-border-ink></div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="6">
+    <div class="mdw-grid__content">
+      <h6 class="mdw-type">Javascript Code</h6>
+      <div class="mdw-card mdw-theme component-code component-js" mdw-surface="card" mdw-border-ink></div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="100%">
+    <h6 class="mdw-type">Samples</h6>
+  </div>
+  <div class="mdw-grid__item display-flex" mdw-colspan="4" flex-justify-content="center">
+    <div class="mdw-grid__content">
+      <div class="render-fill">
+        <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'primary 700', dark:true }) %>
+        <div class="mdw-appbar mdw-theme" mdw-surface="primary 500" mdw-dark>
+          <div class="mdw-appbar__action">
+            <div class="mdw-appbar__start">
+              <div class="mdw-tooltip__wrapper">
+                <%~ includeFile(T, { button: { icon:true, class:'mdw-tooltip__target material-icons', text:'menu' }}) %>
+                <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark>Menu</div>
+              </div>
+            </div>
+            <div class="mdw-appbar__end">
+              <div class="mdw-tooltip__wrapper mdw-menu__wrapper">
+                <%~ includeFile(T, { button: { icon:true, class:'mdw-tooltip__target material-icons', href:"#moremenu", text:'more_vert' }}) %>
+                <div class="mdw-tooltip mdw-theme mdw-tooltip" mdw-surface="background 700" mdw-dark>Options</div>
+                <div class="mdw-menu" id="moremenu" mdw-direction="reverse" mdw-position="end" mdw-width-units="3">
+                  <a class="mdw-menu__close" href="#"></a>
+                  <div class="mdw-menu__popup mdw-theme" mdw-surface="card">
+                    <div class="mdw-menu__text">Refresh</div>
+                    <div class="mdw-menu__text">Settings</div>
+                    <div class="mdw-menu__text">Send feedback</div>
+                    <div class="mdw-menu__text">Help</div>
+                    <div class="mdw-menu__text">Signout</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content" style="padding:16px 8px;">
+          <div class="mdw-menu__wrapper">
+            <%~ includeFile(T, { button: {  surface:'primary 500', dark:true, raised:true, href:'#textmenu' , id:'textmenu-button', text:'Text' }}) %>
+            <div class="mdw-menu" id="textmenu">
+              <a class="mdw-menu__close" href="#textmenu-button"></a>
+              <div class="mdw-menu__popup mdw-theme" mdw-surface="card">
+                <div class="mdw-menu__item mdw-overlay mdw-ripple">Maps</div>
+                <div class="mdw-menu__item mdw-overlay mdw-ripple">Books</div>
+                <div class="mdw-menu__item mdw-overlay mdw-ripple">Flights</div>
+                <div class="mdw-menu__item mdw-overlay mdw-ripple">Apps</div>
+              </div>
+            </div>
+          </div>
+          <div class="mdw-menu__wrapper">
+            <%~ includeFile(T, { button: {  surface:'primary 500', dark:true, raised:true, href:"#checkmenu" , id:'checkmenu-button', text:'Checks' }}) %>
+            <div class="mdw-menu" id="checkmenu">
+              <a class="mdw-menu__close" href="#checkmenu-button"></a>
+              <div class="mdw-menu__popup mdw-theme" mdw-surface="card">
+                <div class="mdw-menu__item mdw-overlay mdw-ripple">
+                  <div class="mdw-menu__check mdw-theme material-icons" mdw-ink="medium">check</div>
+                  <div class="mdw-menu__text">Maps</div>
+                </div>
+                <div class="mdw-menu__item mdw-overlay mdw-ripple" aria-checked="true">
+                  <div class="mdw-menu__check mdw-theme material-icons" mdw-ink="medium">check</div>
+                  <div class="mdw-menu__text">Books</div>
+                </div>
+                <div class="mdw-menu__item mdw-overlay mdw-ripple" aria-checked="true">
+                  <div class="mdw-menu__check mdw-theme material-icons" mdw-ink="medium">check</div>
+                  <div class="mdw-menu__text">Flights</div>
+                </div>
+                <div class="mdw-menu__item mdw-overlay mdw-ripple">
+                  <div class="mdw-menu__check mdw-theme material-icons" mdw-ink="medium">check</div>
+                  <div class="mdw-menu__text">Apps</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="height:400px;"></div>
+          <div class="mdw-menu__wrapper">
+            <%~ includeFile(T, { button: {  surface:'primary 500', dark:true, raised:true, href:"#infomenu" , id:'infomenu-button', text:'Info' }}) %>
+            <div class="mdw-menu" id="infomenu" mdw-width-units="4" mdw-direction="up" mdw-position="top">
+              <a class="mdw-menu__close" href="#infomenu-button"></a>
+              <div class="mdw-menu__popup mdw-theme" mdw-surface="card">
+                <div class="mdw-menu__item mdw-overlay mdw-ripple" aria-disabled="true">
+                  <div class="mdw-menu__check mdw-theme material-icons" mdw-ink="medium">check</div>
+                  <div class="mdw-menu__text">Bold</div>
+                  <div class="mdw-menu__info">⌘B</div>
+                </div>
+                <div class="mdw-menu__item mdw-overlay mdw-ripple" aria-checked="true">
+                  <div class="mdw-menu__check mdw-theme material-icons" mdw-ink="medium">check</div>
+                  <div class="mdw-menu__text">Italic</div>
+                  <div class="mdw-menu__info">⌘I</div>
+                </div>
+                <div class="mdw-menu__item mdw-overlay mdw-ripple" aria-checked="true">
+                  <div class="mdw-menu__check mdw-theme material-icons" mdw-ink="medium">check</div>
+                  <div class="mdw-menu__text">Underline</div>
+                  <div class="mdw-menu__info">⌘U</div>
+                </div>
+                <div class="mdw-divider mdw-theme" mdw-ink="divider"></div>
+                <div class="mdw-menu__item mdw-overlay mdw-ripple" aria-checked="true">
+                  <div class="mdw-menu__check mdw-theme material-icons" mdw-ink="medium">check</div>
+                  <div class="mdw-menu__text">Flights</div>
+                </div>
+                <div class="mdw-menu__item mdw-overlay mdw-ripple">
+                  <div class="mdw-menu__check mdw-theme material-icons" mdw-ink="medium">check</div>
+                  <div class="mdw-menu__text">Apps</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mdw-menu__wrapper">
+            <%~ includeFile(T, { button: {  surface:'primary 500', dark:true, raised:true, href:"#iconmenu" , id:'iconmenu-button', text:'Icons' }}) %>
+            <div class="mdw-menu" id="iconmenu" mdw-width-units="4" mdw-direction="up" mdw-position="top">
+              <a class="mdw-menu__close" href="#iconmenu-button"></a>
+              <div class="mdw-menu__popup mdw-theme" mdw-surface="card">
+                <div class="mdw-menu__item mdw-overlay mdw-ripple">
+                  <div class="mdw-menu__icon mdw-theme material-icons" mdw-ink="medium">format_bold</div>
+                  <div class="mdw-menu__text">Bold</div>
+                  <div class="mdw-menu__info">⌘B</div>
+                </div>
+                <div class="mdw-menu__item mdw-overlay mdw-ripple">
+                  <div class="mdw-menu__icon mdw-theme material-icons" mdw-ink="medium">format_italic</div>
+                  <div class="mdw-menu__text">Italic</div>
+                  <div class="mdw-menu__info">⌘I</div>
+                </div>
+                <div class="mdw-menu__item mdw-overlay mdw-ripple">
+                  <div class="mdw-menu__icon mdw-theme material-icons" mdw-ink="medium">format_underline</div>
+                  <div class="mdw-menu__text">Underline</div>
+                  <div class="mdw-menu__info">⌘U</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mdw-menu__wrapper js">
+            <%~ includeFile(T, { button: {  surface:'primary 500', dark:true, raised: true , text:'JS' }}) %>
+            <div class="mdw-menu" mdw-width-units="4" mdw-direction="reverse">
+              <div class="mdw-menu__popup mdw-theme" mdw-surface="card">
+                <div class="mdw-menu__item">
+                  <div class="mdw-menu__icon mdw-theme material-icons" mdw-ink="medium">format_bold</div>
+                  <div class="mdw-menu__text">Bold</div>
+                  <div class="mdw-menu__info">⌘B</div>
+                </div>
+                <div class="mdw-menu__item" aria-disabled="true">
+                  <div class="mdw-menu__icon mdw-theme material-icons" mdw-ink="medium">format_italic</div>
+                  <div class="mdw-menu__text">Italic</div>
+                  <div class="mdw-menu__info">⌘I</div>
+                </div>
+                <div class="mdw-menu__item">
+                  <div class="mdw-menu__icon mdw-theme material-icons" mdw-ink="medium">format_underline</div>
+                  <div class="mdw-menu__text">Underline</div>
+                  <div class="mdw-menu__info">⌘U</div>
+                </div>
+                <div class="mdw-divider mdw-theme" mdw-ink="divider"></div>
+                <div class="mdw-menu__item" aria-checked="true">
+                  <div class="mdw-menu__check mdw-theme material-icons" mdw-ink="medium">check</div>
+                  <div class="mdw-menu__text">Flights</div>
+                </div>
+                <div class="mdw-menu__item">
+                  <div class="mdw-menu__check mdw-theme material-icons" mdw-ink="medium">check</div>
+                  <div class="mdw-menu__text">Apps</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="menu.min.js"></script>

@@ -9,7 +9,7 @@ export function detectStandalone() {
 /** @return {void} */
 export function detectUserAgent() {
   const ua = navigator.userAgent.toLowerCase();
-  if (/iphone/.test(ua) || /ipad/.test(ua)) {
+  if (/iphone/i.test(ua) || /ipad/i.test(ua) || /macintosh/i.test(ua)) {
     document.documentElement.setAttribute('mdw-ios', '');
   }
 }

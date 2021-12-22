@@ -1,5 +1,5 @@
-import DomAdapter from '../dom/index';
-import * as ListItem from '../../components/list/item';
+import * as ListItem from '../../components/list/item.js';
+import DomAdapter from '../dom/index.js';
 
 /**
  * @template T1
@@ -50,7 +50,7 @@ function AnyListAdapterRenderer(element, data) {
 /**
  * @template T
  * @extends {DomAdapter<T, HTMLLIElement>}
- * */
+ */
 export default class ListAdapter extends DomAdapter {
   /** @param {ListAdapterCreateOptions<T>} options */
   constructor(options) {

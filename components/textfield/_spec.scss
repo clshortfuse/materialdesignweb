@@ -186,7 +186,7 @@ $input-bottom-alignment: dp(8) !default;
     border-top-width: $border-line-height;
 
     transition-delay: 1ms;
-    transition-duration: motion.$simpleDuration / 2;
+    transition-duration: motion.$simpleDuration * 0.5;
     transition-property: left, right;
     transition-timing-function: motion.$standardEasing;
 
@@ -286,7 +286,7 @@ $input-bottom-alignment: dp(8) !default;
     transition-timing-function: motion.$accelerateEasing;
     will-change: transform;
 
-    transform: scaleX(0) translateY(-$border-line-height/2);
+    transform: scaleX(0) translateY(-$border-line-height*0.5);
 
     border-radius: inherit;
     color: transparent;
@@ -740,7 +740,7 @@ select.mdw-textfield__input ~ .mdw-textfield__border,
       transition-duration: motion.$expandDuration;
       transition-timing-function: motion.$decelerateEasing;
 
-      transform: scaleX(1) translateY(-$border-line-height/2);
+      transform: scaleX(1) translateY(-$border-line-height*0.5);
     }
   }
 }

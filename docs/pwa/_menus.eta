@@ -1,0 +1,16 @@
+<div class="mdw-menu" id="sample-menu" mdw-width-units="4">
+  <div class="mdw-menu__popup mdw-theme" mdw-surface="card">
+    <div class="mdw-menu__item" data-action="connect">
+      <div class="mdw-menu__icon mdw-theme material-icons" mdw-ink="medium">&#xE61D;</div>
+      <div class="mdw-menu__text">Connect</div>
+    </div>
+    <div class="mdw-menu__item" data-action="hold">
+      <div class="mdw-menu__icon mdw-theme material-icons" mdw-ink="medium">&#xE620;</div>
+      <div class="mdw-menu__text">Hold</div>
+    </div>
+    <div class="mdw-menu__item" data-action="disconnect">
+      <div class="mdw-menu__icon mdw-theme material-icons" mdw-ink="medium">&#xE0B1;</div>
+      <div class="mdw-menu__text">Disconnect</div>
+    </div>
+  </div>
+</div>

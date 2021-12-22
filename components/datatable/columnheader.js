@@ -1,20 +1,10 @@
-import * as Keyboard from '../../core/aria/keyboard';
-import * as Attributes from '../../core/aria/attributes';
-import { dispatchDomEvent } from '../../core/dom';
-import * as Cell from './cell';
+import * as Attributes from '../../core/aria/attributes.js';
+import * as Keyboard from '../../core/aria/keyboard.js';
+import { dispatchDomEvent } from '../../core/dom.js';
+
+import * as Cell from './cell.js';
 
 export const SORT_EVENT = 'mdw:datatablecolumnheader-sort';
-
-/**
- * @param {HTMLTableHeaderCellElement} element
- * @return {void}
- */
-export function attach(element) {
-  Keyboard.attach(element);
-  element.setAttribute('role', 'columnheader');
-  element.addEventListener('click', onClick);
-  Cell.attach(element);
-}
 
 /**
  * @param {FocusEvent} event
@@ -35,6 +25,16 @@ export function onClick(event) {
   dispatchDomEvent(columnHeaderElement, SORT_EVENT, detail);
 }
 
+/**
+ * @param {HTMLTableHeaderCellElement} element
+ * @return {void}
+ */
+export function attach(element) {
+  Keyboard.attach(element);
+  element.setAttribute('role', 'columnheader');
+  element.addEventListener('click', onClick);
+  Cell.attach(element);
+}
 
 /**
  * @param {HTMLTableHeaderCellElement} element

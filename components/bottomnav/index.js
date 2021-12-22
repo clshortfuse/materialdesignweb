@@ -1,39 +1,10 @@
 // https://www.w3.org/TR/wai-aria-practices/#tabpanel
 
-import { iterateArrayLike } from '../../core/dom';
+import * as Keyboard from '../../core/aria/keyboard.js';
+import * as RovingTabIndex from '../../core/aria/rovingtabindex.js';
+import { iterateArrayLike } from '../../core/dom.js';
 
-import * as RovingTabIndex from '../../core/aria/rovingtabindex';
-import * as Keyboard from '../../core/aria/keyboard';
-import * as BottomNavItem from './item';
-
-/**
- * @param {Element} bottomnavElement
- * @return {void}
- */
-export function attach(bottomnavElement) {
-  setupARIA(bottomnavElement);
-  /** @type {Element} */
-  let selectedItem;
-  const items = bottomnavElement.getElementsByClassName('mdw-bottomnav__item');
-
-  iterateArrayLike(items, (item) => {
-    BottomNavItem.attach(item);
-    if (!selectedItem && item.getAttribute('aria-selected') === 'true') {
-      selectedItem = item;
-    }
-  });
-  if (!selectedItem) {
-    selectedItem = items[0];
-  }
-  if (selectedItem) {
-    BottomNavItem.setSelected(selectedItem, true, true);
-  }
-  RovingTabIndex.setupTabIndexes(bottomnavElement.querySelectorAll('[role="tab"]'));
-  bottomnavElement.addEventListener(BottomNavItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
-  bottomnavElement.addEventListener(Keyboard.FORWARD_ARROW_KEY, onForwardsRequested);
-  bottomnavElement.addEventListener(Keyboard.BACK_ARROW_KEY, onBackwardsRequested);
-  bottomnavElement.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
-}
+import * as BottomNavItem from './item.js';
 
 /**
  * @param {Event} event
@@ -91,18 +62,6 @@ export function setupARIA(bottomnavElement) {
 }
 
 /**
- * @param {Element} bottomnavElement
- * @return {void}
- */
-export function detach(bottomnavElement) {
-  bottomnavElement.removeEventListener(BottomNavItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
-  bottomnavElement.removeEventListener(Keyboard.FORWARD_ARROW_KEY, onForwardsRequested);
-  bottomnavElement.removeEventListener(Keyboard.BACK_ARROW_KEY, onBackwardsRequested);
-  bottomnavElement.removeEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
-  iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'), BottomNavItem.detach);
-}
-
-/**
  * @param {CustomEvent} event
  * @return {void}
  */
@@ -119,4 +78,45 @@ export function onSelectedChangeEvent(event) {
       BottomNavItem.setSelected(item, false);
     }
   });
+}
+
+/**
+ * @param {Element} bottomnavElement
+ * @return {void}
+ */
+export function attach(bottomnavElement) {
+  setupARIA(bottomnavElement);
+  /** @type {Element} */
+  let selectedItem;
+  const items = bottomnavElement.getElementsByClassName('mdw-bottomnav__item');
+
+  iterateArrayLike(items, (item) => {
+    BottomNavItem.attach(item);
+    if (!selectedItem && item.getAttribute('aria-selected') === 'true') {
+      selectedItem = item;
+    }
+  });
+  if (!selectedItem) {
+    selectedItem = items[0];
+  }
+  if (selectedItem) {
+    BottomNavItem.setSelected(selectedItem, true, true);
+  }
+  RovingTabIndex.setupTabIndexes(bottomnavElement.querySelectorAll('[role="tab"]'));
+  bottomnavElement.addEventListener(BottomNavItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
+  bottomnavElement.addEventListener(Keyboard.FORWARD_ARROW_KEY, onForwardsRequested);
+  bottomnavElement.addEventListener(Keyboard.BACK_ARROW_KEY, onBackwardsRequested);
+  bottomnavElement.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
+}
+
+/**
+ * @param {Element} bottomnavElement
+ * @return {void}
+ */
+export function detach(bottomnavElement) {
+  bottomnavElement.removeEventListener(BottomNavItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
+  bottomnavElement.removeEventListener(Keyboard.FORWARD_ARROW_KEY, onForwardsRequested);
+  bottomnavElement.removeEventListener(Keyboard.BACK_ARROW_KEY, onBackwardsRequested);
+  bottomnavElement.removeEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
+  iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'), BottomNavItem.detach);
 }

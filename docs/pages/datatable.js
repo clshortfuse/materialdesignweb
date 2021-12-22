@@ -1,10 +1,10 @@
-import { iterateArrayLike } from '../../core/dom';
-import * as Button from '../../components/button/index';
-import * as DataTable from '../../components/datatable/index';
-import * as Selection from '../../components/selection/index';
-import * as Menu from '../../components/menu/index';
-import * as MenuItem from '../../components/menu/item';
-import DataTableAdapter from '../../adapters/datatable/index';
+import DataTableAdapter from '../../adapters/datatable/index.js';
+import * as Button from '../../components/button/index.js';
+import * as DataTable from '../../components/datatable/index.js';
+import * as Menu from '../../components/menu/index.js';
+import * as MenuItem from '../../components/menu/item.js';
+import * as Selection from '../../components/selection/index.js';
+import { iterateArrayLike } from '../../core/dom.js';
 
 /** @return {void} */
 function initializeMdwComponents() {
@@ -13,7 +13,6 @@ function initializeMdwComponents() {
   iterateArrayLike(document.getElementsByClassName('mdw-selection'), Selection.attach);
   iterateArrayLike(document.getElementsByClassName('mdw-menu'), Menu.attach);
 }
-
 
 /**
  * @typedef {Object} CustomData

@@ -1,6 +1,6 @@
-import { convertElementToCode } from '../_sample-utils';
-import * as Snackbar from '../../components/snackbar/index';
-import { iterateArrayLike } from '../../core/dom';
+import * as Snackbar from '../../components/snackbar/index.js';
+import { iterateArrayLike } from '../../core/dom.js';
+import { convertElementToCode } from '../_sample-utils.js';
 
 /** @type {HTMLElement} */
 let sampleComponent;

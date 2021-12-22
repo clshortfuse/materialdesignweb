@@ -1,5 +1,5 @@
-import * as List from '../../components/list/index';
-import { iterateArrayLike } from '../../core/dom';
+import * as List from '../../components/list/index.js';
+import { iterateArrayLike } from '../../core/dom.js';
 
 /** @return {void} */
 function initializeMdwComponents() {

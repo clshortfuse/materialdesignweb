@@ -1,17 +1,9 @@
-import { dispatchDomEvent } from '../../core/dom';
+import {
+  dispatchDomEvent,
+} from '../../core/dom.js';
 
 export const CLICK_EVENT = 'mdw:selectioninput-click';
 export const FOCUS_EVENT = 'mdw:selectioninput-focus';
-
-/**
- * @param {HTMLElement} element
- * @return {void}
- */
-export function attach(element) {
-  element.addEventListener('keydown', onKeyDown);
-  element.addEventListener('click', onClick);
-  element.addEventListener('focus', onFocus);
-}
 
 /**
  * @param {KeyboardEvent} event
@@ -26,14 +18,13 @@ function onKeyDown(event) {
   }
 }
 
-
 /**
  * @param {MouseEvent} event
  * @return {void}
  */
 function onClick(event) {
   event.stopPropagation();
-  dispatchDomEvent(/** @type {HTMLElement} */(event.target), CLICK_EVENT);
+  dispatchDomEvent(/** @type {HTMLElement} */ (event.target), CLICK_EVENT);
 }
 
 /**
@@ -41,7 +32,17 @@ function onClick(event) {
  * @return {void}
  */
 function onFocus(event) {
-  dispatchDomEvent(/** @type {HTMLElement} */(event.target), FOCUS_EVENT);
+  dispatchDomEvent(/** @type {HTMLElement} */ (event.target), FOCUS_EVENT);
+}
+
+/**
+ * @param {HTMLElement} element
+ * @return {void}
+ */
+export function attach(element) {
+  element.addEventListener('keydown', onKeyDown);
+  element.addEventListener('click', onClick);
+  element.addEventListener('focus', onFocus);
 }
 
 /**

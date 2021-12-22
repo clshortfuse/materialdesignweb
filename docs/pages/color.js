@@ -1,6 +1,6 @@
-import * as Overlay from '../../core/overlay/index';
-import * as Ripple from '../../core/ripple/index';
-import { iterateArrayLike, nextTick } from '../../core/dom';
+import { iterateArrayLike, nextTick } from '../../core/dom.js';
+import * as Overlay from '../../core/overlay/index.js';
+import * as Ripple from '../../core/ripple/index.js';
 
 iterateArrayLike(document.getElementsByClassName('mdw-overlay'), Overlay.attach);
 iterateArrayLike(document.getElementsByClassName('mdw-ripple'), Ripple.attach);
@@ -15,7 +15,6 @@ const sampleButtonActivated = document.getElementById('sample-button__activated'
 const sampleContrastText = document.getElementById('sample-contrast__text');
 const sampleContrastSelected = document.getElementById('sample-contrast__selected');
 const sampleContrastActivated = document.getElementById('sample-contrast__activated');
-
 
 /** @typedef {{r:number,g:number,b:number,a:number}} Color */
 
@@ -133,10 +132,10 @@ function calculateContrast() {
     const style = window.getComputedStyle(sampleButton);
     const surfaceColor = parseColor(style.backgroundColor);
     const inkColor = parseColor(style.color);
-    sampleSurface.textContent = ` ${colorToString(surfaceColor)}`;
-    sampleInk.textContent = ` ${colorToString(inkColor)}`;
+    sampleSurface.textContent = colorToString(surfaceColor);
+    sampleInk.textContent = colorToString(inkColor);
     const flattenedInk = overlayColor(surfaceColor, inkColor);
-    sampleContrastText.textContent = ` ${getContrastRatio(surfaceColor, flattenedInk).toFixed(2)}`;
+    sampleContrastText.textContent = getContrastRatio(surfaceColor, flattenedInk).toFixed(2);
 
     let selectedOpacity = 0.08;
     let activatedOpacity = 0.12;
@@ -153,12 +152,12 @@ function calculateContrast() {
     const selectedOverlay = parseColor(`rgba(${overlayInkColor.r},${overlayInkColor.g},${overlayInkColor.b},${selectedOpacity})`);
     const selectedBackground = overlayColor(surfaceColor, selectedOverlay);
     const selectedColor = overlayColor(selectedFlattenedInk, selectedOverlay);
-    sampleContrastSelected.textContent = ` ${getContrastRatio(selectedBackground, selectedColor).toFixed(2)}`;
+    sampleContrastSelected.textContent = getContrastRatio(selectedBackground, selectedColor).toFixed(2);
 
     const activatedOverlay = parseColor(`rgba(${overlayInkColor.r},${overlayInkColor.g},${overlayInkColor.b},${activatedOpacity})`);
     const activatedBackground = overlayColor(surfaceColor, activatedOverlay);
     const activatedColor = overlayColor(flattenedInk, activatedOverlay);
-    sampleContrastActivated.textContent = ` ${getContrastRatio(activatedBackground, activatedColor).toFixed(2)}`;
+    sampleContrastActivated.textContent = getContrastRatio(activatedBackground, activatedColor).toFixed(2);
   });
 }
 
@@ -251,7 +250,7 @@ function setupComponentOptions() {
 
 iterateArrayLike(
   document.getElementsByClassName('demo-core-item'),
-  (item) => item.addEventListener('click', onItemClick)
+  (item) => item.addEventListener('click', onItemClick),
 );
 
 [

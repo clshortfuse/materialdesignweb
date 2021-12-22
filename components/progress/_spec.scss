@@ -4,6 +4,8 @@
 // https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/anim/progress_indeterminate_material.xml
 // https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/drawable/vector_drawable_progress_bar_medium.xml
 
+@use "sass:math";
+
 @use '../../core/_motion.scss' as motion;
 @use '../../core/_platform.scss' as platform;
 
@@ -33,7 +35,7 @@ $duration: 1333ms;
   $radius: 8.75;
   $pi: 3.14159265359;
   $circumference: 2 * $pi * $radius;
-  @return $circumference * (($limit/100) - ($percent/100));
+  @return $circumference * (math.div($limit,100) - math.div($percent,100));
 }
 
 @keyframes rotate-clockwise {
@@ -92,7 +94,7 @@ $duration: 1333ms;
         animation-iteration-count: infinite;
 
         stroke-dasharray: circlePercentage(25, 100);
-        stroke-dashoffset: circlePercentage(100/3, 75); // Fallback 33% length for IE
+        stroke-dashoffset: circlePercentage(math.div(100, 3), 75); // Fallback 33% length for IE
         stroke-linecap: round;
 
       }
@@ -115,7 +117,7 @@ $duration: 1333ms;
   // Double rotation speed
   @include platform.ifIE() {
     &:not([mdw-determinate]) svg {
-      animation-duration: $duration / 2;
+      animation-duration: $duration * 0.5;
     }
   }
 }

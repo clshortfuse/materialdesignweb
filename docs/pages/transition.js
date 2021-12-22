@@ -1,11 +1,10 @@
-import * as Transition from '../../core/transition/index';
-import * as Overlay from '../../core/overlay/index';
-import * as Ripple from '../../core/ripple/index';
-import { iterateArrayLike } from '../../core/dom';
+import { iterateArrayLike } from '../../core/dom.js';
+import * as Overlay from '../../core/overlay/index.js';
+import * as Ripple from '../../core/ripple/index.js';
+import * as Transition from '../../core/transition/index.js';
 
 iterateArrayLike(document.getElementsByClassName('mdw-overlay'), Overlay.attach);
 iterateArrayLike(document.getElementsByClassName('mdw-ripple'), Ripple.attach);
-
 
 /** @type {HTMLElement} */
 let target1;
@@ -40,8 +39,8 @@ function onItemClick(event) {
   Transition.transitionElement({
     fromShapeElement: target1,
     toShapeElement: target2,
-    fromContentElement: target1.getElementsByTagName('span')[0],
-    toContentElement: target2.getElementsByTagName('span')[0],
+    fromContentElement: target1.getElementsByClassName('demo-core-content')[0],
+    toContentElement: target2.getElementsByClassName('demo-core-content')[0],
     duration: 3000,
     revertFrom: true,
   });
@@ -51,5 +50,5 @@ function onItemClick(event) {
 
 iterateArrayLike(
   document.getElementsByClassName('demo-core-item'),
-  (item) => item.addEventListener('click', onItemClick)
+  (item) => item.addEventListener('click', onItemClick),
 );

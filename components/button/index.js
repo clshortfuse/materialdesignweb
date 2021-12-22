@@ -1,8 +1,16 @@
-// https://www.w3.org/TR/wai-aria-practices/#button
+/** @see https://www.w3.org/TR/wai-aria-practices/#button */
 
-import * as Ripple from '../../core/ripple/index';
-import * as Overlay from '../../core/overlay/index';
-import * as AriaButton from '../../core/aria/button';
+import * as AriaButton from '../../core/aria/button.js';
+import * as Overlay from '../../core/overlay/index.js';
+import * as Ripple from '../../core/ripple/index.js';
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
+export function attachCore(element) {
+  AriaButton.attach(element);
+}
 
 /**
  * @param {Element} element
@@ -14,14 +22,6 @@ export function attach(element) {
   element.classList.add('mdw-ripple');
   Overlay.attach(element);
   attachCore(element);
-}
-
-/**
- * @param {Element} element
- * @return {void}
- */
-export function attachCore(element) {
-  AriaButton.attach(element);
 }
 
 /**

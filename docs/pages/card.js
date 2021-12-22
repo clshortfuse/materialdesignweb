@@ -1,5 +1,5 @@
-import { convertElementToCode } from '../_sample-utils';
-import { iterateArrayLike, setTextNode } from '../../core/dom';
+import { iterateArrayLike, setTextNode } from '../../core/dom.js';
+import { convertElementToCode } from '../_sample-utils.js';
 
 /** @type {HTMLElement} */
 let sampleComponent;

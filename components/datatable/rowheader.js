@@ -1,4 +1,4 @@
-import * as Keyboard from '../../core/aria/keyboard';
+import * as Keyboard from '../../core/aria/keyboard.js';
 
 /**
  * @param {HTMLTableHeaderCellElement} element

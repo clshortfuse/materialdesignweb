@@ -1,15 +1,15 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
 import {
+  cancelTick,
   dispatchDomEvent,
   isRtl,
   iterateArrayLike,
   iterateSomeOfArrayLike,
   nextTick,
-  cancelTick,
-} from '../../core/dom';
+} from '../../core/dom.js';
 
-import * as MenuItem from './item';
+import * as MenuItem from './item.js';
 
 class MenuStack {
   /**
@@ -36,16 +36,42 @@ export const HIDE_EVENT = 'mdw:menu-hide';
 
 /**
  * @param {Element} menuElement
- * @return {void}
+ * @return {boolean} handled
  */
-export function attach(menuElement) {
-  menuElement.setAttribute('mdw-menu-js', '');
-  menuElement.addEventListener('click', onMenuClick);
-  menuElement.addEventListener('scroll', onMenuScroll);
-  menuElement.addEventListener('touchmove', onMenuScroll);
-  menuElement.addEventListener('wheel', onMenuScroll);
-  menuElement.addEventListener('keydown', onKeyDown);
-  setupARIA(menuElement);
+export function hide(menuElement) {
+  if (menuElement.getAttribute('aria-hidden') === 'true') {
+    return false;
+  }
+  menuElement.setAttribute('aria-hidden', 'true');
+  let stackIndex = -1;
+  OPEN_MENUS.some((stack, index) => {
+    if (stack.element === menuElement) {
+      stackIndex = index;
+      return true;
+    }
+    return false;
+  });
+  if (stackIndex !== -1) {
+    const menuStack = OPEN_MENUS[stackIndex];
+    if (menuStack.previousFocus && menuStack.previousFocus instanceof HTMLElement) {
+      menuStack.previousFocus.focus();
+    }
+    OPEN_MENUS.splice(stackIndex, 1);
+    if (menuStack.state && window.history && window.history.state) {
+      // IE11 returns a cloned state object, not the original
+      if (menuStack.state.hash === window.history.state.hash) {
+        window.history.back();
+      }
+    }
+  }
+  if (!OPEN_MENUS.length) {
+    // eslint-disable-next-line no-use-before-define
+    window.removeEventListener('popstate', onPopState);
+    // eslint-disable-next-line no-use-before-define
+    window.removeEventListener('resize', onWindowResize);
+  }
+  dispatchDomEvent(menuElement, HIDE_EVENT);
+  return true;
 }
 
 /**
@@ -99,176 +125,6 @@ export function onMenuClick(event) {
   if (event.currentTarget === event.target && event.target instanceof HTMLElement) {
     event.stopPropagation();
     hide(event.target);
-  }
-}
-
-/**
- * @return {void}
- */
-export function onWindowResize() {
-  const lastOpenMenu = OPEN_MENUS[OPEN_MENUS.length - 1];
-  if (!lastOpenMenu || !lastOpenMenu.originalEvent) {
-    return;
-  }
-  if (lastOpenMenu.pendingResizeOperation) {
-    cancelTick(lastOpenMenu.pendingResizeOperation);
-  }
-  lastOpenMenu.pendingResizeOperation = nextTick(() => {
-    updateMenuPosition(
-      lastOpenMenu.element,
-      /** @type {HTMLElement} */ (lastOpenMenu.element.getElementsByClassName('mdw-menu__popup')[0]),
-      lastOpenMenu.originalEvent
-    );
-    lastOpenMenu.pendingResizeOperation = null;
-  });
-}
-
-/**
- * @param {PopStateEvent} event
- * @return {void}
- */
-export function onPopState(event) {
-  if (!event.state) {
-    return;
-  }
-  const lastOpenMenu = OPEN_MENUS[OPEN_MENUS.length - 1];
-  if (!lastOpenMenu || !lastOpenMenu.previousState) {
-    return;
-  }
-  if ((lastOpenMenu.previousState === event.state) || Object.keys(event.state)
-    .every((key) => event.state[key] === lastOpenMenu.previousState[key])) {
-    hide(lastOpenMenu.element);
-  }
-}
-
-/**
- * @param {KeyboardEvent} event
- * @return {void}
- */
-export function onKeyDown(event) {
-  /** @type {HTMLElement} */
-  const menuElement = (event.currentTarget);
-  if (!menuElement || menuElement.getAttribute('aria-hidden') === 'true') {
-    return;
-  }
-
-  if (event.key === 'ArrowDown' || (event.key === 'Down')) {
-    event.stopPropagation();
-    event.preventDefault();
-    selectNextMenuItem(menuElement, false);
-    return;
-  }
-  if (event.key === 'ArrowUp' || (event.key === 'Up')) {
-    event.stopPropagation();
-    event.preventDefault();
-    selectNextMenuItem(menuElement, true);
-    return;
-  }
-  if (event.key === 'Tab') {
-    // Hide menu allowing focus to revert to calling element
-    // To then allow browser default Tab interaction
-    // Unless menu hiding is cancelled
-    if (!hide(menuElement)) {
-      event.stopPropagation();
-      event.preventDefault();
-    }
-    return;
-  }
-  if (event.key === 'Escape' || event.key === 'Esc') {
-    event.stopPropagation();
-    event.preventDefault();
-    hide(menuElement);
-  }
-}
-
-/**
- * @param {Element} menuElement
- * @return {void}
- */
-export function detach(menuElement) {
-  hide(menuElement);
-  menuElement.removeEventListener('click', onMenuClick);
-  menuElement.removeEventListener('scroll', onMenuScroll);
-  menuElement.removeEventListener('touchmove', onMenuScroll);
-  menuElement.removeEventListener('wheel', onMenuScroll);
-  menuElement.addEventListener('keydown', onKeyDown);
-  menuElement.removeAttribute('mdw-menu-js');
-  /** @type {HTMLElement} */
-  const popupElement = (menuElement.getElementsByClassName('mdw-menu__popup')[0]);
-  if (popupElement) {
-    popupElement.style.removeProperty('top');
-    popupElement.style.removeProperty('left');
-    popupElement.style.removeProperty('right');
-    popupElement.style.removeProperty('bottom');
-    popupElement.style.removeProperty('margin');
-    popupElement.style.removeProperty('transform-origin');
-    popupElement.style.removeProperty('position');
-    if (popupElement.hasAttribute('style') && !popupElement.getAttribute('style')) {
-      popupElement.removeAttribute('style');
-    }
-  }
-  iterateArrayLike(menuElement.getElementsByClassName('mdw-menu__item'), MenuItem.detach);
-}
-
-/**
- * @param {Element} menu
- * @param {boolean} [backwards=false]
- * @return {void}
- */
-export function selectNextMenuItem(menu, backwards) {
-  /** @type {HTMLCollectionOf<HTMLElement>} */
-  const menuItems = (menu.getElementsByClassName('mdw-menu__item'));
-  let foundTarget = false;
-  /** @type {HTMLElement} */
-  let candidate = null;
-  /** @type {HTMLElement} */
-  let firstFocusableItem = null;
-  let lastFocusableElement = null;
-  const target = document.activeElement;
-
-  // Hidden elements cannot be focused
-  // Disabled elements cannot be focused on IE11
-  // Skip elements that fail to receive focus
-  iterateSomeOfArrayLike(menuItems, (el) => {
-    el.focus();
-    const focusable = (document.activeElement === el);
-    if (focusable) {
-      if (!firstFocusableItem) {
-        firstFocusableItem = el;
-      }
-      lastFocusableElement = el;
-    }
-    if (el === target) {
-      foundTarget = true;
-      if (backwards && candidate) {
-        return true;
-      }
-      return false;
-    }
-    if (backwards) {
-      if (focusable) {
-        candidate = el;
-      }
-      return false;
-    }
-    if (foundTarget) {
-      if (focusable) {
-        candidate = el;
-        return true;
-      }
-      return false;
-    }
-    return false;
-  });
-  if (!candidate) {
-    if (backwards) {
-      candidate = lastFocusableElement;
-    } else {
-      candidate = firstFocusableItem;
-    }
-  }
-  if (candidate && document.activeElement !== candidate) {
-    candidate.focus();
   }
 }
 
@@ -606,6 +462,147 @@ export function updateMenuPosition(menuElement, popupElement, event, alignTarget
 }
 
 /**
+ * @return {void}
+ */
+export function onWindowResize() {
+  const lastOpenMenu = OPEN_MENUS[OPEN_MENUS.length - 1];
+  if (!lastOpenMenu || !lastOpenMenu.originalEvent) {
+    return;
+  }
+  if (lastOpenMenu.pendingResizeOperation) {
+    cancelTick(lastOpenMenu.pendingResizeOperation);
+  }
+  lastOpenMenu.pendingResizeOperation = nextTick(() => {
+    updateMenuPosition(
+      lastOpenMenu.element,
+      /** @type {HTMLElement} */ (lastOpenMenu.element.getElementsByClassName('mdw-menu__popup')[0]),
+      lastOpenMenu.originalEvent,
+    );
+    lastOpenMenu.pendingResizeOperation = null;
+  });
+}
+
+/**
+ * @param {PopStateEvent} event
+ * @return {void}
+ */
+export function onPopState(event) {
+  if (!event.state) {
+    return;
+  }
+  const lastOpenMenu = OPEN_MENUS[OPEN_MENUS.length - 1];
+  if (!lastOpenMenu || !lastOpenMenu.previousState) {
+    return;
+  }
+  if ((lastOpenMenu.previousState === event.state) || Object.keys(event.state)
+    .every((key) => event.state[key] === lastOpenMenu.previousState[key])) {
+    hide(lastOpenMenu.element);
+  }
+}
+
+/**
+ * @param {Element} menu
+ * @param {boolean} [backwards=false]
+ * @return {void}
+ */
+export function selectNextMenuItem(menu, backwards) {
+  /** @type {HTMLCollectionOf<HTMLElement>} */
+  const menuItems = (menu.getElementsByClassName('mdw-menu__item'));
+  let foundTarget = false;
+  /** @type {HTMLElement} */
+  let candidate = null;
+  /** @type {HTMLElement} */
+  let firstFocusableItem = null;
+  let lastFocusableElement = null;
+  const target = document.activeElement;
+
+  // Hidden elements cannot be focused
+  // Disabled elements cannot be focused on IE11
+  // Skip elements that fail to receive focus
+  iterateSomeOfArrayLike(menuItems, (el) => {
+    el.focus();
+    const focusable = (document.activeElement === el);
+    if (focusable) {
+      if (!firstFocusableItem) {
+        firstFocusableItem = el;
+      }
+      lastFocusableElement = el;
+    }
+    if (el === target) {
+      foundTarget = true;
+      if (backwards && candidate) {
+        return true;
+      }
+      return false;
+    }
+    if (backwards) {
+      if (focusable) {
+        candidate = el;
+      }
+      return false;
+    }
+    if (foundTarget) {
+      if (focusable) {
+        candidate = el;
+        return true;
+      }
+      return false;
+    }
+    return false;
+  });
+  if (!candidate) {
+    if (backwards) {
+      candidate = lastFocusableElement;
+    } else {
+      candidate = firstFocusableItem;
+    }
+  }
+  if (candidate && document.activeElement !== candidate) {
+    candidate.focus();
+  }
+}
+
+/**
+ * @param {KeyboardEvent} event
+ * @return {void}
+ */
+export function onKeyDown(event) {
+  /** @type {HTMLElement} */
+  const menuElement = (event.currentTarget);
+  if (!menuElement || menuElement.getAttribute('aria-hidden') === 'true') {
+    return;
+  }
+
+  if (event.key === 'ArrowDown' || (event.key === 'Down')) {
+    event.stopPropagation();
+    event.preventDefault();
+    selectNextMenuItem(menuElement, false);
+    return;
+  }
+  if (event.key === 'ArrowUp' || (event.key === 'Up')) {
+    event.stopPropagation();
+    event.preventDefault();
+    selectNextMenuItem(menuElement, true);
+    return;
+  }
+  if (event.key === 'Tab') {
+    // Hide menu allowing focus to revert to calling element
+    // To then allow browser default Tab interaction
+    // Unless menu hiding is cancelled
+    if (!hide(menuElement)) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+    return;
+  }
+  if (event.key === 'Escape' || event.key === 'Esc') {
+    event.stopPropagation();
+    event.preventDefault();
+    hide(menuElement);
+  }
+}
+
+/**
  * @param {Element} menuElement
  * @return {void}
  */
@@ -616,6 +613,20 @@ export function refreshMenuItems(menuElement) {
   });
   const popupElement = menuElement.getElementsByClassName('mdw-menu__popup')[0];
   popupElement.setAttribute('tabindex', '-1');
+}
+
+/**
+ * @param {Element} menuElement
+ * @return {void}
+ */
+export function attach(menuElement) {
+  menuElement.setAttribute('mdw-menu-js', '');
+  menuElement.addEventListener('click', onMenuClick);
+  menuElement.addEventListener('scroll', onMenuScroll);
+  menuElement.addEventListener('touchmove', onMenuScroll);
+  menuElement.addEventListener('wheel', onMenuScroll);
+  menuElement.addEventListener('keydown', onKeyDown);
+  setupARIA(menuElement);
 }
 
 /**
@@ -682,38 +693,29 @@ export function show(menuElement, event, alignTarget) {
 
 /**
  * @param {Element} menuElement
- * @return {boolean} handled
+ * @return {void}
  */
-export function hide(menuElement) {
-  if (menuElement.getAttribute('aria-hidden') === 'true') {
-    return false;
-  }
-  menuElement.setAttribute('aria-hidden', 'true');
-  let stackIndex = -1;
-  OPEN_MENUS.some((stack, index) => {
-    if (stack.element === menuElement) {
-      stackIndex = index;
-      return true;
-    }
-    return false;
-  });
-  if (stackIndex !== -1) {
-    const menuStack = OPEN_MENUS[stackIndex];
-    if (menuStack.previousFocus && menuStack.previousFocus instanceof HTMLElement) {
-      menuStack.previousFocus.focus();
-    }
-    OPEN_MENUS.splice(stackIndex, 1);
-    if (menuStack.state && window.history && window.history.state) {
-      // IE11 returns a cloned state object, not the original
-      if (menuStack.state.hash === window.history.state.hash) {
-        window.history.back();
-      }
+export function detach(menuElement) {
+  hide(menuElement);
+  menuElement.removeEventListener('click', onMenuClick);
+  menuElement.removeEventListener('scroll', onMenuScroll);
+  menuElement.removeEventListener('touchmove', onMenuScroll);
+  menuElement.removeEventListener('wheel', onMenuScroll);
+  menuElement.addEventListener('keydown', onKeyDown);
+  menuElement.removeAttribute('mdw-menu-js');
+  /** @type {HTMLElement} */
+  const popupElement = (menuElement.getElementsByClassName('mdw-menu__popup')[0]);
+  if (popupElement) {
+    popupElement.style.removeProperty('top');
+    popupElement.style.removeProperty('left');
+    popupElement.style.removeProperty('right');
+    popupElement.style.removeProperty('bottom');
+    popupElement.style.removeProperty('margin');
+    popupElement.style.removeProperty('transform-origin');
+    popupElement.style.removeProperty('position');
+    if (popupElement.hasAttribute('style') && !popupElement.getAttribute('style')) {
+      popupElement.removeAttribute('style');
     }
   }
-  if (!OPEN_MENUS.length) {
-    window.removeEventListener('popstate', onPopState);
-    window.removeEventListener('resize', onWindowResize);
-  }
-  dispatchDomEvent(menuElement, HIDE_EVENT);
-  return true;
+  iterateArrayLike(menuElement.getElementsByClassName('mdw-menu__item'), MenuItem.detach);
 }

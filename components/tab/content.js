@@ -1,33 +1,15 @@
 import {
-  iterateArrayLike,
-  scrollToElement,
   dispatchDomEvent,
+  getPassiveEventListenerOption,
   isRtl,
+  iterateArrayLike,
   iterateSomeOfArrayLike,
-} from '../../core/dom';
-import * as TabPanel from './panel';
+  scrollToElement,
+} from '../../core/dom.js';
+
+import * as TabPanel from './panel.js';
 
 export const SCROLL_EVENT = 'mdw:tabcontent-scroll';
-
-/**
- * @param {Element} tabContentElement
- * @return {void}
- */
-export function attach(tabContentElement) {
-  tabContentElement.addEventListener('scroll', onTabContentScroll);
-  iterateArrayLike(tabContentElement.getElementsByClassName('mdw-tab__panel'), TabPanel.attach);
-  tabContentElement.addEventListener('keydown', onKeyDown);
-}
-
-/**
- * @param {Element} tabContentElement
- * @return {void}
- */
-export function detach(tabContentElement) {
-  tabContentElement.removeEventListener('keydown', onKeyDown);
-  tabContentElement.removeEventListener('scroll', onTabContentScroll);
-  iterateArrayLike(tabContentElement.getElementsByClassName('mdw-tab__panel'), TabPanel.detach);
-}
 
 /**
  * Prevent scrolling with keyboard
@@ -48,7 +30,6 @@ function onKeyDown(event) {
     default:
   }
 }
-
 
 /**
  * @param {Event} event
@@ -201,4 +182,24 @@ export function selectPanel(tabContentElement, panel, scrollToPanel = 'smooth') 
     }
     scrollToElement(panelElement, scrollToPanel === 'smooth', isPageRtl);
   }
+}
+
+/**
+ * @param {Element} tabContentElement
+ * @return {void}
+ */
+export function attach(tabContentElement) {
+  tabContentElement.addEventListener('scroll', onTabContentScroll, getPassiveEventListenerOption());
+  iterateArrayLike(tabContentElement.getElementsByClassName('mdw-tab__panel'), TabPanel.attach);
+  tabContentElement.addEventListener('keydown', onKeyDown);
+}
+
+/**
+ * @param {Element} tabContentElement
+ * @return {void}
+ */
+export function detach(tabContentElement) {
+  tabContentElement.removeEventListener('keydown', onKeyDown);
+  tabContentElement.removeEventListener('scroll', onTabContentScroll);
+  iterateArrayLike(tabContentElement.getElementsByClassName('mdw-tab__panel'), TabPanel.detach);
 }

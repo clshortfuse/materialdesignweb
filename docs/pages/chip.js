@@ -1,11 +1,9 @@
-
-import * as Chip from '../../components/chip/index';
-import { iterateArrayLike } from '../../core/dom';
-import { convertElementToCode } from '../_sample-utils';
+import * as Chip from '../../components/chip/index.js';
+import { iterateArrayLike } from '../../core/dom.js';
+import { convertElementToCode } from '../_sample-utils.js';
 
 /** @type {ArrayLike<HTMLElement>} */
 let sampleComponents;
-
 
 /** @return {void} */
 function updateSampleCode() {
@@ -15,7 +13,6 @@ function updateSampleCode() {
 
   // Strip JS related elements and attributes
   iterateArrayLike(sampleComponents, Chip.detach);
-
 
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
   const sampleContainer = document.querySelector('.component-sample__container').firstElementChild;

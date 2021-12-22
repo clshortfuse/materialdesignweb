@@ -2,7 +2,7 @@
 // https://material.io/design/components/buttons.html
 // https://material.io/design/iconography/system-icons.html#color
 
-@use '../../core/theme/index.scss' as theme;
+@use '../../core/theme/_mixins.scss' as theme;
 
 $themeValues: (
   default-text-rgb:                    theme.$foreground,

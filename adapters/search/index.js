@@ -1,11 +1,10 @@
 // https://www.w3.org/TR/wai-aria-practices/#combobox
 
-import { iterateSomeOfArrayLike, iterateArrayLike, getTextNode } from '../../core/dom';
-
-import * as List from '../../components/list/index';
-import * as ListContent from '../../components/list/content';
-import * as TextField from '../../components/textfield/index';
-import { noop } from '../../utils/function';
+import * as ListContent from '../../components/list/content.js';
+import * as List from '../../components/list/index.js';
+import * as TextField from '../../components/textfield/index.js';
+import { getTextNode, iterateArrayLike, iterateSomeOfArrayLike } from '../../core/dom.js';
+import { noop } from '../../utils/function.js';
 
 /**
  * @param {string} input
@@ -292,7 +291,7 @@ export default class SearchAdapter {
 
   /**
    * @param {string} inputValue
-   * @param {function} resolve
+   * @param {Function} resolve
    * @param {function(Error):any} reject
    * @return {void}
    */
@@ -306,7 +305,7 @@ export default class SearchAdapter {
 
   /**
    * @param {string} searchTerm
-   * @param {function} resolve
+   * @param {Function} resolve
    * @param {function(Error):any} reject
    * @return {void}
    */

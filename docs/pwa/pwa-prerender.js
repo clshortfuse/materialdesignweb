@@ -1,3 +1,3 @@
-import * as Document from '../../core/document/index';
+import * as Document from '../../core/document/index.js';
 
 Document.onPrerender();

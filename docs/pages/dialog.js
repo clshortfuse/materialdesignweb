@@ -1,8 +1,7 @@
-import * as Button from '../../components/button/index';
-import * as Dialog from '../../components/dialog/index';
-import { iterateArrayLike } from '../../core/dom';
-import { convertElementToCode } from '../_sample-utils';
-
+import * as Button from '../../components/button/index.js';
+import * as Dialog from '../../components/dialog/index.js';
+import { iterateArrayLike } from '../../core/dom.js';
+import { convertElementToCode } from '../_sample-utils.js';
 
 /** @type {HTMLElement} */
 let sampleComponent;
@@ -61,7 +60,6 @@ function updateSampleCode() {
       sampleComponent.insertBefore(closer, sampleComponent.firstElementChild);
     }
   }
-
 
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
   const sampleContainer = document.querySelector('.component-sample__container');

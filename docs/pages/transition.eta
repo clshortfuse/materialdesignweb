@@ -1,0 +1,117 @@
+<% var T = '../../templates/index.eta' %>
+<% layout('../_partials/_header.eta', {page: 'transition'}) %>
+<div class="mdw-grid" mdw-margin-top mdw-margin-bottom mdw-stretch>
+  <div class="mdw-grid__item" mdw-colspan="100%">
+    <div class="mdw-grid__content">
+      <div class="display-flex" flex-align-items="center">
+        <h5 class="mdw-type">Select two items.</h5>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="25%">
+    <div class="mdw-grid__content">
+      <div class="display-flex flex-column">
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="white" mdw-light>
+          <div class="demo-core-content">Small</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="black" mdw-dark>
+          <div class="demo-core-content">Small</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="primary 500" mdw-dark>
+          <div class="demo-core-content">Small</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="secondary 500" mdw-dark>
+          <div class="demo-core-content">Small</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="warn 500" mdw-dark>
+          <div class="demo-core-content">Small</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="50%">
+    <div class="mdw-grid__content">
+      <div class="display-flex flex-column">
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="white" mdw-light>
+          <div class="demo-core-content">Medium</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="black" mdw-dark>
+          <div class="demo-core-content">Medium</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="primary 500" mdw-dark>
+          <div class="demo-core-content">Medium</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="secondary 500" mdw-dark>
+          <div class="demo-core-content">Medium</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="warn 500" mdw-dark>
+          <div class="demo-core-content">Medium</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="25%">
+    <div class="mdw-grid__content">
+      <div class="display-flex flex-column" flex-align-items="center">
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="white" mdw-light demo-round>
+          <div class="demo-core-content">Round</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="black" mdw-dark demo-round>
+          <div class="demo-core-content">Round</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="primary 500" mdw-dark demo-round>
+          <div class="demo-core-content">Round</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="secondary 500" mdw-dark demo-round>
+          <div class="demo-core-content">Round</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="warn 500" mdw-dark demo-round>
+          <div class="demo-core-content">Round</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="25%">
+    <div class="mdw-grid__content">
+      <div class="display-flex flex-column" flex-align-items="center">
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="white" mdw-light demo-square>
+          <div class="demo-core-content">Square</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="black" mdw-dark demo-square>
+          <div class="demo-core-content">Square</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="primary 500" mdw-dark demo-square>
+          <div class="demo-core-content">Square</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="secondary 500" mdw-dark demo-square>
+          <div class="demo-core-content">Square</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="warn 500" mdw-dark demo-square>
+          <div class="demo-core-content">Square</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="75%">
+    <div class="mdw-grid__content">
+      <div class="display-flex flex-column">
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="white" mdw-light>
+          <div class="demo-core-content">Wide</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="black" mdw-dark>
+          <div class="demo-core-content">Wide</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="primary 500" mdw-dark>
+          <div class="demo-core-content">Wide</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="secondary 500" mdw-dark>
+          <div class="demo-core-content">Wide</div>
+        </div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-ripple mdw-theme" mdw-elevation="1" mdw-surface="warn 500" mdw-dark>
+          <div class="demo-core-content">Wide</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="transition.min.js"></script>

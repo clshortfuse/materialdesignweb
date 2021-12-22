@@ -1,0 +1,149 @@
+<% var T = '../../templates/index.eta' -%>
+<!DOCTYPE html>
+<html class="mdw-layout mdw-theme" lang="en" mdw-surface="binary" mdw-light>
+
+<head>
+  <title>Material Design Web</title>
+  <meta charset="utf-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="Material Design Web - CSS/JS Framework" name="description">
+  <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport">
+  <meta name="theme-color" content="#C2185B">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,400,500">
+  <link rel="stylesheet" href="docs.min.css">
+  <link rel="stylesheet" href="spec.min.css">
+  <link rel="stylesheet" href="theme-default.min.css" title="Default Theme">
+  <link rel="stylesheet" href="theme-default-fallbacks.min.css" media="all\0" title="Default Theme">
+  <link rel="stylesheet" disabled href="theme-colored.min.css" title="Colored Theme">
+  <link rel="stylesheet" disabled href="theme-colored-fallbacks.min.css" media="all\0" title="Colored Theme">
+  <script src="prerender.min.js"></script>
+</head>
+
+<body class="mdw-layout__body mdw-theme" mdw-surface="background" mdw-sidesheet-toggle="dismissible" mdw-sidesheet-style="modal">
+  <div class="mdw-layout__menus"></div>
+  <div class="mdw-layout__dialogs"></div>
+  <nav class="mdw-layout__navdrawer" id="docs-navdrawer">
+    <div class="mdw-layout__sheet-content mdw-theme" mdw-surface="background" mdw-border-ink>
+      <ul class="mdw-list" style="padding-bottom:64px;">
+        <li class="mdw-list__item">
+          <a class="mdw-list__content mdw-overlay mdw-ripple mdw-theme" <%~ it.page === 'Home' ? 'aria-current="page"' : '' %> aria-selected="<%~ it.page === 'Home'%>" href="index.html" mdw-ink="default">
+            <div class="mdw-list__text">Home</div>
+          </a>
+        </li>
+        <li class="mdw-list__item" aria-expanded="true">
+          <div class="mdw-list__content mdw-list__subheader">
+            <div class="mdw-list__text mdw-theme" mdw-ink="medium">Core</div>
+            <div class="mdw-list__secondary mdw-theme material-icons" mdw-ink="medium">expand_more</div>
+          </div>
+          <ul class="mdw-list">
+            <%~ includeFile('../_partials/_navlistitem.eta', {key: 'color', icon: 'compare', name: 'Color', page: it.page, color: 'primary contrast'}) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key: 'overlay', icon: 'tonality', name: 'Overlay', page: it.page, color: 'primary contrast'}) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key: 'ripple', icon: 'center_focus_strong', name: 'Ripple', page: it.page, color: 'primary contrast'}) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key: 'transition', icon: 'dynamic_feed', name: 'Transition', page: it.page, color: 'primary contrast'}) %>
+          </ul>
+        </li>
+        <li class="mdw-list__item mdw-theme" aria-expanded="true">
+          <div class="mdw-list__content mdw-list__subheader">
+            <div class="mdw-list__text mdw-theme" mdw-ink="medium">Components</div>
+            <div class="mdw-list__secondary mdw-theme material-icons" mdw-ink="medium">expand_more</div>
+          </div>
+          <ul class="mdw-list">
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'appbar', icon: 'web_asset', name: 'App Bar', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'bottomnav', icon: 'call_to_action', name: 'Bottom Navigation', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'button', icon: 'crop_landscape', name: 'Button', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'card', icon: 'crop_square', name: 'Card', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'chip', icon: 'check_circle', name: 'Chip', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'datatable', icon: 'format_align_justify', name: 'Data Table', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'dialog', icon: 'select_all', name: 'Dialog', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'elevation', icon: 'layers', name: 'Elevation', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'fab', icon: 'add_circle', name: 'Floating Action Button', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'grid', icon: 'view_compact', name: 'Grid', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'layout', icon: 'view_quilt', name: 'Layout', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'list', icon: 'view_list', name: 'List', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'menu', icon: 'picture_in_picture', name: 'Menu', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'progress', icon: 'timelapse', name: 'Progress', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'selection', icon: 'toggle_on', name: 'Selection', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'slider', icon: 'tune', name: 'Slider', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'snackbar', icon: 'video_label', name: 'Snackbar', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'tab', icon: 'tab', name: 'Tab', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'textfield', icon: 'text_fields', name: 'Text Field', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'tooltip', icon: 'info', name: 'Tooltip', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'type', icon: 'font_download', name: 'Typography', page: it.page }) %>
+          </ul>
+        </li>
+        <li class="mdw-list__item" aria-expanded="true">
+          <div class="mdw-list__content mdw-list__subheader">
+            <div class="mdw-list__text mdw-theme" mdw-ink="medium">Adapters</div>
+            <div class="mdw-list__secondary mdw-theme material-icons" mdw-ink="medium">expand_more</div>
+          </div>
+          <ul class="mdw-list">
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'dom', icon:'calendar_view_day', name:'DOM', page: it.page }) %>
+            <%~ includeFile('../_partials/_navlistitem.eta', {key:'search', icon:'search', name:'Search', page: it.page }) %>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <a class="mdw-layout__scrim" href="#" tabindex="-1"></a>
+  <div class="mdw-layout__appbar mdw-appbar mdw-theme" mdw-autohide="mobile tablet" mdw-surface="secondary 500" mdw-dark>
+    <div class="mdw-layout__appbar-shape"></div>
+    <div class="mdw-appbar__action">
+      <div class="mdw-appbar__start">
+        <div class="mdw-tooltip__wrapper">
+          <%~ includeFile(T, { button: {
+               class: 'mdw-tooltip__target material-icons mdw-layout__navdrawer-toggle',
+               text:'menu', icon:true, attributes: { href:"#docs-navdrawer" },
+            }}) %>
+          <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="start">Menu</div>
+        </div>
+      </div>
+      <div class="mdw-appbar__title"><%~ it.page %></div>
+      <div class="mdw-appbar__end" id="docs-menu-buttons">
+        <div class="mdw-tooltip__wrapper">
+          <%~ includeFile(T, { button: {
+              id: 'altThemeButton', class: 'mdw-tooltip__target material-icons',
+              text:'palette', icon:true,  attributes: { 'mdw-overlay-default':'medium', 'mdw-overlay-off':'activated', 'aria-pressed':'false' }, 
+           }}) %>
+          <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="end">Alt Theme</div>
+        </div>
+        <div class="mdw-tooltip__wrapper">
+          <%~ includeFile(T, { button: {
+              id: 'darkModeButton', class: 'mdw-tooltip__target material-icons',
+              text: 'brightness_3', icon: true, attributes: { 'mdw-overlay-default':'medium', 'mdw-overlay-off':'activated', 'aria-pressed':'false' },
+            }}) %>
+          <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="end">Dark Mode</div>
+        </div>
+        <div class="mdw-tooltip__wrapper">
+          <%~ includeFile(T, { button: {
+              id: 'rtlButton', class: 'mdw-tooltip__target material-icons',
+              text: 'format_align_right', icon: true, attributes: { 'mdw-overlay-default': 'medium', 'mdw-overlay-off':'activated', 'aria-pressed':'false' },
+            }}) %>
+          <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="end">Right-to-Left</div>
+        </div>
+        <div class="mdw-tooltip__wrapper">
+          <%~ includeFile(T, { button: {
+              id: 'largeFontButton', class: 'mdw-tooltip__target material-icons',
+              text: 'format_size', icon: true, attributes: { 'mdw-overlay-default': 'medium', 'mdw-overlay-off':'activated', 'aria-pressed':'false' },
+            }}) %>
+          <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="end">200% Text</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-layout__fab"></div>
+  <div class="mdw-layout__snackbar"></div>
+  <div class="mdw-layout__content">
+    <div class="mdw-layout__content-page">
+      <%~ it?.body ?? '' %>
+    </div>
+  </div>
+</body>
+<script src="postrender.min.js"></script>
+<script src="entire-framework.min.js"></script>
+<script src="docs.common.min.js"></script>
+
+</html>

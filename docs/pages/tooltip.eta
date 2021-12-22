@@ -1,0 +1,94 @@
+<% var T = '../../templates/index.eta' %>
+<% layout('../_partials/_header.eta', {page: 'tooltip'}) %>
+<div class="comparison">
+  <div class="render">
+    <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'cyan 700', dark:true }) %>
+    <div class="mdw-appbar mdw-theme" mdw-surface="cyan 500" mdw-dark>
+      <div class="mdw-appbar__action">
+        <div class="mdw-appbar__start">
+          <div class="mdw-tooltip__wrapper">
+            <%~ includeFile(T, { button: { icon:true , class:'material-icons mdw-tooltip__target', text:'menu' }}) %>
+            <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="start">Menu</div>
+          </div>
+        </div>
+        <div class="mdw-appbar__title" style="color:white;">Inbox</div>
+        <div class="mdw-appbar__end">
+          <div class="mdw-tooltip__wrapper">
+            <%~ includeFile(T, { button: {  icon:true , class:'material-icons mdw-tooltip__target', text:'search' }}) %>
+            <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="end">Search</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <ul class="mdw-list" mdw-divider>
+        <li class="mdw-list__subheader mdw-theme" mdw-ink="medium">Today</li>
+        <li class="mdw-list__item">
+          <div class="mdw-list__content">
+            <div class="mdw-list__avatar"><i class="material-icons" style="font-size:40px;">&#xE853;</i></div>
+            <div class="mdw-list__text">
+              <div class="mdw-list__text-line">Brunch this weekend?</div>
+              <div class="mdw-list__text-line">Ali Connors<span class="mdw-theme" mdw-ink="medium"> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to meet?</span></div>
+            </div>
+          </div>
+        </li>
+        <li class="mdw-list__item">
+          <div class="mdw-list__content">
+            <div class="mdw-list__avatar"><i class="material-icons" style="font-size:40px;">&#xE853;</i></div>
+            <div class="mdw-list__text">
+              <div class="mdw-list__text-line">Summer BBQ<span class="mdw-theme" mdw-ink="medium"> 4</span></div>
+              <div class="mdw-list__text-line">to Alex, Scott, Jennifer<span class="mdw-theme" mdw-ink="medium"> &mdash; Wish I could come. but I'm out of town this weekend.</span></div>
+            </div>
+          </div>
+        </li>
+        <li class="mdw-list__item">
+          <div class="mdw-list__content">
+            <div class="mdw-list__avatar"><i class="material-icons" style="font-size:40px;">&#xE853;</i></div>
+            <div class="mdw-list__text">
+              <div class="mdw-list__text-line">Oui oui</div>
+              <div class="mdw-list__text-line">Sandra Adams<span class="mdw-theme" mdw-ink="medium"> &mdash; Do you have Paris recommendations? Have you ever been?</span></div>
+            </div>
+          </div>
+        </li>
+        <li class="mdw-list__item">
+          <div class="mdw-list__content">
+            <div class="mdw-list__avatar"><i class="material-icons" style="font-size:40px;">&#xE853;</i></div>
+            <div class="mdw-list__text">
+              <div class="mdw-list__text-line">Birthday gift</div>
+              <div class="mdw-list__text-line">Trevor Hansen<span class="mdw-theme" mdw-ink="medium"> &mdash; Have any ideas about what we should get Heidi for her birthday?</span></div>
+            </div>
+          </div>
+        </li>
+        <li class="mdw-list__item">
+          <div class="mdw-list__content">
+            <div class="mdw-list__avatar"><i class="material-icons" style="font-size:40px;">&#xE853;</i></div>
+            <div class="mdw-list__text">
+              <div class="mdw-list__text-line">Recipe to try</div>
+              <div class="mdw-list__text-line">Britta Holt<span class="mdw-theme" mdw-ink="medium"> &mdash; We should eat this: Grated Squash, Corn, and tomatillo Tacos J</span></div>
+            </div>
+          </div>
+        </li>
+        <li class="mdw-list__item">
+          <div class="mdw-list__content">
+            <div class="mdw-list__avatar"><i class="material-icons" style="font-size:40px;">&#xE853;</i></div>
+            <div class="mdw-list__text">
+              <div class="mdw-list__text-line">Giants game</div>
+              <div class="mdw-list__text-line">David Park<span class="mdw-theme" mdw-ink="medium"> &mdash; Any interest in seeing</span></div>
+            </div>
+          </div>
+        </li>
+        <li class="mdw-list__item">
+          <div class="mdw-list__content">
+            <div class="mdw-list__avatar"><i class="material-icons" style="font-size:40px;">&#xE853;</i></div>
+            <div class="mdw-list__text">
+              <div class="mdw-list__text-line">Montauk weekend</div>
+              <div class="mdw-list__text-line">-----</div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <%~ includeFile('../_partials/_androidnavbar.eta') %>
+  </div>
+</div>
+<script src="tooltip.min.js"></script>

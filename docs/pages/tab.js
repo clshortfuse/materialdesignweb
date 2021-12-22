@@ -1,7 +1,7 @@
-import * as Button from '../../components/button/index';
-import * as Tab from '../../components/tab/index';
-import { convertElementToCode } from '../_sample-utils';
-import { iterateArrayLike, setTextNode } from '../../core/dom';
+import * as Button from '../../components/button/index.js';
+import * as Tab from '../../components/tab/index.js';
+import { iterateArrayLike, setTextNode } from '../../core/dom.js';
+import { convertElementToCode } from '../_sample-utils.js';
 
 /** @type {HTMLElement} */
 let sampleComponent;
@@ -9,20 +9,6 @@ let sampleComponent;
 /** @return {void} */
 function onWindowResize() {
   iterateArrayLike(document.getElementsByClassName('mdw-tab'), Tab.onResize);
-}
-
-/** @return {void} */
-function setupPugButton() {
-  const pugButton = document.getElementById('usePug');
-  Button.attach(pugButton);
-  pugButton.addEventListener('click', () => {
-    if (pugButton.getAttribute('aria-pressed') === 'true') {
-      pugButton.setAttribute('aria-pressed', 'false');
-    } else {
-      pugButton.setAttribute('aria-pressed', 'true');
-    }
-    updateSampleCode();
-  });
 }
 
 /** @return {void} */
@@ -37,7 +23,6 @@ function updateSampleCode() {
   const indicator = sampleComponent.getElementsByClassName('mdw-tab__indicator')[0];
   indicator.removeAttribute('style');
 
-
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
   setTextNode(htmlCodeElement, convertElementToCode(sampleComponent,
     document.getElementById('usePug').getAttribute('aria-pressed') === 'true'));
@@ -50,6 +35,20 @@ function updateSampleCode() {
     '',
     "window.addEventListener('resize', () => mdw.Tab.onResize(tabElement));",
   ].join('\n');
+}
+
+/** @return {void} */
+function setupPugButton() {
+  const pugButton = document.getElementById('usePug');
+  Button.attach(pugButton);
+  pugButton.addEventListener('click', () => {
+    if (pugButton.getAttribute('aria-pressed') === 'true') {
+      pugButton.setAttribute('aria-pressed', 'false');
+    } else {
+      pugButton.setAttribute('aria-pressed', 'true');
+    }
+    updateSampleCode();
+  });
 }
 
 /** @return {void} */

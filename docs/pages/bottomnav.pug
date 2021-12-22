@@ -29,19 +29,19 @@ include ../_mixins.pug
           +androidnavbar
     .mdw-grid__item(mdw-colspan="4")
       .mdw-type(mdw-style="subtitle") Javascript
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', type:'radio', name:'javascript', value:'required', checked:true}) Required
         +mdwSelection({ink:'secondary', type:'radio', name:'javascript', value:'optional', disabled:true}) Optional
         +mdwSelection({ink:'secondary', type:'radio', name:'javascript', value:'none', disabled:true}) None
       .mdw-type(mdw-style="subtitle") Ink
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', type:'radio', name:'ink', value:'default'}) Default
         +mdwSelection({ink:'secondary', type:'radio', name:'ink', value:'primary', checked:true}) Primary
         +mdwSelection({ink:'secondary', type:'radio', name:'ink', value:'secondary'}) Secondary
         +mdwSelection({ink:'secondary', type:'radio', name:'ink', value:'warn'}) Warn
         +mdwSelection({ink:'secondary', type:'radio', name:'ink', value:'purple'}) Purple
       .mdw-type(mdw-style="subtitle") Surface
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', type:'radio', name:'surface', value:'none', checked:true}) None
         +mdwSelection({ink:'secondary', type:'radio', name:'surface', value:'card'}) Card
         +mdwSelection({ink:'secondary', type:'radio', name:'surface', value:'primary 500 dark'}) Primary 500 (Dark)

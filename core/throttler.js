@@ -17,7 +17,7 @@ export default class Throttler {
   }
 
   /**
-   * @param {function} fn
+   * @param {Function} fn
    * @return {void}
    */
   run(fn) {

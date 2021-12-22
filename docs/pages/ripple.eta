@@ -1,0 +1,27 @@
+<% var T = '../../templates/index.eta' %>
+<% layout('../_partials/_header.eta', {page: 'ripple'}) %>
+<div class="mdw-grid" mdw-margin-top mdw-margin-bottom mdw-stretch>
+  <div class="mdw-grid__item" mdw-colspan="4">
+    <div class="mdw-grid__content">
+      <h6 class="mdw-type">Javascript</h6>
+      <div class="display-flex flex-column js">
+        <div class="demo-core-item mdw-elevation mdw-ripple mdw-theme" mdw-elevation="1" mdw-ink="default" mdw-surface="binary">Default Ink</div>
+        <div class="demo-core-item mdw-elevation mdw-ripple mdw-theme" mdw-elevation="1" mdw-ink="primary" mdw-surface="binary">Primary Ink</div>
+        <div class="demo-core-item mdw-elevation mdw-ripple mdw-theme" mdw-elevation="1" mdw-ink="secondary" mdw-surface="binary">Secondary Ink</div>
+        <div class="demo-core-item mdw-elevation mdw-ripple mdw-theme" mdw-elevation="1" mdw-ink="warn" mdw-surface="binary">Warn Ink</div>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="4">
+    <div class="mdw-grid__content">
+      <h6 class="mdw-type">CSS Only</h6>
+      <div class="display-flex flex-column">
+        <div class="demo-core-item mdw-elevation mdw-ripple mdw-theme" mdw-elevation="1" mdw-ink="default" mdw-surface="binary">Default Ink</div>
+        <div class="demo-core-item mdw-elevation mdw-ripple mdw-theme" mdw-elevation="1" mdw-ink="primary" mdw-surface="binary">Primary Ink</div>
+        <div class="demo-core-item mdw-elevation mdw-ripple mdw-theme" mdw-elevation="1" mdw-ink="secondary" mdw-surface="binary">Secondary Ink</div>
+        <div class="demo-core-item mdw-elevation mdw-ripple mdw-theme" mdw-elevation="1" mdw-ink="warn" mdw-surface="binary">Warn Ink</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="ripple.min.js"></script>

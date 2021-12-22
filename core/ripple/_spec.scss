@@ -1,12 +1,14 @@
 // https://android.googlesource.com/platform/frameworks/base/+/dbcbca4/graphics/java/android/graphics/drawable/Ripple.java
 
+@use "sass:math";
+
 @use "../_breakpoint.scss" as breakpoint;
 @use "../_platform.scss" as platform;
 @use "../_motion.scss" as motion;
 
 $enterDelay: 80ms !default;
 
-$fadeOutDuration: 1000ms / 3.0 !default;
+$fadeOutDuration: math.div(1000ms, 3.0) !default;
 $touchDownAcceleration: 1024 !default;
 $touchUpAcceleration: 3400 !default;
 

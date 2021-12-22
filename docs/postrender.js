@@ -1,8 +1,8 @@
-import * as Button from '../components/button/index';
-import * as Layout from '../components/layout/index';
-import * as List from '../components/list/index';
-import * as ListContent from '../components/list/content';
-import { iterateArrayLike } from '../core/dom';
+import * as Button from '../components/button/index.js';
+import * as Layout from '../components/layout/index.js';
+import * as ListContent from '../components/list/content.js';
+import * as List from '../components/list/index.js';
+import { iterateArrayLike } from '../core/dom.js';
 
 const navDrawer = document.getElementsByClassName('mdw-layout__navdrawer')[0];
 List.attachAll(navDrawer);
@@ -19,7 +19,6 @@ navDrawer.querySelector('[aria-current]').scrollIntoView({
 function clearCurrentPage() {
   iterateArrayLike(navDrawer.querySelectorAll('[aria-current]'), (item) => item.removeAttribute('aria-current'));
 }
-
 
 navDrawer.addEventListener(ListContent.ACTIVATE_EVENT, (event) => {
   /** @type {HTMLElement} */

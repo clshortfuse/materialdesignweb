@@ -1,0 +1,69 @@
+<% var T = '../../templates/index.eta' %>
+<% layout('../_partials/_header.eta', {page: 'overlay'}) %>
+<div class="mdw-grid" mdw-margin-top mdw-margin-bottom mdw-stretch>
+  <div class="mdw-grid__item" mdw-colspan="100%">
+    <div class="mdw-grid__content">
+      <h2 class="mdw-type">JS</h2>
+      <p class="mdw-type">No hover or focus overlay on touch</p>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="4">
+    <div class="mdw-grid__content">
+      <h6 class="mdw-type">Default Ink</h6>
+      <div class="display-flex flex-column js">
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary">Normal</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-selected="false">[aria-selected="false"]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-selected="true">[aria-selected="true"]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-pressed="false">[aria-pressed="false"]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-pressed="true">[aria-pressed="true"]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-current="true">[aria-current]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-selected="true" aria-current="true">[aria-selected="true"][aria-current]</div>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="4">
+    <div class="mdw-grid__content">
+      <h6 class="mdw-type">Secondary Ink</h6>
+      <div class="display-flex flex-column js">
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary">Normal</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-selected="false">[aria-selected="false"]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-selected="true">[aria-selected="true"]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-pressed="false">[aria-pressed="false"]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-pressed="true">[aria-pressed="true"]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-current="true">[aria-current]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-selected="true" aria-current="true">[aria-selected="true"][aria-current]</div>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="100%">
+    <div class="mdw-grid__content">
+      <h2 class="mdw-type">CSS Only</h2>
+      <p class="mdw-type">No touch detection</p>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="4">
+    <div class="mdw-grid__content">
+      <h6 class="mdw-type">Default Ink</h6>
+      <div class="display-flex flex-column">
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary">Normal</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-selected="false">[aria-selected="false"]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-pressed="false">[aria-pressed="false"]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-selected="true">[aria-selected="true"]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="default" mdw-surface="binary" aria-pressed="true">[aria-pressed="true"]</div>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="4">
+    <div class="mdw-grid__content">
+      <h6 class="mdw-type">Secondary Ink</h6>
+      <div class="display-flex flex-column">
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary">Normal</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-selected="false">[aria-selected="false"]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-pressed="false">[aria-pressed="false"]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-selected="true">[aria-selected="true"]</div>
+        <div class="demo-core-item mdw-elevation mdw-overlay mdw-theme" mdw-elevation="1" tabindex="0" mdw-raised mdw-ink="secondary" mdw-surface="binary" aria-pressed="true">[aria-pressed="true"]</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="overlay.min.js"></script>

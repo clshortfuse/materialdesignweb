@@ -10,19 +10,19 @@ include ../_mixins.pug
             .mdw-appbar__action
               .mdw-appbar__title Styled HTMLInputElement
           .content
-            div.display-flex(style="padding:16px")
+            .display-flex(style="padding:16px")
               +mdwSelection({ink:'blue', checked:true, prefix:true, type:'switch' }) Switch
-            div.display-flex(style="padding:16px")
+            .display-flex(style="padding:16px")
               +mdwSelection({ink:'blue', checked:true, prefix:true }) Prefixed
-            div.display-flex(style="padding:16px")
+            .display-flex(style="padding:16px")
               +mdwSelection({ink:'teal', checked:true }) Suffixed
-            div.display-flex(style="padding:16px")
+            .display-flex(style="padding:16px")
               +mdwSelection({ink:'teal', checked:true, disabled:true}) Disabled
-            div.display-flex(style="padding:16px")
+            .display-flex(style="padding:16px")
               +mdwSelection({ink:'teal', type:'radio', name:'test', checked:true }) Option A
-            div.display-flex(style="padding:16px")
+            .display-flex(style="padding:16px")
               +mdwSelection({ink:'teal', type:'radio', name:'test' }) Option B
-            div.display-flex(style="padding:16px")
+            .display-flex(style="padding:16px")
               +mdwSelection({ink:'teal', type:'radio', name:'test', disabled:true }) Option C
     .mdw-grid__item(mdw-colspan="4")
       .mdw-grid__content
@@ -32,7 +32,7 @@ include ../_mixins.pug
             .mdw-appbar__action
               .mdw-appbar__title aria-checked (JS)
           .content
-            span#docs-selection-subheader1.mdw-list__subheader.mdw-theme(mdw-ink="medium") Switch
+            div#docs-selection-subheader1.mdw-list__subheader.mdw-theme(mdw-ink="medium") Switch
             ul.mdw-list(role="listbox" aria-labelledby='docs-selection-subheader1')
               li.mdw-list__item
                 a.mdw-list__content.mdw-selection.mdw-overlay(aria-checked="true")
@@ -42,7 +42,7 @@ include ../_mixins.pug
                 a.mdw-list__content.mdw-selection.mdw-overlay(aria-checked="false" aria-disabled="true")
                   .mdw-list__text.mdw-selection__label Android Switch Disabled
                   .mdw-list__secondary.mdw-selection__icon.mdw-theme(mdw-ink="teal contrast" mdw-switch)
-            span.mdw-list__subheader.mdw-theme(mdw-ink="medium") .mdw-list[role="radiogroup"]
+            .mdw-list__subheader.mdw-theme(mdw-ink="medium") .mdw-list[role="radiogroup"]
             ul.mdw-list.mdw-selection__radio-group(role="radiogroup")
               li.mdw-list__item
                 a.mdw-list__content.mdw-selection.mdw-overlay(aria-checked="true")
@@ -56,7 +56,7 @@ include ../_mixins.pug
                     .mdw-list__text-line Option 2
                     .mdw-list__text-line.mdw-theme(mdw-ink="medium") Description
                   .mdw-list__secondary.mdw-selection__icon.mdw-theme(mdw-ink="blue" mdw-radio)
-            span.mdw-list__subheader.mdw-theme(mdw-ink="medium") Multiple check
+            .mdw-list__subheader.mdw-theme(mdw-ink="medium") Multiple check
             ul.mdw-list(role="listbox" aria-multiselectable="true")
               li.mdw-list__item
                 a.mdw-list__content.mdw-selection.mdw-overlay(aria-checked="true")

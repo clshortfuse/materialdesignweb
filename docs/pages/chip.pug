@@ -72,12 +72,12 @@ include ../_mixins.pug
                   .mdw-chip__checkmark.material-icons check
     .mdw-grid__item(mdw-colspan="4").demo-options
       .mdw-type(mdw-style="subtitle") Javascript
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'required', disabled:true}) Required
         +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'optional', checked:true}) Optional
         +mdwSelection({ink:'secondary', name:'javascript', type:'radio', value:'none'}) None
       .mdw-type(mdw-style="subtitle") Options
-      div.docs-option-list
+      .docs-option-list
         +mdwSelection({ink:'secondary', name:'outlined'}) Outlined
     .mdw-grid__item(mdw-colspan="100%" style="max-height:0")
     .mdw-grid__item(mdw-colspan="6")

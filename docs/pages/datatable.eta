@@ -1,0 +1,323 @@
+<% var T = '../../templates/index.eta' %>
+<% layout('../_partials/_header.eta', {page: 'datatable'}) %>
+<div class="mdw-grid" mdw-margin-top mdw-margin-bottom>
+  <div class="mdw-grid__item" mdw-colspan="100%">
+    <div class="mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>
+      <div class="mdw-datatable mdw-theme" mdw-ink="primary" style="overflow-x:auto;">
+        <table>
+          <caption>Standard HTML Table (CSS Only)</caption>
+          <thead>
+            <tr>
+              <th>Dessert (100g serving)</th>
+              <th>Calories</th>
+              <th>Fat (g)</th>
+              <th>Carbs (g)</th>
+              <th>Protein (g)</th>
+              <th>Sodium (mg)</th>
+              <th>Calcium (%)</th>
+              <th>Iron (%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Frozen Yogurt</td>
+              <td>159</td>
+              <td>6.0</td>
+              <td>24</td>
+              <td>4.0</td>
+              <td>87</td>
+              <td>14%</td>
+              <td>1%</td>
+            </tr>
+            <tr>
+              <td>Ice cream sandwich</td>
+              <td>237</td>
+              <td>9.0</td>
+              <td>37</td>
+              <td>4.3</td>
+              <td>129</td>
+              <td>8%</td>
+              <td>1%</td>
+            </tr>
+            <tr>
+              <td>Eclair</td>
+              <td>262</td>
+              <td>16.0</td>
+              <td>24</td>
+              <td>6.0</td>
+              <td>337</td>
+              <td>6%</td>
+              <td>7%</td>
+            </tr>
+            <tr>
+              <td>Cupcake</td>
+              <td>305</td>
+              <td>3.7</td>
+              <td>67</td>
+              <td>4.3</td>
+              <td>413</td>
+              <td>3%</td>
+              <td>8%</td>
+            </tr>
+            <tr>
+              <td>Gingerbread</td>
+              <td>356</td>
+              <td>16.0</td>
+              <td>49</td>
+              <td>3.9</td>
+              <td>327</td>
+              <td>7%</td>
+              <td>16%</td>
+            </tr>
+            <tr>
+              <td>Jelly bean</td>
+              <td>375</td>
+              <td>0.0</td>
+              <td>94</td>
+              <td>0.0</td>
+              <td>50</td>
+              <td>0%</td>
+              <td>0%</td>
+            </tr>
+            <tr>
+              <td>Lollipop</td>
+              <td>392</td>
+              <td>0.2</td>
+              <td>98</td>
+              <td>0</td>
+              <td>38</td>
+              <td>0%</td>
+              <td>2%</td>
+            </tr>
+            <tr>
+              <td>Honeycomb</td>
+              <td>408</td>
+              <td>3.2</td>
+              <td>87</td>
+              <td>6.5</td>
+              <td>562</td>
+              <td>0%</td>
+              <td>45%</td>
+            </tr>
+            <tr>
+              <td>Donut</td>
+              <td>452</td>
+              <td>25.0</td>
+              <td>51</td>
+              <td>4.9</td>
+              <td>326</td>
+              <td>2%</td>
+              <td>22%</td>
+            </tr>
+            <tr>
+              <td>Kitkat</td>
+              <td>518</td>
+              <td>26.0</td>
+              <td>65</td>
+              <td>7</td>
+              <td>54</td>
+              <td>12%</td>
+              <td>6%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="100%">
+    <div class="mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>
+      <div class="mdw-datatable js mdw-theme" mdw-ink="primary" mdw-cell-focusable>
+        <div class="mdw-datatable__header">
+          <div class="mdw-datatable__header-text">Customized HTML Table</div>
+        </div>
+        <div class="mdw-datatable__scroller">
+          <table>
+            <thead>
+              <tr>
+                <th aria-sort="none" mdw-text mdw-primary-column><span class="mdw-datatable__sort-icon material-icons">arrow_downward</span>Dessert (100g serving)</th>
+                <th aria-sort="ascending" mdw-number><span class="mdw-datatable__sort-icon material-icons">arrow_downward</span><span class="mdw-tooltip__wrapper"><span class="mdw-tooltip__target">Calories</span><div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark>The total amount of food energy in the given serving size.</div></span></th>
+                <th aria-sort="none" mdw-number><span class="mdw-datatable__sort-icon material-icons">arrow_downward</span>Fat (g)</th>
+                <th aria-sort="none" mdw-number><span class="mdw-datatable__sort-icon material-icons">arrow_downward</span>Carbs (g)</th>
+                <th aria-sort="none" mdw-number><span class="mdw-datatable__sort-icon material-icons">arrow_downward</span>Protein (g)</th>
+                <th aria-sort="none" mdw-number><span class="mdw-datatable__sort-icon material-icons">arrow_downward</span>Sodium (mg)</th>
+                <th aria-sort="none" mdw-number><span class="mdw-datatable__sort-icon material-icons">arrow_downward</span>Calcium (%)</th>
+                <th aria-sort="none" mdw-number><span class="mdw-datatable__sort-icon material-icons">arrow_downward</span>Iron (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td mdw-text mdw-primary-column>Frozen Yogurt</td>
+                <td mdw-number>159</td>
+                <td mdw-number>6.0</td>
+                <td mdw-number>24</td>
+                <td mdw-number>4.0</td>
+                <td mdw-number>87</td>
+                <td mdw-number>14%</td>
+                <td mdw-number>1%</td>
+              </tr>
+              <tr>
+                <td mdw-text mdw-primary-column>Ice cream sandwich</td>
+                <td mdw-number>237</td>
+                <td mdw-number>9.0</td>
+                <td mdw-number>37</td>
+                <td mdw-number>4.3</td>
+                <td mdw-number>129</td>
+                <td mdw-number>8%</td>
+                <td mdw-number>1%</td>
+              </tr>
+              <tr>
+                <td mdw-text mdw-primary-column>Eclair</td>
+                <td mdw-number>262</td>
+                <td mdw-number>16.0</td>
+                <td mdw-number>24</td>
+                <td mdw-number>6.0</td>
+                <td mdw-number>337</td>
+                <td mdw-number>6%</td>
+                <td mdw-number>7%</td>
+              </tr>
+              <tr>
+                <td mdw-text mdw-primary-column>Cupcake</td>
+                <td mdw-number>305</td>
+                <td mdw-number>3.7</td>
+                <td mdw-number>67</td>
+                <td mdw-number>4.3</td>
+                <td mdw-number>413</td>
+                <td mdw-number>3%</td>
+                <td mdw-number>8%</td>
+              </tr>
+              <tr>
+                <td mdw-text mdw-primary-column>Gingerbread</td>
+                <td mdw-number>356</td>
+                <td mdw-number>16.0</td>
+                <td mdw-number>49</td>
+                <td mdw-number>3.9</td>
+                <td mdw-number>327</td>
+                <td mdw-number>7%</td>
+                <td mdw-number>16%</td>
+              </tr>
+              <tr>
+                <td mdw-text mdw-primary-column>Jelly bean</td>
+                <td mdw-number>375</td>
+                <td mdw-number>0.0</td>
+                <td mdw-number>94</td>
+                <td mdw-number>0.0</td>
+                <td mdw-number>50</td>
+                <td mdw-number>0%</td>
+                <td mdw-number>0%</td>
+              </tr>
+              <tr>
+                <td mdw-text mdw-primary-column>Lollipop</td>
+                <td mdw-number>392</td>
+                <td mdw-number>0.2</td>
+                <td mdw-number>98</td>
+                <td mdw-number>0</td>
+                <td mdw-number>38</td>
+                <td mdw-number>0%</td>
+                <td mdw-number>2%</td>
+              </tr>
+              <tr>
+                <td mdw-text mdw-primary-column>Honeycomb</td>
+                <td mdw-number>408</td>
+                <td mdw-number>3.2</td>
+                <td mdw-number>87</td>
+                <td mdw-number>6.5</td>
+                <td mdw-number>562</td>
+                <td mdw-number>0%</td>
+                <td mdw-number>45%</td>
+              </tr>
+              <tr>
+                <td mdw-text mdw-primary-column>Donut</td>
+                <td mdw-number>452</td>
+                <td mdw-number>25.0</td>
+                <td mdw-number>51</td>
+                <td mdw-number>4.9</td>
+                <td mdw-number>326</td>
+                <td mdw-number>2%</td>
+                <td mdw-number>22%</td>
+              </tr>
+              <tr>
+                <td mdw-text mdw-primary-column>Kitkat</td>
+                <td mdw-number>518</td>
+                <td mdw-number>26.0</td>
+                <td mdw-number>65</td>
+                <td mdw-number>7</td>
+                <td mdw-number>54</td>
+                <td mdw-number>12%</td>
+                <td mdw-number>6%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mdw-datatable__footer">
+          <div class="mdw-datatable__footer-options">
+            <div>Rows per page</div>
+            <label class="mdw-textfield" mdw-solo>
+              <select class="mdw-textfield__input">
+                <option class="mdw-theme" mdw-surface="card" value="10">10</option>
+                <option class="mdw-theme" mdw-surface="card" value="25">25</option>
+                <option class="mdw-theme" mdw-surface="card" value="50">50</option>
+                <option class="mdw-theme" mdw-surface="card" value="100">100</option>
+              </select>
+              <div class="mdw-textfield__icon" mdw-dropdown></div>
+            </label>
+          </div>
+          <div class="mdw-datatable__footer-details">1-10 of 10</div>
+          <div class="mdw-datatable__footer-controls">
+            <%~ includeFile(T, { button: {  icon:true, disabled:true , class:'material-icons', text:'chevron_left' }}) %>
+            <%~ includeFile(T, { button: {  icon: true, disabled:true , class:'material-icons', text:'chevron_right' }}) %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="100%">
+    <div class="mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>
+      <div class="mdw-datatable js mdw-theme" id="dynamic-table" mdw-ink="primary" mdw-row-focusable style="max-height:80vh;">
+        <div class="mdw-datatable__header">
+          <div class="mdw-datatable__header-text">Data Table Adapter</div>
+          <div class="mdw-datatable__header-controls">
+            <div class="mdw-menu__wrapper">
+              <%~ includeFile(T, { button: {  icon:true, ink:'primary' , class:'material-icons', attributes: {'mdw-overlay-default':"medium", 'aria-pressed':"false"}, text:'filter_list' }}) %>
+              <div class="mdw-menu" mdw-position="end">
+                <div class="mdw-menu__popup mdw-theme" mdw-surface="card">
+                  <div class="mdw-menu__item" aria-checked="true" data-filter="none">
+                    <div class="mdw-menu__radio mdw-theme material-icons" mdw-ink="medium">check</div>
+                    <div class="mdw-menu__text">No filter</div>
+                  </div>
+                  <div class="mdw-menu__item" data-filter="md">
+                    <div class="mdw-menu__radio mdw-theme material-icons" mdw-ink="medium">check</div>
+                    <div class="mdw-menu__text">Contains 'md'</div>
+                  </div>
+                  <div class="mdw-menu__item" data-filter="div9">
+                    <div class="mdw-menu__radio mdw-theme material-icons" mdw-ink="medium">check</div>
+                    <div class="mdw-menu__text">Random divisible by 9</div>
+                  </div>
+                  <div class="mdw-menu__item" data-filter="bool">
+                    <div class="mdw-menu__radio mdw-theme material-icons" mdw-ink="medium">check</div>
+                    <div class="mdw-menu__text">bool is checked</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mdw-menu__wrapper">
+              <%~ includeFile(T, { button: {  icon:true, ink:'medium' , class:'material-icons', text:'more_vert' }}) %>
+              <div class="mdw-menu" mdw-position="end">
+                <div class="mdw-menu__popup mdw-theme" mdw-surface="card">
+                  <div class="mdw-menu__item" aria-checked="true" data-option="throttle">
+                    <div class="mdw-menu__check mdw-theme material-icons" mdw-ink="medium">check</div>
+                    <div class="mdw-menu__text">Throttle</div>
+                  </div>
+                  <div class="mdw-menu__item" aria-checked="true" data-option="paginate">
+                    <div class="mdw-menu__check mdw-theme material-icons" mdw-ink="medium">check</div>
+                    <div class="mdw-menu__text">Paginate</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="datatable.min.js"></script>

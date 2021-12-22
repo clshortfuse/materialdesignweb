@@ -1,46 +1,9 @@
-import { getPassiveEventListenerOption } from '../../core/dom';
-
-/**
- * @param {Element} textfieldElement
- * @return {void}
- */
-export function attach(textfieldElement) {
-  /** @type {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} */
-  const input = (textfieldElement.getElementsByClassName('mdw-textfield__input')[0]);
-  if (input) {
-    input.addEventListener('input', onInput, getPassiveEventListenerOption());
-    onInput({ currentTarget: input });
-  }
-}
-
-/**
- * @param {Element} textfieldElement
- * @return {void}
- */
-export function detach(textfieldElement) {
-  textfieldElement.removeAttribute('mdw-value-empty');
-  const input = (textfieldElement.getElementsByClassName('mdw-textfield__input')[0]);
-  if (input) {
-    input.removeEventListener('input', onInput);
-  }
-}
-
-/**
- * @param {Event|{currentTarget:HTMLElement}} event
- * @return {void}
- */
-export function onInput(event) {
-  /** @type {HTMLInputElement|HTMLTextAreaElement} */
-  const inputElement = (event.currentTarget);
-  if (inputElement.parentElement.hasAttribute('mdw-autosize')) {
-    updateTextAreaSize(/** @type {HTMLTextAreaElement} */ (inputElement));
-  }
-  updateInputEmptyState(inputElement);
-}
+import { getPassiveEventListenerOption } from '../../core/dom.js';
 
 /**
  * @param {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} inputElement
- * @return {void} */
+ * @return {void}
+ */
 export function updateInputEmptyState(inputElement) {
   const attrName = 'mdw-value-empty';
   const textfieldElement = inputElement.parentElement;
@@ -55,7 +18,8 @@ export function updateInputEmptyState(inputElement) {
 
 /**
  * @param {HTMLTextAreaElement} inputElement
- * @return {number} Single row height */
+ * @return {number} Single row height
+ */
 export function updateTextAreaSize(inputElement) {
   const previousRowsAttrValue = inputElement.getAttribute('rows');
   // eslint-disable-next-line no-param-reassign
@@ -74,6 +38,19 @@ export function updateTextAreaSize(inputElement) {
   // eslint-disable-next-line no-param-reassign
   inputElement.rows = Math.floor((inputElement.scrollHeight - paddingTopPx) / heightPx);
   return heightPx;
+}
+
+/**
+ * @param {Event|{currentTarget:HTMLElement}} event
+ * @return {void}
+ */
+export function onInput(event) {
+  /** @type {HTMLInputElement|HTMLTextAreaElement} */
+  const inputElement = (event.currentTarget);
+  if (inputElement.parentElement.hasAttribute('mdw-autosize')) {
+    updateTextAreaSize(/** @type {HTMLTextAreaElement} */ (inputElement));
+  }
+  updateInputEmptyState(inputElement);
 }
 
 /**
@@ -97,7 +74,7 @@ export function getValue(textfieldElement) {
         return null;
       }
       return new Date(
-        (new Date(input.valueAsNumber).getTimezoneOffset() * 60 * 1000) + input.valueAsNumber
+        (new Date(input.valueAsNumber).getTimezoneOffset() * 60 * 1000) + input.valueAsNumber,
       );
     default:
       return input.value;
@@ -162,5 +139,30 @@ export function setValue(textfieldElement, value) {
   updateInputEmptyState(input);
   if (input instanceof HTMLTextAreaElement && textfieldElement.hasAttribute('mdw-autosize')) {
     updateTextAreaSize(input);
+  }
+}
+
+/**
+ * @param {Element} textfieldElement
+ * @return {void}
+ */
+export function attach(textfieldElement) {
+  /** @type {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} */
+  const input = (textfieldElement.getElementsByClassName('mdw-textfield__input')[0]);
+  if (input) {
+    input.addEventListener('input', onInput, getPassiveEventListenerOption());
+    onInput({ currentTarget: input });
+  }
+}
+
+/**
+ * @param {Element} textfieldElement
+ * @return {void}
+ */
+export function detach(textfieldElement) {
+  textfieldElement.removeAttribute('mdw-value-empty');
+  const input = (textfieldElement.getElementsByClassName('mdw-textfield__input')[0]);
+  if (input) {
+    input.removeEventListener('input', onInput);
   }
 }

@@ -1,3 +1,5 @@
+import { getPassiveEventListenerOption } from '../../core/dom.js';
+
 /** @return {HTMLElement} */
 function AnyDomAdapterCreator() {
   return document.createElement('div');
@@ -84,7 +86,7 @@ export default class DomAdapter {
     if (!this.recycle) {
       return;
     }
-    this.recycle.scroller.addEventListener('scroll', this.onScrollerScrollListener);
+    this.recycle.scroller.addEventListener('scroll', this.onScrollerScrollListener, getPassiveEventListenerOption());
     const scrollerStyle = window.getComputedStyle(this.recycle.scroller);
     if (scrollerStyle.position === 'static') {
       this.recycle.scroller.style.setProperty('position', 'relative');
@@ -158,7 +160,6 @@ export default class DomAdapter {
       this.element.removeChild(this.element.lastChild);
     }
   }
-
 
   /**
    * @param {boolean} [idle=true]
@@ -401,7 +402,6 @@ export default class DomAdapter {
     this.dataBoundsMap = new WeakMap();
   }
 
-
   /**
    * @param {T1} data
    * @param {Object} [options]
@@ -579,7 +579,6 @@ export default class DomAdapter {
     }
     return true;
   }
-
 
   /**
    * @param {T1} data

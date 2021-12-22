@@ -1,7 +1,6 @@
-import { iterateArrayLike } from '../../core/dom';
-import * as TextField from '../../components/textfield/index';
-
-import { convertElementToCode } from '../_sample-utils';
+import * as TextField from '../../components/textfield/index.js';
+import { iterateArrayLike } from '../../core/dom.js';
+import { convertElementToCode } from '../_sample-utils.js';
 
 /** @return {void} */
 function initializeSampleComponents() {

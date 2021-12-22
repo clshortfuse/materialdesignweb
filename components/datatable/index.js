@@ -1,13 +1,13 @@
 // https://www.w3.org/TR/wai-aria-practices/#grid
 
-import * as DataTableCell from './cell';
-import * as DataTableColumnHeader from './columnheader';
-import * as DataTableRowHeader from './rowheader';
-import * as DataTableRow from './row';
-import * as RovingTabIndex from '../../core/aria/rovingtabindex';
-import * as Keyboard from '../../core/aria/keyboard';
+import * as Keyboard from '../../core/aria/keyboard.js';
+import * as RovingTabIndex from '../../core/aria/rovingtabindex.js';
+import { iterateArrayLike } from '../../core/dom.js';
 
-import { iterateArrayLike } from '../../core/dom';
+import * as DataTableCell from './cell.js';
+import * as DataTableColumnHeader from './columnheader.js';
+import * as DataTableRow from './row.js';
+import * as DataTableRowHeader from './rowheader.js';
 
 export const CELL_TABINDEX_QUERIES = [
   'td:not([mdw-autofocus-widget])',
@@ -15,48 +15,6 @@ export const CELL_TABINDEX_QUERIES = [
   'td[mdw-autofocus-widget] .mdw-datatable__widget',
   'th[mdw-autofocus-widget] .mdw-datatable__widget',
 ];
-
-/**
- * @param {Element} element
- * @return {void}
- */
-export function attach(element) {
-  element.setAttribute('mdw-datatable-js', '');
-
-  const table = getTable(element);
-  table.setAttribute('role', 'grid');
-  const headerRow = getHeaderRow(element);
-  const tbody = getTableBody(element);
-
-  iterateArrayLike(headerRow.getElementsByTagName('th'), DataTableColumnHeader.attach);
-  iterateArrayLike(tbody.getElementsByTagName('th'), DataTableRowHeader.attach);
-
-  const tableRows = tbody.getElementsByTagName('tr');
-  iterateArrayLike(tableRows, DataTableRow.attach);
-
-  const rowFocusable = element.hasAttribute('mdw-row-focusable');
-  if (rowFocusable) {
-    RovingTabIndex.setupTabIndexes(tableRows);
-  }
-  const cellFocusable = element.hasAttribute('mdw-cell-focusable');
-  if (cellFocusable) {
-    RovingTabIndex.setupTabIndexes(tbody.querySelectorAll(CELL_TABINDEX_QUERIES.join(',')));
-  }
-
-  element.addEventListener(DataTableRow.FOCUS_EVENT, onItemFocus);
-  element.addEventListener(DataTableRow.SELECTED_CHANGE_EVENT, onSelectedChange);
-  element.addEventListener(DataTableCell.FOCUS_EVENT, onItemFocus);
-  element.addEventListener(DataTableCell.SELECTED_CHANGE_EVENT, onSelectedChange);
-  element.addEventListener(DataTableColumnHeader.SORT_EVENT, onSort);
-  element.addEventListener(Keyboard.SPACEBAR_KEY, onKeyboard);
-  element.addEventListener(Keyboard.UP_ARROW_KEY, onKeyboard);
-  element.addEventListener(Keyboard.DOWN_ARROW_KEY, onKeyboard);
-  element.addEventListener(Keyboard.FORWARD_ARROW_KEY, onKeyboard);
-  element.addEventListener(Keyboard.BACK_ARROW_KEY, onKeyboard);
-  element.addEventListener(Keyboard.HOME_KEY, onKeyboard);
-  element.addEventListener(Keyboard.END_KEY, onKeyboard);
-  element.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
-}
 
 /**
  * @param {CustomEvent} event
@@ -72,6 +30,108 @@ export function onSelectedChange(event) {
   } else {
     dataTableElement.removeAttribute('mdw-has-selection');
   }
+}
+
+/**
+ * @param {Element} datatableElement
+ * @return {HTMLElement}
+ */
+export function getScroller(datatableElement) {
+  /** @type {HTMLElement} */
+  let scroller = (datatableElement.getElementsByClassName('mdw-datatable__scroller')[0]);
+  if (!scroller) {
+    scroller = document.createElement('div');
+    scroller.classList.add('mdw-datatable__scroller');
+    const footer = datatableElement.getElementsByClassName('mdw-datatable__footer')[0];
+    if (footer) {
+      datatableElement.insertBefore(scroller, footer);
+    } else {
+      datatableElement.appendChild(scroller);
+    }
+    // Move table into scroller if it exists
+    const table = datatableElement.getElementsByTagName('table')[0];
+    if (table) {
+      table.parentElement.removeChild(table);
+      scroller.appendChild(table);
+    }
+  }
+  return scroller;
+}
+
+/**
+ * @param {Element} datatableElement
+ * @return {HTMLTableElement}
+ */
+export function getTable(datatableElement) {
+  if (datatableElement instanceof HTMLTableElement) {
+    return datatableElement;
+  }
+  let table = datatableElement.getElementsByTagName('table')[0];
+  if (!table) {
+    const scroller = getScroller(datatableElement);
+    table = document.createElement('table');
+    scroller.appendChild(table);
+  }
+  return table;
+}
+
+/**
+ * @param {Element} datatableElement
+ * @return {HTMLTableSectionElement}
+ */
+export function getTableBody(datatableElement) {
+  let tbody = datatableElement.getElementsByTagName('tbody')[0];
+  if (!tbody) {
+    const table = getTable(datatableElement);
+    tbody = document.createElement('tbody');
+    table.appendChild(tbody);
+  }
+  return tbody;
+}
+
+/**
+ * @param {Element} datatableElement
+ * @param {number} columnIndex
+ * @param {boolean} ascending
+ * @return {void}
+ */
+export function sortColumn(datatableElement, columnIndex, ascending = true) {
+  if (datatableElement.hasAttribute('mdw-datatable-adapter')) {
+    return;
+  }
+  iterateArrayLike(datatableElement.getElementsByTagName('th'), (th) => {
+    if (th.cellIndex === columnIndex) {
+      th.setAttribute('aria-sort', ascending ? 'ascending' : 'descending');
+    } else if (th.hasAttribute('aria-sort')) {
+      th.setAttribute('aria-sort', 'none');
+    }
+  });
+
+  /** @type {HTMLTableSectionElement} */
+  const tbody = getTableBody(datatableElement);
+  const rows = [];
+  for (let i = tbody.rows.length - 1; i >= 0; i -= 1) {
+    rows.push(tbody.rows.item(i));
+    tbody.deleteRow(i);
+  }
+  rows.sort((a, b) => {
+    const aCell = a.cells.item(columnIndex);
+    const bCell = b.cells.item(columnIndex);
+    const aText = aCell.textContent;
+    const bText = bCell.textContent;
+    if (aCell.dataset.type === 'number') {
+      return parseFloat(bText) - parseFloat(aText);
+    }
+    return bText.localeCompare(aText);
+  });
+  if (ascending) {
+    rows.reverse();
+  }
+  const fragment = document.createDocumentFragment();
+  rows.forEach((row) => {
+    fragment.appendChild(row);
+  });
+  tbody.appendChild(fragment);
 }
 
 /**
@@ -125,51 +185,6 @@ export function onRowHeaderCheckedChange(event) {
   const cell = (event.target);
   const row = cell.parentElement;
   DataTableRow.setSelected(row, event.detail.value);
-}
-
-/**
- * @param {Element} datatableElement
- * @param {number} columnIndex
- * @param {boolean} ascending
- * @return {void}
- */
-export function sortColumn(datatableElement, columnIndex, ascending = true) {
-  if (datatableElement.hasAttribute('mdw-datatable-adapter')) {
-    return;
-  }
-  iterateArrayLike(datatableElement.getElementsByTagName('th'), (th) => {
-    if (th.cellIndex === columnIndex) {
-      th.setAttribute('aria-sort', ascending ? 'ascending' : 'descending');
-    } else if (th.hasAttribute('aria-sort')) {
-      th.setAttribute('aria-sort', 'none');
-    }
-  });
-
-  /** @type {HTMLTableSectionElement} */
-  const tbody = getTableBody(datatableElement);
-  const rows = [];
-  for (let i = tbody.rows.length - 1; i >= 0; i -= 1) {
-    rows.push(tbody.rows.item(i));
-    tbody.deleteRow(i);
-  }
-  rows.sort((a, b) => {
-    const aCell = a.cells.item(columnIndex);
-    const bCell = b.cells.item(columnIndex);
-    const aText = aCell.textContent;
-    const bText = bCell.textContent;
-    if (aCell.dataset.type === 'number') {
-      return parseFloat(bText) - parseFloat(aText);
-    }
-    return bText.localeCompare(aText);
-  });
-  if (ascending) {
-    rows.reverse();
-  }
-  const fragment = document.createDocumentFragment();
-  rows.forEach((row) => {
-    fragment.appendChild(row);
-  });
-  tbody.appendChild(fragment);
 }
 
 /**
@@ -246,7 +261,7 @@ export function onKeyboard(event) {
         }
         if (cell) {
           searchElements = getTableBody(dataTableElement).querySelectorAll(
-            CELL_TABINDEX_QUERIES.map((q) => `${q}:nth-child(${cell.cellIndex + 1})`).join(',')
+            CELL_TABINDEX_QUERIES.map((q) => `${q}:nth-child(${cell.cellIndex + 1})`).join(','),
           );
         } else {
           searchElements = getTableBody(dataTableElement).getElementsByTagName('tr');
@@ -293,7 +308,6 @@ export function onKeyboard(event) {
   event.stopPropagation();
 }
 
-
 /**
  * @param {Element} element
  * @return {void}
@@ -310,49 +324,6 @@ export function detach(element) {
   element.removeEventListener(Keyboard.HOME_KEY, onKeyboard);
   element.removeEventListener(Keyboard.END_KEY, onKeyboard);
   element.removeEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
-}
-
-/**
- * @param {Element} datatableElement
- * @return {HTMLElement}
- */
-export function getScroller(datatableElement) {
-  /** @type {HTMLElement} */
-  let scroller = (datatableElement.getElementsByClassName('mdw-datatable__scroller')[0]);
-  if (!scroller) {
-    scroller = document.createElement('div');
-    scroller.classList.add('mdw-datatable__scroller');
-    const footer = datatableElement.getElementsByClassName('mdw-datatable__footer')[0];
-    if (footer) {
-      datatableElement.insertBefore(scroller, footer);
-    } else {
-      datatableElement.appendChild(scroller);
-    }
-    // Move table into scroller if it exists
-    const table = datatableElement.getElementsByTagName('table')[0];
-    if (table) {
-      table.parentElement.removeChild(table);
-      scroller.appendChild(table);
-    }
-  }
-  return scroller;
-}
-
-/**
- * @param {Element} datatableElement
- * @return {HTMLTableElement}
- */
-export function getTable(datatableElement) {
-  if (datatableElement instanceof HTMLTableElement) {
-    return datatableElement;
-  }
-  let table = datatableElement.getElementsByTagName('table')[0];
-  if (!table) {
-    const scroller = getScroller(datatableElement);
-    table = document.createElement('table');
-    scroller.appendChild(table);
-  }
-  return table;
 }
 
 /**
@@ -375,15 +346,43 @@ export function getHeaderRow(tableElement) {
 }
 
 /**
- * @param {Element} datatableElement
- * @return {HTMLTableSectionElement}
+ * @param {Element} element
+ * @return {void}
  */
-export function getTableBody(datatableElement) {
-  let tbody = datatableElement.getElementsByTagName('tbody')[0];
-  if (!tbody) {
-    const table = getTable(datatableElement);
-    tbody = document.createElement('tbody');
-    table.appendChild(tbody);
+export function attach(element) {
+  element.setAttribute('mdw-datatable-js', '');
+
+  const table = getTable(element);
+  table.setAttribute('role', 'grid');
+  const headerRow = getHeaderRow(element);
+  const tbody = getTableBody(element);
+
+  iterateArrayLike(headerRow.getElementsByTagName('th'), DataTableColumnHeader.attach);
+  iterateArrayLike(tbody.getElementsByTagName('th'), DataTableRowHeader.attach);
+
+  const tableRows = tbody.getElementsByTagName('tr');
+  iterateArrayLike(tableRows, DataTableRow.attach);
+
+  const rowFocusable = element.hasAttribute('mdw-row-focusable');
+  if (rowFocusable) {
+    RovingTabIndex.setupTabIndexes(tableRows);
   }
-  return tbody;
+  const cellFocusable = element.hasAttribute('mdw-cell-focusable');
+  if (cellFocusable) {
+    RovingTabIndex.setupTabIndexes(tbody.querySelectorAll(CELL_TABINDEX_QUERIES.join(',')));
+  }
+
+  element.addEventListener(DataTableRow.FOCUS_EVENT, onItemFocus);
+  element.addEventListener(DataTableRow.SELECTED_CHANGE_EVENT, onSelectedChange);
+  element.addEventListener(DataTableCell.FOCUS_EVENT, onItemFocus);
+  element.addEventListener(DataTableCell.SELECTED_CHANGE_EVENT, onSelectedChange);
+  element.addEventListener(DataTableColumnHeader.SORT_EVENT, onSort);
+  element.addEventListener(Keyboard.SPACEBAR_KEY, onKeyboard);
+  element.addEventListener(Keyboard.UP_ARROW_KEY, onKeyboard);
+  element.addEventListener(Keyboard.DOWN_ARROW_KEY, onKeyboard);
+  element.addEventListener(Keyboard.FORWARD_ARROW_KEY, onKeyboard);
+  element.addEventListener(Keyboard.BACK_ARROW_KEY, onKeyboard);
+  element.addEventListener(Keyboard.HOME_KEY, onKeyboard);
+  element.addEventListener(Keyboard.END_KEY, onKeyboard);
+  element.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
 }

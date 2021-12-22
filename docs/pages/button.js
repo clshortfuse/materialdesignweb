@@ -1,26 +1,12 @@
-import * as Button from '../../components/button/index';
-import * as Overlay from '../../core/overlay/index';
-import * as Ripple from '../../core/ripple/index';
-import { convertElementToCode } from '../_sample-utils';
-import { iterateArrayLike, setTextNode } from '../../core/dom';
+import * as Button from '../../components/button/index.js';
+import { iterateArrayLike, setTextNode } from '../../core/dom.js';
+import * as Overlay from '../../core/overlay/index.js';
+import * as Ripple from '../../core/ripple/index.js';
+import { convertElementToCode } from '../_sample-utils.js';
 
 /** @return {void} */
 function initializeSampleComponents() {
   iterateArrayLike(document.querySelectorAll('.js .mdw-button'), Button.attach);
-}
-
-/** @return {void} */
-function setupPugButton() {
-  const pugButton = document.getElementById('usePug');
-  Button.attach(pugButton);
-  pugButton.addEventListener('click', () => {
-    if (pugButton.getAttribute('aria-pressed') === 'true') {
-      pugButton.setAttribute('aria-pressed', 'false');
-    } else {
-      pugButton.setAttribute('aria-pressed', 'true');
-    }
-    updateSampleCode();
-  });
 }
 
 /** @type {HTMLElement} */
@@ -79,6 +65,20 @@ function updateSampleCode() {
 
   const jsCodeElement = document.getElementsByClassName('component-js')[0];
   jsCodeElement.textContent = 'mdw.Button.attach(buttonElement);';
+}
+
+/** @return {void} */
+function setupPugButton() {
+  const pugButton = document.getElementById('usePug');
+  Button.attach(pugButton);
+  pugButton.addEventListener('click', () => {
+    if (pugButton.getAttribute('aria-pressed') === 'true') {
+      pugButton.setAttribute('aria-pressed', 'false');
+    } else {
+      pugButton.setAttribute('aria-pressed', 'true');
+    }
+    updateSampleCode();
+  });
 }
 
 /**

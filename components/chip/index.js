@@ -1,7 +1,8 @@
 // https://www.w3.org/TR/wai-aria-practices/#Listbox
 
-import { iterateArrayLike } from '../../core/dom';
-import * as ChipItem from './item';
+import { iterateArrayLike } from '../../core/dom.js';
+
+import * as ChipItem from './item.js';
 
 /**
  * @param {Element} element

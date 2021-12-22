@@ -3,7 +3,7 @@ include ../_mixins.pug
 +header("fab")
   .comparison.js
     .render
-      div.display-flex.flex-1(flex-column style="position:relative")
+      .display-flex.flex-1(flex-column style="position:relative")
         +androidstatusbar('primary 700', 'dark')
         +appbar('primary 500', 'dark', ['menu'], ['search']) JS
         .content(style="padding:16px 8px;")
@@ -39,7 +39,7 @@ include ../_mixins.pug
       +androidnavbar
   .comparison
     .render
-      div.display-flex.flex-1(flex-column style="position:relative")
+      .display-flex.flex-1(flex-column style="position:relative")
         +androidstatusbar('primary 700', 'dark')
         +appbar('primary 500', 'dark', ['menu'], ['search']) CSS Only
         .content(style="padding:16px 8px;") 

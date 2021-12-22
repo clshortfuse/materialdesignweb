@@ -1,0 +1,188 @@
+<% var T = '../../templates/index.eta' %>
+<% layout('../_partials/_header.eta', {page: 'bottomnav'}) %>
+<div class="mdw-grid" mdw-margin-top mdw-margin-bottom mdw-stretch>
+  <div class="mdw-grid__item" mdw-colspan="100%">
+    <h5 class="mdw-type" mdw-baseline-next="36">Bottom navigation bars allow movement between primary destinations in an app.</h5>
+    <p class="mdw-typeBottom">navigation bars display three to five destinations at the bottom of a screen. Each destination is represented by an icon and an optional text label. When a bottom navigation icon is tapped, the user is taken to the top-level navigation destination associated with that icon.</p>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="6">
+    <div class="mdw-grid__content component-sample">
+      <div class="render-fill">
+        <%~ includeFile('../_partials/_androidstatusbar.eta', { surface: 'background 900', dark:true }) %>
+        <%~ includeFile('../_partials/_appbar.eta', { surface: 'background 800', dark:true, body:'Bottom Navigation' }) %>
+        <div class="content"></div>
+        <nav class="mdw-bottomnav">
+          <a class="mdw-bottomnav__item mdw-theme" mdw-ink="primary" aria-selected="true">
+            <div class="mdw-bottomnav__icon">
+              <i class="material-icons">history</i>
+            </div>
+            <div class="mdw-bottomnav__label">Recents</div>
+          </a>
+          <a class="mdw-bottomnav__item mdw-theme" mdw-ink="primary" aria-selected="false">
+            <div class="mdw-bottomnav__icon">
+              <div class="mdw-bottomnav__badge mdw-theme" mdw-surface="warn 500" mdw-ink="white" mdw-badge></div>
+              <i class="material-icons">favorite</i>
+            </div>
+            <div class="mdw-bottomnav__label">Favorites</div>
+          </a>
+          <a class="mdw-bottomnav__item mdw-theme" mdw-ink="primary" aria-selected="false">
+            <div class="mdw-bottomnav__icon">
+              <div class="mdw-bottomnav__badge mdw-theme" mdw-surface="warn 500" mdw-ink="white" mdw-badge="99+"></div>
+              <i class="material-icons">near_me</i>
+            </div>
+            <div class="mdw-bottomnav__label">Nearby</div>
+          </a>
+        </nav>
+        <%~ includeFile('../_partials/_androidnavbar.eta') %>
+      </div>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="4">
+    <div class="mdw-type" mdw-style="subtitle">Javascript</div>
+    <div class="docs-option-list">
+      <%~ includeFile(T, { selection: { ink:'secondary', type:'radio', name:'javascript', value:'required', checked:true, text: 'Required' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', type:'radio', name:'javascript', value:'optional', disabled:true, text: 'Optional' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', type:'radio', name:'javascript', value:'none', disabled:true, text: 'None' }}) %>
+    </div>
+    <div class="mdw-type" mdw-style="subtitle">Ink</div>
+    <div class="docs-option-list">
+      <%~ includeFile(T, {selection: { ink:'secondary', type:'radio', name:'ink', value:'default', text:'Default' }}) %>
+      <%~ includeFile(T, {selection: { ink:'secondary', type:'radio', name:'ink', value:'primary', checked:true, text:'Primary' }}) %>
+      <%~ includeFile(T, {selection: { ink:'secondary', type:'radio', name:'ink', value:'secondary', text:'Secondary' }}) %>
+      <%~ includeFile(T, {selection: { ink:'secondary', type:'radio', name:'ink', value:'warn', text:'Warn' }}) %>
+      <%~ includeFile(T, {selection: { ink:'secondary', type:'radio', name:'ink', value:'purple', text:'Purple' }}) %>
+    </div>
+    <div class="mdw-type" mdw-style="subtitle">Surface</div>
+    <div class="docs-option-list">
+      <%~ includeFile(T, {selection: { ink:'secondary', type:'radio', name:'surface', value:'none', checked:true, text:'None' }}) %>
+      <%~ includeFile(T, {selection: { ink:'secondary', type:'radio', name:'surface', value:'card', text:'Card' }}) %>
+      <%~ includeFile(T, {selection: { ink:'secondary', type:'radio', name:'surface', value:'primary 500 dark', text:'Primary 500 (Dark)' }}) %>
+      <%~ includeFile(T, {selection: { ink:'secondary', type:'radio', name:'surface', value:'secondary 100 light', text:'Secondary 100 (Light)' }}) %>
+      <%~ includeFile(T, {selection: { ink:'secondary', type:'radio', name:'surface', value:'warn 200 light', text:'Warn 200 (Light)' }}) %>
+      <%~ includeFile(T, {selection: { ink:'secondary', type:'radio', name:'surface', value:'green 700 dark', text:'Green 700 (Dark)' }}) %>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="100%"></div>
+  <div class="mdw-grid__item" mdw-colspan="6">
+    <h6 class="mdw-type">HTML Code</h6>
+    <div class="mdw-card mdw-theme component-code component-html" mdw-surface="card" mdw-border-ink>
+      <%~ includeFile(T, {button: { icon: true, ink:'secondary', attributes: { 'aria-pressed': 'false', 'mdw-overlay-off':'activated' }, text: 'PUG', id: 'usePug' }}) %>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="4">
+    <h6 class="mdw-type">Javascript Code</h6>
+    <div class="mdw-card mdw-theme component-code component-js" mdw-surface="card" mdw-border-ink></div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="100%">
+    <h6 class="mdw-type">Samples</h6>
+  </div>
+  <div class="mdw-grid__item display-flex" mdw-colspan="6">
+    <div class="render-fill mdw-theme" mdw-surface="white" mdw-light>
+      <%~ includeFile('../_partials/_androidstatusbar.eta') %>
+      <%~ includeFile('../_partials/_appbar.eta', { text: 'Light Theme' }) %>
+      <div class="content" style="padding: 16px 0;">
+        <ul>
+          <li>Radio buttons</li>
+          <li>Badges</li>
+        </ul>
+      </div>
+      <nav class="mdw-bottomnav mdw-theme" mdw-ink="primary medium">
+        <a class="mdw-bottomnav__item" aria-selected="true">
+          <div class="mdw-bottomnav__icon material-icons">history</div>
+          <div class="mdw-bottomnav__label">Recents</div>
+        </a>
+        <a class="mdw-bottomnav__item" aria-selected="false">
+          <div class="mdw-bottomnav__icon">
+            <div class="mdw-bottomnav__badge mdw-theme" mdw-surface="warn 500" mdw-ink="white" mdw-badge></div>
+            <div class="material-icons">favorite</div>
+          </div>
+          <div class="mdw-bottomnav__label">Favorites</div>
+        </a>
+        <a class="mdw-bottomnav__item" aria-selected="false">
+          <div class="mdw-bottomnav__icon material-icons">near_me</div>
+          <div class="mdw-bottomnav__label">Nearby</div>
+        </a>
+      </nav>
+      <%~ includeFile('../_partials/_androidnavbar.eta') %>
+    </div>
+  </div>
+  <div class="mdw-grid__item display-flex" mdw-colspan="6">
+    <div class="render-fill js mdw-theme" mdw-surface="black" mdw-dark>
+      <%~ includeFile('../_partials/_androidstatusbar.eta') %>
+      <%~ includeFile('../_partials/_appbar.eta', {text: 'Dark Theme'}) %>
+      <div class="content" style="padding: 16px 0;">
+        <ul>
+          <li>Disappearing Labels</li>
+          <li>Badges</li>
+          <li>Shifting labels</li>
+        </ul>
+      </div>
+      <nav class="mdw-bottomnav" mdw-shifting>
+        <a class="mdw-bottomnav__item">
+          <div class="mdw-bottomnav__icon material-icons">tv</div>
+          <div class="mdw-bottomnav__label">Movies</div>
+        </a>
+        <a class="mdw-bottomnav__item" aria-selected="true">
+          <div class="mdw-bottomnav__icon">
+            <div class="mdw-bottomnav__badge mdw-theme" mdw-surface="warn 500" mdw-ink="white" mdw-badge></div>
+            <div class="material-icons">music_note</div>
+          </div>
+          <div class="mdw-bottomnav__label">Music</div>
+        </a>
+        <a class="mdw-bottomnav__item" aria-selected="false">
+          <div class="mdw-bottomnav__icon">
+            <div class="mdw-bottomnav__badge mdw-theme" mdw-surface="warn 500" mdw-ink="white" mdw-badge="88"></div>
+            <div class="material-icons">book</div>
+          </div>
+          <div class="mdw-bottomnav__label">Books</div>
+        </a>
+        <a class="mdw-bottomnav__item" aria-selected="false">
+          <div class="mdw-bottomnav__icon">
+            <div class="mdw-bottomnav__badge mdw-theme" mdw-surface="warn 500" mdw-ink="white" mdw-badge="888+"></div>
+            <div class="material-icons">assignment</div>
+          </div>
+          <div class="mdw-bottomnav__label">Newsstand</div>
+        </a>
+      </nav>
+      <%~ includeFile('../_partials/_androidnavbar.eta') %>
+    </div>
+  </div>
+  <div class="mdw-grid__item display-flex" mdw-colspan="6">
+    <div class="render-fill js mdw-theme">
+      <%~ includeFile('../_partials/_androidstatusbar.eta') %>
+      <%~ includeFile('../_partials/_appbar.eta', {text: 'Tablet'}) %>
+      <div class="content" style="padding: 16px 0;">
+        <ul>
+          <li>Disappearing Labels</li>
+          <li>Badges</li>
+        </ul>
+      </div>
+      <nav class="mdw-bottomnav mdw-theme" mdw-surface="teal 700" mdw-dark mdw-shifting>
+        <a class="mdw-bottomnav__item" aria-selected="true">
+          <div class="mdw-bottomnav__icon">
+            <div class="mdw-bottomnav__badge mdw-theme" mdw-surface="warn 500" mdw-ink="white" mdw-badge="4"></div>
+            <div class="material-icons">tv</div>
+          </div>
+          <div class="mdw-bottomnav__label">Movies</div>
+        </a>
+        <a class="mdw-bottomnav__item" aria-selected="false">
+          <div class="mdw-bottomnav__icon">
+            <div class="mdw-bottomnav__badge mdw-theme" mdw-surface="warn 500" mdw-ink="white" mdw-badge></div>
+            <div class="material-icons">music_note</div>
+          </div>
+          <div class="mdw-bottomnav__label">Music</div>
+        </a>
+        <a class="mdw-bottomnav__item" aria-selected="false">
+          <div class="mdw-bottomnav__icon material-icons">book</div>
+          <div class="mdw-bottomnav__label">Books</div>
+        </a>
+        <a class="mdw-bottomnav__item" aria-selected="false">
+          <div class="mdw-bottomnav__icon material-icons">assignment</div>
+          <div class="mdw-bottomnav__label">Newsstand</div>
+        </a>
+      </nav>
+      <%~ includeFile('../_partials/_androidnavbar.eta') %>
+    </div>
+  </div>
+</div>
+<script src="bottomnav.min.js"></script>

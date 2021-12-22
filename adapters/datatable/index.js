@@ -1,15 +1,15 @@
-import { iterateArrayLike, iterateSomeOfArrayLike } from '../../core/dom';
+import * as Button from '../../components/button/index.js';
+import * as DataTableCell from '../../components/datatable/cell.js';
+import * as DataTableColumnHeader from '../../components/datatable/columnheader.js';
+import * as DataTable from '../../components/datatable/index.js';
+import * as DataTableRow from '../../components/datatable/row.js';
+import * as DataTableRowHeader from '../../components/datatable/rowheader.js';
+import * as Selection from '../../components/selection/index.js';
+import * as RovingTabIndex from '../../core/aria/rovingtabindex.js';
+import { getPassiveEventListenerOption, iterateArrayLike, iterateSomeOfArrayLike } from '../../core/dom.js';
+import { noop } from '../../utils/function.js';
 
-import * as RovingTabIndex from '../../core/aria/rovingtabindex';
-import * as Button from '../../components/button/index';
-import * as DataTable from '../../components/datatable/index';
-import * as DataTableColumnHeader from '../../components/datatable/columnheader';
-import * as DataTableRow from '../../components/datatable/row';
-import * as DataTableRowHeader from '../../components/datatable/rowheader';
-import * as DataTableCell from '../../components/datatable/cell';
-import * as Selection from '../../components/selection/index';
-import DataTableAdapterColumn from './column';
-import { noop } from '../../utils/function';
+import DataTableAdapterColumn from './column.js';
 
 /**
  * @template {Record<string, any>} T
@@ -96,15 +96,15 @@ export default class DataTableAdapter {
 
     this.element.addEventListener(
       DataTableColumnHeader.SORT_EVENT,
-      this.onDataTableColumnHeaderSortListener
+      this.onDataTableColumnHeaderSortListener,
     );
     this.element.addEventListener(
       Selection.CHECKED_CHANGE_EVENT,
-      this.onCheckedChangeEventListener
+      this.onCheckedChangeEventListener,
     );
     this.element.addEventListener(
       DataTableRow.SELECTED_CHANGE_EVENT,
-      DataTableAdapter.onRowSelectedChangeEvent
+      DataTableAdapter.onRowSelectedChangeEvent,
     );
 
     this.scroller = DataTable.getScroller(this.element);
@@ -198,7 +198,7 @@ export default class DataTableAdapter {
   }
 
   buildScrollListener() {
-    this.scroller.addEventListener('scroll', this.onElementScrollListener);
+    this.scroller.addEventListener('scroll', this.onElementScrollListener, getPassiveEventListenerOption());
   }
 
   destroyScrollListener() {
@@ -567,7 +567,7 @@ export default class DataTableAdapter {
   isRowVisible(
     el,
     viewportTop = this.scroller.scrollTop,
-    viewportBottom = this.scroller.scrollTop + this.scroller.offsetHeight
+    viewportBottom = this.scroller.scrollTop + this.scroller.offsetHeight,
   ) {
     const rowTop = el.offsetTop;
     const rowBottom = rowTop + el.offsetHeight;

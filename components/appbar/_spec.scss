@@ -189,19 +189,19 @@ $iconHeight: 40 !default;
 .mdw-appbar__start,
 .mdw-appbar__end,
 .mdw-appbar__title {
-  margin-top: dp(($height - $iconHeight) / 2);
+  margin-top: dp(($height - $iconHeight) * 0.5);
   
   .mdw-appbar[mdw-dense] & {
-    margin-top: dp(($heightDense - $iconHeight) / 2);
+    margin-top: dp(($heightDense - $iconHeight) * 0.5);
   }
 
   &,
   .mdw-appbar[mdw-dense] & {
     @include breakpoint.maxTabletDevice {
-      margin-top: dp(($heightMobile - $iconHeight) / 2);
+      margin-top: dp(($heightMobile - $iconHeight) * 0.5);
     }
     @include breakpoint.isMobileDeviceLandscape {
-      margin-top: dp(($heightMobileLandscape - $iconHeight) / 2);
+      margin-top: dp(($heightMobileLandscape - $iconHeight) * 0.5);
     }
   }
 }

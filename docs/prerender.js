@@ -1,6 +1,6 @@
-import * as Document from '../core/document/index';
-import { setupMenuOptions } from './_menuoptions';
+import * as Document from '../core/document/index.js';
 
+import { setupMenuOptions } from './_menuoptions.js';
 
 /** @return {void} */
 function onDOMContentLoaded() {

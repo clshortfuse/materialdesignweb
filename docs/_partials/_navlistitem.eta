@@ -1,0 +1,16 @@
+<li class="mdw-list__item">
+  <a class="mdw-list__content mdw-overlay mdw-ripple mdw-theme" <%_~ [
+    it.page === it.key ? 'aria-current="page"' : '',
+    `aria-selected="${it.page === it.key}"`,
+    `href="${it.key}.html"`,
+    `mdw-ink="${it.color ?? 'secondary contrast'}"`,
+  ].filter(v=>v).join(' ')
+  %>>
+    <% if (it.icon) { %>
+    <div class="mdw-list__icon mdw-theme material-icons" mdw-ink="medium"><%= it.icon ?? '' %></div>
+    <% } %>
+    <div class="mdw-list__text">
+      <div class="mdw-list__text-block"><%= it.name ?? '' %></div>
+    </div>
+  </a>
+</li>

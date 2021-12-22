@@ -1,7 +1,7 @@
-import * as Menu from '../../components/menu/index';
-import * as MenuItem from '../../components/menu/item';
-import { convertElementToCode } from '../_sample-utils';
-import { iterateArrayLike } from '../../core/dom';
+import * as Menu from '../../components/menu/index.js';
+import * as MenuItem from '../../components/menu/item.js';
+import { iterateArrayLike } from '../../core/dom.js';
+import { convertElementToCode } from '../_sample-utils.js';
 
 /** @type {HTMLElement} */
 let sampleComponent;
@@ -60,7 +60,6 @@ function updateSampleCode() {
       sampleComponent.insertBefore(closer, sampleComponent.firstElementChild);
     }
   }
-
 
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
   const sampleContainer = document.querySelector('.component-sample__container');

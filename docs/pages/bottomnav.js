@@ -1,27 +1,12 @@
-import * as BottomNav from '../../components/bottomnav/index';
-import * as BottomNavItem from '../../components/bottomnav/item';
-import * as Button from '../../components/button/index';
-import { convertElementToCode } from '../_sample-utils';
-import { iterateArrayLike, setTextNode } from '../../core/dom';
-
+import * as BottomNav from '../../components/bottomnav/index.js';
+import * as BottomNavItem from '../../components/bottomnav/item.js';
+import * as Button from '../../components/button/index.js';
+import { iterateArrayLike, setTextNode } from '../../core/dom.js';
+import { convertElementToCode } from '../_sample-utils.js';
 
 /** @return {void} */
 function initializeSampleComponents() {
   iterateArrayLike(document.querySelectorAll('.mdw-bottomnav'), BottomNav.attach);
-}
-
-/** @return {void} */
-function setupPugButton() {
-  const pugButton = document.getElementById('usePug');
-  Button.attach(pugButton);
-  pugButton.addEventListener('click', () => {
-    if (pugButton.getAttribute('aria-pressed') === 'true') {
-      pugButton.setAttribute('aria-pressed', 'false');
-    } else {
-      pugButton.setAttribute('aria-pressed', 'true');
-    }
-    updateSampleCode();
-  });
 }
 
 /** @type {HTMLElement} */
@@ -49,6 +34,20 @@ function updateSampleCode() {
 
   const jsCodeElement = document.getElementsByClassName('component-js')[0];
   jsCodeElement.textContent = 'mdw.BottomNav.attach(bottomNavElement);';
+}
+
+/** @return {void} */
+function setupPugButton() {
+  const pugButton = document.getElementById('usePug');
+  Button.attach(pugButton);
+  pugButton.addEventListener('click', () => {
+    if (pugButton.getAttribute('aria-pressed') === 'true') {
+      pugButton.setAttribute('aria-pressed', 'false');
+    } else {
+      pugButton.setAttribute('aria-pressed', 'true');
+    }
+    updateSampleCode();
+  });
 }
 
 /**

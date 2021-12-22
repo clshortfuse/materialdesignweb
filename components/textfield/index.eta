@@ -1,0 +1,74 @@
+<label <%~ Object.entries({
+  'class': [
+    'mdw-textfield',
+    it?.ink || it?.theme ? 'mdw-theme' : '',
+    it?.labelClass,
+  ].filter(v=>v).join(' '),
+  'mdw-outlined': it?.outlined,
+  'mdw-autosize': it?.autosize,
+  'mdw-ink': it?.ink,
+  ...it?.labelAttributes,
+  }).map(([key, value]) => {
+    if (value === true) return key;
+    if (value === false || value == null) return false;
+    return `${key}="${value}"`
+  }).filter(v=>v).join(' ')-%>>
+
+  <%_ if (it?.signifier) { _%>
+  <div <%~ Object.entries({
+      'class': [
+        'mdw-textfield__signifier',
+        it?.signifier.class,
+      ].join(' '),
+      ...it?.signifier.attributes,
+      }).map(([key, value]) => {
+      if (value === true) return key;
+      if (value === false || value == null) return false;
+      return `${key}="${value}"`;
+    }).filter(v=>v).join(' ')-%>><%~ it?.signifier.body ?? '' %><%= it?.signifier.text ?? '' %></div>
+  <%_ } _%>
+
+  <input <%~ Object.entries({
+    'class': [
+      'mdw-textfield__input',
+      it?.class,
+    ].filter(v=>v).join(' '),
+    'disabled': it?.disabled && it?.disabled !== 'false',
+    'aria-disabled': it?.disabled === true ? 'true' : it?.disabled,
+    'minlength': it?.minlength,
+    'placeholder': it?.placeholder ?? ' ',
+    'required': it?.required,
+    'name': it?.name,
+    'type': it?.type ?? 'text',
+    'value': it?.value,
+    ...it?.attributes,
+    }).map(([key, value]) => {
+      if (value === true) return key;
+      if (value === false || value == null) return false;
+      return `${key}="${value}"`;
+    }).filter(v=>v).join(' ')-%> />
+
+  <%_ _%>
+
+  <div class="mdw-textfield__border">
+    <div class="mdw-textfield__outline-gap">
+      <div class="mdw-textfield__label"><%= it?.body ?? '' %><%= it?.text ?? '' %></div>
+    </div>
+  </div>
+
+  <%_ if (it?.prefix) { _%>
+  <div class="mdw-textfield__prefix"><%= it?.prefix %></div>
+  <%_ } _%>
+
+  <%_ if (it?.suffix) { _%>
+  <div class="mdw-textfield__suffix"><%= it?.suffix %></div>
+  <% } %>
+
+  <%_ if (it?.helper) { _%>
+  <div class="mdw-textfield__helper-text"><%= it?.helper %></div>
+  <%_ } _%>
+
+  <%_ if (it?.error) { _%>
+  <div class="mdw-textfield__error-text"><%= it?.error %></div>
+  <%_ } _%>
+</label>

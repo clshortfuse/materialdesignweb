@@ -1,38 +1,7 @@
-import * as Keyboard from '../../core/aria/keyboard';
-import { iterateArrayLike, getChildElementByClass } from '../../core/dom';
-import * as ListContent from './content';
+import * as Keyboard from '../../core/aria/keyboard.js';
+import { getChildElementByClass, iterateArrayLike } from '../../core/dom.js';
 
-/**
- * @param {Element} listItemElement
- * @return {void}
- */
-export function attach(listItemElement) {
-  attachCore(listItemElement);
-  iterateArrayLike(listItemElement.getElementsByClassName('mdw-list__content'), ListContent.attach);
-  if (listItemElement.hasAttribute('aria-expanded')) {
-    if (!listItemElement.hasAttribute('mdw-expander-js')) {
-      listItemElement.setAttribute('mdw-pre-expander-js', '');
-      setTimeout(() => {
-        if (listItemElement.hasAttribute('mdw-pre-expander-js')) {
-          listItemElement.removeAttribute('mdw-pre-expander-js');
-          listItemElement.setAttribute('mdw-expander-js', '');
-        }
-      }, 500);
-    }
-    setExpanded(listItemElement, isExpanded(listItemElement));
-  }
-  listItemElement.addEventListener(ListContent.ACTIVATE_EVENT, onChildContentActivate);
-  listItemElement.addEventListener('keydown', onKeyDown);
-  Keyboard.attach(listItemElement);
-}
-
-/**
- * @param {Element} listItemElement
- * @return {void}
- */
-export function attachCore(listItemElement) {
-  setupAria(listItemElement);
-}
+import * as ListContent from './content.js';
 
 /**
  * @param {Element} listItemElement
@@ -158,6 +127,37 @@ function onKeyDown(event) {
   const newEvent = document.createEvent('Event');
   newEvent.initEvent('click', true, true);
   activatorContent.dispatchEvent(newEvent);
+}
+
+/**
+ * @param {Element} listItemElement
+ * @return {void}
+ */
+export function attachCore(listItemElement) {
+  setupAria(listItemElement);
+}
+/**
+ * @param {Element} listItemElement
+ * @return {void}
+ */
+export function attach(listItemElement) {
+  attachCore(listItemElement);
+  iterateArrayLike(listItemElement.getElementsByClassName('mdw-list__content'), ListContent.attach);
+  if (listItemElement.hasAttribute('aria-expanded')) {
+    if (!listItemElement.hasAttribute('mdw-expander-js')) {
+      listItemElement.setAttribute('mdw-pre-expander-js', '');
+      setTimeout(() => {
+        if (listItemElement.hasAttribute('mdw-pre-expander-js')) {
+          listItemElement.removeAttribute('mdw-pre-expander-js');
+          listItemElement.setAttribute('mdw-expander-js', '');
+        }
+      }, 500);
+    }
+    setExpanded(listItemElement, isExpanded(listItemElement));
+  }
+  listItemElement.addEventListener(ListContent.ACTIVATE_EVENT, onChildContentActivate);
+  listItemElement.addEventListener('keydown', onKeyDown);
+  Keyboard.attach(listItemElement);
 }
 
 /**

@@ -156,6 +156,8 @@ p.mdw-type,
   &::after {
     display: inline-block;
     content: '';
+
+    min-height: dp(1); // Safari workaround
   }
 }
 

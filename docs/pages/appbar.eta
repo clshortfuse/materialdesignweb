@@ -1,0 +1,114 @@
+<% var T = '../../templates/index.eta' %>
+<% layout('../_partials/_header.eta', {page: 'appbar'}) %>
+<div class="comparison clipped">
+  <div class="render">
+    <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'background 400', light:true }) %>
+    <%~ includeFile('../_partials/_appbar.eta', {
+      surface:'background 50', light:true, start: ['menu'], end: ['search', 'favorite', 'more_vert'], body: 'Title',
+    }) %>
+    <div class="content mdw-theme" mdw-surface="background alt"></div>
+  </div>
+</div>
+
+<div class="comparison clipped">
+  <div class="render">
+    <%~ includeFile('../_partials/_androidstatusbar.eta', { surface: 'black', dark: true }) %>
+    <%~ includeFile('../_partials/_appbar.eta', {
+      surface: 'background 900', dark: true, start: ['menu'], end: ['search', 'favorite', 'more_vert'], body: 'Title'
+    }) %>
+    <div class="content mdw-theme" mdw-surface="background alt"></div>
+  </div>
+</div>
+
+<div class="comparison clipped">
+  <div class="render">
+    <%~ includeFile('../_partials/_androidstatusbar.eta', { surface: 'blue 800', dark: true }) %>
+    <%~ includeFile('../_partials/_appbar.eta', {
+      surface: 'blue 700', dark: true, start: ['menu'], end: ['search', 'favorite', 'more_vert'], body: 'Title'
+    }) %>
+    <div class="content mdw-theme" mdw-surface="background alt"></div>
+  </div>
+</div>
+
+<div class="comparison clipped-304">
+  <div class="render">
+    <%~ includeFile('../_partials/_androidstatusbar.eta') %>
+    <!-- Elevation and z-index only for demo-->
+    <!-- Normally handled with .mdw-layout__appbar-->
+    <div class="mdw-appbar mdw-elevation" mdw-dense mdw-elevation="4" style="z-index:4">
+      <div class="mdw-appbar__action">
+        <div class="mdw-appbar__start">
+          <%~ includeFile(T, { button: {icon:true, class: 'material-icons', body: 'menu' }}) %>
+        </div>
+        <div class="mdw-appbar__title">Dense (Desktop)</div>
+        <div class="mdw-appbar__end">
+          <%~ includeFile(T, { button: {icon:true, class: 'material-icons', body: 'more_vert' }}) %>
+        </div>
+      </div>
+    </div>
+    <div class="content mdw-theme" mdw-surface="background alt"></div>
+  </div>
+</div>
+<div class="comparison clipped-304">
+  <div class="render">
+    <%~ includeFile('../_partials/_androidstatusbar.eta') %>
+    <div class="mdw-appbar mdw-elevation" mdw-prominent mdw-dense mdw-elevation="4" style="z-index:4">
+      <div class="mdw-appbar__action">
+        <div class="mdw-appbar__start">
+          <%~ includeFile(T, { button: {icon:true, class: 'material-icons', body: 'menu' }}) %>
+        </div>
+        <div class="mdw-appbar__title">Prominent Dense</div>
+        <div class="mdw-appbar__end">
+          <%~ includeFile(T, { button: {icon:true, class: 'material-icons', body: 'search' }}) %>
+          <%~ includeFile(T, { button: {icon:true, class: 'material-icons', body: 'more_vert' }}) %>
+        </div>
+      </div>
+    </div>
+    <div class="content mdw-theme" mdw-surface="background alt"></div>
+  </div>
+</div>
+<div class="comparison clipped-304">
+  <div class="render">
+    <%~ includeFile('../_partials/_androidstatusbar.eta') %>
+    <div class="mdw-appbar mdw-elevation" mdw-elevation="4" style="z-index:4">
+      <div class="mdw-appbar__action">
+        <div class="mdw-appbar__start">
+          <div class="mdw-tooltip__wrapper">
+            <%~ includeFile(T, { button: {icon:true, class: 'mdw-tooltip__target material-icons', body: 'arrow_back' }}) %>
+            <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark>Back</div>
+          </div>
+        </div>
+        <div class="mdw-appbar__end">
+          <div class="mdw-tooltip__wrapper">
+            <%~ includeFile(T, { button: {icon:true, class: 'mdw-tooltip__target material-icons', body: 'more_vert', attributes: {'mdw-more-button': true} }}) %>
+            <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark>More</div>
+          </div>
+        </div>
+      </div>
+      <div class="mdw-appbar__content">
+        <label class="mdw-textfield mdw-theme" mdw-ink="primary contrast" style="font-size: 1.5rem">
+          <input class="mdw-textfield__input" value="Project Properties" placeholder=" " />
+          <div class="mdw-textfield__border">
+            <div class="mdw-textfield__outline-gap">
+              <div class="mdw-textfield__label">Title</div>
+            </div>
+          </div>
+        </label>
+        <div style="height:8px"></div>
+        <label class="mdw-textfield mdw-theme" mdw-ink="primary contrast">
+          <input class="mdw-textfield__input" value="Sync with the team abo" placeholder=" " />
+          <div class="mdw-textfield__border">
+            <div class="mdw-textfield__outline-gap">
+              <div class="mdw-textfield__label">Description</div>
+            </div>
+          </div>
+        </label>
+        <div style="height:24px">
+          <!-- Spec says 16dp, but it's actually 24dp-->
+        </div>
+      </div>
+    </div>
+    <div class="content mdw-theme" mdw-surface="background alt"></div>
+  </div>
+</div>
+<script src="appbar.min.js"></script>

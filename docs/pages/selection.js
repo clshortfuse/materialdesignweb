@@ -1,7 +1,7 @@
-import * as Selection from '../../components/selection/index';
-import * as SelectionRadioGroup from '../../components/selection/radiogroup';
-import * as List from '../../components/list/index';
-import { iterateArrayLike } from '../../core/dom';
+import * as List from '../../components/list/index.js';
+import * as Selection from '../../components/selection/index.js';
+import * as SelectionRadioGroup from '../../components/selection/radiogroup.js';
+import { iterateArrayLike } from '../../core/dom.js';
 
 /** @return {void} */
 function initializeMdwComponents() {

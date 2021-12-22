@@ -1,6 +1,6 @@
 // https://www.w3.org/TR/wai-aria-practices/#Listbox
 
-import * as Ripple from '../../core/ripple/index';
+import * as Ripple from '../../core/ripple/index.js';
 
 /**
  * @param {Element} element

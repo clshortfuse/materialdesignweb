@@ -1,0 +1,246 @@
+<% var T = '../../templates/index.eta' %>
+<% layout('../_partials/_header.eta', {page: 'search'}) %>
+<div class="comparison js">
+  <div class="render">
+    <div class="display-flex" style="padding:8px;">
+      <div class="flex-1 display-flex" flex-column>
+        <p>Text field dropdown with:</p>
+        <ul>
+          <li>one-time search on first input</li>
+          <li>startsWith text filter</li>
+          <li>append input on selection</li>
+        </ul>
+        <div>
+          <label class="mdw-textfield mdw-theme" id="search-textfield-custom1" mdw-ink="secondary">
+            <input class="mdw-textfield__input" placeholder=" " />
+            <div class="mdw-textfield__border">
+              <div class="mdw-textfield__outline-gap">
+                <div class="mdw-textfield__label">Property</div>
+              </div>
+            </div>
+            <div class="mdw-textfield__dropdown mdw-theme" mdw-surface="card" mdw-type="list" mdw-hide>
+              <div class="custom-busy-indicator display-flex" flex-align-items="center">
+                <div class="mdw-progress-circle">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 3.25A8.75 8.75 0 1 1 3.25 12"></path>
+                    <path d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25"></path>
+                  </svg>
+                </div>
+                <div>Searching...</div>
+              </div>
+              <div class="mdw-list" id="search-list-custom1"></div>
+            </div>
+          </label>
+        </div>
+        <p>Current Selection: <span id="search-result-custom1"></span></p>
+        <p>Text field dropdown with:</p>
+        <ul>
+          <li>input-based search</li>
+          <li>300ms debounce</li>
+          <li>replace input on selection</li>
+          <li>disabled item filter</li>
+        </ul>
+        <div>
+          <label class="mdw-textfield mdw-theme" id="search-textfield-custom2" mdw-ink="primary" mdw-outlined>
+            <input class="mdw-textfield__input" placeholder=" " />
+            <div class="mdw-textfield__border">
+              <div class="mdw-textfield__outline-gap">
+                <div class="mdw-textfield__label">Property</div>
+              </div>
+            </div>
+            <div class="mdw-textfield__dropdown mdw-theme" mdw-surface="card" mdw-type="list" mdw-hide>
+              <div class="custom-busy-indicator display-flex" flex-align-items="center">
+                <div class="mdw-progress-circle">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 3.25A8.75 8.75 0 1 1 3.25 12"></path>
+                    <path d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25"></path>
+                  </svg>
+                </div>
+                <div>Searching...</div>
+              </div>
+              <div class="custom-no-results-indicator display-flex" flex-align-items="center" style="display:none">No results found</div>
+              <div class="mdw-list" id="search-list-custom2"></div>
+            </div>
+          </label>
+        </div>
+        <p>Current Selection: <span id="search-result-custom2"></span></p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="comparison js">
+  <div class="render">
+    <div class="androidstatusbar mdw-theme" mdw-surface="primary 700" mdw-dark>
+      <div>12:30</div>
+      <i class="material-icons" style="letter-spacing:2px;padding:0 2px;">&#xE1BA;&#xE1C8;&#xE1A4;</i>
+    </div>
+    <div class="mdw-appbar mdw-theme" mdw-surface="primary 500" mdw-dark>
+      <div class="mdw-appbar__action">
+        <div class="mdw-appbar__start">
+          <a class="mdw-button mdw-overlay mdw-ripple material-icons" mdw-icon tabindex="0">arrow_back</a>
+        </div>
+        <div class="mdw-appbar__title" mdw-custom>
+          <div class="mdw-textfield mdw-theme" id="search-textfield-simple" mdw-solo mdw-ink="secondary">
+            <input class="mdw-textfield__input" placeholder="Search" />
+          </div>
+        </div>
+        <div class="mdw-appbar__end">
+          <a class="mdw-button mdw-overlay mdw-ripple material-icons" mdw-icon tabindex="0">clear</a>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <ul class="mdw-list" id="search-list-simple">
+        <li class="mdw-list__item">
+          <a class="mdw-list__content">Attractions</a>
+        </li>
+        <li class="mdw-list__item">
+          <a class="mdw-list__content">Dining</a>
+        </li>
+        <li class="mdw-list__item">
+          <a class="mdw-list__content">Education</a>
+        </li>
+        <li class="mdw-list__item">
+          <a class="mdw-list__content">Family</a>
+        </li>
+        <li class="mdw-list__item">
+          <a class="mdw-list__content">Health</a>
+        </li>
+        <li class="mdw-list__item">
+          <a class="mdw-list__content">Office</a>
+        </li>
+        <li class="mdw-list__item">
+          <a class="mdw-list__content">Promotions</a>
+        </li>
+        <li class="mdw-list__item">
+          <a class="mdw-list__content">Radio</a>
+        </li>
+        <li class="mdw-list__item">
+          <a class="mdw-list__content">Recipes</a>
+        </li>
+        <li class="mdw-list__item">
+          <a class="mdw-list__content">Sports</a>
+        </li>
+        <li class="mdw-list__item">
+          <a class="mdw-list__content">Travel</a>
+        </li>
+      </ul>
+    </div>
+    <div class="androidnavbar">
+      <i class="material-icons back-button">&#xE3C8;</i>
+      <i class="material-icons">&#xE836;</i>
+      <i class="material-icons">&#xE835;</i>
+    </div>
+  </div>
+</div>
+<div class="comparison js">
+  <div class="render">
+    <div class="androidstatusbar mdw-theme" mdw-surface="primary 700" mdw-dark>
+      <div>12:30</div>
+      <i class="material-icons" style="letter-spacing:2px;padding:0 2px;">&#xE1BA;&#xE1C8;&#xE1A4;</i>
+    </div>
+    <div class="mdw-appbar mdw-theme" mdw-surface="primary 500" mdw-dark>
+      <div class="mdw-appbar__action">
+        <div class="mdw-appbar__start">
+          <a class="mdw-button mdw-overlay mdw-ripple material-icons" mdw-icon tabindex="0">arrow_back</a>
+        </div>
+        <div class="mdw-appbar__title" mdw-custom>
+          <div class="mdw-textfield mdw-theme" id="search-textfield-multiline" mdw-solo mdw-ink="secondary">
+            <input class="mdw-textfield__input" placeholder="Search" />
+          </div>
+        </div>
+        <div class="mdw-appbar__end">
+          <a class="mdw-button mdw-overlay mdw-ripple material-icons" mdw-icon tabindex="0">clear</a>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <ul class="mdw-list" id="search-list-multiline">
+        <li class="mdw-list__subheader mdw-theme" mdw-ink="medium">Today</li>
+        <li class="mdw-list__item">
+          <div class="mdw-list__content mdw-overlay mdw-ripple">
+            <div class="mdw-list__avatar">
+              <i class="material-icons" style="font-size:40px;">&#xE853;</i>
+            </div>
+            <div class="mdw-list__text">
+              <div class="mdw-list__text-line">Brunch this weekend?</div>
+              <div class="mdw-list__text-block">Ali Connors<span class="mdw-theme" mdw-ink="medium"> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to meet?</span></div>
+            </div>
+          </div>
+        </li>
+        <li class="mdw-list__item">
+          <div class="mdw-list__content">
+            <div class="mdw-list__avatar">
+              <i class="material-icons" style="font-size:40px;">&#xE853;</i>
+            </div>
+            <div class="mdw-list__text">
+              <div class="mdw-list__text-line">Summer BBQ<span class="mdw-theme" mdw-ink="medium"> 4</span></div>
+              <div class="mdw-list__text-block">to Alex, Scott, Jennifer<span class="mdw-theme" mdw-ink="medium"> &mdash; Wish I could come. but I'm out of town this weekend.</span></div>
+            </div>
+          </div>
+        </li>
+        <li class="mdw-list__item">
+          <div class="mdw-list__content">
+            <div class="mdw-list__avatar">
+              <i class="material-icons" style="font-size:40px;">&#xE853;</i>
+            </div>
+            <div class="mdw-list__text">
+              <div class="mdw-list__text-line">Oui oui</div>
+              <div class="mdw-list__text-block">Sandra Adams<span class="mdw-theme" mdw-ink="medium"> &mdash; Do you have Paris recommendations? Have you ever been?</span></div>
+            </div>
+          </div>
+        </li>
+        <li class="mdw-list__item">
+          <div class="mdw-list__content">
+            <div class="mdw-list__avatar">
+              <i class="material-icons" style="font-size:40px;">&#xE853;</i>
+            </div>
+            <div class="mdw-list__text">
+              <div class="mdw-list__text-line">Birthday gift</div>
+              <div class="mdw-list__text-block">Trevor Hansen<span class="mdw-theme" mdw-ink="medium"> &mdash; Have any ideas about what we should get Heidi for her birthday?</span></div>
+            </div>
+          </div>
+        </li>
+        <li class="mdw-list__item">
+          <div class="mdw-list__content">
+            <div class="mdw-list__avatar">
+              <i class="material-icons" style="font-size:40px;">&#xE853;</i>
+            </div>
+            <div class="mdw-list__text">
+              <div class="mdw-list__text-line">Recipe to try</div>
+              <div class="mdw-list__text-block">Britta Holt<span class="mdw-theme" mdw-ink="medium"> &mdash; We should eat this: Grated Squash, Corn, and tomatillo Tacos J</span></div>
+            </div>
+          </div>
+        </li>
+        <li class="mdw-list__item">
+          <div class="mdw-list__content">
+            <div class="mdw-list__avatar">
+              <i class="material-icons" style="font-size:40px;">&#xE853;</i>
+            </div>
+            <div class="mdw-list__text">
+              <div class="mdw-list__text-line">Giants game</div>
+              <div class="mdw-list__text-block">David Park<span class="mdw-theme" mdw-ink="medium"> &mdash; Any interest in seeing</span></div>
+            </div>
+          </div>
+        </li>
+        <li class="mdw-list__item">
+          <div class="mdw-list__content">
+            <div class="mdw-list__avatar">
+              <i class="material-icons" style="font-size:40px;">&#xE853;</i>
+            </div>
+            <div class="mdw-list__text">
+              <div class="mdw-list__text-line">Montauk weekend</div>
+              <div class="mdw-list__text-block">-----</div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="androidnavbar">
+      <i class="material-icons back-button">&#xE3C8;</i>
+      <i class="material-icons">&#xE836;</i>
+      <i class="material-icons">&#xE835;</i>
+    </div>
+  </div>
+</div>
+<script src="search.min.js"></script>

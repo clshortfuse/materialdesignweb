@@ -35,8 +35,8 @@ mixin target(url)
 mixin navListItem(key, icon, name, activatedKey, color="secondary contrast")
   li.mdw-list__item
     a.mdw-list__content.mdw-overlay.mdw-ripple.mdw-theme(
-    aria-current=(activatedKey==key ? 'page' : false)
     aria-selected=(activatedKey==key ? 'true' : 'false')
+    aria-current=(activatedKey==key ? 'page' : false)
     href=(key + ".html")
     mdw-ink=color
     )
@@ -82,7 +82,7 @@ mixin header(activated)
               mdw-ink="default")
                 .mdw-list__text Home
             li.mdw-list__item(aria-expanded="true")
-              span.mdw-list__content.mdw-list__subheader
+              .mdw-list__content.mdw-list__subheader
                 .mdw-list__text.mdw-theme(mdw-ink="medium") Core
                 .mdw-list__secondary.mdw-theme.material-icons(mdw-ink="medium") expand_more
               ul.mdw-list
@@ -91,7 +91,7 @@ mixin header(activated)
                 +navListItem('ripple', 'center_focus_strong', 'Ripple', activated, 'primary contrast')
                 +navListItem('transition', 'open_in_new', 'Transition', activated, 'primary contrast')
             li.mdw-list__item.mdw-theme(aria-expanded="true")
-              span.mdw-list__content.mdw-list__subheader
+              .mdw-list__content.mdw-list__subheader
                 .mdw-list__text.mdw-theme(mdw-ink="medium") Components
                 .mdw-list__secondary.mdw-theme.material-icons(mdw-ink="medium") expand_more
               ul.mdw-list
@@ -117,7 +117,7 @@ mixin header(activated)
                 +navListItem('tooltip', 'info', 'Tooltip', activated)
                 +navListItem('type', 'font_download', 'Typography', activated)
             li.mdw-list__item(aria-expanded="true")
-              span.mdw-list__content.mdw-list__subheader
+              .mdw-list__content.mdw-list__subheader
                 .mdw-list__text.mdw-theme(mdw-ink="medium") Adapters
                 .mdw-list__secondary.mdw-theme.material-icons(mdw-ink="medium") expand_more
               ul.mdw-list

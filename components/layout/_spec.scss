@@ -91,6 +91,10 @@ $contentOverflowYSticky: visible !default;
   @include gridColumn($columnContent);
   @include gridRow($rowTop);
 
+  &[aria-hidden="true"] {
+    display: none;
+  }
+
   position: static;
   position: -webkit-sticky;
   position: -moz-sticky;
@@ -396,15 +400,15 @@ $contentOverflowYSticky: visible !default;
 
   // Snackbars are not aligned with layout
   box-sizing: border-box;
-  padding-top: dp(24 / 2);
+  padding-top: dp(24 * 0.5);
   padding-right: 0;
-  padding-bottom: dp(24 / 2);
-  padding-left: dp(24 / 2);
+  padding-bottom: dp(24 * 0.5);
+  padding-left: dp(24 * 0.5);
   @include breakpoint.has16DPMargin() {
-    padding-top: dp(16 / 2);
+    padding-top: dp(16 * 0.5);
     padding-right: 0;
-    padding-bottom: dp(16 / 2);
-    padding-left: dp(16 / 2);
+    padding-bottom: dp(16 * 0.5);
+    padding-left: dp(16 * 0.5);
   }
 
   transition-duration: inherit;
@@ -415,14 +419,14 @@ $contentOverflowYSticky: visible !default;
     right: 0;
     left: auto;
 
-    padding-top: dp(24 / 2);
-    padding-right: dp(24 / 2);
-    padding-bottom: dp(24 / 2);
+    padding-top: dp(24 * 0.5);
+    padding-right: dp(24 * 0.5);
+    padding-bottom: dp(24 * 0.5);
     padding-left: 0;
     @include breakpoint.has16DPMargin() {
-      padding-top: dp(16 / 2);
-      padding-right: dp(16 / 2);
-      padding-bottom: dp(16 / 2);
+      padding-top: dp(16 * 0.5);
+      padding-right: dp(16 * 0.5);
+      padding-bottom: dp(16 * 0.5);
       padding-left: dp(0);
     }
   }
@@ -467,6 +471,10 @@ $contentOverflowYSticky: visible !default;
 .mdw-layout__bottomnav {
   @include gridColumn($columnContent);
   @include gridRow($rowBottom);
+
+  &[aria-hidden="true"] {
+    display: none;
+  }
 
   position: static;
   position: -webkit-sticky;
@@ -528,7 +536,7 @@ $contentOverflowYSticky: visible !default;
   transition-property: transform;
   transition-timing-function: motion.$standardEasing;
 
-  transform: translateX(100%) translateX(-($fabSize / 2));
+  transform: translateX(100%) translateX(-($fabSize * 0.5));
 
   &::before,
   &::after,
@@ -544,7 +552,7 @@ $contentOverflowYSticky: visible !default;
     content: '';
 
     width: 100%;
-    margin-left: -$fabCutSize / 2;
+    margin-left: -$fabCutSize * 0.5;
 
     background-color: currentColor;
   }
@@ -558,7 +566,7 @@ $contentOverflowYSticky: visible !default;
   }
 
   & > svg {
-    left: -$fabCutSize / 2;
+    left: -$fabCutSize * 0.5;
 
     width: $fabCutSize;
 
@@ -640,7 +648,7 @@ $contentOverflowYSticky: visible !default;
 
     &[mdw-fab-cut] {
       & ~ .mdw-layout__fab {
-        transform: translateY(-100%) translateY(#{$fabSize / 2});
+        transform: translateY(-100%) translateY(#{$fabSize * 0.5});
       }
   
       .mdw-layout__appbar-shape {
@@ -697,9 +705,9 @@ $contentOverflowYSticky: visible !default;
       right: 0;
       left: 0;
 
-      padding: dp(24 / 2);
+      padding: dp(24 * 0.5);
       @include breakpoint.has16DPMargin() {
-        padding: dp(16 / 2);
+        padding: dp(16 * 0.5);
       }
     }
   }
@@ -772,7 +780,7 @@ $contentOverflowYSticky: visible !default;
     & ~ .mdw-layout__snackbar .mdw-layout__snackbar-anchor {
       bottom: 0;
 
-      transform: translateY(-$fabSize / 2);
+      transform: translateY(-$fabSize * 0.5);
     }
   }
 }

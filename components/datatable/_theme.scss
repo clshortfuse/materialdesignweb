@@ -1,4 +1,4 @@
-@use '../../core/theme/index.scss' as theme;
+@use '../../core/theme/_mixins.scss' as theme;
 
 $themeValues: (
   text-color:                    theme.$foreground,

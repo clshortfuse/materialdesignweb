@@ -1,6 +1,6 @@
 // https://www.w3.org/TR/wai-aria-1.1/#tabpanel
 
-import * as Attributes from '../../core/aria/attributes';
+import * as Attributes from '../../core/aria/attributes.js';
 
 export const EXPANDED_CHANGE_EVENT = 'mdw:tabpanel-expandedchange';
 

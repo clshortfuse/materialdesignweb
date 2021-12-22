@@ -1,0 +1,135 @@
+<% var T = '../../templates/index.eta' %>
+<% layout('../_partials/_header.eta', {page: 'grid'}) %>
+<div class="mdw-grid" mdw-margin-top>
+  <div class="mdw-grid__item" mdw-colspan="8">
+    <h5 class="mdw-type" mdw-baseline-next="36">The Material Design responsive layout grid adapts to screen size and orientation, ensuring consistency across layouts.</h5>
+    <p class="mdw-type">The Material Design layout grid is made up of three elements: columns, gutters, and margins.</p>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="8">
+    <div class="mdw-type" mdw-style="subtitle">Margins and Gutters</div>
+    <div class="docs-option-list">
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'default-margins', checked:true, text:'Default Margins and Gutters' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'top-margin', checked:true, text:'Top Margin' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'bottom-margin', checked:true, text:'Bottom Margin' }}) %>
+    </div>
+    <div class="mdw-type" mdw-style="subtitle">Maximum Columns</div>
+    <div class="docs-option-list">
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'columns', type:'radio', value:'12', checked:true, text:'12' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'columns', type:'radio', value:'8', text:'8' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'columns', type:'radio', value:'4', text:'4' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'columns', type:'radio', value:'1', text:'1' }}) %>
+    </div>
+    <div class="mdw-type" mdw-style="subtitle">Display Model</div>
+    <div class="docs-option-list">
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'style', type:'radio', value:'flex', checked:true, text:'Flexbox' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'style', type:'radio', value:'grid', text:'Grid' }}) %>
+    </div>
+    <div class="mdw-type" mdw-style="subtitle">Options</div>
+    <div class="docs-option-list">
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'stretch', text:'Stretch' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'center', text:'Center' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'dense', text:'Dense' }}) %>
+    </div>
+  </div>
+  <div class="mdw-grid__item" mdw-colspan="100%">
+    <p class="mdw-type" style="text-align:center;" mdw-texttop-top="16dp" mdw-baseline-bottom="16dp">Click on an element to change colspan</p>
+  </div>
+</div>
+<div class="docs-grid" id="sample-component">
+  <div class="mdw-grid" mdw-margin-top mdw-margin-bottom>
+    <div class="mdw-grid__item" mdw-rowspan="2">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="cyan 100" mdw-light mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="cyan 200" mdw-light mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="cyan 400" mdw-dark mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="cyan 700" mdw-dark mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item" mdw-rowspan="3">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="red 100" mdw-light mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="red 200" mdw-light mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item" mdw-colspan="2">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="red 400" mdw-dark mdw-border-ink>2</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item" mdw-rowspan="5" mdw-colspan="25%">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="red 700" mdw-dark mdw-border-ink>25%</div>
+    </div>
+    <div class="mdw-grid__item" mdw-colspan="3">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>3</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="green 100" mdw-light mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="green 200" mdw-light mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item" mdw-colspan="75%">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>75%</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="green 400" mdw-dark mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="green 700" mdw-dark mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="purple 100" mdw-light mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item" mdw-colspan="8">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>8</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="purple 200" mdw-light mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="purple 400" mdw-dark mdw-border-ink>1</div>
+    </div>
+    <div class="mdw-grid__item" mdw-colspan="2">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="card" mdw-border-ink>2</div>
+    </div>
+    <div class="mdw-grid__item">
+      <div class="mdw-grid__content mdw-card mdw-theme" mdw-surface="purple 700" mdw-dark mdw-border-ink>1</div>
+    </div>
+  </div>
+</div>
+<script src="grid.min.js"></script>

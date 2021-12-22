@@ -1,30 +1,9 @@
-import { getPassiveEventListenerOption, iterateArrayLike } from '../dom';
+import { getPassiveEventListenerOption, iterateArrayLike } from '../dom.js';
 
 let lastInteractionWasTouch = false;
 
 if (window && window.matchMedia) {
   lastInteractionWasTouch = window.matchMedia('(any-pointer: coarse)').matches;
-}
-
-/**
- * @param {Element|Document} [root=document]
- * @return {void}
- */
-export function attachAll(root = document) {
-  iterateArrayLike(root.getElementsByClassName('mdw-overlay'), attach);
-}
-
-/**
- * @param {Element} element
- * @return {void}
- */
-export function attach(element) {
-  element.setAttribute('mdw-overlay-js', '');
-  element.addEventListener('mousedown', onMouseDown, getPassiveEventListenerOption());
-  element.addEventListener('touchstart', onTouchStart, getPassiveEventListenerOption());
-  element.addEventListener('keydown', onKeyDown, getPassiveEventListenerOption());
-  element.addEventListener('blur', onBlur, getPassiveEventListenerOption());
-  element.addEventListener('focus', onFocus, getPassiveEventListenerOption());
 }
 
 /**
@@ -92,6 +71,27 @@ export function onFocus(event) {
       element.setAttribute('mdw-overlay-touch', 'true');
     }
   }
+}
+
+/**
+ * @param {Element} element
+ * @return {void}
+ */
+export function attach(element) {
+  element.setAttribute('mdw-overlay-js', '');
+  element.addEventListener('mousedown', onMouseDown, getPassiveEventListenerOption());
+  element.addEventListener('touchstart', onTouchStart, getPassiveEventListenerOption());
+  element.addEventListener('keydown', onKeyDown, getPassiveEventListenerOption());
+  element.addEventListener('blur', onBlur, getPassiveEventListenerOption());
+  element.addEventListener('focus', onFocus, getPassiveEventListenerOption());
+}
+
+/**
+ * @param {Element|Document} [root=document]
+ * @return {void}
+ */
+export function attachAll(root = document) {
+  iterateArrayLike(root.getElementsByClassName('mdw-overlay'), attach);
 }
 
 /**

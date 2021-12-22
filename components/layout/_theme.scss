@@ -1,5 +1,5 @@
 @use '../../core/_breakpoint.scss' as breakpoint;
-@use '../../core/theme/index.scss' as theme;
+@use '../../core/theme/_mixins.scss' as theme;
 
 $themeValues: () !default;
 

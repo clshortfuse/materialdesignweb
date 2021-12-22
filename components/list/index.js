@@ -2,76 +2,13 @@
 // https://www.w3.org/TR/wai-aria-practices/#TreeView
 // https://www.w3.org/TR/wai-aria-practices/examples/landmarks/navigation.html
 
-import { iterateArrayLike, iterateSomeOfArrayLike } from '../../core/dom';
-import * as Attributes from '../../core/aria/attributes';
-import * as RovingTabIndex from '../../core/aria/rovingtabindex';
-import * as Keyboard from '../../core/aria/keyboard';
+import * as Attributes from '../../core/aria/attributes.js';
+import * as Keyboard from '../../core/aria/keyboard.js';
+import * as RovingTabIndex from '../../core/aria/rovingtabindex.js';
+import { iterateArrayLike, iterateSomeOfArrayLike } from '../../core/dom.js';
 
-import * as ListItem from './item';
-import * as ListContent from './content';
-
-/**
- * @param {Element|Document} [root=document]
- * @return {void}
- */
-export function attachAll(root = document) {
-  iterateArrayLike(root.getElementsByClassName('mdw-list'), attach);
-}
-
-/**
- * @param {Element} listElement
- * @return {void}
- */
-export function attach(listElement) {
-  let role = listElement.getAttribute('role');
-  if (!role) {
-    let newRole = 'listbox';
-    const parentRole = listElement.parentElement && listElement.parentElement.getAttribute('role');
-    if (parentRole === 'treeitem') {
-      newRole = 'group';
-    } else if (iterateSomeOfArrayLike(listElement.children,
-      (child) => child.hasAttribute('aria-expanded') && child.classList.contains('mdw-list__item'))) {
-      newRole = 'tree';
-    }
-    listElement.setAttribute('role', newRole);
-    role = newRole;
-  }
-
-  setupAria(listElement, role);
-  iterateArrayLike(listElement.children, (child) => {
-    if (child.classList.contains('mdw-list__item')) {
-      ListItem.attach(child);
-    }
-  });
-  iterateArrayLike(listElement.getElementsByClassName('mdw-list'), attach);
-  if (listElement.hasAttribute('mdw-list-js')) {
-    return;
-  }
-  if (role !== 'listbox' && role !== 'tree' && role !== 'radiogroup') {
-    return;
-  }
-
-  switch (role) {
-    case 'tree':
-      RovingTabIndex.setupTabIndexes(listElement.querySelectorAll('[role="treeitem"]'));
-      break;
-    case 'listbox':
-      RovingTabIndex.setupTabIndexes(listElement.querySelectorAll('[role="option"]'));
-      break;
-    case 'radiogroup':
-      RovingTabIndex.setupTabIndexes(listElement.querySelectorAll('[role="radio"]'));
-      break;
-    default:
-      return;
-  }
-
-  listElement.addEventListener(Keyboard.DOWN_ARROW_KEY, onDownArrowKey);
-  listElement.addEventListener(Keyboard.UP_ARROW_KEY, onUpArrowKey);
-  listElement.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
-  listElement.addEventListener(ListContent.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
-  listElement.addEventListener(ListContent.FOCUS_EVENT, onContentFocusEvent);
-  listElement.setAttribute('mdw-list-js', '');
-}
+import * as ListContent from './content.js';
+import * as ListItem from './item.js';
 
 /**
  * @param {Event} event
@@ -238,6 +175,69 @@ export function setupAria(listElement, role = 'tree') {
   if (!listElement.hasAttribute('aria-multiselectable')) {
     listElement.setAttribute('aria-multiselectable', 'false');
   }
+}
+
+/**
+ * @param {Element} listElement
+ * @return {void}
+ */
+export function attach(listElement) {
+  let role = listElement.getAttribute('role');
+  if (!role) {
+    let newRole = 'listbox';
+    const parentRole = listElement.parentElement && listElement.parentElement.getAttribute('role');
+    if (parentRole === 'treeitem') {
+      newRole = 'group';
+    } else if (iterateSomeOfArrayLike(listElement.children,
+      (child) => child.hasAttribute('aria-expanded') && child.classList.contains('mdw-list__item'))) {
+      newRole = 'tree';
+    }
+    listElement.setAttribute('role', newRole);
+    role = newRole;
+  }
+
+  setupAria(listElement, role);
+  iterateArrayLike(listElement.children, (child) => {
+    if (child.classList.contains('mdw-list__item')) {
+      ListItem.attach(child);
+    }
+  });
+  iterateArrayLike(listElement.getElementsByClassName('mdw-list'), attach);
+  if (listElement.hasAttribute('mdw-list-js')) {
+    return;
+  }
+  if (role !== 'listbox' && role !== 'tree' && role !== 'radiogroup') {
+    return;
+  }
+
+  switch (role) {
+    case 'tree':
+      RovingTabIndex.setupTabIndexes(listElement.querySelectorAll('[role="treeitem"]'));
+      break;
+    case 'listbox':
+      RovingTabIndex.setupTabIndexes(listElement.querySelectorAll('[role="option"]'));
+      break;
+    case 'radiogroup':
+      RovingTabIndex.setupTabIndexes(listElement.querySelectorAll('[role="radio"]'));
+      break;
+    default:
+      return;
+  }
+
+  listElement.addEventListener(Keyboard.DOWN_ARROW_KEY, onDownArrowKey);
+  listElement.addEventListener(Keyboard.UP_ARROW_KEY, onUpArrowKey);
+  listElement.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
+  listElement.addEventListener(ListContent.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
+  listElement.addEventListener(ListContent.FOCUS_EVENT, onContentFocusEvent);
+  listElement.setAttribute('mdw-list-js', '');
+}
+
+/**
+ * @param {Element|Document} [root=document]
+ * @return {void}
+ */
+export function attachAll(root = document) {
+  iterateArrayLike(root.getElementsByClassName('mdw-list'), attach);
 }
 
 /**
