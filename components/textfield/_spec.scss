@@ -6,17 +6,19 @@
 @use '../../core/_motion.scss' as motion;
 @use '../../core/_platform.scss' as platform;
 @use '../../core/_type.scss' as type;
-@use './_mixins.scss' as *;
 
-$border-line-height: dp(1) !default;
-$border-line-height__focused: dp(2) !default;
+$border-line-height: 1px !default;
+$border-line-height__focused: 2px !default;
 
-$textarea-padding-horizontal: dp(16) !default;
-$outline-start-width: dp(10) !default;
-$outline-end-width: dp(8) !default;
+$textarea-padding-horizontal: 16px !default;
+$outline-start-width: 10px !default;
+$outline-end-width: 8px !default;
 
 $input-top-alignment: calc(#{dp(8 + 4)} + #{sp(12)} + 0.125em) !default; // Extra 1/8em for font alignment
-$input-bottom-alignment: dp(8) !default;
+$input-bottom-alignment: 8px !default;
+$input-dense-reduction: 8px !default;
+$input-top-alignment-dense: calc(#{dp(8 + 2)} + #{sp(12)} + 0.125em) !default;
+$input-bottom-alignment-dense: 4px !default;
 
 // CSS Grid Layout
 //     1   |  2  |   3    |   4   |        5        |    6   |  7
@@ -28,29 +30,24 @@ $input-bottom-alignment: dp(8) !default;
 // 2: Dropdown ---------------------------------------------------
 
 .mdw-textfield {
-  display: -ms-grid;
   display: grid;
   position: relative;
   align-items: baseline;
-  grid-template-columns: dp(12) auto auto 1fr auto auto dp(8);
-  -ms-grid-columns: dp(12) auto auto 1fr auto auto dp(8);
+  grid-template-columns: 12px auto auto 1fr auto auto 8px;
   grid-template-rows: auto auto;
-  -ms-grid-rows: auto auto;
 
-  padding: dp(8) 0;
+  padding: 8px 0;
 
   transition-duration: motion.$simpleDuration;
   transition-timing-function: motion.$standardEasing;
 
-
-  &[mdw-solo] {
+  &[mdw-solo],
+  &[mdw-solo][mdw-dense] {
     grid-template-columns: 0 auto auto 1fr auto auto 0;
-    -ms-grid-columns: 0 auto auto 1fr auto auto 0;
 
     padding: 0;
 
     .mdw-textfield__input {
-      -ms-grid-row-align: center;
       align-self: center;
 
       margin: 0;
@@ -78,62 +75,60 @@ $input-bottom-alignment: dp(8) !default;
 
   display: inline-block;
 
-  -ms-grid-column: 4;
   grid-column: 4;
-  -ms-grid-row: 1;
   grid-row: 1;
 
   box-sizing: content-box; // Don't allow global override
-  height: 1em;
-  margin-top: dp(8 + 4);
-  margin-bottom: dp(16);
-  padding-top: sp(12);
+  block-size: 1em;
+  margin-block: dp(8 + 4) 16px;
+  padding-block-start: sp(12);
+
+}
+
+.mdw-textfield[mdw-dense]::before {
+  margin-block: 8px 12px;
 }
 
 .mdw-textfield[mdw-solo],
+.mdw-textfield[mdw-solo][mdw-dense],
 .mdw-textfield[mdw-outlined] {
   .mdw-textfield__prefix,
   .mdw-textfield__suffix,
   .mdw-textfield__icon {
-    -ms-grid-row-align: center;
     align-self: center;
 
-    margin-top: 0;
-    margin-bottom: 0;
+    margin-block: 0;
   }
 
   textarea.mdw-textfield__input {
     & ~ .mdw-textfield__prefix,
     & ~ .mdw-textfield__suffix {
-      -ms-grid-row-align: start;
       align-self: flex-start;
 
-      margin-top: dp(8);
-      margin-bottom: dp(8);
+      margin-block: 0;
+
+      transform: translateY(calc((8px + sp(12) + 4px + 1em + 16px) * 0.5)) translateY(-50%);
     }
   }
 }
 
 .mdw-textfield__prefix,
 .mdw-textfield__suffix {
-  -ms-grid-row: 1;
   grid-row: 1;
-  
+
+  pointer-events: none;
+
   transition-duration: motion.$simpleDuration;
   transition-property: color;
   transition-timing-function: motion.$standardEasing;
   will-change: color;
-
-  pointer-events: none;
 }
 
 .mdw-textfield__prefix {
-  -ms-grid-column: 3;
   grid-column: 3;
 }
 
 .mdw-textfield__suffix {
-  -ms-grid-column: 6;
   grid-column: 6;
 }
 
@@ -143,35 +138,27 @@ $input-bottom-alignment: dp(8) !default;
 
   display: inline-block;
 
-  width: dp(4);
+  inline-size: 4px;
 }
 
 .mdw-textfield__outline-gap {
   // Using transform would create a new composition layer and cause subpixel rendering issues
   position: absolute;
-  top: $border-line-height__focused;
-  right: dp(12);
-  bottom: 0;
-  left: dp(12);
-  -ms-grid-column: 2;
+  inset-block: $border-line-height__focused 0;
+  inset-inline: dp(12);
+
   grid-column: 2;
-  -ms-grid-row: 1;
   grid-row: 1;
 
-  margin-top: -$border-line-height__focused;
-  margin-bottom: -$border-line-height;
+  margin-block: -$border-line-height__focused #{-$border-line-height};
 
   .mdw-textfield[mdw-outlined] & {
     position: relative;
-    top: auto;
-    right: auto;
-    bottom: auto;
-    left: auto;
+    inset: auto;
 
-    max-width: calc(100% - #{dp(24)});
-    margin-top: -$border-line-height;
-    margin-bottom: -$border-line-height;
-    
+    max-inline-size: calc(100% - 24px);
+    margin-block: -$border-line-height;
+
     color: inherit;
   }
 
@@ -180,10 +167,10 @@ $input-bottom-alignment: dp(8) !default;
     content: none;
 
     position: absolute;
-    top: 0;
+    inset-block-start: 0;
 
-    border-top-style: solid;
-    border-top-width: $border-line-height;
+    border-block-start-style: solid;
+    border-block-start-width: $border-line-height;
 
     transition-delay: 1ms;
     transition-duration: motion.$simpleDuration * 0.5;
@@ -196,14 +183,17 @@ $input-bottom-alignment: dp(8) !default;
       content: "";
 
       // Height must exactly match parent to avoid subpixel rendering issues
-      bottom: 0;
-      
-      border-style: none;
-      border-top-style: solid;
-      border-bottom-style: solid;
-      
-      border-top-color: currentColor;
-      border-bottom-color: transparent;
+      inset-block-end: 0;
+
+      border-block-start-style: solid;
+      border-block-end-style: solid;
+
+      &:not(:focus) {
+        border-style: none;
+      }
+
+      border-block-start-color: currentColor;
+      border-block-end-color: transparent;
       border-radius: 0;
       color: inherit;
     }
@@ -213,22 +203,22 @@ $input-bottom-alignment: dp(8) !default;
 .mdw-textfield__border {
   display: flex;
   position: relative;
-  -ms-grid-row-align: stretch;
   align-self: stretch;
-  -ms-grid-column: 1;
   grid-column-start: 1;
-  -ms-grid-column-span: 7;
   grid-column-end: span 7;
-  -ms-grid-row: 1;
   grid-row: 1;
 
   box-sizing: border-box;
-  min-width: 100%; // Fixes FireFox Grid bug
-  border-top-style: none;
-  border-right-style: none;
-  border-bottom-style: solid;
-  border-left-style: none;
+  min-inline-size: 100%; // Fixes FireFox Grid bug
+  border-block-start-style: none;
+  border-block-end-style: solid;
   border-width: $border-line-height;
+  border-start-start-radius: 4px;
+  border-start-end-radius: 4px;
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+  border-inline-start-style: none;
+  border-inline-end-style: none;
 
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -238,25 +228,21 @@ $input-bottom-alignment: dp(8) !default;
   transition-property: color, border-color;
   transition-timing-function: motion.$standardEasing;
 
-  border-top-color: transparent;
-  border-right-color: transparent;
-  border-bottom-color: currentColor;
-  border-left-color: transparent;
-  border-top-left-radius: dp(4);
-  border-top-right-radius: dp(4);
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+  border-block-start-color: transparent;
+  border-block-end-color: currentColor;
+  border-inline-start-color: transparent;
+  border-inline-end-color: transparent;
 
   .mdw-textfield[mdw-outlined] & {
-    border-top-style: solid;
-    border-right-style: solid;
-    border-bottom-style: solid;
-    border-left-style: solid;
+    border-block-start-style: solid;
+    border-block-end-style: solid;
+    border-end-start-radius: 4px;
+
+    border-end-end-radius: 4px;
+    border-inline-start-style: solid;
+    border-inline-end-style: solid;
 
     transition: none;
-
-    border-bottom-right-radius: dp(4);
-    border-bottom-left-radius: dp(4);
   }
 
   .mdw-textfield__input:focus ~ & {
@@ -272,12 +258,11 @@ $input-bottom-alignment: dp(8) !default;
     content: "";
 
     position: absolute;
-    right: 0;
-    bottom: -$border-line-height__focused;
-    left: 0;
+    inset-block-end: -$border-line-height__focused;
+    inset-inline: 0;
 
-    height: 100%;
-    border-bottom-style: solid;
+    block-size: 100%;
+    border-block-end-style: solid;
     border-width: $border-line-height__focused;
 
     transition-delay: 1ms;
@@ -286,19 +271,16 @@ $input-bottom-alignment: dp(8) !default;
     transition-timing-function: motion.$accelerateEasing;
     will-change: transform;
 
-    transform: scaleX(0) translateY(-$border-line-height*0.5);
+    transform: scaleX(0) translateY(-$border-line-height * 0.5);
 
     border-radius: inherit;
     color: transparent;
-    
+
     .mdw-textfield[mdw-outlined] & {
       content: "";
 
       position: relative;
-      top: auto;
-      right: auto;
-      bottom: auto;
-      left: auto;
+      inset: auto;
 
       transition: none;
       will-change: auto;
@@ -313,56 +295,50 @@ $input-bottom-alignment: dp(8) !default;
     flex-grow: 1;
   }
 
-  .mdw-textfield[mdw-outlined] &::before,
-  :root[dir="rtl"] .mdw-textfield[mdw-outlined] &::after {
-    min-width: $outline-start-width - $border-line-height;
-    margin-top: -$border-line-height;
-    margin-right: 0;
-    margin-left: -$border-line-height;
-    border-top-style: solid;
-    border-right-style: none;
-    border-bottom-style: solid;
-    border-left-style: solid;
+  .mdw-textfield[mdw-outlined] &::before {
+    min-inline-size: $outline-start-width - $border-line-height;
+    margin-block-start: -$border-line-height;
+    margin-inline: -$border-line-height 0;
+    border-block-start-style: solid;
+    border-block-end-style: solid;
     border-width: inherit;
+    border-start-start-radius: inherit;
+    border-start-end-radius: 0;
+    border-end-start-radius: inherit;
+    border-end-end-radius: 0;
+    border-inline-start-style: solid;
+    border-inline-end-style: none;
 
-    border-top-color: currentColor;
-    border-right-color: transparent;
-    border-bottom-color: transparent;
-    border-left-color: currentColor;
-    border-top-left-radius: inherit;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: inherit;
+    border-block-start-color: currentColor;
+    border-block-end-color: transparent;
+    border-inline-start-color: currentColor;
+    border-inline-end-color: transparent;
   }
 
-  .mdw-textfield[mdw-outlined] &::after,
-  :root[dir="rtl"] .mdw-textfield[mdw-outlined] &::before {
-    min-width: $outline-end-width - $border-line-height;
-    margin-top: -$border-line-height;
-    margin-right: -$border-line-height;
-    margin-left: 0;
-    border-top-style: solid;
-    border-right-style: solid;
-    border-bottom-style: solid;
-    border-left-style: none;
+  .mdw-textfield[mdw-outlined] &::after {
+    min-inline-size: $outline-end-width - $border-line-height;
+    margin-block-start: -$border-line-height;
+    margin-inline: 0 #{-$border-line-height};
+    border-block-start-style: solid;
+    border-block-end-style: solid;
     border-width: inherit;
+    border-start-start-radius: 0;
+    border-start-end-radius: inherit;
+    border-end-start-radius: 0;
+    border-end-end-radius: inherit;
+    border-inline-start-style: none;
+    border-inline-end-style: solid;
 
-    border-top-color: currentColor;
-    border-right-color: currentColor;
-    border-bottom-color: transparent;
-    border-left-color: transparent;
-    border-top-left-radius: 0;
-    border-top-right-radius: inherit;
-    border-bottom-right-radius: inherit;
-    border-bottom-left-radius: 0;
+    border-block-start-color: currentColor;
+    border-block-end-color: transparent;
+    border-inline-start-color: transparent;
+    border-inline-end-color: currentColor;
   }
 }
 
 .mdw-textfield__label {
   position: absolute;
-  right: 0;
-  left: 0;
-  -ms-grid-row-align: start;
+  inset-inline: 0;
   align-self: flex-start;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -370,12 +346,12 @@ $input-bottom-alignment: dp(8) !default;
   margin: 0;
   padding: 0;
 
+  pointer-events: none; // allow clickthrough
+
   transition-duration: motion.$shapeChangeDuration;
   transition-property: top, transform, font-size;
   transition-timing-function: motion.$standardEasing;
   will-change: top, transform, font-size;
-
-  pointer-events: none; // allow clickthrough
 
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -383,23 +359,22 @@ $input-bottom-alignment: dp(8) !default;
   .mdw-textfield[mdw-outlined] & {
     position: relative; // reflow DOM
 
-    padding: 0 dp(4);
+    padding: 0 4px;
   }
-
 
   &::before {
     // Add upper 8dp from text-top to top for positioning
     // Add lower 8dp from baseline to keep vertically centered
     @include type.addRules('caption');
     content: "";
-    
+
     display: inline-block;
-    vertical-align: dp(-8);
+    vertical-align: -8px;
 
     box-sizing: content-box; // Don't allow global override
-    height: 1em;
-    margin-top: dp(8);
-    padding-top: dp(8);
+    block-size: 1em;
+    margin-block-start: 8px;
+    padding-block-start: 8px;
 
     .mdw-textfield[mdw-outlined] & {
       content: none;
@@ -408,79 +383,67 @@ $input-bottom-alignment: dp(8) !default;
 }
 
 .mdw-textfield__signifier {
-  -ms-grid-row-align: center;
   align-self: center;
-  -ms-grid-column: 2;
   grid-column: 2;
-  -ms-grid-row: 1;
   grid-row: 1;
 
-  margin-top: dp(8);
-  margin-bottom: dp(8);
+  margin-block: 8px;
 
   &::after {
     content: "";
 
     display: inline-block;
 
-    width: dp(8);
+    inline-size: 8px;
   }
 
   & ~ .mdw-textfield__border .mdw-textfield__outline-gap {
-    margin-right: 0;
-    margin-left: dp(24 + 8);
-
-    :root[dir="rtl"] & {
-      margin-right: dp(24 + 8);
-      margin-left: 0;
-    }
+    margin-inline: dp(24 + 8) 0;
   }
 
   .mdw-textfield[mdw-outlined] & ~ .mdw-textfield__border {
     &::before {
-      padding-right: dp(24 + 8);
-      padding-left: 0;
-
-      :root[dir="rtl"] & {
-        padding-right: 0;
-        padding-left: dp(24 + 8);
-      }
+      padding-inline: 0 dp(24 + 8);
     }
 
     .mdw-textfield__outline-gap {
-      max-width: calc(100% - #{dp(24 + 24 + 8)});
-      margin-left: 0;
+      max-inline-size: calc(100% - #{dp(24 + 24 + 8)});
+      margin-inline-start: 0;
+    }
+  }
+}
 
-      :root[dir="rtl"] & {
-        margin-right: 0;
-      }
-
+.mdw-textfield[mdw-outlined] {
+  &,
+  &[mdw-dense], {
+    .mdw-textfield__input,
+    textfield.mdw-textfield__input,
+    .mdw-textfield__prefix,
+    .mdw-textfield__suffix {
+      margin-block: calc(#{sp(6)} + 2px); // Half of label + 2px // Equidistant from border
     }
   }
 }
 
 .mdw-textfield__input {
-  -ms-grid-column: 4;
   grid-column-start: 4;
-  -ms-grid-column-span: 2;
   grid-column-end: span 2;
-  -ms-grid-row: 1;
   grid-row: 1;
-  
+
   box-sizing: border-box;
-  min-width: 0; // Firefox CSS Grid fix
-  width: 100%;
+  min-inline-size: 0; // Firefox CSS Grid fix
+  inline-size: 100%;
   border: none;
   padding: 0;
-  
+
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  
+
   z-index: 1;
-  
+
   background: none;
   box-shadow: none; // Firefox :invalid styling
 
@@ -491,18 +454,11 @@ $input-bottom-alignment: dp(8) !default;
   letter-spacing: inherit;
 
   .mdw-textfield[mdw-outlined] & {
-    -ms-grid-row-align: center;
     align-self: center;
 
-    margin-top: calc(#{sp(6)} + #{dp(2)}); // Half of label + 2px
-    margin-bottom: calc(#{sp(6)} + #{dp(2)}); // Equidistant from border
-    border-right: none;
-    border-left: dp(2) solid transparent;
-
-    :root[dir="rtl"] & {
-      border-right: dp(2) solid transparent;
-      border-left: none;
-    }
+    margin-block: calc(#{sp(6)} + 2px); // Half of label + 2px // Equidistant from border
+    border-inline-start: 2px solid transparent;
+    border-inline-end: none;
   }
 
   &::placeholder {
@@ -525,11 +481,16 @@ $input-bottom-alignment: dp(8) !default;
 .mdw-textfield__input,
 .mdw-textfield__prefix,
 .mdw-textfield__suffix {
-  -ms-grid-row-align: flex-start;
   align-self: flex-start;
 
-  margin-top: $input-top-alignment;
-  margin-bottom: $input-bottom-alignment;
+  margin-block: $input-top-alignment $input-bottom-alignment;
+
+  // margin-top: $input-top-alignment-dense;
+  // margin-bottom: $input-bottom-alignment-dense;
+  .mdw-textfield[mdw-dense] > & {
+    // margin-top: $input-top-alignment-dense;
+    // margin-bottom: $input-bottom-alignment-dense;
+  }
 }
 
 textarea.mdw-textfield__input {
@@ -537,41 +498,30 @@ textarea.mdw-textfield__input {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 
-  min-height: 1em; // Avoid clipping on resize
-  min-width: 100%; // Always fill container horizontally
-  max-width: 100%; // Don't allow resize beyond bounds
-  margin-top: $input-top-alignment;
-  margin-bottom: $input-bottom-alignment;
-  padding-right: $textarea-padding-horizontal;
-  padding-left: 0;
+  min-block-size: 1em; // Avoid clipping on resize
+  min-inline-size: 100%; // Always fill container horizontally
+  max-inline-size: 100%; // Don't allow resize beyond bounds
+  inline-size: 100% !important; // Unfortunately required
+  margin-block: $input-top-alignment $input-bottom-alignment;
+  padding-inline: 0 $textarea-padding-horizontal;
 
-  :root[dir="rtl"] & {
-    padding-right: 0;
-    padding-left: $textarea-padding-horizontal;
+  // margin-top: $input-top-alignment-dense;
+  // margin-bottom: $input-bottom-alignment-dense;
+  .mdw-textfield[mdw-dense] > & {
+    margin-block: $input-top-alignment-dense $input-bottom-alignment-dense;
   }
 
   .mdw-textfield[mdw-autosize] > & {
-    min-height: 1em;
+    min-block-size: 1em;
 
     resize: none;
   }
 }
 
 select.mdw-textfield__input {
-  padding-right: dp(24);
-  padding-left: 0;
+  padding-inline: 0 24px;
 
   cursor: pointer;
-
-  :root[dir="rtl"] & {
-    padding-right: 0;
-    padding-left: dp(24);
-  }
-
-  &::-ms-expand {
-    // Remove IE11 dropdown button
-    display: none;
-  }
 
   option {
     -moz-appearance: none;
@@ -593,11 +543,8 @@ select.mdw-textfield__input {
 .mdw-textfield__error-text {
   @include type.textTopToTop(4);
   @include type.addRules('caption');
-  -ms-grid-column: 3;
   grid-column: 3;
-  -ms-grid-column-span: 4;
   grid-column-end: span 4;
-  -ms-grid-row: 2;
   grid-row: 2;
   overflow: hidden;
 
@@ -607,15 +554,12 @@ select.mdw-textfield__input {
 
 .mdw-textfield__icon {
   display: flex;
-  -ms-grid-row-align: center;
   align-self: center;
-  -ms-grid-column: 5;
   grid-column: 5;
-  -ms-grid-row: 1;
   grid-row: 1;
-  
-  height: dp(24);
-  width: dp(24);
+
+  block-size: 24px;
+  inline-size: 24px;
 
   &[mdw-dropdown] {
     pointer-events: none;
@@ -624,32 +568,32 @@ select.mdw-textfield__input {
       content: "";
 
       // Triangle shape
-      width: 0;
-      margin-top: dp(10);
-      margin-right: auto;
-      margin-left: auto;
-      border-top: dp(5) solid currentColor;
-      border-right: dp(5) solid transparent;
-      border-left: dp(5) solid transparent;
+      inline-size: 0;
+      margin-block-start: 10px;
+      margin-inline: auto;
+      border-block-start: 5px solid currentColor;
+      border-inline-start: 5px solid transparent;
+      border-inline-end: 5px solid transparent;
     }
   }
 }
 
 .mdw-textfield__dropdown {
   position: absolute;
-  -ms-grid-column: 1;
   grid-column: 1;
-  -ms-grid-column-span: 7;
   grid-column-end: span 7;
-  -ms-grid-row: 2;
   grid-row: 2;
   overflow: hidden;
 
-  max-height: 0;
-  max-width: 100%;
-  width: 100%;
-  margin-top: 0;
-  margin-bottom: dp(8);
+  max-block-size: 0;
+  max-inline-size: 100%;
+  inline-size: 100%;
+  margin-block: 0 8px;
+
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+  border-end-start-radius: 4px;
+  border-end-end-radius: 4px;
 
   transition-duration: motion.$collapseDuration;
   transition-property: box-shadow, max-height;
@@ -657,18 +601,13 @@ select.mdw-textfield__input {
 
   z-index: 2;
 
-  border-top-left-radius: dp(0);
-  border-top-right-radius: dp(0);
-  border-bottom-right-radius: dp(4);
-  border-bottom-left-radius: dp(4);
-
   box-shadow: none;
 
   .mdw-textfield[mdw-outlined] & {
-    margin-top: dp(8);
+    margin-block-start: 8px;
 
-    border-top-left-radius: dp(4);
-    border-top-right-radius: dp(4);
+    border-start-start-radius: 4px;
+    border-start-end-radius: 4px;
   }
 
   &:active,
@@ -681,7 +620,7 @@ select.mdw-textfield__input {
       box-shadow: elevation.boxShadow(24);
 
       &[mdw-type="list"] {
-        max-height: dp(300);
+        max-block-size: 300px;
       }
     }
   }
@@ -693,29 +632,51 @@ select.mdw-textfield__input {
 
 }
 
-// Default state of centered or when [mdw-value-empty] is present (IE)
-@include centerLabel();
+.mdw-textfield__label {
+  @include type.addRules('subtitle');
 
-.mdw-textfield[mdw-value-empty] {
-  @include centerLabel();
+  inset-block-start: 50%;
+
+  transform: translateY(-50%);
+}
+
+.mdw-textfield__outline-gap {
+  &::before {
+    inset-inline: 0 50%;
+  }
+
+  &::after {
+    inset-inline: 50% 0;
+  }
 }
 
 // Floating states:
-// IE/Edge, HTMLSelectElement, :focus, :autofill, or has texted (unfocused with placeholder)
-
-@include platform.ifMS() {
-  @include floatLabel();
-}
+// HTMLSelectElement, :focus, :autofill, or has texted (unfocused with placeholder)
 
 select.mdw-textfield__input ~ .mdw-textfield__border,
-.mdw-textfield__input:focus ~ .mdw-textfield__border {
-  @include floatLabel();
-}
-
-// Rules are intentionally separated because IE won't parse rules with unknown psuedos
+.mdw-textfield__input:focus ~ .mdw-textfield__border,
 .mdw-textfield__input:-webkit-autofill ~ .mdw-textfield__border,
 .mdw-textfield__input:not(:placeholder-shown):not(:focus) ~ .mdw-textfield__border {
-  @include floatLabel();
+  .mdw-textfield__label {
+    @include type.addRules('caption');
+    inset-block-start: 0;
+
+    transform: translateY(0);
+
+    .mdw-textfield[mdw-outlined] & {
+      transform: translateY(-50%);
+    }
+  }
+
+  .mdw-textfield__outline-gap {
+    &::before {
+      inset-inline: 0 100%;
+    }
+
+    &::after {
+      inset-inline: 100% 0;
+    }
+  }
 }
 
 // Invalid state
@@ -740,7 +701,7 @@ select.mdw-textfield__input ~ .mdw-textfield__border,
       transition-duration: motion.$expandDuration;
       transition-timing-function: motion.$decelerateEasing;
 
-      transform: scaleX(1) translateY(-$border-line-height*0.5);
+      transform: scaleX(1) translateY(-$border-line-height * 0.5);
     }
   }
 }
@@ -750,33 +711,27 @@ select.mdw-textfield__input ~ .mdw-textfield__border,
 .mdw-textfield[mdw-outlined] > .mdw-textfield__input:not(:disabled):focus ~ .mdw-textfield__border {
   border-width: $border-line-height__focused;
 
-  &::before,
-  html[dir="rtl"] &::after {
-    min-width: $outline-start-width - $border-line-height__focused;
-    margin-top: -$border-line-height__focused;
-    margin-right: 0;
-    margin-left: -$border-line-height__focused;
+  &::before {
+    min-inline-size: $outline-start-width - $border-line-height__focused;
+    margin-block-start: -$border-line-height__focused;
+    margin-inline: -$border-line-height__focused 0;
   }
 
-  &::after,
-  html[dir="rtl"] &::before {
-    min-width: $outline-end-width - $border-line-height__focused;
-    margin-top: -$border-line-height__focused;
-    margin-right: -$border-line-height__focused;
-    margin-left: 0;
+  &::after {
+    min-inline-size: $outline-end-width - $border-line-height__focused;
+    margin-block-start: -$border-line-height__focused;
+    margin-inline: 0 -$border-line-height__focused;
   }
 
   .mdw-textfield__outline-gap {
-    margin-top: -$border-line-height__focused;
-    margin-bottom: -$border-line-height__focused;
+    margin-block: -$border-line-height__focused;
 
     &::before,
     &::after {
-      border-top-width: $border-line-height__focused;
+      border-block-start-width: $border-line-height__focused;
     }
   }
 }
-
 
 // Invalid
 .mdw-textfield__input:focus:invalid ~ .mdw-textfield__error-text {
@@ -789,18 +744,17 @@ select.mdw-textfield__input ~ .mdw-textfield__border,
   transform: translateY(0);
 }
 
-
 @keyframes labelShake {
   0% {
     transform: translateX(0);
   }
 
   33% {
-    transform: translateX(dp(4));
+    transform: translateX(4px);
   }
 
   66% {
-    transform: translateX(dp(-4));
+    transform: translateX(-4px);
   }
 
   100% {

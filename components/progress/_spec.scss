@@ -8,11 +8,13 @@
 
 @use '../../core/_motion.scss' as motion;
 @use '../../core/_platform.scss' as platform;
+@use '../../core/_length.scss' as *;
 
-$duration: 1333ms;
+:root {
+  --mdw-progress__circle-duration: 1333ms;
+}
 
-
-/* 
+/*
  * SVG Animated Material Spin Animation
  * radius = 8.75
  * pi = 3.14159
@@ -20,9 +22,9 @@ $duration: 1333ms;
  * dash-length = circumference * (100-x)/100
  *
  * Every cycle rotates entire shape an additional -90deg (CCW)
- * 
+ *
  * Entire animation rotates 4x speed (CW)
- * 
+ *
  * 1. Start head at: 0.5%
  * 2. Ease in head: to 75%
  * 3. Ease out tail: to 74.5%
@@ -42,6 +44,7 @@ $duration: 1333ms;
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -51,8 +54,9 @@ $duration: 1333ms;
   0% {
     transform: rotate(0deg);
   }
+
   100% {
-    transform: rotate(-360deg)
+    transform: rotate(-360deg);
   }
 }
 
@@ -61,36 +65,44 @@ $duration: 1333ms;
     stroke-dashoffset: circlePercentage(0.5, 75);
   }
   #{motion.$standardPeakVelocity * 100%} {
-    stroke-dashoffset: circlePercentage(75,75);
+    stroke-dashoffset: circlePercentage(75, 75);
   }
+
   100% {
-    stroke-dashoffset: circlePercentage(149.5,75);
+    stroke-dashoffset: circlePercentage(149.5, 75);
   }
 }
 
-.mdw-progress-circle {
-  width: 48px;
-  height: 48px;
-  stroke-width: 2.5;
+.mdw-progress__circle {
+  block-size: 48px;
+  inline-size: 48px;
   margin: 8px;
+
+  stroke-width: 2.5;
+
   svg {
-    width:100%;
-    height:100%;
-    transform: rotate(0deg);
-    will-change: transform;
+    block-size: 100%;
+    inline-size: 100%;
+
     animation-name: rotate-clockwise;
-    animation-duration: $duration;
+    animation-duration: var(--mdw-progress__circle-duration);
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+    will-change: transform;
+
+    transform: rotate(0deg);
+
     & > path {
-      fill: none;
-      stroke-width: inherit;
-      stroke: currentColor;
       transform-origin: center center;
+
+      fill: none;
+      stroke: currentColor;
+      stroke-width: inherit;
+
       &:nth-child(1) {
         animation-name: mdw-progress-dash, rotate-counterclockwise;
-        animation-duration: $duration, $duration * 4;
-        animation-timing-function: motion.$standardEasing, steps(4,end);
+        animation-duration: var(--mdw-progress__circle-duration), calc(var(--mdw-progress__circle-duration) * 4);
+        animation-timing-function: motion.$standardEasing, steps(4, end);
         animation-iteration-count: infinite;
 
         stroke-dasharray: circlePercentage(25, 100);
@@ -98,39 +110,36 @@ $duration: 1333ms;
         stroke-linecap: round;
 
       }
+
       &:nth-child(2) {
         display: none;
 
-        transition-property: stroke-dashoffset;
         transition-duration: motion.$shapeChangeDuration;
+
+        transition-property: stroke-dashoffset;
         transition-timing-function: motion.$standardEasing;
 
         stroke-dasharray: circlePercentage(0, 100);
         stroke-dashoffset: circlePercentage(0, 100);
         stroke-linecap: square;
       }
-      
-    }
-  }
-  
-  // IE does not support animated SVG
-  // Double rotation speed
-  @include platform.ifIE() {
-    &:not([mdw-determinate]) svg {
-      animation-duration: $duration * 0.5;
+
     }
   }
 }
 
-.mdw-progress-circle[mdw-determinate] {
+.mdw-progress__circle[mdw-determinate] {
   svg {
     animation: none;
     will-change: none;
+
     & > path {
       &:nth-child(1) {
         display: none;
+
         animation: none;
       }
+
       &:nth-child(2) {
         display: inline;
       }
@@ -138,7 +147,7 @@ $duration: 1333ms;
   }
 }
 
-.mdw-progress-circle[value='100'] {
+.mdw-progress__circle[value='100'] {
   svg {
     & > path:nth-child(2) {
       stroke-dashoffset: circlePercentage(100);

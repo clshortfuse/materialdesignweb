@@ -1,12 +1,11 @@
 import * as Button from '../../components/button/index.js';
 import * as Fab from '../../components/fab/index.js';
-import { iterateArrayLike } from '../../core/dom.js';
 
 /** @return {void} */
 function initializeMdwComponents() {
-  iterateArrayLike(document.querySelectorAll('.js .mdw-fab'), Fab.attach);
+  for (const element of document.querySelectorAll('.js .mdw-fab')) { Fab.attach(element); }
 
-  iterateArrayLike(document.querySelectorAll('.js .mdw-button'), Button.attach);
+  for (const element of document.querySelectorAll('.js .mdw-button')) { Button.attach(element); }
 
   document.querySelector('input[name="hover"]').addEventListener('change', (event) => {
     if (event.currentTarget.checked) {

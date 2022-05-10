@@ -7,7 +7,17 @@
 @use '../../core/_platform.scss' as platform;
 @use '../../core/_type.scss' as type;
 
-$unit-width: dp(56) !default;
+$unit-width: 56px !default;
+
+:root {
+  --mdw-menu__transform-origin-inline-start: left;
+  --mdw-menu__transform-origin-inline-end: right;
+
+  &[dir="rtl"] {
+    --mdw-menu__transform-origin-inline-start: right;
+    --mdw-menu__transform-origin-inline-end: left;
+  }
+}
 
 /* @deprecated */
 .mdw-menu__wrapper {
@@ -17,29 +27,30 @@ $unit-width: dp(56) !default;
 
 .mdw-menu__close {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset-block: 0 auto;
+  inset-inline: 0 auto;
 
-  height: 100%;
-  width: 100%;
+  block-size: 100%;
+  inline-size: 100%;
 
   cursor: default;
 
   pointer-events: inherit;
+
   z-index: 8;
 }
 
 .mdw-menu {
+  --mdw-menu__transform-origin-x: var(--mdw-menu__transform-origin-inline-start); // Normal
+  --mdw-menu__transform-origin-y: top; // Down
   display: block;
   position: absolute;
 
   // Default position is bottom
   // Default direction is start
 
-  top: 100%;
-  right: auto;
-  bottom: auto;
-  left: 0;
+  inset-block: 100% auto;
+  inset-inline: auto 0;
 
   // Hide scrollbar
   -ms-overflow-style: none;
@@ -47,174 +58,101 @@ $unit-width: dp(56) !default;
   // Scroll mask
   overscroll-behavior: none;
   overscroll-behavior: contain;
-  -ms-scroll-chaining: none;
   scrollbar-width: none;
+
+  pointer-events: none;
 
   transition-duration: motion.$fadeOutDuration;
   transition-property: none;
   transition-timing-function: motion.$decelerateEasing;
 
-  pointer-events: none;
-  transform-origin: left top;
+  transform-origin: var(--mdw-menu__transform-origin-x) var(--mdw-menu__transform-origin-y);
   // visibility: visible;
 
-  :root[dir="rtl"] & {
-    right: 0;
-    left: auto;
-
-    transform-origin: right top;
-  }
-
   &::after {
+    content: '';
+
     display: block;
 
-    height: 200%;
-    width: 200%;
-    content: '';
+    block-size: 200%;
+    inline-size: 200%;
   }
 
   &::-webkit-scrollbar {
     display: none;
   }
 
-  &[aria-hidden="false"],
-  &[id]:target {
-    
-
-    pointer-events: auto;
-
-    .mdw-menu__popup {
-      // Instant on desktop
-      transition-delay: 0s;
-      transition-duration: 0s;
-      transition-property: box-shadow, opacity, transform;
-      transition-timing-function: motion.$accelerateEasing;
-
-      opacity: 1;
-      transform: scale(1);
-
-      visibility: visible;
-
-      box-shadow: elevation.boxShadow(8);
-      @include breakpoint.maxTabletDevice {
-        transition-duration: motion.$expandDuration;
-      }
-    }
-    
+  /** Vertical Position */
+  &[mdw-position~="top"] {
+    inset-block: 0 auto;
   }
 
-  &[mdw-position~="top"] {
-    top: 0;
+  &[mdw-position~="bottom"] {
+    inset-block: auto 0;
   }
 
   &[mdw-position~="vcenter"] {
-    top: 50%;
+    inset-block: 50% auto;
+  }
+
+  /** Horizontal Position */
+  &[mdw-position~="start"] {
+    inset-inline: auto 100%;
+  }
+
+  &[mdw-position~="end"] {
+    inset-inline: 100% auto;
+  }
+
+  &[mdw-position~="left"] {
+    /* stylelint-disable-next-line liberty/use-logical-spec */
+    right: 100%;
+    /* stylelint-disable-next-line liberty/use-logical-spec */
+    left: auto;
+  }
+
+  &[mdw-position~="right"] {
+    /* stylelint-disable-next-line liberty/use-logical-spec */
+    right: auto;
+    left: 100%;
   }
 
   &[mdw-position~="hcenter"] {
-    left: 50%;
+    inset-inline: 50% auto;
   }
 
-  &[mdw-position~="right"],
-  &[mdw-position~="end"] {
-    right: auto;
-    left: 100%;
-
-    :root[dir="rtl"] & {
-      right: 100%;
-      left: auto;
-    }
-  }
-
-  &[mdw-direction~="reverse"],
-  &[mdw-direction~="rtl"] {
-    right: 100%;
-    left: auto;
-
-    transform-origin: right top;
-
-    :root[dir="rtl"] & {
-      right: auto;
-      left: 100%;
-
-      transform-origin: left top;
-    }
-
-    &[mdw-position~="right"],
-    &[mdw-position~="end"] {
-      right: 0;
-      left: auto;
-
-      :root[dir="rtl"] & {
-        right: auto;
-        left: 0;
-      }
-    }
+  /** Vertical Direction */
+  &[mdw-direction~="down"] {
+    // --mdw-menu__transform-origin-y: top;
   }
 
   &[mdw-direction~="up"] {
-    top: auto;
-    bottom: 0;
-
-    transform-origin: left bottom;
-
-    :root[dir="rtl"] & {
-      transform-origin: right bottom;
-    }
-
-    &[mdw-position~="top"] {
-      bottom: 100%;
-    }
-
-    &[mdw-position~="vcenter"] {
-      bottom: 50%;
-    }
-
-    &[mdw-direction~="reverse"],
-    &[mdw-direction~="rtl"] {
-      transform-origin: right bottom;
-
-      :root[dir="rtl"] & {
-        transform-origin: left bottom;
-      }
-    }
+    --mdw-menu__transform-origin-y: bottom;
   }
+
+  /** Horizontal Direction */
+  &[mdw-direction~="normal"] {
+    // --mdw-menu__transform-origin-x: var(--mdw-menu__transform-origin-inline-start);
+  }
+
+  &[mdw-direction~="reverse"] {
+    --mdw-menu__transform-origin-x: var(--mdw-menu__transform-origin-inline-end);
+  }
+
+  &[mdw-direction~="ltr"] {
+    --mdw-menu__transform-origin-x: left;
+  }
+
+  &[mdw-direction~="rtl"] {
+    --mdw-menu__transform-origin-x: right;
+  }
+
   @for $i from 3 to 8 {
     &[mdw-width-units="#{$i}"] {
       .mdw-menu__popup {
-        width: #{$unit-width * $i};
+        inline-size: #{$unit-width * $i};
       }
     }
-  }
-}
-
-.mdw-menu[mdw-menu-js] {
-  position: fixed;
-  top: 0;
-  right: auto;
-  bottom: auto;
-  left: 0;
-  overflow-y: scroll;
-  
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  
-  cursor: default;
-  
-  z-index: 8;
-
-  :root[dir="rtl"] & {
-    right: 0;
-    left: auto;
-  }
-
-  .mdw-menu__close {
-    display: none;
-  }
-
-  .mdw-menu__popup {
-    margin: 0;
   }
 }
 
@@ -226,10 +164,7 @@ $unit-width: dp(56) !default;
 .mdw-menu__popup {
   display: inline-flex;
   position: absolute;
-  top: inherit;
-  right: inherit;
-  bottom: inherit;
-  left: inherit;
+  inset: inherit;
   flex-direction: column;
   -ms-overflow-style: -ms-autohiding-scrollbar;
   overflow-y: auto;
@@ -237,15 +172,14 @@ $unit-width: dp(56) !default;
   overscroll-behavior: contain;
   -ms-scroll-chaining: none;
 
-  max-height: 50vh;
-  min-width: $unit-width * 2;
-  max-width: $unit-width * 7;
-  margin-right: dp(8);
-  margin-left: dp(8);
-  padding-top: dp(8);
-  padding-bottom: dp(8);
+  max-block-size: 50vh;
+  min-inline-size: $unit-width * 2;
+  max-inline-size: $unit-width * 7;
+  margin-inline: 8px;
+  padding-block: 8px;
 
   outline: none;
+  pointer-events: inherit;
 
   transition-delay: 0s, 0s, motion.$fadeOutDuration, motion.$fadeOutDuration;
   transition-duration: motion.$fadeOutDuration;
@@ -253,13 +187,35 @@ $unit-width: dp(56) !default;
   transition-timing-function: motion.$accelerateEasing;
 
   opacity: 0;
-  pointer-events: inherit;
   transform: scale(0);
   transform-origin: inherit;
   z-index: 8;
 
-  border-radius: dp(4);
+  border-radius: 4px;
   box-shadow: elevation.boxShadow(0);
+}
+
+.mdw-menu[mdw-menu-js] {
+  position: fixed;
+  inset-block: 0 auto;
+  inset-inline: 0 auto;
+  overflow-y: scroll;
+
+  block-size: 100%;
+  inline-size: 100%;
+  margin: 0;
+
+  cursor: default;
+
+  z-index: 8;
+
+  .mdw-menu__close {
+    display: none;
+  }
+
+  .mdw-menu__popup {
+    margin: 0;
+  }
 }
 
 .mdw-menu__text {
@@ -274,16 +230,16 @@ $unit-width: dp(56) !default;
 .mdw-menu__icon,
 .mdw-menu__check,
 .mdw-menu__radio {
-  min-width: dp(40);
+  min-inline-size: 40px;
 }
 
 .mdw-menu__check,
 .mdw-menu__radio {
+  visibility: hidden;
+
   &[aria-hidden="true"] {
     display: none;
   }
-  
-  visibility: hidden;
 
   .mdw-menu__item[aria-checked="true"] & {
     visibility: visible;
@@ -291,9 +247,8 @@ $unit-width: dp(56) !default;
 }
 
 .mdw-menu__popup > .mdw-divider {
-  height: dp(1);
-  margin-top: dp(7);
-  margin-bottom: dp(8);
+  block-size: 1px;
+  margin-block: 7px 8px;
 }
 
 .mdw-menu__item {
@@ -306,10 +261,8 @@ $unit-width: dp(56) !default;
 
   box-sizing: border-box;
 
-
-  min-height: dp(48);
-  padding-right: dp(16);
-  padding-left: dp(16);
+  min-block-size: 48px;
+  padding-inline: 16px;
 
   cursor: pointer;
   outline: none;
@@ -322,6 +275,7 @@ $unit-width: dp(56) !default;
   z-index: 0;
 
   &[aria-disabled="true"] {
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
     cursor: not-allowed;
   }
 }
@@ -330,33 +284,46 @@ $unit-width: dp(56) !default;
 .mdw-menu[mdw-dense]:not([mdw-dense="never"]),
 .mdw-menu[mdw-dropdown] {
   .mdw-menu__item {
-    min-height: dp(32);
-    padding-right: dp(24);
-    padding-left: dp(24);
+    min-block-size: 32px;
+    padding-inline: 24px;
   }
 }
+
 @include platform.ifNoTouch() {
   .mdw-menu:not([mdw-dense="never"]) {
     .mdw-menu__item {
-      min-height: dp(32);
-      padding-right: dp(24);
-      padding-left: dp(24);
+      min-block-size: 32px;
+      padding-inline: 24px;
     }
   }
 }
 
 .mdw-menu__info {
-  padding-right: 0;
-  padding-left: dp(16);
+  padding-inline: 16px 0;
 
-  text-align: right;
   text-align: end;
+}
 
-  :root[dir="rtl"] & {
-    padding-right: dp(16);
-    padding-left: 0;
+.mdw-menu[aria-hidden="false"],
+.mdw-menu[id]:target {
+  pointer-events: auto;
 
-    text-align: left;
-    text-align: end;
+  .mdw-menu__popup {
+    // Instant on desktop
+    transition-delay: 0s;
+    transition-duration: 0s;
+    transition-property: box-shadow, opacity, transform;
+    transition-timing-function: motion.$accelerateEasing;
+
+    opacity: 1;
+    transform: scale(1);
+
+    visibility: visible;
+
+    box-shadow: elevation.boxShadow(8);
+    @include breakpoint.maxTabletDevice {
+      transition-duration: motion.$expandDuration;
+    }
   }
+
 }

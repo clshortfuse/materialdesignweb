@@ -4,14 +4,13 @@ import * as DataTable from '../../components/datatable/index.js';
 import * as Menu from '../../components/menu/index.js';
 import * as MenuItem from '../../components/menu/item.js';
 import * as Selection from '../../components/selection/index.js';
-import { iterateArrayLike } from '../../core/dom.js';
 
 /** @return {void} */
 function initializeMdwComponents() {
-  iterateArrayLike(document.querySelectorAll('.mdw-datatable.js'), DataTable.attach);
-  iterateArrayLike(document.getElementsByClassName('mdw-button'), Button.attach);
-  iterateArrayLike(document.getElementsByClassName('mdw-selection'), Selection.attach);
-  iterateArrayLike(document.getElementsByClassName('mdw-menu'), Menu.attach);
+  for (const element of document.querySelectorAll('.mdw-datatable.js')) { DataTable.attach(element); }
+  for (const element of document.getElementsByClassName('mdw-button')) { Button.attach(element); }
+  for (const element of document.getElementsByClassName('mdw-selection')) { Selection.attach(element); }
+  for (const element of document.getElementsByClassName('mdw-menu')) { Menu.attach(element); }
 }
 
 /**
@@ -34,11 +33,11 @@ function buildDynamicTable() {
   const addDatasourceObject = () => {
     datasource.push({
       selected: false,
-      text: Math.random().toString(36).substring(2),
-      text2: Math.random().toString(36).substring(2),
+      text: Math.random().toString(36).slice(2),
+      text2: Math.random().toString(36).slice(2),
       check1: Math.random() > 0.5,
       increment: count,
-      random: Math.floor(Math.random() * 99999),
+      random: Math.floor(Math.random() * 99_999),
     });
     count += 1;
   };
@@ -101,15 +100,14 @@ function buildDynamicTable() {
   optionsButton.addEventListener('click', (/** @type {MouseEvent} */ event) => Menu.show(optionsMenu, event));
 
   filterMenu.addEventListener(MenuItem.CHECK_EVENT, (event) => {
-    /** @type {HTMLElement} */
-    const menuItem = (event.target);
+    const menuItem = /** @type {HTMLElement} */ (event.target);
     switch (menuItem.dataset.filter) {
       default:
       case 'none':
         dynamicTableAdapter.setFilter(null);
         break;
       case 'md':
-        dynamicTableAdapter.setFilter((data) => data.text.indexOf('md') !== -1 || data.text2.indexOf('md') !== -1);
+        dynamicTableAdapter.setFilter((data) => data.text.includes('md') || data.text2.includes('md'));
         break;
       case 'div9':
         dynamicTableAdapter.setFilter((data) => data.random % 9 === 0);
@@ -128,8 +126,7 @@ function buildDynamicTable() {
   filterMenu.addEventListener(MenuItem.ACTIVATE_EVENT, () => Menu.hide(filterMenu));
 
   optionsMenu.addEventListener(MenuItem.CHECK_EVENT, (event) => {
-    /** @type {HTMLElement} */
-    const menuItem = (event.target);
+    const menuItem = /** @type {HTMLElement} */ (event.target);
     switch (menuItem.dataset.option) {
       default:
         break;
@@ -143,8 +140,7 @@ function buildDynamicTable() {
     dynamicTableAdapter.refresh();
   });
   optionsMenu.addEventListener(MenuItem.UNCHECK_EVENT, (event) => {
-    /** @type {HTMLElement} */
-    const menuItem = (event.target);
+    const menuItem = /** @type {HTMLElement} */ (event.target);
     switch (menuItem.dataset.option) {
       default:
         break;

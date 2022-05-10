@@ -1,7 +1,6 @@
 import DomAdapter from '../../adapters/dom/index.js';
 import * as ListContent from '../../components/list/content.js';
 import * as ListItem from '../../components/list/item.js';
-import { iterateArrayLike } from '../../core/dom.js';
 
 class CustomDataSourceItem {
   /** @param {number} i */
@@ -40,9 +39,9 @@ function onOptionChange(event) {
 }
 /** @return {void} */
 function setupComponentOptions() {
-  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+  for (const el of document.querySelectorAll('input[name]')) {
     el.addEventListener('change', onOptionChange);
-  });
+  }
   sampleComponent = document.querySelector('.component-sample .mdw-list');
   resetDatasource();
   domAdapter = new DomAdapter({
@@ -115,7 +114,7 @@ function setupComponentOptions() {
     buttons[1].setAttribute('aria-disabled', 'true');
   });
   buttons[2].addEventListener('click', () => {
-    const item = datasource.filter((d) => d.itemnumber === 50)[0];
+    const item = datasource.find((d) => d.itemnumber === 50);
     item.clickCount += 1;
     // Element will not change size, therefore avoid possible invalidation
     // (When element is refreshed and not in DOM, adapter may assume sized change)
@@ -123,17 +122,15 @@ function setupComponentOptions() {
     domAdapter.drawViewport();
   });
   buttons[3].addEventListener('click', () => {
-    const item = datasource.filter((d) => d.itemnumber === 80)[0];
+    const item = datasource.find((d) => d.itemnumber === 80);
     item.expanded = !item.expanded;
     // Force invalidation from height change
     domAdapter.refreshItem(item, { invalidate: true });
     domAdapter.drawViewport();
   });
   sampleComponent.addEventListener(ListContent.ACTIVATE_EVENT, (event) => {
-    /** @type {HTMLElement} */
-    const listContent = (event.target);
-    /** @type {HTMLLIElement} */
-    const listItem = (listContent.parentElement);
+    const listContent = /** @type {HTMLElement} */ (event.target);
+    const listItem = /** @type {HTMLLIElement} */ (listContent.parentElement);
     const dataItem = domAdapter.elementDataMap.get(listItem);
     dataItem.clickCount += 1;
     domAdapter.refreshItem(dataItem);

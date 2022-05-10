@@ -1,40 +1,3 @@
-/** @type {?boolean} */
-let passiveEventListenerSupported = null;
-
-/** @return {void} */
-function testPassiveEventListenerOptionSupport() {
-  try {
-    passiveEventListenerSupported = false;
-    const options = {
-      get passive() {
-        passiveEventListenerSupported = true;
-        return true;
-      },
-    };
-    // @ts-ignore: Custom test event
-    window.addEventListener('test', options, options);
-    // @ts-ignore: Custom test event
-    window.removeEventListener('test', options, options);
-  } catch (err) {
-    passiveEventListenerSupported = false;
-  }
-}
-
-/** @return {Object|boolean} */
-export function getPassiveEventListenerOption() {
-  if (passiveEventListenerSupported == null) {
-    testPassiveEventListenerOptionSupport();
-  }
-  if (passiveEventListenerSupported) {
-    return { passive: true };
-  }
-  return false;
-}
-
-export const nextTick = window.requestAnimationFrame || ((cb) => window.setTimeout(cb, 17));
-
-export const cancelTick = window.cancelAnimationFrame || window.clearTimeout;
-
 /**
  * @param {Element} element
  * @param {string} className
@@ -46,26 +9,6 @@ export function getChildElementByClass(element, className) {
     return null;
   }
   return child;
-}
-
-/**
- * @param {Element} element
- * @param {string} className
- * @param {boolean} [includeSelf=true]
- * @return {HTMLElement}
- */
-export function findElementParentByClassName(element, className, includeSelf) {
-  let el;
-  if (includeSelf === false) {
-    el = element.parentElement;
-  } else {
-    /** @type {HTMLElement} */
-    el = (element);
-  }
-  while (el != null && !el.classList.contains(className)) {
-    el = el.parentElement;
-  }
-  return el;
 }
 
 /** @return {boolean} */
@@ -102,26 +45,6 @@ export function dispatchDomEvent(eventTarget, type, detail) {
     event.initCustomEvent(type, true, true, detail);
   }
   return eventTarget.dispatchEvent(event);
-}
-
-/**
- * @param {ArrayLike<T>} arrayLike
- * @param {function(T, number, ArrayLike<T>):any} fn
- * @return {void}
- * @template {any} T
- */
-export function iterateArrayLike(arrayLike, fn) {
-  Array.prototype.forEach.call(arrayLike, fn);
-}
-
-/**
- * @param {ArrayLike<T>} arrayLike
- * @param {function(T, number, ArrayLike<T>):boolean|void} fn
- * @return {boolean}
- * @template {any} T
- */
-export function iterateSomeOfArrayLike(arrayLike, fn) {
-  return Array.prototype.some.call(arrayLike, fn);
 }
 
 /**
@@ -177,50 +100,36 @@ export function iterateSomeOfElementSiblings(element, fn) {
 /**
  * @param {Node} node
  * @param {boolean} [create]
- * @return {Text}
+ * @return {?Text}
  */
 export function getTextNode(node, create) {
-  let textNode;
-  iterateSomeOfArrayLike(node.childNodes, (childNode) => {
-    if (childNode.nodeType !== Node.TEXT_NODE) {
-      return false;
+  for (const childNode of node.childNodes) {
+    if (childNode.nodeType === Node.TEXT_NODE) {
+      return /** @type {Text} */ (childNode);
     }
-    textNode = childNode;
-    return true;
-  });
-  if (create && !textNode) {
-    textNode = document.createTextNode('');
-    node.appendChild(textNode);
   }
-  return textNode;
+  if (!create) return null;
+  return node.appendChild(document.createTextNode(''));
 }
 
 /**
  * @param {Node} node
  * @param {string} value
- * @return {Node}
+ * @return {?Text}
  */
 export function setTextNode(node, value) {
-  /** @type {ChildNode} */
-  let textNode;
-  iterateSomeOfArrayLike(node.childNodes, (childNode) => {
-    if (childNode.nodeType !== Node.TEXT_NODE) {
-      return false;
+  for (const childNode of node.childNodes) {
+    if (childNode.nodeType === Node.TEXT_NODE) {
+      if (value) {
+        childNode.nodeValue = value;
+      } else {
+        node.removeChild(childNode);
+      }
+      return /** @type {Text} */ (childNode);
     }
-    textNode = childNode;
-    return true;
-  });
-  if (value) {
-    if (!textNode) {
-      textNode = document.createTextNode(value);
-      node.appendChild(textNode);
-    } else {
-      textNode.nodeValue = value;
-    }
-  } else if (textNode) {
-    node.removeChild(textNode);
   }
-  return textNode;
+  if (!value) return null;
+  return node.appendChild(document.createTextNode(value));
 }
 
 /**
@@ -265,7 +174,7 @@ export function scrollToElement(element, smooth, rtl) {
   }
   parent.style.setProperty('scroll-behavior', 'auto');
   parent.scrollLeft = targetScrollLeft;
-  nextTick(() => {
+  requestAnimationFrame(() => {
     parent.style.removeProperty('scroll-behavior');
   });
 }

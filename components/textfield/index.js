@@ -1,5 +1,3 @@
-import { getPassiveEventListenerOption } from '../../core/dom.js';
-
 /**
  * @param {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} inputElement
  * @return {void}
@@ -22,7 +20,6 @@ export function updateInputEmptyState(inputElement) {
  */
 export function updateTextAreaSize(inputElement) {
   const previousRowsAttrValue = inputElement.getAttribute('rows');
-  // eslint-disable-next-line no-param-reassign
   inputElement.rows = 1;
   const { height, paddingTop } = window.getComputedStyle(inputElement);
   if (!height || height === 'auto') {
@@ -33,9 +30,8 @@ export function updateTextAreaSize(inputElement) {
     }
     return -1;
   }
-  const heightPx = parseInt(height.replace('px', ''), 10);
-  const paddingTopPx = parseInt(paddingTop.replace('px', ''), 10);
-  // eslint-disable-next-line no-param-reassign
+  const heightPx = Number.parseInt(height.replace('px', ''), 10);
+  const paddingTopPx = Number.parseInt(paddingTop.replace('px', ''), 10);
   inputElement.rows = Math.floor((inputElement.scrollHeight - paddingTopPx) / heightPx);
   return heightPx;
 }
@@ -45,8 +41,7 @@ export function updateTextAreaSize(inputElement) {
  * @return {void}
  */
 export function onInput(event) {
-  /** @type {HTMLInputElement|HTMLTextAreaElement} */
-  const inputElement = (event.currentTarget);
+  const inputElement = /** @type {HTMLInputElement|HTMLTextAreaElement} */ (event.currentTarget);
   if (inputElement.parentElement.hasAttribute('mdw-autosize')) {
     updateTextAreaSize(/** @type {HTMLTextAreaElement} */ (inputElement));
   }
@@ -58,8 +53,7 @@ export function onInput(event) {
  * @return {string|Date|number}
  */
 export function getValue(textfieldElement) {
-  /** @type {HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement} */
-  const input = (textfieldElement.getElementsByClassName('mdw-textfield__input')[0]);
+  const input = /** @type {HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement} */ (textfieldElement.getElementsByClassName('mdw-textfield__input')[0]);
   if ((input instanceof HTMLTextAreaElement) || (input instanceof HTMLSelectElement)) {
     return input.value;
   }
@@ -83,12 +77,11 @@ export function getValue(textfieldElement) {
 
 /**
  * @param {Element} textfieldElement
- * @param {string|Date|number} [value]
+ * @param {string|Date|number|null} [value]
  * @return {void}
  */
 export function setValue(textfieldElement, value) {
-  /** @type {HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement} */
-  const input = (textfieldElement.getElementsByClassName('mdw-textfield__input')[0]);
+  const input = /** @type {HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement} */ (textfieldElement.getElementsByClassName('mdw-textfield__input')[0]);
   if (value == null) {
     input.value = null;
   } else if (input instanceof HTMLTextAreaElement || input instanceof HTMLSelectElement) {
@@ -147,10 +140,9 @@ export function setValue(textfieldElement, value) {
  * @return {void}
  */
 export function attach(textfieldElement) {
-  /** @type {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} */
-  const input = (textfieldElement.getElementsByClassName('mdw-textfield__input')[0]);
+  const input = /** @type {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} */ (textfieldElement.getElementsByClassName('mdw-textfield__input')[0]);
   if (input) {
-    input.addEventListener('input', onInput, getPassiveEventListenerOption());
+    input.addEventListener('input', onInput, { passive: true });
     onInput({ currentTarget: input });
   }
 }

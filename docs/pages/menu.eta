@@ -119,26 +119,24 @@
       <div class="render-fill">
         <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'primary 700', dark:true }) %>
         <div class="mdw-appbar mdw-theme" mdw-surface="primary 500" mdw-dark>
-          <div class="mdw-appbar__action">
-            <div class="mdw-appbar__start">
-              <div class="mdw-tooltip__wrapper">
-                <%~ includeFile(T, { button: { icon:true, class:'mdw-tooltip__target material-icons', text:'menu' }}) %>
-                <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark>Menu</div>
-              </div>
+          <div class="mdw-appbar__start">
+            <div class="mdw-tooltip__wrapper">
+              <%~ includeFile(T, { button: { icon:true, class:'mdw-tooltip__target material-icons', text:'menu' }}) %>
+              <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark>Menu</div>
             </div>
-            <div class="mdw-appbar__end">
-              <div class="mdw-tooltip__wrapper mdw-menu__wrapper">
-                <%~ includeFile(T, { button: { icon:true, class:'mdw-tooltip__target material-icons', href:"#moremenu", text:'more_vert' }}) %>
-                <div class="mdw-tooltip mdw-theme mdw-tooltip" mdw-surface="background 700" mdw-dark>Options</div>
-                <div class="mdw-menu" id="moremenu" mdw-direction="reverse" mdw-position="end" mdw-width-units="3">
-                  <a class="mdw-menu__close" href="#"></a>
-                  <div class="mdw-menu__popup mdw-theme" mdw-surface="card">
-                    <div class="mdw-menu__text">Refresh</div>
-                    <div class="mdw-menu__text">Settings</div>
-                    <div class="mdw-menu__text">Send feedback</div>
-                    <div class="mdw-menu__text">Help</div>
-                    <div class="mdw-menu__text">Signout</div>
-                  </div>
+          </div>
+          <div class="mdw-appbar__end">
+            <div class="mdw-tooltip__wrapper mdw-menu__wrapper">
+              <%~ includeFile(T, { button: { icon:true, class:'mdw-tooltip__target material-icons', href:"#moremenu", text:'more_vert' }}) %>
+              <div class="mdw-tooltip mdw-theme mdw-tooltip" mdw-surface="background 700" mdw-dark>Options</div>
+              <div class="mdw-menu" id="moremenu" mdw-direction="reverse" mdw-position="end" mdw-width-units="3">
+                <a class="mdw-menu__close" href="#"></a>
+                <div class="mdw-menu__popup mdw-theme" mdw-surface="card">
+                  <div class="mdw-menu__text">Refresh</div>
+                  <div class="mdw-menu__text">Settings</div>
+                  <div class="mdw-menu__text">Send feedback</div>
+                  <div class="mdw-menu__text">Help</div>
+                  <div class="mdw-menu__text">Signout</div>
                 </div>
               </div>
             </div>

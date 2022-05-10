@@ -1,12 +1,12 @@
 import * as Button from '../../components/button/index.js';
-import { iterateArrayLike, setTextNode } from '../../core/dom.js';
+import { setTextNode } from '../../core/dom.js';
 import * as Overlay from '../../core/overlay/index.js';
 import * as Ripple from '../../core/ripple/index.js';
 import { convertElementToCode } from '../_sample-utils.js';
 
 /** @return {void} */
 function initializeSampleComponents() {
-  iterateArrayLike(document.querySelectorAll('.js .mdw-button'), Button.attach);
+  for (const element of document.querySelectorAll('.js .mdw-button')) { Button.attach(element); }
 }
 
 /** @type {HTMLElement} */
@@ -27,13 +27,13 @@ function toggleOverlayOption(name, value) {
     return;
   }
   if (value) {
-    if (attr.indexOf(name) !== -1) {
+    if (attr.includes(name)) {
       return;
     }
     sampleComponent.setAttribute('mdw-overlay-off', `${attr} ${name}`);
     return;
   }
-  if (attr.indexOf(name) === -1) {
+  if (!attr.includes(name)) {
     return;
   }
   sampleComponent.setAttribute('mdw-overlay-off', attr.replace(name, '').trim());
@@ -175,12 +175,12 @@ function onOptionChange(event) {
           break;
         default:
           sampleComponent.setAttribute('mdw-surface', value.replace(/ (light|dark)/, ''));
-          if (value.indexOf(' light') === -1) {
+          if (!value.includes(' light')) {
             sampleComponent.removeAttribute('mdw-light');
           } else {
             sampleComponent.setAttribute('mdw-light', '');
           }
-          if (value.indexOf(' dark') === -1) {
+          if (!value.includes(' dark')) {
             sampleComponent.removeAttribute('mdw-dark');
           } else {
             sampleComponent.setAttribute('mdw-dark', '');
@@ -198,9 +198,9 @@ function onOptionChange(event) {
       while (sampleComponent.firstChild) {
         newElement.appendChild(sampleComponent.firstChild);
       }
-      iterateArrayLike(sampleComponent.attributes, (attr) => {
+      for (const attr of sampleComponent.attributes) {
         newElement.attributes.setNamedItem(attr.cloneNode());
-      });
+      }
       sampleComponent.parentElement.replaceChild(newElement, sampleComponent);
       sampleComponent = newElement;
       break;
@@ -213,9 +213,9 @@ function onOptionChange(event) {
 function setupComponentOptions() {
   sampleComponent = document.querySelector('.component-sample .mdw-button');
   Button.attach(sampleComponent);
-  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+  for (const el of document.querySelectorAll('input[name]')) {
     el.addEventListener('change', onOptionChange);
-  });
+  }
 }
 
 initializeSampleComponents();

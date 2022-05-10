@@ -2,14 +2,11 @@
 
 @use '../../core/_length.scss' as *;
 
-$borderWidth: dp(1) !default;
+$borderWidth: 1px !default;
 
 .mdw-chip {
-  margin: 0 0 dp(-8) dp(-8);
-
-  :root[dir="rtl"] & {
-    margin: 0 dp(-8) dp(-8) 0;
-  }
+  margin-block: 0 -8px;
+  margin-inline: -8px 0;
 }
 
 .mdw-chip__item {
@@ -18,17 +15,15 @@ $borderWidth: dp(1) !default;
   align-items: center;
   overflow: hidden;
 
-  min-height: dp(32);
-  margin: 0 0 dp(8) dp(8);
-  padding: 0 dp(12);
+  min-block-size: 32px;
+
+  margin-block: 0 8px;
+  margin-inline: 8px 0;
+  padding: 0 12px;
 
   transition: inherit;
 
-  border-radius: dp(32); // unlikely to be taller than 64dp
-
-  :root[dir="rtl"] & {
-    margin: 0 dp(8) dp(8) 0;
-  }
+  border-radius: 32px; // unlikely to be taller than 64dp
 }
 
 .mdw-chip__checkmark,
@@ -37,28 +32,21 @@ $borderWidth: dp(1) !default;
   align-items: center;
   order: -1;
 
-  margin-right: dp(8);
-  margin-left: dp(-8);
+  margin-inline: -8px 8px;
 
   transition: inherit;
-  transition-property: max-width, opacity;
+  transition-property: max-inline-size, opacity;
 
-
-  :root[dir="rtl"] & {
-    margin-right: dp(-8);
-    margin-left: dp(8);
-  }
-  
 }
 
 .mdw-chip__input {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
 
   box-sizing: border-box;
-  height: 100%;
-  width: 100%;
+  block-size: 100%;
+  inline-size: 100%;
   margin: 0;
   border-style: solid;
   border-width: $borderWidth;
@@ -79,10 +67,7 @@ $borderWidth: dp(1) !default;
     content: '';
 
     position: absolute;
-    top: -$borderWidth;
-    right: -$borderWidth;
-    bottom: -$borderWidth;
-    left: -$borderWidth;
+    inset: -$borderWidth;
 
     transition: inherit;
     transition-property: background-color, opacity;
@@ -91,18 +76,16 @@ $borderWidth: dp(1) !default;
   }
 
   & ~ .mdw-chip__checkmark {
-    max-width: 0;
+    max-inline-size: 0;
 
     opacity: 0;
   }
 
   &:checked ~ .mdw-chip__checkmark {
-    max-width: dp(24);
+    max-inline-size: 24px;
 
     opacity: 1;
   }
-
- 
 }
 
 .mdw-chip__text {
@@ -115,20 +98,14 @@ $borderWidth: dp(1) !default;
   align-items: center;
   order: 1;
 
-  margin-right: dp(-4);
-  margin-left: dp(8);
-  
+  margin-inline: 8px -4px;
+
   cursor: pointer;
 
   z-index: 1;
 
-  :root[dir="rtl"] & {
-    margin-right: dp(8);
-    margin-left: dp(-4);
-  }
-
   /* stylelint-disable-next-line selector-class-pattern */
   &.material-icons {
-    font-size: dp(18);
+    font-size: 18px;
   }
 }

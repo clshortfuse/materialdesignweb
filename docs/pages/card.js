@@ -1,4 +1,4 @@
-import { iterateArrayLike, setTextNode } from '../../core/dom.js';
+import { setTextNode } from '../../core/dom.js';
 import { convertElementToCode } from '../_sample-utils.js';
 
 /** @type {HTMLElement} */
@@ -15,8 +15,10 @@ let primaryButtonElement;
 /** @return {void} */
 function updateSampleCode() {
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
-  setTextNode(htmlCodeElement, convertElementToCode(sampleComponent,
-    document.getElementById('usePug').getAttribute('aria-pressed') === 'true'));
+  setTextNode(htmlCodeElement, convertElementToCode(
+    sampleComponent,
+    document.getElementById('usePug').getAttribute('aria-pressed') === 'true',
+  ));
 }
 
 /** @return {void} */
@@ -54,11 +56,11 @@ function onOptionChange(event) {
     case 'raise-hover':
       raiseOptions = (sampleComponent.getAttribute('mdw-raised') || '').split(' ');
       if (checked) {
-        if (raiseOptions.indexOf(name.substr('raise-'.length)) === -1) {
-          raiseOptions.push(name.substr('raise-'.length));
+        if (!raiseOptions.includes(name.slice('raise-'.length))) {
+          raiseOptions.push(name.slice('raise-'.length));
         }
       } else {
-        raiseOptions = raiseOptions.filter((o) => o !== name.substr('raise-'.length));
+        raiseOptions = raiseOptions.filter((o) => o !== name.slice('raise-'.length));
       }
       raiseOptions.sort();
       if (raiseOptions.length) {
@@ -69,7 +71,7 @@ function onOptionChange(event) {
       break;
     case 'media-placement':
       if (mediaElement.parentElement) {
-        mediaElement.parentElement.removeChild(mediaElement);
+        mediaElement.remove();
       }
       switch (value) {
         default:
@@ -112,7 +114,7 @@ function onOptionChange(event) {
           sampleComponent.insertBefore(primaryButtonElement, sampleComponent.firstChild);
         }
       } else if (primaryButtonElement.parentElement) {
-        primaryButtonElement.parentElement.removeChild(primaryButtonElement);
+        primaryButtonElement.remove();
       }
       break;
     case 'secondary-actions':
@@ -121,7 +123,7 @@ function onOptionChange(event) {
           sampleComponent.appendChild(actionsElement);
         }
       } else if (actionsElement.parentElement) {
-        actionsElement.parentElement.removeChild(actionsElement);
+        actionsElement.remove();
       }
       break;
     case 'close-action':
@@ -130,17 +132,17 @@ function onOptionChange(event) {
           sampleComponent.insertBefore(closeActionElement, sampleComponent.getElementsByClassName('mdw-card__header')[0]);
         }
       } else if (closeActionElement.parentElement) {
-        closeActionElement.parentElement.removeChild(closeActionElement);
+        closeActionElement.remove();
       }
       break;
     case 'surface':
       sampleComponent.setAttribute('mdw-surface', value.replace(/ (light|dark)/, ''));
-      if (value.indexOf(' light') === -1) {
+      if (!value.includes(' light')) {
         sampleComponent.removeAttribute('mdw-light');
       } else {
         sampleComponent.setAttribute('mdw-light', '');
       }
-      if (value.indexOf(' dark') === -1) {
+      if (!value.includes(' dark')) {
         sampleComponent.removeAttribute('mdw-dark');
       } else {
         sampleComponent.setAttribute('mdw-dark', '');
@@ -159,17 +161,13 @@ function onOptionChange(event) {
 /** @return {void} */
 function setupComponentOptions() {
   sampleComponent = document.querySelector('.component-sample .mdw-card');
-  /** @type {HTMLElement} */
-  mediaElement = (sampleComponent.getElementsByClassName('mdw-card__media')[0]);
-  /** @type {HTMLElement} */
-  actionsElement = (sampleComponent.getElementsByClassName('mdw-card__actions')[0]);
-  /** @type {HTMLElement} */
-  primaryButtonElement = (sampleComponent.getElementsByClassName('mdw-card__button')[0]);
-  /** @type {HTMLElement} */
-  closeActionElement = (sampleComponent.getElementsByClassName('mdw-card__end')[0]);
-  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+  mediaElement = /** @type {HTMLElement} */ (sampleComponent.getElementsByClassName('mdw-card__media')[0]);
+  actionsElement = /** @type {HTMLElement} */ (sampleComponent.getElementsByClassName('mdw-card__actions')[0]);
+  primaryButtonElement = /** @type {HTMLElement} */ (sampleComponent.getElementsByClassName('mdw-card__button')[0]);
+  closeActionElement = /** @type {HTMLElement} */ (sampleComponent.getElementsByClassName('mdw-card__end')[0]);
+  for (const el of document.querySelectorAll('input[name]')) {
     el.addEventListener('change', onOptionChange);
-  });
+  }
 }
 
 setupComponentOptions();

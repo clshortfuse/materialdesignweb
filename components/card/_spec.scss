@@ -1,4 +1,4 @@
-// https://material.io/design/components/cards.html#specs
+/* https://material.io/design/components/cards.html#specs */
 
 @use "sass:math";
 
@@ -9,13 +9,30 @@
 @use '../../core/_platform.scss' as platform;
 @use '../../core/_type.scss' as type;
 
+$horizontalPadding: 16px !default;
 
-$horizontalPadding: dp(16) !default;
+:root {
+  --mdw-card__inline-start: left;
+  --mdw-card__inline-end: right;
+  --mdw-card__box-shadow: #{elevation.boxShadow(0)};
+  --mdw-card__border-color: inherit;
+
+  &[dir="rtl"] {
+    --mdw-card__inline-start: right;
+    --mdw-card__inline-end: left;
+  }
+
+  @include breakpoint.maxTabletDevice() {
+    --mdw-card__box-shadow: #{elevation.boxShadow(1)};
+    --mdw-card__border-color: transparent;
+  }
+}
 
 .mdw-card {
   @include type.addRules('body-2');
 
   display: block;
+
   position: relative;
 
   outline: none;
@@ -24,35 +41,28 @@ $horizontalPadding: dp(16) !default;
   transition-property: box-shadow;
   transition-timing-function: motion.$standardEasing;
 
-  border-radius: dp(4);
-  box-shadow: elevation.boxShadow(0);
+  border-radius: 4px;
+  box-shadow: var(--mdw-card__box-shadow);
 
   &::before {
     // Outline is behind content, not around it
     content: "";
 
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset: 0;
 
-    border: solid dp(1);
-    
+    // Separated to avoid minification
+    border-block-style: solid;
+    border-block-width: 1px;
+    border-inline-style: solid;
+    border-inline-width: 1px;
+
     pointer-events: none;
 
-    border-color: inherit;
+    border-color: var(--mdw-card__border-color, inherit);
+
     border-radius: inherit;
-  }
 
-  @include breakpoint.maxTabletDevice() {
-    &:not([mdw-elevation]) {
-      box-shadow: elevation.boxShadow(1);
-
-      &::before {
-        border-color: transparent;
-      }
-    }
   }
 
   &[mdw-elevation="1"] {
@@ -74,13 +84,12 @@ $horizontalPadding: dp(16) !default;
   }
 }
 
-
 .mdw-card__actions,
 .mdw-card__start,
 .mdw-card__end {
   // Position z-index higher than .mdw-card__button
   position: relative;
-  
+
   z-index: 2;
 }
 
@@ -97,37 +106,28 @@ $horizontalPadding: dp(16) !default;
 }
 
 .mdw-card > .mdw-divider {
-  width: calc(100% - #{$horizontalPadding * 2});
-  margin-right: $horizontalPadding;
-  margin-left: $horizontalPadding;
+  inline-size: calc(100% - #{$horizontalPadding * 2});
+  margin-inline: $horizontalPadding;
 }
 
 .mdw-card__thumbnail {
-  margin-top: dp(16);
-  margin-right: $horizontalPadding;
-  margin-bottom: 0;
-  margin-left: $horizontalPadding;
+  margin-block: 16px 0;
+  margin-inline: $horizontalPadding;
 }
 
 .mdw-card__start {
-  float: left;
-
-  :root[dir="rtl"] & {
-    float: right;
-  }
+  float: var(--mdw-card__inline-start);
+  float: inline-start;
 }
 
 .mdw-card__end {
-  float: right;
-
-  :root[dir="rtl"] & {
-    float: left;
-  }
+  float: var(--mdw-card__inline-end);
+  float: inline-end;
 }
 
 .mdw-card__image {
-  height: auto;
-  width: 100%;
+  block-size: auto;
+  inline-size: 100%;
 }
 
 .mdw-card__media {
@@ -138,7 +138,7 @@ $horizontalPadding: dp(16) !default;
   &[mdw-ratio] > .mdw-card__image {
     position: absolute;
 
-    height: 100%;
+    block-size: 100%;
 
     object-fit: cover;
   }
@@ -148,39 +148,33 @@ $horizontalPadding: dp(16) !default;
 
     display: inline-block;
 
-    height: 0;
-    width: auto;
+    block-size: 0;
+    inline-size: auto;
   }
 
   &[mdw-ratio="16:9"]::after {
-    padding-bottom: #{math.div(100%, 16) * 9};
+    padding-block-end: #{math.div(100%, 16) * 9};
   }
 
   &[mdw-ratio="3:2"]::after {
-    padding-bottom: #{math.div(100%, 3) * 2};
+    padding-block-end: #{math.div(100%, 3) * 2};
   }
 
   &[mdw-ratio="4:3"]::after {
-    padding-bottom: #{math.div(100%, 4) * 3};
+    padding-block-end: #{math.div(100%, 4) * 3};
   }
 
   &[mdw-ratio="1:1"]::after {
-    padding-bottom: #{math.div(100%, 1) * 1};
+    padding-block-end: #{math.div(100%, 1) * 1};
   }
 }
 
 .mdw-card__header-thumbnail {
   align-self: center;
 
-  min-height: dp(40);
-  min-width: dp(40);
-  margin-right: $horizontalPadding;
-  margin-left: 0;
-
-  :root[dir="rtl"] & {
-    margin-right: 0;
-    margin-left: $horizontalPadding;
-  }
+  min-block-size: 40px;
+  min-inline-size: 40px;
+  margin-inline: 0 $horizontalPadding;
 }
 
 .mdw-card__header {
@@ -191,7 +185,7 @@ h5.mdw-card__header {
   @include type.textTopToTop(16);
   @include type.addRules('h5');
   @include type.baselineToBottom(28);
-  margin-bottom: dp(-28);
+  margin-block-end: -28px;
 }
 
 h6.mdw-card__header {
@@ -201,7 +195,7 @@ h6.mdw-card__header {
 
 .mdw-card__header[mdw-two-line] {
   @include type.baselineToBottom(22);
-  margin-bottom: dp(-22);
+  margin-block-end: -22px;
 
   & ~ .mdw-card__subheader {
     @include type.textTopToTop(8);
@@ -212,12 +206,11 @@ h6.mdw-card__header {
 .mdw-card__actions {
   display: flex;
 
-  padding-top: dp(8);
-  padding-right: dp(4);
-  padding-left: dp(4);
+  padding-block-start: 8px;
+  padding-inline: 4px;
 
   & > .mdw-button {
-    margin: 0 dp(4);
+    margin: 0 4px;
   }
 
   & > span {
@@ -228,17 +221,17 @@ h6.mdw-card__header {
 .mdw-card__actions,
 .mdw-card__supporting-text {
   &:last-child {
-    padding-bottom: dp(8);
+    padding-block-end: 8px;
   }
 }
 
 .mdw-button.mdw-card__button {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
 
-  height: 100%;
-  width: 100%;
+  block-size: 100%;
+  inline-size: 100%;
   margin: 0;
   padding: 0;
 
@@ -246,4 +239,3 @@ h6.mdw-card__header {
 
   border-radius: inherit;
 }
-

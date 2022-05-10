@@ -1,4 +1,4 @@
-import { dispatchDomEvent, getPassiveEventListenerOption } from '../../core/dom.js';
+import { dispatchDomEvent } from '../../core/dom.js';
 
 export const SECONDARY_ACTION_EVENT = 'mdw:listsecondary-action';
 
@@ -16,8 +16,7 @@ export function onInteraction(event) {
  */
 export function onClick(event) {
   event.stopPropagation();
-  /** @type {HTMLElement} */
-  const listSecondaryElement = (event.currentTarget);
+  const listSecondaryElement = /** @type {HTMLElement} */ (event.currentTarget);
   dispatchDomEvent(listSecondaryElement, SECONDARY_ACTION_EVENT);
 }
 
@@ -30,9 +29,9 @@ export function attach(listSecondaryElement) {
     return;
   }
   listSecondaryElement.addEventListener('click', onClick);
-  listSecondaryElement.addEventListener('mousedown', onInteraction, getPassiveEventListenerOption());
-  listSecondaryElement.addEventListener('touchstart', onInteraction, getPassiveEventListenerOption());
-  listSecondaryElement.addEventListener('keydown', onInteraction, getPassiveEventListenerOption());
+  listSecondaryElement.addEventListener('mousedown', onInteraction, { passive: true });
+  listSecondaryElement.addEventListener('touchstart', onInteraction, { passive: true });
+  listSecondaryElement.addEventListener('keydown', onInteraction, { passive: true });
 }
 /**
  * @param {Element} listSecondaryElement
@@ -40,7 +39,7 @@ export function attach(listSecondaryElement) {
  */
 export function detach(listSecondaryElement) {
   listSecondaryElement.removeEventListener('click', onClick);
-  listSecondaryElement.removeEventListener('mousedown', onInteraction, getPassiveEventListenerOption());
-  listSecondaryElement.removeEventListener('touchstart', onInteraction, getPassiveEventListenerOption());
-  listSecondaryElement.removeEventListener('keydown', onInteraction, getPassiveEventListenerOption());
+  listSecondaryElement.removeEventListener('mousedown', onInteraction);
+  listSecondaryElement.removeEventListener('touchstart', onInteraction);
+  listSecondaryElement.removeEventListener('keydown', onInteraction);
 }

@@ -1,44 +1,19 @@
 @use '../../core/_breakpoint.scss' as breakpoint;
-@use '../../core/theme/_mixins.scss' as theme;
 
-$themeValues: () !default;
-
-@function getThemeValue($key, $type) {
-  @return theme.getThemeValue('layout', $themeValues, $key, $type);
+.mdw-layout__appbar[mdw-fab-cut],
+.mdw-layout__appbar.mdw-theme[mdw-fab-cut] {
+  background-color: transparent;
 }
 
-@mixin addThemeRules($type: 'var') {
-  @if ($type == 'var') {
-    .mdw-layout__appbar[mdw-fab-cut],
-    .mdw-layout__appbar.mdw-theme[mdw-fab-cut] {
+.mdw-layout__appbar-shape {
+  color: RGB(var(--mdw-surface));
+}
+
+@include breakpoint.minMediumWindow {
+  .mdw-layout__body[mdw-navdrawer-style~="floating"]:not([mdw-navdrawer-style~="card"]) > .mdw-layout__navdrawer,
+  .mdw-layout__body[mdw-sidesheet-style~="floating"]:not([mdw-sidesheet-style~="card"]) > .mdw-layout__sidesheet {
+    & > .mdw-layout__sheet-content {
       background-color: transparent;
     }
-
-    .mdw-layout__appbar-shape {
-      color: RGB(var(--mdw-surface));
-    }
-  }
-
-  @include breakpoint.minMediumWindow {
-    .mdw-layout__body[mdw-navdrawer-style~="floating"]:not([mdw-navdrawer-style~="card"]) > .mdw-layout__navdrawer,
-    .mdw-layout__body[mdw-sidesheet-style~="floating"]:not([mdw-sidesheet-style~="card"]) > .mdw-layout__sidesheet {
-      & > .mdw-layout__sheet-content {
-        background-color: transparent;
-      }
-    }
   }
 }
-
-
-@include theme.addComponentFallbackRules('light') {
-  @include addThemeRules('light');
-}
-@include theme.addComponentFallbackRules('dark') {
-  @include addThemeRules('dark');
-}
-
-
-@include theme.addComponentCSSVariableRules('layout', $themeValues) {
-  @include addThemeRules();
-}
-

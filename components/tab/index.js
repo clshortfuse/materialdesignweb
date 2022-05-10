@@ -1,8 +1,5 @@
 import {
   dispatchDomEvent,
-  getPassiveEventListenerOption,
-  iterateSomeOfArrayLike,
-  nextTick,
 } from '../../core/dom.js';
 
 import * as TabContent from './content.js';
@@ -35,8 +32,7 @@ export function onResize(tabElement) {
     stage += 1;
     tabElement.setAttribute('mdw-resize-stage', stage.toString());
     if (stage === RESIZE_WAIT_FRAMES) {
-      /** @type {HTMLElement} */
-      const tabContentElement = (tabElement.getElementsByClassName('mdw-tab__content')[0]);
+      const tabContentElement = /** @type {HTMLElement} */ (tabElement.getElementsByClassName('mdw-tab__content')[0]);
       if (tabContentElement) {
         /** @type {HTMLElement} */
         const relatedPanel = (tabContentElement.querySelector('.mdw-tab__panel[aria-expanded="true"]'));
@@ -45,8 +41,7 @@ export function onResize(tabElement) {
         }
       }
     } else if (stage === RESIZE_WAIT_FRAMES * 2) {
-      /** @type {HTMLElement} */
-      const tabListElement = (tabElement.getElementsByClassName('mdw-tab__list')[0]);
+      const tabListElement = /** @type {HTMLElement} */ (tabElement.getElementsByClassName('mdw-tab__list')[0]);
       if (tabListElement) {
         /** @type {HTMLElement} */
         const relatedItem = (tabListElement.querySelector('.mdw-tab__item[aria-selected="true"]'));
@@ -58,9 +53,9 @@ export function onResize(tabElement) {
       return;
     }
 
-    nextTick(performResize);
+    requestAnimationFrame(performResize);
   }
-  nextTick(performResize);
+  requestAnimationFrame(performResize);
 }
 
 /**
@@ -85,18 +80,14 @@ export function onTabItemSelectedChange(event) {
   if (event.detail.value !== 'true') {
     return;
   }
-  /** @type {HTMLElement} */
-  const tabElement = (event.currentTarget);
-  /** @type {HTMLElement} */
-  const tabItemElement = (event.target);
-  /** @type {HTMLElement} */
-  const tabListElement = (tabElement.getElementsByClassName('mdw-tab__list')[0]);
+  const tabElement = /** @type {HTMLElement} */ (event.currentTarget);
+  const tabItemElement = /** @type {HTMLElement} */ (event.target);
+  const tabListElement = /** @type {HTMLElement} */ (tabElement.getElementsByClassName('mdw-tab__list')[0]);
   if (!tabListElement) {
     return;
   }
 
-  /** @type {HTMLElement} */
-  const tabContentElement = (tabElement.getElementsByClassName('mdw-tab__content')[0]);
+  const tabContentElement = /** @type {HTMLElement} */ (tabElement.getElementsByClassName('mdw-tab__content')[0]);
   const tabItemIndex = TabList.getTabItemIndex(tabListElement, tabItemElement);
   if (tabItemIndex === -1) {
     return;
@@ -120,8 +111,7 @@ export function onTabItemSelectedChange(event) {
  * @return {void}
  */
 export function onTabContentScroll(event) {
-  /** @type {HTMLElement} */
-  const tabElement = (event.currentTarget);
+  const tabElement = /** @type {HTMLElement} */ (event.currentTarget);
   const { detail } = event;
   if (!detail.forceSelection && tabElement.hasAttribute('mdw-resize-stage')) {
     return;
@@ -147,14 +137,12 @@ export function onTabPanelExpandedChange(event) {
   if (event.detail.value !== 'true') {
     return;
   }
-  /** @type {HTMLElement} */
-  const tabElement = (event.currentTarget);
+  const tabElement = /** @type {HTMLElement} */ (event.currentTarget);
   if (tabElement.hasAttribute('mdw-resize-stage')) {
     return;
   }
   let index = 0;
-  /** @type {HTMLElement} */
-  const tabPanelElement = (event.target);
+  const tabPanelElement = /** @type {HTMLElement} */ (event.target);
   let sibling = tabPanelElement.previousElementSibling;
   while (sibling) {
     index += 1;
@@ -181,22 +169,31 @@ export function attach(tabElement) {
     TabContent.attach(tabContentElement);
   }
 
-  tabElement.addEventListener(TabContent.SCROLL_EVENT, onTabContentScroll,
-    getPassiveEventListenerOption());
-  tabElement.addEventListener(TabItem.SELECTED_CHANGE_EVENT, onTabItemSelectedChange,
-    getPassiveEventListenerOption());
-  tabElement.addEventListener(TabPanel.EXPANDED_CHANGE_EVENT, onTabPanelExpandedChange,
-    getPassiveEventListenerOption());
+  tabElement.addEventListener(
+    TabContent.SCROLL_EVENT,
+    onTabContentScroll,
+    { passive: true },
+  );
+  tabElement.addEventListener(
+    TabItem.SELECTED_CHANGE_EVENT,
+    onTabItemSelectedChange,
+    { passive: true },
+  );
+  tabElement.addEventListener(
+    TabPanel.EXPANDED_CHANGE_EVENT,
+    onTabPanelExpandedChange,
+    { passive: true },
+  );
 
-  /** @type {ArrayLike<Element>} */
+  /** @type {HTMLCollectionOf<Element>|Element[]} */
   const items = (tabListElement && tabListElement.getElementsByClassName('mdw-tab__item')) || [];
-  /** @type {ArrayLike<Element>} */
+  /** @type {HTMLCollectionOf<Element>|Element[]} */
   const panels = (tabContentElement && tabContentElement.getElementsByClassName('mdw-tab__panel')) || [];
 
   let selectedItem;
   let selectedPanel;
   let selectedIndex;
-  iterateSomeOfArrayLike(items, (itemElement, index) => {
+  [...items].some((itemElement, index) => {
     if (itemElement.getAttribute('aria-selected') === 'true') {
       selectedItem = itemElement;
       selectedPanel = panels[index];
@@ -206,7 +203,7 @@ export function attach(tabElement) {
     return false;
   });
   if (selectedIndex == null) {
-    iterateSomeOfArrayLike(panels, (panelElement, index) => {
+    [...panels].some((panelElement, index) => {
       if (panelElement.getAttribute('aria-expanded') === 'true') {
         selectedPanel = panelElement;
         selectedItem = items[index];

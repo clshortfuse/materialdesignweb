@@ -1,5 +1,3 @@
-import { iterateArrayLike } from '../../core/dom.js';
-
 import * as Selection from './index.js';
 
 /**
@@ -7,31 +5,26 @@ import * as Selection from './index.js';
  * @return {void}
  */
 function onCheckedChange(event) {
-  const { detail } = event;
-  if (detail.value === 'false') {
+  if (event.detail.value === 'false') {
     return;
   }
-  /** @type {HTMLElement} */
-  const radiogroupElement = (event.currentTarget);
-  /** @type {HTMLElement} */
-  const itemElement = (event.target);
+  const radiogroupElement = /** @type {HTMLElement} */ (event.currentTarget);
+  const itemElement = /** @type {HTMLElement} */ (event.target);
   setTimeout(() => {
     // Wait to see if event is cancelled
     if (event.defaultPrevented) {
       return;
     }
-    iterateArrayLike(radiogroupElement.querySelectorAll('[role="radio"][aria-checked="true"]'),
-      (item) => {
-        if (item === itemElement) {
-          return;
-        }
+    for (const item of radiogroupElement.querySelectorAll('[role="radio"][aria-checked="true"]')) {
+      if (item !== itemElement) {
         item.setAttribute('aria-checked', 'false');
-      });
+      }
+    }
   });
 }
 
 /**
- * @param {HTMLElement} element
+ * @param {Element} element
  * @return {void}
  */
 export function attach(element) {

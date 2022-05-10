@@ -10,25 +10,3 @@
     @content;
   }
 }
-
-// Browser specific mixins
-@mixin ifIE {
-  @media all\0 {
-    @content;
-  }
-}
-
-@mixin ifEdge {
-  @supports (-ms-ime-align:auto) {
-    @content;
-  }
-}
-
-@mixin ifMS {
-  @include ifIE {
-    @content;
-  }
-  @include ifEdge {
-    @content;
-  }
-}

@@ -6,7 +6,15 @@
 @use '../../core/_platform.scss' as platform;
 @use '../../core/_type.scss' as type;
 
-$iconSize: dp(16) !default;
+$iconSize: 16px !default;
+
+:root {
+  --mdw-datatable__footer-controls-transform: scaleX(1);
+
+  &[dir="rtl"] {
+    --mdw-datatable__footer-controls-transform: scaleX(-1);
+  }
+}
 
 .mdw-datatable {
   display: flex;
@@ -18,28 +26,22 @@ $iconSize: dp(16) !default;
 
   border-collapse: collapse;
 
-  width: 100%;
+  inline-size: 100%;
 }
 
 .mdw-datatable caption,
 .mdw-datatable__header {
   @include type.addRules('h6');
-  min-height: dp(64);
+  min-block-size: 64px;
 }
 
 .mdw-datatable caption {
   caption-side: top;
 
-  padding: 0 dp(16);
+  padding: 0 16px;
 
-  line-height: dp(64);
-  text-align: left;
+  line-height: 64px;
   text-align: start;
-
-  :root[dir="rtl"] & {
-    text-align: right;
-    text-align: start;
-  }
 }
 
 .mdw-datatable__header {
@@ -62,34 +64,26 @@ $iconSize: dp(16) !default;
 }
 
 .mdw-datatable__header-text {
-  padding-right: 0;
-  padding-left: dp(16);
-
-  :root[dir="rtl"] & {
-    padding-right: dp(16);
-    padding-left: 0;
-  }
+  padding-inline: 16px 0;
 }
 
 .mdw-datatable tr {
-  height: dp(48);
-  border-bottom-style: solid;
-  border-bottom-width: dp(1);
+  block-size: 48px;
+  border-block-end-style: solid;
+  border-block-end-width: 1px;
 
   outline: none;
 }
 
 .mdw-datatable thead > tr {
-  height: dp(48);
+  block-size: 48px;
 }
-
 
 .mdw-datatable td {
   @include type.addRules('body-2');
   // text-align: left;
   // Expected line-height is 20dp. Support two lines within 48dp
-  padding-top: dp(4);
-  padding-bottom: dp(4 - 1); // Remove bottom border width
+  padding-block: 4px 3px; // Remove 1px bottom border width
 
   outline: none;
 
@@ -102,8 +96,7 @@ $iconSize: dp(16) !default;
 
 .mdw-datatable th,
 .mdw-datatable td {
-  padding-right: dp(16);
-  padding-left: dp(16);
+  padding-inline: 16px;
 
   text-align: center;
 
@@ -112,56 +105,27 @@ $iconSize: dp(16) !default;
   }
 
   &[mdw-text] {
-    text-align: left;
     text-align: start;
-  
-    :root[dir="rtl"] & {
-      text-align: right;
-      text-align: start;
-    }
   }
 
   &[mdw-number] {
-    text-align: right;
     text-align: end;
-
-    :root[dir="rtl"] & {
-      text-align: left;
-      text-align: end;
-    }
   }
 
   &[mdw-primary-column] {
-    width: 100%;
-    border-right-style: solid;
-    border-width: dp(1);
-
-    :root[dir="rtl"] & {
-      border-right-style: none;
-      border-left-style: solid;
-    }
+    inline-size: 100%;
+    border-width: 1px;
+    border-inline-end-style: solid;
   }
 }
 
 .mdw-datatable th[mdw-selector] {
-  width: dp(24);
-  padding-right: 0;
-  padding-left: dp(16);
-
-  :root[dir="rtl"] & {
-    padding-right: dp(16);
-    padding-left: 0;
-  }
+  inline-size: 24px;
+  padding-inline: 16px 0;
 
   & + td,
   & + th {
-    padding-right: dp(16);
-    padding-left: dp(12);
-
-    :root[dir="rtl"] & {
-      padding-right: dp(12);
-      padding-left: dp(16);
-    }
+    padding-inline: 12px 16px;
   }
 }
 
@@ -169,7 +133,7 @@ $iconSize: dp(16) !default;
   display: inline-block;
   vertical-align: text-bottom;
 
-  max-width: 0;
+  max-inline-size: 0;
 
   transition-duration: motion.$shapeChangeDuration;
   transition-property: transform;
@@ -223,66 +187,39 @@ $iconSize: dp(16) !default;
   flex-direction: row;
   justify-content: flex-end;
 
-  min-height: dp(56);
+  min-block-size: 56px;
   flex: none;
-}
-
-.mdw-datatable__header,
-.mdw-datatable__footer {
-  @include platform.ifIE() {
-    // Fix IE min-height flexbug
-    &::after {
-      content: '';
-
-      min-height: inherit;
-      width: 0;
-    }
-  }
 }
 
 .mdw-datatable__footer-options,
 .mdw-datatable__footer-details {
-  margin-right: dp(28);
-  margin-left: dp(2);
-
-  :root[dir="rtl"] & {
-    margin-right: dp(2);
-    margin-left: dp(28);
-  }
+  margin-inline: 2px 28px;
 }
 
 .mdw-datatable__header-controls,
 .mdw-datatable__footer-controls {
   display: inline-flex;
 
-  margin-right: dp(4);
-  margin-left: dp(4);
+  margin-inline: 4px;
 
   .mdw-button {
-    margin: 0 dp(4);
+    margin: 0 4px;
   }
 }
 
 .mdw-datatable__footer-controls {
-  direction: ltr;
-
-  :root[dir="rtl"] & {
-    transform: scaleX(-1);
+  .mdw-button {
+    transform: var(--mdw-datatable__footer-controls-transform);
   }
 }
 
 .mdw-datatable__footer-options {
   display: flex;
   align-items: center;
-  
+
   select.mdw-textfield__input {
-    min-width: dp(40 + 24);
+    min-inline-size: 64px; // 40 + 24;
 
-    direction: rtl;
-
-    :root[dir="rtl"] & {
-      direction: ltr;
-    }
+    text-align: end;
   }
 }
-

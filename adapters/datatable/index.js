@@ -6,14 +6,12 @@ import * as DataTableRow from '../../components/datatable/row.js';
 import * as DataTableRowHeader from '../../components/datatable/rowheader.js';
 import * as Selection from '../../components/selection/index.js';
 import * as RovingTabIndex from '../../core/aria/rovingtabindex.js';
-import { getPassiveEventListenerOption, iterateArrayLike, iterateSomeOfArrayLike } from '../../core/dom.js';
-import { noop } from '../../utils/function.js';
 
 import DataTableAdapterColumn from './column.js';
 
 /**
  * @template {Record<string, any>} T
- * @template {keyof T & string} K
+ * @template {(keyof T & string)|string} K
  * @typedef {import('./column').DataTableAdapterColumnOptions<T,K>} DataTableAdapterColumnOptions<T,K>
  */
 
@@ -77,8 +75,8 @@ export default class DataTableAdapter {
     this.datasource = options.datasource;
     this.filter = options.filter;
     this.sorter = options.sorter;
-    this.onValueChangeRequested = options.onValueChangeRequested || (() => false);
-    this.onValueChanged = options.onValueChanged || noop;
+    this.onValueChangeRequested = options.onValueChangeRequested;
+    this.onValueChanged = options.onValueChanged;
     DataTable.attach(this.element);
 
     this.onElementScrollListener = () => this.onElementScroll();
@@ -107,6 +105,8 @@ export default class DataTableAdapter {
       DataTableAdapter.onRowSelectedChangeEvent,
     );
 
+    /** @type {HTMLTableSectionElement} */
+    this.tbody = null;
     this.scroller = DataTable.getScroller(this.element);
     this.element.setAttribute('mdw-datatable-adapter', '');
     /** @type {DataTableAdapterColumn<T,any>[]} */
@@ -123,8 +123,7 @@ export default class DataTableAdapter {
    * @return {void}
    */
   onDataTableColumnHeaderSort(event) {
-    /** @type {HTMLTableHeaderCellElement} */
-    const cell = (event.target);
+    const cell = /** @type {HTMLTableHeaderCellElement} */ (event.target);
     const ascending = event.detail.sort === 'ascending';
     this.updateSortIcons(cell, ascending);
     if (this.updateSortColumn) {
@@ -168,8 +167,7 @@ export default class DataTableAdapter {
    * @return {void}
    */
   static onRowSelectedChangeEvent(event) {
-    /** @type {HTMLTableRowElement} */
-    const row = (event.target);
+    const row = /** @type {HTMLTableRowElement} */ (event.target);
     const selectionElement = row.querySelector('[mdw-selector] .mdw-selection[aria-checked]');
     if (!selectionElement) {
       return;
@@ -198,7 +196,7 @@ export default class DataTableAdapter {
   }
 
   buildScrollListener() {
-    this.scroller.addEventListener('scroll', this.onElementScrollListener, getPassiveEventListenerOption());
+    this.scroller.addEventListener('scroll', this.onElementScrollListener, { passive: true });
   }
 
   destroyScrollListener() {
@@ -210,8 +208,7 @@ export default class DataTableAdapter {
    * @return {void}
    */
   onCheckedChangeEvent(event) {
-    /** @type {HTMLElement} */
-    const selectionElement = (event.target);
+    const selectionElement = /** @type {HTMLElement} */ (event.target);
     const checked = event.detail.value === 'true';
     const currentCell = this.getTableCell(selectionElement);
     if (currentCell.getAttribute('role') === 'columnheader') {
@@ -221,15 +218,14 @@ export default class DataTableAdapter {
     }
     const currentRow = this.getTableRow(selectionElement);
     const object = this.getDataForTableRow(currentRow);
-    /** @type {keyof T & string} */
     // eslint-disable-next-line prefer-destructuring
-    const key = (currentCell.dataset.key);
-    if (this.onValueChangeRequested(object, key, checked)) {
+    const key = /** @type {keyof T & string} */ (currentCell.dataset.key);
+    if (this.onValueChangeRequested?.(object, key, checked)) {
       event.preventDefault();
       return;
     }
     object[key] = checked;
-    this.onValueChanged(object, key, checked);
+    this.onValueChanged?.(object, key, checked);
     if (currentCell.hasAttribute('mdw-selector')) {
       DataTableRow.setSelected(currentRow, event.detail.value, true);
     }
@@ -270,7 +266,7 @@ export default class DataTableAdapter {
         return direction;
       }
       if (tableColumn.type === 'number') {
-        return (parseFloat(valueA) - parseFloat(valueB)) * direction;
+        return (Number.parseFloat(valueA) - Number.parseFloat(valueB)) * direction;
       }
       if (tableColumn.type === 'checkbox') {
         return ((valueA ? 1 : 0) - (valueB ? 1 : 0)) * direction;
@@ -300,11 +296,11 @@ export default class DataTableAdapter {
         sortedTableHeaderCell.setAttribute('aria-sort', 'descending');
       }
     }
-    iterateArrayLike(this.getHeaderRow().getElementsByTagName('th'), (otherTableHeader) => {
+    for (const otherTableHeader of this.getHeaderRow().getElementsByTagName('th')) {
       if (otherTableHeader !== sortedTableHeaderCell && otherTableHeader.hasAttribute('aria-sort')) {
         otherTableHeader.setAttribute('aria-sort', 'none');
       }
-    });
+    }
   }
 
   /**
@@ -314,9 +310,9 @@ export default class DataTableAdapter {
    */
   setCheckOnAllRows(value, columnIndex) {
     const column = this.columns[columnIndex];
-    this.datasource.forEach((object) => {
-      object[column.key] = value; // eslint-disable-line no-param-reassign
-    });
+    for (const object of this.datasource) {
+      object[column.key] = value;
+    }
     this.refresh();
   }
 
@@ -356,7 +352,7 @@ export default class DataTableAdapter {
 
   /** @return {T[]} */
   getSelectedRows() {
-    const selectorColumn = this.columns.filter((column) => column.rowSelector)[0];
+    const selectorColumn = this.columns.find((column) => column.rowSelector);
     if (!selectorColumn) {
       return [];
     }
@@ -398,7 +394,7 @@ export default class DataTableAdapter {
   }
 
   /**
-   * @template {keyof T & string} K
+   * @template {(keyof T & string)|string} K
    * @param {DataTableAdapterColumnOptions<T,K>} options
    * @return {DataTableAdapterColumn<T,K>}
    */
@@ -456,14 +452,14 @@ export default class DataTableAdapter {
       limitsElement.setAttribute('mdw-solo', '');
       const select = document.createElement('select');
       select.classList.add('mdw-textfield__input');
-      limits.forEach((limit) => {
+      for (const limit of limits) {
         const option = document.createElement('option');
         option.value = limit.toString();
         option.textContent = limit.toString();
         option.className = 'mdw-theme';
         option.setAttribute('mdw-surface', 'card');
         select.appendChild(option);
-      });
+      }
       select.value = (options.limit && options.limit.toString()) || '10';
       const dropdownIcon = document.createElement('div');
       dropdownIcon.classList.add('mdw-textfield__icon');
@@ -474,23 +470,23 @@ export default class DataTableAdapter {
       optionsElement.appendChild(limitsElement);
       footer.appendChild(optionsElement);
       select.addEventListener('input', () => {
-        this.pageLimit = parseInt(select.value, 10);
+        this.pageLimit = Number.parseInt(select.value, 10);
         this.updateRowCount(false);
         this.updatePaginator();
         this.refreshRows();
       });
     }
-    if (!this.paginationDetailsElement) {
-      this.paginationDetailsElement = footer.getElementsByClassName('mdw-datatable__footer-details')[0];
-    }
+
+    this.paginationDetailsElement ||= /** @type {HTMLDivElement} */ (footer.getElementsByClassName('mdw-datatable__footer-details')[0]);
+
     if (!this.paginationDetailsElement) {
       this.paginationDetailsElement = document.createElement('div');
       this.paginationDetailsElement.classList.add('mdw-datatable__footer-details');
       footer.appendChild(this.paginationDetailsElement);
     }
-    if (!this.paginationControls) {
-      this.paginationControls = footer.getElementsByClassName('mdw-datatable__footer-controls')[0];
-    }
+
+    this.paginationControls ||= /** @type {HTMLDivElement} */ (footer.getElementsByClassName('mdw-datatable__footer-controls')[0]);
+
     if (!this.paginationControls) {
       this.paginationControls = document.createElement('div');
       this.paginationControls.classList.add('mdw-datatable__footer-controls');
@@ -548,8 +544,7 @@ export default class DataTableAdapter {
    * @return {HTMLElement}
    */
   getFooter(create) {
-    /** @type {HTMLElement} */
-    let footer = (this.element.getElementsByClassName('mdw-datatable__footer')[0]);
+    let footer = /** @type {HTMLElement} */ (this.element.getElementsByClassName('mdw-datatable__footer')[0]);
     if (!footer && create) {
       footer = document.createElement('div');
       footer.classList.add('mdw-datatable__footer');
@@ -591,15 +586,16 @@ export default class DataTableAdapter {
     if (visibleRows.length === tbody.rows.length) {
       return;
     }
-    let firstRowIndex = Infinity;
-    let lastRowIndex = -Infinity;
+    let firstRowIndex = Number.POSITIVE_INFINITY;
+    let lastRowIndex = Number.NEGATIVE_INFINITY;
     if (visibleRows.length) {
       firstRowIndex = visibleRows[0].sectionRowIndex;
       lastRowIndex = visibleRows[visibleRows.length - 1].sectionRowIndex;
     }
-    iterateArrayLike(tbody.rows, (row, index) => {
+    for (let index = 0; index < tbody.rows.length; index++) {
+      const row = tbody.rows[index];
       if (index >= firstRowIndex && index <= lastRowIndex) {
-        return;
+        continue;
       }
       if (row.lastChild) {
         // Store row height to prevent layout shifting
@@ -608,7 +604,7 @@ export default class DataTableAdapter {
       while (row.lastChild) {
         row.removeChild(row.lastChild);
       }
-    });
+    }
   }
 
   /**
@@ -621,9 +617,9 @@ export default class DataTableAdapter {
     const rows = [];
     const minRowCount = window.screen.height / 48;
     if (len <= minRowCount) {
-      iterateArrayLike(tbody.rows, (row) => {
+      for (const row of tbody.rows) {
         rows.push(row);
-      });
+      }
       return rows;
     }
     let foundFirstVisibleRow = false;
@@ -631,18 +627,19 @@ export default class DataTableAdapter {
     let endIndex = 0;
     const viewportTop = this.scroller.scrollTop;
     const viewportBottom = viewportTop + this.scroller.offsetHeight;
-    iterateSomeOfArrayLike(tbody.rows, (row, index) => {
+
+    for (let i = 0; i < tbody.rows.length; i++) {
+      const row = tbody.rows.item(i);
       if (this.isRowVisible(row, viewportTop, viewportBottom)) {
         if (!foundFirstVisibleRow) {
           foundFirstVisibleRow = true;
-          startIndex = index;
+          startIndex = i;
         }
-        endIndex = index;
+        endIndex = i;
       } else if (foundFirstVisibleRow) {
-        return true;
+        break;
       }
-      return false;
-    });
+    }
 
     while ((endIndex - startIndex) + 1 < minRowCount) {
       if (startIndex === 0) {
@@ -667,11 +664,11 @@ export default class DataTableAdapter {
    */
   performLazyRender(forceRefresh = false) {
     const visibleRows = this.getLazyRenderRows();
-    visibleRows.forEach((row) => {
+    for (const row of visibleRows) {
       if (forceRefresh || !row.cells.length) {
         this.refreshRow(row.sectionRowIndex);
       }
-    });
+    }
     this.clearNonvisibleRows(visibleRows);
   }
 
@@ -771,9 +768,9 @@ export default class DataTableAdapter {
       if (this.useLazyRendering) {
         this.scheduleThrottledRender(true);
       } else {
-        newRows.forEach((row) => {
+        for (const row of newRows) {
           this.refreshRow(row.sectionRowIndex);
-        });
+        }
       }
     }
   }
@@ -784,9 +781,9 @@ export default class DataTableAdapter {
       this.performLazyRender(true);
     } else {
       const tbody = this.getTableBody();
-      iterateArrayLike(tbody.rows, (row, index) => {
-        this.refreshRow(index);
-      });
+      for (let i = 0; i < tbody.rows.length; i++) {
+        this.refreshRow(i);
+      }
     }
     if (this.useLazyRendering) {
       this.scheduleThrottledRender();
@@ -830,9 +827,9 @@ export default class DataTableAdapter {
   refreshRow(rowIndex) {
     const row = this.getTableBody().rows.item(rowIndex);
     row.style.removeProperty('height');
-    this.columns.forEach((column, columnIndex) => {
-      this.refreshCell(columnIndex, rowIndex);
-    });
+    for (let i = 0; i < this.columns.length; i++) {
+      this.refreshCell(i, rowIndex);
+    }
   }
 
   /**
@@ -843,6 +840,7 @@ export default class DataTableAdapter {
   refreshCell(columnIndex, rowIndex) {
     const tableColumn = this.columns[columnIndex];
     const row = this.getTableBody().rows.item(rowIndex);
+    if (!row) return;
     let len = row.cells.length;
     let createdCells = false;
     while (len <= columnIndex) {
@@ -879,18 +877,14 @@ export default class DataTableAdapter {
       }
       len += 1;
     }
-    if (createdCells) {
-      if (this.element.hasAttribute('mdw-cell-focusable')) {
-        RovingTabIndex.setupTabIndexes(row.querySelectorAll(DataTable.CELL_TABINDEX_QUERIES.join(',')));
-      }
+    if (createdCells && this.element.hasAttribute('mdw-cell-focusable')) {
+      RovingTabIndex.setupTabIndexes(row.querySelectorAll(DataTable.CELL_TABINDEX_QUERIES.join(',')));
     }
     const cell = row.cells.item(columnIndex);
     const data = this.getDataForTableRow(row);
     const value = data[tableColumn.key];
-    if (tableColumn.rowSelector) {
-      if (row.getAttribute('aria-selected') !== (value ? 'true' : 'false')) {
-        row.setAttribute('aria-selected', (value ? 'true' : 'false'));
-      }
+    if (tableColumn.rowSelector && row.getAttribute('aria-selected') !== (value ? 'true' : 'false')) {
+      row.setAttribute('aria-selected', (value ? 'true' : 'false'));
     }
     const formattedValue = tableColumn.formatter(value, data);
     tableColumn.renderer(cell, formattedValue, data);
@@ -906,10 +900,10 @@ export default class DataTableAdapter {
       return search;
     }
     if (search instanceof HTMLTableCellElement) {
-      return this.columns.filter((column) => column.element === search)[0];
+      return this.columns.find((column) => column.element === search);
     }
     if (typeof search === 'string') {
-      return this.columns.filter((column) => column.element.dataset.key === search)[0];
+      return this.columns.find((column) => column.element.dataset.key === search);
     }
     return this.columns[search];
   }
@@ -947,16 +941,10 @@ export default class DataTableAdapter {
 
   /** @return {HTMLTableSectionElement} */
   getTableBody() {
-    if (this.tbody) {
-      return this.tbody;
-    }
-    this.tbody = this.element.getElementsByTagName('tbody')[0];
-    if (!this.tbody) {
-      const table = this.getTable();
-      this.tbody = document.createElement('tbody');
-      table.appendChild(this.tbody);
-    }
-    return this.tbody;
+    // eslint-disable-next-line no-return-assign
+    return this.tbody
+      ||= this.element.getElementsByTagName('tbody')[0]
+      || this.getTable().appendChild(document.createElement('tbody'));
   }
 
   /**
@@ -965,8 +953,8 @@ export default class DataTableAdapter {
    */
   refreshColumn(columnIndex) {
     const tbody = this.getTableBody();
-    iterateArrayLike(tbody.rows, (row, rowIndex) => {
-      this.refreshCell(columnIndex, rowIndex);
-    });
+    for (let i = 0; i < tbody.rows.length; i++) {
+      this.refreshCell(columnIndex, i);
+    }
   }
 }

@@ -2,10 +2,7 @@
 
 import {
   dispatchDomEvent,
-  findElementParentByClassName,
   getChildElementByClass,
-  iterateArrayLike,
-  iterateSomeOfArrayLike,
   setTextNode,
 } from '../../core/dom.js';
 import * as Button from '../button/index.js';
@@ -13,13 +10,13 @@ import * as Button from '../button/index.js';
 class DialogStack {
   /**
    * @param {Element} element
-   * @param {Element} previousFocus
-   * @param {Object} [state]
-   * @param {Object} [previousState]
+   * @param {?Element} [previousFocus]
+   * @param {{hash:string}} [state]
+   * @param {{hash:string}} [previousState]
    */
   constructor(element, previousFocus, state, previousState) {
-    this.element = (element);
-    this.previousFocus = (previousFocus);
+    this.element = element;
+    this.previousFocus = previousFocus;
     this.state = state;
     this.previousState = previousState;
   }
@@ -41,13 +38,11 @@ export function onTransitionEnd(event) {
   if (event.propertyName !== 'opacity') {
     return;
   }
-  /** @type {HTMLElement} */
-  const dialogElement = (event.currentTarget);
+  const dialogElement = /** @type {HTMLElement} */ (event.currentTarget);
   if (dialogElement.getAttribute('aria-hidden') !== 'true') {
     return;
   }
-  /** @type {HTMLElement} */
-  const popupElement = (dialogElement.getElementsByClassName('mdw-dialog__popup')[0]);
+  const popupElement = /** @type {HTMLElement} */ (dialogElement.getElementsByClassName('mdw-dialog__popup')[0]);
   if (!popupElement) {
     return;
   }
@@ -103,22 +98,18 @@ export function hide(dialogElement) {
   });
   if (stackIndex !== -1) {
     const stack = OPEN_DIALOGS[stackIndex];
-    if (stack.previousFocus && stack.previousFocus instanceof HTMLElement) {
-      if (findElementParentByClassName(document.activeElement, 'mdw-dialog') === dialogElement) {
-        // Only pop focus back when hiding a dialog with focus within itself.
-        try {
-          stack.previousFocus.focus();
-        } catch (e) {
-          // Failed to focus
-        }
+    if (stack.previousFocus && stack.previousFocus instanceof HTMLElement && document.activeElement?.closest('.mdw-dialog') === dialogElement) {
+      // Only pop focus back when hiding a dialog with focus within itself.
+      try {
+        stack.previousFocus.focus();
+      } catch {
+        // Failed to focus
       }
     }
     OPEN_DIALOGS.splice(stackIndex, 1);
-    if (stack.state && window.history && window.history.state) {
-      // IE11 returns a cloned state object, not the original
-      if (stack.state.hash === window.history.state.hash) {
-        window.history.back();
-      }
+    if (stack.state && window.history && window.history.state // IE11 returns a cloned state object, not the original
+      && stack.state.hash === window.history.state.hash) {
+      window.history.back();
     }
   }
   if (!OPEN_DIALOGS.length) {
@@ -156,9 +147,8 @@ export function onCancelClick(event) {
   if (event && event.currentTarget instanceof HTMLAnchorElement) {
     event.preventDefault();
   }
-  /** @type {HTMLElement} */
-  const cancelElement = (event.currentTarget);
-  const dialogElement = findElementParentByClassName(cancelElement, 'mdw-dialog');
+  const cancelElement = /** @type {HTMLElement} */ (event.currentTarget);
+  const dialogElement = cancelElement.closest('.mdw-dialog');
   cancel(dialogElement);
 }
 
@@ -170,9 +160,8 @@ export function onConfirmClick(event) {
   if (event && event.currentTarget instanceof HTMLAnchorElement) {
     event.preventDefault();
   }
-  /** @type {HTMLElement} */
-  const button = (event.currentTarget);
-  const dialogElement = findElementParentByClassName(button, 'mdw-dialog');
+  const button = /** @type {HTMLElement} */ (event.currentTarget);
+  const dialogElement = button.closest('.mdw-dialog');
   confirm(dialogElement);
 }
 
@@ -184,10 +173,9 @@ export function onCustomButtonClick(event) {
   if (event && event.currentTarget instanceof HTMLAnchorElement) {
     event.preventDefault();
   }
-  /** @type {HTMLElement} */
-  const button = (event.currentTarget);
+  const button = /** @type {HTMLElement} */ (event.currentTarget);
   if (dispatchDomEvent(button, CUSTOM_EVENT)) {
-    const dialogElement = findElementParentByClassName(button, 'mdw-dialog');
+    const dialogElement = button.closest('.mdw-dialog');
     hide(dialogElement);
   }
 }
@@ -197,8 +185,7 @@ export function onCustomButtonClick(event) {
  * @return {void}
  */
 export function handleTabKeyPress(event) {
-  /** @type {Element} */
-  const popupElement = (event.currentTarget);
+  const popupElement = /** @type {Element} */ (event.currentTarget);
   const focusableElements = popupElement.querySelectorAll([
     'button:not(:disabled):not([tabindex="-1"])',
     '[href]:not(:disabled):not([tabindex="-1"])',
@@ -208,35 +195,28 @@ export function handleTabKeyPress(event) {
     '[tabindex]:not([tabindex="-1"])'].join(', '));
   let foundTarget = false;
   let candidate = null;
-  iterateSomeOfArrayLike(focusableElements, (el) => {
+  for (const el of focusableElements) {
     if (el === event.target) {
       foundTarget = true;
       if (event.shiftKey) {
-        return true;
+        break;
       }
     } else if (event.shiftKey) {
       candidate = el;
     } else if (foundTarget) {
       candidate = el;
-      return true;
+      break;
     }
-    return false;
-  });
+  }
   if (!candidate) {
-    if (event.shiftKey) {
-      // Select last item
-      candidate = focusableElements[focusableElements.length - 1];
-    } else {
-      // Select first item
-      candidate = focusableElements[0];
-    }
+    candidate = event.shiftKey ? focusableElements[focusableElements.length - 1] : focusableElements[0];
   }
   event.stopPropagation();
   event.preventDefault();
   if (candidate && candidate instanceof HTMLElement) {
     try {
       candidate.focus();
-    } catch (e) {
+    } catch {
       // Failed to focus
     }
   }
@@ -249,9 +229,8 @@ export function handleTabKeyPress(event) {
 export function onEscapeKeyDown(event) {
   event.stopPropagation();
   event.preventDefault();
-  /** @type {HTMLElement} */
-  const popupElement = (event.currentTarget);
-  const dialogElement = findElementParentByClassName(popupElement, 'mdw-dialog');
+  const popupElement = /** @type {HTMLElement} */ (event.currentTarget);
+  const dialogElement = popupElement.closest('.mdw-dialog');
   cancel(dialogElement);
 }
 
@@ -277,11 +256,11 @@ export function getTitleText(dialogElement) {
   let title = 'Dialog';
   const titleElement = dialogElement.getElementsByClassName('mdw-dialog__title')[0];
   if (titleElement) {
-    title = titleElement.textContent;
+    title = titleElement.textContent ?? '';
   } else {
     const bodyElement = dialogElement.getElementsByClassName('mdw-dialog__body')[0];
     if (bodyElement) {
-      title = bodyElement.textContent;
+      title = bodyElement.textContent ?? '';
     }
   }
   return title;
@@ -313,7 +292,7 @@ export function onPopState(event) {
 
 /**
  * @param {Element} dialogElement
- * @param {(DocumentFragment|string)} [content]
+ * @param {(DocumentFragment|string|null)} [content]
  * @return {void}
  */
 export function updateTitle(dialogElement, content) {
@@ -323,14 +302,14 @@ export function updateTitle(dialogElement, content) {
       // Nothing to be done
       return;
     }
-    title.parentElement.removeChild(title);
+    title.remove();
     return;
   }
   if (!title) {
     title = document.createElement('div');
     title.className = 'mdw-dialog__title';
     const popup = dialogElement.getElementsByClassName('mdw-dialog__popup')[0];
-    popup.insertBefore(title, popup.firstChild);
+    popup.prepend(title);
   }
   if (content instanceof DocumentFragment) {
     while (title.lastChild) {
@@ -349,9 +328,9 @@ export function updateTitle(dialogElement, content) {
  */
 export function updateButtonText(dialogElement, texts) {
   const buttons = dialogElement.querySelectorAll('.mdw-dialog__button-area .mdw-button');
-  iterateArrayLike(buttons, (button, index) => {
-    setTextNode(button, texts[index]);
-  });
+  for (let i = 0; i < buttons.length; i++) {
+    setTextNode(buttons.item(i), texts[i]);
+  }
 }
 
 /**
@@ -366,7 +345,7 @@ export function updateBody(dialogElement, content) {
       // Nothing to be done
       return;
     }
-    body.parentElement.removeChild(body);
+    body.remove();
     return;
   }
   if (!body) {
@@ -375,10 +354,10 @@ export function updateBody(dialogElement, content) {
     body.setAttribute('mdw-ink', 'medium');
     const title = dialogElement.getElementsByClassName('mdw-dialog__title')[0];
     if (title) {
-      title.insertAdjacentElement('afterend', body);
+      title.after(body);
     } else {
       const popup = dialogElement.getElementsByClassName('mdw-dialog__popup')[0];
-      popup.insertBefore(body, popup.firstChild);
+      popup.prepend(body);
     }
   }
   if (content instanceof DocumentFragment) {
@@ -393,12 +372,11 @@ export function updateBody(dialogElement, content) {
 
 /**
  * @param {Element} dialogElement
- * @param {Event} [event]
+ * @param {Event|MouseEvent} [event]
  * @return {void}
  */
 export function updateTransformOrigin(dialogElement, event) {
-  /** @type {HTMLElement} */
-  const popup = (dialogElement.getElementsByClassName('mdw-dialog__popup')[0]);
+  const popup = /** @type {HTMLElement} */ (dialogElement.getElementsByClassName('mdw-dialog__popup')[0]);
   popup.style.removeProperty('transform-origin');
   if (!event) {
     return;
@@ -411,13 +389,11 @@ export function updateTransformOrigin(dialogElement, event) {
   let pageY;
   const dialogRect = dialogElement.getBoundingClientRect();
   if ('pageX' in event && 'pageY' in event) {
-    ({ pageX, pageY } = event);
-    pageX -= window.pageXOffset;
-    pageY -= window.pageYOffset;
+    pageX = event.pageX - window.pageXOffset;
+    pageY = event.pageY - window.pageYOffset;
   } else {
-    /** @type {Element} */
     const target = (event.target || event.currentTarget);
-    if (target instanceof Element === false) {
+    if (!(target instanceof Element)) {
       return;
     }
     const rect = target.getBoundingClientRect();
@@ -448,7 +424,7 @@ export function attach(element) {
     dialogCloser = document.createElement('div');
     dialogCloser.className = 'mdw-dialog__close';
     if (element.firstChild) {
-      element.insertBefore(dialogCloser, element.firstChild);
+      element.prepend(dialogCloser);
     } else {
       element.appendChild(dialogCloser);
     }
@@ -459,24 +435,24 @@ export function attach(element) {
   const buttons = popup.querySelectorAll('.mdw-dialog__button-area .mdw-button');
   let foundConfirmButton = false;
   let foundCancelButton = false;
-  iterateArrayLike(buttons, (button) => {
+  for (const button of buttons) {
     Button.attach(button);
     if (button.hasAttribute('mdw-custom')) {
       button.addEventListener('click', onCustomButtonClick);
-      return;
+      continue;
     }
     if (!foundConfirmButton) {
       button.addEventListener('click', onConfirmClick);
       foundConfirmButton = true;
-      return;
+      continue;
     }
     if (!foundCancelButton) {
       button.addEventListener('click', onCancelClick);
       foundCancelButton = true;
-      return;
+      continue;
     }
     button.addEventListener('click', onCustomButtonClick);
-  });
+  }
   setupARIA(element);
 }
 
@@ -507,7 +483,7 @@ export function create(options) {
     const buttonArea = document.createElement('div');
     buttonArea.className = 'mdw-dialog__button-area';
     let index = 0;
-    options.buttons.forEach((buttonText) => {
+    for (const buttonText of options.buttons) {
       const button = document.createElement('div');
       button.className = 'mdw-button mdw-theme';
       button.setAttribute('tabindex', '0');
@@ -522,7 +498,7 @@ export function create(options) {
         button.setAttribute('mdw-autofocus', '');
       }
       index += 1;
-    });
+    }
     if (options.stacked) {
       buttonArea.setAttribute('mdw-stacked', '');
     }
@@ -549,8 +525,7 @@ export function show(dialogElement, event) {
 
   if (dialogElement.getAttribute('aria-hidden') !== 'false') {
     dialogElement.setAttribute('aria-hidden', 'false');
-    /** @type {HTMLElement} */
-    const popupElement = (dialogElement.getElementsByClassName('mdw-dialog__popup')[0]);
+    const popupElement = /** @type {HTMLElement} */ (dialogElement.getElementsByClassName('mdw-dialog__popup')[0]);
     popupElement.style.setProperty('display', 'flex');
     changed = true;
   }
@@ -562,13 +537,13 @@ export function show(dialogElement, event) {
   }
   attach(dialogElement);
   const previousFocus = document.activeElement;
-  const newState = { hash: Math.random().toString(36).substr(2, 16) };
+  const newState = { hash: Math.random().toString(36).slice(2, 18) };
   let previousState = null;
   if (window.history && window.history.pushState) {
     if (!window.history.state) {
       // Create new previous state
       window.history.replaceState({
-        hash: Math.random().toString(36).substr(2, 16),
+        hash: Math.random().toString(36).slice(2, 18),
       }, document.title);
     }
     previousState = window.history.state;
@@ -588,7 +563,7 @@ export function show(dialogElement, event) {
     } else if (dialogElement instanceof HTMLElement) {
       dialogElement.focus();
     }
-  } catch (e) {
+  } catch {
     // Failed to focus
   }
   return true;
@@ -605,8 +580,7 @@ export function detach(dialogElement) {
   if (dialogCloser) {
     dialogCloser.removeEventListener('click', onCancelClick);
   }
-  /** @type {HTMLElement} */
-  const popupElement = (dialogElement.getElementsByClassName('mdw-dialog__popup')[0]);
+  const popupElement = /** @type {HTMLElement} */ (dialogElement.getElementsByClassName('mdw-dialog__popup')[0]);
   if (popupElement) {
     popupElement.removeEventListener('keydown', onKeyDown);
     popupElement.style.removeProperty('transform-origin');
@@ -615,12 +589,12 @@ export function detach(dialogElement) {
     }
   }
   const buttons = popupElement.querySelectorAll('.mdw-dialog__button-area .mdw-button');
-  iterateArrayLike(buttons, (button) => {
+  for (const button of buttons) {
     Button.detach(button);
     button.removeEventListener('click', onConfirmClick);
     button.removeEventListener('click', onCancelClick);
     button.removeEventListener('click', onCustomButtonClick);
-  });
+  }
 }
 
 // Aliases

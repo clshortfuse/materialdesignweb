@@ -5,11 +5,11 @@
 @use '../../core/_motion.scss' as motion;
 
 $delay: 40ms !default;
-$padding: dp(16) !default;
-$size: dp(56) !default;
-$miniSize: dp(40) !default;
-$miniPadding: dp(8) !default;
-$iconSize: dp(24) !default;
+$padding: 16px !default;
+$size: 56px !default;
+$miniSize: 40px !default;
+$miniPadding: 8px !default;
+$iconSize: 24px !default;
 
 .mdw-fab {
   display: flex;
@@ -18,9 +18,10 @@ $iconSize: dp(24) !default;
   flex-direction: column-reverse;
   justify-content: center;
 
-  height: dp(56);
+  block-size: 56px;
 
   pointer-events: none;
+
   z-index: 6;
 
   &[mdw-horizontal] {
@@ -30,14 +31,12 @@ $iconSize: dp(24) !default;
 
 .mdw-fab__close {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
 
   cursor: default;
 
   pointer-events: auto;
+
   visibility: hidden;
   // z-index: -1; // Safari has a negative z-index bug
 }
@@ -46,14 +45,14 @@ $iconSize: dp(24) !default;
   order: -1;
 
   box-sizing: content-box;
-  height: dp(24);
-  min-width: dp(24);
+  block-size: 24px;
+  min-inline-size: 24px;
   margin: 0;
-  padding: dp(16);
+  padding: 16px;
 
   pointer-events: auto;
 
-  border-radius: dp(32);
+  border-radius: 32px;
   box-shadow: elevation.boxShadow(6);
 
   &:active {
@@ -61,34 +60,30 @@ $iconSize: dp(24) !default;
   }
 
   &[mdw-extended] {
-    padding: dp(12);
+    padding: 12px;
   }
 
   &[mdw-mini] {
-    padding: dp(8);
+    padding: 8px;
   }
 }
 
 .mdw-fab__speed-dial {
   display: flex;
   position: absolute;
-  right: 0;
-  bottom: 100%;
-  left: auto;
+  inset-block-end: 100%;
+  inset-inline: auto 0;
+
   align-items: center;
   flex-direction: inherit;
   order: 1;
 
   pointer-events: none;
+
   z-index: inherit;
 
-  :root[dir="rtl"] & {
-    right: auto;
-    left: 0;
-  }
-
   & > .mdw-fab__button.mdw-button {
-    margin: 0 0 dp(16) 0;
+    margin: 0 0 16px 0;
 
     transition-duration: motion.$collapseDuration;
     transition-property: transform, opacity;
@@ -98,14 +93,14 @@ $iconSize: dp(24) !default;
     transform: scale(0);
 
     &[mdw-mini] {
-      margin: 0 dp(8) dp(16) dp(8);
+      margin: 0 8px 16px 8px;
 
       .mdw-fab__button[mdw-mini] ~ & {
-        margin: 0 0 dp(16) 0;
+        margin: 0 0 16px 0;
       }
 
       .mdw-fab__button[mdw-extended] ~ & {
-        margin: 0 dp(4) dp(16) dp(4);
+        margin: 0 4px 16px 4px;
       }
     }
     @for $i from 1 through 7 {
@@ -119,8 +114,8 @@ $iconSize: dp(24) !default;
 .mdw-fab__icon {
   position: relative;
 
-  height: $iconSize;
-  width: $iconSize;
+  block-size: $iconSize;
+  inline-size: $iconSize;
 
   transition-duration: 200ms;
   transition-property: margin;
@@ -131,7 +126,7 @@ $iconSize: dp(24) !default;
   overflow: hidden;
 
   transition-duration: 200ms;
-  transition-property: font-size, margin-left, margin-right;
+  transition-property: font-size, margin-inline;
   transition-timing-function: linear;
   will-change: font-size;
 
@@ -141,7 +136,7 @@ $iconSize: dp(24) !default;
 
 .mdw-fab__button[mdw-extended]:not([mdw-extended="hover"]),
 .mdw-fab__button[mdw-extended="hover"]:hover {
-  padding: dp(12) dp(16);
+  padding: 12px 16px;
 
   .mdw-fab__text {
     font-size: inherit;
@@ -149,21 +144,15 @@ $iconSize: dp(24) !default;
   }
 
   .mdw-fab__icon + .mdw-fab__text {
-    margin-right: dp(4);
-    margin-left: dp(8);
-
-    :root[dir="rtl"] & {
-      margin-right: dp(8);
-      margin-left: dp(4);
-    }
+    margin-inline: 8px 4px;
   }
 }
 
 .mdw-fab__hidden-icon,
 .mdw-fab__shown-icon {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
 }
 
 .mdw-fab__shown-icon {
@@ -174,7 +163,6 @@ $iconSize: dp(24) !default;
   // Hack to allow __close to capture click event
   pointer-events: none;
 }
-
 
 .mdw-fab:target,
 .mdw-fab[mdw-show]:not([mdw-hide]) {

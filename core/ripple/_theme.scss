@@ -1,40 +1,20 @@
-// https://material.io/design/interaction/states.html
-// https://material.io/design/components/buttons.html
-// https://material.io/design/iconography/system-icons.html#color
+/* https://material.io/design/interaction/states.html */
+/* https://material.io/design/components/buttons.html */
+/* https://material.io/design/iconography/system-icons.html#color */
 
-@use '../theme/_mixins.scss' as theme;
-
-$themeValues: (
-  overlay-color:                 (('foreground-light', 1.00), ('foreground-dark', 1.00)),
-  pressed-opacity:               (0.16, 0.32),
-) !default;
-
-@function getThemeValue($key, $type) {
-  @return theme.getThemeValue('ripple', $themeValues, $key, $type);
+.mdw-theme[mdw-light] {
+  --mdw-ripple__pressed-opacity: 0.16;
 }
 
-@mixin addThemeRules($type: 'var') {
-  .mdw-ripple {
-    & > .mdw-ripple__container > .mdw-ripple__inner,
-    &::after {
-      opacity: getThemeValue("pressed-opacity", $type);
-      color: inherit;
-      @if ($type == 'var') {
-        // Fallback handed by previous inherit rule
-        color: RGB(var(--mdw-ink));
-      }
-    }
+.mdw-theme[mdw-dark] {
+  --mdw-ripple__pressed-opacity: 0.32;
+}
+
+.mdw-ripple {
+  & > .mdw-ripple__container > .mdw-ripple__inner,
+  &::after {
+    opacity: var(--mdw-ripple__pressed-opacity);
+
+    color: RGB(var(--mdw-ink));
   }
-}
-
-
-@include theme.addComponentFallbackRules('light') {
-  @include addThemeRules('light');
-}
-@include theme.addComponentFallbackRules('dark') {
-  @include addThemeRules('dark');
-}
-
-@include theme.addComponentCSSVariableRules('ripple', $themeValues) {
-  @include addThemeRules();
 }

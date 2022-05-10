@@ -1,12 +1,8 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
 import {
-  cancelTick,
   dispatchDomEvent,
   isRtl,
-  iterateArrayLike,
-  iterateSomeOfArrayLike,
-  nextTick,
 } from '../../core/dom.js';
 
 import * as MenuItem from './item.js';
@@ -57,11 +53,9 @@ export function hide(menuElement) {
       menuStack.previousFocus.focus();
     }
     OPEN_MENUS.splice(stackIndex, 1);
-    if (menuStack.state && window.history && window.history.state) {
-      // IE11 returns a cloned state object, not the original
-      if (menuStack.state.hash === window.history.state.hash) {
-        window.history.back();
-      }
+    if (menuStack.state && window.history && window.history.state // IE11 returns a cloned state object, not the original
+      && menuStack.state.hash === window.history.state.hash) {
+      window.history.back();
     }
   }
   if (!OPEN_MENUS.length) {
@@ -85,8 +79,9 @@ export function setupARIA(menuElement) {
   if (!menuElement.hasAttribute('aria-hidden')) {
     menuElement.setAttribute('aria-hidden', 'true');
   }
-  iterateArrayLike(menuElement.getElementsByClassName('mdw-divider'),
-    (el) => el.setAttribute('role', 'separator'));
+  for (const el of menuElement.getElementsByClassName('mdw-divider')) {
+    el.setAttribute('role', 'separator');
+  }
   menuElement.setAttribute('role', 'menu');
   const popupElement = menuElement.getElementsByClassName('mdw-menu__popup')[0];
   if (popupElement) {
@@ -107,8 +102,7 @@ export function onMenuScroll(event) {
   if (event.type !== 'scroll') {
     return;
   }
-  /** @type {HTMLElement} */
-  const element = (event.currentTarget);
+  const element = /** @type {HTMLElement} */ (event.currentTarget);
   if (element.scrollTop !== 0) {
     element.scrollTop = 0;
   }
@@ -143,27 +137,26 @@ export function updateMenuPosition(menuElement, popupElement, event, alignTarget
   const margin = useAlignTarget ? '0' : '';
   const mdwPosition = menuElement.getAttribute('mdw-position') || '';
   const mdwDirection = menuElement.getAttribute('mdw-direction') || '';
-  let alignTop = mdwPosition.indexOf('top') !== -1;
-  let alignBottom = mdwPosition.indexOf('bottom') !== -1;
-  let alignVCenter = mdwPosition.indexOf('vcenter') !== -1;
+  let alignTop = mdwPosition.includes('top');
+  let alignBottom = mdwPosition.includes('bottom');
+  let alignVCenter = mdwPosition.includes('vcenter');
 
-  const alignStart = mdwPosition.indexOf('start') !== -1;
-  const alignEnd = mdwPosition.indexOf('end') !== -1;
-  let alignLeft = mdwPosition.indexOf('left') !== -1;
-  let alignRight = mdwPosition.indexOf('right') !== -1;
-  let alignHCenter = mdwPosition.indexOf('hcenter') !== -1;
+  const alignStart = mdwPosition.includes('start');
+  const alignEnd = mdwPosition.includes('end');
+  let alignLeft = mdwPosition.includes('left');
+  let alignRight = mdwPosition.includes('right');
+  let alignHCenter = mdwPosition.includes('hcenter');
 
-  let openUp = mdwDirection.indexOf('up') !== -1;
-  let openDown = mdwDirection.indexOf('down') !== -1;
-  const openNormal = mdwDirection.indexOf('normal') !== -1;
-  const openReverse = mdwDirection.indexOf('reverse') !== -1;
-  let openVCenter = mdwDirection.indexOf('vcenter') !== -1;
-  let openHCenter = mdwDirection.indexOf('hcenter') !== -1;
-  let openLtr = mdwDirection.indexOf('ltr') !== -1;
-  let openRtl = mdwDirection.indexOf('rtl') !== -1;
+  let openUp = mdwDirection.includes('up');
+  let openDown = mdwDirection.includes('down');
+  const openNormal = mdwDirection.includes('normal');
+  const openReverse = mdwDirection.includes('reverse');
+  let openVCenter = mdwDirection.includes('vcenter');
+  let openHCenter = mdwDirection.includes('hcenter');
+  let openLtr = mdwDirection.includes('ltr');
+  let openRtl = mdwDirection.includes('rtl');
 
-  /** @type {HTMLElement} */
-  const target = (event.currentTarget || event.target);
+  const target = /** @type {HTMLElement} */ (event.currentTarget || event.target);
 
   let isPageRTL = null;
   if (alignStart || alignEnd || openNormal || openReverse) {
@@ -320,10 +313,10 @@ export function updateMenuPosition(menuElement, popupElement, event, alignTarget
     }
     if (isPageRTL) {
       candidateNumber = [2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 15]
-        .filter((number) => candidates.indexOf(number) !== -1)[0];
+        .find((number) => candidates.includes(number));
     } else {
       candidateNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-        .filter((number) => candidates.indexOf(number) !== -1)[0];
+        .find((number) => candidates.includes(number));
     }
     if (candidateNumber == null) {
       candidateNumber = isPageRTL ? 2 : 1;
@@ -470,9 +463,9 @@ export function onWindowResize() {
     return;
   }
   if (lastOpenMenu.pendingResizeOperation) {
-    cancelTick(lastOpenMenu.pendingResizeOperation);
+    cancelAnimationFrame(lastOpenMenu.pendingResizeOperation);
   }
-  lastOpenMenu.pendingResizeOperation = nextTick(() => {
+  lastOpenMenu.pendingResizeOperation = requestAnimationFrame(() => {
     updateMenuPosition(
       lastOpenMenu.element,
       /** @type {HTMLElement} */ (lastOpenMenu.element.getElementsByClassName('mdw-menu__popup')[0]),
@@ -506,8 +499,7 @@ export function onPopState(event) {
  * @return {void}
  */
 export function selectNextMenuItem(menu, backwards) {
-  /** @type {HTMLCollectionOf<HTMLElement>} */
-  const menuItems = (menu.getElementsByClassName('mdw-menu__item'));
+  const menuItems = /** @type {HTMLCollectionOf<HTMLElement>} */ (menu.getElementsByClassName('mdw-menu__item'));
   let foundTarget = false;
   /** @type {HTMLElement} */
   let candidate = null;
@@ -519,7 +511,7 @@ export function selectNextMenuItem(menu, backwards) {
   // Hidden elements cannot be focused
   // Disabled elements cannot be focused on IE11
   // Skip elements that fail to receive focus
-  iterateSomeOfArrayLike(menuItems, (el) => {
+  for (const el of menuItems) {
     el.focus();
     const focusable = (document.activeElement === el);
     if (focusable) {
@@ -531,31 +523,26 @@ export function selectNextMenuItem(menu, backwards) {
     if (el === target) {
       foundTarget = true;
       if (backwards && candidate) {
-        return true;
+        break;
       }
-      return false;
+      continue;
     }
     if (backwards) {
       if (focusable) {
         candidate = el;
       }
-      return false;
+      continue;
     }
     if (foundTarget) {
       if (focusable) {
         candidate = el;
-        return true;
+        break;
       }
-      return false;
+      continue;
     }
-    return false;
-  });
+  }
   if (!candidate) {
-    if (backwards) {
-      candidate = lastFocusableElement;
-    } else {
-      candidate = firstFocusableItem;
-    }
+    candidate = backwards ? lastFocusableElement : firstFocusableItem;
   }
   if (candidate && document.activeElement !== candidate) {
     candidate.focus();
@@ -567,8 +554,7 @@ export function selectNextMenuItem(menu, backwards) {
  * @return {void}
  */
 export function onKeyDown(event) {
-  /** @type {HTMLElement} */
-  const menuElement = (event.currentTarget);
+  const menuElement = /** @type {HTMLElement} */ (event.currentTarget);
   if (!menuElement || menuElement.getAttribute('aria-hidden') === 'true') {
     return;
   }
@@ -607,10 +593,10 @@ export function onKeyDown(event) {
  * @return {void}
  */
 export function refreshMenuItems(menuElement) {
-  iterateArrayLike(menuElement.getElementsByClassName('mdw-menu__item'), (menuItem) => {
+  for (const menuItem of menuElement.getElementsByClassName('mdw-menu__item')) {
     menuItem.setAttribute('tabindex', '-1');
     MenuItem.attach(menuItem);
-  });
+  }
   const popupElement = menuElement.getElementsByClassName('mdw-menu__popup')[0];
   popupElement.setAttribute('tabindex', '-1');
 }
@@ -640,8 +626,7 @@ export function show(menuElement, event, alignTarget) {
     // Prevent anchor link
     event.preventDefault();
   }
-  /** @type {HTMLElement} */
-  const popupElement = (menuElement.getElementsByClassName('mdw-menu__popup')[0]);
+  const popupElement = /** @type {HTMLElement} */ (menuElement.getElementsByClassName('mdw-menu__popup')[0]);
   let changed = false;
   if (event) {
     updateMenuPosition(menuElement, popupElement, event, alignTarget);
@@ -664,13 +649,13 @@ export function show(menuElement, event, alignTarget) {
   if (changed) {
     attach(menuElement);
     const previousFocus = document.activeElement;
-    const newState = { hash: Math.random().toString(36).substr(2, 16) };
+    const newState = { hash: Math.random().toString(36).slice(2, 18) };
     let previousState = null;
     if (window.history && window.history.pushState) {
       if (!window.history.state) {
         // Create new previous state
         window.history.replaceState({
-          hash: Math.random().toString(36).substr(2, 16),
+          hash: Math.random().toString(36).slice(2, 18),
         }, document.title);
       }
       previousState = window.history.state;
@@ -703,8 +688,7 @@ export function detach(menuElement) {
   menuElement.removeEventListener('wheel', onMenuScroll);
   menuElement.addEventListener('keydown', onKeyDown);
   menuElement.removeAttribute('mdw-menu-js');
-  /** @type {HTMLElement} */
-  const popupElement = (menuElement.getElementsByClassName('mdw-menu__popup')[0]);
+  const popupElement = /** @type {HTMLElement} */ (menuElement.getElementsByClassName('mdw-menu__popup')[0]);
   if (popupElement) {
     popupElement.style.removeProperty('top');
     popupElement.style.removeProperty('left');
@@ -717,5 +701,5 @@ export function detach(menuElement) {
       popupElement.removeAttribute('style');
     }
   }
-  iterateArrayLike(menuElement.getElementsByClassName('mdw-menu__item'), MenuItem.detach);
+  for (const element of menuElement.getElementsByClassName('mdw-menu__item')) { MenuItem.detach(element); }
 }

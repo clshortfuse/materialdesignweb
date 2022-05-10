@@ -18,8 +18,7 @@ export const ENTER_KEY = 'mdw:keyboard-enterkey';
  * @return {void}
  */
 function onKeyDownHandler(event) {
-  /** @type {Element} */
-  const element = (event.currentTarget);
+  const element = /** @type {Element} */ (event.currentTarget);
   const detail = {
     ctrlKey: event.ctrlKey,
     shiftKey: event.shiftKey,

@@ -2,7 +2,6 @@
 
 import * as Keyboard from '../../core/aria/keyboard.js';
 import * as RovingTabIndex from '../../core/aria/rovingtabindex.js';
-import { iterateArrayLike } from '../../core/dom.js';
 
 import * as BottomNavItem from './item.js';
 
@@ -12,10 +11,8 @@ import * as BottomNavItem from './item.js';
  */
 function onTabIndexZeroed(event) {
   event.stopPropagation();
-  /** @type {HTMLElement} */
-  const bottomnavElement = (event.currentTarget);
-  /** @type {HTMLElement} */
-  const currentItem = (event.target);
+  const bottomnavElement = /** @type {HTMLElement} */ (event.currentTarget);
+  const currentItem = /** @type {HTMLElement} */ (event.target);
   RovingTabIndex.removeTabIndex(bottomnavElement.querySelectorAll('[role="tab"]'), [currentItem]);
 }
 
@@ -30,8 +27,7 @@ function onForwardsRequested(event) {
   }
   event.preventDefault();
   event.stopPropagation();
-  /** @type {HTMLElement} */
-  const bottomnavElement = (event.currentTarget);
+  const bottomnavElement = /** @type {HTMLElement} */ (event.currentTarget);
   RovingTabIndex.selectNext(bottomnavElement.querySelectorAll('[role="tab"]'));
 }
 
@@ -46,8 +42,7 @@ function onBackwardsRequested(event) {
   }
   event.preventDefault();
   event.stopPropagation();
-  /** @type {HTMLElement} */
-  const bottomnavElement = (event.currentTarget);
+  const bottomnavElement = /** @type {HTMLElement} */ (event.currentTarget);
   RovingTabIndex.selectPrevious(bottomnavElement.querySelectorAll('[role="tab"]'));
 }
 
@@ -66,18 +61,16 @@ export function setupARIA(bottomnavElement) {
  * @return {void}
  */
 export function onSelectedChangeEvent(event) {
-  /** @type {HTMLElement} */
-  const itemElement = (event.target);
+  const itemElement = /** @type {HTMLElement} */ (event.target);
   if (event.detail.value !== 'true') {
     return;
   }
-  /** @type {HTMLElement} */
-  const bottomnavElement = (event.currentTarget);
-  iterateArrayLike(bottomnavElement.querySelectorAll('[role="tab"]'), (item) => {
+  const bottomnavElement = /** @type {HTMLElement} */ (event.currentTarget);
+  for (const item of bottomnavElement.querySelectorAll('[role="tab"]')) {
     if (item !== itemElement) {
       BottomNavItem.setSelected(item, false);
     }
-  });
+  }
 }
 
 /**
@@ -86,16 +79,16 @@ export function onSelectedChangeEvent(event) {
  */
 export function attach(bottomnavElement) {
   setupARIA(bottomnavElement);
-  /** @type {Element} */
-  let selectedItem;
+  /** @type {?Element} */
+  let selectedItem = null;
   const items = bottomnavElement.getElementsByClassName('mdw-bottomnav__item');
 
-  iterateArrayLike(items, (item) => {
+  for (const item of items) {
     BottomNavItem.attach(item);
     if (!selectedItem && item.getAttribute('aria-selected') === 'true') {
       selectedItem = item;
     }
-  });
+  }
   if (!selectedItem) {
     selectedItem = items[0];
   }
@@ -118,5 +111,7 @@ export function detach(bottomnavElement) {
   bottomnavElement.removeEventListener(Keyboard.FORWARD_ARROW_KEY, onForwardsRequested);
   bottomnavElement.removeEventListener(Keyboard.BACK_ARROW_KEY, onBackwardsRequested);
   bottomnavElement.removeEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
-  iterateArrayLike(bottomnavElement.getElementsByClassName('mdw-bottomnav__item'), BottomNavItem.detach);
+  for (const element of bottomnavElement.getElementsByClassName('mdw-bottomnav__item')) {
+    BottomNavItem.detach(element);
+  }
 }

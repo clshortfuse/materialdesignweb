@@ -1,6 +1,7 @@
 // https://material.io/design/navigation/navigation-transitions.html
 
-import { nextTick } from '../dom.js';
+const EXPAND_DURATION_MS = 300;
+const COLLAPSE_DURATION_MS = 250;
 
 /**
  * @typedef {Object} ShapeTranformDetails
@@ -21,7 +22,7 @@ function pxToInteger(px) {
   if (!px) {
     return 0;
   }
-  return parseInt(px, 10);
+  return Number.parseInt(px, 10);
 }
 
 /**
@@ -42,26 +43,26 @@ function convertBoxShadow(stringValue, scaleX, scaleY) {
     let blurRadius = '';
     let spreadRadius = '';
     let color = '';
-    shadow.split(' ').forEach((value) => {
+    for (const value of shadow.trim().split(' ')) {
       if (value.toLowerCase() === 'inset') {
         inset = value;
-        return;
+        continue;
       }
-      if (value.indexOf('(') !== -1 || !value.match(/\d/).length) {
+      if (value.includes('(') || !value.match(/\d/).length) {
         color = value;
-        return;
+        continue;
       }
       const numberValue = pxToInteger(value);
       if (!offsetX) {
-        offsetX = `${numberValue / scaleX}${value.replace(/[0-9\\-\\.]/g, '')}`;
+        offsetX = `${numberValue / scaleX}${value.replace(/[\d.\\]/g, '')}`;
       } else if (!offsetY) {
-        offsetY = `${numberValue / scaleY}${value.replace(/[0-9\\-\\.]/g, '')}`;
+        offsetY = `${numberValue / scaleY}${value.replace(/[\d.\\]/g, '')}`;
       } else if (!blurRadius) {
-        blurRadius = `${numberValue / (scaleX * scaleY)}${value.replace(/[0-9\-\\.]/g, '')}`;
+        blurRadius = `${numberValue / (scaleX * scaleY)}${value.replace(/[\d.\\-]/g, '')}`;
       } else {
-        spreadRadius = `${numberValue / (scaleX * scaleY)}${value.replace(/[0-9\-\\.]/g, '')}`;
+        spreadRadius = `${numberValue / (scaleX * scaleY)}${value.replace(/[\d.\\-]/g, '')}`;
       }
-    });
+    }
     return [
       inset,
       offsetX,
@@ -69,7 +70,7 @@ function convertBoxShadow(stringValue, scaleX, scaleY) {
       blurRadius,
       spreadRadius,
       color,
-    ].filter((v) => v).join(' ');
+    ].filter(Boolean).join(' ');
   }
 
   if (!stringValue) {
@@ -79,13 +80,24 @@ function convertBoxShadow(stringValue, scaleX, scaleY) {
     // Strip spaces from anything parenthesized
     .replace(/\([^)]+\)/g, (substring) => substring.replace(/ /g, ''))
     // Split shadows by commas no inside parentheses
-    .match(/[^,(]+\([^)]+\)?[^,]*(|$)/g)
-    // Trim empty spaces
-    .map((shadow) => shadow.trim())
+    .match(/[^(,]+\([^)]+\)?[^,]*(|$)/g)
     // Convert values
-    .map(convertShadow)
+    .map((shadow) => convertShadow(shadow))
     // Rejoin shadows
     .join(', ');
+}
+
+/**
+ * @param {string} value
+ * @param {number} length
+ * @return {number}
+ */
+function parsePercentage(value, length) {
+  const numValue = pxToInteger(value);
+  if (!value.includes('%')) {
+    return numValue;
+  }
+  return ((numValue * length) / 100);
 }
 
 /**
@@ -95,19 +107,6 @@ function convertBoxShadow(stringValue, scaleX, scaleY) {
  * @return {{horizontal:number, vertical:number}}
  */
 function convertBorderRadius(stringValue, width, height) {
-  /**
-   * @param {string} value
-   * @param {number} length
-   * @return {number}
-   */
-  function parsePercentage(value, length) {
-    const numValue = pxToInteger(value);
-    if (value.indexOf('%') === -1) {
-      return numValue;
-    }
-    return ((numValue * length) / 100.0);
-  }
-
   if (!stringValue) {
     return {
       horizontal: 0,
@@ -222,9 +221,7 @@ function buildTransitionEndListener(element, property, callback, expectedDuratio
 export function transitionElement(options) {
   const toStyleSyle = window.getComputedStyle(options.toShapeElement);
 
-  const shapeTransform = getShapeTransform(
-    options.fromShapeElement, options.toShapeElement, toStyleSyle,
-  );
+  const shapeTransform = getShapeTransform(options.fromShapeElement, options.toShapeElement, toStyleSyle);
   const contentTransform = getShapeTransform(options.toContentElement, options.fromContentElement);
 
   const transitionProperties = [
@@ -240,17 +237,17 @@ export function transitionElement(options) {
     'visibility',
   ];
 
-  /** @type {Object.<string,string>} */
+  /** @type {Record<string,string>} */
   const oldFromShapeProperties = {};
-  /** @type {Object.<string,string>} */
+  /** @type {Record<string,string>} */
   const oldToShapeProperties = {};
-  /** @type {Object.<string,string>} */
+  /** @type {Record<string,string>} */
   const oldFromContentProperties = {};
-  /** @type {Object.<string,string>} */
+  /** @type {Record<string,string>} */
   const oldToContentProperties = {};
-  /** @type {Object.<string,string>} */
+  /** @type {Record<string,string>} */
   const newFromShapeProperties = {};
-  transitionProperties.forEach((prop) => {
+  for (const prop of transitionProperties) {
     oldFromShapeProperties[prop] = options.fromShapeElement.style.getPropertyValue(prop);
     oldToShapeProperties[prop] = options.toShapeElement.style.getPropertyValue(prop);
     oldFromContentProperties[prop] = options.fromContentElement.style.getPropertyValue(prop);
@@ -298,7 +295,7 @@ export function transitionElement(options) {
     } else {
       newFromShapeProperties[prop] = toStyleSyle.getPropertyValue(prop);
     }
-  });
+  }
 
   options.fromShapeElement.setAttribute('mdw-transition-busy', '');
   options.toShapeElement.setAttribute('mdw-transition-busy', '');
@@ -326,7 +323,7 @@ export function transitionElement(options) {
   options.toShapeElement.style.setProperty('visibility', 'visible');
 
   const revertFunction = () => {
-    transitionProperties.forEach((prop) => {
+    for (const prop of transitionProperties) {
       if (oldFromShapeProperties[prop] == null) {
         options.fromShapeElement.style.removeProperty(prop);
       } else {
@@ -347,22 +344,16 @@ export function transitionElement(options) {
       } else {
         options.toContentElement.style.setProperty(prop, oldToContentProperties[prop]);
       }
-    });
+    }
   };
 
-  nextTick(() => {
-    nextTick(() => {
-      let calculatedDuration = options.duration;
-      if (calculatedDuration == null) {
-        if (shapeTransform.scaleX * shapeTransform.scaleY >= 1) {
-          calculatedDuration = 300; // expand
-        } else {
-          calculatedDuration = 250; // collapse
-        }
-      }
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const calculatedDuration = options.duration
+        ?? ((shapeTransform.scaleX * shapeTransform.scaleY >= 1) ? EXPAND_DURATION_MS : COLLAPSE_DURATION_MS);
       const totalDuration = calculatedDuration.toString(10);
-      const fadeInTime = (calculatedDuration * 0.70).toString(10);
-      const fadeOutTime = (calculatedDuration * 0.30).toString(10);
+      const fadeInTime = (calculatedDuration * 0.7).toString(10);
+      const fadeOutTime = (calculatedDuration * 0.3).toString(10);
       const transformTransition = transitionProperties
         .filter((prop) => prop !== 'transform-origin' && prop !== 'opacity' && prop !== 'transition')
         .map((prop) => `${prop} ${totalDuration}ms cubic-bezier(0.4, 0.0, 0.2, 1) 0s`)
@@ -374,27 +365,34 @@ export function transitionElement(options) {
       ].join(', ');
 
       options.fromShapeElement.style.setProperty('transition', transformTransition);
-      transitionProperties.forEach((prop) => {
-        if (prop === 'transform') {
-          options.fromShapeElement.style.setProperty('transform', shapeTransform.toString());
-        } else if (prop === 'transition') {
-          // noop;
-        } else if (prop === 'transform-origin') {
-          options.fromShapeElement.style.setProperty('transform-origin', '0 0 0');
-        } else if (prop === 'z-index') {
-          options.fromShapeElement.style.setProperty('z-index', '8');
-        } else if (prop === 'visibility') {
-          options.fromShapeElement.style.setProperty('visibility', 'hidden');
-        } else if (newFromShapeProperties[prop] == null) {
-          options.fromShapeElement.style.removeProperty(prop);
-        } else {
-          options.fromShapeElement.style.setProperty(prop, newFromShapeProperties[prop]);
+      for (const prop of transitionProperties) {
+        switch (prop) {
+          case 'transform': {
+            options.fromShapeElement.style.setProperty('transform', shapeTransform.toString());
+            continue;
+          }
+          case 'transition': continue;
+          case 'transform-origin':
+            options.fromShapeElement.style.setProperty('transform-origin', '0 0 0');
+            continue;
+          case 'z-index':
+            options.fromShapeElement.style.setProperty('z-index', '8');
+            continue;
+          case 'visibility':
+            options.fromShapeElement.style.setProperty('visibility', 'hidden');
+            continue;
+          default:
+            if (newFromShapeProperties[prop] == null) {
+              options.fromShapeElement.style.removeProperty(prop);
+            } else {
+              options.fromShapeElement.style.setProperty(prop, newFromShapeProperties[prop]);
+            }
         }
-      });
+      }
 
-      nextTick(() => {
+      requestAnimationFrame(() => {
         buildTransitionEndListener(options.fromShapeElement, 'transform', () => {
-          transitionProperties.forEach((prop) => {
+          for (const prop of transitionProperties) {
             if (prop === 'transition') {
               options.toShapeElement.style.setProperty('transition', 'none');
               options.toContentElement.style.setProperty('transition', 'none');
@@ -411,9 +409,8 @@ export function transitionElement(options) {
               }
             }
 
-            if (prop === 'visibility' && !options.revertFrom) {
-              return;
-            }
+            if (prop === 'visibility' && !options.revertFrom) continue;
+
             if (oldFromContentProperties[prop] == null) {
               options.fromContentElement.style.removeProperty(prop);
             } else {
@@ -424,11 +421,11 @@ export function transitionElement(options) {
             } else {
               options.fromShapeElement.style.setProperty(prop, oldFromShapeProperties[prop]);
             }
-          });
+          }
           if (options.onTransitionEnd) {
             options.onTransitionEnd(options);
           }
-          nextTick(() => {
+          requestAnimationFrame(() => {
             if (oldToShapeProperties.transition == null) {
               options.toShapeElement.style.removeProperty('transition');
             } else {

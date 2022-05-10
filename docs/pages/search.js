@@ -3,7 +3,7 @@ import SearchAdapter from '../../adapters/search/index.js';
 import * as ListContent from '../../components/list/content.js';
 import * as ListItem from '../../components/list/item.js';
 import * as TextField from '../../components/textfield/index.js';
-import { iterateArrayLike, setTextNode } from '../../core/dom.js';
+import { setTextNode } from '../../core/dom.js';
 
 /** @typedef {{line1:string, line2:string}} CustomSearchResult */
 
@@ -18,12 +18,11 @@ let searchDocsMultiline;
  */
 function performFakeSearch(filter) {
   const results = [];
-  // eslint-disable-next-line guard-for-in, no-restricted-syntax
+  // eslint-disable-next-line guard-for-in
   for (const key in navigator) {
-    /** @type {keyof Navigator} */
-    const navKey = (key);
+    const navKey = /** @type {keyof Navigator} */ (key);
     const value = navigator[navKey] && navigator[navKey].toString();
-    if (!filter || key.indexOf(filter) !== -1 || (value && value.indexOf(filter) !== -1)) {
+    if (!filter || key.includes(filter) || (value && value.includes(filter))) {
       results.push({ line1: key, line2: value });
     }
   }
@@ -51,7 +50,7 @@ function showElement(element) {
  * @return {void}
  */
 function searchResultRenderer(listItemElement, result) {
-  if (!listItemElement.children.length) {
+  if (!listItemElement.hasChildNodes()) {
     const markup = `
     <div class="mdw-list__content mdw-theme" mdw-ink="secondary" aria-selected="false">
       <div class="mdw-list__text">
@@ -59,7 +58,6 @@ function searchResultRenderer(listItemElement, result) {
         <div class="mdw-list__text-line"></div>
       </div>
     </div>`;
-    // eslint-disable-next-line no-param-reassign
     listItemElement.innerHTML = markup;
     ListItem.attach(listItemElement);
   }
@@ -72,8 +70,7 @@ function searchResultRenderer(listItemElement, result) {
 function buildCustomSearch1() {
   const textfield = document.getElementById('search-textfield-custom1');
   const list = document.getElementById('search-list-custom1');
-  /** @type {HTMLElement} */
-  const busyIndicator = (textfield.getElementsByClassName('custom-busy-indicator')[0]);
+  const busyIndicator = /** @type {HTMLElement} */ (textfield.getElementsByClassName('custom-busy-indicator')[0]);
 
   // For purpose of this demo results are cached.
   // Actual filter is performed by SearchAdapter
@@ -96,11 +93,10 @@ function buildCustomSearch1() {
     dropdown: true,
     textFilter: 'startsWith',
     suggestionMethod: 'append',
-    performSearch(input, resolve) {
+    performSearch: async (input) => {
       // Use precached results
       if (myCachedResults != null) {
-        resolve(myCachedResults);
-        return;
+        return myCachedResults;
       }
 
       // Display a busy indicator
@@ -110,18 +106,15 @@ function buildCustomSearch1() {
       myCachedResults = performFakeSearch();
 
       // Let busy indicator spin to illustrate loading
-      setTimeout(() => {
-        // Send back the search results
-        resolve(myCachedResults);
-      }, 2000);
+      await setTimeout(() => { /* noop */ }, 2000);
+      return myCachedResults;
     },
-    updateList(searchResults, resolve) {
+    updateList: (searchResults) => {
       // SearchAdapter signaling the UI is ready to update with search results
 
       if (customListAdapter.datasource === searchResults) {
         // Search results have already been mapped. Nothing to do.
         // SearchAdapter handles item filtering.
-        resolve();
         return;
       }
 
@@ -133,16 +126,14 @@ function buildCustomSearch1() {
 
       // Tell ListAdapter to perform a full refresh
       customListAdapter.refresh();
-      resolve();
     },
   });
 
   searchDocsCustom.list.addEventListener(ListContent.ACTIVATE_EVENT, (event) => {
-    /** @type {HTMLElement} */
-    const listContentElement = (event.target);
-    /** @type {HTMLLIElement} */
-    const listItemElement = (listContentElement.parentElement);
+    const listContentElement = /** @type {HTMLElement} */ (event.target);
+    const listItemElement = /** @type {HTMLLIElement} */ (listContentElement.parentElement);
     const selectedItem = customListAdapter.elementDataMap.get(listItemElement);
+    if (!selectedItem) throw new Error('Missing item!');
     const text = `${selectedItem.line1}:${selectedItem.line2}`;
     document.getElementById('search-result-custom1').textContent = text;
   });
@@ -152,10 +143,8 @@ function buildCustomSearch1() {
 function buildCustomSearch2() {
   const textfield = document.getElementById('search-textfield-custom2');
   const list = document.getElementById('search-list-custom2');
-  /** @type {HTMLElement} */
-  const busyIndicator = (textfield.getElementsByClassName('custom-busy-indicator')[0]);
-  /** @type {HTMLElement} */
-  const noResultsIndicator = (textfield.getElementsByClassName('custom-no-results-indicator')[0]);
+  const busyIndicator = /** @type {HTMLElement} */ (textfield.getElementsByClassName('custom-busy-indicator')[0]);
+  const noResultsIndicator = /** @type {HTMLElement} */ (textfield.getElementsByClassName('custom-no-results-indicator')[0]);
 
   /** @type {ListAdapter<CustomSearchResult>} */
   const customListAdapter = new ListAdapter({
@@ -174,7 +163,7 @@ function buildCustomSearch2() {
     debounce: 300,
     dropdown: true,
     filterItems: false,
-    performSearch(searchTerm, resolve) {
+    performSearch: async (searchTerm) => {
       // Clear ListAdapter
       customListAdapter.clear();
 
@@ -182,32 +171,26 @@ function buildCustomSearch2() {
       hideElement(noResultsIndicator);
 
       const myData = performFakeSearch(searchTerm);
-      setTimeout(() => {
-        // Spin for 1000ms
-        resolve(myData);
-      }, 1000);
+      // Spin for 1000ms
+      await setTimeout(() => { /* noop */ }, 1000);
+      return myData;
     },
-    updateList(items, resolve) {
+    updateList: (items) => {
       hideElement(busyIndicator);
 
       if (!items.length) {
         showElement(noResultsIndicator);
-        resolve();
         return;
       }
 
       // Assign results to ListAdapter
       customListAdapter.datasource = items;
       customListAdapter.refresh();
-
-      resolve();
     },
   });
   searchDocsCustom.list.addEventListener(ListContent.ACTIVATE_EVENT, (event) => {
-    /** @type {HTMLElement} */
-    const listContentElement = (event.target);
-    /** @type {HTMLLIElement} */
-    const listItemElement = (listContentElement.parentElement);
+    const listContentElement = /** @type {HTMLElement} */ (event.target);
+    const listItemElement = /** @type {HTMLLIElement} */ (listContentElement.parentElement);
     const selectedItem = customListAdapter.elementDataMap.get(listItemElement);
     const text = `${selectedItem.line1}:${selectedItem.line2}`;
     document.getElementById('search-result-custom2').textContent = text;
@@ -236,7 +219,7 @@ function setupSearches() {
 
 /** @return {void} */
 function initializeMdwComponents() {
-  iterateArrayLike(document.querySelectorAll('.js .mdw-textfield'), TextField.attach);
+  for (const element of document.querySelectorAll('.js .mdw-textfield')) { TextField.attach(element); }
 }
 
 initializeMdwComponents();

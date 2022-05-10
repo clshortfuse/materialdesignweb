@@ -4,14 +4,28 @@
 @use '../../core/_length.scss' as *;
 @use '../../core/_type.scss' as type;
 
+:root {
+  --mdw-banner__flex-wrap: nowrap;
+  --mdw-banner__text-padding-inline-start: 24px;
+  --mdw-banner__buttons-margin-inline-start: 0;
+  @include breakpoint.has16DPMargin() {
+    --mdw-banner__text-padding-inline-start: 16px;
+  }
+  @include breakpoint.minMediumWindow() {
+    --mdw-banner__flex-wrap: wrap;
+    --mdw-banner__buttons-margin-inline-start: 90px;
+  }
+}
+
 .mdw-banner {
   display: flex;
   align-items: center;
   flex-direction: row;
+  flex-wrap: var(--mdw-banner__flex-wrap);
   justify-content: center;
 
-  width: 100%;
-  border-bottom: solid dp(1);
+  inline-size: 100%;
+  border-block-end: solid 1px;
 }
 
 .mdw-banner__container {
@@ -22,34 +36,18 @@
   align-items: center;
   flex-wrap: wrap;
   justify-content: flex-end;
-  
+
   box-sizing: border-box;
-  max-width: dp(960);
+  max-inline-size: 960px;
   flex: 1;
-  padding-top: dp(8);
-  padding-bottom: dp(7);
+  padding-block: 8px 7px;
 }
 
 .mdw-banner__icon {
   position: absolute;
-  top: dp(24);
-  right: auto;
-  left: dp(16);
 
-  :root[dir="rtl"] & {
-    right: dp(16);
-    left: auto;
-  }
-
-  & ~ .mdw-banner__text {
-    margin-right: 0;
-    margin-left: dp(40 + 16);
-
-    :root[dir="rtl"] & {
-      margin-right: dp(40 + 16);
-      margin-left: 0;
-    }
-  }
+  inset-block-start: 24px;
+  inset-inline: 16px auto;
 }
 
 .mdw-banner__text {
@@ -58,24 +56,12 @@
 
   flex-grow: 1;
 
-  padding-right: 0;
-  padding-left: dp(24);
+  padding-inline-start: var(--mdw-banner__text-padding-inline-start);
 
   white-space: pre-line;
 
-  :root[dir="rtl"] {
-    padding-right: dp(24);
-    padding-left: 0;
-  }
-
-  @include breakpoint.has16DPMargin() {
-    padding-right: 0;
-    padding-left: dp(16);
-
-    :root[dir="rtl"] & {
-      padding-right: dp(16);
-      padding-left: 0;
-    }
+  .mdw-banner__icon ~ & {
+    margin-inline: 56px 0; // 40 + 16
   }
 }
 
@@ -84,35 +70,14 @@
   flex-direction: row-reverse;
   flex-wrap: wrap;
   justify-content: flex-start;
-  
-  max-width: 100%;
+
+  max-inline-size: 100%;
   flex: none;
+  margin-inline-start: var(--mdw-banner__buttons-margin-inline-start);
 
   .mdw-button {
-    margin-right: dp(8);
-    margin-left: 0;
+    margin-inline: 0 8px;
 
     text-align: end;
-
-    :root[dir="rtl"] & {
-      margin-right: 0;
-      margin-left: dp(8);
-    }
-  }
-}
-
-@include breakpoint.minMediumWindow {
-  .mdw-banner {
-    flex-wrap: nowrap;
-  }
-
-  .mdw-banner__buttons {
-    margin-right: 0;
-    margin-left: dp(90);
-
-    :root[dir="rtl"] & {
-      margin-right: dp(90);
-      margin-left: 0;
-    }
   }
 }

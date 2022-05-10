@@ -1,154 +1,128 @@
-@use '../../core/theme/_mixins.scss' as theme;
-
-$themeValues: (
-  text-color:                    theme.$foreground,
-  text-opacity:                  theme.$high-opacity,
-  secondary-text-opacity:        theme.$medium-opacity,
-  divider-opacity:               theme.$divider-opacity,
-
-  hover-opacity:                 (0.04, 0.08),
-  focus-opacity:                 (0.12, 0.24),
-  selected-opacity:              (0.08, 0.16),
-
-  hover-focus-opacity:           (0.04 + 0.12, 0.08 + 0.24),
-
-  selected-hover-opacity:        (0.08 + 0.04, 0.16 + 0.08),
-  selected-focus-opacity:        (0.08 + 0.12, 0.16 + 0.24),
-  selected-hover-focus-opacity:  (0.08 + 0.04 + 0.12, 0.16 + 0.08 + 0.24),
-
-
-  header-fill-text:       ((invalid                  ), (#fff,              1.00)),
-  selected-primary-ie:    (('primary'  , '500', null), ('primary',   '500', null)),
-  selected-secondary-ie:  (('secondary', '500', null), ('secondary', '500', null)),
-  selected-warn-ie:       (('warn'     , '500', null), ('warn',      '500', null)),
-) !default;
-
-@function getThemeValue($key, $type) {
-  @return theme.getThemeValue('datatable', $themeValues, $key, $type);
+.mdw-theme {
+  --mdw-datatable__text-rgb: var(--mdw-ink-default);
+  --mdw-datatable__text-opacity: var(--mdw-high-opacity);
+  --mdw-datatable__secondary-text-opacity: var(--mdw-medium-opacity);
+  --mdw-datatable__divider-opacity: var(--mdw-divider-opacity);
+  --mdw-datatable__hover-opacity: var(--mdw-datatable__hover-opacity-value);
+  --mdw-datatable__focus-opacity: var(--mdw-datatable__focus-opacity-value);
+  --mdw-datatable__selected-opacity: var(--mdw-datatable__selected-opacity-value);
+  --mdw-datatable__disabled-opacity: var(--mdw-inactive-opacity);
 }
 
-@mixin addThemeRules($type: 'var') {
-  .mdw-datatable tr,
-  .mdw-datatable td,
-  .mdw-datatable th {
-    border-color: RGBA(getThemeValue("text-color", $type), getThemeValue("divider-opacity", $type));
+.mdw-theme[mdw-light] {
+  --mdw-datatable__hover-opacity-value: 0.04;
+  --mdw-datatable__focus-opacity-value: 0.12;
+  --mdw-datatable__selected-opacity-value: 0.08;
+
+  // Inherit color on light theme.
+  --mdw-datatable__header-fill-text: invalid;
+}
+
+.mdw-theme[mdw-dark] {
+  --mdw-datatable__hover-opacity-value: 0.08;
+  --mdw-datatable__focus-opacity-value: 0.24;
+  --mdw-datatable__selected-opacity-value: 0.16;
+  --mdw-datatable__header-fill-text: rgba(255, 255, 255, 1.00);
+}
+
+.mdw-datatable {
+  --mdw-datatable__cell-focus-opacity: 0;
+  --mdw-datatable__cell-hover-opacity: 0;
+  --mdw-datatable__cell-disabled-opacity: 0;
+  --mdw-datatable__row-background-color: var(--mdw-datatable__text-rgb);
+  --mdw-datatable__row-focus-opacity: var(--mdw-datatable__focus-opacity);
+  --mdw-datatable__row-hover-opacity: var(--mdw-datatable__hover-opacity);
+  --mdw-datatable__row-disabled-opacity: var(--mdw-datatable__disabled-opacity);
+
+  &[mdw-cell-focusable] {
+    --mdw-datatable__cell-focus-opacity: var(--mdw-datatable__focus-opacity);
+    --mdw-datatable__cell-hover-opacity: var(--mdw-datatable__hover-opacity);
+    --mdw-datatable__cell-disabled-opacity: var(--mdw-datatable__disabled-opacity);
+  }
+}
+
+.mdw-datatable tr,
+.mdw-datatable td,
+.mdw-datatable th {
+  border-color: RGBA(var(--mdw-datatable__text-rgb), var(--mdw-datatable__divider-opacity));
+}
+
+.mdw-datatable th:not([mdw-selector]),
+.mdw-datatable__footer {
+  color: RGBA(var(--mdw-datatable__text-rgb), var(--mdw-datatable__secondary-text-opacity));
+}
+
+.mdw-datatable caption,
+.mdw-datatable__header-text {
+  color: RGBA(var(--mdw-datatable__text-rgb), var(--mdw-datatable__text-opacity));
+}
+
+.mdw-datatable__header-controls,
+.mdw-datatable__footer-controls {
+  color: RGBA(var(--mdw-datatable__text-rgb), var(--mdw-datatable__text-opacity));
+}
+
+.mdw-datatable td:not([mdw-checkbox]) {
+  color: RGBA(var(--mdw-datatable__text-rgb), var(--mdw-datatable__text-opacity));
+}
+
+.mdw-datatable th[aria-sort]:not([aria-sort="none"]) {
+  color: RGBA(var(--mdw-datatable__text-rgb), var(--mdw-datatable__text-opacity));
+}
+
+.mdw-datatable[mdw-has-selection] {
+  caption,
+  .mdw-datatable__header {
+    background-color: RGBA(var(--mdw-ink), var(--mdw-datatable__selected-opacity));
   }
 
-  .mdw-datatable th:not([mdw-selector]),
-  .mdw-datatable__footer {
-    color: RGBA(getThemeValue("text-color", $type), getThemeValue("secondary-text-opacity", $type));
-  }
-
-  .mdw-datatable caption,
+  caption,
   .mdw-datatable__header-text {
-    color: RGBA(getThemeValue("text-color", $type), getThemeValue("text-opacity", $type));
-  }
-  
-  .mdw-datatable__header-controls,
-  .mdw-datatable__footer-controls {
-    color: RGBA(getThemeValue("text-color", $type), getThemeValue("text-opacity", $type));
-  }
-
-  .mdw-datatable td:not([mdw-checkbox]) {
-    color: RGBA(getThemeValue("text-color", $type), getThemeValue("text-opacity", $type));
-  }
-
-  .mdw-datatable th[aria-sort]:not([aria-sort="none"]) {
-    color: RGBA(getThemeValue("text-color", $type), getThemeValue("text-opacity", $type));
-  }
-
-  .mdw-datatable tbody {
-    > tr {
-      &:hover {
-        background-color: RGBA(getThemeValue("text-color", $type), getThemeValue("hover-opacity", $type));
-      }
-
-      &:focus,
-      > td:focus {
-        background-color: RGBA(getThemeValue("text-color", $type), getThemeValue("focus-opacity", $type));
-      }
-
-      &:hover:focus,
-      & > td:hover:focus {
-        background-color: RGBA(getThemeValue("text-color", $type), getThemeValue("hover-focus-opacity", $type));
-      }
-    }
-  }
-
-  .mdw-datatable[mdw-has-selection] {
-    caption,
-    .mdw-datatable__header-text {
-      @if ($type == 'light') {
-        color: inherit;
-      } @else {
-        color: RGBA(getThemeValue("header-fill-text", $type));
-      }
-      
-    }
-  }
-
-  @if ($type == 'var') {
-    .mdw-datatable[mdw-has-selection] {
-      .mdw-datatable__header,
-      caption {
-        background-color: RGBA(var(--mdw-ink), getThemeValue("selected-opacity", $type));
-      }
-    }
-
-    .mdw-datatable tbody tr[aria-selected="true"] {
-      background-color: RGBA(var(--mdw-ink), getThemeValue("selected-opacity", $type));
-
-      &:hover {
-        background-color: RGBA(var(--mdw-ink), getThemeValue("selected-hover-opacity", $type));
-      }
-
-      &:focus {
-        background-color: RGBA(var(--mdw-ink), getThemeValue("selected-focus-opacity", $type));
-      }
-
-      &:hover:focus {
-        background-color: RGBA(var(--mdw-ink), getThemeValue("selected-hover-focus-opacity", $type));
-      }
-    }
-  } @else {
-    @each $color in ('primary', 'secondary', 'warn') {
-      .mdw-datatable[mdw-ink^="#{$color}"] {
-        &[mdw-has-selection] {
-          .mdw-datatable__header,
-          caption {
-            background-color: RGBA(getThemeValue("selected-#{$color}-ie", $type), getThemeValue("selected-opacity", $type));
-          }
-        }
-
-        tbody tr[aria-selected="true"] {
-          background-color: RGBA(getThemeValue("selected-#{$color}-ie", $type), getThemeValue("selected-opacity", $type));
-
-          &:hover {
-            background-color: RGBA(getThemeValue("selected-#{$color}-ie", $type), getThemeValue("selected-hover-opacity", $type));
-          }
-
-          &:focus {
-            background-color: RGBA(getThemeValue("selected-#{$color}-ie", $type), getThemeValue("selected-focus-opacity", $type));
-          }
-
-          &:hover:focus {
-            background-color: RGBA(getThemeValue("selected-#{$color}-ie", $type), getThemeValue("selected-hover-focus-opacity", $type));
-          }
-        }
-      }
-    }
+    // Inherit color on light theme
+    color: var(--mdw-datatable__header-fill-text, inherit);
   }
 }
 
+.mdw-datatable tbody tr {
+  background-color: RGBA(var(--mdw-datatable__row-background-color), calc(var(--mdw-datatable__row-hover-opacity) + var(--mdw-datatable__row-focus-opacity) + var(--mdw-datatable__selected-opacity)));
 
-@include theme.addComponentFallbackRules('light') {
-  @include addThemeRules('light');
+  &[aria-selected="true"] {
+    --mdw-datatable__row-background-color: var(--mdw-ink);
+  }
+
+  &:not([aria-selected="true"]) {
+    --mdw-datatable__selected-opacity: 0;
+  }
+
+  &:not(:hover) {
+    --mdw-datatable__row-hover-opacity: 0;
+  }
+
+  &:not(:focus) {
+    --mdw-datatable__row-focus-opacity: 0;
+  }
+
+  &[aria-disabled="true"] {
+    --mdw-datatable__row-hover-opacity: 0;
+    --mdw-datatable__row-focus-opacity: 0;
+    opacity: var(--mdw-datatable__row-disabled-opacity);
+  }
 }
-@include theme.addComponentFallbackRules('dark') {
-  @include addThemeRules('dark');
-}
 
+.mdw-datatable tbody td {
+  background-color: RGBA(var(--mdw-datatable__text-rgb), calc(var(--mdw-datatable__cell-hover-opacity) + var(--mdw-datatable__cell-focus-opacity)));
 
-@include theme.addComponentCSSVariableRules('datatable', $themeValues) {
-  @include addThemeRules();
+  &:not(:hover) {
+    --mdw-datatable__cell-hover-opacity: 0;
+  }
+
+  &:not(:focus) {
+    --mdw-datatable__cell-focus-opacity: 0;
+  }
+
+  &[aria-disabled="true"] {
+    --mdw-datatable__cell-hover-opacity: 0;
+    --mdw-datatable__cell-focus-opacity: 0;
+    opacity: var(--mdw-datatable__cell-disabled-opacity);
+  }
 }

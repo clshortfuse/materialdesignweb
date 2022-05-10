@@ -7,20 +7,35 @@
 @use '../../core/_length.scss' as *;
 @use '../../core/_motion.scss' as motion;
 
-$ripple-size: dp(40) !default;
-$icon-size: dp(24) !default;
+$ripple-size: 40px !default;
+$icon-size: 24px !default;
 $scale-size: math.div($ripple-size, $icon-size) !default;
-$radio-size: dp(20) !default;
-$checkbox-size: dp(18) !default;
-$border-size: dp(2) !default;
-$horizontal-margin: dp(2) !default;
+$radio-size: 20px !default;
+$checkbox-size: 18px !default;
+$border-size: 2px !default;
+$horizontal-margin: 2px !default;
 // from ic_check_black_18px.svg
 // rotated 45°
-$checkbox-icon-height: dp(12.73) !default;
-$checkbox-icon-width: dp(5.93) !default;
-$checkbox-icon-thickness: dp(1.5) !default;
-$checkbox-icon-offset-y: dp(2.64) - $checkbox-icon-thickness - $border-size !default;
-$checkbox-icon-offset-x: dp(6.04) - $border-size !default;
+
+$checkbox-icon-height: 12.73px !default;
+$checkbox-icon-width: 5.93px !default;
+$checkbox-icon-thickness: 1.5px !default;
+$checkbox-icon-offset-y: 2.64px - $checkbox-icon-thickness - $border-size !default;
+$checkbox-icon-offset-x: 6.04px - $border-size !default;
+
+:root {
+  --mdw-selection__switch-ripple-offset-unchecked: -2px;
+  --mdw-selection__switch-ripple-offset-checked: 14px;
+  --mdw-selection__switch-thumb-offset: 16px;
+  --mdw-selection__checkbox-rotation: 45deg;
+
+  &[dir="rtl"] {
+    --mdw-selection__switch-ripple-offset-unchecked: 2px;
+    --mdw-selection__switch-ripple-offset-checked: -14px;
+    --mdw-selection__switch-thumb-offset: -16px;
+    --mdw-selection__checkbox-rotation: -45deg;
+  }
+}
 
 .mdw-selection {
   display: inline-flex;
@@ -33,13 +48,16 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
   align-self: center;
   order: 1;
 
-  min-height: $icon-size;
-  min-width: $icon-size;
+  min-block-size: $icon-size;
+  min-inline-size: $icon-size;
   margin: 0 auto;
   padding: 0;
 
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   -moz-appearance: none;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   -webkit-appearance: none;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   appearance: none;
   cursor: pointer;
   outline: none;
@@ -56,43 +74,37 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
 
   color: inherit;
 
-  &::-ms-check {
-    background-color: transparent;
-    border-color: transparent;
-    // IE11
-    border-radius: 50%;
-    color: transparent;
-  }
-
   .mdw-selection[aria-disabled="true"] &,
   &:disabled {
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
     cursor: not-allowed;
   }
 
   // HTMLInputElement should not have psuedos
   &.mdw-overlay::before {
-    display: none;
     content: none;
+
+    display: none;
   }
 
   &[role="switch"] {
-    margin-right: dp(12);
-  
-    transform: translateX(#{dp(-2)}) scale($scale-size);
-  
+    margin-inline-end: 12px;
+
+    transform: translateX(var(--mdw-selection__switch-ripple-offset-unchecked)) scale($scale-size);
+
     &:checked {
-      transform: translateX(#{dp(14)}) scale($scale-size);
+      transform: translateX(var(--mdw-selection__switch-ripple-offset-checked)) scale($scale-size);
     }
-  
+
     label.mdw-selection:active &:not(:disabled),
     label.mdw-selection:hover &:not(:disabled),
     &:active:not(:disabled),
     &:hover:not(:disabled),
     &:focus {
-      transform: translateX(#{dp(-2)}) scale($scale-size);
-  
+      transform: translateX(var(--mdw-selection__switch-ripple-offset-unchecked)) scale($scale-size);
+
       &:checked {
-        transform: translateX(#{dp(14)}) scale($scale-size);
+        transform: translateX(var(--mdw-selection__switch-ripple-offset-checked)) scale($scale-size);
       }
     }
   }
@@ -101,14 +113,13 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
 .mdw-selection__icon {
   display: inline-flex;
   position: relative;
-  
+
   box-sizing: border-box;
-  height: $icon-size;
-  width: $icon-size;
+  block-size: $icon-size;
+  inline-size: $icon-size;
   flex: none;
+  margin-block: auto;
   margin: 0;
-  margin-top: auto;
-  margin-bottom: auto;
   padding: 0;
 
   -moz-appearance: none;
@@ -116,36 +127,31 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
   appearance: none;
   cursor: pointer;
   outline: none;
+
+  pointer-events: none;
   -webkit-tap-highlight-color: transparent;
 
   transition-property: background-color, border-color;
 
-  pointer-events: none;
-  
   z-index: 1;
 
   background-color: transparent;
 
-  :root[dir="rtl"] & {
-    order: 1;
-  }
-
   .mdw-selection__input ~ & {
     // width is represented by input element
-    max-width: 0;
+    max-inline-size: 0;
   }
-
 
   &::before {
     content: "";
 
     position: absolute;
-    top: 0;
-    left: 0;
+    inset-block-start: 0;
+    inset-inline-start: 0;
 
     box-sizing: border-box;
     border-style: solid;
-    border-width: dp(2);
+    border-width: 2px;
 
     transition-property: border-width, border-color, background-color, color;
 
@@ -161,20 +167,21 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
 
   .mdw-selection[aria-disabled="true"] &,
   .mdw-selection__input:disabled ~ & {
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
     cursor: not-allowed;
   }
 
   &[mdw-checkbox] {
     // Box outline
     &::before {
-      top: ($icon-size - $checkbox-size) * 0.5;
-      left: ($icon-size - $checkbox-size) * 0.5;
-  
-      height: $checkbox-size;
-      width: $checkbox-size;
-  
-      border-radius: dp(2);
-  
+      inset-block-start: ($icon-size - $checkbox-size) * 0.5;
+      inset-inline-start: ($icon-size - $checkbox-size) * 0.5;
+
+      block-size: $checkbox-size;
+      inline-size: $checkbox-size;
+
+      border-radius: 2px;
+
       // Checked or Active
       .mdw-selection[aria-checked="true"] &,
       .mdw-selection[aria-checked]:not([aria-disabled="true"]):active &,
@@ -182,41 +189,41 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
       .mdw-selection__input[type="checkbox"]:not(:disabled):active ~ & {
         border-width: $checkbox-size * 0.5;
       }
-  
+
       // Checked not
       .mdw-selection[aria-checked="true"]:not(:active):not([aria-disabled="true"]) &,
       .mdw-selection__input[type="checkbox"]:checked:not(:active):not(:disabled) ~ & {
         background-color: currentColor;
       }
     }
-  
+
     // Check stencil
     &::after {
-      top: $border-size + (($icon-size - $checkbox-size) * 0.5);
-      left: $border-size + (($icon-size - $checkbox-size) * 0.5);
-      
-      height: $checkbox-icon-height;
-      width: $checkbox-icon-width;
-      margin-top: $checkbox-icon-offset-y;
-      margin-left: $checkbox-icon-offset-x;
-  
+      inset-block-start: $border-size + (($icon-size - $checkbox-size) * 0.5);
+      inset-inline-start: $border-size + (($icon-size - $checkbox-size) * 0.5);
+
+      block-size: $checkbox-icon-height;
+      inline-size: $checkbox-icon-width;
+      margin-block-start: $checkbox-icon-offset-y;
+      margin-inline-start: $checkbox-icon-offset-x;
+
       .mdw-selection[aria-checked="true"] &,
       .mdw-selection__input[type="checkbox"]:checked ~ & {
         box-sizing: border-box;
-        border-right-style: solid;
-        border-bottom-style: solid;
+        border-block-end-style: solid;
         // border-width: $checkbox-icon-thickness;
         // Increase visibility
-        border-width: dp(2);
-  
+        border-width: 2px;
+        border-inline-end-style: solid;
+
         animation-name: showCheck;
         animation-direction: normal;
         animation-fill-mode: forwards;
-  
+
         transition: none;
-        
-        transform: rotate(45deg);
-        
+
+        transform: rotate(var(--mdw-selection__checkbox-rotation));
+
         background-color: transparent;
       }
     }
@@ -225,37 +232,37 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
   &[mdw-radio] {
     // Outer ring
     &::before {
-      top: ($icon-size - $radio-size) * 0.5;
-      left: ($icon-size - $radio-size) * 0.5;
-  
-      height: $radio-size;
-      width: $radio-size;
-  
+      inset-block-start: ($icon-size - $radio-size) * 0.5;
+      inset-inline-start: ($icon-size - $radio-size) * 0.5;
+
+      block-size: $radio-size;
+      inline-size: $radio-size;
+
       border-color: currentColor;
       border-radius: 50%;
-  
+
       // Active, not disabled
       .mdw-selection:active:not([aria-disabled="true"]) &,
       .mdw-selection__input:active:not(:disabled) ~ & {
         border-width: $radio-size * 0.5;
       }
     }
-  
+
     // Center dot
     &::after {
-      top: ($icon-size - $radio-size) * 0.5;
-      left: ($icon-size - $radio-size) * 0.5;
-  
-      height: $radio-size;
-      width: $radio-size;
-  
+      inset-block-start: ($icon-size - $radio-size) * 0.5;
+      inset-inline-start: ($icon-size - $radio-size) * 0.5;
+
+      block-size: $radio-size;
+      inline-size: $radio-size;
+
       transition-property: transform, background-color;
-  
+
       transform: scale(0);
-  
+
       background-color: currentColor;
       border-radius: 50%;
-  
+
       .mdw-selection[aria-checked="true"] &,
       .mdw-selection__input:checked ~ & {
         transform: scale(0.5);
@@ -264,54 +271,48 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
   }
 
   &[mdw-switch] {
-    width: dp(36);
+    inline-size: 36px;
 
     &::before {
-      top: dp(2);
-      left: 0;
-  
-      height: dp(20);
-      width: dp(20);
+      inset-block-start: 2px;
+      inset-inline-start: 0;
+
+      block-size: 20px;
+      inline-size: 20px;
       border-style: none;
-  
+
       transition-property: background-color, transform;
-  
+
       transform: translateX(0);
       z-index: 1;
-  
+
       background-color: currentColor;
-  
+
       border-radius: 50%;
-      box-shadow: elevation.boxShadow(1);
-  
+      box-shadow: var(--mdw-elevation__box-shadow-1);
+
       .mdw-selection[aria-checked="true"] &,
       .mdw-selection__input:checked ~ & {
-        transform: translateX(#{dp(16)});
+        transform: translateX(var(--mdw-selection__switch-thumb-offset));
       }
     }
-  
+
     &::after {
-      top: dp(5);
-      bottom: dp(5);
-      left: 0;
-  
-      height: dp(14);
-      width: dp(36);
+      inset-block: 5px;
+      inset-inline-start: 0;
+
+      block-size: 14px;
+      inline-size: 36px;
       margin: 0;
       border-style: none;
-  
+
       animation-name: none;
-  
+
       transform: none;
 
       background-color: currentColor;
-  
-      border-radius: dp(7);
-    }
-  
-    .mdw-selection:active:not([aria-disabled="true"]) &,
-    .mdw-selection__input:active:not(:disabled) ~ & {
-      // color: inherit;
+
+      border-radius: 7px;
     }
   }
 }
@@ -319,8 +320,7 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
 .mdw-selection__label {
   order: -1;
 
-  padding-right: dp(8);
-  padding-left: 0;
+  padding-inline: 0 8px;
 
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -331,26 +331,16 @@ $checkbox-icon-offset-x: dp(6.04) - $border-size !default;
 
   z-index: 1;
 
-  :root[dir="rtl"] & {
-    padding-right: 0;
-    padding-left: dp(8);
-  }
-
   // Label as suffix
   .mdw-selection__icon ~ & {
     order: 1;
 
-    padding-right: 0;
-    padding-left: dp(8);
-
-    :root[dir="rtl"] & {
-      padding-right: dp(8);
-      padding-left: 0;
-    }
+    padding-inline: 8px 0;
   }
 
   .mdw-selection[aria-disabled="true"] &,
   .mdw-selection__input:disabled ~ & {
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
     cursor: not-allowed;
   }
 }

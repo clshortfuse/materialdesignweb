@@ -4,19 +4,17 @@
   <div class="render">
     <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'cyan 700', dark:true }) %>
     <div class="mdw-appbar mdw-theme" mdw-surface="cyan 500" mdw-dark>
-      <div class="mdw-appbar__action">
-        <div class="mdw-appbar__start">
-          <div class="mdw-tooltip__wrapper">
-            <%~ includeFile(T, { button: { icon:true , class:'material-icons mdw-tooltip__target', text:'menu' }}) %>
-            <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="start">Menu</div>
-          </div>
+      <div class="mdw-appbar__start">
+        <div class="mdw-tooltip__wrapper">
+          <%~ includeFile(T, { button: { icon:true , class:'material-icons mdw-tooltip__target', text:'menu' }}) %>
+          <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="start">Menu</div>
         </div>
-        <div class="mdw-appbar__title" style="color:white;">Inbox</div>
-        <div class="mdw-appbar__end">
-          <div class="mdw-tooltip__wrapper">
-            <%~ includeFile(T, { button: {  icon:true , class:'material-icons mdw-tooltip__target', text:'search' }}) %>
-            <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="end">Search</div>
-          </div>
+      </div>
+      <div class="mdw-appbar__title" style="color:white;">Inbox</div>
+      <div class="mdw-appbar__end">
+        <div class="mdw-tooltip__wrapper">
+          <%~ includeFile(T, { button: {  icon:true , class:'material-icons mdw-tooltip__target', text:'search' }}) %>
+          <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="end">Search</div>
         </div>
       </div>
     </div>

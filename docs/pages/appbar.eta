@@ -36,14 +36,12 @@
     <!-- Elevation and z-index only for demo-->
     <!-- Normally handled with .mdw-layout__appbar-->
     <div class="mdw-appbar mdw-elevation" mdw-dense mdw-elevation="4" style="z-index:4">
-      <div class="mdw-appbar__action">
-        <div class="mdw-appbar__start">
-          <%~ includeFile(T, { button: {icon:true, class: 'material-icons', body: 'menu' }}) %>
-        </div>
-        <div class="mdw-appbar__title">Dense (Desktop)</div>
-        <div class="mdw-appbar__end">
-          <%~ includeFile(T, { button: {icon:true, class: 'material-icons', body: 'more_vert' }}) %>
-        </div>
+      <div class="mdw-appbar__start">
+        <%~ includeFile(T, { button: {icon:true, class: 'material-icons', body: 'menu' }}) %>
+      </div>
+      <div class="mdw-appbar__title">Dense (Desktop)</div>
+      <div class="mdw-appbar__end">
+        <%~ includeFile(T, { button: {icon:true, class: 'material-icons', body: 'more_vert' }}) %>
       </div>
     </div>
     <div class="content mdw-theme" mdw-surface="background alt"></div>
@@ -53,15 +51,13 @@
   <div class="render">
     <%~ includeFile('../_partials/_androidstatusbar.eta') %>
     <div class="mdw-appbar mdw-elevation" mdw-prominent mdw-dense mdw-elevation="4" style="z-index:4">
-      <div class="mdw-appbar__action">
-        <div class="mdw-appbar__start">
-          <%~ includeFile(T, { button: {icon:true, class: 'material-icons', body: 'menu' }}) %>
-        </div>
-        <div class="mdw-appbar__title">Prominent Dense</div>
-        <div class="mdw-appbar__end">
-          <%~ includeFile(T, { button: {icon:true, class: 'material-icons', body: 'search' }}) %>
-          <%~ includeFile(T, { button: {icon:true, class: 'material-icons', body: 'more_vert' }}) %>
-        </div>
+      <div class="mdw-appbar__start">
+        <%~ includeFile(T, { button: {icon:true, class: 'material-icons', body: 'menu' }}) %>
+      </div>
+      <div class="mdw-appbar__title">Prominent Dense</div>
+      <div class="mdw-appbar__end">
+        <%~ includeFile(T, { button: {icon:true, class: 'material-icons', body: 'search' }}) %>
+        <%~ includeFile(T, { button: {icon:true, class: 'material-icons', body: 'more_vert' }}) %>
       </div>
     </div>
     <div class="content mdw-theme" mdw-surface="background alt"></div>
@@ -71,18 +67,16 @@
   <div class="render">
     <%~ includeFile('../_partials/_androidstatusbar.eta') %>
     <div class="mdw-appbar mdw-elevation" mdw-elevation="4" style="z-index:4">
-      <div class="mdw-appbar__action">
-        <div class="mdw-appbar__start">
-          <div class="mdw-tooltip__wrapper">
-            <%~ includeFile(T, { button: {icon:true, class: 'mdw-tooltip__target material-icons', body: 'arrow_back' }}) %>
-            <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark>Back</div>
-          </div>
+      <div class="mdw-appbar__start">
+        <div class="mdw-tooltip__wrapper">
+          <%~ includeFile(T, { button: {icon:true, class: 'mdw-tooltip__target material-icons', body: 'arrow_back' }}) %>
+          <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark>Back</div>
         </div>
-        <div class="mdw-appbar__end">
-          <div class="mdw-tooltip__wrapper">
-            <%~ includeFile(T, { button: {icon:true, class: 'mdw-tooltip__target material-icons', body: 'more_vert', attributes: {'mdw-more-button': true} }}) %>
-            <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark>More</div>
-          </div>
+      </div>
+      <div class="mdw-appbar__end">
+        <div class="mdw-tooltip__wrapper">
+          <%~ includeFile(T, { button: {icon:true, class: 'mdw-tooltip__target material-icons', body: 'more_vert', attributes: {'mdw-more-button': true} }}) %>
+          <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark>More</div>
         </div>
       </div>
       <div class="mdw-appbar__content">

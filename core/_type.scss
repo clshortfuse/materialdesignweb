@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use './_length.scss' as *;
 
 $weightThin: 100 !default;
@@ -90,9 +91,9 @@ $types: (
 ) !default;
 
 @mixin addRules($type) {
-  $rules: map-get($types, $type);
-  @each $key in map-keys($rules) {
-    #{$key}: map-get($rules, $key);
+  $rules: map.get($types, $type);
+  @each $key in map.keys($rules) {
+    #{$key}: map.get($rules, $key);
   }
 }
 
@@ -102,7 +103,7 @@ $types: (
 
     display: inline-block;
 
-    height: dp($dp);
+    block-size: dp($dp);
   }
 }
 
@@ -121,7 +122,7 @@ $types: (
 
     display: inline-block;
 
-    height: 1em;
-    margin-top: dp($dp);
+    block-size: 1em;
+    margin-block-start: dp($dp);
   }
 }

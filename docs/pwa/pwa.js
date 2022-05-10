@@ -9,9 +9,6 @@ import * as Selection from '../../components/selection/index.js';
 import * as SelectionRadioGroup from '../../components/selection/radiogroup.js';
 import * as Snackbar from '../../components/snackbar/index.js';
 import * as Attributes from '../../core/aria/attributes.js';
-import {
-  iterateArrayLike,
-} from '../../core/dom.js';
 import * as Overlay from '../../core/overlay/index.js';
 import * as Ripple from '../../core/ripple/index.js';
 
@@ -26,14 +23,14 @@ Layout.attach();
 
 /** @return {void} */
 function initializeSampleComponents() {
-  iterateArrayLike(document.getElementsByClassName('mdw-overlay'), Overlay.attach);
-  iterateArrayLike(document.getElementsByClassName('mdw-ripple'), Ripple.attach);
-  iterateArrayLike(document.getElementsByClassName('mdw-button'), Button.attach);
-  iterateArrayLike(document.getElementsByClassName('mdw-selection__radio-group'), SelectionRadioGroup.attach);
-  iterateArrayLike(document.getElementsByClassName('mdw-selection'), Selection.attach);
-  iterateArrayLike(document.getElementsByClassName('mdw-list'), List.attach);
-  iterateArrayLike(document.getElementsByClassName('mdw-dialog'), Dialog.attach);
-  iterateArrayLike(document.getElementsByClassName('mdw-menu'), Menu.attach);
+  for (const element of document.getElementsByClassName('mdw-overlay')) { Overlay.attach(element); }
+  for (const element of document.getElementsByClassName('mdw-ripple')) { Ripple.attach(element); }
+  for (const element of document.getElementsByClassName('mdw-button')) { Button.attach(element); }
+  for (const element of document.getElementsByClassName('mdw-selection__radio-group')) { SelectionRadioGroup.attach(element); }
+  for (const element of document.getElementsByClassName('mdw-selection')) { Selection.attach(element); }
+  for (const element of document.getElementsByClassName('mdw-list')) { List.attach(element); }
+  for (const element of document.getElementsByClassName('mdw-dialog')) { Dialog.attach(element); }
+  for (const element of document.getElementsByClassName('mdw-menu')) { Menu.attach(element); }
 }
 
 /**
@@ -150,8 +147,7 @@ function updateFabDesktopOption() {
  * @return {void}
  */
 function onCheckChange(event) {
-  /** @type {HTMLElement} */
-  const listContentElement = (event.target);
+  const listContentElement = /** @type {HTMLElement} */ (event.target);
   const checked = event.detail.value === 'true';
   const { name, value } = listContentElement.dataset;
   switch (name) {
@@ -220,8 +216,7 @@ function onCheckChange(event) {
 /** @return {void} */
 function setupComponentOptions() {
   document.addEventListener(ListSecondary.SECONDARY_ACTION_EVENT, (event) => {
-    /** @type {HTMLElement} */
-    const secondaryElement = (event.target);
+    const secondaryElement = /** @type {HTMLElement} */ (event.target);
     const selectionElement = secondaryElement.parentElement;
     // inverse check
     const newValue = !Attributes.isChecked(selectionElement);
@@ -243,8 +238,7 @@ initializeSampleComponents();
 setupComponentOptions();
 
 document.addEventListener(Dialog.CONFIRM_EVENT, (event) => {
-  /** @type {HTMLElement} */
-  const dialog = (event.target);
+  const dialog = /** @type {HTMLElement} */ (event.target);
   switch (dialog.id) {
     case 'dialog-autohide-options':
       updateAutoHideOption();
@@ -260,32 +254,30 @@ document.addEventListener(Dialog.CONFIRM_EVENT, (event) => {
 });
 // Dialog was cancelled
 document.addEventListener(Dialog.CANCEL_EVENT, (event) => {
-  /** @type {HTMLElement} */
-  const dialog = (event.target);
+  const dialog = /** @type {HTMLElement} */ (event.target);
   // Revert selection
   switch (dialog.id) {
     case 'dialog-autohide-options':
-      iterateArrayLike(document.querySelectorAll('[data-name="appbar-autohide"]'), (item) => {
+      for (const item of document.querySelectorAll('[data-name="appbar-autohide"]')) {
         item.setAttribute('aria-checked', (item === checkedAutoHideItem) ? 'true' : 'false');
-      });
+      }
       break;
     case 'dialog-fabmobile-options':
-      iterateArrayLike(document.querySelectorAll('[data-name="fab-mobile"]'), (item) => {
+      for (const item of document.querySelectorAll('[data-name="fab-mobile"]')) {
         item.setAttribute('aria-checked', (item === checkedFabMobileItem) ? 'true' : 'false');
-      });
+      }
       break;
     case 'dialog-fabdesktop-options':
-      iterateArrayLike(document.querySelectorAll('[data-name="fab-desktop"]'), (item) => {
+      for (const item of document.querySelectorAll('[data-name="fab-desktop"]')) {
         item.setAttribute('aria-checked', (item === checkedFabDesktopItem) ? 'true' : 'false');
-      });
+      }
       break;
     default:
   }
 });
 
 document.addEventListener(ListContent.ACTIVATE_EVENT, (event) => {
-  /** @type {HTMLElement} */
-  const listContentElement = (event.target);
+  const listContentElement = /** @type {HTMLElement} */ (event.target);
 
   // Before opening dialog, remember which item was checked
   switch (listContentElement.dataset.name) {

@@ -3,8 +3,6 @@
 
 import {
   dispatchDomEvent,
-  findElementParentByClassName,
-  nextTick,
   setTextNode,
 } from '../../core/dom.js';
 import * as Button from '../button/index.js';
@@ -91,7 +89,7 @@ export function handleAnimationChange(snackbarElement) {
     if (autoHideString == null) {
       return;
     }
-    const timeInSeconds = parseFloat(autoHideString) || 4;
+    const timeInSeconds = Number.parseFloat(autoHideString) || 4;
     if (timeInSeconds < 0) {
       return;
     }
@@ -113,10 +111,8 @@ export function handleAnimationChange(snackbarElement) {
     show(snackbarElement);
     return;
   }
-  if (snackbarElement.hasAttribute('mdw-autodestroy')) {
-    if (snackbarElement.parentElement) {
-      snackbarElement.parentElement.removeChild(snackbarElement);
-    }
+  if (snackbarElement.hasAttribute('mdw-autodestroy') && snackbarElement.parentElement) {
+    snackbarElement.remove();
   }
 }
 
@@ -145,7 +141,7 @@ export function hide(snackbarElement) {
     SNACKBAR_QUEUE.splice(SNACKBAR_QUEUE.indexOf(currentQueueItem), 1);
   }
   if (window.getComputedStyle(snackbarElement).animationName === 'none') {
-    nextTick(() => handleAnimationChange(snackbarElement));
+    requestAnimationFrame(() => handleAnimationChange(snackbarElement));
   }
   return true;
 }
@@ -159,8 +155,7 @@ export function onKeyDown(event) {
     // Allow users to close snackbar with escape, for accessibilty reasons
     event.stopPropagation();
     event.preventDefault();
-    /** @type {Element} */
-    const snackbarElement = (event.currentTarget);
+    const snackbarElement = /** @type {Element} */ (event.currentTarget);
     hide(snackbarElement);
   }
 }
@@ -170,12 +165,11 @@ export function onKeyDown(event) {
  * @return {void}
  */
 export function onButtonClick(event) {
-  /** @type {HTMLElement} */
-  const buttonElement = (event.currentTarget);
+  const buttonElement = /** @type {HTMLElement} */ (event.currentTarget);
   if (buttonElement instanceof HTMLAnchorElement) {
     event.preventDefault();
   }
-  const snackbarElement = findElementParentByClassName(buttonElement, 'mdw-snackbar');
+  const snackbarElement = buttonElement.closest('.mdw-snackbar');
   hide(snackbarElement);
 }
 
@@ -197,11 +191,11 @@ export function update(element, options) {
   let span = element.getElementsByTagName('span')[0];
   if (span) {
     // To trigger screen readers, we destroy and create a new span and textnode
-    span.parentElement.removeChild(span);
+    span.remove();
   }
   span = document.createElement('span');
   if (element.firstChild) {
-    element.insertBefore(span, element.firstChild);
+    element.prepend(span);
   } else {
     element.appendChild(span);
   }
@@ -225,7 +219,7 @@ export function update(element, options) {
       // Don't set attribute if null is passed
     }
   } else if (button && button.parentElement) {
-    button.parentElement.removeChild(button);
+    button.remove();
   }
   if (options.stacked) {
     element.setAttribute('mdw-stacked', '');
@@ -275,13 +269,13 @@ export function detach(snackbarElement) {
     button.removeEventListener('click', onButtonClick);
   }
   // Remove timeouts and stacks
-  SNACKBAR_QUEUE.slice().reverse().forEach((queue, reverseIndex, array) => {
+  for (let i = SNACKBAR_QUEUE.length - 1; i >= 0; i--) {
+    const queue = SNACKBAR_QUEUE[i];
     if (queue.element === snackbarElement) {
       queue.clearHideTimeout();
-      const index = array.length - reverseIndex - 1;
-      SNACKBAR_QUEUE.splice(index, 1);
+      SNACKBAR_QUEUE.splice(i, 1);
     }
-  });
+  }
   snackbarElement.removeAttribute('mdw-js');
 }
 
@@ -299,7 +293,7 @@ export function show(snackbarElement) {
   snackbarElement.setAttribute('aria-hidden', 'false');
   attach(snackbarElement);
   if (window.getComputedStyle(snackbarElement).animationName === 'none') {
-    nextTick(() => handleAnimationChange(snackbarElement));
+    requestAnimationFrame(() => handleAnimationChange(snackbarElement));
   }
   return true;
 }

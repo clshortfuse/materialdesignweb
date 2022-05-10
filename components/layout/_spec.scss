@@ -1,6 +1,21 @@
-// https://material.io/design/components/navigation-drawer.html
-// https://material.io/archive/guidelines/patterns/navigation-drawer.html
-// https://material.io/archive/guidelines/layout/metrics-keylines.html#metrics-keylines-keylines-spacing
+/*
+ * https://material.io/design/components/navigation-drawer.html
+ * https://material.io/archive/guidelines/patterns/navigation-drawer.html
+ * https://material.io/archive/guidelines/layout/metrics-keylines.html#metrics-keylines-keylines-spacing
+ *
+ * Elements follow descending elevation order and use sibling selector (~)
+ * Body scrolls except when clipped on desktop (content scrolls instead)
+ *
+ * html.mdw-layout
+ *   body.mdw-layout__body       Sets layout rules
+ *     nav.mdw-layout__navdrawer Visible by default on Desktop. Hidden modal on Mobile
+ *     div.mdw-layout__sidesheet Visible by default on Desktop. Hidden modal on Mobile
+ *     div.mdw-layout__scrim     Visible if modal open. Must follow navdrawer and sidedrawer (~)
+ *     div.mdw-layout__appbar    Should follow navdrawer and sidedrawer (~)
+ *     div.mdw-layout__fab       Must follow appbar (~)
+ *     div.mdw-layout__snackbar  Must follow fab (~)
+ *     main.mdw-layout__content  Must follow fab (~)
+ */
 
 @use '../../core/_breakpoint.scss' as breakpoint;
 @use '../../core/_elevation.scss' as elevation;
@@ -10,12 +25,33 @@
 
 @use './_mixins.scss' as *;
 
-$scrimColor: rgba(0, 0, 0, 0.50) !default;
-$sheetMinWidth: dp(256) !default;
-$sheetMaxWidthMini: dp(72) !default;
+:root {
+  --mdw-layout__transform-inline: translateX(100%);
+  --mdw-layout__transform-inline-reverse: translateX(-100%);
+  --mdw-layout__fab-transform: translateX(0);
+  --mdw-layout__sheet-max-inline-size: calc(100vw - 56px);
+  --mdw-layout__margin: 24px;
+  @include breakpoint.has16DPMargin() {
+    --mdw-layout__margin: 16px;
+  }
 
-$fabSize: dp(56) !default;
-$fabCutSize: dp(72) !default;
+  @include breakpoint.isXSmallWindow() {
+    --mdw-layout__sheet-max-inline-size: calc(100vw - 64px);
+  }
+
+  &[dir="rtl"] {
+    --mdw-layout__transform-inline: translateX(-100%);
+    --mdw-layout__transform-inline-reverse: translateX(100%);
+    --mdw-layout__fab-transform: translateX(100%);
+  }
+}
+
+$scrimColor: rgba(0, 0, 0, 0.50) !default;
+$sheetMinWidth: 256px !default;
+$sheetMaxWidthMini: 72px !default;
+
+$fabSize: 56px !default;
+$fabCutSize: 72px !default;
 $fabCutDelay: 100ms !default;
 
 $rowTop: 1 !default;
@@ -25,20 +61,15 @@ $rowBottom: 4 !default;
 
 $columnNavDrawer: 1 !default;
 $columnContent: 2 !default;
-$columnSideSheet: 3 !default;
+$columnSideDrawer: 3 !default;
 $columnViewportEnd: 4 !default;
-
-$bodyOverflowY: hidden !default;
-$bodyOverflowYSticky: auto !default;
-$contentOverflowY: auto !default;
-$contentOverflowYSticky: visible !default;
 
 .mdw-layout {
   overflow-y: hidden;
-  
-  min-height: 100%;
-  height: 100%;
-  width: 100vw;
+
+  min-block-size: 100%;
+  block-size: 100%;
+  inline-size: 100vw;
   margin: 0;
   padding: 0;
 
@@ -51,25 +82,38 @@ $contentOverflowYSticky: visible !default;
 .mdw-layout__body {
   @include type.addRules('body');
 
-  display: -ms-grid;
+  --mdw-grid__row1: "navdrawer appbar  sidedrawer";
+  --mdw-grid__row2: "navdrawer banner  sidedrawer";
+  --mdw-grid__row3: "navdrawer content sidedrawer";
+  --mdw-grid__row4: "navdrawer bottom  sidedrawer";
+
   display: grid;
   position: relative;
-  // start | main | end
-  // Use minmax(0, 1fr) to clamp horizontally oversized grid-items~~
+  grid-template-areas:
+    var(--mdw-grid__row1)
+    var(--mdw-grid__row2)
+    var(--mdw-grid__row3)
+    var(--mdw-grid__row4);
+
   // Use minmax everywhere to solve Chrome v80 grid bugs
-  grid-template-columns: minmax(0, auto) minmax(0, 100%) minmax(0, auto);
-  -ms-grid-columns: auto minmax(0, 1fr) auto;
-  // top | banner | content | bottom
-  grid-template-rows: auto auto minmax(auto, 1fr) auto;
-  -ms-grid-rows: auto auto 1fr auto;
+  grid-template-columns:
+    [start] minmax(0, auto)
+    [center] minmax(0, 100%)
+    [end] minmax(0, auto);
+
+  grid-template-rows:
+    [top] auto
+    [banner] auto
+    [content] minmax(auto, 1fr) /* Use minmax(0, 1fr) to clamp horizontally oversized grid-items */
+    [bottom] auto;
 
   overflow-x: hidden;
-  overflow-y: $bodyOverflowY;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 
-  height: 100%;
-  max-width: 100vw;
-  width: 100vw;
+  block-size: 100%;
+  max-inline-size: 100vw;
+  inline-size: 100vw;
   margin: 0;
   padding: 0;
 
@@ -78,38 +122,49 @@ $contentOverflowYSticky: visible !default;
 
   background-color: inherit;
 
-  // Chrome v78 fix scrolling bug
-  // https://bugs.chromium.org/p/chromium/issues/detail?id=1011866
-  // Apply to Chrome v76+
-  /* stylelint-disable-next-line media-feature-name-no-vendor-prefix */
-  @media screen and (prefers-color-scheme) and (-webkit-min-device-pixel-ratio:0) and (min-resolution: 0.001dpcm) {
-    opacity: 0.999;
+  &[mdw-navdrawer-style~="clipped"] {
+    --mdw-grid__row1: "appbar appbar sidedrawer";
+  }
+
+  &[mdw-sidedrawer-style~="clipped"] {
+    --mdw-grid__row1: "navdrawer appbar appbar";
+  }
+
+  &[mdw-navdrawer-style~="clipped"][mdw-sidedrawer-style~="clipped"] {
+    --mdw-grid__row1: "appbar appbar appbar";
+  }
+
+  &[mdw-navdrawer-style~="floating"] {
+    --mdw-grid__row2: "banner banner sidedrawer";
+  }
+
+  &[mdw-sidedrawer-style~="floating"] {
+    --mdw-grid__row2: "navdrawer banner banner";
+  }
+
+  &[mdw-navdrawer-style~="floating"][mdw-sidedrawer-style~="floating"] {
+    --mdw-grid__row2: "banner banner banner";
   }
 }
 
 .mdw-layout__appbar {
-  @include gridColumn($columnContent);
-  @include gridRow($rowTop);
+  position: sticky;
+  inset-block-start: 0;
+  grid-area: appbar;
+
+  margin-block-start: 0;
+
+  transition-duration: motion.$expandDuration;
+  transition-property: transform, margin-block-start, min-block-size;
+  transition-timing-function: motion.$decelerateEasing;
+  will-change: transform, margin-block-start, min-block-size;
+
+  transform: translateY(0); // browser hint
+  z-index: 4;
 
   &[aria-hidden="true"] {
     display: none;
   }
-
-  position: static;
-  position: -webkit-sticky;
-  position: -moz-sticky;
-  position: sticky;
-  top: 0;
-  
-  margin-top: 0;
-
-  transition-duration: motion.$expandDuration;
-  transition-property: transform, margin-top;
-  transition-timing-function: motion.$decelerateEasing;
-  will-change: transform, margin-top;
-
-  transform: translateY(0); // browser hint
-  z-index: 4;
 
   &[mdw-hide] {
     transition-duration: motion.$collapseDuration;
@@ -117,42 +172,31 @@ $contentOverflowYSticky: visible !default;
   }
 }
 
-.mdw-layout[mdw-ios][mdw-standalone] {
-  .mdw-layout__appbar,
-  .mdw-layout__navdrawer,
-  .mdw-layout__sidesheet {
-    padding-top: dp(20);
-    padding-top: constant(safe-area-inset-top);
-    padding-top: env(safe-area-inset-top);
-  }
-}
-
 .mdw-layout__scrim {
   content: '';
 
   position: fixed;
-  top: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
   // Scroll mask
-  -ms-overflow-style: none;
   overflow-y: scroll;
   overscroll-behavior: none;
   overscroll-behavior: contain;
-  -ms-scroll-chaining: none;
   scrollbar-width: none;
 
-  height: 100%;
-  width: 100%;
+  block-size: 100%;
+  inline-size: 100%;
 
   cursor: auto;
   outline: none;
+
+  pointer-events: none;
   -webkit-tap-highlight-color: transparent;
 
   transition-duration: motion.$fadeOutDuration;
   transition-property: background-color, visibility;
   transition-timing-function: motion.$accelerateEasing;
 
-  pointer-events: none;
   visibility: hidden;
   z-index: 16;
 
@@ -164,29 +208,25 @@ $contentOverflowYSticky: visible !default;
   }
 
   &::after {
-    display: block;
     content: '';
 
-    height: 200%;
-    width: 200%;
+    display: block;
+
+    block-size: 200%;
+    inline-size: 200%;
   }
 }
 
 .mdw-layout__navdrawer,
 .mdw-layout__sidesheet {
-  @include gridRow($rowTop, $rowBottom);
-
   box-sizing: border-box;
-  max-height: 100vh;
-  height: 100%;
-  max-width: calc(100vw - #{dp(56)});
-  @include breakpoint.isXSmallWindow() {
-    max-width: calc(100vw - #{dp(64)}); // Tablet or Desktop
-  }
-  width: $sheetMinWidth;
+  max-block-size: 100vh;
+  block-size: 100%;
+  max-inline-size: var(--mdw-layout__sheet-max-inline-size);
+  inline-size: $sheetMinWidth;
 
   transition-duration: motion.$expandDuration;
-  transition-property: width, max-width, transform;
+  transition-property: block-size, max-block-size, transform;
   transition-timing-function: motion.$decelerateEasing;
 
   will-change: max-width, transform, position;
@@ -203,39 +243,46 @@ $contentOverflowYSticky: visible !default;
   -webkit-overflow-scrolling: touch;
 
   box-sizing: border-box;
-  max-height: 100%;
-  height: 100%;
-  border-width: dp(1);
+  max-block-size: 100%;
+  block-size: 100%;
+  border-width: 1px;
 }
 
 .mdw-layout__navdrawer {
-  @include gridColumn($columnNavDrawer);
+  grid-area: navdrawer;
+
+  .mdw-layout__sheet-content {
+    border-inline-start-style: none;
+    border-inline-end-style: solid;
+  }
 
   .mdw-list__content.mdw-overlay {
     &::before,
     & > .mdw-ripple__container {
-      margin: dp(4) dp(8);
+      margin: 4px 8px;
 
-      border-radius: dp(4);
+      border-radius: 4px;
     }
   }
 }
 
 .mdw-layout__sidesheet {
-  @include gridColumn($columnSideSheet);
+  grid-area: sidedrawer;
+
+  .mdw-layout__sheet-content {
+    border-inline-start-style: solid;
+    border-inline-end-style: none;
+  }
 }
 
-.mdw-layout__navdrawer .mdw-layout__sheet-content,
-:root[dir="rtl"] .mdw-layout__sidesheet .mdw-layout__sheet-content {
-  border-right-style: solid;
-  border-left-style: none;
-}
-
-/* stylelint-disable-next-line no-descending-specificity */
-.mdw-layout__sidesheet .mdw-layout__sheet-content,
-:root[dir="rtl"] .mdw-layout__navdrawer .mdw-layout__sheet-content {
-  border-right-style: none;
-  border-left-style: solid;
+.mdw-layout[mdw-ios][mdw-standalone] {
+  .mdw-layout__appbar,
+  .mdw-layout__navdrawer,
+  .mdw-layout__sidesheet {
+    padding-block-start: 20px;
+    padding-block-start: constant(safe-area-inset-top);
+    padding-block-start: env(safe-area-inset-top);
+  }
 }
 
 @each $side in ('navdrawer', 'sidesheet') {
@@ -245,16 +292,13 @@ $contentOverflowYSticky: visible !default;
     }
 
     .mdw-layout__#{$side} {
-      // Safari bug prevents using position:fixed with grid on resize
-      // Switching between display:block and display:flex will force Safari to rerender
-      // https://codepen.io/shortfuse/pen/pYqLbQ
-      
-      display: inline-block;
+
+      // display: inline-block;
       position: fixed;
-      top: 0;
-      bottom: 0;
+      inset-block: 0;
 
       flex-direction: column;
+      grid-row-start: 1;
 
       // Transition visibility
       transition-duration: motion.$collapseDuration;
@@ -269,29 +313,14 @@ $contentOverflowYSticky: visible !default;
         border-width: 0;
       }
       @if ($side == 'navdrawer') {
-        right: auto;
-        left: 0;
+        inset-inline: 0 auto;
 
-        transform: translateX(-100%);
+        transform: var(--mdw-layout__transform-inline-reverse);
 
-        :root[dir="rtl"] & {
-          right: 0;
-          left: auto;
-
-          transform: translateX(100%);
-        }
       } @else {
-        right: 0;
-        left: auto;
+        inset-inline: auto 0;
 
-        transform: translateX(100%);
-
-        :root[dir="rtl"] & {
-          right: auto;
-          left: 0;
-
-          transform: translateX(-100%);
-        }
+        transform: var(--mdw-layout__transform-inline);
       }
 
       // Shown
@@ -299,7 +328,7 @@ $contentOverflowYSticky: visible !default;
       &[aria-hidden="false"] {
         // Change visibility immediately
         transition-duration: motion.$expandDuration;
-        transition-property: max-width, transform;
+        transition-property: max-inline-size, transform;
         transition-timing-function: motion.$decelerateEasing;
 
         transform: translateX(0);
@@ -309,13 +338,14 @@ $contentOverflowYSticky: visible !default;
 
         & ~ .mdw-layout__scrim {
           pointer-events: auto;
+
           visibility: visible;
-    
+
           background-color: $scrimColor;
         }
 
         &,
-        &.mdw-layout__appbar {
+        & ~ .mdw-layout__appbar {
           .mdw-layout__#{$side}-show {
             display: none;
           }
@@ -326,49 +356,40 @@ $contentOverflowYSticky: visible !default;
 }
 
 .mdw-layout__banner {
-  @include gridRow($rowBanner);
-  @include gridColumn($columnContent);
+  grid-area: banner;
+
   z-index: 0;
 }
 
 .mdw-layout__content {
-  @include gridRow($rowContent);
-  @include gridColumn($columnContent);
-
   display: flex;
   position: relative;
   align-items: center;
   flex-direction: column;
+  grid-area: content;
   overflow-x: visible;
-  overflow-y: $contentOverflowY;
+  overflow-y: visible;
   -webkit-overflow-scrolling: touch;
 }
 
-
 .mdw-layout__content-page {
-  width: 100%;
+  inline-size: 100%;
 }
 
 .mdw-layout__fab,
 .mdw-layout__snackbar {
-  // Aligned to bottom-anchor
-  @include gridRow($rowBottom);
-  @include gridColumn($columnContent);
-
-  position: static;
-  position: -webkit-sticky;
-  position: -moz-sticky;
   position: sticky;
-  top: auto;
-  bottom: 0;
+  inset-block: auto 0;
+  grid-area: bottom;
 
-  width: auto;
+  inline-size: auto;
+
+  pointer-events: none;
 
   transition-duration: motion.$expandDuration;
   transition-property: transform;
   transition-timing-function: motion.$decelerateEasing;
 
-  pointer-events: none;
   transform: translateY(-100%);
   z-index: 6;
 
@@ -382,10 +403,7 @@ $contentOverflowYSticky: visible !default;
 
 .mdw-layout__dialogs {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
 
   pointer-events: none;
 
@@ -394,42 +412,17 @@ $contentOverflowYSticky: visible !default;
 
 .mdw-layout__snackbar-anchor {
   position: absolute;
-  right: auto;
-  bottom: 0;
-  left: 0;
+  inset-block-end: 0;
+  inset-inline: 0 auto;
 
   // Snackbars are not aligned with layout
   box-sizing: border-box;
-  padding-top: dp(24 * 0.5);
-  padding-right: 0;
-  padding-bottom: dp(24 * 0.5);
-  padding-left: dp(24 * 0.5);
-  @include breakpoint.has16DPMargin() {
-    padding-top: dp(16 * 0.5);
-    padding-right: 0;
-    padding-bottom: dp(16 * 0.5);
-    padding-left: dp(16 * 0.5);
-  }
+  padding-block: calc(var(--mdw-layout__margin) * 0.5);
+  padding-inline-start: calc(var(--mdw-layout__margin) * 0.5);
 
   transition-duration: inherit;
-  transition-property: transform, bottom;
+  transition-property: transform, inset-block-end;
   transition-timing-function: inherit;
-
-  :root[dir="rtl"] & {
-    right: 0;
-    left: auto;
-
-    padding-top: dp(24 * 0.5);
-    padding-right: dp(24 * 0.5);
-    padding-bottom: dp(24 * 0.5);
-    padding-left: 0;
-    @include breakpoint.has16DPMargin() {
-      padding-top: dp(16 * 0.5);
-      padding-right: dp(16 * 0.5);
-      padding-bottom: dp(16 * 0.5);
-      padding-left: dp(0);
-    }
-  }
 }
 
 .mdw-layout__snackbar .mdw-snackbar__container {
@@ -438,26 +431,17 @@ $contentOverflowYSticky: visible !default;
 
 .mdw-layout__fab-anchor {
   position: absolute;
+  inset-block-end: 0;
 
-  // Left aligned
-  right: 0;
-  bottom: 0;
-  left: auto;
+  // Start aligned
+  inset-inline: auto 0;
 
-  padding: dp(24);
-  @include breakpoint.has16DPMargin() {
-    padding: dp(16);
-  }
+  padding: var(--mdw-layout__margin);
 
   transition-duration: inherit;
-  transition-property: transform, right, padding-top, padding-bottom;
+  transition-property: transform, inset-inline, padding-block;
   transition-timing-function: inherit;
 
-  :root[dir="rtl"] & {
-    right: 100%;
-
-    transform: translateX(100%);
-  }
 }
 
 .mdw-layout__fab-anchor .mdw-fab {
@@ -469,40 +453,39 @@ $contentOverflowYSticky: visible !default;
 }
 
 .mdw-layout__bottomnav {
-  @include gridColumn($columnContent);
-  @include gridRow($rowBottom);
+  position: sticky;
+  inset-block-end: 0;
+  grid-area: bottom;
+
+  z-index: 4;
+
+  box-shadow: elevation.boxShadow(8);
 
   &[aria-hidden="true"] {
     display: none;
   }
-
-  position: static;
-  position: -webkit-sticky;
-  position: -moz-sticky;
-  position: sticky;
-  bottom: 0;
-  
-  z-index: 4;
-
-  box-shadow: elevation.boxShadow(8);
 }
 
 .mdw-layout__appbar-shape {
   display: flex;
   position: absolute;
-  top: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+
+  grid-row: 1 / span 2;
   overflow: hidden;
 
-  height: 100%;
-  width: 100%;
+  block-size: 100%;
+  inline-size: 100%;
 
   transition-duration: inherit;
   transition-property: box-shadow;
   transition-timing-function: inherit;
 
+  z-index: -1;
+
   box-shadow: elevation.boxShadow(4);
-  
+
   color: transparent;
 
   .mdw-layout__appbar[mdw-autoraise]:not([mdw-raise]) & {
@@ -515,22 +498,19 @@ $contentOverflowYSticky: visible !default;
   &::after {
     content: '';
 
-    min-width: dp(24);
-    @include breakpoint.has16DPMargin() {
-      min-width: dp(16);
-    }
+    min-inline-size: var(--mdw-layout__margin);
   }
 }
 
 .mdw-layout__fab-cut-track {
   display: flex;
   position: relative;
-  top: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
   flex-direction: row;
 
-  height: 100%;
-  width: 100%;
+  block-size: 100%;
+  inline-size: 100%;
 
   transition-duration: motion.$shapeChangeDuration;
   transition-property: transform;
@@ -542,33 +522,33 @@ $contentOverflowYSticky: visible !default;
   &::after,
   & > svg {
     position: absolute;
-    top: 0;
+    inset-block-start: 0;
 
-    height: 100%;
+    block-size: 100%;
   }
 
   &::before,
   &::after {
     content: '';
 
-    width: 100%;
-    margin-left: -$fabCutSize * 0.5;
+    inline-size: 100%;
+    margin-inline-start: -$fabCutSize * 0.5;
 
     background-color: currentColor;
   }
 
   &::before {
-    left: -100%;
+    inset-inline-start: -100%;
   }
 
   &::after {
-    left: $fabCutSize;
+    inset-inline-start: $fabCutSize;
   }
 
   & > svg {
-    left: -$fabCutSize * 0.5;
+    inset-inline-start: -$fabCutSize * 0.5;
 
-    width: $fabCutSize;
+    inline-size: $fabCutSize;
 
     fill: currentColor;
   }
@@ -600,7 +580,7 @@ $contentOverflowYSticky: visible !default;
         transform: translateY(0);
       }
     }
-    
+
     .mdw-layout__appbar-shape {
       filter: none;
 
@@ -635,10 +615,16 @@ $contentOverflowYSticky: visible !default;
 }
 
 @include breakpoint.maxSmallWindow {
+  .mdw-layout__body {
+    grid-template-columns:
+      [start] 0
+      [center] minmax(0, 100%)
+      [end] 0;
+  }
+
   .mdw-layout__appbar[mdw-bottom] {
-    @include gridRow($rowBottom);
-    top: auto;
-    bottom: 0;
+    inset-block: auto 0;
+    grid-area: bottom;
 
     z-index: 8;
 
@@ -650,15 +636,15 @@ $contentOverflowYSticky: visible !default;
       & ~ .mdw-layout__fab {
         transform: translateY(-100%) translateY(#{$fabSize * 0.5});
       }
-  
+
       .mdw-layout__appbar-shape {
         transition-property: filter;
-  
+
         filter: elevation.filter(8);
-        
+
         box-shadow: elevation.boxShadow(0);
       }
-      
+
       .mdw-layout__fab-mask-shape {
         transform: scale(0);
       }
@@ -700,30 +686,20 @@ $contentOverflowYSticky: visible !default;
   }
 
   .mdw-layout__snackbar-anchor {
-    &,
-    :root[dir="rtl"] & {
-      right: 0;
-      left: 0;
+    inset-inline: 0;
 
-      padding: dp(24 * 0.5);
-      @include breakpoint.has16DPMargin() {
-        padding: dp(16 * 0.5);
-      }
-    }
+    padding: calc(var(--mdw-layout__margin) * 0.5);
   }
 
   .mdw-layout__fab[mdw-mobile] {
     & ~ .mdw-layout__snackbar .mdw-layout__snackbar-anchor {
-      bottom: dp(24);
-      @include breakpoint.has16DPMargin() {
-        bottom: dp(16);
-      }
+      inset-block-end: var(--mdw-layout__margin);
 
-      transform: translateY(#{dp(-56)});
+      transform: translateY(-56px);
     }
 
     & ~ .mdw-layout__content {
-      padding-bottom: #{$fabSize + dp(24)};
+      padding-block-end: calc(#{$fabSize} + var(--mdw-layout__margin));
     }
 
     &[aria-hidden="false"] .mdw-fab {
@@ -736,6 +712,7 @@ $contentOverflowYSticky: visible !default;
 
   .mdw-layout__appbar[mdw-fab-cut~="center"] .mdw-layout__fab-cut-track,
   .mdw-layout__fab[mdw-mobile="center"] .mdw-layout__fab-anchor {
+    /* stylelint-disable-next-line liberty/use-logical-spec */
     right: 50%;
 
     transform: translateX(50%);
@@ -743,16 +720,14 @@ $contentOverflowYSticky: visible !default;
 
   .mdw-layout__appbar[mdw-fab-cut~="full"] .mdw-layout__fab-cut-track,
   .mdw-layout__fab[mdw-mobile="full"] .mdw-layout__fab-anchor {
-    right: 0;
-    left: 0;
+    inset-inline: 0;
 
     transform: none;
   }
 
   .mdw-layout__fab[mdw-mobile="full"] .mdw-fab__button {
-    width: 100%;
-    padding-right: 0;
-    padding-left: 0;
+    inline-size: 100%;
+    padding-inline: 0;
   }
 
   .mdw-layout__appbar[mdw-fab-cut][mdw-bottom]:not([mdw-hide]) {
@@ -772,13 +747,12 @@ $contentOverflowYSticky: visible !default;
       }
 
       .mdw-layout__fab-anchor {
-        padding-top: 0;
-        padding-bottom: 0;
+        padding-block: 0;
       }
     }
 
     & ~ .mdw-layout__snackbar .mdw-layout__snackbar-anchor {
-      bottom: 0;
+      inset-block-end: 0;
 
       transform: translateY(-$fabSize * 0.5);
     }
@@ -794,37 +768,33 @@ $contentOverflowYSticky: visible !default;
     }
   }
 
-  .mdw-layout__body:not([mdw-sidesheet-toggle]):not([mdw-sidesheet-style="modal"]) {
-    .mdw-layout__sidesheet-show,
-    .mdw-layout__sidesheet-hide,
-    .mdw-layout__sidesheet-toggle {
+  .mdw-layout__body:not([mdw-sidedrawer-toggle]):not([mdw-sidedrawer-style="modal"]) {
+    .mdw-layout__sidedrawer-show,
+    .mdw-layout__sidedrawer-hide,
+    .mdw-layout__sidedrawer-toggle {
       display: none;
     }
   }
 
-  .mdw-layout__navdrawer,
-  .mdw-layout__sidesheet {
+  .mdw-layout__navdrawer {
     // Full-height
-    position: static;
-    position: -webkit-sticky;
-    position: -moz-sticky;
+
     position: sticky;
-    top: 0;
-    bottom: auto;
+    inset-block: 0 auto;
 
     transform: none;
   }
 
   .mdw-layout__snackbar-anchor {
-    width: 50%;
+    inline-size: 50%;
   }
 
   .mdw-layout__body[mdw-navdrawer-style~="clipped"],
-  .mdw-layout__body[mdw-sidesheet-style~="clipped"] {
-    overflow-y: $bodyOverflowY;
+  .mdw-layout__body[mdw-sidedrawer-style~="clipped"] {
+    overflow-y: hidden;
 
     & > .mdw-layout__content {
-      overflow-y: $contentOverflowY;
+      overflow-y: auto;
     }
   }
 
@@ -837,14 +807,13 @@ $contentOverflowYSticky: visible !default;
     }
 
     &:not([mdw-desktop="appbar"]) ~ .mdw-layout__content {
-      padding-bottom: #{$fabSize + dp(24)};
+      padding-block-end: calc(#{$fabSize} + var(--mdw-layout__margin));
     }
   }
 
   .mdw-layout__fab[mdw-desktop="appbar"] {
-    @include gridRow($rowTop);
-    top: 0;
-    bottom: auto;
+    inset-block: 0 auto;
+    grid-area: appbar;
 
     transform: translateY(100%);
 
@@ -856,26 +825,17 @@ $contentOverflowYSticky: visible !default;
     }
 
     & ~ .mdw-layout__snackbar .mdw-layout__snackbar-anchor {
-      width: 75%;
+      inline-size: 75%;
     }
 
     .mdw-layout__fab-anchor {
-      top: 0;
-      right: auto;
-      bottom: auto;
-      left: 0;
+      inset-block: 0 auto;
+      inset-inline: 0 auto;
 
-      padding-top: 0;
-      padding-right: dp(8);
-      padding-bottom: 0;
-      padding-left: dp(8);
+      padding-block: 0;
+      padding-inline: 8px;
 
       transform: none;
-
-      :root[dir="rtl"] & {
-        right: 0;
-        left: auto;
-      }
     }
   }
 
@@ -885,67 +845,22 @@ $contentOverflowYSticky: visible !default;
   }
 
   .mdw-layout__body[mdw-navdrawer-style~="clipped"] .mdw-layout__navdrawer,
-  .mdw-layout__body[mdw-sidesheet-style~="clipped"] .mdw-layout__sidesheet {
-    @include gridRow($rowBanner, $rowBottom);
+  .mdw-layout__body[mdw-sidedrawer-style~="clipped"] .mdw-layout__sidedrawer {
     z-index: 0;
   }
-  
-  .mdw-layout__body[mdw-navdrawer-style~="clipped"] {
-    .mdw-layout__appbar,
-    .mdw-layout__fab[mdw-desktop="appbar"] {
-      @include gridColumn($columnNavDrawer, $columnContent);
-    }
-  }
 
-  .mdw-layout__body[mdw-sidesheet-style~="clipped"] {
-    .mdw-layout__appbar,
-    .mdw-layout__fab[mdw-desktop="appbar"] {
-      @include gridColumn($columnContent, $columnSideSheet);
-    }
-  }
-
-  .mdw-layout__body[mdw-navdrawer-style~="clipped"][mdw-sidesheet-style~="clipped"] {
-    .mdw-layout__appbar,
-    .mdw-layout__fab[mdw-desktop="appbar"] {
-      @include gridColumn($columnNavDrawer, $columnSideSheet);
-    }
-  }
-  
   .mdw-layout__body[mdw-navdrawer-style~="floating"] .mdw-layout__navdrawer,
-  .mdw-layout__body[mdw-sidesheet-style~="floating"] .mdw-layout__sidesheet {
-    @include gridRow($rowContent, $rowBottom);
-
+  .mdw-layout__body[mdw-sidedrawer-style~="floating"] .mdw-layout__sidedrawer {
     & .mdw-layout__sheet-content {
-      height: auto;
+      block-size: auto;
       border-width: 0;
     }
   }
 
-  .mdw-layout__body[mdw-navdrawer-style~="floating"] {
-    .mdw-layout__banner,
-    .mdw-layout__bottomnav {
-      @include gridColumn($columnNavDrawer, $columnContent);
-    }
-  }
-
-  .mdw-layout__body[mdw-sidesheet-style~="floating"] {
-    .mdw-layout__banner,
-    .mdw-layout__bottomnav {
-      @include gridColumn($columnContent, $columnSideSheet);
-    }
-  }
-
-  .mdw-layout__body[mdw-navdrawer-style~="floating"][mdw-sidesheet-style~="floating"] {
-    .mdw-layout__banner,
-    .mdw-layout__bottomnav {
-      @include gridColumn($columnNavDrawer, $columnSideSheet);
-    }
-  }
-
   .mdw-layout__body[mdw-navdrawer-style~="card"] .mdw-layout__navdrawer,
-  .mdw-layout__body[mdw-sidesheet-style~="card"] .mdw-layout__sidesheet {
-    margin: 0 dp(24);
-    padding: dp(24) 0;
+  .mdw-layout__body[mdw-sidedrawer-style~="card"] .mdw-layout__sidedrawer {
+    margin: 0 var(--mdw-layout__margin);
+    padding: var(--mdw-layout__margin) 0;
 
     & > .mdw-layout__sheet-content {
       box-shadow: elevation.boxShadow(8);
@@ -953,16 +868,15 @@ $contentOverflowYSticky: visible !default;
   }
 
   .mdw-layout__body[mdw-navdrawer-toggle~="dismissible"]:not([mdw-navdrawer-style="modal"]) .mdw-layout__navdrawer:not([aria-hidden="false"]),
-  .mdw-layout__body[mdw-sidesheet-toggle~="dismissible"]:not([mdw-sidesheet-style="modal"]) .mdw-layout__sidesheet:not([aria-hidden="false"]) {
-    max-width: 0;
-    width: 0;
-    margin-right: 0;
-    margin-left: 0;
+  .mdw-layout__body[mdw-sidedrawer-toggle~="dismissible"]:not([mdw-sidedrawer-style="modal"]) .mdw-layout__sidedrawer:not([aria-hidden="false"]) {
+    max-inline-size: 0;
+    inline-size: 0;
+    margin-inline: 0;
 
     transition-duration: motion.$collapseDuration;
     transition-property: width, max-width, margin, transform, visibility;
     transition-timing-function: motion.$accelerateEasing;
-    
+
     visibility: hidden;
 
     .mdw-layout__sheet-content {
@@ -972,18 +886,18 @@ $contentOverflowYSticky: visible !default;
 
   .mdw-layout__body[mdw-navdrawer-toggle~="mini"]:not([mdw-navdrawer-style="modal"]) {
     .mdw-layout__navdrawer:not([aria-hidden="false"]) {
-      max-width: $sheetMaxWidthMini;
-      width: $sheetMaxWidthMini;
+      max-inline-size: $sheetMaxWidthMini;
+      inline-size: $sheetMaxWidthMini;
 
       transition-duration: motion.$collapseDuration;
       transition-timing-function: motion.$accelerateEasing;
     }
   }
 
-  .mdw-layout__body[mdw-sidesheet-toggle~="mini"]:not([mdw-sidesheet-style="modal"]) {
-    .mdw-layout__sidesheet:not([aria-hidden="false"]) {
-      max-width: $sheetMaxWidthMini;
-      width: $sheetMaxWidthMini;
+  .mdw-layout__body[mdw-sidedrawer-toggle~="mini"]:not([mdw-sidedrawer-style="modal"]) {
+    .mdw-layout__sidedrawer:not([aria-hidden="false"]) {
+      max-inline-size: $sheetMaxWidthMini;
+      inline-size: $sheetMaxWidthMini;
 
       transition-duration: motion.$collapseDuration;
       transition-timing-function: motion.$accelerateEasing;
@@ -997,16 +911,6 @@ $contentOverflowYSticky: visible !default;
       filter: none;
 
       box-shadow: elevation.boxShadow(0);
-    }
-  }
-}
-
-@supports (position: sticky) or (position: -webkit-sticky) or (position: -moz-sticky) {
-  .mdw-layout__body {
-    overflow-y: $bodyOverflowYSticky;
-
-    & > .mdw-layout__content {
-      overflow-y: $contentOverflowYSticky;
     }
   }
 }

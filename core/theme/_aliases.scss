@@ -1,0 +1,15 @@
+@use 'sass:map';
+@use './_config.scss' as *;
+@use './_palettes.scss' as *;
+@use './_functions.scss' as *;
+
+:root {
+  @each $aliasKey in map.keys($alias) {
+    $paletteKey: map.get($alias, $aliasKey);
+    $palette: map.get($palettes, $paletteKey);
+    @each $toneKey in getAllTones() {
+      $tone: map.get($palette, $toneKey);
+      --mdw-alias-#{$aliasKey}-#{$toneKey}: var(--mdw-palette-#{$paletteKey}-#{$toneKey});
+    }
+  }
+}

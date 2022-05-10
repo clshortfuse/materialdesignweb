@@ -1,16 +1,16 @@
 // https://material.io/guidelines/components/buttons.html#buttons-raised-buttons
 // https://material.io/guidelines/style/icons.html#
 
-@use '../../core/_breakpoint.scss' as breakpoint;
 @use '../../core/_elevation.scss' as elevation;
 @use '../../core/_length.scss' as *;
 @use '../../core/_motion.scss' as motion;
 @use '../../core/_platform.scss' as platform;
 @use '../../core/_type.scss' as type;
 
-$externalPadding: dp(8) !default;
-$minimumClickTarget: dp(48) !default;
-$outlineSize: dp(1) !default;
+:root {
+  --mdw-button__click-target-size: 48px;
+  --mdw-button__outline-size: 1px;
+}
 
 .mdw-button {
   display: inline-flex;
@@ -20,11 +20,11 @@ $outlineSize: dp(1) !default;
   overflow: hidden;
 
   box-sizing: border-box;
-  height: dp(36);
-  min-width: dp(64);
-  margin: 0 dp(8);
+  block-size: 36px;
+  min-inline-size: 64px;
+  margin: 0 8px;
   border: none;
-  padding: 0 dp(8);
+  padding: 0 8px;
 
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -42,20 +42,21 @@ $outlineSize: dp(1) !default;
 
   z-index: 0;
 
-  border-radius: dp(4);
+  border-radius: 4px;
   color: inherit;
 
   text-align: center;
   text-decoration: none;
-  
+
   // Remove Firefox inner
+
   &::-moz-focus-inner {
     border: 0;
   }
 
   &[mdw-border-ink],
   &[mdw-surface] {
-    padding: 0 dp(16);
+    padding: 0 16px;
   }
 
   &:not([mdw-surface]) {
@@ -63,6 +64,7 @@ $outlineSize: dp(1) !default;
   }
 
   // Don't override font icon properties
+
   &:not([mdw-icon]) {
     @include type.addRules('button');
     font-family: inherit;
@@ -71,25 +73,26 @@ $outlineSize: dp(1) !default;
 
   &[mdw-border-ink] {
     border-style: solid;
-    border-width: $outlineSize;
+    border-width: var(--mdw-button__outline-size);
 
     &::before,
     & > .mdw-ripple {
       box-sizing: content-box;
-      height: 100%;
-      width: 100%;
-      margin-top: -$outlineSize;
-      margin-left: -$outlineSize;
-      padding-right: 2 * $outlineSize;
-      padding-bottom: 2 * $outlineSize;
+      block-size: 100%;
+      inline-size: 100%;
+      margin-block-start: calc(-1 * var(--mdw-button__outline-size));
+      margin-inline-start: calc(-1 * var(--mdw-button__outline-size));
+      padding-block-end: calc(2 * var(--mdw-button__outline-size));
+      padding-inline-end: calc(2 * var(--mdw-button__outline-size));
     }
   }
 
   // Icon properties
+
   &[mdw-icon] {
-    height: dp(40);
-    min-width: dp(40);
-    padding: dp(8);
+    block-size: 40px;
+    min-inline-size: 40px;
+    padding: 8px;
 
     -moz-user-select: none;
     -ms-user-select: none;
@@ -98,12 +101,12 @@ $outlineSize: dp(1) !default;
 
     border-radius: 50%;
 
-    font-size: dp(24); // Internal padding provided by font
+    font-size: 24px; // Internal padding provided by font
   }
 
   &[mdw-image] {
-    height: dp(24);
-    min-width: dp(24);
+    block-size: 24px;
+    min-inline-size: 24px;
     margin: 0;
     padding: 0;
 
@@ -116,11 +119,11 @@ $outlineSize: dp(1) !default;
 
     & > {
       position: absolute;
-      top: 0;
-      left: 0;
-      
-      height: 100%;
-      width: auto;
+      inset-block-start: 0;
+      inset-inline-start: 0;
+
+      block-size: 100%;
+      inline-size: auto;
     }
   }
 }
@@ -131,31 +134,29 @@ $outlineSize: dp(1) !default;
     content: "";
 
     position: absolute;
-    top: 50%;
-    left: 0;
-    
-    height: $minimumClickTarget;
-    width: 100%;
+    inset-block-start: 50%;
+    inset-inline-start: 0;
+
+    block-size: var(--mdw-button__click-target-size);
+    inline-size: 100%;
 
     transform: translateY(-50%);
   }
 }
 
 // Raised
-.mdw-button[mdw-raised] {
-  box-shadow: elevation.boxShadow(2);
+
+.mdw-button[mdw-raised]:not([disabled]):not([aria-disabled="true"]) {
+  @include elevation.boxShadowMixin(2);
 
   &:active {
-    box-shadow: elevation.boxShadow(8);
+    @include elevation.boxShadowMixin(8);
   }
 }
 
+// Disabled
 .mdw-button[disabled],
 .mdw-button[aria-disabled="true"] {
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   cursor: not-allowed;
-
-  &,
-  &[mdw-raised] {
-    box-shadow: elevation.boxShadow(0);
-  }
 }

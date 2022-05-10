@@ -26,8 +26,7 @@ function onKeyDown(event) {
   if (event.key !== 'Enter' && event.key !== 'Spacebar' && event.key !== ' ') {
     return;
   }
-  /** @type {HTMLElement} */
-  const element = (event.currentTarget);
+  const element = /** @type {HTMLElement} */ (event.currentTarget);
   if (!element) {
     return;
   }

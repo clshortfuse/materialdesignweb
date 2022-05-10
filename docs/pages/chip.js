@@ -1,8 +1,7 @@
 import * as Chip from '../../components/chip/index.js';
-import { iterateArrayLike } from '../../core/dom.js';
 import { convertElementToCode } from '../_sample-utils.js';
 
-/** @type {ArrayLike<HTMLElement>} */
+/** @type {Iterable<HTMLElement>} */
 let sampleComponents;
 
 /** @return {void} */
@@ -12,7 +11,7 @@ function updateSampleCode() {
   const useJS = jsRequired || jsOptional;
 
   // Strip JS related elements and attributes
-  iterateArrayLike(sampleComponents, Chip.detach);
+  for (const element of sampleComponents) { Chip.detach(element); }
 
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
   const sampleContainer = document.querySelector('.component-sample__container').firstElementChild;
@@ -20,7 +19,7 @@ function updateSampleCode() {
 
   // Reattach JS if requested
   if (useJS) {
-    iterateArrayLike(sampleComponents, Chip.attach);
+    for (const element of sampleComponents) { Chip.attach(element); }
   }
 
   const jsCodeElement = document.getElementsByClassName('component-js')[0];
@@ -29,10 +28,10 @@ function updateSampleCode() {
 
 /** @return {void} */
 function initializeSampleComponents() {
-  iterateArrayLike(document.querySelectorAll('.js .mdw-tab'), Chip.attach);
-  iterateArrayLike(document.getElementsByTagName('form'), (formElement) => {
+  for (const element of document.querySelectorAll('.js .mdw-tab')) { Chip.attach(element); }
+  for (const formElement of document.getElementsByTagName('form')) {
     formElement.reset();
-  });
+  }
 }
 
 /**
@@ -40,8 +39,7 @@ function initializeSampleComponents() {
  * @return {void}
  */
 function onOptionChange(event) {
-  /** @type {HTMLInputElement} */
-  const inputElement = (event.currentTarget);
+  const inputElement = /** @type {HTMLInputElement} */ (event.currentTarget);
   const { name, value, checked } = inputElement;
 
   switch (name) {
@@ -55,13 +53,13 @@ function onOptionChange(event) {
       }
       break;
     case 'outlined': {
-      iterateArrayLike(sampleComponents, (el) => {
+      for (const el of sampleComponents) {
         if (checked) {
           el.setAttribute('mdw-outlined', '');
         } else {
           el.removeAttribute('mdw-outlined');
         }
-      });
+      }
       break;
     }
     default:
@@ -72,9 +70,9 @@ function onOptionChange(event) {
 /** @return {void} */
 function setupComponentOptions() {
   sampleComponents = document.querySelectorAll('.component-sample .mdw-chip');
-  iterateArrayLike(document.querySelectorAll('.demo-options input[name]'), (el) => {
+  for (const el of document.querySelectorAll('.demo-options input[name]')) {
     el.addEventListener('change', onOptionChange);
-  });
+  }
 }
 
 initializeSampleComponents();

@@ -16,7 +16,6 @@ $icon-with-label-height: 72 !default;
 }
 
 .mdw-tab__list {
-  display: flex; // IE11 doesn't support grid-auto-columns
   display: grid;
   position: relative;
   flex-direction: row;
@@ -24,8 +23,6 @@ $icon-with-label-height: 72 !default;
   grid-auto-columns: 1fr;
 
   justify-content: flex-start;
-
-  -ms-overflow-style: none;
 
   overflow-x: auto;
   overflow-y: hidden;
@@ -41,21 +38,15 @@ $icon-with-label-height: 72 !default;
   &[mdw-scrollable] {
     display: flex;
     overflow-x: auto;
-    
+
     box-sizing: border-box;
-    
+
     &::before,
     &::after {
-
-      min-width: dp(52);
       // Ensures 52dp blank space at end
       content: '';
-    }
 
-    & > .mdw-tab__item {
-      min-width: dp(90);
-      max-width: 100%;
-      flex: none;
+      min-inline-size: 52px;
     }
   }
 }
@@ -69,13 +60,12 @@ $icon-with-label-height: 72 !default;
 
 .mdw-tab__indicator {
   position: absolute;
-  right: auto;
-  bottom: 0;
-  left: 0;
+  inset-block-end: 0;
+  inset-inline: 0 auto;
 
-  height: dp(2);
-  width: 0;
-  width: dp(1000);
+  block-size: 2px;
+  inline-size: 0;
+  inline-size: 1000px;
 
   transition-property: none;
 
@@ -87,7 +77,7 @@ $icon-with-label-height: 72 !default;
   &[mdw-animate] {
     transition-property: transform;
   }
-  
+
 }
 
 .mdw-tab__item {
@@ -100,7 +90,8 @@ $icon-with-label-height: 72 !default;
   overflow: hidden;
 
   box-sizing: content-box;
-  min-height: dp(48); // Redundant but needed for IE11
+
+  min-block-size: 48px;
   flex: auto;
 
   cursor: pointer;
@@ -116,43 +107,42 @@ $icon-with-label-height: 72 !default;
 
   box-shadow: none;
 
-  
+  .mdw-tab__list[mdw-scrollable] > & {
+    min-inline-size: 90px;
+    max-inline-size: 100%;
+    flex: none;
+  }
 }
 
 .mdw-tab__icon {
   @include type.baselineToBottom($icon-to-label-baseline);
-  margin-top: dp($icon-margin-top);
-  margin-bottom: dp(-$icon-to-label-baseline);
-
-  transition-property: color;
+  margin-block: dp($icon-margin-top) dp(-$icon-to-label-baseline);
 
   pointer-events: none;
+
+  transition-property: color;
 }
 
 .mdw-tab__label {
   @include type.addRules('button');
 
   box-sizing: border-box;
-  margin-top: auto;
-  margin-bottom: auto;
-  padding: 0 dp(16);
-
-  transition-property: color;
+  margin-block: auto;
+  padding: 0 16px;
 
   pointer-events: none;
+
+  transition-property: color;
 
   text-align: center;
 
   .mdw-tab__icon ~ & {
     @include type.baselineToTop($icon-to-label-baseline);
-    @include type.baselineToBottom($icon-with-label-height
-    - $icon-margin-top
-    - $icon-size
-    - $icon-to-label-baseline);
+    @include type.baselineToBottom($icon-with-label-height - $icon-margin-top - $icon-size - $icon-to-label-baseline);
 
     display: block;
 
-    min-height: 0;
+    min-block-size: 0;
     margin: 0;
   }
 }
@@ -168,8 +158,9 @@ $icon-with-label-height: 72 !default;
   overflow-x: hidden;
   overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
+
   scroll-behavior: smooth;
-  
+
   // W3C standard
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -183,12 +174,7 @@ $icon-with-label-height: 72 !default;
   scroll-snap-type-x: mandatory;
   -webkit-scroll-snap-points-x: repeat(100%);
   scroll-snap-points-x: repeat(100%);
-  
-  // Safari 9
-  
-  // IE + Edge
-  -ms-scroll-snap-x: mandatory snapInterval(0%, 100%);
-  
+
   overscroll-behavior-x: none;
 
   .mdw-tab[mdw-resize-stage] & {
@@ -203,8 +189,8 @@ $icon-with-label-height: 72 !default;
 .mdw-tab__panel {
   scroll-snap-align: center;
 
-  min-width: 100%;
-  max-width: 100%;
+  min-inline-size: 100%;
+  max-inline-size: 100%;
   flex-shrink: 0;
   flex-basis: 100%;
 
@@ -216,17 +202,16 @@ $icon-with-label-height: 72 !default;
     visibility: hidden;
   }
 
-
-  &[aria-expanded="false"] .mdw-tabs__panel__inactive-hide,
-  &[aria-expanded="true"] .mdw-tabs__panel__active-hide {
+  &[aria-expanded="false"] .mdw-tab__panel__inactive-hide,
+  &[aria-expanded="true"] .mdw-tab__panel__active-hide {
     visibility: hidden;
   }
 
-  &[aria-expanded="false"] .mdw-tabs__panel__inactive-remove,
-  &[aria-expanded="true"] .mdw-tabs__panel__active-remove {
+  &[aria-expanded="false"] .mdw-tab__panel__inactive-remove,
+  &[aria-expanded="true"] .mdw-tab__panel__active-remove {
     display: none;
   }
-  
+
 }
 
 .mdw-tab__content[mdw-no-scroll] {

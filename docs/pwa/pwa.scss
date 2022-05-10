@@ -1,12 +1,12 @@
-@use "../../core/theme/_config.scss" with (
-  $primary: 'deeppurple',
-  $secondary: 'deeporange',
-  $warn: 'red',
-  $background: 'bluegray',
-  $foreground: (#006064, #E0F7FA),
+@use "../../core/theme" with (
+  $alias: (
+    'primary': 'deeppurple',
+    'secondary': 'deeporange',
+    'warn': 'red',
+    'background': 'bluegray',
+  )
 );
 
-@use "../../core/color";
 @use "../../core/overlay";
 @use "../../core/ripple";
 
@@ -24,3 +24,8 @@
 @use "../../components/selection";
 @use "../../components/snackbar";
 @use "../../components/type";
+
+:root {
+  --mdw-ink-default-light: 0,96,100;
+  --mdw-ink-default-dark: 224,247,250;
+}

@@ -1,6 +1,6 @@
 import * as Attributes from '../../core/aria/attributes.js';
 import * as Keyboard from '../../core/aria/keyboard.js';
-import { dispatchDomEvent, iterateArrayLike } from '../../core/dom.js';
+import { dispatchDomEvent } from '../../core/dom.js';
 import * as Overlay from '../../core/overlay/index.js';
 import * as Ripple from '../../core/ripple/index.js';
 
@@ -19,8 +19,7 @@ function onEnterKey(event) {
     || event.detail.altKey || event.detail.metaKey) {
     return;
   }
-  /** @type {HTMLElement} */
-  const listContentElement = (event.currentTarget);
+  const listContentElement = /** @type {HTMLElement} */ (event.currentTarget);
   if (!listContentElement) {
     return;
   }
@@ -39,8 +38,7 @@ function onEnterKey(event) {
  */
 export function onClick(event) {
   event.preventDefault();
-  /** @type {HTMLElement} */
-  const listContentElement = (event.currentTarget);
+  const listContentElement = /** @type {HTMLElement} */ (event.currentTarget);
   if (Attributes.isDisabled(listContentElement)) {
     return;
   }
@@ -52,17 +50,15 @@ export function onClick(event) {
  * @return {void}
  */
 export function attach(listContentElement) {
-  if (!listContentElement.hasAttribute('role')) {
-    if (listContentElement.parentElement.getAttribute('role') === 'none') {
-      listContentElement.setAttribute('role', 'option');
-    }
+  if (!listContentElement.hasAttribute('role') && listContentElement.parentElement.getAttribute('role') === 'none') {
+    listContentElement.setAttribute('role', 'option');
   }
-  iterateArrayLike(listContentElement.getElementsByClassName('mdw-list__icon'), (el) => {
+  for (const el of listContentElement.getElementsByClassName('mdw-list__icon')) {
     el.setAttribute('aria-hidden', 'true');
-  });
-  iterateArrayLike(listContentElement.getElementsByClassName('mdw-list__avatar'), (el) => {
+  }
+  for (const el of listContentElement.getElementsByClassName('mdw-list__avatar')) {
     el.setAttribute('aria-hidden', 'true');
-  });
+  }
   listContentElement.addEventListener('click', onClick);
 
   if (!listContentElement.hasAttribute('mdw-no-overlay')) {

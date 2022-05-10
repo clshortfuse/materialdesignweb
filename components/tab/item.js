@@ -1,7 +1,6 @@
 // https://www.w3.org/TR/wai-aria-1.1/#tab
 
 import * as AriaTab from '../../core/aria/tab.js';
-import { iterateArrayLike } from '../../core/dom.js';
 import * as Overlay from '../../core/overlay/index.js';
 import * as Ripple from '../../core/ripple/index.js';
 
@@ -22,8 +21,7 @@ export function setSelected(element, value, dispatchEvent = true) {
  * @return {void}
  */
 function onClick(event) {
-  /** @type {HTMLElement} */
-  const element = (event.currentTarget);
+  const element = /** @type {HTMLElement} */ (event.currentTarget);
   if (element.getAttribute('aria-disabled') === 'true') {
     return;
   }
@@ -36,8 +34,9 @@ function onClick(event) {
  */
 export function attachAria(element) {
   AriaTab.attach(element);
-  iterateArrayLike(element.getElementsByClassName('mdw-tab__icon'),
-    (el) => el.setAttribute('aria-hidden', 'true'));
+  for (const el of element.getElementsByClassName('mdw-tab__icon')) {
+    el.setAttribute('aria-hidden', 'true');
+  }
 }
 
 /**

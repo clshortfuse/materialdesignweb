@@ -4,14 +4,28 @@
 @use '../../core/_motion.scss' as motion;
 @use '../../core/_type.scss' as type;
 
+:root {
+  --mdw-bottomnav__label-opacity: 1;
+  --mdw-bottomnav__label-transform: none;
+  --mdw-bottomnav__icon-transform: #{translateY(8px)};
+}
+
 .mdw-bottomnav {
   display: flex;
   position: relative;
   justify-content: center;
   overflow: hidden;
 
-  min-height: dp(56);
-  width: 100%;
+  min-block-size: 56px;
+  inline-size: 100%;
+
+  &[mdw-shifting] {
+    .mdw-bottomnav__item:not([aria-selected="true"]) {
+      --mdw-bottomnav__label-opacity: 0;
+      --mdw-bottomnav__label-transform: #{translateY(8px)};
+      --mdw-bottomnav__icon-transform: #{translateY(16px)};
+    }
+  }
 }
 
 .mdw-bottomnav__item {
@@ -21,12 +35,12 @@
   flex-direction: column;
   justify-content: flex-start;
   overflow: visible;
-  
-  min-width: dp(80);
-  flex: dp(168);
+
+  min-inline-size: 80px;
+  flex: 168px;
   flex-grow: 0;
   // flex-shrink: 1;
-  // flex-basis: dp(168);
+  // flex-basis: 168px;
   margin: 0;
   padding: 0;
 
@@ -38,7 +52,7 @@
   user-select: none;
 
   z-index: 0;
-  
+
   border-radius: 0;
   box-shadow: none;
 }
@@ -46,56 +60,51 @@
 .mdw-bottomnav__icon {
   display: flex;
   position: absolute;
-  top: 0;
-  left: 50%;
-  
+  inset-block-start: 0;
+  inset-inline-start: 50%;
+
+  margin-inline-start: -12px;
+
   margin: 0;
-  margin-left: dp(-12);
   padding: 0;
+
+  pointer-events: none;
 
   transition-duration: motion.$shapeChangeDuration, motion.$simpleDuration;
   transition-property: transform, color;
   transition-timing-function: motion.$standardEasing;
 
-  pointer-events: none;
-  transform: translateY(dp(8));
+  transform: var(--mdw-bottomnav__icon-transform);
 
   &:last-child {
     // No label
-    transform: translateY(dp(16));
+    transform: translateY(16px);
   }
 }
 
 .mdw-bottomnav__badge {
   position: absolute;
-  top: 0;
-  right: auto;
-  left: dp(16);
+  inset-block-start: 0;
+  inset-inline: 16px auto;
 
-  
   box-sizing: border-box;
-  min-height: dp(8);
-  min-width: dp(8);
-  padding: dp(2);
+  min-block-size: 8px;
+  min-inline-size: 8px;
+  padding: 2px;
 
   visibility: hidden;
 
   z-index: 1;
 
-  border-radius: dp(8);
+  border-radius: 8px;
 
   font: inherit;
 
   font-weight: type.$weightRegular;
-  font-size: dp(10);
-  line-height: dp(12);
+  font-size: 10px;
+  line-height: 12px;
   letter-spacing: normal;
 
-  :root[dir="rtl"] & {
-    right: dp(16);
-    left: auto;
-  }
-  
   &[mdw-badge] {
     visibility: visible;
 
@@ -117,41 +126,24 @@
   @include type.addRules('caption');
   @include type.textTopToTop(32);
   @include type.baselineToBottom(8);
-  
+
   // Overriding 12dp for baseline bottom with 8dp for oversized and textwrapped
   // Baseline top will ensure type.baselineToBottom is 12dp for standard layouts
 
   box-sizing: border-box;
-  max-width: 100%;
-  padding: 0 dp(12);
-  
+  max-inline-size: 100%;
+  padding: 0 12px;
+
+  pointer-events: none;
+
   transition-duration: motion.$shapeChangeDuration;
   transition-property: transform, opacity, color;
   transition-timing-function: motion.$standardEasing;
 
-  pointer-events: none;
+  opacity: var(--mdw-bottomnav__label-opacity);
+  transform: var(--mdw-bottomnav__label-transform);
 
   text-align: center;
   word-break: break-all;
   word-break: break-word;
-}
-
-.mdw-bottomnav[mdw-shifting] {
-  .mdw-bottomnav__icon {
-    transform: translateY(dp(16));
-  }
-
-  .mdw-bottomnav__label {
-    opacity: 0;
-    transform: translateY(dp(8));
-  }
-
-  .mdw-bottomnav__item[aria-selected="true"] > .mdw-bottomnav__label {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .mdw-bottomnav__item[aria-selected="true"] > .mdw-bottomnav__icon {
-    transform: translateY(dp(8));
-  }
 }

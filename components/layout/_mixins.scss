@@ -9,25 +9,3 @@
     @content;
   }
 }
-
-@mixin gridColumn($start, $end: null) {
-  @if ($end == null) {
-    $end: $start;
-  }
-  -ms-grid-column: $start;
-  grid-column-start: $start;
-  -ms-grid-column-span: #{($end - $start) + 1};
-  grid-column-end: span #{($end - $start) + 1};
-}
-
-
-@mixin gridRow($top, $bottom: null) {
-  @if ($bottom == null) {
-    $bottom: $top;
-  }
-  -ms-grid-row: $top;
-  grid-row-start: $top;
-  -ms-grid-row-span: #{($bottom  - $top) + 1};
-  grid-row-end: span #{($bottom  - $top) + 1};
-}
-

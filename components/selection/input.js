@@ -10,11 +10,9 @@ export const FOCUS_EVENT = 'mdw:selectioninput-focus';
  * @return {void}
  */
 function onKeyDown(event) {
-  if (event.target instanceof HTMLInputElement) {
-    if (event.key === ' ' || event.key === 'Spacebar') {
-      // Don't pass up Spacebar on native input elements
-      event.stopPropagation();
-    }
+  if (event.target instanceof HTMLInputElement && (event.key === ' ' || event.key === 'Spacebar')) {
+    // Don't pass up Spacebar on native input elements
+    event.stopPropagation();
   }
 }
 

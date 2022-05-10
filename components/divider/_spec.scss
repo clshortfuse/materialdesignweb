@@ -1,13 +1,11 @@
 @use '../../core/_length.scss' as *;
 
 .mdw-divider {
-  width: 100%;
-  margin-top: dp(-1);
-  border-bottom: dp(1) solid;
-}
+  inline-size: 100%;
+  margin-block-start: -1px;
+  border-block-end: 1px solid;
 
-.mdw-divider__vertical {
-  height: 100%;
-  margin-right: dp(-1);
-  border-left: dp(1) solid;
+  &[mdw-vertical] {
+    writing-mode: vertical-lr;
+  }
 }

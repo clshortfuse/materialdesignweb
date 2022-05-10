@@ -1,5 +1,3 @@
-import { findElementParentByClassName } from '../../core/dom.js';
-
 /**
  * @param {Element} fabElement
  * @return {boolean} handled
@@ -39,9 +37,8 @@ export function hide(fabElement) {
  * @return {void}
  */
 export function onCloserClicked(event) {
-  /** @type {HTMLElement} */
-  const closer = (event.currentTarget);
-  const fabElement = findElementParentByClassName(closer, 'mdw-fab');
+  const closer = /** @type {HTMLElement} */ (event.currentTarget);
+  const fabElement = closer.closest('.mdw-fab');
   if (!fabElement) {
     return;
   }
@@ -64,9 +61,8 @@ export function toggle(fabElement) {
  * @return {void}
  */
 export function onFabButtonClicked(event) {
-  /** @type {HTMLElement} */
-  const button = (event.currentTarget);
-  const fabElement = findElementParentByClassName(button, 'mdw-fab');
+  const button = /** @type {HTMLElement} */ (event.currentTarget);
+  const fabElement = button.closest('.mdw-fab');
   if (!fabElement) {
     return;
   }

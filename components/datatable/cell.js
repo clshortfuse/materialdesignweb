@@ -11,8 +11,7 @@ export const SELECTED_CHANGE_EVENT = 'mdw:datatablecell-selectedchange';
  * @return {void}
  */
 export function onFocus(event) {
-  /** @type {HTMLElement} */
-  const gridCellElement = (event.currentTarget);
+  const gridCellElement = /** @type {HTMLElement} */ (event.currentTarget);
   dispatchDomEvent(gridCellElement, FOCUS_EVENT);
 }
 

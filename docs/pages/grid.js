@@ -1,4 +1,4 @@
-import { iterateArrayLike, setTextNode } from '../../core/dom.js';
+import { setTextNode } from '../../core/dom.js';
 
 const sampleComponent = document.getElementById('sample-component');
 
@@ -115,14 +115,14 @@ function onOptionChange(event) {
 
 /** @return {void} */
 function setupInteractions() {
-  iterateArrayLike(sampleComponent.getElementsByClassName('mdw-grid__item'), (item) => {
+  for (const item of sampleComponent.getElementsByClassName('mdw-grid__item')) {
     item.addEventListener('click', () => {
       onGridItemClick(item);
     });
-  });
-  iterateArrayLike(document.querySelectorAll('[name]'), (el) => {
+  }
+  for (const el of document.querySelectorAll('[name]')) {
     el.addEventListener('change', onOptionChange);
-  });
+  }
 }
 
 setupInteractions();

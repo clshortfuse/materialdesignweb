@@ -59,15 +59,13 @@ $touchUpAcceleration: 3400 !default;
 
 .mdw-ripple__container {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   overflow: hidden;
-  
+
   box-sizing: border-box;
 
   pointer-events: none;
+
   z-index: 1;
 
   border-radius: inherit;
@@ -76,6 +74,8 @@ $touchUpAcceleration: 3400 !default;
 .mdw-ripple__inner {
   display: block;
   position: absolute;
+
+  pointer-events: none;
 
   animation-name: none;
   animation-duration: motion.$expandDuration;
@@ -88,11 +88,10 @@ $touchUpAcceleration: 3400 !default;
   transition-timing-function: motion.$standardEasing;
 
   opacity: 0.16;
-  pointer-events: none;
   transform: scale(0);
-  
+
   background-color: currentColor;
-  
+
   border-radius: 50%;
 }
 
@@ -110,7 +109,6 @@ $touchUpAcceleration: 3400 !default;
   animation-duration: $fadeOutDuration;
   animation-timing-function: motion.$decelerateEasing;
 }
-
 
 @keyframes ripple-fade-in {
   from {
@@ -144,33 +142,35 @@ $touchUpAcceleration: 3400 !default;
 }
 
 .mdw-ripple::after {
+  content: '';
+
   display: table; // See above
   position: absolute;
-  top: 50%;
-  left: 50%;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
 
-  height: 0;
-  width: 0;
+  block-size: 0;
+  inline-size: 0;
   padding: 50%;
+
+  pointer-events: none;
   // z-index: -1; // Safari has a negative z-index scrolling bug (hides elements)
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
   user-select: none;
 
-  transition: 
+  transition:
     transform #{motion.$expandDuration + $fadeOutDuration} linear $enterDelay,
     background-color $fadeOutDuration motion.$decelerateEasing #{$enterDelay + motion.$expandDuration};
   will-change: transform, background-color;
 
   opacity: 0.16;
-  pointer-events: none;
   transform: translateX(-50%) translateY(-50%) scale(2);
 
   background-color: transparent;
   border-radius: 50%;
   color: inherit;
-  content: '';
 }
 
 // On active, pop up initial state
@@ -194,4 +194,3 @@ $touchUpAcceleration: 3400 !default;
     visibility: hidden;
   }
 }
-

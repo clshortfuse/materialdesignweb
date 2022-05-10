@@ -58,6 +58,7 @@
     <div class="mdw-type" mdw-style="subtitle">Attributes</div>
     <div class="docs-option-list">
       <%~ includeFile(T, { selection: { ink:'secondary', name:'autosize', checked:true, text:'Autosize' }}) %>
+      <%~ includeFile(T, { selection: { ink:'secondary', name:'dense', text:'Dense' }}) %>
       <%~ includeFile(T, { selection: { ink:'secondary', name:'disabled', text:'Disabled' }}) %>
       <%~ includeFile(T, { selection: { ink:'secondary', name:'4minlength', text:'4 Min Length' }}) %>
       <%~ includeFile(T, { selection: { ink:'secondary', name:'required', text:'Required' }}) %>
@@ -75,7 +76,7 @@
   <div class="mdw-grid__item" mdw-colspan="100%">
     <h6 class="mdw-type">Samples</h6>
   </div>
-  <div class="mdw-grid__item" mdw-colspan="4" flex-justify-content="center">
+  <div class="mdw-grid__item" mdw-colspan="6" flex-justify-content="center">
     <div class="render-fill">
       <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'primary 700', dark:true }) %>
       <%~ includeFile('../_partials/_appbar.eta', { surface: 'primary 500', dark: true, start:['arrow_back'], end: ['more_vert'], body: 'Application' }) %>
@@ -118,7 +119,7 @@
       <%~ includeFile('../_partials/_androidnavbar.eta') %>
     </div>
   </div>
-  <div class="mdw-grid__item" mdw-colspan="4" flex-justify-content="center">
+  <div class="mdw-grid__item" mdw-colspan="6" flex-justify-content="center">
     <div class="render-fill">
       <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'secondary 300', light:true }) %>
       <%~ includeFile('../_partials/_appbar.eta', { surface: 'secondary 100', light: true, start: ['arrow_back'], end: ['search'], body: 'Auto-fill styling' }) %>
@@ -203,7 +204,7 @@
       <%~ includeFile('../_partials/_androidnavbar.eta') %>
     </div>
   </div>
-  <div class="mdw-grid__item" mdw-colspan="4" flex-justify-content="center">
+  <div class="mdw-grid__item" mdw-colspan="6" flex-justify-content="center">
     <div class="render-fill">
       <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'secondary 800', dark:true }) %>
       <%~ includeFile('../_partials/_appbar.eta', { surface: 'secondary 700', dark: true, start: ['arrow_back'], end: ['search'] }) %>
@@ -275,7 +276,7 @@
       <%~ includeFile('../_partials/_androidnavbar.eta') %>
     </div>
   </div>
-  <div class="mdw-grid__item" mdw-colspan="4" flex-justify-content="center">
+  <div class="mdw-grid__item" mdw-colspan="6" flex-justify-content="center">
     <div class="render-fill">
       <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'primary 700', dark:true }) %>
       <%~ includeFile('../_partials/_appbar.eta', { surface: 'primary 500', dark: true, start: ['arrow_back'], end: ['done'] }) %>
@@ -335,7 +336,7 @@
       <%~ includeFile('../_partials/_androidnavbar.eta') %>
     </div>
   </div>
-  <div class="mdw-grid__item" mdw-colspan="4" flex-justify-content="center">
+  <div class="mdw-grid__item" mdw-colspan="6" flex-justify-content="center">
     <div class="render-fill">
       <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'amber 600', dark:true }) %>
       <%~ includeFile('../_partials/_appbar.eta', { surface: 'amber 400', dark: true, start: ['arrow_back'], end: ['done'] }) %>
@@ -369,7 +370,7 @@
       <%~ includeFile('../_partials/_androidnavbar.eta') %>
     </div>
   </div>
-  <div class="mdw-grid__item" mdw-colspan="4" flex-justify-content="center">
+  <div class="mdw-grid__item" mdw-colspan="6" flex-justify-content="center">
     <div class="render-fill">
       <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'amber 700', dark:true }) %>
       <%~ includeFile('../_partials/_appbar.eta', { surface: 'amber 400', dark: true, start: ['arrow_back'], end: ['done'] }) %>
@@ -407,7 +408,7 @@
       <%~ includeFile('../_partials/_androidnavbar.eta') %>
     </div>
   </div>
-  <div class="mdw-grid__item js" mdw-colspan="4">
+  <div class="mdw-grid__item js" mdw-colspan="6">
     <div class="render-fill">
       <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'primary 700', dark:true }) %>
       <%~ includeFile('../_partials/_appbar.eta', { surface: 'primary 500', dark: true, start: ['arrow_back'], end: ['done'], text: 'With Javascript' }) %>
@@ -480,7 +481,7 @@
       <%~ includeFile('../_partials/_androidnavbar.eta') %>
     </div>
   </div>
-  <div class="mdw-grid__item" mdw-colspan="4"></div>
+  <div class="mdw-grid__item" mdw-colspan="6"></div>
   <div class="mdw-grid__item" mdw-colspan="4"></div>
 </div>
 <script src="textfield.min.js"></script>

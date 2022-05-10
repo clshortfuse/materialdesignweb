@@ -11,19 +11,17 @@
     if (value === false || value == null) return false;
     return `${key}="${value}"`
   }).filter(v=>v).join(' ')-%>>
-  <div class="mdw-appbar__action">
-    <div class="mdw-appbar__start">
-      <%_~ it?.start?.map((icon) => includeFile(T, { button: {
-        class:'material-icons', icon:true, text:icon }})).join(' ') ?? '' _%>
-    </div>
-    <div class="mdw-appbar__title">
-      <%_~ it?.body ?? '' %><%= it?.text ?? '' _%>
-    </div>
-    <div class="mdw-appbar__end">
-      <%_~ it?.end?.map((icon) => includeFile(T, { button:{
-        class:'material-icons', icon:true, text:icon,
-        attributes: { 'mdw-more-button': icon === 'more_vert' }
-      }})).join(' ') ?? '' _%>
-    </div>
+  <div class="mdw-appbar__start">
+    <%_~ it?.start?.map((icon) => includeFile(T, { button: {
+      class:'material-icons', icon:true, text:icon }})).join(' ') ?? '' _%>
+  </div>
+  <div class="mdw-appbar__title">
+    <%_~ it?.body ?? '' %><%= it?.text ?? '' _%>
+  </div>
+  <div class="mdw-appbar__end">
+    <%_~ it?.end?.map((icon) => includeFile(T, { button:{
+      class:'material-icons', icon:true, text:icon,
+      attributes: { 'mdw-more-button': icon === 'more_vert' }
+    }})).join(' ') ?? '' _%>
   </div>
 </div>

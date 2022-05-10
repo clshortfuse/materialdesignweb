@@ -1,6 +1,5 @@
 import * as Button from '../../components/button/index.js';
 import * as Dialog from '../../components/dialog/index.js';
-import { iterateArrayLike } from '../../core/dom.js';
 import { convertElementToCode } from '../_sample-utils.js';
 
 /** @type {HTMLElement} */
@@ -28,13 +27,11 @@ function updateSampleCode() {
   Button.detach(button);
   button.removeEventListener('click', onSampleButtonClick);
   const tabIndexElements = sampleComponent.querySelectorAll('[tabindex]');
-  iterateArrayLike(tabIndexElements, (el) => el.removeAttribute('tabindex'));
+  for (const el of tabIndexElements) el.removeAttribute('tabindex');
 
-  if (closer) {
-    if (jsRequired || (closer instanceof HTMLAnchorElement === false)) {
-      closer.parentElement.removeChild(closer);
-      closer = null;
-    }
+  if (closer && (jsRequired || !(closer instanceof HTMLAnchorElement))) {
+    closer.remove();
+    closer = null;
   }
 
   if (useJS) {
@@ -122,9 +119,9 @@ function onOptionChange(event) {
 /** @return {void} */
 function setupComponentOptions() {
   sampleComponent = document.querySelector('.component-sample .mdw-dialog');
-  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+  for (const el of document.querySelectorAll('input[name]')) {
     el.addEventListener('change', onOptionChange);
-  });
+  }
 }
 
 /** @return {void} */

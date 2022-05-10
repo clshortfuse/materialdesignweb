@@ -1,0 +1,268 @@
+@use 'sass:map';
+@use 'sass:list';
+@use './_config.scss' as *;
+@use './_palettes.scss' as *;
+@use './_functions.scss' as *;
+
+:root {
+  --mdw-ink-default-light: 0,0,0;
+  --mdw-high-opacity-light: 0.87;
+  --mdw-medium-opacity-light: 0.60;
+  --mdw-inactive-opacity-light: 0.38;
+  --mdw-divider-opacity-light: 0.12;
+  --mdw-ink-default-dark: 255,255,255;
+  --mdw-high-opacity-dark: 1.00;
+  --mdw-medium-opacity-dark: 0.70;
+  --mdw-inactive-opacity-dark: 0.50;
+  --mdw-divider-opacity-dark: 0.24;
+  --mdw-surface-binary-light: 255,255,255;
+  --mdw-surface-binary-dark: 0,0,0;
+  --mdw-surface-card-light: 255,255,255;
+  --mdw-surface-card-dark: 18,18,18;
+
+  @each $paletteKey in map.keys($palettes) {
+    $palette: map.get($palettes, $paletteKey);
+    @each $toneKey in getAllTones() {
+      $tone: map.get($palette, $toneKey);
+      --mdw-palette-#{$paletteKey}-#{$toneKey}: #{getRGB($tone)};
+    }
+  }
+}
+
+.mdw-theme {
+  --mdw-text-color: RGBA(var(--mdw-ink-default), var(--mdw-high-opacity));
+  --mdw-medium-color: RGBA(var(--mdw-ink-default), var(--mdw-medium-opacity));
+  --mdw-inactive-color: RGBA(var(--mdw-ink-default), var(--mdw-inactive-opacity));
+  --mdw-divider-color: RGBA(var(--mdw-ink-default), var(--mdw-divider-opacity));
+}
+
+.mdw-theme[mdw-light] {
+  --mdw-ink-default: var(--mdw-ink-default-light);
+  --mdw-high-opacity: var(--mdw-high-opacity-light);
+  --mdw-medium-opacity: var(--mdw-medium-opacity-light);
+  --mdw-inactive-opacity: var(--mdw-inactive-opacity-light);
+  --mdw-divider-opacity: var(--mdw-divider-opacity-light);
+  --mdw-surface-binary: var(--mdw-surface-binary-light);
+  --mdw-surface-card: var(--mdw-surface-card-light);
+  @each $paletteKey in map.keys($palettes) {
+    $palette: map.get($palettes, $paletteKey);
+    --mdw-palette-#{$paletteKey}-surface-default: var(--mdw-palette-#{$paletteKey}-50);
+    --mdw-palette-#{$paletteKey}-surface-alt: var(--mdw-palette-#{$paletteKey}-100);
+    --mdw-palette-#{$paletteKey}-surface-alt2: var(--mdw-palette-#{$paletteKey}-200);
+    --mdw-palette-#{$paletteKey}-ink-default: var(--mdw-palette-#{$paletteKey}-A700);
+    --mdw-palette-#{$paletteKey}-ink-contrast: var(--mdw-palette-#{$paletteKey}-A700);
+    --mdw-palette-#{$paletteKey}-ink-light: var(--mdw-palette-#{$paletteKey}-A400);
+  }
+
+  @each $aliasKey in map.keys($alias) {
+    $paletteKey: map.get($alias, $aliasKey);
+    --mdw-alias-#{$aliasKey}-surface-default: var(--mdw-alias-#{$aliasKey}-50);
+    --mdw-alias-#{$aliasKey}-surface-alt: var(--mdw-alias-#{$aliasKey}-100);
+    --mdw-alias-#{$aliasKey}-surface-alt2: var(--mdw-alias-#{$aliasKey}-200);
+    --mdw-alias-#{$aliasKey}-ink-default: var(--mdw-alias-#{$aliasKey}-A700);
+    --mdw-alias-#{$aliasKey}-ink-contrast: var(--mdw-alias-#{$aliasKey}-A700);
+    --mdw-alias-#{$aliasKey}-ink-light: var(--mdw-alias-#{$aliasKey}-A400);
+  }
+}
+
+.mdw-theme[mdw-dark] {
+  --mdw-ink-default: var(--mdw-ink-default-dark);
+  --mdw-high-opacity: var(--mdw-high-opacity-dark);
+  --mdw-medium-opacity: var(--mdw-medium-opacity-dark);
+  --mdw-inactive-opacity: var(--mdw-inactive-opacity-dark);
+  --mdw-divider-opacity: var(--mdw-divider-opacity-dark);
+  --mdw-surface-binary: var(--mdw-surface-binary-dark);
+  --mdw-surface-card: var(--mdw-surface-card-dark);
+  @each $paletteKey in map.keys($palettes) {
+    $palette: map.get($palettes, $paletteKey);
+    --mdw-palette-#{$paletteKey}-surface-default: var(--mdw-palette-#{$paletteKey}-900);
+    --mdw-palette-#{$paletteKey}-surface-alt: var(--mdw-palette-#{$paletteKey}-800);
+    --mdw-palette-#{$paletteKey}-surface-alt2: var(--mdw-palette-#{$paletteKey}-700);
+    --mdw-palette-#{$paletteKey}-ink-default: var(--mdw-palette-#{$paletteKey}-A200);
+    --mdw-palette-#{$paletteKey}-ink-contrast: var(--mdw-palette-#{$paletteKey}-A100);
+    --mdw-palette-#{$paletteKey}-ink-light: var(--mdw-palette-#{$paletteKey}-A100);
+  }
+
+  @each $aliasKey in map.keys($alias) {
+    $paletteKey: map.get($alias, $aliasKey);
+    --mdw-alias-#{$aliasKey}-surface-default: var(--mdw-alias-#{$aliasKey}-900);
+    --mdw-alias-#{$aliasKey}-surface-alt: var(--mdw-alias-#{$aliasKey}-800);
+    --mdw-alias-#{$aliasKey}-surface-alt2: var(--mdw-alias-#{$aliasKey}-700);
+    --mdw-alias-#{$aliasKey}-ink-default: var(--mdw-alias-#{$aliasKey}-A200);
+    --mdw-alias-#{$aliasKey}-ink-contrast: var(--mdw-alias-#{$aliasKey}-A100);
+    --mdw-alias-#{$aliasKey}-ink-light: var(--mdw-alias-#{$aliasKey}-A100);
+  }
+}
+
+/** Surface Colors */
+
+.mdw-theme[mdw-surface] {
+  background-color: RGB(var(--mdw-surface));
+}
+
+svg.mdw-theme[mdw-surface] {
+  background-color: transparent;
+
+  fill: RGB(var(--mdw-surface));
+}
+
+.mdw-theme {
+  &[mdw-surface]:not([mdw-ink]) {
+    --mdw-ink: var(--mdw-ink-default);
+    --mdw-ink-opacity: var(--mdw-high-opacity);
+    color: RGBA(var(--mdw-ink), var(--mdw-ink-opacity));
+  }
+
+  &[mdw-surface="white"] {
+    --mdw-surface: 255,255,255;
+  }
+
+  &[mdw-surface="black"] {
+    --mdw-surface: 0,0,0;
+  }
+
+  &[mdw-surface="binary"] {
+    --mdw-surface: var(--mdw-surface-binary);
+  }
+
+  &[mdw-surface="card"] {
+    --mdw-surface: var(--mdw-surface-card);
+  }
+
+  @each $paletteKey in map.keys($palettes) {
+    $palette: map.get($palettes, $paletteKey);
+    &[mdw-surface~="#{$paletteKey}"] {
+      --mdw-surface: var(--mdw-palette-#{$paletteKey}-surface-default);
+      @each $toneKey in $surface-tones {
+        --mdw-surface-#{$toneKey}: var(--mdw-palette-#{$paletteKey}-#{$toneKey});
+      }
+    }
+    &[mdw-surface="#{$paletteKey} alt"] {
+      --mdw-surface: var(--mdw-palette-#{$paletteKey}-surface-alt);
+    }
+    &[mdw-surface="#{$paletteKey} alt2"] {
+      --mdw-surface: var(--mdw-palette-#{$paletteKey}-surface-alt2);
+    }
+  }
+
+  @each $aliasKey in map.keys($alias) {
+    &[mdw-surface~="#{$aliasKey}"] {
+      --mdw-surface: var(--mdw-alias-#{$aliasKey}-surface-default);
+      @each $toneKey in $surface-tones {
+        --mdw-surface-#{$toneKey}: var(--mdw-alias-#{$aliasKey}-#{$toneKey});
+      }
+    }
+    &[mdw-surface="#{$aliasKey} alt"] {
+      --mdw-surface: var(--mdw-alias-#{$aliasKey}-surface-alt);
+    }
+    &[mdw-surface="#{$aliasKey} alt2"] {
+      --mdw-surface: var(--mdw-alias-#{$aliasKey}-surface-alt2);
+    }
+  }
+
+  @each $tone in $surface-tones {
+    &[mdw-surface~="#{$tone}"] {
+      --mdw-surface: var(--mdw-surface-#{$tone});
+    }
+  }
+}
+
+/** Ink Color **/
+
+.mdw-theme {
+  &[mdw-ink] {
+    --mdw-ink: var(--mdw-ink-default);
+    --mdw-ink-opacity: 1;
+    color: RGBA(var(--mdw-ink), var(--mdw-ink-opacity));
+  }
+
+  &[mdw-ink=""],
+  &[mdw-ink~="default"] {
+    --mdw-ink: var(--mdw--ink-default);
+    --mdw-ink-opacity: var(--mdw-high-opacity);
+  }
+
+  &[mdw-ink~="white"] {
+    --mdw-ink: 255,255,255;
+  }
+
+  &[mdw-ink~="black"] {
+    --mdw-ink: 0,0,0;
+  }
+
+  @each $paletteKey in map.keys($palettes) {
+    $palette: map.get($palettes, $paletteKey);
+    &[mdw-ink~="#{$paletteKey}"] {
+      --mdw-ink: var(--mdw-palette-#{$paletteKey}-ink-default);
+      @each $toneKey in $ink-tones {
+        --mdw-ink-#{$toneKey}: var(--mdw-palette-#{$paletteKey}-#{$toneKey});
+      }
+    }
+    &[mdw-ink^="#{$paletteKey} contrast"] {
+      --mdw-ink: var(--mdw-palette-#{$paletteKey}-ink-contrast);
+    }
+    &[mdw-ink^="#{$paletteKey} light"] {
+      --mdw-ink: var(--mdw-palette-#{$paletteKey}-ink-light);
+    }
+  }
+
+  @each $aliasKey in map.keys($alias) {
+    &[mdw-ink~="#{$aliasKey}"] {
+      --mdw-ink: var(--mdw-alias-#{$aliasKey}-ink-default);
+      @each $toneKey in $ink-tones {
+        --mdw-ink-#{$toneKey}: var(--mdw-alias-#{$aliasKey}-#{$toneKey});
+      }
+    }
+    &[mdw-ink^="#{$aliasKey} contrast"] {
+      --mdw-ink: var(--mdw-alias-#{$aliasKey}-ink-contrast);
+    }
+    &[mdw-ink^="#{$aliasKey} light"] {
+      --mdw-ink: var(--mdw-palette-#{$aliasKey}-ink-light);
+    }
+  }
+
+  @each $tone in $ink-tones {
+    &[mdw-ink~="#{$tone}"] {
+      --mdw-ink: var(--mdw-ink-#{$tone});
+    }
+  }
+}
+
+/** Ink Opacity **/
+.mdw-theme {
+  &[mdw-ink~="solid"] {
+    --mdw-ink-opacity: 1;
+  }
+
+  &[mdw-ink~="high"] {
+    --mdw-ink-opacity: var(--mdw-high-opacity);
+  }
+
+  &[mdw-ink~="medium"] {
+    --mdw-ink-opacity: var(--mdw-medium-opacity);
+  }
+
+  &[mdw-ink~="inactive"] {
+    --mdw-ink-opacity: var(--mdw-inactive-opacity);
+  }
+
+  &[mdw-ink~="divider"] {
+    --mdw-ink-opacity: var(--mdw-divider-opacity);
+  }
+}
+
+/** Border Ink **/
+
+.mdw-theme {
+  &[mdw-border-ink] {
+    border-color: RGBA(var(--mdw-ink), var(--mdw-divider-opacity));
+  }
+
+  &[mdw-border-ink="default"] {
+    border-color: RGBA(var(--mdw-ink-default), var(--mdw-divider-opacity));
+  }
+
+  &[mdw-border-ink="none"] {
+    border-color: transparent;
+  }
+}

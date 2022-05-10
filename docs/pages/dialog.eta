@@ -63,18 +63,16 @@
       <div class="display-flex flex-1" flex-column style="position:relative;">
         <%~ includeFile('../_partials/_androidstatusbar.eta', { surface: 'primary 700', dark: true }) %>
         <div class="mdw-appbar mdw-theme" mdw-surface="primary 500" mdw-dark>
-          <div class="mdw-appbar__action">
-            <div class="mdw-appbar__start">
-              <div class="mdw-tooltip__wrapper">
-                <%~ includeFile(T, {button: { icon:true, class:"mdw-tooltip__target material-icons", text:'menu' }}) %>
-                <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark>Menu</div>
-              </div>
+          <div class="mdw-appbar__start">
+            <div class="mdw-tooltip__wrapper">
+              <%~ includeFile(T, {button: { icon:true, class:"mdw-tooltip__target material-icons", text:'menu' }}) %>
+              <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark>Menu</div>
             </div>
-            <div class="mdw-appbar__end">
-              <div class="mdw-tooltip__wrapper">
-                <%~ includeFile(T, {button: { icon:true, class:"mdw-tooltip__target material-icons", text:'more_vert' }}) %>
-                <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark>Options</div>
-              </div>
+          </div>
+          <div class="mdw-appbar__end">
+            <div class="mdw-tooltip__wrapper">
+              <%~ includeFile(T, {button: { icon:true, class:"mdw-tooltip__target material-icons", text:'more_vert' }}) %>
+              <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark>Options</div>
             </div>
           </div>
         </div>

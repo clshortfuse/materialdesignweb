@@ -1,3 +1,15 @@
+v0.5.0
+------
+
+* Drop IE11
+* Drop Opera Mini
+* Rewrite JS Syntax targetting >1% browsers
+* Prefer modern DOM APIs
+* Use CSS Logical properties and values
+
+* Search: (BREAKING) Use Promises instead of NodeJS-style callbacks
+* Elevation: Add Dark Theme opacity
+
 v0.4.0
 ------
 

@@ -2,9 +2,7 @@
 
 import * as Keyboard from '../../core/aria/keyboard.js';
 import * as RovingTabIndex from '../../core/aria/rovingtabindex.js';
-import {
-  getPassiveEventListenerOption, iterateArrayLike, iterateSomeOfArrayLike, scrollToElement,
-} from '../../core/dom.js';
+import { scrollToElement } from '../../core/dom.js';
 
 import * as TabItem from './item.js';
 
@@ -13,10 +11,8 @@ import * as TabItem from './item.js';
  * @return {void}
  */
 function onTabIndexZeroed(event) {
-  /** @type {HTMLElement} */
-  const tabListElement = (event.currentTarget);
-  /** @type {HTMLElement} */
-  const currentItem = (event.target);
+  const tabListElement = /** @type {HTMLElement} */ (event.currentTarget);
+  const currentItem = /** @type {HTMLElement} */ (event.target);
   RovingTabIndex.removeTabIndex(tabListElement.querySelectorAll('[role="tab"]'), [currentItem]);
 }
 /**
@@ -30,8 +26,7 @@ function onForwardArrowKey(event) {
   }
   event.preventDefault();
   event.stopPropagation();
-  /** @type {HTMLElement} */
-  const tabListElement = (event.currentTarget);
+  const tabListElement = /** @type {HTMLElement} */ (event.currentTarget);
   RovingTabIndex.selectNext(tabListElement.querySelectorAll('[role="tab"]'));
 }
 
@@ -46,8 +41,7 @@ function onBackArrowKey(event) {
   }
   event.preventDefault();
   event.stopPropagation();
-  /** @type {HTMLElement} */
-  const tabListElement = (event.currentTarget);
+  const tabListElement = /** @type {HTMLElement} */ (event.currentTarget);
   RovingTabIndex.selectPrevious(tabListElement.querySelectorAll('[role="tab"]'));
 }
 
@@ -76,25 +70,21 @@ export function setupARIA(tabListElement) {
  * @return {void}
  */
 export function setIndicatorPosition(tabListElement, item, percentage, animate = false) {
-  /** @type {HTMLElement} */
-  const indicatorElement = (tabListElement.getElementsByClassName('mdw-tab__indicator')[0]);
+  const indicatorElement = /** @type {HTMLElement} */ (tabListElement.getElementsByClassName('mdw-tab__indicator')[0]);
   if (!indicatorElement) {
     return;
   }
   const items = (tabListElement.getElementsByClassName('mdw-tab__item'));
-  /** @type {HTMLElement} */
-  const leftItem = (item instanceof Element ? item : items.item(item));
+  const leftItem = /** @type {HTMLElement} */ (item instanceof Element ? item : items.item(item));
   let left = leftItem.offsetLeft;
   let right = left + leftItem.offsetWidth;
 
   if (percentage > 0) {
     left += (percentage * leftItem.offsetWidth);
-    /** @type {HTMLElement} */
-    let nextItem = (leftItem.nextElementSibling);
+    let nextItem = /** @type {HTMLElement} */ (leftItem.nextElementSibling);
     if (!nextItem.classList.contains('mdw-tab__item')) {
       // RTL
-      /** @type {HTMLElement} */
-      nextItem = (leftItem.previousElementSibling);
+      nextItem = /** @type {HTMLElement} */ (leftItem.previousElementSibling);
     }
     right = nextItem.offsetLeft + (percentage * nextItem.offsetWidth);
   }
@@ -115,10 +105,9 @@ export function setIndicatorPosition(tabListElement, item, percentage, animate =
  * @return {number}
  */
 export function getTabItemIndex(tabListElement, tabItemElement) {
-  /** @type {HTMLCollectionOf<HTMLElement>} */
-  const items = (tabListElement.getElementsByClassName('mdw-tab__item'));
+  const items = /** @type {HTMLCollectionOf<HTMLElement>} */ (tabListElement.getElementsByClassName('mdw-tab__item'));
   let tabItemIndex = -1;
-  iterateSomeOfArrayLike(items, (el, index) => {
+  [...items].some((el, index) => {
     if (el === tabItemElement) {
       tabItemIndex = index;
       return true;
@@ -135,8 +124,7 @@ export function getTabItemIndex(tabListElement, tabItemElement) {
  * @return {void}
  */
 export function selectItemAtIndex(tabListElement, tabItemIndex, dispatchEvents = false) {
-  /** @type {HTMLCollectionOf<HTMLElement>} */
-  const items = (tabListElement.getElementsByClassName('mdw-tab__item'));
+  const items = /** @type {HTMLCollectionOf<HTMLElement>} */ (tabListElement.getElementsByClassName('mdw-tab__item'));
   if (dispatchEvents) {
     const item = items.item(tabItemIndex);
     if (item) {
@@ -144,7 +132,8 @@ export function selectItemAtIndex(tabListElement, tabItemIndex, dispatchEvents =
     }
     return;
   }
-  iterateArrayLike(items, (el, index) => {
+  // eslint-disable-next-line github/array-foreach
+  [...items].forEach((el, index) => {
     if (tabItemIndex === index) {
       TabItem.setSelected(el, true, false);
       if (tabListElement.hasAttribute('mdw-scrollable')) {
@@ -164,15 +153,13 @@ export function onSelectedChangeEvent(event) {
   if (event.detail.value !== 'true') {
     return;
   }
-  /** @type {HTMLElement} */
-  const itemElement = (event.target);
-  /** @type {HTMLElement} */
-  const tabListElement = (event.currentTarget);
-  iterateArrayLike(tabListElement.querySelectorAll('[role="tab"]'), (item) => {
+  const itemElement = /** @type {HTMLElement} */ (event.target);
+  const tabListElement = /** @type {HTMLElement} */ (event.currentTarget);
+  for (const item of tabListElement.querySelectorAll('[role="tab"]')) {
     if (item !== itemElement) {
       TabItem.setSelected(item, false, false);
     }
-  });
+  }
 }
 
 /**
@@ -188,10 +175,9 @@ export function attach(tabListElement) {
   }
 
   setupARIA(tabListElement);
-  iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.attach);
+  for (const element of tabListElement.getElementsByClassName('mdw-tab__item')) { TabItem.attach(element); }
   RovingTabIndex.setupTabIndexes(tabListElement.querySelectorAll('[role="tab"]'));
-  tabListElement.addEventListener(TabItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent,
-    getPassiveEventListenerOption());
+  tabListElement.addEventListener(TabItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent, { passive: true });
   tabListElement.addEventListener(Keyboard.FORWARD_ARROW_KEY, onForwardArrowKey);
   tabListElement.addEventListener(Keyboard.BACK_ARROW_KEY, onBackArrowKey);
   tabListElement.addEventListener(RovingTabIndex.TABINDEX_ZEROED, onTabIndexZeroed);
@@ -205,6 +191,6 @@ export function detach(tabListElement) {
   tabListElement.removeEventListener(TabItem.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
   tabListElement.removeEventListener(Keyboard.FORWARD_ARROW_KEY, onForwardArrowKey);
   tabListElement.removeEventListener(Keyboard.BACK_ARROW_KEY, onBackArrowKey);
-  iterateArrayLike(tabListElement.querySelectorAll('[role="tab"]'), RovingTabIndex.detach);
-  iterateArrayLike(tabListElement.getElementsByClassName('mdw-tab__item'), TabItem.detach);
+  for (const el of tabListElement.querySelectorAll('[role="tab"]')) RovingTabIndex.detach(el);
+  for (const el of tabListElement.getElementsByClassName('mdw-tab__item')) TabItem.detach(el);
 }

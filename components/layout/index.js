@@ -1,4 +1,3 @@
-import { getPassiveEventListenerOption, iterateArrayLike } from '../../core/dom.js';
 import Throttler from '../../core/throttler.js';
 
 const MIN_SCROLL_DELTA = 24; // Avoid finger bounce
@@ -43,8 +42,7 @@ export function onScrimScroll(event) {
     event.preventDefault();
     return;
   }
-  /** @type {HTMLElement} */
-  const element = (event.currentTarget);
+  const element = /** @type {HTMLElement} */ (event.currentTarget);
   if (element.scrollTop !== element.scrollHeight / 4) {
     element.scrollTop = element.scrollHeight / 4;
   }
@@ -137,10 +135,8 @@ export function onScrimClick(event) {
     hideNavDrawer();
   }
   const sidesheet = document.getElementsByClassName('mdw-layout__sidesheet')[0];
-  if (sidesheet && sidesheet.getAttribute('aria-hidden') === 'false') {
-    if (window.innerWidth < TABLET_BREAKPOINT || document.body.getAttribute('mdw-sidesheet-style') === 'modal') {
-      hideSideSheet();
-    }
+  if (sidesheet && sidesheet.getAttribute('aria-hidden') === 'false' && (window.innerWidth < TABLET_BREAKPOINT || document.body.getAttribute('mdw-sidesheet-style') === 'modal')) {
+    hideSideSheet();
   }
 }
 
@@ -169,11 +165,8 @@ export function isTablet() {
 
 /** @return {HTMLElement} */
 export function getAppBarElement() {
-  if (!appBarElement) {
-    /** @type {HTMLElement} */
-    appBarElement = (document.getElementsByClassName('mdw-layout__appbar')[0]);
-  }
-  return appBarElement;
+  // eslint-disable-next-line no-return-assign
+  return (appBarElement ||= /** @type {HTMLElement} */ (document.getElementsByClassName('mdw-layout__appbar')[0]));
 }
 
 /** @return {boolean} */
@@ -189,10 +182,10 @@ export function shouldAutoHideAppBar() {
   if (autoHide === '') {
     return true;
   }
-  if (autoHide.indexOf('tablet') !== -1 && isTablet()) {
+  if (autoHide.includes('tablet') && isTablet()) {
     return true;
   }
-  if (autoHide.indexOf('mobile') !== -1 && isMobile()) {
+  if (autoHide.includes('mobile') && isMobile()) {
     return true;
   }
   return false;
@@ -208,7 +201,7 @@ export function openAppBarFabCut() {
   if (fabCutAttr == null) {
     return;
   }
-  if (fabCutAttr.indexOf('open') === -1) {
+  if (!fabCutAttr.includes('open')) {
     appBar.setAttribute('mdw-fab-cut', `open ${fabCutAttr}`.trim());
   }
 }
@@ -238,7 +231,7 @@ export function closeAppBarFabCut() {
   if (!fabCutAttr) {
     return;
   }
-  if (fabCutAttr.indexOf('open') !== -1) {
+  if (fabCutAttr.includes('open')) {
     appBar.setAttribute('mdw-fab-cut', fabCutAttr.replace('open', '').trim());
   }
 }
@@ -270,8 +263,7 @@ export function isFabShown() {
 /** @return {HTMLElement} */
 export function getContentElement() {
   if (!layoutContentElement) {
-    /** @type {HTMLElement} */
-    layoutContentElement = (document.getElementsByClassName('mdw-layout__content')[0]);
+    layoutContentElement = /** @type {HTMLElement} */ (document.getElementsByClassName('mdw-layout__content')[0]);
   }
   return layoutContentElement;
 }
@@ -344,19 +336,15 @@ export function onScroll(isBody) {
   }
 
   // Don't perform on each scroll back, only on first
-  if (newScrollBack || isAtRest) {
-    if (appBar.hasAttribute('mdw-autohide')) {
-      appBar.removeAttribute('mdw-hide');
-      appBar.style.removeProperty('margin-top');
-    }
+  if ((newScrollBack || isAtRest) && appBar.hasAttribute('mdw-autohide')) {
+    appBar.removeAttribute('mdw-hide');
+    appBar.style.removeProperty('margin-top');
   }
 
   if (!scrolledPastAppBar) {
-    if (bottomAppBar) {
-      scrolledPastAppBar = currentScrollY <= scrollBottom - appBar.clientHeight;
-    } else {
-      scrolledPastAppBar = currentScrollY > appBar.clientHeight;
-    }
+    scrolledPastAppBar = bottomAppBar
+      ? currentScrollY <= scrollBottom - appBar.clientHeight
+      : currentScrollY > appBar.clientHeight;
   }
 
   if (isAtRest) {
@@ -382,10 +370,8 @@ export function onScroll(isBody) {
     }
   }
 
-  if (newScrollAway) {
-    if (appBar.hasAttribute('mdw-autoraise')) {
-      appBar.setAttribute('mdw-raise', '');
-    }
+  if (newScrollAway && appBar.hasAttribute('mdw-autoraise')) {
+    appBar.setAttribute('mdw-raise', '');
   }
 }
 
@@ -418,26 +404,32 @@ export function attach() {
   const appBar = getAppBarElement();
   if (appBar) {
     // Initialize with scroll up
-    document.body.addEventListener('scroll', onBodyScroll, getPassiveEventListenerOption());
+    document.body.addEventListener('scroll', onBodyScroll, { passive: true });
     const contentElement = getContentElement();
     if (contentElement) {
-      contentElement.addEventListener('scroll', onContentScroll, getPassiveEventListenerOption());
+      contentElement.addEventListener('scroll', onContentScroll, { passive: true });
     }
     resetScroll();
   }
 
-  iterateArrayLike(document.getElementsByClassName('mdw-layout__navdrawer-toggle'),
-    (el) => el.addEventListener('click', toggleNavDrawer));
-  iterateArrayLike(document.getElementsByClassName('mdw-layout__navdrawer-show'),
-    (el) => el.addEventListener('click', showNavDrawer));
-  iterateArrayLike(document.getElementsByClassName('mdw-layout__navdrawer-hide'),
-    (el) => el.addEventListener('click', hideNavDrawer));
-  iterateArrayLike(document.getElementsByClassName('mdw-layout__sidesheet-toggle'),
-    (el) => el.addEventListener('click', toggleSideSheet));
-  iterateArrayLike(document.getElementsByClassName('mdw-layout__sidesheet-show'),
-    (el) => el.addEventListener('click', showSideSheet));
-  iterateArrayLike(document.getElementsByClassName('mdw-layout__sidesheet-hide'),
-    (el) => el.addEventListener('click', hideSideSheet));
+  for (const el of document.getElementsByClassName('mdw-layout__navdrawer-toggle')) {
+    el.addEventListener('click', toggleNavDrawer);
+  }
+  for (const el of document.getElementsByClassName('mdw-layout__navdrawer-show')) {
+    el.addEventListener('click', showNavDrawer);
+  }
+  for (const el of document.getElementsByClassName('mdw-layout__navdrawer-hide')) {
+    el.addEventListener('click', hideNavDrawer);
+  }
+  for (const el of document.getElementsByClassName('mdw-layout__sidesheet-toggle')) {
+    el.addEventListener('click', toggleSideSheet);
+  }
+  for (const el of document.getElementsByClassName('mdw-layout__sidesheet-show')) {
+    el.addEventListener('click', showSideSheet);
+  }
+  for (const el of document.getElementsByClassName('mdw-layout__sidesheet-hide')) {
+    el.addEventListener('click', hideSideSheet);
+  }
   const scrim = document.getElementsByClassName('mdw-layout__scrim')[0];
   if (scrim) {
     scrim.addEventListener('click', onScrimClick);
@@ -449,11 +441,9 @@ export function attach() {
 
 /** @return {void} */
 export function detach() {
-  document.removeEventListener('scroll', onBodyScroll, getPassiveEventListenerOption());
+  document.removeEventListener('scroll', onBodyScroll);
   const content = getContentElement();
-  if (content) {
-    content.removeEventListener('scroll', onContentScroll, getPassiveEventListenerOption());
-  }
+  content?.removeEventListener('scroll', onContentScroll);
   const scrim = document.getElementsByClassName('mdw-layout__scrim')[0];
   if (scrim) {
     scrim.removeEventListener('click', onScrimClick);

@@ -1,6 +1,5 @@
 import * as Menu from '../../components/menu/index.js';
 import * as MenuItem from '../../components/menu/item.js';
-import { iterateArrayLike } from '../../core/dom.js';
 import { convertElementToCode } from '../_sample-utils.js';
 
 /** @type {HTMLElement} */
@@ -37,13 +36,11 @@ function updateSampleCode() {
   const button = document.querySelector('.component-sample .mdw-button');
   let closer = document.querySelector('.component-sample .mdw-menu__close');
   button.removeEventListener('click', onSampleButtonClick);
-  iterateArrayLike(sampleComponent.querySelectorAll('[tabindex]'), (el) => el.removeAttribute('tabindex'));
+  for (const el of sampleComponent.querySelectorAll('[tabindex]')) el.removeAttribute('tabindex');
 
-  if (closer) {
-    if (jsRequired || (closer instanceof HTMLAnchorElement === false)) {
-      closer.parentElement.removeChild(closer);
-      closer = null;
-    }
+  if (closer && (jsRequired || !(closer instanceof HTMLAnchorElement))) {
+    closer.remove();
+    closer = null;
   }
 
   if (jsRequired) {
@@ -113,8 +110,7 @@ function initializeSampleComponents() {
  * @return {void}
  */
 function onOptionChange(event) {
-  /** @type {HTMLInputElement} */
-  const { name, value } = (event.target);
+  const { name, value } = /** @type {HTMLInputElement} */ (event.target);
   let mdwDirection = sampleComponent.getAttribute('mdw-direction') || '';
   let mdwPosition = sampleComponent.getAttribute('mdw-position') || '';
 
@@ -207,9 +203,9 @@ function onOptionChange(event) {
 /** @return {void} */
 function setupComponentOptions() {
   sampleComponent = document.querySelector('.component-sample .mdw-menu');
-  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+  for (const el of document.querySelectorAll('input[name]')) {
     el.addEventListener('change', onOptionChange);
-  });
+  }
 }
 
 initializeSampleComponents();

@@ -8,8 +8,7 @@ function onKeyDown(event) {
   if (event.key !== 'Enter' && event.key !== 'Spacebar' && event.key !== ' ') {
     return;
   }
-  /** @type {HTMLElement} */
-  const buttonElement = (event.currentTarget);
+  const buttonElement = /** @type {HTMLElement} */ (event.currentTarget);
   if (!buttonElement) {
     return;
   }
@@ -29,13 +28,13 @@ function onKeyDown(event) {
  */
 export function attach(element) {
   element.setAttribute('role', 'button');
-  if (element instanceof HTMLButtonElement === false
+  if (!(element instanceof HTMLButtonElement)
       && !element.hasAttribute('tabindex')) {
     element.setAttribute('tabindex', '0');
   }
   element.setAttribute('mdw-aria-button-js', '');
-  if (element instanceof HTMLButtonElement === false
-    && element instanceof HTMLInputElement === false) {
+  if (!(element instanceof HTMLButtonElement)
+    && !(element instanceof HTMLInputElement)) {
     element.addEventListener('keydown', onKeyDown);
   }
 }

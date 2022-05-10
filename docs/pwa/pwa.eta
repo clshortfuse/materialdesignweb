@@ -1,6 +1,6 @@
 <% var T = '../../templates/index.eta' %>
 <!DOCTYPE html>
-<html class="mdw-layout mdw-theme" lang="en">
+<html class="mdw-layout mdw-theme" lang="en" mdw-light>
 
 <head>
   <title>MDW PWA</title>
@@ -11,7 +11,7 @@
   <meta name="theme-color" content="#fff">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="pwa.min.css">
   <script src="pwa-prerender.min.js"></script>
 </head>
@@ -100,7 +100,7 @@
       <div>
         <span>
           <span class="mdw-type" mdw-style="h2">Info</span>
-          <%~ includeFile(T, { button: { icon:true, class:'material-icons', text:'close' }}) %>
+          <%~ includeFile(T, { button: { icon:true, class:'material-icons mdw-layout__sidesheet-hide mdw-layout__sidesheet-hide', text:'close' }}) %>
         </span>
       </div>
     </div>
@@ -119,14 +119,12 @@
         </svg>
       </div>
     </div>
-    <div class="mdw-appbar__action">
-      <div class="mdw-appbar__start">
-        <%~ includeFile(T, { button: { icon:true, class:'.mdw-layout__navdrawer-toggle', text:'menu' }}) %>
-      </div>
-      <div class="mdw-appbar__title">MDW PWA</div>
-      <div class="mdw-appbar__end">
-        <%~ includeFile(T, { button: { icon:true, class:'.mdw-layout__sidesheet-toggle', text:'info' }}) %>
-      </div>
+    <div class="mdw-appbar__start">
+      <%~ includeFile(T, { button: { icon:true, class:'mdw-layout__navdrawer-toggle material-icons', text:'menu' }}) %>
+    </div>
+    <div class="mdw-appbar__title">MDW PWA</div>
+    <div class="mdw-appbar__end">
+      <%~ includeFile(T, { button: { icon:true, class:'mdw-layout__sidesheet-toggle material-icons', text:'info' }}) %>
     </div>
   </div>
   <div class="mdw-layout__banner">
@@ -200,7 +198,7 @@
                     <div class="mdw-list__text-line">Auto Hide</div>
                     <div class="mdw-list__text-line mdw-theme" mdw-ink="medium">Mobile and Tablet</div>
                   </div>
-                  <div class="mdw-divider__vertical mdw-theme" mdw-ink="divider"></div>
+                  <div class="mdw-divider mdw-theme" mdw-vertical mdw-ink="divider"></div>
                   <div class="mdw-list__secondary" mdw-action>
                     <div class="mdw-selection__icon mdw-theme" mdw-ink="secondary" mdw-switch></div>
                   </div>
@@ -272,7 +270,7 @@
                     <div class="mdw-list__text-line">Mobile</div>
                     <div class="mdw-list__text-line mdw-theme" mdw-ink="medium">Center</div>
                   </div>
-                  <div class="mdw-divider__vertical mdw-theme" mdw-ink="divider"></div>
+                  <div class="mdw-divider mdw-theme" mdw-vertical mdw-ink="divider"></div>
                   <div class="mdw-list__secondary" mdw-action>
                     <div class="mdw-selection__icon mdw-theme" mdw-ink="secondary" mdw-switch></div>
                   </div>
@@ -284,7 +282,7 @@
                     <div class="mdw-list__text-line">Desktop</div>
                     <div class="mdw-list__text-line mdw-theme" mdw-ink="medium">End</div>
                   </div>
-                  <div class="mdw-divider__vertical mdw-theme" mdw-ink="divider "></div>
+                  <div class="mdw-divider mdw-theme" mdw-vertical mdw-ink="divider "></div>
                   <div class="mdw-list__secondary" mdw-action>
                     <div class="mdw-selection__icon mdw-theme" mdw-ink="secondary" mdw-switch></div>
                   </div>
@@ -430,8 +428,8 @@
             <div class="mdw-card__subheader">Supplementary content</div>
             <div class="mdw-divider mdw-theme" mdw-ink="divider"></div>
             <div class="mdw-card__actions">
-              <%~ includeFile(T, { button: { id:'dialog-alert-button', text:' Alert' }}) %>
-              <%~ includeFile(T, { button: { id:'dialog-confirm-button', text:'Confirm' }}) %>
+              <%~ includeFile(T, { button: { id:'dialog-alert-button', text: 'Alert' }}) %>
+              <%~ includeFile(T, { button: { id:'dialog-confirm-button', text: 'Confirm' }}) %>
             </div>
           </div>
         </div>

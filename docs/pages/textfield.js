@@ -1,10 +1,9 @@
 import * as TextField from '../../components/textfield/index.js';
-import { iterateArrayLike } from '../../core/dom.js';
 import { convertElementToCode } from '../_sample-utils.js';
 
 /** @return {void} */
 function initializeSampleComponents() {
-  iterateArrayLike(document.querySelectorAll('.js .mdw-textfield'), TextField.attach);
+  for (const el of document.querySelectorAll('.js .mdw-textfield')) TextField.attach(el);
 }
 
 /** @type {HTMLElement} */
@@ -101,6 +100,13 @@ function onOptionChange(event) {
         sampleComponent.removeAttribute('mdw-outlined');
       }
       break;
+    case 'dense':
+      if (checked) {
+        sampleComponent.setAttribute('mdw-dense', '');
+      } else {
+        sampleComponent.removeAttribute('mdw-dense');
+      }
+      break;
     case 'disabled':
       if (checked) {
         sampleComponent.getElementsByClassName('mdw-textfield__input')[0].setAttribute('disabled', '');
@@ -132,7 +138,7 @@ function onOptionChange(event) {
           sampleComponent.appendChild(prefixText);
         }
       } else if (prefixText) {
-        prefixText.parentElement.removeChild(prefixText);
+        prefixText.remove();
       }
       break;
     case 'suffix':
@@ -145,7 +151,7 @@ function onOptionChange(event) {
           sampleComponent.appendChild(suffixText);
         }
       } else if (suffixText) {
-        suffixText.parentElement.removeChild(suffixText);
+        suffixText.remove();
       }
       break;
     case 'signifier':
@@ -163,7 +169,7 @@ function onOptionChange(event) {
           }
         }
       } else if (signifierElement) {
-        signifierElement.parentElement.removeChild(signifierElement);
+        signifierElement.remove();
       }
       break;
     case 'helper-text':
@@ -176,7 +182,7 @@ function onOptionChange(event) {
           sampleComponent.appendChild(helperText);
         }
       } else if (helperText) {
-        helperText.parentElement.removeChild(helperText);
+        helperText.remove();
       }
       break;
     case 'error-text':
@@ -189,7 +195,7 @@ function onOptionChange(event) {
           sampleComponent.appendChild(errorText);
         }
       } else if (errorText) {
-        errorText.parentElement.removeChild(errorText);
+        errorText.remove();
       }
       break;
     case 'ink':
@@ -207,7 +213,8 @@ function onOptionChange(event) {
 
   if (inputElement.tagName.toLowerCase() !== desiredTagName) {
     const newElement = document.createElement(desiredTagName);
-    for (let i = inputElement.attributes.length - 1; i >= 0; i -= 1) {
+    let i = inputElement.attributes.length;
+    while (i--) {
       const attr = inputElement.attributes.item(i);
       newElement.attributes.setNamedItem(attr.cloneNode());
     }
@@ -215,18 +222,14 @@ function onOptionChange(event) {
     inputElement = newElement;
     let dropdown = sampleComponent.getElementsByClassName('mdw-textfield__icon')[0];
     if (desiredTagName === 'select') {
-      const option1 = document.createElement('option');
-      option1.setAttribute('value', '');
-      option1.textContent = 'Empty';
-      const option2 = document.createElement('option');
-      option2.setAttribute('value', 'option1');
-      option2.textContent = 'Option 1';
-      const option3 = document.createElement('option');
-      option3.setAttribute('value', 'option2');
-      option3.textContent = 'Option 2';
-      inputElement.appendChild(option1);
-      inputElement.appendChild(option2);
-      inputElement.appendChild(option3);
+      for (const [valueAttr, textContent] of [['', 'Empty'], ['option1', 'Option 1'], ['option2', 'Option 2']]) {
+        const option = document.createElement('option');
+        option.className = 'mdw-theme';
+        option.setAttribute('mdw-surface', 'card');
+        option.setAttribute('value', valueAttr);
+        option.textContent = textContent;
+        inputElement.appendChild(option);
+      }
       if (!dropdown) {
         dropdown = document.createElement('div');
         dropdown.classList.add('mdw-textfield__icon');
@@ -234,7 +237,7 @@ function onOptionChange(event) {
         sampleComponent.appendChild(dropdown);
       }
     } else if (dropdown) {
-      dropdown.parentElement.removeChild(dropdown);
+      dropdown.remove();
     }
   }
   inputElement.removeAttribute('rows');
@@ -244,9 +247,9 @@ function onOptionChange(event) {
 /** @return {void} */
 function setupComponentOptions() {
   sampleComponent = document.querySelector('.component-sample .mdw-textfield');
-  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+  for (const el of document.querySelectorAll('input[name]')) {
     el.addEventListener('change', onOptionChange);
-  });
+  }
 }
 
 initializeSampleComponents();

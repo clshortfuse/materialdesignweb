@@ -1,5 +1,5 @@
 import * as Keyboard from '../../core/aria/keyboard.js';
-import { getChildElementByClass, iterateArrayLike } from '../../core/dom.js';
+import { getChildElementByClass } from '../../core/dom.js';
 
 import * as ListContent from './content.js';
 
@@ -18,9 +18,9 @@ export function isExpanded(listItemElement) {
  */
 export function setExpanded(listItemElement, value) {
   listItemElement.setAttribute('aria-expanded', value ? 'true' : 'false');
-  iterateArrayLike(listItemElement.querySelectorAll('[role="treeitem"]'), (treeitem) => {
+  for (const treeitem of listItemElement.querySelectorAll('[role="treeitem"]')) {
     treeitem.setAttribute('mdw-skip-tab', value ? 'false' : 'true');
-  });
+  }
 }
 
 /**
@@ -28,10 +28,8 @@ export function setExpanded(listItemElement, value) {
  * @return {void}
  */
 export function onChildContentActivate(event) {
-  /** @type {HTMLElement} */
-  const activatedElement = (event.target);
-  /** @type {HTMLElement} */
-  const element = (event.currentTarget);
+  const activatedElement = /** @type {HTMLElement} */ (event.target);
+  const element = /** @type {HTMLElement} */ (event.currentTarget);
   if (!activatedElement || activatedElement.parentElement !== element) {
     return;
   }
@@ -110,8 +108,7 @@ function onKeyDown(event) {
   if (document.activeElement !== event.currentTarget) {
     return;
   }
-  /** @type {HTMLElement} */
-  const element = (event.currentTarget);
+  const element = /** @type {HTMLElement} */ (event.currentTarget);
   if (!element) {
     return;
   }
@@ -142,7 +139,7 @@ export function attachCore(listItemElement) {
  */
 export function attach(listItemElement) {
   attachCore(listItemElement);
-  iterateArrayLike(listItemElement.getElementsByClassName('mdw-list__content'), ListContent.attach);
+  for (const element of listItemElement.getElementsByClassName('mdw-list__content')) { ListContent.attach(element); }
   if (listItemElement.hasAttribute('aria-expanded')) {
     if (!listItemElement.hasAttribute('mdw-expander-js')) {
       listItemElement.setAttribute('mdw-pre-expander-js', '');
@@ -166,5 +163,5 @@ export function attach(listItemElement) {
  */
 export function detach(listItemElement) {
   Keyboard.detach(listItemElement);
-  iterateArrayLike(listItemElement.getElementsByClassName('mdw-list__content'), ListContent.detach);
+  for (const element of listItemElement.getElementsByClassName('mdw-list__content')) { ListContent.detach(element); }
 }

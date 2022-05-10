@@ -1,5 +1,4 @@
 import * as Snackbar from '../../components/snackbar/index.js';
-import { iterateArrayLike } from '../../core/dom.js';
 import { convertElementToCode } from '../_sample-utils.js';
 
 /** @type {HTMLElement} */
@@ -112,7 +111,7 @@ function onOptionChange(event) {
     case 'button':
       if (value === 'none') {
         if (buttonElement) {
-          buttonElement.parentElement.removeChild(buttonElement);
+          buttonElement.remove();
         }
         break;
       }
@@ -149,9 +148,9 @@ function setupComponentOptions() {
       parent: jsSnackbarContainer,
     });
   });
-  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+  for (const el of document.querySelectorAll('input[name]')) {
     el.addEventListener('change', onOptionChange);
-  });
+  }
 }
 
 setupComponentOptions();

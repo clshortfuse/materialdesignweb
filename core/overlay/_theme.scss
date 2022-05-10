@@ -1,171 +1,147 @@
 // https://material.io/design/interaction/states.html
 
-@use '../theme/_mixins.scss' as theme;
+.mdw-theme {
+  --mdw-overlay__overlay-rgb: var(--mdw-ink-default);
+  --mdw-overlay__high-opacity: var(--mdw-high-opacity);
+  --mdw-overlay__medium-opacity: var(--mdw-medium-opacity);
+  --mdw-overlay__inactive-opacity: var(--mdw-inactive-opacity);
+  --mdw-overlay__divider-opacity: var(--mdw-divider-opacity);
+  --mdw-overlay__base-opacity: var(--mdw-overlay__base-opacity-value);
+  --mdw-overlay__disabled-opacity: var(--mdw-overlay__disabled-opacity-value);
+  --mdw-overlay__hover-opacity: var(--mdw-overlay__hover-opacity-value);
+  --mdw-overlay__focus-opacity: var(--mdw-overlay__focus-opacity-value);
+  --mdw-overlay__selected-opacity: var(--mdw-overlay__selected-opacity-value);
+  --mdw-overlay__activated-opacity: var(--mdw-overlay__activated-opacity-value);
 
-$themeValues: (
-  overlay-color:                 theme.$foreground,
-
-  high-opacity:                  theme.$high-opacity,
-  medium-opacity:                theme.$medium-opacity,
-  inactive-opacity:              theme.$inactive-opacity,
-  divider-opacity:               theme.$divider-opacity,
-  
-  disabled-opacity:              (0.38, 0.50),
-  
-  // states   
-
-  hover-opacity:                 (0.04, 0.08),
-  focus-opacity:                 (0.12, 0.24),
-  selected-opacity:              (0.08, 0.16),
-  activated-opacity:             (0.12, 0.24),
-  
-  hover-focus-opacity:           (0.04 + 0.12, 0.08 + 0.24),
-
-  selected-hover-opacity:        (0.08 + 0.04, 0.16 + 0.08),
-  selected-focus-opacity:        (0.08 + 0.12, 0.16 + 0.24),
-  selected-hover-focus-opacity:  (0.08 + 0.04 + 0.12, 0.16 + 0.08 + 0.24),
-
-  activated-hover-opacity:       (0.12 + 0.04, 0.24 + 0.08),
-  activated-focus-opacity:       (0.12 + 0.12, 0.24 + 0.24),
-  activated-hover-focus-opacity: (0.12 + 0.04 + 0.12, 0.24 + 0.08 + 0.24),
-) !default;
-
-@function getThemeValue($key, $type) {
-  @return theme.getThemeValue('overlay', $themeValues, $key, $type);
 }
 
-@mixin addThemeRules($type: 'var') {
-  .mdw-overlay {
-    &,
-    &[aria-pressed="false"]:active,
-    &[aria-selected="true"],
-    &[aria-pressed="true"],
-    &[aria-current] {
-      &::before {
-        @if ($type == 'var') {
-          color: RGB(var(--mdw-ink));
-        } @else {
-          // Handled by mdw-color
-        }
-      }
-    }
+.mdw-theme[mdw-light] {
+  --mdw-overlay__base-opacity-value: 0;
+  --mdw-overlay__base-opacity-elevation_1: 0;
+  --mdw-overlay__base-opacity-elevation_2: 0;
+  --mdw-overlay__base-opacity-elevation_3: 0;
+  --mdw-overlay__base-opacity-elevation_4: 0;
+  --mdw-overlay__base-opacity-elevation_6: 0;
+  --mdw-overlay__base-opacity-elevation_8: 0;
+  --mdw-overlay__base-opacity-elevation_9: 0;
+  --mdw-overlay__base-opacity-elevation_12: 0;
+  --mdw-overlay__base-opacity-elevation_16: 0;
+  --mdw-overlay__base-opacity-elevation_24: 0;
+  --mdw-overlay__disabled-opacity-value: 0.38;
+  --mdw-overlay__hover-opacity-value: 0.04;
+  --mdw-overlay__focus-opacity-value: 0.12;
+  --mdw-overlay__selected-opacity-value: 0.08;
+  --mdw-overlay__activated-opacity-value: 0.12;
+}
 
-    &[aria-selected="false"],
-    &[aria-pressed="false"],
-    &[aria-disabled="true"],
-    &[aria-disabled="true"]:active {
-      &::before {
-        @if ($type == 'var') {
-          color: RGB(getThemeValue("overlay-color", $type));
-        } @else {
-          background-color: RGB(getThemeValue("overlay-color", $type));
-        }
-      }
-    }
+.mdw-theme[mdw-dark] {
+  --mdw-overlay__base-opacity-value: 0;
+  --mdw-overlay__base-opacity-elevation_1: 0.05;
+  --mdw-overlay__base-opacity-elevation_2: 0.07;
+  --mdw-overlay__base-opacity-elevation_3: 0.08;
+  --mdw-overlay__base-opacity-elevation_4: 0.09;
+  --mdw-overlay__base-opacity-elevation_6: 0.11;
+  --mdw-overlay__base-opacity-elevation_8: 0.12;
+  --mdw-overlay__base-opacity-elevation_9: 0.13;
+  --mdw-overlay__base-opacity-elevation_12: 0.14;
+  --mdw-overlay__base-opacity-elevation_16: 0.15;
+  --mdw-overlay__base-opacity-elevation_24: 0.16;
+  --mdw-overlay__disabled-opacity-value: 0.50;
+  --mdw-overlay__hover-opacity-value: 0.08;
+  --mdw-overlay__focus-opacity-value: 0.24;
+  --mdw-overlay__selected-opacity-value: 0.16;
+  --mdw-overlay__activated-opacity-value: 0.24;
+}
 
-    // Off color
-    &[aria-selected="false"],
-    &[aria-pressed="false"],
-    &[aria-selected="true"]:not([aria-current]) {
-      #{if($type == 'var', '&', '&,&.mdw-theme')} {
-        color: RGBA(getThemeValue("overlay-color", $type), getThemeValue("high-opacity", $type));
-        &[mdw-border-ink] {
-          border-color: RGBA(getThemeValue("overlay-color", $type), getThemeValue("divider-opacity", $type));
-        }
-        &[mdw-overlay-default="medium"] {
-          color: RGBA(getThemeValue("overlay-color", $type), getThemeValue("medium-opacity", $type));
-        }
-        &[mdw-overlay-default="inactive"] {
-          color: RGBA(getThemeValue("overlay-color", $type), getThemeValue("inactive-opacity", $type));
-        }
-        &[mdw-overlay-default="divider"] {
-          color: RGBA(getThemeValue("overlay-color", $type), getThemeValue("divider-opacity", $type));
-        }
-      }
-    }
+.mdw-overlay {
+  // Disable Hover State
+  &[aria-disabled="true"],
+  &[mdw-overlay-touch="true"],
+  &[mdw-overlay-off~="hover"],
+  &:not(:hover) {
+    --mdw-overlay__hover-opacity: 0;
+  }
 
-    &[aria-disabled="true"] {
-      &[mdw-overlay-disabled="ink"] {
-        color: RGBA(getThemeValue("overlay-color", $type), getThemeValue("inactive-opacity", $type));
-      }
-      &:not([mdw-overlay-disabled]) {
-        opacity: getThemeValue("disabled-opacity", $type);
-      }
-    }
+  // Disable Focus State
+  &[aria-disabled="true"],
+  &[mdw-overlay-touch="true"],
+  &[mdw-overlay-off~="focus"],
+  &:not(:focus) {
+    --mdw-overlay__focus-opacity: 0;
+  }
 
-    &:not([mdw-overlay-touch="true"]) {
-      &:focus:not([mdw-overlay-off~="focus"]):not([mdw-overlay-touch="true"])::before {
-        opacity: getThemeValue("focus-opacity", $type);
-      }
+  // Disable Selected State
+  // Activated overrides Selected
+  &[mdw-overlay-off~="selected"],
+  &:not([aria-selected="true"]),
+  &[aria-current],
+  &[aria-pressed="true"] {
+    --mdw-overlay__selected-opacity: 0;
+  }
 
-      &:not([aria-disabled="true"]):not([mdw-overlay-touch="true"]) {
-        &:hover:not([mdw-overlay-off~="hover"])::before {
-          opacity: getThemeValue("hover-opacity", $type);
-        }
+  &[mdw-overlay-off~="activated"],
+  &:not([aria-current]):not([aria-pressed="true"]) {
+    --mdw-overlay__activated-opacity: 0;
+  }
 
-        &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-          opacity: getThemeValue("hover-focus-opacity", $type);
-        }
-      }
-    }
+  &::before {
+    opacity: calc(var(--mdw-overlay__base-opacity) + var(--mdw-overlay__hover-opacity) + var(--mdw-overlay__focus-opacity) + var(--mdw-overlay__selected-opacity) + var(--mdw-overlay__activated-opacity));
 
-    // Selected
-    &[aria-selected="true"]:not([mdw-overlay-off~="selected"]) {
-      &::before {
-        opacity: getThemeValue("selected-opacity", $type);
-      }
+    color: RGB(var(--mdw-overlay__overlay-rgb));
+  }
 
-      &:not([mdw-overlay-touch="true"]) {
-        &:focus:not([mdw-overlay-off~="focus"])::before {
-          opacity: getThemeValue("selected-focus-opacity", $type);
-        }
-
-        &:not([aria-disabled="true"]) {
-          &:hover:not([mdw-overlay-off~="hover"])::before {
-            opacity: getThemeValue("selected-hover-opacity", $type);
-          }
-
-          &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-            opacity: getThemeValue("selected-hover-focus-opacity", $type);
-          }
-        }
-      }
-    }
-
-    // Activated
-    &[aria-current]:not([mdw-overlay-off~="activated"]),
-    &[aria-pressed="true"]:not([mdw-overlay-off~="activated"]) {
-      &::before {
-        opacity: getThemeValue("activated-opacity", $type);
-      }
-
-      &:not([mdw-overlay-touch="true"]) {
-        &:focus:not([mdw-overlay-off~="focus"])::before {
-          opacity: getThemeValue("activated-focus-opacity", $type);
-        }
-
-        &:not([aria-disabled="true"]) {
-          &:hover:not([mdw-overlay-off~="hover"])::before {
-            opacity: getThemeValue("activated-hover-opacity", $type);
-          }
-
-          &:hover:focus:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-            opacity: getThemeValue("activated-hover-focus-opacity", $type);
-          }
-        }
-      }
+  &:hover,
+  &:focus,
+  &[aria-pressed="false"]:active,
+  &[aria-selected="true"],
+  &[aria-pressed="true"],
+  &[aria-current] {
+    &::before {
+      color: RGB(var(--mdw-ink));
     }
   }
-}
 
-@include theme.addComponentFallbackRules('light') {
-  @include addThemeRules('light');
-}
-@include theme.addComponentFallbackRules('dark') {
-  @include addThemeRules('dark');
-}
+  &[aria-selected="false"],
+  &[aria-pressed="false"],
+  &[aria-disabled="true"],
+  &[aria-disabled="true"]:active {
+    &::before {
+      color: RGB(var(--mdw-overlay__overlay-rgb));
+    }
+  }
 
+  // Off color
+  &[aria-selected="false"],
+  &[aria-pressed="false"],
+  &[aria-selected="true"]:not([aria-current]) {
+    --mdw-overlay__text-opacity: var(--mdw-overlay__high-opacity);
 
-@include theme.addComponentCSSVariableRules('overlay', $themeValues) {
-  @include addThemeRules();
+    color: RGBA(var(--mdw-overlay__overlay-rgb), var(--mdw-overlay__text-opacity));
+
+    &[mdw-overlay-default="medium"] {
+      --mdw-overlay__text-opacity: var(--mdw-overlay__medium-opacity);
+    }
+
+    &[mdw-overlay-default="inactive"] {
+      --mdw-overlay__text-opacity: var(--mdw-overlay__inactive-opacity);
+    }
+
+    &[mdw-overlay-default="divider"] {
+      --mdw-overlay__text-opacity: var(--mdw-overlay__divider-opacity);
+    }
+
+    &[mdw-border-ink] {
+      border-color: RGBA(var(--mdw-overlay__overlay-rgb), var(--mdw-overlay__divider-opacity));
+    }
+  }
+
+  &[aria-disabled="true"] {
+    &[mdw-overlay-disabled="ink"] {
+      color: RGBA(var(--mdw-overlay__overlay-rgb), var(--mdw-overlay__inactive-opacity));
+    }
+
+    &:not([mdw-overlay-disabled]) {
+      opacity: var(--mdw-overlay__disabled-opacity);
+    }
+  }
 }

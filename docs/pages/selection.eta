@@ -6,9 +6,7 @@
       <div class="render-fill">
         <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'teal 700', dark:true }) %>
         <div class="mdw-appbar mdw-theme" mdw-surface="teal 500" mdw-dark>
-          <div class="mdw-appbar__action">
-            <div class="mdw-appbar__title">Styled HTMLInputElement</div>
-          </div>
+          <div class="mdw-appbar__title">Styled HTMLInputElement</div>
         </div>
         <div class="content">
           <div class="display-flex" style="padding:16px;">
@@ -41,9 +39,7 @@
       <div class="render-fill">
         <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'teal 700', dark:true }) %>
         <div class="mdw-appbar mdw-theme" mdw-surface="teal 500" mdw-dark>
-          <div class="mdw-appbar__action">
-            <div class="mdw-appbar__title">aria-checked (JS)</div>
-          </div>
+          <div class="mdw-appbar__title">aria-checked (JS)</div>
         </div>
         <div class="content">
           <div class="mdw-list__subheader mdw-theme" id="docs-selection-subheader1" mdw-ink="medium">Switch</div>

@@ -3,7 +3,6 @@
 import * as Attributes from '../../core/aria/attributes.js';
 import {
   dispatchDomEvent,
-  iterateArrayLike,
   iterateElementSiblings,
 } from '../../core/dom.js';
 import * as Overlay from '../../core/overlay/index.js';
@@ -39,14 +38,10 @@ export function setupARIA(element) {
   if (useAriaChecked && !element.hasAttribute('aria-checked')) {
     element.setAttribute('aria-checked', 'false');
   }
-  iterateArrayLike(element.getElementsByClassName('mdw-menu__icon'),
-    (el) => el.setAttribute('aria-hidden', 'true'));
-  iterateArrayLike(element.getElementsByClassName('mdw-menu__text'),
-    (el) => el.setAttribute('role', 'text'));
-  iterateArrayLike(element.getElementsByClassName('mdw-menu__check'),
-    (el) => el.setAttribute('aria-hidden', 'true'));
-  iterateArrayLike(element.getElementsByClassName('mdw-menu__info'),
-    (el) => el.setAttribute('role', 'note'));
+  for (const el of element.getElementsByClassName('mdw-menu__icon')) el.setAttribute('aria-hidden', 'true');
+  for (const el of element.getElementsByClassName('mdw-menu__text')) el.setAttribute('role', 'text');
+  for (const el of element.getElementsByClassName('mdw-menu__check')) el.setAttribute('aria-hidden', 'true');
+  for (const el of element.getElementsByClassName('mdw-menu__info')) el.setAttribute('role', 'note');
 }
 
 /**
@@ -54,8 +49,7 @@ export function setupARIA(element) {
  * @return {void}
  */
 export function onMouseMove(event) {
-  /** @type {HTMLElement} */
-  const el = (event.currentTarget);
+  const el = /** @type {HTMLElement} */ (event.currentTarget);
   if (!el) {
     return;
   }
@@ -68,10 +62,10 @@ export function onMouseMove(event) {
     return;
   }
   el.focus();
-  if (document.activeElement !== el) {
-    if (document.activeElement !== previousFocus && previousFocus instanceof HTMLElement) {
-      previousFocus.focus();
-    }
+  if (document.activeElement !== el
+    && document.activeElement !== previousFocus
+    && previousFocus instanceof HTMLElement) {
+    previousFocus.focus();
   }
 }
 
@@ -139,8 +133,7 @@ export function openSubMenu(element) {
 export function onClick(event) {
   event.stopPropagation();
 
-  /** @type {HTMLElement} */
-  const menuItemElement = (event.currentTarget);
+  const menuItemElement = /** @type {HTMLElement} */ (event.currentTarget);
   if (Attributes.isDisabled(menuItemElement)) {
     return;
   }
@@ -158,8 +151,7 @@ export function onClick(event) {
  * @return {void}
  */
 export function onKeyDown(event) {
-  /** @type {HTMLElement} */
-  const menuItemElement = (event.currentTarget);
+  const menuItemElement = /** @type {HTMLElement} */ (event.currentTarget);
 
   if (event.key === 'Enter') {
     event.stopPropagation();

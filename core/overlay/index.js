@@ -1,5 +1,3 @@
-import { getPassiveEventListenerOption, iterateArrayLike } from '../dom.js';
-
 let lastInteractionWasTouch = false;
 
 if (window && window.matchMedia) {
@@ -11,8 +9,7 @@ if (window && window.matchMedia) {
  * @return {void}
  */
 export function onMouseDown(event) {
-  /** @type {HTMLElement} */
-  const element = (event.currentTarget);
+  const element = /** @type {HTMLElement} */ (event.currentTarget);
   if (element.hasAttribute('mdw-overlay-touch')) {
     return;
   }
@@ -24,8 +21,7 @@ export function onMouseDown(event) {
  * @return {void}
  */
 export function onTouchStart(event) {
-  /** @type {HTMLElement} */
-  const element = (event.currentTarget);
+  const element = /** @type {HTMLElement} */ (event.currentTarget);
   element.setAttribute('mdw-overlay-touch', 'true');
 }
 
@@ -34,8 +30,7 @@ export function onTouchStart(event) {
  * @return {void}
  */
 export function onKeyDown(event) {
-  /** @type {HTMLElement} */
-  const element = (event.currentTarget);
+  const element = /** @type {HTMLElement} */ (event.currentTarget);
   element.setAttribute('mdw-overlay-touch', 'false');
 }
 
@@ -44,17 +39,12 @@ export function onKeyDown(event) {
  * @return {void}
  */
 export function onBlur(event) {
-  /** @type {HTMLElement} */
-  const element = (event.currentTarget);
+  const element = /** @type {HTMLElement} */ (event.currentTarget);
   const value = element.getAttribute('mdw-overlay-touch');
   if (value == null) {
     return;
   }
-  if (value === 'true') {
-    lastInteractionWasTouch = true;
-  } else {
-    lastInteractionWasTouch = false;
-  }
+  lastInteractionWasTouch = value === 'true';
   element.removeAttribute('mdw-overlay-touch');
 }
 
@@ -63,13 +53,10 @@ export function onBlur(event) {
  * @return {void}
  */
 export function onFocus(event) {
-  /** @type {HTMLElement} */
-  const element = (event.currentTarget);
-  if (!element.hasAttribute('mdw-overlay-touch')) {
-    // Element was focused without a mouse or touch event (keyboard or programmatic)
-    if (lastInteractionWasTouch) {
-      element.setAttribute('mdw-overlay-touch', 'true');
-    }
+  const element = /** @type {HTMLElement} */ (event.currentTarget);
+  // Element was focused without a mouse or touch event (keyboard or programmatic)
+  if (!element.hasAttribute('mdw-overlay-touch') && lastInteractionWasTouch) {
+    element.setAttribute('mdw-overlay-touch', 'true');
   }
 }
 
@@ -79,11 +66,11 @@ export function onFocus(event) {
  */
 export function attach(element) {
   element.setAttribute('mdw-overlay-js', '');
-  element.addEventListener('mousedown', onMouseDown, getPassiveEventListenerOption());
-  element.addEventListener('touchstart', onTouchStart, getPassiveEventListenerOption());
-  element.addEventListener('keydown', onKeyDown, getPassiveEventListenerOption());
-  element.addEventListener('blur', onBlur, getPassiveEventListenerOption());
-  element.addEventListener('focus', onFocus, getPassiveEventListenerOption());
+  element.addEventListener('mousedown', onMouseDown, { passive: true });
+  element.addEventListener('touchstart', onTouchStart, { passive: true });
+  element.addEventListener('keydown', onKeyDown, { passive: true });
+  element.addEventListener('blur', onBlur, { passive: true });
+  element.addEventListener('focus', onFocus, { passive: true });
 }
 
 /**
@@ -91,7 +78,7 @@ export function attach(element) {
  * @return {void}
  */
 export function attachAll(root = document) {
-  iterateArrayLike(root.getElementsByClassName('mdw-overlay'), attach);
+  for (const el of root.getElementsByClassName('mdw-overlay')) attach(el);
 }
 
 /**
@@ -101,8 +88,8 @@ export function attachAll(root = document) {
 export function detach(element) {
   element.removeAttribute('mdw-overlay-js');
   element.removeAttribute('mdw-overlay-touch');
-  element.removeEventListener('mousedown', onMouseDown, getPassiveEventListenerOption());
-  element.removeEventListener('touchstart', onTouchStart, getPassiveEventListenerOption());
-  element.removeEventListener('keydown', onKeyDown, getPassiveEventListenerOption());
-  element.removeEventListener('blur', onBlur, getPassiveEventListenerOption());
+  element.removeEventListener('mousedown', onMouseDown);
+  element.removeEventListener('touchstart', onTouchStart);
+  element.removeEventListener('keydown', onKeyDown);
+  element.removeEventListener('blur', onBlur);
 }

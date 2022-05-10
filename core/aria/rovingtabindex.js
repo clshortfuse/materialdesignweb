@@ -2,8 +2,6 @@
 
 import {
   dispatchDomEvent,
-  iterateArrayLike,
-  iterateSomeOfArrayLike,
 } from '../dom.js';
 
 export const TABINDEX_ZEROED = 'mdw:rovingtabindex-tabindexzeroed';
@@ -13,8 +11,7 @@ export const TABINDEX_ZEROED = 'mdw:rovingtabindex-tabindexzeroed';
  * @return {void}
  */
 function onChildFocus(event) {
-  /** @type {Element} */
-  const child = (event.currentTarget);
+  const child = /** @type {Element} */ (event.currentTarget);
   if (child.getAttribute('tabindex') === '0') {
     return;
   }
@@ -23,19 +20,19 @@ function onChildFocus(event) {
 }
 
 /**
- * @param {ArrayLike<Element>} items
+ * @param {Iterable<Element>} items
  * @param {Element[]} [excludeItems]
  * @return {void}
  */
 export function removeTabIndex(items, excludeItems = []) {
-  iterateArrayLike(items, (item) => {
-    if (excludeItems.indexOf(item) !== -1) {
-      return;
+  for (const item of items) {
+    if (excludeItems.includes(item)) {
+      continue;
     }
     if (item.hasAttribute('tabindex')) {
       item.setAttribute('tabindex', '-1');
     }
-  });
+  }
 }
 
 /**
@@ -45,14 +42,14 @@ export function removeTabIndex(items, excludeItems = []) {
 function attemptFocus(element) {
   try {
     element.focus();
-  } catch (e) {
+  } catch {
     // Ignore error.
   }
   return document.activeElement === element;
 }
 
 /**
- * @param {ArrayLike<HTMLElement>} list
+ * @param {Iterable<HTMLElement>} list
  * @param {Element} [current]
  * @param {boolean} [loop=true]
  * @param {boolean} [reverse]
@@ -61,7 +58,7 @@ function attemptFocus(element) {
 export function selectNext(list, current = null, loop = true, reverse = false) {
   let foundCurrent = false;
 
-  const iterateResult = iterateSomeOfArrayLike(list, (item, index, array) => {
+  const iterateResult = [...list].some((item, index, array) => {
     const candidate = reverse ? (array[array.length - 1 - index]) : item;
     if (!foundCurrent) {
       if (current) {
@@ -93,7 +90,7 @@ export function selectNext(list, current = null, loop = true, reverse = false) {
     }
     return;
   }
-  iterateSomeOfArrayLike(list, (item, index, array) => {
+  [...list].some((item, index, array) => {
     const candidate = reverse ? (array[array.length - 1 - index]) : item;
     if (!candidate.hasAttribute('tabindex')) {
       return false;
@@ -112,7 +109,7 @@ export function selectNext(list, current = null, loop = true, reverse = false) {
 
 /**
  * Alias for selectNext(list, current, true);
- * @param {ArrayLike<HTMLElement>} list
+ * @param {Iterable<HTMLElement>} list
  * @param {Element} [current]
  * @param {boolean} [loop=true]
  * @return {void}
@@ -141,7 +138,7 @@ export function detach(element) {
 }
 
 /**
- * @param {ArrayLike<Element>} items
+ * @param {Iterable<Element>} items
  * @param {boolean} [focusableWhenDisabled=true]
  * @return {void}
  */
@@ -152,7 +149,7 @@ export function setupTabIndexes(items, focusableWhenDisabled = true) {
   let currentTabIndexChild = null;
   /** @type {Element} */
   let firstFocusableChild = null;
-  iterateArrayLike(items, (child) => {
+  for (const child of items) {
     if (!currentlyFocusedChild && document.activeElement === child) {
       currentlyFocusedChild = child;
     } else if (!currentTabIndexChild && child.getAttribute('tabindex') === '0') {
@@ -165,7 +162,7 @@ export function setupTabIndexes(items, focusableWhenDisabled = true) {
       child.setAttribute('tabindex', '-1');
     }
     attach(child);
-  });
+  }
   if (currentlyFocusedChild) {
     currentlyFocusedChild.setAttribute('tabindex', '0');
   } else if (currentTabIndexChild) {

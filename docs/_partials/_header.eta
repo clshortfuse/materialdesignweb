@@ -11,15 +11,14 @@
   <meta name="theme-color" content="#C2185B">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-capable" content="yes">
+
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500">
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,400,500">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather:300,400,500">
   <link rel="stylesheet" href="docs.min.css">
-  <link rel="stylesheet" href="spec.min.css">
+  <link rel="stylesheet" href="framework.min.css">
   <link rel="stylesheet" href="theme-default.min.css" title="Default Theme">
-  <link rel="stylesheet" href="theme-default-fallbacks.min.css" media="all\0" title="Default Theme">
   <link rel="stylesheet" disabled href="theme-colored.min.css" title="Colored Theme">
-  <link rel="stylesheet" disabled href="theme-colored-fallbacks.min.css" media="all\0" title="Colored Theme">
   <script src="prerender.min.js"></script>
 </head>
 
@@ -91,46 +90,44 @@
   <a class="mdw-layout__scrim" href="#" tabindex="-1"></a>
   <div class="mdw-layout__appbar mdw-appbar mdw-theme" mdw-autohide="mobile tablet" mdw-surface="secondary 500" mdw-dark>
     <div class="mdw-layout__appbar-shape"></div>
-    <div class="mdw-appbar__action">
-      <div class="mdw-appbar__start">
-        <div class="mdw-tooltip__wrapper">
-          <%~ includeFile(T, { button: {
-               class: 'mdw-tooltip__target material-icons mdw-layout__navdrawer-toggle',
-               text:'menu', icon:true, attributes: { href:"#docs-navdrawer" },
-            }}) %>
-          <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="start">Menu</div>
-        </div>
+    <div class="mdw-appbar__start">
+      <div class="mdw-tooltip__wrapper">
+        <%~ includeFile(T, { button: {
+              class: 'mdw-tooltip__target material-icons mdw-layout__navdrawer-toggle',
+              text:'menu', icon:true, attributes: { href:"#docs-navdrawer" },
+          }}) %>
+        <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="start">Menu</div>
       </div>
-      <div class="mdw-appbar__title"><%~ it.page %></div>
-      <div class="mdw-appbar__end" id="docs-menu-buttons">
-        <div class="mdw-tooltip__wrapper">
-          <%~ includeFile(T, { button: {
-              id: 'altThemeButton', class: 'mdw-tooltip__target material-icons',
-              text:'palette', icon:true,  attributes: { 'mdw-overlay-default':'medium', 'mdw-overlay-off':'activated', 'aria-pressed':'false' }, 
-           }}) %>
-          <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="end">Alt Theme</div>
-        </div>
-        <div class="mdw-tooltip__wrapper">
-          <%~ includeFile(T, { button: {
-              id: 'darkModeButton', class: 'mdw-tooltip__target material-icons',
-              text: 'brightness_3', icon: true, attributes: { 'mdw-overlay-default':'medium', 'mdw-overlay-off':'activated', 'aria-pressed':'false' },
-            }}) %>
-          <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="end">Dark Mode</div>
-        </div>
-        <div class="mdw-tooltip__wrapper">
-          <%~ includeFile(T, { button: {
-              id: 'rtlButton', class: 'mdw-tooltip__target material-icons',
-              text: 'format_align_right', icon: true, attributes: { 'mdw-overlay-default': 'medium', 'mdw-overlay-off':'activated', 'aria-pressed':'false' },
-            }}) %>
-          <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="end">Right-to-Left</div>
-        </div>
-        <div class="mdw-tooltip__wrapper">
-          <%~ includeFile(T, { button: {
-              id: 'largeFontButton', class: 'mdw-tooltip__target material-icons',
-              text: 'format_size', icon: true, attributes: { 'mdw-overlay-default': 'medium', 'mdw-overlay-off':'activated', 'aria-pressed':'false' },
-            }}) %>
-          <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="end">200% Text</div>
-        </div>
+    </div>
+    <div class="mdw-appbar__title"><%~ it.page %></div>
+    <div class="mdw-appbar__end" id="docs-menu-buttons">
+      <div class="mdw-tooltip__wrapper">
+        <%~ includeFile(T, { button: {
+            id: 'altThemeButton', class: 'mdw-tooltip__target material-icons',
+            text:'palette', icon:true,  attributes: { 'mdw-overlay-default':'medium', 'mdw-overlay-off':'activated', 'aria-pressed':'false' }, 
+          }}) %>
+        <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="end">Alt Theme</div>
+      </div>
+      <div class="mdw-tooltip__wrapper">
+        <%~ includeFile(T, { button: {
+            id: 'darkModeButton', class: 'mdw-tooltip__target material-icons',
+            text: 'brightness_3', icon: true, attributes: { 'mdw-overlay-default':'medium', 'mdw-overlay-off':'activated', 'aria-pressed':'false' },
+          }}) %>
+        <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="end">Dark Mode</div>
+      </div>
+      <div class="mdw-tooltip__wrapper">
+        <%~ includeFile(T, { button: {
+            id: 'rtlButton', class: 'mdw-tooltip__target material-icons',
+            text: 'format_align_right', icon: true, attributes: { 'mdw-overlay-default': 'medium', 'mdw-overlay-off':'activated', 'aria-pressed':'false' },
+          }}) %>
+        <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="end">Right-to-Left</div>
+      </div>
+      <div class="mdw-tooltip__wrapper">
+        <%~ includeFile(T, { button: {
+            id: 'largeFontButton', class: 'mdw-tooltip__target material-icons',
+            text: 'format_size', icon: true, attributes: { 'mdw-overlay-default': 'medium', 'mdw-overlay-off':'activated', 'aria-pressed':'false' },
+          }}) %>
+        <div class="mdw-tooltip mdw-theme" mdw-surface="background 700" mdw-dark mdw-align="end">200% Text</div>
       </div>
     </div>
   </div>

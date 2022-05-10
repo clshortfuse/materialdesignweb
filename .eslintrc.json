@@ -6,7 +6,10 @@
   "extends": [
     "airbnb-base",
     "plugin:@typescript-eslint/recommended",
-    "plugin:jsdoc/recommended"
+    "plugin:jsdoc/recommended",
+    "plugin:github/recommended",
+    "plugin:node/recommended",
+    "plugin:unicorn/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -14,19 +17,52 @@
       "impliedStrict": true
     },
     "ecmaVersion": 2020,
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "./tsconfig.json"
   },
   "plugins": [
-    "jsdoc",
     "@typescript-eslint",
+    "github",
+    "jsdoc",
+    "unicorn",
     "eta"
   ],
   "root": true,
   "rules": {
+    "object-curly-newline": ["error", {
+      "ObjectExpression": {  "multiline": true, "consistent": true },
+      "ObjectPattern": {  "multiline": true, "consistent": true },
+      "ImportDeclaration": {  "multiline": true, "consistent": true },
+      "ExportDeclaration": {  "multiline": true, "consistent": true }
+    }],
+    "no-param-reassign": ["error", { "props": false }],
+    "no-continue": 0,
+    "no-restricted-syntax": 0,
+    "require-await": 0,
+    "no-return-await": 0,
+    "eslint-comments/no-use": 0,
+    "filenames/match-regex": 0,
+    "prettier/prettier": 0,
+    "i18n-text/no-en": 0,
+    "import/no-namespace": 0,
+    "no-unused-vars": 0,
+    "import/namespace": 0,
+    "no-constructor-return": 0,
+    "default-case-last": 0,
+    "no-undef": 0,
+    "import/named": 0,
+    "no-empty": ["error", {"allowEmptyCatch": true}],
+    "no-promise-executor-return": 0,
+    "github/no-then": 0,
     "@typescript-eslint/ban-ts-comment": ["warn", {
       "ts-ignore": "allow-with-description"
     }],
     "@typescript-eslint/explicit-module-boundary-types": 0,
+    "@typescript-eslint/require-await": "error",
+    "no-void": "off",
+    "@typescript-eslint/no-floating-promises": "error",
+    "@typescript-eslint/return-await": ["error", "always"],
+
     "import/extensions": ["error", "always", {
       "js": "always",
       "mjs": "never"
@@ -55,6 +91,23 @@
       "pathGroupsExcludedImportTypes": ["builtin"]
     }],
     "import/prefer-default-export": 0,
+    "unicorn/no-useless-undefined": 0,
+    "unicorn/no-array-for-each": 0,
+    "unicorn/prefer-spread": 0,
+    "unicorn/no-null": 0,
+    "unicorn/filename-case": 0,
+    "unicorn/prefer-dom-node-append": 0,
+    "unicorn/prevent-abbreviations": 0,
+    "unicorn/explicit-length-check": 0,
+    "unicorn/catch-error-name": 0,
+    "unicorn/prefer-dom-node-dataset": 0,
+    "unicorn/no-array-reduce": 0,
+    "unicorn/no-this-assignment": 0,
+    "unicorn/prefer-ternary": ["error", "only-single-line"],
+    "unicorn/no-empty-file": 0,
+    "unicorn/prefer-query-selector": 0,
+    "unicorn/prefer-dom-node-remove": 0,
+    "unicorn/no-for-loop": 0,
     "jsdoc/newline-after-description": [
       "warn",
       "never"
@@ -62,10 +115,7 @@
     "jsdoc/no-undefined-types": 0,
     "jsdoc/require-param-description": 0,
     "jsdoc/require-property-description": 0,
-    "jsdoc/require-returns": ["warn", {
-      "forceRequireReturn": true,
-      "forceReturnsWithAsync": true
-    }],
+    "jsdoc/require-returns": 0,
     "jsdoc/require-returns-description": 0,
     "jsdoc/valid-types": 0,
     "max-len": ["error", 120, 2, {
@@ -75,6 +125,7 @@
       "ignoreTemplateLiterals": true,
       "ignoreUrls": true
     }],
+    "consistent-return": "warn",
     "no-console": ["error", {
       "allow": [
         "warn",
@@ -91,7 +142,7 @@
     "prefer-destructuring": ["error", {
       "AssignmentExpression": {
         "array": false,
-        "object": true
+        "object": false
       },
       "VariableDeclarator": {
         "array": false,

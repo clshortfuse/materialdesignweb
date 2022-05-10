@@ -2,12 +2,13 @@ import * as Button from '../components/button/index.js';
 import * as Layout from '../components/layout/index.js';
 import * as ListContent from '../components/list/content.js';
 import * as List from '../components/list/index.js';
-import { iterateArrayLike } from '../core/dom.js';
 
 const navDrawer = document.getElementsByClassName('mdw-layout__navdrawer')[0];
 List.attachAll(navDrawer);
 Layout.attach();
-iterateArrayLike(document.querySelectorAll('.mdw-layout__appbar .mdw-button'), Button.attach);
+for (const element of document.querySelectorAll('.mdw-layout__appbar .mdw-button')) {
+  Button.attach(element);
+}
 
 navDrawer.querySelector('[aria-current]').scrollIntoView({
   behavior: 'auto',
@@ -17,12 +18,13 @@ navDrawer.querySelector('[aria-current]').scrollIntoView({
 
 /** @return {void} */
 function clearCurrentPage() {
-  iterateArrayLike(navDrawer.querySelectorAll('[aria-current]'), (item) => item.removeAttribute('aria-current'));
+  for (const item of navDrawer.querySelectorAll('[aria-current]')) {
+    item.removeAttribute('aria-current');
+  }
 }
 
 navDrawer.addEventListener(ListContent.ACTIVATE_EVENT, (event) => {
-  /** @type {HTMLElement} */
-  const item = (event.target);
+  const item = /** @type {HTMLElement} */ (event.target);
   ListContent.setSelected(item, true);
   if (item instanceof HTMLAnchorElement) {
     if (item.hasAttribute('aria-current')) {

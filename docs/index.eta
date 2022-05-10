@@ -3,12 +3,8 @@
   <div class="mdw-grid__item" mdw-colspan="100%">
     <div class="mdw-grid__content">
       <h1 class="mdw-type">Material Design Web</h1>
-      <%~ includeFile('../components/button/index.eta', {
-        ink: 'primary', attributes: {href:"https://github.com/clshortfuse/materialdesignweb"}, text: 'GitHub',
-      }) %>
-      <%~ includeFile('../components/button/index.eta', {
-        ink: 'primary', attributes: {href:"./report.html"}, text: 'Bundle Analyzer Report',
-      }) %>
+      <a class="mdw-button mdw-theme" mdw-ink="primary" href="https://github.com/clshortfuse/materialdesignweb">GitHub</a>
+      <a class="mdw-button mdw-theme" mdw-ink="primary" href="./report.html">Bundle Analyzer Report</a>
     </div>
   </div>
 </div>

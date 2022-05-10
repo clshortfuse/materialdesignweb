@@ -1,177 +1,105 @@
-// https://material.io/design/interaction/states.html
-// https://material.io/design/components/chips.html
-// https://material.io/design/iconography/system-icons.html#color
+/* https://material.io/design/interaction/states.html */
+/* https://material.io/design/components/chips.html */
+/* https://material.io/design/iconography/system-icons.html#color */
 
-@use '../../core/theme/_mixins.scss' as theme;
+.mdw-theme {
+  --mdw-chip__text-color: var(--mdw-text-color);
+  --mdw-chip__background-color: var(--mdw-divider-color);
+  --mdw-chip__active-icon-color__focus: var(--mdw-text-color);
+  --mdw-chip__active-icon-color: var(--mdw-medium-color);
+  --mdw-chip__inactive-icon-color: var(--mdw-inactive-color);
+  --mdw-chip__overlay-color: RGBA(var(--mdw-ink-default), 1.00);
 
-$themeValues: (
-  text-color:                    (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  background-color:              (('foreground-light', 0.12), ('foreground-dark', 0.24)),
+  --mdw-chip__disabled-background-color: RGBA(var(--mdw-ink-default), 0.12);
+  --mdw-chip__outline-color: RGBA(var(--mdw-ink-default), 0.12);
 
-  // icon
-  active-icon-color__focus:      (('foreground-light', 0.87), ('foreground-dark', 1.00)),
-  active-icon-color:             (('foreground-light', 0.54), ('foreground-dark', 0.70)),
-  inactive-icon-color:           (('foreground-light', 0.38), ('foreground-dark', 0.50)),
-
-  // states
-  overlay-color:                 (('foreground-light', 1.00), ('foreground-dark', 1.00)),
-
-  default-opacity:               (0.12              , 0.24),
-  hover-opacity:                 (0.12 + 0.04       , 0.24 + 0.08),
-  focus-opacity:                 (0.12 + 0.12       , 0.24 + 0.24),
-  hover-focus-opacity:           (0.12 + 0.04 + 0.12, 0.24 + 0.08 + 0.24),
-
-  selected-opacity:              (0.12 + 0.08              , 0.24 + 0.16),
-  selected-hover-opacity:        (0.12 + 0.08 + 0.04       , 0.24 + 0.16 + 0.08),
-  selected-focus-opacity:        (0.12 + 0.08 + 0.12       , 0.24 + 0.16 + 0.24),
-  selected-hover-focus-opacity:  (0.12 + 0.08 + 0.04 + 0.12, 0.24 + 0.16 + 0.08 + 0.24),
-
-  outlined-opacity:               (0.00       , 0.00),
-  outlined-hover-opacity:         (0.04       , 0.08),
-  outlined-focus-opacity:         (0.12       , 0.24),
-  outlined-hover-focus-opacity:   (0.04 + 0.12, 0.08 + 0.24),
-
-  outlined-selected-opacity:              (0.08              , 0.16),
-  outlined-selected-hover-opacity:        (0.08 + 0.04       , 0.16 + 0.08),
-  outlined-selected-focus-opacity:        (0.08 + 0.12       , 0.16 + 0.24),
-  outlined-selected-hover-focus-opacity:  (0.08 + 0.04 + 0.12, 0.16 + 0.08 + 0.24),
-
-  activated-opacity:             (0.12, 0.24),
-
-  activated-text-color:           (inherit, ('foreground-dark', 1.00)),
-
-  activated-hover-opacity:       (0.12 + 0.04, 0.24 + 0.4),
-  activated-focus-opacity:       (0.12 + 0.12, 0.24 + 0.12),
-  activated-hover-focus-opacity: (0.12 + 0.04 + 0.12, 0.24 + 0.4 + 0.12),
-
-  pressed-opacity:               (0.16, 0.32),
-
-  // disabled
-  disabled-text-color:           (('foreground-light', 0.26), ('foreground-dark', 0.30)),
-  disabled-background-color:     (('foreground-light', 0.12), ('foreground-dark', 0.12)),
-  outline-color:                 (('foreground-light', 0.12), ('foreground-dark', 0.12)),
-
-) !default;
-
-@function getThemeValue($key, $type) {
-  @return theme.getThemeValue('chip', $themeValues, $key, $type);
+  --mdw-chip__default-opacity: var(--mdw-chip__default-opacity-value);
+  --mdw-chip__hover-opacity: var(--mdw-chip__hover-opacity-value);
+  --mdw-chip__focus-opacity: var(--mdw-chip__focus-opacity-value);
+  --mdw-chip__selected-opacity: var(--mdw-chip__selected-opacity-value);
+  --mdw-chip__outlined-opacity: var(--mdw-chip__outlined-opacity-value);
+  --mdw-chip__activated-opacity: var(--mdw-chip__activated-opacity-value);
 }
 
-@mixin addThemeRules($type: 'var') {
-  .mdw-chip__thumbnail,
-  .mdw-chip__remove,
-  .mdw-chip__text {
-    color: RGBA(getThemeValue("text-color", $type));
+.mdw-theme[mdw-light] {
+  --mdw-chip__default-opacity-value: 0.12;
+  --mdw-chip__hover-opacity-value: 0.04;
+  --mdw-chip__focus-opacity-value: 0.12;
+  --mdw-chip__selected-opacity-value: 0.08;
+  --mdw-chip__outlined-opacity-value: 0.00;
+  --mdw-chip__activated-opacity-value: 0.12;
+  --mdw-chip__activated-text-color: inherit;
+
+  --mdw-chip__pressed-opacity: 0.16;
+
+  --mdw-chip__disabled-text-color: RGBA(var(--mdw-ink-default-light), 0.26);
+}
+
+.mdw-theme[mdw-dark] {
+  --mdw-chip__default-opacity-value: 0.24;
+  --mdw-chip__hover-opacity-value: 0.08;
+  --mdw-chip__focus-opacity-value: 0.24;
+  --mdw-chip__selected-opacity-value: 0.16;
+  --mdw-chip__outlined-opacity-value: 0.00;
+  --mdw-chip__activated-opacity-value: 0.24;
+  --mdw-chip__activated-text-color: var(--mdw-text-color);
+
+  --mdw-chip__pressed-opacity: 0.32;
+
+  --mdw-chip__disabled-text-color: RGBA(var(--mdw-ink-default-dark), 0.30);
+}
+
+.mdw-chip {
+  --mdw-chip__base-opacity: var(--mdw-chip__default-opacity);
+  --mdw-chip__border-color: transparent;
+
+  &[mdw-outlined] {
+    --mdw-chip__base-opacity: var(--mdw-chip__outlined-opacity);
+    --mdw-chip__border-color: var(--mdw-chip__outline-color);
+  }
+}
+
+.mdw-chip__thumbnail,
+.mdw-chip__remove,
+.mdw-chip__text {
+  color: var(--mdw-chip__text-color);
+}
+
+.mdw-chip__input {
+  border-color: var(--mdw-chip__border-color);
+  color: inherit;
+
+  &:not(:hover) {
+    --mdw-chip__hover-opacity: 0;
   }
 
-  .mdw-chip__input {
+  &:not(:focus) {
+    --mdw-chip__focus-opacity: 0;
+  }
+
+  &:not(:checked) {
+    --mdw-chip__selected-opacity: 0;
+  }
+
+  &::before {
+    opacity: calc(var(--mdw-chip__base-opacity) + var(--mdw-chip__hover-opacity) + var(--mdw-chip__focus-opacity) + var(--mdw-chip__selected-opacity));
+
+    background-color: var(--mdw-chip__overlay-color);
+  }
+
+  &:checked::before {
     color: inherit;
-
-    &::before {
-      opacity: getThemeValue("default-opacity", $type);
-
-      background-color: RGBA(getThemeValue("overlay-color", $type));
-    }
-
-    &:checked::before {
-      color: inherit;
-    }
-
-    &:hover::before {
-      opacity: getThemeValue("hover-opacity", $type);
-    }
-
-    &:focus::before {
-      opacity: getThemeValue("focus-opacity", $type);
-    }
-
-    &:hover:focus::before {
-      opacity: getThemeValue("hover-focus-opacity", $type);
-    }
-
-    &:checked {
-      & ~ .mdw-chip__text {
-        color: RGBA(getThemeValue("activated-text-color", $type));
-      }
-
-      &[type="radio"] {
-        &::before {
-          background: currentColor;
-        }
-      }
-
-      &[type="checkbox"] {
-        &::before {
-          opacity: getThemeValue("selected-opacity", $type);
-        }
-
-        &:hover::before {
-          opacity: getThemeValue("selected-hover-opacity", $type);
-        }
-
-        &:focus::before {
-          opacity: getThemeValue("selected-focus-opacity", $type);
-        }
-
-        &:hover:focus::before {
-          opacity: getThemeValue("selected-hover-focus-opacity", $type);
-        }
-      }
-    }
   }
 
-  .mdw-chip[mdw-outlined] .mdw-chip__input {
-    border-color: RGBA(getThemeValue('outline-color', $type));
+  &:checked {
+    & ~ .mdw-chip__text {
+      color: var(--mdw-chip__activated-text-color);
+    }
 
-    &:not(:checked) {
+    &[type="radio"] {
       &::before {
-        opacity: getThemeValue("outlined-opacity", $type);
-      }
-
-      &:hover::before {
-        opacity: getThemeValue("outlined-hover-opacity", $type);
-      }
-
-      &:focus::before {
-        opacity: getThemeValue("outlined-focus-opacity", $type);
-      }
-
-      &:hover:focus::before {
-        opacity: getThemeValue("outlined-hover-focus-opacity", $type);
-      }
-    }
-
-    &:checked {
-      &[type="checkbox"] {
-        &::before {
-          opacity: getThemeValue("outlined-selected-opacity", $type);
-        }
-
-        &:hover::before {
-          opacity: getThemeValue("outlined-selected-hover-opacity", $type);
-        }
-
-        &:focus::before {
-          opacity: getThemeValue("outlined-selected-focus-opacity", $type);
-        }
-
-        &:hover:focus::before {
-          opacity: getThemeValue("outlined-selected-hover-focus-opacity", $type);
-        }
+        background: currentColor;
       }
     }
   }
-}
-
-
-@include theme.addComponentFallbackRules('light') {
-  @include addThemeRules('light');
-}
-
-@include theme.addComponentFallbackRules('dark') {
-  @include addThemeRules('dark');
-}
-
-@include theme.addComponentCSSVariableRules('chip', $themeValues) {
-  @include addThemeRules();
 }

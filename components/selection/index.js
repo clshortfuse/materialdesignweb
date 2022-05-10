@@ -31,8 +31,7 @@ function onActivateEvent(event) {
     event.stopPropagation();
     event.preventDefault();
   }
-  /** @type {HTMLElement} */
-  const selectionElement = (event.currentTarget);
+  const selectionElement = /** @type {HTMLElement} */ (event.currentTarget);
   if (Attributes.isDisabled(selectionElement)) {
     return;
   }
@@ -42,28 +41,23 @@ function onActivateEvent(event) {
   if (!selectionElement.hasAttribute('aria-checked')) {
     return;
   }
-  if (event.type === 'click' || event.type === SelectionInput.CLICK_EVENT) {
-    if (selectionElement.hasAttribute('mdw-no-autocheck')) {
-      return;
-    }
-  }
+  if ((event.type === 'click' || event.type === SelectionInput.CLICK_EVENT)
+    && selectionElement.hasAttribute('mdw-no-autocheck')) return;
+
   const role = selectionElement.getAttribute('role');
-  if (event.type === 'focus' || event.type === SelectionInput.FOCUS_EVENT) {
-    if (role !== 'radio') {
-      return;
-    }
-  }
+  if ((event.type === 'focus' || event.type === SelectionInput.FOCUS_EVENT)
+    && role !== 'radio') return;
+
   const newValue = (role === 'radio' ? true : !Attributes.isChecked(selectionElement));
   setChecked(selectionElement, newValue, true);
 }
 
 /**
- * @param {HTMLElement} element
+ * @param {Element} element
  * @return {void}
  */
 export function attach(element) {
-  /** @type {HTMLElement} */
-  const inputElement = (element.getElementsByClassName('mdw-selection__input')[0]);
+  const inputElement = /** @type {HTMLElement} */ (element.getElementsByClassName('mdw-selection__input')[0]);
   if (inputElement) {
     SelectionInput.attach(inputElement);
   }

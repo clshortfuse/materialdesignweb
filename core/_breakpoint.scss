@@ -2,29 +2,29 @@
 
 @use "./_length.scss" as *;
 
-$portraitSmallHandset: dp(0) !default;
-$portraitMediumHandset: dp(360) !default;
-$portraitLargeHandset: dp(400) !default;
-$portraitSmallTablet: dp(600) !default;
-$portraitLargeTablet: dp(720) !default;
-$portraitDesktop: dp(960) !default;
+$portraitSmallHandset: 0 !default;
+$portraitMediumHandset: 360px !default;
+$portraitLargeHandset: 400px !default;
+$portraitSmallTablet: 600px !default;
+$portraitLargeTablet: 720px !default;
+$portraitDesktop: 960px !default;
 
-$landscapeSmallHandset: dp(480) !default;
-$landscapeMediumHandset: dp(600) !default;
-$landscapeLargeHandset: dp(720) !default;
-$landscapeSmallTablet: dp(960) !default;
-$landscapeLargeTablet: dp(1024) !default;
-$landscapeDesktop: dp(1440) !default;
+$landscapeSmallHandset: 480px !default;
+$landscapeMediumHandset: 600px !default;
+$landscapeLargeHandset: 720px !default;
+$landscapeSmallTablet: 960px !default;
+$landscapeLargeTablet: 1024px !default;
+$landscapeDesktop: 1440px !default;
 
-$windowXSmall: dp(0) !default;
-$windowSmall: dp(600) !default;
-$windowMedium: dp(1024) !default;
-$windowLarge: dp(1440) !default;
-$windowXLarge: dp(1920) !default;
+$windowXSmall: 0 !default;
+$windowSmall: 600px !default;
+$windowMedium: 1024px !default;
+$windowLarge: 1440px !default;
+$windowXLarge: 1920px !default;
 
-$columns4: dp(0) !default;
-$columns8: dp(600) !default;
-$columns12: dp(840) !default;
+$columns4: 0 !default;
+$columns8: 600px !default;
+$columns12: 840px !default;
 
 // Column-count based mixins
 
@@ -62,8 +62,8 @@ $columns12: dp(840) !default;
 
 @mixin has16DPMargin {
   @media
-    (orientation:portrait) and (max-width: dp(599)),
-    (orientation:landscape) and (max-height: dp(599)) {
+    (orientation:portrait) and (max-width: 599px),
+    (orientation:landscape) and (max-height: 599px) {
     @content;
   }
 }
@@ -145,13 +145,13 @@ $columns12: dp(840) !default;
 
 @mixin isMobileDevicePortrait {
   @media (max-device-width: #{$portraitSmallTablet - 1})
-    and (max-device-aspect-ratio: 1/1) {
+    and (max-device-aspect-ratio: 1 / 1) {
     @content;
   }
 }
 @mixin isMobileDeviceLandscape {
   @media (max-device-width: #{$landscapeSmallTablet - 1})
-    and (min-device-aspect-ratio: 1/1) {
+    and (min-device-aspect-ratio: 1 / 1) {
     @content;
   }
 }
@@ -159,9 +159,9 @@ $columns12: dp(840) !default;
 @mixin isMobileDevice {
   @media
     (max-device-width: #{$portraitSmallTablet - 1})
-    and (max-device-aspect-ratio: 1/1),
+    and (max-device-aspect-ratio: 1 / 1),
     (max-device-width: #{$landscapeSmallTablet - 1})
-    and (min-device-aspect-ratio: 1/1) {
+    and (min-device-aspect-ratio: 1 / 1) {
     @content;
   }
 }
@@ -170,10 +170,10 @@ $columns12: dp(840) !default;
   @media
     (min-width: $portraitSmallTablet)
     and (max-device-width: #{$portraitDesktop - 1})
-    and (max-device-aspect-ratio: 1/1),
+    and (max-device-aspect-ratio: 1 / 1),
     (min-width: $landscapeSmallTablet)
     and (max-device-width: #{$landscapeDesktop - 1})
-    and (min-device-aspect-ratio: 1/1) {
+    and (min-device-aspect-ratio: 1 / 1) {
     @content;
   }
 }
@@ -181,9 +181,9 @@ $columns12: dp(840) !default;
 @mixin maxTabletDevice {
   @media
     (max-device-width: #{$portraitDesktop - 1})
-    and (max-device-aspect-ratio: 1/1),
+    and (max-device-aspect-ratio: 1 / 1),
     (max-device-width: #{$landscapeDesktop - 1})
-    and (min-device-aspect-ratio: 1/1) {
+    and (min-device-aspect-ratio: 1 / 1) {
     @content;
   }
 }

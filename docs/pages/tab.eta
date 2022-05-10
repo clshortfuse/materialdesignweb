@@ -32,11 +32,11 @@
                   <%~ includeFile(T, { button: {  borderInk:true , text:'Unfocusable when inactive' }}) %>
                   <p>HTML Ordered List with (#) representing DOM position</p>
                   <ol>
-                    <li class="mdw-tabs__panel__active-hide">(1) Layer hidden when active (peek only)</li>
-                    <li class="mdw-tabs__panel__active-remove">(2) Layer removed when active (peek only)</li>
+                    <li class="mdw-tab__panel__active-hide">(1) Layer hidden when active (peek only)</li>
+                    <li class="mdw-tab__panel__active-remove">(2) Layer removed when active (peek only)</li>
                     <li>(3) Always visible</li>
-                    <li class="mdw-tabs__panel__inactive-hide">(4) Layer hidden when inactive (active only)</li>
-                    <li class="mdw-tabs__panel__inactive-remove">(5) Layer removed when inactive (active only)</li>
+                    <li class="mdw-tab__panel__inactive-hide">(4) Layer hidden when inactive (active only)</li>
+                    <li class="mdw-tab__panel__inactive-remove">(5) Layer removed when inactive (active only)</li>
                     <li>(6) Always visible</li>
                   </ol>
                 </div>
@@ -47,11 +47,11 @@
                   <%~ includeFile(T, { button: {  borderInk:true , text:'Unfocusable when inactive' }}) %>
                   <p>HTML Ordered List with (#) representing DOM position</p>
                   <ol>
-                    <li class="mdw-tabs__panel__active-hide">(1) Layer hidden when active (peek only)</li>
-                    <li class="mdw-tabs__panel__active-remove">(2) Layer removed when active (peek only)</li>
+                    <li class="mdw-tab__panel__active-hide">(1) Layer hidden when active (peek only)</li>
+                    <li class="mdw-tab__panel__active-remove">(2) Layer removed when active (peek only)</li>
                     <li>(3) Always visible</li>
-                    <li class="mdw-tabs__panel__inactive-hide">(4) Layer hidden when inactive (active only)</li>
-                    <li class="mdw-tabs__panel__inactive-remove">(5) Layer removed when inactive (active only)</li>
+                    <li class="mdw-tab__panel__inactive-hide">(4) Layer hidden when inactive (active only)</li>
+                    <li class="mdw-tab__panel__inactive-remove">(5) Layer removed when inactive (active only)</li>
                     <li>(6) Always visible</li>
                   </ol>
                 </div>
@@ -62,11 +62,11 @@
                   <%~ includeFile(T, { button: {  borderInk:true , text:'Unfocusable when inactive' }}) %>
                   <p>HTML Ordered List with (#) representing DOM position</p>
                   <ol>
-                    <li class="mdw-tabs__panel__active-hide">(1) Layer hidden when active (peek only)</li>
-                    <li class="mdw-tabs__panel__active-remove">(2) Layer removed when active (peek only)</li>
+                    <li class="mdw-tab__panel__active-hide">(1) Layer hidden when active (peek only)</li>
+                    <li class="mdw-tab__panel__active-remove">(2) Layer removed when active (peek only)</li>
                     <li>(3) Always visible</li>
-                    <li class="mdw-tabs__panel__inactive-hide">(4) Layer hidden when inactive (active only)</li>
-                    <li class="mdw-tabs__panel__inactive-remove">(5) Layer removed when inactive (active only)</li>
+                    <li class="mdw-tab__panel__inactive-hide">(4) Layer hidden when inactive (active only)</li>
+                    <li class="mdw-tab__panel__inactive-remove">(5) Layer removed when inactive (active only)</li>
                     <li>(6) Always visible</li>
                   </ol>
                 </div>
@@ -147,15 +147,13 @@
     <div class="render-fill">
       <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'cyan 700', dark:true }) %>
       <div class="mdw-appbar mdw-theme" mdw-surface="cyan 500" mdw-dark mdw-prominent>
-        <div class="mdw-appbar__action">
-          <div class="mdw-appbar__start">
-            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'menu' }}) %>
-          </div>
-          <div class="mdw-appbar__title">Page title</div>
-          <div class="mdw-appbar__end">
-            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'search' }}) %>
-            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'more_vert' }}) %>
-          </div>
+        <div class="mdw-appbar__start">
+          <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'menu' }}) %>
+        </div>
+        <div class="mdw-appbar__title">Page title</div>
+        <div class="mdw-appbar__end">
+          <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'search' }}) %>
+          <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'more_vert' }}) %>
         </div>
         <div class="mdw-tab">
           <div class="mdw-tab__list">
@@ -180,15 +178,13 @@
       <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'cyan 700', dark:true }) %>
       <div class="mdw-tab">
         <div class="mdw-tab__list-wrapper mdw-appbar mdw-theme" mdw-surface="cyan 500" mdw-dark>
-          <div class="mdw-appbar__action">
-            <div class="mdw-appbar__start">
-              <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'menu' }}) %>
-            </div>
-            <div class="mdw-appbar__title">Page title</div>
-            <div class="mdw-appbar__end">
-              <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'search' }}) %>
-              <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'more_vert' }}) %>
-            </div>
+          <div class="mdw-appbar__start">
+            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'menu' }}) %>
+          </div>
+          <div class="mdw-appbar__title">Page title</div>
+          <div class="mdw-appbar__end">
+            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'search' }}) %>
+            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'more_vert' }}) %>
           </div>
           <div class="mdw-tab__list">
             <div class="mdw-tab__item mdw-theme" mdw-ink="yellow A400" mdw-overlay-default="medium">
@@ -216,15 +212,13 @@
       <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'background 600', dark:true }) %>
       <div class="mdw-tab">
         <div class="mdw-tab__list-wrapper mdw-appbar">
-          <div class="mdw-appbar__action">
-            <div class="mdw-appbar__start">
-              <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'menu' }}) %>
-            </div>
-            <div class="mdw-appbar__title">Page title</div>
-            <div class="mdw-appbar__end">
-              <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'search' }}) %>
-              <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'more_vert' }}) %>
-            </div>
+          <div class="mdw-appbar__start">
+            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'menu' }}) %>
+          </div>
+          <div class="mdw-appbar__title">Page title</div>
+          <div class="mdw-appbar__end">
+            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'search' }}) %>
+            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'more_vert' }}) %>
           </div>
           <div class="mdw-tab__list">
             <div class="mdw-tab__item mdw-theme" mdw-ink="cyan A700" mdw-overlay-default="medium">
@@ -251,15 +245,13 @@
     <div class="render-fill">
       <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'cyan 700', dark:true }) %>
       <div class="mdw-appbar mdw-theme" mdw-surface="cyan 500" mdw-dark>
-        <div class="mdw-appbar__action">
-          <div class="mdw-appbar__start">
-            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'menu' }}) %>
-          </div>
-          <div class="mdw-appbar__title">Page title</div>
-          <div class="mdw-appbar__end">
-            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'search' }}) %>
-            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'more_vert' }}) %>
-          </div>
+        <div class="mdw-appbar__start">
+          <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'menu' }}) %>
+        </div>
+        <div class="mdw-appbar__title">Page title</div>
+        <div class="mdw-appbar__end">
+          <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'search' }}) %>
+          <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'more_vert' }}) %>
         </div>
         <div class="mdw-tab">
           <div class="mdw-tab__list">
@@ -286,15 +278,13 @@
     <div class="render-fill">
       <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'background 600', dark:true }) %>
       <div class="mdw-appbar">
-        <div class="mdw-appbar__action">
-          <div class="mdw-appbar__start">
-            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'menu' }}) %>
-          </div>
-          <div class="mdw-appbar__title">Page title</div>
-          <div class="mdw-appbar__end">
-            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'search' }}) %>
-            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'more_vert' }}) %>
-          </div>
+        <div class="mdw-appbar__start">
+          <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'menu' }}) %>
+        </div>
+        <div class="mdw-appbar__title">Page title</div>
+        <div class="mdw-appbar__end">
+          <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'search' }}) %>
+          <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'more_vert' }}) %>
         </div>
         <div class="mdw-tab">
           <div class="mdw-tab__list">
@@ -319,15 +309,13 @@
       <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'cyan 700', dark:true }) %>
       <div class="mdw-tab">
         <div class="mdw-tab__list-wrapper mdw-appbar mdw-theme" mdw-surface="cyan 500" mdw-dark>
-          <div class="mdw-appbar__action">
-            <div class="mdw-appbar__start">
-              <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'menu' }}) %>
-            </div>
-            <div class="mdw-appbar__title">Clustered</div>
-            <div class="mdw-appbar__end">
-              <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'search' }}) %>
-              <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'more_vert' }}) %>
-            </div>
+          <div class="mdw-appbar__start">
+            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'menu' }}) %>
+          </div>
+          <div class="mdw-appbar__title">Clustered</div>
+          <div class="mdw-appbar__end">
+            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'search' }}) %>
+            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'more_vert' }}) %>
           </div>
           <div class="mdw-tab__list" style="align-self:center;">
             <div class="mdw-tab__item mdw-theme" mdw-ink="yellow A400" mdw-overlay-default="medium">
@@ -358,15 +346,13 @@
       <%~ includeFile('../_partials/_androidstatusbar.eta', { surface:'cyan 700', dark:true }) %>
       <div class="mdw-tab">
         <div class="mdw-appbar mdw-theme" mdw-surface="cyan 500" mdw-dark>
-          <div class="mdw-appbar__action">
-            <div class="mdw-appbar__start">
-              <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'menu' }}) %>
-            </div>
-            <div class="mdw-appbar__title">Scrollable</div>
-            <div class="mdw-appbar__end">
-              <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'search' }}) %>
-              <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'more_vert' }}) %>
-            </div>
+          <div class="mdw-appbar__start">
+            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'menu' }}) %>
+          </div>
+          <div class="mdw-appbar__title">Scrollable</div>
+          <div class="mdw-appbar__end">
+            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'search' }}) %>
+            <%~ includeFile(T, { button: {  icon:true , class:'material-icons', text:'more_vert' }}) %>
           </div>
           <div class="mdw-tab__list" mdw-scrollable>
             <div class="mdw-tab__item mdw-theme" mdw-ink="yellow A400" mdw-overlay-default="medium">

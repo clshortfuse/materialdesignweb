@@ -1,17 +1,15 @@
 @use "../../core/theme/_config.scss" with (
-  $primary: 'deeppurple',
-  $secondary: 'deeporange',
-  $warn: 'red',
-  $background: 'bluegray',
-  $foreground: (#006064, #E0F7FA),
-  $inks: ('primary', 'secondary', 'warn', 'amber', 'blue', 'cyan', 'red', 'green', 'deeppurple', 'purple', 'yellow', 'teal'),
-  $surfaces: ('primary', 'secondary', 'warn', 'background', 'amber', 'blue', 'cyan', 'red', 'green', 'deeppurple', 'purple', 'yellow', 'teal'),
-  $fallbacks: false,
+  $alias: (
+    'primary': 'deeppurple',
+    'secondary': 'deeporange',
+    'warn': 'red',
+    'background': 'bluegray'
+  )
 );
-
-@use "./_component-themes.scss";
+@use "../../core/theme/_aliases.scss";
 
 :root {
+  --mdw-ink-default-light: 0,96,100;
+  --mdw-ink-default-dark: 224,247,250;
   font-family: Merriweather, sans-serif;
 }
-

@@ -20,7 +20,7 @@
             </div>
             <div class="mdw-textfield__dropdown mdw-theme" mdw-surface="card" mdw-type="list" mdw-hide>
               <div class="custom-busy-indicator display-flex" flex-align-items="center">
-                <div class="mdw-progress-circle">
+                <div class="mdw-progress__circle">
                   <svg viewBox="0 0 24 24">
                     <path d="M12 3.25A8.75 8.75 0 1 1 3.25 12"></path>
                     <path d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25"></path>
@@ -50,7 +50,7 @@
             </div>
             <div class="mdw-textfield__dropdown mdw-theme" mdw-surface="card" mdw-type="list" mdw-hide>
               <div class="custom-busy-indicator display-flex" flex-align-items="center">
-                <div class="mdw-progress-circle">
+                <div class="mdw-progress__circle">
                   <svg viewBox="0 0 24 24">
                     <path d="M12 3.25A8.75 8.75 0 1 1 3.25 12"></path>
                     <path d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75 8.75 0 0 1 12 3.25"></path>
@@ -75,18 +75,16 @@
       <i class="material-icons" style="letter-spacing:2px;padding:0 2px;">&#xE1BA;&#xE1C8;&#xE1A4;</i>
     </div>
     <div class="mdw-appbar mdw-theme" mdw-surface="primary 500" mdw-dark>
-      <div class="mdw-appbar__action">
-        <div class="mdw-appbar__start">
-          <a class="mdw-button mdw-overlay mdw-ripple material-icons" mdw-icon tabindex="0">arrow_back</a>
+      <div class="mdw-appbar__start">
+        <a class="mdw-button mdw-overlay mdw-ripple material-icons" mdw-icon tabindex="0">arrow_back</a>
+      </div>
+      <div class="mdw-appbar__title" mdw-custom>
+        <div class="mdw-textfield mdw-theme" id="search-textfield-simple" mdw-solo mdw-ink="secondary">
+          <input class="mdw-textfield__input" placeholder="Search" />
         </div>
-        <div class="mdw-appbar__title" mdw-custom>
-          <div class="mdw-textfield mdw-theme" id="search-textfield-simple" mdw-solo mdw-ink="secondary">
-            <input class="mdw-textfield__input" placeholder="Search" />
-          </div>
-        </div>
-        <div class="mdw-appbar__end">
-          <a class="mdw-button mdw-overlay mdw-ripple material-icons" mdw-icon tabindex="0">clear</a>
-        </div>
+      </div>
+      <div class="mdw-appbar__end">
+        <a class="mdw-button mdw-overlay mdw-ripple material-icons" mdw-icon tabindex="0">clear</a>
       </div>
     </div>
     <div class="content">
@@ -140,18 +138,16 @@
       <i class="material-icons" style="letter-spacing:2px;padding:0 2px;">&#xE1BA;&#xE1C8;&#xE1A4;</i>
     </div>
     <div class="mdw-appbar mdw-theme" mdw-surface="primary 500" mdw-dark>
-      <div class="mdw-appbar__action">
-        <div class="mdw-appbar__start">
-          <a class="mdw-button mdw-overlay mdw-ripple material-icons" mdw-icon tabindex="0">arrow_back</a>
+      <div class="mdw-appbar__start">
+        <a class="mdw-button mdw-overlay mdw-ripple material-icons" mdw-icon tabindex="0">arrow_back</a>
+      </div>
+      <div class="mdw-appbar__title" mdw-custom>
+        <div class="mdw-textfield mdw-theme" id="search-textfield-multiline" mdw-solo mdw-ink="secondary">
+          <input class="mdw-textfield__input" placeholder="Search" />
         </div>
-        <div class="mdw-appbar__title" mdw-custom>
-          <div class="mdw-textfield mdw-theme" id="search-textfield-multiline" mdw-solo mdw-ink="secondary">
-            <input class="mdw-textfield__input" placeholder="Search" />
-          </div>
-        </div>
-        <div class="mdw-appbar__end">
-          <a class="mdw-button mdw-overlay mdw-ripple material-icons" mdw-icon tabindex="0">clear</a>
-        </div>
+      </div>
+      <div class="mdw-appbar__end">
+        <a class="mdw-button mdw-overlay mdw-ripple material-icons" mdw-icon tabindex="0">clear</a>
       </div>
     </div>
     <div class="content">

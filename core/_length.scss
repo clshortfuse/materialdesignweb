@@ -3,7 +3,6 @@
 @function dp($multiplier) {
   @return $multiplier * 1px;
 }
-
 @function sp($multiplier) {
   @return math.div($multiplier,16.0) * 1rem;
 }

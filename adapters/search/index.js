@@ -3,8 +3,7 @@
 import * as ListContent from '../../components/list/content.js';
 import * as List from '../../components/list/index.js';
 import * as TextField from '../../components/textfield/index.js';
-import { getTextNode, iterateArrayLike, iterateSomeOfArrayLike } from '../../core/dom.js';
-import { noop } from '../../utils/function.js';
+import { getTextNode } from '../../core/dom.js';
 
 /**
  * @param {string} input
@@ -13,7 +12,7 @@ import { noop } from '../../utils/function.js';
  */
 function containsTextFilter(input, content) {
   return content.trim().toLocaleLowerCase()
-    .indexOf(input.trim().toLocaleLowerCase()) !== -1;
+    .includes(input.trim().toLocaleLowerCase());
 }
 
 /**
@@ -61,17 +60,13 @@ function selectSibling(list, backwards) {
   const items = list.querySelectorAll('[role="option"]:not([aria-hidden="true"]):not([disabled])');
   let sibling;
   if (current && current.getAttribute('aria-hidden') !== 'true') {
-    iterateSomeOfArrayLike(items, (item, index) => {
-      if (item !== current) {
-        return false;
+    for (let i = 0; i < items.length; i++) {
+      const item = items.item(i);
+      if (item === current) {
+        sibling = backwards ? items[i - 1] : items[i + 1];
+        break;
       }
-      if (backwards) {
-        sibling = items[index - 1];
-      } else {
-        sibling = items[index + 1];
-      }
-      return true;
-    });
+    }
   } else if (backwards) {
     sibling = items[items.length - 1];
   } else {
@@ -88,38 +83,41 @@ function selectSibling(list, backwards) {
 }
 
 /**
+ * @param {Element} el
+ * @return {number}
+ */
+function getElementVisibility(el) {
+  let rect = el.getBoundingClientRect();
+  const { top, height } = rect;
+  let next = el.parentElement;
+  do {
+    rect = next.getBoundingClientRect();
+    // eslint-disable-next-line unicorn/consistent-destructuring
+    if ((top + height) > rect.bottom) {
+      // bottom clipped
+      return 1;
+    }
+    // eslint-disable-next-line unicorn/consistent-destructuring
+    if (top < rect.top) {
+      // top clipped
+      return -1;
+    }
+    next = next.parentElement;
+  } while (next !== document.body);
+  if (top < 0) {
+    return -1;
+  }
+  if ((top + height) > document.documentElement.clientHeight) {
+    return 1;
+  }
+  return 0;
+}
+
+/**
  * @param {Element} listItem
  * @return {void}
  */
 function scrollItemIntoView(listItem) {
-  /**
-   * @param {Element} el
-   * @return {number}
-   */
-  function getElementVisibility(el) {
-    let rect = el.getBoundingClientRect();
-    const { top, height } = rect;
-    let next = el.parentElement;
-    do {
-      rect = next.getBoundingClientRect();
-      if ((top + height) > rect.bottom) {
-        // bottom clipped
-        return 1;
-      }
-      if (top < rect.top) {
-        // top clipped
-        return -1;
-      }
-      next = next.parentElement;
-    } while (next !== document.body);
-    if (top < 0) {
-      return -1;
-    }
-    if ((top + height) > document.documentElement.clientHeight) {
-      return 1;
-    }
-    return 0;
-  }
   const visibility = getElementVisibility(listItem);
   if (visibility < 0) {
     listItem.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
@@ -145,8 +143,8 @@ function scrollItemIntoView(listItem) {
  * @prop {boolean} [dropdown=false]
  * @prop {boolean} [filterItems=true]
  * @prop {('replace'|'append'|'none')} [suggestionMethod='replace']
- * @prop {function(string, function(T[]=), function(Error=)=):void} [performSearch]
- * @prop {function(T[], function(), function(Error=)):void} [updateList]
+ * @prop {function(string):(Promise<T[]>)|T[]} [performSearch]
+ * @prop {function(T[]):(Promise<void>|void)} [updateList]
  * @prop {boolean} [searchOnFocus=true]
  * @prop {number} [debounce=null] Debounce time in milliseconds
  */
@@ -167,12 +165,10 @@ export default class SearchAdapter {
       this.filter = containsTextFilter;
     }
     this.itemTextParser = defaultItemTextParser || options.itemTextParser;
-    /** @type {HTMLInputElement} */
-    const input = (this.textfield.getElementsByClassName('mdw-textfield__input')[0]);
+    const input = /** @type {HTMLInputElement} */ (this.textfield.getElementsByClassName('mdw-textfield__input')[0]);
     this.input = input;
     this.list.addEventListener(ListContent.ACTIVATE_EVENT, (event) => {
-      /** @type {HTMLElement} */
-      const item = (event.target);
+      const item = /** @type {HTMLElement} */(event.target);
       this.onItemSelected(item);
       const inputValue = this.input.value || '';
       this.suggestedInput = inputValue;
@@ -209,12 +205,30 @@ export default class SearchAdapter {
     this.debounce = options.debounce;
     this.suggestionMethod = options.suggestionMethod || 'replace';
     this.currentSearchTerm = this.input.value || '';
-    /** @type {string} */
+    /** @type {?string} */
     this.suggestedInput = null;
-    /** @type {string} */
+    /** @type {?string} */
     this.previousValue = null;
-    this.performSearch = options.performSearch || ((value, resolve = noop) => resolve());
-    this.updateList = options.updateList || ((results, resolve = noop) => resolve());
+    this.performSearch = options.performSearch || this.performSearch.bind(this);
+    this.updateList = options.updateList || this.updateList.bind(this);
+  }
+
+  /**
+   * @param {string} value
+   * @return {Promise<T[]>|T[]}
+   */
+  // eslint-disable-next-line class-methods-use-this
+  performSearch(value) {
+    return [];
+  }
+
+  /**
+   * @param {T[]} results
+   * @return {Promise<void>|void}
+   */
+  // eslint-disable-next-line class-methods-use-this
+  updateList(results) {
+    return undefined;
   }
 
   /**
@@ -237,90 +251,54 @@ export default class SearchAdapter {
     this.previousValue = inputValue;
     this.currentSearchTerm = inputValue;
 
-    /**
-     * @param {Error} error
-     * @return {void}
-     */
-    function onErrorCallback(error) {
-      if (error.message === 'debounced') {
-        return;
+    void (async () => {
+      try {
+        await this.performDebounce(inputValue);
+        await this.checkExpired(inputValue);
+        const searchResults = await this.performSearch(inputValue);
+        await this.checkExpired(inputValue);
+        await this.updateList(searchResults);
+        await this.filterListItems();
+      } catch (error) {
+        if (error.message === 'debounced') {
+          return;
+        }
+        if (error.message === 'expired') {
+          return;
+        }
+        throw error;
       }
-      if (error.message === 'expired') {
-        return;
-      }
-      throw error;
-    }
-
-    // IE does not support ES6 Promises
-    // Using resolve/reject callbacks instead.
-    // Syntactically ugly, but removes need for a polyfill.
-    this.performDebounce(inputValue,
-      () => this.checkExpired(inputValue,
-        () => this.performSearch(inputValue,
-          (searchResults) => this.checkExpired(inputValue,
-            () => this.updateList(searchResults,
-              () => this.filterListItems(),
-              onErrorCallback),
-            onErrorCallback),
-          onErrorCallback),
-        onErrorCallback),
-      onErrorCallback);
-
-    /**
-     * Promise.resolve()
-     *   .then(() => this.performDebounce(inputValue))
-     *   .then(() => this.checkExpired(inputValue))
-     *   .then(() => this.performSearch(inputValue))
-     *   .then((searchResults) => {
-     *     results = searchResults;
-     *   })
-     *   .then(() => this.checkExpired(inputValue))
-     *   .then(() => this.updateList(results))
-     *   .then(() => this.filterListItems())
-     *   .catch((error) => {
-     *     if (error.message === 'debounced') {
-     *       return;
-     *     }
-     *     if (error.message === 'expired') {
-     *       return;
-     *     }
-     *     throw error;
-     *   });
-     */
+    })();
   }
 
   /**
    * @param {string} inputValue
-   * @param {Function} resolve
-   * @param {function(Error):any} reject
-   * @return {void}
+   * @return {Promise<void>}
    */
-  checkExpired(inputValue, resolve, reject) {
+  checkExpired(inputValue) {
     if (inputValue === this.currentSearchTerm) {
-      resolve();
-    } else {
-      reject(new Error('expired'));
+      return Promise.resolve();
     }
+    return Promise.reject(new Error('expired'));
   }
 
   /**
    * @param {string} searchTerm
-   * @param {Function} resolve
-   * @param {function(Error):any} reject
-   * @return {void}
+   * @return {Promise<void>}
    */
-  performDebounce(searchTerm, resolve, reject) {
+  performDebounce(searchTerm) {
     if (!this.debounce) {
-      resolve();
-      return;
+      return Promise.resolve();
     }
-    setTimeout(() => {
-      if (searchTerm !== this.currentSearchTerm) {
-        reject(new Error('debounced'));
-        return;
-      }
-      resolve();
-    }, this.debounce);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (searchTerm !== this.currentSearchTerm) {
+          reject(new Error('debounced'));
+          return;
+        }
+        resolve();
+      }, this.debounce);
+    });
   }
 
   /** @return {boolean} handled */
@@ -423,7 +401,7 @@ export default class SearchAdapter {
     const current = this.list.querySelector('[role="option"][aria-selected="true"]');
     const items = this.list.querySelectorAll('[role="option"]');
     let hasItem = false;
-    iterateArrayLike(items, (item) => {
+    for (const item of items) {
       const content = this.itemTextParser(item);
       const fn = fnFilter || this.filter;
       if (fn(input, content)) {
@@ -432,7 +410,7 @@ export default class SearchAdapter {
       } else {
         item.setAttribute('aria-hidden', 'true');
       }
-    });
+    }
     if (current && current.getAttribute('aria-hidden') === 'true') {
       const newSelection = selectSibling(this.list);
       if (newSelection) {
@@ -495,23 +473,19 @@ export default class SearchAdapter {
       case 'Enter': {
         /** @type {HTMLElement} */
         const current = this.list.querySelector('[role="option"][aria-selected="true"]');
-        if (current) {
-          if (this.hideDropDown()) {
-            current.click();
-            event.stopPropagation();
-            event.preventDefault();
-          }
+        if (current && this.hideDropDown()) {
+          current.click();
+          event.stopPropagation();
+          event.preventDefault();
         }
         break;
       }
       case 'Tab': {
         /** @type {HTMLElement} */
         const current = this.list.querySelector('[role="option"][aria-selected="true"]');
-        if (current) {
-          if (this.hideDropDown()) {
-            current.click();
-            event.stopPropagation();
-          }
+        if (current && this.hideDropDown()) {
+          current.click();
+          event.stopPropagation();
         }
         break;
       }

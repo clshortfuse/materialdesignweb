@@ -1,9 +1,6 @@
 import {
   dispatchDomEvent,
-  getPassiveEventListenerOption,
   isRtl,
-  iterateArrayLike,
-  iterateSomeOfArrayLike,
   scrollToElement,
 } from '../../core/dom.js';
 
@@ -25,6 +22,11 @@ function onKeyDown(event) {
     case 'ArrowRight':
     case 'Left':
     case 'Right':
+      if (event.target instanceof HTMLInputElement
+        || event.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+      event.stopPropagation();
       event.preventDefault();
       break;
     default:
@@ -36,8 +38,7 @@ function onKeyDown(event) {
  * @return {void}
  */
 export function onTabContentScroll(event) {
-  /** @type {HTMLElement} */
-  const tabContentElement = (event.currentTarget);
+  const tabContentElement = /** @type {HTMLElement} */ (event.currentTarget);
   const isPageRtl = isRtl();
   const scrollPoint = tabContentElement.scrollLeft / tabContentElement.clientWidth;
   let visibleIndex = Math.floor(scrollPoint);
@@ -45,14 +46,15 @@ export function onTabContentScroll(event) {
 
   // Percentage may be incorrect due to floating point rounding errors
   // Compare integer values provided by browser to check if within 1px
-  iterateSomeOfArrayLike(tabContentElement.children, ((/** @type {HTMLElement} */ panel, index) => {
+  for (let i = 0; i < tabContentElement.children.length; i++) {
+    const panel = tabContentElement.children.item(i);
+    if (!(panel instanceof HTMLElement)) continue;
     if (Math.abs(tabContentElement.scrollLeft - panel.offsetLeft) <= 1) {
-      visibleIndex = index;
+      visibleIndex = i;
       visibilityPercentage = 0;
-      return true;
+      break;
     }
-    return false;
-  }));
+  }
 
   const isResting = visibilityPercentage === 0;
   let rightPanel;
@@ -88,12 +90,13 @@ export function onTabContentScroll(event) {
       selectedIndex = visibleIndex + 1;
     }
   }
-  /** @type {HTMLElement} */
-  const leftPanel = (tabContentElement.children.item(leftPanelIndex));
+
+  const leftPanel = /** @type {HTMLElement} */ (tabContentElement.children.item(leftPanelIndex));
 
   const currentTargetIndexString = tabContentElement.getAttribute('mdw-target-index');
-  const currentTargetIndex = currentTargetIndexString == null
-    ? null : parseInt(currentTargetIndexString, 10);
+  const currentTargetIndex = (currentTargetIndexString == null)
+    ? null
+    : Number.parseInt(currentTargetIndexString, 10);
 
   let updateSelected = false;
   let forceSelection = false;
@@ -103,12 +106,10 @@ export function onTabContentScroll(event) {
       TabPanel.setExpanded(rightPanel, rightSelected);
     }
     updateSelected = visibilityPercentage === 0;
-  } else if (currentTargetIndex === selectedIndex) {
-    if (visibilityPercentage === 0) {
-      updateSelected = true;
-      forceSelection = true;
-      tabContentElement.removeAttribute('mdw-target-index');
-    }
+  } else if (currentTargetIndex === selectedIndex && visibilityPercentage === 0) {
+    updateSelected = true;
+    forceSelection = true;
+    tabContentElement.removeAttribute('mdw-target-index');
   }
 
   TabPanel.setHidden(leftPanel, false);
@@ -145,15 +146,15 @@ export function selectPanel(tabContentElement, panel, scrollToPanel = 'smooth') 
   let panelIndex = null;
   /** @type {Element[]} */
   const otherPanels = [];
-  iterateArrayLike(tabContentElement.getElementsByClassName('mdw-tab__panel'), (el, index) => {
+  // eslint-disable-next-line github/array-foreach
+  [...tabContentElement.getElementsByClassName('mdw-tab__panel')].forEach((el, index) => {
     if (currentSelectedIndex == null && TabPanel.isExpanded(el)) {
       currentSelectedIndex = index;
     }
     if (panel === el || panel === index) {
       TabPanel.setExpanded(el, true);
       TabPanel.setHidden(el, false);
-      /** @type {HTMLElement} */
-      panelElement = (el);
+      panelElement = /** @type {HTMLElement} */ (el);
       panelIndex = index;
     } else {
       otherPanels.push(el);
@@ -163,7 +164,7 @@ export function selectPanel(tabContentElement, panel, scrollToPanel = 'smooth') 
     // Invalid index or panel not in tabcontent
     return;
   }
-  otherPanels.forEach((sibling) => TabPanel.setExpanded(sibling, false));
+  for (const sibling of otherPanels) TabPanel.setExpanded(sibling, false);
 
   const isPageRtl = isRtl();
   const targetScrollLeft = isPageRtl
@@ -171,7 +172,7 @@ export function selectPanel(tabContentElement, panel, scrollToPanel = 'smooth') 
     : panelElement.offsetLeft;
   if (!scrollToPanel || panelElement.parentElement.scrollLeft === targetScrollLeft) {
     // No scrolling, hide others
-    otherPanels.forEach((sibling) => TabPanel.setHidden(sibling, true));
+    for (const sibling of otherPanels) TabPanel.setHidden(sibling, true);
     return;
   }
   if (scrollToPanel && panelElement) {
@@ -189,8 +190,10 @@ export function selectPanel(tabContentElement, panel, scrollToPanel = 'smooth') 
  * @return {void}
  */
 export function attach(tabContentElement) {
-  tabContentElement.addEventListener('scroll', onTabContentScroll, getPassiveEventListenerOption());
-  iterateArrayLike(tabContentElement.getElementsByClassName('mdw-tab__panel'), TabPanel.attach);
+  tabContentElement.addEventListener('scroll', onTabContentScroll, { passive: true });
+  for (const element of tabContentElement.getElementsByClassName('mdw-tab__panel')) {
+    TabPanel.attach(element);
+  }
   tabContentElement.addEventListener('keydown', onKeyDown);
 }
 
@@ -201,5 +204,7 @@ export function attach(tabContentElement) {
 export function detach(tabContentElement) {
   tabContentElement.removeEventListener('keydown', onKeyDown);
   tabContentElement.removeEventListener('scroll', onTabContentScroll);
-  iterateArrayLike(tabContentElement.getElementsByClassName('mdw-tab__panel'), TabPanel.detach);
+  for (const element of tabContentElement.getElementsByClassName('mdw-tab__panel')) {
+    TabPanel.detach(element);
+  }
 }

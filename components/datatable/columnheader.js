@@ -11,8 +11,7 @@ export const SORT_EVENT = 'mdw:datatablecolumnheader-sort';
  * @return {void}
  */
 export function onClick(event) {
-  /** @type {HTMLElement} */
-  const columnHeaderElement = (event.currentTarget);
+  const columnHeaderElement = /** @type {HTMLElement} */ (event.currentTarget);
   if (Attributes.isDisabled(columnHeaderElement)) {
     return;
   }

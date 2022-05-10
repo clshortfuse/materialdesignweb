@@ -6,28 +6,26 @@
 @use '../../core/_motion.scss' as motion;
 @use '../../core/_type.scss' as type;
 
-$unitWidth: dp(56) !default;
+$unitWidth: 56px !default;
 
 .mdw-dialog__close {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
   // Scroll mask
-  -ms-overflow-style: none;
   overflow-y: scroll;
   overscroll-behavior: none;
   overscroll-behavior: contain;
-  -ms-scroll-chaining: none;
   scrollbar-width: none;
-  
-  
-  height: 100%;
-  width: 100%;
-  
+
+  block-size: 100%;
+  inline-size: 100%;
+
   cursor: default;
-  -webkit-tap-highlight-color: transparent;
-  
+
   pointer-events: inherit;
+  -webkit-tap-highlight-color: transparent;
+
   visibility: hidden;
   z-index: 8;
 
@@ -37,39 +35,43 @@ $unitWidth: dp(56) !default;
   }
 
   &::after {
-    display: block;
     content: '';
 
-    height: 200%;
-    width: 200%;
+    display: block;
+
+    block-size: 200%;
+    inline-size: 200%;
   }
 }
 
 .mdw-dialog {
   display: flex;
   position: absolute;
-  top: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+
   align-items: center;
   flex-direction: row;
   justify-content: center;
-  
+
   box-sizing: border-box;
-  height: 100%;
-  width: 100%;
-  padding: dp(84) dp(40);
-  
+  block-size: 100%;
+  inline-size: 100%;
+  padding: 84px 40px;
+
+  pointer-events: none;
+
   transition-duration: motion.$fadeOutDuration;
   transition-property: opacity;
   transition-timing-function: motion.$accelerateEasing;
   will-change: opacity;
-  
+
   opacity: 0;
-  pointer-events: none;
 
   z-index: 24;
 
-  background-color: rgba(0, 0, 0, 0.50);
+  /* Handled by theme */
+  // background-color: rgba(0, 0, 0, 0.50);
 
   &:not([aria-hidden]) {
     // Initial state
@@ -79,7 +81,7 @@ $unitWidth: dp(56) !default;
   @for $i from 3 to 8 {
     &[mdw-width-units="#{$i}"] {
       .mdw-dialog__popup {
-        min-width: #{$unitWidth * $i};
+        min-inline-size: #{$unitWidth * $i};
       }
     }
   }
@@ -94,31 +96,31 @@ $unitWidth: dp(56) !default;
 
   overscroll-behavior: none;
   overscroll-behavior: contain;
-  -ms-scroll-chaining: none;
-  
-  max-height: 100%;
-  min-width: dp(224);
-  max-width: 100%;
+
+  max-block-size: 100%;
+  min-inline-size: 224px;
+  max-inline-size: 100%;
   flex-shrink: 1;
 
   will-change: display, transform;
-  
+
   transform: scale(1);
   transform-origin: bottom center;
   z-index: 24;
 
-  border-radius: dp(4);
+  border-radius: 4px;
   box-shadow: elevation.boxShadow(24);
 }
 
 .mdw-dialog[aria-hidden="false"],
 .mdw-dialog[id]:target {
+  pointer-events: auto;
+
   transition-duration: motion.$fadeInDuration;
   transition-property: opacity;
   transition-timing-function: motion.$decelerateEasing;
 
   opacity: 1;
-  pointer-events: auto;
 
   .mdw-dialog__close {
     visibility: visible;
@@ -150,8 +152,8 @@ $unitWidth: dp(56) !default;
   @include type.addRules('h6');
   @include type.baselineToBottom(36);
 
-  margin-bottom: dp(-36);
-  padding: 0 dp(24);
+  margin-block-end: -36px;
+  padding: 0 24px;
 }
 
 .mdw-dialog__body {
@@ -159,11 +161,11 @@ $unitWidth: dp(56) !default;
   @include type.addRules('body');
   @include type.baselineToBottom(28);
 
-  padding: 0 dp(24);
+  padding: 0 24px;
 }
 
 .mdw-dialog__header {
-  min-height: dp(64);
+  min-block-size: 64px;
 }
 
 .mdw-dialog__scrolling {
@@ -175,39 +177,27 @@ $unitWidth: dp(56) !default;
   flex-direction: row-reverse;
   flex-wrap: wrap;
   justify-content: flex-start;
-  
+
   flex: none;
-  margin-top: dp(8);
-  margin-bottom: dp(8);
+  margin-block: 8px;
+
+  .mdw-button {
+    margin-inline: 0 8px;
+
+    text-align: end;
+  }
 
   &[mdw-stacked] {
-    margin-top: 0;
+    margin-block-start: 0;
 
     .mdw-button {
       justify-content: flex-end;
-      
-      min-height: dp(48);
+
+      min-block-size: 48px;
       flex-basis: 100%;
-      margin-right: 0;
-      padding-right: dp(16);
-      padding-left: dp(16);
-      
-      &,
-      :root[dir="rtl"] & {
-        margin-left: 0;
-      }
-    }
-  }
+      margin-inline: 0;
+      padding-inline: 16px;
 
-  .mdw-button {
-    margin-right: dp(8);
-    margin-left: 0;
-
-    text-align: end;
-
-    :root[dir="rtl"] & {
-      margin-right: 0;
-      margin-left: dp(8);
     }
   }
 }

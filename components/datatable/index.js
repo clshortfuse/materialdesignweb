@@ -2,7 +2,6 @@
 
 import * as Keyboard from '../../core/aria/keyboard.js';
 import * as RovingTabIndex from '../../core/aria/rovingtabindex.js';
-import { iterateArrayLike } from '../../core/dom.js';
 
 import * as DataTableCell from './cell.js';
 import * as DataTableColumnHeader from './columnheader.js';
@@ -22,8 +21,7 @@ export const CELL_TABINDEX_QUERIES = [
  */
 export function onSelectedChange(event) {
   const selected = event.detail.value === 'true';
-  /** @type {HTMLElement} */
-  const dataTableElement = (event.currentTarget);
+  const dataTableElement = /** @type {HTMLElement} */ (event.currentTarget);
   const hasSelection = selected || dataTableElement.querySelector('td[aria-selected="true"],tr[aria-selected="true"]');
   if (hasSelection) {
     dataTableElement.setAttribute('mdw-has-selection', '');
@@ -37,21 +35,20 @@ export function onSelectedChange(event) {
  * @return {HTMLElement}
  */
 export function getScroller(datatableElement) {
-  /** @type {HTMLElement} */
-  let scroller = (datatableElement.getElementsByClassName('mdw-datatable__scroller')[0]);
+  let scroller = /** @type {HTMLElement} */ (datatableElement.getElementsByClassName('mdw-datatable__scroller')[0]);
   if (!scroller) {
     scroller = document.createElement('div');
     scroller.classList.add('mdw-datatable__scroller');
     const footer = datatableElement.getElementsByClassName('mdw-datatable__footer')[0];
     if (footer) {
-      datatableElement.insertBefore(scroller, footer);
+      footer.before(scroller);
     } else {
       datatableElement.appendChild(scroller);
     }
     // Move table into scroller if it exists
     const table = datatableElement.getElementsByTagName('table')[0];
     if (table) {
-      table.parentElement.removeChild(table);
+      table.remove();
       scroller.appendChild(table);
     }
   }
@@ -99,18 +96,19 @@ export function sortColumn(datatableElement, columnIndex, ascending = true) {
   if (datatableElement.hasAttribute('mdw-datatable-adapter')) {
     return;
   }
-  iterateArrayLike(datatableElement.getElementsByTagName('th'), (th) => {
+  for (const th of datatableElement.getElementsByTagName('th')) {
     if (th.cellIndex === columnIndex) {
       th.setAttribute('aria-sort', ascending ? 'ascending' : 'descending');
     } else if (th.hasAttribute('aria-sort')) {
       th.setAttribute('aria-sort', 'none');
     }
-  });
+  }
 
   /** @type {HTMLTableSectionElement} */
   const tbody = getTableBody(datatableElement);
   const rows = [];
-  for (let i = tbody.rows.length - 1; i >= 0; i -= 1) {
+  let i = tbody.rows.length;
+  while (i--) {
     rows.push(tbody.rows.item(i));
     tbody.deleteRow(i);
   }
@@ -120,7 +118,7 @@ export function sortColumn(datatableElement, columnIndex, ascending = true) {
     const aText = aCell.textContent;
     const bText = bCell.textContent;
     if (aCell.dataset.type === 'number') {
-      return parseFloat(bText) - parseFloat(aText);
+      return Number.parseFloat(bText) - Number.parseFloat(aText);
     }
     return bText.localeCompare(aText);
   });
@@ -128,9 +126,9 @@ export function sortColumn(datatableElement, columnIndex, ascending = true) {
     rows.reverse();
   }
   const fragment = document.createDocumentFragment();
-  rows.forEach((row) => {
+  for (const row of rows) {
     fragment.appendChild(row);
-  });
+  }
   tbody.appendChild(fragment);
 }
 
@@ -139,18 +137,16 @@ export function sortColumn(datatableElement, columnIndex, ascending = true) {
  * @return {void}
  */
 export function onItemFocus(event) {
-  /** @type {HTMLElement} */
-  const datatableElement = (event.currentTarget);
+  const datatableElement = /** @type {HTMLElement} */ (event.currentTarget);
   const onFocusInteraction = datatableElement.getAttribute('mdw-on-focus');
   if (!onFocusInteraction) {
     return;
   }
-  /** @type {HTMLElement} */
-  const itemElement = (event.target);
+  const itemElement = /** @type {HTMLElement} */ (event.target);
   if (itemElement.getAttribute('aria-disabled') === 'true') {
     return;
   }
-  onFocusInteraction.split(' ').forEach((interaction) => {
+  for (const interaction of onFocusInteraction.split(' ')) {
     switch (interaction) {
       case 'select':
         if (itemElement instanceof HTMLTableRowElement) {
@@ -161,7 +157,7 @@ export function onItemFocus(event) {
         break;
       default:
     }
-  });
+  }
 }
 
 /**
@@ -169,10 +165,8 @@ export function onItemFocus(event) {
  * @return {void}
  */
 export function onSort(event) {
-  /** @type {HTMLElement} */
-  const datatableElement = (event.currentTarget);
-  /** @type {HTMLTableHeaderCellElement} */
-  const cell = (event.target);
+  const datatableElement = /** @type {HTMLElement} */ (event.currentTarget);
+  const cell = /** @type {HTMLTableHeaderCellElement} */ (event.target);
   sortColumn(datatableElement, cell.cellIndex, event.detail.sort === 'ascending');
 }
 
@@ -181,8 +175,7 @@ export function onSort(event) {
  * @return {void}
  */
 export function onRowHeaderCheckedChange(event) {
-  /** @type {HTMLTableHeaderCellElement} */
-  const cell = (event.target);
+  const cell = /** @type {HTMLTableHeaderCellElement} */ (event.target);
   const row = cell.parentElement;
   DataTableRow.setSelected(row, event.detail.value);
 }
@@ -192,10 +185,8 @@ export function onRowHeaderCheckedChange(event) {
  * @return {void}
  */
 function onTabIndexZeroed(event) {
-  /** @type {HTMLElement} */
-  const dataTableElement = (event.currentTarget);
-  /** @type {HTMLElement} */
-  const emitter = (event.target);
+  const dataTableElement = /** @type {HTMLElement} */ (event.currentTarget);
+  const emitter = /** @type {HTMLElement} */ (event.target);
 
   const row = (emitter instanceof HTMLTableRowElement && emitter);
   const cell = (!row && emitter instanceof HTMLTableCellElement && emitter);
@@ -211,10 +202,8 @@ function onTabIndexZeroed(event) {
  * @return {void}
  */
 export function onKeyboard(event) {
-  /** @type {HTMLElement} */
-  const dataTableElement = (event.currentTarget);
-  /** @type {HTMLElement} */
-  const emitter = (event.target);
+  const dataTableElement = /** @type {HTMLElement} */ (event.currentTarget);
+  const emitter = /** @type {HTMLElement} */ (event.target);
   let current = document.activeElement;
 
   let row = (emitter instanceof HTMLTableRowElement && emitter);
@@ -223,8 +212,7 @@ export function onKeyboard(event) {
     return;
   }
   if (!row) {
-    /** @type {HTMLTableRowElement} */
-    row = (cell.parentElement);
+    row = /** @type {HTMLTableRowElement} */ (cell.parentElement);
   }
 
   let checkNavKeys = false;
@@ -247,14 +235,14 @@ export function onKeyboard(event) {
 
   if (checkNavKeys) {
     // Keyboard Navigation
-    /** @type {ArrayLike<HTMLElement>} */
+    /** @type {Iterable<HTMLElement>} */
     let searchElements;
     let reverse = false;
     let loop = false;
     switch (event.type) {
       case Keyboard.UP_ARROW_KEY:
         reverse = true;
-        // eslint-disable-next-line no-fallthrough
+        // Fallthrough
       case Keyboard.DOWN_ARROW_KEY:
         if (event.detail.ctrlKey || event.detail.altKey || event.detail.metaKey) {
           return;
@@ -269,7 +257,7 @@ export function onKeyboard(event) {
         break;
       case Keyboard.BACK_ARROW_KEY:
         reverse = true;
-        // eslint-disable-next-line no-fallthrough
+        // Fallthrough
       case Keyboard.FORWARD_ARROW_KEY:
         if (event.detail.ctrlKey || event.detail.altKey || event.detail.metaKey) {
           return;
@@ -281,7 +269,7 @@ export function onKeyboard(event) {
         break;
       case Keyboard.END_KEY:
         reverse = true;
-        // eslint-disable-next-line no-fallthrough
+        // Fallthrough
       case Keyboard.HOME_KEY:
         if (event.detail.altKey || event.detail.metaKey) {
           return;
@@ -289,11 +277,9 @@ export function onKeyboard(event) {
         if (!cell) {
           return;
         }
-        if (event.detail.ctrlKey) {
-          searchElements = getTableBody(dataTableElement).querySelectorAll(CELL_TABINDEX_QUERIES.join(','));
-        } else {
-          searchElements = cell.parentElement.querySelectorAll(CELL_TABINDEX_QUERIES.join(','));
-        }
+        searchElements = event.detail.ctrlKey
+          ? getTableBody(dataTableElement).querySelectorAll(CELL_TABINDEX_QUERIES.join(','))
+          : cell.parentElement.querySelectorAll(CELL_TABINDEX_QUERIES.join(','));
         cell.setAttribute('tabindex', '-1');
         current = null;
         loop = true;
@@ -357,11 +343,11 @@ export function attach(element) {
   const headerRow = getHeaderRow(element);
   const tbody = getTableBody(element);
 
-  iterateArrayLike(headerRow.getElementsByTagName('th'), DataTableColumnHeader.attach);
-  iterateArrayLike(tbody.getElementsByTagName('th'), DataTableRowHeader.attach);
+  for (const el of headerRow.getElementsByTagName('th')) DataTableColumnHeader.attach(el);
+  for (const el of tbody.getElementsByTagName('th')) DataTableRowHeader.attach(el);
 
   const tableRows = tbody.getElementsByTagName('tr');
-  iterateArrayLike(tableRows, DataTableRow.attach);
+  for (const el of tableRows) DataTableRow.attach(el);
 
   const rowFocusable = element.hasAttribute('mdw-row-focusable');
   if (rowFocusable) {

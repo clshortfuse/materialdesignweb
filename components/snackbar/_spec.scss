@@ -18,9 +18,8 @@ $scale-initial: 0.85 !default;
 .mdw-snackbar__container {
   display: flex;
   position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset-block-end: 0;
+  inset-inline: 0;
   flex-direction: row;
   justify-content: flex-start;
 
@@ -33,21 +32,23 @@ $scale-initial: 0.85 !default;
   &[mdw-position="center"] {
     justify-content: center;
   }
-} 
+}
 
 .mdw-snackbar {
   @include type.addRules('body-2');
 
   display: flex;
   position: absolute;
-  bottom: 0;
+  inset-block-end: 0;
   align-items: center;
   justify-content: space-between;
 
-  min-height: dp(48);
-  max-width: 100%;
-  padding-right: dp(8);
-  padding-left: dp(8);
+  min-block-size: 48px;
+  max-inline-size: 100%;
+  padding-inline: 8px;
+
+  // Default state is hidden
+  pointer-events: auto;
 
   animation-name: none;
   animation-duration: motion.$fadeInDuration;
@@ -57,14 +58,11 @@ $scale-initial: 0.85 !default;
   will-change: opacity, transform, visibility;
 
   opacity: 0;
-
-  // Default state is hidden
-  pointer-events: auto;
   transform: scale($scale-initial);
   visibility: hidden;
 
-  border-radius: dp(4);
-  
+  border-radius: 4px;
+
   box-shadow: elevation.boxShadow(6);
 
   &[aria-hidden="false"] {
@@ -119,22 +117,21 @@ $scale-initial: 0.85 !default;
   order: 1;
 
   flex: none;
-  margin: dp(6) 0;
+  margin: 6px 0;
 }
 
 .mdw-snackbar > span {
   @include type.textTopToTop(16);
   @include type.baselineToBottom(48 - 30);
   box-sizing: border-box;
-  padding: 0 dp(8);
+  padding: 0 8px;
 
   white-space: pre-line;
 }
 
 @include breakpoint.isXSmallWindow() {
   .mdw-snackbar {
-    right: 0;
-    left: 0;
+    inset-inline: 0;
 
     &[mdw-stacked] {
       align-items: flex-end;
@@ -142,54 +139,12 @@ $scale-initial: 0.85 !default;
       justify-content: center;
 
       > span {
-        width: 100%;
+        inline-size: 100%;
       }
 
       .mdw-button {
-        margin-top: dp(2);
-        margin-bottom: dp(8);
+        margin-block: 2px 8px;
       }
     }
   }
-}
-
-@include platform.ifIE() {
-  // Fix IE flexbug
-  .mdw-snackbar {
-    &::after {
-      min-height: inherit;
-      min-width: 0;
-      content: '';
-    }
-  }
-
-  .mdw-snackbar__container[mdw-position="center"] {
-    .mdw-snackbar {
-      transform: translateX(-50%);
-
-      html[dir="rtl"] & {
-        transform: translateX(50%);
-
-        &[mdw-hide] {
-          transform: translateX(50%) scale($scale-initial);
-        }
-      }
-
-      &[mdw-hide] {
-        transform: translateX(-50%) scale($scale-initial);
-      }
-    }
-  }
-
-  .mdw-snackbar__container[mdw-position="end"] {
-    .mdw-snackbar {
-      right: 0;
-
-      html[dir="rtl"] & {
-        right: auto;
-        left: 0;
-      }
-    }
-  }
-  
 }

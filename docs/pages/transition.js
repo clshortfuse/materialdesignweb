@@ -1,10 +1,9 @@
-import { iterateArrayLike } from '../../core/dom.js';
 import * as Overlay from '../../core/overlay/index.js';
 import * as Ripple from '../../core/ripple/index.js';
 import * as Transition from '../../core/transition/index.js';
 
-iterateArrayLike(document.getElementsByClassName('mdw-overlay'), Overlay.attach);
-iterateArrayLike(document.getElementsByClassName('mdw-ripple'), Ripple.attach);
+for (const element of document.getElementsByClassName('mdw-overlay')) { Overlay.attach(element); }
+for (const element of document.getElementsByClassName('mdw-ripple')) { Ripple.attach(element); }
 
 /** @type {HTMLElement} */
 let target1;
@@ -48,7 +47,6 @@ function onItemClick(event) {
   target2 = null;
 }
 
-iterateArrayLike(
-  document.getElementsByClassName('demo-core-item'),
-  (item) => item.addEventListener('click', onItemClick),
-);
+for (const item of document.getElementsByClassName('demo-core-item')) {
+  item.addEventListener('click', onItemClick);
+}

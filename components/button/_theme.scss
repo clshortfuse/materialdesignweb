@@ -2,64 +2,41 @@
 // https://material.io/design/components/buttons.html
 // https://material.io/design/iconography/system-icons.html#color
 
-@use '../../core/theme/_mixins.scss' as theme;
-
-$themeValues: (
-  default-text-rgb:                    theme.$foreground,
-  disabled-text-rgb:                   theme.$foreground,
-  disabled-surface-text-rgb:           theme.$foreground,
-  disabled-surface-background-rgb:     theme.$foreground,
-  default-text-alpha:                  theme.$high-opacity,
-  disabled-text-alpha:                 theme.$inactive-opacity,
-  disabled-surface-text-alpha:         theme.$high-opacity,
-  disabled-surface-background-alpha:   theme.$inactive-opacity,
-) !default;
-
-@function getThemeValue($key, $type) {
-  @return theme.getThemeValue('button', $themeValues, $key, $type);
+.mdw-theme {
+  --mdw-button__default-text-rgb: var(--mdw-ink-default);
+  --mdw-button__disabled-text-rgb: var(--mdw-ink-default);
+  --mdw-button__disabled-surface-text-rgb: var(--mdw-ink-default);
+  --mdw-button__disabled-surface-background-rgb: var(--mdw-ink-default);
+  --mdw-button__default-text-opacity: var(--mdw-high-opacity);
+  --mdw-button__disabled-text-opacity: var(--mdw-inactive-opacity);
+  --mdw-button__disabled-surface-text-opacity: var(--mdw-high-opacity);
+  --mdw-button__disabled-surface-background-opacity: var(--mdw-inactive-opacity);
 }
 
-@mixin addThemeRules($type: 'var') {
-  .mdw-button {
-    &:disabled:not([aria-disabled="true"]) {
-      color: RGBA(getThemeValue("disabled-text-rgb", $type), getThemeValue("disabled-text-alpha", $type));
+.mdw-button {
+  &:disabled:not([aria-disabled="true"]) {
+    color: RGBA(var(--mdw-button__disabled-text-rgb), var(--mdw-button__disabled-text-opacity));
 
-      &.mdw-overlay::before {
-        display: none;
-      }
+    &.mdw-overlay::before {
+      display: none;
     }
+  }
 
-    &.mdw-overlay[aria-disabled="true"] {
-      // Sets foreground to default ink color
-      color: RGBA(getThemeValue("default-text-rgb", $type), getThemeValue("default-text-alpha", $type));
+  &.mdw-overlay[aria-disabled="true"] {
+    // Sets foreground to default ink color
+    color: RGBA(var(--mdw-button__default-text-rgb), var(--mdw-button__default-text-opacity));
 
-      &[mdw-surface] {
-        background-color: RGBA(getThemeValue("disabled-surface-background-rgb", $type), getThemeValue("disabled-surface-background-alpha", $type));
-        color: RGBA(getThemeValue("disabled-surface-text-rgb", $type), getThemeValue("disabled-surface-text-alpha", $type));
+    &[mdw-surface] {
+      background-color: RGBA(var(--mdw-button__disabled-surface-background-rgb), var(--mdw-button__disabled-surface-background-opacity));
+      color: RGBA(var(--mdw-button__disabled-surface-text-rgb), var(--mdw-button__disabled-surface-text-opacity));
 
-        // Disabled filled buttons use parent's theming context
-        @if ($type == 'var') {
-          &[mdw-dark],
-          &[mdw-light] {
-            --mdw-button__disabled-surface-text-rgb: inherit;
-            --mdw-button__disabled-surface-text-opacity: inherit;
-            --mdw-button__disabled-surface-background-rgb: inherit;
-            --mdw-button__disabled-surface-background-opacity: inherit;
-          }
-        }
+      &[mdw-dark],
+      &[mdw-light] {
+        --mdw-button__disabled-surface-text-rgb: inherit;
+        --mdw-button__disabled-surface-text-opacity: inherit;
+        --mdw-button__disabled-surface-background-rgb: inherit;
+        --mdw-button__disabled-surface-background-opacity: inherit;
       }
     }
   }
-}
-
-
-@include theme.addComponentFallbackRules('light') {
-  @include addThemeRules('light');
-}
-@include theme.addComponentFallbackRules('dark') {
-  @include addThemeRules('dark');
-}
-
-@include theme.addComponentCSSVariableRules('button', $themeValues) {
-  @include addThemeRules();
 }

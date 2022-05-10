@@ -1,111 +1,102 @@
-@use '../../core/theme/_mixins.scss' as theme;
-
-$themeValues: (
-  divider-color:                 theme.$foreground,
-  divider-opacity:               theme.$divider-opacity,
-
-  focus-opacity:                 (0.12, 0.24),
-  hover-focus-opacity:           (0.04 + 0.12, 0.08 + 0.24),
-  selected-focus-opacity:        (0.08 + 0.12, 0.16 + 0.24),
-  selected-hover-focus-opacity:  (0.08 + 0.04 + 0.12, 0.16 + 0.08 + 0.24),
-
-  activated-focus-opacity:       (0.12 + 0.12, 0.24 + 0.24),
-  activated-hover-focus-opacity: (0.12 + 0.04 + 0.12, 0.24 + 0.08 + 0.24),
-
-) !default;
-
-@function getThemeValue($key, $type) {
-  @return theme.getThemeValue('list', $themeValues, $key, $type);
+.mdw-theme {
+  --mdw-list__divider-color: var(--mdw-divider-color);
+  --mdw-list__focus-opacity: var(--mdw-list__focus-opacity-value);
+  --mdw-list__focus-selected-opacity: calc(var(--mdw-list__focus-opacity-value) + var(--mdw-list__selected-opacity-value));
+  --mdw-list__focus-activated-opacity: calc(var(--mdw-list__focus-opacity-value) + var(--mdw-list__activated-opacity-value));
+  --mdw-list__focus-hover-opacity: calc(var(--mdw-list__focus-opacity-value) + var(--mdw-list__hover-opacity-value));
+  --mdw-list__focus-hover-selected-opacity: calc(var(--mdw-list__focus-opacity-value) + var(--mdw-list__hover-opacity-value) + var(--mdw-list__selected-opacity-value));
+  --mdw-list__focus-hover-activated-opacity: calc(var(--mdw-list__focus-opacity-value) + var(--mdw-list__hover-opacity-value) + var(--mdw-list__activated-opacity-value));
 }
 
-@mixin addThemeRules($type: 'var') {
-  .mdw-list__content {
-    &[mdw-ink][aria-current] {
-      .mdw-list__icon,
-      .mdw-list__text {
-        color: inherit;
+.mdw-theme[mdw-light] {
+  --mdw-list__focus-opacity-value: 0.12;
+  --mdw-list__hover-opacity-value: 0.04;
+  --mdw-list__selected-opacity-value: 0.08;
+  --mdw-list__activated-opacity-value: 0.12;
+}
+
+.mdw-theme[mdw-dark] {
+  --mdw-list__focus-opacity-value: 0.24;
+  --mdw-list__hover-opacity-value: 0.08;
+  --mdw-list__selected-opacity-value: 0.16;
+  --mdw-list__activated-opacity-value: 0.24;
+}
+
+
+
+.mdw-list__content {
+  &[mdw-ink][aria-current] {
+    .mdw-list__icon,
+    .mdw-list__text {
+      color: inherit;
+    }
+  }
+}
+
+.mdw-list[mdw-divider] {
+  & > .mdw-list__item:not(:last-child) .mdw-list__text::after {
+    background-color: var(--mdw-list__divider-color);
+  }
+}
+
+.mdw-list__item[aria-expanded]:focus {
+  & > .mdw-list__content {
+    &:not([mdw-overlay-touch="true"]) {
+      &:not([mdw-overlay-off~="focus"]):not([mdw-overlay-touch="true"])::before {
+        opacity: var(--mdw-list__focus-opacity);
+      }
+
+      &:not([aria-disabled="true"]):not([mdw-overlay-touch="true"]) {
+        &:hover:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
+          opacity: var(--mdw-list__focus-hover-opacity);
+        }
       }
     }
-  }
 
-  .mdw-list[mdw-divider] {
-    & > .mdw-list__item:not(:last-child) .mdw-list__text::after {
-      background-color: RGBA(getThemeValue("divider-color", $type), getThemeValue("divider-opacity", $type));
-    }
-  }
-
-  .mdw-list__item[aria-expanded]:focus {
-    & > .mdw-list__content {
+    // Selected
+    &[aria-selected="true"]:not([mdw-overlay-off~="selected"]) {
       &:not([mdw-overlay-touch="true"]) {
-        &:not([mdw-overlay-off~="focus"]):not([mdw-overlay-touch="true"])::before {
-          opacity: getThemeValue("focus-opacity", $type);
+        &:focus:not([mdw-overlay-off~="focus"])::before {
+          opacity: var(--mdw-list__focus-selected-opacity);
         }
-  
-        &:not([aria-disabled="true"]):not([mdw-overlay-touch="true"]) {
+
+        &:not([aria-disabled="true"]) {
           &:hover:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-            opacity: getThemeValue("hover-focus-opacity", $type);
+            opacity: var(--mdw-list__focus-hover-selected-opacity);
           }
         }
       }
-  
-      // Selected
-      &[aria-selected="true"]:not([mdw-overlay-off~="selected"]) {
-        &:not([mdw-overlay-touch="true"]) {
-          &:focus:not([mdw-overlay-off~="focus"])::before {
-            opacity: getThemeValue("selected-focus-opacity", $type);
-          }
-  
-          &:not([aria-disabled="true"]) {
-            &:hover:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-              opacity: getThemeValue("selected-hover-focus-opacity", $type);
-            }
-          }
+    }
+
+    // Activated
+    &[aria-current]:not([mdw-overlay-off~="current"]),
+    &[aria-pressed="true"]:not([mdw-overlay-off~="activated"]) {
+      &:not([mdw-overlay-touch="true"]) {
+        &:not([mdw-overlay-off~="focus"])::before {
+          opacity: var(--mdw-list__focus-activated-opacity);
         }
-      }
-  
-      // Activated
-      &[aria-current]:not([mdw-overlay-off~="current"]),
-      &[aria-pressed="true"]:not([mdw-overlay-off~="activated"]) {
-        &:not([mdw-overlay-touch="true"]) {
-          &:not([mdw-overlay-off~="focus"])::before {
-            opacity: getThemeValue("activated-focus-opacity", $type);
-          }
-  
-          &:not([aria-disabled="true"]) {
-            &:hover:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
-              opacity: getThemeValue("activated-hover-focus-opacity", $type);
-            }
+
+        &:not([aria-disabled="true"]) {
+          &:hover:not([mdw-overlay-off~="hover"]):not([mdw-overlay-off~="focus"])::before {
+            opacity: var(--mdw-list__focus-hover-activated-opacity);
           }
         }
       }
     }
   }
+}
 
-  .mdw-list__item[aria-expanded="true"] {
-    &::before,
-    &::after {
-      background-color: RGBA(getThemeValue("divider-color", $type), getThemeValue("divider-opacity", $type));
-    }
+.mdw-list__item[aria-expanded="true"] {
+  &::before,
+  &::after {
+    background-color: var(--mdw-list__divider-color);
+  }
 
-    &[mdw-ink][aria-expanded="true"] {
-      & > .mdw-list__content,
-      & > .mdw-list__content::before,
-      & > .mdw-list__content > .mdw-list__text {
-        color: inherit;
-      }
+  &[mdw-ink][aria-expanded="true"] {
+    & > .mdw-list__content,
+    & > .mdw-list__content::before,
+    & > .mdw-list__content > .mdw-list__text {
+      color: inherit;
     }
   }
-  
-}
-
-
-@include theme.addComponentFallbackRules('light') {
-  @include addThemeRules('light');
-}
-@include theme.addComponentFallbackRules('dark') {
-  @include addThemeRules('dark');
-}
-
-@include theme.addComponentCSSVariableRules('list', $themeValues) {
-  @include addThemeRules();
 }

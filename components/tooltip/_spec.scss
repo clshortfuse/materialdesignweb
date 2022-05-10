@@ -5,14 +5,12 @@
 @use '../../core/_platform.scss' as platform;
 @use '../../core/_type.scss' as type;
 
-
 // Guidelines state background is #616161, which is Gray 700
 
-$desktop-margin: dp(14) !default;
-$mobile-margin: dp(24) !default;
+$desktop-margin: 14px !default;
+$mobile-margin: 24px !default;
 $touch-fade-out-time: 1.5s !default;
 $touch-min-hold-time: 500ms !default;
-
 
 .mdw-tooltip__wrapper {
   position: relative;
@@ -33,29 +31,30 @@ $touch-min-hold-time: 500ms !default;
 
   position: absolute;
 
-  top: 100%;
-  left: 50%;
+  inset-block-start: 100%;
+  inset-inline-start: 50%;
   align-items: center;
   flex-direction: column;
   justify-content: center;
 
-  width: auto;
-  padding: dp(6) dp(8);
-  
+  inline-size: auto;
+  padding: 6px 8px;
+
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   cursor: none;
-  
+  pointer-events: none;
+
   transition-duration: motion.$fadeOutDuration;
   transition-property: opacity;
   transition-timing-function: motion.$accelerateEasing;
-  
+
   opacity: 0;
-  pointer-events: none;
   // Default Alignment is Center
-  
+
   transform: translateX(-50%) translateY($desktop-margin);
   z-index: 8;
 
-  border-radius: dp(4);
+  border-radius: 4px;
 
   line-height: 1;
   white-space: nowrap;
@@ -66,20 +65,18 @@ $touch-min-hold-time: 500ms !default;
   .mdw-tooltip__wrapper > .mdw-tooltip__target:not([tabindex="-1"]):focus ~ & {
     transition-duration: motion.$fadeInDuration;
     transition-timing-function: motion.$accelerateEasing;
-    
+
     opacity: 0.9;
   }
 
   &[mdw-align="start"],
   :root[dir="rtl"] &[mdw-align="end"] {
-    right: auto;
-    left: 0;
+    inset-inline: 0 auto;
   }
 
   &[mdw-align="end"],
   :root[dir="rtl"] &[mdw-align="start"] {
-    right: 0;
-    left: auto;
+    inset-inline: auto 0;
   }
 
   &[mdw-align="start"],
@@ -91,8 +88,8 @@ $touch-min-hold-time: 500ms !default;
   &[mdw-position="end"],
   &[mdw-position="left"],
   &[mdw-position="right"] {
-    top: 50%;
-    left: 0;
+    inset-block-start: 50%;
+    inset-inline-start: 0;
   }
 
   &[mdw-position="start"],
@@ -110,7 +107,7 @@ $touch-min-hold-time: 500ms !default;
   }
 
   &[mdw-position="top"] {
-    top: 0;
+    inset-block-start: 0;
 
     transform: translateX(-50%) translateY(-100%) translateY(-$desktop-margin);
 
@@ -119,18 +116,18 @@ $touch-min-hold-time: 500ms !default;
       transform: translateY(-100%) translateY(-$desktop-margin);
     }
   }
-  
+
 }
 
 // Button position fix
 .mdw-tooltip__wrapper > .mdw-button[mdw-icon] ~ .mdw-tooltip {
   &:not([mdw-position]) {
     // Bottom
-    margin-top: dp(-8);
+    margin-block-start: -8px;
   }
 
   &[mdw-position="top"] {
-    margin-top: dp(8);
+    margin-block-start: 8px;
   }
 }
 
@@ -144,7 +141,7 @@ $touch-min-hold-time: 500ms !default;
 
 @include platform.ifHasTouch() {
   .mdw-tooltip {
-    padding: dp(10) dp(16);
+    padding: 10px 16px;
 
     transition-delay: $touch-min-hold-time;
 

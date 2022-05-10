@@ -1,12 +1,14 @@
 import * as BottomNav from '../../components/bottomnav/index.js';
 import * as BottomNavItem from '../../components/bottomnav/item.js';
 import * as Button from '../../components/button/index.js';
-import { iterateArrayLike, setTextNode } from '../../core/dom.js';
+import { setTextNode } from '../../core/dom.js';
 import { convertElementToCode } from '../_sample-utils.js';
 
 /** @return {void} */
 function initializeSampleComponents() {
-  iterateArrayLike(document.querySelectorAll('.mdw-bottomnav'), BottomNav.attach);
+  for (const element of document.querySelectorAll('.mdw-bottomnav')) {
+    BottomNav.attach(element);
+  }
 }
 
 /** @type {HTMLElement} */
@@ -17,17 +19,19 @@ function updateSampleCode() {
   // Strip JS related elements and attributes
   BottomNav.detach(sampleComponent);
   sampleComponent.removeAttribute('role');
-  iterateArrayLike(sampleComponent.getElementsByClassName('mdw-bottomnav__item'), (item) => {
+  for (const item of sampleComponent.getElementsByClassName('mdw-bottomnav__item')) {
     BottomNavItem.detach(item);
     item.classList.remove('mdw-ripple');
     item.classList.remove('mdw-overlay');
     item.removeAttribute('mdw-overlay-off');
     item.removeAttribute('role');
-  });
+  }
 
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
-  setTextNode(htmlCodeElement, convertElementToCode(sampleComponent,
-    document.getElementById('usePug').getAttribute('aria-pressed') === 'true'));
+  setTextNode(htmlCodeElement, convertElementToCode(
+    sampleComponent,
+    document.getElementById('usePug').getAttribute('aria-pressed') === 'true',
+  ));
 
   // Reattach JS if requested
   BottomNav.attach(sampleComponent);
@@ -55,16 +59,15 @@ function setupPugButton() {
  * @return {void}
  */
 function onOptionChange(event) {
-  /** @type {HTMLInputElement} */
-  const { name, value } = (event.target);
+  const { name, value } = /** @type {HTMLInputElement} */ (event.target);
   switch (name) {
     case 'ink':
       switch (value) {
         case 'default':
-          iterateArrayLike(sampleComponent.getElementsByClassName('mdw-bottomnav__item'), (el) => el.removeAttribute('mdw-ink'));
+          for (const el of sampleComponent.getElementsByClassName('mdw-bottomnav__item')) el.removeAttribute('mdw-ink');
           break;
         default:
-          iterateArrayLike(sampleComponent.getElementsByClassName('mdw-bottomnav__item'), (el) => el.setAttribute('mdw-ink', value));
+          for (const el of sampleComponent.getElementsByClassName('mdw-bottomnav__item')) el.setAttribute('mdw-ink', value);
           break;
       }
       break;
@@ -77,12 +80,12 @@ function onOptionChange(event) {
           break;
         default:
           sampleComponent.setAttribute('mdw-surface', value.replace(/ (light|dark)/, ''));
-          if (value.indexOf(' light') === -1) {
+          if (!value.includes(' light')) {
             sampleComponent.removeAttribute('mdw-light');
           } else {
             sampleComponent.setAttribute('mdw-light', '');
           }
-          if (value.indexOf(' dark') === -1) {
+          if (!value.includes(' dark')) {
             sampleComponent.removeAttribute('mdw-dark');
           } else {
             sampleComponent.setAttribute('mdw-dark', '');
@@ -104,9 +107,9 @@ function onOptionChange(event) {
 function setupComponentOptions() {
   sampleComponent = document.querySelector('.component-sample .mdw-bottomnav');
   BottomNav.attach(sampleComponent);
-  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+  for (const el of document.querySelectorAll('input[name]')) {
     el.addEventListener('change', onOptionChange);
-  });
+  }
 }
 
 initializeSampleComponents();

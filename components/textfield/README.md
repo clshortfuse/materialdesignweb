@@ -165,9 +165,9 @@ label.mdw-textfield(mdw-autosize mdw-outlined)
 # Javascript
 
 ```
-  document.getElementsByClassName("mdw-textfield").forEach((element) => {
+  for (const element of document.getElementsByClassName("mdw-textfield")) {
     TextField.attach(element);
-  });
+  }
 ```
 
 # Notes

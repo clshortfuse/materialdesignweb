@@ -1,9 +1,8 @@
-import { iterateArrayLike, nextTick } from '../../core/dom.js';
 import * as Overlay from '../../core/overlay/index.js';
 import * as Ripple from '../../core/ripple/index.js';
 
-iterateArrayLike(document.getElementsByClassName('mdw-overlay'), Overlay.attach);
-iterateArrayLike(document.getElementsByClassName('mdw-ripple'), Ripple.attach);
+for (const el of document.getElementsByClassName('mdw-overlay')) Overlay.attach(el);
+for (const el of document.getElementsByClassName('mdw-ripple')) Ripple.attach(el);
 
 const sampleSurface = document.getElementById('sample-surface');
 const sampleInk = document.getElementById('sample-ink');
@@ -39,7 +38,7 @@ function parseColor(colorString) {
   return colorString
     .match(/\(([^)]+)\)/)[1]
     .split(',')
-    .map((value) => (value == null ? 1.0 : parseFloat(value)))
+    .map((value) => (value == null ? 1 : Number.parseFloat(value)))
     .reduce((prev, curr, index) => {
       if (index > 3) {
         throw new Error('Unexpected 5th value');
@@ -51,7 +50,7 @@ function parseColor(colorString) {
         a: index === 3 ? curr : prev.a,
       };
     }, {
-      r: 255, g: 255, b: 255, a: 1.0,
+      r: 255, g: 255, b: 255, a: 1,
     });
 }
 
@@ -62,11 +61,22 @@ function parseColor(colorString) {
  */
 function overlayColor(color, overlay) {
   return {
-    r: (1.0 - overlay.a) * color.r + overlay.a * overlay.r,
-    g: (1.0 - overlay.a) * color.g + overlay.a * overlay.g,
-    b: (1.0 - overlay.a) * color.b + overlay.a * overlay.b,
-    a: 1.0,
+    r: (1 - overlay.a) * color.r + overlay.a * overlay.r,
+    g: (1 - overlay.a) * color.g + overlay.a * overlay.g,
+    b: (1 - overlay.a) * color.b + overlay.a * overlay.b,
+    a: 1,
   };
+}
+
+/**
+ * @param {number} colorValue
+ * @return {number}
+ */
+function sRGBMapping(colorValue) {
+  if (colorValue <= (0.039_28 * 255)) {
+    return colorValue / 255 / 12.92;
+  }
+  return ((colorValue / 255 + 0.055) / 1.055) ** 2.4;
 }
 
 /**
@@ -75,16 +85,6 @@ function overlayColor(color, overlay) {
  * @return {number}
  */
 function getLuminance(color) {
-  /**
-   * @param {number} colorValue
-   * @return {number}
-   */
-  function sRGBMapping(colorValue) {
-    if (colorValue <= (0.03928 * 255)) {
-      return colorValue / 255 / 12.92;
-    }
-    return ((colorValue / 255 + 0.055) / 1.055) ** 2.4;
-  }
   const R = 0.2126 * sRGBMapping(color.r);
   const G = 0.7152 * sRGBMapping(color.g);
   const B = 0.0722 * sRGBMapping(color.b);
@@ -128,7 +128,7 @@ function updateInks(name) {
 
 /** @return {void} */
 function calculateContrast() {
-  nextTick(() => {
+  requestAnimationFrame(() => {
     const style = window.getComputedStyle(sampleButton);
     const surfaceColor = parseColor(style.backgroundColor);
     const inkColor = parseColor(style.color);
@@ -166,8 +166,7 @@ function calculateContrast() {
  * @return {void}
  */
 function onItemClick(event) {
-  /** @type {HTMLElement} */
-  const item = (event.currentTarget);
+  const item = /** @type {HTMLElement} */ (event.currentTarget);
   if (item.id) {
     return;
   }
@@ -197,15 +196,15 @@ function refresh() {
     currentInkOptions.color,
     currentInkOptions.tone,
     currentInkOptions.opacity,
-  ].filter((v) => v).join(' ');
+  ].filter(Boolean).join(' ');
   const surfaceProperties = [
     currentSurfaceOptions.color,
     currentSurfaceOptions.tone,
-  ].filter((v) => v).join(' ');
-  iterateArrayLike(document.querySelectorAll('#color-sample-area .demo-core-item'), (el) => {
+  ].filter(Boolean).join(' ');
+  for (const el of document.querySelectorAll('#color-sample-area .demo-core-item')) {
     el.setAttribute('mdw-ink', inkProperties);
     el.setAttribute('mdw-surface', surfaceProperties);
-  });
+  }
   calculateContrast();
 }
 
@@ -214,8 +213,7 @@ function refresh() {
  * @return {void}
  */
 function onOptionChange(event) {
-  /** @type {HTMLSelectElement} */
-  const selectElement = (event.target);
+  const selectElement = /** @type {HTMLSelectElement} */ (event.target);
   const { name, value } = selectElement;
   switch (name) {
     case 'ink-color':
@@ -243,20 +241,21 @@ function onOptionChange(event) {
 function setupComponentOptions() {
   // sampleComponent = document.querySelector('.component-sample .mdw-button');
   // Button.attach(sampleComponent);
-  iterateArrayLike(document.querySelectorAll('#color-page-options [name]'), (el) => {
+  for (const el of document.querySelectorAll('#color-page-options [name]')) {
     el.addEventListener('change', onOptionChange);
-  });
+  }
 }
 
-iterateArrayLike(
-  document.getElementsByClassName('demo-core-item'),
-  (item) => item.addEventListener('click', onItemClick),
-);
+for (const item of document.getElementsByClassName('demo-core-item')) {
+  item.addEventListener('click', onItemClick);
+}
 
-[
+for (const button of [
   document.getElementById('darkModeButton'),
   document.getElementById('altThemeButton'),
-].forEach((button) => button.addEventListener('click', calculateContrast));
+]) {
+  button?.addEventListener('click', calculateContrast);
+}
 
 setupComponentOptions();
 refresh();

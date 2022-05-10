@@ -51,7 +51,7 @@ button.mdw-button(disabled)
 # Javascript
 
 ```
-  [...document.getElementsByClassName("mdw-button")].forEach(Button.attach);
+  for (const el of document.getElementsByClassName("mdw-button")) Button.attach(el);
 ```
 
 # Notes

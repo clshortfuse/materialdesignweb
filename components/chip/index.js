@@ -1,7 +1,5 @@
 // https://www.w3.org/TR/wai-aria-practices/#Listbox
 
-import { iterateArrayLike } from '../../core/dom.js';
-
 import * as ChipItem from './item.js';
 
 /**
@@ -9,7 +7,9 @@ import * as ChipItem from './item.js';
  * @return {void}
  */
 export function attach(element) {
-  iterateArrayLike(element.getElementsByClassName('mdw-chip__item'), ChipItem.attach);
+  for (const el of element.getElementsByClassName('mdw-chip__item')) {
+    ChipItem.attach(el);
+  }
 }
 
 /**
@@ -17,5 +17,7 @@ export function attach(element) {
  * @return {void}
  */
 export function detach(element) {
-  iterateArrayLike(element.getElementsByClassName('mdw-chip__item'), ChipItem.detach);
+  for (const el of element.getElementsByClassName('mdw-chip__item')) {
+    ChipItem.detach(el);
+  }
 }

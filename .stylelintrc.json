@@ -1,15 +1,34 @@
 {
+  "env": {
+    "browser": true
+  },
+  "ignorePatterns": ["*.min.js"],
+  "settings": {
+    "html/html-extensions": [
+      ".html",
+      ".eta"
+    ]
+  },
   "extends": [
     "stylelint-config-recommended-scss",
     "stylelint-config-sass-guidelines"
   ],
   "ignoreFiles": "test/**",
   "plugins": [
-    "stylelint-scss"
+    "stylelint-scss",
+    "stylelint-use-logical-spec",
+    "stylelint-no-unsupported-browser-features"
   ],
+  "customSyntax": "postcss-scss",
   "rules": {
+    "plugin/no-unsupported-browser-features": [ true, {
+      "ignore": ["css-appearance", "overscroll-behavior"]
+    }],
+    "liberty/use-logical-spec": [
+      "always"
+    ],
     "max-nesting-depth": null,
-    "declaration-property-value-blacklist": null,
+    "declaration-property-value-disallowed-list": null,
     "selector-no-vendor-prefix": null,
     "property-no-vendor-prefix": null,
     "value-no-vendor-prefix": null,
@@ -25,6 +44,19 @@
     "no-empty-source": null,
     "block-no-empty": true,
     "no-extra-semicolons": true,
+    "rule-empty-line-before": [
+      "always",
+      {
+        "except": [
+          "first-nested"
+        ],
+        "ignore": [
+          "after-comment"
+        ]
+      }
+    ],
+    "no-eol-whitespace": true,
+    "shorthand-property-no-redundant-values": null,
     "selector-max-universal": 0,
     "selector-attribute-brackets-space-inside": "never",
     "selector-attribute-operator-space-after": "never",
@@ -38,25 +70,45 @@
     "selector-type-case": "lower",
     "selector-list-comma-space-before": "never",
     "indentation": 2,
-    "max-empty-lines": 2,
-    "selector-max-compound-selectors": [3, {
-      "severity": "warning"
-    }],
-    "no-descending-specificity": [true, {
-      "severity": "warning"
-    }],
-    "unit-blacklist": "px",
-    "selector-class-pattern": "^mdw-[a-z]+(__[a-z-]+)?$",
+    "max-empty-lines": 1,
+    "selector-max-compound-selectors": [
+      3,
+      {
+        "severity": "warning"
+      }
+    ],
+    "no-descending-specificity": [
+      true,
+      {
+        "severity": "warning"
+      }
+    ],
     "scss/at-import-no-partial-leading-underscore": null,
     "scss/at-function-pattern": "^[a-z][a-zA-Z0-9]*$",
     "scss/at-mixin-pattern": "^[a-z][a-zA-Z0-9]*$",
-    "scss/dollar-variable-default": [true, {
-      "ignore": "local"
-    }],
-    "scss/dollar-variable-pattern": "^[a-z][a-zA-Z0-9]*$",
-    "order/order": null,
+    "scss/dollar-variable-default": [
+      true,
+      {
+        "ignore": "local"
+      }
+    ],
+    "scss/dollar-variable-pattern": "^[a-z][a-zA-Z0-9-]*$",
+    "order/order": [
+      "dollar-variables",
+      "custom-properties",
+      "declarations",
+      "rules"
+    ],
     "order/properties-alphabetical-order": null,
-    "order/properties-order": [{
+    "order/properties-order": [
+      {
+        "groupName": "content",
+        "emptyLineBefore": "always",
+        "properties": [
+          "content"
+        ]
+      },
+      {
         "groupName": "layout",
         "emptyLineBefore": "always",
         "properties": [
@@ -66,6 +118,13 @@
           "right",
           "bottom",
           "left",
+          "inset",
+          "inset-block",
+          "inset-block-start",
+          "inset-block-end",
+          "inset-inline",
+          "inset-inline-start",
+          "inset-inline-end",
           "align-content",
           "align-items",
           "grid-column-align",
@@ -183,20 +242,22 @@
         "emptyLineBefore": "always",
         "properties": [
           "box-sizing",
-
           "min-height",
           "max-height",
           "height",
-
+          "min-block-size",
+          "max-block-size",
+          "block-size",
           "min-width",
           "max-width",
           "width",
-
+          "min-inline-size",
+          "max-inline-size",
+          "inline-size",
           "flex",
           "flex-grow",
           "flex-shrink",
           "flex-basis",
-
           "margin-block",
           "margin-block-start",
           "margin-block-end",
@@ -205,62 +266,47 @@
           "margin-inline-start",
           "margin-inline-end",
           "margin-trim",
-
           "margin",
           "margin-top",
           "margin-right",
           "margin-bottom",
           "margin-left",
-
           "border-block",
           "border-block-start",
           "border-block-end",
-
-          
-
           "border-block-style",
           "border-block-start-style",
           "border-block-end-style",
-
           "border-block-width",
           "border-block-start-width",
           "border-block-end-width",
-
           "border-fit",
           "border-fit-length",
           "border-fit-width",
-
           "border-corner-fit",
-
           "border-top-left-fit-length",
           "border-top-right-fit-length",
           "border-bottom-right-fit-length",
           "border-bottom-left-fit-length",
-
           "border-top-left-fit-width",
           "border-top-right-fit-width",
           "border-bottom-right-fit-width",
           "border-bottom-left-fit-width",
-
           "border-top-fit-length",
           "border-right-fit-length",
           "border-bottom-fit-length",
           "border-left-fit-length",
-
           "border-top-fit-width",
           "border-right-fit-width",
           "border-bottom-fit-width",
           "border-left-fit-width",
-
           "border-image",
           "border-image-source",
           "border-image-slice",
           "border-image-width",
           "border-image-outset",
           "border-image-repeat",
-
           "border-image-transform",
-
           "border-top-left-image",
           "border-top-image",
           "border-top-right-image",
@@ -268,27 +314,22 @@
           "border-bottom-right-image",
           "border-bottom-image",
           "border-bottom-left-image",
-
           "border",
-
           "border-top",
           "border-right",
           "border-bottom",
           "border-left",
           "border-left-image",
-
           "border-style",
           "border-top-style",
           "border-right-style",
           "border-bottom-style",
           "border-left-style",
-
           "border-width",
           "border-top-width",
           "border-right-width",
           "border-bottom-width",
           "border-left-width",
-
           "border-boundary",
           "border-break",
           "border-corner-image",
@@ -298,26 +339,20 @@
           "border-end-start-radius",
           "border-end-end-radius",
           "border-inline",
-
           "border-inline-style",
           "border-inline-width",
           "border-inline-start",
-          
           "border-inline-start-style",
           "border-inline-start-width",
           "border-inline-end",
-          
           "border-inline-end-style",
           "border-inline-end-width",
-
-
           "padding-block",
           "padding-block-start",
           "padding-block-end",
           "padding-inline",
           "padding-inline-start",
           "padding-inline-end",
-
           "padding",
           "padding-top",
           "padding-right",
@@ -343,6 +378,7 @@
           "outline-offset",
           "outline-style",
           "outline-width",
+          "pointer-events",
           "resize",
           "tap-highlight-color",
           "user-select"
@@ -409,7 +445,6 @@
           "mask-type",
           "mix-blend-mode",
           "opacity",
-          "pointer-events",
           "perspective",
           "perspective-origin",
           "transform",
@@ -596,5 +631,15 @@
         ]
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.scss"
+      ],
+      "rules": {
+        "selector-class-pattern": "^mdw-[a-z]+(__[a-z-]+)*$"
+      }
+    }
+  ]
 }

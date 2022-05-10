@@ -7,7 +7,15 @@
 @use '../../core/_platform.scss' as platform;
 @use '../../core/_type.scss' as type;
 
-$dividerHeight: dp(1) !default;
+$dividerHeight: 1px !default;
+
+:root {
+  --mdw-list__inline-padding: 24px;
+  @include breakpoint.has16DPMargin() {
+    --mdw-list__inline-padding: 16px;
+  }
+
+}
 
 .mdw-list {
   margin: 0;
@@ -16,14 +24,13 @@ $dividerHeight: dp(1) !default;
   list-style-type: none;
 
   &[mdw-margin-top] {
-    margin-top: dp(8);
+    margin-block-start: 8px;
   }
 
   &[mdw-margin-bottom] {
-    margin-bottom: dp(8);
+    margin-block-end: 8px;
   }
 }
-
 
 li.mdw-list__item {
   position: relative;
@@ -33,7 +40,7 @@ li.mdw-list__item {
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
-  
+
   text-align: start;
   text-decoration: none;
   text-transform: none;
@@ -43,8 +50,8 @@ a.mdw-list__content {
   text-decoration: none;
 }
 
-.mdw-list__content > .mdw-divider__vertical {
-  height: dp(40);
+.mdw-list__content > .mdw-divider[mdw-vertical] {
+  inline-size: 40px;
 }
 
 .mdw-list__subheader,
@@ -54,13 +61,10 @@ a.mdw-list__content {
   flex-direction: row;
   justify-content: stretch;
   overflow: hidden;
-  
-  min-height: dp(48);
+
+  min-block-size: 48px;
   flex: 1;
-  padding: 0 dp(24);
-  @include breakpoint.has16DPMargin() {
-    padding: 0 dp(16);
-  }
+  padding: 0 var(--mdw-list__inline-padding);
 }
 
 .mdw-list__subheader {
@@ -87,15 +91,14 @@ a.mdw-list__content {
   flex-direction: row;
   justify-content: flex-start;
   order: -1;
-  
-  min-width: dp(72 - 16);
-  max-width: dp(72 - 16);
-  margin: dp(16) 0;
+
+  min-inline-size: 56px; /* 72 - 16 */
+  max-inline-size: 56px; /* 72 - 16 */
+  margin: 16px 0;
 }
 
-
 .mdw-list__avatar {
-  min-height: dp(40);
+  min-block-size: 40px;
 }
 
 .mdw-list__item {
@@ -110,12 +113,13 @@ a.mdw-list__content {
 
   &::before,
   &::after {
+    content: '';
+
     position: absolute;
 
-    right: 0;
-    left: 0;
+    inset-inline: 0;
 
-    height: dp(1);
+    block-size: 1px;
 
     transition-duration: motion.$shapeChangeDuration;
 
@@ -123,25 +127,25 @@ a.mdw-list__content {
     transition-timing-function: motion.$standardEasing;
 
     background-color: transparent;
-    content: '';
   }
 
   &::before {
-    top: dp(-1);
+    inset-block-start: -1px;
   }
 
   &::after {
-    bottom: 0;
+    inset-block-end: 0;
   }
 
   & > .mdw-list__content .mdw-list__secondary {
-    min-height: dp(48);
+    min-block-size: 48px;
+
+    pointer-events: none;
 
     transition-duration: motion.$shapeChangeDuration;
     transition-property: transform;
     transition-timing-function: motion.$standardEasing;
 
-    pointer-events: none;
     transform: rotate(0deg);
   }
 
@@ -189,29 +193,29 @@ a.mdw-list__content {
 
 @keyframes expandRow {
   0% {
-    min-height: 0;
+    min-block-size: 0;
     flex-basis: 0;
   }
 
   99.99% {
-    min-height: dp(48);
+    min-block-size: 48px;
     flex-basis: 0;
   }
 
   100% {
-    min-height: dp(48);
+    min-block-size: 48px;
     flex-basis: 100%;
   }
 }
 
 @keyframes collapseRow {
   0% {
-    min-height: dp(48);
+    min-block-size: 48px;
     flex-basis: 0;
   }
 
   100% {
-    min-height: 0;
+    min-block-size: 0;
     flex-basis: 0;
   }
 }
@@ -219,8 +223,8 @@ a.mdw-list__content {
 .mdw-list__expand-checkbox {
   display: none;
 
-  max-height: 0;
-  max-width: 0;
+  max-block-size: 0;
+  max-inline-size: 0;
 
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -238,45 +242,18 @@ a.mdw-list__content {
   flex-direction: row;
   justify-content: center;
   order: 1;
-  
-  min-width: dp(24);
-  margin-right: dp(-24);
-  margin-left: 0;
-  border-width: dp(1);
-  padding: 0 dp(24);
+
+  min-inline-size: var(--mdw-list__inline-padding);
+  margin-inline: 0 calc(-1 * var(--mdw-list__inline-padding));
+  border-width: 1px;
+  padding: 0 var(--mdw-list__inline-padding);
 
   pointer-events: none;
 
   z-index: 1;
-  @include breakpoint.has16DPMargin() {
-    margin-right: dp(-16);
-    margin-left: 0;
-    padding: 0 dp(16);
-  }
-
-  :root[dir="rtl"] & {
-    margin-right: 0;
-    margin-left: dp(-24);
-    @include breakpoint.has16DPMargin() {
-      margin-right: 0;
-      margin-left: dp(-16);
-    }
-  }
 
   &[mdw-action] {
     pointer-events: auto;
-  }
-}
-
-
-@include platform.ifIE() {
-  .mdw-list__icon::after,
-  .mdw-list__secondary::after {
-    // Fix IE min-height flexbug
-    content: '';
-    
-    min-height: inherit;
-    width: 0;
   }
 }
 
@@ -287,7 +264,7 @@ a.mdw-list__content {
   overflow-x: hidden;
 
   flex-grow: 1;
-  
+
   pointer-events: none;
 
   text-overflow: ellipsis;
@@ -298,18 +275,17 @@ a.mdw-list__content {
     content: '';
 
     position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset-block-end: 0;
+    inset-inline: 0;
 
-    height: $dividerHeight;
-    width: 100%;
+    block-size: $dividerHeight;
+    inline-size: 100%;
   }
 }
 
 .mdw-list__avatar ~ .mdw-list__text::after,
 .mdw-list[mdw-divider] > .mdw-list__item:not(:last-child) .mdw-list__icon ~ .mdw-list__text::after {
-  margin-left: dp(72);
+  margin-inline-start: 72px;
 }
 
 .mdw-list__text-line {
@@ -330,15 +306,8 @@ a.mdw-list__content {
   @include type.addRules('caption');
   align-self: flex-start;
 
-  margin-right: 0;
-  margin-left: dp(28);
-
-  :root[dir="rtl"] & {
-    margin-right: dp(28);
-    margin-left: 0;
-  }
+  margin-inline: 28px 0;
 }
-
 
 // First line is pushed up 20dp
 .mdw-list__text-line:first-child {
@@ -350,7 +319,7 @@ a.mdw-list__content {
 .mdw-list__text-block:not(:first-child) {
   @include type.addRules('body-2');
   @include type.baselineToTop(20);
-  margin-top: dp(-20);
+  margin-block-start: -20px;
 }
 
 // Second line is pushed up 16dp from baseline
@@ -358,21 +327,18 @@ a.mdw-list__content {
   @include type.baselineToBottom(16);
 }
 
-
 // When 3-lines, 2nd and 3rd lines are pushed up 20dp
 .mdw-list__text-line:nth-child(3),
 .mdw-list__text-line:not(:first-child):not(:last-child) {
   @include type.baselineToBottom(20);
 }
 
-
 .mdw-list__text-block {
   display: block;
   display: -webkit-box;
   overflow-x: hidden;
   overflow-y: hidden;
-  
-  
+
   pointer-events: none;
 
   text-align: start;
@@ -385,12 +351,12 @@ a.mdw-list__content {
   word-break: break-word;
 
   &:not(:only-child) {
-    max-height: sp(20 * 2);
-    height: sp(20 * 2);
-    margin-bottom: dp(16);
-    padding-bottom: dp(4);
+    max-block-size: sp(20 * 2);
+    block-size: sp(20 * 2);
+    margin-block-end: 16px;
+    padding-block-end: 4px;
   }
-  
+
   &:only-child {
     @include type.baselineToBottom(16);
   }

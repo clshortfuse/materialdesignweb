@@ -7,29 +7,33 @@
 @use '../../core/_length.scss' as *;
 @use '../../core/_motion.scss' as motion;
 
-$margin: dp(24) !default;
-$gutter: dp(24) !default;
+:root {
+  --mdw-grid__margin: 24px;
+  --mdw-grid__gutter: 24px;
+  @include breakpoint.has16DPMargin() {
+    --mdw-grid__margin: 16px;
+    --mdw-grid__gutter: 16px;
+  }
+}
 
 .mdw-grid {
+  --mdw-grid__columns: 12;
+  --mdw-grid__item-flex-grow: 0;
+  --mdw-grid__item-min-width: none;
+
   display: flex;
   flex-wrap: wrap;
   grid-auto-flow: row;
   grid-auto-rows: auto;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat(var(--mdw-grid__columns), 1fr);
 
-  margin-top: -$gutter;
-
-  margin-left: -$gutter;
-  padding-right: $margin;
-
-  padding-left: $margin;
-  -ms-grid-columns: unquote("(1fr)[12]");
-  -ms-grid-rows: auto;
+  margin-block-start: calc(-1 * var(--mdw-grid__gutter));
+  margin-inline-start: calc(-1 * var(--mdw-grid__gutter));
+  padding-inline: var(--mdw-grid__margin);
 
   &[mdw-grid] {
-    // IE11 is currently unsupported due to lack of automatic placement
+    --mdw-grid__item-min-width: 100%;
     display: grid;
-    display: -ms-grid;
   }
 
   &[mdw-dense] {
@@ -41,182 +45,80 @@ $gutter: dp(24) !default;
   }
 
   &[mdw-margin-top] {
-    padding-top: $margin;
+    padding-block-start: var(--mdw-grid__margin);
   }
 
   &[mdw-margin-bottom] {
-    padding-bottom: $margin;
+    padding-block-end: var(--mdw-grid__margin);
   }
 
-}
+  &[mdw-columns="8"] {
+    --mdw-grid__columns: 8;
+  }
 
-@mixin item($columnCount) {
-  &[mdw-colspan="1"],
-  &:not([mdw-colspan]) {
-    width: #{math.div(100%, $columnCount)};
+  &[mdw-columns="4"] {
+    --mdw-grid__columns: 4;
+  }
+
+  &[mdw-columns="1"] {
+    --mdw-grid__columns: 1;
+
+    & > .mdw-grid__item {
+      inline-size: 100%;
+    }
   }
 
   &[mdw-stretch] {
-    max-width: none;
+    --mdw-grid__item-flex-grow: 1;
   }
-  @for $i from 2 to 12 {
-    &[mdw-colspan="#{$i}"] {
-      @if ($i > $columnCount) {
-        -ms-grid-column-span: #{$columnCount};
-        grid-column-end: span #{$columnCount};
 
-        width: 100%;
-      } @else {
-        width: #{math.div($i * 100%, $columnCount)};
-      }
-    }
-  }
-  @each $percent in (25, 50, 75, 100) {
-    &[mdw-colspan="#{$percent}%"] {
-      $value: $percent * 0.01 * $columnCount;
-      -ms-grid-column-span: #{$value};
-      grid-column-end: span #{$value};
-      @if ($value < 1) {
-        $value: $columnCount;
-        width: 100%;
-      }
-    }
-  }
 }
 
 .mdw-grid__item {
-
-  @include item(12);
   box-sizing: border-box;
-  max-width: 100%;
-  flex-grow: 0;
+  min-inline-size: var(--mdw-grid__item-min-width);
+  max-inline-size: 100%;
+
+  inline-size: calc(100% / var(--mdw-grid__columns));
+  flex-grow: var(--mdw-grid__item-flex-grow);
   flex-shrink: 1;
-  padding-top: $gutter;
-  padding-left: $gutter;
+  padding-block-start: var(--mdw-grid__gutter);
+  padding-inline-start: var(--mdw-grid__gutter);
 
   transition-duration: motion.$shapeChangeDuration;
   transition-property: flex, width, padding;
   transition-timing-function: motion.$standardEasing;
 
-  .mdw-grid[mdw-grid] > & {
-    min-width: 100%;
-  }
-
-  .mdw-grid[mdw-stretch] > & {
-    flex-grow: 1;
-  }
-
-  &[mdw-colspan="25%"] {
-    width: 25%;
-  }
-
-  &[mdw-colspan="50%"] {
-    width: 50%;
-  }
-
-  &[mdw-colspan="75%"] {
-    width: 75%;
-  }
-
-  &[mdw-colspan="100%"] {
-    width: 100%;
+  &[mdw-stretch] {
+    max-inline-size: none;
   }
 
   @for $i from 2 to 12 {
+    &[mdw-colspan="#{$i}"] {
+      grid-column-end: span min(#{$i}, var(--mdw-grid__columns));
+
+      inline-size: calc(#{$i} * 100% / var(--mdw-grid__columns));
+    }
     &[mdw-rowspan="#{$i}"] {
-      -ms-grid-row-span: #{$i};
       grid-row-end: span #{$i};
     }
-
-    &[mdw-colspan="#{$i}"] {
-      -ms-grid-column-span: #{$i};
-      grid-column-end: span #{$i};
-    }
   }
-}
+  @each $percent in (25, 50, 75, 100) {
+    &[mdw-colspan="#{$percent}%"] {
+      grid-column-end: span calc($percent / 100 * var(--mdw-grid__columns));
 
-@include breakpoint.has16DPMargin() {
-  .mdw-grid {
-    margin-top: dp(-16);
-    margin-left: dp(-16);
-    padding-right: dp(16);
-    padding-left: dp(16);
-
-    &[mdw-margin-top] {
-      padding-top: dp(16);
-    }
-
-    &[mdw-margin-bottom] {
-      padding-bottom: dp(16);
-    }
-
-    & > .mdw-grid__item {
-      padding-top: dp(16);
-      padding-left: dp(16);
+      inline-size: #{$percent + '%'};
     }
   }
 }
 
 .mdw-grid__content {
   box-sizing: border-box;
-  max-height: 100%;
-  height: 100%;
-  max-width: 100%;
-  width: 100%;
+  max-block-size: 100%;
+  block-size: 100%;
+  max-inline-size: 100%;
+  inline-size: 100%;
   flex: 100%;
-}
-
-// 8 Columns (Explicit on >=840dp, Implicit on < 840dp)
-.mdw-grid[mdw-columns="8"] {
-  grid-template-columns: repeat(8, 1fr);
-  -ms-grid-columns: unquote("(1fr)[8]");
-
-  & > .mdw-grid__item {
-    @include item(8);
-  }
-}
-@include breakpoint.max8Columns() {
-  .mdw-grid {
-    grid-template-columns: repeat(8, 1fr);
-    -ms-grid-columns: unquote("(1fr)[8]");
-  }
-
-  .mdw-grid__item {
-    @include item(8);
-  }
-}
-
-// 4 Columns (Explicit on >=600dp, Implicit on <600dp)
-.mdw-grid[mdw-columns="4"] {
-  grid-template-columns: repeat(4, 1fr);
-  -ms-grid-columns: unquote("(1fr)[4]");
-
-  & > .mdw-grid__item {
-    @include item(4);
-  }
-}
-
-@include breakpoint.is4Columns() {
-  .mdw-grid,
-  .mdw-grid[mdw-columns="8"] {
-    grid-template-columns: repeat(4, 1fr);
-    -ms-grid-columns: unquote("(1fr)[4]");
-  }
-
-  .mdw-grid__item,
-  .mdw-grid[mdw-columns="8"] > .mdw-grid__item {
-    @include item(4);
-  }
-}
-
-// 1 Column (Explicit on all)
-.mdw-grid[mdw-columns="1"] {
-  grid-template-columns: 1fr;
-  -ms-grid-columns: 1fr;
-
-  & > .mdw-grid__item {
-    @include item(1);
-  }
 }
 
 // 1-column uses same margin values as 12-column
@@ -225,87 +127,42 @@ $gutter: dp(24) !default;
   .mdw-grid[mdw-columns="1"][mdw-margin="#{$value}"],
   .mdw-grid[mdw-columns="8"][mdw-margin-8col="#{$value}"],
   .mdw-grid[mdw-columns="4"][mdw-margin-4col="#{$value}"] {
-    padding-right: dp($value);
-    padding-left: dp($value);
-
-    &[mdw-margin-bottom] {
-      padding-bottom: dp($value);
-    }
-
-    &[mdw-margin-top] {
-      padding-top: dp($value);
-    }
+    --mdw-grid__margin: #{dp($value)};
   }
 
   .mdw-grid[mdw-gutter="#{$value}"],
   .mdw-grid[mdw-columns="1"][mdw-gutter="#{$value}"],
   .mdw-grid[mdw-columns="8"][mdw-gutter-8col="#{$value}"],
   .mdw-grid[mdw-columns="4"][mdw-gutter-4col="#{$value}"] {
-    margin-top: dp(-$value);
-    margin-left: dp(-$value);
-
-    & > .mdw-grid__item {
-      padding-top: dp($value);
-      padding-left: dp($value);
-    }
+    --mdw-grid__gutter: #{dp($value)};
   }
 }
 
-// 8-col grids use 8col variable
 @include breakpoint.max8Columns() {
-  @each $value in (0, 8, 16, 24, 40) {
-    .mdw-grid[mdw-margin-8col="#{$value}"] {
-      padding-right: dp($value);
-      padding-left: dp($value);
-
-      &[mdw-margin-bottom] {
-        padding-bottom: dp($value);
+  .mdw-grid {
+    --mdw-grid__columns: 8;
+    @each $value in (0, 8, 16, 24, 40) {
+      &[mdw-margin-8col="#{$value}"] {
+        --mdw-grid__margin: #{dp($value)};
       }
 
-      &[mdw-margin-top] {
-        padding-top: dp($value);
-      }
-    }
-
-    .mdw-grid[mdw-gutter-8col="#{$value}"] {
-      margin-top: dp(-$value);
-      margin-left: dp(-$value);
-
-      & > .mdw-grid__item {
-        padding-top: dp($value);
-        padding-left: dp($value);
+      &[mdw-gutter-8col="#{$value}"] {
+        --mdw-grid__gutter: #{dp($value)};
       }
     }
   }
 }
 
-// 4col grids use 4col variable
-// Overrides 8col and 12col
 @include breakpoint.is4Columns() {
-  @each $value in (0, 8, 16, 24, 40) {
-    .mdw-grid,
-    .mdw-grid[mdw-columns="8"] {
+  .mdw-grid {
+    --mdw-grid__columns: 4;
+    @each $value in (0, 8, 16, 24, 40) {
       &[mdw-margin-4col="#{$value}"] {
-        padding-right: dp($value);
-        padding-left: dp($value);
-
-        &[mdw-margin-bottom] {
-          padding-bottom: dp($value);
-        }
-
-        &[mdw-margin-top] {
-          padding-top: dp($value);
-        }
+        --mdw-grid__margin: #{dp($value)};
       }
 
       &[mdw-gutter-4col="#{$value}"] {
-        margin-top: dp(-$value);
-        margin-left: dp(-$value);
-
-        > .mdw-grid__item {
-          padding-top: dp($value);
-          padding-left: dp($value);
-        }
+        --mdw-grid__gutter: #{dp($value)};
       }
     }
   }

@@ -1,5 +1,3 @@
-import { getPassiveEventListenerOption } from '../../core/dom.js';
-
 /** @return {HTMLElement} */
 function AnyDomAdapterCreator() {
   return document.createElement('div');
@@ -13,15 +11,9 @@ function AnyDomAdapterCreator() {
 function AnyDomAdapterRenderer(element, data) {
   let s = '';
   if (data != null) {
-    if (data.toString) {
-      s = data.toString();
-    } else {
-      // eslint-disable-next-line no-new-wrappers
-      s = new String(data).toString();
-    }
+    s = data.toString ? data.toString() : String(data).toString();
   }
   if (element.textContent !== s) {
-    // eslint-disable-next-line no-param-reassign
     element.textContent = s;
   }
 }
@@ -86,7 +78,7 @@ export default class DomAdapter {
     if (!this.recycle) {
       return;
     }
-    this.recycle.scroller.addEventListener('scroll', this.onScrollerScrollListener, getPassiveEventListenerOption());
+    this.recycle.scroller.addEventListener('scroll', this.onScrollerScrollListener, { passive: true });
     const scrollerStyle = window.getComputedStyle(this.recycle.scroller);
     if (scrollerStyle.position === 'static') {
       this.recycle.scroller.style.setProperty('position', 'relative');
@@ -116,25 +108,25 @@ export default class DomAdapter {
       const unlinkedDataItems = [];
       /** @type {T2[]} */
       const orphanedElements = [];
-      this.dataElementMap.forEach((element, data) => {
-        if (this.datasource.indexOf(data) === -1) {
+      for (const data of this.dataElementMap.keys()) {
+        if (!this.datasource.includes(data)) {
           unlinkedDataItems.push(data);
         }
-      });
-      for (let i = this.element.children.length - 1; i >= 0; i -= 1) {
-        /** @type {T2} */
-        const child = (this.element.children.item(i));
+      }
+      let i = this.element.children.length;
+      while (i--) {
+        const child = /** @type {T2} */ (this.element.children.item(i));
         const data = this.elementDataMap.get(child);
-        if (data && this.datasource.indexOf(data) === -1) {
+        if (data && !this.datasource.includes(data)) {
           orphanedElements.push(child);
         }
       }
-      unlinkedDataItems.forEach((data) => {
+      for (const data of unlinkedDataItems) {
         this.removeItem(data);
-      });
-      orphanedElements.forEach((el) => {
+      }
+      for (const el of orphanedElements) {
         this.removeElement(el);
-      });
+      }
     }
     if (this.recycle) {
       this.element.style.removeProperty('box-sizing');
@@ -144,9 +136,9 @@ export default class DomAdapter {
       this.clear();
       this.drawViewport(true);
     } else {
-      this.datasource.forEach((data) => {
+      for (const data of this.datasource) {
         this.refreshItem(data);
-      });
+      }
     }
   }
 
@@ -261,10 +253,10 @@ export default class DomAdapter {
       }
       renderedElements.push(element);
     }
-    for (let i = this.element.children.length - 1; i >= 0; i -= 1) {
-      /** @type {T2} */
-      const child = (this.element.children.item(i));
-      if (renderedElements.indexOf(child) === -1) {
+    let i = this.element.children.length;
+    while (i--) {
+      const child = /** @type {T2} */ (this.element.children.item(i));
+      if (!renderedElements.includes(child)) {
         this.removeElement(child);
       }
     }
@@ -295,7 +287,7 @@ export default class DomAdapter {
   /**
    * @param {T1} data
    * @param {number} [indexHint]
-   * @return {DomAdapterBounds}
+   * @return {?DomAdapterBounds}
    */
   getBounds(data, indexHint) {
     const cached = this.dataBoundsMap.get(data);
@@ -303,11 +295,7 @@ export default class DomAdapter {
       return cached;
     }
     let index = -1;
-    if (indexHint === -1 || indexHint == null) {
-      index = this.datasource.indexOf(data);
-    } else {
-      index = indexHint;
-    }
+    index = indexHint === -1 || indexHint == null ? this.datasource.indexOf(data) : indexHint;
     if (index === -1) {
       return null;
     }
@@ -330,7 +318,6 @@ export default class DomAdapter {
       const firstBounds = this.dataBoundsMap.get(this.datasource[0]);
       if (firstBounds && firstBounds.height) {
         top = firstBounds.height * index;
-        // eslint-disable-next-line prefer-destructuring
         height = firstBounds.height;
       } else {
         return null;
@@ -430,8 +417,7 @@ export default class DomAdapter {
     if (!element) {
       // Element does not exist, assume size changed
       invalidate = true;
-      /** @type {T2} */
-      element = (this.create(data));
+      element = /** @type {T2} */ (this.create(data));
       this.dataElementMap.set(data, element);
       this.elementDataMap.set(element, data);
     }
@@ -467,9 +453,9 @@ export default class DomAdapter {
         }
       }
       if (elementIndex !== dataIndex) {
-        if (!this.element.children.length) {
+        if (!this.element.hasChildNodes()) {
           if (element.parentElement) {
-            element.parentElement.removeChild(element);
+            element.remove();
           }
           this.element.appendChild(element);
         } else {
@@ -483,9 +469,9 @@ export default class DomAdapter {
             if (previousElement) {
               if (element.previousElementSibling !== previousElement) {
                 if (element.parentElement) {
-                  element.parentElement.removeChild(element);
+                  element.remove();
                 }
-                previousElement.insertAdjacentElement('afterend', element);
+                previousElement.after(element);
               }
               inserted = true;
             } else {
@@ -494,7 +480,7 @@ export default class DomAdapter {
           } while (previousDataObject && !inserted);
           if (!inserted) {
             if (element.parentElement) {
-              element.parentElement.removeChild(element);
+              element.remove();
             }
             this.element.insertBefore(element, this.element.firstElementChild);
           }
@@ -514,11 +500,10 @@ export default class DomAdapter {
         prevClientHeight = element.clientHeight;
       }
       this.render(element, data, dataIndex);
-      if (!invalidate && options.invalidate !== false) {
-        if (element.clientWidth !== prevClientWidth || element.clientHeight !== prevClientHeight) {
-          // Element width or height has changed
-          invalidate = true;
-        }
+      if (!invalidate && options.invalidate !== false
+        && (element.clientWidth !== prevClientWidth || element.clientHeight !== prevClientHeight)) {
+        // Element width or height has changed
+        invalidate = true;
       }
     }
     if (options.invalidate === true || (invalidate && options.invalidate !== false)) {
@@ -533,7 +518,7 @@ export default class DomAdapter {
    */
   removeElement(element) {
     if (element.parentElement) {
-      element.parentElement.removeChild(element);
+      element.remove();
     }
     const data = this.elementDataMap.get(element);
     if (data) {

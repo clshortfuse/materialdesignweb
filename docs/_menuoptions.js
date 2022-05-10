@@ -57,10 +57,10 @@ export function setAltTheme(value, button) {
   const items = document.head.getElementsByTagName('link');
   for (let i = 0; i < items.length; i += 1) {
     const stylesheet = items.item(i);
-    if (stylesheet.href.indexOf(value ? 'theme-colored' : 'theme-default') !== -1) {
+    if (stylesheet.href.includes(value ? 'theme-colored' : 'theme-default')) {
       stylesheet.disabled = false;
     }
-    if (stylesheet.href.indexOf(value ? 'theme-default' : 'theme-colored') !== -1) {
+    if (stylesheet.href.includes(value ? 'theme-default' : 'theme-colored')) {
       stylesheet.disabled = true;
     }
   }

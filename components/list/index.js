@@ -5,7 +5,6 @@
 import * as Attributes from '../../core/aria/attributes.js';
 import * as Keyboard from '../../core/aria/keyboard.js';
 import * as RovingTabIndex from '../../core/aria/rovingtabindex.js';
-import { iterateArrayLike, iterateSomeOfArrayLike } from '../../core/dom.js';
 
 import * as ListContent from './content.js';
 import * as ListItem from './item.js';
@@ -15,25 +14,23 @@ import * as ListItem from './item.js';
  * @return {void}
  */
 function onContentFocusEvent(event) {
-  /** @type {HTMLElement} */
-  const listElement = (event.currentTarget);
+  const listElement = /** @type {HTMLElement} */ (event.currentTarget);
   const onFocusInteraction = listElement.getAttribute('mdw-on-focus');
   if (!onFocusInteraction) {
     return;
   }
-  /** @type {HTMLElement} */
-  const listContentElement = (event.target);
+  const listContentElement = /** @type {HTMLElement} */ (event.target);
   if (Attributes.isDisabled(listContentElement)) {
     return;
   }
-  onFocusInteraction.split(' ').forEach((interaction) => {
+  for (const interaction of onFocusInteraction.split(' ')) {
     switch (interaction) {
       case 'select':
         ListContent.setSelected(listContentElement, true);
         break;
       default:
     }
-  });
+  }
 }
 
 /**
@@ -41,8 +38,7 @@ function onContentFocusEvent(event) {
  * @return {void}
  */
 function onSelectedChangeEvent(event) {
-  /** @type {HTMLElement} */
-  const listElement = (event.currentTarget);
+  const listElement = /** @type {HTMLElement} */ (event.currentTarget);
   // List is readonly
   if (listElement.getAttribute('aria-readonly') === 'true') {
     event.stopPropagation();
@@ -54,8 +50,7 @@ function onSelectedChangeEvent(event) {
     // Bubble up
     return;
   }
-  const { detail } = event;
-  if (detail.value === 'false') {
+  if (event.detail.value === 'false') {
     // Item is radio-like and cannot be unselected
     if (listElement.getAttribute('aria-required') === 'true'
       && listElement.getAttribute('aria-multiselectable') !== 'true') {
@@ -64,8 +59,7 @@ function onSelectedChangeEvent(event) {
     }
     return;
   }
-  /** @type {HTMLElement} */
-  const itemElement = (event.target);
+  const itemElement = /** @type {HTMLElement} */ (event.target);
   if (listElement.getAttribute('aria-multiselectable') !== 'true') {
     // Item is radio-like and must uncheck others
     setTimeout(() => {
@@ -74,13 +68,11 @@ function onSelectedChangeEvent(event) {
         return;
       }
       const role = itemElement.getAttribute('role');
-      iterateArrayLike(listElement.querySelectorAll(`[role="${role}"][aria-selected="true"]`),
-        (item) => {
-          if (item === itemElement) {
-            return;
-          }
+      for (const item of listElement.querySelectorAll(`[role="${role}"][aria-selected="true"]`)) {
+        if (item !== itemElement) {
           item.setAttribute('aria-selected', 'false');
-        });
+        }
+      }
     });
   }
 }
@@ -91,10 +83,8 @@ function onSelectedChangeEvent(event) {
  */
 function onTabIndexZeroed(event) {
   event.stopPropagation();
-  /** @type {HTMLElement} */
-  const listElement = (event.currentTarget);
-  /** @type {HTMLElement} */
-  const currentItem = (event.target);
+  const listElement = /** @type {HTMLElement} */ (event.currentTarget);
+  const currentItem = /** @type {HTMLElement} */ (event.target);
   switch (listElement.getAttribute('role')) {
     case 'tree':
       RovingTabIndex.removeTabIndex(listElement.querySelectorAll('[role="treeitem"]'), [currentItem]);
@@ -119,8 +109,7 @@ function onDownArrowKey(event) {
   }
   event.preventDefault();
   event.stopPropagation();
-  /** @type {HTMLElement} */
-  const listElement = (event.currentTarget);
+  const listElement = /** @type {HTMLElement} */ (event.currentTarget);
   switch (listElement.getAttribute('role')) {
     case 'tree':
       RovingTabIndex.selectNext(listElement.querySelectorAll('[role="treeitem"]'));
@@ -146,8 +135,7 @@ function onUpArrowKey(event) {
   }
   event.preventDefault();
   event.stopPropagation();
-  /** @type {HTMLElement} */
-  const listElement = (event.currentTarget);
+  const listElement = /** @type {HTMLElement} */ (event.currentTarget);
   switch (listElement.getAttribute('role')) {
     case 'tree':
       RovingTabIndex.selectPrevious(listElement.querySelectorAll('[role="treeitem"]'));
@@ -188,21 +176,27 @@ export function attach(listElement) {
     const parentRole = listElement.parentElement && listElement.parentElement.getAttribute('role');
     if (parentRole === 'treeitem') {
       newRole = 'group';
-    } else if (iterateSomeOfArrayLike(listElement.children,
-      (child) => child.hasAttribute('aria-expanded') && child.classList.contains('mdw-list__item'))) {
-      newRole = 'tree';
+    } else {
+      for (const child of listElement.children) {
+        if (child.hasAttribute('aria-expanded') && child.classList.contains('mdw-list__item')) {
+          newRole = 'tree';
+          break;
+        }
+      }
     }
     listElement.setAttribute('role', newRole);
     role = newRole;
   }
 
   setupAria(listElement, role);
-  iterateArrayLike(listElement.children, (child) => {
+  for (const child of listElement.children) {
     if (child.classList.contains('mdw-list__item')) {
       ListItem.attach(child);
     }
-  });
-  iterateArrayLike(listElement.getElementsByClassName('mdw-list'), attach);
+  }
+  for (const el of listElement.getElementsByClassName('mdw-list')) {
+    attach(el);
+  }
   if (listElement.hasAttribute('mdw-list-js')) {
     return;
   }
@@ -237,7 +231,7 @@ export function attach(listElement) {
  * @return {void}
  */
 export function attachAll(root = document) {
-  iterateArrayLike(root.getElementsByClassName('mdw-list'), attach);
+  for (const el of root.getElementsByClassName('mdw-list')) attach(el);
 }
 
 /**
@@ -245,13 +239,15 @@ export function attachAll(root = document) {
  * @return {void}
  */
 export function detach(listElement) {
-  iterateArrayLike(listElement.children, (child) => {
+  for (const child of listElement.children) {
     if (child.classList.contains('mdw-list__item')) {
       ListItem.detach(child);
     }
-  });
-  iterateArrayLike(listElement.querySelectorAll(`[role="${listElement.getAttribute('role') === 'tree' ? 'treeitem' : 'option'}"]`),
-    RovingTabIndex.detach);
+  }
+  const elements = listElement.querySelectorAll(`[role="${listElement.getAttribute('role') === 'tree' ? 'treeitem' : 'option'}"]`);
+  for (const element of elements) {
+    RovingTabIndex.detach(element);
+  }
   listElement.removeEventListener(ListContent.SELECTED_CHANGE_EVENT, onSelectedChangeEvent);
   listElement.removeEventListener(Keyboard.DOWN_ARROW_KEY, onDownArrowKey);
   listElement.removeEventListener(Keyboard.UP_ARROW_KEY, onUpArrowKey);

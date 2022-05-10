@@ -1,6 +1,6 @@
 import * as Button from '../../components/button/index.js';
 import * as Tab from '../../components/tab/index.js';
-import { iterateArrayLike, setTextNode } from '../../core/dom.js';
+import { setTextNode } from '../../core/dom.js';
 import { convertElementToCode } from '../_sample-utils.js';
 
 /** @type {HTMLElement} */
@@ -8,24 +8,26 @@ let sampleComponent;
 
 /** @return {void} */
 function onWindowResize() {
-  iterateArrayLike(document.getElementsByClassName('mdw-tab'), Tab.onResize);
+  for (const element of document.getElementsByClassName('mdw-tab')) { Tab.onResize(element); }
 }
 
 /** @return {void} */
 function updateSampleCode() {
   // Strip automatic attributes and classes
   Tab.detach(sampleComponent);
-  iterateArrayLike(sampleComponent.getElementsByClassName('mdw-tab__item'), (el) => {
+  for (const el of sampleComponent.getElementsByClassName('mdw-tab__item')) {
     el.classList.remove('mdw-overlay');
     el.classList.remove('mdw-ripple');
     el.removeAttribute('mdw-overlay-off');
-  });
+  }
   const indicator = sampleComponent.getElementsByClassName('mdw-tab__indicator')[0];
   indicator.removeAttribute('style');
 
   const htmlCodeElement = document.getElementsByClassName('component-html')[0];
-  setTextNode(htmlCodeElement, convertElementToCode(sampleComponent,
-    document.getElementById('usePug').getAttribute('aria-pressed') === 'true'));
+  setTextNode(htmlCodeElement, convertElementToCode(
+    sampleComponent,
+    document.getElementById('usePug').getAttribute('aria-pressed') === 'true',
+  ));
 
   Tab.attach(sampleComponent);
 
@@ -53,11 +55,11 @@ function setupPugButton() {
 
 /** @return {void} */
 function initializeSampleComponents() {
-  iterateArrayLike(document.getElementsByClassName('mdw-tab'), Tab.attach);
+  for (const element of document.getElementsByClassName('mdw-tab')) { Tab.attach(element); }
   window.addEventListener('resize', onWindowResize);
-  iterateArrayLike(document.getElementsByTagName('form'), (formElement) => {
+  for (const formElement of document.getElementsByTagName('form')) {
     formElement.reset();
-  });
+  }
 }
 
 /**
@@ -65,8 +67,7 @@ function initializeSampleComponents() {
  * @return {void}
  */
 function onOptionChange(event) {
-  /** @type {HTMLInputElement} */
-  const inputElement = (event.currentTarget);
+  const inputElement = /** @type {HTMLInputElement} */ (event.currentTarget);
   const { name, value, checked } = inputElement;
   const tabListElement = sampleComponent.querySelector('.mdw-tab__list');
 
@@ -99,12 +100,12 @@ function onOptionChange(event) {
           break;
         default:
           tabListElement.setAttribute('mdw-surface', value.replace(/ (light|dark)/, ''));
-          if (value.indexOf(' light') === -1) {
+          if (!value.includes(' light')) {
             tabListElement.removeAttribute('mdw-light');
           } else {
             tabListElement.setAttribute('mdw-light', '');
           }
-          if (value.indexOf(' dark') === -1) {
+          if (!value.includes(' dark')) {
             tabListElement.removeAttribute('mdw-dark');
           } else {
             tabListElement.setAttribute('mdw-dark', '');
@@ -141,9 +142,9 @@ function onOptionChange(event) {
 function setupComponentOptions() {
   setupPugButton();
   sampleComponent = document.querySelector('.component-sample .mdw-tab');
-  iterateArrayLike(document.querySelectorAll('input[name]'), (el) => {
+  for (const el of document.querySelectorAll('input[name]')) {
     el.addEventListener('change', onOptionChange);
-  });
+  }
 }
 
 initializeSampleComponents();
