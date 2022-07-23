@@ -1,0 +1,83 @@
+:host {
+  position: relative;
+
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Remove Firefox inner */
+:host(::-moz-focus-inner) {
+  border: 0;
+}
+
+:host {
+  --mdw-overlay__hover-opacity: 0.08;
+  --mdw-overlay__focus-opacity: 0.12;
+  --mdw-overlay__pressed-opacity: 0.12;
+  --mdw-overlay__dragged-opacity: 0.12;
+  --mdw-overlay__visibility: intial;
+}
+
+/* Remove Hover State */
+:host(:is(
+[aria-disabled="true"]:not([mdw-overlay-disabled~="hover"]),
+[mdw-overlay-touch="true"],
+[mdw-overlay-off~="hover"],
+:not(:hover))) {
+  --mdw-overlay__hover-opacity: 0;
+}
+
+/* Remove Focus State */
+:host(:is(
+[aria-disabled="true"]:not([mdw-overlay-disabled~="focus"]),
+[mdw-overlay-touch="true"],
+[mdw-overlay-off~="focus"],
+:not(:focus))) {
+  --mdw-overlay__focus-opacity: 0;
+}
+
+/* Remove Pressed State */
+
+:host(:is(
+[aria-disabled="true"]:not([mdw-overlay-disabled~="pressed"]),
+[mdw-overlay-off~="pressed"],
+:not(:active))) {
+  --mdw-overlay__pressed-opacity: 0;
+}
+
+/* Remove Dragged State */
+:host(:is(
+[aria-disabled="true"]:not([mdw-overlay-disabled~="dragged"]),
+[mdw-overlay-off~="dragged"],
+:not([aria-dragged="true"]))) {
+  --mdw-overlay__dragged-opacity: 0;
+}
+
+.mdw-overlay__container {
+  opacity: calc(var(--mdw-overlay__hover-opacity) + var(--mdw-overlay__focus-opacity) + var(--mdw-overlay__pressed-opacity) + var(--mdw-overlay__dragged-opacity));
+  /* color: rgb(var(--mdw-ink)); */
+}
+
+/* Disabled */
+
+:host([aria-disabled="true"]:not([mdw-overlay-disabled])) {
+  --mdw-overlay__visibility: hidden;
+}
+
+.mdw-overlay__container {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  transition-delay: 1ms;
+  transition-duration: 0ms;
+  transition-property: opacity, color, background-color;
+
+  visibility: var(--mdw-overlay__visibility);
+
+  /* opacity handled by theme engine */
+
+  background-color: currentColor;
+  border-radius: inherit;
+}

@@ -1,0 +1,76 @@
+/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
+/* https://material.io/guidelines/style/icons.html# */
+
+:host {
+  --mdw-ink: var(--mdw-color__primary);
+  --mdw-shape__size: 8px;
+  --mdw-button__icon__size: 18px;
+  --mdw-chip__trailing-icon__size: 18px;
+  --mdw-chip__trailing-icon__opacity: 1;
+  --mdw-chip__trailing-icon__display: block;
+  --mdw-chip__trailing-icon__font-variation-settings: 'FILL' 1;
+
+  min-block-size: 32px;
+  block-size: 32px;
+
+  padding-inline-start: 0;
+  padding-inline-end: 0;
+
+  color: rgb(var(--mdw-color__on-surface));
+}
+
+:host([mdw-elevated]) {
+  color: rgb(var(--mdw-color__on-surface));
+}
+
+:host([mdw-elevated]) .mdw-button__outline {
+  visibility: hidden;
+}
+
+.mdw-button__outline {
+  --mdw-button__outline__rgb: var(--mdw-color__outline);
+}
+
+.mdw-button__icon {
+  --mdw-button__icon__margin-inline-start: 8px;
+  --mdw-button__icon__margin-inline-end: 8px;
+  color: rgb(var(--mdw-ink));
+}
+
+:host(:not([mdw-trailing-icon])) .mdw-chip__trailing-icon {
+  --mdw-chip__trailing-icon__size: 0;
+}
+
+.mdw-container__content,
+.mdw-overlay__container,
+.mdw-ripple__container {
+  color: rgb(var(--mdw-color__on-surface));
+}
+
+:host([aria-disabled="true"]) :is(.mdw-container__content, .mdw-button__icon, .mdw-button__image) {
+  color: rgba(var(--mdw-color__on-surface), 0.38);
+}
+
+:host([aria-disabled="true"]) .mdw-chip__trailing-image {
+  opacity: 0.38;
+}
+
+.mdw-chip__trailing-icon {
+  display: var(--mdw-button__icon__display);
+  position: relative;
+  order: 1;
+
+  block-size: var(--mdw-chip__trailing-icon__size);
+  inline-size: var(--mdw-chip__trailing-icon__size);
+  margin-inline-start: 8px;
+  margin-inline-end: 8px;
+
+  transition-delay: 1ms;
+  transition-duration: 100ms;
+  transition-property: font-variation-settings, inline-size, opacity;
+
+  opacity: var(--mdw-chip__trailing-icon__opacity);
+
+  font-size: var(--mdw-chip__trailing-icon__size);
+  font-variation-settings: var(--mdw-chip__trailing-icon__font-variation-settings);
+}

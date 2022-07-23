@@ -1,0 +1,63 @@
+/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
+/* https://material.io/guidelines/style/icons.html# */
+
+:host {
+  --mdw-shape__size: 0;
+  --mdw-button__icon__font-variation-settings: 'FILL' 0;
+  --mdw-button__outline__size: 1px;
+  --mdw-ink: var(--mdw-color__on-surface);
+  color: rgb(var(--mdw-ink));
+}
+
+:host(:first-child) {
+  --mdw-shape__size__top-start-size: var(--mdw-shape__full);
+  --mdw-shape__size__top-end-size: 0;
+  --mdw-shape__size__bottom-start-size: var(--mdw-shape__full);
+  --mdw-shape__size__bottom-end-size: 0;
+}
+
+:host(:last-child) {
+  --mdw-shape__size__top-start-size: 0;
+  --mdw-shape__size__top-end-size: var(--mdw-shape__full);
+  --mdw-shape__size__bottom-start-size: 0;
+  --mdw-shape__size__bottom-end-size: var(--mdw-shape__full);
+}
+
+.mdw-button__outline {
+  inset-inline-end: calc(-1 * var(--mdw-button__outline__size));
+
+  border-inline-start-width: var(--mdw-button__outline__size);
+  border-inline-end-width: var(--mdw-button__outline__size);
+  /* border-color: rgb(var(--mdw-color__outline)); */
+}
+
+:host(:first-child) .mdw-button__outline {
+  border-inline-start-width: var(--mdw-button__outline__size);
+}
+
+:host(:last-child) .mdw-button__outline {
+  inset-inline-end: 0;
+
+  border-inline-end-width: var(--mdw-button__outline__size);
+}
+
+:host(:focus) {
+  --mdw-button__outline__rgb: var(--mdw-color__outline);
+}
+
+:host([aria-disabled="true"]:is([aria-selected="true"],[aria-checked="true"])) {
+  background-color: rgba(var(--mdw-color__on-surface), 0.12);
+  /* color: rgba(var(--mdw-color__on-surface), 0.38); */
+}
+
+:host(:is([aria-selected="true"],[aria-checked="true"])) {
+  --mdw-button__icon__font-variation-settings: 'FILL' 1;
+  --mdw-ink: inherit;
+  --mdw-surface: inherit;
+  background-color: rgb(var(--mdw-surface));
+}
+
+:host([aria-checked="false"]) {
+  --mdw-button__icon__size: 0;
+  --mdw-button__icon__opacity: 0;
+}

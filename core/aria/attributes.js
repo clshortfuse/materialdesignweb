@@ -1,4 +1,5 @@
-import { dispatchDomEvent } from '../dom.js';
+export const ARIA_SELECTED_EVENT = 'mdw:aria-selected';
+export const ARIA_CHECKED_EVENT = 'mdw:aria-checked';
 
 /**
  * @param {string} name Attribute Name
@@ -44,7 +45,9 @@ function setAttribute(name, element, value, dispatchEventName, explicit = true, 
     return true;
   }
   // Alert change
-  if (!dispatchDomEvent(element, dispatchEventName, { value: stringValue })) {
+  const detail = { value: stringValue };
+  const customEvent = new CustomEvent(dispatchEventName, { bubbles: true, cancelable: true, detail });
+  if (!element.dispatchEvent(customEvent)) {
     // Revert
     if (attr == null) {
       element.removeAttribute(name);

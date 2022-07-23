@@ -1,0 +1,27 @@
+/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
+/* https://material.io/guidelines/style/icons.html# */
+
+:host {
+  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+
+  box-sizing: border-box;
+
+  block-size: 80px;
+  padding-block: 12px;
+  padding-inline: 8px 16px;
+
+  background-color: rgb(var(--mdw-color__surface));
+
+  box-shadow: none;
+  color: rgb(var(--mdw-color__on-surface));
+
+  direction: ltr;
+}
+
+:host([mdw-color]:not([mdw-color|="surface"])) {
+  --mdw-container__elevation__opacity: 0;
+}

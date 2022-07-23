@@ -1,9 +1,5 @@
 // https://www.w3.org/TR/wai-aria-practices/#kbd_roving_tabindex
 
-import {
-  dispatchDomEvent,
-} from '../dom.js';
-
 export const TABINDEX_ZEROED = 'mdw:rovingtabindex-tabindexzeroed';
 
 /**
@@ -16,7 +12,7 @@ function onChildFocus(event) {
     return;
   }
   child.setAttribute('tabindex', '0');
-  dispatchDomEvent(child, TABINDEX_ZEROED);
+  child.dispatchEvent(new Event(TABINDEX_ZEROED, { bubbles: true, cancelable: true }));
 }
 
 /**

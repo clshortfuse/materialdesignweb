@@ -1,7 +1,5 @@
 // Keyboard Navigation
 
-import { dispatchDomEvent, isRtl } from '../dom.js';
-
 export const FORWARD_ARROW_KEY = 'mdw:keyboard-forwardarrowkey';
 export const BACK_ARROW_KEY = 'mdw:keyboard-backarrowkey';
 export const UP_ARROW_KEY = 'mdw:keyboard-uparrowkey';
@@ -12,6 +10,14 @@ export const PAGEUP_KEY = 'mdw:keyboard-pageupkey';
 export const PAGEDOWN_KEY = 'mdw:keyboard-pagedownkey';
 export const SPACEBAR_KEY = 'mdw:keyboard-spacebarkey';
 export const ENTER_KEY = 'mdw:keyboard-enterkey';
+
+/**
+ * @param {Element} element
+ * @return {boolean}
+ */
+function isRtl(element) {
+  return getComputedStyle(element).direction === 'rtl';
+}
 
 /**
  * @param {KeyboardEvent} event
@@ -46,11 +52,11 @@ function onKeyDownHandler(event) {
       break;
     case 'ArrowLeft':
     case 'Left':
-      type = isRtl() ? FORWARD_ARROW_KEY : BACK_ARROW_KEY;
+      type = isRtl(element) ? FORWARD_ARROW_KEY : BACK_ARROW_KEY;
       break;
     case 'ArrowRight':
     case 'Right':
-      type = isRtl() ? BACK_ARROW_KEY : FORWARD_ARROW_KEY;
+      type = isRtl(element) ? BACK_ARROW_KEY : FORWARD_ARROW_KEY;
       break;
     case 'Home':
       type = HOME_KEY;
@@ -68,7 +74,8 @@ function onKeyDownHandler(event) {
       return;
   }
 
-  if (!dispatchDomEvent(element, type, detail)) {
+  const customEvent = new CustomEvent(type, { bubbles: true, cancelable: true, detail });
+  if (!element.dispatchEvent(customEvent)) {
     // preventDefault called
     event.stopPropagation();
     event.preventDefault();

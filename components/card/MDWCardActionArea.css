@@ -1,0 +1,10 @@
+/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
+/* https://material.io/guidelines/style/icons.html# */
+
+:host {
+  position: relative;
+
+  pointer-events: var(--mdw-card-action-area__pointer-events, auto);
+
+  z-index: 2;
+}

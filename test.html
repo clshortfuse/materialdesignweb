@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    :root {
+      --mdw-color__background: 255 255 255;
+      --mdw-color__on-background: 0 0 0;
+    }
+
+  </style>
+  <style media="(prefers-color-scheme:dark)">
+    :root {
+      --mdw-color__background: 0 0 0;
+      --mdw-color__on-background: 255 255 255;
+    }
+
+  </style>
+  <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport" />
+  <link rel=preconnect href="https://fonts.googleapis.com" />
+  <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
+  <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
+  <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1" />
+  <style>
+    html {
+      height: 100%;
+    }
+
+    html {
+      background: repeating-conic-gradient(rgba(var(--mdw-color__on-background), 0.025) 0% 25%, transparent 0% 50%) 50% / 16px 16px;
+      background-color: rgb(var(--mdw-color__background));
+      color: rgb(var(--mdw-color__on-background));
+    }
+
+    .box {
+      padding: 8px;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .custom-card-box {
+      padding: 12px;
+    }
+
+    mdw-button {}
+
+    flex {
+      display: flex;
+    }
+
+    flex[gap12] {
+      gap: 12px;
+    }
+
+    flex[align-center] {
+      align-items: center;
+    }
+
+    flex[wrap] {
+      flex-wrap: wrap;
+    }
+
+    flex[column] {
+      flex-direction: column;
+    }
+
+    .colorful-bg {
+      background-image: linear-gradient(rgb(var(--mdw-color__primary-container)), rgb(var(--mdw-color__tertiary-container)));
+    }
+
+  </style>
+</head>
+
+<body>
+  <section>
+    <h1>Color</h1>
+    <section>
+      <h2>Primary</h2>
+      <flex align-center wrap>
+        <mdw-container class=box mdw-color=primary>Primary</mdw-container>
+        <mdw-container class=box mdw-color=primary-container>Primary Container</mdw-container>
+      </flex>
+    </section>
+    <section>
+      <h2>Secondary</h2>
+      <flex align-center wrap>
+        <mdw-container class=box mdw-color=secondary>Secondary</mdw-container>
+        <mdw-container class=box mdw-color=secondary-container>Secondary Container</mdw-container>
+      </flex>
+    </section>
+    <section>
+      <h2>Tertiary</h2>
+      <flex align-center wrap>
+        <mdw-container class=box mdw-color=tertiary>Tertiary</mdw-container>
+        <mdw-container class=box mdw-color=tertiary-container>Tertiary Container</mdw-container>
+      </flex>
+    </section>
+    <section>
+      <h2>Error</h2>
+      <flex align-center wrap>
+        <mdw-container class=box mdw-color=error>Error</mdw-container>
+        <mdw-container class=box mdw-color=error-container>Error Container</mdw-container>
+      </flex>
+    </section>
+    <section>
+      <h2>Neutral</h2>
+      <flex align-center gap12 wrap>
+        <mdw-container class=box mdw-color=background>Background</mdw-container>
+      </flex>
+      <section>
+        <h3>Surface tones</h2>
+          <flex align-center gap12 wrap>
+            <mdw-container class=box mdw-color=surface>Surface</mdw-container>
+            <mdw-container class=box mdw-color=surface mdw-elevation=1>Surface +1</mdw-container>
+            <mdw-container class=box mdw-color=surface mdw-elevation=2>Surface +2</mdw-container>
+            <mdw-container class=box mdw-color=surface mdw-elevation=3>Surface +3</mdw-container>
+            <mdw-container class=box mdw-color=surface mdw-elevation=4>Surface +4</mdw-container>
+            <mdw-container class=box mdw-color=surface mdw-elevation=5>Surface +5</mdw-container>
+          </flex>
+      </section>
+      <section>
+        <h3>Inverse</h2>
+          <flex align-center gap12 wrap>
+            <mdw-container class=box mdw-color=inverse-surface>Inverse Surface</mdw-container>
+            <mdw-container class=box mdw-color=inverse-surface mdw-elevation=1>Inverse Surface +1</mdw-container>
+            <mdw-container class=box mdw-color=inverse-surface mdw-elevation=2>Inverse Surface +2</mdw-container>
+            <mdw-container class=box mdw-color=inverse-surface mdw-elevation=3>Inverse Surface +3</mdw-container>
+            <mdw-container class=box mdw-color=inverse-surface mdw-elevation=4>Inverse Surface +4</mdw-container>
+            <mdw-container class=box mdw-color=inverse-surface mdw-elevation=5>Inverse Surface +5</mdw-container>
+            <mdw-container class=box mdw-color=inverse-primary>Inverse Primary</mdw-container>
+          </flex>
+      </section>
+      <section>
+        <h3>Neutral variant</h2>
+          <flex align-center gap12 wrap>
+            <mdw-container class=box mdw-color=surface-variant>Surface Variant</mdw-container>
+            <mdw-container class=box mdw-color=surface-variant mdw-elevation=1>Surface Variant +1</mdw-container>
+            <mdw-container class=box mdw-color=surface-variant mdw-elevation=2>Surface Variant +2</mdw-container>
+            <mdw-container class=box mdw-color=surface-variant mdw-elevation=3>Surface Variant +3</mdw-container>
+            <mdw-container class=box mdw-color=surface-variant mdw-elevation=4>Surface Variant +4</mdw-container>
+            <mdw-container class=box mdw-color=surface-variant mdw-elevation=5>Surface Variant +5</mdw-container>
+            <mdw-container class=box mdw-ink=outline>Outline</mdw-container>
+          </flex>
+      </section>
+    </section>
+    <section>
+      <h2>Custom</h2>
+      <section>
+        <h3>Yellow</h3>
+        <flex align-center wrap>
+          <mdw-container class="box mdw-custom" mdw-color=yellow>Yellow</mdw-container>
+          <mdw-container class="box mdw-custom" mdw-color=yellow-container>Yellow Container</mdw-container>
+        </flex>
+      </section>
+      <section>
+        <h3>Orange</h3>
+        <flex align-center wrap>
+          <mdw-container class="box mdw-custom" mdw-color=orange>Orange</mdw-container>
+          <mdw-container class="box mdw-custom" mdw-color=orange-container>Orange Container</mdw-container>
+        </flex>
+      </section>
+      <section>
+        <h3>Green</h3>
+        <flex align-center wrap>
+          <mdw-container class="box mdw-custom" mdw-color=green>Green</mdw-container>
+          <mdw-container class="box mdw-custom" mdw-color=green-container>Green Container</mdw-container>
+        </flex>
+      </section>
+      <section>
+        <h3>Alias</h3>
+        <flex align-center wrap>
+          <mdw-container class="box mdw-custom" mdw-color=alias>Alias</mdw-container>
+          <mdw-container class="box mdw-custom" mdw-color=alias-container>Alias Container</mdw-container>
+        </flex>
+      </section>
+    </section>
+  </section>
+  <section>
+    <h1> Shape </h1>
+    <section>
+      <h2>Shape tokens</h2>
+      <flex align-center gap12 wrap>
+        <mdw-container class=box mdw-color=primary mdw-shape-style=extra-small>Extra small</mdw-container>
+        <mdw-container class=box mdw-color=primary mdw-shape-style=small>Small</mdw-container>
+        <mdw-container class=box mdw-color=primary mdw-shape-style=medium>Medium</mdw-container>
+        <mdw-container class=box mdw-color=primary mdw-shape-style=large>Large</mdw-container>
+        <mdw-container class=box mdw-color=primary mdw-shape-style=extra-large>Extra large</mdw-container>
+        <mdw-container class=box mdw-color=primary mdw-shape-style=full>Full</mdw-container>
+      </flex>
+    </section>
+    <section>
+      <h2>Shape token top modifier</h2>
+      <flex align-center gap12 wrap>
+        <mdw-container class=box mdw-color=secondary mdw-shape-top mdw-shape-style=extra-small>Extra small top
+        </mdw-container>
+        <mdw-container class=box mdw-color=secondary mdw-shape-top mdw-shape-style=small>Small top</mdw-container>
+        <mdw-container class=box mdw-color=secondary mdw-shape-top mdw-shape-style=medium>Medium top</mdw-container>
+        <mdw-container class=box mdw-color=secondary mdw-shape-top mdw-shape-style=large>Large top</mdw-container>
+        <mdw-container class=box mdw-color=secondary mdw-shape-top mdw-shape-style=extra-large>Extra large top
+        </mdw-container>
+      </flex>
+    </section>
+    <section>
+      <h2>Shape token end modifier</h2>
+      <flex align-center gap12 wrap>
+        <mdw-container class=box mdw-color=secondary mdw-shape-end mdw-shape-style=extra-small>Extra small end
+        </mdw-container>
+        <mdw-container class=box mdw-color=secondary mdw-shape-end mdw-shape-style=small>Small end</mdw-container>
+        <mdw-container class=box mdw-color=secondary mdw-shape-end mdw-shape-style=medium>Medium end</mdw-container>
+        <mdw-container class=box mdw-color=secondary mdw-shape-end mdw-shape-style=large>Large end</mdw-container>
+        <mdw-container class=box mdw-color=secondary mdw-shape-end mdw-shape-style=extra-large>Extra large end
+        </mdw-container>
+        </mdw-container>
+      </flex>
+    </section>
+  </section>
+  <section>
+    <h1> Typography </h1>
+    <section>
+      <h2> Roles </h2>
+      <mdw-container mdw-type=display-large>Display large</mdw-container>
+      <mdw-container mdw-type=display-medium>Display medium</mdw-container>
+      <mdw-container mdw-type=display-small>Display small</mdw-container>
+      <mdw-container mdw-type=headline-large>Headline large</mdw-container>
+      <mdw-container mdw-type=headline-medium>Headline medium</mdw-container>
+      <mdw-container mdw-type=headline-small>Headline small</mdw-container>
+      <mdw-container mdw-type=title-large>Title large</mdw-container>
+      <mdw-container mdw-type=title-medium>Title medium</mdw-container>
+      <mdw-container mdw-type=title-small>Title small</mdw-container>
+      <mdw-container mdw-type=label-large>Label large</mdw-container>
+      <mdw-container mdw-type=label-medium>Label medium</mdw-container>
+      <mdw-container mdw-type=label-small>Label small</mdw-container>
+      <mdw-container mdw-type=body-large>Body large</mdw-container>
+      <mdw-container mdw-type=body-medium>Body medium</mdw-container>
+      <mdw-container mdw-type=body-small>Body small</mdw-container>
+    </section>
+  </section>
+
+  <section>
+    <h1> Buttons </h1>
+    <section>
+      <h2> Common Buttons </h2>
+      <section>
+        <h3> Elevated buttons </h3>
+        <flex align-center gap12 wrap>
+          <mdw-button mdw-elevated>Elevated button</mdw-button>
+          <mdw-button aria-disabled=true mdw-elevated>Elevated button (disabled)</mdw-button>
+          <mdw-button mdw-elevated mdw-icon=search>Elevated icon button</mdw-button>
+          <mdw-button mdw-elevated mdw-color="surface" mdw-ink="tertiary">Elevated Surface-Tertiary button</mdw-button>
+        </flex>
+      </section>
+      <section>
+        <h3> Filled buttons </h3>
+        <flex align-center gap12 wrap>
+          <mdw-button mdw-filled>Filled button</mdw-button>
+          <mdw-button aria-disabled=true mdw-filled>Filled button (Disabled)</mdw-button>
+        </flex>
+      </section>
+      <section>
+        <h3> Filled tonal buttons </h3>
+        <flex align-center gap12 wrap>
+          <mdw-button mdw-filled=tonal>Filled tonal button</mdw-button>
+          <mdw-button aria-disabled=true mdw-filled=tonal>Filled tonal button (Disabled)</mdw-button>
+          <mdw-button mdw-filled=tonal mdw-icon=search>Filled tonal button</mdw-button>
+        </flex>
+      </section>
+      <section>
+        <h3> Outlined buttons </h3>
+        <flex align-center gap12 wrap>
+          <mdw-button mdw-outlined>Outlined button</mdw-button>
+          <mdw-button mdw-outlined mdw-icon=add>Outlined icon button</mdw-button>
+          <mdw-button mdw-outlined="surface" mdw-icon=add>Outlined surface icon button</mdw-button>
+          <mdw-button aria-disabled=true mdw-outlined>Outlined button (Disabled)</mdw-button>
+          <mdw-button aria-disabled=true mdw-outlined mdw-icon=add>Outlined icon button (Disabled)</mdw-button>
+        </flex>
+      </section>
+      <section>
+        <h3> Text buttons </h3>
+        <flex align-center gap12 wrap>
+          <mdw-button>0</mdw-button>
+          <mdw-button>Text button</mdw-button>
+          <mdw-button mdw-ink=tertiary mdw-icon=add>Tertiary text button</mdw-button>
+          <mdw-button mdw-ink=tertiary aria-disabled=true>Text button (Disabled)</mdw-button>
+          <mdw-button mdw-ink=primary aria-disabled=true mdw-icon=add>Icon text button (Disabled)</mdw-button>
+        </flex>
+      </section>
+      <section>
+        <h3> Custom buttons </h3>
+        <flex align-center gap12 wrap>
+          <mdw-button class=mdw-custom mdw-ink=yellow>Custom text button</mdw-button>
+          <mdw-button class=mdw-custom mdw-elevated mdw-ink=yellow>Custom elevated button</mdw-button>
+          <mdw-button class=mdw-custom mdw-filled mdw-color=yellow>Custom filled button</mdw-button>
+          <mdw-button class=mdw-custom mdw-filled=tonal mdw-icon=add mdw-color=yellow-container>Custom tonal button
+          </mdw-button>
+          <mdw-button class=mdw-custom mdw-outlined mdw-ink=yellow>Custom outlined button</mdw-button>
+          <mdw-button aria-disabled=true mdw-outlined>Outlined button (Disabled)</mdw-button>
+          <mdw-button aria-disabled=true mdw-outlined mdw-icon=add>Outlined icon button (Disabled)</mdw-button>
+          <mdw-button aria-disabled=true class=mdw-custom mdw-ink=yellow>Custom text button</mdw-button>
+          <mdw-button aria-disabled=true class=mdw-custom mdw-elevated=yellow>Custom elevated button</mdw-button>
+          <mdw-button aria-disabled=true mdw-filled class=mdw-custom mdw-color=yellow>Custom filled button</mdw-button>
+          <mdw-button aria-disabled=true mdw-filled=tonal class=mdw-custom mdw-icon=add mdw-color=yellow-container>
+            Custom tonal button
+          </mdw-button>
+        </flex>
+      </section>
+    </section>
+    <section>
+      <h2> FAB </h2>
+      <section>
+        <h3>Normal</h3>
+        <flex align-center gap12 wrap>
+          <mdw-fab-button>edit</mdw-fab-button>
+          <mdw-fab-button mdw-color=surface-primary>edit</mdw-fab-button>
+          <mdw-fab-button mdw-color=secondary-container>edit</mdw-fab-button>
+          <mdw-fab-button mdw-color=tertiary-container>edit</mdw-fab-button>
+          <mdw-fab-button class=mdw-custom mdw-color=yellow-container>edit</mdw-fab-button>
+        </flex>
+      </section>
+      <section>
+        <h3>Small</h3>
+        <flex align-center gap12 wrap>
+          <mdw-fab-button mdw-small>edit</mdw-fab-button>
+          <mdw-fab-button mdw-small mdw-color=surface-primary>edit</mdw-fab-button>
+          <mdw-fab-button mdw-small mdw-color=secondary-container>edit</mdw-fab-button>
+          <mdw-fab-button mdw-small mdw-color=tertiary-container>edit</mdw-fab-button>
+          <mdw-fab-button mdw-small class=mdw-custom mdw-color=yellow-container>edit</mdw-fab-button>
+        </flex>
+      </section>
+      <section>
+        <h3>Large</h3>
+        <flex align-center gap12 wrap>
+          <mdw-fab-button mdw-large>edit</mdw-fab-button>
+          <mdw-fab-button mdw-large mdw-color=surface-primary>edit</mdw-fab-button>
+          <mdw-fab-button mdw-large mdw-color=secondary-container>edit</mdw-fab-button>
+          <mdw-fab-button mdw-large mdw-color=tertiary-container>edit</mdw-fab-button>
+          <mdw-fab-button mdw-large class=mdw-custom mdw-color=yellow-container>edit</mdw-fab-button>
+        </flex>
+      </section>
+      <section>
+        <h3>Lowered</h3>
+        <flex align-center gap12 wrap>
+          <mdw-fab-button mdw-lowered class=mdw-custom mdw-small mdw-color=surface mdw-ink=yellow>edit
+          </mdw-fab-button>
+          <mdw-fab-button mdw-lowered class=mdw-custom mdw-small mdw-color=orange-container>edit</mdw-fab-button>
+          <mdw-fab-button mdw-lowered class=mdw-custom mdw-color=green-container>edit</mdw-fab-button>
+          <mdw-fab-button mdw-lowered class=mdw-custom mdw-large mdw-color=alias-container>edit</mdw-fab-button>
+        </flex>
+      </section>
+    </section>
+    <section>
+      <h2> Extended FAB </h2>
+      <section>
+        <h3>With icon</h3>
+
+        <flex align-center gap12 wrap>
+          <mdw-extended-fab-button mdw-color=surface-primary mdw-icon=edit>Compose</mdw-extended-fab-button>
+          <mdw-extended-fab-button mdw-color=secondary-container mdw-icon=edit>Compose</mdw-extended-fab-button>
+          <mdw-extended-fab-button mdw-color=tertiary-container mdw-icon=edit>Compose</mdw-extended-fab-button>
+        </flex>
+      </section>
+      <section>
+        <h3>Without icon</h3>
+        <flex align-center gap12 wrap>
+          <mdw-extended-fab-button class=mdw-custom mdw-color=yellow>Compose</mdw-extended-fab-button>
+          <mdw-extended-fab-button class=mdw-custom mdw-color=green>Compose</mdw-extended-fab-button>
+          <mdw-extended-fab-button class=mdw-custom mdw-color=alias>Compose</mdw-extended-fab-button>
+        </flex>
+      </section>
+    </section>
+    <section>
+      <h2> Icon buttons </h2>
+      <section>
+        <h3> Filled icon buttons </h3>
+        <flex align-center gap12 wrap>
+          <mdw-icon-button mdw-filled>search</mdw-icon-button>
+          <mdw-icon-button mdw-filled aria-pressed=false>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-filled aria-disabled=true aria-pressed=false>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-filled aria-disabled=true aria-pressed=true>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-filled aria-pressed=true>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-filled aria-pressed=false mdw-color=tertiary>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-filled mdw-color=tertiary>favorite</mdw-icon-button>
+        </flex>
+      </section>
+      <section>
+        <h3> Filled tonal icon buttons </h3>
+        <flex align-center gap12 wrap>
+          <mdw-icon-button mdw-filled=tonal>search</mdw-icon-button>
+          <mdw-icon-button mdw-filled=tonal aria-pressed=false>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-filled=tonal aria-disabled=true aria-pressed=false>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-filled=tonal aria-disabled=true aria-pressed=true>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-filled=tonal aria-pressed=true>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-filled=tonal aria-pressed=false mdw-color=tertiary-container>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-filled=tonal mdw-color=tertiary-container>favorite</mdw-icon-button>
+        </flex>
+      </section>
+      <section>
+        <h3> Outlined icon buttons </h3>
+        <flex align-center gap12 wrap>
+          <mdw-icon-button mdw-outlined>search</mdw-icon-button>
+          <mdw-icon-button mdw-outlined aria-pressed=false>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-outlined aria-disabled=true aria-pressed=false>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-outlined aria-disabled=true aria-pressed=true>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-outlined aria-pressed=true>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-outlined aria-pressed=false mdw-color=tertiary>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-outlined aria-pressed=false mdw-color=tertiary-container>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-outlined mdw-ink=tertiary>favorite</mdw-icon-button>
+        </flex>
+      </section>
+      <section>
+        <h3> Standard icon buttons </h3>
+        <flex align-center gap12 wrap>
+          <mdw-icon-button>search</mdw-icon-button>
+          <mdw-icon-button aria-pressed=false>favorite</mdw-icon-button>
+          <mdw-icon-button aria-disabled=true aria-pressed=false>favorite</mdw-icon-button>
+          <mdw-icon-button aria-disabled=true aria-pressed=true>favorite</mdw-icon-button>
+          <mdw-icon-button aria-pressed=true>favorite</mdw-icon-button>
+          <mdw-icon-button aria-pressed=false mdw-ink=tertiary>favorite</mdw-icon-button>
+          <mdw-icon-button mdw-ink=tertiary>favorite</mdw-icon-button>
+        </flex>
+      </section>
+      <section>
+        <h3> Custom icon buttons </h3>
+        <flex align-center gap12 wrap>
+          <mdw-icon-button class=mdw-custom mdw-ink=yellow>search</mdw-icon-button>
+          <mdw-icon-button class=mdw-custom mdw-filled mdw-color=yellow>search</mdw-icon-button>
+          <mdw-icon-button class=mdw-custom mdw-filled=tonal mdw-color=yellow-container>search</mdw-icon-button>
+          <mdw-icon-button aria-pressed=false class=mdw-custom mdw-ink=yellow>favorite</mdw-icon-button>
+          <mdw-icon-button aria-pressed=false class=mdw-custom mdw-filled mdw-color=yellow>favorite</mdw-icon-button>
+          <mdw-icon-button aria-pressed=false class=mdw-custom mdw-filled=tonal mdw-color=yellow-container>favorite
+          </mdw-icon-button>
+        </flex>
+      </section>
+    </section>
+    <section>
+      <h2> Segmented buttons </h2>
+      <section>
+        <h3>Single selection</h3>
+        <flex align-center gap12 wrap>
+          <mdw-segmented-button-group>
+            <mdw-segmented-button aria-selected=true mdw-icon=favorite>Favorite</mdw-segmented-button>
+            <mdw-segmented-button mdw-icon=star>Enabled</mdw-segmented-button>
+            <mdw-segmented-button mdw-icon=edit aria-disabled=true>Disabled</mdw-segmented-button>
+            <mdw-segmented-button>Text only</mdw-segmented-button>
+          </mdw-segmented-button-group>
+        </flex>
+      </section>
+      <section>
+        <h3>Multi-selectable</h3>
+        <flex align-center gap12 wrap>
+          <mdw-segmented-button-group class=mdw-custom mdw-color=alias-container aria-multiselectable=true>
+            <mdw-segmented-button aria-selected=true mdw-icon=favorite>Favorite</mdw-segmented-button>
+            <mdw-segmented-button aria-selected=true mdw-icon=star>Enabled</mdw-segmented-button>
+            <mdw-segmented-button mdw-icon=edit aria-disabled=true>Disabled</mdw-segmented-button>
+            <mdw-segmented-button>Text only</mdw-segmented-button>
+          </mdw-segmented-button-group>
+        </flex>
+      </section>
+      <section>
+        <h3>Checks</h3>
+        <flex align-center gap12 wrap>
+          <mdw-segmented-button-group mdw-color="tertiary-container">
+            <mdw-segmented-button aria-checked=true mdw-icon=check>$</mdw-segmented-button>
+            <mdw-segmented-button aria-checked=false mdw-icon=check>$$</mdw-segmented-button>
+            <mdw-segmented-button aria-checked=false mdw-icon=check aria-disabled=true>$$$</mdw-segmented-button>
+            <mdw-segmented-button aria-checked=false mdw-icon=check>$$$$</mdw-segmented-button>
+          </mdw-segmented-button-group>
+        </flex>
+      </section>
+      <section>
+        <h3>Multi-selectable checks</h3>
+        <flex align-center gap12 wrap>
+          <mdw-segmented-button-group class=mdw-custom mdw-color=alias-container aria-multiselectable=true>
+            <mdw-segmented-button aria-checked=true mdw-icon=check>$</mdw-segmented-button>
+            <mdw-segmented-button aria-checked=false mdw-icon=check>$$</mdw-segmented-button>
+            <mdw-segmented-button aria-checked=false mdw-icon=check aria-disabled=true>$$$</mdw-segmented-button>
+            <mdw-segmented-button aria-checked=true mdw-icon=check>$$$$</mdw-segmented-button>
+          </mdw-segmented-button-group>
+        </flex>
+      </section>
+    </section>
+  </section>
+  <section>
+    <h1>Bottom app bar</h1>
+    <section>
+      <h2>Surface color</h2>
+      <mdw-bottom-app-bar>
+        <mdw-icon-button>1k</mdw-icon-button>
+        <mdw-icon-button>2k</mdw-icon-button>
+        <mdw-icon-button>3k</mdw-icon-button>
+        <mdw-icon-button>4k</mdw-icon-button>
+      </mdw-bottom-app-bar>
+    </section>
+    <section>
+      <h2>Primary-container color</h2>
+      <mdw-bottom-app-bar mdw-color=surface>
+        <mdw-icon-button>1k</mdw-icon-button>
+        <mdw-icon-button>2k</mdw-icon-button>
+        <mdw-icon-button>3k</mdw-icon-button>
+        <mdw-icon-button>4k</mdw-icon-button>
+      </mdw-bottom-app-bar>
+    </section>
+    <section>
+      <h2>Custom color</h3>
+        <mdw-bottom-app-bar class=mdw-custom mdw-color=alias-container>
+          <mdw-icon-button>1k</mdw-icon-button>
+          <mdw-icon-button>2k</mdw-icon-button>
+          <mdw-icon-button>3k</mdw-icon-button>
+          <mdw-icon-button>4k</mdw-icon-button>
+        </mdw-bottom-app-bar>
+    </section>
+  </section>
+  <section>
+    <h1>Card</h1>
+    <section>
+      <h2>Elevated</h2>
+      <flex align-center gap12 wrap>
+        <mdw-card mdw-elevated>
+          <div style="padding:12px">
+            <mdw-container mdw-type=title>Elevated Card</mdw-container>
+            <mdw-container mdw-type=title-small>Title small text</mdw-container>
+            <mdw-container mdw-type=body-medium>Body medium text</mdw-container>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button mdw-filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card mdw-actionable mdw-elevated>
+          <mdw-button slot="primary-action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-container mdw-type=title>Actionable Elevated Card</mdw-container>
+            <mdw-container mdw-type=title-small>Title small text</mdw-container>
+            <mdw-container mdw-type=body-medium>Body medium text</mdw-container>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button mdw-filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card mdw-actionable mdw-elevated mdw-color="inverse-surface">
+          <mdw-button slot="primary-action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-container mdw-type=title>Actionable Elevated Card</mdw-container>
+            <mdw-container mdw-type=title-small>Title small text</mdw-container>
+            <mdw-container mdw-type=body-medium>Body medium text</mdw-container>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button mdw-filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card mdw-elevated aria-disabled="true">
+          <div style="padding:12px">
+            <mdw-container mdw-type=title>Elevated Card</mdw-container>
+            <mdw-container mdw-type=title-small>Title small text</mdw-container>
+            <mdw-container mdw-type=body-medium>Body medium text</mdw-container>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button aria-disabled=true mdw-filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card mdw-actionable mdw-elevated aria-disabled=true>
+          <mdw-button slot="primary-action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-container mdw-type=title>Actionable Elevated Card</mdw-container>
+            <mdw-container mdw-type=title-small>Title small text</mdw-container>
+            <mdw-container mdw-type=body-medium>Body medium text</mdw-container>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button aria-disabled=true mdw-filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+      </flex>
+    </section>
+    <section>
+      <h2>Filled</h2>
+      <flex align-center gap12 wrap>
+        <mdw-card mdw-filled>
+          <div style="padding:12px">
+            <mdw-container mdw-type=title>Filled Card</mdw-container>
+            <mdw-container mdw-type=title-small>Title small text</mdw-container>
+            <mdw-container mdw-type=body-medium>Body medium text</mdw-container>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button mdw-filled="tertiary">Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card mdw-filled mdw-actionable>
+          <mdw-button slot="primary-action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-container mdw-type=title>Actionable Filled Card</mdw-container>
+            <mdw-container mdw-type=title-small>Title small text</mdw-container>
+            <mdw-container mdw-type=body-medium>Body medium text</mdw-container>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button mdw-filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card mdw-filled mdw-color="inverse-surface" mdw-actionable>
+          <mdw-button slot="primary-action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-container mdw-type=title>Actionable Filled Card</mdw-container>
+            <mdw-container mdw-type=title-small>Title small text</mdw-container>
+            <mdw-container mdw-type=body-medium>Body medium text</mdw-container>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button mdw-filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card mdw-filled aria-disabled=true>
+          <div style="padding:12px">
+            <mdw-container mdw-type=title>Filled Card</mdw-container>
+            <mdw-container mdw-type=title-small>Title small text</mdw-container>
+            <mdw-container mdw-type=body-medium>Body medium text</mdw-container>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button aria-disabled=true mdw-filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card mdw-filled mdw-actionable aria-disabled="true">
+          <mdw-button slot="primary-action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-container mdw-type=title>Actionable Filled Card</mdw-container>
+            <mdw-container mdw-type=title-small>Title small text</mdw-container>
+            <mdw-container mdw-type=body-medium>Body medium text</mdw-container>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button aria-disabled="true" mdw-filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+      </flex>
+    </section>
+    <section>
+      <h2>Outlined</h2>
+      <flex align-center gap12 wrap>
+        <mdw-card mdw-outlined>
+          <div style="padding:12px">
+            <mdw-container mdw-type=title>Outlined Card</mdw-container>
+            <mdw-container mdw-type=title-small>Title small text</mdw-container>
+            <mdw-container mdw-type=body-medium>Body medium text</mdw-container>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button mdw-filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card mdw-outlined mdw-actionable>
+          <mdw-button slot="primary-action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-container mdw-type=title>Actionable Outlined Card</mdw-container>
+            <mdw-container mdw-type=title-small>Title small text</mdw-container>
+            <mdw-container mdw-type=body-medium>Body medium text</mdw-container>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button mdw-filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card mdw-outlined aria-disabled="true">
+          <div style="padding:12px">
+            <mdw-container mdw-type=title>Outlined Card</mdw-container>
+            <mdw-container mdw-type=title-small>(Disabled)</mdw-container>
+            <mdw-container mdw-type=body-medium>Body medium text</mdw-container>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button aria-disabled="true" mdw-filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card mdw-outlined mdw-actionable aria-disabled="true">
+          <mdw-button slot="primary-action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-container mdw-type=title>Actionable Outlined Card</mdw-container>
+            <mdw-container mdw-type=title-small>(Disabled)</mdw-container>
+            <mdw-container mdw-type=body-medium>Body medium text</mdw-container>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button aria-disabled="true" mdw-filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+      </flex>
+    </section>
+  </section>
+  <section>
+    <h1>Chips</h1>
+    <section>
+      <h2>Assist chips</h2>
+      <section>
+        <h3>Default</h3>
+        <flex align-center gap12 wrap style="padding:12px">
+          <mdw-chip mdw-icon=edit>Default</mdw-chip>
+          <mdw-chip mdw-icon=edit mdw-trailing-icon=close>Trailing</mdw-chip>
+          <mdw-chip mdw-icon=edit mdw-ink=tertiary>Tertiary</mdw-chip>
+          <mdw-chip mdw-icon=edit mdw-color=surface-primary>Surface Primary</mdw-chip>
+          <mdw-chip class=mdw-custom mdw-ink=green mdw-icon=edit>Custom ink</mdw-chip>
+          <mdw-chip mdw-icon mdw-src="test/fixtures/google-logo.svg">Assist chip</mdw-chip>
+          <mdw-chip mdw-icon=edit aria-disabled="true">Disabled chip</mdw-chip>
+        </flex>
+      </section>
+      <section>
+        <h3>Elevated</h3>
+        <flex align-center gap12 wrap style="padding:12px">
+          <mdw-chip mdw-elevated mdw-icon=edit>Default</mdw-chip>
+          <mdw-chip mdw-elevated mdw-icon=edit mdw-ink=tertiary>Tertiary</mdw-chip>
+          <mdw-chip mdw-elevated mdw-icon=edit mdw-color=surface-primary>Surface Primary</mdw-chip>
+          <mdw-chip mdw-elevated class=mdw-custom mdw-ink=green mdw-icon=edit>Custom ink</mdw-chip>
+          <mdw-chip mdw-elevated mdw-icon mdw-src="test/fixtures/google-logo.svg">Assist chip</mdw-chip>
+          <mdw-chip mdw-elevated mdw-icon=edit aria-disabled="true">Disabled chip</mdw-chip>
+          <mdw-chip mdw-elevated mdw-icon mdw-src="test/fixtures/google-logo.svg" aria-disabled="true">Assist chip
+          </mdw-chip>
+        </flex>
+      </section>
+    </section>
+    <section>
+      <h2>Filter chips</h2>
+      <section>
+        <h3>aria-pressed (button)</h3>
+        <flex align-center gap12 wrap>
+          <mdw-filter-chip aria-pressed=true>Default</mdw-filter-chip>
+          <mdw-filter-chip aria-pressed=true mdw-color=tertiary-container>Tertiary</mdw-filter-chip>
+          <mdw-filter-chip aria-pressed=true mdw-color=surface-primary>Surface Primary</mdw-filter-chip>
+          <mdw-filter-chip aria-pressed=true class=mdw-custom mdw-ink=green>Custom color</mdw-filter-chip>
+          <mdw-filter-chip aria-pressed=true>Assist chip</mdw-filter-chip>
+          <mdw-filter-chip aria-pressed=true aria-disabled="true">Disabled chip</mdw-filter-chip>
+        </flex>
+      </section>
+      <section>
+        <h3>aria-checked (checkbox)</h3>
+        <flex align-center gap12 wrap>
+          <mdw-filter-chip role=checkbox aria-checked=true>Default</mdw-filter-chip>
+          <mdw-filter-chip role=checkbox aria-checked=true mdw-color=tertiary-container>Tertiary</mdw-filter-chip>
+          <mdw-filter-chip role=checkbox aria-checked=true mdw-color=surface-primary>Surface Primary</mdw-filter-chip>
+          <mdw-filter-chip role=checkbox aria-checked=true class=mdw-custom mdw-color=green-container>Custom color</mdw-filter-chip>
+          <mdw-filter-chip role=checkbox aria-checked=true>Assist chip</mdw-filter-chip>
+          <mdw-filter-chip role=checkbox aria-checked=true aria-disabled="true">Disabled chip</mdw-filter-chip>
+        </flex>
+      </section>
+    </section>
+    <section>
+      <h2>Input chips</h2>
+      <flex align-center gap12 wrap></flex>
+    </section>
+    <section>
+      <h2>Suggestion chips</h2>
+      <flex align-center gap12 wrap></flex>
+    </section>
+  </section>
+  <br>
+  <caption>Sample</caption>
+  <script type=module src="index.js?color=&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto"></script>
+
+</body>
+
+</html>

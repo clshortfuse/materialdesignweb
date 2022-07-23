@@ -42,6 +42,7 @@ function onKeyDown(event) {
  * @return {void}
  */
 export function attach(element) {
+  if (element.hasAttribute('role') && element.getAttribute('role') !== 'tab') return;
   element.setAttribute('role', 'tab');
   element.setAttribute('mdw-aria-tab-js', '');
   element.addEventListener('keydown', onKeyDown);
