@@ -2,37 +2,18 @@ import * as Attributes from '../../core/aria/attributes.js';
 import * as RovingTabIndex from '../../core/aria/rovingtabindex.js';
 
 import MDWButton from './MDWButton.js';
+import styles from './MDWSegmentedButton.css' assert { type: 'css' };
 
 export default class MDWSegmentedButton extends MDWButton {
   constructor() {
     super();
-    this.stylesElement.append(MDWSegmentedButton.getStylesFragment().cloneNode(true));
     this.setAttribute('mdw-outlined', '');
     this.setAttribute('mdw-overlay-disabled', 'focus');
   }
 
-  static register(tagname = 'mdw-segmented-button') {
-    customElements.define(tagname, MDWSegmentedButton);
-  }
+  static elementName = 'mdw-segmented-button';
 
-  /** @type {HTMLTemplateElement} */
-  static #styles = null;
-
-  /** @return {DocumentFragment} */
-  static getStylesFragment() {
-    if (!MDWSegmentedButton.#styles) {
-      const template = document.createElement('template');
-      const fragment = document.createRange().createContextualFragment(
-        /* html */`
-          <link rel="stylesheet" href="MDWSegmentedButton.css"/>
-        `,
-      );
-      template.content.appendChild(fragment);
-      template.content.querySelector('link[href="MDWSegmentedButton.css"]').href = new URL('MDWSegmentedButton.css', import.meta.url).toString();
-      MDWSegmentedButton.#styles = template;
-    }
-    return MDWSegmentedButton.#styles.content;
-  }
+  static get styles() { return [...super.styles, styles]; }
 
   /**
    * Remap Space and Enter as Click
