@@ -1,10 +1,10 @@
 import MDWButton from '../button/MDWButton.js';
 
+import styles from './MDWChip.css' assert { type: 'css' };
+
 export default class MDWChip extends MDWButton {
   constructor() {
     super();
-    this.stylesElement.append(MDWChip.getStylesFragment().cloneNode(true));
-    this.shadowRoot.prepend(MDWChip.getContentFragment().cloneNode(true));
     this.trailingIconElement = this.shadowRoot.querySelector('.mdw-chip__trailing-icon');
     /** @type {HTMLImageElement} */
     this.trailingImageElement = this.shadowRoot.querySelector('.mdw-chip__trailing-image');
@@ -40,46 +40,18 @@ export default class MDWChip extends MDWButton {
     }
   }
 
-  static register(tagname = 'mdw-chip') {
-    customElements.define(tagname, MDWChip);
-  }
+  static elementName = 'mdw-chip';
 
-  /** @type {HTMLTemplateElement} */
-  static #styles = null;
+  static get styles() { return [...super.styles, styles]; }
 
-  /** @return {DocumentFragment} */
-  static getStylesFragment() {
-    if (!MDWChip.#styles) {
-      const template = document.createElement('template');
-      const fragment = document.createRange().createContextualFragment(
-        /* html */`
-          <link rel="stylesheet" href="MDWChip.css"/>
-        `,
-      );
-      template.content.appendChild(fragment);
-      template.content.querySelector('link[href="MDWChip.css"]').href = new URL('MDWChip.css', import.meta.url).toString();
-      MDWChip.#styles = template;
-    }
-    return MDWChip.#styles.content;
-  }
-
-  /** @type {HTMLTemplateElement} */
-  static #content = null;
-
-  /** @return {DocumentFragment} */
-  static getContentFragment() {
-    if (!MDWChip.#content) {
-      const template = document.createElement('template');
-      const fragment = document.createRange().createContextualFragment(
-        /* html */`
-          <div class="mdw-chip__trailing-icon material-symbols-outlined" aria-hidden="true">
-              <img class="mdw-chip__trailing-image" aria-hidden="true"/>
-          </div>
-        `,
-      );
-      template.content.appendChild(fragment);
-      MDWChip.#content = template;
-    }
-    return MDWChip.#content.content;
+  static get fragments() {
+    return [
+      ...super.fragments,
+      /* html */`
+        <div class="mdw-chip__trailing-icon material-symbols-outlined" aria-hidden="true">
+            <img class="mdw-chip__trailing-image" aria-hidden="true"/>
+        </div>
+      `,
+    ];
   }
 }

@@ -1,14 +1,31 @@
 import MDWOverlay from '../overlay/MDWOverlay.js';
 
+import styles from './MDWRipple.css' assert { type: 'css' };
+
 export default class MDWRipple extends MDWOverlay {
   constructor() {
     super();
-    this.stylesElement.append(MDWRipple.getStylesFragment().cloneNode(true));
-    this.shadowRoot.prepend(MDWRipple.getContentFragment().cloneNode(true));
     /** @type {HTMLElement} */
     this.containerElement = this.shadowRoot.querySelector('.mdw-ripple__container');
     /** @type {HTMLElement} */
     this.innerElement = this.shadowRoot.querySelector('.mdw-ripple__inner');
+  }
+
+  static elementName = 'mdw-ripple';
+
+  static get styles() {
+    return [...super.styles, styles];
+  }
+
+  static get fragments() {
+    return [
+      ...super.fragments,
+      /* html */`
+        <div class="mdw-ripple__container" part="rippleContainer" aria-hidden="true">
+          <div class="mdw-ripple__inner" part="rippleInner"></div>
+        </div>
+      `,
+    ];
   }
 
   /**
@@ -115,50 +132,6 @@ export default class MDWRipple extends MDWOverlay {
     this.innerElement.removeAttribute('mdw-fade-in-repeat');
     this.innerElement.removeAttribute('mdw-fade-in-complete');
     this.innerElement.setAttribute('mdw-fade-out', '');
-  }
-
-  /** @type {HTMLTemplateElement} */
-  static #styles = null;
-
-  /** @return {DocumentFragment} */
-  static getStylesFragment() {
-    if (!MDWRipple.#styles) {
-      const template = document.createElement('template');
-      const fragment = document.createRange().createContextualFragment(
-        /* html */`
-          <link rel="stylesheet" href="MDWRipple.css"/>
-        `,
-      );
-      template.content.appendChild(fragment);
-      template.content.querySelector('link').href = new URL('MDWRipple.css', import.meta.url).toString();
-      MDWRipple.#styles = template;
-    }
-    return MDWRipple.#styles.content;
-  }
-
-  /** @type {HTMLTemplateElement} */
-  static #content = null;
-
-  /** @return {DocumentFragment} */
-  static getContentFragment() {
-    if (!MDWRipple.#content) {
-      const template = document.createElement('template');
-      const fragment = document.createRange().createContextualFragment(
-        /* html */`
-          <div class="mdw-ripple__container" part="rippleContainer" aria-hidden="true">
-            <div class="mdw-ripple__inner" part="rippleInner"></div>
-          </div>
-        `,
-      );
-      template.content.appendChild(fragment);
-      MDWRipple.#content = template;
-    }
-    return MDWRipple.#content.content;
-  }
-
-
-  static register(tagname = 'mdw-ripple') {
-    customElements.define(tagname, MDWRipple);
   }
 
   /**

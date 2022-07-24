@@ -1,54 +1,20 @@
 import MDWContainer from '../container/MDWContainer.js';
 
+import styles from './MDWOverlay.css' assert { type: 'css' };
+
 export default class MDWOverlay extends MDWContainer {
-  constructor() {
-    super();
-    this.stylesElement.append(MDWOverlay.getStylesFragment().cloneNode(true));
-    this.shadowRoot.prepend(MDWOverlay.getContentFragment().cloneNode(true));
+  static elementName = 'mdw-overlay';
+
+  static get styles() { return [...super.styles, styles]; }
+
+  static get fragments() {
+    return [
+      ...super.fragments,
+      '<div class="mdw-overlay__container" part="overlay-container" aria-hidden="true"/>',
+    ];
   }
 
   static lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matches;
-
-  static register(tagname = 'mdw-overlay') {
-    customElements.define(tagname, MDWOverlay);
-  }
-
-  /** @type {HTMLTemplateElement} */
-  static #styles = null;
-
-  /** @return {DocumentFragment} */
-  static getStylesFragment() {
-    if (!MDWOverlay.#styles) {
-      const template = document.createElement('template');
-      const fragment = document.createRange().createContextualFragment(
-        /* html */`
-          <link rel="stylesheet" href="MDWOverlay.css"/>
-        `,
-      );
-      template.content.appendChild(fragment);
-      template.content.querySelector('link[href="MDWOverlay.css"]').href = new URL('MDWOverlay.css', import.meta.url).toString();
-      MDWOverlay.#styles = template;
-    }
-    return MDWOverlay.#styles.content;
-  }
-
-  /** @type {HTMLTemplateElement} */
-  static #content = null;
-
-  /** @return {DocumentFragment} */
-  static getContentFragment() {
-    if (!MDWOverlay.#content) {
-      const template = document.createElement('template');
-      const fragment = document.createRange().createContextualFragment(
-        /* html */`
-          <div class="mdw-overlay__container" part="overlay-container" aria-hidden="true"/>
-        `,
-      );
-      template.content.appendChild(fragment);
-      MDWOverlay.#content = template;
-    }
-    return MDWOverlay.#content.content;
-  }
 
   /**
    * @param {PointerEvent|MouseEvent} event

@@ -15,16 +15,16 @@ import * as theming from './core/theme/index.js';
 
 MDWBottomAppBar.register();
 MDWButton.register();
-MDWIconButton.register();
-MDWFabButton.register();
 MDWExtendedFabButton.register();
+MDWFabButton.register();
+MDWIconButton.register();
 MDWSegmentedButton.register();
 MDWSegmentedButtonGroup.register();
 MDWCard.register();
 MDWCardActionArea.register();
-MDWContainer.register();
 MDWAssistChip.register();
 MDWFilterChip.register();
+MDWContainer.register();
 MDWOverlay.register();
 
 const { searchParams } = new URL(import.meta.url);

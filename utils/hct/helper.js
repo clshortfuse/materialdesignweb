@@ -170,7 +170,6 @@ export function getScheme(mainColor, customColors = []) {
     darkRules.push(cssVariablesFromCustom(name, tp, true));
     lightContentRules.push(cssVariablesFromCustom(name, ctp));
     darkContentRules.push(cssVariablesFromCustom(name, ctp, true));
-    console.log('hi?');
   }
   return {
     light: lightRules.join('\n'),
