@@ -31,7 +31,7 @@
   background-color: rgba(var(--mdw-color__on-surface), 0.12);
 }
 
-:host([aria-disabled="true"]) .mdw-container__content::slotted(*) {
+:host([aria-disabled="true"]) .mdw-container__content::slotted(:first-child) {
   --mdw-card-action-area__pointer-events: none;
 }
 
@@ -43,7 +43,7 @@
   visibility: var(--mdw-card__elevation__visiblity);
 }
 
-.mdw-card__primary-action::slotted(*) {
+.mdw-card__primary-action::slotted(:first-child) {
   --mdw-ink: inherit;
   --mdw-shape__size: inherit;
   --mdw-container__elevation__opacity: inherit;

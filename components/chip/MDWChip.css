@@ -9,6 +9,7 @@
   --mdw-chip__trailing-icon__opacity: 1;
   --mdw-chip__trailing-icon__display: block;
   --mdw-chip__trailing-icon__font-variation-settings: 'FILL' 1;
+  --mdw-chip__label-color: var(--mdw-color__on-surface);
 
   min-block-size: 32px;
   block-size: 32px;
@@ -16,43 +17,30 @@
   padding-inline-start: 0;
   padding-inline-end: 0;
 
-  color: rgb(var(--mdw-color__on-surface));
+  color: rgb(var(mdw-chip__label-color));
 }
 
 :host([mdw-elevated]) {
-  color: rgb(var(--mdw-color__on-surface));
+  color: rgb(var(mdw-chip__label-color));
 }
 
-:host([mdw-elevated]) .mdw-button__outline {
-  visibility: hidden;
+:host(:where([mdw-suggestion])) {
+  --mdw-ink: var(--mdw-color__on-surface-variant);
+  --mdw-chip__label-color: var(--mdw-ink);
 }
 
 .mdw-button__outline {
   --mdw-button__outline__rgb: var(--mdw-color__outline);
 }
 
+:host([mdw-elevated]) .mdw-button__outline {
+  visibility: hidden;
+}
+
 .mdw-button__icon {
   --mdw-button__icon__margin-inline-start: 8px;
   --mdw-button__icon__margin-inline-end: 8px;
   color: rgb(var(--mdw-ink));
-}
-
-:host(:not([mdw-trailing-icon])) .mdw-chip__trailing-icon {
-  --mdw-chip__trailing-icon__size: 0;
-}
-
-.mdw-container__content,
-.mdw-overlay__container,
-.mdw-ripple__container {
-  color: rgb(var(--mdw-color__on-surface));
-}
-
-:host([aria-disabled="true"]) :is(.mdw-container__content, .mdw-button__icon, .mdw-button__image) {
-  color: rgba(var(--mdw-color__on-surface), 0.38);
-}
-
-:host([aria-disabled="true"]) .mdw-chip__trailing-image {
-  opacity: 0.38;
 }
 
 .mdw-chip__trailing-icon {
@@ -73,4 +61,22 @@
 
   font-size: var(--mdw-chip__trailing-icon__size);
   font-variation-settings: var(--mdw-chip__trailing-icon__font-variation-settings);
+}
+
+:host(:not([mdw-trailing-icon])) .mdw-chip__trailing-icon {
+  --mdw-chip__trailing-icon__size: 0;
+}
+
+.mdw-container__content,
+.mdw-overlay__container,
+.mdw-ripple__container {
+  color: rgb(var(--mdw-chip__label-color));
+}
+
+:host([aria-disabled="true"]) :is(.mdw-container__content, .mdw-button__icon, .mdw-button__image) {
+  color: rgba(var(--mdw-color__on-surface), 0.38);
+}
+
+:host([aria-disabled="true"]) .mdw-chip__trailing-image {
+  opacity: 0.38;
 }

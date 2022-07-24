@@ -23,8 +23,7 @@
     "@typescript-eslint",
     "github",
     "jsdoc",
-    "unicorn",
-    "eta"
+    "unicorn"
   ],
   "root": true,
   "rules": {
@@ -182,8 +181,7 @@
       }
     },
     "html/html-extensions": [
-      ".html",
-      ".eta"
+      ".html"
     ]
   },
   "overrides": [
@@ -193,10 +191,6 @@
         "import/no-nodejs-modules": 0,
         "@typescript-eslint/no-var-requires": 0
       }
-    },
-    {
-      "files": ["**/*.eta"],
-      "processor": "eta/eta"
     }
   ]
   

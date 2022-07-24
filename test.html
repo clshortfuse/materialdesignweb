@@ -736,12 +736,32 @@
     </section>
     <section>
       <h2>Suggestion chips</h2>
-      <flex align-center gap12 wrap></flex>
+      <section>
+        <h3>Default</h3>
+        <flex align-center gap12 wrap>
+          <mdw-chip mdw-suggestion>Default</mdw-chip>
+          <mdw-chip mdw-suggestion mdw-ink=primary>Primary</mdw-chip>
+          <mdw-chip mdw-suggestion mdw-ink=tertiary>Tertiary</mdw-chip>
+          <mdw-chip mdw-suggestion mdw-color=surface-primary>Surface Primary</mdw-chip>
+          <mdw-chip mdw-suggestion class=mdw-custom mdw-ink=green>Custom ink</mdw-chip>
+          <mdw-chip mdw-suggestion aria-disabled="true">Disabled chip</mdw-chip>
+        </flex>  
+      </section>
+      <section>
+        <h3>Elevated</h3>
+        <flex align-center gap12 wrap>
+          <mdw-chip mdw-elevated mdw-suggestion>Default</mdw-chip>
+          <mdw-chip mdw-elevated mdw-suggestion mdw-ink=primary>Primary</mdw-chip>
+          <mdw-chip mdw-elevated mdw-suggestion mdw-ink=tertiary>Tertiary</mdw-chip>
+          <mdw-chip mdw-elevated mdw-suggestion class=mdw-custom mdw-ink=green>Custom ink</mdw-chip>
+          <mdw-chip mdw-elevated mdw-suggestion aria-disabled="true">Disabled chip</mdw-chip>
+        </flex>  
+      </section>
     </section>
   </section>
   <br>
   <caption>Sample</caption>
-  <script type=module src="index.js?color=&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto"></script>
+  <script type=module src="index.js?color=&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=dark"></script>
 
 </body>
 

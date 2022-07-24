@@ -1,11 +1,11 @@
 /* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
+
 /* https://material.io/guidelines/style/icons.html# */
 
 :host {
   --mdw-shape__size: 20px;
   --mdw-button__padding-inline-start: 12px;
   --mdw-button__padding-inline-end: 12px;
-
   --mdw-button__icon__size: 18px;
   --mdw-button__icon__opacity: 1;
   --mdw-button__icon__display: none;
@@ -17,15 +17,12 @@
   --mdw-button__outline__opacity: 1;
   --mdw-button__outline__rgb: var(--mdw-color__outline);
   --mdw-button__touch-target__size: 48px;
-
   display: inline-flex;
-
   position: relative;
   align-items: center;
   justify-content: center;
 
   box-sizing: border-box;
-
   min-block-size: 40px;
   min-inline-size: 48px;
   padding-inline-start: var(--mdw-button__padding-inline-start);
@@ -44,9 +41,9 @@
   color: rgb(var(--mdw-color__primary));
 
   text-decoration: none;
-
   white-space: nowrap;
 }
+
 /** Elevated Color Defaults */
 
 :host(:where([mdw-elevated])) {
@@ -55,18 +52,21 @@
 }
 
 /** Filled Color Defaults */
+
 :host(:where([mdw-filled])) {
   background-color: rgb(var(--mdw-color__primary));
   color: rgb(var(--mdw-color__on-primary));
 }
 
 /** Filled Tonal Color Defaults */
+
 :host(:where([mdw-filled="tonal"])) {
   background-color: rgb(var(--mdw-color__secondary-container));
   color: rgb(var(--mdw-color__on-secondary-container));
 }
 
 /** Outlined Color Defaults */
+
 :host(:where([mdw-outlined])) {
   color: rgb(var(--mdw-color__primary));
 }
@@ -75,13 +75,13 @@
   background-color: rgb(var(--mdw-color__surface));
 }
 
-:host(:where([mdw-outlined],[mdw-elevated],[mdw-filled],[mdw-icon])) {
+:host(:where([mdw-outlined], [mdw-elevated], [mdw-filled], [mdw-icon])) {
   --mdw-button__icon__display: block;
   --mdw-button__padding-inline-start: 0;
   --mdw-button__padding-inline-end: 24px;
 }
 
-:host(:is([mdw-outlined],[mdw-elevated],[mdw-filled])) {
+:host(:is([mdw-outlined], [mdw-elevated], [mdw-filled])) {
   --mdw-button__icon__margin-inline-start: 16px;
 }
 
@@ -92,12 +92,7 @@
   color: rgba(var(--mdw-color__on-surface), 0.38);
 }
 
-:host([aria-disabled="true"]) .mdw-button__image {
-  /* filter: grayscale(); */
-  opacity: 0.38;
-}
-
-:host([aria-disabled="true"]:is([mdw-elevated],[mdw-filled])) {
+:host([aria-disabled="true"]:is([mdw-elevated], [mdw-filled])) {
   background: rgba(var(--mdw-color__on-surface), 0.12);
 }
 
@@ -106,11 +101,10 @@
 }
 
 /* Elevation */
+
 /* Use CSS instead of [mdw-elevation] to avoid JS calls */
 
-:host(:where(
-[mdw-elevated],
-[mdw-filled]:hover:not(:active))) {
+:host(:where([mdw-elevated], [mdw-filled]:hover:not(:active))) {
   --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__1);
   --mdw-container__box-shadow: var(--mdw-container__box-shadow__1);
 }
@@ -151,7 +145,8 @@
 
   transition-delay: 1ms;
   transition-duration: 100ms;
-  transition-property: font-variation-settings, inline-size, opacity;
+  /* stylelint-disable-next-line liberty/use-logical-spec -- Safari does not animate inline-size */
+  transition-property: font-variation-settings, inline-size, opacity, width;
 
   opacity: var(--mdw-button__icon__opacity);
 
@@ -163,10 +158,6 @@
   inline-size: 0;
 }
 
-.mdw-button__image:not([src]) {
-  display: none;
-}
-
 .mdw-button__image {
   position: absolute;
   inset: 0;
@@ -175,6 +166,15 @@
   inline-size: 100%;
 
   object-fit: cover;
+}
+
+.mdw-button__image:not([src]) {
+  display: none;
+}
+
+:host([aria-disabled="true"]) .mdw-button__image {
+  /* filter: grayscale(); */
+  opacity: 0.38;
 }
 
 /* Remove Firefox inner */
@@ -192,7 +192,6 @@
   inline-size: var(--mdw-button__touch-target__size);
 
   visibility: hidden;
-
 }
 
 @media (any-pointer: coarse) {
@@ -206,5 +205,6 @@
 }
 
 .material-symbols-outlined {
-  direction: inherit; /* https://github.com/google/material-design-icons/issues/750 */
+  direction: inherit;
+  /* https://github.com/google/material-design-icons/issues/750 */
 }

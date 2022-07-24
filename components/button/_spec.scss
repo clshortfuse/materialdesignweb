@@ -157,6 +157,5 @@
 // Disabled
 .mdw-button[disabled],
 .mdw-button[aria-disabled="true"] {
-  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   cursor: not-allowed;
 }

@@ -3,26 +3,15 @@
     "browser": true
   },
   "ignorePatterns": ["*.min.js"],
-  "settings": {
-    "html/html-extensions": [
-      ".html",
-      ".eta"
-    ]
-  },
-  "extends": [
-    "stylelint-config-recommended-scss",
-    "stylelint-config-sass-guidelines"
-  ],
   "ignoreFiles": "test/**",
   "plugins": [
-    "stylelint-scss",
-    "stylelint-use-logical-spec",
-    "stylelint-no-unsupported-browser-features"
+    "stylelint-no-unsupported-browser-features",
+    "stylelint-order",
+    "stylelint-use-logical-spec"
   ],
-  "customSyntax": "postcss-scss",
   "rules": {
     "plugin/no-unsupported-browser-features": [ true, {
-      "ignore": ["css-appearance", "overscroll-behavior"]
+      "ignore": ["css-appearance", "overscroll-behavior", "css3-cursors"]
     }],
     "liberty/use-logical-spec": [
       "always"
@@ -35,8 +24,6 @@
     "selector-no-qualifying-type": null,
     "number-no-trailing-zeros": null,
     "string-quotes": null,
-    "scss/at-import-partial-extension-blacklist": null,
-    "scss/selector-no-redundant-nesting-selector": null,
     "font-family-no-missing-generic-family-keyword": null,
     "color-hex-length": null,
     "color-hex-case": null,
@@ -83,16 +70,6 @@
         "severity": "warning"
       }
     ],
-    "scss/at-import-no-partial-leading-underscore": null,
-    "scss/at-function-pattern": "^[a-z][a-zA-Z0-9]*$",
-    "scss/at-mixin-pattern": "^[a-z][a-zA-Z0-9]*$",
-    "scss/dollar-variable-default": [
-      true,
-      {
-        "ignore": "local"
-      }
-    ],
-    "scss/dollar-variable-pattern": "^[a-z][a-zA-Z0-9-]*$",
     "order/order": [
       "dollar-variables",
       "custom-properties",
@@ -631,15 +608,5 @@
         ]
       }
     ]
-  },
-  "overrides": [
-    {
-      "files": [
-        "**/*.scss"
-      ],
-      "rules": {
-        "selector-class-pattern": "^mdw-[a-z]+(__[a-z-]+)*$"
-      }
-    }
-  ]
+  }
 }
