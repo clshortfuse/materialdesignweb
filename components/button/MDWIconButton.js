@@ -13,5 +13,11 @@ export default class MDWIconButton extends MDWButton {
 
   static elementName = 'mdw-icon-button';
 
-  static get styles() { return [...super.styles, styles]; }
+  static get styles() {
+    return [
+      ...super.styles,
+      // new URL('MDWIconButton.css', import.meta.url),
+      styles,
+    ];
+  }
 }

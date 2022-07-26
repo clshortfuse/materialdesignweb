@@ -1,61 +1,61 @@
 # Syntax
 
 
-## Flat
-```
-.mdw-button
-```
-
-## Raised
-```
-.mdw-button(mdw-raised)
+## Elevated
+```html
+  <mdw-button mdw-elevated>Elevated</mdw-button>
+  <mdw-button aria-disabled=true mdw-elevated>Elevated (disabled)</mdw-button>
+  <mdw-button mdw-elevated mdw-icon=search>Elevated icon</mdw-button>
+  <mdw-button mdw-elevated mdw-color="surface" mdw-ink="tertiary">Elevated Surface-Tertiary</mdw-button>
 ```
 
-## Colored (Primary)
-```
-.mdw-button.mdw-theme(mdw-ink="primary contrast")
-```
-
-## Colored (Custom)
-```
-.mdw-button.mdw-theme(mdw-ink="green contrast")
+## Filled
+```html
+  <mdw-button mdw-filled>Filled button</mdw-button>
+  <mdw-button aria-disabled=true mdw-filled>Filled button (Disabled)</mdw-button>
 ```
 
-## Filled Light
-```
-.mdw-button.mdw-theme(mdw-surface="primary 100" mdw-light)
-```
-
-## Filled Dark
-```
-.mdw-button.mdw-theme(mdw-surface="secondary 600" mdw-dark)
+## Filled Tonal
+```html
+  <mdw-button mdw-filled=tonal>Filled tonal button</mdw-button>
+  <mdw-button aria-disabled=true mdw-filled=tonal>Filled tonal button (Disabled)</mdw-button>
+  <mdw-button mdw-filled=tonal mdw-icon=search>Filled tonal button</mdw-button>
 ```
 
-## Toggled
-```
-.mdw-button(aria-pressed="true")
-```
-
-## Disabled
-```
-a.mdw-button(disabled)
-button.mdw-button(disabled)
-.mdw-button(aria-disabled="true")
+## Outlined
+```html
+  <mdw-button mdw-outlined>Outlined</mdw-button>
+  <mdw-button mdw-outlined mdw-icon=add>Outlined icon</mdw-button>
+  <mdw-button mdw-outlined="surface" mdw-icon=add>Outlined surface icon</mdw-button>
+  <mdw-button aria-disabled=true mdw-outlined>Outlined (Disabled)</mdw-button>
+  <mdw-button aria-disabled=true mdw-outlined mdw-icon=add>Outlined icon (Disabled)</mdw-button>
 ```
 
-## Icon Button
-```
-.mdw-button(mdw-icon).material-icons favorite
-```
-
-# Javascript
-
-```
-  for (const el of document.getElementsByClassName("mdw-button")) Button.attach(el);
+## Text
+```html
+  <mdw-button>Text</mdw-button>
+  <mdw-button mdw-ink=tertiary mdw-icon=add>Tertiary</mdw-button>
+  <mdw-button mdw-ink=tertiary aria-disabled=true>Text (Disabled)</mdw-button>
+  <mdw-button mdw-ink=primary aria-disabled=true mdw-icon=add>Icon text (Disabled)</mdw-button>
 ```
 
-# Notes
+## Custom
+```html
+  <mdw-button class=mdw-custom mdw-ink=yellow>Custom text</mdw-button>
+  <mdw-button class=mdw-custom mdw-elevated mdw-ink=yellow>Custom elevated</mdw-button>
+  <mdw-button class=mdw-custom mdw-filled mdw-color=yellow>Custom filled</mdw-button>
+  <mdw-button class=mdw-custom mdw-filled=tonal mdw-icon=add mdw-color=yellow-container>Custom tonal</mdw-button>
+  <mdw-button class=mdw-custom mdw-outlined mdw-ink=yellow>Custom outlined</mdw-button>
+  <mdw-button aria-disabled=true mdw-outlined>Outlined (Disabled)</mdw-button>
+  <mdw-button aria-disabled=true mdw-outlined mdw-icon=add>Outlined icon (Disabled)</mdw-button>
+  <mdw-button aria-disabled=true class=mdw-custom mdw-ink=yellow>Custom text</mdw-button>
+  <mdw-button aria-disabled=true class=mdw-custom mdw-elevated=yellow>Custom elevated</mdw-button>
+  <mdw-button aria-disabled=true mdw-filled class=mdw-custom mdw-color=yellow>Custom filled</mdw-button>
+  <mdw-button aria-disabled=true mdw-filled=tonal class=mdw-custom mdw-icon=add mdw-color=yellow-container>Custom tonal</mdw-button>
+```
 
-The click ripple aftereffect is centered when using keyboard or when using only CSS. Initializing the element with Javascript will ensure the ripple will spawn from the cursor position.
+```js
+  import MDWButton from "components/button/MDWButton.js";
 
-Use of `HTMLElementButton` or `HTMLAnchorElement` is supported, but note that using interactive content descendents violates the HTML specifications. Therefore, some browsers may not apply interactive elements such as ripples.
+  MDWButton.register()
+```

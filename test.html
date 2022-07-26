@@ -27,7 +27,7 @@
     }
 
     html {
-      background: repeating-conic-gradient(rgba(var(--mdw-color__on-background), 0.025) 0% 25%, transparent 0% 50%) 50% / 16px 16px;
+      background: repeating-conic-gradient(rgba(var(--mdw-color__on-background), 0.0333) 0% 25%, transparent 0% 50%) 50% / 16px 16px;
       background-color: rgb(var(--mdw-color__background));
       color: rgb(var(--mdw-color__on-background));
     }
@@ -41,8 +41,6 @@
     .custom-card-box {
       padding: 12px;
     }
-
-    mdw-button {}
 
     flex {
       display: flex;
@@ -62,10 +60,6 @@
 
     flex[column] {
       flex-direction: column;
-    }
-
-    .colorful-bg {
-      background-image: linear-gradient(rgb(var(--mdw-color__primary-container)), rgb(var(--mdw-color__tertiary-container)));
     }
 
   </style>
@@ -242,65 +236,79 @@
       <h2> Common Buttons </h2>
       <section>
         <h3> Elevated buttons </h3>
-        <flex align-center gap12 wrap>
-          <mdw-button mdw-elevated>Elevated button</mdw-button>
-          <mdw-button aria-disabled=true mdw-elevated>Elevated button (disabled)</mdw-button>
-          <mdw-button mdw-elevated mdw-icon=search>Elevated icon button</mdw-button>
-          <mdw-button mdw-elevated mdw-color="surface" mdw-ink="tertiary">Elevated Surface-Tertiary button</mdw-button>
+        <flex gap12 wrap>
+          <flex gap12 wrap>
+            <mdw-button mdw-elevated>Default</mdw-button>
+            <mdw-button mdw-elevated mdw-icon=search mdw-ink=tertiary>Icon Tertiary</mdw-button>
+            <mdw-button mdw-elevated class=mdw-custom mdw-ink=yellow>Custom Color</mdw-button>
+          </flex>
+          <flex gap12 wrap>
+            <mdw-button aria-disabled=true mdw-elevated>Default</mdw-button>
+            <mdw-button aria-disabled=true mdw-elevated mdw-icon=search mdw-ink=tertiary>Icon Tertiary</mdw-button>
+            <mdw-button aria-disabled=true mdw-elevated class=mdw-custom mdw-ink=yellow>Custom Color</mdw-button>
+          </flex>
         </flex>
       </section>
       <section>
         <h3> Filled buttons </h3>
-        <flex align-center gap12 wrap>
-          <mdw-button mdw-filled>Filled button</mdw-button>
-          <mdw-button aria-disabled=true mdw-filled>Filled button (Disabled)</mdw-button>
+        <flex gap12 wrap>
+          <flex gap12 wrap>
+            <mdw-button mdw-filled>Default</mdw-button>
+            <mdw-button mdw-filled mdw-icon=search mdw-color=tertiary>Icon Tertiary</mdw-button>
+            <mdw-button mdw-filled class=mdw-custom mdw-color=yellow>Custom Color</mdw-button>
+          </flex>
+          <flex gap12 wrap>
+            <mdw-button aria-disabled=true mdw-filled>Default</mdw-button>
+            <mdw-button aria-disabled=true mdw-filled mdw-icon=search mdw-color=tertiary>Icon Tertiary</mdw-button>
+            <mdw-button aria-disabled=true mdw-filled class=mdw-custom mdw-color=yellow>Custom Color</mdw-button>
+          </flex>
         </flex>
       </section>
       <section>
-        <h3> Filled tonal buttons </h3>
-        <flex align-center gap12 wrap>
-          <mdw-button mdw-filled=tonal>Filled tonal button</mdw-button>
-          <mdw-button aria-disabled=true mdw-filled=tonal>Filled tonal button (Disabled)</mdw-button>
-          <mdw-button mdw-filled=tonal mdw-icon=search>Filled tonal button</mdw-button>
+        <h3>Filled tonal buttons</h3>
+        <flex gap12 wrap>
+          <flex gap12 wrap>
+            <mdw-button mdw-filled=tonal>Default</mdw-button>
+            <mdw-button mdw-filled=tonal mdw-icon=search mdw-color=tertiary-container>Icon Tertiary</mdw-button>
+            <mdw-button mdw-filled=tonal class=mdw-custom mdw-color=yellow-container>Custom Color</mdw-button>
+          </flex>
+          <flex gap12 wrap>
+            <mdw-button aria-disabled=true mdw-filled=tonal>Default</mdw-button>
+            <mdw-button aria-disabled=true mdw-filled=tonal mdw-icon=search mdw-color=tertiary-container>Icon Tertiary</mdw-button>
+            <mdw-button aria-disabled=true mdw-filled=tonal class=mdw-custom mdw-color=yellow-container>Custom Color</mdw-button>
+          </flex>
         </flex>
       </section>
       <section>
         <h3> Outlined buttons </h3>
-        <flex align-center gap12 wrap>
-          <mdw-button mdw-outlined>Outlined button</mdw-button>
-          <mdw-button mdw-outlined mdw-icon=add>Outlined icon button</mdw-button>
-          <mdw-button mdw-outlined="surface" mdw-icon=add>Outlined surface icon button</mdw-button>
-          <mdw-button aria-disabled=true mdw-outlined>Outlined button (Disabled)</mdw-button>
-          <mdw-button aria-disabled=true mdw-outlined mdw-icon=add>Outlined icon button (Disabled)</mdw-button>
+        <flex gap12 wrap>
+          <flex gap12 wrap>
+            <mdw-button mdw-outlined>Default</mdw-button>
+            <mdw-button mdw-outlined mdw-color=surface-primary>Surface Primary</mdw-button>
+            <mdw-button mdw-outlined mdw-icon=search mdw-ink=tertiary>Icon Tertiary</mdw-button>
+            <mdw-button mdw-outlined class=mdw-custom mdw-ink=yellow>Custom Color</mdw-button>
+          </flex>
+          <flex gap12 wrap>
+            <mdw-button aria-disabled=true mdw-outlined>Default</mdw-button>
+            <mdw-button aria-disabled=true mdw-outlined mdw-color=surface-primary>Surface Primary</mdw-button>
+            <mdw-button aria-disabled=true mdw-outlined mdw-icon=search mdw-ink=tertiary>Icon Tertiary</mdw-button>
+            <mdw-button aria-disabled=true mdw-outlined class=mdw-custom mdw-ink=yellow>Custom Color</mdw-button>
+          </flex>
         </flex>
       </section>
       <section>
-        <h3> Text buttons </h3>
-        <flex align-center gap12 wrap>
-          <mdw-button>0</mdw-button>
-          <mdw-button>Text button</mdw-button>
-          <mdw-button mdw-ink=tertiary mdw-icon=add>Tertiary text button</mdw-button>
-          <mdw-button mdw-ink=tertiary aria-disabled=true>Text button (Disabled)</mdw-button>
-          <mdw-button mdw-ink=primary aria-disabled=true mdw-icon=add>Icon text button (Disabled)</mdw-button>
-        </flex>
-      </section>
-      <section>
-        <h3> Custom buttons </h3>
-        <flex align-center gap12 wrap>
-          <mdw-button class=mdw-custom mdw-ink=yellow>Custom text button</mdw-button>
-          <mdw-button class=mdw-custom mdw-elevated mdw-ink=yellow>Custom elevated button</mdw-button>
-          <mdw-button class=mdw-custom mdw-filled mdw-color=yellow>Custom filled button</mdw-button>
-          <mdw-button class=mdw-custom mdw-filled=tonal mdw-icon=add mdw-color=yellow-container>Custom tonal button
-          </mdw-button>
-          <mdw-button class=mdw-custom mdw-outlined mdw-ink=yellow>Custom outlined button</mdw-button>
-          <mdw-button aria-disabled=true mdw-outlined>Outlined button (Disabled)</mdw-button>
-          <mdw-button aria-disabled=true mdw-outlined mdw-icon=add>Outlined icon button (Disabled)</mdw-button>
-          <mdw-button aria-disabled=true class=mdw-custom mdw-ink=yellow>Custom text button</mdw-button>
-          <mdw-button aria-disabled=true class=mdw-custom mdw-elevated=yellow>Custom elevated button</mdw-button>
-          <mdw-button aria-disabled=true mdw-filled class=mdw-custom mdw-color=yellow>Custom filled button</mdw-button>
-          <mdw-button aria-disabled=true mdw-filled=tonal class=mdw-custom mdw-icon=add mdw-color=yellow-container>
-            Custom tonal button
-          </mdw-button>
+        <h3>Text buttons</h3>
+        <flex gap12 wrap>
+          <flex gap12 wrap>
+            <mdw-button>Default</mdw-button>
+            <mdw-button mdw-icon=search mdw-ink=tertiary>Icon Tertiary</mdw-button>
+            <mdw-button class=mdw-custom mdw-ink=yellow>Custom Color</mdw-button>
+          </flex>
+          <flex gap12 wrap>
+            <mdw-button aria-disabled=true>Default</mdw-button>
+            <mdw-button aria-disabled=true mdw-icon=search mdw-ink=tertiary>Icon Tertiary</mdw-button>
+            <mdw-button aria-disabled=true class=mdw-custom mdw-ink=yellow>Custom Color</mdw-button>
+          </flex>
         </flex>
       </section>
     </section>
@@ -351,7 +359,6 @@
       <h2> Extended FAB </h2>
       <section>
         <h3>With icon</h3>
-
         <flex align-center gap12 wrap>
           <mdw-extended-fab-button mdw-color=surface-primary mdw-icon=edit>Compose</mdw-extended-fab-button>
           <mdw-extended-fab-button mdw-color=secondary-container mdw-icon=edit>Compose</mdw-extended-fab-button>
@@ -371,64 +378,179 @@
       <h2> Icon buttons </h2>
       <section>
         <h3> Filled icon buttons </h3>
-        <flex align-center gap12 wrap>
-          <mdw-icon-button mdw-filled>search</mdw-icon-button>
-          <mdw-icon-button mdw-filled aria-pressed=false>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-filled aria-disabled=true aria-pressed=false>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-filled aria-disabled=true aria-pressed=true>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-filled aria-pressed=true>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-filled aria-pressed=false mdw-color=tertiary>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-filled mdw-color=tertiary>favorite</mdw-icon-button>
-        </flex>
+        <section>
+          <h4>No toggle</h4>
+          <flex gap12 wrap>
+            <flex gap12 wrap>
+              <mdw-icon-button mdw-filled>settings</mdw-icon-button>
+              <mdw-icon-button mdw-filled mdw-color=tertiary>favorite</mdw-icon-button>
+              <mdw-icon-button mdw-filled class=mdw-custom mdw-color=yellow>edit</mdw-icon-button>
+            </flex>
+            <flex gap12 wrap>
+              <mdw-icon-button aria-disabled=true mdw-filled>settings</mdw-icon-button>
+              <mdw-icon-button aria-disabled=true mdw-filled mdw-color=tertiary>favorite</mdw-icon-button>
+              <mdw-icon-button aria-disabled=true mdw-filled class=mdw-custom mdw-color=yellow>edit</mdw-icon-button>
+            </flex>
+          </flex>
+        </section>
+        <section>
+          <h4>Toggle</h4>
+          <flex gap12 wrap>
+            <flex gap12 wrap>
+              <mdw-icon-button mdw-filled aria-pressed=false>settings</mdw-icon-button>
+              <mdw-icon-button mdw-filled aria-pressed=true>settings</mdw-icon-button>
+              <mdw-icon-button mdw-filled aria-pressed=false mdw-color=tertiary>favorite</mdw-icon-button>
+              <mdw-icon-button mdw-filled aria-pressed=true mdw-color=tertiary>favorite</mdw-icon-button>
+              <mdw-icon-button mdw-filled aria-pressed=false class=mdw-custom mdw-color=yellow>edit</mdw-icon-button>
+              <mdw-icon-button mdw-filled aria-pressed=true class=mdw-custom mdw-color=yellow>edit</mdw-icon-button>
+            </flex>
+            <flex gap12 wrap>
+              <mdw-icon-button mdw-filled aria-disabled=true aria-pressed=false>settings</mdw-icon-button>
+              <mdw-icon-button mdw-filled aria-disabled=true aria-pressed=true>settings</mdw-icon-button>
+              <mdw-icon-button mdw-filled aria-disabled=true aria-pressed=false mdw-color=tertiary>favorite
+              </mdw-icon-button>
+              <mdw-icon-button mdw-filled aria-disabled=true aria-pressed=true mdw-color=tertiary>favorite
+              </mdw-icon-button>
+              <mdw-icon-button mdw-filled aria-disabled=true aria-pressed=false class=mdw-custom mdw-color=yellow>edit
+              </mdw-icon-button>
+              <mdw-icon-button mdw-filled aria-disabled=true aria-pressed=true class=mdw-custom mdw-color=yellow>edit
+              </mdw-icon-button>
+            </flex>
+          </flex>
+        </section>
       </section>
       <section>
-        <h3> Filled tonal icon buttons </h3>
-        <flex align-center gap12 wrap>
-          <mdw-icon-button mdw-filled=tonal>search</mdw-icon-button>
-          <mdw-icon-button mdw-filled=tonal aria-pressed=false>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-filled=tonal aria-disabled=true aria-pressed=false>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-filled=tonal aria-disabled=true aria-pressed=true>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-filled=tonal aria-pressed=true>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-filled=tonal aria-pressed=false mdw-color=tertiary-container>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-filled=tonal mdw-color=tertiary-container>favorite</mdw-icon-button>
-        </flex>
+        <h3>Filled tonal icon buttons</h3>
+        <section>
+          <h4>No toggle</h4>
+          <flex gap12 wrap>
+            <flex gap12 wrap>
+              <mdw-icon-button mdw-filled=tonal>settings</mdw-icon-button>
+              <mdw-icon-button mdw-filled=tonal mdw-color=tertiary-container>favorite</mdw-icon-button>
+              <mdw-icon-button mdw-filled=tonal class=mdw-custom mdw-color=yellow-container>edit</mdw-icon-button>
+            </flex>
+            <flex gap12 wrap>
+              <mdw-icon-button aria-disabled=true mdw-filled=tonal>settings</mdw-icon-button>
+              <mdw-icon-button aria-disabled=true mdw-filled=tonal mdw-color=tertiary>favorite</mdw-icon-button>
+              <mdw-icon-button aria-disabled=true mdw-filled=tonal class=mdw-custom mdw-color=yellow>edit
+              </mdw-icon-button>
+            </flex>
+          </flex>
+        </section>
+        <section>
+          <h4>Toggle</h4>
+          <flex gap12 wrap>
+            <flex gap12 wrap>
+              <mdw-icon-button mdw-filled=tonal aria-pressed=false>settings</mdw-icon-button>
+              <mdw-icon-button mdw-filled=tonal aria-pressed=true>settings</mdw-icon-button>
+              <mdw-icon-button mdw-filled=tonal aria-pressed=false mdw-color=tertiary-container>favorite
+              </mdw-icon-button>
+              <mdw-icon-button mdw-filled=tonal aria-pressed=true mdw-color=tertiary-container>favorite
+              </mdw-icon-button>
+              <mdw-icon-button mdw-filled=tonal aria-pressed=false class=mdw-custom mdw-color=yellow-container>edit
+              </mdw-icon-button>
+              <mdw-icon-button mdw-filled=tonal aria-pressed=true class=mdw-custom mdw-color=yellow-container>edit
+              </mdw-icon-button>
+            </flex>
+            <flex gap12 wrap>
+              <mdw-icon-button mdw-filled=tonal aria-disabled=true aria-pressed=false>settings</mdw-icon-button>
+              <mdw-icon-button mdw-filled=tonal aria-disabled=true aria-pressed=true>settings</mdw-icon-button>
+              <mdw-icon-button mdw-filled=tonal aria-disabled=true aria-pressed=false mdw-color=tertiary-container>
+                favorite</mdw-icon-button>
+              <mdw-icon-button mdw-filled=tonal aria-disabled=true aria-pressed=true mdw-color=tertiary-container>
+                favorite</mdw-icon-button>
+              <mdw-icon-button mdw-filled=tonal aria-disabled=true aria-pressed=false class=mdw-custom
+                mdw-color=yellow-container>edit</mdw-icon-button>
+              <mdw-icon-button mdw-filled=tonal aria-disabled=true aria-pressed=true class=mdw-custom
+                mdw-color=yellow-container>edit</mdw-icon-button>
+            </flex>
+          </flex>
+        </section>
       </section>
       <section>
-        <h3> Outlined icon buttons </h3>
-        <flex align-center gap12 wrap>
-          <mdw-icon-button mdw-outlined>search</mdw-icon-button>
-          <mdw-icon-button mdw-outlined aria-pressed=false>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-outlined aria-disabled=true aria-pressed=false>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-outlined aria-disabled=true aria-pressed=true>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-outlined aria-pressed=true>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-outlined aria-pressed=false mdw-color=tertiary>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-outlined aria-pressed=false mdw-color=tertiary-container>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-outlined mdw-ink=tertiary>favorite</mdw-icon-button>
-        </flex>
+        <h3>Outlined icon buttons</h3>
+        <section>
+          <h4>No toggle</h4>
+          <flex gap12 wrap>
+            <flex gap12 wrap>
+              <mdw-icon-button mdw-outlined>settings</mdw-icon-button>
+              <mdw-icon-button mdw-outlined mdw-ink=tertiary>favorite</mdw-icon-button>
+              <mdw-icon-button mdw-outlined class=mdw-custom mdw-ink=yellow>edit</mdw-icon-button>
+            </flex>
+            <flex gap12 wrap>
+              <mdw-icon-button aria-disabled=true mdw-outlined>settings</mdw-icon-button>
+              <mdw-icon-button aria-disabled=true mdw-outlined mdw-color=tertiary>favorite</mdw-icon-button>
+              <mdw-icon-button aria-disabled=true mdw-outlined class=mdw-custom mdw-color=yellow>edit
+              </mdw-icon-button>
+            </flex>
+          </flex>
+        </section>
+        <section>
+          <h4>Toggle</h4>
+          <flex gap12 wrap>
+            <flex gap12 wrap>
+              <mdw-icon-button mdw-outlined aria-pressed=false>settings</mdw-icon-button>
+              <mdw-icon-button mdw-outlined aria-pressed=true>settings</mdw-icon-button>
+              <mdw-icon-button mdw-outlined aria-pressed=false mdw-color=tertiary>favorite</mdw-icon-button>
+              <mdw-icon-button mdw-outlined aria-pressed=true mdw-color=tertiary>favorite</mdw-icon-button>
+              <mdw-icon-button mdw-outlined aria-pressed=false class=mdw-custom mdw-color=yellow>edit</mdw-icon-button>
+              <mdw-icon-button mdw-outlined aria-pressed=true class=mdw-custom mdw-color=yellow>edit</mdw-icon-button>
+            </flex>
+            <flex gap12 wrap>
+              <mdw-icon-button mdw-outlined aria-disabled=true aria-pressed=false>settings</mdw-icon-button>
+              <mdw-icon-button mdw-outlined aria-disabled=true aria-pressed=true>settings</mdw-icon-button>
+              <mdw-icon-button mdw-outlined aria-disabled=true aria-pressed=false mdw-color=tertiary-container>favorite
+              </mdw-icon-button>
+              <mdw-icon-button mdw-outlined aria-disabled=true aria-pressed=true mdw-color=tertiary-container>favorite
+              </mdw-icon-button>
+              <mdw-icon-button mdw-outlined aria-disabled=true aria-pressed=false class=mdw-custom
+                mdw-color=yellow-container>edit</mdw-icon-button>
+              <mdw-icon-button mdw-outlined aria-disabled=true aria-pressed=true class=mdw-custom
+                mdw-color=yellow-container>edit</mdw-icon-button>
+            </flex>
+          </flex>
+        </section>
       </section>
       <section>
         <h3> Standard icon buttons </h3>
-        <flex align-center gap12 wrap>
-          <mdw-icon-button>search</mdw-icon-button>
-          <mdw-icon-button aria-pressed=false>favorite</mdw-icon-button>
-          <mdw-icon-button aria-disabled=true aria-pressed=false>favorite</mdw-icon-button>
-          <mdw-icon-button aria-disabled=true aria-pressed=true>favorite</mdw-icon-button>
-          <mdw-icon-button aria-pressed=true>favorite</mdw-icon-button>
-          <mdw-icon-button aria-pressed=false mdw-ink=tertiary>favorite</mdw-icon-button>
-          <mdw-icon-button mdw-ink=tertiary>favorite</mdw-icon-button>
-        </flex>
-      </section>
-      <section>
-        <h3> Custom icon buttons </h3>
-        <flex align-center gap12 wrap>
-          <mdw-icon-button class=mdw-custom mdw-ink=yellow>search</mdw-icon-button>
-          <mdw-icon-button class=mdw-custom mdw-filled mdw-color=yellow>search</mdw-icon-button>
-          <mdw-icon-button class=mdw-custom mdw-filled=tonal mdw-color=yellow-container>search</mdw-icon-button>
-          <mdw-icon-button aria-pressed=false class=mdw-custom mdw-ink=yellow>favorite</mdw-icon-button>
-          <mdw-icon-button aria-pressed=false class=mdw-custom mdw-filled mdw-color=yellow>favorite</mdw-icon-button>
-          <mdw-icon-button aria-pressed=false class=mdw-custom mdw-filled=tonal mdw-color=yellow-container>favorite
-          </mdw-icon-button>
-        </flex>
+        <section>
+          <h4>No toggle</h4>
+          <flex gap12 wrap>
+            <flex gap12 wrap>
+              <mdw-icon-button>settings</mdw-icon-button>
+              <mdw-icon-button mdw-ink=tertiary>favorite</mdw-icon-button>
+              <mdw-icon-button class=mdw-custom mdw-ink=yellow>edit</mdw-icon-button>
+            </flex>
+            <flex gap12 wrap>
+              <mdw-icon-button aria-disabled=true>settings</mdw-icon-button>
+              <mdw-icon-button aria-disabled=true mdw-ink=tertiary>favorite</mdw-icon-button>
+              <mdw-icon-button aria-disabled=true class=mdw-custom mdw-ink=yellow>edit</mdw-icon-button>
+            </flex>
+          </flex>
+        </section>
+        <section>
+          <h4>Toggle</h4>
+          <flex gap12 wrap>
+            <flex gap12 wrap>
+              <mdw-icon-button aria-pressed=false>settings</mdw-icon-button>
+              <mdw-icon-button aria-pressed=true>settings</mdw-icon-button>
+              <mdw-icon-button aria-pressed=false mdw-ink=tertiary>favorite</mdw-icon-button>
+              <mdw-icon-button aria-pressed=true mdw-ink=tertiary>favorite</mdw-icon-button>
+              <mdw-icon-button aria-pressed=false class=mdw-custom mdw-ink=yellow>edit</mdw-icon-button>
+              <mdw-icon-button aria-pressed=true class=mdw-custom mdw-ink=yellow>edit</mdw-icon-button>
+            </flex>
+            <flex gap12 wrap>
+              <mdw-icon-button aria-disabled=true aria-pressed=false>settings</mdw-icon-button>
+              <mdw-icon-button aria-disabled=true aria-pressed=true>settings</mdw-icon-button>
+              <mdw-icon-button aria-disabled=true aria-pressed=false mdw-ink=tertiary>favorite</mdw-icon-button>
+              <mdw-icon-button aria-disabled=true aria-pressed=true mdw-ink=tertiary>favorite</mdw-icon-button>
+              <mdw-icon-button aria-disabled=true aria-pressed=false class=mdw-custom mdw-ink=yellow>edit
+              </mdw-icon-button>
+              <mdw-icon-button aria-disabled=true aria-pressed=true class=mdw-custom mdw-ink=yellow>edit
+              </mdw-icon-button>
+            </flex>
+          </flex>
+        </section>
       </section>
     </section>
     <section>
@@ -724,7 +846,8 @@
           <mdw-filter-chip role=checkbox aria-checked=true>Default</mdw-filter-chip>
           <mdw-filter-chip role=checkbox aria-checked=true mdw-color=tertiary-container>Tertiary</mdw-filter-chip>
           <mdw-filter-chip role=checkbox aria-checked=true mdw-color=surface-primary>Surface Primary</mdw-filter-chip>
-          <mdw-filter-chip role=checkbox aria-checked=true class=mdw-custom mdw-color=green-container>Custom color</mdw-filter-chip>
+          <mdw-filter-chip role=checkbox aria-checked=true class=mdw-custom mdw-color=green-container>Custom color
+          </mdw-filter-chip>
           <mdw-filter-chip role=checkbox aria-checked=true>Assist chip</mdw-filter-chip>
           <mdw-filter-chip role=checkbox aria-checked=true aria-disabled="true">Disabled chip</mdw-filter-chip>
         </flex>
@@ -745,7 +868,7 @@
           <mdw-chip mdw-suggestion mdw-color=surface-primary>Surface Primary</mdw-chip>
           <mdw-chip mdw-suggestion class=mdw-custom mdw-ink=green>Custom ink</mdw-chip>
           <mdw-chip mdw-suggestion aria-disabled="true">Disabled chip</mdw-chip>
-        </flex>  
+        </flex>
       </section>
       <section>
         <h3>Elevated</h3>
@@ -755,13 +878,13 @@
           <mdw-chip mdw-elevated mdw-suggestion mdw-ink=tertiary>Tertiary</mdw-chip>
           <mdw-chip mdw-elevated mdw-suggestion class=mdw-custom mdw-ink=green>Custom ink</mdw-chip>
           <mdw-chip mdw-elevated mdw-suggestion aria-disabled="true">Disabled chip</mdw-chip>
-        </flex>  
+        </flex>
       </section>
     </section>
   </section>
   <br>
   <caption>Sample</caption>
-  <script type=module src="index.js?color=&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=dark"></script>
+  <script type=module src="index.js?color=&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=light"></script>
 
 </body>
 
