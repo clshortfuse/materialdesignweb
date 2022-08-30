@@ -11,12 +11,12 @@ A standards-focused, zero-dependency implemention of Material Design 3 (Material
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/native/demo.html?d=1661894306839
+https://rawcdn.githack.com/clshortfuse/materialdesignweb/native/demo.html?d=1661896564063
 
 # Getting started
 
 ```html
-<style type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/native/index.js?d=1661894306839" />
+<style type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/native/index.js?d=1661896564063" />
 ```
 
 # Support

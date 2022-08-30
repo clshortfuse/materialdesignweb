@@ -57,7 +57,7 @@ export default class MDWSegmentedButton extends MDWButton {
     if (this.type !== 'radio') return;
     if (this.required) return;
     if (!this.hasAttribute('checked')) return;
-    event.preventDefault();
+
     this.checked = false;
     host.toggleAttribute('checked', false);
   }
