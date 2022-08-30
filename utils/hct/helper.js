@@ -133,15 +133,15 @@ function cssVariablesFromCustom(name, tonalPalette, isDark) {
       --mdw-color__${name}-container: ${cssVarFromArgb(tonalPalette.tone(isDark ? 30 : 90))};
       --mdw-color__on-${name}-container: ${cssVarFromArgb(tonalPalette.tone(isDark ? 90 : 10))};
     }
-    .mdw-custom[mdw-color="${name}"] {
-      --mdw-surface: var(--mdw-color__${name});
+    .mdw-custom[color="${name}"] {
+      --mdw-bg: var(--mdw-color__${name});
       --mdw-ink: var(--mdw-color__on-${name});
     }
-    .mdw-custom[mdw-color="${name}-container"] {
-      --mdw-surface: var(--mdw-color__${name}-container);
+    .mdw-custom[color="${name}-container"] {
+      --mdw-bg: var(--mdw-color__${name}-container);
       --mdw-ink: var(--mdw-color__on-${name}-container);
     }
-    .mdw-custom[mdw-ink="${name}"] {
+    .mdw-custom[ink="${name}"] {
       --mdw-ink: var(--mdw-color__${name});
     }
     

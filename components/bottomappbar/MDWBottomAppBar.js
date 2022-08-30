@@ -9,10 +9,11 @@ import styles from './MDWBottomAppBar.css' assert { type: 'css' };
  * next on the DOM, so users can logically tab to it.
  */
 
+/** @implements {HTMLMenuElement} */
 export default class MDWBottomAppBar extends MDWContainer {
   static elementName = 'mdw-bottom-app-bar';
 
-  static get styles() { return [...super.styles, styles]; }
+  static styles = [...super.styles, styles];
 
   connectedCallback() {
     AriaToolbar.attach(this);

@@ -12,17 +12,18 @@ const QUERY_SELECTOR = '[role=option]';
 
 /**
  * @param {Event} event
+ * @this {HTMLElement}
  * @return {void}
  */
 function onTabIndexZeroed(event) {
   event.stopPropagation();
-  const element = /** @type {HTMLElement} */ (event.currentTarget);
   const currentItem = /** @type {HTMLElement} */ (event.target);
-  RovingTabIndex.removeTabIndex(element.querySelectorAll(QUERY_SELECTOR), [currentItem]);
+  RovingTabIndex.removeTabIndex(this.querySelectorAll(QUERY_SELECTOR), [currentItem]);
 }
 
 /**
  * @param {CustomEvent} event
+ * @this {HTMLElement}
  * @return {void}
  */
 function onUpArrowKey(event) {
@@ -30,15 +31,15 @@ function onUpArrowKey(event) {
     || event.detail.shiftKey || event.detail.metaKey) {
     return;
   }
-  const element = /** @type {HTMLElement} */ (event.currentTarget);
-  if (element.getAttribute('aria-orientation') === 'horizontal') return;
+  if (this.getAttribute('aria-orientation') === 'horizontal') return;
   event.preventDefault();
   event.stopPropagation();
-  RovingTabIndex.selectPrevious(element.querySelectorAll(QUERY_SELECTOR));
+  this.ariaActiveDescendantElement = RovingTabIndex.selectPrevious(this.querySelectorAll(QUERY_SELECTOR));
 }
 
 /**
  * @param {CustomEvent} event
+ * @this {HTMLElement}
  * @return {void}
  */
 function onBackArrowKey(event) {
@@ -46,15 +47,15 @@ function onBackArrowKey(event) {
     || event.detail.shiftKey || event.detail.metaKey) {
     return;
   }
-  const element = /** @type {HTMLElement} */ (event.currentTarget);
-  if (element.getAttribute('aria-orientation') !== 'horizontal') return;
+  if (this.getAttribute('aria-orientation') !== 'horizontal') return;
   event.preventDefault();
   event.stopPropagation();
-  RovingTabIndex.selectPrevious(element.querySelectorAll(QUERY_SELECTOR));
+  this.ariaActiveDescendantElement = RovingTabIndex.selectPrevious(this.querySelectorAll(QUERY_SELECTOR));
 }
 
 /**
  * @param {CustomEvent} event
+ * @this {HTMLElement}
  * @return {void}
  */
 function onDownArrowKey(event) {
@@ -62,15 +63,15 @@ function onDownArrowKey(event) {
     || event.detail.shiftKey || event.detail.metaKey) {
     return;
   }
-  const element = /** @type {HTMLElement} */ (event.currentTarget);
-  if (element.getAttribute('aria-orientation') === 'horizontal') return;
+  if (this.getAttribute('aria-orientation') === 'horizontal') return;
   event.preventDefault();
   event.stopPropagation();
-  RovingTabIndex.selectNext(element.querySelectorAll(QUERY_SELECTOR));
+  this.ariaActiveDescendantElement = RovingTabIndex.selectNext(this.querySelectorAll(QUERY_SELECTOR));
 }
 
 /**
  * @param {CustomEvent} event
+ * @this {HTMLElement}
  * @return {void}
  */
 function onForwardArrowKey(event) {
@@ -78,38 +79,42 @@ function onForwardArrowKey(event) {
     || event.detail.shiftKey || event.detail.metaKey) {
     return;
   }
-  const element = /** @type {HTMLElement} */ (event.currentTarget);
-  if (element.getAttribute('aria-orientation') !== 'horizontal') return;
+  if (this.getAttribute('aria-orientation') !== 'horizontal') return;
   event.preventDefault();
   event.stopPropagation();
-  RovingTabIndex.selectNext(element.querySelectorAll(QUERY_SELECTOR));
+  this.ariaActiveDescendantElement = RovingTabIndex.selectNext(this.querySelectorAll(QUERY_SELECTOR));
 }
 
 /**
- * @param {CustomEvent<{value:boolean}} event
+ * @param {CustomEvent<{value:'true'|'false'}>} event
+ * @this {HTMLElement}
  * @return {void}
  */
 function onAriaSelectedEvent(event) {
   if (!event.detail.value) return;
-  const element = /** @type {HTMLElement} */ (event.currentTarget);
-  if (element.getAttribute('aria-multiselectable') === 'true') return;
+  if (event.detail.value === 'false' && this.getAttribute('aria-required') === 'true') {
+    event.preventDefault();
+    return;
+  }
+  if (!event.detail.value) return;
+  if (this.getAttribute('aria-multiselectable') === 'true') return;
   // Uncheck all others
-  for (const el of element.querySelectorAll(QUERY_SELECTOR)) {
+  for (const el of this.querySelectorAll(QUERY_SELECTOR)) {
     if (el === event.target) continue;
     el.setAttribute('aria-selected', 'false');
   }
 }
 
 /**
- * @param {CustomEvent<{value:boolean}} event
+ * @param {CustomEvent<{value:boolean}>} event
+ * @this {HTMLElement}
  * @return {void}
  */
 function onAriaCheckedEvent(event) {
   if (!event.detail.value) return;
-  const element = /** @type {HTMLElement} */ (event.currentTarget);
-  if (element.getAttribute('aria-multiselectable') === 'true') return;
+  if (this.getAttribute('aria-multiselectable') === 'true') return;
   // Uncheck all others
-  for (const el of element.querySelectorAll(QUERY_SELECTOR)) {
+  for (const el of this.querySelectorAll(QUERY_SELECTOR)) {
     if (el === event.target) continue;
     el.setAttribute('aria-checked', 'false');
   }
@@ -122,7 +127,8 @@ function onAriaCheckedEvent(event) {
 export function attach(element) {
   if (element.hasAttribute('role') && element.getAttribute('role') !== 'listbox') return;
   element.setAttribute('role', 'listbox');
-  RovingTabIndex.setupTabIndexes(element.querySelectorAll('[role="option"]'), true);
+  const items = element.querySelectorAll(QUERY_SELECTOR);
+  RovingTabIndex.setupTabIndexes(items, true);
   Keyboard.attach(element);
   element.addEventListener(Keyboard.DOWN_ARROW_KEY, onDownArrowKey);
   element.addEventListener(Keyboard.UP_ARROW_KEY, onUpArrowKey);

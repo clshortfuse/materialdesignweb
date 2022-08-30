@@ -3,6 +3,15 @@
 import * as Keyboard from './keyboard.js';
 import * as RovingTabIndex from './rovingtabindex.js';
 
+const TOOLBAR_ITEM_SELECTOR = [
+  'button',
+  '[href]',
+  'input',
+  'select',
+  'textarea',
+  '[tabindex]',
+].join(', ');
+
 /**
  * Toolbar items should be focusable when disabled
  * @see https://w3c.github.io/aria-practices/#kbd_disabled_controls
@@ -32,7 +41,8 @@ function onUpArrowKey(event) {
   if (element.getAttribute('aria-orientation') !== 'vertical') return;
   event.preventDefault();
   event.stopPropagation();
-  RovingTabIndex.selectPrevious(element.children);
+  const items = element.querySelectorAll(TOOLBAR_ITEM_SELECTOR);
+  RovingTabIndex.selectPrevious(items);
 }
 
 /**
@@ -48,7 +58,8 @@ function onBackArrowKey(event) {
   if (element.getAttribute('aria-orientation') === 'vertical') return;
   event.preventDefault();
   event.stopPropagation();
-  RovingTabIndex.selectPrevious(element.children);
+  const items = element.querySelectorAll(TOOLBAR_ITEM_SELECTOR);
+  RovingTabIndex.selectPrevious(items);
 }
 
 /**
@@ -64,7 +75,8 @@ function onDownArrowKey(event) {
   if (element.getAttribute('aria-orientation') !== 'vertical') return;
   event.preventDefault();
   event.stopPropagation();
-  RovingTabIndex.selectNext(element.children);
+  const items = element.querySelectorAll(TOOLBAR_ITEM_SELECTOR);
+  RovingTabIndex.selectNext(items);
 }
 
 /**
@@ -80,8 +92,8 @@ function onForwardArrowKey(event) {
   if (element.getAttribute('aria-orientation') === 'vertical') return;
   event.preventDefault();
   event.stopPropagation();
-  console.log(element.children);
-  RovingTabIndex.selectNext(element.children);
+  const items = element.querySelectorAll(TOOLBAR_ITEM_SELECTOR);
+  RovingTabIndex.selectNext(items);
 }
 
 /**
@@ -91,7 +103,8 @@ function onForwardArrowKey(event) {
 export function attach(element) {
   if (element.hasAttribute('role') && element.getAttribute('role') !== 'toolbar') return;
   element.setAttribute('role', 'toolbar');
-  RovingTabIndex.setupTabIndexes(element.children, true);
+  const items = element.querySelectorAll(TOOLBAR_ITEM_SELECTOR);
+  RovingTabIndex.setupTabIndexes(items, true);
   Keyboard.attach(element);
   element.addEventListener(Keyboard.DOWN_ARROW_KEY, onDownArrowKey);
   element.addEventListener(Keyboard.UP_ARROW_KEY, onUpArrowKey);

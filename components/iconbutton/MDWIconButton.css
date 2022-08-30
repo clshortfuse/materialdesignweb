@@ -17,46 +17,45 @@
 
   --mdw-ink: var(--mdw-color__on-surface-variant);
 
-  min-block-size: 40px;
   block-size: 40px;
-  min-inline-size: 40px;
-  inline-size: 40px;
-  padding: 0;
 
+  min-block-size: 40px;
+  inline-size: 40px;
+  min-inline-size: 40px;
 }
 
-:host([aria-pressed="true"]) {
+:host(:where([toggle])[checked]) {
   --mdw-button__icon__font-variation-settings: 'FILL' 1;
 }
 
 /** Standard default is same as unselected */
 
-:host([aria-pressed="false"]) {
+:host(:where([toggle]):not([checked])) {
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
 /** Filled default is same as selected */
 
-:host(:where([mdw-filled])) {
+:host(:where([filled])) {
   --mdw-ink: var(--mdw-color__on-primary);
-  --mdw-surface: var(--mdw-color__primary);
+  --mdw-bg: var(--mdw-color__primary);
   --mdw-button__icon__font-variation-settings: 'FILL' 1;
-  /* background-color: rgb(var(--mdw-surface)); */
+  /* background-color: rgb(var(--mdw-bg)); */
   /* color: rgb(var(--mdw-color__on-primary)); */
 }
 
-:host(:where([mdw-filled="tonal"])) {
+:host(:where([filled="tonal"])) {
   --mdw-ink: var(--mdw-color__on-secondary-container);
-  --mdw-surface: var(--mdw-color__secondary-container);
+  --mdw-bg: var(--mdw-color__secondary-container);
 }
 
-:host(:where([mdw-filled])[aria-pressed="false"]) {
+:host(:where([filled][toggle]):not([checked])) {
   --mdw-button__icon__font-variation-settings: 'FILL' 0;
   background-color: rgb(var(--mdw-color__surface-variant));
-  color: rgb(var(--mdw-surface));
+  color: rgb(var(--mdw-bg));
 }
 
-:host(:where([mdw-filled="tonal"])[aria-pressed="false"]) {
+:host(:where([filled="tonal"][toggle]):not([checked])) {
   --mdw-button__icon__font-variation-settings: 'FILL' 0;
   background-color: rgb(var(--mdw-color__surface-variant));
   color: rgb(var(--mdw-color__on-surface-variant));
@@ -64,8 +63,8 @@
 
 /** Outlined default is same as unselected */
 
-:host(:where([mdw-outlined])) {
-  --mdw-surface: var(--mdw-color__inverse-surface);
+:host(:where([outlined])) {
+  --mdw-bg: var(--mdw-color__inverse-surface);
   --mdw-ink: var(--mdw-color__inverse-on-surface);
   --mdw-button__icon__font-variation-settings: 'FILL' 0;
   --mdw-button__outline__size: 1px;
@@ -73,23 +72,23 @@
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
-:host(:where([mdw-outlined])[aria-pressed="false"]) {
+:host(:where([outlined][toggle]):not([checked])) {
   /* Needed to override custom colors */
   background-color: transparent;
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
-:host(:where([mdw-outlined])[aria-pressed="true"]) {
+:host(:where([outlined][toggle])[checked]) {
   --mdw-button__icon__font-variation-settings: 'FILL' 1;
   --mdw-button__outline__size: 0;
 
-  background-color: rgba(var(--mdw-surface), var(--mdw-icon-button__background-alpha));
+  background-color: rgba(var(--mdw-bg), var(--mdw-icon-button__background-alpha));
   color: rgb(var(--mdw-ink));
 }
 
 /** Disabled */
 
-:host([aria-disabled="true"]) {
+:host([disabled]) {
   --mdw-button__outline__opacity: 0.12;
   --mdw-icon-button__background-alpha: 0.12;
 
@@ -98,7 +97,7 @@
   color: rgba(var(--mdw-color__on-surface), 0.38);
 }
 
-:host([aria-disabled="true"]:is([mdw-filled],[mdw-outlined][aria-pressed="true"])) {
+:host([disabled]:is([filled],[outlined][toggle][checked])) {
   background-color: rgba(var(--mdw-color__on-surface), 0.12);
 }
 
@@ -106,15 +105,14 @@
   --mdw-button__outline__rgb: var(--mdw-color__outline);
 }
 
-:host([mdw-ink]:focus) {
+:host([ink]:focus) {
   --mdw-button__outline__rgb: var(--mdw-ink);
 }
 
-:host([mdw-outlined]:active) {
-  /* Spec Typo? */
-  /* color: rgb(var(--mdw-color__on-surface)); */
+label {
+  padding: 0;
 }
 
-.mdw-button__icon {
+#icon {
   margin: 0;
 }

@@ -6,35 +6,23 @@ export default class MDWRipple extends MDWOverlay {
   constructor() {
     super();
     /** @type {HTMLElement} */
-    this.containerElement = this.shadowRoot.querySelector('.mdw-ripple__container');
+    this.rippleElement = this.shadowRoot.getElementById('ripple');
     /** @type {HTMLElement} */
-    this.innerElement = this.shadowRoot.querySelector('.mdw-ripple__inner');
+    this.innerElement = this.shadowRoot.getElementById('ripple-inner');
   }
 
   static elementName = 'mdw-ripple';
 
-  static get styles() {
-    return [...super.styles, styles];
-  }
+  static styles = [...super.styles, styles];
 
-  static get fragments() {
-    return [
-      ...super.fragments,
-      /* html */`
-        <div class="mdw-ripple__container" part="rippleContainer" aria-hidden="true">
-          <div class="mdw-ripple__inner" part="rippleInner"></div>
-        </div>
-      `,
-    ];
-  }
-
-  /**
-   * @param {Element} element
-   * @return {boolean}
-   */
-  static isActive(element) {
-    return element.matches(':active');
-  }
+  static fragments = [
+    ...super.fragments,
+    /* html */`
+      <div id="ripple" aria-hidden="true">
+        <div id="ripple-inner"></div>
+      </div>
+    `,
+  ];
 
   /**
    * @param {number} [x]
@@ -44,53 +32,49 @@ export default class MDWRipple extends MDWOverlay {
   updateRipplePosition(x, y) {
     let width;
     let height;
-    let xPos = x;
-    let yPos = y;
-    const {
-      clientWidth: parentWidth,
-      clientHeight: parentHeight,
-    } = (this.containerElement);
+    let xPos;
+    let yPos;
+    const { clientWidth, clientHeight } = this.rippleElement;
 
-    if (x == null) {
-      xPos = parentWidth / 2;
-      width = xPos;
-    } else if (x >= parentWidth / 2) {
-      width = x;
-    // furthest horizontal side is left
+    if (x == null || y == null) {
+      width = clientWidth / 2;
+      height = clientHeight / 2;
+      xPos = `${width}px`;
+      yPos = `${height}px`;
     } else {
-      width = parentWidth - x;
-    // furthest horizontal side is right
+      // Distance from furthest side
+      width = (x >= clientWidth / 2) ? x : clientWidth - x;
+      height = (y >= clientHeight / 2) ? y : clientHeight - y;
+      xPos = `${x}px`;
+      yPos = `${y}px`;
     }
-    if (y == null) {
-      yPos = parentHeight / 2;
-      height = yPos;
-    } else if (y >= parentHeight / 2) {
-      height = y;
-    // furthest vertical side is bottom
-    } else {
-      height = parentHeight - y;
-    // furthest vertical side is top
-    }
+
     const hypotenuse = Math.sqrt((width * width) + (height * height));
-    this.innerElement.style.setProperty('height', `${hypotenuse}px`);
-    this.innerElement.style.setProperty('width', `${hypotenuse}px`);
-    this.innerElement.style.setProperty('left', `${xPos - (hypotenuse / 2)}px`);
-    this.innerElement.style.setProperty('top', `${yPos - (hypotenuse / 2)}px`);
+    this.innerElement.style.setProperty('--mdw-ripple-radius', `${hypotenuse}`);
+    this.innerElement.style.setProperty('--mdw-ripple-x', xPos);
+    this.innerElement.style.setProperty('--mdw-ripple-y', yPos);
   }
 
   /**
-   * @param {string} initiator
+   * @param {'key'|'mouse'|'touch'|'click'} [initiator]
+   * @param {number} [x]
+   * @param {number} [y]
    * @return {void}
    */
-  drawRipple(initiator) {
+  drawRipple(initiator, x, y) {
     const currentInitiator = this.innerElement.getAttribute('mdw-fade-in');
-    if (currentInitiator && currentInitiator !== initiator) {
-    // Only allow repeat interactions from same initiator
-      return;
-    }
+
+    // Abort ripple if different initiator
+    if (currentInitiator && currentInitiator !== initiator) return;
+
+    this.updateRipplePosition(x, y);
     this.innerElement.setAttribute('mdw-fade-in', initiator);
-    if (currentInitiator === initiator) {
+
     // Repeat the animation
+    if (currentInitiator === initiator) {
+      // Remove complete state of fade-in
+      this.innerElement.removeAttribute('mdw-fade-in-complete');
+      // Alternate between normal fade-in to repeat fade-in
       if (this.innerElement.hasAttribute('mdw-fade-in-repeat')) {
         this.innerElement.removeAttribute('mdw-fade-in-repeat');
       } else {
@@ -101,33 +85,29 @@ export default class MDWRipple extends MDWOverlay {
 
   /**
    * @param {AnimationEvent} event
+   * @this {HTMLElement}
    * @return {void}
    */
-  static onAnimationEnd(event) {
-    const rippleInner = /** @type {HTMLElement} */ (event.currentTarget);
-    if (event.animationName === 'ripple-fade-in' || event.animationName === 'ripple-fade-in-repeat') {
-      rippleInner.setAttribute('mdw-fade-in-complete', '');
-      return;
-    }
-    if (event.animationName === 'ripple-fade-out') {
-      rippleInner.removeAttribute('mdw-fade-in');
-      rippleInner.removeAttribute('mdw-fade-in-repeat');
-      rippleInner.removeAttribute('mdw-fade-in-complete');
-      rippleInner.removeAttribute('mdw-fade-out');
+  static onAnimationEnd({ animationName }) {
+    switch (animationName) {
+      case 'ripple-fade-in':
+      case 'ripple-fade-in-repeat':
+        this.setAttribute('mdw-fade-in-complete', '');
+        break;
+      case 'ripple-fade-out':
+        this.removeAttribute('mdw-fade-in');
+        this.removeAttribute('mdw-fade-in-repeat');
+        this.removeAttribute('mdw-fade-in-complete');
+        this.removeAttribute('mdw-fade-out');
+        break;
+      default:
     }
   }
 
   /** @return {void} */
   clearRipple() {
-    if (!this.innerElement.hasAttribute('mdw-fade-in')) {
-      return;
-    }
-    if (this.innerElement.hasAttribute('mdw-keydown') && !this.innerElement.hasAttribute('mdw-keyup')) {
-      return;
-    }
-    if (!this.innerElement.hasAttribute('mdw-fade-in-complete')) {
-      return;
-    }
+    if (!this.innerElement.hasAttribute('mdw-fade-in')) return;
+    if (!this.innerElement.hasAttribute('mdw-fade-in-complete')) return;
     this.innerElement.removeAttribute('mdw-fade-in');
     this.innerElement.removeAttribute('mdw-fade-in-repeat');
     this.innerElement.removeAttribute('mdw-fade-in-complete');
@@ -135,75 +115,58 @@ export default class MDWRipple extends MDWOverlay {
   }
 
   /**
-   * @param {PointerEvent|MouseEvent} event
+   * @param {MouseEvent} event
+   * @this {MDWRipple}
    * @return {void}
    */
   static onMouseDown(event) {
-    const element = /** @type {MDWRipple} */ (event.currentTarget);
-    // @ts-ignore: Optimization
-    if (!event.pointerType && !event.detail) {
-      return;
-    }
-    const rect = element.containerElement.getBoundingClientRect();
+    if (event.button) return;
+
+    const rect = this.rippleElement.getBoundingClientRect();
     const x = event.pageX - rect.left - window.pageXOffset;
     const y = event.pageY - rect.top - window.pageYOffset;
-    element.updateRipplePosition(x, y);
-    element.drawRipple('mouse');
+    this.drawRipple('mouse', x, y);
   }
 
   /**
    * @param {TouchEvent} event
+   * @this {MDWRipple}
    * @return {void}
    */
   static onTouchStart(event) {
-    const element = /** @type {MDWRipple} */ (event.currentTarget);
-    const touch = event.changedTouches[0];
-    if (!touch) {
-      return;
-    }
-    const rect = element.containerElement.getBoundingClientRect();
+    const [touch] = event.changedTouches;
+    if (!touch) return;
+
+    const rect = this.rippleElement.getBoundingClientRect();
     const x = touch.pageX - rect.left - window.pageXOffset;
     const y = touch.pageY - rect.top - window.pageYOffset;
-    element.updateRipplePosition(x, y);
-    element.drawRipple('touch');
+    this.drawRipple('touch', x, y);
   }
 
   /**
    * @param {PointerEvent|MouseEvent} event
+   * @this {MDWRipple}
    * @return {void}
    */
   static onClick(event) {
-    const element = /** @type {MDWRipple} */ (event.currentTarget);
-    // @ts-ignore: Optimization
-    if (event.pointerType || event.detail) {
-      return;
-    }
-    if (element.innerElement.getAttribute('mdw-fade-in') === 'key') {
-    // Already handled by keydown
-      return;
-    }
-    element.updateRipplePosition();
-    element.drawRipple('key');
-    requestAnimationFrame(() => {
-      element.clearRipple();
-    });
+    this.drawRipple('click');
+    // requestAnimationFrame(() => this.clearRipple());
   }
 
   /**
    * @param {KeyboardEvent} event
+   * @this {HTMLElement}
    * @return {void}
    */
   static onKeyDown(event) {
-    const element = /** @type {MDWRipple} */ (event.currentTarget);
+    if (event.repeat) return;
 
     requestAnimationFrame(() => {
-      if (!element.matches(':active')) return;
+      if (!this.matches(':active')) return;
 
-      if (element.innerElement.getAttribute('mdw-fade-in') === 'key') {
-        return;
-      }
-      element.updateRipplePosition();
-      element.drawRipple('key');
+      /** @type {{host:MDWRipple}} */ // @ts-ignore Coerce
+      const { host } = this.getRootNode();
+      host.drawRipple('key');
     });
   }
 

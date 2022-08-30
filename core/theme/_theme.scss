@@ -4,39 +4,14 @@
 @use './_palettes.scss' as *;
 @use './_functions.scss' as *;
 
-:root {
-  --mdw-ink-default-light: 0,0,0;
-  --mdw-high-opacity-light: 0.87;
-  --mdw-medium-opacity-light: 0.60;
-  --mdw-inactive-opacity-light: 0.38;
-  --mdw-divider-opacity-light: 0.12;
-  --mdw-ink-default-dark: 255,255,255;
-  --mdw-high-opacity-dark: 1.00;
-  --mdw-medium-opacity-dark: 0.70;
-  --mdw-inactive-opacity-dark: 0.50;
-  --mdw-divider-opacity-dark: 0.24;
-  --mdw-surface-binary-light: 255,255,255;
-  --mdw-surface-binary-dark: 0,0,0;
-  --mdw-surface-card-light: 255,255,255;
-  --mdw-surface-card-dark: 18,18,18;
-
-  @each $paletteKey in map.keys($palettes) {
-    $palette: map.get($palettes, $paletteKey);
-    @each $toneKey in getAllTones() {
-      $tone: map.get($palette, $toneKey);
-      --mdw-palette-#{$paletteKey}-#{$toneKey}: #{getRGB($tone)};
-    }
-  }
-}
-
-.mdw-theme {
+:host {
   --mdw-text-color: RGBA(var(--mdw-ink-default), var(--mdw-high-opacity));
   --mdw-medium-color: RGBA(var(--mdw-ink-default), var(--mdw-medium-opacity));
   --mdw-inactive-color: RGBA(var(--mdw-ink-default), var(--mdw-inactive-opacity));
   --mdw-divider-color: RGBA(var(--mdw-ink-default), var(--mdw-divider-opacity));
 }
 
-.mdw-theme[mdw-light] {
+:host[mdw-light] {
   --mdw-ink-default: var(--mdw-ink-default-light);
   --mdw-high-opacity: var(--mdw-high-opacity-light);
   --mdw-medium-opacity: var(--mdw-medium-opacity-light);
@@ -65,7 +40,7 @@
   }
 }
 
-.mdw-theme[mdw-dark] {
+:host[mdw-dark] {
   --mdw-ink-default: var(--mdw-ink-default-dark);
   --mdw-high-opacity: var(--mdw-high-opacity-dark);
   --mdw-medium-opacity: var(--mdw-medium-opacity-dark);
@@ -96,17 +71,16 @@
 
 /** Surface Colors */
 
-.mdw-theme[mdw-surface] {
+:host[mdw-surface] {
   background-color: RGB(var(--mdw-surface));
 }
 
-svg.mdw-theme[mdw-surface] {
-  background-color: transparent;
+// svg.mdw-theme[mdw-surface] {
+//   background-color: transparent;
+//   fill: RGB(var(--mdw-surface));
+// }
 
-  fill: RGB(var(--mdw-surface));
-}
-
-.mdw-theme {
+:host {
   &[mdw-surface]:not([mdw-ink]) {
     --mdw-ink: var(--mdw-ink-default);
     --mdw-ink-opacity: var(--mdw-high-opacity);
@@ -169,7 +143,7 @@ svg.mdw-theme[mdw-surface] {
 
 /** Ink Color **/
 
-.mdw-theme {
+:host {
   &[mdw-ink] {
     --mdw-ink: var(--mdw-ink-default);
     --mdw-ink-opacity: 1;
@@ -229,7 +203,7 @@ svg.mdw-theme[mdw-surface] {
 }
 
 /** Ink Opacity **/
-.mdw-theme {
+:host {
   &[mdw-ink~="solid"] {
     --mdw-ink-opacity: 1;
   }
@@ -253,7 +227,7 @@ svg.mdw-theme[mdw-surface] {
 
 /** Border Ink **/
 
-.mdw-theme {
+:host {
   &[mdw-border-ink] {
     border-color: RGBA(var(--mdw-ink), var(--mdw-divider-opacity));
   }

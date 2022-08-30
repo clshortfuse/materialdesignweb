@@ -1,46 +1,48 @@
 // https://www.w3.org/TR/wai-aria-practices/#button
 
+import * as Attributes from './attributes.js';
+
 /**
  * @param {KeyboardEvent} event
+ * @this {HTMLElement}
  * @return {void}
  */
 function onKeyDown(event) {
   if (event.key !== 'Enter' && event.key !== 'Spacebar' && event.key !== ' ') {
     return;
   }
-  const buttonElement = /** @type {HTMLElement} */ (event.currentTarget);
-  if (!buttonElement) {
+  if (!this) {
     return;
   }
-  if (buttonElement.getAttribute('aria-disabled') === 'true') {
+  if (this.getAttribute('aria-disabled') === 'true') {
     return;
   }
   event.stopPropagation();
   event.preventDefault();
   const newEvent = document.createEvent('Event');
   newEvent.initEvent('click', true, true);
-  buttonElement.dispatchEvent(newEvent);
+  this.dispatchEvent(newEvent);
 }
 
 /**
  * @param {MouseEvent} event
+ * @this {HTMLElement}
  * @return {void}
  */
 function onClick(event) {
   if (event.button != null && event.button !== 0) return;
-  const buttonElement = /** @type {HTMLElement} */ (event.currentTarget);
-  if (!buttonElement) {
+  if (!this) {
     return;
   }
-  if (buttonElement.getAttribute('aria-disabled') === 'true') {
+  if (this.getAttribute('aria-disabled') === 'true') {
     return;
   }
-  switch (buttonElement.getAttribute('aria-pressed')) {
+  switch (this.getAttribute('aria-pressed')) {
     case 'true':
-      buttonElement.setAttribute('aria-pressed', 'false');
+      Attributes.setPressed(this, 'false', Attributes.ARIA_PRESSED_EVENT);
       break;
     case 'false':
-      buttonElement.setAttribute('aria-pressed', 'true');
+      Attributes.setPressed(this, 'true', Attributes.ARIA_PRESSED_EVENT);
       break;
     default:
   }

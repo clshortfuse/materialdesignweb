@@ -1,5 +1,6 @@
 export const ARIA_SELECTED_EVENT = 'mdw:aria-selected';
 export const ARIA_CHECKED_EVENT = 'mdw:aria-checked';
+export const ARIA_PRESSED_EVENT = 'mdw:aria-pressed';
 
 /**
  * @param {string} name Attribute Name
@@ -141,4 +142,14 @@ export function setExpanded(element, value, dispatchEventName) {
  */
 export function isReadonly(element) {
   return element.getAttribute('aria-readonly') === 'true';
+}
+
+/**
+ * @param {Element} element
+ * @param {string|boolean} value
+ * @param {string} [dispatchEventName]
+ * @return {boolean} successful
+ */
+export function setPressed(element, value, dispatchEventName) {
+  return setAttribute('aria-pressed', element, value, dispatchEventName);
 }

@@ -6,98 +6,92 @@
   --mdw-shape__size: 20px;
   --mdw-button__padding-inline-start: 12px;
   --mdw-button__padding-inline-end: 12px;
-  --mdw-button__icon__size: 18px;
-  --mdw-button__icon__opacity: 1;
+
   --mdw-button__icon__display: none;
+  --mdw-button__icon__font-variation-settings: 'FILL' 1;
   --mdw-button__icon__margin-inline-start: 12px;
   --mdw-button__icon__margin-inline-end: 8px;
-  --mdw-button__icon__font-variation-settings: 'FILL' 1;
+  --mdw-button__icon__opacity: 1;
+  --mdw-button__icon__size: 18px;
+
   --mdw-button__outline__size: 1px;
   --mdw-button__outline__visibility: hidden;
   --mdw-button__outline__opacity: 1;
   --mdw-button__outline__rgb: var(--mdw-color__outline);
   --mdw-button__touch-target__size: 48px;
+
   --mdw-ink: var(--mdw-color__primary);
 
+  --mdw-type__font-weight: var(--mdw-typescale__label-large__font-weight);
+  --mdw-type__font-size: var(--mdw-typescale__label-large__font-size);
+  --mdw-type__line-height: var(--mdw-typescale__label-large__line-height);
+  --mdw-type__font-family: var(--mdw-typescale__label-large__font-family);
+  --mdw-type__letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
+
   display: inline-flex;
-  position: relative;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
 
-  box-sizing: border-box;
   min-block-size: 40px;
   min-inline-size: 48px;
-  padding-inline-start: var(--mdw-button__padding-inline-start);
-  padding-inline-end: var(--mdw-button__padding-inline-end);
 
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
 
   color: rgb(var(--mdw-ink));
-
-  text-decoration: none;
-  white-space: nowrap;
 }
 
-:host(:where([mdw-elevated],[mdw-filled])) {
-  background-color: rgb(var(--mdw-surface));
+:host(:where([elevated],[filled])) {
+  background-color: rgb(var(--mdw-bg));
 }
 /** Elevated Color Defaults */
 
-:host(:where([mdw-elevated])) {
-  --mdw-surface: var(--mdw-color__surface);
+:host(:where([elevated])) {
+  --mdw-bg: var(--mdw-color__surface);
   --mdw-ink: var(--mdw-color__primary);
 }
 
 /** Filled Color Defaults */
 
-:host(:where([mdw-filled])) {
-  --mdw-surface: var(--mdw-color__primary);
+:host(:where([filled])) {
+  --mdw-bg: var(--mdw-color__primary);
   --mdw-ink: var(--mdw-color__on-primary);
 }
 
 /** Filled Tonal Color Defaults */
 
-:host(:where([mdw-filled="tonal"])) {
-  --mdw-surface: var(--mdw-color__secondary-container);
+:host(:where([filled="tonal"])) {
+  --mdw-bg: var(--mdw-color__secondary-container);
   --mdw-ink: var(--mdw-color__on-secondary-container);
 }
 
 /** Outlined Color Defaults */
 
-:host(:where([mdw-outlined])) {
+:host(:where([outlined])) {
   color: rgb(var(--mdw-color__primary));
 }
 
-:host(:where([mdw-outlined="surface"])) {
+:host(:where([outlined="surface"])) {
   background-color: rgb(var(--mdw-color__surface));
 }
 
-:host(:where([mdw-outlined], [mdw-elevated], [mdw-filled], [mdw-icon])) {
+:host(:where([outlined], [elevated], [filled], [icon])) {
   --mdw-button__icon__display: block;
   --mdw-button__padding-inline-start: 0;
   --mdw-button__padding-inline-end: 24px;
 }
 
-:host(:is([mdw-outlined], [mdw-elevated], [mdw-filled])) {
+:host(:is([outlined], [elevated], [filled])) {
   --mdw-button__icon__margin-inline-start: 16px;
 }
 
-:host([aria-disabled="true"]) {
+:host([disabled]) {
   --mdw-button__outline__opacity: 0.12;
   cursor: not-allowed;
 
   color: rgba(var(--mdw-color__on-surface), 0.38);
 }
 
-:host([aria-disabled="true"]:is([mdw-elevated], [mdw-filled])) {
+:host([disabled]:is([elevated], [filled])) {
   background: rgba(var(--mdw-color__on-surface), 0.12);
   color: rgba(var(--mdw-color__on-surface), 0.38);
 }
@@ -108,30 +102,32 @@
 
 /* Elevation */
 
-/* Use CSS instead of [mdw-elevation] to avoid JS calls */
+/* Use CSS instead of [elevation] to avoid JS calls */
 
-:host(:where([mdw-elevated], [mdw-filled]:hover:not(:active))) {
+:host(:where([elevated], [filled]:hover:not(:active))) {
   --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__1);
   --mdw-container__box-shadow: var(--mdw-container__box-shadow__1);
 }
 
-:host([mdw-elevated]:hover:not(:active)) {
+:host([elevated]:hover:not(:active)) {
   --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
   --mdw-container__box-shadow: var(--mdw-container__box-shadow__2);
 }
 
 /* Outlined */
 
-:host([mdw-outlined]) {
+:host([outlined]) {
   --mdw-button__outline__visibility: visible;
 }
 
-.mdw-button__outline {
+#outline {
   position: absolute;
   inset: 0;
 
   border-style: solid;
   border-width: var(--mdw-button__outline__size);
+
+  pointer-events: none;
 
   visibility: var(--mdw-button__outline__visibility);
 
@@ -139,57 +135,30 @@
   border-radius: inherit;
 }
 
-.mdw-button__icon {
+#icon {
+  --mdw-icon__font-variation-settings: var(--mdw-button__icon__font-variation-settings);
+  --mdw-icon__opacity: var(--mdw-button__icon__opacity);
+  --mdw-icon__size: var(--mdw-button__icon__size);
+
   display: var(--mdw-button__icon__display);
-  position: relative;
   order: -1;
 
-  block-size: var(--mdw-button__icon__size);
-  inline-size: var(--mdw-button__icon__size);
   margin-inline-start: var(--mdw-button__icon__margin-inline-start);
   margin-inline-end: var(--mdw-button__icon__margin-inline-end);
-
-  transition-delay: 1ms;
-  transition-duration: 100ms;
-  /* stylelint-disable-next-line liberty/use-logical-spec -- Safari does not animate inline-size */
-  transition-property: font-variation-settings, inline-size, opacity, width;
-
-  opacity: var(--mdw-button__icon__opacity);
-
-  font-size: var(--mdw-button__icon__size);
-  font-variation-settings: var(--mdw-button__icon__font-variation-settings);
 }
 
-:host(:not([mdw-icon])) .mdw-button__icon {
+:host(:not([icon])) #icon {
   inline-size: 0;
 }
 
-.mdw-button__image {
-  position: absolute;
-  inset: 0;
-
-  block-size: 100%;
-  inline-size: 100%;
-
-  object-fit: cover;
-}
-
-.mdw-button__image:not([src]) {
-  display: none;
-}
-
-:host([aria-disabled="true"]) .mdw-button__image {
+:host([disabled]) #icon {
   /* filter: grayscale(); */
-  opacity: 0.38;
+  --mdw-icon__image__opacity: 0.38;
 }
 
 /* Remove Firefox inner */
 
-:host(::-moz-focus-inner) {
-  border: 0;
-}
-
-.mdw-button__touch-target {
+#touch-target {
   position: absolute;
   inset-block-start: calc(50% - var(--mdw-button__touch-target__size) / 2);
   inset-inline-start: calc(50% - var(--mdw-button__touch-target__size) / 2);
@@ -201,16 +170,56 @@
 }
 
 @media (any-pointer: coarse) {
-  .mdw-button__touch-target {
+  #touch-target {
     visibility: visible;
   }
 }
 
-.mdw-container__content {
-  text-align: center;
+label {
+  display:flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+  block-size: auto;
+  min-block-size: none;
+  max-block-size: none;
+  inline-size: auto;
+  min-inline-size: none;
+  max-inline-size: none;
+
+  flex:1;
+  margin: 0;
+  border: none;
+  padding: 0;
+  padding-inline-start: var(--mdw-button__padding-inline-start);
+  padding-inline-end: var(--mdw-button__padding-inline-end);
+
+  cursor: inherit;
+
+  outline: none;
+
+  -webkit-tap-highlight-color: transparent;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+
+  z-index: 0;
+
+  background-color: transparent;
+
+  border-radius: inherit;
+  color: inherit;
+
+  font: inherit;
+  letter-spacing: inherit;
+
+  text-decoration: none;
+  white-space: nowrap;
 }
 
-.material-symbols-outlined {
-  direction: inherit;
-  /* https://github.com/google/material-design-icons/issues/750 */
+#slot {
+  text-align: center;
 }

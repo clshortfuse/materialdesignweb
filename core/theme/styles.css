@@ -1,0 +1,1236 @@
+:host {
+  --mdw-text-color: RGBA(var(--mdw-ink-default), var(--mdw-high-opacity));
+  --mdw-medium-color: RGBA(var(--mdw-ink-default), var(--mdw-medium-opacity));
+  --mdw-inactive-color: RGBA(var(--mdw-ink-default), var(--mdw-inactive-opacity));
+  --mdw-divider-color: RGBA(var(--mdw-ink-default), var(--mdw-divider-opacity));
+}
+
+:host([mdw-light]) {
+  --mdw-ink-default: var(--mdw-ink-default-light);
+  --mdw-high-opacity: var(--mdw-high-opacity-light);
+  --mdw-medium-opacity: var(--mdw-medium-opacity-light);
+  --mdw-inactive-opacity: var(--mdw-inactive-opacity-light);
+  --mdw-divider-opacity: var(--mdw-divider-opacity-light);
+  --mdw-bg-binary: var(--mdw-bg-binary-light);
+  --mdw-bg-card: var(--mdw-bg-card-light);
+  --mdw-palette-blue-surface-default: var(--mdw-palette-blue-50);
+  --mdw-palette-blue-surface-alt: var(--mdw-palette-blue-100);
+  --mdw-palette-blue-surface-alt2: var(--mdw-palette-blue-200);
+  --mdw-palette-blue-ink-default: var(--mdw-palette-blue-A700);
+  --mdw-palette-blue-ink-contrast: var(--mdw-palette-blue-A700);
+  --mdw-palette-blue-ink-light: var(--mdw-palette-blue-A400);
+  --mdw-palette-indigo-surface-default: var(--mdw-palette-indigo-50);
+  --mdw-palette-indigo-surface-alt: var(--mdw-palette-indigo-100);
+  --mdw-palette-indigo-surface-alt2: var(--mdw-palette-indigo-200);
+  --mdw-palette-indigo-ink-default: var(--mdw-palette-indigo-A700);
+  --mdw-palette-indigo-ink-contrast: var(--mdw-palette-indigo-A700);
+  --mdw-palette-indigo-ink-light: var(--mdw-palette-indigo-A400);
+  --mdw-palette-deeppurple-surface-default: var(--mdw-palette-deeppurple-50);
+  --mdw-palette-deeppurple-surface-alt: var(--mdw-palette-deeppurple-100);
+  --mdw-palette-deeppurple-surface-alt2: var(--mdw-palette-deeppurple-200);
+  --mdw-palette-deeppurple-ink-default: var(--mdw-palette-deeppurple-A700);
+  --mdw-palette-deeppurple-ink-contrast: var(--mdw-palette-deeppurple-A700);
+  --mdw-palette-deeppurple-ink-light: var(--mdw-palette-deeppurple-A400);
+  --mdw-palette-purple-surface-default: var(--mdw-palette-purple-50);
+  --mdw-palette-purple-surface-alt: var(--mdw-palette-purple-100);
+  --mdw-palette-purple-surface-alt2: var(--mdw-palette-purple-200);
+  --mdw-palette-purple-ink-default: var(--mdw-palette-purple-A700);
+  --mdw-palette-purple-ink-contrast: var(--mdw-palette-purple-A700);
+  --mdw-palette-purple-ink-light: var(--mdw-palette-purple-A400);
+  --mdw-palette-lightblue-surface-default: var(--mdw-palette-lightblue-50);
+  --mdw-palette-lightblue-surface-alt: var(--mdw-palette-lightblue-100);
+  --mdw-palette-lightblue-surface-alt2: var(--mdw-palette-lightblue-200);
+  --mdw-palette-lightblue-ink-default: var(--mdw-palette-lightblue-A700);
+  --mdw-palette-lightblue-ink-contrast: var(--mdw-palette-lightblue-A700);
+  --mdw-palette-lightblue-ink-light: var(--mdw-palette-lightblue-A400);
+  --mdw-palette-cyan-surface-default: var(--mdw-palette-cyan-50);
+  --mdw-palette-cyan-surface-alt: var(--mdw-palette-cyan-100);
+  --mdw-palette-cyan-surface-alt2: var(--mdw-palette-cyan-200);
+  --mdw-palette-cyan-ink-default: var(--mdw-palette-cyan-A700);
+  --mdw-palette-cyan-ink-contrast: var(--mdw-palette-cyan-A700);
+  --mdw-palette-cyan-ink-light: var(--mdw-palette-cyan-A400);
+  --mdw-palette-teal-surface-default: var(--mdw-palette-teal-50);
+  --mdw-palette-teal-surface-alt: var(--mdw-palette-teal-100);
+  --mdw-palette-teal-surface-alt2: var(--mdw-palette-teal-200);
+  --mdw-palette-teal-ink-default: var(--mdw-palette-teal-A700);
+  --mdw-palette-teal-ink-contrast: var(--mdw-palette-teal-A700);
+  --mdw-palette-teal-ink-light: var(--mdw-palette-teal-A400);
+  --mdw-palette-green-surface-default: var(--mdw-palette-green-50);
+  --mdw-palette-green-surface-alt: var(--mdw-palette-green-100);
+  --mdw-palette-green-surface-alt2: var(--mdw-palette-green-200);
+  --mdw-palette-green-ink-default: var(--mdw-palette-green-A700);
+  --mdw-palette-green-ink-contrast: var(--mdw-palette-green-A700);
+  --mdw-palette-green-ink-light: var(--mdw-palette-green-A400);
+  --mdw-palette-lightgreen-surface-default: var(--mdw-palette-lightgreen-50);
+  --mdw-palette-lightgreen-surface-alt: var(--mdw-palette-lightgreen-100);
+  --mdw-palette-lightgreen-surface-alt2: var(--mdw-palette-lightgreen-200);
+  --mdw-palette-lightgreen-ink-default: var(--mdw-palette-lightgreen-A700);
+  --mdw-palette-lightgreen-ink-contrast: var(--mdw-palette-lightgreen-A700);
+  --mdw-palette-lightgreen-ink-light: var(--mdw-palette-lightgreen-A400);
+  --mdw-palette-lime-surface-default: var(--mdw-palette-lime-50);
+  --mdw-palette-lime-surface-alt: var(--mdw-palette-lime-100);
+  --mdw-palette-lime-surface-alt2: var(--mdw-palette-lime-200);
+  --mdw-palette-lime-ink-default: var(--mdw-palette-lime-A700);
+  --mdw-palette-lime-ink-contrast: var(--mdw-palette-lime-A700);
+  --mdw-palette-lime-ink-light: var(--mdw-palette-lime-A400);
+  --mdw-palette-yellow-surface-default: var(--mdw-palette-yellow-50);
+  --mdw-palette-yellow-surface-alt: var(--mdw-palette-yellow-100);
+  --mdw-palette-yellow-surface-alt2: var(--mdw-palette-yellow-200);
+  --mdw-palette-yellow-ink-default: var(--mdw-palette-yellow-A700);
+  --mdw-palette-yellow-ink-contrast: var(--mdw-palette-yellow-A700);
+  --mdw-palette-yellow-ink-light: var(--mdw-palette-yellow-A400);
+  --mdw-palette-amber-surface-default: var(--mdw-palette-amber-50);
+  --mdw-palette-amber-surface-alt: var(--mdw-palette-amber-100);
+  --mdw-palette-amber-surface-alt2: var(--mdw-palette-amber-200);
+  --mdw-palette-amber-ink-default: var(--mdw-palette-amber-A700);
+  --mdw-palette-amber-ink-contrast: var(--mdw-palette-amber-A700);
+  --mdw-palette-amber-ink-light: var(--mdw-palette-amber-A400);
+  --mdw-palette-orange-surface-default: var(--mdw-palette-orange-50);
+  --mdw-palette-orange-surface-alt: var(--mdw-palette-orange-100);
+  --mdw-palette-orange-surface-alt2: var(--mdw-palette-orange-200);
+  --mdw-palette-orange-ink-default: var(--mdw-palette-orange-A700);
+  --mdw-palette-orange-ink-contrast: var(--mdw-palette-orange-A700);
+  --mdw-palette-orange-ink-light: var(--mdw-palette-orange-A400);
+  --mdw-palette-deeporange-surface-default: var(--mdw-palette-deeporange-50);
+  --mdw-palette-deeporange-surface-alt: var(--mdw-palette-deeporange-100);
+  --mdw-palette-deeporange-surface-alt2: var(--mdw-palette-deeporange-200);
+  --mdw-palette-deeporange-ink-default: var(--mdw-palette-deeporange-A700);
+  --mdw-palette-deeporange-ink-contrast: var(--mdw-palette-deeporange-A700);
+  --mdw-palette-deeporange-ink-light: var(--mdw-palette-deeporange-A400);
+  --mdw-palette-red-surface-default: var(--mdw-palette-red-50);
+  --mdw-palette-red-surface-alt: var(--mdw-palette-red-100);
+  --mdw-palette-red-surface-alt2: var(--mdw-palette-red-200);
+  --mdw-palette-red-ink-default: var(--mdw-palette-red-A700);
+  --mdw-palette-red-ink-contrast: var(--mdw-palette-red-A700);
+  --mdw-palette-red-ink-light: var(--mdw-palette-red-A400);
+  --mdw-palette-pink-surface-default: var(--mdw-palette-pink-50);
+  --mdw-palette-pink-surface-alt: var(--mdw-palette-pink-100);
+  --mdw-palette-pink-surface-alt2: var(--mdw-palette-pink-200);
+  --mdw-palette-pink-ink-default: var(--mdw-palette-pink-A700);
+  --mdw-palette-pink-ink-contrast: var(--mdw-palette-pink-A700);
+  --mdw-palette-pink-ink-light: var(--mdw-palette-pink-A400);
+  --mdw-palette-brown-surface-default: var(--mdw-palette-brown-50);
+  --mdw-palette-brown-surface-alt: var(--mdw-palette-brown-100);
+  --mdw-palette-brown-surface-alt2: var(--mdw-palette-brown-200);
+  --mdw-palette-brown-ink-default: var(--mdw-palette-brown-A700);
+  --mdw-palette-brown-ink-contrast: var(--mdw-palette-brown-A700);
+  --mdw-palette-brown-ink-light: var(--mdw-palette-brown-A400);
+  --mdw-palette-bluegrey-surface-default: var(--mdw-palette-bluegrey-50);
+  --mdw-palette-bluegrey-surface-alt: var(--mdw-palette-bluegrey-100);
+  --mdw-palette-bluegrey-surface-alt2: var(--mdw-palette-bluegrey-200);
+  --mdw-palette-bluegrey-ink-default: var(--mdw-palette-bluegrey-A700);
+  --mdw-palette-bluegrey-ink-contrast: var(--mdw-palette-bluegrey-A700);
+  --mdw-palette-bluegrey-ink-light: var(--mdw-palette-bluegrey-A400);
+  --mdw-palette-bluegray-surface-default: var(--mdw-palette-bluegray-50);
+  --mdw-palette-bluegray-surface-alt: var(--mdw-palette-bluegray-100);
+  --mdw-palette-bluegray-surface-alt2: var(--mdw-palette-bluegray-200);
+  --mdw-palette-bluegray-ink-default: var(--mdw-palette-bluegray-A700);
+  --mdw-palette-bluegray-ink-contrast: var(--mdw-palette-bluegray-A700);
+  --mdw-palette-bluegray-ink-light: var(--mdw-palette-bluegray-A400);
+  --mdw-palette-grey-surface-default: var(--mdw-palette-grey-50);
+  --mdw-palette-grey-surface-alt: var(--mdw-palette-grey-100);
+  --mdw-palette-grey-surface-alt2: var(--mdw-palette-grey-200);
+  --mdw-palette-grey-ink-default: var(--mdw-palette-grey-A700);
+  --mdw-palette-grey-ink-contrast: var(--mdw-palette-grey-A700);
+  --mdw-palette-grey-ink-light: var(--mdw-palette-grey-A400);
+  --mdw-palette-gray-surface-default: var(--mdw-palette-gray-50);
+  --mdw-palette-gray-surface-alt: var(--mdw-palette-gray-100);
+  --mdw-palette-gray-surface-alt2: var(--mdw-palette-gray-200);
+  --mdw-palette-gray-ink-default: var(--mdw-palette-gray-A700);
+  --mdw-palette-gray-ink-contrast: var(--mdw-palette-gray-A700);
+  --mdw-palette-gray-ink-light: var(--mdw-palette-gray-A400);
+  --mdw-alias-primary-surface-default: var(--mdw-alias-primary-50);
+  --mdw-alias-primary-surface-alt: var(--mdw-alias-primary-100);
+  --mdw-alias-primary-surface-alt2: var(--mdw-alias-primary-200);
+  --mdw-alias-primary-ink-default: var(--mdw-alias-primary-A700);
+  --mdw-alias-primary-ink-contrast: var(--mdw-alias-primary-A700);
+  --mdw-alias-primary-ink-light: var(--mdw-alias-primary-A400);
+  --mdw-alias-secondary-surface-default: var(--mdw-alias-secondary-50);
+  --mdw-alias-secondary-surface-alt: var(--mdw-alias-secondary-100);
+  --mdw-alias-secondary-surface-alt2: var(--mdw-alias-secondary-200);
+  --mdw-alias-secondary-ink-default: var(--mdw-alias-secondary-A700);
+  --mdw-alias-secondary-ink-contrast: var(--mdw-alias-secondary-A700);
+  --mdw-alias-secondary-ink-light: var(--mdw-alias-secondary-A400);
+  --mdw-alias-warn-surface-default: var(--mdw-alias-warn-50);
+  --mdw-alias-warn-surface-alt: var(--mdw-alias-warn-100);
+  --mdw-alias-warn-surface-alt2: var(--mdw-alias-warn-200);
+  --mdw-alias-warn-ink-default: var(--mdw-alias-warn-A700);
+  --mdw-alias-warn-ink-contrast: var(--mdw-alias-warn-A700);
+  --mdw-alias-warn-ink-light: var(--mdw-alias-warn-A400);
+  --mdw-alias-background-surface-default: var(--mdw-alias-background-50);
+  --mdw-alias-background-surface-alt: var(--mdw-alias-background-100);
+  --mdw-alias-background-surface-alt2: var(--mdw-alias-background-200);
+  --mdw-alias-background-ink-default: var(--mdw-alias-background-A700);
+  --mdw-alias-background-ink-contrast: var(--mdw-alias-background-A700);
+  --mdw-alias-background-ink-light: var(--mdw-alias-background-A400);
+}
+
+:host([mdw-dark]) {
+  --mdw-ink-default: var(--mdw-ink-default-dark);
+  --mdw-high-opacity: var(--mdw-high-opacity-dark);
+  --mdw-medium-opacity: var(--mdw-medium-opacity-dark);
+  --mdw-inactive-opacity: var(--mdw-inactive-opacity-dark);
+  --mdw-divider-opacity: var(--mdw-divider-opacity-dark);
+  --mdw-bg-binary: var(--mdw-bg-binary-dark);
+  --mdw-bg-card: var(--mdw-bg-card-dark);
+  --mdw-palette-blue-surface-default: var(--mdw-palette-blue-900);
+  --mdw-palette-blue-surface-alt: var(--mdw-palette-blue-800);
+  --mdw-palette-blue-surface-alt2: var(--mdw-palette-blue-700);
+  --mdw-palette-blue-ink-default: var(--mdw-palette-blue-A200);
+  --mdw-palette-blue-ink-contrast: var(--mdw-palette-blue-A100);
+  --mdw-palette-blue-ink-light: var(--mdw-palette-blue-A100);
+  --mdw-palette-indigo-surface-default: var(--mdw-palette-indigo-900);
+  --mdw-palette-indigo-surface-alt: var(--mdw-palette-indigo-800);
+  --mdw-palette-indigo-surface-alt2: var(--mdw-palette-indigo-700);
+  --mdw-palette-indigo-ink-default: var(--mdw-palette-indigo-A200);
+  --mdw-palette-indigo-ink-contrast: var(--mdw-palette-indigo-A100);
+  --mdw-palette-indigo-ink-light: var(--mdw-palette-indigo-A100);
+  --mdw-palette-deeppurple-surface-default: var(--mdw-palette-deeppurple-900);
+  --mdw-palette-deeppurple-surface-alt: var(--mdw-palette-deeppurple-800);
+  --mdw-palette-deeppurple-surface-alt2: var(--mdw-palette-deeppurple-700);
+  --mdw-palette-deeppurple-ink-default: var(--mdw-palette-deeppurple-A200);
+  --mdw-palette-deeppurple-ink-contrast: var(--mdw-palette-deeppurple-A100);
+  --mdw-palette-deeppurple-ink-light: var(--mdw-palette-deeppurple-A100);
+  --mdw-palette-purple-surface-default: var(--mdw-palette-purple-900);
+  --mdw-palette-purple-surface-alt: var(--mdw-palette-purple-800);
+  --mdw-palette-purple-surface-alt2: var(--mdw-palette-purple-700);
+  --mdw-palette-purple-ink-default: var(--mdw-palette-purple-A200);
+  --mdw-palette-purple-ink-contrast: var(--mdw-palette-purple-A100);
+  --mdw-palette-purple-ink-light: var(--mdw-palette-purple-A100);
+  --mdw-palette-lightblue-surface-default: var(--mdw-palette-lightblue-900);
+  --mdw-palette-lightblue-surface-alt: var(--mdw-palette-lightblue-800);
+  --mdw-palette-lightblue-surface-alt2: var(--mdw-palette-lightblue-700);
+  --mdw-palette-lightblue-ink-default: var(--mdw-palette-lightblue-A200);
+  --mdw-palette-lightblue-ink-contrast: var(--mdw-palette-lightblue-A100);
+  --mdw-palette-lightblue-ink-light: var(--mdw-palette-lightblue-A100);
+  --mdw-palette-cyan-surface-default: var(--mdw-palette-cyan-900);
+  --mdw-palette-cyan-surface-alt: var(--mdw-palette-cyan-800);
+  --mdw-palette-cyan-surface-alt2: var(--mdw-palette-cyan-700);
+  --mdw-palette-cyan-ink-default: var(--mdw-palette-cyan-A200);
+  --mdw-palette-cyan-ink-contrast: var(--mdw-palette-cyan-A100);
+  --mdw-palette-cyan-ink-light: var(--mdw-palette-cyan-A100);
+  --mdw-palette-teal-surface-default: var(--mdw-palette-teal-900);
+  --mdw-palette-teal-surface-alt: var(--mdw-palette-teal-800);
+  --mdw-palette-teal-surface-alt2: var(--mdw-palette-teal-700);
+  --mdw-palette-teal-ink-default: var(--mdw-palette-teal-A200);
+  --mdw-palette-teal-ink-contrast: var(--mdw-palette-teal-A100);
+  --mdw-palette-teal-ink-light: var(--mdw-palette-teal-A100);
+  --mdw-palette-green-surface-default: var(--mdw-palette-green-900);
+  --mdw-palette-green-surface-alt: var(--mdw-palette-green-800);
+  --mdw-palette-green-surface-alt2: var(--mdw-palette-green-700);
+  --mdw-palette-green-ink-default: var(--mdw-palette-green-A200);
+  --mdw-palette-green-ink-contrast: var(--mdw-palette-green-A100);
+  --mdw-palette-green-ink-light: var(--mdw-palette-green-A100);
+  --mdw-palette-lightgreen-surface-default: var(--mdw-palette-lightgreen-900);
+  --mdw-palette-lightgreen-surface-alt: var(--mdw-palette-lightgreen-800);
+  --mdw-palette-lightgreen-surface-alt2: var(--mdw-palette-lightgreen-700);
+  --mdw-palette-lightgreen-ink-default: var(--mdw-palette-lightgreen-A200);
+  --mdw-palette-lightgreen-ink-contrast: var(--mdw-palette-lightgreen-A100);
+  --mdw-palette-lightgreen-ink-light: var(--mdw-palette-lightgreen-A100);
+  --mdw-palette-lime-surface-default: var(--mdw-palette-lime-900);
+  --mdw-palette-lime-surface-alt: var(--mdw-palette-lime-800);
+  --mdw-palette-lime-surface-alt2: var(--mdw-palette-lime-700);
+  --mdw-palette-lime-ink-default: var(--mdw-palette-lime-A200);
+  --mdw-palette-lime-ink-contrast: var(--mdw-palette-lime-A100);
+  --mdw-palette-lime-ink-light: var(--mdw-palette-lime-A100);
+  --mdw-palette-yellow-surface-default: var(--mdw-palette-yellow-900);
+  --mdw-palette-yellow-surface-alt: var(--mdw-palette-yellow-800);
+  --mdw-palette-yellow-surface-alt2: var(--mdw-palette-yellow-700);
+  --mdw-palette-yellow-ink-default: var(--mdw-palette-yellow-A200);
+  --mdw-palette-yellow-ink-contrast: var(--mdw-palette-yellow-A100);
+  --mdw-palette-yellow-ink-light: var(--mdw-palette-yellow-A100);
+  --mdw-palette-amber-surface-default: var(--mdw-palette-amber-900);
+  --mdw-palette-amber-surface-alt: var(--mdw-palette-amber-800);
+  --mdw-palette-amber-surface-alt2: var(--mdw-palette-amber-700);
+  --mdw-palette-amber-ink-default: var(--mdw-palette-amber-A200);
+  --mdw-palette-amber-ink-contrast: var(--mdw-palette-amber-A100);
+  --mdw-palette-amber-ink-light: var(--mdw-palette-amber-A100);
+  --mdw-palette-orange-surface-default: var(--mdw-palette-orange-900);
+  --mdw-palette-orange-surface-alt: var(--mdw-palette-orange-800);
+  --mdw-palette-orange-surface-alt2: var(--mdw-palette-orange-700);
+  --mdw-palette-orange-ink-default: var(--mdw-palette-orange-A200);
+  --mdw-palette-orange-ink-contrast: var(--mdw-palette-orange-A100);
+  --mdw-palette-orange-ink-light: var(--mdw-palette-orange-A100);
+  --mdw-palette-deeporange-surface-default: var(--mdw-palette-deeporange-900);
+  --mdw-palette-deeporange-surface-alt: var(--mdw-palette-deeporange-800);
+  --mdw-palette-deeporange-surface-alt2: var(--mdw-palette-deeporange-700);
+  --mdw-palette-deeporange-ink-default: var(--mdw-palette-deeporange-A200);
+  --mdw-palette-deeporange-ink-contrast: var(--mdw-palette-deeporange-A100);
+  --mdw-palette-deeporange-ink-light: var(--mdw-palette-deeporange-A100);
+  --mdw-palette-red-surface-default: var(--mdw-palette-red-900);
+  --mdw-palette-red-surface-alt: var(--mdw-palette-red-800);
+  --mdw-palette-red-surface-alt2: var(--mdw-palette-red-700);
+  --mdw-palette-red-ink-default: var(--mdw-palette-red-A200);
+  --mdw-palette-red-ink-contrast: var(--mdw-palette-red-A100);
+  --mdw-palette-red-ink-light: var(--mdw-palette-red-A100);
+  --mdw-palette-pink-surface-default: var(--mdw-palette-pink-900);
+  --mdw-palette-pink-surface-alt: var(--mdw-palette-pink-800);
+  --mdw-palette-pink-surface-alt2: var(--mdw-palette-pink-700);
+  --mdw-palette-pink-ink-default: var(--mdw-palette-pink-A200);
+  --mdw-palette-pink-ink-contrast: var(--mdw-palette-pink-A100);
+  --mdw-palette-pink-ink-light: var(--mdw-palette-pink-A100);
+  --mdw-palette-brown-surface-default: var(--mdw-palette-brown-900);
+  --mdw-palette-brown-surface-alt: var(--mdw-palette-brown-800);
+  --mdw-palette-brown-surface-alt2: var(--mdw-palette-brown-700);
+  --mdw-palette-brown-ink-default: var(--mdw-palette-brown-A200);
+  --mdw-palette-brown-ink-contrast: var(--mdw-palette-brown-A100);
+  --mdw-palette-brown-ink-light: var(--mdw-palette-brown-A100);
+  --mdw-palette-bluegrey-surface-default: var(--mdw-palette-bluegrey-900);
+  --mdw-palette-bluegrey-surface-alt: var(--mdw-palette-bluegrey-800);
+  --mdw-palette-bluegrey-surface-alt2: var(--mdw-palette-bluegrey-700);
+  --mdw-palette-bluegrey-ink-default: var(--mdw-palette-bluegrey-A200);
+  --mdw-palette-bluegrey-ink-contrast: var(--mdw-palette-bluegrey-A100);
+  --mdw-palette-bluegrey-ink-light: var(--mdw-palette-bluegrey-A100);
+  --mdw-palette-bluegray-surface-default: var(--mdw-palette-bluegray-900);
+  --mdw-palette-bluegray-surface-alt: var(--mdw-palette-bluegray-800);
+  --mdw-palette-bluegray-surface-alt2: var(--mdw-palette-bluegray-700);
+  --mdw-palette-bluegray-ink-default: var(--mdw-palette-bluegray-A200);
+  --mdw-palette-bluegray-ink-contrast: var(--mdw-palette-bluegray-A100);
+  --mdw-palette-bluegray-ink-light: var(--mdw-palette-bluegray-A100);
+  --mdw-palette-grey-surface-default: var(--mdw-palette-grey-900);
+  --mdw-palette-grey-surface-alt: var(--mdw-palette-grey-800);
+  --mdw-palette-grey-surface-alt2: var(--mdw-palette-grey-700);
+  --mdw-palette-grey-ink-default: var(--mdw-palette-grey-A200);
+  --mdw-palette-grey-ink-contrast: var(--mdw-palette-grey-A100);
+  --mdw-palette-grey-ink-light: var(--mdw-palette-grey-A100);
+  --mdw-palette-gray-surface-default: var(--mdw-palette-gray-900);
+  --mdw-palette-gray-surface-alt: var(--mdw-palette-gray-800);
+  --mdw-palette-gray-surface-alt2: var(--mdw-palette-gray-700);
+  --mdw-palette-gray-ink-default: var(--mdw-palette-gray-A200);
+  --mdw-palette-gray-ink-contrast: var(--mdw-palette-gray-A100);
+  --mdw-palette-gray-ink-light: var(--mdw-palette-gray-A100);
+  --mdw-alias-primary-surface-default: var(--mdw-alias-primary-900);
+  --mdw-alias-primary-surface-alt: var(--mdw-alias-primary-800);
+  --mdw-alias-primary-surface-alt2: var(--mdw-alias-primary-700);
+  --mdw-alias-primary-ink-default: var(--mdw-alias-primary-A200);
+  --mdw-alias-primary-ink-contrast: var(--mdw-alias-primary-A100);
+  --mdw-alias-primary-ink-light: var(--mdw-alias-primary-A100);
+  --mdw-alias-secondary-surface-default: var(--mdw-alias-secondary-900);
+  --mdw-alias-secondary-surface-alt: var(--mdw-alias-secondary-800);
+  --mdw-alias-secondary-surface-alt2: var(--mdw-alias-secondary-700);
+  --mdw-alias-secondary-ink-default: var(--mdw-alias-secondary-A200);
+  --mdw-alias-secondary-ink-contrast: var(--mdw-alias-secondary-A100);
+  --mdw-alias-secondary-ink-light: var(--mdw-alias-secondary-A100);
+  --mdw-alias-warn-surface-default: var(--mdw-alias-warn-900);
+  --mdw-alias-warn-surface-alt: var(--mdw-alias-warn-800);
+  --mdw-alias-warn-surface-alt2: var(--mdw-alias-warn-700);
+  --mdw-alias-warn-ink-default: var(--mdw-alias-warn-A200);
+  --mdw-alias-warn-ink-contrast: var(--mdw-alias-warn-A100);
+  --mdw-alias-warn-ink-light: var(--mdw-alias-warn-A100);
+  --mdw-alias-background-surface-default: var(--mdw-alias-background-900);
+  --mdw-alias-background-surface-alt: var(--mdw-alias-background-800);
+  --mdw-alias-background-surface-alt2: var(--mdw-alias-background-700);
+  --mdw-alias-background-ink-default: var(--mdw-alias-background-A200);
+  --mdw-alias-background-ink-contrast: var(--mdw-alias-background-A100);
+  --mdw-alias-background-ink-light: var(--mdw-alias-background-A100);
+}
+
+/** Surface Colors */
+:host[mdw-surface] {
+  background-color: RGB(var(--mdw-bg));
+}
+
+:host[mdw-surface]:not([mdw-ink]) {
+  --mdw-ink: var(--mdw-ink-default);
+  --mdw-ink-opacity: var(--mdw-high-opacity);
+  color: RGBA(var(--mdw-ink), var(--mdw-ink-opacity));
+}
+:host[mdw-surface=white] {
+  --mdw-bg: 255,255,255;
+}
+:host[mdw-surface=black] {
+  --mdw-bg: 0,0,0;
+}
+:host[mdw-surface=binary] {
+  --mdw-bg: var(--mdw-bg-binary);
+}
+:host[mdw-surface=card] {
+  --mdw-bg: var(--mdw-bg-card);
+}
+:host[mdw-surface~=blue] {
+  --mdw-bg: var(--mdw-palette-blue-surface-default);
+  --mdw-bg-50: var(--mdw-palette-blue-50);
+  --mdw-bg-100: var(--mdw-palette-blue-100);
+  --mdw-bg-200: var(--mdw-palette-blue-200);
+  --mdw-bg-300: var(--mdw-palette-blue-300);
+  --mdw-bg-400: var(--mdw-palette-blue-400);
+  --mdw-bg-500: var(--mdw-palette-blue-500);
+  --mdw-bg-600: var(--mdw-palette-blue-600);
+  --mdw-bg-700: var(--mdw-palette-blue-700);
+  --mdw-bg-800: var(--mdw-palette-blue-800);
+  --mdw-bg-900: var(--mdw-palette-blue-900);
+}
+:host[mdw-surface="blue alt"] {
+  --mdw-bg: var(--mdw-palette-blue-surface-alt);
+}
+:host[mdw-surface="blue alt2"] {
+  --mdw-bg: var(--mdw-palette-blue-surface-alt2);
+}
+:host[mdw-surface~=indigo] {
+  --mdw-bg: var(--mdw-palette-indigo-surface-default);
+  --mdw-bg-50: var(--mdw-palette-indigo-50);
+  --mdw-bg-100: var(--mdw-palette-indigo-100);
+  --mdw-bg-200: var(--mdw-palette-indigo-200);
+  --mdw-bg-300: var(--mdw-palette-indigo-300);
+  --mdw-bg-400: var(--mdw-palette-indigo-400);
+  --mdw-bg-500: var(--mdw-palette-indigo-500);
+  --mdw-bg-600: var(--mdw-palette-indigo-600);
+  --mdw-bg-700: var(--mdw-palette-indigo-700);
+  --mdw-bg-800: var(--mdw-palette-indigo-800);
+  --mdw-bg-900: var(--mdw-palette-indigo-900);
+}
+:host[mdw-surface="indigo alt"] {
+  --mdw-bg: var(--mdw-palette-indigo-surface-alt);
+}
+:host[mdw-surface="indigo alt2"] {
+  --mdw-bg: var(--mdw-palette-indigo-surface-alt2);
+}
+:host[mdw-surface~=deeppurple] {
+  --mdw-bg: var(--mdw-palette-deeppurple-surface-default);
+  --mdw-bg-50: var(--mdw-palette-deeppurple-50);
+  --mdw-bg-100: var(--mdw-palette-deeppurple-100);
+  --mdw-bg-200: var(--mdw-palette-deeppurple-200);
+  --mdw-bg-300: var(--mdw-palette-deeppurple-300);
+  --mdw-bg-400: var(--mdw-palette-deeppurple-400);
+  --mdw-bg-500: var(--mdw-palette-deeppurple-500);
+  --mdw-bg-600: var(--mdw-palette-deeppurple-600);
+  --mdw-bg-700: var(--mdw-palette-deeppurple-700);
+  --mdw-bg-800: var(--mdw-palette-deeppurple-800);
+  --mdw-bg-900: var(--mdw-palette-deeppurple-900);
+}
+:host[mdw-surface="deeppurple alt"] {
+  --mdw-bg: var(--mdw-palette-deeppurple-surface-alt);
+}
+:host[mdw-surface="deeppurple alt2"] {
+  --mdw-bg: var(--mdw-palette-deeppurple-surface-alt2);
+}
+:host[mdw-surface~=purple] {
+  --mdw-bg: var(--mdw-palette-purple-surface-default);
+  --mdw-bg-50: var(--mdw-palette-purple-50);
+  --mdw-bg-100: var(--mdw-palette-purple-100);
+  --mdw-bg-200: var(--mdw-palette-purple-200);
+  --mdw-bg-300: var(--mdw-palette-purple-300);
+  --mdw-bg-400: var(--mdw-palette-purple-400);
+  --mdw-bg-500: var(--mdw-palette-purple-500);
+  --mdw-bg-600: var(--mdw-palette-purple-600);
+  --mdw-bg-700: var(--mdw-palette-purple-700);
+  --mdw-bg-800: var(--mdw-palette-purple-800);
+  --mdw-bg-900: var(--mdw-palette-purple-900);
+}
+:host[mdw-surface="purple alt"] {
+  --mdw-bg: var(--mdw-palette-purple-surface-alt);
+}
+:host[mdw-surface="purple alt2"] {
+  --mdw-bg: var(--mdw-palette-purple-surface-alt2);
+}
+:host[mdw-surface~=lightblue] {
+  --mdw-bg: var(--mdw-palette-lightblue-surface-default);
+  --mdw-bg-50: var(--mdw-palette-lightblue-50);
+  --mdw-bg-100: var(--mdw-palette-lightblue-100);
+  --mdw-bg-200: var(--mdw-palette-lightblue-200);
+  --mdw-bg-300: var(--mdw-palette-lightblue-300);
+  --mdw-bg-400: var(--mdw-palette-lightblue-400);
+  --mdw-bg-500: var(--mdw-palette-lightblue-500);
+  --mdw-bg-600: var(--mdw-palette-lightblue-600);
+  --mdw-bg-700: var(--mdw-palette-lightblue-700);
+  --mdw-bg-800: var(--mdw-palette-lightblue-800);
+  --mdw-bg-900: var(--mdw-palette-lightblue-900);
+}
+:host[mdw-surface="lightblue alt"] {
+  --mdw-bg: var(--mdw-palette-lightblue-surface-alt);
+}
+:host[mdw-surface="lightblue alt2"] {
+  --mdw-bg: var(--mdw-palette-lightblue-surface-alt2);
+}
+:host[mdw-surface~=cyan] {
+  --mdw-bg: var(--mdw-palette-cyan-surface-default);
+  --mdw-bg-50: var(--mdw-palette-cyan-50);
+  --mdw-bg-100: var(--mdw-palette-cyan-100);
+  --mdw-bg-200: var(--mdw-palette-cyan-200);
+  --mdw-bg-300: var(--mdw-palette-cyan-300);
+  --mdw-bg-400: var(--mdw-palette-cyan-400);
+  --mdw-bg-500: var(--mdw-palette-cyan-500);
+  --mdw-bg-600: var(--mdw-palette-cyan-600);
+  --mdw-bg-700: var(--mdw-palette-cyan-700);
+  --mdw-bg-800: var(--mdw-palette-cyan-800);
+  --mdw-bg-900: var(--mdw-palette-cyan-900);
+}
+:host[mdw-surface="cyan alt"] {
+  --mdw-bg: var(--mdw-palette-cyan-surface-alt);
+}
+:host[mdw-surface="cyan alt2"] {
+  --mdw-bg: var(--mdw-palette-cyan-surface-alt2);
+}
+:host[mdw-surface~=teal] {
+  --mdw-bg: var(--mdw-palette-teal-surface-default);
+  --mdw-bg-50: var(--mdw-palette-teal-50);
+  --mdw-bg-100: var(--mdw-palette-teal-100);
+  --mdw-bg-200: var(--mdw-palette-teal-200);
+  --mdw-bg-300: var(--mdw-palette-teal-300);
+  --mdw-bg-400: var(--mdw-palette-teal-400);
+  --mdw-bg-500: var(--mdw-palette-teal-500);
+  --mdw-bg-600: var(--mdw-palette-teal-600);
+  --mdw-bg-700: var(--mdw-palette-teal-700);
+  --mdw-bg-800: var(--mdw-palette-teal-800);
+  --mdw-bg-900: var(--mdw-palette-teal-900);
+}
+:host[mdw-surface="teal alt"] {
+  --mdw-bg: var(--mdw-palette-teal-surface-alt);
+}
+:host[mdw-surface="teal alt2"] {
+  --mdw-bg: var(--mdw-palette-teal-surface-alt2);
+}
+:host[mdw-surface~=green] {
+  --mdw-bg: var(--mdw-palette-green-surface-default);
+  --mdw-bg-50: var(--mdw-palette-green-50);
+  --mdw-bg-100: var(--mdw-palette-green-100);
+  --mdw-bg-200: var(--mdw-palette-green-200);
+  --mdw-bg-300: var(--mdw-palette-green-300);
+  --mdw-bg-400: var(--mdw-palette-green-400);
+  --mdw-bg-500: var(--mdw-palette-green-500);
+  --mdw-bg-600: var(--mdw-palette-green-600);
+  --mdw-bg-700: var(--mdw-palette-green-700);
+  --mdw-bg-800: var(--mdw-palette-green-800);
+  --mdw-bg-900: var(--mdw-palette-green-900);
+}
+:host[mdw-surface="green alt"] {
+  --mdw-bg: var(--mdw-palette-green-surface-alt);
+}
+:host[mdw-surface="green alt2"] {
+  --mdw-bg: var(--mdw-palette-green-surface-alt2);
+}
+:host[mdw-surface~=lightgreen] {
+  --mdw-bg: var(--mdw-palette-lightgreen-surface-default);
+  --mdw-bg-50: var(--mdw-palette-lightgreen-50);
+  --mdw-bg-100: var(--mdw-palette-lightgreen-100);
+  --mdw-bg-200: var(--mdw-palette-lightgreen-200);
+  --mdw-bg-300: var(--mdw-palette-lightgreen-300);
+  --mdw-bg-400: var(--mdw-palette-lightgreen-400);
+  --mdw-bg-500: var(--mdw-palette-lightgreen-500);
+  --mdw-bg-600: var(--mdw-palette-lightgreen-600);
+  --mdw-bg-700: var(--mdw-palette-lightgreen-700);
+  --mdw-bg-800: var(--mdw-palette-lightgreen-800);
+  --mdw-bg-900: var(--mdw-palette-lightgreen-900);
+}
+:host[mdw-surface="lightgreen alt"] {
+  --mdw-bg: var(--mdw-palette-lightgreen-surface-alt);
+}
+:host[mdw-surface="lightgreen alt2"] {
+  --mdw-bg: var(--mdw-palette-lightgreen-surface-alt2);
+}
+:host[mdw-surface~=lime] {
+  --mdw-bg: var(--mdw-palette-lime-surface-default);
+  --mdw-bg-50: var(--mdw-palette-lime-50);
+  --mdw-bg-100: var(--mdw-palette-lime-100);
+  --mdw-bg-200: var(--mdw-palette-lime-200);
+  --mdw-bg-300: var(--mdw-palette-lime-300);
+  --mdw-bg-400: var(--mdw-palette-lime-400);
+  --mdw-bg-500: var(--mdw-palette-lime-500);
+  --mdw-bg-600: var(--mdw-palette-lime-600);
+  --mdw-bg-700: var(--mdw-palette-lime-700);
+  --mdw-bg-800: var(--mdw-palette-lime-800);
+  --mdw-bg-900: var(--mdw-palette-lime-900);
+}
+:host[mdw-surface="lime alt"] {
+  --mdw-bg: var(--mdw-palette-lime-surface-alt);
+}
+:host[mdw-surface="lime alt2"] {
+  --mdw-bg: var(--mdw-palette-lime-surface-alt2);
+}
+:host[mdw-surface~=yellow] {
+  --mdw-bg: var(--mdw-palette-yellow-surface-default);
+  --mdw-bg-50: var(--mdw-palette-yellow-50);
+  --mdw-bg-100: var(--mdw-palette-yellow-100);
+  --mdw-bg-200: var(--mdw-palette-yellow-200);
+  --mdw-bg-300: var(--mdw-palette-yellow-300);
+  --mdw-bg-400: var(--mdw-palette-yellow-400);
+  --mdw-bg-500: var(--mdw-palette-yellow-500);
+  --mdw-bg-600: var(--mdw-palette-yellow-600);
+  --mdw-bg-700: var(--mdw-palette-yellow-700);
+  --mdw-bg-800: var(--mdw-palette-yellow-800);
+  --mdw-bg-900: var(--mdw-palette-yellow-900);
+}
+:host[mdw-surface="yellow alt"] {
+  --mdw-bg: var(--mdw-palette-yellow-surface-alt);
+}
+:host[mdw-surface="yellow alt2"] {
+  --mdw-bg: var(--mdw-palette-yellow-surface-alt2);
+}
+:host[mdw-surface~=amber] {
+  --mdw-bg: var(--mdw-palette-amber-surface-default);
+  --mdw-bg-50: var(--mdw-palette-amber-50);
+  --mdw-bg-100: var(--mdw-palette-amber-100);
+  --mdw-bg-200: var(--mdw-palette-amber-200);
+  --mdw-bg-300: var(--mdw-palette-amber-300);
+  --mdw-bg-400: var(--mdw-palette-amber-400);
+  --mdw-bg-500: var(--mdw-palette-amber-500);
+  --mdw-bg-600: var(--mdw-palette-amber-600);
+  --mdw-bg-700: var(--mdw-palette-amber-700);
+  --mdw-bg-800: var(--mdw-palette-amber-800);
+  --mdw-bg-900: var(--mdw-palette-amber-900);
+}
+:host[mdw-surface="amber alt"] {
+  --mdw-bg: var(--mdw-palette-amber-surface-alt);
+}
+:host[mdw-surface="amber alt2"] {
+  --mdw-bg: var(--mdw-palette-amber-surface-alt2);
+}
+:host[mdw-surface~=orange] {
+  --mdw-bg: var(--mdw-palette-orange-surface-default);
+  --mdw-bg-50: var(--mdw-palette-orange-50);
+  --mdw-bg-100: var(--mdw-palette-orange-100);
+  --mdw-bg-200: var(--mdw-palette-orange-200);
+  --mdw-bg-300: var(--mdw-palette-orange-300);
+  --mdw-bg-400: var(--mdw-palette-orange-400);
+  --mdw-bg-500: var(--mdw-palette-orange-500);
+  --mdw-bg-600: var(--mdw-palette-orange-600);
+  --mdw-bg-700: var(--mdw-palette-orange-700);
+  --mdw-bg-800: var(--mdw-palette-orange-800);
+  --mdw-bg-900: var(--mdw-palette-orange-900);
+}
+:host[mdw-surface="orange alt"] {
+  --mdw-bg: var(--mdw-palette-orange-surface-alt);
+}
+:host[mdw-surface="orange alt2"] {
+  --mdw-bg: var(--mdw-palette-orange-surface-alt2);
+}
+:host[mdw-surface~=deeporange] {
+  --mdw-bg: var(--mdw-palette-deeporange-surface-default);
+  --mdw-bg-50: var(--mdw-palette-deeporange-50);
+  --mdw-bg-100: var(--mdw-palette-deeporange-100);
+  --mdw-bg-200: var(--mdw-palette-deeporange-200);
+  --mdw-bg-300: var(--mdw-palette-deeporange-300);
+  --mdw-bg-400: var(--mdw-palette-deeporange-400);
+  --mdw-bg-500: var(--mdw-palette-deeporange-500);
+  --mdw-bg-600: var(--mdw-palette-deeporange-600);
+  --mdw-bg-700: var(--mdw-palette-deeporange-700);
+  --mdw-bg-800: var(--mdw-palette-deeporange-800);
+  --mdw-bg-900: var(--mdw-palette-deeporange-900);
+}
+:host[mdw-surface="deeporange alt"] {
+  --mdw-bg: var(--mdw-palette-deeporange-surface-alt);
+}
+:host[mdw-surface="deeporange alt2"] {
+  --mdw-bg: var(--mdw-palette-deeporange-surface-alt2);
+}
+:host[mdw-surface~=red] {
+  --mdw-bg: var(--mdw-palette-red-surface-default);
+  --mdw-bg-50: var(--mdw-palette-red-50);
+  --mdw-bg-100: var(--mdw-palette-red-100);
+  --mdw-bg-200: var(--mdw-palette-red-200);
+  --mdw-bg-300: var(--mdw-palette-red-300);
+  --mdw-bg-400: var(--mdw-palette-red-400);
+  --mdw-bg-500: var(--mdw-palette-red-500);
+  --mdw-bg-600: var(--mdw-palette-red-600);
+  --mdw-bg-700: var(--mdw-palette-red-700);
+  --mdw-bg-800: var(--mdw-palette-red-800);
+  --mdw-bg-900: var(--mdw-palette-red-900);
+}
+:host[mdw-surface="red alt"] {
+  --mdw-bg: var(--mdw-palette-red-surface-alt);
+}
+:host[mdw-surface="red alt2"] {
+  --mdw-bg: var(--mdw-palette-red-surface-alt2);
+}
+:host[mdw-surface~=pink] {
+  --mdw-bg: var(--mdw-palette-pink-surface-default);
+  --mdw-bg-50: var(--mdw-palette-pink-50);
+  --mdw-bg-100: var(--mdw-palette-pink-100);
+  --mdw-bg-200: var(--mdw-palette-pink-200);
+  --mdw-bg-300: var(--mdw-palette-pink-300);
+  --mdw-bg-400: var(--mdw-palette-pink-400);
+  --mdw-bg-500: var(--mdw-palette-pink-500);
+  --mdw-bg-600: var(--mdw-palette-pink-600);
+  --mdw-bg-700: var(--mdw-palette-pink-700);
+  --mdw-bg-800: var(--mdw-palette-pink-800);
+  --mdw-bg-900: var(--mdw-palette-pink-900);
+}
+:host[mdw-surface="pink alt"] {
+  --mdw-bg: var(--mdw-palette-pink-surface-alt);
+}
+:host[mdw-surface="pink alt2"] {
+  --mdw-bg: var(--mdw-palette-pink-surface-alt2);
+}
+:host[mdw-surface~=brown] {
+  --mdw-bg: var(--mdw-palette-brown-surface-default);
+  --mdw-bg-50: var(--mdw-palette-brown-50);
+  --mdw-bg-100: var(--mdw-palette-brown-100);
+  --mdw-bg-200: var(--mdw-palette-brown-200);
+  --mdw-bg-300: var(--mdw-palette-brown-300);
+  --mdw-bg-400: var(--mdw-palette-brown-400);
+  --mdw-bg-500: var(--mdw-palette-brown-500);
+  --mdw-bg-600: var(--mdw-palette-brown-600);
+  --mdw-bg-700: var(--mdw-palette-brown-700);
+  --mdw-bg-800: var(--mdw-palette-brown-800);
+  --mdw-bg-900: var(--mdw-palette-brown-900);
+}
+:host[mdw-surface="brown alt"] {
+  --mdw-bg: var(--mdw-palette-brown-surface-alt);
+}
+:host[mdw-surface="brown alt2"] {
+  --mdw-bg: var(--mdw-palette-brown-surface-alt2);
+}
+:host[mdw-surface~=bluegrey] {
+  --mdw-bg: var(--mdw-palette-bluegrey-surface-default);
+  --mdw-bg-50: var(--mdw-palette-bluegrey-50);
+  --mdw-bg-100: var(--mdw-palette-bluegrey-100);
+  --mdw-bg-200: var(--mdw-palette-bluegrey-200);
+  --mdw-bg-300: var(--mdw-palette-bluegrey-300);
+  --mdw-bg-400: var(--mdw-palette-bluegrey-400);
+  --mdw-bg-500: var(--mdw-palette-bluegrey-500);
+  --mdw-bg-600: var(--mdw-palette-bluegrey-600);
+  --mdw-bg-700: var(--mdw-palette-bluegrey-700);
+  --mdw-bg-800: var(--mdw-palette-bluegrey-800);
+  --mdw-bg-900: var(--mdw-palette-bluegrey-900);
+}
+:host[mdw-surface="bluegrey alt"] {
+  --mdw-bg: var(--mdw-palette-bluegrey-surface-alt);
+}
+:host[mdw-surface="bluegrey alt2"] {
+  --mdw-bg: var(--mdw-palette-bluegrey-surface-alt2);
+}
+:host[mdw-surface~=bluegray] {
+  --mdw-bg: var(--mdw-palette-bluegray-surface-default);
+  --mdw-bg-50: var(--mdw-palette-bluegray-50);
+  --mdw-bg-100: var(--mdw-palette-bluegray-100);
+  --mdw-bg-200: var(--mdw-palette-bluegray-200);
+  --mdw-bg-300: var(--mdw-palette-bluegray-300);
+  --mdw-bg-400: var(--mdw-palette-bluegray-400);
+  --mdw-bg-500: var(--mdw-palette-bluegray-500);
+  --mdw-bg-600: var(--mdw-palette-bluegray-600);
+  --mdw-bg-700: var(--mdw-palette-bluegray-700);
+  --mdw-bg-800: var(--mdw-palette-bluegray-800);
+  --mdw-bg-900: var(--mdw-palette-bluegray-900);
+}
+:host[mdw-surface="bluegray alt"] {
+  --mdw-bg: var(--mdw-palette-bluegray-surface-alt);
+}
+:host[mdw-surface="bluegray alt2"] {
+  --mdw-bg: var(--mdw-palette-bluegray-surface-alt2);
+}
+:host[mdw-surface~=grey] {
+  --mdw-bg: var(--mdw-palette-grey-surface-default);
+  --mdw-bg-50: var(--mdw-palette-grey-50);
+  --mdw-bg-100: var(--mdw-palette-grey-100);
+  --mdw-bg-200: var(--mdw-palette-grey-200);
+  --mdw-bg-300: var(--mdw-palette-grey-300);
+  --mdw-bg-400: var(--mdw-palette-grey-400);
+  --mdw-bg-500: var(--mdw-palette-grey-500);
+  --mdw-bg-600: var(--mdw-palette-grey-600);
+  --mdw-bg-700: var(--mdw-palette-grey-700);
+  --mdw-bg-800: var(--mdw-palette-grey-800);
+  --mdw-bg-900: var(--mdw-palette-grey-900);
+}
+:host[mdw-surface="grey alt"] {
+  --mdw-bg: var(--mdw-palette-grey-surface-alt);
+}
+:host[mdw-surface="grey alt2"] {
+  --mdw-bg: var(--mdw-palette-grey-surface-alt2);
+}
+:host[mdw-surface~=gray] {
+  --mdw-bg: var(--mdw-palette-gray-surface-default);
+  --mdw-bg-50: var(--mdw-palette-gray-50);
+  --mdw-bg-100: var(--mdw-palette-gray-100);
+  --mdw-bg-200: var(--mdw-palette-gray-200);
+  --mdw-bg-300: var(--mdw-palette-gray-300);
+  --mdw-bg-400: var(--mdw-palette-gray-400);
+  --mdw-bg-500: var(--mdw-palette-gray-500);
+  --mdw-bg-600: var(--mdw-palette-gray-600);
+  --mdw-bg-700: var(--mdw-palette-gray-700);
+  --mdw-bg-800: var(--mdw-palette-gray-800);
+  --mdw-bg-900: var(--mdw-palette-gray-900);
+}
+:host[mdw-surface="gray alt"] {
+  --mdw-bg: var(--mdw-palette-gray-surface-alt);
+}
+:host[mdw-surface="gray alt2"] {
+  --mdw-bg: var(--mdw-palette-gray-surface-alt2);
+}
+:host[mdw-surface~=primary] {
+  --mdw-bg: var(--mdw-alias-primary-surface-default);
+  --mdw-bg-50: var(--mdw-alias-primary-50);
+  --mdw-bg-100: var(--mdw-alias-primary-100);
+  --mdw-bg-200: var(--mdw-alias-primary-200);
+  --mdw-bg-300: var(--mdw-alias-primary-300);
+  --mdw-bg-400: var(--mdw-alias-primary-400);
+  --mdw-bg-500: var(--mdw-alias-primary-500);
+  --mdw-bg-600: var(--mdw-alias-primary-600);
+  --mdw-bg-700: var(--mdw-alias-primary-700);
+  --mdw-bg-800: var(--mdw-alias-primary-800);
+  --mdw-bg-900: var(--mdw-alias-primary-900);
+}
+:host[mdw-surface="primary alt"] {
+  --mdw-bg: var(--mdw-alias-primary-surface-alt);
+}
+:host[mdw-surface="primary alt2"] {
+  --mdw-bg: var(--mdw-alias-primary-surface-alt2);
+}
+:host[mdw-surface~=secondary] {
+  --mdw-bg: var(--mdw-alias-secondary-surface-default);
+  --mdw-bg-50: var(--mdw-alias-secondary-50);
+  --mdw-bg-100: var(--mdw-alias-secondary-100);
+  --mdw-bg-200: var(--mdw-alias-secondary-200);
+  --mdw-bg-300: var(--mdw-alias-secondary-300);
+  --mdw-bg-400: var(--mdw-alias-secondary-400);
+  --mdw-bg-500: var(--mdw-alias-secondary-500);
+  --mdw-bg-600: var(--mdw-alias-secondary-600);
+  --mdw-bg-700: var(--mdw-alias-secondary-700);
+  --mdw-bg-800: var(--mdw-alias-secondary-800);
+  --mdw-bg-900: var(--mdw-alias-secondary-900);
+}
+:host[mdw-surface="secondary alt"] {
+  --mdw-bg: var(--mdw-alias-secondary-surface-alt);
+}
+:host[mdw-surface="secondary alt2"] {
+  --mdw-bg: var(--mdw-alias-secondary-surface-alt2);
+}
+:host[mdw-surface~=warn] {
+  --mdw-bg: var(--mdw-alias-warn-surface-default);
+  --mdw-bg-50: var(--mdw-alias-warn-50);
+  --mdw-bg-100: var(--mdw-alias-warn-100);
+  --mdw-bg-200: var(--mdw-alias-warn-200);
+  --mdw-bg-300: var(--mdw-alias-warn-300);
+  --mdw-bg-400: var(--mdw-alias-warn-400);
+  --mdw-bg-500: var(--mdw-alias-warn-500);
+  --mdw-bg-600: var(--mdw-alias-warn-600);
+  --mdw-bg-700: var(--mdw-alias-warn-700);
+  --mdw-bg-800: var(--mdw-alias-warn-800);
+  --mdw-bg-900: var(--mdw-alias-warn-900);
+}
+:host[mdw-surface="warn alt"] {
+  --mdw-bg: var(--mdw-alias-warn-surface-alt);
+}
+:host[mdw-surface="warn alt2"] {
+  --mdw-bg: var(--mdw-alias-warn-surface-alt2);
+}
+:host[mdw-surface~=background] {
+  --mdw-bg: var(--mdw-alias-background-surface-default);
+  --mdw-bg-50: var(--mdw-alias-background-50);
+  --mdw-bg-100: var(--mdw-alias-background-100);
+  --mdw-bg-200: var(--mdw-alias-background-200);
+  --mdw-bg-300: var(--mdw-alias-background-300);
+  --mdw-bg-400: var(--mdw-alias-background-400);
+  --mdw-bg-500: var(--mdw-alias-background-500);
+  --mdw-bg-600: var(--mdw-alias-background-600);
+  --mdw-bg-700: var(--mdw-alias-background-700);
+  --mdw-bg-800: var(--mdw-alias-background-800);
+  --mdw-bg-900: var(--mdw-alias-background-900);
+}
+:host[mdw-surface="background alt"] {
+  --mdw-bg: var(--mdw-alias-background-surface-alt);
+}
+:host[mdw-surface="background alt2"] {
+  --mdw-bg: var(--mdw-alias-background-surface-alt2);
+}
+:host[mdw-surface~="50"] {
+  --mdw-bg: var(--mdw-bg-50);
+}
+:host[mdw-surface~="100"] {
+  --mdw-bg: var(--mdw-bg-100);
+}
+:host[mdw-surface~="200"] {
+  --mdw-bg: var(--mdw-bg-200);
+}
+:host[mdw-surface~="300"] {
+  --mdw-bg: var(--mdw-bg-300);
+}
+:host[mdw-surface~="400"] {
+  --mdw-bg: var(--mdw-bg-400);
+}
+:host[mdw-surface~="500"] {
+  --mdw-bg: var(--mdw-bg-500);
+}
+:host[mdw-surface~="600"] {
+  --mdw-bg: var(--mdw-bg-600);
+}
+:host[mdw-surface~="700"] {
+  --mdw-bg: var(--mdw-bg-700);
+}
+:host[mdw-surface~="800"] {
+  --mdw-bg: var(--mdw-bg-800);
+}
+:host[mdw-surface~="900"] {
+  --mdw-bg: var(--mdw-bg-900);
+}
+
+/** Ink Color **/
+:host[mdw-ink] {
+  --mdw-ink: var(--mdw-ink-default);
+  --mdw-ink-opacity: 1;
+  color: RGBA(var(--mdw-ink), var(--mdw-ink-opacity));
+}
+:host[mdw-ink=""], :host[mdw-ink~=default] {
+  --mdw-ink: var(--mdw--ink-default);
+  --mdw-ink-opacity: var(--mdw-high-opacity);
+}
+:host[mdw-ink~=white] {
+  --mdw-ink: 255,255,255;
+}
+:host[mdw-ink~=black] {
+  --mdw-ink: 0,0,0;
+}
+:host[mdw-ink~=blue] {
+  --mdw-ink: var(--mdw-palette-blue-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-blue-A100);
+  --mdw-ink-A200: var(--mdw-palette-blue-A200);
+  --mdw-ink-A400: var(--mdw-palette-blue-A400);
+  --mdw-ink-A700: var(--mdw-palette-blue-A700);
+}
+:host[mdw-ink^="blue contrast"] {
+  --mdw-ink: var(--mdw-palette-blue-ink-contrast);
+}
+:host[mdw-ink^="blue light"] {
+  --mdw-ink: var(--mdw-palette-blue-ink-light);
+}
+:host[mdw-ink~=indigo] {
+  --mdw-ink: var(--mdw-palette-indigo-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-indigo-A100);
+  --mdw-ink-A200: var(--mdw-palette-indigo-A200);
+  --mdw-ink-A400: var(--mdw-palette-indigo-A400);
+  --mdw-ink-A700: var(--mdw-palette-indigo-A700);
+}
+:host[mdw-ink^="indigo contrast"] {
+  --mdw-ink: var(--mdw-palette-indigo-ink-contrast);
+}
+:host[mdw-ink^="indigo light"] {
+  --mdw-ink: var(--mdw-palette-indigo-ink-light);
+}
+:host[mdw-ink~=deeppurple] {
+  --mdw-ink: var(--mdw-palette-deeppurple-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-deeppurple-A100);
+  --mdw-ink-A200: var(--mdw-palette-deeppurple-A200);
+  --mdw-ink-A400: var(--mdw-palette-deeppurple-A400);
+  --mdw-ink-A700: var(--mdw-palette-deeppurple-A700);
+}
+:host[mdw-ink^="deeppurple contrast"] {
+  --mdw-ink: var(--mdw-palette-deeppurple-ink-contrast);
+}
+:host[mdw-ink^="deeppurple light"] {
+  --mdw-ink: var(--mdw-palette-deeppurple-ink-light);
+}
+:host[mdw-ink~=purple] {
+  --mdw-ink: var(--mdw-palette-purple-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-purple-A100);
+  --mdw-ink-A200: var(--mdw-palette-purple-A200);
+  --mdw-ink-A400: var(--mdw-palette-purple-A400);
+  --mdw-ink-A700: var(--mdw-palette-purple-A700);
+}
+:host[mdw-ink^="purple contrast"] {
+  --mdw-ink: var(--mdw-palette-purple-ink-contrast);
+}
+:host[mdw-ink^="purple light"] {
+  --mdw-ink: var(--mdw-palette-purple-ink-light);
+}
+:host[mdw-ink~=lightblue] {
+  --mdw-ink: var(--mdw-palette-lightblue-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-lightblue-A100);
+  --mdw-ink-A200: var(--mdw-palette-lightblue-A200);
+  --mdw-ink-A400: var(--mdw-palette-lightblue-A400);
+  --mdw-ink-A700: var(--mdw-palette-lightblue-A700);
+}
+:host[mdw-ink^="lightblue contrast"] {
+  --mdw-ink: var(--mdw-palette-lightblue-ink-contrast);
+}
+:host[mdw-ink^="lightblue light"] {
+  --mdw-ink: var(--mdw-palette-lightblue-ink-light);
+}
+:host[mdw-ink~=cyan] {
+  --mdw-ink: var(--mdw-palette-cyan-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-cyan-A100);
+  --mdw-ink-A200: var(--mdw-palette-cyan-A200);
+  --mdw-ink-A400: var(--mdw-palette-cyan-A400);
+  --mdw-ink-A700: var(--mdw-palette-cyan-A700);
+}
+:host[mdw-ink^="cyan contrast"] {
+  --mdw-ink: var(--mdw-palette-cyan-ink-contrast);
+}
+:host[mdw-ink^="cyan light"] {
+  --mdw-ink: var(--mdw-palette-cyan-ink-light);
+}
+:host[mdw-ink~=teal] {
+  --mdw-ink: var(--mdw-palette-teal-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-teal-A100);
+  --mdw-ink-A200: var(--mdw-palette-teal-A200);
+  --mdw-ink-A400: var(--mdw-palette-teal-A400);
+  --mdw-ink-A700: var(--mdw-palette-teal-A700);
+}
+:host[mdw-ink^="teal contrast"] {
+  --mdw-ink: var(--mdw-palette-teal-ink-contrast);
+}
+:host[mdw-ink^="teal light"] {
+  --mdw-ink: var(--mdw-palette-teal-ink-light);
+}
+:host[mdw-ink~=green] {
+  --mdw-ink: var(--mdw-palette-green-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-green-A100);
+  --mdw-ink-A200: var(--mdw-palette-green-A200);
+  --mdw-ink-A400: var(--mdw-palette-green-A400);
+  --mdw-ink-A700: var(--mdw-palette-green-A700);
+}
+:host[mdw-ink^="green contrast"] {
+  --mdw-ink: var(--mdw-palette-green-ink-contrast);
+}
+:host[mdw-ink^="green light"] {
+  --mdw-ink: var(--mdw-palette-green-ink-light);
+}
+:host[mdw-ink~=lightgreen] {
+  --mdw-ink: var(--mdw-palette-lightgreen-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-lightgreen-A100);
+  --mdw-ink-A200: var(--mdw-palette-lightgreen-A200);
+  --mdw-ink-A400: var(--mdw-palette-lightgreen-A400);
+  --mdw-ink-A700: var(--mdw-palette-lightgreen-A700);
+}
+:host[mdw-ink^="lightgreen contrast"] {
+  --mdw-ink: var(--mdw-palette-lightgreen-ink-contrast);
+}
+:host[mdw-ink^="lightgreen light"] {
+  --mdw-ink: var(--mdw-palette-lightgreen-ink-light);
+}
+:host[mdw-ink~=lime] {
+  --mdw-ink: var(--mdw-palette-lime-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-lime-A100);
+  --mdw-ink-A200: var(--mdw-palette-lime-A200);
+  --mdw-ink-A400: var(--mdw-palette-lime-A400);
+  --mdw-ink-A700: var(--mdw-palette-lime-A700);
+}
+:host[mdw-ink^="lime contrast"] {
+  --mdw-ink: var(--mdw-palette-lime-ink-contrast);
+}
+:host[mdw-ink^="lime light"] {
+  --mdw-ink: var(--mdw-palette-lime-ink-light);
+}
+:host[mdw-ink~=yellow] {
+  --mdw-ink: var(--mdw-palette-yellow-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-yellow-A100);
+  --mdw-ink-A200: var(--mdw-palette-yellow-A200);
+  --mdw-ink-A400: var(--mdw-palette-yellow-A400);
+  --mdw-ink-A700: var(--mdw-palette-yellow-A700);
+}
+:host[mdw-ink^="yellow contrast"] {
+  --mdw-ink: var(--mdw-palette-yellow-ink-contrast);
+}
+:host[mdw-ink^="yellow light"] {
+  --mdw-ink: var(--mdw-palette-yellow-ink-light);
+}
+:host[mdw-ink~=amber] {
+  --mdw-ink: var(--mdw-palette-amber-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-amber-A100);
+  --mdw-ink-A200: var(--mdw-palette-amber-A200);
+  --mdw-ink-A400: var(--mdw-palette-amber-A400);
+  --mdw-ink-A700: var(--mdw-palette-amber-A700);
+}
+:host[mdw-ink^="amber contrast"] {
+  --mdw-ink: var(--mdw-palette-amber-ink-contrast);
+}
+:host[mdw-ink^="amber light"] {
+  --mdw-ink: var(--mdw-palette-amber-ink-light);
+}
+:host[mdw-ink~=orange] {
+  --mdw-ink: var(--mdw-palette-orange-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-orange-A100);
+  --mdw-ink-A200: var(--mdw-palette-orange-A200);
+  --mdw-ink-A400: var(--mdw-palette-orange-A400);
+  --mdw-ink-A700: var(--mdw-palette-orange-A700);
+}
+:host[mdw-ink^="orange contrast"] {
+  --mdw-ink: var(--mdw-palette-orange-ink-contrast);
+}
+:host[mdw-ink^="orange light"] {
+  --mdw-ink: var(--mdw-palette-orange-ink-light);
+}
+:host[mdw-ink~=deeporange] {
+  --mdw-ink: var(--mdw-palette-deeporange-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-deeporange-A100);
+  --mdw-ink-A200: var(--mdw-palette-deeporange-A200);
+  --mdw-ink-A400: var(--mdw-palette-deeporange-A400);
+  --mdw-ink-A700: var(--mdw-palette-deeporange-A700);
+}
+:host[mdw-ink^="deeporange contrast"] {
+  --mdw-ink: var(--mdw-palette-deeporange-ink-contrast);
+}
+:host[mdw-ink^="deeporange light"] {
+  --mdw-ink: var(--mdw-palette-deeporange-ink-light);
+}
+:host[mdw-ink~=red] {
+  --mdw-ink: var(--mdw-palette-red-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-red-A100);
+  --mdw-ink-A200: var(--mdw-palette-red-A200);
+  --mdw-ink-A400: var(--mdw-palette-red-A400);
+  --mdw-ink-A700: var(--mdw-palette-red-A700);
+}
+:host[mdw-ink^="red contrast"] {
+  --mdw-ink: var(--mdw-palette-red-ink-contrast);
+}
+:host[mdw-ink^="red light"] {
+  --mdw-ink: var(--mdw-palette-red-ink-light);
+}
+:host[mdw-ink~=pink] {
+  --mdw-ink: var(--mdw-palette-pink-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-pink-A100);
+  --mdw-ink-A200: var(--mdw-palette-pink-A200);
+  --mdw-ink-A400: var(--mdw-palette-pink-A400);
+  --mdw-ink-A700: var(--mdw-palette-pink-A700);
+}
+:host[mdw-ink^="pink contrast"] {
+  --mdw-ink: var(--mdw-palette-pink-ink-contrast);
+}
+:host[mdw-ink^="pink light"] {
+  --mdw-ink: var(--mdw-palette-pink-ink-light);
+}
+:host[mdw-ink~=brown] {
+  --mdw-ink: var(--mdw-palette-brown-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-brown-A100);
+  --mdw-ink-A200: var(--mdw-palette-brown-A200);
+  --mdw-ink-A400: var(--mdw-palette-brown-A400);
+  --mdw-ink-A700: var(--mdw-palette-brown-A700);
+}
+:host[mdw-ink^="brown contrast"] {
+  --mdw-ink: var(--mdw-palette-brown-ink-contrast);
+}
+:host[mdw-ink^="brown light"] {
+  --mdw-ink: var(--mdw-palette-brown-ink-light);
+}
+:host[mdw-ink~=bluegrey] {
+  --mdw-ink: var(--mdw-palette-bluegrey-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-bluegrey-A100);
+  --mdw-ink-A200: var(--mdw-palette-bluegrey-A200);
+  --mdw-ink-A400: var(--mdw-palette-bluegrey-A400);
+  --mdw-ink-A700: var(--mdw-palette-bluegrey-A700);
+}
+:host[mdw-ink^="bluegrey contrast"] {
+  --mdw-ink: var(--mdw-palette-bluegrey-ink-contrast);
+}
+:host[mdw-ink^="bluegrey light"] {
+  --mdw-ink: var(--mdw-palette-bluegrey-ink-light);
+}
+:host[mdw-ink~=bluegray] {
+  --mdw-ink: var(--mdw-palette-bluegray-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-bluegray-A100);
+  --mdw-ink-A200: var(--mdw-palette-bluegray-A200);
+  --mdw-ink-A400: var(--mdw-palette-bluegray-A400);
+  --mdw-ink-A700: var(--mdw-palette-bluegray-A700);
+}
+:host[mdw-ink^="bluegray contrast"] {
+  --mdw-ink: var(--mdw-palette-bluegray-ink-contrast);
+}
+:host[mdw-ink^="bluegray light"] {
+  --mdw-ink: var(--mdw-palette-bluegray-ink-light);
+}
+:host[mdw-ink~=grey] {
+  --mdw-ink: var(--mdw-palette-grey-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-grey-A100);
+  --mdw-ink-A200: var(--mdw-palette-grey-A200);
+  --mdw-ink-A400: var(--mdw-palette-grey-A400);
+  --mdw-ink-A700: var(--mdw-palette-grey-A700);
+}
+:host[mdw-ink^="grey contrast"] {
+  --mdw-ink: var(--mdw-palette-grey-ink-contrast);
+}
+:host[mdw-ink^="grey light"] {
+  --mdw-ink: var(--mdw-palette-grey-ink-light);
+}
+:host[mdw-ink~=gray] {
+  --mdw-ink: var(--mdw-palette-gray-ink-default);
+  --mdw-ink-A100: var(--mdw-palette-gray-A100);
+  --mdw-ink-A200: var(--mdw-palette-gray-A200);
+  --mdw-ink-A400: var(--mdw-palette-gray-A400);
+  --mdw-ink-A700: var(--mdw-palette-gray-A700);
+}
+:host[mdw-ink^="gray contrast"] {
+  --mdw-ink: var(--mdw-palette-gray-ink-contrast);
+}
+:host[mdw-ink^="gray light"] {
+  --mdw-ink: var(--mdw-palette-gray-ink-light);
+}
+:host[mdw-ink~=primary] {
+  --mdw-ink: var(--mdw-alias-primary-ink-default);
+  --mdw-ink-A100: var(--mdw-alias-primary-A100);
+  --mdw-ink-A200: var(--mdw-alias-primary-A200);
+  --mdw-ink-A400: var(--mdw-alias-primary-A400);
+  --mdw-ink-A700: var(--mdw-alias-primary-A700);
+}
+:host[mdw-ink^="primary contrast"] {
+  --mdw-ink: var(--mdw-alias-primary-ink-contrast);
+}
+:host[mdw-ink^="primary light"] {
+  --mdw-ink: var(--mdw-palette-primary-ink-light);
+}
+:host[mdw-ink~=secondary] {
+  --mdw-ink: var(--mdw-alias-secondary-ink-default);
+  --mdw-ink-A100: var(--mdw-alias-secondary-A100);
+  --mdw-ink-A200: var(--mdw-alias-secondary-A200);
+  --mdw-ink-A400: var(--mdw-alias-secondary-A400);
+  --mdw-ink-A700: var(--mdw-alias-secondary-A700);
+}
+:host[mdw-ink^="secondary contrast"] {
+  --mdw-ink: var(--mdw-alias-secondary-ink-contrast);
+}
+:host[mdw-ink^="secondary light"] {
+  --mdw-ink: var(--mdw-palette-secondary-ink-light);
+}
+:host[mdw-ink~=warn] {
+  --mdw-ink: var(--mdw-alias-warn-ink-default);
+  --mdw-ink-A100: var(--mdw-alias-warn-A100);
+  --mdw-ink-A200: var(--mdw-alias-warn-A200);
+  --mdw-ink-A400: var(--mdw-alias-warn-A400);
+  --mdw-ink-A700: var(--mdw-alias-warn-A700);
+}
+:host[mdw-ink^="warn contrast"] {
+  --mdw-ink: var(--mdw-alias-warn-ink-contrast);
+}
+:host[mdw-ink^="warn light"] {
+  --mdw-ink: var(--mdw-palette-warn-ink-light);
+}
+:host[mdw-ink~=background] {
+  --mdw-ink: var(--mdw-alias-background-ink-default);
+  --mdw-ink-A100: var(--mdw-alias-background-A100);
+  --mdw-ink-A200: var(--mdw-alias-background-A200);
+  --mdw-ink-A400: var(--mdw-alias-background-A400);
+  --mdw-ink-A700: var(--mdw-alias-background-A700);
+}
+:host[mdw-ink^="background contrast"] {
+  --mdw-ink: var(--mdw-alias-background-ink-contrast);
+}
+:host[mdw-ink^="background light"] {
+  --mdw-ink: var(--mdw-palette-background-ink-light);
+}
+:host[mdw-ink~=A100] {
+  --mdw-ink: var(--mdw-ink-A100);
+}
+:host[mdw-ink~=A200] {
+  --mdw-ink: var(--mdw-ink-A200);
+}
+:host[mdw-ink~=A400] {
+  --mdw-ink: var(--mdw-ink-A400);
+}
+:host[mdw-ink~=A700] {
+  --mdw-ink: var(--mdw-ink-A700);
+}
+
+/** Ink Opacity **/
+:host[mdw-ink~=solid] {
+  --mdw-ink-opacity: 1;
+}
+:host[mdw-ink~=high] {
+  --mdw-ink-opacity: var(--mdw-high-opacity);
+}
+:host[mdw-ink~=medium] {
+  --mdw-ink-opacity: var(--mdw-medium-opacity);
+}
+:host[mdw-ink~=inactive] {
+  --mdw-ink-opacity: var(--mdw-inactive-opacity);
+}
+:host[mdw-ink~=divider] {
+  --mdw-ink-opacity: var(--mdw-divider-opacity);
+}
+
+/** Border Ink **/
+:host[mdw-border-ink] {
+  border-color: RGBA(var(--mdw-ink), var(--mdw-divider-opacity));
+}
+:host[mdw-border-ink=default] {
+  border-color: RGBA(var(--mdw-ink-default), var(--mdw-divider-opacity));
+}
+:host[mdw-border-ink=none] {
+  border-color: transparent;
+}

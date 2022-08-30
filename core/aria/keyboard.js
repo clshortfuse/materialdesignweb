@@ -21,10 +21,10 @@ function isRtl(element) {
 
 /**
  * @param {KeyboardEvent} event
+ * @this {HTMLElement}
  * @return {void}
  */
 function onKeyDownHandler(event) {
-  const element = /** @type {Element} */ (event.currentTarget);
   const detail = {
     ctrlKey: event.ctrlKey,
     shiftKey: event.shiftKey,
@@ -52,11 +52,11 @@ function onKeyDownHandler(event) {
       break;
     case 'ArrowLeft':
     case 'Left':
-      type = isRtl(element) ? FORWARD_ARROW_KEY : BACK_ARROW_KEY;
+      type = isRtl(this) ? FORWARD_ARROW_KEY : BACK_ARROW_KEY;
       break;
     case 'ArrowRight':
     case 'Right':
-      type = isRtl(element) ? BACK_ARROW_KEY : FORWARD_ARROW_KEY;
+      type = isRtl(this) ? BACK_ARROW_KEY : FORWARD_ARROW_KEY;
       break;
     case 'Home':
       type = HOME_KEY;
@@ -75,7 +75,7 @@ function onKeyDownHandler(event) {
   }
 
   const customEvent = new CustomEvent(type, { bubbles: true, cancelable: true, detail });
-  if (!element.dispatchEvent(customEvent)) {
+  if (!this.dispatchEvent(customEvent)) {
     // preventDefault called
     event.stopPropagation();
     event.preventDefault();

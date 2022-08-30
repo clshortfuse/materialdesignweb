@@ -1,0 +1,38 @@
+@use 'sass:map';
+@use './_config.scss' as *;
+@use './_palettes.scss' as *;
+@use './_functions.scss' as *;
+
+:root {
+  --mdw-ink-default-light: 0,0,0;
+  --mdw-high-opacity-light: 0.87;
+  --mdw-medium-opacity-light: 0.60;
+  --mdw-inactive-opacity-light: 0.38;
+  --mdw-divider-opacity-light: 0.12;
+  --mdw-ink-default-dark: 255,255,255;
+  --mdw-high-opacity-dark: 1.00;
+  --mdw-medium-opacity-dark: 0.70;
+  --mdw-inactive-opacity-dark: 0.50;
+  --mdw-divider-opacity-dark: 0.24;
+  --mdw-surface-binary-light: 255,255,255;
+  --mdw-surface-binary-dark: 0,0,0;
+  --mdw-surface-card-light: 255,255,255;
+  --mdw-surface-card-dark: 18,18,18;
+
+  @each $paletteKey in map.keys($palettes) {
+    $palette: map.get($palettes, $paletteKey);
+    @each $toneKey in getAllTones() {
+      $tone: map.get($palette, $toneKey);
+      --mdw-palette-#{$paletteKey}-#{$toneKey}: #{getRGB($tone)};
+    }
+  }
+
+  @each $aliasKey in map.keys($alias) {
+    $paletteKey: map.get($alias, $aliasKey);
+    $palette: map.get($palettes, $paletteKey);
+    @each $toneKey in getAllTones() {
+      $tone: map.get($palette, $toneKey);
+      --mdw-alias-#{$aliasKey}-#{$toneKey}: var(--mdw-palette-#{$paletteKey}-#{$toneKey});
+    }
+  }
+}

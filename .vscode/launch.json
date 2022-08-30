@@ -1,31 +1,11 @@
 {
   "version": "0.2.0",
-  "configurations": [{
-      "name": "Chrome Docs Debug",
-      "type": "chrome",
-      "request": "launch",
-      "preLaunchTask": "npm: start:docs",
-      "url": "http://localhost:8080/",
-      "webRoot": "${workspaceFolder}/docs",
-      "sourceMapPathOverrides": {
-        "webpack:///*": "${webRoot}/*",
-      }
-    },
+  "configurations": [
     {
-      "name": "Chrome Docs Debug (WSL)",
-      "type": "chrome",
+      "type": "pwa-chrome",
+      "name": "http://127.0.0.1:5000/demo.html",
       "request": "launch",
-      "preLaunchTask": "npm: start:docs",
-      "url": "http://localhost:8080/",
-      "runtimeExecutable": "/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe",
-      "runtimeArgs": [
-        "--remote-debugging-port=9222",
-        "--user-data-dir=remote-profile"
-      ],
-      "webRoot": "${workspaceFolder}/docs",
-      "sourceMapPathOverrides": {
-        "webpack:///*": "${webRoot}/*",
-      }
-    },
+      "url": "http://127.0.0.1:5000/demo.html"
+    }
   ]
 }

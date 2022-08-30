@@ -1,0 +1,12 @@
+:host {
+  inline-size: 100%;
+  margin-block-start: -1px;
+  border-block-end: 1px solid;
+
+  background-color: currentColor;
+  color: rgb(var(--mdw-color__outline-variant));
+}
+
+:host([mdw-vertical]) {
+  writing-mode: vertical-lr;
+}

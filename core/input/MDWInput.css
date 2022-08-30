@@ -1,0 +1,45 @@
+/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
+
+/* https://material.io/guidelines/style/icons.html# */
+
+:host {
+  --mdw-input__padding-inline-start: 0;
+  --mdw-input__padding-inline-end: 0;
+  display: inline-flex;
+}
+
+/* Remove Firefox inner */
+
+:host(::-moz-focus-inner) {
+  border: 0;
+}
+
+label {
+  flex: 1;
+}
+
+input {
+  position: absolute;
+
+  max-block-size: 0;
+  max-inline-size: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  cursor: inherit;
+  outline: none;
+}
+
+input::-moz-focus-inner {
+  border: 0;
+}
+
+/* Fix active ripple state */
+input:active ~ #ripple > #ripple-inner {
+  animation-name: var(--mdw-ripple__fade-in-name), none;
+}

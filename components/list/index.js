@@ -98,6 +98,7 @@ function onTabIndexZeroed(event) {
     default:
   }
 }
+
 /**
  * @param {CustomEvent} event
  * @return {void}

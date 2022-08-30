@@ -1,0 +1,51 @@
+/* https://material.io/guidelines/style/icons.html# */
+
+:host {
+  --mdw-icon__size: 18px;
+  --mdw-icon__opacity: 1;
+  --mdw-icon__display: block;
+  --mdw-icon__margin-inline-start: 12px;
+  --mdw-icon__margin-inline-end: 8px;
+  --mdw-icon__font-variation-settings: 'FILL' 1;
+  --mdw-icon__image__opacity: 1;
+}
+
+#icon {
+  display: var(--mdw-icon__display);
+  position: relative;
+  order: -1;
+
+  block-size: var(--mdw-icon__size);
+  inline-size: var(--mdw-icon__size);
+
+  transition-delay: 1ms;
+  transition-duration: 100ms;
+  /* stylelint-disable-next-line liberty/use-logical-spec -- Safari does not animate inline-size */
+  transition-property: font-variation-settings, inline-size, opacity, width;
+
+  opacity: var(--mdw-icon__opacity);
+
+  font-size: var(--mdw-icon__size);
+  font-variation-settings: var(--mdw-icon__font-variation-settings);
+}
+
+#image {
+  position: absolute;
+  inset: 0;
+
+  block-size: 100%;
+  inline-size: 100%;
+
+  opacity: var(--mdw-icon__image__opacity);
+
+  object-fit: cover;
+}
+
+#image:not([src]) {
+  display: none;
+}
+
+.material-symbols-outlined {
+  direction: inherit;
+  /* https://github.com/google/material-design-icons/issues/750 */
+}

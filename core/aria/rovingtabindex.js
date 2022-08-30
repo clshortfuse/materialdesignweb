@@ -4,15 +4,14 @@ export const TABINDEX_ZEROED = 'mdw:rovingtabindex-tabindexzeroed';
 
 /**
  * @param {FocusEvent} event
+ * @this {HTMLElement}
  * @return {void}
  */
 function onChildFocus(event) {
-  const child = /** @type {Element} */ (event.currentTarget);
-  if (child.getAttribute('tabindex') === '0') {
-    return;
-  }
-  child.setAttribute('tabindex', '0');
-  child.dispatchEvent(new Event(TABINDEX_ZEROED, { bubbles: true, cancelable: true }));
+  if (this.getAttribute('tabindex') === '0') return;
+
+  this.setAttribute('tabindex', '0');
+  this.dispatchEvent(new Event(TABINDEX_ZEROED, { bubbles: true, cancelable: true }));
 }
 
 /**
@@ -38,24 +37,30 @@ export function removeTabIndex(items, excludeItems = []) {
 function attemptFocus(element) {
   try {
     element.focus();
-  } catch {
+  } catch (e) {
+    console.error(e);
     // Ignore error.
   }
-  return document.activeElement === element;
+  const focused = document.activeElement === element;
+  if (!focused) {
+    console.warn('Element was not focused', element);
+    return false;
+  }
+  return true;
 }
 
 /**
  * @param {Iterable<HTMLElement>} list
- * @param {Element} [current]
+ * @param {Element|HTMLElement} [current]
  * @param {boolean} [loop=true]
  * @param {boolean} [reverse]
- * @return {void}
+ * @return {HTMLElement} focusedElement
  */
 export function selectNext(list, current = null, loop = true, reverse = false) {
   let foundCurrent = false;
 
-  const iterateResult = [...list].some((item, index, array) => {
-    const candidate = reverse ? (array[array.length - 1 - index]) : item;
+  const array = reverse ? [...list].reverse() : list;
+  for (const candidate of array) {
     if (!foundCurrent) {
       if (current) {
         if (candidate === current) {
@@ -64,43 +69,49 @@ export function selectNext(list, current = null, loop = true, reverse = false) {
       } else if (candidate.getAttribute('tabindex') === '0') {
         foundCurrent = true;
       }
-      return false;
+      continue;
     }
     if (!candidate.hasAttribute('tabindex')) {
-      return false;
+      continue;
     }
     if (candidate.getAttribute('aria-hidden') === 'true') {
-      return false;
+      continue;
     }
     if (candidate.getAttribute('mdw-skip-tab') === 'true') {
-      return false;
+      continue;
     }
-    return attemptFocus(candidate);
-  });
-  if (iterateResult) {
-    return;
+    if (attemptFocus(candidate)) {
+      return candidate;
+    }
   }
+
   if (!loop) {
     if (document.activeElement !== current && current instanceof HTMLElement) {
       current.focus();
     }
-    return;
+    return current;
   }
-  [...list].some((item, index, array) => {
-    const candidate = reverse ? (array[array.length - 1 - index]) : item;
+  // Loop
+  for (const candidate of array) {
     if (!candidate.hasAttribute('tabindex')) {
-      return false;
+      continue;
     }
     if (candidate.getAttribute('aria-hidden') === 'true') {
-      return false;
+      continue;
     }
     if (candidate.getAttribute('mdw-skip-tab') === 'true') {
-      return false;
+      continue;
     }
     // Abort if we've looped all the way back to original element
     // Abort if candidate received focus
-    return (attemptFocus(candidate) || candidate === current);
-  });
+    if (attemptFocus(candidate)) {
+      return candidate;
+    }
+    if (candidate === current) {
+      return candidate;
+    }
+  }
+  return null;
 }
 
 /**
@@ -108,7 +119,7 @@ export function selectNext(list, current = null, loop = true, reverse = false) {
  * @param {Iterable<HTMLElement>} list
  * @param {Element} [current]
  * @param {boolean} [loop=true]
- * @return {void}
+ * @return {HTMLElement}
  */
 export function selectPrevious(list, current, loop = true) {
   return selectNext(list, current, loop, true);

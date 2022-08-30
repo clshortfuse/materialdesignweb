@@ -32,7 +32,7 @@
  *
  */
 
- :host {
+:host {
   --enter-delay: 80ms;
   --fade-out-duration: calc(1000ms / 3.0);
   --touch-down-acceleration: 1024;
@@ -42,7 +42,6 @@
   --mdw-ripple-standard-easing: var(--mdw-motion-standard-easing, cubic-bezier(0.4, 0.0, 0.2, 1));
   --mdw-ripple-deceleration-easing: var(--mdw-motion-deceleration-easing, cubic-bezier(0.0, 0.0, 0.2, 1));
   --mdw-ripple__visibility: visible;
-  --mdw-ripple__fade-out-animation: ripple-fade-out;
 }
 
 :host(:not([mdw-ripple="none"])) {
@@ -58,7 +57,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.mdw-ripple__container {
+#ripple {
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -74,84 +73,97 @@
   border-radius: inherit;
 }
 
-.mdw-ripple__inner {
+#ripple-inner {
+  --mdw-ripple__fade-in-name: ripple-fade-in;
+  --mdw-ripple-x: 0;
+  --mdw-ripple-y: 0;
+  --mdw-ripple-radius: 0;
+  --mdw-ripple-transform__gone: translateX(var(--mdw-ripple-x)) translateY(var(--mdw-ripple-y)) scale(0);
+  --mdw-ripple-transform__full: translateX(var(--mdw-ripple-x)) translateY(var(--mdw-ripple-y)) scale(var(--mdw-ripple-radius));
+
   display: block;
   position: absolute;
 
+  inset-block-start: -1px;
+  inset-inline-start: -1px;
+
+  block-size: 2px;
+  inline-size: 2px;
+
   pointer-events: none;
 
-  animation-name: none;
-  animation-duration: var(--mdw-ripple-expand-duration);
-  animation-timing-function: linear;
+  animation:
+    var(--mdw-ripple__fade-in-name) var(--mdw-ripple-expand-duration) linear,
+    ripple-fade-out calc(1000ms / 3.0) var(--mdw-ripple-deceleration-easing);
+  animation-name: none, none;
   animation-direction: normal;
   animation-fill-mode: forwards;
   transition-delay: 0s;
   transition-duration: var(--mdw-ripple-simple-duration);
   transition-property: background-color, color;
   transition-timing-function: var(--mdw-ripple-standard-easing);
+  will-change: transform, opacity;
 
   opacity: 0.12;
-  transform: scale(0);
+  transform: var(--mdw-ripple-transform__gone);
 
   background-color: currentColor;
 
   border-radius: 50%;
 }
 
-.mdw-ripple__inner[mdw-fade-in] {
-  animation-name: ripple-fade-in;
+#ripple-inner[mdw-fade-in-repeat] {
+  --mdw-ripple__fade-in-name: ripple-fade-in-repeat;
 }
 
-.mdw-ripple__inner[mdw-fade-in-repeat] {
-  animation-name: ripple-fade-in-repeat;
+#ripple-inner[mdw-fade-in] {
+  animation-name: var(--mdw-ripple__fade-in-name), none;
+}
+
+#ripple-inner[mdw-fade-in-complete] {
+  animation-name: none, ripple-fade-out;
+}
+
+#ripple-inner[mdw-fade-out] {
+  animation-name: none, ripple-fade-out;
 }
 
 :host(:active) {
   /* Hold fade-in animation while held (active) */
-  --mdw-ripple__fade-out-animation: ripple-fade-in;
+  animation-name: var(--mdw-ripple__fade-in-name), none;
 }
 
-.mdw-ripple__inner[mdw-fade-in-complete][mdw-fade-in] {
-  animation-name: var(--mdw-ripple__fade-out-animation);
-}
-
-.mdw-ripple__inner[mdw-fade-out] {
-  animation-name: ripple-fade-out;
-  animation-duration: var(--fade-out-duration);
-  animation-timing-function: var(--mdw-ripple-deceleration-easing);
+:host([disabled]) {
+  --mdw-ripple__visibility: hidden;
 }
 
 @keyframes ripple-fade-in {
   from {
-    transform: scale(0);
+    transform: var(--mdw-ripple-transform__gone);
   }
 
   to {
-    transform: scale(2);
+    transform: var(--mdw-ripple-transform__full);
   }
 }
 
 @keyframes ripple-fade-in-repeat {
   from {
-    transform: scale(0);
+    transform: var(--mdw-ripple-transform__gone);
   }
 
   to {
-    transform: scale(2);
+    transform: var(--mdw-ripple-transform__full);
   }
 }
 
 @keyframes ripple-fade-out {
   from {
-    transform: scale(2);
+    transform: var(--mdw-ripple-transform__full);
   }
 
   to {
     opacity: 0;
-    transform: scale(2);
+    transform: var(--mdw-ripple-transform__full);
   }
-}
-
-:host([aria-disabled="true"]) {
-  --mdw-ripple__visibility: hidden;
 }

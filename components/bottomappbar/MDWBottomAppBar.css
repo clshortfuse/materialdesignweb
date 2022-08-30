@@ -22,6 +22,6 @@
   direction: ltr;
 }
 
-:host([mdw-color]:not([mdw-color|="surface"])) {
+:host([color]:not([color|="surface"])) {
   --mdw-container__elevation__opacity: 0;
 }

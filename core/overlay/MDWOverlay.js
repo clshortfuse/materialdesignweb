@@ -3,72 +3,84 @@ import MDWContainer from '../container/MDWContainer.js';
 import styles from './MDWOverlay.css' assert { type: 'css' };
 
 export default class MDWOverlay extends MDWContainer {
+  constructor() {
+    super();
+    this.overlayElement = this.shadowRoot.getElementById('overlay');
+  }
+
   static elementName = 'mdw-overlay';
 
-  static get styles() { return [...super.styles, styles]; }
+  static styles = [...super.styles, styles];
 
-  static get fragments() {
-    return [
-      ...super.fragments,
-      '<div class="mdw-overlay__container" part="overlay-container" aria-hidden="true"/>',
-    ];
-  }
+  static fragments = [
+    ...super.fragments,
+    '<div id="overlay" aria-hidden="true"/>',
+  ];
 
   static lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matches;
 
+  /** @type {'mouse'|'touch'|'key'|null} */
+  #lastInteraction = null;
+
   /**
    * @param {PointerEvent|MouseEvent} event
+   * @this {MDWOverlay}
    * @return {void}
    */
   static onMouseDown(event) {
-    const element = /** @type {MDWOverlay} */ (event.currentTarget);
-    if (element.hasAttribute('mdw-overlay-touch')) {
-      return;
-    }
-    element.setAttribute('mdw-overlay-touch', 'false');
+    if (this.#lastInteraction) return;
+    this.#lastInteraction = 'mouse';
+    this.overlayElement.removeAttribute('touched');
   }
 
   /**
    * @param {TouchEvent} event
+   * @this {MDWOverlay}
    * @return {void}
    */
   static onTouchStart(event) {
-    const element = /** @type {MDWOverlay} */ (event.currentTarget);
-    element.setAttribute('mdw-overlay-touch', 'true');
+    this.#lastInteraction = 'touch';
+    this.overlayElement.setAttribute('touched', '');
   }
 
   /**
    * @param {KeyboardEvent} event
+   * @this {MDWOverlay}
    * @return {void}
    */
   static onKeyDown(event) {
-    const element = /** @type {MDWOverlay} */ (event.currentTarget);
-    element.setAttribute('mdw-overlay-touch', 'false');
+    this.#lastInteraction = 'key';
+    this.overlayElement.removeAttribute('touched');
   }
 
   /**
    * @param {FocusEvent} event
+   * @this {MDWOverlay}
    * @return {void}
    */
   static onBlur(event) {
-    const element = /** @type {MDWOverlay} */ (event.currentTarget);
-    const value = element.getAttribute('mdw-overlay-touch');
-    if (value == null) {
-      return;
+    switch (this.#lastInteraction) {
+      case null: return;
+      case 'touch':
+        MDWOverlay.lastInteractionWasTouch = true;
+        this.overlayElement.removeAttribute('touched');
+        break;
+      default:
+        MDWOverlay.lastInteractionWasTouch = false;
     }
-    MDWOverlay.lastInteractionWasTouch = (value === 'true');
-    element.removeAttribute('mdw-overlay-touch');
   }
 
   /**
    * @param {FocusEvent} event
+   * @this {MDWOverlay}
    * @return {void}
    */
   static onFocus(event) {
-    const element = /** @type {MDWOverlay} */ (event.currentTarget);
     // Element was focused without a mouse or touch event (keyboard or programmatic)
-    if (!element.hasAttribute('mdw-overlay-touch') && MDWOverlay.lastInteractionWasTouch) {
-      element.setAttribute('mdw-overlay-touch', 'true');
+    if (!this.#lastInteraction && MDWOverlay.lastInteractionWasTouch) {
+      // Replicate touch behavior
+      this.#lastInteraction = 'touch';
+      this.overlayElement.setAttribute('touched', '');
     }
   }
 

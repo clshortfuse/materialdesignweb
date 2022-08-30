@@ -58,7 +58,7 @@ export function setupARIA(tabListElement) {
   tabListElement.setAttribute('aria-orientation', 'horizontal');
   const indicatorElement = tabListElement.getElementsByClassName('mdw-tab__indicator')[0];
   if (indicatorElement) {
-    indicatorElement.setAttribute('role', 'presentation');
+    indicatorElement.setAttribute('role', 'none');
   }
 }
 

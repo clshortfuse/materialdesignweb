@@ -2,12 +2,12 @@
 /* https://material.io/guidelines/style/icons.html# */
 
 :host {
-  --mdw-surface: var(--mdw-color__secondary-container);
+  --mdw-bg: var(--mdw-color__secondary-container);
   --mdw-ink: var(--mdw-color__on-secondary-container);
 
   display: flex;
 }
 
-:host([mdw-color]) {
+:host([color]) {
   background-color: transparent;
 }
