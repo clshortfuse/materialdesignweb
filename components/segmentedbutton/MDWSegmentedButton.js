@@ -112,7 +112,7 @@ export default class MDWSegmentedButton extends MDWButton {
   connectedCallback() {
     super.connectedCallback();
     RovingTabIndex.attach(this);
-    this.inputElement.addEventListener('click', MDWSegmentedButton.onInputClick, { passive: true });
+    this.inputElement.addEventListener('click', MDWSegmentedButton.onInputClick);
     this.inputElement.addEventListener('change', MDWSegmentedButton.onInputChange);
     this.inputElement.addEventListener('keydown', MDWSegmentedButton.onInputKeydown);
   }
