@@ -11,6 +11,8 @@ import styles from './MDWBottomAppBar.css' assert { type: 'css' };
 
 /** @implements {HTMLMenuElement} */
 export default class MDWBottomAppBar extends MDWContainer {
+  static ariaRole = 'toolbar';
+
   static elementName = 'mdw-bottom-app-bar';
 
   static styles = [...super.styles, styles];

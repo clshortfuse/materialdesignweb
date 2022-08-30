@@ -27,7 +27,7 @@ export default class MDWText extends MDWComponent {
   static fragments = [
     ...super.fragments,
     /* html */`
-      <slot id=slot role=none></slot>
+      <slot id=slot></slot>
     `,
   ];
 }

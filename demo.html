@@ -327,21 +327,21 @@
       <demo-section>
         <h3 slot=heading>Small</h3>
         <demo-flex align-center gap12 wrap>
-          <mdw-fab size="small" aria-label="Sample">edit</mdw-fab>
-          <mdw-fab size="small" color=surface-primary aria-label="Sample">edit</mdw-fab>
-          <mdw-fab size="small" color=secondary-container aria-label="Sample">edit</mdw-fab>
-          <mdw-fab size="small" color=tertiary-container aria-label="Sample">edit</mdw-fab>
-          <mdw-fab size="small" class=mdw-custom color=yellow-container aria-label="Sample">edit</mdw-fab>
+          <mdw-fab size=small aria-label=Sample>edit</mdw-fab>
+          <mdw-fab size=small color=surface-primary aria-label=Sample>edit</mdw-fab>
+          <mdw-fab size=small color=secondary-container aria-label=Sample>edit</mdw-fab>
+          <mdw-fab size=small color=tertiary-container aria-label=Sample>edit</mdw-fab>
+          <mdw-fab size=small class=mdw-custom color=yellow-container aria-label=Sample>edit</mdw-fab>
         </demo-flex>
       </demo-section>
       <demo-section>
         <h3 slot=heading>Large</h3>
         <demo-flex align-center gap12 wrap>
-          <mdw-fab size=large aria-label="Edit">edit</mdw-fab>
-          <mdw-fab size=large color=surface-primary aria-label="Edit">edit</mdw-fab>
-          <mdw-fab size=large color=secondary-container aria-label="Edit">edit</mdw-fab>
-          <mdw-fab size=large color=tertiary-container aria-label="Edit">edit</mdw-fab>
-          <mdw-fab class=mdw-custom size=large color=yellow-container aria-label="Edit">edit</mdw-fab>
+          <mdw-fab size=large aria-label=Edit>edit</mdw-fab>
+          <mdw-fab size=large color=surface-primary aria-label=Edit>edit</mdw-fab>
+          <mdw-fab size=large color=secondary-container aria-label=Edit>edit</mdw-fab>
+          <mdw-fab size=large color=tertiary-container aria-label=Edit>edit</mdw-fab>
+          <mdw-fab class=mdw-custom size=large color=yellow-container aria-label=Edit>edit</mdw-fab>
         </demo-flex>
       </demo-section>
       <demo-section>
@@ -381,9 +381,9 @@
           <h4 slot=heading>No toggle</h4>
           <demo-flex gap12 wrap>
             <demo-flex gap12 wrap>
-              <mdw-icon-button filled aria-label="Settings">settings</mdw-icon-button>
-              <mdw-icon-button filled color=tertiary aria-label="Favorite">favorite</mdw-icon-button>
-              <mdw-icon-button filled class=mdw-custom color=yellow aria-label="edit">edit</mdw-icon-button>
+              <mdw-icon-button filled aria-label=Settings>settings</mdw-icon-button>
+              <mdw-icon-button filled color=tertiary aria-label=Favorite>favorite</mdw-icon-button>
+              <mdw-icon-button filled class=mdw-custom color=yellow aria-label=edit>edit</mdw-icon-button>
             </demo-flex>
             <demo-flex gap12 wrap>
               <mdw-icon-button disabled filled>settings</mdw-icon-button>
@@ -558,11 +558,11 @@
         <demo-flex align-center gap12 wrap>
           <form>
             <mdw-segmented-button-group>
-              <mdw-segmented-button name=segmented-demo value="favorite" icon=favorite>Favorite</mdw-segmented-button>
-              <mdw-segmented-button name=segmented-demo value="enabled" icon=star>Enabled</mdw-segmented-button>
-              <mdw-segmented-button name=segmented-demo value="disabled" icon=edit disabled>Disabled
+              <mdw-segmented-button name=segmented-demo value=favorite icon=favorite>Favorite</mdw-segmented-button>
+              <mdw-segmented-button name=segmented-demo value=enabled icon=star>Enabled</mdw-segmented-button>
+              <mdw-segmented-button name=segmented-demo value=disabled icon=edit disabled>Disabled
               </mdw-segmented-button>
-              <mdw-segmented-button name=segmented-demo value="text">Text only</mdw-segmented-button>
+              <mdw-segmented-button name=segmented-demo value=text>Text only</mdw-segmented-button>
             </mdw-segmented-button-group>
           </form>
         </demo-flex>
@@ -571,19 +571,19 @@
         <h3 slot=heading>Single selection (Required)</h3>
         <demo-flex align-center gap12 wrap>
           <form>
-            <mdw-segmented-button-group aria-required="true">
-              <mdw-segmented-button name=segmented-demo required value="favorite" checked icon=favorite>Favorite
+            <mdw-segmented-button-group aria-required=true>
+              <mdw-segmented-button name=segmented-demo-required required value=favorite checked icon=favorite>Favorite
               </mdw-segmented-button>
-              <mdw-segmented-button name=segmented-demo required value="enabled" icon=star>Enabled
+              <mdw-segmented-button name=segmented-demo-required required value=enabled icon=star>Enabled
               </mdw-segmented-button>
-              <mdw-segmented-button name=segmented-demo required value="disabled" icon=edit disabled>Disabled
+              <mdw-segmented-button name=segmented-demo-required required value=disabled icon=edit disabled>Disabled
               </mdw-segmented-button>
-              <mdw-segmented-button name=segmented-demo required value="text">Text only</mdw-segmented-button>
+              <mdw-segmented-button name=segmented-demo-required required value=text>Text only</mdw-segmented-button>
             </mdw-segmented-button-group>
           </form>
         </demo-flex>
       </demo-section>
-      
+
       <demo-section>
         <h3 slot=heading>Multi-selectable</h3>
         <demo-flex align-center gap12 wrap>
@@ -596,24 +596,26 @@
         </demo-flex>
       </demo-section>
       <demo-section>
-        <h3 slot=heading>Checks</h3>
+        <h3 slot=heading>Text-only</h3>
         <demo-flex align-center gap12 wrap>
-          <mdw-segmented-button-group color="tertiary-container">
-            <mdw-segmented-button aria-checked=true icon=check>$</mdw-segmented-button>
-            <mdw-segmented-button aria-checked=false icon=check>$$</mdw-segmented-button>
-            <mdw-segmented-button aria-checked=false icon=check disabled>$$$</mdw-segmented-button>
-            <mdw-segmented-button aria-checked=false icon=check>$$$$</mdw-segmented-button>
-          </mdw-segmented-button-group>
+          <form>
+            <mdw-segmented-button-group color=tertiary-container>
+              <mdw-segmented-button name=demo-segmented-text value="$" checked>$</mdw-segmented-button>
+              <mdw-segmented-button name=demo-segmented-text value="$$">$$</mdw-segmented-button>
+              <mdw-segmented-button name=demo-segmented-text value="$$$" disabled>$$$</mdw-segmented-button>
+              <mdw-segmented-button name=demo-segmented-text value="$$$$">$$$$</mdw-segmented-button>
+            </mdw-segmented-button-group>
+          </form>
         </demo-flex>
       </demo-section>
       <demo-section>
-        <h3 slot=heading>Multi-selectable checks</h3>
+        <h3 slot=heading>Multi-selectable text-only</h3>
         <demo-flex align-center gap12 wrap>
           <mdw-segmented-button-group class=mdw-custom color=alias-container aria-multiselectable=true>
-            <mdw-segmented-button aria-checked=true icon=check>$</mdw-segmented-button>
-            <mdw-segmented-button aria-checked=false icon=check>$$</mdw-segmented-button>
-            <mdw-segmented-button aria-checked=false icon=check disabled>$$$</mdw-segmented-button>
-            <mdw-segmented-button aria-checked=true icon=check>$$$$</mdw-segmented-button>
+            <mdw-segmented-button type=checkbox checked icon=check>$</mdw-segmented-button>
+            <mdw-segmented-button type=checkbox icon=check>$$</mdw-segmented-button>
+            <mdw-segmented-button type=checkbox icon=check disabled>$$$</mdw-segmented-button>
+            <mdw-segmented-button type=checkbox checked icon=check>$$$$</mdw-segmented-button>
           </mdw-segmented-button-group>
         </demo-flex>
       </demo-section>
@@ -624,10 +626,10 @@
     <demo-section>
       <h2 slot=heading>Surface color</h2>
       <mdw-bottom-app-bar>
-        <mdw-icon-button aria-label="1K">1k</mdw-icon-button>
-        <mdw-icon-button aria-label="2K">2k</mdw-icon-button>
-        <mdw-icon-button aria-label="3K">3k</mdw-icon-button>
-        <mdw-icon-button aria-label="4K">4k</mdw-icon-button>
+        <mdw-icon-button aria-label=1K>1k</mdw-icon-button>
+        <mdw-icon-button aria-label=2K>2k</mdw-icon-button>
+        <mdw-icon-button aria-label=3K>3k</mdw-icon-button>
+        <mdw-icon-button aria-label=4K>4k</mdw-icon-button>
       </mdw-bottom-app-bar>
     </demo-section>
     <demo-section>
@@ -665,7 +667,7 @@
           </mdw-card-action-area>
         </mdw-card>
         <mdw-card actionable elevated>
-          <mdw-button slot="primary-action"></mdw-button>
+          <mdw-button slot=primary-action></mdw-button>
           <div style="padding:12px">
             <mdw-text block type-style=title>Actionable Elevated Card</mdw-text>
             <mdw-text block type-style=title-small>Title small text</mdw-text>
@@ -675,8 +677,8 @@
             <mdw-button filled>Action</mdw-button>
           </mdw-card-action-area>
         </mdw-card>
-        <mdw-card actionable elevated color="inverse-surface">
-          <mdw-button slot="primary-action"></mdw-button>
+        <mdw-card actionable elevated color=inverse-surface>
+          <mdw-button slot=primary-action></mdw-button>
           <div style="padding:12px">
             <mdw-text block type-style=title>Actionable Elevated Card</mdw-text>
             <mdw-text block type-style=title-small>Title small text</mdw-text>
@@ -697,7 +699,7 @@
           </mdw-card-action-area>
         </mdw-card>
         <mdw-card actionable elevated disabled>
-          <mdw-button slot="primary-action"></mdw-button>
+          <mdw-button slot=primary-action></mdw-button>
           <div style="padding:12px">
             <mdw-text block type-style=title>Actionable Elevated Card</mdw-text>
             <mdw-text block type-style=title-small>Title small text</mdw-text>
@@ -719,11 +721,11 @@
             <mdw-text block type-style=body-medium>Body medium text</mdw-text>
           </div>
           <mdw-card-action-area style="padding:12px">
-            <mdw-button filled="tertiary">Action</mdw-button>
+            <mdw-button filled=tertiary>Action</mdw-button>
           </mdw-card-action-area>
         </mdw-card>
         <mdw-card filled actionable>
-          <mdw-button slot="primary-action"></mdw-button>
+          <mdw-button slot=primary-action></mdw-button>
           <div style="padding:12px">
             <mdw-text block type-style=title>Actionable Filled Card</mdw-text>
             <mdw-text block type-style=title-small>Title small text</mdw-text>
@@ -733,8 +735,8 @@
             <mdw-button filled>Action</mdw-button>
           </mdw-card-action-area>
         </mdw-card>
-        <mdw-card filled color="inverse-surface" actionable>
-          <mdw-button slot="primary-action"></mdw-button>
+        <mdw-card filled color=inverse-surface actionable>
+          <mdw-button slot=primary-action></mdw-button>
           <div style="padding:12px">
             <mdw-text block type-style=title>Actionable Filled Card</mdw-text>
             <mdw-text block type-style=title-small>Title small text</mdw-text>
@@ -755,7 +757,7 @@
           </mdw-card-action-area>
         </mdw-card>
         <mdw-card filled actionable disabled>
-          <mdw-button slot="primary-action"></mdw-button>
+          <mdw-button slot=primary-action></mdw-button>
           <div style="padding:12px">
             <mdw-text block type-style=title>Actionable Filled Card</mdw-text>
             <mdw-text block type-style=title-small>Title small text</mdw-text>
@@ -781,7 +783,7 @@
           </mdw-card-action-area>
         </mdw-card>
         <mdw-card outlined actionable>
-          <mdw-button slot="primary-action"></mdw-button>
+          <mdw-button slot=primary-action></mdw-button>
           <div style="padding:12px">
             <mdw-text block type-style=title>Actionable Outlined Card</mdw-text>
             <mdw-text block type-style=title-small>Title small text</mdw-text>
@@ -802,7 +804,7 @@
           </mdw-card-action-area>
         </mdw-card>
         <mdw-card outlined actionable disabled>
-          <mdw-button slot="primary-action"></mdw-button>
+          <mdw-button slot=primary-action></mdw-button>
           <div style="padding:12px">
             <mdw-text block type-style=title>Actionable Outlined Card</mdw-text>
             <mdw-text block type-style=title-small>(Disabled)</mdw-text>
@@ -899,26 +901,27 @@
     </demo-section>
   </demo-section>
   <demo-section>
-    <h1 slot="heading">Dialogs</h1>
+    <h1 slot=heading>Dialogs</h1>
     <demo-section>
-      <h2 slot="heading">Basic dialog</h2>
+      <h2 slot=heading>Basic dialog</h2>
       <demo-flex wrap gap12>
-        <mdw-button onclick="document.getElementById('dialog-simple').show(this)" aria-haspopup="dialog">Basic dialog
+        <mdw-button onclick="document.getElementById('dialog-simple').show(this)" aria-haspopup=dialog>Basic dialog
         </mdw-button>
-        <mdw-button onclick="document.getElementById('dialog-body').show(this)" aria-haspopup="dialog">Body dialog
+        <mdw-button onclick="document.getElementById('dialog-body').show(this)" aria-haspopup=dialog>Body dialog
         </mdw-button>
       </demo-flex>
     </demo-section>
   </demo-section>
-  <mdw-dialog id="dialog-simple" icon="refresh" title="My title" description="Description (no body).">
+  <mdw-dialog id=dialog-simple icon=refresh title="My title" description="Description (no body).">
   </mdw-dialog>
-  <mdw-dialog id="dialog-body" icon="refresh" title="Reset settings?"
+  <mdw-dialog id=dialog-body icon=refresh title="Reset settings?"
     description="This will reset your app preferences back to their default settings. The following accounts will be signed out:"
     custom-body>
     <demo-dummy-text></demo-dummy-text>
   </mdw-dialog>
   <script type=module src="./demo.js"></script>
-  <script type=module src="index.js?color=&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto"></script>
+  <script type=module src="index.min.js?color=&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto">
+  </script>
 
 </body>
 

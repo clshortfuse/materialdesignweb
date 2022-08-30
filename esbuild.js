@@ -9,6 +9,7 @@ await esbuild.build({
   sourcemap: true,
   minify: true,
   bundle: true,
+  watch: true,
   legalComments: 'linked',
   target,
   outfile: 'index.min.js',

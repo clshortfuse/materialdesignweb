@@ -47,10 +47,7 @@ export default class MDWButton extends MDWInput {
 
   static elementName = 'mdw-button';
 
-  static styles = [
-    ...super.styles,
-    styles,
-  ];
+  static styles = [...super.styles, styles];
 
   static fragments = [
     ...super.fragments,

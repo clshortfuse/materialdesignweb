@@ -20,10 +20,6 @@ export default class MDWInput extends MDWRipple {
       this.slotElement,
     );
 
-    // Aria will use aria-labelledby instead
-    // Fallback with wrapped HTMLLabelElement
-    this.slotElement.setAttribute('aria-hidden', 'true');
-
     if (!this.hasAttribute('tabindex')) {
       // Expose this element as focusable
       this.setAttribute('tabindex', '0');
@@ -122,7 +118,7 @@ export default class MDWInput extends MDWRipple {
   static fragments = [
     ...super.fragments,
     /* html */`
-      <label id=label role=none>
+      <label id=label>
         <input id=input aria-labelledby="slot" >
       </label>
     `,
@@ -182,7 +178,6 @@ export default class MDWInput extends MDWRipple {
 
   /** @type {HTMLElement['focus']} */
   focus(options) {
-    console.log('MDWInput.focus', this);
     super.focus(options);
     this.inputElement?.focus(options);
   }

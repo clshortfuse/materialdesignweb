@@ -21,8 +21,10 @@ label {
 input {
   position: absolute;
 
-  max-block-size: 0;
-  max-inline-size: 0;
+  block-size: 1px;
+  max-block-size: 1px;
+  inline-size: 1px;
+  max-inline-size: 1px;
   margin: 0;
   border: 0;
   padding: 0;
@@ -33,6 +35,9 @@ input {
 
   cursor: inherit;
   outline: none;
+
+  /** Firefox requires at least 1px "visible" for screen reading */
+  opacity: 0;
 }
 
 input::-moz-focus-inner {

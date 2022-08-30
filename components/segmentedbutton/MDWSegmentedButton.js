@@ -8,13 +8,15 @@ export default class MDWSegmentedButton extends MDWButton {
 
   constructor() {
     super();
+    this.checkIconElement = this.shadowRoot.getElementById('check-icon');
     this.outlined = true;
     this.setAttribute('mdw-overlay-disabled', 'focus');
     if (!this.hasAttribute('type')) {
       this.type = 'radio';
+      this.attributeChangedCallback('type', null, 'radio');
     }
     this.inputElement.setAttribute('role', 'option');
-    this.setAttribute('aria-checked', this.checked ? 'true' : 'false');
+    this.labelElement.appendChild(this.checkIconElement);
   }
 
   /**
@@ -24,10 +26,14 @@ export default class MDWSegmentedButton extends MDWButton {
    */
   attributeChangedCallback(name, oldValue, newValue) {
     // Listboxes should always receive focus
-    if (name === 'disabled') return;
+    if (name === 'disabled') {
+      this.inputElement.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
+      return;
+    }
     super.attributeChangedCallback(name, oldValue, newValue);
-    if (name === 'checked') {
-      this.setAttribute('aria-checked', newValue == null ? 'false' : 'true');
+    if (name === 'checked' || name === 'type') {
+      const attribute = this.type === 'checkbox' ? 'aria-checked' : 'aria-selected';
+      this.inputElement.setAttribute(attribute, this.checked ? 'true' : 'false');
     }
   }
 
@@ -41,18 +47,43 @@ export default class MDWSegmentedButton extends MDWButton {
    * @return {void}
    */
   static onInputClick(event) {
-    console.log('MDWSegmentedButton.onClick', this.checked);
-    if (this.type !== 'radio') return;
-    if (this.required) return;
-    if (!this.hasAttribute('checked')) return;
     /** @type {{host:MDWSegmentedButton}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
     if (host.hasAttribute('disabled')) {
       event.preventDefault();
       return;
     }
+
+    if (this.type !== 'radio') return;
+    if (this.required) return;
+    if (!this.hasAttribute('checked')) return;
+    event.preventDefault();
     this.checked = false;
     host.toggleAttribute('checked', false);
+  }
+
+  /**
+   * @param {KeyboardEvent} event
+   * @this {HTMLInputElement}
+   * @return {void}
+   */
+  static onInputKeydown(event) {
+    if (event.key !== 'Spacebar' && event.key !== ' ') return;
+    /** @type {{host:MDWSegmentedButton}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    if (host.hasAttribute('disabled')) {
+      event.preventDefault();
+      return;
+    }
+
+    if (this.type !== 'radio') return;
+    if (this.required) return;
+    if (!this.hasAttribute('checked')) return;
+    event.preventDefault();
+
+    this.checked = false;
+    host.toggleAttribute('checked', false);
+    event.preventDefault();
   }
 
   /**
@@ -61,40 +92,36 @@ export default class MDWSegmentedButton extends MDWButton {
    * @return {void}
    */
   static onInputChange(event) {
-    console.log('MDWSegmentedButton.onInputChange', this.checked);
     /** @type {{host:MDWSegmentedButton}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
     if (host.hasAttribute('disabled')) {
-      console.log('preventing default');
       event.preventDefault();
       return;
     }
     host.toggleAttribute('checked', this.checked);
   }
 
-  /**
-   * @param {Event} event
-   * @this {HTMLInputElement} this
-   * @return {void}
-   */
-  static onInputFocus(event) {
-    console.log('MDWSegmentedButton.onInputFocus', this.checked, this.value);
-    // event.preventDefault();
-  }
+
+  static fragments = [
+    ...super.fragments,
+    /* html */`
+      <mdw-icon id=check-icon icon=check aria-hidden="true"></mdw-icon>
+    `,
+  ];
 
   connectedCallback() {
     super.connectedCallback();
     RovingTabIndex.attach(this);
     this.inputElement.addEventListener('click', MDWSegmentedButton.onInputClick, { passive: true });
     this.inputElement.addEventListener('change', MDWSegmentedButton.onInputChange);
-    // this.inputElement.addEventListener('focus', MDWSegmentedButton.onInputFocus);
-    // this.addEventListener('keydown', MDWSegmentedButton.onKeyDown);
+    this.inputElement.addEventListener('keydown', MDWSegmentedButton.onInputKeydown);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     RovingTabIndex.detach(this);
-    this.removeEventListener('click', MDWSegmentedButton.onClick);
-    // this.removeEventListener('keydown', MDWSegmentedButton.onKeyDown);
+    this.inputElement.removeEventListener('click', MDWSegmentedButton.onInputClick);
+    this.inputElement.removeEventListener('change', MDWSegmentedButton.onInputChange);
+    this.inputElement.removeEventListener('keydown', MDWSegmentedButton.onInputKeydown);
   }
 }

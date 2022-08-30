@@ -50,9 +50,20 @@ export default class MDWSegmentedButtonGroup extends MDWContainer {
       case 'Right':
         selectNext = true;
         break;
+      case 'ArrowUp':
+      case 'Up':
+      case 'ArrowDown':
+      case 'Down':
+        // Firefox triggers selection with vertical direction input
+        break;
       default:
         return;
     }
+
+    // Firefox auto checks radio buttons on directional key
+    event.preventDefault();
+
+    if (selectNext == null) return;
     if (getComputedStyle(this).direction === 'rtl') {
       selectNext = !selectNext;
     }

@@ -10,7 +10,8 @@ export function handleTabKeyPress(event) {
     'input:not(:disabled):not([tabindex="-1"])',
     'select:not(:disabled):not([tabindex="-1"])',
     'textarea:not(:disabled):not([tabindex="-1"])',
-    '[tabindex]:not([tabindex="-1"])'].join(', '));
+    '[tabindex]:not([tabindex="-1"])',
+  ].join(', '));
   let foundTarget = false;
   let candidate = null;
   for (const el of focusableElements) {
