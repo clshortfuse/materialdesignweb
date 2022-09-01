@@ -1,4 +1,4 @@
 **/**/node_modules/*
 dist/*
-test/*
+.test/*
 **/**/.DS_Store

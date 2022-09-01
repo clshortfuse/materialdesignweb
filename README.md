@@ -40,52 +40,52 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/native/demo.html?d=1661
 
 # M3 Components
 
-| Component                                                 | HTML                                        |     Extends      | ARIA Role  | Implements                                    | Status  |
-| :-------------------------------------------------------- | :------------------------------------------ | :--------------: | :--------: | :-------------------------------------------- | :-----: |
-| [Button: Elevated](components/button)                     | `<mdw-button elevated>`                     |    `MDWInput`    |  `button`  | `<input type=button>`                         |  beta   |
-| [Button: Filled](components/button)                       | `<mdw-button filled>`                       |    `MDWInput`    |  `button`  | `<input type=button>`                         |  beta   |
-| [Button: Filled Tonal](components/button)                 | `<mdw-button filled=tonal>`                 |    `MDWInput`    |  `button`  | `<input type=button>`                         |  beta   |
-| [Button: Outlined](components/button)                     | `<mdw-button outlined>`                     |    `MDWInput`    |  `button`  | `<input type=button>`                         |  beta   |
-| [Button: Text](components/button)                         | `<mdw-button>`                              |    `MDWInput`    |  `button`  | `<input type=button>`                         |  beta   |
-| [FAB](components/fab)                                     | `<mdw-fab>`                                 | `MDWExtendedFab` |  `button`  | `<input type=button>`                         |  beta   |
-| [FAB: Extended](components/fab)                           | `<mdw-extended-fab>`                        |   `MDWButton`    |  `button`  | `<input type=button>`                         |  beta   |
-| [Icon Button: Filled](components/iconbutton)              | `<mdw-icon-button filled>`                  |   `MDWButton`    |  `button`  | `<input type=button>`                         |  beta   |
-| [Icon Button: Filled Toggle](components/iconbutton)       | `<mdw-icon-button filled toggle>`           |   `MDWButton`    | `checkbox` | `<input type=checkbox>`                       |  beta   |
-| [Icon Button: Filled Tonal](components/iconbutton)        | `<mdw-icon-button filled=tonal>`            |   `MDWButton`    |  `button`  | `<input type=button>`                         |  beta   |
-| [Icon Button: Filled Tonal Toggle](components/iconbutton) | `<mdw-icon-button filled=tonal toggle>`     |   `MDWButton`    | `checkbox` | `<input type=checkbox>`                       |  beta   |
-| [Icon Button: Outlined](components/iconbutton/)           | `<mdw-icon-button outlined>`                |   `MDWButton`    |  `button`  | `<input type=button>`                         |  beta   |
-| [Icon Button: Outlined Toggle](components/iconbutton/)    | `<mdw-icon-button outlined toggle>`         |   `MDWButton`    | `checkbox` | `<input type=checkbox>`                       |  beta   |
-| [Icon Button: Standard](components/iconbutton/)           | `<mdw-icon-button>`                         |   `MDWButton`    |  `button`  | `<input type=button>`                         |  beta   |
-| [Icon Button: Standard Toggle](components/iconbutton/)    | `<mdw-icon-button toggle>`                  |   `MDWButton`    | `checkbox` | `<input type=checkbox>`                       |  beta   |
-| [Segmented Button](components/segmentedbutton/)           | `<mdw-segmented-button>`                    |   `MDWButton`    |  `option`  | `<input type=checkbox>` `<input type=radio>` |  alpha  |
-| [Segmented Button Group](components/segmentedbutton/)     | `<mdw-segmented-button-group>`              |  `MDWContainer`  | `listbox`  | `<menu>`                                      |  alpha  |
-| [Bottom App Bar](components/bottomappbar/)                | `<mdw-bottom-app-bar>`                      |  `MDWContainer`  | `toolbar`  | `<menu>`                                      |  beta   |
-| Bottom Sheet                                              |                                             |                  |            |                                               | planned |
-| [Card: Elevated](components/card/)                        | `<mdw-card elevated>`                       |  `MDWContainer`  |  `figure`  | `<figure>`                                    |  beta   |
-| [Card: Filled](components/card/)                          | `<mdw-card filled>`                         |  `MDWContainer`  |  `figure`  | `<figure>`                                    |  beta   |
-| [Card: Outlined](components/card/)                        | `<mdw-card outlined>`                       |  `MDWContainer`  |  `figure`  | `<figure>`                                    |  beta   |
-| [Card Action Area](components/card/)                      | `<mdw-card-action-area>`                    |  `MDWContainer`  |   `none`   | `<figure>`                                    |  beta   |
-| [Chip: Assist](components/chip/)                          | `<mdw-chip>`                                |   `MDWButton`    |  `button`  | `<input type=button>`                         |  beta   |
-| [Chip: Filter](components/chip/)                          | `<mdw-filter-chip>`                         |    `MDWChip`     | `checkbox` | `<input type=checkbox>`                       |  beta   |
-| [Chip: Filter List](components/chip/)                     | `<mdw-filter-chip list>`                    |    `MDWChip`     | `listbox`  | `<input type=text list=slot>`                 |  alpha  |
-| [Chip: Input](components/chip/)                           | `<mdw-input-chip>`                          |                  |            |                                               | planned |
-| [Chip: Suggestion](components/chip/)                      | `<mdw-chip suggestion>`                     |   `MDWButton`    |  `button`  | `<input type=button>`                         |  beta   |
-| [Dialog: Basic](components/dialog/)                       | `<mdw-dialog title=title description=desc>` |  `MDWComponent`  |  `dialog`  | `<dialog>`                                    |  alpha  |
-| [Dialog: Full-screen](components/dialog/)                 |                                             |                  |  `dialog`  | `<dialog>`                                    | planned |
-| [Divider](components/divider/)                            | `<mdw-divider>`                             |  `MDWContainer`  |   `none`   | `<div>`                                       |  beta   |
-| Menu                                                      |                                             |                  |            |                                               | rewrite |
-| Navigation Bar                                            |                                             |                  |            |                                               | rewrite |
-| Navigation Drawer                                         |                                             |                  |            |                                               | rewrite |
-| Navigation Rail                                           |                                             |                  |            |                                               | planned |
-| Progress Indicator: Linear                                |                                             |                  |            |                                               | planned |
-| Progress Indicator: Circle                                |                                             |                  |            |                                               | rewrite |
-| Radio Button                                              |                                             |                  |            |                                               | rewrite |
-| Slider: Continuous                                        |                                             |                  |            |                                               | rewrite |
-| Slider: Discrete                                          |                                             |                  |            |                                               | planned |
-| Switch                                                    |                                             |                  |            |                                               | rewrite |
-| Text fields: Filled                                       |                                             |                  |            |                                               | rewrite |
-| Text fields: Outlined                                     |                                             |                  |            |                                               | rewrite |
-| Top App Bar                                               |                                             |                  |            |                                               | rewrite |
+| Component                                                 | HTML                                        |     Extends      | ARIA Role  | Implements                                   | Status  |
+| :-------------------------------------------------------- | :------------------------------------------ | :--------------: | :--------: | :------------------------------------------- | :-----: |
+| [Button: Elevated](components/button)                     | `<mdw-button elevated>`                     |    `MDWInput`    |  `button`  | `<input type=button>`                        |  beta   |
+| [Button: Filled](components/button)                       | `<mdw-button filled>`                       |    `MDWInput`    |  `button`  | `<input type=button>`                        |  beta   |
+| [Button: Filled Tonal](components/button)                 | `<mdw-button filled=tonal>`                 |    `MDWInput`    |  `button`  | `<input type=button>`                        |  beta   |
+| [Button: Outlined](components/button)                     | `<mdw-button outlined>`                     |    `MDWInput`    |  `button`  | `<input type=button>`                        |  beta   |
+| [Button: Text](components/button)                         | `<mdw-button>`                              |    `MDWInput`    |  `button`  | `<input type=button>`                        |  beta   |
+| [FAB](components/fab)                                     | `<mdw-fab>`                                 | `MDWExtendedFab` |  `button`  | `<input type=button>`                        |  beta   |
+| [FAB: Extended](components/fab)                           | `<mdw-extended-fab>`                        |   `MDWButton`    |  `button`  | `<input type=button>`                        |  beta   |
+| [Icon Button: Filled](components/iconbutton)              | `<mdw-icon-button filled>`                  |   `MDWButton`    |  `button`  | `<input type=button>`                        |  beta   |
+| [Icon Button: Filled Toggle](components/iconbutton)       | `<mdw-icon-button filled toggle>`           |   `MDWButton`    |  `button`  | `<input type=checkbox>`                      |  beta   |
+| [Icon Button: Filled Tonal](components/iconbutton)        | `<mdw-icon-button filled=tonal>`            |   `MDWButton`    |  `button`  | `<input type=button>`                        |  beta   |
+| [Icon Button: Filled Tonal Toggle](components/iconbutton) | `<mdw-icon-button filled=tonal toggle>`     |   `MDWButton`    |  `button`  | `<input type=checkbox>`                      |  beta   |
+| [Icon Button: Outlined](components/iconbutton/)           | `<mdw-icon-button outlined>`                |   `MDWButton`    |  `button`  | `<input type=button>`                        |  beta   |
+| [Icon Button: Outlined Toggle](components/iconbutton/)    | `<mdw-icon-button outlined toggle>`         |   `MDWButton`    |  `button`  | `<input type=checkbox>`                      |  beta   |
+| [Icon Button: Standard](components/iconbutton/)           | `<mdw-icon-button>`                         |   `MDWButton`    |  `button`  | `<input type=button>`                        |  beta   |
+| [Icon Button: Standard Toggle](components/iconbutton/)    | `<mdw-icon-button toggle>`                  |   `MDWButton`    |  `button`  | `<input type=checkbox>`                      |  beta   |
+| [Segmented Button](components/segmentedbutton/)           | `<mdw-segmented-button>`                    |   `MDWButton`    |  `option`  | `<input type=checkbox>` `<input type=radio>` |  beta   |
+| [Segmented Button Group](components/segmentedbutton/)     | `<mdw-segmented-button-group>`              |  `MDWContainer`  | `listbox`  | `<menu>`                                     |  beta   |
+| [Bottom App Bar](components/bottomappbar/)                | `<mdw-bottom-app-bar>`                      |  `MDWContainer`  | `toolbar`  | `<menu>`                                     |  beta   |
+| Bottom Sheet                                              |                                             |                  |            |                                              | planned |
+| [Card: Elevated](components/card/)                        | `<mdw-card elevated>`                       |  `MDWContainer`  |  `figure`  | `<figure>`                                   |  beta   |
+| [Card: Filled](components/card/)                          | `<mdw-card filled>`                         |  `MDWContainer`  |  `figure`  | `<figure>`                                   |  beta   |
+| [Card: Outlined](components/card/)                        | `<mdw-card outlined>`                       |  `MDWContainer`  |  `figure`  | `<figure>`                                   |  beta   |
+| [Card Action Area](components/card/)                      | `<mdw-card-action-area>`                    |  `MDWContainer`  |   `none`   | `<figure>`                                   |  beta   |
+| [Chip: Assist](components/chip/)                          | `<mdw-chip>`                                |   `MDWButton`    |  `button`  | `<input type=button>`                        |  beta   |
+| [Chip: Filter](components/chip/)                          | `<mdw-filter-chip>`                         |    `MDWChip`     | `checkbox` | `<input type=checkbox>`                      |  beta   |
+| [Chip: Filter List](components/chip/)                     | `<mdw-filter-chip list>`                    |    `MDWChip`     | `listbox`  | `<input type=text list=slot>`                |  alpha  |
+| [Chip: Input](components/chip/)                           | `<mdw-input-chip>`                          |                  |            |                                              | planned |
+| [Chip: Suggestion](components/chip/)                      | `<mdw-chip suggestion>`                     |   `MDWButton`    |  `button`  | `<input type=button>`                        |  beta   |
+| [Dialog: Basic](components/dialog/)                       | `<mdw-dialog title=title description=desc>` |  `MDWComponent`  |  `dialog`  | `<dialog>`                                   |  alpha  |
+| [Dialog: Full-screen](components/dialog/)                 |                                             |                  |  `dialog`  | `<dialog>`                                   | planned |
+| [Divider](components/divider/)                            | `<mdw-divider>`                             |  `MDWContainer`  |   `none`   | `<div>`                                      |  beta   |
+| Menu                                                      |                                             |                  |            |                                              | rewrite |
+| Navigation Bar                                            |                                             |                  |            |                                              | rewrite |
+| Navigation Drawer                                         |                                             |                  |            |                                              | rewrite |
+| Navigation Rail                                           |                                             |                  |            |                                              | planned |
+| Progress Indicator: Linear                                |                                             |                  |            |                                              | planned |
+| Progress Indicator: Circle                                |                                             |                  |            |                                              | rewrite |
+| Radio Button                                              |                                             |                  |            |                                              | rewrite |
+| Slider: Continuous                                        |                                             |                  |            |                                              | rewrite |
+| Slider: Discrete                                          |                                             |                  |            |                                              | planned |
+| Switch                                                    |                                             |                  |            |                                              | rewrite |
+| Text fields: Filled                                       |                                             |                  |            |                                              | rewrite |
+| Text fields: Outlined                                     |                                             |                  |            |                                              | rewrite |
+| Top App Bar                                               |                                             |                  |            |                                              | rewrite |
 
 # Other Components
 

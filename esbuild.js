@@ -1,15 +1,21 @@
+import process from 'node:process';
+
 import browserslistToEsbuild from 'browserslist-to-esbuild';
 import esbuild from 'esbuild';
 
 const target = browserslistToEsbuild();
 
+const cliArgs = new Set(process.argv.slice(2));
+
+const minify = cliArgs.has('--minify');
+
 await esbuild.build({
   entryPoints: ['index.js'],
   format: 'esm',
   sourcemap: true,
-  minify: true,
+  minify,
+  watch: cliArgs.has('--watch'),
   bundle: true,
-  watch: true,
   legalComments: 'linked',
   target,
   outfile: 'index.min.js',
@@ -20,7 +26,7 @@ await esbuild.build({
         const { outputFiles } = await esbuild.build({
           entryPoints: [args.path],
           bundle: true,
-          // minify: true,
+          minify,
           write: false,
           target,
         });

@@ -8,10 +8,11 @@
     "build:docs": "webpack --config webpack.config.js --env target=docs",
     "deploy:docs": "scripts/deploy-docs.sh",
     "dist": "webpack",
-    "pretest": "eslint --ignore-path .gitignore .",
     "start:docs": "webpack serve --config webpack.config.js --env target=docs --host 0.0.0.0",
     "stats:docs": "webpack --config webpack.config.js --env target=docs --profile --json > stats.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node esbuild.js --minify",
+    "pretest": "eslint --ignore-path .gitignore",
+    "test": "c8 tap --no-coverage"
   },
   "repository": {
     "type": "git",
@@ -33,18 +34,11 @@
   },
   "homepage": "https://github.com/clshortfuse/materialdesignweb#readme",
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.16.7",
-    "@babel/plugin-proposal-optional-chaining": "^7.16.7",
-    "@babel/plugin-proposal-private-methods": "^7.16.11",
-    "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
-    "@babel/preset-env": "^7.12.1",
-    "@types/clean-css": "^4.2.5",
+    "@types/tap": "^15.0.7",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
-    "babel-loader": "^8.2.3",
     "browserslist-to-esbuild": "^1.1.1",
-    "clean-css": "^5.3.1",
-    "cssnano": "^5.0.14",
+    "c8": "^7.12.0",
     "esbuild": "^0.15.5",
     "eslint": "^8.8.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -53,11 +47,13 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsdoc": "^39.2.9",
     "eslint-plugin-unicorn": "^42.0.0",
+    "http-server": "^14.1.1",
     "stylelint": "^14.8.2",
     "stylelint-no-unsupported-browser-features": "github:clshortfuse/stylelint-no-unsupported-browser-features",
     "stylelint-order": "^5.0.0",
     "stylelint-use-logical-spec": "^4.1.0",
-    "terser-webpack-plugin": "^5.3.1",
-    "typescript": "^4.5.4"
+    "tap": "^16.3.0",
+    "typescript": "^4.8.2",
+    "webdriverio": "^7.23.0"
   }
 }

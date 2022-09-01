@@ -33,6 +33,7 @@
       "ImportDeclaration": {  "multiline": true, "consistent": true },
       "ExportDeclaration": {  "multiline": true, "consistent": true }
     }],
+    "no-cond-assign": ["error", "except-parens"],
     "no-param-reassign": ["error", { "props": false }],
     "no-continue": 0,
     "no-restricted-syntax": 0,
@@ -58,7 +59,7 @@
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/require-await": "error",
     "no-void": "off",
-    "@typescript-eslint/no-floating-promises": "error",
+    "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/return-await": ["error", "always"],
 
     "import/extensions": ["error", "always", {
