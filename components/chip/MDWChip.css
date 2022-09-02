@@ -10,8 +10,10 @@
   --mdw-chip__trailing-icon__display: block;
   --mdw-chip__trailing-icon__font-variation-settings: 'FILL' 1;
   --mdw-chip__label-color: var(--mdw-color__on-surface);
+  --mdw-button__padding-inline-end: 16px;
 
   min-block-size: 32px;
+
   color: rgb(var(mdw-chip__label-color));
 }
 
