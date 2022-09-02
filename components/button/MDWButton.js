@@ -7,10 +7,12 @@ export default class MDWButton extends MDWInput {
     super();
     this.iconElement = this.shadowRoot.getElementById('icon');
     this.touchTargetElement = this.shadowRoot.getElementById('touch-target');
+    this.outlineElement = this.shadowRoot.getElementById('outline');
     this.labelElement.append(
       this.iconElement,
       this.rippleElement,
       this.touchTargetElement,
+      this.outlineElement,
     );
 
     this.inputElement.setAttribute('role', 'button');

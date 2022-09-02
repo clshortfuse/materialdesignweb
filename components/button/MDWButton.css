@@ -223,3 +223,7 @@ label {
 #slot {
   text-align: center;
 }
+
+#overlay[touched] ~ #outline {
+  --mdw-button__outline__rgb: var(--mdw-color__outline);
+}
