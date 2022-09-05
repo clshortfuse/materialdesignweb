@@ -75,8 +75,6 @@
 
 #ripple-inner {
   --mdw-ripple__fade-in-name: ripple-fade-in;
-  --mdw-ripple-transform__gone: translateX(-50%) translateY(-50%) scale(0);
-  --mdw-ripple-transform__full: translateX(-50%) translateY(-50%) scale(2);
 
   display: block;
   position: absolute;
@@ -96,7 +94,7 @@
   will-change: transform, opacity;
 
   opacity: 0.12;
-  transform: var(--mdw-ripple-transform__gone);
+  transform: scale(0);
 
   background-color: currentColor;
 
@@ -130,32 +128,31 @@
 
 @keyframes ripple-fade-in {
   from {
-    transform: var(--mdw-ripple-transform__gone);
+    transform: scale(0);
   }
 
   to {
-    transform: var(--mdw-ripple-transform__full);
+    transform: scale(2);
   }
 }
 
 @keyframes ripple-fade-in-repeat {
   from {
-    transform: var(--mdw-ripple-transform__gone);
+    transform: scale(0);
   }
 
   to {
-    transform: var(--mdw-ripple-transform__full);
+    transform: scale(2);
   }
 }
 
 @keyframes ripple-fade-out {
   from {
-    opacity: 0.12; /* Explicit value required by Safari */
-    transform: var(--mdw-ripple-transform__full);
+    transform: scale(2);
   }
 
   to {
     opacity: 0;
-    transform: var(--mdw-ripple-transform__full);
+    transform: scale(2);
   }
 }

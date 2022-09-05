@@ -39,22 +39,21 @@ export default class MDWRipple extends MDWOverlay {
     if (x == null || y == null) {
       width = clientWidth / 2;
       height = clientHeight / 2;
-      xPos = `${width}px`;
-      yPos = `${height}px`;
+      xPos = width;
+      yPos = height;
     } else {
       // Distance from furthest side
       width = (x >= clientWidth / 2) ? x : clientWidth - x;
       height = (y >= clientHeight / 2) ? y : clientHeight - y;
-      xPos = `${x}px`;
-      yPos = `${y}px`;
+      xPos = x;
+      yPos = y;
     }
 
     const hypotenuse = Math.sqrt((width * width) + (height * height));
-    const size = `${hypotenuse}px`;
-    this.innerElement.style.setProperty('width', size);
-    this.innerElement.style.setProperty('height', size);
-    this.innerElement.style.setProperty('left', xPos);
-    this.innerElement.style.setProperty('top', yPos);
+    this.innerElement.style.setProperty('height', `${hypotenuse}px`);
+    this.innerElement.style.setProperty('width', `${hypotenuse}px`);
+    this.innerElement.style.setProperty('left', `${xPos - (hypotenuse / 2)}px`);
+    this.innerElement.style.setProperty('top', `${yPos - (hypotenuse / 2)}px`);
   }
 
   /**
