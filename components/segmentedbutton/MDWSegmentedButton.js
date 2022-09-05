@@ -101,7 +101,6 @@ export default class MDWSegmentedButton extends MDWButton {
     host.toggleAttribute('checked', this.checked);
   }
 
-
   static fragments = [
     ...super.fragments,
     /* html */`

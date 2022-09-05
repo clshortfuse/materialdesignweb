@@ -22,7 +22,6 @@ export default class MDWSegmentedButtonGroup extends MDWContainer {
   static onSlotChanged(event) {
     /** @type {{host:MDWSegmentedButtonGroup}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
-    console.log('slotchanged', this, host.childSegmentedButtons);
     RovingTabIndex.setupTabIndexes(host.childSegmentedButtons, true);
   }
 
