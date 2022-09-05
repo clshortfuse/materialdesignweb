@@ -19,6 +19,7 @@ await esbuild.build({
   legalComments: 'linked',
   target,
   outfile: 'index.min.js',
+  inject: ['polyfills.js'],
   plugins: [{
     name: 'css import assertions',
     setup: (build) => {
