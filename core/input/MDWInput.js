@@ -32,7 +32,7 @@ export default class MDWInput extends MDWRipple {
 
   static idlInputElementAttributes = [
     'aria-labelledby', 'type', 'value', 'checked',
-    'name', 'required',
+    'name', 'required', 'list',
   ];
 
   static get observedAttributes() {

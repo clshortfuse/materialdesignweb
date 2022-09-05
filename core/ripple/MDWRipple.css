@@ -91,7 +91,8 @@
   transition-duration: var(--mdw-ripple-simple-duration);
   transition-property: background-color, color;
   transition-timing-function: var(--mdw-ripple-standard-easing);
-  will-change: transform, opacity;
+  /* stylelint-disable-next-line liberty/use-logical-spec */
+  will-change: transform, opacity, top, left, height, width;
 
   opacity: 0.12;
   transform: scale(0);
