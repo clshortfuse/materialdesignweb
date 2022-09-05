@@ -15,6 +15,8 @@
   --mdw-bg: var(--mdw-color__surface);
   --mdw-ink: var(--mdw-color__on-surface);
 
+  --mdw-dialog__edge-distance: 48px;
+
   position: fixed;
   inset: 0;
 
@@ -26,40 +28,30 @@
   z-index: 24;
 }
 
-#dialog {
-  --mdw-shape__size: 28px;
-  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__3);
-  --mdw-container__box-shadow: var(--mdw-container__box-shadow__3);
-  --mdw-bg: var(--mdw-color__surface);
-  --mdw-ink: var(--mdw-color__on-surface);
-  --mdw-dialog__expand-duration: var(--mdw-motion-expand-duration, 250ms);
-  --mdw-dialog__simple-duration: var(--mdw-motion-simple-duration, 100ms);
-  --mdw-dialog__standard-easing: var(--mdw-motion-standard-easing, cubic-bezier(0.4, 0.0, 0.2, 1));
-  --mdw-dialog__deceleration-easing: var(--mdw-motion-deceleration-easing, cubic-bezier(0.0, 0.0, 0.2, 1));
+@media (min-width: 1440px) {
+  :host {
+    --mdw-dialog__edge-distance: 56px;
+  }
+}
 
-  --mdw-dialog__fade-in-duration: var(--mdw-motion-fade-in-duration, 150ms);
-  --mdw-dialog__scrim__visibility: hidden;
-
-  --mdw-bg: var(--mdw-color__surface);
-  --mdw-ink: var(--mdw-color__on-surface);
-
+dialog {
   display: flex;
   position: fixed;
-  inset: 0;
-  margin:0;
-  height:100%;
-  width:100%;
-  max-width: none;
-  max-width: none;
-  background-color: transparent;
+  inset-block-start: 0;
+  inset-inline-start: 0;
 
   align-items: center;
   flex-direction: row;
   justify-content: center;
 
   box-sizing: border-box;
+  block-size:100%;
+  max-block-size: none;
+  inline-size:100%;
+  max-inline-size: none;
   margin:0;
-  padding: 0;
+  border: none;
+  padding: var(--mdw-dialog__edge-distance);
 
   /* Handled by theme */
   /* background-color: rgba(0, 0, 0, 0.50); */
@@ -74,9 +66,17 @@
   opacity: 0;
 
   z-index: 24;
+
+  background-color: transparent;
 }
 
-#dialog:is([aria-hidden="false"],[open]) {
+dialog::backdrop {
+  /** Use scrim instead */
+  display: none;
+}
+
+/* dialog[aria-hidden="false"], */
+dialog:modal {
 
   --mdw-dialog__scrim__visibility: visible;
   pointer-events: auto;
@@ -92,12 +92,39 @@
   position: fixed;
   inset: 0;
 
+  overflow-y: scroll;
+  overscroll-behavior: none;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+
+  block-size: 100%;
+  inline-size: 100%;
+
+  cursor: default;
+
+  pointer-events: inherit;
+  -webkit-tap-highlight-color: transparent;
+
   opacity: 0.38;
   visibility: var(--mdw-dialog__scrim__visibility);
 
   z-index:0;
 
   background-color: black;
+
+}
+
+#scrim::-webkit-scrollbar {
+  display: none;
+}
+
+#scrim::after {
+  content: '';
+
+  display: block;
+
+  block-size: 200%;
+  inline-size: 200%;
 }
 
 @keyframes scaleUpAnimation {
@@ -110,14 +137,15 @@
   }
 }
 
-:host([aria-hidden="false"]) #container {
+/* dialog[aria-hidden="false"] #container, */
+dialog:modal #container {
   animation-name: scaleUpAnimation;
   animation-duration: var(--mdw-dialog__fade-in-duration);
   animation-direction: forwards;
 }
 
 #container {
-  --mdw-shape__size: 28px;
+  /* --mdw-shape__size: 28px;
   --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__3);
   --mdw-container__box-shadow: var(--mdw-container__box-shadow__3);
 
@@ -125,7 +153,7 @@
   --mdw-type__font-size: var(--mdw-typescale__body-medium__font-size);
   --mdw-type__line-height: var(--mdw-typescale__body-medium__line-height);
   --mdw-type__font-family: var(--mdw-typescale__body-medium__font-family);
-  --mdw-type__letter-spacing: var(--mdw-typescale__body-medium__letter-spacing);
+  --mdw-type__letter-spacing: var(--mdw-typescale__body-medium__letter-spacing); */
 
   display: flex;
 
@@ -133,6 +161,8 @@
   align-items: center;
   flex-direction: column;
   flex-direction: column;
+
+  overflow-y: auto;
 
   overscroll-behavior: none;
   overscroll-behavior: contain;
@@ -175,7 +205,7 @@
   color: rgb(var(--mdw-color__secondary));
 }
 
-:host([custom-body]) #body {
+#body[slotted] {
   display:block;
   overflow-y: auto;
 

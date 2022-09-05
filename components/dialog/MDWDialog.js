@@ -14,9 +14,12 @@ import styles from './MDWDialog.css' assert { type: 'css' };
  * @prop {DialogStackState} [previousState]
  */
 
-/** @implements HTMLDialogElement */
 export default class MDWDialog extends MDWComponent {
   static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
+
+  static ariaRole = 'none';
+
+  /** @prop {string} description */
 
   constructor() {
     super();
@@ -29,11 +32,11 @@ export default class MDWDialog extends MDWComponent {
     this.headlineElement = this.shadowRoot.getElementById('headline');
     this.descriptionElement = this.shadowRoot.getElementById('description');
     this.bodyElement = this.shadowRoot.getElementById('body');
+    this.cancelElement = this.shadowRoot.getElementById('cancel');
+    this.confirmElement = this.shadowRoot.getElementById('confirm');
+
+    this.bodyElement.addEventListener('slotchange', MDWDialog.onSlotChanged);
   }
-
-  static CANCEL_EVENT = 'mdw:dialog-cancel';
-
-  static CLOSE_EVENT = 'mdw:dialog-close';
 
   /** @type {DialogStack[]} */
   static OPEN_DIALOGS = [];
@@ -43,11 +46,12 @@ export default class MDWDialog extends MDWComponent {
   static idlStringAttributes = [
     ...super.idlStringAttributes,
     'title', 'description', 'icon',
+    'default', 'cancel', 'confirm',
   ];
 
   static idlBooleanAttributes = [
     ...super.idlBooleanAttributes,
-    'custom-body',
+    'open',
   ];
 
   static styles = [...super.styles, styles];
@@ -60,14 +64,12 @@ export default class MDWDialog extends MDWComponent {
         <form id=form method="dialog" role=none>
           <mdw-container id=container>
             <mdw-icon id=icon aria-hidden="true"></mdw-icon>
-            <mdw-container id=headline role="header"></mdw-container>
+            <mdw-text id=headline role="header"></mdw-text>
             <div id=description></div>
-            <mdw-container id=body>
-              <slot></slot>
-            </mdw-container>
+            <slot id=body></slot>
             <div id=actions>
-              <mdw-button value="cancel">No</mdw-button>
-              <mdw-button value="default">Yes</mdw-button>
+              <mdw-button id=cancel type=submit value="cancel">Cancel</mdw-button>
+              <mdw-button id=confirm type=submit value="confirm" autofocus>Confirm</mdw-button>
             </div>
           </mdw-container>
         </form>
@@ -90,18 +92,29 @@ export default class MDWDialog extends MDWComponent {
       case 'title':
         this.headlineElement.textContent = newValue ?? '';
         break;
-      case 'mdw-description':
+      case 'description':
         this.descriptionElement.textContent = newValue ?? '';
+        break;
+      case 'cancel':
+        this.cancelElement.textContent = newValue ?? '';
+        break;
+      case 'confirm':
+        this.confirmElement.textContent = newValue ?? '';
+        break;
+      case 'default':
+        this.confirmElement.toggleAttribute('autofocus', newValue == null || newValue === 'confirm');
+        this.cancelElement.toggleAttribute('autofocus', newValue === 'cancel');
+        break;
+      case 'open':
+        // HTMLDialogElement Spec states attribute manipulation does not invoke events
+        if (newValue == null) {
+          this.dialogElement.setAttribute('aria-hidden', 'true');
+        } else {
+          this.dialogElement.setAttribute('aria-hidden', 'false');
+        }
         break;
       default:
     }
-  }
-
-  get open() {
-    if (MDWDialog.supportsHTMLDialogElement) {
-      return this.dialogElement.open;
-    }
-    return this.dialogElement.getAttribute('aria-hidden') !== 'true';
   }
 
   /**
@@ -117,21 +130,34 @@ export default class MDWDialog extends MDWComponent {
   }
 
   /**
+   * @param {Event} event
+   * @this {HTMLSlotElement}
+   * @return {void}
+   */
+  static onSlotChanged(event) {
+    const nodes = this.assignedNodes();
+    const hasContent = nodes.some((node) => (node.nodeType === node.ELEMENT_NODE)
+      || (node.nodeType === node.TEXT_NODE && node.nodeValue.trim().length));
+    this.toggleAttribute('slotted', hasContent);
+  }
+
+  /**
    * @param {any} returnValue
    * @return {boolean} handled
    */
   close(returnValue) {
-    if (this.dialogElement.getAttribute('aria-hidden') === 'true') return false;
+    if (!this.open) return false;
+    // if (this.dialogElement.getAttribute('aria-hidden') === 'true') return false;
     if (MDWDialog.supportsHTMLDialogElement && this.dialogElement.open) {
-      console.log('force close native dialog');
+      // Force close native dialog
       this.dialogElement.close(returnValue);
     } else {
       this.dialogElement.returnValue = returnValue;
     }
 
-    const closeEvent = new Event(MDWDialog.CLOSE_EVENT, { bubbles: true, cancelable: true });
-    this.dialogElement.setAttribute('aria-hidden', 'true');
-    dispatchEvent(closeEvent);
+    // Will invoke observed attribute change: ('aria-hidden', 'true');
+    this.open = false;
+    dispatchEvent(new Event('close'));
     // .mdw-dialog__popup hidden by transitionEnd event
     let stackIndex = -1;
     MDWDialog.OPEN_DIALOGS.some((stack, index) => {
@@ -170,15 +196,11 @@ export default class MDWDialog extends MDWComponent {
    * @return {void}
    */
   static onScrimClick(event) {
-    console.log('onScrimClick');
-    if (this instanceof HTMLAnchorElement) {
-      event.preventDefault();
-    }
-    const cancelEvent = new Event(MDWDialog.CANCEL_EVENT, { bubbles: true, cancelable: true, composed: true });
-    const result = this.dispatchEvent(cancelEvent);
-    if (!result) return;
     /** @type {{host:MDWDialog}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
+
+    const cancelEvent = new Event('cancel', { cancelable: true });
+    if (!host.dispatchEvent(cancelEvent)) return;
     host.close();
   }
 
@@ -197,10 +219,10 @@ export default class MDWDialog extends MDWComponent {
     if (event.key === 'Escape' || event.key === 'Esc') {
       event.preventDefault();
       event.stopPropagation();
-      const cancelEvent = new Event(MDWDialog.CANCEL_EVENT, { bubbles: true, cancelable: true, composed: true });
+      /** @type {{host:MDWDialog}} */ // @ts-ignore Coerce
+      const { host } = this.getRootNode();
+      const cancelEvent = new Event('cancel', { cancelable: true });
       if (this.dispatchEvent(cancelEvent)) {
-        /** @type {{host:MDWDialog}} */ // @ts-ignore Coerce
-        const { host } = this.getRootNode();
         host.close();
       }
     }
@@ -212,8 +234,13 @@ export default class MDWDialog extends MDWComponent {
    * @return {void}
    */
   static onNativeCancelEvent(event) {
-    const cancelEvent = new Event(MDWDialog.CANCEL_EVENT, { bubbles: true, cancelable: true, composed: true });
-    if (!this.dispatchEvent(cancelEvent)) {
+    console.log('onNativeCancelEvent');
+    event.stopPropagation();
+    /** @type {{host:MDWDialog}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+
+    const cancelEvent = new Event('cancel', { cancelable: true });
+    if (!host.dispatchEvent(cancelEvent)) {
       event.preventDefault();
     }
   }
@@ -224,24 +251,19 @@ export default class MDWDialog extends MDWComponent {
    * @return {void}
    */
   static onNativeCloseEvent(event) {
+    event.stopPropagation();
     /** @type {{host:MDWDialog}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
     host.close(this.returnValue);
   }
 
-  /** @param {boolean} add */
-  configureListeners(add = true) {
-    const fn = add ? 'addEventListener' : 'removeEventListener';
-    this[fn]('transitionend', MDWDialog.onTransitionEnd);
-    this.dialogElement[fn]('cancel', MDWDialog.onNativeCancelEvent);
-    this.dialogElement[fn]('close', MDWDialog.onNativeCloseEvent);
-    this.scrimElement[fn]('click', MDWDialog.onScrimClick);
-    this.containerElement[fn]('keydown', MDWDialog.onContainerKeyDown);
-  }
-
   connectedCallback() {
-    this.configureListeners();
-    this.setAttribute('role', 'none');
+    this.dialogElement.addEventListener('cancel', MDWDialog.onNativeCancelEvent);
+    this.dialogElement.addEventListener('close', MDWDialog.onNativeCloseEvent, { passive: true });
+    this.scrimElement.addEventListener('click', MDWDialog.onScrimClick, { passive: true });
+    this.containerElement.addEventListener('keydown', MDWDialog.onContainerKeyDown);
+
+    // this.setAttribute('role', 'none');
     if (MDWDialog.supportsHTMLDialogElement) {
       this.dialogElement.setAttribute('aria-modal', 'true');
       if (!this.dialogElement.hasAttribute('aria-hidden')) {
@@ -251,7 +273,10 @@ export default class MDWDialog extends MDWComponent {
   }
 
   disconnectedCallback() {
-    this.configureListeners(false);
+    this.dialogElement.removeEventListener('cancel', MDWDialog.onNativeCancelEvent);
+    this.dialogElement.removeEventListener('close', MDWDialog.onNativeCloseEvent);
+    this.scrimElement.removeEventListener('click', MDWDialog.onScrimClick);
+    this.containerElement.removeEventListener('keydown', MDWDialog.onContainerKeyDown);
   }
 
   /**
@@ -259,21 +284,23 @@ export default class MDWDialog extends MDWComponent {
    * @return {void}
    */
   static onPopState(event) {
+    console.log('popstate', event);
     if (!event.state) return;
+    console.log('popstate');
 
-    const lastOpenDialog = MDWDialog.OPEN_DIALOGS[MDWDialog.OPEN_DIALOGS.length - 1];
+    const lastOpenDialog = MDWDialog.OPEN_DIALOGS.at(-1);
     if (!lastOpenDialog || !lastOpenDialog.previousState) {
       return;
     }
-    if ((lastOpenDialog.previousState === event.state) || Object.keys(event.state)
-      .every((key) => event.state[key] === lastOpenDialog.previousState[key])) {
-      const cancelEvent = new Event(MDWDialog.CANCEL_EVENT, { cancelable: true, bubbles: true });
+    if ((lastOpenDialog.previousState === event.state) || Object.entries(event.state)
+      .every(([key, value]) => value === lastOpenDialog.previousState[key])) {
+      console.log('will close', lastOpenDialog.previousState, event.state, lastOpenDialog.previousState, event.state);
+      const cancelEvent = new Event('cancel', { cancelable: true });
       if (lastOpenDialog.element.dispatchEvent(cancelEvent)) {
         lastOpenDialog.element.close();
       } else {
         // Revert pop state by pushing state again
-        const title = this.title || this.description;
-        window.history.pushState(lastOpenDialog.state, title);
+        window.history.pushState(lastOpenDialog.state, lastOpenDialog.state.title);
       }
     }
   }
@@ -287,33 +314,23 @@ export default class MDWDialog extends MDWComponent {
    * @return {boolean} handled
    */
   show(event) {
-    if (event && event.type === 'click' && event.currentTarget instanceof HTMLAnchorElement) {
-      // Prevent anchor link
-      event.preventDefault();
-    }
-
-    let changed = false;
-
-    if (this.dialogElement.getAttribute('aria-hidden') !== 'false') {
-      this.dialogElement.setAttribute('aria-hidden', 'false');
-      changed = true;
-    }
-
-    if (!changed) return false;
+    if (this.open) return false;
+    this.open = true;
 
     if (MDWDialog.supportsHTMLDialogElement && !this.dialogElement.open) {
       this.dialogElement.showModal();
     }
 
     const previousFocus = document.activeElement;
-    const newState = {};
+    const title = this.title || this.description;
+    const newState = { time: Date.now(), random: Math.random(), title };
     let previousState = null;
 
     if (!window.history.state) {
       window.history.replaceState({}, document.title);
     }
     previousState = window.history.state;
-    window.history.pushState(newState, this.title || this.description);
+    window.history.pushState(newState, title);
     window.addEventListener('popstate', MDWDialog.onPopState);
 
     /** @type {DialogStack} */
@@ -324,7 +341,8 @@ export default class MDWDialog extends MDWComponent {
       previousState,
     };
     MDWDialog.OPEN_DIALOGS.push(dialogStack);
-    const focusElement = this.querySelector('[autofocus]');
+    const focusElement = this.querySelector('[autofocus]')
+      ?? this.shadowRoot.querySelector('[autofocus]');
     try {
       if (focusElement && focusElement instanceof HTMLElement) {
         if (focusElement.scrollIntoView) {
