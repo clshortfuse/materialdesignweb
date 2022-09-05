@@ -1,2 +1,2 @@
 // Safari
-import 'element-internals-polyfill';
+import elementInternalsPolyfill from 'element-internals-polyfill';

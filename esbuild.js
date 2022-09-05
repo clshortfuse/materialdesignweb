@@ -16,6 +16,7 @@ await esbuild.build({
   minify,
   watch: cliArgs.has('--watch'),
   bundle: true,
+  keepNames: true,
   legalComments: 'linked',
   target,
   outfile: 'index.min.js',
