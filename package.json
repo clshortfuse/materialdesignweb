@@ -46,7 +46,7 @@
     "eslint-plugin-github": "^4.3.5",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsdoc": "^39.2.9",
-    "eslint-plugin-unicorn": "^42.0.0",
+    "eslint-plugin-unicorn": "^43.0.2",
     "http-server": "^14.1.1",
     "stylelint": "^14.8.2",
     "stylelint-no-unsupported-browser-features": "github:clshortfuse/stylelint-no-unsupported-browser-features",
