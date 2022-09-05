@@ -1,5 +1,3 @@
-import * as AriaCheckbox from '../../core/aria/checkbox.js';
-
 import MDWChip from './MDWChip.js';
 import styles from './MDWFilterChip.css' assert { type: 'css' };
 
@@ -7,29 +5,29 @@ export default class MDWFilterChip extends MDWChip {
   constructor() {
     super();
 
-    this.inputElement = this.shadowRoot.querySelector('input');
-    this.labelElement = this.shadowRoot.querySelector('label');
-    this.trailingIconElement = this.shadowRoot.querySelector('.mdw-chip__trailing-icon');
-    /** @type {HTMLImageElement} */
-    this.trailingImageElement = this.shadowRoot.querySelector('.mdw-chip__trailing-image');
-    this.inputElement.type = 'checkbox';
+    this.checkIconElement = this.shadowRoot.getElementById('check-icon');
+    this.trailingIconElement = this.shadowRoot.getElementById('trailing-icon');
+    this.labelElement.append(
+      this.checkIconElement,
+      this.trailingIconElement,
+    );
+
+    this.inputElement.removeAttribute('role');
+    this.inputElement.autocomplete = 'off';
+    if (!this.hasAttribute('type')) {
+      this.type = 'checkbox';
+      this.attributeChangedCallback('type', null, 'checkbox');
+    }
 
     // this.labelElement.append(...this.buttonElement.children);
     // Aria will use aria-labelledby instead
     // Fallback with wrapped HTMLLabelElement
-
-    if (this.icon == null && this.src == null) {
-      this.icon = 'check';
-      super.attributeChangedCallback('icon', null, 'check');
-    }
 
     if (this.getAttribute('trailing-icon') === '') {
       this.setAttribute('trailing-icon', 'dropdown');
       this.attributeChangedCallback('trailing-icon', null, 'dropdown');
     }
   }
-
-  
 
   static elementName = 'mdw-filter-chip';
 
@@ -46,49 +44,100 @@ export default class MDWFilterChip extends MDWChip {
     switch (name) {
       case 'trailing-icon':
         if (newValue) {
-          this.trailingIconElement.textContent = newValue;
+          this.trailingIconElement.setAttribute('icon', newValue);
         }
         break;
       case 'trailing-src':
         if (newValue == null) {
-          this.trailingImageElement.removeAttribute('src');
+          this.trailingIconElement.removeAttribute('src');
         } else {
-          this.trailingImageElement.setAttribute('src', newValue);
+          this.trailingIconElement.setAttribute('src', newValue);
         }
         break;
       default:
     }
+    super.attributeChangedCallback(name, oldValue, newValue);
   }
 
   static fragments = [
     ...super.fragments,
     /* html */`
-      <label class="mdw-button__text" role=none>
-        <input type="checkbox" aria-labelledby="slot" class="mdw-chip__checkbox">
-        <div class="mdw-chip__trailing-icon" aria-hidden="true"></div>
-      </label>
+      <mdw-icon id=check-icon icon=check aria-hidden="true"></mdw-icon>
+      <mdw-icon id=trailing-icon aria-hidden="true"></mdw-icon>
     `,
   ];
 
   /**
-   * @param {InputEvent} event
+   * @param {MouseEvent|PointerEvent} event
    * @this {HTMLInputElement}
    * @return {void}
    */
-  static onInputEvent(event) {
-    if (this.disabled) return;
+  static onInputClick(event) {
     /** @type {{host:MDWFilterChip}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
-    host.checked = this.checked;
+    if (host.hasAttribute('disabled')) {
+      event.preventDefault();
+      return;
+    }
+
+    if (this.type !== 'radio') return;
+    if (this.required) return;
+    if (!this.hasAttribute('checked')) return;
+
+    this.checked = false;
+    host.toggleAttribute('checked', false);
+  }
+
+  /**
+   * @param {KeyboardEvent} event
+   * @this {HTMLInputElement}
+   * @return {void}
+   */
+  static onInputKeydown(event) {
+    if (event.key !== 'Spacebar' && event.key !== ' ') return;
+    /** @type {{host:MDWFilterChip}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    if (host.hasAttribute('disabled')) {
+      event.preventDefault();
+      return;
+    }
+
+    if (this.type !== 'radio') return;
+    if (this.required) return;
+    if (!this.hasAttribute('checked')) return;
+    event.preventDefault();
+
+    this.checked = false;
+    host.toggleAttribute('checked', false);
+    event.preventDefault();
+  }
+
+  /**
+   * @param {Event} event
+   * @this {HTMLInputElement} this
+   * @return {void}
+   */
+  static onInputChange(event) {
+    /** @type {{host:MDWFilterChip}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    if (host.hasAttribute('disabled')) {
+      event.preventDefault();
+      return;
+    }
+    host.toggleAttribute('checked', this.checked);
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.inputElement.addEventListener('input', MDWFilterChip.onInputEvent);
+    this.inputElement.addEventListener('click', MDWFilterChip.onInputClick);
+    this.inputElement.addEventListener('change', MDWFilterChip.onInputChange);
+    this.inputElement.addEventListener('keydown', MDWFilterChip.onInputKeydown);
   }
 
   disconnectedCallback() {
-    this.inputElement.removeEventListener('input', MDWFilterChip.onInputEvent);
     super.disconnectedCallback();
+    this.inputElement.removeEventListener('click', MDWFilterChip.onInputClick);
+    this.inputElement.removeEventListener('change', MDWFilterChip.onInputChange);
+    this.inputElement.removeEventListener('keydown', MDWFilterChip.onInputKeydown);
   }
 }

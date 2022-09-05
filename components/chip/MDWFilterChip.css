@@ -15,6 +15,10 @@
   color: inherit;
 }
 
+#label {
+  padding: 0;
+}
+
 :host(:focus) {
   --mdw-button__outline__rgb: var(--mdw-color__outline);
 }
@@ -24,11 +28,6 @@
   /* color: rgba(var(--mdw-color__on-surface), 0.38); */
 }
 
-:host(:not([checked])) {
-  --mdw-button__icon__size: 0;
-  --mdw-button__icon__opacity: 0;
-}
-
 :host([checked]) {
   --mdw-button__icon__font-variation-settings: 'FILL' 1;
   background-color: rgb(var(--mdw-bg));
@@ -36,13 +35,11 @@
 }
 
 :host(:not([checked])) {
-  --mdw-button__icon__size: 0;
-  --mdw-button__icon__opacity: 0;
   background-color: transparent;
   color: rgb(var(--mdw-color__on-surface__variant));
 }
 
-.mdw-chip__trailing-icon {
+#trailing-icon {
   --mdw-icon__size: var(--mdw-chip__trailing-icon__size);
   --mdw-icon__opacity: var(--mdw-chip__trailing-icon__opacity);
   --mdw-icon__display: var(--mdw-chip__trailing-icon__display);
@@ -65,6 +62,31 @@
   pointer-events: none;
 }
 
-:host(:not([trailing-icon])) .mdw-chip__trailing-icon {
+:host(:not([trailing-icon])) #trailing-icon {
   --mdw-chip__trailing-icon__size: 0;
+}
+
+#check-icon {
+  --mdw-icon__size: 0;
+  order: -1;
+
+  margin-inline: 8px;
+}
+
+:host(:not([icon])) #icon {
+  display: none;
+}
+
+:host([icon]) #check-icon {
+  display: none;
+}
+
+:host([checked]) #check-icon {
+  --mdw-icon__size: 18px;
+}
+
+/** Filter **/
+
+:host[type="checkbox"] :is(#slot, #overlay, #ripple, #icon, #check-icon) {
+  color: inherit;
 }
