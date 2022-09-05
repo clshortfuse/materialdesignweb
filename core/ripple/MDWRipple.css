@@ -75,19 +75,11 @@
 
 #ripple-inner {
   --mdw-ripple__fade-in-name: ripple-fade-in;
-  --mdw-ripple-x: 0;
-  --mdw-ripple-y: 0;
-  --mdw-ripple-radius: 0;
   --mdw-ripple-transform__gone: translateX(-50%) translateY(-50%) scale(0);
   --mdw-ripple-transform__full: translateX(-50%) translateY(-50%) scale(2);
 
   display: block;
   position: absolute;
-  inset-block-start: var(--mdw-ripple-y);
-  inset-inline-start: var(--mdw-ripple-x);
-
-  block-size: var(--mdw-ripple-radius);
-  inline-size: var(--mdw-ripple-radius);
 
   pointer-events: none;
 

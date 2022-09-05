@@ -50,9 +50,11 @@ export default class MDWRipple extends MDWOverlay {
     }
 
     const hypotenuse = Math.sqrt((width * width) + (height * height));
-    this.innerElement.style.setProperty('--mdw-ripple-radius', `${hypotenuse}px`);
-    this.innerElement.style.setProperty('--mdw-ripple-x', xPos);
-    this.innerElement.style.setProperty('--mdw-ripple-y', yPos);
+    const size = `${hypotenuse}px`;
+    this.innerElement.style.setProperty('width', size);
+    this.innerElement.style.setProperty('height', size);
+    this.innerElement.style.setProperty('left', xPos);
+    this.innerElement.style.setProperty('top', yPos);
   }
 
   /**
