@@ -158,6 +158,7 @@
 
 @keyframes ripple-fade-out {
   from {
+    opacity: 0.12; /* Explicit value required by Safari */
     transform: var(--mdw-ripple-transform__full);
   }
 
