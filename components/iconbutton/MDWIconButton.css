@@ -24,13 +24,13 @@
   min-inline-size: 40px;
 }
 
-:host(:where([toggle])[checked]) {
+:host(:where([type="checkbox"])[checked]) {
   --mdw-button__icon__font-variation-settings: 'FILL' 1;
 }
 
 /** Standard default is same as unselected */
 
-:host(:where([toggle]):not([checked])) {
+:host(:where([type="checkbox"]):not([checked])) {
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
@@ -49,13 +49,13 @@
   --mdw-bg: var(--mdw-color__secondary-container);
 }
 
-:host(:where([filled][toggle]):not([checked])) {
+:host(:where([filled][type="checkbox"]):not([checked])) {
   --mdw-button__icon__font-variation-settings: 'FILL' 0;
   background-color: rgb(var(--mdw-color__surface-variant));
   color: rgb(var(--mdw-bg));
 }
 
-:host(:where([filled="tonal"][toggle]):not([checked])) {
+:host(:where([filled="tonal"][type="checkbox"]):not([checked])) {
   --mdw-button__icon__font-variation-settings: 'FILL' 0;
   background-color: rgb(var(--mdw-color__surface-variant));
   color: rgb(var(--mdw-color__on-surface-variant));
@@ -72,13 +72,13 @@
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
-:host(:where([outlined][toggle]):not([checked])) {
+:host(:where([outlined][type="checkbox"]):not([checked])) {
   /* Needed to override custom colors */
   background-color: transparent;
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
-:host(:where([outlined][toggle])[checked]) {
+:host(:where([outlined][type="checkbox"])[checked]) {
   --mdw-button__icon__font-variation-settings: 'FILL' 1;
   --mdw-button__outline__size: 0;
 
@@ -97,7 +97,7 @@
   color: rgba(var(--mdw-color__on-surface), 0.38);
 }
 
-:host([disabled]:is([filled],[outlined][toggle][checked])) {
+:host([disabled]:is([filled],[outlined][type="checkbox"][checked])) {
   background-color: rgba(var(--mdw-color__on-surface), 0.12);
 }
 

@@ -9,11 +9,6 @@ export default class MDWIconButton extends MDWButton {
     this.iconElement.appendChild(this.slotElement);
   }
 
-  static idlBooleanAttributes = [
-    ...super.idlBooleanAttributes,
-    'toggle',
-  ];
-
   /**
    * @param {string} name
    * @param {string?} oldValue
@@ -23,17 +18,15 @@ export default class MDWIconButton extends MDWButton {
     super.attributeChangedCallback(name, oldValue, newValue);
     if (oldValue == null && newValue == null) return;
     switch (name) {
-      case 'toggle':
+      case 'type':
         if (newValue === null) {
           this.inputElement.removeAttribute('aria-pressed');
-          this.inputElement.type = this.getAttribute('type') ?? 'button';
-        } else {
-          this.inputElement.type = 'checkbox';
+        } else if (newValue === 'checkbox') {
           this.inputElement.setAttribute('aria-pressed', this.checked ? 'true' : 'false');
         }
         break;
       case 'checked':
-        if (!this.toggle) {
+        if (this.type !== 'checkbox') {
           this.inputElement.removeAttribute('aria-pressed');
         }
         this.inputElement.setAttribute('aria-pressed', newValue == null ? 'false' : 'true');
