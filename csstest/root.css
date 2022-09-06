@@ -1,7 +1,0 @@
-@import 'custom.css' layer(custom);
-
-body {
-  background-color: rgb(75%,75%,75%);
-}
-
-@layer custom.test;
