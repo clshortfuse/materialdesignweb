@@ -930,11 +930,12 @@
           </mdw-button>
           <mdw-button onclick="document.getElementById('dialog-custom-buttons').show(this)" aria-haspopup=dialog>Custom
             buttons</mdw-button>
+            <mdw-button onclick="document.getElementById('dialog-input').show(this)" aria-haspopup=dialog>Autofocus input</mdw-button>
         </demo-flex>
       </demo-section>
     </demo-section>
   </main>
-  <mdw-dialog id=dialog-simple icon=refresh title="My title" description="Description (no body)."></mdw-dialog>
+  <mdw-dialog id=dialog-simple title="My title" description="Description (no body)."></mdw-dialog>
   <mdw-dialog id=dialog-body icon=refresh title="Reset settings?"
     description="This will reset your app preferences back to their default settings. The following accounts will be signed out:">
     <demo-dummy-text></demo-dummy-text>
@@ -942,6 +943,10 @@
   <mdw-dialog id=dialog-simple icon=refresh title="My title" description="Description (no body)."></mdw-dialog>
   <mdw-dialog id=dialog-custom-buttons icon=refresh title="Title" description="description" confirm="Go" cancel="Abort"
     default="confirm">
+  </mdw-dialog>
+  <mdw-dialog id=dialog-input icon=edit title="Input autofocus" description="Input element autofocuses on open (mobile compatible)"
+    default="confirm">
+    <input type="text" autofocus>
   </mdw-dialog>
   <script type=module src="./demo.js"></script>
   <script type=module src="./index.min.js?color=&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto">
