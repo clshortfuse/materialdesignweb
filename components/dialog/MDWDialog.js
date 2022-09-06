@@ -331,6 +331,10 @@ export default class MDWDialog extends MDWComponent {
 
     if (MDWDialog.supportsHTMLDialogElement && !this.dialogElement.open) {
       this.dialogElement.show();
+      const main = document.querySelector('main');
+      if (main) {
+        main.ariaHidden = 'true';
+      }
     }
 
     const previousFocus = document.activeElement;
