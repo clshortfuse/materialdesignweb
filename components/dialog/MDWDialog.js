@@ -150,7 +150,6 @@ export default class MDWDialog extends MDWComponent {
     const main = document.querySelector('main');
     this.isNativeModal = false;
     if (main) {
-      // main.toggleAttribute('inert', false);
       main.removeAttribute('aria-hidden');
     }
     // if (this.dialogElement.getAttribute('aria-hidden') === 'true') return false;
@@ -342,7 +341,6 @@ export default class MDWDialog extends MDWComponent {
       this.dialogElement.show();
       const main = document.querySelector('main');
       if (main) {
-        // main.toggleAttribute('inert', true);
         main.setAttribute('aria-hidden', 'true');
       }
     }

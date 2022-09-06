@@ -64,6 +64,7 @@ dialog {
   will-change: opacity;
 
   opacity: 0;
+  visibility: hidden;
 
   z-index: 24;
 
@@ -77,7 +78,6 @@ dialog::backdrop {
 
 dialog[aria-hidden="false"],
 dialog:modal {
-
   --mdw-dialog__scrim__visibility: visible;
   pointer-events: auto;
 
@@ -86,6 +86,7 @@ dialog:modal {
   transition-timing-function: var(--mdw-dialog__deceleration-easing);
 
   opacity: 1;
+  visibility: visible;
 }
 
 #scrim {
