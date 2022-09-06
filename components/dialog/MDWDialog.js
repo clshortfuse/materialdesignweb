@@ -147,6 +147,11 @@ export default class MDWDialog extends MDWComponent {
    */
   close(returnValue) {
     if (!this.open) return false;
+    const main = document.querySelector('main');
+    if (main) {
+      // main.toggleAttribute('inert', false);
+      main.removeAttribute('aria-hidden');
+    }
     // if (this.dialogElement.getAttribute('aria-hidden') === 'true') return false;
     if (MDWDialog.supportsHTMLDialogElement && this.dialogElement.open) {
       // Force close native dialog
@@ -333,7 +338,8 @@ export default class MDWDialog extends MDWComponent {
       this.dialogElement.show();
       const main = document.querySelector('main');
       if (main) {
-        main.ariaHidden = 'true';
+        // main.toggleAttribute('inert', true);
+        main.setAttribute('aria-hidden', 'true');
       }
     }
 
