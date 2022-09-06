@@ -148,6 +148,7 @@ export default class MDWDialog extends MDWComponent {
   close(returnValue) {
     if (!this.open) return false;
     const main = document.querySelector('main');
+    this.isNativeModal = false;
     if (main) {
       // main.toggleAttribute('inert', false);
       main.removeAttribute('aria-hidden');
@@ -216,8 +217,10 @@ export default class MDWDialog extends MDWComponent {
    */
   static onContainerKeyDown(event) {
     if (event.key === 'Tab') {
-      if (!MDWDialog.supportsHTMLDialogElement) {
-        handleTabKeyPress(event);
+      /** @type {{host:MDWDialog}} */ // @ts-ignore Coerce
+      const { host } = this.getRootNode();
+      if (!host.isNativeModal) {
+        handleTabKeyPress.call(this, event);
       }
       return;
     }
@@ -322,6 +325,7 @@ export default class MDWDialog extends MDWComponent {
     if (this.open) return false;
     if (MDWDialog.supportsHTMLDialogElement && !this.dialogElement.open) {
       this.dialogElement.showModal();
+      this.isNativeModal = true;
     }
     this.show(event);
   }
