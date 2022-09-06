@@ -8,9 +8,12 @@
   --mdw-dialog__simple-duration: var(--mdw-motion-simple-duration, 100ms);
   --mdw-dialog__standard-easing: var(--mdw-motion-standard-easing, cubic-bezier(0.4, 0.0, 0.2, 1));
   --mdw-dialog__deceleration-easing: var(--mdw-motion-deceleration-easing, cubic-bezier(0.0, 0.0, 0.2, 1));
+  --mdw-dialog__align-items: flex-start;
 
   --mdw-dialog__fade-in-duration: var(--mdw-motion-fade-in-duration, 150ms);
   --mdw-dialog__scrim__visibility: hidden;
+
+  --mdw-dialog__icon__display: none;
 
   --mdw-bg: var(--mdw-color__surface);
   --mdw-ink: var(--mdw-color__on-surface);
@@ -26,6 +29,11 @@
   /* background-color: rgba(0, 0, 0, 0.50); */
 
   z-index: 24;
+}
+
+:host([icon]) {
+  --mdw-dialog__align-items: center;
+  --mdw-dialog__icon__display: block;
 }
 
 @media (min-width: 1440px) {
@@ -159,7 +167,7 @@ dialog:modal #container {
   display: flex;
 
   position: relative;
-  align-items: center;
+  align-items: var(--mdw-dialog__align-items);
   flex-direction: column;
   flex-direction: column;
 
@@ -201,18 +209,34 @@ dialog:modal #container {
 
 #icon {
   --mdw-icon__size: 24px;
+
+  display: var(--mdw-dialog__icon__display);
+
   margin-block-end: 16px;
 
   color: rgb(var(--mdw-color__secondary));
+}
+
+#description {
+  margin-block-end: 16px;
 }
 
 #body[slotted] {
   display:block;
   overflow-y: auto;
 
+  margin-block-end: 16px;
+
   border-style: solid none;
 
   border-width: 1px 0;
+  padding-block: 16px;
 
   border-color: rgb(var(--mdw-color__outline));
+}
+
+#actions {
+  align-self: flex-end;
+
+  margin-block-start: 8px;
 }
