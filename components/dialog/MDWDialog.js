@@ -313,12 +313,24 @@ export default class MDWDialog extends MDWComponent {
    * @param {Event} [event]
    * @return {boolean} handled
    */
+  showModal(event) {
+    if (this.open) return false;
+    if (MDWDialog.supportsHTMLDialogElement && !this.dialogElement.open) {
+      this.dialogElement.showModal();
+    }
+    this.show(event);
+  }
+
+  /**
+   * @param {Event} [event]
+   * @return {boolean} handled
+   */
   show(event) {
     if (this.open) return false;
     this.open = true;
 
     if (MDWDialog.supportsHTMLDialogElement && !this.dialogElement.open) {
-      this.dialogElement.showModal();
+      this.dialogElement.show();
     }
 
     const previousFocus = document.activeElement;
@@ -358,5 +370,3 @@ export default class MDWDialog extends MDWComponent {
     return true;
   }
 }
-
-MDWDialog.prototype.showModal = MDWDialog.prototype.show;

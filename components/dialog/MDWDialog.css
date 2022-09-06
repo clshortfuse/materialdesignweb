@@ -75,7 +75,7 @@ dialog::backdrop {
   display: none;
 }
 
-/* dialog[aria-hidden="false"], */
+dialog[aria-hidden="false"],
 dialog:modal {
 
   --mdw-dialog__scrim__visibility: visible;
@@ -137,7 +137,7 @@ dialog:modal {
   }
 }
 
-/* dialog[aria-hidden="false"] #container, */
+dialog[aria-hidden="false"] #container,
 dialog:modal #container {
   animation-name: scaleUpAnimation;
   animation-duration: var(--mdw-dialog__fade-in-duration);
