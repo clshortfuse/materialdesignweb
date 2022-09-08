@@ -35,6 +35,11 @@ export default class MDWInput extends MDWRipple {
     'name', 'required', 'list',
   ];
 
+  static idlStringAttributes = [
+    ...super.idlStringAttributes,
+    'aria-controls',
+  ];
+
   static get observedAttributes() {
     return [
       ...super.observedAttributes,
@@ -82,7 +87,7 @@ export default class MDWInput extends MDWRipple {
         break;
       default:
     }
-    if (MDWInput.idlInputElementAttributes.includes(name)) {
+    if (name === 'aria-controls' || MDWInput.idlInputElementAttributes.includes(name)) {
       if (newValue == null) {
         this.inputElement?.removeAttribute(name);
       } else {
