@@ -145,15 +145,14 @@ export default class MDWDialog extends MDWComponent {
    */
   close(returnValue) {
     if (!this.open) return false;
-    if (!this.isNativeModal) {
+    if (this.isNativeModal) {
+      this.isNativeModal = false;
+    } else {
       const main = document.querySelector('main');
       if (main) {
         main.removeAttribute('aria-hidden');
       }
-    } else {
-      this.isNativeModal = false;
     }
-
     // if (this.dialogElement.getAttribute('aria-hidden') === 'true') return false;
     if (MDWDialog.supportsHTMLDialogElement && this.dialogElement.open) {
       // Force close native dialog
@@ -324,7 +323,7 @@ export default class MDWDialog extends MDWComponent {
    */
   showModal(event) {
     if (this.open) return false;
-    if (MDWDialog.supportsHTMLDialogElement && !this.dialogElement.open) {
+    if (MDWDialog.supportsHTMLDialogElement) {
       this.dialogElement.showModal();
       this.isNativeModal = true;
     }
@@ -339,7 +338,7 @@ export default class MDWDialog extends MDWComponent {
     if (this.open) return false;
     this.open = true;
 
-    if (MDWDialog.supportsHTMLDialogElement && !this.dialogElement.open) {
+    if (MDWDialog.supportsHTMLDialogElement) {
       this.dialogElement.show();
       const main = document.querySelector('main');
       if (main) {
