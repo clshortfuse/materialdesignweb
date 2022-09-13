@@ -19,8 +19,6 @@ export default class MDWDialog extends MDWComponent {
 
   static ariaRole = 'none';
 
-  /** @prop {string} description */
-
   constructor() {
     super();
     /** @type {HTMLDialogElement} */
@@ -147,11 +145,15 @@ export default class MDWDialog extends MDWComponent {
    */
   close(returnValue) {
     if (!this.open) return false;
-    const main = document.querySelector('main');
-    this.isNativeModal = false;
-    if (main) {
-      main.removeAttribute('aria-hidden');
+    if (!this.isNativeModal) {
+      const main = document.querySelector('main');
+      if (main) {
+        main.removeAttribute('aria-hidden');
+      }
+    } else {
+      this.isNativeModal = false;
     }
+
     // if (this.dialogElement.getAttribute('aria-hidden') === 'true') return false;
     if (MDWDialog.supportsHTMLDialogElement && this.dialogElement.open) {
       // Force close native dialog
