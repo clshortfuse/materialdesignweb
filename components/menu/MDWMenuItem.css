@@ -1,0 +1,5 @@
+
+:host {
+  --mdw-shape__size: 0;
+  color: rgb(var(--mdw-ink));
+}
