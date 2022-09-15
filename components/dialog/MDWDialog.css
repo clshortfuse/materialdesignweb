@@ -169,7 +169,6 @@ dialog:modal #container {
   position: relative;
   align-items: var(--mdw-dialog__align-items);
   flex-direction: column;
-  flex-direction: column;
 
   overflow-y: auto;
 

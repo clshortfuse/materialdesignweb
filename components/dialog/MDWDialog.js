@@ -15,9 +15,48 @@ import styles from './MDWDialog.css' assert { type: 'css' };
  */
 
 export default class MDWDialog extends MDWComponent {
+  static ariaRole = 'none';
+
+  static elementName = 'mdw-dialog';
+
   static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
 
-  static ariaRole = 'none';
+  /** @type {DialogStack[]} */
+  static OPEN_DIALOGS = [];
+
+  static idlBooleanAttributes = [
+    ...super.idlBooleanAttributes,
+    'open',
+  ];
+
+  static idlStringAttributes = [
+    ...super.idlStringAttributes,
+    'title', 'description', 'icon',
+    'default', 'cancel', 'confirm',
+  ];
+
+  static styles = [...super.styles, styles];
+
+  static fragments = [
+    ...super.fragments,
+    /* html */`
+      <dialog id=dialog role=dialog aria-hidden=true aria-labelledby=headline aria-describedby=description>
+        <div id=scrim aria-hidden=true></div>
+        <form id=form method=dialog role=none>
+          <mdw-container id=container>
+            <mdw-icon id=icon aria-hidden=true></mdw-icon>
+            <mdw-text id=headline role="header"></mdw-text>
+            <div id=description></div>
+            <slot id=body></slot>
+            <div id=actions>
+              <mdw-button id=cancel type=submit value="cancel">Cancel</mdw-button>
+              <mdw-button id=confirm type=submit value="confirm" autofocus>Confirm</mdw-button>
+            </div>
+          </mdw-container>
+        </form>
+      </dialog>
+    `,
+  ];
 
   constructor() {
     super();
@@ -35,45 +74,6 @@ export default class MDWDialog extends MDWComponent {
 
     this.bodyElement.addEventListener('slotchange', MDWDialog.onSlotChanged);
   }
-
-  /** @type {DialogStack[]} */
-  static OPEN_DIALOGS = [];
-
-  static elementName = 'mdw-dialog';
-
-  static idlStringAttributes = [
-    ...super.idlStringAttributes,
-    'title', 'description', 'icon',
-    'default', 'cancel', 'confirm',
-  ];
-
-  static idlBooleanAttributes = [
-    ...super.idlBooleanAttributes,
-    'open',
-  ];
-
-  static styles = [...super.styles, styles];
-
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <dialog id=dialog role="dialog" aria-hidden="true" aria-labelledby="headline" aria-describedby="description">
-        <div id=scrim aria-hidden="true"></div>
-        <form id=form method="dialog" role=none>
-          <mdw-container id=container>
-            <mdw-icon id=icon aria-hidden="true"></mdw-icon>
-            <mdw-text id=headline role="header"></mdw-text>
-            <div id=description></div>
-            <slot id=body></slot>
-            <div id=actions>
-              <mdw-button id=cancel type=submit value="cancel">Cancel</mdw-button>
-              <mdw-button id=confirm type=submit value="confirm" autofocus>Confirm</mdw-button>
-            </div>
-          </mdw-container>
-        </form>
-      </dialog>
-    `,
-  ];
 
   /**
    * @param {string} name
@@ -163,7 +163,7 @@ export default class MDWDialog extends MDWComponent {
 
     // Will invoke observed attribute change: ('aria-hidden', 'true');
     this.open = false;
-    dispatchEvent(new Event('close'));
+    this.dispatchEvent(new Event('close'));
     // .mdw-dialog__popup hidden by transitionEnd event
     let stackIndex = -1;
     MDWDialog.OPEN_DIALOGS.some((stack, index) => {
@@ -292,9 +292,7 @@ export default class MDWDialog extends MDWComponent {
    * @return {void}
    */
   static onPopState(event) {
-    console.log('popstate', event);
     if (!event.state) return;
-    console.log('popstate');
 
     const lastOpenDialog = MDWDialog.OPEN_DIALOGS.at(-1);
     if (!lastOpenDialog || !lastOpenDialog.previousState) {
@@ -327,7 +325,7 @@ export default class MDWDialog extends MDWComponent {
       this.dialogElement.showModal();
       this.isNativeModal = true;
     }
-    this.show(event);
+    return this.show(event);
   }
 
   /**
