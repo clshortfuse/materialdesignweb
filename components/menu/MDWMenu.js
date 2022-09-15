@@ -16,14 +16,12 @@ import MDWMenuItem from './MDWMenuItem.js';
  */
 
 export default class MDWMenu extends MDWComponent {
-  static ariaRole = 'menu';
+  static elementName = 'mdw-menu';
 
   static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
 
   /** @type {MenuStack[]} */
   static OPEN_MENUS = [];
-
-  static HIDE_EVENT = 'mdw:menu-hide';
 
   static idlBooleanAttributes = [
     ...super.idlBooleanAttributes,
@@ -42,9 +40,11 @@ export default class MDWMenu extends MDWComponent {
     /* html */`
       <dialog id=dialog role=menu aria-hidden=true>
         <div id=scrim aria-hidden=true></div>
+        <form id=form method=dialog role=none>
           <mdw-container id=container>
             <slot id=body></slot>
           </mdw-container>
+        </form>
       </dialog>
     `,
   ];
@@ -56,6 +56,28 @@ export default class MDWMenu extends MDWComponent {
     this.scrimElement = this.shadowRoot.getElementById('scrim');
     /** @type {MDWContainer} */
     this.containerElement = this.shadowRoot.getElementById('container');
+    this.bodyElement = this.shadowRoot.getElementById('body');
+  }
+
+  /**
+   * @param {string} name
+   * @param {string?} oldValue
+   * @param {string?} newValue
+   */
+  attributeChangedCallback(name, oldValue, newValue) {
+    super.attributeChangedCallback(name, oldValue, newValue);
+    if (oldValue == null && newValue == null) return;
+    switch (name) {
+      case 'open':
+        // HTMLDialogElement Spec states attribute manipulation does not invoke events
+        if (newValue == null) {
+          this.dialogElement.setAttribute('aria-hidden', 'true');
+        } else {
+          this.dialogElement.setAttribute('aria-hidden', 'false');
+        }
+        break;
+      default:
+    }
   }
 
   /**
@@ -63,13 +85,13 @@ export default class MDWMenu extends MDWComponent {
    */
   close() {
     if (!this.open) return false;
-    if (!this.isNativeModal) {
+    if (this.isNativeModal) {
+      this.isNativeModal = false;
+    } else {
       const main = document.querySelector('main');
       if (main) {
         main.removeAttribute('aria-hidden');
       }
-    } else {
-      this.isNativeModal = false;
     }
     // if (this.dialogElement.getAttribute('aria-hidden') === 'true') return false;
     if (MDWMenu.supportsHTMLDialogElement && this.dialogElement.open) {
@@ -91,19 +113,19 @@ export default class MDWMenu extends MDWComponent {
       return false;
     });
     if (stackIndex !== -1) {
-      const menuStack = MDWMenu.OPEN_MENUS[stackIndex];
-      if (menuStack.previousFocus && menuStack.previousFocus instanceof HTMLElement) {
-        menuStack.previousFocus.focus();
+      const stack = MDWMenu.OPEN_MENUS[stackIndex];
+      if (stack.previousFocus && stack.previousFocus instanceof HTMLElement) {
+        stack.previousFocus.focus();
       }
       MDWMenu.OPEN_MENUS.splice(stackIndex, 1);
-      if (menuStack.state && window.history && window.history.state // IE11 returns a cloned state object, not the original
-      && menuStack.state.hash === window.history.state.hash) {
+      if (stack.state && window.history && window.history.state // IE11 returns a cloned state object, not the original
+      && stack.state.hash === window.history.state.hash) {
         window.history.back();
       }
     }
     if (!MDWMenu.OPEN_MENUS.length) {
-      window.removeEventListener('popstate', onPopState);
-      window.removeEventListener('resize', onWindowResize);
+      window.removeEventListener('popstate', MDWMenu.onPopState);
+      window.removeEventListener('resize', MDWMenu.onWindowResize);
     }
     return true;
   }
@@ -137,29 +159,26 @@ export default class MDWMenu extends MDWComponent {
 
   /**
    * @param {MouseEvent|PointerEvent} event
-   * @this {Element}
+   * @this {MDWMenu}
    * @return {void}
    */
   static onMenuClick(event) {
     if (this !== event.target) return;
-    if (this instanceof HTMLElement == false) return;
-    /** @type {{host:MDWDialog}} */ // @ts-ignore Coerce
     event.stopPropagation();
-    const { host } = this.getRootNode();
-    host.hide(this);
+    this.close();
   }
 
   /**
-   * @param {MouseEvent|PointerEvent} [event]
-   * @param {boolean} [alignTarget=true]
+   * @param {MouseEvent|PointerEvent|HTMLElement} source
    * @return {void}
    */
-  updateMenuPosition(event, alignTarget) {
+  updateMenuPosition(source) {
+    console.log('updateMenuPosition', source);
     let top = 'auto';
     let left = 'auto';
     let transformOrigin = '';
-    const useAlignTarget = (alignTarget !== false);
-    const margin = useAlignTarget ? '0' : '';
+    const event = source instanceof HTMLElement ? null : source;
+    const margin = event ? '0' : '';
     const mdwPosition = this.position || '';
     const mdwDirection = this.direction || '';
     let alignTop = mdwPosition.includes('top');
@@ -181,7 +200,8 @@ export default class MDWMenu extends MDWComponent {
     let openLtr = mdwDirection.includes('ltr');
     let openRtl = mdwDirection.includes('rtl');
 
-    const target = /** @type {HTMLElement} */ (event.currentTarget || event.target);
+    /** @type {HTMLElement} */
+    const target = event ? event.currentTarget || event.target : source;
 
     let isPageRTL = null;
     if (alignStart || alignEnd || openNormal || openReverse) {
@@ -214,17 +234,17 @@ export default class MDWMenu extends MDWComponent {
         }
       }
     }
-    const offsetTop = useAlignTarget ? 0 : -event.offsetY;
-    const offsetBottom = useAlignTarget ? target.clientHeight : event.offsetY;
-    const offsetLeft = useAlignTarget ? 0 : -event.offsetX;
-    const offsetRight = useAlignTarget ? target.clientWidth : event.offsetX;
+    const offsetTop = event ? -event.offsetY : 0;
+    const offsetBottom = event ? event.offsetY : target.clientHeight;
+    const offsetLeft = event ? -event.offsetX : 0;
+    const offsetRight = event ? event.offsetX : target.clientWidth;
     const rect = target.getBoundingClientRect();
     const pageX = rect.left;
     const pageY = rect.top;
 
     /* Automatic Positioning
     *
-    * 9 Positions
+    * Positions:
     *   3      7      4
     *     ┌─────────┐
     *     │         │
@@ -243,7 +263,7 @@ export default class MDWMenu extends MDWComponent {
     * 8: HCenter Bottom
     * 9: VCenter HCenter
     *
-    * 9 Directions:
+    * Directions:
     * a - Down LTR
     * b - Down RTL
     * c - Up LTR
@@ -279,36 +299,39 @@ export default class MDWMenu extends MDWComponent {
 
     const popupElement = this.containerElement;
     popupElement.style.setProperty('max-height', 'none');
+    popupElement.style.removeProperty('--mdw-menu__size');
+    const newSize = Math.ceil(popupElement.clientWidth / 56);
+    popupElement.style.setProperty('--mdw-menu__size', newSize);
     const popupElementHeight = popupElement.clientHeight;
     const popupElementWidth = popupElement.clientWidth;
     const canOpenDownwardsFromBottom = !alignTop && !alignVCenter
-    && !openUp && !openVCenter
-    && popupElementHeight + (pageY + offsetBottom) <= window.innerHeight;
+      && !openUp && !openVCenter
+      && popupElementHeight + (pageY + offsetBottom) <= window.innerHeight;
     const canOpenDownwardsFromTop = !alignBottom && !alignVCenter
-    && !openUp && !openVCenter
-    && popupElementHeight + (pageY + offsetTop) <= window.innerHeight;
+      && !openUp && !openVCenter
+      && popupElementHeight + (pageY + offsetTop) <= window.innerHeight;
     const canOpenUpwardsFromTop = !alignBottom && !alignVCenter && !openDown
-    && !openVCenter
-    && pageY + offsetTop >= popupElementHeight;
+      && !openVCenter
+      && pageY + offsetTop >= popupElementHeight;
     const canOpenUpwardsFromBottom = !alignTop && !alignVCenter && !openDown
-    && !openVCenter
-    && pageY + offsetBottom >= popupElementHeight;
+      && !openVCenter
+      && pageY + offsetBottom >= popupElementHeight;
     const canOpenRightwardsFromLeft = !alignRight && !alignHCenter
-    && !openRtl && !openHCenter
-    && popupElementWidth + (pageX + offsetLeft) <= window.innerWidth;
+      && !openRtl && !openHCenter
+      && popupElementWidth + (pageX + offsetLeft) <= window.innerWidth;
     const canOpenRightwardsFromRight = !alignLeft && !alignHCenter
-    && !openRtl && !openHCenter
-    && popupElementWidth + (pageX + offsetRight) <= window.innerWidth;
+      && !openRtl && !openHCenter
+      && popupElementWidth + (pageX + offsetRight) <= window.innerWidth;
     const canOpenLeftwardsFromRight = !alignLeft && !alignHCenter
-    && !openLtr && !openHCenter
-    && pageX + offsetRight >= popupElementWidth;
+      && !openLtr && !openHCenter
+      && pageX + offsetRight >= popupElementWidth;
     const canOpenLeftwardsFromLeft = !alignRight && !alignHCenter
-    && !openLtr && !openHCenter
-    && pageX + offsetLeft >= popupElementWidth;
+      && !openLtr && !openHCenter
+      && pageX + offsetLeft >= popupElementWidth;
     const canOpenFromCenter = !alignLeft && !alignRight && !alignTop && !alignBottom
-    && !openUp && !openDown
-    && ((pageX + offsetLeft) / 2) >= (popupElementWidth / 2)
-    && (popupElementWidth / 2) + ((pageX + offsetLeft) / 2) <= window.innerWidth;
+      && !openUp && !openDown
+      && ((pageX + offsetLeft) / 2) >= (popupElementWidth / 2)
+      && (popupElementWidth / 2) + ((pageX + offsetLeft) / 2) <= window.innerWidth;
     popupElement.style.removeProperty('max-height');
     const candidates = [
       canOpenDownwardsFromBottom && canOpenRightwardsFromLeft, // 1a └↘
@@ -335,7 +358,7 @@ export default class MDWMenu extends MDWComponent {
     if (candidates.length) {
       let candidateNumber;
       if (isPageRTL === null) {
-        isPageRTL = isRtl();
+        isPageRTL = (getComputedStyle(target).direction === 'rtl');
       }
       if (isPageRTL) {
         candidateNumber = [2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 15]
@@ -350,24 +373,16 @@ export default class MDWMenu extends MDWComponent {
       switch (candidateNumber) {
       // Position
         default:
-        case 1:
-        case 8:
-        case 11:
+        case 1: case 8: case 11:
           alignBottom = true; alignLeft = true;
           break;
-        case 2:
-        case 7:
-        case 12:
+        case 2: case 7: case 12:
           alignBottom = true; alignRight = true;
           break;
-        case 3:
-        case 6:
-        case 9:
+        case 3: case 6: case 9:
           alignTop = true; alignLeft = true;
           break;
-        case 4:
-        case 5:
-        case 10:
+        case 4: case 5: case 10:
           alignTop = true; alignRight = true;
           break;
         case 13:
@@ -382,24 +397,16 @@ export default class MDWMenu extends MDWComponent {
       switch (candidateNumber) {
       // Direction
         default:
-        case 1:
-        case 5:
-        case 9:
+        case 1: case 5: case 9:
           openDown = true; openLtr = true;
           break;
-        case 2:
-        case 6:
-        case 10:
+        case 2: case 6: case 10:
           openDown = true; openRtl = true;
           break;
-        case 3:
-        case 7:
-        case 11:
+        case 3: case 7: case 11:
           openUp = true; openLtr = true;
           break;
-        case 4:
-        case 8:
-        case 12:
+        case 4: case 8: case 12:
           openUp = true; openRtl = true;
           break;
         case 13:
@@ -478,12 +485,15 @@ export default class MDWMenu extends MDWComponent {
     popupElement.style.setProperty('bottom', 'auto');
     popupElement.style.setProperty('margin', margin);
     popupElement.style.setProperty('transform-origin', transformOrigin);
+    // Keeps on screen when resizing with showModal
+    popupElement.scrollIntoView();
   }
 
   /**
    * @return {void}
    */
   static onWindowResize() {
+    console.log('onWindowResize');
     const lastOpenMenu = MDWMenu.OPEN_MENUS.at(-1);
     if (!lastOpenMenu || !lastOpenMenu.originalEvent) {
       return;
@@ -518,7 +528,8 @@ export default class MDWMenu extends MDWComponent {
    * @return {void}
    */
   selectNextMenuItem(backwards) {
-    const menuItems = /** @type {HTMLCollectionOf<HTMLElement>} */ (this.slotElement.querySelectorAll(MDWMenuItem.name));
+    const menuItems = /** @type {HTMLCollectionOf<HTMLElement>} */
+      (this.slotElement.querySelectorAll(MDWMenuItem.name));
     let foundTarget = false;
     /** @type {HTMLElement} */
     let candidate = null;
@@ -616,17 +627,33 @@ export default class MDWMenu extends MDWComponent {
   }
 
   /**
-   * @param {MouseEvent|PointerEvent} [event]
-   * @param {boolean} [alignTarget=true]
+   * @param {MouseEvent|PointerEvent|HTMLElement} [source]
    * @return {boolean} handled
    */
-  show(event, alignTarget) {
-    const changed = false;
+  showModal(source) {
+    if (this.open) return false;
+    if (MDWMenu.supportsHTMLDialogElement) {
+      console.log('showing modal');
+      this.dialogElement.showModal();
+      console.log('modal shown?');
+      this.isNativeModal = true;
+    }
+    return this.show(source);
+  }
 
-    if (event) {
-      this.updateMenuPosition(event, alignTarget);
+  /**
+   * @param {MouseEvent|PointerEvent|HTMLElement} [source]
+   * @return {boolean} handled
+   */
+  show(source) {
+    if (this.open) return false;
+    this.open = true;
+
+    if (source) {
+      this.updateMenuPosition(source);
     } else {
       const popupElement = this.containerElement;
+      popupElement.style.removeProperty('inset');
       popupElement.style.removeProperty('top');
       popupElement.style.removeProperty('left');
       popupElement.style.removeProperty('right');
@@ -638,10 +665,6 @@ export default class MDWMenu extends MDWComponent {
         popupElement.removeAttribute('style');
       }
     }
-
-    if (this.open) return false;
-    this.open = true;
-
     if (MDWMenu.supportsHTMLDialogElement && !this.dialogElement.open) {
       this.dialogElement.show();
       const main = document.querySelector('main');
@@ -666,37 +689,17 @@ export default class MDWMenu extends MDWComponent {
       window.addEventListener('resize', MDWMenu.onWindowResize);
     }
     /** @type {MenuStack} */
-    const menuStack = { menuElement, previousFocus, newState, previousState, event };
+    const menuStack = { element: this, previousFocus, state: newState, previousState, originalEvent: source };
     MDWMenu.OPEN_MENUS.push(menuStack);
-    this.refreshMenuItems();
-    if (event && !event.detail && ('pointerType' in event) && !event.pointerType) {
+    // this.refreshMenuItems();
+
+    if (source && !source.detail && ('pointerType' in source) && !source.pointerType) {
       // Triggered with keyboard event
       this.selectNextMenuItem();
     } else {
-      popupElement.focus();
+      this.containerElement.focus();
     }
 
     return true;
-  }
-
-  disconnectedCallBack() {
-    this.close();
-    this.removeEventListener('click', onMenuClick);
-    this.removeEventListener('scroll', onMenuScroll);
-    this.removeEventListener('touchmove', onMenuScroll);
-    this.removeEventListener('wheel', onMenuScroll);
-    this.addEventListener('keydown', onKeyDown);
-    this.removeAttribute('mdw-menu-js');
-    const popupElement = this.containerElement;
-    popupElement.style.removeProperty('top');
-    popupElement.style.removeProperty('left');
-    popupElement.style.removeProperty('right');
-    popupElement.style.removeProperty('bottom');
-    popupElement.style.removeProperty('margin');
-    popupElement.style.removeProperty('transform-origin');
-    popupElement.style.removeProperty('position');
-    if (popupElement.hasAttribute('style') && !popupElement.getAttribute('style')) {
-      popupElement.removeAttribute('style');
-    }
   }
 }

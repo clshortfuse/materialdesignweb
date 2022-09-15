@@ -8,6 +8,8 @@ import styles from './MDWMenuItem.css' assert { type: 'css' };
 export default class MDWMenuItem extends MDWInput {
   static ariaRole = 'none';
 
+  static elementName = 'mdw-menu-item';
+
   constructor() {
     super();
     this.iconElement = this.shadowRoot.getElementById('icon');
@@ -18,6 +20,10 @@ export default class MDWMenuItem extends MDWInput {
       this.iconElement,
       this.trailingElement,
     );
+    if (!this.hasAttribute('type')) {
+      this.type = 'button';
+      this.inputElement.setAttribute('role', 'menuitem');
+    }
   }
 
   static fragments = [

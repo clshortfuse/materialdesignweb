@@ -1,5 +1,35 @@
-
 :host {
   --mdw-shape__size: 0;
+  --mdw-type__font-weight: var(--mdw-typescale__label-large__font-weight);
+  --mdw-type__font-size: var(--mdw-typescale__label-large__font-size);
+  --mdw-type__line-height: var(--mdw-typescale__label-large__line-height);
+  --mdw-type__font-family: var(--mdw-typescale__label-large__font-family);
+  --mdw-type__letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
+  grid-column-start: 1;
+  grid-column-end: -1;
+  grid-row: auto;
+
   color: rgb(var(--mdw-ink));
+
+  white-space: nowrap;
+}
+
+#label {
+  display: flex;
+
+  min-block-size: 48px;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+}
+
+#slot {
+  flex: 1;
+
+}
+
+#trailing-icon,
+#icon {
+  color: rgb(var(--mdw-color__on-surface));
 }
