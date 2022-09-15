@@ -939,6 +939,18 @@
         </demo-flex>
       </demo-section>
     </demo-section>
+    <demo-section>
+      <h1 slot=heading>Menus</h1>
+      <demo-section>
+        <h2 slot=heading>Basic menu</h2>
+        <demo-flex wrap gap12>
+          <mdw-button onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=dialog aria-controls="menu-simple">Basic menu</mdw-button>
+          <mdw-button onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=dialog aria-controls="menu-oversized">Oversized menu</mdw-button>
+          <mdw-button onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=dialog aria-controls="menu-simple">Basic menu modal</mdw-button>
+          <mdw-button onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=dialog aria-controls="menu-oversized">Oversized menu modal</mdw-button>
+        </demo-flex>
+      </demo-section>
+    </demo-section>
   </main>
   <div id=dialogs>
     <mdw-dialog id=dialog-simple title="My title" description="Description (no body)."></mdw-dialog>
@@ -955,8 +967,24 @@
       <input type="text" autofocus>
     </mdw-dialog>
   </div>
+  <div id=menus>
+    <mdw-menu id=menu-simple>
+      <mdw-menu-item>Item 1</mdw-menu-item>
+      <mdw-menu-item icon=visibility>Item 2</mdw-menu-item>
+      <mdw-menu-item icon=content_copy trailing="Ctrl+C">Item 3</mdw-menu-item>
+      <mdw-menu-item icon=content_paste trailing="⌘V">Item 4</mdw-menu-item>
+      <mdw-menu-item icon="cloud" trailing-icon="chevron_right">Item 4</mdw-menu-item>
+    </mdw-menu>
+    <mdw-menu id=menu-oversized>
+      <mdw-menu-item>Short</mdw-menu-item>
+      <mdw-menu-item icon=visibility>Icon</mdw-menu-item>
+      <mdw-menu-item icon=content_copy trailing="Ctrl+C">Icon and trailing</mdw-menu-item>
+      <mdw-menu-item icon=content_paste trailing="⌘V">Medium sized with icon and trailing</mdw-menu-item>
+      <mdw-menu-item icon="cloud" trailing-icon="chevron_right">Long menu item including both icon and trailing</mdw-menu-item>
+    </mdw-menu>
+  </div>
   <script type=module src="./demo.js"></script>
-  <script type=module src="./index.min.js?color=&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto">
+  <script type=module src="./index.min.js?color=&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=light">
   </script>
 
 </body>

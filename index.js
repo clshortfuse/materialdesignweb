@@ -9,6 +9,8 @@ import MDWDivider from './components/divider/MDWDivider.js';
 import MDWExtendedFab from './components/fab/MDWExtendedFab.js';
 import MDWFab from './components/fab/MDWFab.js';
 import MDWIconButton from './components/iconbutton/MDWIconButton.js';
+import MDWMenu from './components/menu/MDWMenu.js';
+import MDWMenuItem from './components/menu/MDWMenuItem.js';
 import MDWSegmentedButton from './components/segmentedbutton/MDWSegmentedButton.js';
 import MDWSegmentedButtonGroup from './components/segmentedbutton/MDWSegmentedButtonGroup.js';
 import MDWContainer from './core/container/MDWContainer.js';
@@ -44,6 +46,9 @@ MDWFilterChip.register();
 MDWDialog.register();
 
 MDWDivider.register();
+
+MDWMenu.register();
+MDWMenuItem.register();
 
 const { searchParams } = new URL(import.meta.url);
 const color = searchParams.get('color') || '#6750A4';
