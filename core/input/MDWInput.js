@@ -10,6 +10,13 @@ export default class MDWInput extends MDWRipple {
 
   static FORM_IPC_EVENT = 'mdw-input-changed';
 
+  static GlobalListener = new EventTarget();
+
+  #ipcListener = this.formIPCEvent.bind(this);
+
+  /** @type {EventTarget} */
+  #ipcTarget = null;
+
   constructor() {
     super();
     this.inputElement = /** @type {HTMLInputElement} */ (this.shadowRoot.getElementById('input'));
@@ -102,13 +109,11 @@ export default class MDWInput extends MDWRipple {
             console.log('MDWInput.attributeChangedCallback: unset', this.name, 'null');
             this.elementInternals.setFormValue(null);
           } else {
-            console.log('MDWInput.attributeChangedCallback: set', this.name, this.value ?? 'on');
+            // console.log('MDWInput.attributeChangedCallback: set', this.name, this.value ?? 'on');
             this.elementInternals.setFormValue(this.value ?? 'on');
-            const { form } = this.elementInternals;
-            if (form) {
-              form.dispatchEvent(new CustomEvent(MDWInput.FORM_IPC_EVENT, { detail: [this.name, this.value] }));
-              console.log('MDWInput.attributeChangedCallback: FORM_IPC_EVENT complete');
-            }
+            this.#ipcTarget?.dispatchEvent(
+              new CustomEvent(MDWInput.FORM_IPC_EVENT, { detail: [this.name, this.value] }),
+            );
           }
           break;
         default:
@@ -129,6 +134,21 @@ export default class MDWInput extends MDWRipple {
     `,
   ];
 
+  refreshFormAssociation() {
+    const newTarget = this.elementInternals.form ?? MDWInput.GlobalListener;
+    if (newTarget === this.#ipcTarget) {
+      console.warn('Already associated?', newTarget);
+      return;
+    }
+    if (this.#ipcTarget) {
+      this.#ipcTarget.removeEventListener(MDWInput.FORM_IPC_EVENT, this.#ipcListener);
+    }
+    if (this.type !== 'radio') return;
+
+    this.#ipcTarget = newTarget;
+    this.#ipcTarget.addEventListener(MDWInput.FORM_IPC_EVENT, this.#ipcListener);
+  }
+
   /**
    * New lifecycle callback. This is called when association with
    * <form> is changed.
@@ -136,9 +156,7 @@ export default class MDWInput extends MDWRipple {
    * @return {void}
    */
   formAssociatedCallback(form) {
-    if (form == null) return;
-    console.log('Form associated. Adding bind.');
-    form.addEventListener(MDWInput.FORM_IPC_EVENT, this.formIPCEvent.bind(this));
+    this.refreshFormAssociation();
   }
 
   /**
@@ -146,7 +164,7 @@ export default class MDWInput extends MDWRipple {
    * @return {void}
    */
   formIPCEvent(event) {
-    if (event.target !== this.elementInternals.form) {
+    if (event.target !== this.#ipcTarget) {
       console.warn('MDWInput.formIPCEvent: Abort from wrong form');
       return;
     }
@@ -193,7 +211,12 @@ export default class MDWInput extends MDWRipple {
 
   get type() { return this.inputElement.type; }
 
-  set type(value) { this.inputElement.type = value; }
+  set type(value) {
+    this.inputElement.type = value;
+    if (value === 'radio') {
+      this.refreshFormAssociation();
+    }
+  }
 
   get checked() { return this.inputElement.checked; }
 
@@ -230,5 +253,8 @@ export default class MDWInput extends MDWRipple {
     super.connectedCallback();
     this.removeEventListener('keydown', MDWRipple.onKeyDown);
     this.inputElement.addEventListener('keydown', MDWRipple.onKeyDown, { passive: true });
+    if (!this.elementInternals.form) {
+      this.formAssociatedCallback(null);
+    }
   }
 }
