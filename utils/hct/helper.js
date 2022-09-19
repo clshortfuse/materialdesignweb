@@ -112,7 +112,9 @@ function cssVariablesFromScheme(scheme) {
       --mdw-color__surface-variant: ${cssVarFromArgb(scheme.surfaceVariant)};
       --mdw-color__on-surface-variant: ${cssVarFromArgb(scheme.onSurfaceVariant)};
       --mdw-color__outline: ${cssVarFromArgb(scheme.outline)};
+      --mdw-color__outline-variant: ${cssVarFromArgb(scheme.outlineVariant)};
       --mdw-color__shadow: ${cssVarFromArgb(scheme.shadow)};
+      --mdw-color__scrim: ${cssVarFromArgb(scheme.scrim)};
       --mdw-color__inverse-surface: ${cssVarFromArgb(scheme.inverseSurface)};
       --mdw-color__inverse-on-surface: ${cssVarFromArgb(scheme.inverseOnSurface)};
       --mdw-color__inverse-primary: ${cssVarFromArgb(scheme.inversePrimary)};

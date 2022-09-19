@@ -42,7 +42,9 @@ export default class Scheme {
    * @param {number} [surfaceVariant]
    * @param {number} [onSurfaceVariant]
    * @param {number} [outline]
+   * @param {number} [outlineVariant]
    * @param {number} [shadow]
+   * @param {number} [scrim]
    * @param {number} [inverseSurface]
    * @param {number} [inverseOnSurface]
    * @param {number} [inversePrimary]
@@ -71,7 +73,9 @@ export default class Scheme {
     surfaceVariant,
     onSurfaceVariant,
     outline,
+    outlineVariant,
     shadow,
+    scrim,
     inverseSurface,
     inverseOnSurface,
     inversePrimary,
@@ -99,7 +103,9 @@ export default class Scheme {
     this.surfaceVariant = surfaceVariant;
     this.onSurfaceVariant = onSurfaceVariant;
     this.outline = outline;
+    this.outlineVariant = outlineVariant;
     this.shadow = shadow;
+    this.scrim = scrim;
     this.inverseSurface = inverseSurface;
     this.inverseOnSurface = inverseOnSurface;
     this.inversePrimary = inversePrimary;
@@ -167,7 +173,9 @@ export default class Scheme {
       .withSurfaceVariant(core.n2.tone(90))
       .withOnSurfaceVariant(core.n2.tone(30))
       .withOutline(core.n2.tone(50))
+      .withOutlineVariant(core.n2.tone(80))
       .withShadow(core.n1.tone(0))
+      .withScrim(core.n1.tone(0))
       .withInverseSurface(core.n1.tone(20))
       .withInverseOnSurface(core.n1.tone(95))
       .withInversePrimary(core.a1.tone(80));
@@ -203,7 +211,9 @@ export default class Scheme {
       .withSurfaceVariant(core.n2.tone(30))
       .withOnSurfaceVariant(core.n2.tone(80))
       .withOutline(core.n2.tone(60))
+      .withOutlineVariant(core.n2.tone(30))
       .withShadow(core.n1.tone(0))
+      .withScrim(core.n1.tone(0))
       .withInverseSurface(core.n1.tone(90))
       .withInverseOnSurface(core.n1.tone(20))
       .withInversePrimary(core.a1.tone(40));
@@ -417,11 +427,29 @@ export default class Scheme {
   }
 
   /**
+   * @param {number} outlineVariant
+   * @return {this}
+   */
+  withOutlineVariant(outlineVariant) {
+    this.outlineVariant = outlineVariant;
+    return this;
+  }
+
+  /**
    * @param {number} shadow
    * @return {this}
    */
   withShadow(shadow) {
     this.shadow = shadow;
+    return this;
+  }
+
+  /**
+   * @param {number} scrim
+   * @return {this}
+   */
+  withScrim(scrim) {
+    this.scrim = scrim;
     return this;
   }
 
@@ -535,7 +563,13 @@ export default class Scheme {
     if (this.outline !== scheme.outline) {
       return false;
     }
+    if (this.outlineVariant !== scheme.outlineVariant) {
+      return false;
+    }
     if (this.shadow !== scheme.shadow) {
+      return false;
+    }
+    if (this.scrim !== scheme.scrim) {
       return false;
     }
     if (this.inverseSurface !== scheme.inverseSurface) {
