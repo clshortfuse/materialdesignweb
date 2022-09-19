@@ -5,9 +5,6 @@
   --mdw-type__line-height: var(--mdw-typescale__label-large__line-height);
   --mdw-type__font-family: var(--mdw-typescale__label-large__font-family);
   --mdw-type__letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
-  grid-column-start: 1;
-  grid-column-end: -1;
-  grid-row: auto;
 
   color: rgb(var(--mdw-ink));
 

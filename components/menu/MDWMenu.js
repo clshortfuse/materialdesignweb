@@ -318,8 +318,9 @@ export default class MDWMenu extends MDWComponent {
 
     const popupElement = this.containerElement;
     popupElement.style.setProperty('max-height', 'none');
-    popupElement.style.removeProperty('--mdw-menu__size');
+    popupElement.style.setProperty('width', 'auto');
     const newSize = Math.ceil(popupElement.clientWidth / 56);
+    popupElement.style.removeProperty('width');
     popupElement.style.setProperty('--mdw-menu__size', newSize);
     const popupElementHeight = popupElement.clientHeight;
     const popupElementWidth = popupElement.clientWidth;

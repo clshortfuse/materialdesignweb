@@ -203,17 +203,18 @@ dialog:modal {
   --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
   --mdw-container__box-shadow: var(--mdw-container__box-shadow__2);
 
-  display: inline-grid;
+  display: inline-flex;
 
   position: relative;
   align-items: stretch;
   flex-direction: column;
-  grid-auto-flow: row;
-  grid-template-columns: repeat(var(--mdw-menu__size), minmax(max-content, var(--mdw-menu__inline-base)));
+  flex-direction: column;
 
   overflow-y: auto;
   overscroll-behavior: none;
   overscroll-behavior: contain;
+
+  inline-size: calc(var(--mdw-menu__size) * var(--mdw-menu__inline-base));
 
   min-inline-size: calc(var(--mdw-menu__inline-base) * 2);
   max-inline-size: calc(var(--mdw-menu__inline-base) * 7);
