@@ -119,7 +119,7 @@ dialog:modal {
 
   z-index:0;
 
-  background-color: black;
+  background-color: rgb(var(--mdw-color__scrim));
 
 }
 
