@@ -16,8 +16,10 @@
 
 #label {
   display: flex;
+  align-items: center;
 
   min-block-size: 48px;
+  padding-inline: 12px;
 
   cursor: pointer;
 
@@ -25,11 +27,49 @@
 }
 
 #slot {
+  display: block;
+
   flex: 1;
+}
+
+#icon {
+  order: -1;
+
+  padding-inline-end: 12px;
+
+  transition-duration: 100ms;
+  transition-property: opacity;
+  will-change: opacity;
 
 }
 
-#trailing-icon,
-#icon {
-  color: rgb(var(--mdw-color__on-surface));
+:host(:not([icon])) #icon {
+  display: none;
+}
+
+#trailing {
+  display: none;
+  order: 1;
+
+  padding-inline-start: 12px;
+}
+
+#trailing, #icon {
+  color: rgb(var(--mdw-color__on-surface-variant));
+}
+
+#trailing-icon:not(:is([icon],[src])) {
+  display: none;
+}
+
+:host(:is([trailing],[trailing-icon],[trailing-src])) #trailing {
+  display: block;
+}
+
+:host(:is([type="checkbox"],[type="radio"])) #icon {
+  opacity: 0;
+}
+
+:host([checked]) #icon {
+  opacity: 1;
 }

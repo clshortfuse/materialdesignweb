@@ -1,5 +1,6 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
+import * as RovingTabIndex from '../../core/aria/rovingtabindex.js';
 import MDWComponent from '../../core/component/MDWComponent.js';
 
 import styles from './MDWMenu.css' assert { type: 'css' };
@@ -41,7 +42,7 @@ export default class MDWMenu extends MDWComponent {
       <dialog id=dialog role=menu aria-hidden=true>
         <div id=scrim aria-hidden=true></div>
         <form id=form method=dialog role=none>
-          <mdw-container id=container>
+          <mdw-container id=container role=none>
             <slot id=body></slot>
           </mdw-container>
         </form>
@@ -57,6 +58,7 @@ export default class MDWMenu extends MDWComponent {
     /** @type {MDWContainer} */
     this.containerElement = this.shadowRoot.getElementById('container');
     this.bodyElement = this.shadowRoot.getElementById('body');
+    this.bodyElement.addEventListener('slotchange', MDWMenu.onSlotChanged, { passive: true });
   }
 
   /**
@@ -134,6 +136,22 @@ export default class MDWMenu extends MDWComponent {
   //   el.setAttribute('role', 'separator');
   // }
 
+  /** @return {NodeListOf<MDWMenuItem>} */
+  get childMenuItems() {
+    return this.querySelectorAll(MDWMenuItem.elementName);
+  }
+
+  /**
+   * @param {Event} event
+   * @this {HTMLSlotElement}
+   * @return {void}
+   */
+  static onSlotChanged(event) {
+    /** @type {{host:MDWMenu}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    RovingTabIndex.setupTabIndexes(host.childMenuItems, true);
+  }
+
   /**
    * @param {Event} event
    * @this {MDWMenu}
@@ -164,6 +182,7 @@ export default class MDWMenu extends MDWComponent {
    */
   static onMenuClick(event) {
     if (this !== event.target) return;
+    // Clicked self (scrim-like)
     event.stopPropagation();
     this.close();
   }
@@ -528,8 +547,7 @@ export default class MDWMenu extends MDWComponent {
    * @return {void}
    */
   selectNextMenuItem(backwards) {
-    const menuItems = /** @type {HTMLCollectionOf<HTMLElement>} */
-      (this.slotElement.querySelectorAll(MDWMenuItem.name));
+    const menuItems = this.childMenuItems;
     let foundTarget = false;
     /** @type {HTMLElement} */
     let candidate = null;
@@ -584,21 +602,21 @@ export default class MDWMenu extends MDWComponent {
    * @this {MDWMenu}
    * @return {void}
    */
-  static onKeyDown(event) {
-    if (!this || this.getAttribute('aria-hidden') === 'true') {
+  static onMenuKeyDown(event) {
+    if (!this || !this.open || this.getAttribute('aria-hidden') === 'true') {
       return;
     }
 
     if (event.key === 'ArrowDown' || (event.key === 'Down')) {
       event.stopPropagation();
       event.preventDefault();
-      this.selectNextMenuItem(false);
+      this.ariaActiveDescendantElement = RovingTabIndex.selectNext(this.childMenuItems);
       return;
     }
     if (event.key === 'ArrowUp' || (event.key === 'Up')) {
       event.stopPropagation();
       event.preventDefault();
-      this.selectNextMenuItem(true);
+      this.ariaActiveDescendantElement = RovingTabIndex.selectPrevious(this.childMenuItems);
       return;
     }
     if (event.key === 'Tab') {
@@ -618,12 +636,25 @@ export default class MDWMenu extends MDWComponent {
     }
   }
 
+  
+  /**
+   * @param {Event} event
+   * @this {MDWMenu}
+   * @return {void}
+   */
+   static onTabIndexZeroed(event) {
+    event.stopPropagation();
+    const currentItem = /** @type {HTMLElement} */ (event.target);
+    RovingTabIndex.removeTabIndex(this.childMenuItems, [currentItem]);
+  }
+
   connectedCallback() {
     this.addEventListener('click', MDWMenu.onMenuClick);
     this.addEventListener('scroll', MDWMenu.onMenuScroll);
     this.addEventListener('touchmove', MDWMenu.onMenuScroll);
     this.addEventListener('wheel', MDWMenu.onMenuScroll);
-    this.addEventListener('keydown', MDWMenu.onKeyDown);
+    this.addEventListener('keydown', MDWMenu.onMenuKeyDown);
+    this.addEventListener(RovingTabIndex.TABINDEX_ZEROED, MDWMenu.onTabIndexZeroed);
   }
 
   /**
@@ -693,11 +724,14 @@ export default class MDWMenu extends MDWComponent {
     MDWMenu.OPEN_MENUS.push(menuStack);
     // this.refreshMenuItems();
 
-    if (source && !source.detail && ('pointerType' in source) && !source.pointerType) {
-      // Triggered with keyboard event
-      this.selectNextMenuItem();
-    } else {
-      this.containerElement.focus();
+    const [firstItem] = this.childMenuItems;
+    try {
+      firstItem.focus();
+      if (firstItem !== document.activeElement) {
+        throw new Error('focus failed');
+      }
+    } catch {
+      RovingTabIndex.selectNext(this.childMenuItems, firstItem);
     }
 
     return true;

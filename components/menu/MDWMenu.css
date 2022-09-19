@@ -37,8 +37,6 @@
   transition-timing-function: motion.$decelerateEasing;
 
   transform-origin: var(--mdw-menu__transform-origin-x) var(--mdw-menu__transform-origin-y);
-
-
 }
 
 :host(::after) {

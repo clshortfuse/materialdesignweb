@@ -37,15 +37,12 @@ export default class MDWMenuItem extends MDWInput {
     `,
   ];
 
-  static styles = [
-    ...super.styles,
-    styles,
-  ];
+  static styles = [...super.styles, styles];
 
   static idlStringAttributes = [
     ...super.idlStringAttributes,
     'icon', 'src',
-    'trailing-icon', 'trailing-src',
+    'trailing', 'trailing-icon', 'trailing-src',
   ];
 
   /**
@@ -80,6 +77,9 @@ export default class MDWMenuItem extends MDWInput {
         } else {
           this.iconElement.setAttribute(name, newValue);
         }
+        break;
+      case 'trailing':
+        this.trailingSlotElement.textContent = newValue;
         break;
       case 'trailing-icon':
         if (newValue == null) {
