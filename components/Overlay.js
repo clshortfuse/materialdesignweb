@@ -26,7 +26,7 @@ export default class Overlay extends Container {
    * @this {Overlay}
    * @return {void}
    */
-  static onMouseDown(event) {
+  static onOverlayMouseDown(event) {
     if (this.#lastInteraction) return;
     this.#lastInteraction = 'mouse';
     this.overlayElement.removeAttribute('touched');
@@ -37,7 +37,7 @@ export default class Overlay extends Container {
    * @this {Overlay}
    * @return {void}
    */
-  static onTouchStart(event) {
+  static onOverlayTouchStart(event) {
     this.#lastInteraction = 'touch';
     this.overlayElement.setAttribute('touched', '');
   }
@@ -47,7 +47,7 @@ export default class Overlay extends Container {
    * @this {Overlay}
    * @return {void}
    */
-  static onKeyDown(event) {
+  static onOverlayKeyDown(event) {
     this.#lastInteraction = 'key';
     this.overlayElement.removeAttribute('touched');
   }
@@ -57,16 +57,17 @@ export default class Overlay extends Container {
    * @this {Overlay}
    * @return {void}
    */
-  static onBlur(event) {
+  static onOverlayBlur(event) {
     switch (this.#lastInteraction) {
       case null: return;
       case 'touch':
         Overlay.lastInteractionWasTouch = true;
-        this.overlayElement.removeAttribute('touched');
+        // this.overlayElement.removeAttribute('touched');
         break;
       default:
         Overlay.lastInteractionWasTouch = false;
     }
+    this.#lastInteraction = null;
   }
 
   /**
@@ -74,7 +75,7 @@ export default class Overlay extends Container {
    * @this {Overlay}
    * @return {void}
    */
-  static onFocus(event) {
+  static onOverlayFocus(event) {
     // Element was focused without a mouse or touch event (keyboard or programmatic)
     if (!this.#lastInteraction && Overlay.lastInteractionWasTouch) {
       // Replicate touch behavior
@@ -85,19 +86,14 @@ export default class Overlay extends Container {
 
   connectedCallback() {
     // super.connectedCallback();
-    this.addEventListener('mousedown', Overlay.onMouseDown, { passive: true });
-    this.addEventListener('touchstart', Overlay.onTouchStart, { passive: true });
-    this.addEventListener('keydown', Overlay.onKeyDown, { passive: true });
-    this.addEventListener('blur', Overlay.onBlur, { passive: true });
-    this.addEventListener('focus', Overlay.onFocus, { passive: true });
+    this.addEventListener('mousedown', Overlay.onOverlayMouseDown, { passive: true });
+    this.addEventListener('touchstart', Overlay.onOverlayTouchStart, { passive: true });
+    this.addEventListener('keydown', Overlay.onOverlayKeyDown, { passive: true });
+    this.addEventListener('blur', Overlay.onOverlayBlur, { passive: true });
+    this.addEventListener('focus', Overlay.onOverlayFocus, { passive: true });
   }
 
   disconnectedCallback() {
-    // super.disconnectedCallback();
-    this.removeEventListener('mousedown', Overlay.onMouseDown);
-    this.removeEventListener('touchstart', Overlay.onTouchStart);
-    this.removeEventListener('keydown', Overlay.onKeyDown);
-    this.removeEventListener('blur', Overlay.onBlur);
-    this.removeEventListener('focus', Overlay.onFocus);
+    this.#lastInteraction = null;
   }
 }
