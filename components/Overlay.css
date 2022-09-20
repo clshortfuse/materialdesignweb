@@ -60,6 +60,7 @@
   transition-delay: 1ms;
   transition-duration: 0ms;
   transition-property: opacity, color, background-color;
+  will-change: opacity;
 
   opacity: calc(
     var(--mdw-overlay__hover-opacity) +
