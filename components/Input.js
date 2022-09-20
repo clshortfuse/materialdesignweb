@@ -250,8 +250,8 @@ export default class Input extends Ripple {
 
   connectedCallback() {
     super.connectedCallback();
-    this.removeEventListener('keydown', Ripple.onKeyDown);
-    this.inputElement.addEventListener('keydown', Ripple.onKeyDown, { passive: true });
+    this.removeEventListener('keydown', Ripple.onRippleKeyDown);
+    this.inputElement.addEventListener('keydown', Ripple.onRippleKeyDown, { passive: true });
     if (!this.elementInternals.form) {
       this.formAssociatedCallback(null);
     }
