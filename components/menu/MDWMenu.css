@@ -185,6 +185,10 @@ dialog:modal {
   z-index:0;
 }
 
+form {
+  display: contents;
+}
+
 #scrim::-webkit-scrollbar {
   display: none;
 }
