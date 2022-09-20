@@ -231,7 +231,11 @@ dialog:modal #container {
   border-width: 1px 0;
   padding-block: 16px;
 
-  border-color: rgb(var(--mdw-color__outline));
+  border-color: rgb(var(--mdw-color__outline-variant));
+}
+
+form {
+  display: contents;
 }
 
 #actions {
