@@ -24,16 +24,16 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/native/demo.html?d=1661
 * Unbundled: Chrome >=93
 * Bundled: >1% browsers *(polyfills not included)*
 
-# Core modules
+# Core components
 
 | Module                                       |     Extends     | Implements | Description                                                                | Status |
 | :------------------------------------------- | :-------------: | :--------: | :------------------------------------------------------------------------- | :----: |
 | [CustomElement](components/CustomElement.md) |  `HTMLElement`  |  `<span>`  | Handles ShadowDOM, styles, fragments, ElementInternals, and IDL attributes |  beta  |
 | [Text](components/Text.md)                   | `CustomElement` |  `<span>`  | Applies typography and ink (foreground) colors                             |  beta  |
 | [Container](components/Container.md)         |     `Text`      |  `<div>`   | Applies shapes, shadows, and background colors                             |  beta  |
+| [Icon](components/Icon.md)                   |   `Container`   | `<image>`  | Adds font and image icons                                                  | alpha  |
 | [Overlay](components/Overlay.md)             |   `Container`   |  `<div>`   | Adds hover, focus, pressed, dragged, and disabled states                   |  beta  |
 | [Ripple](components/Ripple.md/)              |    `Overlay`    |  `<div>`   | Substitutes pressed state for ripple effect                                | alpha  |
-| [Icon](components/Icon.md)                   |   `Container`   | `<image>`  | Adds font and image icons                                                  | alpha  |
 | [Input](components/Input.md)                 |    `Ripple`     | `<input>`  | Wraps `<input>` element and adds form support                              |  beta  |
 | [Theme](theming/index.js)                    |      *N/A*      |   *N/A*    | Adds color, shape and typography rules                                     | alpha  |
 
@@ -75,7 +75,8 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/native/demo.html?d=1661
 | [Divider](components/Divider.md)                             | `<mdw-divider>`                                | `<div>`                                                            |  beta   |
 | [Menu](components/Menu.md)                                   | `<mdw-menu>`                                   | `<dialog>`                                                         |  beta   |
 | [Menu Item](components/MenuItem.md)                          | `<mdw-menu-item>`                              | `<input type=button>` `<input type=checkbox>` `<input type=radio>` |  beta   |
-| Navigation Bar                                               |                                                |                                                                    | rewrite |
+| [Nav Bar](components/NavBar.md)                              | `<mdw-nav-bar>`                                | `<nav>`                                                            |  beta   |
+| [Nav Bar Item](components/NavBarItem.md)                     | `<mdw-nav-bar-item>`                           | `<a href=#>`                                                       |  beta   |
 | Navigation Drawer                                            |                                                |                                                                    | rewrite |
 | Navigation Rail                                              |                                                |                                                                    | planned |
 | Progress Indicator: Linear                                   |                                                |                                                                    | planned |

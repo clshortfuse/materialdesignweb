@@ -973,11 +973,28 @@
         </demo-flex>
       </demo-section>
     </demo-section>
-    <demo-section>
-      <h2 slot="heading">Navigation Bar</h2>
-      <demo-flex wrap gap12>
-        
-      </demo-flex>
+    <demo-section id=navbar>
+      <h1 slot="heading">Navigation Bar</h2>
+        <demo-section>
+          <h2 slot=heading>Standard</h2>
+          <demo-flex wrap gap12>
+            <mdw-nav-bar>
+              <mdw-nav-bar-item icon="edit" href="#navbar">Default</mdw-nav-bar-item>
+              <mdw-nav-bar-item icon="change_history" href="#navbar" color=primary-container>Primary</mdw-nav-bar-item>
+              <mdw-nav-bar-item icon="change_history" href="#navbar" color=tertiary-container>Tertiary</mdw-nav-bar-item>
+            </mdw-nav-bar>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h2 slot=heading>Badges</h2>
+          <demo-flex wrap gap12>
+            <mdw-nav-bar>
+              <mdw-nav-bar-item icon="change_history" href="#navbar" badge>Default</mdw-nav-bar-item>
+              <mdw-nav-bar-item icon="change_history" href="#navbar" badge=1 color=primary-container>Primary</mdw-nav-bar-item>
+              <mdw-nav-bar-item icon="change_history" href="#navbar" badge="999+" color=tertiary-container>Tertiary</mdw-nav-bar-item>
+            </mdw-nav-bar>
+          </demo-flex>
+        </demo-section>
     </demo-section>
     <demo-dummy-text></demo-dummy-text>
   </main>
