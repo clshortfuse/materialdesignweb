@@ -1,2 +1,0 @@
-<% var entry = Object.keys(it)[0]; -%>
-<%~ includeFile(`../components/${entry}/index.eta`, it[entry]) -%>

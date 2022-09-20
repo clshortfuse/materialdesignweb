@@ -50,7 +50,6 @@ export default class StaticServer {
     this.httpServer = http.createServer();
   }
 
-
   /**
    * @param {import('http').IncomingMessage} req
    * @param {import('http').ServerResponse} res

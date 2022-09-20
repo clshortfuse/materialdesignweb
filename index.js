@@ -1,54 +1,57 @@
-import MDWBottomAppBar from './components/bottomappbar/MDWBottomAppBar.js';
-import MDWButton from './components/button/MDWButton.js';
-import MDWCard from './components/card/MDWCard.js';
-import MDWCardActionArea from './components/card/MDWCardActionArea.js';
-import MDWAssistChip from './components/chip/MDWChip.js';
-import MDWFilterChip from './components/chip/MDWFilterChip.js';
-import MDWDialog from './components/dialog/MDWDialog.js';
-import MDWDivider from './components/divider/MDWDivider.js';
-import MDWExtendedFab from './components/fab/MDWExtendedFab.js';
-import MDWFab from './components/fab/MDWFab.js';
-import MDWIconButton from './components/iconbutton/MDWIconButton.js';
-import MDWMenu from './components/menu/MDWMenu.js';
-import MDWMenuItem from './components/menu/MDWMenuItem.js';
-import MDWSegmentedButton from './components/segmentedbutton/MDWSegmentedButton.js';
-import MDWSegmentedButtonGroup from './components/segmentedbutton/MDWSegmentedButtonGroup.js';
-import MDWContainer from './core/container/MDWContainer.js';
-import MDWIcon from './core/icon/MDWIcon.js';
-import MDWOverlay from './core/overlay/MDWOverlay.js';
-import MDWText from './core/text/MDWText.js';
-import * as theming from './core/theme/index.js';
+import BottomAppBar from './components/BottomAppBar.js';
+import Button from './components/Button.js';
+import Card from './components/Card.js';
+import CardActionArea from './components/CardActionArea.js';
+import Chip from './components/Chip.js';
+import Container from './components/Container.js';
+import Dialog from './components/Dialog.js';
+import Divider from './components/Divider.js';
+import ExtendedFab from './components/ExtendedFab.js';
+import Fab from './components/Fab.js';
+import FilterChip from './components/FilterChip.js';
+import Icon from './components/Icon.js';
+import IconButton from './components/IconButton.js';
+import Menu from './components/Menu.js';
+import MenuItem from './components/MenuItem.js';
+import NavBar from './components/NavBar.js';
+import Overlay from './components/Overlay.js';
+import SegmentedButton from './components/SegmentedButton.js';
+import SegmentedButtonGroup from './components/SegmentedButtonGroup.js';
+import Text from './components/Text.js';
+import * as theming from './theming/index.js';
 
-MDWText.register();
-MDWContainer.register();
-MDWOverlay.register();
+Text.register();
+Container.register();
+Overlay.register();
 
-MDWIcon.register();
-MDWButton.register();
-MDWFab.register();
-MDWExtendedFab.register();
-MDWIconButton.register();
-MDWSegmentedButtonGroup.register();
-MDWSegmentedButton.register();
+Icon.register();
+Button.register();
+Fab.register();
+ExtendedFab.register();
+IconButton.register();
+SegmentedButtonGroup.register();
+SegmentedButton.register();
 
-MDWBottomAppBar.register();
+BottomAppBar.register();
 
-MDWCard.register();
-MDWCardActionArea.register();
+Card.register();
+CardActionArea.register();
 
 // BottomSheets.register()
 
-MDWAssistChip.register();
-MDWFilterChip.register();
+Chip.register();
+FilterChip.register();
 
-// MDWInputChip.register();
+// InputChip.register();
 
-MDWDialog.register();
+Dialog.register();
 
-MDWDivider.register();
+Divider.register();
 
-MDWMenu.register();
-MDWMenuItem.register();
+Menu.register();
+MenuItem.register();
+
+NavBar.register();
 
 const { searchParams } = new URL(import.meta.url);
 const color = searchParams.get('color') || '#6750A4';
