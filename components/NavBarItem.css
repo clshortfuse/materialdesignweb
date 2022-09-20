@@ -1,0 +1,135 @@
+/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
+/* https://material.io/guidelines/style/icons.html# */
+
+:host {
+  --mdw-type__font-weight: var(--mdw-typescale__label-medium__font-weight);
+  --mdw-type__font-size: var(--mdw-typescale__label-medium__font-size);
+  --mdw-type__line-height: var(--mdw-typescale__label-medium__line-height);
+  --mdw-type__font-family: var(--mdw-typescale__label-medium__font-family);
+  --mdw-type__letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
+  --mdw-ink: var(--mdw-color__on-secondary-container);
+  --mdw-bg: var(--mdw-color__secondary-container);
+
+  display: flex;
+  align-items: center;
+
+  min-block-size: 48px;
+  inline-size:100%;
+
+  padding-block: 8px 16px;
+
+  background-color: transparent;
+  color: rgb(var(--mdw-color__on-surface-variant));
+}
+
+:host([color]) {
+  background-color: transparent;
+  color: rgb(var(--mdw-color__on-surface-variant));
+}
+
+a {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+
+  flex:1;
+
+  cursor: pointer;
+  outline: none;
+
+  color: inherit;
+
+  text-decoration: inherit;
+}
+
+#indicator {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+
+  block-size: 32px;
+  inline-size: 64px;
+
+  border-radius: 16px;
+
+}
+
+#icon {
+  --mdw-icon__size: 24px;
+  z-index: 3;
+}
+
+#overlay {
+  z-index: 2;
+}
+
+#badge {
+  --mdw-badge__scale:0;
+  display: flex;
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-start: 50%;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  block-size: 16px;
+  min-inline-size:16px;
+  padding: 4px;
+
+  transition: transform 200ms;
+  will-change: transform;
+
+  transform: translateX(4px) translateY(-50%) scale(var(--mdw-badge__scale));
+
+  z-index:4;
+
+  border-radius: 8px;
+}
+
+#badge::after {
+  content: attr(badge);
+}
+
+#badge[badge] {
+  --mdw-badge__scale:1;
+}
+
+#badge[badge=""] {
+  block-size: 6px;
+  min-inline-size:6px;
+  margin-inline-start: 5px;
+  padding: 0;
+
+  transform: translateX(4px) translateY(-50%) scale(var(--mdw-badge__scale));
+
+  border-radius: 50%;
+}
+
+/* Fix active ripple state */
+a:active #ripple-inner {
+  animation-name: var(--mdw-ripple__fade-in-name), none;
+}
+
+:host([selected]) #ripple-inner {
+  /* Hold fade-in animation while held (active) */
+  animation-name: var(--mdw-ripple__fade-in-name), none;
+}
+
+:host([selected]) #indicator {
+  color: rgb(var(--mdw-ink));
+}
+
+#ripple-inner {
+  opacity: 1;
+
+  color: rgb(var(--mdw-bg));
+}
+
+:host([selected]) #slot {
+  color: rgb(var(--mdw-color__on-surface));
+}
