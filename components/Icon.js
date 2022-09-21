@@ -3,11 +3,12 @@
 import Container from './Container.js';
 import styles from './Icon.css' assert { type: 'css' };
 
+/** @implements {HTMLImageElement} */
 export default class Icon extends Container {
   constructor() {
     super();
     this.iconElement = this.shadowRoot.getElementById('icon');
-    this.imageElement = this.shadowRoot.getElementById('image');
+    this.imageElement = /** @type {HTMLImageElement} */ (this.shadowRoot.getElementById('image'));
     // this.slotElement.remove();
     this.iconElement.className = Icon.fontClassName;
     this.iconElement.appendChild(this.slotElement);
@@ -18,14 +19,15 @@ export default class Icon extends Container {
     // 'height', 'width',
     // 'ismap',
     'loading', 'referrerpolicy',
-    'sizes', 'src', 'srcset',
+    'sizes', 'srcset',
   ];
 
-  static observedAttributes = [
-    ...super.observedAttributes,
-    'icon',
-    ...Icon.imageElementAttributes,
-  ];
+  static get observedAttributes() {
+    return [
+      ...super.observedAttributes,
+      ...Icon.imageElementAttributes,
+    ];
+  }
 
   /**
    * @param {string} name
@@ -33,6 +35,7 @@ export default class Icon extends Container {
    * @param {string?} newValue
    */
   attributeChangedCallback(name, oldValue, newValue) {
+    super.attributeChangedCallback(name, oldValue, newValue);
     if (oldValue == null && newValue == null) return;
     switch (name) {
       case 'icon':
@@ -73,4 +76,25 @@ export default class Icon extends Container {
       </div>
     `,
   ];
+
+  get complete() {
+    if (this.src == null && this.srcset == null) return true;
+    if (this.srcset == null && this.src === '') return true;
+    return (this.imageElement.complete);
+  }
 }
+
+// https://html.spec.whatwg.org/multipage/embedded-content.html#htmlimageelement
+
+Icon.prototype.alt = Icon.idlString('alt');
+Icon.prototype.src = Icon.idlString('src');
+Icon.prototype.srcset = Icon.idlString('srcset');
+Icon.prototype.sizes = Icon.idlString('sizes');
+Icon.prototype.crossOrigin = Icon.idlString('crossorigin', 'crossOrigin');
+Icon.prototype.useMap = Icon.idlString('usemap', 'useMap');
+Icon.prototype.isMap = Icon.idlString('ismap', 'isMap');
+Icon.prototype.referrerPolicy = Icon.idlString('referrerpolicy', 'referrerPolicy');
+Icon.prototype.decoder = Icon.idlString('decoder');
+Icon.prototype.loading = Icon.idlString('loading');
+
+Icon.prototype.icon = Icon.idlString('icon');

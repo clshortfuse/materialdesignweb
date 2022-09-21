@@ -1,7 +1,7 @@
 import { handleTabKeyPress } from '../aria/modal.js';
 
-import CustomElement from './CustomElement.js';
 import Container from './Container.js';
+import CustomElement from './CustomElement.js';
 import styles from './Dialog.css' assert { type: 'css' };
 
 /** @typedef {Object<string,any>} DialogStackState */
@@ -23,17 +23,6 @@ export default class Dialog extends CustomElement {
 
   /** @type {DialogStack[]} */
   static OPEN_DIALOGS = [];
-
-  static idlBooleanAttributes = [
-    ...super.idlBooleanAttributes,
-    'open',
-  ];
-
-  static idlStringAttributes = [
-    ...super.idlStringAttributes,
-    'title', 'description', 'icon',
-    'default', 'cancel', 'confirm',
-  ];
 
   static styles = [...super.styles, styles];
 
@@ -60,11 +49,9 @@ export default class Dialog extends CustomElement {
 
   constructor() {
     super();
-    /** @type {HTMLDialogElement} */
-    this.dialogElement = this.shadowRoot.getElementById('dialog');
+    this.dialogElement = /** @type {HTMLDialogElement} */ (this.shadowRoot.getElementById('dialog'));
     this.scrimElement = this.shadowRoot.getElementById('scrim');
-    /** @type {Container} */
-    this.containerElement = this.shadowRoot.getElementById('container');
+    this.containerElement = /** @type {Container} */ (this.shadowRoot.getElementById('container'));
     this.iconElement = this.shadowRoot.getElementById('icon');
     this.headlineElement = this.shadowRoot.getElementById('headline');
     this.descriptionElement = this.shadowRoot.getElementById('description');
@@ -87,7 +74,7 @@ export default class Dialog extends CustomElement {
       case 'icon':
         this.iconElement.textContent = newValue ?? '';
         break;
-      case 'title':
+      case 'headline':
         this.headlineElement.textContent = newValue ?? '';
         break;
       case 'description':
@@ -121,7 +108,6 @@ export default class Dialog extends CustomElement {
    * @return {void}
    */
   static onTransitionEnd(event) {
-    console.log('transition end');
     if (event.propertyName !== 'opacity') return;
     if (this.getAttribute('aria-hidden') !== 'true') return;
     this.setAttribute('mdw-ready', '');
@@ -242,7 +228,6 @@ export default class Dialog extends CustomElement {
    * @return {void}
    */
   static onNativeCancelEvent(event) {
-    console.log('onNativeCancelEvent');
     event.stopPropagation();
     /** @type {{host:Dialog}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
@@ -300,7 +285,6 @@ export default class Dialog extends CustomElement {
     }
     if ((lastOpenDialog.previousState === event.state) || Object.entries(event.state)
       .every(([key, value]) => value === lastOpenDialog.previousState[key])) {
-      console.log('will close', lastOpenDialog.previousState, event.state, lastOpenDialog.previousState, event.state);
       const cancelEvent = new Event('cancel', { cancelable: true });
       if (lastOpenDialog.element.dispatchEvent(cancelEvent)) {
         lastOpenDialog.element.close();
@@ -345,7 +329,7 @@ export default class Dialog extends CustomElement {
     }
 
     const previousFocus = document.activeElement;
-    const title = this.title || this.description;
+    const title = this.headline || this.description;
     const newState = { time: Date.now(), random: Math.random(), title };
     let previousState = null;
 
@@ -381,3 +365,11 @@ export default class Dialog extends CustomElement {
     return true;
   }
 }
+
+Dialog.prototype.open = Dialog.idlBoolean('open');
+Dialog.prototype.headline = Dialog.idlString('headline');
+Dialog.prototype.description = Dialog.idlString('description');
+Dialog.prototype.icon = Dialog.idlString('icon');
+Dialog.prototype.default = Dialog.idlString('default');
+Dialog.prototype.cancel = Dialog.idlString('cancel');
+Dialog.prototype.confirm = Dialog.idlString('confirm');

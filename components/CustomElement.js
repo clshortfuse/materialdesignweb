@@ -1,3 +1,13 @@
+/** @typedef {'boolean'|'integer'|'float'|'string'} IDLOptionType */
+
+/**
+ * @template {IDLOptionType} T
+ * @typedef IDLOptions
+ * @prop {T} type
+ * @prop {string} [attrName]
+ * @prop {string} [propName]
+ */
+
 /**
  * Web Component that can cache templates for minification or performance
  */
@@ -13,24 +23,9 @@ export default class CustomElement extends HTMLElement {
 
   static delegatesFocus = false;
 
-  /** @type {string[]} */
-  static idlBooleanAttributes = [];
-
-  /** @type {string[]} */
-  static idlIntegerAttributes = [];
-
-  /** @type {string[]} */
-  static idlFloatAttributes = [];
-
-  /** @type {string[]} */
-  static idlStringAttributes = [];
-
   static get observedAttributes() {
     return [
-      ...this.idlBooleanAttributes,
-      ...this.idlIntegerAttributes,
-      ...this.idlFloatAttributes,
-      ...this.idlStringAttributes,
+      ...this.getIdlMap().keys(),
     ];
   }
 
@@ -48,41 +43,37 @@ export default class CustomElement extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue == null && newValue == null) return;
     const component = /** @type {typeof CustomElement} */ (this.constructor);
-    if (component.idlBooleanAttributes.includes(name)) {
-      const tuple = this.#getIdlValue(name);
-      if (tuple[1] === newValue) return;
-      tuple[1] = newValue;
-      tuple[0] = newValue != null;
-      return;
-    }
-    if (component.idlStringAttributes.includes(name)) {
-      const tuple = this.#getIdlValue(name);
-      if (tuple[1] === newValue) return;
-      tuple[1] = newValue;
-      tuple[0] = newValue;
-      return;
-    }
-    if (component.idlIntegerAttributes.includes(name)) {
-      const tuple = this.#getIdlValue(name);
-      if (tuple[1] === newValue) return;
-      tuple[1] = newValue;
-      if (newValue == null) {
-        tuple[0] = null;
-      } else {
-        const numValue = Number.parseInt(newValue, 10);
-        tuple[0] = Number.isNaN(numValue) ? null : numValue;
-      }
-    }
-    if (component.idlFloatAttributes.includes(name)) {
-      const tuple = this.#getIdlValue(name);
-      if (tuple[1] === newValue) return;
-      tuple[1] = newValue;
-      if (newValue == null) {
-        tuple[0] = null;
-      } else {
-        const numValue = Number.parseFloat(newValue);
-        tuple[0] = Number.isNaN(numValue) ? null : numValue;
-      }
+    const map = CustomElement.idlCache.get(component);
+    if (!map) return;
+    const options = map.get(name);
+    if (!options) return;
+    const tuple = this.#getIdlValue(name);
+    if (tuple[1] === newValue) return;
+    tuple[1] = newValue;
+    switch (options.type) {
+      case 'boolean':
+        tuple[0] = newValue != null;
+        break;
+      case 'string':
+        tuple[0] = newValue;
+        break;
+      case 'integer':
+        if (newValue == null) {
+          tuple[0] = null;
+        } else {
+          const numValue = Number.parseInt(newValue, 10);
+          tuple[0] = Number.isNaN(numValue) ? null : numValue;
+        }
+        break;
+      case 'float':
+        if (newValue == null) {
+          tuple[0] = null;
+        } else {
+          const numValue = Number.parseFloat(newValue);
+          tuple[0] = Number.isNaN(numValue) ? null : numValue;
+        }
+        break;
+      default:
     }
   }
 
@@ -106,6 +97,7 @@ export default class CustomElement extends HTMLElement {
     const component = /** @type {typeof CustomElement} */ (this.constructor);
     let array = CustomElement.#stylesCache.get(component);
     if (!array) {
+      // @ts-ignore Skip cast
       array = component.styles.filter((style) => style instanceof CSSStyleSheet);
       CustomElement.#stylesCache.set(component, array);
     }
@@ -180,59 +172,63 @@ export default class CustomElement extends HTMLElement {
 
   #attachIDLs() {
     const component = /** @type {typeof CustomElement} */ (this.constructor);
-    for (const key of component.idlBooleanAttributes) {
-      const propName = CustomElement.attrNameToPropName(key);
-      Object.defineProperty(this, propName, {
-        enumerable: true,
-        get() {
-          const tuple = this.#getIdlValue(key);
-          return tuple[0];
-        },
-        set(value) {
-          const parsedValue = !!value;
-          this.#storeIdl(key, parsedValue, parsedValue ? '' : null);
-          this.toggleAttribute(key, parsedValue);
-        },
-      });
-    }
-    for (const key of [...component.idlIntegerAttributes, ...component.idlFloatAttributes]) {
-      const propName = CustomElement.attrNameToPropName(key);
-      Object.defineProperty(this, propName, {
-        enumerable: true,
-        get() {
-          return this.#getIdlValue(key)[0];
-        },
-        set(value) {
-          if (value == null) {
-            this.#storeIdl(key, null);
-            this.removeAttribute(key);
-            return;
-          }
-          if (typeof value !== 'number') throw new TypeError('Value must be a number');
-          const stringValue = String(value);
-          this.#storeIdl(key, value, stringValue);
-          this.setAttribute(key, stringValue);
-        },
-      });
-    }
-    for (const key of component.idlStringAttributes) {
-      const propName = CustomElement.attrNameToPropName(key);
-      Object.defineProperty(this, propName, {
-        enumerable: true,
-        get() {
-          return this.#getIdlValue(key)[0];
-        },
-        set(value) {
-          if (value == null) {
-            this.#storeIdl(key, null);
-            this.removeAttribute(key);
-            return;
-          }
-          const stringValue = String(value);
-          this.#storeIdl(key, stringValue, stringValue);
-          this.setAttribute(key, stringValue);
-        },
-      });
+    for (const [key, options] of CustomElement.idlCache.get(component) ?? []) {
+      const propName = options.propName ?? CustomElement.attrNameToPropName(key);
+      switch (options.type) {
+        case 'boolean':
+          Object.defineProperty(this, propName, {
+            enumerable: true,
+            get() {
+              const tuple = this.#getIdlValue(key);
+              return tuple[0];
+            },
+            set(value) {
+              const parsedValue = !!value;
+              this.#storeIdl(key, parsedValue, parsedValue ? '' : null);
+              this.toggleAttribute(key, parsedValue);
+            },
+          });
+          break;
+        case 'integer':
+        case 'float':
+          Object.defineProperty(this, propName, {
+            enumerable: true,
+            get() {
+              return this.#getIdlValue(key)[0];
+            },
+            set(value) {
+              if (value == null) {
+                this.#storeIdl(key, null);
+                this.removeAttribute(key);
+                return;
+              }
+              if (typeof value !== 'number') throw new TypeError('Value must be a number');
+              const stringValue = String(value);
+              this.#storeIdl(key, value, stringValue);
+              this.setAttribute(key, stringValue);
+            },
+          });
+          break;
+        case 'string':
+          Object.defineProperty(this, propName, {
+            enumerable: true,
+            get() {
+              return this.#getIdlValue(key)[0];
+            },
+            set(value) {
+              if (value == null) {
+                this.#storeIdl(key, null);
+                this.removeAttribute(key);
+                return;
+              }
+              const stringValue = String(value);
+              this.#storeIdl(key, stringValue, stringValue);
+              this.setAttribute(key, stringValue);
+            },
+          });
+          break;
+        default:
+      }
     }
   }
 
@@ -250,11 +246,81 @@ export default class CustomElement extends HTMLElement {
   /** @type {WeakMap<typeof CustomElement, CSSStyleSheet[]>} */
   static #stylesCache = new WeakMap();
 
+  /**
+   * @private
+   * @type {WeakMap<typeof CustomElement, Map<string, IDLOptions<?>>>}
+   */
+  static idlCache = new WeakMap();
+
   /** @type {string} */
   static elementName = null;
 
   /** @type {Map<string,[boolean|number|string,string]>} */
   #idlValues = new Map();
+
+  static getIdlMap() {
+    let map = this.idlCache.get(this);
+    if (!map) {
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      let parent = this;
+      let parentMap;
+      while ((parent = Object.getPrototypeOf(parent)) !== CustomElement) {
+        parentMap = this.idlCache.get(parent);
+        if (parentMap) break;
+      }
+      map = new Map(parentMap);
+      this.idlCache.set(this, map);
+    }
+    return map;
+  }
+
+  /**
+   * @template {IDLOptionType} T
+   * @param {string} name
+   * @param {IDLOptions<T>} options
+   * @return {T extends 'boolean' ? boolean : T extends 'integer'|'float' ? number : T extends 'string' ? string : unknown}
+   */
+  static idl(name, options) {
+    const map = this.getIdlMap();
+    map.set(name, options);
+    return null;
+  }
+
+  /**
+   * @param {string} attrName
+   * @param {string} [propName]
+   * @return {boolean}
+   */
+  static idlBoolean(attrName, propName) {
+    return this.idl(attrName, { type: 'boolean', attrName, propName });
+  }
+
+  /**
+   * @param {string} attrName
+   * @param {string} [propName]
+   * @return {number}
+   */
+  static idlInteger(attrName, propName) {
+    return this.idl(attrName, { type: 'integer', attrName, propName });
+  }
+
+  /**
+   * @param {string} attrName
+   * @param {string} [propName]
+   * @return {number}
+   */
+  static idlFloat(attrName, propName) {
+    return this.idl(attrName, { type: 'float', attrName, propName });
+  }
+
+  /**
+   * @param {string} attrName
+   * @param {string} [propName]
+   * @return {string}
+   */
+  static idlString(attrName, propName) {
+    return this.idl(attrName, { type: 'string', attrName, propName });
+  }
 
   /**
    * @param {string} key

@@ -32,18 +32,9 @@ export default class Input extends Ripple {
     }
   }
 
-  static idlBooleanAttributes = [
-    ...super.idlBooleanAttributes,
-  ];
-
   static idlInputElementAttributes = [
     'aria-labelledby', 'type', 'value', 'checked',
     'name', 'required', 'list',
-  ];
-
-  static idlStringAttributes = [
-    ...super.idlStringAttributes,
-    'aria-controls',
   ];
 
   static get observedAttributes() {
@@ -199,7 +190,7 @@ export default class Input extends Ripple {
   }
 
   /** @type {HTMLElement['focus']} */
-  focus(options) {
+  focus(options = undefined) {
     super.focus(options);
     this.inputElement?.focus(options);
   }
@@ -257,3 +248,5 @@ export default class Input extends Ripple {
     }
   }
 }
+
+Input.prototype.ariaControls = Input.idlString('aria-controls');

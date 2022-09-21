@@ -8,17 +8,6 @@ export default class Text extends CustomElement {
     this.slotElement = /** @type {HTMLSlotElement} */ (this.shadowRoot.getElementById('slot'));
   }
 
-  static idlBooleanAttributes = [
-    ...super.idlBooleanAttributes,
-    'block',
-  ];
-
-  static idlStringAttributes = [
-    ...super.idlStringAttributes,
-    'ink',
-    'type-style',
-  ];
-
   static elementName = 'mdw-text';
 
   static styles = [...super.styles, styles];
@@ -30,3 +19,7 @@ export default class Text extends CustomElement {
     `,
   ];
 }
+
+Text.prototype.block = Text.idlBoolean('block');
+Text.prototype.ink = Text.idlString('ink');
+Text.prototype.typeStyle = Text.idlString('type-style');

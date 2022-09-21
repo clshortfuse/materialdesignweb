@@ -1,7 +1,7 @@
 import * as AriaToolbar from '../aria/toolbar.js';
 
-import Container from './Container.js';
 import styles from './BottomAppBar.css' assert { type: 'css' };
+import Container from './Container.js';
 
 /**
  * Note: FAB does not exist inside because FABs can appear outside.

@@ -2,27 +2,12 @@ import styles from './Container.css' assert { type: 'css' };
 import Text from './Text.js';
 
 /** @implements {HTMLDivElement} */
+// @ts-ignore `align` is deprecated
 export default class Container extends Text {
   constructor() {
     super();
     this.elevationElement = this.shadowRoot.getElementById('elevation');
   }
-
-  static idlBooleanAttributes = [
-    ...super.idlBooleanAttributes,
-    'disabled',
-    'shape-top', 'shape-bottom', 'shape-start', 'shape-end',
-  ];
-
-  static idlIntegerAttributes = [
-    ...super.idlIntegerAttributes,
-    'elevation',
-  ];
-
-  static idlStringAttributes = [
-    ...super.idlStringAttributes,
-    'color', 'bg', 'shape-style',
-  ];
 
   /**
    * @param {string} name
@@ -55,3 +40,13 @@ export default class Container extends Text {
     `,
   ];
 }
+
+Container.prototype.disabled = Container.idlBoolean('disabled');
+Container.prototype.shapeTop = Container.idlBoolean('shape-top');
+Container.prototype.shapeBottom = Container.idlBoolean('shape-bottom');
+Container.prototype.shapeStart = Container.idlBoolean('shape-start');
+Container.prototype.shapeEnd = Container.idlBoolean('shape-end');
+Container.prototype.elevation = Container.idlInteger('elevation');
+Container.prototype.color = Container.idlString('color');
+Container.prototype.bg = Container.idlString('bg');
+Container.prototype.shapeStyle = Container.idlString('shape-style');

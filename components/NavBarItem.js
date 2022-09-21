@@ -15,25 +15,15 @@ export default class NavBarItem extends Ripple {
       <a id=anchor href="#" aria-labelledby=slot>
         <div id=indicator>
           <mdw-container id=badge type-style=label-small color=error></mdw-container>
-          <mdw-icon id=icon aria-hidden=true>
+          <mdw-icon id=icon aria-hidden=true></mdw-icon>
         </div>
       </a>
     `,
   ];
 
-  static idlBooleanAttributes = [
-    ...super.idlBooleanAttributes,
-    'selected',
-  ];
-
-  static idlStringAttributes = [
-    ...super.idlStringAttributes,
-    'icon', 'src', 'href', 'badge',
-  ];
-
   constructor() {
     super();
-    this.anchorElement = this.shadowRoot.getElementById('anchor');
+    this.anchorElement = /** @type {HTMLAnchorElement} */ (this.shadowRoot.getElementById('anchor'));
     this.indicatorElement = this.shadowRoot.getElementById('indicator');
     this.iconElement = this.shadowRoot.getElementById('icon');
     this.badgeElement = this.shadowRoot.getElementById('badge');
@@ -61,7 +51,7 @@ export default class NavBarItem extends Ripple {
         }
         break;
       case 'href':
-        this.anchorElement.setAttribute('href', newValue ?? '#');
+        this.anchorElement.href = newValue ?? '#';
         break;
       case 'selected':
         if (newValue == null) {
@@ -83,7 +73,7 @@ export default class NavBarItem extends Ripple {
   }
 
   /** @type {HTMLElement['focus']} */
-  focus(options) {
+  focus(options = undefined) {
     super.focus(options);
     this.anchorElement?.focus(options);
   }
@@ -97,3 +87,9 @@ export default class NavBarItem extends Ripple {
     this.removeEventListener('keydown', Ripple.onRippleKeyDown);
   }
 }
+
+NavBarItem.prototype.selected = NavBarItem.idlBoolean('selected');
+NavBarItem.prototype.icon = NavBarItem.idlString('icon');
+NavBarItem.prototype.src = NavBarItem.idlString('src');
+NavBarItem.prototype.href = NavBarItem.idlString('href');
+NavBarItem.prototype.badge = NavBarItem.idlString('badge');

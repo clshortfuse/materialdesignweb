@@ -1,10 +1,11 @@
 import styles from './Button.css' assert { type: 'css' };
+import Icon from './Icon.js';
 import Input from './Input.js';
 
 export default class Button extends Input {
   constructor() {
     super();
-    this.iconElement = this.shadowRoot.getElementById('icon');
+    this.iconElement = /** @type {Icon} */ (this.shadowRoot.getElementById('icon'));
     this.touchTargetElement = this.shadowRoot.getElementById('touch-target');
     this.outlineElement = this.shadowRoot.getElementById('outline');
     this.labelElement.append(
@@ -19,16 +20,6 @@ export default class Button extends Input {
       this.type = 'button';
     }
   }
-
-  static idlBooleanAttributes = [
-    ...super.idlBooleanAttributes,
-    'elevated', 'filled', 'outlined',
-  ];
-
-  static idlStringAttributes = [
-    ...super.idlStringAttributes,
-    'icon', 'src',
-  ];
 
   /**
    * @param {string} name
@@ -101,3 +92,9 @@ export default class Button extends Input {
     super.disconnectedCallback();
   }
 }
+
+Button.prototype.elevated = Button.idlBoolean('elevated');
+Button.prototype.filled = Button.idlBoolean('filled');
+Button.prototype.outlined = Button.idlBoolean('outlined');
+Button.prototype.icon = Button.idlString('icon');
+Button.prototype.src = Button.idlString('src');

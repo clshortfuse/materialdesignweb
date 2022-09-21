@@ -39,12 +39,6 @@ export default class MenuItem extends Input {
 
   static styles = [...super.styles, styles];
 
-  static idlStringAttributes = [
-    ...super.idlStringAttributes,
-    'icon', 'src',
-    'trailing', 'trailing-icon', 'trailing-src',
-  ];
-
   /**
    * @param {string} name
    * @param {string?} oldValue
@@ -210,3 +204,9 @@ export default class MenuItem extends Input {
     RovingTabIndex.detach(this);
   }
 }
+
+MenuItem.prototype.icon = MenuItem.idlString('icon');
+MenuItem.prototype.src = MenuItem.idlString('src');
+MenuItem.prototype.trailing = MenuItem.idlString('trailing');
+MenuItem.prototype.trailingIcon = MenuItem.idlString('trailing-icon');
+MenuItem.prototype.trailingSrc = MenuItem.idlString('trailing-src');

@@ -1,6 +1,7 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
 import * as RovingTabIndex from '../aria/rovingtabindex.js';
+import Container from './Container.js';
 
 import CustomElement from './CustomElement.js';
 import styles from './Menu.css' assert { type: 'css' };
@@ -24,16 +25,6 @@ export default class Menu extends CustomElement {
   /** @type {MenuStack[]} */
   static OPEN_MENUS = [];
 
-  static idlBooleanAttributes = [
-    ...super.idlBooleanAttributes,
-    'open',
-  ];
-
-  static idlStringAttributes = [
-    ...super.idlStringAttributes,
-    'direction', 'position',
-  ];
-
   static styles = [...super.styles, styles];
 
   static fragments = [
@@ -52,11 +43,9 @@ export default class Menu extends CustomElement {
 
   constructor() {
     super();
-    /** @type {HTMLDialogElement} */
-    this.dialogElement = this.shadowRoot.getElementById('dialog');
+    this.dialogElement = /** @type {HTMLDialogElement} */ (this.shadowRoot.getElementById('dialog'));
     this.scrimElement = this.shadowRoot.getElementById('scrim');
-    /** @type {Container} */
-    this.containerElement = this.shadowRoot.getElementById('container');
+    this.containerElement = /** @type {Container} */ (this.shadowRoot.getElementById('container'));
     this.bodyElement = this.shadowRoot.getElementById('body');
     this.bodyElement.addEventListener('slotchange', Menu.onSlotChanged, { passive: true });
   }
@@ -321,7 +310,7 @@ export default class Menu extends CustomElement {
     popupElement.style.setProperty('width', 'auto');
     const newSize = Math.ceil(popupElement.clientWidth / 56);
     popupElement.style.removeProperty('width');
-    popupElement.style.setProperty('--mdw-menu__size', newSize);
+    popupElement.style.setProperty('--mdw-menu__size', newSize.toString(10));
     const popupElementHeight = popupElement.clientHeight;
     const popupElementWidth = popupElement.clientWidth;
     const canOpenDownwardsFromBottom = !alignTop && !alignVCenter
@@ -737,3 +726,7 @@ export default class Menu extends CustomElement {
     return true;
   }
 }
+
+Menu.prototype.open = Menu.idlBoolean('open');
+Menu.prototype.direction = Menu.idlString('direction');
+Menu.prototype.position = Menu.idlString('position');

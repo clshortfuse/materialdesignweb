@@ -1,12 +1,13 @@
 import Chip from './Chip.js';
 import styles from './FilterChip.css' assert { type: 'css' };
+import Icon from './Icon.js';
 
 export default class FilterChip extends Chip {
   constructor() {
     super();
 
-    this.checkIconElement = this.shadowRoot.getElementById('check-icon');
-    this.trailingIconElement = this.shadowRoot.getElementById('trailing-icon');
+    this.checkIconElement = /** @type {Icon} */ (this.shadowRoot.getElementById('check-icon'));
+    this.trailingIconElement = /** @type {Icon} */ (this.shadowRoot.getElementById('trailing-icon'));
     this.labelElement.append(
       this.checkIconElement,
       this.trailingIconElement,
