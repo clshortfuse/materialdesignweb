@@ -16,7 +16,7 @@ export default class DemoSection extends CustomElement {
   ];
 
   /** @type {HTMLElement['focus']} */
-  focus(options) {
+  focus(options = undefined) {
     super.focus(options);
     this.shadowRoot.getElementById('input').focus(options);
   }
