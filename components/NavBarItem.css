@@ -20,6 +20,8 @@
 
   padding-block: 8px 16px;
 
+  cursor: pointer;
+
   background-color: transparent;
   color: rgb(var(--mdw-color__on-surface-variant));
 }
@@ -40,7 +42,7 @@ a {
   flex: 1;
   padding-block-start: 36px; /** indicator + gap */
 
-  cursor: pointer;
+  cursor: inherit;
   outline: none;
 
   color: inherit;
@@ -120,12 +122,12 @@ a:active #ripple-inner {
   animation-name: var(--mdw-ripple__fade-in-name), none;
 }
 
-:host([selected]) #ripple-inner {
+:host([active]) #ripple-inner {
   /* Hold fade-in animation while held (active) */
   animation-name: var(--mdw-ripple__fade-in-name), none;
 }
 
-:host([selected]) #indicator {
+:host([active]) #indicator {
   color: rgb(var(--mdw-ink));
 }
 
@@ -135,6 +137,6 @@ a:active #ripple-inner {
   color: rgb(var(--mdw-bg));
 }
 
-:host([selected]) #slot {
+:host([active]) #slot {
   color: rgb(var(--mdw-color__on-surface));
 }

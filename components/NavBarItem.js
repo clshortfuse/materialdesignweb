@@ -14,7 +14,7 @@ export default class NavBarItem extends Ripple {
     ...super.fragments,
     /* html */ `
       <a id=anchor href="#" aria-labelledby=slot>
-        <div id=indicator>
+        <div id=indicator aria-hidden=true>
           <mdw-container id=badge type-style=label-small color=error></mdw-container>
           <mdw-icon id=icon aria-hidden=true></mdw-icon>
         </div>
@@ -68,7 +68,7 @@ export default class NavBarItem extends Ripple {
       case 'href':
         this.anchorElement.href = newValue ?? '#';
         break;
-      case 'selected':
+      case 'active':
         if (newValue == null) {
           this.anchorElement.removeAttribute('aria-current');
         } else {
@@ -102,7 +102,7 @@ export default class NavBarItem extends Ripple {
   }
 }
 
-NavBarItem.prototype.selected = NavBarItem.idlBoolean('selected');
+NavBarItem.prototype.active = NavBarItem.idlBoolean('active');
 NavBarItem.prototype.icon = NavBarItem.idlString('icon');
 NavBarItem.prototype.src = NavBarItem.idlString('src');
 NavBarItem.prototype.href = NavBarItem.idlString('href');
