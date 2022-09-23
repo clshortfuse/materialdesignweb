@@ -1,4 +1,4 @@
 {
   "editor.colorDecorators": false,
-  "livePreview.defaultPreviewPath": "/demo.html"
+  "livePreview.defaultPreviewPath": "/docs/"
 }

@@ -14,7 +14,8 @@ import IconButton from './components/IconButton.js';
 import Menu from './components/Menu.js';
 import MenuItem from './components/MenuItem.js';
 import NavBar from './components/NavBar.js';
-import NavBarItem from './components/NavBarItem.js';
+import NavItem from './components/NavItem.js';
+import NavRail from './components/NavRail.js';
 import Overlay from './components/Overlay.js';
 import SegmentedButton from './components/SegmentedButton.js';
 import SegmentedButtonGroup from './components/SegmentedButtonGroup.js';
@@ -52,8 +53,10 @@ Divider.register();
 Menu.register();
 MenuItem.register();
 
+NavItem.register();
+
 NavBar.register();
-NavBarItem.register();
+NavRail.register();
 
 const { searchParams } = new URL(import.meta.url);
 const color = searchParams.get('color') || '#6750A4';
