@@ -22,6 +22,13 @@ export default class NavBarItem extends Ripple {
     `,
   ];
 
+  static get observedAttributes() {
+    return [
+      ...super.observedAttributes,
+      'aria-label',
+    ];
+  }
+
   constructor() {
     super();
     this.anchorElement = /** @type {HTMLAnchorElement} */ (this.shadowRoot.getElementById('anchor'));
@@ -41,8 +48,15 @@ export default class NavBarItem extends Ripple {
    * @param {string?} newValue
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    // Menu items should always receive focus
+    super.attributeChangedCallback(name, oldValue, newValue);
     switch (name) {
+      case 'aria-label':
+        if (newValue == null) {
+          this.anchorElement.removeAttribute('aria-label');
+        } else {
+          this.anchorElement.setAttribute('aria-label', newValue);
+        }
+        break;
       case 'icon':
       case 'src':
         if (newValue == null) {
@@ -70,7 +84,6 @@ export default class NavBarItem extends Ripple {
         break;
       default:
     }
-    super.attributeChangedCallback(name, oldValue, newValue);
   }
 
   /** @type {HTMLElement['focus']} */

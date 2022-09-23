@@ -13,8 +13,10 @@
   display: flex;
   align-items: center;
 
+  box-sizing: border-box;
+  block-size: 100%;
   min-block-size: 48px;
-  inline-size:100%;
+  inline-size: 100%;
 
   padding-block: 8px 16px;
 
@@ -29,12 +31,14 @@
 
 a {
   display: flex;
+  position: inherit;
   align-items: center;
   flex-direction: column;
-  gap: 4px;
+
   justify-content: center;
 
-  flex:1;
+  flex: 1;
+  padding-block-start: 36px; /** indicator + gap */
 
   cursor: pointer;
   outline: none;
@@ -46,7 +50,8 @@ a {
 
 #indicator {
   display: flex;
-  position: relative;
+  position: absolute;
+  inset-block-start: 0;
   align-items: center;
   justify-content: center;
 
@@ -67,7 +72,7 @@ a {
 }
 
 #badge {
-  --mdw-badge__scale:0;
+  --mdw-badge__scale: 0;
   display: flex;
   position: absolute;
   inset-block-start: 8px;
@@ -78,7 +83,7 @@ a {
   box-sizing: border-box;
 
   block-size: 16px;
-  min-inline-size:16px;
+  min-inline-size: 16px;
   padding: 4px;
 
   transition: transform 200ms;
@@ -86,7 +91,7 @@ a {
 
   transform: translateX(4px) translateY(-50%) scale(var(--mdw-badge__scale));
 
-  z-index:4;
+  z-index: 4;
 
   border-radius: 8px;
 }
@@ -96,12 +101,12 @@ a {
 }
 
 #badge[badge] {
-  --mdw-badge__scale:1;
+  --mdw-badge__scale: 1;
 }
 
 #badge[badge=""] {
   block-size: 6px;
-  min-inline-size:6px;
+  min-inline-size: 6px;
   margin-inline-start: 5px;
   padding: 0;
 
