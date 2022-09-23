@@ -2,21 +2,33 @@
 /* https://material.io/guidelines/style/icons.html# */
 
 :host {
-  --mdw-type__font-weight: var(--mdw-typescale__label-medium__font-weight);
-  --mdw-type__font-size: var(--mdw-typescale__label-medium__font-size);
-  --mdw-type__line-height: var(--mdw-typescale__label-medium__line-height);
-  --mdw-type__font-family: var(--mdw-typescale__label-medium__font-family);
-  --mdw-type__letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
   --mdw-ink: var(--mdw-color__on-secondary-container);
   --mdw-bg: var(--mdw-color__secondary-container);
 
-  display: flex;
-  align-items: center;
+  display: grid;
+  align-content: center;
+  align-items: stretch;
+
+  gap: 4px;
+
+  grid: auto-flow minmax(16px, 1fr) / auto;
+  /* grid-auto-flow: row; */
+  /* grid-auto-rows: minmax(16px, 1fr); */
+  grid-template:
+    "badge" 32px
+    "anchor" auto
+    / 1fr;
+  /* grid-template-rows: 32px; */
+  /* grid-template-columns: 1fr; */
+  /* grid-template-areas: "indicator" "anchor"; */
+
+  justify-items: center;
 
   box-sizing: border-box;
-  min-block-size: var(--mdw-nav-item__min-block-size, none);
+  min-block-size: 56px;
 
-  padding-block: var(--mdw-nav-item__padding-block, 8px 16px);
+  padding-block: var(--mdw-nav-item__padding-block, 0);
+  padding-inline: var(--mdw-nav-item__padding-inline, 0);
 
   cursor: pointer;
 
@@ -26,37 +38,44 @@
 
 :host([color]) {
   background-color: transparent;
-  color: rgb(var(--mdw-color__on-surface-variant));
+  color: inherit;
 }
 
 a {
-  display: flex;
+  display: var(--mdw-nav-item__anchor__display, contents);
   position: inherit;
   align-items: center;
   flex-direction: column;
+  grid-area: anchor;
 
   justify-content: center;
 
   flex: 1;
-  padding-block-start: var(--mdw-nav-item__label__padding, 36px);
+  /* padding-block: var(--mdw-nav-item__label__padding-block, 36px 0); */
 
   cursor: inherit;
   outline: none;
 
   color: inherit;
 
+  font-weight: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  letter-spacing: inherit;
+
   text-decoration: inherit;
 }
 
 #indicator {
   display: flex;
-  position: absolute;
-  inset-block-start: 0;
+  position: relative;
   align-items: center;
+  grid-area: badge;
   justify-content: center;
 
-  block-size: 32px;
-  inline-size: var(--mdw-nav-item__indicator__inline-size, 64px);
+  /* block-size: 32px; */
+  inline-size: var(--mdw-nav-item__indicator__inline-size, 56px);
 
   border-radius: 16px;
 
@@ -78,6 +97,8 @@ a {
   inset-block-start: 8px;
   inset-inline-start: 50%;
   align-items: center;
+  grid-area: badge;
+
   justify-content: center;
 
   box-sizing: border-box;
@@ -135,6 +156,10 @@ a:active #ripple-inner {
   color: rgb(var(--mdw-bg));
 }
 
+:host([active]) {
+  color: inherit;
+}
+
 :host([active]) #slot {
-  color: rgb(var(--mdw-color__on-surface));
+  color: inherit;
 }

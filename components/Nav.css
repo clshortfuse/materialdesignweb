@@ -2,7 +2,16 @@
 /* https://material.io/guidelines/style/icons.html# */
 
 :host {
+  --mdw-type__font-weight: var(--mdw-typescale__label-medium__font-weight);
+  --mdw-type__font-size: var(--mdw-typescale__label-medium__font-size);
+  --mdw-type__line-height: var(--mdw-typescale__label-medium__line-height);
+  --mdw-type__font-family: var(--mdw-typescale__label-medium__font-family);
+  --mdw-type__letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
+
   --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
+
+  background-color: rgb(var(--mdw-color__surface));
+  color: rgb(var(--mdw-color__on-surface));
 }
 
 :host([color]:not([color|="surface"])) {

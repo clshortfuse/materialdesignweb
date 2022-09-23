@@ -13,12 +13,11 @@ export default class NavItem extends Ripple {
   static fragments = [
     ...super.fragments,
     /* html */ `
-      <a id=anchor href="#" aria-labelledby=slot>
-        <div id=indicator aria-hidden=true>
-          <mdw-container id=badge type-style=label-small color=error></mdw-container>
-          <mdw-icon id=icon aria-hidden=true></mdw-icon>
-        </div>
-      </a>
+      <div id=indicator aria-hidden=true>
+        <mdw-icon id=icon aria-hidden=true></mdw-icon>
+      </div>
+      <a id=anchor href="#" aria-labelledby=slot aria-describedby=badge></a>
+      <mdw-container aria-hidden=true id=badge type-style=label-small color=error></mdw-container>
     `,
   ];
 

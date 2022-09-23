@@ -5,18 +5,20 @@
   display: grid;
 
   gap: 8px;
-  grid-auto-columns: minmax(48px, auto);
+  grid-auto-columns: minmax(48px, 1fr);
   grid-auto-flow: column;
-  grid-template-rows: 1fr;
+  grid-template-rows: minmax(80px, min-content);
 
   box-sizing: border-box;
 
-  block-size: 80px;
-
   inline-size: 100%;
-
-  background-color: rgb(var(--mdw-color__surface));
 
   box-shadow: none;
 
+  text-align: center;
+}
+
+#slot {
+  --mdw-nav-item__padding-block: 8px 16px;
+  --mdw-nav-item__indicator__inline-size: 64px;
 }
