@@ -242,7 +242,7 @@
   transition-duration: 100ms;
   transition-property: opacity, color, background-color;
 
-  opacity: var(--mdw-container__elevation__opacity);
+  opacity: var(--mdw-container__elevation__opacity, 0);
   visibility: var(--mdw-container__elevation__visibility);
 
   background-color: rgb(var(--mdw-container__elevation__color));

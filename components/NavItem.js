@@ -1,12 +1,12 @@
-import styles from './NavBarItem.css' assert { type: 'css' };
+import styles from './NavItem.css' assert { type: 'css' };
 import Ripple from './Ripple.js';
 
 /** @typedef {'charset'|'coords'|'name'|'shape'} DeprecatedHTMLAnchorElementProperties */
 /** @implements {Omit<HTMLAnchorElement,DeprecatedHTMLAnchorElementProperties>} */
-export default class NavBarItem extends Ripple {
+export default class NavItem extends Ripple {
   static delegatesFocus = true;
 
-  static elementName = 'mdw-nav-bar-item';
+  static elementName = 'mdw-nav-item';
 
   static styles = [...super.styles, styles];
 
@@ -102,8 +102,8 @@ export default class NavBarItem extends Ripple {
   }
 }
 
-NavBarItem.prototype.active = NavBarItem.idlBoolean('active');
-NavBarItem.prototype.icon = NavBarItem.idlString('icon');
-NavBarItem.prototype.src = NavBarItem.idlString('src');
-NavBarItem.prototype.href = NavBarItem.idlString('href');
-NavBarItem.prototype.badge = NavBarItem.idlString('badge');
+NavItem.prototype.active = NavItem.idlBoolean('active');
+NavItem.prototype.icon = NavItem.idlString('icon');
+NavItem.prototype.src = NavItem.idlString('src');
+NavItem.prototype.href = NavItem.idlString('href');
+NavItem.prototype.badge = NavItem.idlString('badge');

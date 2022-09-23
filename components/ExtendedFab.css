@@ -4,14 +4,6 @@
 :host {
   --mdw-shape__size: 16px;
 
-  --mdw-fab__elevation__opacity: var(--mdw-container__elevation__opacity__3);
-  --mdw-fab__box-shadow: var(--mdw-container__box-shadow__3);
-
-  --mdw-fab__elevation__opacity__hovered: var(--mdw-container__elevation__opacity__4);
-  --mdw-fab__box-shadow__hovered: var(--mdw-container__box-shadow__4);
-
-  --mdw-container__elevation__opacity: var(--mdw-fab__elevation__opacity);
-  --mdw-container__box-shadow: var(--mdw-fab__box-shadow);
   --mdw-button__icon__size: 24px;
 
   --mdw-button__padding-inline-start: 20px;
@@ -20,6 +12,16 @@
 
   min-block-size: 56px;
   min-inline-size: 80px;
+}
+
+:host(:not([flat])) {
+  --mdw-fab__elevation__opacity: var(--mdw-container__elevation__opacity__3);
+  --mdw-fab__box-shadow: var(--mdw-container__box-shadow__3);
+  --mdw-fab__elevation__opacity__hovered: var(--mdw-container__elevation__opacity__4);
+  --mdw-fab__box-shadow__hovered: var(--mdw-container__box-shadow__4);
+
+  --mdw-container__elevation__opacity: var(--mdw-fab__elevation__opacity);
+  --mdw-container__box-shadow: var(--mdw-fab__box-shadow);
 }
 
 :host([icon]) {

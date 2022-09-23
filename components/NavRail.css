@@ -1,0 +1,44 @@
+/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
+/* https://material.io/guidelines/style/icons.html# */
+
+:host {
+  display: inline-grid;
+  align-items: stretch;
+  flex-direction: column;
+
+  grid-template-columns: 80px;
+
+  grid-template-rows: minmax(auto, 1fr) minmax(0, auto) minmax(auto, 1fr);
+
+  inline-size: 80px;
+
+  background-color: rgb(var(--mdw-color__surface));
+
+  box-shadow: none;
+}
+
+:host([align="start"]) {
+  grid-template-rows: min-content;
+}
+
+:host([align="end"]) {
+  grid-template-rows: 1fr;
+}
+
+#group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#start {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+#slot {
+  --mdw-nav-item__padding-block: 0;
+  --mdw-nav-item__min-block-size: 56px;
+  --mdw-nav-item__indicator__inline-size: 56px;
+}

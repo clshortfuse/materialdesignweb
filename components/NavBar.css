@@ -2,16 +2,12 @@
 /* https://material.io/guidelines/style/icons.html# */
 
 :host {
-  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
-
   display: grid;
-  align-items: center;
 
   gap: 8px;
+  grid-auto-columns: minmax(48px, auto);
   grid-auto-flow: column;
   grid-template-rows: 1fr;
-  justify-content: stretch;
-  justify-items: center;
 
   box-sizing: border-box;
 
@@ -23,9 +19,4 @@
 
   box-shadow: none;
 
-  direction: ltr;
-}
-
-:host([color]:not([color|="surface"])) {
-  --mdw-container__elevation__opacity: 0;
 }

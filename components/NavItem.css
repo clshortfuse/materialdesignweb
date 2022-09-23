@@ -14,11 +14,9 @@
   align-items: center;
 
   box-sizing: border-box;
-  block-size: 100%;
-  min-block-size: 48px;
-  inline-size: 100%;
+  min-block-size: var(--mdw-nav-item__min-block-size, none);
 
-  padding-block: 8px 16px;
+  padding-block: var(--mdw-nav-item__padding-block, 8px 16px);
 
   cursor: pointer;
 
@@ -40,7 +38,7 @@ a {
   justify-content: center;
 
   flex: 1;
-  padding-block-start: 36px; /** indicator + gap */
+  padding-block-start: var(--mdw-nav-item__label__padding, 36px);
 
   cursor: inherit;
   outline: none;
@@ -58,7 +56,7 @@ a {
   justify-content: center;
 
   block-size: 32px;
-  inline-size: 64px;
+  inline-size: var(--mdw-nav-item__indicator__inline-size, 64px);
 
   border-radius: 16px;
 

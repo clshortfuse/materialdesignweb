@@ -1,0 +1,10 @@
+/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
+/* https://material.io/guidelines/style/icons.html# */
+
+:host {
+  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
+}
+
+:host([color]:not([color|="surface"])) {
+  --mdw-container__elevation__opacity: 0;
+}
