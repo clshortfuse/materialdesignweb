@@ -1,8 +1,8 @@
 import styles from './Container.css' assert { type: 'css' };
 import Text from './Text.js';
 
-/** @implements {HTMLDivElement} */
-// @ts-ignore `align` is deprecated
+/** @typedef {'align'} DeprecatedHTMLDivElementProperties */
+/** @implements {Omit<HTMLDivElement,DeprecatedHTMLDivElementProperties>} */
 export default class Container extends Text {
   constructor() {
     super();

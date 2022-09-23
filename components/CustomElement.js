@@ -23,10 +23,9 @@ export default class CustomElement extends HTMLElement {
 
   static delegatesFocus = false;
 
+  /** @type {Iterable<string>} */
   static get observedAttributes() {
-    return [
-      ...this.getIdlMap().keys(),
-    ];
+    return this.getIdlMap().keys();
   }
 
   /** @type {(DocumentFragment|string)[]} */

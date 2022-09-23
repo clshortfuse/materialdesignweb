@@ -14,6 +14,7 @@ import styles from './Dialog.css' assert { type: 'css' };
  * @prop {DialogStackState} [previousState]
  */
 
+/** @implements {HTMLDialogElement} */
 export default class Dialog extends CustomElement {
   static ariaRole = 'none';
 

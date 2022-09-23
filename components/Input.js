@@ -1,7 +1,9 @@
 import styles from './Input.css' assert { type: 'css' };
 import Ripple from './Ripple.js';
 
-/** @implements {HTMLInputElement} */
+/** @typedef {'align'|'useMap'} DeprecatedHTMLInputElementProperties */
+
+/** @implements {Omit<HTMLInputElement,DeprecatedHTMLInputElementProperties>} */
 export default class Input extends Ripple {
   static delegatesFocus = true;
 

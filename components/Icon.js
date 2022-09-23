@@ -3,31 +3,35 @@
 import Container from './Container.js';
 import styles from './Icon.css' assert { type: 'css' };
 
-/** @implements {HTMLImageElement} */
+/** @typedef {'align'|'border'|'hspace'|'longDesc'|'lowsrc'|'name'|'vspace'} DeprecatedHTMLImageElementProperties */
+
+/** @implements {Omit<HTMLImageElement,DeprecatedHTMLImageElementProperties>} */
 export default class Icon extends Container {
-  constructor() {
+  /**
+   * @param {number} [width]
+   * @param {number} [height]
+   */
+  constructor(width, height) {
     super();
     this.iconElement = this.shadowRoot.getElementById('icon');
     this.imageElement = /** @type {HTMLImageElement} */ (this.shadowRoot.getElementById('image'));
     // this.slotElement.remove();
     this.iconElement.className = Icon.fontClassName;
     this.iconElement.appendChild(this.slotElement);
+    if (width !== null) {
+      this.width = width;
+    }
+    if (height !== null) {
+      this.height = height;
+    }
   }
 
   static imageElementAttributes = [
-    'alt', 'crossorigin', 'decoding', 'fetchpriority',
-    // 'height', 'width',
-    // 'ismap',
-    'loading', 'referrerpolicy',
-    'sizes', 'srcset',
+    'alt', 'src', 'srcset',
+    'sizes', 'crossorigin', 'usemap',
+    'ismap', 'referrerpolicy',
+    'decoding', 'loading',
   ];
-
-  static get observedAttributes() {
-    return [
-      ...super.observedAttributes,
-      ...Icon.imageElementAttributes,
-    ];
-  }
 
   /**
    * @param {string} name
@@ -77,11 +81,19 @@ export default class Icon extends Container {
     `,
   ];
 
-  get complete() {
-    if (this.src == null && this.srcset == null) return true;
-    if (this.srcset == null && this.src === '') return true;
-    return (this.imageElement.complete);
-  }
+  get naturalWidth() { return this.imageElement.naturalWidth; }
+
+  get naturalHeight() { return this.imageElement.naturalHeight; }
+
+  get complete() { return this.imageElement.complete; }
+
+  get currentSrc() { return this.imageElement.currentSrc; }
+
+  get x() { return this.imageElement.x; }
+
+  get y() { return this.imageElement.y; }
+
+  get decode() { return this.imageElement.decode; }
 }
 
 // https://html.spec.whatwg.org/multipage/embedded-content.html#htmlimageelement
@@ -92,9 +104,11 @@ Icon.prototype.srcset = Icon.idlString('srcset');
 Icon.prototype.sizes = Icon.idlString('sizes');
 Icon.prototype.crossOrigin = Icon.idlString('crossorigin', 'crossOrigin');
 Icon.prototype.useMap = Icon.idlString('usemap', 'useMap');
-Icon.prototype.isMap = Icon.idlString('ismap', 'isMap');
+Icon.prototype.isMap = Icon.idlBoolean('ismap', 'isMap');
 Icon.prototype.referrerPolicy = Icon.idlString('referrerpolicy', 'referrerPolicy');
-Icon.prototype.decoder = Icon.idlString('decoder');
-Icon.prototype.loading = Icon.idlString('loading');
+Icon.prototype.decoding = /** @type {'async'|'sync'|'auto'} */ (Icon.idlString('decoding'));
+Icon.prototype.loading = /** @type {'eager'|'lazy'} */ (Icon.idlString('loading'));
+Icon.prototype.width = Icon.idlFloat('width');
+Icon.prototype.height = Icon.idlFloat('height');
 
 Icon.prototype.icon = Icon.idlString('icon');

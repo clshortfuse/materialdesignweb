@@ -1,8 +1,8 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
 import * as RovingTabIndex from '../aria/rovingtabindex.js';
-import Container from './Container.js';
 
+import Container from './Container.js';
 import CustomElement from './CustomElement.js';
 import styles from './Menu.css' assert { type: 'css' };
 import MenuItem from './MenuItem.js';
@@ -17,6 +17,7 @@ import MenuItem from './MenuItem.js';
  * @prop {any} [pendingResizeOperation]
  */
 
+/** @implements {HTMLDialogElement} */
 export default class Menu extends CustomElement {
   static elementName = 'mdw-menu';
 
@@ -725,6 +726,8 @@ export default class Menu extends CustomElement {
 
     return true;
   }
+
+  returnValue = '';
 }
 
 Menu.prototype.open = Menu.idlBoolean('open');

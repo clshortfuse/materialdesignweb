@@ -9,7 +9,8 @@ import Container from './Container.js';
  * next on the DOM, so users can logically tab to it.
  */
 
-/** @implements {HTMLMenuElement} */
+/** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
+/** @implements {Omit<HTMLMenuElement,DeprecatedHTMLMenuElementProperties>} */
 export default class BottomAppBar extends Container {
   static ariaRole = 'toolbar';
 

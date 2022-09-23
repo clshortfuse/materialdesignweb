@@ -1,7 +1,8 @@
 import styles from './NavBarItem.css' assert { type: 'css' };
 import Ripple from './Ripple.js';
 
-/** @implements {HTMLAnchorElement} */
+/** @typedef {'charset'|'coords'|'name'|'shape'} DeprecatedHTMLAnchorElementProperties */
+/** @implements {Omit<HTMLAnchorElement,DeprecatedHTMLAnchorElementProperties>} */
 export default class NavBarItem extends Ripple {
   static delegatesFocus = true;
 

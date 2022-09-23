@@ -4,7 +4,9 @@ import Container from './Container.js';
 import SegmentedButton from './SegmentedButton.js';
 import styles from './SegmentedButtonGroup.css' assert { type: 'css' };
 
-/** @implements {HTMLMenuElement} */
+/** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
+
+/** @implements {Omit<HTMLMenuElement,DeprecatedHTMLMenuElementProperties>} */
 export default class SegmentedButtonGroup extends Container {
   static ariaRole = 'listbox';
 
@@ -67,6 +69,7 @@ export default class SegmentedButtonGroup extends Container {
       selectNext = !selectNext;
     }
 
+    // @ts-ignore ARIA 1.3
     this.ariaActiveDescendantElement = selectNext
       ? RovingTabIndex.selectNext(this.childSegmentedButtons)
       : RovingTabIndex.selectPrevious(this.childSegmentedButtons);

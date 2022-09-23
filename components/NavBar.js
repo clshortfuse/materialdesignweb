@@ -2,7 +2,6 @@ import Container from './Container.js';
 import styles from './NavBar.css' assert { type: 'css' };
 import NavBarItem from './NavBarItem.js';
 
-/** @implements {HTMLElement} */
 export default class NavBar extends Container {
   static ariaRole = 'navigation';
 
