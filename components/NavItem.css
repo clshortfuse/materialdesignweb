@@ -7,28 +7,20 @@
 
   display: grid;
   align-content: center;
-  align-items: stretch;
+  align-items: center;
 
-  gap: 4px;
+  grid: auto-flow minmax(20px, min-content) / auto;
 
-  grid: auto-flow minmax(16px, 1fr) / auto;
-  /* grid-auto-flow: row; */
-  /* grid-auto-rows: minmax(16px, 1fr); */
-  grid-template:
-    "badge" 32px
-    "anchor" auto
-    / 1fr;
-  /* grid-template-rows: 32px; */
-  /* grid-template-columns: 1fr; */
-  /* grid-template-areas: "indicator" "anchor"; */
+  grid-template: "a" minmax(32px, 1fr) / auto;
 
   justify-items: center;
+  row-gap: 4px;
+
+  box-sizing: content-box;
 
   box-sizing: border-box;
   min-block-size: 56px;
-
-  padding-block: var(--mdw-nav-item__padding-block, 0);
-  padding-inline: var(--mdw-nav-item__padding-inline, 0);
+  padding: 0;
 
   cursor: pointer;
 
@@ -41,17 +33,20 @@
   color: inherit;
 }
 
+#slot {
+  grid-row: 2;
+}
+
 a {
   display: var(--mdw-nav-item__anchor__display, contents);
   position: inherit;
   align-items: center;
   flex-direction: column;
-  grid-area: anchor;
+  grid-area: b;
 
   justify-content: center;
 
   flex: 1;
-  /* padding-block: var(--mdw-nav-item__label__padding-block, 36px 0); */
 
   cursor: inherit;
   outline: none;
@@ -69,20 +64,21 @@ a {
 
 #indicator {
   display: flex;
-  position: relative;
-  align-items: center;
-  grid-area: badge;
-  justify-content: center;
+  position: absolute;
+  inset: 0;
+  grid-area: var(--mdw-nav-item__indicator__grid-area, a);
+  z-index: 0;
 
-  /* block-size: 32px; */
-  inline-size: var(--mdw-nav-item__indicator__inline-size, 56px);
-
-  border-radius: 16px;
+  border-radius: 999px;
 
 }
 
 #icon {
   --mdw-icon__size: 24px;
+  position: relative;
+  align-self: center;
+  grid-area: a;
+
   z-index: 3;
 }
 
@@ -93,11 +89,11 @@ a {
 #badge {
   --mdw-badge__scale: 0;
   display: flex;
-  position: absolute;
-  inset-block-start: 8px;
+  position: var(--mdw-nav-item__badge__position, absolute);
+  inset-block-start: 50%;
   inset-inline-start: 50%;
   align-items: center;
-  grid-area: badge;
+  grid-area: var(--mdw-nav-item__badge__grid-area, a);
 
   justify-content: center;
 
@@ -110,11 +106,19 @@ a {
   transition: transform 200ms;
   will-change: transform;
 
-  transform: translateX(4px) translateY(-50%) scale(var(--mdw-badge__scale));
+  transform: var(--mdw-nav-item__badge__transform, translateY(-50%) translateX(4px) translateY(-8px) scale(var(--mdw-badge__scale)));
 
   z-index: 4;
 
+  background: var(--mdw-nav-item__badge__background, transparent);
   border-radius: 8px;
+  color: var(--mdw-nav-item__badge__color, inherit);
+
+  font-weight: var(--mdw-nav-item__badge__font-weight, inherit);
+  font-size: var(--mdw-nav-item__badge__font-size, inherit);
+  line-height: var(--mdw-nav-item__badge__line-height, inherit);
+  font-family: var(--mdw-nav-item__badge__font-family, inherit);
+  letter-spacing: var(--mdw-nav-item__badge__letter-spacing, inherit);
 }
 
 #badge::after {
@@ -130,8 +134,6 @@ a {
   min-inline-size: 6px;
   margin-inline-start: 5px;
   padding: 0;
-
-  transform: translateX(4px) translateY(-50%) scale(var(--mdw-badge__scale));
 
   border-radius: 50%;
 }
@@ -163,3 +165,5 @@ a:active #ripple-inner {
 :host([active]) #slot {
   color: inherit;
 }
+
+:host[show-label="active"]:not([active]) {}

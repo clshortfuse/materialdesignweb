@@ -6,11 +6,11 @@
   align-items: stretch;
   flex-direction: column;
 
-  grid-template-columns: minmax(80px, min-content);
-
   grid-template-rows: minmax(auto, 1fr) minmax(0, auto) minmax(auto, 1fr);
+  grid-template-columns: minmax(80px, min-content);
+  justify-items: center;
 
-  inline-size: 80px;
+  min-inline-size: 80px;
 
   background-color: rgb(var(--mdw-color__surface));
 
@@ -28,9 +28,21 @@
 }
 
 #group {
+  --mdw-nav-item__badge__font-weight: var(--mdw-typescale__label-small__font-weight);
+  --mdw-nav-item__badge__font-size: var(--mdw-typescale__label-small__font-size);
+  --mdw-nav-item__badge__line-height: var(--mdw-typescale__label-small__line-height);
+  --mdw-nav-item__badge__font-family: var(--mdw-typescale__label-small__font-family);
+  --mdw-nav-item__badge__letter-spacing: var(--mdw-typescale__label-small__letter-spacing);
+  --mdw-nav-item__badge__background: rgb(var(--mdw-color__error));
+  --mdw-nav-item__badge__color: rgb(var(--mdw-color__on-error));
+
   display: flex;
+
   flex-direction: column;
   gap: 12px;
+
+  min-inline-size: 56px;
+  margin-inline: 12px;
 }
 
 #start {

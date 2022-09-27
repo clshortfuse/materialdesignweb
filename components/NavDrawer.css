@@ -1,0 +1,60 @@
+:host {
+  --mdw-type__font-weight: var(--mdw-typescale__label-large__font-weight);
+  --mdw-type__font-size: var(--mdw-typescale__label-large__font-size);
+  --mdw-type__line-height: var(--mdw-typescale__label-large__line-height);
+  --mdw-type__font-family: var(--mdw-typescale__label-large__font-family);
+  --mdw-type__letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
+
+  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__0);
+
+  --mdw-shape__size: var(--mdw-shape__large, 16px);
+  --mdw-shape__size__top-start-size: 0;
+  --mdw-shape__size__bottom-start-size: 0;
+
+  display: inline-block;
+  align-items: center;
+  flex-direction: column;
+
+  inline-size: 360px;
+
+  box-shadow: none;
+}
+
+:host([align="start"]) {
+  grid-template-rows: min-content;
+}
+
+:host([align="end"]) {
+  grid-template-rows: 1fr;
+}
+
+#group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#start {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+#slot::slotted(mdw-nav-item) {
+  --mdw-nav-item__badge__position: static;
+  --mdw-nav-item__badge__transform: none;
+  --mdw-nav-item__badge__background-color: transparent;
+  --mdw-nav-item__label__padding-block: 18px;
+  --mdw-nav-item__label__padding-inline: 52px 0;
+  --mdw-nav-item__anchor__display: block;
+  --mdw-nav-item__badge__grid-area: c;
+  --mdw-nav-item__indicator__grid-area: s1 / s1 / s2 / s2 ;
+
+  display: grid;
+  align-items: center;
+  gap: 12px;
+  grid-template: "s1 a b c s2" minmax(56px, min-content) / 0 24px 1fr minmax(0, min-content) 12px;
+  justify-items: flex-start;
+
+  padding-inline-end: 12px;
+}

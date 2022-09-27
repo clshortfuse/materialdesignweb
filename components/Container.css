@@ -227,7 +227,7 @@
   --mdw-shape__size__bottom-end-size: 0;
 }
 
-:host([mdw-shape-end]) {
+:host([shape-end]) {
   --mdw-shape__size__top-start-size: 0;
   --mdw-shape__size__bottom-start-size: 0;
 }
