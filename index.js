@@ -14,6 +14,7 @@ import IconButton from './components/IconButton.js';
 import Menu from './components/Menu.js';
 import MenuItem from './components/MenuItem.js';
 import NavBar from './components/NavBar.js';
+import NavDrawer from './components/NavDrawer.js';
 import NavItem from './components/NavItem.js';
 import NavRail from './components/NavRail.js';
 import Overlay from './components/Overlay.js';
@@ -57,6 +58,7 @@ NavItem.register();
 
 NavBar.register();
 NavRail.register();
+NavDrawer.register();
 
 const { searchParams } = new URL(import.meta.url);
 const color = searchParams.get('color') || '#6750A4';

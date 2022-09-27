@@ -76,8 +76,8 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/native/docs/?d=16639557
 | [Menu](components/Menu.js)                                   | `<mdw-menu>`                                   | `<dialog>`                                                         |  beta   |
 | [Menu Item](components/MenuItem.js)                          | `<mdw-menu-item>`                              | `<input type=button>` `<input type=checkbox>` `<input type=radio>` |  beta   |
 | [Nav Item](components/NavBarItem.js)                         | `<mdw-nav-item>`                               | `<a href=#>`                                                       |  beta   |
-| [Nav Bar](components/NavBar.js)                              | `<mdw-nav-bar>`                                | `<nav>`                                                            |  beta   |
-| Navigation Drawer                                            |                                                |                                                                    | rewrite |
+| [Nav Bar](components/NavBar.js)                              | `<mdw-nav-bar>`                                | `<nav>`                                                            |  alpha  |
+| [Navigation Drawer]                                          | `<mdw-nav-drawer>`                             | `<nav>`                                                            |  alpha  |
 | [Navigation Rail](components/NavRail.js)                     | `<mdw-nav-rail>`                               | `<nav>`                                                            |  beta   |
 | Progress Indicator: Linear                                   |                                                |                                                                    | planned |
 | Progress Indicator: Circle                                   |                                                |                                                                    | rewrite |

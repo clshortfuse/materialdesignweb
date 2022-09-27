@@ -72,106 +72,84 @@
   <main>
     <demo-section>
       <h1 slot=heading>Color</h1>
+      <demo-flex align-center wrap gap12>
+        <mdw-container class=box color=primary>Primary</mdw-container>
+        <mdw-container class=box color=primary-container>Primary Container</mdw-container>
+        <mdw-container class=box color=secondary>Secondary</mdw-container>
+        <mdw-container class=box color=secondary-container>Secondary Container</mdw-container>
+        <mdw-container class=box color=tertiary>Tertiary</mdw-container>
+        <mdw-container class=box color=tertiary-container>Tertiary Container</mdw-container>
+        <mdw-container class=box color=error>Error</mdw-container>
+        <mdw-container class=box color=error-container>Error Container</mdw-container>
+        <mdw-container class=box color=background>Background</mdw-container>
+      </demo-flex>
       <demo-section>
-        <h2 slot=heading>Primary</h2>
-        <demo-flex align-center wrap>
-          <mdw-container class=box color=primary>Primary</mdw-container>
-          <mdw-container class=box color=primary-container>Primary Container</mdw-container>
-        </demo-flex>
-      </demo-section>
-      <demo-section>
-        <h2 slot=heading>Secondary</h2>
-        <demo-flex align-center wrap>
-          <mdw-container class=box color=secondary>Secondary</mdw-container>
-          <mdw-container class=box color=secondary-container>Secondary Container</mdw-container>
-        </demo-flex>
-      </demo-section>
-      <demo-section>
-        <h2 slot=heading>Tertiary</h2>
-        <demo-flex align-center wrap>
-          <mdw-container class=box color=tertiary>Tertiary</mdw-container>
-          <mdw-container class=box color=tertiary-container>Tertiary Container</mdw-container>
-        </demo-flex>
-      </demo-section>
-      <demo-section>
-        <h2 slot=heading>Error</h2>
-        <demo-flex align-center wrap>
-          <mdw-container class=box color=error>Error</mdw-container>
-          <mdw-container class=box color=error-container>Error Container</mdw-container>
-        </demo-flex>
-      </demo-section>
-      <demo-section>
-        <h2 slot=heading>Neutral</h2>
+        <h3 slot=heading>Surface tones</h3>
         <demo-flex align-center gap12 wrap>
-          <mdw-container class=box color=background>Background</mdw-container>
+          <mdw-container class=box color=surface>Surface</mdw-container>
+          <mdw-container class=box color=surface elevation=1>Surface +1</mdw-container>
+          <mdw-container class=box color=surface elevation=2>Surface +2</mdw-container>
+          <mdw-container class=box color=surface elevation=3>Surface +3</mdw-container>
+          <mdw-container class=box color=surface elevation=4>Surface +4</mdw-container>
+          <mdw-container class=box color=surface elevation=5>Surface +5</mdw-container>
         </demo-flex>
-        <demo-section>
-          <h3 slot=heading>Surface tones</h3>
-          <demo-flex align-center gap12 wrap>
-            <mdw-container class=box color=surface>Surface</mdw-container>
-            <mdw-container class=box color=surface elevation=1>Surface +1</mdw-container>
-            <mdw-container class=box color=surface elevation=2>Surface +2</mdw-container>
-            <mdw-container class=box color=surface elevation=3>Surface +3</mdw-container>
-            <mdw-container class=box color=surface elevation=4>Surface +4</mdw-container>
-            <mdw-container class=box color=surface elevation=5>Surface +5</mdw-container>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h3 slot=heading>Inverse</h3>
-          <demo-flex align-center gap12 wrap>
-            <mdw-container class=box color=inverse-surface>Inverse Surface</mdw-container>
-            <mdw-container class=box color=inverse-surface elevation=1>Inverse Surface +1</mdw-container>
-            <mdw-container class=box color=inverse-surface elevation=2>Inverse Surface +2</mdw-container>
-            <mdw-container class=box color=inverse-surface elevation=3>Inverse Surface +3</mdw-container>
-            <mdw-container class=box color=inverse-surface elevation=4>Inverse Surface +4</mdw-container>
-            <mdw-container class=box color=inverse-surface elevation=5>Inverse Surface +5</mdw-container>
-            <mdw-container class=box color=inverse-primary>Inverse Primary</mdw-container>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h3 slot=heading>Neutral variant</h3>
-          <demo-flex align-center gap12 wrap>
-            <mdw-container class=box color=surface-variant>Surface Variant</mdw-container>
-            <mdw-container class=box color=surface-variant elevation=1>Surface Variant +1</mdw-container>
-            <mdw-container class=box color=surface-variant elevation=2>Surface Variant +2</mdw-container>
-            <mdw-container class=box color=surface-variant elevation=3>Surface Variant +3</mdw-container>
-            <mdw-container class=box color=surface-variant elevation=4>Surface Variant +4</mdw-container>
-            <mdw-container class=box color=surface-variant elevation=5>Surface Variant +5</mdw-container>
-            <mdw-container class=box ink=outline>Outline</mdw-container>
-          </demo-flex>
-        </demo-section>
       </demo-section>
       <demo-section>
-        <h2 slot=heading>Custom</h2>
-        <demo-section>
-          <h3 slot=heading>Yellow</h3>
-          <demo-flex align-center wrap>
-            <mdw-container class="box mdw-custom" color=yellow>Yellow</mdw-container>
-            <mdw-container class="box mdw-custom" color=yellow-container>Yellow Container</mdw-container>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h3 slot=heading>Orange</h3>
-          <demo-flex align-center wrap>
-            <mdw-container class="box mdw-custom" color=orange>Orange</mdw-container>
-            <mdw-container class="box mdw-custom" color=orange-container>Orange Container</mdw-container>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h3 slot=heading>Green</h3>
-          <demo-flex align-center wrap>
-            <mdw-container class="box mdw-custom" color=green>Green</mdw-container>
-            <mdw-container class="box mdw-custom" color=green-container>Green Container</mdw-container>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h3 slot=heading>Alias</h3>
-          <demo-flex align-center wrap>
-            <mdw-container class="box mdw-custom" color=alias>Alias</mdw-container>
-            <mdw-container class="box mdw-custom" color=alias-container>Alias Container</mdw-container>
-          </demo-flex>
-        </demo-section>
+        <h3 slot=heading>Inverse</h3>
+        <demo-flex align-center gap12 wrap>
+          <mdw-container class=box color=inverse-surface>Inverse Surface</mdw-container>
+          <mdw-container class=box color=inverse-surface elevation=1>Inverse Surface +1</mdw-container>
+          <mdw-container class=box color=inverse-surface elevation=2>Inverse Surface +2</mdw-container>
+          <mdw-container class=box color=inverse-surface elevation=3>Inverse Surface +3</mdw-container>
+          <mdw-container class=box color=inverse-surface elevation=4>Inverse Surface +4</mdw-container>
+          <mdw-container class=box color=inverse-surface elevation=5>Inverse Surface +5</mdw-container>
+          <mdw-container class=box color=inverse-primary>Inverse Primary</mdw-container>
+        </demo-flex>
       </demo-section>
+      <demo-section>
+        <h3 slot=heading>Neutral variant</h3>
+        <demo-flex align-center gap12 wrap>
+          <mdw-container class=box color=surface-variant>Surface Variant</mdw-container>
+          <mdw-container class=box color=surface-variant elevation=1>Surface Variant +1</mdw-container>
+          <mdw-container class=box color=surface-variant elevation=2>Surface Variant +2</mdw-container>
+          <mdw-container class=box color=surface-variant elevation=3>Surface Variant +3</mdw-container>
+          <mdw-container class=box color=surface-variant elevation=4>Surface Variant +4</mdw-container>
+          <mdw-container class=box color=surface-variant elevation=5>Surface Variant +5</mdw-container>
+          <mdw-container class=box ink=outline>Outline</mdw-container>
+        </demo-flex>
+      </demo-section>
+    </demo-section>
+    <demo-section>
+      <h2 slot=heading>Custom</h2>
+      <demo-section>
+        <h3 slot=heading>Yellow</h3>
+        <demo-flex align-center wrap>
+          <mdw-container class="box mdw-custom" color=yellow>Yellow</mdw-container>
+          <mdw-container class="box mdw-custom" color=yellow-container>Yellow Container</mdw-container>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h3 slot=heading>Orange</h3>
+        <demo-flex align-center wrap>
+          <mdw-container class="box mdw-custom" color=orange>Orange</mdw-container>
+          <mdw-container class="box mdw-custom" color=orange-container>Orange Container</mdw-container>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h3 slot=heading>Green</h3>
+        <demo-flex align-center wrap>
+          <mdw-container class="box mdw-custom" color=green>Green</mdw-container>
+          <mdw-container class="box mdw-custom" color=green-container>Green Container</mdw-container>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h3 slot=heading>Alias</h3>
+        <demo-flex align-center wrap>
+          <mdw-container class="box mdw-custom" color=alias>Alias</mdw-container>
+          <mdw-container class="box mdw-custom" color=alias-container>Alias Container</mdw-container>
+        </demo-flex>
+      </demo-section>
+    </demo-section>
     </demo-section>
     <demo-section>
       <h1 slot=heading> Shape </h1>
@@ -1001,8 +979,9 @@
           <demo-flex wrap gap12>
             <mdw-nav-bar>
               <mdw-nav-item icon="edit" href="#navbar">Default</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navbar" color=primary-container>Primary</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navbar" color=tertiary-container>Tertiary
+              <mdw-nav-item icon="change_history" href="#navbar" color=primary-container>Primary Container
+              </mdw-nav-item>
+              <mdw-nav-item icon="change_history" href="#navbar" color=tertiary-container>Tertiary Container
               </mdw-nav-item>
             </mdw-nav-bar>
           </demo-flex>
@@ -1010,11 +989,11 @@
         <demo-section>
           <h2 slot=heading>Badges</h2>
           <demo-flex wrap gap12>
-            <mdw-nav-bar>
-              <mdw-nav-item icon="change_history" href="#navbar" badge>Default</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navbar" badge=1 color=primary-container>Primary
+            <mdw-nav-bar color="primary">
+              <mdw-nav-item icon="change_history" href="#navbar" color=primary-container badge>Primary Container
               </mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navbar" badge="999+" color=tertiary-container>Tertiary
+              <mdw-nav-item icon="change_history" href="#navbar" badge=1 color=tertiary>Tertiary</mdw-nav-item>
+              <mdw-nav-item class=mdw-custom icon="change_history" href="#navbar" badge="999+" color=Green>Green
               </mdw-nav-item>
             </mdw-nav-bar>
           </demo-flex>
@@ -1111,6 +1090,29 @@
               <mdw-nav-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container
                 aria-label="Tertiary"></mdw-nav-item>
             </mdw-nav-rail>
+          </demo-flex>
+        </demo-section>
+    </demo-section>
+    <demo-section id=navdrawer>
+      <h1 slot="heading">Navigation Drawer</h2>
+        <demo-section>
+          <h2 slot=heading>Standard</h2>
+          <demo-flex wrap gap12>
+            <mdw-nav-drawer style="min-height:400px">
+              <mdw-nav-item icon="edit" href="#navdrawer">Default</mdw-nav-item>
+              <mdw-nav-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-item>
+              <mdw-nav-item icon="change_history" href="#navdrawer" color=tertiary-container>Tertiary</mdw-nav-item>
+            </mdw-nav-drawer>
+            <mdw-nav-drawer color="tertiary-container" align=start style="min-height:400px">
+              <mdw-nav-item icon="edit" href="#navdrawer">Default</mdw-nav-item>
+              <mdw-nav-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-item>
+              <mdw-nav-item class="mdw-custom" icon="change_history" href="#navdrawer" badge="999+" color=green>Green</mdw-nav-item>
+            </mdw-nav-drawer>
+            <mdw-nav-drawer align=end style="min-height:400px">
+              <mdw-nav-item icon="edit" href="#navdrawer">Default</mdw-nav-item>
+              <mdw-nav-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-item>
+              <mdw-nav-item icon="change_history" href="#navdrawer" color=tertiary-container>Tertiary</mdw-nav-item>
+            </mdw-nav-drawer>
           </demo-flex>
         </demo-section>
     </demo-section>
