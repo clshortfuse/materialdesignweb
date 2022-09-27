@@ -11,12 +11,12 @@ A standards-focused, zero-dependency implemention of Material Design 3 (Material
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/native/docs/?d=1663955736187
+https://rawcdn.githack.com/clshortfuse/materialdesignweb/2a7120f/docs/?d=1663955736187
 
 # Getting started
 
 ```html
-<style type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/native/index.js?d=1661896564063" />
+<style type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/2a7120f/index.js?d=1661896564063" />
 ```
 
 # Support
@@ -77,7 +77,7 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/native/docs/?d=16639557
 | [Menu Item](components/MenuItem.js)                          | `<mdw-menu-item>`                              | `<input type=button>` `<input type=checkbox>` `<input type=radio>` |  beta   |
 | [Nav Item](components/NavBarItem.js)                         | `<mdw-nav-item>`                               | `<a href=#>`                                                       |  beta   |
 | [Nav Bar](components/NavBar.js)                              | `<mdw-nav-bar>`                                | `<nav>`                                                            |  alpha  |
-| [Navigation Drawer]                                          | `<mdw-nav-drawer>`                             | `<nav>`                                                            |  alpha  |
+| [Navigation Drawer](components/NavDrawer.js)                 | `<mdw-nav-drawer>`                             | `<nav>`                                                            |  alpha  |
 | [Navigation Rail](components/NavRail.js)                     | `<mdw-nav-rail>`                               | `<nav>`                                                            |  beta   |
 | Progress Indicator: Linear                                   |                                                |                                                                    | planned |
 | Progress Indicator: Circle                                   |                                                |                                                                    | rewrite |
