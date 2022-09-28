@@ -1,7 +1,7 @@
-import Nav from './Nav.js';
 import styles from './NavDrawer.css' assert { type: 'css' };
+import NavRail from './NavRail.js';
 
-export default class NavDrawer extends Nav {
+export default class NavDrawer extends NavRail {
   static elementName = 'mdw-nav-drawer';
 
   static styles = [...super.styles, styles];

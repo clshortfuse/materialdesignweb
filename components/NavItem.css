@@ -2,30 +2,34 @@
 /* https://material.io/guidelines/style/icons.html# */
 
 :host {
-  --mdw-ink: var(--mdw-color__on-secondary-container);
-  --mdw-bg: var(--mdw-color__secondary-container);
-
   display: grid;
   align-content: center;
   align-items: center;
 
   grid: auto-flow minmax(20px, min-content) / auto;
 
-  grid-template: "a" minmax(32px, 1fr) / auto;
+  grid-template: "a" minmax(32px, 1fr) / 56px;
 
   justify-items: center;
   row-gap: 4px;
 
   box-sizing: content-box;
-
   box-sizing: border-box;
+
   min-block-size: 56px;
-  padding: 0;
+  padding-inline: 0;
 
   cursor: pointer;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  user-select: none;
 
   background-color: transparent;
   color: rgb(var(--mdw-color__on-surface-variant));
+}
+
+:host(:not([color])) {
+  --mdw-ink: var(--mdw-color__on-secondary-container);
+  --mdw-bg: var(--mdw-color__secondary-container);
 }
 
 :host([color]) {
@@ -51,6 +55,12 @@ a {
   cursor: inherit;
   outline: none;
 
+  transition: opacity, color, transform 200ms;
+  will-change: opacity, transform;
+
+  opacity: var(--mdw-nav-item__anchor__opacity, 1);
+  transform: translateY(var(--mdw-nav-item__offset-y, 0));
+
   color: inherit;
 
   font-weight: inherit;
@@ -67,6 +77,12 @@ a {
   position: absolute;
   inset: 0;
   grid-area: var(--mdw-nav-item__indicator__grid-area, a);
+
+  transition: transform 200ms;
+  will-change: transform;
+
+  transform: translateY(var(--mdw-nav-item__offset-y, 0));
+
   z-index: 0;
 
   border-radius: 999px;
@@ -78,6 +94,11 @@ a {
   position: relative;
   align-self: center;
   grid-area: a;
+
+  transition: transform 200ms;
+  will-change: transform;
+
+  transform: translateY(var(--mdw-nav-item__offset-y, 0));
 
   z-index: 3;
 }
@@ -106,7 +127,7 @@ a {
   transition: transform 200ms;
   will-change: transform;
 
-  transform: var(--mdw-nav-item__badge__transform, translateY(-50%) translateX(4px) translateY(-8px) scale(var(--mdw-badge__scale)));
+  transform: var(--mdw-nav-item__badge__transform, translateY(-50%) translateX(4px) translateY(-8px) translateY(var(--mdw-nav-item__offset-y, 0)) scale(var(--mdw-badge__scale)));
 
   z-index: 4;
 
@@ -138,9 +159,10 @@ a {
   border-radius: 50%;
 }
 
-/* Fix active ripple state */
-a:active #ripple-inner {
-  animation-name: var(--mdw-ripple__fade-in-name), none;
+#ripple-inner {
+  opacity: 1;
+
+  color: rgb(var(--mdw-bg));
 }
 
 :host([active]) #ripple-inner {
@@ -148,22 +170,24 @@ a:active #ripple-inner {
   animation-name: var(--mdw-ripple__fade-in-name), none;
 }
 
+/* Fix active ripple state */
+a:active #ripple-inner {
+  animation-name: var(--mdw-ripple__fade-in-name), none;
+}
+
 :host([active]) #indicator {
   color: rgb(var(--mdw-ink));
 }
 
-#ripple-inner {
-  opacity: 1;
-
-  color: rgb(var(--mdw-bg));
-}
-
-:host([active]) {
-  color: inherit;
+:host([active]) #icon {
+  color: rgb(var(--mdw-ink));
 }
 
 :host([active]) #slot {
   color: inherit;
 }
 
-:host[show-label="active"]:not([active]) {}
+:host(:is([show-label="never"],[show-label="active"]:not([active]))) {
+  --mdw-nav-item__anchor__opacity: 0;
+  --mdw-nav-item__offset-y: 12px;
+}

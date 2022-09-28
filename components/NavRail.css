@@ -37,12 +37,15 @@
   --mdw-nav-item__badge__color: rgb(var(--mdw-color__on-error));
 
   display: flex;
+  align-items: center;
 
   flex-direction: column;
   gap: 12px;
 
+  box-sizing: border-box;
+  inline-size: 100%;
+
   min-inline-size: 56px;
-  margin-inline: 12px;
 }
 
 #start {
