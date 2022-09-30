@@ -18,6 +18,7 @@ import NavDrawer from './components/NavDrawer.js';
 import NavItem from './components/NavItem.js';
 import NavRail from './components/NavRail.js';
 import Overlay from './components/Overlay.js';
+import Progress from './components/Progress.js';
 import SegmentedButton from './components/SegmentedButton.js';
 import SegmentedButtonGroup from './components/SegmentedButtonGroup.js';
 import Text from './components/Text.js';
@@ -59,6 +60,7 @@ NavItem.register();
 NavBar.register();
 NavRail.register();
 NavDrawer.register();
+Progress.register();
 
 const { searchParams } = new URL(import.meta.url);
 const color = searchParams.get('color') || '#6750A4';

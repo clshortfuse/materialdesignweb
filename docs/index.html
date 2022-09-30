@@ -121,35 +121,16 @@
     </demo-section>
     <demo-section>
       <h2 slot=heading>Custom</h2>
-      <demo-section>
-        <h3 slot=heading>Yellow</h3>
-        <demo-flex align-center wrap>
-          <mdw-container class="box mdw-custom" color=yellow>Yellow</mdw-container>
-          <mdw-container class="box mdw-custom" color=yellow-container>Yellow Container</mdw-container>
-        </demo-flex>
-      </demo-section>
-      <demo-section>
-        <h3 slot=heading>Orange</h3>
-        <demo-flex align-center wrap>
-          <mdw-container class="box mdw-custom" color=orange>Orange</mdw-container>
-          <mdw-container class="box mdw-custom" color=orange-container>Orange Container</mdw-container>
-        </demo-flex>
-      </demo-section>
-      <demo-section>
-        <h3 slot=heading>Green</h3>
-        <demo-flex align-center wrap>
-          <mdw-container class="box mdw-custom" color=green>Green</mdw-container>
-          <mdw-container class="box mdw-custom" color=green-container>Green Container</mdw-container>
-        </demo-flex>
-      </demo-section>
-      <demo-section>
-        <h3 slot=heading>Alias</h3>
-        <demo-flex align-center wrap>
-          <mdw-container class="box mdw-custom" color=alias>Alias</mdw-container>
-          <mdw-container class="box mdw-custom" color=alias-container>Alias Container</mdw-container>
-        </demo-flex>
-      </demo-section>
-    </demo-section>
+      <demo-flex align-center gap12 wrap>
+        <mdw-container class="box mdw-custom" color=yellow>Yellow</mdw-container>
+        <mdw-container class="box mdw-custom" color=yellow-container>Yellow Container</mdw-container>
+        <mdw-container class="box mdw-custom" color=orange>Orange</mdw-container>
+        <mdw-container class="box mdw-custom" color=orange-container>Orange Container</mdw-container>
+        <mdw-container class="box mdw-custom" color=green>Green</mdw-container>
+        <mdw-container class="box mdw-custom" color=green-container>Green Container</mdw-container>
+        <mdw-container class="box mdw-custom" color=alias>Alias</mdw-container>
+        <mdw-container class="box mdw-custom" color=alias-container>Alias Container</mdw-container>
+      </demo-flex>
     </demo-section>
     <demo-section>
       <h1 slot=heading> Shape </h1>
@@ -990,10 +971,11 @@
           <h2 slot=heading>Badges</h2>
           <demo-flex wrap gap12>
             <mdw-nav-bar color="primary">
-              <mdw-nav-item icon="change_history" href="#navbar" color=primary-container badge>Primary Container
+              <mdw-nav-item show-label=active icon="change_history" href="#navbar" color=primary-container badge>Primary Container
               </mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navbar" badge=1 color=tertiary>Tertiary</mdw-nav-item>
-              <mdw-nav-item class=mdw-custom icon="change_history" href="#navbar" badge="999+" color=Green>Green
+              <mdw-nav-item show-label=active icon="change_history" href="#navbar" badge=1 color=tertiary>Tertiary</mdw-nav-item>
+              <mdw-nav-item class=mdw-custom show-label=active icon="change_history" href="#navbar" badge="999+" color=green-container>
+                Green Container
               </mdw-nav-item>
             </mdw-nav-bar>
           </demo-flex>
@@ -1002,11 +984,9 @@
           <h2 slot=heading>No label</h2>
           <demo-flex wrap gap12>
             <mdw-nav-bar>
-              <mdw-nav-item icon="change_history" href="#navbar" badge aria-label="Default"></mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navbar" badge=1 color=primary-container aria-label="Primary">
-              </mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navbar" badge="999+" color=tertiary-container
-                aria-label="Tertiary"></mdw-nav-item>
+              <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge aria-label="Default">Default</mdw-nav-item>
+              <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge=1 color=primary-container aria-label="Primary">Primary</mdw-nav-item>
+              <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge="999+" color=tertiary-container aria-label="Tertiary">Tertiary Container</mdw-nav-item>
             </mdw-nav-bar>
           </demo-flex>
         </demo-section>
@@ -1098,21 +1078,41 @@
         <demo-section>
           <h2 slot=heading>Standard</h2>
           <demo-flex wrap gap12>
-            <mdw-nav-drawer style="min-height:400px">
+            <mdw-nav-drawer open style="min-height:400px">
               <mdw-nav-item icon="edit" href="#navdrawer">Default</mdw-nav-item>
               <mdw-nav-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-item>
               <mdw-nav-item icon="change_history" href="#navdrawer" color=tertiary-container>Tertiary</mdw-nav-item>
             </mdw-nav-drawer>
-            <mdw-nav-drawer color="tertiary-container" align=start style="min-height:400px">
+            <mdw-nav-drawer open color="tertiary-container" style="min-height:400px">
               <mdw-nav-item icon="edit" href="#navdrawer">Default</mdw-nav-item>
               <mdw-nav-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-item>
-              <mdw-nav-item class="mdw-custom" icon="change_history" href="#navdrawer" badge="999+" color=green>Green</mdw-nav-item>
+              <mdw-nav-item class="mdw-custom" icon="change_history" href="#navdrawer" badge="999+"
+                color=green-container>Green Container</mdw-nav-item>
             </mdw-nav-drawer>
-            <mdw-nav-drawer align=end style="min-height:400px">
+            <mdw-nav-drawer open style="min-height:400px">
               <mdw-nav-item icon="edit" href="#navdrawer">Default</mdw-nav-item>
               <mdw-nav-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-item>
               <mdw-nav-item icon="change_history" href="#navdrawer" color=tertiary-container>Tertiary</mdw-nav-item>
             </mdw-nav-drawer>
+          </demo-flex>
+        </demo-section>
+    </demo-section>
+    <demo-section id=progress>
+      <h1 slot="heading">Progress Indicators</h2>
+        <demo-section>
+          <h2 slot=heading>Linear</h2>
+          <demo-flex gap12>
+            <mdw-progress ink="primary"></mdw-progress>
+            <mdw-progress value="30" ink="secondary"></mdw-progress>
+            <mdw-progress value="60" auto-hide ink="tertiary"></mdw-progress>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h2 slot=heading>Circular</h2>
+          <demo-flex gap12>
+            <mdw-progress circle ink="primary"></mdw-progress>
+            <mdw-progress circle ink="secondary"></mdw-progress>
+            <mdw-progress circle ink="tertiary"></mdw-progress>
           </demo-flex>
         </demo-section>
     </demo-section>
@@ -1166,7 +1166,7 @@
     </mdw-menu>
   </div>
   <script type=module src="./demo.js"></script>
-  <script type=module src="../index.min.js?color=&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=light">
+  <script type=module src="../index.min.js?color=&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto">
   </script>
 
 </body>
