@@ -11,12 +11,12 @@ A standards-focused, zero-dependency implemention of Material Design 3 (Material
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/2a7120f/docs/?d=1663955736187
+https://rawcdn.githack.com/clshortfuse/materialdesignweb/2ba4c6b/docs/
 
 # Getting started
 
 ```html
-<style type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/2a7120f/index.js?d=1661896564063" />
+<style type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/2ba4c6b/index.js" />
 ```
 
 # Support
@@ -79,7 +79,7 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/2a7120f/docs/?d=1663955
 | [Nav Bar](components/NavBar.js)                              | `<mdw-nav-bar>`                                | `<nav>`                                                            |  alpha  |
 | [Navigation Drawer](components/NavDrawer.js)                 | `<mdw-nav-drawer>`                             | `<nav>`                                                            |  alpha  |
 | [Navigation Rail](components/NavRail.js)                     | `<mdw-nav-rail>`                               | `<nav>`                                                            |  beta   |
-| Progress Indicator: Linear                                   |                                                |                                                                    | planned |
+| [Progress Indicator: Linear](components/Progress.js)         | `<mdw-progress>`                               | `<progress>`                                                       |  beta   |
 | Progress Indicator: Circle                                   |                                                |                                                                    | rewrite |
 | Radio Button                                                 |                                                |                                                                    | rewrite |
 | Slider: Continuous                                           |                                                |                                                                    | rewrite |
