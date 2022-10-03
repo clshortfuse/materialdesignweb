@@ -31,12 +31,6 @@
   opacity:0;
 }
 
-@media (prefers-reduced-motion) {
-  :host {
-    --mdw-progress__line-duration: 36000ms
-  }
-}
-
 progress {
   --value: 0;
 

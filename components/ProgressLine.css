@@ -8,6 +8,12 @@
   --mdw-progress__line__duration: 1800ms;
 }
 
+@media (prefers-reduced-motion) {
+  :host {
+    --mdw-progress__line__duration: 18000ms
+  }
+}
+
 .line {
   transition: opacity var(--mdw-progress__opacity__duration);
   will-change: opacity;

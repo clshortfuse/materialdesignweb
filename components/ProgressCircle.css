@@ -3,11 +3,18 @@
 :host {
   --mdw-progress__circle__timing: cubic-bezier(0.4, 0.0, 0.2, 1);
 
+  --mdw-progress__circle__margin: 4px;
   --mdw-progress__circle__duration: 5400ms;
   --mdw-progress__circle__duration__expand: 667ms;
   --mdw-progress__circle__duration__collapse: 667ms;
   --mdw-progress__circle__duration__fade-in: 333ms;
   --mdw-progress__circle__duration__complete-end: 333ms;
+}
+
+@media (prefers-reduced-motion) {
+  :host {
+    --mdw-progress__circle__duration: 54000ms;
+  }
 }
 
 #circle {
@@ -61,7 +68,7 @@
 
 .semi {
   position: absolute;
-  inset: 0;
+  inset: var(--mdw-progress__circle__margin);
   overflow: hidden;
 
   box-sizing: border-box;
@@ -127,7 +134,7 @@
 
 .arc {
   position: absolute;
-  inset: 0;
+  inset: var(--mdw-progress__circle__margin);
   overflow: hidden;
 
   box-sizing: border-box;
