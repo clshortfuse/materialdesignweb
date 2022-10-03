@@ -1111,8 +1111,49 @@
           <h2 slot=heading>Circular</h2>
           <demo-flex gap12>
             <mdw-progress circle ink="primary"></mdw-progress>
-            <mdw-progress circle ink="secondary"></mdw-progress>
-            <mdw-progress circle ink="tertiary"></mdw-progress>
+            <mdw-progress circle value="30" ink="secondary"></mdw-progress>
+            <mdw-progress circle value="60" auto-hide ink="tertiary"></mdw-progress>
+          </demo-flex>
+        </demo-section>
+    </demo-section>
+    <demo-section id=radio>
+      <h1 slot="heading">Radio Buttons</h2>
+          <h2 slot=heading>Normal</h2>
+          <demo-flex gap12>
+            <form>
+              <mdw-radio name=radio-demo value="1">Default</mdw-radio>
+              <mdw-radio name=radio-demo ink="secondary" value="2">Secondary</mdw-radio>
+              <mdw-radio name=radio-demo ink="tertiary" value="3">Tertiary</mdw-radio>
+              <mdw-radio name=radio-demo ink="primary" disabled value="4">Disabled</mdw-radio>
+              <mdw-radio name=radio-demo ink="primary" disabled value="5" checked>Disabled Checked</mdw-radio>
+            </form>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h2 slot=heading>No Label</h2>
+          <demo-flex gap12>
+            <form>
+              <mdw-radio name=radio-demo aria-label="Default" value="1"></mdw-radio>
+              <mdw-radio name=radio-demo aria-label="Secondary" ink="secondary" value="2"></mdw-radio>
+              <mdw-radio name=radio-demo aria-label="Tertiary" ink="tertiary" value="3"></mdw-radio>
+            </form>
+          </demo-flex>
+        </demo-section>
+    </demo-section>
+    <demo-section id=slider>
+      <h1 slot="heading">Sliders</h2>
+          <h2 slot=heading>Continuous</h2>
+          <demo-flex gap12>
+              <mdw-slider value="1"></mdw-slider>
+              <mdw-slider ink="secondary" value="2" min="-10" max="10"></mdw-slider>
+              <mdw-slider ink="tertiary" min="-10" value="3"></mdw-slider>
+              <mdw-slider class=mdw-custom ink="green" min="10" max="90"></mdw-slider>
+              <mdw-slider ink="error" value="30" disabled></mdw-slider>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h2 slot=heading>Discrete</h2>
+          <demo-flex gap12>
           </demo-flex>
         </demo-section>
     </demo-section>
