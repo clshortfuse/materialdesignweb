@@ -126,13 +126,12 @@ export default class Input extends Ripple {
     `,
   ];
 
-  
   /**
    * @param {MouseEvent|PointerEvent} event
    * @this {HTMLInputElement}
    * @return {void}
    */
-   static onInputClick(event) {
+  static onInputClick(event) {
     /** @type {{host:Input}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
     if (host.hasAttribute('disabled')) {
