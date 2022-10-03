@@ -11,7 +11,7 @@ A standards-focused, zero-dependency implemention of Material Design 3 (Material
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/2ba4c6b/docs/
+https://rawcdn.githack.com/clshortfuse/materialdesignweb/ec0e740/docs/
 
 # Getting started
 
@@ -80,9 +80,9 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/2ba4c6b/docs/
 | [Navigation Drawer](components/NavDrawer.js)                 | `<mdw-nav-drawer>`                             | `<nav>`                                                            |  alpha  |
 | [Navigation Rail](components/NavRail.js)                     | `<mdw-nav-rail>`                               | `<nav>`                                                            |  beta   |
 | [Progress Indicator: Linear](components/Progress.js)         | `<mdw-progress>`                               | `<progress>`                                                       |  beta   |
-| Progress Indicator: Circle                                   |                                                |                                                                    | rewrite |
-| Radio Button                                                 |                                                |                                                                    | rewrite |
-| Slider: Continuous                                           |                                                |                                                                    | rewrite |
+| [Progress Indicator: Circular](components/Progress.js)       | `<mdw-progress circle>`                        | `<progress>`                                                       |  beta   |
+| [Radio Button](components/Radio.js)                          | `<mdw-radio>`                                  | `<input type=radio>`                                               |  beta   |
+| [Slider: Continuous](components/Slider.js)                   | `<mdw-slider>`                                 | `<input type=range>`                                               |  beta   |
 | Slider: Discrete                                             |                                                |                                                                    | planned |
 | Switch                                                       |                                                |                                                                    | rewrite |
 | Text fields: Filled                                          |                                                |                                                                    | rewrite |
