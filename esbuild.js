@@ -1,3 +1,4 @@
+import { writeFileSync } from 'node:fs';
 import process from 'node:process';
 
 import browserslistToEsbuild from 'browserslist-to-esbuild';
@@ -18,6 +19,7 @@ await esbuild.build({
   bundle: true,
   keepNames: true,
   legalComments: 'linked',
+  metafile: cliArgs.has('--metafile'),
   target,
   outfile: 'index.min.js',
   inject: ['polyfills.js'],
@@ -45,6 +47,19 @@ await esbuild.build({
           }
           export default styles;`;
         return { contents };
+      });
+      build.onEnd(async ({ metafile }) => {
+        if (metafile) {
+          const metaString = JSON.stringify(metafile);
+          writeFileSync('meta.json', JSON.stringify(metafile));
+          console.log({
+            'meta.json': metaString.length,
+            ...Object.fromEntries(
+              Object.entries(metafile.outputs)
+                .map(([key, value]) => [key, value.bytes]),
+            ),
+          });
+        }
       });
     },
   }],
