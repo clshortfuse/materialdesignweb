@@ -92,7 +92,7 @@
   transition-property: background-color, color;
   transition-timing-function: var(--mdw-ripple-standard-easing);
   /* stylelint-disable-next-line liberty/use-logical-spec */
-  will-change: transform, opacity, top, left, height, width;
+  will-change: transform, opacity;
 
   opacity: 0.12;
   transform: scale(0);
