@@ -121,10 +121,71 @@ export default class Input extends Ripple {
     ...super.fragments,
     /* html */`
       <label id=label>
-        <input id=input aria-labelledby="slot" >
+        <input id=input aria-labelledby="slot">
       </label>
     `,
   ];
+
+  
+  /**
+   * @param {MouseEvent|PointerEvent} event
+   * @this {HTMLInputElement}
+   * @return {void}
+   */
+   static onInputClick(event) {
+    /** @type {{host:Input}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    if (host.hasAttribute('disabled')) {
+      event.preventDefault();
+      return;
+    }
+
+    if (this.type !== 'radio') return;
+    if (this.required) return;
+    if (!this.hasAttribute('checked')) return;
+
+    this.checked = false;
+    host.toggleAttribute('checked', false);
+  }
+
+  /**
+   * @param {KeyboardEvent} event
+   * @this {HTMLInputElement}
+   * @return {void}
+   */
+  static onInputKeydown(event) {
+    if (event.key !== 'Spacebar' && event.key !== ' ') return;
+    /** @type {{host:Input}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    if (host.hasAttribute('disabled')) {
+      event.preventDefault();
+      return;
+    }
+
+    if (this.type !== 'radio') return;
+    if (this.required) return;
+    if (!this.hasAttribute('checked')) return;
+    event.preventDefault();
+
+    this.checked = false;
+    host.toggleAttribute('checked', false);
+    event.preventDefault();
+  }
+
+  /**
+   * @param {Event} event
+   * @this {HTMLInputElement} this
+   * @return {void}
+   */
+  static onInputChange(event) {
+    /** @type {{host:Input}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    if (host.hasAttribute('disabled')) {
+      event.preventDefault();
+      return;
+    }
+    host.toggleAttribute('checked', this.checked);
+  }
 
   refreshFormAssociation() {
     const newTarget = this.elementInternals.form ?? Input.GlobalListener;
@@ -245,9 +306,19 @@ export default class Input extends Ripple {
     super.connectedCallback();
     this.removeEventListener('keydown', Ripple.onRippleKeyDown);
     this.inputElement.addEventListener('keydown', Ripple.onRippleKeyDown, { passive: true });
+    this.inputElement.addEventListener('click', Input.onInputClick);
+    this.inputElement.addEventListener('change', Input.onInputChange);
+    this.inputElement.addEventListener('keydown', Input.onInputKeydown);
     if (!this.elementInternals.form) {
       this.formAssociatedCallback(null);
     }
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.inputElement.removeEventListener('click', Input.onInputClick);
+    this.inputElement.removeEventListener('change', Input.onInputChange);
+    this.inputElement.removeEventListener('keydown', Input.onInputKeydown);
   }
 }
 

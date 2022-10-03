@@ -1,0 +1,81 @@
+/* https://m3.material.io/components/radio-button/specs */
+
+:host {
+  --mdw-ink: var(--mdw-color__primary);
+  gap: var(--mdw-radio__gap, 8px);
+
+  direction: var(--mdw-radio__direction, initial);
+}
+
+:host([ink]) {
+  color: inherit;
+}
+
+label {
+  display: inline-grid;
+  align-items: center;
+  gap: inherit;
+  grid-auto-flow: column;
+  grid-template-rows: minmax(40px, min-content);
+  grid-template-columns: 40px;
+  justify-content: center;
+
+  border-radius: 50%;
+}
+
+#icon {
+  display: flex;
+  position: relative;
+  align-items: center;
+  grid-column: 1;
+  justify-content: center;
+
+  block-size: 40px;
+  inline-size: 40px;
+
+  background-color: transparent;
+  border-radius: 50%;
+  color: rgb(var(--mdw-color__on-surface-variant));
+}
+
+:host([checked]) #icon {
+  color: rgb(var(--mdw-ink));
+}
+
+#icon::before {
+  content: '';
+
+  position: absolute;
+
+  box-sizing: border-box;
+  block-size: 20px;
+
+  inline-size: 20px;
+  border: solid 1px currentColor;
+
+  border-radius: 50%;
+}
+
+#icon::after {
+  content: '';
+
+  position: absolute;
+
+  block-size: 10px;
+  inline-size: 10px;
+
+  transition: transform 100ms;
+
+  transform: scale(0);
+
+  background-color: currentColor;
+  border-radius: inherit;
+}
+
+:host([checked]) #icon::after {
+  transform: scale(1);
+}
+
+:host(:active) #ripple-inner {
+  animation-name: var(--mdw-ripple__fade-in-name), none;
+}

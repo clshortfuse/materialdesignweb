@@ -57,7 +57,6 @@ export default class FilterChip extends Chip {
         break;
       default:
     }
-    super.attributeChangedCallback(name, oldValue, newValue);
   }
 
   static fragments = [
@@ -67,78 +66,4 @@ export default class FilterChip extends Chip {
       <mdw-icon id=trailing-icon aria-hidden="true"></mdw-icon>
     `,
   ];
-
-  /**
-   * @param {MouseEvent|PointerEvent} event
-   * @this {HTMLInputElement}
-   * @return {void}
-   */
-  static onInputClick(event) {
-    /** @type {{host:FilterChip}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    if (host.hasAttribute('disabled')) {
-      event.preventDefault();
-      return;
-    }
-
-    if (this.type !== 'radio') return;
-    if (this.required) return;
-    if (!this.hasAttribute('checked')) return;
-
-    this.checked = false;
-    host.toggleAttribute('checked', false);
-  }
-
-  /**
-   * @param {KeyboardEvent} event
-   * @this {HTMLInputElement}
-   * @return {void}
-   */
-  static onInputKeydown(event) {
-    if (event.key !== 'Spacebar' && event.key !== ' ') return;
-    /** @type {{host:FilterChip}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    if (host.hasAttribute('disabled')) {
-      event.preventDefault();
-      return;
-    }
-
-    if (this.type !== 'radio') return;
-    if (this.required) return;
-    if (!this.hasAttribute('checked')) return;
-    event.preventDefault();
-
-    this.checked = false;
-    host.toggleAttribute('checked', false);
-    event.preventDefault();
-  }
-
-  /**
-   * @param {Event} event
-   * @this {HTMLInputElement} this
-   * @return {void}
-   */
-  static onInputChange(event) {
-    /** @type {{host:FilterChip}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    if (host.hasAttribute('disabled')) {
-      event.preventDefault();
-      return;
-    }
-    host.toggleAttribute('checked', this.checked);
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.inputElement.addEventListener('click', FilterChip.onInputClick);
-    this.inputElement.addEventListener('change', FilterChip.onInputChange);
-    this.inputElement.addEventListener('keydown', FilterChip.onInputKeydown);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.inputElement.removeEventListener('click', FilterChip.onInputClick);
-    this.inputElement.removeEventListener('change', FilterChip.onInputChange);
-    this.inputElement.removeEventListener('keydown', FilterChip.onInputKeydown);
-  }
 }
