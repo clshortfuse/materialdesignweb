@@ -1,0 +1,155 @@
+/** https://github.com/material-components/material-components-android/blob/ed77ab36ccac98df24e55060d58406c5981a9062/lib/java/com/google/android/material/progressindicator/ */
+
+:host {
+  --mdw-progress__line1-head__timing: cubic-bezier(0.2, 0.8, 0, 1.0);
+  --mdw-progress__line1-tail__timing: cubic-bezier(0.4, 0.0, 1.0, 1.0);
+  --mdw-progress__line2-head__timing: cubic-bezier(0.0, 0.65, 0, 1.0);
+  --mdw-progress__line2-tail__timing: cubic-bezier(0.1, 0.45, 0, 1.0);
+  --mdw-progress__line__duration: 1800ms;
+}
+
+.line {
+  transition: opacity var(--mdw-progress__opacity__duration);
+  will-change: opacity;
+
+  opacity: 1;
+}
+
+.line,
+.line::after {
+  position: absolute;
+
+  inset: 0;
+  overflow: hidden;
+
+  animation-duration: var(--mdw-progress__line__duration);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+}
+
+.line::after {
+  content: '';
+
+  animation: inherit;
+  will-change: transform;
+
+  background-color: currentColor;
+}
+
+#line1 {
+  animation-name: l1h;
+}
+
+#line2 {
+  animation-name: l2h;
+}
+
+#line1::after {
+  animation-name: l1t;
+}
+
+#line2::after {
+  animation-name: l2t;
+}
+
+:host([value]) .line {
+  transition: opacity var(--mdw-progress__opacity__duration), visibility 1ms var(--mdw-progress__opacity__duration);
+
+  opacity: 0;
+  visibility: hidden;
+}
+
+/**
+  * L1H = 1267 / +533 = 70.39% - 100%
+  * L1T = 1000 / +567 = 55.56% - 87.05%
+  * L2H = 0333 / +850 = 18.50% - 65.72%
+  * L2T = 0000 / +750 = 0% - 41.67%
+  * Total = 1800ms
+  *
+  *    t      l1h    l1t      l2h     l2t
+  * --------------------------------------
+  * 0.0000  0.0000  0.0000  0.0000  0.0000
+  * 0.1850  0.0000  0.0000  0.0000  0.5899
+  * 0.4167  0.0000  0.0000  0.7374  1.0000
+  * 0.5556  0.0000  0.0000  0.9072  1.0000
+  * 0.6572  0.0000  0.1544  1.0000  1.0000
+  * 0.7039  0.0000  0.2939  1.0000  1.0000
+  * 0.8706  0.7918  1.0000  1.0000  1.0000
+  * 1.0000  1.0000  1.0000  1.0000  1.0000
+*/
+
+@keyframes l1h {
+  0% {
+    transform: translateX(0%);
+  }
+
+  70.4% {
+    animation-timing-function: var(--mdw-progress__line1-head__timing);
+
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes l1t {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  55.6% {
+    animation-timing-function: var(--mdw-progress__line1-tail__timing);
+
+    transform: translateX(-100%);
+  }
+
+  87.1% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+
+}
+
+@keyframes l2h {
+  0% {
+    transform: translateX(0%);
+  }
+
+  18.5% {
+    animation-timing-function: var(--mdw-progress__line2-head__timing);
+
+    transform: translateX(0%);
+  }
+
+  65.72% {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+
+}
+
+@keyframes l2t {
+  0% {
+    animation-timing-function: var(--mdw-progress__line2-tail__timing);
+
+    transform: translateX(-100%);
+  }
+
+  41.67% {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(0%);
+  }
+
+}

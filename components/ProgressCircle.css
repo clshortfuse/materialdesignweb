@@ -1,0 +1,238 @@
+/** https://github.com/material-components/material-components-android/blob/ed77ab36ccac98df24e55060d58406c5981a9062/lib/java/com/google/android/material/progressindicator/CircularIndeterminateAnimatorDelegate.java */
+
+:host {
+  --mdw-progress__circle__timing: cubic-bezier(0.4, 0.0, 0.2, 1);
+
+  --mdw-progress__circle__duration: 5400ms;
+  --mdw-progress__circle__duration__expand: 667ms;
+  --mdw-progress__circle__duration__collapse: 667ms;
+  --mdw-progress__circle__duration__fade-in: 333ms;
+  --mdw-progress__circle__duration__complete-end: 333ms;
+}
+
+#circle {
+  --previous: 0;
+  --value: 0;
+
+  --startA: min(0.5, var(--previous));
+  --endA: min(0.5, var(--value));
+
+  --travelA: max(
+    calc(var(--startA) - var(--endA)),
+    calc(var(--endA) - var(--startA))
+  );
+  --delayA: max(0, calc(var(--previous) - 0.5));
+
+  --startB: max(0, calc(var(--previous) - 0.5));
+  --endB: max(0, calc(var(--value) - 0.5));
+
+  --travelB: max(
+    calc(var(--startB) - var(--endB)),
+    calc(var(--endB) - var(--startB))
+  );
+  --delayB: max(0, 0.5 - calc(var(--previous)));
+
+  display: none;
+
+  position: absolute;
+  inset: 0;
+}
+
+:host([circle]) {
+  block-size: 48px;
+  inline-size: 48px;
+}
+
+:host([circle]:not([color])) {
+  background-color: transparent;
+}
+
+:host([circle]) .line {
+  display: none;
+}
+
+:host([circle]) progress {
+  visibility: hidden;
+}
+
+:host([circle]) #circle {
+  display: block;
+}
+
+.semi {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+
+  box-sizing: border-box;
+}
+
+#semi1 {
+  inset-inline-start: 50%;
+}
+
+#semi2 {
+  inset-inline-end: 50%;
+}
+
+.semi::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  box-sizing: border-box;
+  border: solid currentcolor 4px;
+
+  transition: transform 400ms;
+  transition-timing-function: linear;
+
+  transform: rotate(var(--rotation));
+
+  background-color: transparent;
+  border-radius: 50%;
+}
+
+#semi1::after {
+  --rotation: min(180deg, calc(var(--value) * 360deg));
+  inset-inline-start: -100%;
+
+  transition-delay: calc(var(--delayA) * var(--mdw-progress__circle__duration__expand));
+  transition-duration: calc(var(--travelA) * var(--mdw-progress__circle__duration__expand));
+
+  clip-path: inset(0 50% 0 0);
+}
+
+#semi2::after {
+  --rotation: max(0deg, calc(var(--value) * 360deg - 180deg));
+  inset-inline-end: -100%;
+
+  transition-delay: calc(var(--delayB) * var(--mdw-progress__circle__duration__expand));
+  transition-duration: calc(var(--travelB) * var(--mdw-progress__circle__duration__expand));
+
+  clip-path: inset(0 0 0 50%);
+}
+
+#indeterminate-circle {
+  display: none;
+  position: absolute;
+  inset: 0;
+
+  animation: rotate-cw calc(var(--mdw-progress__circle__duration) / 4) linear infinite;
+}
+
+:host([circle]:not([value])) #indeterminate-circle {
+  display: block;
+}
+
+.arc {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+
+  box-sizing: border-box;
+
+  animation: rotate-jump var(--mdw-progress__circle__duration) steps(1,end) infinite;
+}
+
+.arc::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  box-sizing: border-box;
+  border: solid currentcolor 4px;
+
+  animation: grow-shrink calc(var(--mdw-progress__circle__duration) / 4) var(--mdw-progress__circle__timing) infinite;
+
+  background-color: transparent;
+  border-radius: 50%;
+}
+
+#arc2 {
+  inset-block-end: 50%;
+  inset-inline-start: 50%;
+
+  transform-origin: 0 100%;
+}
+
+#arc3 {
+  inset-block-start: 50%;
+  inset-inline-end: 50%;
+
+  transform-origin: 100% 0;
+}
+
+#arc4 {
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+
+  transform-origin: 0 0;
+}
+
+#arc2:after {
+  inset-block-end: -100%;
+  inset-inline-start: -100%;
+
+  clip-path: polygon(0% 0%, 50% 0%, 50% 50%, 100% 50%, 100% 100%, 0% 100%);
+}
+
+#arc3:after {
+  inset-block-start: -100%;
+  inset-inline-end: -100%;
+
+  clip-path: inset(0 50% 50% 0);
+}
+
+#arc4:after {
+  inset-block-start: -100%;
+  inset-inline-start: -100%;
+
+  clip-path: inset(0 50% 0 0);
+}
+
+@keyframes rotate-cw {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate-jump {
+  0% { transform: scaleX(1) rotate(0deg); }
+
+  12.5% { transform: scaleX(-1) rotate(-270deg); }
+
+  25% { transform: scaleX(1) rotate(270deg); }
+
+  37.5% {transform: scaleX(-1) rotate(-180deg);}
+
+  50% { transform: scaleX(1) rotate(180deg); }
+
+  62.5% { transform: scaleX(-1) rotate(-90deg); }
+
+  75% { transform: scaleX(1) rotate(90deg); }
+
+  87.5% { transform: scaleX(-1) rotate(0deg); }
+
+  to { transform: scaleX(1) rotate(0deg); }
+}
+
+@keyframes grow-shrink {
+  from {
+    transform: rotate(calc(0.01 * 360deg));
+  }
+
+  50% {
+    transform: rotate(calc(0.73 * 360deg));
+  }
+
+  to {
+    transform: rotate(calc(0.01 * 360deg));
+  }
+
+}
