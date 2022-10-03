@@ -20,7 +20,15 @@ label {
   grid-template-columns: 40px;
   justify-content: center;
 
+  cursor: pointer;
+
   border-radius: 50%;
+}
+
+:host([disabled]) label {
+  cursor: not-allowed;
+
+  opacity: 0.38;
 }
 
 #icon {
@@ -38,7 +46,7 @@ label {
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
-:host([checked]) #icon {
+:host([checked]:not([disabled])) #icon {
   color: rgb(var(--mdw-ink));
 }
 
