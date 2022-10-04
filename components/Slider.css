@@ -1,8 +1,8 @@
 /* https://m3.material.io/components/radio-button/specs */
 
 :host {
-  --mdw-ink: var(--mdw-color__primary);
-  --mdw-bg: var(--mdw-color__surface-variant);
+  --mdw-ink: var(--mdw-color__on-primary);
+  --mdw-bg: var(--mdw-color__primary);
 
   --mdw-slider__hover-opacity: 0.08;
   --mdw-slider__focus-opacity: 0.12;
@@ -12,15 +12,19 @@
   display: block;
 
   min-block-size: 4px;
-  inline-size: 100%;
+  inline-size: 88px;
 
-  background-color: rgb(var(--mdw-bg));
+  background-color: transparent;
 
   border-radius: 99px;
 
-  color: rgb(var(--mdw-ink));
-
   direction: var(--mdw-radio__direction, initial);
+
+}
+
+:host,
+:host([color]) {
+  background-color: transparent;
 }
 
 label {
@@ -29,6 +33,7 @@ label {
   inset: 0;
 
   border-radius: 50%;
+  color: rgb(var(--mdw-bg));
 }
 
 :host([disabled]) label {
@@ -38,6 +43,17 @@ label {
 }
 
 input {
+  /* Trackbar needs to bleed over to align center of thumb to edge */
+  /* Devs likely want the bar to align, but must account for proper margins */
+  inset-block: -18px;
+  inset-inline: -10px;
+  overflow: visible;
+
+  block-size: 40px;
+
+  /* Firefox doesn't calculate auto properly */
+  inline-size: calc(100% + 20px);
+
   appearance: none;
 
   opacity: 1;
@@ -71,14 +87,8 @@ input::-webkit-slider-thumb {
   block-size: 10px;
   inline-size: 10px;
 
-  border: solid 5px rgba(
-    var(--mdw-ink),
-    calc(
-      var(--mdw-slider__hover-opacity) +
-      var(--mdw-slider__focus-opacity) +
-      var(--mdw-slider__pressed-opacity)
-    )
-  );
+  border: solid 5px rgba(var(--mdw-bg),
+  calc(var(--mdw-slider__hover-opacity) + var(--mdw-slider__focus-opacity) + var(--mdw-slider__pressed-opacity)));
 
   -webkit-appearance: none;
 
@@ -111,14 +121,8 @@ input::-moz-range-thumb {
   block-size: 10px;
   inline-size: 10px;
 
-  border: solid 5px rgba(
-    var(--mdw-ink),
-    calc(
-      var(--mdw-slider__hover-opacity) +
-      var(--mdw-slider__focus-opacity) +
-      var(--mdw-slider__pressed-opacity)
-    )
-  );
+  border: solid 5px rgba(var(--mdw-bg),
+  calc(var(--mdw-slider__hover-opacity) + var(--mdw-slider__focus-opacity) + var(--mdw-slider__pressed-opacity)));
 
   -webkit-appearance: none;
 
@@ -148,32 +152,115 @@ input::-moz-range-thumb:not(:hover) {
   --value: 0;
   position: absolute;
   inset: 0;
-  overflow: hidden;
 
-  background-color: inherit;
+  pointer-events: none;
+  user-select: none;
+
+  background-color: rgb(var(--mdw-color__surface-variant));
   border-radius: inherit;
 }
 
-#track::after {
+/* Active Indicator */
+#track-active {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+#track-active::before {
   content: '';
 
   position: absolute;
   inset: 0;
 
-  transition: transform 200ms;
+  will-change: transform;
 
   transform: scaleX(var(--value));
   transform-origin: 0 0;
 
-  background-color: currentColor;
+  background-color: rgb(var(--mdw-bg));
+}
+
+#track-label-anchor {
+  display: flex;
+  position: absolute;
+  inset-block-end: 16px;
+  inset-inline: 0;
+  align-items: flex-start;
+  flex-direction: column;
+
+  block-size: auto;
+  inline-size: 1%;
+
+  will-change: transform;
+
+  transform: translateX(calc(var(--value) * 100 * 100%));
+  transform-origin: 0 0;
+
+}
+
+#track-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: content-box;
+
+  margin-block-end: 6px;
+
+  transition: transform 200ms;
+
+  will-change: transform;
+
+  transform: translateX(-50%) scale(1);
+
+  font-weight: var(--mdw-typescale__label-medium__font-weight);
+  line-height: var(--mdw-typescale__label-medium__line-height);
+  font-family: var(--mdw-typescale__label-medium__font-family);
+  letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
+}
+
+#track-label:is([hidden],[text=""]) {
+  transform: translateX(-50%) scale(0);
+}
+
+#track-label::before {
+  content: attr(text);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-block-size: 28px;
+  min-inline-size: 28px;
+
+  z-index: 1;
+
+  background-color: rgb(var(--mdw-bg));
+  border-radius: 50%;
+  color: rgb(var(--mdw-ink));
+}
+
+#track-label::after {
+  content: "";
+
+  position: absolute;
+  inset-block: 50% -6px;
+  inset-inline: 4px;
+
+  margin-block-start: 5px;
+
+  clip-path: polygon(-25% 0%, 125% 0%, 50% 100%);
+
+  background-color: rgb(var(--mdw-bg));
 }
 
 :host([disabled]) {
   --mdw-slider__cursor: not-allowed;
+  --mdw-bg: var(--mdw-color__on-surface);
   opacity: 0.38;
 
   background-color: rgb(var(--mdw-color__on-surface), calc(0.12 / 0.38));
-  color: rgb(var(--mdw-color__on-surface));
 }
 
 :host([disabled]) label {
