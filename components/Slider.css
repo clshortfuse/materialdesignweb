@@ -12,7 +12,7 @@
   display: block;
 
   min-block-size: 4px;
-  inline-size: 88px;
+  min-inline-size: 88px;
 
   background-color: transparent;
 
@@ -43,16 +43,11 @@ label {
 }
 
 input {
-  /* Trackbar needs to bleed over to align center of thumb to edge */
-  /* Devs likely want the bar to align, but must account for proper margins */
   inset-block: -18px;
-  inset-inline: -10px;
+
   overflow: visible;
 
   block-size: 40px;
-
-  /* Firefox doesn't calculate auto properly */
-  inline-size: calc(100% + 20px);
 
   appearance: none;
 
@@ -69,15 +64,25 @@ input:not(:focus) {
 }
 
 input::-webkit-slider-runnable-track {
+  margin-inline:-10px;
+
   appearance: none;
 
   background-color: transparent;
 }
 
-input::-moz-range-thumb {
-  appearance: none;
+@supports (-moz-appearance:none ){
+  input {
+    inset-inline: -10px;
 
-  background-color: transparent;
+    inline-size: calc(100% + 20px);
+  }
+}
+
+input::-moz-range-track {
+  inline-size: calc(100% + 20px) !important;
+
+  appearance: none;
 }
 
 input::-webkit-slider-thumb {
@@ -124,7 +129,7 @@ input::-moz-range-thumb {
   border: solid 5px rgba(var(--mdw-bg),
   calc(var(--mdw-slider__hover-opacity) + var(--mdw-slider__focus-opacity) + var(--mdw-slider__pressed-opacity)));
 
-  -webkit-appearance: none;
+  appearance: none;
 
   cursor: var(--mdw-slider__cursor);
 
@@ -165,6 +170,8 @@ input::-moz-range-thumb:not(:hover) {
   position: absolute;
   inset: 0;
   overflow: hidden;
+
+  border-radius: 99px;
 }
 
 #track-active::before {
@@ -196,7 +203,7 @@ input::-moz-range-thumb:not(:hover) {
 
   transform: translateX(calc(var(--value) * 100 * 100%));
   transform-origin: 0 0;
-
+  z-index: 24;
 }
 
 #track-label {
@@ -209,10 +216,11 @@ input::-moz-range-thumb:not(:hover) {
   margin-block-end: 6px;
 
   transition: transform 200ms;
-
   will-change: transform;
 
   transform: translateX(-50%) scale(1);
+
+  transform-origin: 50% 100%;
 
   font-weight: var(--mdw-typescale__label-medium__font-weight);
   line-height: var(--mdw-typescale__label-medium__line-height);

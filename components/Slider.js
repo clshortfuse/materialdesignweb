@@ -25,6 +25,7 @@ export default class Slider extends Input {
     super.attributeChangedCallback(name, oldValue, newValue);
     if (oldValue == null && newValue == null) return;
     switch (name) {
+      case 'step':
       case 'min':
       case 'max':
       case 'value':
@@ -72,12 +73,14 @@ export default class Slider extends Input {
     let clientX;
     let isActive;
 
-    if ('touches' in event) {
-      if (!event.touches.length) return;
-      const [touch] = event.touches;
-      isActive = true;
-      // @ts-ignore Might exist
-      ({ offsetX, clientX } = touch);
+    const isTouch = 'touches' in event;
+    if (isTouch) {
+      if (event.touches.length) {
+        const [touch] = event.touches;
+        isActive = true;
+        // @ts-ignore Might exist
+        ({ offsetX, clientX } = touch);
+      }
     } else {
       // Ignore mouse drag-over
       // eslint-disable-next-line no-bitwise
@@ -90,9 +93,8 @@ export default class Slider extends Input {
       offsetX = clientX - rect.left;
     }
 
-    const realWidth = this.clientWidth - 10;
-    const realOffset = offsetX - 10;
-    let position = (realOffset / realWidth);
+    const { clientWidth } = this;
+    let position = (offsetX / clientWidth);
     if (position > 1) {
       position = 1;
     } else if (position < 0) {
@@ -101,17 +103,26 @@ export default class Slider extends Input {
 
     let isHoveringThumb = false;
     if (isActive) {
-      host.updateTrack(position);
       isHoveringThumb = true;
-    } else {
+      const { min, max, step } = this;
+      const nMin = (min === '') ? 0 : Number.parseFloat(min);
+      const nMax = (max === '') ? 100 : Number.parseFloat(max);
+      const nStep = (step === '') ? 1 : Number.parseFloat(step);
+
+      const currentValue = position * (nMax - nMin) + nMin;
+      const roundedValue = Math.round(currentValue / nStep) * nStep;
+      const roundedPosition = (roundedValue - nMin) / (nMax - nMin);
+      host.updateTrack(roundedPosition);
+      host.updateLabel(roundedValue.toString(10));
+    } else if (!isTouch) {
       const valueAsFraction = host.getValueAsFraction();
-      const thumbOffset = valueAsFraction * realWidth;
+      const thumbOffset = valueAsFraction * clientWidth;
       const thumbMin = thumbOffset - 20;
       const thumbMax = thumbOffset + 20;
-      isHoveringThumb = realOffset >= thumbMin && realOffset <= thumbMax;
+      isHoveringThumb = offsetX >= thumbMin && offsetX <= thumbMax;
     }
 
-    if (isHoveringThumb) {
+    if (isHoveringThumb || document.activeElement === host) {
       host.showLabel();
     } else {
       host.hideLabel();
@@ -154,13 +165,21 @@ export default class Slider extends Input {
    * @this Slider
    */
   static onLeaveEvent() {
+    if (document.activeElement === this) return;
     this.hideLabel();
   }
 
   static onInputFocus() {
     /** @type {{host:Slider}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
+    host.updateTrack();
     host.showLabel();
+  }
+
+  static onInputBlur() {
+    /** @type {{host:Slider}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    host.hideLabel();
   }
 
   static elementName = 'mdw-slider';
@@ -174,9 +193,13 @@ export default class Slider extends Input {
     this.inputElement.addEventListener('mousemove', Slider.onInputMouseOrTouch);
     this.inputElement.addEventListener('touchmove', Slider.onInputMouseOrTouch);
     this.inputElement.addEventListener('touchstart', Slider.onInputMouseOrTouch);
+    this.inputElement.addEventListener('touchend', Slider.onInputMouseOrTouch);
+    this.inputElement.addEventListener('touchleave', Slider.onInputMouseOrTouch);
+    this.inputElement.addEventListener('touchcancel', Slider.onInputMouseOrTouch);
+    this.inputElement.addEventListener('mouseout', Slider.onInputMouseOrTouch);
     this.inputElement.addEventListener('focus', Slider.onInputFocus);
+    this.inputElement.addEventListener('blur', Slider.onInputBlur);
     this.addEventListener('mouseout', Slider.onLeaveEvent);
-    this.addEventListener('blur', Slider.onLeaveEvent);
     this.updateTrack();
   }
 
