@@ -971,10 +971,13 @@
           <h2 slot=heading>Badges</h2>
           <demo-flex wrap gap12>
             <mdw-nav-bar color="primary">
-              <mdw-nav-item show-label=active icon="change_history" href="#navbar" color=primary-container badge>Primary Container
+              <mdw-nav-item show-label=active icon="change_history" href="#navbar" color=primary-container badge>Primary
+                Container
               </mdw-nav-item>
-              <mdw-nav-item show-label=active icon="change_history" href="#navbar" badge=1 color=tertiary>Tertiary</mdw-nav-item>
-              <mdw-nav-item class=mdw-custom show-label=active icon="change_history" href="#navbar" badge="999+" color=green-container>
+              <mdw-nav-item show-label=active icon="change_history" href="#navbar" badge=1 color=tertiary>Tertiary
+              </mdw-nav-item>
+              <mdw-nav-item class=mdw-custom show-label=active icon="change_history" href="#navbar" badge="999+"
+                color=green-container>
                 Green Container
               </mdw-nav-item>
             </mdw-nav-bar>
@@ -984,9 +987,12 @@
           <h2 slot=heading>No label</h2>
           <demo-flex wrap gap12>
             <mdw-nav-bar>
-              <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge aria-label="Default">Default</mdw-nav-item>
-              <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge=1 color=primary-container aria-label="Primary">Primary</mdw-nav-item>
-              <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge="999+" color=tertiary-container aria-label="Tertiary">Tertiary Container</mdw-nav-item>
+              <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge aria-label="Default">Default
+              </mdw-nav-item>
+              <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge=1 color=primary-container
+                aria-label="Primary">Primary</mdw-nav-item>
+              <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge="999+" color=tertiary-container
+                aria-label="Tertiary">Tertiary Container</mdw-nav-item>
             </mdw-nav-bar>
           </demo-flex>
         </demo-section>
@@ -1118,44 +1124,59 @@
     </demo-section>
     <demo-section id=radio>
       <h1 slot="heading">Radio Buttons</h2>
-          <h2 slot=heading>Normal</h2>
-          <demo-flex gap12>
-            <form>
-              <mdw-radio name=radio-demo value="1">Default</mdw-radio>
-              <mdw-radio name=radio-demo ink="secondary" value="2">Secondary</mdw-radio>
-              <mdw-radio name=radio-demo ink="tertiary" value="3">Tertiary</mdw-radio>
-              <mdw-radio name=radio-demo ink="primary" disabled value="4">Disabled</mdw-radio>
-              <mdw-radio name=radio-demo ink="primary" disabled value="5" checked>Disabled Checked</mdw-radio>
-            </form>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h2 slot=heading>No Label</h2>
-          <demo-flex gap12>
-            <form>
-              <mdw-radio name=radio-demo aria-label="Default" value="1"></mdw-radio>
-              <mdw-radio name=radio-demo aria-label="Secondary" ink="secondary" value="2"></mdw-radio>
-              <mdw-radio name=radio-demo aria-label="Tertiary" ink="tertiary" value="3"></mdw-radio>
-            </form>
-          </demo-flex>
-        </demo-section>
+        <h2 slot=heading>Normal</h2>
+        <demo-flex gap12>
+          <form>
+            <mdw-radio name=radio-demo value="1">Default</mdw-radio>
+            <mdw-radio name=radio-demo ink="secondary" value="2">Secondary</mdw-radio>
+            <mdw-radio name=radio-demo ink="tertiary" value="3">Tertiary</mdw-radio>
+            <mdw-radio name=radio-demo ink="primary" disabled value="4">Disabled</mdw-radio>
+            <mdw-radio name=radio-demo ink="primary" disabled value="5" checked>Disabled Checked</mdw-radio>
+          </form>
+        </demo-flex>
+    </demo-section>
+    <demo-section>
+      <h2 slot=heading>No Label</h2>
+      <demo-flex gap12>
+        <form>
+          <mdw-radio name=radio-demo aria-label="Default" value="1"></mdw-radio>
+          <mdw-radio name=radio-demo aria-label="Secondary" ink="secondary" value="2"></mdw-radio>
+          <mdw-radio name=radio-demo aria-label="Tertiary" ink="tertiary" value="3"></mdw-radio>
+        </form>
+      </demo-flex>
+    </demo-section>
     </demo-section>
     <demo-section id=slider>
       <h1 slot="heading">Sliders</h2>
-          <h2 slot=heading>Continuous</h2>
-          <demo-flex gap12>
-              <mdw-slider value="1"></mdw-slider>
-              <mdw-slider ink="secondary" value="2" min="-10" max="10"></mdw-slider>
-              <mdw-slider ink="tertiary" min="-10" value="3"></mdw-slider>
-              <mdw-slider class=mdw-custom ink="green" min="10" max="90"></mdw-slider>
-              <mdw-slider ink="error" value="30" disabled></mdw-slider>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h2 slot=heading>Discrete</h2>
-          <demo-flex gap12>
-          </demo-flex>
-        </demo-section>
+        <h2 slot=heading>Continuous</h2>
+        <demo-flex wrap style="margin:24px; gap:48px">
+          <mdw-slider value="1"></mdw-slider>
+          <mdw-slider color="secondary" value="2" min="-10" max="10"></mdw-slider>
+          <mdw-slider color="tertiary" min="-10" value="3"></mdw-slider>
+          <mdw-slider class=mdw-custom color="green" min="10" max="90"></mdw-slider>
+          <mdw-slider color="error" value="30" disabled></mdw-slider>
+        </demo-flex>
+    </demo-section>
+    <demo-section>
+      <h2 slot=heading>Discrete</h2>
+      <demo-flex wrap style="margin:24px; gap:48px">
+        <mdw-slider value="1" list="tickmarks">
+          <datalist id="tickmarks" slot="list">
+            <option value="0" label="0%"></option>
+            <option value="10"></option>
+            <option value="20"></option>
+            <option value="30"></option>
+            <option value="40"></option>
+            <option value="50" label="50%"></option>
+            <option value="60"></option>
+            <option value="70"></option>
+            <option value="80"></option>
+            <option value="90"></option>
+            <option value="100" label="100%"></option>
+          </datalist>
+        </mdw-slider>
+      </demo-flex>
+    </demo-section>
     </demo-section>
     <demo-dummy-text></demo-dummy-text>
   </main>

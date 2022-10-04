@@ -10,8 +10,8 @@
     "dist": "webpack",
     "start:docs": "webpack serve --config webpack.config.js --env target=docs --host 0.0.0.0",
     "stats:docs": "webpack --config webpack.config.js --env target=docs --profile --json > stats.json",
-    "build": "node esbuild.js",
-    "watch": "node esbuild.js --watch",
+    "build": "node esbuild.js --minify --metafile",
+    "watch": "node esbuild.js --watch --metafile",
     "pretest": "eslint --ignore-path .gitignore",
     "test": "c8 tap --no-coverage"
   },
