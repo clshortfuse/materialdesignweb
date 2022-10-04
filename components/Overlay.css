@@ -22,7 +22,7 @@
 :host(:is(
 [disabled]:not([mdw-overlay-disabled~="hover"]),
 [mdw-overlay-off~="hover"],
-:not(:hover))) {
+:not(:hover))) #overlay {
   --mdw-overlay__hover-opacity: 0;
 }
 
@@ -30,7 +30,7 @@
 :host(:is(
 [disabled]:not([mdw-overlay-disabled~="focus"]),
 [mdw-overlay-off~="focus"],
-:not(:focus))) {
+:not(:focus))) #overlay {
   --mdw-overlay__focus-opacity: 0;
 }
 
@@ -39,7 +39,7 @@
 :host(:is(
 [disabled]:not([mdw-overlay-disabled~="pressed"]),
 [mdw-overlay-off~="pressed"],
-:not(:active))) {
+:not(:active))) #overlay {
   --mdw-overlay__pressed-opacity: 0;
 }
 
@@ -47,7 +47,7 @@
 :host(:is(
 [disabled]:not([mdw-overlay-disabled~="dragged"]),
 [mdw-overlay-off~="dragged"],
-:not([aria-dragged="true"]))) {
+:not([aria-dragged="true"]))) #overlay {
   --mdw-overlay__dragged-opacity: 0;
 }
 
