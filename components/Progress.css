@@ -40,7 +40,9 @@ progress {
   box-sizing: border-box;
   block-size: 100%;
   inline-size: 100%;
+  border: none; /* FireFox */
 
+  -moz-appearance: none;
   appearance: none;
 
   transition: transform 275ms, opacity var(--mdw-progress__opacity__duration);
@@ -57,6 +59,12 @@ progress {
 
 progress::-webkit-progress-bar {
   display: none;
+}
+
+progress::-moz-progress-bar  {
+  display: none; /* Doesn't always work */
+
+  block-size: 0;
 }
 
 progress[value] {
