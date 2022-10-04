@@ -165,6 +165,46 @@ input::-moz-range-thumb:not(:hover) {
   border-radius: inherit;
 }
 
+/* Inactive ticks */
+#ticks {
+  display: none;
+}
+
+:host([ticks]) #ticks {
+  display: block;
+}
+
+#ticks::before,
+#ticks::after {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  padding-inline: 10px;
+
+  background-clip: content-box;
+
+  background-image: radial-gradient(circle at center, var(--tick-color) 0, var(--tick-color) 1px, transparent 0);
+  background-position: center center;
+  background-repeat: repeat-x;
+  background-size: 0 100%;
+  background-size: calc(100% / var(--ticks, 0)) 2px;
+}
+
+#ticks::before {
+  --tick-color: rgb(var(--mdw-color__on-surface-variant));
+}
+
+#ticks::after {
+  --tick-color: rgb(var(--mdw-ink));
+  padding-inline-end: calc(100% - (100% * var(--value)) + 10px);
+
+  will-change: padding-inline-end;
+
+  z-index: 1;
+}
+
 /* Active Indicator */
 #track-active {
   position: absolute;

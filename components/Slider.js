@@ -25,6 +25,14 @@ export default class Slider extends Input {
     super.attributeChangedCallback(name, oldValue, newValue);
     if (oldValue == null && newValue == null) return;
     switch (name) {
+      case 'ticks': {
+        if (newValue == null) {
+          this.trackElement.style.removeProperty('--ticks');
+        } else {
+          this.trackElement.style.setProperty('--ticks', newValue);
+        }
+        break;
+      }
       case 'step':
       case 'min':
       case 'max':
@@ -224,6 +232,7 @@ export default class Slider extends Input {
     ...super.fragments,
     /* html */ `
       <div id=track>
+        <div id=ticks></div>
         <div id="track-active"></div>
         <div id="track-label-anchor">
           <div id="track-label" hidden text></div>
@@ -236,3 +245,4 @@ export default class Slider extends Input {
 Slider.prototype.min = Slider.idlString('min');
 Slider.prototype.max = Slider.idlString('max');
 Slider.prototype.step = Slider.idlString('step');
+Slider.prototype.ticks = Slider.idlInteger('ticks');
