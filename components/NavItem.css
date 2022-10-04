@@ -91,6 +91,7 @@ a {
 
 #icon {
   --mdw-icon__size: 24px;
+  --mdw-icon__font-variation-settings: 'FILL' 0;
   position: relative;
   align-self: center;
   grid-area: a;
@@ -180,6 +181,7 @@ a:active #ripple-inner {
 }
 
 :host([active]) #icon {
+  --mdw-icon__font-variation-settings: 'FILL' 1;
   color: rgb(var(--mdw-ink));
 }
 
