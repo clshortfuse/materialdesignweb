@@ -11,7 +11,7 @@
   ],
   "rules": {
     "plugin/no-unsupported-browser-features": [ true, {
-      "ignore": ["css-appearance", "overscroll-behavior", "css3-cursors", "css-clip-path", "css-masks"]
+      "ignore": ["css-appearance", "overscroll-behavior", "css3-cursors", "css-clip-path", "css-masks", "user-select-none"]
     }],
     "liberty/use-logical-spec": [
       "always"
