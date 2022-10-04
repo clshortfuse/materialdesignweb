@@ -231,7 +231,7 @@ export default class Slider extends Input {
   static fragments = [
     ...super.fragments,
     /* html */ `
-      <div id=track>
+      <div id=track aria-hidden=true>
         <div id=ticks></div>
         <div id="track-active"></div>
         <div id="track-label-anchor">
