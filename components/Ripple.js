@@ -31,28 +31,24 @@ export default class Ripple extends Overlay {
   updateRipplePosition(x, y) {
     let width;
     let height;
-    let xPos;
-    let yPos;
     const { clientWidth, clientHeight } = this.rippleElement;
 
     if (x == null || y == null) {
-      width = clientWidth / 2;
-      height = clientHeight / 2;
-      xPos = width;
-      yPos = height;
+      // eslint-disable-next-line no-param-reassign, no-multi-assign
+      x = width = clientWidth / 2;
+      // eslint-disable-next-line no-param-reassign, no-multi-assign
+      y = height = clientHeight / 2;
     } else {
       // Distance from furthest side
-      width = (x >= clientWidth / 2) ? x : clientWidth - x;
-      height = (y >= clientHeight / 2) ? y : clientHeight - y;
-      xPos = x;
-      yPos = y;
+      width = (x >= clientWidth / 2) ? x : (clientWidth - x);
+      height = (y >= clientHeight / 2) ? y : (clientHeight - y);
     }
 
     const hypotenuse = Math.sqrt((width * width) + (height * height));
     this.innerElement.style.setProperty('height', `${hypotenuse}px`);
     this.innerElement.style.setProperty('width', `${hypotenuse}px`);
-    this.innerElement.style.setProperty('left', `${xPos - (hypotenuse / 2)}px`);
-    this.innerElement.style.setProperty('top', `${yPos - (hypotenuse / 2)}px`);
+    this.innerElement.style.setProperty('left', `${x - (hypotenuse / 2)}px`);
+    this.innerElement.style.setProperty('top', `${y - (hypotenuse / 2)}px`);
   }
 
   /**
