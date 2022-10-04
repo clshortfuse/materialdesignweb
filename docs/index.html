@@ -1149,12 +1149,14 @@
     <demo-section id=slider>
       <h1 slot="heading">Sliders</h2>
         <h2 slot=heading>Continuous</h2>
-        <demo-flex wrap style="margin:24px; gap:48px">
-          <mdw-slider value="1"></mdw-slider>
+        <demo-flex wrap style="margin:24px; gap:48px" column>
+          <mdw-slider value="8"></mdw-slider>
           <mdw-slider color="secondary" value="2" min="-10" max="10"></mdw-slider>
           <mdw-slider color="tertiary" min="-10" value="3"></mdw-slider>
           <mdw-slider class=mdw-custom color="green" min="10" max="90"></mdw-slider>
-          <mdw-slider color="error" value="30" disabled></mdw-slider>
+          <mdw-slider class=mdw-custom color="custom" min=0 step=5 value=100></mdw-slider>
+          <mdw-slider color=secondary value="12" disabled></mdw-slider>
+          
         </demo-flex>
     </demo-section>
     <demo-section>
