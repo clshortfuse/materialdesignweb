@@ -41,6 +41,7 @@
 }
 
 :host(:where([elevated],[filled])) {
+  --mdw-container__will-change: box-shadow;
   background-color: rgb(var(--mdw-bg));
 }
 /** Elevated Color Defaults */

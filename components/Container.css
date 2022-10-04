@@ -48,6 +48,7 @@
   --mdw-container__elevation__filter__24dp: drop-shadow(0 22.12px 12.0px rgba(var(--mdw-color__shadow), 0.26)) drop-shadow(0 0 16.00px rgba(var(--mdw-color__shadow), 0.08));
 
   --mdw-container__transition-property: background-color, color, border-radius, box-shadow;
+  --mdw-container__will-change: none;
 
   --mdw-shape__size: 0;
   --mdw-shape__size__top-start-size: var(--mdw-shape__size);
@@ -66,6 +67,7 @@
   transition-delay: 1ms;
   transition-duration: 100ms;
   transition-property: var(--mdw-container__transition-property);
+  will-change: var(--mdw-container__will-change);
 
   box-shadow: var(--mdw-container__box-shadow);
 }
