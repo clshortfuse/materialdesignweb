@@ -11,7 +11,7 @@ A standards-focused, zero-dependency implemention of Material Design 3 (Material
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/ec0e740/docs/
+https://rawcdn.githack.com/clshortfuse/materialdesignweb/b947eb9/docs/
 
 # Getting started
 
