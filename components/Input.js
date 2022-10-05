@@ -74,6 +74,8 @@ export default class Input extends Ripple {
         switch (this.inputElement.getAttribute('role')) {
           case null:
           case 'button':
+          case 'radio':
+          case 'switch':
             this.inputElement.disabled = newValue != null;
             if (newValue === null) {
               this.setAttribute('tabindex', '0');

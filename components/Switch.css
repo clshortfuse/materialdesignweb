@@ -1,0 +1,152 @@
+/* https://m3.material.io/components/switch/specs */
+
+:host {
+  --mdw-ink: var(--mdw-color__on-primary);
+  --mdw-bg: var(--mdw-color__primary);
+
+  flex-direction: var(--mdw-switch__direction, row);
+  gap: var(--mdw-switch__gap, 8px);
+}
+
+:dir(rtl) #track {
+  --mdw-dir: -1;
+}
+
+:host(:is([color], [ink], [bg])) {
+  background-color: transparent;
+  color: inherit;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  flex-direction: inherit;
+  gap: inherit;
+
+  cursor: pointer;
+
+  border-radius: 50%;
+}
+
+#track {
+  --x: 14px;
+  --scale: calc(16/24);
+
+  display: flex;
+  position: relative;
+  align-items: center;
+
+  box-sizing: border-box;
+
+  block-size: 32px;
+  inline-size: 52px;
+  border: solid 2px rgb(var(--mdw-color__outline));
+
+  background-color: rgb(var(--mdw-color__surface-variant));
+  border-radius: 99px;
+
+  /* Content Area = 48x28 */
+}
+
+:host([checked]) #track {
+  --scale: calc(24/24);
+  --x: calc(48px - 14px);
+  background-color: rgb(var(--mdw-bg));
+  border-color: rgb(var(--mdw-bg));
+  color: rgb(var(--mdw-ink));
+  /* Overlay */
+}
+
+:host(:active:not([disabled])) #track {
+  --scale: calc(28/24);
+}
+
+#thumb {
+  display: flex;
+  position: absolute;
+  inset-inline-start: 0;
+  align-items: center;
+  justify-content: center;
+
+  /* Sized to state layer */
+  block-size: 40px;
+  inline-size: 40px;
+
+  transform: translateX(calc(var(--mdw-dir, 1) * -50%)) translateX(calc(var(--mdw-dir,1) * var(--x)));
+
+  border-radius: 50%;
+}
+
+#thumb::before {
+  content: '';
+
+  position: absolute;
+
+  block-size: 24px;
+  inline-size: 24px;
+
+  transform: scale(var(--scale));
+
+  background-color: rgb(var(--mdw-color__outline));
+  border-radius: 50%;
+}
+
+:host(:is([icon], [src], [unchecked-icon], [unchecked-src])) #thumb::before {
+  transform: scale(max(1, var(--scale)));
+}
+
+.icon {
+  --mdw-icon__size: 16px;
+  position: absolute;
+
+  opacity: 0;
+
+  transform: scale(max(1, var(--scale)));
+
+  border-radius: 50%;
+}
+
+.icon:not([src]):empty {
+  display: none;
+}
+
+:host([checked]) #thumb::before {
+  background-color: rgb(var(--mdw-ink));
+  color: rgb(var(--mdw-bg));
+}
+
+#icon, #unchecked-icon {
+  --mdw-icon__font-variation-settings: 'FILL' 0;
+  opacity: 1;
+
+  color: rgb(var(--mdw-color__surface-variant));
+}
+
+:host([checked]) #unchecked-icon {
+  opacity: 0;
+}
+
+:host([checked]) #checked-icon {
+  opacity: 1;
+}
+
+:host([checked]) #icon {
+  --mdw-icon__font-variation-settings: 'FILL' 1;
+  color: rgb(var(--mdw-bg));
+}
+
+#checked-icon {
+  color: rgb(var(--mdw-bg));
+}
+
+:host([disabled]) label {
+  --mdw-ink: var(--mdw-color__surface);
+  --mdw-bg: var(--mdw-color__on-surface);
+  cursor: not-allowed;
+
+  opacity: 0.38;
+}
+
+:host([disabled]) #track {
+  opacity: calc(0.12/0.38);
+}
