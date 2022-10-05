@@ -23,6 +23,7 @@ import Radio from './components/Radio.js';
 import SegmentedButton from './components/SegmentedButton.js';
 import SegmentedButtonGroup from './components/SegmentedButtonGroup.js';
 import Slider from './components/Slider.js';
+import Switch from './components/Switch.js';
 import Text from './components/Text.js';
 import * as theming from './theming/index.js';
 
@@ -65,6 +66,7 @@ NavDrawer.register();
 Progress.register();
 Radio.register();
 Slider.register();
+Switch.register();
 
 const { searchParams } = new URL(import.meta.url);
 const color = searchParams.get('color') || '#6750A4';
