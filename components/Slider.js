@@ -79,6 +79,7 @@ export default class Slider extends Input {
 
     let offsetX;
     let clientX;
+    let pageX;
     let isActive;
 
     const isTouch = 'touches' in event;
@@ -87,17 +88,20 @@ export default class Slider extends Input {
         const [touch] = event.touches;
         isActive = true;
         // @ts-ignore Might exist
-        ({ offsetX, clientX } = touch);
+        ({ offsetX, clientX, pageX } = touch);
       }
     } else {
       // Ignore mouse drag-over
       // eslint-disable-next-line no-bitwise
       isActive = (event.buttons & 1) === 1 && this.matches(':active');
-      ({ offsetX, clientX } = event);
+      ({ offsetX, clientX, pageX } = event);
     }
 
     if (offsetX == null) {
       const rect = this.getBoundingClientRect();
+      if (clientX == null) { // Safari
+        clientX = pageX - window.scrollX;
+      }
       offsetX = clientX - rect.left;
     }
 
