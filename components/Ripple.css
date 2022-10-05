@@ -118,7 +118,7 @@
   animation-name: none, ripple-fade-out;
 }
 
-:host(:active) {
+:host(:active) #ripple-inner {
   /* Hold fade-in animation while held (active) */
   animation-name: var(--mdw-ripple__fade-in-name), none;
 }

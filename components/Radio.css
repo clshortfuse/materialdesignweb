@@ -83,7 +83,3 @@ label {
 :host([checked]) #icon::after {
   transform: scale(1);
 }
-
-:host(:active) #ripple-inner {
-  animation-name: var(--mdw-ripple__fade-in-name), none;
-}

@@ -167,7 +167,7 @@ a {
 }
 
 :host([active]) #ripple-inner {
-  /* Hold fade-in animation while held (active) */
+  /* Hold fade-in animation while selected */
   animation-name: var(--mdw-ripple__fade-in-name), none;
 }
 
