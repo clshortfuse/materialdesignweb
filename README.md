@@ -16,7 +16,7 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/ec0e740/docs/
 # Getting started
 
 ```html
-<style type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/2ba4c6b/index.js" />
+<style type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/b947eb9/index.js" />
 ```
 
 # Support
@@ -83,8 +83,8 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/ec0e740/docs/
 | [Progress Indicator: Circular](components/Progress.js)       | `<mdw-progress circle>`                        | `<progress>`                                                       |  beta   |
 | [Radio Button](components/Radio.js)                          | `<mdw-radio>`                                  | `<input type=radio>`                                               |  beta   |
 | [Slider: Continuous](components/Slider.js)                   | `<mdw-slider>`                                 | `<input type=range>`                                               |  beta   |
-| Slider: Discrete                                             |                                                |                                                                    | planned |
-| Switch                                                       |                                                |                                                                    | rewrite |
+| [Slider: Discrete](components/Slider.js)                     | `<mdw-slider ticks=10>`                        | `<input type=range>`                                               |  beta   |
+| [Switch](components/Switch.js)                               | `<mdw-switch>`                                 | `<input type=checkbox>`                                            |  beta   |
 | Text fields: Filled                                          |                                                |                                                                    | rewrite |
 | Text fields: Outlined                                        |                                                |                                                                    | rewrite |
 | Top App Bar                                                  |                                                |                                                                    | rewrite |
