@@ -52,59 +52,59 @@
   display: none;
 }
 
-:host([mdw-position~="top"]) {
+:host([position~="top"]) {
   inset-block: 0 auto;
 }
 
-:host([mdw-position~="bottom"]) {
+:host([position~="bottom"]) {
   inset-block: auto 0;
 }
 
-:host([mdw-position~="vcenter"]) {
+:host([position~="vcenter"]) {
   inset-block: 50% auto;
 }
 
 /** Horizontal Position */
-:host([mdw-position~="start"]) {
+:host([position~="start"]) {
   inset-inline: auto 100%;
 }
 
-:host([mdw-position~="end"]) {
+:host([position~="end"]) {
   inset-inline: 100% auto;
 }
 
-:host([mdw-position~="left"]) {
+:host([position~="left"]) {
   /* stylelint-disable-next-line liberty/use-logical-spec */
   right: 100%;
   /* stylelint-disable-next-line liberty/use-logical-spec */
   left: auto;
 }
 
-:host([mdw-position~="right"]) {
+:host([position~="right"]) {
   /* stylelint-disable-next-line liberty/use-logical-spec */
   right: auto;
   left: 100%;
 }
 
-:host([mdw-position~="hcenter"]) {
+:host([position~="hcenter"]) {
   inset-inline: 50% auto;
 }
 
 /** Vertical Direction */
-:host([mdw-direction~="down"]) {
+:host([direction~="down"]) {
   /* --mdw-menu__transform-origin-y: top; */
 }
 
-:host([mdw-direction~="up"]) {
+:host([direction~="up"]) {
   --mdw-menu__transform-origin-y: bottom;
 }
 
 /** Horizontal Direction */
-:host([mdw-direction~="normal"]) {
+:host([direction~="normal"]) {
   /* --mdw-menu__transform-origin-x: var(--mdw-menu__transform-origin-inline-start); */
 }
 
-:host([mdw-direction~="reverse"]) {
+:host([direction~="reverse"]) {
   --mdw-menu__transform-origin-x: var(--mdw-menu__transform-origin-inline-end);
 }
 
