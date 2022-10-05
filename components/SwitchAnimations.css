@@ -3,11 +3,11 @@
 :host {
   /*FastOutLinearInInterpolator*/
   --mdw-switch__transition-timing__collapse: cubic-bezier(0.4, 0.0, 1, 1);
-  --mdw-switch__transition-duration__collapse: 200ms;
+  --mdw-switch__transition-duration__collapse: 375ms;
 
   /*LinearOutSlowInInterpolator*/
   --mdw-switch__transition-timing__expand: cubic-bezier(0.0, 0.0, 0.2, 1);
-  --mdw-switch__transition-duration__expand: 250ms;
+  --mdw-switch__transition-duration__expand: 500ms;
 
   --scale-delay: var(--mdw-switch__transition-duration);
 }
