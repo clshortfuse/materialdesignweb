@@ -23,6 +23,7 @@ input {
 
   inset: 0;
 
+  /** Firefox requires at least 1px "visible" for screen reading */
   block-size: 100%;
   inline-size: 100%;
 
@@ -37,7 +38,6 @@ input {
   cursor: inherit;
   outline: none;
 
-  /** Firefox requires at least 1px "visible" for screen reading */
   opacity: 0;
 }
 

@@ -198,6 +198,8 @@ input::-moz-range-thumb:not(:hover) {
 
 #ticks::after {
   --tick-color: rgb(var(--mdw-ink));
+
+  /* TODO: Use single-paint implementation */
   padding-inline-end: calc(100% - (100% * var(--value)) + 10px);
 
   will-change: padding-inline-end;
