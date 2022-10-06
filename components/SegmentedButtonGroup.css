@@ -1,5 +1,4 @@
-/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
-/* https://material.io/guidelines/style/icons.html# */
+/* https://m3.material.io/components/segmented-buttons/specs */
 
 :host {
   --mdw-bg: var(--mdw-color__secondary-container);

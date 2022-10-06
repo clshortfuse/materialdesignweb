@@ -1,3 +1,5 @@
+/* https://m3.material.io/components/menus/specs */
+
 :host {
   --mdw-menu__transform-origin-inline-start: left;
   --mdw-menu__transform-origin-inline-end: right;
@@ -6,25 +8,18 @@
   /* Down */
   --mdw-menu__transform-origin-y: top;
   --mdw-menu__inline-base: 56px;
-
   --mdw-menu__size: 2;
-  /* visibility: visible; */
-
-  /** Vertical Position */
   --mdw-bg: var(--mdw-color__surface);
   --mdw-ink: var(--mdw-color__on-surface);
-  display: block;
   position: absolute;
-
   /* Default position is bottom */
   /* Default direction is start */
-
   inset-block: 100% auto;
   inset-inline: auto 0;
 
+  display: block;
   /* Hide scrollbar */
   -ms-overflow-style: none;
-
   /* Scroll mask */
   overscroll-behavior: none;
   overscroll-behavior: contain;
@@ -32,11 +27,11 @@
 
   pointer-events: none;
 
+  transform-origin: var(--mdw-menu__transform-origin-x) var(--mdw-menu__transform-origin-y);
+
   transition-duration: motion.$fadeOutDuration;
   transition-property: none;
   transition-timing-function: motion.$decelerateEasing;
-
-  transform-origin: var(--mdw-menu__transform-origin-x) var(--mdw-menu__transform-origin-y);
 }
 
 :host(::after) {
@@ -63,7 +58,6 @@
 :host([position~="vcenter"]) {
   inset-block: 50% auto;
 }
-
 /** Horizontal Position */
 :host([position~="start"]) {
   inset-inline: auto 100%;
@@ -83,13 +77,13 @@
 :host([position~="right"]) {
   /* stylelint-disable-next-line liberty/use-logical-spec */
   right: auto;
+  /* stylelint-disable-next-line liberty/use-logical-spec */
   left: 100%;
 }
 
 :host([position~="hcenter"]) {
   inset-inline: 50% auto;
 }
-
 /** Vertical Direction */
 :host([direction~="down"]) {
   /* --mdw-menu__transform-origin-y: top; */
@@ -98,7 +92,6 @@
 :host([direction~="up"]) {
   --mdw-menu__transform-origin-y: bottom;
 }
-
 /** Horizontal Direction */
 :host([direction~="normal"]) {
   /* --mdw-menu__transform-origin-x: var(--mdw-menu__transform-origin-inline-start); */
@@ -129,20 +122,15 @@ dialog {
   border: none;
   padding: 0;
 
-  /* Handled by theme */
-  /* background-color: rgba(0, 0, 0, 0.50); */
-
-  transition: none;
-
-  transition-property: opacity;
-  will-change: opacity;
-
   opacity: 0;
   visibility: hidden;
-
   z-index: 24;
 
   background-color: transparent;
+
+  transition: none;
+  transition-property: opacity;
+  will-change: opacity;
 }
 
 dialog::backdrop {
@@ -157,12 +145,12 @@ dialog:modal {
 
   pointer-events: auto;
 
+  opacity: 1;
+  visibility: visible;
+
   transition-duration: var(--mdw-dialog__fade-in-duration);
   transition-property: opacity;
   transition-timing-function: var(--mdw-dialog__deceleration-easing);
-
-  opacity: 1;
-  visibility: visible;
 }
 
 #scrim {
@@ -178,7 +166,6 @@ dialog:modal {
   inline-size: 100%;
 
   cursor: default;
-
   pointer-events: inherit;
   -webkit-tap-highlight-color: transparent;
 
@@ -206,23 +193,19 @@ form {
   --mdw-shape__size: var(--mdw-shape__extra-small);
   --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
   --mdw-container__box-shadow: var(--mdw-container__box-shadow__2);
+  position: relative;
 
   display: inline-flex;
-
-  position: relative;
   align-items: stretch;
   flex-direction: column;
   flex-direction: column;
-
   overflow-y: auto;
   overscroll-behavior: none;
   overscroll-behavior: contain;
 
   inline-size: calc(var(--mdw-menu__size) * var(--mdw-menu__inline-base));
-
   min-inline-size: calc(var(--mdw-menu__inline-base) * 2);
   max-inline-size: calc(var(--mdw-menu__inline-base) * 7);
-
   padding-block: 8px;
 
   background-color: rgb(var(--mdw-color__surface));

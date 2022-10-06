@@ -8,10 +8,6 @@
   gap: var(--mdw-switch__gap, 8px);
 }
 
-:dir(rtl) #track {
-  --mdw-dir: -1;
-}
-
 :host(:is([color], [ink], [bg])) {
   background-color: transparent;
   color: inherit;
@@ -32,25 +28,29 @@ label {
   --x: 14px;
   --scale: calc(16/24);
 
-  display: flex;
   position: relative;
+
+  display: flex;
   align-items: center;
 
   box-sizing: border-box;
-
   block-size: 32px;
   inline-size: 52px;
   border: solid 2px rgb(var(--mdw-color__outline));
 
   background-color: rgb(var(--mdw-color__surface-variant));
   border-radius: 99px;
-
   /* Content Area = 48x28 */
+}
+
+:dir(rtl) #track {
+  --mdw-dir: -1;
 }
 
 :host([checked]) #track {
   --scale: calc(24/24);
   --x: calc(48px - 14px);
+
   background-color: rgb(var(--mdw-bg));
   border-color: rgb(var(--mdw-bg));
   color: rgb(var(--mdw-ink));
@@ -62,12 +62,12 @@ label {
 }
 
 #thumb {
-  display: flex;
   position: absolute;
   inset-inline-start: 0;
+
+  display: flex;
   align-items: center;
   justify-content: center;
-
   /* Sized to state layer */
   block-size: 40px;
   inline-size: 40px;
@@ -97,10 +97,10 @@ label {
 
 .icon {
   --mdw-icon__size: 16px;
+
   position: absolute;
 
   opacity: 0;
-
   transform: scale(max(1, var(--scale)));
 
   border-radius: 50%;
@@ -108,6 +108,10 @@ label {
 
 .icon:not([src]):empty {
   display: none;
+}
+
+#checked-icon {
+  color: rgb(var(--mdw-bg));
 }
 
 :host([checked]) #thumb::before {
@@ -132,10 +136,6 @@ label {
 
 :host([checked]) #icon {
   --mdw-icon__font-variation-settings: 'FILL' 1;
-  color: rgb(var(--mdw-bg));
-}
-
-#checked-icon {
   color: rgb(var(--mdw-bg));
 }
 

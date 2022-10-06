@@ -1,3 +1,5 @@
+/* https://m3.material.io/components/menus/specs */
+
 :host {
   --mdw-shape__size: 0;
   --mdw-type__font-weight: var(--mdw-typescale__label-large__font-weight);
@@ -5,7 +7,6 @@
   --mdw-type__line-height: var(--mdw-typescale__label-large__line-height);
   --mdw-type__font-family: var(--mdw-typescale__label-large__font-family);
   --mdw-type__letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
-
   color: rgb(var(--mdw-ink));
 
   white-space: nowrap;
@@ -37,33 +38,34 @@
   transition-duration: 100ms;
   transition-property: opacity;
   will-change: opacity;
+}
 
+#trailing {
+  order: 1;
+
+  display: none;
+
+  padding-inline-start: 12px;
+}
+
+#trailing,
+#icon {
+  color: rgb(var(--mdw-color__on-surface-variant));
 }
 
 :host(:not([icon])) #icon {
   display: none;
 }
 
-#trailing {
-  display: none;
-  order: 1;
-
-  padding-inline-start: 12px;
-}
-
-#trailing, #icon {
-  color: rgb(var(--mdw-color__on-surface-variant));
-}
-
-#trailing-icon:not(:is([icon],[src])) {
+#trailing-icon:not(:is([icon], [src])) {
   display: none;
 }
 
-:host(:is([trailing],[trailing-icon],[trailing-src])) #trailing {
+:host(:is([trailing], [trailing-icon], [trailing-src])) #trailing {
   display: block;
 }
 
-:host(:is([type="checkbox"],[type="radio"])) #icon {
+:host(:is([type="checkbox"], [type="radio"])) #icon {
   opacity: 0;
 }
 

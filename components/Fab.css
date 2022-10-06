@@ -1,12 +1,10 @@
-/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
-/* https://material.io/guidelines/style/icons.html# */
+/* https://m3.material.io/components/floating-action-button/specs */
 
 :host {
   --mdw-shape__size: 16px;
-
   --mdw-button__icon__display: block;
-
   --mdw-button__icon__size: 24px;
+
   min-block-size: 56px;
   min-inline-size: 56px;
 
@@ -17,10 +15,8 @@
 :host(:not([flat])) {
   --mdw-fab__elevation__opacity: var(--mdw-container__elevation__opacity__3);
   --mdw-fab__box-shadow: var(--mdw-container__box-shadow__3);
-
   --mdw-fab__elevation__opacity__hovered: var(--mdw-container__elevation__opacity__4);
   --mdw-fab__box-shadow__hovered: var(--mdw-container__box-shadow__4);
-
   --mdw-container__elevation__opacity: var(--mdw-fab__elevation__opacity);
   --mdw-container__box-shadow: var(--mdw-fab__box-shadow);
 }
@@ -35,6 +31,7 @@ label {
 
 :host([size="small"]) {
   --mdw-shape__size: 12px;
+
   min-block-size: 40px;
   min-inline-size: 40px;
 }
@@ -42,6 +39,7 @@ label {
 :host([size="large"]) {
   --mdw-shape__size: 28px;
   --mdw-button__icon__size: 36px;
+
   min-block-size: 96px;
   min-inline-size: 96px;
 }

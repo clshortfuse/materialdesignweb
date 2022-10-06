@@ -1,18 +1,15 @@
-/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
-/* https://material.io/guidelines/style/icons.html# */
+/* https://m3.material.io/components/navigation-bar/specs */
 
 :host {
   display: grid;
   align-content: flex-start;
   align-items: flex-start;
-
   gap: 8px;
   grid-auto-columns: minmax(48px, 1fr);
   grid-auto-flow: column;
 
   box-sizing: border-box;
   min-block-size: 80px;
-
   inline-size: 100%;
 
   box-shadow: none;
@@ -27,9 +24,9 @@
   --mdw-nav-item__badge__line-height: var(--mdw-typescale__label-small__line-height);
   --mdw-nav-item__badge__font-family: var(--mdw-typescale__label-small__font-family);
   --mdw-nav-item__badge__letter-spacing: var(--mdw-typescale__label-small__letter-spacing);
-
   --mdw-nav-item__badge__background: rgb(var(--mdw-color__error));
   --mdw-nav-item__badge__color: rgb(var(--mdw-color__on-error));
+
   grid: auto-flow auto / auto;
   grid-template: "x a y" 32px "b b b" minmax(16px, min-content) / auto 64px auto;
 

@@ -1,11 +1,9 @@
-/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
-/* https://material.io/guidelines/style/icons.html# */
+/* https://m3.material.io/components/navigation-rail/specs */
 
 :host {
   display: inline-grid;
   align-items: stretch;
   flex-direction: column;
-
   grid-template-rows: minmax(auto, 1fr) minmax(0, auto) minmax(auto, 1fr);
   grid-template-columns: minmax(80px, min-content);
   justify-items: center;
@@ -13,7 +11,6 @@
   min-inline-size: 80px;
 
   background-color: rgb(var(--mdw-color__surface));
-
   box-shadow: none;
 
   text-align: center;
@@ -38,13 +35,11 @@
 
   display: flex;
   align-items: center;
-
   flex-direction: column;
   gap: 12px;
 
   box-sizing: border-box;
   inline-size: 100%;
-
   min-inline-size: 56px;
 }
 

@@ -1,3 +1,5 @@
+/* https://m3.material.io/components/cards/specs */
+
 :host {
   --mdw-shape__size: 12px;
   --mdw-card__elevation__visiblity: visible;
@@ -6,8 +8,9 @@
   --mdw-card__outline__opacity: 1;
   --mdw-card__outline__rgb: var(--mdw-color__outline);
 
-  display: inline-block;
   position: relative;
+
+  display: inline-block;
   align-items: flex-start;
 
   box-sizing: border-box;
@@ -17,11 +20,13 @@
 :host([actionable]) {
   /** Overlay, ripples, and box-shadows are shown by the primary action instead */
   --mdw-card__elevation__visiblity: hidden;
+
   box-shadow: none;
 }
 
 :host([disabled]) {
   --mdw-card__outline__opacity: 0.12;
+
   cursor: not-allowed;
 
   color: rgba(var(--mdw-color__on-surface), 0.38);
@@ -62,6 +67,7 @@
 
 :host(:where([elevated])) {
   --mdw-container__will-change: box-shadow;
+
   background-color: rgb(var(--mdw-color__surface));
   color: rgb(var(--mdw-color__on-surface));
 }

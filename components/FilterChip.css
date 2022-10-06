@@ -1,10 +1,8 @@
-/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
-/* https://material.io/guidelines/style/icons.html# */
+/* https://m3.material.io/components/chips/specs */
 
 :host {
   --mdw-ink: var(--mdw-color__on-secondary-container);
   --mdw-bg: var(--mdw-color__secondary-container);
-
   color: rgb(var(--mdw-color__on-surface__variant));
 }
 
@@ -86,7 +84,6 @@
 }
 
 /** Filter **/
-
-:host[type="checkbox"] :is(#slot, #overlay, #ripple, #icon, #check-icon) {
+:host([type="checkbox"]) :is(#slot, #overlay, #ripple, #icon, #check-icon) {
   color: inherit;
 }

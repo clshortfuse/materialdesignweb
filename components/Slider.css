@@ -1,25 +1,23 @@
-/* https://m3.material.io/components/radio-button/specs */
+/* https://m3.material.io/components/sliders/specs */
 
 :host {
-  --mdw-ink: var(--mdw-color__on-primary);
-  --mdw-bg: var(--mdw-color__primary);
-
   --mdw-slider__hover-opacity: 0.08;
   --mdw-slider__focus-opacity: 0.12;
   --mdw-slider__pressed-opacity: 0.12;
-
   --mdw-slider__cursor: pointer;
+
+  --mdw-ink: var(--mdw-color__on-primary);
+  --mdw-bg: var(--mdw-color__primary);
+
   display: block;
 
   min-block-size: 4px;
   min-inline-size: 88px;
 
   background-color: transparent;
-
   border-radius: 99px;
 
   direction: var(--mdw-radio__direction, initial);
-
 }
 
 :host,
@@ -28,9 +26,10 @@
 }
 
 label {
-  display: block;
   position: absolute;
   inset: 0;
+
+  display: block;
 
   border-radius: 50%;
   color: rgb(var(--mdw-bg));
@@ -52,7 +51,6 @@ input {
   appearance: none;
 
   opacity: 1;
-
   z-index: 1;
 
   background-color: transparent;
@@ -91,24 +89,20 @@ input::-webkit-slider-thumb {
   box-sizing: content-box;
   block-size: 10px;
   inline-size: 10px;
-
   border: solid 5px rgba(var(--mdw-bg),
   calc(var(--mdw-slider__hover-opacity) + var(--mdw-slider__focus-opacity) + var(--mdw-slider__pressed-opacity)));
 
   -webkit-appearance: none;
-
   cursor: var(--mdw-slider__cursor);
-
-  transition: border-color 100ms;
 
   transform: scale(2);
 
   background-clip: content-box;
-
   background-color: currentColor;
-
   border-radius: 50%;
   color: inherit;
+
+  transition: border-color 100ms;
 }
 
 input::-webkit-slider-thumb:not(:active) {
@@ -125,24 +119,20 @@ input::-moz-range-thumb {
   box-sizing: content-box;
   block-size: 10px;
   inline-size: 10px;
-
   border: solid 5px rgba(var(--mdw-bg),
   calc(var(--mdw-slider__hover-opacity) + var(--mdw-slider__focus-opacity) + var(--mdw-slider__pressed-opacity)));
 
   appearance: none;
-
   cursor: var(--mdw-slider__cursor);
-
-  transition: border-color 100ms;
 
   transform: scale(2);
 
   background-clip: content-box;
-
   background-color: currentColor;
-
   border-radius: 50%;
   color: inherit;
+
+  transition: border-color 100ms;
 }
 
 input::-moz-range-thumb:not(:active) {
@@ -164,7 +154,6 @@ input::-moz-range-thumb:not(:hover) {
   background-color: rgb(var(--mdw-color__surface-variant));
   border-radius: inherit;
 }
-
 /* Inactive ticks */
 #ticks {
   display: none;
@@ -184,7 +173,7 @@ input::-moz-range-thumb:not(:hover) {
   padding-inline: 10px;
 
   background-clip: content-box;
-
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   background-image: radial-gradient(circle at center, var(--tick-color) 0, var(--tick-color) 1px, transparent 0);
   background-position: center center;
   background-repeat: repeat-x;
@@ -198,19 +187,18 @@ input::-moz-range-thumb:not(:hover) {
 
 #ticks::after {
   --tick-color: rgb(var(--mdw-ink));
-
   /* TODO: Use single-paint implementation */
   padding-inline-end: calc(100% - (100% * var(--value)) + 10px);
 
-  will-change: padding-inline-end;
-
   z-index: 1;
-}
 
+  will-change: padding-inline-end;
+}
 /* Active Indicator */
 #track-active {
   position: absolute;
   inset: 0;
+
   overflow: hidden;
 
   border-radius: 99px;
@@ -222,30 +210,31 @@ input::-moz-range-thumb:not(:hover) {
   position: absolute;
   inset: 0;
 
-  will-change: transform;
-
   transform: scaleX(var(--value));
   transform-origin: 0 0;
 
   background-color: rgb(var(--mdw-bg));
+
+  will-change: transform;
 }
 
 #track-label-anchor {
-  display: flex;
   position: absolute;
   inset-block-end: 16px;
   inset-inline: 0;
+
+  display: flex;
   align-items: flex-start;
   flex-direction: column;
 
   block-size: auto;
   inline-size: 1%;
 
-  will-change: transform;
-
   transform: translateX(calc(var(--value) * 100 * 100%));
   transform-origin: 0 0;
   z-index: 24;
+
+  will-change: transform;
 }
 
 #track-label {
@@ -254,20 +243,18 @@ input::-moz-range-thumb:not(:hover) {
   justify-content: center;
 
   box-sizing: content-box;
-
   margin-block-end: 6px;
 
-  transition: transform 200ms;
-  will-change: transform;
-
   transform: translateX(-50%) scale(1);
-
   transform-origin: 50% 100%;
 
   font-weight: var(--mdw-typescale__label-medium__font-weight);
   line-height: var(--mdw-typescale__label-medium__line-height);
   font-family: var(--mdw-typescale__label-medium__font-family);
   letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
+
+  transition: transform 200ms;
+  will-change: transform;
 }
 
 #track-label:is([hidden],[text=""]) {

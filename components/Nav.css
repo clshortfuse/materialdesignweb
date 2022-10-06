@@ -1,5 +1,6 @@
-/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
-/* https://material.io/guidelines/style/icons.html# */
+/* https://m3.material.io/components/navigation-bar/specs */
+/* https://m3.material.io/components/navigation-drawer/specs */
+/* https://m3.material.io/components/navigation-rail/specs */
 
 :host {
   --mdw-type__font-weight: var(--mdw-typescale__label-medium__font-weight);
@@ -7,7 +8,6 @@
   --mdw-type__line-height: var(--mdw-typescale__label-medium__line-height);
   --mdw-type__font-family: var(--mdw-typescale__label-medium__font-family);
   --mdw-type__letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
-
   --mdw-nav-item__badge__font-weight: var(--mdw-typescale__label-small__font-weight);
   --mdw-nav-item__badge__font-size: var(--mdw-typescale__label-small__font-size);
   --mdw-nav-item__badge__line-height: var(--mdw-typescale__label-small__line-height);
@@ -15,7 +15,6 @@
   --mdw-nav-item__badge__letter-spacing: var(--mdw-typescale__label-small__letter-spacing);
   --mdw-nav-item__badge__background: rgb(var(--mdw-color__error));
   --mdw-nav-item__badge__color: rgb(var(--mdw-color__on-error));
-
   --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
 
   background-color: rgb(var(--mdw-color__surface));

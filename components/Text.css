@@ -1,7 +1,4 @@
-
-/* private static final float SHADOW_RADIUS_MULTIPLIER = .75f; */
-
-/* private static final float SHADOW_OFFSET_MULTIPLIER = .25f; */
+/* https://m3.material.io/styles/typography/type-scale-tokens */
 
 :host {
   font-weight: var(--mdw-type__font-weight, invalid);

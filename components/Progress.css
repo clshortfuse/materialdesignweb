@@ -1,24 +1,23 @@
-/** https://github.com/material-components/material-components-android/blob/ed77ab36ccac98df24e55060d58406c5981a9062/lib/java/com/google/android/material/progressindicator/ */
+/* https://m3.material.io/components/progress-indicators/specs */
 
 :host {
   --mdw-bg: var(--mdw-color__surface-variant);
   --mdw-ink: var(--mdw-color__primary);
-
   --mdw-progress__opacity__duration: 500ms;
+  position: relative;
 
   display: inline-block;
-  position: relative;
   overflow: hidden;
 
   min-block-size: 4px;
   inline-size: 100%;
 
-  transition: opacity 500ms 275ms;
-
   opacity: 1;
 
   background-color: rgb(var(--mdw-bg));
   color: rgb(var(--mdw-ink));
+
+  transition: opacity 500ms 275ms;
 }
 
 :host([auto-hide]) {
@@ -26,14 +25,13 @@
 }
 
 :host([auto-hide][value="100"]) {
-  transition: opacity 1s 1s;
-
   opacity:0;
+
+  transition: opacity 1s 1s;
 }
 
 progress {
   --value: 0;
-
   position: absolute;
   inset: 0;
 
@@ -45,16 +43,15 @@ progress {
   -moz-appearance: none;
   appearance: none;
 
-  transition: transform 275ms, opacity var(--mdw-progress__opacity__duration);
-  will-change: transform, opacity;
-
   opacity:0;
   transform: scaleX(var(--value, 0));
   transform-origin: 0 0;
 
   background-color: currentColor;
-
   color: inherit;
+
+  transition: transform 275ms, opacity var(--mdw-progress__opacity__duration);
+  will-change: transform, opacity;
 }
 
 progress::-webkit-progress-bar {

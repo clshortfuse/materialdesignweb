@@ -1,33 +1,15 @@
 
-/* private static final float SHADOW_RADIUS_MULTIPLIER = .75f; */
-
-/* private static final float SHADOW_OFFSET_MULTIPLIER = .25f; */
-
 :host {
-  --mdw-container__elevation__opacity: 0;
-  --mdw-container__elevation__visibility: visible;
-  --mdw-container__elevation__color: var(--mdw-color__primary);
-
-  --mdw-container__box-shadow: var(--mdw-container__box-shadow__0dp);
-  --mdw-container__filter: var(--mdw-container__elevation__filter__0dp);
-
-  --mdw-container__box-shadow__0dp: none;
   --mdw-container__box-shadow__1dp: 0 0 02px 0 rgba(var(--mdw-color__shadow), 0.14), 0 02px 02px 0 rgba(var(--mdw-color__shadow), 0.12), 0 01px 03px 0 rgba(var(--mdw-color__shadow), 0.20);
-  --mdw-container__box-shadow__2dp: 0 0 04px 0 rgba(var(--mdw-color__shadow), 0.14), 0 03px 04px 0 rgba(var(--mdw-color__shadow), 0.12), 0 01px 05px 0 rgba(var(--mdw-color__shadow), 0.20);
+  /* --mdw-container__box-shadow__2dp: 0 0 04px 0 rgba(var(--mdw-color__shadow), 0.14), 0 03px 04px 0 rgba(var(--mdw-color__shadow), 0.12), 0 01px 05px 0 rgba(var(--mdw-color__shadow), 0.20); */
   --mdw-container__box-shadow__3dp: 0 03px 03px 0 rgba(var(--mdw-color__shadow), 0.14), 0 03px 04px 0 rgba(var(--mdw-color__shadow), 0.12), 0 01px 08px 0 rgba(var(--mdw-color__shadow), 0.20);
-  --mdw-container__box-shadow__4dp: 0 02px 04px 0 rgba(var(--mdw-color__shadow), 0.14), 0 04px 05px 0 rgba(var(--mdw-color__shadow), 0.12), 0 01px 10px 0 rgba(var(--mdw-color__shadow), 0.20);
+  /* --mdw-container__box-shadow__4dp: 0 02px 04px 0 rgba(var(--mdw-color__shadow), 0.14), 0 04px 05px 0 rgba(var(--mdw-color__shadow), 0.12), 0 01px 10px 0 rgba(var(--mdw-color__shadow), 0.20); */
   --mdw-container__box-shadow__6dp: 0 06px 10px 0 rgba(var(--mdw-color__shadow), 0.14), 0 01px 18px 0 rgba(var(--mdw-color__shadow), 0.12), 0 03px 05px 0 rgba(var(--mdw-color__shadow), 0.20);
   --mdw-container__box-shadow__8dp: 0 08px 10px 1px rgba(var(--mdw-color__shadow), 0.14), 0 03px 14px 3px rgba(var(--mdw-color__shadow), 0.12), 0 04px 15px 0 rgba(var(--mdw-color__shadow), 0.20);
-  --mdw-container__box-shadow__9dp: 0 09px 12px 1px rgba(var(--mdw-color__shadow), 0.14), 0 03px 16px 2px rgba(var(--mdw-color__shadow), 0.12), 0 05px 06px 0 rgba(var(--mdw-color__shadow), 0.20);
+  /* --mdw-container__box-shadow__9dp: 0 09px 12px 1px rgba(var(--mdw-color__shadow), 0.14), 0 03px 16px 2px rgba(var(--mdw-color__shadow), 0.12), 0 05px 06px 0 rgba(var(--mdw-color__shadow), 0.20); */
   --mdw-container__box-shadow__12dp: 0 12px 17px 2px rgba(var(--mdw-color__shadow), 0.14), 0 05px 22px 4px rgba(var(--mdw-color__shadow), 0.12), 0 07px 08px 0 rgba(var(--mdw-color__shadow), 0.20);
-  --mdw-container__box-shadow__16dp: 0 16px 24px 2px rgba(var(--mdw-color__shadow), 0.14), 0 06px 30px 5px rgba(var(--mdw-color__shadow), 0.12), 0 08px 10px 0 rgba(var(--mdw-color__shadow), 0.20);
-  --mdw-container__box-shadow__24dp: 0 24px 38px 3px rgba(var(--mdw-color__shadow), 0.14), 0 09px 46px 8px rgba(var(--mdw-color__shadow), 0.12), 0 11px 15px 0 rgba(var(--mdw-color__shadow), 0.20);
-
-  --mdw-container__elevation__opacity__1: 0.05;
-  --mdw-container__elevation__opacity__2: 0.08;
-  --mdw-container__elevation__opacity__3: 0.11;
-  --mdw-container__elevation__opacity__4: 0.12;
-  --mdw-container__elevation__opacity__5: 0.14;
+  /* --mdw-container__box-shadow__16dp: 0 16px 24px 2px rgba(var(--mdw-color__shadow), 0.14), 0 06px 30px 5px rgba(var(--mdw-color__shadow), 0.12), 0 08px 10px 0 rgba(var(--mdw-color__shadow), 0.20); */
+  /* --mdw-container__box-shadow__24dp: 0 24px 38px 3px rgba(var(--mdw-color__shadow), 0.14), 0 09px 46px 8px rgba(var(--mdw-color__shadow), 0.12), 0 11px 15px 0 rgba(var(--mdw-color__shadow), 0.20); */
 
   --mdw-container__box-shadow__1: var(--mdw-container__box-shadow__1dp);
   --mdw-container__box-shadow__2: var(--mdw-container__box-shadow__3dp);
@@ -35,41 +17,40 @@
   --mdw-container__box-shadow__4: var(--mdw-container__box-shadow__8dp);
   --mdw-container__box-shadow__5: var(--mdw-container__box-shadow__12dp);
 
-  --mdw-container__elevation__filter__0dp: none;
-  --mdw-container__elevation__filter__1dp: drop-shadow(0 00.92px 00.5px rgba(var(--mdw-color__shadow), 0.26)) drop-shadow(0 0 00.67px rgba(var(--mdw-color__shadow), 0.08));
-  --mdw-container__elevation__filter__2dp: drop-shadow(0 01.83px 01.0px rgba(var(--mdw-color__shadow), 0.26)) drop-shadow(0 0 01.33px rgba(var(--mdw-color__shadow), 0.08));
-  --mdw-container__elevation__filter__3dp: drop-shadow(0 02.75px 01.5px rgba(var(--mdw-color__shadow), 0.26)) drop-shadow(0 0 02.00px rgba(var(--mdw-color__shadow), 0.08));
-  --mdw-container__elevation__filter__4dp: drop-shadow(0 03.67px 02.0px rgba(var(--mdw-color__shadow), 0.26)) drop-shadow(0 0 02.67px rgba(var(--mdw-color__shadow), 0.08));
-  --mdw-container__elevation__filter__6dp: drop-shadow(0 05.50px 03.0px rgba(var(--mdw-color__shadow), 0.26)) drop-shadow(0 0 04.00px rgba(var(--mdw-color__shadow), 0.08));
-  --mdw-container__elevation__filter__8dp: drop-shadow(0 07.33px 04.0px rgba(var(--mdw-color__shadow), 0.26)) drop-shadow(0 0 05.33px rgba(var(--mdw-color__shadow), 0.08));
-  --mdw-container__elevation__filter__9dp: drop-shadow(0 08.25px 04.5px rgba(var(--mdw-color__shadow), 0.26)) drop-shadow(0 0 06.00px rgba(var(--mdw-color__shadow), 0.08));
-  --mdw-container__elevation__filter__12dp: drop-shadow(0 11.00px 06.0px rgba(var(--mdw-color__shadow), 0.26)) drop-shadow(0 0 08.00px rgba(var(--mdw-color__shadow), 0.08));
-  --mdw-container__elevation__filter__16dp: drop-shadow(0 14.67px 08.0px rgba(var(--mdw-color__shadow), 0.26)) drop-shadow(0 0 10.67px rgba(var(--mdw-color__shadow), 0.08));
-  --mdw-container__elevation__filter__24dp: drop-shadow(0 22.12px 12.0px rgba(var(--mdw-color__shadow), 0.26)) drop-shadow(0 0 16.00px rgba(var(--mdw-color__shadow), 0.08));
+  --mdw-container__box-shadow: none;
+
+  --mdw-container__elevation__color: var(--mdw-color__primary);
+  --mdw-container__elevation__opacity__1: 0.05;
+  --mdw-container__elevation__opacity__2: 0.08;
+  --mdw-container__elevation__opacity__3: 0.11;
+  --mdw-container__elevation__opacity__4: 0.12;
+  --mdw-container__elevation__opacity__5: 0.14;
+  --mdw-container__elevation__opacity: 0;
+  --mdw-container__elevation__visibility: visible;
 
   --mdw-container__transition-property: background-color, color, border-radius, box-shadow;
   --mdw-container__will-change: none;
-
   --mdw-shape__size: 0;
   --mdw-shape__size__top-start-size: var(--mdw-shape__size);
   --mdw-shape__size__top-end-size: var(--mdw-shape__size);
   --mdw-shape__size__bottom-start-size: var(--mdw-shape__size);
   --mdw-shape__size__bottom-end-size: var(--mdw-shape__size);
 
-  display: block;
   position: relative;
+
+  display: block;
 
   border-start-start-radius: var(--mdw-shape__size__top-start-size);
   border-start-end-radius: var(--mdw-shape__size__top-end-size);
   border-end-start-radius: var(--mdw-shape__size__bottom-start-size);
   border-end-end-radius: var(--mdw-shape__size__bottom-end-size);
 
+  box-shadow: var(--mdw-container__box-shadow);
+
   transition-delay: 1ms;
   transition-duration: 100ms;
   transition-property: var(--mdw-container__transition-property);
   will-change: var(--mdw-container__will-change);
-
-  box-shadow: var(--mdw-container__box-shadow);
 }
 
 :host([color]:where(:not([disabled]))) {
@@ -240,14 +221,13 @@
 
   pointer-events: none;
 
-  transition-delay: 1ms;
-  transition-duration: 100ms;
-  transition-property: opacity, color, background-color;
-
   opacity: var(--mdw-container__elevation__opacity, 0);
   visibility: var(--mdw-container__elevation__visibility);
 
   background-color: rgb(var(--mdw-container__elevation__color));
-
   border-radius: inherit;
+
+  transition-delay: 1ms;
+  transition-duration: 100ms;
+  transition-property: opacity, color, background-color;
 }

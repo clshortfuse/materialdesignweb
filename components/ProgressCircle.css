@@ -2,7 +2,6 @@
 
 :host {
   --mdw-progress__circle__timing: cubic-bezier(0.4, 0.0, 0.2, 1);
-
   --mdw-progress__circle__margin: 4px;
   --mdw-progress__circle__duration: 5400ms;
   --mdw-progress__circle__duration__expand: 667ms;
@@ -20,29 +19,25 @@
 #circle {
   --previous: 0;
   --value: 0;
-
   --startA: min(0.5, var(--previous));
   --endA: min(0.5, var(--value));
-
   --travelA: max(
     calc(var(--startA) - var(--endA)),
     calc(var(--endA) - var(--startA))
   );
   --delayA: max(0, calc(var(--previous) - 0.5));
-
   --startB: max(0, calc(var(--previous) - 0.5));
   --endB: max(0, calc(var(--value) - 0.5));
-
   --travelB: max(
     calc(var(--startB) - var(--endB)),
     calc(var(--endB) - var(--startB))
   );
   --delayB: max(0, 0.5 - calc(var(--previous)));
 
-  display: none;
-
   position: absolute;
   inset: 0;
+
+  display: none;
 }
 
 :host([circle]) {
@@ -69,6 +64,7 @@
 .semi {
   position: absolute;
   inset: var(--mdw-progress__circle__margin);
+
   overflow: hidden;
 
   box-sizing: border-box;
@@ -91,39 +87,40 @@
   box-sizing: border-box;
   border: solid currentcolor 4px;
 
-  transition: transform 400ms;
-  transition-timing-function: linear;
-
   transform: rotate(var(--rotation));
 
   background-color: transparent;
   border-radius: 50%;
+
+  transition: transform 400ms;
+  transition-timing-function: linear;
 }
 
 #semi1::after {
   --rotation: min(180deg, calc(var(--value) * 360deg));
   inset-inline-start: -100%;
 
+  clip-path: inset(0 50% 0 0);
+
   transition-delay: calc(var(--delayA) * var(--mdw-progress__circle__duration__expand));
   transition-duration: calc(var(--travelA) * var(--mdw-progress__circle__duration__expand));
-
-  clip-path: inset(0 50% 0 0);
 }
 
 #semi2::after {
   --rotation: max(0deg, calc(var(--value) * 360deg - 180deg));
   inset-inline-end: -100%;
 
+  clip-path: inset(0 0 0 50%);
+
   transition-delay: calc(var(--delayB) * var(--mdw-progress__circle__duration__expand));
   transition-duration: calc(var(--travelB) * var(--mdw-progress__circle__duration__expand));
-
-  clip-path: inset(0 0 0 50%);
 }
 
 #indeterminate-circle {
-  display: none;
   position: absolute;
   inset: 0;
+
+  display: none;
 
   animation: rotate-cw calc(var(--mdw-progress__circle__duration) / 4) linear infinite;
 }
@@ -135,6 +132,7 @@
 .arc {
   position: absolute;
   inset: var(--mdw-progress__circle__margin);
+
   overflow: hidden;
 
   box-sizing: border-box;
@@ -151,10 +149,10 @@
   box-sizing: border-box;
   border: solid currentcolor 4px;
 
-  animation: grow-shrink calc(var(--mdw-progress__circle__duration) / 4) var(--mdw-progress__circle__timing) infinite;
-
   background-color: transparent;
   border-radius: 50%;
+
+  animation: grow-shrink calc(var(--mdw-progress__circle__duration) / 4) var(--mdw-progress__circle__timing) infinite;
 }
 
 #arc2 {
@@ -241,5 +239,4 @@
   to {
     transform: rotate(calc(0.01 * 360deg));
   }
-
 }

@@ -60,6 +60,7 @@
 #ripple {
   position: absolute;
   inset: 0;
+
   overflow: hidden;
 
   box-sizing: border-box;
@@ -75,24 +76,11 @@
 
 #ripple-inner {
   --mdw-ripple__fade-in-name: ripple-fade-in;
-
-  display: block;
   position: absolute;
 
-  pointer-events: none;
+  display: block;
 
-  animation:
-    var(--mdw-ripple__fade-in-name) var(--mdw-ripple-expand-duration) linear,
-    ripple-fade-out calc(1000ms / 3.0) var(--mdw-ripple-deceleration-easing);
-  animation-name: none, none;
-  animation-direction: normal;
-  animation-fill-mode: forwards;
-  transition-delay: 0s;
-  transition-duration: var(--mdw-ripple-simple-duration);
-  transition-property: background-color, color;
-  transition-timing-function: var(--mdw-ripple-standard-easing);
-  /* stylelint-disable-next-line liberty/use-logical-spec */
-  will-change: transform, opacity;
+  pointer-events: none;
 
   opacity: 0.12;
   transform: scale(0);
@@ -100,6 +88,20 @@
   background-color: currentColor;
 
   border-radius: 50%;
+
+  transition-delay: 0s;
+  transition-duration: var(--mdw-ripple-simple-duration);
+  transition-property: background-color, color;
+  transition-timing-function: var(--mdw-ripple-standard-easing);
+
+  animation:
+    var(--mdw-ripple__fade-in-name) var(--mdw-ripple-expand-duration) linear,
+    ripple-fade-out calc(1000ms / 3.0) var(--mdw-ripple-deceleration-easing);
+  animation-name: none, none;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  /* stylelint-disable-next-line liberty/use-logical-spec */
+  will-change: transform, opacity;
 }
 
 #ripple-inner[mdw-fade-in-repeat] {

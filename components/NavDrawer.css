@@ -1,17 +1,17 @@
+/* https://m3.material.io/components/navigation-drawer/specs */
+
 :host([open]) {
   --mdw-type__font-weight: var(--mdw-typescale__label-large__font-weight);
   --mdw-type__font-size: var(--mdw-typescale__label-large__font-size);
   --mdw-type__line-height: var(--mdw-typescale__label-large__line-height);
   --mdw-type__font-family: var(--mdw-typescale__label-large__font-family);
   --mdw-type__letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
-
   --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__0);
-
   --mdw-shape__size: var(--mdw-shape__large, 16px);
   --mdw-shape__size__top-start-size: 0;
   --mdw-shape__size__bottom-start-size: 0;
-  grid-template-rows: min-content;
 
+  grid-template-rows: min-content;
   grid-template-columns: minmax(360px, min-content);
 
   min-inline-size: 360px;
@@ -20,7 +20,6 @@
 }
 
 :host([open]) #slot::slotted(mdw-nav-item) {
-
   --mdw-nav-item__badge__font-weight: initial;
   --mdw-nav-item__badge__font-size: initial;
   --mdw-nav-item__badge__line-height: initial;
@@ -28,7 +27,6 @@
   --mdw-nav-item__badge__letter-spacing: initial;
   --mdw-nav-item__badge__background: initial;
   --mdw-nav-item__badge__color: initial;
-
   --mdw-nav-item__badge__position: static;
   --mdw-nav-item__badge__transform: none;
   --mdw-nav-item__label__padding-block: 18px;
@@ -37,9 +35,10 @@
   --mdw-nav-item__badge__grid-area: c;
   --mdw-nav-item__indicator__grid-area: s1 / s1 / s2 / s2 ;
 
+  align-self: stretch;
+
   display: grid;
   align-items: center;
-  align-self: stretch;
   gap: 12px;
   grid-template: "s1 a b c s2" minmax(56px, min-content) / 0 24px 1fr minmax(0, min-content) 12px;
   justify-items: flex-start;

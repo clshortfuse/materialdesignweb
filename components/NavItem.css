@@ -1,21 +1,18 @@
-/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
-/* https://material.io/guidelines/style/icons.html# */
+/* https://m3.material.io/components/navigation-bar/specs */
+/* https://m3.material.io/components/navigation-drawer/specs */
+/* https://m3.material.io/components/navigation-rail/specs */
 
 :host {
   display: grid;
   align-content: center;
   align-items: center;
-
   grid: auto-flow minmax(20px, min-content) / auto;
-
   grid-template: "a" minmax(32px, 1fr) / 56px;
-
   justify-items: center;
   row-gap: 4px;
 
   box-sizing: content-box;
   box-sizing: border-box;
-
   min-block-size: 56px;
   padding-inline: 0;
 
@@ -42,21 +39,18 @@
 }
 
 a {
-  display: var(--mdw-nav-item__anchor__display, contents);
   position: inherit;
+
+  display: var(--mdw-nav-item__anchor__display, contents);
   align-items: center;
   flex-direction: column;
   grid-area: b;
-
   justify-content: center;
 
   flex: 1;
 
   cursor: inherit;
   outline: none;
-
-  transition: opacity, color, transform 200ms;
-  will-change: opacity, transform;
 
   opacity: var(--mdw-nav-item__anchor__opacity, 1);
   transform: translateY(var(--mdw-nav-item__offset-y, 0));
@@ -68,25 +62,26 @@ a {
   line-height: inherit;
   font-family: inherit;
   letter-spacing: inherit;
-
   text-decoration: inherit;
+
+  transition: opacity, color, transform 200ms;
+  will-change: opacity, transform;
 }
 
 #indicator {
-  display: flex;
   position: absolute;
   inset: 0;
+
+  display: flex;
   grid-area: var(--mdw-nav-item__indicator__grid-area, a);
 
-  transition: transform 200ms;
-  will-change: transform;
-
   transform: translateY(var(--mdw-nav-item__offset-y, 0));
-
   z-index: 0;
 
   border-radius: 999px;
 
+  transition: transform 200ms;
+  will-change: transform;
 }
 
 #icon {
@@ -94,14 +89,14 @@ a {
   --mdw-icon__font-variation-settings: 'FILL' 0;
   position: relative;
   align-self: center;
+
   grid-area: a;
+
+  transform: translateY(var(--mdw-nav-item__offset-y, 0));
+  z-index: 3;
 
   transition: transform 200ms;
   will-change: transform;
-
-  transform: translateY(var(--mdw-nav-item__offset-y, 0));
-
-  z-index: 3;
 }
 
 #overlay {
@@ -110,26 +105,21 @@ a {
 
 #badge {
   --mdw-badge__scale: 0;
-  display: flex;
   position: var(--mdw-nav-item__badge__position, absolute);
   inset-block-start: 50%;
   inset-inline-start: 50%;
+
+  display: flex;
   align-items: center;
   grid-area: var(--mdw-nav-item__badge__grid-area, a);
-
   justify-content: center;
 
   box-sizing: border-box;
-
   block-size: 16px;
   min-inline-size: 16px;
   padding: 4px;
 
-  transition: transform 200ms;
-  will-change: transform;
-
   transform: var(--mdw-nav-item__badge__transform, translateY(-50%) translateX(4px) translateY(-8px) translateY(var(--mdw-nav-item__offset-y, 0)) scale(var(--mdw-badge__scale)));
-
   z-index: 4;
 
   background: var(--mdw-nav-item__badge__background, transparent);
@@ -141,6 +131,9 @@ a {
   line-height: var(--mdw-nav-item__badge__line-height, inherit);
   font-family: var(--mdw-nav-item__badge__font-family, inherit);
   letter-spacing: var(--mdw-nav-item__badge__letter-spacing, inherit);
+
+  transition: transform 200ms;
+  will-change: transform;
 }
 
 #badge::after {
@@ -170,7 +163,6 @@ a {
   /* Hold fade-in animation while selected */
   animation-name: var(--mdw-ripple__fade-in-name), none;
 }
-
 /* Fix active ripple state */
 a:active #ripple-inner {
   animation-name: var(--mdw-ripple__fade-in-name), none;

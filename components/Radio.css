@@ -32,14 +32,15 @@ label {
 }
 
 #icon {
-  display: flex;
   position: relative;
+
+  display: flex;
   align-items: center;
-  grid-column: 1;
   justify-content: center;
 
   block-size: 40px;
   inline-size: 40px;
+  grid-column: 1;
 
   background-color: transparent;
   border-radius: 50%;
@@ -57,7 +58,6 @@ label {
 
   box-sizing: border-box;
   block-size: 20px;
-
   inline-size: 20px;
   border: solid 1px currentColor;
 
@@ -72,12 +72,12 @@ label {
   block-size: 10px;
   inline-size: 10px;
 
-  transition: transform 100ms;
-
   transform: scale(0);
 
   background-color: currentColor;
   border-radius: inherit;
+
+  transition: transform 100ms;
 }
 
 :host([checked]) #icon::after {

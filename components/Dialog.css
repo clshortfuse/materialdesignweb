@@ -1,33 +1,29 @@
+/* https://m3.material.io/components/dialogs/specs */
+
 :host {
-  --mdw-shape__size: 28px;
-  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__3);
-  --mdw-container__box-shadow: var(--mdw-container__box-shadow__3);
-  --mdw-bg: var(--mdw-color__surface);
-  --mdw-ink: var(--mdw-color__on-surface);
   --mdw-dialog__expand-duration: var(--mdw-motion-expand-duration, 250ms);
   --mdw-dialog__simple-duration: var(--mdw-motion-simple-duration, 100ms);
   --mdw-dialog__standard-easing: var(--mdw-motion-standard-easing, cubic-bezier(0.4, 0.0, 0.2, 1));
   --mdw-dialog__deceleration-easing: var(--mdw-motion-deceleration-easing, cubic-bezier(0.0, 0.0, 0.2, 1));
   --mdw-dialog__align-items: flex-start;
-
   --mdw-dialog__fade-in-duration: var(--mdw-motion-fade-in-duration, 150ms);
   --mdw-dialog__scrim__visibility: hidden;
-
   --mdw-dialog__icon__display: none;
+  --mdw-dialog__edge-distance: 48px;
+
+  --mdw-shape__size: 28px;
+  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__3);
+  --mdw-container__box-shadow: var(--mdw-container__box-shadow__3);
 
   --mdw-bg: var(--mdw-color__surface);
   --mdw-ink: var(--mdw-color__on-surface);
-
-  --mdw-dialog__edge-distance: 48px;
 
   position: fixed;
   inset: 0;
 
   pointer-events: none;
-
   /* Handled by theme */
   /* background-color: rgba(0, 0, 0, 0.50); */
-
   z-index: 24;
 }
 
@@ -43,11 +39,11 @@
 }
 
 dialog {
-  display: flex;
   position: fixed;
   inset-block-start: 0;
   inset-inline-start: 0;
 
+  display: flex;
   align-items: center;
   flex-direction: row;
   justify-content: center;
@@ -61,22 +57,17 @@ dialog {
   border: none;
   padding: var(--mdw-dialog__edge-distance);
 
-  /* Handled by theme */
-  /* background-color: rgba(0, 0, 0, 0.50); */
+  opacity: 0;
+  visibility: hidden;
+  z-index: 24;
+
+  background-color: transparent;
 
   transition: none;
-
   transition-duration: motion.$fadeOutDuration;
   transition-property: opacity;
   transition-timing-function: motion.$accelerateEasing;
   will-change: opacity;
-
-  opacity: 0;
-  visibility: hidden;
-
-  z-index: 24;
-
-  background-color: transparent;
 }
 
 dialog::backdrop {
@@ -87,14 +78,15 @@ dialog::backdrop {
 dialog[aria-hidden="false"],
 dialog:modal {
   --mdw-dialog__scrim__visibility: visible;
+
   pointer-events: auto;
+
+  opacity: 1;
+  visibility: visible;
 
   transition-duration: var(--mdw-dialog__fade-in-duration);
   transition-property: opacity;
   transition-timing-function: var(--mdw-dialog__deceleration-easing);
-
-  opacity: 1;
-  visibility: visible;
 }
 
 #scrim {
@@ -110,17 +102,14 @@ dialog:modal {
   inline-size: 100%;
 
   cursor: default;
-
   pointer-events: inherit;
   -webkit-tap-highlight-color: transparent;
 
   opacity: 0.38;
   visibility: var(--mdw-dialog__scrim__visibility);
-
   z-index:0;
 
   background-color: rgb(var(--mdw-color__scrim));
-
 }
 
 #scrim::-webkit-scrollbar {
@@ -135,7 +124,6 @@ dialog:modal {
   block-size: 200%;
   inline-size: 200%;
 }
-
 @keyframes scaleUpAnimation {
   from {
     transform: scale(0);
@@ -146,46 +134,30 @@ dialog:modal {
   }
 }
 
-dialog[aria-hidden="false"] #container,
-dialog:modal #container {
-  animation-name: scaleUpAnimation;
-  animation-duration: var(--mdw-dialog__fade-in-duration);
-  animation-direction: forwards;
-}
-
 #container {
+  position: relative;
   /* --mdw-shape__size: 28px;
   --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__3);
   --mdw-container__box-shadow: var(--mdw-container__box-shadow__3);
-
   --mdw-type__font-weight: var(--mdw-typescale__body-medium__font-weight);
   --mdw-type__font-size: var(--mdw-typescale__body-medium__font-size);
   --mdw-type__line-height: var(--mdw-typescale__body-medium__line-height);
   --mdw-type__font-family: var(--mdw-typescale__body-medium__font-family);
   --mdw-type__letter-spacing: var(--mdw-typescale__body-medium__letter-spacing); */
-
   display: flex;
-
-  position: relative;
   align-items: var(--mdw-dialog__align-items);
   flex-direction: column;
-
   overflow-y: auto;
-
+  -webkit-overflow-scrolling: touch;
   overscroll-behavior: none;
   overscroll-behavior: contain;
 
   box-sizing: border-box;
   max-block-size: 100%;
-
   min-inline-size: 280px;
   max-inline-size: 560px;
-
   flex-shrink: 1;
-
   padding: 24px;
-
-  will-change: display, transform;
 
   transform: scale(1);
   transform-origin: bottom center;
@@ -194,7 +166,14 @@ dialog:modal #container {
   background-color: rgb(var(--mdw-color__surface));
   color: rgb(var(--mdw-color__on-surface-variant));
 
-  -webkit-overflow-scrolling: touch;
+  will-change: display, transform;
+}
+
+dialog[aria-hidden="false"] #container,
+dialog:modal #container {
+  animation-name: scaleUpAnimation;
+  animation-duration: var(--mdw-dialog__fade-in-duration);
+  animation-direction: forwards;
 }
 
 #headline {
@@ -203,12 +182,12 @@ dialog:modal #container {
   --mdw-type__line-height: var(--mdw-typescale__headline-small__line-height);
   --mdw-type__font-family: var(--mdw-typescale__headline-small__font-family);
   --mdw-type__letter-spacing: var(--mdw-typescale__headline-small__letter-spacing);
+
   margin-block-end: 16px;
 }
 
 #icon {
   --mdw-icon__size: 24px;
-
   display: var(--mdw-dialog__icon__display);
 
   margin-block-end: 16px;
@@ -225,9 +204,7 @@ dialog:modal #container {
   overflow-y: auto;
 
   margin-block-end: 16px;
-
   border-style: solid none;
-
   border-width: 1px 0;
   padding-block: 16px;
 

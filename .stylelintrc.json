@@ -2,7 +2,9 @@
   "env": {
     "browser": true
   },
-  "ignorePatterns": ["*.min.js"],
+  "ignorePatterns": [
+    "*.min.js"
+  ],
   "ignoreFiles": "test/**",
   "plugins": [
     "stylelint-no-unsupported-browser-features",
@@ -10,9 +12,19 @@
     "stylelint-use-logical-spec"
   ],
   "rules": {
-    "plugin/no-unsupported-browser-features": [ true, {
-      "ignore": ["css-appearance", "overscroll-behavior", "css3-cursors", "css-clip-path", "css-masks", "user-select-none"]
-    }],
+    "plugin/no-unsupported-browser-features": [
+      true,
+      {
+        "ignore": [
+          "css-appearance",
+          "overscroll-behavior",
+          "css3-cursors",
+          "css-clip-path",
+          "css-masks",
+          "user-select-none"
+        ]
+      }
+    ],
     "liberty/use-logical-spec": [
       "always"
     ],
@@ -86,10 +98,9 @@
         ]
       },
       {
-        "groupName": "layout",
+        "groupName": "position",
         "emptyLineBefore": "always",
         "properties": [
-          "display",
           "position",
           "top",
           "right",
@@ -102,19 +113,33 @@
           "inset-inline",
           "inset-inline-start",
           "inset-inline-end",
+          "align-self",
+          "justify-self",
+          "order",
+          "float",
+          "float-defer",
+          "float-offset",
+          "float-reference"
+        ]
+      },
+      {
+        "groupName": "layout",
+        "emptyLineBefore": "always",
+        "properties": [
+          "display",
           "align-content",
           "align-items",
           "grid-column-align",
           "grid-row-align",
-          "align-self",
           "alignment-adjust",
           "alignment-baseline",
           "baseline-shift",
           "box-decoration-break",
           "box-snap",
-          "break-after",
+          "margin-break",
           "break-before",
           "break-inside",
+          "break-after",
           "chains",
           "clear",
           "column-count",
@@ -130,10 +155,6 @@
           "flex-direction",
           "flex-flow",
           "flex-wrap",
-          "float",
-          "float-defer",
-          "float-offset",
-          "float-reference",
           "flow",
           "flow-from",
           "flow-into",
@@ -143,22 +164,12 @@
           "grid-auto-columns",
           "grid-auto-flow",
           "grid-auto-rows",
-          "grid-column",
-          "grid-column-start",
-          "grid-column-span",
-          "grid-column-end",
-          "grid-row",
-          "grid-row-start",
-          "grid-row-span",
-          "grid-row-end",
           "grid-template",
           "grid-template-rows",
           "grid-template-columns",
           "grid-template-areas",
           "justify-content",
           "justify-items",
-          "justify-self",
-          "order",
           "overflow",
           "overflow-block",
           "overflow-inline",
@@ -166,6 +177,7 @@
           "overflow-wrap",
           "overflow-x",
           "overflow-y",
+          "overflow-scrolling",
           "overscroll-behavior",
           "place-content",
           "place-items",
@@ -231,6 +243,14 @@
           "min-inline-size",
           "max-width",
           "max-inline-size",
+          "grid-column",
+          "grid-column-start",
+          "grid-column-span",
+          "grid-column-end",
+          "grid-row",
+          "grid-row-start",
+          "grid-row-span",
+          "grid-row-end",
           "flex",
           "flex-grow",
           "flex-shrink",
@@ -243,7 +263,6 @@
           "margin-block",
           "margin-block-start",
           "margin-block-end",
-          "margin-break",
           "margin-inline",
           "margin-inline-start",
           "margin-inline-end",
@@ -359,37 +378,6 @@
           "resize",
           "tap-highlight-color",
           "user-select"
-        ]
-      },
-      {
-        "groupName": "animation",
-        "emptyLineBefore": "always",
-        "properties": [
-          "animation",
-          "animation-name",
-          "animation-duration",
-          "animation-timing-function",
-          "animation-delay",
-          "animation-iteration-count",
-          "animation-direction",
-          "animation-fill-mode",
-          "animation-play-state",
-          "offset",
-          "offset-after",
-          "offset-anchor",
-          "offset-before",
-          "offset-distance",
-          "offset-start",
-          "offset-end",
-          "offset-path",
-          "offset-position",
-          "offset-rotate",
-          "transition",
-          "transition-delay",
-          "transition-duration",
-          "transition-property",
-          "transition-timing-function",
-          "will-change"
         ]
       },
       {
@@ -605,6 +593,37 @@
           "image-resolution",
           "object-fit",
           "object-position"
+        ]
+      },
+      {
+        "groupName": "animation",
+        "emptyLineBefore": "always",
+        "properties": [
+          "transition",
+          "transition-delay",
+          "transition-duration",
+          "transition-property",
+          "transition-timing-function",
+          "animation",
+          "animation-name",
+          "animation-duration",
+          "animation-timing-function",
+          "animation-delay",
+          "animation-iteration-count",
+          "animation-direction",
+          "animation-fill-mode",
+          "animation-play-state",
+          "offset",
+          "offset-after",
+          "offset-anchor",
+          "offset-before",
+          "offset-distance",
+          "offset-start",
+          "offset-end",
+          "offset-path",
+          "offset-position",
+          "offset-rotate",
+          "will-change"
         ]
       }
     ]

@@ -1,4 +1,4 @@
-/** https://github.com/material-components/material-components-android/blob/ed77ab36ccac98df24e55060d58406c5981a9062/lib/java/com/google/android/material/progressindicator/ */
+/* https://github.com/material-components/material-components-android/blob/ed77ab36ccac98df24e55060d58406c5981a9062/lib/java/com/google/android/material/progressindicator/ */
 
 :host {
   --mdw-progress__line1-head__timing: cubic-bezier(0.2, 0.8, 0, 1.0);
@@ -15,17 +15,17 @@
 }
 
 .line {
+  opacity: 1;
+
   transition: opacity var(--mdw-progress__opacity__duration);
   will-change: opacity;
-
-  opacity: 1;
 }
 
 .line,
 .line::after {
   position: absolute;
-
   inset: 0;
+
   overflow: hidden;
 
   animation-duration: var(--mdw-progress__line__duration);
@@ -37,10 +37,10 @@
 .line::after {
   content: '';
 
+  background-color: currentColor;
+
   animation: inherit;
   will-change: transform;
-
-  background-color: currentColor;
 }
 
 #line1 {
@@ -60,10 +60,10 @@
 }
 
 :host([value]) .line {
-  transition: opacity var(--mdw-progress__opacity__duration), visibility 1ms var(--mdw-progress__opacity__duration);
-
   opacity: 0;
   visibility: hidden;
+
+  transition: opacity var(--mdw-progress__opacity__duration), visibility 1ms var(--mdw-progress__opacity__duration);
 }
 
 /**
@@ -91,25 +91,24 @@
   }
 
   70.4% {
-    animation-timing-function: var(--mdw-progress__line1-head__timing);
-
     transform: translateX(0%);
+
+    animation-timing-function: var(--mdw-progress__line1-head__timing);
   }
 
   100% {
     transform: translateX(100%);
   }
 }
-
 @keyframes l1t {
   0% {
     transform: translateX(-100%);
   }
 
   55.6% {
-    animation-timing-function: var(--mdw-progress__line1-tail__timing);
-
     transform: translateX(-100%);
+
+    animation-timing-function: var(--mdw-progress__line1-tail__timing);
   }
 
   87.1% {
@@ -119,18 +118,16 @@
   100% {
     transform: translateX(0%);
   }
-
 }
-
 @keyframes l2h {
   0% {
     transform: translateX(0%);
   }
 
   18.5% {
-    animation-timing-function: var(--mdw-progress__line2-head__timing);
-
     transform: translateX(0%);
+
+    animation-timing-function: var(--mdw-progress__line2-head__timing);
   }
 
   65.72% {
@@ -140,14 +137,12 @@
   to {
     transform: translateX(100%);
   }
-
 }
-
 @keyframes l2t {
   0% {
-    animation-timing-function: var(--mdw-progress__line2-tail__timing);
-
     transform: translateX(-100%);
+
+    animation-timing-function: var(--mdw-progress__line2-tail__timing);
   }
 
   41.67% {
@@ -157,5 +152,4 @@
   to {
     transform: translateX(0%);
   }
-
 }

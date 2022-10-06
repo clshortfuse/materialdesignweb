@@ -1,5 +1,4 @@
-/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
-/* https://material.io/guidelines/style/icons.html# */
+/* https://m3.material.io/components/segmented-buttons/specs */
 
 :host {
   --mdw-shape__size: 0;
@@ -53,6 +52,7 @@
 :host([checked]) {
   --mdw-ink: inherit;
   --mdw-bg: inherit;
+
   background-color: rgb(var(--mdw-bg));
 }
 
@@ -68,11 +68,11 @@
 #check-icon {
   --mdw-icon__font-variation-settings: 'FILL' 1;
   --mdw-icon__size: 0;
-
   --mdw-icon__opacity: 0;
 
-  display: var(--mdw-button__icon__display);
   order: -1;
+
+  display: var(--mdw-button__icon__display);
 
   margin-inline-start: var(--mdw-button__icon__margin-inline-start);
   margin-inline-end: var(--mdw-button__icon__margin-inline-end);
@@ -89,10 +89,10 @@
 
 :host([icon]) #check-icon {
   --mdw-icon__size: 18px;
-
   --mdw-icon__opacity: 0;
   position: absolute;
   inset-inline-start: var(--mdw-button__icon__margin-inline-start);
+
   overflow: visible;
 
   margin: 0;

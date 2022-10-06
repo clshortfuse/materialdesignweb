@@ -1,4 +1,4 @@
-/* https://material.io/guidelines/style/icons.html# */
+/* https://material.io/design/iconography/system-icons.html */
 
 :host {
   --mdw-icon__size: 18px;
@@ -11,22 +11,23 @@
 }
 
 #icon {
-  display: var(--mdw-icon__display);
   position: relative;
   order: -1;
 
+  display: var(--mdw-icon__display);
+
   block-size: var(--mdw-icon__size);
   inline-size: var(--mdw-icon__size);
-
-  transition-delay: 1ms;
-  transition-duration: 100ms;
-  /* stylelint-disable-next-line liberty/use-logical-spec -- Safari does not animate inline-size */
-  transition-property: font-variation-settings, inline-size, opacity, width;
 
   opacity: var(--mdw-icon__opacity);
 
   font-size: var(--mdw-icon__size);
   font-variation-settings: var(--mdw-icon__font-variation-settings);
+
+  transition-delay: 1ms;
+  transition-duration: 100ms;
+  /* stylelint-disable-next-line liberty/use-logical-spec -- Safari does not animate inline-size */
+  transition-property: font-variation-settings, inline-size, opacity, width;
 }
 
 #image {
@@ -46,6 +47,6 @@
 }
 
 .material-symbols-outlined {
-  direction: inherit;
   /* https://github.com/google/material-design-icons/issues/750 */
+  direction: inherit;
 }

@@ -1,24 +1,18 @@
-/* https://material.io/guidelines/components/buttons.html#buttons-raised-buttons */
-/* https://material.io/guidelines/style/icons.html# */
+/* https://m3.material.io/components/icon-buttons/specs */
 
 :host {
   --mdw-shape__size: var(--mdw-shape__full);
-
   --mdw-container__box-shadow: none;
   --mdw-container__elevation__opacity: 0;
-
   --mdw-button__icon__size: 24px;
   --mdw-button__icon__display: block;
   --mdw-button__outline__opacity: 1;
-
   --mdw-button__icon__font-variation-settings: 'FILL' 0;
   --mdw-icon-button__background-alpha: 1;
   --mdw-button__outline__size: 0;
-
   --mdw-ink: var(--mdw-color__on-surface-variant);
 
   block-size: 40px;
-
   min-block-size: 40px;
   inline-size: 40px;
   min-inline-size: 40px;
@@ -29,13 +23,11 @@
 }
 
 /** Standard default is same as unselected */
-
 :host(:where([type="checkbox"]):not([checked])) {
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
 /** Filled default is same as selected */
-
 :host(:where([filled])) {
   --mdw-ink: var(--mdw-color__on-primary);
   --mdw-bg: var(--mdw-color__primary);
@@ -62,7 +54,6 @@
 }
 
 /** Outlined default is same as unselected */
-
 :host(:where([outlined])) {
   --mdw-bg: var(--mdw-color__inverse-surface);
   --mdw-ink: var(--mdw-color__inverse-on-surface);
@@ -81,17 +72,14 @@
 :host(:where([outlined][type="checkbox"])[checked]) {
   --mdw-button__icon__font-variation-settings: 'FILL' 1;
   --mdw-button__outline__size: 0;
-
   background-color: rgba(var(--mdw-bg), var(--mdw-icon-button__background-alpha));
   color: rgb(var(--mdw-ink));
 }
 
 /** Disabled */
-
 :host([disabled]) {
   --mdw-button__outline__opacity: 0.12;
   --mdw-icon-button__background-alpha: 0.12;
-
   cursor: not-allowed;
 
   color: rgba(var(--mdw-color__on-surface), 0.38);
