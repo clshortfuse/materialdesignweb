@@ -4,11 +4,9 @@ import Ripple from './Ripple.js';
 /** @typedef {'charset'|'coords'|'name'|'shape'} DeprecatedHTMLAnchorElementProperties */
 /** @implements {Omit<HTMLAnchorElement,DeprecatedHTMLAnchorElementProperties>} */
 export default class NavItem extends Ripple {
-  static delegatesFocus = true;
-
   static elementName = 'mdw-nav-item';
 
-  static styles = [...super.styles, styles];
+  static delegatesFocus = true;
 
   static fragments = [
     ...super.fragments,
@@ -19,6 +17,8 @@ export default class NavItem extends Ripple {
       <span aria-hidden=true id=badge type-style=label-small color=error></mdw-container>
     `,
   ];
+
+  static styles = [...super.styles, styles];
 
   static get observedAttributes() {
     return [

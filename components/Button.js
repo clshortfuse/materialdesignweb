@@ -3,6 +3,46 @@ import Icon from './Icon.js';
 import Input from './Input.js';
 
 export default class Button extends Input {
+  static elementName = 'mdw-button';
+
+  static fragments = [
+    ...super.fragments,
+    /* html */`
+      <div id=touch-target aria-hidden="true"></div>
+      <div id=outline aria-hidden="true"></div>
+      <mdw-icon id=icon aria-hidden="true"></mdw-icon>
+    `,
+  ];
+
+  static styles = [...super.styles, styles];
+
+  /**
+   * @param {Event} event
+   * @this {HTMLInputElement} this
+   * @return {void}
+   */
+  static onButtonClick(event) {
+    if (this.disabled) return;
+    if (this.type !== 'submit') return;
+    /** @type {{host:Button}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    if (host.disabled) return;
+    const value = null;
+    const form = host.elementInternals?.form;
+    if (!form) return;
+    host.elementInternals.setFormValue(value);
+    if ((this.type ?? 'submit') !== 'submit') return;
+    const duplicatedButton = /** @type {HTMLButtonElement} */ (this.cloneNode());
+    duplicatedButton.hidden = true;
+    form.append(duplicatedButton);
+    if ('requestSubmit' in form) {
+      form.requestSubmit(duplicatedButton);
+    } else {
+      duplicatedButton.click();
+    }
+    duplicatedButton.remove();
+  }
+
   constructor() {
     super();
     this.iconElement = /** @type {Icon} */ (this.shadowRoot.getElementById('icon'));
@@ -40,46 +80,6 @@ export default class Button extends Input {
         break;
       default:
     }
-  }
-
-  static elementName = 'mdw-button';
-
-  static styles = [...super.styles, styles];
-
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <div id=touch-target aria-hidden="true"></div>
-      <div id=outline aria-hidden="true"></div>
-      <mdw-icon id=icon aria-hidden="true"></mdw-icon>
-    `,
-  ];
-
-  /**
-   * @param {Event} event
-   * @this {HTMLInputElement} this
-   * @return {void}
-   */
-  static onButtonClick(event) {
-    if (this.disabled) return;
-    if (this.type !== 'submit') return;
-    /** @type {{host:Button}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    if (host.disabled) return;
-    const value = null;
-    const form = host.elementInternals?.form;
-    if (!form) return;
-    host.elementInternals.setFormValue(value);
-    if ((this.type ?? 'submit') !== 'submit') return;
-    const duplicatedButton = /** @type {HTMLButtonElement} */ (this.cloneNode());
-    duplicatedButton.hidden = true;
-    form.append(duplicatedButton);
-    if ('requestSubmit' in form) {
-      form.requestSubmit(duplicatedButton);
-    } else {
-      duplicatedButton.click();
-    }
-    duplicatedButton.remove();
   }
 
   connectedCallback() {

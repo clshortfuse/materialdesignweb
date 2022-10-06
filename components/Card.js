@@ -6,8 +6,6 @@ export default class Card extends Container {
 
   static ariaRole = 'figure';
 
-  static styles = [...super.styles, styles];
-
   static fragments = [
     ...super.fragments,
     /* html */`
@@ -15,4 +13,6 @@ export default class Card extends Container {
       <div id=outline></div>
     `,
   ];
+
+  static styles = [...super.styles, styles];
 }

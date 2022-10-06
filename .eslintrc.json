@@ -23,7 +23,8 @@
     "@typescript-eslint",
     "github",
     "jsdoc",
-    "unicorn"
+    "unicorn",
+    "sort-class-members"
   ],
   "root": true,
   "rules": {
@@ -90,6 +91,44 @@
       "pathGroupsExcludedImportTypes": ["builtin"]
     }],
     "import/prefer-default-export": 0,
+    "sort-class-members/sort-class-members": [
+			2,
+			{
+				"order": [
+          "[webcomponents]",
+					"[static-properties]",
+					"[static-methods]",
+          "[static-events]",
+					"[properties]",
+					"[conventional-private-properties]",
+					"constructor",
+          "attributeChangedCallback",
+					"[methods]",
+					"[conventional-private-methods]",
+          "[everything-else]",
+          "[lifecycle]"
+				],
+        "groups": {
+          "webcomponents": [
+            { "name": "elementName", "static": true },
+            { "name": "ariaRole", "static": true },
+            { "name": "delegatesFocus", "static": true },
+            { "name": "formAssociated", "static": true },
+            { "name": "fragments", "static": true },
+            { "name": "styles", "static": true },
+            { "name": "observedAttributes", "static": true }
+          ],
+          "lifecycle": [
+            { "name": "connectedCallback" },
+            { "name": "disconnectedCallback" }
+          ],
+          "static-events": [
+            { "name": "/on.+/", "type":"method", "static":true }
+          ]
+        },
+				"accessorPairPositioning": "getThenSet"
+			}
+		],
     "unicorn/no-useless-undefined": 0,
     "unicorn/no-array-for-each": 0,
     "unicorn/prefer-spread": 0,

@@ -3,9 +3,9 @@ import styles from './Nav.css' assert { type: 'css' };
 import NavItem from './NavItem.js';
 
 export default class Nav extends Container {
-  static ariaRole = 'navigation';
-
   static elementName = 'mdw-nav';
+
+  static ariaRole = 'navigation';
 
   static styles = [...super.styles, styles];
 

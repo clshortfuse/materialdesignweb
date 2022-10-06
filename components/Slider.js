@@ -2,52 +2,22 @@ import Input from './Input.js';
 import styles from './Slider.css' assert { type: 'css' };
 
 export default class Slider extends Input {
-  constructor() {
-    super();
-    if (!this.hasAttribute('type')) {
-      this.type = 'range';
-      this.attributeChangedCallback('type', null, 'range');
-    }
-    this.rippleElement.remove();
-    this.overlayElement.remove();
-    this.trackElement = this.shadowRoot.getElementById('track');
-    this.trackLabelElement = this.shadowRoot.getElementById('track-label');
-  }
+  static elementName = 'mdw-slider';
 
-  #labelShown = false;
+  static fragments = [
+    ...super.fragments,
+    /* html */ `
+      <div id=track aria-hidden=true>
+        <div id=ticks></div>
+        <div id="track-active"></div>
+        <div id="track-label-anchor">
+          <div id="track-label" hidden text></div>
+        </div>
+      </div>
+    `,
+  ];
 
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
-  attributeChangedCallback(name, oldValue, newValue) {
-    super.attributeChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
-    switch (name) {
-      case 'ticks': {
-        if (newValue == null) {
-          this.trackElement.style.removeProperty('--ticks');
-        } else {
-          this.trackElement.style.setProperty('--ticks', newValue);
-        }
-        break;
-      }
-      case 'step':
-      case 'min':
-      case 'max':
-      case 'value':
-        if (newValue == null) {
-          this.inputElement.removeAttribute(name);
-        } else {
-          this.inputElement.setAttribute(name, newValue);
-        }
-        this.updateTrack();
-        this.updateLabel();
-        break;
-      default:
-    }
-  }
+  static styles = [...super.styles, styles];
 
   /**
    * @param {Event} event
@@ -141,6 +111,74 @@ export default class Slider extends Input {
     }
   }
 
+  /**
+   * @this Slider
+   */
+  static onLeaveEvent() {
+    if (document.activeElement === this) return;
+    this.hideLabel();
+  }
+
+  static onInputFocus() {
+    /** @type {{host:Slider}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    host.updateTrack();
+    host.showLabel();
+  }
+
+  static onInputBlur() {
+    /** @type {{host:Slider}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    host.hideLabel();
+  }
+
+  #labelShown = false;
+
+  constructor() {
+    super();
+    if (!this.hasAttribute('type')) {
+      this.type = 'range';
+      this.attributeChangedCallback('type', null, 'range');
+    }
+    this.rippleElement.remove();
+    this.overlayElement.remove();
+    this.trackElement = this.shadowRoot.getElementById('track');
+    this.trackLabelElement = this.shadowRoot.getElementById('track-label');
+  }
+
+  /**
+   * @param {string} name
+   * @param {string?} oldValue
+   * @param {string?} newValue
+   */
+  attributeChangedCallback(name, oldValue, newValue) {
+    super.attributeChangedCallback(name, oldValue, newValue);
+    if (oldValue == null && newValue == null) return;
+    switch (name) {
+      case 'ticks': {
+        if (newValue == null) {
+          this.trackElement.style.removeProperty('--ticks');
+        } else {
+          this.trackElement.style.setProperty('--ticks', newValue);
+        }
+        break;
+      }
+      case 'step':
+      case 'min':
+      case 'max':
+      case 'value':
+        if (newValue == null) {
+          this.inputElement.removeAttribute(name);
+        } else {
+          this.inputElement.setAttribute(name, newValue);
+        }
+        this.updateTrack();
+        this.updateLabel();
+        break;
+      default:
+    }
+  }
+
   showLabel() {
     if (this.#labelShown) return;
     this.#labelShown = true;
@@ -173,46 +211,11 @@ export default class Slider extends Input {
     this.trackElement.style.setProperty('--value', value.toPrecision(12));
   }
 
-  /**
-   * @this Slider
-   */
-  static onLeaveEvent() {
-    if (document.activeElement === this) return;
-    this.hideLabel();
-  }
-
-  static onInputFocus() {
-    /** @type {{host:Slider}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    host.updateTrack();
-    host.showLabel();
-  }
-
-  static onInputBlur() {
-    /** @type {{host:Slider}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    host.hideLabel();
-  }
-
-  static elementName = 'mdw-slider';
-
-  static styles = [...super.styles, styles];
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.inputElement.addEventListener('change', Slider.onInputChange);
-    this.inputElement.addEventListener('mousedown', Slider.onInputMouseOrTouch);
-    this.inputElement.addEventListener('mousemove', Slider.onInputMouseOrTouch);
-    this.inputElement.addEventListener('touchmove', Slider.onInputMouseOrTouch);
-    this.inputElement.addEventListener('touchstart', Slider.onInputMouseOrTouch);
-    this.inputElement.addEventListener('touchend', Slider.onInputMouseOrTouch);
-    this.inputElement.addEventListener('touchleave', Slider.onInputMouseOrTouch);
-    this.inputElement.addEventListener('touchcancel', Slider.onInputMouseOrTouch);
-    this.inputElement.addEventListener('mouseout', Slider.onInputMouseOrTouch);
-    this.inputElement.addEventListener('focus', Slider.onInputFocus);
-    this.inputElement.addEventListener('blur', Slider.onInputBlur);
-    this.addEventListener('mouseout', Slider.onLeaveEvent);
+  /** @param {string} v */
+  set value(v) {
+    super.value = v;
     this.updateTrack();
+    this.updateLabel();
   }
 
   get valueAsNumber() {
@@ -225,25 +228,22 @@ export default class Slider extends Input {
     this.updateLabel();
   }
 
-  /** @param {string} v */
-  set value(v) {
-    super.value = v;
+  connectedCallback() {
+    super.connectedCallback();
+    this.inputElement.addEventListener('change', Slider.onInputChange);
+    this.inputElement.addEventListener('mousedown', Slider.onInputMouseOrTouch, { passive: true });
+    this.inputElement.addEventListener('mousemove', Slider.onInputMouseOrTouch, { passive: true });
+    this.inputElement.addEventListener('touchmove', Slider.onInputMouseOrTouch, { passive: true });
+    this.inputElement.addEventListener('touchstart', Slider.onInputMouseOrTouch, { passive: true });
+    this.inputElement.addEventListener('touchend', Slider.onInputMouseOrTouch, { passive: true });
+    this.inputElement.addEventListener('touchleave', Slider.onInputMouseOrTouch, { passive: true });
+    this.inputElement.addEventListener('touchcancel', Slider.onInputMouseOrTouch, { passive: true });
+    this.inputElement.addEventListener('mouseout', Slider.onInputMouseOrTouch, { passive: true });
+    this.inputElement.addEventListener('focus', Slider.onInputFocus, { passive: true });
+    this.inputElement.addEventListener('blur', Slider.onInputBlur, { passive: true });
+    this.addEventListener('mouseout', Slider.onLeaveEvent);
     this.updateTrack();
-    this.updateLabel();
   }
-
-  static fragments = [
-    ...super.fragments,
-    /* html */ `
-      <div id=track aria-hidden=true>
-        <div id=ticks></div>
-        <div id="track-active"></div>
-        <div id="track-label-anchor">
-          <div id="track-label" hidden text></div>
-        </div>
-      </div>
-    `,
-  ];
 }
 
 Slider.prototype.min = Slider.idlString('min');

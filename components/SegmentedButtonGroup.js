@@ -8,13 +8,11 @@ import styles from './SegmentedButtonGroup.css' assert { type: 'css' };
 
 /** @implements {Omit<HTMLMenuElement,DeprecatedHTMLMenuElementProperties>} */
 export default class SegmentedButtonGroup extends Container {
+  static elementName = 'mdw-segmented-button-group';
+
   static ariaRole = 'listbox';
 
-  constructor() {
-    super();
-    this.setAttribute('aria-orientation', 'horizontal');
-    this.slotElement.addEventListener('slotchange', SegmentedButtonGroup.onSlotChanged, { passive: true });
-  }
+  static styles = [...super.styles, styles];
 
   /**
    * @param {Event} event
@@ -26,10 +24,6 @@ export default class SegmentedButtonGroup extends Container {
     const { host } = this.getRootNode();
     RovingTabIndex.setupTabIndexes(host.childSegmentedButtons, true);
   }
-
-  static elementName = 'mdw-segmented-button-group';
-
-  static styles = [...super.styles, styles];
 
   /**
    * @param {KeyboardEvent} event
@@ -75,11 +69,6 @@ export default class SegmentedButtonGroup extends Container {
       : RovingTabIndex.selectPrevious(this.childSegmentedButtons);
   }
 
-  /** @return {NodeListOf<SegmentedButton>} */
-  get childSegmentedButtons() {
-    return this.querySelectorAll(SegmentedButton.elementName);
-  }
-
   /**
    * @param {Event} event
    * @this {SegmentedButtonGroup}
@@ -89,6 +78,17 @@ export default class SegmentedButtonGroup extends Container {
     event.stopPropagation();
     const currentItem = /** @type {HTMLElement} */ (event.target);
     RovingTabIndex.removeTabIndex(this.childSegmentedButtons, [currentItem]);
+  }
+
+  constructor() {
+    super();
+    this.setAttribute('aria-orientation', 'horizontal');
+    this.slotElement.addEventListener('slotchange', SegmentedButtonGroup.onSlotChanged, { passive: true });
+  }
+
+  /** @return {NodeListOf<SegmentedButton>} */
+  get childSegmentedButtons() {
+    return this.querySelectorAll(SegmentedButton.elementName);
   }
 
   connectedCallback() {

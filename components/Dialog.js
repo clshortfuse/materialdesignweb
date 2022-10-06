@@ -16,16 +16,7 @@ import styles from './Dialog.css' assert { type: 'css' };
 
 /** @implements {HTMLDialogElement} */
 export default class Dialog extends CustomElement {
-  static ariaRole = 'none';
-
   static elementName = 'mdw-dialog';
-
-  static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
-
-  /** @type {DialogStack[]} */
-  static OPEN_DIALOGS = [];
-
-  static styles = [...super.styles, styles];
 
   static fragments = [
     ...super.fragments,
@@ -48,60 +39,12 @@ export default class Dialog extends CustomElement {
     `,
   ];
 
-  constructor() {
-    super();
-    this.dialogElement = /** @type {HTMLDialogElement} */ (this.shadowRoot.getElementById('dialog'));
-    this.scrimElement = this.shadowRoot.getElementById('scrim');
-    this.containerElement = /** @type {Container} */ (this.shadowRoot.getElementById('container'));
-    this.iconElement = this.shadowRoot.getElementById('icon');
-    this.headlineElement = this.shadowRoot.getElementById('headline');
-    this.descriptionElement = this.shadowRoot.getElementById('description');
-    this.bodyElement = this.shadowRoot.getElementById('body');
-    this.cancelElement = this.shadowRoot.getElementById('cancel');
-    this.confirmElement = this.shadowRoot.getElementById('confirm');
+  static styles = [...super.styles, styles];
 
-    this.bodyElement.addEventListener('slotchange', Dialog.onSlotChanged);
-  }
+  static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
 
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
-  attributeChangedCallback(name, oldValue, newValue) {
-    super.attributeChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
-    switch (name) {
-      case 'icon':
-        this.iconElement.textContent = newValue ?? '';
-        break;
-      case 'headline':
-        this.headlineElement.textContent = newValue ?? '';
-        break;
-      case 'description':
-        this.descriptionElement.textContent = newValue ?? '';
-        break;
-      case 'cancel':
-        this.cancelElement.textContent = newValue ?? '';
-        break;
-      case 'confirm':
-        this.confirmElement.textContent = newValue ?? '';
-        break;
-      case 'default':
-        this.confirmElement.toggleAttribute('autofocus', newValue == null || newValue === 'confirm');
-        this.cancelElement.toggleAttribute('autofocus', newValue === 'cancel');
-        break;
-      case 'open':
-        // HTMLDialogElement Spec states attribute manipulation does not invoke events
-        if (newValue == null) {
-          this.dialogElement.setAttribute('aria-hidden', 'true');
-        } else {
-          this.dialogElement.setAttribute('aria-hidden', 'false');
-        }
-        break;
-      default:
-    }
-  }
+  /** @type {DialogStack[]} */
+  static OPEN_DIALOGS = [];
 
   /**
    * @param {TransitionEvent} event
@@ -124,63 +67,6 @@ export default class Dialog extends CustomElement {
     const hasContent = nodes.some((node) => (node.nodeType === node.ELEMENT_NODE)
       || (node.nodeType === node.TEXT_NODE && node.nodeValue.trim().length));
     this.toggleAttribute('slotted', hasContent);
-  }
-
-  /**
-   * @param {any} returnValue
-   * @return {boolean} handled
-   */
-  close(returnValue) {
-    if (!this.open) return false;
-    if (this.isNativeModal) {
-      this.isNativeModal = false;
-    } else {
-      const main = document.querySelector('main');
-      if (main) {
-        main.removeAttribute('aria-hidden');
-      }
-    }
-    // if (this.dialogElement.getAttribute('aria-hidden') === 'true') return false;
-    if (Dialog.supportsHTMLDialogElement && this.dialogElement.open) {
-      // Force close native dialog
-      this.dialogElement.close(returnValue);
-    } else {
-      this.dialogElement.returnValue = returnValue;
-    }
-
-    // Will invoke observed attribute change: ('aria-hidden', 'true');
-    this.open = false;
-    this.dispatchEvent(new Event('close'));
-    // .mdw-dialog__popup hidden by transitionEnd event
-    let stackIndex = -1;
-    Dialog.OPEN_DIALOGS.some((stack, index) => {
-      if (stack.element === this) {
-        stackIndex = index;
-        return true;
-      }
-      return false;
-    });
-    if (stackIndex !== -1) {
-      const stack = Dialog.OPEN_DIALOGS[stackIndex];
-      if (stack.previousFocus
-        && stack.previousFocus instanceof HTMLElement
-        && document.activeElement?.closest(Dialog.elementName) === this) {
-        // Only pop focus back when hiding a dialog with focus within itself.
-        try {
-          stack.previousFocus.focus();
-        } catch {
-          // Failed to focus
-        }
-      }
-      Dialog.OPEN_DIALOGS.splice(stackIndex, 1);
-      if (stack.state === window.history.state) {
-        window.history.back();
-      }
-    }
-    if (!Dialog.OPEN_DIALOGS.length) {
-      window.removeEventListener('popstate', Dialog.onPopState);
-    }
-    return true;
   }
 
   /**
@@ -251,28 +137,6 @@ export default class Dialog extends CustomElement {
     host.close(this.returnValue);
   }
 
-  connectedCallback() {
-    this.dialogElement.addEventListener('cancel', Dialog.onNativeCancelEvent);
-    this.dialogElement.addEventListener('close', Dialog.onNativeCloseEvent, { passive: true });
-    this.scrimElement.addEventListener('click', Dialog.onScrimClick, { passive: true });
-    this.containerElement.addEventListener('keydown', Dialog.onContainerKeyDown);
-
-    // this.setAttribute('role', 'none');
-    if (Dialog.supportsHTMLDialogElement) {
-      this.dialogElement.setAttribute('aria-modal', 'true');
-      if (!this.dialogElement.hasAttribute('aria-hidden')) {
-        this.setAttribute('aria-hidden', 'true');
-      }
-    }
-  }
-
-  disconnectedCallback() {
-    this.dialogElement.removeEventListener('cancel', Dialog.onNativeCancelEvent);
-    this.dialogElement.removeEventListener('close', Dialog.onNativeCloseEvent);
-    this.scrimElement.removeEventListener('click', Dialog.onScrimClick);
-    this.containerElement.removeEventListener('keydown', Dialog.onContainerKeyDown);
-  }
-
   /**
    * @param {PopStateEvent} event
    * @return {void}
@@ -294,6 +158,118 @@ export default class Dialog extends CustomElement {
         window.history.pushState(lastOpenDialog.state, lastOpenDialog.state.title);
       }
     }
+  }
+
+  constructor() {
+    super();
+    this.dialogElement = /** @type {HTMLDialogElement} */ (this.shadowRoot.getElementById('dialog'));
+    this.scrimElement = this.shadowRoot.getElementById('scrim');
+    this.containerElement = /** @type {Container} */ (this.shadowRoot.getElementById('container'));
+    this.iconElement = this.shadowRoot.getElementById('icon');
+    this.headlineElement = this.shadowRoot.getElementById('headline');
+    this.descriptionElement = this.shadowRoot.getElementById('description');
+    this.bodyElement = this.shadowRoot.getElementById('body');
+    this.cancelElement = this.shadowRoot.getElementById('cancel');
+    this.confirmElement = this.shadowRoot.getElementById('confirm');
+
+    this.bodyElement.addEventListener('slotchange', Dialog.onSlotChanged);
+  }
+
+  /**
+   * @param {string} name
+   * @param {string?} oldValue
+   * @param {string?} newValue
+   */
+  attributeChangedCallback(name, oldValue, newValue) {
+    super.attributeChangedCallback(name, oldValue, newValue);
+    if (oldValue == null && newValue == null) return;
+    switch (name) {
+      case 'icon':
+        this.iconElement.textContent = newValue ?? '';
+        break;
+      case 'headline':
+        this.headlineElement.textContent = newValue ?? '';
+        break;
+      case 'description':
+        this.descriptionElement.textContent = newValue ?? '';
+        break;
+      case 'cancel':
+        this.cancelElement.textContent = newValue ?? '';
+        break;
+      case 'confirm':
+        this.confirmElement.textContent = newValue ?? '';
+        break;
+      case 'default':
+        this.confirmElement.toggleAttribute('autofocus', newValue == null || newValue === 'confirm');
+        this.cancelElement.toggleAttribute('autofocus', newValue === 'cancel');
+        break;
+      case 'open':
+        // HTMLDialogElement Spec states attribute manipulation does not invoke events
+        if (newValue == null) {
+          this.dialogElement.setAttribute('aria-hidden', 'true');
+        } else {
+          this.dialogElement.setAttribute('aria-hidden', 'false');
+        }
+        break;
+      default:
+    }
+  }
+
+  /**
+   * @param {any} returnValue
+   * @return {boolean} handled
+   */
+  close(returnValue) {
+    if (!this.open) return false;
+    if (this.isNativeModal) {
+      this.isNativeModal = false;
+    } else {
+      const main = document.querySelector('main');
+      if (main) {
+        main.removeAttribute('aria-hidden');
+      }
+    }
+    // if (this.dialogElement.getAttribute('aria-hidden') === 'true') return false;
+    if (Dialog.supportsHTMLDialogElement && this.dialogElement.open) {
+      // Force close native dialog
+      this.dialogElement.close(returnValue);
+    } else {
+      this.dialogElement.returnValue = returnValue;
+    }
+
+    // Will invoke observed attribute change: ('aria-hidden', 'true');
+    this.open = false;
+    this.dispatchEvent(new Event('close'));
+    // .mdw-dialog__popup hidden by transitionEnd event
+    let stackIndex = -1;
+    Dialog.OPEN_DIALOGS.some((stack, index) => {
+      if (stack.element === this) {
+        stackIndex = index;
+        return true;
+      }
+      return false;
+    });
+    if (stackIndex !== -1) {
+      const stack = Dialog.OPEN_DIALOGS[stackIndex];
+      if (stack.previousFocus
+        && stack.previousFocus instanceof HTMLElement
+        && document.activeElement?.closest(Dialog.elementName) === this) {
+        // Only pop focus back when hiding a dialog with focus within itself.
+        try {
+          stack.previousFocus.focus();
+        } catch {
+          // Failed to focus
+        }
+      }
+      Dialog.OPEN_DIALOGS.splice(stackIndex, 1);
+      if (stack.state === window.history.state) {
+        window.history.back();
+      }
+    }
+    if (!Dialog.OPEN_DIALOGS.length) {
+      window.removeEventListener('popstate', Dialog.onPopState);
+    }
+    return true;
   }
 
   get returnValue() {
@@ -364,6 +340,28 @@ export default class Dialog extends CustomElement {
       // Failed to focus
     }
     return true;
+  }
+
+  connectedCallback() {
+    this.dialogElement.addEventListener('cancel', Dialog.onNativeCancelEvent);
+    this.dialogElement.addEventListener('close', Dialog.onNativeCloseEvent, { passive: true });
+    this.scrimElement.addEventListener('click', Dialog.onScrimClick, { passive: true });
+    this.containerElement.addEventListener('keydown', Dialog.onContainerKeyDown);
+
+    // this.setAttribute('role', 'none');
+    if (Dialog.supportsHTMLDialogElement) {
+      this.dialogElement.setAttribute('aria-modal', 'true');
+      if (!this.dialogElement.hasAttribute('aria-hidden')) {
+        this.setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+
+  disconnectedCallback() {
+    this.dialogElement.removeEventListener('cancel', Dialog.onNativeCancelEvent);
+    this.dialogElement.removeEventListener('close', Dialog.onNativeCloseEvent);
+    this.scrimElement.removeEventListener('click', Dialog.onScrimClick);
+    this.containerElement.removeEventListener('keydown', Dialog.onContainerKeyDown);
   }
 }
 

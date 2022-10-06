@@ -5,13 +5,99 @@ import Ripple from './Ripple.js';
 
 /** @implements {Omit<HTMLInputElement,DeprecatedHTMLInputElementProperties>} */
 export default class Input extends Ripple {
+  static elementName = 'mdw-input';
+
   static delegatesFocus = true;
 
   static formAssociated = true;
 
+  static fragments = [
+    ...super.fragments,
+    /* html */`
+      <label id=label>
+        <input id=input aria-labelledby="slot">
+      </label>
+    `,
+  ];
+
+  static styles = [...super.styles, styles];
+
+  static get observedAttributes() {
+    return [
+      ...super.observedAttributes,
+      ...this.idlInputElementAttributes,
+      'aria-label',
+    ];
+  }
+
   static FORM_IPC_EVENT = 'mdw-input-changed';
 
   static GlobalListener = new EventTarget();
+
+  static idlInputElementAttributes = [
+    'aria-labelledby', 'type', 'value', 'checked',
+    'name', 'required', 'list',
+  ];
+
+  /**
+   * @param {MouseEvent|PointerEvent} event
+   * @this {HTMLInputElement}
+   * @return {void}
+   */
+  static onInputClick(event) {
+    /** @type {{host:Input}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    if (host.hasAttribute('disabled')) {
+      event.preventDefault();
+      return;
+    }
+
+    if (this.type !== 'radio') return;
+    if (this.required) return;
+    if (!this.hasAttribute('checked')) return;
+
+    this.checked = false;
+    host.toggleAttribute('checked', false);
+  }
+
+  /**
+   * @param {KeyboardEvent} event
+   * @this {HTMLInputElement}
+   * @return {void}
+   */
+  static onInputKeydown(event) {
+    if (event.key !== 'Spacebar' && event.key !== ' ') return;
+    /** @type {{host:Input}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    if (host.hasAttribute('disabled')) {
+      event.preventDefault();
+      return;
+    }
+
+    if (this.type !== 'radio') return;
+    if (this.required) return;
+    if (!this.hasAttribute('checked')) return;
+    event.preventDefault();
+
+    this.checked = false;
+    host.toggleAttribute('checked', false);
+    event.preventDefault();
+  }
+
+  /**
+   * @param {Event} event
+   * @this {HTMLInputElement} this
+   * @return {void}
+   */
+  static onInputChange(event) {
+    /** @type {{host:Input}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    if (host.hasAttribute('disabled')) {
+      event.preventDefault();
+      return;
+    }
+    host.toggleAttribute('checked', this.checked);
+  }
 
   #ipcListener = this.formIPCEvent.bind(this);
 
@@ -32,19 +118,6 @@ export default class Input extends Ripple {
       // Expose this element as focusable
       this.setAttribute('tabindex', '0');
     }
-  }
-
-  static idlInputElementAttributes = [
-    'aria-labelledby', 'type', 'value', 'checked',
-    'name', 'required', 'list',
-  ];
-
-  static get observedAttributes() {
-    return [
-      ...super.observedAttributes,
-      ...this.idlInputElementAttributes,
-      'aria-label',
-    ];
   }
 
   /**
@@ -113,79 +186,6 @@ export default class Input extends Ripple {
         default:
       }
     }
-  }
-
-  static elementName = 'mdw-input';
-
-  static styles = [...super.styles, styles];
-
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <label id=label>
-        <input id=input aria-labelledby="slot">
-      </label>
-    `,
-  ];
-
-  /**
-   * @param {MouseEvent|PointerEvent} event
-   * @this {HTMLInputElement}
-   * @return {void}
-   */
-  static onInputClick(event) {
-    /** @type {{host:Input}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    if (host.hasAttribute('disabled')) {
-      event.preventDefault();
-      return;
-    }
-
-    if (this.type !== 'radio') return;
-    if (this.required) return;
-    if (!this.hasAttribute('checked')) return;
-
-    this.checked = false;
-    host.toggleAttribute('checked', false);
-  }
-
-  /**
-   * @param {KeyboardEvent} event
-   * @this {HTMLInputElement}
-   * @return {void}
-   */
-  static onInputKeydown(event) {
-    if (event.key !== 'Spacebar' && event.key !== ' ') return;
-    /** @type {{host:Input}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    if (host.hasAttribute('disabled')) {
-      event.preventDefault();
-      return;
-    }
-
-    if (this.type !== 'radio') return;
-    if (this.required) return;
-    if (!this.hasAttribute('checked')) return;
-    event.preventDefault();
-
-    this.checked = false;
-    host.toggleAttribute('checked', false);
-    event.preventDefault();
-  }
-
-  /**
-   * @param {Event} event
-   * @this {HTMLInputElement} this
-   * @return {void}
-   */
-  static onInputChange(event) {
-    /** @type {{host:Input}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    if (host.hasAttribute('disabled')) {
-      event.preventDefault();
-      return;
-    }
-    host.toggleAttribute('checked', this.checked);
   }
 
   refreshFormAssociation() {

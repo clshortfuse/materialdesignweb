@@ -12,6 +12,24 @@
  * Web Component that can cache templates for minification or performance
  */
 export default class CustomElement extends HTMLElement {
+  /** @type {string} */
+  static elementName = null;
+
+  static ariaRole = 'none';
+
+  static delegatesFocus = false;
+
+  /** @type {(DocumentFragment|string)[]} */
+  static fragments = [];
+
+  /** @type {(string|URL|CSSStyleSheet)[]} */
+  static styles = [];
+
+  /** @type {Iterable<string>} */
+  static get observedAttributes() {
+    return this.getIdlMap().keys();
+  }
+
   static supportsAdoptedStyleSheets = 'adoptedStyleSheets' in ShadowRoot.prototype;
 
   static supportsElementInternals = 'attachInternals' in HTMLElement.prototype;
@@ -19,20 +37,117 @@ export default class CustomElement extends HTMLElement {
   static supportsElementInternalsRole = CustomElement.supportsElementInternals
     && 'role' in ElementInternals.prototype;
 
-  static ariaRole = 'none';
+  /** @type {WeakMap<typeof CustomElement, DocumentFragment>} */
+  static #fragmentCache = new WeakMap();
 
-  static delegatesFocus = false;
+  /** @type {WeakMap<typeof CustomElement, CSSStyleSheet[]>} */
+  static #stylesCache = new WeakMap();
 
-  /** @type {Iterable<string>} */
-  static get observedAttributes() {
-    return this.getIdlMap().keys();
+  /**
+   * @private
+   * @type {WeakMap<typeof CustomElement, Map<string, IDLOptions<?>>>}
+   */
+  static idlCache = new WeakMap();
+
+  /**
+   * Converts attribute name to property name
+   * (Similar to DOMStringMap)
+   * @param {string} name
+   * @return {string}
+   */
+  static attrNameToPropName(name) {
+    const propNameWords = name.split('-');
+    if (propNameWords.length === 1) return name;
+    return propNameWords.reduce((prev, curr) => {
+      if (prev == null) return curr;
+      return prev + curr[0].toUpperCase() + curr.slice(1);
+    });
   }
 
-  /** @type {(DocumentFragment|string)[]} */
-  static fragments = [];
+  /**
+   * @this {typeof CustomElement}
+   * @param {string} [elementName]
+   */
+  static register(elementName) {
+    customElements.define(elementName || this.elementName, this);
+  }
 
-  /** @type {(string|URL|CSSStyleSheet)[]} */
-  static styles = [];
+  static getIdlMap() {
+    let map = this.idlCache.get(this);
+    if (!map) {
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      let parent = this;
+      let parentMap;
+      while ((parent = Object.getPrototypeOf(parent)) !== CustomElement) {
+        parentMap = this.idlCache.get(parent);
+        if (parentMap) break;
+      }
+      map = new Map(parentMap);
+      this.idlCache.set(this, map);
+    }
+    return map;
+  }
+
+  /**
+   * @template {IDLOptionType} T
+   * @param {string} name
+   * @param {IDLOptions<T>} options
+   * @return {T extends 'boolean' ? boolean : T extends 'integer'|'float' ? number : T extends 'string' ? string : unknown}
+   */
+  static idl(name, options) {
+    const map = this.getIdlMap();
+    map.set(name, options);
+    return null;
+  }
+
+  /**
+   * @param {string} attrName
+   * @param {string} [propName]
+   * @return {boolean}
+   */
+  static idlBoolean(attrName, propName) {
+    return this.idl(attrName, { type: 'boolean', attrName, propName });
+  }
+
+  /**
+   * @param {string} attrName
+   * @param {string} [propName]
+   * @return {number}
+   */
+  static idlInteger(attrName, propName) {
+    return this.idl(attrName, { type: 'integer', attrName, propName });
+  }
+
+  /**
+   * @param {string} attrName
+   * @param {string} [propName]
+   * @return {number}
+   */
+  static idlFloat(attrName, propName) {
+    return this.idl(attrName, { type: 'float', attrName, propName });
+  }
+
+  /**
+   * @param {string} attrName
+   * @param {string} [propName]
+   * @return {string}
+   */
+  static idlString(attrName, propName) {
+    return this.idl(attrName, { type: 'string', attrName, propName });
+  }
+
+  /** @type {Map<string,[boolean|number|string,string]>} */
+  #idlValues = new Map();
+
+  constructor() {
+    super();
+    this.#attachIDLs();
+    this.#attachShadow();
+    this.#attachStyles();
+    this.#attachContent();
+    this.#attachInternals();
+    this.#attachARIA();
+  }
 
   /**
    * @param {string} name
@@ -74,16 +189,6 @@ export default class CustomElement extends HTMLElement {
         break;
       default:
     }
-  }
-
-  constructor() {
-    super();
-    this.#attachIDLs();
-    this.#attachShadow();
-    this.#attachStyles();
-    this.#attachContent();
-    this.#attachInternals();
-    this.#attachARIA();
   }
 
   #attachShadow() {
@@ -154,21 +259,6 @@ export default class CustomElement extends HTMLElement {
     }
   }
 
-  /**
-   * Converts attribute name to property name
-   * (Similar to DOMStringMap)
-   * @param {string} name
-   * @return {string}
-   */
-  static attrNameToPropName(name) {
-    const propNameWords = name.split('-');
-    if (propNameWords.length === 1) return name;
-    return propNameWords.reduce((prev, curr) => {
-      if (prev == null) return curr;
-      return prev + curr[0].toUpperCase() + curr.slice(1);
-    });
-  }
-
   #attachIDLs() {
     const component = /** @type {typeof CustomElement} */ (this.constructor);
     for (const [key, options] of CustomElement.idlCache.get(component) ?? []) {
@@ -229,96 +319,6 @@ export default class CustomElement extends HTMLElement {
         default:
       }
     }
-  }
-
-  /**
-   * @this {typeof CustomElement}
-   * @param {string} [elementName]
-   */
-  static register(elementName) {
-    customElements.define(elementName || this.elementName, this);
-  }
-
-  /** @type {WeakMap<typeof CustomElement, DocumentFragment>} */
-  static #fragmentCache = new WeakMap();
-
-  /** @type {WeakMap<typeof CustomElement, CSSStyleSheet[]>} */
-  static #stylesCache = new WeakMap();
-
-  /**
-   * @private
-   * @type {WeakMap<typeof CustomElement, Map<string, IDLOptions<?>>>}
-   */
-  static idlCache = new WeakMap();
-
-  /** @type {string} */
-  static elementName = null;
-
-  /** @type {Map<string,[boolean|number|string,string]>} */
-  #idlValues = new Map();
-
-  static getIdlMap() {
-    let map = this.idlCache.get(this);
-    if (!map) {
-      // eslint-disable-next-line @typescript-eslint/no-this-alias
-      let parent = this;
-      let parentMap;
-      while ((parent = Object.getPrototypeOf(parent)) !== CustomElement) {
-        parentMap = this.idlCache.get(parent);
-        if (parentMap) break;
-      }
-      map = new Map(parentMap);
-      this.idlCache.set(this, map);
-    }
-    return map;
-  }
-
-  /**
-   * @template {IDLOptionType} T
-   * @param {string} name
-   * @param {IDLOptions<T>} options
-   * @return {T extends 'boolean' ? boolean : T extends 'integer'|'float' ? number : T extends 'string' ? string : unknown}
-   */
-  static idl(name, options) {
-    const map = this.getIdlMap();
-    map.set(name, options);
-    return null;
-  }
-
-  /**
-   * @param {string} attrName
-   * @param {string} [propName]
-   * @return {boolean}
-   */
-  static idlBoolean(attrName, propName) {
-    return this.idl(attrName, { type: 'boolean', attrName, propName });
-  }
-
-  /**
-   * @param {string} attrName
-   * @param {string} [propName]
-   * @return {number}
-   */
-  static idlInteger(attrName, propName) {
-    return this.idl(attrName, { type: 'integer', attrName, propName });
-  }
-
-  /**
-   * @param {string} attrName
-   * @param {string} [propName]
-   * @return {number}
-   */
-  static idlFloat(attrName, propName) {
-    return this.idl(attrName, { type: 'float', attrName, propName });
-  }
-
-  /**
-   * @param {string} attrName
-   * @param {string} [propName]
-   * @return {string}
-   */
-  static idlString(attrName, propName) {
-    return this.idl(attrName, { type: 'string', attrName, propName });
   }
 
   /**

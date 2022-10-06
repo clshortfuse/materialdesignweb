@@ -2,15 +2,7 @@ import Nav from './Nav.js';
 import styles from './NavRail.css' assert { type: 'css' };
 
 export default class NavRail extends Nav {
-  constructor() {
-    super();
-    this.groupElement = this.shadowRoot.getElementById('group');
-    this.groupElement.append(this.slotElement);
-  }
-
   static elementName = 'mdw-nav-rail';
-
-  static styles = [...super.styles, styles];
 
   static fragments = [
     ...super.fragments,
@@ -19,6 +11,14 @@ export default class NavRail extends Nav {
       <div id=group></div>
     `,
   ];
+
+  static styles = [...super.styles, styles];
+
+  constructor() {
+    super();
+    this.groupElement = this.shadowRoot.getElementById('group');
+    this.groupElement.append(this.slotElement);
+  }
 }
 
 NavRail.prototype.align = /** @type {'start'|'center'|'end'} */ (NavRail.idlString('align'));

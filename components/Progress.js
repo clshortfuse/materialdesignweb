@@ -9,6 +9,28 @@ import lineStyles from './ProgressLine.css' assert { type: 'css' };
 export default class Progress extends Container {
   static elementName = 'mdw-progress';
 
+  static fragments = [
+    ...super.fragments,
+    /* html */`
+      <progress id=progress></progress>
+      <div id=indeterminate-line>
+        <div id=line1 class=line></div>
+        <div id=line2 class=line></div>
+      </div>
+      <div id=indeterminate-circle>
+        <div id=arc2 class=arc></div>
+        <div id=arc3 class=arc></div>
+        <div id=arc4 class=arc></div>
+      </div>
+      <div id=circle>
+        <div id=semi1 class=semi></div>
+        <div id=semi2 class=semi></div>
+      </div>
+    `,
+  ];
+
+  static styles = [...super.styles, styles, lineStyles, circleStyles];
+
   constructor() {
     super();
     this.progressElement = /** @type {HTMLProgressElement} */ (this.shadowRoot.getElementById('progress'));
@@ -46,28 +68,6 @@ export default class Progress extends Container {
     this.circleElement.style.setProperty('--value', value);
     this.progressElement.style.setProperty('--value', value);
   }
-
-  static styles = [...super.styles, styles, lineStyles, circleStyles];
-
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <progress id=progress></progress>
-      <div id=indeterminate-line>
-        <div id=line1 class=line></div>
-        <div id=line2 class=line></div>
-      </div>
-      <div id=indeterminate-circle>
-        <div id=arc2 class=arc></div>
-        <div id=arc3 class=arc></div>
-        <div id=arc4 class=arc></div>
-      </div>
-      <div id=circle>
-        <div id=semi1 class=semi></div>
-        <div id=semi2 class=semi></div>
-      </div>
-    `,
-  ];
 
   get position() { return this.progressElement.position; }
 

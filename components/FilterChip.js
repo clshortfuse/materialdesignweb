@@ -3,6 +3,18 @@ import styles from './FilterChip.css' assert { type: 'css' };
 import Icon from './Icon.js';
 
 export default class FilterChip extends Chip {
+  static elementName = 'mdw-filter-chip';
+
+  static fragments = [
+    ...super.fragments,
+    /* html */`
+      <mdw-icon id=check-icon icon=check aria-hidden="true"></mdw-icon>
+      <mdw-icon id=trailing-icon aria-hidden="true"></mdw-icon>
+    `,
+  ];
+
+  static styles = [...super.styles, styles];
+
   constructor() {
     super();
 
@@ -30,10 +42,6 @@ export default class FilterChip extends Chip {
     }
   }
 
-  static elementName = 'mdw-filter-chip';
-
-  static styles = [...super.styles, styles];
-
   /**
    * @param {string} name
    * @param {string?} oldValue
@@ -58,12 +66,4 @@ export default class FilterChip extends Chip {
       default:
     }
   }
-
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <mdw-icon id=check-icon icon=check aria-hidden="true"></mdw-icon>
-      <mdw-icon id=trailing-icon aria-hidden="true"></mdw-icon>
-    `,
-  ];
 }

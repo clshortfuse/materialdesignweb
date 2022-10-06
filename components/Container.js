@@ -4,6 +4,17 @@ import Text from './Text.js';
 /** @typedef {'align'} DeprecatedHTMLDivElementProperties */
 /** @implements {Omit<HTMLDivElement,DeprecatedHTMLDivElementProperties>} */
 export default class Container extends Text {
+  static elementName = 'mdw-container';
+
+  static fragments = [
+    ...super.fragments,
+    /* html */`
+      <div id=elevation aria-hidden=true></div>
+    `,
+  ];
+
+  static styles = [...super.styles, styles];
+
   constructor() {
     super();
     this.elevationElement = this.shadowRoot.getElementById('elevation');
@@ -28,17 +39,6 @@ export default class Container extends Text {
       default:
     }
   }
-
-  static elementName = 'mdw-container';
-
-  static styles = [...super.styles, styles];
-
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <div id=elevation aria-hidden=true></div>
-    `,
-  ];
 }
 
 Container.prototype.disabled = Container.idlBoolean('disabled');

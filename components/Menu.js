@@ -21,13 +21,6 @@ import MenuItem from './MenuItem.js';
 export default class Menu extends CustomElement {
   static elementName = 'mdw-menu';
 
-  static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
-
-  /** @type {MenuStack[]} */
-  static OPEN_MENUS = [];
-
-  static styles = [...super.styles, styles];
-
   static fragments = [
     ...super.fragments,
     /* html */`
@@ -41,6 +34,147 @@ export default class Menu extends CustomElement {
       </dialog>
     `,
   ];
+
+  static styles = [...super.styles, styles];
+
+  static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
+
+  /** @type {MenuStack[]} */
+  static OPEN_MENUS = [];
+
+  /**
+   * @param {Event} event
+   * @this {HTMLSlotElement}
+   * @return {void}
+   */
+  static onSlotChanged(event) {
+    /** @type {{host:Menu}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    RovingTabIndex.setupTabIndexes(host.childMenuItems, true);
+  }
+
+  /**
+   * @param {Event} event
+   * @this {Menu}
+   * @return {void}
+   */
+  static onMenuScroll(event) {
+  // JS needed for Safari
+    if (event.target === event.currentTarget) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    if (event.type !== 'scroll') {
+      return;
+    }
+    const element = /** @type {HTMLElement} */ (event.currentTarget);
+    if (element.scrollTop !== 0) {
+      element.scrollTop = 0;
+    }
+    if (element.scrollLeft !== 0) {
+      element.scrollLeft = 0;
+    }
+  }
+
+  /**
+   * @param {MouseEvent|PointerEvent} event
+   * @this {Menu}
+   * @return {void}
+   */
+  static onMenuClick(event) {
+    if (this !== event.target) return;
+    // Clicked self (scrim-like)
+    event.stopPropagation();
+    this.close();
+  }
+
+  /**
+   * @return {void}
+   */
+  static onWindowResize() {
+    console.log('onWindowResize');
+    const lastOpenMenu = Menu.OPEN_MENUS.at(-1);
+    if (!lastOpenMenu || !lastOpenMenu.originalEvent) {
+      return;
+    }
+    if (lastOpenMenu.pendingResizeOperation) {
+      cancelAnimationFrame(lastOpenMenu.pendingResizeOperation);
+    }
+    lastOpenMenu.pendingResizeOperation = requestAnimationFrame(() => {
+      lastOpenMenu.element.updateMenuPosition(lastOpenMenu.originalEvent);
+      lastOpenMenu.pendingResizeOperation = null;
+    });
+  }
+
+  /**
+   * @param {PopStateEvent} event
+   * @return {void}
+   */
+  static onPopState(event) {
+    if (!event.state) return;
+    const lastOpenMenu = Menu.OPEN_MENUS.at(-1);
+    if (!lastOpenMenu || !lastOpenMenu.previousState) {
+      return;
+    }
+    if ((lastOpenMenu.previousState === event.state) || Object.keys(event.state)
+      .every((key) => event.state[key] === lastOpenMenu.previousState[key])) {
+      lastOpenMenu.element.close();
+    }
+  }
+
+  /**
+   * @param {KeyboardEvent} event
+   * @this {Menu}
+   * @return {void}
+   */
+  static onMenuKeyDown(event) {
+    if (!this || !this.open || this.getAttribute('aria-hidden') === 'true') {
+      return;
+    }
+
+    if (event.key === 'ArrowDown' || (event.key === 'Down')) {
+      event.stopPropagation();
+      event.preventDefault();
+      // @ts-ignore AOM
+      this.ariaActiveDescendantElement = RovingTabIndex.selectNext(this.childMenuItems);
+      return;
+    }
+    if (event.key === 'ArrowUp' || (event.key === 'Up')) {
+      event.stopPropagation();
+      event.preventDefault();
+      // @ts-ignore AOM
+      this.ariaActiveDescendantElement = RovingTabIndex.selectPrevious(this.childMenuItems);
+      return;
+    }
+    if (event.key === 'Tab') {
+    // Hide menu allowing focus to revert to calling element
+    // To then allow browser default Tab interaction
+    // Unless menu hiding is cancelled
+      if (!this.close()) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+      return;
+    }
+    if (event.key === 'Escape' || event.key === 'Esc') {
+      event.stopPropagation();
+      event.preventDefault();
+      this.close();
+    }
+  }
+
+  /**
+   * @param {Event} event
+   * @this {Menu}
+   * @return {void}
+   */
+  static onTabIndexZeroed(event) {
+    event.stopPropagation();
+    const currentItem = /** @type {HTMLElement} */ (event.target);
+    RovingTabIndex.removeTabIndex(this.childMenuItems, [currentItem]);
+  }
+
+  returnValue = '';
 
   constructor() {
     super();
@@ -122,59 +256,9 @@ export default class Menu extends CustomElement {
     return true;
   }
 
-  // for (const el of menuElement.getElementsByClassName('mdw-divider')) {
-  //   el.setAttribute('role', 'separator');
-  // }
-
   /** @return {NodeListOf<MenuItem>} */
   get childMenuItems() {
     return this.querySelectorAll(MenuItem.elementName);
-  }
-
-  /**
-   * @param {Event} event
-   * @this {HTMLSlotElement}
-   * @return {void}
-   */
-  static onSlotChanged(event) {
-    /** @type {{host:Menu}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    RovingTabIndex.setupTabIndexes(host.childMenuItems, true);
-  }
-
-  /**
-   * @param {Event} event
-   * @this {Menu}
-   * @return {void}
-   */
-  static onMenuScroll(event) {
-  // JS needed for Safari
-    if (event.target === event.currentTarget) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    if (event.type !== 'scroll') {
-      return;
-    }
-    const element = /** @type {HTMLElement} */ (event.currentTarget);
-    if (element.scrollTop !== 0) {
-      element.scrollTop = 0;
-    }
-    if (element.scrollLeft !== 0) {
-      element.scrollLeft = 0;
-    }
-  }
-
-  /**
-   * @param {MouseEvent|PointerEvent} event
-   * @this {Menu}
-   * @return {void}
-   */
-  static onMenuClick(event) {
-    if (this !== event.target) return;
-    // Clicked self (scrim-like)
-    event.stopPropagation();
-    this.close();
   }
 
   /**
@@ -500,40 +584,6 @@ export default class Menu extends CustomElement {
   }
 
   /**
-   * @return {void}
-   */
-  static onWindowResize() {
-    console.log('onWindowResize');
-    const lastOpenMenu = Menu.OPEN_MENUS.at(-1);
-    if (!lastOpenMenu || !lastOpenMenu.originalEvent) {
-      return;
-    }
-    if (lastOpenMenu.pendingResizeOperation) {
-      cancelAnimationFrame(lastOpenMenu.pendingResizeOperation);
-    }
-    lastOpenMenu.pendingResizeOperation = requestAnimationFrame(() => {
-      lastOpenMenu.element.updateMenuPosition(lastOpenMenu.originalEvent);
-      lastOpenMenu.pendingResizeOperation = null;
-    });
-  }
-
-  /**
-   * @param {PopStateEvent} event
-   * @return {void}
-   */
-  static onPopState(event) {
-    if (!event.state) return;
-    const lastOpenMenu = Menu.OPEN_MENUS.at(-1);
-    if (!lastOpenMenu || !lastOpenMenu.previousState) {
-      return;
-    }
-    if ((lastOpenMenu.previousState === event.state) || Object.keys(event.state)
-      .every((key) => event.state[key] === lastOpenMenu.previousState[key])) {
-      lastOpenMenu.element.close();
-    }
-  }
-
-  /**
    * @param {boolean} [backwards=false]
    * @return {void}
    */
@@ -586,65 +636,6 @@ export default class Menu extends CustomElement {
     if (candidate && document.activeElement !== candidate) {
       candidate.focus();
     }
-  }
-
-  /**
-   * @param {KeyboardEvent} event
-   * @this {Menu}
-   * @return {void}
-   */
-  static onMenuKeyDown(event) {
-    if (!this || !this.open || this.getAttribute('aria-hidden') === 'true') {
-      return;
-    }
-
-    if (event.key === 'ArrowDown' || (event.key === 'Down')) {
-      event.stopPropagation();
-      event.preventDefault();
-      this.ariaActiveDescendantElement = RovingTabIndex.selectNext(this.childMenuItems);
-      return;
-    }
-    if (event.key === 'ArrowUp' || (event.key === 'Up')) {
-      event.stopPropagation();
-      event.preventDefault();
-      this.ariaActiveDescendantElement = RovingTabIndex.selectPrevious(this.childMenuItems);
-      return;
-    }
-    if (event.key === 'Tab') {
-    // Hide menu allowing focus to revert to calling element
-    // To then allow browser default Tab interaction
-    // Unless menu hiding is cancelled
-      if (!this.close()) {
-        event.stopPropagation();
-        event.preventDefault();
-      }
-      return;
-    }
-    if (event.key === 'Escape' || event.key === 'Esc') {
-      event.stopPropagation();
-      event.preventDefault();
-      this.close();
-    }
-  }
-
-  /**
-   * @param {Event} event
-   * @this {Menu}
-   * @return {void}
-   */
-  static onTabIndexZeroed(event) {
-    event.stopPropagation();
-    const currentItem = /** @type {HTMLElement} */ (event.target);
-    RovingTabIndex.removeTabIndex(this.childMenuItems, [currentItem]);
-  }
-
-  connectedCallback() {
-    this.addEventListener('click', Menu.onMenuClick);
-    this.addEventListener('scroll', Menu.onMenuScroll);
-    this.addEventListener('touchmove', Menu.onMenuScroll);
-    this.addEventListener('wheel', Menu.onMenuScroll);
-    this.addEventListener('keydown', Menu.onMenuKeyDown);
-    this.addEventListener(RovingTabIndex.TABINDEX_ZEROED, Menu.onTabIndexZeroed);
   }
 
   /**
@@ -727,7 +718,14 @@ export default class Menu extends CustomElement {
     return true;
   }
 
-  returnValue = '';
+  connectedCallback() {
+    this.addEventListener('click', Menu.onMenuClick);
+    this.addEventListener('scroll', Menu.onMenuScroll);
+    this.addEventListener('touchmove', Menu.onMenuScroll);
+    this.addEventListener('wheel', Menu.onMenuScroll);
+    this.addEventListener('keydown', Menu.onMenuKeyDown);
+    this.addEventListener(RovingTabIndex.TABINDEX_ZEROED, Menu.onTabIndexZeroed);
+  }
 }
 
 Menu.prototype.open = Menu.idlBoolean('open');

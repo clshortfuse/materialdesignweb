@@ -2,17 +2,7 @@ import Overlay from './Overlay.js';
 import styles from './Ripple.css' assert { type: 'css' };
 
 export default class Ripple extends Overlay {
-  constructor() {
-    super();
-    /** @type {HTMLElement} */
-    this.rippleElement = this.shadowRoot.getElementById('ripple');
-    /** @type {HTMLElement} */
-    this.innerElement = this.shadowRoot.getElementById('ripple-inner');
-  }
-
   static elementName = 'mdw-ripple';
-
-  static styles = [...super.styles, styles];
 
   static fragments = [
     ...super.fragments,
@@ -22,6 +12,93 @@ export default class Ripple extends Overlay {
       </div>
     `,
   ];
+
+  static styles = [...super.styles, styles];
+
+  /**
+   * @param {AnimationEvent} event
+   * @this {HTMLElement}
+   * @return {void}
+   */
+  static onRippleAnimationEnd({ animationName }) {
+    switch (animationName) {
+      case 'ripple-fade-in':
+      case 'ripple-fade-in-repeat':
+        this.setAttribute('mdw-fade-in-complete', '');
+        break;
+      case 'ripple-fade-out':
+        this.removeAttribute('mdw-fade-in');
+        this.removeAttribute('mdw-fade-in-repeat');
+        this.removeAttribute('mdw-fade-in-complete');
+        this.removeAttribute('mdw-fade-out');
+        break;
+      default:
+    }
+  }
+
+  /**
+   * @param {MouseEvent} event
+   * @this {Ripple}
+   * @return {void}
+   */
+  static onRippleMouseDown(event) {
+    if (event.button) return;
+
+    const rect = this.rippleElement.getBoundingClientRect();
+    const x = event.pageX - rect.left - window.pageXOffset;
+    const y = event.pageY - rect.top - window.pageYOffset;
+    this.drawRipple('mouse', x, y);
+  }
+
+  /**
+   * @param {TouchEvent} event
+   * @this {Ripple}
+   * @return {void}
+   */
+  static onRippleTouchStart(event) {
+    const [touch] = event.changedTouches;
+    if (!touch) return;
+
+    const rect = this.rippleElement.getBoundingClientRect();
+    const x = touch.pageX - rect.left - window.pageXOffset;
+    const y = touch.pageY - rect.top - window.pageYOffset;
+    this.drawRipple('touch', x, y);
+  }
+
+  /**
+   * @param {PointerEvent|MouseEvent} event
+   * @this {Ripple}
+   * @return {void}
+   */
+  static onRippleClick(event) {
+    this.drawRipple('click');
+    // requestAnimationFrame(() => this.clearRipple());
+  }
+
+  /**
+   * @param {KeyboardEvent} event
+   * @this {HTMLElement}
+   * @return {void}
+   */
+  static onRippleKeyDown(event) {
+    if (event.repeat) return;
+
+    requestAnimationFrame(() => {
+      if (!this.matches(':active')) return;
+
+      /** @type {{host:Ripple}} */ // @ts-ignore Coerce
+      const { host } = this.getRootNode();
+      host.drawRipple('key');
+    });
+  }
+
+  constructor() {
+    super();
+    /** @type {HTMLElement} */
+    this.rippleElement = this.shadowRoot.getElementById('ripple');
+    /** @type {HTMLElement} */
+    this.innerElement = this.shadowRoot.getElementById('ripple-inner');
+  }
 
   /**
    * @param {number} [x]
@@ -79,27 +156,6 @@ export default class Ripple extends Overlay {
     }
   }
 
-  /**
-   * @param {AnimationEvent} event
-   * @this {HTMLElement}
-   * @return {void}
-   */
-  static onRippleAnimationEnd({ animationName }) {
-    switch (animationName) {
-      case 'ripple-fade-in':
-      case 'ripple-fade-in-repeat':
-        this.setAttribute('mdw-fade-in-complete', '');
-        break;
-      case 'ripple-fade-out':
-        this.removeAttribute('mdw-fade-in');
-        this.removeAttribute('mdw-fade-in-repeat');
-        this.removeAttribute('mdw-fade-in-complete');
-        this.removeAttribute('mdw-fade-out');
-        break;
-      default:
-    }
-  }
-
   /** @return {void} */
   clearRipple() {
     if (!this.innerElement.hasAttribute('mdw-fade-in')) return;
@@ -108,62 +164,6 @@ export default class Ripple extends Overlay {
     this.innerElement.removeAttribute('mdw-fade-in-repeat');
     this.innerElement.removeAttribute('mdw-fade-in-complete');
     this.innerElement.setAttribute('mdw-fade-out', '');
-  }
-
-  /**
-   * @param {MouseEvent} event
-   * @this {Ripple}
-   * @return {void}
-   */
-  static onRippleMouseDown(event) {
-    if (event.button) return;
-
-    const rect = this.rippleElement.getBoundingClientRect();
-    const x = event.pageX - rect.left - window.pageXOffset;
-    const y = event.pageY - rect.top - window.pageYOffset;
-    this.drawRipple('mouse', x, y);
-  }
-
-  /**
-   * @param {TouchEvent} event
-   * @this {Ripple}
-   * @return {void}
-   */
-  static onRippleTouchStart(event) {
-    const [touch] = event.changedTouches;
-    if (!touch) return;
-
-    const rect = this.rippleElement.getBoundingClientRect();
-    const x = touch.pageX - rect.left - window.pageXOffset;
-    const y = touch.pageY - rect.top - window.pageYOffset;
-    this.drawRipple('touch', x, y);
-  }
-
-  /**
-   * @param {PointerEvent|MouseEvent} event
-   * @this {Ripple}
-   * @return {void}
-   */
-  static onRippleClick(event) {
-    this.drawRipple('click');
-    // requestAnimationFrame(() => this.clearRipple());
-  }
-
-  /**
-   * @param {KeyboardEvent} event
-   * @this {HTMLElement}
-   * @return {void}
-   */
-  static onRippleKeyDown(event) {
-    if (event.repeat) return;
-
-    requestAnimationFrame(() => {
-      if (!this.matches(':active')) return;
-
-      /** @type {{host:Ripple}} */ // @ts-ignore Coerce
-      const { host } = this.getRootNode();
-      host.drawRipple('key');
-    });
   }
 
   connectedCallback() {

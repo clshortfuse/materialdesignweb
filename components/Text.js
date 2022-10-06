@@ -3,14 +3,7 @@ import styles from './Text.css' assert { type: 'css' };
 
 /** @implements {HTMLSpanElement} */
 export default class Text extends CustomElement {
-  constructor() {
-    super();
-    this.slotElement = /** @type {HTMLSlotElement} */ (this.shadowRoot.getElementById('slot'));
-  }
-
   static elementName = 'mdw-text';
-
-  static styles = [...super.styles, styles];
 
   static fragments = [
     ...super.fragments,
@@ -18,6 +11,13 @@ export default class Text extends CustomElement {
       <slot id=slot></slot>
     `,
   ];
+
+  static styles = [...super.styles, styles];
+
+  constructor() {
+    super();
+    this.slotElement = /** @type {HTMLSlotElement} */ (this.shadowRoot.getElementById('slot'));
+  }
 }
 
 Text.prototype.block = Text.idlBoolean('block');

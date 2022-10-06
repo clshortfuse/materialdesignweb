@@ -12,9 +12,9 @@ import Container from './Container.js';
 /** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
 /** @implements {Omit<HTMLMenuElement,DeprecatedHTMLMenuElementProperties>} */
 export default class BottomAppBar extends Container {
-  static ariaRole = 'toolbar';
-
   static elementName = 'mdw-bottom-app-bar';
+
+  static ariaRole = 'toolbar';
 
   static styles = [...super.styles, styles];
 

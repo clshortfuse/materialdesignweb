@@ -3,6 +3,21 @@ import styles from './Switch.css' assert { type: 'css' };
 import animationStyles from './SwitchAnimations.css' assert { type: 'css' };
 
 export default class Switch extends Input {
+  static elementName = 'mdw-switch';
+
+  static fragments = [...super.fragments,
+  /* html */ `
+    <div id=track aria-hidden=true>
+      <div id=thumb>
+        <mdw-icon class=icon id=icon></mdw-icon>
+        <mdw-icon class=icon id=checked-icon></mdw-icon>
+        <mdw-icon class=icon id=unchecked-icon></mdw-icon>
+      </div>
+    </div>
+  `];
+
+  static styles = [...super.styles, styles, animationStyles];
+
   constructor() {
     super();
     if (!this.hasAttribute('type')) {
@@ -23,21 +38,6 @@ export default class Switch extends Input {
       this.trackElement,
     );
   }
-
-  static elementName = 'mdw-switch';
-
-  static styles = [...super.styles, styles, animationStyles];
-
-  static fragments = [...super.fragments,
-  /* html */ `
-    <div id=track aria-hidden=true>
-      <div id=thumb>
-        <mdw-icon class=icon id=icon></mdw-icon>
-        <mdw-icon class=icon id=checked-icon></mdw-icon>
-        <mdw-icon class=icon id=unchecked-icon></mdw-icon>
-      </div>
-    </div>
-  `];
 
   /**
    * @param {string} name

@@ -2,6 +2,15 @@ import Input from './Input.js';
 import styles from './Radio.css' assert { type: 'css' };
 
 export default class Radio extends Input {
+  static elementName = 'mdw-radio';
+
+  static fragments = [...super.fragments,
+  /* html */ `
+    <div id=icon></div>
+  `];
+
+  static styles = [...super.styles, styles];
+
   constructor() {
     super();
     if (!this.hasAttribute('type')) {
@@ -15,13 +24,4 @@ export default class Radio extends Input {
     );
     this.labelElement.append(this.iconElement);
   }
-
-  static elementName = 'mdw-radio';
-
-  static styles = [...super.styles, styles];
-
-  static fragments = [...super.fragments,
-  /* html */ `
-    <div id=icon></div>
-  `];
 }

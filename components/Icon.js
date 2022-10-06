@@ -7,6 +7,36 @@ import styles from './Icon.css' assert { type: 'css' };
 
 /** @implements {Omit<HTMLImageElement,DeprecatedHTMLImageElementProperties>} */
 export default class Icon extends Container {
+  static elementName = 'mdw-icon';
+
+  static fragments = [
+    ...super.fragments,
+    /* html */`
+      <div id=icon aria-hidden="true">
+        <img id=image aria-hidden="true"/>
+      </div>
+    `,
+  ];
+
+  static get styles() {
+    return [
+      ...super.styles,
+      new URL(this.fontLibrary),
+      styles,
+    ];
+  }
+
+  static imageElementAttributes = [
+    'alt', 'src', 'srcset',
+    'sizes', 'crossorigin', 'usemap',
+    'ismap', 'referrerpolicy',
+    'decoding', 'loading',
+  ];
+
+  static fontLibrary = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&text=search';
+
+  static fontClassName = 'material-symbols-outlined';
+
   /**
    * @param {number} [width]
    * @param {number} [height]
@@ -25,13 +55,6 @@ export default class Icon extends Container {
       this.height = height;
     }
   }
-
-  static imageElementAttributes = [
-    'alt', 'src', 'srcset',
-    'sizes', 'crossorigin', 'usemap',
-    'ismap', 'referrerpolicy',
-    'decoding', 'loading',
-  ];
 
   /**
    * @param {string} name
@@ -57,29 +80,6 @@ export default class Icon extends Container {
       }
     }
   }
-
-  static elementName = 'mdw-icon';
-
-  static fontLibrary = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&text=search';
-
-  static fontClassName = 'material-symbols-outlined';
-
-  static get styles() {
-    return [
-      ...super.styles,
-      new URL(this.fontLibrary),
-      styles,
-    ];
-  }
-
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <div id=icon aria-hidden="true">
-        <img id=image aria-hidden="true"/>
-      </div>
-    `,
-  ];
 
   get naturalWidth() { return this.imageElement.naturalWidth; }
 

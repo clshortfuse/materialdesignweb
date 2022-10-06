@@ -4,7 +4,16 @@ import Button from './Button.js';
 import styles from './SegmentedButton.css' assert { type: 'css' };
 
 export default class SegmentedButton extends Button {
-  static ariaRole = 'none';
+  static elementName = 'mdw-segmented-button';
+
+  static fragments = [
+    ...super.fragments,
+    /* html */`
+      <mdw-icon id=check-icon icon=check aria-hidden="true"></mdw-icon>
+    `,
+  ];
+
+  static styles = [...super.styles, styles];
 
   constructor() {
     super();
@@ -36,17 +45,6 @@ export default class SegmentedButton extends Button {
       this.inputElement.setAttribute(attribute, this.checked ? 'true' : 'false');
     }
   }
-
-  static elementName = 'mdw-segmented-button';
-
-  static styles = [...super.styles, styles];
-
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <mdw-icon id=check-icon icon=check aria-hidden="true"></mdw-icon>
-    `,
-  ];
 
   connectedCallback() {
     super.connectedCallback();

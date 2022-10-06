@@ -2,24 +2,16 @@ import Container from './Container.js';
 import styles from './Overlay.css' assert { type: 'css' };
 
 export default class Overlay extends Container {
-  constructor() {
-    super();
-    this.overlayElement = this.shadowRoot.getElementById('overlay');
-  }
-
   static elementName = 'mdw-overlay';
-
-  static styles = [...super.styles, styles];
 
   static fragments = [
     ...super.fragments,
     '<div id="overlay" aria-hidden="true"/>',
   ];
 
-  static lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matches;
+  static styles = [...super.styles, styles];
 
-  /** @type {'mouse'|'touch'|'key'|null} */
-  #lastInteraction = null;
+  static lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matches;
 
   /**
    * @param {PointerEvent|MouseEvent} event
@@ -82,6 +74,14 @@ export default class Overlay extends Container {
       this.#lastInteraction = 'touch';
       this.overlayElement.setAttribute('touched', '');
     }
+  }
+
+  /** @type {'mouse'|'touch'|'key'|null} */
+  #lastInteraction = null;
+
+  constructor() {
+    super();
+    this.overlayElement = this.shadowRoot.getElementById('overlay');
   }
 
   connectedCallback() {

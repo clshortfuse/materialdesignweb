@@ -6,25 +6,7 @@ import Input from './Input.js';
 import styles from './MenuItem.css' assert { type: 'css' };
 
 export default class MenuItem extends Input {
-  static ariaRole = 'none';
-
   static elementName = 'mdw-menu-item';
-
-  constructor() {
-    super();
-    this.iconElement = this.shadowRoot.getElementById('icon');
-    this.trailingElement = this.shadowRoot.getElementById('trailing');
-    this.trailingIconElement = this.shadowRoot.getElementById('trailing-icon');
-    this.trailingSlotElement = this.shadowRoot.getElementById('trailing-slot');
-    this.labelElement.append(
-      this.iconElement,
-      this.trailingElement,
-    );
-    if (!this.hasAttribute('type')) {
-      this.type = 'button';
-      this.inputElement.setAttribute('role', 'menuitem');
-    }
-  }
 
   static fragments = [
     ...super.fragments,
@@ -38,61 +20,6 @@ export default class MenuItem extends Input {
   ];
 
   static styles = [...super.styles, styles];
-
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
-  attributeChangedCallback(name, oldValue, newValue) {
-    // Menu items should always receive focus
-    switch (name) {
-      case 'disabled':
-        this.inputElement.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
-        return;
-      case 'type':
-        switch (newValue) {
-          case null:
-            this.inputElement.setAttribute('role', 'menuitem');
-            break;
-          case 'checkbox':
-            this.inputElement.setAttribute('role', 'menuitemcheckbox');
-            break;
-          case 'radio':
-            this.inputElement.setAttribute('role', 'menuitemradio');
-            break;
-          default:
-        }
-        break;
-      case 'icon':
-      case 'src':
-        if (newValue == null) {
-          this.iconElement.removeAttribute(name);
-        } else {
-          this.iconElement.setAttribute(name, newValue);
-        }
-        break;
-      case 'trailing':
-        this.trailingSlotElement.textContent = newValue;
-        break;
-      case 'trailing-icon':
-        if (newValue == null) {
-          this.trailingIconElement.removeAttribute('icon');
-        } else {
-          this.trailingIconElement.setAttribute('icon', newValue);
-        }
-        break;
-      case 'trailing-src':
-        if (newValue == null) {
-          this.trailingIconElement.removeAttribute('src');
-        } else {
-          this.trailingIconElement.setAttribute('src', newValue);
-        }
-        break;
-      default:
-    }
-    super.attributeChangedCallback(name, oldValue, newValue);
-  }
 
   /**
    * @param {MouseEvent} event
@@ -173,6 +100,77 @@ export default class MenuItem extends Input {
       return;
     }
     host.toggleAttribute('checked', this.checked);
+  }
+
+  constructor() {
+    super();
+    this.iconElement = this.shadowRoot.getElementById('icon');
+    this.trailingElement = this.shadowRoot.getElementById('trailing');
+    this.trailingIconElement = this.shadowRoot.getElementById('trailing-icon');
+    this.trailingSlotElement = this.shadowRoot.getElementById('trailing-slot');
+    this.labelElement.append(
+      this.iconElement,
+      this.trailingElement,
+    );
+    if (!this.hasAttribute('type')) {
+      this.type = 'button';
+      this.inputElement.setAttribute('role', 'menuitem');
+    }
+  }
+
+  /**
+   * @param {string} name
+   * @param {string?} oldValue
+   * @param {string?} newValue
+   */
+  attributeChangedCallback(name, oldValue, newValue) {
+    // Menu items should always receive focus
+    switch (name) {
+      case 'disabled':
+        this.inputElement.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
+        return;
+      case 'type':
+        switch (newValue) {
+          case null:
+            this.inputElement.setAttribute('role', 'menuitem');
+            break;
+          case 'checkbox':
+            this.inputElement.setAttribute('role', 'menuitemcheckbox');
+            break;
+          case 'radio':
+            this.inputElement.setAttribute('role', 'menuitemradio');
+            break;
+          default:
+        }
+        break;
+      case 'icon':
+      case 'src':
+        if (newValue == null) {
+          this.iconElement.removeAttribute(name);
+        } else {
+          this.iconElement.setAttribute(name, newValue);
+        }
+        break;
+      case 'trailing':
+        this.trailingSlotElement.textContent = newValue;
+        break;
+      case 'trailing-icon':
+        if (newValue == null) {
+          this.trailingIconElement.removeAttribute('icon');
+        } else {
+          this.trailingIconElement.setAttribute('icon', newValue);
+        }
+        break;
+      case 'trailing-src':
+        if (newValue == null) {
+          this.trailingIconElement.removeAttribute('src');
+        } else {
+          this.trailingIconElement.setAttribute('src', newValue);
+        }
+        break;
+      default:
+    }
+    super.attributeChangedCallback(name, oldValue, newValue);
   }
 
   /**
