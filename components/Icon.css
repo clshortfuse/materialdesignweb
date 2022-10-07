@@ -30,7 +30,7 @@
   transition-property: font-variation-settings, inline-size, opacity, width;
 }
 
-#image {
+img {
   position: absolute;
   inset: 0;
 
@@ -42,7 +42,7 @@
   object-fit: cover;
 }
 
-#image:not([src]) {
+img:not([src]) {
   display: none;
 }
 

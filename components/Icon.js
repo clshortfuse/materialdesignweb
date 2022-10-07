@@ -9,21 +9,29 @@ import styles from './Icon.css' assert { type: 'css' };
 export default class Icon extends Container {
   static elementName = 'mdw-icon';
 
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <div id=icon aria-hidden="true">
-        <img id=image aria-hidden="true"/>
-      </div>
-    `,
-  ];
-
   static get styles() {
     return [
       ...super.styles,
       new URL(this.fontLibrary),
       styles,
     ];
+  }
+
+  static fragments = [
+    ...super.fragments,
+    /* html */`
+      <div id=icon aria-hidden="true">
+        <img id=img aria-hidden="true"/>
+      </div>
+    `,
+  ];
+
+  static compose() {
+    const fragment = super.compose();
+    const icon = fragment.getElementById('icon');
+    icon.className = Icon.fontClassName;
+    icon.append(fragment.getElementById('slot'));
+    return fragment;
   }
 
   static imageElementAttributes = [
@@ -43,11 +51,7 @@ export default class Icon extends Container {
    */
   constructor(width, height) {
     super();
-    this.iconElement = this.shadowRoot.getElementById('icon');
-    this.imageElement = /** @type {HTMLImageElement} */ (this.shadowRoot.getElementById('image'));
-    // this.slotElement.remove();
-    this.iconElement.className = Icon.fontClassName;
-    this.iconElement.appendChild(this.slotElement);
+    // this.refs.slot.remove();
     if (width !== null) {
       this.width = width;
     }
@@ -67,33 +71,33 @@ export default class Icon extends Container {
     switch (name) {
       case 'icon':
         if (newValue) {
-          this.iconElement.textContent = newValue;
+          this.refs.icon.textContent = newValue;
         }
         break;
       default:
     }
     if (Icon.imageElementAttributes.includes(name)) {
       if (newValue == null) {
-        this.imageElement.removeAttribute(name);
+        this.refs.img.removeAttribute(name);
       } else {
-        this.imageElement.setAttribute(name, newValue);
+        this.refs.img.setAttribute(name, newValue);
       }
     }
   }
 
-  get naturalWidth() { return this.imageElement.naturalWidth; }
+  get naturalWidth() { return this.refs.img.naturalWidth; }
 
-  get naturalHeight() { return this.imageElement.naturalHeight; }
+  get naturalHeight() { return this.refs.img.naturalHeight; }
 
-  get complete() { return this.imageElement.complete; }
+  get complete() { return this.refs.img.complete; }
 
-  get currentSrc() { return this.imageElement.currentSrc; }
+  get currentSrc() { return this.refs.img.currentSrc; }
 
-  get x() { return this.imageElement.x; }
+  get x() { return this.refs.img.x; }
 
-  get y() { return this.imageElement.y; }
+  get y() { return this.refs.img.y; }
 
-  get decode() { return this.imageElement.decode; }
+  get decode() { return this.refs.img.decode; }
 }
 
 // https://html.spec.whatwg.org/multipage/embedded-content.html#htmlimageelement
@@ -112,3 +116,8 @@ Icon.prototype.width = Icon.idlFloat('width');
 Icon.prototype.height = Icon.idlFloat('height');
 
 Icon.prototype.icon = Icon.idlString('icon');
+
+Icon.prototype.refs = {
+  ...Container.prototype.refs,
+  ...Icon.addRefNames('icon', 'img'),
+};

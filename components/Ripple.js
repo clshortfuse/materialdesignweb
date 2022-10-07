@@ -4,6 +4,8 @@ import styles from './Ripple.css' assert { type: 'css' };
 export default class Ripple extends Overlay {
   static elementName = 'mdw-ripple';
 
+  static styles = [...super.styles, styles];
+
   static fragments = [
     ...super.fragments,
     /* html */`
@@ -12,8 +14,6 @@ export default class Ripple extends Overlay {
       </div>
     `,
   ];
-
-  static styles = [...super.styles, styles];
 
   /**
    * @param {AnimationEvent} event
@@ -44,7 +44,9 @@ export default class Ripple extends Overlay {
   static onRippleMouseDown(event) {
     if (event.button) return;
 
-    const rect = this.rippleElement.getBoundingClientRect();
+    const { ripple } = this.refs;
+    if (!ripple) return;
+    const rect = ripple.getBoundingClientRect();
     const x = event.pageX - rect.left - window.pageXOffset;
     const y = event.pageY - rect.top - window.pageYOffset;
     this.drawRipple('mouse', x, y);
@@ -59,7 +61,9 @@ export default class Ripple extends Overlay {
     const [touch] = event.changedTouches;
     if (!touch) return;
 
-    const rect = this.rippleElement.getBoundingClientRect();
+    const { ripple } = this.refs;
+    if (!ripple) return;
+    const rect = ripple.getBoundingClientRect();
     const x = touch.pageX - rect.left - window.pageXOffset;
     const y = touch.pageY - rect.top - window.pageYOffset;
     this.drawRipple('touch', x, y);
@@ -92,14 +96,6 @@ export default class Ripple extends Overlay {
     });
   }
 
-  constructor() {
-    super();
-    /** @type {HTMLElement} */
-    this.rippleElement = this.shadowRoot.getElementById('ripple');
-    /** @type {HTMLElement} */
-    this.innerElement = this.shadowRoot.getElementById('ripple-inner');
-  }
-
   /**
    * @param {number} [x]
    * @param {number} [y]
@@ -108,7 +104,9 @@ export default class Ripple extends Overlay {
   updateRipplePosition(x, y) {
     let width;
     let height;
-    const { clientWidth, clientHeight } = this.rippleElement;
+    const { ripple, rippleInner } = this.refs;
+    if (!ripple || !rippleInner) return;
+    const { clientWidth, clientHeight } = ripple;
 
     if (x == null || y == null) {
       // eslint-disable-next-line no-param-reassign, no-multi-assign
@@ -122,10 +120,11 @@ export default class Ripple extends Overlay {
     }
 
     const hypotenuse = Math.sqrt((width * width) + (height * height));
-    this.innerElement.style.setProperty('height', `${hypotenuse}px`);
-    this.innerElement.style.setProperty('width', `${hypotenuse}px`);
-    this.innerElement.style.setProperty('left', `${x - (hypotenuse / 2)}px`);
-    this.innerElement.style.setProperty('top', `${y - (hypotenuse / 2)}px`);
+
+    rippleInner.style.setProperty('height', `${hypotenuse}px`);
+    rippleInner.style.setProperty('width', `${hypotenuse}px`);
+    rippleInner.style.setProperty('left', `${x - (hypotenuse / 2)}px`);
+    rippleInner.style.setProperty('top', `${y - (hypotenuse / 2)}px`);
   }
 
   /**
@@ -135,48 +134,55 @@ export default class Ripple extends Overlay {
    * @return {void}
    */
   drawRipple(initiator, x, y) {
-    const currentInitiator = this.innerElement.getAttribute('mdw-fade-in');
+    const { rippleInner } = this.refs;
+    if (!rippleInner) return;
+    const currentInitiator = rippleInner.getAttribute('mdw-fade-in');
 
     // Abort ripple if different initiator
     if (currentInitiator && currentInitiator !== initiator) return;
 
     this.updateRipplePosition(x, y);
-    this.innerElement.setAttribute('mdw-fade-in', initiator);
+    rippleInner.setAttribute('mdw-fade-in', initiator);
 
     // Repeat the animation
     if (currentInitiator === initiator) {
       // Remove complete state of fade-in
-      this.innerElement.removeAttribute('mdw-fade-in-complete');
+      rippleInner.removeAttribute('mdw-fade-in-complete');
       // Alternate between normal fade-in to repeat fade-in
-      if (this.innerElement.hasAttribute('mdw-fade-in-repeat')) {
-        this.innerElement.removeAttribute('mdw-fade-in-repeat');
+      if (rippleInner.hasAttribute('mdw-fade-in-repeat')) {
+        rippleInner.removeAttribute('mdw-fade-in-repeat');
       } else {
-        this.innerElement.setAttribute('mdw-fade-in-repeat', '');
+        rippleInner.setAttribute('mdw-fade-in-repeat', '');
       }
     }
   }
 
   /** @return {void} */
   clearRipple() {
-    if (!this.innerElement.hasAttribute('mdw-fade-in')) return;
-    if (!this.innerElement.hasAttribute('mdw-fade-in-complete')) return;
-    this.innerElement.removeAttribute('mdw-fade-in');
-    this.innerElement.removeAttribute('mdw-fade-in-repeat');
-    this.innerElement.removeAttribute('mdw-fade-in-complete');
-    this.innerElement.setAttribute('mdw-fade-out', '');
+    const { rippleInner } = this.refs;
+    if (!rippleInner) return;
+    if (!rippleInner.hasAttribute('mdw-fade-in')) return;
+    if (!rippleInner.hasAttribute('mdw-fade-in-complete')) return;
+    rippleInner.removeAttribute('mdw-fade-in');
+    rippleInner.removeAttribute('mdw-fade-in-repeat');
+    rippleInner.removeAttribute('mdw-fade-in-complete');
+    rippleInner.setAttribute('mdw-fade-out', '');
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.innerElement.removeAttribute('mdw-fade-in');
-    this.innerElement.removeAttribute('mdw-fade-in-repeat');
-    this.innerElement.removeAttribute('mdw-fade-in-complete');
-    this.innerElement.removeAttribute('mdw-fade-out');
+    const { rippleInner } = this.refs;
+    if (rippleInner) {
+      rippleInner.removeAttribute('mdw-fade-in');
+      rippleInner.removeAttribute('mdw-fade-in-repeat');
+      rippleInner.removeAttribute('mdw-fade-in-complete');
+      rippleInner.removeAttribute('mdw-fade-out');
+      rippleInner.addEventListener('animationend', Ripple.onRippleAnimationEnd, { passive: true });
+    }
     this.addEventListener('click', Ripple.onRippleClick, { passive: true });
     this.addEventListener('mousedown', Ripple.onRippleMouseDown, { passive: true });
     this.addEventListener('touchstart', Ripple.onRippleTouchStart, { passive: true });
     this.addEventListener('keydown', Ripple.onRippleKeyDown, { passive: true });
-    this.innerElement.addEventListener('animationend', Ripple.onRippleAnimationEnd, { passive: true });
   }
 
   disconnectedCallback() {
@@ -184,3 +190,8 @@ export default class Ripple extends Overlay {
     super.disconnectedCallback();
   }
 }
+
+Ripple.prototype.refs = {
+  ...Overlay.prototype.refs,
+  ...Ripple.addRefNames('ripple', 'rippleInner'),
+};

@@ -14,9 +14,9 @@ import Container from './Container.js';
 export default class BottomAppBar extends Container {
   static elementName = 'mdw-bottom-app-bar';
 
-  static ariaRole = 'toolbar';
-
   static styles = [...super.styles, styles];
+
+  static ariaRole = 'toolbar';
 
   connectedCallback() {
     AriaToolbar.attach(this);

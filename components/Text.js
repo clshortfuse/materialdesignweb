@@ -5,21 +5,18 @@ import styles from './Text.css' assert { type: 'css' };
 export default class Text extends CustomElement {
   static elementName = 'mdw-text';
 
+  static styles = [...super.styles, styles];
+
   static fragments = [
     ...super.fragments,
     /* html */`
       <slot id=slot></slot>
     `,
   ];
-
-  static styles = [...super.styles, styles];
-
-  constructor() {
-    super();
-    this.slotElement = /** @type {HTMLSlotElement} */ (this.shadowRoot.getElementById('slot'));
-  }
 }
 
 Text.prototype.block = Text.idlBoolean('block');
 Text.prototype.ink = Text.idlString('ink');
 Text.prototype.typeStyle = Text.idlString('type-style');
+
+Text.prototype.refs = Text.addRefNames('slot');

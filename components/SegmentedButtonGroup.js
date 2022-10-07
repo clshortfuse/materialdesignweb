@@ -10,9 +10,9 @@ import styles from './SegmentedButtonGroup.css' assert { type: 'css' };
 export default class SegmentedButtonGroup extends Container {
   static elementName = 'mdw-segmented-button-group';
 
-  static ariaRole = 'listbox';
-
   static styles = [...super.styles, styles];
+
+  static ariaRole = 'listbox';
 
   /**
    * @param {Event} event
@@ -83,7 +83,7 @@ export default class SegmentedButtonGroup extends Container {
   constructor() {
     super();
     this.setAttribute('aria-orientation', 'horizontal');
-    this.slotElement.addEventListener('slotchange', SegmentedButtonGroup.onSlotChanged, { passive: true });
+    this.refs.slot.addEventListener('slotchange', SegmentedButtonGroup.onSlotChanged, { passive: true });
   }
 
   /** @return {NodeListOf<SegmentedButton>} */
@@ -101,3 +101,8 @@ export default class SegmentedButtonGroup extends Container {
     this.removeEventListener(RovingTabIndex.TABINDEX_ZEROED, SegmentedButtonGroup.onTabIndexZeroed);
   }
 }
+
+SegmentedButtonGroup.prototype.refs = {
+  ...Container.prototype.refs,
+  ...SegmentedButtonGroup.addRefNames('slot'),
+};

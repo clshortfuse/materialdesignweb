@@ -5,6 +5,8 @@ import Input from './Input.js';
 export default class Button extends Input {
   static elementName = 'mdw-button';
 
+  static styles = [...super.styles, styles];
+
   static fragments = [
     ...super.fragments,
     /* html */`
@@ -14,7 +16,19 @@ export default class Button extends Input {
     `,
   ];
 
-  static styles = [...super.styles, styles];
+  static compose() {
+    const fragment = super.compose();
+    fragment.getElementById('label').append(
+      fragment.getElementById('icon'),
+      fragment.getElementById('ripple'),
+      fragment.getElementById('touch-target'),
+      fragment.getElementById('outline'),
+    );
+    const input = fragment.getElementById('input');
+    input.setAttribute('role', 'button');
+    input.setAttribute('type', 'button');
+    return fragment;
+  }
 
   /**
    * @param {Event} event
@@ -27,7 +41,7 @@ export default class Button extends Input {
     /** @type {{host:Button}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
     if (host.disabled) return;
-    const value = null;
+    const { value } = this;
     const form = host.elementInternals?.form;
     if (!form) return;
     host.elementInternals.setFormValue(value);
@@ -43,24 +57,6 @@ export default class Button extends Input {
     duplicatedButton.remove();
   }
 
-  constructor() {
-    super();
-    this.iconElement = /** @type {Icon} */ (this.shadowRoot.getElementById('icon'));
-    this.touchTargetElement = this.shadowRoot.getElementById('touch-target');
-    this.outlineElement = this.shadowRoot.getElementById('outline');
-    this.labelElement.append(
-      this.iconElement,
-      this.rippleElement,
-      this.touchTargetElement,
-      this.outlineElement,
-    );
-
-    this.inputElement.setAttribute('role', 'button');
-    if (!this.hasAttribute('type')) {
-      this.type = 'button';
-    }
-  }
-
   /**
    * @param {string} name
    * @param {string?} oldValue
@@ -73,9 +69,9 @@ export default class Button extends Input {
       case 'icon':
       case 'src':
         if (newValue == null) {
-          this.iconElement.removeAttribute(name);
+          this.refs.icon.removeAttribute(name);
         } else {
-          this.iconElement.setAttribute(name, newValue);
+          this.refs.icon.setAttribute(name, newValue);
         }
         break;
       default:
@@ -84,12 +80,7 @@ export default class Button extends Input {
 
   connectedCallback() {
     super.connectedCallback();
-    this.inputElement.addEventListener('click', Button.onButtonClick, { passive: true });
-  }
-
-  disconnectedCallback() {
-    this.inputElement.removeEventListener('click', Button.onButtonClick);
-    super.disconnectedCallback();
+    this.refs.input.addEventListener('click', Button.onButtonClick, { passive: true });
   }
 }
 
@@ -98,3 +89,8 @@ Button.prototype.filled = Button.idlBoolean('filled');
 Button.prototype.outlined = Button.idlBoolean('outlined');
 Button.prototype.icon = Button.idlString('icon');
 Button.prototype.src = Button.idlString('src');
+
+Button.prototype.refs = {
+  ...Input.prototype.refs,
+  ...Button.addRefs({ icon: Icon }),
+};

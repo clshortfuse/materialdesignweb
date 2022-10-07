@@ -21,6 +21,8 @@ import MenuItem from './MenuItem.js';
 export default class Menu extends CustomElement {
   static elementName = 'mdw-menu';
 
+  static styles = [...super.styles, styles];
+
   static fragments = [
     ...super.fragments,
     /* html */`
@@ -28,14 +30,12 @@ export default class Menu extends CustomElement {
         <div id=scrim aria-hidden=true></div>
         <form id=form method=dialog role=none>
           <mdw-container id=container role=none>
-            <slot id=body></slot>
+            <slot id=slot></slot>
           </mdw-container>
         </form>
       </dialog>
     `,
   ];
-
-  static styles = [...super.styles, styles];
 
   static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
 
@@ -178,11 +178,7 @@ export default class Menu extends CustomElement {
 
   constructor() {
     super();
-    this.dialogElement = /** @type {HTMLDialogElement} */ (this.shadowRoot.getElementById('dialog'));
-    this.scrimElement = this.shadowRoot.getElementById('scrim');
-    this.containerElement = /** @type {Container} */ (this.shadowRoot.getElementById('container'));
-    this.bodyElement = this.shadowRoot.getElementById('body');
-    this.bodyElement.addEventListener('slotchange', Menu.onSlotChanged, { passive: true });
+    this.refs.slot.addEventListener('slotchange', Menu.onSlotChanged, { passive: true });
   }
 
   /**
@@ -197,9 +193,9 @@ export default class Menu extends CustomElement {
       case 'open':
         // HTMLDialogElement Spec states attribute manipulation does not invoke events
         if (newValue == null) {
-          this.dialogElement.setAttribute('aria-hidden', 'true');
+          this.refs.dialog.setAttribute('aria-hidden', 'true');
         } else {
-          this.dialogElement.setAttribute('aria-hidden', 'false');
+          this.refs.dialog.setAttribute('aria-hidden', 'false');
         }
         break;
       default:
@@ -220,9 +216,9 @@ export default class Menu extends CustomElement {
       }
     }
     // if (this.dialogElement.getAttribute('aria-hidden') === 'true') return false;
-    if (Menu.supportsHTMLDialogElement && this.dialogElement.open) {
+    if (Menu.supportsHTMLDialogElement && this.refs.dialog.open) {
     // Force close native dialog
-      this.dialogElement.close();
+      this.refs.dialog.close();
     }
 
     // Will invoke observed attribute change: ('aria-hidden', 'true');
@@ -266,7 +262,7 @@ export default class Menu extends CustomElement {
    * @return {void}
    */
   updateMenuPosition(source) {
-    console.log('updateMenuPosition', source);
+    // console.log('updateMenuPosition', source);
     let top = 'auto';
     let left = 'auto';
     let transformOrigin = '';
@@ -390,7 +386,7 @@ export default class Menu extends CustomElement {
     * - Open from center           9i             █·
     */
 
-    const popupElement = this.containerElement;
+    const popupElement = this.refs.container;
     popupElement.style.setProperty('max-height', 'none');
     popupElement.style.setProperty('width', 'auto');
     const newSize = Math.ceil(popupElement.clientWidth / 56);
@@ -645,9 +641,7 @@ export default class Menu extends CustomElement {
   showModal(source) {
     if (this.open) return false;
     if (Menu.supportsHTMLDialogElement) {
-      console.log('showing modal');
-      this.dialogElement.showModal();
-      console.log('modal shown?');
+      this.refs.dialog.showModal();
       this.isNativeModal = true;
     }
     return this.show(source);
@@ -664,7 +658,7 @@ export default class Menu extends CustomElement {
     if (source) {
       this.updateMenuPosition(source);
     } else {
-      const popupElement = this.containerElement;
+      const popupElement = this.refs.container;
       popupElement.style.removeProperty('inset');
       popupElement.style.removeProperty('top');
       popupElement.style.removeProperty('left');
@@ -677,8 +671,8 @@ export default class Menu extends CustomElement {
         popupElement.removeAttribute('style');
       }
     }
-    if (Menu.supportsHTMLDialogElement && !this.dialogElement.open) {
-      this.dialogElement.show();
+    if (Menu.supportsHTMLDialogElement && !this.refs.dialog.open) {
+      this.refs.dialog.show();
       const main = document.querySelector('main');
       if (main) {
         main.setAttribute('aria-hidden', 'true');
@@ -731,3 +725,11 @@ export default class Menu extends CustomElement {
 Menu.prototype.open = Menu.idlBoolean('open');
 Menu.prototype.direction = Menu.idlString('direction');
 Menu.prototype.position = Menu.idlString('position');
+
+Menu.prototype.refs = Menu.addRefs({
+  dialog: 'dialog',
+  scrim: 'div',
+  form: 'form',
+  container: Container,
+  slot: 'slot',
+});

@@ -1,3 +1,4 @@
+import Container from './Container.js';
 import styles from './Input.css' assert { type: 'css' };
 import Ripple from './Ripple.js';
 
@@ -6,6 +7,8 @@ import Ripple from './Ripple.js';
 /** @implements {Omit<HTMLInputElement,DeprecatedHTMLInputElementProperties>} */
 export default class Input extends Ripple {
   static elementName = 'mdw-input';
+
+  static styles = [...super.styles, styles];
 
   static delegatesFocus = true;
 
@@ -20,7 +23,15 @@ export default class Input extends Ripple {
     `,
   ];
 
-  static styles = [...super.styles, styles];
+  static compose() {
+    const fragment = super.compose();
+    fragment.getElementById('label').append(
+      fragment.getElementById('overlay'),
+      fragment.getElementById('ripple'),
+      fragment.getElementById('slot'),
+    );
+    return fragment;
+  }
 
   static get observedAttributes() {
     return [
@@ -106,14 +117,6 @@ export default class Input extends Ripple {
 
   constructor() {
     super();
-    this.inputElement = /** @type {HTMLInputElement} */ (this.shadowRoot.getElementById('input'));
-    this.labelElement = /** @type {HTMLLabelElement} */ this.shadowRoot.getElementById('label');
-    this.labelElement.append(
-      this.overlayElement,
-      this.rippleElement,
-      this.slotElement,
-    );
-
     if (!this.hasAttribute('tabindex')) {
       // Expose this element as focusable
       this.setAttribute('tabindex', '0');
@@ -128,28 +131,29 @@ export default class Input extends Ripple {
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
     if (oldValue == null && newValue == null) return;
+    const { input } = this.refs;
+    if (!input) return;
     switch (name) {
       case 'aria-label':
         if (newValue == null) {
-          this.inputElement?.removeAttribute(name);
+          input.removeAttribute(name);
           if (!this.hasAttribute('aria-labelledby')) {
-            this.inputElement?.setAttribute('aria-labelledby', 'slot');
+            input.setAttribute('aria-labelledby', 'slot');
           }
         } else {
-          this.inputElement?.setAttribute(name, newValue);
+          input.setAttribute(name, newValue);
           if (!this.hasAttribute('aria-labelledby')) {
-            this.inputElement?.removeAttribute('aria-labelledby');
+            input.removeAttribute('aria-labelledby');
           }
         }
         break;
       case 'disabled':
-        if (!this.inputElement) break;
-        switch (this.inputElement.getAttribute('role')) {
+        switch (input.getAttribute('role')) {
           case null:
           case 'button':
           case 'radio':
           case 'switch':
-            this.inputElement.disabled = newValue != null;
+            input.disabled = newValue != null;
             if (newValue === null) {
               this.setAttribute('tabindex', '0');
             } else {
@@ -163,9 +167,9 @@ export default class Input extends Ripple {
     }
     if (name === 'aria-controls' || Input.idlInputElementAttributes.includes(name)) {
       if (newValue == null) {
-        this.inputElement?.removeAttribute(name);
+        input.removeAttribute(name);
       } else {
-        this.inputElement?.setAttribute(name, newValue);
+        input.setAttribute(name, newValue);
       }
     }
     if (name === 'checked') {
@@ -173,7 +177,7 @@ export default class Input extends Ripple {
         case 'checkbox':
         case 'radio':
           if (newValue == null) {
-            console.log('Input.attributeChangedCallback: unset', this.name, 'null');
+            // console.log('Input.attributeChangedCallback: unset', this.name, 'null');
             this.elementInternals.setFormValue(null);
           } else {
             // console.log('Input.attributeChangedCallback: set', this.name, this.value ?? 'on');
@@ -229,11 +233,11 @@ export default class Input extends Ripple {
     const [name, value] = event.detail;
     if (this.name !== name) return;
     if (value !== this.value) {
-      console.log('Input.formIPCEvent: Unset self', this.name, this.value);
+      // console.log('Input.formIPCEvent: Unset self', this.name, this.value);
       this.checked = false;
       this.removeAttribute('checked');
     } else {
-      console.log('Input.formIPCEvent: Continue match', this.name, this.value);
+      // console.log('Input.formIPCEvent: Continue match', this.name, this.value);
     }
   }
 
@@ -256,41 +260,41 @@ export default class Input extends Ripple {
   /** @type {HTMLElement['focus']} */
   focus(options = undefined) {
     super.focus(options);
-    this.inputElement?.focus(options);
+    this.refs.input?.focus(options);
   }
 
   get form() { return this.elementInternals.form; }
 
   get name() { return this.getAttribute('name'); }
 
-  get type() { return this.inputElement.type; }
+  get type() { return this.refs.input?.type; }
 
   set type(value) {
-    this.inputElement.type = value;
+    this.refs.input.type = value;
     if (value === 'radio') {
       this.refreshFormAssociation();
     }
   }
 
-  get checked() { return this.inputElement.checked; }
+  get checked() { return this.refs.input.checked; }
 
   set checked(value) {
-    this.inputElement.checked = value;
+    this.refs.input.checked = value;
   }
 
   get required() {
-    return this.inputElement.required;
+    return this.refs.input.required;
   }
 
   set required(v) {
-    this.inputElement.required = v;
+    this.refs.input.required = v;
   }
 
-  get value() { return this.inputElement.value; }
+  get value() { return this.refs.input.value; }
 
   set value(v) {
-    console.log('Input.value =', v);
-    this.inputElement.value = v;
+    // console.log('Input.value =', v);
+    this.refs.input.value = v;
   }
 
   get validity() { return this.elementInternals.validity; }
@@ -306,21 +310,20 @@ export default class Input extends Ripple {
   connectedCallback() {
     super.connectedCallback();
     this.removeEventListener('keydown', Ripple.onRippleKeyDown);
-    this.inputElement.addEventListener('keydown', Ripple.onRippleKeyDown, { passive: true });
-    this.inputElement.addEventListener('click', Input.onInputClick);
-    this.inputElement.addEventListener('change', Input.onInputChange);
-    this.inputElement.addEventListener('keydown', Input.onInputKeydown);
+    const { input } = this.refs;
+    input.addEventListener('keydown', Ripple.onRippleKeyDown, { passive: true });
+    input.addEventListener('click', Input.onInputClick);
+    input.addEventListener('change', Input.onInputChange);
+    input.addEventListener('keydown', Input.onInputKeydown);
     if (!this.elementInternals.form) {
       this.formAssociatedCallback(null);
     }
   }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.inputElement.removeEventListener('click', Input.onInputClick);
-    this.inputElement.removeEventListener('change', Input.onInputChange);
-    this.inputElement.removeEventListener('keydown', Input.onInputKeydown);
-  }
 }
 
 Input.prototype.ariaControls = Input.idlString('aria-controls');
+
+Input.prototype.refs = {
+  ...Ripple.prototype.refs,
+  ...Input.addRefNames('label', 'input'),
+};

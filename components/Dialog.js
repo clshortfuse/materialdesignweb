@@ -1,8 +1,10 @@
 import { handleTabKeyPress } from '../aria/modal.js';
 
+import Button from './Button.js';
 import Container from './Container.js';
 import CustomElement from './CustomElement.js';
 import styles from './Dialog.css' assert { type: 'css' };
+import Icon from './Icon.js';
 
 /** @typedef {Object<string,any>} DialogStackState */
 
@@ -18,6 +20,8 @@ import styles from './Dialog.css' assert { type: 'css' };
 export default class Dialog extends CustomElement {
   static elementName = 'mdw-dialog';
 
+  static styles = [...super.styles, styles];
+
   static fragments = [
     ...super.fragments,
     /* html */`
@@ -28,7 +32,7 @@ export default class Dialog extends CustomElement {
             <mdw-icon id=icon aria-hidden=true></mdw-icon>
             <mdw-text id=headline role="header"></mdw-text>
             <div id=description></div>
-            <slot id=body></slot>
+            <slot id=slot></slot>
             <div id=actions>
               <mdw-button id=cancel type=submit value="cancel">Cancel</mdw-button>
               <mdw-button id=confirm type=submit value="confirm" autofocus>Confirm</mdw-button>
@@ -38,8 +42,6 @@ export default class Dialog extends CustomElement {
       </dialog>
     `,
   ];
-
-  static styles = [...super.styles, styles];
 
   static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
 
@@ -162,17 +164,7 @@ export default class Dialog extends CustomElement {
 
   constructor() {
     super();
-    this.dialogElement = /** @type {HTMLDialogElement} */ (this.shadowRoot.getElementById('dialog'));
-    this.scrimElement = this.shadowRoot.getElementById('scrim');
-    this.containerElement = /** @type {Container} */ (this.shadowRoot.getElementById('container'));
-    this.iconElement = this.shadowRoot.getElementById('icon');
-    this.headlineElement = this.shadowRoot.getElementById('headline');
-    this.descriptionElement = this.shadowRoot.getElementById('description');
-    this.bodyElement = this.shadowRoot.getElementById('body');
-    this.cancelElement = this.shadowRoot.getElementById('cancel');
-    this.confirmElement = this.shadowRoot.getElementById('confirm');
-
-    this.bodyElement.addEventListener('slotchange', Dialog.onSlotChanged);
+    this.refs.slot.addEventListener('slotchange', Dialog.onSlotChanged);
   }
 
   /**
@@ -185,30 +177,30 @@ export default class Dialog extends CustomElement {
     if (oldValue == null && newValue == null) return;
     switch (name) {
       case 'icon':
-        this.iconElement.textContent = newValue ?? '';
+        this.refs.icon.textContent = newValue ?? '';
         break;
       case 'headline':
-        this.headlineElement.textContent = newValue ?? '';
+        this.refs.headline.textContent = newValue ?? '';
         break;
       case 'description':
-        this.descriptionElement.textContent = newValue ?? '';
+        this.refs.description.textContent = newValue ?? '';
         break;
       case 'cancel':
-        this.cancelElement.textContent = newValue ?? '';
+        this.refs.cancel.textContent = newValue ?? '';
         break;
       case 'confirm':
-        this.confirmElement.textContent = newValue ?? '';
+        this.refs.confirm.textContent = newValue ?? '';
         break;
       case 'default':
-        this.confirmElement.toggleAttribute('autofocus', newValue == null || newValue === 'confirm');
-        this.cancelElement.toggleAttribute('autofocus', newValue === 'cancel');
+        this.refs.confirm.toggleAttribute('autofocus', newValue == null || newValue === 'confirm');
+        this.refs.cancel.toggleAttribute('autofocus', newValue === 'cancel');
         break;
       case 'open':
         // HTMLDialogElement Spec states attribute manipulation does not invoke events
         if (newValue == null) {
-          this.dialogElement.setAttribute('aria-hidden', 'true');
+          this.refs.dialog.setAttribute('aria-hidden', 'true');
         } else {
-          this.dialogElement.setAttribute('aria-hidden', 'false');
+          this.refs.dialog.setAttribute('aria-hidden', 'false');
         }
         break;
       default:
@@ -230,11 +222,11 @@ export default class Dialog extends CustomElement {
       }
     }
     // if (this.dialogElement.getAttribute('aria-hidden') === 'true') return false;
-    if (Dialog.supportsHTMLDialogElement && this.dialogElement.open) {
+    if (Dialog.supportsHTMLDialogElement && this.refs.dialog.open) {
       // Force close native dialog
-      this.dialogElement.close(returnValue);
+      this.refs.dialog.close(returnValue);
     } else {
-      this.dialogElement.returnValue = returnValue;
+      this.refs.dialog.returnValue = returnValue;
     }
 
     // Will invoke observed attribute change: ('aria-hidden', 'true');
@@ -273,7 +265,7 @@ export default class Dialog extends CustomElement {
   }
 
   get returnValue() {
-    return this.dialogElement.returnValue;
+    return this.refs.dialog.returnValue;
   }
 
   /**
@@ -283,7 +275,7 @@ export default class Dialog extends CustomElement {
   showModal(event) {
     if (this.open) return false;
     if (Dialog.supportsHTMLDialogElement) {
-      this.dialogElement.showModal();
+      this.refs.dialog.showModal();
       this.isNativeModal = true;
     }
     return this.show(event);
@@ -298,7 +290,7 @@ export default class Dialog extends CustomElement {
     this.open = true;
 
     if (Dialog.supportsHTMLDialogElement) {
-      this.dialogElement.show();
+      this.refs.dialog.show();
       const main = document.querySelector('main');
       if (main) {
         main.setAttribute('aria-hidden', 'true');
@@ -334,7 +326,7 @@ export default class Dialog extends CustomElement {
         }
         focusElement.focus();
       } else {
-        this.containerElement.focus();
+        this.refs.container.focus();
       }
     } catch {
       // Failed to focus
@@ -343,25 +335,19 @@ export default class Dialog extends CustomElement {
   }
 
   connectedCallback() {
-    this.dialogElement.addEventListener('cancel', Dialog.onNativeCancelEvent);
-    this.dialogElement.addEventListener('close', Dialog.onNativeCloseEvent, { passive: true });
-    this.scrimElement.addEventListener('click', Dialog.onScrimClick, { passive: true });
-    this.containerElement.addEventListener('keydown', Dialog.onContainerKeyDown);
+    const { dialog, scrim, container } = this.refs;
+    dialog.addEventListener('cancel', Dialog.onNativeCancelEvent);
+    dialog.addEventListener('close', Dialog.onNativeCloseEvent, { passive: true });
+    scrim.addEventListener('click', Dialog.onScrimClick, { passive: true });
+    container.addEventListener('keydown', Dialog.onContainerKeyDown);
 
     // this.setAttribute('role', 'none');
     if (Dialog.supportsHTMLDialogElement) {
-      this.dialogElement.setAttribute('aria-modal', 'true');
-      if (!this.dialogElement.hasAttribute('aria-hidden')) {
+      dialog.setAttribute('aria-modal', 'true');
+      if (!dialog.hasAttribute('aria-hidden')) {
         this.setAttribute('aria-hidden', 'true');
       }
     }
-  }
-
-  disconnectedCallback() {
-    this.dialogElement.removeEventListener('cancel', Dialog.onNativeCancelEvent);
-    this.dialogElement.removeEventListener('close', Dialog.onNativeCloseEvent);
-    this.scrimElement.removeEventListener('click', Dialog.onScrimClick);
-    this.containerElement.removeEventListener('keydown', Dialog.onContainerKeyDown);
   }
 }
 
@@ -372,3 +358,17 @@ Dialog.prototype.icon = Dialog.idlString('icon');
 Dialog.prototype.default = Dialog.idlString('default');
 Dialog.prototype.cancel = Dialog.idlString('cancel');
 Dialog.prototype.confirm = Dialog.idlString('confirm');
+
+Dialog.prototype.refs = Dialog.addRefs({
+  dialog: 'dialog',
+  scrim: 'div',
+  form: 'form',
+  container: Container,
+  icon: Icon,
+  headline: Text,
+  description: 'div',
+  slot: 'slot',
+  actions: 'div',
+  cancel: Button,
+  confirm: Button,
+});

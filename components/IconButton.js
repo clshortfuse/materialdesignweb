@@ -6,6 +6,14 @@ export default class IconButton extends Button {
 
   static styles = [...super.styles, styles];
 
+  static compose() {
+    const fragment = super.compose();
+    fragment.getElementById('icon').append(
+      fragment.getElementById('slot'),
+    );
+    return fragment;
+  }
+
   /**
    * @param {Event} event
    * @this {HTMLInputElement} this
@@ -42,8 +50,7 @@ export default class IconButton extends Button {
 
   constructor() {
     super();
-    this.setAttribute('icon', '');
-    this.iconElement.appendChild(this.slotElement);
+    this.icon = '';
   }
 
   /**
@@ -57,16 +64,16 @@ export default class IconButton extends Button {
     switch (name) {
       case 'type':
         if (newValue === null) {
-          this.inputElement.removeAttribute('aria-pressed');
+          this.refs.input.removeAttribute('aria-pressed');
         } else if (newValue === 'checkbox') {
-          this.inputElement.setAttribute('aria-pressed', this.checked ? 'true' : 'false');
+          this.refs.input.setAttribute('aria-pressed', this.checked ? 'true' : 'false');
         }
         break;
       case 'checked':
         if (this.type !== 'checkbox') {
-          this.inputElement.removeAttribute('aria-pressed');
+          this.refs.input.removeAttribute('aria-pressed');
         }
-        this.inputElement.setAttribute('aria-pressed', newValue == null ? 'false' : 'true');
+        this.refs.input.setAttribute('aria-pressed', newValue == null ? 'false' : 'true');
 
         break;
       default:
@@ -75,13 +82,8 @@ export default class IconButton extends Button {
 
   connectedCallback() {
     super.connectedCallback();
-    this.inputElement.addEventListener('change', IconButton.onInputChange, { passive: true });
-    this.inputElement.addEventListener('keydown', IconButton.onInputKeyDown);
-  }
-
-  disconnectedCallback() {
-    this.inputElement.removeEventListener('change', IconButton.onInputChange);
-    this.inputElement.removeEventListener('keydown', IconButton.onInputKeyDown);
-    super.disconnectedCallback();
+    const { input } = this.refs;
+    input.addEventListener('change', IconButton.onInputChange, { passive: true });
+    input.addEventListener('keydown', IconButton.onInputKeyDown);
   }
 }

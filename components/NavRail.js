@@ -4,6 +4,8 @@ import styles from './NavRail.css' assert { type: 'css' };
 export default class NavRail extends Nav {
   static elementName = 'mdw-nav-rail';
 
+  static styles = [...super.styles, styles];
+
   static fragments = [
     ...super.fragments,
     /* html */ `
@@ -12,13 +14,21 @@ export default class NavRail extends Nav {
     `,
   ];
 
-  static styles = [...super.styles, styles];
-
-  constructor() {
-    super();
-    this.groupElement = this.shadowRoot.getElementById('group');
-    this.groupElement.append(this.slotElement);
+  static compose() {
+    const fragment = super.compose();
+    fragment.getElementById('group').append(
+      fragment.getElementById('slot'),
+    );
+    return fragment;
   }
 }
 
 NavRail.prototype.align = /** @type {'start'|'center'|'end'} */ (NavRail.idlString('align'));
+
+NavRail.prototype.refs = {
+  ...Nav.prototype.refs,
+  ...NavRail.addRefs({
+    start: 'slot',
+    group: 'div',
+  }),
+};

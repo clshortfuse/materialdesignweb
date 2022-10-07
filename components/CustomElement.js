@@ -9,11 +9,26 @@
  */
 
 /**
+ * @typedef RefOptions
+ * @prop {string} [id]
+ * @prop {string} [class]
+ * @prop {string} [query]
+ */
+
+/**
+ * @template {keyof HTMLElementTagNameMap|Function|undefined} T
+ * @typedef {T extends undefined ? undefined : T extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[T] : T extends Function ? InstanceType<T> : HTMLElement } RefType<T>
+ */
+
+/**
  * Web Component that can cache templates for minification or performance
  */
 export default class CustomElement extends HTMLElement {
   /** @type {string} */
   static elementName = null;
+
+  /** @type {(string|URL|CSSStyleSheet)[]} */
+  static styles = [];
 
   static ariaRole = 'none';
 
@@ -22,12 +37,40 @@ export default class CustomElement extends HTMLElement {
   /** @type {(DocumentFragment|string)[]} */
   static fragments = [];
 
-  /** @type {(string|URL|CSSStyleSheet)[]} */
-  static styles = [];
+  /** @return {DocumentFragment} */
+  static compose() {
+    const fragment = document.createDocumentFragment();
+    fragment.append(
+      ...this.styles.map((style) => {
+        if (typeof style === 'string') {
+          const el = document.createElement('style');
+          el.textContent = style;
+          return el;
+        }
+        if (style instanceof URL) {
+          const el = document.createElement('link');
+          el.rel = 'stylesheet';
+          el.href = style.href;
+          return el;
+        }
+        if (CustomElement.supportsAdoptedStyleSheets) return null;
+        const el = document.createElement('style');
+        el.textContent = [...style.cssRules].map((r) => r.cssText).join('\n');
+        return el;
+      }).filter(Boolean),
+      ...this.fragments.map((f) => {
+        if (typeof f === 'string') {
+          return document.createRange().createContextualFragment(f);
+        }
+        return fragment;
+      }),
+    );
+    return fragment;
+  }
 
   /** @type {Iterable<string>} */
   static get observedAttributes() {
-    return this.getIdlMap().keys();
+    return this.idlMap.keys();
   }
 
   static supportsAdoptedStyleSheets = 'adoptedStyleSheets' in ShadowRoot.prototype;
@@ -50,6 +93,12 @@ export default class CustomElement extends HTMLElement {
   static idlCache = new WeakMap();
 
   /**
+   * @private
+   * @type {WeakMap<typeof CustomElement, Map<string, RefOptions>>}
+   */
+  static refCache = new WeakMap();
+
+  /**
    * Converts attribute name to property name
    * (Similar to DOMStringMap)
    * @param {string} name
@@ -65,6 +114,24 @@ export default class CustomElement extends HTMLElement {
   }
 
   /**
+   * Converts property name to attribute name
+   * (Similar to DOMStringMap)
+   * @param {string} name
+   * @return {string}
+   */
+  static propNameToAttrName(name) {
+    const attrNameWords = name.split(/([A-Z])/);
+    if (attrNameWords.length === 1) return name;
+    return attrNameWords.reduce((prev, curr) => {
+      if (prev == null) return curr;
+      if (curr.length === 1 && curr.toUpperCase() === curr) {
+        return `${prev}-${curr.toLowerCase()}`;
+      }
+      return prev + curr;
+    });
+  }
+
+  /**
    * @this {typeof CustomElement}
    * @param {string} [elementName]
    */
@@ -72,7 +139,7 @@ export default class CustomElement extends HTMLElement {
     customElements.define(elementName || this.elementName, this);
   }
 
-  static getIdlMap() {
+  static get idlMap() {
     let map = this.idlCache.get(this);
     if (!map) {
       // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -88,6 +155,59 @@ export default class CustomElement extends HTMLElement {
     return map;
   }
 
+  static get refMap() {
+    let map = this.refCache.get(this);
+    if (!map) {
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      let parent = this;
+      let parentMap;
+      while ((parent = Object.getPrototypeOf(parent)) !== CustomElement) {
+        parentMap = this.refCache.get(parent);
+        if (parentMap) break;
+      }
+      map = new Map(parentMap);
+      this.refCache.set(this, map);
+    }
+    return map;
+  }
+
+  /**
+   * @param {string} name
+   * @param {RefOptions} options
+   * @return {HTMLElement}
+   */
+  static ref(name, options) {
+    this.refMap.set(name, options);
+    return null;
+  }
+
+  /**
+   * @template {string} T
+   * @param  {...T} names
+   * @return {{[P in T]: RefType<P> }}
+   */
+  static addRefNames(...names) {
+    for (const name of names) {
+      this.ref(name, { id: CustomElement.propNameToAttrName(name) });
+    }
+    return null;
+  }
+
+  /**
+   * @template {keyof HTMLElementTagNameMap|Function} T1
+   * @template {{id:string,type:T1}} T2
+   * @template {Record<string, T1|T2>} T
+   * @param {T} options
+   * @return {{[P in keyof T]: RefType<T[P] extends T1 ? T[P] : T[P]['type']>}}
+   */
+  static addRefs(options) {
+    for (const [key, value] of Object.entries(options)) {
+      const id = typeof value === 'object' ? value?.id : null;
+      this.ref(key, { id: id ?? CustomElement.propNameToAttrName(key) });
+    }
+    return null;
+  }
+
   /**
    * @template {IDLOptionType} T
    * @param {string} name
@@ -95,8 +215,10 @@ export default class CustomElement extends HTMLElement {
    * @return {T extends 'boolean' ? boolean : T extends 'integer'|'float' ? number : T extends 'string' ? string : unknown}
    */
   static idl(name, options) {
-    const map = this.getIdlMap();
-    map.set(name, options);
+    this.idlMap.set(name, {
+      ...options,
+      propName: CustomElement.attrNameToPropName(name),
+    });
     return null;
   }
 
@@ -139,12 +261,16 @@ export default class CustomElement extends HTMLElement {
   /** @type {Map<string,[boolean|number|string,string]>} */
   #idlValues = new Map();
 
+  /** @type {Map<string,WeakRef<HTMLElement>>} */
+  #weakRefs = new Map();
+
   constructor() {
     super();
     this.#attachIDLs();
     this.#attachShadow();
     this.#attachStyles();
     this.#attachContent();
+    this.#attachRefs();
     this.#attachInternals();
     this.#attachARIA();
   }
@@ -210,34 +336,9 @@ export default class CustomElement extends HTMLElement {
 
   #attachContent() {
     const component = /** @type {typeof CustomElement} */ (this.constructor);
-    let content = CustomElement.#fragmentCache.get(component);
+    let content = CustomElement.#fragmentCache.get(component) ?? component.compose();
     if (!content) {
-      content = document.createDocumentFragment();
-      content.append(
-        ...component.styles.map((style) => {
-          if (typeof style === 'string') {
-            const el = document.createElement('style');
-            el.textContent = style;
-            return el;
-          }
-          if (style instanceof URL) {
-            const el = document.createElement('link');
-            el.rel = 'stylesheet';
-            el.href = style.href;
-            return el;
-          }
-          if (CustomElement.supportsAdoptedStyleSheets) return null;
-          const el = document.createElement('style');
-          el.textContent = [...style.cssRules].map((r) => r.cssText).join('\n');
-          return el;
-        }).filter(Boolean),
-        ...component.fragments.map((fragment) => {
-          if (typeof fragment === 'string') {
-            return document.createRange().createContextualFragment(fragment);
-          }
-          return fragment;
-        }),
-      );
+      content = component.compose();
       CustomElement.#fragmentCache.set(component, content);
     }
     this.shadowRoot.prepend(content.cloneNode(true));
@@ -261,7 +362,7 @@ export default class CustomElement extends HTMLElement {
 
   #attachIDLs() {
     const component = /** @type {typeof CustomElement} */ (this.constructor);
-    for (const [key, options] of CustomElement.idlCache.get(component) ?? []) {
+    for (const [key, options] of component.idlMap) {
       const propName = options.propName ?? CustomElement.attrNameToPropName(key);
       switch (options.type) {
         case 'boolean':
@@ -321,6 +422,38 @@ export default class CustomElement extends HTMLElement {
     }
   }
 
+  #attachRefs() {
+    const component = /** @type {typeof CustomElement} */ (this.constructor);
+    const { refMap } = component;
+    const refObject = {};
+    for (const [key, options] of refMap) {
+      let element;
+      if (options.id) {
+        element = this.shadowRoot.getElementById(options.id);
+      } else if (options.class) {
+        element = this.shadowRoot.querySelector(`.${options.class}`);
+      } else if (options.query) {
+        element = this.shadowRoot.querySelector(options.query);
+      } else {
+        throw new Error(`Invalid ref options: ${JSON.stringify(options)}`);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      const scope = this;
+      Object.defineProperty(refObject, key, {
+        enumerable: true,
+        get() {
+          return scope.#getRef(key);
+        },
+        set(value) {
+          scope.#setRef(key, value);
+        },
+      });
+      // @ts-ignore TS doesn't process defineProperty
+      refObject[key] = element;
+    }
+    this.refs = refObject;
+  }
+
   /**
    * @param {string} key
    * @param {boolean|number|string} value
@@ -331,6 +464,27 @@ export default class CustomElement extends HTMLElement {
     const tuple = this.#getIdlValue(key);
     tuple[0] = value;
     tuple[1] = stringValue;
+  }
+
+  /**
+   * @param {string} key
+   * @return {HTMLElement}
+   */
+  #getRef(key) {
+    return this.#weakRefs.get(key)?.deref();
+  }
+
+  /**
+   * @param {string} key
+   * @param {?HTMLElement} value
+   * @return {void}
+   */
+  #setRef(key, value) {
+    if (value) {
+      this.#weakRefs.set(key, new WeakRef(value));
+    } else {
+      this.#weakRefs.delete(key);
+    }
   }
 
   /**

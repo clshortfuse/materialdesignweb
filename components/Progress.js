@@ -9,6 +9,8 @@ import lineStyles from './ProgressLine.css' assert { type: 'css' };
 export default class Progress extends Container {
   static elementName = 'mdw-progress';
 
+  static styles = [...super.styles, styles, lineStyles, circleStyles];
+
   static fragments = [
     ...super.fragments,
     /* html */`
@@ -29,14 +31,10 @@ export default class Progress extends Container {
     `,
   ];
 
-  static styles = [...super.styles, styles, lineStyles, circleStyles];
-
-  constructor() {
-    super();
-    this.progressElement = /** @type {HTMLProgressElement} */ (this.shadowRoot.getElementById('progress'));
-    this.circleElement = this.shadowRoot.getElementById('circle');
-    this.slotElement.remove();
-    this.slotElement = null;
+  static compose() {
+    const fragment = super.compose();
+    fragment.getElementById('slot').remove();
+    return fragment;
   }
 
   /**
@@ -47,31 +45,34 @@ export default class Progress extends Container {
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
     if (oldValue == null && newValue == null) return;
+    const { circle, progress } = this.refs;
+
     switch (name) {
       default:
         return;
       case 'value':
       case 'max':
         if (newValue == null) {
-          this.circleElement.removeAttribute(name);
-          this.progressElement.removeAttribute(name);
+          circle.removeAttribute(name);
+          progress.removeAttribute(name);
           return;
         }
     }
-    this.circleElement.setAttribute(name, newValue);
-    this.progressElement.setAttribute(name, newValue);
+
+    circle.setAttribute(name, newValue);
+    progress.setAttribute(name, newValue);
 
     const value = (this.value / (this.max || 100)).toPrecision(12);
-    const previous = this.circleElement.style.getPropertyValue('--value') || value;
+    const previous = circle.style.getPropertyValue('--value') || value;
 
-    this.circleElement.style.setProperty('--previous', previous);
-    this.circleElement.style.setProperty('--value', value);
-    this.progressElement.style.setProperty('--value', value);
+    circle.style.setProperty('--previous', previous);
+    circle.style.setProperty('--value', value);
+    progress.style.setProperty('--value', value);
   }
 
-  get position() { return this.progressElement.position; }
+  get position() { return this.refs.progress.position; }
 
-  get labels() { return this.progressElement.labels; }
+  get labels() { return this.refs.progress.labels; }
 }
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element
@@ -79,3 +80,12 @@ export default class Progress extends Container {
 Progress.prototype.value = Progress.idlFloat('value');
 Progress.prototype.max = Progress.idlFloat('max');
 Progress.prototype.autoHide = Progress.idlBoolean('auto-hide');
+
+Progress.prototype.refs = {
+  ...Container.prototype.refs,
+  ...Progress.addRefs({
+    progress: 'progress',
+    circle: 'div',
+    slot: undefined,
+  }),
+};

@@ -5,6 +5,8 @@ import Icon from './Icon.js';
 export default class FilterChip extends Chip {
   static elementName = 'mdw-filter-chip';
 
+  static styles = [...super.styles, styles];
+
   static fragments = [
     ...super.fragments,
     /* html */`
@@ -13,24 +15,21 @@ export default class FilterChip extends Chip {
     `,
   ];
 
-  static styles = [...super.styles, styles];
+  static compose() {
+    const fragment = super.compose();
+    fragment.getElementById('label').append(
+      fragment.getElementById('check-icon'),
+      fragment.getElementById('trailing-icon'),
+    );
+    const input = fragment.getElementById('input');
+    input.removeAttribute('role');
+    input.setAttribute('autocomplete', 'off');
+    input.setAttribute('type', 'checkbox');
+    return fragment;
+  }
 
   constructor() {
     super();
-
-    this.checkIconElement = /** @type {Icon} */ (this.shadowRoot.getElementById('check-icon'));
-    this.trailingIconElement = /** @type {Icon} */ (this.shadowRoot.getElementById('trailing-icon'));
-    this.labelElement.append(
-      this.checkIconElement,
-      this.trailingIconElement,
-    );
-
-    this.inputElement.removeAttribute('role');
-    this.inputElement.autocomplete = 'off';
-    if (!this.hasAttribute('type')) {
-      this.type = 'checkbox';
-      this.attributeChangedCallback('type', null, 'checkbox');
-    }
 
     // this.labelElement.append(...this.buttonElement.children);
     // Aria will use aria-labelledby instead
@@ -53,17 +52,24 @@ export default class FilterChip extends Chip {
     switch (name) {
       case 'trailing-icon':
         if (newValue) {
-          this.trailingIconElement.setAttribute('icon', newValue);
+          this.refs.trailingIcon.setAttribute('icon', newValue);
         }
         break;
       case 'trailing-src':
         if (newValue == null) {
-          this.trailingIconElement.removeAttribute('src');
+          this.refs.trailingIcon.removeAttribute('src');
         } else {
-          this.trailingIconElement.setAttribute('src', newValue);
+          this.refs.trailingIcon.setAttribute('src', newValue);
         }
         break;
       default:
     }
   }
 }
+
+FilterChip.prototype.refs = {
+  ...Chip.prototype.refs,
+  ...FilterChip.addRefs({
+    trailingIcon: Icon,
+  }),
+};

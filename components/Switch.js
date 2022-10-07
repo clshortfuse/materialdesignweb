@@ -1,9 +1,12 @@
+import Icon from './Icon.js';
 import Input from './Input.js';
 import styles from './Switch.css' assert { type: 'css' };
 import animationStyles from './SwitchAnimations.css' assert { type: 'css' };
 
 export default class Switch extends Input {
   static elementName = 'mdw-switch';
+
+  static styles = [...super.styles, styles, animationStyles];
 
   static fragments = [...super.fragments,
   /* html */ `
@@ -16,27 +19,19 @@ export default class Switch extends Input {
     </div>
   `];
 
-  static styles = [...super.styles, styles, animationStyles];
-
-  constructor() {
-    super();
-    if (!this.hasAttribute('type')) {
-      this.type = 'checkbox';
-      this.attributeChangedCallback('type', null, 'checkbox');
-    }
-    this.inputElement.setAttribute('role', 'switch');
-    this.trackElement = this.shadowRoot.getElementById('track');
-    this.thumbElement = this.shadowRoot.getElementById('thumb');
-    this.iconElement = this.shadowRoot.getElementById('icon');
-    this.checkedIconElement = this.shadowRoot.getElementById('checked-icon');
-    this.uncheckedIconElement = this.shadowRoot.getElementById('unchecked-icon');
-    this.thumbElement.append(
-      this.overlayElement,
-      this.rippleElement,
+  static compose() {
+    const fragment = super.compose();
+    const input = fragment.getElementById('input');
+    input.setAttribute('type', 'checkbox');
+    input.setAttribute('role', 'switch');
+    fragment.getElementById('thumb').append(
+      fragment.getElementById('overlay'),
+      fragment.getElementById('ripple'),
     );
-    this.labelElement.append(
-      this.trackElement,
+    fragment.getElementById('label').append(
+      fragment.getElementById('track'),
     );
+    return fragment;
   }
 
   /**
@@ -51,22 +46,22 @@ export default class Switch extends Input {
     let srcElement;
     switch (name) {
       case 'icon':
-        textContentElement = this.iconElement;
+        textContentElement = this.refs.icon;
         break;
       case 'checked-icon':
-        textContentElement = this.checkedIconElement;
+        textContentElement = this.refs.checkedIcon;
         break;
       case 'unchecked-icon':
-        textContentElement = this.uncheckedIconElement;
+        textContentElement = this.refs.uncheckedIcon;
         break;
       case 'src':
-        srcElement = this.iconElement;
+        srcElement = this.refs.icon;
         break;
       case 'checked-src':
-        srcElement = this.checkedIconElement;
+        srcElement = this.refs.checkedIcon;
         break;
       case 'unchecked-src':
-        srcElement = this.uncheckedIconElement;
+        srcElement = this.refs.uncheckedIcon;
         break;
       default:
     }
@@ -90,3 +85,16 @@ Switch.prototype.uncheckedIcon = Switch.idlString('unchecked-icon');
 Switch.prototype.src = Switch.idlString('src');
 Switch.prototype.checkedSrc = Switch.idlString('checked-src');
 Switch.prototype.uncheckedSrc = Switch.idlString('unchecked-src');
+
+Switch.prototype.refs = {
+  ...Input.prototype.refs,
+  ...Switch.addRefs({
+    track: 'div',
+    thumb: 'div',
+    icon: Icon,
+    checkedIcon: Icon,
+    uncheckedIcon: Icon,
+    overlay: null,
+    ripple: null,
+  }),
+};

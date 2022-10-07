@@ -4,12 +4,12 @@ import styles from './Overlay.css' assert { type: 'css' };
 export default class Overlay extends Container {
   static elementName = 'mdw-overlay';
 
+  static styles = [...super.styles, styles];
+
   static fragments = [
     ...super.fragments,
     '<div id="overlay" aria-hidden="true"/>',
   ];
-
-  static styles = [...super.styles, styles];
 
   static lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matches;
 
@@ -21,7 +21,7 @@ export default class Overlay extends Container {
   static onOverlayMouseDown(event) {
     if (this.#lastInteraction) return;
     this.#lastInteraction = 'mouse';
-    this.overlayElement.removeAttribute('touched');
+    this.refs.overlay.removeAttribute('touched');
   }
 
   /**
@@ -31,7 +31,7 @@ export default class Overlay extends Container {
    */
   static onOverlayTouchStart(event) {
     this.#lastInteraction = 'touch';
-    this.overlayElement.setAttribute('touched', '');
+    this.refs.overlay.setAttribute('touched', '');
   }
 
   /**
@@ -41,7 +41,7 @@ export default class Overlay extends Container {
    */
   static onOverlayKeyDown(event) {
     this.#lastInteraction = 'key';
-    this.overlayElement.removeAttribute('touched');
+    this.refs.overlay.removeAttribute('touched');
   }
 
   /**
@@ -54,7 +54,7 @@ export default class Overlay extends Container {
       case null: return;
       case 'touch':
         Overlay.lastInteractionWasTouch = true;
-        // this.overlayElement.removeAttribute('touched');
+        // this.refs.overlay.removeAttribute('touched');
         break;
       default:
         Overlay.lastInteractionWasTouch = false;
@@ -72,17 +72,12 @@ export default class Overlay extends Container {
     if (!this.#lastInteraction && Overlay.lastInteractionWasTouch) {
       // Replicate touch behavior
       this.#lastInteraction = 'touch';
-      this.overlayElement.setAttribute('touched', '');
+      this.refs.overlay.setAttribute('touched', '');
     }
   }
 
   /** @type {'mouse'|'touch'|'key'|null} */
   #lastInteraction = null;
-
-  constructor() {
-    super();
-    this.overlayElement = this.shadowRoot.getElementById('overlay');
-  }
 
   connectedCallback() {
     // super.connectedCallback();
@@ -97,3 +92,8 @@ export default class Overlay extends Container {
     this.#lastInteraction = null;
   }
 }
+
+Overlay.prototype.refs = {
+  ...Container.prototype.refs,
+  ...Overlay.addRefNames('overlay'),
+};

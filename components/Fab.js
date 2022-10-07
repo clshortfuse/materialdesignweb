@@ -6,10 +6,17 @@ export default class Fab extends ExtendedFab {
 
   static styles = [...super.styles, styles];
 
+  static compose() {
+    const fragment = super.compose();
+    fragment.getElementById('icon').append(
+      fragment.getElementById('slot'),
+    );
+    return fragment;
+  }
+
   constructor() {
     super();
     this.icon = '';
-    this.iconElement.appendChild(this.slotElement);
   }
 }
 

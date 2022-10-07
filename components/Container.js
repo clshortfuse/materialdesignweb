@@ -6,19 +6,14 @@ import Text from './Text.js';
 export default class Container extends Text {
   static elementName = 'mdw-container';
 
+  static styles = [...super.styles, styles];
+
   static fragments = [
     ...super.fragments,
     /* html */`
       <div id=elevation aria-hidden=true></div>
     `,
   ];
-
-  static styles = [...super.styles, styles];
-
-  constructor() {
-    super();
-    this.elevationElement = this.shadowRoot.getElementById('elevation');
-  }
 
   /**
    * @param {string} name
@@ -50,3 +45,8 @@ Container.prototype.elevation = Container.idlInteger('elevation');
 Container.prototype.color = Container.idlString('color');
 Container.prototype.bg = Container.idlString('bg');
 Container.prototype.shapeStyle = Container.idlString('shape-style');
+
+Container.prototype.refs = {
+  ...Text.prototype.refs,
+  ...Container.addRefNames('elevation'),
+};

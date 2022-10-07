@@ -2,11 +2,14 @@
 
 import * as RovingTabIndex from '../aria/rovingtabindex.js';
 
+import Icon from './Icon.js';
 import Input from './Input.js';
 import styles from './MenuItem.css' assert { type: 'css' };
 
 export default class MenuItem extends Input {
   static elementName = 'mdw-menu-item';
+
+  static styles = [...super.styles, styles];
 
   static fragments = [
     ...super.fragments,
@@ -19,7 +22,17 @@ export default class MenuItem extends Input {
     `,
   ];
 
-  static styles = [...super.styles, styles];
+  static compose() {
+    const fragment = super.compose();
+    fragment.getElementById('label').append(
+      fragment.getElementById('icon'),
+      fragment.getElementById('trailing'),
+    );
+    const input = fragment.getElementById('input');
+    input.setAttribute('type', 'button');
+    input.setAttribute('role', 'menuitem');
+    return fragment;
+  }
 
   /**
    * @param {MouseEvent} event
@@ -102,43 +115,29 @@ export default class MenuItem extends Input {
     host.toggleAttribute('checked', this.checked);
   }
 
-  constructor() {
-    super();
-    this.iconElement = this.shadowRoot.getElementById('icon');
-    this.trailingElement = this.shadowRoot.getElementById('trailing');
-    this.trailingIconElement = this.shadowRoot.getElementById('trailing-icon');
-    this.trailingSlotElement = this.shadowRoot.getElementById('trailing-slot');
-    this.labelElement.append(
-      this.iconElement,
-      this.trailingElement,
-    );
-    if (!this.hasAttribute('type')) {
-      this.type = 'button';
-      this.inputElement.setAttribute('role', 'menuitem');
-    }
-  }
-
   /**
    * @param {string} name
    * @param {string?} oldValue
    * @param {string?} newValue
    */
   attributeChangedCallback(name, oldValue, newValue) {
+    super.attributeChangedCallback(name, oldValue, newValue);
+    if (oldValue == null && newValue == null) return;
     // Menu items should always receive focus
     switch (name) {
       case 'disabled':
-        this.inputElement.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
+        this.refs.input.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
         return;
       case 'type':
         switch (newValue) {
           case null:
-            this.inputElement.setAttribute('role', 'menuitem');
+            this.refs.input.setAttribute('role', 'menuitem');
             break;
           case 'checkbox':
-            this.inputElement.setAttribute('role', 'menuitemcheckbox');
+            this.refs.input.setAttribute('role', 'menuitemcheckbox');
             break;
           case 'radio':
-            this.inputElement.setAttribute('role', 'menuitemradio');
+            this.refs.input.setAttribute('role', 'menuitemradio');
             break;
           default:
         }
@@ -146,31 +145,30 @@ export default class MenuItem extends Input {
       case 'icon':
       case 'src':
         if (newValue == null) {
-          this.iconElement.removeAttribute(name);
+          this.refs.icon.removeAttribute(name);
         } else {
-          this.iconElement.setAttribute(name, newValue);
+          this.refs.icon.setAttribute(name, newValue);
         }
         break;
       case 'trailing':
-        this.trailingSlotElement.textContent = newValue;
+        this.refs.trailingSlot.textContent = newValue;
         break;
       case 'trailing-icon':
         if (newValue == null) {
-          this.trailingIconElement.removeAttribute('icon');
+          this.refs.trailingIcon.removeAttribute('icon');
         } else {
-          this.trailingIconElement.setAttribute('icon', newValue);
+          this.refs.trailingIcon.setAttribute('icon', newValue);
         }
         break;
       case 'trailing-src':
         if (newValue == null) {
-          this.trailingIconElement.removeAttribute('src');
+          this.refs.trailingIcon.removeAttribute('src');
         } else {
-          this.trailingIconElement.setAttribute('src', newValue);
+          this.refs.trailingIcon.setAttribute('src', newValue);
         }
         break;
       default:
     }
-    super.attributeChangedCallback(name, oldValue, newValue);
   }
 
   /**
@@ -189,9 +187,10 @@ export default class MenuItem extends Input {
   connectedCallback() {
     super.connectedCallback();
     RovingTabIndex.attach(this);
-    this.inputElement.addEventListener('click', MenuItem.onInputClick);
-    this.inputElement.addEventListener('change', MenuItem.onInputChange);
-    this.inputElement.addEventListener('keydown', MenuItem.onInputKeydown);
+    const { input } = this.refs;
+    input.addEventListener('click', MenuItem.onInputClick);
+    input.addEventListener('change', MenuItem.onInputChange);
+    input.addEventListener('keydown', MenuItem.onInputKeydown);
     this.addEventListener('mousemove', MenuItem.onMouseMove);
   }
 
@@ -208,3 +207,13 @@ MenuItem.prototype.src = MenuItem.idlString('src');
 MenuItem.prototype.trailing = MenuItem.idlString('trailing');
 MenuItem.prototype.trailingIcon = MenuItem.idlString('trailing-icon');
 MenuItem.prototype.trailingSrc = MenuItem.idlString('trailing-src');
+
+MenuItem.prototype.refs = {
+  ...Input.prototype.refs,
+  ...MenuItem.addRefs({
+    icon: Icon,
+    trailing: 'span',
+    trailingSlot: 'slot',
+    trailingIcon: Icon,
+  }),
+};

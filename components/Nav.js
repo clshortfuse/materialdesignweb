@@ -5,9 +5,9 @@ import NavItem from './NavItem.js';
 export default class Nav extends Container {
   static elementName = 'mdw-nav';
 
-  static ariaRole = 'navigation';
-
   static styles = [...super.styles, styles];
+
+  static ariaRole = 'navigation';
 
   /**
    * @param {PointerEvent|MouseEvent} event

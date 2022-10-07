@@ -4,6 +4,8 @@ import styles from './Slider.css' assert { type: 'css' };
 export default class Slider extends Input {
   static elementName = 'mdw-slider';
 
+  static styles = [...super.styles, styles];
+
   static fragments = [
     ...super.fragments,
     /* html */ `
@@ -17,7 +19,13 @@ export default class Slider extends Input {
     `,
   ];
 
-  static styles = [...super.styles, styles];
+  static compose() {
+    const fragment = super.compose();
+    fragment.getElementById('input').setAttribute('type', 'range');
+    fragment.getElementById('ripple').remove();
+    fragment.getElementById('overlay').remove();
+    return fragment;
+  }
 
   /**
    * @param {Event} event
@@ -134,18 +142,6 @@ export default class Slider extends Input {
 
   #labelShown = false;
 
-  constructor() {
-    super();
-    if (!this.hasAttribute('type')) {
-      this.type = 'range';
-      this.attributeChangedCallback('type', null, 'range');
-    }
-    this.rippleElement.remove();
-    this.overlayElement.remove();
-    this.trackElement = this.shadowRoot.getElementById('track');
-    this.trackLabelElement = this.shadowRoot.getElementById('track-label');
-  }
-
   /**
    * @param {string} name
    * @param {string?} oldValue
@@ -157,9 +153,9 @@ export default class Slider extends Input {
     switch (name) {
       case 'ticks': {
         if (newValue == null) {
-          this.trackElement.style.removeProperty('--ticks');
+          this.refs.track.style.removeProperty('--ticks');
         } else {
-          this.trackElement.style.setProperty('--ticks', newValue);
+          this.refs.track.style.setProperty('--ticks', newValue);
         }
         break;
       }
@@ -168,9 +164,9 @@ export default class Slider extends Input {
       case 'max':
       case 'value':
         if (newValue == null) {
-          this.inputElement.removeAttribute(name);
+          this.refs.input.removeAttribute(name);
         } else {
-          this.inputElement.setAttribute(name, newValue);
+          this.refs.input.setAttribute(name, newValue);
         }
         this.updateTrack();
         this.updateLabel();
@@ -182,21 +178,21 @@ export default class Slider extends Input {
   showLabel() {
     if (this.#labelShown) return;
     this.#labelShown = true;
-    this.trackLabelElement.hidden = false;
+    this.refs.trackLabel.hidden = false;
   }
 
   hideLabel() {
     if (!this.#labelShown) return;
     this.#labelShown = false;
-    this.trackLabelElement.hidden = true;
+    this.refs.trackLabel.hidden = true;
   }
 
-  updateLabel(text = this.inputElement.value ?? '') {
-    this.trackLabelElement.setAttribute('text', text);
+  updateLabel(text = this.refs.input.value ?? '') {
+    this.refs.trackLabel.setAttribute('text', text);
   }
 
   getValueAsFraction() {
-    const { min, max, valueAsNumber } = this.inputElement;
+    const { min, max, valueAsNumber } = this.refs.input;
     const nMin = (min === '') ? 0 : Number.parseFloat(min);
     const nMax = (max === '') ? 100 : Number.parseFloat(max);
 
@@ -208,7 +204,7 @@ export default class Slider extends Input {
    * @return {void}
    */
   updateTrack(value = this.getValueAsFraction()) {
-    this.trackElement.style.setProperty('--value', value.toPrecision(12));
+    this.refs.track.style.setProperty('--value', value.toPrecision(12));
   }
 
   /** @param {string} v */
@@ -219,28 +215,29 @@ export default class Slider extends Input {
   }
 
   get valueAsNumber() {
-    return this.inputElement.valueAsNumber;
+    return this.refs.input.valueAsNumber;
   }
 
   set valueAsNumber(v) {
-    this.inputElement.valueAsNumber = v;
+    this.refs.input.valueAsNumber = v;
     this.updateTrack();
     this.updateLabel();
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.inputElement.addEventListener('change', Slider.onInputChange);
-    this.inputElement.addEventListener('mousedown', Slider.onInputMouseOrTouch, { passive: true });
-    this.inputElement.addEventListener('mousemove', Slider.onInputMouseOrTouch, { passive: true });
-    this.inputElement.addEventListener('touchmove', Slider.onInputMouseOrTouch, { passive: true });
-    this.inputElement.addEventListener('touchstart', Slider.onInputMouseOrTouch, { passive: true });
-    this.inputElement.addEventListener('touchend', Slider.onInputMouseOrTouch, { passive: true });
-    this.inputElement.addEventListener('touchleave', Slider.onInputMouseOrTouch, { passive: true });
-    this.inputElement.addEventListener('touchcancel', Slider.onInputMouseOrTouch, { passive: true });
-    this.inputElement.addEventListener('mouseout', Slider.onInputMouseOrTouch, { passive: true });
-    this.inputElement.addEventListener('focus', Slider.onInputFocus, { passive: true });
-    this.inputElement.addEventListener('blur', Slider.onInputBlur, { passive: true });
+    const { input } = this.refs;
+    input.addEventListener('change', Slider.onInputChange);
+    input.addEventListener('mousedown', Slider.onInputMouseOrTouch, { passive: true });
+    input.addEventListener('mousemove', Slider.onInputMouseOrTouch, { passive: true });
+    input.addEventListener('touchmove', Slider.onInputMouseOrTouch, { passive: true });
+    input.addEventListener('touchstart', Slider.onInputMouseOrTouch, { passive: true });
+    input.addEventListener('touchend', Slider.onInputMouseOrTouch, { passive: true });
+    input.addEventListener('touchleave', Slider.onInputMouseOrTouch, { passive: true });
+    input.addEventListener('touchcancel', Slider.onInputMouseOrTouch, { passive: true });
+    input.addEventListener('mouseout', Slider.onInputMouseOrTouch, { passive: true });
+    input.addEventListener('focus', Slider.onInputFocus, { passive: true });
+    input.addEventListener('blur', Slider.onInputBlur, { passive: true });
     this.addEventListener('mouseout', Slider.onLeaveEvent);
     this.updateTrack();
   }
@@ -250,3 +247,13 @@ Slider.prototype.min = Slider.idlString('min');
 Slider.prototype.max = Slider.idlString('max');
 Slider.prototype.step = Slider.idlString('step');
 Slider.prototype.ticks = Slider.idlInteger('ticks');
+
+Slider.prototype.refs = {
+  ...Input.prototype.refs,
+  ...Slider.addRefs({
+    track: 'div',
+    trackLabel: 'div',
+    overlay: null,
+    ripple: null,
+  }),
+};

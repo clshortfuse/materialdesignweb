@@ -1,3 +1,4 @@
+import Icon from './Icon.js';
 import styles from './NavItem.css' assert { type: 'css' };
 import Ripple from './Ripple.js';
 
@@ -5,6 +6,8 @@ import Ripple from './Ripple.js';
 /** @implements {Omit<HTMLAnchorElement,DeprecatedHTMLAnchorElementProperties>} */
 export default class NavItem extends Ripple {
   static elementName = 'mdw-nav-item';
+
+  static styles = [...super.styles, styles];
 
   static delegatesFocus = true;
 
@@ -18,26 +21,23 @@ export default class NavItem extends Ripple {
     `,
   ];
 
-  static styles = [...super.styles, styles];
+  static compose() {
+    const fragment = super.compose();
+    fragment.getElementById('indicator').append(
+      fragment.getElementById('overlay'),
+      fragment.getElementById('ripple'),
+    );
+    fragment.getElementById('anchor').append(
+      fragment.getElementById('slot'),
+    );
+    return fragment;
+  }
 
   static get observedAttributes() {
     return [
       ...super.observedAttributes,
       'aria-label',
     ];
-  }
-
-  constructor() {
-    super();
-    this.anchorElement = /** @type {HTMLAnchorElement} */ (this.shadowRoot.getElementById('anchor'));
-    this.indicatorElement = this.shadowRoot.getElementById('indicator');
-    this.iconElement = this.shadowRoot.getElementById('icon');
-    this.badgeElement = this.shadowRoot.getElementById('badge');
-    this.indicatorElement.append(
-      this.overlayElement,
-      this.rippleElement,
-    );
-    this.anchorElement.append(this.slotElement);
   }
 
   /**
@@ -50,34 +50,34 @@ export default class NavItem extends Ripple {
     switch (name) {
       case 'aria-label':
         if (newValue == null) {
-          this.anchorElement.removeAttribute('aria-label');
+          this.refs.anchor.removeAttribute('aria-label');
         } else {
-          this.anchorElement.setAttribute('aria-label', newValue);
+          this.refs.anchor.setAttribute('aria-label', newValue);
         }
         break;
       case 'icon':
       case 'src':
         if (newValue == null) {
-          this.iconElement.removeAttribute(name);
+          this.refs.icon.removeAttribute(name);
         } else {
-          this.iconElement.setAttribute(name, newValue);
+          this.refs.icon.setAttribute(name, newValue);
         }
         break;
       case 'href':
-        this.anchorElement.href = newValue ?? '#';
+        this.refs.anchor.href = newValue ?? '#';
         break;
       case 'active':
         if (newValue == null) {
-          this.anchorElement.removeAttribute('aria-current');
+          this.refs.anchor.removeAttribute('aria-current');
         } else {
-          this.anchorElement.setAttribute('aria-current', 'page');
+          this.refs.anchor.setAttribute('aria-current', 'page');
         }
         break;
       case 'badge':
         if (newValue == null) {
-          this.badgeElement.removeAttribute('badge');
+          this.refs.badge.removeAttribute('badge');
         } else {
-          this.badgeElement.setAttribute('badge', newValue);
+          this.refs.badge.setAttribute('badge', newValue);
         }
         break;
       default:
@@ -87,7 +87,7 @@ export default class NavItem extends Ripple {
   /** @type {HTMLElement['focus']} */
   focus(options = undefined) {
     super.focus(options);
-    this.anchorElement?.focus(options);
+    this.refs.anchor?.focus(options);
   }
 
   connectedCallback() {
@@ -105,3 +105,13 @@ NavItem.prototype.icon = NavItem.idlString('icon');
 NavItem.prototype.src = NavItem.idlString('src');
 NavItem.prototype.href = NavItem.idlString('href');
 NavItem.prototype.badge = NavItem.idlString('badge');
+
+NavItem.prototype.refs = {
+  ...Ripple.prototype.refs,
+  ...NavItem.addRefs({
+    anchor: 'a',
+    icon: Icon,
+    indicator: 'div',
+    badge: 'span',
+  }),
+};
