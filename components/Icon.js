@@ -21,18 +21,11 @@ export default class Icon extends Container {
     ...super.fragments,
     /* html */`
       <div id=icon aria-hidden="true">
+        {icon}
         <img id=img aria-hidden="true"/>
       </div>
     `,
   ];
-
-  static compose() {
-    const fragment = super.compose();
-    const icon = fragment.getElementById('icon');
-    icon.className = Icon.fontClassName;
-    icon.append(fragment.getElementById('slot'));
-    return fragment;
-  }
 
   static imageElementAttributes = [
     'alt', 'src', 'srcset',
@@ -51,13 +44,20 @@ export default class Icon extends Container {
    */
   constructor(width, height) {
     super();
-    // this.refs.slot.remove();
-    if (width !== null) {
+    if (width != null) {
       this.width = width;
     }
-    if (height !== null) {
+    if (height != null) {
       this.height = height;
     }
+  }
+
+  compose() {
+    const fragment = super.compose();
+    const icon = fragment.getElementById('icon');
+    icon.className = Icon.fontClassName;
+    icon.append(fragment.getElementById('slot'));
+    return fragment;
   }
 
   /**
@@ -68,14 +68,6 @@ export default class Icon extends Container {
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
     if (oldValue == null && newValue == null) return;
-    switch (name) {
-      case 'icon':
-        if (newValue) {
-          this.refs.icon.textContent = newValue;
-        }
-        break;
-      default:
-    }
     if (Icon.imageElementAttributes.includes(name)) {
       if (newValue == null) {
         this.refs.img.removeAttribute(name);

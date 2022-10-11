@@ -15,14 +15,21 @@ export default class NavItem extends Ripple {
     ...super.fragments,
     /* html */ `
       <div id=indicator aria-hidden=true></div>
-      <mdw-icon id=icon aria-hidden=true></mdw-icon>
+      <mdw-icon id=icon aria-hidden=true icon={icon} src={src}></mdw-icon>
       <a id=anchor href="#" aria-labelledby=slot aria-describedby=badge></a>
-      <span aria-hidden=true id=badge type-style=label-small color=error></mdw-container>
     `,
   ];
 
-  static compose() {
+  static get observedAttributes() {
+    return [
+      ...super.observedAttributes,
+      'aria-label',
+    ];
+  }
+
+  compose() {
     const fragment = super.compose();
+    const { html } = this;
     fragment.getElementById('indicator').append(
       fragment.getElementById('overlay'),
       fragment.getElementById('ripple'),
@@ -30,14 +37,10 @@ export default class NavItem extends Ripple {
     fragment.getElementById('anchor').append(
       fragment.getElementById('slot'),
     );
+    fragment.append(html`
+      <span aria-hidden=true id=badge type-style=label-small color=error badge={badge} aria-current=${({ active }) => (active ? 'page' : null)}></mdw-container>
+    `);
     return fragment;
-  }
-
-  static get observedAttributes() {
-    return [
-      ...super.observedAttributes,
-      'aria-label',
-    ];
   }
 
   /**
@@ -55,30 +58,8 @@ export default class NavItem extends Ripple {
           this.refs.anchor.setAttribute('aria-label', newValue);
         }
         break;
-      case 'icon':
-      case 'src':
-        if (newValue == null) {
-          this.refs.icon.removeAttribute(name);
-        } else {
-          this.refs.icon.setAttribute(name, newValue);
-        }
-        break;
       case 'href':
         this.refs.anchor.href = newValue ?? '#';
-        break;
-      case 'active':
-        if (newValue == null) {
-          this.refs.anchor.removeAttribute('aria-current');
-        } else {
-          this.refs.anchor.setAttribute('aria-current', 'page');
-        }
-        break;
-      case 'badge':
-        if (newValue == null) {
-          this.refs.badge.removeAttribute('badge');
-        } else {
-          this.refs.badge.setAttribute('badge', newValue);
-        }
         break;
       default:
     }
@@ -111,7 +92,5 @@ NavItem.prototype.refs = {
   ...NavItem.addRefs({
     anchor: 'a',
     icon: Icon,
-    indicator: 'div',
-    badge: 'span',
   }),
 };

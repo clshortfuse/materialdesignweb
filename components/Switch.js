@@ -12,14 +12,14 @@ export default class Switch extends Input {
   /* html */ `
     <div id=track aria-hidden=true>
       <div id=thumb>
-        <mdw-icon class=icon id=icon></mdw-icon>
-        <mdw-icon class=icon id=checked-icon></mdw-icon>
-        <mdw-icon class=icon id=unchecked-icon></mdw-icon>
+        <mdw-icon class=icon id=icon src={src}>{icon}</mdw-icon>
+        <mdw-icon class=icon id=checked-icon src={checkedIconSrc}>{checkedIcon}</mdw-icon>
+        <mdw-icon class=icon id=unchecked-icon src={uncheckedIconSrc}>{uncheckedIcon}</mdw-icon>
       </div>
     </div>
   `];
 
-  static compose() {
+  compose() {
     const fragment = super.compose();
     const input = fragment.getElementById('input');
     input.setAttribute('type', 'checkbox');
@@ -33,49 +33,6 @@ export default class Switch extends Input {
     );
     return fragment;
   }
-
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
-  attributeChangedCallback(name, oldValue, newValue) {
-    super.attributeChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
-    let textContentElement;
-    let srcElement;
-    switch (name) {
-      case 'icon':
-        textContentElement = this.refs.icon;
-        break;
-      case 'checked-icon':
-        textContentElement = this.refs.checkedIcon;
-        break;
-      case 'unchecked-icon':
-        textContentElement = this.refs.uncheckedIcon;
-        break;
-      case 'src':
-        srcElement = this.refs.icon;
-        break;
-      case 'checked-src':
-        srcElement = this.refs.checkedIcon;
-        break;
-      case 'unchecked-src':
-        srcElement = this.refs.uncheckedIcon;
-        break;
-      default:
-    }
-
-    if (textContentElement) {
-      textContentElement.textContent = newValue;
-    } else if (srcElement) {
-      if (newValue == null) {
-        srcElement.removeAttribute('src');
-      } else {
-        srcElement.setAttribute('src', newValue);
-      }
-    }
-  }
 }
 
 Switch.prototype.icon = Switch.idlString('icon');
@@ -85,16 +42,3 @@ Switch.prototype.uncheckedIcon = Switch.idlString('unchecked-icon');
 Switch.prototype.src = Switch.idlString('src');
 Switch.prototype.checkedSrc = Switch.idlString('checked-src');
 Switch.prototype.uncheckedSrc = Switch.idlString('unchecked-src');
-
-Switch.prototype.refs = {
-  ...Input.prototype.refs,
-  ...Switch.addRefs({
-    track: 'div',
-    thumb: 'div',
-    icon: Icon,
-    checkedIcon: Icon,
-    uncheckedIcon: Icon,
-    overlay: null,
-    ripple: null,
-  }),
-};

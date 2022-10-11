@@ -30,7 +30,7 @@ export default class Menu extends CustomElement {
         <div id=scrim aria-hidden=true></div>
         <form id=form method=dialog role=none>
           <mdw-container id=container role=none>
-            <slot id=slot></slot>
+            <slot id=slot onslotchange="{~constructor.onSlotChange}"></slot>
           </mdw-container>
         </form>
       </dialog>
@@ -47,7 +47,7 @@ export default class Menu extends CustomElement {
    * @this {HTMLSlotElement}
    * @return {void}
    */
-  static onSlotChanged(event) {
+  static onSlotChange(event) {
     /** @type {{host:Menu}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
     RovingTabIndex.setupTabIndexes(host.childMenuItems, true);
@@ -175,11 +175,6 @@ export default class Menu extends CustomElement {
   }
 
   returnValue = '';
-
-  constructor() {
-    super();
-    this.refs.slot.addEventListener('slotchange', Menu.onSlotChanged, { passive: true });
-  }
 
   /**
    * @param {string} name
@@ -728,8 +723,5 @@ Menu.prototype.position = Menu.idlString('position');
 
 Menu.prototype.refs = Menu.addRefs({
   dialog: 'dialog',
-  scrim: 'div',
-  form: 'form',
   container: Container,
-  slot: 'slot',
 });

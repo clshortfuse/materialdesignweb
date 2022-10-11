@@ -6,14 +6,6 @@ export default class IconButton extends Button {
 
   static styles = [...super.styles, styles];
 
-  static compose() {
-    const fragment = super.compose();
-    fragment.getElementById('icon').append(
-      fragment.getElementById('slot'),
-    );
-    return fragment;
-  }
-
   /**
    * @param {Event} event
    * @this {HTMLInputElement} this
@@ -50,7 +42,17 @@ export default class IconButton extends Button {
 
   constructor() {
     super();
-    this.icon = '';
+    if (!this.icon) {
+      this.icon = this.textContent ?? '';
+    }
+  }
+
+  compose() {
+    const fragment = super.compose();
+    fragment.getElementById('icon').append(
+      fragment.getElementById('slot'),
+    );
+    return fragment;
   }
 
   /**

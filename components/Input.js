@@ -1,4 +1,3 @@
-import Container from './Container.js';
 import styles from './Input.css' assert { type: 'css' };
 import Ripple from './Ripple.js';
 
@@ -18,20 +17,13 @@ export default class Input extends Ripple {
     ...super.fragments,
     /* html */`
       <label id=label>
-        <input id=input aria-labelledby="slot">
+        <input id=input aria-labelledby="slot"
+          onclick="{constructor.onInputClick}"
+          onchange="{constructor.onInputChange}"
+          onkeydown="{constructor.onInputKeydown}">
       </label>
     `,
   ];
-
-  static compose() {
-    const fragment = super.compose();
-    fragment.getElementById('label').append(
-      fragment.getElementById('overlay'),
-      fragment.getElementById('ripple'),
-      fragment.getElementById('slot'),
-    );
-    return fragment;
-  }
 
   static get observedAttributes() {
     return [
@@ -121,6 +113,16 @@ export default class Input extends Ripple {
       // Expose this element as focusable
       this.setAttribute('tabindex', '0');
     }
+  }
+
+  compose() {
+    const fragment = super.compose();
+    fragment.getElementById('label').append(
+      fragment.getElementById('overlay'),
+      fragment.getElementById('ripple'),
+      fragment.getElementById('slot'),
+    );
+    return fragment;
   }
 
   /**
@@ -312,9 +314,6 @@ export default class Input extends Ripple {
     this.removeEventListener('keydown', Ripple.onRippleKeyDown);
     const { input } = this.refs;
     input.addEventListener('keydown', Ripple.onRippleKeyDown, { passive: true });
-    input.addEventListener('click', Input.onInputClick);
-    input.addEventListener('change', Input.onInputChange);
-    input.addEventListener('keydown', Input.onInputKeydown);
     if (!this.elementInternals.form) {
       this.formAssociatedCallback(null);
     }

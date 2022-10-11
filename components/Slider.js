@@ -6,27 +6,6 @@ export default class Slider extends Input {
 
   static styles = [...super.styles, styles];
 
-  static fragments = [
-    ...super.fragments,
-    /* html */ `
-      <div id=track aria-hidden=true>
-        <div id=ticks></div>
-        <div id="track-active"></div>
-        <div id="track-label-anchor">
-          <div id="track-label" hidden text></div>
-        </div>
-      </div>
-    `,
-  ];
-
-  static compose() {
-    const fragment = super.compose();
-    fragment.getElementById('input').setAttribute('type', 'range');
-    fragment.getElementById('ripple').remove();
-    fragment.getElementById('overlay').remove();
-    return fragment;
-  }
-
   /**
    * @param {Event} event
    * @this {HTMLInputElement} this
@@ -140,7 +119,27 @@ export default class Slider extends Input {
     host.hideLabel();
   }
 
-  #labelShown = false;
+  compose() {
+    const fragment = super.compose();
+    const { html } = this;
+    fragment.getElementById('input').setAttribute('type', 'range');
+    fragment.getElementById('ripple').remove();
+    fragment.getElementById('overlay').remove();
+    fragment.append(
+      html`
+        <div id=track aria-hidden=true>
+          <div id=ticks></div>
+          <div id="track-active"></div>
+          <div id="track-label-anchor">
+            <div id="track-label" 
+            hidden=${({ _labelShown }) => (_labelShown ? null : '')} 
+            text=${({ _labelText }) => _labelText ?? ''}></div>
+          </div>
+        </div>
+      `,
+    );
+    return fragment;
+  }
 
   /**
    * @param {string} name
@@ -176,19 +175,15 @@ export default class Slider extends Input {
   }
 
   showLabel() {
-    if (this.#labelShown) return;
-    this.#labelShown = true;
-    this.refs.trackLabel.hidden = false;
+    this._labelShown = true;
   }
 
   hideLabel() {
-    if (!this.#labelShown) return;
-    this.#labelShown = false;
-    this.refs.trackLabel.hidden = true;
+    this._labelShown = false;
   }
 
-  updateLabel(text = this.refs.input.value ?? '') {
-    this.refs.trackLabel.setAttribute('text', text);
+  updateLabel(text = this.refs.input.value) {
+    this._labelText = text;
   }
 
   getValueAsFraction() {
@@ -247,12 +242,13 @@ Slider.prototype.min = Slider.idlString('min');
 Slider.prototype.max = Slider.idlString('max');
 Slider.prototype.step = Slider.idlString('step');
 Slider.prototype.ticks = Slider.idlInteger('ticks');
+Slider.prototype._labelShown = Slider.idlBoolean('_labelShown');
+Slider.prototype._labelText = Slider.idlString('_labelText');
 
 Slider.prototype.refs = {
   ...Input.prototype.refs,
   ...Slider.addRefs({
     track: 'div',
-    trackLabel: 'div',
     overlay: null,
     ripple: null,
   }),

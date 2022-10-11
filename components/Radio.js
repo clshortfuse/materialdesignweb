@@ -6,12 +6,13 @@ export default class Radio extends Input {
 
   static styles = [...super.styles, styles];
 
-  static fragments = [...super.fragments,
-  /* html */ `
-    <div id=icon></div>
-  `];
+  static fragments = [
+    ...super.fragments,
+    /* html */ `
+      <div id=icon></div>
+    `];
 
-  static compose() {
+  compose() {
     const fragment = super.compose();
     fragment.getElementById('icon').append(
       fragment.getElementById('ripple'),
@@ -20,19 +21,7 @@ export default class Radio extends Input {
     fragment.getElementById('label').append(
       fragment.getElementById('icon'),
     );
+    fragment.getElementById('input').setAttribute('type', 'radio');
     return fragment;
   }
-
-  constructor() {
-    super();
-    if (!this.hasAttribute('type')) {
-      this.type = 'radio';
-      this.attributeChangedCallback('type', null, 'radio');
-    }
-  }
 }
-
-Radio.prototype.refs = {
-  ...Input.prototype.refs,
-  ...Radio.addRefNames('icon'),
-};

@@ -1,9 +1,9 @@
 import CustomElement from '../components/CustomElement.js';
 
 export default class DemoSection extends CustomElement {
-  static delegatesFocus = true;
-
   static elementName = 'demo-button';
+
+  static delegatesFocus = true;
 
   static fragments = [
     ...super.fragments,

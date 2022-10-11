@@ -21,7 +21,7 @@ export default class Overlay extends Container {
   static onOverlayMouseDown(event) {
     if (this.#lastInteraction) return;
     this.#lastInteraction = 'mouse';
-    this.refs.overlay.removeAttribute('touched');
+    this.refs.overlay?.removeAttribute('touched');
   }
 
   /**
@@ -31,7 +31,7 @@ export default class Overlay extends Container {
    */
   static onOverlayTouchStart(event) {
     this.#lastInteraction = 'touch';
-    this.refs.overlay.setAttribute('touched', '');
+    this.refs.overlay?.setAttribute('touched', '');
   }
 
   /**
@@ -41,7 +41,7 @@ export default class Overlay extends Container {
    */
   static onOverlayKeyDown(event) {
     this.#lastInteraction = 'key';
-    this.refs.overlay.removeAttribute('touched');
+    this.refs.overlay?.removeAttribute('touched');
   }
 
   /**
@@ -72,7 +72,7 @@ export default class Overlay extends Container {
     if (!this.#lastInteraction && Overlay.lastInteractionWasTouch) {
       // Replicate touch behavior
       this.#lastInteraction = 'touch';
-      this.refs.overlay.setAttribute('touched', '');
+      this.refs.overlay?.setAttribute('touched', '');
     }
   }
 

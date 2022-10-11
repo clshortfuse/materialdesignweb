@@ -15,7 +15,13 @@ export default class SegmentedButton extends Button {
     `,
   ];
 
-  static compose() {
+  constructor() {
+    super();
+    this.outlined = true;
+    this.setAttribute('mdw-overlay-disabled', 'focus');
+  }
+
+  compose() {
     const fragment = super.compose();
     fragment.getElementById('label').append(
       fragment.getElementById('check-icon'),
@@ -24,12 +30,6 @@ export default class SegmentedButton extends Button {
     input.setAttribute('type', 'radio');
     input.setAttribute('role', 'option');
     return fragment;
-  }
-
-  constructor() {
-    super();
-    this.outlined = true;
-    this.setAttribute('mdw-overlay-disabled', 'focus');
   }
 
   /**

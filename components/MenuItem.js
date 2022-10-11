@@ -14,25 +14,13 @@ export default class MenuItem extends Input {
   static fragments = [
     ...super.fragments,
     /* html */`
-      <mdw-icon id=icon aria-hidden="true"></mdw-icon>
+      <mdw-icon id=icon aria-hidden="true" icon={icon} src={src}></mdw-icon>
       <span id=trailing>
-        <slot id=trailing-slot name=trailing role=note></slot>
-        <mdw-icon id=trailing-icon aria-hidden="true"></mdw-icon>
+        <slot id=trailing-slot name=trailing role=note>{trailing}</slot>
+        <mdw-icon id=trailing-icon aria-hidden="true" icon={trailingIcon} src={trailingSrc}></mdw-icon>
       </span>
     `,
   ];
-
-  static compose() {
-    const fragment = super.compose();
-    fragment.getElementById('label').append(
-      fragment.getElementById('icon'),
-      fragment.getElementById('trailing'),
-    );
-    const input = fragment.getElementById('input');
-    input.setAttribute('type', 'button');
-    input.setAttribute('role', 'menuitem');
-    return fragment;
-  }
 
   /**
    * @param {MouseEvent} event
@@ -55,64 +43,16 @@ export default class MenuItem extends Input {
     }
   }
 
-  /**
-   * @param {MouseEvent|PointerEvent} event
-   * @this {HTMLInputElement}
-   * @return {void}
-   */
-  static onInputClick(event) {
-    /** @type {{host:MenuItem}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    if (host.hasAttribute('disabled')) {
-      event.preventDefault();
-      return;
-    }
-
-    if (this.type !== 'radio') return;
-    if (this.required) return;
-    if (!this.hasAttribute('checked')) return;
-
-    this.checked = false;
-    host.toggleAttribute('checked', false);
-  }
-
-  /**
-   * @param {KeyboardEvent} event
-   * @this {HTMLInputElement}
-   * @return {void}
-   */
-  static onInputKeydown(event) {
-    if (event.key !== 'Spacebar' && event.key !== ' ') return;
-    /** @type {{host:MenuItem}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    if (host.hasAttribute('disabled')) {
-      event.preventDefault();
-      return;
-    }
-
-    if (this.type !== 'radio') return;
-    if (this.required) return;
-    if (!this.hasAttribute('checked')) return;
-    event.preventDefault();
-
-    this.checked = false;
-    host.toggleAttribute('checked', false);
-    event.preventDefault();
-  }
-
-  /**
-   * @param {Event} event
-   * @this {HTMLInputElement} this
-   * @return {void}
-   */
-  static onInputChange(event) {
-    /** @type {{host:MenuItem}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    if (host.hasAttribute('disabled')) {
-      event.preventDefault();
-      return;
-    }
-    host.toggleAttribute('checked', this.checked);
+  compose() {
+    const fragment = super.compose();
+    fragment.getElementById('label').append(
+      fragment.getElementById('icon'),
+      fragment.getElementById('trailing'),
+    );
+    const input = fragment.getElementById('input');
+    input.setAttribute('type', 'button');
+    input.setAttribute('role', 'menuitem');
+    return fragment;
   }
 
   /**
@@ -142,31 +82,6 @@ export default class MenuItem extends Input {
           default:
         }
         break;
-      case 'icon':
-      case 'src':
-        if (newValue == null) {
-          this.refs.icon.removeAttribute(name);
-        } else {
-          this.refs.icon.setAttribute(name, newValue);
-        }
-        break;
-      case 'trailing':
-        this.refs.trailingSlot.textContent = newValue;
-        break;
-      case 'trailing-icon':
-        if (newValue == null) {
-          this.refs.trailingIcon.removeAttribute('icon');
-        } else {
-          this.refs.trailingIcon.setAttribute('icon', newValue);
-        }
-        break;
-      case 'trailing-src':
-        if (newValue == null) {
-          this.refs.trailingIcon.removeAttribute('src');
-        } else {
-          this.refs.trailingIcon.setAttribute('src', newValue);
-        }
-        break;
       default:
     }
   }
@@ -187,10 +102,6 @@ export default class MenuItem extends Input {
   connectedCallback() {
     super.connectedCallback();
     RovingTabIndex.attach(this);
-    const { input } = this.refs;
-    input.addEventListener('click', MenuItem.onInputClick);
-    input.addEventListener('change', MenuItem.onInputChange);
-    input.addEventListener('keydown', MenuItem.onInputKeydown);
     this.addEventListener('mousemove', MenuItem.onMouseMove);
   }
 
@@ -207,13 +118,3 @@ MenuItem.prototype.src = MenuItem.idlString('src');
 MenuItem.prototype.trailing = MenuItem.idlString('trailing');
 MenuItem.prototype.trailingIcon = MenuItem.idlString('trailing-icon');
 MenuItem.prototype.trailingSrc = MenuItem.idlString('trailing-src');
-
-MenuItem.prototype.refs = {
-  ...Input.prototype.refs,
-  ...MenuItem.addRefs({
-    icon: Icon,
-    trailing: 'span',
-    trailingSlot: 'slot',
-    trailingIcon: Icon,
-  }),
-};

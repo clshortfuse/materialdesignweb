@@ -14,7 +14,7 @@ export default class NavRail extends Nav {
     `,
   ];
 
-  static compose() {
+  compose() {
     const fragment = super.compose();
     fragment.getElementById('group').append(
       fragment.getElementById('slot'),
@@ -24,11 +24,3 @@ export default class NavRail extends Nav {
 }
 
 NavRail.prototype.align = /** @type {'start'|'center'|'end'} */ (NavRail.idlString('align'));
-
-NavRail.prototype.refs = {
-  ...Nav.prototype.refs,
-  ...NavRail.addRefs({
-    start: 'slot',
-    group: 'div',
-  }),
-};

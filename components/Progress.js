@@ -31,7 +31,7 @@ export default class Progress extends Container {
     `,
   ];
 
-  static compose() {
+  compose() {
     const fragment = super.compose();
     fragment.getElementById('slot').remove();
     return fragment;
@@ -86,6 +86,5 @@ Progress.prototype.refs = {
   ...Progress.addRefs({
     progress: 'progress',
     circle: 'div',
-    slot: undefined,
   }),
 };

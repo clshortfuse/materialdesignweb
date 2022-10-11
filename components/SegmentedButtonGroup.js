@@ -19,7 +19,7 @@ export default class SegmentedButtonGroup extends Container {
    * @this {HTMLSlotElement}
    * @return {void}
    */
-  static onSlotChanged(event) {
+  static onSlotChange(event) {
     /** @type {{host:SegmentedButtonGroup}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
     RovingTabIndex.setupTabIndexes(host.childSegmentedButtons, true);
@@ -83,7 +83,7 @@ export default class SegmentedButtonGroup extends Container {
   constructor() {
     super();
     this.setAttribute('aria-orientation', 'horizontal');
-    this.refs.slot.addEventListener('slotchange', SegmentedButtonGroup.onSlotChanged, { passive: true });
+    this.refs.slot.addEventListener('slotchange', SegmentedButtonGroup.onSlotChange, { passive: true });
   }
 
   /** @return {NodeListOf<SegmentedButton>} */

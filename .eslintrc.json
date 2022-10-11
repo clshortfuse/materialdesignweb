@@ -41,6 +41,7 @@
     "require-await": 0,
     "no-return-await": 0,
     "eslint-comments/no-use": 0,
+    "no-underscore-dangle": 0,
     "filenames/match-regex": 0,
     "prettier/prettier": 0,
     "i18n-text/no-en": 0,
@@ -102,6 +103,8 @@
 					"[properties]",
 					"[conventional-private-properties]",
 					"constructor",
+          "compose",
+          "render",
           "attributeChangedCallback",
 					"[methods]",
 					"[conventional-private-methods]",
@@ -111,11 +114,11 @@
         "groups": {
           "webcomponents": [
             { "name": "elementName", "static": true },
+            { "name": "styles", "static": true },
             { "name": "ariaRole", "static": true },
             { "name": "delegatesFocus", "static": true },
             { "name": "formAssociated", "static": true },
             { "name": "fragments", "static": true },
-            { "name": "styles", "static": true },
             { "name": "observedAttributes", "static": true }
           ],
           "lifecycle": [

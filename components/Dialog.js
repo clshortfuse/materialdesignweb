@@ -24,23 +24,7 @@ export default class Dialog extends CustomElement {
 
   static fragments = [
     ...super.fragments,
-    /* html */`
-      <dialog id=dialog role=dialog aria-hidden=true aria-labelledby=headline aria-describedby=description>
-        <div id=scrim aria-hidden=true></div>
-        <form id=form method=dialog role=none>
-          <mdw-container id=container>
-            <mdw-icon id=icon aria-hidden=true></mdw-icon>
-            <mdw-text id=headline role="header"></mdw-text>
-            <div id=description></div>
-            <slot id=slot></slot>
-            <div id=actions>
-              <mdw-button id=cancel type=submit value="cancel">Cancel</mdw-button>
-              <mdw-button id=confirm type=submit value="confirm" autofocus>Confirm</mdw-button>
-            </div>
-          </mdw-container>
-        </form>
-      </dialog>
-    `,
+
   ];
 
   static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
@@ -64,7 +48,7 @@ export default class Dialog extends CustomElement {
    * @this {HTMLSlotElement}
    * @return {void}
    */
-  static onSlotChanged(event) {
+  static onSlotChange(event) {
     const nodes = this.assignedNodes();
     const hasContent = nodes.some((node) => (node.nodeType === node.ELEMENT_NODE)
       || (node.nodeType === node.TEXT_NODE && node.nodeValue.trim().length));
@@ -164,47 +148,50 @@ export default class Dialog extends CustomElement {
 
   constructor() {
     super();
-    this.refs.slot.addEventListener('slotchange', Dialog.onSlotChanged);
+    if (!this.confirm) {
+      this.confirm = 'Confirm';
+    }
+    if (!this.cancel) {
+      this.cancel = 'Cancel';
+    }
+  }
+
+  compose() {
+    const fragment = super.compose();
+    const { html } = this;
+    const newFragment = html`
+      <dialog id=dialog
+      ${Dialog.supportsHTMLDialogElement ? 'aria-model=true' : ''}
+      role=dialog aria-hidden=${({ open }) => (open ? 'false' : 'true')} 
+      aria-labelledby=headline aria-describedby=description
+      oncancel="{constructor.onNativeCancelEvent}"
+      onclose="{~constructor.onNativeCloseEvent}">
+        <div id=scrim onclick="{~constructor.onScrimClick}" aria-hidden=true></div>
+        <form id=form method=dialog role=none>
+          <mdw-container id=container onkeydown="{constructor.onContainerKeyDown}">
+            <mdw-icon id=icon aria-hidden=true>{icon}</mdw-icon>
+            <mdw-text id=headline role="header">{headline}</mdw-text>
+            <div id=description>{description}</div>
+            <slot id=slot onslotchange="{constructor.onSlotChange}"></slot>
+            <div id=actions>
+              <mdw-button id=cancel type=submit value="cancel" autofocus=${({ default: d }) => (!d || d === 'confirm')}>{cancel}</mdw-button>
+              <mdw-button id=confirm type=submit value="confirm" autofocus=${({ default: d }) => (d === 'cancel')}>{confirm}</mdw-button>
+            </div>
+          </mdw-container>
+        </form>
+      </dialog>
+    `;
+    fragment.append(newFragment);
+    return fragment;
   }
 
   /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
+   *
+   * @param {Date} data
+   * @return {void}
    */
-  attributeChangedCallback(name, oldValue, newValue) {
-    super.attributeChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
-    switch (name) {
-      case 'icon':
-        this.refs.icon.textContent = newValue ?? '';
-        break;
-      case 'headline':
-        this.refs.headline.textContent = newValue ?? '';
-        break;
-      case 'description':
-        this.refs.description.textContent = newValue ?? '';
-        break;
-      case 'cancel':
-        this.refs.cancel.textContent = newValue ?? '';
-        break;
-      case 'confirm':
-        this.refs.confirm.textContent = newValue ?? '';
-        break;
-      case 'default':
-        this.refs.confirm.toggleAttribute('autofocus', newValue == null || newValue === 'confirm');
-        this.refs.cancel.toggleAttribute('autofocus', newValue === 'cancel');
-        break;
-      case 'open':
-        // HTMLDialogElement Spec states attribute manipulation does not invoke events
-        if (newValue == null) {
-          this.refs.dialog.setAttribute('aria-hidden', 'true');
-        } else {
-          this.refs.dialog.setAttribute('aria-hidden', 'false');
-        }
-        break;
-      default:
-    }
+  render(data) {
+    super.render(data);
   }
 
   /**
@@ -333,22 +320,6 @@ export default class Dialog extends CustomElement {
     }
     return true;
   }
-
-  connectedCallback() {
-    const { dialog, scrim, container } = this.refs;
-    dialog.addEventListener('cancel', Dialog.onNativeCancelEvent);
-    dialog.addEventListener('close', Dialog.onNativeCloseEvent, { passive: true });
-    scrim.addEventListener('click', Dialog.onScrimClick, { passive: true });
-    container.addEventListener('keydown', Dialog.onContainerKeyDown);
-
-    // this.setAttribute('role', 'none');
-    if (Dialog.supportsHTMLDialogElement) {
-      dialog.setAttribute('aria-modal', 'true');
-      if (!dialog.hasAttribute('aria-hidden')) {
-        this.setAttribute('aria-hidden', 'true');
-      }
-    }
-  }
 }
 
 Dialog.prototype.open = Dialog.idlBoolean('open');
@@ -361,14 +332,5 @@ Dialog.prototype.confirm = Dialog.idlString('confirm');
 
 Dialog.prototype.refs = Dialog.addRefs({
   dialog: 'dialog',
-  scrim: 'div',
-  form: 'form',
   container: Container,
-  icon: Icon,
-  headline: Text,
-  description: 'div',
-  slot: 'slot',
-  actions: 'div',
-  cancel: Button,
-  confirm: Button,
 });
