@@ -16,11 +16,6 @@
   }
 }
 
-#determinate {
-  --previous: 0;
-  --value: 0;
-}
-
 #circle {
   --startA: min(0.5, var(--previous));
   --endA: min(0.5, var(--value));

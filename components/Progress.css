@@ -34,8 +34,12 @@
   display: none;
 }
 
-progress {
+#determinate {
+  --previous: 0;
   --value: 0;
+}
+
+progress {
   position: absolute;
   inset: 0;
 
@@ -72,4 +76,3 @@ progress[value] {
   opacity:1;
   transform: scaleX(var(--value, 0));
 }
-
