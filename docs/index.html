@@ -3,26 +3,13 @@
 
 <head>
   <title>Material Design Web</title>
-  <style>
-    :root {
-      --mdw-color__background: 255 255 255;
-      --mdw-color__on-background: 0 0 0;
-    }
-
-  </style>
-  <style media="(prefers-color-scheme:dark)">
-    :root {
-      --mdw-color__background: 0 0 0;
-      --mdw-color__on-background: 255 255 255;
-    }
-
-  </style>
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <link rel=preconnect href="https://fonts.googleapis.com" />
   <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
   <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
   <link rel=stylesheet
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&text=search" />
+  <link rel="stylesheet" href="theme.css">
 
   <style>
     html {
@@ -1155,10 +1142,10 @@
         <demo-section>
           <h2 slot=heading>Continuous</h2>
           <demo-flex wrap style="margin:24px; gap:48px" column>
-            <mdw-slider value="8"></mdw-slider>
+            <mdw-slider></mdw-slider>
             <mdw-slider color="secondary" value="2" min="-10" max="10"></mdw-slider>
             <mdw-slider color="tertiary" min="-10" value="3"></mdw-slider>
-            <mdw-slider class=mdw-custom color="green" min="10" max="90"></mdw-slider>
+            <mdw-slider class=mdw-custom color="green" min="1" max="5"></mdw-slider>
             <mdw-slider class=mdw-custom color="custom" min=0 step=5 value=100></mdw-slider>
             <mdw-slider color=secondary value="12" disabled></mdw-slider>
           </demo-flex>
@@ -1270,7 +1257,7 @@
     </mdw-menu>
   </div>
   <script type=module src="./demo.js"></script>
-  <script type=module src="../index.min.js?color=&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto">
+  <script type=module src="../index.min.js">
   </script>
 
 </body>
