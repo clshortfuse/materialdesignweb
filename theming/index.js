@@ -1,6 +1,14 @@
 import { COLOR_KEYWORDS } from '../utils/color_keywords.js';
 import { getScheme } from '../utils/hct/helper.js';
 
+/**
+ * @typedef {Object} ThemeOptions
+ * @prop {string} [color]
+ * @prop {Iterable<[string,string?]>} [custom] Map()
+ * @prop {'auto'|'light'|'dark'} [lightness='auto']
+ * @return {string}
+ */
+
 /** @return {string} */
 function cornerCutClipPath() {
   const TOP = 0;
@@ -207,7 +215,7 @@ const TYPOGRAPHY_DEFAULT = {
  * @param {typeof TYPOGRAPHY_DEFAULT} config
  * @return {string}
  */
-export function getTypographyStyle(config = TYPOGRAPHY_DEFAULT) {
+export function generateTypographyCSS(config = TYPOGRAPHY_DEFAULT) {
   return /* css */`
     :root {
       --mdw-typeface__brand: ${config.face.brand};
@@ -312,7 +320,7 @@ export function getTypographyStyle(config = TYPOGRAPHY_DEFAULT) {
  * @param {typeof SHAPE_ROUNDED_DEFAULT} config
  * @return {string}
  */
-export function getShapeStyle(config = SHAPE_ROUNDED_DEFAULT) {
+export function generateShapeCSS(config = SHAPE_ROUNDED_DEFAULT) {
   return /* css */`
     :root {
       --mdw-shape__extra-small: ${config.size.extraSmall};
@@ -337,10 +345,22 @@ function addStyle(content) {
 }
 
 /**
- * @param {Object} options
- * @param {string} [options.color]
- * @param {Iterable<[string,string?]>} [options.custom] Map()
- * @param {'auto'|'light'|'dark'} [options.lightness='auto']
+ * @param {ThemeOptions} options
+ * @return {string}
+ */
+export function generateColorCSS({ color = '#6750A4', custom = [], lightness = 'light' }) {
+  /** @type {[string,string][]} */
+  const parsedColors = [...custom]
+    .map(([name, hex]) => [name, COLOR_KEYWORDS.get(hex) || hex || COLOR_KEYWORDS.get(name)]);
+  const scheme = getScheme(color, parsedColors);
+  if (lightness === 'dark') {
+    return scheme.dark;
+  }
+  return scheme.light;
+}
+
+/**
+ * @param {ThemeOptions} options
  * @return {void}
  */
 export function setupTheme({ color = '#6750A4', custom = [], lightness = 'auto' }) {
@@ -356,7 +376,46 @@ export function setupTheme({ color = '#6750A4', custom = [], lightness = 'auto' 
       addStyle(scheme.dark).media = '(prefers-color-scheme:dark)';
     }
   }
+  addStyle(generateShapeCSS());
+  addStyle(generateTypographyCSS());
+}
 
-  addStyle(getShapeStyle());
-  addStyle(getTypographyStyle());
+/**
+ * @param {URLSearchParams} searchParams
+ * @return {ThemeOptions}
+ */
+export function themeOptionsFromSearchParams(searchParams) {
+  const color = searchParams.get('color') || '#6750A4';
+
+  /** @type {[string,string?][]} */
+  const custom = searchParams.getAll('custom')
+    .flatMap((c) => c.split(','))
+    .map((c) => c.split(':'));
+
+  const lightness = searchParams.get('lightness') ?? 'auto';
+  return { color, custom, lightness };
+}
+
+/**
+ * @param {ThemeOptions} options
+ * @return {string}
+ */
+export function generateThemeCSS({ color = '#6750A4', custom = [], lightness = 'auto' }) {
+  const shapeCss = generateShapeCSS();
+  const typographyCss = generateTypographyCSS();
+  let colorCss;
+  if (lightness === 'light' || lightness === 'dark') {
+    colorCss = generateColorCSS({ color, custom, lightness });
+  } else {
+    colorCss = `
+    ${generateColorCSS({ color, custom, lightness: 'light' })}
+    @media (prefers-color-scheme:dark) {
+      ${generateColorCSS({ color, custom, lightness: 'dark' })}
+    }`;
+  }
+  return [
+    shapeCss,
+    typographyCss,
+    colorCss,
+  ].join('\n');
 }

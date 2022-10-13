@@ -10,6 +10,7 @@
     "dist": "webpack",
     "start:docs": "webpack serve --config webpack.config.js --env target=docs --host 0.0.0.0",
     "stats:docs": "webpack --config webpack.config.js --env target=docs --profile --json > stats.json",
+    "prebuild": "node bin/generate-css.js --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/theme.css",
     "build": "node esbuild.js --minify --metafile",
     "watch": "node esbuild.js --watch --metafile",
     "pretest": "eslint --ignore-path .gitignore",
