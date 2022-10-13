@@ -29,14 +29,14 @@ label {
   margin: 0;
 }
 
-:host([size="small"]) {
+:host([fab-size="small"]) {
   --mdw-shape__size: 12px;
 
   min-block-size: 40px;
   min-inline-size: 40px;
 }
 
-:host([size="large"]) {
+:host([fab-size="large"]) {
   --mdw-shape__size: 28px;
   --mdw-button__icon__size: 36px;
 

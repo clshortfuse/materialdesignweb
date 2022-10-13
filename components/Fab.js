@@ -22,4 +22,5 @@ export default class Fab extends ExtendedFab {
   }
 }
 
-Fab.prototype.size = /** @type {'small'|'large'} */ (Fab.idlString('size'));
+/** @type {'small'|'large'} */
+Fab.prototype.fabSize = Fab.idl('fabSize');
