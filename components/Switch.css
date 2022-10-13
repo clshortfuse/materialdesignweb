@@ -47,7 +47,7 @@ label {
   --mdw-dir: -1;
 }
 
-:host([checked]) #track {
+:host([selected]) #track {
   --scale: calc(24/24);
   --x: calc(48px - 14px);
 
@@ -91,7 +91,7 @@ label {
   border-radius: 50%;
 }
 
-:host(:is([icon], [src], [unchecked-icon], [unchecked-src])) #thumb::before {
+:host(:is([icon], [src], [unselected-icon], [unselected-src])) #thumb::before {
   transform: scale(max(1, var(--scale)));
 }
 
@@ -110,31 +110,31 @@ label {
   display: none;
 }
 
-#checked-icon {
+#selected-icon {
   color: rgb(var(--mdw-bg));
 }
 
-:host([checked]) #thumb::before {
+:host([selected]) #thumb::before {
   background-color: rgb(var(--mdw-ink));
   color: rgb(var(--mdw-bg));
 }
 
-#icon, #unchecked-icon {
+#icon, #unselected-icon {
   --mdw-icon__font-variation-settings: 'FILL' 0;
   opacity: 1;
 
   color: rgb(var(--mdw-color__surface-variant));
 }
 
-:host([checked]) #unchecked-icon {
+:host([selected]) #unselected-icon {
   opacity: 0;
 }
 
-:host([checked]) #checked-icon {
+:host([selected]) #selected-icon {
   opacity: 1;
 }
 
-:host([checked]) #icon {
+:host([selected]) #icon {
   --mdw-icon__font-variation-settings: 'FILL' 1;
   color: rgb(var(--mdw-bg));
 }

@@ -11,15 +11,6 @@ export default class NavItem extends Ripple {
 
   static delegatesFocus = true;
 
-  static fragments = [
-    ...super.fragments,
-    /* html */ `
-      <div id=indicator aria-hidden=true></div>
-      <mdw-icon id=icon aria-hidden=true icon={icon} src={src}></mdw-icon>
-      <a id=anchor href="#" aria-labelledby=slot aria-describedby=badge></a>
-    `,
-  ];
-
   static get observedAttributes() {
     return [
       ...super.observedAttributes,
@@ -30,16 +21,23 @@ export default class NavItem extends Ripple {
   compose() {
     const fragment = super.compose();
     const { html } = this;
+
+    fragment.append(html`
+      <div id=indicator aria-hidden=true></div>
+      <mdw-icon id=icon aria-hidden=true src={src}>{icon}</mdw-icon>
+      <a id=anchor aria-labelledby=slot aria-describedby=badge href=${({ href }) => href ?? '#'} aria-label=${({ ariaLabel }) => ariaLabel}></a>
+      <span aria-hidden=true id=badge type-style=label-small color=error badge={badge} aria-current=${({ active }) => (active ? 'page' : null)}></mdw-container>
+    `);
+
+    fragment.getElementById('anchor').append(
+      fragment.getElementById('slot'),
+    );
+
     fragment.getElementById('indicator').append(
       fragment.getElementById('overlay'),
       fragment.getElementById('ripple'),
     );
-    fragment.getElementById('anchor').append(
-      fragment.getElementById('slot'),
-    );
-    fragment.append(html`
-      <span aria-hidden=true id=badge type-style=label-small color=error badge={badge} aria-current=${({ active }) => (active ? 'page' : null)}></mdw-container>
-    `);
+
     return fragment;
   }
 
@@ -52,14 +50,7 @@ export default class NavItem extends Ripple {
     super.attributeChangedCallback(name, oldValue, newValue);
     switch (name) {
       case 'aria-label':
-        if (newValue == null) {
-          this.refs.anchor.removeAttribute('aria-label');
-        } else {
-          this.refs.anchor.setAttribute('aria-label', newValue);
-        }
-        break;
-      case 'href':
-        this.refs.anchor.href = newValue ?? '#';
+        this.idlChangedCallback('ariaLabel', oldValue, newValue);
         break;
       default:
     }
@@ -82,10 +73,10 @@ export default class NavItem extends Ripple {
 }
 
 NavItem.prototype.active = NavItem.idlBoolean('active');
-NavItem.prototype.icon = NavItem.idlString('icon');
-NavItem.prototype.src = NavItem.idlString('src');
-NavItem.prototype.href = NavItem.idlString('href');
-NavItem.prototype.badge = NavItem.idlString('badge');
+NavItem.prototype.icon = NavItem.idl('icon');
+NavItem.prototype.src = NavItem.idl('src');
+NavItem.prototype.href = NavItem.idl('href');
+NavItem.prototype.badge = NavItem.idl('badge');
 
 NavItem.prototype.refs = {
   ...Ripple.prototype.refs,

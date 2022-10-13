@@ -193,5 +193,8 @@ export default class Ripple extends Overlay {
 
 Ripple.prototype.refs = {
   ...Overlay.prototype.refs,
-  ...Ripple.addRefNames('ripple', 'rippleInner'),
+  ...Ripple.addRefs({
+    ripple: { id: 'ripple' },
+    rippleInner: { id: 'ripple-inner' },
+  }),
 };

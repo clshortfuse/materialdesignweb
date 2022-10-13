@@ -23,20 +23,6 @@ export default class Menu extends CustomElement {
 
   static styles = [...super.styles, styles];
 
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <dialog id=dialog role=menu aria-hidden=true>
-        <div id=scrim aria-hidden=true></div>
-        <form id=form method=dialog role=none>
-          <mdw-container id=container role=none>
-            <slot id=slot onslotchange="{~constructor.onSlotChange}"></slot>
-          </mdw-container>
-        </form>
-      </dialog>
-    `,
-  ];
-
   static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
 
   /** @type {MenuStack[]} */
@@ -176,25 +162,20 @@ export default class Menu extends CustomElement {
 
   returnValue = '';
 
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
-  attributeChangedCallback(name, oldValue, newValue) {
-    super.attributeChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
-    switch (name) {
-      case 'open':
-        // HTMLDialogElement Spec states attribute manipulation does not invoke events
-        if (newValue == null) {
-          this.refs.dialog.setAttribute('aria-hidden', 'true');
-        } else {
-          this.refs.dialog.setAttribute('aria-hidden', 'false');
-        }
-        break;
-      default:
-    }
+  compose() {
+    const fragment = super.compose();
+    const { html } = this;
+    fragment.append(html`
+      <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>
+        <div id=scrim aria-hidden=true></div>
+        <form id=form method=dialog role=none>
+          <mdw-container id=container role=none>
+            <slot id=slot onslotchange={~constructor.onSlotChange}></slot>
+          </mdw-container>
+        </form>
+      </dialog>
+    `);
+    return fragment;
   }
 
   /**
@@ -718,8 +699,8 @@ export default class Menu extends CustomElement {
 }
 
 Menu.prototype.open = Menu.idlBoolean('open');
-Menu.prototype.direction = Menu.idlString('direction');
-Menu.prototype.position = Menu.idlString('position');
+Menu.prototype.direction = Menu.idl('direction');
+Menu.prototype.position = Menu.idl('position');
 
 Menu.prototype.refs = Menu.addRefs({
   dialog: 'dialog',

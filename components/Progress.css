@@ -30,6 +30,10 @@
   transition: opacity 1s 1s;
 }
 
+:host([value]) #indeterminate {
+  display: none;
+}
+
 progress {
   --value: 0;
   position: absolute;
@@ -68,3 +72,4 @@ progress[value] {
   opacity:1;
   transform: scaleX(var(--value, 0));
 }
+

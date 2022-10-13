@@ -69,6 +69,6 @@
   opacity: 0;
 }
 
-:host([checked]) #icon {
+:host([selected]) #icon {
   opacity: 1;
 }

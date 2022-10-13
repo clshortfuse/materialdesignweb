@@ -7,19 +7,6 @@ export default class IconButton extends Button {
   static styles = [...super.styles, styles];
 
   /**
-   * @param {Event} event
-   * @this {HTMLInputElement} this
-   * @return {void}
-   */
-  static onInputChange(event) {
-    if (this.type !== 'checkbox') return;
-    if (this.disabled) return;
-    /** @type {{host:IconButton}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    host.toggleAttribute('checked', this.checked);
-  }
-
-  /**
    * @param {KeyboardEvent} event
    * @this {HTMLInputElement}
    * @return {void}
@@ -42,9 +29,7 @@ export default class IconButton extends Button {
 
   constructor() {
     super();
-    if (!this.icon) {
-      this.icon = this.textContent ?? '';
-    }
+    this.toggleAttribute('icon', true);
   }
 
   compose() {
@@ -71,7 +56,7 @@ export default class IconButton extends Button {
           this.refs.input.setAttribute('aria-pressed', this.checked ? 'true' : 'false');
         }
         break;
-      case 'checked':
+      case 'selected':
         if (this.type !== 'checkbox') {
           this.refs.input.removeAttribute('aria-pressed');
         }
@@ -89,3 +74,5 @@ export default class IconButton extends Button {
     input.addEventListener('keydown', IconButton.onInputKeyDown);
   }
 }
+
+IconButton.idlMap.delete('icon');

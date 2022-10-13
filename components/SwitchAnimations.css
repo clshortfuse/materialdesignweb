@@ -32,14 +32,14 @@
 }
 
 #thumb:before, .icon {
-  /* (checked => unchecked): stall color+scale */
+  /* (selected => unselected): stall color+scale */
   transition-delay: var(--mdw-switch__transition-delay__scale), var(--mdw-switch__transition-delay__color), var(--mdw-switch__transition-delay__color);
   transition-duration: inherit;
   transition-property: transform, background-color, color;
   transition-timing-function: inherit;
 }
 
-:host(:is([icon], [src], [unchecked-icon], [unchecked-src])) #track {
+:host(:is([icon], [src], [unselected-icon], [unselected-src])) #track {
   --mdw-switch__transition-delay__translate: 0s;
 }
 
@@ -47,8 +47,8 @@
   transition-property: transform, opacity, color;
 }
 
-/* unchecked => checked  */
-:host([checked]) #track {
+/* unselected => selected  */
+:host([selected]) #track {
   /* --mdw-switch__transition-delay__color: 0s; */
   --mdw-switch__transition-delay__scale: 0s;
   /* --mdw-switch__transition-delay__translate: 0s; */
@@ -56,22 +56,22 @@
   --mdw-switch__transition-timing: var(--mdw-switch__transition-timing__expand);
 }
 
-/* active => checked */
-:host([checked]:active) #track {
+/* active => selected */
+:host([selected]:active) #track {
   /* --mdw-switch__transition-delay__color: 0s; */
   /* --mdw-switch__transition-delay__scale: 0s; */
   --mdw-switch__transition-delay__translate: 0s;
 }
 
-/* checked => unchecked */
-:host(:not([checked])) #track {
+/* selected => unselected */
+:host(:not([selected])) #track {
   /* --mdw-switch__transition-delay__color: 0s; */
   /* --mdw-switch__transition-delay__scale: 0s; */
   --mdw-switch__transition-delay__translate: 0s;
 }
 
-/* unchecked => active */
-:host(:active:not([checked])) #track {
+/* unselected => active */
+:host(:active:not([selected])) #track {
   /* --mdw-switch__transition-delay__color: 0s; */
   --mdw-switch__transition-delay__scale: 0s;
   /* --mdw-switch__transition-delay__translate: 0s; */

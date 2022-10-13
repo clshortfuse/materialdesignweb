@@ -44,19 +44,19 @@
   --mdw-button__outline__rgb: var(--mdw-color__outline);
 }
 
-:host([disabled]:is([checked])) {
+:host([disabled]:is([selected])) {
   background-color: rgba(var(--mdw-color__on-surface), 0.12);
   /* color: rgba(var(--mdw-color__on-surface), 0.38); */
 }
 
-:host([checked]) {
+:host([selected]) {
   --mdw-ink: inherit;
   --mdw-bg: inherit;
 
   background-color: rgb(var(--mdw-bg));
 }
 
-:host([type="checkbox"]:not([checked])) {
+:host([type="checkbox"]:not([selected])) {
   --mdw-button__icon__size: 0;
   --mdw-button__icon__opacity: 0;
 }
@@ -78,7 +78,7 @@
   margin-inline-end: var(--mdw-button__icon__margin-inline-end);
 }
 
-:host([checked]) #check-icon {
+:host([selected]) #check-icon {
   --mdw-icon__size: 18px;
   --mdw-icon__opacity: 1;
 }
@@ -98,11 +98,11 @@
   margin: 0;
 }
 
-:host([icon][checked]) #icon {
+:host([icon][selected]) #icon {
   --mdw-icon__opacity: 0;
 }
 
-:host([icon][checked]) #check-icon {
+:host([icon][selected]) #check-icon {
   --mdw-icon__size: 18px;
   --mdw-icon__opacity: 1;
 }

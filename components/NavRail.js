@@ -23,4 +23,4 @@ export default class NavRail extends Nav {
   }
 }
 
-NavRail.prototype.align = /** @type {'start'|'center'|'end'} */ (NavRail.idlString('align'));
+NavRail.prototype.align = /** @type {'start'|'center'|'end'} */ (NavRail.idl('align'));

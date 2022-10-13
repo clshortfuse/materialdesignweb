@@ -8,9 +8,8 @@ export default class Fab extends ExtendedFab {
 
   constructor() {
     super();
-    if (this.icon == null) {
-      this.icon = this.textContent ?? '';
-    }
+    // Used for styling
+    this.toggleAttribute('icon', true);
   }
 
   compose() {
@@ -24,3 +23,5 @@ export default class Fab extends ExtendedFab {
 
 /** @type {'small'|'large'} */
 Fab.prototype.fabSize = Fab.idl('fabSize');
+
+Fab.idlMap.delete('icon');

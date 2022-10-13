@@ -144,7 +144,7 @@ input::-moz-range-thumb:not(:hover) {
 }
 
 #track {
-  --value: 0;
+  --value: 0.5;
   position: absolute;
   inset: 0;
 

@@ -6,20 +6,44 @@ export default class Slider extends Input {
 
   static styles = [...super.styles, styles];
 
+  static rootTemplate = /* html */ `
+    <mdw-slider>
+  `;
+
   /**
-   * @param {Event} event
-   * @this {HTMLInputElement} this
-   * @return {void}
+   * @param {string} value
+   * @param {number} onNaN
+   * @return {number}
    */
-  static onInputChange(event) {
-    if (this.disabled) return;
-    /** @type {{host:Slider}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    if (host.hasAttribute('disabled')) {
-      event.preventDefault();
-    }
-    host.updateTrack();
-    host.updateLabel();
+  static parseFloat(value, onNaN = 0) {
+    const number = Number.parseFloat(value);
+    if (Number.isNaN(number)) return onNaN;
+    return number;
+  }
+
+  /**
+   * @param {string} value
+   * @param {string} min
+   * @param {string} max
+   * @return {?number}
+   */
+  static valueAsFraction(value, min, max) {
+    const nValue = Slider.parseFloat(value);
+    const nMin = Slider.parseFloat(min);
+    const nMax = Slider.parseFloat(max, 100);
+
+    return (nValue - nMin) / (nMax - nMin);
+  }
+
+  /**
+   * @param {Partial<Slider>} data
+   * @return {?string}
+   */
+  static updateTrackStyle({ ticks, _previewValue, min, max }) {
+    return [
+      ticks ? `--ticks:${ticks}` : null,
+      `--value:${Slider.valueAsFraction(_previewValue, min, max)}`,
+    ].filter(Boolean).join(';') || null;
   }
 
   /**
@@ -70,32 +94,28 @@ export default class Slider extends Input {
       position = 0;
     }
 
-    let isHoveringThumb = false;
     if (isActive) {
-      isHoveringThumb = true;
+      host._isHoveringThumb = true;
       const { min, max, step } = this;
-      const nMin = (min === '') ? 0 : Number.parseFloat(min);
-      const nMax = (max === '') ? 100 : Number.parseFloat(max);
-      const nStep = (step === '') ? 1 : Number.parseFloat(step);
+
+      const nMin = Slider.parseFloat(min);
+      const nMax = Slider.parseFloat(max, 100);
+      const nStep = Slider.parseFloat(step, 1);
 
       const currentValue = position * (nMax - nMin) + nMin;
       const roundedValue = Math.round(currentValue / nStep) * nStep;
-      const roundedPosition = (roundedValue - nMin) / (nMax - nMin);
-      host.updateTrack(roundedPosition);
-      host.updateLabel(roundedValue.toString(10));
-    } else if (!isTouch) {
-      const valueAsFraction = host.getValueAsFraction();
-      const thumbOffset = valueAsFraction * clientWidth;
-      const thumbMin = thumbOffset - 20;
-      const thumbMax = thumbOffset + 20;
-      isHoveringThumb = offsetX >= thumbMin && offsetX <= thumbMax;
+
+      host._previewValue = roundedValue.toString(10);
+      return;
     }
 
-    if (isHoveringThumb || document.activeElement === host) {
-      host.showLabel();
-    } else {
-      host.hideLabel();
-    }
+    if (isTouch) return;
+
+    const valueAsFraction = Slider.valueAsFraction(host.value, host.min, host.max);
+    const thumbOffset = valueAsFraction * clientWidth;
+    const thumbMin = thumbOffset - 20;
+    const thumbMax = thumbOffset + 20;
+    host._isHoveringThumb = offsetX >= thumbMin && offsetX <= thumbMax;
   }
 
   /**
@@ -103,20 +123,19 @@ export default class Slider extends Input {
    */
   static onLeaveEvent() {
     if (document.activeElement === this) return;
-    this.hideLabel();
+    this._isHoveringThumb = false;
   }
 
   static onInputFocus() {
     /** @type {{host:Slider}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
-    host.updateTrack();
-    host.showLabel();
+    host._isFocused = true;
   }
 
   static onInputBlur() {
     /** @type {{host:Slider}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
-    host.hideLabel();
+    host._isFocused = false;
   }
 
   compose() {
@@ -127,13 +146,13 @@ export default class Slider extends Input {
     fragment.getElementById('overlay').remove();
     fragment.append(
       html`
-        <div id=track aria-hidden=true>
+        <div id=track aria-hidden=true style=${Slider.updateTrackStyle}>
           <div id=ticks></div>
           <div id="track-active"></div>
           <div id="track-label-anchor">
             <div id="track-label" 
-            hidden=${({ _labelShown }) => (_labelShown ? null : '')} 
-            text=${({ _labelText }) => _labelText ?? ''}></div>
+            hidden=${({ _isFocused, _isHoveringThumb }) => (!_isHoveringThumb && !_isFocused)} 
+            text=${({ _previewValue }) => _previewValue ?? ''}></div>
           </div>
         </div>
       `,
@@ -141,115 +160,49 @@ export default class Slider extends Input {
     return fragment;
   }
 
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
-  attributeChangedCallback(name, oldValue, newValue) {
-    super.attributeChangedCallback(name, oldValue, newValue);
+  /** @type {Input['idlChangedCallback']} */
+  idlChangedCallback(name, oldValue, newValue) {
+    super.idlChangedCallback(name, oldValue, newValue);
     if (oldValue == null && newValue == null) return;
     switch (name) {
-      case 'ticks': {
-        if (newValue == null) {
-          this.refs.track.style.removeProperty('--ticks');
-        } else {
-          this.refs.track.style.setProperty('--ticks', newValue);
-        }
-        break;
-      }
-      case 'step':
-      case 'min':
-      case 'max':
       case 'value':
-        if (newValue == null) {
-          this.refs.input.removeAttribute(name);
-        } else {
-          this.refs.input.setAttribute(name, newValue);
-        }
-        this.updateTrack();
-        this.updateLabel();
+        /** @type {string} */
+        this._previewValue = newValue;
         break;
       default:
     }
   }
 
-  showLabel() {
-    this._labelShown = true;
-  }
-
-  hideLabel() {
-    this._labelShown = false;
-  }
-
-  updateLabel(text = this.refs.input.value) {
-    this._labelText = text;
-  }
-
-  getValueAsFraction() {
-    const { min, max, valueAsNumber } = this.refs.input;
-    const nMin = (min === '') ? 0 : Number.parseFloat(min);
-    const nMax = (max === '') ? 100 : Number.parseFloat(max);
-
-    return (valueAsNumber - nMin) / (nMax - nMin);
-  }
-
-  /**
-   * @param {number} [value]
-   * @return {void}
-   */
-  updateTrack(value = this.getValueAsFraction()) {
-    this.refs.track.style.setProperty('--value', value.toPrecision(12));
-  }
-
-  /** @param {string} v */
-  set value(v) {
-    super.value = v;
-    this.updateTrack();
-    this.updateLabel();
-  }
-
   get valueAsNumber() {
-    return this.refs.input.valueAsNumber;
+    if (this.refs.input) {
+      return this.refs.input.valueAsNumber;
+    }
+    return Slider.parseFloat(this.value, 0);
   }
 
   set valueAsNumber(v) {
     this.refs.input.valueAsNumber = v;
-    this.updateTrack();
-    this.updateLabel();
+    // this.#valueAsNumber = this.refs.input.valueAsNumber;
+    this.value = this.refs.input.value;
   }
 
   connectedCallback() {
     super.connectedCallback();
     const { input } = this.refs;
-    input.addEventListener('change', Slider.onInputChange);
-    input.addEventListener('mousedown', Slider.onInputMouseOrTouch, { passive: true });
-    input.addEventListener('mousemove', Slider.onInputMouseOrTouch, { passive: true });
-    input.addEventListener('touchmove', Slider.onInputMouseOrTouch, { passive: true });
-    input.addEventListener('touchstart', Slider.onInputMouseOrTouch, { passive: true });
-    input.addEventListener('touchend', Slider.onInputMouseOrTouch, { passive: true });
-    input.addEventListener('touchleave', Slider.onInputMouseOrTouch, { passive: true });
-    input.addEventListener('touchcancel', Slider.onInputMouseOrTouch, { passive: true });
-    input.addEventListener('mouseout', Slider.onInputMouseOrTouch, { passive: true });
+
+    for (const type of ['mousedown', 'mousemove', 'mouseout',
+      'touchmove', 'touchstart', 'touchend', 'touchleave', 'touchcancel']) {
+      input.addEventListener(type, Slider.onInputMouseOrTouch, { passive: true });
+    }
     input.addEventListener('focus', Slider.onInputFocus, { passive: true });
     input.addEventListener('blur', Slider.onInputBlur, { passive: true });
+
     this.addEventListener('mouseout', Slider.onLeaveEvent);
-    this.updateTrack();
   }
 }
 
-Slider.prototype.min = Slider.idlString('min');
-Slider.prototype.max = Slider.idlString('max');
-Slider.prototype.step = Slider.idlString('step');
-Slider.prototype.ticks = Slider.idlInteger('ticks');
-Slider.prototype._labelShown = Slider.idlBoolean('_labelShown');
-Slider.prototype._labelText = Slider.idlString('_labelText');
-
-Slider.prototype.refs = {
-  ...Input.prototype.refs,
-  ...Slider.addRefs({
-    track: 'div',
-    overlay: null,
-    ripple: null,
-  }),
-};
+Slider.prototype.ticks = Slider.idl('ticks');
+Slider.prototype.showLabel = Slider.idlBoolean('showLabel', { reflect: false });
+Slider.prototype._previewValue = Slider.idl('_previewValue');
+Slider.prototype._isFocused = Slider.idlBoolean('_isFocused');
+Slider.prototype._isHoveringThumb = Slider.idlBoolean('_isHoveringThumb');

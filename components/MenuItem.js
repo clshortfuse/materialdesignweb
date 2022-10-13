@@ -14,10 +14,10 @@ export default class MenuItem extends Input {
   static fragments = [
     ...super.fragments,
     /* html */`
-      <mdw-icon id=icon aria-hidden="true" icon={icon} src={src}></mdw-icon>
+      <mdw-icon id=icon aria-hidden="true" src={src}>{icon}</mdw-icon>
       <span id=trailing>
         <slot id=trailing-slot name=trailing role=note>{trailing}</slot>
-        <mdw-icon id=trailing-icon aria-hidden="true" icon={trailingIcon} src={trailingSrc}></mdw-icon>
+        <mdw-icon id=trailing-icon aria-hidden="true" src={trailingSrc}>{trailingIcon}</mdw-icon>
       </span>
     `,
   ];
@@ -113,8 +113,8 @@ export default class MenuItem extends Input {
   }
 }
 
-MenuItem.prototype.icon = MenuItem.idlString('icon');
-MenuItem.prototype.src = MenuItem.idlString('src');
-MenuItem.prototype.trailing = MenuItem.idlString('trailing');
-MenuItem.prototype.trailingIcon = MenuItem.idlString('trailing-icon');
-MenuItem.prototype.trailingSrc = MenuItem.idlString('trailing-src');
+MenuItem.prototype.icon = MenuItem.idl('icon');
+MenuItem.prototype.src = MenuItem.idl('src');
+MenuItem.prototype.trailing = MenuItem.idl('trailing');
+MenuItem.prototype.trailingIcon = MenuItem.idl('trailingIcon');
+MenuItem.prototype.trailingSrc = MenuItem.idl('trailingSrc');

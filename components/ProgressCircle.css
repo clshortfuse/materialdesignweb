@@ -16,9 +16,12 @@
   }
 }
 
-#circle {
+#determinate {
   --previous: 0;
   --value: 0;
+}
+
+#circle {
   --startA: min(0.5, var(--previous));
   --endA: min(0.5, var(--value));
   --travelA: max(
@@ -120,13 +123,9 @@
   position: absolute;
   inset: 0;
 
-  display: none;
+  display: block;
 
   animation: rotate-cw calc(var(--mdw-progress__circle__duration) / 4) linear infinite;
-}
-
-:host([circle]:not([value])) #indeterminate-circle {
-  display: block;
 }
 
 .arc {

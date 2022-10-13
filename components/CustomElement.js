@@ -2,17 +2,30 @@
 
 /**
  * @template {IDLOptionType} T
+  @typedef {T extends 'boolean' ? boolean : T extends 'string' ? string : T extends 'float'|'integer' ? number : unknown } ParsedIDLType<T> */
+
+/**
+ * @template {IDLOptionType} T1
+ * @template {any} T2
  * @typedef IDLOptions
- * @prop {T} type
- * @prop {string} [propName]
+ * @prop {T1} [type]
+ * @prop {string} [attr]
  * @prop {boolean} [reflect=true]
  * @prop {boolean} [enumerable]
- * @prop {any} [default]
+ * @prop {boolean} [nullable]
+ * @prop {T2} [empty] Empty value when not nullable
+ * @prop {(value: T2) => T2} [onNullish] Function used when null passed
+ * @prop {T2} [default]
  */
 
 /**
  * @typedef RefOptions
  * @prop {string} id
+ */
+
+/**
+ * @template T
+ * @typedef {[T,Attr['nodeValue'],Attr['nodeValue']]} IDLTuple<T>
  */
 
 /**
@@ -28,6 +41,7 @@
  * @prop {string} id
  * @prop {string} node
  * @prop {(data:T) => any} fn
+ * @prop {Set<keyof T & string>} props
  */
 
 /**
@@ -78,7 +92,11 @@ export default class CustomElement extends HTMLElement {
 
   /** @type {Iterable<string>} */
   static get observedAttributes() {
-    return this.idlMap.keys();
+    const attrs = new Set();
+    for (const [, { attr }] of this.idlMap.entries()) {
+      if (attr) attrs.add(attr);
+    }
+    return attrs;
   }
 
   static interpolatesTemplate = true;
@@ -98,7 +116,7 @@ export default class CustomElement extends HTMLElement {
 
   /**
    * @private
-   * @type {WeakMap<typeof CustomElement, Map<string, IDLOptions<?>>>}
+   * @type {WeakMap<typeof CustomElement, Map<string, IDLOptions<?,?>>>}
    */
   static idlCache = new WeakMap();
 
@@ -128,152 +146,7 @@ export default class CustomElement extends HTMLElement {
 
   static #generatedUIDs = new Set();
 
-  /**
-   * @template {true|false} T
-   * @param {T extends true ? Attr : Text } node
-   * @param {T} [isAttr]
-   * @return {void}
-   */
-  static interpolateNode(node, isAttr) {
-    const { nodeName, nodeValue, nodeType } = node;
-    if (!nodeValue) return;
-    const trimmed = nodeValue.trim();
-    if (!trimmed) return;
-    if (trimmed[0] !== '{') return;
-    const { length } = trimmed;
-    if (trimmed[length - 1] !== '}') return;
-
-    let parsedValue = trimmed.slice(1, length - 1);
-
-    /** @type {Element} */
-    let element;
-    let isEvent;
-    let eventFlags;
-
-    if (isAttr === false || (nodeType === Node.TEXT_NODE)) {
-      // eslint-disable-next-line unicorn/consistent-destructuring
-      element = node.parentElement;
-      node.nodeValue = '';
-    } else {
-      // @ts-ignore Skip cast
-      // eslint-disable-next-line unicorn/consistent-destructuring
-      element = node.ownerElement;
-      element.removeAttribute(nodeName);
-      if (nodeName.startsWith('on')) {
-        const [, flags, prop] = parsedValue.match(/^([!1~]+)?(.*)$/);
-        eventFlags = flags;
-        parsedValue = prop;
-        isEvent = true;
-      }
-    }
-
-    let { id } = element;
-    if (!id) {
-      id = CustomElement.#generateUID();
-      element.id = id;
-    }
-    const { refMap } = this;
-    if (!refMap.has(id)) {
-      this.ref(id, { id });
-    }
-    let fn;
-    /** @type {Iterable<string>} */
-    let props;
-    if (parsedValue.startsWith('#')) {
-      const { inlineFunctionMap } = this;
-      const value = inlineFunctionMap.get(parsedValue);
-      if (!value) {
-        console.warn(`Invalid interpolation value: ${parsedValue}`);
-        return;
-      }
-      fn = value.fn;
-      props = value.props;
-      if (!props && !isEvent) {
-        // Idempotent expressions allows us to spy on values
-        const poked = new Set();
-        fn.call(null, new Proxy({}, {
-          get(target, p) {
-            poked.add(p);
-            return null;
-          },
-          has(target, p) {
-            poked.add(p);
-            return true;
-          },
-        }));
-        value.props = poked;
-        props = poked;
-      }
-    } else {
-      props = [parsedValue];
-    }
-    if (isEvent) {
-      const options = {
-        once: eventFlags?.includes('1'),
-        passive: eventFlags?.includes('~'),
-        capture: eventFlags?.includes('!'),
-      };
-
-      const type = nodeName.slice(2);
-      element.removeAttribute(nodeName);
-
-      const { eventMap } = this;
-      let set = eventMap.get(id);
-      if (!set) {
-        set = new Set();
-        eventMap.set(id, set);
-      }
-      if (fn) {
-        set.add({ type, options, listener: fn });
-      } else {
-        set.add({ type, options, prop: parsedValue });
-      }
-      return;
-    }
-
-    const { bindMap } = this;
-
-    const entry = { id, node: nodeName, fn };
-    for (const prop of props) {
-      let set = bindMap.get(prop);
-      if (!set) {
-        set = new Set();
-        bindMap.set(prop, set);
-      }
-      set.add(entry);
-    }
-
-    // console.log(this.name, 'binding', isText ? '#text' : `[${nodeName}]`, 'of', id, 'with', parsedValue);
-  }
-
-  /**
-   * @template {DocumentFragment|Element} [T=DocumentFragment]
-   * @param {T} content
-   * @return {T}
-   */
-  static interpolate(content) {
-    for (const node of content.childNodes) {
-      const { nodeType } = node;
-      switch (nodeType) {
-        case Node.ELEMENT_NODE:
-          break;
-        case Node.TEXT_NODE:
-          // @ts-ignore Skip cast
-          this.interpolateNode(node, false);
-          continue;
-        default:
-          continue;
-      }
-
-      const element = /** @type {Element} */ (node);
-      // eslint-disable-next-line unicorn/no-useless-spread
-      for (const attribute of [...element.attributes]) {
-        this.interpolateNode(attribute, true);
-      }
-      this.interpolate(element);
-    }
-    return content;
-  }
+  static rootTemplate = '';
 
   /** @return {string} */
   static #generateUID() {
@@ -297,6 +170,24 @@ export default class CustomElement extends HTMLElement {
     return propNameWords.reduce((prev, curr) => {
       if (prev == null) return curr;
       return prev + curr[0].toUpperCase() + curr.slice(1);
+    });
+  }
+
+  /**
+   * Converts property name to attribute name
+   * (Similar to DOMStringMap)
+   * @param {string} name
+   * @return {string}
+   */
+  static propNameToAttrName(name) {
+    const attrNameWords = name.split(/([A-Z])/);
+    if (attrNameWords.length === 1) return name;
+    return attrNameWords.reduce((prev, curr) => {
+      if (prev == null) return curr;
+      if (curr.length === 1 && curr.toUpperCase() === curr) {
+        return `${prev}-${curr.toLowerCase()}`;
+      }
+      return prev + curr;
     });
   }
 
@@ -447,60 +338,95 @@ export default class CustomElement extends HTMLElement {
   }
 
   /**
-   * @template {IDLOptionType} T
+   * @template {IDLOptionType} [T1=any]
+   * @template {any} [T2=ParsedIDLType<T1>]
    * @param {string} name
-   * @param {IDLOptions<T>} options
-   * @return {T extends 'boolean' ? boolean : T extends 'integer'|'float' ? number : T extends 'string' ? string : unknown}
+   * @param {IDLOptions<T1,T2>} [options]
+   * @return {unknown extends T2 ? string : T2}
    */
-  static idl(name, options) {
+  static idl(name, options = {}) {
     const isPrivate = name[0] === '_';
+
+    const { type, attr, empty, onNullish } = options;
+
+    // If not set, private variables never reflect
+    const reflect = options.reflect ?? (attr == null ? !isPrivate : true);
+    const enumerable = options.enumerable ?? !isPrivate;
+
+    /** @type {IDLOptionType} */
+    let parsedType = type;
+    if (parsedType == null) {
+      if (options.default == null) {
+        parsedType = 'string';
+      } else {
+        const parsed = typeof options.default;
+        parsedType = (parsed === 'number')
+          ? (Number.isInteger(options.default) ? 'integer' : 'float')
+          : parsed;
+      }
+    }
+
+    const nullable = options.nullable ?? (parsedType !== 'boolean');
+    /** @type {any} */
+    let parsedEmpty = empty ?? null;
+    if (!nullable && parsedEmpty === null) {
+      // Auto assign empty value
+      switch (parsedType) {
+        case 'boolean':
+          parsedEmpty = false;
+          break;
+        case 'integer':
+        case 'float':
+          parsedEmpty = 0;
+          break;
+        default:
+        case 'string':
+          parsedEmpty = '';
+          break;
+      }
+    }
+
     this.idlMap.set(name, {
-      reflect: options.reflect ?? !isPrivate,
-      enumerable: options.enumerable ?? !isPrivate,
-      default: options.default ?? null,
-      type: options.type ?? 'string',
-      propName: options.propName || CustomElement.attrNameToPropName(name),
+      reflect,
+      enumerable,
+      default: options.default ?? parsedEmpty,
+      type: parsedType,
+      attr: attr ?? (reflect ? CustomElement.propNameToAttrName(name) : null),
+      nullable,
+      empty: nullable ? null : parsedEmpty,
+      onNullish,
     });
     return null;
   }
 
   /**
    * @param {string} name
-   * @param {string} [propName]
+   * @param {IDLOptions<'boolean',boolean>} [options]
    * @return {boolean}
    */
-  static idlBoolean(name, propName) {
-    return this.idl(name, { type: 'boolean', propName });
+  static idlBoolean(name, options) {
+    return this.idl(name, { type: 'boolean', ...options });
   }
 
   /**
-   * @param {string} attrName
-   * @param {string} [propName]
+   * @param {string} name
+   * @param {IDLOptions<'integer',number>} [options]
    * @return {number}
    */
-  static idlInteger(attrName, propName) {
-    return this.idl(attrName, { type: 'integer', propName });
+  static idlInteger(name, options) {
+    return this.idl(name, { type: 'integer', ...options });
   }
 
   /**
-   * @param {string} attrName
-   * @param {string} [propName]
+   * @param {string} name
+   * @param {IDLOptions<'float',number>} [options]
    * @return {number}
    */
-  static idlFloat(attrName, propName) {
-    return this.idl(attrName, { type: 'float', propName });
+  static idlFloat(name, options) {
+    return this.idl(name, { type: 'float', ...options });
   }
 
-  /**
-   * @param {string} attrName
-   * @param {string} [propName]
-   * @return {string}
-   */
-  static idlString(attrName, propName) {
-    return this.idl(attrName, { type: 'string', propName });
-  }
-
-  /** @type {Map<string,[boolean|number|string,string]>} */
+  /** @type {Map<string,IDLTuple<?>>} */
   #idlValues = new Map();
 
   /** @type {Map<string,WeakRef<HTMLElement>>} */
@@ -523,7 +449,7 @@ export default class CustomElement extends HTMLElement {
     const { idlMap } = component;
     const nonReflecting = [...idlMap.entries()]
       .filter(([, options]) => !options.reflect)
-      .map(([key,]) => [key, this[key]]);
+      .map(([key]) => [key, this[key]]);
     if (nonReflecting.length) {
       const dataObject = Object.fromEntries(nonReflecting);
       this.render(dataObject);
@@ -580,31 +506,44 @@ export default class CustomElement extends HTMLElement {
     const modifiedNodes = new WeakMap();
     for (const [key, bindings] of bindMap.entries()) {
       if (!(key in data)) continue;
-      for (const { id, node, fn } of bindings) {
+      for (const { id, node, fn, props } of bindings) {
         const ref = this.refs[id] ?? this.shadowRoot.getElementById(id);
         if (!ref) continue;
         if (modifiedNodes.get(ref)?.has(node)) {
-          console.warn('Node already modified. Skipping', id, node);
+          // console.warn('Node already modified. Skipping', id, node);
           continue;
         }
         let value;
         if (fn) {
           if (!fnResults.has(fn)) {
-            value = fn(data);
+            const args = Object.fromEntries(
+              [...props].map((prop) => [prop, prop in data ? data[prop] : this[prop]]),
+            );
+            value = fn.call(this, args);
             fnResults.set(fn, value);
           } else {
             value = fnResults.get(fn);
           }
         } else {
-          if (component.name === 'Slider') {
-            console.log('hi');
-          }
           value = data[key];
         }
-        if (node === '#text') {
-          ref.textContent = value ?? '';
-        } else if (value == null) {
+        if (node.startsWith('#text')) {
+          const index = node.slice('#text'.length + 1) || 0;
+          let nodesFound = 0;
+          for (const childNode of ref.childNodes) {
+            if (childNode.nodeType !== Node.TEXT_NODE) continue;
+            if (index !== nodesFound++) continue;
+            childNode.nodeValue = value ?? '';
+            break;
+          }
+          if (index > nodesFound) {
+            console.log('node not found, adding?');
+            ref.append(value);
+          }
+        } else if (value === false || value == null) {
           ref.removeAttribute(node);
+        } else if (value === true) {
+          ref.setAttribute(node, '');
         } else {
           ref.setAttribute(node, value);
         }
@@ -629,37 +568,190 @@ export default class CustomElement extends HTMLElement {
 
     const map = CustomElement.idlCache.get(component);
     if (!map) return;
-    const options = map.get(name);
-    if (!options) return;
-    const tuple = this.#getIdlTuple(name);
-    if (tuple[1] === newValue) return;
-    tuple[1] = newValue;
-    switch (options.type) {
-      case 'boolean':
-        tuple[0] = newValue != null;
-        break;
-      case 'string':
-        tuple[0] = newValue;
-        break;
-      case 'integer':
-        if (newValue == null) {
-          tuple[0] = null;
-        } else {
-          const numValue = Number.parseInt(newValue, 10);
-          tuple[0] = Number.isNaN(numValue) ? null : numValue;
-        }
-        break;
-      case 'float':
-        if (newValue == null) {
-          tuple[0] = null;
-        } else {
-          const numValue = Number.parseFloat(newValue);
-          tuple[0] = Number.isNaN(numValue) ? null : numValue;
-        }
-        break;
-      default:
+    // TODO: Index attribute names?
+    for (const [key, options] of map) {
+      if (options.attr !== name) continue;
+      const tuple = this.#getIdlTuple(key);
+      const previousDataValue = tuple[0];
+      if (tuple[1] === newValue) return;
+      tuple[1] = newValue;
+      switch (options.type) {
+        case 'boolean':
+          tuple[0] = newValue != null;
+          break;
+        case 'string':
+          tuple[0] = newValue;
+          break;
+        case 'integer':
+          if (newValue == null) {
+            tuple[0] = null;
+          } else {
+            const numValue = Number.parseInt(newValue, 10);
+            tuple[0] = Number.isNaN(numValue) ? null : numValue;
+          }
+          break;
+        case 'float':
+          if (newValue == null) {
+            tuple[0] = null;
+          } else {
+            const numValue = Number.parseFloat(newValue);
+            tuple[0] = Number.isNaN(numValue) ? null : numValue;
+          }
+          break;
+        default:
+      }
+      this.idlChangedCallback(key, previousDataValue, tuple[0]);
     }
-    this.render({ [name]: tuple[0] });
+  }
+
+  /**
+   * @param {string} name
+   * @param {any} oldValue
+   * @param {any} newValue
+   * @return {void}
+   */
+  idlChangedCallback(name, oldValue, newValue) {
+    this.render({ [name]: newValue });
+  }
+
+  /**
+   * @template {true|false} T
+   * @param {T extends true ? Attr : Text } node
+   * @param {T} [isAttr]
+   * @return {void}
+   */
+  #interpolateNode(node, isAttr) {
+    const { nodeName, nodeValue, nodeType } = node;
+    if (!nodeValue) return;
+    const trimmed = nodeValue.trim();
+    if (!trimmed) return;
+    if (trimmed[0] !== '{') return;
+    const { length } = trimmed;
+    if (trimmed[length - 1] !== '}') return;
+
+    let parsedValue = trimmed.slice(1, length - 1);
+
+    /** @type {Element} */
+    let element;
+    let isEvent;
+    let eventFlags;
+    let textNodeIndex;
+
+    if (isAttr === false || (nodeType === Node.TEXT_NODE)) {
+      // eslint-disable-next-line unicorn/consistent-destructuring
+      element = node.parentElement;
+      node.nodeValue = '';
+      textNodeIndex = 0;
+      let prev = node;
+      while ((prev = prev.previousSibling) != null) {
+        if (prev.nodeType === Node.TEXT_NODE) {
+          textNodeIndex++;
+        }
+      }
+    } else {
+      // @ts-ignore Skip cast
+      // eslint-disable-next-line unicorn/consistent-destructuring
+      element = node.ownerElement;
+      element.removeAttribute(nodeName);
+      if (nodeName.startsWith('on')) {
+        const [, flags, prop] = parsedValue.match(/^([!1~]+)?(.*)$/);
+        eventFlags = flags;
+        parsedValue = prop;
+        isEvent = true;
+      }
+    }
+
+    let { id } = element;
+    if (!id) {
+      id = CustomElement.#generateUID();
+      element.id = id;
+    }
+
+    const component = /** @type {typeof CustomElement} */ (this.constructor);
+    const { refMap } = component;
+    if (!refMap.has(id)) {
+      component.ref(id, { id });
+    }
+    let fn;
+    /** @type {Set<string>} */
+    let props;
+    if (parsedValue.startsWith('#')) {
+      const { inlineFunctionMap } = component;
+      const value = inlineFunctionMap.get(parsedValue);
+      if (!value) {
+        console.warn(`Invalid interpolation value: ${parsedValue}`);
+        return;
+      }
+      fn = value.fn;
+      props = value.props;
+      if (!props && !isEvent) {
+        // Idempotent expressions allows us to spy on values
+        const poked = new Set();
+        const scope = this;
+        // TODO: thisProxy & argProxy
+        const proxy = new Proxy(scope, {
+          get(target, p) {
+            poked.add(p);
+            // console.log('spying on', target, p);
+            const v = Reflect.get(target, p);
+            if (v == null) return null;
+            if (typeof v === 'function') {
+              // console.log('rebinding function', v);
+              return v.bind(target, proxy);
+            }
+            // @ts-ignore Skip cast
+            return value;
+          },
+          has(target, p) {
+            poked.add(p);
+            return Reflect.has(target, p);
+          },
+        });
+        fn.call(proxy, proxy);
+        value.props = poked;
+        props = poked;
+      }
+    } else {
+      props = new Set([parsedValue]);
+    }
+    if (isEvent) {
+      const options = {
+        once: eventFlags?.includes('1'),
+        passive: eventFlags?.includes('~'),
+        capture: eventFlags?.includes('!'),
+      };
+
+      const type = nodeName.slice(2);
+      element.removeAttribute(nodeName);
+
+      const { eventMap } = component;
+      let set = eventMap.get(id);
+      if (!set) {
+        set = new Set();
+        eventMap.set(id, set);
+      }
+      if (fn) {
+        set.add({ type, options, listener: fn });
+      } else {
+        set.add({ type, options, prop: parsedValue });
+      }
+      return;
+    }
+
+    const { bindMap } = component;
+
+    const parsedNodeName = textNodeIndex ? nodeName + textNodeIndex : nodeName;
+    const entry = { id, node: parsedNodeName, fn, props };
+    for (const prop of props) {
+      let set = bindMap.get(prop);
+      if (!set) {
+        set = new Set();
+        bindMap.set(prop, set);
+      }
+      set.add(entry);
+    }
+
+    // console.log(this.name, 'binding', isText ? '#text' : `[${nodeName}]`, 'of', id, 'with', parsedValue);
   }
 
   /**
@@ -722,13 +814,13 @@ export default class CustomElement extends HTMLElement {
     if (!content) {
       content = this.compose();
       if (component.interpolatesTemplate) {
-        content = component.interpolate(content);
-        console.log(JSON.stringify({ [component.name]: component.bindMap }, (key, value) => {
-          if (value instanceof Map || value instanceof Set) {
-            return [...value];
-          }
-          return value;
-        }, ''));
+        content = this.#interpolate(content);
+        // console.log(JSON.stringify({ [component.name]: component.bindMap }, (key, value) => {
+        //   if (value instanceof Map || value instanceof Set) {
+        //     return [...value];
+        //   }
+        //   return value;
+        // }, ''));
       }
       CustomElement.#fragmentCache.set(component, content);
     }
@@ -754,61 +846,84 @@ export default class CustomElement extends HTMLElement {
   #attachIDLs() {
     const component = /** @type {typeof CustomElement} */ (this.constructor);
     for (const [key, options] of component.idlMap) {
-      const propName = options.propName ?? CustomElement.attrNameToPropName(key);
-      const isPrivate = key[0] === '#' || key[0] === '_';
+      // const propName = options.propName ?? CustomElement.attrNameToPropName(key);
 
-      const enumerable = options.enumerable ?? !isPrivate;
-      const reflect = options.reflect ?? enumerable;
+      const { enumerable, reflect, empty, nullable, attr, onNullish } = options;
 
-      Object.defineProperty(this, propName, {
+      Object.defineProperty(this, key, {
         enumerable,
         get() {
-          return this.#getIdlTuple(key)[0];
+          return this.#getIdlTuple(key)[0] ?? empty;
         },
         set(value) {
           const tuple = this.#getIdlTuple(key);
           const previousValue = tuple[0];
-          if (previousValue == null && value == null) return;
-          if (previousValue === value) return;
+          const newValue = (!nullable && value == null) ? empty : value;
+          if (previousValue == null && newValue == null) return;
+          if (previousValue === newValue) return;
           let parsedValue;
           /** @type {?string} */
           let attrValue;
           switch (options.type) {
             case 'boolean':
-              parsedValue = !!value;
+              parsedValue = !!newValue;
               attrValue = parsedValue ? '' : null;
               break;
             case 'integer':
             case 'float':
-              if (value == null) {
-                parsedValue = null;
-                attrValue = null;
+              if (newValue == null) {
+                if (onNullish) {
+                  parsedValue = onNullish(newValue);
+                  attrValue = String(parsedValue);
+                } else {
+                  parsedValue = null;
+                  attrValue = null;
+                }
               } else {
-                if (typeof value !== 'number') throw new TypeError('Value must be a number');
-                parsedValue = value;
-                attrValue = String(value);
+                if (typeof newValue !== 'number') throw new TypeError('Value must be a number');
+                parsedValue = newValue;
+                attrValue = String(newValue);
               }
               break;
             // case 'string':
             default:
-              if (value == null) {
-                parsedValue = null;
-                attrValue = null;
+              if (newValue == null) {
+                if (onNullish) {
+                  parsedValue = onNullish(newValue);
+                  attrValue = parsedValue;
+                } else {
+                  parsedValue = null;
+                  attrValue = null;
+                }
               } else {
-                parsedValue = String(value);
+                parsedValue = String(newValue);
                 attrValue = parsedValue;
               }
           }
+          const lastAttrValue = tuple[1];
+
           tuple[0] = parsedValue;
           tuple[1] = attrValue;
+          tuple[2] = previousValue;
+
+          // console.log(component.name, 'Property change: idlChangedCallback', { key, previousValue, parsedValue });
+          this.idlChangedCallback(key, previousValue, parsedValue);
+
           if (reflect) {
-            if (attrValue == null) {
-              this.removeAttribute(key);
+            if ((lastAttrValue == null && attrValue == null) || (lastAttrValue === attrValue)) {
+              // If set to undefined instead of null;
+              console.warn('Ignoring unchanged attribute value');
             } else {
-              this.setAttribute(key, attrValue);
+              // console.log('Invoking attribute change', { attr, previousValue, parsedValue });
+              if (attrValue == null) {
+                this.removeAttribute(attr);
+              } else {
+                this.setAttribute(attr, attrValue);
+              }
             }
+          } else {
+            // this.idlChangedCallback(propName, previousValue, parsedValue);
           }
-          this.render({ [propName]: parsedValue });
         },
       });
       if (options.default != null) {
@@ -819,6 +934,35 @@ export default class CustomElement extends HTMLElement {
         tuple[0] = false;
       }
     }
+  }
+
+  /**
+   * @template {DocumentFragment|Element} [T=DocumentFragment]
+   * @param {T} content
+   * @return {T}
+   */
+  #interpolate(content) {
+    for (const node of content.childNodes) {
+      const { nodeType } = node;
+      switch (nodeType) {
+        case Node.ELEMENT_NODE:
+          break;
+        case Node.TEXT_NODE:
+          // @ts-ignore Skip cast
+          this.#interpolateNode(node, false);
+          continue;
+        default:
+          continue;
+      }
+
+      const element = /** @type {Element} */ (node);
+      // eslint-disable-next-line unicorn/no-useless-spread
+      for (const attribute of [...element.attributes]) {
+        this.#interpolateNode(attribute, true);
+      }
+      this.#interpolate(element);
+    }
+    return content;
   }
 
   #attachRefs() {
@@ -838,10 +982,14 @@ export default class CustomElement extends HTMLElement {
       Object.defineProperty(refObject, key, {
         enumerable: true,
         get() {
-          return scope.#getRef(key);
+          return scope.#weakRefs.get(key)?.deref();
         },
         set(value) {
-          scope.#setRef(key, value);
+          if (value) {
+            scope.#weakRefs.set(key, new WeakRef(value));
+          } else {
+            scope.#weakRefs.delete(key);
+          }
         },
       });
       // @ts-ignore TS doesn't process defineProperty
@@ -886,33 +1034,12 @@ export default class CustomElement extends HTMLElement {
 
   /**
    * @param {string} key
-   * @return {HTMLElement}
-   */
-  #getRef(key) {
-    return this.#weakRefs.get(key)?.deref();
-  }
-
-  /**
-   * @param {string} key
-   * @param {?HTMLElement} value
-   * @return {void}
-   */
-  #setRef(key, value) {
-    if (value) {
-      this.#weakRefs.set(key, new WeakRef(value));
-    } else {
-      this.#weakRefs.delete(key);
-    }
-  }
-
-  /**
-   * @param {string} key
-   * @return {[boolean|number|string,string]}
+   * @return {IDLTuple<?>}
    */
   #getIdlTuple(key) {
     let value = this.#idlValues.get(key);
     if (!value) {
-      value = [null, null];
+      value = [null, null, null];
       this.#idlValues.set(key, value);
     }
     return value;

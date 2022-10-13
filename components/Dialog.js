@@ -22,11 +22,6 @@ export default class Dialog extends CustomElement {
 
   static styles = [...super.styles, styles];
 
-  static fragments = [
-    ...super.fragments,
-
-  ];
-
   static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
 
   /** @type {DialogStack[]} */
@@ -159,7 +154,7 @@ export default class Dialog extends CustomElement {
   compose() {
     const fragment = super.compose();
     const { html } = this;
-    const newFragment = html`
+    fragment.append(html`
       <dialog id=dialog
       ${Dialog.supportsHTMLDialogElement ? 'aria-model=true' : ''}
       role=dialog aria-hidden=${({ open }) => (open ? 'false' : 'true')} 
@@ -180,18 +175,8 @@ export default class Dialog extends CustomElement {
           </mdw-container>
         </form>
       </dialog>
-    `;
-    fragment.append(newFragment);
+    `);
     return fragment;
-  }
-
-  /**
-   *
-   * @param {Date} data
-   * @return {void}
-   */
-  render(data) {
-    super.render(data);
   }
 
   /**
@@ -323,12 +308,12 @@ export default class Dialog extends CustomElement {
 }
 
 Dialog.prototype.open = Dialog.idlBoolean('open');
-Dialog.prototype.headline = Dialog.idlString('headline');
-Dialog.prototype.description = Dialog.idlString('description');
-Dialog.prototype.icon = Dialog.idlString('icon');
-Dialog.prototype.default = Dialog.idlString('default');
-Dialog.prototype.cancel = Dialog.idlString('cancel');
-Dialog.prototype.confirm = Dialog.idlString('confirm');
+Dialog.prototype.headline = Dialog.idl('headline');
+Dialog.prototype.description = Dialog.idl('description');
+Dialog.prototype.icon = Dialog.idl('icon');
+Dialog.prototype.default = Dialog.idl('default');
+Dialog.prototype.cancel = Dialog.idl('cancel');
+Dialog.prototype.confirm = Dialog.idl('confirm');
 
 Dialog.prototype.refs = Dialog.addRefs({
   dialog: 'dialog',

@@ -16,5 +16,5 @@ export default class Text extends CustomElement {
 }
 
 Text.prototype.block = Text.idlBoolean('block');
-Text.prototype.ink = Text.idlString('ink');
-Text.prototype.typeStyle = Text.idlString('type-style');
+Text.prototype.ink = Text.idl('ink');
+Text.prototype.typeStyle = Text.idl('typeStyle');

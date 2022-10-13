@@ -1,5 +1,4 @@
 import styles from './Button.css' assert { type: 'css' };
-import Icon from './Icon.js';
 import Input from './Input.js';
 
 export default class Button extends Input {
@@ -12,7 +11,7 @@ export default class Button extends Input {
     /* html */`
       <div id=touch-target aria-hidden="true"></div>
       <div id=outline aria-hidden="true"></div>
-      <mdw-icon id=icon aria-hidden="true" icon="{icon}" src="{src}"></mdw-icon>
+      <mdw-icon id=icon aria-hidden="true" src="{src}">{icon}</mdw-icon>
     `,
   ];
 
@@ -63,5 +62,4 @@ export default class Button extends Input {
 Button.prototype.elevated = Button.idlBoolean('elevated');
 Button.prototype.filled = Button.idlBoolean('filled');
 Button.prototype.outlined = Button.idlBoolean('outlined');
-Button.prototype.icon = Button.idlString('icon');
-Button.prototype.src = Button.idlString('src');
+Button.prototype.icon = Button.idl('icon');

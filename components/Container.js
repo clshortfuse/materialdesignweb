@@ -37,14 +37,14 @@ export default class Container extends Text {
 }
 
 Container.prototype.disabled = Container.idlBoolean('disabled');
-Container.prototype.shapeTop = Container.idlBoolean('shape-top');
-Container.prototype.shapeBottom = Container.idlBoolean('shape-bottom');
-Container.prototype.shapeStart = Container.idlBoolean('shape-start');
-Container.prototype.shapeEnd = Container.idlBoolean('shape-end');
+Container.prototype.shapeTop = Container.idlBoolean('shapeTop');
+Container.prototype.shapeBottom = Container.idlBoolean('shapeBottom');
+Container.prototype.shapeStart = Container.idlBoolean('shapeStart');
+Container.prototype.shapeEnd = Container.idlBoolean('shapeEnd');
 Container.prototype.elevation = Container.idlInteger('elevation');
-Container.prototype.color = Container.idlString('color');
-Container.prototype.bg = Container.idlString('bg');
-Container.prototype.shapeStyle = Container.idlString('shape-style');
+Container.prototype.color = Container.idl('color');
+Container.prototype.bg = Container.idl('bg');
+Container.prototype.shapeStyle = Container.idl('shapeStyle');
 
 Container.prototype.refs = {
   ...Text.prototype.refs,

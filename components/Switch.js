@@ -13,8 +13,8 @@ export default class Switch extends Input {
     <div id=track aria-hidden=true>
       <div id=thumb>
         <mdw-icon class=icon id=icon src={src}>{icon}</mdw-icon>
-        <mdw-icon class=icon id=checked-icon src={checkedIconSrc}>{checkedIcon}</mdw-icon>
-        <mdw-icon class=icon id=unchecked-icon src={uncheckedIconSrc}>{uncheckedIcon}</mdw-icon>
+        <mdw-icon class=icon id=selected-icon src={selectedIconSrc}>{selectedIcon}</mdw-icon>
+        <mdw-icon class=icon id=unselected-icon src={unselectedIconSrc}>{unselectedIcon}</mdw-icon>
       </div>
     </div>
   `];
@@ -35,10 +35,10 @@ export default class Switch extends Input {
   }
 }
 
-Switch.prototype.icon = Switch.idlString('icon');
-Switch.prototype.checkedIcon = Switch.idlString('checked-icon');
-Switch.prototype.uncheckedIcon = Switch.idlString('unchecked-icon');
+Switch.prototype.icon = Switch.idl('icon');
+Switch.prototype.selectedIcon = Switch.idl('selectedIcon');
+Switch.prototype.unselectedIcon = Switch.idl('unselectedIcon');
 
-Switch.prototype.src = Switch.idlString('src');
-Switch.prototype.checkedSrc = Switch.idlString('checked-src');
-Switch.prototype.uncheckedSrc = Switch.idlString('unchecked-src');
+Switch.prototype.src = Switch.idl('src');
+Switch.prototype.selectedSrc = Switch.idl('selectedSrc');
+Switch.prototype.unselectedSrc = Switch.idl('unselectedSrc');

@@ -21,7 +21,6 @@ export default class Icon extends Container {
     ...super.fragments,
     /* html */`
       <div id=icon aria-hidden="true">
-        {icon}
         <img id=img aria-hidden="true"/>
       </div>
     `,
@@ -94,22 +93,20 @@ export default class Icon extends Container {
 
 // https://html.spec.whatwg.org/multipage/embedded-content.html#htmlimageelement
 
-Icon.prototype.alt = Icon.idlString('alt');
-Icon.prototype.src = Icon.idlString('src');
-Icon.prototype.srcset = Icon.idlString('srcset');
-Icon.prototype.sizes = Icon.idlString('sizes');
-Icon.prototype.crossOrigin = Icon.idlString('crossorigin', 'crossOrigin');
-Icon.prototype.useMap = Icon.idlString('usemap', 'useMap');
-Icon.prototype.isMap = Icon.idlBoolean('ismap', 'isMap');
-Icon.prototype.referrerPolicy = Icon.idlString('referrerpolicy', 'referrerPolicy');
-Icon.prototype.decoding = /** @type {'async'|'sync'|'auto'} */ (Icon.idlString('decoding'));
-Icon.prototype.loading = /** @type {'eager'|'lazy'} */ (Icon.idlString('loading'));
+Icon.prototype.alt = Icon.idl('alt');
+Icon.prototype.src = Icon.idl('src');
+Icon.prototype.srcset = Icon.idl('srcset');
+Icon.prototype.sizes = Icon.idl('sizes');
+Icon.prototype.crossOrigin = Icon.idl('crossOrigin', { attr: 'crossorigin' });
+Icon.prototype.useMap = Icon.idl('useMap', { attr: 'usemap' });
+Icon.prototype.isMap = Icon.idlBoolean('isMap', { attr: 'ismap' });
+Icon.prototype.referrerPolicy = Icon.idl('referrerPolicy', { attr: 'referrerpolicy' });
+Icon.prototype.decoding = /** @type {'async'|'sync'|'auto'} */ (Icon.idl('decoding'));
+Icon.prototype.loading = /** @type {'eager'|'lazy'} */ (Icon.idl('loading'));
 Icon.prototype.width = Icon.idlFloat('width');
 Icon.prototype.height = Icon.idlFloat('height');
 
-Icon.prototype.icon = Icon.idlString('icon');
-
 Icon.prototype.refs = {
   ...Container.prototype.refs,
-  ...Icon.addRefNames('icon', 'img'),
+  ...Icon.addRefNames('img'),
 };

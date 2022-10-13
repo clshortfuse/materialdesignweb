@@ -11,63 +11,59 @@ export default class Progress extends Container {
 
   static styles = [...super.styles, styles, lineStyles, circleStyles];
 
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <progress id=progress></progress>
-      <div id=indeterminate-line>
-        <div id=line1 class=line></div>
-        <div id=line2 class=line></div>
-      </div>
-      <div id=indeterminate-circle>
-        <div id=arc2 class=arc></div>
-        <div id=arc3 class=arc></div>
-        <div id=arc4 class=arc></div>
-      </div>
-      <div id=circle>
-        <div id=semi1 class=semi></div>
-        <div id=semi2 class=semi></div>
-      </div>
-    `,
-  ];
-
   compose() {
     const fragment = super.compose();
+    // eslint-disable-next-line prefer-destructuring
+    const html = this.html;
     fragment.getElementById('slot').remove();
+    fragment.append(html`
+      <div id=determinate style=${this.updateDeterminateStyle}>
+        <progress id=progress value={value} max={max}></progress>
+        <div id=circle>
+          <div id=semi1 class=semi></div>
+          <div id=semi2 class=semi></div>
+        </div>
+      </div>
+      <div id=indeterminate>
+        <div id=indeterminate-line>
+          <div id=line1 class=line></div>
+          <div id=line2 class=line></div>
+        </div>
+        <div id=indeterminate-circle>
+          <div id=arc2 class=arc></div>
+          <div id=arc3 class=arc></div>
+          <div id=arc4 class=arc></div>
+        </div>
+      </div>
+    `);
     return fragment;
+  }
+
+  updateDeterminateStyle() {
+    return `
+      --previous:${this._previousValueAsFraction ?? this.valueAsFraction ?? 0};
+      --value:${this.valueAsFraction ?? 0};
+    `;
   }
 
   /**
    * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
+   * @param {any} oldValue
+   * @param {any} newValue
+   * @return {void}
    */
-  attributeChangedCallback(name, oldValue, newValue) {
-    super.attributeChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
-    const { circle, progress } = this.refs;
-
+  idlChangedCallback(name, oldValue, newValue) {
+    super.idlChangedCallback(name, oldValue, newValue);
     switch (name) {
-      default:
-        return;
       case 'value':
       case 'max':
-        if (newValue == null) {
-          circle.removeAttribute(name);
-          progress.removeAttribute(name);
-          return;
-        }
+        this.valueAsFraction = (this.value / (this.max || 100));
+        break;
+      case 'valueAsFraction':
+        this._previousValueAsFraction = oldValue;
+        break;
+      default:
     }
-
-    circle.setAttribute(name, newValue);
-    progress.setAttribute(name, newValue);
-
-    const value = (this.value / (this.max || 100)).toPrecision(12);
-    const previous = circle.style.getPropertyValue('--value') || value;
-
-    circle.style.setProperty('--previous', previous);
-    circle.style.setProperty('--value', value);
-    progress.style.setProperty('--value', value);
   }
 
   get position() { return this.refs.progress.position; }
@@ -77,9 +73,11 @@ export default class Progress extends Container {
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element
 
+Progress.prototype._previousValueAsFraction = Progress.idlFloat('_previousValueAsFraction');
+Progress.prototype.valueAsFraction = Progress.idlFloat('valueAsFraction');
 Progress.prototype.value = Progress.idlFloat('value');
 Progress.prototype.max = Progress.idlFloat('max');
-Progress.prototype.autoHide = Progress.idlBoolean('auto-hide');
+Progress.prototype.autoHide = Progress.idlBoolean('autoHide');
 
 Progress.prototype.refs = {
   ...Container.prototype.refs,

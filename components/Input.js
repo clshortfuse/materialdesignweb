@@ -38,8 +38,18 @@ export default class Input extends Ripple {
   static GlobalListener = new EventTarget();
 
   static idlInputElementAttributes = [
-    'aria-labelledby', 'type', 'value', 'checked',
-    'name', 'required', 'list',
+    'aria-labelledby',
+    'accept', 'alt', 'autocomplete',
+    'checked', 'dirname', 'disabled',
+    'max', 'maxlength', 'min', 'maxlength',
+    'multiple', 'name', 'pattern', 'placeholder',
+    'readonly', 'required', 'size', 'src', 'step',
+    'type', 'value',
+  ];
+
+  static valueChangingInputAttributes = [
+    'checked', 'max', 'maxlength', 'min', 'maxlength',
+    'multiple', 'pattern', 'step', 'type', 'value',
   ];
 
   /**
@@ -57,10 +67,10 @@ export default class Input extends Ripple {
 
     if (this.type !== 'radio') return;
     if (this.required) return;
-    if (!this.hasAttribute('checked')) return;
+    if (!this.hasAttribute('selected')) return;
 
     this.checked = false;
-    host.toggleAttribute('checked', false);
+    host.toggleAttribute('selected', false);
   }
 
   /**
@@ -79,11 +89,11 @@ export default class Input extends Ripple {
 
     if (this.type !== 'radio') return;
     if (this.required) return;
-    if (!this.hasAttribute('checked')) return;
+    if (!this.hasAttribute('selected')) return;
     event.preventDefault();
 
     this.checked = false;
-    host.toggleAttribute('checked', false);
+    host.toggleAttribute('selected', false);
     event.preventDefault();
   }
 
@@ -95,11 +105,12 @@ export default class Input extends Ripple {
   static onInputChange(event) {
     /** @type {{host:Input}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
+    host.value = this.value;
     if (host.hasAttribute('disabled')) {
       event.preventDefault();
       return;
     }
-    host.toggleAttribute('checked', this.checked);
+    host._checked = this.checked;
   }
 
   #ipcListener = this.formIPCEvent.bind(this);
@@ -107,8 +118,11 @@ export default class Input extends Ripple {
   /** @type {EventTarget} */
   #ipcTarget = null;
 
+  _hasValue = false;
+
   constructor() {
     super();
+    this._value = this.refs.input.value;
     if (!this.hasAttribute('tabindex')) {
       // Expose this element as focusable
       this.setAttribute('tabindex', '0');
@@ -174,23 +188,55 @@ export default class Input extends Ripple {
         input.setAttribute(name, newValue);
       }
     }
-    if (name === 'checked') {
-      switch (this.type) {
-        case 'checkbox':
-        case 'radio':
-          if (newValue == null) {
-            // console.log('Input.attributeChangedCallback: unset', this.name, 'null');
-            this.elementInternals.setFormValue(null);
-          } else {
-            // console.log('Input.attributeChangedCallback: set', this.name, this.value ?? 'on');
-            this.elementInternals.setFormValue(this.value ?? 'on');
-            this.#ipcTarget?.dispatchEvent(
-              new CustomEvent(Input.FORM_IPC_EVENT, { detail: [this.name, this.value] }),
-            );
-          }
-          break;
-        default:
+
+    if (Input.valueChangingInputAttributes.includes(name)) {
+      if (!this.hasAttribute('value')) {
+        // Force HTMLInputElement to recalculate default
+        // Unintended effect of incrementally changing attributes (eg: range)
+        input.setAttribute('value', '');
       }
+      // Changing input attribute may change the value (eg: min/max)
+      this._value = input.value;
+    }
+
+    if (name === 'checked') {
+      this._checked = input.checked;
+    }
+  }
+
+  get hasValue() { return this._hasValue; }
+
+  /** @type {Ripple['idlChangedCallback']} */
+  idlChangedCallback(name, oldValue, newValue) {
+    super.idlChangedCallback(name, oldValue, newValue);
+    if (oldValue == null && newValue == null) return;
+    switch (name) {
+      case '_value':
+        // Reinvoke change event for components tracking 'value';
+        this.idlChangedCallback('value', oldValue, newValue);
+        break;
+      case '_checked':
+        this.toggleAttribute('selected', newValue);
+        switch (this.type) {
+          case 'checkbox':
+          case 'radio':
+            if (!newValue) {
+              // console.log('Input.attributeChangedCallback: unset', this.name, 'null');
+              this.elementInternals.setFormValue(null);
+            } else {
+              // console.log('Input.attributeChangedCallback: set', this.name, this.value ?? 'on');
+              this.elementInternals.setFormValue(this.value ?? 'on');
+              this.#ipcTarget?.dispatchEvent(
+                new CustomEvent(Input.FORM_IPC_EVENT, { detail: [this.name, this.value] }),
+              );
+            }
+            break;
+          default:
+        }
+        // Reinvoke change event for components tracking 'value';
+        this.idlChangedCallback('checked', oldValue, newValue);
+        break;
+      default:
     }
   }
 
@@ -237,7 +283,7 @@ export default class Input extends Ripple {
     if (value !== this.value) {
       // console.log('Input.formIPCEvent: Unset self', this.name, this.value);
       this.checked = false;
-      this.removeAttribute('checked');
+      this.removeAttribute('selected');
     } else {
       // console.log('Input.formIPCEvent: Continue match', this.name, this.value);
     }
@@ -255,8 +301,18 @@ export default class Input extends Ripple {
     this.value = this.getAttribute('value') || '';
   }
 
+  /**
+   *
+   * @param {string|FormData} state
+   * @param {'autocomplete'|'restore'} mode
+   */
   formStateRestoreCallback(state, mode) {
-    this.value = state;
+    console.log('formStateRestoreCallback', state);
+    if (typeof state === 'string') {
+      this.value = state;
+    } else {
+      console.warn('Could not restore', state);
+    }
   }
 
   /** @type {HTMLElement['focus']} */
@@ -267,36 +323,24 @@ export default class Input extends Ripple {
 
   get form() { return this.elementInternals.form; }
 
-  get name() { return this.getAttribute('name'); }
+  // get name() { return this.getAttribute('name'); }
 
-  get type() { return this.refs.input?.type; }
-
-  set type(value) {
-    this.refs.input.type = value;
-    if (value === 'radio') {
-      this.refreshFormAssociation();
-    }
-  }
-
-  get checked() { return this.refs.input.checked; }
+  get checked() { return this._checked; }
 
   set checked(value) {
     this.refs.input.checked = value;
+    /** @type {boolean} */
+    this._checked = this.refs.input.checked;
   }
 
-  get required() {
-    return this.refs.input.required;
+  get value() {
+    return this._value;
   }
-
-  set required(v) {
-    this.refs.input.required = v;
-  }
-
-  get value() { return this.refs.input.value; }
 
   set value(v) {
-    // console.log('Input.value =', v);
+    this._hasValue = true;
     this.refs.input.value = v;
+    this._value = this.refs.input.value;
   }
 
   get validity() { return this.elementInternals.validity; }
@@ -320,9 +364,70 @@ export default class Input extends Ripple {
   }
 }
 
-Input.prototype.ariaControls = Input.idlString('aria-controls');
+Input.prototype.ariaControls = Input.idl('ariaControls');
+
+// https://html.spec.whatwg.org/multipage/input.html#htmlinputelement
+
+const DOMString = { onNullish: String };
+const NOT_NULLABLE = { nullable: false };
+
+Input.prototype.accept = Input.idl('accept', DOMString);
+Input.prototype.alt = Input.idl('alt', DOMString);
+Input.prototype.autocomplete = Input.idl('autocomplete', DOMString);
+Input.prototype.defaultChecked = Input.idlBoolean('defaultChecked', { attr: 'checked' });
+//  attribute boolean checked;
+Input.prototype._checked = Input.idlBoolean('_checked', { reflect: false });
+Input.prototype.dirName = Input.idl('dirName', { attr: 'dirname', ...DOMString });
+Input.prototype.disabled = Input.idlBoolean('disabled');
+// readonly attribute HTMLFormElement? form;
+// attribute FileList? files;
+// [CEReactions] attribute USVString formAction;
+// [CEReactions] attribute DOMString formEnctype;
+// [CEReactions] attribute DOMString formMethod;
+// [CEReactions] attribute boolean formNoValidate;
+// [CEReactions] attribute DOMString formTarget;
+// [CEReactions] attribute unsigned long height;
+// attribute boolean indeterminate;
+// readonly attribute HTMLElement? list;
+Input.prototype.max = Input.idl('max', DOMString);
+Input.prototype.maxLength = Input.idlInteger('maxLength', { attr: 'maxlength', ...NOT_NULLABLE });
+Input.prototype.min = Input.idl('min', DOMString);
+Input.prototype.minLength = Input.idlInteger('minLength', { attr: 'minlength', ...NOT_NULLABLE });
+Input.prototype.multiple = Input.idlBoolean('multiple');
+Input.prototype.name = Input.idl('name', DOMString);
+Input.prototype.pattern = Input.idl('pattern', DOMString);
+Input.prototype.placeholder = Input.idl('placeholder', DOMString);
+Input.prototype.readOnly = Input.idlBoolean('readOnly', { attr: 'readOnly' });
+Input.prototype.required = Input.idlBoolean('required');
+Input.prototype.size = Input.idlInteger('size', NOT_NULLABLE);
+Input.prototype.src = Input.idl('src', DOMString);
+Input.prototype.step = Input.idl('step', DOMString);
+Input.prototype.type = Input.idl('type', DOMString);
+Input.prototype.defaultValue = Input.idl('defaultValue', { attr: 'value', ...DOMString });
+//  [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
+Input.prototype._value = Input.idl('_value', { default: '', reflect: false });
+// attribute object? valueAsDate;
+// attribute unrestricted double valueAsNumber;
+// [CEReactions] attribute unsigned long width;
+// undefined stepUp(optional long n = 1);
+// undefined stepDown(optional long n = 1);
+// readonly attribute boolean willValidate;
+// readonly attribute ValidityState validity;
+// readonly attribute DOMString validationMessage;
+// boolean checkValidity();
+// boolean reportValidity();
+// undefined setCustomValidity(DOMString error);
+// readonly attribute NodeList? labels;
+// undefined select();
+// attribute unsigned long? selectionStart;
+// attribute unsigned long? selectionEnd;
+// attribute DOMString? selectionDirection;
+// undefined setRangeText(DOMString replacement);
+// undefined setRangeText(DOMString replacement, unsigned long start, unsigned long end, optional SelectionMode selectionMode = "preserve");
+// undefined setSelectionRange(unsigned long start, unsigned long end, optional DOMString direction);
+// undefined showPicker();
 
 Input.prototype.refs = {
   ...Ripple.prototype.refs,
-  ...Input.addRefNames('label', 'input'),
+  ...Input.addRefNames('input'),
 };

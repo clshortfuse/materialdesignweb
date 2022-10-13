@@ -11,7 +11,7 @@ export default class SegmentedButton extends Button {
   static fragments = [
     ...super.fragments,
     /* html */`
-      <mdw-icon id=check-icon icon=check aria-hidden="true"></mdw-icon>
+      <mdw-icon id=check-icon aria-hidden="true">check</mdw-icon>
     `,
   ];
 
@@ -44,6 +44,11 @@ export default class SegmentedButton extends Button {
       return;
     }
     super.attributeChangedCallback(name, oldValue, newValue);
+  }
+
+  /** @type {Button['idlChangedCallback']} */
+  idlChangedCallback(name, oldValue, newValue) {
+    super.idlChangedCallback(name, oldValue, newValue);
     if (name === 'checked' || name === 'type') {
       const attribute = this.type === 'checkbox' ? 'aria-checked' : 'aria-selected';
       this.refs.input.setAttribute(attribute, this.checked ? 'true' : 'false');

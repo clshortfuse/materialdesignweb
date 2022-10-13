@@ -10,8 +10,8 @@ export default class FilterChip extends Chip {
   static fragments = [
     ...super.fragments,
     /* html */`
-      <mdw-icon id=check-icon icon=check aria-hidden="true"></mdw-icon>
-      <mdw-icon id=trailing-icon aria-hidden="true" icon={trailingIcon} src={trailingSrc}></mdw-icon>
+      <mdw-icon id=check-icon aria-hidden="true">check</mdw-icon>
+      <mdw-icon id=trailing-icon aria-hidden="true" src={trailingSrc}>{trailingIcon}</mdw-icon>
     `,
   ];
 
@@ -41,5 +41,5 @@ export default class FilterChip extends Chip {
   }
 }
 
-FilterChip.prototype.trailingIcon = FilterChip.idlString('trailing-icon');
-FilterChip.prototype.trailingSrc = FilterChip.idlString('trailing-src');
+FilterChip.prototype.trailingIcon = FilterChip.idl('trailingIcon');
+FilterChip.prototype.trailingSrc = FilterChip.idl('trailingSrc');

@@ -47,7 +47,7 @@ label {
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
-:host([checked]:not([disabled])) #icon {
+:host([selected]:not([disabled])) #icon {
   color: rgb(var(--mdw-ink));
 }
 
@@ -80,6 +80,6 @@ label {
   transition: transform 100ms;
 }
 
-:host([checked]) #icon::after {
+:host([selected]) #icon::after {
   transform: scale(1);
 }
