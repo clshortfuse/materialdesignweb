@@ -1,5 +1,3 @@
-// import fontStyles from 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1' assert { type: 'css'};
-
 import Container from './Container.js';
 import styles from './Progress.css' assert { type: 'css' };
 import circleStyles from './ProgressCircle.css' assert { type: 'css' };

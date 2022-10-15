@@ -8,7 +8,7 @@ export default class Overlay extends Container {
 
   static fragments = [
     ...super.fragments,
-    '<div id="overlay" aria-hidden="true"/>',
+    '<div id=overlay aria-hidden=true/>',
   ];
 
   static lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matches;

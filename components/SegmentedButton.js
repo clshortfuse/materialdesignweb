@@ -11,7 +11,7 @@ export default class SegmentedButton extends Button {
   static fragments = [
     ...super.fragments,
     /* html */`
-      <mdw-icon id=check-icon aria-hidden="true">check</mdw-icon>
+      <mdw-icon id=check-icon aria-hidden=true>check</mdw-icon>
     `,
   ];
 

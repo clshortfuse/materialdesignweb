@@ -9,8 +9,8 @@ export default class Ripple extends Overlay {
   static fragments = [
     ...super.fragments,
     /* html */`
-      <div id="ripple" aria-hidden="true">
-        <div id="ripple-inner"></div>
+      <div id=ripple aria-hidden=true>
+        <div id=ripple-inner></div>
       </div>
     `,
   ];
