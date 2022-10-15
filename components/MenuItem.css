@@ -57,7 +57,7 @@
   display: none;
 }
 
-#trailing-icon:not(:is([icon], [src])) {
+#trailing-icon:not(:is([icon],[src])) {
   display: none;
 }
 
@@ -65,7 +65,7 @@
   display: block;
 }
 
-:host(:is([type="checkbox"], [type="radio"])) #icon {
+:host(:is([type="checkbox"],[type="radio"])) #icon {
   opacity: 0;
 }
 
