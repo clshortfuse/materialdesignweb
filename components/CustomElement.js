@@ -527,7 +527,9 @@ export default class CustomElement extends HTMLElement {
         } else {
           value = data[key];
         }
-        if (node.startsWith('#text')) {
+        if (node[0] === '?') {
+          value = Boolean(value);
+        } else if (node.startsWith('#text')) {
           const index = node.slice('#text'.length + 1) || 0;
           let nodesFound = 0;
           for (const childNode of ref.childNodes) {
@@ -788,7 +790,9 @@ export default class CustomElement extends HTMLElement {
     });
 
     const compiledString = String.raw({ raw: strings }, ...replacements);
-    return document.createRange().createContextualFragment(compiledString);
+    const fragment = document.createRange().createContextualFragment(compiledString);
+    // TODO: cache fragment for conditional fragments
+    return fragment;
   }
 
   #attachShadow() {
