@@ -20,7 +20,9 @@ export default class Input extends Ripple {
         <input id=input aria-labelledby="slot"
           onclick="{constructor.onInputClick}"
           onchange="{constructor.onInputChange}"
-          onkeydown="{constructor.onInputKeydown}">
+          onkeydown="{constructor.onInputKeydown}"
+          onfocus="{~constructor.onInputFocus}"
+          onblur="{~constructor.onInputBlur}">
       </label>
     `,
   ];
@@ -51,6 +53,18 @@ export default class Input extends Ripple {
     'checked', 'max', 'maxlength', 'min', 'maxlength',
     'multiple', 'pattern', 'step', 'type', 'value',
   ];
+
+  static onInputFocus() {
+    /** @type {{host:Input}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    host._isFocused = true;
+  }
+
+  static onInputBlur() {
+    /** @type {{host:Input}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    host._isFocused = false;
+  }
 
   /**
    * @param {MouseEvent|PointerEvent} event
@@ -365,6 +379,7 @@ export default class Input extends Ripple {
 }
 
 Input.prototype.ariaControls = Input.idl('ariaControls');
+Input.prototype._isFocused = Input.idlBoolean('_isFocused');
 
 // https://html.spec.whatwg.org/multipage/input.html#htmlinputelement
 

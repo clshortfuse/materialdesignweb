@@ -126,17 +126,6 @@ export default class Slider extends Input {
     this._isHoveringThumb = false;
   }
 
-  static onInputFocus() {
-    /** @type {{host:Slider}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    host._isFocused = true;
-  }
-
-  static onInputBlur() {
-    /** @type {{host:Slider}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    host._isFocused = false;
-  }
 
   compose() {
     const fragment = super.compose();
@@ -194,8 +183,6 @@ export default class Slider extends Input {
       'touchmove', 'touchstart', 'touchend', 'touchleave', 'touchcancel']) {
       input.addEventListener(type, Slider.onInputMouseOrTouch, { passive: true });
     }
-    input.addEventListener('focus', Slider.onInputFocus, { passive: true });
-    input.addEventListener('blur', Slider.onInputBlur, { passive: true });
 
     this.addEventListener('mouseout', Slider.onLeaveEvent);
   }
@@ -203,6 +190,5 @@ export default class Slider extends Input {
 
 Slider.prototype.ticks = Slider.idl('ticks');
 Slider.prototype.showLabel = Slider.idlBoolean('showLabel', { reflect: false });
-Slider.prototype._previewValue = Slider.idl('_previewValue');
-Slider.prototype._isFocused = Slider.idlBoolean('_isFocused');
+Slider.prototype._previewValue = Slider.idl('_previewValue')
 Slider.prototype._isHoveringThumb = Slider.idlBoolean('_isHoveringThumb');
