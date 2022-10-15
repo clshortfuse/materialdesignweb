@@ -1,12 +1,12 @@
-// import fontStyles from 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1' assert { type: 'css'};
+// import fontStyles from 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block' assert { type: 'css'};
 
-import Container from './Container.js';
 import styles from './Icon.css' assert { type: 'css' };
+import Text from './Text.js';
 
 /** @typedef {'align'|'border'|'hspace'|'longDesc'|'lowsrc'|'name'|'vspace'} DeprecatedHTMLImageElementProperties */
 
 /** @implements {Omit<HTMLImageElement,DeprecatedHTMLImageElementProperties>} */
-export default class Icon extends Container {
+export default class Icon extends Text {
   static elementName = 'mdw-icon';
 
   static get styles() {
@@ -20,7 +20,7 @@ export default class Icon extends Container {
   static fragments = [
     ...super.fragments,
     /* html */`
-      <div id=icon aria-hidden="true">
+      <div id=icon class={fontClass} aria-hidden="true">
         <img id=img aria-hidden="true"/>
       </div>
     `,
@@ -33,9 +33,10 @@ export default class Icon extends Container {
     'decoding', 'loading',
   ];
 
-  static fontLibrary = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&text=search';
+  static fontLibrary = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block';
 
-  static fontClassName = 'material-symbols-outlined';
+  /** Bind hard reference */
+  #imgElement = this.refs.img;
 
   /**
    * @param {number} [width]
@@ -43,6 +44,12 @@ export default class Icon extends Container {
    */
   constructor(width, height) {
     super();
+
+    if (this.src == null) {
+      // Drop from DOM if not used (performance)
+      this.#imgElement.remove();
+    }
+
     if (width != null) {
       this.width = width;
     }
@@ -54,7 +61,6 @@ export default class Icon extends Container {
   compose() {
     const fragment = super.compose();
     const icon = fragment.getElementById('icon');
-    icon.className = Icon.fontClassName;
     icon.append(fragment.getElementById('slot'));
     return fragment;
   }
@@ -72,6 +78,14 @@ export default class Icon extends Container {
         this.refs.img.removeAttribute(name);
       } else {
         this.refs.img.setAttribute(name, newValue);
+      }
+    }
+
+    if (name === 'src') {
+      if (oldValue == null) {
+        this.refs.icon.append(this.#imgElement);
+      } else if (newValue == null) {
+        this.#imgElement.remove();
       }
     }
   }
@@ -106,7 +120,9 @@ Icon.prototype.loading = /** @type {'eager'|'lazy'} */ (Icon.idl('loading'));
 Icon.prototype.width = Icon.idlFloat('width');
 Icon.prototype.height = Icon.idlFloat('height');
 
+Icon.prototype.fontClass = Icon.idl('fontClass', { reflect: false, default: 'material-symbols-outlined' });
+
 Icon.prototype.refs = {
-  ...Container.prototype.refs,
-  ...Icon.addRefNames('img'),
+  ...Text.prototype.refs,
+  ...Icon.addRefNames('icon', 'img'),
 };

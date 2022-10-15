@@ -3,18 +3,24 @@
 :host {
   --mdw-icon__size: 18px;
   --mdw-icon__opacity: 1;
-  --mdw-icon__display: block;
   --mdw-icon__margin-inline-start: 12px;
   --mdw-icon__margin-inline-end: 8px;
   --mdw-icon__font-variation-settings: 'FILL' 1;
   --mdw-icon__image__opacity: 1;
+
+  block-size: var(--mdw-icon__size);
+  inline-size: var(--mdw-icon__size);
+  /* stylelint-disable-next-line liberty/use-logical-spec -- Safari does not animate inline-size */
+  transition-property: inline-size, width;
 }
 
 #icon {
-  position: relative;
-  order: -1;
+  position: absolute;
 
-  display: var(--mdw-icon__display);
+  display: var(--mdw-icon__display, block);
+
+  /* Clip bounds in case font is not ready */
+  overflow: clip;
 
   block-size: var(--mdw-icon__size);
   inline-size: var(--mdw-icon__size);
@@ -26,8 +32,8 @@
 
   transition-delay: 1ms;
   transition-duration: 100ms;
-  /* stylelint-disable-next-line liberty/use-logical-spec -- Safari does not animate inline-size */
-  transition-property: font-variation-settings, inline-size, opacity, width;
+
+  transition-property: font-variation-settings, opacity;
 }
 
 img {
