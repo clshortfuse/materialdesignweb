@@ -1,0 +1,106 @@
+:host([color]:where(:not([disabled]))) {
+  background-color: rgb(var(--mdw-bg));
+  color: rgb(var(--mdw-ink));
+}
+
+:host([color="primary"]) {
+  --mdw-bg: var(--mdw-color__primary);
+  --mdw-ink: var(--mdw-color__on-primary);
+}
+
+:host([color="primary-container"]) {
+  --mdw-bg: var(--mdw-color__primary-container);
+  --mdw-ink: var(--mdw-color__on-primary-container);
+}
+
+:host([color="secondary"]) {
+  --mdw-bg: var(--mdw-color__secondary);
+  --mdw-ink: var(--mdw-color__on-secondary);
+}
+
+:host([color="secondary-container"]) {
+  --mdw-bg: var(--mdw-color__secondary-container);
+  --mdw-ink: var(--mdw-color__on-secondary-container);
+}
+
+:host([color="tertiary"]) {
+  --mdw-bg: var(--mdw-color__tertiary);
+  --mdw-ink: var(--mdw-color__on-tertiary);
+}
+
+:host([color="tertiary-container"]) {
+  --mdw-bg: var(--mdw-color__tertiary-container);
+  --mdw-ink: var(--mdw-color__on-tertiary-container);
+}
+
+:host([color="error"]) {
+  --mdw-bg: var(--mdw-color__error);
+  --mdw-ink: var(--mdw-color__on-error);
+}
+
+:host([color="error-container"]) {
+  --mdw-bg: var(--mdw-color__error-container);
+  --mdw-ink: var(--mdw-color__on-error-container);
+}
+
+:host([color="background"]) {
+  --mdw-bg: var(--mdw-color__background);
+  --mdw-ink: var(--mdw-color__on-background);
+}
+
+:host([color|="surface"]) {
+  --mdw-bg: var(--mdw-color__surface);
+  --mdw-ink: var(--mdw-color__on-surface);
+}
+
+/* @QOL */
+:host([color="surface-primary"]) {
+  --mdw-ink: var(--mdw-color__primary);
+}
+
+:host([color="surface-variant"]) {
+  --mdw-bg: var(--mdw-color__surface-variant);
+  --mdw-ink: var(--mdw-color__on-surface-variant);
+}
+
+:host([color|="inverse"]) {
+  --mdw-bg: var(--mdw-color__inverse-surface);
+}
+
+:host([color="inverse-surface"]) {
+  --mdw-ink: var(--mdw-color__inverse-on-surface);
+}
+
+:host([color="inverse-primary"]) {
+  --mdw-ink: var(--mdw-color__inverse-primary);
+}
+
+:host([color|="surface"][elevation="1"]) {
+  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__1);
+  --mdw-container__box-shadow: var(--mdw-container__box-shadow__1);
+}
+
+:host([color|="surface"][elevation="2"]) {
+  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
+  --mdw-container__box-shadow: var(--mdw-container__box-shadow__2);
+}
+
+:host([color|="surface"][elevation="3"]) {
+  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__3);
+  --mdw-container__box-shadow: var(--mdw-container__box-shadow__3);
+}
+
+:host([color|="surface"][elevation="4"]) {
+  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__4);
+  --mdw-container__box-shadow: var(--mdw-container__box-shadow__4);
+}
+
+:host([color|="surface"][elevation="5"]) {
+  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__5);
+  --mdw-container__box-shadow: var(--mdw-container__box-shadow__5);
+}
+
+:host([color][disabled]) {
+  /* background-color: rgba(var(--mdw-color__on-surface), 0.12); */
+  /* color: rgba(var(--mdw-color__on-surface), 0.38); */
+}

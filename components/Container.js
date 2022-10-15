@@ -1,4 +1,5 @@
 import styles from './Container.css' assert { type: 'css' };
+import colorStyles from './ContainerColors.css' assert { type: 'css' };
 import Text from './Text.js';
 
 /** @typedef {'align'} DeprecatedHTMLDivElementProperties */
@@ -6,7 +7,8 @@ import Text from './Text.js';
 export default class Container extends Text {
   static elementName = 'mdw-container';
 
-  static styles = [...super.styles, styles];
+  // Allow inks to override color styles
+  static styles = [colorStyles, ...super.styles, styles];
 
   static fragments = [
     ...super.fragments,
@@ -43,7 +45,6 @@ Container.prototype.shapeStart = Container.idlBoolean('shapeStart');
 Container.prototype.shapeEnd = Container.idlBoolean('shapeEnd');
 Container.prototype.elevation = Container.idlInteger('elevation');
 Container.prototype.color = Container.idl('color');
-Container.prototype.bg = Container.idl('bg');
 Container.prototype.shapeStyle = Container.idl('shapeStyle');
 
 Container.prototype.refs = {
