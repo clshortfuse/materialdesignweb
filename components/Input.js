@@ -13,20 +13,6 @@ export default class Input extends Ripple {
 
   static formAssociated = true;
 
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <label id=label>
-        <input id=input aria-labelledby="slot"
-          onclick="{constructor.onInputClick}"
-          onchange="{constructor.onInputChange}"
-          onkeydown="{constructor.onInputKeydown}"
-          onfocus="{~constructor.onInputFocus}"
-          onblur="{~constructor.onInputBlur}">
-      </label>
-    `,
-  ];
-
   static get observedAttributes() {
     return [
       ...super.observedAttributes,
@@ -34,6 +20,8 @@ export default class Input extends Ripple {
       'aria-label',
     ];
   }
+
+  static inputTagName = 'input';
 
   static FORM_IPC_EVENT = 'mdw-input-changed';
 
@@ -145,6 +133,18 @@ export default class Input extends Ripple {
 
   compose() {
     const fragment = super.compose();
+    const { html } = this;
+    const component = /** @type {typeof Input} */ (this.constructor);
+    fragment.append(html`
+      <label id=label>
+        <${component.inputTagName} id=input aria-labelledby="slot"
+          onclick="{constructor.onInputClick}"
+          onchange="{constructor.onInputChange}"
+          onkeydown="{constructor.onInputKeydown}"
+          onfocus="{~constructor.onInputFocus}"
+          onblur="{~constructor.onInputBlur}">
+      </label>
+    `);
     fragment.getElementById('label').append(
       fragment.getElementById('overlay'),
       fragment.getElementById('ripple'),

@@ -13,7 +13,7 @@ label {
   flex: 1;
 }
 
-input {
+#input {
   position: absolute;
   inset: 0;
   /** Firefox requires at least 1px "visible" for screen reading */
@@ -32,11 +32,11 @@ input {
   opacity: 0;
 }
 
-input::-moz-focus-inner {
+#input::-moz-focus-inner {
   border: 0;
 }
 
 /* Fix active ripple state */
-input:active ~ #ripple > #ripple-inner {
+#input:active ~ #ripple > #ripple-inner {
   animation-name: var(--mdw-ripple__fade-in-name), none;
 }
