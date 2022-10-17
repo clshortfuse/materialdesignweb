@@ -25,6 +25,7 @@ import SegmentedButtonGroup from './components/SegmentedButtonGroup.js';
 import Slider from './components/Slider.js';
 import Switch from './components/Switch.js';
 import Text from './components/Text.js';
+import TextInput from './components/TextInput.js';
 
 Text.register();
 Container.register();
@@ -66,4 +67,5 @@ Progress.register();
 Radio.register();
 Slider.register();
 Switch.register();
+TextInput.register();
 

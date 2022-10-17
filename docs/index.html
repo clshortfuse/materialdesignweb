@@ -8,7 +8,7 @@
   <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
   <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
   <link rel=stylesheet
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&text=search" />
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
   <link rel="stylesheet" href="theme.css">
 
   <style>
@@ -1204,6 +1204,55 @@
             </mdw-switch>
             <mdw-switch disabled icon=check aria-label="Disabled"></mdw-switch>
             <mdw-switch color=secondary disabled checked icon=check aria-label="Disabled"></mdw-switch>
+          </demo-flex>
+        </demo-section>
+    </demo-section>
+    <demo-section id=textinputs>
+      <h1 slot="heading">Text Inputs</h2>
+        <demo-section>
+          <h2 slot=heading>Filled</h2>
+          <demo-flex wrap style="margin:24px; gap:16px" column>
+            <mdw-textinput>Label</mdw-textinput>
+            <mdw-textinput color="secondary-container" ink="secondary" value="default value">Label</mdw-textinput>
+            <mdw-textinput color="tertiary-container" ink="tertiary" placeholder="Label">Very long label that label will clip selectively </mdw-textinput>
+            <mdw-textinput class=mdw-custom placeholder="Placeholder" color="green-container" ink="green" type-style="headline" icon=edit>Custom typography and icon</mdw-textinput>
+            <mdw-textinput class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$" placeholder="10" type="number">Price</mdw-textinput>
+            <mdw-textinput icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4" maxlength="8" supporting required>Email</mdw-textinput>
+            <mdw-textinput class=mdw-custom icon=edit color="alias-container" ink="alias" supporting="I'm being helpful!" required>Name*</mdw-textinput>
+            <mdw-textinput color=secondary-container error="I am error">Errored</mdw-textinput>
+            <mdw-textinput color=secondary-container disabled>Disabled</mdw-textinput>
+            <mdw-textinput color=secondary-container disabled error="Unavailable" value="filled">Disabled</mdw-textinput>
+          </demo-flex>
+          </form>
+        </demo-section>
+        <demo-section>
+          <h2 slot=heading>Outlined</h2>
+          <demo-flex wrap style="margin:24px; gap:16px" column>
+            <mdw-textinput outlined>Label</mdw-textinput>
+            <mdw-textinput outlined color="secondary-container" ink="secondary" value="default value">Label</mdw-textinput>
+            <mdw-textinput outlined color="tertiary-container" ink="tertiary" placeholder="Label">Very long label that label will clip selectively </mdw-textinput>
+            <mdw-textinput outlined class=mdw-custom placeholder="Placeholder" color="green-container" ink="green" type-style="headline" icon=edit>Custom typography and icon</mdw-textinput>
+            <mdw-textinput outlined class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$" placeholder="10" type="number">Price</mdw-textinput>
+            <mdw-textinput outlined icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4" maxlength="8" supporting required>Email</mdw-textinput>
+            <mdw-textinput outlined class=mdw-custom icon=edit color="alias-container" ink="alias" supporting="I'm being helpful!" required>Name*</mdw-textinput>
+            <mdw-textinput outlined color=secondary-container error="I am error">Errored</mdw-textinput>
+            <mdw-textinput outlined color=secondary-container disabled>Disabled</mdw-textinput>
+            <mdw-textinput outlined color=secondary-container disabled error="Unavailable" value="filled">Disabled</mdw-textinput>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h2 slot=heading>Outlined Dense</h2>
+          <demo-flex wrap style="margin:24px; gap:16px" column>
+            <mdw-textinput outlined dense>Label</mdw-textinput>
+            <mdw-textinput outlined dense color="secondary-container" ink="secondary" value="default value">Label</mdw-textinput>
+            <mdw-textinput outlined dense color="tertiary-container" ink="tertiary" placeholder="Label">Very long label that label will clip selectively </mdw-textinput>
+            <mdw-textinput outlined dense class=mdw-custom placeholder="Placeholder" color="green-container" ink="green" type-style="headline" icon=edit>Custom typography and icon</mdw-textinput>
+            <mdw-textinput outlined dense class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$" placeholder="10" type="number">Price</mdw-textinput>
+            <mdw-textinput outlined dense icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4" maxlength="8" supporting required>Email</mdw-textinput>
+            <mdw-textinput outlined dense class=mdw-custom icon=edit color="alias-container" ink="alias" supporting="I'm being helpful!" required>Name*</mdw-textinput>
+            <mdw-textinput outlined dense color=secondary-container error="I am error">Errored</mdw-textinput>
+            <mdw-textinput outlined dense color=secondary-container disabled>Disabled</mdw-textinput>
+            <mdw-textinput outlined dense color=secondary-container disabled error="Unavailable" value="filled">Disabled</mdw-textinput>
           </demo-flex>
         </demo-section>
     </demo-section>
