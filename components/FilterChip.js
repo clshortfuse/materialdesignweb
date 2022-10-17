@@ -1,6 +1,5 @@
 import Chip from './Chip.js';
 import styles from './FilterChip.css' assert { type: 'css' };
-import Icon from './Icon.js';
 
 export default class FilterChip extends Chip {
   static elementName = 'mdw-filter-chip';
@@ -33,13 +32,14 @@ export default class FilterChip extends Chip {
       fragment.getElementById('check-icon'),
       fragment.getElementById('trailing-icon'),
     );
-    const input = fragment.getElementById('input');
-    input.removeAttribute('role');
-    input.setAttribute('autocomplete', 'off');
-    input.setAttribute('type', 'checkbox');
+    const control = fragment.getElementById('control');
+    control.removeAttribute('role');
+    control.setAttribute('autocomplete', 'off');
+    control.setAttribute('type', 'checkbox');
     return fragment;
   }
 }
 
+FilterChip.prototype.type = FilterChip.idl('type', { empty: 'checkbox', nullable: false });
 FilterChip.prototype.trailingIcon = FilterChip.idl('trailingIcon');
 FilterChip.prototype.trailingSrc = FilterChip.idl('trailingSrc');

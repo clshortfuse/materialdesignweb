@@ -6,12 +6,17 @@ export default class IconButton extends Button {
 
   static styles = [...super.styles, styles];
 
+  constructor() {
+    super();
+    this.toggleAttribute('icon', true);
+  }
+
   /**
    * @param {KeyboardEvent} event
    * @this {HTMLInputElement}
    * @return {void}
    */
-  static onInputKeyDown(event) {
+  static onControlKeyDown(event) {
     if (event.key !== 'Enter') return;
     if (this.type !== 'checkbox') return;
     event.stopPropagation();
@@ -25,11 +30,6 @@ export default class IconButton extends Button {
     // Toggle check and signal
     this.checked = !this.checked;
     this.dispatchEvent(new Event('change', { bubbles: true }));
-  }
-
-  constructor() {
-    super();
-    this.toggleAttribute('icon', true);
   }
 
   compose() {
@@ -51,27 +51,20 @@ export default class IconButton extends Button {
     switch (name) {
       case 'type':
         if (newValue === null) {
-          this.refs.input.removeAttribute('aria-pressed');
+          this.refs.control.removeAttribute('aria-pressed');
         } else if (newValue === 'checkbox') {
-          this.refs.input.setAttribute('aria-pressed', this.checked ? 'true' : 'false');
+          this.refs.control.setAttribute('aria-pressed', this.checked ? 'true' : 'false');
         }
         break;
       case 'selected':
         if (this.type !== 'checkbox') {
-          this.refs.input.removeAttribute('aria-pressed');
+          this.refs.control.removeAttribute('aria-pressed');
         }
-        this.refs.input.setAttribute('aria-pressed', newValue == null ? 'false' : 'true');
+        this.refs.control.setAttribute('aria-pressed', newValue == null ? 'false' : 'true');
 
         break;
       default:
     }
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    const { input } = this.refs;
-    input.addEventListener('change', IconButton.onInputChange, { passive: true });
-    input.addEventListener('keydown', IconButton.onInputKeyDown);
   }
 }
 

@@ -1,10 +1,8 @@
 import { handleTabKeyPress } from '../aria/modal.js';
 
-import Button from './Button.js';
 import Container from './Container.js';
 import CustomElement from './CustomElement.js';
 import styles from './Dialog.css' assert { type: 'css' };
-import Icon from './Icon.js';
 
 /** @typedef {Object<string,any>} DialogStackState */
 
@@ -26,6 +24,16 @@ export default class Dialog extends CustomElement {
 
   /** @type {DialogStack[]} */
   static OPEN_DIALOGS = [];
+
+  constructor() {
+    super();
+    if (!this.confirm) {
+      this.confirm = 'Confirm';
+    }
+    if (!this.cancel) {
+      this.cancel = 'Cancel';
+    }
+  }
 
   /**
    * @param {TransitionEvent} event
@@ -138,16 +146,6 @@ export default class Dialog extends CustomElement {
         // Revert pop state by pushing state again
         window.history.pushState(lastOpenDialog.state, lastOpenDialog.state.title);
       }
-    }
-  }
-
-  constructor() {
-    super();
-    if (!this.confirm) {
-      this.confirm = 'Confirm';
-    }
-    if (!this.cancel) {
-      this.cancel = 'Cancel';
     }
   }
 

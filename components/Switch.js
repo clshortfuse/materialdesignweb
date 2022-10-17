@@ -1,4 +1,3 @@
-import Icon from './Icon.js';
 import Input from './Input.js';
 import styles from './Switch.css' assert { type: 'css' };
 import animationStyles from './SwitchAnimations.css' assert { type: 'css' };
@@ -21,9 +20,9 @@ export default class Switch extends Input {
 
   compose() {
     const fragment = super.compose();
-    const input = fragment.getElementById('input');
-    input.setAttribute('type', 'checkbox');
-    input.setAttribute('role', 'switch');
+    const control = fragment.getElementById('control');
+    control.setAttribute('type', 'checkbox');
+    control.setAttribute('role', 'switch');
     fragment.getElementById('thumb').append(
       fragment.getElementById('overlay'),
       fragment.getElementById('ripple'),
@@ -33,6 +32,10 @@ export default class Switch extends Input {
     );
     return fragment;
   }
+
+  // @ts-ignore @override
+  // eslint-disable-next-line class-methods-use-this
+  get type() { return 'checkbox'; }
 }
 
 Switch.prototype.icon = Switch.idl('icon');

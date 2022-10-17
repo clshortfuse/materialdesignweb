@@ -1,6 +1,4 @@
 :host {
-  --mdw-input__padding-inline-start: 0;
-  --mdw-input__padding-inline-end: 0;
   display: inline-flex;
 }
 
@@ -13,7 +11,7 @@ label {
   flex: 1;
 }
 
-#input {
+#control {
   position: absolute;
   inset: 0;
   /** Firefox requires at least 1px "visible" for screen reading */
@@ -32,11 +30,11 @@ label {
   opacity: 0;
 }
 
-#input::-moz-focus-inner {
+#control::-moz-focus-inner {
   border: 0;
 }
 
 /* Fix active ripple state */
-#input:active ~ #ripple > #ripple-inner {
+#control:active ~ #ripple > #ripple-inner {
   animation-name: var(--mdw-ripple__fade-in-name), none;
 }

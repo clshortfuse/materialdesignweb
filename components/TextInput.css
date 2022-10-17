@@ -1,5 +1,27 @@
 /* https://m3.material.io/components/text-fields/specs */
 
+/**
+ * States:      Enabled            / Hover              / Focus              / Error              / Error Hover        / Error Focus
+ * Input:       on-surface         / on-surface         / on-surface         / on-surface         / on-surface         / on-surface
+ * Inline:      on-surface-variant / on-surface-variant / on-surface-variant / on-surface-variant / on-surface-variant / on-surface-variant
+ * Label:       on-surface-variant / on-surface*        / ink                / error              / on-error-container / error
+ * Indicator:   on-surface-variant / on-surface         / ink                / error              / on-error-container / error
+ * Caret:       (any)              / (any)              / ink                / (any)              / (any)              / error
+ * Outline:     outline            / on-surface         / ink                / error              / on-error-container / error
+ * Selection:   on-*               / on-*               / ink                / error              / on-error-container / error
+ *
+ *
+ * *Filled hovered unpopulated label may be on-surface-variant instead
+ *
+ * Input: Always on-surface
+ * Inline: Always on-surface-variant
+ * Indicator: same as label
+ * Label: same as indicator
+ * Outline: outline default, same as label+indicator on :hover or :focus
+ * Caret: same as label+indicator+outline (cannot inherit color or use currentColor)
+ * Selection:  (cannot inherit color or use currentColor)
+ */
+
 :host {
   --mdw-shape__size: var(--mdw-shape__extra-small);
   --mdw-shape__size__bottom-start-size: 0;
@@ -22,15 +44,17 @@
   --icon__inline-footprint-end: 0px;
   --label__inline-start: calc(var(--padding-inline-start) + var(--icon__inline-footprint-start));
   --label__inline-end: calc(var(--padding-inline-start) + var(--icon__inline-footprint-end));
-  --input__margin-top: 8px;
-  --input__padding-top: var(--mdw-typescale__body-small__line-height);
-  --input__padding-bottom: 8px;
-  --input__margin-bottom: 0px;
+  --control__margin-top: 8px;
+  --control__padding-top: var(--mdw-typescale__body-small__line-height);
+  --control__padding-bottom: 8px;
+  --control__margin-bottom: 0px;
 
-  --mdw-text-input__dense: 12px;
-  --outline__color: rgb(var(--mdw-color__on-surface));
+  --mdw-textinput__dense: 12px;
 
   --container-color: rgb(var(--mdw-bg));
+  --inline-color: rgb(var(--mdw-color__on-surface-variant));
+  --outline-color: rgb(var(--mdw-color__outline));
+  --label-color: rgb(var(--mdw-color__on-surface-variant));
 
   display: grid;
   grid-auto-columns: 1fr;
@@ -39,13 +63,9 @@
   cursor: pointer;
 
   background-color: transparent;
-  /* Default color of most elements */
-  color: rgb(var(--mdw-color__on-surface-variant));
-}
 
-:host(:focus) {
-  --border-width: var(--border-width__focused);
-  --outline__color: rgb(var(--mdw-ink));
+  /* State layer */
+  color: rgb(var(--mdw-color__on-surface));
 }
 
 :host([icon]) {
@@ -60,7 +80,20 @@
 
 :host(:is([color], [ink])) {
   background-color: transparent;
-  color: rgb(var(--mdw-color__on-surface-variant));
+  color: rgb(var(--mdw-color__on-surface));
+}
+
+:host(:hover) {
+  --label-color: rgb(var(--mdw-color__on-surface));
+}
+
+:host(:is(:focus,:hover:focus)) {
+  --label-color: rgb(var(--mdw-ink));
+  --border-width: var(--border-width__focused);
+}
+
+:host(:is(:hover, :focus)) {
+  --outline-color: var(--label-color);
 }
 
 label {
@@ -88,16 +121,16 @@ label {
 
 #prefix,
 #suffix,
-#input::placeholder {
+#control::placeholder {
   opacity: 0;
 
-  color: rgb(var(--mdw-color__on-surface-variant));
+  color: var(--inline-color);
 
   transition: opacity 200ms;
   will-change: opacity;
 }
 
-#input {
+#control {
   position: relative;
 
   align-self: flex-start;
@@ -110,17 +143,17 @@ label {
   min-inline-size: none;
   flex: 1;
 
-  margin-block: var(--input__margin-top) var(--input__margin-bottom);
-  padding-block: var(--input__padding-top) var(--input__padding-bottom);
+  margin-block: var(--control__margin-top) var(--control__margin-bottom);
+  padding-block: var(--control__padding-top) var(--control__padding-bottom);
 
   appearance: none;
-  caret-color: rgb(var(--mdw-ink));
+  caret-color: var(--label-color);
   cursor: auto;
 
   opacity: 1;
 
   background-color: transparent;
-  color: rgb(var(--mdw-color__on-surface));
+  color: inherit; /* rgb(var(--mdw-color__on-surface)); */
 
   font-weight: inherit;
   font-size: inherit;
@@ -132,33 +165,30 @@ label {
 #suffix,
 #prefix {
   /* Symmetrical to allow centering */
-  padding-block: var(--input__padding-bottom);
+  padding-block: var(--control__padding-bottom);
 }
 
 /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
-#input::selection {
-  background-color: rgb(var(--mdw-ink));
+#control::selection {
+  background-color: var(--label-color);
   color: rgb(var(--mdw-color__surface));
 }
 
 #overlay {
   --mdw-overlay__focus-opacity: 0;
-  color: rgb(var(--mdw-color__on-surface));
 }
 
 mdw-icon {
   --mdw-icon__size: 24px;
   align-self: center;
 
-  color: inherit;
+  color: var(--inline-color);
 }
 
 #icon {
   order: -2;
 
   margin-inline-end: 16px;
-
-  color: inherit;
 }
 
 #prefix {
@@ -181,33 +211,21 @@ mdw-icon {
 
   display: flex;
 
-  border-block-end: 2px solid currentColor;
+  border-block-end: 2px solid var(--label-color);
 
   pointer-events: none;
 
   transform: scaleY(0.5);
   transform-origin: 0% 100%;
 
-  color: var(--outline__color);
-
-  transition-duration: 1ms, 200ms;
-  /* stylelint-disable-next-line liberty/use-logical-spec */
-  transition-property: color, transform;
-  will-change: color, transform;
-}
-
-:host(:hover) {
-  --outline__color: rgb(var(--mdw-color__on-surface));
-}
-
-:host(:focus) {
-  --outline__color: rgb(var(--mdw-ink));
+  transition: transform 200ms cubic-bezier(0.0, 0.0, 0.2, 1);
+  will-change: transform;
 }
 
 :host(:focus) #indicator {
   transform: scaleY(1);
 
-  color: rgb(var(--mdw-ink));
+  transition: transform 100ms cubic-bezier(0.4, 0.0, 1, 1);
 }
 
 slot {
@@ -218,9 +236,12 @@ slot {
 
   display: block;
   overflow-x: clip;
+  overflow-y: hidden; /* FireFox bug */
 
   opacity: 1;
-  transform: translateY(calc((var(--input__margin-top) + var(--input__padding-top) + 100% + var(--input__padding-bottom) + var(--input__margin-bottom)) / 2)) translateY(-50%);
+  transform: translateY(calc((var(--control__margin-top) + var(--control__padding-top) + 100% + var(--control__padding-bottom) + var(--control__margin-bottom)) / 2)) translateY(-50%);
+
+  color: var(--label-color);
 
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -237,19 +258,15 @@ slot {
   --label__inline-end: 0;
 }
 
-:host(:focus) slot {
-  color: rgb(var(--mdw-ink));
-}
-
 :host(:is(:focus, [populated])) :is(#prefix, #suffix) {
   opacity: 1;
 }
 
-:host(:is(:focus, [populated])) #input::placeholder {
+:host(:is(:focus, [populated])) #control::placeholder {
   opacity: 0.70;
 }
 
-:host([input-suffix]) input {
+:host([input-suffix]) #control {
   text-align: end;
 }
 
@@ -278,8 +295,9 @@ slot {
 
   border: solid var(--border-width) transparent;
 
-  border-bottom-color: var(--outline__color);
+  pointer-events: none;
 
+  border-block-end-color: var(--outline-color);
   border-radius: inherit;
 }
 
@@ -288,30 +306,30 @@ slot {
   content: var(--psuedo-content, none);
 
   box-sizing: border-box;
+  margin-block: calc(var(--border-width) * -1);
+  margin-inline: calc(var(--border-width) * -1);
+  border: solid var(--border-width) var(--outline-color);
 
-  margin: calc(var(--border-width) * -1);
-  border: solid var(--border-width) var(--outline__color);
-
-  border-bottom-color: transparent;
+  border-block-end-color: transparent;
 }
 
 #outline::before {
-  width: 16px;
+  inline-size: 16px;
 
-  margin-right: 0;
-  border-right: none;
+  margin-inline-end: 0;
 
-  border-top-left-radius: inherit;
-  border-bottom-left-radius: inherit;
+  border-start-start-radius: inherit;
+  border-end-start-radius: inherit;
+  border-inline-end: none;
 
 }
 
 #outline::after {
-  margin-left: 0;
-  border-left: none;
+  margin-inline-start: 0;
 
-  border-top-right-radius: inherit;
-  border-bottom-right-radius: inherit;
+  border-start-end-radius: inherit;
+  border-end-end-radius: inherit;
+  border-inline-start: none;
 
 }
 
@@ -322,7 +340,7 @@ slot {
   position: absolute;
   inset: 0;
 
-  border-top: solid var(--border-width) var(--outline__color);
+  border-block-start: solid var(--border-width) var(--outline-color);
 
   transition: inherit;
   transition-property: transform;
@@ -330,12 +348,6 @@ slot {
   will-change: transform;
 
 }
-
-#outline {
-  pointer-events: none;
-}
-
-
 
 #gap::before {
   /* Slightly oversized to overlap */
@@ -366,15 +378,11 @@ slot {
   align-items: center;
 }
 
-:host([outlined]) input {
-
-}
-
 :host([outlined]) #gap {
   position: relative;
 
   box-sizing: border-box;
-  max-width: calc(100% - 24px);
+  max-inline-size: calc(100% - 24px);
   margin-block: calc(var(--border-width) * -1);
   padding-inline-start: calc(4px + var(--icon__inline-footprint-start, 0px));
   padding-inline-end: calc(4px + var(--icon__inline-footprint-end, 0px));
@@ -384,17 +392,17 @@ slot {
 }
 
 :host([outlined]) #outline::before {
-  width: 12px;
+  inline-size: 12px;
   flex: none;
 }
 
 :host([outlined]) {
   --mdw-shape__size__bottom-start-size: var(--mdw-shape__size);
   --mdw-shape__size__bottom-end-size: var(--mdw-shape__size);
-  --input__margin-top: 0px;
-  --input__margin-bottom: 0px;
-  --input__padding-top: 16px;
-  --input__padding-bottom: 16px;
+  --control__margin-top: 0px;
+  --control__margin-bottom: 0px;
+  --control__padding-top: 16px;
+  --control__padding-bottom: 16px;
 }
 
 :host([outlined]) slot {
@@ -409,16 +417,24 @@ slot {
   --container-color: transparent;
 }
 
+#outline {
+  border-color: rgb(var(--mdw-color__outline));
+}
+
+#outline:is(:hover,:focus) {
+  border-color: currentColor;
+}
+
 #outline::after {
-  min-width: 12px;
+  min-inline-size: 12px;
   flex: 1;
 
   /* background-color: rgba(0,255,0,.20); */
 }
 
 :host([outlined][dense]) {
-  --input__padding-top: var(--mdw-text-input__dense);
-  --input__padding-bottom: var(--mdw-text-input__dense);
+  --control__padding-top: var(--mdw-textinput__dense);
+  --control__padding-bottom: var(--mdw-textinput__dense);
 }
 
 :host([outlined]:is(:focus, [populated])) {
@@ -430,7 +446,8 @@ slot {
 }
 
 #supporting {
-  margin-top: 4px;
+  min-block-size: var(--mdw-typescale__body-small__line-height);
+  margin-block-start: 4px;
   margin-inline: 16px;
 
   font-weight: var(--mdw-typescale__body-small__font-weight); /* Not spec */
@@ -444,26 +461,26 @@ slot {
   display: none;
 }
 
-:host([error]) {
-  --mdw-ink: var(--mdw-color__error);
-  --outline__color: rgb(var(--mdw-color__error));
-  color: rgb(var(--mdw-color__error));
+:host([supporting]) #supporting {
+  display: block;
 }
 
-:host([error]:hover) {
-  --mdw-ink: var(--mdw-color__on-error-container);
-  --outline__color: rgb(var(--mdw-color__on-error-container));
-  color: rgb(var(--mdw-color__on-error-container));
+:host(:is([error],[invalid])) {
+  --label-color: rgb(var(--mdw-color__error));
+  --outline-color: var(--label-color);
 }
 
-:host([error]:focus) {
-  --mdw-ink: var(--mdw-color__error);
-  --outline__color: rgb(var(--mdw-color__error));
-  color: rgb(var(--mdw-color__error));
+:host(:is([error],[invalid]):hover) {
+  --label-color: rgb(var(--mdw-color__on-error-container));
 }
 
-:host([disabled]) {
-  --outline__color: rgba(var(--mdw-color__on-surface), calc(0.12/0.38));
+:host(:is([error],[invalid]):focus) {
+  --label-color: rgb(var(--mdw-color__error));
+}
+
+:host(:is([disabled],[disabled]:hover)) {
+  --label-color: rgb(var(--mdw-color__on-surface));
+  --outline-color: rgba(var(--mdw-color__on-surface), calc(0.12/0.38));
   --container-color: rgba(var(--mdw-color__on-surface), calc(0.04/0.38));
   opacity: 0.38;
 

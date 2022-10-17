@@ -3,7 +3,7 @@ import Input from './Input.js';
 import styles from './TextInput.css' assert { type: 'css' };
 
 export default class TextInput extends Input {
-  static elementName = 'mdw-text-input';
+  static elementName = 'mdw-textinput';
 
   static styles = [...super.styles, styles];
 
@@ -25,7 +25,7 @@ export default class TextInput extends Input {
   compose() {
     const fragment = super.compose();
     const { html } = this;
-    const input = fragment.getElementById('input');
+    const input = fragment.getElementById('control');
     input.setAttribute('type', 'text');
     input.setAttribute('placeholder', '{placeholder}');
     fragment.getElementById('label').append(
@@ -44,7 +44,7 @@ export default class TextInput extends Input {
       fragment.getElementById('slot'),
     );
     fragment.append(html`
-      <div id=supporting>${({ supporting, error }) => (error || supporting) ?? ''}</div>
+      <div id=supporting>${({ error, _validationMessage, supporting }) => (error || _validationMessage || supporting) ?? ''}</div>
     `);
 
     fragment.getElementById('ripple').remove();
@@ -83,18 +83,24 @@ export default class TextInput extends Input {
   idlChangedCallback(name, oldValue, newValue) {
     super.idlChangedCallback(name, oldValue, newValue);
     if (oldValue == null && newValue == null) return;
-    if (name === 'value') {
-      this.toggleAttribute('populated', !!newValue);
+    switch (name) {
+      case 'value':
+      case '_badInput':
+        this._populated = this.value || this._badInput;
+        break;
+      default:
     }
   }
 }
 
+TextInput.prototype.type = TextInput.idl('type', { empty: 'text', nullable: false });
 TextInput.prototype.icon = TextInput.idl('icon');
 TextInput.prototype.inputPrefix = TextInput.idl('inputPrefix');
 TextInput.prototype.inputSuffix = TextInput.idl('inputSuffix');
 TextInput.prototype.trailingIcon = TextInput.idl('trailingIcon');
 TextInput.prototype.supporting = TextInput.idl('supporting');
 TextInput.prototype.error = TextInput.idl('error');
+TextInput.prototype._populated = TextInput.idlBoolean('_populated', { attr: 'populated' });
 
 TextInput.prototype.refs = {
   ...Input.prototype.refs,

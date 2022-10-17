@@ -2,7 +2,6 @@
 
 import * as RovingTabIndex from '../aria/rovingtabindex.js';
 
-import Icon from './Icon.js';
 import Input from './Input.js';
 import styles from './MenuItem.css' assert { type: 'css' };
 
@@ -49,9 +48,9 @@ export default class MenuItem extends Input {
       fragment.getElementById('icon'),
       fragment.getElementById('trailing'),
     );
-    const input = fragment.getElementById('input');
-    input.setAttribute('type', 'button');
-    input.setAttribute('role', 'menuitem');
+    const control = fragment.getElementById('control');
+    control.setAttribute('type', 'button');
+    control.setAttribute('role', 'menuitem');
     return fragment;
   }
 
@@ -66,20 +65,33 @@ export default class MenuItem extends Input {
     // Menu items should always receive focus
     switch (name) {
       case 'disabled':
-        this.refs.input.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
-        return;
+        this.refs.control.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
+        break;
+      default:
+    }
+  }
+
+  /**
+   * @param {string} name
+   * @param {string?} oldValue
+   * @param {string?} newValue
+   */
+  idlChangedCallback(name, oldValue, newValue) {
+    super.idlChangedCallback(name, oldValue, newValue);
+    if (oldValue == null && newValue == null) return;
+    switch (name) {
       case 'type':
         switch (newValue) {
-          case null:
-            this.refs.input.setAttribute('role', 'menuitem');
+          default:
+          case 'button':
+            this.refs.control.setAttribute('role', 'menuitem');
             break;
           case 'checkbox':
-            this.refs.input.setAttribute('role', 'menuitemcheckbox');
+            this.refs.control.setAttribute('role', 'menuitemcheckbox');
             break;
           case 'radio':
-            this.refs.input.setAttribute('role', 'menuitemradio');
+            this.refs.control.setAttribute('role', 'menuitemradio');
             break;
-          default:
         }
         break;
       default:
@@ -113,6 +125,7 @@ export default class MenuItem extends Input {
   }
 }
 
+MenuItem.prototype.type = MenuItem.idl('type', { empty: 'button', nullable: false });
 MenuItem.prototype.icon = MenuItem.idl('icon');
 MenuItem.prototype.src = MenuItem.idl('src');
 MenuItem.prototype.trailing = MenuItem.idl('trailing');

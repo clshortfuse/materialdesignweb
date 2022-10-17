@@ -13,6 +13,9 @@ export default class Overlay extends Container {
 
   static lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matches;
 
+  /** @type {'mouse'|'touch'|'key'|null} */
+  #lastInteraction = null;
+
   /**
    * @param {PointerEvent|MouseEvent} event
    * @this {Overlay}
@@ -75,9 +78,6 @@ export default class Overlay extends Container {
       this.refs.overlay?.setAttribute('touched', '');
     }
   }
-
-  /** @type {'mouse'|'touch'|'key'|null} */
-  #lastInteraction = null;
 
   connectedCallback() {
     // super.connectedCallback();

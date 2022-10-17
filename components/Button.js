@@ -20,9 +20,9 @@ export default class Button extends Input {
    * @this {HTMLInputElement} this
    * @return {void}
    */
-  static onInputClick(event) {
+  static onControlClick(event) {
     if (this.disabled) return;
-    super.onInputClick(event);
+    super.onControlClick(event);
     if (event.defaultPrevented) return;
     if (this.type !== 'submit') return;
     /** @type {{host:Button}} */ // @ts-ignore Coerce
@@ -52,13 +52,14 @@ export default class Button extends Input {
       fragment.getElementById('touch-target'),
       fragment.getElementById('outline'),
     );
-    const input = fragment.getElementById('input');
-    input.setAttribute('role', 'button');
-    input.setAttribute('type', 'button');
+    const control = fragment.getElementById('control');
+    control.setAttribute('role', 'button');
+    control.setAttribute('type', 'button');
     return fragment;
   }
 }
 
+Button.prototype.type = Button.idl('type', { empty: 'button', nullable: false });
 Button.prototype.elevated = Button.idlBoolean('elevated');
 Button.prototype.filled = Button.idlBoolean('filled');
 Button.prototype.outlined = Button.idlBoolean('outlined');

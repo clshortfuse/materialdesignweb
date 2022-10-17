@@ -25,7 +25,7 @@
 
 /**
  * @template T
- * @typedef {[T,Attr['nodeValue'],Attr['nodeValue']]} IDLTuple<T>
+ * @typedef {[T,Attr['nodeValue']]} IDLTuple<T>
  */
 
 /**
@@ -93,8 +93,8 @@ export default class CustomElement extends HTMLElement {
   /** @type {Iterable<string>} */
   static get observedAttributes() {
     const attrs = new Set();
-    for (const [, { attr }] of this.idlMap.entries()) {
-      if (attr) attrs.add(attr);
+    for (const [, { attr, enumerable }] of this.idlMap.entries()) {
+      if (attr && enumerable) attrs.add(attr);
     }
     return attrs;
   }
@@ -147,6 +147,48 @@ export default class CustomElement extends HTMLElement {
   static #generatedUIDs = new Set();
 
   static rootTemplate = '';
+
+  /** @type {PropertyDescriptor} */
+  static DUMMY_DESCRIPTOR = {
+    enumerable: true,
+    configurable: true,
+    get() {
+      return null;
+    },
+    set: CustomElement.DUMMY_DESCRIPTOR_SETTER,
+  };
+
+  /** @type {Map<string,IDLTuple<?>>} */
+  #idlValues = new Map();
+
+  /** @type {Map<string,WeakRef<HTMLElement>>} */
+  #weakRefs = new Map();
+
+  /** @type {this['composeHtml']} */
+  #html;
+
+  constructor() {
+    super();
+    this.#attachIDLs();
+    this.#attachShadow();
+    this.#attachStyles();
+    this.#attachContent();
+    this.#attachRefs();
+    this.#attachEvents();
+    this.#attachInternals();
+    this.#attachARIA();
+    const component = /** @type {typeof CustomElement} */ (this.constructor);
+    const { idlMap } = component;
+    const nonReflecting = [...idlMap.entries()]
+      .filter(([, options]) => !options.reflect)
+      .map(([key]) => [key, this[key]]);
+    if (nonReflecting.length) {
+      const dataObject = Object.fromEntries(nonReflecting);
+      this.render(dataObject);
+    }
+  }
+
+  static DUMMY_DESCRIPTOR_SETTER() {}
 
   /** @return {string} */
   static #generateUID() {
@@ -386,6 +428,8 @@ export default class CustomElement extends HTMLElement {
       }
     }
 
+    Object.defineProperty(this.prototype, name, CustomElement.DUMMY_DESCRIPTOR);
+
     this.idlMap.set(name, {
       reflect,
       enumerable,
@@ -424,36 +468,6 @@ export default class CustomElement extends HTMLElement {
    */
   static idlFloat(name, options) {
     return this.idl(name, { type: 'float', ...options });
-  }
-
-  /** @type {Map<string,IDLTuple<?>>} */
-  #idlValues = new Map();
-
-  /** @type {Map<string,WeakRef<HTMLElement>>} */
-  #weakRefs = new Map();
-
-  /** @type {this['composeHtml']} */
-  #html;
-
-  constructor() {
-    super();
-    this.#attachIDLs();
-    this.#attachShadow();
-    this.#attachStyles();
-    this.#attachContent();
-    this.#attachRefs();
-    this.#attachEvents();
-    this.#attachInternals();
-    this.#attachARIA();
-    const component = /** @type {typeof CustomElement} */ (this.constructor);
-    const { idlMap } = component;
-    const nonReflecting = [...idlMap.entries()]
-      .filter(([, options]) => !options.reflect)
-      .map(([key]) => [key, this[key]]);
-    if (nonReflecting.length) {
-      const dataObject = Object.fromEntries(nonReflecting);
-      this.render(dataObject);
-    }
   }
 
   /**
@@ -576,32 +590,42 @@ export default class CustomElement extends HTMLElement {
       const tuple = this.#getIdlTuple(key);
       const previousDataValue = tuple[0];
       if (tuple[1] === newValue) return;
-      tuple[1] = newValue;
+
+      let parsedValue;
       switch (options.type) {
         case 'boolean':
-          tuple[0] = newValue != null;
+          parsedValue = newValue != null;
           break;
         case 'string':
-          tuple[0] = newValue;
+          parsedValue = newValue;
           break;
         case 'integer':
           if (newValue == null) {
-            tuple[0] = null;
+            parsedValue = null;
           } else {
             const numValue = Number.parseInt(newValue, 10);
-            tuple[0] = Number.isNaN(numValue) ? null : numValue;
+            parsedValue = Number.isNaN(numValue) ? null : numValue;
           }
           break;
         case 'float':
           if (newValue == null) {
-            tuple[0] = null;
+            parsedValue = null;
           } else {
             const numValue = Number.parseFloat(newValue);
-            tuple[0] = Number.isNaN(numValue) ? null : numValue;
+            parsedValue = Number.isNaN(numValue) ? null : numValue;
           }
           break;
         default:
       }
+      if (!options.nullable && parsedValue == null) {
+        parsedValue = options.empty;
+      }
+      if (parsedValue === tuple[0]) {
+        // No internal value change
+        return;
+      }
+      tuple[0] = parsedValue;
+      tuple[1] = newValue;
       this.idlChangedCallback(key, previousDataValue, tuple[0]);
     }
   }
@@ -854,6 +878,11 @@ export default class CustomElement extends HTMLElement {
 
       const { enumerable, reflect, empty, nullable, attr, onNullish } = options;
 
+      const protoTypeDescriptor = Reflect.getOwnPropertyDescriptor(component.prototype, key);
+      if (protoTypeDescriptor && protoTypeDescriptor.set !== CustomElement.DUMMY_DESCRIPTOR_SETTER) {
+        // Prototype descriptor was changed, likely by class field override
+        continue;
+      }
       Object.defineProperty(this, key, {
         enumerable,
         get() {
@@ -864,6 +893,7 @@ export default class CustomElement extends HTMLElement {
           const previousValue = tuple[0];
           const newValue = (!nullable && value == null) ? empty : value;
           if (previousValue == null && newValue == null) return;
+          // Object.is()?
           if (previousValue === newValue) return;
           let parsedValue;
           /** @type {?string} */
@@ -1043,7 +1073,7 @@ export default class CustomElement extends HTMLElement {
   #getIdlTuple(key) {
     let value = this.#idlValues.get(key);
     if (!value) {
-      value = [null, null, null];
+      value = [null, null];
       this.#idlValues.set(key, value);
     }
     return value;

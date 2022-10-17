@@ -51,7 +51,7 @@ export default class Slider extends Input {
    * @this {HTMLInputElement} this
    * @return {void}
    */
-  static onInputMouseOrTouch(event) {
+  static onControlMouseOrTouch(event) {
     if (this.disabled) return;
 
     /** @type {{host:Slider}} */ // @ts-ignore Coerce
@@ -126,11 +126,10 @@ export default class Slider extends Input {
     this._isHoveringThumb = false;
   }
 
-
   compose() {
     const fragment = super.compose();
     const { html } = this;
-    fragment.getElementById('input').setAttribute('type', 'range');
+    fragment.getElementById('control').setAttribute('type', 'range');
     fragment.getElementById('ripple').remove();
     fragment.getElementById('overlay').remove();
     fragment.append(
@@ -162,26 +161,17 @@ export default class Slider extends Input {
     }
   }
 
-  get valueAsNumber() {
-    if (this.refs.input) {
-      return this.refs.input.valueAsNumber;
-    }
-    return Slider.parseFloat(this.value, 0);
-  }
-
-  set valueAsNumber(v) {
-    this.refs.input.valueAsNumber = v;
-    // this.#valueAsNumber = this.refs.input.valueAsNumber;
-    this.value = this.refs.input.value;
-  }
+  // @ts-ignore @override
+  // eslint-disable-next-line class-methods-use-this
+  get type() { return 'range'; }
 
   connectedCallback() {
     super.connectedCallback();
-    const { input } = this.refs;
+    const { control } = this.refs;
 
     for (const type of ['mousedown', 'mousemove', 'mouseout',
       'touchmove', 'touchstart', 'touchend', 'touchleave', 'touchcancel']) {
-      input.addEventListener(type, Slider.onInputMouseOrTouch, { passive: true });
+      control.addEventListener(type, Slider.onControlMouseOrTouch, { passive: true });
     }
 
     this.addEventListener('mouseout', Slider.onLeaveEvent);
@@ -190,5 +180,5 @@ export default class Slider extends Input {
 
 Slider.prototype.ticks = Slider.idl('ticks');
 Slider.prototype.showLabel = Slider.idlBoolean('showLabel', { reflect: false });
-Slider.prototype._previewValue = Slider.idl('_previewValue')
+Slider.prototype._previewValue = Slider.idl('_previewValue');
 Slider.prototype._isHoveringThumb = Slider.idlBoolean('_isHoveringThumb');

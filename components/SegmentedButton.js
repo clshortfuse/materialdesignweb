@@ -26,9 +26,9 @@ export default class SegmentedButton extends Button {
     fragment.getElementById('label').append(
       fragment.getElementById('check-icon'),
     );
-    const input = fragment.getElementById('input');
-    input.setAttribute('type', 'radio');
-    input.setAttribute('role', 'option');
+    const control = fragment.getElementById('control');
+    control.setAttribute('type', 'radio');
+    control.setAttribute('role', 'option');
     return fragment;
   }
 
@@ -40,7 +40,7 @@ export default class SegmentedButton extends Button {
   attributeChangedCallback(name, oldValue, newValue) {
     // Listboxes should always receive focus
     if (name === 'disabled') {
-      this.refs.input.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
+      this.refs.control.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
       return;
     }
     super.attributeChangedCallback(name, oldValue, newValue);
@@ -51,7 +51,7 @@ export default class SegmentedButton extends Button {
     super.idlChangedCallback(name, oldValue, newValue);
     if (name === 'checked' || name === 'type') {
       const attribute = this.type === 'checkbox' ? 'aria-checked' : 'aria-selected';
-      this.refs.input.setAttribute(attribute, this.checked ? 'true' : 'false');
+      this.refs.control.setAttribute(attribute, this.checked ? 'true' : 'false');
     }
   }
 
@@ -65,3 +65,5 @@ export default class SegmentedButton extends Button {
     RovingTabIndex.detach(this);
   }
 }
+
+SegmentedButton.prototype.type = SegmentedButton.idl('type', { empty: 'radio', nullable: false });

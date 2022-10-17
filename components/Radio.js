@@ -21,7 +21,11 @@ export default class Radio extends Input {
     fragment.getElementById('label').append(
       fragment.getElementById('icon'),
     );
-    fragment.getElementById('input').setAttribute('type', 'radio');
+    fragment.getElementById('control').setAttribute('type', 'radio');
     return fragment;
   }
+
+  // @ts-ignore @override
+  // eslint-disable-next-line class-methods-use-this
+  get type() { return 'radio'; }
 }
