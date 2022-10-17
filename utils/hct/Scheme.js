@@ -203,7 +203,7 @@ export default class Scheme {
       .withError(core.error.tone(80))
       .withOnError(core.error.tone(20))
       .withErrorContainer(core.error.tone(30))
-      .withOnErrorContainer(core.error.tone(80))
+      .withOnErrorContainer(core.error.tone(90))
       .withBackground(core.n1.tone(10))
       .withOnBackground(core.n1.tone(90))
       .withSurface(core.n1.tone(10))
