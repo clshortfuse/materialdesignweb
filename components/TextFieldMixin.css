@@ -44,10 +44,10 @@
   --icon__inline-footprint-end: 0px;
   --label__inline-start: calc(var(--padding-inline-start) + var(--icon__inline-footprint-start));
   --label__inline-end: calc(var(--padding-inline-start) + var(--icon__inline-footprint-end));
-  --control__margin-top: 8px;
-  --control__padding-top: var(--mdw-typescale__body-small__line-height);
-  --control__padding-bottom: 8px;
-  --control__margin-bottom: 0px;
+  --control__margin-top: calc(8px + var(--mdw-typescale__body-small__line-height));
+  --control__padding-top: 0px;
+  --control__padding-bottom: 4px;
+  --control__margin-bottom: 4px;
 
   --mdw-textinput__dense: 12px;
 
@@ -87,7 +87,7 @@
   --label-color: rgb(var(--mdw-color__on-surface));
 }
 
-:host(:is(:focus,:hover:focus)) {
+:host(:is(:focus, :hover:focus)) {
   --label-color: rgb(var(--mdw-ink));
   --border-width: var(--border-width__focused);
 }
@@ -101,7 +101,7 @@ label {
 
   display: flex;
 
-  align-items: flex-end;
+  align-items: flex-start;
 
   /* block-size: 56px; */
   padding-inline-start: var(--padding-inline-start);
@@ -117,6 +117,12 @@ label {
   line-height: inherit;
   font-family: inherit;
   letter-spacing: inherit;
+
+  transition: none 200ms cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+:host(:focus) label {
+  transition: none 100ms cubic-bezier(0.4, 0.0, 1, 1);
 }
 
 #prefix,
@@ -126,7 +132,8 @@ label {
 
   color: var(--inline-color);
 
-  transition: opacity 200ms;
+  transition: inherit;
+  transition-property: opacity;
   will-change: opacity;
 }
 
@@ -137,13 +144,15 @@ label {
 
   display: inline;
 
+  box-sizing: border-box;
+
   block-size: auto;
   inline-size: 0;
 
   min-inline-size: none;
   flex: 1;
-
-  margin-block: var(--control__margin-top) var(--control__margin-bottom);
+  border-block-start: solid var(--control__margin-top) transparent;
+  border-block-end: solid var(--control__margin-bottom) transparent;
   padding-block: var(--control__padding-top) var(--control__padding-bottom);
 
   appearance: none;
@@ -153,7 +162,9 @@ label {
   opacity: 1;
 
   background-color: transparent;
-  color: inherit; /* rgb(var(--mdw-color__on-surface)); */
+  border-color: transparent;
+  color: inherit;
+  /* rgb(var(--mdw-color__on-surface)); */
 
   font-weight: inherit;
   font-size: inherit;
@@ -165,7 +176,8 @@ label {
 #suffix,
 #prefix {
   /* Symmetrical to allow centering */
-  padding-block: var(--control__padding-bottom);
+  margin-block: var(--control__margin-top) var(--control__margin-bottom);
+  padding-block: var(--control__padding-top) var(--control__padding-bottom);
 }
 
 /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
@@ -218,17 +230,17 @@ mdw-icon {
   transform: scaleY(0.5);
   transform-origin: 0% 100%;
 
-  transition: transform 200ms cubic-bezier(0.0, 0.0, 0.2, 1);
+  transition: inherit;
+  transition-property: transform;
   will-change: transform;
 }
 
 :host(:focus) #indicator {
   transform: scaleY(1);
 
-  transition: transform 100ms cubic-bezier(0.4, 0.0, 1, 1);
 }
 
-slot {
+#label-text {
   position: absolute;
   inset-block-start: 0;
   inset-inline-start: var(--label__inline-start);
@@ -236,7 +248,8 @@ slot {
 
   display: block;
   overflow-x: clip;
-  overflow-y: hidden; /* FireFox bug */
+  overflow-y: hidden;
+  /* FireFox bug */
 
   opacity: 1;
   transform: translateY(calc((var(--control__margin-top) + var(--control__padding-top) + 100% + var(--control__padding-bottom) + var(--control__margin-bottom)) / 2)) translateY(-50%);
@@ -270,14 +283,17 @@ slot {
   text-align: end;
 }
 
-:host(:is(:focus, [populated])) slot {
+:host(:is(:focus, [populated])) #label-text {
   transform: translateY(8px);
 
-  font-weight: var(--mdw-typescale__body-small__font-weight); /* Not spec */
+  font-weight: var(--mdw-typescale__body-small__font-weight);
+  /* Not spec */
   font-size: var(--mdw-typescale__body-small__font-size);
   line-height: var(--mdw-typescale__body-small__line-height);
-  font-family: var(--mdw-typescale__body-small__font-family); /* Not spec */
-  letter-spacing: var(--mdw-typescale__body-small__letter-spacing); /* Not spec */
+  font-family: var(--mdw-typescale__body-small__font-family);
+  /* Not spec */
+  letter-spacing: var(--mdw-typescale__body-small__letter-spacing);
+  /* Not spec */
 }
 
 /** Outlined **/
@@ -364,14 +380,13 @@ slot {
 
 #gap {
   /* Close gap */
-  transition: padding 200ms cubic-bezier(0.0, 0.0, 0.2, 1);
+  transition: inherit;
+  transition-property: padding;
 }
 
-:host(:is(:focus,[populated])) #gap {
+:host(:is(:focus, [populated])) #gap {
   /* Open gap */
   --gap-transform: scaleX(0);
-  transition: padding 100ms cubic-bezier(0.4, 0.0, 1, 1);
-  /* transition-delay: 100ms; */
 }
 
 :host([outlined]) label {
@@ -399,13 +414,13 @@ slot {
 :host([outlined]) {
   --mdw-shape__size__bottom-start-size: var(--mdw-shape__size);
   --mdw-shape__size__bottom-end-size: var(--mdw-shape__size);
-  --control__margin-top: 0px;
+  --control__margin-top: calc(var(--mdw-typescale__body-small__line-height) / 2);
   --control__margin-bottom: 0px;
-  --control__padding-top: 16px;
+  --control__padding-top: calc(16px - calc(var(--mdw-typescale__body-small__line-height) / 2));
   --control__padding-bottom: 16px;
 }
 
-:host([outlined]) slot {
+:host([outlined]) #label-text {
   position: relative;
 }
 
@@ -419,9 +434,11 @@ slot {
 
 #outline {
   border-color: rgb(var(--mdw-color__outline));
+
+  transition: inherit;
 }
 
-#outline:is(:hover,:focus) {
+#outline:is(:hover, :focus) {
   border-color: currentColor;
 }
 
@@ -433,7 +450,9 @@ slot {
 }
 
 :host([outlined][dense]) {
-  --control__padding-top: var(--mdw-textinput__dense);
+  --control__margin-top: calc(var(--mdw-typescale__body-small__line-height) / 2);
+  --control__margin-bottom: 0px;
+  --control__padding-top: calc(var(--mdw-textinput__dense) - calc(var(--mdw-typescale__body-small__line-height) / 2));
   --control__padding-bottom: var(--mdw-textinput__dense);
 }
 
@@ -441,7 +460,7 @@ slot {
   --icon__inline-footprint-start: 0px;
 }
 
-:host([outlined]:is(:focus, [populated])) slot {
+:host([outlined]:is(:focus, [populated])) #label-text {
   transform: translateY(-50%);
 }
 
@@ -450,11 +469,14 @@ slot {
   margin-block-start: 4px;
   margin-inline: 16px;
 
-  font-weight: var(--mdw-typescale__body-small__font-weight); /* Not spec */
+  font-weight: var(--mdw-typescale__body-small__font-weight);
+  /* Not spec */
   font-size: var(--mdw-typescale__body-small__font-size);
   line-height: var(--mdw-typescale__body-small__line-height);
-  font-family: var(--mdw-typescale__body-small__font-family); /* Not spec */
-  letter-spacing: var(--mdw-typescale__body-small__letter-spacing); /* Not spec */
+  font-family: var(--mdw-typescale__body-small__font-family);
+  /* Not spec */
+  letter-spacing: var(--mdw-typescale__body-small__letter-spacing);
+  /* Not spec */
 }
 
 #supporting:empty {
@@ -465,20 +487,20 @@ slot {
   display: block;
 }
 
-:host(:is([error],[invalid])) {
+:host(:is([error], [invalid])) {
   --label-color: rgb(var(--mdw-color__error));
   --outline-color: var(--label-color);
 }
 
-:host(:is([error],[invalid]):hover) {
+:host(:is([error], [invalid]):hover) {
   --label-color: rgb(var(--mdw-color__on-error-container));
 }
 
-:host(:is([error],[invalid]):focus) {
+:host(:is([error], [invalid]):focus) {
   --label-color: rgb(var(--mdw-color__error));
 }
 
-:host(:is([disabled],[disabled]:hover)) {
+:host(:is([disabled], [disabled]:hover)) {
   --label-color: rgb(var(--mdw-color__on-surface));
   --outline-color: rgba(var(--mdw-color__on-surface), calc(0.12/0.38));
   --container-color: rgba(var(--mdw-color__on-surface), calc(0.04/0.38));
