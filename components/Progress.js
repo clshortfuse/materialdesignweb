@@ -9,6 +9,8 @@ export default class Progress extends Container {
 
   static styles = [...super.styles, styles, lineStyles, circleStyles];
 
+  #progress = /** @type {HTMLProgressElement} */ (this.refs.progress);
+
   compose() {
     const fragment = super.compose();
     // eslint-disable-next-line prefer-destructuring
@@ -64,23 +66,15 @@ export default class Progress extends Container {
     }
   }
 
-  get position() { return this.refs.progress.position; }
+  get position() { return this.#progress.position; }
 
-  get labels() { return this.refs.progress.labels; }
+  get labels() { return this.#progress.labels; }
 }
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element
 
-Progress.prototype._previousValueAsFraction = Progress.idlFloat('_previousValueAsFraction');
-Progress.prototype.valueAsFraction = Progress.idlFloat('valueAsFraction');
-Progress.prototype.value = Progress.idlFloat('value');
-Progress.prototype.max = Progress.idlFloat('max');
-Progress.prototype.autoHide = Progress.idlBoolean('autoHide');
-
-Progress.prototype.refs = {
-  ...Container.prototype.refs,
-  ...Progress.addRefs({
-    progress: 'progress',
-    circle: 'div',
-  }),
-};
+Progress.prototype._previousValueAsFraction = Progress.idl('_previousValueAsFraction', 'float');
+Progress.prototype.valueAsFraction = Progress.idl('valueAsFraction', 'float');
+Progress.prototype.value = Progress.idl('value', 'float');
+Progress.prototype.max = Progress.idl('max', 'float');
+Progress.prototype.autoHide = Progress.idl('autoHide', 'boolean');

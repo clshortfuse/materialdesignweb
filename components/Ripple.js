@@ -61,7 +61,7 @@ export default class Ripple extends Overlay {
     const [touch] = event.changedTouches;
     if (!touch) return;
 
-    const { ripple } = this.refs;
+    const ripple = this.#ripple;
     if (!ripple) return;
     const rect = ripple.getBoundingClientRect();
     const x = touch.pageX - rect.left - window.pageXOffset;
@@ -96,6 +96,10 @@ export default class Ripple extends Overlay {
     });
   }
 
+  get #ripple() { return this.refs.ripple; }
+
+  get #rippleInner() { return this.refs['ripple-inner']; }
+
   /**
    * @param {number} [x]
    * @param {number} [y]
@@ -104,7 +108,8 @@ export default class Ripple extends Overlay {
   updateRipplePosition(x, y) {
     let width;
     let height;
-    const { ripple, rippleInner } = this.refs;
+    const ripple = this.#ripple;
+    const rippleInner = this.#rippleInner;
     if (!ripple || !rippleInner) return;
     const { clientWidth, clientHeight } = ripple;
 
@@ -134,7 +139,7 @@ export default class Ripple extends Overlay {
    * @return {void}
    */
   drawRipple(initiator, x, y) {
-    const { rippleInner } = this.refs;
+    const rippleInner = this.#rippleInner;
     if (!rippleInner) return;
     const currentInitiator = rippleInner.getAttribute('mdw-fade-in');
 
@@ -159,7 +164,7 @@ export default class Ripple extends Overlay {
 
   /** @return {void} */
   clearRipple() {
-    const { rippleInner } = this.refs;
+    const rippleInner = this.#rippleInner;
     if (!rippleInner) return;
     if (!rippleInner.hasAttribute('mdw-fade-in')) return;
     if (!rippleInner.hasAttribute('mdw-fade-in-complete')) return;
@@ -171,7 +176,7 @@ export default class Ripple extends Overlay {
 
   connectedCallback() {
     super.connectedCallback();
-    const { rippleInner } = this.refs;
+    const rippleInner = this.#rippleInner;
     if (rippleInner) {
       rippleInner.removeAttribute('mdw-fade-in');
       rippleInner.removeAttribute('mdw-fade-in-repeat');
@@ -190,11 +195,3 @@ export default class Ripple extends Overlay {
     super.disconnectedCallback();
   }
 }
-
-Ripple.prototype.refs = {
-  ...Overlay.prototype.refs,
-  ...Ripple.addRefs({
-    ripple: { id: 'ripple' },
-    rippleInner: { id: 'ripple-inner' },
-  }),
-};

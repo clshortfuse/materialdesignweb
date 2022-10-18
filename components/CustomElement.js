@@ -16,16 +16,13 @@
  * @prop {T2} [empty] Empty value when not nullable
  * @prop {(value: T2) => T2} [onNullish] Function used when null passed
  * @prop {T2} [default]
+ * @prop {WeakMap<CustomElement, T1>} [values]
+ * @prop {WeakMap<CustomElement, string>} [attrValues]
  */
 
 /**
  * @typedef RefOptions
  * @prop {string} id
- */
-
-/**
- * @template T
- * @typedef {[T,Attr['nodeValue']]} IDLTuple<T>
  */
 
 /**
@@ -92,11 +89,9 @@ export default class CustomElement extends HTMLElement {
 
   /** @type {Iterable<string>} */
   static get observedAttributes() {
-    const attrs = new Set();
-    for (const [, { attr, enumerable }] of this.idlMap.entries()) {
-      if (attr && enumerable) attrs.add(attr);
-    }
-    return attrs;
+    return [...this.idls.values()]
+      .filter((options) => options.attr && options.enumerable)
+      .map(({ attr }) => attr);
   }
 
   static interpolatesTemplate = true;
@@ -152,20 +147,49 @@ export default class CustomElement extends HTMLElement {
   static DUMMY_DESCRIPTOR = {
     enumerable: true,
     configurable: true,
-    get() {
-      return null;
-    },
-    set: CustomElement.DUMMY_DESCRIPTOR_SETTER,
+    get: () => null,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    set() {},
   };
 
-  /** @type {Map<string,IDLTuple<?>>} */
-  #idlValues = new Map();
+  /** @type {this['composeHtml']} */
+  #html;
 
   /** @type {Map<string,WeakRef<HTMLElement>>} */
   #weakRefs = new Map();
 
-  /** @type {this['composeHtml']} */
-  #html;
+  /** @type {Record<string, HTMLElement>}} */
+  refs = new Proxy({}, {
+    /**
+     * @param {any} target
+     * @param {string} p
+     * @return {HTMLElement}
+     */
+    get: (target, p) => {
+      let element = this.#weakRefs.get(p)?.deref();
+      if (!element) {
+        element = this.shadowRoot.getElementById(p);
+        if (element) {
+          this.#weakRefs.set(p, new WeakRef(element));
+        }
+      }
+      return element;
+    },
+    /**
+     * @param {any} target
+     * @param {string} p
+     * @param {HTMLElement} value
+     * @return {boolean}
+     */
+    set: (target, p, value) => {
+      if (value) {
+        this.#weakRefs.set(p, new WeakRef(value));
+      } else {
+        this.#weakRefs.delete(p);
+      }
+      return true;
+    },
+  });
 
   constructor() {
     super();
@@ -173,13 +197,12 @@ export default class CustomElement extends HTMLElement {
     this.#attachShadow();
     this.#attachStyles();
     this.#attachContent();
-    this.#attachRefs();
     this.#attachEvents();
     this.#attachInternals();
     this.#attachARIA();
     const component = /** @type {typeof CustomElement} */ (this.constructor);
-    const { idlMap } = component;
-    const nonReflecting = [...idlMap.entries()]
+    const { idls } = component;
+    const nonReflecting = [...idls.entries()]
       .filter(([, options]) => !options.reflect)
       .map(([key]) => [key, this[key]]);
     if (nonReflecting.length) {
@@ -187,8 +210,6 @@ export default class CustomElement extends HTMLElement {
       this.render(dataObject);
     }
   }
-
-  static DUMMY_DESCRIPTOR_SETTER() {}
 
   /** @return {string} */
   static #generateUID() {
@@ -241,7 +262,7 @@ export default class CustomElement extends HTMLElement {
     customElements.define(elementName || this.elementName, this);
   }
 
-  static get idlMap() {
+  static get idls() {
     let map = this.idlCache.get(this);
     if (!map) {
       // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -249,26 +270,13 @@ export default class CustomElement extends HTMLElement {
       let parentMap;
       while ((parent = Object.getPrototypeOf(parent)) !== CustomElement) {
         parentMap = this.idlCache.get(parent);
-        if (parentMap) break;
+        if (parentMap) {
+          parentMap = [...parentMap.entries()].map(([name, options]) => [name, { ...options }]);
+          break;
+        }
       }
       map = new Map(parentMap);
       this.idlCache.set(this, map);
-    }
-    return map;
-  }
-
-  static get refMap() {
-    let map = this.refCache.get(this);
-    if (!map) {
-      // eslint-disable-next-line @typescript-eslint/no-this-alias
-      let parent = this;
-      let parentMap;
-      while ((parent = Object.getPrototypeOf(parent)) !== CustomElement) {
-        parentMap = this.refCache.get(parent);
-        if (parentMap) break;
-      }
-      map = new Map(parentMap);
-      this.refCache.set(this, map);
     }
     return map;
   }
@@ -343,51 +351,19 @@ export default class CustomElement extends HTMLElement {
   }
 
   /**
-   * @param {string} name
-   * @param {RefOptions} options
-   * @return {HTMLElement}
-   */
-  static ref(name, options) {
-    this.refMap.set(name, options);
-    return null;
-  }
-
-  /**
-   * @template {string} T
-   * @param  {...T} names
-   * @return {{[P in T]: RefType<P> }}
-   */
-  static addRefNames(...names) {
-    for (const name of names) {
-      this.ref(name, { id: name });
-    }
-    return null;
-  }
-
-  /**
-   * @template {keyof HTMLElementTagNameMap|Function} T1
-   * @template {{id:string,type:T1}} T2
-   * @template {Record<string, T1|T2>} T
-   * @param {T} options
-   * @return {{[P in keyof T]: RefType<T[P] extends T1 ? T[P] : T[P]['type']>}}
-   */
-  static addRefs(options) {
-    for (const [key, value] of Object.entries(options)) {
-      const id = typeof value === 'object' ? value?.id : null;
-      this.ref(key, { id: id ?? key });
-    }
-    return null;
-  }
-
-  /**
    * @template {IDLOptionType} [T1=any]
    * @template {any} [T2=ParsedIDLType<T1>]
    * @param {string} name
-   * @param {IDLOptions<T1,T2>} [options]
+   * @param {T1|IDLOptions<T1,T2>} [typeOrOptions='string']
    * @return {unknown extends T2 ? string : T2}
    */
-  static idl(name, options = {}) {
+  static idl(name, typeOrOptions) {
     const isPrivate = name[0] === '_';
+
+    /** @type {IDLOptions<T1,T2>} */
+    const options = {
+      ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
+    };
 
     const { type, attr, empty, onNullish } = options;
 
@@ -430,7 +406,7 @@ export default class CustomElement extends HTMLElement {
 
     Object.defineProperty(this.prototype, name, CustomElement.DUMMY_DESCRIPTOR);
 
-    this.idlMap.set(name, {
+    this.idls.set(name, {
       reflect,
       enumerable,
       default: options.default ?? parsedEmpty,
@@ -439,35 +415,10 @@ export default class CustomElement extends HTMLElement {
       nullable,
       empty: nullable ? null : parsedEmpty,
       onNullish,
+      values: new WeakMap(),
+      attrValues: new WeakMap(),
     });
     return null;
-  }
-
-  /**
-   * @param {string} name
-   * @param {IDLOptions<'boolean',boolean>} [options]
-   * @return {boolean}
-   */
-  static idlBoolean(name, options) {
-    return this.idl(name, { type: 'boolean', ...options });
-  }
-
-  /**
-   * @param {string} name
-   * @param {IDLOptions<'integer',number>} [options]
-   * @return {number}
-   */
-  static idlInteger(name, options) {
-    return this.idl(name, { type: 'integer', ...options });
-  }
-
-  /**
-   * @param {string} name
-   * @param {IDLOptions<'float',number>} [options]
-   * @return {number}
-   */
-  static idlFloat(name, options) {
-    return this.idl(name, { type: 'float', ...options });
   }
 
   /**
@@ -582,14 +533,13 @@ export default class CustomElement extends HTMLElement {
     if (oldValue == null && newValue == null) return;
     const component = /** @type {typeof CustomElement} */ (this.constructor);
 
-    const map = CustomElement.idlCache.get(component);
+    const map = component.idls;
     if (!map) return;
     // TODO: Index attribute names?
     for (const [key, options] of map) {
       if (options.attr !== name) continue;
-      const tuple = this.#getIdlTuple(key);
-      const previousDataValue = tuple[0];
-      if (tuple[1] === newValue) return;
+      const previousDataValue = options.values.get(this);
+      if (options.attrValues.get(this) === newValue) return;
 
       let parsedValue;
       switch (options.type) {
@@ -620,13 +570,13 @@ export default class CustomElement extends HTMLElement {
       if (!options.nullable && parsedValue == null) {
         parsedValue = options.empty;
       }
-      if (parsedValue === tuple[0]) {
+      if (parsedValue === previousDataValue) {
         // No internal value change
         return;
       }
-      tuple[0] = parsedValue;
-      tuple[1] = newValue;
-      this.idlChangedCallback(key, previousDataValue, tuple[0]);
+      options.values.set(this, parsedValue);
+      options.attrValues.set(this, newValue);
+      this.idlChangedCallback(key, previousDataValue, parsedValue);
     }
   }
 
@@ -694,10 +644,6 @@ export default class CustomElement extends HTMLElement {
     }
 
     const component = /** @type {typeof CustomElement} */ (this.constructor);
-    const { refMap } = component;
-    if (!refMap.has(id)) {
-      component.ref(id, { id });
-    }
     let fn;
     /** @type {Set<string>} */
     let props;
@@ -873,24 +819,23 @@ export default class CustomElement extends HTMLElement {
 
   #attachIDLs() {
     const component = /** @type {typeof CustomElement} */ (this.constructor);
-    for (const [key, options] of component.idlMap) {
+    for (const [key, options] of component.idls) {
       // const propName = options.propName ?? CustomElement.attrNameToPropName(key);
 
-      const { enumerable, reflect, empty, nullable, attr, onNullish } = options;
+      const { enumerable, reflect, empty, nullable, attr, onNullish, values, attrValues } = options;
 
       const protoTypeDescriptor = Reflect.getOwnPropertyDescriptor(component.prototype, key);
-      if (protoTypeDescriptor && protoTypeDescriptor.set !== CustomElement.DUMMY_DESCRIPTOR_SETTER) {
+      if (protoTypeDescriptor && protoTypeDescriptor.set !== CustomElement.DUMMY_DESCRIPTOR.set) {
         // Prototype descriptor was changed, likely by class field override
         continue;
       }
       Object.defineProperty(this, key, {
         enumerable,
         get() {
-          return this.#getIdlTuple(key)[0] ?? empty;
+          return values.get(this) ?? empty;
         },
         set(value) {
-          const tuple = this.#getIdlTuple(key);
-          const previousValue = tuple[0];
+          const previousValue = values.get(this);
           const newValue = (!nullable && value == null) ? empty : value;
           if (previousValue == null && newValue == null) return;
           // Object.is()?
@@ -934,38 +879,29 @@ export default class CustomElement extends HTMLElement {
                 attrValue = parsedValue;
               }
           }
-          const lastAttrValue = tuple[1];
+          if (previousValue === parsedValue) return;
+          const lastAttrValue = attrValues.get(this);
 
-          tuple[0] = parsedValue;
-          tuple[1] = attrValue;
-          tuple[2] = previousValue;
+          values.set(this, parsedValue);
+          attrValues.set(this, attrValue);
 
           // console.log(component.name, 'Property change: idlChangedCallback', { key, previousValue, parsedValue });
           this.idlChangedCallback(key, previousValue, parsedValue);
 
-          if (reflect) {
-            if ((lastAttrValue == null && attrValue == null) || (lastAttrValue === attrValue)) {
-              // If set to undefined instead of null;
-              console.warn('Ignoring unchanged attribute value');
-            } else {
-              // console.log('Invoking attribute change', { attr, previousValue, parsedValue });
-              if (attrValue == null) {
-                this.removeAttribute(attr);
-              } else {
-                this.setAttribute(attr, attrValue);
-              }
-            }
+          if (!reflect) return;
+          if (lastAttrValue == null && attrValue == null) return;
+          if (lastAttrValue === attrValue) return;
+          if (attrValue == null) {
+            this.removeAttribute(attr);
           } else {
-            // this.idlChangedCallback(propName, previousValue, parsedValue);
+            this.setAttribute(attr, attrValue);
           }
         },
       });
       if (options.default != null) {
-        const tuple = this.#getIdlTuple(key);
-        tuple[0] = options.default;
+        values.set(this, options.default);
       } else if (options.type === 'boolean') {
-        const tuple = this.#getIdlTuple(key);
-        tuple[0] = false;
+        values.set(this, false);
       }
     }
   }
@@ -977,59 +913,23 @@ export default class CustomElement extends HTMLElement {
    */
   #interpolate(content) {
     for (const node of content.childNodes) {
-      const { nodeType } = node;
-      switch (nodeType) {
+      switch (node.nodeType) {
         case Node.ELEMENT_NODE:
+          // @ts-ignore Skip cast
+          // eslint-disable-next-line github/array-foreach
+          [...node.attributes]
+            .forEach((attr) => this.#interpolateNode(attr, true));
+          // @ts-ignore Skip cast
+          this.#interpolate(node);
           break;
         case Node.TEXT_NODE:
           // @ts-ignore Skip cast
           this.#interpolateNode(node, false);
-          continue;
+          break;
         default:
-          continue;
       }
-
-      const element = /** @type {Element} */ (node);
-      // eslint-disable-next-line unicorn/no-useless-spread
-      for (const attribute of [...element.attributes]) {
-        this.#interpolateNode(attribute, true);
-      }
-      this.#interpolate(element);
     }
     return content;
-  }
-
-  #attachRefs() {
-    const component = /** @type {typeof CustomElement} */ (this.constructor);
-    const { refMap } = component;
-    /** @type {Record<string,?HTMLElement>} */
-    const refObject = {};
-    for (const [key, options] of refMap) {
-      let element;
-      if (options.id) {
-        element = this.shadowRoot.getElementById(options.id);
-      } else {
-        throw new Error(`Invalid ref options: ${JSON.stringify(options)}`);
-      }
-      // eslint-disable-next-line @typescript-eslint/no-this-alias
-      const scope = this;
-      Object.defineProperty(refObject, key, {
-        enumerable: true,
-        get() {
-          return scope.#weakRefs.get(key)?.deref();
-        },
-        set(value) {
-          if (value) {
-            scope.#weakRefs.set(key, new WeakRef(value));
-          } else {
-            scope.#weakRefs.delete(key);
-          }
-        },
-      });
-      // @ts-ignore TS doesn't process defineProperty
-      refObject[key] = element;
-    }
-    this.refs = refObject;
   }
 
   #attachEvents() {
@@ -1037,7 +937,7 @@ export default class CustomElement extends HTMLElement {
     const { eventMap } = component;
     for (const [id, events] of eventMap) {
       /** @type {HTMLElement} */
-      const ref = this.refs[id] ?? this.shadowRoot.getElementById(id);
+      const ref = this.refs[id];
       if (!ref) {
         console.warn('Could not bind events for #', id);
         continue;
@@ -1064,18 +964,5 @@ export default class CustomElement extends HTMLElement {
         }
       }
     }
-  }
-
-  /**
-   * @param {string} key
-   * @return {IDLTuple<?>}
-   */
-  #getIdlTuple(key) {
-    let value = this.#idlValues.get(key);
-    if (!value) {
-      value = [null, null];
-      this.#idlValues.set(key, value);
-    }
-    return value;
   }
 }

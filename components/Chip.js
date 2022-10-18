@@ -12,4 +12,4 @@ export default class Chip extends Button {
   }
 }
 
-Chip.prototype.suggestion = Chip.idlBoolean('suggestion');
+Chip.prototype.suggestion = Chip.idl('suggestion', 'boolean');

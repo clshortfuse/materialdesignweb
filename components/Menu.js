@@ -28,6 +28,12 @@ export default class Menu extends CustomElement {
   /** @type {MenuStack[]} */
   static OPEN_MENUS = [];
 
+  #dialog = /** @type {HTMLDialogElement} */ (this.refs.dialog);
+
+  #container = this.refs.container;
+
+  returnValue = '';
+
   /**
    * @param {Event} event
    * @this {HTMLSlotElement}
@@ -160,8 +166,6 @@ export default class Menu extends CustomElement {
     RovingTabIndex.removeTabIndex(this.childMenuItems, [currentItem]);
   }
 
-  returnValue = '';
-
   compose() {
     const fragment = super.compose();
     const { html } = this;
@@ -192,9 +196,9 @@ export default class Menu extends CustomElement {
       }
     }
     // if (this.dialogElement.getAttribute('aria-hidden') === 'true') return false;
-    if (Menu.supportsHTMLDialogElement && this.refs.dialog.open) {
+    if (Menu.supportsHTMLDialogElement && this.#dialog.open) {
     // Force close native dialog
-      this.refs.dialog.close();
+      this.#dialog.close();
     }
 
     // Will invoke observed attribute change: ('aria-hidden', 'true');
@@ -362,7 +366,7 @@ export default class Menu extends CustomElement {
     * - Open from center           9i             █·
     */
 
-    const popupElement = this.refs.container;
+    const popupElement = this.#container;
     popupElement.style.setProperty('max-height', 'none');
     popupElement.style.setProperty('width', 'auto');
     const newSize = Math.ceil(popupElement.clientWidth / 56);
@@ -617,7 +621,7 @@ export default class Menu extends CustomElement {
   showModal(source) {
     if (this.open) return false;
     if (Menu.supportsHTMLDialogElement) {
-      this.refs.dialog.showModal();
+      this.#dialog.showModal();
       this.isNativeModal = true;
     }
     return this.show(source);
@@ -634,7 +638,7 @@ export default class Menu extends CustomElement {
     if (source) {
       this.updateMenuPosition(source);
     } else {
-      const popupElement = this.refs.container;
+      const popupElement = this.#container;
       popupElement.style.removeProperty('inset');
       popupElement.style.removeProperty('top');
       popupElement.style.removeProperty('left');
@@ -647,8 +651,8 @@ export default class Menu extends CustomElement {
         popupElement.removeAttribute('style');
       }
     }
-    if (Menu.supportsHTMLDialogElement && !this.refs.dialog.open) {
-      this.refs.dialog.show();
+    if (Menu.supportsHTMLDialogElement && !this.#dialog.open) {
+      this.#dialog.show();
       const main = document.querySelector('main');
       if (main) {
         main.setAttribute('aria-hidden', 'true');
@@ -698,11 +702,6 @@ export default class Menu extends CustomElement {
   }
 }
 
-Menu.prototype.open = Menu.idlBoolean('open');
+Menu.prototype.open = Menu.idl('open', 'boolean');
 Menu.prototype.direction = Menu.idl('direction');
 Menu.prototype.position = Menu.idl('position');
-
-Menu.prototype.refs = Menu.addRefs({
-  dialog: 'dialog',
-  container: Container,
-});

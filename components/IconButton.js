@@ -6,6 +6,8 @@ export default class IconButton extends Button {
 
   static styles = [...super.styles, styles];
 
+  #input = /** @type {HTMLInputElement} */ (this.refs.control);
+
   constructor() {
     super();
     this.toggleAttribute('icon', true);
@@ -51,16 +53,16 @@ export default class IconButton extends Button {
     switch (name) {
       case 'type':
         if (newValue === null) {
-          this.refs.control.removeAttribute('aria-pressed');
+          this.#input.removeAttribute('aria-pressed');
         } else if (newValue === 'checkbox') {
-          this.refs.control.setAttribute('aria-pressed', this.checked ? 'true' : 'false');
+          this.#input.setAttribute('aria-pressed', this.checked ? 'true' : 'false');
         }
         break;
       case 'selected':
         if (this.type !== 'checkbox') {
-          this.refs.control.removeAttribute('aria-pressed');
+          this.#input.removeAttribute('aria-pressed');
         }
-        this.refs.control.setAttribute('aria-pressed', newValue == null ? 'false' : 'true');
+        this.#input.setAttribute('aria-pressed', newValue == null ? 'false' : 'true');
 
         break;
       default:
@@ -68,4 +70,4 @@ export default class IconButton extends Button {
   }
 }
 
-IconButton.idlMap.delete('icon');
+IconButton.idls.delete('icon');

@@ -24,4 +24,4 @@ export default class Fab extends ExtendedFab {
 /** @type {'small'|'large'} */
 Fab.prototype.fabSize = Fab.idl('fabSize');
 
-Fab.idlMap.delete('icon');
+Fab.idls.delete('icon');

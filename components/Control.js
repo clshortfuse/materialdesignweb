@@ -28,6 +28,8 @@ export default class Control extends Ripple {
 
   static controlTagName = 'input';
 
+  static controlVoidElement = true;
+
   static FORM_IPC_EVENT = 'mdw-control-changed';
 
   static GlobalListener = new EventTarget();
@@ -45,9 +47,11 @@ export default class Control extends Ripple {
   /** @type {EventTarget} */
   #ipcTarget = null;
 
+  #control = /** @type {HTMLControlElement} */ (this.refs.control);
+
   constructor() {
     super();
-    this._value = this.refs.control.value;
+    this._value = this.#control.value;
     if (!this.hasAttribute('tabindex')) {
       // Expose this element as focusable
       this.setAttribute('tabindex', '0');
@@ -129,7 +133,7 @@ export default class Control extends Ripple {
           onfocus="{~constructor.onControlFocus}"
           onblur="{~constructor.onControlBlur}"
           oninput="{constructor.onControlInput}"
-          >
+          >${component.controlVoidElement ? '' : `</${component.controlTagName}>`}
       </label>
     `);
     fragment.getElementById('label').append(
@@ -148,29 +152,27 @@ export default class Control extends Ripple {
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
     if (oldValue == null && newValue == null) return;
-    const { control } = this.refs;
-    if (!control) return;
     switch (name) {
       case 'aria-label':
         if (newValue == null) {
-          control.removeAttribute(name);
+          this.#control.removeAttribute(name);
           if (!this.hasAttribute('aria-labelledby')) {
-            control.setAttribute('aria-labelledby', 'slot');
+            this.#control.setAttribute('aria-labelledby', 'slot');
           }
         } else {
-          control.setAttribute(name, newValue);
+          this.#control.setAttribute(name, newValue);
           if (!this.hasAttribute('aria-labelledby')) {
-            control.removeAttribute('aria-labelledby');
+            this.#control.removeAttribute('aria-labelledby');
           }
         }
         break;
       case 'disabled':
-        switch (control.getAttribute('role')) {
+        switch (this.#control.getAttribute('role')) {
           case null:
           case 'button':
           case 'radio':
           case 'switch':
-            control.disabled = newValue != null;
+            this.#control.disabled = newValue != null;
             if (newValue === null) {
               this.setAttribute('tabindex', '0');
             } else {
@@ -184,18 +186,18 @@ export default class Control extends Ripple {
     }
     if (name === 'aria-controls') {
       if (newValue == null) {
-        control.removeAttribute(name);
+        this.#control.removeAttribute(name);
       } else {
-        control.setAttribute(name, newValue);
+        this.#control.setAttribute(name, newValue);
       }
     }
 
     const component = /** @type {typeof Control} */ (this.constructor);
     if (component.clonedContentAttributes.includes(name)) {
       if (newValue == null) {
-        control.removeAttribute(name);
+        this.#control.removeAttribute(name);
       } else {
-        control.setAttribute(name, newValue);
+        this.#control.setAttribute(name, newValue);
       }
     }
 
@@ -203,10 +205,10 @@ export default class Control extends Ripple {
       if (!this.hasAttribute('value')) {
         // Force HTMLInputElement to recalculate default
         // Unintended effect of incrementally changing attributes (eg: range)
-        control.setAttribute('value', '');
+        this.#control.setAttribute('value', '');
       }
       // Changing control attribute may change the value (eg: min/max)
-      this._value = control.value;
+      this._value = this.#control.value;
     }
   }
 
@@ -285,7 +287,7 @@ export default class Control extends Ripple {
   /** @type {HTMLElement['focus']} */
   focus(options = undefined) {
     super.focus(options);
-    this.refs.control?.focus(options);
+    this.#control.focus(options);
   }
 
   get form() { return this.elementInternals.form; }
@@ -298,8 +300,8 @@ export default class Control extends Ripple {
   set value(v) {
     console.warn('setting value');
     this._dirtyValue = true;
-    this.refs.control.value = v;
-    this._value = this.refs.control.value;
+    this.#control.value = v;
+    this._value = this.#control.value;
   }
 
   get validity() { return this.elementInternals.validity; }
@@ -309,25 +311,24 @@ export default class Control extends Ripple {
   get willValidate() { return this.elementInternals.willValidate; }
 
   checkValidity() {
-    const { control } = this.refs;
-    const validityState = control.checkValidity();
+    const validityState = this.#control.checkValidity();
     /** @type {Partial<ValidityState>} */
     const newValidity = {};
     // eslint-disable-next-line guard-for-in
-    for (const key in control.validity) {
+    for (const key in this.#control.validity) {
       // @ts-ignore Skip cast
-      newValidity[key] = control.validity[key];
+      newValidity[key] = this.#control.validity[key];
     }
-    this.elementInternals.setValidity(newValidity, control.validationMessage);
+    this.elementInternals.setValidity(newValidity, this.#control.validationMessage);
     this._invalid = !validityState;
-    this._validationMessage = control.validationMessage;
-    this._badInput = control.validity.badInput;
+    this._validationMessage = this.#control.validationMessage;
+    this._badInput = this.#control.validity.badInput;
     return validityState;
   }
 
   reportValidity() {
     this.checkValidity();
-    this.refs.control.reportValidity();
+    this.#control.reportValidity();
     return this.elementInternals.reportValidity();
   }
 
@@ -336,11 +337,11 @@ export default class Control extends Ripple {
    * @return {void}
    */
   setCustomValidity(error) {
-    this.refs.control.setCustomValidity(error);
+    this.#control.setCustomValidity(error);
     this.checkValidity();
   }
 
-  labels() { return this.elementInternals.labels; }
+  get labels() { return this.elementInternals.labels; }
 
   /**
    * @param {string} key
@@ -356,8 +357,7 @@ export default class Control extends Ripple {
   connectedCallback() {
     super.connectedCallback();
     this.removeEventListener('keydown', Ripple.onRippleKeyDown);
-    const { control } = this.refs;
-    control.addEventListener('keydown', Ripple.onRippleKeyDown, { passive: true });
+    this.#control.addEventListener('keydown', Ripple.onRippleKeyDown, { passive: true });
     // control.addEventListener('invalid', Control.onControlInvalid);
     if (!this.elementInternals.form) {
       this.formAssociatedCallback(null);
@@ -366,24 +366,23 @@ export default class Control extends Ripple {
 }
 
 Control.prototype.ariaControls = Control.idl('ariaControls');
-Control.prototype._isFocused = Control.idlBoolean('_isFocused');
+Control.prototype._isFocused = Control.idl('_isFocused', 'boolean');
 
 // https://html.spec.whatwg.org/multipage/input.html#htmlinputelement
 
 const DOMString = { onNullish: String };
-const NOT_NULLABLE = { nullable: false };
 
 Control.prototype.autocomplete = Control.idl('autocomplete', DOMString);
-Control.prototype.disabled = Control.idlBoolean('disabled');
+Control.prototype.disabled = Control.idl('disabled', 'boolean');
 // readonly attribute HTMLFormElement? form;
 Control.prototype.name = Control.idl('name', DOMString);
-Control.prototype.readOnly = Control.idlBoolean('readOnly', { attr: 'readonly' });
-Control.prototype.required = Control.idlBoolean('required');
+Control.prototype.readOnly = Control.idl('readOnly', { attr: 'readonly', type: 'boolean' });
+Control.prototype.required = Control.idl('required', 'boolean');
 Control.prototype.type = Control.idl('type', DOMString);
 //  [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
 Control.prototype._value = Control.idl('_value', { default: '', reflect: false });
-Control.prototype._invalid = Control.idlBoolean('_invalid', { attr: 'invalid' });
-Control.prototype._badInput = Control.idlBoolean('_badInput');
+Control.prototype._invalid = Control.idl('_invalid', { attr: 'invalid', type: 'boolean' });
+Control.prototype._badInput = Control.idl('_badInput', 'boolean');
 Control.prototype._validationMessage = Control.idl('_validationMessage');
 // readonly attribute boolean willValidate;
 // readonly attribute ValidityState validity;
@@ -392,10 +391,3 @@ Control.prototype._validationMessage = Control.idl('_validationMessage');
 // boolean reportValidity();
 // undefined setCustomValidity(DOMString error);
 // readonly attribute NodeList? labels;
-
-Control.prototype.refs = {
-  ...Ripple.prototype.refs,
-  ...Control.addRefs({
-    control: { id: 'control', type: /** @type {'input'|'textarea'|'select'} */ (null) },
-  }),
-};

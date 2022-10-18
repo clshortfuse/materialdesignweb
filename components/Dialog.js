@@ -25,6 +25,10 @@ export default class Dialog extends CustomElement {
   /** @type {DialogStack[]} */
   static OPEN_DIALOGS = [];
 
+  #dialog = /** @type {HTMLDialogElement} */ (this.refs.dialog);
+
+  #container = this.refs.container;
+
   constructor() {
     super();
     if (!this.confirm) {
@@ -192,11 +196,11 @@ export default class Dialog extends CustomElement {
       }
     }
     // if (this.dialogElement.getAttribute('aria-hidden') === 'true') return false;
-    if (Dialog.supportsHTMLDialogElement && this.refs.dialog.open) {
+    if (Dialog.supportsHTMLDialogElement && this.#dialog.open) {
       // Force close native dialog
-      this.refs.dialog.close(returnValue);
+      this.#dialog.close(returnValue);
     } else {
-      this.refs.dialog.returnValue = returnValue;
+      this.#dialog.returnValue = returnValue;
     }
 
     // Will invoke observed attribute change: ('aria-hidden', 'true');
@@ -235,7 +239,7 @@ export default class Dialog extends CustomElement {
   }
 
   get returnValue() {
-    return this.refs.dialog.returnValue;
+    return this.dialog.returnValue;
   }
 
   /**
@@ -245,7 +249,7 @@ export default class Dialog extends CustomElement {
   showModal(event) {
     if (this.open) return false;
     if (Dialog.supportsHTMLDialogElement) {
-      this.refs.dialog.showModal();
+      this.dialog.showModal();
       this.isNativeModal = true;
     }
     return this.show(event);
@@ -260,7 +264,7 @@ export default class Dialog extends CustomElement {
     this.open = true;
 
     if (Dialog.supportsHTMLDialogElement) {
-      this.refs.dialog.show();
+      this.dialog.show();
       const main = document.querySelector('main');
       if (main) {
         main.setAttribute('aria-hidden', 'true');
@@ -296,7 +300,7 @@ export default class Dialog extends CustomElement {
         }
         focusElement.focus();
       } else {
-        this.refs.container.focus();
+        this.#container.focus();
       }
     } catch {
       // Failed to focus
@@ -305,15 +309,10 @@ export default class Dialog extends CustomElement {
   }
 }
 
-Dialog.prototype.open = Dialog.idlBoolean('open');
+Dialog.prototype.open = Dialog.idl('open', 'boolean');
 Dialog.prototype.headline = Dialog.idl('headline');
 Dialog.prototype.description = Dialog.idl('description');
 Dialog.prototype.icon = Dialog.idl('icon');
 Dialog.prototype.default = Dialog.idl('default');
 Dialog.prototype.cancel = Dialog.idl('cancel');
 Dialog.prototype.confirm = Dialog.idl('confirm');
-
-Dialog.prototype.refs = Dialog.addRefs({
-  dialog: 'dialog',
-  container: Container,
-});

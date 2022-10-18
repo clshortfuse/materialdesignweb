@@ -44,6 +44,8 @@ export default class Input extends Control {
     'multiple', 'pattern', 'step', 'type', 'value',
   ];
 
+  #input = /** @type {HTMLInputElement} */ (this.refs.control);
+
   /**
    * @param {MouseEvent|PointerEvent} event
    * @this {HTMLInputElement}
@@ -109,29 +111,27 @@ export default class Input extends Control {
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
     if (oldValue == null && newValue == null) return;
-    const input = this.refs.control;
-    if (!input) return;
     switch (name) {
       case 'aria-label':
         if (newValue == null) {
-          input.removeAttribute(name);
+          this.#input.removeAttribute(name);
           if (!this.hasAttribute('aria-labelledby')) {
-            input.setAttribute('aria-labelledby', 'slot');
+            this.#input.setAttribute('aria-labelledby', 'slot');
           }
         } else {
-          input.setAttribute(name, newValue);
+          this.#input.setAttribute(name, newValue);
           if (!this.hasAttribute('aria-labelledby')) {
-            input.removeAttribute('aria-labelledby');
+            this.#input.removeAttribute('aria-labelledby');
           }
         }
         break;
       case 'disabled':
-        switch (input.getAttribute('role')) {
+        switch (this.#input.getAttribute('role')) {
           case null:
           case 'button':
           case 'radio':
           case 'switch':
-            input.disabled = newValue != null;
+            this.#input.disabled = newValue != null;
             if (newValue === null) {
               this.setAttribute('tabindex', '0');
             } else {
@@ -145,7 +145,7 @@ export default class Input extends Control {
     }
 
     if (name === 'checked') {
-      this._checked = input.checked;
+      this._checked = this.#input.checked;
     }
   }
 
@@ -177,7 +177,7 @@ export default class Input extends Control {
     if (oldValue == null && newValue == null) return;
     switch (name) {
       case 'type':
-        this.refs.control.type = newValue;
+        this.#input.type = newValue;
         break;
       case '_formAction':
         this.formAction = newValue;
@@ -211,108 +211,108 @@ export default class Input extends Control {
     }
   }
 
-  get files() { return this.refs.control.files; }
+  get files() { return this.#input.files; }
 
-  get indeterminate() { return this.refs.control.indeterminate; }
+  get indeterminate() { return this.#input.indeterminate; }
 
-  get select() { return this.refs.control.select; }
+  get select() { return this.#input.select; }
 
-  get selectionDirection() { return this.refs.control.selectionDirection; }
+  get selectionDirection() { return this.#input.selectionDirection; }
 
-  set selectionDirection(value) { this.refs.control.selectionDirection = value; }
+  set selectionDirection(value) { this.#input.selectionDirection = value; }
 
-  get selectionEnd() { return this.refs.control.selectionEnd; }
+  get selectionEnd() { return this.#input.selectionEnd; }
 
-  set selectionEnd(value) { this.refs.control.selectionEnd = value; }
+  set selectionEnd(value) { this.#input.selectionEnd = value; }
 
-  get selectionStart() { return this.refs.control.selectionStart; }
+  get selectionStart() { return this.#input.selectionStart; }
 
-  set selectionStart(value) { this.refs.control.selectionStart = value; }
+  set selectionStart(value) { this.#input.selectionStart = value; }
 
-  get setRangeText() { return this.refs.control.setRangeText; }
+  get setRangeText() { return this.#input.setRangeText; }
 
-  get setSelectionRange() { return this.refs.control.setSelectionRange; }
+  get setSelectionRange() { return this.#input.setSelectionRange; }
 
-  get showPicker() { return this.refs.control.showPicker; }
+  get showPicker() { return this.#input.showPicker; }
 
-  get stepDown() { return this.refs.control.stepDown; }
+  get stepDown() { return this.#input.stepDown; }
 
-  get stepUp() { return this.refs.control.stepUp; }
+  get stepUp() { return this.#input.stepUp; }
 
-  get valueAsDate() { return this.refs.control.valueAsDate; }
+  get valueAsDate() { return this.#input.valueAsDate; }
 
   set valueAsDate(value) {
-    this.refs.control.valueAsDate = value;
-    this.value = this.refs.control.value;
+    this.#input.valueAsDate = value;
+    this.value = this.#input.value;
   }
 
-  get valueAsNumber() { return this.refs.control.valueAsNumber; }
+  get valueAsNumber() { return this.#input.valueAsNumber; }
 
   set valueAsNumber(value) {
-    this.refs.control.valueAsNumber = value;
-    this.value = this.refs.control.value;
+    this.#input.valueAsNumber = value;
+    this.value = this.#input.value;
   }
 
-  get height() { return this.refs.control.height; }
+  get height() { return this.#input.height; }
 
   set height(value) {
-    this.refs.control.height = value;
+    this.#input.height = value;
     this._height = value;
   }
 
-  get formAction() { return this.refs.control.formAction; }
+  get formAction() { return this.#input.formAction; }
 
   set formAction(value) {
-    this.refs.control.formAction = value;
+    this.#input.formAction = value;
     this._formAction = value;
   }
 
-  get width() { return this.refs.control.width; }
+  get width() { return this.#input.width; }
 
   set width(value) {
-    this.refs.control.width = value;
+    this.#input.width = value;
     this._width = value;
+  }
+
+  get checked() { return this._checked; }
+
+  set checked(value) {
+    this.#input.checked = value;
+    /** @type {boolean} */
+    this._checked = this.#input.checked;
   }
 }
 
 Input.prototype.ariaControls = Input.idl('ariaControls');
-Input.prototype._isFocused = Input.idlBoolean('_isFocused');
+Input.prototype._isFocused = Input.idl('_isFocused', 'boolean');
 
 // https://html.spec.whatwg.org/multipage/input.html#htmlinputelement
 
 const DOMString = { onNullish: String };
-const NOT_NULLABLE = { nullable: false };
 
 Input.prototype.accept = Input.idl('accept', DOMString);
 Input.prototype.alt = Input.idl('alt', DOMString);
-Input.prototype.defaultChecked = Input.idlBoolean('defaultChecked', { attr: 'checked' });
+Input.prototype.defaultChecked = Input.idl('defaultChecked', { attr: 'checked', type: 'boolean' });
 //  attribute boolean checked;
-Input.prototype._checked = Input.idlBoolean('_checked', { attr: 'selected' });
+Input.prototype._checked = Input.idl('_checked', { attr: 'selected', type: 'boolean' });
 Input.prototype.dirName = Input.idl('dirName', { attr: 'dirname', ...DOMString });
 Input.prototype._formAction = Input.idl('_formAction', { attr: 'formaction' });
 Input.prototype.formEnctype = Input.idl('formEnctype', { attr: 'formenctype', ...DOMString });
 Input.prototype.formMethod = Input.idl('formMethod', { attr: 'formmethod', ...DOMString });
-Input.prototype.formNoValidate = Input.idlBoolean('formnovalidate', { attr: 'formNoValidate' });
+Input.prototype.formNoValidate = Input.idl('formnovalidate', { attr: 'formNoValidate', type: 'boolean' });
 Input.prototype.formTarget = Input.idl('formTarget', { attr: 'formtarget', ...DOMString });
-Input.prototype._height = Input.idlInteger('_height', { attr: 'height' });
+Input.prototype._height = Input.idl('_height', { attr: 'height', type: 'integer' });
 Input.prototype.max = Input.idl('max', DOMString);
-Input.prototype.maxLength = Input.idlInteger('maxLength', { attr: 'maxlength', ...NOT_NULLABLE });
+Input.prototype.maxLength = Input.idl('maxLength', { attr: 'maxlength', type: 'integer', nullable: false });
 Input.prototype.min = Input.idl('min', DOMString);
-Input.prototype.minLength = Input.idlInteger('minLength', { attr: 'minlength', ...NOT_NULLABLE });
-Input.prototype.multiple = Input.idlBoolean('multiple');
+Input.prototype.minLength = Input.idl('minLength', { attr: 'minlength', type: 'integer', nullable: false });
+Input.prototype.multiple = Input.idl('multiple', 'boolean');
 Input.prototype.pattern = Input.idl('pattern', DOMString);
 Input.prototype.placeholder = Input.idl('placeholder', DOMString);
-Input.prototype.size = Input.idlInteger('size', NOT_NULLABLE);
+Input.prototype.size = Input.idl('size', { type: 'integer', nullable: false });
 Input.prototype.src = Input.idl('src', DOMString);
 Input.prototype.step = Input.idl('step', DOMString);
 Input.prototype.type = Input.idl('type', DOMString);
 Input.prototype.defaultValue = Input.idl('defaultValue', { attr: 'value', ...DOMString });
 //  [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
-Input.prototype._width = Input.idlInteger('_width', { attr: 'width' });
-
-Input.prototype.refs = {
-  ...Ripple.prototype.refs,
-  ...Input.addRefs({
-    control: { id: 'control', type: 'input' },
-  }),
-};
+Input.prototype._width = Input.idl('_width', { attr: 'width', type: 'integer' });

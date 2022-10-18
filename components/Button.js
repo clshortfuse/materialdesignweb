@@ -60,7 +60,8 @@ export default class Button extends Input {
 }
 
 Button.prototype.type = Button.idl('type', { empty: 'button', nullable: false });
-Button.prototype.elevated = Button.idlBoolean('elevated');
-Button.prototype.filled = Button.idlBoolean('filled');
-Button.prototype.outlined = Button.idlBoolean('outlined');
+Button.prototype.elevated = Button.idl('elevated', 'boolean');
+Button.prototype.elevated = Button.idl('elevated', 'boolean');
+Button.prototype.filled = Button.idl('filled', 'boolean');
+Button.prototype.outlined = Button.idl('outlined', 'boolean');
 Button.prototype.icon = Button.idl('icon');

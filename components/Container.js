@@ -38,16 +38,11 @@ export default class Container extends Text {
   }
 }
 
-Container.prototype.disabled = Container.idlBoolean('disabled');
-Container.prototype.shapeTop = Container.idlBoolean('shapeTop');
-Container.prototype.shapeBottom = Container.idlBoolean('shapeBottom');
-Container.prototype.shapeStart = Container.idlBoolean('shapeStart');
-Container.prototype.shapeEnd = Container.idlBoolean('shapeEnd');
-Container.prototype.elevation = Container.idlInteger('elevation');
+Container.prototype.disabled = Container.idl('disabled', 'boolean');
+Container.prototype.shapeTop = Container.idl('shapeTop', 'boolean');
+Container.prototype.shapeBottom = Container.idl('shapeBottom', 'boolean');
+Container.prototype.shapeStart = Container.idl('shapeStart', 'boolean');
+Container.prototype.shapeEnd = Container.idl('shapeEnd', 'boolean');
+Container.prototype.elevation = Container.idl('elevation', 'integer');
 Container.prototype.color = Container.idl('color');
 Container.prototype.shapeStyle = Container.idl('shapeStyle');
-
-Container.prototype.refs = {
-  ...Text.prototype.refs,
-  ...Container.addRefNames('elevation'),
-};

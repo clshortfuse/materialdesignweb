@@ -18,6 +18,8 @@ export default class NavItem extends Ripple {
     ];
   }
 
+  #anchor = /** @type {HTMLAnchorElement} */ (this.refs.anchor);
+
   compose() {
     const fragment = super.compose();
     const { html } = this;
@@ -59,7 +61,7 @@ export default class NavItem extends Ripple {
   /** @type {HTMLElement['focus']} */
   focus(options = undefined) {
     super.focus(options);
-    this.refs.anchor?.focus(options);
+    this.#anchor.focus(options);
   }
 
   connectedCallback() {
@@ -72,16 +74,8 @@ export default class NavItem extends Ripple {
   }
 }
 
-NavItem.prototype.active = NavItem.idlBoolean('active');
+NavItem.prototype.active = NavItem.idl('active', 'boolean');
 NavItem.prototype.icon = NavItem.idl('icon');
 NavItem.prototype.src = NavItem.idl('src');
 NavItem.prototype.href = NavItem.idl('href');
 NavItem.prototype.badge = NavItem.idl('badge');
-
-NavItem.prototype.refs = {
-  ...Ripple.prototype.refs,
-  ...NavItem.addRefs({
-    anchor: 'a',
-    icon: Icon,
-  }),
-};

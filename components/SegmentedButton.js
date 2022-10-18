@@ -15,6 +15,8 @@ export default class SegmentedButton extends Button {
     `,
   ];
 
+  #input = /** @type {HTMLInputElement} */ (this.refs.control);
+
   constructor() {
     super();
     this.outlined = true;
@@ -40,7 +42,7 @@ export default class SegmentedButton extends Button {
   attributeChangedCallback(name, oldValue, newValue) {
     // Listboxes should always receive focus
     if (name === 'disabled') {
-      this.refs.control.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
+      this.#input.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
       return;
     }
     super.attributeChangedCallback(name, oldValue, newValue);
@@ -51,7 +53,7 @@ export default class SegmentedButton extends Button {
     super.idlChangedCallback(name, oldValue, newValue);
     if (name === 'checked' || name === 'type') {
       const attribute = this.type === 'checkbox' ? 'aria-checked' : 'aria-selected';
-      this.refs.control.setAttribute(attribute, this.checked ? 'true' : 'false');
+      this.#input.setAttribute(attribute, this.checked ? 'true' : 'false');
     }
   }
 

@@ -101,8 +101,3 @@ export default class SegmentedButtonGroup extends Container {
     this.removeEventListener(RovingTabIndex.TABINDEX_ZEROED, SegmentedButtonGroup.onTabIndexZeroed);
   }
 }
-
-SegmentedButtonGroup.prototype.refs = {
-  ...Container.prototype.refs,
-  ...SegmentedButtonGroup.addRefNames('slot'),
-};

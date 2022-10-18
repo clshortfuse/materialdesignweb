@@ -179,6 +179,6 @@ export default class Slider extends Input {
 }
 
 Slider.prototype.ticks = Slider.idl('ticks');
-Slider.prototype.showLabel = Slider.idlBoolean('showLabel', { reflect: false });
+Slider.prototype.showLabel = Slider.idl('showLabel', { type: 'boolean', reflect: false });
 Slider.prototype._previewValue = Slider.idl('_previewValue');
-Slider.prototype._isHoveringThumb = Slider.idlBoolean('_isHoveringThumb');
+Slider.prototype._isHoveringThumb = Slider.idl('_isHoveringThumb', 'boolean');

@@ -21,6 +21,8 @@ export default class MenuItem extends Input {
     `,
   ];
 
+  #input = /** @type {HTMLInputElement} */ (this.refs.control);
+
   /**
    * @param {MouseEvent} event
    * @this {MenuItem}
@@ -65,7 +67,7 @@ export default class MenuItem extends Input {
     // Menu items should always receive focus
     switch (name) {
       case 'disabled':
-        this.refs.control.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
+        this.#input.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
         break;
       default:
     }
@@ -84,13 +86,13 @@ export default class MenuItem extends Input {
         switch (newValue) {
           default:
           case 'button':
-            this.refs.control.setAttribute('role', 'menuitem');
+            this.#input.setAttribute('role', 'menuitem');
             break;
           case 'checkbox':
-            this.refs.control.setAttribute('role', 'menuitemcheckbox');
+            this.#input.setAttribute('role', 'menuitemcheckbox');
             break;
           case 'radio':
-            this.refs.control.setAttribute('role', 'menuitemradio');
+            this.#input.setAttribute('role', 'menuitemradio');
             break;
         }
         break;

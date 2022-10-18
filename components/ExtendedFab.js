@@ -7,4 +7,4 @@ export default class ExtendedFab extends Button {
   static styles = [...super.styles, styles];
 }
 
-ExtendedFab.prototype.lowered = ExtendedFab.idlBoolean('lowered');
+ExtendedFab.prototype.lowered = ExtendedFab.idl('lowered', 'boolean');

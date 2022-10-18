@@ -21,7 +21,7 @@ export default class Icon extends Text {
     ...super.fragments,
     /* html */`
       <div id=icon class={fontClass} aria-hidden="true">
-        <img id=img aria-hidden="true"/>
+        <img id=img aria-hidden="true">
       </div>
     `,
   ];
@@ -35,8 +35,9 @@ export default class Icon extends Text {
 
   static fontLibrary = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block';
 
-  /** Bind hard reference */
-  #imgElement = this.refs.img;
+  #icon = this.refs.icon;
+
+  #img = /** @type {HTMLImageElement} */ (this.refs.img);
 
   /**
    * @param {number} [width]
@@ -47,7 +48,7 @@ export default class Icon extends Text {
 
     if (this.src == null) {
       // Drop from DOM if not used (performance)
-      this.#imgElement.remove();
+      this.#img.remove();
     }
 
     if (width != null) {
@@ -75,34 +76,34 @@ export default class Icon extends Text {
     if (oldValue == null && newValue == null) return;
     if (Icon.imageElementAttributes.includes(name)) {
       if (newValue == null) {
-        this.refs.img.removeAttribute(name);
+        this.#img.removeAttribute(name);
       } else {
-        this.refs.img.setAttribute(name, newValue);
+        this.#img.setAttribute(name, newValue);
       }
     }
 
     if (name === 'src') {
       if (oldValue == null) {
-        this.refs.icon.append(this.#imgElement);
+        this.#icon.append(this.#img);
       } else if (newValue == null) {
-        this.#imgElement.remove();
+        this.#img.remove();
       }
     }
   }
 
-  get naturalWidth() { return this.refs.img.naturalWidth; }
+  get naturalWidth() { return this.#img.naturalWidth; }
 
-  get naturalHeight() { return this.refs.img.naturalHeight; }
+  get naturalHeight() { return this.#img.naturalHeight; }
 
-  get complete() { return this.refs.img.complete; }
+  get complete() { return this.#img.complete; }
 
-  get currentSrc() { return this.refs.img.currentSrc; }
+  get currentSrc() { return this.#img.currentSrc; }
 
-  get x() { return this.refs.img.x; }
+  get x() { return this.#img.x; }
 
-  get y() { return this.refs.img.y; }
+  get y() { return this.#img.y; }
 
-  get decode() { return this.refs.img.decode; }
+  get decode() { return this.#img.decode; }
 }
 
 // https://html.spec.whatwg.org/multipage/embedded-content.html#htmlimageelement
@@ -113,16 +114,12 @@ Icon.prototype.srcset = Icon.idl('srcset');
 Icon.prototype.sizes = Icon.idl('sizes');
 Icon.prototype.crossOrigin = Icon.idl('crossOrigin', { attr: 'crossorigin' });
 Icon.prototype.useMap = Icon.idl('useMap', { attr: 'usemap' });
-Icon.prototype.isMap = Icon.idlBoolean('isMap', { attr: 'ismap' });
+Icon.prototype.isMap = Icon.idl('isMap', { attr: 'ismap', type: 'boolean' });
 Icon.prototype.referrerPolicy = Icon.idl('referrerPolicy', { attr: 'referrerpolicy' });
 Icon.prototype.decoding = /** @type {'async'|'sync'|'auto'} */ (Icon.idl('decoding'));
 Icon.prototype.loading = /** @type {'eager'|'lazy'} */ (Icon.idl('loading'));
-Icon.prototype.width = Icon.idlFloat('width');
-Icon.prototype.height = Icon.idlFloat('height');
+Icon.prototype.width = Icon.idl('width', 'float');
+Icon.prototype.height = Icon.idl('height', 'float');
 
 Icon.prototype.fontClass = Icon.idl('fontClass', { reflect: false, default: 'material-symbols-outlined' });
 
-Icon.prototype.refs = {
-  ...Text.prototype.refs,
-  ...Icon.addRefNames('icon', 'img'),
-};
