@@ -122,4 +122,3 @@ Icon.prototype.width = Icon.idl('width', 'float');
 Icon.prototype.height = Icon.idl('height', 'float');
 
 Icon.prototype.fontClass = Icon.idl('fontClass', { reflect: false, default: 'material-symbols-outlined' });
-

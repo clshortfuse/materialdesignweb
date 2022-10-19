@@ -16,7 +16,7 @@ export default class Button extends Input {
   ];
 
   /**
-   * @param {Event} event
+   * @param {MouseEvent|PointerEvent} event
    * @this {HTMLInputElement} this
    * @return {void}
    */

@@ -1,8 +1,8 @@
-import Icon from './Icon.js';
 import styles from './NavItem.css' assert { type: 'css' };
 import Ripple from './Ripple.js';
 
 /** @typedef {'charset'|'coords'|'name'|'shape'} DeprecatedHTMLAnchorElementProperties */
+
 /** @implements {Omit<HTMLAnchorElement,DeprecatedHTMLAnchorElementProperties>} */
 export default class NavItem extends Ripple {
   static elementName = 'mdw-nav-item';

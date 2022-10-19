@@ -3,6 +3,7 @@ import colorStyles from './ContainerColors.css' assert { type: 'css' };
 import Text from './Text.js';
 
 /** @typedef {'align'} DeprecatedHTMLDivElementProperties */
+
 /** @implements {Omit<HTMLDivElement,DeprecatedHTMLDivElementProperties>} */
 export default class Container extends Text {
   static elementName = 'mdw-container';

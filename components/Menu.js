@@ -84,7 +84,6 @@ export default class Menu extends CustomElement {
    * @return {void}
    */
   static onWindowResize() {
-    console.log('onWindowResize');
     const lastOpenMenu = Menu.OPEN_MENUS.at(-1);
     if (!lastOpenMenu || !lastOpenMenu.originalEvent) {
       return;
