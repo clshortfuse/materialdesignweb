@@ -380,7 +380,7 @@ Control.prototype.readOnly = Control.idl('readOnly', { attr: 'readonly', type: '
 Control.prototype.required = Control.idl('required', 'boolean');
 Control.prototype.type = Control.idl('type', DOMString);
 //  [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
-Control.prototype._value = Control.idl('_value', { default: '', reflect: false });
+Control.prototype._value = Control.idl('_value', { empty: '' });
 Control.prototype._invalid = Control.idl('_invalid', { attr: 'invalid', type: 'boolean' });
 Control.prototype._badInput = Control.idl('_badInput', 'boolean');
 Control.prototype._validationMessage = Control.idl('_validationMessage');

@@ -10,12 +10,13 @@
  * @typedef IDLOptions
  * @prop {T1} [type]
  * @prop {string} [attr]
- * @prop {boolean} [reflect=true]
+ * @prop {boolean|'write'|'read'} [reflect=true]
  * @prop {boolean} [enumerable]
- * @prop {boolean} [nullable]
+ * @prop {boolean} [nullable] Defaults to false if boolean
  * @prop {T2} [empty] Empty value when not nullable
  * @prop {(value: T2) => T2} [onNullish] Function used when null passed
- * @prop {T2} [default]
+ * @prop {T2} [default] Initial value (empty value if not specified)
+ * @prop {boolean} [initialized]
  * @prop {WeakMap<CustomElement, T1>} [values]
  * @prop {WeakMap<CustomElement, string>} [attrValues]
  */
@@ -90,7 +91,7 @@ export default class CustomElement extends HTMLElement {
   /** @type {Iterable<string>} */
   static get observedAttributes() {
     return [...this.idls.values()]
-      .filter((options) => options.attr && options.enumerable)
+      .filter((options) => options.attr && (options.reflect === true || options.reflect === 'read'))
       .map(({ attr }) => attr);
   }
 
@@ -202,12 +203,12 @@ export default class CustomElement extends HTMLElement {
     this.#attachARIA();
     const component = /** @type {typeof CustomElement} */ (this.constructor);
     const { idls } = component;
-    const needFirstRender = [...idls.entries()]
-      .filter(([, options]) => !options.reflect || options.default)
+    const needsFirstRender = [...idls.entries()]
+      .filter(([, options]) => options.initialized
+        && ((options.reflect === false || options.reflect === 'write' || options.default)))
       .map(([key]) => [key, this[key]]);
-    if (needFirstRender.length) {
-      const dataObject = Object.fromEntries(needFirstRender);
-      this.render(dataObject);
+    if (needsFirstRender.length) {
+      this.render(Object.fromEntries(needsFirstRender));
     }
   }
 
@@ -367,8 +368,11 @@ export default class CustomElement extends HTMLElement {
 
     const { type, attr, empty, onNullish } = options;
 
-    // If not set, private variables never reflect
-    const reflect = options.reflect ?? (attr == null ? !isPrivate : true);
+    // If not set:
+    //  private & attribute = write-only
+    //  attribute = true
+    //  else false
+    const reflect = options.reflect ?? (isPrivate ? (attr ? 'write' : false) : true);
     const enumerable = options.enumerable ?? !isPrivate;
 
     /** @type {IDLOptionType} */
@@ -384,7 +388,9 @@ export default class CustomElement extends HTMLElement {
       }
     }
 
-    const nullable = options.nullable ?? (parsedType !== 'boolean');
+    // Booleans are not nullable by default
+    // Auto set nullable if empty value declared
+    const nullable = options.nullable ?? (parsedType === 'boolean' ? false : empty == null);
     /** @type {any} */
     let parsedEmpty = empty ?? null;
     if (!nullable && parsedEmpty === null) {
@@ -832,7 +838,7 @@ export default class CustomElement extends HTMLElement {
       Object.defineProperty(this, key, {
         enumerable,
         get() {
-          return values.get(this) ?? empty;
+          return values.get(this) ?? (nullable ? null : empty);
         },
         set(value) {
           const previousValue = values.get(this);
@@ -903,6 +909,7 @@ export default class CustomElement extends HTMLElement {
       } else if (options.type === 'boolean') {
         values.set(this, false);
       }
+      options.initialized = true;
     }
   }
 

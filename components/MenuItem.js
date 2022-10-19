@@ -127,7 +127,7 @@ export default class MenuItem extends Input {
   }
 }
 
-MenuItem.prototype.type = MenuItem.idl('type', { empty: 'button', nullable: false });
+MenuItem.prototype.type = MenuItem.idl('type', { empty: 'button' });
 MenuItem.prototype.icon = MenuItem.idl('icon');
 MenuItem.prototype.src = MenuItem.idl('src');
 MenuItem.prototype.trailing = MenuItem.idl('trailing');

@@ -102,7 +102,7 @@ export function TextFieldMixin(Base) {
       }
     }
   };
-  TextField.prototype.type = TextField.idl('type', { empty: 'text', nullable: false });
+  TextField.prototype.type = TextField.idl('type', { empty: 'text' });
   TextField.prototype.icon = TextField.idl('icon');
   TextField.prototype.label = TextField.idl('label');
   TextField.prototype.inputPrefix = TextField.idl('inputPrefix');

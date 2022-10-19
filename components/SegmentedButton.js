@@ -68,4 +68,4 @@ export default class SegmentedButton extends Button {
   }
 }
 
-SegmentedButton.prototype.type = SegmentedButton.idl('type', { empty: 'radio', nullable: false });
+SegmentedButton.prototype.type = SegmentedButton.idl('type', { empty: 'radio' });

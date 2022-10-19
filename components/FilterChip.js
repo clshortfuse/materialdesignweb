@@ -40,6 +40,6 @@ export default class FilterChip extends Chip {
   }
 }
 
-FilterChip.prototype.type = FilterChip.idl('type', { empty: 'checkbox', nullable: false });
+FilterChip.prototype.type = FilterChip.idl('type', { empty: 'checkbox' });
 FilterChip.prototype.trailingIcon = FilterChip.idl('trailingIcon');
 FilterChip.prototype.trailingSrc = FilterChip.idl('trailingSrc');

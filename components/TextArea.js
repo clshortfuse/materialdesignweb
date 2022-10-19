@@ -195,12 +195,12 @@ TextArea.prototype.maxRows = TextArea.idl('maxRows', { attr: 'maxrows', type: 'i
 // https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element
 
 const DOMString = { onNullish: String };
-TextArea.prototype.cols = TextArea.idl('cols', { type: 'integer', nullable: false });
+TextArea.prototype.cols = TextArea.idl('cols', { type: 'integer', empty: 0 });
 TextArea.prototype.dirName = TextArea.idl('dirName', { attr: 'dirname', ...DOMString });
-TextArea.prototype.maxLength = TextArea.idl('maxLength', { attr: 'maxlength', type: 'integer', nullable: false });
-TextArea.prototype.minLength = TextArea.idl('minLength', { attr: 'minlength', type: 'integer', nullable: false });
+TextArea.prototype.maxLength = TextArea.idl('maxLength', { attr: 'maxlength', type: 'integer', empty: 0 });
+TextArea.prototype.minLength = TextArea.idl('minLength', { attr: 'minlength', type: 'integer', empty: 0 });
 TextArea.prototype.placeholder = TextArea.idl('placeholder', DOMString);
-TextArea.prototype.rows = TextArea.idl('rows', { type: 'integer', nullable: false, default: 0 });
+TextArea.prototype.rows = TextArea.idl('rows', { type: 'integer', empty: 0 });
 TextArea.prototype.wrap = TextArea.idl('wrap', DOMString);
 
 // Not in spec, but plays nice with HTML linters

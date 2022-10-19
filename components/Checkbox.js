@@ -52,6 +52,6 @@ export default class Checkbox extends Input {
   get type() { return 'checkbox'; }
 }
 
-Checkbox.prototype.icon = Checkbox.idl('icon', { type: 'string', empty: 'check', default: 'check' });
-Checkbox.prototype.indeterminateIcon = Checkbox.idl('indeterminateIcon', { type: 'string', empty: 'check_indeterminate_small', default: 'check_indeterminate_small' });
+Checkbox.prototype.icon = Checkbox.idl('icon', { type: 'string', default: 'check' });
+Checkbox.prototype.indeterminateIcon = Checkbox.idl('indeterminateIcon', { type: 'string', default: 'check_indeterminate_small' });
 Checkbox.prototype.indeterminate = Checkbox.idl('indeterminate', { type: 'boolean', reflect: true });
