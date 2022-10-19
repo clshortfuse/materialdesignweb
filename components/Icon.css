@@ -10,6 +10,8 @@
 
   block-size: var(--mdw-icon__size);
   inline-size: var(--mdw-icon__size);
+
+  user-select: none;
   /* stylelint-disable-next-line liberty/use-logical-spec -- Safari does not animate inline-size */
   transition-property: inline-size, width;
 }
