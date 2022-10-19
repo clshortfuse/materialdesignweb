@@ -29,13 +29,27 @@
   "root": true,
   "rules": {
     "object-curly-newline": ["error", {
-      "ObjectExpression": {  "multiline": true, "consistent": true },
-      "ObjectPattern": {  "multiline": true, "consistent": true },
-      "ImportDeclaration": {  "multiline": true, "consistent": true },
-      "ExportDeclaration": {  "multiline": true, "consistent": true }
+      "ObjectExpression": {
+        "multiline": true,
+        "consistent": true
+      },
+      "ObjectPattern": {
+        "multiline": true,
+        "consistent": true
+      },
+      "ImportDeclaration": {
+        "multiline": true,
+        "consistent": true
+      },
+      "ExportDeclaration": {
+        "multiline": true,
+        "consistent": true
+      }
     }],
     "no-cond-assign": ["error", "except-parens"],
-    "no-param-reassign": ["error", { "props": false }],
+    "no-param-reassign": ["error", {
+      "props": false
+    }],
     "no-continue": 0,
     "no-restricted-syntax": 0,
     "require-await": 0,
@@ -52,7 +66,9 @@
     "default-case-last": 0,
     "no-undef": 0,
     "import/named": 0,
-    "no-empty": ["error", {"allowEmptyCatch": true}],
+    "no-empty": ["error", {
+      "allowEmptyCatch": true
+    }],
     "no-promise-executor-return": 0,
     "github/no-then": 0,
     "@typescript-eslint/ban-ts-comment": ["warn", {
@@ -63,7 +79,6 @@
     "no-void": "off",
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/return-await": ["error", "always"],
-
     "import/extensions": ["error", "always", {
       "js": "always",
       "mjs": "never"
@@ -76,13 +91,7 @@
         "caseInsensitive": false,
         "order": "asc"
       },
-      "groups": [
-        "builtin",
-        "external",
-        "parent",
-        "sibling",
-        "index"
-      ],
+      "groups": ["builtin", "external", "parent", "sibling", "index"],
       "newlines-between": "always",
       "pathGroups": [{
         "group": "external",
@@ -92,46 +101,59 @@
       "pathGroupsExcludedImportTypes": ["builtin"]
     }],
     "import/prefer-default-export": 0,
-    "sort-class-members/sort-class-members": [
-			2,
-			{
-				"order": [
-          "[webcomponents]",
-					"[static-properties]",
-          "[conventional-private-properties]",
-          "[properties]",
-          "constructor",
-					"[static-methods]",
-          "[static-events]",
-          "compose",
-          "render",
-          "attributeChangedCallback",
-					"[methods]",
-					"[conventional-private-methods]",
-          "[everything-else]",
-          "[lifecycle]"
-				],
-        "groups": {
-          "webcomponents": [
-            { "name": "elementName", "static": true },
-            { "name": "styles", "static": true },
-            { "name": "ariaRole", "static": true },
-            { "name": "delegatesFocus", "static": true },
-            { "name": "formAssociated", "static": true },
-            { "name": "fragments", "static": true },
-            { "name": "observedAttributes", "static": true }
-          ],
-          "lifecycle": [
-            { "name": "connectedCallback" },
-            { "name": "disconnectedCallback" }
-          ],
-          "static-events": [
-            { "name": "/on.+/", "type":"method", "static":true }
-          ]
-        },
-				"accessorPairPositioning": "getThenSet"
-			}
-		],
+    "sort-class-members/sort-class-members": [2, {
+      "order": [
+        "[webcomponents]",
+        "[static-properties]",
+        "[conventional-private-properties]",
+        "[properties]",
+        "constructor",
+        "[static-methods]",
+        "[static-events]",
+        "compose",
+        "render",
+        "attributeChangedCallback",
+        "[methods]",
+        "[conventional-private-methods]",
+        "[everything-else]",
+        "[lifecycle]"
+      ],
+      "groups": {
+        "webcomponents": [{
+          "name": "elementName",
+          "static": true
+        }, {
+          "name": "styles",
+          "static": true
+        }, {
+          "name": "ariaRole",
+          "static": true
+        }, {
+          "name": "delegatesFocus",
+          "static": true
+        }, {
+          "name": "formAssociated",
+          "static": true
+        }, {
+          "name": "fragments",
+          "static": true
+        }, {
+          "name": "observedAttributes",
+          "static": true
+        }],
+        "lifecycle": [{
+          "name": "connectedCallback"
+        }, {
+          "name": "disconnectedCallback"
+        }],
+        "static-events": [{
+          "name": "/on.+/",
+          "type": "method",
+          "static": true
+        }]
+      },
+      "accessorPairPositioning": "getThenSet"
+    }],
     "unicorn/no-useless-undefined": 0,
     "unicorn/no-array-for-each": 0,
     "unicorn/prefer-spread": 0,
@@ -149,10 +171,7 @@
     "unicorn/prefer-query-selector": 0,
     "unicorn/prefer-dom-node-remove": 0,
     "unicorn/no-for-loop": 0,
-    "jsdoc/newline-after-description": [
-      "warn",
-      "never"
-    ],
+    "jsdoc/newline-after-description": ["warn", "never"],
     "jsdoc/no-undefined-types": 0,
     "jsdoc/require-param-description": 0,
     "jsdoc/require-property-description": 0,
@@ -168,12 +187,7 @@
     }],
     "consistent-return": "warn",
     "no-console": ["error", {
-      "allow": [
-        "warn",
-        "error",
-        "time",
-        "timeEnd"
-      ]
+      "allow": ["warn", "error", "time", "timeEnd"]
     }],
     "no-plusplus": ["off"],
     "node/no-unsupported-features/es-syntax": ["off", {
@@ -223,18 +237,13 @@
         "returns": "return"
       }
     },
-    "html/html-extensions": [
-      ".html"
-    ]
+    "html/html-extensions": [".html"]
   },
-  "overrides": [
-    {
-      "files": [ "*.cjs"],
-      "rules": {
-        "import/no-nodejs-modules": 0,
-        "@typescript-eslint/no-var-requires": 0
-      }
+  "overrides": [{
+    "files": ["*.cjs"],
+    "rules": {
+      "import/no-nodejs-modules": 0,
+      "@typescript-eslint/no-var-requires": 0
     }
-  ]
-  
+  }]
 }
