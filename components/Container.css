@@ -113,3 +113,7 @@
   transition-duration: 100ms;
   transition-property: opacity, color, background-color;
 }
+
+:host([disabled]) #elevation {
+  display: none;
+}
