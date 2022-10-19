@@ -11,12 +11,12 @@ A standards-focused, zero-dependency implemention of Material Design 3 (Material
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/b947eb9/docs/
+https://rawcdn.githack.com/clshortfuse/materialdesignweb/6e7f5d7/docs/
 
 # Getting started
 
 ```html
-<style type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/b947eb9/index.js" />
+<style type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/6e7f5d7/index.js" />
 ```
 
 # Support
@@ -34,7 +34,8 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/b947eb9/docs/
 | [Icon](components/Icon.md)                   |   `Container`   | `<image>`  | Adds font and image icons                                                  | alpha  |
 | [Overlay](components/Overlay.md)             |   `Container`   |  `<div>`   | Adds hover, focus, pressed, dragged, and disabled states                   |  beta  |
 | [Ripple](components/Ripple.md/)              |    `Overlay`    |  `<div>`   | Substitutes pressed state for ripple effect                                | alpha  |
-| [Input](components/Input.md)                 |    `Ripple`     | `<input>`  | Wraps `<input>` element and adds form support                              |  beta  |
+| [Control](components/Control.md)             |    `Ripple`     |   *N/A*    | Base class for Form Controls                                               |  beta  |
+| [Input](components/Input.md)                 |    `Control`    | `<input>`  | Labelled `<input>` element                                                 |  beta  |
 | [Theme](theming/index.js)                    |      *N/A*      |   *N/A*    | Adds color, shape and typography rules                                     | alpha  |
 
 
@@ -80,13 +81,17 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/b947eb9/docs/
 | [Navigation Drawer](components/NavDrawer.js)                 | `<mdw-nav-drawer>`                             | `<nav>`                                                            |  alpha  |
 | [Navigation Rail](components/NavRail.js)                     | `<mdw-nav-rail>`                               | `<nav>`                                                            |  beta   |
 | [Progress Indicator: Linear](components/Progress.js)         | `<mdw-progress>`                               | `<progress>`                                                       |  beta   |
-| [Progress Indicator: Circular](components/Progress.js)       | `<mdw-progress circle>`                        | `<progress>`                                                       |  beta   |
+| [Progress Indicator: Circular](components/Progress.js)       | `<mdw-progress circle>`                        | `<progress>`                                                       |  alpha  |
 | [Radio Button](components/Radio.js)                          | `<mdw-radio>`                                  | `<input type=radio>`                                               |  beta   |
 | [Slider: Continuous](components/Slider.js)                   | `<mdw-slider>`                                 | `<input type=range>`                                               |  beta   |
 | [Slider: Discrete](components/Slider.js)                     | `<mdw-slider ticks=10>`                        | `<input type=range>`                                               |  beta   |
 | [Switch](components/Switch.js)                               | `<mdw-switch>`                                 | `<input type=checkbox>`                                            |  beta   |
-| Text fields: Filled                                          |                                                |                                                                    | rewrite |
-| Text fields: Outlined                                        |                                                |                                                                    | rewrite |
+| [Text fields: Filled](components/TextInput.js)               | `<mdw-textinput>`                              | `<input>`                                                          |  beta   |
+| [Text fields: Filled Multiline](components/TextArea.js)      | `<mdw-textarea>`                               | `<textarea>`                                                       |  beta   |
+| [Text fields: Filled Selection](components/TextSelect.js)    | `<mdw-textselect>`                             | `<select>`                                                         | planned |
+| [Text fields: Outlined](components/TextInput.js)             | `<mdw-textinput outlined>`                     | `<input>`                                                          |  beta   |
+| [Text fields: Outlined Multiline](components/TextArea.js)    | `<mdw-textarea outlined>`                      | `<textarea>`                                                       |  beta   |
+| [Text fields: Outlined Selection](components/TextSelect.js)  | `<mdw-textselect outlined>`                    | `<select>`                                                         | planned |
 | Top App Bar                                                  |                                                |                                                                    | rewrite |
 
 # Other Components
