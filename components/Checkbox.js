@@ -12,6 +12,8 @@ export default class Checkbox extends Input {
       <div id=container></div>
     `];
 
+  #input = /** @type {HTMLInputElement} */ (this.refs.control);
+
   compose() {
     const fragment = super.compose();
     const { html } = this;
@@ -26,6 +28,23 @@ export default class Checkbox extends Input {
     );
     fragment.getElementById('control').setAttribute('type', 'checkbox');
     return fragment;
+  }
+
+  /**
+   * @param {string} name
+   * @param {string} newValue
+   * @param {string} oldValue
+   */
+  idlChangedCallback(name, newValue, oldValue) {
+    super.idlChangedCallback(name, newValue, oldValue);
+    switch (name) {
+      case 'indeterminate':
+      case 'checked':
+        // Screen readers do not report indeterminate state
+        this.#input.setAttribute('aria-checked', this.indeterminate ? 'mixed' : String(this.checked));
+        break;
+      default:
+    }
   }
 
   // @ts-ignore @override

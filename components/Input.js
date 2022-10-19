@@ -11,6 +11,7 @@ export default class Input extends Control {
     return [
       ...super.observedAttributes,
       'aria-label',
+      'selected',
     ];
   }
 
@@ -141,11 +142,15 @@ export default class Input extends Control {
           default:
         }
         break;
+      case 'checked':
+        this._checked = this.#input.checked;
+        break;
+      case 'selected':
+        // Track if attribute was manually manipulated
+        if (this.#input.checked === (newValue != null)) break;
+        this.checked = newValue != null;
+        break;
       default:
-    }
-
-    if (name === 'checked') {
-      this._checked = this.#input.checked;
     }
   }
 
@@ -207,7 +212,7 @@ export default class Input extends Control {
             break;
           default:
         }
-        // Reinvoke change event for components tracking 'value';
+        // Reinvoke change event for components tracking 'checked';
         this.idlChangedCallback('checked', oldValue, newValue);
         break;
       default:
@@ -305,13 +310,13 @@ Input.prototype.formTarget = Input.idl('formTarget', { attr: 'formtarget', ...DO
 Input.prototype._height = Input.idl('_height', { attr: 'height', type: 'integer' });
 Input.prototype.indeterminate = Input.idl('indeterminate', { type: 'boolean', reflect: false });
 Input.prototype.max = Input.idl('max', DOMString);
-Input.prototype.maxLength = Input.idl('maxLength', { attr: 'maxlength', type: 'integer', nullable: false });
+Input.prototype.maxLength = Input.idl('maxLength', { attr: 'maxlength', type: 'integer', empty: -1 });
 Input.prototype.min = Input.idl('min', DOMString);
-Input.prototype.minLength = Input.idl('minLength', { attr: 'minlength', type: 'integer', nullable: false });
+Input.prototype.minLength = Input.idl('minLength', { attr: 'minlength', type: 'integer', empty: -1 });
 Input.prototype.multiple = Input.idl('multiple', 'boolean');
 Input.prototype.pattern = Input.idl('pattern', DOMString);
 Input.prototype.placeholder = Input.idl('placeholder', DOMString);
-Input.prototype.size = Input.idl('size', { type: 'integer', nullable: false });
+Input.prototype.size = Input.idl('size', { type: 'integer', empty: 20 });
 Input.prototype.src = Input.idl('src', DOMString);
 Input.prototype.step = Input.idl('step', DOMString);
 Input.prototype.type = Input.idl('type', DOMString);
