@@ -239,7 +239,7 @@ export default class Dialog extends CustomElement {
   }
 
   get returnValue() {
-    return this.dialog.returnValue;
+    return this.#dialog.returnValue;
   }
 
   /**
@@ -249,7 +249,7 @@ export default class Dialog extends CustomElement {
   showModal(event) {
     if (this.open) return false;
     if (Dialog.supportsHTMLDialogElement) {
-      this.dialog.showModal();
+      this.#dialog.showModal();
       this.isNativeModal = true;
     }
     return this.show(event);
@@ -264,7 +264,7 @@ export default class Dialog extends CustomElement {
     this.open = true;
 
     if (Dialog.supportsHTMLDialogElement) {
-      this.dialog.show();
+      this.#dialog.show();
       const main = document.querySelector('main');
       if (main) {
         main.setAttribute('aria-hidden', 'true');
