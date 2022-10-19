@@ -279,15 +279,18 @@ label {
 }
 
 #track-label::after {
+  /* Values from Figma SVG */
+  --x-start: 14.6446%;
+  --x-end: 85.3554%;
+  --y: 70.7106%;
+
   content: "";
 
   position: absolute;
-  inset-block: 50% -6px;
-  inset-inline: 4px;
+  inset: 0;
+  inset-block-end: -6px;
 
-  margin-block-start: 5px;
-
-  clip-path: polygon(-25% 0%, 125% 0%, 50% 100%);
+  clip-path: polygon(var(--x-start) var(--y), var(--x-end) var(--y), 50% 100%, var(--x-start) var(--y));
 
   background-color: rgb(var(--mdw-bg));
 }
