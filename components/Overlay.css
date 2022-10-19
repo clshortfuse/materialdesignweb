@@ -17,7 +17,6 @@
   --mdw-overlay__focus-opacity: 0.12;
   --mdw-overlay__pressed-opacity: 0.12;
   --mdw-overlay__dragged-opacity: 0.12;
-  --mdw-overlay__visibility: intial;
 }
 
 #overlay {
@@ -32,7 +31,6 @@
     var(--mdw-overlay__pressed-opacity) +
     var(--mdw-overlay__dragged-opacity)
   );
-  visibility: var(--mdw-overlay__visibility);
   /* opacity handled by theme engine */
   background-color: currentColor;
   border-radius: inherit;
@@ -82,5 +80,5 @@
 
 /* Disabled */
 :host([disabled]:not([mdw-overlay-disabled])) #overlay {
-  --mdw-overlay__visibility: hidden;
+  display: none;
 }
