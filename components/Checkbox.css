@@ -1,0 +1,118 @@
+/* https://m3.material.io/components/checkbox/specs */
+
+:host {
+  --mdw-ink: var(--mdw-color__on-primary);
+  --mdw-bg: var(--mdw-color__primary);
+  --mdw-checkbox__container__color: rgb(var(--mdw-color__on-surface));
+  --mdw-checkbox__border-width: 2px;
+  --mdw-checkbox__size: 18px;
+  --mdw-checkbox__state-size: 40px;
+  --mdw-checkbox__margin: calc((var(--mdw-checkbox__state-size) - var(--mdw-checkbox__size)) / 2);
+
+  gap: var(--mdw-radio__gap, 8px);
+
+  direction: var(--mdw-radio__direction, initial);
+}
+
+:host([color]) {
+  background-color: transparent;
+  color: inherit;
+}
+
+label {
+  display: inline-grid;
+  align-items: center;
+  gap: inherit;
+  grid-auto-flow: column;
+  grid-template-rows: minmax(var(--mdw-checkbox__state-size), min-content);
+  grid-template-columns: var(--mdw-checkbox__state-size);
+  justify-content: center;
+
+  cursor: pointer;
+
+  border-radius: 50%;
+
+  transition: none 100ms cubic-bezier(0.4, 0.0, 1, 1);
+}
+
+#container {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  block-size: var(--mdw-checkbox__size);
+  inline-size: var(--mdw-checkbox__size);
+  grid-column: 1;
+  margin: var(--mdw-checkbox__margin);
+  border: solid var(--mdw-checkbox__border-width) currentColor;
+
+  background-color: transparent;
+  border-radius: var(--mdw-checkbox__border-width);
+  color: var(--mdw-checkbox__container__color);
+
+  transition: inherit;
+  transition-property: color, border-color;
+
+  will-change: color, border-color;
+}
+
+#overlay,
+#ripple {
+  inset-block: calc(-1 * (var(--mdw-checkbox__margin) + var(--mdw-checkbox__border-width)));
+  /* -(2px + 11px) */
+  inset-inline: calc(-1 * (var(--mdw-checkbox__margin) + var(--mdw-checkbox__border-width)));
+  /* -(2px + 11px) */
+
+  block-size: var(--mdw-checkbox__state-size);
+  inline-size: var(--mdw-checkbox__state-size);
+
+  border-radius: 50%;
+}
+
+#icon {
+  --mdw-icon__size: var(--mdw-checkbox__size);
+  position: absolute;
+
+  inset-block: calc(-1 var(--mdw-checkbox__border-width));
+  inset-inline: calc(-1 var(--mdw-checkbox__border-width));
+
+  opacity: 0;
+
+  background-color: rgb(var(--mdw-bg));
+  border-radius: inherit;
+  color: rgb(var(--mdw-ink));
+
+  transition: inherit;
+  transition-property: opacity;
+  will-change: opacity;
+}
+
+:host(:is([selected], [indeterminate])) label {
+  --mdw-checkbox__container__color: rgb(var(--mdw-bg));
+
+  transition: none 200ms cubic-bezier(0.0, 0.0, 0.2, 1)
+}
+
+:host(:is([selected], [indeterminate])) #icon {
+  opacity: 1;
+}
+
+:host([invalid]) label {
+  --mdw-bg: rgb(var(--mdw-color__error));
+  --mdw-ink: rgb(var(--mdw-color__on-error));
+  --mdw-checkbox__container__color: rgb(var(--mdw-color__error));
+}
+
+:host([disabled]) label {
+  --mdw-bg: var(--mdw-color__on-surface);
+  --mdw-ink: var(--mdw-color__surface);
+  --mdw-checkbox__container__color: rgb(var(--mdw-color__on-surface));
+
+  cursor: not-allowed;
+
+  opacity: 0.38;
+}

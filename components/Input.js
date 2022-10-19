@@ -176,6 +176,9 @@ export default class Input extends Control {
     super.idlChangedCallback(name, oldValue, newValue);
     if (oldValue == null && newValue == null) return;
     switch (name) {
+      case 'indeterminate':
+        this.#input.indeterminate = newValue;
+        break;
       case 'type':
         this.#input.type = newValue;
         break;
@@ -212,8 +215,6 @@ export default class Input extends Control {
   }
 
   get files() { return this.#input.files; }
-
-  get indeterminate() { return this.#input.indeterminate; }
 
   get select() { return this.#input.select; }
 
@@ -302,6 +303,7 @@ Input.prototype.formMethod = Input.idl('formMethod', { attr: 'formmethod', ...DO
 Input.prototype.formNoValidate = Input.idl('formnovalidate', { attr: 'formNoValidate', type: 'boolean' });
 Input.prototype.formTarget = Input.idl('formTarget', { attr: 'formtarget', ...DOMString });
 Input.prototype._height = Input.idl('_height', { attr: 'height', type: 'integer' });
+Input.prototype.indeterminate = Input.idl('indeterminate', { type: 'boolean', reflect: false });
 Input.prototype.max = Input.idl('max', DOMString);
 Input.prototype.maxLength = Input.idl('maxLength', { attr: 'maxlength', type: 'integer', nullable: false });
 Input.prototype.min = Input.idl('min', DOMString);

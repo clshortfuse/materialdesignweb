@@ -202,11 +202,11 @@ export default class CustomElement extends HTMLElement {
     this.#attachARIA();
     const component = /** @type {typeof CustomElement} */ (this.constructor);
     const { idls } = component;
-    const nonReflecting = [...idls.entries()]
-      .filter(([, options]) => !options.reflect)
+    const needFirstRender = [...idls.entries()]
+      .filter(([, options]) => !options.reflect || options.default)
       .map(([key]) => [key, this[key]]);
-    if (nonReflecting.length) {
-      const dataObject = Object.fromEntries(nonReflecting);
+    if (needFirstRender.length) {
+      const dataObject = Object.fromEntries(needFirstRender);
       this.render(dataObject);
     }
   }
