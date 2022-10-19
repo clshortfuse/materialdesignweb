@@ -16,7 +16,7 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/6e7f5d7/docs/
 # Getting started
 
 ```html
-<style type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/6e7f5d7/index.js" />
+<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/6e7f5d7/index.js" />
 ```
 
 # Support
