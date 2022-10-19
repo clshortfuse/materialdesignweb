@@ -3,13 +3,13 @@
 
 <head>
   <title>Material Design Web</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <link rel=preconnect href="https://fonts.googleapis.com" />
   <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
   <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
   <link rel=stylesheet
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
-  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="theme.css" />
 
   <style>
     html {
@@ -945,186 +945,186 @@
       </demo-section>
     </demo-section>
     <demo-section id=navbar>
-      <h1 slot="heading">Navigation Bar</h2>
-        <demo-section>
-          <h2 slot=heading>Standard</h2>
-          <demo-flex wrap gap12>
-            <mdw-nav-bar>
-              <mdw-nav-item icon="edit" href="#navbar">Default</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navbar" color=primary-container>Primary Container
-              </mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navbar" color=tertiary-container>Tertiary Container
-              </mdw-nav-item>
-            </mdw-nav-bar>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h2 slot=heading>Badges</h2>
-          <demo-flex wrap gap12>
-            <mdw-nav-bar color="primary">
-              <mdw-nav-item show-label=active icon="change_history" href="#navbar" color=primary-container badge>Primary
-                Container
-              </mdw-nav-item>
-              <mdw-nav-item show-label=active icon="change_history" href="#navbar" badge=1 color=tertiary>Tertiary
-              </mdw-nav-item>
-              <mdw-nav-item class=mdw-custom show-label=active icon="change_history" href="#navbar" badge="999+"
-                color=green-container>
-                Green Container
-              </mdw-nav-item>
-            </mdw-nav-bar>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h2 slot=heading>No label</h2>
-          <demo-flex wrap gap12>
-            <mdw-nav-bar>
-              <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge aria-label="Default">Default
-              </mdw-nav-item>
-              <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge=1 color=primary-container
-                aria-label="Primary">Primary</mdw-nav-item>
-              <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge="999+" color=tertiary-container
-                aria-label="Tertiary">Tertiary Container</mdw-nav-item>
-            </mdw-nav-bar>
-          </demo-flex>
-        </demo-section>
+      <h1 slot="heading">Navigation Bar</h1>
+      <demo-section>
+        <h2 slot=heading>Standard</h2>
+        <demo-flex wrap gap12>
+          <mdw-nav-bar>
+            <mdw-nav-item icon="edit" href="#navbar">Default</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navbar" color=primary-container>Primary Container
+            </mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navbar" color=tertiary-container>Tertiary Container
+            </mdw-nav-item>
+          </mdw-nav-bar>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Badges</h2>
+        <demo-flex wrap gap12>
+          <mdw-nav-bar color="primary">
+            <mdw-nav-item show-label=active icon="change_history" href="#navbar" color=primary-container badge>Primary
+              Container
+            </mdw-nav-item>
+            <mdw-nav-item show-label=active icon="change_history" href="#navbar" badge=1 color=tertiary>Tertiary
+            </mdw-nav-item>
+            <mdw-nav-item class=mdw-custom show-label=active icon="change_history" href="#navbar" badge="999+"
+              color=green-container>
+              Green Container
+            </mdw-nav-item>
+          </mdw-nav-bar>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>No label</h2>
+        <demo-flex wrap gap12>
+          <mdw-nav-bar>
+            <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge aria-label="Default">Default
+            </mdw-nav-item>
+            <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge=1 color=primary-container
+              aria-label="Primary">Primary</mdw-nav-item>
+            <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge="999+" color=tertiary-container
+              aria-label="Tertiary">Tertiary Container</mdw-nav-item>
+          </mdw-nav-bar>
+        </demo-flex>
+      </demo-section>
     </demo-section>
     <demo-section id=navrail>
-      <h1 slot="heading">Navigation Rail</h2>
-        <demo-section>
-          <h2 slot=heading>Standard</h2>
-          <demo-flex wrap gap12>
-            <mdw-nav-rail style="min-height:400px">
-              <mdw-nav-item icon="edit" href="#navrail">Default</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary</mdw-nav-item>
-            </mdw-nav-rail>
-            <mdw-nav-rail align=start style="min-height:400px">
-              <mdw-nav-item icon="edit" href="#navrail">Default</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary</mdw-nav-item>
-            </mdw-nav-rail>
-            <mdw-nav-rail align=end style="min-height:400px">
-              <mdw-nav-item icon="edit" href="#navrail">Default</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary</mdw-nav-item>
-            </mdw-nav-rail>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h2 slot=heading>Menu</h2>
-          <demo-flex wrap gap12>
-            <mdw-nav-rail style="min-height:400px">
-              <mdw-icon-button slot=start aria-label="Menu">menu</mdw-icon-button>
-              <mdw-nav-item icon="edit" href="#navrail">Default</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary
-              </mdw-nav-item>
-            </mdw-nav-rail>
-            <mdw-nav-rail align=start style="min-height:400px">
-              <mdw-icon-button slot=start aria-label="Menu">menu</mdw-icon-button>
-              <mdw-nav-item icon="change_history" href="#navrail" badge>Default</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" badge=1 color=primary-container>Primary
-              </mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container>Tertiary
-              </mdw-nav-item>
-            </mdw-nav-rail>
-            <mdw-nav-rail align=end style="min-height:400px">
-              <mdw-icon-button slot=start aria-label="Menu">menu</mdw-icon-button>
-              <mdw-nav-item icon="change_history" href="#navrail" badge aria-label="Default"></mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" badge=1 color=primary-container aria-label="Primary">
-              </mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container
-                aria-label="Tertiary"></mdw-nav-item>
-            </mdw-nav-rail>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h2 slot=heading>Menu and Fab</h2>
-          <demo-flex wrap gap12>
-            <mdw-nav-rail style="min-height:400px">
-              <mdw-icon-button slot=start aria-label="Menu">menu</mdw-icon-button>
-              <mdw-fab slot=start aria-label="fab" flat>add</mdw-fab>
-              <mdw-nav-item icon="edit" href="#navrail">Default</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary
-              </mdw-nav-item>
-            </mdw-nav-rail>
-            <mdw-nav-rail align=start style="min-height:400px">
-              <mdw-icon-button slot=start aria-label="Menu">menu</mdw-icon-button>
-              <mdw-fab slot=start aria-label="fab" flat>add</mdw-fab>
-              <mdw-nav-item icon="change_history" href="#navrail" badge>Default</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" badge=1 color=primary-container>Primary
-              </mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container>Tertiary
-              </mdw-nav-item>
-            </mdw-nav-rail>
-            <mdw-nav-rail align=end style="min-height:400px">
-              <mdw-icon-button slot=start aria-label="Menu" flat>menu</mdw-icon-button>
-              <mdw-fab slot=start aria-label="fab" flat>add</mdw-fab>
-              <mdw-nav-item icon="change_history" href="#navrail" badge aria-label="Default"></mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" badge=1 color=primary-container aria-label="Primary">
-              </mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container
-                aria-label="Tertiary"></mdw-nav-item>
-            </mdw-nav-rail>
-          </demo-flex>
-        </demo-section>
+      <h1 slot="heading">Navigation Rail</h1>
+      <demo-section>
+        <h2 slot=heading>Standard</h2>
+        <demo-flex wrap gap12>
+          <mdw-nav-rail style="min-height:400px">
+            <mdw-nav-item icon="edit" href="#navrail">Default</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary</mdw-nav-item>
+          </mdw-nav-rail>
+          <mdw-nav-rail align=start style="min-height:400px">
+            <mdw-nav-item icon="edit" href="#navrail">Default</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary</mdw-nav-item>
+          </mdw-nav-rail>
+          <mdw-nav-rail align=end style="min-height:400px">
+            <mdw-nav-item icon="edit" href="#navrail">Default</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary</mdw-nav-item>
+          </mdw-nav-rail>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Menu</h2>
+        <demo-flex wrap gap12>
+          <mdw-nav-rail style="min-height:400px">
+            <mdw-icon-button slot=start aria-label="Menu">menu</mdw-icon-button>
+            <mdw-nav-item icon="edit" href="#navrail">Default</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary
+            </mdw-nav-item>
+          </mdw-nav-rail>
+          <mdw-nav-rail align=start style="min-height:400px">
+            <mdw-icon-button slot=start aria-label="Menu">menu</mdw-icon-button>
+            <mdw-nav-item icon="change_history" href="#navrail" badge>Default</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" badge=1 color=primary-container>Primary
+            </mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container>Tertiary
+            </mdw-nav-item>
+          </mdw-nav-rail>
+          <mdw-nav-rail align=end style="min-height:400px">
+            <mdw-icon-button slot=start aria-label="Menu">menu</mdw-icon-button>
+            <mdw-nav-item icon="change_history" href="#navrail" badge aria-label="Default"></mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" badge=1 color=primary-container aria-label="Primary">
+            </mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container
+              aria-label="Tertiary"></mdw-nav-item>
+          </mdw-nav-rail>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Menu and Fab</h2>
+        <demo-flex wrap gap12>
+          <mdw-nav-rail style="min-height:400px">
+            <mdw-icon-button slot=start aria-label="Menu">menu</mdw-icon-button>
+            <mdw-fab slot=start aria-label="fab" flat>add</mdw-fab>
+            <mdw-nav-item icon="edit" href="#navrail">Default</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary
+            </mdw-nav-item>
+          </mdw-nav-rail>
+          <mdw-nav-rail align=start style="min-height:400px">
+            <mdw-icon-button slot=start aria-label="Menu">menu</mdw-icon-button>
+            <mdw-fab slot=start aria-label="fab" flat>add</mdw-fab>
+            <mdw-nav-item icon="change_history" href="#navrail" badge>Default</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" badge=1 color=primary-container>Primary
+            </mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container>Tertiary
+            </mdw-nav-item>
+          </mdw-nav-rail>
+          <mdw-nav-rail align=end style="min-height:400px">
+            <mdw-icon-button slot=start aria-label="Menu" flat>menu</mdw-icon-button>
+            <mdw-fab slot=start aria-label="fab" flat>add</mdw-fab>
+            <mdw-nav-item icon="change_history" href="#navrail" badge aria-label="Default"></mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" badge=1 color=primary-container aria-label="Primary">
+            </mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container
+              aria-label="Tertiary"></mdw-nav-item>
+          </mdw-nav-rail>
+        </demo-flex>
+      </demo-section>
     </demo-section>
     <demo-section id=navdrawer>
-      <h1 slot="heading">Navigation Drawer</h2>
-        <demo-section>
-          <h2 slot=heading>Standard</h2>
-          <demo-flex wrap gap12>
-            <mdw-nav-drawer open style="min-height:400px">
-              <mdw-nav-item icon="edit" href="#navdrawer">Default</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navdrawer" color=tertiary-container>Tertiary</mdw-nav-item>
-            </mdw-nav-drawer>
-            <mdw-nav-drawer open color="tertiary-container" style="min-height:400px">
-              <mdw-nav-item icon="edit" href="#navdrawer">Default</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-item>
-              <mdw-nav-item class="mdw-custom" icon="change_history" href="#navdrawer" badge="999+"
-                color=green-container>Green Container</mdw-nav-item>
-            </mdw-nav-drawer>
-            <mdw-nav-drawer open style="min-height:400px">
-              <mdw-nav-item icon="edit" href="#navdrawer">Default</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-item>
-              <mdw-nav-item icon="change_history" href="#navdrawer" color=tertiary-container>Tertiary</mdw-nav-item>
-            </mdw-nav-drawer>
-          </demo-flex>
-        </demo-section>
+      <h1 slot="heading">Navigation Drawer</h1>
+      <demo-section>
+        <h2 slot=heading>Standard</h2>
+        <demo-flex wrap gap12>
+          <mdw-nav-drawer open style="min-height:400px">
+            <mdw-nav-item icon="edit" href="#navdrawer">Default</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navdrawer" color=tertiary-container>Tertiary</mdw-nav-item>
+          </mdw-nav-drawer>
+          <mdw-nav-drawer open color="tertiary-container" style="min-height:400px">
+            <mdw-nav-item icon="edit" href="#navdrawer">Default</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-item>
+            <mdw-nav-item class="mdw-custom" icon="change_history" href="#navdrawer" badge="999+" color=green-container>
+              Green Container</mdw-nav-item>
+          </mdw-nav-drawer>
+          <mdw-nav-drawer open style="min-height:400px">
+            <mdw-nav-item icon="edit" href="#navdrawer">Default</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navdrawer" color=tertiary-container>Tertiary</mdw-nav-item>
+          </mdw-nav-drawer>
+        </demo-flex>
+      </demo-section>
     </demo-section>
     <demo-section id=progress>
-      <h1 slot="heading">Progress Indicators</h2>
-        <demo-section>
-          <h2 slot=heading>Linear</h2>
-          <demo-flex gap12>
-            <mdw-progress ink="primary"></mdw-progress>
-            <mdw-progress value="30" ink="secondary"></mdw-progress>
-            <mdw-progress value="60" auto-hide ink="tertiary"></mdw-progress>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h2 slot=heading>Circular</h2>
-          <demo-flex gap12>
-            <mdw-progress circle ink="primary"></mdw-progress>
-            <mdw-progress circle value="30" ink="secondary"></mdw-progress>
-            <mdw-progress circle value="60" auto-hide ink="tertiary"></mdw-progress>
-          </demo-flex>
-        </demo-section>
+      <h1 slot="heading">Progress Indicators</h1>
+      <demo-section>
+        <h2 slot=heading>Linear</h2>
+        <demo-flex gap12>
+          <mdw-progress ink="primary"></mdw-progress>
+          <mdw-progress value="30" ink="secondary"></mdw-progress>
+          <mdw-progress value="60" auto-hide ink="tertiary"></mdw-progress>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Circular</h2>
+        <demo-flex gap12>
+          <mdw-progress circle ink="primary"></mdw-progress>
+          <mdw-progress circle value="30" ink="secondary"></mdw-progress>
+          <mdw-progress circle value="60" auto-hide ink="tertiary"></mdw-progress>
+        </demo-flex>
+      </demo-section>
     </demo-section>
     <demo-section id=radio>
-      <h1 slot="heading">Radio Buttons</h2>
-        <h2 slot=heading>Normal</h2>
-        <demo-flex gap12 wrap>
-          <form>
-            <mdw-radio name=radio-demo value="1">Default</mdw-radio>
-            <mdw-radio name=radio-demo ink="secondary" value="2">Secondary</mdw-radio>
-            <mdw-radio name=radio-demo ink="tertiary" value="3">Tertiary</mdw-radio>
-            <mdw-radio name=radio-demo ink="primary" disabled value="4">Disabled</mdw-radio>
-            <mdw-radio name=radio-demo ink="primary" disabled value="5" checked>Disabled Checked</mdw-radio>
-          </form>
-        </demo-flex>
+      <h1 slot="heading">Radio Buttons</h1>
+      <h2 slot=heading>Normal</h2>
+      <demo-flex gap12 wrap>
+        <form>
+          <mdw-radio name=radio-demo value="1">Default</mdw-radio>
+          <mdw-radio name=radio-demo ink="secondary" value="2">Secondary</mdw-radio>
+          <mdw-radio name=radio-demo ink="tertiary" value="3">Tertiary</mdw-radio>
+          <mdw-radio name=radio-demo ink="primary" disabled value="4">Disabled</mdw-radio>
+          <mdw-radio name=radio-demo ink="primary" disabled value="5" checked>Disabled Checked</mdw-radio>
+        </form>
+      </demo-flex>
     </demo-section>
     <demo-section>
       <h2 slot=heading>No Label</h2>
@@ -1136,125 +1136,269 @@
         </form>
       </demo-flex>
     </demo-section>
-    </demo-section>
     <demo-section id=sliders>
-      <h1 slot="heading">Sliders</h2>
-        <demo-section>
-          <h2 slot=heading>Continuous</h2>
-          <demo-flex wrap style="margin:24px; gap:48px" column>
-            <mdw-slider></mdw-slider>
-            <mdw-slider color="secondary" value="2" min="-10" max="10"></mdw-slider>
-            <mdw-slider color="tertiary" min="-10" value="3"></mdw-slider>
-            <mdw-slider class=mdw-custom color="green" min="1" max="5"></mdw-slider>
-            <mdw-slider class=mdw-custom color="custom" min=0 step=5 value=100></mdw-slider>
-            <mdw-slider color=secondary value="12" disabled></mdw-slider>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h2 slot=heading>Discrete</h2>
-          <demo-flex wrap style="margin:24px; gap:48px" column>
-            <mdw-slider value="1" min=0 list="tickmarks" ticks="10" step="10"></mdw-slider>
-            <mdw-slider value="8" ticks="8" min="0" max="64"></mdw-slider>
-            <mdw-slider color="secondary" value="2" min="-10" max="10" ticks="4"></mdw-slider>
-            <mdw-slider color="tertiary" min="0" max="10" ticks="10" value="3"></mdw-slider>
-            <mdw-slider class=mdw-custom color="green" min="10" max="90" ticks="1"></mdw-slider>
-            <mdw-slider class=mdw-custom color="custom" min=0 step=5 value=100 ticks="5"></mdw-slider>
-            <mdw-slider color=secondary value="12" disabled ticks="10"></mdw-slider>
-          </demo-flex>
-        </demo-section>
+      <h1 slot="heading">Sliders</h1>
+      <demo-section>
+        <h2 slot=heading>Continuous</h2>
+        <demo-flex wrap style="margin:24px; gap:48px" column>
+          <mdw-slider></mdw-slider>
+          <mdw-slider color="secondary" value="2" min="-10" max="10"></mdw-slider>
+          <mdw-slider color="tertiary" min="-10" value="3"></mdw-slider>
+          <mdw-slider class=mdw-custom color="green" min="1" max="5"></mdw-slider>
+          <mdw-slider class=mdw-custom color="custom" min=0 step=5 value=100></mdw-slider>
+          <mdw-slider color=secondary value="12" disabled></mdw-slider>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Discrete</h2>
+        <demo-flex wrap style="margin:24px; gap:48px" column>
+          <mdw-slider value="1" min=0 list="tickmarks" ticks="10" step="10"></mdw-slider>
+          <mdw-slider value="8" ticks="8" min="0" max="64"></mdw-slider>
+          <mdw-slider color="secondary" value="2" min="-10" max="10" ticks="4"></mdw-slider>
+          <mdw-slider color="tertiary" min="0" max="10" ticks="10" value="3"></mdw-slider>
+          <mdw-slider class=mdw-custom color="green" min="10" max="90" ticks="1"></mdw-slider>
+          <mdw-slider class=mdw-custom color="custom" min=0 step=5 value=100 ticks="5"></mdw-slider>
+          <mdw-slider color=secondary value="12" disabled ticks="10"></mdw-slider>
+        </demo-flex>
+      </demo-section>
     </demo-section>
     <demo-section id=switches>
-      <h1 slot="heading">Switches</h2>
-        <demo-section>
-          <h2 slot="heading">Without Icons</h2>
-          <demo-flex wrap gap12>
-            <mdw-switch>Default</mdw-switch>
-            <mdw-switch color=secondary checked>Secondary</mdw-switch>
-            <mdw-switch color=tertiary>Tertiary</mdw-switch>
-            <mdw-switch disabled>Disabled</mdw-switch>
-            <mdw-switch color=secondary disabled checked>Disabled</mdw-switch>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h2 slot="heading">Icon on selected switch</h2>
-          <demo-flex wrap gap12>
-            <mdw-switch checked-icon=check>Default</mdw-switch>
-            <mdw-switch color=secondary checked checked-icon=check>Secondary</mdw-switch>
-            <mdw-switch color=tertiary checked-icon=edit>Tertiary</mdw-switch>
-            <mdw-switch disabled checked-icon=check>Disabled</mdw-switch>
-            <mdw-switch color=secondary disabled checked checked-icon=check>Disabled</mdw-switch>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h2 slot="heading">Icon on selected and unselected switch</h2>
-          <demo-flex wrap gap12>
-            <mdw-switch icon=check>Default</mdw-switch>
-            <mdw-switch color=secondary checked icon=favorite>Secondary</mdw-switch>
-            <mdw-switch color=tertiary unchecked-icon=dark_mode checked-icon=light_mode>Tertiary</mdw-switch>
-            <mdw-switch disabled icon=check>Disabled</mdw-switch>
-            <mdw-switch color=secondary disabled checked icon=check>Disabled</mdw-switch>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h2 slot="heading">No label</h2>
-          <demo-flex wrap gap12>
-            <mdw-switch icon=check aria-label="Default"></mdw-switch>
-            <mdw-switch color=secondary checked icon=favorite aria-label="Secondary"></mdw-switch>
-            <mdw-switch color=tertiary unchecked-icon=dark_mode checked-icon=light_mode aria-label="Tertiary">
-            </mdw-switch>
-            <mdw-switch disabled icon=check aria-label="Disabled"></mdw-switch>
-            <mdw-switch color=secondary disabled checked icon=check aria-label="Disabled"></mdw-switch>
-          </demo-flex>
-        </demo-section>
+      <h1 slot="heading">Switches</h1>
+      <demo-section>
+        <h2 slot="heading">Without Icons</h2>
+        <demo-flex wrap gap12>
+          <mdw-switch>Default</mdw-switch>
+          <mdw-switch color=secondary checked>Secondary</mdw-switch>
+          <mdw-switch color=tertiary>Tertiary</mdw-switch>
+          <mdw-switch disabled>Disabled</mdw-switch>
+          <mdw-switch color=secondary disabled checked>Disabled</mdw-switch>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot="heading">Icon on selected switch</h2>
+        <demo-flex wrap gap12>
+          <mdw-switch checked-icon=check>Default</mdw-switch>
+          <mdw-switch color=secondary checked checked-icon=check>Secondary</mdw-switch>
+          <mdw-switch color=tertiary checked-icon=edit>Tertiary</mdw-switch>
+          <mdw-switch disabled checked-icon=check>Disabled</mdw-switch>
+          <mdw-switch color=secondary disabled checked checked-icon=check>Disabled</mdw-switch>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot="heading">Icon on selected and unselected switch</h2>
+        <demo-flex wrap gap12>
+          <mdw-switch icon=check>Default</mdw-switch>
+          <mdw-switch color=secondary checked icon=favorite>Secondary</mdw-switch>
+          <mdw-switch color=tertiary unchecked-icon=dark_mode checked-icon=light_mode>Tertiary</mdw-switch>
+          <mdw-switch disabled icon=check>Disabled</mdw-switch>
+          <mdw-switch color=secondary disabled checked icon=check>Disabled</mdw-switch>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot="heading">No label</h2>
+        <demo-flex wrap gap12>
+          <mdw-switch icon=check aria-label="Default"></mdw-switch>
+          <mdw-switch color=secondary checked icon=favorite aria-label="Secondary"></mdw-switch>
+          <mdw-switch color=tertiary unchecked-icon=dark_mode checked-icon=light_mode aria-label="Tertiary">
+          </mdw-switch>
+          <mdw-switch disabled icon=check aria-label="Disabled"></mdw-switch>
+          <mdw-switch color=secondary disabled checked icon=check aria-label="Disabled"></mdw-switch>
+        </demo-flex>
+      </demo-section>
     </demo-section>
     <demo-section id=textinputs>
-      <h1 slot="heading">Text Inputs</h2>
-        <demo-section>
-          <h2 slot=heading>Filled</h2>
-          <demo-flex wrap style="margin:24px; gap:16px" column>
-            <mdw-textinput>Label</mdw-textinput>
-            <mdw-textinput color="secondary-container" ink="secondary" value="default value">Label</mdw-textinput>
-            <mdw-textinput color="tertiary-container" ink="tertiary" placeholder="Label">Very long label that label will clip selectively </mdw-textinput>
-            <mdw-textinput class=mdw-custom placeholder="Placeholder" color="green-container" ink="green" type-style="headline" icon=edit>Custom typography and icon</mdw-textinput>
-            <mdw-textinput class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$" placeholder="10" type="number">Price</mdw-textinput>
-            <mdw-textinput icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4" maxlength="8" supporting required>Email</mdw-textinput>
-            <mdw-textinput class=mdw-custom icon=edit color="alias-container" ink="alias" supporting="I'm being helpful!" required>Name*</mdw-textinput>
-            <mdw-textinput color=secondary-container error="I am error">Errored</mdw-textinput>
-            <mdw-textinput color=secondary-container disabled>Disabled</mdw-textinput>
-            <mdw-textinput color=secondary-container disabled error="Unavailable" value="filled">Disabled</mdw-textinput>
-          </demo-flex>
-          </form>
-        </demo-section>
-        <demo-section>
-          <h2 slot=heading>Outlined</h2>
-          <demo-flex wrap style="margin:24px; gap:16px" column>
-            <mdw-textinput outlined>Label</mdw-textinput>
-            <mdw-textinput outlined color="secondary-container" ink="secondary" value="default value">Label</mdw-textinput>
-            <mdw-textinput outlined color="tertiary-container" ink="tertiary" placeholder="Label">Very long label that label will clip selectively </mdw-textinput>
-            <mdw-textinput outlined class=mdw-custom placeholder="Placeholder" color="green-container" ink="green" type-style="headline" icon=edit>Custom typography and icon</mdw-textinput>
-            <mdw-textinput outlined class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$" placeholder="10" type="number">Price</mdw-textinput>
-            <mdw-textinput outlined icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4" maxlength="8" supporting required>Email</mdw-textinput>
-            <mdw-textinput outlined class=mdw-custom icon=edit color="alias-container" ink="alias" supporting="I'm being helpful!" required>Name*</mdw-textinput>
-            <mdw-textinput outlined color=secondary-container error="I am error">Errored</mdw-textinput>
-            <mdw-textinput outlined color=secondary-container disabled>Disabled</mdw-textinput>
-            <mdw-textinput outlined color=secondary-container disabled error="Unavailable" value="filled">Disabled</mdw-textinput>
-          </demo-flex>
-        </demo-section>
-        <demo-section>
-          <h2 slot=heading>Outlined Dense</h2>
-          <demo-flex wrap style="margin:24px; gap:16px" column>
-            <mdw-textinput outlined dense>Label</mdw-textinput>
-            <mdw-textinput outlined dense color="secondary-container" ink="secondary" value="default value">Label</mdw-textinput>
-            <mdw-textinput outlined dense color="tertiary-container" ink="tertiary" placeholder="Label">Very long label that label will clip selectively </mdw-textinput>
-            <mdw-textinput outlined dense class=mdw-custom placeholder="Placeholder" color="green-container" ink="green" type-style="headline" icon=edit>Custom typography and icon</mdw-textinput>
-            <mdw-textinput outlined dense class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$" placeholder="10" type="number">Price</mdw-textinput>
-            <mdw-textinput outlined dense icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4" maxlength="8" supporting required>Email</mdw-textinput>
-            <mdw-textinput outlined dense class=mdw-custom icon=edit color="alias-container" ink="alias" supporting="I'm being helpful!" required>Name*</mdw-textinput>
-            <mdw-textinput outlined dense color=secondary-container error="I am error">Errored</mdw-textinput>
-            <mdw-textinput outlined dense color=secondary-container disabled>Disabled</mdw-textinput>
-            <mdw-textinput outlined dense color=secondary-container disabled error="Unavailable" value="filled">Disabled</mdw-textinput>
-          </demo-flex>
-        </demo-section>
+      <h1 slot="heading">Text Inputs</h1>
+      <demo-section>
+        <h2 slot=heading>Filled</h2>
+        <demo-flex wrap style="margin:24px; gap:16px" column>
+          <mdw-textinput>Label</mdw-textinput>
+          <mdw-textinput color="secondary-container" ink="secondary" value="default value">Label</mdw-textinput>
+          <mdw-textinput color="tertiary-container" ink="tertiary" placeholder="Label">Very long label that label will
+            clip selectively </mdw-textinput>
+          <mdw-textinput class=mdw-custom placeholder="Placeholder" color="green-container" ink="green"
+            type-style="headline" icon=edit>Custom typography and icon</mdw-textinput>
+          <mdw-textinput class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$"
+            placeholder="10" type="number">Price</mdw-textinput>
+          <mdw-textinput icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4"
+            maxlength="8" supporting required>Email</mdw-textinput>
+          <mdw-textinput class=mdw-custom icon=edit color="alias-container" ink="alias" supporting="I'm being helpful!"
+            required>Name*</mdw-textinput>
+          <mdw-textinput color=secondary-container error="I am error">Errored</mdw-textinput>
+          <mdw-textinput color=secondary-container disabled>Disabled</mdw-textinput>
+          <mdw-textinput color=secondary-container disabled error="Unavailable" value="filled">Disabled</mdw-textinput>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Outlined</h2>
+        <demo-flex wrap style="margin:24px; gap:16px" column>
+          <mdw-textinput outlined>Label</mdw-textinput>
+          <mdw-textinput outlined color="secondary-container" ink="secondary" value="default value">Label
+          </mdw-textinput>
+          <mdw-textinput outlined color="tertiary-container" ink="tertiary" placeholder="Label">Very long label that
+            label will clip selectively </mdw-textinput>
+          <mdw-textinput outlined class=mdw-custom placeholder="Placeholder" color="green-container" ink="green"
+            type-style="headline" icon=edit>Custom typography and icon</mdw-textinput>
+          <mdw-textinput outlined class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$"
+            placeholder="10" type="number">Price</mdw-textinput>
+          <mdw-textinput outlined icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4"
+            maxlength="8" supporting required>Email</mdw-textinput>
+          <mdw-textinput outlined class=mdw-custom icon=edit color="alias-container" ink="alias"
+            supporting="I'm being helpful!" required>Name*</mdw-textinput>
+          <mdw-textinput outlined color=secondary-container error="I am error">Errored</mdw-textinput>
+          <mdw-textinput outlined color=secondary-container disabled>Disabled</mdw-textinput>
+          <mdw-textinput outlined color=secondary-container disabled error="Unavailable" value="filled">Disabled
+          </mdw-textinput>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Outlined Dense</h2>
+        <demo-flex wrap style="margin:24px; gap:16px" column>
+          <mdw-textinput outlined dense>Label</mdw-textinput>
+          <mdw-textinput outlined dense color="secondary-container" ink="secondary" value="default value">Label
+          </mdw-textinput>
+          <mdw-textinput outlined dense color="tertiary-container" ink="tertiary" placeholder="Label">Very long label
+            that label will clip selectively </mdw-textinput>
+          <mdw-textinput outlined dense class=mdw-custom placeholder="Placeholder" color="green-container" ink="green"
+            type-style="headline" icon=edit>Custom typography and icon</mdw-textinput>
+          <mdw-textinput outlined dense class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$"
+            placeholder="10" type="number">Price</mdw-textinput>
+          <mdw-textinput outlined dense icon=email input-suffix="@gmail.com" type="text" placeholder="frank"
+            minlength="4" maxlength="8" supporting required>Email</mdw-textinput>
+          <mdw-textinput outlined dense class=mdw-custom icon=edit color="alias-container" ink="alias"
+            supporting="I'm being helpful!" required>Name*</mdw-textinput>
+          <mdw-textinput outlined dense color=secondary-container error="I am error">Errored</mdw-textinput>
+          <mdw-textinput outlined dense color=secondary-container disabled>Disabled</mdw-textinput>
+          <mdw-textinput outlined dense color=secondary-container disabled error="Unavailable" value="filled">Disabled
+          </mdw-textinput>
+        </demo-flex>
+      </demo-section>
+    </demo-section>
+    <demo-section id=textareas>
+      <h1 slot="heading">Text Areas</h1>
+      <demo-section>
+        <h2 slot=heading>Filled</h2>
+        <demo-flex wrap style="margin:24px; gap:16px" column>
+          <mdw-textarea label="Label"></mdw-textarea>
+          <mdw-textarea label="Label" rows="2" fixed>Fixed size</mdw-textarea>
+          <mdw-textarea label="Max 2 rows" maxrows=2></mdw-textarea>
+          <mdw-textarea label="5 rows with max-height override" rows="5" style="max-height:100px"></mdw-textarea>
+          <mdw-textarea label="Min 2 rows, max 5" minrows="2" maxrows="5"></mdw-textarea>
+          <mdw-textarea color="secondary-container" ink="secondary" value="default value" label="Label"></mdw-textarea>
+          <mdw-textarea color="tertiary-container" ink="tertiary" placeholder="Label"
+            label="Very long label that label will clip selectively" value="Dear Madam Speaker,
+
+Regarding your letter dated ...
+
+...
+
+Yours Sincerely,
+
+..."></mdw-textarea>
+          <mdw-textarea class=mdw-custom placeholder="Placeholder" color="green-container" ink="green"
+            type-style="headline" icon=edit label="Custom typography and icon"></mdw-textarea>
+          <mdw-textarea class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$" placeholder="10"
+            type="number" label="Price"></mdw-textarea>
+          <mdw-textarea icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4" maxlength="8"
+            supporting required label="Email"></mdw-textarea>
+          <mdw-textarea class=mdw-custom icon=edit color="alias-container" ink="alias" supporting="I'm being helpful!"
+            required label="Oversized placeholder" placeholder="Dear Francine,
+
+They closed the parks this week, so we won't be able to
+meet your there. Should we just have dinner?
+
+Love,
+Daddy"></mdw-textarea>
+          <mdw-textarea color=secondary-container error="I am error" label="Errored"></mdw-textarea>
+          <mdw-textarea color=secondary-container disabled label="Disabled" maxrows=2
+            value="Disable elements still may have values and resizable. Max Rows 2"></mdw-textarea>
+          <mdw-textarea color=secondary-container disabled error="Unavailable" label="Disabled" fixed value="Disable and fixed
+            sized with HTMLTextAreaElement default row count of 2"></mdw-textarea>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Outlined</h2>
+        <demo-flex wrap style="margin:24px; gap:16px" column>
+          <mdw-textarea outlined label="Label"></mdw-textarea>
+          <mdw-textarea outlined label="Label" rows="2" fixed>Fixed size</mdw-textarea>
+          <mdw-textarea outlined label="Max 2 rows" maxrows=2></mdw-textarea>
+          <mdw-textarea outlined label="5 rows with max-height override" rows="5" style="max-height:100px">
+          </mdw-textarea>
+          <mdw-textarea outlined label="Min 2 rows, max 5" minrows="2" maxrows="5"></mdw-textarea>
+          <mdw-textarea outlined color="secondary-container" ink="secondary" value="default value" label="Label">
+          </mdw-textarea>
+          <mdw-textarea outlined color="tertiary-container" ink="tertiary" placeholder="Label"
+            label="Very long label that label will clip selectively" value="Dear Madam Speaker,
+
+Regarding your letter dated ...
+
+...
+
+Yours Sincerely,
+
+..."></mdw-textarea>
+          <mdw-textarea outlined class=mdw-custom placeholder="Placeholder" color="green-container" ink="green"
+            type-style="headline" icon=edit label="Custom typography and icon"></mdw-textarea>
+          <mdw-textarea outlined class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$"
+            placeholder="10" type="number" label="Price"></mdw-textarea>
+          <mdw-textarea outlined icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4"
+            maxlength="8" supporting required label="Email"></mdw-textarea>
+          <mdw-textarea outlined class=mdw-custom icon=edit color="alias-container" ink="alias"
+            supporting="I'm being helpful!" required label="Oversized placeholder" placeholder="Dear Francine,
+
+They closed the parks this week, so we won't be able to
+meet your there. Should we just have dinner?
+
+Love,
+Daddy"></mdw-textarea>
+          <mdw-textarea outlined color=secondary-container error="I am error" label="Errored"></mdw-textarea>
+          <mdw-textarea outlined color=secondary-container disabled label="Disabled" maxrows=2 value="Disable elements still
+            may have values and resizable. Max Rows 2"></mdw-textarea>
+          <mdw-textarea outlined color=secondary-container disabled error="Unavailable" label="Disabled" fixed value="Disable
+            and fixed sized with HTMLTextAreaElement default row count of 2"></mdw-textarea>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Outlined Dense</h2>
+        <demo-flex wrap style="margin:24px; gap:16px" column>
+          <mdw-textarea outlined dense label="Label"></mdw-textarea>
+          <mdw-textarea outlined dense label="Label" rows="2" fixed>Fixed size</mdw-textarea>
+          <mdw-textarea outlined dense label="Max 2 rows" maxrows=2></mdw-textarea>
+          <mdw-textarea outlined dense label="5 rows with max-height override" rows="5" style="max-height:100px">
+          </mdw-textarea>
+          <mdw-textarea outlined dense label="Min 2 rows, max 5" minrows="2" maxrows="5"></mdw-textarea>
+          <mdw-textarea outlined dense color="secondary-container" ink="secondary" value="default value" label="Label">
+          </mdw-textarea>
+          <mdw-textarea outlined dense color="tertiary-container" ink="tertiary" placeholder="Label"
+            label="Very long label that label will clip selectively" value="Dear Madam Speaker,
+
+Regarding your letter dated ...
+
+...
+
+Yours Sincerely,
+
+..."></mdw-textarea>
+          <mdw-textarea outlined dense class=mdw-custom placeholder="Placeholder" color="green-container" ink="green"
+            type-style="headline" icon=edit label="Custom typography and icon"></mdw-textarea>
+          <mdw-textarea outlined dense class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$"
+            placeholder="10" type="number" label="Price"></mdw-textarea>
+          <mdw-textarea outlined dense icon=email input-suffix="@gmail.com" type="text" placeholder="frank"
+            minlength="4" maxlength="8" supporting required label="Email"></mdw-textarea>
+          <mdw-textarea outlined dense class=mdw-custom icon=edit color="alias-container" ink="alias"
+            supporting="I'm being helpful!" required label="Oversized placeholder" placeholder="Dear Francine,
+
+They closed the parks this week, so we won't be able to
+meet your there. Should we just have dinner?
+
+Love,
+Daddy"></mdw-textarea>
+          <mdw-textarea outlined dense color=secondary-container error="I am error" label="Errored"></mdw-textarea>
+          <mdw-textarea outlined dense color=secondary-container disabled label="Disabled" maxrows=2
+            value="Disable elements still may have values and resizable. Max Rows 2"></mdw-textarea>
+          <mdw-textarea outlined dense color=secondary-container disabled error="Unavailable" label="Disabled" fixed
+            value="Disable and fixed sized with HTMLTextAreaElement default row count of 2"></mdw-textarea>
+        </demo-flex>
+      </demo-section>
     </demo-section>
     <demo-dummy-text></demo-dummy-text>
   </main>
@@ -1264,13 +1408,13 @@
       description="This will reset your app preferences back to their default settings. The following accounts will be signed out:">
       <demo-dummy-text></demo-dummy-text>
     </mdw-dialog>
-    <mdw-dialog id=dialog-simple icon=refresh headline="My title" description="Description (no body)."></mdw-dialog>
+    <mdw-dialog id=dialog-icon icon=refresh headline="My title" description="Description (no body)."></mdw-dialog>
     <mdw-dialog id=dialog-custom-buttons icon=refresh headline="Title" description="description" confirm="Go"
       cancel="Abort" default="confirm">
     </mdw-dialog>
     <mdw-dialog id=dialog-input icon=edit headline="Input autofocus"
       description="Input element autofocuses on open (mobile compatible)" default="confirm">
-      <input type="text" autofocus>
+      <input type="text" autofocus />
     </mdw-dialog>
   </div>
   <div id=menus>

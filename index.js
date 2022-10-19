@@ -25,6 +25,7 @@ import SegmentedButtonGroup from './components/SegmentedButtonGroup.js';
 import Slider from './components/Slider.js';
 import Switch from './components/Switch.js';
 import Text from './components/Text.js';
+import TextArea from './components/TextArea.js';
 import TextInput from './components/TextInput.js';
 
 Text.register();
@@ -68,4 +69,4 @@ Radio.register();
 Slider.register();
 Switch.register();
 TextInput.register();
-
+TextArea.register();
