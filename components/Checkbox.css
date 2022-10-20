@@ -9,7 +9,7 @@
   --mdw-checkbox__state-size: 40px;
   --mdw-checkbox__margin: calc((var(--mdw-checkbox__state-size) - var(--mdw-checkbox__size)) / 2);
 
-  gap: var(--mdw-radio__gap, 8px);
+  gap: var(--mdw-radio__gap, calc(var(--mdw-checkbox__margin)));
 
   direction: var(--mdw-radio__direction, initial);
 }
@@ -24,8 +24,8 @@ label {
   align-items: center;
   gap: inherit;
   grid-auto-flow: column;
-  grid-template-rows: minmax(var(--mdw-checkbox__state-size), min-content);
-  grid-template-columns: var(--mdw-checkbox__state-size);
+  grid-template-rows: minmax(var(--mdw-checkbox__size), min-content);
+  grid-template-columns: var(--mdw-checkbox__size);
   justify-content: center;
 
   cursor: pointer;
@@ -33,6 +33,14 @@ label {
   border-radius: 50%;
 
   transition: none 100ms cubic-bezier(0.4, 0.0, 1, 1);
+}
+
+#control {
+  line-height: 0;
+}
+
+#overlay {
+  pointer-events: auto;
 }
 
 #container {
@@ -47,7 +55,6 @@ label {
   block-size: var(--mdw-checkbox__size);
   inline-size: var(--mdw-checkbox__size);
   grid-column: 1;
-  margin: var(--mdw-checkbox__margin);
   border: solid var(--mdw-checkbox__border-width) currentColor;
 
   background-color: transparent;
@@ -87,7 +94,7 @@ label {
   color: rgb(var(--mdw-ink));
 
   transition: inherit;
-  transition-property: opacity;
+  transition-property: opacity, background-color, color;
   will-change: opacity;
 }
 
