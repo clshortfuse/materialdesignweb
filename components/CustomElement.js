@@ -498,9 +498,7 @@ export default class CustomElement extends HTMLElement {
         } else {
           value = data[key];
         }
-        if (node[0] === '?') {
-          value = Boolean(value);
-        } else if (node.startsWith('#text')) {
+        if (node.startsWith('#text')) {
           const index = node.slice('#text'.length + 1) || 0;
           let nodesFound = 0;
           for (const childNode of ref.childNodes) {
