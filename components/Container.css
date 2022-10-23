@@ -114,6 +114,9 @@
   transition-property: opacity, color, background-color;
 }
 
+:host([disabled]) {
+  box-shadow: none;
+}
 :host([disabled]) #elevation {
   display: none;
 }
