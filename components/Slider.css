@@ -280,9 +280,9 @@ label {
 
 #track-label::after {
   /* Values from Figma SVG */
-  --x-start: 14.6446%;
+  --x-start: 14.6446%; /*4.1005px*/
   --x-end: 85.3554%;
-  --y: 70.7106%;
+  --y: 70.7106%; /*24.0416px*/
 
   content: "";
 
