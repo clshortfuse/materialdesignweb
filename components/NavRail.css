@@ -5,7 +5,7 @@
   align-items: stretch;
   flex-direction: column;
   grid-template-rows: minmax(auto, 1fr) minmax(0, auto) minmax(auto, 1fr);
-  grid-template-columns: minmax(80px, min-content);
+  grid-template-columns: minmax(80px, auto);
   justify-items: center;
 
   min-inline-size: 80px;
@@ -37,6 +37,8 @@
   align-items: center;
   flex-direction: column;
   gap: 12px;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   box-sizing: border-box;
   inline-size: 100%;
