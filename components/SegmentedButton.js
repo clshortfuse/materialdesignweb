@@ -15,23 +15,23 @@ export default class SegmentedButton extends Button {
     `,
   ];
 
+  static get template() {
+    const template = super.template;
+    template.getElementById('label').append(
+      template.getElementById('check-icon'),
+    );
+    const control = template.getElementById('control');
+    control.setAttribute('type', 'radio');
+    control.setAttribute('role', 'option');
+    return template;
+  }
+
   #input = /** @type {HTMLInputElement} */ (this.refs.control);
 
   constructor() {
     super();
     this.outlined = true;
     this.setAttribute('mdw-overlay-disabled', 'focus');
-  }
-
-  compose() {
-    const fragment = super.compose();
-    fragment.getElementById('label').append(
-      fragment.getElementById('check-icon'),
-    );
-    const control = fragment.getElementById('control');
-    control.setAttribute('type', 'radio');
-    control.setAttribute('role', 'option');
-    return fragment;
   }
 
   /**

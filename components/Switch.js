@@ -18,19 +18,19 @@ export default class Switch extends Input {
     </div>
   `];
 
-  compose() {
-    const fragment = super.compose();
-    const control = fragment.getElementById('control');
+  static get template() {
+    const template = super.template;
+    const control = template.getElementById('control');
     control.setAttribute('type', 'checkbox');
     control.setAttribute('role', 'switch');
-    fragment.getElementById('thumb').append(
-      fragment.getElementById('overlay'),
-      fragment.getElementById('ripple'),
+    template.getElementById('thumb').append(
+      template.getElementById('overlay'),
+      template.getElementById('ripple'),
     );
-    fragment.getElementById('label').append(
-      fragment.getElementById('track'),
+    template.getElementById('label').append(
+      template.getElementById('track'),
     );
-    return fragment;
+    return template;
   }
 
   // @ts-ignore @override

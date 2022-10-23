@@ -21,6 +21,18 @@ export default class MenuItem extends Input {
     `,
   ];
 
+  static get template() {
+    const template = super.template;
+    template.getElementById('label').append(
+      template.getElementById('icon'),
+      template.getElementById('trailing'),
+    );
+    const control = template.getElementById('control');
+    control.setAttribute('type', 'button');
+    control.setAttribute('role', 'menuitem');
+    return template;
+  }
+
   #input = /** @type {HTMLInputElement} */ (this.refs.control);
 
   /**
@@ -42,18 +54,6 @@ export default class MenuItem extends Input {
     && previousFocus instanceof HTMLElement) {
       previousFocus.focus();
     }
-  }
-
-  compose() {
-    const fragment = super.compose();
-    fragment.getElementById('label').append(
-      fragment.getElementById('icon'),
-      fragment.getElementById('trailing'),
-    );
-    const control = fragment.getElementById('control');
-    control.setAttribute('type', 'button');
-    control.setAttribute('role', 'menuitem');
-    return fragment;
   }
 
   /**

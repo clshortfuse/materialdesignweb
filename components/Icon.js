@@ -21,10 +21,17 @@ export default class Icon extends Text {
     ...super.fragments,
     /* html */`
       <div id=icon class={fontClass} aria-hidden="true">
-        <img id=img aria-hidden="true">
+        <img id=img aria-hidden="true" />
       </div>
     `,
   ];
+
+  static get template() {
+    const template = super.template;
+    const icon = template.getElementById('icon');
+    icon.append(template.getElementById('slot'));
+    return template;
+  }
 
   static imageElementAttributes = [
     'alt', 'src', 'srcset',
@@ -57,13 +64,6 @@ export default class Icon extends Text {
     if (height != null) {
       this.height = height;
     }
-  }
-
-  compose() {
-    const fragment = super.compose();
-    const icon = fragment.getElementById('icon');
-    icon.append(fragment.getElementById('slot'));
-    return fragment;
   }
 
   /**

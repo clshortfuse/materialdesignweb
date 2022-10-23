@@ -4,9 +4,9 @@ import Container from './Container.js';
 export default class Card extends Container {
   static elementName = 'mdw-card';
 
-  static styles = [...super.styles, styles];
-
   static ariaRole = 'figure';
+
+  static styles = [...super.styles, styles];
 
   static fragments = [
     ...super.fragments,

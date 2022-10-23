@@ -6,10 +6,44 @@ import styles from './TextFieldMixin.css' assert { type: 'css' };
  * @param {typeof Control} Base
  */
 export function TextFieldMixin(Base) {
-  const TextField = class extends Base {
+  class TextField extends Base {
     static elementName = 'mdw-textbase';
 
     static styles = [...super.styles, styles];
+
+    static get template() {
+      const template = super.template;
+      /** @type {TextField['html']} */
+      const html = this.html;
+      const control = template.getElementById('control');
+      control.setAttribute('type', 'text');
+      control.setAttribute('placeholder', '{placeholder}');
+      control.setAttribute('aria-labelledby', 'label-text');
+      control.classList.add('inline');
+      template.getElementById('label').append(
+        html`
+          <mdw-icon id=icon aria-hidden=true>{icon}</mdw-icon>
+          <span class=inline id=prefix aria-hidden=true>{inputPrefix}</span>
+          <span class=inline id=suffix aria-hidden=true>{inputSuffix}</span>
+          <mdw-icon id=trailing-icon aria-hidden=true>{trailingIcon}</mdw-icon>
+          <div id=indicator></div>
+          <div id=outline>
+            <div id=gap>
+              <div id=label-text>{label}</div>
+            </div>
+          </div>
+        `,
+      );
+      template.getElementById('label-text').append(
+        template.getElementById('slot'),
+      );
+      template.append(html`
+        <div id=supporting>${({ error, _validationMessage, supporting }) => (error || _validationMessage || supporting) ?? ''}</div>
+      `);
+
+      template.getElementById('ripple').remove();
+      return template;
+    }
 
     #icon = /** @type {Icon} */ (this.refs.icon);
 
@@ -26,39 +60,6 @@ export function TextFieldMixin(Base) {
       if (this.trailingIcon == null) {
         this.#trailingIcon.remove();
       }
-    }
-
-    compose() {
-      const fragment = super.compose();
-      const { html } = this;
-      const control = fragment.getElementById('control');
-      control.setAttribute('type', 'text');
-      control.setAttribute('placeholder', '{placeholder}');
-      control.setAttribute('aria-labelledby', 'label-text');
-      control.classList.add('inline');
-      fragment.getElementById('label').append(
-        html`
-          <mdw-icon id=icon aria-hidden=true>{icon}</mdw-icon>
-          <span class=inline id=prefix aria-hidden=true>{inputPrefix}</span>
-          <span class=inline id=suffix aria-hidden=true>{inputSuffix}</span>
-          <mdw-icon id=trailing-icon aria-hidden=true>{trailingIcon}</mdw-icon>
-          <div id=indicator></div>
-          <div id=outline>
-            <div id=gap>
-              <div id=label-text>{label}</div>
-            </div>
-          </div>
-        `,
-      );
-      fragment.getElementById('label-text').append(
-        fragment.getElementById('slot'),
-      );
-      fragment.append(html`
-        <div id=supporting>${({ error, _validationMessage, supporting }) => (error || _validationMessage || supporting) ?? ''}</div>
-      `);
-
-      fragment.getElementById('ripple').remove();
-      return fragment;
     }
 
     /**
@@ -101,7 +102,8 @@ export function TextFieldMixin(Base) {
         default:
       }
     }
-  };
+  }
+
   TextField.prototype.type = TextField.idl('type', { empty: 'text' });
   TextField.prototype.icon = TextField.idl('icon');
   TextField.prototype.label = TextField.idl('label');

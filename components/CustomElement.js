@@ -27,8 +27,12 @@
  */
 
 /**
- * @template {keyof HTMLElementTagNameMap|Function|undefined} T
- * @typedef {T extends undefined ? undefined : T extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[T] : T extends Function ? InstanceType<T> : HTMLElement } RefType<T>
+ * @template T1
+ * @template [T2=T1]
+ * @callback HTMLTemplater
+ * @param {TemplateStringsArray} strings
+ * @param  {...(string|((this:T1, data:T2) => any))} substitutions
+ * @return {DocumentFragment}
  */
 
 /**
@@ -40,6 +44,7 @@
  * @prop {string} node
  * @prop {(data:T) => any} fn
  * @prop {Set<keyof T & string>} props
+ * @prop {T} defaultValue
  */
 
 /**
@@ -49,6 +54,7 @@
  * @typedef {Object} InlineFunctionEntry
  * @prop {(data:T) => any} fn
  * @prop {Set<keyof T & string>} [props]
+ * @prop {T} [defaultValue]
  */
 
 /**
@@ -78,21 +84,52 @@ export default class CustomElement extends HTMLElement {
   /** @type {string} */
   static elementName = null;
 
-  /** @type {(string|URL|CSSStyleSheet)[]} */
-  static styles = [];
-
   static ariaRole = 'none';
 
   static delegatesFocus = false;
 
+  /** @type {Iterable<string>} */
+  static get observedAttributes() {
+    return [...this.getIdls().values()]
+      .filter((options) => options.attr && (options.reflect === true || options.reflect === 'read'))
+      .map(({ attr }) => attr);
+  }
+
+  /** @type {(string|URL|CSSStyleSheet)[]} */
+  static styles = [];
+
   /** @type {(DocumentFragment|string)[]} */
   static fragments = [];
 
-  /** @type {Iterable<string>} */
-  static get observedAttributes() {
-    return [...this.idls.values()]
-      .filter((options) => options.attr && (options.reflect === true || options.reflect === 'read'))
-      .map(({ attr }) => attr);
+  /** @type {?DocumentFragment} */
+  static get template() {
+    const fragment = document.createDocumentFragment();
+    fragment.append(
+      ...this.styles.map((style) => {
+        if (typeof style === 'string') {
+          const el = document.createElement('style');
+          el.textContent = style;
+          return el;
+        }
+        if (style instanceof URL) {
+          const el = document.createElement('link');
+          el.rel = 'stylesheet';
+          el.href = style.href;
+          return el;
+        }
+        if (CustomElement.supportsAdoptedStyleSheets) return null;
+        const el = document.createElement('style');
+        el.textContent = [...style.cssRules].map((r) => r.cssText).join('\n');
+        return el;
+      }).filter(Boolean),
+      ...this.fragments.map((f) => {
+        if (typeof f === 'string') {
+          return document.createRange().createContextualFragment(f);
+        }
+        return fragment;
+      }),
+    );
+    return fragment;
   }
 
   static interpolatesTemplate = true;
@@ -104,56 +141,37 @@ export default class CustomElement extends HTMLElement {
   static supportsElementInternalsRole = CustomElement.supportsElementInternals
     && 'role' in ElementInternals.prototype;
 
-  /** @type {WeakMap<typeof CustomElement, DocumentFragment>} */
-  static #fragmentCache = new WeakMap();
-
-  /** @type {WeakMap<typeof CustomElement, CSSStyleSheet[]>} */
-  static #stylesCache = new WeakMap();
-
-  /**
-   * @private
-   * @type {WeakMap<typeof CustomElement, Map<string, IDLOptions<?,?>>>}
-   */
-  static idlCache = new WeakMap();
-
-  /**
-   * @private
-   * @type {WeakMap<typeof CustomElement, Map<string, RefOptions>>}
-   */
-  static refCache = new WeakMap();
-
-  /**
-   * @private
-   * @type {WeakMap<typeof CustomElement, BindMap<Partial<?>>>}
-   */
-  static bindMapCache = new WeakMap();
-
-  /**
-   * @private
-   * @type {WeakMap<typeof CustomElement, InlineFunctionMap<Partial<?>>>}
-   */
-  static inlineFunctionMapCache = new WeakMap();
-
-  /**
-   * @private
-   * @type {WeakMap<typeof CustomElement, EventMap>}
-   */
-  static eventMapCache = new WeakMap();
-
   static #generatedUIDs = new Set();
 
   static rootTemplate = '';
 
-  /** @type {PropertyDescriptor} */
-  static DUMMY_DESCRIPTOR = {
-    enumerable: true,
-    configurable: true,
-    get: () => null,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    set() {},
-  };
+  static IDL_INIT = Symbol('IDL_INIT');
 
-  /** @type {this['composeHtml']} */
+  /** @type {boolean} */
+  static templatable = null;
+
+  /** @type {HTMLTemplater<any,any>} */
+  static _staticHtml;
+
+  /** @type {DocumentFragment} */
+  static _composition = null;
+
+  /** @type {Map<string, IDLOptions<?,?>>} */
+  static _idls = new Map();
+
+  /** @type {BindMap<Partial<?>>} */
+  static _bindings = new Map();
+
+  /** @type {InlineFunctionMap<Partial<?>>} */
+  static _inlineFunctions = new Map();
+
+  /** @type {EventMap} */
+  static _events = new Map();
+
+  /** @type {CSSStyleSheet[]} */
+  static _adoptedStyleSheets = [];
+
+  /** @type {HTMLTemplater<this>} */
   #html;
 
   /** @type {Map<string,WeakRef<HTMLElement>>} */
@@ -192,24 +210,19 @@ export default class CustomElement extends HTMLElement {
     },
   });
 
+  /** @type {Set<string>[]} */
+  #spySets = [];
+
+  #spying = false;
+
   constructor() {
     super();
-    this.#attachIDLs();
     this.#attachShadow();
     this.#attachStyles();
     this.#attachContent();
     this.#attachEvents();
     this.#attachInternals();
     this.#attachARIA();
-    const component = /** @type {typeof CustomElement} */ (this.constructor);
-    const { idls } = component;
-    const needsFirstRender = [...idls.entries()]
-      .filter(([, options]) => options.initialized
-        && ((options.reflect === false || options.reflect === 'write' || options.default)))
-      .map(([key]) => [key, this[key]]);
-    if (needsFirstRender.length) {
-      this.render(Object.fromEntries(needsFirstRender));
-    }
   }
 
   /** @return {string} */
@@ -255,100 +268,60 @@ export default class CustomElement extends HTMLElement {
     });
   }
 
-  /**
-   * @this {typeof CustomElement}
-   * @param {string} [elementName]
-   */
+  /** @param {string} [elementName] */
   static register(elementName) {
     customElements.define(elementName || this.elementName, this);
   }
 
-  static get idls() {
-    let map = this.idlCache.get(this);
-    if (!map) {
-      // eslint-disable-next-line @typescript-eslint/no-this-alias
-      let parent = this;
-      let parentMap;
-      while ((parent = Object.getPrototypeOf(parent)) !== CustomElement) {
-        parentMap = this.idlCache.get(parent);
-        if (parentMap) {
-          parentMap = [...parentMap.entries()].map(([name, options]) => [name, { ...options }]);
-          break;
-        }
-      }
-      map = new Map(parentMap);
-      this.idlCache.set(this, map);
+  static getIdls() {
+    // eslint-disable-next-line no-prototype-builtins
+    if (!this.hasOwnProperty('_idls')) {
+      this._idls = new Map(this._idls);
     }
-    return map;
+    return this._idls;
   }
 
-  static get bindMap() {
-    let map = this.bindMapCache.get(this);
-    if (!map) {
-      map = new Map();
-      if (!this.interpolatesTemplate) {
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        let parent = this;
-        let parentMap;
-        while ((parent = Object.getPrototypeOf(parent)) !== CustomElement) {
-          parentMap = this.bindMapCache.get(parent);
-          if (parentMap) break;
-        }
-        for (const [key, entries] of parentMap ?? []) {
-          const newSet = new Set();
-          for (const entry of entries) {
-            newSet.add({ ...entry });
-          }
-          map.set(key, newSet);
-        }
-      }
-
-      this.bindMapCache.set(this, map);
+  static getBindings() {
+    // eslint-disable-next-line no-prototype-builtins
+    if (!this.hasOwnProperty('_bindings')) {
+      this._bindings = new Map(
+        [...this._bindings].map(([key, entries]) => [
+          key,
+          new Set([...entries].map((entry) => ({ ...entry }))),
+        ]),
+      );
     }
-    return map;
+    return this._bindings;
   }
 
-  static get inlineFunctionMap() {
-    let map = this.inlineFunctionMapCache.get(this);
-    if (!map) {
-      // eslint-disable-next-line @typescript-eslint/no-this-alias
-      let parent = this;
-      let parentMap;
-      while ((parent = Object.getPrototypeOf(parent)) !== CustomElement) {
-        parentMap = this.inlineFunctionMapCache.get(parent);
-        if (parentMap) break;
-      }
-      map = new Map(parentMap);
-
-      this.inlineFunctionMapCache.set(this, map);
+  static getInlineFunctions() {
+    // eslint-disable-next-line no-prototype-builtins
+    if (!this.hasOwnProperty('_inlineFunctions')) {
+      this._inlineFunctions = new Map(this._inlineFunctions);
     }
-    return map;
+    return this._inlineFunctions;
   }
 
-  static get eventMap() {
-    let map = this.eventMapCache.get(this);
-    if (!map) {
-      map = new Map();
-      if (!this.interpolatesTemplate) {
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        let parent = this;
-        let parentMap;
-        while ((parent = Object.getPrototypeOf(parent)) !== CustomElement) {
-          parentMap = this.eventMapCache.get(parent);
-          if (parentMap) break;
-        }
-        for (const [key, entries] of parentMap ?? []) {
-          const newSet = new Set();
-          for (const entry of entries) {
-            newSet.add({ ...entry });
-          }
-          map.set(key, newSet);
-        }
-      }
-
-      this.eventMapCache.set(this, map);
+  static getEvents() {
+    // eslint-disable-next-line no-prototype-builtins
+    if (!this.hasOwnProperty('_events')) {
+      this._events = new Map(
+        [...this._events].map(([key, entries]) => [
+          key,
+          new Set([...entries].map((entry) => ({ ...entry }))),
+        ]),
+      );
     }
-    return map;
+    return this._events;
+  }
+
+  static getAdoptedStyleSheets() {
+    // eslint-disable-next-line no-prototype-builtins
+    if (!this.hasOwnProperty('_adoptedStyleSheets')) {
+      this._adoptedStyleSheets = /** @type {CSSStyleSheet[]} */ (this.styles
+        .filter((style) => style instanceof CSSStyleSheet));
+    }
+    return this._adoptedStyleSheets;
   }
 
   /**
@@ -356,9 +329,9 @@ export default class CustomElement extends HTMLElement {
    * @template {any} [T2=ParsedIDLType<T1>]
    * @param {string} name
    * @param {T1|IDLOptions<T1,T2>} [typeOrOptions='string']
-   * @return {unknown extends T2 ? string : T2}
+   * @return {IDLOptions<T1,T2>}
    */
-  static idl(name, typeOrOptions) {
+  static parseIDLOptions(name, typeOrOptions) {
     const isPrivate = name[0] === '_';
 
     /** @type {IDLOptions<T1,T2>} */
@@ -410,9 +383,7 @@ export default class CustomElement extends HTMLElement {
       }
     }
 
-    Object.defineProperty(this.prototype, name, CustomElement.DUMMY_DESCRIPTOR);
-
-    this.idls.set(name, {
+    return {
       reflect,
       enumerable,
       default: options.default ?? parsedEmpty,
@@ -423,44 +394,118 @@ export default class CustomElement extends HTMLElement {
       onNullish,
       values: new WeakMap(),
       attrValues: new WeakMap(),
-    });
-    return null;
+    };
   }
 
   /**
-   * Composes template used for construction
-   * Not static so `this` can referenced for type-checking
-   * @return {DocumentFragment}
+   * @template {IDLOptionType} [T1=any]
+   * @template {any} [T2=ParsedIDLType<T1>]
+   * @param {string} name
+   * @param {T1|IDLOptions<T1,T2>} [typeOrOptions='string']
+   * @return {unknown extends T2 ? string : T2}
    */
-  compose() {
-    const component = /** @type {typeof CustomElement} */ (this.constructor);
-    const fragment = document.createDocumentFragment();
-    fragment.append(
-      ...component.styles.map((style) => {
-        if (typeof style === 'string') {
-          const el = document.createElement('style');
-          el.textContent = style;
-          return el;
+  static idl(name, typeOrOptions) {
+    const options = CustomElement.parseIDLOptions(name, typeOrOptions);
+
+    this.getIdls().set(name, options);
+
+    Object.defineProperty(this.prototype, name, {
+      enumerable: options.enumerable,
+      /**
+       * @this {CustomElement}
+       * @return {any}
+       */
+      get() {
+        if (this.#spying) {
+          this.#spySets.at(-1).add(name);
         }
-        if (style instanceof URL) {
-          const el = document.createElement('link');
-          el.rel = 'stylesheet';
-          el.href = style.href;
-          return el;
+        if (!options.values.has(this)) return options.default;
+        return options.values.get(this) ?? (options.nullable ? null : options.empty);
+      },
+      /**
+       * @this {CustomElement}
+       * @param {any} value
+       * @return {void}
+       */
+      set(value) {
+        if (value === CustomElement.IDL_INIT) return;
+        // console.log('set:', this.constructor.name, name, value);
+        const previousValue = this[name];
+        const newValue = (!options.nullable && value == null) ? options.empty : value;
+        if (previousValue == null && newValue == null) return;
+        // Object.is()?
+        if (previousValue === newValue) return;
+        let parsedValue;
+        /** @type {?string} */
+        let attrValue;
+        switch (options.type) {
+          case 'boolean':
+            parsedValue = !!newValue;
+            attrValue = parsedValue ? '' : null;
+            break;
+          case 'integer':
+          case 'float':
+            if (newValue == null) {
+              if (options.onNullish) {
+                parsedValue = options.onNullish(newValue);
+                attrValue = String(parsedValue);
+              } else {
+                parsedValue = null;
+                attrValue = null;
+              }
+            } else {
+              if (typeof newValue !== 'number') throw new TypeError('Value must be a number');
+              parsedValue = newValue;
+              attrValue = String(newValue);
+            }
+            break;
+          // case 'string':
+          default:
+            if (newValue == null) {
+              if (options.onNullish) {
+                parsedValue = options.onNullish(newValue);
+                attrValue = parsedValue;
+              } else {
+                parsedValue = null;
+                attrValue = null;
+              }
+            } else {
+              parsedValue = String(newValue);
+              attrValue = parsedValue;
+            }
         }
-        if (CustomElement.supportsAdoptedStyleSheets) return null;
-        const el = document.createElement('style');
-        el.textContent = [...style.cssRules].map((r) => r.cssText).join('\n');
-        return el;
-      }).filter(Boolean),
-      ...component.fragments.map((f) => {
-        if (typeof f === 'string') {
-          return document.createRange().createContextualFragment(f);
+        if (previousValue === parsedValue) return;
+        const lastAttrValue = options.attrValues.get(this);
+
+        options.values.set(this, parsedValue);
+        options.attrValues.set(this, attrValue);
+
+        // console.log(this.static.name, 'Property change: idlChangedCallback', { name, previousValue, parsedValue });
+        this.idlChangedCallback(name, previousValue, parsedValue);
+
+        if (!options.reflect) return;
+        if (lastAttrValue == null && attrValue == null) return;
+        if (lastAttrValue === attrValue) return;
+        if (attrValue == null) {
+          this.removeAttribute(options.attr);
+        } else {
+          this.setAttribute(options.attr, attrValue);
         }
-        return fragment;
-      }),
-    );
-    return fragment;
+      },
+    });
+
+    return /** @type {any} */ (CustomElement.IDL_INIT);
+  }
+
+  /**
+   * Wraps composeHtml with bind to `this` (not natively set with tagged template literals)
+   * @return {HTMLTemplater<any>}
+   */
+  static get html() {
+    if (!this._staticHtml) {
+      this._staticHtml = this._templateHTML.bind(this);
+    }
+    return this._staticHtml;
   }
 
   /**
@@ -469,13 +514,11 @@ export default class CustomElement extends HTMLElement {
    */
   render(data) {
     if (!data) return;
-    const component = /** @type {typeof CustomElement} */ (this.constructor);
-    const { bindMap } = component;
 
     const fnResults = new WeakMap();
     /** @type {WeakMap<Element, Set<string>>} */
     const modifiedNodes = new WeakMap();
-    for (const [key, bindings] of bindMap.entries()) {
+    for (const [key, bindings] of this.static.getBindings()) {
       if (!(key in data)) continue;
       for (const { id, node, fn, props } of bindings) {
         const ref = this.refs[id] ?? this.shadowRoot.getElementById(id);
@@ -513,10 +556,8 @@ export default class CustomElement extends HTMLElement {
           }
         } else if (value === false || value == null) {
           ref.removeAttribute(node);
-        } else if (value === true) {
-          ref.setAttribute(node, '');
         } else {
-          ref.setAttribute(node, value);
+          ref.setAttribute(node, value === true ? '' : value);
         }
         let set = modifiedNodes.get(ref);
         if (!set) {
@@ -535,12 +576,9 @@ export default class CustomElement extends HTMLElement {
    */
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue == null && newValue == null) return;
-    const component = /** @type {typeof CustomElement} */ (this.constructor);
 
-    const map = component.idls;
-    if (!map) return;
     // TODO: Index attribute names?
-    for (const [key, options] of map) {
+    for (const [key, options] of this.static.getIdls()) {
       if (options.attr !== name) continue;
       const previousDataValue = options.values.get(this);
       if (options.attrValues.get(this) === newValue) return;
@@ -584,14 +622,25 @@ export default class CustomElement extends HTMLElement {
     }
   }
 
-  /**
-   * @param {string} name
-   * @param {any} oldValue
-   * @param {any} newValue
-   * @return {void}
-   */
-  idlChangedCallback(name, oldValue, newValue) {
-    this.render({ [name]: newValue });
+  get static() { return /** @type {typeof CustomElement} */ (/** @type {unknown} */ (this.constructor)); }
+
+  #startSpy() {
+    this.#spying = true;
+    this.#spySets.push(new Set());
+  }
+
+  #pauseSpy() {
+    this.#spying = false;
+  }
+
+  #resumeSpy() {
+    this.#spying = false;
+  }
+
+  #stopSpy() {
+    const result = this.#spySets.pop();
+    this.#spying = (this.#spySets.length !== 0);
+    return result;
   }
 
   /**
@@ -600,7 +649,7 @@ export default class CustomElement extends HTMLElement {
    * @param {T} [isAttr]
    * @return {void}
    */
-  #interpolateNode(node, isAttr) {
+  interpolateNode(node, isAttr) {
     const { nodeName, nodeValue, nodeType } = node;
     if (!nodeValue) return;
     const trimmed = nodeValue.trim();
@@ -620,7 +669,6 @@ export default class CustomElement extends HTMLElement {
     if (isAttr === false || (nodeType === Node.TEXT_NODE)) {
       // eslint-disable-next-line unicorn/consistent-destructuring
       element = node.parentElement;
-      node.nodeValue = '';
       textNodeIndex = 0;
       let prev = node;
       while ((prev = prev.previousSibling) != null) {
@@ -632,7 +680,6 @@ export default class CustomElement extends HTMLElement {
       // @ts-ignore Skip cast
       // eslint-disable-next-line unicorn/consistent-destructuring
       element = node.ownerElement;
-      element.removeAttribute(nodeName);
       if (nodeName.startsWith('on')) {
         const [, flags, prop] = parsedValue.match(/^([!1~]+)?(.*)$/);
         eventFlags = flags;
@@ -647,49 +694,11 @@ export default class CustomElement extends HTMLElement {
       element.id = id;
     }
 
-    const component = /** @type {typeof CustomElement} */ (this.constructor);
+    /** @type {Function} */
     let fn;
     /** @type {Set<string>} */
     let props;
-    if (parsedValue.startsWith('#')) {
-      const { inlineFunctionMap } = component;
-      const value = inlineFunctionMap.get(parsedValue);
-      if (!value) {
-        console.warn(`Invalid interpolation value: ${parsedValue}`);
-        return;
-      }
-      fn = value.fn;
-      props = value.props;
-      if (!props && !isEvent) {
-        // Idempotent expressions allows us to spy on values
-        const poked = new Set();
-        const scope = this;
-        // TODO: thisProxy & argProxy
-        const proxy = new Proxy(scope, {
-          get(target, p) {
-            poked.add(p);
-            // console.log('spying on', target, p);
-            const v = Reflect.get(target, p);
-            if (v == null) return null;
-            if (typeof v === 'function') {
-              // console.log('rebinding function', v);
-              return v.bind(target, proxy);
-            }
-            // @ts-ignore Skip cast
-            return value;
-          },
-          has(target, p) {
-            poked.add(p);
-            return Reflect.has(target, p);
-          },
-        });
-        fn.call(proxy, proxy);
-        value.props = poked;
-        props = poked;
-      }
-    } else {
-      props = new Set([parsedValue]);
-    }
+
     if (isEvent) {
       const options = {
         once: eventFlags?.includes('1'),
@@ -700,11 +709,11 @@ export default class CustomElement extends HTMLElement {
       const type = nodeName.slice(2);
       element.removeAttribute(nodeName);
 
-      const { eventMap } = component;
-      let set = eventMap.get(id);
+      const events = this.static.getEvents();
+      let set = events.get(id);
       if (!set) {
         set = new Set();
-        eventMap.set(id, set);
+        events.set(id, set);
       }
       if (fn) {
         set.add({ type, options, listener: fn });
@@ -714,15 +723,109 @@ export default class CustomElement extends HTMLElement {
       return;
     }
 
-    const { bindMap } = component;
+    /** @type {any} */
+    let defaultValue;
+    let inlineFunctionOptions;
+    // Is Inline Function?
+    if (parsedValue.startsWith('#')) {
+      inlineFunctionOptions = this.static.getInlineFunctions().get(parsedValue);
+      if (!inlineFunctionOptions) {
+        console.warn(`Invalid interpolation value: ${parsedValue}`);
+        return;
+      }
+      if (inlineFunctionOptions.props) {
+        console.log('This function has already been called. Reuse props');
+        props = inlineFunctionOptions.props;
+        defaultValue = inlineFunctionOptions.defaultValue ?? null;
+      } else {
+        defaultValue = inlineFunctionOptions.fn;
+      }
+    } else {
+      defaultValue = this[parsedValue];
+    }
+
+    if (!props) {
+      if (typeof defaultValue === 'function') {
+        // Value must be reinterpolated and function spied upon
+        fn = defaultValue;
+        this.#startSpy();
+        const pauseSpy = () => this.#pauseSpy();
+        const resumeSpy = () => this.#resumeSpy();
+        const argPoked = new Set();
+        const argProxy = new Proxy(this, {
+          get(target, p) {
+            argPoked.add(p);
+            pauseSpy();
+            const value = Reflect.get(target, p);
+            resumeSpy();
+            return value;
+          },
+          has(target, p) {
+            argPoked.add(p);
+            pauseSpy();
+            const value = Reflect.has(target, p);
+            resumeSpy();
+            return value;
+          },
+        });
+        defaultValue = fn.call(this, argProxy);
+        const thisPoked = this.#stopSpy();
+        if (thisPoked.size) {
+          if (!fn.name) {
+            console.warn(this.static.name, 'anonymous function poked this?', [...thisPoked]);
+            this.static.templatable = false;
+          } else {
+            // console.log(this.static.name, fn.name, 'used this:', [...thisPoked]);
+          }
+        }
+        if (argPoked.size) {
+          // console.log(this.static.name, fn.name || parsedValue || 'anonymous function', 'used arg:', [...argPoked]);
+        }
+        const combinedSet = new Set([
+          ...argPoked,
+          ...thisPoked,
+        ]);
+
+        if (!combinedSet.size) {
+          console.warn(this.static.name, fn.name || parsedValue || 'anonymous function', ': No variables used. External references?');
+        }
+
+        props = combinedSet;
+        if (inlineFunctionOptions) {
+          inlineFunctionOptions.defaultValue = defaultValue;
+          inlineFunctionOptions.props = props;
+        }
+        // console.log(this.static.name, fn.name || parsedValue, combinedSet);
+      } else {
+        props = new Set([parsedValue]);
+      }
+    }
+
+    if (typeof defaultValue === 'symbol') {
+      console.warn(this.static.name, ': Invalid binding:', parsedValue);
+      defaultValue = null;
+    }
+    if (isAttr === false || (nodeType === Node.TEXT_NODE)) {
+      node.nodeValue = defaultValue ?? '';
+    } else if (defaultValue == null || defaultValue === false) {
+      element.removeAttribute(nodeName);
+    } else {
+      element.setAttribute(nodeName, defaultValue === true ? '' : defaultValue);
+    }
+
+    const bindings = this.static.getBindings();
+
+    if (nodeName === '_if') {
+      // console.log('found an element conditional!', id);
+    }
 
     const parsedNodeName = textNodeIndex ? nodeName + textNodeIndex : nodeName;
     const entry = { id, node: parsedNodeName, fn, props };
     for (const prop of props) {
-      let set = bindMap.get(prop);
+      let set = bindings.get(prop);
       if (!set) {
         set = new Set();
-        bindMap.set(prop, set);
+        bindings.set(prop, set);
       }
       set.add(entry);
     }
@@ -731,35 +834,42 @@ export default class CustomElement extends HTMLElement {
   }
 
   /**
-   * Wraps composeHtml with bind to `this` (not natively set with tagged template literals)
-   * @this {this}
-   * @return {this['composeHtml']}
+   * @template {DocumentFragment|Element} [T=DocumentFragment]
+   * @param {T} content
+   * @return {T}
    */
-  get html() {
-    if (!this.#html) {
-      this.#html = this.composeHtml.bind(this);
+  interpolate(content) {
+    // eslint-disable-next-line unicorn/no-useless-spread
+    for (const node of [...content.childNodes]) {
+      switch (node.nodeType) {
+        case Node.ELEMENT_NODE:
+          // @ts-ignore Skip cast
+          // eslint-disable-next-line github/array-foreach
+          [...node.attributes]
+            .forEach((attr) => this.interpolateNode(attr, true));
+          // @ts-ignore Skip cast
+          this.interpolate(node);
+          break;
+        case Node.TEXT_NODE:
+          // @ts-ignore Skip cast
+          this.interpolateNode(node, false);
+          break;
+        default:
+      }
     }
-    return this.#html;
+    return content;
   }
 
-  /**
-   * @template {any} [T=Partial<this>]
-   * @param {TemplateStringsArray} strings
-   * @param  {...(string|((data:T) => any))} substitutions
-   * @return {DocumentFragment}
-   */
+  /** @type {HTMLTemplater<this>} */
   composeHtml(strings, ...substitutions) {
-    const component = /** @type {typeof CustomElement} */ (this.constructor);
-    const { inlineFunctionMap } = component;
+    const inlineFunctions = this.static.getInlineFunctions();
 
     const replacements = substitutions.map((sub) => {
       if (typeof sub === 'string') return sub;
 
       const internalName = `#${CustomElement.#generateUID()}`;
 
-      inlineFunctionMap.set(internalName, {
-        fn: sub,
-      });
+      inlineFunctions.set(internalName, { fn: sub });
       return `{${internalName}}`;
     });
 
@@ -769,40 +879,62 @@ export default class CustomElement extends HTMLElement {
     return fragment;
   }
 
+  /**
+   * @param {string} name
+   * @param {any} oldValue
+   * @param {any} newValue
+   * @return {void}
+   */
+  idlChangedCallback(name, oldValue, newValue) {
+    this.render({ [name]: newValue });
+  }
+
+  /**
+   * Wraps composeHtml with bind to `this` (not natively set with tagged template literals)
+   * @return {HTMLTemplater<this,this>}
+   */
+  get html() {
+    if (!this.#html) {
+      this.#html = this.composeHtml.bind(this);
+    }
+    return this.#html;
+  }
+
   #attachShadow() {
-    const component = /** @type {typeof CustomElement} */ (this.constructor);
-    this.attachShadow({ mode: 'open', delegatesFocus: component.delegatesFocus });
+    this.attachShadow({ mode: 'open', delegatesFocus: this.static.delegatesFocus });
   }
 
   #attachStyles() {
     if (!CustomElement.supportsAdoptedStyleSheets) return;
-    const component = /** @type {typeof CustomElement} */ (this.constructor);
-    let array = CustomElement.#stylesCache.get(component);
-    if (!array) {
-      // @ts-ignore Skip cast
-      array = component.styles.filter((style) => style instanceof CSSStyleSheet);
-      CustomElement.#stylesCache.set(component, array);
-    }
-    this.shadowRoot.adoptedStyleSheets = array;
+    this.shadowRoot.adoptedStyleSheets = this.static.getAdoptedStyleSheets();
   }
 
   #attachContent() {
-    const component = /** @type {typeof CustomElement} */ (this.constructor);
-    let content = CustomElement.#fragmentCache.get(component);
-    if (!content) {
-      content = this.compose();
-      if (component.interpolatesTemplate) {
-        content = this.#interpolate(content);
-        // console.log(JSON.stringify({ [component.name]: component.bindMap }, (key, value) => {
-        //   if (value instanceof Map || value instanceof Set) {
-        //     return [...value];
-        //   }
-        //   return value;
-        // }, ''));
-      }
-      CustomElement.#fragmentCache.set(component, content);
+    this.shadowRoot.prepend(this.getComposition().cloneNode(true));
+  }
+
+  getComposition() {
+    // eslint-disable-next-line no-prototype-builtins
+    if (this.static.hasOwnProperty('_composition')) {
+      return this.static._composition;
     }
-    this.shadowRoot.prepend(content.cloneNode(true));
+    this.#startSpy();
+    let composition = this.static.template;
+    const composeProps = this.#stopSpy();
+    if (composeProps.size) {
+      console.warn('used composeProps', [...composeProps]);
+    }
+    if (this.static.interpolatesTemplate) {
+      composition = this.interpolate(composition);
+    }
+    if (this.static.templatable === false) {
+      console.warn(this.static.name, 'Cannot be used as template');
+    } else {
+      // Store instance template as static template
+      // console.log(this.static.name, 'Storing composition', [...composition.children].map((child) => child.outerHTML).join('\n'));
+      this.static._composition = composition;
+    }
+    return composition;
   }
 
   #attachInternals() {
@@ -812,135 +944,16 @@ export default class CustomElement extends HTMLElement {
   }
 
   #attachARIA() {
-    const component = /** @type {typeof CustomElement} */ (this.constructor);
-    if (component.supportsElementInternalsRole) {
-      this.elementInternals.role = component.ariaRole;
+    if (this.static.supportsElementInternalsRole) {
+      this.elementInternals.role = this.static.ariaRole;
     } else {
       if (this.hasAttribute('role')) return;
-      this.setAttribute('role', component.ariaRole);
+      this.setAttribute('role', this.static.ariaRole);
     }
-  }
-
-  #attachIDLs() {
-    const component = /** @type {typeof CustomElement} */ (this.constructor);
-    for (const [key, options] of component.idls) {
-      // const propName = options.propName ?? CustomElement.attrNameToPropName(key);
-
-      const { enumerable, reflect, empty, nullable, attr, onNullish, values, attrValues } = options;
-
-      const protoTypeDescriptor = Reflect.getOwnPropertyDescriptor(component.prototype, key);
-      if (protoTypeDescriptor && protoTypeDescriptor.set !== CustomElement.DUMMY_DESCRIPTOR.set) {
-        // Prototype descriptor was changed, likely by class field override
-        continue;
-      }
-      Object.defineProperty(this, key, {
-        enumerable,
-        get() {
-          return values.get(this) ?? (nullable ? null : empty);
-        },
-        set(value) {
-          const previousValue = values.get(this);
-          const newValue = (!nullable && value == null) ? empty : value;
-          if (previousValue == null && newValue == null) return;
-          // Object.is()?
-          if (previousValue === newValue) return;
-          let parsedValue;
-          /** @type {?string} */
-          let attrValue;
-          switch (options.type) {
-            case 'boolean':
-              parsedValue = !!newValue;
-              attrValue = parsedValue ? '' : null;
-              break;
-            case 'integer':
-            case 'float':
-              if (newValue == null) {
-                if (onNullish) {
-                  parsedValue = onNullish(newValue);
-                  attrValue = String(parsedValue);
-                } else {
-                  parsedValue = null;
-                  attrValue = null;
-                }
-              } else {
-                if (typeof newValue !== 'number') throw new TypeError('Value must be a number');
-                parsedValue = newValue;
-                attrValue = String(newValue);
-              }
-              break;
-            // case 'string':
-            default:
-              if (newValue == null) {
-                if (onNullish) {
-                  parsedValue = onNullish(newValue);
-                  attrValue = parsedValue;
-                } else {
-                  parsedValue = null;
-                  attrValue = null;
-                }
-              } else {
-                parsedValue = String(newValue);
-                attrValue = parsedValue;
-              }
-          }
-          if (previousValue === parsedValue) return;
-          const lastAttrValue = attrValues.get(this);
-
-          values.set(this, parsedValue);
-          attrValues.set(this, attrValue);
-
-          // console.log(component.name, 'Property change: idlChangedCallback', { key, previousValue, parsedValue });
-          this.idlChangedCallback(key, previousValue, parsedValue);
-
-          if (!reflect) return;
-          if (lastAttrValue == null && attrValue == null) return;
-          if (lastAttrValue === attrValue) return;
-          if (attrValue == null) {
-            this.removeAttribute(attr);
-          } else {
-            this.setAttribute(attr, attrValue);
-          }
-        },
-      });
-      if (options.default != null) {
-        values.set(this, options.default);
-      } else if (options.type === 'boolean') {
-        values.set(this, false);
-      }
-      options.initialized = true;
-    }
-  }
-
-  /**
-   * @template {DocumentFragment|Element} [T=DocumentFragment]
-   * @param {T} content
-   * @return {T}
-   */
-  #interpolate(content) {
-    for (const node of content.childNodes) {
-      switch (node.nodeType) {
-        case Node.ELEMENT_NODE:
-          // @ts-ignore Skip cast
-          // eslint-disable-next-line github/array-foreach
-          [...node.attributes]
-            .forEach((attr) => this.#interpolateNode(attr, true));
-          // @ts-ignore Skip cast
-          this.#interpolate(node);
-          break;
-        case Node.TEXT_NODE:
-          // @ts-ignore Skip cast
-          this.#interpolateNode(node, false);
-          break;
-        default:
-      }
-    }
-    return content;
   }
 
   #attachEvents() {
-    const component = /** @type {typeof CustomElement} */ (this.constructor);
-    const { eventMap } = component;
-    for (const [id, events] of eventMap) {
+    for (const [id, events] of this.static.getEvents()) {
       /** @type {HTMLElement} */
       const ref = this.refs[id];
       if (!ref) {
@@ -969,5 +982,27 @@ export default class CustomElement extends HTMLElement {
         }
       }
     }
+  }
+
+  /**
+   * @type {HTMLTemplater<unknown, unknown>}
+   */
+  static _templateHTML(strings, ...substitutions) {
+    const inlineFunctions = this.getInlineFunctions();
+
+    const replacements = substitutions.map((sub) => {
+      if (typeof sub === 'string') return sub;
+
+      const internalName = `#${CustomElement.#generateUID()}`;
+
+      // console.log(this.name, 'using', internalName, 'instead of', sub);
+      inlineFunctions.set(internalName, { fn: sub });
+      return `{${internalName}}`;
+    });
+
+    const compiledString = String.raw({ raw: strings }, ...replacements);
+    const fragment = document.createRange().createContextualFragment(compiledString);
+    // TODO: cache fragment for conditional fragments
+    return fragment;
   }
 }

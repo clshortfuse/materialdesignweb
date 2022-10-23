@@ -11,8 +11,6 @@ import Ripple from './Ripple.js';
 export default class Control extends Ripple {
   static elementName = 'mdw-control';
 
-  static styles = [...super.styles, styles];
-
   static delegatesFocus = true;
 
   static formAssociated = true;
@@ -24,6 +22,31 @@ export default class Control extends Ripple {
       ...this.valueChangingContentAttributes,
       'aria-label',
     ];
+  }
+
+  static styles = [...super.styles, styles];
+
+  static get template() {
+    const template = super.template;
+    const html = this.html;
+    template.append(html`
+      <label id=label>
+        <${this.controlTagName} id=control aria-labelledby="slot"
+          onclick={static.onControlClick}
+          onchange={static.onControlChange}
+          onkeydown={static.onControlKeydown}
+          onfocus={~static.onControlFocus}
+          onblur={~static.onControlBlur}
+          oninput={static.onControlInput}
+          >${this.controlVoidElement ? '' : `</${this.controlTagName}>`}
+      </label>
+    `);
+    template.getElementById('label').append(
+      template.getElementById('overlay'),
+      template.getElementById('ripple'),
+      template.getElementById('slot'),
+    );
+    return template;
   }
 
   static controlTagName = 'input';
@@ -81,14 +104,18 @@ export default class Control extends Ripple {
    * @this {HTMLControlElement}
    * @return {void}
    */
-  static onControlClick(event) {}
+  static onControlClick(event) {
+    // Do nothing by default
+  }
 
   /**
    * @param {KeyboardEvent} event
    * @this {HTMLControlElement}
    * @return {void}
    */
-  static onControlKeydown(event) {}
+  static onControlKeydown(event) {
+    // Do nothing by default
+  }
 
   /**
    * @param {InputEvent} event
@@ -118,30 +145,6 @@ export default class Control extends Ripple {
     const { host } = this.getRootNode();
     host._value = this.value;
     host.checkValidity();
-  }
-
-  compose() {
-    const fragment = super.compose();
-    const { html } = this;
-    const component = /** @type {typeof Control} */ (this.constructor);
-    fragment.append(html`
-      <label id=label>
-        <${component.controlTagName} id=control aria-labelledby="slot"
-          onclick="{constructor.onControlClick}"
-          onchange="{constructor.onControlChange}"
-          onkeydown="{constructor.onControlKeydown}"
-          onfocus="{~constructor.onControlFocus}"
-          onblur="{~constructor.onControlBlur}"
-          oninput="{constructor.onControlInput}"
-          >${component.controlVoidElement ? '' : `</${component.controlTagName}>`}
-      </label>
-    `);
-    fragment.getElementById('label').append(
-      fragment.getElementById('overlay'),
-      fragment.getElementById('ripple'),
-      fragment.getElementById('slot'),
-    );
-    return fragment;
   }
 
   /**
@@ -192,8 +195,7 @@ export default class Control extends Ripple {
       }
     }
 
-    const component = /** @type {typeof Control} */ (this.constructor);
-    if (component.clonedContentAttributes.includes(name)) {
+    if (this.static.clonedContentAttributes.includes(name)) {
       if (newValue == null) {
         this.#control.removeAttribute(name);
       } else {
@@ -201,7 +203,7 @@ export default class Control extends Ripple {
       }
     }
 
-    if (component.valueChangingContentAttributes.includes(name)) {
+    if (this.static.valueChangingContentAttributes.includes(name)) {
       if (!this.hasAttribute('value')) {
         // Force HTMLInputElement to recalculate default
         // Unintended effect of incrementally changing attributes (eg: range)
@@ -211,6 +213,8 @@ export default class Control extends Ripple {
       this._value = this.#control.value;
     }
   }
+
+  get static() { return /** @type {typeof Control} */ (super.static); }
 
   get dirtyValue() { return this._dirtyValue; }
 

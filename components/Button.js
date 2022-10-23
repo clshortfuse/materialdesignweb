@@ -15,6 +15,20 @@ export default class Button extends Input {
     `,
   ];
 
+  static get template() {
+    const template = super.template;
+    template.getElementById('label').append(
+      template.getElementById('icon'),
+      template.getElementById('ripple'),
+      template.getElementById('touch-target'),
+      template.getElementById('outline'),
+    );
+    const control = template.getElementById('control');
+    control.setAttribute('role', 'button');
+    control.setAttribute('type', 'button');
+    return template;
+  }
+
   /**
    * @param {MouseEvent|PointerEvent} event
    * @this {HTMLInputElement} this
@@ -43,24 +57,9 @@ export default class Button extends Input {
     }
     duplicatedButton.remove();
   }
-
-  compose() {
-    const fragment = super.compose();
-    fragment.getElementById('label').append(
-      fragment.getElementById('icon'),
-      fragment.getElementById('ripple'),
-      fragment.getElementById('touch-target'),
-      fragment.getElementById('outline'),
-    );
-    const control = fragment.getElementById('control');
-    control.setAttribute('role', 'button');
-    control.setAttribute('type', 'button');
-    return fragment;
-  }
 }
 
 Button.prototype.type = Button.idl('type', { default: 'button' });
-Button.prototype.elevated = Button.idl('elevated', 'boolean');
 Button.prototype.elevated = Button.idl('elevated', 'boolean');
 Button.prototype.filled = Button.idl('filled', 'boolean');
 Button.prototype.outlined = Button.idl('outlined', 'boolean');

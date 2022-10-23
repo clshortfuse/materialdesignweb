@@ -6,6 +6,14 @@ export default class IconButton extends Button {
 
   static styles = [...super.styles, styles];
 
+  static get template() {
+    const template = super.template;
+    template.getElementById('icon').append(
+      template.getElementById('slot'),
+    );
+    return template;
+  }
+
   #input = /** @type {HTMLInputElement} */ (this.refs.control);
 
   constructor() {
@@ -32,14 +40,6 @@ export default class IconButton extends Button {
     // Toggle check and signal
     this.checked = !this.checked;
     this.dispatchEvent(new Event('change', { bubbles: true }));
-  }
-
-  compose() {
-    const fragment = super.compose();
-    fragment.getElementById('icon').append(
-      fragment.getElementById('slot'),
-    );
-    return fragment;
   }
 
   /**
@@ -70,4 +70,4 @@ export default class IconButton extends Button {
   }
 }
 
-IconButton.idls.delete('icon');
+IconButton.getIdls().delete('icon');

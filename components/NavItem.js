@@ -7,8 +7,6 @@ import Ripple from './Ripple.js';
 export default class NavItem extends Ripple {
   static elementName = 'mdw-nav-item';
 
-  static styles = [...super.styles, styles];
-
   static delegatesFocus = true;
 
   static get observedAttributes() {
@@ -18,30 +16,32 @@ export default class NavItem extends Ripple {
     ];
   }
 
-  #anchor = /** @type {HTMLAnchorElement} */ (this.refs.anchor);
+  static styles = [...super.styles, styles];
 
-  compose() {
-    const fragment = super.compose();
-    const { html } = this;
-
-    fragment.append(html`
+  static get template() {
+    const template = super.template;
+    /** @type {NavItem['html']} */
+    const html = this.html;
+    template.append(html`
       <div id=indicator aria-hidden=true></div>
       <mdw-icon id=icon aria-hidden=true src={src}>{icon}</mdw-icon>
       <a id=anchor aria-labelledby=slot aria-describedby=badge href=${({ href }) => href ?? '#'} aria-label=${({ ariaLabel }) => ariaLabel}></a>
       <span aria-hidden=true id=badge type-style=label-small color=error badge={badge} aria-current=${({ active }) => (active ? 'page' : null)}></mdw-container>
     `);
 
-    fragment.getElementById('anchor').append(
-      fragment.getElementById('slot'),
+    template.getElementById('anchor').append(
+      template.getElementById('slot'),
     );
 
-    fragment.getElementById('indicator').append(
-      fragment.getElementById('overlay'),
-      fragment.getElementById('ripple'),
+    template.getElementById('indicator').append(
+      template.getElementById('overlay'),
+      template.getElementById('ripple'),
     );
 
-    return fragment;
+    return template;
   }
+
+  #anchor = /** @type {HTMLAnchorElement} */ (this.refs.anchor);
 
   /**
    * @param {string} name

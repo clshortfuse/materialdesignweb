@@ -20,6 +20,35 @@ export default class Dialog extends CustomElement {
 
   static styles = [...super.styles, styles];
 
+  static get template() {
+    const template = super.template;
+    /** @type {Dialog['html']} */
+    const html = this.html;
+    template.append(html`
+      <dialog id=dialog
+      ${this.supportsHTMLDialogElement ? 'aria-model=true' : ''}
+      role=dialog aria-hidden=${({ open }) => (open ? 'false' : 'true')} 
+      aria-labelledby=headline aria-describedby=description
+      oncancel="{static.onNativeCancelEvent}"
+      onclose="{~static.onNativeCloseEvent}">
+        <div id=scrim onclick="{~static.onScrimClick}" aria-hidden=true></div>
+        <form id=form method=dialog role=none>
+          <mdw-container id=container onkeydown="{static.onContainerKeyDown}">
+            <mdw-icon id=icon aria-hidden=true>{icon}</mdw-icon>
+            <mdw-text id=headline role="header">{headline}</mdw-text>
+            <div id=description>{description}</div>
+            <slot id=slot onslotchange="{static.onSlotChange}"></slot>
+            <div id=actions>
+              <mdw-button id=cancel type=submit value="cancel" autofocus=${({ default: d }) => (!d || d === 'confirm')}>{cancel}</mdw-button>
+              <mdw-button id=confirm type=submit value="confirm" autofocus=${({ default: d }) => (d === 'cancel')}>{confirm}</mdw-button>
+            </div>
+          </mdw-container>
+        </form>
+      </dialog>
+    `);
+    return template;
+  }
+
   static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
 
   /** @type {DialogStack[]} */
@@ -151,34 +180,6 @@ export default class Dialog extends CustomElement {
         window.history.pushState(lastOpenDialog.state, lastOpenDialog.state.title);
       }
     }
-  }
-
-  compose() {
-    const fragment = super.compose();
-    const { html } = this;
-    fragment.append(html`
-      <dialog id=dialog
-      ${Dialog.supportsHTMLDialogElement ? 'aria-model=true' : ''}
-      role=dialog aria-hidden=${({ open }) => (open ? 'false' : 'true')} 
-      aria-labelledby=headline aria-describedby=description
-      oncancel="{constructor.onNativeCancelEvent}"
-      onclose="{~constructor.onNativeCloseEvent}">
-        <div id=scrim onclick="{~constructor.onScrimClick}" aria-hidden=true></div>
-        <form id=form method=dialog role=none>
-          <mdw-container id=container onkeydown="{constructor.onContainerKeyDown}">
-            <mdw-icon id=icon aria-hidden=true>{icon}</mdw-icon>
-            <mdw-text id=headline role="header">{headline}</mdw-text>
-            <div id=description>{description}</div>
-            <slot id=slot onslotchange="{constructor.onSlotChange}"></slot>
-            <div id=actions>
-              <mdw-button id=cancel type=submit value="cancel" autofocus=${({ default: d }) => (!d || d === 'confirm')}>{cancel}</mdw-button>
-              <mdw-button id=confirm type=submit value="confirm" autofocus=${({ default: d }) => (d === 'cancel')}>{confirm}</mdw-button>
-            </div>
-          </mdw-container>
-        </form>
-      </dialog>
-    `);
-    return fragment;
   }
 
   /**

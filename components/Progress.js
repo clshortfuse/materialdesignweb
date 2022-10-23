@@ -9,15 +9,10 @@ export default class Progress extends Container {
 
   static styles = [...super.styles, styles, lineStyles, circleStyles];
 
-  #progress = /** @type {HTMLProgressElement} */ (this.refs.progress);
-
-  compose() {
-    const fragment = super.compose();
-    // eslint-disable-next-line prefer-destructuring
-    const html = this.html;
-    fragment.getElementById('slot').remove();
-    fragment.append(html`
-      <div id=determinate style=${this.updateDeterminateStyle}>
+  static fragments = [
+    ...super.fragments,
+    /* html */ `
+      <div id=determinate style={computeDeterminateStyle}>
         <progress id=progress value={value} max={max}></progress>
         <div id=circle>
           <div id=semi1 class=semi></div>
@@ -35,11 +30,18 @@ export default class Progress extends Container {
           <div id=arc4 class=arc></div>
         </div>
       </div>
-    `);
-    return fragment;
+    `,
+  ];
+
+  static get template() {
+    const template = super.template;
+    template.getElementById('slot').remove();
+    return template;
   }
 
-  updateDeterminateStyle() {
+  #progress = /** @type {HTMLProgressElement} */ (this.refs.progress);
+
+  computeDeterminateStyle() {
     return `
       --previous:${this._previousValueAsFraction ?? this.valueAsFraction ?? 0};
       --value:${this.valueAsFraction ?? 0};

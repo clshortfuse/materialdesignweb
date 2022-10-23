@@ -12,17 +12,17 @@ export default class Radio extends Input {
       <div id=icon></div>
     `];
 
-  compose() {
-    const fragment = super.compose();
-    fragment.getElementById('icon').append(
-      fragment.getElementById('ripple'),
-      fragment.getElementById('overlay'),
+  static get template() {
+    const template = super.template;
+    template.getElementById('icon').append(
+      template.getElementById('ripple'),
+      template.getElementById('overlay'),
     );
-    fragment.getElementById('label').append(
-      fragment.getElementById('icon'),
+    template.getElementById('label').append(
+      template.getElementById('icon'),
     );
-    fragment.getElementById('control').setAttribute('type', 'radio');
-    return fragment;
+    template.getElementById('control').setAttribute('type', 'radio');
+    return template;
   }
 
   // @ts-ignore @override

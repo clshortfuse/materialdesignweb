@@ -12,23 +12,23 @@ export default class Checkbox extends Input {
       <div id=container></div>
     `];
 
-  #input = /** @type {HTMLInputElement} */ (this.refs.control);
-
-  compose() {
-    const fragment = super.compose();
+  static get template() {
+    const template = super.template;
     const { html } = this;
-    fragment.getElementById('container').append(
+    template.getElementById('container').append(
       html`<mdw-icon id=icon>${({ indeterminate, indeterminateIcon, icon }) => (indeterminate ? indeterminateIcon : icon)}</mdw-icon>`,
-      fragment.getElementById('ripple'),
-      fragment.getElementById('overlay'),
+      template.getElementById('ripple'),
+      template.getElementById('overlay'),
     );
 
-    fragment.getElementById('label').append(
-      fragment.getElementById('container'),
+    template.getElementById('label').append(
+      template.getElementById('container'),
     );
-    fragment.getElementById('control').setAttribute('type', 'checkbox');
-    return fragment;
+    template.getElementById('control').setAttribute('type', 'checkbox');
+    return template;
   }
+
+  #input = /** @type {HTMLInputElement} */ (this.refs.control);
 
   /**
    * @param {string} name
@@ -47,6 +47,7 @@ export default class Checkbox extends Input {
     }
   }
 
+  /** @override */
   // @ts-ignore @override
   // eslint-disable-next-line class-methods-use-this
   get type() { return 'checkbox'; }

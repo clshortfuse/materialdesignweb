@@ -6,6 +6,29 @@ export default class Slider extends Input {
 
   static styles = [...super.styles, styles];
 
+  static get template() {
+    const template = super.template;
+    /** @type {Slider['html']} */
+    const html = this.html;
+    template.getElementById('control').setAttribute('type', 'range');
+    template.getElementById('ripple').remove();
+    template.getElementById('overlay').remove();
+    template.append(
+      html`
+        <div id=track aria-hidden=true style={computeTrackStyle}>
+          <div id=ticks></div>
+          <div id="track-active"></div>
+          <div id="track-label-anchor">
+            <div id="track-label" 
+            hidden=${({ _isHoveringThumb, _isFocused }) => (!_isHoveringThumb && !_isFocused)} 
+            text=${({ _previewValue }) => _previewValue ?? ''}></div>
+          </div>
+        </div>
+      `,
+    );
+    return template;
+  }
+
   static rootTemplate = /* html */ `
     <mdw-slider>
   `;
@@ -35,16 +58,8 @@ export default class Slider extends Input {
     return (nValue - nMin) / (nMax - nMin);
   }
 
-  /**
-   * @param {Partial<Slider>} data
-   * @return {?string}
-   */
-  static updateTrackStyle({ ticks, _previewValue, min, max }) {
-    return [
-      ticks ? `--ticks:${ticks}` : null,
-      `--value:${Slider.valueAsFraction(_previewValue, min, max)}`,
-    ].filter(Boolean).join(';') || null;
-  }
+  /** @return {InstanceType<Slider>} */
+  static get self() { return this; }
 
   /**
    * @param {MouseEvent|TouchEvent} event
@@ -119,33 +134,18 @@ export default class Slider extends Input {
   }
 
   /**
-   * @this Slider
+   * @this {Slider}
    */
   static onLeaveEvent() {
     if (document.activeElement === this) return;
     this._isHoveringThumb = false;
   }
 
-  compose() {
-    const fragment = super.compose();
-    const { html } = this;
-    fragment.getElementById('control').setAttribute('type', 'range');
-    fragment.getElementById('ripple').remove();
-    fragment.getElementById('overlay').remove();
-    fragment.append(
-      html`
-        <div id=track aria-hidden=true style=${Slider.updateTrackStyle}>
-          <div id=ticks></div>
-          <div id="track-active"></div>
-          <div id="track-label-anchor">
-            <div id="track-label" 
-            hidden=${({ _isFocused, _isHoveringThumb }) => (!_isHoveringThumb && !_isFocused)} 
-            text=${({ _previewValue }) => _previewValue ?? ''}></div>
-          </div>
-        </div>
-      `,
-    );
-    return fragment;
+  computeTrackStyle() {
+    return [
+      this.ticks ? `--ticks:${this.ticks}` : null,
+      `--value:${Slider.valueAsFraction(this._previewValue, this.min, this.max)}`,
+    ].filter(Boolean).join(';') || null;
   }
 
   /** @type {Input['idlChangedCallback']} */

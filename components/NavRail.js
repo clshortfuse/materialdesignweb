@@ -14,12 +14,12 @@ export default class NavRail extends Nav {
     `,
   ];
 
-  compose() {
-    const fragment = super.compose();
-    fragment.getElementById('group').append(
-      fragment.getElementById('slot'),
+  static get template() {
+    const template = super.template;
+    template.getElementById('group').append(
+      template.getElementById('slot'),
     );
-    return fragment;
+    return template;
   }
 }
 

@@ -14,6 +14,19 @@ export default class FilterChip extends Chip {
     `,
   ];
 
+  static get template() {
+    const template = super.template;
+    template.getElementById('label').append(
+      template.getElementById('check-icon'),
+      template.getElementById('trailing-icon'),
+    );
+    const control = template.getElementById('control');
+    control.removeAttribute('role');
+    control.setAttribute('autocomplete', 'off');
+    control.setAttribute('type', 'checkbox');
+    return template;
+  }
+
   constructor() {
     super();
 
@@ -24,19 +37,6 @@ export default class FilterChip extends Chip {
     if (this.trailingIcon === '') {
       this.trailingIcon = 'dropdown';
     }
-  }
-
-  compose() {
-    const fragment = super.compose();
-    fragment.getElementById('label').append(
-      fragment.getElementById('check-icon'),
-      fragment.getElementById('trailing-icon'),
-    );
-    const control = fragment.getElementById('control');
-    control.removeAttribute('role');
-    control.setAttribute('autocomplete', 'off');
-    control.setAttribute('type', 'checkbox');
-    return fragment;
   }
 }
 

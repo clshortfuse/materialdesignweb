@@ -10,9 +10,9 @@ import styles from './SegmentedButtonGroup.css' assert { type: 'css' };
 export default class SegmentedButtonGroup extends Container {
   static elementName = 'mdw-segmented-button-group';
 
-  static styles = [...super.styles, styles];
-
   static ariaRole = 'listbox';
+
+  static styles = [...super.styles, styles];
 
   constructor() {
     super();

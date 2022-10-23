@@ -6,22 +6,22 @@ export default class Fab extends ExtendedFab {
 
   static styles = [...super.styles, styles];
 
+  static get template() {
+    const template = super.template;
+    template.getElementById('icon').append(
+      template.getElementById('slot'),
+    );
+    return template;
+  }
+
   constructor() {
     super();
     // Used for styling
     this.toggleAttribute('icon', true);
-  }
-
-  compose() {
-    const fragment = super.compose();
-    fragment.getElementById('icon').append(
-      fragment.getElementById('slot'),
-    );
-    return fragment;
   }
 }
 
 /** @type {'small'|'large'} */
 Fab.prototype.fabSize = Fab.idl('fabSize');
 
-Fab.idls.delete('icon');
+Fab.getIdls().delete('icon');

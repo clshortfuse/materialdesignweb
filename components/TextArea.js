@@ -8,6 +8,16 @@ export default class TextArea extends TextFieldMixin(Control) {
 
   static styles = [...super.styles, styles];
 
+  static get template() {
+    const template = super.template;
+    const slot = template.getElementById('slot');
+
+    slot.setAttribute('onslotchange', '{~static.onSlotChange}');
+
+    template.append(slot);
+    return template;
+  }
+
   static controlTagName = 'textarea';
 
   static controlVoidElement = false;
@@ -62,16 +72,6 @@ export default class TextArea extends TextFieldMixin(Control) {
     if (previousValue !== newValue) {
       host.idlChangedCallback('defaultValue', previousValue, newValue);
     }
-  }
-
-  compose() {
-    const fragment = super.compose();
-    const slot = fragment.getElementById('slot');
-
-    slot.setAttribute('onslotchange', '{~constructor.onSlotChange}');
-
-    fragment.append(slot);
-    return fragment;
   }
 
   /** @return {number} */

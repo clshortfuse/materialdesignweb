@@ -23,6 +23,23 @@ export default class Menu extends CustomElement {
 
   static styles = [...super.styles, styles];
 
+  static get template() {
+    const template = super.template;
+    /** @type {Menu['html']} */
+    const html = this.html;
+    template.append(html`
+      <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>
+        <div id=scrim aria-hidden=true></div>
+        <form id=form method=dialog role=none>
+          <mdw-container id=container role=none>
+            <slot id=slot onslotchange={~static.onSlotChange}></slot>
+          </mdw-container>
+        </form>
+      </dialog>
+    `);
+    return template;
+  }
+
   static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
 
   /** @type {MenuStack[]} */
@@ -163,22 +180,6 @@ export default class Menu extends CustomElement {
     event.stopPropagation();
     const currentItem = /** @type {HTMLElement} */ (event.target);
     RovingTabIndex.removeTabIndex(this.childMenuItems, [currentItem]);
-  }
-
-  compose() {
-    const fragment = super.compose();
-    const { html } = this;
-    fragment.append(html`
-      <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>
-        <div id=scrim aria-hidden=true></div>
-        <form id=form method=dialog role=none>
-          <mdw-container id=container role=none>
-            <slot id=slot onslotchange={~constructor.onSlotChange}></slot>
-          </mdw-container>
-        </form>
-      </dialog>
-    `);
-    return fragment;
   }
 
   /**
