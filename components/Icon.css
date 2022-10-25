@@ -50,10 +50,6 @@ img {
   object-fit: cover;
 }
 
-img:not([src]) {
-  display: none;
-}
-
 .material-symbols-outlined {
   /* https://github.com/google/material-design-icons/issues/750 */
   direction: inherit;

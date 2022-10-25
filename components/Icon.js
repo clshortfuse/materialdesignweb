@@ -21,7 +21,10 @@ export default class Icon extends Text {
     ...super.fragments,
     /* html */`
       <div id=icon class={fontClass} aria-hidden="true">
-        <img id=img aria-hidden="true" />
+        <img _if={src} aria-hidden="true" id=img
+          alt={alt} src={src} srcset={srcset} sizes={sizes} crossorigin={crossOrigin} usemap={useMap}
+          ismap={isMap} referrerpolicy={referrerPolicy} decoding={decoding} loading={loading} width={width} height={height}
+        />
       </div>
     `,
   ];
@@ -33,18 +36,7 @@ export default class Icon extends Text {
     return template;
   }
 
-  static imageElementAttributes = [
-    'alt', 'src', 'srcset',
-    'sizes', 'crossorigin', 'usemap',
-    'ismap', 'referrerpolicy',
-    'decoding', 'loading',
-  ];
-
   static fontLibrary = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block';
-
-  #icon = this.refs.icon;
-
-  #img = /** @type {HTMLImageElement} */ (this.refs.img);
 
   /**
    * @param {number} [width]
@@ -52,11 +44,6 @@ export default class Icon extends Text {
    */
   constructor(width, height) {
     super();
-
-    if (this.src == null) {
-      // Drop from DOM if not used (performance)
-      this.#img.remove();
-    }
 
     if (width != null) {
       this.width = width;
@@ -66,44 +53,19 @@ export default class Icon extends Text {
     }
   }
 
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
-  attributeChangedCallback(name, oldValue, newValue) {
-    super.attributeChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
-    if (Icon.imageElementAttributes.includes(name)) {
-      if (newValue == null) {
-        this.#img.removeAttribute(name);
-      } else {
-        this.#img.setAttribute(name, newValue);
-      }
-    }
+  get naturalWidth() { return /** @type {HTMLImageElement} */ (this.refs.img).naturalWidth; }
 
-    if (name === 'src') {
-      if (oldValue == null) {
-        this.#icon.append(this.#img);
-      } else if (newValue == null) {
-        this.#img.remove();
-      }
-    }
-  }
+  get naturalHeight() { return /** @type {HTMLImageElement} */ (this.refs.img).naturalHeight; }
 
-  get naturalWidth() { return this.#img.naturalWidth; }
+  get complete() { return /** @type {HTMLImageElement} */ (this.refs.img).complete; }
 
-  get naturalHeight() { return this.#img.naturalHeight; }
+  get currentSrc() { return /** @type {HTMLImageElement} */ (this.refs.img).currentSrc; }
 
-  get complete() { return this.#img.complete; }
+  get x() { return /** @type {HTMLImageElement} */ (this.refs.img).x; }
 
-  get currentSrc() { return this.#img.currentSrc; }
+  get y() { return /** @type {HTMLImageElement} */ (this.refs.img).y; }
 
-  get x() { return this.#img.x; }
-
-  get y() { return this.#img.y; }
-
-  get decode() { return this.#img.decode; }
+  get decode() { return /** @type {HTMLImageElement} */ (this.refs.img).decode; }
 }
 
 // https://html.spec.whatwg.org/multipage/embedded-content.html#htmlimageelement
@@ -118,7 +80,7 @@ Icon.prototype.isMap = Icon.idl('isMap', { attr: 'ismap', type: 'boolean' });
 Icon.prototype.referrerPolicy = Icon.idl('referrerPolicy', { attr: 'referrerpolicy' });
 Icon.prototype.decoding = /** @type {'async'|'sync'|'auto'} */ (Icon.idl('decoding'));
 Icon.prototype.loading = /** @type {'eager'|'lazy'} */ (Icon.idl('loading'));
-Icon.prototype.width = Icon.idl('width', 'float');
-Icon.prototype.height = Icon.idl('height', 'float');
+Icon.prototype.width = Icon.idl('width', 'integer');
+Icon.prototype.height = Icon.idl('height', 'integer');
 
 Icon.prototype.fontClass = Icon.idl('fontClass', { reflect: false, default: 'material-symbols-outlined' });
