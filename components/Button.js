@@ -64,3 +64,4 @@ Button.prototype.elevated = Button.idl('elevated', 'boolean');
 Button.prototype.filled = Button.idl('filled', 'boolean');
 Button.prototype.outlined = Button.idl('outlined', 'boolean');
 Button.prototype.icon = Button.idl('icon');
+Button.prototype.src = Button.idl('src');
