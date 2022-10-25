@@ -7,8 +7,6 @@ import styles from './TextFieldMixin.css' assert { type: 'css' };
  */
 export function TextFieldMixin(Base) {
   class TextField extends Base {
-    static elementName = 'mdw-textbase';
-
     static styles = [...super.styles, styles];
 
     static get template() {
@@ -22,10 +20,10 @@ export function TextFieldMixin(Base) {
       control.classList.add('inline');
       template.getElementById('label').append(
         html`
-          <mdw-icon id=icon aria-hidden=true>{icon}</mdw-icon>
-          <span class=inline id=prefix aria-hidden=true>{inputPrefix}</span>
-          <span class=inline id=suffix aria-hidden=true>{inputSuffix}</span>
-          <mdw-icon id=trailing-icon aria-hidden=true>{trailingIcon}</mdw-icon>
+          <mdw-icon _if={icon} id=icon aria-hidden=true>{icon}</mdw-icon>
+          <span _if={inputPrefix} class=inline id=prefix aria-hidden=true>{inputPrefix}</span>
+          <span _if={inputSuffix} class=inline id=suffix aria-hidden=true>{inputSuffix}</span>
+          <mdw-icon _if={trailingIcon} id=trailing-icon aria-hidden=true>{trailingIcon}</mdw-icon>
           <div id=indicator></div>
           <div id=outline>
             <div id=gap>
@@ -43,47 +41,6 @@ export function TextFieldMixin(Base) {
 
       template.getElementById('ripple').remove();
       return template;
-    }
-
-    #icon = /** @type {Icon} */ (this.refs.icon);
-
-    #trailingIcon = /** @type {Icon} */ (this.refs['trailing-icon']);
-
-    #label = /** @type {HTMLLabelElement} */ (this.refs.label);
-
-    constructor() {
-      super();
-      if (this.icon == null) {
-      // perf: Drop from DOM if not used
-        this.#icon.remove();
-      }
-      if (this.trailingIcon == null) {
-        this.#trailingIcon.remove();
-      }
-    }
-
-    /**
-     * @param {string} name
-     * @param {string?} oldValue
-     * @param {string?} newValue
-     */
-    attributeChangedCallback(name, oldValue, newValue) {
-      super.attributeChangedCallback(name, oldValue, newValue);
-      if (oldValue == null && newValue == null) return;
-      if (name === 'icon') {
-        if (oldValue == null) {
-          this.#label.append(this.#icon);
-        } else if (newValue == null) {
-          this.#icon.remove();
-        }
-      }
-      if (name === 'trailing-icon') {
-        if (oldValue == null) {
-          this.#label.append(this.#trailingIcon);
-        } else if (newValue == null) {
-          this.#trailingIcon.remove();
-        }
-      }
     }
 
     /**
