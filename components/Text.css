@@ -1,11 +1,11 @@
 /* https://m3.material.io/styles/typography/type-scale-tokens */
 
 :host {
-  font-weight: var(--mdw-type__font-weight, invalid);
-  font-size: var(--mdw-type__font-size, invalid);
-  line-height: var(--mdw-type__line-height, invalid);
-  font-family: var(--mdw-type__font-family, invalid);
-  letter-spacing: var(--mdw-type__letter-spacing, invalid);
+  font-weight: var(--mdw-type__font-weight);
+  font-size: var(--mdw-type__font-size);
+  line-height: var(--mdw-type__line-height);
+  font-family: var(--mdw-type__font-family);
+  letter-spacing: var(--mdw-type__letter-spacing);
 }
 
 :host([block]) {
