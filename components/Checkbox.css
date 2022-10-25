@@ -43,30 +43,6 @@ label {
   pointer-events: auto;
 }
 
-#container {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-sizing: border-box;
-
-  block-size: var(--mdw-checkbox__size);
-  inline-size: var(--mdw-checkbox__size);
-  grid-column: 1;
-  border: solid var(--mdw-checkbox__border-width) currentColor;
-
-  background-color: transparent;
-  border-radius: var(--mdw-checkbox__border-width);
-  color: var(--mdw-checkbox__container__color);
-
-  transition: inherit;
-  transition-property: color, border-color;
-
-  will-change: color, border-color;
-}
-
 #overlay,
 #ripple {
   inset-block: calc(-1 * (var(--mdw-checkbox__margin) + var(--mdw-checkbox__border-width)));
@@ -78,24 +54,6 @@ label {
   inline-size: var(--mdw-checkbox__state-size);
 
   border-radius: 50%;
-}
-
-#icon {
-  --mdw-icon__size: var(--mdw-checkbox__size);
-  position: absolute;
-
-  inset-block: calc(-1 var(--mdw-checkbox__border-width));
-  inset-inline: calc(-1 var(--mdw-checkbox__border-width));
-
-  opacity: 0;
-
-  background-color: rgb(var(--mdw-bg));
-  border-radius: inherit;
-  color: rgb(var(--mdw-ink));
-
-  transition: inherit;
-  transition-property: opacity, background-color, color;
-  will-change: opacity;
 }
 
 :host(:is([selected], [indeterminate])) label {

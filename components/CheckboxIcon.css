@@ -1,0 +1,47 @@
+/* https://m3.material.io/components/checkbox/specs */
+
+.checkbox-box {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  block-size: var(--mdw-checkbox__size, 18px);
+  inline-size: var(--mdw-checkbox__size, 18px);
+  grid-column: 1;
+  border: solid var(--mdw-checkbox__border-width, 2px) currentColor;
+
+  background-color: transparent;
+  border-radius: var(--mdw-checkbox__border-width, 2px);
+  color: var(--mdw-checkbox__container__color, inherit);
+
+  transition: inherit;
+  transition-property: color, border-color;
+
+  will-change: color, border-color;
+}
+
+.checkbox-icon {
+  --mdw-icon__size: var(--mdw-checkbox__size, 18px);
+  position: absolute;
+
+  inset-block: calc(-1 * var(--mdw-checkbox__border-width, 2px));
+  inset-inline: calc(-1 * var(--mdw-checkbox__border-width, 2px));
+
+  opacity: 0;
+
+  background-color: rgb(var(--mdw-bg));
+  border-radius: var(--mdw-checkbox__border-width, 2px);
+  color: rgb(var(--mdw-ink));
+
+  transition: inherit;
+  transition-property: opacity, background-color, color;
+  will-change: opacity;
+}
+
+.checkbox-icon:is([selected], [indeterminate]) {
+  opacity: 1;
+}

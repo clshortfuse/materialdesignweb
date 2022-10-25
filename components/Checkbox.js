@@ -1,28 +1,27 @@
 import styles from './Checkbox.css' assert { type: 'css' };
+import iconStyles from './CheckboxIcon.css' assert { type: 'css' };
 import Input from './Input.js';
 
 export default class Checkbox extends Input {
   static elementName = 'mdw-checkbox';
 
-  static styles = [...super.styles, styles];
-
-  static fragments = [
-    ...super.fragments,
-    /* html */ `
-      <div id=container></div>
-    `];
+  static styles = [...super.styles, styles, iconStyles];
 
   static get template() {
     const template = super.template;
     const { html } = this;
-    template.getElementById('container').append(
-      html`<mdw-icon id=icon>${({ indeterminate, indeterminateIcon, icon }) => (indeterminate ? indeterminateIcon : icon)}</mdw-icon>`,
+    template.getElementById('label').append(
+      html`
+        <div id=checkbox-box class=checkbox-box>
+          <mdw-icon id=checkbox-icon class=checkbox-icon selected={checked} indeterminate={indeterminate}>
+            ${({ indeterminate, indeterminateIcon, icon }) => (indeterminate ? indeterminateIcon : icon)}
+          </mdw-icon>
+        </div>
+      `,
+    );
+    template.getElementById('checkbox-box').append(
       template.getElementById('ripple'),
       template.getElementById('overlay'),
-    );
-
-    template.getElementById('label').append(
-      template.getElementById('container'),
     );
     template.getElementById('control').setAttribute('type', 'checkbox');
     return template;
