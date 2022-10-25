@@ -13,8 +13,8 @@ export default class Container extends Text {
 
   static fragments = [
     ...super.fragments,
-    /* html */`
-      <div id=elevation aria-hidden=true></div>
+    /* html */ `
+      <div _if={!disabled} id=elevation aria-hidden=true></div>
     `,
   ];
 

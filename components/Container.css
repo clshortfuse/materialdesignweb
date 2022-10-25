@@ -117,6 +117,3 @@
 :host([disabled]) {
   box-shadow: none;
 }
-:host([disabled]) #elevation {
-  display: none;
-}
