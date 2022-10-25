@@ -6,10 +6,15 @@ export default class Overlay extends Container {
 
   static styles = [...super.styles, styles];
 
-  static fragments = [
-    ...super.fragments,
-    '<div id=overlay aria-hidden=true>',
-  ];
+  static get template() {
+    const template = super.template;
+    /** @type {Overlay['html']} */
+    const html = this.html;
+    template.append(html`
+      <div id=overlay disabled={disabled} aria-hidden=true>
+    `);
+    return template;
+  }
 
   static lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matches;
 
@@ -53,6 +58,7 @@ export default class Overlay extends Container {
    * @return {void}
    */
   static onOverlayBlur(event) {
+    this.refs.overlay?.removeAttribute('focus');
     switch (this.#lastInteraction) {
       case null: return;
       case 'touch':
@@ -71,6 +77,7 @@ export default class Overlay extends Container {
    * @return {void}
    */
   static onOverlayFocus(event) {
+    this.refs.overlay?.setAttribute('focus', '');
     // Element was focused without a mouse or touch event (keyboard or programmatic)
     if (!this.#lastInteraction && Overlay.lastInteractionWasTouch) {
       // Replicate touch behavior
@@ -92,3 +99,5 @@ export default class Overlay extends Container {
     this.#lastInteraction = null;
   }
 }
+
+Overlay.prototype.disabled = Overlay.idl('disabled', { type: 'boolean' });
