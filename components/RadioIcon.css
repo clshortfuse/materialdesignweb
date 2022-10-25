@@ -1,0 +1,54 @@
+/* https://m3.material.io/components/radio-button/specs */
+
+.radio-icon {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  block-size: 40px;
+  inline-size: 40px;
+  grid-column: 1;
+
+  background-color: transparent;
+  border-radius: 50%;
+  color: rgb(var(--mdw-color__on-surface-variant));
+}
+
+.radio-icon[selected]:not([disabled]) {
+  color: rgb(var(--mdw-ink));
+}
+
+.radio-icon::before {
+  content: '';
+
+  position: absolute;
+
+  box-sizing: border-box;
+  block-size: 20px;
+  inline-size: 20px;
+  border: solid 1px currentColor;
+
+  border-radius: 50%;
+}
+
+.radio-icon::after {
+  content: '';
+
+  position: absolute;
+
+  block-size: 10px;
+  inline-size: 10px;
+
+  transform: scale(0);
+
+  background-color: currentColor;
+  border-radius: inherit;
+
+  transition: transform 100ms;
+}
+
+.radio-icon[selected]::after {
+  transform: scale(1);
+}

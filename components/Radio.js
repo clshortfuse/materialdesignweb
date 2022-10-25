@@ -1,15 +1,16 @@
 import Input from './Input.js';
 import styles from './Radio.css' assert { type: 'css' };
+import iconStyles from './RadioIcon.css' assert { type: 'css' };
 
 export default class Radio extends Input {
   static elementName = 'mdw-radio';
 
-  static styles = [...super.styles, styles];
+  static styles = [...super.styles, styles, iconStyles];
 
   static fragments = [
     ...super.fragments,
     /* html */ `
-      <div id=icon></div>
+      <div id=icon class=radio-icon selected={_checked} disabled={disabled}></div>
     `];
 
   static get template() {
