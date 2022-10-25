@@ -11,14 +11,24 @@ export default class IconButton extends Button {
     template.getElementById('icon').append(
       template.getElementById('slot'),
     );
+    const control = template.getElementById('control');
+    control.setAttribute('aria-pressed', '{static.computeAriaPressed}');
+
     return template;
   }
-
-  #input = /** @type {HTMLInputElement} */ (this.refs.control);
 
   constructor() {
     super();
     this.toggleAttribute('icon', true);
+  }
+
+  /**
+   * @param {IconButton} instance
+   * @return {string?}
+   */
+  static computeAriaPressed({ type, _checked }) {
+    if (type !== 'checkbox') return null;
+    return _checked ? 'true' : 'false';
   }
 
   /**
@@ -40,33 +50,6 @@ export default class IconButton extends Button {
     // Toggle check and signal
     this.checked = !this.checked;
     this.dispatchEvent(new Event('change', { bubbles: true }));
-  }
-
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
-  attributeChangedCallback(name, oldValue, newValue) {
-    super.attributeChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
-    switch (name) {
-      case 'type':
-        if (newValue === null) {
-          this.#input.removeAttribute('aria-pressed');
-        } else if (newValue === 'checkbox') {
-          this.#input.setAttribute('aria-pressed', this.checked ? 'true' : 'false');
-        }
-        break;
-      case 'selected':
-        if (this.type !== 'checkbox') {
-          this.#input.removeAttribute('aria-pressed');
-        }
-        this.#input.setAttribute('aria-pressed', newValue == null ? 'false' : 'true');
-
-        break;
-      default:
-    }
   }
 }
 
