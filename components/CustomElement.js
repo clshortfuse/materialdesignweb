@@ -41,8 +41,10 @@
  * @template {any} T
  * @typedef {Object} BindEntry
  * @prop {string} id
+ * @prop {number} nodeType
  * @prop {string} node
- * @prop {(data:T) => any} fn
+ * @prop {boolean} [negate]
+ * @prop {Function} [fn]
  * @prop {Set<keyof T & string>} props
  * @prop {T} defaultValue
  */
@@ -103,7 +105,7 @@ export default class CustomElement extends HTMLElement {
 
   /** @type {?DocumentFragment} */
   static get template() {
-    const fragment = document.createDocumentFragment();
+    const fragment = this.generateFragment();
     fragment.append(
       ...this.styles.map((style) => {
         if (typeof style === 'string') {
@@ -122,13 +124,16 @@ export default class CustomElement extends HTMLElement {
         el.textContent = [...style.cssRules].map((r) => r.cssText).join('\n');
         return el;
       }).filter(Boolean),
-      ...this.fragments.map((f) => {
-        if (typeof f === 'string') {
-          return document.createRange().createContextualFragment(f);
-        }
-        return fragment;
-      }),
     );
+    for (const f of this.fragments) {
+      if (typeof f === 'string') {
+        const parsed = this.getDomParser().parseFromString(f, 'text/html');
+        fragment.append(...parsed.body.childNodes);
+      } else {
+        fragment.append(f);
+      }
+    }
+
     return fragment;
   }
 
@@ -150,11 +155,20 @@ export default class CustomElement extends HTMLElement {
   /** @type {boolean} */
   static templatable = null;
 
+  /** @type {Document} */
+  static _inactiveDocument;
+
+  /** @type {DOMParser} */
+  static _domParser;
+
   /** @type {HTMLTemplater<any,any>} */
   static _staticHtml;
 
   /** @type {DocumentFragment} */
   static _composition = null;
+
+  /** @type {DocumentFragment} */
+  static _fullComposition = null;
 
   /** @type {Map<string, IDLOptions<?,?>>} */
   static _idls = new Map();
@@ -171,25 +185,39 @@ export default class CustomElement extends HTMLElement {
   /** @type {CSSStyleSheet[]} */
   static _adoptedStyleSheets = [];
 
+  /** @type {Map<string,HTMLElement>} */
+  static _removedRefs = new Map();
+
   /** @type {HTMLTemplater<this>} */
   #html;
 
   /** @type {Map<string,WeakRef<HTMLElement>>} */
   #weakRefs = new Map();
 
+  /** @type {Map<string,HTMLElement>} */
+  #hardRefs = new Map();
+
   /** @type {Record<string, HTMLElement>}} */
   refs = new Proxy({}, {
     /**
      * @param {any} target
-     * @param {string} p
+     * @param {string} id
      * @return {HTMLElement}
      */
-    get: (target, p) => {
-      let element = this.#weakRefs.get(p)?.deref();
+    get: (target, id) => {
+      let element = this.#weakRefs.get(id)?.deref();
       if (!element) {
-        element = this.shadowRoot.getElementById(p);
+        element = this.shadowRoot.getElementById(id);
+        if (!element) {
+          const template = this.static._fullComposition.getElementById(id);
+          if (template) {
+            element = /** @type {HTMLElement} */ (template.cloneNode(true));
+            // console.log(this.static.name, '- Recreated element from template:', id);
+            this.#hardRefs.set(id, element);
+          }
+        }
         if (element) {
-          this.#weakRefs.set(p, new WeakRef(element));
+          this.#weakRefs.set(id, new WeakRef(element));
         }
       }
       return element;
@@ -223,6 +251,11 @@ export default class CustomElement extends HTMLElement {
     this.#attachEvents();
     this.#attachInternals();
     this.#attachARIA();
+  }
+
+  static generateFragment() {
+    this._inactiveDocument ??= new Document();
+    return this._inactiveDocument.createDocumentFragment();
   }
 
   /** @return {string} */
@@ -508,6 +541,12 @@ export default class CustomElement extends HTMLElement {
     return this._staticHtml;
   }
 
+  /** @return {DOMParser} */
+  static getDomParser() {
+    this._domParser ??= new DOMParser();
+    return this._domParser;
+  }
+
   /**
    * @param {?} data
    * @return {void}
@@ -520,18 +559,24 @@ export default class CustomElement extends HTMLElement {
     const modifiedNodes = new WeakMap();
     for (const [key, bindings] of this.static.getBindings()) {
       if (!(key in data)) continue;
-      for (const { id, node, fn, props } of bindings) {
-        const ref = this.refs[id] ?? this.shadowRoot.getElementById(id);
-        if (!ref) continue;
+      for (const { id, node, nodeType, fn, props, negate } of bindings) {
+        const ref = this.refs[id];
+        if (!ref) {
+          console.warn('Non existent id', id);
+          continue;
+        }
         if (modifiedNodes.get(ref)?.has(node)) {
           // console.warn('Node already modified. Skipping', id, node);
           continue;
+        }
+        if (!ref.isConnected && node !== '_if') {
+          console.log(this.static.name, 'Offscreen rendering', ref, node);
         }
         let value;
         if (fn) {
           if (!fnResults.has(fn)) {
             const args = Object.fromEntries(
-              [...props].map((prop) => [prop, prop in data ? data[prop] : this[prop]]),
+              [...props].map((prop) => [prop, prop in data ? data[prop] : this.#valueFromPropName(prop)]),
             );
             value = fn.call(this, args);
             fnResults.set(fn, value);
@@ -541,7 +586,10 @@ export default class CustomElement extends HTMLElement {
         } else {
           value = data[key];
         }
-        if (node.startsWith('#text')) {
+        if (negate) {
+          value = !value;
+        }
+        if (nodeType === Node.TEXT_NODE) {
           const index = node.slice('#text'.length + 1) || 0;
           let nodesFound = 0;
           for (const childNode of ref.childNodes) {
@@ -553,6 +601,36 @@ export default class CustomElement extends HTMLElement {
           if (index > nodesFound) {
             console.log('node not found, adding?');
             ref.append(value);
+          }
+        } else if (node === '_if') {
+          if (value) {
+            if (!ref.isConnected) {
+              const fullComposition = this.static._fullComposition;
+              const parentID = fullComposition.getElementById(id)?.parentElement?.id;
+              const parent = (parentID ? this.refs[parentID] : null) ?? this.shadowRoot;
+
+              let commentNode;
+              for (const child of parent.childNodes) {
+                if (child.nodeType !== Node.COMMENT_NODE) continue;
+                if ((/** @type {Comment} */child).nodeValue === id) {
+                  commentNode = child;
+                  break;
+                }
+              }
+              if (!commentNode) {
+                console.warn(this.static.name, 'Could not add', id, 'back to DOM');
+              } else {
+                commentNode.after(ref);
+                // console.log(this.static.name, 'Add', id, 'back to', parentID ?? 'root', ref.outerHTML);
+                commentNode.remove();
+              }
+            }
+          } else if (ref.isConnected) {
+            // console.log('Removing from DOM', ref);
+            this.#hardRefs.set(ref.id, ref);
+            const commentPlaceholder = new Comment(id);
+            ref.before(commentPlaceholder);
+            ref.remove();
           }
         } else if (value === false || value == null) {
           ref.removeAttribute(node);
@@ -644,6 +722,25 @@ export default class CustomElement extends HTMLElement {
   }
 
   /**
+   * @param {string} prop
+   * @param {any} source
+   * @return {any}
+   */
+  #valueFromPropName(prop, source = this) {
+    let value = source;
+    for (const child of prop.split('.')) {
+      if (!child) {
+        value = null;
+        break;
+      }
+      // @ts-ignore Skip cast
+      value = value[child];
+    }
+    if (value === source) return null;
+    return value;
+  }
+
+  /**
    * @template {true|false} T
    * @param {T extends true ? Attr : Text } node
    * @param {T} [isAttr]
@@ -659,6 +756,10 @@ export default class CustomElement extends HTMLElement {
     if (trimmed[length - 1] !== '}') return;
 
     let parsedValue = trimmed.slice(1, length - 1);
+    const negate = parsedValue[0] === '!';
+    if (negate) {
+      parsedValue = parsedValue.slice(1);
+    }
 
     /** @type {Element} */
     let element;
@@ -671,7 +772,7 @@ export default class CustomElement extends HTMLElement {
       element = node.parentElement;
       textNodeIndex = 0;
       let prev = node;
-      while ((prev = prev.previousSibling) != null) {
+      while ((prev = prev.previousSibling)) {
         if (prev.nodeType === Node.TEXT_NODE) {
           textNodeIndex++;
         }
@@ -681,7 +782,7 @@ export default class CustomElement extends HTMLElement {
       // eslint-disable-next-line unicorn/consistent-destructuring
       element = node.ownerElement;
       if (nodeName.startsWith('on')) {
-        const [, flags, prop] = parsedValue.match(/^([!1~]+)?(.*)$/);
+        const [, flags, prop] = parsedValue.match(/^([*1~]+)?(.*)$/);
         eventFlags = flags;
         parsedValue = prop;
         isEvent = true;
@@ -703,7 +804,7 @@ export default class CustomElement extends HTMLElement {
       const options = {
         once: eventFlags?.includes('1'),
         passive: eventFlags?.includes('~'),
-        capture: eventFlags?.includes('!'),
+        capture: eventFlags?.includes('*'),
       };
 
       const type = nodeName.slice(2);
@@ -741,7 +842,7 @@ export default class CustomElement extends HTMLElement {
         defaultValue = inlineFunctionOptions.fn;
       }
     } else {
-      defaultValue = this[parsedValue];
+      defaultValue = this.#valueFromPropName(parsedValue);
     }
 
     if (!props) {
@@ -791,10 +892,6 @@ export default class CustomElement extends HTMLElement {
         }
 
         props = combinedSet;
-        if (inlineFunctionOptions) {
-          inlineFunctionOptions.defaultValue = defaultValue;
-          inlineFunctionOptions.props = props;
-        }
         // console.log(this.static.name, fn.name || parsedValue, combinedSet);
       } else {
         props = new Set([parsedValue]);
@@ -805,22 +902,22 @@ export default class CustomElement extends HTMLElement {
       console.warn(this.static.name, ': Invalid binding:', parsedValue);
       defaultValue = null;
     }
-    if (isAttr === false || (nodeType === Node.TEXT_NODE)) {
-      node.nodeValue = defaultValue ?? '';
-    } else if (defaultValue == null || defaultValue === false) {
-      element.removeAttribute(nodeName);
-    } else {
-      element.setAttribute(nodeName, defaultValue === true ? '' : defaultValue);
+
+    if (negate) {
+      defaultValue = !defaultValue;
     }
+
+    if (inlineFunctionOptions) {
+      inlineFunctionOptions.defaultValue = defaultValue;
+      inlineFunctionOptions.props = props;
+    }
+
+    // Bind
 
     const bindings = this.static.getBindings();
 
-    if (nodeName === '_if') {
-      // console.log('found an element conditional!', id);
-    }
-
     const parsedNodeName = textNodeIndex ? nodeName + textNodeIndex : nodeName;
-    const entry = { id, node: parsedNodeName, fn, props };
+    const entry = { id, node: parsedNodeName, fn, props, nodeType, defaultValue, negate };
     for (const prop of props) {
       let set = bindings.get(prop);
       if (!set) {
@@ -830,34 +927,67 @@ export default class CustomElement extends HTMLElement {
       set.add(entry);
     }
 
+    // Mutate
+
+    if (isAttr === false || (nodeType === Node.TEXT_NODE)) {
+      node.nodeValue = defaultValue ?? '';
+    } else if (nodeName === '_if') {
+      element.removeAttribute(nodeName);
+      if (defaultValue == null || defaultValue === false) {
+        const commentPlaceholder = new Comment(id);
+        element.before(commentPlaceholder);
+        this.static._removedRefs.set(id, element);
+      }
+    } else if (defaultValue == null || defaultValue === false) {
+      element.removeAttribute(nodeName);
+    } else {
+      element.setAttribute(nodeName, defaultValue === true ? '' : defaultValue);
+    }
+
     // console.log(this.name, 'binding', isText ? '#text' : `[${nodeName}]`, 'of', id, 'with', parsedValue);
   }
 
   /**
-   * @template {DocumentFragment|Element} [T=DocumentFragment]
-   * @param {T} content
-   * @return {T}
+   * @param {DocumentFragment} template source for interpolation (not mutated)
+   * @return {DocumentFragment} Interpolation of content
    */
-  interpolate(content) {
-    // eslint-disable-next-line unicorn/no-useless-spread
-    for (const node of [...content.childNodes]) {
+  interpolate(template) {
+    const interpolation = /** @type {DocumentFragment} */ (template.cloneNode(true));
+    if (!this.static.interpolatesTemplate) return interpolation;
+
+    // console.log(this.static.name, 'Interpolating', [...template.children].map((child) => child.outerHTML).join('\n'));
+
+    // eslint-disable-next-line no-bitwise
+    const iterator = document.createTreeWalker(interpolation, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = iterator.nextNode())) {
       switch (node.nodeType) {
         case Node.ELEMENT_NODE:
-          // @ts-ignore Skip cast
           // eslint-disable-next-line github/array-foreach
-          [...node.attributes]
+          [...(/** @type {Element} */ (node)).attributes]
+            // .sort((a, b) => a.name.localeCompare(b.name)) // Get _pragmas first
             .forEach((attr) => this.interpolateNode(attr, true));
-          // @ts-ignore Skip cast
-          this.interpolate(node);
           break;
         case Node.TEXT_NODE:
-          // @ts-ignore Skip cast
-          this.interpolateNode(node, false);
+          this.interpolateNode(/** @type {Text} */ (node), false);
           break;
         default:
       }
     }
-    return content;
+
+    const elements = [...this.static._removedRefs.values()].reverse();
+    for (const element of elements) {
+      let parent = element;
+      while ((parent = parent.parentElement)) {
+        if (!parent.id) {
+          parent.id = CustomElement.#generateUID();
+        }
+      }
+    }
+
+    this.static._fullComposition = /** @type {DocumentFragment} */ (interpolation.cloneNode(true));
+    for (const element of elements) element.remove();
+    return interpolation;
   }
 
   /** @type {HTMLTemplater<this>} */
@@ -919,14 +1049,12 @@ export default class CustomElement extends HTMLElement {
       return this.static._composition;
     }
     this.#startSpy();
-    let composition = this.static.template;
+    const template = this.static.template;
     const composeProps = this.#stopSpy();
     if (composeProps.size) {
       console.warn('used composeProps', [...composeProps]);
     }
-    if (this.static.interpolatesTemplate) {
-      composition = this.interpolate(composition);
-    }
+    const composition = this.interpolate(template);
     if (this.static.templatable === false) {
       console.warn(this.static.name, 'Cannot be used as template');
     } else {
@@ -965,16 +1093,8 @@ export default class CustomElement extends HTMLElement {
           ref.addEventListener(type, listener, options);
         } else {
           /** @type {any} */
-          // eslint-disable-next-line @typescript-eslint/no-this-alias
-          let value = this;
-          for (const child of prop.split('.')) {
-            if (!child) {
-              value = null;
-              break;
-            }
-            value = value[child];
-          }
-          if (!value || value === this) {
+          const value = this.#valueFromPropName(prop);
+          if (!value) {
             console.warn('Invalid event listener:', prop);
             continue;
           }
@@ -1001,8 +1121,9 @@ export default class CustomElement extends HTMLElement {
     });
 
     const compiledString = String.raw({ raw: strings }, ...replacements);
-    const fragment = document.createRange().createContextualFragment(compiledString);
-    // TODO: cache fragment for conditional fragments
+    const fragment = this.generateFragment();
+    const parsed = this.getDomParser().parseFromString(compiledString, 'text/html');
+    fragment.append(...parsed.body.childNodes);
     return fragment;
   }
 }
