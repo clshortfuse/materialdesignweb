@@ -16,7 +16,7 @@ export default class Slider extends Input {
     template.append(
       html`
         <div id=track aria-hidden=true style={computeTrackStyle}>
-          <div id=ticks></div>
+          <div _if={ticks} id=ticks></div>
           <div id="track-active"></div>
           <div id="track-label-anchor">
             <div id="track-label" 

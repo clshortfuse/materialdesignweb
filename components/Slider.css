@@ -154,14 +154,8 @@ label {
   background-color: rgb(var(--mdw-color__surface-variant));
   border-radius: inherit;
 }
-/* Inactive ticks */
-#ticks {
-  display: none;
-}
 
-:host([ticks]) #ticks {
-  display: block;
-}
+/* Inactive ticks */
 
 #ticks::before,
 #ticks::after {
