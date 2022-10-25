@@ -10,19 +10,18 @@ export default class MenuItem extends Input {
 
   static styles = [...super.styles, styles];
 
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <mdw-icon id=icon aria-hidden="true" src={src}>{icon}</mdw-icon>
-      <span id=trailing>
-        <slot id=trailing-slot name=trailing role=note>{trailing}</slot>
-        <mdw-icon id=trailing-icon aria-hidden="true" src={trailingSrc}>{trailingIcon}</mdw-icon>
-      </span>
-    `,
-  ];
-
   static get template() {
     const template = super.template;
+    /** @type {MenuItem['html']} */
+    const html = this.html;
+    template.append(html`
+      <mdw-icon _if={icon} id=icon aria-hidden="true" src={src}>{icon}</mdw-icon>
+      <span id=trailing>
+        <slot id=trailing-slot name=trailing role=note>{trailing}</slot>
+        <mdw-icon _if=${({ trailingIcon, trailingSrc }) => trailingIcon || trailingSrc}
+        id=trailing-icon aria-hidden="true" src={trailingSrc}>{trailingIcon}</mdw-icon>
+      </span>
+    `);
     template.getElementById('label').append(
       template.getElementById('icon'),
       template.getElementById('trailing'),

@@ -43,7 +43,7 @@
 #trailing {
   order: 1;
 
-  display: none;
+  display: flex;
 
   padding-inline-start: 12px;
 }
@@ -51,18 +51,6 @@
 #trailing,
 #icon {
   color: rgb(var(--mdw-color__on-surface-variant));
-}
-
-:host(:not([icon])) #icon {
-  display: none;
-}
-
-#trailing-icon:not(:is([icon],[src])) {
-  display: none;
-}
-
-:host(:is([trailing], [trailing-icon], [trailing-src])) #trailing {
-  display: block;
 }
 
 :host(:is([type="checkbox"],[type="radio"])) #icon {
