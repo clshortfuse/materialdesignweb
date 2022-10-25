@@ -9,32 +9,31 @@ export default class Progress extends Container {
 
   static styles = [...super.styles, styles, lineStyles, circleStyles];
 
-  static fragments = [
-    ...super.fragments,
-    /* html */ `
+  static get template() {
+    const template = super.template;
+    /** @type {Progress['html']} */
+    const html = this.html;
+    template.append(html`
       <div id=determinate style={computeDeterminateStyle}>
         <progress id=progress value={value} max={max}></progress>
-        <div id=circle>
+        <div _if={circle} id=circle>
           <div id=semi1 class=semi></div>
           <div id=semi2 class=semi></div>
         </div>
       </div>
-      <div id=indeterminate>
-        <div id=indeterminate-line>
+      <div _if={!value} id=indeterminate>
+        <div _if={!circle} id=indeterminate-line>
           <div id=line1 class=line></div>
           <div id=line2 class=line></div>
         </div>
-        <div id=indeterminate-circle>
+        <div _if={circle} id=indeterminate-circle>
           <div id=arc2 class=arc></div>
           <div id=arc3 class=arc></div>
           <div id=arc4 class=arc></div>
         </div>
       </div>
-    `,
-  ];
+    `);
 
-  static get template() {
-    const template = super.template;
     template.getElementById('slot').remove();
     return template;
   }
@@ -77,6 +76,7 @@ export default class Progress extends Container {
 
 Progress.prototype._previousValueAsFraction = Progress.idl('_previousValueAsFraction', 'float');
 Progress.prototype.valueAsFraction = Progress.idl('valueAsFraction', 'float');
+Progress.prototype.circle = Progress.idl('circle', { type: 'boolean' });
 Progress.prototype.value = Progress.idl('value', 'float');
 Progress.prototype.max = Progress.idl('max', 'float');
 Progress.prototype.autoHide = Progress.idl('autoHide', 'boolean');

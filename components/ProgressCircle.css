@@ -34,8 +34,6 @@
 
   position: absolute;
   inset: 0;
-
-  display: none;
 }
 
 :host([circle]) {
@@ -53,10 +51,6 @@
 
 :host([circle]) progress {
   visibility: hidden;
-}
-
-:host([circle]) #circle {
-  display: block;
 }
 
 .semi {
