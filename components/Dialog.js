@@ -34,7 +34,7 @@ export default class Dialog extends CustomElement {
         <div id=scrim onclick="{~static.onScrimClick}" aria-hidden=true></div>
         <form id=form method=dialog role=none>
           <mdw-container id=container onkeydown="{static.onContainerKeyDown}">
-            <mdw-icon id=icon aria-hidden=true>{icon}</mdw-icon>
+            <mdw-icon _if={icon} id=icon aria-hidden=true>{icon}</mdw-icon>
             <mdw-text id=headline role="header">{headline}</mdw-text>
             <div id=description>{description}</div>
             <slot id=slot onslotchange="{static.onSlotChange}"></slot>
