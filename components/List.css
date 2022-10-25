@@ -1,0 +1,12 @@
+/* https://m3.material.io/components/lists/specs */
+
+:host {
+  display: flex;
+  flex-direction: column;
+
+  padding-block: 8px;
+}
+
+:host(:focus) {
+  outline: 1px solid red;
+}
