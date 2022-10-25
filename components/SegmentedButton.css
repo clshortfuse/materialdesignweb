@@ -61,10 +61,6 @@
   --mdw-button__icon__opacity: 0;
 }
 
-#icon {
-  display: none;
-}
-
 #check-icon {
   --mdw-icon__font-variation-settings: 'FILL' 1;
   --mdw-icon__size: 0;
@@ -81,10 +77,6 @@
 :host([selected]) #check-icon {
   --mdw-icon__size: 18px;
   --mdw-icon__opacity: 1;
-}
-
-:host([icon]) #icon {
-  display: block;
 }
 
 :host([icon]) #check-icon {

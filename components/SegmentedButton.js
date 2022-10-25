@@ -11,7 +11,7 @@ export default class SegmentedButton extends Button {
   static fragments = [
     ...super.fragments,
     /* html */`
-      <mdw-icon id=check-icon aria-hidden=true>check</mdw-icon>
+      <mdw-icon _if={icon} id=check-icon aria-hidden=true>check</mdw-icon>
     `,
   ];
 
@@ -23,6 +23,7 @@ export default class SegmentedButton extends Button {
     const control = template.getElementById('control');
     control.setAttribute('type', 'radio');
     control.setAttribute('role', 'option');
+    template.getElementById('overlay').setAttribute('overlay-disabled', 'focus');
     return template;
   }
 
@@ -31,7 +32,6 @@ export default class SegmentedButton extends Button {
   constructor() {
     super();
     this.outlined = true;
-    this.setAttribute('mdw-overlay-disabled', 'focus');
   }
 
   /**
