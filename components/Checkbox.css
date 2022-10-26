@@ -26,7 +26,6 @@ label {
   grid-auto-flow: column;
   grid-template-rows: minmax(var(--mdw-checkbox__size), min-content);
   grid-template-columns: var(--mdw-checkbox__size);
-  justify-content: center;
 
   cursor: pointer;
 
