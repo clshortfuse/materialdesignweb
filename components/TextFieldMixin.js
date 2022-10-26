@@ -36,7 +36,10 @@ export function TextFieldMixin(Base) {
         template.getElementById('slot'),
       );
       template.append(html`
-        <div id=supporting>${({ error, _validationMessage, supporting }) => (error || _validationMessage || supporting) ?? ''}</div>
+        <div _if={shouldShowSupporting} id=supporting>
+          {computeSupportingText}
+          <slot id=supporting-slot name=supporting></slot>
+        </div>
       `);
 
       template.getElementById('ripple').remove();
@@ -58,6 +61,16 @@ export function TextFieldMixin(Base) {
           break;
         default:
       }
+    }
+
+    shouldShowSupporting() {
+      const { _invalid, error, supporting } = this;
+      return _invalid || ((error ?? supporting) != null);
+    }
+
+    computeSupportingText() {
+      const { error, _validationMessage, supporting } = this;
+      return (error || _validationMessage || supporting) ?? '';
     }
   }
 

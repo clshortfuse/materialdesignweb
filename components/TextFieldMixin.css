@@ -30,11 +30,8 @@
   --mdw-bg: var(--mdw-color__surface-variant);
   --mdw-ink: var(--mdw-color__primary);
 
-  --mdw-type__font-weight: var(--mdw-typescale__body-large__font-weight);
-  --mdw-type__font-size: var(--mdw-typescale__body-large__font-size);
-  --mdw-type__line-height: var(--mdw-typescale__body-large__line-height);
-  --mdw-type__font-family: var(--mdw-typescale__body-large__font-family);
-  --mdw-type__letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
+  font: var(--mdw-typescale__body-large__font);
+  letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
 
   --border-width: 1px;
   --border-width__focused: 2px;
@@ -286,14 +283,9 @@ mdw-icon {
 :host(:is(:focus, [populated])) #label-text {
   transform: translateY(8px);
 
-  font-weight: var(--mdw-typescale__body-small__font-weight);
-  /* Not spec */
-  font-size: var(--mdw-typescale__body-small__font-size);
-  line-height: var(--mdw-typescale__body-small__line-height);
-  font-family: var(--mdw-typescale__body-small__font-family);
-  /* Not spec */
+  font: var(--mdw-typescale__body-small__font);
+  /* Not spec: Should only use font-size and line-height */
   letter-spacing: var(--mdw-typescale__body-small__letter-spacing);
-  /* Not spec */
 }
 
 /** Outlined **/
@@ -479,12 +471,8 @@ mdw-icon {
   /* Not spec */
 }
 
-#supporting:empty {
+:host(:is([error], [invalid])) #supporting-slot {
   display: none;
-}
-
-:host([supporting]) #supporting {
-  display: block;
 }
 
 :host(:is([error], [invalid])) {
