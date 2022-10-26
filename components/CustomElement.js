@@ -209,7 +209,7 @@ export default class CustomElement extends HTMLElement {
       if (!element) {
         element = this.shadowRoot.getElementById(id);
         if (!element) {
-          const template = this.static._fullComposition.getElementById(id);
+          const template = this.getFullComposition().getElementById(id);
           if (template) {
             element = /** @type {HTMLElement} */ (template.cloneNode(true));
             // console.log(this.static.name, '- Recreated element from template:', id);
@@ -605,7 +605,7 @@ export default class CustomElement extends HTMLElement {
         } else if (node === '_if') {
           if (value) {
             if (!ref.isConnected) {
-              const fullComposition = this.static._fullComposition;
+              const fullComposition = this.getFullComposition();
               const parentID = fullComposition.getElementById(id)?.parentElement?.id;
               const parent = (parentID ? this.refs[parentID] : null) ?? this.shadowRoot;
 
@@ -953,7 +953,10 @@ export default class CustomElement extends HTMLElement {
    */
   interpolate(template) {
     const interpolation = /** @type {DocumentFragment} */ (template.cloneNode(true));
-    if (!this.static.interpolatesTemplate) return interpolation;
+    if (!this.static.interpolatesTemplate) {
+      this.static._fullComposition = /** @type {DocumentFragment} */ (interpolation.cloneNode(true));
+      return interpolation;
+    }
 
     // console.log(this.static.name, 'Interpolating', [...template.children].map((child) => child.outerHTML).join('\n'));
 
@@ -1043,6 +1046,15 @@ export default class CustomElement extends HTMLElement {
     this.shadowRoot.prepend(this.getComposition().cloneNode(true));
   }
 
+  getFullComposition() {
+    // eslint-disable-next-line no-prototype-builtins
+    if (this.static.hasOwnProperty('_fullComposition')) {
+      return this.static._fullComposition;
+    }
+    this.getComposition();
+    return this.static._fullComposition;
+  }
+
   getComposition() {
     // eslint-disable-next-line no-prototype-builtins
     if (this.static.hasOwnProperty('_composition')) {
@@ -1091,15 +1103,17 @@ export default class CustomElement extends HTMLElement {
       for (const { type, listener, options, prop } of events) {
         if (listener) {
           ref.addEventListener(type, listener, options);
-        } else {
-          /** @type {any} */
-          const value = this.#valueFromPropName(prop);
-          if (!value) {
-            console.warn('Invalid event listener:', prop);
-            continue;
-          }
-          ref.addEventListener(type, value, options);
+          continue;
         }
+        /** @type {any} */
+        const value = this.#valueFromPropName(prop);
+        if (value) {
+          ref.addEventListener(type, value, options);
+          continue;
+        }
+        // If listener is a Class Field, it will not be available yet
+        // Assume it will be and if not, it will throw the error anyway
+        ref.addEventListener(type, (e) => this.#valueFromPropName(prop)(e), options);
       }
     }
   }
