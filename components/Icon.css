@@ -12,6 +12,8 @@
   inline-size: var(--mdw-icon__size);
 
   user-select: none;
+
+  transition-duration: 100ms;
   /* stylelint-disable-next-line liberty/use-logical-spec -- Safari does not animate inline-size */
   transition-property: inline-size, width;
 }
