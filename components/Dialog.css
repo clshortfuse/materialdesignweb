@@ -134,14 +134,11 @@ dialog:modal {
 
 #container {
   position: relative;
-  /* --mdw-shape__size: 28px;
-  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__3);
-  --mdw-container__box-shadow: var(--mdw-container__box-shadow__3);
-  --mdw-type__font-weight: var(--mdw-typescale__body-medium__font-weight);
-  --mdw-type__font-size: var(--mdw-typescale__body-medium__font-size);
-  --mdw-type__line-height: var(--mdw-typescale__body-medium__line-height);
-  --mdw-type__font-family: var(--mdw-typescale__body-medium__font-family);
-  --mdw-type__letter-spacing: var(--mdw-typescale__body-medium__letter-spacing); */
+  /* --mdw-shape__size: 28px; */
+  /* --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__3); */
+  /* --mdw-container__box-shadow: var(--mdw-container__box-shadow__3); */
+  /* font: var(--mdw-typescale__body-medium__font); */
+  /* letter-spacing: var(--mdw-typescale__body-medium__letter-spacing); */
   display: flex;
   align-items: var(--mdw-dialog__align-items);
   flex-direction: column;
@@ -175,13 +172,10 @@ dialog:modal #container {
 }
 
 #headline {
-  --mdw-type__font-weight: var(--mdw-typescale__headline-small__font-weight);
-  --mdw-type__font-size: var(--mdw-typescale__headline-small__font-size);
-  --mdw-type__line-height: var(--mdw-typescale__headline-small__line-height);
-  --mdw-type__font-family: var(--mdw-typescale__headline-small__font-family);
-  --mdw-type__letter-spacing: var(--mdw-typescale__headline-small__letter-spacing);
-
   margin-block-end: 16px;
+
+  font: var(--mdw-typescale__headline-small__font);
+  letter-spacing: var(--mdw-typescale__headline-small__letter-spacing);
 }
 
 #icon {

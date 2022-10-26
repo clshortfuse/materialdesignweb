@@ -126,10 +126,7 @@ a {
   border-radius: 8px;
   color: var(--mdw-nav-item__badge__color, inherit);
 
-  font-weight: var(--mdw-nav-item__badge__font-weight, inherit);
-  font-size: var(--mdw-nav-item__badge__font-size, inherit);
-  line-height: var(--mdw-nav-item__badge__line-height, inherit);
-  font-family: var(--mdw-nav-item__badge__font-family, inherit);
+  font: var(--mdw-nav-item__badge__font, inherit);
   letter-spacing: var(--mdw-nav-item__badge__letter-spacing, inherit);
 
   transition: transform 200ms;

@@ -25,10 +25,7 @@
 }
 
 #group {
-  --mdw-nav-item__badge__font-weight: var(--mdw-typescale__label-small__font-weight);
-  --mdw-nav-item__badge__font-size: var(--mdw-typescale__label-small__font-size);
-  --mdw-nav-item__badge__line-height: var(--mdw-typescale__label-small__line-height);
-  --mdw-nav-item__badge__font-family: var(--mdw-typescale__label-small__font-family);
+  --mdw-nav-item__badge__font: var(--mdw-typescale__label-small__font);
   --mdw-nav-item__badge__letter-spacing: var(--mdw-typescale__label-small__letter-spacing);
   --mdw-nav-item__badge__background: rgb(var(--mdw-color__error));
   --mdw-nav-item__badge__color: rgb(var(--mdw-color__on-error));

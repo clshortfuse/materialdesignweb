@@ -16,11 +16,6 @@
   --mdw-button__outline__rgb: var(--mdw-color__outline);
   --mdw-button__touch-target__size: 10mm;
   --mdw-ink: var(--mdw-color__primary);
-  --mdw-type__font-weight: var(--mdw-typescale__label-large__font-weight);
-  --mdw-type__font-size: var(--mdw-typescale__label-large__font-size);
-  --mdw-type__line-height: var(--mdw-typescale__label-large__line-height);
-  --mdw-type__font-family: var(--mdw-typescale__label-large__font-family);
-  --mdw-type__letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
   display: inline-flex;
   align-items: stretch;
   justify-content: center;
@@ -31,6 +26,9 @@
   cursor: pointer;
 
   color: rgb(var(--mdw-ink));
+
+  font: var(--mdw-typescale__label-large__font);
+  letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
 }
 
 :host(:where([elevated],[filled])) {

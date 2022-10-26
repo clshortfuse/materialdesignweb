@@ -2,12 +2,10 @@
 
 :host {
   --mdw-shape__size: 0;
-  --mdw-type__font-weight: var(--mdw-typescale__label-large__font-weight);
-  --mdw-type__font-size: var(--mdw-typescale__label-large__font-size);
-  --mdw-type__line-height: var(--mdw-typescale__label-large__line-height);
-  --mdw-type__font-family: var(--mdw-typescale__label-large__font-family);
-  --mdw-type__letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
   color: rgb(var(--mdw-ink));
+
+  font: var(--mdw-typescale__label-large__font);
+  letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
 
   white-space: nowrap;
 }

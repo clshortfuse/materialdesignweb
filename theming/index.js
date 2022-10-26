@@ -98,7 +98,7 @@ const TYPOGRAPHY_DEFAULT = {
         fontFamily: 'var(--mdw-typeface__brand)',
         lineHeight: 64,
         fontSize: 57,
-        letterSpacing: -0.25, // From Figma (Web: 0)
+        letterSpacing: 0,
         weight: 'var(--mdw-typeface__weight-regular)',
       },
       medium: {
@@ -145,13 +145,13 @@ const TYPOGRAPHY_DEFAULT = {
         lineHeight: 28,
         fontSize: 22,
         letterSpacing: 0,
-        weight: 'var(--mdw-typeface__weight-regular)',
+        weight: 'var(--mdw-typeface__weight-medium)', // Figma style has regular
       },
       medium: {
         fontFamily: 'var(--mdw-typeface__plain)',
         lineHeight: 24,
         fontSize: 16,
-        letterSpacing: 0.1, // From Figma (Web: 0.15)
+        letterSpacing: 0.15,
         weight: 'var(--mdw-typeface__weight-medium)',
       },
       small: {
@@ -179,7 +179,7 @@ const TYPOGRAPHY_DEFAULT = {
       },
       small: {
         fontFamily: 'var(--mdw-typeface__plain)',
-        lineHeight: 16, // From Figma (Web: 6)
+        lineHeight: 16,
         fontSize: 11,
         letterSpacing: 0.5,
         weight: 'var(--mdw-typeface__weight-medium)',
@@ -190,22 +190,22 @@ const TYPOGRAPHY_DEFAULT = {
         fontFamily: 'var(--mdw-typeface__plain)',
         lineHeight: 24,
         fontSize: 16,
-        letterSpacing: 0.5,
-        weight: 'var(--mdw-typeface__weight-regular)', // From Figma (Web: Medium)
+        letterSpacing: 0.5, // Figma text has 0.15
+        weight: 'var(--mdw-typeface__weight-regular)',
       },
       medium: {
         fontFamily: 'var(--mdw-typeface__plain)',
         lineHeight: 20,
         fontSize: 14,
         letterSpacing: 0.25,
-        weight: 'var(--mdw-typeface__weight-regular)', // From Figma (Web: Medium)
+        weight: 'var(--mdw-typeface__weight-regular)',
       },
       small: {
         fontFamily: 'var(--mdw-typeface__brand)',
         lineHeight: 16,
         fontSize: 12,
         letterSpacing: 0.4,
-        weight: 'var(--mdw-typeface__weight-regular)', // From Figma (Web: Medium)
+        weight: 'var(--mdw-typeface__weight-regular)',
       },
     },
   },
@@ -216,7 +216,7 @@ const TYPOGRAPHY_DEFAULT = {
  * @return {string}
  */
 export function generateTypographyCSS(config = TYPOGRAPHY_DEFAULT) {
-  return /* css */`
+  return /* css */ `
     :root {
       --mdw-typeface__brand: ${config.face.brand};
       --mdw-typeface__weight-regular: ${config.face.weight.regular};
@@ -312,8 +312,22 @@ export function generateTypographyCSS(config = TYPOGRAPHY_DEFAULT) {
       --mdw-typescale__body-small__font-size: calc(${config.scale.body.small.fontSize} * 0.0625rem);
       --mdw-typescale__body-small__letter-spacing: calc(${config.scale.body.small.letterSpacing} * 0.0625rem);
       --mdw-typescale__body-small__font-weight: ${config.scale.body.small.weight};
-    }
-  `;
+      }`;
+}
+
+/** @return {string} */
+export function generateTypographyGlobalCSS() {
+  return /* css */ `
+    :root {${['display', 'headline', 'title', 'label', 'body']
+    .map((style) => ['large', 'medium', 'small']
+      .map((size) => `--mdw-typescale__${style}-${size}__font: ${
+        [
+          `var(--mdw-typescale__${style}-${size}__font-weight)`,
+          `var(--mdw-typescale__${style}-${size}__font-size)/var(--mdw-typescale__${style}-${size}__line-height)`,
+          `var(--mdw-typescale__${style}-${size}__font-family)`,
+        ].join(' ')
+      };`).join('\n'))
+    .join('\n')}}`;
 }
 
 /**

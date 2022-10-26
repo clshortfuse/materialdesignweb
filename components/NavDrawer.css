@@ -1,11 +1,6 @@
 /* https://m3.material.io/components/navigation-drawer/specs */
 
 :host([open]) {
-  --mdw-type__font-weight: var(--mdw-typescale__label-large__font-weight);
-  --mdw-type__font-size: var(--mdw-typescale__label-large__font-size);
-  --mdw-type__line-height: var(--mdw-typescale__label-large__line-height);
-  --mdw-type__font-family: var(--mdw-typescale__label-large__font-family);
-  --mdw-type__letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
   --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__0);
   --mdw-shape__size: var(--mdw-shape__large, 16px);
   --mdw-shape__size__top-start-size: 0;
@@ -17,13 +12,13 @@
   min-inline-size: 360px;
 
   box-shadow: none;
+
+  font: var(--mdw-typescale__label-large__font);
+  letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
 }
 
 :host([open]) #slot::slotted(mdw-nav-item) {
-  --mdw-nav-item__badge__font-weight: initial;
-  --mdw-nav-item__badge__font-size: initial;
-  --mdw-nav-item__badge__line-height: initial;
-  --mdw-nav-item__badge__font-family: initial;
+  --mdw-nav-item__badge__font: initial;
   --mdw-nav-item__badge__letter-spacing: initial;
   --mdw-nav-item__badge__background: initial;
   --mdw-nav-item__badge__color: initial;
