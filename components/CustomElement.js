@@ -127,7 +127,7 @@ export default class CustomElement extends HTMLElement {
     );
     for (const f of this.fragments) {
       if (typeof f === 'string') {
-        const parsed = this.getDomParser().parseFromString(f, 'text/html');
+        const parsed = this.getDomParser().parseFromString(f.trim(), 'text/html');
         fragment.append(...parsed.body.childNodes);
       } else {
         fragment.append(f);
@@ -1122,7 +1122,7 @@ export default class CustomElement extends HTMLElement {
 
     const compiledString = String.raw({ raw: strings }, ...replacements);
     const fragment = this.generateFragment();
-    const parsed = this.getDomParser().parseFromString(compiledString, 'text/html');
+    const parsed = this.getDomParser().parseFromString(compiledString.trim(), 'text/html');
     fragment.append(...parsed.body.childNodes);
     return fragment;
   }
