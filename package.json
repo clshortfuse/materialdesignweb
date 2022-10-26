@@ -30,7 +30,7 @@
   },
   "author": "Carlos Lopez Jr. <clshortfuse@gmail.com> (https://shortfuse.org/)",
   "license": "ISC",
-  "sideEffects": false,
+  "sideEffects": ["./components/*.js"],
   "bugs": {
     "url": "https://github.com/clshortfuse/materialdesignweb/issues"
   },
