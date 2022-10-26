@@ -115,6 +115,8 @@
   border-style: solid;
   border-width: var(--mdw-card__outline__size);
 
+  pointer-events: none;
+
   visibility: var(--mdw-card__outline__visibility);
 
   border-color: rgba(var(--mdw-card__outline__rgb), var(--mdw-card__outline__opacity));
