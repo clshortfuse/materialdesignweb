@@ -66,6 +66,7 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/6e7f5d7/docs/
 | [Card: Filled](components/Card.js)                           | `<mdw-card filled>`                            | `<figure>`                                                         |  beta   |
 | [Card: Outlined](components/Card.js)                         | `<mdw-card outlined>`                          | `<figure>`                                                         |  beta   |
 | [Card Action Area](components/Card.js)                       | `<mdw-card-action-area>`                       | `<figure>`                                                         |  beta   |
+| [Checkbox](components/Checkbox.js)                           | `<mdw-checkbox>`                               | `<input type=checkbox>`                                            |  beta   |
 | [Chip: Assist](components/Chip.js)                           | `<mdw-chip>`                                   | `<input type=button>`                                              |  beta   |
 | [Chip: Filter](components/Chip.js)                           | `<mdw-filter-chip>`                            | `<input type=checkbox>`                                            |  beta   |
 | [Chip: Filter Dropdown](components/Chip.js)                  |                                                |                                                                    | planned |
@@ -74,6 +75,10 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/6e7f5d7/docs/
 | [Dialog: Basic](components/Dialog.js)                        | `<mdw-dialog title=title description=desc>`    | `<dialog>`                                                         |  alpha  |
 | [Dialog: Full-screen](components/Dialog.js)                  |                                                | `<dialog>`                                                         | planned |
 | [Divider](components/Divider.js)                             | `<mdw-divider>`                                | `<div>`                                                            |  beta   |
+| [List](components/List.js)                                   | `<mdw-list>`                                   | `<ul>`                                                             |  beta   |
+| [ListItem](components/ListItem.js)                           | `<mdw-list-item>`                              | `<li>`                                                             |  beta   |
+| [ListSelect](components/ListSelect.js)                       | `<mdw-list-select>`                            | `<select>`                                                         |  beta   |
+| [ListOption](components/ListOption.js)                       | `<mdw-list-option>`                            | `<option>`                                                         |  beta   |
 | [Menu](components/Menu.js)                                   | `<mdw-menu>`                                   | `<dialog>`                                                         |  beta   |
 | [Menu Item](components/MenuItem.js)                          | `<mdw-menu-item>`                              | `<input type=button>` `<input type=checkbox>` `<input type=radio>` |  beta   |
 | [Nav Item](components/NavBarItem.js)                         | `<mdw-nav-item>`                               | `<a href=#>`                                                       |  beta   |
@@ -98,20 +103,18 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/6e7f5d7/docs/
 
 These components do not have official M3 guidelines
 
-| Component    | HTML               | Extends | ARIA Role  | Implements |  Status  |
-| :----------- | :----------------- | :-----: | :--------: | :--------- | :------: |
-| ~~Backdrop~~ |                    |         |            |            | no plans |
-| Banner       | `<mdw-banner>`     |         |            |            | rewrite  |
-| Checkbox     | `<mdw-checkbox>`   |         | `checkbox` |            | rewrite  |
-| Data Table   |                    |         |            |            | rewrite  |
-| Data Picker  |                    |         |            |            | planned  |
-| Image List   |                    |         |            |            | rewrite  |
-| List         | `<mdw-list>`       |         |            |            | rewrite  |
-| Snackbar     | `<mdw-snackbar>`   |         |  `alert`   |            | rewrite  |
-| Side Sheet   | `<mdw-side-sheet>` |         |            |            | rewrite  |
-| Tab          | `<mdw-tab>`        |         |   `tab`    |            | rewrite  |
-| Time Picker  |                    |         |            |            | planned  |
-| Tooltip      | `<mdw-tooltip>`    |         | `tooltip`  |            | rewrite  |
+| Component    | HTML               | Extends | ARIA Role | Implements |  Status  |
+| :----------- | :----------------- | :-----: | :-------: | :--------- | :------: |
+| ~~Backdrop~~ |                    |         |           |            | no plans |
+| Banner       | `<mdw-banner>`     |         |           |            | rewrite  |
+| Data Table   |                    |         |           |            | rewrite  |
+| Data Picker  |                    |         |           |            | planned  |
+| Image List   |                    |         |           |            | rewrite  |
+| Snackbar     | `<mdw-snackbar>`   |         |  `alert`  |            | rewrite  |
+| Side Sheet   | `<mdw-side-sheet>` |         |           |            | rewrite  |
+| Tab          | `<mdw-tab>`        |         |   `tab`   |            | rewrite  |
+| Time Picker  |                    |         |           |            | planned  |
+| Tooltip      | `<mdw-tooltip>`    |         | `tooltip` |            | rewrite  |
 
 # Adapter classes
 | Adapter                          | Status  |
