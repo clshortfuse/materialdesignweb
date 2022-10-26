@@ -23,7 +23,7 @@
   position: absolute;
   inset: 0;
 
-  pointer-events: auto;
+  pointer-events: none;
 
   opacity: calc(
     var(--mdw-overlay__hover-opacity) +
@@ -39,7 +39,6 @@
   transition-duration: 0ms;
   transition-property: opacity, color, background-color;
   will-change: opacity;
-  z-index: 24;
 }
 
 #overlay[touched] {
@@ -48,34 +47,34 @@
 }
 
 /* Remove Hover State */
+:host(:not(:hover)) #overlay,
 #overlay:is(
-[disabled]:not([overlay-disabled~="hover"]),
-[mdw-overlay-off~="hover"],
-:not(:hover)) {
+  [disabled]:not([overlay-disabled~="hover"]),
+  [overlay-off~="hover"]) {
   --mdw-overlay__hover-opacity: 0;
 }
 
 /* Remove Focus State */
+:host(:not(:focus)) #overlay,
 #overlay:is(
-[disabled]:not([overlay-disabled~="focus"]),
-[overlay-off~="focus"],
-:not([focus])) {
+  [disabled]:not([overlay-disabled~="focus"]),
+  [overlay-off~="focus"]) {
   --mdw-overlay__focus-opacity: 0;
 }
 
 /* Remove Pressed State */
+:host(:not(:active)) #overlay,
 #overlay:is(
-[disabled]:not([overlay-disabled~="pressed"]),
-[overlay-off~="pressed"],
-:not(:active))  {
+  [disabled]:not([overlay-disabled~="pressed"]),
+  [overlay-off~="pressed"]) {
   --mdw-overlay__pressed-opacity: 0;
 }
 
 /* Remove Dragged State */
+:host(:not([aria-dragged="true"])) #overlay,
 #overlay:is(
-[disabled]:not([overlay-disabled~="dragged"]),
-[overlay-off~="dragged"],
-:not([aria-dragged="true"])) {
+  [disabled]:not([overlay-disabled~="dragged"]),
+  [overlay-off~="dragged"]) {
   --mdw-overlay__dragged-opacity: 0;
 }
 
