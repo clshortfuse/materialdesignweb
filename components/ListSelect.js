@@ -134,6 +134,9 @@ export default class ListSelect extends FormAssociatedMixin(List) {
     }
   }
 
+  /** @return {typeof ListSelect} */
+  get static() { return /** @type {typeof ListSelect} */ (super.static); }
+
   /** @type {CustomElement['idlChangedCallback']} */
   idlChangedCallback(name, oldValue, newValue) {
     super.idlChangedCallback(name, oldValue, newValue);
@@ -173,6 +176,7 @@ export default class ListSelect extends FormAssociatedMixin(List) {
 
   /** @type {HTMLElement['focus']} */
   focus(options = undefined) {
+    console.log('focus?');
     super.focus(options);
     const nextTarget = this.querySelector('[role="option"][tabindex="0"]');
     nextTarget?.focus();

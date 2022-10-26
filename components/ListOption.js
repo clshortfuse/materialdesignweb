@@ -8,6 +8,8 @@ export default class ListOption extends ListItem {
 
   static ariaRole = 'option';
 
+  static delegatesFocus = false;
+
   static get template() {
     const template = super.template;
     template.getElementById('headline-text').append(
