@@ -1,8 +1,11 @@
 import Input from './Input.js';
 import styles from './Switch.css' assert { type: 'css' };
 import animationStyles from './SwitchAnimations.css' assert { type: 'css' };
+import './Icon.js';
 
 export default class Switch extends Input {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-switch';
 
   static styles = [...super.styles, styles, animationStyles];

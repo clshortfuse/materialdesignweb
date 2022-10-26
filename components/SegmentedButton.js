@@ -2,8 +2,11 @@ import * as RovingTabIndex from '../aria/rovingtabindex.js';
 
 import Button from './Button.js';
 import styles from './SegmentedButton.css' assert { type: 'css' };
+import './Icon.js';
 
 export default class SegmentedButton extends Button {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-segmented-button';
 
   static styles = [...super.styles, styles];

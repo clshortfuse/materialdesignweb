@@ -4,6 +4,8 @@ import { TextFieldMixin } from './TextFieldMixin.js';
 
 /** @implements {HTMLTextAreaElement} */
 export default class TextArea extends TextFieldMixin(Control) {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-textarea';
 
   static styles = [...super.styles, styles];

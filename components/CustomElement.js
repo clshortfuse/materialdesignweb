@@ -155,6 +155,8 @@ export default class CustomElement extends HTMLElement {
   /** @type {boolean} */
   static templatable = null;
 
+  static defined = false;
+
   /** @type {Document} */
   static _inactiveDocument;
 
@@ -253,6 +255,10 @@ export default class CustomElement extends HTMLElement {
     this.#attachARIA();
   }
 
+  static autoRegister() {
+    queueMicrotask(() => this.register());
+  }
+
   static generateFragment() {
     this._inactiveDocument ??= new Document();
     return this._inactiveDocument.createDocumentFragment();
@@ -301,13 +307,28 @@ export default class CustomElement extends HTMLElement {
     });
   }
 
-  /** @param {string} [elementName] */
-  static register(elementName) {
-    customElements.define(elementName || this.elementName, this);
+  /**
+   * @param {string} [elementName]
+   * @param {boolean} [force=false]
+   * @return {string}
+   */
+  static register(elementName, force = false) {
+    const name = elementName || this.elementName;
+    if (this.hasOwnProperty('defined') && this.defined && !force) {
+      // console.warn(name, 'already registered.');
+      return this.elementName;
+    }
+
+    if (this.elementName !== name) {
+      // console.log('Changing', this.elementName, '=>', name);
+      this.elementName = name;
+    }
+    customElements.define(name, this);
+    this.defined = true;
+    return this.elementName;
   }
 
   static getIdls() {
-    // eslint-disable-next-line no-prototype-builtins
     if (!this.hasOwnProperty('_idls')) {
       this._idls = new Map(this._idls);
     }
@@ -315,7 +336,6 @@ export default class CustomElement extends HTMLElement {
   }
 
   static getBindings() {
-    // eslint-disable-next-line no-prototype-builtins
     if (!this.hasOwnProperty('_bindings')) {
       this._bindings = new Map(
         [...this._bindings].map(([key, entries]) => [
@@ -328,7 +348,6 @@ export default class CustomElement extends HTMLElement {
   }
 
   static getInlineFunctions() {
-    // eslint-disable-next-line no-prototype-builtins
     if (!this.hasOwnProperty('_inlineFunctions')) {
       this._inlineFunctions = new Map(this._inlineFunctions);
     }
@@ -336,7 +355,6 @@ export default class CustomElement extends HTMLElement {
   }
 
   static getEvents() {
-    // eslint-disable-next-line no-prototype-builtins
     if (!this.hasOwnProperty('_events')) {
       this._events = new Map(
         [...this._events].map(([key, entries]) => [
@@ -349,7 +367,6 @@ export default class CustomElement extends HTMLElement {
   }
 
   static getAdoptedStyleSheets() {
-    // eslint-disable-next-line no-prototype-builtins
     if (!this.hasOwnProperty('_adoptedStyleSheets')) {
       this._adoptedStyleSheets = /** @type {CSSStyleSheet[]} */ (this.styles
         .filter((style) => style instanceof CSSStyleSheet));
@@ -1047,7 +1064,6 @@ export default class CustomElement extends HTMLElement {
   }
 
   getFullComposition() {
-    // eslint-disable-next-line no-prototype-builtins
     if (this.static.hasOwnProperty('_fullComposition')) {
       return this.static._fullComposition;
     }
@@ -1056,7 +1072,6 @@ export default class CustomElement extends HTMLElement {
   }
 
   getComposition() {
-    // eslint-disable-next-line no-prototype-builtins
     if (this.static.hasOwnProperty('_composition')) {
       return this.static._composition;
     }

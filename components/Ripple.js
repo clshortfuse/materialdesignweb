@@ -2,6 +2,8 @@ import Overlay from './Overlay.js';
 import styles from './Ripple.css' assert { type: 'css' };
 
 export default class Ripple extends Overlay {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-ripple';
 
   static styles = [...super.styles, styles];

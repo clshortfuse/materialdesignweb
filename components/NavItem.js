@@ -1,10 +1,13 @@
 import styles from './NavItem.css' assert { type: 'css' };
 import Ripple from './Ripple.js';
+import './Icon.js';
 
 /** @typedef {'charset'|'coords'|'name'|'shape'} DeprecatedHTMLAnchorElementProperties */
 
 /** @implements {Omit<HTMLAnchorElement,DeprecatedHTMLAnchorElementProperties>} */
 export default class NavItem extends Ripple {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-nav-item';
 
   static delegatesFocus = true;

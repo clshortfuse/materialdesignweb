@@ -3,6 +3,8 @@ import styles from './Nav.css' assert { type: 'css' };
 import NavItem from './NavItem.js';
 
 export default class Nav extends Container {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-nav';
 
   static ariaRole = 'navigation';

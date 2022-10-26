@@ -2,6 +2,8 @@ import ExtendedFab from './ExtendedFab.js';
 import styles from './Fab.css' assert { type: 'css' };
 
 export default class Fab extends ExtendedFab {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-fab';
 
   static styles = [...super.styles, styles];

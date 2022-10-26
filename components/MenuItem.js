@@ -2,10 +2,13 @@
 
 import * as RovingTabIndex from '../aria/rovingtabindex.js';
 
+import './Icon.js';
 import Input from './Input.js';
 import styles from './MenuItem.css' assert { type: 'css' };
 
 export default class MenuItem extends Input {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-menu-item';
 
   static styles = [...super.styles, styles];

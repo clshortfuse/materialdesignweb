@@ -1,11 +1,17 @@
 // https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
 
 import checkboxIconStyles from './CheckboxIcon.css' assert { type: 'css'};
+import './Container.js';
+import './Divider.js';
+import './Icon.js';
 import styles from './ListItem.css' assert { type: 'css' };
 import radioIconStyles from './RadioIcon.css' assert { type: 'css'};
 import Ripple from './Ripple.js';
+import './Text.js';
 
 export default class ListItem extends Ripple {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-list-item';
 
   static ariaRole = 'listitem';

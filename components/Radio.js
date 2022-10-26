@@ -3,6 +3,8 @@ import styles from './Radio.css' assert { type: 'css' };
 import iconStyles from './RadioIcon.css' assert { type: 'css' };
 
 export default class Radio extends Input {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-radio';
 
   static styles = [...super.styles, styles, iconStyles];

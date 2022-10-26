@@ -1,8 +1,11 @@
 import { handleTabKeyPress } from '../aria/modal.js';
 
-import Container from './Container.js';
+import './Container.js';
 import CustomElement from './CustomElement.js';
 import styles from './Dialog.css' assert { type: 'css' };
+import './Icon.js';
+import './Text.js';
+import './Button.js';
 
 /** @typedef {Object<string,any>} DialogStackState */
 
@@ -16,6 +19,8 @@ import styles from './Dialog.css' assert { type: 'css' };
 
 /** @implements {HTMLDialogElement} */
 export default class Dialog extends CustomElement {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-dialog';
 
   static styles = [...super.styles, styles];

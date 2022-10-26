@@ -1,7 +1,10 @@
 import Chip from './Chip.js';
 import styles from './FilterChip.css' assert { type: 'css' };
+import './Icon.js';
 
 export default class FilterChip extends Chip {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-filter-chip';
 
   static styles = [...super.styles, styles];

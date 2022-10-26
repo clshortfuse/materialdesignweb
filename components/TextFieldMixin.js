@@ -1,9 +1,8 @@
-import Control from './Control.js';
-import Icon from './Icon.js';
+import './Icon.js';
 import styles from './TextFieldMixin.css' assert { type: 'css' };
 
 /**
- * @param {typeof Control} Base
+ * @param {typeof import('./Control.js').default} Base
  */
 export function TextFieldMixin(Base) {
   class TextField extends Base {

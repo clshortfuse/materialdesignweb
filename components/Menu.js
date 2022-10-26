@@ -19,6 +19,8 @@ import MenuItem from './MenuItem.js';
 
 /** @implements {HTMLDialogElement} */
 export default class Menu extends CustomElement {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-menu';
 
   static styles = [...super.styles, styles];

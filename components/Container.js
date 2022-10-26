@@ -6,6 +6,8 @@ import Text from './Text.js';
 
 /** @implements {Omit<HTMLDivElement,DeprecatedHTMLDivElementProperties>} */
 export default class Container extends Text {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-container';
 
   // Allow inks to override color styles

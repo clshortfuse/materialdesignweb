@@ -2,6 +2,8 @@ import Container from './Container.js';
 import styles from './Overlay.css' assert { type: 'css' };
 
 export default class Overlay extends Container {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-overlay';
 
   static styles = [...super.styles, styles];

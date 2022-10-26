@@ -12,11 +12,13 @@ import Container from './Container.js';
 /** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
 /** @implements {Omit<HTMLMenuElement,DeprecatedHTMLMenuElementProperties>} */
 export default class BottomAppBar extends Container {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-bottom-app-bar';
 
-  static styles = [...super.styles, styles];
-
   static ariaRole = 'toolbar';
+
+  static styles = [...super.styles, styles];
 
   connectedCallback() {
     AriaToolbar.attach(this);

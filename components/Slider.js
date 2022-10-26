@@ -2,6 +2,8 @@ import Input from './Input.js';
 import styles from './Slider.css' assert { type: 'css' };
 
 export default class Slider extends Input {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-slider';
 
   static styles = [...super.styles, styles];

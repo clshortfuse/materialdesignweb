@@ -5,6 +5,8 @@ import Ripple from './Ripple.js';
 
 /** @implements {Omit<HTMLInputElement,DeprecatedHTMLInputElementProperties>} */
 export default class Input extends Control {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-input';
 
   static get observedAttributes() {

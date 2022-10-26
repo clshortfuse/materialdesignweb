@@ -1,8 +1,11 @@
 import styles from './Checkbox.css' assert { type: 'css' };
 import iconStyles from './CheckboxIcon.css' assert { type: 'css' };
 import Input from './Input.js';
+import './Icon.js';
 
 export default class Checkbox extends Input {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-checkbox';
 
   static styles = [...super.styles, styles, iconStyles];

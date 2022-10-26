@@ -10,6 +10,8 @@ import ListOption from './ListOption.js';
 
 /** @implements {HTMLSelectElement} */
 export default class ListSelect extends FormAssociatedMixin(List) {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-list-select';
 
   static ariaRole = 'listbox';

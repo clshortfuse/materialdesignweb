@@ -2,6 +2,8 @@ import Button from './Button.js';
 import styles from './IconButton.css' assert { type: 'css' };
 
 export default class IconButton extends Button {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-icon-button';
 
   static styles = [...super.styles, styles];

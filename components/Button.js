@@ -1,7 +1,10 @@
 import styles from './Button.css' assert { type: 'css' };
 import Input from './Input.js';
+import './Icon.js';
 
 export default class Button extends Input {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-button';
 
   static styles = [...super.styles, styles];
