@@ -30,13 +30,13 @@ export function FormAssociatedMixin(Base) {
 
     _dirtyValue = false;
 
+    /** @type {HTMLControlElement} */
+    _control = this;
+
     #ipcListener = this.formIPCEvent.bind(this);
 
     /** @type {EventTarget} */
     #ipcTarget = null;
-
-    /** @type {HTMLControlElement} */
-    _control = this;
 
     constructor() {
       super();
@@ -112,9 +112,6 @@ export function FormAssociatedMixin(Base) {
       host.checkValidity();
     }
 
-
-    get static() { return /** @type {typeof FormAssociated} */ (super.static); }
-
     get dirtyValue() { return this._dirtyValue; }
 
     /** @type {CustomElement['idlChangedCallback']} */
@@ -123,7 +120,7 @@ export function FormAssociatedMixin(Base) {
       if (oldValue == null && newValue == null) return;
       switch (name) {
         case '_value':
-        // Reinvoke change event for components tracking 'value';
+          // Reinvoke change event for components tracking 'value';
           this.idlChangedCallback('value', oldValue, newValue);
           break;
         default:
@@ -159,8 +156,12 @@ export function FormAssociatedMixin(Base) {
      * @param {CustomEvent<[string, string]>} event
      * @return {void}
      */
-    formIPCEvent(event) {}
+    // eslint-disable-next-line class-methods-use-this
+    formIPCEvent(event) {
+      // virtual
+    }
 
+    // New lifecycle callback. This is called when ‘disabled’ attribute of
     // this element or an ancestor <fieldset> is updated.
     formDisabledCallback(disabled) {
     // console.log('formDisabledCallback', disabled, this);
@@ -168,9 +169,9 @@ export function FormAssociatedMixin(Base) {
     // this.disabled = disabled;
     }
 
-    // New lifecycle callback. This is called when ‘disabled’ attribute of
     formResetCallback() {
-      this.value = this.getAttribute('value') || '';
+      this._dirtyValue = false;
+      this.checkValidity();
     }
 
     /**

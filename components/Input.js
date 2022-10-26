@@ -176,6 +176,14 @@ export default class Input extends Control {
     }
   }
 
+  formResetCallback() {
+    this.#input.value = this.defaultValue;
+    this.#input.checked = this.checked;
+    this._value = this.#input.value;
+    this._checked = this.#input.checked;
+    super.formResetCallback();
+  }
+
   /** @type {Ripple['idlChangedCallback']} */
   idlChangedCallback(name, oldValue, newValue) {
     super.idlChangedCallback(name, oldValue, newValue);

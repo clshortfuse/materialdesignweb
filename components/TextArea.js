@@ -117,6 +117,12 @@ export default class TextArea extends TextFieldMixin(Control) {
     return this.rows;
   }
 
+  formResetCallback() {
+    this.#textarea.value = this.defaultValue;
+    this._value = this.#textarea.value;
+    super.formResetCallback();
+  }
+
   /**
    * @param {string} name
    * @param {string?} oldValue

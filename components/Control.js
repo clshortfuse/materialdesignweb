@@ -132,6 +132,7 @@ export default class Control extends FormAssociatedMixin(Ripple) {
     }
   }
 
+  /** @return {typeof Control} */
   get static() { return /** @type {typeof Control} */ (super.static); }
 
   get form() { return this.elementInternals.form; }
@@ -186,7 +187,6 @@ export default class Control extends FormAssociatedMixin(Ripple) {
   }
 
   get labels() { return this.elementInternals.labels; }
-
 
   connectedCallback() {
     super.connectedCallback();
