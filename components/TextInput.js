@@ -5,5 +5,5 @@ import { TextFieldMixin } from './TextFieldMixin.js';
 export default class TextInput extends TextFieldMixin(Input) {
   static { this.autoRegister(); }
 
-  static elementName = 'mdw-textinput';
+  static elementName = 'mdw-text-input';
 }

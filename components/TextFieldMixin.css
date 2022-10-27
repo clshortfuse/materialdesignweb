@@ -46,7 +46,7 @@
   --control__padding-bottom: 4px;
   --control__margin-bottom: 4px;
 
-  --mdw-textinput__dense: 12px;
+  --mdw-text-field__dense: 12px;
 
   --container-color: rgb(var(--mdw-bg));
   --inline-color: rgb(var(--mdw-color__on-surface-variant));
@@ -444,8 +444,8 @@ mdw-icon {
 :host([outlined][dense]) {
   --control__margin-top: calc(var(--mdw-typescale__body-small__line-height) / 2);
   --control__margin-bottom: 0px;
-  --control__padding-top: calc(var(--mdw-textinput__dense) - calc(var(--mdw-typescale__body-small__line-height) / 2));
-  --control__padding-bottom: var(--mdw-textinput__dense);
+  --control__padding-top: calc(var(--mdw-text-field__dense) - calc(var(--mdw-typescale__body-small__line-height) / 2));
+  --control__padding-bottom: var(--mdw-text-field__dense);
 }
 
 :host([outlined]:is(:focus, [populated])) {
