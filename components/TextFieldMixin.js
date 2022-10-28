@@ -23,10 +23,10 @@ export function TextFieldMixin(Base) {
           <span _if={inputPrefix} class=inline id=prefix aria-hidden=true>{inputPrefix}</span>
           <span _if={inputSuffix} class=inline id=suffix aria-hidden=true>{inputSuffix}</span>
           <mdw-icon _if={trailingIcon} id=trailing-icon aria-hidden=true>{trailingIcon}</mdw-icon>
-          <div id=indicator></div>
+          <div _if={filled} id=indicator></div>
           <div id=outline>
             <div id=gap>
-              <div id=label-text>{label}</div>
+              <div _if={label} id=label-text>{label}</div>
             </div>
           </div>
         `,
@@ -76,6 +76,8 @@ export function TextFieldMixin(Base) {
   TextField.prototype.type = TextField.idl('type', { empty: 'text' });
   TextField.prototype.icon = TextField.idl('icon');
   TextField.prototype.label = TextField.idl('label');
+  TextField.prototype.filled = TextField.idl('filled', 'boolean');
+  TextField.prototype.outlined = TextField.idl('outlined', 'boolean');
   TextField.prototype.inputPrefix = TextField.idl('inputPrefix');
   TextField.prototype.inputSuffix = TextField.idl('inputSuffix');
   TextField.prototype.trailingIcon = TextField.idl('trailingIcon');

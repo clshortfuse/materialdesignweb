@@ -1,14 +1,28 @@
 /* https://m3.material.io/components/text-fields/specs */
 
 :host {
-  --control__margin-top: calc(8px + var(--mdw-typescale__body-small__line-height));
-  --control__padding-top: 0px;
-  --control__padding-bottom: 7px;
-  --control__margin-bottom: 1px;
-  --expected-height: calc((var(--control__margin-top) + var(--control__padding-top) + var(--mdw-type__line-height) + var(--control__padding-bottom) + var(--control__margin-bottom)));
   display: grid;
   grid-auto-flow: row;
   grid-template-rows: minmax(0, 100%);
+}
+
+:host(:is([filled][label])) {
+  --control__margin-top: calc((var(--mdw-text-field__ratio) * 8px) + var(--mdw-typescale__body-small__line-height));
+  --control__padding-top: 0px;
+  --control__padding-bottom: calc((var(--mdw-text-field__ratio) * 8px) - 1px);
+  --control__margin-bottom: 1px;
+}
+
+label {
+  --max-rows: none;
+  --line-height: var(--mdw-typescale__body-large__line-height);
+  --expected-height: calc((var(--control__margin-top) + var(--control__padding-top) + var(--line-height) + var(--control__padding-bottom) + var(--control__margin-bottom)));
+}
+
+@supports({width: 1lh}) {
+  label {
+    --line-height: 1lh;
+  }
 }
 
 slot {
@@ -36,6 +50,10 @@ slot {
   /* !important to override user-agent resize */
   padding-inline-start: var(--padding-inline-start);
   padding-inline-end: var(--padding-inline-end);
+}
+
+:host([maxrows]) #control {
+  max-block-size: calc((var(--max-rows) * var(--line-height)) + (var(--control__margin-top) + var(--control__padding-top) + var(--control__padding-bottom) + var(--control__margin-bottom)));
 }
 
 :host(:is([icon], [input-prefix])) #control {

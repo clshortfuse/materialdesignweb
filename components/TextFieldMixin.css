@@ -24,14 +24,8 @@
 
 :host {
   --mdw-shape__size: var(--mdw-shape__extra-small);
-  --mdw-shape__size__bottom-start-size: 0;
-  --mdw-shape__size__bottom-end-size: 0;
-
-  --mdw-bg: var(--mdw-color__surface-variant);
-  --mdw-ink: var(--mdw-color__primary);
-
-  font: var(--mdw-typescale__body-large__font);
-  letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
+  --mdw-shape__size__bottom-start-size: var(--mdw-shape__size);
+  --mdw-shape__size__bottom-end-size: var(--mdw-shape__size);
 
   --border-width: 1px;
   --border-width__focused: 2px;
@@ -41,17 +35,18 @@
   --icon__inline-footprint-end: 0px;
   --label__inline-start: calc(var(--padding-inline-start) + var(--icon__inline-footprint-start));
   --label__inline-end: calc(var(--padding-inline-start) + var(--icon__inline-footprint-end));
-  --control__margin-top: calc(8px + var(--mdw-typescale__body-small__line-height));
-  --control__padding-top: 0px;
-  --control__padding-bottom: 4px;
-  --control__margin-bottom: 4px;
 
-  --mdw-text-field__dense: 12px;
+  --control__margin-top: calc(var(--mdw-typescale__body-small__line-height) / 2);
+  --control__padding-top: calc((var(--mdw-text-field__ratio) * 16px) - calc(var(--mdw-typescale__body-small__line-height) / 2));
+  --control__padding-bottom: calc(var(--mdw-text-field__ratio) * 16px);
+  --control__margin-bottom: 0px;
+  --mdw-text-field__ratio: 1; /* Density */
 
-  --container-color: rgb(var(--mdw-bg));
+  --container-color: transparent;
   --inline-color: rgb(var(--mdw-color__on-surface-variant));
   --outline-color: rgb(var(--mdw-color__outline));
   --label-color: rgb(var(--mdw-color__on-surface-variant));
+  --descriptor-opacity: 0.5;
 
   display: grid;
   grid-auto-columns: 1fr;
@@ -63,6 +58,18 @@
 
   /* State layer */
   color: rgb(var(--mdw-color__on-surface));
+
+  font: var(--mdw-typescale__body-large__font);
+  letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
+}
+
+:host(:is([filled],[color])) {
+  --container-color: rgb(var(--mdw-bg));
+}
+
+:host(:where([filled],[outlined])) {
+  --mdw-bg: var(--mdw-color__surface-variant);
+  --mdw-ink: var(--mdw-color__primary);
 }
 
 :host([icon]) {
@@ -98,7 +105,7 @@ label {
 
   display: flex;
 
-  align-items: flex-start;
+  align-items: center;
 
   /* block-size: 56px; */
   padding-inline-start: var(--padding-inline-start);
@@ -125,13 +132,17 @@ label {
 #prefix,
 #suffix,
 #control::placeholder {
-  opacity: 0;
+  opacity: var(--descriptor-opacity);
 
   color: var(--inline-color);
 
   transition: inherit;
   transition-property: opacity;
   will-change: opacity;
+}
+
+:host([label]) {
+  --descriptor-opacity: 0;
 }
 
 #control {
@@ -168,6 +179,9 @@ label {
   line-height: inherit;
   font-family: inherit;
   letter-spacing: inherit;
+
+  transition: inherit;
+  transition-property: color;
 }
 
 #suffix,
@@ -246,6 +260,8 @@ mdw-icon {
   display: block;
   overflow-x: clip;
   overflow-y: hidden;
+
+  padding: 0;
   /* FireFox bug */
 
   opacity: 1;
@@ -257,15 +273,16 @@ mdw-icon {
   white-space: nowrap;
 
   transition: inherit;
-  transition-property: font-size, transform;
+  transition-property: padding, font-size, transform;
   /*Expand*/
 
-  will-change: font-size, transform;
+  will-change: padding, font-size, transform;
 }
 
 :host([outlined]) {
   --label__inline-start: 0;
   --label__inline-end: 0;
+  --container-color: transparent;
 }
 
 :host(:is(:focus, [populated])) :is(#prefix, #suffix) {
@@ -281,7 +298,7 @@ mdw-icon {
 }
 
 :host(:is(:focus, [populated])) #label-text {
-  transform: translateY(8px);
+  transform: translateY(calc(var(--mdw-text-field__ratio) * 8px));
 
   font: var(--mdw-typescale__body-small__font);
   /* Not spec: Should only use font-size and line-height */
@@ -295,18 +312,23 @@ mdw-icon {
 }
 
 :host([outlined]) #outline {
-  --psuedo-content: '';
   position: absolute;
   inset: 0;
 
   display: flex;
 
-  border: solid var(--border-width) transparent;
+  border: solid var(--border-width) var(--outline-color);
 
   pointer-events: none;
 
+  border-radius: var(--mdw-shape__size);
+}
+
+:host([outlined][label]) #outline {
+  --psuedo-content: '';
+  border-color: transparent;
   border-block-end-color: var(--outline-color);
-  border-radius: inherit;
+  border-radius: min(12px, var(--mdw-shape__size));
 }
 
 #outline::before,
@@ -381,8 +403,8 @@ mdw-icon {
   --gap-transform: scaleX(0);
 }
 
-:host([outlined]) label {
-  align-items: center;
+:host(:is([filled][label])) label {
+  align-items: flex-start;
 }
 
 :host([outlined]) #gap {
@@ -391,8 +413,8 @@ mdw-icon {
   box-sizing: border-box;
   max-inline-size: calc(100% - 24px);
   margin-block: calc(var(--border-width) * -1);
-  padding-inline-start: calc(4px + var(--icon__inline-footprint-start, 0px));
-  padding-inline-end: calc(4px + var(--icon__inline-footprint-end, 0px));
+  padding-inline-start: var(--icon__inline-footprint-start, 0px);
+  padding-inline-end: var(--icon__inline-footprint-end, 0px);
 
   /* Padding instead of transform because max content width changes based on font-size and icon */
   transition-property: padding;
@@ -403,13 +425,24 @@ mdw-icon {
   flex: none;
 }
 
-:host([outlined]) {
-  --mdw-shape__size__bottom-start-size: var(--mdw-shape__size);
-  --mdw-shape__size__bottom-end-size: var(--mdw-shape__size);
-  --control__margin-top: calc(var(--mdw-typescale__body-small__line-height) / 2);
-  --control__margin-bottom: 0px;
-  --control__padding-top: calc(16px - calc(var(--mdw-typescale__body-small__line-height) / 2));
-  --control__padding-bottom: 16px;
+:host([filled]) {
+  --mdw-shape__size__bottom-start-size: 0;
+  --mdw-shape__size__bottom-end-size: 0;
+}
+
+:host([dense]) {
+  --mdw-text-field__ratio: 0.75;
+}
+
+:host([filled][dense]) {
+  --mdw-text-field__ratio: 0.5;
+}
+
+:host(:is([filled][label])) {
+  --control__margin-top: calc((var(--mdw-text-field__ratio) * 8px) + var(--mdw-typescale__body-small__line-height));
+  --control__padding-top: 0px;
+  --control__padding-bottom: calc(var(--mdw-text-field__ratio) * 4px);
+  --control__margin-bottom: calc(var(--mdw-text-field__ratio) * 4px);
 }
 
 :host([outlined]) #label-text {
@@ -418,10 +451,6 @@ mdw-icon {
 
 :host([outlined]) #overlay {
   display: none;
-}
-
-:host([outlined]) {
-  --container-color: transparent;
 }
 
 #outline {
@@ -441,18 +470,13 @@ mdw-icon {
   /* background-color: rgba(0,255,0,.20); */
 }
 
-:host([outlined][dense]) {
-  --control__margin-top: calc(var(--mdw-typescale__body-small__line-height) / 2);
-  --control__margin-bottom: 0px;
-  --control__padding-top: calc(var(--mdw-text-field__dense) - calc(var(--mdw-typescale__body-small__line-height) / 2));
-  --control__padding-bottom: var(--mdw-text-field__dense);
-}
-
 :host([outlined]:is(:focus, [populated])) {
   --icon__inline-footprint-start: 0px;
 }
 
 :host([outlined]:is(:focus, [populated])) #label-text {
+  padding-inline: 4px;
+
   transform: translateY(-50%);
 }
 

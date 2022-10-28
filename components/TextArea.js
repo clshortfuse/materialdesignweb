@@ -20,6 +20,8 @@ export default class TextArea extends TextFieldMixin(Control) {
     return template;
   }
 
+  static supportsCSSLineHeightUnit = CSS.supports('height', '1lh');
+
   static controlTagName = 'textarea';
 
   static controlVoidElement = false;
@@ -45,6 +47,7 @@ export default class TextArea extends TextFieldMixin(Control) {
    */
   static onControlInput(event) {
     super.onControlInput(event);
+    if (TextArea.supportsCSSLineHeightUnit) return;
     /** @type {{host:TextArea}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
     // if (!host.autosize) return;
@@ -80,10 +83,14 @@ export default class TextArea extends TextFieldMixin(Control) {
   resize() {
     const textarea = this.#textarea;
     textarea.style.removeProperty('height');
-    const { lineHeight } = window.getComputedStyle(textarea);
-    this._maxHeight = this.maxRows
-      ? /* css */` calc((${this.maxRows} * ${lineHeight}) + (var(--control__margin-top) + var(--control__padding-top) + var(--control__padding-bottom) + var(--control__margin-bottom)))`
-      : null;
+
+    // if (this.placeholder) textarea.removeAttribute('placeholder');
+
+    if (!TextArea.supportsCSSLineHeightUnit) {
+      const { lineHeight } = window.getComputedStyle(textarea);
+      this._lineHeight = lineHeight;
+    }
+
     if (this.minRows > 1 && textarea.rows < this.minRows) {
       textarea.rows = this.minRows;
     } else if (this.maxRows && textarea.rows > this.maxRows) {
@@ -116,6 +123,7 @@ export default class TextArea extends TextFieldMixin(Control) {
       textarea.scrollTop = textarea.scrollHeight;
     }
     this.rows = textarea.rows;
+    // if (this.placeholder) textarea.setAttribute('placeholder', this.placeholder);
     return this.rows;
   }
 
@@ -140,11 +148,17 @@ export default class TextArea extends TextFieldMixin(Control) {
         this._value = this.#textarea.value;
         this.resize();
         break;
+      case '_lineHeight':
+        this.refs.label.style.setProperty('--line-height', newValue);
+        break;
       case '_maxHeight':
         this.#textarea.style.setProperty('max-height', newValue);
         break;
-      case 'minrows':
-      case 'maxrows':
+      case 'maxRows':
+        this.refs.label.style.setProperty('--max-rows', newValue || 'none');
+        // fallthrough
+      case 'minRows':
+      case 'rows':
         this.resize();
         break;
       default:
@@ -199,6 +213,7 @@ TextArea.prototype._maxHeight = TextArea.idl('_maxHeight', { type: 'string' });
 TextArea.prototype.fixed = TextArea.idl('fixed', { type: 'boolean' });
 TextArea.prototype.minRows = TextArea.idl('minRows', { attr: 'minrows', type: 'integer', empty: 0 });
 TextArea.prototype.maxRows = TextArea.idl('maxRows', { attr: 'maxrows', type: 'integer', empty: 0 });
+TextArea.prototype._lineHeight = TextArea.idl('_lineHeight');
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element
 
