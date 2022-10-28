@@ -20,16 +20,16 @@
   --startA: min(0.5, var(--previous));
   --endA: min(0.5, var(--value));
   --travelA: max(
-    calc(var(--startA) - var(--endA)),
-    calc(var(--endA) - var(--startA))
-  );
+      calc(var(--startA) - var(--endA)),
+      calc(var(--endA) - var(--startA))
+    );
   --delayA: max(0, calc(var(--previous) - 0.5));
   --startB: max(0, calc(var(--previous) - 0.5));
   --endB: max(0, calc(var(--value) - 0.5));
   --travelB: max(
-    calc(var(--startB) - var(--endB)),
-    calc(var(--endB) - var(--startB))
-  );
+      calc(var(--startB) - var(--endB)),
+      calc(var(--endB) - var(--startB))
+    );
   --delayB: max(0, 0.5 - calc(var(--previous)));
 
   position: absolute;

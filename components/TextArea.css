@@ -53,7 +53,12 @@ slot {
 }
 
 :host([maxrows]) #control {
-  max-block-size: calc((var(--max-rows) * var(--line-height)) + (var(--control__margin-top) + var(--control__padding-top) + var(--control__padding-bottom) + var(--control__margin-bottom)));
+  max-block-size: calc((var(--max-rows) * var(--line-height))
+    + var(--control__margin-top)
+    + var(--control__padding-top)
+    + var(--control__padding-bottom)
+    + var(--control__margin-bottom)
+  );
 }
 
 :host(:is([icon], [input-prefix])) #control {

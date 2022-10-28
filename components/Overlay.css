@@ -1,6 +1,10 @@
 /* https://m3.material.io/foundations/interaction-states */
 
 :host {
+  --mdw-overlay__hover-opacity: 0.08;
+  --mdw-overlay__focus-opacity: 0.12;
+  --mdw-overlay__pressed-opacity: 0.12;
+  --mdw-overlay__dragged-opacity: 0.12;
   position: relative;
 
   outline: none;
@@ -12,13 +16,6 @@
   border: 0;
 }
 
-:host {
-  --mdw-overlay__hover-opacity: 0.08;
-  --mdw-overlay__focus-opacity: 0.12;
-  --mdw-overlay__pressed-opacity: 0.12;
-  --mdw-overlay__dragged-opacity: 0.12;
-}
-
 #overlay {
   position: absolute;
   inset: 0;
@@ -26,11 +23,11 @@
   pointer-events: none;
 
   opacity: calc(
-    var(--mdw-overlay__hover-opacity) +
-    var(--mdw-overlay__focus-opacity) +
-    var(--mdw-overlay__pressed-opacity) +
-    var(--mdw-overlay__dragged-opacity)
-  );
+      var(--mdw-overlay__hover-opacity) +
+      var(--mdw-overlay__focus-opacity) +
+      var(--mdw-overlay__pressed-opacity) +
+      var(--mdw-overlay__dragged-opacity)
+    );
   /* opacity handled by theme engine */
   background-color: currentColor;
   border-radius: inherit;

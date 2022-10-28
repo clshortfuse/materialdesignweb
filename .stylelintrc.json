@@ -68,7 +68,15 @@
     "selector-pseudo-class-parentheses-space-inside": "never",
     "selector-type-case": "lower",
     "selector-list-comma-space-before": "never",
-    "indentation": 2,
+    "indentation": [
+      2,
+      {
+        "baseIndentLevel": 1,
+        "indentInsideParens": "once-at-root-twice-in-block",
+        "indentClosingBrace": false
+      }
+    ],
+    "no-duplicate-selectors": true,
     "max-empty-lines": 1,
     "selector-max-compound-selectors": [
       3,
@@ -433,10 +441,10 @@
           "background-repeat",
           "background-size",
           "background-attachment",
+          "border-color",
           "border-block-color",
           "border-block-start-color",
           "border-block-end-color",
-          "border-color",
           "border-top-color",
           "border-right-color",
           "border-bottom-color",

@@ -35,12 +35,6 @@ label {
   color: rgb(var(--mdw-bg));
 }
 
-:host([disabled]) label {
-  cursor: not-allowed;
-
-  opacity: 0.38;
-}
-
 #control {
   inset-block: -18px;
 
@@ -89,8 +83,10 @@ label {
   box-sizing: content-box;
   block-size: 10px;
   inline-size: 10px;
-  border: solid 5px rgba(var(--mdw-bg),
-  calc(var(--mdw-slider__hover-opacity) + var(--mdw-slider__focus-opacity) + var(--mdw-slider__pressed-opacity)));
+  border: solid 5px rgba(var(--mdw-bg), calc(
+      var(--mdw-slider__hover-opacity)
+      + var(--mdw-slider__focus-opacity)
+      + var(--mdw-slider__pressed-opacity)));
 
   -webkit-appearance: none;
   cursor: var(--mdw-slider__cursor);
@@ -119,8 +115,10 @@ label {
   box-sizing: content-box;
   block-size: 10px;
   inline-size: 10px;
-  border: solid 5px rgba(var(--mdw-bg),
-  calc(var(--mdw-slider__hover-opacity) + var(--mdw-slider__focus-opacity) + var(--mdw-slider__pressed-opacity)));
+  border: solid 5px rgba(var(--mdw-bg), calc(
+      var(--mdw-slider__hover-opacity)
+      + var(--mdw-slider__focus-opacity)
+      + var(--mdw-slider__pressed-opacity)));
 
   appearance: none;
   cursor: var(--mdw-slider__cursor);
@@ -298,6 +296,8 @@ label {
 }
 
 :host([disabled]) label {
+  cursor: not-allowed;
+
   opacity: 1;
 }
 

@@ -246,6 +246,12 @@ mdw-icon {
   will-change: transform;
 }
 
+#outline {
+  border-color: rgb(var(--mdw-color__outline));
+
+  transition: inherit;
+}
+
 :host(:focus) #indicator {
   transform: scaleY(1);
 
@@ -355,8 +361,9 @@ mdw-icon {
 }
 
 #outline::after {
+  min-inline-size: 12px;
+  flex: 1;
   margin-inline-start: 0;
-
   border-start-end-radius: inherit;
   border-end-end-radius: inherit;
   border-inline-start: none;
@@ -453,21 +460,8 @@ mdw-icon {
   display: none;
 }
 
-#outline {
-  border-color: rgb(var(--mdw-color__outline));
-
-  transition: inherit;
-}
-
 #outline:is(:hover, :focus) {
   border-color: currentColor;
-}
-
-#outline::after {
-  min-inline-size: 12px;
-  flex: 1;
-
-  /* background-color: rgba(0,255,0,.20); */
 }
 
 :host([outlined]:is(:focus, [populated])) {

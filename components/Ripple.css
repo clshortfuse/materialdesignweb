@@ -42,6 +42,8 @@
   --mdw-ripple-standard-easing: var(--mdw-motion-standard-easing, cubic-bezier(0.4, 0.0, 0.2, 1));
   --mdw-ripple-deceleration-easing: var(--mdw-motion-deceleration-easing, cubic-bezier(0.0, 0.0, 0.2, 1));
   --mdw-ripple__visibility: visible;
+  -webkit-tap-highlight-color: transparent;
+
 }
 
 :host(:not([mdw-ripple="none"])) {
@@ -51,10 +53,6 @@
 
 :host([mdw-ripple="none"]) {
   --mdw-ripple__visibility: hidden;
-}
-
-:host {
-  -webkit-tap-highlight-color: transparent;
 }
 
 #ripple {
