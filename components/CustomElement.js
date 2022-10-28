@@ -411,9 +411,15 @@ export default class CustomElement extends HTMLElement {
       }
     }
 
-    // Booleans are not nullable by default
-    // Auto set nullable if empty value declared
-    const nullable = options.nullable ?? (parsedType === 'boolean' ? false : empty == null);
+    // if defined ? value
+    // else if boolean ? false
+    // else if onNullish ? false
+    // else if empty == null
+    const nullable = options.nullable ?? (
+      parsedType === 'boolean'
+        ? false
+        : (onNullish ? false : empty == null)
+    );
     /** @type {any} */
     let parsedEmpty = empty ?? null;
     if (!nullable && parsedEmpty === null) {
@@ -481,7 +487,11 @@ export default class CustomElement extends HTMLElement {
         if (value === CustomElement.IDL_INIT) return;
         // console.log('set:', this.constructor.name, name, value);
         const previousValue = this[name];
-        const newValue = (!options.nullable && value == null) ? options.empty : value;
+        let newValue = value;
+        if (!options.nullable && value == null) {
+          newValue = options.onNullish ? options.onNullish(value) : options.empty;
+        }
+
         if (previousValue == null && newValue == null) return;
         // Object.is()?
         if (previousValue === newValue) return;
@@ -496,13 +506,8 @@ export default class CustomElement extends HTMLElement {
           case 'integer':
           case 'float':
             if (newValue == null) {
-              if (options.onNullish) {
-                parsedValue = options.onNullish(newValue);
-                attrValue = String(parsedValue);
-              } else {
-                parsedValue = null;
-                attrValue = null;
-              }
+              parsedValue = null;
+              attrValue = null;
             } else {
               if (typeof newValue !== 'number') throw new TypeError('Value must be a number');
               parsedValue = newValue;
@@ -512,13 +517,8 @@ export default class CustomElement extends HTMLElement {
           // case 'string':
           default:
             if (newValue == null) {
-              if (options.onNullish) {
-                parsedValue = options.onNullish(newValue);
-                attrValue = parsedValue;
-              } else {
-                parsedValue = null;
-                attrValue = null;
-              }
+              parsedValue = null;
+              attrValue = null;
             } else {
               parsedValue = String(newValue);
               attrValue = parsedValue;
