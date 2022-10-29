@@ -53,6 +53,10 @@
   will-change: var(--mdw-container__will-change);
 }
 
+:host([shape-style="none"]) {
+  --mdw-shape__size: 0;
+}
+
 :host([shape-style="extra-small"]) {
   --mdw-shape__size: var(--mdw-shape__extra-small);
 }
@@ -110,7 +114,7 @@
   border-radius: inherit;
 
   transition-delay: 1ms;
-  transition-duration: 100ms;
+  transition-duration: 200ms;
   transition-property: opacity, color, background-color;
 }
 
