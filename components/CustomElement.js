@@ -157,6 +157,8 @@ export default class CustomElement extends HTMLElement {
 
   static defined = false;
 
+  static autoRegistration = true;
+
   /** @type {Document} */
   static _inactiveDocument;
 
@@ -193,11 +195,8 @@ export default class CustomElement extends HTMLElement {
   /** @type {HTMLTemplater<this>} */
   #html;
 
-  /** @type {Map<string,WeakRef<HTMLElement>>} */
-  #weakRefs = new Map();
-
   /** @type {Map<string,HTMLElement>} */
-  #hardRefs = new Map();
+  #shadowRefs = new Map();
 
   /** @type {Record<string, HTMLElement>}} */
   refs = new Proxy({}, {
@@ -207,36 +206,56 @@ export default class CustomElement extends HTMLElement {
      * @return {HTMLElement}
      */
     get: (target, id) => {
-      let element = this.#weakRefs.get(id)?.deref();
-      if (!element) {
-        element = this.shadowRoot.getElementById(id);
-        if (!element) {
-          const template = this.getFullComposition().getElementById(id);
-          if (template) {
-            element = /** @type {HTMLElement} */ (template.cloneNode(true));
-            // console.log(this.static.name, '- Recreated element from template:', id);
-            this.#hardRefs.set(id, element);
-          }
-        }
-        if (element) {
-          this.#weakRefs.set(id, new WeakRef(element));
-        }
+      let element = this.#shadowRefs.get(id);
+      if (element) return element;
+      if (element === null) return null; // Cached null response
+
+      // Undefined
+
+      element = this.shadowRoot.getElementById(id);
+      if (element) {
+        this.#shadowRefs.set(id, element);
+        return element;
       }
+
+      const fullComposition = this.getFullComposition();
+      const template = fullComposition.getElementById(id);
+      if (!template) {
+        // Cache not in full composition
+        this.#shadowRefs.set(id, null);
+        return null;
+      }
+      let parent = template;
+      let cloneTarget = template;
+
+      // Iterate backwards in template until used reference is found
+      while ((parent = parent.parentElement) != null) {
+        // Parent already in DOM and referenced
+        if (this.#shadowRefs.has(parent.id)) break;
+
+        // Parent already in DOM. Cache reference
+        const liveElement = this.shadowRoot.getElementById(parent.id);
+        if (liveElement) {
+          this.#shadowRefs.set(liveElement.id, liveElement);
+          break;
+        }
+
+        cloneTarget = parent;
+      }
+
+      const clone = cloneTarget.cloneNode(true);
+      const iterator = document.createTreeWalker(clone, NodeFilter.SHOW_ELEMENT);
+
+      let node = /** @type {HTMLElement} */ (clone);
+      do {
+        const nodeId = node.id;
+        if (!nodeId) continue;
+        if (!element && (nodeId === id)) {
+          element = node;
+        }
+        this.#shadowRefs.set(node.id, node);
+      } while ((node = iterator.nextNode()));
       return element;
-    },
-    /**
-     * @param {any} target
-     * @param {string} p
-     * @param {HTMLElement} value
-     * @return {boolean}
-     */
-    set: (target, p, value) => {
-      if (value) {
-        this.#weakRefs.set(p, new WeakRef(value));
-      } else {
-        this.#weakRefs.delete(p);
-      }
-      return true;
     },
   });
 
@@ -256,7 +275,11 @@ export default class CustomElement extends HTMLElement {
   }
 
   static autoRegister() {
-    queueMicrotask(() => this.register());
+    queueMicrotask(() => {
+      if (this.autoRegistration) {
+        this.register();
+      }
+    });
   }
 
   static generateFragment() {
@@ -644,7 +667,6 @@ export default class CustomElement extends HTMLElement {
             }
           } else if (ref.isConnected) {
             // console.log('Removing from DOM', ref);
-            this.#hardRefs.set(ref.id, ref);
             const commentPlaceholder = new Comment(id);
             ref.before(commentPlaceholder);
             ref.remove();
