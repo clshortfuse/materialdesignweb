@@ -68,22 +68,39 @@ export default class TopAppBar extends Container {
     switch (name) {
       case '_scrollPosition':
         this.raised = (newValue > 0);
+
         if (!this.hideOnScroll) return;
 
-        this._onScreen = (newValue >= this._translateY && newValue <= this._translateY + this.scrollHeight);
-        this._scrollDirection = newValue > oldValue ? 'down' : 'up';
+        // TODO: Watch for scroll stop and hide or reveal appbar if partially visible
 
         if (newValue <= 0) {
+          // Set at rest (top of parent, but allow overscroll)
+          this._cssPosition = 'static';
           this._translateY = 0;
         } else if (newValue < this._translateY) {
-          // TODO: Consider position sticky instead?
-          this._translateY = newValue;
+          // Align appbar.top with scroll position (top of screen)
+          this._cssPosition = 'sticky';
+          this._translateY = 0;
         }
+        this._onScreen = this._cssPosition === 'sticky'
+         || (newValue >= this._translateY && newValue <= this._translateY + this.scrollHeight);
+        this._scrollDirection = newValue > oldValue ? 'down' : 'up';
+        break;
+      case '_cssPosition':
+        this.style.setProperty('position', newValue);
         break;
       case '_scrollDirection':
-        if (!this._onScreen && newValue === 'up') {
-          this._translateY = this._scrollPosition - this.scrollHeight;
+        if (newValue === 'down') {
+          if (this._cssPosition !== 'sticky') return;
+          // Was sticky, switch to static and let appbar scroll away
+          this._cssPosition = 'static';
+          this._translateY = this._scrollPosition;
+          return;
         }
+        if (this._onScreen) return;
+        // Align appbar.bottom with scroll position (top of screen)
+        this._translateY = this._scrollPosition - this.scrollHeight;
+
         break;
       case '_translateY':
         if (this.#rafRequested) return;
@@ -139,7 +156,8 @@ TopAppBar.prototype.kbdNav = TopAppBar.idl('kbdNav', { empty: 'arrow' });
 TopAppBar.prototype.headline = TopAppBar.idl('headline');
 TopAppBar.prototype.raised = TopAppBar.idl('raised', 'boolean');
 TopAppBar.prototype.hideOnScroll = TopAppBar.idl('hideOnScroll', 'boolean');
+TopAppBar.prototype._cssPosition = TopAppBar.idl('_cssPosition', { empty: 'static' });
 TopAppBar.prototype._scrollPosition = TopAppBar.idl('_scrollPosition', { type: 'float', empty: 0 });
-TopAppBar.prototype._scrollDirection = /** @type {'up'|'down'} */ (TopAppBar.idl('_scrollDirection', { type: 'string', empty: 'down' }));
-TopAppBar.prototype._onScreen = TopAppBar.idl('_onScreen', { type: 'boolean', default: true });
+TopAppBar.prototype._scrollDirection = /** @type {'up'|'down'} */ (TopAppBar.idl('_scrollDirection', { empty: 'down' }));
+TopAppBar.prototype._onScreen = TopAppBar.idl('_onScreen', { default: true });
 TopAppBar.prototype._translateY = TopAppBar.idl('_translateY', { type: 'float', empty: 0 });
