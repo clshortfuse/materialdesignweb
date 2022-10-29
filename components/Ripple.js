@@ -112,7 +112,7 @@ export default class Ripple extends Overlay {
     let height;
     const ripple = this.#ripple;
     const rippleInner = this.#rippleInner;
-    if (!ripple || !rippleInner) return;
+    if (!rippleInner || !rippleInner.isConnected) return;
     const { clientWidth, clientHeight } = ripple;
 
     if (x == null || y == null) {
@@ -142,7 +142,7 @@ export default class Ripple extends Overlay {
    */
   drawRipple(initiator, x, y) {
     const rippleInner = this.#rippleInner;
-    if (!rippleInner) return;
+    if (!rippleInner || !rippleInner.isConnected) return;
     const currentInitiator = rippleInner.getAttribute('mdw-fade-in');
 
     // Abort ripple if different initiator
@@ -167,7 +167,7 @@ export default class Ripple extends Overlay {
   /** @return {void} */
   clearRipple() {
     const rippleInner = this.#rippleInner;
-    if (!rippleInner) return;
+    if (!rippleInner || !rippleInner.isConnected) return;
     if (!rippleInner.hasAttribute('mdw-fade-in')) return;
     if (!rippleInner.hasAttribute('mdw-fade-in-complete')) return;
     rippleInner.removeAttribute('mdw-fade-in');
