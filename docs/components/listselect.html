@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Material Design Web</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link rel=preconnect href="https://fonts.googleapis.com" />
+  <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
+  <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
+  <link rel=stylesheet
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
+  <link rel="stylesheet" href="../theme.css" />
+  <link rel="stylesheet" href="../demo.css" />
+</head>
+
+<body>
+
+  <main>
+    <demo-section id=list-select>
+      <h1 slot="heading">Selectable List</h1>
+      <demo-section>
+        <h2 slot=heading>Multi-selection (checkbox)</h2>
+        <demo-flex gap12 wrap>
+          <mdw-list-select color="surface" style="width:100%" multiple>
+            <mdw-list-option value="1" checkbox supporting="Listbox supports keyboard navigation">Option 1
+            </mdw-list-option>
+            <mdw-list-option value="2" checkbox disabled supporting="Disabled items are not skipped">Disabled
+            </mdw-list-option>
+            <mdw-list-option value="3" checkbox>Option3</mdw-list-option>
+            <mdw-list-option value="4" checkbox supporting="Allows multiple selections">Option4</mdw-list-option>
+          </mdw-list-select>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Single-selection (radio)</h2>
+        <demo-flex gap12 wrap>
+          <mdw-list-select color="surface" style="width:100%" required>
+            <mdw-list-option value="1" radio supporting="Listbox supports keyboard navigation">Option 1
+            </mdw-list-option>
+            <mdw-list-option value="2" radio disabled supporting="Disabled items are not skipped">Disabled
+            </mdw-list-option>
+            <mdw-list-option value="3" radio>Option3</mdw-list-option>
+            <mdw-list-option value="4" radio supporting="[required] means deselecting not allowed">Option4</mdw-list-option>
+          </mdw-list-select>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Single-selection (checkbox)</h2>
+        <demo-flex gap12 wrap>
+          <mdw-list-select color="surface" style="width:100%">
+            <mdw-list-option value="1" checkbox supporting="Listbox supports keyboard navigation">Option 1
+            </mdw-list-option>
+            <mdw-list-option value="2" checkbox disabled supporting="Disabled items are not skipped">Disabled
+            </mdw-list-option>
+            <mdw-list-option value="3" checkbox>Option3</mdw-list-option>
+            <mdw-list-option value="4" checkbox supporting="Only one check allowed, but can deselect">Option4</mdw-list-option>
+          </mdw-list-select>
+        </demo-flex>
+      </demo-section>
+    </demo-section>
+    <demo-dummy-text></demo-dummy-text>
+  </main>
+  <script type=module src="../demo.js"></script>
+  <script type=module src="../../index.min.js">
+  </script>
+
+</body>
+
+</html>

@@ -1,6 +1,8 @@
 import CustomElement from '../components/CustomElement.js';
 
 export default class DemoSection extends CustomElement {
+  static { this.autoRegister(); }
+
   static elementName = 'demo-button';
 
   static delegatesFocus = true;

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Material Design Web</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link rel=preconnect href="https://fonts.googleapis.com" />
+  <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
+  <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
+  <link rel=stylesheet
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
+  <link rel="stylesheet" href="../theme.css" />
+  <link rel="stylesheet" href="../demo.css" />
+</head>
+
+<body>
+  
+  <main>
+    <demo-section>
+      <h1 slot=heading>Chips</h1>
+      <demo-section>
+        <h2 slot=heading>Assist chips</h2>
+        <demo-section>
+          <h3 slot=heading>Default</h3>
+          <demo-flex align-center gap12 wrap style="padding:12px">
+            <mdw-chip icon=edit>Default</mdw-chip>
+            <mdw-chip icon=edit ink=tertiary>Tertiary</mdw-chip>
+            <mdw-chip icon=edit color=surface-primary>Surface Primary</mdw-chip>
+            <mdw-chip icon=edit class=mdw-custom ink=green>Custom ink</mdw-chip>
+            <mdw-chip icon src="../google-logo.svg">Assist chip</mdw-chip>
+            <mdw-chip icon=edit disabled>Disabled chip</mdw-chip>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading>Elevated</h3>
+          <demo-flex align-center gap12 wrap style="padding:12px">
+            <mdw-chip elevated icon=edit>Default</mdw-chip>
+            <mdw-chip elevated icon=edit ink=tertiary>Tertiary</mdw-chip>
+            <mdw-chip elevated icon=edit color=surface-primary>Surface Primary</mdw-chip>
+            <mdw-chip elevated class=mdw-custom ink=green icon=edit>Custom ink</mdw-chip>
+            <mdw-chip elevated icon src="../google-logo.svg">Assist chip</mdw-chip>
+            <mdw-chip elevated icon=edit disabled>Disabled chip</mdw-chip>
+            <mdw-chip elevated icon src="../google-logo.svg" disabled>Assist chip
+            </mdw-chip>
+          </demo-flex>
+        </demo-section>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Filter chips</h2>
+        <demo-section>
+          <h3 slot=heading>Text</h3>
+          <demo-flex align-center gap12 wrap>
+            <mdw-filter-chip>Default</mdw-filter-chip>
+            <mdw-filter-chip color=tertiary-container>Tertiary</mdw-filter-chip>
+            <mdw-filter-chip color=surface-primary>Surface Primary</mdw-filter-chip>
+            <mdw-filter-chip checked class=mdw-custom ink=green>Custom color</mdw-filter-chip>
+            <mdw-filter-chip checked>Assist chip</mdw-filter-chip>
+            <mdw-filter-chip checked disabled>Disabled chip</mdw-filter-chip>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading>Icons</h3>
+          <demo-flex align-center gap12 wrap>
+            <mdw-filter-chip checked icon="edit">Default</mdw-filter-chip>
+            <mdw-filter-chip checked icon="edit" color=tertiary-container>Tertiary</mdw-filter-chip>
+            <mdw-filter-chip checked icon="edit" color=surface-primary>Surface Primary</mdw-filter-chip>
+            <mdw-filter-chip checked icon="edit" class=mdw-custom color=green-container>Custom color</mdw-filter-chip>
+            <mdw-filter-chip checked icon="edit">Assist chip</mdw-filter-chip>
+            <mdw-filter-chip checked icon="edit" disabled>Disabled chip</mdw-filter-chip>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading>Radio</h3>
+          <form>
+            <demo-flex align-center gap12 wrap>
+              <mdw-filter-chip type=radio required name=filter-radio value=small>Small</mdw-filter-chip>
+              <mdw-filter-chip type=radio required name=filter-radio value=medium checked>Medium</mdw-filter-chip>
+              <mdw-filter-chip type=radio required name=filter-radio value=large>Large</mdw-filter-chip>
+              <mdw-filter-chip type=radio required name=filter-radio value=x-large>X-Large</mdw-filter-chip>
+            </demo-flex>
+          </form>
+        </demo-section>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Input chips</h2>
+        <demo-flex align-center gap12 wrap></demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Suggestion chips</h2>
+        <demo-section>
+          <h3 slot=heading>Default</h3>
+          <demo-flex align-center gap12 wrap>
+            <mdw-chip suggestion>Default</mdw-chip>
+            <mdw-chip suggestion ink=primary>Primary</mdw-chip>
+            <mdw-chip suggestion ink=tertiary>Tertiary</mdw-chip>
+            <mdw-chip suggestion color=surface-primary>Surface Primary</mdw-chip>
+            <mdw-chip suggestion class=mdw-custom ink=green>Custom ink</mdw-chip>
+            <mdw-chip suggestion disabled>Disabled chip</mdw-chip>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading>Elevated</h3>
+          <demo-flex align-center gap12 wrap>
+            <mdw-chip elevated suggestion>Default</mdw-chip>
+            <mdw-chip elevated suggestion ink=primary>Primary</mdw-chip>
+            <mdw-chip elevated suggestion ink=tertiary>Tertiary</mdw-chip>
+            <mdw-chip elevated suggestion class=mdw-custom ink=green>Custom ink</mdw-chip>
+            <mdw-chip elevated suggestion disabled>Disabled chip</mdw-chip>
+          </demo-flex>
+        </demo-section>
+      </demo-section>
+    </demo-section>
+  </main>
+  <script type=module src="../demo.js"></script>
+  <script type=module src="../../index.min.js">
+  </script>
+
+</body>
+
+</html>

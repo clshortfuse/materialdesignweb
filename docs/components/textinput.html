@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Material Design Web</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link rel=preconnect href="https://fonts.googleapis.com" />
+  <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
+  <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
+  <link rel=stylesheet
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
+  <link rel="stylesheet" href="../theme.css" />
+  <link rel="stylesheet" href="../demo.css" />
+</head>
+
+<body>
+
+  <main>
+    <demo-section id=textinputs>
+      <h1 slot="heading">Text Inputs</h1>
+      <demo-section>
+        <h2 slot=heading>Filled</h2>
+        <demo-flex wrap style="margin:24px; gap:16px" column>
+          <mdw-text-input filled label="Label"></mdw-text-input>
+          <mdw-text-input filled placeholder="Placeholder only" aria-label="Blank"></mdw-text-input>
+          <mdw-text-input filled ink="tertiary" label="Ink only"></mdw-text-input>
+          <mdw-text-input filled color="secondary-container" ink="secondary" value="default value" label="Label">
+          </mdw-text-input>
+          <mdw-text-input filled color="tertiary-container" ink="tertiary"
+            label="Very long label that label will clip selectively" placeholder="Label"></mdw-text-input>
+          <mdw-text-input filled class=mdw-custom placeholder="Placeholder" color="green-container" ink="green"
+            type-style="headline" icon=edit label="Custom typography and icon"></mdw-text-input>
+          <mdw-text-input filled shape-style="full" type=search icon=search placeholder="Full shape, icon, type=search">
+          </mdw-text-input>
+          <mdw-text-input filled shape-style="large" placeholder="Placeholder" icon=edit
+            label="Large shape with icon">
+          </mdw-text-input>
+          <mdw-text-input filled shape-style="full" placeholder="Placeholder" icon=edit
+            label="Full shape with icon">
+          </mdw-text-input>
+          <mdw-text-input filled class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$"
+            placeholder="10" type="number" label="Price"></mdw-text-input>
+          <mdw-text-input filled icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4"
+            maxlength="8" supporting required label="Email"></mdw-text-input>
+          <mdw-text-input filled class=mdw-custom icon=edit color="alias-container" ink="alias"
+            supporting="I'm being helpful!" label=Name* required></mdw-text-input>
+          <mdw-text-input filled icon=edit supporting label="Customized supporting" value="deleteme">
+            <div slot="supporting">
+              You are <mdw-text ink="primary">awesome</mdw-text>!
+            </div>
+          </mdw-text-input>
+          <mdw-text-input filled color=secondary-container error="I am error" label="Errored"></mdw-text-input>
+          <mdw-text-input filled color=secondary-container disabled label="Disabled"></mdw-text-input>
+          <mdw-text-input filled color=secondary-container disabled error="Unavailable" value="filled">Disabled
+          </mdw-text-input>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Outlined</h2>
+        <demo-flex wrap style="margin:24px; gap:16px" column>
+          <mdw-text-input outlined label="Label"></mdw-text-input>
+          <mdw-text-input outlined placeholder="Placeholder only" aria-label="Blank"></mdw-text-input>
+          <mdw-text-input outlined ink="tertiary" label="Ink only"></mdw-text-input>
+          <mdw-text-input outlined color="secondary-container" ink="secondary" value="default value" label="Label">
+          </mdw-text-input>
+          <mdw-text-input outlined color="tertiary-container" ink="tertiary"
+            label="Very long label that label will clip selectively" placeholder="Label"></mdw-text-input>
+          <mdw-text-input outlined class=mdw-custom placeholder="Placeholder" color="green-container" ink="green"
+            type-style="headline" icon=edit label="Custom typography and icon"></mdw-text-input>
+          <mdw-text-input outlined shape-style="full" type=search icon=search placeholder="Full shape, icon, type=search">
+          </mdw-text-input>
+          <mdw-text-input outlined shape-style="large" placeholder="Placeholder" icon=edit
+            label="Large shape with icon">
+          </mdw-text-input>
+          <mdw-text-input outlined shape-style="full" placeholder="Placeholder" icon=edit
+            label="Full shape with icon">
+          </mdw-text-input>
+          <mdw-text-input outlined class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$"
+            placeholder="10" type="number" label="Price"></mdw-text-input>
+          <mdw-text-input outlined icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4"
+            maxlength="8" supporting required label="Email"></mdw-text-input>
+          <mdw-text-input outlined class=mdw-custom icon=edit color="alias-container" ink="alias"
+            supporting="I'm being helpful!" label=Name* required></mdw-text-input>
+          <mdw-text-input outlined icon=edit supporting label="Customized supporting" value="deleteme">
+            <div slot="supporting">
+              You are <mdw-text ink="primary">awesome</mdw-text>!
+            </div>
+          </mdw-text-input>
+          <mdw-text-input outlined color=secondary-container error="I am error" label="Errored"></mdw-text-input>
+          <mdw-text-input outlined color=secondary-container disabled label="Disabled"></mdw-text-input>
+          <mdw-text-input outlined color=secondary-container disabled error="Unavailable" value="filled">Disabled
+          </mdw-text-input>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Outlined Dense</h2>
+        <demo-flex wrap style="margin:24px; gap:16px" column>
+          <mdw-text-input outlined dense label="Label"></mdw-text-input>
+          <mdw-text-input outlined dense placeholder="Placeholder only" aria-label="Blank"></mdw-text-input>
+          <mdw-text-input outlined dense ink="tertiary" label="Ink only"></mdw-text-input>
+          <mdw-text-input outlined dense color="secondary-container" ink="secondary" value="default value"
+            label="Label">
+          </mdw-text-input>
+          <mdw-text-input outlined dense color="tertiary-container" ink="tertiary"
+            label="Very long label that label will clip selectively" placeholder="Label"></mdw-text-input>
+          <mdw-text-input outlined dense class=mdw-custom placeholder="Placeholder" color="green-container" ink="green"
+            type-style="headline" icon=edit label="Custom typography and icon"></mdw-text-input>
+          <mdw-text-input outlined dense shape-style="full" type=search icon=search placeholder="Full shape, icon, type=search">
+          </mdw-text-input>
+          <mdw-text-input outlined dense shape-style="large" placeholder="Placeholder" icon=edit
+            label="Large shape with icon">
+          </mdw-text-input>
+          <mdw-text-input outlined dense shape-style="full" placeholder="Placeholder" icon=edit
+            label="Full shape with icon">
+          </mdw-text-input>
+          <mdw-text-input outlined dense class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$"
+            placeholder="10" type="number" label="Price"></mdw-text-input>
+          <mdw-text-input outlined dense icon=email input-suffix="@gmail.com" type="text" placeholder="frank"
+            minlength="4" maxlength="8" supporting required label="Email"></mdw-text-input>
+          <mdw-text-input outlined dense class=mdw-custom icon=edit color="alias-container" ink="alias"
+            supporting="I'm being helpful!" label=Name* required></mdw-text-input>
+          <mdw-text-input outlined dense icon=edit supporting label="Customized supporting" value="deleteme">
+            <div slot="supporting">
+              You are <mdw-text ink="primary">awesome</mdw-text>!
+            </div>
+          </mdw-text-input>
+          <mdw-text-input outlined dense color=secondary-container error="I am error" label="Errored"></mdw-text-input>
+          <mdw-text-input outlined dense color=secondary-container disabled label="Disabled"></mdw-text-input>
+          <mdw-text-input outlined dense color=secondary-container disabled error="Unavailable" value="filled">Disabled
+          </mdw-text-input>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Bare</h2>
+        <demo-flex wrap style="margin:24px; gap:16px" column>
+          <mdw-text-input aria-label="Label"></mdw-text-input>
+          <mdw-text-input placeholder="Placeholder only" aria-label="Blank"></mdw-text-input>
+          <mdw-text-input ink="tertiary" aria-label="Ink only"></mdw-text-input>
+          <mdw-text-input color="secondary-container" ink="secondary" value="default value" aria-label="Label">
+          </mdw-text-input>
+          <mdw-text-input color="tertiary-container" ink="tertiary"
+            aria-label="Very long label that label will clip selectively" placeholder="Label"></mdw-text-input>
+          <mdw-text-input class=mdw-custom placeholder="Placeholder" color="green-container" ink="green"
+            type-style="headline" icon=edit aria-label="Custom typography and icon"></mdw-text-input>
+          <mdw-text-input shape-style="full" type=search icon=search placeholder="Full shape, icon, type=search" aria-label="Full shape">
+          </mdw-text-input>
+          <mdw-text-input shape-style="large" placeholder="Placeholder" icon=edit aria-label="Large shape with icon">
+          </mdw-text-input>
+          <mdw-text-input shape-style="full" placeholder="Placeholder" icon=edit aria-label="Full shape with icon">
+          </mdw-text-input>
+          <mdw-text-input class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$"
+            placeholder="10" type="number" aria-label="Price"></mdw-text-input>
+          <mdw-text-input icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4"
+            maxlength="8" supporting required aria-label="Email"></mdw-text-input>
+          <mdw-text-input class=mdw-custom icon=edit color="alias-container" ink="alias" supporting="I'm being helpful!"
+            aria-label=Name* required></mdw-text-input>
+          <mdw-text-input icon=edit supporting aria-label="Customized supporting" value="deleteme">
+            <div slot="supporting">
+              You are <mdw-text ink="primary">awesome</mdw-text>!
+            </div>
+          </mdw-text-input>
+          <mdw-text-input color=secondary-container error="I am error" aria-label="Errored"></mdw-text-input>
+          <mdw-text-input color=secondary-container disabled aria-label="Disabled"></mdw-text-input>
+          <mdw-text-input color=secondary-container disabled error="Unavailable" value="filled">Disabled
+          </mdw-text-input>
+        </demo-flex>
+      </demo-section>
+    </demo-section>
+  </main>
+  <script type=module src="../demo.js"></script>
+  <script type=module src="../../index.min.js">
+  </script>
+
+</body>
+
+</html>

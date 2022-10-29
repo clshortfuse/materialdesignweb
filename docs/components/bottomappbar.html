@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Material Design Web</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link rel=preconnect href="https://fonts.googleapis.com" />
+  <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
+  <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
+  <link rel=stylesheet
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
+  <link rel="stylesheet" href="../theme.css" />
+  <link rel="stylesheet" href="../demo.css" />
+</head>
+
+<body>
+  <main>
+    <demo-section>
+      <h1 slot=heading>Bottom app bar</h1>
+      <demo-section>
+        <h2 slot=heading>Surface color</h2>
+        <mdw-bottom-app-bar>
+          <mdw-icon-button aria-label=1K>1k</mdw-icon-button>
+          <mdw-icon-button aria-label=2K>2k</mdw-icon-button>
+          <mdw-icon-button aria-label=3K>3k</mdw-icon-button>
+          <mdw-icon-button aria-label=4K>4k</mdw-icon-button>
+        </mdw-bottom-app-bar>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Primary-container color</h2>
+        <mdw-bottom-app-bar color=primary-container>
+          <mdw-icon-button aria-label="1k">1k</mdw-icon-button>
+          <mdw-icon-button aria-label="2k">2k</mdw-icon-button>
+          <mdw-icon-button aria-label="3k">3k</mdw-icon-button>
+          <mdw-icon-button aria-label="4k">4k</mdw-icon-button>
+        </mdw-bottom-app-bar>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Custom color</h2>
+        <mdw-bottom-app-bar class=mdw-custom color=alias-container>
+          <mdw-icon-button aria-label="1k">1k</mdw-icon-button>
+          <mdw-icon-button aria-label="2k">2k</mdw-icon-button>
+          <mdw-icon-button aria-label="3k">3k</mdw-icon-button>
+          <mdw-icon-button aria-label="4k">4k</mdw-icon-button>
+        </mdw-bottom-app-bar>
+      </demo-section>
+    </demo-section>
+  </main>
+  <script type=module src="../demo.js"></script>
+  <script type=module src="../../index.min.js">
+  </script>
+
+</body>
+
+</html>

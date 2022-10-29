@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Material Design Web</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link rel=preconnect href="https://fonts.googleapis.com" />
+  <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
+  <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
+  <link rel=stylesheet
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
+  <link rel="stylesheet" href="../theme.css" />
+  <link rel="stylesheet" href="../demo.css" />
+</head>
+
+<body>
+  <main>
+    <demo-section>
+      <h1 slot=heading>Color</h1>
+      <demo-flex align-center wrap gap12>
+        <mdw-container class=box color=primary>Primary</mdw-container>
+        <mdw-container class=box color=primary-container>Primary Container</mdw-container>
+        <mdw-container class=box color=secondary>Secondary</mdw-container>
+        <mdw-container class=box color=secondary-container>Secondary Container</mdw-container>
+        <mdw-container class=box color=tertiary>Tertiary</mdw-container>
+        <mdw-container class=box color=tertiary-container>Tertiary Container</mdw-container>
+        <mdw-container class=box color=error>Error</mdw-container>
+        <mdw-container class=box color=error-container>Error Container</mdw-container>
+        <mdw-container class=box color=background>Background</mdw-container>
+      </demo-flex>
+      <demo-section>
+        <h2 slot=heading>Surface tones</h2>
+        <demo-flex align-center gap12 wrap>
+          <mdw-container class=box color=surface>Surface</mdw-container>
+          <mdw-container class=box color=surface elevation=1>Surface +1</mdw-container>
+          <mdw-container class=box color=surface elevation=2>Surface +2</mdw-container>
+          <mdw-container class=box color=surface elevation=3>Surface +3</mdw-container>
+          <mdw-container class=box color=surface elevation=4>Surface +4</mdw-container>
+          <mdw-container class=box color=surface elevation=5>Surface +5</mdw-container>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Inverse</h2>
+        <demo-flex align-center gap12 wrap>
+          <mdw-container class=box color=inverse-surface>Inverse Surface</mdw-container>
+          <mdw-container class=box color=inverse-surface elevation=1>Inverse Surface +1</mdw-container>
+          <mdw-container class=box color=inverse-surface elevation=2>Inverse Surface +2</mdw-container>
+          <mdw-container class=box color=inverse-surface elevation=3>Inverse Surface +3</mdw-container>
+          <mdw-container class=box color=inverse-surface elevation=4>Inverse Surface +4</mdw-container>
+          <mdw-container class=box color=inverse-surface elevation=5>Inverse Surface +5</mdw-container>
+          <mdw-container class=box color=inverse-primary>Inverse Primary</mdw-container>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Neutral variant</h2>
+        <demo-flex align-center gap12 wrap>
+          <mdw-container class=box color=surface-variant>Surface Variant</mdw-container>
+          <mdw-container class=box color=surface-variant elevation=1>Surface Variant +1</mdw-container>
+          <mdw-container class=box color=surface-variant elevation=2>Surface Variant +2</mdw-container>
+          <mdw-container class=box color=surface-variant elevation=3>Surface Variant +3</mdw-container>
+          <mdw-container class=box color=surface-variant elevation=4>Surface Variant +4</mdw-container>
+          <mdw-container class=box color=surface-variant elevation=5>Surface Variant +5</mdw-container>
+          <mdw-container class=box ink=outline>Outline</mdw-container>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Custom</h2>
+        <demo-flex align-center gap12 wrap>
+          <mdw-container class="box mdw-custom" color=yellow>Yellow</mdw-container>
+          <mdw-container class="box mdw-custom" color=yellow-container>Yellow Container</mdw-container>
+          <mdw-container class="box mdw-custom" color=orange>Orange</mdw-container>
+          <mdw-container class="box mdw-custom" color=orange-container>Orange Container</mdw-container>
+          <mdw-container class="box mdw-custom" color=green>Green</mdw-container>
+          <mdw-container class="box mdw-custom" color=green-container>Green Container</mdw-container>
+          <mdw-container class="box mdw-custom" color=alias>Alias</mdw-container>
+          <mdw-container class="box mdw-custom" color=alias-container>Alias Container</mdw-container>
+        </demo-flex>
+      </demo-section>
+    </demo-section>
+  </main>
+  <script type=module src="../demo.js"></script>
+  <script type=module src="../../index.min.js">
+  </script>
+
+</body>
+
+</html>

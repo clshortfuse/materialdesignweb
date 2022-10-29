@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Material Design Web</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link rel=preconnect href="https://fonts.googleapis.com" />
+  <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
+  <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
+  <link rel=stylesheet
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
+  <link rel="stylesheet" href="../theme.css" />
+  <link rel="stylesheet" href="../demo.css" />
+</head>
+
+<body>
+  <main>
+    <demo-section>
+      <h1 slot=heading> Buttons </h1>
+      <demo-section>
+        <h2 slot=heading> Common Buttons </h2>
+        <demo-section>
+          <h3 slot=heading> Elevated buttons </h3>
+          <demo-flex gap12 wrap>
+            <demo-flex gap12 wrap>
+              <mdw-button elevated>Default</mdw-button>
+              <mdw-button elevated icon=search ink=tertiary>Icon Tertiary</mdw-button>
+              <mdw-button elevated class=mdw-custom ink=yellow>Custom Color</mdw-button>
+            </demo-flex>
+            <demo-flex gap12 wrap>
+              <mdw-button disabled elevated>Default</mdw-button>
+              <mdw-button disabled elevated icon=search ink=tertiary>Icon Tertiary</mdw-button>
+              <mdw-button disabled elevated class=mdw-custom ink=yellow>Custom Color</mdw-button>
+            </demo-flex>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading> Filled buttons </h3>
+          <demo-flex gap12 wrap>
+            <demo-flex gap12 wrap>
+              <mdw-button filled>Default</mdw-button>
+              <mdw-button filled icon=search color=tertiary>Icon Tertiary</mdw-button>
+              <mdw-button filled class=mdw-custom color=yellow>Custom Color</mdw-button>
+            </demo-flex>
+            <demo-flex gap12 wrap>
+              <mdw-button disabled filled>Default</mdw-button>
+              <mdw-button disabled filled icon=search color=tertiary>Icon Tertiary</mdw-button>
+              <mdw-button disabled filled class=mdw-custom color=yellow>Custom Color</mdw-button>
+            </demo-flex>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading>Filled tonal buttons</h3>
+          <demo-flex gap12 wrap>
+            <demo-flex gap12 wrap>
+              <mdw-button filled=tonal>Default</mdw-button>
+              <mdw-button filled=tonal icon=search color=tertiary-container>Icon Tertiary</mdw-button>
+              <mdw-button filled=tonal class=mdw-custom color=yellow-container>Custom Color</mdw-button>
+            </demo-flex>
+            <demo-flex gap12 wrap>
+              <mdw-button disabled filled=tonal>Default</mdw-button>
+              <mdw-button disabled filled=tonal icon=search color=tertiary-container>Icon Tertiary
+              </mdw-button>
+              <mdw-button disabled filled=tonal class=mdw-custom color=yellow-container>Custom Color
+              </mdw-button>
+            </demo-flex>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading> Outlined buttons </h3>
+          <demo-flex gap12 wrap>
+            <demo-flex gap12 wrap>
+              <mdw-button outlined>Default</mdw-button>
+              <mdw-button outlined color=surface-primary>Surface Primary</mdw-button>
+              <mdw-button outlined icon=search ink=tertiary>Icon Tertiary</mdw-button>
+              <mdw-button outlined class=mdw-custom ink=yellow>Custom Color</mdw-button>
+            </demo-flex>
+            <demo-flex gap12 wrap>
+              <mdw-button disabled outlined>Default</mdw-button>
+              <mdw-button disabled outlined color=surface-primary>Surface Primary</mdw-button>
+              <mdw-button disabled outlined icon=search ink=tertiary>Icon Tertiary</mdw-button>
+              <mdw-button disabled outlined class=mdw-custom ink=yellow>Custom Color</mdw-button>
+            </demo-flex>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading>Text buttons</h3>
+          <demo-flex gap12 wrap>
+            <demo-flex gap12 wrap>
+              <mdw-button>Default</mdw-button>
+              <mdw-button icon=search ink=tertiary>Icon Tertiary</mdw-button>
+              <mdw-button class=mdw-custom ink=yellow>Custom Color</mdw-button>
+            </demo-flex>
+            <demo-flex gap12 wrap>
+              <mdw-button disabled>Default</mdw-button>
+              <mdw-button disabled icon=search ink=tertiary>Icon Tertiary</mdw-button>
+              <mdw-button disabled class=mdw-custom ink=yellow>Custom Color</mdw-button>
+            </demo-flex>
+          </demo-flex>
+        </demo-section>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading> FAB </h2>
+        <demo-section>
+          <h3 slot=heading>Normal</h3>
+          <demo-flex align-center gap12 wrap>
+            <mdw-fab aria-label="Sample">edit</mdw-fab>
+            <mdw-fab color=surface-primary aria-label="Sample">edit</mdw-fab>
+            <mdw-fab color=secondary-container aria-label="Sample">edit</mdw-fab>
+            <mdw-fab color=tertiary-container aria-label="Sample">edit</mdw-fab>
+            <mdw-fab class=mdw-custom color=yellow-container aria-label="Sample">edit</mdw-fab>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading>Small</h3>
+          <demo-flex align-center gap12 wrap>
+            <mdw-fab fab-size=small aria-label=Sample>edit</mdw-fab>
+            <mdw-fab fab-size=small color=surface-primary aria-label=Sample>edit</mdw-fab>
+            <mdw-fab fab-size=small color=secondary-container aria-label=Sample>edit</mdw-fab>
+            <mdw-fab fab-size=small color=tertiary-container aria-label=Sample>edit</mdw-fab>
+            <mdw-fab fab-size=small class=mdw-custom color=yellow-container aria-label=Sample>edit</mdw-fab>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading>Large</h3>
+          <demo-flex align-center gap12 wrap>
+            <mdw-fab fab-size=large aria-label=Edit>edit</mdw-fab>
+            <mdw-fab fab-size=large color=surface-primary aria-label=Edit>edit</mdw-fab>
+            <mdw-fab fab-size=large color=secondary-container aria-label=Edit>edit</mdw-fab>
+            <mdw-fab fab-size=large color=tertiary-container aria-label=Edit>edit</mdw-fab>
+            <mdw-fab class=mdw-custom fab-size=large color=yellow-container aria-label=Edit>edit</mdw-fab>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading>Lowered</h3>
+          <demo-flex align-center gap12 wrap>
+            <mdw-fab class=mdw-custom lowered fab-size=small color=surface ink=yellow>edit</mdw-fab>
+            <mdw-fab class=mdw-custom lowered fab-size=small color=orange-container>edit</mdw-fab>
+            <mdw-fab class=mdw-custom lowered color=green-container>edit</mdw-fab>
+            <mdw-fab class=mdw-custom lowered fab-size=large color=alias-container>edit</mdw-fab>
+          </demo-flex>
+        </demo-section>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading> Extended FAB </h2>
+        <demo-section>
+          <h3 slot=heading>With icon</h3>
+          <demo-flex align-center gap12 wrap>
+            <mdw-extended-fab color=surface-primary icon=edit>Compose</mdw-extended-fab>
+            <mdw-extended-fab color=secondary-container icon=edit>Compose</mdw-extended-fab>
+            <mdw-extended-fab color=tertiary-container icon=edit>Compose</mdw-extended-fab>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading>Without icon</h3>
+          <demo-flex align-center gap12 wrap>
+            <mdw-extended-fab class=mdw-custom color=yellow>Compose</mdw-extended-fab>
+            <mdw-extended-fab class=mdw-custom color=green>Compose</mdw-extended-fab>
+            <mdw-extended-fab class=mdw-custom color=alias>Compose</mdw-extended-fab>
+          </demo-flex>
+        </demo-section>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading> Icon buttons </h2>
+        <demo-section>
+          <h3 slot=heading> Filled icon buttons </h3>
+          <demo-section>
+            <h4 slot=heading>No toggle</h4>
+            <demo-flex gap12 wrap>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button filled aria-label=Settings>settings</mdw-icon-button>
+                <mdw-icon-button filled color=tertiary aria-label=Favorite>favorite</mdw-icon-button>
+                <mdw-icon-button filled class=mdw-custom color=yellow aria-label=edit>edit</mdw-icon-button>
+              </demo-flex>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button disabled filled aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button disabled filled color=tertiary aria-label="Favorite">favorite</mdw-icon-button>
+                <mdw-icon-button disabled filled class=mdw-custom color=yellow aria-label="Edit">edit</mdw-icon-button>
+              </demo-flex>
+            </demo-flex>
+          </demo-section>
+          <demo-section>
+            <h4 slot=heading>Toggle</h4>
+            <demo-flex gap12 wrap>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button filled type=checkbox aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button filled type=checkbox checked aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button filled type=checkbox color=tertiary aria-label="Favorite">favorite</mdw-icon-button>
+                <mdw-icon-button filled type=checkbox checked color=tertiary aria-label="Favorite">favorite
+                </mdw-icon-button>
+                <mdw-icon-button filled type=checkbox class=mdw-custom color=yellow aria-label="Edit">edit
+                </mdw-icon-button>
+                <mdw-icon-button filled type=checkbox checked class=mdw-custom color=yellow aria-label="Edit">edit
+                </mdw-icon-button>
+              </demo-flex>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button filled disabled type=checkbox aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button filled disabled type=checkbox checked aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button filled disabled type=checkbox color=tertiary aria-label="Favorite">favorite
+                </mdw-icon-button>
+                <mdw-icon-button filled disabled type=checkbox checked color=tertiary aria-label="Favorite">favorite
+                </mdw-icon-button>
+                <mdw-icon-button filled disabled type=checkbox class=mdw-custom color=yellow aria-label="Edit">edit
+                </mdw-icon-button>
+                <mdw-icon-button filled disabled type=checkbox checked class=mdw-custom color=yellow aria-label="Edit">
+                  edit
+                </mdw-icon-button>
+              </demo-flex>
+            </demo-flex>
+          </demo-section>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading>Filled tonal icon buttons</h3>
+          <demo-section>
+            <h4 slot=heading>No toggle</h4>
+            <demo-flex gap12 wrap>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button filled=tonal aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button filled=tonal color=tertiary-container aria-label="Favorite">favorite</mdw-icon-button>
+                <mdw-icon-button filled=tonal class=mdw-custom color=yellow-container aria-label="Edit">edit
+                </mdw-icon-button>
+              </demo-flex>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button disabled filled=tonal aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button disabled filled=tonal color=tertiary aria-label="Favorite">favorite</mdw-icon-button>
+                <mdw-icon-button disabled filled=tonal class=mdw-custom color=yellow aria-label="Edit">edit
+                </mdw-icon-button>
+              </demo-flex>
+            </demo-flex>
+          </demo-section>
+          <demo-section>
+            <h4 slot=heading>Toggle</h4>
+            <demo-flex gap12 wrap>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button filled=tonal type=checkbox aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button filled=tonal type=checkbox checked aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button filled=tonal type=checkbox color=tertiary-container aria-label="Favorite">favorite
+                </mdw-icon-button>
+                <mdw-icon-button filled=tonal type=checkbox checked color=tertiary-container aria-label="Favorite">
+                  favorite
+                </mdw-icon-button>
+                <mdw-icon-button filled=tonal type=checkbox class=mdw-custom color=yellow-container aria-label="Edit">
+                  edit
+                </mdw-icon-button>
+                <mdw-icon-button filled=tonal type=checkbox checked class=mdw-custom color=yellow-container
+                  aria-label="Edit">edit
+                </mdw-icon-button>
+              </demo-flex>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button filled=tonal disabled type=checkbox aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button filled=tonal disabled type=checkbox checked aria-label="Settings">settings
+                </mdw-icon-button>
+                <mdw-icon-button filled=tonal disabled type=checkbox color=tertiary-container aria-label="Favorite">
+                  favorite</mdw-icon-button>
+                <mdw-icon-button filled=tonal disabled type=checkbox checked color=tertiary-container
+                  aria-label="Favorite">
+                  favorite</mdw-icon-button>
+                <mdw-icon-button filled=tonal disabled type=checkbox class=mdw-custom color=yellow-container
+                  aria-label="Edit">edit
+                </mdw-icon-button>
+                <mdw-icon-button filled=tonal disabled type=checkbox checked class=mdw-custom color=yellow-container
+                  aria-label="Edit">
+                  edit
+                </mdw-icon-button>
+              </demo-flex>
+            </demo-flex>
+          </demo-section>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading>Outlined icon buttons</h3>
+          <demo-section>
+            <h4 slot=heading>No toggle</h4>
+            <demo-flex gap12 wrap>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button outlined aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button outlined ink=tertiary aria-label="Favorite">favorite</mdw-icon-button>
+                <mdw-icon-button outlined class=mdw-custom ink=yellow aria-label="Edit">edit</mdw-icon-button>
+              </demo-flex>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button disabled outlined aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button disabled outlined color=tertiary aria-label="Favorite">favorite</mdw-icon-button>
+                <mdw-icon-button disabled outlined class=mdw-custom color=yellow aria-label="Edit">edit
+                </mdw-icon-button>
+              </demo-flex>
+            </demo-flex>
+          </demo-section>
+          <demo-section>
+            <h4 slot=heading>Toggle</h4>
+            <demo-flex gap12 wrap>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button outlined type=checkbox aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button outlined type=checkbox checked aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button outlined type=checkbox color=tertiary aria-label="Favorite">favorite</mdw-icon-button>
+                <mdw-icon-button outlined type=checkbox checked color=tertiary aria-label="Favorite">favorite
+                </mdw-icon-button>
+                <mdw-icon-button outlined type=checkbox class=mdw-custom color=yellow aria-label="Edit">edit
+                </mdw-icon-button>
+                <mdw-icon-button outlined type=checkbox checked class=mdw-custom color=yellow aria-label="Edit">edit
+                </mdw-icon-button>
+              </demo-flex>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button outlined disabled type=checkbox aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button outlined disabled type=checkbox checked aria-label="Settings">settings
+                </mdw-icon-button>
+                <mdw-icon-button outlined disabled type=checkbox color=tertiary-container aria-label="Favorite">favorite
+                </mdw-icon-button>
+                <mdw-icon-button outlined disabled type=checkbox checked color=tertiary-container aria-label="Favorite">
+                  favorite
+                </mdw-icon-button>
+                <mdw-icon-button outlined disabled type=checkbox class=mdw-custom color=yellow-container
+                  aria-label="Edit">edit
+                </mdw-icon-button>
+                <mdw-icon-button outlined disabled type=checkbox checked class=mdw-custom color=yellow-container
+                  aria-label="Edit">edit
+                </mdw-icon-button>
+              </demo-flex>
+            </demo-flex>
+          </demo-section>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading> Standard icon buttons </h3>
+          <demo-section>
+            <h4 slot=heading>No toggle</h4>
+            <demo-flex gap12 wrap>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button ink=tertiary aria-label="Favorite">favorite</mdw-icon-button>
+                <mdw-icon-button class=mdw-custom ink=yellow aria-label="Edit">edit</mdw-icon-button>
+              </demo-flex>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button disabled aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button disabled ink=tertiary aria-label="Favorite">favorite</mdw-icon-button>
+                <mdw-icon-button disabled class=mdw-custom ink=yellow aria-label="Edit">edit</mdw-icon-button>
+              </demo-flex>
+            </demo-flex>
+          </demo-section>
+          <demo-section>
+            <h4 slot=heading>Toggle</h4>
+            <demo-flex gap12 wrap>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button type=checkbox aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button type=checkbox checked aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button type=checkbox ink=tertiary aria-label="Favorite">favorite</mdw-icon-button>
+                <mdw-icon-button type=checkbox checked ink=tertiary aria-label="Favorite">favorite</mdw-icon-button>
+                <mdw-icon-button type=checkbox class=mdw-custom ink=yellow aria-label="Edit">edit</mdw-icon-button>
+                <mdw-icon-button type=checkbox checked class=mdw-custom ink=yellow aria-label="Favorite">edit
+                </mdw-icon-button>
+              </demo-flex>
+              <demo-flex gap12 wrap>
+                <mdw-icon-button disabled type=checkbox aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button disabled type=checkbox checked aria-label="Settings">settings</mdw-icon-button>
+                <mdw-icon-button disabled type=checkbox ink=tertiary aria-label="Favorite">favorite</mdw-icon-button>
+                <mdw-icon-button disabled type=checkbox checked ink=tertiary aria-label="Favorite">favorite
+                </mdw-icon-button>
+                <mdw-icon-button disabled type=checkbox class=mdw-custom ink=yellow aria-label="Edit">edit
+                </mdw-icon-button>
+                <mdw-icon-button disabled type=checkbox checked class=mdw-custom ink=yellow aria-label="Edit">edit
+                </mdw-icon-button>
+              </demo-flex>
+            </demo-flex>
+          </demo-section>
+        </demo-section>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading> Segmented buttons </h2>
+        <demo-section>
+          <h3 slot=heading>Single selection</h3>
+          <demo-flex align-center gap12 wrap>
+            <form>
+              <mdw-segmented-button-group>
+                <mdw-segmented-button name=segmented-demo value=favorite icon=favorite>Favorite</mdw-segmented-button>
+                <mdw-segmented-button name=segmented-demo value=enabled icon=star>Enabled</mdw-segmented-button>
+                <mdw-segmented-button name=segmented-demo value=disabled icon=edit disabled>Disabled
+                </mdw-segmented-button>
+                <mdw-segmented-button name=segmented-demo value=text>Text only</mdw-segmented-button>
+              </mdw-segmented-button-group>
+            </form>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading>Single selection (Required)</h3>
+          <demo-flex align-center gap12 wrap>
+            <form>
+              <mdw-segmented-button-group aria-required=true>
+                <mdw-segmented-button name=segmented-demo-required required value=favorite checked icon=favorite>
+                  Favorite
+                </mdw-segmented-button>
+                <mdw-segmented-button name=segmented-demo-required required value=enabled icon=star>Enabled
+                </mdw-segmented-button>
+                <mdw-segmented-button name=segmented-demo-required required value=disabled icon=edit disabled>Disabled
+                </mdw-segmented-button>
+                <mdw-segmented-button name=segmented-demo-required required value=text>Text only</mdw-segmented-button>
+              </mdw-segmented-button-group>
+            </form>
+          </demo-flex>
+        </demo-section>
+
+        <demo-section>
+          <h3 slot=heading>Multi-selectable</h3>
+          <demo-flex align-center gap12 wrap>
+            <mdw-segmented-button-group class=mdw-custom color=alias-container aria-multiselectable=true>
+              <mdw-segmented-button type=checkbox checked icon=favorite>Favorite</mdw-segmented-button>
+              <mdw-segmented-button type=checkbox checked icon=star>Enabled</mdw-segmented-button>
+              <mdw-segmented-button type=checkbox icon=edit disabled>Disabled</mdw-segmented-button>
+              <mdw-segmented-button type=checkbox>Text only</mdw-segmented-button>
+            </mdw-segmented-button-group>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading>Text-only</h3>
+          <demo-flex align-center gap12 wrap>
+            <form>
+              <mdw-segmented-button-group color=tertiary-container>
+                <mdw-segmented-button name=demo-segmented-text value="$" checked>$</mdw-segmented-button>
+                <mdw-segmented-button name=demo-segmented-text value="$$">$$</mdw-segmented-button>
+                <mdw-segmented-button name=demo-segmented-text value="$$$" disabled>$$$</mdw-segmented-button>
+                <mdw-segmented-button name=demo-segmented-text value="$$$$">$$$$</mdw-segmented-button>
+              </mdw-segmented-button-group>
+            </form>
+          </demo-flex>
+        </demo-section>
+        <demo-section>
+          <h3 slot=heading>Multi-selectable text-only</h3>
+          <demo-flex align-center gap12 wrap>
+            <mdw-segmented-button-group class=mdw-custom color=alias-container aria-multiselectable=true>
+              <mdw-segmented-button type=checkbox checked icon=check>$</mdw-segmented-button>
+              <mdw-segmented-button type=checkbox icon=check>$$</mdw-segmented-button>
+              <mdw-segmented-button type=checkbox icon=check disabled>$$$</mdw-segmented-button>
+              <mdw-segmented-button type=checkbox checked icon=check>$$$$</mdw-segmented-button>
+            </mdw-segmented-button-group>
+          </demo-flex>
+        </demo-section>
+      </demo-section>
+    </demo-section>
+  </main>
+  <script type=module src="../demo.js"></script>
+  <script type=module src="../../index.min.js">
+  </script>
+
+</body>
+
+</html>

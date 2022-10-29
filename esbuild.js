@@ -17,7 +17,7 @@ await esbuild.build({
   minify,
   watch: cliArgs.has('--watch'),
   bundle: true,
-  keepNames: true,
+  keepNames: false,
   legalComments: 'linked',
   metafile: cliArgs.has('--metafile'),
   target,
@@ -48,18 +48,18 @@ await esbuild.build({
           export default styles;`;
         return { contents };
       });
-      build.onEnd(async ({ metafile }) => {
-        if (metafile) {
-          const metaString = JSON.stringify(metafile);
-          writeFileSync('meta.json', JSON.stringify(metafile));
-          console.log({
-            'meta.json': metaString.length,
-            ...Object.fromEntries(
-              Object.entries(metafile.outputs)
-                .map(([key, value]) => [key, value.bytes]),
-            ),
-          });
-        }
+      build.onEnd(({ metafile }) => {
+        if (!metafile) return;
+        const metaString = JSON.stringify(metafile);
+        writeFileSync('meta.json', JSON.stringify(metafile));
+        console.log({
+          timestamp: new Date().toLocaleString(),
+          'meta.json': metaString.length,
+          ...Object.fromEntries(
+            Object.entries(metafile.outputs)
+              .map(([key, value]) => [key, value.bytes]),
+          ),
+        });
       });
     },
   }],

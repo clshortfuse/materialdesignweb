@@ -1,6 +1,8 @@
 import CustomElement from '../components/CustomElement.js';
 
 export default class DemoDummyText extends CustomElement {
+  static { this.autoRegister(); }
+
   static elementName = 'demo-dummy-text';
 
   static fragments = [

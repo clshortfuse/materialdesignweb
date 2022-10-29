@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Material Design Web</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link rel=preconnect href="https://fonts.googleapis.com" />
+  <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
+  <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
+  <link rel=stylesheet
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
+  <link rel="stylesheet" href="../theme.css" />
+  <link rel="stylesheet" href="../demo.css" />
+</head>
+
+<body>
+  
+  <main>
+    <demo-section id=textareas>
+      <h1 slot="heading">Text Areas</h1>
+      <demo-section>
+        <h2 slot=heading>Filled</h2>
+        <demo-flex wrap style="margin:24px; gap:16px" column>
+          <mdw-textarea filled label="Label"></mdw-textarea>
+          <mdw-textarea filled label="Label" rows="2" fixed>Fixed size</mdw-textarea>
+          <mdw-textarea filled label="Max 2 rows" maxrows=2></mdw-textarea>
+          <mdw-textarea filled label="5 rows with max-height override" rows="5" style="max-height:100px"></mdw-textarea>
+          <mdw-textarea filled label="Min 2 rows, max 5" minrows="2" maxrows="5"></mdw-textarea>
+          <mdw-textarea filled color="secondary-container" ink="secondary" value="default value" label="Label"></mdw-textarea>
+          <mdw-textarea filled color="tertiary-container" ink="tertiary" placeholder="Label"
+            label="Very long label that label will clip selectively" value="Dear Madam Speaker,
+
+Regarding your letter dated ...
+
+...
+
+Yours Sincerely,
+
+..."></mdw-textarea>
+          <mdw-textarea filled class=mdw-custom placeholder="Placeholder" color="green-container" ink="green"
+            type-style="headline" icon=edit label="Custom typography and icon"></mdw-textarea>
+          <mdw-textarea filled class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$" placeholder="10"
+            type="number" label="Price"></mdw-textarea>
+          <mdw-textarea filled icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4" maxlength="8"
+            supporting required label="Email"></mdw-textarea>
+          <mdw-textarea filled class=mdw-custom icon=edit color="alias-container" ink="alias" supporting="I'm being helpful!"
+            required label="Oversized placeholder" placeholder="Dear Francine,
+
+They closed the parks this week, so we won't be able to
+meet your there. Should we just have dinner?
+
+Love,
+Daddy"></mdw-textarea>
+          <mdw-textarea filled color=secondary-container error="I am error" label="Errored"></mdw-textarea>
+          <mdw-textarea filled color=secondary-container disabled label="Disabled" maxrows=2
+            value="Disable elements still may have values and resizable. Max Rows 2"></mdw-textarea>
+          <mdw-textarea color=secondary-container disabled error="Unavailable" label="Disabled" fixed value="Disable and fixed
+            sized with HTMLTextAreaElement default row count of 2"></mdw-textarea>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Outlined</h2>
+        <demo-flex wrap style="margin:24px; gap:16px" column>
+          <mdw-textarea outlined label="Label"></mdw-textarea>
+          <mdw-textarea outlined label="Label" rows="2" fixed>Fixed size</mdw-textarea>
+          <mdw-textarea outlined label="Max 2 rows" maxrows=2></mdw-textarea>
+          <mdw-textarea outlined label="5 rows with max-height override" rows="5" style="max-height:100px">
+          </mdw-textarea>
+          <mdw-textarea outlined label="Min 2 rows, max 5" minrows="2" maxrows="5"></mdw-textarea>
+          <mdw-textarea outlined color="secondary-container" ink="secondary" value="default value" label="Label">
+          </mdw-textarea>
+          <mdw-textarea outlined color="tertiary-container" ink="tertiary" placeholder="Label"
+            label="Very long label that label will clip selectively" value="Dear Madam Speaker,
+
+Regarding your letter dated ...
+
+...
+
+Yours Sincerely,
+
+..."></mdw-textarea>
+          <mdw-textarea outlined class=mdw-custom placeholder="Placeholder" color="green-container" ink="green"
+            type-style="headline" icon=edit label="Custom typography and icon"></mdw-textarea>
+          <mdw-textarea outlined class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$"
+            placeholder="10" type="number" label="Price"></mdw-textarea>
+          <mdw-textarea outlined icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4"
+            maxlength="8" supporting required label="Email"></mdw-textarea>
+          <mdw-textarea outlined class=mdw-custom icon=edit color="alias-container" ink="alias"
+            supporting="I'm being helpful!" required label="Oversized placeholder" placeholder="Dear Francine,
+
+They closed the parks this week, so we won't be able to
+meet your there. Should we just have dinner?
+
+Love,
+Daddy"></mdw-textarea>
+          <mdw-textarea outlined color=secondary-container error="I am error" label="Errored"></mdw-textarea>
+          <mdw-textarea outlined color=secondary-container disabled label="Disabled" maxrows=2 value="Disable elements still
+            may have values and resizable. Max Rows 2"></mdw-textarea>
+          <mdw-textarea outlined color=secondary-container disabled error="Unavailable" label="Disabled" fixed value="Disable
+            and fixed sized with HTMLTextAreaElement default row count of 2"></mdw-textarea>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Outlined Dense</h2>
+        <demo-flex wrap style="margin:24px; gap:16px" column>
+          <mdw-textarea outlined dense label="Label"></mdw-textarea>
+          <mdw-textarea outlined dense label="Label" rows="2" fixed>Fixed size</mdw-textarea>
+          <mdw-textarea outlined dense label="Max 2 rows" maxrows=2></mdw-textarea>
+          <mdw-textarea outlined dense label="5 rows with max-height override" rows="5" style="max-height:100px">
+          </mdw-textarea>
+          <mdw-textarea outlined dense label="Min 2 rows, max 5" minrows="2" maxrows="5"></mdw-textarea>
+          <mdw-textarea outlined dense color="secondary-container" ink="secondary" value="default value" label="Label">
+          </mdw-textarea>
+          <mdw-textarea outlined dense color="tertiary-container" ink="tertiary" placeholder="Label"
+            label="Very long label that label will clip selectively" value="Dear Madam Speaker,
+
+Regarding your letter dated ...
+
+...
+
+Yours Sincerely,
+
+..."></mdw-textarea>
+          <mdw-textarea outlined dense class=mdw-custom placeholder="Placeholder" color="green-container" ink="green"
+            type-style="headline" icon=edit label="Custom typography and icon"></mdw-textarea>
+          <mdw-textarea outlined dense class=mdw-custom icon=edit color="alias-container" ink="alias" input-prefix="$"
+            placeholder="10" type="number" label="Price"></mdw-textarea>
+          <mdw-textarea outlined dense icon=email input-suffix="@gmail.com" type="text" placeholder="frank"
+            minlength="4" maxlength="8" supporting required label="Email"></mdw-textarea>
+          <mdw-textarea outlined dense class=mdw-custom icon=edit color="alias-container" ink="alias"
+            supporting="I'm being helpful!" required label="Oversized placeholder" placeholder="Dear Francine,
+
+They closed the parks this week, so we won't be able to
+meet your there. Should we just have dinner?
+
+Love,
+Daddy"></mdw-textarea>
+          <mdw-textarea outlined dense color=secondary-container error="I am error" label="Errored"></mdw-textarea>
+          <mdw-textarea outlined dense color=secondary-container disabled label="Disabled" maxrows=2
+            value="Disable elements still may have values and resizable. Max Rows 2"></mdw-textarea>
+          <mdw-textarea outlined dense color=secondary-container disabled error="Unavailable" label="Disabled" fixed
+            value="Disable and fixed sized with HTMLTextAreaElement default row count of 2"></mdw-textarea>
+        </demo-flex>
+      </demo-section>
+    </demo-section>
+  </main>
+  <script type=module src="../demo.js"></script>
+  <script type=module src="../../index.min.js">
+  </script>
+
+</body>
+
+</html>

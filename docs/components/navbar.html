@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Material Design Web</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link rel=preconnect href="https://fonts.googleapis.com" />
+  <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
+  <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
+  <link rel=stylesheet
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
+  <link rel="stylesheet" href="../theme.css" />
+  <link rel="stylesheet" href="../demo.css" />
+  <script type=module src="../demo.js"></script>
+  <script type=module src="../../index.min.js"></script>
+</head>
+
+<body>
+  
+  <main>
+    <demo-section id=navbar>
+      <h1 slot="heading">Navigation Bar</h1>
+      <demo-section>
+        <h2 slot=heading>Standard</h2>
+        <demo-flex wrap gap12>
+          <mdw-nav-bar>
+            <mdw-nav-item icon="edit" href="#navbar">Default</mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navbar" color=primary-container>Primary Container
+            </mdw-nav-item>
+            <mdw-nav-item icon="change_history" href="#navbar" color=tertiary-container>Tertiary Container
+            </mdw-nav-item>
+          </mdw-nav-bar>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Badges</h2>
+        <demo-flex wrap gap12>
+          <mdw-nav-bar color="primary">
+            <mdw-nav-item show-label=active icon="change_history" href="#navbar" color=primary-container badge>Primary
+              Container
+            </mdw-nav-item>
+            <mdw-nav-item show-label=active icon="change_history" href="#navbar" badge=1 color=tertiary>Tertiary
+            </mdw-nav-item>
+            <mdw-nav-item class=mdw-custom show-label=active icon="change_history" href="#navbar" badge="999+"
+              color=green-container>
+              Green Container
+            </mdw-nav-item>
+          </mdw-nav-bar>
+        </demo-flex>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>No label</h2>
+        <demo-flex wrap gap12>
+          <mdw-nav-bar>
+            <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge aria-label="Default">Default
+            </mdw-nav-item>
+            <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge=1 color=primary-container
+              aria-label="Primary">Primary</mdw-nav-item>
+            <mdw-nav-item show-label=never icon="change_history" href="#navbar" badge="999+" color=tertiary-container
+              aria-label="Tertiary">Tertiary Container</mdw-nav-item>
+          </mdw-nav-bar>
+        </demo-flex>
+      </demo-section>
+    </demo-section>
+  </main>
+</body>
+
+</html>
