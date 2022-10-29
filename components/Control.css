@@ -27,7 +27,7 @@ label {
   cursor: inherit;
   outline: none;
 
-  opacity: 0;
+  visibility: hidden;
 }
 
 #control::-moz-focus-inner {
