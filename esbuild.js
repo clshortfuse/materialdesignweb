@@ -11,7 +11,7 @@ const cliArgs = new Set(process.argv.slice(2));
 const minify = cliArgs.has('--minify');
 
 await esbuild.build({
-  entryPoints: ['index.js'],
+  entryPoints: ['docs/demo.js'],
   format: 'esm',
   sourcemap: true,
   minify,
@@ -21,7 +21,7 @@ await esbuild.build({
   legalComments: 'linked',
   metafile: cliArgs.has('--metafile'),
   target,
-  outfile: 'index.min.js',
+  outfile: 'docs/demo.min.js',
   inject: ['polyfills.js'],
   plugins: [{
     name: 'css import assertions',
