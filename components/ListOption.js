@@ -4,6 +4,8 @@ import ListItem from './ListItem.js';
 
 /** @implements {HTMLOptionElement} */
 export default class ListOption extends ListItem {
+  static { this.autoRegister(); }
+
   static elementName = 'mdw-list-option';
 
   static ariaRole = 'option';
