@@ -1,6 +1,7 @@
 import * as AriaToolbar from '../aria/toolbar.js';
 
 import Container from './Container.js';
+import CustomElement from './CustomElement.js';
 import styles from './TopAppBar.css' assert { type: 'css' };
 
 /** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
@@ -10,7 +11,12 @@ export default class TopAppBar extends Container {
 
   static elementName = 'mdw-top-app-bar';
 
-  static ariaRole = 'toolbar';
+  static get observedAttributes() {
+    return [
+      ...super.observedAttributes,
+      'aria-label',
+    ];
+  }
 
   static styles = [...super.styles, styles];
 
@@ -19,12 +25,16 @@ export default class TopAppBar extends Container {
     /** @type {import('./CustomElement.js').HTMLTemplater<TopAppBar>} */
     const html = this.html;
     template.append(/* html */html`
-      <div id=leading><slot id=leading-slot name=leading onslotchange={static.onSlotChange}></slot></div>
-      <div id=headline>{headline}</div>
-      <div id=trailing><slot id=trailing-slot name=trailing onslotchange={static.onSlotChange}></slot></div>
-      <div id=second-headline><span>{headline}</span></div>
+      <div id="bar" role=toolbar aria-labelledby=headline style=${this.computeBarStyle}>
+        <div id=leading><slot id=leading-slot name=leading onslotchange={static.onSlotChange}></slot></div>
+        <div id=headline>{headline}</div>
+        <div id=trailing><slot id=trailing-slot name=trailing onslotchange={static.onSlotChange}></slot></div>
+      </div>
+      <div _if=${({ size }) => size === 'medium' || size === 'large'} id=companion aria-hidden=true><span id=companion-text>{headline}</span></div>
     `);
 
+    const bar = template.getElementById('bar');
+    bar.prepend(template.getElementById('elevation'));
     const slot = template.getElementById('slot');
     slot.setAttribute('onslotchange', '{static.onSlotChange}');
     template.getElementById('headline').append(slot);
@@ -40,6 +50,18 @@ export default class TopAppBar extends Container {
   #rafRequested = false;
 
   /**
+   * @param {TopAppBar} instance
+   * @return {string}
+   */
+  static computeBarStyle({ hideOnScroll, _cssPosition, _translateY }) {
+    if (!hideOnScroll) return '';
+    return `
+      position: ${_cssPosition};
+      transform: translateY(${_translateY}px);
+    `;
+  }
+
+  /**
    * @param {Event} event
    * @this {HTMLSlotElement}
    * @return {void}
@@ -49,6 +71,27 @@ export default class TopAppBar extends Container {
     const { host } = this.getRootNode();
     if (host.kbdNav === 'arrow') {
       AriaToolbar.attach(host);
+    }
+  }
+
+  /** @type {CustomElement['attributeChangedCallback']} */
+  attributeChangedCallback(name, oldValue, newValue) {
+    super.attributeChangedCallback(name, oldValue, newValue);
+    switch (name) {
+      case 'aria-label':
+        if (newValue == null) {
+          this.refs.bar.removeAttribute(name);
+          if (!this.hasAttribute('aria-labelledby')) {
+            this.refs.bar.setAttribute('aria-labelledby', 'headline');
+          }
+        } else {
+          this.refs.bar.setAttribute(name, newValue);
+          if (!this.hasAttribute('aria-labelledby')) {
+            this.refs.bar.removeAttribute('aria-labelledby');
+          }
+        }
+        break;
+      default:
     }
   }
 
@@ -82,12 +125,10 @@ export default class TopAppBar extends Container {
           this._cssPosition = 'sticky';
           this._translateY = 0;
         }
+
         this._onScreen = this._cssPosition === 'sticky'
-         || (newValue >= this._translateY && newValue <= this._translateY + this.scrollHeight);
+         || (newValue >= this._translateY && newValue <= this._translateY + this.refs.bar.scrollHeight);
         this._scrollDirection = newValue > oldValue ? 'down' : 'up';
-        break;
-      case '_cssPosition':
-        this.style.setProperty('position', newValue);
         break;
       case '_scrollDirection':
         if (newValue === 'down') {
@@ -99,13 +140,7 @@ export default class TopAppBar extends Container {
         }
         if (this._onScreen) return;
         // Align appbar.bottom with scroll position (top of screen)
-        this._translateY = this._scrollPosition - this.scrollHeight;
-
-        break;
-      case '_translateY':
-        if (this.#rafRequested) return;
-        window.requestAnimationFrame(this.onRaF.bind(this));
-        this.#rafRequested = true;
+        this._translateY = this._scrollPosition - this.refs.bar.scrollHeight;
         break;
       default:
     }
@@ -120,9 +155,9 @@ export default class TopAppBar extends Container {
    * @param {Element} [offsetParent]
    * @return {boolean}
    */
-  startScrollListener(offsetParent = this.offsetParent) {
+  startScrollListener(offsetParent = this.hideOnScroll ? this.refs.bar.offsetParent : this.offsetParent) {
     if (!offsetParent) return false;
-    this.#offsetParent = new WeakRef(this.offsetParent);
+    this.#offsetParent = new WeakRef(offsetParent);
     this.#scrollListener = this.onParentScroll.bind(this);
     offsetParent.addEventListener('scroll', this.#scrollListener);
     return true;
@@ -156,6 +191,7 @@ TopAppBar.prototype.kbdNav = TopAppBar.idl('kbdNav', { empty: 'arrow' });
 TopAppBar.prototype.headline = TopAppBar.idl('headline');
 TopAppBar.prototype.raised = TopAppBar.idl('raised', 'boolean');
 TopAppBar.prototype.hideOnScroll = TopAppBar.idl('hideOnScroll', 'boolean');
+TopAppBar.prototype.size = /** @type {'small'|'medium'|'large'|null} */ TopAppBar.idl('size');
 TopAppBar.prototype._cssPosition = TopAppBar.idl('_cssPosition', { empty: 'static' });
 TopAppBar.prototype._scrollPosition = TopAppBar.idl('_scrollPosition', { type: 'float', empty: 0 });
 TopAppBar.prototype._scrollDirection = /** @type {'up'|'down'} */ (TopAppBar.idl('_scrollDirection', { empty: 'down' }));
