@@ -11,12 +11,12 @@ A standards-focused, zero-dependency implemention of Material Design 3 (Material
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/6e7f5d7/docs/
+https://rawcdn.githack.com/clshortfuse/materialdesignweb/77b1098/docs/
 
 # Getting started
 
 ```html
-<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/6e7f5d7/index.js" />
+<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/77b1098/index.js" />
 ```
 
 # Support
@@ -72,6 +72,7 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/6e7f5d7/docs/
 | [Chip: Filter Dropdown](components/Chip.js)                  |                                                |                                                                    | planned |
 | [Chip: Input](components/Chip.js)                            | `<mdw-input-chip>`                             |                                                                    | planned |
 | [Chip: Suggestion](components/Chip.js)                       | `<mdw-chip suggestion>`                        | `<input type=button>`                                              |  beta   |
+| Date Picker                                                  |                                                |                                                                    | planned |
 | [Dialog: Basic](components/Dialog.js)                        | `<mdw-dialog title=title description=desc>`    | `<dialog>`                                                         |  alpha  |
 | [Dialog: Full-screen](components/Dialog.js)                  |                                                | `<dialog>`                                                         | planned |
 | [Divider](components/Divider.js)                             | `<mdw-divider>`                                | `<div>`                                                            |  beta   |
@@ -91,13 +92,18 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/6e7f5d7/docs/
 | [Slider: Continuous](components/Slider.js)                   | `<mdw-slider>`                                 | `<input type=range>`                                               |  beta   |
 | [Slider: Discrete](components/Slider.js)                     | `<mdw-slider ticks=10>`                        | `<input type=range>`                                               |  beta   |
 | [Switch](components/Switch.js)                               | `<mdw-switch>`                                 | `<input type=checkbox>`                                            |  beta   |
-| [Text fields: Filled](components/TextInput.js)               | `<mdw-textinput>`                              | `<input>`                                                          |  beta   |
+| Tab                                                          |                                                |                                                                    | rewrite |
+| [Text fields: Filled](components/TextInput.js)               | `<mdw-text-input>`                             | `<input>`                                                          |  beta   |
 | [Text fields: Filled Multiline](components/TextArea.js)      | `<mdw-textarea>`                               | `<textarea>`                                                       |  beta   |
 | [Text fields: Filled Selection](components/TextSelect.js)    | `<mdw-textselect>`                             | `<select>`                                                         | planned |
-| [Text fields: Outlined](components/TextInput.js)             | `<mdw-textinput outlined>`                     | `<input>`                                                          |  beta   |
+| [Text fields: Outlined](components/TextInput.js)             | `<mdw-text-input outlined>`                    | `<input>`                                                          |  beta   |
 | [Text fields: Outlined Multiline](components/TextArea.js)    | `<mdw-textarea outlined>`                      | `<textarea>`                                                       |  beta   |
 | [Text fields: Outlined Selection](components/TextSelect.js)  | `<mdw-textselect outlined>`                    | `<select>`                                                         | planned |
-| Top App Bar                                                  |                                                |                                                                    | rewrite |
+| Time Picker                                                  |                                                |                                                                    | planned |
+| [Top App Bar: Centered](components/TopAppBar.js)             | `<mdw-top-app-bar>`                            | `<menu>`                                                           |  beta   |
+| [Top App Bar: Small](components/TopAppBar.js)                | `<mdw-top-app-bar size=small>`                 | `<menu>`                                                           |  beta   |
+| [Top App Bar: Medium](components/TopAppBar.js)               | `<mdw-top-app-bar size=medium>`                | `<menu>`                                                           |  beta   |
+| [Top App Bar: Large](components/TopAppBar.js)                | `<mdw-top-app-bar size=medium>`                | `<menu>`                                                           |  beta   |
 
 # Other Components
 
@@ -108,12 +114,9 @@ These components do not have official M3 guidelines
 | ~~Backdrop~~ |                    |         |           |            | no plans |
 | Banner       | `<mdw-banner>`     |         |           |            | rewrite  |
 | Data Table   |                    |         |           |            | rewrite  |
-| Data Picker  |                    |         |           |            | planned  |
 | Image List   |                    |         |           |            | rewrite  |
 | Snackbar     | `<mdw-snackbar>`   |         |  `alert`  |            | rewrite  |
 | Side Sheet   | `<mdw-side-sheet>` |         |           |            | rewrite  |
-| Tab          | `<mdw-tab>`        |         |   `tab`   |            | rewrite  |
-| Time Picker  |                    |         |           |            | planned  |
 | Tooltip      | `<mdw-tooltip>`    |         | `tooltip` |            | rewrite  |
 
 # Adapter classes
