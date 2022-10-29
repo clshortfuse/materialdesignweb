@@ -1,0 +1,122 @@
+/* https://m3.material.io/components/bottom-app-bar/specs */
+
+:host {
+  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__0);
+  position: sticky;
+  inset-block-start: 0;
+
+  display: grid;
+  align-items: center;
+  grid-auto-flow: row;
+  grid-template-rows: minmax(64px,min-content) minmax(0, min-content);
+  grid-template-columns: minmax(auto,1fr) 12px minmax(0,auto) 12px minmax(auto,1fr);
+
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: 100%;
+
+  /* 16px from icon */
+  /* inset = (button.width / 2) - (icon.width / 2) */
+  /* paddingInline = 16px - inset */
+  /* paddingInlineStart = 16px - ((48px / 2) - (24px / 2)) */
+  /* paddingInlineEnd = 16px - ((48px / 2) - (30px / 2)) */
+
+  padding-inline: 4px;
+
+  background-color: rgb(var(--mdw-color__surface));
+  box-shadow: none;
+  color: rgb(var(--mdw-color__on-surface));
+
+  font: var(--mdw-typescale__title-large__font);
+  letter-spacing: var(--mdw-typescale__title-large__letter-spacing);
+  white-space: nowrap;
+
+  transition: none;
+  will-change: transform;
+}
+
+:host::before {
+  content: '';
+
+  position: absolute;
+  inset-block:0;
+  inset-inline-start: 50%;
+
+  inline-size: 1px;
+  margin-inline-end: -1px;
+
+  /* background-color: fuchsia; */
+
+}
+
+:host([color]:not([color|="surface"])) #elevation {
+  display: none;
+}
+
+:host([raised]) {
+  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
+}
+
+#leading {
+  display: flex;
+  align-items: center;
+
+  grid-column: 1;
+  grid-row: 1;
+
+}
+
+#headline {
+  display: block;
+  overflow-x: clip;
+
+  overflow-y: hidden;
+  overflow-y: hidden;
+
+  grid-column: 3;
+  grid-row: 1;
+
+  text-overflow: ellipsis;
+  text-transform: none;
+  word-break: break-word;
+}
+
+#trailing {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  grid-column: 5;
+  grid-row: 1;
+
+  color: var(--mdw-color__on-surface-variant);
+}
+
+#second-headline {
+  display: none;
+
+  grid-column: 1/5;
+  grid-row: 2;
+
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#second-headline[compact] {
+  transform: translateY(-100%);
+}
+
+:host([size]) {
+  grid-template-columns: auto 12px 1fr 12px auto;
+  justify-content: flex-start;
+}
+
+:host(:is([size="medium"],[size="large"])) {
+  opacity: 0;
+}
+
+:host([hide-on-scroll]) {
+  position: static;
+
+  transform: translateY(0);
+}
