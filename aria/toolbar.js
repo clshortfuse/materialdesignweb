@@ -101,8 +101,6 @@ function onForwardArrowKey(event) {
  * @return {void}
  */
 export function attach(element) {
-  if (element.hasAttribute('role') && element.getAttribute('role') !== 'toolbar') return;
-  element.setAttribute('role', 'toolbar');
   const items = element.querySelectorAll(TOOLBAR_ITEM_SELECTOR);
   RovingTabIndex.setupTabIndexes(items, true);
   Keyboard.attach(element);
