@@ -13,8 +13,7 @@
 }
 
 #bar {
-  position: static;
-  inset-block-start: 0;
+  position: relative;
 
   display: grid;
   align-items: center;
@@ -173,6 +172,10 @@
 }
 
 :host([hide-on-scroll]) #bar {
+  position: static;
+
+  inset-block-start: 0;
+
   transform: translateY(0);
 
   will-change: transform, position;
