@@ -15,7 +15,8 @@
   --mdw-shape__size__bottom-end-size: 0;
 }
 
-:host(:last-child) {
+/* Safari renders :last-child improperly when selected */
+:host(:last-of-type) {
   --mdw-shape__size__top-start-size: 0;
   --mdw-shape__size__top-end-size: var(--mdw-shape__full);
   --mdw-shape__size__bottom-start-size: 0;
