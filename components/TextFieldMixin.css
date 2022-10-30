@@ -48,9 +48,7 @@
   --label-color: rgb(var(--mdw-color__on-surface-variant));
   --descriptor-opacity: 0.5;
 
-  display: grid;
-  grid-auto-columns: 1fr;
-  grid-auto-flow: row;
+  display: block;
 
   cursor: pointer;
 
@@ -107,7 +105,6 @@ label {
 
   align-items: center;
 
-  /* block-size: 56px; */
   padding-inline-start: var(--padding-inline-start);
   padding-inline-end: var(--padding-inline-end);
 
@@ -155,7 +152,7 @@ label {
   box-sizing: border-box;
 
   block-size: auto;
-  inline-size: 0;
+  inline-size: auto;
 
   min-inline-size: none;
   flex: 1;
