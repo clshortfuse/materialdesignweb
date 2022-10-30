@@ -11,12 +11,12 @@ A standards-focused, zero-dependency implemention of Material Design 3 (Material
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/77b1098/docs/
+https://rawcdn.githack.com/clshortfuse/materialdesignweb/9df87d9/docs/
 
 # Getting started
 
 ```html
-<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/77b1098/index.js" />
+<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/9df87d9/index.js" />
 ```
 
 # Support
@@ -91,6 +91,7 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/77b1098/docs/
 | [Radio Button](components/Radio.js)                          | `<mdw-radio>`                                  | `<input type=radio>`                                               |  beta   |
 | [Slider: Continuous](components/Slider.js)                   | `<mdw-slider>`                                 | `<input type=range>`                                               |  beta   |
 | [Slider: Discrete](components/Slider.js)                     | `<mdw-slider ticks=10>`                        | `<input type=range>`                                               |  beta   |
+| Snackbar                                                     |                                                |                                                                    | rewrite |
 | [Switch](components/Switch.js)                               | `<mdw-switch>`                                 | `<input type=checkbox>`                                            |  beta   |
 | Tab                                                          |                                                |                                                                    | rewrite |
 | [Text fields: Filled](components/TextInput.js)               | `<mdw-text-input>`                             | `<input>`                                                          |  beta   |
@@ -115,7 +116,6 @@ These components do not have official M3 guidelines
 | Banner       | `<mdw-banner>`     |         |           |            | rewrite  |
 | Data Table   |                    |         |           |            | rewrite  |
 | Image List   |                    |         |           |            | rewrite  |
-| Snackbar     | `<mdw-snackbar>`   |         |  `alert`  |            | rewrite  |
 | Side Sheet   | `<mdw-side-sheet>` |         |           |            | rewrite  |
 | Tooltip      | `<mdw-tooltip>`    |         | `tooltip` |            | rewrite  |
 
