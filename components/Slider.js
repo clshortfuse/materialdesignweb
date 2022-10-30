@@ -14,19 +14,22 @@ export default class Slider extends Input {
     const html = this.html;
     template.getElementById('control').setAttribute('type', 'range');
     template.getElementById('ripple').remove();
-    template.getElementById('overlay').remove();
     template.append(
       html`
         <div id=track aria-hidden=true style={computeTrackStyle}>
           <div _if={ticks} id=ticks></div>
           <div id="track-active"></div>
-          <div id="track-label-anchor">
-            <div id="track-label" 
+          <div id="thumb-anchor">
+            <div id=thumb></div>
+            <div id="thumb-label"
             hidden=${({ _isHoveringThumb, _isFocused }) => (!_isHoveringThumb && !_isFocused)} 
             text=${({ _previewValue }) => _previewValue ?? ''}></div>
           </div>
         </div>
       `,
+    );
+    template.getElementById('thumb').append(
+      template.getElementById('overlay'),
     );
     return template;
   }
@@ -75,6 +78,11 @@ export default class Slider extends Input {
     const { host } = this.getRootNode();
     if (host.hasAttribute('disabled')) return;
 
+    if (event.type === 'touchend') {
+      host._isHoveringThumb = false;
+      return;
+    }
+
     let offsetX;
     let clientX;
     let pageX;
@@ -90,8 +98,10 @@ export default class Slider extends Input {
       }
     } else {
       // Ignore mouse drag-over
+      // Firefox doesn't report `:active`
       // eslint-disable-next-line no-bitwise
-      isActive = (event.buttons & 1) === 1 && this.matches(':active');
+      isActive = (event.buttons & 1) === 1
+        && (event.type === 'mousedown' || this.matches(':active'));
       ({ offsetX, clientX, pageX } = event);
     }
 
@@ -122,6 +132,7 @@ export default class Slider extends Input {
       const currentValue = position * (nMax - nMin) + nMin;
       const roundedValue = Math.round(currentValue / nStep) * nStep;
 
+      host._roundedValue = roundedValue;
       host._previewValue = roundedValue.toString(10);
       return;
     }
@@ -141,6 +152,24 @@ export default class Slider extends Input {
   static onLeaveEvent() {
     if (document.activeElement === this) return;
     this._isHoveringThumb = false;
+  }
+
+  /**
+   * @this {HTMLInputElement}
+   * @param {MouseEvent} event
+   */
+  static onControlClick(event) {
+    if (!this.disabled) {
+      event.preventDefault();
+      /** @type {{host:Slider}} */ // @ts-ignore Coerce
+      const { host } = this.getRootNode();
+      this.valueAsNumber = host._roundedValue;
+      if (host._value !== this.value) {
+        host._value = this.value;
+        this.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+    super.onControlClick(event);
   }
 
   computeTrackStyle() {
@@ -176,6 +205,8 @@ export default class Slider extends Input {
       control.addEventListener(type, Slider.onControlMouseOrTouch, { passive: true });
     }
 
+    control.addEventListener('touchend', Slider.onControlClick);
+    this.addEventListener('blur', Slider.onLeaveEvent);
     this.addEventListener('mouseout', Slider.onLeaveEvent);
   }
 }
@@ -183,4 +214,5 @@ export default class Slider extends Input {
 Slider.prototype.ticks = Slider.idl('ticks');
 Slider.prototype.showLabel = Slider.idl('showLabel', { type: 'boolean', reflect: false });
 Slider.prototype._previewValue = Slider.idl('_previewValue');
+Slider.prototype._roundedValue = Slider.idl('_roundedValue', { type: 'float' });
 Slider.prototype._isHoveringThumb = Slider.idl('_isHoveringThumb', 'boolean');

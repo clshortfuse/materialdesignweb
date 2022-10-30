@@ -1,9 +1,6 @@
 /* https://m3.material.io/components/sliders/specs */
 
 :host {
-  --mdw-slider__hover-opacity: 0.08;
-  --mdw-slider__focus-opacity: 0.12;
-  --mdw-slider__pressed-opacity: 0.12;
   --mdw-slider__cursor: pointer;
 
   --mdw-ink: var(--mdw-color__on-primary);
@@ -44,15 +41,14 @@ label {
 
   appearance: none;
 
-  opacity: 1;
+  cursor: var(--mdw-slider__cursor);
+
+
+  visibility: visible;
   z-index: 1;
 
   background-color: transparent;
   color: inherit;
-}
-
-#control:not(:focus) {
-  --mdw-slider__focus-opacity: 0;
 }
 
 #control::-webkit-slider-runnable-track {
@@ -80,65 +76,35 @@ label {
 #control::-webkit-slider-thumb {
   display: block;
 
-  box-sizing: content-box;
-  block-size: 10px;
-  inline-size: 10px;
-  border: solid 5px rgba(var(--mdw-bg), calc(
-      var(--mdw-slider__hover-opacity)
-      + var(--mdw-slider__focus-opacity)
-      + var(--mdw-slider__pressed-opacity)));
+  block-size: 20px;
+  inline-size: 20px;
 
   -webkit-appearance: none;
   cursor: var(--mdw-slider__cursor);
 
   transform: scale(2);
 
-  background-clip: content-box;
-  background-color: currentColor;
+  background-color: transparent; /* Safari */
+
   border-radius: 50%;
-  color: inherit;
-
-  transition: border-color 100ms;
-}
-
-#control::-webkit-slider-thumb:not(:active) {
-  --mdw-slider__pressed-opacity: 0;
-}
-
-#control::-webkit-slider-thumb:not(:hover) {
-  --mdw-slider__hover-opacity: 0;
+  box-shadow: none; /* Safari */
 }
 
 #control::-moz-range-thumb {
   display: block;
 
   box-sizing: content-box;
-  block-size: 10px;
-  inline-size: 10px;
-  border: solid 5px rgba(var(--mdw-bg), calc(
-      var(--mdw-slider__hover-opacity)
-      + var(--mdw-slider__focus-opacity)
-      + var(--mdw-slider__pressed-opacity)));
+  block-size: 20px;
+  inline-size: 20px;
+  border: none;
 
   appearance: none;
   cursor: var(--mdw-slider__cursor);
 
   transform: scale(2);
 
-  background-clip: content-box;
-  background-color: currentColor;
+  background-color: transparent;
   border-radius: 50%;
-  color: inherit;
-
-  transition: border-color 100ms;
-}
-
-#control::-moz-range-thumb:not(:active) {
-  --mdw-slider__pressed-opacity: 0;
-}
-
-#control::-moz-range-thumb:not(:hover) {
-  --mdw-slider__hover-opacity: 0;
 }
 
 #track {
@@ -151,6 +117,39 @@ label {
 
   background-color: rgb(var(--mdw-color__surface-variant));
   border-radius: inherit;
+}
+
+#thumb {
+  position: absolute;
+  inset-block-start: -18px;
+  inset-inline-start: -20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  block-size: 40px;
+  inline-size: 40px;
+
+  pointer-events: none;
+
+  border-radius: 50%;
+
+  color: rgb(var(--mdw-bg));
+}
+
+#thumb::before {
+  content: '';
+
+  display: block;
+
+  block-size: 20px;
+  inline-size: 20px;
+
+  background-color: currentColor;
+  border-radius: 50%;
+
+  transition: background-color 100ms;
 }
 
 /* Inactive ticks */
@@ -210,16 +209,14 @@ label {
   will-change: transform;
 }
 
-#track-label-anchor {
+#thumb-anchor {
   position: absolute;
-  inset-block-end: 16px;
   inset-inline: 0;
 
   display: flex;
   align-items: flex-start;
   flex-direction: column;
 
-  block-size: auto;
   inline-size: 1%;
 
   transform: translateX(calc(var(--value) * 100 * 100%));
@@ -229,7 +226,10 @@ label {
   will-change: transform;
 }
 
-#track-label {
+#thumb-label {
+  position: absolute;
+  inset-block-end: 14px;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -249,11 +249,11 @@ label {
   will-change: transform;
 }
 
-#track-label:is([hidden],[text=""]) {
+#thumb-label:is([hidden],[text=""]) {
   transform: translateX(-50%) scale(0);
 }
 
-#track-label::before {
+#thumb-label::before {
   content: attr(text);
 
   display: flex;
@@ -270,7 +270,7 @@ label {
   color: rgb(var(--mdw-ink));
 }
 
-#track-label::after {
+#thumb-label::after {
   /* Values from Figma SVG */
   --x-start: 14.6446%; /*4.1005px*/
   --x-end: 85.3554%;
@@ -297,13 +297,4 @@ label {
 
 :host([disabled]) label {
   cursor: not-allowed;
-
-  opacity: 1;
-}
-
-#control:disabled {
-  --mdw-slider__hover-opacity: 0;
-  --mdw-slider__focus-opacity: 0;
-  --mdw-slider__pressed-opacity: 0;
-  opacity: 1;
 }
