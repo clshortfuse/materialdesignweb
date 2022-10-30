@@ -11,12 +11,12 @@ A standards-focused, zero-dependency implemention of Material Design 3 (Material
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/9df87d9/docs/
+https://rawcdn.githack.com/clshortfuse/materialdesignweb/28f5e49/docs/
 
 # Getting started
 
 ```html
-<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/9df87d9/index.js" />
+<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/28f5e49/index.js" />
 ```
 
 # Support
@@ -26,17 +26,18 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/9df87d9/docs/
 
 # Core components
 
-| Module                                       |     Extends     | Implements | Description                                                                | Status |
-| :------------------------------------------- | :-------------: | :--------: | :------------------------------------------------------------------------- | :----: |
-| [CustomElement](components/CustomElement.md) |  `HTMLElement`  |  `<span>`  | Handles ShadowDOM, styles, fragments, ElementInternals, and IDL attributes |  beta  |
-| [Text](components/Text.md)                   | `CustomElement` |  `<span>`  | Applies typography and ink (foreground) colors                             |  beta  |
-| [Container](components/Container.md)         |     `Text`      |  `<div>`   | Applies shapes, shadows, and background colors                             |  beta  |
-| [Icon](components/Icon.md)                   |   `Container`   | `<image>`  | Adds font and image icons                                                  | alpha  |
-| [Overlay](components/Overlay.md)             |   `Container`   |  `<div>`   | Adds hover, focus, pressed, dragged, and disabled states                   |  beta  |
-| [Ripple](components/Ripple.md/)              |    `Overlay`    |  `<div>`   | Substitutes pressed state for ripple effect                                | alpha  |
-| [Control](components/Control.md)             |    `Ripple`     |   *N/A*    | Base class for Form Controls                                               |  beta  |
-| [Input](components/Input.md)                 |    `Control`    | `<input>`  | Labelled `<input>` element                                                 |  beta  |
-| [Theme](theming/index.js)                    |      *N/A*      |   *N/A*    | Adds color, shape and typography rules                                     | alpha  |
+| Module                                                   |        Extends        | Implements | Description                                                                | Status |
+| :------------------------------------------------------- | :-------------------: | :--------: | :------------------------------------------------------------------------- | :----: |
+| [CustomElement](components/CustomElement.js)             |     `HTMLElement`     |  `<span>`  | Handles ShadowDOM, styles, fragments, ElementInternals, and IDL attributes |  beta  |
+| [Text](components/Text.js)                               |    `CustomElement`    |  `<span>`  | Applies typography and ink (foreground) colors                             |  beta  |
+| [Container](components/Container.js)                     |        `Text`         |  `<div>`   | Applies shapes, shadows, and background colors                             |  beta  |
+| [Icon](components/Icon.js)                               |      `Container`      | `<image>`  | Adds font and image icons                                                  | alpha  |
+| [Overlay](components/Overlay.js)                         |      `Container`      |  `<div>`   | Adds hover, focus, pressed, dragged, and disabled states                   |  beta  |
+| [Control](components/Control.js)                         |       `Ripple`        |   *N/A*    | Base class for Form Controls                                               |  beta  |  |
+| [FormAssociatedMixin](components/FormAssociatedMixin.js) |    `CustomElement`    |   *N/A*    | Tracks Element Internals Form Associated controls                          | alpha  |
+| [Control](components/Control.js)                         | `FormAssociatedMixin` |   *N/A*    | Base class for Native HTML Controls                                        |  beta  |
+| [Input](components/Input.js)                             |       `Control`       | `<input>`  | Labelled `<input>` element                                                 |  beta  |
+| [Theme](theming/index.js)                                |         *N/A*         |   *N/A*    | Adds color, shape and typography rules                                     | alpha  |
 
 
 # M3 Components
