@@ -13,7 +13,7 @@
 }
 
 #bar {
-  position: sticky;
+  position: static;
   inset-block-start: 0;
 
   display: grid;
@@ -45,20 +45,6 @@
   white-space: nowrap;
 
   transition: grid-template-columns 100ms;
-}
-
-:host::before {
-  content: '';
-
-  position: absolute;
-  inset-block:0;
-  inset-inline-start: 50%;
-
-  inline-size: 1px;
-  margin-inline-end: -1px;
-
-  /* background-color: fuchsia; */
-
 }
 
 #elevation {
@@ -187,8 +173,6 @@
 }
 
 :host([hide-on-scroll]) #bar {
-  position: static;
-
   transform: translateY(0);
 
   will-change: transform, position;
