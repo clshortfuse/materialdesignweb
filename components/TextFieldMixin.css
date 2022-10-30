@@ -167,7 +167,7 @@ label {
   caret-color: var(--label-color);
   cursor: auto;
 
-  opacity: 1;
+  visibility: visible;
 
   background-color: transparent;
   border-color: transparent;
