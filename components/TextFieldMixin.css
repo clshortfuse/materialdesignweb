@@ -152,7 +152,7 @@ label {
   box-sizing: border-box;
 
   block-size: auto;
-  inline-size: auto;
+  inline-size: 0;
 
   min-inline-size: none;
   flex: 1;
