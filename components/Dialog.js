@@ -234,7 +234,8 @@ export default class Dialog extends CustomElement {
         }
       }
       Dialog.OPEN_DIALOGS.splice(stackIndex, 1);
-      if (stack.state === window.history.state) {
+      if (stack.state && window.history && window.history.state // IE11 returns a cloned state object, not the original
+      && stack.state.hash === window.history.state.hash) {
         window.history.back();
       }
     }
@@ -262,10 +263,10 @@ export default class Dialog extends CustomElement {
   }
 
   /**
-   * @param {Event} [event]
+   * @param {MouseEvent|PointerEvent|HTMLElement} [source]
    * @return {boolean} handled
    */
-  show(event) {
+  show(source) {
     if (this.open) return false;
     this.open = true;
 
@@ -283,7 +284,9 @@ export default class Dialog extends CustomElement {
     let previousState = null;
 
     if (!window.history.state) {
-      window.history.replaceState({}, document.title);
+      window.history.replaceState({
+        hash: Math.random().toString(36).slice(2, 18),
+      }, document.title);
     }
     previousState = window.history.state;
     window.history.pushState(newState, title);

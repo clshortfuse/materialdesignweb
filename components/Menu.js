@@ -664,20 +664,26 @@ export default class Menu extends CustomElement {
     const previousFocus = document.activeElement;
     const newState = { hash: Math.random().toString(36).slice(2, 18) };
     let previousState = null;
-    if (window.history && window.history.pushState) {
-      if (!window.history.state) {
-        // Create new previous state
-        window.history.replaceState({
-          hash: Math.random().toString(36).slice(2, 18),
-        }, document.title);
-      }
-      previousState = window.history.state;
-      window.history.pushState(newState, document.title);
-      window.addEventListener('popstate', Menu.onPopState);
-      window.addEventListener('resize', Menu.onWindowResize);
+
+    if (!window.history.state) {
+      // Create new previous state
+      window.history.replaceState({
+        hash: Math.random().toString(36).slice(2, 18),
+      }, document.title);
     }
+    previousState = window.history.state;
+    window.history.pushState(newState, document.title);
+    window.addEventListener('popstate', Menu.onPopState);
+    window.addEventListener('resize', Menu.onWindowResize);
+
     /** @type {MenuStack} */
-    const menuStack = { element: this, previousFocus, state: newState, previousState, originalEvent: source };
+    const menuStack = {
+      element: this,
+      previousFocus,
+      state: newState,
+      previousState,
+      originalEvent: source,
+    };
     Menu.OPEN_MENUS.push(menuStack);
     // this.refreshMenuItems();
 
