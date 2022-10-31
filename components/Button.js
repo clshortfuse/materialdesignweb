@@ -14,7 +14,7 @@ export default class Button extends Input {
     /* html */`
       <div id=touch-target aria-hidden="true"></div>
       <div id=outline aria-hidden="true"></div>
-      <mdw-icon id=icon aria-hidden="true" src="{src}">{icon}</mdw-icon>
+      <mdw-icon id=icon aria-hidden="true" svg={svg} src="{src}">{icon}</mdw-icon>
     `,
   ];
 
@@ -68,3 +68,4 @@ Button.prototype.filled = Button.idl('filled', 'boolean');
 Button.prototype.outlined = Button.idl('outlined', 'boolean');
 Button.prototype.icon = Button.idl('icon');
 Button.prototype.src = Button.idl('src');
+Button.prototype.svg = Button.idl('svg');
