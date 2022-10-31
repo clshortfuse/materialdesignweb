@@ -75,12 +75,6 @@ a {
   min-block-size: 88px;
 }
 
-@container (min-height: 88px) {
-  :host {
-    align-items: flex-start;
-  }
-}
-
 .text {
   display: block;
   overflow-x: hidden;

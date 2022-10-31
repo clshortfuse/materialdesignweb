@@ -47,8 +47,6 @@ export default class TopAppBar extends Container {
   /** @type {EventListener} */
   #scrollListener;
 
-  #rafRequested = false;
-
   /**
    * @param {TopAppBar} instance
    * @return {string}
@@ -93,11 +91,6 @@ export default class TopAppBar extends Container {
         break;
       default:
     }
-  }
-
-  onRaF() {
-    this.style.setProperty('transform', `translateY(${this._translateY}px)`);
-    this.#rafRequested = false;
   }
 
   /**
