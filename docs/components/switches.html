@@ -31,11 +31,11 @@
       <demo-section>
         <h2 slot="heading">Icon on selected switch</h2>
         <demo-flex wrap gap12>
-          <mdw-switch checked-icon=check>Default</mdw-switch>
-          <mdw-switch color=secondary checked checked-icon=check>Secondary</mdw-switch>
-          <mdw-switch color=tertiary checked-icon=edit>Tertiary</mdw-switch>
-          <mdw-switch disabled checked-icon=check>Disabled</mdw-switch>
-          <mdw-switch color=secondary disabled checked checked-icon=check>Disabled</mdw-switch>
+          <mdw-switch selected-icon=check>Default</mdw-switch>
+          <mdw-switch color=secondary checked selected-icon=check>Secondary</mdw-switch>
+          <mdw-switch color=tertiary selected-icon=edit>Tertiary</mdw-switch>
+          <mdw-switch disabled selected-icon=check>Disabled</mdw-switch>
+          <mdw-switch color=secondary disabled checked selected-icon=check>Disabled</mdw-switch>
         </demo-flex>
       </demo-section>
       <demo-section>
@@ -43,7 +43,7 @@
         <demo-flex wrap gap12>
           <mdw-switch icon=check>Default</mdw-switch>
           <mdw-switch color=secondary checked icon=favorite>Secondary</mdw-switch>
-          <mdw-switch color=tertiary unchecked-icon=dark_mode checked-icon=light_mode>Tertiary</mdw-switch>
+          <mdw-switch color=tertiary unselected-icon=dark_mode selected-icon=light_mode>Tertiary</mdw-switch>
           <mdw-switch disabled icon=check>Disabled</mdw-switch>
           <mdw-switch color=secondary disabled checked icon=check>Disabled</mdw-switch>
         </demo-flex>
@@ -53,7 +53,7 @@
         <demo-flex wrap gap12>
           <mdw-switch icon=check aria-label="Default"></mdw-switch>
           <mdw-switch color=secondary checked icon=favorite aria-label="Secondary"></mdw-switch>
-          <mdw-switch color=tertiary unchecked-icon=dark_mode checked-icon=light_mode aria-label="Tertiary">
+          <mdw-switch color=tertiary unselected-icon=dark_mode selected-icon=light_mode aria-label="Tertiary">
           </mdw-switch>
           <mdw-switch disabled icon=check aria-label="Disabled"></mdw-switch>
           <mdw-switch color=secondary disabled checked icon=check aria-label="Disabled"></mdw-switch>

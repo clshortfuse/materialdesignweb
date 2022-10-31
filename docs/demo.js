@@ -1,3 +1,5 @@
+import 'element-internals-polyfill'; // Safari
+
 import './demo/DemoButton.js';
 import './demo/DemoDummy.js';
 import './demo/DemoSection.js';

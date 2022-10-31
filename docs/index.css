@@ -8,13 +8,11 @@ html {
   margin: 0;
   padding: 0;
 
-  background: repeating-conic-gradient(rgba(var(--mdw-color__on-background), 0.0333) 0% 25%, transparent 0% 50%) 50% / 16px 16px;
   background-color: rgb(var(--mdw-color__background));
   color: rgb(var(--mdw-color__on-background));
 }
 
 body {
-
   --mdw-grid__row1: "navdrawer appbar sidedrawer";
   --mdw-grid__row2: "navdrawer banner sidedrawer";
   --mdw-grid__row3: "navdrawer content sidedrawer";
@@ -34,6 +32,8 @@ body {
   margin: 0;
 
   padding: 0;
+
+  background: repeating-conic-gradient(rgba(var(--mdw-color__on-background), 0.0333) 0% 25%, transparent 0% 50%) 50% / 16px 16px;
 }
 
 #nav {
@@ -60,14 +60,15 @@ iframe {
 }
 
 iframe#main {
-  width: 100%;
-  min-height: 100%;
-  height: auto;
   position: relative;
 
   grid-area: content;
   overflow-x: visible;
-  overflow-y: visible
+  overflow-y: visible;
+
+  block-size: auto;
+  min-block-size: 100%;
+  inline-size: 100%
 }
 
 .box {
@@ -109,8 +110,4 @@ html[dir="rtl"] {
   block-size: 100vh;
   inline-size: 100%;
   border: none;
-}
-
-mdw-*:not(:defined) {
-  visibility: hidden;
 }

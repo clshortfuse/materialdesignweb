@@ -52,7 +52,7 @@ body {
 }
 
 main {
-  inline-size:100%;
+  inline-size: 100%;
 }
 
 iframe {
@@ -118,8 +118,4 @@ html[dir="rtl"] {
   block-size: 100vh;
   inline-size: 100%;
   border: none;
-}
-
-mdw-*:not(:defined) {
-  visibility: hidden;
 }
