@@ -40,7 +40,7 @@
   transition-property: font-variation-settings, opacity;
 }
 
-img {
+svg, img {
   position: absolute;
   inset: 0;
 

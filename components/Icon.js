@@ -23,7 +23,10 @@ export default class Icon extends Text {
     ...super.fragments,
     /* html */`
       <div id=icon class={fontClass} aria-hidden="true">
-        <img _if={src} aria-hidden="true" id=img
+        <svg _if={svg} id=svg viewBox="0 0 24 24" id="svg">
+          <use href="{svg}" fill="currentColor"/>
+        </svg>
+        <img _if={src} id=img
           alt={alt} src={src} srcset={srcset} sizes={sizes} crossorigin={crossOrigin} usemap={useMap}
           ismap={isMap} referrerpolicy={referrerPolicy} decoding={decoding} loading={loading} width={width} height={height}
         />
@@ -74,6 +77,7 @@ export default class Icon extends Text {
 
 Icon.prototype.alt = Icon.idl('alt');
 Icon.prototype.src = Icon.idl('src');
+Icon.prototype.svg = Icon.idl('svg');
 Icon.prototype.srcset = Icon.idl('srcset');
 Icon.prototype.sizes = Icon.idl('sizes');
 Icon.prototype.crossOrigin = Icon.idl('crossOrigin', { attr: 'crossorigin' });
