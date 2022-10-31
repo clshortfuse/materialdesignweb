@@ -159,6 +159,9 @@ export default class CustomElement extends HTMLElement {
 
   static autoRegistration = true;
 
+  /** @type {Map<string, typeof CustomElement>} */
+  static registrations = new Map();
+
   /** @type {Document} */
   static _inactiveDocument;
 
@@ -347,6 +350,7 @@ export default class CustomElement extends HTMLElement {
       this.elementName = name;
     }
     customElements.define(name, this);
+    CustomElement.registrations.set(name, this);
     this.defined = true;
     return this.elementName;
   }
@@ -610,7 +614,7 @@ export default class CustomElement extends HTMLElement {
           continue;
         }
         if (!ref.isConnected && node !== '_if') {
-          console.log(this.static.name, 'Offscreen rendering', ref, node);
+          // console.log(this.static.name, 'Offscreen rendering', ref, node);
         }
         let value;
         if (fn) {
