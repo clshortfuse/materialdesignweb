@@ -623,6 +623,9 @@ export default class CustomElement extends HTMLElement {
   }
 
   /**
+   * Updates component nodes based on data
+   * Expects data in JSON Merge Patch format
+   * @see https://www.rfc-editor.org/rfc/rfc7386
    * @param {?} data
    * @return {void}
    */

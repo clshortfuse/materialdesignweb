@@ -153,7 +153,6 @@ export default class TopAppBar extends Container {
         ? this.refs.bar.offsetParent
         : this.offsetParent;
       if (scrollingElement === document.body) {
-        console.log('using window instead of body');
         // eslint-disable-next-line no-param-reassign
         scrollingElement = window;
       }

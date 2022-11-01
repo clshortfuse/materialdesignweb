@@ -1,7 +1,6 @@
 import * as RovingTabIndex from '../aria/rovingtabindex.js';
 import { constructHTMLOptionsCollectionProxy } from '../dom/ HTMLOptionsCollectionProxy.js';
 
-import CustomElement from './CustomElement.js';
 import { FormAssociatedMixin } from './FormAssociatedMixin.js';
 import styles from './List.css' assert { type: 'css' };
 import List from './List.js';
@@ -28,7 +27,6 @@ export default class ListSelect extends FormAssociatedMixin(List) {
   static onSlotChange(event) {
     /** @type {{host:ListSelect}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
-    console.log('onslotchange', event);
     RovingTabIndex.setupTabIndexes(host.options, true);
     let index = 0;
     for (const el of host.options) {
@@ -124,19 +122,18 @@ export default class ListSelect extends FormAssociatedMixin(List) {
     }
   }
 
-  /** @type {HTMLCollectionOf<ListItem> & HTMLOptionsCollection} */
+  /** @type {HTMLCollectionOf<ListOption> & HTMLOptionsCollection} */
   _optionsCollection = null;
 
   constructor() {
     super();
-    this.setAttribute('aria-orientation', 'vertical');
     this.refs.slot.addEventListener('slotchange', ListSelect.onSlotChange, { passive: true });
     this.addEventListener('keydown', this.static.onControlKeydown);
     this.addEventListener(RovingTabIndex.TABINDEX_ZEROED, this.static.onTabIndexZeroed);
     this.addEventListener('click', this.static.onListSelectClick);
   }
 
-  /** @type {CustomElement['idlChangedCallback']} */
+  /** @type {List['idlChangedCallback']} */
   idlChangedCallback(name, oldValue, newValue) {
     super.idlChangedCallback(name, oldValue, newValue);
     switch (name) {
@@ -170,7 +167,6 @@ export default class ListSelect extends FormAssociatedMixin(List) {
         OptionConstructor: ListOption,
         GroupConstructor: ListOption,
       });
-      console.log('collection created', this);
     }
     return this._optionsCollection;
   }
@@ -185,7 +181,6 @@ export default class ListSelect extends FormAssociatedMixin(List) {
 
   /** @type {HTMLElement['focus']} */
   focus(options = undefined) {
-    console.log('focus?');
     super.focus(options);
     const nextTarget = this.querySelector('[role="option"][tabindex="0"]');
     nextTarget?.focus();

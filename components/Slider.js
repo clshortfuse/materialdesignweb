@@ -30,10 +30,6 @@ export default class Slider extends Input {
     return template;
   }
 
-  static rootTemplate = /* html */ `
-    <mdw-slider>
-  `;
-
   /**
    * @param {string} value
    * @param {number} onNaN
