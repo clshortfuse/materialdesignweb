@@ -9,22 +9,16 @@ export default class Button extends Input {
 
   static styles = [...super.styles, styles];
 
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <div id=touch-target aria-hidden="true"></div>
-      <div id=outline aria-hidden="true"></div>
-      <mdw-icon id=icon aria-hidden="true" svg={svg} src="{src}">{icon}</mdw-icon>
-    `,
-  ];
-
   static get template() {
     const template = super.template;
+    const html = this.html;
     template.getElementById('label').append(
-      template.getElementById('icon'),
-      template.getElementById('ripple'),
-      template.getElementById('touch-target'),
-      template.getElementById('outline'),
+      html`
+        <mdw-icon id=icon aria-hidden="true" svg={svg} src="{src}">{icon}</mdw-icon>
+        ${template.getElementById('ripple')}
+        <div id=touch-target aria-hidden="true"></div>
+        <div id=outline aria-hidden="true"></div>
+      `,
     );
     const control = template.getElementById('control');
     control.setAttribute('role', 'button');

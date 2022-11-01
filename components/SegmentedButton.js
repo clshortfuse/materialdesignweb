@@ -11,18 +11,12 @@ export default class SegmentedButton extends Button {
 
   static styles = [...super.styles, styles];
 
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <mdw-icon _if={icon} id=check-icon aria-hidden=true>check</mdw-icon>
-    `,
-  ];
-
   static get template() {
     const template = super.template;
-    template.getElementById('label').append(
-      template.getElementById('check-icon'),
-    );
+    const html = this.html;
+    template.getElementById('label').append(html`
+      <mdw-icon _if={icon} id=check-icon aria-hidden=true>check</mdw-icon>
+    `);
     const control = template.getElementById('control');
     control.setAttribute('type', 'radio');
     control.setAttribute('role', 'option');

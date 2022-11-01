@@ -19,12 +19,10 @@ export default class Checkbox extends Input {
           <mdw-icon id=checkbox-icon class=checkbox-icon selected={checked} indeterminate={indeterminate}>
             ${({ indeterminate, indeterminateIcon, icon }) => (indeterminate ? indeterminateIcon : icon)}
           </mdw-icon>
+          ${template.getElementById('ripple')}
+          ${template.getElementById('overlay')}
         </div>
       `,
-    );
-    template.getElementById('checkbox-box').append(
-      template.getElementById('ripple'),
-      template.getElementById('overlay'),
     );
     template.getElementById('control').setAttribute('type', 'checkbox');
     return template;

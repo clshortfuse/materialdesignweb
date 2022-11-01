@@ -20,9 +20,10 @@ export default class ListItem extends Ripple {
 
   static styles = [...super.styles, checkboxIconStyles, radioIconStyles, styles];
 
-  static fragments = [
-    ...super.fragments,
-    /* html */`
+  static get template() {
+    const template = super.template;
+    const html = this.html;
+    template.append(html`
       <a id=anchor href={href}>
         <mdw-container _if={checkbox} class="leading checkbox-box" id=checkbox color={selectionColor} aria-hidden="true">
           <mdw-icon id=checkbox-icon class="checkbox-icon" selected={_selected} disabled={disabled}>check</mdw-icon>
@@ -36,7 +37,7 @@ export default class ListItem extends Ripple {
         <slot id=leading-slot name=leading><span _if={leading} id=leading-text class=leading>{leading}</span></slot>
         <div id=content href={href}>
           <mdw-text block id=headline type-style=body-large ink=on-surface>
-            <slot id=headline-slot name=headline><span id=headline-text class=text>{text}</span></slot>
+            <slot id=headline-slot name=headline><span id=headline-text class=text>{text}${template.getElementById('slot')}</span></slot>
           </mdw-text>
           <mdw-text block id=supporting type-style=body-medium ink=on-surface-variant>
             <slot id=supporting-slot name=supporting><span _if={supporting} id=supporting-text class=text>{supporting}</span>
@@ -51,14 +52,7 @@ export default class ListItem extends Ripple {
         </mdw-text>
       </a>
       <mdw-divider _if={divider} id=divider></mdw-divider>
-    `,
-  ];
-
-  static get template() {
-    const template = super.template;
-    template.getElementById('headline-text').append(
-      template.getElementById('slot'),
-    );
+    `);
     template.getElementById('overlay').setAttribute('overlay-disabled', 'focus hover');
     return template;
   }

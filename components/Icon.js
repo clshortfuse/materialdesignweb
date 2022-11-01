@@ -19,9 +19,10 @@ export default class Icon extends Text {
     ];
   }
 
-  static fragments = [
-    ...super.fragments,
-    /* html */`
+  static get template() {
+    const template = super.template;
+    const html = this.html;
+    template.append(html`
       <div id=icon class={fontClass} aria-hidden="true">
         <svg _if={svg} id=svg viewBox="0 0 24 24" id="svg">
           <use href="{svg}" fill="currentColor"/>
@@ -32,14 +33,9 @@ export default class Icon extends Text {
           referrerpolicy={referrerPolicy} decoding={decoding} loading={loading}
           width={width} height={height}
         />
+        ${template.getElementById('slot')}
       </div>
-    `,
-  ];
-
-  static get template() {
-    const template = super.template;
-    const icon = template.getElementById('icon');
-    icon.append(template.getElementById('slot'));
+    `);
     return template;
   }
 

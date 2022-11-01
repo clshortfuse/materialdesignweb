@@ -10,9 +10,11 @@ export default class IconButton extends Button {
 
   static get template() {
     const template = super.template;
+
     const icon = template.getElementById('icon');
     icon.append(template.getElementById('slot'));
     icon.setAttribute('style', '{static.computeIconStyle}');
+
     const control = template.getElementById('control');
     control.setAttribute('aria-pressed', '{static.computeAriaPressed}');
 

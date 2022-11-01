@@ -17,7 +17,7 @@ export default class MenuItem extends Input {
     const template = super.template;
     /** @type {import('./CustomElement.js').HTMLTemplater<MenuItem>} */
     const html = this.html;
-    template.append(html`
+    template.getElementById('label').append(html`
       <mdw-icon _if={icon} id=icon aria-hidden="true" src={src}>{icon}</mdw-icon>
       <span id=trailing>
         <slot id=trailing-slot name=trailing role=note>{trailing}</slot>
@@ -25,10 +25,6 @@ export default class MenuItem extends Input {
         id=trailing-icon aria-hidden="true" src={trailingSrc}>{trailingIcon}</mdw-icon>
       </span>
     `);
-    template.getElementById('label').append(
-      template.getElementById('icon'),
-      template.getElementById('trailing'),
-    );
     const control = template.getElementById('control');
     control.setAttribute('type', 'button');
     control.setAttribute('role', 'menuitem');

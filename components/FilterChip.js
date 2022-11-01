@@ -9,20 +9,13 @@ export default class FilterChip extends Chip {
 
   static styles = [...super.styles, styles];
 
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <mdw-icon id=check-icon aria-hidden="true">check</mdw-icon>
-      <mdw-icon id=trailing-icon aria-hidden="true" src={trailingSrc}>{trailingIcon}</mdw-icon>
-    `,
-  ];
-
   static get template() {
     const template = super.template;
-    template.getElementById('label').append(
-      template.getElementById('check-icon'),
-      template.getElementById('trailing-icon'),
-    );
+    const html = this.html;
+    template.getElementById('label').append(html`
+      <mdw-icon id=check-icon aria-hidden="true">check</mdw-icon>
+      <mdw-icon id=trailing-icon aria-hidden="true" src={trailingSrc}>{trailingIcon}</mdw-icon>
+    `);
     const control = template.getElementById('control');
     control.removeAttribute('role');
     control.setAttribute('autocomplete', 'off');

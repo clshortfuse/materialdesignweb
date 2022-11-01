@@ -23,21 +23,22 @@ export default class TopAppBar extends Container {
     const template = super.template;
     /** @type {import('./CustomElement.js').HTMLTemplater<TopAppBar>} */
     const html = this.html;
+    const slot = template.getElementById('slot');
+    slot.setAttribute('onslotchange', '{static.onSlotChange}');
+
     template.append(html`
       <div id="bar" role=toolbar aria-labelledby=headline style=${this.computeBarStyle}>
+        ${template.getElementById('elevation')}
         <div id=leading><slot id=leading-slot name=leading onslotchange={static.onSlotChange}></slot></div>
-        <div id=headline>{headline}</div>
+        <div id=headline>
+          {headline}
+          ${slot}
+        </div>
         <div id=trailing><slot id=trailing-slot name=trailing onslotchange={static.onSlotChange}></slot></div>
       </div>
       <div _if=${({ size }) => size === 'medium' || size === 'large'}
         id=companion aria-hidden=true><span id=companion-text>{headline}</span></div>
     `);
-
-    const bar = template.getElementById('bar');
-    bar.prepend(template.getElementById('elevation'));
-    const slot = template.getElementById('slot');
-    slot.setAttribute('onslotchange', '{static.onSlotChange}');
-    template.getElementById('headline').append(slot);
     return template;
   }
 
@@ -152,6 +153,7 @@ export default class TopAppBar extends Container {
         ? this.refs.bar.offsetParent
         : this.offsetParent;
       if (scrollingElement === document.body) {
+        console.log('using window instead of body');
         // eslint-disable-next-line no-param-reassign
         scrollingElement = window;
       }

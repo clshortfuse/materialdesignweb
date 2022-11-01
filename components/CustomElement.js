@@ -31,7 +31,7 @@
  * @template [T2=T1]
  * @callback HTMLTemplater
  * @param {TemplateStringsArray} strings
- * @param  {...(string|((this:T1, data:T2) => any))} substitutions
+ * @param  {...(string|Element|((this:T1, data:T2) => any))} substitutions
  * @return {DocumentFragment}
  */
 
@@ -105,36 +105,31 @@ export default class CustomElement extends HTMLElement {
 
   /** @type {?DocumentFragment} */
   static get template() {
-    const fragment = this.generateFragment();
-    fragment.append(
-      ...this.styles.map((style) => {
-        if (typeof style === 'string') {
+    if (!this.hasOwnProperty('_template')) {
+      this._template = this.generateFragment();
+      this._template.append(
+        ...this.styles.map((style) => {
+          if (typeof style === 'string') {
+            const el = document.createElement('style');
+            el.textContent = style;
+            return el;
+          }
+          if (style instanceof URL) {
+            const el = document.createElement('link');
+            el.rel = 'stylesheet';
+            el.href = style.href;
+            return el;
+          }
+          if (CustomElement.supportsAdoptedStyleSheets) return null;
           const el = document.createElement('style');
-          el.textContent = style;
+          el.textContent = [...style.cssRules].map((r) => r.cssText).join('\n');
           return el;
-        }
-        if (style instanceof URL) {
-          const el = document.createElement('link');
-          el.rel = 'stylesheet';
-          el.href = style.href;
-          return el;
-        }
-        if (CustomElement.supportsAdoptedStyleSheets) return null;
-        const el = document.createElement('style');
-        el.textContent = [...style.cssRules].map((r) => r.cssText).join('\n');
-        return el;
-      }).filter(Boolean),
-    );
-    for (const f of this.fragments) {
-      if (typeof f === 'string') {
-        const parsed = this.getDomParser().parseFromString(f.trim(), 'text/html');
-        fragment.append(...parsed.body.childNodes);
-      } else {
-        fragment.append(f);
-      }
+        }).filter(Boolean),
+        ...this.fragments.map((f) => ((typeof f === 'string') ? this.generateFragment(f) : f)),
+      );
     }
 
-    return fragment;
+    return this._template;
   }
 
   static #generatedUIDs = new Set();
@@ -142,11 +137,11 @@ export default class CustomElement extends HTMLElement {
   /** @type {Document} */
   static _inactiveDocument;
 
-  /** @type {DOMParser} */
-  static _domParser;
-
   /** @type {HTMLTemplater<any,any>} */
-  static _staticHtml;
+  static _html;
+
+  /** @type {DocumentFragment} */
+  static _template = null;
 
   /** @type {DocumentFragment} */
   static _composition = null;
@@ -208,19 +203,36 @@ export default class CustomElement extends HTMLElement {
    */
   static _templateHTML(strings, ...substitutions) {
     const inlineFunctions = this.getInlineFunctions();
-    const fragment = this.generateFragment();
+    /** @type {Map<string, Element>} */
+    const tempSlots = new Map();
     const replacements = substitutions.map((sub) => {
-      if (typeof sub === 'string') return sub;
+      switch (typeof sub) {
+        case 'string': return sub;
+        case 'function': {
+          const internalName = `#${CustomElement.#generateUID()}`;
 
-      const internalName = `#${CustomElement.#generateUID()}`;
-
-      // console.log(this.name, 'using', internalName, 'instead of', sub);
-      inlineFunctions.set(internalName, { fn: sub });
-      return `{${internalName}}`;
+          // console.log(this.name, 'using', internalName, 'instead of', sub);
+          inlineFunctions.set(internalName, { fn: sub });
+          return `{${internalName}}`;
+        }
+        case 'object': {
+          // Assume Element
+          const tempId = CustomElement.#generateUID();
+          tempSlots.set(tempId, sub);
+          return `<div id="${tempId}"></div>`;
+        }
+        default:
+          throw new Error(`Unexpected substitution: ${String(sub)}`);
+      }
     });
     const compiledString = String.raw({ raw: strings }, ...replacements);
-    const parsed = this.getDomParser().parseFromString(compiledString.trim(), 'text/html');
-    fragment.append(...parsed.body.childNodes);
+    const fragment = this.generateFragment(compiledString);
+    for (const [id, element] of tempSlots) {
+      const slot = fragment.getElementById(id);
+      slot.after(element);
+      slot.remove();
+    }
+
     return fragment;
   }
 
@@ -232,9 +244,16 @@ export default class CustomElement extends HTMLElement {
     });
   }
 
-  static generateFragment() {
-    this._inactiveDocument ??= new Document();
-    return this._inactiveDocument.createDocumentFragment();
+  /**
+   * @param {string} [fromString]
+   * @return {DocumentFragment}
+   */
+  static generateFragment(fromString) {
+    this._inactiveDocument ??= document.implementation.createHTMLDocument();
+    if (fromString == null) {
+      return this._inactiveDocument.createDocumentFragment();
+    }
+    return this._inactiveDocument.createRange().createContextualFragment(fromString);
   }
 
   /**
@@ -518,16 +537,10 @@ export default class CustomElement extends HTMLElement {
    * @return {HTMLTemplater<?>}
    */
   static get html() {
-    if (!this._staticHtml) {
-      this._staticHtml = this._templateHTML.bind(this);
+    if (!this._html) {
+      this._html = this._templateHTML.bind(this);
     }
-    return this._staticHtml;
-  }
-
-  /** @return {DOMParser} */
-  static getDomParser() {
-    this._domParser ??= new DOMParser();
-    return this._domParser;
+    return this._html;
   }
 
   /** @type {Map<string,HTMLElement>} */
@@ -1147,7 +1160,6 @@ export default class CustomElement extends HTMLElement {
     }
     return composition;
   }
-
 
   // eslint-disable-next-line class-methods-use-this
   connectedCallback() {

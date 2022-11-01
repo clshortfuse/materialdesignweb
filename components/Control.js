@@ -34,13 +34,11 @@ export default class Control extends FormAssociatedMixin(Ripple) {
           onblur={~static.onControlBlur}
           oninput={static.onControlInput}
           >${this.controlVoidElement ? '' : `</${this.controlTagName}>`}
+          ${template.getElementById('overlay')}
+          ${template.getElementById('ripple')}
+          ${template.getElementById('slot')}
       </label>
     `);
-    template.getElementById('label').append(
-      template.getElementById('overlay'),
-      template.getElementById('ripple'),
-      template.getElementById('slot'),
-    );
     return template;
   }
 

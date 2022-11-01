@@ -18,23 +18,21 @@ export function TextFieldMixin(Base) {
       control.setAttribute('placeholder', '{placeholder}');
       control.setAttribute('aria-labelledby', 'label-text');
       control.classList.add('inline');
-      template.getElementById('label').append(
-        html`
-          <mdw-icon _if={icon} id=icon aria-hidden=true>{icon}</mdw-icon>
-          <span _if={inputPrefix} class=inline id=prefix aria-hidden=true>{inputPrefix}</span>
-          <span _if={inputSuffix} class=inline id=suffix aria-hidden=true>{inputSuffix}</span>
-          <mdw-icon _if={trailingIcon} id=trailing-icon aria-hidden=true>{trailingIcon}</mdw-icon>
-          <div _if={filled} id=indicator></div>
-          <div id=outline>
-            <div id=gap>
-              <div _if={label} id=label-text>{label}</div>
+      template.getElementById('label').append(html`
+        <mdw-icon _if={icon} id=icon aria-hidden=true>{icon}</mdw-icon>
+        <span _if={inputPrefix} class=inline id=prefix aria-hidden=true>{inputPrefix}</span>
+        <span _if={inputSuffix} class=inline id=suffix aria-hidden=true>{inputSuffix}</span>
+        <mdw-icon _if={trailingIcon} id=trailing-icon aria-hidden=true>{trailingIcon}</mdw-icon>
+        <div _if={filled} id=indicator></div>
+        <div id=outline>
+          <div id=gap>
+            <div _if={label} id=label-text>
+              {label}
+              ${template.getElementById('slot')}
             </div>
           </div>
-        `,
-      );
-      template.getElementById('label-text').append(
-        template.getElementById('slot'),
-      );
+        </div>
+      `);
       template.append(html`
         <div _if={shouldShowSupporting} id=supporting>
           {computeSupportingText}

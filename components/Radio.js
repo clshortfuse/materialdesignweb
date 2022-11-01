@@ -9,21 +9,15 @@ export default class Radio extends Input {
 
   static styles = [...super.styles, styles, iconStyles];
 
-  static fragments = [
-    ...super.fragments,
-    /* html */ `
-      <div id=icon class=radio-icon selected={_checked} disabled={disabled}></div>
-    `];
-
   static get template() {
     const template = super.template;
-    template.getElementById('icon').append(
-      template.getElementById('ripple'),
-      template.getElementById('overlay'),
-    );
-    template.getElementById('label').append(
-      template.getElementById('icon'),
-    );
+    const html = this.html;
+    template.getElementById('label').append(html`
+      <div id=icon class=radio-icon selected={_checked} disabled={disabled}>
+        ${template.getElementById('ripple')}
+        ${template.getElementById('overlay')}
+      </div>
+    `);
     template.getElementById('control').setAttribute('type', 'radio');
     return template;
   }

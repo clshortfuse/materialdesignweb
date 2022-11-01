@@ -26,21 +26,16 @@ export default class NavItem extends Ripple {
     /** @type {import('./CustomElement.js').HTMLTemplater<NavItem>} */
     const html = this.html;
     template.append(html`
-      <div id=indicator aria-hidden=true></div>
+      <div id=indicator aria-hidden=true>
+        ${template.getElementById('overlay')}
+        ${template.getElementById('ripple')}
+      </div>
       <mdw-icon id=icon aria-hidden=true src={src}>{icon}</mdw-icon>
-      <a id=anchor aria-labelledby=slot aria-describedby=badge href=${({ href }) => href ?? '#'} aria-label=${({ ariaLabel }) => ariaLabel}></a>
+      <a id=anchor aria-labelledby=slot aria-describedby=badge href=${({ href }) => href ?? '#'} aria-label=${({ ariaLabel }) => ariaLabel}>
+        ${template.getElementById('slot')}
+      </a>
       <span aria-hidden=true id=badge type-style=label-small color=error badge={badge} aria-current=${({ active }) => (active ? 'page' : null)}></mdw-container>
     `);
-
-    template.getElementById('anchor').append(
-      template.getElementById('slot'),
-    );
-
-    template.getElementById('indicator').append(
-      template.getElementById('overlay'),
-      template.getElementById('ripple'),
-    );
-
     return template;
   }
 

@@ -12,25 +12,21 @@ export default class Slider extends Input {
     const template = super.template;
     /** @type {import('./CustomElement.js').HTMLTemplater<Slider>} */
     const html = this.html;
+    template.append(html`
+      <div id=track aria-hidden=true style={computeTrackStyle}>
+        <div _if={ticks} id=ticks></div>
+        <div id="track-active"></div>
+        <div id="thumb-anchor">
+          <div id=thumb></div>
+          <div id="thumb-label"
+          hidden=${({ _isHoveringThumb, _isFocused }) => (!_isHoveringThumb && !_isFocused)} 
+          text=${({ _previewValue }) => _previewValue ?? ''}></div>
+          ${template.getElementById('overlay')}
+        </div>
+      </div>
+    `);
     template.getElementById('control').setAttribute('type', 'range');
     template.getElementById('ripple').remove();
-    template.append(
-      html`
-        <div id=track aria-hidden=true style={computeTrackStyle}>
-          <div _if={ticks} id=ticks></div>
-          <div id="track-active"></div>
-          <div id="thumb-anchor">
-            <div id=thumb></div>
-            <div id="thumb-label"
-            hidden=${({ _isHoveringThumb, _isFocused }) => (!_isHoveringThumb && !_isFocused)} 
-            text=${({ _previewValue }) => _previewValue ?? ''}></div>
-          </div>
-        </div>
-      `,
-    );
-    template.getElementById('thumb').append(
-      template.getElementById('overlay'),
-    );
     return template;
   }
 
