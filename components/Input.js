@@ -171,22 +171,6 @@ export default class Input extends Control {
           }
         }
         break;
-      case 'disabled':
-        switch (this.#input.getAttribute('role')) {
-          case null:
-          case 'button':
-          case 'radio':
-          case 'switch':
-            this.#input.disabled = newValue != null;
-            if (newValue === null) {
-              this.setAttribute('tabindex', '0');
-            } else {
-              this.setAttribute('tabindex', '-1');
-            }
-            break;
-          default:
-        }
-        break;
       case 'checked':
         this._checked = this.#input.checked;
         break;

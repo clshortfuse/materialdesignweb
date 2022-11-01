@@ -12,9 +12,13 @@ label {
 }
 
 #control {
+  /* Firefox requires at least 1px "visible" for screen reading */
+  /* Safari will not allow interaction with 0 opacity */
+  /* Chrome will not focus with visibility:hidden */
+
   position: absolute;
   inset: 0;
-  /** Firefox requires at least 1px "visible" for screen reading */
+
   block-size: 100%;
   inline-size: 100%;
   margin: 0;
@@ -27,7 +31,8 @@ label {
   cursor: inherit;
   outline: none;
 
-  visibility: hidden;
+  background-color: transparent;
+  color: transparent;
 }
 
 #control::-moz-focus-inner {

@@ -88,19 +88,11 @@ export default class Control extends FormAssociatedMixin(Ripple) {
         }
         break;
       case 'disabled':
-        switch (this._control.getAttribute('role')) {
-          case null:
-          case 'button':
-          case 'radio':
-          case 'switch':
-            this._control.disabled = newValue != null;
-            if (newValue === null) {
-              this.setAttribute('tabindex', '0');
-            } else {
-              this.setAttribute('tabindex', '-1');
-            }
-            break;
-          default:
+        this._control.disabled = newValue != null;
+        if (newValue === null) {
+          this.setAttribute('tabindex', '0');
+        } else {
+          this.removeAttribute('tabindex');
         }
         break;
       default:
