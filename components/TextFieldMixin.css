@@ -47,6 +47,8 @@
   --outline-color: rgb(var(--mdw-color__outline));
   --label-color: rgb(var(--mdw-color__on-surface-variant));
   --descriptor-opacity: 0.5;
+  --mdw-ink: var(--mdw-color__primary);
+  --mdw-bg: var(--mdw-color__surface-variant);
 
   display: block;
 
@@ -63,11 +65,6 @@
 
 :host(:is([filled],[color])) {
   --container-color: rgb(var(--mdw-bg));
-}
-
-:host(:where([filled],[outlined])) {
-  --mdw-bg: var(--mdw-color__surface-variant);
-  --mdw-ink: var(--mdw-color__primary);
 }
 
 :host([icon]) {
@@ -227,16 +224,15 @@ mdw-icon {
 
 #indicator {
   position: absolute;
-  inset: 0;
-
-  display: flex;
+  inset-block-end: 0;
+  inset-inline: 0;
 
   border-block-end: 2px solid var(--label-color);
 
   pointer-events: none;
 
   transform: scaleY(0.5);
-  transform-origin: 0% 100%;
+  z-index: 1; /* Force new layer to avoid repaint */
 
   transition: inherit;
   transition-property: transform;
@@ -244,6 +240,11 @@ mdw-icon {
 }
 
 #outline {
+  position: absolute;
+  inset: 0;
+
+  z-index: 1; /* Force new layer to avoid repaint */
+
   border-color: rgb(var(--mdw-color__outline));
 
   transition: inherit;
@@ -292,6 +293,13 @@ mdw-icon {
   opacity: 1;
 }
 
+#wrapper {
+  /* Exists to block flex from passing center position to absolutely position children */
+  /* Avoids paint on focus */
+  /* transition: inherit; */
+}
+
+/* If no label */
 :host(:is(:focus, [populated])) #control::placeholder {
   opacity: 0.70;
 }
@@ -315,9 +323,6 @@ mdw-icon {
 }
 
 :host([outlined]) #outline {
-  position: absolute;
-  inset: 0;
-
   display: flex;
 
   border: solid var(--border-width) var(--outline-color);
@@ -379,7 +384,7 @@ mdw-icon {
   transition: inherit;
   transition-property: transform;
 
-  will-change: transform;
+  will-change: transform, border-width, border-color;
 
 }
 
@@ -422,6 +427,7 @@ mdw-icon {
 
   /* Padding instead of transform because max content width changes based on font-size and icon */
   transition-property: padding;
+  will-change: margin, padding;
 }
 
 :host([outlined]) #outline::before {
