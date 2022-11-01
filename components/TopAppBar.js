@@ -86,7 +86,7 @@ export default class TopAppBar extends Container {
 
         if (newValue <= 0) {
           // Set at rest (top of parent, but allow overscroll)
-          this._cssPosition = 'static';
+          this._cssPosition = 'relative';
           this._translateY = 0;
         } else if (newValue < this._translateY) {
           // Align appbar.top with scroll position (top of screen)
@@ -101,8 +101,8 @@ export default class TopAppBar extends Container {
       case '_scrollDirection':
         if (newValue === 'down') {
           if (this._cssPosition !== 'sticky') return;
-          // Was sticky, switch to static and let appbar scroll away
-          this._cssPosition = 'static';
+          // Was sticky, switch to relative and let appbar scroll away
+          this._cssPosition = 'relative';
           this._translateY = this._scrollPosition;
           return;
         }
@@ -194,7 +194,7 @@ TopAppBar.prototype.headline = TopAppBar.idl('headline');
 TopAppBar.prototype.raised = TopAppBar.idl('raised', 'boolean');
 TopAppBar.prototype.hideOnScroll = TopAppBar.idl('hideOnScroll', 'boolean');
 TopAppBar.prototype.size = /** @type {'small'|'medium'|'large'|null} */ TopAppBar.idl('size');
-TopAppBar.prototype._cssPosition = TopAppBar.idl('_cssPosition', { empty: 'static' });
+TopAppBar.prototype._cssPosition = TopAppBar.idl('_cssPosition', { empty: 'relative' });
 TopAppBar.prototype._scrollPosition = TopAppBar.idl('_scrollPosition', { type: 'float', empty: 0 });
 TopAppBar.prototype._scrollDirection = /** @type {'up'|'down'} */ (TopAppBar.idl('_scrollDirection', { empty: 'down' }));
 TopAppBar.prototype._onScreen = TopAppBar.idl('_onScreen', { default: true });
