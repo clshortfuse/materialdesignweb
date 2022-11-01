@@ -10,7 +10,6 @@ export default class Overlay extends Container {
 
   static get template() {
     const template = super.template;
-    /** @type {Overlay['html']} */
     const html = this.html;
     template.append(html`
       <div id=overlay disabled={disabled} aria-hidden=true>
@@ -19,9 +18,6 @@ export default class Overlay extends Container {
   }
 
   static lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matches;
-
-  /** @type {'mouse'|'touch'|'key'|null} */
-  #lastInteraction = null;
 
   /**
    * @param {PointerEvent|MouseEvent} event
@@ -87,6 +83,9 @@ export default class Overlay extends Container {
       this.refs.overlay?.setAttribute('touched', '');
     }
   }
+
+  /** @type {'mouse'|'touch'|'key'|null} */
+  #lastInteraction = null;
 
   connectedCallback() {
     // super.connectedCallback();

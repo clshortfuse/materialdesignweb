@@ -20,18 +20,6 @@ export default class ListSelect extends FormAssociatedMixin(List) {
 
   static styles = [...super.styles, styles];
 
-  /** @type {HTMLCollectionOf<ListItem> & HTMLOptionsCollection} */
-  _optionsCollection = null;
-
-  constructor() {
-    super();
-    this.setAttribute('aria-orientation', 'vertical');
-    this.refs.slot.addEventListener('slotchange', ListSelect.onSlotChange, { passive: true });
-    this.addEventListener('keydown', this.static.onControlKeydown);
-    this.addEventListener(RovingTabIndex.TABINDEX_ZEROED, this.static.onTabIndexZeroed);
-    this.addEventListener('click', this.static.onListSelectClick);
-  }
-
   /**
    * @param {Event} event
    * @this {HTMLSlotElement}
@@ -136,8 +124,17 @@ export default class ListSelect extends FormAssociatedMixin(List) {
     }
   }
 
-  /** @return {typeof ListSelect} */
-  get static() { return /** @type {typeof ListSelect} */ (super.static); }
+  /** @type {HTMLCollectionOf<ListItem> & HTMLOptionsCollection} */
+  _optionsCollection = null;
+
+  constructor() {
+    super();
+    this.setAttribute('aria-orientation', 'vertical');
+    this.refs.slot.addEventListener('slotchange', ListSelect.onSlotChange, { passive: true });
+    this.addEventListener('keydown', this.static.onControlKeydown);
+    this.addEventListener(RovingTabIndex.TABINDEX_ZEROED, this.static.onTabIndexZeroed);
+    this.addEventListener('click', this.static.onListSelectClick);
+  }
 
   /** @type {CustomElement['idlChangedCallback']} */
   idlChangedCallback(name, oldValue, newValue) {
@@ -149,6 +146,16 @@ export default class ListSelect extends FormAssociatedMixin(List) {
       default:
     }
   }
+
+  * _selectedOptionsGenerator() {
+    for (const el of this.options) {
+      if (!el.selected) continue;
+      yield el;
+    }
+  }
+
+  /** @return {typeof ListSelect} */
+  get static() { return /** @type {typeof ListSelect} */ (super.static); }
 
   /** @return {NodeListOf<ListItem>} */
   get childListItems() {
@@ -195,13 +202,14 @@ export default class ListSelect extends FormAssociatedMixin(List) {
 
   set selectedIndex(value) {
     this.options.selectedIndex = value;
-    this._value = this.options.item(value)?.value ?? '';
+    this._value = (this.options.item(value)?.value) ?? '';
   }
 
   get value() {
     return this._value;
   }
 
+  /** @param {string} v */
   set value(v) {
     for (const el of this.options) {
       el.selected = (el.value === v);
@@ -217,13 +225,6 @@ export default class ListSelect extends FormAssociatedMixin(List) {
 
   * [Symbol.iterator]() {
     for (const el of this.options) {
-      yield el;
-    }
-  }
-
-  * _selectedOptionsGenerator() {
-    for (const el of this.options) {
-      if (!el.selected) continue;
       yield el;
     }
   }

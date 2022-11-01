@@ -2,7 +2,7 @@
 
 import * as RovingTabIndex from '../aria/rovingtabindex.js';
 
-import Container from './Container.js';
+import './Container.js';
 import CustomElement from './CustomElement.js';
 import styles from './Menu.css' assert { type: 'css' };
 import MenuItem from './MenuItem.js';
@@ -27,7 +27,7 @@ export default class Menu extends CustomElement {
 
   static get template() {
     const template = super.template;
-    /** @type {Menu['html']} */
+    /** @type {import('./CustomElement.js').HTMLTemplater<Menu>} */
     const html = this.html;
     template.append(html`
       <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>
@@ -46,12 +46,6 @@ export default class Menu extends CustomElement {
 
   /** @type {MenuStack[]} */
   static OPEN_MENUS = [];
-
-  #dialog = /** @type {HTMLDialogElement} */ (this.refs.dialog);
-
-  #container = this.refs.container;
-
-  returnValue = '';
 
   /**
    * @param {Event} event
@@ -183,6 +177,12 @@ export default class Menu extends CustomElement {
     const currentItem = /** @type {HTMLElement} */ (event.target);
     RovingTabIndex.removeTabIndex(this.childMenuItems, [currentItem]);
   }
+
+  #dialog = /** @type {HTMLDialogElement} */ (this.refs.dialog);
+
+  #container = this.refs.container;
+
+  returnValue = '';
 
   /**
    * @return {boolean} handled

@@ -36,10 +36,6 @@ export default class TextArea extends TextFieldMixin(Control) {
     'rows',
   ];
 
-  #updatingSlot = false;
-
-  #textarea = /** @type {HTMLTextAreaElement} */ (this.refs.control);
-
   /**
    * @param {InputEvent} event
    * @this {HTMLTextAreaElement}
@@ -76,6 +72,38 @@ export default class TextArea extends TextFieldMixin(Control) {
     const newValue = textarea.defaultValue;
     if (previousValue !== newValue) {
       host.idlChangedCallback('defaultValue', previousValue, newValue);
+    }
+  }
+
+  #updatingSlot = false;
+
+  #textarea = /** @type {HTMLTextAreaElement} */ (this.refs.control);
+
+  /** @type {Control['idlChangedCallback']} */
+  idlChangedCallback(name, oldValue, newValue) {
+    super.idlChangedCallback(name, oldValue, newValue);
+    switch (name) {
+      case 'defaultValueAttr':
+        this.defaultValue = newValue;
+        break;
+      case 'defaultValue':
+        this._value = this.#textarea.value;
+        this.resize();
+        break;
+      case '_lineHeight':
+        this.refs.label.style.setProperty('--line-height', newValue);
+        break;
+      case '_maxHeight':
+        this.#textarea.style.setProperty('max-height', newValue);
+        break;
+      case 'maxRows':
+        this.refs.label.style.setProperty('--max-rows', newValue || 'none');
+        // fallthrough
+      case 'minRows':
+      case 'rows':
+        this.resize();
+        break;
+      default:
     }
   }
 
@@ -131,38 +159,6 @@ export default class TextArea extends TextFieldMixin(Control) {
     this.#textarea.value = this.defaultValue;
     this._value = this.#textarea.value;
     super.formResetCallback();
-  }
-
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
-  idlChangedCallback(name, oldValue, newValue) {
-    super.idlChangedCallback(name, oldValue, newValue);
-    switch (name) {
-      case 'defaultValueAttr':
-        this.defaultValue = newValue;
-        break;
-      case 'defaultValue':
-        this._value = this.#textarea.value;
-        this.resize();
-        break;
-      case '_lineHeight':
-        this.refs.label.style.setProperty('--line-height', newValue);
-        break;
-      case '_maxHeight':
-        this.#textarea.style.setProperty('max-height', newValue);
-        break;
-      case 'maxRows':
-        this.refs.label.style.setProperty('--max-rows', newValue || 'none');
-        // fallthrough
-      case 'minRows':
-      case 'rows':
-        this.resize();
-        break;
-      default:
-    }
   }
 
   get updatingSlot() { return this.#updatingSlot; }

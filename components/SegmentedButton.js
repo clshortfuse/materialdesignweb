@@ -37,6 +37,15 @@ export default class SegmentedButton extends Button {
     this.outlined = true;
   }
 
+  /** @type {Button['idlChangedCallback']} */
+  idlChangedCallback(name, oldValue, newValue) {
+    super.idlChangedCallback(name, oldValue, newValue);
+    if (name === 'checked' || name === 'type') {
+      const attribute = this.type === 'checkbox' ? 'aria-checked' : 'aria-selected';
+      this.#input.setAttribute(attribute, this.checked ? 'true' : 'false');
+    }
+  }
+
   /**
    * @param {string} name
    * @param {string?} oldValue
@@ -49,15 +58,6 @@ export default class SegmentedButton extends Button {
       return;
     }
     super.attributeChangedCallback(name, oldValue, newValue);
-  }
-
-  /** @type {Button['idlChangedCallback']} */
-  idlChangedCallback(name, oldValue, newValue) {
-    super.idlChangedCallback(name, oldValue, newValue);
-    if (name === 'checked' || name === 'type') {
-      const attribute = this.type === 'checkbox' ? 'aria-checked' : 'aria-selected';
-      this.#input.setAttribute(attribute, this.checked ? 'true' : 'false');
-    }
   }
 
   connectedCallback() {

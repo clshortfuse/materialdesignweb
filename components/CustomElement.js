@@ -137,30 +137,7 @@ export default class CustomElement extends HTMLElement {
     return fragment;
   }
 
-  static interpolatesTemplate = true;
-
-  static supportsAdoptedStyleSheets = 'adoptedStyleSheets' in ShadowRoot.prototype;
-
-  static supportsElementInternals = 'attachInternals' in HTMLElement.prototype;
-
-  static supportsElementInternalsRole = CustomElement.supportsElementInternals
-    && 'role' in ElementInternals.prototype;
-
   static #generatedUIDs = new Set();
-
-  static rootTemplate = '';
-
-  static IDL_INIT = Symbol('IDL_INIT');
-
-  /** @type {boolean} */
-  static templatable = null;
-
-  static defined = false;
-
-  static autoRegistration = true;
-
-  /** @type {Map<string, typeof CustomElement>} */
-  static registrations = new Map();
 
   /** @type {Document} */
   static _inactiveDocument;
@@ -195,86 +172,56 @@ export default class CustomElement extends HTMLElement {
   /** @type {Map<string,HTMLElement>} */
   static _removedRefs = new Map();
 
-  /** @type {HTMLTemplater<this>} */
-  #html;
+  static interpolatesTemplate = true;
 
-  /** @type {Map<string,HTMLElement>} */
-  #shadowRefs = new Map();
+  static supportsAdoptedStyleSheets = 'adoptedStyleSheets' in ShadowRoot.prototype;
 
-  /** @type {Record<string, HTMLElement>}} */
-  refs = new Proxy({}, {
-    /**
-     * @param {any} target
-     * @param {string} id
-     * @return {HTMLElement}
-     */
-    get: (target, id) => {
-      let element = this.#shadowRefs.get(id);
-      if (element) return element;
-      if (element === null) return null; // Cached null response
+  static supportsElementInternals = 'attachInternals' in HTMLElement.prototype;
 
-      // Undefined
+  static supportsElementInternalsRole = CustomElement.supportsElementInternals
+    && 'role' in ElementInternals.prototype;
 
-      element = this.shadowRoot.getElementById(id);
-      if (element) {
-        this.#shadowRefs.set(id, element);
-        return element;
-      }
+  static IDL_INIT = Symbol('IDL_INIT');
 
-      const fullComposition = this.getFullComposition();
-      const template = fullComposition.getElementById(id);
-      if (!template) {
-        // Cache not in full composition
-        this.#shadowRefs.set(id, null);
-        return null;
-      }
-      let parent = template;
-      let cloneTarget = template;
+  /** @type {boolean} */
+  static templatable = null;
 
-      // Iterate backwards in template until used reference is found
-      while ((parent = parent.parentElement) != null) {
-        // Parent already in DOM and referenced
-        if (this.#shadowRefs.has(parent.id)) break;
+  static defined = false;
 
-        // Parent already in DOM. Cache reference
-        const liveElement = this.shadowRoot.getElementById(parent.id);
-        if (liveElement) {
-          this.#shadowRefs.set(liveElement.id, liveElement);
-          break;
-        }
+  static autoRegistration = true;
 
-        cloneTarget = parent;
-      }
+  /** @type {Map<string, typeof CustomElement>} */
+  static registrations = new Map();
 
-      const clone = cloneTarget.cloneNode(true);
-      const iterator = document.createTreeWalker(clone, NodeFilter.SHOW_ELEMENT);
+  /** @return {string} */
+  static #generateUID() {
+    const id = Math.random().toString(36).slice(2, 10);
+    if (this.#generatedUIDs.has(id)) {
+      return this.#generateUID();
+    }
+    this.#generatedUIDs.add(id);
+    return id;
+  }
 
-      let node = /** @type {HTMLElement} */ (clone);
-      do {
-        const nodeId = node.id;
-        if (!nodeId) continue;
-        if (!element && (nodeId === id)) {
-          element = node;
-        }
-        this.#shadowRefs.set(node.id, node);
-      } while ((node = iterator.nextNode()));
-      return element;
-    },
-  });
+  /**
+   * @type {HTMLTemplater<unknown, unknown>}
+   */
+  static _templateHTML(strings, ...substitutions) {
+    const inlineFunctions = this.getInlineFunctions();
+    const fragment = this.generateFragment();
+    const replacements = substitutions.map((sub) => {
+      if (typeof sub === 'string') return sub;
 
-  /** @type {Set<string>[]} */
-  #spySets = [];
+      const internalName = `#${CustomElement.#generateUID()}`;
 
-  #spying = false;
-
-  constructor() {
-    super();
-    this.#attachShadow();
-    this.#attachStyles();
-    this.#attachContent();
-    this.#attachEvents();
-    this.#attachInternals();
-    this.#attachARIA();
+      // console.log(this.name, 'using', internalName, 'instead of', sub);
+      inlineFunctions.set(internalName, { fn: sub });
+      return `{${internalName}}`;
+    });
+    const compiledString = String.raw({ raw: strings }, ...replacements);
+    const parsed = this.getDomParser().parseFromString(compiledString.trim(), 'text/html');
+    fragment.append(...parsed.body.childNodes);
+    return fragment;
   }
 
   static autoRegister() {
@@ -288,16 +235,6 @@ export default class CustomElement extends HTMLElement {
   static generateFragment() {
     this._inactiveDocument ??= new Document();
     return this._inactiveDocument.createDocumentFragment();
-  }
-
-  /** @return {string} */
-  static #generateUID() {
-    const id = Math.random().toString(36).slice(2, 10);
-    if (this.#generatedUIDs.has(id)) {
-      return this.#generateUID();
-    }
-    this.#generatedUIDs.add(id);
-    return id;
   }
 
   /**
@@ -536,7 +473,9 @@ export default class CustomElement extends HTMLElement {
               parsedValue = null;
               attrValue = null;
             } else {
-              if (typeof newValue !== 'number') throw new TypeError('Value must be a number');
+              if (typeof newValue !== 'number') {
+                throw new TypeError('Value must be a number');
+              }
               parsedValue = newValue;
               attrValue = String(newValue);
             }
@@ -576,7 +515,7 @@ export default class CustomElement extends HTMLElement {
 
   /**
    * Wraps composeHtml with bind to `this` (not natively set with tagged template literals)
-   * @return {HTMLTemplater<any>}
+   * @return {HTMLTemplater<?>}
    */
   static get html() {
     if (!this._staticHtml) {
@@ -589,6 +528,85 @@ export default class CustomElement extends HTMLElement {
   static getDomParser() {
     this._domParser ??= new DOMParser();
     return this._domParser;
+  }
+
+  /** @type {Map<string,HTMLElement>} */
+  #shadowRefs = new Map();
+
+  /** @type {Set<string>[]} */
+  #spySets = [];
+
+  #spying = false;
+
+  /** @type {Record<string, HTMLElement>}} */
+  refs = new Proxy({}, {
+    /**
+     * @param {any} target
+     * @param {string} id
+     * @return {HTMLElement}
+     */
+    get: (target, id) => {
+      let element = this.#shadowRefs.get(id);
+      if (element) return element;
+      if (element === null) return null; // Cached null response
+
+      // Undefined
+
+      element = this.shadowRoot.getElementById(id);
+      if (element) {
+        this.#shadowRefs.set(id, element);
+        return element;
+      }
+
+      const fullComposition = this.getFullComposition();
+      const template = fullComposition.getElementById(id);
+      if (!template) {
+        // Cache not in full composition
+        this.#shadowRefs.set(id, null);
+        return null;
+      }
+      let parent = template;
+      let cloneTarget = template;
+
+      // Iterate backwards in template until used reference is found
+      while ((parent = parent.parentElement) != null) {
+        // Parent already in DOM and referenced
+        if (this.#shadowRefs.has(parent.id)) break;
+
+        // Parent already in DOM. Cache reference
+        const liveElement = this.shadowRoot.getElementById(parent.id);
+        if (liveElement) {
+          this.#shadowRefs.set(liveElement.id, liveElement);
+          break;
+        }
+
+        cloneTarget = parent;
+      }
+
+      const clone = cloneTarget.cloneNode(true);
+      const iterator = document.createTreeWalker(clone, NodeFilter.SHOW_ELEMENT);
+
+      let node = /** @type {HTMLElement} */ (clone);
+      do {
+        const nodeId = node.id;
+        if (!nodeId) continue;
+        if (!element && (nodeId === id)) {
+          element = node;
+        }
+        this.#shadowRefs.set(node.id, node);
+      } while ((node = iterator.nextNode()));
+      return element;
+    },
+  });
+
+  constructor() {
+    super();
+    this.#attachShadow();
+    this.#attachStyles();
+    this.#attachContent();
+    this.#attachEvents();
+    this.#attachInternals();
+    this.#attachARIA();
   }
 
   /**
@@ -692,6 +710,16 @@ export default class CustomElement extends HTMLElement {
 
   /**
    * @param {string} name
+   * @param {any} oldValue
+   * @param {any} newValue
+   * @return {void}
+   */
+  idlChangedCallback(name, oldValue, newValue) {
+    this.render({ [name]: newValue });
+  }
+
+  /**
+   * @param {string} name
    * @param {string?} oldValue
    * @param {string?} newValue
    */
@@ -743,8 +771,6 @@ export default class CustomElement extends HTMLElement {
     }
   }
 
-  get static() { return /** @type {typeof CustomElement} */ (/** @type {unknown} */ (this.constructor)); }
-
   #startSpy() {
     this.#spying = true;
     this.#spySets.push(new Set());
@@ -782,6 +808,61 @@ export default class CustomElement extends HTMLElement {
     if (value === source) return null;
     return value;
   }
+
+  #attachShadow() {
+    this.attachShadow({ mode: 'open', delegatesFocus: this.static.delegatesFocus });
+  }
+
+  #attachStyles() {
+    if (!CustomElement.supportsAdoptedStyleSheets) return;
+    this.shadowRoot.adoptedStyleSheets = this.static.getAdoptedStyleSheets();
+  }
+
+  #attachContent() {
+    this.shadowRoot.prepend(this.getComposition().cloneNode(true));
+  }
+
+  #attachInternals() {
+    if (CustomElement.supportsElementInternals) {
+      this.elementInternals = this.attachInternals();
+    }
+  }
+
+  #attachARIA() {
+    if (this.static.supportsElementInternalsRole) {
+      this.elementInternals.role = this.static.ariaRole;
+    } else if (!this.hasAttribute('role')) {
+      this.setAttribute('role', this.static.ariaRole);
+    }
+  }
+
+  #attachEvents() {
+    for (const [id, events] of this.static.getEvents()) {
+      /** @type {HTMLElement} */
+      const ref = this.refs[id];
+      if (!ref) {
+        console.warn('Could not bind events for #', id);
+        continue;
+      }
+      for (const { type, listener, options, prop } of events) {
+        if (listener) {
+          ref.addEventListener(type, listener, options);
+          continue;
+        }
+        /** @type {any} */
+        const value = this.#valueFromPropName(prop);
+        if (value) {
+          ref.addEventListener(type, value, options);
+          continue;
+        }
+        // If listener is a Class Field, it will not be available yet
+        // Assume it will be and if not, it will throw the error anyway
+        ref.addEventListener(type, (e) => this.#valueFromPropName(prop)(e), options);
+      }
+    }
+  }
+
+  get static() { return /** @type {typeof CustomElement} */ (/** @type {unknown} */ (this.constructor)); }
 
   /**
    * @template {true|false} T
@@ -1003,8 +1084,11 @@ export default class CustomElement extends HTMLElement {
 
     // console.log(this.static.name, 'Interpolating', [...template.children].map((child) => child.outerHTML).join('\n'));
 
-    // eslint-disable-next-line no-bitwise
-    const iterator = document.createTreeWalker(interpolation, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
+    const iterator = document.createTreeWalker(
+      interpolation,
+      // eslint-disable-next-line no-bitwise
+      NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT,
+    );
     let node;
     while ((node = iterator.nextNode())) {
       switch (node.nodeType) {
@@ -1025,75 +1109,21 @@ export default class CustomElement extends HTMLElement {
     for (const element of elements) {
       let parent = element;
       while ((parent = parent.parentElement)) {
-        if (!parent.id) {
-          parent.id = CustomElement.#generateUID();
-        }
+        parent.id ||= CustomElement.#generateUID();
       }
     }
 
     this.static._fullComposition = /** @type {DocumentFragment} */ (interpolation.cloneNode(true));
-    for (const element of elements) element.remove();
+    for (const element of elements) {
+      element.remove();
+    }
     return interpolation;
   }
 
-  /** @type {HTMLTemplater<this>} */
-  composeHtml(strings, ...substitutions) {
-    const inlineFunctions = this.static.getInlineFunctions();
-
-    const replacements = substitutions.map((sub) => {
-      if (typeof sub === 'string') return sub;
-
-      const internalName = `#${CustomElement.#generateUID()}`;
-
-      inlineFunctions.set(internalName, { fn: sub });
-      return `{${internalName}}`;
-    });
-
-    const compiledString = String.raw({ raw: strings }, ...replacements);
-    const fragment = document.createRange().createContextualFragment(compiledString);
-    // TODO: cache fragment for conditional fragments
-    return fragment;
-  }
-
-  /**
-   * @param {string} name
-   * @param {any} oldValue
-   * @param {any} newValue
-   * @return {void}
-   */
-  idlChangedCallback(name, oldValue, newValue) {
-    this.render({ [name]: newValue });
-  }
-
-  /**
-   * Wraps composeHtml with bind to `this` (not natively set with tagged template literals)
-   * @return {HTMLTemplater<this,this>}
-   */
-  get html() {
-    if (!this.#html) {
-      this.#html = this.composeHtml.bind(this);
-    }
-    return this.#html;
-  }
-
-  #attachShadow() {
-    this.attachShadow({ mode: 'open', delegatesFocus: this.static.delegatesFocus });
-  }
-
-  #attachStyles() {
-    if (!CustomElement.supportsAdoptedStyleSheets) return;
-    this.shadowRoot.adoptedStyleSheets = this.static.getAdoptedStyleSheets();
-  }
-
-  #attachContent() {
-    this.shadowRoot.prepend(this.getComposition().cloneNode(true));
-  }
-
   getFullComposition() {
-    if (this.static.hasOwnProperty('_fullComposition')) {
-      return this.static._fullComposition;
+    if (!this.static.hasOwnProperty('_fullComposition')) {
+      this.getComposition();
     }
-    this.getComposition();
     return this.static._fullComposition;
   }
 
@@ -1118,67 +1148,14 @@ export default class CustomElement extends HTMLElement {
     return composition;
   }
 
-  #attachInternals() {
-    if (CustomElement.supportsElementInternals) {
-      this.elementInternals = this.attachInternals();
-    }
+
+  // eslint-disable-next-line class-methods-use-this
+  connectedCallback() {
+    // In case author calls super.connectedCallback();
   }
 
-  #attachARIA() {
-    if (this.static.supportsElementInternalsRole) {
-      this.elementInternals.role = this.static.ariaRole;
-    } else {
-      if (this.hasAttribute('role')) return;
-      this.setAttribute('role', this.static.ariaRole);
-    }
-  }
-
-  #attachEvents() {
-    for (const [id, events] of this.static.getEvents()) {
-      /** @type {HTMLElement} */
-      const ref = this.refs[id];
-      if (!ref) {
-        console.warn('Could not bind events for #', id);
-        continue;
-      }
-      for (const { type, listener, options, prop } of events) {
-        if (listener) {
-          ref.addEventListener(type, listener, options);
-          continue;
-        }
-        /** @type {any} */
-        const value = this.#valueFromPropName(prop);
-        if (value) {
-          ref.addEventListener(type, value, options);
-          continue;
-        }
-        // If listener is a Class Field, it will not be available yet
-        // Assume it will be and if not, it will throw the error anyway
-        ref.addEventListener(type, (e) => this.#valueFromPropName(prop)(e), options);
-      }
-    }
-  }
-
-  /**
-   * @type {HTMLTemplater<unknown, unknown>}
-   */
-  static _templateHTML(strings, ...substitutions) {
-    const inlineFunctions = this.getInlineFunctions();
-
-    const replacements = substitutions.map((sub) => {
-      if (typeof sub === 'string') return sub;
-
-      const internalName = `#${CustomElement.#generateUID()}`;
-
-      // console.log(this.name, 'using', internalName, 'instead of', sub);
-      inlineFunctions.set(internalName, { fn: sub });
-      return `{${internalName}}`;
-    });
-
-    const compiledString = String.raw({ raw: strings }, ...replacements);
-    const fragment = this.generateFragment();
-    const parsed = this.getDomParser().parseFromString(compiledString.trim(), 'text/html');
-    fragment.append(...parsed.body.childNodes);
-    return fragment;
+  // eslint-disable-next-line class-methods-use-this
+  disconnectedCallback() {
+    // In case author calls super.disconnectedCallback();
   }
 }

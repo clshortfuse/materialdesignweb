@@ -27,8 +27,10 @@ export default class Icon extends Text {
           <use href="{svg}" fill="currentColor"/>
         </svg>
         <img _if={src} id=img
-          alt={alt} src={src} srcset={srcset} sizes={sizes} crossorigin={crossOrigin} usemap={useMap}
-          ismap={isMap} referrerpolicy={referrerPolicy} decoding={decoding} loading={loading} width={width} height={height}
+          alt={alt} src={src} srcset={srcset} sizes={sizes}
+          crossorigin={crossOrigin} usemap={useMap} ismap={isMap}
+          referrerpolicy={referrerPolicy} decoding={decoding} loading={loading}
+          width={width} height={height}
         />
       </div>
     `,

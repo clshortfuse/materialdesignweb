@@ -23,7 +23,7 @@ export default class NavItem extends Ripple {
 
   static get template() {
     const template = super.template;
-    /** @type {NavItem['html']} */
+    /** @type {import('./CustomElement.js').HTMLTemplater<NavItem>} */
     const html = this.html;
     template.append(html`
       <div id=indicator aria-hidden=true></div>
@@ -46,11 +46,7 @@ export default class NavItem extends Ripple {
 
   #anchor = /** @type {HTMLAnchorElement} */ (this.refs.anchor);
 
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
+  /** @type {Ripple['attributeChangedCallback']} */
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
     switch (name) {

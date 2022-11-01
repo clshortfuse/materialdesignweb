@@ -47,8 +47,6 @@ export default class Input extends Control {
     'multiple', 'pattern', 'step', 'type', 'value',
   ];
 
-  #input = /** @type {HTMLInputElement} */ (this.refs.control);
-
   /**
    * @param {MouseEvent|PointerEvent} event
    * @this {HTMLInputElement}
@@ -104,6 +102,51 @@ export default class Input extends Control {
       return;
     }
     host._checked = this.checked;
+  }
+
+  #input = /** @type {HTMLInputElement} */ (this.refs.control);
+
+  /** @type {Ripple['idlChangedCallback']} */
+  idlChangedCallback(name, oldValue, newValue) {
+    super.idlChangedCallback(name, oldValue, newValue);
+    if (oldValue == null && newValue == null) return;
+    switch (name) {
+      case 'indeterminate':
+        this.#input.indeterminate = newValue;
+        break;
+      case 'type':
+        this.#input.type = newValue;
+        break;
+      case '_formAction':
+        this.formAction = newValue;
+        break;
+      case '_height':
+        this.height = newValue;
+        break;
+      case '_width':
+        this.width = newValue;
+        break;
+      case '_checked':
+        if (!this.type) {
+          console.warn('unknown type?', this);
+        }
+        switch (this.type) {
+          case 'checkbox':
+          case 'radio':
+            if (!newValue) {
+              this.elementInternals.setFormValue(null);
+            } else {
+              this.elementInternals.setFormValue(this.value ?? 'on');
+              this._notifyRadioChange(this.name, this.value ?? 'on');
+            }
+            break;
+          default:
+        }
+        // Reinvoke change event for components tracking 'checked';
+        this.idlChangedCallback('checked', oldValue, newValue);
+        break;
+      default:
+    }
   }
 
   /**
@@ -186,49 +229,6 @@ export default class Input extends Control {
     super.formResetCallback();
   }
 
-  /** @type {Ripple['idlChangedCallback']} */
-  idlChangedCallback(name, oldValue, newValue) {
-    super.idlChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
-    switch (name) {
-      case 'indeterminate':
-        this.#input.indeterminate = newValue;
-        break;
-      case 'type':
-        this.#input.type = newValue;
-        break;
-      case '_formAction':
-        this.formAction = newValue;
-        break;
-      case '_height':
-        this.height = newValue;
-        break;
-      case '_width':
-        this.width = newValue;
-        break;
-      case '_checked':
-        if (!this.type) {
-          console.warn('unknown type?', this);
-        }
-        switch (this.type) {
-          case 'checkbox':
-          case 'radio':
-            if (!newValue) {
-              this.elementInternals.setFormValue(null);
-            } else {
-              this.elementInternals.setFormValue(this.value ?? 'on');
-              this._notifyRadioChange(this.name, this.value ?? 'on');
-            }
-            break;
-          default:
-        }
-        // Reinvoke change event for components tracking 'checked';
-        this.idlChangedCallback('checked', oldValue, newValue);
-        break;
-      default:
-    }
-  }
-
   get files() { return this.#input.files; }
 
   get select() { return this.#input.select; }
@@ -292,6 +292,7 @@ export default class Input extends Control {
 
   get checked() { return this._checked; }
 
+  /** @param {boolean} value */
   set checked(value) {
     this.#input.checked = value;
     /** @type {boolean} */

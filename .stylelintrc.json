@@ -68,6 +68,7 @@
     "selector-pseudo-class-parentheses-space-inside": "never",
     "selector-type-case": "lower",
     "selector-list-comma-space-before": "never",
+    "custom-property-no-missing-var-function": true,
     "indentation": [
       2,
       {

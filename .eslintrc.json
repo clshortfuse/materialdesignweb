@@ -50,6 +50,7 @@
     "no-param-reassign": ["error", {
       "props": false
     }],
+    "no-prototype-builtins": 0,
     "no-continue": 0,
     "no-restricted-syntax": 0,
     "require-await": 0,
@@ -104,26 +105,29 @@
     "sort-class-members/sort-class-members": [2, {
       "order": [
         "[webcomponents]",
+        "[private-static-properties]",
+        "[conventional-private-static-properties]",
         "[static-properties]",
+        "[private-static-methods]",
+        "[conventional-private-static-methods]",
+        "[static-methods]",
+        "[static-events]",
+        "[private-properties]",
         "[conventional-private-properties]",
         "[properties]",
         "constructor",
-        "[static-methods]",
-        "[static-events]",
-        "compose",
         "render",
+        "idlChangedCallback",
         "attributeChangedCallback",
-        "[methods]",
+        "[private-methods]",
         "[conventional-private-methods]",
+        "[methods]",
         "[everything-else]",
         "[lifecycle]"
       ],
       "groups": {
         "webcomponents": [{
           "name": "elementName",
-          "static": true
-        }, {
-          "name": "styles",
           "static": true
         }, {
           "name": "ariaRole",
@@ -135,11 +139,45 @@
           "name": "formAssociated",
           "static": true
         }, {
+          "name": "observedAttributes",
+          "static": true
+        }, {
+          "name": "styles",
+          "static": true
+        }, {
           "name": "fragments",
           "static": true
         }, {
-          "name": "observedAttributes",
+          "name": "template",
           "static": true
+        }],
+        "private-static-methods": [{
+          "private": true,
+          "type": "method",
+          "static": true
+        }],
+        "conventional-private-static-methods": [{
+          "name": "/_.+/",
+          "type": "method",
+          "static": true
+        }],
+        "private-static-properties": [{
+          "private": true,
+          "type": "property",
+          "static": true
+        }],
+        "conventional-private-static-properties": [{
+          "name": "/_.+/",
+          "type": "property",
+          "static": true
+        }],
+        "private-methods": [{
+          "private": true,
+          "type": "method"
+        }],
+        "private-properties": [{
+          "private": true,
+          "type": "property"
         }],
         "lifecycle": [{
           "name": "connectedCallback"
@@ -186,7 +224,7 @@
       "ignoreUrls": true
     }],
     "consistent-return": "warn",
-    "no-console": ["error", {
+    "no-console": ["warn", {
       "allow": ["warn", "error", "time", "timeEnd"]
     }],
     "no-plusplus": ["off"],
@@ -194,14 +232,14 @@
       "ignores": [],
       "version": ">=14.0.0"
     }],
-    "prefer-destructuring": ["error", {
+    "prefer-destructuring": ["warn", {
       "AssignmentExpression": {
         "array": false,
         "object": false
       },
       "VariableDeclarator": {
-        "array": false,
-        "object": true
+        "array": true,
+        "object": false
       }
     }, {
       "enforceForRenamedProperties": false

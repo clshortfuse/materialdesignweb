@@ -19,11 +19,6 @@ export default class IconButton extends Button {
     return template;
   }
 
-  constructor() {
-    super();
-    this.toggleAttribute('icon', true);
-  }
-
   /** @this {IconButton} */
   static computeIconStyle() {
     return this.iconSize !== '24px' ? `--mdw-icon__size:${this.iconSize}` : null;
@@ -57,6 +52,11 @@ export default class IconButton extends Button {
     // Toggle check and signal
     this.checked = !this.checked;
     this.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  constructor() {
+    super();
+    this.toggleAttribute('icon', true);
   }
 }
 

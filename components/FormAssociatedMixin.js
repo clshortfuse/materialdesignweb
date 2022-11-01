@@ -28,24 +28,6 @@ export function FormAssociatedMixin(Base) {
     /** @type {string[]} */
     static valueChangingContentAttributes = [];
 
-    _dirtyValue = false;
-
-    /** @type {HTMLControlElement} */
-    _control = this;
-
-    #ipcListener = this.formIPCEvent.bind(this);
-
-    /** @type {EventTarget} */
-    #ipcTarget = null;
-
-    constructor() {
-      super();
-      if (!this.hasAttribute('tabindex')) {
-      // Expose this element as focusable
-        this.setAttribute('tabindex', '0');
-      }
-    }
-
     static onControlFocus() {
     /** @type {{host:FormAssociated}} */ // @ts-ignore Coerce
       const { host } = this.getRootNode();
@@ -84,17 +66,17 @@ export function FormAssociatedMixin(Base) {
 
     /**
      * @param {InputEvent} event
-     * @this {HTMLControlElement}
+     * @this {HTMLInputElement}
      * @return {void}
      */
     static onControlInput(event) {
     /** @type {{host:FormAssociated}} */ // @ts-ignore Coerce
       const { host } = this.getRootNode();
       if (!host.validity.valid) {
-      // Perform check in case user has validated
+        // Perform check in case user has validated
         host.checkValidity();
       } else {
-      // Track internally
+        // Track internally
         this.checkValidity();
         host._badInput = this.validity.badInput;
       }
@@ -112,7 +94,23 @@ export function FormAssociatedMixin(Base) {
       host.checkValidity();
     }
 
-    get dirtyValue() { return this._dirtyValue; }
+    #ipcListener = this.formIPCEvent.bind(this);
+
+    /** @type {EventTarget} */
+    #ipcTarget = null;
+
+    _dirtyValue = false;
+
+    /** @type {HTMLControlElement} */
+    _control = this;
+
+    constructor() {
+      super();
+      if (!this.hasAttribute('tabindex')) {
+      // Expose this element as focusable
+        this.setAttribute('tabindex', '0');
+      }
+    }
 
     /** @type {CustomElement['idlChangedCallback']} */
     idlChangedCallback(name, oldValue, newValue) {
@@ -126,6 +124,19 @@ export function FormAssociatedMixin(Base) {
         default:
       }
     }
+
+    /**
+     * @param {string} key
+     * @param {string} value
+     * @return {void}
+     */
+    _notifyRadioChange(key, value) {
+      this.#ipcTarget?.dispatchEvent(
+        new CustomEvent(FormAssociated.FORM_IPC_EVENT, { detail: [key, value] }),
+      );
+    }
+
+    get dirtyValue() { return this._dirtyValue; }
 
     refreshFormAssociation() {
       const newTarget = this.elementInternals.form ?? FormAssociated.GlobalListener;
@@ -230,19 +241,8 @@ export function FormAssociatedMixin(Base) {
 
     get labels() { return this.elementInternals.labels; }
 
-    /**
-     * @param {string} key
-     * @param {string} value
-     * @return {void}
-     */
-    _notifyRadioChange(key, value) {
-      this.#ipcTarget?.dispatchEvent(
-        new CustomEvent(FormAssociated.FORM_IPC_EVENT, { detail: [key, value] }),
-      );
-    }
-
     connectedCallback() {
-      super.connectedCallback?.();
+      super.connectedCallback();
       // control.addEventListener('invalid', Control.onControlInvalid);
       if (!this.elementInternals.form) {
         this.formAssociatedCallback(null);

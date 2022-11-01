@@ -49,7 +49,9 @@ export default class Control extends FormAssociatedMixin(Ripple) {
   static controlVoidElement = true;
 
   /** @type {string[]} */
-  static clonedContentAttributes = ['autocomplete', 'disabled', 'name', 'readonly', 'required'];
+  static clonedContentAttributes = [
+    'autocomplete', 'disabled', 'name', 'readonly', 'required',
+  ];
 
   /** @type {string[]} */
   static valueChangingContentAttributes = [];

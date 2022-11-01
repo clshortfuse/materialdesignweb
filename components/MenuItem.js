@@ -15,7 +15,7 @@ export default class MenuItem extends Input {
 
   static get template() {
     const template = super.template;
-    /** @type {MenuItem['html']} */
+    /** @type {import('./CustomElement.js').HTMLTemplater<MenuItem>} */
     const html = this.html;
     template.append(html`
       <mdw-icon _if={icon} id=icon aria-hidden="true" src={src}>{icon}</mdw-icon>
@@ -34,8 +34,6 @@ export default class MenuItem extends Input {
     control.setAttribute('role', 'menuitem');
     return template;
   }
-
-  #input = /** @type {HTMLInputElement} */ (this.refs.control);
 
   /**
    * @param {MouseEvent} event
@@ -58,28 +56,9 @@ export default class MenuItem extends Input {
     }
   }
 
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
-  attributeChangedCallback(name, oldValue, newValue) {
-    super.attributeChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
-    // Menu items should always receive focus
-    switch (name) {
-      case 'disabled':
-        this.#input.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
-        break;
-      default:
-    }
-  }
+  #input = /** @type {HTMLInputElement} */ (this.refs.control);
 
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
+  /** @type {Input['idlChangedCallback']} */
   idlChangedCallback(name, oldValue, newValue) {
     super.idlChangedCallback(name, oldValue, newValue);
     if (oldValue == null && newValue == null) return;
@@ -97,6 +76,23 @@ export default class MenuItem extends Input {
             this.#input.setAttribute('role', 'menuitemradio');
             break;
         }
+        break;
+      default:
+    }
+  }
+
+  /**
+   * @param {string} name
+   * @param {string?} oldValue
+   * @param {string?} newValue
+   */
+  attributeChangedCallback(name, oldValue, newValue) {
+    super.attributeChangedCallback(name, oldValue, newValue);
+    if (oldValue == null && newValue == null) return;
+    // Menu items should always receive focus
+    switch (name) {
+      case 'disabled':
+        this.#input.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
         break;
       default:
     }

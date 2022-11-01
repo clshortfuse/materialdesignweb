@@ -13,7 +13,6 @@ export default class Progress extends Container {
 
   static get template() {
     const template = super.template;
-    /** @type {Progress['html']} */
     const html = this.html;
     template.append(html`
       <div id=determinate style={computeDeterminateStyle}>
@@ -42,19 +41,7 @@ export default class Progress extends Container {
 
   #progress = /** @type {HTMLProgressElement} */ (this.refs.progress);
 
-  computeDeterminateStyle() {
-    return `
-      --previous:${this._previousValueAsFraction ?? this.valueAsFraction ?? 0};
-      --value:${this.valueAsFraction ?? 0};
-    `;
-  }
-
-  /**
-   * @param {string} name
-   * @param {any} oldValue
-   * @param {any} newValue
-   * @return {void}
-   */
+  /** @type {Container['idlChangedCallback']} */
   idlChangedCallback(name, oldValue, newValue) {
     super.idlChangedCallback(name, oldValue, newValue);
     switch (name) {
@@ -67,6 +54,13 @@ export default class Progress extends Container {
         break;
       default:
     }
+  }
+
+  computeDeterminateStyle() {
+    return `
+      --previous:${this._previousValueAsFraction ?? this.valueAsFraction ?? 0};
+      --value:${this.valueAsFraction ?? 0};
+    `;
   }
 
   get position() { return this.#progress.position; }

@@ -32,11 +32,7 @@ export default class Checkbox extends Input {
 
   #input = /** @type {HTMLInputElement} */ (this.refs.control);
 
-  /**
-   * @param {string} name
-   * @param {string} newValue
-   * @param {string} oldValue
-   */
+  /** @type {Input['idlChangedCallback']} */
   idlChangedCallback(name, newValue, oldValue) {
     super.idlChangedCallback(name, newValue, oldValue);
     switch (name) {

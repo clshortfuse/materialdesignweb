@@ -16,12 +16,6 @@ export default class SegmentedButtonGroup extends Container {
 
   static styles = [...super.styles, styles];
 
-  constructor() {
-    super();
-    this.setAttribute('aria-orientation', 'horizontal');
-    this.refs.slot.addEventListener('slotchange', SegmentedButtonGroup.onSlotChange, { passive: true });
-  }
-
   /**
    * @param {Event} event
    * @this {HTMLSlotElement}
@@ -86,6 +80,12 @@ export default class SegmentedButtonGroup extends Container {
     event.stopPropagation();
     const currentItem = /** @type {HTMLElement} */ (event.target);
     RovingTabIndex.removeTabIndex(this.childSegmentedButtons, [currentItem]);
+  }
+
+  constructor() {
+    super();
+    this.setAttribute('aria-orientation', 'horizontal');
+    this.refs.slot.addEventListener('slotchange', SegmentedButtonGroup.onSlotChange, { passive: true });
   }
 
   /** @return {NodeListOf<SegmentedButton>} */

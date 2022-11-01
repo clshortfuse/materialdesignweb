@@ -63,20 +63,7 @@ export default class ListItem extends Ripple {
     return template;
   }
 
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
-  attributeChangedCallback(name, oldValue, newValue) {
-    super.attributeChangedCallback(name, oldValue, newValue);
-  }
-
-  /**
-   * @param {string} name
-   * @param {any} oldValue
-   * @param {any} newValue
-   */
+  /** @type {Ripple['idlChangedCallback']} */
   idlChangedCallback(name, oldValue, newValue) {
     super.idlChangedCallback(name, oldValue, newValue);
     switch (name) {

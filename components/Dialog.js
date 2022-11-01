@@ -27,7 +27,7 @@ export default class Dialog extends CustomElement {
 
   static get template() {
     const template = super.template;
-    /** @type {Dialog['html']} */
+    /** @type {import('./CustomElement.js').HTMLTemplater<Dialog>} */
     const html = this.html;
     template.append(html`
       <dialog id=dialog
@@ -58,20 +58,6 @@ export default class Dialog extends CustomElement {
 
   /** @type {DialogStack[]} */
   static OPEN_DIALOGS = [];
-
-  #dialog = /** @type {HTMLDialogElement} */ (this.refs.dialog);
-
-  #container = this.refs.container;
-
-  constructor() {
-    super();
-    if (!this.confirm) {
-      this.confirm = 'Confirm';
-    }
-    if (!this.cancel) {
-      this.cancel = 'Cancel';
-    }
-  }
 
   /**
    * @param {TransitionEvent} event
@@ -184,6 +170,20 @@ export default class Dialog extends CustomElement {
         // Revert pop state by pushing state again
         window.history.pushState(lastOpenDialog.state, lastOpenDialog.state.title);
       }
+    }
+  }
+
+  #dialog = /** @type {HTMLDialogElement} */ (this.refs.dialog);
+
+  #container = this.refs.container;
+
+  constructor() {
+    super();
+    if (!this.confirm) {
+      this.confirm = 'Confirm';
+    }
+    if (!this.cancel) {
+      this.cancel = 'Cancel';
     }
   }
 

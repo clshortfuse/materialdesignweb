@@ -10,7 +10,7 @@ export default class Slider extends Input {
 
   static get template() {
     const template = super.template;
-    /** @type {Slider['html']} */
+    /** @type {import('./CustomElement.js').HTMLTemplater<Slider>} */
     const html = this.html;
     template.getElementById('control').setAttribute('type', 'range');
     template.getElementById('ripple').remove();
@@ -106,11 +106,8 @@ export default class Slider extends Input {
     }
 
     if (offsetX == null) {
-      const rect = this.getBoundingClientRect();
-      if (clientX == null) { // Safari
-        clientX = pageX - window.scrollX;
-      }
-      offsetX = clientX - rect.left;
+      clientX ??= pageX - window.scrollX; // Safari
+      offsetX = clientX - this.getBoundingClientRect().left;
     }
 
     const { clientWidth } = this;
@@ -172,13 +169,6 @@ export default class Slider extends Input {
     super.onControlClick(event);
   }
 
-  computeTrackStyle() {
-    return [
-      this.ticks ? `--ticks:${this.ticks}` : null,
-      `--value:${Slider.valueAsFraction(this._previewValue, this.min, this.max)}`,
-    ].filter(Boolean).join(';') || null;
-  }
-
   /** @type {Input['idlChangedCallback']} */
   idlChangedCallback(name, oldValue, newValue) {
     super.idlChangedCallback(name, oldValue, newValue);
@@ -190,6 +180,13 @@ export default class Slider extends Input {
         break;
       default:
     }
+  }
+
+  computeTrackStyle() {
+    return [
+      this.ticks ? `--ticks:${this.ticks}` : null,
+      `--value:${Slider.valueAsFraction(this._previewValue, this.min, this.max)}`,
+    ].filter(Boolean).join(';') || null;
   }
 
   // @ts-ignore @override
