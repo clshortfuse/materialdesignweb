@@ -1,7 +1,6 @@
 import * as AriaToolbar from '../aria/toolbar.js';
 
 import Container from './Container.js';
-import CustomElement from './CustomElement.js';
 import styles from './TopAppBar.css' assert { type: 'css' };
 
 /** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
@@ -24,13 +23,14 @@ export default class TopAppBar extends Container {
     const template = super.template;
     /** @type {import('./CustomElement.js').HTMLTemplater<TopAppBar>} */
     const html = this.html;
-    template.append(/* html */html`
+    template.append(html`
       <div id="bar" role=toolbar aria-labelledby=headline style=${this.computeBarStyle}>
         <div id=leading><slot id=leading-slot name=leading onslotchange={static.onSlotChange}></slot></div>
         <div id=headline>{headline}</div>
         <div id=trailing><slot id=trailing-slot name=trailing onslotchange={static.onSlotChange}></slot></div>
       </div>
-      <div _if=${({ size }) => size === 'medium' || size === 'large'} id=companion aria-hidden=true><span id=companion-text>{headline}</span></div>
+      <div _if=${({ size }) => size === 'medium' || size === 'large'}
+        id=companion aria-hidden=true><span id=companion-text>{headline}</span></div>
     `);
 
     const bar = template.getElementById('bar');
@@ -40,12 +40,6 @@ export default class TopAppBar extends Container {
     template.getElementById('headline').append(slot);
     return template;
   }
-
-  /** @type {WeakRef<Element>} */
-  #offsetParent;
-
-  /** @type {EventListener} */
-  #scrollListener;
 
   /**
    * @param {TopAppBar} instance
@@ -72,33 +66,13 @@ export default class TopAppBar extends Container {
     }
   }
 
-  /** @type {CustomElement['attributeChangedCallback']} */
-  attributeChangedCallback(name, oldValue, newValue) {
-    super.attributeChangedCallback(name, oldValue, newValue);
-    switch (name) {
-      case 'aria-label':
-        if (newValue == null) {
-          this.refs.bar.removeAttribute(name);
-          if (!this.hasAttribute('aria-labelledby')) {
-            this.refs.bar.setAttribute('aria-labelledby', 'headline');
-          }
-        } else {
-          this.refs.bar.setAttribute(name, newValue);
-          if (!this.hasAttribute('aria-labelledby')) {
-            this.refs.bar.removeAttribute('aria-labelledby');
-          }
-        }
-        break;
-      default:
-    }
-  }
+  /** @type {WeakRef<Element|Window>} */
+  #scrollingElement;
 
-  /**
-   * @param {string} name
-   * @param {any} oldValue
-   * @param {any} newValue
-   * @return {void}
-   */
+  /** @type {EventListener} */
+  #scrollListener;
+
+  /** @type {Container['idlChangedCallback']} */
   idlChangedCallback(name, oldValue, newValue) {
     super.idlChangedCallback(name, oldValue, newValue);
     switch (name) {
@@ -139,31 +113,64 @@ export default class TopAppBar extends Container {
     }
   }
 
+  /** @type {Container['attributeChangedCallback']} */
+  attributeChangedCallback(name, oldValue, newValue) {
+    super.attributeChangedCallback(name, oldValue, newValue);
+    switch (name) {
+      case 'aria-label':
+        if (newValue == null) {
+          this.refs.bar.removeAttribute(name);
+          if (!this.hasAttribute('aria-labelledby')) {
+            this.refs.bar.setAttribute('aria-labelledby', 'headline');
+          }
+        } else {
+          this.refs.bar.setAttribute(name, newValue);
+          if (!this.hasAttribute('aria-labelledby')) {
+            this.refs.bar.removeAttribute('aria-labelledby');
+          }
+        }
+        break;
+      default:
+    }
+  }
+
   /** @param {Event} event */
   onParentScroll(event) {
-    this._scrollPosition = /** @type {Element} */ (event.currentTarget).scrollTop;
+    this._scrollPosition = (event.currentTarget === window)
+      ? window.scrollY
+      : /** @type {Element} */ (event.currentTarget).scrollTop;
   }
 
   /**
-   * @param {Element} [offsetParent]
+   * @param {Element|Window} [scrollingElement]
    * @return {boolean}
    */
-  startScrollListener(offsetParent = this.hideOnScroll ? this.refs.bar.offsetParent : this.offsetParent) {
-    if (!offsetParent) return false;
-    this.#offsetParent = new WeakRef(offsetParent);
+  startScrollListener(scrollingElement) {
+    if (!scrollingElement) {
+      // eslint-disable-next-line no-param-reassign
+      scrollingElement = this.hideOnScroll
+        ? this.refs.bar.offsetParent
+        : this.offsetParent;
+      if (scrollingElement === document.body) {
+        // eslint-disable-next-line no-param-reassign
+        scrollingElement = window;
+      }
+      if (!scrollingElement) return false;
+    }
+    this.#scrollingElement = new WeakRef(scrollingElement);
     this.#scrollListener = this.onParentScroll.bind(this);
-    offsetParent.addEventListener('scroll', this.#scrollListener);
+    scrollingElement.addEventListener('scroll', this.#scrollListener);
     return true;
   }
 
   /**
-   * @param {Element} offsetParent
+   * @param {Element|Window} scrollingElement
    * @return {boolean}
    */
-  clearScrollListener(offsetParent = this.#offsetParent?.deref()) {
-    if (!offsetParent) return false;
+  clearScrollListener(scrollingElement = this.#scrollingElement?.deref()) {
+    if (!scrollingElement) return false;
     if (!this.#scrollListener) return false;
-    offsetParent.removeEventListener('scroll', this.#scrollListener);
+    scrollingElement.removeEventListener('scroll', this.#scrollListener);
     return true;
   }
 
