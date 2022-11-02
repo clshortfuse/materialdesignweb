@@ -80,6 +80,8 @@ export function FormAssociatedMixin(Base) {
         this.checkValidity();
         host._badInput = this.validity.badInput;
       }
+      host._value = this.value;
+      host.dispatchEvent(new Event('input', { bubbles: true }));
     }
 
     /**
