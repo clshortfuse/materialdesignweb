@@ -99,6 +99,7 @@ export default class Input extends Control {
     const { host } = this.getRootNode();
     if (host.hasAttribute('disabled')) {
       event.preventDefault();
+      event.stopPropagation();
       return;
     }
     host._checked = this.checked;

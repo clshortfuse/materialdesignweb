@@ -90,8 +90,13 @@ export function FormAssociatedMixin(Base) {
     static onControlChange(event) {
     /** @type {{host:FormAssociated}} */ // @ts-ignore Coerce
       const { host } = this.getRootNode();
+
+      const previousValue = host._value;
       host._value = this.value;
       host.checkValidity();
+      if (previousValue !== host._value) {
+        host.dispatchEvent(new Event('change', { bubbles: true }));
+      }
     }
 
     #ipcListener = this.formIPCEvent.bind(this);
