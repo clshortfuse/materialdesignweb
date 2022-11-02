@@ -94,7 +94,6 @@ export default class Input extends Control {
    * @return {void}
    */
   static onControlChange(event) {
-    super.onControlChange(event);
     /** @type {{host:Input}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
     if (host.hasAttribute('disabled')) {
@@ -103,6 +102,7 @@ export default class Input extends Control {
       return;
     }
     host._checked = this.checked;
+    super.onControlChange(event);
   }
 
   #input = /** @type {HTMLInputElement} */ (this.refs.control);

@@ -81,21 +81,6 @@ export function FormAssociatedMixin(Base) {
         host._badInput = this.validity.badInput;
       }
       host._value = this.value;
-      if (!event.composed) {
-        console.log('manually dispatching input event');
-        host.dispatchEvent(new InputEvent('input', {
-          bubbles: true,
-          cancelable: event.cancelable,
-          composed: false,
-          data: event.data,
-          dataTransfer: event.dataTransfer,
-          detail: event.detail,
-          inputType: event.inputType,
-          isComposing: event.isComposing,
-          targetRanges: event.getTargetRanges(),
-          view: event.view,
-        }));
-      }
     }
 
     /**
@@ -106,14 +91,9 @@ export function FormAssociatedMixin(Base) {
     static onControlChange(event) {
     /** @type {{host:FormAssociated}} */ // @ts-ignore Coerce
       const { host } = this.getRootNode();
-
-      const previousValue = host._value;
       host._value = this.value;
       host.checkValidity();
-      if (previousValue !== host._value && !event.composed) {
-        console.log('manually dispatching change event');
-        host.dispatchEvent(new Event('change', { bubbles: true }));
-      }
+      host.dispatchEvent(new Event('change', { bubbles: true }));
     }
 
     #ipcListener = this.formIPCEvent.bind(this);
