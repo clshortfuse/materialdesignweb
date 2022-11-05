@@ -1,3 +1,7 @@
+# Note
+
+`master` branch has been been soft-archived. All new work is being done at https://github.com/clshortfuse/materialdesignweb/tree/native
+
 # materialdesignweb
 Material Design for Web
 
