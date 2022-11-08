@@ -52,6 +52,15 @@ slot {
   padding-inline-end: var(--padding-inline-end);
 }
 
+:host([minrows]) #control {
+  min-block-size: calc((var(--min-rows) * var(--line-height))
+    + var(--control__margin-top)
+    + var(--control__padding-top)
+    + var(--control__padding-bottom)
+    + var(--control__margin-bottom)
+  );
+}
+
 :host([maxrows]) #control {
   max-block-size: calc((var(--max-rows) * var(--line-height))
     + var(--control__margin-top)

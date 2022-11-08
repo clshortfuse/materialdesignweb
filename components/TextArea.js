@@ -13,9 +13,7 @@ export default class TextArea extends TextFieldMixin(Control) {
   static get template() {
     const template = super.template;
     const slot = template.getElementById('slot');
-
     slot.setAttribute('onslotchange', '{~static.onSlotChange}');
-
     template.append(slot);
     return template;
   }
@@ -96,10 +94,14 @@ export default class TextArea extends TextFieldMixin(Control) {
       case '_maxHeight':
         this.#textarea.style.setProperty('max-height', newValue);
         break;
+      case 'minRows':
+        this.refs.label.style.setProperty('--min-rows', newValue || 'none');
+        this.resize();
+        break;
       case 'maxRows':
         this.refs.label.style.setProperty('--max-rows', newValue || 'none');
-        // fallthrough
-      case 'minRows':
+        this.resize();
+        break;
       case 'rows':
         this.resize();
         break;
