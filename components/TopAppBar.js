@@ -21,7 +21,7 @@ export default class TopAppBar extends Container {
 
   static get template() {
     const template = super.template;
-    /** @type {import('./CustomElement.js').HTMLTemplater<TopAppBar>} */
+    /** @type {HTMLTemplater<TopAppBar>} */
     const html = this.html;
     const slot = template.getElementById('slot');
     slot.setAttribute('onslotchange', '{static.onSlotChange}');

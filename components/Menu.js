@@ -1,9 +1,9 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
 import * as RovingTabIndex from '../aria/rovingtabindex.js';
-
 import './Container.js';
-import CustomElement from './CustomElement.js';
+import CustomElement from '../core/CustomElement.js';
+
 import styles from './Menu.css' assert { type: 'css' };
 import MenuItem from './MenuItem.js';
 
@@ -27,7 +27,7 @@ export default class Menu extends CustomElement {
 
   static get template() {
     const template = super.template;
-    /** @type {import('./CustomElement.js').HTMLTemplater<Menu>} */
+    /** @type {HTMLTemplater<Menu>} */
     const html = this.html;
     template.append(html`
       <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>

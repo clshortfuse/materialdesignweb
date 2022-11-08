@@ -1,17 +1,16 @@
-import Control from './Control.js';
 import './Icon.js';
 import styles from './TextFieldMixin.css' assert { type: 'css' };
 
-/**
- * @param {typeof import('./Control.js').default} Base
- */
+/** @typedef {import('./Control.js').default} Control */
+
+/** @param {typeof import('./Control.js').default} Base */
 export function TextFieldMixin(Base) {
   class TextField extends Base {
     static styles = [...super.styles, styles];
 
     static get template() {
       const template = super.template;
-      /** @type {import('./CustomElement.js').HTMLTemplater<TextField>} */
+      /** @type {HTMLTemplater<TextField>} */
       const html = this.html;
       const control = template.getElementById('control');
       control.setAttribute('type', 'text');
@@ -47,7 +46,6 @@ export function TextFieldMixin(Base) {
     /** @type {Control['idlChangedCallback']} */
     idlChangedCallback(name, oldValue, newValue) {
       super.idlChangedCallback(name, oldValue, newValue);
-      if (oldValue == null && newValue == null) return;
       switch (name) {
         case 'value':
         case '_badInput':

@@ -1,4 +1,5 @@
-import CustomElement from './CustomElement.js';
+import CustomElement from '../core/CustomElement.js';
+
 import styles from './Text.css' assert { type: 'css' };
 import inkStyles from './TextInks.css' assert { type: 'css' };
 

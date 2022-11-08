@@ -1,13 +1,13 @@
 /* https://html.spec.whatwg.org/multipage/form-control-infrastructure.html */
 
-import CustomElement from './CustomElement.js';
-
 /** @typedef {'align'|'useMap'} DeprecatedHTMLInputElementProperties */
 
 /** @typedef {HTMLElement & {value:string}} HTMLControlElement */
 
+/** @typedef {import('../core/CustomElement.js').default} CustomElement */
+
 /**
- * @param {typeof CustomElement} Base
+ * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export function FormAssociatedMixin(Base) {
   class FormAssociated extends Base {
@@ -117,7 +117,6 @@ export function FormAssociatedMixin(Base) {
     /** @type {CustomElement['idlChangedCallback']} */
     idlChangedCallback(name, oldValue, newValue) {
       super.idlChangedCallback(name, oldValue, newValue);
-      if (oldValue == null && newValue == null) return;
       switch (name) {
         case '_value':
           // Reinvoke change event for components tracking 'value';

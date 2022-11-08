@@ -1,83 +1,4 @@
-/** @typedef {'boolean'|'integer'|'float'|'string'} IDLOptionType */
-
-/**
- * @template {IDLOptionType} T
-  @typedef {T extends 'boolean' ? boolean : T extends 'string' ? string : T extends 'float'|'integer' ? number : unknown } ParsedIDLType<T> */
-
-/**
- * @template {IDLOptionType} T1
- * @template {any} T2
- * @typedef IDLOptions
- * @prop {T1} [type]
- * @prop {string} [attr]
- * @prop {boolean|'write'|'read'} [reflect=true]
- * @prop {boolean} [enumerable]
- * @prop {boolean} [nullable] Defaults to false if boolean
- * @prop {T2} [empty] Empty value when not nullable
- * @prop {(value: T2) => T2} [onNullish] Function used when null passed
- * @prop {T2} [default] Initial value (empty value if not specified)
- * @prop {boolean} [initialized]
- * @prop {WeakMap<CustomElement, T1>} [values]
- * @prop {WeakMap<CustomElement, string>} [attrValues]
- */
-
-/**
- * @typedef RefOptions
- * @prop {string} id
- */
-
-/**
- * @template T1
- * @template [T2=T1]
- * @callback HTMLTemplater
- * @param {TemplateStringsArray} strings
- * @param  {...(string|Element|((this:T1, data:T2) => any))} substitutions
- * @return {DocumentFragment}
- */
-
-/**
- * Property are bound to an ID+Node
- * Values are either getter or via an function
- * @template {any} T
- * @typedef {Object} BindEntry
- * @prop {string} id
- * @prop {number} nodeType
- * @prop {string} node
- * @prop {boolean} [negate]
- * @prop {Function} [fn]
- * @prop {Set<keyof T & string>} props
- * @prop {T} defaultValue
- */
-
-/**
- * Property are bound to an ID+Node
- * Values are either getter or via an function
- * @template {any} T
- * @typedef {Object} InlineFunctionEntry
- * @prop {(data:T) => any} fn
- * @prop {Set<keyof T & string>} [props]
- * @prop {T} [defaultValue]
- */
-
-/**
- * @typedef {Object} EventEntry
- * @prop {string} type
- * @prop {EventListenerOptions} options
- * @prop {EventListener} [listener]
- * @prop {string} [prop]
- */
-
-/**
- * @template T
- * @typedef {Map<keyof T, Set<BindEntry<T>>>} BindMap
- */
-
-/**
- * @template T
- * @typedef {Map<string, InlineFunctionEntry<T>>} InlineFunctionMap
- */
-
-/** @typedef {Map<string, Set<EventEntry>>} EventMap */
+import { generateFragment, generateUID, parseIDLOptions, valueFromPropName } from './functions.js';
 
 /**
  * Web Component that can cache templates for minification or performance
@@ -106,7 +27,7 @@ export default class CustomElement extends HTMLElement {
   /** @type {?DocumentFragment} */
   static get template() {
     if (!this.hasOwnProperty('_template')) {
-      this._template = this.generateFragment();
+      this._template = generateFragment();
       this._template.append(
         ...this.styles.map((style) => {
           if (typeof style === 'string') {
@@ -125,17 +46,12 @@ export default class CustomElement extends HTMLElement {
           el.textContent = [...style.cssRules].map((r) => r.cssText).join('\n');
           return el;
         }).filter(Boolean),
-        ...this.fragments.map((f) => ((typeof f === 'string') ? this.generateFragment(f) : f)),
+        ...this.fragments.map((f) => ((typeof f === 'string') ? generateFragment(f) : f)),
       );
     }
 
     return this._template;
   }
-
-  static #generatedUIDs = new Set();
-
-  /** @type {Document} */
-  static _inactiveDocument;
 
   /** @type {HTMLTemplater<any,any>} */
   static _html;
@@ -188,36 +104,19 @@ export default class CustomElement extends HTMLElement {
   /** @type {Map<string, typeof CustomElement>} */
   static registrations = new Map();
 
-  /** @return {string} */
-  static #generateUID() {
-    const id = Math.random().toString(36).slice(2, 10);
-    if (this.#generatedUIDs.has(id)) {
-      return this.#generateUID();
-    }
-    this.#generatedUIDs.add(id);
-    return id;
-  }
-
   /**
    * @type {HTMLTemplater<unknown, unknown>}
    */
   static _templateHTML(strings, ...substitutions) {
-    const inlineFunctions = this.getInlineFunctions();
     /** @type {Map<string, Element>} */
     const tempSlots = new Map();
     const replacements = substitutions.map((sub) => {
       switch (typeof sub) {
         case 'string': return sub;
-        case 'function': {
-          const internalName = `#${CustomElement.#generateUID()}`;
-
-          // console.log(this.name, 'using', internalName, 'instead of', sub);
-          inlineFunctions.set(internalName, { fn: sub });
-          return `{${internalName}}`;
-        }
+        case 'function': return this.addInlineFunction(sub);
         case 'object': {
           // Assume Element
-          const tempId = CustomElement.#generateUID();
+          const tempId = generateUID();
           tempSlots.set(tempId, sub);
           return `<div id="${tempId}"></div>`;
         }
@@ -226,7 +125,7 @@ export default class CustomElement extends HTMLElement {
       }
     });
     const compiledString = String.raw({ raw: strings }, ...replacements);
-    const fragment = this.generateFragment(compiledString);
+    const fragment = generateFragment(compiledString);
     for (const [id, element] of tempSlots) {
       const slot = fragment.getElementById(id);
       slot.after(element);
@@ -236,56 +135,22 @@ export default class CustomElement extends HTMLElement {
     return fragment;
   }
 
+  /**
+   * @param {(data: Partial<any>) => any} fn
+   * @return {string}
+   */
+  static addInlineFunction(fn) {
+    const internalName = `#${generateUID()}`;
+    // console.log(this.name, 'using', internalName, 'instead of', sub);
+    this.getInlineFunctions().set(internalName, { fn });
+    return `{${internalName}}`;
+  }
+
   static autoRegister() {
     queueMicrotask(() => {
       if (this.autoRegistration) {
         this.register();
       }
-    });
-  }
-
-  /**
-   * @param {string} [fromString]
-   * @return {DocumentFragment}
-   */
-  static generateFragment(fromString) {
-    this._inactiveDocument ??= document.implementation.createHTMLDocument();
-    if (fromString == null) {
-      return this._inactiveDocument.createDocumentFragment();
-    }
-    return this._inactiveDocument.createRange().createContextualFragment(fromString);
-  }
-
-  /**
-   * Converts attribute name to property name
-   * (Similar to DOMStringMap)
-   * @param {string} name
-   * @return {string}
-   */
-  static attrNameToPropName(name) {
-    const propNameWords = name.split('-');
-    if (propNameWords.length === 1) return name;
-    return propNameWords.reduce((prev, curr) => {
-      if (prev == null) return curr;
-      return prev + curr[0].toUpperCase() + curr.slice(1);
-    });
-  }
-
-  /**
-   * Converts property name to attribute name
-   * (Similar to DOMStringMap)
-   * @param {string} name
-   * @return {string}
-   */
-  static propNameToAttrName(name) {
-    const attrNameWords = name.split(/([A-Z])/);
-    if (attrNameWords.length === 1) return name;
-    return attrNameWords.reduce((prev, curr) => {
-      if (prev == null) return curr;
-      if (curr.length === 1 && curr.toUpperCase() === curr) {
-        return `${prev}-${curr.toLowerCase()}`;
-      }
-      return prev + curr;
     });
   }
 
@@ -362,89 +227,10 @@ export default class CustomElement extends HTMLElement {
    * @template {any} [T2=ParsedIDLType<T1>]
    * @param {string} name
    * @param {T1|IDLOptions<T1,T2>} [typeOrOptions='string']
-   * @return {IDLOptions<T1,T2>}
-   */
-  static parseIDLOptions(name, typeOrOptions) {
-    const isPrivate = name[0] === '_';
-
-    /** @type {IDLOptions<T1,T2>} */
-    const options = {
-      ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
-    };
-
-    const { type, attr, empty, onNullish } = options;
-
-    // If not set:
-    //  private & attribute = write-only
-    //  attribute = true
-    //  else false
-    const reflect = options.reflect ?? (isPrivate ? (attr ? 'write' : false) : true);
-    const enumerable = options.enumerable ?? !isPrivate;
-
-    /** @type {IDLOptionType} */
-    let parsedType = type;
-    if (parsedType == null) {
-      if (options.default == null) {
-        parsedType = 'string';
-      } else {
-        const parsed = typeof options.default;
-        parsedType = (parsed === 'number')
-          ? (Number.isInteger(options.default) ? 'integer' : 'float')
-          : parsed;
-      }
-    }
-
-    // if defined ? value
-    // else if boolean ? false
-    // else if onNullish ? false
-    // else if empty == null
-    const nullable = options.nullable ?? (
-      parsedType === 'boolean'
-        ? false
-        : (onNullish ? false : empty == null)
-    );
-    /** @type {any} */
-    let parsedEmpty = empty ?? null;
-    if (!nullable && parsedEmpty === null) {
-      // Auto assign empty value
-      switch (parsedType) {
-        case 'boolean':
-          parsedEmpty = false;
-          break;
-        case 'integer':
-        case 'float':
-          parsedEmpty = 0;
-          break;
-        default:
-        case 'string':
-          parsedEmpty = '';
-          break;
-      }
-    }
-
-    return {
-      reflect,
-      enumerable,
-      default: options.default ?? parsedEmpty,
-      type: parsedType,
-      attr: attr ?? (reflect ? CustomElement.propNameToAttrName(name) : null),
-      nullable,
-      empty: nullable ? null : parsedEmpty,
-      onNullish,
-      values: new WeakMap(),
-      attrValues: new WeakMap(),
-    };
-  }
-
-  /**
-   * @template {IDLOptionType} [T1=any]
-   * @template {any} [T2=ParsedIDLType<T1>]
-   * @param {string} name
-   * @param {T1|IDLOptions<T1,T2>} [typeOrOptions='string']
    * @return {unknown extends T2 ? string : T2}
    */
   static idl(name, typeOrOptions) {
-    const options = CustomElement.parseIDLOptions(name, typeOrOptions);
+    const options = parseIDLOptions(name, typeOrOptions);
 
     this.getIdls().set(name, options);
 
@@ -521,6 +307,7 @@ export default class CustomElement extends HTMLElement {
         if (!options.reflect) return;
         if (lastAttrValue == null && attrValue == null) return;
         if (lastAttrValue === attrValue) return;
+
         if (attrValue == null) {
           this.removeAttribute(options.attr);
         } else {
@@ -654,7 +441,7 @@ export default class CustomElement extends HTMLElement {
         if (fn) {
           if (!fnResults.has(fn)) {
             const args = Object.fromEntries(
-              [...props].map((prop) => [prop, prop in data ? data[prop] : this.#valueFromPropName(prop)]),
+              [...props].map((prop) => [prop, prop in data ? data[prop] : valueFromPropName(prop, this)]),
             );
             value = fn.call(this, args);
             fnResults.set(fn, value);
@@ -740,8 +527,6 @@ export default class CustomElement extends HTMLElement {
    * @param {string?} newValue
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue == null && newValue == null) return;
-
     // TODO: Index attribute names?
     for (const [key, options] of this.static.getIdls()) {
       if (options.attr !== name) continue;
@@ -806,25 +591,6 @@ export default class CustomElement extends HTMLElement {
     return result;
   }
 
-  /**
-   * @param {string} prop
-   * @param {any} source
-   * @return {any}
-   */
-  #valueFromPropName(prop, source = this) {
-    let value = source;
-    for (const child of prop.split('.')) {
-      if (!child) {
-        value = null;
-        break;
-      }
-      // @ts-ignore Skip cast
-      value = value[child];
-    }
-    if (value === source) return null;
-    return value;
-  }
-
   #attachShadow() {
     this.attachShadow({ mode: 'open', delegatesFocus: this.static.delegatesFocus });
   }
@@ -866,14 +632,14 @@ export default class CustomElement extends HTMLElement {
           continue;
         }
         /** @type {any} */
-        const value = this.#valueFromPropName(prop);
+        const value = valueFromPropName(prop, this);
         if (value) {
           ref.addEventListener(type, value, options);
           continue;
         }
         // If listener is a Class Field, it will not be available yet
         // Assume it will be and if not, it will throw the error anyway
-        ref.addEventListener(type, (e) => this.#valueFromPropName(prop)(e), options);
+        ref.addEventListener(type, (e) => valueFromPropName(prop, this)(e), options);
       }
     }
   }
@@ -931,7 +697,7 @@ export default class CustomElement extends HTMLElement {
 
     let { id } = element;
     if (!id) {
-      id = CustomElement.#generateUID();
+      id = generateUID();
       element.id = id;
     }
 
@@ -982,7 +748,7 @@ export default class CustomElement extends HTMLElement {
         defaultValue = inlineFunctionOptions.fn;
       }
     } else {
-      defaultValue = this.#valueFromPropName(parsedValue);
+      defaultValue = valueFromPropName(parsedValue, this);
     }
 
     if (!props) {
@@ -1125,7 +891,7 @@ export default class CustomElement extends HTMLElement {
     for (const element of elements) {
       let parent = element;
       while ((parent = parent.parentElement)) {
-        parent.id ||= CustomElement.#generateUID();
+        parent.id ||= generateUID();
       }
     }
 

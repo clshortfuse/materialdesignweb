@@ -23,7 +23,7 @@ export default class NavItem extends Ripple {
 
   static get template() {
     const template = super.template;
-    /** @type {import('./CustomElement.js').HTMLTemplater<NavItem>} */
+    /** @type {HTMLTemplater<NavItem>} */
     const html = this.html;
     template.append(html`
       <div id=indicator aria-hidden=true>

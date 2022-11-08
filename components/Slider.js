@@ -10,7 +10,7 @@ export default class Slider extends Input {
 
   static get template() {
     const template = super.template;
-    /** @type {import('./CustomElement.js').HTMLTemplater<Slider>} */
+    /** @type {HTMLTemplater<Slider>} */
     const html = this.html;
     template.append(html`
       <div id=track aria-hidden=true style={computeTrackStyle}>
@@ -164,7 +164,6 @@ export default class Slider extends Input {
   /** @type {Input['idlChangedCallback']} */
   idlChangedCallback(name, oldValue, newValue) {
     super.idlChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
     switch (name) {
       case 'value':
         /** @type {string} */

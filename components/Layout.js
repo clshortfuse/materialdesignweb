@@ -1,4 +1,5 @@
-import CustomElement from './CustomElement.js';
+import CustomElement from '../core/CustomElement.js';
+
 import styles from './Layout.css' assert { type: 'css' };
 
 export default class Layout extends CustomElement {

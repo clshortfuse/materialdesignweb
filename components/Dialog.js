@@ -1,7 +1,7 @@
 import { handleTabKeyPress } from '../aria/modal.js';
-
 import './Container.js';
-import CustomElement from './CustomElement.js';
+import CustomElement from '../core/CustomElement.js';
+
 import styles from './Dialog.css' assert { type: 'css' };
 import './Icon.js';
 import './Text.js';
@@ -27,7 +27,7 @@ export default class Dialog extends CustomElement {
 
   static get template() {
     const template = super.template;
-    /** @type {import('./CustomElement.js').HTMLTemplater<Dialog>} */
+    /** @type {HTMLTemplater<Dialog>} */
     const html = this.html;
     template.append(html`
       <dialog id=dialog
