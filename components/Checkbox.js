@@ -24,23 +24,14 @@ export default class Checkbox extends Input {
         </div>
       `,
     );
-    template.getElementById('control').setAttribute('type', 'checkbox');
+    const control = template.getElementById('control');
+    control.setAttribute('type', 'checkbox');
+    // Indeterminate must be manually expressed for ARIA
+    control.setAttribute(
+      'aria-checked',
+      this.addInlineFunction(({ indeterminate, checked }) => (indeterminate ? 'mixed' : String(!!checked))),
+    );
     return template;
-  }
-
-  #input = /** @type {HTMLInputElement} */ (this.refs.control);
-
-  /** @type {Input['idlChangedCallback']} */
-  idlChangedCallback(name, newValue, oldValue) {
-    super.idlChangedCallback(name, newValue, oldValue);
-    switch (name) {
-      case 'indeterminate':
-      case 'checked':
-        // Screen readers do not report indeterminate state
-        this.#input.setAttribute('aria-checked', this.indeterminate ? 'mixed' : String(this.checked));
-        break;
-      default:
-    }
   }
 
   /** @override */

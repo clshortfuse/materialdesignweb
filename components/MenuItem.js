@@ -15,7 +15,7 @@ export default class MenuItem extends Input {
 
   static get template() {
     const template = super.template;
-    /** @type {import('./CustomElement.js').HTMLTemplater<MenuItem>} */
+    /** @type {HTMLTemplater<MenuItem>} */
     const html = this.html;
     template.getElementById('label').append(html`
       <mdw-icon _if={icon} id=icon aria-hidden="true" src={src}>{icon}</mdw-icon>
@@ -27,7 +27,18 @@ export default class MenuItem extends Input {
     `);
     const control = template.getElementById('control');
     control.setAttribute('type', 'button');
-    control.setAttribute('role', 'menuitem');
+    control.setAttribute('role', this.addInlineFunction(({ type }) => {
+      switch (type) {
+        case 'checkbox':
+          return 'menuitemcheckbox';
+        case 'radio':
+          return 'menuitemradio';
+        default:
+        case 'button':
+          return 'menuitem';
+      }
+    }));
+
     return template;
   }
 
@@ -54,29 +65,6 @@ export default class MenuItem extends Input {
 
   #input = /** @type {HTMLInputElement} */ (this.refs.control);
 
-  /** @type {Input['idlChangedCallback']} */
-  idlChangedCallback(name, oldValue, newValue) {
-    super.idlChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
-    switch (name) {
-      case 'type':
-        switch (newValue) {
-          default:
-          case 'button':
-            this.#input.setAttribute('role', 'menuitem');
-            break;
-          case 'checkbox':
-            this.#input.setAttribute('role', 'menuitemcheckbox');
-            break;
-          case 'radio':
-            this.#input.setAttribute('role', 'menuitemradio');
-            break;
-        }
-        break;
-      default:
-    }
-  }
-
   /**
    * @param {string} name
    * @param {string?} oldValue
@@ -84,7 +72,6 @@ export default class MenuItem extends Input {
    */
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
     // Menu items should always receive focus
     switch (name) {
       case 'disabled':

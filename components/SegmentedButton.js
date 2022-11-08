@@ -20,6 +20,12 @@ export default class SegmentedButton extends Button {
     const control = template.getElementById('control');
     control.setAttribute('type', 'radio');
     control.setAttribute('role', 'option');
+    control.setAttribute('aria-checked', this.addInlineFunction(
+      (/** @type {SegmentedButton} */ { type, checked }) => (type === 'checkbox' ? String(!!checked) : null),
+    ));
+    control.setAttribute('aria-selected', this.addInlineFunction(
+      (/** @type {SegmentedButton} */ { type, checked }) => (type !== 'checkbox' ? String(!!checked) : null),
+    ));
     template.getElementById('overlay').setAttribute('overlay-disabled', 'focus');
     return template;
   }
@@ -29,15 +35,6 @@ export default class SegmentedButton extends Button {
   constructor() {
     super();
     this.outlined = true;
-  }
-
-  /** @type {Button['idlChangedCallback']} */
-  idlChangedCallback(name, oldValue, newValue) {
-    super.idlChangedCallback(name, oldValue, newValue);
-    if (name === 'checked' || name === 'type') {
-      const attribute = this.type === 'checkbox' ? 'aria-checked' : 'aria-selected';
-      this.#input.setAttribute(attribute, this.checked ? 'true' : 'false');
-    }
   }
 
   /**
