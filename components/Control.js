@@ -72,7 +72,6 @@ export default class Control extends FormAssociatedMixin(Ripple) {
    */
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
     switch (name) {
       case 'aria-label':
         if (newValue == null) {

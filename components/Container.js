@@ -27,7 +27,6 @@ export default class Container extends Text {
    */
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
     switch (name) {
       case 'disabled':
         if (newValue == null) {

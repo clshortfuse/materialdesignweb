@@ -110,7 +110,6 @@ export default class Input extends Control {
   /** @type {Ripple['idlChangedCallback']} */
   idlChangedCallback(name, oldValue, newValue) {
     super.idlChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
     switch (name) {
       case 'indeterminate':
         this.#input.indeterminate = newValue;
@@ -157,7 +156,6 @@ export default class Input extends Control {
    */
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
-    if (oldValue == null && newValue == null) return;
     switch (name) {
       case 'aria-label':
         if (newValue == null) {
@@ -277,9 +275,9 @@ export default class Input extends Control {
 
   get checked() { return this._checked; }
 
-  /** @param {boolean} value */
-  set checked(value) {
-    this.#input.checked = value;
+  /** @param {boolean} flag */
+  set checked(flag) {
+    this.#input.checked = Boolean(flag);
     /** @type {boolean} */
     this._checked = this.#input.checked;
   }
