@@ -16,6 +16,8 @@
   min-block-size: 40px;
   inline-size: 40px;
   min-inline-size: 40px;
+
+  font-size: 24px;
 }
 
 :host(:where([type="checkbox"])[selected]) {

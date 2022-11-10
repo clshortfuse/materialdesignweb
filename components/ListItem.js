@@ -32,7 +32,7 @@ export default class ListItem extends Ripple {
           aria-hidden="true"></mdw-text>
         <mdw-container _if={avatar} class=leading id=avatar color={avatarColor} type-style=title-medium src={AvatarSrc}
           aria-hidden="true">{avatar}</mdw-container>
-        <mdw-icon _if={icon} class=leading id=icon ink={iconInk} src={iconSrc} aria-hidden=true>{icon}</mdw-icon>
+        <mdw-icon _if={icon} class=leading id=icon ink={iconInk} src={iconSrc} style=${({ iconSize }) => `font-size:${iconSize}`} aria-hidden=true>{icon}</mdw-icon>
         <img id=img _if={src} class=leading src={src} alt={alt} />
         <slot id=leading-slot name=leading><span _if={leading} id=leading-text class=leading>{leading}</span></slot>
         <div id=content href={href}>
@@ -89,6 +89,7 @@ ListItem.prototype.icon = ListItem.idl('icon');
 ListItem.prototype.href = ListItem.idl('href');
 ListItem.prototype.iconInk = ListItem.idl('iconInk');
 ListItem.prototype.iconSrc = ListItem.idl('iconSrc');
+ListItem.prototype.iconSize = ListItem.idl('iconSize', { default: '18px' });
 ListItem.prototype.checkbox = ListItem.idl('checkbox', { type: 'boolean' });
 ListItem.prototype.radio = ListItem.idl('radio', { type: 'boolean' });
 ListItem.prototype.selectionColor = ListItem.idl('selectionColor', { default: 'primary' });

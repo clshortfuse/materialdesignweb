@@ -1,17 +1,19 @@
 /* https://material.io/design/iconography/system-icons.html */
 
 :host {
-  --mdw-icon__size: 18px;
   --mdw-icon__opacity: 1;
-  --mdw-icon__margin-inline-start: 12px;
-  --mdw-icon__margin-inline-end: 8px;
   --mdw-icon__font-variation-settings: 'FILL' 1;
   --mdw-icon__image__opacity: 1;
 
-  block-size: var(--mdw-icon__size);
-  inline-size: var(--mdw-icon__size);
+  display: inline-block;
+  vertical-align: -11.5%;
+
+  block-size: var(--mdw-icon__size, 1em);
+  inline-size: var(--mdw-icon__size, 1em);
 
   user-select: none;
+
+  font-size: var(--mdw-icon__size, inherit);
 
   transition-duration: 100ms;
   /* stylelint-disable-next-line liberty/use-logical-spec -- Safari does not animate inline-size */
@@ -26,12 +28,12 @@
   /* Clip bounds in case font is not ready */
   overflow: clip;
 
-  block-size: var(--mdw-icon__size);
-  inline-size: var(--mdw-icon__size);
+  block-size: 1em;
+  inline-size: 1em;
 
   opacity: var(--mdw-icon__opacity);
 
-  font-size: var(--mdw-icon__size);
+  font-size: inherit;
   font-variation-settings: var(--mdw-icon__font-variation-settings);
 
   transition-delay: 1ms;

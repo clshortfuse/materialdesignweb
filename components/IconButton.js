@@ -21,11 +21,6 @@ export default class IconButton extends Button {
     return template;
   }
 
-  /** @this {IconButton} */
-  static computeIconStyle() {
-    return this.iconSize !== '24px' ? `--mdw-icon__size:${this.iconSize}` : null;
-  }
-
   /**
    * @param {IconButton} instance
    * @return {string?}
@@ -63,4 +58,3 @@ export default class IconButton extends Button {
 }
 
 IconButton.getIdls().delete('icon');
-IconButton.prototype.iconSize = IconButton.idl('iconSize', { empty: '24px' });
