@@ -27,7 +27,7 @@ export default class NavItem extends Ripple {
     const html = this.html;
     template.append(html`
       <div id=indicator aria-hidden=true>
-        ${template.getElementById('overlay')}
+        ${template.getElementById('state')}
         ${template.getElementById('ripple')}
       </div>
       <mdw-icon id=icon aria-hidden=true src={src}>{icon}</mdw-icon>

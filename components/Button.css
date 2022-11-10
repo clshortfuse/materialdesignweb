@@ -208,6 +208,6 @@ label {
   text-align: center;
 }
 
-#overlay[touched] ~ #outline {
+#state[touched] ~ #outline {
   --mdw-button__outline__rgb: var(--mdw-color__outline);
 }

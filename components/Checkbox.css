@@ -38,11 +38,11 @@ label {
   line-height: 0;
 }
 
-#overlay {
+#state {
   pointer-events: auto;
 }
 
-#overlay,
+#state,
 #ripple {
   inset-block: calc(-1 * (var(--mdw-checkbox__margin) + var(--mdw-checkbox__border-width)));
   /* -(2px + 11px) */

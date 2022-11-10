@@ -19,7 +19,7 @@ export default class Switch extends Input {
           <mdw-icon class=icon id=icon src={src}>{icon}</mdw-icon>
           <mdw-icon class=icon id=selected-icon src={selectedIconSrc}>{selectedIcon}</mdw-icon>
           <mdw-icon class=icon id=unselected-icon src={unselectedIconSrc}>{unselectedIcon}</mdw-icon>
-          ${template.getElementById('overlay')}
+          ${template.getElementById('state')}
           ${template.getElementById('ripple')}
         </div>
       </div>

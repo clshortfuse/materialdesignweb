@@ -8,7 +8,6 @@ import Ripple from './Ripple.js';
 
 /** @typedef {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} HTMLControlElement */
 
-/** @implements {HTMLElement} */
 export default class Control extends FormAssociatedMixin(Ripple) {
   static delegatesFocus = true;
 
@@ -34,7 +33,7 @@ export default class Control extends FormAssociatedMixin(Ripple) {
           onblur={~static.onControlBlur}
           oninput={static.onControlInput}
           >${this.controlVoidElement ? '' : `</${this.controlTagName}>`}
-          ${template.getElementById('overlay')}
+          ${template.getElementById('state')}
           ${template.getElementById('ripple')}
           ${template.getElementById('slot')}
       </label>

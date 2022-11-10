@@ -54,7 +54,7 @@ label {
   background-color: rgb(var(--mdw-bg));
   border-color: rgb(var(--mdw-bg));
   color: rgb(var(--mdw-ink));
-  /* Overlay */
+  /* State */
 }
 
 :host(:active:not([disabled])) #track {

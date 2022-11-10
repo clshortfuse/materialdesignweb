@@ -192,8 +192,8 @@ label {
   color: rgb(var(--mdw-color__surface));
 }
 
-#overlay {
-  --mdw-overlay__focus-opacity: 0;
+#state {
+  --mdw-state__focus-opacity: 0;
 }
 
 mdw-icon {
@@ -460,7 +460,7 @@ mdw-icon {
   position: relative;
 }
 
-:host([outlined]) #overlay {
+:host([outlined]) #state {
   display: none;
 }
 

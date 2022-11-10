@@ -260,7 +260,7 @@ export function FormAssociatedMixin(Base) {
 
   FormAssociated.prototype.autocomplete = FormAssociated.idl('autocomplete', DOMString);
 
-  // disabled from Overlay component
+  // disabled from State component
   // readonly attribute HTMLFormElement? form;
   FormAssociated.prototype.name = FormAssociated.idl('name', DOMString);
   FormAssociated.prototype.readOnly = FormAssociated.idl('readOnly', { attr: 'readonly', type: 'boolean' });

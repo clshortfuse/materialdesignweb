@@ -47,7 +47,7 @@
 }
 
 #slot,
-#overlay,
+#state,
 #ripple {
   color: rgb(var(--mdw-chip__label-color));
 }

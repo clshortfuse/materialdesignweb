@@ -26,7 +26,7 @@ export default class SegmentedButton extends Button {
     control.setAttribute('aria-selected', this.addInlineFunction(
       (/** @type {SegmentedButton} */ { type, checked }) => (type !== 'checkbox' ? String(!!checked) : null),
     ));
-    template.getElementById('overlay').setAttribute('overlay-disabled', 'focus');
+    template.getElementById('state').setAttribute('state-disabled', 'focus');
     return template;
   }
 

@@ -7,7 +7,7 @@
 }
 
 #slot,
-#overlay,
+#state,
 #ripple,
 #icon {
   color: inherit;
@@ -84,6 +84,6 @@
 }
 
 /** Filter **/
-:host([type="checkbox"]) :is(#slot, #overlay, #ripple, #icon, #check-icon) {
+:host([type="checkbox"]) :is(#slot, #state, #ripple, #icon, #check-icon) {
   color: inherit;
 }

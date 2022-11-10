@@ -15,7 +15,7 @@ export default class Radio extends Input {
     template.getElementById('label').append(html`
       <div id=icon class=radio-icon selected={_checked} disabled={disabled}>
         ${template.getElementById('ripple')}
-        ${template.getElementById('overlay')}
+        ${template.getElementById('state')}
       </div>
     `);
     template.getElementById('control').setAttribute('type', 'radio');

@@ -21,7 +21,7 @@ export default class Slider extends Input {
           <div id="thumb-label"
           hidden=${({ _isHoveringThumb, _isFocused }) => (!_isHoveringThumb && !_isFocused)} 
           text=${({ _previewValue }) => _previewValue ?? ''}></div>
-          ${template.getElementById('overlay')}
+          ${template.getElementById('state')}
         </div>
       </div>
     `);

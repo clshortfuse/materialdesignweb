@@ -18,7 +18,7 @@
 }
 
 :host([actionable]) {
-  /** Overlay, ripples, and box-shadows are shown by the primary action instead */
+  /** State, ripples, and box-shadows are shown by the primary action instead */
   --mdw-card__elevation__visiblity: hidden;
 
   box-shadow: none;

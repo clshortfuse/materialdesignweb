@@ -1,7 +1,7 @@
-import Overlay from './Overlay.js';
 import styles from './Ripple.css' assert { type: 'css' };
+import State from './State.js';
 
-export default class Ripple extends Overlay {
+export default class Ripple extends State {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-ripple';

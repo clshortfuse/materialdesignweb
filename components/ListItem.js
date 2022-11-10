@@ -53,7 +53,7 @@ export default class ListItem extends Ripple {
       </a>
       <mdw-divider _if={divider} id=divider></mdw-divider>
     `);
-    template.getElementById('overlay').setAttribute('overlay-disabled', 'focus hover');
+    template.getElementById('state').setAttribute('state-disabled', 'focus hover');
     return template;
   }
 

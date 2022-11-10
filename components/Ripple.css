@@ -42,17 +42,10 @@
   --mdw-ripple-standard-easing: var(--mdw-motion-standard-easing, cubic-bezier(0.4, 0.0, 0.2, 1));
   --mdw-ripple-deceleration-easing: var(--mdw-motion-deceleration-easing, cubic-bezier(0.0, 0.0, 0.2, 1));
   --mdw-ripple__visibility: visible;
+  --mdw-state__pressed-opacity: 0; /* Use ripple for pressed state instead */
+
   -webkit-tap-highlight-color: transparent;
 
-}
-
-:host(:not([mdw-ripple="none"])) {
-  /* Use ripple for pressed state */
-  --mdw-overlay__pressed-opacity: 0;
-}
-
-:host([mdw-ripple="none"]) {
-  --mdw-ripple__visibility: hidden;
 }
 
 #ripple {

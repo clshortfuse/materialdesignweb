@@ -99,7 +99,7 @@ a {
   will-change: transform;
 }
 
-#overlay {
+#state {
   z-index: 2;
 }
 

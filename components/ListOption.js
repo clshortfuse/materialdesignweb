@@ -17,7 +17,7 @@ export default class ListOption extends ListItem {
     template.getElementById('headline-text').append(
       template.getElementById('slot'),
     );
-    template.getElementById('overlay').setAttribute('overlay-disabled', 'focus hover');
+    template.getElementById('state').setAttribute('state-disabled', 'focus hover');
     return template;
   }
 

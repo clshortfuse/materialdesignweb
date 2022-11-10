@@ -20,7 +20,7 @@ export default class Checkbox extends Input {
             ${({ indeterminate, indeterminateIcon, icon }) => (indeterminate ? indeterminateIcon : icon)}
           </mdw-icon>
           ${template.getElementById('ripple')}
-          ${template.getElementById('overlay')}
+          ${template.getElementById('state')}
         </div>
       `,
     );
