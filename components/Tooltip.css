@@ -1,0 +1,27 @@
+/* https://m2.material.io/components/tooltips */
+
+:host {
+  --mdw-shape__size: var(--mdw-shape__extra-small);
+  --mdw-ink: var(--mdw-color__on-surface-variant);
+  --mdw-bg: var(--mdw-color__surface-variant);
+  display: block;
+  vertical-align: middle;
+
+  margin-inline: auto;
+  padding-block: 4px;
+  padding-inline: 8px;
+
+  background-color: rgb(var(--mdw-bg));
+  color: rgb(var(--mdw-ink));
+
+  font: var(--mdw-typescale__label-medium__font);
+  letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
+}
+
+:host(:where([touch])) {
+  padding-block: 6px;
+  padding-inline: 16px;
+
+  font: var(--mdw-typescale__label-large__font);
+  letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
+}
