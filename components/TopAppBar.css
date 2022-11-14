@@ -4,18 +4,14 @@
   --mdw-bg: var(--mdw-color__surface);
   --mdw-ink: var(--mdw-color__on-surface);
   --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__0);
-  position: sticky;
-  inset-block-start: 0;
+  display: contents;
 
   z-index:2;
 }
 
-:host([hide-on-scroll]) {
-  display: contents;
-}
-
 #bar {
-  position: relative;
+  position: sticky;
+  inset-block-start: 0;
 
   display: grid;
   align-items: center;
@@ -189,12 +185,6 @@
 
 :host(:is([size="medium"],[size="large"])) #headline {
   opacity: 0;
-  transform: translateY(-25%);
 
-  will-change: transform, opacity;
-}
-
-:host([hide-on-scroll][raised]:is([size="medium"],[size="large"])) #headline {
-  opacity: 1;
-  transform: translateY(0);
+  will-change: opacity;
 }

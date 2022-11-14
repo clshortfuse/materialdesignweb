@@ -30,7 +30,7 @@ export default class TopAppBar extends Container {
       <div id="bar" role=toolbar aria-labelledby=headline style=${this.computeBarStyle}>
         ${template.getElementById('elevation')}
         <div id=leading><slot id=leading-slot name=leading onslotchange={static.onSlotChange}></slot></div>
-        <div id=headline>
+        <div id=headline style=${this.computeHeadlineStyle}>
           {headline}
           ${slot}
         </div>
@@ -54,6 +54,17 @@ export default class TopAppBar extends Container {
       position: ${_cssPosition};
       transform: translateY(${_translateY}px);
       transition: ${_transition};
+    `;
+  }
+
+  /**
+   * @param {TopAppBar} instance
+   * @return {string}
+   */
+  static computeHeadlineStyle({ size, _headlineOpacity }) {
+    if (size !== 'medium' && size !== 'large') return '';
+    return `
+      opacity: ${_headlineOpacity};
     `;
   }
 
@@ -83,9 +94,13 @@ export default class TopAppBar extends Container {
       case '_scrollPosition':
         this.raised = (newValue > 0);
 
-        if (!this.hideOnScroll) return;
+        if (this.size === 'medium' || this.size === 'large') {
+          const max = this.refs.companion.scrollHeight;
+          const min = (0.5 * max);
+          this._headlineOpacity = Math.max(0, Math.min(1, (newValue - min) / (max - min)));
+        }
 
-        // TODO: Watch for scroll stop and hide or reveal appbar if partially visible
+        if (!this.hideOnScroll) return;
 
         this._transition = 'none';
         if (newValue <= 0) {
@@ -98,7 +113,7 @@ export default class TopAppBar extends Container {
           this._cssPosition = 'sticky';
           this._translateY = 0;
           this._visibleStart = 0;
-        } else {
+        } else if (this._cssPosition !== 'sticky') {
           this._visibleStart = (newValue - this._translateY) / this.refs.bar.scrollHeight;
         }
 
@@ -143,14 +158,20 @@ export default class TopAppBar extends Container {
 
   onScrollIdle() {
     const _visibleStart = this._visibleStart;
+    if (this._headlineOpacity > 0) {
+      // Fill in opacity on idle
+      this._headlineOpacity = 1;
+    }
     if (_visibleStart <= 0) return;
     if (_visibleStart >= 1) return;
-    if (_visibleStart < 0.5) {
+    if (this._scrollPosition < (this.refs.bar.scrollHeight)) return;
+    if (_visibleStart <= 0.5) {
+      // Reveal all
       this._cssPosition = 'relative';
       this._translateY = this._scrollPosition;
       this._transition = 'transform 250ms ease-in';
+      this._headlineOpacity = 1;
     } else {
-      if (this._scrollPosition < this.refs.bar.scrollHeight) return;
       this._cssPosition = 'relative';
       this._translateY = this._scrollPosition - this.refs.bar.scrollHeight;
       this._transition = 'transform 200ms ease-out';
@@ -174,9 +195,7 @@ export default class TopAppBar extends Container {
   startScrollListener(scrollingElement) {
     if (!scrollingElement) {
       // eslint-disable-next-line no-param-reassign
-      scrollingElement = this.hideOnScroll
-        ? this.refs.bar.offsetParent
-        : this.offsetParent;
+      scrollingElement = this.refs.bar.offsetParent;
       if (scrollingElement === document.body) {
         // eslint-disable-next-line no-param-reassign
         scrollingElement = window;
@@ -201,6 +220,7 @@ export default class TopAppBar extends Container {
   }
 
   connectedCallback() {
+    super.connectedCallback();
     this.startScrollListener();
     if (this.kbdNav === 'arrow') {
       AriaToolbar.attach(this);
@@ -210,6 +230,7 @@ export default class TopAppBar extends Container {
   disconnectedCallback() {
     this.clearScrollListener();
     AriaToolbar.detach(this);
+    super.disconnectedCallback();
   }
 }
 
@@ -224,3 +245,4 @@ TopAppBar.prototype._scrollDirection = /** @type {'up'|'down'} */ (TopAppBar.idl
 TopAppBar.prototype._visibleStart = TopAppBar.idl('_visibleStart', { type: 'float', default: 0 });
 TopAppBar.prototype._translateY = TopAppBar.idl('_translateY', { type: 'float', empty: 0 });
 TopAppBar.prototype._transition = TopAppBar.idl('_transition', { empty: 'none' });
+TopAppBar.prototype._headlineOpacity = TopAppBar.idl('_headlineOpacity', { type: 'float', default: 0 });
