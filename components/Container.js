@@ -20,11 +20,7 @@ export default class Container extends Text {
     `,
   ];
 
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
+  /** @type {Text['attributeChangedCallback']} */
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
     switch (name) {

@@ -66,11 +66,7 @@ export default class MenuItem extends InputMixin(Container) {
 
   #input = /** @type {HTMLInputElement} */ (this.refs.control);
 
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
+  /** @type {Container['attributeChangedCallback']} */
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
     // Menu items should always receive focus

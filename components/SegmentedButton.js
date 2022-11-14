@@ -37,11 +37,7 @@ export default class SegmentedButton extends Button {
     this.outlined = true;
   }
 
-  /**
-   * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
-   */
+  /** @type {Button['attributeChangedCallback']} */
   attributeChangedCallback(name, oldValue, newValue) {
     // Listboxes should always receive focus
     if (name === 'disabled') {

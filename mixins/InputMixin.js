@@ -147,11 +147,7 @@ export default function InputMixin(Base) {
       }
     }
 
-    /**
-     * @param {string} name
-     * @param {string?} oldValue
-     * @param {string?} newValue
-     */
+    /** @type {CustomElement['attributeChangedCallback']} */
     attributeChangedCallback(name, oldValue, newValue) {
       super.attributeChangedCallback(name, oldValue, newValue);
       switch (name) {
@@ -180,10 +176,7 @@ export default function InputMixin(Base) {
       }
     }
 
-    /**
-     * @param {CustomEvent<[string, string]>} event
-     * @return {void}
-     */
+    /** @param {CustomEvent<[string, string]>} event */
     formIPCEvent(event) {
       if (event.target instanceof HTMLFormElement && event.target !== this.form) {
         console.warn('Control.formIPCEvent: Abort from wrong form');

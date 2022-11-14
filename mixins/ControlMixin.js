@@ -4,6 +4,8 @@ import styles from './ControlMixin.css' assert { type: 'css' };
 import FormAssociatedMixin from './FormAssociatedMixin.js';
 import RippleMixin from './RippleMixin.js';
 
+/** @typedef {import('../core/CustomElement.js').default} CustomElement */
+
 /** @typedef {'align'|'useMap'} DeprecatedHTMLInputElementProperties */
 
 /** @typedef {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} HTMLControlElement */
@@ -66,11 +68,7 @@ export default function ControlMixin(Base) {
       }
     }
 
-    /**
-     * @param {string} name
-     * @param {string?} oldValue
-     * @param {string?} newValue
-     */
+    /** @type {CustomElement['attributeChangedCallback']} */
     attributeChangedCallback(name, oldValue, newValue) {
       super.attributeChangedCallback(name, oldValue, newValue);
       switch (name) {
@@ -124,8 +122,12 @@ export default function ControlMixin(Base) {
       }
     }
 
-    /** @return {typeof Control} */
-    get static() { return /** @type {typeof Control} */ (super.static); }
+    /** @return {typeof Control & ReturnType<RippleMixin> & ReturnType<FormAssociatedMixin>} */
+    get static() {
+      return /** @type {typeof Control & ReturnType<RippleMixin> & ReturnType<FormAssociatedMixin>} */ (
+        /** @type {unknown} */ (super.static)
+      );
+    }
 
     get form() { return this.elementInternals.form; }
 
