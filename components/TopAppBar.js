@@ -42,15 +42,18 @@ export default class TopAppBar extends Container {
     return template;
   }
 
+  static IDLE_TIMEOUT_MS = 500;
+
   /**
    * @param {TopAppBar} instance
    * @return {string}
    */
-  static computeBarStyle({ hideOnScroll, _cssPosition, _translateY }) {
+  static computeBarStyle({ hideOnScroll, _cssPosition, _translateY, _transition }) {
     if (!hideOnScroll) return '';
     return `
       position: ${_cssPosition};
       transform: translateY(${_translateY}px);
+      transition: ${_transition};
     `;
   }
 
@@ -84,18 +87,21 @@ export default class TopAppBar extends Container {
 
         // TODO: Watch for scroll stop and hide or reveal appbar if partially visible
 
+        this._transition = 'none';
         if (newValue <= 0) {
           // Set at rest (top of parent, but allow overscroll)
           this._cssPosition = 'relative';
           this._translateY = 0;
+          this._visibleStart = 0;
         } else if (newValue < this._translateY) {
           // Align appbar.top with scroll position (top of screen)
           this._cssPosition = 'sticky';
           this._translateY = 0;
+          this._visibleStart = 0;
+        } else {
+          this._visibleStart = (newValue - this._translateY) / this.refs.bar.scrollHeight;
         }
 
-        this._onScreen = this._cssPosition === 'sticky'
-         || (newValue >= this._translateY && newValue <= this._translateY + this.refs.bar.scrollHeight);
         this._scrollDirection = newValue > oldValue ? 'down' : 'up';
         break;
       case '_scrollDirection':
@@ -106,7 +112,7 @@ export default class TopAppBar extends Container {
           this._translateY = this._scrollPosition;
           return;
         }
-        if (this._onScreen) return;
+        if (this._visibleStart < 1) return;
         // Align appbar.bottom with scroll position (top of screen)
         this._translateY = this._scrollPosition - this.refs.bar.scrollHeight;
         break;
@@ -135,11 +141,30 @@ export default class TopAppBar extends Container {
     }
   }
 
+  onScrollIdle() {
+    const _visibleStart = this._visibleStart;
+    if (_visibleStart <= 0) return;
+    if (_visibleStart >= 1) return;
+    if (_visibleStart < 0.5) {
+      this._cssPosition = 'relative';
+      this._translateY = this._scrollPosition;
+      this._transition = 'transform 250ms ease-in';
+    } else {
+      if (this._scrollPosition < this.refs.bar.scrollHeight) return;
+      this._cssPosition = 'relative';
+      this._translateY = this._scrollPosition - this.refs.bar.scrollHeight;
+      this._transition = 'transform 200ms ease-out';
+    }
+  }
+
   /** @param {Event} event */
   onParentScroll(event) {
     this._scrollPosition = (event.currentTarget === window)
       ? window.scrollY
       : /** @type {Element} */ (event.currentTarget).scrollTop;
+
+    clearTimeout(this.scrollDebounce);
+    this.scrollDebounce = setTimeout(() => this.onScrollIdle(), TopAppBar.IDLE_TIMEOUT_MS);
   }
 
   /**
@@ -196,5 +221,6 @@ TopAppBar.prototype.size = /** @type {'small'|'medium'|'large'|null} */ TopAppBa
 TopAppBar.prototype._cssPosition = TopAppBar.idl('_cssPosition', { empty: 'relative' });
 TopAppBar.prototype._scrollPosition = TopAppBar.idl('_scrollPosition', { type: 'float', empty: 0 });
 TopAppBar.prototype._scrollDirection = /** @type {'up'|'down'} */ (TopAppBar.idl('_scrollDirection', { empty: 'down' }));
-TopAppBar.prototype._onScreen = TopAppBar.idl('_onScreen', { default: true });
+TopAppBar.prototype._visibleStart = TopAppBar.idl('_visibleStart', { type: 'float', default: 0 });
 TopAppBar.prototype._translateY = TopAppBar.idl('_translateY', { type: 'float', empty: 0 });
+TopAppBar.prototype._transition = TopAppBar.idl('_transition', { empty: 'none' });
