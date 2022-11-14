@@ -1,7 +1,7 @@
 import * as RovingTabIndex from '../aria/rovingtabindex.js';
 import { constructHTMLOptionsCollectionProxy } from '../dom/ HTMLOptionsCollectionProxy.js';
+import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 
-import { FormAssociatedMixin } from './FormAssociatedMixin.js';
 import styles from './List.css' assert { type: 'css' };
 import List from './List.js';
 import ListItem from './ListItem.js';

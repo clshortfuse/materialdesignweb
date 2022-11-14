@@ -1,8 +1,10 @@
-import styles from './Button.css' assert { type: 'css' };
-import Input from './Input.js';
 import './Icon.js';
+import InputMixin from '../mixins/InputMixin.js';
 
-export default class Button extends Input {
+import styles from './Button.css' assert { type: 'css' };
+import Container from './Container.js';
+
+export default class Button extends InputMixin(Container) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-button';

@@ -1,9 +1,10 @@
-import Control from './Control.js';
+import { TextFieldMixin } from '../mixins/TextFieldMixin.js';
+
+import Container from './Container.js';
 import styles from './TextArea.css' assert { type: 'css' };
-import { TextFieldMixin } from './TextFieldMixin.js';
 
 /** @implements {HTMLTextAreaElement} */
-export default class TextArea extends TextFieldMixin(Control) {
+export default class TextArea extends TextFieldMixin(Container) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-textarea';

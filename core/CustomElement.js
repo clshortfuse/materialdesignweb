@@ -1,4 +1,4 @@
-import { generateFragment, generateUID, parseIDLOptions, valueFromPropName } from './functions.js';
+import { generateFragment, generateUID, parseIDLOptions, valueFromPropName } from './CustomElementFns.js';
 
 /**
  * Web Component that can cache templates for minification or performance

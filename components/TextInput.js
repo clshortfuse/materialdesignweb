@@ -1,8 +1,10 @@
-import Input from './Input.js';
-import { TextFieldMixin } from './TextFieldMixin.js';
+import InputMixin from '../mixins/InputMixin.js';
+import { TextFieldMixin } from '../mixins/TextFieldMixin.js';
+
+import Container from './Container.js';
 
 /** @implements {HTMLInputElement} */
-export default class TextInput extends TextFieldMixin(Input) {
+export default class TextInput extends TextFieldMixin(InputMixin(Container)) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-text-input';

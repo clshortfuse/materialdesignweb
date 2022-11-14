@@ -1,9 +1,11 @@
-import Input from './Input.js';
+import './Icon.js';
+import InputMixin from '../mixins/InputMixin.js';
+
+import Container from './Container.js';
 import styles from './Switch.css' assert { type: 'css' };
 import animationStyles from './SwitchAnimations.css' assert { type: 'css' };
-import './Icon.js';
 
-export default class Switch extends Input {
+export default class Switch extends InputMixin(Container) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-switch';

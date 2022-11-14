@@ -1,15 +1,16 @@
 // https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
 
-import checkboxIconStyles from './CheckboxIcon.css' assert { type: 'css'};
-import './Container.js';
 import './Divider.js';
 import './Icon.js';
+import './Text.js';
+import RippleMixin from '../mixins/RippleMixin.js';
+
+import checkboxIconStyles from './CheckboxIcon.css' assert { type: 'css'};
+import Container from './Container.js';
 import styles from './ListItem.css' assert { type: 'css' };
 import radioIconStyles from './RadioIcon.css' assert { type: 'css'};
-import Ripple from './Ripple.js';
-import './Text.js';
 
-export default class ListItem extends Ripple {
+export default class ListItem extends RippleMixin(Container) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-list-item';
@@ -57,7 +58,7 @@ export default class ListItem extends Ripple {
     return template;
   }
 
-  /** @type {Ripple['idlChangedCallback']} */
+  /** @type {Container['idlChangedCallback']} */
   idlChangedCallback(name, oldValue, newValue) {
     super.idlChangedCallback(name, oldValue, newValue);
     switch (name) {

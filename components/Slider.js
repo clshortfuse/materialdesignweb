@@ -1,7 +1,9 @@
-import Input from './Input.js';
+import InputMixin from '../mixins/InputMixin.js';
+
+import Container from './Container.js';
 import styles from './Slider.css' assert { type: 'css' };
 
-export default class Slider extends Input {
+export default class Slider extends InputMixin(Container) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-slider';
@@ -161,7 +163,7 @@ export default class Slider extends Input {
     super.onControlClick(event);
   }
 
-  /** @type {Input['idlChangedCallback']} */
+  /** @type {Container['idlChangedCallback']} */
   idlChangedCallback(name, oldValue, newValue) {
     super.idlChangedCallback(name, oldValue, newValue);
     switch (name) {

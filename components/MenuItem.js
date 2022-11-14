@@ -1,12 +1,13 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
-import * as RovingTabIndex from '../aria/rovingtabindex.js';
-
 import './Icon.js';
-import Input from './Input.js';
+import * as RovingTabIndex from '../aria/rovingtabindex.js';
+import InputMixin from '../mixins/InputMixin.js';
+
+import Container from './Container.js';
 import styles from './MenuItem.css' assert { type: 'css' };
 
-export default class MenuItem extends Input {
+export default class MenuItem extends InputMixin(Container) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-menu-item';

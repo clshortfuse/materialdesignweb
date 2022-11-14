@@ -1,11 +1,14 @@
-import styles from './NavItem.css' assert { type: 'css' };
-import Ripple from './Ripple.js';
 import './Icon.js';
+
+import RippleMixin from '../mixins/RippleMixin.js';
+
+import Container from './Container.js';
+import styles from './NavItem.css' assert { type: 'css' };
 
 /** @typedef {'charset'|'coords'|'name'|'shape'} DeprecatedHTMLAnchorElementProperties */
 
 /** @implements {Omit<HTMLAnchorElement,DeprecatedHTMLAnchorElementProperties>} */
-export default class NavItem extends Ripple {
+export default class NavItem extends RippleMixin(Container) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-nav-item';
@@ -41,7 +44,7 @@ export default class NavItem extends Ripple {
 
   #anchor = /** @type {HTMLAnchorElement} */ (this.refs.anchor);
 
-  /** @type {Ripple['attributeChangedCallback']} */
+  /** @type {Container['attributeChangedCallback']} */
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
     switch (name) {
@@ -62,9 +65,9 @@ export default class NavItem extends Ripple {
     super.connectedCallback();
 
     // this.removeEventListener('click', Ripple.onRippleClick);
-    this.removeEventListener('mousedown', Ripple.onRippleMouseDown);
-    this.removeEventListener('touchstart', Ripple.onRippleTouchStart);
-    this.removeEventListener('keydown', Ripple.onRippleKeyDown);
+    this.removeEventListener('mousedown', this.static.onRippleMouseDown);
+    this.removeEventListener('touchstart', this.static.onRippleTouchStart);
+    this.removeEventListener('keydown', this.static.onRippleKeyDown);
   }
 }
 

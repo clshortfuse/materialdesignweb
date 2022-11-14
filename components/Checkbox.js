@@ -1,9 +1,11 @@
+import './Icon.js';
+import InputMixin from '../mixins/InputMixin.js';
+
 import styles from './Checkbox.css' assert { type: 'css' };
 import iconStyles from './CheckboxIcon.css' assert { type: 'css' };
-import Input from './Input.js';
-import './Icon.js';
+import Container from './Container.js';
 
-export default class Checkbox extends Input {
+export default class Checkbox extends InputMixin(Container) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-checkbox';

@@ -6,10 +6,8 @@
 
 /** @typedef {import('../core/CustomElement.js').default} CustomElement */
 
-/**
- * @param {typeof import('../core/CustomElement.js').default} Base
- */
-export function FormAssociatedMixin(Base) {
+/** @param {typeof import('../core/CustomElement.js').default} Base */
+export default function FormAssociatedMixin(Base) {
   class FormAssociated extends Base {
     static formAssociated = true;
 
@@ -213,8 +211,8 @@ export function FormAssociatedMixin(Base) {
       return this._value;
     }
 
+    /** @param {string} v */
     set value(v) {
-      console.warn('setting value');
       this._dirtyValue = true;
       this._value = v;
     }
@@ -241,6 +239,9 @@ export function FormAssociatedMixin(Base) {
     }
 
     get labels() { return this.elementInternals.labels; }
+
+    /** @return {typeof FormAssociated} */
+    get static() { return /** @type {typeof FormAssociated} */ (super.static); }
 
     connectedCallback() {
       super.connectedCallback();

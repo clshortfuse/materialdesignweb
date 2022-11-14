@@ -1,8 +1,10 @@
-import Input from './Input.js';
+import InputMixin from '../mixins/InputMixin.js';
+
 import styles from './Radio.css' assert { type: 'css' };
 import iconStyles from './RadioIcon.css' assert { type: 'css' };
+import Text from './Text.js';
 
-export default class Radio extends Input {
+export default class Radio extends InputMixin(Text) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-radio';

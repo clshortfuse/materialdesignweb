@@ -1,11 +1,12 @@
-import './Icon.js';
+import '../components/Icon.js';
+import ControlMixin from './ControlMixin.js';
 import styles from './TextFieldMixin.css' assert { type: 'css' };
 
-/** @typedef {import('./Control.js').default} Control */
+/** @typedef {import('../core/CustomElement.js').default} CustomElement */
 
-/** @param {typeof import('./Control.js').default} Base */
+/** @param {typeof import('../core/CustomElement.js').default} Base */
 export function TextFieldMixin(Base) {
-  class TextField extends Base {
+  class TextField extends ControlMixin(Base) {
     static styles = [...super.styles, styles];
 
     static get template() {
@@ -43,7 +44,7 @@ export function TextFieldMixin(Base) {
       return template;
     }
 
-    /** @type {Control['idlChangedCallback']} */
+    /** @type {CustomElement['idlChangedCallback']} */
     idlChangedCallback(name, oldValue, newValue) {
       super.idlChangedCallback(name, oldValue, newValue);
       switch (name) {
@@ -64,6 +65,9 @@ export function TextFieldMixin(Base) {
       const { error, _validationMessage, supporting } = this;
       return (error || _validationMessage || supporting) ?? '';
     }
+
+    /** @return {typeof TextField} */
+    get static() { return /** @type {typeof TextField} */ (super.static); }
   }
 
   TextField.prototype.type = TextField.idl('type', { empty: 'text' });
