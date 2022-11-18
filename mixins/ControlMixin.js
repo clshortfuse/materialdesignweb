@@ -63,8 +63,9 @@ export default function ControlMixin(Base) {
       super();
       this._value = this._control.value;
       if (!this.hasAttribute('tabindex')) {
+        this.tabIndex = 0;
       // Expose this element as focusable
-        this.setAttribute('tabindex', '0');
+        // this.setAttribute('tabindex', '0');
       }
     }
 
@@ -88,7 +89,8 @@ export default function ControlMixin(Base) {
         case 'disabled':
           this._control.disabled = newValue != null;
           if (newValue === null) {
-            this.setAttribute('tabindex', '0');
+            this.tabIndex = 0;
+            // this.setAttribute('tabindex', '0');
           } else {
             this.removeAttribute('tabindex');
           }
@@ -120,6 +122,14 @@ export default function ControlMixin(Base) {
         // Changing control attribute may change the value (eg: min/max)
         this._value = this._control.value;
       }
+    }
+
+    /** @type {HTMLElement['focus']} */
+    focus(options = undefined) {
+      super.focus(options);
+      console.log('focus', this, this.refs.control);
+      
+      this.refs.control.focus(options);
     }
 
     /** @return {typeof Control & ReturnType<RippleMixin> & ReturnType<FormAssociatedMixin>} */

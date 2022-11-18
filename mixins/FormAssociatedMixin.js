@@ -26,10 +26,11 @@ export default function FormAssociatedMixin(Base) {
     /** @type {string[]} */
     static valueChangingContentAttributes = [];
 
-    static onControlFocus() {
+    static onControlFocus(event) {
     /** @type {{host:FormAssociated}} */ // @ts-ignore Coerce
       const { host } = this.getRootNode();
       host._isFocused = true;
+      console.log('onControlFocus', this);
     }
 
     /**
@@ -42,6 +43,9 @@ export default function FormAssociatedMixin(Base) {
       const { host } = this.getRootNode();
       host._isFocused = false;
       host.checkValidity();
+      console.log('onControlBlur', this);
+
+      // event.stopPropagation(); // Prevent composed blur from bubbling to DOM
     }
 
     /**
@@ -108,7 +112,8 @@ export default function FormAssociatedMixin(Base) {
       super();
       if (!this.hasAttribute('tabindex')) {
       // Expose this element as focusable
-        this.setAttribute('tabindex', '0');
+        this.tabIndex = 0;
+        // this.setAttribute('tabindex', '0');
       }
     }
 
@@ -196,13 +201,6 @@ export default function FormAssociatedMixin(Base) {
       } else {
         console.warn('Could not restore', state);
       }
-    }
-
-    /** @type {HTMLElement['focus']} */
-    focus(options = undefined) {
-      super.focus(options);
-      if (this._control === this) return;
-      this._control.focus(options);
     }
 
     get form() { return this.elementInternals.form; }

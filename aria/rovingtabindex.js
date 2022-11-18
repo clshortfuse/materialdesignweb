@@ -10,7 +10,7 @@ export const TABINDEX_ZEROED = 'mdw:rovingtabindex-tabindexzeroed';
 function onChildFocus(event) {
   if (this.getAttribute('tabindex') === '0') return;
 
-  this.setAttribute('tabindex', '0');
+  this.tabIndex = 0;
   this.dispatchEvent(new Event(TABINDEX_ZEROED, { bubbles: true, cancelable: true }));
 }
 
@@ -25,7 +25,8 @@ export function removeTabIndex(items, excludeItems = []) {
       continue;
     }
     if (item.hasAttribute('tabindex')) {
-      item.setAttribute('tabindex', '-1');
+      item.tabIndex = -1;
+      // item.setAttribute('tabindex', '-1');
     }
   }
 }
@@ -131,7 +132,7 @@ export function selectPrevious(list, current, loop = true) {
  */
 export function attach(element) {
   if (!element.hasAttribute('tabindex')) {
-    element.setAttribute('tabindex', (document.activeElement === element) ? '0' : '-1');
+    element.tabIndex = (document.activeElement === element) ? 0 : -1;
   }
   element.addEventListener('focus', onChildFocus);
 }
@@ -166,17 +167,21 @@ export function setupTabIndexes(items, focusableWhenDisabled = true) {
         && (focusableWhenDisabled || child.getAttribute('aria-disabled') !== 'true')) {
         firstFocusableChild = child;
       }
-      child.setAttribute('tabindex', '-1');
+      child.tabIndex = -1;
+      // child.setAttribute('tabindex', '-1');
     }
     attach(child);
   }
   if (currentlyFocusedChild) {
-    currentlyFocusedChild.setAttribute('tabindex', '0');
+    currentlyFocusedChild.tabIndex = 0;
+    // currentlyFocusedChild.setAttribute('tabindex', '0');
   } else if (currentTabIndexChild) {
     if (currentlyFocusedChild) {
-      currentTabIndexChild.setAttribute('tabindex', '-1');
+      currentTabIndexChild.tabIndex = -1;
+      // currentTabIndexChild.setAttribute('tabindex', '-1');
     }
   } else if (firstFocusableChild) {
-    firstFocusableChild.setAttribute('tabindex', '0');
+    firstFocusableChild.tabIndex = 0;
+    // firstFocusableChild.setAttribute('tabindex', '0');
   }
 }

@@ -1,12 +1,11 @@
 import '../components/Icon.js';
-import ControlMixin from './ControlMixin.js';
 import styles from './TextFieldMixin.css' assert { type: 'css' };
 
 /** @typedef {import('../core/CustomElement.js').default} CustomElement */
 
 /** @param {typeof import('../core/CustomElement.js').default} Base */
-export function TextFieldMixin(Base) {
-  class TextField extends ControlMixin(Base) {
+export default function TextFieldMixin(Base) {
+  class TextField extends Base {
     static styles = [...super.styles, styles];
 
     static get template() {

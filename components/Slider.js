@@ -19,11 +19,10 @@ export default class Slider extends InputMixin(Container) {
         <div _if={ticks} id=ticks></div>
         <div id="track-active"></div>
         <div id="thumb-anchor">
-          <div id=thumb></div>
+          <div id=thumb>${template.getElementById('state')}</div>
           <div id="thumb-label"
           hidden=${({ _isHoveringThumb, _isFocused }) => (!_isHoveringThumb && !_isFocused)} 
           text=${({ _previewValue }) => _previewValue ?? ''}></div>
-          ${template.getElementById('state')}
         </div>
       </div>
     `);

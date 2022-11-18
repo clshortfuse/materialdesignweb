@@ -1,7 +1,9 @@
+import TooltipTriggerMixin from '../mixins/TooltipTriggerMixin.js';
+
 import Button from './Button.js';
 import styles from './IconButton.css' assert { type: 'css' };
 
-export default class IconButton extends Button {
+export default class IconButton extends TooltipTriggerMixin(Button) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-icon-button';
@@ -11,12 +13,15 @@ export default class IconButton extends Button {
   static get template() {
     const template = super.template;
 
+    template.getElementById('slot').remove();
+    template.getElementById('tooltip-slot').removeAttribute('name');
+    // icon.append(template.getElementById('slot'));
     const icon = template.getElementById('icon');
-    icon.append(template.getElementById('slot'));
     icon.setAttribute('style', '{static.computeIconStyle}');
 
     const control = template.getElementById('control');
     control.setAttribute('aria-pressed', '{static.computeAriaPressed}');
+    control.setAttribute('aria-labelledby', 'toolbar');
 
     return template;
   }
@@ -50,11 +55,4 @@ export default class IconButton extends Button {
     this.checked = !this.checked;
     this.dispatchEvent(new Event('change', { bubbles: true }));
   }
-
-  constructor() {
-    super();
-    this.toggleAttribute('icon', true);
-  }
 }
-
-IconButton.getIdls().delete('icon');

@@ -1,7 +1,9 @@
+import TooltipTriggerMixin from '../mixins/TooltipTriggerMixin.js';
+
 import ExtendedFab from './ExtendedFab.js';
 import styles from './Fab.css' assert { type: 'css' };
 
-export default class Fab extends ExtendedFab {
+export default class Fab extends TooltipTriggerMixin(ExtendedFab) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-fab';
@@ -10,20 +12,13 @@ export default class Fab extends ExtendedFab {
 
   static get template() {
     const template = super.template;
-    template.getElementById('icon').append(
-      template.getElementById('slot'),
-    );
+    template.getElementById('slot').remove();
+    template.getElementById('tooltip-slot').removeAttribute('name');
+    const control = template.getElementById('control');
+    control.setAttribute('aria-labelledby', 'toolbar');
     return template;
-  }
-
-  constructor() {
-    super();
-    // Used for styling
-    this.toggleAttribute('icon', true);
   }
 }
 
 /** @type {'small'|'large'} */
 Fab.prototype.fabSize = Fab.idl('fabSize');
-
-Fab.getIdls().delete('icon');

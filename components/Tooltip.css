@@ -11,11 +11,19 @@
   padding-block: 4px;
   padding-inline: 8px;
 
+  pointer-events: none;
+
+  opacity: 0;
+  transform: scale(0);
+  z-index: 24;
+
   background-color: rgb(var(--mdw-bg));
   color: rgb(var(--mdw-ink));
 
   font: var(--mdw-typescale__label-medium__font);
   letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
+
+  transition: transform 200ms, opacity 200ms;
 }
 
 :host(:where([touch])) {
@@ -24,4 +32,9 @@
 
   font: var(--mdw-typescale__label-large__font);
   letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
+}
+
+:host([open]) {
+  opacity: 1;
+  transform: scale(1);
 }

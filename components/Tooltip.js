@@ -10,3 +10,5 @@ export default class Tooltip extends Container {
 
   static styles = [...super.styles, styles];
 }
+
+Tooltip.prototype.open = Tooltip.idl('open', 'boolean');
