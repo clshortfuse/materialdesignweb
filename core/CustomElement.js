@@ -644,6 +644,38 @@ export default class CustomElement extends HTMLElement {
     }
   }
 
+  get tabIndex() {
+    return super.tabIndex;
+  }
+
+  set tabIndex(value) {
+    if (value === super.tabIndex && value !== -1) {
+      // Non -1 value already set
+      return;
+    }
+
+    if (this.static.delegatesFocus && document.activeElement === this) {
+      if (this.getAttribute('tabindex') === value.toString()) {
+        // Skip if possible
+        return;
+      }
+
+      // Chrome blurs on tabindex changes with delegatesFocus
+      // https://bugs.chromium.org/p/chromium/issues/detail?id=1346606
+      const listener = (e) => {
+        e.stopImmediatePropagation();
+        this.focus(); // Give focus back
+      };
+      this.addEventListener('blur', listener, { capture: true, once: true });
+      console.warn('Skipping blur');
+      super.tabIndex = value;
+      this.removeEventListener('blur', listener);
+      return;
+    }
+
+    super.tabIndex = value;
+  }
+
   get static() { return /** @type {typeof CustomElement} */ (/** @type {unknown} */ (this.constructor)); }
 
   /**
