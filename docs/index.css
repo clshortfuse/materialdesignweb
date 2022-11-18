@@ -1,39 +1,27 @@
 html {
-  overflow-y: hidden;
-
-  block-size: 100%;
-  min-block-size: 100%;
-  inline-size: 100vw;
-
+  max-inline-size: 100%;
   margin: 0;
   padding: 0;
 
   background-color: rgb(var(--mdw-color__background));
   color: rgb(var(--mdw-color__on-background));
+  scroll-snap-type: y mandatory;
 }
 
 body {
-  --mdw-grid__row1: "navdrawer appbar sidedrawer";
-  --mdw-grid__row2: "navdrawer banner sidedrawer";
-  --mdw-grid__row3: "navdrawer content sidedrawer";
-  --mdw-grid__row4: "navdrawer bottom sidedrawer";
-  position: relative;
-
-  display: grid;
-  grid-template-rows: [top] auto [banner] auto [content] minmax(auto,1fr) [bottom] auto;
-  grid-template-columns: [start] minmax(0,auto) [center] minmax(0,100%) [end] minmax(0,auto);
-  grid-template-areas: var(--mdw-grid__row1) var(--mdw-grid__row2) var(--mdw-grid__row3) var(--mdw-grid__row4);
-  overflow-x: hidden;
-  overflow-y: auto;
-
-  block-size: 100%;
-  inline-size: 100vw;
-  max-inline-size: 100vw;
+  max-inline-size: 100%;
   margin: 0;
 
   padding: 0;
 
   background: repeating-conic-gradient(rgba(var(--mdw-color__on-background), 0.0333) 0% 25%, transparent 0% 50%) 50% / 16px 16px;
+  /* position: relative; */
+
+  font-weight: var(--mdw-typescale__body-large__font-weight);
+  font-size: var(--mdw-typescale__body-large__font-size);
+  line-height: var(--mdw-typescale__body-large__line-height);
+  font-family: var(--mdw-typescale__body-large__font-family);
+  letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
 }
 
 #nav {

@@ -26,6 +26,7 @@
     }
 
     .toolbar-avatar {
+      font-size: 30px;
       margin-inline: 3px;
     }
 
@@ -50,31 +51,25 @@
             <demo-dummy-text></demo-dummy-text>
           </mdw-container>
           <mdw-container class="demo-screen" color="background">
-            <mdw-top-app-bar headline="Title"></mdw-top-app-bar>
-            <demo-dummy-text></demo-dummy-text>
-          </mdw-container>
-          <mdw-container class="demo-screen" color="background">
             <mdw-top-app-bar headline="Auto-hide" hide-on-scroll>
-              <mdw-icon-button class="toolbar-icon-button" slot="leading">menu</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="menu">Menu</mdw-icon-button>
             </mdw-top-app-bar>
             <demo-dummy-text></demo-dummy-text>
           </mdw-container>
           <mdw-container class="demo-screen" color="background">
             <mdw-top-app-bar>
-              <mdw-icon-button class="toolbar-icon-button" slot="leading">menu</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button toolbar-avatar" slot="trailing" icon-size="30px">
-                account_circle
-              </mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="menu">Menu</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button toolbar-avatar" slot="trailing" icon="account_circle">Profile</mdw-icon-button>
               <mdw-text ink=primary>Custom</mdw-text> (and oversized) Title
             </mdw-top-app-bar>
             <demo-dummy-text></demo-dummy-text>
           </mdw-container>
           <mdw-container class="demo-screen" color="background">
             <mdw-top-app-bar kbd-nav="tab" aria-label="Search Toolbar">
-              <mdw-icon-button class="toolbar-icon-button" slot="leading">menu</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="menu">Menu</mdw-icon-button>
               <mdw-text-input class="demo-app-bar-search" placeholder="Search" type=search icon=search outlined dense
                 shape-style="full"></mdw-text-input>
-              <mdw-icon-button class="toolbar-icon-button toolbar-avatar" slot="trailing" icon-size="30px">
+              <mdw-icon-button class="toolbar-icon-button toolbar-avatar" slot="trailing">
                 account_circle</mdw-icon-button>
             </mdw-top-app-bar>
             <demo-dummy-text></demo-dummy-text>
@@ -86,10 +81,10 @@
         <demo-flex wrap gap12>
           <mdw-container class="demo-screen" color="background">
             <mdw-top-app-bar headline="Small app bar" size="small">
-              <mdw-icon-button class="toolbar-icon-button" slot="leading">arrow_back</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button" slot="trailing">attach_file</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button" slot="trailing">today</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button" slot="trailing">menu</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="attach_file">Attach File</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="today">Today</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="menu">More</mdw-icon-button>
             </mdw-top-app-bar>
             <demo-dummy-text></demo-dummy-text>
           </mdw-container>
@@ -100,19 +95,19 @@
         <demo-flex wrap gap12>
           <mdw-container class="demo-screen" color="background">
             <mdw-top-app-bar headline="Medium app bar" size="medium" color="secondary-container">
-              <mdw-icon-button class="toolbar-icon-button" slot="leading">arrow_back</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button" slot="trailing">attach_file</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button" slot="trailing">today</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button" slot="trailing">menu</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="attach_file">Attach File</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="today">Today</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="menu">More</mdw-icon-button>
             </mdw-top-app-bar>
             <demo-dummy-text></demo-dummy-text>
           </mdw-container>
           <mdw-container class="demo-screen" color="background">
-            <mdw-top-app-bar headline="Oversized Headline Medium app bar" hide-on-scroll size="medium">
-              <mdw-icon-button class="toolbar-icon-button" slot="leading">arrow_back</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button" slot="trailing">attach_file</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button" slot="trailing">today</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button" slot="trailing">menu</mdw-icon-button>
+            <mdw-top-app-bar headline="Oversized Auto-Hiding Headline Medium app bar" hide-on-scroll size="medium">
+              <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="attach_file">Attach File</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="today">Today</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="menu">More</mdw-icon-button>
             </mdw-top-app-bar>
             <demo-dummy-text></demo-dummy-text>
           </mdw-container>
@@ -123,20 +118,20 @@
         <demo-flex wrap gap12>
           <mdw-container class="demo-screen" color="background">
             <mdw-top-app-bar headline="Large app bar" size="large">
-              <mdw-icon-button class="toolbar-icon-button" slot="leading">arrow_back</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button" slot="trailing">attach_file</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button" slot="trailing">today</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button" slot="trailing">menu</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="attach_file">Attach File</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="today">Today</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="menu">More</mdw-icon-button>
             </mdw-top-app-bar>
             <demo-dummy-text></demo-dummy-text>
           </mdw-container>
           <mdw-container class="demo-screen" color="background">
             <mdw-top-app-bar headline="Oversized Headline Large app bar will not exceed two lines" hide-on-scroll
               size="large">
-              <mdw-icon-button class="toolbar-icon-button" slot="leading">arrow_back</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button" slot="trailing">attach_file</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button" slot="trailing">today</mdw-icon-button>
-              <mdw-icon-button class="toolbar-icon-button" slot="trailing">menu</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="attach_file">Attach File</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="today">Today</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="menu">More</mdw-icon-button>
             </mdw-top-app-bar>
             <demo-dummy-text></demo-dummy-text>
           </mdw-container>

@@ -1,10 +1,5 @@
 html {
-  overflow-y: hidden;
-
-  block-size: 100%;
-  min-block-size: 100%;
-  inline-size: 100vw;
-
+  max-inline-size: 100%;
   margin: 0;
   padding: 0;
 
@@ -14,13 +9,8 @@ html {
 }
 
 body {
-  display: block;
-  overflow-x: hidden;
-  overflow-y: auto;
+  max-inline-size: 100%;
 
-  block-size: 100%;
-  inline-size: 100vw;
-  max-inline-size: 100vw;
   margin: 0;
 
   padding: 0;
@@ -31,6 +21,7 @@ body {
   font-family: var(--mdw-typescale__body-large__font-family);
   letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
 }
+
 
 #nav {
   position: sticky;
@@ -55,21 +46,7 @@ main {
   inline-size: 100%;
 }
 
-iframe {
-  border: none;
-}
 
-iframe#main {
-  position: relative;
-
-  grid-area: content;
-  overflow-x: visible;
-  overflow-y: visible;
-
-  block-size: auto;
-  min-block-size: 100%;
-  inline-size: 100%
-}
 
 .box {
   min-inline-size: 40px;

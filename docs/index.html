@@ -12,57 +12,52 @@
   <link rel="stylesheet" href="theme.css" />
   <link rel="stylesheet" href="index.css" />
   <style>
-    body {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      position: relative;
+    mdw-layout:not(:defined) {
+      display: none;
     }
-
-    mdw-layout:not(:defined) { display: none; }
 
   </style>
 </head>
 
 <body>
   <mdw-top-app-bar hide-on-scroll headline="Material Design Web">
-    <mdw-icon-button 
-      slot="trailing"
-      svg="./imgs/icons.svg#invertocat"
-      aria-label="GitHub Page"
-      onclick="window.location = 'https\://github.com/clshortfuse/materialdesignweb/tree/native'"></mdw-icon-button>
+    <mdw-icon-button slot="trailing" svg="./imgs/icons.svg#invertocat"
+      onclick="window.location = 'https\://github.com/clshortfuse/materialdesignweb/tree/native'">GitHub Page</mdw-icon-button>
   </mdw-top-app-bar>
-  <mdw-list id=nav-list color="surface">
-    <mdw-list-item icon=palette href="./components/color.html">Color</mdw-list-item>
-    <mdw-list-item icon="rounded_corner" href="./components/shape.html">Shape</mdw-list-item>
-    <mdw-list-item icon=font_download href="./components/typography.html">Typography</mdw-list-item>
-    <mdw-divider></mdw-divider>
-    <mdw-list-item icon=exposure_plus_1 disabled supporting="No demos">Badges</mdw-list-item>
-    <mdw-list-item icon=call_to_action href="./components/bottomappbar.html">Bottom App Bar</mdw-list-item>
-    <mdw-list-item icon=crop_landscape href="./components/buttons.html">Buttons</mdw-list-item>
-    <mdw-list-item icon=view_comfy href="./components/cards.html">Cards</mdw-list-item>
-    <mdw-list-item icon=check_box href="./components/checkbox.html">Checkbox</mdw-list-item>
-    <mdw-list-item icon=edit_attributes href="./components/chips.html">Chips</mdw-list-item>
-    <mdw-list-item icon=edit_calendar disabled supporting="Work in progress">Date Picker</mdw-list-item>
-    <mdw-list-item icon=select_all href="./components/dialogs.html">Dialogs</mdw-list-item>
-    <mdw-list-item icon=border_horizontal disabled supporting="No demos">Dividers</mdw-list-item>
-    <mdw-list-item icon=list href="./components/list.html">Lists</mdw-list-item>
-    <mdw-list-item icon=checklist href="./components/listselect.html">List Select</mdw-list-item>
-    <mdw-list-item icon=picture_in_picture href="./components/menus.html">Menus</mdw-list-item>
-    <mdw-list-item icon=video_label href="./components/navbar.html">Navigation Bar</mdw-list-item>
-    <mdw-list-item icon=list_alt href="./components/navdrawer.html">Navigation Drawer</mdw-list-item>
-    <mdw-list-item icon=more_vert href="./components/navrail.html">Navigation Rail</mdw-list-item>
-    <mdw-list-item icon=rotate_right href="./components/progress.html">Progress Indicators</mdw-list-item>
-    <mdw-list-item icon=radio_button_checked href="./components/radio.html">Radio Buttons</mdw-list-item>
-    <mdw-list-item icon=tune href="./components/sliders.html">Sliders</mdw-list-item>
-    <mdw-list-item icon=call_to_action disabled supporting="Work in progress">Snackbar</mdw-list-item>
-    <mdw-list-item icon=toggle_on href="./components/switches.html">Switches</mdw-list-item>
-    <mdw-list-item icon=tab disabled supporting="Work in progress">Tabs</mdw-list-item>
-    <mdw-list-item icon=edit href="./components/textinput.html">Text Input</mdw-list-item>
-    <mdw-list-item icon=edit_note href="./components/textarea.html">Text Area</mdw-list-item>
-    <mdw-list-item icon=schedule disabled supporting="Work in progress">Time Picker</mdw-list-item>
-    <mdw-list-item icon=web_asset href="./components/topappbar.html">Top App Bar</mdw-list-item>
-  </mdw-list>
+  <main>
+    <mdw-list id=nav-list color="surface">
+      <mdw-list-item icon=palette href="./components/color.html">Color</mdw-list-item>
+      <mdw-list-item icon="rounded_corner" href="./components/shape.html">Shape</mdw-list-item>
+      <mdw-list-item icon=font_download href="./components/typography.html">Typography</mdw-list-item>
+      <mdw-divider></mdw-divider>
+      <mdw-list-item icon=exposure_plus_1 disabled supporting="No demos">Badges</mdw-list-item>
+      <mdw-list-item icon=call_to_action href="./components/bottomappbar.html">Bottom App Bar</mdw-list-item>
+      <mdw-list-item icon=crop_landscape href="./components/buttons.html">Buttons</mdw-list-item>
+      <mdw-list-item icon=view_comfy href="./components/cards.html">Cards</mdw-list-item>
+      <mdw-list-item icon=check_box href="./components/checkbox.html">Checkbox</mdw-list-item>
+      <mdw-list-item icon=edit_attributes href="./components/chips.html">Chips</mdw-list-item>
+      <mdw-list-item icon=edit_calendar disabled supporting="Work in progress">Date Picker</mdw-list-item>
+      <mdw-list-item icon=select_all href="./components/dialogs.html">Dialogs</mdw-list-item>
+      <mdw-list-item icon=border_horizontal disabled supporting="No demos">Dividers</mdw-list-item>
+      <mdw-list-item icon=list href="./components/list.html">Lists</mdw-list-item>
+      <mdw-list-item icon=checklist href="./components/listselect.html">List Select</mdw-list-item>
+      <mdw-list-item icon=picture_in_picture href="./components/menus.html">Menus</mdw-list-item>
+      <mdw-list-item icon=video_label href="./components/navbar.html">Navigation Bar</mdw-list-item>
+      <mdw-list-item icon=list_alt href="./components/navdrawer.html">Navigation Drawer</mdw-list-item>
+      <mdw-list-item icon=more_vert href="./components/navrail.html">Navigation Rail</mdw-list-item>
+      <mdw-list-item icon=rotate_right href="./components/progress.html">Progress Indicators</mdw-list-item>
+      <mdw-list-item icon=radio_button_checked href="./components/radio.html">Radio Buttons</mdw-list-item>
+      <mdw-list-item icon=tune href="./components/sliders.html">Sliders</mdw-list-item>
+      <mdw-list-item icon=call_to_action disabled supporting="Work in progress">Snackbar</mdw-list-item>
+      <mdw-list-item icon=toggle_on href="./components/switches.html">Switches</mdw-list-item>
+      <mdw-list-item icon=tab disabled supporting="Work in progress">Tabs</mdw-list-item>
+      <mdw-list-item icon=edit href="./components/textinput.html">Text Input</mdw-list-item>
+      <mdw-list-item icon=edit_note href="./components/textarea.html">Text Area</mdw-list-item>
+      <mdw-list-item icon=schedule disabled supporting="Work in progress">Time Picker</mdw-list-item>
+      <mdw-list-item icon=web_asset href="./components/tooltip.html">Tooltips</mdw-list-item>
+      <mdw-list-item icon=web_asset href="./components/topappbar.html">Top App Bar</mdw-list-item>
+    </mdw-list>
+  </main>
 
 
   <script type=module src="./demo.min.js"></script>

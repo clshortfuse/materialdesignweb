@@ -1,4 +1,4 @@
-import CustomElement from '../../components/CustomElement.js';
+import CustomElement from '../../core/CustomElement.js';
 
 export default class DemoSection extends CustomElement {
   static { this.autoRegister(); }
