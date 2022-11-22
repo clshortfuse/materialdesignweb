@@ -4,7 +4,10 @@ import ControlMixin from './ControlMixin.js';
 
 /** @typedef {import('../core/CustomElement.js').default} CustomElement */
 
-/** @param {typeof import('../core/CustomElement.js').default} Base */
+/**
+ * @template {typeof import('../core/CustomElement.js').default} T
+ * @param {T} Base
+ */
 export default function InputMixin(Base) {
   class Input extends ControlMixin(Base) {
     static get observedAttributes() {

@@ -3,7 +3,10 @@ import styles from './TextFieldMixin.css' assert { type: 'css' };
 
 /** @typedef {import('../core/CustomElement.js').default} CustomElement */
 
-/** @param {typeof import('../core/CustomElement.js').default} Base */
+/**
+ * @template {ReturnType<import('./ControlMixin.js').default>} T
+ * @param {T} Base
+ */
 export default function TextFieldMixin(Base) {
   class TextField extends Base {
     static styles = [...super.styles, styles];

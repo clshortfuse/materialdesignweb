@@ -1,7 +1,10 @@
 import styles from './RippleMixin.css' assert { type: 'css' };
 import StateMixin from './StateMixin.js';
 
-/** @param {typeof import('../core/CustomElement.js').default} Base */
+/**
+ * @template {typeof import('../core/CustomElement.js').default} T
+ * @param {T} Base
+ */
 export default function RippleMixin(Base) {
   class Ripple extends StateMixin(Base) {
     static styles = [...super.styles, styles];

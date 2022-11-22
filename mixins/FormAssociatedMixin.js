@@ -6,11 +6,15 @@
 
 /** @typedef {import('../core/CustomElement.js').default} CustomElement */
 
-/** @param {typeof import('../core/CustomElement.js').default} Base */
+/**
+ * @template {typeof import('../core/CustomElement.js').default} T
+ * @param {T} Base
+ */
 export default function FormAssociatedMixin(Base) {
   class FormAssociated extends Base {
     static formAssociated = true;
 
+    /** @return {Iterable<string>} */
     static get observedAttributes() {
       return [
         ...super.observedAttributes,
@@ -108,8 +112,9 @@ export default function FormAssociatedMixin(Base) {
     /** @type {HTMLControlElement} */
     _control = this;
 
-    constructor() {
-      super();
+    /** @param {any[]} args */
+    constructor(...args) {
+      super(...args);
       if (!this.hasAttribute('tabindex')) {
       // Expose this element as focusable
         this.tabIndex = 0;

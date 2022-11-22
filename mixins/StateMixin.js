@@ -4,7 +4,10 @@ import styles from './StateMixin.css' assert { type: 'css' };
 
 let lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matches;
 
-/** @param {typeof import('../core/CustomElement.js').default} Base */
+/**
+ * @template {typeof import('../core/CustomElement.js').default} T
+ * @param {T} Base
+ */
 export default function StateMixin(Base) {
   class State extends Base {
     static styles = [...super.styles, styles];

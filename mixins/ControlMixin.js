@@ -10,11 +10,15 @@ import RippleMixin from './RippleMixin.js';
 
 /** @typedef {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} HTMLControlElement */
 
-/** @param {typeof import('../core/CustomElement.js').default} Base */
+/**
+ * @template {typeof import('../core/CustomElement.js').default} T
+ * @param {T} Base
+ */
 export default function ControlMixin(Base) {
   class Control extends FormAssociatedMixin(RippleMixin(Base)) {
     static delegatesFocus = true;
 
+    /** @return {Iterable<string>} */
     static get observedAttributes() {
       return [
         ...super.observedAttributes,
@@ -59,8 +63,9 @@ export default function ControlMixin(Base) {
 
     _control = /** @type {HTMLControlElement} */ (this.refs.control);
 
-    constructor() {
-      super();
+    /** @param {any[]} args  */
+    constructor(...args) {
+      super(...args);
       this._value = this._control.value;
       if (!this.hasAttribute('tabindex')) {
         this.tabIndex = 0;
@@ -128,15 +133,15 @@ export default function ControlMixin(Base) {
     focus(options = undefined) {
       super.focus(options);
       console.log('focus', this, this.refs.control);
-      
       this.refs.control.focus(options);
     }
 
-    /** @return {typeof Control & ReturnType<RippleMixin> & ReturnType<FormAssociatedMixin>} */
+    /**
+     * @template {typeof Control & ReturnType<import('./RippleMixin.js').default> & ReturnType<import('./FormAssociatedMixin.js').default>} T
+     * @return {T}
+     */
     get static() {
-      return /** @type {typeof Control & ReturnType<RippleMixin> & ReturnType<FormAssociatedMixin>} */ (
-        /** @type {unknown} */ (super.static)
-      );
+      return /** @type {T} */ (/** @type {unknown} */ (super.static));
     }
 
     get form() { return this.elementInternals.form; }
