@@ -1,12 +1,24 @@
 import Tooltip from '../components/Tooltip.js';
+import { canAnchorPopup } from '../utils/popup.js';
 
-/** @param {typeof import('../core/CustomElement.js').default} Base */
+import styles from './TooltipTriggerMixin.css' assert { type: 'css' };
+
+/**
+ * @template {typeof import('../core/CustomElement.js').default} T
+ * @param {T} Base
+ */
 export default function TooltipTriggerMixin(Base) {
   class TooltipTrigger extends Base {
+    static styles = [
+      ...super.styles,
+      styles,
+    ];
+
     static fragments = [
       ...super.fragments,
       /* html */ `
-        <${Tooltip.elementName} role=tooltip id=tooltip style="position:fixed;margin:8px"><slot id=tooltip-slot onslotchange={static.onTooltipTriggerSlotChange} name=tooltip>{tooltip}</slot></${Tooltip.elementName}>
+        <${Tooltip.elementName} role=tooltip id=tooltip
+          ><slot id=tooltip-slot onslotchange={static.onTooltipTriggerSlotChange} name=tooltip>{tooltip}</slot></${Tooltip.elementName}>
       `,
     ];
 
@@ -20,14 +32,12 @@ export default function TooltipTriggerMixin(Base) {
      * @return {void}
      */
     static onTooltipTriggerSlotChange(event) {
-      console.log('slot changed');
       const instance = /** @type {TooltipTrigger} */ (this.getRootNode().host);
       const tooltip = instance.tooltipClone;
       while (tooltip.lastChild) {
         tooltip.lastChild.remove();
       }
       for (const child of this.assignedNodes()) {
-        console.log(child);
         tooltip.append(child.cloneNode(true));
       }
     }
@@ -38,10 +48,10 @@ export default function TooltipTriggerMixin(Base) {
      * @return {void}
      */
     static onTooltipTriggerFocus(event) {
-      console.log('getting focus', event);
+      // console.log('getting focus', event);
       if (this.disabled) return;
       if (this.matches(':active')) {
-        console.log('abort from active');
+        // console.log('abort from active');
         return;
       }
       this.showTooltip();
@@ -57,20 +67,10 @@ export default function TooltipTriggerMixin(Base) {
     }
 
     /**
-     * @param event
      * @this {TooltipTrigger} this
      * @return {void}
      */
-    static onTooltipTriggerBlur(event) {
-      console.log('blur (hide)', event);
-      if (this.matches(':focus')) {
-        console.log('fake blur?');
-        return;
-      }
-      if (this.matches(':focus-within')) {
-        console.log('fake blur2?');
-        return;
-      }
+    static onTooltipTriggerBlur() {
       this.hideTooltip();
     }
 
@@ -81,7 +81,7 @@ export default function TooltipTriggerMixin(Base) {
      */
     static onTooltipTriggerPointer(event) {
       if (this.disabled) return;
-      console.log('tooltip event', event.type);
+      // console.log('tooltip event', event.type);
       switch (event.type) {
         case 'touchstart':
           this.scheduleShowTooltip('touch');
@@ -110,6 +110,7 @@ export default function TooltipTriggerMixin(Base) {
 
     #pendingHide = false;
 
+    /** @type {HTMLElement[]} */
     #watchedParents = [];
 
     #resizeObserver;
@@ -120,13 +121,15 @@ export default function TooltipTriggerMixin(Base) {
       this.updateTooltipPosition();
     };
 
-    constructor() {
-      super();
+    /** @param {any[]} args */
+    constructor(...args) {
+      super(...args);
       this.#tooltip = /** @type {Tooltip} */ (this.refs.tooltip.cloneNode(true));
       this.#tooltip.id = '';
+      this.#tooltip.style.setProperty('position', 'fixed');
       this.#tooltip.setAttribute('aria-hidden', 'true');
       this.#resizeObserver = new ResizeObserver((entries) => {
-        console.log('RO', entries);
+        // console.log('RO', entries);
         if (!this.#tooltip.open) return;
         this.updateTooltipPosition();
       });
@@ -135,7 +138,7 @@ export default function TooltipTriggerMixin(Base) {
         threshold.push(i);
       }
       this.#intersectObserver = new IntersectionObserver((entries) => {
-        console.log('IO', entries);
+        // console.log('IO', entries);
         if (!this.#tooltip.open) return;
         for (const entry of entries) {
           if (entry.intersectionRatio <= 0) {
@@ -148,10 +151,10 @@ export default function TooltipTriggerMixin(Base) {
           }
           if (entry.target === this) {
             if (entry.intersectionRatio <= 0.5) {
-              console.log('should hide');
+              // console.log('should hide');
               this.hideTooltip();
             } else {
-              console.log('tooltip rect', entry);
+              // console.log('container size given', entry);
               this.updateTooltipPosition(entry.boundingClientRect);
             }
             return;
@@ -171,7 +174,7 @@ export default function TooltipTriggerMixin(Base) {
     }
 
     cancelShowTooltip() {
-      console.log('cancel tooltiptimer');
+      // console.log('cancel tooltiptimer');
       clearTimeout(this.#idleDebounce);
     }
 
@@ -179,7 +182,7 @@ export default function TooltipTriggerMixin(Base) {
     scheduleHideTooltip(type) {
       clearTimeout(this.#idleDebounce);
       if (!this.#tooltip.open) {
-        console.log('abort schedule (shown)');
+        // console.log('abort schedule (shown)');
         return;
       }
       let timeout = 0;
@@ -192,9 +195,9 @@ export default function TooltipTriggerMixin(Base) {
           break;
         default:
       }
-      console.log('schedule tooltiptimer');
+      // console.log('schedule tooltiptimer');
       this.#idleDebounce = setTimeout(() => {
-        console.log('hide timeout');
+        // console.log('hide timeout');
         this.hideTooltip();
       }, timeout);
     }
@@ -225,6 +228,7 @@ export default function TooltipTriggerMixin(Base) {
 
     showTooltip() {
       if (this.#tooltip.open) return;
+      this.refs.tooltip.open = true;
       document.body.append(this.#tooltip);
       this.updateTooltipPosition();
       this.#resizeObserver.observe(this, { box: 'border-box' });
@@ -233,14 +237,14 @@ export default function TooltipTriggerMixin(Base) {
       let offsetParent = this;
       while ((offsetParent = offsetParent.offsetParent)) {
         this.#resizeObserver.observe(offsetParent, { box: 'border-box' });
-        console.log('observing', offsetParent);
+        // console.log('observing', offsetParent);
         this.#watchedParents.push(offsetParent);
         this.#intersectObserver.observe(offsetParent);
         offsetParent.addEventListener('scroll', this.onParentScroll);
       }
       window.addEventListener('scroll', this.onParentScroll);
 
-      console.log('offsetparent', this.offsetParent);
+      // console.log('offsetparent', this.offsetParent);
 
       this.#tooltip.open = true;
     }
@@ -255,6 +259,10 @@ export default function TooltipTriggerMixin(Base) {
       window.removeEventListener('scroll', this.onParentScroll);
       this.#tooltip.open = false;
       this.#tooltip.remove();
+      this.refs.tooltip.open = false;
+      const hoverStyle = this.refs.tooltip.style;
+      hoverStyle.removeProperty('width');
+      hoverStyle.removeProperty('height');
     }
 
     /**
@@ -262,283 +270,77 @@ export default function TooltipTriggerMixin(Base) {
      * @return {void}
      */
     updateTooltipPosition(domRect) {
-    // console.log('updateMenuPosition', source);
-      let top = 'auto';
-      let left = 'auto';
-      let transformOrigin = '';
-      const margin = 0;
-      const mdwPosition = this.tooltipPosition || '';
-      const mdwDirection = this.tooltipDirection || '';
-      let alignTop = mdwPosition.includes('top');
-      let alignBottom = mdwPosition.includes('bottom');
-      let alignVCenter = mdwPosition.includes('vcenter');
+      const offset = 8;
+      // const margin = 8;
+      /** @type {import('../utils/popup.js').CanAnchorPopUpOptions} */
+      const anchorOptions = {
+        anchor: domRect ?? this.getBoundingClientRect(),
+        width: this.#tooltip.clientWidth,
+        height: this.#tooltip.clientHeight,
+        // margin,
+      };
 
-      const alignStart = mdwPosition.includes('start');
-      const alignEnd = mdwPosition.includes('end');
-      let alignLeft = mdwPosition.includes('left');
-      let alignRight = mdwPosition.includes('right');
-      const alignHCenter = mdwPosition.includes('hcenter');
+      const isPageRTL = (getComputedStyle(this).direction === 'rtl');
+      const xStart = isPageRTL ? 'right' : 'left';
+      const xEnd = isPageRTL ? 'left' : 'right';
+      /** @type {import('../utils/popup.js').CanAnchorPopUpOptions[]} */
+      const preferences = [
+        { clientY: 'bottom', clientX: 'center', offsetY: offset },
+        { clientY: 'bottom', clientX: xStart, offsetY: offset },
+        { clientY: 'bottom', clientX: xEnd, offsetY: offset },
+        { clientY: 'top', clientX: 'center', offsetY: -offset },
+        { clientY: 'top', clientX: xStart, offsetY: -offset },
+        { clientY: 'top', clientX: xEnd, offsetY: -offset },
+      ];
 
-      let openUp = mdwDirection.includes('up');
-      let openDown = mdwDirection.includes('down');
-      const openNormal = mdwDirection.includes('normal');
-      const openReverse = mdwDirection.includes('reverse');
-      const openVCenter = mdwDirection.includes('vcenter');
-      let openHCenter = mdwDirection.includes('hcenter');
-      let openLtr = mdwDirection.includes('ltr');
-      let openRtl = mdwDirection.includes('rtl');
-
-      let isPageRTL = null;
-      if (alignStart || alignEnd || openNormal || openReverse) {
-        // Using page-direction based values
-        isPageRTL = (getComputedStyle(this).direction === 'rtl');
-        if (alignStart || alignEnd) {
-          if (alignStart) {
-            if (isPageRTL) {
-              alignRight = true;
-            } else {
-              alignLeft = true;
-            }
-          } else if (isPageRTL) {
-            alignLeft = true;
-          } else {
-            alignRight = true;
-          }
-        }
-        if (openNormal || openReverse) {
-          if (openNormal) {
-            if (isPageRTL) {
-              openRtl = true;
-            } else {
-              openLtr = true;
-            }
-          } else if (isPageRTL) {
-            openLtr = true;
-          } else {
-            openRtl = true;
-          }
-        }
-      }
-      const offsetTop = 0;
-      const offsetBottom = this.clientHeight;
-      const offsetLeft = 0;
-      const offsetRight = this.clientWidth;
-      const rect = domRect ?? this.getBoundingClientRect();
-      console.log(rect);
-      const pageX = rect.left;
-      const pageY = rect.top;
-
-      /* Automatic Positioning
-    *
-    * Positions:
-    *   3      7      4
-    *     ┌─────────┐
-    *     │         │
-    *   5 │    9    │ 6
-    *     │         │
-    *     └─────────┘
-    *   1      8      2
-    *
-    * 1: Bottom Left
-    * 2: Bottom Right
-    * 3: Top Left
-    * 4: Top Right
-    * 5: VCenter Left
-    * 6: VCenter Right
-    * 7: HCenter Top
-    * 8: HCenter Bottom
-    * 9: VCenter HCenter
-    *
-    * Directions:
-    * a - Down LTR
-    * b - Down RTL
-    * c - Up LTR
-    * d - Up RTL
-    * e - LTR
-    * f - RTL
-    * g - Down
-    * h - Up
-    * i - Center
-    *
-    *
-    *
-    * Preference Order:
-    * - Show below                 8g ┷↓  8a ┷↘ 8b ┷↙
-    * - Show above                 7h ┯↑  7a ┯↗ 7b ┯↖
-    * - Show after                 6e │→
-    * - Show before                5f ←│
-    */
-
-      const popupElement = this.#tooltip;
-      const popupElementHeight = popupElement.clientHeight;
-      const popupElementWidth = popupElement.clientWidth;
-      const canOpenDownwardsFromBottom = !alignTop && !alignVCenter
-      && !openUp && !openVCenter
-      && popupElementHeight + (pageY + offsetBottom) <= window.innerHeight;
-      const canOpenDownwardsFromTop = !alignBottom && !alignVCenter
-      && !openUp && !openVCenter
-      && popupElementHeight + (pageY + offsetTop) <= window.innerHeight;
-      const canOpenUpwardsFromTop = !alignBottom && !alignVCenter && !openDown
-      && !openVCenter
-      && pageY + offsetTop >= popupElementHeight;
-      const canOpenUpwardsFromBottom = !alignTop && !alignVCenter && !openDown
-      && !openVCenter
-      && pageY + offsetBottom >= popupElementHeight;
-      const canOpenRightwardsFromLeft = !alignRight && !alignHCenter
-      && !openRtl && !openHCenter
-      && popupElementWidth + (pageX + offsetLeft) <= window.innerWidth;
-      const canOpenRightwardsFromRight = !alignLeft && !alignHCenter
-      && !openRtl && !openHCenter
-      && popupElementWidth + (pageX + offsetRight) <= window.innerWidth;
-      const canOpenLeftwardsFromRight = !alignLeft && !alignHCenter
-      && !openLtr && !openHCenter
-      && pageX + offsetRight >= popupElementWidth;
-      const canOpenLeftwardsFromLeft = !alignRight && !alignHCenter
-      && !openLtr && !openHCenter
-      && pageX + offsetLeft >= popupElementWidth;
-      const canOpenFromCenter = !alignLeft && !alignRight && !alignTop && !alignBottom
-      && !openUp && !openDown
-      && ((pageX + offsetLeft) / 2) >= (popupElementWidth / 2)
-      && (popupElementWidth / 2) + ((pageX + offsetLeft) / 2) <= window.innerWidth;
-      popupElement.style.removeProperty('max-height');
-      const candidates = [
-        canOpenDownwardsFromBottom && canOpenRightwardsFromLeft && canOpenLeftwardsFromRight, // 8g ┷↓
-        canOpenDownwardsFromBottom && canOpenRightwardsFromLeft, // 8a ┷↘
-        canOpenDownwardsFromBottom && canOpenLeftwardsFromRight, // 8b ┷↙
-        canOpenUpwardsFromTop && canOpenRightwardsFromLeft && canOpenLeftwardsFromRight, // 7h ┯↑
-        canOpenUpwardsFromTop && canOpenRightwardsFromLeft, // 7a ┯↗
-        canOpenUpwardsFromTop && canOpenLeftwardsFromRight, // 7b ┯↖
-        canOpenLeftwardsFromRight, // 6e │→
-        canOpenRightwardsFromLeft, // 5f ←│
-      ].map((value, index) => {
-        if (value) {
-          return index + 1;
-        }
-        return 0;
-      }).filter((value) => value !== 0);
-      if (candidates.length) {
-        let candidateNumber;
-        if (isPageRTL === null) {
-          isPageRTL = (getComputedStyle(this).direction === 'rtl');
-        }
-        if (isPageRTL) {
-          candidateNumber = [1, 3, 2, 4, 6, 5, 8, 7]
-            .find((number) => candidates.includes(number));
-        } else {
-          candidateNumber = [1, 2, 3, 4, 5, 6, 7, 8]
-            .find((number) => candidates.includes(number));
-        }
-        if (candidateNumber == null) {
-          candidateNumber = isPageRTL ? 2 : 1;
-        }
-        console.log({ candidateNumber });
-        switch (candidateNumber) {
-          // Position
-          default:
-          case 1:
-            alignBottom = true;
-            openHCenter = true;
-            openDown = true;
-            break;
-          case 2:
-            alignBottom = true; alignLeft = true;
-            openDown = true; openLtr = true;
-            break;
-          case 3:
-            alignBottom = true; alignRight = true;
-            openDown = true; openRtl = true;
-            break;
-          case 4:
-            alignTop = true; openHCenter = true;
-            openUp = true;
-            break;
-          case 5:
-            alignTop = true; alignLeft = true;
-            openUp = true; openLtr = true;
-            break;
-          case 6:
-            alignTop = true; alignRight = true;
-            openUp = true; openRtl = true;
-            break;
-          case 7:
-            alignVCenter = true; alignRight = true;
-            openLtr = true;
-            break;
-          case 8:
-            alignVCenter = true; alignLeft = true;
-            openRtl = true;
-        }
+      let anchorResult;
+      for (const preference of preferences) {
+        anchorResult = canAnchorPopup({
+          ...anchorOptions,
+          ...preference,
+        });
+        if (anchorResult) break;
       }
 
-      if (openLtr) {
-        if (alignRight) {
-          left = `${pageX + offsetRight}px`;
-        } else if (alignHCenter) {
-          left = `${pageX + ((offsetLeft + offsetRight) / 2)}px`;
-        } else {
-          left = `${pageX + offsetLeft}px`;
-        }
-        transformOrigin = 'left';
-      } else if (openHCenter) {
-        if (alignLeft) {
-          left = `${(pageX + offsetLeft) - (popupElementWidth / 2)}px`;
-        } else if (alignRight) {
-          left = `${(pageX + offsetRight) - (popupElementWidth / 2)}px`;
-        } else {
-          left = `${(pageX + ((offsetLeft + offsetRight) / 2)) - (popupElementWidth / 2)}px`;
-        }
-        transformOrigin = 'center';
+      // console.log({ anchorResult });
+      if (!anchorResult) {
+        anchorResult = canAnchorPopup({
+          ...anchorOptions,
+          ...preferences[0],
+          force: true,
+        });
+      }
+
+      this.#tooltip.style.setProperty('top', `${anchorResult.pageY}px`);
+      this.#tooltip.style.setProperty('left', `${anchorResult.pageX}px`);
+      this.#tooltip.style.setProperty('margin', '0');
+      this.#tooltip.style.setProperty('transform-origin', `${anchorResult.transformOriginY} ${anchorResult.transformOriginX}`);
+
+      const hoverStyle = this.refs.tooltip.style;
+      hoverStyle.setProperty('width', `${anchorResult.width + (anchorResult.offsetX * 2)}px`);
+      hoverStyle.setProperty('height', `${anchorResult.height + (anchorResult.offsetY)}px`);
+      if (anchorResult.clientY === 'bottom') {
+        hoverStyle.setProperty('top', '100%');
+        hoverStyle.removeProperty('bottom');
       } else {
-        if (alignLeft) {
-          left = `${(pageX + offsetLeft) - popupElementWidth}px`;
-        } else if (alignHCenter) {
-          left = `${(pageX + ((offsetLeft + offsetRight) / 2)) - popupElementWidth}px`;
-        } else {
-          left = `${(pageX + offsetRight) - popupElementWidth}px`;
-        }
-        transformOrigin = 'right';
+        hoverStyle.removeProperty('top');
+        hoverStyle.setProperty('height', `${anchorResult.height + (anchorResult.offsetY)}px`);
+        hoverStyle.setProperty('bottom', '100%');
       }
-
-      if (openUp) {
-        if (alignBottom) {
-          top = `${(pageY + offsetBottom) - popupElement.clientHeight}px`;
-        } else if (alignVCenter) {
-          top = `${(pageY + ((offsetTop + offsetBottom) / 2)) - popupElement.clientHeight}px`;
-        } else {
-          top = `${(pageY + offsetTop) - popupElement.clientHeight}px`;
-        }
-        transformOrigin += ' bottom';
-      } else if (openVCenter) {
-        if (alignBottom) {
-          top = `${(pageY + offsetBottom) - (popupElement.clientHeight / 2)}px`;
-        } else if (alignTop) {
-          top = `${(pageY + offsetTop) - (popupElement.clientHeight / 2)}px`;
-        } else {
-          top = `${(pageY + ((offsetTop + offsetBottom) / 2)) - (popupElement.clientHeight / 2)}px`;
-        }
-        transformOrigin += ' center';
-      } else {
-        if (alignTop) {
-          top = `${pageY + offsetTop}px`;
-        } else if (alignVCenter) {
-          top = `${pageY + ((offsetTop + offsetBottom) / 2)}px`;
-        } else {
-          top = `${pageY + offsetBottom}px`;
-        }
-        transformOrigin += ' top';
+      switch (anchorResult.clientX) {
+        case 'left':
+          hoverStyle.setProperty('left', '0');
+          hoverStyle.removeProperty('right');
+          break;
+        default:
+        case 'center':
+          hoverStyle.removeProperty('left');
+          hoverStyle.removeProperty('right');
+          break;
+        case 'right':
+          hoverStyle.removeProperty('left');
+          hoverStyle.setProperty('right', '0');
       }
-
-      popupElement.style.setProperty('--top', top);
-      popupElement.style.setProperty('--left', left);
-      popupElement.style.setProperty('--margin', '0');
-      popupElement.style.setProperty('top', top);
-      popupElement.style.setProperty('left', left);
-      popupElement.style.setProperty('right', 'auto');
-      popupElement.style.setProperty('bottom', 'auto');
-      popupElement.style.setProperty('margin', '0');
-      popupElement.style.setProperty('transform-origin', transformOrigin);
-      // Keeps on screen when resizing with showModal
-      // popupElement.scrollIntoView();
     }
 
     /** @return {typeof TooltipTrigger} */
@@ -557,7 +359,7 @@ export default function TooltipTriggerMixin(Base) {
     }
 
     disconnectedCallback() {
-      console.log('disconnected');
+      // console.log('disconnected');
       this.hideTooltip();
       super.disconnectedCallback();
     }
