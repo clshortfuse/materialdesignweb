@@ -1,8 +1,9 @@
+import './Icon.js';
 import * as RovingTabIndex from '../aria/rovingtabindex.js';
+import { addInlineFunction } from '../core/template.js';
 
 import Button from './Button.js';
 import styles from './SegmentedButton.css' assert { type: 'css' };
-import './Icon.js';
 
 export default class SegmentedButton extends Button {
   static { this.autoRegister(); }
@@ -20,10 +21,10 @@ export default class SegmentedButton extends Button {
     const control = template.getElementById('control');
     control.setAttribute('type', 'radio');
     control.setAttribute('role', 'option');
-    control.setAttribute('aria-checked', this.addInlineFunction(
+    control.setAttribute('aria-checked', addInlineFunction(
       (/** @type {SegmentedButton} */ { type, checked }) => (type === 'checkbox' ? String(!!checked) : null),
     ));
-    control.setAttribute('aria-selected', this.addInlineFunction(
+    control.setAttribute('aria-selected', addInlineFunction(
       (/** @type {SegmentedButton} */ { type, checked }) => (type !== 'checkbox' ? String(!!checked) : null),
     ));
     template.getElementById('state').setAttribute('state-disabled', 'focus');

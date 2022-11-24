@@ -2,6 +2,7 @@
 
 import './Icon.js';
 import * as RovingTabIndex from '../aria/rovingtabindex.js';
+import { addInlineFunction } from '../core/template.js';
 import InputMixin from '../mixins/InputMixin.js';
 
 import Container from './Container.js';
@@ -28,7 +29,7 @@ export default class MenuItem extends InputMixin(Container) {
     `);
     const control = template.getElementById('control');
     control.setAttribute('type', 'button');
-    control.setAttribute('role', this.addInlineFunction(({ type }) => {
+    control.setAttribute('role', addInlineFunction(({ type }) => {
       switch (type) {
         case 'checkbox':
           return 'menuitemcheckbox';

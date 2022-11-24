@@ -1,4 +1,5 @@
 import './Icon.js';
+import { addInlineFunction } from '../core/template.js';
 import InputMixin from '../mixins/InputMixin.js';
 
 import styles from './Checkbox.css' assert { type: 'css' };
@@ -31,14 +32,14 @@ export default class Checkbox extends InputMixin(Container) {
     // Indeterminate must be manually expressed for ARIA
     control.setAttribute(
       'aria-checked',
-      this.addInlineFunction(({ indeterminate, checked }) => (indeterminate ? 'mixed' : String(!!checked))),
+      addInlineFunction(({ indeterminate, checked }) => (indeterminate ? 'mixed' : String(!!checked))),
     );
     return template;
   }
 
   /** @override */
   // @ts-ignore @override
-  // eslint-disable-next-line class-methods-use-this
+
   get type() { return 'checkbox'; }
 }
 

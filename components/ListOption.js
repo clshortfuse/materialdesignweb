@@ -111,7 +111,7 @@ export default class ListOption extends ListItem {
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#htmloptionelement
 
-ListOption.getIdls().delete('disabled');
+ListOption.idls.delete('disabled');
 ListOption.prototype._disabled = ListOption.idl('_disabled', { attr: 'disabled', reflect: true, type: 'boolean' });
 // [CEReactions] attribute boolean disabled;
 ListOption.prototype._form = ListOption.idl('_form');

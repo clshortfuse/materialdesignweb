@@ -1,23 +1,40 @@
-/** @type {Document} */
-let _inactiveDocument;
+/** @typedef {'boolean'|'integer'|'float'|'string'|'map'|'set'|'array'} IDLOptionType */
 
 /**
- * @param {string} [fromString]
- * @return {DocumentFragment}
+ * @template {IDLOptionType} T
+ * @typedef {(
+ *  T extends 'boolean' ? boolean
+ *  : T extends 'string' ? string
+ *  : T extends 'float'|'integer' ? number
+ *  : T extends 'array' ? Array<?>
+ *  : T extends 'set' ? Set<?>
+ *  : T extends 'map' ? Map<?,?>
+ *  : unknown
+ * )} ParsedIDLType<T>
  */
-export function generateFragment(fromString) {
-  _inactiveDocument ??= document.implementation.createHTMLDocument();
-  if (fromString == null) {
-    return _inactiveDocument.createDocumentFragment();
-  }
-  return _inactiveDocument.createRange().createContextualFragment(fromString);
-}
+
+/**
+ * @template {IDLOptionType} T1
+ * @template {any} T2
+ * @typedef IDLOptions
+ * @prop {T1} [type]
+ * @prop {string} [attr]
+ * @prop {boolean|'write'|'read'} [reflect=true]
+ * @prop {boolean} [enumerable]
+ * @prop {boolean} [nullable] Defaults to false if boolean
+ * @prop {T2} [empty] Empty value when not nullable
+ * @prop {(value: T2) => T2} [onNullish] Function used when null passed
+ * @prop {T2} [default] Initial value (empty value if not specified)
+ * @prop {boolean} [initialized]
+ * @prop {WeakMap<CustomElement, T1>} [values]
+ * @prop {WeakMap<CustomElement, string>} [attrValues]
+ */
 
 /**
  * @param {IDLOptionType} type
  * @return {any}
  */
-export function emptyFromType(type) {
+function emptyFromType(type) {
   switch (type) {
     case 'boolean':
       return false;
@@ -42,7 +59,7 @@ export function emptyFromType(type) {
  * @param {string} name
  * @return {string}
  */
-export function propNameToAttrName(name) {
+function propNameToAttrName(name) {
   const attrNameWords = name.split(/([A-Z])/);
   if (attrNameWords.length === 1) return name;
   return attrNameWords.reduce((prev, curr) => {
@@ -118,51 +135,4 @@ export function parseIDLOptions(name, typeOrOptions) {
     values: new WeakMap(),
     attrValues: new WeakMap(),
   };
-}
-
-/** @type {Set<string>} */
-const generatedUIDs = new Set();
-
-/** @return {string} */
-export function generateUID() {
-  const id = Math.random().toString(36).slice(2, 10);
-  if (generatedUIDs.has(id)) {
-    return generateUID();
-  }
-  generatedUIDs.add(id);
-  return id;
-}
-
-/**
- * Converts attribute name to property name
- * (Similar to DOMStringMap)
- * @param {string} name
- * @return {string}
- */
-export function attrNameToPropName(name) {
-  const propNameWords = name.split('-');
-  if (propNameWords.length === 1) return name;
-  return propNameWords.reduce((prev, curr) => {
-    if (prev == null) return curr;
-    return prev + curr[0].toUpperCase() + curr.slice(1);
-  });
-}
-
-/**
- * @param {string} prop
- * @param {any} source
- * @return {any}
- */
-export function valueFromPropName(prop, source) {
-  let value = source;
-  for (const child of prop.split('.')) {
-    if (!child) {
-      value = null;
-      break;
-    }
-    // @ts-ignore Skip cast
-    value = value[child];
-  }
-  if (value === source) return null;
-  return value;
 }
