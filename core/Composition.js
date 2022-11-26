@@ -1,4 +1,5 @@
-import { elementMatchesIdentifier, identifierFromElement, identifierFromKey, keyFromIdentifier } from './identify.js';
+import { findElement, iterateNodes } from './dom.js';
+import { identifierFromElement, identifierFromKey, identifierMatchesElement, keyFromIdentifier } from './identify.js';
 import { inlineFunctions } from './template.js';
 
 /**
@@ -30,28 +31,6 @@ import { inlineFunctions } from './template.js';
  * @prop {Set<keyof T & string>} props
  * @prop {T} defaultValue
  */
-
-/**
- * @param {Element|DocumentFragment} root
- * @param {ElementIdentifier|ElementIdentifierKey} identifierOrKey
- * @return {Element}
- */
-function findElement(root, identifierOrKey) {
-  const identifier = typeof identifierOrKey === 'string' ? identifierFromKey(identifierOrKey) : identifierOrKey;
-  if (identifier.id) {
-    if (root instanceof DocumentFragment) {
-      return root.getElementById(identifier.id);
-    }
-    return root.querySelector(`#${identifier.id}`);
-  }
-  if (identifier.class) {
-    if (root instanceof DocumentFragment) {
-      return root.querySelector(`.${identifier.class}`);
-    }
-    return root.getElementsByClassName(identifier.class)[0];
-  }
-  return root.querySelector(identifier.query);
-}
 
 /**
  * @param {(data: Partial<any>) => any} fn
@@ -99,33 +78,6 @@ export function spyOnFunction(fn, args = {}) {
     defaultValue,
     reusable,
   };
-}
-
-/**
- * @param {ParentNode} template
- * @yields {Text|Attr}
- */
-function* iterateTemplate(template) {
-  const iterator = document.createTreeWalker(
-    template,
-    // eslint-disable-next-line no-bitwise
-    NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT,
-  );
-  let node;
-  while ((node = iterator.nextNode())) {
-    switch (node.nodeType) {
-      case Node.ELEMENT_NODE:
-        // eslint-disable-next-line unicorn/no-useless-spread
-        for (const attr of [...(/** @type {Element} */ (node)).attributes]) {
-          yield attr;
-        }
-        break;
-      case Node.TEXT_NODE:
-        yield node;
-        break;
-      default:
-    }
-  }
 }
 
 /**
@@ -194,13 +146,13 @@ export default class Composition {
      */
     this.template = template;
 
+    // console.log('Template', [...template.children].map((child) => child.outerHTML).join('\n'));
     this.cloneable = /** @type {DocumentFragment} */ (template.cloneNode(true));
 
-    // console.log(this.static.name, 'Interpolating', [...template.children].map((child) => child.outerHTML).join('\n'));
     /** @type {Map<string,Element>} */
-    const removedRefs = new Map();
+    const removalList = new Map();
 
-    for (const node of iterateTemplate(this.cloneable)) {
+    for (const node of iterateNodes(this.cloneable, { attribute: true, text: true })) {
       const { nodeName, nodeValue, nodeType } = node;
       if (!nodeValue) continue;
       const trimmed = nodeValue.trim();
@@ -246,11 +198,6 @@ export default class Composition {
       const identifier = identifierFromElement(element, true);
       const identifierKey = keyFromIdentifier(identifier);
 
-      /** @type {Function} */
-      let fn;
-      /** @type {Set<string>} */
-      let props;
-
       if (isEvent) {
         const options = {
           once: eventFlags?.includes('1'),
@@ -266,13 +213,18 @@ export default class Composition {
           set = new Set();
           this.events.set(identifierKey, set);
         }
-        if (fn) {
-          set.add({ type, options, listener: fn });
+        if (parsedValue.startsWith('#')) {
+          set.add({ type, options, listener: inlineFunctions.get(parsedValue) });
         } else {
           set.add({ type, options, prop: parsedValue });
         }
         continue;
       }
+
+      /** @type {Function} */
+      let fn;
+      /** @type {Set<string>} */
+      let props;
 
       /** @type {any} */
       let defaultValue;
@@ -341,9 +293,7 @@ export default class Composition {
       } else if (nodeName === '_if') {
         element.removeAttribute(nodeName);
         if (defaultValue == null || defaultValue === false) {
-          const commentPlaceholder = new Comment(identifierKey);
-          element.before(commentPlaceholder);
-          removedRefs.set(identifierKey, element);
+          removalList.set(identifierKey, element);
         }
       } else if (defaultValue == null || defaultValue === false) {
         element.removeAttribute(nodeName);
@@ -352,7 +302,7 @@ export default class Composition {
       }
     }
 
-    const elements = [...removedRefs.values()].reverse();
+    const elements = [...removalList.values()].reverse();
     for (const element of elements) {
       let parent = element;
       while ((parent = parent.parentElement)) {
@@ -362,9 +312,16 @@ export default class Composition {
 
     /** @type {DocumentFragment} */
     this.interpolation = /** @type {DocumentFragment} */ (this.cloneable.cloneNode(true));
-    for (const element of elements) {
+
+    // console.log('Interpolated', [...this.interpolation.children].map((child) => child.outerHTML).join('\n'));
+
+    for (const [key, element] of removalList) {
+      const commentPlaceholder = new Comment(key);
+      element.before(commentPlaceholder);
       element.remove();
     }
+
+    // console.log('Cloneable', [...this.cloneable.children].map((child) => child.outerHTML).join('\n'));
   }
 
   /**
@@ -390,9 +347,11 @@ export default class Composition {
       for (const { identifier, node, nodeType, fn, props, negate } of entries) {
         let value;
         let ref;
+        let identifierKey;
         if (identifier) {
           ref = this.getElement(root, identifier);
           if (!ref) {
+            ref = this.getElement(root, identifier);
             console.warn('Non existent id', identifier);
             continue;
           }
@@ -457,9 +416,10 @@ export default class Composition {
               }
 
               let commentNode;
+              identifierKey ??= keyFromIdentifier(identifier);
               for (const child of parent.childNodes) {
                 if (child.nodeType !== Node.COMMENT_NODE) continue;
-                if ((/** @type {Comment} */child).nodeValue === keyFromIdentifier(identifier)) {
+                if ((/** @type {Comment} */child).nodeValue === identifierKey) {
                   commentNode = child;
                   break;
                 }
@@ -470,6 +430,26 @@ export default class Composition {
                 commentNode.after(ref);
                 // console.log('Add', identifier, 'back', ref.outerHTML);
                 commentNode.remove();
+              }
+              const events = this.events.get(identifierKey);
+              if (events) {
+                for (const { type, listener, options, prop } of events) {
+                  let eventListener;
+                  if (listener) {
+                    eventListener = listener;
+                  } else if (prop?.startsWith('#')) {
+                    // console.log('binding to inline function');
+                    eventListener = inlineFunctions.get(prop).fn;
+                  } else {
+                    eventListener = valueFromPropName(prop, data);
+                  }
+                  if (eventListener) {
+                    // console.log('Bind event to added element', identifier, ref, eventListener, ref.isConnected);
+                    ref.addEventListener(type, eventListener, options);
+                  } else {
+                    console.warn('Could not bind event', identifier, prop);
+                  }
+                }
               }
             }
           } else if (attached) {
@@ -504,13 +484,13 @@ export default class Composition {
   initialRender(root, data) {
     root.append(this.cloneable.cloneNode(true));
 
+    console.log('Initial render', [...root.children].map((child) => child.outerHTML).join('\n'));
+
     // Bind events
-    // TODO: Implement lazy bind
     for (const [identifier, events] of this.events) {
-      /** @type {Element} */
-      const ref = this.getElement(root, identifier);
+      const ref = findElement(root, identifier);
       if (!ref) {
-        console.warn('Could not bind events for #', identifier);
+        console.warn('Skip bind events for', identifier);
         continue;
       }
       for (const { type, listener, options, prop } of events) {
@@ -526,11 +506,12 @@ export default class Composition {
         }
         // If listener is a Class Field, it will not be available yet
         // Assume it will be and if not, it will throw the error anyway
+        // console.log('lazy assignment?', identifier);
         ref.addEventListener(type, (e) => valueFromPropName(prop, data)(e), options);
       }
     }
 
-    this.getReferences(root); // Build reference to mark as initially rendered
+    this.getReferences(root); // Initialize reference map to mark as initially rendered
   }
 
   /**
@@ -608,21 +589,19 @@ export default class Composition {
       cloneTarget = parent;
     }
 
-    const clone = cloneTarget.cloneNode(true);
-    const iterator = document.createTreeWalker(clone, NodeFilter.SHOW_ELEMENT);
-
-    let node = /** @type {Element} */ (clone);
-    do {
-      if (!element && (elementMatchesIdentifier(node, identifier))) {
+    const clone = /** @type {Element} */ (cloneTarget.cloneNode(true));
+    for (const node of iterateNodes(clone, { element: true, self: true })) {
+      if (!element && (identifierMatchesElement(identifier, node))) {
         element = node;
       }
       const nodeIdentifier = identifierFromElement(node);
       if (nodeIdentifier) {
+        // console.log('Caching element', nodeIdentifier);
         references.set(keyFromIdentifier(nodeIdentifier), node);
       } else {
         console.warn('Could not cache node', node);
       }
-    } while ((node = iterator.nextNode()));
+    }
     return element;
   }
 

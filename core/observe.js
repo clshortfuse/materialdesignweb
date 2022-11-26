@@ -1,7 +1,7 @@
-/** @typedef {'boolean'|'integer'|'float'|'string'|'map'|'set'|'array'} IDLOptionType */
+/** @typedef {'boolean'|'integer'|'float'|'string'|'map'|'set'|'array'} ObserverPropertyType */
 
 /**
- * @template {IDLOptionType} T
+ * @template {ObserverPropertyType} T
  * @typedef {(
  *  T extends 'boolean' ? boolean
  *  : T extends 'string' ? string
@@ -10,28 +10,68 @@
  *  : T extends 'set' ? Set<?>
  *  : T extends 'map' ? Map<?,?>
  *  : unknown
- * )} ParsedIDLType<T>
+ * )} ParsedObserverPropertyType<T>
  */
 
 /**
- * @template {IDLOptionType} T1
+ * @template T
+ * @template {any} [C=any]
+ * @callback ValueParser
+ * @this C
+ * @param {any} value
+ * @throws {TypeError}
+ * @return {T}
+ */
+
+/**
+ * @template T
+ * @template {any} [C=any]
+ * @callback NullParser
+ * @this C
+ * @param {undefined|null} value
+ * @throws {TypeError}
+ * @return {T}
+ */
+
+/**
+ * @template {ObserverPropertyType} T1
  * @template {any} T2
- * @typedef IDLOptions
+ * @template {string} K
+ * @template {any} [C=any]
+ * @typedef ObserverOptions
  * @prop {T1} [type]
  * @prop {string} [attr]
  * @prop {boolean|'write'|'read'} [reflect=true]
  * @prop {boolean} [enumerable]
  * @prop {boolean} [nullable] Defaults to false if boolean
  * @prop {T2} [empty] Empty value when not nullable
- * @prop {(value: T2) => T2} [onNullish] Function used when null passed
  * @prop {T2} [default] Initial value (empty value if not specified)
- * @prop {boolean} [initialized]
- * @prop {WeakMap<CustomElement, T1>} [values]
- * @prop {WeakMap<CustomElement, string>} [attrValues]
+ * @prop {(this:C, name:K,oldValue:T2,newValue:T2)=>any} changedCallback
+ * @prop {(this:C, value:null|undefined)=>T2} [nullParser]
+ * @prop {(this:C, value:any)=>T2} [parser]
+ * @prop {(this:C, a:T2,b:T2)=>boolean} [is] Function used when comparing
  */
 
 /**
- * @param {IDLOptionType} type
+ * @template {any} T
+ * @template {string} K
+ * @template {any} [C=any]
+ * @typedef ObserverConfiguration
+ * @prop {K} key
+ * @prop {boolean} [enumerable]
+ * @prop {T} [default] Initial value (empty value if not specified)
+ * @prop {WeakMap<any, T>} [values]
+ * @prop {(this:C, name:K,oldValue:T,newValue:T)=>any} changedCallback
+ * @prop {(this:C, value:any)=>T} nullParser
+ * @prop {(this:C, value:any)=>T} parser
+ * @prop {(this:C, a:T,b:T)=>boolean} is Function used when comparing
+ */
+
+/** @return {null} */
+const DEFAULT_NULL_PARSER = () => null;
+
+/**
+ * @param {ObserverPropertyType} type
  * @return {any}
  */
 function emptyFromType(type) {
@@ -54,48 +94,51 @@ function emptyFromType(type) {
 }
 
 /**
- * Converts property name to attribute name
- * (Similar to DOMStringMap)
- * @param {string} name
- * @return {string}
+ * @param {ObserverPropertyType} type
+ * @return {any}
  */
-function propNameToAttrName(name) {
-  const attrNameWords = name.split(/([A-Z])/);
-  if (attrNameWords.length === 1) return name;
-  return attrNameWords.reduce((prev, curr) => {
-    if (prev == null) return curr;
-    if (curr.length === 1 && curr.toUpperCase() === curr) {
-      return `${prev}-${curr.toLowerCase()}`;
-    }
-    return prev + curr;
-  });
+function defaultParserFromType(type) {
+  switch (type) {
+    case 'boolean':
+      return Boolean;
+    case 'integer':
+      // Calls ToNumber(x)
+      return Math.round;
+    case 'float':
+      return Number;
+    case 'map':
+      return Map;
+    case 'set':
+      return Set;
+    case 'array':
+      return Array.from;
+    default:
+    case 'string':
+      return String;
+  }
 }
 
 /**
- * @template {IDLOptionType} [T1=any]
- * @template {any} [T2=ParsedIDLType<T1>]
- * @param {string} name
- * @param {T1|IDLOptions<T1,T2>} [typeOrOptions='string']
- * @return {IDLOptions<T1,T2>}
+ * @template {string} K
+ * @template {ObserverPropertyType} [T1=any]
+ * @template {any} [T2=ParsedObserverPropertyType<T1>]
+ * @param {K} name
+ * @param {T1|ObserverOptions<T1,T2,K>} [typeOrOptions='string']
+ * @return {ObserverConfiguration<T1,K> & ObserverOptions<T1,T2,K>}
  */
-export function parseIDLOptions(name, typeOrOptions) {
+export function parseObserverOptions(name, typeOrOptions) {
   const isPrivate = name[0] === '_';
 
-  /** @type {IDLOptions<T1,T2>} */
+  /** @type {Partial<ObserverOptions<T1,T2,K>>} */
   const options = {
     ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
   };
 
-  const { type, attr, empty, onNullish } = options;
+  const { type, empty } = options;
 
-  // If not set:
-  //  private & attribute = write-only
-  //  attribute = true
-  //  else false
-  const reflect = options.reflect ?? (isPrivate ? (attr ? 'write' : false) : true);
   const enumerable = options.enumerable ?? !isPrivate;
 
-  /** @type {IDLOptionType} */
+  /** @type {ObserverPropertyType} */
   let parsedType = type;
   if (parsedType == null) {
     if (options.default == null) {
@@ -103,7 +146,7 @@ export function parseIDLOptions(name, typeOrOptions) {
     } else {
       const parsed = typeof options.default;
       parsedType = (parsed === 'number')
-        ? (Number.isInteger(options.default) ? 'integer' : 'float')
+        ? (Number.isInteger(options.default) ? 'integer' : 'number')
         : parsed;
     }
   }
@@ -112,27 +155,102 @@ export function parseIDLOptions(name, typeOrOptions) {
   // else if boolean ? false
   // else if onNullish ? false
   // else if empty == null
-  const nullable = options.nullable ?? (
-    parsedType === 'boolean'
-      ? false
-      : (onNullish ? false : empty == null)
-  );
-  /** @type {any} */
-  let parsedEmpty = empty ?? null;
-  if (!nullable && parsedEmpty === null) {
-    parsedEmpty = emptyFromType(parsedType);
+  const parser = options.parser ?? defaultParserFromType(parsedType);
+  let nullParser = options.nullParser;
+  const parsedEmpty = empty ?? null;
+  if (!nullParser) {
+    const nullable = options.nullable ?? (
+      parsedType === 'boolean'
+        ? false
+        : (empty == null));
+    if (nullable) {
+      nullParser = DEFAULT_NULL_PARSER;
+    } else {
+      nullParser = parsedEmpty === null ? () => emptyFromType(parsedType) : () => parsedEmpty;
+    }
   }
 
   return {
-    reflect,
+    ...options,
     enumerable,
     default: options.default ?? parsedEmpty,
-    type: parsedType,
-    attr: attr ?? (reflect ? propNameToAttrName(name) : null),
-    nullable,
-    empty: nullable ? null : parsedEmpty,
-    onNullish,
-    values: new WeakMap(),
-    attrValues: new WeakMap(),
+    parser,
+    nullParser,
+    key: name,
+    changedCallback: options.changedCallback,
   };
 }
+
+/** @type {Partial<ObserverConfiguration<?,?>>} */
+const DEFAULT_OBSERVER_CONFIGURATION = {
+  nullParser: DEFAULT_NULL_PARSER,
+  is: Object.is,
+};
+
+/**
+ * @this {ObserverConfiguration<?,?,?>}
+ * @param {*} value
+ */
+export function parsePropertyValue(value) {
+  let newValue = value;
+  newValue = value == null
+    ? this.nullParser.call(this, value)
+    : this.parser.call(this, newValue);
+}
+
+/**
+ * @template {ObserverPropertyType} T1
+ * @template T2
+ * @template {string} K
+ * @template [C=any]
+ * @param {C} object
+ * @param {K} key
+ * @param {ObserverOptions<T1,T2,K,C>} options
+ * @return {ObserverConfiguration<T1,K,C>}
+ */
+export const defineObservableProperty = (object, key, options) => {
+  /** @type {ObserverConfiguration<T1,K,C>} */
+  const config = {
+    values: new Map(),
+    ...DEFAULT_OBSERVER_CONFIGURATION,
+    ...parseObserverOptions(key, options),
+    changedCallback: options.changedCallback,
+  };
+
+  Object.defineProperty(object, key, {
+    enumerable: config.enumerable,
+    /**
+     * @this {C}
+     * @return {T1}
+     */
+    get() {
+      return !config.values.has(this) ? config.default : config.values.get(this);
+    },
+    /**
+     * @this {C}
+     * @param {T1} value
+     * @return {void}
+     */
+    set(value) {
+      const oldValue = !config.values.has(this) ? config.default : config.values.get(this);
+      if (oldValue === value) return;
+
+      let newValue = value;
+      newValue = value == null
+        ? config.nullParser.call(this, value)
+        : config.parser.call(this, newValue);
+
+      if (oldValue == null) {
+        if (newValue == null) return; // Both nullish
+      } else if (newValue != null && (oldValue === newValue || config.is.call(this, oldValue, newValue))) {
+        // Not null and match
+        return;
+      }
+
+      config.values.set(this, newValue);
+      config.changedCallback.call(this, key, oldValue, newValue);
+    },
+  });
+
+  return config;
+};

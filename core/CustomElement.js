@@ -1,11 +1,24 @@
 import Composition from './Composition.js';
-import { parseIDLOptions } from './observe.js';
+import { attrNameFromPropName, attrValueFromDataValue } from './dom.js';
+import { defineObservableProperty } from './observe.js';
 import { generateFragment, html } from './template.js';
 
-/** @template T1 @template T2 @typedef {import('./observe.js').IDLOptions<T1,T2>} IDLOptions<T1,T2> */
-
-/** @typedef {import('./observe.js').IDLOptionType} IDLOptionType */
-/** @template T @typedef {import('./observe.js').ParsedIDLType<T>} ParsedIDLType<T> */
+/**
+ * @template {import('./observe.js').ObserverPropertyType} T1
+ * @template {any} T2
+ * @typedef IDLOptions
+ * @prop {T1} [type]
+ * @prop {string} [attr]
+ * @prop {boolean|'write'|'read'} [reflect=true]
+ * @prop {boolean} [enumerable]
+ * @prop {boolean} [nullable] Defaults to false if boolean
+ * @prop {T2} [empty] Empty value when not nullable
+ * @prop {(value: T2) => T2} [onNullish] Function used when null passed
+ * @prop {T2} [default] Initial value (empty value if not specified)
+ * @prop {boolean} [initialized]
+ * @prop {WeakMap<CustomElement, T1>} [values]
+ * @prop {WeakMap<CustomElement, string>} [attrValues]
+ */
 
 /**
  * Web Component that can cache templates for minification or performance
@@ -20,9 +33,7 @@ export default class CustomElement extends HTMLElement {
 
   /** @type {Iterable<string>} */
   static get observedAttributes() {
-    return [...this.idls.values()]
-      .filter((options) => options.attr && (options.reflect === true || options.reflect === 'read'))
-      .map(({ attr }) => attr);
+    return this.readAttributeIdls.keys();
   }
 
   /** @type {(string|URL|CSSStyleSheet)[]} */
@@ -68,6 +79,12 @@ export default class CustomElement extends HTMLElement {
 
   /** @type {Map<string, IDLOptions<?,?>>} */
   static _idls = new Map();
+
+  /** @type {Map<keyof any & string, Attr['name']>} */
+  static _writeAttributeIdls = new Map();
+
+  /** @type {Map<Attr['name'],import('./observe.js').ObserverConfiguration<?,?,?>} */
+  static _readAttributeIdls = new Map();
 
   /** @type {WeakSet<Function>} */
   static _reusableFunctions = new WeakSet();
@@ -133,6 +150,20 @@ export default class CustomElement extends HTMLElement {
     return this._idls;
   }
 
+  static get readAttributeIdls() {
+    if (!this.hasOwnProperty('_readAttributeIdls')) {
+      this._readAttributeIdls = new Map(this._readAttributeIdls);
+    }
+    return this._readAttributeIdls;
+  }
+
+  static get writeAttributeIdls() {
+    if (!this.hasOwnProperty('_writeAttributeIdls')) {
+      this._writeAttributeIdls = new Map(this._writeAttributeIdls);
+    }
+    return this._writeAttributeIdls;
+  }
+
   static get adoptedStyleSheets() {
     if (!this.hasOwnProperty('_adoptedStyleSheets')) {
       this._adoptedStyleSheets = /** @type {CSSStyleSheet[]} */ (this.styles
@@ -142,97 +173,36 @@ export default class CustomElement extends HTMLElement {
   }
 
   /**
-   * @template {IDLOptionType} [T1=any]
-   * @template {any} [T2=ParsedIDLType<T1>]
+   * @template {import('./observe.js').ObserverPropertyType} [T1=any]
+   * @template {any} [T2=import('./observe.js').ParsedObserverPropertyType<T1>]
    * @param {string} name
    * @param {T1|IDLOptions<T1,T2>} [typeOrOptions='string']
    * @return {unknown extends T2 ? string : T2}
    */
   static idl(name, typeOrOptions) {
-    const options = parseIDLOptions(name, typeOrOptions);
+    const options = {
+      ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
+    };
 
-    this.idls.set(name, options);
+    let { enumerable, attr, reflect } = options;
+    enumerable ??= name[0] !== '_';
+    reflect ??= enumerable ? true : (attr ? 'write' : false);
+    attr ??= (reflect ? attrNameFromPropName(name) : null);
 
-    Object.defineProperty(this.prototype, name, {
-      enumerable: options.enumerable,
-      /**
-       * @this {CustomElement}
-       * @return {any}
-       */
-      get() {
-        if (!options.values.has(this)) return options.default;
-        return options.values.get(this) ?? (options.nullable ? null : options.empty);
-      },
-      /**
-       * @this {CustomElement}
-       * @param {any} value
-       * @return {void}
-       */
-      set(value) {
-        if (value === CustomElement.IDL_INIT) return;
-        // console.log('set:', this.constructor.name, name, value);
-        const previousValue = this[name];
-        let newValue = value;
-        if (!options.nullable && value == null) {
-          newValue = options.onNullish ? options.onNullish(value) : options.empty;
-        }
-
-        if (previousValue == null && newValue == null) return;
-        // Object.is()?
-        if (previousValue === newValue) return;
-        let parsedValue;
-        /** @type {?string} */
-        let attrValue;
-        switch (options.type) {
-          case 'boolean':
-            parsedValue = !!newValue;
-            attrValue = parsedValue ? '' : null;
-            break;
-          case 'integer':
-          case 'float':
-            if (newValue == null) {
-              parsedValue = null;
-              attrValue = null;
-            } else {
-              if (typeof newValue !== 'number') {
-                throw new TypeError('Value must be a number');
-              }
-              parsedValue = newValue;
-              attrValue = String(newValue);
-            }
-            break;
-          // case 'string':
-          default:
-            if (newValue == null) {
-              parsedValue = null;
-              attrValue = null;
-            } else {
-              parsedValue = String(newValue);
-              attrValue = parsedValue;
-            }
-        }
-        if (previousValue === parsedValue) return;
-        const lastAttrValue = options.attrValues.get(this);
-
-        options.values.set(this, parsedValue);
-        options.attrValues.set(this, attrValue);
-
-        // console.log(this.static.name, 'Property change: idlChangedCallback', { name, previousValue, parsedValue });
-        this.idlChangedCallback(name, previousValue, parsedValue);
-
-        if (!options.reflect) return;
-        if (lastAttrValue == null && attrValue == null) return;
-        if (lastAttrValue === attrValue) return;
-
-        if (attrValue == null) {
-          this.removeAttribute(options.attr);
-        } else {
-          this.setAttribute(options.attr, attrValue);
-        }
-      },
+    const config = defineObservableProperty(this.prototype, name, {
+      ...options,
+      changedCallback: this.prototype._onObserverPropertyChanged,
     });
 
-    return /** @type {any} */ (CustomElement.IDL_INIT);
+    if (reflect === true || reflect === 'read') {
+      // console.log(this.name, 'adding read attribute', attr, config);
+      this.readAttributeIdls.set(attr, config);
+    }
+    if (reflect === true || reflect === 'write') {
+      // console.log(this.name, 'adding write attribute', name, attr);
+      this.writeAttributeIdls.set(name, attr);
+    }
+    return /** @type {any} */ (config.default);
   }
 
   /**
@@ -247,24 +217,32 @@ export default class CustomElement extends HTMLElement {
   }
 
   /** @type {Record<string, HTMLElement>}} */
-  refs = new Proxy({}, {
-    /**
-     * @param {any} target
-     * @param {string} id
-     * @return {HTMLElement}
-     */
-    // @ts-ignore
-    get: (target, id) => this.composition.getElement(this.shadowRoot, { id }),
-  });
+  #refsProxy;
+
+  /** @type {Map<string,string|null>} */
+  _idlAttributeCache;
 
   /** @param {any[]} args */
   constructor(...args) {
     super();
-    this.#attachShadow();
-    this.#attachStyles();
-    this.#attachContent();
-    this.#attachInternals();
-    this.#attachARIA();
+
+    this.attachShadow({ mode: 'open', delegatesFocus: this.static.delegatesFocus });
+
+    if (!CustomElement.supportsAdoptedStyleSheets) {
+      this.shadowRoot.adoptedStyleSheets = this.static.adoptedStyleSheets;
+    }
+
+    this.composition.initialRender(this.shadowRoot, this);
+
+    if (CustomElement.supportsElementInternals) {
+      this.elementInternals = this.attachInternals();
+    }
+
+    if (this.static.supportsElementInternalsRole) {
+      this.elementInternals.role = this.static.ariaRole;
+    } else if (!this.hasAttribute('role')) {
+      this.setAttribute('role', this.static.ariaRole);
+    }
   }
 
   /**
@@ -275,6 +253,7 @@ export default class CustomElement extends HTMLElement {
    * @return {void}
    */
   render(data) {
+    // console.log('render', data);
     this.composition.render(this.shadowRoot, data, this);
   }
 
@@ -285,6 +264,7 @@ export default class CustomElement extends HTMLElement {
    * @return {void}
    */
   idlChangedCallback(name, oldValue, newValue) {
+    // console.log('idlChangedCallback', name, oldValue, newValue);
     this.render({ [name]: newValue });
   }
 
@@ -294,79 +274,62 @@ export default class CustomElement extends HTMLElement {
    * @param {string?} newValue
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    // TODO: Index attribute names?
-    for (const [key, options] of this.static.idls) {
-      if (options.attr !== name) continue;
-      const previousDataValue = options.values.get(this);
-      if (options.attrValues.get(this) === newValue) return;
+    // console.log(this.tagName, 'attributeChangedCallback', name, oldValue, newValue, '.');
+    const config = this.static.readAttributeIdls.get(name);
+    if (!config) return;
+    const attrValue = this.attributeCache.get(name) ?? null;
+    if (attrValue === newValue) return;
 
-      let parsedValue;
-      switch (options.type) {
-        case 'boolean':
-          parsedValue = newValue != null;
-          break;
-        case 'string':
-          parsedValue = newValue;
-          break;
-        case 'integer':
-          if (newValue == null) {
-            parsedValue = null;
-          } else {
-            const numValue = Number.parseInt(newValue, 10);
-            parsedValue = Number.isNaN(numValue) ? null : numValue;
-          }
-          break;
-        case 'float':
-          if (newValue == null) {
-            parsedValue = null;
-          } else {
-            const numValue = Number.parseFloat(newValue);
-            parsedValue = Number.isNaN(numValue) ? null : numValue;
-          }
-          break;
-        default:
-      }
-      if (!options.nullable && parsedValue == null) {
-        parsedValue = options.empty;
-      }
-      if (parsedValue === previousDataValue) {
-        // No internal value change
-        return;
-      }
-      options.values.set(this, parsedValue);
-      options.attrValues.set(this, newValue);
-      this.idlChangedCallback(key, previousDataValue, parsedValue);
+    const previousDataValue = this[config.key];
+    const parsedValue = newValue == null
+      ? config.nullParser(newValue)
+      : (config.parser === Boolean ? true : config.parser(newValue));
+
+    if (parsedValue === previousDataValue) {
+      // No internal value change
+      return;
     }
+    config.values.set(this, parsedValue);
+    this.attributeCache.set(name, newValue);
+    this.idlChangedCallback(name, previousDataValue, parsedValue);
   }
 
-  #attachShadow() {
-    this.attachShadow({ mode: 'open', delegatesFocus: this.static.delegatesFocus });
-  }
-
-  #attachStyles() {
-    if (!CustomElement.supportsAdoptedStyleSheets) return;
-    this.shadowRoot.adoptedStyleSheets = this.static.adoptedStyleSheets;
-  }
-
-  #attachContent() {
-    this.composition.initialRender(this.shadowRoot, this);
-  }
-
-  #attachInternals() {
-    if (CustomElement.supportsElementInternals) {
-      this.elementInternals = this.attachInternals();
+  _onObserverPropertyChanged(name, oldValue, newValue) {
+    const attrName = this.static.writeAttributeIdls.get(name);
+    if (attrName) {
+      const attrValue = attrValueFromDataValue(newValue);
+      const lastAttrValue = this.attributeCache.get(attrName) ?? null;
+      if (lastAttrValue !== attrValue) {
+        this.attributeCache.set(attrName, attrValue);
+        if (attrValue == null) {
+          this.removeAttribute(attrName);
+        } else {
+          this.setAttribute(attrName, attrValue);
+        }
+      }
     }
+
+    // Invoke render
+    this.idlChangedCallback(name, oldValue, newValue);
   }
 
-  #attachARIA() {
-    if (this.static.supportsElementInternalsRole) {
-      this.elementInternals.role = this.static.ariaRole;
-    } else if (!this.hasAttribute('role')) {
-      this.setAttribute('role', this.static.ariaRole);
-    }
+  get refs() {
+    // eslint-disable-next-line no-return-assign
+    return (this.#refsProxy ??= new Proxy({}, {
+      /**
+       * @param {any} target
+       * @param {string} id
+       * @return {HTMLElement}
+       */
+      // @ts-ignore
+      get: (target, id) => this.composition.getElement(this.shadowRoot, { id }),
+    }));
   }
 
-  get unique() { return false; }
+  get attributeCache() {
+    this._idlAttributeCache ??= new Map();
+    return this._idlAttributeCache;
+  }
 
   get tabIndex() {
     return super.tabIndex;
@@ -402,6 +365,7 @@ export default class CustomElement extends HTMLElement {
 
   get static() { return /** @type {typeof CustomElement} */ (/** @type {unknown} */ (this.constructor)); }
 
+  /** @return {Composition<?>} */
   get composition() {
     if (this.static.hasOwnProperty('_composition')) {
       return this.static._composition;

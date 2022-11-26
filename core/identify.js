@@ -67,11 +67,11 @@ export function identifierFromElement(element, mutate) {
 }
 
 /**
- * @param {Element} element
  * @param {ElementIdentifier} identifier
+ * @param {Element} element
  * @return {boolean}
  */
-export function elementMatchesIdentifier(element, identifier) {
+export function identifierMatchesElement(identifier, element) {
   if (identifier.id) {
     return element.id === identifier.id;
   }
