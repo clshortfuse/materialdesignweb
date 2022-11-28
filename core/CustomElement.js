@@ -228,7 +228,7 @@ export default class CustomElement extends HTMLElement {
 
     this.attachShadow({ mode: 'open', delegatesFocus: this.static.delegatesFocus });
 
-    if (!CustomElement.supportsAdoptedStyleSheets) {
+    if (CustomElement.supportsAdoptedStyleSheets) {
       this.shadowRoot.adoptedStyleSheets = this.static.adoptedStyleSheets;
     }
 
