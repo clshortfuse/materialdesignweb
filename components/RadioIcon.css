@@ -28,7 +28,7 @@
   box-sizing: border-box;
   block-size: 20px;
   inline-size: 20px;
-  border: solid 1px currentColor;
+  border: solid 2px currentColor;
 
   border-radius: 50%;
 }
@@ -38,8 +38,8 @@
 
   position: absolute;
 
-  block-size: 10px;
-  inline-size: 10px;
+  block-size: 20px;
+  inline-size: 20px;
 
   transform: scale(0);
 
@@ -50,5 +50,10 @@
 }
 
 .radio-icon[selected]::after {
-  transform: scale(1);
+  transform: scale(0.5);
+}
+
+.radio-icon:active:not([disabled])::after {
+  /** Overshoot while active */
+  /* transform: scale(1); */
 }
