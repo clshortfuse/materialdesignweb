@@ -205,6 +205,7 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
   get setSelectionRange() { return this.#textarea.setSelectionRange; }
 
   connectedCallback() {
+    super.connectedCallback();
     this.resize();
   }
 }
