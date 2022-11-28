@@ -211,6 +211,16 @@ export default class TopAppBar extends AriaToolbarMixin(Container) {
     return true;
   }
 
+  /** @override */
+  // @ts-ignore @override
+  get ariaActiveDescendantElement() {
+    return this.refs.bar.ariaActiveDescendantElement;
+  }
+
+  set ariaActiveDescendantElement(value) {
+    this.refs.bar.ariaActiveDescendantElement = value;
+  }
+
   connectedCallback() {
     super.connectedCallback();
     this.startScrollListener();

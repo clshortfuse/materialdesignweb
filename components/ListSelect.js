@@ -1,13 +1,13 @@
 import { constructHTMLOptionsCollectionProxy } from '../dom/ HTMLOptionsCollectionProxy.js';
 import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
-import RovingTabIndexedMixin from '../mixins/RovingTaxIndexedMixin.js';
+import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
 
 import styles from './List.css' assert { type: 'css' };
 import List from './List.js';
 import ListOption from './ListOption.js';
 
 /** @implements {HTMLSelectElement} */
-export default class ListSelect extends RovingTabIndexedMixin(FormAssociatedMixin(List)) {
+export default class ListSelect extends KeyboardNavMixin(FormAssociatedMixin(List)) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-list-select';
@@ -68,18 +68,6 @@ export default class ListSelect extends RovingTabIndexedMixin(FormAssociatedMixi
    */
   onControlKeydown(event) {
     super.onControlKeydown(event);
-    if (event.key === 'ArrowDown' || (event.key === 'Down')) {
-      event.stopPropagation();
-      event.preventDefault();
-      this.ariaActiveDescendantElement = this.rtiFocusNext();
-      return;
-    }
-    if (event.key === 'ArrowUp' || (event.key === 'Up')) {
-      event.stopPropagation();
-      event.preventDefault();
-      this.ariaActiveDescendantElement = this.rtiFocusNext();
-      return;
-    }
     if (event.key === 'Spacebar' || event.key === ' ') {
       const target = event.target;
       if (!(target instanceof ListOption)) return;
@@ -155,7 +143,8 @@ export default class ListSelect extends RovingTabIndexedMixin(FormAssociatedMixi
   // @ts-ignore @override
   get type() { return 'select'; }
 
-  get rtiQuery() { return ListOption.elementName; }
+  /** @override */
+  get kbdNavQuery() { return ListOption.elementName; }
 
   // @ts-ignore @override
   get length() {

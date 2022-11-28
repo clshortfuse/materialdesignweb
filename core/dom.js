@@ -133,12 +133,13 @@ export function attrNameFromPropName(name) {
 
 /**
  * @param {HTMLElement} element
+ * @param {Parameters<HTMLElement['focus']>} [options]
  * @return {boolean} Focus was successful
  */
-export function attemptFocus(element) {
+export function attemptFocus(element, ...options) {
   if (!element) return false;
   try {
-    element.focus();
+    element.focus(...options);
   } catch (e) {
     console.error(e);
     // Ignore error.

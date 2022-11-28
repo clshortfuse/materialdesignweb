@@ -1,40 +1,46 @@
-import { attemptFocus } from '../core/dom.js';
+import { attemptFocus, isRtl } from '../core/dom.js';
 
 /**
  * @template {typeof import('../core/CustomElement.js').default} T
  * @param {T} Base
  */
-export default function RovingTabIndexedMixin(Base) {
-  class RovingTabIndexed extends Base {
-    static RTI_DEFAULT_QUERY = [
-      'button:not(:disabled):not([tabindex="-1"])',
-      '[href]:not(:disabled):not([tabindex="-1"])',
-      'input:not(:disabled):not([tabindex="-1"])',
-      'select:not(:disabled):not([tabindex="-1"])',
-      'textarea:not(:disabled):not([tabindex="-1"])',
-      '[tabindex]:not([tabindex="-1"])',
+export default function KeyboardNavMixin(Base) {
+  class KeyboardNav extends Base {
+    static DEFAULT_ELEMENT_QUERY = [
+      'button',
+      '[href]',
+      'input',
+      'select',
+      'textarea',
+      '[tabindex]',
     ].join(', ');
+
+    #ariaOrientationIsVertical() {
+      return (this.ariaOrientation
+          ?? this.getAttribute('aria-orientation')
+          ?? this.ariaOrientationDefault) === 'vertical';
+    }
 
     /**
      * Query used to find roving tab index children
      */
-    get rtiQuery() {
-      return /** @type {typeof RovingTabIndexed} */ (this.static).RTI_DEFAULT_QUERY;
+    get kbdNavQuery() {
+      return /** @type {typeof KeyboardNav} */ (this.static).DEFAULT_ELEMENT_QUERY;
     }
 
     /**
      * List of roving tab index participating children
      * @return {NodeListOf<HTMLElement>}
      */
-    get rtiChildren() {
-      return this.querySelectorAll(this.rtiQuery);
+    get kbdNavChildren() {
+      return this.querySelectorAll(this.kbdNavQuery);
     }
 
     /**
      * Flag whether disabled elements participating in roving tab index
      * should be focusable.
      */
-    get rtiFocusableWhenDisabled() { return true; }
+    get kbdNavFocusableWhenDisabled() { return true; }
 
     /**
      * Focuses next element participating in roving tab index list
@@ -43,9 +49,9 @@ export default function RovingTabIndexedMixin(Base) {
      * @param {boolean} [reverse]
      * @return {HTMLElement} focusedElement
      */
-    rtiFocusNext(current = null, loop = true, reverse = false) {
+    focusNext(current = null, loop = true, reverse = false) {
       let foundCurrent = false;
-      const array = reverse ? [...this.rtiChildren].reverse() : this.rtiChildren;
+      const array = reverse ? [...this.kbdNavChildren].reverse() : this.kbdNavChildren;
       for (const candidate of array) {
         if (!foundCurrent) {
           foundCurrent = (current
@@ -60,6 +66,7 @@ export default function RovingTabIndexedMixin(Base) {
           continue;
         }
         if (attemptFocus(candidate)) {
+          this.ariaActiveDescendantElement = candidate;
           return candidate;
         }
       }
@@ -91,47 +98,51 @@ export default function RovingTabIndexedMixin(Base) {
     }
 
     /**
-     * Alias for rtiFocusNext(list, current, true).
-     * Selects previous element participating in roving tab index list
+     * Alias for focusNext(list, current, true).
+     * Selects previous element
      * @param {HTMLElement} [current]
      * @param {boolean} [loop=true]
      * @return {HTMLElement}
      */
-    rtiFocusPrevious(current, loop = true) {
-      return this.rtiFocusNext(current, loop, true);
+    focusPrevious(current, loop = true) {
+      return this.focusNext(current, loop, true);
     }
 
     /** @type {HTMLElement['focus']} */
-    focus(options = undefined) {
-      super.focus(options);
-      for (const candidate of this.rtiChildren) {
+    focus(...options) {
+      super.focus(...options);
+      if (attemptFocus(this.ariaActiveDescendantElement, ...options)) {
+        return;
+      }
+      for (const candidate of this.kbdNavChildren) {
         if (candidate.getAttribute('tabindex') === '0' && candidate instanceof HTMLElement) {
-          candidate.focus();
+          this.ariaActiveDescendantElement = candidate;
+          candidate.focus(...options);
           return;
         }
       }
-      this.rtiFocusNext();
+      this.focusNext();
     }
 
     /**
      * Refreshes roving tab index attributes based on rtiChildren
      */
     refreshTabIndexes() {
-      if (this.rovingTabIndex !== 'true') return;
+      if (this.kbdNav !== 'true') return;
       /** @type {HTMLElement} */
       let currentlyFocusedChild = null;
       /** @type {HTMLElement} */
       let currentTabIndexChild = null;
       /** @type {HTMLElement} */
       let firstFocusableChild = null;
-      for (const child of this.rtiChildren) {
+      for (const child of this.kbdNavChildren) {
         if (!currentlyFocusedChild && document.activeElement === child) {
           currentlyFocusedChild = child;
         } else if (!currentTabIndexChild && child.getAttribute('tabindex') === '0') {
           currentTabIndexChild = child;
         } else {
           if (!firstFocusableChild && child.getAttribute('aria-hidden') !== 'true'
-        && (this.rtiFocusableWhenDisabled || child.getAttribute('aria-disabled') !== 'true')) {
+        && (this.kbdNavFocusableWhenDisabled || child.getAttribute('aria-disabled') !== 'true')) {
             firstFocusableChild = child;
           }
           child.tabIndex = -1;
@@ -158,15 +169,16 @@ export default function RovingTabIndexedMixin(Base) {
     }
 
     /** @param {FocusEvent} event */
-    onRTIFocusIn(event) {
-      if (this.rovingTabIndex !== 'true') return;
+    onKbdNavFocusIn(event) {
+      if (this.kbdNav !== 'true') return;
       const currentItem = /** @type {HTMLElement} */ (event.target);
-      const participates = currentItem.matches(this.rtiQuery);
+      const participates = currentItem.matches(this.kbdNavQuery);
       if (!participates) return;
+      this.ariaActiveDescendantElement = currentItem;
       if (currentItem.getAttribute('tabindex') !== '0') {
         currentItem.tabIndex = 0;
       }
-      for (const item of this.rtiChildren) {
+      for (const item of this.kbdNavChildren) {
         if (item !== currentItem && item.hasAttribute('tabindex')) {
           item.tabIndex = -1;
           // item.setAttribute('tabindex', '-1');
@@ -174,14 +186,63 @@ export default function RovingTabIndexedMixin(Base) {
       }
     }
 
+    /** @return {'horizontal'|'vertical'} */
+    get ariaOrientationDefault() { return 'vertical'; }
+
+    /**
+     * @param {KeyboardEvent} event
+     * @return {void}
+     */
+    onKbdNavKeydown(event) {
+      if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) return;
+      if (this.kbdNav !== 'true') return;
+
+      switch (event.key) {
+        case 'ArrowUp':
+        case 'Up':
+          if (this.#ariaOrientationIsVertical()) {
+            this.focusPrevious();
+          }
+          break;
+        case 'ArrowDown':
+        case 'Down':
+          if (this.#ariaOrientationIsVertical()) {
+            this.focusNext();
+          }
+          break;
+        case 'ArrowLeft':
+        case 'Left':
+          if (this.#ariaOrientationIsVertical()) return;
+          if (isRtl(this)) {
+            this.focusNext();
+          } else {
+            this.focusPrevious();
+          }
+          break;
+        case 'ArrowRight':
+        case 'Right':
+          if (this.#ariaOrientationIsVertical()) return;
+          if (isRtl(this)) {
+            this.focusPrevious();
+          } else {
+            this.focusNext();
+          }
+          break;
+        default:
+          return;
+      }
+      event.preventDefault();
+    }
+
     connectedCallback() {
       super.connectedCallback();
       this.refreshTabIndexes();
-      this.addEventListener('focusin', this.onRTIFocusIn);
+      this.addEventListener('focusin', this.onKbdNavFocusIn);
+      this.addEventListener('keydown', this.onKbdNavKeydown);
     }
   }
 
   /** @type {'true'|'false'} */
-  RovingTabIndexed.prototype.rovingTabIndex = RovingTabIndexed.idl('rovingTabIndex', { empty: 'true' });
-  return RovingTabIndexed;
+  KeyboardNav.prototype.kbdNav = KeyboardNav.idl('kbdNav', { empty: 'true' });
+  return KeyboardNav;
 }

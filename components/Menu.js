@@ -2,7 +2,7 @@
 
 import './Container.js';
 import CustomElement from '../core/CustomElement.js';
-import RovingTabIndexedMixin from '../mixins/RovingTaxIndexedMixin.js';
+import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
 
 import styles from './Menu.css' assert { type: 'css' };
 import MenuItem from './MenuItem.js';
@@ -18,7 +18,7 @@ import MenuItem from './MenuItem.js';
  */
 
 /** @implements {HTMLDialogElement} */
-export default class Menu extends RovingTabIndexedMixin(CustomElement) {
+export default class Menu extends KeyboardNavMixin(CustomElement) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-menu';
@@ -143,18 +143,6 @@ export default class Menu extends RovingTabIndexedMixin(CustomElement) {
       return;
     }
 
-    if (event.key === 'ArrowDown' || (event.key === 'Down')) {
-      event.stopPropagation();
-      event.preventDefault();
-      this.ariaActiveDescendantElement = this.rtiFocusNext();
-      return;
-    }
-    if (event.key === 'ArrowUp' || (event.key === 'Up')) {
-      event.stopPropagation();
-      event.preventDefault();
-      this.ariaActiveDescendantElement = this.rtiFocusPrevious();
-      return;
-    }
     if (event.key === 'Tab') {
     // Hide menu allowing focus to revert to calling element
     // To then allow browser default Tab interaction
@@ -222,7 +210,8 @@ export default class Menu extends RovingTabIndexedMixin(CustomElement) {
     return true;
   }
 
-  get rtiQuery() { return MenuItem.elementName; }
+  /** @override */
+  get kbdNavQuery() { return MenuItem.elementName; }
 
   /**
    * @param {MouseEvent|PointerEvent|HTMLElement} source
@@ -547,61 +536,6 @@ export default class Menu extends RovingTabIndexedMixin(CustomElement) {
   }
 
   /**
-   * @param {boolean} [backwards=false]
-   * @return {void}
-   */
-  selectNextMenuItem(backwards) {
-    const menuItems = this.rtiChildren;
-    let foundTarget = false;
-    /** @type {HTMLElement} */
-    let candidate = null;
-    /** @type {HTMLElement} */
-    let firstFocusableItem = null;
-    let lastFocusableElement = null;
-    const target = document.activeElement;
-
-    // Hidden elements cannot be focused
-    // Disabled elements cannot be focused on IE11
-    // Skip elements that fail to receive focus
-    for (const el of menuItems) {
-      el.focus();
-      const focusable = (document.activeElement === el);
-      if (focusable) {
-        if (!firstFocusableItem) {
-          firstFocusableItem = el;
-        }
-        lastFocusableElement = el;
-      }
-      if (el === target) {
-        foundTarget = true;
-        if (backwards && candidate) {
-          break;
-        }
-        continue;
-      }
-      if (backwards) {
-        if (focusable) {
-          candidate = el;
-        }
-        continue;
-      }
-      if (foundTarget) {
-        if (focusable) {
-          candidate = el;
-          break;
-        }
-        continue;
-      }
-    }
-    if (!candidate) {
-      candidate = backwards ? lastFocusableElement : firstFocusableItem;
-    }
-    if (candidate && document.activeElement !== candidate) {
-      candidate.focus();
-    }
-  }
-
-  /**
    * @param {MouseEvent|PointerEvent|HTMLElement} [source]
    * @return {boolean} handled
    */
@@ -672,14 +606,14 @@ export default class Menu extends RovingTabIndexedMixin(CustomElement) {
     Menu.OPEN_MENUS.push(menuStack);
     // this.refreshMenuItems();
 
-    const [firstItem] = this.rtiChildren;
+    const [firstItem] = this.kbdNavChildren;
     try {
       firstItem.focus();
       if (firstItem !== document.activeElement) {
         throw new Error('focus failed');
       }
     } catch {
-      this.rtiFocusNext(firstItem);
+      this.focusNext(firstItem);
     }
 
     return true;
