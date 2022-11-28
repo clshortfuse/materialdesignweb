@@ -23,7 +23,7 @@ export default function RippleMixin(Base) {
      * @this {HTMLElement}
      * @return {void}
      */
-    static onRippleAnimationEnd({ animationName }) {
+    onRippleAnimationEnd({ animationName }) {
       switch (animationName) {
         case 'ripple-fade-in':
         case 'ripple-fade-in-repeat':
@@ -44,7 +44,7 @@ export default function RippleMixin(Base) {
      * @this {Ripple}
      * @return {void}
      */
-    static onRippleMouseDown(event) {
+    onRippleMouseDown(event) {
       if (event.button) return;
 
       const { ripple } = this.refs;
@@ -60,7 +60,7 @@ export default function RippleMixin(Base) {
      * @this {Ripple}
      * @return {void}
      */
-    static onRippleTouchStart(event) {
+    onRippleTouchStart(event) {
       const [touch] = event.changedTouches;
       if (!touch) return;
 
@@ -77,7 +77,7 @@ export default function RippleMixin(Base) {
      * @this {Ripple}
      * @return {void}
      */
-    static onRippleClick(event) {
+    onRippleClick(event) {
       this.drawRipple('click');
     // requestAnimationFrame(() => this.clearRipple());
     }
@@ -87,7 +87,7 @@ export default function RippleMixin(Base) {
      * @this {HTMLElement}
      * @return {void}
      */
-    static onRippleKeyDown(event) {
+    onRippleKeyDown(event) {
       if (event.repeat) return;
 
       requestAnimationFrame(() => {
@@ -177,9 +177,6 @@ export default function RippleMixin(Base) {
       rippleInner.setAttribute('mdw-fade-out', '');
     }
 
-    /** @return {typeof Ripple} */
-    get static() { return /** @type {typeof Ripple} */ (super.static); }
-
     connectedCallback() {
       super.connectedCallback();
       const rippleInner = this.#rippleInner;
@@ -188,12 +185,12 @@ export default function RippleMixin(Base) {
         rippleInner.removeAttribute('mdw-fade-in-repeat');
         rippleInner.removeAttribute('mdw-fade-in-complete');
         rippleInner.removeAttribute('mdw-fade-out');
-        rippleInner.addEventListener('animationend', Ripple.onRippleAnimationEnd, { passive: true });
+        rippleInner.addEventListener('animationend', this.onRippleAnimationEnd, { passive: true });
       }
-      this.addEventListener('click', Ripple.onRippleClick, { passive: true });
-      this.addEventListener('mousedown', Ripple.onRippleMouseDown, { passive: true });
-      this.addEventListener('touchstart', Ripple.onRippleTouchStart, { passive: true });
-      this.addEventListener('keydown', Ripple.onRippleKeyDown, { passive: true });
+      this.addEventListener('click', this.onRippleClick, { passive: true });
+      this.addEventListener('mousedown', this.onRippleMouseDown, { passive: true });
+      this.addEventListener('touchstart', this.onRippleTouchStart, { passive: true });
+      this.addEventListener('keydown', this.onRippleKeyDown, { passive: true });
     }
 
     disconnectedCallback() {

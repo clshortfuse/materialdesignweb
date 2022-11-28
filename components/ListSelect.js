@@ -19,12 +19,41 @@ export default class ListSelect extends FormAssociatedMixin(List) {
 
   static styles = [...super.styles, styles];
 
+  /** @type {HTMLCollectionOf<ListOption> & HTMLOptionsCollection} */
+  _optionsCollection = null;
+
+  constructor() {
+    super();
+    this.refs.slot.addEventListener('slotchange', this.onSlotChange, { passive: true });
+    this.addEventListener('keydown', this.onControlKeydown);
+    this.addEventListener(RovingTabIndex.TABINDEX_ZEROED, this.onTabIndexZeroed);
+    this.addEventListener('click', this.onListSelectClick);
+  }
+
+  /** @type {List['idlChangedCallback']} */
+  idlChangedCallback(name, oldValue, newValue) {
+    super.idlChangedCallback(name, oldValue, newValue);
+    switch (name) {
+      case 'multiple':
+        this.setAttribute('aria-multiselectable', newValue ? 'true' : 'false');
+        break;
+      default:
+    }
+  }
+
+  * _selectedOptionsGenerator() {
+    for (const el of this.options) {
+      if (!el.selected) continue;
+      yield el;
+    }
+  }
+
   /**
    * @param {Event} event
    * @this {HTMLSlotElement}
    * @return {void}
    */
-  static onSlotChange(event) {
+  onSlotChange(event) {
     /** @type {{host:ListSelect}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
     RovingTabIndex.setupTabIndexes(host.options, true);
@@ -35,11 +64,41 @@ export default class ListSelect extends FormAssociatedMixin(List) {
   }
 
   /**
+   * @param {KeyboardEvent} event
+   * @this {ListSelect}
+   * @return {void}
+   */
+  onControlKeydown(event) {
+    super.onControlKeydown(event);
+    if (event.key === 'ArrowDown' || (event.key === 'Down')) {
+      event.stopPropagation();
+      event.preventDefault();
+      // @ts-ignore AOM
+      this.ariaActiveDescendantElement = RovingTabIndex.selectNext([...this.options]);
+      return;
+    }
+    if (event.key === 'ArrowUp' || (event.key === 'Up')) {
+      event.stopPropagation();
+      event.preventDefault();
+      // @ts-ignore AOM
+      this.ariaActiveDescendantElement = RovingTabIndex.selectPrevious([...this.options]);
+      return;
+    }
+    if (event.key === 'Spacebar' || event.key === ' ') {
+      const target = event.target;
+      if (!(target instanceof ListOption)) return;
+      event.stopPropagation();
+      event.preventDefault();
+      this.onListSelectClick.call(this, event);
+    }
+  }
+
+  /**
    * @param {Event} event
    * @this {ListSelect}
    * @return {void}
    */
-  static onTabIndexZeroed(event) {
+  onTabIndexZeroed(event) {
     event.stopPropagation();
     const currentItem = /** @type {HTMLElement} */ (event.target);
     RovingTabIndex.removeTabIndex(this.options, [currentItem]);
@@ -50,7 +109,7 @@ export default class ListSelect extends FormAssociatedMixin(List) {
    * @this {ListSelect}
    * @return {void}
    */
-  static onListSelectClick(event) {
+  onListSelectClick(event) {
     const target = event.target;
     if (!(target instanceof ListOption)) return;
     event.stopPropagation();
@@ -92,68 +151,6 @@ export default class ListSelect extends FormAssociatedMixin(List) {
     this._value = target.value;
   }
 
-  /**
-   * @param {KeyboardEvent} event
-   * @this {ListSelect}
-   * @return {void}
-   */
-  static onControlKeydown(event) {
-    super.onControlKeydown(event);
-    if (event.key === 'ArrowDown' || (event.key === 'Down')) {
-      event.stopPropagation();
-      event.preventDefault();
-      // @ts-ignore AOM
-      this.ariaActiveDescendantElement = RovingTabIndex.selectNext([...this.options]);
-      return;
-    }
-    if (event.key === 'ArrowUp' || (event.key === 'Up')) {
-      event.stopPropagation();
-      event.preventDefault();
-      // @ts-ignore AOM
-      this.ariaActiveDescendantElement = RovingTabIndex.selectPrevious([...this.options]);
-      return;
-    }
-    if (event.key === 'Spacebar' || event.key === ' ') {
-      const target = event.target;
-      if (!(target instanceof ListOption)) return;
-      event.stopPropagation();
-      event.preventDefault();
-      ListSelect.onListSelectClick.call(this, event);
-    }
-  }
-
-  /** @type {HTMLCollectionOf<ListOption> & HTMLOptionsCollection} */
-  _optionsCollection = null;
-
-  constructor() {
-    super();
-    this.refs.slot.addEventListener('slotchange', ListSelect.onSlotChange, { passive: true });
-    this.addEventListener('keydown', this.static.onControlKeydown);
-    this.addEventListener(RovingTabIndex.TABINDEX_ZEROED, this.static.onTabIndexZeroed);
-    this.addEventListener('click', this.static.onListSelectClick);
-  }
-
-  /** @type {List['idlChangedCallback']} */
-  idlChangedCallback(name, oldValue, newValue) {
-    super.idlChangedCallback(name, oldValue, newValue);
-    switch (name) {
-      case 'multiple':
-        this.setAttribute('aria-multiselectable', newValue ? 'true' : 'false');
-        break;
-      default:
-    }
-  }
-
-  * _selectedOptionsGenerator() {
-    for (const el of this.options) {
-      if (!el.selected) continue;
-      yield el;
-    }
-  }
-
-  /** @return {typeof ListSelect} */
-  get static() { return /** @type {typeof ListSelect} */ (super.static); }
-
   /** @return {NodeListOf<ListItem>} */
   get childListItems() {
     return this.querySelectorAll(ListItem.elementName);
@@ -176,7 +173,7 @@ export default class ListSelect extends FormAssociatedMixin(List) {
   }
 
   // @ts-ignore @override
-  // eslint-disable-next-line class-methods-use-this
+
   get type() { return 'select'; }
 
   /** @type {HTMLElement['focus']} */

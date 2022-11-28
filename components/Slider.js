@@ -64,7 +64,7 @@ export default class Slider extends InputMixin(Container) {
    * @this {HTMLInputElement} this
    * @return {void}
    */
-  static onControlMouseOrTouch(event) {
+  onControlMouseOrTouch(event) {
     if (this.disabled) return;
 
     /** @type {{host:Slider}} */ // @ts-ignore Coerce
@@ -139,7 +139,7 @@ export default class Slider extends InputMixin(Container) {
   /**
    * @this {Slider}
    */
-  static onLeaveEvent() {
+  onLeaveEvent() {
     if (document.activeElement === this) return;
     this._isHoveringThumb = false;
   }
@@ -148,7 +148,7 @@ export default class Slider extends InputMixin(Container) {
    * @this {HTMLInputElement}
    * @param {MouseEvent} event
    */
-  static onControlClick(event) {
+  onControlClick(event) {
     if (!this.disabled) {
       event.preventDefault();
       /** @type {{host:Slider}} */ // @ts-ignore Coerce
@@ -191,12 +191,12 @@ export default class Slider extends InputMixin(Container) {
 
     for (const type of ['mousedown', 'mousemove', 'mouseout',
       'touchmove', 'touchstart', 'touchend', 'touchleave', 'touchcancel']) {
-      control.addEventListener(type, Slider.onControlMouseOrTouch, { passive: true });
+      control.addEventListener(type, this.onControlMouseOrTouch, { passive: true });
     }
 
-    control.addEventListener('touchend', Slider.onControlClick);
-    this.addEventListener('blur', Slider.onLeaveEvent);
-    this.addEventListener('mouseout', Slider.onLeaveEvent);
+    control.addEventListener('touchend', this.onControlClick);
+    this.addEventListener('blur', this.onLeaveEvent);
+    this.addEventListener('mouseout', this.onLeaveEvent);
   }
 }
 

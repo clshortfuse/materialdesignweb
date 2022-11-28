@@ -64,10 +64,10 @@ export default class NavItem extends RippleMixin(Container) {
   connectedCallback() {
     super.connectedCallback();
 
-    // this.removeEventListener('click', Ripple.onRippleClick);
-    this.removeEventListener('mousedown', this.static.onRippleMouseDown);
-    this.removeEventListener('touchstart', this.static.onRippleTouchStart);
-    this.removeEventListener('keydown', this.static.onRippleKeyDown);
+    // this.removeEventListener('click', this.onRippleClick);
+    this.removeEventListener('mousedown', this.onRippleMouseDown);
+    this.removeEventListener('touchstart', this.onRippleTouchStart);
+    this.removeEventListener('keydown', this.onRippleKeyDown);
   }
 }
 

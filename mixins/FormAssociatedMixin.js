@@ -30,7 +30,12 @@ export default function FormAssociatedMixin(Base) {
     /** @type {string[]} */
     static valueChangingContentAttributes = [];
 
-    static onControlFocus(event) {
+    /**
+     * @this {HTMLControlElement}
+     * @param {FocusEvent} event
+     * @return {void}
+     */
+    onControlFocus(event) {
     /** @type {{host:FormAssociated}} */ // @ts-ignore Coerce
       const { host } = this.getRootNode();
       host._isFocused = true;
@@ -42,7 +47,7 @@ export default function FormAssociatedMixin(Base) {
      * @param {FocusEvent} event
      * @return {void}
      */
-    static onControlBlur(event) {
+    onControlBlur(event) {
     /** @type {{host:FormAssociated}} */ // @ts-ignore Coerce
       const { host } = this.getRootNode();
       host._isFocused = false;
@@ -57,7 +62,7 @@ export default function FormAssociatedMixin(Base) {
      * @this {HTMLControlElement}
      * @return {void}
      */
-    static onControlClick(event) {
+    onControlClick(event) {
     // Do nothing by default
     }
 
@@ -66,7 +71,7 @@ export default function FormAssociatedMixin(Base) {
      * @this {HTMLControlElement}
      * @return {void}
      */
-    static onControlKeydown(event) {
+    onControlKeydown(event) {
     // Do nothing by default
     }
 
@@ -75,7 +80,7 @@ export default function FormAssociatedMixin(Base) {
      * @this {HTMLInputElement}
      * @return {void}
      */
-    static onControlInput(event) {
+    onControlInput(event) {
     /** @type {{host:FormAssociated}} */ // @ts-ignore Coerce
       const { host } = this.getRootNode();
       if (!host.validity.valid) {
@@ -94,7 +99,7 @@ export default function FormAssociatedMixin(Base) {
      * @this {HTMLControlElement} this
      * @return {void}
      */
-    static onControlChange(event) {
+    onControlChange(event) {
     /** @type {{host:FormAssociated}} */ // @ts-ignore Coerce
       const { host } = this.getRootNode();
       host._value = this.value;
@@ -248,7 +253,7 @@ export default function FormAssociatedMixin(Base) {
 
     connectedCallback() {
       super.connectedCallback();
-      // control.addEventListener('invalid', Control.onControlInvalid);
+      // control.addEventListener('invalid', this.onControlInvalid);
       if (!this.elementInternals.form) {
         this.formAssociatedCallback(null);
       }

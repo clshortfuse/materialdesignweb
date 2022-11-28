@@ -18,89 +18,13 @@ export default function TooltipTriggerMixin(Base) {
       ...super.fragments,
       /* html */ `
         <${Tooltip.elementName} role=tooltip id=tooltip
-          ><slot id=tooltip-slot onslotchange={static.onTooltipTriggerSlotChange} name=tooltip>{tooltip}</slot></${Tooltip.elementName}>
+          ><slot id=tooltip-slot onslotchange={onTooltipTriggerSlotChange} name=tooltip>{tooltip}</slot></${Tooltip.elementName}>
       `,
     ];
 
     static TOOLTIP_MOUSE_IDLE_MS = 500;
 
     static TOOLTIP_TOUCH_IDLE_MS = 1500;
-
-    /**
-     * @this {HTMLSlotElement}
-     * @param {Event} event
-     * @return {void}
-     */
-    static onTooltipTriggerSlotChange(event) {
-      const instance = /** @type {TooltipTrigger} */ (this.getRootNode().host);
-      const tooltip = instance.tooltipClone;
-      while (tooltip.lastChild) {
-        tooltip.lastChild.remove();
-      }
-      for (const child of this.assignedNodes()) {
-        tooltip.append(child.cloneNode(true));
-      }
-    }
-
-    /**
-     * @this {TooltipTrigger} this
-     * @param {FocusEvent} event
-     * @return {void}
-     */
-    static onTooltipTriggerFocus(event) {
-      // console.log('getting focus', event);
-      if (this.disabled) return;
-      if (this.matches(':active')) {
-        // console.log('abort from active');
-        return;
-      }
-      this.showTooltip();
-    }
-
-    /**
-     * @this {TooltipTrigger} this
-     * @param {KeyboardEvent} event
-     * @return {void}
-     */
-    static onTooltipTriggerKeydown(event) {
-      if (event.ctrlKey) this.hideTooltip();
-    }
-
-    /**
-     * @this {TooltipTrigger} this
-     * @return {void}
-     */
-    static onTooltipTriggerBlur() {
-      this.hideTooltip();
-    }
-
-    /**
-     * @param {MouseEvent|TouchEvent} event
-     * @this {TooltipTrigger} this
-     * @return {void}
-     */
-    static onTooltipTriggerPointer(event) {
-      if (this.disabled) return;
-      // console.log('tooltip event', event.type);
-      switch (event.type) {
-        case 'touchstart':
-          this.scheduleShowTooltip('touch');
-          break;
-        case 'touchend':
-        case 'touchcancel':
-          this.scheduleHideTooltip('touch');
-          break;
-        case 'mouseout':
-          this.cancelShowTooltip();
-          this.hideTooltip();
-          break;
-        case 'mousemove':
-        case 'mouseover':
-          this.scheduleShowTooltip('mouse');
-          break;
-        default:
-      }
-    }
 
     /** @type {Tooltip} */
     #tooltip;
@@ -163,6 +87,82 @@ export default function TooltipTriggerMixin(Base) {
         this.updateTooltipPosition();
       }, { threshold });
       // this.#tooltip.remove();
+    }
+
+    /**
+     * @this {HTMLSlotElement}
+     * @param {Event} event
+     * @return {void}
+     */
+    onTooltipTriggerSlotChange(event) {
+      const instance = /** @type {TooltipTrigger} */ (this.getRootNode().host);
+      const tooltip = instance.tooltipClone;
+      while (tooltip.lastChild) {
+        tooltip.lastChild.remove();
+      }
+      for (const child of this.assignedNodes()) {
+        tooltip.append(child.cloneNode(true));
+      }
+    }
+
+    /**
+     * @this {TooltipTrigger} this
+     * @param {FocusEvent} event
+     * @return {void}
+     */
+    onTooltipTriggerFocus(event) {
+      // console.log('getting focus', event);
+      if (this.disabled) return;
+      if (this.matches(':active')) {
+        // console.log('abort from active');
+        return;
+      }
+      this.showTooltip();
+    }
+
+    /**
+     * @this {TooltipTrigger} this
+     * @param {KeyboardEvent} event
+     * @return {void}
+     */
+    onTooltipTriggerKeydown(event) {
+      if (event.ctrlKey) this.hideTooltip();
+    }
+
+    /**
+     * @this {TooltipTrigger} this
+     * @return {void}
+     */
+    onTooltipTriggerBlur() {
+      this.hideTooltip();
+    }
+
+    /**
+     * @param {MouseEvent|TouchEvent} event
+     * @this {TooltipTrigger} this
+     * @return {void}
+     */
+    onTooltipTriggerPointer(event) {
+      if (this.disabled) return;
+      // console.log('tooltip event', event.type);
+      switch (event.type) {
+        case 'touchstart':
+          this.scheduleShowTooltip('touch');
+          break;
+        case 'touchend':
+        case 'touchcancel':
+          this.scheduleHideTooltip('touch');
+          break;
+        case 'mouseout':
+          this.cancelShowTooltip();
+          this.hideTooltip();
+          break;
+        case 'mousemove':
+        case 'mouseover':
+          this.scheduleShowTooltip('mouse');
+          break;
+        default:
+      }
     }
 
     get tooltipClone() {
@@ -348,14 +348,13 @@ export default function TooltipTriggerMixin(Base) {
 
     connectedCallback() {
       super.connectedCallback();
-
       for (const type of ['mousedown', 'mousemove', 'mouseout',
         'touchmove', 'touchstart', 'touchend', 'touchleave', 'touchcancel']) {
-        this.addEventListener(type, TooltipTrigger.onTooltipTriggerPointer, { passive: true });
+        this.addEventListener(type, this.onTooltipTriggerPointer, { passive: true });
       }
-      this.addEventListener('focus', TooltipTrigger.onTooltipTriggerFocus);
-      this.addEventListener('blur', TooltipTrigger.onTooltipTriggerBlur);
-      this.addEventListener('keydown', TooltipTrigger.onTooltipTriggerKeydown, { passive: true });
+      this.addEventListener('focus', this.onTooltipTriggerFocus);
+      this.addEventListener('blur', this.onTooltipTriggerBlur);
+      this.addEventListener('keydown', this.onTooltipTriggerKeydown, { passive: true });
     }
 
     disconnectedCallback() {

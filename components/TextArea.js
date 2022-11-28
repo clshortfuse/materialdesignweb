@@ -15,7 +15,7 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
   static get template() {
     const template = super.template;
     const slot = template.getElementById('slot');
-    slot.setAttribute('onslotchange', '{~static.onSlotChange}');
+    slot.setAttribute('onslotchange', '{~onSlotChange}');
     template.append(slot);
     return template;
   }
@@ -35,45 +35,6 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
     'placeholder',
     'rows',
   ];
-
-  /**
-   * @param {InputEvent} event
-   * @this {HTMLTextAreaElement}
-   * @return {void}
-   */
-  static onControlInput(event) {
-    super.onControlInput(event);
-    if (TextArea.supportsCSSLineHeightUnit) return;
-    /** @type {{host:TextArea}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    // if (!host.autosize) return;
-    host.resize();
-  }
-
-  /**
-   * @param {Event} event
-   * @this {HTMLSlotElement}
-   * @return {void}
-   */
-  static onSlotChange(event) {
-    /** @type {{host:TextArea}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    const textarea = /** @type {HTMLTextAreaElement} */ (host.refs.control);
-    const previousValue = textarea.defaultValue;
-    // Skip redundancy check, just replace.
-    let lastChild;
-    while ((lastChild = textarea.lastChild) != null) {
-      lastChild.remove();
-    }
-    for (const child of this.assignedNodes()) {
-      textarea.append(child.cloneNode(true));
-    }
-
-    const newValue = textarea.defaultValue;
-    if (previousValue !== newValue) {
-      host.idlChangedCallback('defaultValue', previousValue, newValue);
-    }
-  }
 
   #updatingSlot = false;
 
@@ -108,6 +69,45 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
         this.resize();
         break;
       default:
+    }
+  }
+
+  /**
+   * @param {InputEvent} event
+   * @this {HTMLTextAreaElement}
+   * @return {void}
+   */
+  onControlInput(event) {
+    super.onControlInput(event);
+    if (TextArea.supportsCSSLineHeightUnit) return;
+    /** @type {{host:TextArea}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    // if (!host.autosize) return;
+    host.resize();
+  }
+
+  /**
+   * @param {Event} event
+   * @this {HTMLSlotElement}
+   * @return {void}
+   */
+  onSlotChange(event) {
+    /** @type {{host:TextArea}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    const textarea = /** @type {HTMLTextAreaElement} */ (host.refs.control);
+    const previousValue = textarea.defaultValue;
+    // Skip redundancy check, just replace.
+    let lastChild;
+    while ((lastChild = textarea.lastChild) != null) {
+      lastChild.remove();
+    }
+    for (const child of this.assignedNodes()) {
+      textarea.append(child.cloneNode(true));
+    }
+
+    const newValue = textarea.defaultValue;
+    if (previousValue !== newValue) {
+      host.idlChangedCallback('defaultValue', previousValue, newValue);
     }
   }
 
@@ -181,7 +181,7 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
   }
 
   // @ts-ignore @override
-  // eslint-disable-next-line class-methods-use-this
+
   get type() { return 'textarea'; }
 
   get textLength() { return this.#textarea.textLength; }

@@ -53,7 +53,7 @@ export default function InputMixin(Base) {
      * @this {HTMLInputElement}
      * @return {void}
      */
-    static onControlClick(event) {
+    onControlClick(event) {
       super.onControlClick(event);
       if (event.defaultPrevented) return;
 
@@ -73,7 +73,7 @@ export default function InputMixin(Base) {
      * @this {HTMLInputElement}
      * @return {void}
      */
-    static onControlKeydown(event) {
+    onControlKeydown(event) {
       super.onControlKeydown(event);
       if (event.defaultPrevented) return;
       if (this.type !== 'radio') return;
@@ -94,7 +94,7 @@ export default function InputMixin(Base) {
      * @this {HTMLInputElement} this
      * @return {void}
      */
-    static onControlChange(event) {
+    onControlChange(event) {
     /** @type {{host:Input}} */ // @ts-ignore Coerce
       const { host } = this.getRootNode();
       if (host.hasAttribute('disabled')) {

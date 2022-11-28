@@ -16,7 +16,7 @@ export default class Nav extends Container {
    * @this {Nav}
    * @return {void}
    */
-  static onNavClick(event) {
+  onNavClick(event) {
     // Abort if not child
     if (event.target === this) return;
     if (event.target instanceof NavItem === false) return;
@@ -31,6 +31,6 @@ export default class Nav extends Container {
   }
 
   connectedCallback() {
-    this.addEventListener('click', Nav.onNavClick);
+    this.addEventListener('click', this.onNavClick);
   }
 }

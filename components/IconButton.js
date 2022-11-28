@@ -17,20 +17,18 @@ export default class IconButton extends TooltipTriggerMixin(Button) {
     template.getElementById('tooltip-slot').removeAttribute('name');
     // icon.append(template.getElementById('slot'));
     const icon = template.getElementById('icon');
-    icon.setAttribute('style', '{static.computeIconStyle}');
+    icon.setAttribute('style', '{computeIconStyle}');
 
     const control = template.getElementById('control');
-    control.setAttribute('aria-pressed', '{static.computeAriaPressed}');
+    control.setAttribute('aria-pressed', '{computeAriaPressed}');
     control.setAttribute('aria-labelledby', 'toolbar');
 
     return template;
   }
 
-  /**
-   * @param {IconButton} instance
-   * @return {string?}
-   */
-  static computeAriaPressed({ type, _checked }) {
+  /** @return {string?} */
+  computeAriaPressed() {
+    const { type, _checked } = this;
     if (type !== 'checkbox') return null;
     return _checked ? 'true' : 'false';
   }
@@ -40,7 +38,7 @@ export default class IconButton extends TooltipTriggerMixin(Button) {
    * @this {HTMLInputElement}
    * @return {void}
    */
-  static onControlKeyDown(event) {
+  onControlKeyDown(event) {
     if (event.key !== 'Enter') return;
     if (this.type !== 'checkbox') return;
     event.stopPropagation();

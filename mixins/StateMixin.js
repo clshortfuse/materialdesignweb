@@ -24,7 +24,7 @@ export default function StateMixin(Base) {
      * @this {State}
      * @return {void}
      */
-    static onStateMouseDown(event) {
+    onStateMouseDown(event) {
       if (this.#lastInteraction) return;
       this.#lastInteraction = 'mouse';
       this.refs.state?.removeAttribute('touched');
@@ -35,7 +35,7 @@ export default function StateMixin(Base) {
      * @this {State}
      * @return {void}
      */
-    static onStateTouchStart(event) {
+    onStateTouchStart(event) {
       this.#lastInteraction = 'touch';
       this.refs.state?.setAttribute('touched', '');
     }
@@ -45,7 +45,7 @@ export default function StateMixin(Base) {
      * @this {State}
      * @return {void}
      */
-    static onStateKeyDown(event) {
+    onStateKeyDown(event) {
       this.#lastInteraction = 'key';
       this.refs.state?.removeAttribute('touched');
     }
@@ -55,7 +55,7 @@ export default function StateMixin(Base) {
      * @this {State}
      * @return {void}
      */
-    static onStateBlur(event) {
+    onStateBlur(event) {
       this.refs.state?.removeAttribute('focus');
       switch (this.#lastInteraction) {
         case null: return;
@@ -74,7 +74,7 @@ export default function StateMixin(Base) {
      * @this {State}
      * @return {void}
      */
-    static onStateFocus(event) {
+    onStateFocus(event) {
       this.refs.state?.setAttribute('focus', '');
       // Element was focused without a mouse or touch event (keyboard or programmatic)
       if (!this.#lastInteraction && lastInteractionWasTouch) {
@@ -92,11 +92,11 @@ export default function StateMixin(Base) {
 
     connectedCallback() {
       super.connectedCallback();
-      this.addEventListener('mousedown', State.onStateMouseDown, { passive: true });
-      this.addEventListener('touchstart', State.onStateTouchStart, { passive: true });
-      this.addEventListener('keydown', State.onStateKeyDown, { passive: true });
-      this.addEventListener('blur', State.onStateBlur, { passive: true });
-      this.addEventListener('focus', State.onStateFocus, { passive: true });
+      this.addEventListener('mousedown', this.onStateMouseDown, { passive: true });
+      this.addEventListener('touchstart', this.onStateTouchStart, { passive: true });
+      this.addEventListener('keydown', this.onStateKeyDown, { passive: true });
+      this.addEventListener('blur', this.onStateBlur, { passive: true });
+      this.addEventListener('focus', this.onStateFocus, { passive: true });
     }
 
     disconnectedCallback() {

@@ -16,12 +16,18 @@ export default class SegmentedButtonGroup extends Container {
 
   static styles = [...super.styles, styles];
 
+  constructor() {
+    super();
+    this.setAttribute('aria-orientation', 'horizontal');
+    this.refs.slot.addEventListener('slotchange', this.onSlotChange, { passive: true });
+  }
+
   /**
    * @param {Event} event
    * @this {HTMLSlotElement}
    * @return {void}
    */
-  static onSlotChange(event) {
+  onSlotChange(event) {
     /** @type {{host:SegmentedButtonGroup}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
     RovingTabIndex.setupTabIndexes(host.childSegmentedButtons, true);
@@ -32,7 +38,7 @@ export default class SegmentedButtonGroup extends Container {
    * @this {SegmentedButtonGroup}
    * @return {void}
    */
-  static onKeyDownEvent(event) {
+  onKeyDownEvent(event) {
     if (event.ctrlKey) return;
     if (event.shiftKey) return;
     if (event.altKey) return;
@@ -76,16 +82,10 @@ export default class SegmentedButtonGroup extends Container {
    * @this {SegmentedButtonGroup}
    * @return {void}
    */
-  static onTabIndexZeroed(event) {
+  onTabIndexZeroed(event) {
     event.stopPropagation();
     const currentItem = /** @type {HTMLElement} */ (event.target);
     RovingTabIndex.removeTabIndex(this.childSegmentedButtons, [currentItem]);
-  }
-
-  constructor() {
-    super();
-    this.setAttribute('aria-orientation', 'horizontal');
-    this.refs.slot.addEventListener('slotchange', SegmentedButtonGroup.onSlotChange, { passive: true });
   }
 
   /** @return {NodeListOf<SegmentedButton>} */
@@ -94,12 +94,12 @@ export default class SegmentedButtonGroup extends Container {
   }
 
   connectedCallback() {
-    this.addEventListener('keydown', SegmentedButtonGroup.onKeyDownEvent);
-    this.addEventListener(RovingTabIndex.TABINDEX_ZEROED, SegmentedButtonGroup.onTabIndexZeroed);
+    this.addEventListener('keydown', this.onKeyDownEvent);
+    this.addEventListener(RovingTabIndex.TABINDEX_ZEROED, this.onTabIndexZeroed);
   }
 
   disconnectedCallback() {
-    this.removeEventListener('keydown', SegmentedButtonGroup.onKeyDownEvent);
-    this.removeEventListener(RovingTabIndex.TABINDEX_ZEROED, SegmentedButtonGroup.onTabIndexZeroed);
+    this.removeEventListener('keydown', this.onKeyDownEvent);
+    this.removeEventListener(RovingTabIndex.TABINDEX_ZEROED, this.onTabIndexZeroed);
   }
 }

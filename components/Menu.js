@@ -34,7 +34,7 @@ export default class Menu extends CustomElement {
         <div id=scrim aria-hidden=true></div>
         <form id=form method=dialog role=none>
           <mdw-container id=container role=none>
-            <slot id=slot onslotchange={~static.onSlotChange}></slot>
+            <slot id=slot onslotchange={~onSlotChange}></slot>
           </mdw-container>
         </form>
       </dialog>
@@ -52,7 +52,7 @@ export default class Menu extends CustomElement {
    * @this {HTMLSlotElement}
    * @return {void}
    */
-  static onSlotChange(event) {
+  onSlotChange(event) {
     /** @type {{host:Menu}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
     RovingTabIndex.setupTabIndexes(host.childMenuItems, true);
@@ -63,7 +63,7 @@ export default class Menu extends CustomElement {
    * @this {Menu}
    * @return {void}
    */
-  static onMenuScroll(event) {
+  onMenuScroll(event) {
   // JS needed for Safari
     if (event.target === event.currentTarget) {
       event.preventDefault();
@@ -86,7 +86,7 @@ export default class Menu extends CustomElement {
    * @this {Menu}
    * @return {void}
    */
-  static onMenuClick(event) {
+  onMenuClick(event) {
     if (this !== event.target) return;
     // Clicked self (scrim-like)
     event.stopPropagation();
@@ -96,7 +96,7 @@ export default class Menu extends CustomElement {
   /**
    * @return {void}
    */
-  static onWindowResize() {
+  onWindowResize() {
     const lastOpenMenu = Menu.OPEN_MENUS.at(-1);
     if (!lastOpenMenu || !lastOpenMenu.originalEvent) {
       return;
@@ -114,7 +114,7 @@ export default class Menu extends CustomElement {
    * @param {PopStateEvent} event
    * @return {void}
    */
-  static onPopState(event) {
+  onPopState(event) {
     if (!event.state) return;
     const lastOpenMenu = Menu.OPEN_MENUS.at(-1);
     if (!lastOpenMenu || !lastOpenMenu.previousState) {
@@ -131,7 +131,7 @@ export default class Menu extends CustomElement {
    * @this {Menu}
    * @return {void}
    */
-  static onMenuKeyDown(event) {
+  onMenuKeyDown(event) {
     if (!this || !this.open || this.getAttribute('aria-hidden') === 'true') {
       return;
     }
@@ -172,7 +172,7 @@ export default class Menu extends CustomElement {
    * @this {Menu}
    * @return {void}
    */
-  static onTabIndexZeroed(event) {
+  onTabIndexZeroed(event) {
     event.stopPropagation();
     const currentItem = /** @type {HTMLElement} */ (event.target);
     RovingTabIndex.removeTabIndex(this.childMenuItems, [currentItem]);
@@ -228,8 +228,8 @@ export default class Menu extends CustomElement {
       }
     }
     if (!Menu.OPEN_MENUS.length) {
-      window.removeEventListener('popstate', Menu.onPopState);
-      window.removeEventListener('resize', Menu.onWindowResize);
+      window.removeEventListener('popstate', this.onPopState);
+      window.removeEventListener('resize', this.onWindowResize);
     }
     return true;
   }
@@ -673,8 +673,8 @@ export default class Menu extends CustomElement {
     }
     previousState = window.history.state;
     window.history.pushState(newState, document.title);
-    window.addEventListener('popstate', Menu.onPopState);
-    window.addEventListener('resize', Menu.onWindowResize);
+    window.addEventListener('popstate', this.onPopState);
+    window.addEventListener('resize', this.onWindowResize);
 
     /** @type {MenuStack} */
     const menuStack = {
@@ -701,12 +701,12 @@ export default class Menu extends CustomElement {
   }
 
   connectedCallback() {
-    this.addEventListener('click', Menu.onMenuClick);
-    this.addEventListener('scroll', Menu.onMenuScroll);
-    this.addEventListener('touchmove', Menu.onMenuScroll);
-    this.addEventListener('wheel', Menu.onMenuScroll);
-    this.addEventListener('keydown', Menu.onMenuKeyDown);
-    this.addEventListener(RovingTabIndex.TABINDEX_ZEROED, Menu.onTabIndexZeroed);
+    this.addEventListener('click', this.onMenuClick);
+    this.addEventListener('scroll', this.onMenuScroll);
+    this.addEventListener('touchmove', this.onMenuScroll);
+    this.addEventListener('wheel', this.onMenuScroll);
+    this.addEventListener('keydown', this.onMenuKeyDown);
+    this.addEventListener(RovingTabIndex.TABINDEX_ZEROED, this.onTabIndexZeroed);
   }
 }
 

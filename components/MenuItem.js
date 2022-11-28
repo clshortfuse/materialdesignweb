@@ -44,12 +44,26 @@ export default class MenuItem extends InputMixin(Container) {
     return template;
   }
 
+  #input = /** @type {HTMLInputElement} */ (this.refs.control);
+
+  /** @type {Container['attributeChangedCallback']} */
+  attributeChangedCallback(name, oldValue, newValue) {
+    super.attributeChangedCallback(name, oldValue, newValue);
+    // Menu items should always receive focus
+    switch (name) {
+      case 'disabled':
+        this.#input.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
+        break;
+      default:
+    }
+  }
+
   /**
    * @param {MouseEvent} event
    * @this {MenuItem}
    * @return {void}
    */
-  static onMouseMove(event) {
+  onMouseMove(event) {
     if (!this) return;
 
     const previousFocus = document.activeElement;
@@ -62,20 +76,6 @@ export default class MenuItem extends InputMixin(Container) {
     && document.activeElement !== previousFocus
     && previousFocus instanceof HTMLElement) {
       previousFocus.focus();
-    }
-  }
-
-  #input = /** @type {HTMLInputElement} */ (this.refs.control);
-
-  /** @type {Container['attributeChangedCallback']} */
-  attributeChangedCallback(name, oldValue, newValue) {
-    super.attributeChangedCallback(name, oldValue, newValue);
-    // Menu items should always receive focus
-    switch (name) {
-      case 'disabled':
-        this.#input.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
-        break;
-      default:
     }
   }
 
@@ -95,7 +95,7 @@ export default class MenuItem extends InputMixin(Container) {
   connectedCallback() {
     super.connectedCallback();
     RovingTabIndex.attach(this);
-    this.addEventListener('mousemove', MenuItem.onMouseMove);
+    this.addEventListener('mousemove', this.onMouseMove);
   }
 
   /**

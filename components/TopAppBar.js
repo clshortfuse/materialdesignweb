@@ -24,17 +24,17 @@ export default class TopAppBar extends Container {
     /** @type {HTMLTemplater<TopAppBar>} */
     const html = this.html;
     const slot = template.getElementById('slot');
-    slot.setAttribute('onslotchange', '{static.onSlotChange}');
+    slot.setAttribute('onslotchange', '{onSlotChange}');
 
     template.append(html`
-      <div id="bar" role=toolbar aria-labelledby=headline style=${this.computeBarStyle}>
+      <div id="bar" role=toolbar aria-labelledby=headline style={computeBarStyle}>
         ${template.getElementById('elevation')}
-        <div id=leading><slot id=leading-slot name=leading onslotchange={static.onSlotChange}></slot></div>
-        <div id=headline style=${this.computeHeadlineStyle}>
+        <div id=leading><slot id=leading-slot name=leading onslotchange={onSlotChange}></slot></div>
+        <div id=headline style={computeHeadlineStyle}>
           {headline}
           ${slot}
         </div>
-        <div id=trailing><slot id=trailing-slot name=trailing onslotchange={static.onSlotChange}></slot></div>
+        <div id=trailing><slot id=trailing-slot name=trailing onslotchange={onSlotChange}></slot></div>
       </div>
       <div _if=${({ size }) => size === 'medium' || size === 'large'}
         id=companion aria-hidden=true><span id=companion-text>{headline}</span></div>
@@ -43,43 +43,6 @@ export default class TopAppBar extends Container {
   }
 
   static IDLE_TIMEOUT_MS = 500;
-
-  /**
-   * @param {TopAppBar} instance
-   * @return {string}
-   */
-  static computeBarStyle({ hideOnScroll, _cssPosition, _translateY, _transition }) {
-    if (!hideOnScroll) return '';
-    return `
-      position: ${_cssPosition};
-      transform: translateY(${_translateY}px);
-      transition: ${_transition};
-    `;
-  }
-
-  /**
-   * @param {TopAppBar} instance
-   * @return {string}
-   */
-  static computeHeadlineStyle({ size, _headlineOpacity }) {
-    if (size !== 'medium' && size !== 'large') return '';
-    return `
-      opacity: ${_headlineOpacity};
-    `;
-  }
-
-  /**
-   * @param {Event} event
-   * @this {HTMLSlotElement}
-   * @return {void}
-   */
-  static onSlotChange(event) {
-    /** @type {{host:TopAppBar}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    if (host.kbdNav === 'arrow') {
-      AriaToolbar.attach(host);
-    }
-  }
 
   /** @type {WeakRef<Element|Window>} */
   #scrollingElement;
@@ -154,6 +117,37 @@ export default class TopAppBar extends Container {
         break;
       default:
     }
+  }
+
+  computeBarStyle() {
+    const { hideOnScroll, _cssPosition, _translateY, _transition } = this;
+    if (!hideOnScroll) {
+      return '';
+    }
+    return `
+      position: ${_cssPosition};
+      transform: translateY(${_translateY}px);
+      transition: ${_transition};
+    `;
+  }
+
+  /**
+   * @param {Event} event
+   * @this {HTMLSlotElement}
+   * @return {void}
+   */
+  onSlotChange(event) {
+    /** @type {{host:TopAppBar}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    if (host.kbdNav === 'arrow') {
+      AriaToolbar.attach(host);
+    }
+  }
+
+  /** @param {Partial<this>} data */
+  computeHeadlineStyle({ size, _headlineOpacity }) {
+    if (size !== 'medium' && size !== 'large') return '';
+    return `opacity: ${_headlineOpacity}`;
   }
 
   onScrollIdle() {

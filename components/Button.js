@@ -33,7 +33,7 @@ export default class Button extends InputMixin(Container) {
    * @this {HTMLInputElement} this
    * @return {void}
    */
-  static onControlClick(event) {
+  onControlClick(event) {
     if (this.disabled) return;
     super.onControlClick(event);
     if (event.defaultPrevented) return;

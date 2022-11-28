@@ -34,15 +34,15 @@ export default class Dialog extends CustomElement {
       ${this.supportsHTMLDialogElement ? 'aria-model=true' : ''}
       role=dialog aria-hidden=${({ open }) => (open ? 'false' : 'true')} 
       aria-labelledby=headline aria-describedby=description
-      oncancel="{static.onNativeCancelEvent}"
-      onclose="{~static.onNativeCloseEvent}">
-        <div id=scrim onclick="{~static.onScrimClick}" aria-hidden=true></div>
+      oncancel="{onNativeCancelEvent}"
+      onclose="{~onNativeCloseEvent}">
+        <div id=scrim onclick="{~onScrimClick}" aria-hidden=true></div>
         <form id=form method=dialog role=none>
-          <mdw-container id=container onkeydown="{static.onContainerKeyDown}">
+          <mdw-container id=container onkeydown="{onContainerKeyDown}">
             <mdw-icon _if={icon} id=icon aria-hidden=true>{icon}</mdw-icon>
             <mdw-text id=headline role="header">{headline}</mdw-text>
             <div id=description>{description}</div>
-            <slot id=slot onslotchange="{static.onSlotChange}"></slot>
+            <slot id=slot onslotchange="{onSlotChange}"></slot>
             <div id=actions>
               <mdw-button id=cancel type=submit value="cancel" autofocus=${({ default: d }) => (!d || d === 'confirm')}>{cancel}</mdw-button>
               <mdw-button id=confirm type=submit value="confirm" autofocus=${({ default: d }) => (d === 'cancel')}>{confirm}</mdw-button>
@@ -59,12 +59,26 @@ export default class Dialog extends CustomElement {
   /** @type {DialogStack[]} */
   static OPEN_DIALOGS = [];
 
+  #dialog = /** @type {HTMLDialogElement} */ (this.refs.dialog);
+
+  #container = this.refs.container;
+
+  constructor() {
+    super();
+    if (!this.confirm) {
+      this.confirm = 'Confirm';
+    }
+    if (!this.cancel) {
+      this.cancel = 'Cancel';
+    }
+  }
+
   /**
    * @param {TransitionEvent} event
    * @this {Dialog}
    * @return {void}
    */
-  static onTransitionEnd(event) {
+  onTransitionEnd(event) {
     if (event.propertyName !== 'opacity') return;
     if (this.getAttribute('aria-hidden') !== 'true') return;
     this.setAttribute('mdw-ready', '');
@@ -75,7 +89,7 @@ export default class Dialog extends CustomElement {
    * @this {HTMLSlotElement}
    * @return {void}
    */
-  static onSlotChange(event) {
+  onSlotChange(event) {
     const nodes = this.assignedNodes();
     const hasContent = nodes.some((node) => (node.nodeType === node.ELEMENT_NODE)
       || (node.nodeType === node.TEXT_NODE && node.nodeValue.trim().length));
@@ -87,7 +101,7 @@ export default class Dialog extends CustomElement {
    * @this {HTMLElement} this
    * @return {void}
    */
-  static onScrimClick(event) {
+  onScrimClick(event) {
     /** @type {{host:Dialog}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
 
@@ -101,7 +115,7 @@ export default class Dialog extends CustomElement {
    * @this {HTMLElement}
    * @return {void}
    */
-  static onContainerKeyDown(event) {
+  onContainerKeyDown(event) {
     if (event.key === 'Tab') {
       /** @type {{host:Dialog}} */ // @ts-ignore Coerce
       const { host } = this.getRootNode();
@@ -123,38 +137,10 @@ export default class Dialog extends CustomElement {
   }
 
   /**
-   * @param {Event} event
-   * @this {HTMLDialogElement}
-   * @return {void}
-   */
-  static onNativeCancelEvent(event) {
-    event.stopPropagation();
-    /** @type {{host:Dialog}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-
-    const cancelEvent = new Event('cancel', { cancelable: true });
-    if (!host.dispatchEvent(cancelEvent)) {
-      event.preventDefault();
-    }
-  }
-
-  /**
-   * @param {Event} event
-   * @this {HTMLDialogElement}
-   * @return {void}
-   */
-  static onNativeCloseEvent(event) {
-    event.stopPropagation();
-    /** @type {{host:Dialog}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    host.close(this.returnValue);
-  }
-
-  /**
    * @param {PopStateEvent} event
    * @return {void}
    */
-  static onPopState(event) {
+  onPopState(event) {
     if (!event.state) return;
 
     const lastOpenDialog = Dialog.OPEN_DIALOGS.at(-1);
@@ -173,18 +159,32 @@ export default class Dialog extends CustomElement {
     }
   }
 
-  #dialog = /** @type {HTMLDialogElement} */ (this.refs.dialog);
+  /**
+   * @param {Event} event
+   * @this {HTMLDialogElement}
+   * @return {void}
+   */
+  onNativeCancelEvent(event) {
+    event.stopPropagation();
+    /** @type {{host:Dialog}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
 
-  #container = this.refs.container;
+    const cancelEvent = new Event('cancel', { cancelable: true });
+    if (!host.dispatchEvent(cancelEvent)) {
+      event.preventDefault();
+    }
+  }
 
-  constructor() {
-    super();
-    if (!this.confirm) {
-      this.confirm = 'Confirm';
-    }
-    if (!this.cancel) {
-      this.cancel = 'Cancel';
-    }
+  /**
+   * @param {Event} event
+   * @this {HTMLDialogElement}
+   * @return {void}
+   */
+  onNativeCloseEvent(event) {
+    event.stopPropagation();
+    /** @type {{host:Dialog}} */ // @ts-ignore Coerce
+    const { host } = this.getRootNode();
+    host.close(this.returnValue);
   }
 
   /**
@@ -240,7 +240,7 @@ export default class Dialog extends CustomElement {
       }
     }
     if (!Dialog.OPEN_DIALOGS.length) {
-      window.removeEventListener('popstate', Dialog.onPopState);
+      window.removeEventListener('popstate', this.onPopState);
     }
     return true;
   }
@@ -290,7 +290,7 @@ export default class Dialog extends CustomElement {
     }
     previousState = window.history.state;
     window.history.pushState(newState, title);
-    window.addEventListener('popstate', Dialog.onPopState);
+    window.addEventListener('popstate', this.onPopState);
 
     /** @type {DialogStack} */
     const dialogStack = {

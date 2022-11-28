@@ -34,12 +34,12 @@ export default function ControlMixin(Base) {
       template.append(html`
         <label id=label>
           <${this.controlTagName} id=control aria-labelledby="slot"
-            onclick={static.onControlClick}
-            onchange={static.onControlChange}
-            onkeydown={static.onControlKeydown}
-            onfocus={~static.onControlFocus}
-            onblur={~static.onControlBlur}
-            oninput={static.onControlInput}
+            onclick={onControlClick}
+            onchange={onControlChange}
+            onkeydown={onControlKeydown}
+            onfocus={~onControlFocus}
+            onblur={~onControlBlur}
+            oninput={onControlInput}
             >${this.controlVoidElement ? '' : `</${this.controlTagName}>`}
             ${template.getElementById('state')}
             ${template.getElementById('ripple')}
@@ -199,9 +199,9 @@ export default function ControlMixin(Base) {
 
     connectedCallback() {
       super.connectedCallback();
-      this.removeEventListener('keydown', this.static.onRippleKeyDown);
-      this._control.addEventListener('keydown', this.static.onRippleKeyDown, { passive: true });
-    // control.addEventListener('invalid', Control.onControlInvalid);
+      this.removeEventListener('keydown', this.onRippleKeyDown);
+      this._control.addEventListener('keydown', this.onRippleKeyDown, { passive: true });
+    // control.addEventListener('invalid', this.onControlInvalid);
     }
   }
   return Control;
