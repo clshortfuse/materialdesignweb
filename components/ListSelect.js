@@ -1,14 +1,13 @@
-import * as RovingTabIndex from '../aria/rovingtabindex.js';
 import { constructHTMLOptionsCollectionProxy } from '../dom/ HTMLOptionsCollectionProxy.js';
 import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
+import RovingTabIndexedMixin from '../mixins/RovingTaxIndexedMixin.js';
 
 import styles from './List.css' assert { type: 'css' };
 import List from './List.js';
-import ListItem from './ListItem.js';
 import ListOption from './ListOption.js';
 
 /** @implements {HTMLSelectElement} */
-export default class ListSelect extends FormAssociatedMixin(List) {
+export default class ListSelect extends RovingTabIndexedMixin(FormAssociatedMixin(List)) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-list-select';
@@ -26,7 +25,6 @@ export default class ListSelect extends FormAssociatedMixin(List) {
     super();
     this.refs.slot.addEventListener('slotchange', this.onSlotChange, { passive: true });
     this.addEventListener('keydown', this.onControlKeydown);
-    this.addEventListener(RovingTabIndex.TABINDEX_ZEROED, this.onTabIndexZeroed);
     this.addEventListener('click', this.onListSelectClick);
   }
 
@@ -56,7 +54,7 @@ export default class ListSelect extends FormAssociatedMixin(List) {
   onSlotChange(event) {
     /** @type {{host:ListSelect}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
-    RovingTabIndex.setupTabIndexes(host.options, true);
+    host.refreshTabIndexes();
     let index = 0;
     for (const el of host.options) {
       el._index = index++;
@@ -73,15 +71,13 @@ export default class ListSelect extends FormAssociatedMixin(List) {
     if (event.key === 'ArrowDown' || (event.key === 'Down')) {
       event.stopPropagation();
       event.preventDefault();
-      // @ts-ignore AOM
-      this.ariaActiveDescendantElement = RovingTabIndex.selectNext([...this.options]);
+      this.ariaActiveDescendantElement = this.rtiFocusNext();
       return;
     }
     if (event.key === 'ArrowUp' || (event.key === 'Up')) {
       event.stopPropagation();
       event.preventDefault();
-      // @ts-ignore AOM
-      this.ariaActiveDescendantElement = RovingTabIndex.selectPrevious([...this.options]);
+      this.ariaActiveDescendantElement = this.rtiFocusNext();
       return;
     }
     if (event.key === 'Spacebar' || event.key === ' ') {
@@ -91,17 +87,6 @@ export default class ListSelect extends FormAssociatedMixin(List) {
       event.preventDefault();
       this.onListSelectClick.call(this, event);
     }
-  }
-
-  /**
-   * @param {Event} event
-   * @this {ListSelect}
-   * @return {void}
-   */
-  onTabIndexZeroed(event) {
-    event.stopPropagation();
-    const currentItem = /** @type {HTMLElement} */ (event.target);
-    RovingTabIndex.removeTabIndex(this.options, [currentItem]);
   }
 
   /**
@@ -151,11 +136,6 @@ export default class ListSelect extends FormAssociatedMixin(List) {
     this._value = target.value;
   }
 
-  /** @return {NodeListOf<ListItem>} */
-  get childListItems() {
-    return this.querySelectorAll(ListItem.elementName);
-  }
-
   get options() {
     if (!this._optionsCollection) {
       this._optionsCollection = constructHTMLOptionsCollectionProxy({
@@ -173,19 +153,13 @@ export default class ListSelect extends FormAssociatedMixin(List) {
   }
 
   // @ts-ignore @override
-
   get type() { return 'select'; }
 
-  /** @type {HTMLElement['focus']} */
-  focus(options = undefined) {
-    super.focus(options);
-    const nextTarget = this.querySelector('[role="option"][tabindex="0"]');
-    nextTarget?.focus();
-  }
+  get rtiQuery() { return ListOption.elementName; }
 
   // @ts-ignore @override
   get length() {
-    return this.querySelectorAll('[role="option"]').length;
+    return this.options.length;
   }
 
   get selectedIndex() {

@@ -1,7 +1,6 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
 import './Icon.js';
-import * as RovingTabIndex from '../aria/rovingtabindex.js';
 import { addInlineFunction } from '../core/template.js';
 import InputMixin from '../mixins/InputMixin.js';
 
@@ -94,15 +93,7 @@ export default class MenuItem extends InputMixin(Container) {
 
   connectedCallback() {
     super.connectedCallback();
-    RovingTabIndex.attach(this);
     this.addEventListener('mousemove', this.onMouseMove);
-  }
-
-  /**
-   * @return {void}
-   */
-  disconnectedCallback() {
-    RovingTabIndex.detach(this);
   }
 }
 

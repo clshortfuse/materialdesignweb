@@ -100,7 +100,7 @@ export function* iterateNodes(root, filter = {}) {
  * @param {any} value
  * @return {?string}
  */
-export const attrValueFromDataValue = (value) => {
+export function attrValueFromDataValue(value) {
   switch (value) {
     case undefined:
     case null:
@@ -111,7 +111,7 @@ export const attrValueFromDataValue = (value) => {
     default:
       return String(value);
   }
-};
+}
 
 /**
  * Converts property name to attribute name
@@ -119,7 +119,7 @@ export const attrValueFromDataValue = (value) => {
  * @param {string} name
  * @return {string}
  */
-export const attrNameFromPropName = (name) => {
+export function attrNameFromPropName(name) {
   const attrNameWords = name.split(/([A-Z])/);
   if (attrNameWords.length === 1) return name;
   return attrNameWords.reduce((prev, curr) => {
@@ -129,4 +129,32 @@ export const attrNameFromPropName = (name) => {
     }
     return prev + curr;
   });
-};
+}
+
+/**
+ * @param {HTMLElement} element
+ * @return {boolean} Focus was successful
+ */
+export function attemptFocus(element) {
+  if (!element) return false;
+  try {
+    element.focus();
+  } catch (e) {
+    console.error(e);
+    // Ignore error.
+  }
+  const focused = document.activeElement === element;
+  if (!focused) {
+    console.warn('Element was not focused', element);
+    return false;
+  }
+  return true;
+}
+
+/**
+ * @param {Element} element
+ * @return {boolean}
+ */
+export function isRtl(element) {
+  return getComputedStyle(element).direction === 'rtl';
+}

@@ -1,4 +1,4 @@
-import * as RovingTabIndex from '../aria/rovingtabindex.js';
+import RovingTabIndexedMixin from '../mixins/RovingTaxIndexedMixin.js';
 
 import Container from './Container.js';
 import SegmentedButton from './SegmentedButton.js';
@@ -7,7 +7,7 @@ import styles from './SegmentedButtonGroup.css' assert { type: 'css' };
 /** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
 
 /** @implements {Omit<HTMLMenuElement,DeprecatedHTMLMenuElementProperties>} */
-export default class SegmentedButtonGroup extends Container {
+export default class SegmentedButtonGroup extends RovingTabIndexedMixin(Container) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-segmented-button-group';
@@ -30,7 +30,7 @@ export default class SegmentedButtonGroup extends Container {
   onSlotChange(event) {
     /** @type {{host:SegmentedButtonGroup}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
-    RovingTabIndex.setupTabIndexes(host.childSegmentedButtons, true);
+    host.refreshTabIndexes();
   }
 
   /**
@@ -73,33 +73,14 @@ export default class SegmentedButtonGroup extends Container {
 
     // @ts-ignore ARIA 1.3
     this.ariaActiveDescendantElement = selectNext
-      ? RovingTabIndex.selectNext(this.childSegmentedButtons)
-      : RovingTabIndex.selectPrevious(this.childSegmentedButtons);
+      ? this.rtiFocusNext()
+      : this.rtiFocusPrevious();
   }
 
-  /**
-   * @param {Event} event
-   * @this {SegmentedButtonGroup}
-   * @return {void}
-   */
-  onTabIndexZeroed(event) {
-    event.stopPropagation();
-    const currentItem = /** @type {HTMLElement} */ (event.target);
-    RovingTabIndex.removeTabIndex(this.childSegmentedButtons, [currentItem]);
-  }
-
-  /** @return {NodeListOf<SegmentedButton>} */
-  get childSegmentedButtons() {
-    return this.querySelectorAll(SegmentedButton.elementName);
-  }
+  get rtiQuery() { return SegmentedButton.elementName; }
 
   connectedCallback() {
+    super.connectedCallback();
     this.addEventListener('keydown', this.onKeyDownEvent);
-    this.addEventListener(RovingTabIndex.TABINDEX_ZEROED, this.onTabIndexZeroed);
-  }
-
-  disconnectedCallback() {
-    this.removeEventListener('keydown', this.onKeyDownEvent);
-    this.removeEventListener(RovingTabIndex.TABINDEX_ZEROED, this.onTabIndexZeroed);
   }
 }

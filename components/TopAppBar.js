@@ -1,11 +1,11 @@
-import * as AriaToolbar from '../aria/toolbar.js';
+import AriaToolbarMixin from '../mixins/AriaToolbarMixin.js';
 
 import Container from './Container.js';
 import styles from './TopAppBar.css' assert { type: 'css' };
 
 /** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
 /** @implements {Omit<HTMLMenuElement,DeprecatedHTMLMenuElementProperties>} */
-export default class TopAppBar extends Container {
+export default class TopAppBar extends AriaToolbarMixin(Container) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-top-app-bar';
@@ -139,9 +139,7 @@ export default class TopAppBar extends Container {
   onSlotChange(event) {
     /** @type {{host:TopAppBar}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
-    if (host.kbdNav === 'arrow') {
-      AriaToolbar.attach(host);
-    }
+    host.refreshTabIndexes();
   }
 
   /** @param {Partial<this>} data */
@@ -216,19 +214,14 @@ export default class TopAppBar extends Container {
   connectedCallback() {
     super.connectedCallback();
     this.startScrollListener();
-    if (this.kbdNav === 'arrow') {
-      AriaToolbar.attach(this);
-    }
   }
 
   disconnectedCallback() {
     this.clearScrollListener();
-    AriaToolbar.detach(this);
     super.disconnectedCallback();
   }
 }
 
-TopAppBar.prototype.kbdNav = TopAppBar.idl('kbdNav', { empty: 'arrow' });
 TopAppBar.prototype.headline = TopAppBar.idl('headline');
 TopAppBar.prototype.raised = TopAppBar.idl('raised', 'boolean');
 TopAppBar.prototype.hideOnScroll = TopAppBar.idl('hideOnScroll', 'boolean');

@@ -1,5 +1,4 @@
 import './Icon.js';
-import * as RovingTabIndex from '../aria/rovingtabindex.js';
 import { addInlineFunction } from '../core/template.js';
 
 import Button from './Button.js';
@@ -46,16 +45,6 @@ export default class SegmentedButton extends Button {
       return;
     }
     super.attributeChangedCallback(name, oldValue, newValue);
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    RovingTabIndex.attach(this);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    RovingTabIndex.detach(this);
   }
 }
 

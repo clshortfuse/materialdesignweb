@@ -1,8 +1,8 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
-import * as RovingTabIndex from '../aria/rovingtabindex.js';
 import './Container.js';
 import CustomElement from '../core/CustomElement.js';
+import RovingTabIndexedMixin from '../mixins/RovingTaxIndexedMixin.js';
 
 import styles from './Menu.css' assert { type: 'css' };
 import MenuItem from './MenuItem.js';
@@ -18,7 +18,7 @@ import MenuItem from './MenuItem.js';
  */
 
 /** @implements {HTMLDialogElement} */
-export default class Menu extends CustomElement {
+export default class Menu extends RovingTabIndexedMixin(CustomElement) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-menu';
@@ -47,6 +47,12 @@ export default class Menu extends CustomElement {
   /** @type {MenuStack[]} */
   static OPEN_MENUS = [];
 
+  #dialog = /** @type {HTMLDialogElement} */ (this.refs.dialog);
+
+  #container = this.refs.container;
+
+  returnValue = '';
+
   /**
    * @param {Event} event
    * @this {HTMLSlotElement}
@@ -55,7 +61,8 @@ export default class Menu extends CustomElement {
   onSlotChange(event) {
     /** @type {{host:Menu}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
-    RovingTabIndex.setupTabIndexes(host.childMenuItems, true);
+    host.refreshTabIndexes();
+    // RovingTabIndex.setupTabIndexes(host.childMenuItems, true);
   }
 
   /**
@@ -139,15 +146,13 @@ export default class Menu extends CustomElement {
     if (event.key === 'ArrowDown' || (event.key === 'Down')) {
       event.stopPropagation();
       event.preventDefault();
-      // @ts-ignore AOM
-      this.ariaActiveDescendantElement = RovingTabIndex.selectNext(this.childMenuItems);
+      this.ariaActiveDescendantElement = this.rtiFocusNext();
       return;
     }
     if (event.key === 'ArrowUp' || (event.key === 'Up')) {
       event.stopPropagation();
       event.preventDefault();
-      // @ts-ignore AOM
-      this.ariaActiveDescendantElement = RovingTabIndex.selectPrevious(this.childMenuItems);
+      this.ariaActiveDescendantElement = this.rtiFocusPrevious();
       return;
     }
     if (event.key === 'Tab') {
@@ -166,23 +171,6 @@ export default class Menu extends CustomElement {
       this.close();
     }
   }
-
-  /**
-   * @param {Event} event
-   * @this {Menu}
-   * @return {void}
-   */
-  onTabIndexZeroed(event) {
-    event.stopPropagation();
-    const currentItem = /** @type {HTMLElement} */ (event.target);
-    RovingTabIndex.removeTabIndex(this.childMenuItems, [currentItem]);
-  }
-
-  #dialog = /** @type {HTMLDialogElement} */ (this.refs.dialog);
-
-  #container = this.refs.container;
-
-  returnValue = '';
 
   /**
    * @return {boolean} handled
@@ -234,10 +222,7 @@ export default class Menu extends CustomElement {
     return true;
   }
 
-  /** @return {NodeListOf<MenuItem>} */
-  get childMenuItems() {
-    return this.querySelectorAll(MenuItem.elementName);
-  }
+  get rtiQuery() { return MenuItem.elementName; }
 
   /**
    * @param {MouseEvent|PointerEvent|HTMLElement} source
@@ -566,7 +551,7 @@ export default class Menu extends CustomElement {
    * @return {void}
    */
   selectNextMenuItem(backwards) {
-    const menuItems = this.childMenuItems;
+    const menuItems = this.rtiChildren;
     let foundTarget = false;
     /** @type {HTMLElement} */
     let candidate = null;
@@ -687,26 +672,26 @@ export default class Menu extends CustomElement {
     Menu.OPEN_MENUS.push(menuStack);
     // this.refreshMenuItems();
 
-    const [firstItem] = this.childMenuItems;
+    const [firstItem] = this.rtiChildren;
     try {
       firstItem.focus();
       if (firstItem !== document.activeElement) {
         throw new Error('focus failed');
       }
     } catch {
-      RovingTabIndex.selectNext(this.childMenuItems, firstItem);
+      this.rtiFocusNext(firstItem);
     }
 
     return true;
   }
 
   connectedCallback() {
+    super.connectedCallback();
     this.addEventListener('click', this.onMenuClick);
     this.addEventListener('scroll', this.onMenuScroll);
     this.addEventListener('touchmove', this.onMenuScroll);
     this.addEventListener('wheel', this.onMenuScroll);
     this.addEventListener('keydown', this.onMenuKeyDown);
-    this.addEventListener(RovingTabIndex.TABINDEX_ZEROED, this.onTabIndexZeroed);
   }
 }
 
