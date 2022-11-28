@@ -15,7 +15,7 @@ export default class Fab extends TooltipTriggerMixin(ExtendedFab) {
     template.getElementById('slot').remove();
     template.getElementById('tooltip-slot').removeAttribute('name');
     const control = template.getElementById('control');
-    control.setAttribute('aria-labelledby', 'toolbar');
+    control.setAttribute('aria-labelledby', 'tooltip');
     return template;
   }
 }

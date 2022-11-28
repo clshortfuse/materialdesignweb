@@ -21,7 +21,7 @@ export default class IconButton extends TooltipTriggerMixin(Button) {
 
     const control = template.getElementById('control');
     control.setAttribute('aria-pressed', '{computeAriaPressed}');
-    control.setAttribute('aria-labelledby', 'toolbar');
+    control.setAttribute('aria-labelledby', 'tooltip');
 
     return template;
   }

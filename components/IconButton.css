@@ -103,6 +103,10 @@ label {
   padding: 0;
 }
 
+:host(:not([icon])) #icon {
+  inline-size: 1em;
+}
+
 #icon {
   margin: 0;
 }
