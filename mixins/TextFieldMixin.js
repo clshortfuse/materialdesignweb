@@ -9,12 +9,21 @@ import styles from './TextFieldMixin.css' assert { type: 'css' };
  */
 export default function TextFieldMixin(Base) {
   class TextField extends Base {
-    static styles = [...super.styles, styles];
-
-    static get template() {
-      const template = super.template;
-      /** @type {HTMLTemplater<TextField>} */
+    /** @type {import('../core/Composition.js').Compositor<this>} */
+    compose(...parts) {
+      const composition = super.compose(
+        styles,
+        /* html */ `
+          <div _if={shouldShowSupporting} id=supporting>
+            {computeSupportingText}
+            <slot id=supporting-slot name=supporting></slot>
+          </div>
+        `,
+        ...parts,
+      );
+      const template = composition.template;
       const html = this.html;
+
       const control = template.getElementById('control');
       control.setAttribute('type', 'text');
       control.setAttribute('placeholder', '{placeholder}');
@@ -35,15 +44,9 @@ export default function TextFieldMixin(Base) {
           </div>
         </div>
       `);
-      template.append(html`
-        <div _if={shouldShowSupporting} id=supporting>
-          {computeSupportingText}
-          <slot id=supporting-slot name=supporting></slot>
-        </div>
-      `);
 
       template.getElementById('ripple').remove();
-      return template;
+      return composition;
     }
 
     /** @type {CustomElement['idlChangedCallback']} */

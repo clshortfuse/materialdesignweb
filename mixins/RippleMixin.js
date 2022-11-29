@@ -1,22 +1,26 @@
 import styles from './RippleMixin.css' assert { type: 'css' };
 import StateMixin from './StateMixin.js';
 
+/** @typedef {import('../core/CustomElement.js').default} CustomElement */
+
 /**
  * @template {typeof import('../core/CustomElement.js').default} T
  * @param {T} Base
  */
 export default function RippleMixin(Base) {
   class Ripple extends StateMixin(Base) {
-    static styles = [...super.styles, styles];
+    /** @type {CustomElement['compose']} */
+    compose(...parts) {
+      return super.compose(
+        styles,
+        '<div id=ripple aria-hidden=true><div id=ripple-inner></div></div>',
+        ...parts,
+      );
+    }
 
-    static fragments = [
-      ...super.fragments,
-      /* html */`
-        <div id=ripple aria-hidden=true>
-          <div id=ripple-inner></div>
-        </div>
-      `,
-    ];
+    get #ripple() { return this.refs.ripple; }
+
+    get #rippleInner() { return this.refs['ripple-inner']; }
 
     /**
      * @param {AnimationEvent} event
@@ -98,10 +102,6 @@ export default function RippleMixin(Base) {
         host.drawRipple('key');
       });
     }
-
-    get #ripple() { return this.refs.ripple; }
-
-    get #rippleInner() { return this.refs['ripple-inner']; }
 
     /**
      * @param {number} [x]

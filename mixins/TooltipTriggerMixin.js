@@ -9,18 +9,19 @@ import styles from './TooltipTriggerMixin.css' assert { type: 'css' };
  */
 export default function TooltipTriggerMixin(Base) {
   class TooltipTrigger extends Base {
-    static styles = [
-      ...super.styles,
-      styles,
-    ];
-
-    static fragments = [
-      ...super.fragments,
-      /* html */ `
-        <${Tooltip.elementName} role=tooltip id=tooltip
-          ><slot id=tooltip-slot onslotchange={onTooltipTriggerSlotChange} name=tooltip>{tooltip}</slot></${Tooltip.elementName}>
-      `,
-    ];
+    /** @type {import('../core/Composition.js').Compositor<this>} */
+    compose(...parts) {
+      return super.compose(
+        styles,
+        /* html */ `
+          <${Tooltip.elementName} role=tooltip id=tooltip
+          ><slot id=tooltip-slot
+            onslotchange={onTooltipTriggerSlotChange} name=tooltip
+            >{tooltip}</slot></${Tooltip.elementName}>
+        `,
+        ...parts,
+      );
+    }
 
     static TOOLTIP_MOUSE_IDLE_MS = 500;
 

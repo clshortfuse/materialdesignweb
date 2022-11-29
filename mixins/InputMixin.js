@@ -48,66 +48,6 @@ export default function InputMixin(Base) {
       'multiple', 'pattern', 'step', 'type', 'value',
     ];
 
-    /**
-     * @param {MouseEvent|PointerEvent} event
-     * @this {HTMLInputElement}
-     * @return {void}
-     */
-    onControlClick(event) {
-      super.onControlClick(event);
-      if (event.defaultPrevented) return;
-
-      if (this.type !== 'radio') return;
-      if (this.required) return;
-      /** @type {{host:Input}} */ // @ts-ignore Coerce
-      const { host } = this.getRootNode();
-
-      if (host.checked) {
-        host.checked = false;
-      // event.preventDefault();
-      }
-    }
-
-    /**
-     * @param {KeyboardEvent} event
-     * @this {HTMLInputElement}
-     * @return {void}
-     */
-    onControlKeydown(event) {
-      super.onControlKeydown(event);
-      if (event.defaultPrevented) return;
-      if (this.type !== 'radio') return;
-      if (event.key === 'Spacebar' || event.key === ' ') {
-        if (this.required) return;
-        /** @type {{host:Input}} */ // @ts-ignore Coerce
-        const { host } = this.getRootNode();
-
-        if (host.checked) {
-          host.checked = false;
-          event.preventDefault();
-        }
-      }
-    }
-
-    /**
-     * @param {Event} event
-     * @this {HTMLInputElement} this
-     * @return {void}
-     */
-    onControlChange(event) {
-    /** @type {{host:Input}} */ // @ts-ignore Coerce
-      const { host } = this.getRootNode();
-      if (host.hasAttribute('disabled')) {
-        event.preventDefault();
-        event.stopPropagation();
-        return;
-      }
-      host._checked = this.checked;
-      super.onControlChange(event);
-    }
-
-    #input = /** @type {HTMLInputElement} */ (this.refs.control);
-
     /** @type {CustomElement['idlChangedCallback']} */
     idlChangedCallback(name, oldValue, newValue) {
       super.idlChangedCallback(name, oldValue, newValue);
@@ -177,6 +117,67 @@ export default function InputMixin(Base) {
           break;
         default:
       }
+    }
+
+    /** @type {HTMLInputElement} */
+    get #input() { return this.refs.control; }
+
+    /**
+     * @param {MouseEvent|PointerEvent} event
+     * @this {HTMLInputElement}
+     * @return {void}
+     */
+    onControlClick(event) {
+      super.onControlClick(event);
+      if (event.defaultPrevented) return;
+
+      if (this.type !== 'radio') return;
+      if (this.required) return;
+      /** @type {{host:Input}} */ // @ts-ignore Coerce
+      const { host } = this.getRootNode();
+
+      if (host.checked) {
+        host.checked = false;
+      // event.preventDefault();
+      }
+    }
+
+    /**
+     * @param {KeyboardEvent} event
+     * @this {HTMLInputElement}
+     * @return {void}
+     */
+    onControlKeydown(event) {
+      super.onControlKeydown(event);
+      if (event.defaultPrevented) return;
+      if (this.type !== 'radio') return;
+      if (event.key === 'Spacebar' || event.key === ' ') {
+        if (this.required) return;
+        /** @type {{host:Input}} */ // @ts-ignore Coerce
+        const { host } = this.getRootNode();
+
+        if (host.checked) {
+          host.checked = false;
+          event.preventDefault();
+        }
+      }
+    }
+
+    /**
+     * @param {Event} event
+     * @this {HTMLInputElement} this
+     * @return {void}
+     */
+    onControlChange(event) {
+    /** @type {{host:Input}} */ // @ts-ignore Coerce
+      const { host } = this.getRootNode();
+      if (host.hasAttribute('disabled')) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+      }
+      host._checked = this.checked;
+      super.onControlChange(event);
     }
 
     /** @param {CustomEvent<[string, string]>} event */

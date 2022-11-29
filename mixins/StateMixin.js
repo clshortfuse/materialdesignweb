@@ -4,20 +4,25 @@ import styles from './StateMixin.css' assert { type: 'css' };
 
 let lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matches;
 
+/** @typedef {import('../core/CustomElement.js').default} CustomElement */
+
 /**
  * @template {typeof import('../core/CustomElement.js').default} T
  * @param {T} Base
  */
 export default function StateMixin(Base) {
   class State extends Base {
-    static styles = [...super.styles, styles];
+    /** @type {CustomElement['compose']} */
+    compose(...parts) {
+      return super.compose(
+        styles,
+        '<div id=state disabled={disabled} aria-hidden=true>',
+        ...parts,
+      );
+    }
 
-    static fragments = [
-      ...super.fragments,
-      /* html */ `
-        <div id=state disabled={disabled} aria-hidden=true>
-      `,
-    ];
+    /** @type {'mouse'|'touch'|'key'|null} */
+    #lastInteraction = null;
 
     /**
      * @param {PointerEvent|MouseEvent} event
@@ -83,9 +88,6 @@ export default function StateMixin(Base) {
         this.refs.state?.setAttribute('touched', '');
       }
     }
-
-    /** @type {'mouse'|'touch'|'key'|null} */
-    #lastInteraction = null;
 
     /** @return {typeof State} */
     get static() { return /** @type {typeof State} */ (super.static); }

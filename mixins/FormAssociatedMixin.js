@@ -30,6 +30,49 @@ export default function FormAssociatedMixin(Base) {
     /** @type {string[]} */
     static valueChangingContentAttributes = [];
 
+    #ipcListener = this.formIPCEvent.bind(this);
+
+    /** @type {EventTarget} */
+    #ipcTarget = null;
+
+    _dirtyValue = false;
+
+    /** @param {any[]} args */
+    constructor(...args) {
+      super(...args);
+      if (!this.hasAttribute('tabindex')) {
+      // Expose this element as focusable
+        this.tabIndex = 0;
+        // this.setAttribute('tabindex', '0');
+      }
+    }
+
+    /** @type {CustomElement['idlChangedCallback']} */
+    idlChangedCallback(name, oldValue, newValue) {
+      super.idlChangedCallback(name, oldValue, newValue);
+      switch (name) {
+        case '_value':
+          // Reinvoke change event for components tracking 'value';
+          this.idlChangedCallback('value', oldValue, newValue);
+          break;
+        default:
+      }
+    }
+
+    /** @type {HTMLControlElement} */
+    get _control() { return this; }
+
+    /**
+     * @param {string} key
+     * @param {string} value
+     * @return {void}
+     */
+    _notifyRadioChange(key, value) {
+      this.#ipcTarget?.dispatchEvent(
+        new CustomEvent(FormAssociated.FORM_IPC_EVENT, { detail: [key, value] }),
+      );
+    }
+
     /**
      * @this {HTMLControlElement}
      * @param {FocusEvent} event
@@ -39,7 +82,7 @@ export default function FormAssociatedMixin(Base) {
     /** @type {{host:FormAssociated}} */ // @ts-ignore Coerce
       const { host } = this.getRootNode();
       host._isFocused = true;
-      console.log('onControlFocus', this);
+      // console.log('onControlFocus', this);
     }
 
     /**
@@ -52,7 +95,7 @@ export default function FormAssociatedMixin(Base) {
       const { host } = this.getRootNode();
       host._isFocused = false;
       host.checkValidity();
-      console.log('onControlBlur', this);
+      // console.log('onControlBlur', this);
 
       // event.stopPropagation(); // Prevent composed blur from bubbling to DOM
     }
@@ -107,49 +150,6 @@ export default function FormAssociatedMixin(Base) {
       host.dispatchEvent(new Event('change', { bubbles: true }));
     }
 
-    #ipcListener = this.formIPCEvent.bind(this);
-
-    /** @type {EventTarget} */
-    #ipcTarget = null;
-
-    _dirtyValue = false;
-
-    /** @type {HTMLControlElement} */
-    _control = this;
-
-    /** @param {any[]} args */
-    constructor(...args) {
-      super(...args);
-      if (!this.hasAttribute('tabindex')) {
-      // Expose this element as focusable
-        this.tabIndex = 0;
-        // this.setAttribute('tabindex', '0');
-      }
-    }
-
-    /** @type {CustomElement['idlChangedCallback']} */
-    idlChangedCallback(name, oldValue, newValue) {
-      super.idlChangedCallback(name, oldValue, newValue);
-      switch (name) {
-        case '_value':
-          // Reinvoke change event for components tracking 'value';
-          this.idlChangedCallback('value', oldValue, newValue);
-          break;
-        default:
-      }
-    }
-
-    /**
-     * @param {string} key
-     * @param {string} value
-     * @return {void}
-     */
-    _notifyRadioChange(key, value) {
-      this.#ipcTarget?.dispatchEvent(
-        new CustomEvent(FormAssociated.FORM_IPC_EVENT, { detail: [key, value] }),
-      );
-    }
-
     get dirtyValue() { return this._dirtyValue; }
 
     refreshFormAssociation() {
@@ -181,7 +181,7 @@ export default function FormAssociatedMixin(Base) {
      * @param {CustomEvent<[string, string]>} event
      * @return {void}
      */
-    // eslint-disable-next-line class-methods-use-this
+
     formIPCEvent(event) {
       // virtual
     }

@@ -26,27 +26,27 @@ export default function ControlMixin(Base) {
       ];
     }
 
-    static styles = [...super.styles, styles];
-
-    static get template() {
-      const template = super.template;
+    /** @type {import('../core/Composition.js').Compositor<this>} */
+    compose(...parts) {
+      const composition = super.compose(styles, ...parts);
+      const template = composition.template;
       const html = this.html;
       template.append(html`
         <label id=label>
-          <${this.controlTagName} id=control aria-labelledby="slot"
+          <${this.static.controlTagName} id=control aria-labelledby="slot"
             onclick={onControlClick}
             onchange={onControlChange}
             onkeydown={onControlKeydown}
             onfocus={~onControlFocus}
             onblur={~onControlBlur}
             oninput={onControlInput}
-            >${this.controlVoidElement ? '' : `</${this.controlTagName}>`}
+            >${this.static.controlVoidElement ? '' : `</${this.static.controlTagName}>`}
             ${template.getElementById('state')}
             ${template.getElementById('ripple')}
             ${template.getElementById('slot')}
         </label>
       `);
-      return template;
+      return composition;
     }
 
     static controlTagName = 'input';
@@ -60,8 +60,6 @@ export default function ControlMixin(Base) {
 
     /** @type {string[]} */
     static valueChangingContentAttributes = [];
-
-    _control = /** @type {HTMLControlElement} */ (this.refs.control);
 
     /** @param {any[]} args  */
     constructor(...args) {
@@ -129,11 +127,12 @@ export default function ControlMixin(Base) {
       }
     }
 
+    get _control() { return this.refs.control; }
+
     /** @type {HTMLElement['focus']} */
-    focus(options = undefined) {
-      super.focus(options);
-      console.log('focus', this, this.refs.control);
-      this.refs.control.focus(options);
+    focus(...options) {
+      super.focus(...options);
+      this.refs.control.focus(...options);
     }
 
     /**

@@ -125,7 +125,7 @@ export default function KeyboardNavMixin(Base) {
     }
 
     /**
-     * Refreshes roving tab index attributes based on rtiChildren
+     * Refreshes roving tab index attributes based on kbdNavChildren
      */
     refreshTabIndexes() {
       if (this.kbdNav !== 'true') return;
