@@ -56,6 +56,17 @@ export function addInlineFunction(fn) {
 }
 
 /**
+ * @param {TemplateStringsArray} strings
+ * @param  {...(string)} substitutions
+ * @return {HTMLStyleElement}
+ */
+export function css(strings, ...substitutions) {
+  const el = document.createElement('style');
+  el.textContent = String.raw({ raw: strings }, ...substitutions);
+  return el;
+}
+
+/**
  * @template T1
  * @template T2
  * @param {TemplateStringsArray} strings
@@ -89,5 +100,3 @@ export function html(strings, ...substitutions) {
 
   return fragment;
 }
-
-
