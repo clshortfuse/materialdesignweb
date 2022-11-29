@@ -85,10 +85,10 @@
   transition-property: background-color, color;
   transition-timing-function: var(--mdw-ripple-standard-easing);
 
-  animation:
-    var(--mdw-ripple__fade-in-name) var(--mdw-ripple-expand-duration) linear,
-    ripple-fade-out calc(1000ms / 3.0) var(--mdw-ripple-deceleration-easing);
+  /* animation-name: var(--mdw-ripple__fade-in-name), ripple-fade-out; */
   animation-name: none, none;
+  animation-duration: var(--mdw-ripple-expand-duration), calc(1000ms / 3.0);
+  animation-timing-function: linear, var(--mdw-ripple-deceleration-easing);
   animation-direction: normal;
   animation-fill-mode: forwards;
   /* stylelint-disable-next-line liberty/use-logical-spec */
