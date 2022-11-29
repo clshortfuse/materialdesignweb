@@ -10,11 +10,17 @@ export default class Switch extends InputMixin(Container) {
 
   static elementName = 'mdw-switch';
 
-  static styles = [...super.styles, styles, animationStyles];
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    const composition = super.compose(
+      styles,
+      animationStyles,
+      ...parts,
+    );
 
-  static get template() {
-    const template = super.template;
+    const template = composition.template;
     const html = this.html;
+
     template.getElementById('label').append(html`
       <div id=track aria-hidden=true>
         <div id=thumb>
@@ -29,11 +35,11 @@ export default class Switch extends InputMixin(Container) {
     const control = template.getElementById('control');
     control.setAttribute('type', 'checkbox');
     control.setAttribute('role', 'switch');
-    return template;
+    return composition;
   }
 
   // @ts-ignore @override
-  // eslint-disable-next-line class-methods-use-this
+
   get type() { return 'checkbox'; }
 }
 

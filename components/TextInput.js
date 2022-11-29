@@ -9,9 +9,10 @@ export default class TextInput extends TextFieldMixin(InputMixin(Container)) {
 
   static elementName = 'mdw-text-input';
 
-  static get template() {
-    const template = super.template;
-    template.getElementById('slot').remove();
-    return template;
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    const composition = super.compose(...parts);
+    composition.template.getElementById('slot').remove();
+    return composition;
   }
 }

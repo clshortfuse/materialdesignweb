@@ -9,7 +9,13 @@ export default class Nav extends Container {
 
   static ariaRole = 'navigation';
 
-  static styles = [...super.styles, styles];
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    return super.compose(
+      styles,
+      ...parts,
+    );
+  }
 
   /**
    * @param {PointerEvent|MouseEvent} event
@@ -31,6 +37,7 @@ export default class Nav extends Container {
   }
 
   connectedCallback() {
+    super.connectedCallback();
     this.addEventListener('click', this.onNavClick);
   }
 }

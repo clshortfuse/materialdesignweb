@@ -8,13 +8,13 @@ export default class Card extends Container {
 
   static ariaRole = 'figure';
 
-  static styles = [...super.styles, styles];
-
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <slot id=primary-action name=primary-action></slot>
-      <div id=outline></div>
-    `,
-  ];
+  /** @type {Container['compose']} */
+  compose(...parts) {
+    return super.compose(
+      styles,
+      '<slot id=primary-action name=primary-action></slot>',
+      '<div id=outline></div>',
+      ...parts,
+    );
+  }
 }

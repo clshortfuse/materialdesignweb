@@ -23,23 +23,23 @@ export default class Menu extends KeyboardNavMixin(CustomElement) {
 
   static elementName = 'mdw-menu';
 
-  static styles = [...super.styles, styles];
-
-  static get template() {
-    const template = super.template;
-    /** @type {HTMLTemplater<Menu>} */
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
     const html = this.html;
-    template.append(html`
-      <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>
-        <div id=scrim aria-hidden=true></div>
-        <form id=form method=dialog role=none>
-          <mdw-container id=container role=none>
-            <slot id=slot onslotchange={~onSlotChange}></slot>
-          </mdw-container>
-        </form>
-      </dialog>
-    `);
-    return template;
+    return super.compose(
+      styles,
+      html`
+        <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>
+          <div id=scrim aria-hidden=true></div>
+          <form id=form method=dialog role=none>
+            <mdw-container id=container role=none>
+              <slot id=slot onslotchange={~onSlotChange}></slot>
+            </mdw-container>
+          </form>
+        </dialog>
+      `,
+      ...parts,
+    );
   }
 
   static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';

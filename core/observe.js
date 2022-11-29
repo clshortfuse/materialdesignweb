@@ -199,6 +199,56 @@ export function parsePropertyValue(value) {
 }
 
 /**
+ * @param {(data: Partial<any>) => any} fn
+ * @param {any} [arg0]
+ * @this {any}
+ * @return {{props:Set<string>, defaultValue:any, reusable: boolean}}
+ */
+export function observeFunction(fn, arg0 = {}) {
+  const argPoked = new Set();
+  const thisPoked = new Set();
+  // TODO: Use abstract
+  const argProxy = new Proxy(arg0, {
+    get(target, p) {
+      argPoked.add(p);
+      const value = Reflect.get(target, p);
+      return value;
+    },
+    has(target, p) {
+      argPoked.add(p);
+      const value = Reflect.has(target, p);
+      return value;
+    },
+  });
+  const thisProxy = new Proxy(this ?? arg0, {
+    get(target, p) {
+      thisPoked.add(p);
+      const value = Reflect.get(target, p);
+      return value;
+    },
+    has(target, p) {
+      thisPoked.add(p);
+      const value = Reflect.has(target, p);
+      return value;
+    },
+  });
+  const defaultValue = fn.call(thisProxy, argProxy);
+  /* Arrow functions can reused if they don't poke `this` */
+  const reusable = fn.name ? true : !thisPoked.size;
+
+  const props = new Set([
+    ...argPoked,
+    ...thisPoked,
+  ]);
+
+  return {
+    props,
+    defaultValue,
+    reusable,
+  };
+}
+
+/**
  * @template {ObserverPropertyType} T1
  * @template T2
  * @template {string} K

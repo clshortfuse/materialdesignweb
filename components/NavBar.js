@@ -6,5 +6,11 @@ export default class NavBar extends Nav {
 
   static elementName = 'mdw-nav-bar';
 
-  static styles = [...super.styles, styles];
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    return super.compose(
+      styles,
+      ...parts,
+    );
+  }
 }

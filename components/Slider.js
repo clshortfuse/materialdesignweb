@@ -8,11 +8,13 @@ export default class Slider extends InputMixin(Container) {
 
   static elementName = 'mdw-slider';
 
-  static styles = [...super.styles, styles];
-
-  static get template() {
-    const template = super.template;
-    /** @type {HTMLTemplater<Slider>} */
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    const composition = super.compose(
+      styles,
+      ...parts,
+    );
+    const template = composition.template;
     const html = this.html;
     template.append(html`
       <div id=track aria-hidden=true style={computeTrackStyle}>
@@ -28,7 +30,7 @@ export default class Slider extends InputMixin(Container) {
     `);
     template.getElementById('control').setAttribute('type', 'range');
     template.getElementById('ripple').remove();
-    return template;
+    return composition;
   }
 
   /**
@@ -58,6 +60,18 @@ export default class Slider extends InputMixin(Container) {
 
   /** @return {InstanceType<Slider>} */
   static get self() { return this; }
+
+  /** @type {Container['idlChangedCallback']} */
+  idlChangedCallback(name, oldValue, newValue) {
+    super.idlChangedCallback(name, oldValue, newValue);
+    switch (name) {
+      case 'value':
+        /** @type {string} */
+        this._previewValue = newValue;
+        break;
+      default:
+    }
+  }
 
   /**
    * @param {MouseEvent|TouchEvent} event
@@ -162,18 +176,6 @@ export default class Slider extends InputMixin(Container) {
     super.onControlClick(event);
   }
 
-  /** @type {Container['idlChangedCallback']} */
-  idlChangedCallback(name, oldValue, newValue) {
-    super.idlChangedCallback(name, oldValue, newValue);
-    switch (name) {
-      case 'value':
-        /** @type {string} */
-        this._previewValue = newValue;
-        break;
-      default:
-    }
-  }
-
   computeTrackStyle() {
     return [
       this.ticks ? `--ticks:${this.ticks}` : null,
@@ -182,7 +184,7 @@ export default class Slider extends InputMixin(Container) {
   }
 
   // @ts-ignore @override
-  // eslint-disable-next-line class-methods-use-this
+
   get type() { return 'range'; }
 
   connectedCallback() {

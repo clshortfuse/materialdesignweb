@@ -9,10 +9,13 @@ export default class Button extends InputMixin(Container) {
 
   static elementName = 'mdw-button';
 
-  static styles = [...super.styles, styles];
-
-  static get template() {
-    const template = super.template;
+  /** @type {Container['compose']} */
+  compose(...parts) {
+    const composition = super.compose(
+      styles,
+      ...parts,
+    );
+    const template = composition.template;
     const html = this.html;
     template.getElementById('label').append(
       html`
@@ -25,7 +28,7 @@ export default class Button extends InputMixin(Container) {
     const control = template.getElementById('control');
     control.setAttribute('role', 'button');
     control.setAttribute('type', 'button');
-    return template;
+    return composition;
   }
 
   /**

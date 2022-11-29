@@ -22,12 +22,11 @@ export default class NavItem extends RippleMixin(Container) {
     ];
   }
 
-  static styles = [...super.styles, styles];
-
-  static get template() {
-    const template = super.template;
-    /** @type {HTMLTemplater<NavItem>} */
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    const composition = super.compose(...parts, styles);
     const html = this.html;
+    const template = composition.template;
     template.append(html`
       <div id=indicator aria-hidden=true>
         ${template.getElementById('state')}
@@ -39,7 +38,7 @@ export default class NavItem extends RippleMixin(Container) {
       </a>
       <span aria-hidden=true id=badge type-style=label-small color=error badge={badge} aria-current=${({ active }) => (active ? 'page' : null)}></mdw-container>
     `);
-    return template;
+    return composition;
   }
 
   #anchor = /** @type {HTMLAnchorElement} */ (this.refs.anchor);

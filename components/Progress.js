@@ -9,34 +9,37 @@ export default class Progress extends Container {
 
   static elementName = 'mdw-progress';
 
-  static styles = [...super.styles, styles, lineStyles, circleStyles];
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    const composition = super.compose(
+      styles,
+      lineStyles,
+      circleStyles,
+      /* html */ `
+        <div id=determinate style={computeDeterminateStyle}>
+          <progress id=progress value={value} max={max}></progress>
+          <div _if={circle} id=circle>
+            <div id=semi1 class=semi></div>
+            <div id=semi2 class=semi></div>
+          </div>
+        </div>
+        <div _if={!value} id=indeterminate>
+          <div _if={!circle} id=indeterminate-line>
+            <div id=line1 class=line></div>
+            <div id=line2 class=line></div>
+          </div>
+          <div _if={circle} id=indeterminate-circle>
+            <div id=arc2 class=arc></div>
+            <div id=arc3 class=arc></div>
+            <div id=arc4 class=arc></div>
+          </div>
+        </div>
+      `,
+      ...parts,
+    );
 
-  static get template() {
-    const template = super.template;
-    const html = this.html;
-    template.append(html`
-      <div id=determinate style={computeDeterminateStyle}>
-        <progress id=progress value={value} max={max}></progress>
-        <div _if={circle} id=circle>
-          <div id=semi1 class=semi></div>
-          <div id=semi2 class=semi></div>
-        </div>
-      </div>
-      <div _if={!value} id=indeterminate>
-        <div _if={!circle} id=indeterminate-line>
-          <div id=line1 class=line></div>
-          <div id=line2 class=line></div>
-        </div>
-        <div _if={circle} id=indeterminate-circle>
-          <div id=arc2 class=arc></div>
-          <div id=arc3 class=arc></div>
-          <div id=arc4 class=arc></div>
-        </div>
-      </div>
-    `);
-
-    template.getElementById('slot').remove();
-    return template;
+    composition.template.getElementById('slot').remove();
+    return composition;
   }
 
   #progress = /** @type {HTMLProgressElement} */ (this.refs.progress);

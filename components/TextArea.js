@@ -10,14 +10,17 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
 
   static elementName = 'mdw-textarea';
 
-  static styles = [...super.styles, styles];
-
-  static get template() {
-    const template = super.template;
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    const composition = super.compose(
+      styles,
+      ...parts,
+    );
+    const template = composition.template;
     const slot = template.getElementById('slot');
     slot.setAttribute('onslotchange', '{~onSlotChange}');
     template.append(slot);
-    return template;
+    return composition;
   }
 
   static supportsCSSLineHeightUnit = CSS.supports('height', '1lh');

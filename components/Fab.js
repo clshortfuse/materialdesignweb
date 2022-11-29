@@ -8,15 +8,18 @@ export default class Fab extends TooltipTriggerMixin(ExtendedFab) {
 
   static elementName = 'mdw-fab';
 
-  static styles = [...super.styles, styles];
-
-  static get template() {
-    const template = super.template;
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    const composition = super.compose(
+      styles,
+      ...parts,
+    );
+    const { template } = composition;
     template.getElementById('slot').remove();
     template.getElementById('tooltip-slot').removeAttribute('name');
     const control = template.getElementById('control');
     control.setAttribute('aria-labelledby', 'tooltip');
-    return template;
+    return composition;
   }
 }
 

@@ -6,5 +6,11 @@ export default class Divider extends Container {
 
   static elementName = 'mdw-divider';
 
-  static styles = [...super.styles, styles];
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    return super.compose(
+      styles,
+      ...parts,
+    );
+  }
 }

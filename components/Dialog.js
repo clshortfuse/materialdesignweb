@@ -23,15 +23,18 @@ export default class Dialog extends CustomElement {
 
   static elementName = 'mdw-dialog';
 
-  static styles = [...super.styles, styles];
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    const composition = super.compose(
+      styles,
+      ...parts,
+    );
 
-  static get template() {
-    const template = super.template;
-    /** @type {HTMLTemplater<Dialog>} */
+    const template = composition.template;
     const html = this.html;
     template.append(html`
       <dialog id=dialog
-      ${this.supportsHTMLDialogElement ? 'aria-model=true' : ''}
+      ${Dialog.supportsHTMLDialogElement ? 'aria-model=true' : ''}
       role=dialog aria-hidden=${({ open }) => (open ? 'false' : 'true')} 
       aria-labelledby=headline aria-describedby=description
       oncancel="{onNativeCancelEvent}"
@@ -51,7 +54,7 @@ export default class Dialog extends CustomElement {
         </form>
       </dialog>
     `);
-    return template;
+    return composition;
   }
 
   static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';

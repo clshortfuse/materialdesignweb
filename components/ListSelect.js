@@ -16,7 +16,13 @@ export default class ListSelect extends KeyboardNavMixin(FormAssociatedMixin(Lis
 
   static delegatesFocus = true;
 
-  static styles = [...super.styles, styles];
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    return super.compose(
+      styles,
+      ...parts,
+    );
+  }
 
   /** @type {HTMLCollectionOf<ListOption> & HTMLOptionsCollection} */
   _optionsCollection = null;

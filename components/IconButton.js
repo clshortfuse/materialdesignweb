@@ -8,10 +8,13 @@ export default class IconButton extends TooltipTriggerMixin(Button) {
 
   static elementName = 'mdw-icon-button';
 
-  static styles = [...super.styles, styles];
-
-  static get template() {
-    const template = super.template;
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    const composition = super.compose(
+      styles,
+      ...parts,
+    );
+    const template = composition.template;
 
     template.getElementById('slot').remove();
     template.getElementById('tooltip-slot').removeAttribute('name');
@@ -23,7 +26,7 @@ export default class IconButton extends TooltipTriggerMixin(Button) {
     control.setAttribute('aria-pressed', '{computeAriaPressed}');
     control.setAttribute('aria-labelledby', 'tooltip');
 
-    return template;
+    return composition;
   }
 
   /** @return {string?} */

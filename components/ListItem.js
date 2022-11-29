@@ -19,10 +19,15 @@ export default class ListItem extends RippleMixin(Container) {
 
   static delegatesFocus = true;
 
-  static styles = [...super.styles, checkboxIconStyles, radioIconStyles, styles];
-
-  static get template() {
-    const template = super.template;
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    const composition = super.compose(
+      checkboxIconStyles,
+      radioIconStyles,
+      styles,
+      ...parts,
+    );
+    const template = composition.template;
     const html = this.html;
     template.append(html`
       <a id=anchor href={href}>
@@ -55,7 +60,7 @@ export default class ListItem extends RippleMixin(Container) {
       <mdw-divider _if={divider} id=divider></mdw-divider>
     `);
     template.getElementById('state').setAttribute('state-disabled', 'focus hover');
-    return template;
+    return composition;
   }
 
   /** @type {Container['idlChangedCallback']} */

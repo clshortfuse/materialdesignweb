@@ -1,7 +1,7 @@
 import Composition from './Composition.js';
-import { attrNameFromPropName, attrValueFromDataValue } from './dom.js';
+import { attrNameFromPropName, attrValueFromDataValue, findElement } from './dom.js';
 import { defineObservableProperty } from './observe.js';
-import { generateFragment, html } from './template.js';
+import { html } from './template.js';
 
 /**
  * @template {import('./observe.js').ObserverPropertyType} T1
@@ -31,70 +31,38 @@ export default class CustomElement extends HTMLElement {
 
   static delegatesFocus = false;
 
-  /** @type {Iterable<string>} */
+  /** @return {Iterable<string>} */
   static get observedAttributes() {
-    return this.readAttributeIdls.keys();
-  }
-
-  /** @type {(string|URL|CSSStyleSheet)[]} */
-  static styles = [];
-
-  /** @type {(DocumentFragment|string)[]} */
-  static fragments = [];
-
-  /** @type {?DocumentFragment} */
-  static get template() {
-    if (!this.hasOwnProperty('_template')) {
-      this._template = generateFragment();
-      this._template.append(
-        ...this.styles.map((style) => {
-          if (typeof style === 'string') {
-            const el = document.createElement('style');
-            el.textContent = style;
-            return el;
-          }
-          if (style instanceof URL) {
-            const el = document.createElement('link');
-            el.rel = 'stylesheet';
-            el.href = style.href;
-            return el;
-          }
-          if (CustomElement.supportsAdoptedStyleSheets) return null;
-          const el = document.createElement('style');
-          el.textContent = [...style.cssRules].map((r) => r.cssText).join('\n');
-          return el;
-        }).filter(Boolean),
-        ...this.fragments.map((f) => ((typeof f === 'string') ? generateFragment(f) : f)),
-      );
+    const s = new Set();
+    for (const config of this.idls.values()) {
+      if (config.reflect === true || config.reflect === 'read') {
+        s.add(config.attr);
+      }
     }
-
-    return this._template;
+    return s;
   }
 
-  /** @type {Iterable<((data: Partial<any>) => any)>} */
-  static get watchers() { return []; }
+  /** @type {import('./Composition.js').Compositor<?>} */
+  compose(...parts) {
+    if (this.#composition) {
+      console.warn('Already composed. Generating *new* composition...');
+    }
+    this.#composition = new Composition(
+      ...parts,
+    );
+    return this.#composition;
+  }
 
   /** @type {Composition<?>} */
   static _composition = null;
 
-  /** @type {Map<string, IDLOptions<?,?>>} */
+  /** @type {Map<string, import('./observe.js').ObserverConfiguration<?,?,?> & {reflect:boolean|'read'|'write', attr:string}>} */
   static _idls = new Map();
-
-  /** @type {Map<keyof any & string, Attr['name']>} */
-  static _writeAttributeIdls = new Map();
-
-  /** @type {Map<Attr['name'],import('./observe.js').ObserverConfiguration<?,?,?>} */
-  static _readAttributeIdls = new Map();
 
   /** @type {WeakSet<Function>} */
   static _reusableFunctions = new WeakSet();
 
-  /** @type {CSSStyleSheet[]} */
-  static _adoptedStyleSheets = [];
-
   static interpolatesTemplate = true;
-
-  static supportsAdoptedStyleSheets = 'adoptedStyleSheets' in ShadowRoot.prototype;
 
   static supportsElementInternals = 'attachInternals' in HTMLElement.prototype;
 
@@ -150,28 +118,6 @@ export default class CustomElement extends HTMLElement {
     return this._idls;
   }
 
-  static get readAttributeIdls() {
-    if (!this.hasOwnProperty('_readAttributeIdls')) {
-      this._readAttributeIdls = new Map(this._readAttributeIdls);
-    }
-    return this._readAttributeIdls;
-  }
-
-  static get writeAttributeIdls() {
-    if (!this.hasOwnProperty('_writeAttributeIdls')) {
-      this._writeAttributeIdls = new Map(this._writeAttributeIdls);
-    }
-    return this._writeAttributeIdls;
-  }
-
-  static get adoptedStyleSheets() {
-    if (!this.hasOwnProperty('_adoptedStyleSheets')) {
-      this._adoptedStyleSheets = /** @type {CSSStyleSheet[]} */ (this.styles
-        .filter((style) => style instanceof CSSStyleSheet));
-    }
-    return this._adoptedStyleSheets;
-  }
-
   /**
    * @template {import('./observe.js').ObserverPropertyType} [T1=any]
    * @template {any} [T2=import('./observe.js').ParsedObserverPropertyType<T1>]
@@ -194,30 +140,20 @@ export default class CustomElement extends HTMLElement {
       changedCallback: this.prototype._onObserverPropertyChanged,
     });
 
-    if (reflect === true || reflect === 'read') {
-      // console.log(this.name, 'adding read attribute', attr, config);
-      this.readAttributeIdls.set(attr, config);
-    }
-    if (reflect === true || reflect === 'write') {
-      // console.log(this.name, 'adding write attribute', name, attr);
-      this.writeAttributeIdls.set(name, attr);
-    }
-    return /** @type {any} */ (config.default);
-  }
+    this.idls.set(name, {
+      ...config,
+      reflect,
+      attr,
+    });
 
-  /**
-   * Wraps composeHtml with bind to `this` (not natively set with tagged template literals)
-   * @return {import('./template.js').HTMLTemplater<?>}
-   */
-  static get html() {
-    if (!this._html) {
-      this._html = html.bind(this);
-    }
-    return this._html;
+    return /** @type {any} */ (config.default);
   }
 
   /** @type {Record<string, HTMLElement>}} */
   #refsProxy;
+
+  /** @type {Composition<?>} */
+  #composition;
 
   /** @type {Map<string,string|null>} */
   _idlAttributeCache;
@@ -226,23 +162,16 @@ export default class CustomElement extends HTMLElement {
   constructor(...args) {
     super();
 
-    this.attachShadow({ mode: 'open', delegatesFocus: this.static.delegatesFocus });
-
-    if (CustomElement.supportsAdoptedStyleSheets) {
-      this.shadowRoot.adoptedStyleSheets = this.static.adoptedStyleSheets;
-    }
-
-    this.composition.initialRender(this.shadowRoot, this);
-
     if (CustomElement.supportsElementInternals) {
       this.elementInternals = this.attachInternals();
-    }
-
-    if (this.static.supportsElementInternalsRole) {
       this.elementInternals.role = this.static.ariaRole;
     } else if (!this.hasAttribute('role')) {
       this.setAttribute('role', this.static.ariaRole);
     }
+
+    this.attachShadow({ mode: 'open', delegatesFocus: this.static.delegatesFocus });
+
+    this.composition.initialRender(this.shadowRoot, this);
   }
 
   /**
@@ -275,42 +204,64 @@ export default class CustomElement extends HTMLElement {
    */
   attributeChangedCallback(name, oldValue, newValue) {
     // console.log(this.tagName, 'attributeChangedCallback', name, oldValue, newValue, '.');
-    const config = this.static.readAttributeIdls.get(name);
-    if (!config) return;
-    const attrValue = this.attributeCache.get(name) ?? null;
-    if (attrValue === newValue) return;
 
-    const previousDataValue = this[config.key];
-    const parsedValue = newValue == null
-      ? config.nullParser(newValue)
-      : (config.parser === Boolean ? true : config.parser(newValue));
+    for (const config of this.static.idls.values()) {
+      if (config.attr !== name) continue;
+      if (config.reflect !== true && config.reflect !== 'read') continue;
 
-    if (parsedValue === previousDataValue) {
-      // No internal value change
+      const attrValue = this.attributeCache.get(name) ?? null;
+      if (attrValue === newValue) return;
+
+      // @ts-expect-error any
+      const previousDataValue = this[config.key];
+      const parsedValue = newValue == null
+        ? config.nullParser(newValue)
+        : (config.parser === Boolean ? true : config.parser(newValue));
+
+      if (parsedValue === previousDataValue) {
+        // No internal value change
+        return;
+      }
+      config.values.set(this, parsedValue);
+      this.attributeCache.set(name, newValue);
+      this.idlChangedCallback(name, previousDataValue, parsedValue);
       return;
     }
-    config.values.set(this, parsedValue);
-    this.attributeCache.set(name, newValue);
-    this.idlChangedCallback(name, previousDataValue, parsedValue);
   }
 
+  /**
+   * @param {string} name
+   * @param {any} oldValue
+   * @param {any} newValue
+   */
   _onObserverPropertyChanged(name, oldValue, newValue) {
-    const attrName = this.static.writeAttributeIdls.get(name);
-    if (attrName) {
+    const { reflect, attr } = this.static.idls.get(name);
+    if (attr && (reflect === true || reflect === 'write')) {
       const attrValue = attrValueFromDataValue(newValue);
-      const lastAttrValue = this.attributeCache.get(attrName) ?? null;
+      const lastAttrValue = this.attributeCache.get(attr) ?? null;
       if (lastAttrValue !== attrValue) {
-        this.attributeCache.set(attrName, attrValue);
+        this.attributeCache.set(attr, attrValue);
         if (attrValue == null) {
-          this.removeAttribute(attrName);
+          this.removeAttribute(attr);
         } else {
-          this.setAttribute(attrName, attrValue);
+          this.setAttribute(attr, attrValue);
         }
       }
     }
 
-    // Invoke render
+    // Invoke change => render
     this.idlChangedCallback(name, oldValue, newValue);
+  }
+
+  /**
+   * Wraps composeHtml with bind to `this` (not natively set with tagged template literals)
+   * @return {import('./template.js').HTMLTemplater<this>}
+   */
+  get html() {
+    if (!this._html) {
+      this._html = html.bind(this);
+    }
+    return this._html;
   }
 
   get refs() {
@@ -319,10 +270,19 @@ export default class CustomElement extends HTMLElement {
       /**
        * @param {any} target
        * @param {string} id
-       * @return {HTMLElement}
+       * @return {Element}
        */
-      // @ts-ignore
-      get: (target, id) => this.composition.getElement(this.shadowRoot, { id }),
+      get: (target, id) => {
+        if (!this.#composition) {
+          console.warn(this.static.name, 'Attempted to access references before composing!');
+        }
+        const composition = this.composition;
+        if (!composition.interpolated) {
+          console.warn('Returning template reference');
+          return findElement(composition.template, { id });
+        }
+        return composition.getElement(this.shadowRoot, { id });
+      },
     }));
   }
 
@@ -365,20 +325,25 @@ export default class CustomElement extends HTMLElement {
 
   get static() { return /** @type {typeof CustomElement} */ (/** @type {unknown} */ (this.constructor)); }
 
+  get unique() { return false; }
+
   /** @return {Composition<?>} */
   get composition() {
-    if (this.static.hasOwnProperty('_composition')) {
+    if (this.#composition) return this.#composition;
+
+    if (!this.unique && this.static.hasOwnProperty('_composition')) {
+      this.#composition = this.static._composition;
       return this.static._composition;
     }
 
-    const composition = new Composition(this.static.template, this);
+    this.compose();
 
-    for (const watcher of this.static.watchers) {
-      composition.bindWatcher(watcher, this);
+    if (!this.unique) {
+      // Cache compilation into static property
+      this.static._composition = this.#composition;
     }
-    this.static._composition = composition;
 
-    return composition;
+    return this.#composition;
   }
 
   connectedCallback() {

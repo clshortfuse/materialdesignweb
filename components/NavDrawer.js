@@ -6,5 +6,8 @@ export default class NavDrawer extends NavRail {
 
   static elementName = 'mdw-nav-drawer';
 
-  static styles = [...super.styles, styles];
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    return super.compose(...parts, styles);
+  }
 }

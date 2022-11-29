@@ -12,13 +12,15 @@ export default class ListOption extends ListItem {
 
   static delegatesFocus = false;
 
-  static get template() {
-    const template = super.template;
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    const composition = super.compose(...parts);
+    const template = composition.template;
     template.getElementById('headline-text').append(
       template.getElementById('slot'),
     );
     template.getElementById('state').setAttribute('state-disabled', 'focus hover');
-    return template;
+    return composition;
   }
 
   /** @type {HTMLFormElement} */

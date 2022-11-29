@@ -10,15 +10,16 @@ export default class Container extends Text {
 
   static elementName = 'mdw-container';
 
-  // Allow inks to override color styles
-  static styles = [colorStyles, ...super.styles, styles];
-
-  static fragments = [
-    ...super.fragments,
-    /* html */ `
-      <div _if={!disabled} id=elevation aria-hidden=true></div>
-    `,
-  ];
+  /** @type {Text['compose']} */
+  compose(...parts) {
+    const composition = super.compose(
+      styles,
+      '<div _if={!disabled} id=elevation aria-hidden=true></div>',
+      ...parts,
+    );
+    composition.styles.unshift(colorStyles); // Allow inks to override color styles
+    return composition;
+  }
 
   /** @type {Text['attributeChangedCallback']} */
   attributeChangedCallback(name, oldValue, newValue) {

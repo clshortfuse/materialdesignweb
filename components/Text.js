@@ -9,14 +9,15 @@ export default class Text extends CustomElement {
 
   static elementName = 'mdw-text';
 
-  static styles = [...super.styles, styles, inkStyles];
-
-  static fragments = [
-    ...super.fragments,
-    /* html */`
-      <slot id=slot></slot>
-    `,
-  ];
+  /** @type {CustomElement['compose']} */
+  compose(...parts) {
+    return super.compose(
+      styles,
+      inkStyles,
+      '<slot id=slot></slot>',
+      ...parts,
+    );
+  }
 }
 
 Text.prototype.block = Text.idl('block', 'boolean');

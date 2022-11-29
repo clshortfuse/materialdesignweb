@@ -11,10 +11,15 @@ export default class Checkbox extends InputMixin(Container) {
 
   static elementName = 'mdw-checkbox';
 
-  static styles = [...super.styles, styles, iconStyles];
+  /** @type {Container['compose']} */
+  compose(...parts) {
+    const composition = super.compose(
+      styles,
+      iconStyles,
+      ...parts,
+    );
 
-  static get template() {
-    const template = super.template;
+    const template = composition.template;
     const { html } = this;
     template.getElementById('label').append(
       html`
@@ -34,15 +39,14 @@ export default class Checkbox extends InputMixin(Container) {
       'aria-checked',
       addInlineFunction(({ indeterminate, checked }) => (indeterminate ? 'mixed' : String(!!checked))),
     );
-    return template;
+    return composition;
   }
 
   /** @override */
   // @ts-ignore @override
-
   get type() { return 'checkbox'; }
 }
 
 Checkbox.prototype.icon = Checkbox.idl('icon', { type: 'string', default: 'check' });
 Checkbox.prototype.indeterminateIcon = Checkbox.idl('indeterminateIcon', { type: 'string', default: 'check_indeterminate_small' });
-Checkbox.prototype.indeterminate = Checkbox.idl('indeterminate', { type: 'boolean', reflect: true });
+Checkbox.prototype.indeterminate = Checkbox.idl('indeterminate', { type: 'boolean' });

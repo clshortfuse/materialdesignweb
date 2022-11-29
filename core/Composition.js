@@ -1,6 +1,14 @@
 import { findElement, iterateNodes } from './dom.js';
 import { identifierFromElement, identifierFromKey, identifierMatchesElement, keyFromIdentifier } from './identify.js';
-import { inlineFunctions } from './template.js';
+import { observeFunction } from './observe.js';
+import { generateFragment, inlineFunctions } from './template.js';
+
+/**
+ * @template {any} T
+ * @callback Compositor
+ * @param {...(HTMLStyleElement|CSSStyleSheet|DocumentFragment|((this:T, changes:T) => any)|string|T)} parts source for interpolation (not mutated)
+ * @return {Composition<T>}
+ */
 
 /**
  * @typedef {Object} EventEntry
@@ -31,54 +39,6 @@ import { inlineFunctions } from './template.js';
  * @prop {Set<keyof T & string>} props
  * @prop {T} defaultValue
  */
-
-/**
- * @param {(data: Partial<any>) => any} fn
- * @param {any} [args]
- * @return {{props:Set<string>, defaultValue:any, reusable: boolean}}
- */
-export function spyOnFunction(fn, args = {}) {
-  const argPoked = new Set();
-  const thisPoked = new Set();
-  const argProxy = new Proxy(args, {
-    get(target, p) {
-      argPoked.add(p);
-      const value = Reflect.get(target, p);
-      return value;
-    },
-    has(target, p) {
-      argPoked.add(p);
-      const value = Reflect.has(target, p);
-      return value;
-    },
-  });
-  const thisProxy = new Proxy(this ?? args, {
-    get(target, p) {
-      thisPoked.add(p);
-      const value = Reflect.get(target, p);
-      return value;
-    },
-    has(target, p) {
-      thisPoked.add(p);
-      const value = Reflect.has(target, p);
-      return value;
-    },
-  });
-  const defaultValue = fn.call(thisProxy, argProxy);
-  /* Arrow functions can reused if they don't poke `this` */
-  const reusable = fn.name ? true : !thisPoked.size;
-
-  const props = new Set([
-    ...argPoked,
-    ...thisPoked,
-  ]);
-
-  return {
-    props,
-    defaultValue,
-    reusable,
-  };
-}
 
 /**
  * @param {string} prop
@@ -118,6 +78,7 @@ export default class Composition {
    * Snapshot of composition at initial state.
    * This fragment can be cloned for first rendering, instead of calling
    * of using `render()` to construct the initial DOM tree.
+   * @type {DocumentFragment}
    */
   cloneable;
 
@@ -125,8 +86,21 @@ export default class Composition {
    * Result of interpolation of the composition template.
    * Includes all DOM elements, which is used to reference for adding and
    * removing DOM elements during render.
+   * @type {DocumentFragment}
    */
   interpolation;
+
+  /** @type {(HTMLStyleElement|CSSStyleSheet)[]} */
+  styles = [];
+
+  /** @type {CSSStyleSheet[]} */
+  adoptedStyleSheets = [];
+
+  /** @type {DocumentFragment} */
+  stylesFragment;
+
+  /** @type {((this:T, changes:T) => any)[]} */
+  watchers = [];
 
   /**
    * Maintains a reference list of elements used by render target (root).
@@ -136,192 +110,28 @@ export default class Composition {
    */
   referenceCache = new WeakMap();
 
+  /** Flag set when template and styles have been interpolated */
+  interpolated = false;
+
   /**
-   * @param {DocumentFragment} template source for interpolation (not mutated)
-   * @param {T} defaults
+   * @param {(HTMLStyleElement|CSSStyleSheet|DocumentFragment|((this:T, changes:T) => any)|string)[]} parts source for interpolation (not mutated)
    */
-  constructor(template, defaults) {
+  constructor(...parts) {
     /**
-     * Original template passed to compositor.
+     * Template used to build interpolation and cloneable
      */
-    this.template = template;
-
-    // console.log('Template', [...template.children].map((child) => child.outerHTML).join('\n'));
-    this.cloneable = /** @type {DocumentFragment} */ (template.cloneNode(true));
-
-    /** @type {Map<string,Element>} */
-    const removalList = new Map();
-
-    for (const node of iterateNodes(this.cloneable, { attribute: true, text: true })) {
-      const { nodeName, nodeValue, nodeType } = node;
-      if (!nodeValue) continue;
-      const trimmed = nodeValue.trim();
-      if (!trimmed) continue;
-      if (trimmed[0] !== '{') continue;
-      const { length } = trimmed;
-      if (trimmed[length - 1] !== '}') continue;
-
-      let parsedValue = trimmed.slice(1, length - 1);
-      const negate = parsedValue[0] === '!';
-      if (negate) {
-        parsedValue = parsedValue.slice(1);
-      }
-
-      /** @type {Element} */
-      let element;
-      let isEvent;
-      let eventFlags;
-      let textNodeIndex;
-
-      if (nodeType === Node.TEXT_NODE) {
-      // eslint-disable-next-line unicorn/consistent-destructuring
-        element = node.parentElement;
-        textNodeIndex = 0;
-        let prev = node;
-        while ((prev = prev.previousSibling)) {
-          if (prev.nodeType === Node.TEXT_NODE) {
-            textNodeIndex++;
-          }
-        }
-      } else {
-      // @ts-ignore Skip cast
-      // eslint-disable-next-line unicorn/consistent-destructuring
-        element = node.ownerElement;
-        if (nodeName.startsWith('on')) {
-          const [, flags, prop] = parsedValue.match(/^([*1~]+)?(.*)$/);
-          eventFlags = flags;
-          parsedValue = prop;
-          isEvent = true;
-        }
-      }
-
-      const identifier = identifierFromElement(element, true);
-      const identifierKey = keyFromIdentifier(identifier);
-
-      if (isEvent) {
-        const options = {
-          once: eventFlags?.includes('1'),
-          passive: eventFlags?.includes('~'),
-          capture: eventFlags?.includes('*'),
-        };
-
-        const type = nodeName.slice(2);
-        element.removeAttribute(nodeName);
-
-        let set = this.events.get(identifierKey);
-        if (!set) {
-          set = new Set();
-          this.events.set(identifierKey, set);
-        }
-        if (parsedValue.startsWith('#')) {
-          set.add({ type, options, listener: inlineFunctions.get(parsedValue) });
-        } else {
-          set.add({ type, options, prop: parsedValue });
-        }
-        continue;
-      }
-
-      /** @type {Function} */
-      let fn;
-      /** @type {Set<string>} */
-      let props;
-
-      /** @type {any} */
-      let defaultValue;
-      let inlineFunctionOptions;
-      // Is Inline Function?
-      if (parsedValue.startsWith('#')) {
-        inlineFunctionOptions = inlineFunctions.get(parsedValue);
-        if (!inlineFunctionOptions) {
-          console.warn(`Invalid interpolation value: ${parsedValue}`);
-          continue;
-        }
-        if (inlineFunctionOptions.props) {
-          console.log('This function has already been called. Reuse props');
-          props = inlineFunctionOptions.props;
-          defaultValue = inlineFunctionOptions.defaultValue ?? null;
-        } else {
-          defaultValue = inlineFunctionOptions.fn;
-        }
-      } else {
-        defaultValue = valueFromPropName(parsedValue, defaults);
-      }
-
-      if (!props) {
-        if (typeof defaultValue === 'function') {
-        // Value must be reinterpolated and function spied upon
-          const spyResult = spyOnFunction.call(this, defaultValue, defaults);
-          fn = defaultValue;
-          defaultValue = spyResult.defaultValue;
-          props = spyResult.props;
-        // console.log(this.static.name, fn.name || parsedValue, combinedSet);
-        } else {
-          props = new Set([parsedValue]);
-        }
-      }
-
-      if (typeof defaultValue === 'symbol') {
-        console.warn(': Invalid binding:', parsedValue);
-        defaultValue = null;
-      }
-
-      if (negate) {
-        defaultValue = !defaultValue;
-      }
-
-      if (inlineFunctionOptions) {
-        inlineFunctionOptions.defaultValue = defaultValue;
-        inlineFunctionOptions.props = props;
-      }
-
-      // Bind
-      const parsedNodeName = textNodeIndex ? nodeName + textNodeIndex : nodeName;
-      const entry = { identifier, node: parsedNodeName, fn, props, nodeType, defaultValue, negate };
-      for (const prop of props) {
-        let set = this.bindings.get(prop);
-        if (!set) {
-          set = new Set();
-          this.bindings.set(prop, set);
-        }
-        set.add(entry);
-      }
-
-      // Mutate
-
-      if (nodeType === Node.TEXT_NODE) {
-        node.nodeValue = defaultValue ?? '';
-      } else if (nodeName === '_if') {
-        element.removeAttribute(nodeName);
-        if (defaultValue == null || defaultValue === false) {
-          removalList.set(identifierKey, element);
-        }
-      } else if (defaultValue == null || defaultValue === false) {
-        element.removeAttribute(nodeName);
-      } else {
-        element.setAttribute(nodeName, defaultValue === true ? '' : defaultValue);
+    this.template = generateFragment();
+    for (const part of parts) {
+      if (part instanceof DocumentFragment) {
+        this.template.append(part);
+      } else if (part instanceof CSSStyleSheet || part instanceof HTMLStyleElement) {
+        this.styles.push(part);
+      } else if (typeof part === 'function') {
+        this.watchers.push();
+      } else if (typeof part === 'string') {
+        this.template.append(generateFragment(part.trim()));
       }
     }
-
-    const elements = [...removalList.values()].reverse();
-    for (const element of elements) {
-      let parent = element;
-      while ((parent = parent.parentElement)) {
-        identifierFromElement(parent, true);
-      }
-    }
-
-    /** @type {DocumentFragment} */
-    this.interpolation = /** @type {DocumentFragment} */ (this.cloneable.cloneNode(true));
-
-    // console.log('Interpolated', [...this.interpolation.children].map((child) => child.outerHTML).join('\n'));
-
-    for (const [key, element] of removalList) {
-      const commentPlaceholder = new Comment(key);
-      element.before(commentPlaceholder);
-      element.remove();
-    }
-
-    // console.log('Cloneable', [...this.cloneable.children].map((child) => child.outerHTML).join('\n'));
   }
 
   /**
@@ -334,9 +144,8 @@ export default class Composition {
    * @return {void}
    */
   render(root, data, context) {
-    if (!this.referenceCache.has(root)) {
-      this.initialRender(root, data);
-    }
+    if (!this.initiallyRendered) this.initialRender(root, data);
+
     if (!data) return;
 
     const fnResults = new WeakMap();
@@ -474,17 +283,246 @@ export default class Composition {
   }
 
   /**
+   * @param {Object} [defaults]
+   */
+  interpolate(defaults) {
+    // console.log('Template', [...template.children].map((child) => child.outerHTML).join('\n'));
+    this.cloneable = /** @type {DocumentFragment} */ (this.template.cloneNode(true));
+
+    /** @type {Map<string,Element>} */
+    const removalList = new Map();
+
+    for (const node of iterateNodes(this.cloneable, { element: true, attribute: true, text: true })) {
+      const { nodeName, nodeValue, nodeType } = node;
+
+      if (nodeType === Node.ELEMENT_NODE) {
+        // Processing of Element
+        if (node instanceof HTMLTemplateElement) {
+          console.warn('Not supported');
+          continue;
+        }
+        if (node instanceof HTMLStyleElement) {
+          node.remove();
+          this.styles.push(node);
+        }
+        if (node instanceof HTMLScriptElement) {
+          console.warn('Not supported');
+          continue;
+        }
+      }
+
+      if (!nodeValue) continue;
+      const trimmed = nodeValue.trim();
+      if (!trimmed) continue;
+      if (trimmed[0] !== '{') continue;
+      const { length } = trimmed;
+      if (trimmed[length - 1] !== '}') continue;
+
+      let parsedValue = trimmed.slice(1, length - 1);
+      const negate = parsedValue[0] === '!';
+      if (negate) {
+        parsedValue = parsedValue.slice(1);
+      }
+
+      /** @type {Element} */
+      let element;
+      let isEvent;
+      let eventFlags;
+      let textNodeIndex;
+
+      if (nodeType === Node.TEXT_NODE) {
+      // eslint-disable-next-line unicorn/consistent-destructuring
+        element = node.parentElement;
+        textNodeIndex = 0;
+        let prev = node;
+        while ((prev = prev.previousSibling)) {
+          if (prev.nodeType === Node.TEXT_NODE) {
+            textNodeIndex++;
+          }
+        }
+      } else {
+      // @ts-ignore Skip cast
+      // eslint-disable-next-line unicorn/consistent-destructuring
+        element = node.ownerElement;
+        if (nodeName.startsWith('on')) {
+          const [, flags, prop] = parsedValue.match(/^([*1~]+)?(.*)$/);
+          eventFlags = flags;
+          parsedValue = prop;
+          isEvent = true;
+        }
+      }
+
+      const identifier = identifierFromElement(element, true);
+      const identifierKey = keyFromIdentifier(identifier);
+
+      if (isEvent) {
+        const options = {
+          once: eventFlags?.includes('1'),
+          passive: eventFlags?.includes('~'),
+          capture: eventFlags?.includes('*'),
+        };
+
+        const type = nodeName.slice(2);
+        element.removeAttribute(nodeName);
+
+        let set = this.events.get(identifierKey);
+        if (!set) {
+          set = new Set();
+          this.events.set(identifierKey, set);
+        }
+        if (parsedValue.startsWith('#')) {
+          set.add({ type, options, listener: inlineFunctions.get(parsedValue) });
+        } else {
+          set.add({ type, options, prop: parsedValue });
+        }
+        continue;
+      }
+
+      /** @type {Function} */
+      let fn;
+      /** @type {Set<string>} */
+      let props;
+
+      /** @type {any} */
+      let defaultValue;
+      let inlineFunctionOptions;
+      // Is Inline Function?
+      if (parsedValue.startsWith('#')) {
+        inlineFunctionOptions = inlineFunctions.get(parsedValue);
+        if (!inlineFunctionOptions) {
+          console.warn(`Invalid interpolation value: ${parsedValue}`);
+          continue;
+        }
+        if (inlineFunctionOptions.props) {
+          console.log('This function has already been called. Reuse props');
+          props = inlineFunctionOptions.props;
+          defaultValue = inlineFunctionOptions.defaultValue ?? null;
+        } else {
+          defaultValue = inlineFunctionOptions.fn;
+        }
+      } else {
+        defaultValue = valueFromPropName(parsedValue, defaults);
+      }
+
+      if (!props) {
+        if (typeof defaultValue === 'function') {
+        // Value must be reinterpolated and function observed
+          const observeResult = observeFunction.call(this, defaultValue, defaults);
+          fn = defaultValue;
+          defaultValue = observeResult.defaultValue;
+          props = observeResult.props;
+        // console.log(this.static.name, fn.name || parsedValue, combinedSet);
+        } else {
+          props = new Set([parsedValue]);
+        }
+      }
+
+      if (typeof defaultValue === 'symbol') {
+        console.warn(': Invalid binding:', parsedValue);
+        defaultValue = null;
+      }
+
+      if (negate) {
+        defaultValue = !defaultValue;
+      }
+
+      if (inlineFunctionOptions) {
+        inlineFunctionOptions.defaultValue = defaultValue;
+        inlineFunctionOptions.props = props;
+      }
+
+      // Bind
+      const parsedNodeName = textNodeIndex ? nodeName + textNodeIndex : nodeName;
+      const entry = { identifier, node: parsedNodeName, fn, props, nodeType, defaultValue, negate };
+      for (const prop of props) {
+        let set = this.bindings.get(prop);
+        if (!set) {
+          set = new Set();
+          this.bindings.set(prop, set);
+        }
+        set.add(entry);
+      }
+
+      // Mutate
+
+      if (nodeType === Node.TEXT_NODE) {
+        node.nodeValue = defaultValue ?? '';
+      } else if (nodeName === '_if') {
+        element.removeAttribute(nodeName);
+        if (defaultValue == null || defaultValue === false) {
+          removalList.set(identifierKey, element);
+        }
+      } else if (defaultValue == null || defaultValue === false) {
+        element.removeAttribute(nodeName);
+      } else {
+        element.setAttribute(nodeName, defaultValue === true ? '' : defaultValue);
+      }
+    }
+
+    const elements = [...removalList.values()].reverse();
+    for (const element of elements) {
+      let parent = element;
+      while ((parent = parent.parentElement)) {
+        identifierFromElement(parent, true);
+      }
+    }
+
+    /** @type {DocumentFragment} */
+    this.interpolation = /** @type {DocumentFragment} */ (this.cloneable.cloneNode(true));
+
+    // console.log('Interpolated', [...this.interpolation.children].map((child) => child.outerHTML).join('\n'));
+
+    for (const [key, element] of removalList) {
+      const commentPlaceholder = new Comment(key);
+      element.before(commentPlaceholder);
+      element.remove();
+    }
+
+    for (const watcher of this.watchers) {
+      this.bindWatcher(watcher);
+    }
+
+    this.stylesFragment = generateFragment();
+    for (const style of this.styles) {
+      if (style instanceof HTMLStyleElement) {
+        this.stylesFragment.append(style);
+        this.adoptedStyleSheets.push(style.sheet);
+      } else {
+        const el = document.createElement('style');
+        // TODO: Consider skipping if using adoptedStyleSheets
+        el.textContent = [...style.cssRules].map((r) => r.cssText).join('\n');
+        this.stylesFragment.append(el);
+        this.adoptedStyleSheets.push(style);
+      }
+    }
+
+    this.interpolated = true;
+
+    // console.log('Cloneable', [...this.cloneable.children].map((child) => child.outerHTML).join('\n'));
+  }
+
+  /**
    * Updates component nodes based on data
    * Expects data in JSON Merge Patch format
    * @see https://www.rfc-editor.org/rfc/rfc7386
-   * @param {Element|DocumentFragment} root where
+   * @param {Element|DocumentFragment|ShadowRoot} root where
    * @param {Partial<?>} data what
    * @return {void}
    */
   initialRender(root, data) {
+    if (!this.interpolated) this.interpolate(data);
+
+    if ('adoptedStyleSheets' in root) {
+      root.adoptedStyleSheets = this.adoptedStyleSheets;
+    } else if (root instanceof ShadowRoot) {
+      root.append(this.stylesFragment.cloneNode(true));
+    } else {
+      console.warn('Cannot apply styles to singular element');
+    }
+
     root.append(this.cloneable.cloneNode(true));
 
-    console.log('Initial render', [...root.children].map((child) => child.outerHTML).join('\n'));
+    // console.log('Initial render', [...root.children].map((child) => child.outerHTML).join('\n'));
 
     // Bind events
     for (const [identifier, events] of this.events) {
@@ -511,7 +549,7 @@ export default class Composition {
       }
     }
 
-    this.getReferences(root); // Initialize reference map to mark as initially rendered
+    this.initiallyRendered = true;
   }
 
   /**
@@ -607,11 +645,11 @@ export default class Composition {
 
   /**
    * @param {*} fn
-   * @param {T} [defaults]
+   * @param {any} defaults
    * @return {boolean} reusable
    */
   bindWatcher(fn, defaults) {
-    const { props, defaultValue, reusable } = spyOnFunction(fn, defaults);
+    const { props, defaultValue, reusable } = observeFunction.call(this, fn, defaults);
     const entry = { fn, props, defaultValue };
     for (const prop of props) {
       let set = this.bindings.get(prop);

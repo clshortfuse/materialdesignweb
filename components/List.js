@@ -11,5 +11,11 @@ export default class List extends Container {
 
   static ariaRole = 'list';
 
-  static styles = [...super.styles, styles];
+  /** @type {Container['compose']} */
+  compose(...parts) {
+    return super.compose(
+      styles,
+      ...parts,
+    );
+  }
 }

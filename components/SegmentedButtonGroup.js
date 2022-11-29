@@ -14,7 +14,13 @@ export default class SegmentedButtonGroup extends KeyboardNav(Container) {
 
   static ariaRole = 'listbox';
 
-  static styles = [...super.styles, styles];
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    return super.compose(
+      styles,
+      ...parts,
+    );
+  }
 
   constructor() {
     super();

@@ -11,18 +11,17 @@ export default class Icon extends Text {
 
   static elementName = 'mdw-icon';
 
-  static get styles() {
-    return [
-      ...super.styles,
-      new URL(this.fontLibrary),
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    const composition = super.compose(
       styles,
-    ];
-  }
-
-  static get template() {
-    const template = super.template;
+      ...parts,
+    );
     const html = this.html;
+
+    const template = composition.template;
     template.append(html`
+      <link rel=stylesheet href={fontLibrary} />
       <div id=icon class={fontClass} aria-hidden="true">
         <svg _if={svg} id=svg viewBox="0 0 24 24" id="svg">
           <use href="{svg}" fill="currentColor"/>
@@ -36,10 +35,8 @@ export default class Icon extends Text {
         ${template.getElementById('slot')}
       </div>
     `);
-    return template;
+    return composition;
   }
-
-  static fontLibrary = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block';
 
   /**
    * @param {number} [width]
@@ -87,4 +84,5 @@ Icon.prototype.loading = /** @type {'eager'|'lazy'} */ (Icon.idl('loading'));
 Icon.prototype.width = Icon.idl('width', 'integer');
 Icon.prototype.height = Icon.idl('height', 'integer');
 
-Icon.prototype.fontClass = Icon.idl('fontClass', { reflect: false, default: 'material-symbols-outlined' });
+Icon.prototype.fontClass = Icon.idl('fontClass', { empty: 'material-symbols-outlined' });
+Icon.prototype.fontLibrary = Icon.idl('fontLibrary', { empty: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block' });

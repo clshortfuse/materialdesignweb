@@ -17,11 +17,13 @@ export default class TopAppBar extends AriaToolbarMixin(Container) {
     ];
   }
 
-  static styles = [...super.styles, styles];
-
-  static get template() {
-    const template = super.template;
-    /** @type {HTMLTemplater<TopAppBar>} */
+  /** @type {import('../core/Composition.js').Compositor<this>} */
+  compose(...parts) {
+    const composition = super.compose(
+      styles,
+      ...parts,
+    );
+    const template = composition.template;
     const html = this.html;
     const slot = template.getElementById('slot');
     slot.setAttribute('onslotchange', '{onSlotChange}');
@@ -39,7 +41,7 @@ export default class TopAppBar extends AriaToolbarMixin(Container) {
       <div _if=${({ size }) => size === 'medium' || size === 'large'}
         id=companion aria-hidden=true><span id=companion-text>{headline}</span></div>
     `);
-    return template;
+    return composition;
   }
 
   static IDLE_TIMEOUT_MS = 500;
