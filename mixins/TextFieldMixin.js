@@ -13,12 +13,6 @@ export default function TextFieldMixin(Base) {
     compose(...parts) {
       const composition = super.compose(
         styles,
-        /* html */ `
-          <div _if={shouldShowSupporting} id=supporting>
-            {computeSupportingText}
-            <slot id=supporting-slot name=supporting></slot>
-          </div>
-        `,
         ...parts,
       );
       const template = composition.template;
@@ -42,6 +36,13 @@ export default function TextFieldMixin(Base) {
               ${template.getElementById('slot')}
             </div>
           </div>
+        </div>
+      `);
+
+      template.append(html`
+        <div _if={shouldShowSupporting} id=supporting>
+          {computeSupportingText}
+          <slot id=supporting-slot name=supporting></slot>
         </div>
       `);
 
