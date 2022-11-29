@@ -224,7 +224,7 @@ export default class CustomElement extends HTMLElement {
       }
       config.values.set(this, parsedValue);
       this.attributeCache.set(name, newValue);
-      this.idlChangedCallback(name, previousDataValue, parsedValue);
+      this.idlChangedCallback(config.key, previousDataValue, parsedValue);
       return;
     }
   }
