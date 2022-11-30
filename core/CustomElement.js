@@ -3,9 +3,12 @@ import { attrNameFromPropName, attrValueFromDataValue, findElement } from './dom
 import { defineObservableProperty } from './observe.js';
 import { html } from './template.js';
 
+/** @typedef {import('./observe.js').ObserverPropertyType} ObserverPropertyType */
+/** @template T @typedef {import('./observe.js').ParsedObserverPropertyType<T>} ParsedObserverPropertyType<T> */
+
 /**
- * @template {import('./observe.js').ObserverPropertyType} T1
- * @template {any} T2
+ * @template {ObserverPropertyType} T1
+ * @template {any} [T2=any]
  * @typedef IDLOptions
  * @prop {T1} [type]
  * @prop {string} [attr]
@@ -16,7 +19,7 @@ import { html } from './template.js';
  * @prop {(value: T2) => T2} [onNullish] Function used when null passed
  * @prop {T2} [default] Initial value (empty value if not specified)
  * @prop {boolean} [initialized]
- * @prop {WeakMap<CustomElement, T1>} [values]
+ * @prop {WeakMap<CustomElement, T2>} [values]
  * @prop {WeakMap<CustomElement, string>} [attrValues]
  */
 
@@ -56,7 +59,7 @@ export default class CustomElement extends HTMLElement {
   /** @type {Composition<?>} */
   static _composition = null;
 
-  /** @type {Map<string, import('./observe.js').ObserverConfiguration<?,?,?> & {reflect:boolean|'read'|'write', attr:string}>} */
+  /** @type {Map<string, import('./observe.js').ObserverConfiguration<?,?,?,?> & {reflect:boolean|'read'|'write', attr:string}>} */
   static _idls = new Map();
 
   /** @type {WeakSet<Function>} */
@@ -119,13 +122,23 @@ export default class CustomElement extends HTMLElement {
   }
 
   /**
-   * @template {import('./observe.js').ObserverPropertyType} [T1=any]
-   * @template {any} [T2=import('./observe.js').ParsedObserverPropertyType<T1>]
+   * @template {ObserverPropertyType} [T1=null]
+   * @template {ObserverPropertyType} [T2=null]
+   * @template {any} [T3=null]
    * @param {string} name
-   * @param {T1|IDLOptions<T1,T2>} [typeOrOptions='string']
-   * @return {unknown extends T2 ? string : T2}
+   * @param {T1|IDLOptions<T2,T3>} [typeOrOptions='string']
+   * @return {(
+   *    T3 extends null ?
+   *        T2 extends null ?
+   *          T1 extends null ?
+   *            string
+   *          : ParsedObserverPropertyType<T1>
+   *        : ParsedObserverPropertyType<T2>
+   *    : T3
+   * )}
    */
   static idl(name, typeOrOptions) {
+    /** @type {IDLOptions<?,?>} */
     const options = {
       ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
     };
@@ -216,7 +229,7 @@ export default class CustomElement extends HTMLElement {
       const previousDataValue = this[config.key];
       const parsedValue = newValue == null
         ? config.nullParser(newValue)
-        : (config.parser === Boolean ? true : config.parser(newValue));
+        : (config.type === 'boolean' ? true : config.parser(newValue));
 
       if (parsedValue === previousDataValue) {
         // No internal value change

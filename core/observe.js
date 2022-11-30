@@ -1,4 +1,4 @@
-/** @typedef {'boolean'|'integer'|'float'|'string'|'map'|'set'|'array'} ObserverPropertyType */
+/** @typedef {'boolean'|'string'|'float'|'integer'|'array'|'set'|'map'} ObserverPropertyType */
 
 /**
  * @template {ObserverPropertyType} T
@@ -53,18 +53,20 @@
  */
 
 /**
- * @template {any} T
+ * @template {ObserverPropertyType} T1
+ * @template {any} T2
  * @template {string} K
  * @template {any} [C=any]
  * @typedef ObserverConfiguration
  * @prop {K} key
+ * @prop {T1} type
  * @prop {boolean} [enumerable]
- * @prop {T} [default] Initial value (empty value if not specified)
- * @prop {WeakMap<any, T>} [values]
- * @prop {(this:C, name:K,oldValue:T,newValue:T)=>any} changedCallback
- * @prop {(this:C, value:any)=>T} nullParser
- * @prop {(this:C, value:any)=>T} parser
- * @prop {(this:C, a:T,b:T)=>boolean} is Function used when comparing
+ * @prop {T2} [default] Initial value (empty value if not specified)
+ * @prop {WeakMap<any, T2>} [values]
+ * @prop {(this:C, name:K,oldValue:T2,newValue:T2)=>any} changedCallback
+ * @prop {(this:C, value:any)=>T2} nullParser
+ * @prop {(this:C, value:any)=>T2} parser
+ * @prop {(this:C, a:T2,b:T2)=>boolean} is Function used when comparing
  */
 
 /** @return {null} */
@@ -124,7 +126,7 @@ function defaultParserFromType(type) {
  * @template {any} [T2=ParsedObserverPropertyType<T1>]
  * @param {K} name
  * @param {T1|ObserverOptions<T1,T2,K>} [typeOrOptions='string']
- * @return {ObserverConfiguration<T1,K> & ObserverOptions<T1,T2,K>}
+ * @return {ObserverConfiguration<T1,T2,K> & ObserverOptions<T1,T2,K>}
  */
 export function parseObserverOptions(name, typeOrOptions) {
   const isPrivate = name[0] === '_';
@@ -134,7 +136,7 @@ export function parseObserverOptions(name, typeOrOptions) {
     ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
   };
 
-  const { type, empty } = options;
+  const { type, empty, changedCallback } = options;
 
   const enumerable = options.enumerable ?? !isPrivate;
 
@@ -172,12 +174,13 @@ export function parseObserverOptions(name, typeOrOptions) {
 
   return {
     ...options,
+    type: parsedType,
     enumerable,
     default: options.default ?? parsedEmpty,
     parser,
     nullParser,
     key: name,
-    changedCallback: options.changedCallback,
+    changedCallback,
   };
 }
 
@@ -250,16 +253,16 @@ export function observeFunction(fn, arg0 = {}) {
 
 /**
  * @template {ObserverPropertyType} T1
- * @template T2
+ * @template {any} T2
  * @template {string} K
  * @template [C=any]
  * @param {C} object
  * @param {K} key
  * @param {ObserverOptions<T1,T2,K,C>} options
- * @return {ObserverConfiguration<T1,K,C>}
+ * @return {ObserverConfiguration<T1,T2,K,C>}
  */
 export const defineObservableProperty = (object, key, options) => {
-  /** @type {ObserverConfiguration<T1,K,C>} */
+  /** @type {ObserverConfiguration<T1,T2,K,C>} */
   const config = {
     values: new Map(),
     ...DEFAULT_OBSERVER_CONFIGURATION,
@@ -271,14 +274,14 @@ export const defineObservableProperty = (object, key, options) => {
     enumerable: config.enumerable,
     /**
      * @this {C}
-     * @return {T1}
+     * @return {T2}
      */
     get() {
       return !config.values.has(this) ? config.default : config.values.get(this);
     },
     /**
      * @this {C}
-     * @param {T1} value
+     * @param {T2} value
      * @return {void}
      */
     set(value) {
