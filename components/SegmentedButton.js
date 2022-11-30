@@ -9,18 +9,17 @@ export default class SegmentedButton extends Button {
 
   static elementName = 'mdw-segmented-button';
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const composition = super.compose(
+  compose() {
+    const composition = super.compose().append(
       styles,
-      ...parts,
     );
 
-    const template = composition.template;
-    const html = this.html;
+    const { html } = this;
+    const { template } = composition;
     template.getElementById('label').append(html`
       <mdw-icon _if={icon} id=check-icon aria-hidden=true>check</mdw-icon>
     `);
+
     const control = template.getElementById('control');
     control.setAttribute('type', 'radio');
     control.setAttribute('role', 'option');
@@ -30,7 +29,9 @@ export default class SegmentedButton extends Button {
     control.setAttribute('aria-selected', addInlineFunction(
       (/** @type {SegmentedButton} */ { type, checked }) => (type !== 'checkbox' ? String(!!checked) : null),
     ));
+
     template.getElementById('state').setAttribute('state-disabled', 'focus');
+
     return composition;
   }
 
@@ -54,4 +55,3 @@ export default class SegmentedButton extends Button {
 }
 
 SegmentedButton.prototype.type = SegmentedButton.idl('type', { empty: 'radio' });
-SegmentedButton.prototype.outlined = SegmentedButton.idl('outlined', { empty: true });

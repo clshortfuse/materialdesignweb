@@ -11,16 +11,14 @@ export default class Checkbox extends InputMixin(Container) {
 
   static elementName = 'mdw-checkbox';
 
-  /** @type {Container['compose']} */
-  compose(...parts) {
-    const composition = super.compose(
+  compose() {
+    const composition = super.compose().append(
       styles,
       iconStyles,
-      ...parts,
     );
 
-    const template = composition.template;
     const { html } = this;
+    const { template } = composition;
     template.getElementById('label').append(
       html`
         <div id=checkbox-box class=checkbox-box>
@@ -32,6 +30,7 @@ export default class Checkbox extends InputMixin(Container) {
         </div>
       `,
     );
+
     const control = template.getElementById('control');
     control.setAttribute('type', 'checkbox');
     // Indeterminate must be manually expressed for ARIA
@@ -39,6 +38,7 @@ export default class Checkbox extends InputMixin(Container) {
       'aria-checked',
       addInlineFunction(({ indeterminate, checked }) => (indeterminate ? 'mixed' : String(!!checked))),
     );
+
     return composition;
   }
 

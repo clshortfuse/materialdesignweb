@@ -8,10 +8,9 @@ export default class CardActionArea extends Container {
   static elementName = 'mdw-card-action-area';
 
   /** @type {Container['compose']} */
-  compose(...parts) {
-    return super.compose(
+  compose() {
+    return super.compose().append(
       styles,
-      ...parts,
     );
   }
 }

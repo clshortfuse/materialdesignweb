@@ -7,15 +7,14 @@ export default class DemoSection extends CustomElement {
 
   static delegatesFocus = true;
 
-  static fragments = [
-    ...super.fragments,
-    /* html */ `
+  compose() {
+    return super.compose().append(/* html */`
       <label id=label>
         <input id=input type=button role=button>
         <slot id=slot></slot>
       </label>
-    `,
-  ];
+    `);
+  }
 
   /** @type {HTMLElement['focus']} */
   focus(options = undefined) {

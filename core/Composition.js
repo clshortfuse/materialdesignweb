@@ -4,10 +4,12 @@ import { identifierFromElement, identifierFromKey, identifierMatchesElement, key
 import { observeFunction } from './observe.js';
 import { generateFragment, inlineFunctions } from './template.js';
 
+/** @template T @typedef {Composition<?>|HTMLStyleElement|CSSStyleSheet|DocumentFragment|((this:T, changes:T) => any)|string} CompositionPart */
+
 /**
  * @template {any} T
  * @callback Compositor
- * @param {...(HTMLStyleElement|CSSStyleSheet|DocumentFragment|((this:T, changes:T) => any)|string|T)} parts source for interpolation (not mutated)
+ * @param {...(CompositionPart<T>)} parts source for interpolation (not mutated)
  * @return {Composition<T>}
  */
 
@@ -91,6 +93,9 @@ export default class Composition {
    */
   interpolation;
 
+  /** @type {DocumentFragment[]} */
+  fragments = [];
+
   /** @type {(HTMLStyleElement|CSSStyleSheet)[]} */
   styles = [];
 
@@ -115,7 +120,7 @@ export default class Composition {
   interpolated = false;
 
   /**
-   * @param {(HTMLStyleElement|CSSStyleSheet|DocumentFragment|((this:T, changes:T) => any)|string)[]} parts source for interpolation (not mutated)
+   * @param {(CompositionPart<T>)[]} parts
    */
   constructor(...parts) {
     /**
@@ -125,21 +130,37 @@ export default class Composition {
     this.append(...parts);
   }
 
+  * [Symbol.iterator]() {
+    for (const part of this.fragments) {
+      yield part;
+    }
+    for (const part of this.styles) {
+      yield part;
+    }
+    for (const part of this.watchers) {
+      yield part;
+    }
+  }
+
   /**
-   * @param {(HTMLStyleElement|CSSStyleSheet|DocumentFragment|((this:T, changes:T) => any)|string)[]} parts source for interpolation (not mutated)
+   * @param {CompositionPart<T>[]} parts
    */
   append(...parts) {
     for (const part of parts) {
-      if (part instanceof DocumentFragment) {
+      if (typeof part === 'string') {
+        this.append(generateFragment(part.trim()));
+      } else if (typeof part === 'function') {
+        this.watchers.push(part);
+      } else if (part instanceof Composition) {
+        this.append(...part);
+      } else if (part instanceof DocumentFragment) {
         this.template.append(part);
       } else if (part instanceof CSSStyleSheet || part instanceof HTMLStyleElement) {
         this.styles.push(part);
-      } else if (typeof part === 'function') {
-        this.watchers.push();
-      } else if (typeof part === 'string') {
-        this.template.append(generateFragment(part.trim()));
       }
     }
+    // Allow chaining
+    return this;
   }
 
   /**

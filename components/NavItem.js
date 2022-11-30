@@ -22,23 +22,24 @@ export default class NavItem extends RippleMixin(Container) {
     ];
   }
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const composition = super.compose(...parts, styles);
-    const html = this.html;
-    const template = composition.template;
-    template.append(html`
-      <div id=indicator aria-hidden=true>
-        ${template.getElementById('state')}
-        ${template.getElementById('ripple')}
-      </div>
-      <mdw-icon id=icon aria-hidden=true src={src}>{icon}</mdw-icon>
-      <a id=anchor aria-labelledby=slot aria-describedby=badge href=${({ href }) => href ?? '#'} aria-label=${({ ariaLabel }) => ariaLabel}>
-        ${template.getElementById('slot')}
-      </a>
-      <span aria-hidden=true id=badge type-style=label-small color=error badge={badge} aria-current=${({ active }) => (active ? 'page' : null)}></mdw-container>
-    `);
-    return composition;
+  compose() {
+    const composition = super.compose();
+    const { html } = this;
+    const { template } = composition;
+    return composition.append(
+      styles,
+      html`
+        <div id=indicator aria-hidden=true>
+          ${template.getElementById('state')}
+          ${template.getElementById('ripple')}
+        </div>
+        <mdw-icon id=icon aria-hidden=true src={src}>{icon}</mdw-icon>
+        <a id=anchor aria-labelledby=slot aria-describedby=badge href=${({ href }) => href ?? '#'} aria-label=${({ ariaLabel }) => ariaLabel}>
+          ${template.getElementById('slot')}
+        </a>
+        <span aria-hidden=true id=badge type-style=label-small color=error badge={badge} aria-current=${({ active }) => (active ? 'page' : null)}></mdw-container>
+      `,
+    );
   }
 
   #anchor = /** @type {HTMLAnchorElement} */ (this.refs.anchor);

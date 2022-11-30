@@ -6,12 +6,8 @@ export default class ExtendedFab extends Button {
 
   static elementName = 'mdw-extended-fab';
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    return super.compose(
-      styles,
-      ...parts,
-    );
+  compose() {
+    return super.compose().append(styles);
   }
 }
 

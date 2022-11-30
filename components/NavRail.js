@@ -6,19 +6,17 @@ export default class NavRail extends Nav {
 
   static elementName = 'mdw-nav-rail';
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const composition = super.compose(
-      styles,
-      ...parts,
-    );
-    const html = this.html;
+  compose() {
+    const composition = super.compose();
+    const { html } = this;
     const { template } = composition;
-    template.append(html`
-      <slot id=start name=start></slot>
-      <div id=group>${template.getElementById('template')}</div>
-    `);
-    return composition;
+    return composition.append(
+      styles,
+      html`
+        <slot id=start name=start></slot>
+        <div id=group>${template.getElementById('template')}</div>
+      `,
+    );
   }
 }
 

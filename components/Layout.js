@@ -7,7 +7,10 @@ export default class Layout extends CustomElement {
 
   static elementName = 'mdw-layout';
 
-  static styles = [styles];
-
-  static fragments = ['<slot></slot>'];
+  compose() {
+    return super.compose().append(
+      styles,
+      '<slot></slot>',
+    );
+  }
 }

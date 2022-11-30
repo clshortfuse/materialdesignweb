@@ -12,13 +12,12 @@ export default class MenuItem extends InputMixin(Container) {
 
   static elementName = 'mdw-menu-item';
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const composition = super.compose(
+  compose() {
+    const composition = super.compose().append(
       styles,
-      ...parts,
     );
-    const html = this.html;
+
+    const { html } = this;
     const { template } = composition;
     template.getElementById('label').append(html`
       <mdw-icon _if={icon} id=icon aria-hidden="true" src={src}>{icon}</mdw-icon>
@@ -28,6 +27,7 @@ export default class MenuItem extends InputMixin(Container) {
         id=trailing-icon aria-hidden="true" src={trailingSrc}>{trailingIcon}</mdw-icon>
       </span>
     `);
+
     const control = template.getElementById('control');
     control.setAttribute('type', 'button');
     control.setAttribute('role', addInlineFunction(({ type }) => {

@@ -9,9 +9,11 @@ export default class Progress extends Container {
 
   static elementName = 'mdw-progress';
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const composition = super.compose(
+  compose() {
+    const composition = super.compose();
+    const { template } = composition;
+    template.getElementById('slot').remove();
+    return composition.append(
       styles,
       lineStyles,
       circleStyles,
@@ -35,11 +37,7 @@ export default class Progress extends Container {
           </div>
         </div>
       `,
-      ...parts,
     );
-
-    composition.template.getElementById('slot').remove();
-    return composition;
   }
 
   #progress = /** @type {HTMLProgressElement} */ (this.refs.progress);

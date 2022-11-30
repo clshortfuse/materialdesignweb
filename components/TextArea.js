@@ -10,16 +10,18 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
 
   static elementName = 'mdw-textarea';
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const composition = super.compose(
+  compose() {
+    const composition = super.compose().append(
       styles,
-      ...parts,
     );
-    const template = composition.template;
+    const { template } = composition;
+
     const slot = template.getElementById('slot');
     slot.setAttribute('onslotchange', '{~onSlotChange}');
+
+    // Move into root (was label);
     template.append(slot);
+
     return composition;
   }
 
@@ -221,6 +223,7 @@ TextArea.prototype._lineHeight = TextArea.idl('_lineHeight');
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element
 
+/** @type {{onNullish: () => string}} */
 const DOMString = { onNullish: String };
 TextArea.prototype.cols = TextArea.idl('cols', { type: 'integer', empty: 0 });
 TextArea.prototype.dirName = TextArea.idl('dirName', { attr: 'dirname', ...DOMString });

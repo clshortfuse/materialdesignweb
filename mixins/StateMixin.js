@@ -12,12 +12,10 @@ let lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matc
  */
 export default function StateMixin(Base) {
   class State extends Base {
-    /** @type {CustomElement['compose']} */
-    compose(...parts) {
-      return super.compose(
+    compose() {
+      return super.compose().append(
         styles,
         '<div id=state disabled={disabled} aria-hidden=true>',
-        ...parts,
       );
     }
 

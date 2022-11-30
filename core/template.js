@@ -75,7 +75,7 @@ export function css(strings, ...substitutions) {
  */
 export function html(strings, ...substitutions) {
   /** @type {Map<string, Element>} */
-  const tempSlots = new Map();
+  let tempSlots;
   const replacements = substitutions.map((sub) => {
     switch (typeof sub) {
       case 'string': return sub;
@@ -83,6 +83,7 @@ export function html(strings, ...substitutions) {
       case 'object': {
         // Assume Element
         const tempId = generateUID();
+        tempSlots ??= new Map();
         tempSlots.set(tempId, sub);
         return `<div id="${tempId}"></div>`;
       }
@@ -92,10 +93,12 @@ export function html(strings, ...substitutions) {
   });
   const compiledString = String.raw({ raw: strings }, ...replacements);
   const fragment = generateFragment(compiledString);
-  for (const [id, element] of tempSlots) {
-    const slot = fragment.getElementById(id);
-    slot.after(element);
-    slot.remove();
+  if (tempSlots) {
+    for (const [id, element] of tempSlots) {
+      const slot = fragment.getElementById(id);
+      slot.after(element);
+      slot.remove();
+    }
   }
 
   return fragment;

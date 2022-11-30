@@ -23,38 +23,33 @@ export default class Dialog extends CustomElement {
 
   static elementName = 'mdw-dialog';
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const composition = super.compose(
+  compose() {
+    const { html } = this;
+    return super.compose().append(
       styles,
-      ...parts,
+      html`
+        <dialog id=dialog
+        ${Dialog.supportsHTMLDialogElement ? 'aria-model=true' : ''}
+        role=dialog aria-hidden=${({ open }) => (open ? 'false' : 'true')} 
+        aria-labelledby=headline aria-describedby=description
+        oncancel="{onNativeCancelEvent}"
+        onclose="{~onNativeCloseEvent}">
+          <div id=scrim onclick="{~onScrimClick}" aria-hidden=true></div>
+          <form id=form method=dialog role=none>
+            <mdw-container id=container onkeydown="{onContainerKeyDown}">
+              <mdw-icon _if={icon} id=icon aria-hidden=true>{icon}</mdw-icon>
+              <mdw-text id=headline role="header">{headline}</mdw-text>
+              <div id=description>{description}</div>
+              <slot id=slot onslotchange="{onSlotChange}"></slot>
+              <div id=actions>
+                <mdw-button id=cancel type=submit value="cancel" autofocus=${({ default: d }) => (!d || d === 'confirm')}>{cancel}</mdw-button>
+                <mdw-button id=confirm type=submit value="confirm" autofocus=${({ default: d }) => (d === 'cancel')}>{confirm}</mdw-button>
+              </div>
+            </mdw-container>
+          </form>
+        </dialog>
+      `,
     );
-
-    const template = composition.template;
-    const html = this.html;
-    template.append(html`
-      <dialog id=dialog
-      ${Dialog.supportsHTMLDialogElement ? 'aria-model=true' : ''}
-      role=dialog aria-hidden=${({ open }) => (open ? 'false' : 'true')} 
-      aria-labelledby=headline aria-describedby=description
-      oncancel="{onNativeCancelEvent}"
-      onclose="{~onNativeCloseEvent}">
-        <div id=scrim onclick="{~onScrimClick}" aria-hidden=true></div>
-        <form id=form method=dialog role=none>
-          <mdw-container id=container onkeydown="{onContainerKeyDown}">
-            <mdw-icon _if={icon} id=icon aria-hidden=true>{icon}</mdw-icon>
-            <mdw-text id=headline role="header">{headline}</mdw-text>
-            <div id=description>{description}</div>
-            <slot id=slot onslotchange="{onSlotChange}"></slot>
-            <div id=actions>
-              <mdw-button id=cancel type=submit value="cancel" autofocus=${({ default: d }) => (!d || d === 'confirm')}>{cancel}</mdw-button>
-              <mdw-button id=confirm type=submit value="confirm" autofocus=${({ default: d }) => (d === 'cancel')}>{confirm}</mdw-button>
-            </div>
-          </mdw-container>
-        </form>
-      </dialog>
-    `);
-    return composition;
   }
 
   static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';

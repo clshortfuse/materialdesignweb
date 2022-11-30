@@ -8,14 +8,10 @@ export default class IconButton extends TooltipTriggerMixin(Button) {
 
   static elementName = 'mdw-icon-button';
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const composition = super.compose(
-      styles,
-      ...parts,
-    );
-    const template = composition.template;
+  compose() {
+    const composition = super.compose().append(styles);
 
+    const { template } = composition;
     template.getElementById('slot').remove();
     template.getElementById('tooltip-slot').removeAttribute('name');
     // icon.append(template.getElementById('slot'));

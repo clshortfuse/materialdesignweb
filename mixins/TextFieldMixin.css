@@ -483,14 +483,11 @@ mdw-icon {
   margin-block-start: 4px;
   margin-inline: 16px;
 
-  font-weight: var(--mdw-typescale__body-small__font-weight);
-  /* Not spec */
+  font-weight: var(--mdw-typescale__body-small__font-weight); /* Not spec */
   font-size: var(--mdw-typescale__body-small__font-size);
   line-height: var(--mdw-typescale__body-small__line-height);
-  font-family: var(--mdw-typescale__body-small__font-family);
-  /* Not spec */
-  letter-spacing: var(--mdw-typescale__body-small__letter-spacing);
-  /* Not spec */
+  font-family: var(--mdw-typescale__body-small__font-family); /* Not spec */
+  letter-spacing: var(--mdw-typescale__body-small__letter-spacing); /* Not spec */
 }
 
 :host(:is([error], [invalid])) #supporting-slot {

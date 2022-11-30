@@ -17,31 +17,31 @@ export default class TopAppBar extends AriaToolbarMixin(Container) {
     ];
   }
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const composition = super.compose(
-      styles,
-      ...parts,
-    );
-    const template = composition.template;
-    const html = this.html;
+  compose() {
+    const composition = super.compose();
+
+    const { html } = this;
+    const { template } = composition;
+
     const slot = template.getElementById('slot');
     slot.setAttribute('onslotchange', '{onSlotChange}');
 
-    template.append(html`
-      <div id="bar" role=toolbar aria-labelledby=headline style={computeBarStyle}>
-        ${template.getElementById('elevation')}
-        <div id=leading><slot id=leading-slot name=leading onslotchange={onSlotChange}></slot></div>
-        <div id=headline style={computeHeadlineStyle}>
-          {headline}
-          ${slot}
+    return composition.append(
+      styles,
+      html`
+        <div id="bar" role=toolbar aria-labelledby=headline style={computeBarStyle}>
+          ${template.getElementById('elevation')}
+          <div id=leading><slot id=leading-slot name=leading onslotchange={onSlotChange}></slot></div>
+          <div id=headline style={computeHeadlineStyle}>
+            {headline}
+            ${slot}
+          </div>
+          <div id=trailing><slot id=trailing-slot name=trailing onslotchange={onSlotChange}></slot></div>
         </div>
-        <div id=trailing><slot id=trailing-slot name=trailing onslotchange={onSlotChange}></slot></div>
-      </div>
-      <div _if=${({ size }) => size === 'medium' || size === 'large'}
-        id=companion aria-hidden=true><span id=companion-text>{headline}</span></div>
-    `);
-    return composition;
+        <div _if=${({ size }) => size === 'medium' || size === 'large'}
+          id=companion aria-hidden=true><span id=companion-text>{headline}</span></div>
+      `,
+    );
   }
 
   static IDLE_TIMEOUT_MS = 500;

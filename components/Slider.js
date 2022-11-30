@@ -8,14 +8,11 @@ export default class Slider extends InputMixin(Container) {
 
   static elementName = 'mdw-slider';
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const composition = super.compose(
-      styles,
-      ...parts,
-    );
-    const template = composition.template;
-    const html = this.html;
+  compose() {
+    const composition = super.compose().append(styles);
+
+    const { html } = this;
+    const { template } = composition;
     template.append(html`
       <div id=track aria-hidden=true style={computeTrackStyle}>
         <div _if={ticks} id=ticks></div>
@@ -30,6 +27,7 @@ export default class Slider extends InputMixin(Container) {
     `);
     template.getElementById('control').setAttribute('type', 'range');
     template.getElementById('ripple').remove();
+
     return composition;
   }
 

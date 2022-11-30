@@ -9,13 +9,11 @@ export default class Text extends CustomElement {
 
   static elementName = 'mdw-text';
 
-  /** @type {CustomElement['compose']} */
-  compose(...parts) {
-    return super.compose(
+  compose() {
+    return super.compose().append(
       styles,
       inkStyles,
       '<slot id=slot></slot>',
-      ...parts,
     );
   }
 }

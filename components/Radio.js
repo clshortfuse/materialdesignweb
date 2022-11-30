@@ -9,15 +9,14 @@ export default class Radio extends InputMixin(Text) {
 
   static elementName = 'mdw-radio';
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const composition = super.compose(
+  compose() {
+    const composition = super.compose().append(
       styles,
       iconStyles,
-      ...parts,
     );
-    const template = composition.template;
-    const html = this.html;
+
+    const { html } = this;
+    const { template } = composition;
     template.getElementById('label').append(html`
       <div id=icon class=radio-icon selected={_checked} disabled={disabled}>
         ${template.getElementById('ripple')}
@@ -25,6 +24,7 @@ export default class Radio extends InputMixin(Text) {
       </div>
     `);
     template.getElementById('control').setAttribute('type', 'radio');
+
     return composition;
   }
 

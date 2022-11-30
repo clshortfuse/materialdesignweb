@@ -10,13 +10,11 @@ export default class Button extends InputMixin(Container) {
   static elementName = 'mdw-button';
 
   /** @type {Container['compose']} */
-  compose(...parts) {
-    const composition = super.compose(
-      styles,
-      ...parts,
-    );
-    const template = composition.template;
-    const html = this.html;
+  compose() {
+    const composition = super.compose().append(styles);
+
+    const { html } = this;
+    const { template } = composition;
     template.getElementById('label').append(
       html`
         <mdw-icon id=icon aria-hidden="true" svg={svg} src="{src}">{icon}</mdw-icon>
@@ -28,6 +26,7 @@ export default class Button extends InputMixin(Container) {
     const control = template.getElementById('control');
     control.setAttribute('role', 'button');
     control.setAttribute('type', 'button');
+
     return composition;
   }
 

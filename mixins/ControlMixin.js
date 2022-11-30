@@ -26,27 +26,28 @@ export default function ControlMixin(Base) {
       ];
     }
 
-    /** @type {import('../core/Composition.js').Compositor<this>} */
-    compose(...parts) {
-      const composition = super.compose(styles, ...parts);
-      const template = composition.template;
-      const html = this.html;
-      template.append(html`
-        <label id=label>
-          <${this.static.controlTagName} id=control aria-labelledby="slot"
-            onclick={onControlClick}
-            onchange={onControlChange}
-            onkeydown={onControlKeydown}
-            onfocus={~onControlFocus}
-            onblur={~onControlBlur}
-            oninput={onControlInput}
-            >${this.static.controlVoidElement ? '' : `</${this.static.controlTagName}>`}
-            ${template.getElementById('state')}
-            ${template.getElementById('ripple')}
-            ${template.getElementById('slot')}
-        </label>
-      `);
-      return composition;
+    compose() {
+      const composition = super.compose();
+      const { html } = this;
+      const { template } = composition;
+      return composition.append(
+        styles,
+        html`
+          <label id=label>
+            <${this.static.controlTagName} id=control aria-labelledby="slot"
+              onclick={onControlClick}
+              onchange={onControlChange}
+              onkeydown={onControlKeydown}
+              onfocus={~onControlFocus}
+              onblur={~onControlBlur}
+              oninput={onControlInput}
+              >${this.static.controlVoidElement ? '' : `</${this.static.controlTagName}>`}
+              ${template.getElementById('state')}
+              ${template.getElementById('ripple')}
+              ${template.getElementById('slot')}
+          </label>
+        `,
+      );
     }
 
     static controlTagName = 'input';

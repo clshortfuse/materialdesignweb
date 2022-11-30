@@ -9,20 +9,20 @@ import styles from './TextFieldMixin.css' assert { type: 'css' };
  */
 export default function TextFieldMixin(Base) {
   class TextField extends Base {
-    /** @type {import('../core/Composition.js').Compositor<this>} */
-    compose(...parts) {
-      const composition = super.compose(
+    compose() {
+      const composition = super.compose().append(
         styles,
-        ...parts,
       );
-      const template = composition.template;
-      const html = this.html;
+
+      const { html } = this;
+      const { template } = composition;
 
       const control = template.getElementById('control');
       control.setAttribute('type', 'text');
       control.setAttribute('placeholder', '{placeholder}');
       control.setAttribute('aria-labelledby', 'label-text');
       control.classList.add('inline');
+
       template.getElementById('label').append(html`
         <mdw-icon _if={icon} id=icon aria-hidden=true>{icon}</mdw-icon>
         <span _if={inputPrefix} class=inline id=prefix aria-hidden=true>{inputPrefix}</span>
@@ -47,6 +47,7 @@ export default function TextFieldMixin(Base) {
       `);
 
       template.getElementById('ripple').remove();
+
       return composition;
     }
 
@@ -87,5 +88,6 @@ export default function TextFieldMixin(Base) {
   TextField.prototype.supporting = TextField.idl('supporting');
   TextField.prototype.error = TextField.idl('error');
   TextField.prototype._populated = TextField.idl('_populated', { attr: 'populated', type: 'boolean' });
+
   return TextField;
 }

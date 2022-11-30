@@ -9,9 +9,8 @@ import styles from './TooltipTriggerMixin.css' assert { type: 'css' };
  */
 export default function TooltipTriggerMixin(Base) {
   class TooltipTrigger extends Base {
-    /** @type {import('../core/Composition.js').Compositor<this>} */
-    compose(...parts) {
-      return super.compose(
+    compose() {
+      return super.compose().append(
         styles,
         /* html */ `
           <${Tooltip.elementName} role=tooltip id=tooltip
@@ -19,7 +18,6 @@ export default function TooltipTriggerMixin(Base) {
             onslotchange={onTooltipTriggerSlotChange} name=tooltip
             >{tooltip}</slot></${Tooltip.elementName}>
         `,
-        ...parts,
       );
     }
 

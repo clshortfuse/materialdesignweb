@@ -6,12 +6,8 @@ export default class Chip extends Button {
 
   static elementName = 'mdw-chip';
 
-  /** @type {Button['compose']} */
-  compose(...parts) {
-    return super.compose(
-      styles,
-      ...parts,
-    );
+  compose() {
+    return super.compose().append(styles);
   }
 
   constructor() {

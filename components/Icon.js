@@ -11,31 +11,28 @@ export default class Icon extends Text {
 
   static elementName = 'mdw-icon';
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const composition = super.compose(
+  compose() {
+    const composition = super.compose();
+    const { html } = this;
+    const { template } = composition;
+    return composition.append(
       styles,
-      ...parts,
+      html`
+        <link rel=stylesheet href={fontLibrary} />
+        <div id=icon class={fontClass} aria-hidden="true">
+          <svg _if={svg} id=svg viewBox="0 0 24 24" id="svg">
+            <use href="{svg}" fill="currentColor"/>
+          </svg>
+          <img _if={src} id=img
+            alt={alt} src={src} srcset={srcset} sizes={sizes}
+            crossorigin={crossOrigin} usemap={useMap} ismap={isMap}
+            referrerpolicy={referrerPolicy} decoding={decoding} loading={loading}
+            width={width} height={height}
+          />
+          ${template.getElementById('slot')}
+        </div>
+      `,
     );
-    const html = this.html;
-
-    const template = composition.template;
-    template.append(html`
-      <link rel=stylesheet href={fontLibrary} />
-      <div id=icon class={fontClass} aria-hidden="true">
-        <svg _if={svg} id=svg viewBox="0 0 24 24" id="svg">
-          <use href="{svg}" fill="currentColor"/>
-        </svg>
-        <img _if={src} id=img
-          alt={alt} src={src} srcset={srcset} sizes={sizes}
-          crossorigin={crossOrigin} usemap={useMap} ismap={isMap}
-          referrerpolicy={referrerPolicy} decoding={decoding} loading={loading}
-          width={width} height={height}
-        />
-        ${template.getElementById('slot')}
-      </div>
-    `);
-    return composition;
   }
 
   /**

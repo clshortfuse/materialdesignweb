@@ -10,17 +10,14 @@ export default class Switch extends InputMixin(Container) {
 
   static elementName = 'mdw-switch';
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const composition = super.compose(
+  compose() {
+    const composition = super.compose().append(
       styles,
       animationStyles,
-      ...parts,
     );
 
-    const template = composition.template;
-    const html = this.html;
-
+    const { html } = this;
+    const { template } = composition;
     template.getElementById('label').append(html`
       <div id=track aria-hidden=true>
         <div id=thumb>
@@ -32,9 +29,11 @@ export default class Switch extends InputMixin(Container) {
         </div>
       </div>
     `);
+
     const control = template.getElementById('control');
     control.setAttribute('type', 'checkbox');
     control.setAttribute('role', 'switch');
+
     return composition;
   }
 

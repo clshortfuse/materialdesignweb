@@ -9,12 +9,10 @@ import StateMixin from './StateMixin.js';
  */
 export default function RippleMixin(Base) {
   class Ripple extends StateMixin(Base) {
-    /** @type {CustomElement['compose']} */
-    compose(...parts) {
-      return super.compose(
+    compose() {
+      return super.compose().append(
         styles,
         '<div id=ripple aria-hidden=true><div id=ripple-inner></div></div>',
-        ...parts,
       );
     }
 

@@ -10,14 +10,12 @@ export default class Container extends Text {
 
   static elementName = 'mdw-container';
 
-  /** @type {Text['compose']} */
-  compose(...parts) {
-    const composition = super.compose(
+  compose() {
+    const composition = super.compose().append(
       styles,
       '<div _if={!disabled} id=elevation aria-hidden=true></div>',
-      ...parts,
     );
-    composition.styles.unshift(colorStyles); // Allow inks to override color styles
+    composition.styles.unshift(colorStyles); // Ink > Color rules
     return composition;
   }
 

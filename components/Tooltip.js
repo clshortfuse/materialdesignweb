@@ -8,9 +8,8 @@ export default class Tooltip extends Container {
 
   static { this.autoRegister(); }
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    return super.compose(...parts, styles);
+  compose() {
+    return super.compose().append(styles);
   }
 }
 

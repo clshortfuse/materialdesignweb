@@ -18,11 +18,7 @@ export default class BottomAppBar extends AriaToolbarMixin(Container) {
 
   static ariaRole = 'toolbar';
 
-  /** @type {Container['compose']} */
-  compose(...parts) {
-    return super.compose(
-      styles,
-      ...parts,
-    );
+  compose() {
+    return super.compose().append(styles);
   }
 }

@@ -5,13 +5,12 @@ export default class DemoSection extends CustomElement {
 
   static elementName = 'demo-section';
 
-  static fragments = [
-    ...super.fragments,
-    /* html */ `
+  compose() {
+    return super.compose().append(/* html */`
       <section aria-labelledby=slot>
         <slot id=slot name=heading role="none"></slot>
         <slot></slot>
       </section>
-    `,
-  ];
+    `);
+  }
 }

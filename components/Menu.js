@@ -23,10 +23,9 @@ export default class Menu extends KeyboardNavMixin(CustomElement) {
 
   static elementName = 'mdw-menu';
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const html = this.html;
-    return super.compose(
+  compose() {
+    const { html } = this;
+    return super.compose().append(
       styles,
       html`
         <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>
@@ -38,7 +37,6 @@ export default class Menu extends KeyboardNavMixin(CustomElement) {
           </form>
         </dialog>
       `,
-      ...parts,
     );
   }
 
@@ -144,9 +142,9 @@ export default class Menu extends KeyboardNavMixin(CustomElement) {
     }
 
     if (event.key === 'Tab') {
-    // Hide menu allowing focus to revert to calling element
-    // To then allow browser default Tab interaction
-    // Unless menu hiding is cancelled
+      // Hide menu allowing focus to revert to calling element
+      // To then allow browser default Tab interaction
+      // Unless menu hiding is cancelled
       if (!this.close()) {
         event.stopPropagation();
         event.preventDefault();
@@ -245,8 +243,13 @@ export default class Menu extends KeyboardNavMixin(CustomElement) {
     let openLtr = mdwDirection.includes('ltr');
     let openRtl = mdwDirection.includes('rtl');
 
+    // const isPageRTL = (getComputedStyle(this).direction === 'rtl');
+
     /** @type {HTMLElement} */
     const target = event ? event.currentTarget || event.target : source;
+
+    const xStart = isPageRTL ? 'right' : 'left';
+    const xEnd = isPageRTL ? 'left' : 'right';
 
     let isPageRTL = null;
     if (alignStart || alignEnd || openNormal || openReverse) {
@@ -350,6 +353,24 @@ export default class Menu extends KeyboardNavMixin(CustomElement) {
     popupElement.style.setProperty('--mdw-menu__size', newSize.toString(10));
     const popupElementHeight = popupElement.clientHeight;
     const popupElementWidth = popupElement.clientWidth;
+
+    /** @type {import('../utils/popup.js').CanAnchorPopUpOptions[]} */
+    const preferences = [
+      // Flow from corner
+      { clientY: 'bottom', directionY: 'down', clientX: xStart, directionX: xEnd },
+      { clientY: 'bottom', directionY: 'down', clientX: xEnd, directionX: xStart },
+      { clientY: 'top', directionY: 'up', clientX: xStart, directionX: xEnd },
+      { clientY: 'top', directionY: 'up', clientX: xEnd, directionX: xStart },
+      // Open adjacent to target
+      { clientY: 'top', directionY: 'down', clientX: xEnd, directionX: xEnd },
+      { clientY: 'top', directionY: 'down', clientX: xStart, directionX: xStart },
+      { clientY: 'bottom', directionY: 'up', clientX: xEnd, directionX: xEnd },
+      { clientY: 'bottom', directionY: 'up', clientX: xStart, directionX: xStart },
+      // Overlay target
+      { clientY: 'top', directionY: 'down', clientX: xStart, directionX: xEnd },
+
+    ];
+
     const canOpenDownwardsFromBottom = !alignTop && !alignVCenter
       && !openUp && !openVCenter
       && popupElementHeight + (pageY + offsetBottom) <= window.innerHeight;

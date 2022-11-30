@@ -7,16 +7,13 @@ export default class FilterChip extends Chip {
 
   static elementName = 'mdw-filter-chip';
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const composition = super.compose(
+  compose() {
+    const composition = super.compose().append(
       styles,
-      ...parts,
     );
 
+    const { html } = this;
     const { template } = composition;
-    const html = this.html;
-
     template.getElementById('label').append(html`
       <mdw-icon id=check-icon aria-hidden="true">check</mdw-icon>
       <mdw-icon id=trailing-icon aria-hidden="true" src={trailingSrc}>{trailingIcon}</mdw-icon>
@@ -26,6 +23,7 @@ export default class FilterChip extends Chip {
     control.removeAttribute('role');
     control.setAttribute('autocomplete', 'off');
     control.setAttribute('type', 'checkbox');
+
     return composition;
   }
 

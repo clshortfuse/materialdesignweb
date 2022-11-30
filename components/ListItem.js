@@ -19,48 +19,47 @@ export default class ListItem extends RippleMixin(Container) {
 
   static delegatesFocus = true;
 
-  /** @type {import('../core/Composition.js').Compositor<this>} */
-  compose(...parts) {
-    const composition = super.compose(
+  compose() {
+    const composition = super.compose();
+    const { html } = this;
+    const { template } = composition;
+    template.getElementById('state').setAttribute('state-disabled', 'focus hover');
+
+    return composition.append(
       checkboxIconStyles,
       radioIconStyles,
       styles,
-      ...parts,
-    );
-    const template = composition.template;
-    const html = this.html;
-    template.append(html`
-      <a id=anchor href={href}>
-        <mdw-container _if={checkbox} class="leading checkbox-box" id=checkbox color={selectionColor} aria-hidden="true">
-          <mdw-icon id=checkbox-icon class="checkbox-icon" selected={_selected} disabled={disabled}>check</mdw-icon>
-        </mdw-container>
-        <mdw-text _if={radio} id=radio class=radio-icon selected={_selected} disabled={disabled} ink={selectionColor}
-          aria-hidden="true"></mdw-text>
-        <mdw-container _if={avatar} class=leading id=avatar color={avatarColor} type-style=title-medium src={AvatarSrc}
-          aria-hidden="true">{avatar}</mdw-container>
-        <mdw-icon _if={icon} class=leading id=icon ink={iconInk} src={iconSrc} style=${({ iconSize }) => `font-size:${iconSize}`} aria-hidden=true>{icon}</mdw-icon>
-        <img id=img _if={src} class=leading src={src} alt={alt} />
-        <slot id=leading-slot name=leading><span _if={leading} id=leading-text class=leading>{leading}</span></slot>
-        <div id=content href={href}>
-          <mdw-text block id=headline type-style=body-large ink=on-surface>
-            <slot id=headline-slot name=headline><span id=headline-text class=text>{text}${template.getElementById('slot')}</span></slot>
-          </mdw-text>
-          <mdw-text block id=supporting type-style=body-medium ink=on-surface-variant>
-            <slot id=supporting-slot name=supporting><span _if={supporting} id=supporting-text class=text>{supporting}</span>
+      html`
+        <a id=anchor href={href}>
+          <mdw-container _if={checkbox} class="leading checkbox-box" id=checkbox color={selectionColor} aria-hidden="true">
+            <mdw-icon id=checkbox-icon class="checkbox-icon" selected={_selected} disabled={disabled}>check</mdw-icon>
+          </mdw-container>
+          <mdw-text _if={radio} id=radio class=radio-icon selected={_selected} disabled={disabled} ink={selectionColor}
+            aria-hidden="true"></mdw-text>
+          <mdw-container _if={avatar} class=leading id=avatar color={avatarColor} type-style=title-medium src={AvatarSrc}
+            aria-hidden="true">{avatar}</mdw-container>
+          <mdw-icon _if={icon} class=leading id=icon ink={iconInk} src={iconSrc} style=${({ iconSize }) => `font-size:${iconSize}`} aria-hidden=true>{icon}</mdw-icon>
+          <img id=img _if={src} class=leading src={src} alt={alt} />
+          <slot id=leading-slot name=leading><span _if={leading} id=leading-text class=leading>{leading}</span></slot>
+          <div id=content href={href}>
+            <mdw-text block id=headline type-style=body-large ink=on-surface>
+              <slot id=headline-slot name=headline><span id=headline-text class=text>{text}${template.getElementById('slot')}</span></slot>
+            </mdw-text>
+            <mdw-text block id=supporting type-style=body-medium ink=on-surface-variant>
+              <slot id=supporting-slot name=supporting><span _if={supporting} id=supporting-text class=text>{supporting}</span>
+              </slot>
+            </mdw-text>
+          </div>
+          <mdw-icon _if={trailingIcon} class=trailing id=trailing-icon ink={trailingIconInk} src={trailingIconSrc}
+            aria-hidden=true>{trailingIcon}</mdw-icon>
+          <mdw-text block id=trailing type-style=label-small ink=on-surface-variant>
+            <slot id=trailing-slot name=trailing><span _if={trailing} id=trailing-text class="trailing text">{trailing}</span>
             </slot>
           </mdw-text>
-        </div>
-        <mdw-icon _if={trailingIcon} class=trailing id=trailing-icon ink={trailingIconInk} src={trailingIconSrc}
-          aria-hidden=true>{trailingIcon}</mdw-icon>
-        <mdw-text block id=trailing type-style=label-small ink=on-surface-variant>
-          <slot id=trailing-slot name=trailing><span _if={trailing} id=trailing-text class="trailing text">{trailing}</span>
-          </slot>
-        </mdw-text>
-      </a>
-      <mdw-divider _if={divider} id=divider></mdw-divider>
-    `);
-    template.getElementById('state').setAttribute('state-disabled', 'focus hover');
-    return composition;
+        </a>
+        <mdw-divider _if={divider} id=divider></mdw-divider>
+      `,
+    );
   }
 
   /** @type {Container['idlChangedCallback']} */

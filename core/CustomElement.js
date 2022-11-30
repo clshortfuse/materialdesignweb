@@ -46,13 +46,11 @@ export default class CustomElement extends HTMLElement {
   }
 
   /** @type {import('./Composition.js').Compositor<?>} */
-  compose(...parts) {
+  compose() {
     if (this.#composition) {
       console.warn('Already composed. Generating *new* composition...');
     }
-    this.#composition = new Composition(
-      ...parts,
-    );
+    this.#composition = new Composition();
     return this.#composition;
   }
 
@@ -322,14 +320,15 @@ export default class CustomElement extends HTMLElement {
 
       // Chrome blurs on tabindex changes with delegatesFocus
       // https://bugs.chromium.org/p/chromium/issues/detail?id=1346606
+      /** @type {EventListener} */
       const listener = (e) => {
         e.stopImmediatePropagation();
-        this.focus(); // Give focus back
+        console.warn('Chromium bug 1346606: Tabindex change caused blur. Giving focusing back.');
+        this.focus();
       };
       this.addEventListener('blur', listener, { capture: true, once: true });
-      console.warn('Skipping blur');
       super.tabIndex = value;
-      this.removeEventListener('blur', listener);
+      this.removeEventListener('blur', listener, { capture: true });
       return;
     }
 

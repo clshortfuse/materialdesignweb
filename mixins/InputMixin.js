@@ -315,5 +315,6 @@ export default function InputMixin(Base) {
   Input.prototype.defaultValue = Input.idl('defaultValue', { attr: 'value', ...DOMString });
   //  [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
   Input.prototype._width = Input.idl('_width', { attr: 'width', type: 'integer' });
+
   return Input;
 }
