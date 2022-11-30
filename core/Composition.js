@@ -1,3 +1,4 @@
+/* eslint-disable sort-class-members/sort-class-members */
 import { findElement, iterateNodes } from './dom.js';
 import { identifierFromElement, identifierFromKey, identifierMatchesElement, keyFromIdentifier } from './identify.js';
 import { observeFunction } from './observe.js';
@@ -121,6 +122,13 @@ export default class Composition {
      * Template used to build interpolation and cloneable
      */
     this.template = generateFragment();
+    this.append(...parts);
+  }
+
+  /**
+   * @param {(HTMLStyleElement|CSSStyleSheet|DocumentFragment|((this:T, changes:T) => any)|string)[]} parts source for interpolation (not mutated)
+   */
+  append(...parts) {
     for (const part of parts) {
       if (part instanceof DocumentFragment) {
         this.template.append(part);
