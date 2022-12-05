@@ -1,5 +1,7 @@
 import { writeFileSync } from 'node:fs';
+import { relative } from 'node:path';
 import process from 'node:process';
+import { brotliCompressSync, gzipSync } from 'node:zlib';
 
 import browserslistToEsbuild from 'browserslist-to-esbuild';
 import esbuild from 'esbuild';
@@ -8,21 +10,32 @@ const target = browserslistToEsbuild();
 
 const cliArgs = new Set(process.argv.slice(2));
 
-const minify = cliArgs.has('--minify');
+const isProduction = (process.env.NODE_ENV === 'production') || cliArgs.has('--production');
+const minifyAll = cliArgs.has('--minify');
+const minifyWhitespace = cliArgs.has('--minify-whitespace');
+const minifyIdentifiers = cliArgs.has('--minify-identifiers');
+const minifySyntax = cliArgs.has('--minify-syntax');
+
+const minify = minifyAll ? { minify: true } : {
+  minifyWhitespace,
+  minifyIdentifiers,
+  minifySyntax,
+};
 
 await esbuild.build({
   entryPoints: ['docs/demo.js'],
   format: 'esm',
   sourcemap: true,
-  minify,
+  ...minify,
   watch: cliArgs.has('--watch'),
   bundle: true,
   keepNames: false,
   legalComments: 'linked',
   metafile: cliArgs.has('--metafile'),
+  // inject: isProduction ? [] : ['./utils/metadata.js'],
+  write: false,
   target,
   outfile: 'docs/demo.min.js',
-  inject: ['polyfills.js'],
   plugins: [{
     name: 'css import assertions',
     setup: (build) => {
@@ -30,36 +43,45 @@ await esbuild.build({
         const { outputFiles } = await esbuild.build({
           entryPoints: [args.path],
           bundle: true,
-          minify,
+          ...minify,
           write: false,
           target,
         });
         const [file] = outputFiles;
         const { text } = file;
-        const contents = `
+        const contents = /* js */ `
           let contents = \`${text.trim().replaceAll(/`/g, '\\`')}\`;
-          let styles;
+          let sheet;
           try {
-            styles = new CSSStyleSheet();
-            styles.replaceSync(contents);
+            sheet = new CSSStyleSheet();
+            sheet.replaceSync(contents);
           } catch (e) {
-            styles = contents;
+            const doc = document.implementation.createHTMLDocument()
+            const style = doc.createElement('style');
+            style.textContent = contents;
+            doc.head.append(style);
+            sheet = style.sheet;
+            // Note: Removing style from document will nullify sheet
           }
-          export default styles;`;
+          export default sheet;`;
         return { contents };
       });
-      build.onEnd(({ metafile }) => {
-        if (!metafile) return;
-        const metaString = JSON.stringify(metafile);
-        writeFileSync('meta.json', JSON.stringify(metafile));
-        console.log({
+      build.onEnd(({ metafile, outputFiles }) => {
+        const info = {
           timestamp: new Date().toLocaleString(),
-          'meta.json': metaString.length,
-          ...Object.fromEntries(
-            Object.entries(metafile.outputs)
-              .map(([key, value]) => [key, value.bytes]),
-          ),
-        });
+        };
+        for (const file of outputFiles) {
+          writeFileSync(file.path, file.contents);
+          info[relative('', file.path)] = {
+            raw: file.contents.length,
+            brotli: brotliCompressSync(file.contents).length,
+            gzip: gzipSync(file.contents).length,
+          };
+        }
+        if (metafile) {
+          writeFileSync('meta.json', JSON.stringify(metafile));
+        }
+        console.log(info);
       });
     },
   }],

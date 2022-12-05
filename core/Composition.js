@@ -1,4 +1,5 @@
 /* eslint-disable sort-class-members/sort-class-members */
+import { generateCSSStyleSheets, generateHTMLStyleElements } from './css.js';
 import { findElement, iterateNodes } from './dom.js';
 import { identifierFromElement, identifierFromKey, identifierMatchesElement, keyFromIdentifier } from './identify.js';
 import { observeFunction } from './observe.js';
@@ -93,9 +94,6 @@ export default class Composition {
    */
   interpolation;
 
-  /** @type {DocumentFragment[]} */
-  fragments = [];
-
   /** @type {(HTMLStyleElement|CSSStyleSheet)[]} */
   styles = [];
 
@@ -131,12 +129,10 @@ export default class Composition {
   }
 
   * [Symbol.iterator]() {
-    for (const part of this.fragments) {
-      yield part;
-    }
     for (const part of this.styles) {
       yield part;
     }
+    yield this.template;
     for (const part of this.watchers) {
       yield part;
     }
@@ -331,8 +327,8 @@ export default class Composition {
           continue;
         }
         if (node instanceof HTMLStyleElement) {
-          node.remove();
           this.styles.push(node);
+          node.remove();
         }
         if (node instanceof HTMLScriptElement) {
           console.warn('Not supported');
@@ -508,21 +504,18 @@ export default class Composition {
     }
 
     for (const watcher of this.watchers) {
-      this.bindWatcher(watcher);
+      this.bindWatcher(watcher, defaults);
     }
 
-    this.stylesFragment = generateFragment();
-    for (const style of this.styles) {
-      if (style instanceof HTMLStyleElement) {
-        this.stylesFragment.append(style);
-        this.adoptedStyleSheets.push(style.sheet);
-      } else {
-        const el = document.createElement('style');
-        // TODO: Consider skipping if using adoptedStyleSheets
-        el.textContent = [...style.cssRules].map((r) => r.cssText).join('\n');
-        this.stylesFragment.append(el);
-        this.adoptedStyleSheets.push(style);
-      }
+    if ('adoptedStyleSheets' in document) {
+      this.adoptedStyleSheets = [
+        ...generateCSSStyleSheets(this.styles),
+      ];
+    } else {
+      this.stylesFragment = generateFragment();
+      this.stylesFragment.append(
+        ...generateHTMLStyleElements(this.styles),
+      );
     }
 
     this.interpolated = true;
@@ -546,7 +539,7 @@ export default class Composition {
     } else if (root instanceof ShadowRoot) {
       root.append(this.stylesFragment.cloneNode(true));
     } else {
-      console.warn('Cannot apply styles to singular element');
+      // console.warn('Cannot apply styles to singular element');
     }
 
     root.append(this.cloneable.cloneNode(true));
@@ -678,7 +671,7 @@ export default class Composition {
    * @return {boolean} reusable
    */
   bindWatcher(fn, defaults) {
-    const { props, defaultValue, reusable } = observeFunction.call(this, fn, defaults);
+    const { props, defaultValue, reusable } = observeFunction(fn, defaults);
     const entry = { fn, props, defaultValue };
     for (const prop of props) {
       let set = this.bindings.get(prop);

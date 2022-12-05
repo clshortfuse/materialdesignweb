@@ -22,6 +22,9 @@ import { generateUID } from './identify.js';
 /** @type {Document} */
 let _inactiveDocument;
 
+/** @type {boolean} */
+let _cssStyleSheetConstructable;
+
 /**
  * @param {string} [fromString]
  * @return {DocumentFragment}
@@ -58,12 +61,31 @@ export function addInlineFunction(fn) {
 /**
  * @param {TemplateStringsArray} strings
  * @param  {...(string)} substitutions
- * @return {HTMLStyleElement}
+ * @return {HTMLStyleElement|CSSStyleSheet}
  */
 export function css(strings, ...substitutions) {
-  const el = document.createElement('style');
-  el.textContent = String.raw({ raw: strings }, ...substitutions);
-  return el;
+  const content = String.raw({ raw: strings }, ...substitutions);
+  if (_cssStyleSheetConstructable == null) {
+    try {
+      const sheet = new CSSStyleSheet();
+      _cssStyleSheetConstructable = true;
+      sheet.replaceSync(content);
+      return sheet;
+    } catch {
+      _cssStyleSheetConstructable = false;
+    }
+  }
+  if (_cssStyleSheetConstructable) {
+    const sheet = new CSSStyleSheet();
+    _cssStyleSheetConstructable = true;
+    sheet.replaceSync(content);
+    return sheet;
+  }
+
+  _inactiveDocument ??= document.implementation.createHTMLDocument();
+  const style = _inactiveDocument.createElement('style');
+  style.textContent = content;
+  return style;
 }
 
 /**
