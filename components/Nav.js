@@ -7,10 +7,21 @@ export default class Nav extends Container {
 
   static elementName = 'mdw-nav';
 
-  static ariaRole = 'navigation';
-
   compose() {
-    return super.compose().append(styles);
+    const composition = super.compose();
+
+    const { html } = this;
+    const { template } = composition;
+
+    return composition.append(
+      styles,
+      html`
+        <nav id="nav">
+          ${template.getElementById('elevation')}
+          ${template.getElementById('slot')}
+        </nav>
+      `,
+    );
   }
 
   /**

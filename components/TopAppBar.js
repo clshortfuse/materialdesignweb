@@ -1,11 +1,12 @@
 import AriaToolbarMixin from '../mixins/AriaToolbarMixin.js';
+import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
 
 import Container from './Container.js';
 import styles from './TopAppBar.css' assert { type: 'css' };
 
 /** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
 /** @implements {Omit<HTMLMenuElement,DeprecatedHTMLMenuElementProperties>} */
-export default class TopAppBar extends AriaToolbarMixin(Container) {
+export default class TopAppBar extends ScrollListenerMixin(AriaToolbarMixin(Container)) {
   static { this.autoRegister(); }
 
   static elementName = 'mdw-top-app-bar';
@@ -44,46 +45,10 @@ export default class TopAppBar extends AriaToolbarMixin(Container) {
     );
   }
 
-  static IDLE_TIMEOUT_MS = 500;
-
-  /** @type {WeakRef<Element|Window>} */
-  #scrollingElement;
-
-  /** @type {EventListener} */
-  #scrollListener;
-
   /** @type {Container['idlChangedCallback']} */
   idlChangedCallback(name, oldValue, newValue) {
     super.idlChangedCallback(name, oldValue, newValue);
     switch (name) {
-      case '_scrollPosition':
-        this.raised = (newValue > 0);
-
-        if (this.size === 'medium' || this.size === 'large') {
-          const max = this.refs.companion.scrollHeight;
-          const min = (0.5 * max);
-          this._headlineOpacity = Math.max(0, Math.min(1, (newValue - min) / (max - min)));
-        }
-
-        if (!this.hideOnScroll) return;
-
-        this._transition = 'none';
-        if (newValue <= 0) {
-          // Set at rest (top of parent, but allow overscroll)
-          this._cssPosition = 'relative';
-          this._translateY = 0;
-          this._visibleStart = 0;
-        } else if (newValue < this._translateY) {
-          // Align appbar.top with scroll position (top of screen)
-          this._cssPosition = 'sticky';
-          this._translateY = 0;
-          this._visibleStart = 0;
-        } else if (this._cssPosition !== 'sticky') {
-          this._visibleStart = (newValue - this._translateY) / this.refs.bar.scrollHeight;
-        }
-
-        this._scrollDirection = newValue > oldValue ? 'down' : 'up';
-        break;
       case '_scrollDirection':
         if (newValue === 'down') {
           if (this._cssPosition !== 'sticky') return;
@@ -119,6 +84,39 @@ export default class TopAppBar extends AriaToolbarMixin(Container) {
         break;
       default:
     }
+  }
+
+  /**
+   * @param {number} oldValue
+   * @param {number} newValue
+   */
+  onScrollPositionChange(oldValue, newValue) {
+    this.raised = (newValue > 0);
+
+    if (this.size === 'medium' || this.size === 'large') {
+      const max = this.refs.companion.scrollHeight;
+      const min = (0.5 * max);
+      this._headlineOpacity = Math.max(0, Math.min(1, (newValue - min) / (max - min)));
+    }
+
+    if (!this.hideOnScroll) return;
+
+    this._transition = 'none';
+    if (newValue <= 0) {
+      // Set at rest (top of parent, but allow overscroll)
+      this._cssPosition = 'relative';
+      this._translateY = 0;
+      this._visibleStart = 0;
+    } else if (newValue < this._translateY) {
+      // Align appbar.top with scroll position (top of screen)
+      this._cssPosition = 'sticky';
+      this._translateY = 0;
+      this._visibleStart = 0;
+    } else if (this._cssPosition !== 'sticky') {
+      this._visibleStart = (newValue - this._translateY) / this.refs.bar.scrollHeight;
+    }
+
+    this._scrollDirection = newValue > oldValue ? 'down' : 'up';
   }
 
   computeBarStyle() {
@@ -172,47 +170,6 @@ export default class TopAppBar extends AriaToolbarMixin(Container) {
     }
   }
 
-  /** @param {Event} event */
-  onParentScroll(event) {
-    this._scrollPosition = (event.currentTarget === window)
-      ? window.scrollY
-      : /** @type {Element} */ (event.currentTarget).scrollTop;
-
-    clearTimeout(this.scrollDebounce);
-    this.scrollDebounce = setTimeout(() => this.onScrollIdle(), TopAppBar.IDLE_TIMEOUT_MS);
-  }
-
-  /**
-   * @param {Element|Window} [scrollingElement]
-   * @return {boolean}
-   */
-  startScrollListener(scrollingElement) {
-    if (!scrollingElement) {
-      // eslint-disable-next-line no-param-reassign
-      scrollingElement = this.refs.bar.offsetParent;
-      if (scrollingElement === document.body) {
-        // eslint-disable-next-line no-param-reassign
-        scrollingElement = window;
-      }
-      if (!scrollingElement) return false;
-    }
-    this.#scrollingElement = new WeakRef(scrollingElement);
-    this.#scrollListener = this.onParentScroll.bind(this);
-    scrollingElement.addEventListener('scroll', this.#scrollListener);
-    return true;
-  }
-
-  /**
-   * @param {Element|Window} scrollingElement
-   * @return {boolean}
-   */
-  clearScrollListener(scrollingElement = this.#scrollingElement?.deref()) {
-    if (!scrollingElement) return false;
-    if (!this.#scrollListener) return false;
-    scrollingElement.removeEventListener('scroll', this.#scrollListener);
-    return true;
-  }
-
   /** @override */
   // @ts-ignore @override
   get ariaActiveDescendantElement() {
@@ -225,7 +182,7 @@ export default class TopAppBar extends AriaToolbarMixin(Container) {
 
   connectedCallback() {
     super.connectedCallback();
-    this.startScrollListener();
+    this.startScrollListener(this.refs.bar.offsetParent);
   }
 
   disconnectedCallback() {
@@ -239,7 +196,6 @@ TopAppBar.prototype.raised = TopAppBar.idl('raised', 'boolean');
 TopAppBar.prototype.hideOnScroll = TopAppBar.idl('hideOnScroll', 'boolean');
 TopAppBar.prototype.size = /** @type {'small'|'medium'|'large'|null} */ TopAppBar.idl('size');
 TopAppBar.prototype._cssPosition = TopAppBar.idl('_cssPosition', { empty: 'relative' });
-TopAppBar.prototype._scrollPosition = TopAppBar.idl('_scrollPosition', { type: 'float', empty: 0 });
 TopAppBar.prototype._scrollDirection = /** @type {'up'|'down'} */ (TopAppBar.idl('_scrollDirection', { empty: 'down' }));
 TopAppBar.prototype._visibleStart = TopAppBar.idl('_visibleStart', { type: 'float', default: 0 });
 TopAppBar.prototype._translateY = TopAppBar.idl('_translateY', { type: 'float', empty: 0 });

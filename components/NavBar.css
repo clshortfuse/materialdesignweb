@@ -1,6 +1,18 @@
 /* https://m3.material.io/components/navigation-bar/specs */
 
 :host {
+  position: sticky;
+  inset-block-end: 0;
+  order:1; /* Nav Bars are at top of tab order, but bottom of page */
+
+  overflow: hidden; /* Don't expand viewport when contents translates */
+
+  flex-shrink: 0;
+
+  box-shadow: none;
+}
+
+#nav {
   display: grid;
   align-content: flex-start;
   align-items: flex-start;
@@ -12,9 +24,11 @@
   min-block-size: 80px;
   inline-size: 100%;
 
-  box-shadow: none;
+  transform: translateY(0);
 
   text-align: center;
+
+  will-change: transform;
 }
 
 #slot::slotted(mdw-nav-item) {

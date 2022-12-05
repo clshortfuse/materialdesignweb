@@ -9,8 +9,10 @@
   --mdw-nav-item__badge__color: rgb(var(--mdw-color__on-error));
   --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
 
-  background-color: rgb(var(--mdw-color__surface));
-  color: rgb(var(--mdw-color__on-surface));
+  --mdw-bg: var(--mdw-color__surface);
+  --mdw-ink: var(--mdw-color__on-surface);
+
+  z-index:2;
 
   font: var(--mdw-typescale__label-medium__font);
   letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
@@ -18,4 +20,9 @@
 
 :host([color]:not([color|="surface"])) {
   --mdw-container__elevation__opacity: 0;
+}
+
+#nav {
+  background-color: rgb(var(--mdw-bg));
+  color: rgb(var(--mdw-ink));
 }
