@@ -57,13 +57,14 @@ export default function ScrollListenerMixin(Base) {
       if (!scroller) {
         // eslint-disable-next-line no-param-reassign
         scroller = this.offsetParent;
-
-        if (scroller === document.body) {
-          console.log('scroller is body, attaching to window');
-          scroller = window;
-        }
         if (!scroller) return false;
       }
+
+      if (scroller === document.body) {
+        // console.log('scroller is body, attaching to window');
+        scroller = window;
+      }
+
       this.#scroller = new WeakRef(scroller);
       this.#scrollerScrollListener = this.onScrollerScroll.bind(this);
       this.#scrollerResizeListener = this.onScrollerResize.bind(this);
