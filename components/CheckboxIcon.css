@@ -37,8 +37,10 @@
   border-radius: var(--mdw-checkbox__border-width, 2px);
   color: rgb(var(--mdw-ink));
 
-  transition: inherit;
+  transition-delay: inherit;
+  transition-duration: inherit;
   transition-property: opacity, background-color, color;
+  transition-timing-function: inherit;
   will-change: opacity;
 }
 

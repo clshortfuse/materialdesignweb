@@ -130,8 +130,9 @@ label {
 
   color: var(--inline-color);
 
-  transition: inherit;
+  transition-duration: inherit;
   transition-property: opacity;
+  transition-timing-function: inherit;
   will-change: opacity;
 }
 
@@ -175,8 +176,9 @@ label {
   font-family: inherit;
   letter-spacing: inherit;
 
-  transition: inherit;
+  transition-duration: inherit;
   transition-property: color;
+  transition-timing-function: inherit;
 }
 
 #suffix,
@@ -235,8 +237,9 @@ mdw-icon {
   transform: scaleY(0.5);
   z-index: 1; /* Force new layer to avoid repaint */
 
-  transition: inherit;
+  transition-duration: inherit;
   transition-property: transform;
+  transition-timing-function: inherit;
   will-change: transform;
 }
 
@@ -277,8 +280,9 @@ mdw-icon {
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  transition: inherit;
+  transition-duration: inherit;
   transition-property: padding, font-size, transform;
+  transition-timing-function: inherit;
   /*Expand*/
 
   will-change: padding, font-size, transform;
@@ -382,9 +386,9 @@ mdw-icon {
 
   border-block-start: solid var(--border-width) var(--outline-color);
 
-  transition: inherit;
+  transition-duration: inherit;
   transition-property: transform;
-
+  transition-timing-function: inherit;
   will-change: transform, border-width, border-color;
 
 }
@@ -404,8 +408,9 @@ mdw-icon {
 
 #gap {
   /* Close gap */
-  transition: inherit;
+  transition-duration: inherit;
   transition-property: padding;
+  transition-timing-function: inherit;
 }
 
 :host(:is(:focus, [populated])) #gap {
