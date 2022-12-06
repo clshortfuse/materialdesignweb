@@ -59,6 +59,10 @@ export default function TextFieldMixin(Base) {
         case '_badInput':
           this._populated = this.value || this._badInput;
           break;
+        case 'size':
+          // @ts-expect-error Skip cast
+          this.refs.control.style.setProperty('--size', `${newValue}ch`);
+          break;
         default:
       }
     }
@@ -79,6 +83,7 @@ export default function TextFieldMixin(Base) {
 
   TextField.prototype.type = TextField.idl('type', { empty: 'text' });
   TextField.prototype.icon = TextField.idl('icon');
+  TextField.prototype.size = TextField.idl('size', { empty: 20 });
   TextField.prototype.label = TextField.idl('label');
   TextField.prototype.filled = TextField.idl('filled', 'boolean');
   TextField.prototype.outlined = TextField.idl('outlined', 'boolean');

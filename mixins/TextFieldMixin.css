@@ -141,6 +141,8 @@ label {
 }
 
 #control {
+  --size: 20ch;
+
   position: relative;
 
   align-self: flex-start;
@@ -150,10 +152,10 @@ label {
   box-sizing: border-box;
 
   block-size: auto;
-  inline-size: 0;
+  inline-size: auto;
 
   min-inline-size: none;
-  flex: 1;
+  flex: 1 1 var(--size);
   border-block-start: solid var(--control__margin-top) transparent;
   border-block-end: solid var(--control__margin-bottom) transparent;
   padding-block: var(--control__padding-top) var(--control__padding-bottom);
@@ -394,14 +396,18 @@ mdw-icon {
 }
 
 #gap::before {
-  /* Slightly oversized to overlap */
+  /* Slightly oversized to prevent seams */
   /* TODO: Consider cloned text to force center */
+  margin-inline-start: -1px;
+
   transform: var(--gap-transform, scaleX(0.45));
   transform-origin: 0 0;
 }
 
 #gap::after {
-  /* Slightly oversized to overlap */
+  /* Slightly oversized to prevent seams */
+  margin-inline-end: -1px;
+
   transform: var(--gap-transform, scaleX(0.65));
   transform-origin: 100% 0;
 }
