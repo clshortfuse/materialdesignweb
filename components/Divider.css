@@ -9,6 +9,6 @@
   color: rgb(var(--mdw-color__outline-variant));
 }
 
-:host([mdw-vertical]) {
+:host([vertical]) {
   writing-mode: vertical-lr;
 }
