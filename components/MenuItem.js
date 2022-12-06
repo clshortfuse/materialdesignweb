@@ -8,9 +8,7 @@ import Container from './Container.js';
 import styles from './MenuItem.css' assert { type: 'css' };
 
 export default class MenuItem extends InputMixin(Container) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-menu-item';
+  static { this.autoRegister('mdw-menu-item'); }
 
   compose() {
     const composition = super.compose().append(

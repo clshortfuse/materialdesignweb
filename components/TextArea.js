@@ -6,9 +6,7 @@ import styles from './TextArea.css' assert { type: 'css' };
 
 /** @implements {HTMLTextAreaElement} */
 export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-textarea';
+  static { this.autoRegister('mdw-textarea'); }
 
   compose() {
     const composition = super.compose().append(

@@ -11,9 +11,7 @@ import styles from './ListItem.css' assert { type: 'css' };
 import radioIconStyles from './RadioIcon.css' assert { type: 'css'};
 
 export default class ListItem extends RippleMixin(Container) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-list-item';
+  static { this.autoRegister('mdw-list-item'); }
 
   static ariaRole = 'listitem';
 

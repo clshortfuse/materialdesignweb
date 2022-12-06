@@ -7,9 +7,7 @@ import iconStyles from './CheckboxIcon.css' assert { type: 'css' };
 import Container from './Container.js';
 
 export default class Checkbox extends InputMixin(Container) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-checkbox';
+  static { this.autoRegister('mdw-checkbox'); }
 
   compose() {
     const composition = super.compose().append(

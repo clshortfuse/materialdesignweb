@@ -4,9 +4,7 @@ import Container from './Container.js';
 import styles from './Slider.css' assert { type: 'css' };
 
 export default class Slider extends InputMixin(Container) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-slider';
+  static { this.autoRegister('mdw-slider'); }
 
   compose() {
     const composition = super.compose().append(styles);

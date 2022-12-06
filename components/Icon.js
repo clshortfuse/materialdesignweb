@@ -7,9 +7,7 @@ import Text from './Text.js';
 
 /** @implements {Omit<HTMLImageElement,DeprecatedHTMLImageElementProperties>} */
 export default class Icon extends Text {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-icon';
+  static { this.autoRegister('mdw-icon'); }
 
   compose() {
     const composition = super.compose();

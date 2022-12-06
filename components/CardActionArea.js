@@ -3,9 +3,7 @@ import Container from './Container.js';
 
 /** @implements {Container} */
 export default class CardActionArea extends Container {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-card-action-area';
+  static { this.autoRegister('mdw-card-action-area'); }
 
   /** @type {Container['compose']} */
   compose() {

@@ -2,9 +2,7 @@ import Nav from './Nav.js';
 import styles from './NavRail.css' assert { type: 'css' };
 
 export default class NavRail extends Nav {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-nav-rail';
+  static { this.autoRegister('mdw-nav-rail'); }
 
   compose() {
     const composition = super.compose();

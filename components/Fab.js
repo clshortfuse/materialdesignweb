@@ -4,9 +4,7 @@ import ExtendedFab from './ExtendedFab.js';
 import styles from './Fab.css' assert { type: 'css' };
 
 export default class Fab extends TooltipTriggerMixin(ExtendedFab) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-fab';
+  static { this.autoRegister('mdw-fab'); }
 
   compose() {
     const composition = super.compose().append(styles);

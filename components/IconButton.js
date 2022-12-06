@@ -4,9 +4,7 @@ import Button from './Button.js';
 import styles from './IconButton.css' assert { type: 'css' };
 
 export default class IconButton extends TooltipTriggerMixin(Button) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-icon-button';
+  static { this.autoRegister('mdw-icon-button'); }
 
   compose() {
     const composition = super.compose().append(styles);

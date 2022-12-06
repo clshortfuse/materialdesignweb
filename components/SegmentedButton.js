@@ -5,9 +5,7 @@ import Button from './Button.js';
 import styles from './SegmentedButton.css' assert { type: 'css' };
 
 export default class SegmentedButton extends Button {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-segmented-button';
+  static { this.autoRegister('mdw-segmented-button'); }
 
   compose() {
     const composition = super.compose().append(

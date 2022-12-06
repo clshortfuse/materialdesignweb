@@ -3,9 +3,7 @@ import styles from './FilterChip.css' assert { type: 'css' };
 import './Icon.js';
 
 export default class FilterChip extends Chip {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-filter-chip';
+  static { this.autoRegister('mdw-filter-chip'); }
 
   compose() {
     const composition = super.compose().append(

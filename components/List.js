@@ -5,9 +5,7 @@ import styles from './List.css' assert { type: 'css' };
 
 /** @implements {HTMLUListElement} */
 export default class List extends Container {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-list';
+  static { this.autoRegister('mdw-list'); }
 
   static ariaRole = 'list';
 

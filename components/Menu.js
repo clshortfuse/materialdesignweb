@@ -19,9 +19,7 @@ import MenuItem from './MenuItem.js';
 
 /** @implements {HTMLDialogElement} */
 export default class Menu extends KeyboardNavMixin(CustomElement) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-menu';
+  static { this.autoRegister('mdw-menu'); }
 
   compose() {
     const { html } = this;

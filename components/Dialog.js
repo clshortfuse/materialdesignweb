@@ -19,9 +19,7 @@ import './Button.js';
 
 /** @implements {HTMLDialogElement} */
 export default class Dialog extends CustomElement {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-dialog';
+  static { this.autoRegister('mdw-dialog'); }
 
   compose() {
     const { html } = this;

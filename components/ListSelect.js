@@ -8,9 +8,7 @@ import ListOption from './ListOption.js';
 
 /** @implements {HTMLSelectElement} */
 export default class ListSelect extends KeyboardNavMixin(FormAssociatedMixin(List)) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-list-select';
+  static { this.autoRegister('mdw-list-select'); }
 
   static ariaRole = 'listbox';
 

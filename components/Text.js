@@ -5,9 +5,7 @@ import inkStyles from './TextInks.css' assert { type: 'css' };
 
 /** @implements {HTMLSpanElement} */
 export default class Text extends CustomElement {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-text';
+  static { this.autoRegister('mdw-text'); }
 
   compose() {
     return super.compose().append(

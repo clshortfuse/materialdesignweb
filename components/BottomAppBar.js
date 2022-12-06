@@ -12,9 +12,7 @@ import Container from './Container.js';
 /** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
 /** @implements {Omit<HTMLMenuElement,DeprecatedHTMLMenuElementProperties>} */
 export default class BottomAppBar extends AriaToolbarMixin(Container) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-bottom-app-bar';
+  static { this.autoRegister('mdw-bottom-app-bar'); }
 
   static ariaRole = 'toolbar';
 

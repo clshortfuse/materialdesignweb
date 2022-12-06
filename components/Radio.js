@@ -5,9 +5,7 @@ import iconStyles from './RadioIcon.css' assert { type: 'css' };
 import Text from './Text.js';
 
 export default class Radio extends InputMixin(Text) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-radio';
+  static { this.autoRegister('mdw-radio'); }
 
   compose() {
     const composition = super.compose().append(

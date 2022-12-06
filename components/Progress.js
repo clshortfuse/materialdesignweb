@@ -5,9 +5,7 @@ import lineStyles from './ProgressLine.css' assert { type: 'css' };
 
 /** @implements {HTMLProgressElement} */
 export default class Progress extends Container {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-progress';
+  static { this.autoRegister('mdw-progress'); }
 
   compose() {
     const composition = super.compose();

@@ -7,9 +7,7 @@ import styles from './TopAppBar.css' assert { type: 'css' };
 /** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
 /** @implements {Omit<HTMLMenuElement,DeprecatedHTMLMenuElementProperties>} */
 export default class TopAppBar extends ScrollListenerMixin(AriaToolbarMixin(Container)) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-top-app-bar';
+  static { this.autoRegister('mdw-top-app-bar'); }
 
   static get observedAttributes() {
     return [

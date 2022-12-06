@@ -5,9 +5,7 @@ import styles from './Button.css' assert { type: 'css' };
 import Container from './Container.js';
 
 export default class Button extends InputMixin(Container) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-button';
+  static { this.autoRegister('mdw-button'); }
 
   /** @type {Container['compose']} */
   compose() {

@@ -5,9 +5,7 @@ import Container from './Container.js';
 
 /** @implements {HTMLInputElement} */
 export default class TextInput extends TextFieldMixin(InputMixin(Container)) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-text-input';
+  static { this.autoRegister('mdw-text-input'); }
 
   compose() {
     const composition = super.compose();

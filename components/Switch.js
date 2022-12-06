@@ -6,9 +6,7 @@ import styles from './Switch.css' assert { type: 'css' };
 import animationStyles from './SwitchAnimations.css' assert { type: 'css' };
 
 export default class Switch extends InputMixin(Container) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-switch';
+  static { this.autoRegister('mdw-switch'); }
 
   compose() {
     const composition = super.compose().append(

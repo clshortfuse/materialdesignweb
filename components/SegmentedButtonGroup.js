@@ -8,9 +8,7 @@ import styles from './SegmentedButtonGroup.css' assert { type: 'css' };
 
 /** @implements {Omit<HTMLMenuElement,DeprecatedHTMLMenuElementProperties>} */
 export default class SegmentedButtonGroup extends KeyboardNav(Container) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-segmented-button-group';
+  static { this.autoRegister('mdw-segmented-button-group'); }
 
   static ariaRole = 'listbox';
 
