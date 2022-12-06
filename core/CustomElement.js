@@ -157,7 +157,7 @@ export default class CustomElement extends HTMLElement {
       attr,
     });
 
-    return /** @type {any} */ (config.default);
+    return config.default;
   }
 
   /** @type {Record<string, HTMLElement>}} */
@@ -175,6 +175,9 @@ export default class CustomElement extends HTMLElement {
 
     if (CustomElement.supportsElementInternals) {
       this.elementInternals = this.attachInternals();
+    }
+
+    if (CustomElement.supportsElementInternalsRole) {
       this.elementInternals.role = this.static.ariaRole;
     } else if (!this.hasAttribute('role')) {
       this.setAttribute('role', this.static.ariaRole);
@@ -216,9 +219,11 @@ export default class CustomElement extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     // console.log(this.tagName, 'attributeChangedCallback', name, oldValue, newValue, '.');
 
+    // Array.find
     for (const config of this.static.idls.values()) {
       if (config.attr !== name) continue;
-      if (config.reflect !== true && config.reflect !== 'read') continue;
+
+      if (config.reflect !== true && config.reflect !== 'read') return;
 
       const attrValue = this.attributeCache.get(name) ?? null;
       if (attrValue === newValue) return;
@@ -289,7 +294,7 @@ export default class CustomElement extends HTMLElement {
         }
         const composition = this.composition;
         if (!composition.interpolated) {
-          console.warn('Returning template reference');
+          console.warn(this.tagName, 'Returning template reference');
           return findElement(composition.template, { id });
         }
         return composition.getElement(this.shadowRoot, { id });
@@ -348,6 +353,7 @@ export default class CustomElement extends HTMLElement {
       return this.static._composition;
     }
 
+    // TODO: Use Composition to track uniqueness
     this.compose();
 
     if (!this.unique) {
