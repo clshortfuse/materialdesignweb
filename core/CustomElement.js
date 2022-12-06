@@ -28,7 +28,7 @@ import { html } from './template.js';
  */
 export default class CustomElement extends HTMLElement {
   /** @type {string} */
-  static elementName = null;
+  static elementName;
 
   static ariaRole = 'none';
 
@@ -82,7 +82,11 @@ export default class CustomElement extends HTMLElement {
   /** @type {Map<string, typeof CustomElement>} */
   static registrations = new Map();
 
-  static autoRegister() {
+  /** @param {string} [elementName] */
+  static autoRegister(elementName) {
+    if (elementName) {
+      this.elementName = elementName;
+    }
     queueMicrotask(() => {
       if (this.autoRegistration) {
         this.register();
@@ -96,18 +100,17 @@ export default class CustomElement extends HTMLElement {
    * @return {string}
    */
   static register(elementName, force = false) {
-    const name = elementName || this.elementName;
     if (this.hasOwnProperty('defined') && this.defined && !force) {
-      // console.warn(name, 'already registered.');
+      // console.warn(this.elementName, 'already registered.');
       return this.elementName;
     }
 
-    if (this.elementName !== name) {
-      // console.log('Changing', this.elementName, '=>', name);
-      this.elementName = name;
+    if (elementName) {
+      this.elementName = elementName;
     }
-    customElements.define(name, this);
-    CustomElement.registrations.set(name, this);
+
+    customElements.define(this.elementName, this);
+    CustomElement.registrations.set(this.elementName, this);
     this.defined = true;
     return this.elementName;
   }
