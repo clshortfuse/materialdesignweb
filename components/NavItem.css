@@ -3,6 +3,7 @@
 /* https://m3.material.io/components/navigation-rail/specs */
 
 :host {
+  --mdw-badge__scale: 0;
   display: grid;
   align-content: center;
   align-items: center;
@@ -104,50 +105,24 @@ a {
 }
 
 #badge {
-  --mdw-badge__scale: 0;
   position: var(--mdw-nav-item__badge__position, absolute);
   inset-block-start: 50%;
   inset-inline-start: 50%;
 
-  display: flex;
-  align-items: center;
   grid-area: var(--mdw-nav-item__badge__grid-area, a);
-  justify-content: center;
-
-  box-sizing: border-box;
-  block-size: 16px;
-  min-inline-size: 16px;
-  padding: 4px;
 
   transform: var(--mdw-nav-item__badge__transform, translateY(-50%) translateX(4px) translateY(-8px) translateY(var(--mdw-nav-item__offset-y, 0)) scale(var(--mdw-badge__scale)));
   z-index: 4;
 
   background: var(--mdw-nav-item__badge__background, transparent);
-  border-radius: 8px;
   color: var(--mdw-nav-item__badge__color, inherit);
-
-  font: var(--mdw-nav-item__badge__font, inherit);
-  letter-spacing: var(--mdw-nav-item__badge__letter-spacing, inherit);
 
   transition: transform 200ms;
   will-change: transform;
 }
 
-#badge::after {
-  content: attr(badge);
-}
-
-#badge[badge] {
+:host([badge]) {
   --mdw-badge__scale: 1;
-}
-
-#badge[badge=""] {
-  block-size: 6px;
-  min-inline-size: 6px;
-  margin-inline-start: 5px;
-  padding: 0;
-
-  border-radius: 50%;
 }
 
 #ripple-inner {

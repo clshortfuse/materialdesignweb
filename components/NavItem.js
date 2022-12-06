@@ -9,9 +9,7 @@ import styles from './NavItem.css' assert { type: 'css' };
 
 /** @implements {Omit<HTMLAnchorElement,DeprecatedHTMLAnchorElementProperties>} */
 export default class NavItem extends RippleMixin(Container) {
-  static { this.autoRegister(); }
-
-  static elementName = 'mdw-nav-item';
+  static { this.autoRegister('mdw-nav-item'); }
 
   static delegatesFocus = true;
 
@@ -34,10 +32,14 @@ export default class NavItem extends RippleMixin(Container) {
           ${template.getElementById('ripple')}
         </div>
         <mdw-icon id=icon aria-hidden=true src={src}>{icon}</mdw-icon>
-        <a id=anchor aria-labelledby=slot aria-describedby=badge href=${({ href }) => href ?? '#'} aria-label=${({ ariaLabel }) => ariaLabel}>
+        <a id=anchor 
+          aria-current=${({ active }) => (active ? 'page' : null)}
+          aria-describedby=badge
+          aria-label={ariaLabel}
+          href=${({ href }) => href ?? '#'}>
           ${template.getElementById('slot')}
         </a>
-        <span aria-hidden=true id=badge type-style=label-small color=error badge={badge} aria-current=${({ active }) => (active ? 'page' : null)}></mdw-container>
+        <mdw-badge id=badge aria-hidden=true >{badge}</mdw-badge>
       `,
     );
   }
