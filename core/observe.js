@@ -159,7 +159,7 @@ export function parseObserverOptions(name, typeOrOptions) {
   // else if empty == null
   const parser = options.parser ?? defaultParserFromType(parsedType);
   let nullParser = options.nullParser;
-  const parsedEmpty = empty ?? null;
+  let parsedEmpty = empty ?? null;
   if (!nullParser) {
     const nullable = options.nullable ?? (
       parsedType === 'boolean'
@@ -168,6 +168,7 @@ export function parseObserverOptions(name, typeOrOptions) {
     if (nullable) {
       nullParser = DEFAULT_NULL_PARSER;
     } else {
+      parsedEmpty ??= emptyFromType(parsedType);
       nullParser = parsedEmpty === null ? () => emptyFromType(parsedType) : () => parsedEmpty;
     }
   }
