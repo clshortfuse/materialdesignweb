@@ -6,6 +6,7 @@ import styles from './Dialog.css' assert { type: 'css' };
 import './Icon.js';
 import './Text.js';
 import './Button.js';
+import './DialogActions.js';
 
 /** @typedef {Object<string,any>} DialogStackState */
 
@@ -29,22 +30,26 @@ export default class Dialog extends CustomElement {
         <dialog id=dialog
         ${Dialog.supportsHTMLDialogElement ? 'aria-model=true' : ''}
         role=dialog aria-hidden=${({ open }) => (open ? 'false' : 'true')} 
-        aria-labelledby=headline aria-describedby=description
+        aria-labelledby=headline
         oncancel="{onNativeCancelEvent}"
         onclose="{~onNativeCloseEvent}">
           <div id=scrim onclick="{~onScrimClick}" aria-hidden=true></div>
-          <form id=form method=dialog role=none>
-            <mdw-container id=container onkeydown="{onContainerKeyDown}">
-              <mdw-icon _if={icon} id=icon aria-hidden=true>{icon}</mdw-icon>
-              <mdw-text id=headline role="header">{headline}</mdw-text>
-              <div id=description>{description}</div>
-              <slot id=slot onslotchange="{onSlotChange}"></slot>
-              <div id=actions>
-                <mdw-button id=cancel type=submit value="cancel" autofocus=${({ default: d }) => (!d || d === 'confirm')}>{cancel}</mdw-button>
-                <mdw-button id=confirm type=submit value="confirm" autofocus=${({ default: d }) => (d === 'cancel')}>{confirm}</mdw-button>
-              </div>
+            <mdw-container id=container onkeydown={onContainerKeyDown}>
+              <mdw-icon _if={icon} id=icon class=content ink=secondary aria-hidden=true>{icon}</mdw-icon>
+              <slot id=headline class=content name=headline onslotchange={onSlotChange} role=header>{headline}</slot>
+              <slot id=fixed name=fixed class=content onslotchange={onSlotChange}></slot>
+              <mdw-divider id=divider-top size={dividers}></mdw-divider>
+              <slot id=slot class="content" onslotchange={onSlotChange}></slot>
+              <mdw-divider id=divider-bottom size={dividers}></mdw-divider>
+              <slot name=form id=form-slot onslotchange={onFormSlotChange}>
+                <form id=form method=dialog role=none onsubmit={onFormSubmit}>
+                  <mdw-dialog-actions>
+                    <mdw-button id=cancel type=submit value=cancel autofocus=${({ default: d }) => (d === 'cancel')}>{cancel}</mdw-button>
+                    <mdw-button id=confirm type=submit value=confirm autofocus=${({ default: d }) => (d === 'confirm')}>{confirm}</mdw-button>
+                  </mdw-dialog-actions>
+                </form>
+              </slot>
             </mdw-container>
-          </form>
         </dialog>
       `,
     );
@@ -58,16 +63,6 @@ export default class Dialog extends CustomElement {
   #dialog = /** @type {HTMLDialogElement} */ (this.refs.dialog);
 
   #container = this.refs.container;
-
-  constructor() {
-    super();
-    if (!this.confirm) {
-      this.confirm = 'Confirm';
-    }
-    if (!this.cancel) {
-      this.cancel = 'Cancel';
-    }
-  }
 
   /**
    * @param {TransitionEvent} event
@@ -90,6 +85,37 @@ export default class Dialog extends CustomElement {
     const hasContent = nodes.some((node) => (node.nodeType === node.ELEMENT_NODE)
       || (node.nodeType === node.TEXT_NODE && node.nodeValue.trim().length));
     this.toggleAttribute('slotted', hasContent);
+  }
+
+  /**
+   * @param {SubmitEvent} event
+   * @this {HTMLFormElement}
+   * @return {void}
+   */
+  onFormSubmit(event) {
+    if (this.assignedSlot) {
+      // Custom form.
+      /** @type {Dialog} */
+      const host = this.assignedSlot.getRootNode().host;
+      const returnValue = event.submitter?.value;
+      host.close(returnValue);
+      event.preventDefault();
+    }
+  }
+
+  /**
+   * @param {Event} event
+   * @this {HTMLSlotElement}
+   * @return {void}
+   */
+  onFormSlotChange(event) {
+    const [form] = this.assignedNodes();
+
+    if (form) {
+      const host = this.getRootNode().host;
+      form.addEventListener('submit', host.onFormSubmit);
+      console.log('found form');
+    }
   }
 
   /**
@@ -116,7 +142,9 @@ export default class Dialog extends CustomElement {
       /** @type {{host:Dialog}} */ // @ts-ignore Coerce
       const { host } = this.getRootNode();
       if (!host.isNativeModal) {
-        handleTabKeyPress.call(this, event);
+        // Move via Light or Shadow DOM, depending on target
+        const context = this.contains(event.target) ? this : host;
+        handleTabKeyPress.call(context, event);
       }
       return;
     }
@@ -315,9 +343,10 @@ export default class Dialog extends CustomElement {
 }
 
 Dialog.prototype.open = Dialog.idl('open', 'boolean');
+/** @type {'full'|''|'inset'} */
+Dialog.prototype.dividers = Dialog.idl('dividers', 'string');
 Dialog.prototype.headline = Dialog.idl('headline');
-Dialog.prototype.description = Dialog.idl('description');
 Dialog.prototype.icon = Dialog.idl('icon');
-Dialog.prototype.default = Dialog.idl('default');
-Dialog.prototype.cancel = Dialog.idl('cancel');
-Dialog.prototype.confirm = Dialog.idl('confirm');
+Dialog.prototype.default = Dialog.idl('default', { default: 'confirm' });
+Dialog.prototype.cancel = Dialog.idl('cancel', { default: 'Cancel' });
+Dialog.prototype.confirm = Dialog.idl('confirm', { default: 'Confirm' });
