@@ -25,3 +25,11 @@
 :host([ink="outline"]) {
   --mdw-ink: var(--mdw-color__outline);
 }
+
+:host([ink="on-surface"]) {
+  --mdw-ink: var(--mdw-color__on-surface);
+}
+
+:host([ink="on-surface-variant"]) {
+  --mdw-ink: var(--mdw-color__on-surface-variant);
+}
