@@ -20,7 +20,7 @@
       <h1 slot="heading">Text Areas</h1>
       <demo-section>
         <h2 slot=heading>Filled</h2>
-        <demo-flex wrap style="margin:24px; gap:16px" column>
+        <mdw-layout wrap gap=16px style="margin:24px" column>
           <mdw-textarea filled label="Label"></mdw-textarea>
           <mdw-textarea filled label="Label" rows="2" fixed>Fixed size</mdw-textarea>
           <mdw-textarea filled label="Max 2 rows" maxrows=2></mdw-textarea>
@@ -57,11 +57,11 @@ Daddy"></mdw-textarea>
             value="Disable elements still may have values and resizable. Max Rows 2"></mdw-textarea>
           <mdw-textarea color=secondary-container disabled error="Unavailable" label="Disabled" fixed
           value= "Disable and fixed sized with HTMLTextAreaElement default row count of 2"></mdw-textarea>
-        </demo-flex>
+        </mdw-layout>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Outlined</h2>
-        <demo-flex wrap style="margin:24px; gap:16px" column>
+        <mdw-layout wrap style="margin:24px; gap:16px" column>
           <mdw-textarea outlined label="Label"></mdw-textarea>
           <mdw-textarea outlined label="Label" rows="2" fixed>Fixed size</mdw-textarea>
           <mdw-textarea outlined label="Max 2 rows" maxrows=2></mdw-textarea>
@@ -105,11 +105,11 @@ Daddy"></mdw-textarea>
           value="Disable elements still may have values and resizable. Max Rows 2"></mdw-textarea>
           <mdw-textarea outlined color=secondary-container disabled error="Unavailable" label="Disabled" fixed
           value="Disable and fixed sized with HTMLTextAreaElement default row count of 2"></mdw-textarea>
-        </demo-flex>
+        </mdw-layout>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Outlined Dense</h2>
-        <demo-flex wrap style="margin:24px; gap:16px" column>
+        <mdw-layout wrap style="margin:24px; gap:16px" column>
           <mdw-textarea outlined dense label="Label"></mdw-textarea>
           <mdw-textarea outlined dense label="Label" rows="2" fixed>Fixed size</mdw-textarea>
           <mdw-textarea outlined dense label="Max 2 rows" maxrows=2></mdw-textarea>
@@ -147,7 +147,7 @@ Daddy"></mdw-textarea>
             value="Disable elements still may have values and resizable. Max Rows 2"></mdw-textarea>
           <mdw-textarea outlined dense color=secondary-container disabled error="Unavailable" label="Disabled" fixed
             value="Disable and fixed sized with HTMLTextAreaElement default row count of 2"></mdw-textarea>
-        </demo-flex>
+        </mdw-layout>
       </demo-section>
     </demo-section>
   </main>

@@ -20,7 +20,7 @@
       <h1 slot="heading">Lists</h1>
       <demo-section>
         <h2 slot=heading>One-line lists</h2>
-        <demo-flex gap12 wrap>
+        <mdw-layout gap=12px wrap>
           <mdw-list color="surface" style="width:100%">
             <mdw-list-item>Headline (textContent)</mdw-list-item>
             <mdw-list-item icon="person">Headline with leading icon</mdw-list-item>
@@ -44,11 +44,11 @@
               <img slot="leading" src="../imgs/gradient.svg" height="56" width="56" alt="" />
               Headline with leading (slot)</mdw-list-item>
           </mdw-list>
-        </demo-flex>
+        </mdw-layout>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Two-line lists (Explicit)</h2>
-        <demo-flex gap12 wrap>
+        <mdw-layout gap=12px wrap>
           <mdw-list color="surface" style="width:100%">
             <mdw-list-item lines=2>Headline (textContent)</mdw-list-item>
             <mdw-list-item lines=2 supporting="With supporting text">Headline (textContent)</mdw-list-item>
@@ -83,11 +83,11 @@
               supporting="Oversized supporting *attribute* that clips text automatically based on available space">
               Headline</mdw-list-item>
           </mdw-list>
-        </demo-flex>
+        </mdw-layout>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Three-line lists (Explicit)</h2>
-        <demo-flex gap12 wrap>
+        <mdw-layout gap=12px wrap>
           <mdw-list color="surface" style="width:100%">
             <mdw-list-item lines=3>Headline (textContent)</mdw-list-item>
             <mdw-list-item lines=3 supporting="With supporting text">Headline (textContent)</mdw-list-item>
@@ -122,11 +122,11 @@
               supporting="Oversized supporting *attribute* that clips text automatically based on available space. Instead of being clamped to only 1 line, this is now clamped to 2">
               Headline</mdw-list-item>
           </mdw-list>
-        </demo-flex>
+        </mdw-layout>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Dynamic line count</h2>
-        <demo-flex gap12 wrap>
+        <mdw-layout gap=12px wrap>
           <mdw-list color="surface" style="width:100%">
             <mdw-list-item>Headline only</mdw-list-item>
             <mdw-list-item supporting="With supporting text">Headline</mdw-list-item>
@@ -142,12 +142,12 @@
               supporting="Oversized supporting *attribute* that clips text automatically based on available space. Instead of being clamped to only 1 line, this is now clamped to 2">
               Headline</mdw-list-item>
           </mdw-list>
-        </demo-flex>
+        </mdw-layout>
       </demo-section>
     </demo-section>
     <demo-section>
       <h2 slot=heading>Interactive (HTMLAnchorElement)</h2>
-      <demo-flex gap12 wrap>
+      <mdw-layout gap=12px wrap>
         <mdw-list color="surface" style="width:100%">
           <mdw-list-item href="#" supporting="Focusable and tabbable">href=#</mdw-list-item>
           <mdw-list-item href="#" lines=2 supporting="Supporting text" trailing-icon="chevron_right">Headline with
@@ -155,7 +155,7 @@
           <mdw-list-item supporting="Not focusable">No link</mdw-list-item>
           <mdw-list-item supporting="Same as <a> element" href="./list.html">Real link</mdw-list-item>
         </mdw-list>
-      </demo-flex>
+      </mdw-layout>
     </demo-section>
     <demo-dummy-text></demo-dummy-text>
   </main>

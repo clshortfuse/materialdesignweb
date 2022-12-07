@@ -1,9 +1,7 @@
 import CustomElement from '../../core/CustomElement.js';
 
 export default class DemoDummyText extends CustomElement {
-  static { this.autoRegister(); }
-
-  static elementName = 'demo-dummy-text';
+  static { this.autoRegister('demo-dummy-text'); }
 
   compose() {
     return super.compose().append(/* html */`

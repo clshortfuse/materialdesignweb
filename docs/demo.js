@@ -3,6 +3,8 @@ import 'element-internals-polyfill'; // Safari
 import './demo/DemoButton.js';
 import './demo/DemoDummy.js';
 import './demo/DemoSection.js';
+import './demo/DemoScreen.js';
+import '../components/Badge.js';
 import '../components/BottomAppBar.js';
 import '../components/Button.js';
 import '../components/Card.js';

@@ -22,7 +22,6 @@ body {
   letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
 }
 
-
 #nav {
   position: sticky;
 
@@ -47,7 +46,6 @@ main {
 }
 
 
-
 .box {
   min-inline-size: 40px;
   padding: 8px;
@@ -67,32 +65,6 @@ demo-dummy-text:not(:defined) {
   display: none;
 }
 
-demo-flex {
-  display: flex;
-}
-
-demo-flex[gap12] {
-  gap: 12px;
-}
-
-demo-flex[align-center] {
-  align-items: center;
-}
-
-demo-flex[wrap] {
-  flex-wrap: wrap;
-}
-
-demo-flex[column] {
-  flex-direction: column;
-}
-
 html[dir="rtl"] {
   --mdw-dir: -1;
-}
-
-#content {
-  block-size: 100vh;
-  inline-size: 100%;
-  border: none;
 }

@@ -1,24 +1,21 @@
-import CustomElement from '../../core/CustomElement.js';
+import Button from '../../components/Button.js';
 
-export default class DemoSection extends CustomElement {
-  static { this.autoRegister(); }
+export default class DemoSection extends Button {
+  static { this.autoRegister('demo-button'); }
 
-  static elementName = 'demo-button';
-
-  static delegatesFocus = true;
-
-  compose() {
-    return super.compose().append(/* html */`
-      <label id=label>
-        <input id=input type=button role=button>
-        <slot id=slot></slot>
-      </label>
-    `);
+  onClick() {
+    if (this.getAttribute('aria-haspopup') === 'dialog') {
+      const popup = document.getElementById(this.ariaControls);
+      const fn = this.dataset.popupMethod ?? 'show';
+      const [form] = popup.getElementsByTagName('form');
+      if (form) {
+        form.reset();
+      }
+      popup[fn]();
+    }
   }
 
-  /** @type {HTMLElement['focus']} */
-  focus(options = undefined) {
-    super.focus(options);
-    this.shadowRoot.getElementById('input').focus(options);
+  connectedCallback() {
+    this.addEventListener('click', this.onClick);
   }
 }

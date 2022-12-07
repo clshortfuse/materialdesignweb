@@ -1,9 +1,7 @@
 import CustomElement from '../../core/CustomElement.js';
 
 export default class DemoSection extends CustomElement {
-  static { this.autoRegister(); }
-
-  static elementName = 'demo-section';
+  static { this.autoRegister('demo-section'); }
 
   compose() {
     return super.compose().append(/* html */`

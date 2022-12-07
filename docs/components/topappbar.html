@@ -13,14 +13,6 @@
   <link rel="stylesheet" href="../demo.css" />
 
   <style>
-    .demo-screen {
-      position: relative;
-      max-height: 400px;
-      overflow-y: auto;
-      min-width: 360px;
-      width: 90vw;
-    }
-
     .toolbar-icon-button {
       padding: 4px
     }
@@ -45,40 +37,39 @@
       <h1 slot=heading> Top App Bar </h1>
       <demo-section>
         <h2 slot=heading> Center (Default) </h2>
-        <demo-flex wrap gap12>
-          <mdw-container class="demo-screen" color="background">
+        <mdw-layout wrap gap=12px>
+          <demo-screen color="background">
             <mdw-top-app-bar headline="Title"></mdw-top-app-bar>
             <demo-dummy-text></demo-dummy-text>
-          </mdw-container>
-          <mdw-container class="demo-screen" color="background">
+          </demo-screen>
+          <demo-screen color="background">
             <mdw-top-app-bar headline="Auto-hide" hide-on-scroll>
               <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="menu">Menu</mdw-icon-button>
             </mdw-top-app-bar>
             <demo-dummy-text></demo-dummy-text>
-          </mdw-container>
-          <mdw-container class="demo-screen" color="background">
+          </demo-screen>
+          <demo-screen color="background">
             <mdw-top-app-bar>
               <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="menu">Menu</mdw-icon-button>
               <mdw-icon-button class="toolbar-icon-button toolbar-avatar" slot="trailing" icon="account_circle">Profile</mdw-icon-button>
               <mdw-text ink=primary>Custom</mdw-text> (and oversized) Title
             </mdw-top-app-bar>
             <demo-dummy-text></demo-dummy-text>
-          </mdw-container>
-          <mdw-container class="demo-screen" color="background">
-            <mdw-top-app-bar kbd-nav="tab" aria-label="Search Toolbar">
+          </demo-screen>
+          <demo-screen color="background">
+            <mdw-top-app-bar kbd-nav="false" aria-label="Search Toolbar">
               <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="menu">Menu</mdw-icon-button>
               <mdw-text-input class="demo-app-bar-search" placeholder="Search" type=search icon=search outlined dense
                 shape-style="full"></mdw-text-input>
-              <mdw-icon-button class="toolbar-icon-button toolbar-avatar" slot="trailing">
-                account_circle</mdw-icon-button>
+              <mdw-icon-button class="toolbar-icon-button toolbar-avatar" slot="trailing" icon="account_circle">Profile</mdw-icon-button>
             </mdw-top-app-bar>
             <demo-dummy-text></demo-dummy-text>
-          </mdw-container>
-        </demo-flex>
+          </demo-screen>
+        </mdw-layout>
       </demo-section>
       <demo-section>
         <h2 slot=heading> Small </h2>
-        <demo-flex wrap gap12>
+        <mdw-layout wrap gap=12px>
           <mdw-container class="demo-screen" color="background">
             <mdw-top-app-bar headline="Small app bar" size="small">
               <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
@@ -88,11 +79,11 @@
             </mdw-top-app-bar>
             <demo-dummy-text></demo-dummy-text>
           </mdw-container>
-        </demo-flex>
+        </mdw-layout>
       </demo-section>
       <demo-section>
         <h2 slot=heading> Medium </h2>
-        <demo-flex wrap gap12>
+        <mdw-layout wrap gap=12px>
           <mdw-container class="demo-screen" color="background">
             <mdw-top-app-bar headline="Medium app bar" size="medium" color="secondary-container">
               <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
@@ -111,11 +102,11 @@
             </mdw-top-app-bar>
             <demo-dummy-text></demo-dummy-text>
           </mdw-container>
-        </demo-flex>
+        </mdw-layout>
       </demo-section>
       <demo-section>
         <h2 slot=heading> Large </h2>
-        <demo-flex wrap gap12>
+        <mdw-layout wrap gap=12px>
           <mdw-container class="demo-screen" color="background">
             <mdw-top-app-bar headline="Large app bar" size="large">
               <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
@@ -135,7 +126,7 @@
             </mdw-top-app-bar>
             <demo-dummy-text></demo-dummy-text>
           </mdw-container>
-        </demo-flex>
+        </mdw-layout>
       </demo-section>
     </demo-section>
   </main>

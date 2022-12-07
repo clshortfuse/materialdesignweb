@@ -15,22 +15,35 @@
     mdw-layout:not(:defined) {
       display: none;
     }
-
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+  
   </style>
 </head>
 
 <body>
+  <!-- <mdw-nav-bar hide-on-scroll>
+    <mdw-nav-item icon="edit" href="#navbar">Default</mdw-nav-item>
+    <mdw-nav-item icon="change_history" href="#navbar" color=primary-container>Primary Container
+    </mdw-nav-item>
+    <mdw-nav-item icon="change_history" href="#navbar" color=tertiary-container>Tertiary Container
+    </mdw-nav-item>
+  </mdw-nav-bar> -->
   <mdw-top-app-bar hide-on-scroll headline="Material Design Web">
     <mdw-icon-button slot="trailing" svg="./imgs/icons.svg#invertocat"
-      onclick="window.location = 'https\://github.com/clshortfuse/materialdesignweb/tree/native'">GitHub Page</mdw-icon-button>
+      onclick="window.location = 'https\://github.com/clshortfuse/materialdesignweb/tree/native'">GitHub Page
+    </mdw-icon-button>
   </mdw-top-app-bar>
+
   <main>
-    <mdw-list id=nav-list color="surface">
+    <mdw-list id=nav-list>
       <mdw-list-item icon=palette href="./components/color.html">Color</mdw-list-item>
       <mdw-list-item icon="rounded_corner" href="./components/shape.html">Shape</mdw-list-item>
       <mdw-list-item icon=font_download href="./components/typography.html">Typography</mdw-list-item>
       <mdw-divider></mdw-divider>
-      <mdw-list-item icon=exposure_plus_1 disabled supporting="No demos">Badges</mdw-list-item>
+      <mdw-list-item icon=exposure_plus_1 href="./components/badge.html">Badges</mdw-list-item>
       <mdw-list-item icon=call_to_action href="./components/bottomappbar.html">Bottom App Bar</mdw-list-item>
       <mdw-list-item icon=crop_landscape href="./components/buttons.html">Buttons</mdw-list-item>
       <mdw-list-item icon=view_comfy href="./components/cards.html">Cards</mdw-list-item>
