@@ -8,7 +8,7 @@
 
   display: block;
 
-  min-block-size: 4px;
+  min-block-size: 40px;
   min-inline-size: 88px;
 
   background-color: transparent;
@@ -33,8 +33,6 @@ label {
 }
 
 #control {
-  inset-block: -18px;
-
   overflow: visible;
 
   block-size: 40px;
@@ -108,7 +106,11 @@ label {
 #track {
   --value: 0.5;
   position: absolute;
-  inset: 0;
+  inset-block-start: 50%;
+  inset-inline: 0;
+
+  block-size: 4px;
+  margin-block-start: -2px;
 
   pointer-events: none;
   user-select: none;
@@ -289,7 +291,9 @@ label {
   --mdw-slider__cursor: not-allowed;
   --mdw-bg: var(--mdw-color__on-surface);
   opacity: 0.38;
+}
 
+:host([disabled]) #track {
   background-color: rgb(var(--mdw-color__on-surface), calc(0.12 / 0.38));
 }
 
