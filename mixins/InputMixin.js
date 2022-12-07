@@ -196,6 +196,7 @@ export default function InputMixin(Base) {
       super.onControlKeydown(event);
       if (event.defaultPrevented) return;
       if (event.key === 'Enter') {
+        if (this.type === 'submit') return;
         const { host } = this.getRootNode();
         host.performImplicitSubmission(event);
         return;

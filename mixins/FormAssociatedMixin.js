@@ -253,8 +253,7 @@ export default function FormAssociatedMixin(Base) {
      * @param {Event} event
      */
     onRootClick(event) {
-      const [initiator] = event.composedPath();
-      if (this.shadowRoot.contains(initiator)) return;
+      if (event.composedPath().includes(this.shadowRoot)) return;
       event.stopImmediatePropagation();
       if (this._control !== this) {
         this._control.click();
