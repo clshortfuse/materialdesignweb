@@ -248,11 +248,22 @@ export default function FormAssociatedMixin(Base) {
 
     get labels() { return this.elementInternals.labels; }
 
-    /** @return {typeof FormAssociated} */
-    get static() { return /** @type {typeof FormAssociated} */ (super.static); }
+    /**
+     * Reconstructs author-dispatched `click` event to control
+     * @param {Event} event
+     */
+    onRootClick(event) {
+      const [initiator] = event.composedPath();
+      if (this.shadowRoot.contains(initiator)) return;
+      event.stopImmediatePropagation();
+      if (this._control !== this) {
+        this._control.click();
+      }
+    }
 
     connectedCallback() {
       super.connectedCallback();
+      this.addEventListener('click', this.onRootClick, { capture: true });
       // control.addEventListener('invalid', this.onControlInvalid);
       if (!this.elementInternals.form) {
         this.formAssociatedCallback(null);
