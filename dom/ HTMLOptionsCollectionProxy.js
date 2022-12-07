@@ -44,7 +44,6 @@ export function constructHTMLOptionsCollectionProxy({ host, collection, OptionCo
     collection.item(index)?.remove();
   };
 
-  console.log('defining selectedindex', collection);
   Object.defineProperty(collection, 'selectedIndex', {
     get() {
       for (let i = 0; i < collection.length; i++) {

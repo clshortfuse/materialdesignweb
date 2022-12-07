@@ -273,16 +273,14 @@ export default class CustomElement extends HTMLElement {
   }
 
   /**
-   * Wraps composeHtml with bind to `this` (not natively set with tagged template literals)
+   * Wraps `template/html` with bind to `this` (not natively set with tagged template literals)
    * @return {import('./template.js').HTMLTemplater<this>}
    */
   get html() {
-    if (!this._html) {
-      this._html = html.bind(this);
-    }
-    return this._html;
+    return html.bind(this);
   }
 
+  /** @return {Record<string,HTMLElement>} */
   get refs() {
     // eslint-disable-next-line no-return-assign
     return (this.#refsProxy ??= new Proxy({}, {

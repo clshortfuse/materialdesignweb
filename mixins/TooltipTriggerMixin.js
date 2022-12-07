@@ -342,9 +342,6 @@ export default function TooltipTriggerMixin(Base) {
       }
     }
 
-    /** @return {typeof TooltipTrigger} */
-    get static() { return /** @type {typeof TooltipTrigger} */ (super.static); }
-
     connectedCallback() {
       super.connectedCallback();
       for (const type of ['mousedown', 'mousemove', 'mouseout',

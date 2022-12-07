@@ -45,6 +45,6 @@ export default class Checkbox extends InputMixin(Container) {
   get type() { return 'checkbox'; }
 }
 
-Checkbox.prototype.icon = Checkbox.idl('icon', { type: 'string', default: 'check' });
-Checkbox.prototype.indeterminateIcon = Checkbox.idl('indeterminateIcon', { type: 'string', default: 'check_indeterminate_small' });
+Checkbox.prototype.icon = Checkbox.idl('icon', { default: 'check' });
+Checkbox.prototype.indeterminateIcon = Checkbox.idl('indeterminateIcon', { default: 'check_indeterminate_small' });
 Checkbox.prototype.indeterminate = Checkbox.idl('indeterminate', { type: 'boolean' });

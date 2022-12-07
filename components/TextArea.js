@@ -213,7 +213,7 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
   }
 }
 
-TextArea.prototype._maxHeight = TextArea.idl('_maxHeight', { type: 'string' });
+TextArea.prototype._maxHeight = TextArea.idl('_maxHeight');
 TextArea.prototype.fixed = TextArea.idl('fixed', { type: 'boolean' });
 TextArea.prototype.minRows = TextArea.idl('minRows', { attr: 'minrows', type: 'integer', empty: 0 });
 TextArea.prototype.maxRows = TextArea.idl('maxRows', { attr: 'maxrows', type: 'integer', empty: 0 });

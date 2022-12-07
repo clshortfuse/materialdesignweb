@@ -87,9 +87,6 @@ export default function StateMixin(Base) {
       }
     }
 
-    /** @return {typeof State} */
-    get static() { return /** @type {typeof State} */ (super.static); }
-
     connectedCallback() {
       super.connectedCallback();
       this.addEventListener('mousedown', this.onStateMouseDown, { passive: true });

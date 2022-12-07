@@ -39,7 +39,7 @@ export default class NavItem extends RippleMixin(Container) {
           href=${({ href }) => href ?? '#'}>
           ${template.getElementById('slot')}
         </a>
-        <mdw-badge id=badge aria-hidden=true >{badge}</mdw-badge>
+        <mdw-badge id=badge aria-hidden=true>{badge}</mdw-badge>
       `,
     );
   }
