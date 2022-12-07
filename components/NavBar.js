@@ -7,11 +7,18 @@ export default class NavBar extends ScrollListenerMixin(Nav) {
   static { this.autoRegister('mdw-nav-bar'); }
 
   compose() {
-    return super.compose().append(
+    const composition = super.compose();
+    composition.template.getElementById('nav').setAttribute('style', '{computeNavStyle}');
+    return composition.append(
       styles,
-      this.updateTransform,
-      this.updateTransition,
     );
+  }
+
+  computeNavStyle() {
+    return `
+      transform: translateY(${this._translateY}px);
+      transition: ${this._transition};
+    `;
   }
 
   /**
@@ -42,16 +49,6 @@ export default class NavBar extends ScrollListenerMixin(Nav) {
     this.clientHeight;
     this.style.removeProperty('bottom');
     this.onScrollPositionChange(this._scrollPosition, this._scrollPosition);
-  }
-
-  /** @param {Partial<this>} data */
-  updateTransform({ _translateY }) {
-    this.refs.nav?.style.setProperty('transform', `translateY(${_translateY}px)`);
-  }
-
-  /** @param {Partial<this>} data */
-  updateTransition({ _transition }) {
-    this.refs.nav?.style.setProperty('transition', _transition);
   }
 
   onScrollIdle() {
