@@ -19,7 +19,7 @@ export default function TextFieldMixin(Base) {
 
       const control = template.getElementById('control');
       control.setAttribute('type', 'text');
-      control.setAttribute('placeholder', '{placeholder}');
+      control.setAttribute('placeholder', '{computePlaceholder}');
       control.setAttribute('aria-labelledby', 'label-text');
       control.classList.add('inline');
 
@@ -31,7 +31,7 @@ export default function TextFieldMixin(Base) {
         <div _if={filled} id=indicator></div>
         <div id=outline>
           <div id=gap>
-            <div _if={label} id=label-text>
+            <div _if=${({ label, filled, outlined }) => label && (filled || outlined)} id=label-text>
               {label}
               ${template.getElementById('slot')}
             </div>
@@ -60,11 +60,17 @@ export default function TextFieldMixin(Base) {
           this._populated = this.value || this._badInput;
           break;
         case 'size':
-          // @ts-expect-error Skip cast
           this.refs.control.style.setProperty('--size', `${newValue}ch`);
           break;
         default:
       }
+    }
+
+    /** @this {this & {placeholder:string}} */
+    computePlaceholder() {
+      const { filled, outlined, placeholder, label } = this;
+      if (filled || outlined) return placeholder;
+      return placeholder ?? label;
     }
 
     shouldShowSupporting() {
@@ -76,14 +82,10 @@ export default function TextFieldMixin(Base) {
       const { error, _validationMessage, supporting } = this;
       return (error || _validationMessage || supporting) ?? '';
     }
-
-    /** @return {typeof TextField} */
-    get static() { return /** @type {typeof TextField} */ (super.static); }
   }
 
   TextField.prototype.type = TextField.idl('type', { empty: 'text' });
   TextField.prototype.icon = TextField.idl('icon');
-  TextField.prototype.size = TextField.idl('size', { empty: 20 });
   TextField.prototype.label = TextField.idl('label');
   TextField.prototype.filled = TextField.idl('filled', 'boolean');
   TextField.prototype.outlined = TextField.idl('outlined', 'boolean');

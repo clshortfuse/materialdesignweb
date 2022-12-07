@@ -136,7 +136,7 @@ label {
   will-change: opacity;
 }
 
-:host([label]) {
+:host([label]:is([filled],[outlined])) {
   --descriptor-opacity: 0;
 }
 
