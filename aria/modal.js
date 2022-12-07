@@ -7,7 +7,7 @@ export function handleTabKeyPress(event) {
   const focusableElements = this.querySelectorAll([
     'button:not(:disabled):not([tabindex="-1"])',
     '[href]:not(:disabled):not([tabindex="-1"])',
-    'input:not(:disabled):not([tabindex="-1"])',
+    'input:not(:disabled):not([tabindex="-1"]):not([hidden])',
     'select:not(:disabled):not([tabindex="-1"])',
     'textarea:not(:disabled):not([tabindex="-1"])',
     '[tabindex]:not([tabindex="-1"])',
