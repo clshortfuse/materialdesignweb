@@ -535,7 +535,10 @@ export default class Composition {
     if (!this.interpolated) this.interpolate(data);
 
     if ('adoptedStyleSheets' in root) {
-      root.adoptedStyleSheets = this.adoptedStyleSheets;
+      root.adoptedStyleSheets = [
+        ...root.adoptedStyleSheets,
+        ...this.adoptedStyleSheets,
+      ];
     } else if (root instanceof ShadowRoot) {
       root.append(this.stylesFragment.cloneNode(true));
     } else {
