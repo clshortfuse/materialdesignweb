@@ -141,8 +141,6 @@ label {
 }
 
 #control {
-  --size: 20ch;
-
   position: relative;
 
   align-self: flex-start;
@@ -152,10 +150,10 @@ label {
   box-sizing: border-box;
 
   block-size: auto;
-  inline-size: auto;
+  inline-size: 100%;
 
   min-inline-size: none;
-  flex: 1 1 var(--size);
+  flex: 1;
   border-block-start: solid var(--control__margin-top) transparent;
   border-block-end: solid var(--control__margin-bottom) transparent;
   padding-block: var(--control__padding-top) var(--control__padding-bottom);
