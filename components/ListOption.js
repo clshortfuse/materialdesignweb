@@ -69,6 +69,10 @@ export default class ListOption extends ListItem {
     }
   }
 
+  isInteractive() {
+    return true;
+  }
+
   get form() {
     return this._form;
   }

@@ -21,7 +21,12 @@ export default class ListItem extends RippleMixin(Container) {
     const composition = super.compose();
     const { html } = this;
     const { template } = composition;
-    template.getElementById('state').setAttribute('state-disabled', 'focus hover');
+    const state = template.getElementById('state');
+    const ripple = template.getElementById('ripple');
+
+    state.setAttribute('state-disabled', 'focus hover');
+    state.setAttribute('_if', '{isInteractive}');
+    ripple.setAttribute('_if', '{isInteractive}');
 
     return composition.append(
       checkboxIconStyles,
@@ -39,7 +44,7 @@ export default class ListItem extends RippleMixin(Container) {
           <mdw-icon _if={icon} class=leading id=icon ink={iconInk} src={iconSrc} style=${({ iconSize }) => `font-size:${iconSize}`} aria-hidden=true>{icon}</mdw-icon>
           <img id=img _if={src} class=leading src={src} alt={alt} />
           <slot id=leading-slot name=leading><span _if={leading} id=leading-text class=leading>{leading}</span></slot>
-          <div id=content href={href}>
+          <div id=content>
             <mdw-text block id=headline type-style=body-large ink=on-surface>
               <slot id=headline-slot name=headline><span id=headline-text class=text>{text}${template.getElementById('slot')}</span></slot>
             </mdw-text>
@@ -77,6 +82,10 @@ export default class ListItem extends RippleMixin(Container) {
         break;
       default:
     }
+  }
+
+  isInteractive() {
+    return this.href != null;
   }
 }
 
