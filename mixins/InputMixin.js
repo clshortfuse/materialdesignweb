@@ -4,6 +4,21 @@ import ControlMixin from './ControlMixin.js';
 
 /** @typedef {import('../core/CustomElement.js').default} CustomElement */
 
+const IMPLICIT_SUBMISSION_BLOCKING_TYPES = new Set([
+  'text',
+  'search',
+  'url',
+  'tel',
+  'email',
+  'password',
+  'date',
+  'month',
+  'week',
+  'time',
+  'datetime-local',
+  'number',
+]);
+
 /**
  * @template {typeof import('../core/CustomElement.js').default} T
  * @param {T} Base
@@ -143,6 +158,36 @@ export default function InputMixin(Base) {
     }
 
     /**
+     * @see https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission
+     * @param {Event} event
+     * @return {void}
+     */
+    performImplicitSubmission(event) {
+      const form = this.form;
+      if (!form) return;
+      /** @type {HTMLInputElement} */
+      let defaultButton;
+      const submissionBlockers = new Set();
+      for (const element of /** @type {HTMLCollectionOf<HTMLInputElement>} */ (form.elements)) {
+        // Spec doesn't specify disabled, but browsers do skip them.
+        if (element.type === 'submit' && !element.disabled) {
+          defaultButton ??= element;
+          break;
+        }
+
+        if (IMPLICIT_SUBMISSION_BLOCKING_TYPES.has(element.type)) {
+          submissionBlockers.add(element);
+        }
+      }
+      if (defaultButton) {
+        defaultButton.click();
+        return;
+      }
+      if (submissionBlockers.size > 1) return;
+      this.form.submit();
+    }
+
+    /**
      * @param {KeyboardEvent} event
      * @this {HTMLInputElement}
      * @return {void}
@@ -150,6 +195,11 @@ export default function InputMixin(Base) {
     onControlKeydown(event) {
       super.onControlKeydown(event);
       if (event.defaultPrevented) return;
+      if (event.key === 'Enter') {
+        const { host } = this.getRootNode();
+        host.performImplicitSubmission(event);
+        return;
+      }
       if (this.type !== 'radio') return;
       if (event.key === 'Spacebar' || event.key === ' ') {
         if (this.required) return;
@@ -276,9 +326,6 @@ export default function InputMixin(Base) {
       /** @type {boolean} */
       this._checked = this.#input.checked;
     }
-
-    /** @return {typeof Input} */
-    get static() { return /** @type {typeof Input} */ (super.static); }
   }
 
   Input.prototype.ariaControls = Input.idl('ariaControls');
@@ -286,7 +333,7 @@ export default function InputMixin(Base) {
 
   // https://html.spec.whatwg.org/multipage/input.html#htmlinputelement
 
-  const DOMString = { onNullish: String };
+  const DOMString = { onNullish: String, default: '' };
 
   Input.prototype.accept = Input.idl('accept', DOMString);
   Input.prototype.alt = Input.idl('alt', DOMString);
