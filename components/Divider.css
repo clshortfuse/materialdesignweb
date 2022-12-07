@@ -1,14 +1,35 @@
 /* https://m3.material.io/components/dividers/specs */
 
 :host {
-  inline-size: 100%;
-  margin-block-start: -1px;
-  border-block-end: 1px solid;
+  position: relative;
 
-  background-color: currentColor;
+  overflow: visible;
+
+  box-sizing: border-box;
+  block-size: 0;
+  inline-size: 100%;
+
   color: rgb(var(--mdw-color__outline-variant));
 }
 
+:host::before {
+  content: '';
+
+  display: block;
+
+  block-size: 1px;
+
+  inline-size: auto;
+
+  background-color: currentColor;
+}
+
 :host([vertical]) {
-  writing-mode: vertical-lr;
+  block-size: 100%;
+  inline-size: 0;
+}
+
+:host([vertical])::before {
+  block-size: auto;
+  inline-size: 1px;
 }
