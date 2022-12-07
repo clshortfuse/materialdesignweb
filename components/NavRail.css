@@ -1,12 +1,18 @@
 /* https://m3.material.io/components/navigation-rail/specs */
 
-:host {
-  display: inline-grid;
+:host{
+  display: inline-block;
+}
+
+#nav {
+  display: grid;
   align-items: stretch;
   flex-direction: column;
   grid-template-rows: minmax(auto, 1fr) minmax(0, auto) minmax(auto, 1fr);
   grid-template-columns: minmax(80px, auto);
   justify-items: center;
+
+  block-size: 100%;
 
   min-inline-size: 80px;
 
@@ -16,11 +22,11 @@
   text-align: center;
 }
 
-:host([align="start"]) {
+:host([align="start"]) #nav {
   grid-template-rows: min-content;
 }
 
-:host([align="end"]) {
+:host([align="end"]) #nav {
   grid-template-rows: 1fr;
 }
 

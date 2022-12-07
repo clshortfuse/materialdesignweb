@@ -8,12 +8,15 @@ export default class NavRail extends Nav {
     const composition = super.compose();
     const { html } = this;
     const { template } = composition;
+    const nav = template.getElementById('nav');
+    nav.prepend(html`<slot id=start name=start></slot>`);
+    nav.append(
+      html`
+        <div id=group>${template.getElementById('slot')}</div>
+      `,
+    );
     return composition.append(
       styles,
-      html`
-        <slot id=start name=start></slot>
-        <div id=group>${template.getElementById('template')}</div>
-      `,
     );
   }
 }
