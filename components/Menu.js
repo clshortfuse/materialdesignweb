@@ -246,9 +246,6 @@ export default class Menu extends KeyboardNavMixin(CustomElement) {
     /** @type {HTMLElement} */
     const target = event ? event.currentTarget || event.target : source;
 
-    const xStart = isPageRTL ? 'right' : 'left';
-    const xEnd = isPageRTL ? 'left' : 'right';
-
     let isPageRTL = null;
     if (alignStart || alignEnd || openNormal || openReverse) {
     // Using page-direction based values
@@ -351,23 +348,6 @@ export default class Menu extends KeyboardNavMixin(CustomElement) {
     popupElement.style.setProperty('--mdw-menu__size', newSize.toString(10));
     const popupElementHeight = popupElement.clientHeight;
     const popupElementWidth = popupElement.clientWidth;
-
-    /** @type {import('../utils/popup.js').CanAnchorPopUpOptions[]} */
-    const preferences = [
-      // Flow from corner
-      { clientY: 'bottom', directionY: 'down', clientX: xStart, directionX: xEnd },
-      { clientY: 'bottom', directionY: 'down', clientX: xEnd, directionX: xStart },
-      { clientY: 'top', directionY: 'up', clientX: xStart, directionX: xEnd },
-      { clientY: 'top', directionY: 'up', clientX: xEnd, directionX: xStart },
-      // Open adjacent to target
-      { clientY: 'top', directionY: 'down', clientX: xEnd, directionX: xEnd },
-      { clientY: 'top', directionY: 'down', clientX: xStart, directionX: xStart },
-      { clientY: 'bottom', directionY: 'up', clientX: xEnd, directionX: xEnd },
-      { clientY: 'bottom', directionY: 'up', clientX: xStart, directionX: xStart },
-      // Overlay target
-      { clientY: 'top', directionY: 'down', clientX: xStart, directionX: xEnd },
-
-    ];
 
     const canOpenDownwardsFromBottom = !alignTop && !alignVCenter
       && !openUp && !openVCenter
