@@ -34,11 +34,11 @@
 
 :host {
   --enter-delay: 80ms;
-  --fade-out-duration: calc(1000ms / 3.0);
   --touch-down-acceleration: 1024;
   --touch-up-acceleration: 3400;
-  --mdw-ripple-expand-duration: var(--mdw-motion-expand-duration, 250ms);
-  --mdw-ripple-simple-duration: var(--mdw-motion-simple-duration, 100ms);
+  --mdw-ripple-expand-duration: 300ms;
+  --mdw-ripple-simple-duration: 100ms;
+  --mdw-ripple-fade-out-duration: 333ms;
   --mdw-ripple-standard-easing: var(--mdw-motion-standard-easing, cubic-bezier(0.4, 0.0, 0.2, 1));
   --mdw-ripple-deceleration-easing: var(--mdw-motion-deceleration-easing, cubic-bezier(0.0, 0.0, 0.2, 1));
   --mdw-ripple__visibility: visible;
@@ -67,9 +67,13 @@
 
 #ripple-inner {
   --mdw-ripple__fade-in-name: ripple-fade-in;
+  --size: 0;
   position: absolute;
 
   display: block;
+
+  block-size: var(--size);
+  inline-size: var(--size);
 
   pointer-events: none;
 
@@ -80,6 +84,8 @@
 
   border-radius: 50%;
 
+  box-shadow: 0 0 calc(0.10 * var(--size)) calc(0.10 * var(--size)) currentColor; /* Adds feathered appeared to ripple */
+
   transition-delay: 0s;
   transition-duration: var(--mdw-ripple-simple-duration);
   transition-property: background-color, color;
@@ -87,12 +93,12 @@
 
   /* animation-name: var(--mdw-ripple__fade-in-name), ripple-fade-out; */
   animation-name: none, none;
-  animation-duration: var(--mdw-ripple-expand-duration), calc(1000ms / 3.0);
+  animation-duration: var(--mdw-ripple-expand-duration), var(--mdw-ripple-fade-out-duration);
   animation-timing-function: linear, var(--mdw-ripple-deceleration-easing);
   animation-direction: normal;
   animation-fill-mode: forwards;
   /* stylelint-disable-next-line liberty/use-logical-spec */
-  will-change: transform, opacity;
+  will-change: transform, opacity, box-shadow;
 }
 
 #ripple-inner[mdw-fade-in-repeat] {

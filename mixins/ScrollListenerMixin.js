@@ -1,110 +1,106 @@
-import CustomElement from '../core/CustomElement.js';
+const IDLE_TIMEOUT_MS = 500;
 
 /**
- * @template {typeof import('../core/CustomElement.js').default} T
- * @param {T} Base
+ * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function ScrollListenerMixin(Base) {
-  class ScrollListener extends Base {
-    static IDLE_TIMEOUT_MS = 500;
+  return Base
+    .extend()
+    .observe({
+      _scrollPosition: { type: 'float', empty: 0 },
+    })
+    .set({
+      /** @type {WeakRef<HTMLElement|Window>} */
+      _scroller: null,
+      /** @type {EventListener} */
+      _scrollerScrollListener: null,
+      /** @type {EventListener} */
+      _scrollerResizeListener: null,
+      _scrollDebounce: null,
+    })
+    .methods({
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      onScrollIdle() {},
 
-    /** @type {WeakRef<HTMLElement|Window>} */
-    #scroller;
+      /** @param {Event} event */
+      onScrollerScroll(event) {
+        this._scrollPosition = (event.currentTarget === window)
+          ? window.scrollY
+          : /** @type {HTMLElement} */ (event.currentTarget).scrollTop;
 
-    /** @type {EventListener} */
-    #scrollerScrollListener;
+        clearTimeout(this._scrollDebounce);
+        this._scrollDebounce = setTimeout(() => this.onScrollIdle(), IDLE_TIMEOUT_MS);
+      },
 
-    #scrollerResizeListener;
+      /**
+       * @param {number} oldValue
+       * @param {number} newValue
+       */
+      onScrollPositionChange(oldValue, newValue) {},
 
-    /** @type {CustomElement['idlChangedCallback']} */
-    idlChangedCallback(name, oldValue, newValue) {
-      super.idlChangedCallback(name, oldValue, newValue);
-      switch (name) {
-        case '_scrollPosition':
-          this.onScrollPositionChange(oldValue, newValue);
-          break;
-        default:
-      }
-    }
+      /** @param {Event} event */
+      onScrollerResize(event) {},
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    onScrollIdle() {}
+      /**
+       * @param {HTMLElement|Window} [scroller]
+       * @return {boolean}
+       */
+      startScrollListener(scroller) {
+        if (!scroller) {
+          // eslint-disable-next-line no-param-reassign
+          scroller = this.offsetParent;
+          if (!scroller) return false;
+        }
 
-    /** @param {Event} event */
-    onScrollerScroll(event) {
-      this._scrollPosition = (event.currentTarget === window)
-        ? window.scrollY
-        : /** @type {HTMLElement} */ (event.currentTarget).scrollTop;
-
-      clearTimeout(this.scrollDebounce);
-      this.scrollDebounce = setTimeout(() => this.onScrollIdle(), this.constructor.IDLE_TIMEOUT_MS);
-    }
-
-    /**
-     * @param {number} oldValue
-     * @param {number} newValue
-     */
-    onScrollPositionChange(oldValue, newValue) {}
-
-    /** @param {Event} event */
-    onScrollerResize(event) {}
-
-    /**
-     * @param {Element|Window} [scroller]
-     * @return {boolean}
-     */
-    startScrollListener(scroller) {
-      if (!scroller) {
-        // eslint-disable-next-line no-param-reassign
-        scroller = this.offsetParent;
-        if (!scroller) return false;
-      }
-
-      if (scroller === document.body) {
+        if (scroller === document.body) {
         // console.log('scroller is body, attaching to window');
-        scroller = window;
-      }
+          // eslint-disable-next-line no-param-reassign
+          scroller = window;
+        }
 
-      this.#scroller = new WeakRef(scroller);
-      this.#scrollerScrollListener = this.onScrollerScroll.bind(this);
-      this.#scrollerResizeListener = this.onScrollerResize.bind(this);
-      scroller.addEventListener('scroll', this.#scrollerScrollListener);
-      scroller.addEventListener('resize', this.#scrollerResizeListener);
-      this._scrollPosition = 0;
-      return true;
-    }
+        this._scroller = new WeakRef(scroller);
+        this._scrollerScrollListener = this.onScrollerScroll.bind(this);
+        this._scrollerResizeListener = this.onScrollerResize.bind(this);
+        scroller.addEventListener('scroll', this._scrollerScrollListener);
+        scroller.addEventListener('resize', this._scrollerResizeListener);
+        this._scrollPosition = 0;
+        return true;
+      },
 
-    getScrollingElementScrollHeight() {
-      const element = this.getScroller();
-      if (element === window) {
-        return document.documentElement.scrollHeight;
-      }
-      return element.scrollHeight;
-    }
+      getScrollingElementScrollHeight() {
+        const element = this.getScroller();
+        if (element === window) {
+          return document.documentElement.scrollHeight;
+        }
+        // @ts-expect-error Skip Element cast
+        return element.scrollHeight;
+      },
 
-    getScrollingElementClientHeight() {
-      const element = this.getScroller();
-      if (element === window) {
-        return window.innerHeight;
-      }
-      return element.clientHeight;
-    }
+      getScrollingElementClientHeight() {
+        const element = this.getScroller();
+        if (element === window) {
+          return window.innerHeight;
+        }
+        // @ts-expect-error Skip Element cast
+        return element.clientHeight;
+      },
 
-    getScroller() {
-      return this.#scroller.deref();
-    }
+      getScroller() {
+        return this._scroller.deref();
+      },
 
-    /**
-     * @param {Element|Window} scroller
-     * @return {boolean}
-     */
-    clearScrollListener(scroller = this.#scroller?.deref()) {
-      if (!scroller) return false;
-      if (!this.#scrollerScrollListener) return false;
-      scroller.removeEventListener('scroll', this.#scrollerScrollListener);
-      return true;
-    }
-  }
-  ScrollListener.prototype._scrollPosition = ScrollListener.idl('_scrollPosition', { type: 'float', empty: 0 });
-  return ScrollListener;
+      /**
+       * @param {Element|Window} scroller
+       * @return {boolean}
+       */
+      clearScrollListener(scroller = this._scroller?.deref()) {
+        if (!scroller) return false;
+        if (!this._scrollerScrollListener) return false;
+        scroller.removeEventListener('scroll', this._scrollerScrollListener);
+        return true;
+      },
+    })
+    .on('_scrollPositionChanged', (oldValue, newValue, element) => {
+      element.onScrollPositionChange(oldValue, newValue);
+    });
 }

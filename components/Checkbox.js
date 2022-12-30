@@ -1,50 +1,48 @@
 import './Icon.js';
-import { addInlineFunction } from '../core/template.js';
 import InputMixin from '../mixins/InputMixin.js';
 
 import styles from './Checkbox.css' assert { type: 'css' };
 import iconStyles from './CheckboxIcon.css' assert { type: 'css' };
 import Container from './Container.js';
 
-export default class Checkbox extends InputMixin(Container) {
-  static { this.autoRegister('mdw-checkbox'); }
-
-  compose() {
-    const composition = super.compose().append(
-      styles,
-      iconStyles,
-    );
-
-    const { html } = this;
-    const { template } = composition;
-    template.getElementById('label').append(
+export default Container
+  .mixin(InputMixin)
+  .extend()
+  .define({
+    type() { return 'checkbox'; },
+  })
+  .observe({
+    icon: { value: 'check' },
+    indeterminateIcon: { value: 'check_indeterminate_small' },
+    /** Reflected property */
+    indeterminate: { type: 'boolean' },
+  })
+  .expressions({
+    computeDeterminateIcon({ indeterminate, indeterminateIcon, icon }) {
+      return (indeterminate ? indeterminateIcon : icon);
+    },
+    // TODO: Abstract into observed ariaChecked property
+    computeAriaChecked({ indeterminate, checked }) {
+      return (indeterminate ? 'mixed' : String(!!checked));
+    },
+  })
+  .css(styles, iconStyles)
+  .on('composed', ({ $, html }) => {
+    $('#label').append(
       html`
         <div id=checkbox-box class=checkbox-box>
           <mdw-icon id=checkbox-icon class=checkbox-icon selected={checked} indeterminate={indeterminate}>
-            ${({ indeterminate, indeterminateIcon, icon }) => (indeterminate ? indeterminateIcon : icon)}
+            {computeDeterminateIcon}
           </mdw-icon>
-          ${template.getElementById('ripple')}
-          ${template.getElementById('state')}
+          ${$('#ripple')}
+          ${$('#state')}
         </div>
       `,
     );
 
-    const control = template.getElementById('control');
+    const control = $('#control');
     control.setAttribute('type', 'checkbox');
     // Indeterminate must be manually expressed for ARIA
-    control.setAttribute(
-      'aria-checked',
-      addInlineFunction(({ indeterminate, checked }) => (indeterminate ? 'mixed' : String(!!checked))),
-    );
-
-    return composition;
-  }
-
-  /** @override */
-  // @ts-ignore @override
-  get type() { return 'checkbox'; }
-}
-
-Checkbox.prototype.icon = Checkbox.idl('icon', { default: 'check' });
-Checkbox.prototype.indeterminateIcon = Checkbox.idl('indeterminateIcon', { default: 'check_indeterminate_small' });
-Checkbox.prototype.indeterminate = Checkbox.idl('indeterminate', { type: 'boolean' });
+    control.setAttribute('aria-checked', '{computeAriaChecked}');
+  })
+  .autoRegister('mdw-checkbox');

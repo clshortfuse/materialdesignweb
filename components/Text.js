@@ -3,19 +3,16 @@ import CustomElement from '../core/CustomElement.js';
 import styles from './Text.css' assert { type: 'css' };
 import inkStyles from './TextInks.css' assert { type: 'css' };
 
-/** @implements {HTMLSpanElement} */
-export default class Text extends CustomElement {
-  static { this.autoRegister('mdw-text'); }
-
-  compose() {
-    return super.compose().append(
-      styles,
-      inkStyles,
-      '<slot id=slot></slot>',
-    );
-  }
-}
-
-Text.prototype.block = Text.idl('block', 'boolean');
-Text.prototype.ink = Text.idl('ink');
-Text.prototype.typeStyle = Text.idl('typeStyle');
+export default CustomElement
+  .extend()
+  .observe({
+    ink: 'string',
+    block: 'boolean',
+    typeStyle: 'string',
+  })
+  .css(
+    styles,
+    inkStyles,
+  )
+  .html/* html */`<slot id=slot></slot>`
+  .autoRegister('mdw-text');

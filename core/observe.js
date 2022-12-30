@@ -1,73 +1,6 @@
-/** @typedef {'boolean'|'string'|'float'|'integer'|'array'|'set'|'map'} ObserverPropertyType */
+import { attrNameFromPropName } from './dom.js';
 
-/**
- * @template {ObserverPropertyType} T
- * @typedef {(
- *  T extends 'boolean' ? boolean
- *  : T extends 'string' ? string
- *  : T extends 'float'|'integer' ? number
- *  : T extends 'array' ? Array<?>
- *  : T extends 'set' ? Set<?>
- *  : T extends 'map' ? Map<?,?>
- *  : unknown
- * )} ParsedObserverPropertyType<T>
- */
-
-/**
- * @template T
- * @template {any} [C=any]
- * @callback ValueParser
- * @this C
- * @param {any} value
- * @throws {TypeError}
- * @return {T}
- */
-
-/**
- * @template T
- * @template {any} [C=any]
- * @callback NullParser
- * @this C
- * @param {undefined|null} value
- * @throws {TypeError}
- * @return {T}
- */
-
-/**
- * @template {ObserverPropertyType} T1
- * @template {any} T2
- * @template {string} K
- * @template {any} [C=any]
- * @typedef ObserverOptions
- * @prop {T1} [type]
- * @prop {string} [attr]
- * @prop {boolean|'write'|'read'} [reflect=true]
- * @prop {boolean} [enumerable]
- * @prop {boolean} [nullable] Defaults to false if boolean
- * @prop {T2} [empty] Empty value when not nullable
- * @prop {T2} [default] Initial value (empty value if not specified)
- * @prop {(this:C, name:K,oldValue:T2,newValue:T2)=>any} changedCallback
- * @prop {(this:C, value:null|undefined)=>T2} [nullParser]
- * @prop {(this:C, value:any)=>T2} [parser]
- * @prop {(this:C, a:T2,b:T2)=>boolean} [is] Function used when comparing
- */
-
-/**
- * @template {ObserverPropertyType} T1
- * @template {any} T2
- * @template {string} K
- * @template {any} [C=any]
- * @typedef ObserverConfiguration
- * @prop {K} key
- * @prop {T1} type
- * @prop {boolean} [enumerable]
- * @prop {T2} [default] Initial value (empty value if not specified)
- * @prop {WeakMap<any, T2>} [values]
- * @prop {(this:C, name:K,oldValue:T2,newValue:T2)=>any} changedCallback
- * @prop {(this:C, value:any)=>T2} nullParser
- * @prop {(this:C, value:any)=>T2} parser
- * @prop {(this:C, a:T2,b:T2)=>boolean} is Function used when comparing
- */
+/** @typedef {import('./typings.js').ObserverPropertyType} ObserverPropertyType */
 
 /** @return {null} */
 const DEFAULT_NULL_PARSER = () => null;
@@ -123,32 +56,33 @@ function defaultParserFromType(type) {
 /**
  * @template {string} K
  * @template {ObserverPropertyType} [T1=any]
- * @template {any} [T2=ParsedObserverPropertyType<T1>]
+ * @template {any} [T2=import('./typings.js').ParsedObserverPropertyType<T1>]
  * @param {K} name
- * @param {T1|ObserverOptions<T1,T2,K>} [typeOrOptions='string']
- * @return {ObserverConfiguration<T1,T2,K> & ObserverOptions<T1,T2,K>}
+ * @param {T1|import('./typings.js').ObserverOptions<T1,T2,K>} [typeOrOptions='string']
+ * @return {import('./typings.js').ObserverConfiguration<T1,T2,K> & import('./typings.js').ObserverOptions<T1,T2,K>}
  */
 export function parseObserverOptions(name, typeOrOptions) {
-  const isPrivate = name[0] === '_';
-
-  /** @type {Partial<ObserverOptions<T1,T2,K>>} */
+  /** @type {Partial<import('./typings.js').ObserverOptions<T1,T2,K>>} */
   const options = {
     ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
   };
 
+  let { enumerable, attr, reflect } = options;
   const { type, empty, changedCallback } = options;
 
-  const enumerable = options.enumerable ?? !isPrivate;
+  enumerable ??= name[0] !== '_';
+  reflect ??= enumerable ? true : (attr ? 'write' : false);
+  attr ??= (reflect ? attrNameFromPropName(name) : null);
 
   /** @type {ObserverPropertyType} */
   let parsedType = type;
   if (parsedType == null) {
-    if (options.default == null) {
+    if (options.value == null) {
       parsedType = 'string';
     } else {
-      const parsed = typeof options.default;
+      const parsed = typeof options.value;
       parsedType = (parsed === 'number')
-        ? (Number.isInteger(options.default) ? 'integer' : 'number')
+        ? (Number.isInteger(options.value) ? 'integer' : 'number')
         : parsed;
     }
   }
@@ -176,8 +110,11 @@ export function parseObserverOptions(name, typeOrOptions) {
   return {
     ...options,
     type: parsedType,
+    attr,
+    reflect,
+    readonly: options.readonly ?? false,
     enumerable,
-    default: options.default ?? parsedEmpty,
+    value: options.value ?? parsedEmpty,
     parser,
     nullParser,
     key: name,
@@ -185,14 +122,14 @@ export function parseObserverOptions(name, typeOrOptions) {
   };
 }
 
-/** @type {Partial<ObserverConfiguration<?,?>>} */
+/** @type {Partial<import('./typings.js').ObserverConfiguration<?,?,?>>} */
 const DEFAULT_OBSERVER_CONFIGURATION = {
   nullParser: DEFAULT_NULL_PARSER,
   is: Object.is,
 };
 
 /**
- * @this {ObserverConfiguration<?,?,?>}
+ * @this {import('./typings.js').ObserverConfiguration<?,?,?>}
  * @param {*} value
  */
 export function parsePropertyValue(value) {
@@ -259,11 +196,11 @@ export function observeFunction(fn, arg0 = {}) {
  * @template [C=any]
  * @param {C} object
  * @param {K} key
- * @param {ObserverOptions<T1,T2,K,C>} options
- * @return {ObserverConfiguration<T1,T2,K,C>}
+ * @param {import('./typings.js').ObserverOptions<T1,T2,K,C>} options
+ * @return {import('./typings.js').ObserverConfiguration<T1,T2,K,C>}
  */
 export const defineObservableProperty = (object, key, options) => {
-  /** @type {ObserverConfiguration<T1,T2,K,C>} */
+  /** @type {import('./typings.js').ObserverConfiguration<T1,T2,K,C>} */
   const config = {
     values: new Map(),
     ...DEFAULT_OBSERVER_CONFIGURATION,
@@ -271,40 +208,64 @@ export const defineObservableProperty = (object, key, options) => {
     changedCallback: options.changedCallback,
   };
 
-  Object.defineProperty(object, key, {
+  /** @type {Partial<PropertyDescriptor>} */
+  const descriptor = {
     enumerable: config.enumerable,
+  };
+
+  if (options.readonly) {
+    if (options.get) {
+      descriptor.get = options.get;
+    } else {
+      descriptor.value = config.value;
+    }
+  } else {
+    if (options.get) {
+      descriptor.get = options.get;
+    }
+    if (options.set) {
+      descriptor.set = options.set;
+    }
+
+    if (!options.get && !options.set) {
     /**
      * @this {C}
      * @return {T2}
      */
-    get() {
-      return !config.values.has(this) ? config.default : config.values.get(this);
-    },
-    /**
-     * @this {C}
-     * @param {T2} value
-     * @return {void}
-     */
-    set(value) {
-      const oldValue = !config.values.has(this) ? config.default : config.values.get(this);
-      if (oldValue === value) return;
+      descriptor.get = function get() {
+        // console.log('get', key, this.tagName);
+        return !config.values.has(this) ? config.value : config.values.get(this);
+      };
 
-      let newValue = value;
-      newValue = value == null
-        ? config.nullParser.call(this, value)
-        : config.parser.call(this, newValue);
+      /**
+       * @this {C}
+       * @param {T2} value
+       * @return {void}
+       */
+      descriptor.set = function set(value) {
+        // console.log('set', key, value);
+        const oldValue = !config.values.has(this) ? config.value : config.values.get(this);
+        if (oldValue === value) return;
 
-      if (oldValue == null) {
-        if (newValue == null) return; // Both nullish
-      } else if (newValue != null && (oldValue === newValue || config.is.call(this, oldValue, newValue))) {
+        let newValue = value;
+        newValue = value == null
+          ? config.nullParser.call(this, value)
+          : config.parser.call(this, newValue);
+
+        if (oldValue == null) {
+          if (newValue == null) return; // Both nullish
+        } else if (newValue != null && (oldValue === newValue || config.is.call(this, oldValue, newValue))) {
         // Not null and match
-        return;
-      }
+          return;
+        }
 
-      config.values.set(this, newValue);
-      config.changedCallback.call(this, key, oldValue, newValue);
-    },
-  });
+        config.values.set(this, newValue);
+        config.changedCallback.call(this, key, oldValue, newValue);
+      };
+    }
+  }
+
+  Object.defineProperty(object, key, descriptor);
 
   return config;
 };

@@ -1,43 +1,22 @@
+/* eslint-disable max-classes-per-file */
+
 import Composition from './Composition.js';
-import { attrNameFromPropName, attrValueFromDataValue, findElement } from './dom.js';
+import { ICustomElement } from './ICustomElement.js';
+import { attrValueFromDataValue, findElement } from './dom.js';
 import { defineObservableProperty } from './observe.js';
-import { html } from './template.js';
-
-/** @typedef {import('./observe.js').ObserverPropertyType} ObserverPropertyType */
-/** @template T @typedef {import('./observe.js').ParsedObserverPropertyType<T>} ParsedObserverPropertyType<T> */
-
-/**
- * @template {ObserverPropertyType} T1
- * @template {any} [T2=any]
- * @typedef IDLOptions
- * @prop {T1} [type]
- * @prop {string} [attr]
- * @prop {boolean|'write'|'read'} [reflect=true]
- * @prop {boolean} [enumerable]
- * @prop {boolean} [nullable] Defaults to false if boolean
- * @prop {T2} [empty] Empty value when not nullable
- * @prop {(value: T2) => T2} [onNullish] Function used when null passed
- * @prop {T2} [default] Initial value (empty value if not specified)
- * @prop {boolean} [initialized]
- * @prop {WeakMap<CustomElement, T2>} [values]
- * @prop {WeakMap<CustomElement, string>} [attrValues]
- */
+import { addInlineFunction, css, html } from './template.js';
 
 /**
  * Web Component that can cache templates for minification or performance
  */
-export default class CustomElement extends HTMLElement {
+export default class CustomElement extends ICustomElement {
   /** @type {string} */
   static elementName;
-
-  static ariaRole = 'none';
-
-  static delegatesFocus = false;
 
   /** @return {Iterable<string>} */
   static get observedAttributes() {
     const s = new Set();
-    for (const config of this.idls.values()) {
+    for (const config of this.propList.values()) {
       if (config.reflect === true || config.reflect === 'read') {
         s.add(config.attr);
       }
@@ -57,11 +36,26 @@ export default class CustomElement extends HTMLElement {
   /** @type {Composition<?>} */
   static _composition = null;
 
-  /** @type {Map<string, import('./observe.js').ObserverConfiguration<?,?,?,?> & {reflect:boolean|'read'|'write', attr:string}>} */
-  static _idls = new Map();
+  /** @type {Map<string, import('./typings.js').ObserverConfiguration<?,?,?,?>>} */
+  static _props = new Map();
 
-  /** @type {WeakSet<Function>} */
-  static _reusableFunctions = new WeakSet();
+  /** @type {Map<string, Function[]>} */
+  static _propChangedCallbacks = new Map();
+
+  /** @type {Map<string, Function[]>} */
+  static _attributeChangedCallbacks = new Map();
+
+  /** @type {typeof ICustomElement._onComposeCallbacks} */
+  static _onComposeCallbacks = [];
+
+  /** @type {typeof ICustomElement._onConnectedCallbacks} */
+  static _onConnectedCallbacks = [];
+
+  /** @type {typeof ICustomElement._onDisconnectedCallbacks} */
+  static _onDisconnectedCallbacks = [];
+
+  /** @type {typeof ICustomElement._onConstructedCallbacks} */
+  static _onConstructedCallbacks = [];
 
   static interpolatesTemplate = true;
 
@@ -69,8 +63,6 @@ export default class CustomElement extends HTMLElement {
 
   static supportsElementInternalsRole = CustomElement.supportsElementInternals
     && 'role' in ElementInternals.prototype;
-
-  static IDL_INIT = Symbol('IDL_INIT');
 
   /** @type {boolean} */
   static templatable = null;
@@ -82,7 +74,62 @@ export default class CustomElement extends HTMLElement {
   /** @type {Map<string, typeof CustomElement>} */
   static registrations = new Map();
 
-  /** @param {string} [elementName] */
+  /** @type {typeof ICustomElement.expressions} */
+  static expressions = this.set;
+
+  /** @type {typeof ICustomElement.methods} */
+  static methods = this.set;
+
+  /** @type {typeof ICustomElement.props} */
+  static props = this.define;
+
+  /** @type {typeof ICustomElement.observe} */
+  static observe = this.define;
+
+  /**
+   * @template {typeof CustomElement} T
+   * @this T
+   * @template {keyof T} K
+   * @param {K} collection
+   * @param {T[K] extends (infer R)[] ? R : never} callback
+   */
+  static _addCallback(collection, callback) {
+    if (!this.hasOwnProperty(collection)) {
+      this[collection] = [
+        ...this[collection],
+      ];
+    }
+    this[collection].push(callback);
+  }
+
+  /** @type {typeof ICustomElement.append} */
+  static append(...parts) {
+    this.on('composed', ({ composition }) => composition.append(...parts));
+    // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  /** @type {typeof ICustomElement.css} */
+  static css(array, ...substitutions) {
+    if (Array.isArray(array)) {
+      // @ts-expect-error Complex cast
+      this.append(css(array, ...substitutions));
+    } else {
+      // @ts-expect-error Complex cast
+      this.append(array, ...substitutions);
+    }
+    // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  /** @type {typeof ICustomElement['setSchema']} */
+  static setSchema(schema) {
+    this.schema = schema;
+    // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  /** @type {typeof ICustomElement['autoRegister']} */
   static autoRegister(elementName) {
     if (elementName) {
       this.elementName = elementName;
@@ -92,17 +139,50 @@ export default class CustomElement extends HTMLElement {
         this.register();
       }
     });
+    // @ts-expect-error Can't cast T
+    return this;
   }
 
-  /**
-   * @param {string} [elementName]
-   * @param {boolean} [force=false]
-   * @return {string}
-   */
+  /** @type {typeof ICustomElement.html} */
+  static html(strings, ...substitutions) {
+    this.on('composed', ({ composition }) => {
+      composition.append(html(strings, ...substitutions));
+    });
+    // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  /** @type {typeof ICustomElement.extend} */
+  static extend() {
+    // @ts-expect-error Can't cast T
+    return class ExtendedClass extends this {};
+  }
+
+  /** @type {typeof ICustomElement.setStatic} */
+  static setStatic(source) {
+    Object.assign(this, source);
+    // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  /** @type {typeof ICustomElement.set} */
+  static set(source) {
+    Object.assign(this.prototype, source);
+    // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  /** @type {typeof ICustomElement.mixin} */
+  static mixin(mixin) {
+    return mixin(this);
+  }
+
+  /** @type {typeof ICustomElement['register']} */
   static register(elementName, force = false) {
     if (this.hasOwnProperty('defined') && this.defined && !force) {
       // console.warn(this.elementName, 'already registered.');
-      return this.elementName;
+      // @ts-expect-error Can't cast T
+      return this;
     }
 
     if (elementName) {
@@ -112,55 +192,196 @@ export default class CustomElement extends HTMLElement {
     customElements.define(this.elementName, this);
     CustomElement.registrations.set(this.elementName, this);
     this.defined = true;
-    return this.elementName;
+    // @ts-expect-error Can't cast T
+    return this;
   }
 
-  static get idls() {
-    if (!this.hasOwnProperty('_idls')) {
-      this._idls = new Map(this._idls);
+  static get propList() {
+    if (!this.hasOwnProperty('_props')) {
+      this._props = new Map(this._props);
     }
-    return this._idls;
+    return this._props;
+  }
+
+  static get propChangedCallbacks() {
+    if (!this.hasOwnProperty('_propChangedCallbacks')) {
+      this._propChangedCallbacks = new Map(this._propChangedCallbacks);
+    }
+    return this._propChangedCallbacks;
+  }
+
+  static get attributeChangedCallbacks() {
+    if (!this.hasOwnProperty('_attributeChangedCallbacks')) {
+      this._attributeChangedCallbacks = new Map(
+        [
+          ...this._attributeChangedCallbacks,
+        ].map(([name, array]) => [name, array.slice()]),
+      );
+    }
+    return this._attributeChangedCallbacks;
   }
 
   /**
-   * @template {ObserverPropertyType} [T1=null]
-   * @template {ObserverPropertyType} [T2=null]
+   * @template {import('./typings.js').ObserverPropertyType} [T1=null]
+   * @template {import('./typings.js').ObserverPropertyType} [T2=null]
    * @template {any} [T3=null]
    * @param {string} name
-   * @param {T1|IDLOptions<T2,T3>} [typeOrOptions='string']
+   * @param {T1|import('./typings.js').ObserverOptions<T2,T3>} [typeOrOptions='string']
    * @return {(
    *    T3 extends null ?
    *        T2 extends null ?
    *          T1 extends null ?
    *            string
-   *          : ParsedObserverPropertyType<T1>
-   *        : ParsedObserverPropertyType<T2>
+   *          : import('./typings.js').ParsedObserverPropertyType<T1>
+   *        : import('./typings.js').ParsedObserverPropertyType<T2>
    *    : T3
    * )}
    */
-  static idl(name, typeOrOptions) {
-    /** @type {IDLOptions<?,?>} */
+  static prop(name, typeOrOptions) {
+    /** @type {import('./typings.js').ObserverOptions<?,?>} */
     const options = {
       ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
     };
-
-    let { enumerable, attr, reflect } = options;
-    enumerable ??= name[0] !== '_';
-    reflect ??= enumerable ? true : (attr ? 'write' : false);
-    attr ??= (reflect ? attrNameFromPropName(name) : null);
 
     const config = defineObservableProperty(this.prototype, name, {
       ...options,
       changedCallback: this.prototype._onObserverPropertyChanged,
     });
 
-    this.idls.set(name, {
-      ...config,
-      reflect,
-      attr,
+    this.propList.set(name, config);
+
+    return config.value;
+  }
+
+  /** @type {typeof ICustomElement.define} */
+  static define(props) {
+    for (const [name, typeOrOptions] of Object.entries(props ?? {})) {
+      if (typeof typeOrOptions === 'function') {
+        this.prop(name, {
+          reflect: false,
+          get: typeOrOptions,
+        });
+      } else {
+        this.prop(name, typeOrOptions);
+      }
+    }
+    // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  /** @type {typeof ICustomElement.defineStatic} */
+  static defineStatic(props) {
+    for (const [name, typeOrOptions] of Object.entries(props ?? {})) {
+      const options = (typeof typeOrOptions === 'function')
+        ? { get: typeOrOptions }
+        : (typeof typeOrOptions === 'string'
+          ? { type: typeOrOptions }
+          : typeOrOptions);
+      defineObservableProperty(this, name, {
+        reflect: false,
+        ...options,
+      });
+    }
+    // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  /** @type {typeof ICustomElement.events} */
+  static events(queryOrListeners, listeners) {
+    /** @type {string} */
+    let query;
+    if (typeof queryOrListeners === 'string') {
+      query = queryOrListeners;
+    } else {
+      // eslint-disable-next-line no-param-reassign
+      listeners = queryOrListeners;
+    }
+    this.on('composed', ({ composition }) => {
+      for (const [key, options] of Object.entries(listeners)) {
+        const [, flags, type] = key.match(/^([*1~]+)?(.*)$/);
+        composition.addEventListener({
+          type,
+          target: query ? { query } : null,
+          once: flags?.includes('1'),
+          passive: flags?.includes('~'),
+          capture: flags?.includes('*'),
+          ...(
+            typeof options === 'function'
+              ? { handleEvent: options }
+              : (typeof options === 'string'
+                ? { prop: options }
+                : options)
+          ),
+        });
+      }
     });
 
-    return config.default;
+    // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  /** @type {typeof ICustomElement['on']} */
+  static on(nameOrCallbacks, callback) {
+    const callbacks = typeof nameOrCallbacks === 'string'
+      ? { [nameOrCallbacks]: callback }
+      : nameOrCallbacks;
+    for (const [name, fn] of Object.entries(callbacks)) {
+      /** @type {keyof (typeof CustomElement)} */
+      let arrayPropName;
+      switch (name) {
+        case 'composed': arrayPropName = '_onComposeCallbacks'; break;
+        case 'constructed': arrayPropName = '_onConstructedCallbacks'; break;
+        case 'connected': arrayPropName = '_onConnectedCallbacks'; break;
+        case 'disconnected': arrayPropName = '_onDisconnectedCallbacks'; break;
+        case 'props':
+          this.onPropChanged(fn);
+          continue;
+        case 'attrs':
+          this.onAttributeChanged(fn);
+          continue;
+        default:
+          if (name.endsWith('Changed')) {
+            const prop = name.slice(0, name.length - 'Changed'.length);
+            this.onPropChanged({ [prop]: fn });
+            continue;
+          }
+          throw new Error('Invalid callback name');
+      }
+      this._addCallback(arrayPropName, fn);
+    }
+
+    // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  /** @type {typeof ICustomElement['onPropChanged']} */
+  static onPropChanged(options) {
+    for (const [prop, callback] of Object.entries(options)) {
+      let array = this.propChangedCallbacks.get(prop);
+      if (!array) {
+        array = [];
+        this.propChangedCallbacks.set(prop, array);
+      }
+      array.push(callback);
+    }
+
+    // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  /** @type {typeof ICustomElement['onAttributeChanged']} */
+  static onAttributeChanged(options) {
+    for (const [name, callback] of Object.entries(options)) {
+      let array = this.attributeChangedCallbacks.get(name);
+      if (!array) {
+        array = [];
+        this.attributeChangedCallbacks.set(name, array);
+      }
+      array.push(callback);
+    }
+
+    // @ts-expect-error Can't cast T
+    return this;
   }
 
   /** @type {Record<string, HTMLElement>}} */
@@ -170,7 +391,10 @@ export default class CustomElement extends HTMLElement {
   #composition;
 
   /** @type {Map<string,string|null>} */
-  _idlAttributeCache;
+  _propAttributeCache;
+
+  /** @type {import('./ICustomElement.js').CallbackArguments} */
+  _callbackArguments = null;
 
   /** @param {any[]} args */
   constructor(...args) {
@@ -181,18 +405,22 @@ export default class CustomElement extends HTMLElement {
     }
 
     if (CustomElement.supportsElementInternalsRole) {
-      this.elementInternals.role = this.static.ariaRole;
+      this.elementInternals.role = this.ariaRole;
     } else if (!this.hasAttribute('role')) {
-      this.setAttribute('role', this.static.ariaRole);
+      this.setAttribute('role', this.ariaRole);
     }
 
-    this.attachShadow({ mode: 'open', delegatesFocus: this.static.delegatesFocus });
+    this.attachShadow({ mode: 'open', delegatesFocus: this.delegatesFocus });
 
     this.composition.initialRender(this.shadowRoot, this);
+
+    for (const callbacks of this.static._onConstructedCallbacks) {
+      callbacks.call(this, this.callbackArguments);
+    }
   }
 
   /**
-   * Updates component nodes based on data
+   * Updates nodes based on data
    * Expects data in JSON Merge Patch format
    * @see https://www.rfc-editor.org/rfc/rfc7386
    * @param {?} data
@@ -203,27 +431,33 @@ export default class CustomElement extends HTMLElement {
     this.composition.render(this.shadowRoot, data, this);
   }
 
-  /**
-   * @param {string} name
-   * @param {any} oldValue
-   * @param {any} newValue
-   * @return {void}
-   */
-  idlChangedCallback(name, oldValue, newValue) {
-    // console.log('idlChangedCallback', name, oldValue, newValue);
+  /** @type {InstanceType<typeof ICustomElement>['propChangedCallback']} */
+  propChangedCallback(name, oldValue, newValue) {
+    const callbacks = this.static.propChangedCallbacks.get(name);
+    if (callbacks) {
+      for (const callback of callbacks) {
+        callback.call(this, oldValue, newValue, this);
+      }
+    }
+
     this.render({ [name]: newValue });
   }
 
   /**
    * @param {string} name
-   * @param {string?} oldValue
-   * @param {string?} newValue
+   * @param {string|null} oldValue
+   * @param {string|null} newValue
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    // console.log(this.tagName, 'attributeChangedCallback', name, oldValue, newValue, '.');
+    const callbacks = this.static.attributeChangedCallbacks.get(name);
+    if (callbacks) {
+      for (const callback of callbacks) {
+        callback.call(this, oldValue, newValue, this);
+      }
+    }
 
     // Array.find
-    for (const config of this.static.idls.values()) {
+    for (const config of this.static.propList.values()) {
       if (config.attr !== name) continue;
 
       if (config.reflect !== true && config.reflect !== 'read') return;
@@ -233,8 +467,8 @@ export default class CustomElement extends HTMLElement {
 
       // @ts-expect-error any
       const previousDataValue = this[config.key];
-      const parsedValue = newValue == null
-        ? config.nullParser(newValue)
+      const parsedValue = newValue === null
+        ? config.nullParser(/** @type {null} */ (newValue))
         : (config.type === 'boolean' ? true : config.parser(newValue));
 
       if (parsedValue === previousDataValue) {
@@ -243,7 +477,7 @@ export default class CustomElement extends HTMLElement {
       }
       config.values.set(this, parsedValue);
       this.attributeCache.set(name, newValue);
-      this.idlChangedCallback(config.key, previousDataValue, parsedValue);
+      this.propChangedCallback(config.key, previousDataValue, parsedValue);
       return;
     }
   }
@@ -254,7 +488,7 @@ export default class CustomElement extends HTMLElement {
    * @param {any} newValue
    */
   _onObserverPropertyChanged(name, oldValue, newValue) {
-    const { reflect, attr } = this.static.idls.get(name);
+    const { reflect, attr } = this.static.propList.get(name);
     if (attr && (reflect === true || reflect === 'write')) {
       const attrValue = attrValueFromDataValue(newValue);
       const lastAttrValue = this.attributeCache.get(attr) ?? null;
@@ -269,15 +503,7 @@ export default class CustomElement extends HTMLElement {
     }
 
     // Invoke change => render
-    this.idlChangedCallback(name, oldValue, newValue);
-  }
-
-  /**
-   * Wraps `template/html` with bind to `this` (not natively set with tagged template literals)
-   * @return {import('./template.js').HTMLTemplater<this>}
-   */
-  get html() {
-    return html.bind(this);
+    this.propChangedCallback(name, oldValue, newValue);
   }
 
   /** @return {Record<string,HTMLElement>} */
@@ -304,8 +530,8 @@ export default class CustomElement extends HTMLElement {
   }
 
   get attributeCache() {
-    this._idlAttributeCache ??= new Map();
-    return this._idlAttributeCache;
+    this._propAttributeCache ??= new Map();
+    return this._propAttributeCache;
   }
 
   get tabIndex() {
@@ -318,7 +544,7 @@ export default class CustomElement extends HTMLElement {
       return;
     }
 
-    if (this.static.delegatesFocus && document.activeElement === this) {
+    if (this.delegatesFocus && document.activeElement === this) {
       if (this.getAttribute('tabindex') === value.toString()) {
         // Skip if possible
         return;
@@ -345,6 +571,23 @@ export default class CustomElement extends HTMLElement {
 
   get unique() { return false; }
 
+  get callbackArguments() {
+    if (!this._callbackArguments) {
+      const composition = this.#composition;
+      const template = composition.template;
+      this._callbackArguments = {
+        composition,
+        html: html.bind(this),
+        inline: addInlineFunction,
+        template,
+        $: template.querySelector.bind(template),
+        $$: template.querySelectorAll.bind(template),
+        element: this,
+      };
+    }
+    return this._callbackArguments;
+  }
+
   /** @return {Composition<?>} */
   get composition() {
     if (this.#composition) return this.#composition;
@@ -356,6 +599,9 @@ export default class CustomElement extends HTMLElement {
 
     // TODO: Use Composition to track uniqueness
     this.compose();
+    for (const callbacks of this.static._onComposeCallbacks) {
+      callbacks.call(this, this.callbackArguments);
+    }
 
     if (!this.unique) {
       // Cache compilation into static property
@@ -366,10 +612,19 @@ export default class CustomElement extends HTMLElement {
   }
 
   connectedCallback() {
+    for (const callbacks of this.static._onConnectedCallbacks) {
+      callbacks.call(this, this.callbackArguments);
+    }
     // In case author calls super.connectedCallback();
   }
 
   disconnectedCallback() {
+    for (const callbacks of this.static._onDisconnectedCallbacks) {
+      callbacks.call(this, this.callbackArguments);
+    }
     // In case author calls super.disconnectedCallback();
   }
 }
+
+CustomElement.prototype.ariaRole = 'none';
+CustomElement.prototype.delegatesFocus = false;

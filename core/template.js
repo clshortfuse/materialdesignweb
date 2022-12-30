@@ -1,15 +1,6 @@
 import { generateUID } from './identify.js';
 
 /**
- * @template T1
- * @template [T2=T1]
- * @callback HTMLTemplater
- * @param {TemplateStringsArray} strings
- * @param  {...(string|Element|((this:T1, data:T2) => any))} substitutions
- * @return {DocumentFragment}
- */
-
-/**
  * Property are bound to an ID+Node
  * Values are either getter or via an function
  * @template {any} T
@@ -59,12 +50,12 @@ export function addInlineFunction(fn) {
 }
 
 /**
- * @param {TemplateStringsArray} strings
+ * @param {TemplateStringsArray} array
  * @param  {...(string)} substitutions
  * @return {HTMLStyleElement|CSSStyleSheet}
  */
-export function css(strings, ...substitutions) {
-  const content = String.raw({ raw: strings }, ...substitutions);
+export function css(array, ...substitutions) {
+  const content = String.raw({ raw: array }, ...substitutions);
   if (_cssStyleSheetConstructable == null) {
     try {
       const sheet = new CSSStyleSheet();

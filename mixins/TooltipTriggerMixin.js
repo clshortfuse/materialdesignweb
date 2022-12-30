@@ -4,28 +4,26 @@ import { canAnchorPopup } from '../utils/popup.js';
 import styles from './TooltipTriggerMixin.css' assert { type: 'css' };
 
 /**
- * @template {typeof import('../core/CustomElement.js').default} T
- * @param {T} Base
+ * @param {typeof import('../components/Container.js').default} Base
  */
 export default function TooltipTriggerMixin(Base) {
   class TooltipTrigger extends Base {
-    compose() {
-      return super.compose().append(
-        styles,
-        /* html */ `
-          <${Tooltip.elementName} role=tooltip id=tooltip
-          ><slot id=tooltip-slot
-            onslotchange={onTooltipTriggerSlotChange} name=tooltip
-            >{tooltip}</slot></${Tooltip.elementName}>
-        `,
-      );
+    static {
+      this.css(styles);
+      // eslint-disable-next-line no-unused-expressions
+      this.html/* html */`
+        <${Tooltip.elementName} role=tooltip id=tooltip
+        ><slot id=tooltip-slot
+          onslotchange={onTooltipTriggerSlotChange} name=tooltip
+          >{tooltip}</slot></${Tooltip.elementName}>
+      `;
     }
 
     static TOOLTIP_MOUSE_IDLE_MS = 500;
 
     static TOOLTIP_TOUCH_IDLE_MS = 1500;
 
-    /** @type {Tooltip} */
+    /** @type {InstanceType<Tooltip>} */
     #tooltip;
 
     /** @type {any} */
@@ -47,7 +45,7 @@ export default function TooltipTriggerMixin(Base) {
     /** @param {any[]} args */
     constructor(...args) {
       super(...args);
-      this.#tooltip = /** @type {Tooltip} */ (this.refs.tooltip.cloneNode(true));
+      this.#tooltip = /** @type {InstanceType<Tooltip>} */ (this.refs.tooltip.cloneNode(true));
       this.#tooltip.id = '';
       this.#tooltip.style.setProperty('position', 'fixed');
       this.#tooltip.setAttribute('aria-hidden', 'true');
@@ -94,7 +92,9 @@ export default function TooltipTriggerMixin(Base) {
      * @return {void}
      */
     onTooltipTriggerSlotChange(event) {
-      const instance = /** @type {TooltipTrigger} */ (this.getRootNode().host);
+      /** @type {TooltipTrigger} */
+      // @ts-ignore Cast?
+      const instance = (this.getRootNode().host);
       const tooltip = instance.tooltipClone;
       while (tooltip.lastChild) {
         tooltip.lastChild.remove();
@@ -210,10 +210,10 @@ export default function TooltipTriggerMixin(Base) {
       let timeout = 0;
       switch (type) {
         case 'mouse':
-          timeout = this.static.TOOLTIP_MOUSE_IDLE_MS;
+          timeout = this.constructor.TOOLTIP_MOUSE_IDLE_MS;
           break;
         case 'touch':
-          timeout = this.static.TOOLTIP_TOUCH_IDLE_MS;
+          timeout = this.constructor.TOOLTIP_TOUCH_IDLE_MS;
           break;
         default:
       }
@@ -359,6 +359,6 @@ export default function TooltipTriggerMixin(Base) {
       super.disconnectedCallback();
     }
   }
-  TooltipTrigger.prototype.tooltip = TooltipTrigger.idl('tooltip');
+  TooltipTrigger.prototype.tooltip = TooltipTrigger.prop('tooltip');
   return TooltipTrigger;
 }

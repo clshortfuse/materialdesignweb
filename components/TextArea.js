@@ -8,19 +8,12 @@ import styles from './TextArea.css' assert { type: 'css' };
 export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
   static { this.autoRegister('mdw-textarea'); }
 
-  compose() {
-    const composition = super.compose().append(
-      styles,
-    );
-    const { template } = composition;
-
-    const slot = template.getElementById('slot');
-    slot.setAttribute('onslotchange', '{~onSlotChange}');
-
-    // Move into root (was label);
-    template.append(slot);
-
-    return composition;
+  static {
+    this.css(styles);
+    this.events('#slot', { slotchange: 'onSlotChange' });
+    this.on('composed', ({ template, $ }) => {
+      template.append($('#slot')); // Move into root (was label);
+    });
   }
 
   static supportsCSSLineHeightUnit = CSS.supports('height', '1lh');
@@ -43,9 +36,14 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
 
   #textarea = /** @type {HTMLTextAreaElement} */ (this.refs.control);
 
-  /** @type {Control['idlChangedCallback']} */
-  idlChangedCallback(name, oldValue, newValue) {
-    super.idlChangedCallback(name, oldValue, newValue);
+  /**
+   * @template {string} K
+   * @param {K} name
+   * @param {any} oldValue
+   * @param {any} newValue
+   */
+  propChangedCallback(name, oldValue, newValue) {
+    super.propChangedCallback(name, oldValue, newValue);
     switch (name) {
       case 'defaultValueAttr':
         this.defaultValue = newValue;
@@ -75,18 +73,14 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
     }
   }
 
-  /**
-   * @param {InputEvent} event
-   * @this {HTMLTextAreaElement}
-   * @return {void}
-   */
-  onControlInput(event) {
-    super.onControlInput(event);
-    if (TextArea.supportsCSSLineHeightUnit) return;
-    /** @type {{host:TextArea}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    // if (!host.autosize) return;
-    host.resize();
+  static {
+    if (TextArea.supportsCSSLineHeightUnit) {
+      this.events('#control', {
+        input() {
+          this.getRootNode().host.resize();
+        },
+      });
+    }
   }
 
   /**
@@ -110,7 +104,7 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
 
     const newValue = textarea.defaultValue;
     if (previousValue !== newValue) {
-      host.idlChangedCallback('defaultValue', previousValue, newValue);
+      host.propChangedCallback('defaultValue', previousValue, newValue);
     }
   }
 
@@ -178,7 +172,7 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
     const previousValue = this.#textarea.defaultValue;
     this.#textarea.defaultValue = value;
     if (previousValue !== this.#textarea.defaultValue) {
-      this.idlChangedCallback('defaultValue', previousValue, this.defaultValue);
+      this.propChangedCallback('defaultValue', previousValue, this.defaultValue);
     }
     this.textContent = this.#textarea.defaultValue;
   }
@@ -213,23 +207,22 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
   }
 }
 
-TextArea.prototype._maxHeight = TextArea.idl('_maxHeight');
-TextArea.prototype.fixed = TextArea.idl('fixed', { type: 'boolean' });
-TextArea.prototype.minRows = TextArea.idl('minRows', { attr: 'minrows', type: 'integer', empty: 0 });
-TextArea.prototype.maxRows = TextArea.idl('maxRows', { attr: 'maxrows', type: 'integer', empty: 0 });
-TextArea.prototype._lineHeight = TextArea.idl('_lineHeight');
+TextArea.prototype._maxHeight = TextArea.prop('_maxHeight');
+TextArea.prototype.fixed = TextArea.prop('fixed', { type: 'boolean' });
+TextArea.prototype.minRows = TextArea.prop('minRows', { attr: 'minrows', type: 'integer', empty: 0 });
+TextArea.prototype.maxRows = TextArea.prop('maxRows', { attr: 'maxrows', type: 'integer', empty: 0 });
+TextArea.prototype._lineHeight = TextArea.prop('_lineHeight');
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element
 
-/** @type {{onNullish: () => string}} */
-const DOMString = { onNullish: String };
-TextArea.prototype.cols = TextArea.idl('cols', { type: 'integer', empty: 0 });
-TextArea.prototype.dirName = TextArea.idl('dirName', { attr: 'dirname', ...DOMString });
-TextArea.prototype.maxLength = TextArea.idl('maxLength', { attr: 'maxlength', type: 'integer', empty: 0 });
-TextArea.prototype.minLength = TextArea.idl('minLength', { attr: 'minlength', type: 'integer', empty: 0 });
-TextArea.prototype.placeholder = TextArea.idl('placeholder', DOMString);
-TextArea.prototype.rows = TextArea.idl('rows', { type: 'integer', empty: 0 });
-TextArea.prototype.wrap = TextArea.idl('wrap', DOMString);
+const DOMString = { nullParser: String };
+TextArea.prototype.cols = TextArea.prop('cols', { type: 'integer', empty: 0 });
+TextArea.prototype.dirName = TextArea.prop('dirName', { attr: 'dirname', ...DOMString });
+TextArea.prototype.maxLength = TextArea.prop('maxLength', { attr: 'maxlength', type: 'integer', empty: 0 });
+TextArea.prototype.minLength = TextArea.prop('minLength', { attr: 'minlength', type: 'integer', empty: 0 });
+TextArea.prototype.placeholder = TextArea.prop('placeholder', DOMString);
+TextArea.prototype.rows = TextArea.prop('rows', { type: 'integer', empty: 0 });
+TextArea.prototype.wrap = TextArea.prop('wrap', DOMString);
 
 // Not in spec, but plays nice with HTML linters
-TextArea.prototype.defaultValueAttr = TextArea.idl('defaultValueAttr', { attr: 'value', ...DOMString });
+TextArea.prototype.defaultValueAttr = TextArea.prop('defaultValueAttr', { attr: 'value', ...DOMString });

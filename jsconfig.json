@@ -7,10 +7,13 @@
     "resolveJsonModule": true,
     "strict": false,
     "target": "esnext",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "noErrorTruncation": true
   },
+  
   "exclude": [
     "**/node_modules/*",
-    ".history/*"
+    ".history/*",
+    "**/*.min.js"
   ]
 }

@@ -20,15 +20,13 @@ const IMPLICIT_SUBMISSION_BLOCKING_TYPES = new Set([
 ]);
 
 /**
- * @template {typeof import('../core/CustomElement.js').default} T
- * @param {T} Base
+ * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function InputMixin(Base) {
   class Input extends ControlMixin(Base) {
     static get observedAttributes() {
       return [
         ...super.observedAttributes,
-        'aria-label',
         'selected',
       ];
     }
@@ -63,9 +61,9 @@ export default function InputMixin(Base) {
       'multiple', 'pattern', 'step', 'type', 'value',
     ];
 
-    /** @type {CustomElement['idlChangedCallback']} */
-    idlChangedCallback(name, oldValue, newValue) {
-      super.idlChangedCallback(name, oldValue, newValue);
+    /** @type {InstanceType<typeof CustomElement>['propChangedCallback']} */
+    propChangedCallback(name, oldValue, newValue) {
+      super.propChangedCallback(name, oldValue, newValue);
       switch (name) {
         case 'indeterminate':
           this.#input.indeterminate = newValue;
@@ -99,7 +97,7 @@ export default function InputMixin(Base) {
             default:
           }
           // Reinvoke change event for components tracking 'checked';
-          this.idlChangedCallback('checked', oldValue, newValue);
+          this.propChangedCallback('checked', oldValue, newValue);
           break;
         default:
       }
@@ -134,27 +132,50 @@ export default function InputMixin(Base) {
       }
     }
 
-    /** @type {HTMLInputElement} */
-    get #input() { return this.refs.control; }
+    get #input() { return /** @type {HTMLInputElement} */ (this.refs.control); }
 
-    /**
-     * @param {MouseEvent|PointerEvent} event
-     * @this {HTMLInputElement}
-     * @return {void}
-     */
-    onControlClick(event) {
-      super.onControlClick(event);
-      if (event.defaultPrevented) return;
+    static {
+      this.events('#control', {
+        '~click'(event) {
+          if (event.defaultPrevented) return;
+          if (this.type !== 'radio') return;
+          if (this.required) return;
+          const { host } = this.getRootNode();
 
-      if (this.type !== 'radio') return;
-      if (this.required) return;
-      /** @type {{host:Input}} */ // @ts-ignore Coerce
-      const { host } = this.getRootNode();
+          if (host.checked) {
+            host.checked = false;
+            // event.preventDefault();
+          }
+        },
+        keydown(event) {
+          if (event.defaultPrevented) return;
+          if (event.key === 'Enter') {
+            if (this.type === 'submit') return;
+            const { host } = this.getRootNode();
+            host.performImplicitSubmission(event);
+            return;
+          }
+          if (this.type !== 'radio') return;
+          if (event.key === 'Spacebar' || event.key === ' ') {
+            if (this.required) return;
+            const { host } = this.getRootNode();
 
-      if (host.checked) {
-        host.checked = false;
-      // event.preventDefault();
-      }
+            if (host.checked) {
+              host.checked = false;
+              event.preventDefault();
+            }
+          }
+        },
+        change(event) {
+          const { host } = this.getRootNode();
+          if (host.hasAttribute('disabled')) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return;
+          }
+          host._checked = this.checked;
+        },
+      });
     }
 
     /**
@@ -185,50 +206,6 @@ export default function InputMixin(Base) {
       }
       if (submissionBlockers.size > 1) return;
       this.form.submit();
-    }
-
-    /**
-     * @param {KeyboardEvent} event
-     * @this {HTMLInputElement}
-     * @return {void}
-     */
-    onControlKeydown(event) {
-      super.onControlKeydown(event);
-      if (event.defaultPrevented) return;
-      if (event.key === 'Enter') {
-        if (this.type === 'submit') return;
-        const { host } = this.getRootNode();
-        host.performImplicitSubmission(event);
-        return;
-      }
-      if (this.type !== 'radio') return;
-      if (event.key === 'Spacebar' || event.key === ' ') {
-        if (this.required) return;
-        /** @type {{host:Input}} */ // @ts-ignore Coerce
-        const { host } = this.getRootNode();
-
-        if (host.checked) {
-          host.checked = false;
-          event.preventDefault();
-        }
-      }
-    }
-
-    /**
-     * @param {Event} event
-     * @this {HTMLInputElement} this
-     * @return {void}
-     */
-    onControlChange(event) {
-    /** @type {{host:Input}} */ // @ts-ignore Coerce
-      const { host } = this.getRootNode();
-      if (host.hasAttribute('disabled')) {
-        event.preventDefault();
-        event.stopPropagation();
-        return;
-      }
-      host._checked = this.checked;
-      super.onControlChange(event);
     }
 
     /** @param {CustomEvent<[string, string]>} event */
@@ -329,40 +306,39 @@ export default function InputMixin(Base) {
     }
   }
 
-  Input.prototype.ariaControls = Input.idl('ariaControls');
-  Input.prototype._isFocused = Input.idl('_isFocused', 'boolean');
+  Input.prototype.ariaControls = Input.prop('ariaControls');
 
   // https://html.spec.whatwg.org/multipage/input.html#htmlinputelement
 
-  const DOMString = { onNullish: String, default: '' };
+  const DOMString = { nullParser: String, value: '' };
 
-  Input.prototype.accept = Input.idl('accept', DOMString);
-  Input.prototype.alt = Input.idl('alt', DOMString);
-  Input.prototype.defaultChecked = Input.idl('defaultChecked', { attr: 'checked', type: 'boolean' });
+  Input.prototype.accept = Input.prop('accept', DOMString);
+  Input.prototype.alt = Input.prop('alt', DOMString);
+  Input.prototype.defaultChecked = Input.prop('defaultChecked', { attr: 'checked', type: 'boolean' });
   //  attribute boolean checked;
-  Input.prototype._checked = Input.idl('_checked', { attr: 'selected', type: 'boolean' });
-  Input.prototype.dirName = Input.idl('dirName', { attr: 'dirname', ...DOMString });
-  Input.prototype._formAction = Input.idl('_formAction', { attr: 'formaction' });
-  Input.prototype.formEnctype = Input.idl('formEnctype', { attr: 'formenctype', ...DOMString });
-  Input.prototype.formMethod = Input.idl('formMethod', { attr: 'formmethod', ...DOMString });
-  Input.prototype.formNoValidate = Input.idl('formnovalidate', { attr: 'formNoValidate', type: 'boolean' });
-  Input.prototype.formTarget = Input.idl('formTarget', { attr: 'formtarget', ...DOMString });
-  Input.prototype._height = Input.idl('_height', { attr: 'height', type: 'integer' });
-  Input.prototype.indeterminate = Input.idl('indeterminate', { type: 'boolean', reflect: false });
-  Input.prototype.max = Input.idl('max', DOMString);
-  Input.prototype.maxLength = Input.idl('maxLength', { attr: 'maxlength', type: 'integer', empty: -1 });
-  Input.prototype.min = Input.idl('min', DOMString);
-  Input.prototype.minLength = Input.idl('minLength', { attr: 'minlength', type: 'integer', empty: -1 });
-  Input.prototype.multiple = Input.idl('multiple', 'boolean');
-  Input.prototype.pattern = Input.idl('pattern', DOMString);
-  Input.prototype.placeholder = Input.idl('placeholder', DOMString);
-  Input.prototype.size = Input.idl('size', { type: 'integer', empty: 20 });
-  Input.prototype.src = Input.idl('src', DOMString);
-  Input.prototype.step = Input.idl('step', DOMString);
-  Input.prototype.type = Input.idl('type', DOMString);
-  Input.prototype.defaultValue = Input.idl('defaultValue', { attr: 'value', ...DOMString });
+  Input.prototype._checked = Input.prop('_checked', { attr: 'selected', type: 'boolean' });
+  Input.prototype.dirName = Input.prop('dirName', { attr: 'dirname', ...DOMString });
+  Input.prototype._formAction = Input.prop('_formAction', { attr: 'formaction' });
+  Input.prototype.formEnctype = Input.prop('formEnctype', { attr: 'formenctype', ...DOMString });
+  Input.prototype.formMethod = Input.prop('formMethod', { attr: 'formmethod', ...DOMString });
+  Input.prototype.formNoValidate = Input.prop('formnovalidate', { attr: 'formNoValidate', type: 'boolean' });
+  Input.prototype.formTarget = Input.prop('formTarget', { attr: 'formtarget', ...DOMString });
+  Input.prototype._height = Input.prop('_height', { attr: 'height', type: 'integer' });
+  Input.prototype.indeterminate = Input.prop('indeterminate', { type: 'boolean', reflect: false });
+  Input.prototype.max = Input.prop('max', DOMString);
+  Input.prototype.maxLength = Input.prop('maxLength', { attr: 'maxlength', type: 'integer', empty: -1 });
+  Input.prototype.min = Input.prop('min', DOMString);
+  Input.prototype.minLength = Input.prop('minLength', { attr: 'minlength', type: 'integer', empty: -1 });
+  Input.prototype.multiple = Input.prop('multiple', 'boolean');
+  Input.prototype.pattern = Input.prop('pattern', DOMString);
+  Input.prototype.placeholder = Input.prop('placeholder', DOMString);
+  Input.prototype.size = Input.prop('size', { type: 'integer', empty: 20 });
+  Input.prototype.src = Input.prop('src', DOMString);
+  Input.prototype.step = Input.prop('step', DOMString);
+  Input.prototype.type = Input.prop('type', DOMString);
+  Input.prototype.defaultValue = Input.prop('defaultValue', { attr: 'value', ...DOMString });
   //  [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
-  Input.prototype._width = Input.idl('_width', { attr: 'width', type: 'integer' });
+  Input.prototype._width = Input.prop('_width', { attr: 'width', type: 'integer' });
 
   return Input;
 }

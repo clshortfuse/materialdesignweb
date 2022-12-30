@@ -4,103 +4,51 @@ import styles from './StateMixin.css' assert { type: 'css' };
 
 let lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matches;
 
-/** @typedef {import('../core/CustomElement.js').default} CustomElement */
-
 /**
- * @template {typeof import('../core/CustomElement.js').default} T
- * @param {T} Base
+ * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function StateMixin(Base) {
-  class State extends Base {
-    compose() {
-      return super.compose().append(
-        styles,
-        '<div id=state disabled={disabled} aria-hidden=true>',
-      );
-    }
-
-    /** @type {'mouse'|'touch'|'key'|null} */
-    #lastInteraction = null;
-
-    /**
-     * @param {PointerEvent|MouseEvent} event
-     * @this {State}
-     * @return {void}
-     */
-    onStateMouseDown(event) {
-      if (this.#lastInteraction) return;
-      this.#lastInteraction = 'mouse';
-      this.refs.state?.removeAttribute('touched');
-    }
-
-    /**
-     * @param {TouchEvent} event
-     * @this {State}
-     * @return {void}
-     */
-    onStateTouchStart(event) {
-      this.#lastInteraction = 'touch';
-      this.refs.state?.setAttribute('touched', '');
-    }
-
-    /**
-     * @param {KeyboardEvent} event
-     * @this {State}
-     * @return {void}
-     */
-    onStateKeyDown(event) {
-      this.#lastInteraction = 'key';
-      this.refs.state?.removeAttribute('touched');
-    }
-
-    /**
-     * @param {FocusEvent} event
-     * @this {State}
-     * @return {void}
-     */
-    onStateBlur(event) {
-      this.refs.state?.removeAttribute('focus');
-      switch (this.#lastInteraction) {
-        case null: return;
-        case 'touch':
-          lastInteractionWasTouch = true;
-          // this.refs.state.removeAttribute('touched');
-          break;
-        default:
-          lastInteractionWasTouch = false;
-      }
-      this.#lastInteraction = null;
-    }
-
-    /**
-     * @param {FocusEvent} event
-     * @this {State}
-     * @return {void}
-     */
-    onStateFocus(event) {
-      this.refs.state?.setAttribute('focus', '');
-      // Element was focused without a mouse or touch event (keyboard or programmatic)
-      if (!this.#lastInteraction && lastInteractionWasTouch) {
-      // Replicate touch behavior
-        this.#lastInteraction = 'touch';
-        this.refs.state?.setAttribute('touched', '');
-      }
-    }
-
-    connectedCallback() {
-      super.connectedCallback();
-      this.addEventListener('mousedown', this.onStateMouseDown, { passive: true });
-      this.addEventListener('touchstart', this.onStateTouchStart, { passive: true });
-      this.addEventListener('keydown', this.onStateKeyDown, { passive: true });
-      this.addEventListener('blur', this.onStateBlur, { passive: true });
-      this.addEventListener('focus', this.onStateFocus, { passive: true });
-    }
-
-    disconnectedCallback() {
-      this.#lastInteraction = null;
-      super.disconnectedCallback();
-    }
-  }
-  State.prototype.disabled = State.idl('disabled', { type: 'boolean' });
-  return State;
+  return Base
+    .extend()
+    .observe({
+      disabled: 'boolean',
+      _lastInteraction: { value: /** @type {'mouse'|'touch'|'key'|null} */(null) },
+      _focused: 'boolean',
+    })
+    .css(styles)
+    .html/* html */`
+      <div id=state
+        disabled={disabled}
+        touched=${({ _lastInteraction }) => _lastInteraction === 'touch'}
+        focused={_focused}
+        aria-hidden=true></div>
+    `
+    .events({
+      '~mousedown'() {
+        this._lastInteraction ??= 'mouse';
+      },
+      '~touchstart'() {
+        this._lastInteraction = 'touch';
+      },
+      '~keydown'() {
+        this._lastInteraction = 'key';
+      },
+      blur() {
+        this._focused = false;
+        if (!this._lastInteraction) return;
+        lastInteractionWasTouch = (this._lastInteraction === 'touch');
+        this._lastInteraction = null;
+      },
+      focus() {
+        this._focused = true;
+        // Element was focused without a mouse or touch event (keyboard or programmatic)
+        if (!this._lastInteraction && lastInteractionWasTouch) {
+          // Replicate touch behavior
+          this._lastInteraction = 'touch';
+        }
+      },
+    })
+    .on('disconnected', ({ element }) => {
+      element._lastInteraction = null;
+    });
 }

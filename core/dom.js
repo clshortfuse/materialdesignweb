@@ -132,13 +132,14 @@ export function attrNameFromPropName(name) {
 }
 
 /**
- * @param {HTMLElement} element
+ * @param {HTMLElement|Element} element
  * @param {Parameters<HTMLElement['focus']>} [options]
  * @return {boolean} Focus was successful
  */
 export function attemptFocus(element, ...options) {
   if (!element) return false;
   try {
+    // @ts-expect-error Use catch if not HTMLElement
     element.focus(...options);
   } catch (e) {
     console.error(e);

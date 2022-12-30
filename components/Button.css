@@ -116,8 +116,11 @@
 
   visibility: var(--mdw-button__outline__visibility);
 
-  border-color: rgba(var(--mdw-button__outline__rgb), var(--mdw-button__outline__opacity));
+  border-color: currentColor;
   border-radius: inherit;
+
+  color: rgba(var(--mdw-button__outline__rgb), var(--mdw-button__outline__opacity));
+  /* box-shadow: 0 0 var(--mdw-button__outline__size) 0 currentColor; */
 }
 
 #icon {

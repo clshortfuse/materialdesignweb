@@ -1,7 +1,0 @@
-:host {
-  position: relative;
-
-  pointer-events: var(--mdw-card-action-area__pointer-events, auto);
-
-  z-index: 2;
-}

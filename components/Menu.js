@@ -21,21 +21,19 @@ import MenuItem from './MenuItem.js';
 export default class Menu extends KeyboardNavMixin(CustomElement) {
   static { this.autoRegister('mdw-menu'); }
 
-  compose() {
-    const { html } = this;
-    return super.compose().append(
-      styles,
-      html`
-        <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>
-          <div id=scrim aria-hidden=true></div>
-          <form id=form method=dialog role=none>
-            <mdw-container id=container role=none>
-              <slot id=slot onslotchange={~onSlotChange}></slot>
-            </mdw-container>
-          </form>
-        </dialog>
-      `,
-    );
+  static {
+    this.css(styles);
+    // eslint-disable-next-line no-unused-expressions
+    this.html/* html */`
+      <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>
+        <div id=scrim aria-hidden=true></div>
+        <form id=form method=dialog role=none>
+          <mdw-container id=container role=none>
+            <slot id=slot onslotchange={~onSlotChange}></slot>
+          </mdw-container>
+        </form>
+      </dialog>
+    `;
   }
 
   static supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
@@ -628,6 +626,6 @@ export default class Menu extends KeyboardNavMixin(CustomElement) {
   }
 }
 
-Menu.prototype.open = Menu.idl('open', 'boolean');
-Menu.prototype.direction = Menu.idl('direction');
-Menu.prototype.position = Menu.idl('position');
+Menu.prototype.open = Menu.prop('open', 'boolean');
+Menu.prototype.direction = Menu.prop('direction');
+Menu.prototype.position = Menu.prop('position');

@@ -1,13 +1,15 @@
 import KbdNavWidgetMixin from './KeyboardNavMixin.js';
 
 /**
- * @template {typeof import('../core/CustomElement.js').default} T
- * @param {T} Base
+ * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function AriaToolbarMixin(Base) {
-  class AriaToolbar extends KbdNavWidgetMixin(Base) {
-    /** @return {'horizontal'|'vertical'} */
-    get ariaOrientationDefault() { return 'horizontal'; }
-  }
-  return AriaToolbar;
+  return Base
+    .mixin(KbdNavWidgetMixin)
+    .extend()
+    .define({
+      ariaOrientationDefault() {
+        return /** @type {'horizontal'|'vertical'} */ ('horizontal');
+      },
+    });
 }

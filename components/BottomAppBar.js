@@ -9,14 +9,10 @@ import Container from './Container.js';
  * next on the DOM, so users can logically tab to it.
  */
 
-/** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
-/** @implements {Omit<HTMLMenuElement,DeprecatedHTMLMenuElementProperties>} */
-export default class BottomAppBar extends AriaToolbarMixin(Container) {
-  static { this.autoRegister('mdw-bottom-app-bar'); }
-
-  static ariaRole = 'toolbar';
-
-  compose() {
-    return super.compose().append(styles);
-  }
-}
+export default Container
+  .mixin(AriaToolbarMixin)
+  .set({
+    ariaRole: 'toolbar',
+  })
+  .css(styles)
+  .autoRegister('mdw-bottom-app-bar');

@@ -1,14 +1,12 @@
-import styles from './CardActionArea.css' assert { type: 'css' };
 import Container from './Container.js';
 
-/** @implements {Container} */
-export default class CardActionArea extends Container {
-  static { this.autoRegister('mdw-card-action-area'); }
-
-  /** @type {Container['compose']} */
-  compose() {
-    return super.compose().append(
-      styles,
-    );
-  }
-}
+export default Container
+  .extend()
+  .css/* css */`
+    :host {
+      position: relative;
+      pointer-events: var(--mdw-card-action-area__pointer-events, auto);
+      z-index: 2;
+    }
+  `
+  .autoRegister('mdw-card-action-area');

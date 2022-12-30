@@ -11,43 +11,18 @@ import RippleMixin from './RippleMixin.js';
 /** @typedef {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} HTMLControlElement */
 
 /**
- * @template {typeof import('../core/CustomElement.js').default} T
- * @param {T} Base
+ * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function ControlMixin(Base) {
   class Control extends FormAssociatedMixin(RippleMixin(Base)) {
-    static delegatesFocus = true;
-
     /** @return {Iterable<string>} */
     static get observedAttributes() {
       return [
         ...super.observedAttributes,
+        'aria-label',
+        ...this.valueChangingContentAttributes,
         ...this.clonedContentAttributes,
       ];
-    }
-
-    compose() {
-      const composition = super.compose();
-      const { html } = this;
-      const { template } = composition;
-      return composition.append(
-        styles,
-        html`
-          <label id=label>
-            <${this.static.controlTagName} id=control aria-labelledby="slot"
-              onclick={onControlClick}
-              onchange={onControlChange}
-              onkeydown={onControlKeydown}
-              onfocus={~onControlFocus}
-              onblur={~onControlBlur}
-              oninput={onControlInput}
-              >${this.static.controlVoidElement ? '' : `</${this.static.controlTagName}>`}
-              ${template.getElementById('state')}
-              ${template.getElementById('ripple')}
-              ${template.getElementById('slot')}
-          </label>
-        `,
-      );
     }
 
     static controlTagName = 'input';
@@ -65,6 +40,7 @@ export default function ControlMixin(Base) {
     /** @param {any[]} args  */
     constructor(...args) {
       super(...args);
+      /** @type {string} */
       this._value = this._control.value;
       if (!this.hasAttribute('tabindex')) {
         this.tabIndex = 0;
@@ -128,7 +104,60 @@ export default function ControlMixin(Base) {
       }
     }
 
+    /** @type {HTMLControlElement} */
     get _control() { return this.refs.control; }
+
+    get rippleActiveTarget() { return this._control; }
+
+    static {
+      this.css(styles);
+      this.on('composed', ({ template, $, html }) => {
+        template.append(
+          html`
+            <label id=label>
+              <${this.controlTagName} id=control aria-labelledby="slot"
+                >${this.controlVoidElement ? '' : `</${this.controlTagName}>`}
+              ${$('#state')}
+              ${$('#ripple')}
+              ${$('#slot')}
+            </label>
+          `,
+        );
+      });
+      this.events({
+        click: {
+          capture: true,
+          /* Reconstructs author-dispatched `click` event to control */
+          handleEvent(event) {
+            // TODO: Consider event.target === this
+            if (event.composedPath().includes(this.shadowRoot)) return;
+            event.stopImmediatePropagation();
+            this._control.click();
+          },
+        },
+      });
+      this.events('#control', {
+        input() {
+          const { host } = this.getRootNode();
+          if (!host.validity.valid) {
+            // Perform check in case user has validated
+            host.checkValidity();
+          } else {
+            // Track internally
+            this.checkValidity();
+            host._badInput = this.validity.badInput;
+          }
+          host._value = this.value;
+        },
+        change(event) {
+          const { host } = this.getRootNode();
+          host._value = this.value;
+          host.checkValidity();
+          // Change event is NOT composed. Needs to escape shadow DOM
+          host.dispatchEvent(new Event('change', { bubbles: true }));
+        },
+      });
+    }
 
     /** @type {HTMLElement['focus']} */
     focus(...options) {
@@ -196,13 +225,7 @@ export default function ControlMixin(Base) {
     }
 
     get labels() { return this.elementInternals.labels; }
-
-    connectedCallback() {
-      super.connectedCallback();
-      this.removeEventListener('keydown', this.onRippleKeyDown);
-      this._control.addEventListener('keydown', this.onRippleKeyDown, { passive: true });
-    // control.addEventListener('invalid', this.onControlInvalid);
-    }
   }
+  Control.prototype.delegatesFocus = true;
   return Control;
 }

@@ -6,21 +6,13 @@ import ListItem from './ListItem.js';
 export default class ListOption extends ListItem {
   static { this.autoRegister('mdw-list-option'); }
 
-  static ariaRole = 'option';
-
-  static delegatesFocus = false;
-
-  compose() {
-    const composition = super.compose();
-
-    // Modify composition
-    const template = composition.template;
-    template.getElementById('headline-text').append(
-      template.getElementById('slot'),
-    );
-    template.getElementById('state').setAttribute('state-disabled', 'focus hover');
-
-    return composition;
+  static {
+    this.on('composed', ({ $ }) => {
+      $('#headline-text').append(
+        $('#slot'),
+      );
+      $('#state').setAttribute('state-disabled', 'focus hover');
+    });
   }
 
   /** @type {HTMLFormElement} */
@@ -50,23 +42,19 @@ export default class ListOption extends ListItem {
     }
   }
 
-  /** @type {ListItem['idlChangedCallback']} */
-  idlChangedCallback(name, oldValue, newValue) {
-    super.idlChangedCallback(name, oldValue, newValue);
-    switch (name) {
-      case 'checkbox':
+  static {
+    this.onPropChanged({
+      checkbox(oldValue, newValue) {
         if (newValue) {
           this.setAttribute('aria-selected', String(this.hasAttribute('selected')));
         } else {
           this.removeAttribute('aria-selected');
         }
-        break;
-      case '_selected':
-        // /** @type {Checkbox} */ (this.refs.checkbox) = newValue;
+      },
+      _selected(oldValue, newValue) {
         this.setAttribute('aria-selected', String(newValue));
-        break;
-      default:
-    }
+      },
+    });
   }
 
   isInteractive() {
@@ -117,16 +105,19 @@ export default class ListOption extends ListItem {
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#htmloptionelement
 
-ListOption.idls.delete('disabled');
-ListOption.prototype._disabled = ListOption.idl('_disabled', { attr: 'disabled', reflect: true, type: 'boolean' });
+ListOption.propList.delete('disabled');
+ListOption.prototype._disabled = ListOption.prop('_disabled', { attr: 'disabled', reflect: true, type: 'boolean' });
 // [CEReactions] attribute boolean disabled;
-ListOption.prototype._form = ListOption.idl('_form');
-ListOption.prototype._label = ListOption.idl('_label', { attr: 'label', onNullish: String });
-ListOption.prototype.defaultSelected = ListOption.idl('defaultSelected', { attr: 'selected', type: 'boolean' });
-ListOption.prototype._selected = ListOption.idl('_selected', 'boolean');
-ListOption.prototype._value = ListOption.idl('_value', { attr: 'value', reflect: true });
+ListOption.prototype._form = ListOption.prop('_form');
+ListOption.prototype._label = ListOption.prop('_label', { attr: 'label', nullParser: String });
+ListOption.prototype.defaultSelected = ListOption.prop('defaultSelected', { attr: 'selected', type: 'boolean' });
+ListOption.prototype._selected = ListOption.prop('_selected', 'boolean');
+ListOption.prototype._value = ListOption.prop('_value', { attr: 'value', reflect: true });
 // [CEReactions] attribute DOMString value;
-// ListOption.prototype.text = ListOption.idl('text');
+// ListOption.prototype.text = ListOption.prop('text');
 // readonly attribute long index;
 
 // window.ListOption = ListOption;
+ListOption.prototype.ariaRole = 'option';
+
+ListOption.prototype.delegatesFocus = false;

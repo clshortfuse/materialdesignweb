@@ -50,6 +50,7 @@
     "no-param-reassign": ["error", {
       "props": false
     }],
+    "no-invalid-this": 0,
     "no-prototype-builtins": 0,
     "no-continue": 0,
     "no-restricted-syntax": 0,
@@ -67,9 +68,11 @@
     "default-case-last": 0,
     "no-undef": 0,
     "import/named": 0,
+    "object-shorthand": ["error", "always", { "avoidQuotes": false }],
     "no-empty": ["error", {
       "allowEmptyCatch": true
     }],
+    "class-methods-use-this": 0,
     "no-promise-executor-return": 0,
     "github/no-then": 0,
     "@typescript-eslint/ban-ts-comment": ["warn", {
@@ -117,7 +120,7 @@
         "[properties]",
         "constructor",
         "render",
-        "idlChangedCallback",
+        "propChangedCallback",
         "attributeChangedCallback",
         "[private-methods]",
         "[conventional-private-methods]",
@@ -150,7 +153,17 @@
         }, {
           "name": "template",
           "static": true
-        }],
+        }, {
+          "name": "watchers",
+          "static": true
+        }, {
+          "name": "parts",
+          "static": false
+        }, {
+          "name": "compose",
+          "static": false
+        }
+      ],
         "private-static-methods": [{
           "private": true,
           "type": "method",
@@ -203,7 +216,7 @@
     "unicorn/catch-error-name": 0,
     "unicorn/prefer-dom-node-dataset": 0,
     "unicorn/no-array-reduce": 0,
-    "unicorn/no-this-assignment": 0,
+    "unicorn/no-this-assignment": "error",
     "unicorn/prefer-ternary": ["error", "only-single-line"],
     "unicorn/no-empty-file": 0,
     "unicorn/prefer-query-selector": 0,

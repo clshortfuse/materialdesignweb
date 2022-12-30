@@ -3,51 +3,42 @@ import TooltipTriggerMixin from '../mixins/TooltipTriggerMixin.js';
 import Button from './Button.js';
 import styles from './IconButton.css' assert { type: 'css' };
 
-export default class IconButton extends TooltipTriggerMixin(Button) {
-  static { this.autoRegister('mdw-icon-button'); }
+export default Button
+  .mixin(TooltipTriggerMixin)
+  .css(styles)
+  .expressions({
+    computeAriaPressed({ type, _checked }) {
+      if (type !== 'checkbox') return null;
+      return _checked ? 'true' : 'false';
+    },
+  })
+  .events('#control', {
+    keydown(event) {
+      if (event.key !== 'Enter') return;
+      if (this.type !== 'checkbox') return;
+      event.stopImmediatePropagation();
+      event.stopPropagation();
+      event.preventDefault();
+      if (this.disabled) return;
 
-  compose() {
-    const composition = super.compose().append(styles);
+      // Simulate click
+      const clickEvent = new Event('click', { bubbles: true, cancelable: true, composed: true });
+      if (!this.dispatchEvent(clickEvent)) return;
 
-    const { template } = composition;
-    template.getElementById('slot').remove();
-    template.getElementById('tooltip-slot').removeAttribute('name');
-    // icon.append(template.getElementById('slot'));
-    const icon = template.getElementById('icon');
+      // Toggle check and signal
+      this.checked = !this.checked;
+      this.dispatchEvent(new Event('change', { bubbles: true }));
+    },
+  })
+  .on('composed', ({ $ }) => {
+    $('#slot').remove();
+    $('#tooltip-slot').removeAttribute('name');
+    // icon.append($('#slot'));
+    const icon = $('#icon');
     icon.setAttribute('style', '{computeIconStyle}');
 
-    const control = template.getElementById('control');
+    const control = $('#control');
     control.setAttribute('aria-pressed', '{computeAriaPressed}');
     control.setAttribute('aria-labelledby', 'tooltip');
-
-    return composition;
-  }
-
-  /** @return {string?} */
-  computeAriaPressed() {
-    const { type, _checked } = this;
-    if (type !== 'checkbox') return null;
-    return _checked ? 'true' : 'false';
-  }
-
-  /**
-   * @param {KeyboardEvent} event
-   * @this {HTMLInputElement}
-   * @return {void}
-   */
-  onControlKeyDown(event) {
-    if (event.key !== 'Enter') return;
-    if (this.type !== 'checkbox') return;
-    event.stopPropagation();
-    event.preventDefault();
-    if (this.disabled) return;
-
-    // Simulate click
-    const clickEvent = new Event('click', { bubbles: true, cancelable: true, composed: true });
-    if (!this.dispatchEvent(clickEvent)) return;
-
-    // Toggle check and signal
-    this.checked = !this.checked;
-    this.dispatchEvent(new Event('change', { bubbles: true }));
-  }
-}
+  })
+  .autoRegister('mdw-icon-button');

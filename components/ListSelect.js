@@ -8,14 +8,9 @@ import ListOption from './ListOption.js';
 
 /** @implements {HTMLSelectElement} */
 export default class ListSelect extends KeyboardNavMixin(FormAssociatedMixin(List)) {
-  static { this.autoRegister('mdw-list-select'); }
-
-  static ariaRole = 'listbox';
-
-  static delegatesFocus = true;
-
-  compose() {
-    return super.compose().append(styles);
+  static {
+    this.autoRegister('mdw-list-select');
+    this.css(styles);
   }
 
   /** @type {HTMLCollectionOf<ListOption> & HTMLOptionsCollection} */
@@ -28,9 +23,9 @@ export default class ListSelect extends KeyboardNavMixin(FormAssociatedMixin(Lis
     this.addEventListener('click', this.onListSelectClick);
   }
 
-  /** @type {List['idlChangedCallback']} */
-  idlChangedCallback(name, oldValue, newValue) {
-    super.idlChangedCallback(name, oldValue, newValue);
+  /** @type {InstanceType<typeof List>['propChangedCallback']} */
+  propChangedCallback(name, oldValue, newValue) {
+    super.propChangedCallback(name, oldValue, newValue);
     switch (name) {
       case 'multiple':
         this.setAttribute('aria-multiselectable', newValue ? 'true' : 'false');
@@ -67,7 +62,6 @@ export default class ListSelect extends KeyboardNavMixin(FormAssociatedMixin(Lis
    * @return {void}
    */
   onControlKeydown(event) {
-    super.onControlKeydown(event);
     if (event.key === 'Spacebar' || event.key === ' ') {
       const target = event.target;
       if (!(target instanceof ListOption)) return;
@@ -188,10 +182,12 @@ export default class ListSelect extends KeyboardNavMixin(FormAssociatedMixin(Lis
 // https://html.spec.whatwg.org/multipage/form-elements.html#htmlselectelement
 
 // [CEReactions] attribute DOMString autocomplete;
-ListSelect.prototype.disabled = ListSelect.idl('disabled', { type: 'boolean' });
+ListSelect.prototype.disabled = ListSelect.prop('disabled', { type: 'boolean' });
 // readonly attribute HTMLFormElement? form;
-ListSelect.prototype.multiple = ListSelect.idl('multiple', { type: 'boolean' });
+ListSelect.prototype.multiple = ListSelect.prop('multiple', { type: 'boolean' });
 // [CEReactions] attribute boolean multiple;
 // [CEReactions] attribute DOMString name;
 // [CEReactions] attribute boolean required;
-ListSelect.prototype.size = ListSelect.idl('size', { type: 'integer', empty: 0 });
+ListSelect.prototype.size = ListSelect.prop('size', { type: 'integer', empty: 0 });
+ListSelect.prototype.ariaRole = 'listbox';
+ListSelect.prototype.delegatesFocus = true;

@@ -5,21 +5,16 @@ import { identifierFromElement, identifierFromKey, identifierMatchesElement, key
 import { observeFunction } from './observe.js';
 import { generateFragment, inlineFunctions } from './template.js';
 
-/** @template T @typedef {Composition<?>|HTMLStyleElement|CSSStyleSheet|DocumentFragment|((this:T, changes:T) => any)|string} CompositionPart */
+/**
+ * @template T
+ * @typedef {Composition<?>|HTMLStyleElement|CSSStyleSheet|DocumentFragment|((this:T, changes:T) => any)|string} CompositionPart
+ */
 
 /**
  * @template {any} T
  * @callback Compositor
  * @param {...(CompositionPart<T>)} parts source for interpolation (not mutated)
  * @return {Composition<T>}
- */
-
-/**
- * @typedef {Object} EventEntry
- * @prop {string} type
- * @prop {EventListenerOptions} options
- * @prop {EventListener} [listener]
- * @prop {string} [prop]
  */
 
 /**
@@ -74,7 +69,7 @@ export default class Composition {
   /**
    * Collection of events to bind.
    * Indexed by ElementIdentifierKey
-   * @type {Map<ElementIdentifierKey, Set<EventEntry>>}
+   * @type {Map<ElementIdentifierKey, Set<import('./typings.js').CompositionEventListener<any>>>}
    */
   events = new Map();
 
@@ -156,6 +151,18 @@ export default class Composition {
       }
     }
     // Allow chaining
+    return this;
+  }
+
+  /** @param {import('./typings.js').CompositionEventListener<T,any>} listener */
+  addEventListener(listener) {
+    const key = listener.target ? keyFromIdentifier(listener.target) : '';
+    let set = this.events.get(key);
+    if (!set) {
+      set = new Set();
+      this.events.set(key, set);
+    }
+    set.add(listener);
     return this;
   }
 
@@ -267,21 +274,21 @@ export default class Composition {
               }
               const events = this.events.get(identifierKey);
               if (events) {
-                for (const { type, listener, options, prop } of events) {
+                for (const entry of events) {
                   let eventListener;
-                  if (listener) {
-                    eventListener = listener;
-                  } else if (prop?.startsWith('#')) {
+                  if (entry.handleEvent) {
+                    eventListener = entry.handleEvent;
+                  } else if (entry.prop?.startsWith('#')) {
                     // console.log('binding to inline function');
-                    eventListener = inlineFunctions.get(prop).fn;
+                    eventListener = inlineFunctions.get(entry.prop).fn;
                   } else {
-                    eventListener = valueFromPropName(prop, data);
+                    eventListener = valueFromPropName(entry.prop, data);
                   }
                   if (eventListener) {
                     // console.log('Bind event to added element', identifier, ref, eventListener, ref.isConnected);
-                    ref.addEventListener(type, eventListener, options);
+                    ref.addEventListener(entry.type, eventListener, entry);
                   } else {
-                    console.warn('Could not bind event', identifier, prop);
+                    console.warn('Could not bind event', identifier, entry.prop);
                   }
                 }
               }
@@ -396,9 +403,9 @@ export default class Composition {
           this.events.set(identifierKey, set);
         }
         if (parsedValue.startsWith('#')) {
-          set.add({ type, options, listener: inlineFunctions.get(parsedValue) });
+          set.add({ type, handleEvent: inlineFunctions.get(parsedValue), ...options });
         } else {
-          set.add({ type, options, prop: parsedValue });
+          set.add({ type, prop: parsedValue, ...options });
         }
         continue;
       }
@@ -549,28 +556,31 @@ export default class Composition {
 
     // console.log('Initial render', [...root.children].map((child) => child.outerHTML).join('\n'));
 
-    // Bind events
-    for (const [identifier, events] of this.events) {
-      const ref = findElement(root, identifier);
-      if (!ref) {
+    const rootElement = root instanceof ShadowRoot ? root.host : root;
+    // Bind events in reverse order to support stopImmediatePropagation
+    for (const [identifier, events] of [...this.events].reverse()) {
+      const element = identifier
+        ? this.getElement(root, identifier) // Bind events even if not in DOM to avoid tree-walk later
+        : rootElement;
+      if (!element) {
         console.warn('Skip bind events for', identifier);
         continue;
       }
-      for (const { type, listener, options, prop } of events) {
-        if (listener) {
-          ref.addEventListener(type, listener, options);
+      for (const entry of events) {
+        if (entry.handleEvent) {
+          element.addEventListener(entry.type, entry.handleEvent, entry);
           continue;
         }
         /** @type {any} */
-        const value = valueFromPropName(prop, data);
+        const value = valueFromPropName(entry.prop, data);
         if (value) {
-          ref.addEventListener(type, value, options);
+          element.addEventListener(entry.type, value, entry);
           continue;
         }
         // If listener is a Class Field, it will not be available yet
         // Assume it will be and if not, it will throw the error anyway
-        // console.log('lazy assignment?', identifier);
-        ref.addEventListener(type, (e) => valueFromPropName(prop, data)(e), options);
+        console.log('lazy assignment?', identifier, entry);
+        element.addEventListener(entry.type, (e) => valueFromPropName(entry.prop, data)(e), entry);
       }
     }
 
