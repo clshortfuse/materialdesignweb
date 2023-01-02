@@ -58,11 +58,39 @@ function valueFromPropName(prop, source) {
   return value;
 }
 
+/**
+ * @example
+ *  propInSource(
+ *    'address.home.houseNumber',
+ *    {
+ *      address: {
+ *        home: {
+ *          houseNumber:35,
+ *        },
+ *      }
+ *    }
+ * ) === {value:35}
+ * @param {string} prop
+ * @param {any} source
+ * @return {null|{value:any}}
+ */
+function propFromObject(prop, source) {
+  let value = source;
+  for (const child of prop.split('.')) {
+    if (!child) return null; // Invalid
+    if (child in value === false) return null;
+    // @ts-ignore Skip cast
+    value = value[child];
+  }
+  if (value === source) return null;
+  return { value };
+}
+
 /** @template T */
 export default class Composition {
   /**
    * Collection of property bindings.
-   * @type {Map<keyof T, Set<NodeBindEntry<?>>>}
+   * @type {Map<keyof T & string, Set<NodeBindEntry<?>>>}
    */
   bindings = new Map();
 
@@ -183,8 +211,10 @@ export default class Composition {
     const fnResults = new WeakMap();
     /** @type {WeakMap<Element, Set<string>>} */
     const modifiedNodes = new WeakMap();
+    // TODO: Used indexed seek vs scan
     for (const [key, entries] of this.bindings) {
-      if (!(key in data)) continue;
+      const propSearch = propFromObject(key, data);
+      if (!propSearch) continue;
       for (const { identifier, node, nodeType, fn, props, negate } of entries) {
         let value;
         let ref;
@@ -208,7 +238,7 @@ export default class Composition {
             value = fnResults.get(fn);
           }
         } else {
-          value = data[key];
+          value = propSearch.value;
         }
         if (!ref) continue;
         if (modifiedNodes.get(ref)?.has(node)) {
