@@ -13,19 +13,19 @@ import {
 
 type ClassOf<T extends { prototype: unknown; } > = T;
 
-type CallbackArguments<T extends typeof ICustomElement = typeof ICustomElement> = {
-  composition: Composition<InstanceType<T>>,
-  html: HTMLTemplater<InstanceType<T>, Partial<InstanceType<T> & T['schema']>>,
-  inline: InlineTemplate<InstanceType<T>, Partial<InstanceType<T> & T['schema']>>,
+type CallbackArguments<T1 = any, T2 = T1> = {
+  composition: Composition<T1>,
+  html: HTMLTemplater<T1, Partial<T2>>,
+  inline: InlineTemplate<T1, Partial<T2>>,
   template: DocumentFragment,
   $: DocumentFragment['querySelector'],
   $$: DocumentFragment['querySelectorAll'],
-  element: InstanceType<T>
+  element: T1
 }
 
 type IDLParameter<C> = Record<string,
   ObserverPropertyType
-| ObserverOptions<ObserverPropertyType, unknown, unknown, C>
+| ObserverOptions<ObserverPropertyType, unknown, C>
 | ((this: C, ...args:any[]) => any)
 >;
 
@@ -38,30 +38,32 @@ declare type DefinedPropertiesOf<T extends abstract new (...args: any) => any, P
     // & {constructor: Partial<T>}
   };
 
-type CompositionCallback<T1 extends typeof ICustomElement, T2 extends keyof InstanceType<T1>> = {
-    composed?: (this: InstanceType<T1>, options: CallbackArguments<T1>) => any,
-    constructed?: (this: InstanceType<T1>, options: CallbackArguments<T1>) => any,
-    connected?: (this: InstanceType<T1>, options: CallbackArguments<T1>) => any,
-    disconnected?: (this: InstanceType<T1>, options: CallbackArguments<T1>) => any,
-    props?: Record<T2, (
-      this: InstanceType<T1>,
-      oldValue: InstanceType<T1>[T2],
-      newValue: InstanceType<T1>[T2],
-      element: InstanceType<T1>
-      ) => any>,
+type CompositionCallback<T1, T2=T1> = {
+    composed?: (this: T1, options: CallbackArguments<T1, T2>) => any,
+    constructed?: (this: T1, options: CallbackArguments<T1, T2>) => any,
+    connected?: (this: T1, options: CallbackArguments<T1, T2>) => any,
+    disconnected?: (this: T1, options: CallbackArguments<T1, T2>) => any,
+    props?: {
+      [P in keyof T1] : (
+      this: T1,
+      oldValue: T1[P],
+      newValue: T1[P],
+      element: T1
+      ) => any
+    },
     attrs?: Record<string, (
-      this: InstanceType<T1>,
+      this: T1,
       oldValue: string,
       newValue: string,
-      element: InstanceType<T1>
+      element: T1
       ) => unknown
     >,
   } & {
-    [P in keyof InstanceType<T1> & string as `${P}Changed`]?: (
-      this: InstanceType<T1>,
-      oldValue: InstanceType<T1>[P],
-      newValue: InstanceType<T1>[P],
-      element: InstanceType<T1>
+    [P in keyof T1 & string as `${P}Changed`]?: (
+      this: T1,
+      oldValue: T1[P],
+      newValue: T1[P],
+      element: T1
       ) => any
   }
 
@@ -78,8 +80,7 @@ interface ConstructorOf<T> {
   new(): T;
 }
 
-// eslint-disable-next-line vars-on-top, no-var
-declare var ICustomElement: {
+export declare const ICustomElement: {
   new(): ICustomElementInstance;
   prototype: ICustomElementInstance;
 
@@ -115,7 +116,7 @@ declare var ICustomElement: {
     T3 extends IDLParameter<T2>>
     (this: T1, props: T3): T1 & (new (...args: ConstructorParameters<T1>) => T2 & {
           [P in keyof T3]:
-            T3[P] extends (...args:any[]) => infer R ? R
+            T3[P] extends (...args2:any[]) => infer R ? R
               : T3[P] extends ObserverPropertyType
               ? ParsedObserverPropertyType<T3[P]>
               : T3[P] extends {type: ObserverPropertyType}
@@ -131,7 +132,7 @@ declare var ICustomElement: {
   props: typeof ICustomElement.define;
 
   set<T1 extends typeof ICustomElement, T2 extends object>
-    (this: T1, source: T2 & Partial<InstanceType<T1>>)
+    (this: T1, source: T2 & ThisType<T2 & InstanceType<T1>>)
     : T1 & (new (...args: ConstructorParameters<T1>) => InstanceType<T1> & T2)
       // & { prototype: InstanceType<T1> & T2 };
 
@@ -143,7 +144,7 @@ declare var ICustomElement: {
       string,
       ((this: InstanceType<T1>, data?: InstanceType<T1> & T1['schema']) => string|boolean|null)
       >
-    >(this: T1, expressions: T2 & Partial<InstanceType<T1>>):DefinedPropertiesOf<T1, T2>;
+    >(this: T1, expressions: T2 & ThisType<InstanceType<T1> & T2>):DefinedPropertiesOf<T1, T2>;
 
   defineStatic<
     T1 extends typeof ICustomElement,
@@ -157,7 +158,7 @@ declare var ICustomElement: {
         ((this:T1, ...args:any[]) => any)
         |string|number|boolean|any[]|object)>
     >
-    (this: T1, source: Partial<T1> & T2):T1 & T2;
+    (this: T1, source: T2 & ThisType<T1 & T2>):T1 & T2;
 
   autoRegister<T extends typeof ICustomElement>
     (this: T, elementName: string): T;
@@ -191,18 +192,17 @@ declare var ICustomElement: {
       query: string|CompositionEventListenerObject<InstanceType<T>, InstanceType<T>>,
       listeners?: CompositionEventListenerObject<
         InstanceType<T>,
-        Omit<HTMLElement|any, 'getRootNode'> & ({
+        Omit<HTMLElement, 'getRootNode'> & ({
           getRootNode?: (...args: Parameters<Node['getRootNode']>) => Omit<ShadowRoot, 'host'> & {host: InstanceType<T>}
         })>,
     ): T;
 
   on<
     T1 extends typeof ICustomElement,
-    T2 extends keyof InstanceType<T1>,
-    T3 extends CompositionCallback<T1, T2>,
-    T4 extends keyof T3
+    T3 extends CompositionCallback<InstanceType<T1>, InstanceType<T1> & T1['schema']>,
+    T4 extends keyof T3,
     >
-    (this: T1, name: T4|T3, callbacks?: T3[T4]): T1
+    (this: T1, name: T3|T4, callbacks?: T3[T4] & ThisType<InstanceType<T1>>): T1
 
   onPropChanged<
     T1 extends typeof ICustomElement,

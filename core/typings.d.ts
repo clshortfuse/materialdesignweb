@@ -20,7 +20,6 @@ type ParsedObserverPropertyType<T extends ObserverPropertyType> =
 type ObserverOptions<
   T1 extends ObserverPropertyType,
   T2 = any,
-  K = string,
   C = any
   > = {
   type?: T1;
@@ -39,7 +38,7 @@ type ObserverOptions<
   value?: T2;
   reflect?: boolean | 'write' | 'read';
   /** Function used when null passed */
-  changedCallback?: (this:C, name:K, oldValue:T2, newValue:T2)=>any;
+  changedCallback?: (this:C, oldValue:T2, newValue:T2)=>any;
   nullParser?: (this:C, value:null|undefined)=>T2;
   parser?: (this:C, value:any)=>T2;
   /** Function used when comparing */
@@ -52,7 +51,7 @@ type ObserverConfiguration<
   T1 extends ObserverPropertyType,
   T2 = any,
   K = string,
-  C extends object = any> = ObserverOptions<T1, T2, K, C> & {
+  C extends object = any> = ObserverOptions<T1, T2, C> & {
     key: K,
     values?: WeakMap<C, T2>;
     attrValues?: WeakMap<C, string>;

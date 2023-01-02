@@ -58,11 +58,11 @@ function defaultParserFromType(type) {
  * @template {ObserverPropertyType} [T1=any]
  * @template {any} [T2=import('./typings.js').ParsedObserverPropertyType<T1>]
  * @param {K} name
- * @param {T1|import('./typings.js').ObserverOptions<T1,T2,K>} [typeOrOptions='string']
- * @return {import('./typings.js').ObserverConfiguration<T1,T2,K> & import('./typings.js').ObserverOptions<T1,T2,K>}
+ * @param {T1|import('./typings.js').ObserverOptions<T1,T2>} [typeOrOptions='string']
+ * @return {import('./typings.js').ObserverConfiguration<T1,T2,K> & import('./typings.js').ObserverOptions<T1,T2>}
  */
 export function parseObserverOptions(name, typeOrOptions) {
-  /** @type {Partial<import('./typings.js').ObserverOptions<T1,T2,K>>} */
+  /** @type {Partial<import('./typings.js').ObserverOptions<T1,T2>>} */
   const options = {
     ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
   };
@@ -196,7 +196,7 @@ export function observeFunction(fn, arg0 = {}) {
  * @template [C=any]
  * @param {C} object
  * @param {K} key
- * @param {import('./typings.js').ObserverOptions<T1,T2,K,C>} options
+ * @param {import('./typings.js').ObserverOptions<T1, T2, C>} options
  * @return {import('./typings.js').ObserverConfiguration<T1,T2,K,C>}
  */
 export const defineObservableProperty = (object, key, options) => {
@@ -260,7 +260,7 @@ export const defineObservableProperty = (object, key, options) => {
         }
 
         config.values.set(this, newValue);
-        config.changedCallback.call(this, key, oldValue, newValue);
+        config.changedCallback.call(this, oldValue, newValue);
       };
     }
   }

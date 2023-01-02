@@ -36,7 +36,7 @@ export default class CustomElement extends ICustomElement {
   /** @type {Composition<?>} */
   static _composition = null;
 
-  /** @type {Map<string, import('./typings.js').ObserverConfiguration<?,?,?,?>>} */
+  /** @type {Map<string, import('./typings.js').ObserverConfiguration<?,?,?>>} */
   static _props = new Map();
 
   /** @type {Map<string, Function[]>} */
@@ -243,10 +243,18 @@ export default class CustomElement extends ICustomElement {
       ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
     };
 
-    const config = defineObservableProperty(this.prototype, name, {
-      ...options,
-      changedCallback: this.prototype._onObserverPropertyChanged,
-    });
+    const customCallback = options.changedCallback;
+
+    if (customCallback) {
+      // Move callback to later in stack for attribute-based changes as well
+      // @ts-expect-error Skip cast
+      this.onPropChanged({ [name]: customCallback });
+    }
+    options.changedCallback = function wrappedChangedCallback(oldValue, newValue) {
+      this._onObserverPropertyChanged.call(this, name, oldValue, newValue);
+    };
+
+    const config = defineObservableProperty(this.prototype, name, options);
 
     this.propList.set(name, config);
 
