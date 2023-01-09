@@ -1,0 +1,116 @@
+/* https://m3.material.io/components/tabs/specs */
+
+:host {
+  --mdw-ink: var(--mdw-color__primary);
+  --mdw-bg: var(--mdw-color__surface);
+  position: relative;
+  position: sticky;
+  inset-block-start: 0;
+  inset-inline: 0;
+
+  display: grid;
+  grid-auto-columns: minmax(48px, 1fr);
+  grid-auto-flow: column;
+  overflow-y: hidden;
+
+  box-sizing: border-box;
+
+  min-block-size: 48px;
+
+  inline-size: 100%;
+  flex:none;
+
+  background: rgb(var(--mdw-bg));
+
+  text-align: center;
+
+  will-change: transform;
+}
+
+#indicator {
+  --corner: 3;
+  --width: 24;
+  --offset: 0;
+  --visibility: 0;
+  --transition-ratio: 1;
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+
+  overflow: clip;
+
+  block-size: 3px;
+  inline-size: 100%;
+
+  pointer-events: none;
+
+  opacity: 1;
+  transform: translateY(calc(100% * (1 - var(--visibility))));
+
+  color: rgb(var(--mdw-color__on-surface));
+
+  transition: transform 200ms;
+  will-change: transform;
+}
+
+.indicator-piece {
+  position: absolute;
+  inset-block: 0;
+
+  opacity: 1;
+  /* opacity: 0.60; */
+  transform-origin: 0 0;
+  z-index:1;
+
+  background-color: currentColor;
+
+  transition: transform;
+  transition-duration: calc(200ms * var(--transition-ratio));
+  will-change: transform;
+}
+
+#indicator-start {
+  inset-inline-start: 0;
+
+  inline-size: calc(2 * 1px * var(--corner));
+  border-start-start-radius: calc(1px * var(--corner));
+
+  transform: translateX(var(--offset));
+
+  /* background-color:red; */
+}
+
+#indicator-center {
+  position: absolute;
+  inset-inline-start: calc(1px * var(--corner));
+
+  inline-size: 1px;
+
+  transform: translateX(var(--offset)) scaleX(calc(var(--width) - (2 * var(--corner))));
+
+  /* background-color:green; */
+}
+
+#indicator-end {
+  position: absolute;
+  inset-inline-start: 0;
+
+  inline-size: calc(2 * 1px * var(--corner));
+  border-start-end-radius: calc(1px * var(--corner));
+
+  transform:
+    translateX(var(--offset))
+    translateX(calc(-2px * var(--corner)))
+    translateX(calc(var(--width) * 1px));
+
+  /* background-color:blue; */
+}
+
+:host([active]) #indicator {
+  --visibility: 1;
+  color: rgb(var(--mdw-ink));
+}
+
+:host([secondary]) #indicator {
+  --corner: 0;
+}

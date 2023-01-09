@@ -1,0 +1,86 @@
+/* https://m3.material.io/components/tabs/specs */
+
+:host {
+  --mdw-shape__size: 0;
+  --mdw-icon__font-variation-settings: 'FILL' 0;
+  --mdw-icon__size: 24px;
+  --mdw-ink: var(--mdw-color__on-surface-variant);
+  display: flex;
+
+  cursor: pointer;
+
+  color: rgb(var(--mdw-ink));
+}
+
+#anchor {
+  --mdw-shape__size: 0;
+  --mdw-icon__font-variation-settings: 'FILL' 0;
+  --mdw-icon__size: 24px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  box-sizing: border-box;
+  block-size: 100%;
+  inline-size: 100%;
+  flex: 1;
+
+  padding-block: 8px;
+  padding-inline: 0;
+  padding-inline: 8px;
+
+  cursor: pointer;
+  outline: none;
+
+  color: rgb(var(--mdw-ink));
+
+  text-decoration: inherit;
+}
+
+#icon {
+  --mdw-icon__font-variation-settings: inherit;
+  padding-block-end: 4px;
+
+}
+
+:host([disabled]:is([active])) {
+  background-color: rgba(var(--mdw-color__on-surface), 0.12);
+  /* color: rgba(var(--mdw-color__on-surface), 0.38); */
+}
+
+:host([active]) {
+  --mdw-ink: inherit;
+  --mdw-icon__font-variation-settings: 'FILL' 1;
+
+}
+
+#slot {
+  display: block;
+  overflow-x: hidden;
+  overflow-y: hidden;
+
+  max-block-size: var(--mdw-typescale__title-small__line-height);
+
+  max-inline-size: 100%;
+
+  cursor: inherit;
+  outline: none;
+
+  opacity: var(--mdw-nav-item__anchor__opacity, 1);
+  transform: translateY(var(--mdw-nav-item__offset-y, 0));
+
+  color: inherit;
+
+  font: var(--mdw-typescale__title-small__font);
+  letter-spacing: var(--mdw-typescale__title-small__letter-spacing);
+  text-align: center;
+  text-decoration: inherit;
+  text-overflow: ellipsis;
+  text-transform: none;
+  white-space: nowrap;
+  word-break: break-word;
+
+  transition: opacity, color, transform 200ms;
+  will-change: opacity, transform;
+}
