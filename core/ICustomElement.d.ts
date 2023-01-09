@@ -23,11 +23,12 @@ type CallbackArguments<T1 = any, T2 = T1> = {
   element: T1
 }
 
-type IDLParameter<C> = Record<string,
-  ObserverPropertyType
-| ObserverOptions<ObserverPropertyType, unknown, C>
-| ((this: C, ...args:any[]) => any)
->;
+type IDLParameter<C> = {
+  [P in string] :
+    ObserverPropertyType
+    | ObserverOptions<ObserverPropertyType, unknown, C>
+    | ((this: C, ...args:any[]) => any)
+};
 
 declare type DefinedPropertiesOf<T extends abstract new (...args: any) => any, P> =
   Omit<T, 'prototype'>
@@ -113,6 +114,25 @@ export declare const ICustomElement: {
    define<
     T1 extends typeof ICustomElement,
     T2 extends InstanceType<T1>,
+    T3 extends {
+        [P in string] :
+          {
+            enumerable?: boolean;
+            configurable?: boolean;
+            writable?: boolean;
+            value?: any;
+            get?: (this: T2) => any;
+            set?: (this: T2, value: any) => void;
+          } | ((this: T2, ...args:any[]) => any)
+      }>
+    (this: T1, props: T3): T1 & (new (...args: ConstructorParameters<T1>) => T2 & {
+          [P in keyof T3]: T3[P] extends (...args2:any[]) => infer R ? R
+            : T3[P] extends TypedPropertyDescriptor<infer R> ? R : never
+        });
+
+  observe<
+    T1 extends typeof ICustomElement,
+    T2 extends InstanceType<T1>,
     T3 extends IDLParameter<T2>>
     (this: T1, props: T3): T1 & (new (...args: ConstructorParameters<T1>) => T2 & {
           [P in keyof T3]:
@@ -126,8 +146,6 @@ export declare const ICustomElement: {
               : never
         })
         ;
-
-  observe: typeof ICustomElement.define;
 
   props: typeof ICustomElement.define;
 

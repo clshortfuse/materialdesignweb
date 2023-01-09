@@ -211,59 +211,36 @@ export const defineObservableProperty = (object, key, options) => {
   /** @type {Partial<PropertyDescriptor>} */
   const descriptor = {
     enumerable: config.enumerable,
-  };
-
-  if (options.readonly) {
-    if (options.get) {
-      descriptor.get = options.get;
-    } else {
-      descriptor.value = config.value;
-    }
-  } else {
-    if (options.get) {
-      descriptor.get = options.get;
-    }
-    if (options.set) {
-      descriptor.set = options.set;
-    }
-
-    if (!options.get && !options.set) {
+    get: options.get ?? function get() {
+      // console.log('get', key, this.tagName);
+      return !config.values.has(this) ? config.value : config.values.get(this);
+    },
     /**
      * @this {C}
-     * @return {T2}
+     * @param {T2} value
+     * @return {void}
      */
-      descriptor.get = function get() {
-        // console.log('get', key, this.tagName);
-        return !config.values.has(this) ? config.value : config.values.get(this);
-      };
+    set(value) {
+      // console.log('set', key, value);
+      const oldValue = descriptor.get.call(this);
+      if (oldValue === value) return;
 
-      /**
-       * @this {C}
-       * @param {T2} value
-       * @return {void}
-       */
-      descriptor.set = function set(value) {
-        // console.log('set', key, value);
-        const oldValue = !config.values.has(this) ? config.value : config.values.get(this);
-        if (oldValue === value) return;
+      let newValue = value;
+      newValue = value == null
+        ? config.nullParser.call(this, value)
+        : config.parser.call(this, newValue);
 
-        let newValue = value;
-        newValue = value == null
-          ? config.nullParser.call(this, value)
-          : config.parser.call(this, newValue);
+      if (oldValue == null) {
+        if (newValue == null) return; // Both nullish
+      } else if (newValue != null && (oldValue === newValue || config.is.call(this, oldValue, newValue))) {
+      // Not null and match
+        return;
+      }
 
-        if (oldValue == null) {
-          if (newValue == null) return; // Both nullish
-        } else if (newValue != null && (oldValue === newValue || config.is.call(this, oldValue, newValue))) {
-        // Not null and match
-          return;
-        }
-
-        config.values.set(this, newValue);
-        config.changedCallback.call(this, oldValue, newValue);
-      };
-    }
-  }
+      config.values.set(this, newValue);
+      config.changedCallback.call(this, oldValue, newValue);
+    },
+  };
 
   Object.defineProperty(object, key, descriptor);
 

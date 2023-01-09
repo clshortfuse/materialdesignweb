@@ -83,9 +83,6 @@ export default class CustomElement extends ICustomElement {
   /** @type {typeof ICustomElement.props} */
   static props = this.define;
 
-  /** @type {typeof ICustomElement.observe} */
-  static observe = this.define;
-
   /**
    * @template {typeof CustomElement} T
    * @this T
@@ -263,6 +260,30 @@ export default class CustomElement extends ICustomElement {
 
   /** @type {typeof ICustomElement.define} */
   static define(props) {
+    Object.defineProperties(
+      this.prototype,
+      Object.fromEntries(
+        Object.entries(props).map(([name, options]) => [
+          name,
+          {
+            enumerable: name[0] !== '_',
+            configurable: true,
+            ...(
+              typeof options === 'function'
+                ? { get: options }
+                : options
+            ),
+          },
+        ]),
+      ),
+    );
+
+    // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  /** @type {typeof ICustomElement.observe} */
+  static observe(props) {
     for (const [name, typeOrOptions] of Object.entries(props ?? {})) {
       if (typeof typeOrOptions === 'function') {
         this.prop(name, {
