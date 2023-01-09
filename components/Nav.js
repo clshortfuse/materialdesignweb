@@ -18,7 +18,7 @@ export default Container
     </nav>
   `))
   .events({
-    click(event) {
+    '~click'(event) {
       // Abort if not child
       if (event.target === this) return;
       if (event.target instanceof NavItem === false) return;
