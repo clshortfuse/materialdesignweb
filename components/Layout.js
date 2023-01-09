@@ -7,15 +7,23 @@ export default Container
     x: 'string',
     y: 'string',
     column: 'boolean',
-    wrap: { value: /** @type {null|'wrap'|'reverse'} */ (null) },
-    gap: 'string',
+    wrap: {
+      /** @type {null|'wrap'|'reverse'} */
+      value: null,
+    },
+    gap: {
+      /**
+       * @param {string} oldValue
+       * @param {string} newValue
+       */
+      changedCallback(oldValue, newValue) {
+        if (newValue) {
+          this.style.setProperty('--mdw-layout__gap', newValue);
+        } else {
+          this.style.removeProperty('--mdw-layout__gap');
+        }
+      },
+    },
   })
   .css(styles)
-  .on('gapChanged', (oldValue, newValue, element) => {
-    if (newValue) {
-      element.style.setProperty('--mdw-layout__gap', newValue);
-    } else {
-      element.style.removeProperty('--mdw-layout__gap');
-    }
-  })
   .autoRegister('mdw-layout');
