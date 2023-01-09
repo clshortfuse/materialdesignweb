@@ -156,10 +156,10 @@ export default Container
     '~touchcancel': 'onControlMouseOrTouch',
     '~touchend': 'onControlMouseOrTouch',
     focus() {
-      this._isFocused = true;
+      this.getRootNode().host._isFocused = true;
     },
     blur() {
-      this._isFocused = false;
+      this.getRootNode().host._isFocused = false;
     },
     touchend: 'onControlFinish',
     click: 'onControlFinish',
