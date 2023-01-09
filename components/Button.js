@@ -30,16 +30,19 @@ export default Container
   })
   .events('#control', {
     '~click'() {
-      if (this.disabled) return;
-      if (this.type !== 'submit') return;
+      // @ts-ignore Cast
+      // eslint-disable-next-line @typescript-eslint/no-this-alias, unicorn/no-this-assignment
+      const el = /** @type {HTMLInputElement} */ (this);
+      if (el.disabled) return;
+      if (el.type !== 'submit') return;
       const { host } = this.getRootNode();
       if (host.disabled) return;
-      const { value } = this;
+      const { value } = el;
       const form = host.elementInternals?.form;
       if (!form) return;
       host.elementInternals.setFormValue(value);
-      if ((this.type ?? 'submit') !== 'submit') return;
-      const duplicatedButton = /** @type {HTMLButtonElement} */ (this.cloneNode());
+      if ((el.type ?? 'submit') !== 'submit') return;
+      const duplicatedButton = /** @type {HTMLInputElement} */ (el.cloneNode());
       duplicatedButton.hidden = true;
       form.append(duplicatedButton);
       if ('requestSubmit' in form) {
