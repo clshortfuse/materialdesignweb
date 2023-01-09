@@ -51,4 +51,11 @@ export default Container
       );
     },
   })
+  .events('#anchor', {
+    click(event) {
+      if (this.getRootNode().host.href == null) {
+        event.preventDefault();
+      }
+    },
+  })
   .autoRegister('mdw-nav-item');
