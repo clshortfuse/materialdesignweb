@@ -29,10 +29,25 @@ export default Container
     iconInk: 'string',
     iconSrc: 'string',
     iconSize: { value: '18px' },
-    checkbox: { type: 'boolean' },
+    checkbox: {
+      type: 'boolean',
+      changedCallback(oldValue, newValue) {
+        if (newValue) {
+          this.setAttribute('aria-selected', String(this.hasAttribute('selected')));
+        } else {
+          this.removeAttribute('aria-selected');
+        }
+      },
+    },
     radio: { type: 'boolean' },
     selectionColor: { value: 'primary' },
-    checked: { attr: 'selected', type: 'boolean' },
+    checked: {
+      attr: 'selected',
+      type: 'boolean',
+      changedCallback(oldValue, newValue) {
+        this.setAttribute('aria-selected', String(newValue));
+      },
+    },
     supporting: 'string',
     trailing: 'string',
     trailingIcon: 'string',
@@ -90,15 +105,5 @@ export default Container
       </a>
       <mdw-divider _if={divider} id=divider></mdw-divider>
     `);
-  })
-  .on('checkboxChanged', (oldValue, newValue, element) => {
-    if (newValue) {
-      element.setAttribute('aria-selected', String(element.hasAttribute('selected')));
-    } else {
-      element.removeAttribute('aria-selected');
-    }
-  })
-  .on('checkedChanged', (oldValue, newValue, element) => {
-    element.setAttribute('aria-selected', String(newValue));
   })
   .autoRegister('mdw-list-item');
