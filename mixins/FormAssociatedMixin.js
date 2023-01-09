@@ -12,7 +12,8 @@ const FORM_IPC_EVENT = 'mdw-form-associated-changed';
 const GlobalListener = new EventTarget();
 
 /**
- * @param {typeof import('../core/CustomElement.js').default} Base
+ * @template {typeof import('../core/CustomElement.js').default} T
+ * @param {T} Base
  */
 export default function FormAssociatedMixin(Base) {
   return Base
@@ -35,7 +36,16 @@ export default function FormAssociatedMixin(Base) {
       required: 'boolean',
       type: DOMString,
       //  [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
-      _value: { empty: '' },
+      _value: {
+        empty: '',
+        /**
+         * @param {string} oldValue
+         * @param {string} newValue
+         */
+        changedCallback(oldValue, newValue) {
+          this.propChangedCallback('value', oldValue, newValue);
+        },
+      },
       _invalid: { attr: 'invalid', type: 'boolean' },
       _badInput: 'boolean',
       _validationMessage: 'string',
@@ -58,13 +68,12 @@ export default function FormAssociatedMixin(Base) {
       willValidate() { return this.elementInternals.willValidate; },
       labels() { return this.elementInternals.labels; },
     })
-    .on('constructed', ({ element }) => {
-      if (!element.hasAttribute('tabindex')) {
-        element.tabIndex = 0;
-      }
-    })
-    .on('_valueChanged', (oldValue, newValue, element) => {
-      element.propChangedCallback('value', oldValue, newValue);
+    .on({
+      constructed() {
+        if (!this.hasAttribute('tabindex')) {
+          this.tabIndex = 0;
+        }
+      },
     })
     .methods({
       checkValidity() { return this.elementInternals.checkValidity(); },
