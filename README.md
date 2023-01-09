@@ -11,12 +11,12 @@ A standards-focused, zero-dependency implemention of Material Design 3 (Material
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/4b06e17/docs/
+https://rawcdn.githack.com/clshortfuse/materialdesignweb/daef89f/docs/
 
 # Getting started
 
 ````html
-<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/4b06e17/index.js" />
+<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/daef89f/index.js" />
 ````
 
 # Support
@@ -79,11 +79,14 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/4b06e17/docs/
 | [Slider: Discrete](components/Slider.js)                     | `<mdw-slider ticks=10>`                        | `<input type=range>`                                               |  beta   |
 | Snackbar                                                     |                                                |                                                                    | rewrite |
 | [Switch](components/Switch.js)                               | `<mdw-switch>`                                 | `<input type=checkbox>`                                            |  beta   |
-| Tab                                                          |                                                |                                                                    | rewrite |
+| [Tab](components/Tab.js)                                     | `<mdw-tab>`                                    | `<a href=#>`                                                       |  beta   |
+| [Tab List](components/TabList.js)                            | `<mdw-tab-list>`                               | `<div>`                                                            |  beta   |
+| [Tab Content](components/TabContent.js)                      | `<mdw-tab-content>`                            | `<div>`                                                            |  beta   |
+| [Tab Panel](components/TabPanel.js)                          | `<mdw-tab-panel>`                              | `<div>`                                                            |  beta   |
 | [Text fields: Bare](components/TextInput.js)                 | `<mdw-text-input>`                             | `<input>`                                                          |  beta   |
 | [Text fields: Filled](components/TextInput.js)               | `<mdw-text-input filled>`                      | `<input>`                                                          |  beta   |
 | [Text fields: Filled Multiline](components/TextArea.js)      | `<mdw-textarea filled>`                        | `<textarea>`                                                       |  beta   |
-| [Text fields: Filled Selection](components/TextSelect.js)    | `<mdw-textselect>`                             | `<select>`                                                         | planned |
+| [Text fields: Filled Selection](components/TextSelect.js)    | `<mdw-text-select>`                            | `<select>`                                                         | planned |
 | [Text fields: Outlined](components/TextInput.js)             | `<mdw-text-input outlined>`                    | `<input>`                                                          |  beta   |
 | [Text fields: Outlined Multiline](components/TextArea.js)    | `<mdw-textarea outlined>`                      | `<textarea>`                                                       |  beta   |
 | [Text fields: Outlined Selection](components/TextSelect.js)  | `<mdw-textselect outlined>`                    | `<select>`                                                         | planned |
@@ -104,15 +107,15 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/4b06e17/docs/
 
 # Core
 
-| File                                   | Description                                                                           | Status |
-| :------------------------------------- | :------------------------------------------------------------------------------------ | :----: |
-| [Composition](core/Composition.js)     | Class that composes templates based on styles, fragments, and watches. Renders data   |  beta  |
-| [CustomElement](core/CustomElement.js) | Extendable that handles ShadowDOM, ElementInternals, IDL attributes, and compositions |  beta  |
-| [css](core/css.js)                     | Module that includes css converters                                                   |  beta  |
-| [dom](core/dom.js)                     | Module that include common DOM functions                                              |  beta  |
-| [indentify](core/identify.js)          | Module that includes Node identification functions                                    |  beta  |
-| [observe](core/observe.js)             | Modules that applies observable pattern to object properties                          |  beta  |
-| [template](core/template.js)           | Module that includes functions to generate HTML or CSS from templates                 | alpha  |
+| File                                   | Description                                                                                | Status |
+| :------------------------------------- | :----------------------------------------------------------------------------------------- | :----: |
+| [Composition](core/Composition.js)     | Class that composes templates based on styles, fragments, and watches. Renders data        |  beta  |
+| [CustomElement](core/CustomElement.js) | Extendable that handles ShadowDOM, ElementInternals, Property attributes, and compositions |  beta  |
+| [css](core/css.js)                     | Module that includes css converters                                                        |  beta  |
+| [dom](core/dom.js)                     | Module that include common DOM functions                                                   |  beta  |
+| [indentify](core/identify.js)          | Module that includes Node identification functions                                         |  beta  |
+| [observe](core/observe.js)             | Modules that applies observable pattern to object properties                               |  beta  |
+| [template](core/template.js)           | Module that includes functions to generate HTML or CSS from templates                      | alpha  |
 
 # Mixins
 
@@ -124,6 +127,7 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/4b06e17/docs/
 | [InputMixin](mixins/InputMixin.js)                   | Labelled `<input>` element                                                    |  beta  |
 | [KeyboardNavMixin](mixins/KeyboardNavMixin.js)       | Handles roving tab index and arrow key navigation                             |  beta  |
 | [RippleMixin](mixins/RippleMixin.js)                 | Uses ripple for pressed state                                                 |  beta  |
+| [ResizeObserverMixin](mixins/ResizeObserverMixin.js) | Fires callback on element resize                                              |  beta  |
 | [ScrollListenerMixin](mixins/ScrollListenerMixin.js) | Tracks window or offetParent scrolling                                        |  beta  |
 | [StateMixin](mixins/StateMixin.js)                   | Adds hover, focus, pressed, dragged, and disabled states, as interaction type |  beta  |
 | [TextFieldMixin](mixins/TextFieldMixin.js)           | Abstraction for different controls used for text fields                       |  beta  |
