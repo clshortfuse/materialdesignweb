@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Material Design Web</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link rel=preconnect href="https://fonts.googleapis.com" />
+  <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
+  <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
+  <link rel=stylesheet
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
+  <link rel="stylesheet" href="../theme.css" />
+  <link rel="stylesheet" href="../demo.css" />  
+  <script type=module src="../demo.min.js"></script>
+</head>
+
+<body>
+
+  <main>
+    <demo-section id=tabs>
+      <h1 slot="heading">Tabs</h1>
+      <demo-section>
+        <h2 slot=heading>Standard</h2>
+        <mdw-layout wrap gap=12px>
+          <demo-screen color="background">
+            <mdw-tab-list tab-content-id="standard">
+              <mdw-tab href="#standard-flights">Flights</mdw-tab>
+              <mdw-tab href="#standard-trips">Trips</mdw-tab>
+              <mdw-tab href="#standard-explore">Explore</mdw-tab>
+            </mdw-tab-list>
+            <mdw-tab-content id="standard">
+              <mdw-tab-panel column color=primary-container id="standard-flights">
+                <mdw-button>Button</mdw-button>
+                <demo-dummy-text></demo-dummy-text>
+              </mdw-tab-panel>
+              <mdw-tab-panel column color=secondary-container id="standard-trips">
+                <mdw-button>Button</mdw-button>
+              </mdw-tab-panel>
+              <mdw-tab-panel column color=tertiary-container id="standard-explore">
+                <mdw-button>Button</mdw-button>
+                <demo-dummy-text></demo-dummy-text>
+              </mdw-tab-panel>
+            </mdw-tab-content>
+          </demo-screen>
+        </mdw-layout>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Standard (Icons)</h2>
+        <mdw-layout wrap gap=12px>
+          <demo-screen color="background">
+            <mdw-tab-list secondary tab-content-id="standard-icons">
+              <mdw-tab icon="flight" href="#standard-icons-flights">Flights</mdw-tab>
+              <mdw-tab icon="luggage" href="#standard-icons-trips">Trips</mdw-tab>
+              <mdw-tab icon="explore" href="#standard-icons-explore">Explore</mdw-tab>
+            </mdw-tab-list>
+            <mdw-tab-content id="standard-icons">
+              <mdw-tab-panel id="standard-icons-flights">
+                <demo-dummy-text></demo-dummy-text>
+              </mdw-tab-panel>
+              <mdw-tab-panel id="standard-icons-trips">
+                <demo-dummy-text></demo-dummy-text>
+              </mdw-tab-panel>
+              <mdw-tab-panel id="standard-icons-explore">
+                <demo-dummy-text></demo-dummy-text>
+              </mdw-tab-panel>
+            </mdw-tab-content>
+          </demo-screen>
+        </mdw-layout>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Icons only</h2>
+        <mdw-layout wrap gap=12px>
+          <demo-screen color="background">
+            <mdw-tab-list mdw-ink=tertiary tab-content-id="icons">
+              <mdw-tab icon=flight  href="#icons-flights" aria-label="Flights"></mdw-tab>
+              <mdw-tab icon=luggage href="#icons-trips" aria-label="Trips"></mdw-tab>
+              <mdw-tab icon=explore href="#icons-explore" aria-label="Explore"></mdw-tab>
+            </mdw-tab-list>
+            <mdw-tab-content id="icons">
+              <mdw-tab-panel id="icons-flights">
+                <demo-dummy-text></demo-dummy-text>
+              </mdw-tab-panel>
+              <mdw-tab-panel id="icons-trips">
+                <demo-dummy-text></demo-dummy-text>
+              </mdw-tab-panel>
+              <mdw-tab-panel id="icons-explore">
+                <demo-dummy-text></demo-dummy-text>
+              </mdw-tab-panel>
+            </mdw-tab-content>
+          </demo-screen>
+        </mdw-layout>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Mixed sizes</h2>
+        <mdw-layout wrap gap=12px>
+          <demo-screen color="background">
+            <mdw-tab-list tab-content-id="mixed">
+              <mdw-tab icon=flight  href="#mixed-flights">Flight</mdw-tab>
+              <mdw-tab icon=luggage href="#mixed-trips"></mdw-tab>
+              <mdw-tab icon=explore href="#mixed-explore">Oversized label that clips</mdw-tab>
+            </mdw-tab-list>
+            <mdw-tab-content id="mixed">
+              <mdw-tab-panel id="mixed-flights">
+                <demo-dummy-text></demo-dummy-text>
+              </mdw-tab-panel>
+              <mdw-tab-panel id="mixed-trips">
+                <demo-dummy-text></demo-dummy-text>
+              </mdw-tab-panel>
+              <mdw-tab-panel id="mixed-explore">
+                <demo-dummy-text></demo-dummy-text>
+              </mdw-tab-panel>
+            </mdw-tab-content>
+          </demo-screen>
+        </mdw-layout>
+      </demo-section>
+    </demo-section>
+    <br />
+    <br />
+    <br />
+  </main>
+</body>
+
+</html>
