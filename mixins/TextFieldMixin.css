@@ -294,7 +294,7 @@ mdw-icon {
   --container-color: transparent;
 }
 
-:host(:is(:focus, [populated])) :is(#prefix, #suffix) {
+#label:is([focused], [populated]) :is(#prefix, #suffix) {
   opacity: 1;
 }
 
@@ -305,7 +305,7 @@ mdw-icon {
 }
 
 /* If no label */
-:host(:is(:focus, [populated])) #control::placeholder {
+#label:is([focused], [populated]) #control::placeholder {
   opacity: 0.70;
 }
 
@@ -313,7 +313,7 @@ mdw-icon {
   text-align: end;
 }
 
-:host(:is(:focus, [populated])) #label-text {
+#label:is([focused], [populated]) #label-text {
   transform: translateY(calc(var(--mdw-text-field__ratio) * 8px));
 
   font: var(--mdw-typescale__body-small__font);
@@ -417,7 +417,7 @@ mdw-icon {
   transition-timing-function: inherit;
 }
 
-:host(:is(:focus, [populated])) #gap {
+#label:is([focused], [populated]) #gap {
   /* Open gap */
   --gap-transform: scaleX(0);
 }
@@ -477,11 +477,11 @@ mdw-icon {
   border-color: currentColor;
 }
 
-:host([outlined]:is(:focus, [populated])) {
+#label[outlined]:is([focused], [populated]) {
   --icon__inline-footprint-start: 0px;
 }
 
-:host([outlined]:is(:focus, [populated])) #label-text {
+#label[outlined]:is([focused], [populated]) #label-text {
   padding-inline: 4px;
 
   transform: translateY(-50%);

@@ -21,7 +21,7 @@ export default function TextFieldMixin(Base) {
       trailingIcon: 'string',
       supporting: 'string',
       error: 'string',
-      _populated: { attr: 'populated', type: 'boolean' },
+      _isFocused: 'boolean',
       placeholder: { nullParser: String }, // DOMString
     })
     .expressions({
@@ -37,6 +37,10 @@ export default function TextFieldMixin(Base) {
       computeSupportingText({ error, _validationMessage, supporting }) {
         return (error || _validationMessage || supporting) ?? '';
       },
+
+      isPopulated({ value, _badInput }) {
+        return !!value || _badInput;
+      },
     })
     .on('composed', ({ template, $, html }) => {
       const control = $('#control');
@@ -45,7 +49,12 @@ export default function TextFieldMixin(Base) {
       control.setAttribute('aria-labelledby', 'label-text');
       control.classList.add('inline');
 
-      $('#label').append(html`
+      const labelElement = $('#label');
+
+      labelElement.setAttribute('populated', '{isPopulated}');
+      labelElement.setAttribute('outlined', '{outlined}');
+      labelElement.setAttribute('focused', '{_isFocused}');
+      labelElement.append(html`
         <mdw-icon _if={icon} id=icon aria-hidden=true>{icon}</mdw-icon>
         <span _if={inputPrefix} class=inline id=prefix aria-hidden=true>{inputPrefix}</span>
         <span _if={inputSuffix} class=inline id=suffix aria-hidden=true>{inputSuffix}</span>
@@ -70,11 +79,13 @@ export default function TextFieldMixin(Base) {
 
       $('#ripple').remove();
     })
-    .on('valueChanged', (oldValue, newValue, element) => {
-      element._populated = !!element.value || element._badInput;
-    })
-    .on('_badInputChanged', (oldValue, newValue, element) => {
-      element._populated = !!element.value || element._badInput;
+    .events('#control', {
+      focus() {
+        this.getRootNode().host._isFocused = true;
+      },
+      blur() {
+        this.getRootNode().host._isFocused = false;
+      },
     })
     .on('sizeChanged', (oldValue, newValue, element) => {
       element.refs.control.style.setProperty('--size', `${newValue}ch`);
