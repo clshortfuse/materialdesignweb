@@ -19,7 +19,11 @@ export default Nav
     },
   })
   .methods({
-    onScrollPositionChange(oldValue, newValue) {
+    /**
+     * @param {number} oldValue
+     * @param {number} newValue
+     */
+    onScrollPositionYChange(oldValue, newValue) {
       if (!this.hideOnScroll) return;
       const delta = newValue - oldValue;
       const rate = 1;
@@ -42,7 +46,7 @@ export default Nav
       // eslint-disable-next-line no-unused-expressions
       this.clientHeight;
       this.style.removeProperty('bottom');
-      this.onScrollPositionChange(this._scrollPosition, this._scrollPosition);
+      this.onScrollPositionYChange(this._scrollPositionY, this._scrollPositionY);
     },
     onScrollIdle() {
       const max = this.refs.nav.scrollHeight;

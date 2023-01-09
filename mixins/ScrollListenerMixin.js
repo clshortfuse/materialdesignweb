@@ -7,7 +7,8 @@ export default function ScrollListenerMixin(Base) {
   return Base
     .extend()
     .observe({
-      _scrollPosition: { type: 'float', empty: 0 },
+      _scrollPositionX: { type: 'float', empty: 0 },
+      _scrollPositionY: { type: 'float', empty: 0 },
     })
     .set({
       /** @type {WeakRef<HTMLElement|Window>} */
@@ -24,9 +25,13 @@ export default function ScrollListenerMixin(Base) {
 
       /** @param {Event} event */
       onScrollerScroll(event) {
-        this._scrollPosition = (event.currentTarget === window)
+        this._scrollPositionY = (event.currentTarget === window)
           ? window.scrollY
           : /** @type {HTMLElement} */ (event.currentTarget).scrollTop;
+
+        this._scrollPositionX = (event.currentTarget === window)
+          ? window.scrollX
+          : /** @type {HTMLElement} */ (event.currentTarget).scrollLeft;
 
         clearTimeout(this._scrollDebounce);
         this._scrollDebounce = setTimeout(() => this.onScrollIdle(), IDLE_TIMEOUT_MS);
@@ -36,7 +41,13 @@ export default function ScrollListenerMixin(Base) {
        * @param {number} oldValue
        * @param {number} newValue
        */
-      onScrollPositionChange(oldValue, newValue) {},
+      onScrollPositionXChange(oldValue, newValue) {},
+
+      /**
+       * @param {number} oldValue
+       * @param {number} newValue
+       */
+      onScrollPositionYChange(oldValue, newValue) {},
 
       /** @param {Event} event */
       onScrollerResize(event) {},
@@ -63,7 +74,8 @@ export default function ScrollListenerMixin(Base) {
         this._scrollerResizeListener = this.onScrollerResize.bind(this);
         scroller.addEventListener('scroll', this._scrollerScrollListener);
         scroller.addEventListener('resize', this._scrollerResizeListener);
-        this._scrollPosition = 0;
+        this._scrollPositionX = 0;
+        this._scrollPositionY = 0;
         return true;
       },
 
@@ -100,7 +112,10 @@ export default function ScrollListenerMixin(Base) {
         return true;
       },
     })
-    .on('_scrollPositionChanged', (oldValue, newValue, element) => {
-      element.onScrollPositionChange(oldValue, newValue);
+    .on('_scrollPositionXChanged', (oldValue, newValue, element) => {
+      element.onScrollPositionXChange(oldValue, newValue);
+    })
+    .on('_scrollPositionYChanged', (oldValue, newValue, element) => {
+      element.onScrollPositionYChange(oldValue, newValue);
     });
 }

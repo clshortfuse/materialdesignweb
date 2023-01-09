@@ -13,13 +13,53 @@ export default Container
     raised: 'boolean',
     hideOnScroll: 'boolean',
     size: { value: /** @type {'small'|'medium'|'large'|null} */ (null) },
-    _cssPosition: { empty: 'relative' },
-    _scrollDirection: { value: /** @type {'up'|'down'} */ (null) },
+    _cssPosition: {
+      /** @type {'sticky'|'relative'} */
+      empty: 'relative',
+    },
     _visibleStart: { type: 'float', default: 0 },
     _translateY: { type: 'float', empty: 0 },
     _transition: { empty: 'none' },
     _headlineOpacity: { type: 'float', default: 0 },
-    ariaLabel: 'string',
+    ariaLabel: {
+      /**
+       * @param {string} oldValue
+       * @param {string} newValue
+       */
+      changedCallback(oldValue, newValue) {
+        if (newValue == null) {
+          this.refs.bar.removeAttribute('aria-label');
+          if (!this.hasAttribute('aria-labelledby')) {
+            this.refs.bar.setAttribute('aria-labelledby', 'headline');
+          }
+        } else {
+          this.refs.bar.setAttribute('aria-label', newValue);
+          if (!this.hasAttribute('aria-labelledby')) {
+            this.refs.bar.removeAttribute('aria-labelledby');
+          }
+        }
+      },
+    },
+  })
+  .observe({
+    _scrollDirection: {
+      /**
+       * @param {'up'|'down'} oldValue
+       * @param {'up'|'down'} newValue
+       */
+      changedCallback(oldValue, newValue) {
+        if (newValue === 'down') {
+          if (this._cssPosition !== 'sticky') return;
+          // Was sticky, switch to relative and let appbar scroll away
+          this._cssPosition = 'relative';
+          this._translateY = this._scrollPositionY;
+          return;
+        }
+        if (this._visibleStart < 1) return;
+        // Align appbar.bottom with scroll position (top of screen)
+        this._translateY = this._scrollPositionY - this.refs.bar.scrollHeight;
+      },
+    },
   })
   .css(styles)
   .on('composed', ({ template, $, html }) => {
@@ -41,34 +81,8 @@ export default Container
       `,
     );
   })
-  .on('ariaLabelChanged', (oldValue, newValue, element) => {
-    if (newValue == null) {
-      element.refs.bar.removeAttribute('aria-label');
-      if (!element.hasAttribute('aria-labelledby')) {
-        element.refs.bar.setAttribute('aria-labelledby', 'headline');
-      }
-    } else {
-      element.refs.bar.setAttribute('aria-label', newValue);
-      if (!element.hasAttribute('aria-labelledby')) {
-        element.refs.bar.removeAttribute('aria-labelledby');
-      }
-    }
-  })
-  .on('_scrollDirectionChanged', (oldValue, newValue, element) => {
-    if (newValue === 'down') {
-      if (element._cssPosition !== 'sticky') return;
-      // Was sticky, switch to relative and let appbar scroll away
-      element._cssPosition = 'relative';
-      element._translateY = element._scrollPosition;
-      return;
-    }
-    if (element._visibleStart < 1) return;
-    // Align appbar.bottom with scroll position (top of screen)
-    element._translateY = element._scrollPosition - element.refs.bar.scrollHeight;
-  })
-  .on('_scrollPositionChanged', (oldValue, newValue, element) => {
+  .on('_scrollPositionYChanged', (oldValue, newValue, element) => {
     element.raised = (newValue > 0);
-
     if (element.size === 'medium' || element.size === 'large') {
       const max = element.refs.companion.scrollHeight;
       const min = (0.5 * max);
@@ -119,23 +133,22 @@ export default Container
       }
       if (_visibleStart <= 0) return;
       if (_visibleStart >= 1) return;
-      if (this._scrollPosition < (this.refs.bar.scrollHeight)) return;
+      if (this._scrollPositionY < (this.refs.bar.scrollHeight)) return;
       if (_visibleStart <= 0.5) {
         // Reveal all
         this._cssPosition = 'relative';
-        this._translateY = this._scrollPosition;
+        this._translateY = this._scrollPositionY;
         this._transition = 'transform 250ms ease-in';
         this._headlineOpacity = 1;
       } else {
         this._cssPosition = 'relative';
-        this._translateY = this._scrollPosition - this.refs.bar.scrollHeight;
+        this._translateY = this._scrollPositionY - this.refs.bar.scrollHeight;
         this._transition = 'transform 200ms ease-out';
       }
     },
   })
   .define({
     ariaActiveDescendantElement: {
-      reflect: false,
       get() {
         // @ts-ignore Accessibility Object Model
         return this.refs.bar.ariaActiveDescendantElement;
