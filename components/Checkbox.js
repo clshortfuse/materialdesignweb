@@ -15,7 +15,7 @@ export default Container
     icon: { value: 'check' },
     indeterminateIcon: { value: 'check_indeterminate_small' },
     /** Reflected property */
-    indeterminate: { type: 'boolean' },
+    indeterminate: 'boolean',
   })
   .expressions({
     computeDeterminateIcon({ indeterminate, indeterminateIcon, icon }) {
