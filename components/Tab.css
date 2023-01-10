@@ -7,6 +7,9 @@
   --mdw-ink: var(--mdw-color__on-surface-variant);
   display: inline-flex;
 
+  padding-block: 6px;
+  padding-inline: 12px;
+
   cursor: pointer;
 
   color: rgb(var(--mdw-ink));
@@ -26,9 +29,6 @@
   inline-size: 100%;
   flex: 1;
 
-  padding-block: 8px;
-  padding-inline: 12px;
-
   cursor: pointer;
   outline: none;
 
@@ -39,7 +39,7 @@
 
 #icon {
   --mdw-icon__font-variation-settings: inherit;
-  padding-block-end: 4px;
+  padding-block: 4px;
 
 }
 
