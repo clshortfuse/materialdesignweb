@@ -221,13 +221,15 @@ export default function TooltipTriggerMixin(Base) {
       clearTimeout(this.#idleDebounce);
       this.#idleDebounce = setTimeout(() => {
         // console.log('idle');
-        this.showTooltip();
+        this.showTooltip(type === 'touch');
       }, timeout);
     }
 
-    showTooltip() {
+    showTooltip(touch = false) {
       if (this.#tooltip.open) return;
       this.refs.tooltip.open = true;
+      this.refs.tooltip.touch = touch;
+      this.#tooltip.touch = touch;
       document.body.append(this.#tooltip);
       this.updateTooltipPosition();
       this.#resizeObserver.observe(this, { box: 'border-box' });
