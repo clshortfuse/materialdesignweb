@@ -5,7 +5,7 @@
   --mdw-icon__font-variation-settings: 'FILL' 0;
   --mdw-icon__size: 24px;
   --mdw-ink: var(--mdw-color__on-surface-variant);
-  display: flex;
+  display: inline-flex;
 
   cursor: pointer;
 
@@ -27,8 +27,7 @@
   flex: 1;
 
   padding-block: 8px;
-  padding-inline: 0;
-  padding-inline: 8px;
+  padding-inline: 12px;
 
   cursor: pointer;
   outline: none;
