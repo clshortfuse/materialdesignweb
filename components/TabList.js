@@ -72,7 +72,9 @@ export default Container
   .define({
     tabs() {
       // eslint-disable-next-line no-return-assign
-      return this._tabCollection ??= /** @type {any} */ (this.getElementsByTagName(Tab.elementName));
+      return this._tabCollection ??= /** @type {HTMLCollectionOf<InstanceType<Tab>>} */ (
+        this.getElementsByTagName(Tab.elementName)
+      );
     },
   })
   .observe({
@@ -166,13 +168,13 @@ export default Container
     clearCache() {
       this._tabMetrics = null;
     },
-    /**
-     * @param {InstanceType<Tab>} [tab]
-     */
+    /** @param {InstanceType<Tab>} [tab] */
     updateIndicatorByTab(tab) {
       tab ??= this.selectedItem ?? this.tabs.item(0);
-      const { labelMetrics: { left, width }, offsetLeft, clientWidth } = tab;
-      this._indicatorStyle = `--width: ${this.secondary ? clientWidth : width}; --offset: ${offsetLeft + (this.secondary ? 0 : left)}px`;
+
+      const width = this.secondary ? tab.clientWidth : tab.labelMetrics.width;
+      const position = this.secondary ? tab.offsetLeft : tab.offsetLeft + tab.labelMetrics.left;
+      this._indicatorStyle = `--width: ${width}; --offset: ${position}px`;
     },
     updateIndicator(animate = false) {
       this.updateIndicatorByTab();
@@ -183,30 +185,39 @@ export default Container
     /** @param {number} percentage */
     updateIndicatorByPosition(percentage) {
       const metrics = this.tabMetrics;
-      const [firstMetrics] = metrics;
-      const lastMetrics = metrics.at(-1);
-      const start = firstMetrics.center; // Center of first tab
-      const end = lastMetrics.center; // Center of last tab
-      const position = (end - start) * percentage + start;
 
-      const leftCenter = metrics.filter((m) => m.center <= position).at(-1);
-      const rightCenter = metrics.find((m) => m.center >= position);
+      // Tab panels are equal-width whereas tablist may be variable
+
+      const clamped = Math.min(Math.max(percentage, 0), 1);
+      const decimalIndex = (metrics.length - 1) * clamped;
+      const leftIndex = Math.floor(decimalIndex);
+      const rightIndex = Math.ceil(decimalIndex);
+
+      const leftMetrics = metrics[leftIndex];
+      if (!leftMetrics) return;
+
+      const rightMetrics = metrics[rightIndex];
 
       let width;
       let activeTab;
-      if (leftCenter === rightCenter) {
-        // 100% of current;
-        width = this.secondary ? leftCenter.width : leftCenter.label.width;
-        activeTab = this.tabs.item(leftCenter.index);
+      /** Center-based position */
+      let center;
+      if (leftMetrics === rightMetrics) {
+        width = this.secondary ? leftMetrics.width : leftMetrics.label.width;
+        activeTab = this.tabs.item(leftIndex);
+        center = leftMetrics.center;
       } else {
-        // LERP
-        const totalDistance = rightCenter.center - leftCenter.center;
-        const tabRatio = (position - leftCenter.center) / totalDistance;
-        const leftWidth = (1 - tabRatio) * (this.secondary ? leftCenter.width : leftCenter.label.width);
-        const rightWidth = tabRatio * (this.secondary ? rightCenter.width : rightCenter.label.width);
+        const leftRatio = 1 - (decimalIndex - leftIndex);
+        const rightRatio = 1 - leftRatio;
+        const leftWidth = leftRatio * (this.secondary ? leftMetrics.width : leftMetrics.label.width);
+        const rightWidth = rightRatio * (this.secondary ? rightMetrics.width : rightMetrics.label.width);
+        const activeIndex = leftRatio > rightRatio ? leftIndex : rightIndex;
+        const distance = rightMetrics.center - leftMetrics.center;
         width = leftWidth + rightWidth;
-        activeTab = this.tabs.item(tabRatio <= 0.5 ? leftCenter.index : rightCenter.index);
+        activeTab = this.tabs.item(activeIndex);
+        center = leftMetrics.center + (distance * rightRatio);
       }
+
       if (!activeTab.active) {
         for (const tab of this.tabs) {
           tab.active = tab === activeTab;
@@ -214,7 +225,7 @@ export default Container
         this.active = true;
       }
 
-      this._indicatorStyle = `--width: ${width}; --offset: ${position - (width / 2)}px`;
+      this._indicatorStyle = `--width: ${width}; --offset: ${center - (width / 2)}px`;
       this.refs.indicator.style.setProperty('--transition-ratio', '0');
     },
     updateIndicatorByIndex(index = this._selectedIndex) {

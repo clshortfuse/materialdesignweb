@@ -37,7 +37,7 @@
   inset-block-end: 0;
   inset-inline: 0;
 
-  overflow: clip;
+  overflow-y: clip;
 
   block-size: 3px;
   inline-size: 100%;
@@ -76,19 +76,19 @@
   border-start-start-radius: calc(1px * var(--corner));
 
   transform: translateX(var(--offset));
-
-  /* background-color:red; */
 }
 
 #indicator-center {
+  /* Chrome has rendering issues upscaling small elements */
+  --precision: 100;
+
   position: absolute;
   inset-inline-start: calc(1px * var(--corner));
 
-  inline-size: 1px;
+  inline-size: calc(1px * var(--precision));
 
-  transform: translateX(var(--offset)) scaleX(calc(var(--width) - (2 * var(--corner))));
+  transform: translateX(var(--offset)) scaleX(calc((var(--width) - (2 * var(--corner))) / var(--precision)));
 
-  /* background-color:green; */
 }
 
 #indicator-end {
@@ -102,8 +102,6 @@
     translateX(var(--offset))
     translateX(calc(-2px * var(--corner)))
     translateX(calc(var(--width) * 1px));
-
-  /* background-color:blue; */
 }
 
 :host([active]) #indicator {
@@ -113,4 +111,10 @@
 
 :host([secondary]) #indicator {
   --corner: 0;
+}
+
+:host([scrollable]) {
+  padding-inline: 48px;
+  grid-auto-columns: auto;
+  overflow-x: auto;
 }
