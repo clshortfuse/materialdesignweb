@@ -16,6 +16,8 @@
   --mdw-button__outline__rgb: var(--mdw-color__outline);
   --mdw-button__touch-target__size: 10mm;
   --mdw-ink: var(--mdw-color__primary);
+
+  --label-bg: transparent;
   display: inline-flex;
   align-items: stretch;
   justify-content: center;
@@ -31,10 +33,16 @@
   letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
 }
 
+:host(:is([color],[surface])) {
+  --label-bg: rgb(var(--mdw-bg));
+  background-color: transparent;
+}
+
 :host(:where([elevated],[filled])) {
   --mdw-container__will-change: box-shadow;
-  background-color: rgb(var(--mdw-bg));
+  --label-bg: rgb(var(--mdw-bg));
 }
+
 /** Elevated Color Defaults */
 :host(:where([elevated])) {
   --mdw-bg: var(--mdw-color__surface);
@@ -56,7 +64,7 @@
 }
 
 :host(:where([outlined="surface"])) {
-  background-color: rgb(var(--mdw-color__surface));
+  --label-bg: rgb(var(--mdw-color__surface));
 }
 
 :host(:where([outlined], [elevated], [filled], [icon])) {
@@ -78,7 +86,7 @@
 }
 
 :host([disabled]:is([elevated], [filled])) {
-  background: rgba(var(--mdw-color__on-surface), 0.12);
+  --label-bg: rgba(var(--mdw-color__on-surface), 0.12);
   color: rgba(var(--mdw-color__on-surface), 0.38);
 }
 
@@ -148,11 +156,12 @@
 /* Remove Firefox inner */
 #touch-target {
   position: absolute;
-  inset-block-start: calc(50% - var(--mdw-button__touch-target__size) / 2);
-  inset-inline-start: calc(50% - var(--mdw-button__touch-target__size) / 2);
+  inset: 50%;
 
   block-size: var(--mdw-button__touch-target__size);
   inline-size: var(--mdw-button__touch-target__size);
+
+  transform: translateX(-50%) translateY(-50%);
 
   visibility: hidden;
 }
@@ -194,7 +203,7 @@ label {
 
   z-index: 0;
 
-  background-color: transparent;
+  background-color: var(--label-bg);
   border-radius: inherit;
   color: inherit;
 

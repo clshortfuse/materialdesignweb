@@ -7,17 +7,28 @@
   --mdw-button__icon__size: 24px;
   --mdw-button__icon__display: block;
   --mdw-button__outline__opacity: 1;
+  --mdw-button__target__size: 48px;
   --mdw-button__icon__font-variation-settings: 'FILL' 0;
   --mdw-icon-button__background-alpha: 1;
   --mdw-button__outline__size: 0;
   --mdw-ink: var(--mdw-color__on-surface-variant);
 
-  block-size: 40px;
-  min-block-size: 40px;
-  inline-size: 40px;
-  min-inline-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  block-size: auto;
+  min-block-size: 0;
+  inline-size: auto;
+  min-inline-size: 0;
+
+  background-color: transparent;
 
   font-size: 24px;
+}
+
+:host([color]) {
+  background-color: transparent;
 }
 
 :host(:where([type="checkbox"])[selected]) {
@@ -45,13 +56,13 @@
 
 :host(:where([filled][type="checkbox"]):not([selected])) {
   --mdw-button__icon__font-variation-settings: 'FILL' 0;
-  background-color: rgb(var(--mdw-color__surface-variant));
+  --label-bg: rgb(var(--mdw-color__surface-variant));
   color: rgb(var(--mdw-bg));
 }
 
 :host(:where([filled="tonal"][type="checkbox"]):not([selected])) {
   --mdw-button__icon__font-variation-settings: 'FILL' 0;
-  background-color: rgb(var(--mdw-color__surface-variant));
+  --label-bg: rgb(var(--mdw-color__surface-variant));
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
@@ -61,20 +72,20 @@
   --mdw-ink: var(--mdw-color__inverse-on-surface);
   --mdw-button__icon__font-variation-settings: 'FILL' 0;
   --mdw-button__outline__size: 1px;
-  background-color: transparent;
+  --label-bg: transparent;
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
 :host(:where([outlined][type="checkbox"]):not([selected])) {
   /* Needed to override custom colors */
-  background-color: transparent;
+  --label-bg: transparent;
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
 :host(:where([outlined][type="checkbox"])[selected]) {
   --mdw-button__icon__font-variation-settings: 'FILL' 1;
   --mdw-button__outline__size: 0;
-  background-color: rgba(var(--mdw-bg), var(--mdw-icon-button__background-alpha));
+  --label-bg: rgba(var(--mdw-bg), var(--mdw-icon-button__background-alpha));
   color: rgb(var(--mdw-ink));
 }
 
@@ -88,7 +99,7 @@
 }
 
 :host([disabled]:is([filled],[outlined][type="checkbox"][selected])) {
-  background-color: rgba(var(--mdw-color__on-surface), 0.12);
+  --label-bg: rgba(var(--mdw-color__on-surface), 0.12);
 }
 
 :host(:focus) {
@@ -100,13 +111,20 @@
 }
 
 label {
-  padding: 0;
+  border-radius: 50%;
+  block-size:auto;
+  inline-size:auto;
+  flex: 0;
+  padding: 8px;
+
+  background-color: var(--label-bg);
+}
+
+#icon {
+  margin: 0px;
+
 }
 
 :host(:not([icon])) #icon {
   inline-size: 1em;
-}
-
-#icon {
-  margin: 0;
 }
