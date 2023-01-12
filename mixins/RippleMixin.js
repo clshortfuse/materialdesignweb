@@ -99,17 +99,17 @@ export default function RippleMixin(Base) {
       <div id=ripple aria-hidden=true><div id=ripple-inner></div></div>
     `
     .events('#ripple-inner', {
-      'animationend'({ animationName }) {
+      animationend({ animationName, currentTarget }) {
         switch (animationName) {
           case 'ripple-fade-in':
           case 'ripple-fade-in-repeat':
-            this.setAttribute('mdw-fade-in-complete', '');
+            currentTarget.setAttribute('mdw-fade-in-complete', '');
             break;
           case 'ripple-fade-out':
-            this.removeAttribute('mdw-fade-in');
-            this.removeAttribute('mdw-fade-in-repeat');
-            this.removeAttribute('mdw-fade-in-complete');
-            this.removeAttribute('mdw-fade-out');
+            currentTarget.removeAttribute('mdw-fade-in');
+            currentTarget.removeAttribute('mdw-fade-in-repeat');
+            currentTarget.removeAttribute('mdw-fade-in-complete');
+            currentTarget.removeAttribute('mdw-fade-out');
             break;
           default:
         }
