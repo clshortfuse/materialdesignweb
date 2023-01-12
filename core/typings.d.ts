@@ -1,6 +1,6 @@
 import { ElementIdentifier } from './identify.js';
 
-type ObserverPropertyType = 'string' | 'boolean' | 'map' | 'set' | 'float' | 'integer' | 'array';
+type ObserverPropertyType = 'string' | 'boolean' | 'map' | 'set' | 'float' | 'integer' | 'object' | 'function';
 
 type InlineTemplate<T1, T2=T1> = (fn: (this:T1, data: T2) => any) => string;
 
@@ -12,9 +12,9 @@ type ParsedObserverPropertyType<T extends ObserverPropertyType> =
   T extends 'boolean' ? boolean
   : T extends 'string' ? string
   : T extends 'float' | 'integer' ? number
-  : T extends 'array' ? any[]
-  : T extends 'set' ? Set<any>
-  : T extends 'map' ? Map<any, any>
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  : T extends 'object' ? {}
+  : T extends 'function' ? (...args:any) => any
   : unknown;
 
 type ObserverOptions<
@@ -36,6 +36,7 @@ type ObserverOptions<
   empty?: T2;
   /** Initial value (empty value if not specified) */
   value?: T2;
+  values?: Map<C, T2>;
   reflect?: boolean | 'write' | 'read';
   /** Function used when null passed */
   changedCallback?: (this:C, oldValue:T2, newValue:T2)=>any;
@@ -45,6 +46,8 @@ type ObserverOptions<
   is?: (this:C, a:T2, b:T2)=>boolean
   get?: (this:C) => T2
   set?: (this:C, value: T2) => T2,
+  attributeChangedCallback?: (this:C, name:string, oldValue: string, newValue: string) => any;
+  propChangedCallback?: (this:C, name:string, oldValue: T2, newValue: T2) => any;
 }
 
 type ObserverConfiguration<

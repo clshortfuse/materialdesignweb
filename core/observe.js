@@ -119,6 +119,8 @@ export function parseObserverOptions(name, typeOrOptions) {
     nullParser,
     key: name,
     changedCallback,
+    values: options.values ?? new Map(),
+    attributeChangedCallback: options.attributeChangedCallback,
   };
 }
 
@@ -202,7 +204,6 @@ export function observeFunction(fn, arg0 = {}) {
 export const defineObservableProperty = (object, key, options) => {
   /** @type {import('./typings.js').ObserverConfiguration<T1,T2,K,C>} */
   const config = {
-    values: new Map(),
     ...DEFAULT_OBSERVER_CONFIGURATION,
     ...parseObserverOptions(key, options),
     changedCallback: options.changedCallback,
@@ -233,11 +234,14 @@ export const defineObservableProperty = (object, key, options) => {
       if (oldValue == null) {
         if (newValue == null) return; // Both nullish
       } else if (newValue != null && (oldValue === newValue || config.is.call(this, oldValue, newValue))) {
-      // Not null and match
+        // Not null and match
         return;
       }
 
       config.values.set(this, newValue);
+      if (config.propChangedCallback) {
+        config.propChangedCallback.call(this, key, oldValue, newValue);
+      }
       config.changedCallback.call(this, oldValue, newValue);
     },
   };

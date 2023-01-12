@@ -141,7 +141,7 @@ export declare const ICustomElement: {
               ? ParsedObserverPropertyType<T3[P]>
               : T3[P] extends {type: ObserverPropertyType}
               ? ParsedObserverPropertyType<T3[P]['type']>
-              : T3[P] extends ObserverOptions<null, infer R>
+              : T3[P] extends ObserverOptions<any, infer R>
               ? unknown extends R ? string : R
               : never
         })

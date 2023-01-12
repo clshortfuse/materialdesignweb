@@ -134,7 +134,7 @@ export default class CustomElement extends ICustomElement {
 
   /**
    * Registers class asynchronously at end of current event loop cycle
-   * via `queueMicrotask`. If class is registered before than,
+   * via `queueMicrotask`. If class is registered before then,
    * does nothing.
    * @type {typeof ICustomElement['autoRegister']}
    */
@@ -292,8 +292,8 @@ export default class CustomElement extends ICustomElement {
   }
 
   /**
-   * Define properties on instances via Object.defineProperties()
-   * Automatically sets property non-enumerable if name begins with `_`
+   * Define properties on instances via Object.defineProperties().
+   * Automatically sets property non-enumerable if name begins with `_`.
    * @type {typeof ICustomElement.define}
    */
   static define(props) {
@@ -530,6 +530,11 @@ export default class CustomElement extends ICustomElement {
       if (config.attr !== name) continue;
 
       if (config.reflect !== true && config.reflect !== 'read') return;
+
+      if (config.attributeChangedCallback) {
+        config.attributeChangedCallback.call(this, name, oldValue, newValue);
+        return;
+      }
 
       const attrValue = this.attributeCache.get(name) ?? null;
       if (attrValue === newValue) return;
