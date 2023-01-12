@@ -7,5 +7,13 @@ export default Container
     ariaRole: 'tooltip',
   })
   .css(styles)
-  .observe({ open: 'boolean' })
+  .observe({
+    open: {
+      type: 'boolean',
+      changedCallback(oldValue, newValue) {
+        this.setAttribute('aria-hidden', newValue ? 'false' : 'true');
+      },
+    },
+    touch: 'boolean',
+  })
   .autoRegister('mdw-tooltip');
