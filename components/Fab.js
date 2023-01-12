@@ -7,13 +7,15 @@ export default ExtendedFab
   .mixin(TooltipTriggerMixin)
   .extend()
   .observe({
-    fabSize: { value: /** @type {'small'|'large'} */ (null) },
+    fabSize: {
+      /** @type {null|'small'|'large'} */
+      value: null,
+    },
   })
   .css(styles)
   .on('composed', ({ $ }) => {
     $('#slot').remove();
     $('#tooltip-slot').removeAttribute('name');
-    const control = $('#control');
-    control.setAttribute('aria-labelledby', 'tooltip');
+    $('#control').setAttribute('aria-labelledby', 'tooltip');
   })
   .autoRegister('mdw-fab');
