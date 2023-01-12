@@ -5,28 +5,69 @@
       "type": "npm",
       "script": "start:docs",
       "isBackground": true,
-      "problemMatcher": [{
-        "owner": "webpack",
-        "source": "webpack",
-        "fileLocation": "absolute",
-        "severity": "error",
-        "pattern": [{
-          "regexp": "^ERROR in (.*)$",
-        }, {
-          "regexp": "^.*$"
-        }, {
-          "regexp": "^([^:]*): ([^:]*): ([^\\(]*) \\((\\d+):(\\d+)\\)$",
-          "file": 2,
-          "message": 3,
-          "line": 4,
-          "column": 5
-        }],
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "^.*: Hash: *$",
-          "endsPattern": "^.*(Compiled successfully)|(Failed to compile).*$"
+      "problemMatcher": [
+        {
+          "owner": "webpack",
+          "source": "webpack",
+          "fileLocation": "absolute",
+          "severity": "error",
+          "pattern": [
+            {
+              "regexp": "^ERROR in (.*)$"
+            },
+            {
+              "regexp": "^.*$"
+            },
+            {
+              "regexp": "^([^:]*): ([^:]*): ([^\\(]*) \\((\\d+):(\\d+)\\)$",
+              "file": 2,
+              "message": 3,
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "^.*: Hash: *$",
+            "endsPattern": "^.*(Compiled successfully)|(Failed to compile).*$"
+          }
         }
-      }]
+      ]
+    },
+    {
+      "type": "npm",
+      "script": "serve",
+      "label": "npm: serve",
+      "detail": "node esbuild.js --watch --metafile --serve",
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "owner": "esbuild",
+          "source": "esbuild",
+          "fileLocation": "absolute",
+          "severity": "error",
+          "pattern": [
+            {
+              "regexp": "^✘ [ERROR](.*)$"
+            },
+            {
+              "regexp": "^.*$"
+            },
+            {
+              "regexp": "^([^:]*): ([^:]*): ([^\\(]*) \\((\\d+):(\\d+)\\)$",
+              "file": 2,
+              "message": 3,
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "^.*: Hash: *$",
+            "endsPattern": "^.*(Build completed).*$"
+          }
+        }
+      ]
     }
   ]
 }
