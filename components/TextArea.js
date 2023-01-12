@@ -77,7 +77,7 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
     if (TextArea.supportsCSSLineHeightUnit) {
       this.events('#control', {
         input() {
-          this.getRootNode().host.resize();
+          this.resize();
         },
       });
     }

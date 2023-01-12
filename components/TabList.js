@@ -279,9 +279,8 @@ export default Container
   })
   .events('#slot', {
     slotchange() {
-      const host = this.getRootNode().host;
-      host.clearCache();
-      host.updateIndicator();
+      this.clearCache();
+      this.updateIndicator();
     },
   })
   .autoRegister('mdw-tab-list');

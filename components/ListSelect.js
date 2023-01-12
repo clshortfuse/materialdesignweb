@@ -18,7 +18,7 @@ export default class ListSelect extends KeyboardNavMixin(FormAssociatedMixin(Lis
 
   constructor() {
     super();
-    this.refs.slot.addEventListener('slotchange', this.onSlotChange, { passive: true });
+    this.refs.slot.addEventListener('slotchange', this.onSlotChange);
     this.addEventListener('keydown', this.onControlKeydown);
     this.addEventListener('click', this.onListSelectClick);
   }

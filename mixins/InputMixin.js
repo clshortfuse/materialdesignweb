@@ -137,43 +137,42 @@ export default function InputMixin(Base) {
     static {
       this.events('#control', {
         '~click'(event) {
+          const input = /** @type {HTMLInputElement} */ (event.currentTarget); 
           if (event.defaultPrevented) return;
-          if (this.type !== 'radio') return;
-          if (this.required) return;
-          const { host } = this.getRootNode();
+          if (input.type !== 'radio') return;
+          if (input.required) return;
 
-          if (host.checked) {
-            host.checked = false;
+          if (this.checked) {
+            this.checked = false;
             // event.preventDefault();
           }
         },
         keydown(event) {
           if (event.defaultPrevented) return;
+          const input = /** @type {HTMLInputElement} */ (event.currentTarget);
           if (event.key === 'Enter') {
-            if (this.type === 'submit') return;
-            const { host } = this.getRootNode();
-            host.performImplicitSubmission(event);
+            if (input.type === 'submit') return;
+            this.performImplicitSubmission(event);
             return;
           }
-          if (this.type !== 'radio') return;
+          if (input.type !== 'radio') return;
           if (event.key === 'Spacebar' || event.key === ' ') {
-            if (this.required) return;
-            const { host } = this.getRootNode();
+            if (input.required) return;
 
-            if (host.checked) {
-              host.checked = false;
+            if (this.checked) {
+              this.checked = false;
               event.preventDefault();
             }
           }
         },
         change(event) {
-          const { host } = this.getRootNode();
-          if (host.hasAttribute('disabled')) {
+          if (this.hasAttribute('disabled')) {
             event.preventDefault();
             event.stopImmediatePropagation();
             return;
           }
-          host._checked = this.checked;
+          const input = /** @type {HTMLInputElement} */ (event.currentTarget);
+          this._checked = input.checked;
         },
       });
     }

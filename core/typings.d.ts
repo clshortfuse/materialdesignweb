@@ -108,20 +108,23 @@ type CompositionEventMap = HTMLElementEventMap & {
   [P in keyof HTMLElementCancellableEventMap as `~${P}`]: Omit<HTMLElementCancellableEventMap[P], 'preventDefault'>
 };
 
-type CompositionEventListener<T1, T2 = HTMLElement, K = keyof CompositionEventMap> = {
+type CompositionEventListener<T, K = keyof CompositionEventMap> = {
   type?: K
   target?: ElementIdentifier,
   capture?: boolean;
   once?: boolean;
   passive?: boolean;
   signal?: AbortSignal;
-  handleEvent?: (this: T2, event: K extends keyof CompositionEventMap ? CompositionEventMap[K] : Event) => any;
-  prop?: keyof T1 & string;
+  handleEvent?: (
+      this: T,
+      event: (K extends keyof CompositionEventMap ? CompositionEventMap[K] : Event) & {currentTarget:HTMLElement}
+    ) => any;
+  prop?: keyof T & string;
  };
 
-type CompositionEventListenerObject<T1, T2> =
+type CompositionEventListenerObject<T> =
   {
-    [P in keyof CompositionEventMap]?: (keyof T1 & string)
-      | ((this: T2, event: CompositionEventMap[P]) => any)
-      | CompositionEventListener<T1, T2, P>
+    [P in keyof CompositionEventMap]?: (keyof T & string)
+      | ((this: T, event: CompositionEventMap[P] & {currentTarget:HTMLElement}) => any)
+      | CompositionEventListener<T, P>
   };

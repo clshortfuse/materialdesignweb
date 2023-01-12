@@ -44,18 +44,17 @@ export default Container
   })
   .methods({
     /**
-     * @param {MouseEvent|TouchEvent} event
-     * @this {HTMLInputElement} this
+     * @param {(MouseEvent|TouchEvent) & {currentTarget:HTMLInputElement}} event
      * @return {void}
      */
     onControlMouseOrTouch(event) {
-      if (this.disabled) return;
-      /** @type {{host:InstanceType<import('./Slider.js').default>}} */ // @ts-ignore Coerce
-      const { host } = this.getRootNode();
-      if (host.hasAttribute('disabled')) return;
+      const input = event.currentTarget;
+      if (input.disabled) return;
+
+      if (this.hasAttribute('disabled')) return;
 
       if (event.type === 'touchend') {
-        host._isHoveringThumb = false;
+        this._isHoveringThumb = false;
         return;
       }
 
@@ -77,16 +76,16 @@ export default Container
         // Firefox doesn't report `:active`
         // eslint-disable-next-line no-bitwise
         isActive = (event.buttons & 1) === 1
-       && (event.type === 'mousedown' || this.matches(':active'));
+       && (event.type === 'mousedown' || input.matches(':active'));
         ({ offsetX, clientX, pageX } = event);
       }
 
       if (offsetX == null) {
         clientX ??= pageX - window.scrollX; // Safari
-        offsetX = clientX - this.getBoundingClientRect().left;
+        offsetX = clientX - input.getBoundingClientRect().left;
       }
 
-      const { clientWidth } = this;
+      const { clientWidth } = input;
       let position = (offsetX / clientWidth);
       if (position > 1) {
         position = 1;
@@ -95,7 +94,7 @@ export default Container
       }
 
       if (isActive) {
-        host._isHoveringThumb = true;
+        this._isHoveringThumb = true;
         const { min, max, step } = this;
 
         const nMin = parseFloat(min);
@@ -105,39 +104,38 @@ export default Container
         const currentValue = position * (nMax - nMin) + nMin;
         const roundedValue = Math.round(currentValue / nStep) * nStep;
 
-        host._roundedValue = roundedValue;
-        host._previewValue = roundedValue.toString(10);
+        this._roundedValue = roundedValue;
+        this._previewValue = roundedValue.toString(10);
         return;
       }
 
       if (isTouch) return;
 
-      const fractionalValue = valueAsFraction(host.value, host.min, host.max);
+      const fractionalValue = valueAsFraction(this.value, this.min, this.max);
       const thumbOffset = fractionalValue * clientWidth;
       const thumbMin = thumbOffset - 20;
       const thumbMax = thumbOffset + 20;
-      host._isHoveringThumb = offsetX >= thumbMin && offsetX <= thumbMax;
+      this._isHoveringThumb = offsetX >= thumbMin && offsetX <= thumbMax;
     },
 
-    onLeaveEvent() {
-      if (document.activeElement === this) return;
+    /** @param {Event} event */
+    onLeaveEvent({ currentTarget }) {
+      if (document.activeElement === currentTarget) return;
       this._isHoveringThumb = false;
     },
 
     /**
-     * @param {MouseEvent|TouchEvent} event
-     * @this {HTMLInputElement} this
+     * @param {(MouseEvent|TouchEvent) & {currentTarget:HTMLInputElement}} event
      * @return {void}
      */
     onControlFinish(event) {
-      if (this.disabled) return;
+      const input = event.currentTarget;
+      if (input.disabled) return;
       event.preventDefault();
-      /** @type {any} */ // @ts-ignore Coerce
-      const { host } = this.getRootNode();
-      this.valueAsNumber = host._roundedValue;
-      if (host._value !== this.value) {
-        host._value = this.value;
-        this.dispatchEvent(new Event('change', { bubbles: true }));
+      input.valueAsNumber = this._roundedValue;
+      if (this._value !== input.value) {
+        this._value = input.value;
+        input.dispatchEvent(new Event('change', { bubbles: true }));
       }
     },
   })
@@ -156,10 +154,10 @@ export default Container
     '~touchcancel': 'onControlMouseOrTouch',
     '~touchend': 'onControlMouseOrTouch',
     focus() {
-      this.getRootNode().host._isFocused = true;
+      this._isFocused = true;
     },
     blur() {
-      this.getRootNode().host._isFocused = false;
+      this._isFocused = false;
     },
     touchend: 'onControlFinish',
     click: 'onControlFinish',

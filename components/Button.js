@@ -20,29 +20,31 @@ export default Container
   .on('composed', ({ $, html }) => {
     $('#label').append(html`
       <mdw-icon id=icon aria-hidden="true" svg={svg} src="{src}">{icon}</mdw-icon>
-      ${$('#ripple')}
-      <div id=touch-target aria-hidden="true"></div>
+      ${$('#elevation')}
       <div id=outline aria-hidden="true"></div>
+      <div id=touch-target aria-hidden="true"></div>
     `);
     const control = $('#control');
     control.setAttribute('role', 'button');
     control.setAttribute('type', 'button');
   })
   .events('#control', {
-    '~click'() {
-      // @ts-ignore Cast
-      // eslint-disable-next-line @typescript-eslint/no-this-alias, unicorn/no-this-assignment
-      const el = /** @type {HTMLInputElement} */ (this);
-      if (el.disabled) return;
-      if (el.type !== 'submit') return;
-      const { host } = this.getRootNode();
-      if (host.disabled) return;
-      const { value } = el;
-      const form = host.elementInternals?.form;
+    /**
+     * Duplicates button for form submission
+     * @see https://github.com/WICG/webcomponents/issues/814
+     * @param {{currentTarget:HTMLInputElement}} event
+     * @type {any}
+     */
+    '~click'({ currentTarget }) {
+      if (currentTarget.disabled) return;
+      if (currentTarget.type !== 'submit') return;
+      if (this.disabled) return;
+      const { value } = currentTarget;
+      const form = this.elementInternals?.form;
       if (!form) return;
-      host.elementInternals.setFormValue(value);
-      if ((el.type ?? 'submit') !== 'submit') return;
-      const duplicatedButton = /** @type {HTMLInputElement} */ (el.cloneNode());
+      this.elementInternals.setFormValue(value);
+      if ((currentTarget.type ?? 'submit') !== 'submit') return;
+      const duplicatedButton = /** @type {HTMLInputElement} */ (currentTarget.cloneNode());
       duplicatedButton.hidden = true;
       form.append(duplicatedButton);
       if ('requestSubmit' in form) {

@@ -147,7 +147,7 @@ export declare const ICustomElement: {
         })
         ;
 
-  props: typeof ICustomElement.define;
+  props: typeof ICustomElement.observe;
 
   set<T1 extends typeof ICustomElement, T2 extends object>
     (this: T1, source: T2 & ThisType<T2 & InstanceType<T1>>)
@@ -207,12 +207,8 @@ export declare const ICustomElement: {
   events<T extends typeof ICustomElement>
     (
       this: T,
-      query: string|CompositionEventListenerObject<InstanceType<T>, InstanceType<T>>,
-      listeners?: CompositionEventListenerObject<
-        InstanceType<T>,
-        Omit<HTMLElement, 'getRootNode'> & ({
-          getRootNode?: (...args: Parameters<Node['getRootNode']>) => Omit<ShadowRoot, 'host'> & {host: InstanceType<T>}
-        })>,
+      query: string|CompositionEventListenerObject<InstanceType<T>>,
+      listeners?: CompositionEventListenerObject<InstanceType<T>>,
     ): T;
 
   on<

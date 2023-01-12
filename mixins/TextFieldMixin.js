@@ -81,10 +81,10 @@ export default function TextFieldMixin(Base) {
     })
     .events('#control', {
       focus() {
-        this.getRootNode().host._isFocused = true;
+        this._isFocused = true;
       },
       blur() {
-        this.getRootNode().host._isFocused = false;
+        this._isFocused = false;
       },
     })
     .on('sizeChanged', (oldValue, newValue, element) => {

@@ -69,8 +69,7 @@ export default Container
   })
   .events('#anchor', {
     click(event) {
-      const { host } = this.getRootNode();
-      const { href } = host;
+      const { href } = this;
       if (!href) {
         event.preventDefault();
         return;

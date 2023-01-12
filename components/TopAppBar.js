@@ -64,17 +64,17 @@ export default Container
   .css(styles)
   .on('composed', ({ template, $, html }) => {
     const slot = $('#slot');
-    slot.setAttribute('onslotchange', '{refreshTabIndexes}');
+    slot.setAttribute('on-slotchange', '{refreshTabIndexes}');
     return template.append(
       html`
         <div id="bar" role=toolbar aria-labelledby=headline style={computeBarStyle}>
           ${$('#elevation')}
-          <div id=leading><slot id=leading-slot name=leading onslotchange={refreshTabIndexes}></slot></div>
+          <div id=leading><slot id=leading-slot name=leading on-slotchange={refreshTabIndexes}></slot></div>
           <div id=headline style={computeHeadlineStyle}>
             {headline}
             ${slot}
           </div>
-          <div id=trailing><slot id=trailing-slot name=trailing onslotchange={refreshTabIndexes}></slot></div>
+          <div id=trailing><slot id=trailing-slot name=trailing on-slotchange={refreshTabIndexes}></slot></div>
         </div>
         <div _if=${({ size }) => size === 'medium' || size === 'large'}
           id=companion aria-hidden=true><span id=companion-text>{headline}</span></div>

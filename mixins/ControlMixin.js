@@ -137,24 +137,24 @@ export default function ControlMixin(Base) {
         },
       });
       this.events('#control', {
-        input() {
-          const { host } = this.getRootNode();
-          if (!host.validity.valid) {
+        input({ currentTarget }) {
+          const control = /** @type {HTMLControlElement} */ (currentTarget);
+          if (!this.validity.valid) {
             // Perform check in case user has validated
-            host.checkValidity();
+            this.checkValidity();
           } else {
             // Track internally
-            this.checkValidity();
-            host._badInput = this.validity.badInput;
+            control.checkValidity();
+            this._badInput = control.validity.badInput;
           }
-          host._value = this.value;
+          this._value = control.value;
         },
-        change(event) {
-          const { host } = this.getRootNode();
-          host._value = this.value;
-          host.checkValidity();
+        change({ currentTarget }) {
+          const control = /** @type {HTMLControlElement} */ (currentTarget);
+          this._value = control.value;
+          this.checkValidity();
           // Change event is NOT composed. Needs to escape shadow DOM
-          host.dispatchEvent(new Event('change', { bubbles: true }));
+          this.dispatchEvent(new Event('change', { bubbles: true }));
         },
       });
     }

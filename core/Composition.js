@@ -59,6 +59,20 @@ function valueFromPropName(prop, source) {
 }
 
 /**
+ * Returns event listener bound to shadow root host
+ * Use this function avoid generating extra closures
+ * @this {HTMLElement}
+ * @param {Function} fn
+ */
+function buildShadowRootChildListener(fn) {
+  /** @param {Event & {currentTarget:{getRootNode: () => ShadowRoot}}} event */
+  return function onShadowRootChildClick(event) {
+    const host = event.currentTarget.getRootNode().host;
+    fn.call(host, event);
+  };
+}
+
+/**
  * @example
  *  propInSource(
  *    'address.home.houseNumber',
@@ -182,7 +196,7 @@ export default class Composition {
     return this;
   }
 
-  /** @param {import('./typings.js').CompositionEventListener<T,any>} listener */
+  /** @param {import('./typings.js').CompositionEventListener<T>} listener */
   addEventListener(listener) {
     const key = listener.target ? keyFromIdentifier(listener.target) : '';
     let set = this.events.get(key);
@@ -389,7 +403,6 @@ export default class Composition {
       /** @type {Element} */
       let element;
       let isEvent;
-      let eventFlags;
       let textNodeIndex;
 
       if (nodeType === Node.TEXT_NODE) {
@@ -407,10 +420,12 @@ export default class Composition {
       // eslint-disable-next-line unicorn/consistent-destructuring
         element = node.ownerElement;
         if (nodeName.startsWith('on')) {
-          const [, flags, prop] = parsedValue.match(/^([*1~]+)?(.*)$/);
-          eventFlags = flags;
-          parsedValue = prop;
-          isEvent = true;
+          if (nodeName[2] === '-') {
+            isEvent = true;
+          } else {
+            console.log('Will not interpolate inline event listeners', element.outerHTML);
+            continue;
+          }
         }
       }
 
@@ -418,13 +433,14 @@ export default class Composition {
       const identifierKey = keyFromIdentifier(identifier);
 
       if (isEvent) {
+        const eventType = nodeName.slice(3);
+        const [, flags, type] = eventType.match(/^([*1~]+)?(.*)$/);
         const options = {
-          once: eventFlags?.includes('1'),
-          passive: eventFlags?.includes('~'),
-          capture: eventFlags?.includes('*'),
+          once: flags?.includes('1'),
+          passive: flags?.includes('~'),
+          capture: flags?.includes('*'),
         };
 
-        const type = nodeName.slice(2);
         element.removeAttribute(nodeName);
 
         let set = this.events.get(identifierKey);
@@ -596,21 +612,26 @@ export default class Composition {
         console.warn('Skip bind events for', identifier);
         continue;
       }
-      for (const entry of events) {
-        if (entry.handleEvent) {
-          element.addEventListener(entry.type, entry.handleEvent, entry);
-          continue;
+      for (const entry of [...events].reverse()) {
+        let listener = entry.handleEvent;
+        if (!listener) {
+          if (root instanceof ShadowRoot) {
+            listener = valueFromPropName(entry.prop, data);
+            if (element !== rootElement) {
+              // Wrap to retarget this
+              listener = buildShadowRootChildListener(listener);
+            }
+            // Cache and reuse
+            entry.handleEvent = listener;
+            console.log('caching listener', entry);
+          } else {
+            console.warn('creating new listener', entry);
+            listener = (event) => {
+              valueFromPropName(entry.prop, data)(event);
+            };
+          }
         }
-        /** @type {any} */
-        const value = valueFromPropName(entry.prop, data);
-        if (value) {
-          element.addEventListener(entry.type, value, entry);
-          continue;
-        }
-        // If listener is a Class Field, it will not be available yet
-        // Assume it will be and if not, it will throw the error anyway
-        console.log('lazy assignment?', identifier, entry);
-        element.addEventListener(entry.type, (e) => valueFromPropName(entry.prop, data)(e), entry);
+        element.addEventListener(entry.type, listener, entry);
       }
     }
 

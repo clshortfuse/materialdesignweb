@@ -137,11 +137,10 @@ export default CustomElement
   .events('#slot', {
     slotchange(event) {
       const slot = /** @type {HTMLSlotElement} */ (event.currentTarget);
-      const host = this.getRootNode().host;
       // @ts-ignore Skip cast
-      host._panelNodes = slot.assignedElements()
+      this._panelNodes = slot.assignedElements()
         .filter((el) => el.tagName === TabPanel.elementName.toUpperCase());
-      host.updatePanels();
+      this.updatePanels();
     },
   })
   .events({

@@ -14,7 +14,7 @@ export default function TooltipTriggerMixin(Base) {
       this.html/* html */`
         <${Tooltip.elementName} role=tooltip id=tooltip
         ><slot id=tooltip-slot
-          onslotchange={onTooltipTriggerSlotChange} name=tooltip
+          on-slotchange={onTooltipTriggerSlotChange} name=tooltip
           >{tooltip}</slot></${Tooltip.elementName}>
       `;
     }
@@ -87,19 +87,15 @@ export default function TooltipTriggerMixin(Base) {
     }
 
     /**
-     * @this {HTMLSlotElement}
-     * @param {Event} event
+     * @param {Event & {currentTarget: HTMLSlotElement}} event
      * @return {void}
      */
     onTooltipTriggerSlotChange(event) {
-      /** @type {TooltipTrigger} */
-      // @ts-ignore Cast?
-      const instance = (this.getRootNode().host);
-      const tooltip = instance.tooltipClone;
+      const tooltip = this.tooltipClone;
       while (tooltip.lastChild) {
         tooltip.lastChild.remove();
       }
-      for (const child of this.assignedNodes()) {
+      for (const child of event.currentTarget.assignedNodes()) {
         tooltip.append(child.cloneNode(true));
       }
     }

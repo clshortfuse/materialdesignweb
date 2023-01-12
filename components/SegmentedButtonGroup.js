@@ -19,8 +19,7 @@ export default Container
   })
   .events('#slot', {
     slotchange() {
-      const { host } = this.getRootNode();
-      host.refreshTabIndexes();
+      this.refreshTabIndexes();
     },
   })
   .css(styles)

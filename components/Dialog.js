@@ -38,7 +38,10 @@ export default CustomElement
   })
   .observe({
     open: 'boolean',
-    dividers: { value: /** @type {'full'|''|'inset'} */ (null) },
+    dividers: {
+      /** @type {'full'|''|'inset'} */
+      value: null,
+    },
     headline: 'string',
     icon: 'string',
     default: { value: 'confirm' },
@@ -58,24 +61,22 @@ export default CustomElement
     },
 
     /**
-     * @param {Event} event
-     * @this {HTMLSlotElement}
+     * @param {Event & {currentTarget: HTMLSlotElement}} event
      * @return {void}
      */
-    onSlotChange(event) {
-      const nodes = this.assignedNodes();
+    onSlotChange({ currentTarget }) {
+      const nodes = currentTarget.assignedNodes();
       const hasContent = nodes.some((node) => (node.nodeType === node.ELEMENT_NODE)
       || (node.nodeType === node.TEXT_NODE && node.nodeValue.trim().length));
-      this.toggleAttribute('slotted', hasContent);
+      currentTarget.toggleAttribute('slotted', hasContent);
     },
 
     /**
-     * @param {SubmitEvent} event
-     * @this {HTMLFormElement}
+     * @param {SubmitEvent & {currentTarget: HTMLFormElement}} event
      * @return {void}
      */
     onFormSubmit(event) {
-      if (this.assignedSlot) {
+      if (event.currentTarget.assignedSlot) {
         // Custom form.
         // @ts-ignore Skip cast
         const host = /** @type {Dialog} */ (this.assignedSlot.getRootNode().host);
@@ -83,6 +84,16 @@ export default CustomElement
         host.close(returnValue);
         event.preventDefault();
       }
+    },
+
+    /**
+     * @param {Event & {currentTarget: HTMLFormElement}} event
+     * @return {void}
+     */
+    onFormSlotChange({ currentTarget }) {
+      /** @type {HTMLFormElement} */
+      const [form] = currentTarget.assignedNodes();
+      form?.addEventListener('submit', (e) => this.onFormSubmit(e));
     },
 
     /**
@@ -249,13 +260,13 @@ export default CustomElement
       <div id=scrim aria-hidden=true></div>
         <mdw-container id=container>
           <mdw-icon _if={icon} id=icon class=content ink=secondary aria-hidden=true>{icon}</mdw-icon>
-          <slot id=headline class=content name=headline onslotchange={onSlotChange} role=header>{headline}</slot>
-          <slot id=fixed name=fixed class=content onslotchange={onSlotChange}></slot>
+          <slot id=headline class=content name=headline on-slotchange={onSlotChange} role=header>{headline}</slot>
+          <slot id=fixed name=fixed class=content on-slotchange={onSlotChange}></slot>
           <mdw-divider id=divider-top size={dividers}></mdw-divider>
-          <slot id=slot class="content" onslotchange={onSlotChange}></slot>
+          <slot id=slot class="content" on-slotchange={onSlotChange}></slot>
           <mdw-divider id=divider-bottom size={dividers}></mdw-divider>
-          <slot name=form id=form-slot>
-            <form id=form method=dialog role=none onsubmit={onFormSubmit}>
+          <slot name=form id=form-slot on-slotchange={onFormSlotChange}>
+            <form id=form method=dialog role=none on-submit={onFormSubmit}>
               <mdw-dialog-actions>
                 <mdw-button id=cancel type=submit value=cancel
                   autofocus={cancelAutoFocus}>{cancel}</mdw-button>
@@ -270,36 +281,30 @@ export default CustomElement
   .events('#dialog', {
     cancel(event) {
       event.stopPropagation();
-      const { host } = this.getRootNode();
       const cancelEvent = new Event('cancel', { cancelable: true });
-      if (!host.dispatchEvent(cancelEvent)) {
+      if (!this.dispatchEvent(cancelEvent)) {
         event.preventDefault();
       }
     },
     close(event) {
       event.stopPropagation();
-      this.getRootNode().host.close(
-        (/** @type {HTMLDialogElement} */
-          (/** @type {unknown} */ (this))
-        ).returnValue,
-      );
+      this.close(this.returnValue);
     },
   })
   .events('#scrim', {
     '~click'() {
-      const { host } = this.getRootNode();
       const cancelEvent = new Event('cancel', { cancelable: true });
-      if (!host.dispatchEvent(cancelEvent)) return;
-      host.close();
+      if (!this.dispatchEvent(cancelEvent)) return;
+      this.close();
     },
   })
   .events('#container', {
     keydown(event) {
       if (event.key === 'Tab') {
-        const { host } = this.getRootNode();
-        if (!host._isNativeModal) {
+        const container = /** @type {HTMLElement} */ (event.currentTarget);
+        if (!this._isNativeModal) {
           // Move via Light or Shadow DOM, depending on target
-          const context = this.contains(event.target) ? this : host;
+          const context = container.contains(event.target) ? container : this;
           handleTabKeyPress.call(context, event);
         }
         return;
@@ -307,21 +312,10 @@ export default CustomElement
       if (event.key === 'Escape' || event.key === 'Esc') {
         event.preventDefault();
         event.stopPropagation();
-        const { host } = this.getRootNode();
         const cancelEvent = new Event('cancel', { cancelable: true });
         if (this.dispatchEvent(cancelEvent)) {
-          host.close();
+          this.close();
         }
-      }
-    },
-  })
-  .events('#form-slot', {
-    slotchange() {
-      const [form] = /** @type {HTMLSlotElement} */ (this).assignedNodes();
-
-      if (form) {
-        const { host } = this.getRootNode();
-        form.addEventListener('submit', host.onFormSubmit);
       }
     },
   })

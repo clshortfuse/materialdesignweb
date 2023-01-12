@@ -5,6 +5,7 @@ import styles from './IconButton.css' assert { type: 'css' };
 
 export default Button
   .mixin(TooltipTriggerMixin)
+  .extend()
   .css(styles)
   .expressions({
     computeAriaPressed({ type, _checked }) {
@@ -15,19 +16,20 @@ export default Button
   .events('#control', {
     keydown(event) {
       if (event.key !== 'Enter') return;
-      if (this.type !== 'checkbox') return;
+      const input = /** @type {HTMLInputElement} */ (event.currentTarget);
+      if (input.type !== 'checkbox') return;
       event.stopImmediatePropagation();
       event.stopPropagation();
       event.preventDefault();
-      if (this.disabled) return;
+      if (input.disabled) return;
 
       // Simulate click
       const clickEvent = new Event('click', { bubbles: true, cancelable: true, composed: true });
-      if (!this.dispatchEvent(clickEvent)) return;
+      if (!input.dispatchEvent(clickEvent)) return;
 
       // Toggle check and signal
-      this.checked = !this.checked;
-      this.dispatchEvent(new Event('change', { bubbles: true }));
+      input.checked = !input.checked;
+      input.dispatchEvent(new Event('change', { bubbles: true }));
     },
   })
   .on('composed', ({ $ }) => {

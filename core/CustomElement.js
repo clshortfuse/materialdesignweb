@@ -81,7 +81,7 @@ export default class CustomElement extends ICustomElement {
   static methods = this.set;
 
   /** @type {typeof ICustomElement.props} */
-  static props = this.define;
+  static props = this.observe;
 
   /**
    * @template {typeof CustomElement} T
@@ -99,14 +99,20 @@ export default class CustomElement extends ICustomElement {
     this[collection].push(callback);
   }
 
-  /** @type {typeof ICustomElement.append} */
+  /**
+   * Append parts to composition
+   * @type {typeof ICustomElement.append}
+   */
   static append(...parts) {
     this.on('composed', ({ composition }) => composition.append(...parts));
     // @ts-expect-error Can't cast T
     return this;
   }
 
-  /** @type {typeof ICustomElement.css} */
+  /**
+   * Appends styles to composition
+   * @type {typeof ICustomElement.css}
+   */
   static css(array, ...substitutions) {
     if (Array.isArray(array)) {
       // @ts-expect-error Complex cast
@@ -126,7 +132,12 @@ export default class CustomElement extends ICustomElement {
     return this;
   }
 
-  /** @type {typeof ICustomElement['autoRegister']} */
+  /**
+   * Registers class asynchronously at end of current event loop cycle
+   * via `queueMicrotask`. If class is registered before than,
+   * does nothing.
+   * @type {typeof ICustomElement['autoRegister']}
+   */
   static autoRegister(elementName) {
     if (elementName) {
       this.elementName = elementName;
@@ -140,7 +151,10 @@ export default class CustomElement extends ICustomElement {
     return this;
   }
 
-  /** @type {typeof ICustomElement.html} */
+  /**
+   * Appends DocumentFragment to composition
+   * @type {typeof ICustomElement.html}
+   */
   static html(strings, ...substitutions) {
     this.on('composed', ({ composition }) => {
       composition.append(html(strings, ...substitutions));
@@ -149,32 +163,48 @@ export default class CustomElement extends ICustomElement {
     return this;
   }
 
-  /** @type {typeof ICustomElement.extend} */
+  /**
+   * Extends base  class into a new class.
+   * Use to avoid mutating base class.
+   * @type {typeof ICustomElement.extend}
+   */
   static extend() {
     // @ts-expect-error Can't cast T
     return class ExtendedClass extends this {};
   }
 
-  /** @type {typeof ICustomElement.setStatic} */
+  /**
+   * Assigns static values to class
+   * @type {typeof ICustomElement.setStatic}
+   */
   static setStatic(source) {
     Object.assign(this, source);
     // @ts-expect-error Can't cast T
     return this;
   }
 
-  /** @type {typeof ICustomElement.set} */
+  /**
+   * Assigns values directly to all instances (via prototype)
+   * @type {typeof ICustomElement.set}
+   */
   static set(source) {
     Object.assign(this.prototype, source);
     // @ts-expect-error Can't cast T
     return this;
   }
 
-  /** @type {typeof ICustomElement.mixin} */
+  /**
+   * Returns result of calling mixin with current class
+   * @type {typeof ICustomElement.mixin}
+   */
   static mixin(mixin) {
     return mixin(this);
   }
 
-  /** @type {typeof ICustomElement['register']} */
+  /**
+   * Registers class with window.customElements synchronously
+   * @type {typeof ICustomElement['register']}
+   */
   static register(elementName, force = false) {
     if (this.hasOwnProperty('defined') && this.defined && !force) {
       // console.warn(this.elementName, 'already registered.');
@@ -219,6 +249,7 @@ export default class CustomElement extends ICustomElement {
   }
 
   /**
+   * Creates observable property on instances (via prototype)
    * @template {import('./typings.js').ObserverPropertyType} [T1=null]
    * @template {import('./typings.js').ObserverPropertyType} [T2=null]
    * @template {any} [T3=null]
@@ -247,6 +278,8 @@ export default class CustomElement extends ICustomElement {
       // @ts-expect-error Skip cast
       this.onPropChanged({ [name]: customCallback });
     }
+
+    // TODO: Inspect possible closure bloat
     options.changedCallback = function wrappedChangedCallback(oldValue, newValue) {
       this._onObserverPropertyChanged.call(this, name, oldValue, newValue);
     };
@@ -258,7 +291,11 @@ export default class CustomElement extends ICustomElement {
     return config.value;
   }
 
-  /** @type {typeof ICustomElement.define} */
+  /**
+   * Define properties on instances via Object.defineProperties()
+   * Automatically sets property non-enumerable if name begins with `_`
+   * @type {typeof ICustomElement.define}
+   */
   static define(props) {
     Object.defineProperties(
       this.prototype,
@@ -282,7 +319,10 @@ export default class CustomElement extends ICustomElement {
     return this;
   }
 
-  /** @type {typeof ICustomElement.observe} */
+  /**
+   * Creates observable properties on instances
+   * @type {typeof ICustomElement.observe}
+   */
   static observe(props) {
     for (const [name, typeOrOptions] of Object.entries(props ?? {})) {
       if (typeof typeOrOptions === 'function') {
@@ -535,7 +575,10 @@ export default class CustomElement extends ICustomElement {
     this.propChangedCallback(name, oldValue, newValue);
   }
 
-  /** @return {Record<string,HTMLElement>} */
+  /**
+   * Proxy object that returns shadow DOM elements by ID
+   * @return {Record<string,HTMLElement>}
+   */
   get refs() {
     // eslint-disable-next-line no-return-assign
     return (this.#refsProxy ??= new Proxy({}, {
@@ -644,14 +687,12 @@ export default class CustomElement extends ICustomElement {
     for (const callbacks of this.static._onConnectedCallbacks) {
       callbacks.call(this, this.callbackArguments);
     }
-    // In case author calls super.connectedCallback();
   }
 
   disconnectedCallback() {
     for (const callbacks of this.static._onDisconnectedCallbacks) {
       callbacks.call(this, this.callbackArguments);
     }
-    // In case author calls super.disconnectedCallback();
   }
 }
 

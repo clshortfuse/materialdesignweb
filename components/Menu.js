@@ -29,7 +29,7 @@ export default class Menu extends KeyboardNavMixin(CustomElement) {
         <div id=scrim aria-hidden=true></div>
         <form id=form method=dialog role=none>
           <mdw-container id=container role=none>
-            <slot id=slot onslotchange={~onSlotChange}></slot>
+            <slot id=slot on-slotchange={onSlotChange}></slot>
           </mdw-container>
         </form>
       </dialog>
@@ -49,23 +49,19 @@ export default class Menu extends KeyboardNavMixin(CustomElement) {
 
   /**
    * @param {Event} event
-   * @this {HTMLSlotElement}
    * @return {void}
    */
   onSlotChange(event) {
-    /** @type {{host:Menu}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    host.refreshTabIndexes();
-    // RovingTabIndex.setupTabIndexes(host.childMenuItems, true);
+    this.refreshTabIndexes();
+    // RovingTabIndex.setupTabIndexes(this.childMenuItems, true);
   }
 
   /**
    * @param {Event} event
-   * @this {Menu}
    * @return {void}
    */
   onMenuScroll(event) {
-  // JS needed for Safari
+    // JS needed for Safari
     if (event.target === event.currentTarget) {
       event.preventDefault();
       event.stopPropagation();

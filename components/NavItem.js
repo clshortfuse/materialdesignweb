@@ -53,7 +53,7 @@ export default Container
   })
   .events('#anchor', {
     click(event) {
-      if (this.getRootNode().host.href == null) {
+      if (this.href == null) {
         event.preventDefault();
       }
     },
