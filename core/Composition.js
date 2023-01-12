@@ -613,22 +613,22 @@ export default class Composition {
         continue;
       }
       for (const entry of [...events].reverse()) {
-        let listener = entry.handleEvent;
+        let listener = entry.listener;
         if (!listener) {
           if (root instanceof ShadowRoot) {
-            listener = valueFromPropName(entry.prop, data);
+            listener = entry.handleEvent ?? valueFromPropName(entry.prop, data);
             if (element !== rootElement) {
               // Wrap to retarget this
               listener = buildShadowRootChildListener(listener);
             }
             // Cache and reuse
-            entry.handleEvent = listener;
+            entry.listener = listener;
             console.log('caching listener', entry);
           } else {
             console.warn('creating new listener', entry);
-            listener = (event) => {
+            listener = entry.handleEvent ?? ((event) => {
               valueFromPropName(entry.prop, data)(event);
-            };
+            });
           }
         }
         element.addEventListener(entry.type, listener, entry);
