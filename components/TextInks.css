@@ -33,3 +33,11 @@
 :host([ink="on-surface-variant"]) {
   --mdw-ink: var(--mdw-color__on-surface-variant);
 }
+
+:host([ink="inverse-on-surface"]) {
+  --mdw-ink: var(--mdw-color__inverse-on-surface);
+}
+
+:host([ink="inherit"]) {
+  --mdw-ink: inherit;
+}
