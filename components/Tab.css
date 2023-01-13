@@ -8,8 +8,6 @@
   display: inline-flex;
 
   min-inline-size: 64px;
-  padding-block: 6px;
-  padding-inline: 12px;
 
   cursor: pointer;
 
@@ -29,6 +27,9 @@
   block-size: 100%;
   inline-size: 100%;
   flex: 1;
+
+  padding-block: 6px;
+  padding-inline: 12px;
 
   cursor: pointer;
   outline: none;
