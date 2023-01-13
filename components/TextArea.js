@@ -84,27 +84,24 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
   }
 
   /**
-   * @param {Event} event
-   * @this {HTMLSlotElement}
+   * @param {Event & {currentTarget:HTMLSlotElement}} event
    * @return {void}
    */
-  onSlotChange(event) {
-    /** @type {{host:TextArea}} */ // @ts-ignore Coerce
-    const { host } = this.getRootNode();
-    const textarea = /** @type {HTMLTextAreaElement} */ (host.refs.control);
+  onSlotChange({ currentTarget }) {
+    const textarea = /** @type {HTMLTextAreaElement} */ (this.refs.control);
     const previousValue = textarea.defaultValue;
     // Skip redundancy check, just replace.
     let lastChild;
     while ((lastChild = textarea.lastChild) != null) {
       lastChild.remove();
     }
-    for (const child of this.assignedNodes()) {
+    for (const child of currentTarget.assignedNodes()) {
       textarea.append(child.cloneNode(true));
     }
 
     const newValue = textarea.defaultValue;
     if (previousValue !== newValue) {
-      host.propChangedCallback('defaultValue', previousValue, newValue);
+      this.propChangedCallback('defaultValue', previousValue, newValue);
     }
   }
 
