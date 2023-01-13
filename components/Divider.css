@@ -3,6 +3,7 @@
 :host {
   position: relative;
 
+  display: block;
   overflow: visible;
 
   box-sizing: border-box;
@@ -17,19 +18,24 @@
 
   display: block;
 
+  box-sizing: border-box;
   block-size: 1px;
-
   inline-size: auto;
+  padding: inherit;
 
-  background-color: currentColor;
+  background-color: currentcolor;
 }
 
 :host([vertical]) {
-  block-size: 100%;
+  display: inline-flex;
+  vertical-align: top;
+
+  block-size: auto;
+  min-block-size: 100%;
   inline-size: 0;
 }
 
 :host([vertical])::before {
   block-size: auto;
-  inline-size: 1px;
+  min-inline-size: 1px;
 }
