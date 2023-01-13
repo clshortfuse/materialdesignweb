@@ -11,12 +11,12 @@ A standards-focused, zero-dependency implemention of Material Design 3 (Material
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/daef89f/docs/
+https://rawcdn.githack.com/clshortfuse/materialdesignweb/bbe1bd8/docs/
 
 # Getting started
 
 ````html
-<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/daef89f/index.js" />
+<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/bbe1bd8/index.js" />
 ````
 
 # Support
@@ -77,7 +77,7 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/daef89f/docs/
 | [Radio Button](components/Radio.js)                          | `<mdw-radio>`                                  | `<input type=radio>`                                               |  beta   |
 | [Slider: Continuous](components/Slider.js)                   | `<mdw-slider>`                                 | `<input type=range>`                                               |  beta   |
 | [Slider: Discrete](components/Slider.js)                     | `<mdw-slider ticks=10>`                        | `<input type=range>`                                               |  beta   |
-| Snackbar                                                     |                                                |                                                                    | rewrite |
+| [Snackbar](components/Snackbar.js)                           | `<mdw-snackbar>`                               | `<section>`                                                        |  beta   |
 | [Switch](components/Switch.js)                               | `<mdw-switch>`                                 | `<input type=checkbox>`                                            |  beta   |
 | [Tab](components/Tab.js)                                     | `<mdw-tab>`                                    | `<a href=#>`                                                       |  beta   |
 | [Tab List](components/TabList.js)                            | `<mdw-tab-list>`                               | `<div>`                                                            |  beta   |
