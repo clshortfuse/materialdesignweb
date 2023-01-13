@@ -1,0 +1,82 @@
+/* https://m3.material.io/components/snackbar/specs */
+
+:host {
+  --mdw-shape__size: var(--mdw-shape__small);
+  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__3);
+  --mdw-bg: var(--mdw-color__inverse-surface);
+  --mdw-ink: var(--mdw-color__inverse-on-surface);
+
+  --mdw-type__line-height: var(--mdw-typescale__body-medium__line-height);
+
+  display: flex;
+  align-items: center;
+
+  min-block-size: calc(var(--mdw-type__line-height) * 2);
+  min-block-size: 2lh;
+  padding-inline: 8px 8px;
+
+  opacity: 0;
+  transform: translateY(25%) scaleY(0.25);
+  transform-origin: bottom center;
+  visibility: hidden; /* Remove from tab order */
+  z-index: 24;
+
+  background-color: rgb(var(--mdw-bg));
+  color: rgb(var(--mdw-ink));
+
+  font: var(--mdw-typescale__body-medium__font);
+  letter-spacing: var(--mdw-typescale__body-medium__letter-spacing);
+
+  transition: transform 200ms, opacity 200ms, visibility 200ms;
+}
+
+:host([open]) {
+  opacity: 1;
+  transform: scale(1);
+  visibility: visible;
+}
+
+#slot {
+  display: block;
+  overflow-x: hidden;
+  overflow-y: hidden;
+
+  max-block-size: calc(var(--mdw-type__line-height) * 2);
+
+  flex: 1;
+
+  margin-block: 14px;
+  padding-inline: 8px;
+
+  text-align: start;
+  text-overflow: ellipsis;
+  text-transform: none;
+  white-space: normal;
+  word-break: break-word;
+}
+
+@supports(-webkit-line-clamp:1) {
+  #slot {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    max-block-size: none;
+  }
+}
+
+#button {
+  flex:none;
+}
+
+:host([close]) {
+  padding-inline-end: 0;
+}
+
+#close {
+  align-self: stretch;
+
+  padding-inline: 12px;
+
+  border-radius: 0; /* Square touch target */
+}
