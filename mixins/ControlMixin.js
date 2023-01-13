@@ -109,6 +109,11 @@ export default function ControlMixin(Base) {
 
     get rippleActiveTarget() { return this._control; }
 
+    click() {
+      /** Redirect click requests to control itself */
+      this._control.click();
+    }
+
     static {
       this.css(styles);
       this.on('composed', ({ template, $, html }) => {
@@ -123,18 +128,6 @@ export default function ControlMixin(Base) {
             </label>
           `,
         );
-      });
-      this.events({
-        click: {
-          capture: true,
-          /* Reconstructs author-dispatched `click` event to control */
-          handleEvent(event) {
-            // TODO: Consider event.target === this
-            if (event.composedPath().includes(this.shadowRoot)) return;
-            event.stopImmediatePropagation();
-            this._control.click();
-          },
-        },
       });
       this.events('#control', {
         input({ currentTarget }) {

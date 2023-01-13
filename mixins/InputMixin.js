@@ -136,8 +136,12 @@ export default function InputMixin(Base) {
 
     static {
       this.events('#control', {
+        /**
+         * @param {Event & {currentTarget: HTMLInputElement}} event
+         * @type {any}
+         */
         '~click'(event) {
-          const input = /** @type {HTMLInputElement} */ (event.currentTarget); 
+          const input = event.currentTarget;
           if (event.defaultPrevented) return;
           if (input.type !== 'radio') return;
           if (input.required) return;

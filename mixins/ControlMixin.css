@@ -31,6 +31,10 @@ label {
   cursor: inherit;
   outline: none;
 
+  /* Safari and Chrome will emit two click events if not at top of stack */
+  /* Allows up to 3 other layers (eg: ripple, outline) */
+  z-index: 4;
+
   background-color: transparent;
   color: transparent;
 }

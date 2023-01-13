@@ -41,8 +41,6 @@ label {
 
   cursor: var(--mdw-slider__cursor);
 
-  z-index: 1;
-
   background-color: transparent;
   color: inherit;
 }
