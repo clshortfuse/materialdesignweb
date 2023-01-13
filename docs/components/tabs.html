@@ -113,6 +113,56 @@
           </demo-screen>
         </mdw-layout>
       </demo-section>
+      <demo-section>
+        <h2 slot=heading>Customized</h2>
+        <mdw-layout wrap gap=12px>
+          <demo-screen color="background">
+            <mdw-tab-list secondary tab-content-id="custom" ink="tertiary" style="">
+              <mdw-tab icon=flight  href="#custom-flights" shape-style="full">Full Shape</mdw-tab>
+              <mdw-tab icon=luggage href="#custom-trips" shape-style="large" shape-top>Large Top</mdw-tab>
+              <mdw-tab icon=explore href="#custom-explore" shape-style="full" shape-end style="padding:0;margin:12px 8px"></mdw-tab>
+            </mdw-tab-list>
+            <mdw-tab-content id="custom">
+              <mdw-tab-panel id="custom-flights">
+                <demo-dummy-text></demo-dummy-text>
+              </mdw-tab-panel>
+              <mdw-tab-panel id="custom-trips">
+                <demo-dummy-text></demo-dummy-text>
+              </mdw-tab-panel>
+              <mdw-tab-panel id="custom-explore">
+                <demo-dummy-text></demo-dummy-text>
+              </mdw-tab-panel>
+            </mdw-tab-content>
+          </demo-screen>
+        </mdw-layout>
+      </demo-section>
+      <demo-section>
+        <h2 slot=heading>Scrolling Tab List</h2>
+        <mdw-layout wrap gap=12px>
+          <demo-screen color="background">
+            <mdw-tab-list scrollable tab-content-id="scrollable">
+              <mdw-tab href="#scrollable-1">Tab Item #1</mdw-tab>
+              <mdw-tab href="#scrollable-2" icon="filter_2" aria-label="Tab Item #2"></mdw-tab>
+              <mdw-tab href="#scrollable-3">Tab Item #3</mdw-tab>
+              <mdw-tab href="#scrollable-4">Tab Item #4 Oversized</mdw-tab>
+              <mdw-tab href="#scrollable-5" icon="filter_5">Tab Item #5</mdw-tab>
+              <mdw-tab href="#scrollable-6">Tab Item #6</mdw-tab>
+              <mdw-tab href="#scrollable-7">Tab Item #7</mdw-tab>
+              <mdw-tab href="#scrollable-8">Tab Item #8</mdw-tab>
+            </mdw-tab-list>
+            <mdw-tab-content id="scrollable">
+              <mdw-tab-panel id="scrollable-1"><demo-dummy-text></demo-dummy-text></mdw-tab-panel>
+              <mdw-tab-panel id="scrollable-2"><demo-dummy-text></demo-dummy-text></mdw-tab-panel>
+              <mdw-tab-panel id="scrollable-3"><demo-dummy-text></demo-dummy-text></mdw-tab-panel>
+              <mdw-tab-panel id="scrollable-4"><demo-dummy-text></demo-dummy-text></mdw-tab-panel>
+              <mdw-tab-panel id="scrollable-5"><demo-dummy-text></demo-dummy-text></mdw-tab-panel>
+              <mdw-tab-panel id="scrollable-6"><demo-dummy-text></demo-dummy-text></mdw-tab-panel>
+              <mdw-tab-panel id="scrollable-7"><demo-dummy-text></demo-dummy-text></mdw-tab-panel>
+              <mdw-tab-panel id="scrollable-8"><demo-dummy-text></demo-dummy-text></mdw-tab-panel>
+            </mdw-tab-content>
+          </demo-screen>
+        </mdw-layout>
+      </demo-section>
     </demo-section>
     <br />
     <br />

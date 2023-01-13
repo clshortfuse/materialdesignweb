@@ -51,8 +51,11 @@ const buildOptions = {
         });
         const [file] = outputFiles;
         const { text } = file;
+        const jsText = text.trim()
+          .replaceAll(/`/g, '\\`')
+          .replaceAll(/\\([\da-f]+)/gi, (match, p1) => String.fromCodePoint(Number.parseInt(p1, 16)));
         const contents = /* js */ `
-          let contents = \`${text.trim().replaceAll(/`/g, '\\`')}\`;
+          let contents = \`${jsText}\`;
           let sheet;
           try {
             sheet = new CSSStyleSheet();

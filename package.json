@@ -1,6 +1,6 @@
 {
   "name": "@shortfuse/materialdesignweb",
-  "version": "0.5.0",
+  "version": "0.7.0",
   "description": "Material Design for Web",
   "type": "module",
   "scripts": {
@@ -24,7 +24,10 @@
   "keywords": [
     "material",
     "design",
-    "web"
+    "web",
+    "materialyou",
+    "md3",
+    "web-components"
   ],
   "exports": {
     "./": "./"

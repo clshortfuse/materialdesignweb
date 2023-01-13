@@ -34,6 +34,7 @@ import '../components/Radio.js';
 import '../components/SegmentedButton.js';
 import '../components/SegmentedButtonGroup.js';
 import '../components/Slider.js';
+import '../components/Snackbar.js';
 import '../components/Switch.js';
 import '../components/Tab.js';
 import '../components/TabContent.js';
