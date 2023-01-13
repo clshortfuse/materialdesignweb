@@ -79,9 +79,8 @@ export default CustomElement
       if (event.currentTarget.assignedSlot) {
         // Custom form.
         // @ts-ignore Skip cast
-        const host = /** @type {Dialog} */ (this.assignedSlot.getRootNode().host);
         const returnValue = event.submitter?.value;
-        host.close(returnValue);
+        this.close(returnValue);
         event.preventDefault();
       }
     },
