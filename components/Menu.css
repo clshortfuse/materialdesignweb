@@ -143,7 +143,7 @@ dialog:modal {
   --mdw-dialog__scrim__visibility: visible;
   display: block;
 
-  pointer-events: auto;
+  pointer-events: none;
 
   opacity: 1;
   visibility: visible;
@@ -166,8 +166,10 @@ dialog:modal {
   inline-size: 100%;
 
   cursor: default;
-  pointer-events: inherit;
+  pointer-events: auto;
   -webkit-tap-highlight-color: transparent;
+
+  visibility: hidden; /* Only show if [modal] */
 
   z-index:0;
 }
@@ -205,9 +207,15 @@ form {
 
   inline-size: calc(var(--mdw-menu__size) * var(--mdw-menu__inline-base));
   min-inline-size: calc(var(--mdw-menu__inline-base) * 2);
-  max-inline-size: calc(var(--mdw-menu__inline-base) * 7);
+  max-inline-size: 100vw;
   padding-block: 8px;
+
+  pointer-events: auto;
 
   background-color: rgb(var(--mdw-color__surface));
   color: rgb(var(--mdw-color__on-surface));
+}
+
+:host([modal]) #scrim {
+  visibility: visible;
 }

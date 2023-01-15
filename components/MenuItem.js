@@ -16,6 +16,7 @@ export default Container
     trailing: 'string',
     trailingIcon: 'string',
     trailingSrc: 'string',
+    submenuId: 'string',
   })
   .css(styles)
   .events({
@@ -33,17 +34,17 @@ export default Container
         previousFocus.focus();
       }
     },
-  })
-  .methods({
-    /** @return {boolean} handled */
-    openSubMenu() {
-      const hasPopup = this.getAttribute('aria-haspopup');
-      if (hasPopup !== 'menu' && hasPopup !== 'true') {
-        return false;
-      }
-
-      // TODO: Open new menu
-      return false;
+    focus(event) {
+      if (!this.submenuId) return;
+      const submenuElement = document.getElementById(this.submenuId);
+      submenuElement.cascade(this);
+    },
+    blur(event) {
+      if (!this.submenuId) return;
+      if (!event.relatedTarget) return;
+      const submenuElement = document.getElementById(this.submenuId);
+      if (submenuElement.contains(event.relatedTarget)) return;
+      submenuElement.close(false);
     },
   })
   .on({

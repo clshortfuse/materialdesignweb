@@ -231,6 +231,7 @@ export default function KeyboardNavMixin(Base) {
           default:
             return;
         }
+        event.stopPropagation(); // Avoid kbd within kbd (sub menus)
         event.preventDefault();
       },
     })
