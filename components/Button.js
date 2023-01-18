@@ -10,7 +10,7 @@ export default Container
   .observe({
     type: { value: 'button' },
     elevated: 'boolean',
-    filled: 'boolean',
+    filled: 'string',
     outlined: 'boolean',
     icon: 'string',
     src: 'string',
