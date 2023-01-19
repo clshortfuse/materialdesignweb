@@ -27,7 +27,7 @@ type IDLParameter<C> = {
   [P in string] :
     ObserverPropertyType
     | ObserverOptions<ObserverPropertyType, unknown, C>
-    | ((this: C, ...args:any[]) => any)
+    | ((this:C, data:Partial<C>, fn?: () => any) => any)
 };
 
 declare type DefinedPropertiesOf<T extends abstract new (...args: any) => any, P> =
@@ -103,7 +103,7 @@ export declare const ICustomElement: {
     ...substitutions: (string|Element|((this:InstanceType<T>, data:InstanceType<T> & T['schema']) => any))[]
     ): T
 
-   css<
+  css<
     T1 extends typeof ICustomElement,
     T2 extends TemplateStringsArray|HTMLStyleElement|CSSStyleSheet>(
     this: T1,
@@ -111,7 +111,7 @@ export declare const ICustomElement: {
     ...rest: T2 extends TemplateStringsArray ? string[] : (HTMLStyleElement|CSSStyleSheet)[]
   ): T1
 
-   define<
+  define<
     T1 extends typeof ICustomElement,
     T2 extends InstanceType<T1>,
     T3 extends {
@@ -135,17 +135,16 @@ export declare const ICustomElement: {
     T2 extends InstanceType<T1>,
     T3 extends IDLParameter<T2>>
     (this: T1, props: T3): T1 & (new (...args: ConstructorParameters<T1>) => T2 & {
-          [P in keyof T3]:
-            T3[P] extends (...args2:any[]) => infer R ? R
-              : T3[P] extends ObserverPropertyType
-              ? ParsedObserverPropertyType<T3[P]>
-              : T3[P] extends {type: ObserverPropertyType}
-              ? ParsedObserverPropertyType<T3[P]['type']>
-              : T3[P] extends ObserverOptions<any, infer R>
-              ? unknown extends R ? string : R
-              : never
-        })
-        ;
+        [P in keyof T3]:
+          T3[P] extends (...args2:any[]) => infer R ? R
+            : T3[P] extends ObserverPropertyType
+            ? ParsedObserverPropertyType<T3[P]>
+            : T3[P] extends {type: ObserverPropertyType}
+            ? ParsedObserverPropertyType<T3[P]['type']>
+            : T3[P] extends ObserverOptions<any, infer R>
+            ? unknown extends R ? string : R
+            : never
+      });
 
   props: typeof ICustomElement.observe;
 

@@ -119,15 +119,20 @@ export function parseObserverOptions(name, typeOrOptions) {
     nullParser,
     key: name,
     changedCallback,
-    values: options.values ?? new Map(),
+    watchers: options.watchers ?? [],
+    values: options.values ?? new WeakMap(),
+    validValues: options.validValues ?? new WeakMap(),
     attributeChangedCallback: options.attributeChangedCallback,
   };
 }
+
+const INIT_SYMBOL = Symbol('PROP_INIT');
 
 /** @type {Partial<import('./typings.js').ObserverConfiguration<?,?,?>>} */
 const DEFAULT_OBSERVER_CONFIGURATION = {
   nullParser: DEFAULT_NULL_PARSER,
   is: Object.is,
+  INIT_SYMBOL,
 };
 
 /**
@@ -143,11 +148,13 @@ export function parsePropertyValue(value) {
 
 /**
  * @param {(data: Partial<any>) => any} fn
- * @param {any} [arg0]
+ * @param {any} arg0
+ * @param {any} args[]
+ * @param {...any} args
  * @this {any}
  * @return {{props:Set<string>, defaultValue:any, reusable: boolean}}
  */
-export function observeFunction(fn, arg0 = {}) {
+export function observeFunction(fn, arg0, ...args) {
   const argPoked = new Set();
   const thisPoked = new Set();
   // TODO: Use abstract
@@ -175,7 +182,7 @@ export function observeFunction(fn, arg0 = {}) {
       return value;
     },
   });
-  const defaultValue = fn.call(thisProxy, argProxy);
+  const defaultValue = fn.call(thisProxy, argProxy, ...args);
   /* Arrow functions can reused if they don't poke `this` */
   const reusable = fn.name ? true : !thisPoked.size;
 
@@ -201,7 +208,7 @@ export function observeFunction(fn, arg0 = {}) {
  * @param {import('./typings.js').ObserverOptions<T1, T2, C>} options
  * @return {import('./typings.js').ObserverConfiguration<T1,T2,K,C>}
  */
-export const defineObservableProperty = (object, key, options) => {
+export function defineObservableProperty(object, key, options) {
   /** @type {import('./typings.js').ObserverConfiguration<T1,T2,K,C>} */
   const config = {
     ...DEFAULT_OBSERVER_CONFIGURATION,
@@ -209,12 +216,92 @@ export const defineObservableProperty = (object, key, options) => {
     changedCallback: options.changedCallback,
   };
 
+  /**
+   * @param {T2} oldValue
+   * @param {T2} value
+   * @param {boolean} [commit=false]
+   * @return {boolean} changed
+   */
+  function detectChange(oldValue, value, commit) {
+    if (oldValue === value) return false;
+    if (config.get) {
+      // TODO: Custom getter vs parser
+    }
+    let newValue = value;
+    newValue = (value == null)
+      ? config.nullParser.call(this, value)
+      : config.parser.call(this, newValue);
+
+    if (oldValue == null) {
+      if (newValue == null) return false; // Both nullish
+    } else if (newValue != null && (oldValue === newValue || config.is.call(this, oldValue, newValue))) {
+      // Not null and match
+      return false;
+    }
+
+    // Before changing, store old values of properties that will invalidate;
+
+    // Do no set if transient (getter)
+
+    config.values.set(this, newValue);
+    // console.log(key, 'value.set', newValue);
+    config.propChangedCallback?.call(this, key, oldValue, newValue);
+    config.changedCallback?.call(this, oldValue, newValue);
+    return true;
+  }
+  /**
+   * @this {C}
+   * @return {T2}
+   */
+  function internalGet() {
+    return config.values.has(this) ? config.values.get(this) : config.value;
+  }
+
+  /**
+   * @this {C}
+   * @param {T2} value
+   * @return {void}
+   */
+  function internalSet(value) {
+    const oldValue = this[key];
+    // console.log(key, 'internalSet', oldValue, '=>', value);
+    detectChange.call(this, oldValue, value, true);
+  }
+
+  /**
+   *
+   */
+  function onInvalidate() {
+    // console.log(key, 'onInvalidate', '???');
+    const oldValue = config.validValues.get(this);
+    const newValue = this[key];
+    // console.log(key, 'onInvalidate', oldValue, '=>', newValue);
+    detectChange.call(this, oldValue, newValue);
+  }
+
+  if (config.get) {
+    const { props } = observeFunction(config.get.bind(object), object, internalGet.bind(object));
+    // Set of watchers needed
+    // console.log(key, 'invalidates with', props);
+    config.watchers.push(
+      ...[...props].map((prop) => [prop, onInvalidate]),
+    );
+  }
   /** @type {Partial<PropertyDescriptor>} */
   const descriptor = {
     enumerable: config.enumerable,
-    get: options.get ?? function get() {
-      // console.log('get', key, this.tagName);
-      return !config.values.has(this) ? config.value : config.values.get(this);
+    /**
+     * @this {C}
+     * @return {T2}
+     */
+    get() {
+      if (config.get) {
+        const newValue = config.get.call(this, this, internalGet.bind(this));
+        // Store value internally. Used by onInvalidate to get previous value
+        config.validValues.set(this, newValue);
+        return newValue;
+      }
+      return internalGet.call(this);
     },
     /**
      * @this {C}
@@ -222,31 +309,19 @@ export const defineObservableProperty = (object, key, options) => {
      * @return {void}
      */
     set(value) {
-      // console.log('set', key, value);
-      const oldValue = descriptor.get.call(this);
-      if (oldValue === value) return;
-
-      let newValue = value;
-      newValue = value == null
-        ? config.nullParser.call(this, value)
-        : config.parser.call(this, newValue);
-
-      if (oldValue == null) {
-        if (newValue == null) return; // Both nullish
-      } else if (newValue != null && (oldValue === newValue || config.is.call(this, oldValue, newValue))) {
-        // Not null and match
+      if (value === INIT_SYMBOL) {
+        // console.log(key, 'returning due to INIT');
         return;
       }
-
-      config.values.set(this, newValue);
-      if (config.propChangedCallback) {
-        config.propChangedCallback.call(this, key, oldValue, newValue);
+      if (config.set) {
+        config.set.call(this, value, internalSet.bind(this));
+      } else {
+        internalSet.call(this, value);
       }
-      config.changedCallback.call(this, oldValue, newValue);
     },
   };
 
   Object.defineProperty(object, key, descriptor);
 
   return config;
-};
+}

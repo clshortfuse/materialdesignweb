@@ -287,8 +287,11 @@ export default class CustomElement extends ICustomElement {
     const config = defineObservableProperty(this.prototype, name, options);
 
     this.propList.set(name, config);
+    for (const [prop, callback] of config.watchers) {
+      this.on(`${prop}Changed`, callback);
+    }
 
-    return config.value;
+    return config.INIT_SYMBOL;
   }
 
   /**
@@ -300,18 +303,37 @@ export default class CustomElement extends ICustomElement {
     Object.defineProperties(
       this.prototype,
       Object.fromEntries(
-        Object.entries(props).map(([name, options]) => [
-          name,
-          {
-            enumerable: name[0] !== '_',
-            configurable: true,
-            ...(
-              typeof options === 'function'
-                ? { get: options }
-                : options
-            ),
-          },
-        ]),
+        Object.entries(props).map(([name, options]) => {
+          // Tap into .map() to avoid double iteration
+          // Property may be redefined observable
+          Reflect.deleteProperty(this.prototype, name);
+          const config = this.propList.get(name);
+          if (config && config.watchers.length) {
+            const propWatchers = this.propChangedCallbacks.get(name);
+            if (propWatchers) {
+              for (const watcher of config.watchers) {
+                const index = propWatchers.indexOf(watcher);
+                if (index !== -1) {
+                  console.warn('Unwatching', name);
+                  propWatchers.splice(index, 1);
+                }
+              }
+            }
+          }
+
+          return [
+            name,
+            {
+              enumerable: name[0] !== '_',
+              configurable: true,
+              ...(
+                typeof options === 'function'
+                  ? { get: options }
+                  : options
+              ),
+            },
+          ];
+        }),
       ),
     );
 
@@ -459,7 +481,7 @@ export default class CustomElement extends ICustomElement {
   /** @type {Composition<?>} */
   #composition;
 
-  /** @type {Map<string,string|null>} */
+  /** @type {Map<string,null|[string,any]>} */
   _propAttributeCache;
 
   /** @type {import('./ICustomElement.js').CallbackArguments} */
@@ -536,24 +558,34 @@ export default class CustomElement extends ICustomElement {
         return;
       }
 
-      const attrValue = this.attributeCache.get(name) ?? null;
-      if (attrValue === newValue) return;
+      const [stringValue] = this.attributeCache.get(name) ?? [null, null];
+      if (stringValue === newValue) {
+        // Attribute was changed via data change event. Ignore.
+        return;
+      }
 
       // @ts-expect-error any
       const previousDataValue = this[config.key];
       const parsedValue = newValue === null
         ? config.nullParser(/** @type {null} */ (newValue))
+        // Avoid Boolean('') === false
         : (config.type === 'boolean' ? true : config.parser(newValue));
 
       if (parsedValue === previousDataValue) {
         // No internal value change
         return;
       }
-      config.values.set(this, parsedValue);
-      this.attributeCache.set(name, newValue);
-      this.propChangedCallback(config.key, previousDataValue, parsedValue);
+      // "Remember" that this attrValue equates to this data value
+      // Avoids rewriting attribute later on data change event
+      this.attributeCache.set(name, [newValue, parsedValue]);
+      // @ts-expect-error any
+      this[config.key] = parsedValue;
       return;
     }
+  }
+
+  get #template() {
+    return this.#composition?.template;
   }
 
   /**
@@ -564,10 +596,13 @@ export default class CustomElement extends ICustomElement {
   _onObserverPropertyChanged(name, oldValue, newValue) {
     const { reflect, attr } = this.static.propList.get(name);
     if (attr && (reflect === true || reflect === 'write')) {
-      const attrValue = attrValueFromDataValue(newValue);
-      const lastAttrValue = this.attributeCache.get(attr) ?? null;
-      if (lastAttrValue !== attrValue) {
-        this.attributeCache.set(attr, attrValue);
+      const [, dataValue] = this.attributeCache.get(attr) ?? [null, null];
+      // Don't change attribute if data value is equivalent
+      // (eg: Boolean('foo') === true; Number("1.0") === 1)
+      if (dataValue !== newValue) {
+        const attrValue = attrValueFromDataValue(newValue);
+        // Cache attrValue to ignore attributeChangedCallback later
+        this.attributeCache.set(attr, [attrValue, newValue]);
         if (attrValue == null) {
           this.removeAttribute(attr);
         } else {
@@ -649,20 +684,16 @@ export default class CustomElement extends ICustomElement {
   get unique() { return false; }
 
   get callbackArguments() {
-    if (!this._callbackArguments) {
-      const composition = this.#composition;
-      const template = composition.template;
-      this._callbackArguments = {
-        composition,
-        html: html.bind(this),
-        inline: addInlineFunction,
-        template,
-        $: template.querySelector.bind(template),
-        $$: template.querySelectorAll.bind(template),
-        element: this,
-      };
-    }
-    return this._callbackArguments;
+    // eslint-disable-next-line no-return-assign
+    return this._callbackArguments ??= {
+      composition: this.#composition,
+      html: html.bind(this),
+      inline: addInlineFunction,
+      template: this.#template,
+      $: this.#template.querySelector.bind(this.#template),
+      $$: this.#template.querySelectorAll.bind(this.#template),
+      element: this,
+    };
   }
 
   /** @return {Composition<?>} */

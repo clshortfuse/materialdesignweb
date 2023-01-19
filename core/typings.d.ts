@@ -12,8 +12,7 @@ type ParsedObserverPropertyType<T extends ObserverPropertyType> =
   T extends 'boolean' ? boolean
   : T extends 'string' ? string
   : T extends 'float' | 'integer' ? number
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  : T extends 'object' ? {}
+  : T extends 'object' ? any
   : T extends 'function' ? (...args:any) => any
   : unknown;
 
@@ -36,7 +35,7 @@ type ObserverOptions<
   empty?: T2;
   /** Initial value (empty value if not specified) */
   value?: T2;
-  values?: Map<C, T2>;
+  values?: WeakMap<C, T2>;
   reflect?: boolean | 'write' | 'read';
   /** Function used when null passed */
   changedCallback?: (this:C, oldValue:T2, newValue:T2)=>any;
@@ -44,10 +43,12 @@ type ObserverOptions<
   parser?: (this:C, value:any)=>T2;
   /** Function used when comparing */
   is?: (this:C, a:T2, b:T2)=>boolean
-  get?: (this:C) => T2
-  set?: (this:C, value: T2) => T2,
+  get?: (this:C, data:Partial<C>, fn?: () => T2) => T2
+  set?: (this:C, value: T2, fn?:(value2: T2) => any) => any,
   attributeChangedCallback?: (this:C, name:string, oldValue: string, newValue: string) => any;
   propChangedCallback?: (this:C, name:string, oldValue: T2, newValue: T2) => any;
+  validValues?: WeakMap<C, T2>;
+  watchers?: [keyof C, (this:C, ...args:any[]) => any][];
 }
 
 type ObserverConfiguration<
