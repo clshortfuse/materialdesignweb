@@ -101,8 +101,8 @@ export function canAnchorPopup(options) {
   if (!options.force) {
     if (pageX - margin < 0) return null;
     if (pageY - margin < 0) return null;
-    if (pageX + width > (window.innerWidth - margin)) return null;
-    if (pageY + height > (window.innerHeight - margin)) return null;
+    if (pageX + width > (document.documentElement.clientWidth - margin)) return null;
+    if (pageY + height > (document.documentElement.clientHeight - margin)) return null;
   }
 
   return {
