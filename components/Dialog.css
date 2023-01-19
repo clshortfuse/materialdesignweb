@@ -101,7 +101,7 @@ dialog:modal {
 
   opacity: 0.38;
   visibility: var(--mdw-dialog__scrim__visibility);
-  z-index:0;
+  z-index: 0;
 
   background-color: rgb(var(--mdw-color__scrim));
 }

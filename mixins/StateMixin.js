@@ -12,7 +12,10 @@ export default function StateMixin(Base) {
     .extend()
     .observe({
       disabled: 'boolean',
-      _lastInteraction: { value: /** @type {'mouse'|'touch'|'key'|null} */(null) },
+      _lastInteraction: {
+        /** @type {'mouse'|'touch'|'key'|null} */
+        value: null,
+      },
       _focused: 'boolean',
     })
     .css(styles)

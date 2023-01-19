@@ -99,8 +99,8 @@ export default function ControlMixin(Base) {
 
       if (this.static.valueChangingContentAttributes.includes(name)) {
         if (!this.hasAttribute('value')) {
-        // Force HTMLInputElement to recalculate default
-        // Unintended effect of incrementally changing attributes (eg: range)
+          // Force HTMLInputElement to recalculate default
+          // Unintended effect of incrementally changing attributes (eg: range)
           this._control.setAttribute('value', '');
         }
         // Changing control attribute may change the value (eg: min/max)
