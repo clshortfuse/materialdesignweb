@@ -17,13 +17,12 @@ export default Container
     /** Reflected property */
     indeterminate: 'boolean',
   })
-  .expressions({
-    computeDeterminateIcon({ indeterminate, indeterminateIcon, icon }) {
-      return (indeterminate ? indeterminateIcon : icon);
-    },
-    // TODO: Abstract into observed ariaChecked property
-    computeAriaChecked({ indeterminate, checked }) {
+  .observe({
+    _ariaChecked({ indeterminate, checked }) {
       return (indeterminate ? 'mixed' : String(!!checked));
+    },
+    _determinateIcon({ indeterminate, indeterminateIcon, icon }) {
+      return (indeterminate ? indeterminateIcon : icon);
     },
   })
   .css(styles, iconStyles)
@@ -32,7 +31,7 @@ export default Container
       html`
         <div id=checkbox-box class=checkbox-box>
           <mdw-icon id=checkbox-icon class=checkbox-icon selected={checked} indeterminate={indeterminate}>
-            {computeDeterminateIcon}
+            {_determinateIcon}
           </mdw-icon>
           ${$('#ripple')}
           ${$('#state')}
@@ -43,6 +42,6 @@ export default Container
     const control = $('#control');
     control.setAttribute('type', 'checkbox');
     // Indeterminate must be manually expressed for ARIA
-    control.setAttribute('aria-checked', '{computeAriaChecked}');
+    control.setAttribute('aria-checked', '{_ariaChecked}');
   })
   .autoRegister('mdw-checkbox');

@@ -22,7 +22,7 @@ export default function FormAssociatedMixin(Base) {
       formAssociated: true,
     })
     .set({
-      _dirtyValue: false,
+      _valueDirty: false,
       /** @type {EventListener} */
       _ipcListener: null,
       /** @type {EventTarget} */
@@ -46,12 +46,11 @@ export default function FormAssociatedMixin(Base) {
           this.propChangedCallback('value', oldValue, newValue);
         },
       },
-      _invalid: { attr: 'invalid', type: 'boolean' },
+      _invalid: 'boolean',
       _badInput: 'boolean',
       _validationMessage: 'string',
     })
     .define({
-      dirtyValue() { return this._dirtyValue; },
       form() { return this.elementInternals.form; },
       value: {
         get() {
@@ -59,7 +58,7 @@ export default function FormAssociatedMixin(Base) {
         },
         /** @param {string} v */
         set(v) {
-          this._dirtyValue = true;
+          this._valueDirty = true;
           this._value = v;
         },
       },
@@ -146,7 +145,7 @@ export default function FormAssociatedMixin(Base) {
       },
 
       formResetCallback() {
-        this._dirtyValue = false;
+        this._valueDirty = false;
         this.checkValidity();
       },
 

@@ -6,7 +6,12 @@ export default Chip
   .extend()
   .observe({
     type: { empty: 'checkbox' },
-    trailingIcon: 'string',
+    trailingIcon: {
+      parser(data) {
+        if (data === '') return 'dropdown';
+        return String(data);
+      },
+    },
     trailingSrc: 'string',
   })
   .css(styles)
@@ -21,11 +26,6 @@ export default Chip
       control.removeAttribute('role');
       control.setAttribute('autocomplete', 'off');
       control.setAttribute('type', 'checkbox');
-    },
-    constructed({ element }) {
-      if (element.trailingIcon === '') {
-        element.trailingIcon = 'dropdown';
-      }
     },
   })
   .autoRegister('mdw-filter-chip');

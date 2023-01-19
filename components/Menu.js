@@ -274,10 +274,6 @@ export default CustomElement
       this.updateMenuPosition(source);
       if (supportsHTMLDialogElement && !this._dialog.open) {
         this._dialog.show();
-        const main = document.querySelector('main');
-        if (main) {
-          main.setAttribute('aria-hidden', 'true');
-        }
       }
 
       const newState = { hash: Math.random().toString(36).slice(2, 18) };
@@ -381,20 +377,32 @@ export default CustomElement
         return;
       }
 
-      if (event.key === 'Tab') {
-        // Hide menu allowing focus to revert to calling element
-        // To then allow browser default Tab interaction
+      switch (event.key) {
+        case 'Tab':
+          // Hide menu allowing focus to revert to calling element
+          // If close is successfully, focus will return to spawning element
+          // and browser will then tab from spawning to next.
+          // If close is not successful, stop event.
+          if (!this.close()) {
+            event.stopPropagation();
+            event.preventDefault();
+          }
+          break;
         // Unless menu hiding is cancelled
-        if (!this.close()) {
+        case 'ArrowLeft':
+        case 'ArrowRight':
+          if (!this.submenu) break;
+          if (getComputedStyle(this).direction === 'rtl') {
+            if (event.key === 'ArrowLeft') break;
+          } else if (event.key === 'ArrowRight') break;
+          // Fallthrough;
+        case 'Escape':
+        case 'Esc':
           event.stopPropagation();
           event.preventDefault();
-        }
-        return;
-      }
-      if (event.key === 'Escape' || event.key === 'Esc') {
-        event.stopPropagation();
-        event.preventDefault();
-        this.close();
+          this.close();
+          break;
+        default:
       }
     },
     focusout(event) {

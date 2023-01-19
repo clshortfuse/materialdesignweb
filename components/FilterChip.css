@@ -1,9 +1,19 @@
 /* https://m3.material.io/components/chips/specs */
 
+/* Filter Chips can be elevated */
+
 :host {
   --mdw-ink: var(--mdw-color__on-secondary-container);
   --mdw-bg: var(--mdw-color__secondary-container);
-  color: rgb(var(--mdw-color__on-surface__variant));
+  --label-bg: transparent;
+}
+
+:host(:focus) {
+  --mdw-button__outline__rgb: var(--mdw-color__outline);
+}
+
+:host([elevated]) {
+  --label-bg: rgb(var(--mdw-color__surface));
 }
 
 #slot,
@@ -15,30 +25,23 @@
 
 #label {
   padding: 0;
+
+  background-color: transparent;
+  color: rgb(var(--mdw-color__on-surface-variant));
 }
 
-:host(:focus) {
-  --mdw-button__outline__rgb: var(--mdw-color__outline);
+:host([elevated]) #label {
+  background-color: rgb(var(--mdw-color__surface));
 }
 
-:host([disabled][selected]) {
-  background-color: rgba(var(--mdw-color__on-surface), 0.12);
-  /* color: rgba(var(--mdw-color__on-surface), 0.38); */
-}
-
-:host([selected]) {
+#label[selected] {
   --mdw-button__icon__font-variation-settings: 'FILL' 1;
   background-color: rgb(var(--mdw-bg));
   color: rgb(var(--mdw-ink));
 }
 
-:host([selected]) #outline {
+#label[selected] #outline {
   color:transparent;
-}
-
-:host(:not([selected])) {
-  background-color: transparent;
-  color: rgb(var(--mdw-color__on-surface__variant));
 }
 
 #trailing-icon {
@@ -83,15 +86,21 @@
   display: none;
 }
 
-:host([selected]) #check-icon {
-  --mdw-icon__size: 18px;
-}
-
 /** Filter **/
 :host([type="checkbox"]) :is(#slot, #state, #ripple, #icon, #check-icon) {
   color: inherit;
 }
 
-:host([disabled]) :is(#check-icon) {
+:host([elevated][disabled]) #label,
+:host([disabled]) #label[selected] {
+  background-color: rgba(var(--mdw-color__on-surface), 0.12);
+  /* color: rgba(var(--mdw-color__on-surface), 0.38); */
+}
+
+:host([disabled]) #check-icon {
   color: rgba(var(--mdw-color__on-surface), 0.38);
+}
+
+#label[selected] #check-icon {
+  --mdw-icon__size: 18px;
 }

@@ -8,9 +8,12 @@ export default Button
   .extend()
   .css(styles)
   .expressions({
-    computeAriaPressed({ type, _checked }) {
+    computeAriaPressed({ type, checked }) {
       if (type !== 'checkbox') return null;
-      return _checked ? 'true' : 'false';
+      return checked ? 'true' : 'false';
+    },
+    isToggle({ type }) {
+      return type === 'checkbox';
     },
   })
   .events('#control', {
@@ -35,6 +38,7 @@ export default Button
   .on('composed', ({ $ }) => {
     $('#slot').remove();
     $('#tooltip-slot').removeAttribute('name');
+    $('label').setAttribute('toggle', '{isToggle}');
     // icon.append($('#slot'));
     const icon = $('#icon');
     icon.setAttribute('style', '{computeIconStyle}');

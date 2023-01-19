@@ -118,6 +118,11 @@ export default class ListSelect extends KeyboardNavMixin(FormAssociatedMixin(Lis
     this._value = target.value;
   }
 
+  formResetCallback() {
+    // TODO: Reset dirty on options
+    super.formResetCallback();
+  }
+
   get options() {
     if (!this._optionsCollection) {
       this._optionsCollection = constructHTMLOptionsCollectionProxy({

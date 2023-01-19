@@ -16,7 +16,7 @@ export default Text
   )
   .on('composed', ({ $, html }) => {
     $('#label').append(html`
-      <div id=icon class=radio-icon selected={_checked} disabled={disabled}>
+      <div id=icon class=radio-icon selected={checked} disabled={disabled}>
         ${$('#ripple')}
         ${$('#state')}
       </div>

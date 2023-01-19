@@ -1,8 +1,7 @@
 /* https://m3.material.io/components/menus/specs */
 
 :host {
-  --mdw-shape__size: 0;
-  color: rgb(var(--mdw-ink));
+  cursor: pointer;
 
   font: var(--mdw-typescale__label-large__font);
   letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
@@ -10,40 +9,36 @@
   white-space: nowrap;
 }
 
-#label {
+#anchor {
   display: flex;
   align-items: center;
 
   min-block-size: 48px;
-  padding-inline: 12px;
 
-  cursor: pointer;
+  min-block-size: 48px;
+  padding: 0;
 
   white-space: nowrap;
 }
 
-#slot {
-  display: block;
-
-  flex: 1;
+#content {
+  padding-inline: 12px;
 }
 
 #icon {
-  order: -1;
-
-  padding-inline-end: 12px;
-
   transition-duration: 100ms;
   transition-property: opacity;
   will-change: opacity;
 }
 
-#trailing {
-  order: 1;
+.leading {
+  margin: 0;
+  margin-inline-start: 12px;
+}
 
-  display: flex;
-
-  padding-inline-start: 12px;
+.trailing {
+  margin-block: 0;
+  margin-inline-end: 12px;
 }
 
 #trailing,
@@ -51,10 +46,24 @@
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
-:host(:is([type="checkbox"],[type="radio"])) #icon {
+#selection {
   opacity: 0;
+
+  font-size: 18px;
 }
 
-:host([selected]) #icon {
+#selection.trailing {
+  font-size: 24px;
+}
+
+#selection[selected] {
   opacity: 1;
+}
+
+#label[selected] #icon {
+  opacity: 1;
+}
+
+:host([disabled]) {
+  cursor: not-allowed;
 }

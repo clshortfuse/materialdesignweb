@@ -8,7 +8,7 @@
   cursor: pointer;
 }
 
-a {
+#anchor {
   display: flex;
   align-items: center;
 
@@ -32,6 +32,14 @@ a {
   flex: 1;
 
   padding-inline: 16px;
+}
+
+#icon {
+  font-size: 18px;
+}
+
+#trailing-icon {
+  font-size: 24px;
 }
 
 .leading {

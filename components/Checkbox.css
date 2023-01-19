@@ -55,23 +55,23 @@ label {
   border-radius: 50%;
 }
 
-:host(:is([selected], [indeterminate])) label {
+#label:is([selected], [indeterminate]) {
   --mdw-checkbox__container__color: rgb(var(--mdw-bg));
 
   transition: none 200ms cubic-bezier(0.0, 0.0, 0.2, 1)
 }
 
-:host(:is([selected], [indeterminate])) #icon {
+#icon:is([selected], [indeterminate]) {
   opacity: 1;
 }
 
-:host([invalid]) label {
+label[invalid] {
   --mdw-bg: rgb(var(--mdw-color__error));
   --mdw-ink: rgb(var(--mdw-color__on-error));
   --mdw-checkbox__container__color: rgb(var(--mdw-color__error));
 }
 
-:host([disabled]) label {
+label[disabled] {
   --mdw-bg: var(--mdw-color__on-surface);
   --mdw-ink: var(--mdw-color__surface);
   --mdw-checkbox__container__color: rgb(var(--mdw-color__on-surface));

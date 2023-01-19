@@ -24,13 +24,6 @@ const IMPLICIT_SUBMISSION_BLOCKING_TYPES = new Set([
  */
 export default function InputMixin(Base) {
   class Input extends ControlMixin(Base) {
-    static get observedAttributes() {
-      return [
-        ...super.observedAttributes,
-        'selected',
-      ];
-    }
-
     static inputTagName = 'input';
 
     static FORM_IPC_EVENT = 'mdw-input-changed';
@@ -40,15 +33,21 @@ export default function InputMixin(Base) {
     static clonedContentAttributes = [
       ...super.clonedContentAttributes,
       'aria-controls',
-      'accept', 'alt', 'autocomplete',
-      'checked', 'dirname', 'disabled',
+      'accept', 'alt',
+      // 'autocomplete',
+      'checked', 'dirname',
+      // 'disabled',
       // 'form',
       'formaction', 'formenctype', 'formmethod', 'formnovalidate', 'formTarget',
       'height',
       // 'list',
       'max', 'maxlength', 'min', 'minlength',
-      'multiple', 'name', 'pattern', 'placeholder',
-      'readonly', 'required', 'size', 'src', 'step',
+      'multiple',
+      // 'name',
+      'pattern', 'placeholder',
+      // 'readonly',
+      // 'required',
+      'size', 'src', 'step',
       // 'type',
       'value',
       'width',
@@ -80,24 +79,24 @@ export default function InputMixin(Base) {
         case '_width':
           this.width = newValue;
           break;
-        case '_checked':
+        case 'checked':
           if (!this.type) {
             console.warn('unknown type?', this);
           }
           switch (this.type) {
             case 'checkbox':
             case 'radio':
-              if (!newValue) {
-                this.elementInternals.setFormValue(null);
-              } else {
+              if (newValue) {
                 this.elementInternals.setFormValue(this.value ?? 'on');
                 this._notifyRadioChange(this.name, this.value ?? 'on');
+              } else {
+                this.elementInternals.setFormValue(null);
               }
               break;
             default:
           }
           // Reinvoke change event for components tracking 'checked';
-          this.propChangedCallback('checked', oldValue, newValue);
+          // this.propChangedCallback('checked', oldValue, newValue);
           break;
         default:
       }
@@ -120,14 +119,6 @@ export default function InputMixin(Base) {
             }
           }
           break;
-        case 'checked':
-          this._checked = this.#input.checked;
-          break;
-        case 'selected':
-        // Track if attribute was manually manipulated
-          if (this.#input.checked === (newValue != null)) break;
-          this.checked = newValue != null;
-          break;
         default:
       }
     }
@@ -135,6 +126,16 @@ export default function InputMixin(Base) {
     get #input() { return /** @type {HTMLInputElement} */ (this.refs.control); }
 
     static {
+      this.on({
+        composed({ $ }) {
+          const label = $('#label');
+          // Expose [selected] to .checked
+          label.setAttribute('selected', '{checked}');
+          label.setAttribute('invalid', '{_invalid}');
+          label.setAttribute('indeterminate', '{indeterminate}');
+          label.setAttribute('disabled', '{disabled}');
+        },
+      });
       this.events('#control', {
         /**
          * @param {Event & {currentTarget: HTMLInputElement}} event
@@ -176,7 +177,7 @@ export default function InputMixin(Base) {
             return;
           }
           const input = /** @type {HTMLInputElement} */ (event.currentTarget);
-          this._checked = input.checked;
+          this.checked = input.checked;
         },
       });
     }
@@ -223,10 +224,10 @@ export default function InputMixin(Base) {
       }
       const [name, value] = event.detail;
       if (this.name !== name) return;
-      if (value !== this.value) {
-        this.checked = false;
-      } else {
+      if (value === this.value) {
       // console.log('Control.formIPCEvent: Continue match', this.name, this.value);
+      } else {
+        this.checked = false;
       }
     }
 
@@ -235,6 +236,8 @@ export default function InputMixin(Base) {
       this.#input.checked = this.checked;
       this._value = this.#input.value;
       this._checked = this.#input.checked;
+      this._checkedDirty = false;
+
       super.formResetCallback();
     }
 
@@ -298,15 +301,6 @@ export default function InputMixin(Base) {
       this.#input.width = value;
       this._width = value;
     }
-
-    get checked() { return this._checked; }
-
-    /** @param {boolean} flag */
-    set checked(flag) {
-      this.#input.checked = Boolean(flag);
-      /** @type {boolean} */
-      this._checked = this.#input.checked;
-    }
   }
 
   Input.prototype.ariaControls = Input.prop('ariaControls');
@@ -318,8 +312,27 @@ export default function InputMixin(Base) {
   Input.prototype.accept = Input.prop('accept', DOMString);
   Input.prototype.alt = Input.prop('alt', DOMString);
   Input.prototype.defaultChecked = Input.prop('defaultChecked', { attr: 'checked', type: 'boolean' });
+  Input.prototype._checkedDirty = Input.prop('_checkedDirty', 'boolean');
   //  attribute boolean checked;
-  Input.prototype._checked = Input.prop('_checked', { attr: 'selected', type: 'boolean' });
+  Input.prototype._checked = Input.prop('_checked', 'boolean');
+
+  // Exposed property based other watched properties
+  Input.prototype.checked = Input.prop('checked', {
+    reflect: false,
+    type: 'boolean',
+    get({ _checkedDirty, defaultChecked, _checked }) {
+      if (!_checkedDirty) return defaultChecked;
+      return _checked;
+    },
+    set(value) {
+      this._checked = value;
+      this._checkedDirty = true;
+    },
+    changedCallback(oldValue, newValue) {
+      this.shadowRoot.getElementById('control').checked = newValue;
+    },
+  });
+
   Input.prototype.dirName = Input.prop('dirName', { attr: 'dirname', ...DOMString });
   Input.prototype._formAction = Input.prop('_formAction', { attr: 'formaction' });
   Input.prototype.formEnctype = Input.prop('formEnctype', { attr: 'formenctype', ...DOMString });

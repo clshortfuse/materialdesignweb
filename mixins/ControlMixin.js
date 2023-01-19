@@ -25,13 +25,15 @@ export default function ControlMixin(Base) {
       ];
     }
 
+    static focusableOnDisabled = false;
+
     static controlTagName = 'input';
 
     static controlVoidElement = true;
 
     /** @type {string[]} */
     static clonedContentAttributes = [
-      'autocomplete', 'disabled', 'name', 'readonly', 'required',
+      'autocomplete', 'name', 'readonly', 'required',
     ];
 
     /** @type {string[]} */
@@ -67,12 +69,15 @@ export default function ControlMixin(Base) {
           }
           break;
         case 'disabled':
-          this._control.disabled = newValue != null;
-          if (newValue === null) {
-            this.tabIndex = 0;
-            // this.setAttribute('tabindex', '0');
-          } else {
-            this.removeAttribute('tabindex');
+          this._control.setAttribute('aria-disabled', newValue ? 'true' : 'false');
+          if (!this.static.focusableOnDisabled) {
+            this._control.disabled = newValue != null;
+            if (newValue === null) {
+              this.tabIndex = 0;
+              // this.setAttribute('tabindex', '0');
+            } else {
+              this.removeAttribute('tabindex');
+            }
           }
           break;
         default:
@@ -174,7 +179,7 @@ export default function ControlMixin(Base) {
     }
 
     set value(v) {
-      this._dirtyValue = true;
+      this._valueDirty = true;
       this._control.value = v;
       this._value = this._control.value;
     }

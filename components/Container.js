@@ -17,9 +17,4 @@ export default Text
   .css(styles)
   .html/* html */`<div _if={!disabled} id=elevation aria-hidden=true></div>`
   .on('composed', ({ composition }) => composition.styles.unshift(colorStyles)) // Ink > Color rules
-  .onAttributeChanged({
-    disabled(oldValue, newValue) {
-      this.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
-    },
-  })
   .autoRegister('mdw-container');
