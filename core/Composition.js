@@ -242,14 +242,14 @@ export default class Composition {
           }
         }
         if (fn) {
-          if (!fnResults.has(fn)) {
+          if (fnResults.has(fn)) {
+            value = fnResults.get(fn);
+          } else {
             const args = Object.fromEntries(
               [...props].map((prop) => [prop, prop in data ? data[prop] : valueFromPropName(prop, context)]),
             );
             value = fn.call(context, args);
             fnResults.set(fn, value);
-          } else {
-            value = fnResults.get(fn);
           }
         } else {
           value = propSearch.value;
@@ -283,7 +283,7 @@ export default class Composition {
           }
         } else if (node === '_if') {
           const attached = root.contains(ref);
-          if (value) {
+          if (value !== null && value !== false) {
             if (!attached) {
               const sourceElement = findElement(this.interpolation, identifier);
               if (!sourceElement) {
@@ -309,12 +309,12 @@ export default class Composition {
                   break;
                 }
               }
-              if (!commentNode) {
-                console.warn('Could not add', identifier, 'back to DOM');
-              } else {
+              if (commentNode) {
                 commentNode.after(ref);
                 // console.log('Add', identifier, 'back', ref.outerHTML);
                 commentNode.remove();
+              } else {
+                console.warn('Could not add', identifier, 'back to DOM');
               }
               const events = this.events.get(identifierKey);
               if (events) {
@@ -420,12 +420,9 @@ export default class Composition {
       // eslint-disable-next-line unicorn/consistent-destructuring
         element = node.ownerElement;
         if (nodeName.startsWith('on')) {
-          if (nodeName[2] === '-') {
-            isEvent = true;
-          } else {
-            console.log('Will not interpolate inline event listeners', element.outerHTML);
-            continue;
-          }
+          // Do not interpolate inline event listeners
+          if (nodeName[2] !== '-') continue;
+          isEvent = true;
         }
       }
 
@@ -484,12 +481,12 @@ export default class Composition {
 
       if (!props) {
         if (typeof defaultValue === 'function') {
-        // Value must be reinterpolated and function observed
+          // Value must be reinterpolated and function observed
           const observeResult = observeFunction.call(this, defaultValue, defaults);
           fn = defaultValue;
           defaultValue = observeResult.defaultValue;
           props = observeResult.props;
-        // console.log(this.static.name, fn.name || parsedValue, combinedSet);
+          // console.log(this.static.name, fn.name || parsedValue, combinedSet);
         } else {
           props = new Set([parsedValue]);
         }
@@ -623,7 +620,7 @@ export default class Composition {
             }
             // Cache and reuse
             entry.listener = listener;
-            console.log('caching listener', entry);
+            // console.log('caching listener', entry);
           } else {
             console.warn('creating new listener', entry);
             listener = entry.handleEvent ?? ((event) => {
