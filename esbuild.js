@@ -16,6 +16,8 @@ const minifyWhitespace = cliArgs.has('--minify-whitespace');
 const minifyIdentifiers = cliArgs.has('--minify-identifiers');
 const minifySyntax = cliArgs.has('--minify-syntax');
 const serve = cliArgs.has('--serve');
+const watch = cliArgs.has('--watch');
+const live = cliArgs.has('--live');
 
 const minify = minifyAll ? { minify: true } : {
   minifyWhitespace,
@@ -23,24 +25,31 @@ const minify = minifyAll ? { minify: true } : {
   minifySyntax,
 };
 
+/** @type {esbuild.BuildOptions['banner']} */
+const banner = {};
+if (!isProduction && live) {
+  banner.js = /* js */`
+    new EventSource('/esbuild').addEventListener('change', () => window.location.reload());
+  `;
+}
+
 /** @type {esbuild.BuildOptions} */
 const buildOptions = {
   entryPoints: ['docs/demo.js'],
   format: 'esm',
   sourcemap: true,
   ...minify,
-  watch: cliArgs.has('--watch'),
+  banner,
   bundle: true,
   keepNames: false,
   legalComments: 'linked',
   metafile: cliArgs.has('--metafile'),
-  // inject: isProduction ? [] : ['./utils/metadata.js'],
   write: false,
   target,
   outfile: 'docs/demo.min.js',
   plugins: [{
     name: 'css import assertions',
-    setup: (build) => {
+    setup(build) {
       build.onLoad({ filter: /\.css$/ }, async (args) => {
         const { outputFiles } = await esbuild.build({
           entryPoints: [args.path],
@@ -71,6 +80,10 @@ const buildOptions = {
           export default sheet;`;
         return { contents };
       });
+    },
+  }, {
+    name: 'statistics',
+    setup(build) {
       build.onEnd(({ metafile, outputFiles }) => {
         const info = {
           timestamp: new Date().toLocaleString(),
@@ -93,7 +106,12 @@ const buildOptions = {
   }],
 };
 
-let server;
+const context = await esbuild.context(buildOptions);
+
+if (watch) {
+  await context.watch();
+}
+
 if (serve) {
   /** @type {esbuild.ServeOptions} */
   const serveOptions = {
@@ -107,11 +125,11 @@ if (serve) {
     },
   };
 
-  server = await esbuild.serve(serveOptions, { entryPoints: [] });
-  console.log('esbuild server is listening on port', serveOptions.port);
+  const server = await context.serve(serveOptions);
+  console.log(`esbuild server is listening on ${server.host}:${server.port}`);
 }
 
-await Promise.all([
-  server?.wait,
-  esbuild.build(buildOptions),
-]);
+if (!serve && !watch) {
+  await context.rebuild();
+  await context.dispose();
+}

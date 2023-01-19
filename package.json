@@ -13,7 +13,7 @@
     "prebuild": "node bin/generate-css.js --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/theme.css",
     "build": "node esbuild.js --minify --metafile",
     "watch": "node esbuild.js --watch --metafile",
-    "serve": "node esbuild.js --watch --metafile --serve",
+    "serve": "node esbuild.js --watch --metafile --serve --live",
     "pretest": "eslint --ignore-path .gitignore",
     "test": "c8 tap --no-coverage"
   },
@@ -34,7 +34,12 @@
   },
   "author": "Carlos Lopez Jr. <clshortfuse@gmail.com> (https://shortfuse.org/)",
   "license": "ISC",
-  "sideEffects": ["./polyfills.js", "./components/*.js", "./utils/metadata.js", "./docs/demo/*.js"],
+  "sideEffects": [
+    "./polyfills.js",
+    "./components/*.js",
+    "./utils/metadata.js",
+    "./docs/demo/*.js"
+  ],
   "bugs": {
     "url": "https://github.com/clshortfuse/materialdesignweb/issues"
   },
@@ -46,7 +51,7 @@
     "browserslist-to-esbuild": "^1.1.1",
     "c8": "^7.12.0",
     "element-internals-polyfill": "^1.1.11",
-    "esbuild": "^0.15.5",
+    "esbuild": "^0.17.0",
     "eslint": "^8.24.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-compat": "^4.0.2",
@@ -54,7 +59,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsdoc": "^39.2.9",
     "eslint-plugin-sort-class-members": "^1.15.2",
-    "eslint-plugin-unicorn": "^43.0.2",
+    "eslint-plugin-unicorn": "^45.0.2",
     "http-server": "^14.1.1",
     "stylelint": "^14.8.2",
     "stylelint-no-unsupported-browser-features": "github:clshortfuse/stylelint-no-unsupported-browser-features",

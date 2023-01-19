@@ -205,6 +205,7 @@
       },
       "accessorPairPositioning": "getThenSet"
     }],
+    "unicorn/switch-case-braces": ["error", "avoid"],
     "unicorn/no-useless-undefined": 0,
     "unicorn/no-array-for-each": 0,
     "unicorn/prefer-spread": 0,
