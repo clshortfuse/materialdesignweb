@@ -66,7 +66,7 @@ function valueFromPropName(prop, source) {
  */
 function buildShadowRootChildListener(fn) {
   /** @param {Event & {currentTarget:{getRootNode: () => ShadowRoot}}} event */
-  return function onShadowRootChildClick(event) {
+  return function onShadowRootChildEvent(event) {
     const host = event.currentTarget.getRootNode().host;
     fn.call(host, event);
   };
@@ -446,7 +446,7 @@ export default class Composition {
           this.events.set(identifierKey, set);
         }
         if (parsedValue.startsWith('#')) {
-          set.add({ type, handleEvent: inlineFunctions.get(parsedValue), ...options });
+          set.add({ type, handleEvent: inlineFunctions.get(parsedValue).fn, ...options });
         } else {
           set.add({ type, prop: parsedValue, ...options });
         }
