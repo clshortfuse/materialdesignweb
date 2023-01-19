@@ -19,7 +19,7 @@ export default Container
   .css(styles)
   .on('composed', ({ $, html }) => {
     $('#label').append(html`
-      <mdw-icon id=icon aria-hidden="true" svg={svg} src="{src}">{icon}</mdw-icon>
+      <mdw-icon id=icon aria-hidden="true" svg={svg} src="{src}">{icon}<slot name=svg slot=svg></slot></mdw-icon>
       ${$('#elevation')}
       <div id=outline aria-hidden="true"></div>
       <div id=touch-target aria-hidden="true"></div>

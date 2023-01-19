@@ -45,6 +45,7 @@ export default class Icon extends Text
       <svg _if={svg} id=svg viewBox="0 0 24 24" id="svg">
         <use href="{svg}" fill="currentColor"/>
       </svg>
+      <slot id=svg-slot slot=svg name=svg></slot>
       <img _if={src} id=img
         alt={alt} src={src} srcset={srcset} sizes={sizes}
         crossorigin={crossOrigin} usemap={useMap} ismap={isMap}

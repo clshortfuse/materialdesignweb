@@ -42,7 +42,7 @@
   transition-property: font-variation-settings, opacity;
 }
 
-svg, img {
+#svg-slot::slotted(svg), svg, img {
   position: absolute;
   inset: 0;
 
@@ -50,6 +50,8 @@ svg, img {
   inline-size: 100%;
 
   opacity: var(--mdw-icon__image__opacity);
+
+  fill: currentColor;
 
   object-fit: cover;
 }
