@@ -22,7 +22,7 @@ export default Layout
       min-block-size: 100%;
       max-block-size: 100%;
       overflow-y: auto;
-      will-change: visibility;
+      will-change: visibility, transform;
 
       visibility: hidden;
     }

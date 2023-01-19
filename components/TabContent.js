@@ -26,6 +26,7 @@ export default CustomElement
       -webkit-scroll-snap-points-x: repeat(100%);
       scroll-snap-points-x: repeat(100%);
       overscroll-behavior-x: none;
+      will-change: transform; /* Avoid repaint on scroll */
     }
   `
   .set({
