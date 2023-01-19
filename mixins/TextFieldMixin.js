@@ -19,6 +19,7 @@ export default function TextFieldMixin(Base) {
       inputPrefix: 'string',
       inputSuffix: 'string',
       trailingIcon: 'string',
+      trailingIconInk: 'string',
       supporting: 'string',
       error: 'string',
       _isFocused: 'boolean',
@@ -58,7 +59,7 @@ export default function TextFieldMixin(Base) {
         <mdw-icon _if={icon} id=icon aria-hidden=true>{icon}</mdw-icon>
         <span _if={inputPrefix} class=inline id=prefix aria-hidden=true>{inputPrefix}</span>
         <span _if={inputSuffix} class=inline id=suffix aria-hidden=true>{inputSuffix}</span>
-        <mdw-icon _if={trailingIcon} id=trailing-icon aria-hidden=true>{trailingIcon}</mdw-icon>
+        <mdw-icon _if={trailingIcon} id=trailing-icon ink={trailingIconInk} aria-hidden=true>{trailingIcon}</mdw-icon>
         <div _if={filled} id=indicator></div>
         <div id=outline>
           <div id=gap>
