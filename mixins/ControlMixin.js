@@ -44,10 +44,9 @@ export default function ControlMixin(Base) {
       super(...args);
       /** @type {string} */
       this._value = this._control.value;
+      // Expose this element as focusable
       if (!this.hasAttribute('tabindex')) {
         this.tabIndex = 0;
-      // Expose this element as focusable
-        // this.setAttribute('tabindex', '0');
       }
     }
 
@@ -69,7 +68,7 @@ export default function ControlMixin(Base) {
           }
           break;
         case 'disabled':
-          this._control.setAttribute('aria-disabled', newValue ? 'true' : 'false');
+          this._control.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
           if (!this.static.focusableOnDisabled) {
             this._control.disabled = newValue != null;
             if (newValue === null) {
