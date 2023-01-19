@@ -9,12 +9,9 @@ html {
 }
 
 body {
-  max-inline-size: 100%;
-
+  /* max-inline-size: 100%; */
   margin: 0;
-
   padding: 0;
-
   font-weight: var(--mdw-typescale__body-large__font-weight);
   font-size: var(--mdw-typescale__body-large__font-size);
   line-height: var(--mdw-typescale__body-large__line-height);

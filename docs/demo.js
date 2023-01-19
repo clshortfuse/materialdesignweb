@@ -4,6 +4,8 @@ import './demo/DemoButton.js';
 import './demo/DemoDummy.js';
 import './demo/DemoSection.js';
 import './demo/DemoScreen.js';
+import './demo/DemoPage.js';
+
 import '../components/Badge.js';
 import '../components/BottomAppBar.js';
 import '../components/Button.js';

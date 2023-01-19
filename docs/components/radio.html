@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Material Design Web</title>
+  <title>Radio Buttons</title>
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <link rel=preconnect href="https://fonts.googleapis.com" />
   <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
@@ -14,34 +14,31 @@
 </head>
 
 <body>
-  
-  <main>
-    <demo-section id=radio>
-      <h1 slot="heading">Radio Buttons</h1>
-      <demo-section>
-        <h2 slot=heading>Normal</h2>
-        <mdw-layout gap=12px wrap>
-          <form>
-            <mdw-radio name=radio-demo value="1">Default</mdw-radio>
-            <mdw-radio name=radio-demo ink="secondary" value="2">Secondary</mdw-radio>
-            <mdw-radio name=radio-demo ink="tertiary" value="3">Tertiary</mdw-radio>
-            <mdw-radio name=radio-demo ink="primary" disabled value="4">Disabled</mdw-radio>
-            <mdw-radio name=radio-demo ink="primary" disabled value="5" checked>Disabled Checked</mdw-radio>
-          </form>
-        </mdw-layout>
-      </demo-section>
-      <demo-section>
-        <h2 slot=heading>No Label</h2>
-        <mdw-layout gap=12px wrap>
-          <form>
-            <mdw-radio name=radio-demo aria-label="Default" value="1"></mdw-radio>
-            <mdw-radio name=radio-demo aria-label="Secondary" ink="secondary" value="2"></mdw-radio>
-            <mdw-radio name=radio-demo aria-label="Tertiary" ink="tertiary" value="3"></mdw-radio>
-          </form>
-        </mdw-layout>
-      </demo-section>
+
+  <demo-page>
+    <demo-section>
+      <h1 slot=heading>Normal</h1>
+      <mdw-layout gap=12px wrap>
+        <form>
+          <mdw-radio name=radio-demo value="1">Default</mdw-radio>
+          <mdw-radio name=radio-demo ink="secondary" value="2">Secondary</mdw-radio>
+          <mdw-radio name=radio-demo ink="tertiary" value="3">Tertiary</mdw-radio>
+          <mdw-radio name=radio-demo ink="primary" disabled value="4">Disabled</mdw-radio>
+          <mdw-radio name=radio-demo ink="primary" disabled value="5" checked>Disabled Checked</mdw-radio>
+        </form>
+      </mdw-layout>
     </demo-section>
-  </main>
+    <demo-section>
+      <h1 slot=heading>No Label</h1>
+      <mdw-layout gap=12px wrap>
+        <form>
+          <mdw-radio name=radio-demo aria-label="Default" value="1"></mdw-radio>
+          <mdw-radio name=radio-demo aria-label="Secondary" ink="secondary" value="2"></mdw-radio>
+          <mdw-radio name=radio-demo aria-label="Tertiary" ink="tertiary" value="3"></mdw-radio>
+        </form>
+      </mdw-layout>
+    </demo-section>
+  </demo-page>
   <script type=module src="../demo.min.js"></script>
 
 </body>

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Material Design Web</title>
+  <title>Dialogs</title>
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <link rel=preconnect href="https://fonts.googleapis.com" />
   <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
@@ -14,29 +14,28 @@
 </head>
 
 <body>
-  <main>
+  <demo-page>
     <demo-section>
-      <h1 slot=heading>Dialogs</h1>
-      <demo-section>
-        <h2 slot=heading>Basic dialog</h2>
-        <mdw-layout wrap gap=12px column x=center>
-          <demo-button aria-haspopup=dialog aria-controls="dialog-simple">Basic dialog</demo-button>
-          <demo-button aria-haspopup=dialog aria-controls="dialog-no-headline" data-popup-method=showModal>
-            No headline (Native Modal)
-          </demo-button>
-          <mdw-dialog id=dialog-no-headline icon=refresh>This is a modal dialog. It can exist (almost) anywhere in the DOM.</mdw-dialog>
+      <h1 slot=heading>Basic</h1>
+      <mdw-layout wrap gap=12px column x=center>
+        <demo-button aria-haspopup=dialog aria-controls="dialog-simple">Basic dialog</demo-button>
+        <demo-button aria-haspopup=dialog aria-controls="dialog-no-headline" data-popup-method=showModal>
+          No headline (Native Modal)
+        </demo-button>
+        <mdw-dialog id=dialog-no-headline icon=refresh>This is a modal dialog. It can exist (almost) anywhere in the
+          DOM.</mdw-dialog>
 
-          <demo-button aria-haspopup=dialog aria-controls="dialog-slotted" data-popup-method=showModal>Custom slotted
-          </demo-button>
-          <demo-button aria-haspopup=dialog aria-controls="dialog-oversized">Oversized (full dividers)</demo-button>
-          <demo-button aria-haspopup=dialog aria-controls="dialog-reset">List sample (inset dividers)</demo-button>
-          <demo-button aria-haspopup=dialog aria-controls="dialog-custom-buttons">Custom buttons</demo-button>
-          <demo-button aria-haspopup=dialog aria-controls="dialog-input">Autofocus input</demo-button>
-          <demo-button aria-haspopup=dialog aria-controls="dialog-slider">Slider example</demo-button>
-        </mdw-layout>
-      </demo-section>
+        <demo-button aria-haspopup=dialog aria-controls="dialog-slotted" data-popup-method=showModal>Custom slotted
+        </demo-button>
+        <demo-button aria-haspopup=dialog aria-controls="dialog-oversized">Oversized (full dividers)</demo-button>
+        <demo-button aria-haspopup=dialog aria-controls="dialog-reset">List sample (inset dividers)</demo-button>
+        <demo-button aria-haspopup=dialog aria-controls="dialog-custom-buttons">Custom buttons</demo-button>
+        <demo-button aria-haspopup=dialog aria-controls="dialog-input">Autofocus input</demo-button>
+        <demo-button aria-haspopup=dialog aria-controls="dialog-slider">Slider example</demo-button>
+      </mdw-layout>
     </demo-section>
-  </main>
+  </demo-page>
+
   <div id=dialogs>
     <mdw-dialog id=dialog-simple headline="My title">Description</mdw-dialog>
     <mdw-dialog id=dialog-oversized icon=refresh headline="Auto scrolls" dividers>
@@ -47,10 +46,11 @@
       Description text
     </mdw-dialog>
     <mdw-dialog id=dialog-icon icon=refresh headline="My title" description="Description (no body)."></mdw-dialog>
-    <mdw-dialog id=dialog-custom-buttons icon=refresh headline="Title" confirm="Launch"
-      cancel="Abort" default="confirm">Button text changed via [confirm] and [cancel] values.</mdw-dialog>
+    <mdw-dialog id=dialog-custom-buttons icon=refresh headline="Title" confirm="Launch" cancel="Abort"
+      default="confirm">Button text changed via [confirm] and [cancel] values.</mdw-dialog>
     <mdw-dialog id=dialog-reset icon=refresh headline="Reset settings?" dividers=inset>
-      <div slot="fixed">This will reset your app preferences back to their default settings. The following accounts will also be signed out:</div>
+      <div slot="fixed">This will reset your app preferences back to their default settings. The following accounts will
+        also be signed out:</div>
       <mdw-list>
         <mdw-list-item avatar="LV">leevillanuevanotes@gmail.com</mdw-list-item>
         <mdw-list-item avatar="AA">alloitsalejandro@gmail.com</mdw-list-item>
@@ -61,7 +61,8 @@
       <form slot="form" method="dialog">
         <mdw-slider name="volume" autofocus></mdw-slider>
         <mdw-dialog-actions>
-          <input type="submit" hidden value=confirm aria-hidden="true" /> <!-- Forms submit nearest type=submit control on ENTER key -->
+          <input type="submit" hidden value=confirm aria-hidden="true" />
+          <!-- Forms submit nearest type=submit control on ENTER key -->
           <mdw-button type="submit" name=cancel value="cancel">Cancel</mdw-button>
           <mdw-button type="submit" name=confirm value="confirm">Confirm</mdw-button>
         </mdw-dialog-actions>
@@ -71,13 +72,15 @@
       <form slot="form" method="dialog">
         <mdw-text-input name="sample" autofocus filled label="Label"></mdw-text-input>
         <mdw-dialog-actions>
-          <input type="submit" hidden value=confirm tabindex=-1 aria-hidden="true" /> <!-- Forms submit nearest type=submit control on ENTER key -->
+          <input type="submit" hidden value=confirm tabindex=-1 aria-hidden="true" />
+          <!-- Forms submit nearest type=submit control on ENTER key -->
           <mdw-button type="submit" name=cancel value="cancel">Cancel</mdw-button>
           <mdw-button type="submit" name=confirm value="confirm">Confirm</mdw-button>
         </mdw-dialog-actions>
       </form>
     </mdw-dialog>
   </div>
+
   <script type=module src="../demo.min.js"></script>
 </body>
 

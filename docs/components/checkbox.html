@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Material Design Web</title>
+  <title>Checkbox</title>
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <link rel=preconnect href="https://fonts.googleapis.com" />
   <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
@@ -14,38 +14,35 @@
 </head>
 
 <body>
-  
-  <main>
-    <demo-section id=checkbox>
-      <h1 slot="heading">Checkboxes</h1>
-      <demo-section>
-        <h2 slot=heading>Normal</h2>
-        <form>
-          <mdw-layout gap=12px wrap style="margin:8px">
-            <mdw-checkbox name=checkbox-demo-1 value="1">Default</mdw-checkbox>
-            <mdw-checkbox name=checkbox-demo-2 checked color="secondary" value="2">Secondary</mdw-checkbox>
-            <mdw-checkbox name=checkbox-demo-2 class=mdw-custom required color=alias value="2">Alias (Required)
-            </mdw-checkbox>
-            <mdw-checkbox name=checkbox-demo-3 indeterminate color="tertiary" value="3">Tertiary</mdw-checkbox>
-            <mdw-checkbox name=checkbox-demo-4 checked indeterminate color="primary" disabled value="4">Disabled
-            </mdw-checkbox>
-            <mdw-checkbox name=checkbox-demo-5 color="primary" disabled value="5" checked>Disabled Checked
-            </mdw-checkbox>
-          </mdw-layout>
-        </form>
-      </demo-section>
-      <demo-section>
-        <h2 slot=heading>No Label</h2>
-        <form>
-          <mdw-layout gap=12px wrap style="margin:8px">
-            <mdw-checkbox name=checkbox-demo-6 checked aria-label="Default" value="1"></mdw-checkbox>
-            <mdw-checkbox name=checkbox-demo-7 aria-label="Secondary" color="secondary" value="2"></mdw-checkbox>
-            <mdw-checkbox name=checkbox-demo-8 disabled aria-label="Tertiary" color="tertiary" value="3"></mdw-checkbox>
-          </mdw-layout>
-        </form>
-      </demo-section>
+
+  <demo-page>
+    <demo-section>
+      <h1 slot=heading>Normal</h1>
+      <form>
+        <mdw-layout gap=12px wrap style="margin:8px">
+          <mdw-checkbox name=checkbox-demo-1 value="1">Default</mdw-checkbox>
+          <mdw-checkbox name=checkbox-demo-2 checked color="secondary" value="2">Secondary</mdw-checkbox>
+          <mdw-checkbox name=checkbox-demo-2 class=mdw-custom required color=alias value="2">Alias (Required)
+          </mdw-checkbox>
+          <mdw-checkbox name=checkbox-demo-3 indeterminate color="tertiary" value="3">Tertiary</mdw-checkbox>
+          <mdw-checkbox name=checkbox-demo-4 checked indeterminate color="primary" disabled value="4">Disabled
+          </mdw-checkbox>
+          <mdw-checkbox name=checkbox-demo-5 color="primary" disabled value="5" checked>Disabled Checked
+          </mdw-checkbox>
+        </mdw-layout>
+      </form>
     </demo-section>
-  </main>
+    <demo-section>
+      <h1 slot=heading>No Label</h1>
+      <form>
+        <mdw-layout gap=12px wrap style="margin:8px">
+          <mdw-checkbox name=checkbox-demo-6 checked aria-label="Default" value="1"></mdw-checkbox>
+          <mdw-checkbox name=checkbox-demo-7 aria-label="Secondary" color="secondary" value="2"></mdw-checkbox>
+          <mdw-checkbox name=checkbox-demo-8 disabled aria-label="Tertiary" color="tertiary" value="3"></mdw-checkbox>
+        </mdw-layout>
+      </form>
+    </demo-section>
+  </demo-page>
   <script type=module src="../demo.min.js"></script>
 
 </body>

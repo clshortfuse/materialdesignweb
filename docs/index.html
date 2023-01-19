@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Material Design Web</title>
+  <title>MDW</title>
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <link rel=preconnect href="https://fonts.googleapis.com" />
   <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
@@ -12,14 +12,19 @@
   <link rel="stylesheet" href="theme.css" />
   <link rel="stylesheet" href="index.css" />
   <style>
+    demo-page:not(:defined) {
+      display: none;
+    }
+
     mdw-layout:not(:defined) {
       display: none;
     }
+
     body {
       display: flex;
       flex-direction: column;
     }
-  
+
   </style>
 </head>
 
@@ -31,13 +36,7 @@
     <mdw-nav-item icon="change_history" href="#navbar" color=tertiary-container>Tertiary Container
     </mdw-nav-item>
   </mdw-nav-bar> -->
-  <mdw-top-app-bar hide-on-scroll headline="Material Design Web">
-    <mdw-icon-button slot="trailing" svg="./imgs/icons.svg#invertocat"
-      onclick="window.location = 'https\://github.com/clshortfuse/materialdesignweb/tree/native'">GitHub Page
-    </mdw-icon-button>
-  </mdw-top-app-bar>
-
-  <main>
+  <demo-page>
     <mdw-list id=nav-list>
       <mdw-list-item icon=palette href="./components/color.html">Color</mdw-list-item>
       <mdw-list-item icon="rounded_corner" href="./components/shape.html">Shape</mdw-list-item>
@@ -70,8 +69,7 @@
       <mdw-list-item icon=web_asset href="./components/tooltip.html">Tooltips</mdw-list-item>
       <mdw-list-item icon=web_asset href="./components/topappbar.html">Top App Bar</mdw-list-item>
     </mdw-list>
-  </main>
-
+  </demo-page>
 
   <script type=module src="./demo.min.js"></script>
 

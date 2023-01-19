@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Material Design Web</title>
+  <title>Bottom App Bar</title>
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <link rel=preconnect href="https://fonts.googleapis.com" />
   <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
@@ -14,38 +14,35 @@
 </head>
 
 <body>
-  <main>
+  <demo-page>
     <demo-section>
-      <h1 slot=heading>Bottom app bar</h1>
-      <demo-section>
-        <h2 slot=heading>Surface color</h2>
-        <mdw-bottom-app-bar>
-          <mdw-icon-button icon=1k>1K</mdw-icon-button>
-          <mdw-icon-button icon=2k>2K</mdw-icon-button>
-          <mdw-icon-button icon=3k>3K</mdw-icon-button>
-          <mdw-icon-button icon=4k>4K</mdw-icon-button>
-        </mdw-bottom-app-bar>
-      </demo-section>
-      <demo-section>
-        <h2 slot=heading>Primary-container color</h2>
-        <mdw-bottom-app-bar color=primary-container>
-          <mdw-icon-button icon="1k">1K</mdw-icon-button>
-          <mdw-icon-button icon="2k">2K</mdw-icon-button>
-          <mdw-icon-button icon="3k">3K</mdw-icon-button>
-          <mdw-icon-button icon="4k">4K</mdw-icon-button>
-        </mdw-bottom-app-bar>
-      </demo-section>
-      <demo-section>
-        <h2 slot=heading>Custom color</h2>
-        <mdw-bottom-app-bar class=mdw-custom color=alias-container>
-          <mdw-icon-button icon="1k">1K</mdw-icon-button>
-          <mdw-icon-button icon="2k">2K</mdw-icon-button>
-          <mdw-icon-button icon="3k">3K</mdw-icon-button>
-          <mdw-icon-button icon="4k">4K</mdw-icon-button>
-        </mdw-bottom-app-bar>
-      </demo-section>
+      <h1 slot=heading>Surface color</h1>
+      <mdw-bottom-app-bar>
+        <mdw-icon-button icon=1k>1K</mdw-icon-button>
+        <mdw-icon-button icon=2k>2K</mdw-icon-button>
+        <mdw-icon-button icon=3k>3K</mdw-icon-button>
+        <mdw-icon-button icon=4k>4K</mdw-icon-button>
+      </mdw-bottom-app-bar>
     </demo-section>
-  </main>
+    <demo-section>
+      <h1 slot=heading>Primary-container color</h1>
+      <mdw-bottom-app-bar color=primary-container>
+        <mdw-icon-button icon="1k">1K</mdw-icon-button>
+        <mdw-icon-button icon="2k">2K</mdw-icon-button>
+        <mdw-icon-button icon="3k">3K</mdw-icon-button>
+        <mdw-icon-button icon="4k">4K</mdw-icon-button>
+      </mdw-bottom-app-bar>
+    </demo-section>
+    <demo-section>
+      <h1 slot=heading>Custom color</h1>
+      <mdw-bottom-app-bar class=mdw-custom color=alias-container>
+        <mdw-icon-button icon="1k">1K</mdw-icon-button>
+        <mdw-icon-button icon="2k">2K</mdw-icon-button>
+        <mdw-icon-button icon="3k">3K</mdw-icon-button>
+        <mdw-icon-button icon="4k">4K</mdw-icon-button>
+      </mdw-bottom-app-bar>
+    </demo-section>
+  </demo-page>
   <script type=module src="../demo.min.js"></script>
 
 </body>

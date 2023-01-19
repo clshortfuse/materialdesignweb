@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Material Design Web</title>
+  <title>Cards</title>
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <link rel=preconnect href="https://fonts.googleapis.com" />
   <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
@@ -14,175 +14,172 @@
 </head>
 
 <body>
-  
-  <main>
+  <demo-page>
     <demo-section>
-      <h1 slot=heading>Card</h1>
-      <demo-section>
-        <h2 slot=heading>Elevated</h2>
-        <mdw-layout gap=12px wrap>
-          <mdw-card elevated>
-            <div style="padding:12px">
-              <mdw-text block type-style=title>Elevated Card</mdw-text>
-              <mdw-text block type-style=title-small>Title small text</mdw-text>
-              <mdw-text block type-style=body-medium>Body medium text</mdw-text>
-            </div>
-            <mdw-card-action-area style="padding:12px">
-              <mdw-button filled>Action</mdw-button>
-            </mdw-card-action-area>
-          </mdw-card>
-          <mdw-card actionable elevated>
-            <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
-            <div style="padding:12px">
-              <mdw-text block type-style=title>Actionable Elevated Card</mdw-text>
-              <mdw-text block type-style=title-small>Title small text</mdw-text>
-              <mdw-text block type-style=body-medium>Body medium text</mdw-text>
-            </div>
-            <mdw-card-action-area style="padding:12px">
-              <mdw-button filled>Action</mdw-button>
-            </mdw-card-action-area>
-          </mdw-card>
-          <mdw-card actionable elevated color=inverse-surface>
-            <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
-            <div style="padding:12px">
-              <mdw-text block type-style=title>Actionable Elevated Card</mdw-text>
-              <mdw-text block type-style=title-small>Title small text</mdw-text>
-              <mdw-text block type-style=body-medium>Body medium text</mdw-text>
-            </div>
-            <mdw-card-action-area style="padding:12px">
-              <mdw-button filled>Action</mdw-button>
-            </mdw-card-action-area>
-          </mdw-card>
-          <mdw-card elevated disabled>
-            <div style="padding:12px">
-              <mdw-text block type-style=title>Elevated Card</mdw-text>
-              <mdw-text block type-style=title-small>Title small text</mdw-text>
-              <mdw-text block type-style=body-medium>Body medium text</mdw-text>
-            </div>
-            <mdw-card-action-area style="padding:12px">
-              <mdw-button disabled filled>Action</mdw-button>
-            </mdw-card-action-area>
-          </mdw-card>
-          <mdw-card actionable elevated disabled>
-            <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
-            <div style="padding:12px">
-              <mdw-text block type-style=title>Actionable Elevated Card</mdw-text>
-              <mdw-text block type-style=title-small>Title small text</mdw-text>
-              <mdw-text block type-style=body-medium>Body medium text</mdw-text>
-            </div>
-            <mdw-card-action-area style="padding:12px">
-              <mdw-button disabled filled>Action</mdw-button>
-            </mdw-card-action-area>
-          </mdw-card>
-        </mdw-layout>
-      </demo-section>
-      <demo-section>
-        <h2 slot=heading>Filled</h2>
-        <mdw-layout gap=12px wrap>
-          <mdw-card filled>
-            <div style="padding:12px">
-              <mdw-text block type-style=title>Filled Card</mdw-text>
-              <mdw-text block type-style=title-small>Title small text</mdw-text>
-              <mdw-text block type-style=body-medium>Body medium text</mdw-text>
-            </div>
-            <mdw-card-action-area style="padding:12px">
-              <mdw-button filled=tertiary>Action</mdw-button>
-            </mdw-card-action-area>
-          </mdw-card>
-          <mdw-card filled actionable>
-            <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
-            <div style="padding:12px">
-              <mdw-text block type-style=title>Actionable Filled Card</mdw-text>
-              <mdw-text block type-style=title-small>Title small text</mdw-text>
-              <mdw-text block type-style=body-medium>Body medium text</mdw-text>
-            </div>
-            <mdw-card-action-area style="padding:12px">
-              <mdw-button filled>Action</mdw-button>
-            </mdw-card-action-area>
-          </mdw-card>
-          <mdw-card filled color=inverse-surface actionable>
-            <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
-            <div style="padding:12px">
-              <mdw-text block type-style=title>Actionable Filled Card</mdw-text>
-              <mdw-text block type-style=title-small>Title small text</mdw-text>
-              <mdw-text block type-style=body-medium>Body medium text</mdw-text>
-            </div>
-            <mdw-card-action-area style="padding:12px">
-              <mdw-button filled>Action</mdw-button>
-            </mdw-card-action-area>
-          </mdw-card>
-          <mdw-card filled disabled>
-            <div style="padding:12px">
-              <mdw-text block type-style=title>Filled Card</mdw-text>
-              <mdw-text block type-style=title-small>Title small text</mdw-text>
-              <mdw-text block type-style=body-medium>Body medium text</mdw-text>
-            </div>
-            <mdw-card-action-area style="padding:12px">
-              <mdw-button disabled filled>Action</mdw-button>
-            </mdw-card-action-area>
-          </mdw-card>
-          <mdw-card filled actionable disabled>
-            <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
-            <div style="padding:12px">
-              <mdw-text block type-style=title>Actionable Filled Card</mdw-text>
-              <mdw-text block type-style=title-small>Title small text</mdw-text>
-              <mdw-text block type-style=body-medium>Body medium text</mdw-text>
-            </div>
-            <mdw-card-action-area style="padding:12px">
-              <mdw-button disabled filled>Action</mdw-button>
-            </mdw-card-action-area>
-          </mdw-card>
-        </mdw-layout>
-      </demo-section>
-      <demo-section>
-        <h2 slot=heading>Outlined</h2>
-        <mdw-layout gap=12px wrap>
-          <mdw-card outlined>
-            <div style="padding:12px">
-              <mdw-text block type-style=title>Outlined Card</mdw-text>
-              <mdw-text block type-style=title-small>Title small text</mdw-text>
-              <mdw-text block type-style=body-medium>Body medium text</mdw-text>
-            </div>
-            <mdw-card-action-area style="padding:12px">
-              <mdw-button filled>Action</mdw-button>
-            </mdw-card-action-area>
-          </mdw-card>
-          <mdw-card outlined actionable>
-            <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
-            <div style="padding:12px">
-              <mdw-text block type-style=title>Actionable Outlined Card</mdw-text>
-              <mdw-text block type-style=title-small>Title small text</mdw-text>
-              <mdw-text block type-style=body-medium>Body medium text</mdw-text>
-            </div>
-            <mdw-card-action-area style="padding:12px">
-              <mdw-button filled>Action</mdw-button>
-            </mdw-card-action-area>
-          </mdw-card>
-          <mdw-card outlined disabled>
-            <div style="padding:12px">
-              <mdw-text block type-style=title>Outlined Card</mdw-text>
-              <mdw-text block type-style=title-small>(Disabled)</mdw-text>
-              <mdw-text block type-style=body-medium>Body medium text</mdw-text>
-            </div>
-            <mdw-card-action-area style="padding:12px">
-              <mdw-button disabled filled>Action</mdw-button>
-            </mdw-card-action-area>
-          </mdw-card>
-          <mdw-card outlined actionable disabled>
-            <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
-            <div style="padding:12px">
-              <mdw-text block type-style=title>Actionable Outlined Card</mdw-text>
-              <mdw-text block type-style=title-small>(Disabled)</mdw-text>
-              <mdw-text block type-style=body-medium>Body medium text</mdw-text>
-            </div>
-            <mdw-card-action-area style="padding:12px">
-              <mdw-button disabled filled>Action</mdw-button>
-            </mdw-card-action-area>
-          </mdw-card>
-        </mdw-layout>
-      </demo-section>
+      <h1 slot=heading>Elevated</h1>
+      <mdw-layout gap=12px wrap>
+        <mdw-card elevated>
+          <div style="padding:12px">
+            <mdw-text block type-style=title>Elevated Card</mdw-text>
+            <mdw-text block type-style=title-small>Title small text</mdw-text>
+            <mdw-text block type-style=body-medium>Body medium text</mdw-text>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card actionable elevated>
+          <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-text block type-style=title>Actionable Elevated Card</mdw-text>
+            <mdw-text block type-style=title-small>Title small text</mdw-text>
+            <mdw-text block type-style=body-medium>Body medium text</mdw-text>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card actionable elevated color=inverse-surface>
+          <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-text block type-style=title>Actionable Elevated Card</mdw-text>
+            <mdw-text block type-style=title-small>Title small text</mdw-text>
+            <mdw-text block type-style=body-medium>Body medium text</mdw-text>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card elevated disabled>
+          <div style="padding:12px">
+            <mdw-text block type-style=title>Elevated Card</mdw-text>
+            <mdw-text block type-style=title-small>Title small text</mdw-text>
+            <mdw-text block type-style=body-medium>Body medium text</mdw-text>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button disabled filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card actionable elevated disabled>
+          <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-text block type-style=title>Actionable Elevated Card</mdw-text>
+            <mdw-text block type-style=title-small>Title small text</mdw-text>
+            <mdw-text block type-style=body-medium>Body medium text</mdw-text>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button disabled filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+      </mdw-layout>
     </demo-section>
-  </main>
+    <demo-section>
+      <h1 slot=heading>Filled</h1>
+      <mdw-layout gap=12px wrap>
+        <mdw-card filled>
+          <div style="padding:12px">
+            <mdw-text block type-style=title>Filled Card</mdw-text>
+            <mdw-text block type-style=title-small>Title small text</mdw-text>
+            <mdw-text block type-style=body-medium>Body medium text</mdw-text>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button filled=tertiary>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card filled actionable>
+          <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-text block type-style=title>Actionable Filled Card</mdw-text>
+            <mdw-text block type-style=title-small>Title small text</mdw-text>
+            <mdw-text block type-style=body-medium>Body medium text</mdw-text>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card filled color=inverse-surface actionable>
+          <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-text block type-style=title>Actionable Filled Card</mdw-text>
+            <mdw-text block type-style=title-small>Title small text</mdw-text>
+            <mdw-text block type-style=body-medium>Body medium text</mdw-text>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card filled disabled>
+          <div style="padding:12px">
+            <mdw-text block type-style=title>Filled Card</mdw-text>
+            <mdw-text block type-style=title-small>Title small text</mdw-text>
+            <mdw-text block type-style=body-medium>Body medium text</mdw-text>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button disabled filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card filled actionable disabled>
+          <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-text block type-style=title>Actionable Filled Card</mdw-text>
+            <mdw-text block type-style=title-small>Title small text</mdw-text>
+            <mdw-text block type-style=body-medium>Body medium text</mdw-text>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button disabled filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+      </mdw-layout>
+    </demo-section>
+    <demo-section>
+      <h1 slot=heading>Outlined</h1>
+      <mdw-layout gap=12px wrap>
+        <mdw-card outlined>
+          <div style="padding:12px">
+            <mdw-text block type-style=title>Outlined Card</mdw-text>
+            <mdw-text block type-style=title-small>Title small text</mdw-text>
+            <mdw-text block type-style=body-medium>Body medium text</mdw-text>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card outlined actionable>
+          <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-text block type-style=title>Actionable Outlined Card</mdw-text>
+            <mdw-text block type-style=title-small>Title small text</mdw-text>
+            <mdw-text block type-style=body-medium>Body medium text</mdw-text>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card outlined disabled>
+          <div style="padding:12px">
+            <mdw-text block type-style=title>Outlined Card</mdw-text>
+            <mdw-text block type-style=title-small>(Disabled)</mdw-text>
+            <mdw-text block type-style=body-medium>Body medium text</mdw-text>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button disabled filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+        <mdw-card outlined actionable disabled>
+          <mdw-button slot=primary-action aria-label="Primary Action"></mdw-button>
+          <div style="padding:12px">
+            <mdw-text block type-style=title>Actionable Outlined Card</mdw-text>
+            <mdw-text block type-style=title-small>(Disabled)</mdw-text>
+            <mdw-text block type-style=body-medium>Body medium text</mdw-text>
+          </div>
+          <mdw-card-action-area style="padding:12px">
+            <mdw-button disabled filled>Action</mdw-button>
+          </mdw-card-action-area>
+        </mdw-card>
+      </mdw-layout>
+    </demo-section>
+
+  </demo-page>
   <script type=module src="../demo.min.js"></script>
 
 </body>
