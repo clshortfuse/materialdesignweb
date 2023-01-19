@@ -12,6 +12,7 @@
 #bar {
   position: sticky;
   inset-block-start: 0;
+  inset-inline: 0;
 
   display: grid;
   align-items: center;
@@ -31,7 +32,7 @@
 
   padding-inline: 4px;
 
-  z-index:1;
+  z-index: 5;
 
   background-color: rgb(var(--mdw-bg));
   box-shadow: none;
