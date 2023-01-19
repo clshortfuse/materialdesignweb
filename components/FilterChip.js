@@ -24,7 +24,6 @@ export default Chip
 
       const control = $('#control');
       control.removeAttribute('role');
-      control.setAttribute('autocomplete', 'off');
       control.setAttribute('type', 'checkbox');
     },
   })
