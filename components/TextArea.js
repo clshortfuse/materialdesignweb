@@ -204,6 +204,8 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
   }
 }
 
+TextArea.propList.delete('type');
+
 TextArea.prototype._maxHeight = TextArea.prop('_maxHeight');
 TextArea.prototype.fixed = TextArea.prop('fixed', { type: 'boolean' });
 TextArea.prototype.minRows = TextArea.prop('minRows', { attr: 'minrows', type: 'integer', empty: 0 });
