@@ -120,29 +120,31 @@ export default function ControlMixin(Base) {
 
     static {
       this.css(styles);
-      this.on('composed', ({ template, $, html }) => {
-        template.append(
-          html`
-            <label id=label>
-              <${this.controlTagName} id=control aria-labelledby="slot"
-                >${this.controlVoidElement ? '' : `</${this.controlTagName}>`}
-              ${$('#state')}
-              ${$('#ripple')}
-              ${$('#slot')}
-            </label>
-          `,
-        );
+      this.on({
+        composed({ template, $, html }) {
+          template.append(
+            html`
+              <label id=label>
+                <${this.static.controlTagName} id=control aria-labelledby="slot"
+                  >${this.static.controlVoidElement ? '' : `</${this.static.controlTagName}>`}
+                ${$('#state')}
+                ${$('#ripple')}
+                ${$('#slot')}
+              </label>
+            `,
+          );
+        },
       });
       this.events('#control', {
         input({ currentTarget }) {
           const control = /** @type {HTMLControlElement} */ (currentTarget);
-          if (!this.validity.valid) {
-            // Perform check in case user has validated
-            this.checkValidity();
-          } else {
+          if (this.validity.valid) {
             // Track internally
             control.checkValidity();
             this._badInput = control.validity.badInput;
+          } else {
+            // Perform check in case user has validated
+            this.checkValidity();
           }
           this._value = control.value;
         },
