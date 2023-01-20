@@ -1,7 +1,7 @@
 import styles from './Divider.css' assert { type: 'css' };
-import Text from './Text.js';
+import Span from './Span.js';
 
-export default Text
+export default Span
   .extend()
   .observe({
     vertical: 'boolean',

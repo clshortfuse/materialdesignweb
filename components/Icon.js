@@ -1,14 +1,14 @@
 // import fontStyles from 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block' assert { type: 'css'};
 
 import styles from './Icon.css' assert { type: 'css' };
-import Text from './Text.js';
+import Span from './Span.js';
 
 /** @typedef {'align'|'border'|'hspace'|'longDesc'|'lowsrc'|'name'|'vspace'} DeprecatedHTMLImageElementProperties */
 
 // https://html.spec.whatwg.org/multipage/embedded-content.html#htmlimageelement
 
 /** @implements {Omit<HTMLImageElement,DeprecatedHTMLImageElementProperties>} */
-export default class Icon extends Text
+export default class Icon extends Span
   .extend()
   .define({
     _img() { return /** @type {HTMLImageElement} */ (this.refs.img); },

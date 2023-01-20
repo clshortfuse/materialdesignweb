@@ -14,7 +14,7 @@ test('prototype', async (t) => {
   const [element] = await e2e.addHTML('<mdw-container></mdw-container>');
   const result = await e2e.js((el) => el.constructor.name, element);
   t.not(result, 'HTMLElement');
-  // Minified code may modify class name slightly (_MDWText)
+  // Minified code may modify class name slightly (_MDWSpan)
   t.match(result, 'MDWContainer');
 });
 

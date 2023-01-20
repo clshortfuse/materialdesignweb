@@ -1,7 +1,7 @@
 import './Button.js';
 import './Container.js';
 import './Icon.js';
-import './Text.js';
+import './Span.js';
 import './DialogActions.js';
 
 import { handleTabKeyPress } from '../aria/modal.js';

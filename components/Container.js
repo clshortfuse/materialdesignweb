@@ -1,8 +1,8 @@
 import styles from './Container.css' assert { type: 'css' };
 import colorStyles from './ContainerColors.css' assert { type: 'css' };
-import Text from './Text.js';
+import Span from './Span.js';
 
-export default Text
+export default Span
   .extend()
   .observe({
     disabled: 'boolean',

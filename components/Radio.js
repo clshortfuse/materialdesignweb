@@ -2,9 +2,9 @@ import InputMixin from '../mixins/InputMixin.js';
 
 import styles from './Radio.css' assert { type: 'css' };
 import iconStyles from './RadioIcon.css' assert { type: 'css' };
-import Text from './Text.js';
+import Span from './Span.js';
 
-export default Text
+export default Span
   .mixin(InputMixin)
   .extend()
   .define({

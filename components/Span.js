@@ -1,7 +1,7 @@
 import CustomElement from '../core/CustomElement.js';
 
-import styles from './Text.css' assert { type: 'css' };
-import inkStyles from './TextInks.css' assert { type: 'css' };
+import inkStyles from './Inks.css' assert { type: 'css' };
+import styles from './Span.css' assert { type: 'css' };
 
 export default CustomElement
   .extend()
@@ -15,4 +15,4 @@ export default CustomElement
     inkStyles,
   )
   .html/* html */`<slot id=slot></slot>`
-  .autoRegister('mdw-text');
+  .autoRegister('mdw-span');
