@@ -38,6 +38,7 @@
     "./polyfills.js",
     "./components/*.js",
     "./utils/metadata.js",
+    "./theming/loader.js",
     "./docs/demo/*.js"
   ],
   "bugs": {

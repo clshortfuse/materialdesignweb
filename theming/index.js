@@ -81,6 +81,30 @@ const SHAPE_CUT_DEFAULT = {
   clipPath: cornerCutClipPath(),
 };
 
+const BREAKPOINT_DEFAULT = {
+  body: {
+    0: 'calc(100% - 32px)',
+    '600px': 'calc(100% - 64px)',
+    '904px': '840px',
+    '1240px': 'calc(100% - 200px)',
+    '1440px': '1040px',
+  },
+  columns: {
+    '0px': 4,
+    '600px': 8,
+    '904px': 12,
+  },
+  alias: {
+    'extra-small': '0px',
+    phone: '0px',
+    small: '600px',
+    medium: '904px',
+    tablet: '600px',
+    laptop: '1240px',
+    large: '1440px',
+  },
+};
+
 const SP = 1 / 16;
 
 const TYPOGRAPHY_DEFAULT = {
@@ -331,6 +355,52 @@ export function generateTypographyGlobalCSS() {
 }
 
 /**
+ * @param {BREAKPOINT_DEFAULT} [config]
+ * @return {string}
+ */
+export function generateBreakpointGlobalCSS(config = BREAKPOINT_DEFAULT) {
+  /** @type {Map<string, Set<string>>} */
+  const breakpoints = new Map();
+  /**
+   *
+   * @param {string} breakpoint
+   * @return {Set<string>}
+   */
+  function getSet(breakpoint) {
+    let set = breakpoints.get(breakpoint);
+    if (!set) {
+      set = new Set();
+      breakpoints.set(breakpoint, set);
+    }
+    return set;
+  }
+
+  for (const [breakpoint, value] of Object.entries(config.body)) {
+    getSet((breakpoint === '0' || breakpoint === '0px') ? '' : `min-width ${breakpoint}`)
+      .add(`--mdw-breakpoint__body: ${value};`);
+  }
+
+  for (const [breakpoint, value] of Object.entries(config.columns)) {
+    getSet((breakpoint === '0' || breakpoint === '0px') ? '' : `min-width ${breakpoint}`)
+      .add(`--mdw-breakpoint__columns: ${value};`);
+  }
+
+  for (const [alias, value] of Object.entries(config.alias)) {
+    getSet('').add(`--mdw-breakpoint__${alias}: ${value};`);
+  }
+
+  let css = '';
+  for (const [breakpoint, set] of breakpoints) {
+    let rules = `:root { ${[...set].join('')}}`;
+    if (breakpoint) {
+      rules = `@media (min-width: ${breakpoint}) { ${rules} }`;
+    }
+    css += rules;
+  }
+  return css;
+}
+
+/**
  * @param {typeof SHAPE_ROUNDED_DEFAULT} config
  * @return {string}
  */
@@ -424,6 +494,7 @@ export function generateThemeCSS({ color = '#6750A4', custom = [], lightness = '
     colorCss = `
     ${generateColorCSS({ color, custom, lightness: 'light' })}
     @media (prefers-color-scheme:dark) {
+      :root { color-scheme: dark; }
       ${generateColorCSS({ color, custom, lightness: 'dark' })}
     }`;
   }

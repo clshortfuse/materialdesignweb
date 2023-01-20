@@ -1,4 +1,4 @@
-import { generateThemeCSS, generateTypographyGlobalCSS, themeOptionsFromSearchParams } from '../theming/index.js';
+import { generateBreakpointGlobalCSS, generateThemeCSS, generateTypographyGlobalCSS, themeOptionsFromSearchParams } from '../theming/index.js';
 import { getSearchParams } from '../utils/cli.js';
 
 process.stdout.write(
@@ -8,6 +8,5 @@ process.stdout.write(
     ),
   ),
 );
-process.stdout.write(
-  generateTypographyGlobalCSS(),
-);
+process.stdout.write(generateTypographyGlobalCSS());
+process.stdout.write(generateBreakpointGlobalCSS());
