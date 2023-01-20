@@ -11,12 +11,18 @@ A standards-focused, zero-dependency implemention of Material Design 3 (Material
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/bbe1bd8/docs/
+https://rawcdn.githack.com/clshortfuse/materialdesignweb/d4af713/docs/
 
 # Getting started
 
 ````html
-<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/bbe1bd8/index.js" />
+<link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
+
+<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/d4af713/theming/loader.js?color=6750A4&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto"></script>
+
+<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/d4af713/components/Button.js"></script>
+
+<mdw-button>Hello World!</mdw-button>
 ````
 
 # Support
@@ -110,8 +116,9 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/bbe1bd8/docs/
 | File                                   | Description                                                                                | Status |
 | :------------------------------------- | :----------------------------------------------------------------------------------------- | :----: |
 | [Composition](core/Composition.js)     | Class that composes templates based on styles, fragments, and watches. Renders data        |  beta  |
-| [CustomElement](core/CustomElement.js) | Extendable that handles ShadowDOM, ElementInternals, Property attributes, and compositions |  beta  |
 | [css](core/css.js)                     | Module that includes css converters                                                        |  beta  |
+| [CustomElement](core/CustomElement.js) | Extendable that handles ShadowDOM, ElementInternals, Property attributes, and compositions |  beta  |
+| [customTypes](core/customTypes.js)     | Module that include non-primitive observable types                                         |  beta  |
 | [dom](core/dom.js)                     | Module that include common DOM functions                                                   |  beta  |
 | [indentify](core/identify.js)          | Module that includes Node identification functions                                         |  beta  |
 | [observe](core/observe.js)             | Modules that applies observable pattern to object properties                               |  beta  |
@@ -126,8 +133,8 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/bbe1bd8/docs/
 | [FormAssociatedMixin](mixins/FormAssociatedMixin.js) | Tracks Element Internals Form Associated controls                             | alpha  |
 | [InputMixin](mixins/InputMixin.js)                   | Labelled `<input>` element                                                    |  beta  |
 | [KeyboardNavMixin](mixins/KeyboardNavMixin.js)       | Handles roving tab index and arrow key navigation                             |  beta  |
-| [RippleMixin](mixins/RippleMixin.js)                 | Uses ripple for pressed state                                                 |  beta  |
 | [ResizeObserverMixin](mixins/ResizeObserverMixin.js) | Fires callback on element resize                                              |  beta  |
+| [RippleMixin](mixins/RippleMixin.js)                 | Uses ripple for pressed state                                                 |  beta  |
 | [ScrollListenerMixin](mixins/ScrollListenerMixin.js) | Tracks window or offetParent scrolling                                        |  beta  |
 | [StateMixin](mixins/StateMixin.js)                   | Adds hover, focus, pressed, dragged, and disabled states, as interaction type |  beta  |
 | [TextFieldMixin](mixins/TextFieldMixin.js)           | Abstraction for different controls used for text fields                       |  beta  |
