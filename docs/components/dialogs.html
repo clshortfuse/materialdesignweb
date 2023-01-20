@@ -42,7 +42,7 @@
       <demo-dummy-text></demo-dummy-text>
     </mdw-dialog>
     <mdw-dialog id="dialog-slotted">
-      <mdw-text ink="tertiary" slot=headline>Custom Headline</mdw-text>
+      <mdw-span ink="tertiary" slot=headline>Custom Headline</mdw-span>
       Description text
     </mdw-dialog>
     <mdw-dialog id=dialog-icon icon=refresh headline="My title" description="Description (no body)."></mdw-dialog>
@@ -70,7 +70,7 @@
     </mdw-dialog>
     <mdw-dialog id=dialog-input icon=edit headline="Custom form" default="confirm">
       <form slot="form" method="dialog">
-        <mdw-text-input name="sample" autofocus filled label="Label"></mdw-text-input>
+        <mdw-input name="sample" autofocus filled label="Label"></mdw-input>
         <mdw-dialog-actions>
           <input type="submit" hidden value=confirm tabindex=-1 aria-hidden="true" />
           <!-- Forms submit nearest type=submit control on ENTER key -->
