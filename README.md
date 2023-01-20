@@ -11,16 +11,16 @@ A standards-focused, zero-dependency implemention of Material Design 3 (Material
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/d4af713/docs/
+https://rawcdn.githack.com/clshortfuse/materialdesignweb/3f03468/docs/
 
 # Getting started
 
 ````html
 <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
 
-<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/d4af713/theming/loader.js?color=6750A4&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto"></script>
+<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/3f03468/theming/loader.js?color=6750A4&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto"></script>
 
-<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/d4af713/components/Button.js"></script>
+<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/3f03468/components/Button.js"></script>
 
 <mdw-button>Hello World!</mdw-button>
 ````
@@ -89,13 +89,13 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/d4af713/docs/
 | [Tab List](components/TabList.js)                            | `<mdw-tab-list>`                               | `<div>`                                                            |  beta   |
 | [Tab Content](components/TabContent.js)                      | `<mdw-tab-content>`                            | `<div>`                                                            |  beta   |
 | [Tab Panel](components/TabPanel.js)                          | `<mdw-tab-panel>`                              | `<div>`                                                            |  beta   |
-| [Text fields: Bare](components/TextInput.js)                 | `<mdw-text-input>`                             | `<input>`                                                          |  beta   |
-| [Text fields: Filled](components/TextInput.js)               | `<mdw-text-input filled>`                      | `<input>`                                                          |  beta   |
+| [Text fields: Bare](components/Input.js)                     | `<mdw-input>`                                  | `<input>`                                                          |  beta   |
+| [Text fields: Filled](components/Input.js)                   | `<mdw-input filled>`                           | `<input>`                                                          |  beta   |
 | [Text fields: Filled Multiline](components/TextArea.js)      | `<mdw-textarea filled>`                        | `<textarea>`                                                       |  beta   |
-| [Text fields: Filled Selection](components/TextSelect.js)    | `<mdw-text-select>`                            | `<select>`                                                         | planned |
-| [Text fields: Outlined](components/TextInput.js)             | `<mdw-text-input outlined>`                    | `<input>`                                                          |  beta   |
+| [Text fields: Filled Selection](components/Select.js)        | `<mdw-select>`                                 | `<select>`                                                         | planned |
+| [Text fields: Outlined](components/Input.js)                 | `<mdw-input outlined>`                         | `<input>`                                                          |  beta   |
 | [Text fields: Outlined Multiline](components/TextArea.js)    | `<mdw-textarea outlined>`                      | `<textarea>`                                                       |  beta   |
-| [Text fields: Outlined Selection](components/TextSelect.js)  | `<mdw-textselect outlined>`                    | `<select>`                                                         | planned |
+| [Text fields: Outlined Selection](components/Select.js)      | `<mdw-select outlined>`                        | `<select>`                                                         | planned |
 | Time Picker                                                  |                                                |                                                                    | planned |
 | [Tooltip](components/Tooltip.js)                             | `<mdw-tooltip>`                                | `<div>`                                                            |  beta   |
 | [Top App Bar: Centered](components/TopAppBar.js)             | `<mdw-top-app-bar>`                            | `<menu>`                                                           |  beta   |
@@ -107,8 +107,8 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/d4af713/docs/
 
 | Module                               |     Extends     | Implements | Description                                    | Status |
 | :----------------------------------- | :-------------: | :--------: | :--------------------------------------------- | :----: |
-| [Text](components/Text.js)           | `CustomElement` |  `<span>`  | Applies typography and ink (foreground) colors |  beta  |
-| [Container](components/Container.js) |     `Text`      |  `<div>`   | Applies shapes, shadows, and background colors |  beta  |
+| [Span](components/Span.js)           | `CustomElement` |  `<span>`  | Applies typography and ink (foreground) colors |  beta  |
+| [Container](components/Container.js) |     `Span`      |  `<div>`   | Applies shapes, shadows, and background colors |  beta  |
 | [Icon](components/Icon.js)           |   `Container`   | `<image>`  | Adds font and image icons                      | alpha  |
 
 # Core
