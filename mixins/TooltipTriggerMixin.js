@@ -148,6 +148,7 @@ export default function TooltipTriggerMixin(Base) {
         case 'touchcancel':
           this.scheduleHideTooltip('touch');
           break;
+        case 'click':
         case 'mouseout':
           this.cancelShowTooltip();
           this.hideTooltip();
@@ -342,7 +343,7 @@ export default function TooltipTriggerMixin(Base) {
 
     connectedCallback() {
       super.connectedCallback();
-      for (const type of ['mousedown', 'mousemove', 'mouseout',
+      for (const type of ['click', 'mousedown', 'mousemove', 'mouseout',
         'touchmove', 'touchstart', 'touchend', 'touchleave', 'touchcancel']) {
         this.addEventListener(type, this.onTooltipTriggerPointer, { passive: true });
       }
