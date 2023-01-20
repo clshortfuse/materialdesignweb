@@ -161,7 +161,7 @@ export default Container
   })
   .on('connected', ({ element }) => {
     // @ts-ignore Skip cast
-    element.startScrollListener(element.refs.bar.offsetParent);
+    element.startScrollListener(element.refs.bar.offsetParent ?? window);
   })
   .on('disconnected', ({ element }) => {
     element.clearScrollListener();
