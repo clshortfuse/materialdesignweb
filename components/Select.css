@@ -1,0 +1,41 @@
+#slot {
+  display: none;
+}
+
+#label {
+  padding: 0;
+}
+
+#icon {
+  position: absolute;
+
+  padding-inline-start: 12px;
+}
+
+#trailing-icon {
+  position: absolute;
+  inset-inline-end: 16px;
+}
+
+#control {
+  padding-inline-start: 16px;
+  padding-inline-end: calc(16px + 24px + 16px);
+}
+
+:host([icon]) #control {
+  margin-inline-start: calc(16px + 24px);
+  padding-inline-start: 12px;
+}
+
+option {
+  min-block-size: var(--mdw-typescale__label-large__line-height);
+
+  appearance: none;
+
+  background-color: rgb(var(--mdw-color__surface));
+  border-radius: 0;
+  color: rgb(var(--mdw-color__on-surface));
+
+  font: var(--mdw-typescale__label-large__font);
+  letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
+}
