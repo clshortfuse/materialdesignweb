@@ -48,7 +48,7 @@
 }
 
 /* unselected => selected  */
-:host([selected]) #track {
+#track[selected] {
   /* --mdw-switch__transition-delay__color: 0s; */
   --mdw-switch__transition-delay__scale: 0s;
   /* --mdw-switch__transition-delay__translate: 0s; */
@@ -57,21 +57,21 @@
 }
 
 /* active => selected */
-:host([selected]:active) #track {
+:host(:active) #track[selected] {
   /* --mdw-switch__transition-delay__color: 0s; */
   /* --mdw-switch__transition-delay__scale: 0s; */
   --mdw-switch__transition-delay__translate: 0s;
 }
 
 /* selected => unselected */
-:host(:not([selected])) #track {
+#track:not([selected]) {
   /* --mdw-switch__transition-delay__color: 0s; */
   /* --mdw-switch__transition-delay__scale: 0s; */
   --mdw-switch__transition-delay__translate: 0s;
 }
 
 /* unselected => active */
-:host(:active:not([selected])) #track {
+:host(:active) #track:not([selected]) {
   /* --mdw-switch__transition-delay__color: 0s; */
   --mdw-switch__transition-delay__scale: 0s;
   /* --mdw-switch__transition-delay__translate: 0s; */

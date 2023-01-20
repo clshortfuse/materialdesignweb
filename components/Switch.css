@@ -47,7 +47,7 @@ label {
   --mdw-dir: -1;
 }
 
-:host([selected]) #track {
+#track[selected] {
   --scale: calc(24/24);
   --x: calc(48px - 14px);
 
@@ -114,7 +114,7 @@ label {
   color: rgb(var(--mdw-bg));
 }
 
-:host([selected]) #thumb::before {
+#track[selected] #thumb::before {
   background-color: rgb(var(--mdw-ink));
   color: rgb(var(--mdw-bg));
 }
@@ -126,15 +126,15 @@ label {
   color: rgb(var(--mdw-color__surface-variant));
 }
 
-:host([selected]) #unselected-icon {
+#track[selected] #unselected-icon {
   opacity: 0;
 }
 
-:host([selected]) #selected-icon {
+#track[selected] #selected-icon {
   opacity: 1;
 }
 
-:host([selected]) #icon {
+#track[selected] #icon {
   --mdw-icon__font-variation-settings: 'FILL' 1;
   color: rgb(var(--mdw-bg));
 }

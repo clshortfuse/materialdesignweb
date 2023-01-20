@@ -25,7 +25,7 @@ export default Container
   )
   .on('composed', ({ $, html }) => {
     $('#label').append(html`
-      <div id=track aria-hidden=true>
+      <div id=track selected={checked} aria-hidden=true>
         <div id=thumb>
           <mdw-icon class=icon id=icon src={src}>{icon}</mdw-icon>
           <mdw-icon class=icon id=selected-icon src={selectedIconSrc}>{selectedIcon}</mdw-icon>
