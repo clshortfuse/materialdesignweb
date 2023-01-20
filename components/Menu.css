@@ -214,6 +214,8 @@ form {
 
   background-color: rgb(var(--mdw-color__surface));
   color: rgb(var(--mdw-color__on-surface));
+
+  will-change: top, left;
 }
 
 :host([modal]) #scrim {
