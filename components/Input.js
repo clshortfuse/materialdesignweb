@@ -8,4 +8,4 @@ export default Container
   .mixin(TextFieldMixin)
   .extend()
   .on('composed', ({ $ }) => $('#slot').remove())
-  .autoRegister('mdw-text-input');
+  .autoRegister('mdw-input');
