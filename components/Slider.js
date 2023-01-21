@@ -102,7 +102,15 @@ export default Container
         const nStep = parseFloat(step, 1);
 
         const currentValue = position * (nMax - nMin) + nMin;
-        const roundedValue = Math.round(currentValue / nStep) * nStep;
+        let roundedValue = Math.round(currentValue / nStep) * nStep;
+
+        if (nStep < 1) {
+          // Floating Point Numbers need to be rounded off based on step
+          // eg: 3.4 / 10 with step of 0.1 yields 0.33999999999999997
+          const log10 = Math.floor(Math.log10(nStep)); // e value in scientific notation
+          const scale = 10 ** (-1 * log10); // multiplier to scale up to integer
+          roundedValue = Math.round(roundedValue * scale) / scale;
+        }
 
         this._roundedValue = roundedValue;
         this._previewValue = roundedValue.toString(10);
