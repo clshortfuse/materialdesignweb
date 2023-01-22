@@ -1,7 +1,5 @@
 /* https://html.spec.whatwg.org/multipage/form-control-infrastructure.html */
 
-/** @typedef {'align'|'useMap'} DeprecatedHTMLInputElementProperties */
-
 /** @typedef {HTMLElement & {value:string}} HTMLControlElement */
 
 /** @typedef {import('../core/CustomElement.js').default} CustomElement */
@@ -49,9 +47,35 @@ export default function FormAssociatedMixin(Base) {
       _invalid: 'boolean',
       _badInput: 'boolean',
       _validationMessage: 'string',
+      _disabled: {
+        type: 'boolean',
+        reflect: true,
+        attr: 'disabled',
+      },
+      _formDisabled: 'boolean',
+    })
+    .observe({
+      disabled: {
+        reflect: false,
+        type: 'boolean',
+        get({ _formDisabled, _disabled }) {
+          if (_formDisabled) return true;
+          return _disabled;
+        },
+        /**
+         * @param {boolean} value
+         */
+        set(value) {
+          this._disabled = value;
+        },
+      },
     })
     .define({
       form() { return this.elementInternals.form; },
+      validity() { return this.elementInternals.validity; },
+      validationMessage() { return this.elementInternals.validationMessage; },
+      willValidate() { return this.elementInternals.willValidate; },
+      labels() { return this.elementInternals.labels; },
       value: {
         get() {
           return this._value;
@@ -62,10 +86,6 @@ export default function FormAssociatedMixin(Base) {
           this._value = v;
         },
       },
-      validity() { return this.elementInternals.validity; },
-      validationMessage() { return this.elementInternals.validationMessage; },
-      willValidate() { return this.elementInternals.willValidate; },
-      labels() { return this.elementInternals.labels; },
     })
     .on({
       constructed() {
@@ -124,6 +144,7 @@ export default function FormAssociatedMixin(Base) {
        * @return {void}
        */
       formAssociatedCallback(form) {
+        console.log('formAssociatedCallback', this, form);
         this.refreshFormAssociation();
       },
 
@@ -139,9 +160,7 @@ export default function FormAssociatedMixin(Base) {
       // New lifecycle callback. This is called when ‘disabled’ attribute of
       // this element or an ancestor <fieldset> is updated.
       formDisabledCallback(disabled) {
-      // console.log('formDisabledCallback', disabled, this);
-      // TODO: Always disabled regardless of form disabled state
-      // this.disabled = disabled;
+        this._formDisabled = disabled;
       },
 
       formResetCallback() {

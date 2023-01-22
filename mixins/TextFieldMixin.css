@@ -52,8 +52,6 @@
 
   display: block;
 
-  cursor: pointer;
-
   background-color: transparent;
 
   /* State layer */
@@ -515,7 +513,8 @@ mdw-icon {
   --label-color: rgb(var(--mdw-color__error));
 }
 
-:host(:is([disabled], [disabled]:hover)) {
+#label:is([disabled], [disabled]:hover),
+#supporting[disabled] {
   --label-color: rgb(var(--mdw-color__on-surface));
   --outline-color: rgba(var(--mdw-color__on-surface), calc(0.12/0.38));
   --container-color: rgba(var(--mdw-color__on-surface), calc(0.04/0.38));
@@ -524,6 +523,11 @@ mdw-icon {
   color: rgb(var(--mdw-color__on-surface));
 }
 
-:host([disabled][outlined]) {
+#label[disabled],
+#label[disabled] #control {
+  cursor: not-allowed;
+}
+
+#label[disabled][outlined] {
   --container-color: transparent;
 }

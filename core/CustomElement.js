@@ -164,7 +164,7 @@ export default class CustomElement extends ICustomElement {
   }
 
   /**
-   * Extends base  class into a new class.
+   * Extends base class into a new class.
    * Use to avoid mutating base class.
    * @type {typeof ICustomElement.extend}
    */
@@ -320,6 +320,7 @@ export default class CustomElement extends ICustomElement {
               }
             }
           }
+          this.propList.delete(name);
 
           return [
             name,

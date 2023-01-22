@@ -7,4 +7,11 @@ export default Button
     suggestion: 'boolean',
   })
   .css(styles)
+  .on({
+    composed({ $ }) {
+      $('#slot').setAttribute('disabled', '{disabled}');
+      $('#elevation').setAttribute('_if', '{elevated}');
+      $('#outline').setAttribute('_if', '{!elevated}');
+    },
+  })
   .autoRegister('mdw-chip');

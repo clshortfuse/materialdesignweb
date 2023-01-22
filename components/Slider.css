@@ -1,8 +1,6 @@
 /* https://m3.material.io/components/sliders/specs */
 
 :host {
-  --mdw-slider__cursor: pointer;
-
   --mdw-ink: var(--mdw-color__on-primary);
   --mdw-bg: var(--mdw-color__primary);
 
@@ -22,11 +20,13 @@
   background-color: transparent;
 }
 
-label {
+#label {
   position: absolute;
   inset: 0;
 
   display: block;
+
+  cursor: pointer;
 
   border-radius: 50%;
   color: rgb(var(--mdw-bg));
@@ -39,7 +39,7 @@ label {
 
   appearance: none;
 
-  cursor: var(--mdw-slider__cursor);
+  cursor: inherit;
 
   background-color: transparent;
   color: inherit;
@@ -74,7 +74,7 @@ label {
   inline-size: 20px;
 
   -webkit-appearance: none;
-  cursor: var(--mdw-slider__cursor);
+  cursor: inherit;
 
   transform: scale(2);
 
@@ -93,7 +93,7 @@ label {
   border: none;
 
   appearance: none;
-  cursor: var(--mdw-slider__cursor);
+  cursor: inherit;
 
   transform: scale(2);
 
@@ -285,16 +285,14 @@ label {
   background-color: rgb(var(--mdw-bg));
 }
 
-:host([disabled]) {
-  --mdw-slider__cursor: not-allowed;
-  --mdw-bg: var(--mdw-color__on-surface);
-  opacity: 0.38;
-}
-
-:host([disabled]) #track {
+#track[disabled] {
   background-color: rgb(var(--mdw-color__on-surface), calc(0.12 / 0.38));
 }
 
-:host([disabled]) label {
+#label[disabled],
+#track[disabled] {
+  --mdw-bg: var(--mdw-color__on-surface);
   cursor: not-allowed;
+
+  opacity: 0.38;
 }

@@ -180,7 +180,7 @@ export default Container
     },
   })
   .html/* html */`
-    <div id=track aria-hidden=true style={computeTrackStyle}>
+    <div id=track aria-hidden=true style={computeTrackStyle} disabled={disabled}>
       <div _if={ticks} id=ticks></div>
       <div id="track-active"></div>
       <div id="thumb-anchor">

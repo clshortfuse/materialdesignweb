@@ -64,7 +64,7 @@ export default Container
     ripple.setAttribute('_if', '{isInteractive}');
 
     template.append(html`
-      <a id=anchor href={href} role=listitem aria-selected={computeAriaSelected}>
+      <a id=anchor href={href} disabled={disabled} role=listitem aria-selected={computeAriaSelected}>
         <mdw-container _if={checkbox} class="leading checkbox-box" id=checkbox color={selectionColor} aria-hidden="true">
           <mdw-icon id=checkbox-icon class="checkbox-icon" selected={selected} disabled={disabled}>check</mdw-icon>
         </mdw-container>

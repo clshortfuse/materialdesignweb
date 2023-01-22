@@ -30,7 +30,7 @@
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
-:host([elevated]) #label {
+#label[elevated] {
   background-color: rgb(var(--mdw-color__surface));
 }
 
@@ -78,29 +78,20 @@
   margin-inline: 8px;
 }
 
-:host(:not([icon])) #icon {
-  display: none;
-}
-
-:host([icon]) #check-icon {
-  display: none;
-}
-
 /** Filter **/
 :host([type="checkbox"]) :is(#slot, #state, #ripple, #icon, #check-icon) {
   color: inherit;
 }
 
-:host([elevated][disabled]) #label,
-:host([disabled]) #label[selected] {
-  background-color: rgba(var(--mdw-color__on-surface), 0.12);
-  /* color: rgba(var(--mdw-color__on-surface), 0.38); */
+#check-icon[selected] {
+  --mdw-icon__size: 18px;
 }
 
-:host([disabled]) #check-icon {
+#check-icon[disabled] {
   color: rgba(var(--mdw-color__on-surface), 0.38);
 }
 
-#label[selected] #check-icon {
-  --mdw-icon__size: 18px;
+#label[disabled]:is([elevated],[selected]) {
+  background-color: rgba(var(--mdw-color__on-surface), 0.12);
+  /* color: rgba(var(--mdw-color__on-surface), 0.38); */
 }

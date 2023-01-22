@@ -65,13 +65,13 @@ label {
   opacity: 1;
 }
 
-label[invalid] {
+#label[invalid] {
   --mdw-bg: rgb(var(--mdw-color__error));
   --mdw-ink: rgb(var(--mdw-color__on-error));
   --mdw-checkbox__container__color: rgb(var(--mdw-color__error));
 }
 
-label[disabled] {
+#label[disabled] {
   --mdw-bg: var(--mdw-color__on-surface);
   --mdw-ink: var(--mdw-color__surface);
   --mdw-checkbox__container__color: rgb(var(--mdw-color__on-surface));

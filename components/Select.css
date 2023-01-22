@@ -4,6 +4,12 @@
 
 #label {
   padding: 0;
+
+  cursor: pointer;
+}
+
+#label[disabled] {
+  cursor: not-allowed;
 }
 
 #icon {
@@ -20,6 +26,9 @@
 #control {
   padding-inline-start: 16px;
   padding-inline-end: calc(16px + 24px + 16px);
+  accent-color: rgb(var(--mdw-ink));
+
+  cursor: inherit;
 }
 
 :host([icon]) #control {
@@ -28,13 +37,15 @@
 }
 
 option {
+  accent-color: rgb(var(--mdw-ink));
+
   min-block-size: var(--mdw-typescale__label-large__line-height);
 
   appearance: none;
 
-  background-color: rgb(var(--mdw-color__surface));
+  background-color: rgb(var(--mdw-color__surface)) !important;
   border-radius: 0;
-  color: rgb(var(--mdw-color__on-surface));
+  color: rgb(var(--mdw-color__on-surface)) !important;
 
   font: var(--mdw-typescale__label-large__font);
   letter-spacing: var(--mdw-typescale__label-large__letter-spacing);

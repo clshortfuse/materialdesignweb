@@ -72,7 +72,7 @@ export default function TextFieldMixin(Base) {
       `);
 
       template.append(html`
-        <div _if={shouldShowSupporting} id=supporting>
+        <div _if={shouldShowSupporting} id=supporting disabled={disabled}>
           {computeSupportingText}
           <slot id=supporting-slot name=supporting></slot>
         </div>

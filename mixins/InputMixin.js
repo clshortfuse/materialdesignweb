@@ -133,7 +133,6 @@ export default function InputMixin(Base) {
           label.setAttribute('selected', '{checked}');
           label.setAttribute('invalid', '{_invalid}');
           label.setAttribute('indeterminate', '{indeterminate}');
-          label.setAttribute('disabled', '{disabled}');
         },
       });
       this.events('#control', {

@@ -79,7 +79,7 @@
   --mdw-icon__opacity: 1;
 }
 
-:host([disabled]) #label[selected] {
+#label[disabled][selected] {
   background-color: rgba(var(--mdw-color__on-surface), 0.12);
   /* color: rgba(var(--mdw-color__on-surface), 0.38); */
 }

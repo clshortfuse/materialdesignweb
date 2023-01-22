@@ -41,10 +41,6 @@
   --mdw-button__outline__rgb: var(--mdw-color__outline);
 }
 
-:host([elevated]) #outline {
-  visibility: hidden;
-}
-
 #icon {
   --mdw-button__icon__margin-inline-start: 8px;
   --mdw-button__icon__margin-inline-end: 8px;
@@ -57,6 +53,11 @@
   color: rgb(var(--mdw-chip__label-color));
 }
 
-:host([disabled]) :is(#slot, #icon) {
+#slot[disabled],
+#icon[disabled] {
   color: rgba(var(--mdw-color__on-surface), 0.38);
+}
+
+#icon[disabled][src] {
+  filter: saturate(0);
 }

@@ -62,7 +62,7 @@ const Select = Container
     },
   })
   .on({
-    composed({ template, html, $ }) {
+    composed({ template, $ }) {
       template.append($('#slot'));
       $('#prefix').remove();
       $('#suffix').remove();

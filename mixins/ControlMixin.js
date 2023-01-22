@@ -67,18 +67,6 @@ export default function ControlMixin(Base) {
             }
           }
           break;
-        case 'disabled':
-          this._control.setAttribute('aria-disabled', newValue == null ? 'false' : 'true');
-          if (!this.static.focusableOnDisabled) {
-            this._control.disabled = newValue != null;
-            if (newValue === null) {
-              this.tabIndex = 0;
-              // this.setAttribute('tabindex', '0');
-            } else {
-              this.removeAttribute('tabindex');
-            }
-          }
-          break;
         default:
       }
       if (name === 'aria-controls') {
@@ -124,7 +112,7 @@ export default function ControlMixin(Base) {
         composed({ template, $, html }) {
           template.append(
             html`
-              <label id=label>
+              <label id=label disabled={disabled}>
                 <${this.static.controlTagName} id=control aria-labelledby="slot"
                   >${this.static.controlVoidElement ? '' : `</${this.static.controlTagName}>`}
                 ${$('#state')}
@@ -133,6 +121,17 @@ export default function ControlMixin(Base) {
               </label>
             `,
           );
+        },
+        disabledChanged(oldValue, newValue) {
+          this._control.setAttribute('aria-disabled', String(newValue));
+          if (!this.static.focusableOnDisabled) {
+            this._control.disabled = newValue;
+            if (newValue) {
+              this.tabIndex = 0;
+            } else {
+              this.removeAttribute('tabindex');
+            }
+          }
         },
       });
       this.events('#control', {
@@ -226,5 +225,6 @@ export default function ControlMixin(Base) {
     get labels() { return this.elementInternals.labels; }
   }
   Control.prototype.delegatesFocus = true;
+
   return Control;
 }
