@@ -7,6 +7,16 @@ import { defineObservableProperty } from './observe.js';
 import { addInlineFunction, css, html } from './template.js';
 
 /**
+ * @template {abstract new (...args: any) => unknown} T
+ * @param {InstanceType<T>} instance
+ */
+function superOf(instance) {
+  const staticContext = instance.constructor;
+  const superOfStatic = Object.getPrototypeOf(staticContext);
+  return superOfStatic.prototype;
+}
+
+/**
  * Web Component that can cache templates for minification or performance
  */
 export default class CustomElement extends ICustomElement {
@@ -80,6 +90,9 @@ export default class CustomElement extends ICustomElement {
   /** @type {typeof ICustomElement.methods} */
   static methods = this.set;
 
+  /** @type {typeof ICustomElement.overrides} */
+  static overrides = this.set;
+
   /** @type {typeof ICustomElement.props} */
   static props = this.observe;
 
@@ -104,7 +117,10 @@ export default class CustomElement extends ICustomElement {
    * @type {typeof ICustomElement.append}
    */
   static append(...parts) {
-    this.on('composed', ({ composition }) => composition.append(...parts));
+    this.on('composed', ({ composition }) => {
+      // console.log('onComposed:append', ...parts);
+      composition.append(...parts);
+    });
     // @ts-expect-error Can't cast T
     return this;
   }
@@ -157,6 +173,7 @@ export default class CustomElement extends ICustomElement {
    */
   static html(strings, ...substitutions) {
     this.on('composed', ({ composition }) => {
+      // console.log('onComposed:html', strings);
       composition.append(html(strings, ...substitutions));
     });
     // @ts-expect-error Can't cast T
@@ -166,6 +183,7 @@ export default class CustomElement extends ICustomElement {
   /**
    * Extends base class into a new class.
    * Use to avoid mutating base class.
+   * TODO: Add constructor arguments typing
    * @type {typeof ICustomElement.extend}
    */
   static extend() {
@@ -187,8 +205,36 @@ export default class CustomElement extends ICustomElement {
    * Assigns values directly to all instances (via prototype)
    * @type {typeof ICustomElement.set}
    */
-  static set(source) {
-    Object.assign(this.prototype, source);
+  static readonly(source, options) {
+    // @ts-expect-error Can't cast T
+    return this.set(source, { ...options, writable: false });
+  }
+
+  /**
+   * Assigns values directly to all instances (via prototype)
+   * @type {typeof ICustomElement.set}
+   */
+  static set(source, options) {
+    Object.defineProperties(
+      this.prototype,
+      Object.fromEntries(
+        Object.entries(source).map(([name, value]) => {
+          // Tap into .map() to avoid double iteration
+          // Property may be redefined observable
+          this.undefine(name);
+          return [
+            name,
+            {
+              enumerable: name[0] !== '_',
+              configurable: true,
+              value,
+              writable: true,
+              ...options,
+            },
+          ];
+        }),
+      ),
+    );
     // @ts-expect-error Can't cast T
     return this;
   }
@@ -232,7 +278,12 @@ export default class CustomElement extends ICustomElement {
 
   static get propChangedCallbacks() {
     if (!this.hasOwnProperty('_propChangedCallbacks')) {
-      this._propChangedCallbacks = new Map(this._propChangedCallbacks);
+      // structuredClone()
+      this._propChangedCallbacks = new Map(
+        [
+          ...this._propChangedCallbacks,
+        ].map(([name, array]) => [name, array.slice()]),
+      );
     }
     return this._propChangedCallbacks;
   }
@@ -306,22 +357,7 @@ export default class CustomElement extends ICustomElement {
         Object.entries(props).map(([name, options]) => {
           // Tap into .map() to avoid double iteration
           // Property may be redefined observable
-          Reflect.deleteProperty(this.prototype, name);
-          const config = this.propList.get(name);
-          if (config && config.watchers.length) {
-            const propWatchers = this.propChangedCallbacks.get(name);
-            if (propWatchers) {
-              for (const watcher of config.watchers) {
-                const index = propWatchers.indexOf(watcher);
-                if (index !== -1) {
-                  console.warn('Unwatching', name);
-                  propWatchers.splice(index, 1);
-                }
-              }
-            }
-          }
-          this.propList.delete(name);
-
+          this.undefine(name);
           return [
             name,
             {
@@ -339,6 +375,25 @@ export default class CustomElement extends ICustomElement {
     );
 
     // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  static undefine(name) {
+    Reflect.deleteProperty(this.prototype, name);
+    const config = this.propList.get(name);
+    if (config && config.watchers.length) {
+      const propWatchers = this.propChangedCallbacks.get(name);
+      if (propWatchers) {
+        for (const watcher of config.watchers) {
+          const index = propWatchers.indexOf(watcher);
+          if (index !== -1) {
+            console.warn('Unwatching', name);
+            propWatchers.splice(index, 1);
+          }
+        }
+      }
+    }
+    this.propList.delete(name);
     return this;
   }
 
@@ -379,34 +434,42 @@ export default class CustomElement extends ICustomElement {
   }
 
   /** @type {typeof ICustomElement.events} */
-  static events(queryOrListeners, listeners) {
-    /** @type {string} */
-    let query;
-    if (typeof queryOrListeners === 'string') {
-      query = queryOrListeners;
-    } else {
-      // eslint-disable-next-line no-param-reassign
-      listeners = queryOrListeners;
-    }
+  static events(listeners, options) {
     this.on('composed', ({ composition }) => {
-      for (const [key, options] of Object.entries(listeners)) {
+      for (const [key, listenerOptions] of Object.entries(listeners)) {
         const [, flags, type] = key.match(/^([*1~]+)?(.*)$/);
         composition.addEventListener({
           type,
-          target: query ? { query } : null,
           once: flags?.includes('1'),
           passive: flags?.includes('~'),
           capture: flags?.includes('*'),
           ...(
-            typeof options === 'function'
-              ? { handleEvent: options }
-              : (typeof options === 'string'
-                ? { prop: options }
-                : options)
+            typeof listenerOptions === 'function'
+              ? { handleEvent: listenerOptions }
+              : (typeof listenerOptions === 'string'
+                ? { prop: listenerOptions }
+                : listenerOptions)
           ),
+          ...(
+            options
+          )
+          ,
         });
       }
     });
+
+    // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  /** @type {typeof ICustomElement.childEvents} */
+  static childEvents(listenerMap, options) {
+    for (const [id, listeners] of Object.entries(listenerMap)) {
+      this.events(listeners, {
+        id,
+        ...options,
+      });
+    }
 
     // @ts-expect-error Can't cast T
     return this;
@@ -482,6 +545,9 @@ export default class CustomElement extends ICustomElement {
   /** @type {Composition<?>} */
   #composition;
 
+  /** @type {this} */
+  #superProxy = null;
+
   /** @type {Map<string,null|[string,any]>} */
   _propAttributeCache;
 
@@ -506,8 +572,8 @@ export default class CustomElement extends ICustomElement {
 
     this.composition.initialRender(this.shadowRoot, this);
 
-    for (const callbacks of this.static._onConstructedCallbacks) {
-      callbacks.call(this, this.callbackArguments);
+    for (const callback of this.static._onConstructedCallbacks) {
+      callback.call(this, this.callbackArguments);
     }
   }
 
@@ -635,9 +701,9 @@ export default class CustomElement extends ICustomElement {
         const composition = this.composition;
         if (!composition.interpolated) {
           console.warn(this.tagName, 'Returning template reference');
-          return findElement(composition.template, { id });
+          return findElement(composition.template, id);
         }
-        return composition.getElement(this.shadowRoot, { id });
+        return composition.getElement(this.shadowRoot, id);
       },
     }));
   }
@@ -664,6 +730,8 @@ export default class CustomElement extends ICustomElement {
       }
 
       // Chrome blurs on tabindex changes with delegatesFocus
+      // Fixed in Chrome 111
+      // Remove this code ~June 2023
       // https://bugs.chromium.org/p/chromium/issues/detail?id=1346606
       /** @type {EventListener} */
       const listener = (e) => {
@@ -707,9 +775,11 @@ export default class CustomElement extends ICustomElement {
     }
 
     // TODO: Use Composition to track uniqueness
+    // console.log('composing', this.static.elementName);
     this.compose();
-    for (const callbacks of this.static._onComposeCallbacks) {
-      callbacks.call(this, this.callbackArguments);
+    for (const callback of this.static._onComposeCallbacks) {
+      // console.log(this.static.elementName, 'composition callback');
+      callback.call(this, this.callbackArguments);
     }
 
     if (!this.unique) {
@@ -718,6 +788,21 @@ export default class CustomElement extends ICustomElement {
     }
 
     return this.#composition;
+  }
+
+  /** @return {this} */
+
+  get super() {
+    // eslint-disable-next-line no-return-assign
+    return (this.#superProxy ??= new Proxy(superOf(this), {
+      get: (target, prop) => {
+        const value = target[prop];
+        if (typeof value === 'function') {
+          return value.bind(this);
+        }
+        return value;
+      },
+    }));
   }
 
   connectedCallback() {
