@@ -29,7 +29,12 @@ export function* generateHTMLStyleElements(styles) {
   for (const style of styles) {
     if (style instanceof HTMLStyleElement) {
       yield style;
+    } else if (style.ownerNode instanceof HTMLStyleElement) {
+      // console.log('Cloning parent HTMLStyleElement instead');
+      // @ts-ignore Skip cast
+      yield style.ownerNode.cloneNode(true);
     } else {
+      console.warn('Manually constructing HTMLStyleElement', styles);
       const el = document.createElement('style');
       el.textContent = [...style.cssRules].map((r) => r.cssText).join('\n');
       yield el;
