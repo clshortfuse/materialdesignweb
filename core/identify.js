@@ -1,13 +1,3 @@
-/** @typedef {`${string},${string},${string}`} ElementIdentifierKey */
-
-/**
- * @typedef {{
- *  id:string, class?:string, query?:string} |
- *  {id?:string, class:string, query?:string} |
- *  {id?:string, class?:string, query:string
- * }} ElementIdentifier
- */
-
 const PREFIX = '_mdw-';
 
 /** @type {Set<string>} */
@@ -24,59 +14,27 @@ export function generateUID() {
 }
 
 /**
- * @param {ElementIdentifier} identifier
- * @return {ElementIdentifierKey}
- */
-export function keyFromIdentifier(identifier) {
-  return `${identifier.id ?? ''},${identifier.class ?? ''},${identifier.query ?? ''}`;
-}
-
-/**
- * @param {ElementIdentifierKey} key
- * @return {ElementIdentifier}
- */
-export function identifierFromKey(key) {
-  const [id, _class, ...query] = key.split(',');
-  return {
-    id,
-    class: _class,
-    query: query.join(','),
-  };
-}
-
-/**
  * @param {Element} element
  * @param {boolean} [mutate=false]
- * @return {ElementIdentifier}
+ * @return {string}
  */
 export function identifierFromElement(element, mutate) {
   if (element.id) {
-    return { id: element.id };
-  }
-  for (const className of element.classList) {
-    if (className.startsWith(PREFIX)) {
-      return { class: className };
-    }
+    return element.id;
   }
   if (!mutate) {
     return null;
   }
-  const className = PREFIX + generateUID();
-  element.classList.add(className);
-  return { class: className };
+  const id = PREFIX + generateUID();
+  element.id = id;
+  return id;
 }
 
 /**
- * @param {ElementIdentifier} identifier
+ * @param {string} identifier
  * @param {Element} element
  * @return {boolean}
  */
 export function identifierMatchesElement(identifier, element) {
-  if (identifier.id) {
-    return element.id === identifier.id;
-  }
-  if (identifier.class) {
-    return element.classList.contains(identifier.class);
-  }
-  return element.matches(identifier.query);
+  return element.id === identifier;
 }

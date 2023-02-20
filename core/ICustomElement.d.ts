@@ -2,6 +2,7 @@
 
 import Composition from './Composition.js';
 import {
+  CompositionEventListener,
   CompositionEventListenerObject,
   HTMLTemplater,
   InlineTemplate,
@@ -149,11 +150,16 @@ export declare const ICustomElement: {
   props: typeof ICustomElement.observe;
 
   set<T1 extends typeof ICustomElement, T2 extends object>
-    (this: T1, source: T2 & ThisType<T2 & InstanceType<T1>>)
+    (this: T1, source: T2 & ThisType<T2 & InstanceType<T1>>, options?: Partial<PropertyDescriptor>)
     : T1 & (new (...args: ConstructorParameters<T1>) => InstanceType<T1> & T2)
       // & { prototype: InstanceType<T1> & T2 };
 
   methods: typeof ICustomElement.set;
+
+  overrides<T1 extends typeof ICustomElement, T2 extends Partial<InstanceType<T1>>>
+  (this: T1, source: T2 & ThisType<T2 & InstanceType<T1>>, options?: Partial<PropertyDescriptor>)
+  : T1 & (new (...args: ConstructorParameters<T1>) => InstanceType<T1> & T2)
+    // & { prototype: InstanceType<T1> & T2 };
 
   expressions<
     T1 extends typeof ICustomElement,
@@ -161,7 +167,8 @@ export declare const ICustomElement: {
       string,
       ((this: InstanceType<T1>, data?: InstanceType<T1> & T1['schema']) => string|boolean|null)
       >
-    >(this: T1, expressions: T2 & ThisType<InstanceType<T1> & T2>):DefinedPropertiesOf<T1, T2>;
+    >(this: T1, expressions: T2 & ThisType<InstanceType<T1> & T2>):
+      T1 & (new (...args: ConstructorParameters<T1>) => InstanceType<T1> & T2);
 
   defineStatic<
     T1 extends typeof ICustomElement,
@@ -206,8 +213,17 @@ export declare const ICustomElement: {
   events<T extends typeof ICustomElement>
     (
       this: T,
-      query: string|CompositionEventListenerObject<InstanceType<T>>,
       listeners?: CompositionEventListenerObject<InstanceType<T>>,
+      options?: Partial<CompositionEventListener<InstanceType<T>>>,
+    ): T;
+
+  childEvents<T extends typeof ICustomElement>
+    (
+      this: T,
+      listenerMap: {
+        [P in keyof any]: CompositionEventListenerObject<InstanceType<T>>
+      },
+      options?: Partial<CompositionEventListener<InstanceType<T>>>,
     ): T;
 
   on<

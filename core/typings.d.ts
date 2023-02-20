@@ -1,11 +1,9 @@
-import { ElementIdentifier } from './identify.js';
-
 type ObserverPropertyType = 'string' | 'boolean' | 'map' | 'set' | 'float' | 'integer' | 'object' | 'function';
 
 type InlineTemplate<T1, T2=T1> = (fn: (this:T1, data: T2) => any) => string;
 
 type HTMLTemplater<T1, T2=T1> = ((
-  string: TemplateStringsArray, ...substitutions: (string|Element|((this:T1, data:T2) => any))[]
+  string: TemplateStringsArray, ...substitutions: (string|DocumentFragment|Element|((this:T1, data:T2) => any))[]
 ) => DocumentFragment);
 
 type ParsedObserverPropertyType<T extends ObserverPropertyType> =
@@ -114,7 +112,7 @@ type CompositionEventMap = HTMLElementEventMap & {
 
 type CompositionEventListener<T, K = keyof CompositionEventMap> = {
   type?: K
-  target?: ElementIdentifier,
+  id?: string,
   capture?: boolean;
   once?: boolean;
   passive?: boolean;
@@ -132,3 +130,5 @@ type CompositionEventListenerObject<T> =
       | ((this: T, event: CompositionEventMap[P] & {currentTarget:HTMLElement}) => any)
       | CompositionEventListener<T, P>
   };
+
+export type dummyObject = {};

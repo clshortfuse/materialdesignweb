@@ -1,7 +1,7 @@
 /* eslint-disable sort-class-members/sort-class-members */
 import { generateCSSStyleSheets, generateHTMLStyleElements } from './css.js';
 import { findElement, iterateNodes } from './dom.js';
-import { identifierFromElement, identifierFromKey, identifierMatchesElement, keyFromIdentifier } from './identify.js';
+import { identifierFromElement } from './identify.js';
 import { observeFunction } from './observe.js';
 import { generateFragment, inlineFunctions } from './template.js';
 
@@ -24,13 +24,10 @@ import { generateFragment, inlineFunctions } from './template.js';
  * @prop {Set<keyof T & string>} props
  */
 
-/** @typedef {import('./identify.js').ElementIdentifier} ElementIdentifier */
-/** @typedef {import('./identify.js').ElementIdentifierKey} ElementIdentifierKey */
-
 /**
  * @template {any} T
  * @typedef {Object} NodeBindEntry
- * @prop {ElementIdentifier} identifier
+ * @prop {string} id
  * @prop {number} nodeType
  * @prop {string} node
  * @prop {boolean} [negate]
@@ -110,8 +107,8 @@ export default class Composition {
 
   /**
    * Collection of events to bind.
-   * Indexed by ElementIdentifierKey
-   * @type {Map<ElementIdentifierKey, Set<import('./typings.js').CompositionEventListener<any>>>}
+   * Indexed by ID
+   * @type {Map<string, Set<import('./typings.js').CompositionEventListener<any>>>}
    */
   events = new Map();
 
@@ -151,6 +148,14 @@ export default class Composition {
    */
   referenceCache = new WeakMap();
 
+  /**
+   * Maintains a reference list of elements used by render target (root).
+   * When root is garbage collected, references are released.
+   * This includes disconnected elements.
+   * @type {Map<string, Element>}
+   */
+  conditionalElementMap = new Map();
+
   /** Flag set when template and styles have been interpolated */
   interpolated = false;
 
@@ -162,6 +167,9 @@ export default class Composition {
      * Template used to build interpolation and cloneable
      */
     this.template = generateFragment();
+    /** Allows retargetting for components that use a wrapped DOM structure */
+    /** @type {Element|DocumentFragment} */
+    this.fragmentRoot = this.template;
     this.append(...parts);
   }
 
@@ -187,7 +195,7 @@ export default class Composition {
       } else if (part instanceof Composition) {
         this.append(...part);
       } else if (part instanceof DocumentFragment) {
-        this.template.append(part);
+        this.fragmentRoot.append(part);
       } else if (part instanceof CSSStyleSheet || part instanceof HTMLStyleElement) {
         this.styles.push(part);
       }
@@ -198,7 +206,7 @@ export default class Composition {
 
   /** @param {import('./typings.js').CompositionEventListener<T>} listener */
   addEventListener(listener) {
-    const key = listener.target ? keyFromIdentifier(listener.target) : '';
+    const key = listener.id ?? '';
     let set = this.events.get(key);
     if (!set) {
       set = new Set();
@@ -229,15 +237,13 @@ export default class Composition {
     for (const [key, entries] of this.bindings) {
       const propSearch = propFromObject(key, data);
       if (!propSearch) continue;
-      for (const { identifier, node, nodeType, fn, props, negate } of entries) {
+      for (const { id, node, nodeType, fn, props, negate } of entries) {
         let value;
         let ref;
-        let identifierKey;
-        if (identifier) {
-          ref = this.getElement(root, identifier);
+        if (id) {
+          ref = this.getElement(root, id);
           if (!ref) {
-            ref = this.getElement(root, identifier);
-            console.warn('Non existent id', identifier);
+            console.warn('Non existent id', id);
             continue;
           }
         }
@@ -260,9 +266,12 @@ export default class Composition {
           continue;
         }
 
-        // TODO: Benchmark against with isConnected
-        // if (!root.contains(ref) && node !== '_if') {
-        //  console.log('Offscreen rendering', ref, node);
+        // if (!ref.parentElement && node !== '_if') {
+        //   if (ref.parentNode === root) {
+        //     console.debug('Offscreen? root? rendering', ref, node, ref.id, root.host.outerHTML);
+        //   } else {
+        //     console.debug('Offscreen rendering', ref, node, ref.id, root.host.outerHTML);
+        //   }
         // }
 
         if (negate) {
@@ -278,33 +287,42 @@ export default class Composition {
             break;
           }
           if (index > nodesFound) {
-            console.log('node not found, adding?');
+            console.warn('Node not found, adding?');
             ref.append(value);
           }
         } else if (node === '_if') {
           const attached = root.contains(ref);
-          if (value !== null && value !== false) {
-            if (!attached) {
-              const sourceElement = findElement(this.interpolation, identifier);
+          const orphaned = ref.parentElement == null && ref.parentNode !== root;
+          const shouldShow = value !== null && value !== false;
+          if (orphaned && ref.parentNode) {
+            console.warn('Orphaned with parent node?', id, { attached, orphaned, shouldShow }, ref.parentNode);
+          }
+          if (attached !== !orphaned) {
+            console.warn('Conditional state', id, { attached, orphaned, shouldShow });
+            console.warn('Not attached and not orphaned. Should do nothing?');
+          }
+          if (shouldShow) {
+            if (orphaned) {
+              const sourceElement = findElement(this.interpolation, id);
               if (!sourceElement) {
-                console.error(identifier);
-                throw new Error('could not find in source');
+                console.error(id);
+                throw new Error('Could not find in source');
               }
               // Find DOM representation of parent;
               const sourceParentNode = sourceElement.parentNode;
               const parent = sourceParentNode instanceof Element
-                ? this.getElement(root, identifierFromElement(sourceParentNode))
+                ? this.getElement(root, sourceParentNode.id)
                 : root;
               if (!parent) {
-                console.error(identifier);
-                throw new Error('could not parent at all!');
+                console.error(id);
+                throw new Error('Could not find reference parent!');
               }
 
               let commentNode;
-              identifierKey ??= keyFromIdentifier(identifier);
+              const commentText = `{#${id}}`;
               for (const child of parent.childNodes) {
                 if (child.nodeType !== Node.COMMENT_NODE) continue;
-                if ((/** @type {Comment} */child).nodeValue === identifierKey) {
+                if ((/** @type {Comment} */child).nodeValue === commentText) {
                   commentNode = child;
                   break;
                 }
@@ -314,9 +332,9 @@ export default class Composition {
                 // console.log('Add', identifier, 'back', ref.outerHTML);
                 commentNode.remove();
               } else {
-                console.warn('Could not add', identifier, 'back to DOM');
+                console.warn('Could not add', id, 'back to parent');
               }
-              const events = this.events.get(identifierKey);
+              const events = this.events.get(id);
               if (events) {
                 for (const entry of events) {
                   let eventListener;
@@ -332,14 +350,15 @@ export default class Composition {
                     // console.log('Bind event to added element', identifier, ref, eventListener, ref.isConnected);
                     ref.addEventListener(entry.type, eventListener, entry);
                   } else {
-                    console.warn('Could not bind event', identifier, entry.prop);
+                    console.warn('Could not bind event', id, entry.prop);
                   }
                 }
               }
             }
-          } else if (attached) {
-            // console.log('Remove', identifier, ref.outerHTML);
-            const commentPlaceholder = new Comment(keyFromIdentifier(identifier));
+          } else if (!orphaned) {
+            // console.log('Remove', identifier, ref.outerHTML, root.host.outerHTML);
+            const commentText = `{#${id}}`;
+            const commentPlaceholder = new Comment(commentText);
             ref.before(commentPlaceholder);
             ref.remove();
           }
@@ -362,7 +381,7 @@ export default class Composition {
    * @param {Object} [defaults]
    */
   interpolate(defaults) {
-    // console.log('Template', [...template.children].map((child) => child.outerHTML).join('\n'));
+    // console.log('Template', [...this.template.children].map((child) => child.outerHTML).join('\n'));
     this.cloneable = /** @type {DocumentFragment} */ (this.template.cloneNode(true));
 
     /** @type {Map<string,Element>} */
@@ -426,8 +445,7 @@ export default class Composition {
         }
       }
 
-      const identifier = identifierFromElement(element, true);
-      const identifierKey = keyFromIdentifier(identifier);
+      const id = identifierFromElement(element, true);
 
       if (isEvent) {
         const eventType = nodeName.slice(3);
@@ -440,10 +458,10 @@ export default class Composition {
 
         element.removeAttribute(nodeName);
 
-        let set = this.events.get(identifierKey);
+        let set = this.events.get(id);
         if (!set) {
           set = new Set();
-          this.events.set(identifierKey, set);
+          this.events.set(id, set);
         }
         if (parsedValue.startsWith('#')) {
           set.add({ type, handleEvent: inlineFunctions.get(parsedValue).fn, ...options });
@@ -508,7 +526,7 @@ export default class Composition {
 
       // Bind
       const parsedNodeName = textNodeIndex ? nodeName + textNodeIndex : nodeName;
-      const entry = { identifier, node: parsedNodeName, fn, props, nodeType, defaultValue, negate };
+      const entry = { id, node: parsedNodeName, fn, props, nodeType, defaultValue, negate };
       for (const prop of props) {
         let set = this.bindings.get(prop);
         if (!set) {
@@ -525,7 +543,7 @@ export default class Composition {
       } else if (nodeName === '_if') {
         element.removeAttribute(nodeName);
         if (defaultValue == null || defaultValue === false) {
-          removalList.set(identifierKey, element);
+          removalList.set(id, element);
         }
       } else if (defaultValue == null || defaultValue === false) {
         element.removeAttribute(nodeName);
@@ -534,8 +552,8 @@ export default class Composition {
       }
     }
 
-    const elements = [...removalList.values()].reverse();
-    for (const element of elements) {
+    const reversedRemovals = [...removalList].reverse();
+    for (const [key, element] of reversedRemovals) {
       let parent = element;
       while ((parent = parent.parentElement)) {
         identifierFromElement(parent, true);
@@ -547,10 +565,13 @@ export default class Composition {
 
     // console.log('Interpolated', [...this.interpolation.children].map((child) => child.outerHTML).join('\n'));
 
-    for (const [key, element] of removalList) {
-      const commentPlaceholder = new Comment(key);
+    for (const [id, element] of [...removalList].reverse()) {
+      const commentText = `{#${id}}`;
+      const commentPlaceholder = new Comment(commentText);
+      // console.log('Removing', commentPlaceholder);
       element.before(commentPlaceholder);
       element.remove();
+      this.conditionalElementMap.set(id, element.cloneNode(true));
     }
 
     for (const watcher of this.watchers) {
@@ -601,12 +622,12 @@ export default class Composition {
 
     const rootElement = root instanceof ShadowRoot ? root.host : root;
     // Bind events in reverse order to support stopImmediatePropagation
-    for (const [identifier, events] of [...this.events].reverse()) {
-      const element = identifier
-        ? this.getElement(root, identifier) // Bind events even if not in DOM to avoid tree-walk later
+    for (const [id, events] of [...this.events].reverse()) {
+      const element = id
+        ? this.getElement(root, id) // Bind events even if not in DOM to avoid tree-walk later
         : rootElement;
       if (!element) {
-        console.warn('Skip bind events for', identifier);
+        console.warn('Skip bind events for', id);
         continue;
       }
       for (const entry of [...events].reverse()) {
@@ -650,75 +671,92 @@ export default class Composition {
 
   /**
    * @param {Element|DocumentFragment} root
-   * @param {ElementIdentifier|ElementIdentifierKey} identifierOrKey
+   * @param {string} id
    * @return {Element}
    */
-  getElement(root, identifierOrKey) {
+  getElement(root, id) {
     const references = this.getReferences(root);
-    /** @type {ElementIdentifierKey} */
-    let key;
-    /** @type {ElementIdentifier} */
-    let identifier;
-    if (typeof identifierOrKey === 'object') {
-      identifier = identifierOrKey;
-      key = keyFromIdentifier(identifier);
-    } else {
-      key = identifierOrKey;
-      identifier = identifierFromKey(key);
+    let element = references.get(id);
+    if (element) {
+      // console.log('Returning from cache', id);
+      return element;
     }
-    let element = references.get(key);
-    if (element) return element;
     if (element === null) return null; // Cached null response
 
     // Undefined
 
-    element = findElement(root, identifier);
+    // console.log('Search in DOM', id);
+    element = findElement(root, id);
 
     if (element) {
-      references.set(key, element);
+      // console.log('Found in DOM', id);
+      references.set(id, element);
       return element;
     }
 
-    const sourceElement = findElement(this.interpolation, identifier);
+    // Element not in DOM means part of conditional element
+    // Check interpolation (full-tree) first
+    // console.log('Searching in full-tree', id);
+    const sourceElement = findElement(this.interpolation, id);
     if (!sourceElement) {
+      console.warn('Not in full-tree', id);
       // Cache not in full composition
-      references.set(key, null);
+      references.set(id, null);
       return null;
     }
+
+    // Find which conditional element it belongs to
     let parent = sourceElement;
-    let cloneTarget = sourceElement;
+    let cloneTarget = this.conditionalElementMap.get(id);
 
-    // Iterate backwards in template until used reference is found
-    while ((parent = parent.parentElement) != null) {
-      // Parent already in DOM and referenced
-      const parentIdentifier = identifierFromElement(parent);
-      const parentIdentifierKey = keyFromIdentifier(parentIdentifier);
-      if (references.has(parentIdentifierKey)) break;
-
-      // Parent already in DOM. Cache reference
-      const liveElement = findElement(root, parentIdentifier);
-      if (liveElement) {
-        const liveIdentifier = identifierFromElement(liveElement);
-        if (liveIdentifier) {
-          references.set(keyFromIdentifier(liveIdentifier), liveElement);
-        } else {
-          console.warn('Could not cache live node', liveElement);
+    if (!cloneTarget) {
+      console.debug('Search for unconditional element', id, cloneTarget);
+      // Iterate backwards in template until used reference is found
+      while ((parent = parent.parentElement) != null) {
+        const parentId = parent.id;
+        if (!parentId) {
+          console.warn('Parent does not have ID!');
+          cloneTarget = parent;
+          continue;
         }
-        break;
-      }
 
-      cloneTarget = parent;
+        // Parent already in DOM and referenced
+        if (references.has(parentId)) {
+          console.debug('Parent already in DOM and cached', parentId, '>', key);
+          break;
+        }
+
+        const liveElement = findElement(root, parentId);
+        if (liveElement) {
+          console.debug('Parent already in DOM and not cached', parentId, '>', key);
+          // Parent already in DOM. Cache reference
+          references.set(parentId, liveElement);
+          break;
+        }
+
+        const conditionalParent = this.conditionalElementMap.get(parentId);
+        if (conditionalParent) {
+          console.log('Found parent conditional element', parentId, '>', id);
+          cloneTarget = conditionalParent;
+          break;
+        } else {
+          console.log('Wrong Parent', parentId, '>?', id);
+          cloneTarget = parent;
+        }
+      }
     }
 
     const clone = /** @type {Element} */ (cloneTarget.cloneNode(true));
+    // Iterate downwards and cache all references
     for (const node of iterateNodes(clone, { element: true, self: true })) {
-      if (!element && (identifierMatchesElement(identifier, node))) {
+      const nodeIdentifier = node.id;
+      if (!element && nodeIdentifier === id) {
         element = node;
       }
-      const nodeIdentifier = identifierFromElement(node);
+
       if (nodeIdentifier) {
         // console.log('Caching element', nodeIdentifier);
-        references.set(keyFromIdentifier(nodeIdentifier), node);
+        references.set(nodeIdentifier, node);
       } else {
         console.warn('Could not cache node', node);
       }
