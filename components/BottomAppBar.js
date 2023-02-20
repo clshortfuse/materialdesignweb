@@ -1,7 +1,7 @@
 import AriaToolbarMixin from '../mixins/AriaToolbarMixin.js';
 
 import styles from './BottomAppBar.css' assert { type: 'css' };
-import Container from './Container.js';
+import Surface from './Surface.js';
 
 /**
  * Note: FAB does not exist inside because FABs can appear outside.
@@ -9,10 +9,16 @@ import Container from './Container.js';
  * next on the DOM, so users can logically tab to it.
  */
 
-export default Container
+export default Surface
   .mixin(AriaToolbarMixin)
   .set({
     ariaRole: 'toolbar',
+    elevated: true,
+  })
+  .observe({
+    color: {
+      empty: 'surface',
+    },
   })
   .css(styles)
   .autoRegister('mdw-bottom-app-bar');

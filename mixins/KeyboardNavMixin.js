@@ -19,6 +19,8 @@ export default function KeyboardNavMixin(Base) {
     .observe({
       /** Keyboard navigation attribute */
       kbdNav: { empty: 'true' },
+      _kbdFocusable: { empty: true },
+
     })
     .define({
       /**
@@ -118,7 +120,7 @@ export default function KeyboardNavMixin(Base) {
 
       /** @type {HTMLElement['focus']} */
       focus(...options) {
-        super.focus(...options);
+        // super.focus(...options);
         if (attemptFocus(this.ariaActiveDescendantElement, ...options)) {
           return;
         }

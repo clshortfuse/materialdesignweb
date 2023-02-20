@@ -8,7 +8,7 @@
   --mdw-button__padding-inline-start: 0;
   --mdw-button__padding-inline-end: 16px;
   --mdw-button__icon__margin-inline-start: 16px;
-  --mdw-button__outline__visibility: visible;
+  --mdw-outline__visibility: visible;
 
   --mdw-chip__trailing-icon__size: 18px;
   --mdw-chip__trailing-icon__opacity: 1;
@@ -38,7 +38,7 @@
 }
 
 #outline {
-  --mdw-button__outline__rgb: var(--mdw-color__outline);
+  --mdw-outline__rgb: var(--mdw-color__outline);
 }
 
 #icon {
@@ -49,7 +49,7 @@
 
 #slot,
 #state,
-#ripple {
+#ripple-container {
   color: rgb(var(--mdw-chip__label-color));
 }
 

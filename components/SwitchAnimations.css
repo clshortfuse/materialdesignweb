@@ -20,8 +20,21 @@
   transition-delay: var(--mdw-switch__transition-delay__color);
   transition-duration: calc(var(--mdw-switch__transition-duration) / 2);
   /* 2 legged animation */
-  transition-property: border-color, background-color, color;
   transition-timing-function: var(--mdw-switch__transition-timing);
+}
+
+#track-shape {
+  transition-delay: var(--mdw-switch__transition-delay__color);
+  transition-duration: inherit;
+  transition-property: background-color;
+  transition-timing-function: inherit;
+}
+
+#outline {
+  transition-delay: var(--mdw-switch__transition-delay__color);
+  transition-duration: inherit;
+  transition-property: background-color, color;
+  transition-timing-function: inherit;
 }
 
 #thumb {
@@ -31,7 +44,7 @@
   transition-timing-function: inherit;
 }
 
-#thumb:before, .icon {
+#thumb-shape, .icon {
   /* (selected => unselected): stall color+scale */
   transition-delay: var(--mdw-switch__transition-delay__scale), var(--mdw-switch__transition-delay__color), var(--mdw-switch__transition-delay__color);
   transition-duration: inherit;
@@ -57,7 +70,7 @@
 }
 
 /* active => selected */
-:host(:active) #track[selected] {
+#track[selected][pressed] {
   /* --mdw-switch__transition-delay__color: 0s; */
   /* --mdw-switch__transition-delay__scale: 0s; */
   --mdw-switch__transition-delay__translate: 0s;
@@ -71,7 +84,7 @@
 }
 
 /* unselected => active */
-:host(:active) #track:not([selected]) {
+#track[pressed]:not([selected]) {
   /* --mdw-switch__transition-delay__color: 0s; */
   --mdw-switch__transition-delay__scale: 0s;
   /* --mdw-switch__transition-delay__translate: 0s; */

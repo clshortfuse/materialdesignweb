@@ -4,7 +4,7 @@
   display: inline-block;
 }
 
-#nav {
+#shape {
   display: grid;
   align-items: stretch;
   flex-direction: column;
@@ -22,20 +22,15 @@
   text-align: center;
 }
 
-:host([align="start"]) #nav {
+:host([align="start"]) #shape {
   grid-template-rows: min-content;
 }
 
-:host([align="end"]) #nav {
+:host([align="end"]) #shape {
   grid-template-rows: 1fr;
 }
 
 #group {
-  --mdw-nav-item__badge__font: var(--mdw-typescale__label-small__font);
-  --mdw-nav-item__badge__letter-spacing: var(--mdw-typescale__label-small__letter-spacing);
-  --mdw-nav-item__badge__background: rgb(var(--mdw-color__error));
-  --mdw-nav-item__badge__color: rgb(var(--mdw-color__on-error));
-
   display: flex;
   align-items: center;
   flex-direction: column;

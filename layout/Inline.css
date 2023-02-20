@@ -1,0 +1,9 @@
+
+#slot:is([color],[ink]) {
+  color: rgb(var(--mdw-ink));
+}
+
+#slot[type-style] {
+  font: var(--mdw-type__font);
+  letter-spacing: var(--mdw-type__letter-spacing);
+}

@@ -1,0 +1,57 @@
+/* https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
+
+:host{
+  --mdw-layout__x: normal;
+  --mdw-layout__y: normal;
+  display: flex;
+  align-items: var(--mdw-layout__y);
+  justify-content: var(--mdw-layout__x);
+
+  box-sizing: border-box;
+}
+
+:host([column]) {
+  align-items: var(--mdw-layout__x);
+  flex-direction: column;
+  justify-content: var(--mdw-layout__y);
+}
+
+:host(:is([x="start"],[x="flex-start"])) { --mdw-layout__x: flex-start; }
+
+:host(:is([x="end"],[x="flex-end"])) { --mdw-layout__x: flex-end; }
+
+:host([x="center"]) { --mdw-layout__x: center; }
+
+:host(:is([x="between"], [x="space-between"])) { --mdw-layout__x: space-between; }
+
+:host(:is([x="around"], [x="space-around"])) { --mdw-layout__x: space-around; }
+
+:host(:is([x="evenly"], [x='space-evenly'])) { --mdw-layout__x: space-evenly; }
+
+:host([x="stretch"]) { --mdw-layout__x: stretch; }
+
+:host(:is([y="start"],[y="flex-start"])) { --mdw-layout__y: flex-start; }
+
+:host(:is([y="end"],[y="flex-end"])) { --mdw-layout__y: flex-end; }
+
+:host([y="center"]) { --mdw-layout__y: center; }
+
+:host(:is([y="between"], [y="space-between"])) { --mdw-layout__y: space-between; }
+
+:host(:is([y="around"], [y="space-around"])) { --mdw-layout__y: space-around; }
+
+:host(:is([y="evenly"], [y='space-evenly'])) { --mdw-layout__y: space-evenly; }
+
+:host([y="stretch"]) { -y: stretch; }
+
+:host([wrap]) {
+  flex-wrap: wrap;
+}
+
+:host([wrap="reverse"]) {
+  flex-wrap: wrap-reverse;
+}
+
+:host([gap]) {
+  gap: var(--mdw-layout__gap);
+}

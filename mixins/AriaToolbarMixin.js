@@ -7,9 +7,7 @@ export default function AriaToolbarMixin(Base) {
   return Base
     .mixin(KbdNavWidgetMixin)
     .extend()
-    .define({
-      ariaOrientationDefault() {
-        return /** @type {'horizontal'|'vertical'} */ ('horizontal');
-      },
+    .set({
+      ariaOrientationDefault: 'horizontal',
     });
 }

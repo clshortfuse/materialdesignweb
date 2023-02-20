@@ -1,0 +1,14 @@
+:host {
+  --mdw-type__font: var(--mdw-typescale__title-large__font);
+  --mdw-type__letter-spacing: var(--mdw-typescale__title-large__letter-spacing);
+}
+
+:host([size="medium"]) {
+  --mdw-type__font: var(--mdw-typescale__title-medium__font);
+  --mdw-type__letter-spacing: var(--mdw-typescale__title-medium__letter-spacing);
+}
+
+:host([size="small"]) {
+  --mdw-type__font: var(--mdw-typescale__title-small__font);
+  --mdw-type__letter-spacing: var(--mdw-typescale__title-small__letter-spacing);
+}

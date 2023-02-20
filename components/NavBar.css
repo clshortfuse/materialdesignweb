@@ -12,7 +12,7 @@
   box-shadow: none;
 }
 
-#nav {
+#shape {
   display: grid;
   align-content: flex-start;
   align-items: flex-start;
@@ -33,10 +33,6 @@
 
 #slot::slotted(mdw-nav-item) {
   --mdw-nav-item__anchor__display: block;
-  --mdw-nav-item__badge__font: var(--mdw-typescale__label-small__font);
-  --mdw-nav-item__badge__letter-spacing: var(--mdw-typescale__label-small__letter-spacing);
-  --mdw-nav-item__badge__background: rgb(var(--mdw-color__error));
-  --mdw-nav-item__badge__color: rgb(var(--mdw-color__on-error));
 
   grid: auto-flow auto / auto;
   grid-template: "x a y" 32px "b b b" minmax(16px, min-content) / auto 64px auto;

@@ -1,49 +1,82 @@
 /* https://m3.material.io/components/checkbox/specs */
 
-.checkbox-box {
+:host {
+  --mdw-ink: var(--mdw-color__on-primary);
+  --mdw-bg: var(--mdw-color__primary);
+  --mdw-shape__size: 2px;
+  --disabled-opacity: 0.38;
   position: relative;
 
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 
   box-sizing: border-box;
+  block-size: 18px;
+  inline-size: 18px;
 
-  block-size: var(--mdw-checkbox__size, 18px);
-  inline-size: var(--mdw-checkbox__size, 18px);
-  grid-column: 1;
-  border: solid var(--mdw-checkbox__border-width, 2px) currentColor;
-
-  background-color: transparent;
-  border-radius: var(--mdw-checkbox__border-width, 2px);
-  color: var(--mdw-checkbox__container__color, inherit);
-
-  transition: inherit;
-  transition-property: color, border-color;
-
-  will-change: color, border-color;
+  font-size: 18px;
 }
 
-.checkbox-icon {
-  --mdw-icon__size: var(--mdw-checkbox__size, 18px);
-  position: absolute;
+#shape {
+  --mdw-shape__size: inherit;
+}
 
-  inset-block: calc(-1 * var(--mdw-checkbox__border-width, 2px));
-  inset-inline: calc(-1 * var(--mdw-checkbox__border-width, 2px));
+#icon {
+  position: absolute;
 
   opacity: 0;
 
   background-color: rgb(var(--mdw-bg));
-  border-radius: var(--mdw-checkbox__border-width, 2px);
   color: rgb(var(--mdw-ink));
 
-  transition-delay: inherit;
-  transition-duration: inherit;
+  transition-duration: 100ms;
   transition-property: opacity, background-color, color;
-  transition-timing-function: inherit;
   will-change: opacity;
 }
 
-.checkbox-icon:is([selected], [indeterminate]) {
+#outline {
+  filter:
+    drop-shadow(1px 0px 0px currentColor)
+    drop-shadow(0px 1px 0px currentColor)
+    drop-shadow(-1px 0px 0px currentColor)
+    drop-shadow(0px -1px 0px currentColor);
+
+  color: rgb(var(--mdw-color__on-surface));
+
+  transition-duration: 100ms;
+  transition-property: opacity, background-color, color;
+  will-change: opacity;
+}
+
+/* Selected */
+
+#icon[selected] {
   opacity: 1;
+}
+
+#outline[selected] {
+  opacity: 0;
+}
+
+/* Errored */
+
+#icon[errored] {
+  background-color: rgb(var(--mdw-color__error));
+  color: rgb(var(--mdw-color__on-error));
+}
+
+#outline[errored] {
+  color: rgb(var(--mdw-color__error));
+}
+
+/* Disabled */
+
+#icon[disabled] {
+  background-color: rgba(var(--mdw-color__on-surface), var(--disabled-opacity));
+  color: rgb(var(--mdw-color__surface), var(--disabled-opacity));
+}
+
+#outline[disabled] {
+  color: rgb(var(--mdw-color__on-surface), var(--disabled-opacity));
 }

@@ -13,26 +13,23 @@
   --control__margin-bottom: 1px;
 }
 
-label {
+#label {
   --max-rows: none;
   --line-height: var(--mdw-typescale__body-large__line-height);
   --expected-height: calc((var(--control__margin-top) + var(--control__padding-top) + var(--line-height) + var(--control__padding-bottom) + var(--control__margin-bottom)));
+  max-block-size: 100%;
+  grid-row: 1 / 1;
+  padding: 0;
 }
 
-@supports({width: 1lh}) {
-  label {
+@supports(height: 1lh) {
+  #label {
     --line-height: 1lh;
   }
 }
 
-slot {
+#slot {
   display: none;
-}
-
-#label {
-  max-block-size: 100%;
-  grid-row: 1 / 1;
-  padding: 0;
 }
 
 #control {
@@ -46,10 +43,8 @@ slot {
   min-block-size: var(--expected-height);
   /* Avoid clipping on resize */
   max-block-size: inherit;
-  inline-size: 100% !important;
-  /* !important to override user-agent resize */
-  padding-inline-start: var(--padding-inline-start);
-  padding-inline-end: var(--padding-inline-end);
+  inline-size: 100% !important; /* !important to override user-agent resize */
+  padding-inline: 16px;
 }
 
 :host([minrows]) #control {
@@ -74,16 +69,12 @@ slot {
   padding-inline-start: 0;
 }
 
-:host(:is([icon], [input-prefix])) #label {
-  padding-inline-start: var(--padding-inline-start);
-}
-
 :host(:is([trailing-icon], [input-suffix])) #control {
   padding-inline-end: 0;
 }
 
-:host(:is([trailing-icon], [input-suffix])) #label {
-  padding-inline-end: var(--padding-inline-end);
+#suffix {
+  padding-inline-end: 16px;
 }
 
 mdw-icon {

@@ -1,0 +1,108 @@
+:host {
+
+  /** Filter blur is 1/2 CSS blur */
+
+  --mdw-elevation__box-shadow__1__umbra: 0px 1px 2px 0px rgba(var(--mdw-color__shadow), 0.30);
+  --mdw-elevation-_box-shadow__2__umbra: 0px 1px 2px 0px rgba(var(--mdw-color__shadow), 0.30);
+  --mdw-elevation-_box-shadow__3__umbra: 0px 1px 3px 0px rgba(var(--mdw-color__shadow), 0.30);
+  --mdw-elevation-_box-shadow__4__umbra: 0px 2px 3px 0px rgba(var(--mdw-color__shadow), 0.30);
+  --mdw-elevation-_box-shadow__5__umbra: 0px 4px 4px 0px rgba(var(--mdw-color__shadow), 0.30);
+
+  --mdw-elevation__filter__0__umbra: drop-shadow(0px 1px 1px rgba(var(--mdw-color__shadow), 0));
+  --mdw-elevation__filter__1__umbra: drop-shadow(0px 1px 1px rgba(var(--mdw-color__shadow), 0.30));
+  --mdw-elevation__filter__2__umbra: drop-shadow(0px 1px 1px rgba(var(--mdw-color__shadow), 0.30));
+  --mdw-elevation__filter__3__umbra: drop-shadow(0px 1px 1.5px rgba(var(--mdw-color__shadow), 0.30));
+  --mdw-elevation__filter__4__umbra: drop-shadow(0px 2px 1.5px rgba(var(--mdw-color__shadow), 0.30));
+  --mdw-elevation__filter__5__umbra: drop-shadow(0px 4px 2px rgba(var(--mdw-color__shadow), 0.30));
+
+  --mdw-elevation__box-shadow__1__penumbra: 0px 1px 3px 1px  rgba(var(--mdw-color__shadow), 0.15);
+  --mdw-elevation__box-shadow__2__penumbra: 0px 2px 6px 2px  rgba(var(--mdw-color__shadow), 0.15);
+  --mdw-elevation__box-shadow__3__penumbra: 0px 4px 8px 3px  rgba(var(--mdw-color__shadow), 0.15);
+  --mdw-elevation__box-shadow__4__penumbra: 0px 6px 10px 4px rgba(var(--mdw-color__shadow), 0.15);
+  --mdw-elevation__box-shadow__5__penumbra: 0px 8px 12px 6px rgba(var(--mdw-color__shadow), 0.15);
+
+  --mdw-elevation__filter__0__penumbra: drop-shadow(0px 1px 2.5px rgba(var(--mdw-color__shadow), 0));
+  --mdw-elevation__filter__1__penumbra: drop-shadow(0px 1px 2.5px rgba(var(--mdw-color__shadow), 0.25));
+  --mdw-elevation__filter__2__penumbra: drop-shadow(0px 2px 5px rgba(var(--mdw-color__shadow), 0.25));
+  --mdw-elevation__filter__3__penumbra: drop-shadow(0px 4px 7px rgba(var(--mdw-color__shadow), 0.263));
+  --mdw-elevation__filter__4__penumbra: drop-shadow(0px 6px 9px rgba(var(--mdw-color__shadow), 0.27));
+  --mdw-elevation__filter__5__penumbra: drop-shadow(0px 8px 12px rgba(var(--mdw-color__shadow), 0.30));
+
+  --mdw-elevation__filter__0: var(--mdw-elevation__filter__0__umbra) var(--mdw-elevation__filter__0__penumbra);
+  --mdw-elevation__filter__1: var(--mdw-elevation__filter__1__umbra) var(--mdw-elevation__filter__1__penumbra);
+  --mdw-elevation__filter__2: var(--mdw-elevation__filter__2__umbra) var(--mdw-elevation__filter__2__penumbra);
+  --mdw-elevation__filter__3: var(--mdw-elevation__filter__3__umbra) var(--mdw-elevation__filter__3__penumbra);
+  --mdw-elevation__filter__4: var(--mdw-elevation__filter__4__umbra) var(--mdw-elevation__filter__4__penumbra);
+  --mdw-elevation__filter__5: var(--mdw-elevation__filter__5__umbra) var(--mdw-elevation__filter__5__penumbra);
+
+  --mdw-elevation__opacity__1: 0.05;
+  --mdw-elevation__opacity__2: 0.08;
+  --mdw-elevation__opacity__3: 0.11;
+  --mdw-elevation__opacity__4: 0.12;
+  --mdw-elevation__opacity__5: 0.14;
+
+  --mdw-outline__size: 1;
+  --mdw-outline__opacity: 1;
+  --mdw-outline__rgb: var(--mdw-color__outline);
+  --mdw-outline__rgb__focused: var(--mdw-color__outline);
+
+  /** Configurables */
+
+  --mdw-elevation__filter__resting: none;
+  --mdw-elevation__opacity__resting: 0;
+  --mdw-elevation__opacity: var(--mdw-elevation__opacity__resting);
+  --mdw-elevation__filter: var(--mdw-elevation__filter__resting);
+
+  /* --mdw-elevation__opacity__hover: var(--mdw-elevation__opacity, 0); */
+
+  /* --mdw-shape__rounded: 1; */
+  /* --mdw-shape__clip-path__none: none; */
+  --mdw-shape__size: 0px;
+
+  display: block;
+
+  filter: var(--mdw-elevation__filter);
+
+  transition-delay: 1ms;
+  transition-duration: 200ms;
+  transition-property: filter;
+  will-change: filter;
+}
+
+.shape {
+  --mdw-shape__size: inherit;
+}
+
+:host([color*="surface"][elevation="1"]) {
+  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__1);
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__1);
+}
+
+:host([color*="surface"][elevation="2"]) {
+  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__2);
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__2);
+}
+
+:host([color*="surface"][elevation="3"]) {
+  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__3);
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__3);
+}
+
+:host([color*="surface"][elevation="4"]) {
+  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__4);
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__4);
+}
+
+:host([color*="surface"][elevation="5"]) {
+  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__5);
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__5);
+}
+
+:host(:hover:not(:active)) {
+  filter: var(--mdw-elevation__filter__hover, var(--mdw-elevation__filter__resting));
+}
+
+:host(:hover:not(:active)) {
+  --mdw-elevation__opacity: var(--mdw-elevation__opacity__hover, var(--mdw-elevation__opacity__resting));
+  --mdw-elevation__filter: var(--mdw-elevation__opacity__filter, var(--mdw-elevation__filter__resting));
+}

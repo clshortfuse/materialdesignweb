@@ -1,7 +1,7 @@
 import styles from './Badge.css' assert { type: 'css'};
-import Container from './Container.js';
+import Surface from './Surface.js';
 
-export default Container
+export default Surface
   .extend()
   .css(styles)
   .autoRegister('mdw-badge');

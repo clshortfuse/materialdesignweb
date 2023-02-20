@@ -135,13 +135,15 @@ export default CustomElement
       }
     },
   })
-  .events('#slot', {
-    slotchange(event) {
-      const slot = /** @type {HTMLSlotElement} */ (event.currentTarget);
-      // @ts-ignore Skip cast
-      this._panelNodes = slot.assignedElements()
-        .filter((el) => el.tagName === TabPanel.elementName.toUpperCase());
-      this.updatePanels();
+  .childEvents({
+    slot: {
+      slotchange(event) {
+        const slot = /** @type {HTMLSlotElement} */ (event.currentTarget);
+        // @ts-ignore Skip cast
+        this._panelNodes = slot.assignedElements()
+          .filter((el) => el.tagName === TabPanel.elementName.toUpperCase());
+        this.updatePanels();
+      },
     },
   })
   .events({

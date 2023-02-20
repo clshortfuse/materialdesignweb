@@ -1,5 +1,6 @@
 import { COLOR_KEYWORDS } from '../utils/color_keywords.js';
 import { getScheme } from '../utils/hct/helper.js';
+import { svgToCSSURL } from '../utils/svg.js';
 
 /**
  * @typedef {Object} ThemeOptions
@@ -27,34 +28,101 @@ function cornerCutClipPath() {
   const BOTTOM_INSET = (size) => `calc(100% - min(${size},50%))`;
 
   /**
-   *     1           2
+   *     2           3
    *   ┌──────────────┐
-   * 8 │              │ 3
+   * 1 │              │ 4
    *   │              │
    *   │              │
    *   │              │
-   * 7 │              │ 4
+   * 8 │              │ 5
    *   └──────────────┘
-   *    6            5
+   *    7            6
    */
 
   return `polygon(${
     [
-      [TOP, TOP_INSET(TOP_START_SIZE)],
+      [START, TOP_INSET(TOP_START_SIZE)],
+      [START_INSET(TOP_START_SIZE), TOP],
 
-      [TOP, END_INSET(TOP_END_SIZE)],
-      [TOP_INSET(TOP_END_SIZE), END],
+      [END_INSET(TOP_END_SIZE), TOP],
+      [END, TOP_INSET(TOP_END_SIZE)],
 
-      [BOTTOM_INSET(BOTTOM_END_SIZE), END],
-      [BOTTOM, END_INSET(BOTTOM_END_SIZE)],
+      [END, BOTTOM_INSET(BOTTOM_END_SIZE)],
+      [END_INSET(BOTTOM_END_SIZE), BOTTOM],
 
-      [BOTTOM, START_INSET(BOTTOM_START_SIZE)],
-      [BOTTOM_INSET(BOTTOM_START_SIZE), START],
+      [START_INSET(BOTTOM_START_SIZE), BOTTOM],
+      [START, BOTTOM_INSET(BOTTOM_START_SIZE)],
 
-      [TOP_INSET(TOP_START_SIZE), START],
     ].map((coordinates) => coordinates.join(' ')).join(', ')
   })`;
 }
+
+/**
+ * @param {string} shape
+ * @return {string}
+ */
+function getShapeMaskSVG(shape) {
+  return [
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">',
+    `<defs><path id="a" d="${shape}"/></defs>`,
+    '<use href="#a" transform="scale(.666)"/>',
+    '<use href="#a" transform="translate(8) scale(.666)"/>',
+    '<use href="#a" transform="matrix(.666 0 0 .666 0 8)"/>',
+    '<use href="#a" transform="matrix(.666 0 0 .666 8 8)"/>',
+    '<path d="M8 0h8v24H8Z"/><path d="M0 8h24v8H0Z"/>',
+    '</svg>',
+  ].join('');
+}
+
+/**
+ * @param {string} shape
+ * @param {'top-left'|'top-right'|'bottom-left'|'bottom-right'} corner
+ * @param {boolean} [convex]
+ * @return {string}
+ */
+function getShapeCornerSVGs(shape, corner, convex) {
+  const path = `<path ${[
+    `d="${shape}"`,
+    'vector-effect="non-scaling-stroke"',
+    `transform-origin="${corner.replace('-', ' ')}"`,
+    'stroke-linejoin="miter"',
+    'transform="scale(2)"',
+    `stroke-width="${convex ? 4 : 2}px"`,
+    'stroke="black"',
+    'fill="none"',
+  ].join(' ')}/>`;
+
+  return [
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">',
+    convex
+      ? [
+        '<mask id="m">',
+        '<rect x="0" y="0" width="24" height="24" fill="white"/>',
+        `<path d="${shape}" transform-origin="${corner.replace('-', ' ')}" transform="scale(2)"/>`,
+        '</mask>',
+        `<g mask="url(#m)">${path}</g>`,
+      ].join('')
+      : path,
+    '</svg>',
+  ].join('');
+}
+
+/**
+ * @return {string}
+ */
+function getShapeEdgesSVGs() {
+  return [
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">',
+    '<rect x="0" y="0" width="24" height="24" vector-effect="non-scaling-stroke" stroke-width="2px" stroke="black" fill="none"/>',
+    '</svg>',
+  ].join('');
+}
+
+const CIRCLE_PATH = 'M0 12A12 12 0 1012 0 12 12 0 000 12Z';
+// const SQUIRCLE_PATH = 'M12 24C17.2583 24 20.1815 24 22.0908 22.0908 24 20.1815 24 17.2583 24 12 24 6.7417 24 3.8185 22.0908 1.9092 20.1815-0 17.2583-0 12-0 6.7417-0 3.8185-0 1.9092 1.9092-0 3.8185-0 6.7417-0 12-0 17.2583-0 20.1815 1.9092 22.0908 3.8185 24 6.7417 24 12 24Z';
+const DIAMOND_PATH = 'M 0 12 12 0 24 12 12 24 Z';
+const SQUIRCLE_PATH = 'M12 24C17.2583 24 20.1815 24 22.0908 22.0908 24 20.1815 24 17.2583 24 12 24 6.7417 24 3.8185 22.0908 1.9092 20.1815-0 17.2583-0 12-0 6.7417-0 3.8185-0 1.9092 1.9092-0 3.8185-0 6.7417-0 12-0 17.2583-0 20.1815 1.9092 22.0908 3.8185 24 6.7417 24 12 24Z';
+const HALF_NOTCH_PATH = 'M0 6H6V0H18V6H24V18H18V24H6V18H0Z';
 
 const SHAPE_ROUNDED_DEFAULT = {
   size: {
@@ -63,22 +131,29 @@ const SHAPE_ROUNDED_DEFAULT = {
     medium: '12px',
     large: '16px',
     extraLarge: '28px',
-    full: '999px',
+    full: '32px',
   },
-  /** @type {string} */
-  clipPath: undefined,
+  /** @type {string?} */
+  mask: CIRCLE_PATH, // CIRCLE_PATH
+  convex: false,
 };
 
 const SHAPE_CUT_DEFAULT = {
+  ...SHAPE_ROUNDED_DEFAULT,
   size: {
     extraSmall: '4px',
     small: '8px',
     medium: '12px',
     large: '16px',
     extraLarge: '28px',
-    full: '999px',
+    full: '32px',
   },
-  clipPath: cornerCutClipPath(),
+  mask: DIAMOND_PATH,
+};
+
+const SHAPE_SQUIRCLE_DEFAULT = {
+  ...SHAPE_ROUNDED_DEFAULT,
+  mask: SQUIRCLE_PATH,
 };
 
 const BREAKPOINT_DEFAULT = {
@@ -413,6 +488,15 @@ export function generateShapeCSS(config = SHAPE_ROUNDED_DEFAULT) {
       --mdw-shape__large: ${config.size.large};
       --mdw-shape__extra-large: ${config.size.extraLarge};
       --mdw-shape__full: ${config.size.full};
+      --mdw-shape__rounded: ${config.mask ? '0' : '1'};
+      --mdw-shape__outline__background: ${config.mask ? 'currentColor' : 'transparent'};
+      --mdw-shape__convex: ${config.convex ? '1' : '0'};
+      --mdw-shape__mask-border-source: ${config.mask ? svgToCSSURL(getShapeMaskSVG(config.mask)) : 'none'};
+      --mdw-shape__mask-image__top-left: ${config.mask ? svgToCSSURL(getShapeCornerSVGs(config.mask, 'top-left')) : 'none'};
+      --mdw-shape__mask-image__top-right: ${config.mask ? svgToCSSURL(getShapeCornerSVGs(config.mask, 'top-right')) : 'none'};
+      --mdw-shape__mask-image__bottom-right: ${config.mask ? svgToCSSURL(getShapeCornerSVGs(config.mask, 'bottom-right')) : 'none'};
+      --mdw-shape__mask-image__bottom-left: ${config.mask ? svgToCSSURL(getShapeCornerSVGs(config.mask, 'bottom-left')) : 'none'};
+      --mdw-shape__mask-image__edges: ${config.mask ? svgToCSSURL(getShapeEdgesSVGs()) : 'none'};
     }
   `;
 }

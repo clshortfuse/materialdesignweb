@@ -1,6 +1,7 @@
 /* https://m3.material.io/components/dividers/specs */
 
 :host {
+  --mdw-ink: var(--mdw-color__outline-variant);
   position: relative;
 
   display: block;
@@ -10,7 +11,7 @@
   block-size: 0;
   inline-size: 100%;
 
-  color: rgb(var(--mdw-color__outline-variant));
+  color: rgb(var(--mdw-ink));
 }
 
 :host::before {

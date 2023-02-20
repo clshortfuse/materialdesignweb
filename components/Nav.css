@@ -3,11 +3,7 @@
 /* https://m3.material.io/components/navigation-rail/specs */
 
 :host {
-  --mdw-nav-item__badge__font: var(--mdw-typescale__label-small__font);
-  --mdw-nav-item__badge__letter-spacing: var(--mdw-typescale__label-small__letter-spacing);
-  --mdw-nav-item__badge__background: rgb(var(--mdw-color__error));
-  --mdw-nav-item__badge__color: rgb(var(--mdw-color__on-error));
-  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
+  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__2);
 
   --mdw-bg: var(--mdw-color__surface);
   --mdw-ink: var(--mdw-color__on-surface);
@@ -20,12 +16,12 @@
 }
 
 :host([color]:not([color|="surface"])) {
-  --mdw-container__elevation__opacity: 0;
+  --mdw-elevation__opacity__resting: 0;
 }
 
-#nav {
+#shape {
   pointer-events: auto;
 
-  background-color: rgb(var(--mdw-bg));
-  color: rgb(var(--mdw-ink));
+  /* background-color: rgb(var(--mdw-bg)); */
+  /* color: rgb(var(--mdw-ink)); */
 }

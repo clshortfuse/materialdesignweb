@@ -1,23 +1,17 @@
+import Block from '../layout/Block.js';
 import ControlMixin from '../mixins/ControlMixin.js';
+import StateMixin from '../mixins/StateMixin.js';
+import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import TextFieldMixin from '../mixins/TextFieldMixin.js';
 
-import Container from './Container.js';
 import styles from './Select.css' assert { type: 'css' };
 
 /* @implements {HTMLSelectElement} */
 
-/**
- * @template {abstract new (...args: any) => unknown} T
- * @param {InstanceType<T>} instance
- */
-function superOf(instance) {
-  const staticContext = instance.constructor;
-  const superOfStatic = Object.getPrototypeOf(staticContext);
-  return superOfStatic.prototype;
-}
-
-const Select = Container
+const Select = Block
+  .mixin(StateMixin)
   .mixin(ControlMixin)
+  .mixin(SurfaceMixin)
   .mixin(TextFieldMixin)
   .extend()
   .css(styles)
@@ -31,34 +25,32 @@ const Select = Container
     _select() {
       return /** @type {HTMLSelectElement} */ (this.refs.control);
     },
-    /** Locked to false because dropdown */
-    multiple() { return false; },
-    /** Locked to 1 because dropdown */
-    size() { return 1; },
-    type() {
-      return 'select-one';
-    },
+    /** Readonly values */
+    multiple: { value: false },
+    size: { value: 1 },
+    type: { value: 'select-one' },
   })
-  .events('#slot', {
+  .childEvents({
+    slot: {
     /** @param {Event & {currentTarget:HTMLSlotElement}} event */
-    slotchange(event) {
-      const select = this._select;
-      // Skip redundancy check, just replace.
-      let lastChild;
-      while ((lastChild = select.lastChild) != null) {
-        lastChild.remove();
-      }
-      for (const child of event.currentTarget.assignedNodes()) {
-        select.append(child.cloneNode(true));
-      }
-      this._value = select.value;
+      slotchange(event) {
+        const select = this._select;
+        // Skip redundancy check, just replace.
+        let lastChild;
+        while ((lastChild = select.lastChild) != null) {
+          lastChild.remove();
+        }
+        for (const child of event.currentTarget.assignedNodes()) {
+          select.append(child.cloneNode(true));
+        }
+        this._value = select.value;
+      },
     },
   })
-  .methods({
+  .overrides({
     formResetCallback() {
       this._select.value = this.querySelector('option[selected]')?.value ?? '';
-      // this._value = this.#select.value;
-      superOf(this).formResetCallback.call(this);
+      this.super.formResetCallback();
     },
   })
   .on({

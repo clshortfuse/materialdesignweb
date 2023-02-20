@@ -1,7 +1,6 @@
 import './Button.js';
-import './Container.js';
+import './Surface.js';
 import './Icon.js';
-import './Span.js';
 import './DialogActions.js';
 
 import { handleTabKeyPress } from '../aria/modal.js';
@@ -238,7 +237,7 @@ export default CustomElement
           }
           focusElement.focus();
         } else {
-          this.refs.container.focus();
+          this.refs.surface.focus();
         }
       } catch {
       // Failed to focus
@@ -255,11 +254,11 @@ export default CustomElement
     <dialog id=dialog
     ${supportsHTMLDialogElement ? 'aria-model=true' : ''}
     role=dialog aria-hidden=${({ open }) => (open ? 'false' : 'true')} 
-    aria-labelledby=headline>
+    aria-labelledby=headline aria-describedby=slot>
       <div id=scrim aria-hidden=true></div>
-        <mdw-container id=container>
+        <mdw-surface id=surface elevated>
           <mdw-icon _if={icon} id=icon class=content ink=secondary aria-hidden=true>{icon}</mdw-icon>
-          <slot id=headline class=content name=headline on-slotchange={onSlotChange} role=header>{headline}</slot>
+          <slot id=headline name=headline on-slotchange={onSlotChange} role=header>{headline}</slot>
           <slot id=fixed name=fixed class=content on-slotchange={onSlotChange}></slot>
           <mdw-divider id=divider-top size={dividers}></mdw-divider>
           <slot id=slot class="content" on-slotchange={onSlotChange}></slot>
@@ -274,48 +273,50 @@ export default CustomElement
               </mdw-dialog-actions>
             </form>
           </slot>
-        </mdw-container>
+        </mdw-surface>
     </dialog>
   `
-  .events('#dialog', {
-    cancel(event) {
-      event.stopPropagation();
-      const cancelEvent = new Event('cancel', { cancelable: true });
-      if (!this.dispatchEvent(cancelEvent)) {
-        event.preventDefault();
-      }
-    },
-    close(event) {
-      event.stopPropagation();
-      this.close(this.returnValue);
-    },
-  })
-  .events('#scrim', {
-    '~click'() {
-      const cancelEvent = new Event('cancel', { cancelable: true });
-      if (!this.dispatchEvent(cancelEvent)) return;
-      this.close();
-    },
-  })
-  .events('#container', {
-    keydown(event) {
-      if (event.key === 'Tab') {
-        const container = /** @type {HTMLElement} */ (event.currentTarget);
-        if (!this._isNativeModal) {
-          // Move via Light or Shadow DOM, depending on target
-          const context = container.contains(event.target) ? container : this;
-          handleTabKeyPress.call(context, event);
-        }
-        return;
-      }
-      if (event.key === 'Escape' || event.key === 'Esc') {
-        event.preventDefault();
+  .childEvents({
+    dialog: {
+      cancel(event) {
         event.stopPropagation();
         const cancelEvent = new Event('cancel', { cancelable: true });
-        if (this.dispatchEvent(cancelEvent)) {
-          this.close();
+        if (!this.dispatchEvent(cancelEvent)) {
+          event.preventDefault();
         }
-      }
+      },
+      close(event) {
+        event.stopPropagation();
+        this.close(this.returnValue);
+      },
+    },
+    scrim: {
+      '~click'() {
+        const cancelEvent = new Event('cancel', { cancelable: true });
+        if (!this.dispatchEvent(cancelEvent)) return;
+        this.close();
+      },
+    },
+    surface: {
+      keydown(event) {
+        if (event.key === 'Tab') {
+          const surface = /** @type {HTMLElement} */ (event.currentTarget);
+          if (!this._isNativeModal) {
+          // Move via Light or Shadow DOM, depending on target
+            const context = surface.contains(event.target) ? surface : this;
+            handleTabKeyPress.call(context, event);
+          }
+          return;
+        }
+        if (event.key === 'Escape' || event.key === 'Esc') {
+          event.preventDefault();
+          event.stopPropagation();
+          const cancelEvent = new Event('cancel', { cancelable: true });
+          if (this.dispatchEvent(cancelEvent)) {
+            this.close();
+          }
+        }
+      },
     },
   })
   .autoRegister('mdw-dialog');

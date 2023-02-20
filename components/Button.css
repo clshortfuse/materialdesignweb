@@ -1,7 +1,7 @@
 /* https://m3.material.io/components/buttons/specs */
 
 :host {
-  --mdw-shape__size: 20px;
+  --mdw-shape__size: var(--mdw-shape__full);
   --mdw-button__padding-inline-start: 12px;
   --mdw-button__padding-inline-end: 12px;
   --mdw-button__icon__display: none;
@@ -10,10 +10,6 @@
   --mdw-button__icon__margin-inline-end: 8px;
   --mdw-button__icon__opacity: 1;
   --mdw-button__icon__size: 18px;
-  --mdw-button__outline__size: 1px;
-  --mdw-button__outline__visibility: hidden;
-  --mdw-button__outline__opacity: 1;
-  --mdw-button__outline__rgb: var(--mdw-color__outline);
   --mdw-button__touch-target__size: 10mm;
   --mdw-ink: var(--mdw-color__primary);
 
@@ -31,6 +27,7 @@
 
   font: var(--mdw-typescale__label-large__font);
   letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
+  --mdw-outline__rgb__focused: var(--mdw-ink);
 }
 
 :host(:is([color],[surface])) {
@@ -39,7 +36,7 @@
 }
 
 :host(:where([elevated],[filled])) {
-  --mdw-container__will-change: box-shadow;
+  will-change: filter;
   --label-bg: rgb(var(--mdw-bg));
 }
 
@@ -60,7 +57,7 @@
 }
 /** Outlined Color Defaults */
 :host(:where([outlined])) {
-  color: rgb(var(--mdw-color__primary));
+  --mdw-ink: var(--mdw-color__primary);
 }
 
 :host(:where([outlined="surface"])) {
@@ -77,8 +74,8 @@
   --mdw-button__icon__margin-inline-start: 16px;
 }
 
-#label[disabled] {
-  --mdw-button__outline__opacity: 0.12;
+:host(:disabled) #label {
+  --mdw-outline__opacity: 0.12;
 
   cursor: not-allowed;
 
@@ -90,46 +87,32 @@
   color: rgba(var(--mdw-color__on-surface), 0.38);
 }
 
-:host(:focus) {
-  --mdw-button__outline__rgb: var(--mdw-ink);
+#icon[disabled], #slot[disabled] {
+  color: rgba(var(--mdw-color__on-surface), 0.38);
 }
 
 /* Elevation */
 
-/* Use CSS instead of [elevation] to avoid JS calls */
-:host(:where([elevated],[filled]:hover:not(:active))) {
-  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__1);
-  --mdw-container__box-shadow: var(--mdw-container__box-shadow__1);
+:host([filled]) {
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__0);
+  --mdw-elevation__filter__hover: var(--mdw-elevation__filter__1);
 }
 
-:host([elevated]:hover:not(:active)) {
-  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
-  --mdw-container__box-shadow: var(--mdw-container__box-shadow__2);
+:host([elevated]) {
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__1);
+  --mdw-elevation__filter__hover: var(--mdw-elevation__filter__2);
+}
+
+:host([filled][color*="surface"]) {
+  --mdw-elevation__opacity__hover: var(--mdw-elevation__opacity__1);
+}
+
+:host([elevated][color*="surface"]) {
+  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__1);
+  --mdw-elevation__opacity__hover: var(--mdw-elevation__opacity__2);
 }
 
 /* Outlined */
-
-:host([outlined]) {
-  --mdw-button__outline__visibility: visible;
-}
-
-#outline {
-  position: absolute;
-  inset: 0;
-
-  border-style: solid;
-  border-width: var(--mdw-button__outline__size);
-
-  pointer-events: none;
-
-  visibility: var(--mdw-button__outline__visibility);
-
-  border-color: currentColor;
-  border-radius: inherit;
-
-  color: rgba(var(--mdw-button__outline__rgb), var(--mdw-button__outline__opacity));
-  /* box-shadow: 0 0 var(--mdw-button__outline__size) 0 currentColor; */
-}
 
 #icon {
   --mdw-icon__font-variation-settings: var(--mdw-button__icon__font-variation-settings);
@@ -172,7 +155,7 @@
   }
 }
 
-label {
+#label {
   position: relative;
 
   display:flex;
@@ -204,7 +187,6 @@ label {
   z-index: 0;
 
   background-color: var(--label-bg);
-  border-radius: inherit;
   color: inherit;
 
   font-weight: inherit;
@@ -220,6 +202,6 @@ label {
   text-align: center;
 }
 
-#state[touched] ~ #outline {
-  --mdw-button__outline__rgb: var(--mdw-color__outline);
+:host(:disabled) {
+  /* background-color: red !important; */
 }

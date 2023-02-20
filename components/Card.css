@@ -3,10 +3,6 @@
 :host {
   --mdw-shape__size: 12px;
   --mdw-card__elevation__visiblity: visible;
-  --mdw-card__outline__size: 1px;
-  --mdw-card__outline__visibility: hidden;
-  --mdw-card__outline__opacity: 1;
-  --mdw-card__outline__rgb: var(--mdw-color__outline);
 
   position: relative;
 
@@ -24,15 +20,15 @@
   box-shadow: none;
 }
 
-:host([disabled]) {
-  --mdw-card__outline__opacity: 0.12;
+:host([disabled]) #shape {
+  --mdw-outline__opacity: 0.12;
 
   cursor: not-allowed;
 
   color: rgba(var(--mdw-color__on-surface), 0.38);
 }
 
-:host([disabled]:is([elevated],[filled])) {
+:host([disabled]:is([elevated],[filled])) #shape {
   background-color: rgba(var(--mdw-color__on-surface), 0.12);
 }
 
@@ -51,8 +47,8 @@
 #primary-action::slotted(:first-child) {
   --mdw-ink: inherit;
   --mdw-shape__size: inherit;
-  --mdw-container__elevation__opacity: inherit;
-  --mdw-container__box-shadow: inherit;
+  --mdw-surface__elevation__opacity: inherit;
+  --mdw-surface__box-shadow: inherit;
 
   position: absolute;
   inset: 0;
@@ -66,63 +62,39 @@
 }
 
 :host(:where([elevated])) {
-  --mdw-container__will-change: box-shadow;
+  --mdw-surface__will-change: filter;
 
-  background-color: rgb(var(--mdw-color__surface));
-  color: rgb(var(--mdw-color__on-surface));
+  --mdw-bg: var(--mdw-color__surface);
+  --mdw-ink: var(--mdw-color__on-surface);
 }
 
 :host([elevated]) {
-  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__1);
-  --mdw-container__box-shadow: var(--mdw-container__box-shadow__1);
+  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__1);
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__1);
+  --mdw-elevation__opacity__hover: var(--mdw-elevation__opacity__2);
+  --mdw-elevation__filter__hover: var(--mdw-filter__filter__2);
 }
 
 :host(:is([elevated],[filled])[color]:not([color*="surface"])) {
-  --mdw-container__elevation__opacity: 0;
-}
-
-:host([elevated]) #primary-action:hover {
-  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
-  --mdw-container__box-shadow: var(--mdw-container__box-shadow__2);
-}
-
-:host([elevated]) #primary-action:active {
-  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__1);
-  --mdw-container__box-shadow: var(--mdw-container__box-shadow__1);
+  --mdw-elevation__opacity__resting: 0;
+  --mdw-elevation__opacity__hover: 0;
 }
 
 /* Filled */
 
 :host(:where([filled])) {
-  background-color: rgb(var(--mdw-color__surface-variant));
-  color: rgb(var(--mdw-color__on-surface-variant));
+  --mdw-bg: var(--mdw-color__surface-variant);
+  --mdw-ink: var(--mdw-color__on-surface-variant);
 }
 
 :host([filled]) #primary-action:hover {
-  --mdw-container__box-shadow: var(--mdw-container__box-shadow__1);
-}
-
-/* Outlined */
-
-:host([outlined]) {
-  --mdw-card__outline__visibility: visible;
-}
-
-#outline {
-  position: absolute;
-  inset: 0;
-
-  border-style: solid;
-  border-width: var(--mdw-card__outline__size);
-
-  pointer-events: none;
-
-  visibility: var(--mdw-card__outline__visibility);
-
-  border-color: rgba(var(--mdw-card__outline__rgb), var(--mdw-card__outline__opacity));
-  border-radius: inherit;
+  --mdw-surface__box-shadow: var(--mdw-surface__box-shadow__1);
 }
 
 #slot {
   overflow: hidden;
+}
+
+#fieldset {
+  display: contents;
 }

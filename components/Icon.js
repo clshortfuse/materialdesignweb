@@ -1,14 +1,15 @@
 // import fontStyles from 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block' assert { type: 'css'};
 
+import Inline from '../layout/Inline.js';
+
 import styles from './Icon.css' assert { type: 'css' };
-import Span from './Span.js';
 
 /** @typedef {'align'|'border'|'hspace'|'longDesc'|'lowsrc'|'name'|'vspace'} DeprecatedHTMLImageElementProperties */
 
 // https://html.spec.whatwg.org/multipage/embedded-content.html#htmlimageelement
 
 /** @implements {Omit<HTMLImageElement,DeprecatedHTMLImageElementProperties>} */
-export default class Icon extends Span
+export default class Icon extends Inline
   .extend()
   .define({
     _img() { return /** @type {HTMLImageElement} */ (this.refs.img); },
@@ -39,7 +40,7 @@ export default class Icon extends Span
     fontLibrary: { empty: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block' },
   })
   .css(styles)
-  .on('composed', ({ template, html, $ }) => template.append(html`
+  .html/* html */`
     <link rel=stylesheet href={fontLibrary} />
     <div id=icon class={fontClass} aria-hidden="true">
       <svg _if={svg} id=svg viewBox="0 0 24 24" id="svg">
@@ -52,9 +53,11 @@ export default class Icon extends Span
         referrerpolicy={referrerPolicy} decoding={decoding} loading={loading}
         width={width} height={height}
       />
-      ${$('#slot')}
     </div>
-  `)) {
+  `
+  .on('composed', ({ $ }) => {
+    $('#icon').append($('#slot'));
+  }) {
   /**
    * @param {number} [width]
    * @param {number} [height]

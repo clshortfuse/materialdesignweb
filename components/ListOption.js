@@ -7,37 +7,45 @@ import ListItem from './ListItem.js';
 /** @implements {HTMLOptionElement} */
 export default class ListOption extends ListItem
   .extend()
-  .set({
-    delegatesFocus: false,
-    _index: -1,
+  .setStatic({
+    formAssociated: true,
   })
   .set({
-    _dirty: false,
+    delegatesFocus: true,
+    _index: -1,
+    _selectedDirty: false,
+    isInteractive: true,
   })
   .observe({
     // ListOption.prototype._form = ListOption.prop('_form');
     _label: { attr: 'label', nullParser: String },
-    defaultSelected: { attr: 'selected', type: 'boolean' },
+    defaultSelected: { attr: 'selected', reflect: true, type: 'boolean' },
     _selected: 'boolean',
     _value: { attr: 'value', reflect: true },
+    _formDisabled: 'boolean',
   })
   .observe({
     selected: {
       reflect: false,
       type: 'boolean',
-      get({ _dirty, defaultSelected, _selected }) {
-        if (!_dirty) return defaultSelected;
+      get({ _selectedDirty, defaultSelected, _selected }) {
+        console.log('getting ListOption selected');
+        if (!_selectedDirty) return defaultSelected;
         return _selected;
       },
       /** @param {boolean} value */
       set(value) {
-        this._dirty = true;
+        console.log('setting ListOption selected');
+        this._selectedDirty = true;
         this._selected = value;
       },
     },
+    disabledState({ _formDisabled, disabled }) {
+      if (_formDisabled) return true;
+      return !!disabled;
+    },
   })
   .define({
-    isInteractive() { return true; },
     index() { return this._index; },
     form() { return /** @type {import('./ListSelect.js').default} */ (this.parentElement)?.form; },
     label: {
@@ -52,17 +60,27 @@ export default class ListOption extends ListItem
       /** @param {string} value */
       set(value) { this._label = value; },
     },
-
+  })
+  .methods({
+    /** @param {boolean} formDisabled  */
+    formDisabledCallback(formDisabled) {
+      this._formDisabled = formDisabled;
+    },
+    /** @type {HTMLElement['focus']} */
+    focus(...options) {
+      this.refs.anchor.focus(...options);
+    },
   })
   .on({
-    composed({ $, inline }) {
+    composed({ $, inline, html, template }) {
       $('#headline-text').append(
         $('#slot'),
       );
       const anchor = $('#anchor');
       anchor.setAttribute('role', 'option');
-      anchor.setAttribute('aria-disabled', inline(({ disabled }) => (disabled ? 'true' : 'false')));
-      $('#state').setAttribute('state-disabled', 'focus hover');
+      anchor.setAttribute('aria-disabled', inline(({ disabledState }) => (disabledState ? 'true' : 'false')));
+      anchor.setAttribute('tabindex', '0');
+      $('#state').setAttribute('state-disabled', 'focus');
     },
   }) {
   static { this.autoRegister('mdw-list-option'); }

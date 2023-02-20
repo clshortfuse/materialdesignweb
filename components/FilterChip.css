@@ -9,7 +9,7 @@
 }
 
 :host(:focus) {
-  --mdw-button__outline__rgb: var(--mdw-color__outline);
+  --mdw-outline__rgb: var(--mdw-color__outline);
 }
 
 :host([elevated]) {
@@ -18,7 +18,7 @@
 
 #slot,
 #state,
-#ripple,
+#ripple-container,
 #icon {
   color: inherit;
 }
@@ -79,7 +79,7 @@
 }
 
 /** Filter **/
-:host([type="checkbox"]) :is(#slot, #state, #ripple, #icon, #check-icon) {
+:host([type="checkbox"]) :is(#slot, #state, #ripple-container, #icon, #check-icon) {
   color: inherit;
 }
 

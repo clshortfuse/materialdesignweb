@@ -3,17 +3,16 @@
 :host {
   --mdw-ink: var(--mdw-color__on-primary);
   --mdw-bg: var(--mdw-color__primary);
+  --mdw-shape__size: var(--mdw-shape__full);
 
   flex-direction: var(--mdw-switch__direction, row);
   gap: var(--mdw-switch__gap, 8px);
+
 }
 
-:host(:is([color], [ink], [bg])) {
-  background-color: transparent;
-  color: inherit;
-}
+#label {
+  position: relative;
 
-label {
   display: flex;
   align-items: center;
   flex-direction: inherit;
@@ -21,13 +20,12 @@ label {
 
   cursor: pointer;
 
-  border-radius: 50%;
+  /* border-radius: 50%; */
 }
 
-#track {
-  --x: 14px;
-  --scale: calc(16/24);
+/** Track **/
 
+#track {
   position: relative;
 
   display: flex;
@@ -36,49 +34,74 @@ label {
   box-sizing: border-box;
   block-size: 32px;
   inline-size: 52px;
-  border: solid 2px rgb(var(--mdw-color__outline));
+}
+
+/** Track Shape **/
+
+#track-shape{
+  z-index: 0;
 
   background-color: rgb(var(--mdw-color__surface-variant));
-  border-radius: 99px;
-  /* Content Area = 48x28 */
+
 }
 
-:dir(rtl) #track {
-  --mdw-dir: -1;
-}
-
-#track[selected] {
-  --scale: calc(24/24);
-  --x: calc(48px - 14px);
-
+#track-shape[selected] {
   background-color: rgb(var(--mdw-bg));
-  border-color: rgb(var(--mdw-bg));
-  color: rgb(var(--mdw-ink));
-  /* State */
 }
 
-:host(:active:not([disabled])) #track {
-  --scale: calc(28/24);
+/** Track Outline **/
+
+#outline {
+  filter:
+    drop-shadow(1px 0px 0px currentColor)
+    drop-shadow(0px 1px 0px currentColor)
+    drop-shadow(-1px 0px 0px currentColor)
+    drop-shadow(0px -1px 0px currentColor);
 }
+
+/* #outline[selected] {
+  color: transparent;
+} */
+
+/** Thumb **/
 
 #thumb {
+  --x: 16px;
+  --scale: calc(16/24);
   position: absolute;
   inset-inline-start: 0;
 
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   /* Sized to state layer */
   block-size: 40px;
   inline-size: 40px;
 
   transform: translateX(calc(var(--mdw-dir, 1) * -50%)) translateX(calc(var(--mdw-dir,1) * var(--x)));
 
-  border-radius: 50%;
+  color: rgb(var(--mdw-color__outline));
 }
 
-#thumb::before {
-  content: '';
+:dir(rtl) #thumb {
+  --mdw-dir: -1;
+}
+
+#thumb[selected] {
+  --scale: calc(24/24);
+  --x: calc(52px - 16px);
+  color: rgb(var(--mdw-ink));
+}
+
+#thumb[pressed]:not([disabled]) {
+  --scale: calc(28/24);
+}
+
+/** Thumb Shape **/
+
+#thumb-shape {
+  --mdw-shape__size: inherit;
 
   position: absolute;
 
@@ -86,14 +109,17 @@ label {
   inline-size: 24px;
 
   transform: scale(var(--scale));
+  z-index: 0;
 
-  background-color: rgb(var(--mdw-color__outline));
-  border-radius: 50%;
+  background-color: currentColor;
+  /* border-radius: 50%; */
 }
 
-:host(:is([icon], [src], [unselected-icon], [unselected-src])) #thumb::before {
+#thumb-shape[icon] {
   transform: scale(max(1, var(--scale)));
 }
+
+/** Thumb Icons **/
 
 .icon {
   --mdw-icon__size: 16px;
@@ -103,7 +129,7 @@ label {
   opacity: 0;
   transform: scale(max(1, var(--scale)));
 
-  border-radius: 50%;
+  /* border-radius: 50%; */
 }
 
 .icon:not([src]):empty {
@@ -114,11 +140,6 @@ label {
   color: rgb(var(--mdw-bg));
 }
 
-#track[selected] #thumb::before {
-  background-color: rgb(var(--mdw-ink));
-  color: rgb(var(--mdw-bg));
-}
-
 #icon, #unselected-icon {
   --mdw-icon__font-variation-settings: 'FILL' 0;
   opacity: 1;
@@ -126,27 +147,60 @@ label {
   color: rgb(var(--mdw-color__surface-variant));
 }
 
-#track[selected] #unselected-icon {
+#unselected-icon[selected] {
   opacity: 0;
 }
 
-#track[selected] #selected-icon {
+#selected-icon[selected] {
   opacity: 1;
 }
 
-#track[selected] #icon {
+#icon[selected] {
   --mdw-icon__font-variation-settings: 'FILL' 1;
   color: rgb(var(--mdw-bg));
 }
 
-:host([disabled]) label {
-  --mdw-ink: var(--mdw-color__surface);
-  --mdw-bg: var(--mdw-color__on-surface);
+/** State **/
+
+#state {
+  position: absolute;
+  inset-inline-start: 0;
+
+  block-size: 40px;
+  inline-size: 40px;
+
+  border-radius: 50%;
+}
+
+/** Disabled **/
+
+#label[disabled] {
+  --mdw-ink: var(--mdw-color__on-surface); /* selected icon */
+  --mdw-bg: var(--mdw-color__surface);
   cursor: not-allowed;
 
   opacity: 0.38;
 }
 
-:host([disabled]) #track {
+#outline[disabled] {
+  color: rgb(var(--mdw-color__on-surface));
+}
+
+#thumb[disabled] {
+  color: rgb(var(--mdw-color__on-surface));
+}
+
+#track-shape[disabled] {
+  background-color: rgb(var(--mdw-color__surface-variant));
   opacity: calc(0.12/0.38);
+}
+
+#track-shape[disabled][selected] {
+  background-color: rgb(var(--mdw-color__on-surface));
+}
+
+/** Outline Selected (Enabled/Disabled) */
+
+#outline[selected] {
+  color: transparent;
 }

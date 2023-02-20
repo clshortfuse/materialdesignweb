@@ -1,166 +1,115 @@
+import Ripple from '../components/Ripple.js';
+
+/** @typedef {import('../components/Ripple.js').default} Ripple */
+
 import styles from './RippleMixin.css' assert { type: 'css' };
-import StateMixin from './StateMixin.js';
 
 /**
- * @param {typeof import('../core/CustomElement.js').default} Base
+ * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function RippleMixin(Base) {
   return Base
-    .mixin(StateMixin)
     .extend()
+    .css(styles)
+    .set({
+      /** @type {WeakRef<InstanceType<Ripple>>} */
+      _lastRippleWeakRef: null,
+      /** Flag set if ripple was added this event loop. */
+      _rippleAdded: false,
+    })
     .define({
-      _ripple() { return this.refs.ripple; },
-      _rippleInner() { return this.refs['ripple-inner']; },
-      rippleActiveTarget() { return this; },
-      /* Where ripple should originate from */
-      rippleOrigin() { return /** @type {'center'|'pointer'} */ 'pointer'; },
+      _lastRipple: {
+        get() {
+          const element = this._lastRippleWeakRef?.deref();
+          if (element?.isConnected) return element;
+          return null;
+        },
+        set(ripple) {
+          this._lastRippleWeakRef = ripple ? new WeakRef(ripple) : null;
+        },
+      },
     })
     .methods({
       /**
        * @param {number} [x]
        * @param {number} [y]
-       * @return {void}
+       * @param {boolean} [hold]
+       * @return {InstanceType<Ripple>}
        */
-      updateRipplePosition(x, y) {
-        let width;
-        let height;
-        const ripple = this._ripple;
-        const rippleInner = this._rippleInner;
-        if (!rippleInner || !rippleInner.isConnected) return;
-        const { clientWidth, clientHeight } = ripple;
-
-        if (this.rippleOrigin === 'center' || x == null || y == null) {
-          // eslint-disable-next-line no-param-reassign, no-multi-assign
-          x = width = clientWidth / 2;
-          // eslint-disable-next-line no-param-reassign, no-multi-assign
-          y = height = clientHeight / 2;
-        } else {
-          // Distance from furthest side
-          width = (x >= clientWidth / 2) ? x : (clientWidth - x);
-          height = (y >= clientHeight / 2) ? y : (clientHeight - y);
+      addRipple(x, y, hold) {
+        const container = this.refs['ripple-container'];
+        if (!container.isConnected) return null; // Detached?
+        const ripple = new Ripple();
+        this._rippleAdded = true;
+        queueMicrotask(() => {
+          // Reset before next event loop;
+          this._rippleAdded = false;
+        });
+        this.refs['ripple-container'].appendChild(ripple);
+        if (hold) {
+          ripple.holdRipple = true;
         }
-
-        const hypotenuse = Math.sqrt((width * width) + (height * height));
-
-        const expandDuration = Math.min(
-          500, // Never longer than long-press duration
-          (1000 * Math.sqrt(hypotenuse / 2 / 1024) + 0.5), // From Android
-        );
-        rippleInner.style.setProperty('--size', `${hypotenuse}px`);
-        rippleInner.style.setProperty('--mdw-ripple-expand-duration', `${expandDuration.toFixed(0)}ms`);
-
-        rippleInner.style.setProperty('left', `${x - (hypotenuse / 2)}px`);
-        rippleInner.style.setProperty('top', `${y - (hypotenuse / 2)}px`);
-      },
-      /**
-       * @param {'key'|'mouse'|'touch'|'click'} [initiator]
-       * @param {number} [x]
-       * @param {number} [y]
-       * @return {void}
-       */
-      drawRipple(initiator, x, y) {
-        const rippleInner = this._rippleInner;
-        if (!rippleInner || !rippleInner.isConnected) return;
-        const currentInitiator = rippleInner.getAttribute('mdw-fade-in');
-
-        // Abort ripple if different initiator
-        if (currentInitiator && currentInitiator !== initiator) return;
-
-        this.updateRipplePosition(x, y);
-        rippleInner.setAttribute('mdw-fade-in', initiator);
-
-        // Repeat the animation
-        if (currentInitiator === initiator) {
-          // Remove complete state of fade-in
-          rippleInner.removeAttribute('mdw-fade-in-complete');
-          // Alternate between normal fade-in to repeat fade-in
-          if (rippleInner.hasAttribute('mdw-fade-in-repeat')) {
-            rippleInner.removeAttribute('mdw-fade-in-repeat');
-          } else {
-            rippleInner.setAttribute('mdw-fade-in-repeat', '');
-          }
-        }
-      },
-
-      /** @return {void} */
-      clearRipple() {
-        const rippleInner = this._rippleInner;
-        if (!rippleInner || !rippleInner.isConnected) return;
-        if (!rippleInner.hasAttribute('mdw-fade-in')) return;
-        if (!rippleInner.hasAttribute('mdw-fade-in-complete')) return;
-        rippleInner.removeAttribute('mdw-fade-in');
-        rippleInner.removeAttribute('mdw-fade-in-repeat');
-        rippleInner.removeAttribute('mdw-fade-in-complete');
-        rippleInner.setAttribute('mdw-fade-out', '');
+        ripple.updatePosition(x, y);
+        this._lastRipple = ripple;
+        return ripple;
       },
     })
-    .css(styles)
     .html/* html */`
-      <div id=ripple aria-hidden=true><div id=ripple-inner></div></div>
+      <div id=ripple-container _if={!disabledState} aria-hidden=true></div>
     `
-    .events('#ripple-inner', {
-      animationend({ animationName, currentTarget }) {
-        switch (animationName) {
-          case 'ripple-fade-in':
-          case 'ripple-fade-in-repeat':
-            currentTarget.setAttribute('mdw-fade-in-complete', '');
-            break;
-          case 'ripple-fade-out':
-            currentTarget.removeAttribute('mdw-fade-in');
-            currentTarget.removeAttribute('mdw-fade-in-repeat');
-            currentTarget.removeAttribute('mdw-fade-in-complete');
-            currentTarget.removeAttribute('mdw-fade-out');
-            break;
-          default:
-        }
-      },
-    })
     .events({
-      '~mousedown'(event) {
+      '~pointerdown'(event) {
         if (event.button) return;
+        if (this.disabledState) return;
 
-        const { ripple } = this.refs;
-        if (!ripple) return;
-        const rect = ripple.getBoundingClientRect();
+        const container = this.refs['ripple-container'];
+        if (!container.isConnected) return; // Detached?
+        const rect = this.refs['ripple-container'].getBoundingClientRect();
         const x = event.pageX - rect.left - window.pageXOffset;
         const y = event.pageY - rect.top - window.pageYOffset;
-        this.drawRipple('mouse', x, y);
+        const lastRipple = this._lastRipple;
+        if (lastRipple) {
+          lastRipple.holdRipple = false;
+        }
+        console.debug('ripple from pointerdown');
+        this.addRipple(x, y);
       },
-      '~touchstart'(event) {
-        const [touch] = event.changedTouches;
-        if (!touch) return;
-
-        const { ripple } = this.refs;
-        if (!ripple) return;
-        const rect = ripple.getBoundingClientRect();
-        const x = touch.pageX - rect.left - window.pageXOffset;
-        const y = touch.pageY - rect.top - window.pageYOffset;
-        this.drawRipple('touch', x, y);
-      },
-      '~click'() {
-        this.drawRipple('click');
-        // requestAnimationFrame(() => this.clearRipple());
-      },
-      '~keydown'(event) {
-        if (event.repeat) return;
-
-        requestAnimationFrame(() => {
-          if (!this.rippleActiveTarget.matches(':active')) return;
-          this.drawRipple('key');
-        });
+      '~click'(e) {
+        if (this._rippleAdded) {
+          // Avoid double event
+          return;
+        }
+        if (e.pointerType || e.detail) return;
+        if (this.disabledState) return;
+        if (this._pressed) return;
+        const lastRipple = this._lastRipple;
+        if (lastRipple) {
+          lastRipple.holdRipple = false;
+        }
+        console.debug('ripple from programmatic click');
+        this.addRipple();
       },
     })
     .on({
-      connected() {
-        const rippleInner = this._rippleInner;
-        if (!rippleInner) return;
-        rippleInner.removeAttribute('mdw-fade-in');
-        rippleInner.removeAttribute('mdw-fade-in-repeat');
-        rippleInner.removeAttribute('mdw-fade-in-complete');
-        rippleInner.removeAttribute('mdw-fade-out');
-      },
-      disconnected() {
-        this.clearRipple();
+      _pressedChanged(oldValue, pressed) {
+        const ripple = this._lastRipple;
+        if (!pressed) {
+          if (ripple) {
+            ripple.holdRipple = false;
+          }
+          return;
+        }
+        if (!ripple || ripple.hadRippleReleased) {
+          if (this._lastInteraction !== 'key') {
+            // Sometimes pointer events may be out of order
+            return;
+          }
+          console.debug('ripple from press state');
+          this.addRipple(null, null, true);
+          return;
+        }
+        if (ripple.hadRippleHeld) return;
+        ripple.holdRipple = true;
       },
     });
 }

@@ -46,11 +46,12 @@
 }
 
 #elevation {
-  z-index: 1
+  position: 0;
+  z-index: 1;
 }
 
-:host([raised]) {
-  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
+#elevation[raised] {
+  opacity: 0.08;
 }
 
 :host([color]:not([color|="surface"])) #elevation,

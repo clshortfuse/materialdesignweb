@@ -1,6 +1,7 @@
+import Inline from '../layout/Inline.js';
 import InputMixin from '../mixins/InputMixin.js';
+import StateMixin from '../mixins/StateMixin.js';
 
-import Container from './Container.js';
 import styles from './Slider.css' assert { type: 'css' };
 
 /**
@@ -28,11 +29,13 @@ function valueAsFraction(value, min, max) {
   return (nValue - nMin) / (nMax - nMin);
 }
 
-export default Container
+export default Inline
+  .mixin(StateMixin)
   .mixin(InputMixin)
   .extend()
-  .define({
-    type() { return 'range'; },
+  .set({
+    stateLayer: true,
+    type: 'range',
   })
   .observe({
     ticks: 'string',
@@ -40,7 +43,6 @@ export default Container
     _previewValue: { nullable: false },
     _roundedValue: 'float',
     _isHoveringThumb: 'boolean',
-    _isFocused: 'boolean',
   })
   .methods({
     /**
@@ -51,7 +53,7 @@ export default Container
       const input = event.currentTarget;
       if (input.disabled) return;
 
-      if (this.hasAttribute('disabled')) return;
+      if (this.disabledState) return;
 
       if (event.type === 'touchend') {
         this._isHoveringThumb = false;
@@ -151,24 +153,20 @@ export default Container
     blur: 'onLeaveEvent',
     mouseout: 'onLeaveEvent',
   })
-  .events('#control', {
-    '~mousedown': 'onControlMouseOrTouch',
-    '~mousemove': 'onControlMouseOrTouch',
-    '~mouseout': 'onControlMouseOrTouch',
-    '~touchmove': 'onControlMouseOrTouch',
-    '~touchstart': 'onControlMouseOrTouch',
-    // @ts-expect-error Old spec
-    '~touchleave': 'onControlMouseOrTouch',
-    '~touchcancel': 'onControlMouseOrTouch',
-    '~touchend': 'onControlMouseOrTouch',
-    focus() {
-      this._isFocused = true;
+  .childEvents({
+    control: {
+      '~mousedown': 'onControlMouseOrTouch',
+      '~mousemove': 'onControlMouseOrTouch',
+      '~mouseout': 'onControlMouseOrTouch',
+      '~touchmove': 'onControlMouseOrTouch',
+      '~touchstart': 'onControlMouseOrTouch',
+      // @ts-expect-error Old spec
+      '~touchleave': 'onControlMouseOrTouch',
+      '~touchcancel': 'onControlMouseOrTouch',
+      '~touchend': 'onControlMouseOrTouch',
+      touchend: 'onControlFinish',
+      click: 'onControlFinish',
     },
-    blur() {
-      this._isFocused = false;
-    },
-    touchend: 'onControlFinish',
-    click: 'onControlFinish',
   })
   .css(styles)
   .expressions({
@@ -179,22 +177,24 @@ export default Container
       ].filter(Boolean).join(';') || null;
     },
   })
-  .html/* html */`
-    <div id=track aria-hidden=true style={computeTrackStyle} disabled={disabled}>
-      <div _if={ticks} id=ticks></div>
-      <div id="track-active"></div>
-      <div id="thumb-anchor">
-        <div id=thumb></div>
-        <div id="thumb-label"
-          hidden=${({ _isHoveringThumb, _isFocused }) => (!_isHoveringThumb && !_isFocused)} 
-          text={_previewValue}></div>
+  .on('composed', ({ $, template, html }) => {
+    template.append(html`
+      <div id=track style={computeTrackStyle} aria-hidden=true disabled={disabledState}>
+        <div _if={ticks} id=ticks></div>
+        <div id="track-active"></div>
+        <div id="thumb-anchor">
+          <div id=thumb>
+            ${$('#state')}
+          </div>
+          <div id="thumb-label"
+            hidden=${({ _isHoveringThumb, focusedState }) => (!_isHoveringThumb && !focusedState)} 
+            text={_previewValue}></div>
+        </div>
       </div>
-    </div>
-  `
-  .on('composed', ({ $ }) => {
-    $('#thumb').append($('#state')); // Place state inside thumb
+    `);
+    $('#label').removeAttribute('aria-labelledby');
     $('#control').setAttribute('type', 'range');
-    $('#ripple').remove();
+    $('#slot').remove();
   })
   .on('valueChanged', (oldValue, newValue, element) => {
     element._previewValue = newValue;

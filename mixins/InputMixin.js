@@ -20,7 +20,7 @@ const IMPLICIT_SUBMISSION_BLOCKING_TYPES = new Set([
 ]);
 
 /**
- * @param {typeof import('../core/CustomElement.js').default} Base
+ * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function InputMixin(Base) {
   class Input extends ControlMixin(Base) {
@@ -88,7 +88,9 @@ export default function InputMixin(Base) {
             case 'radio':
               if (newValue) {
                 this.elementInternals.setFormValue(this.value ?? 'on');
-                this._notifyRadioChange(this.name, this.value ?? 'on');
+                if (this.type === 'radio') {
+                  this._notifyRadioChange(this.name, this.value ?? 'on');
+                }
               } else {
                 this.elementInternals.setFormValue(null);
               }
@@ -135,48 +137,56 @@ export default function InputMixin(Base) {
           label.setAttribute('indeterminate', '{indeterminate}');
         },
       });
-      this.events('#control', {
+      this.childEvents({
+        control: {
         /**
          * @param {Event & {currentTarget: HTMLInputElement}} event
          * @type {any}
          */
-        '~click'(event) {
-          const input = event.currentTarget;
-          if (event.defaultPrevented) return;
-          if (input.type !== 'radio') return;
-          if (input.required) return;
-
-          if (this.checked) {
-            this.checked = false;
-            // event.preventDefault();
-          }
-        },
-        keydown(event) {
-          if (event.defaultPrevented) return;
-          const input = /** @type {HTMLInputElement} */ (event.currentTarget);
-          if (event.key === 'Enter') {
-            if (input.type === 'submit') return;
-            this.performImplicitSubmission(event);
-            return;
-          }
-          if (input.type !== 'radio') return;
-          if (event.key === 'Spacebar' || event.key === ' ') {
+          '~click'(event) {
+            console.log('control get click event');
+            const input = event.currentTarget;
+            if (event.defaultPrevented) return;
+            if (input.type === 'radio' || input.type === 'checkbox') {
+              console.log('Input clicked', event.composedPath());
+              /* Avoid two click events */
+              // event.stopPropagation();
+            }
+            if (input.type !== 'radio') return;
             if (input.required) return;
 
             if (this.checked) {
               this.checked = false;
-              event.preventDefault();
+            // event.preventDefault();
             }
-          }
-        },
-        change(event) {
-          if (this.hasAttribute('disabled')) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            return;
-          }
-          const input = /** @type {HTMLInputElement} */ (event.currentTarget);
-          this.checked = input.checked;
+          },
+          keydown(event) {
+            if (event.defaultPrevented) return;
+            const input = /** @type {HTMLInputElement} */ (event.currentTarget);
+            if (event.key === 'Enter') {
+              if (input.type === 'submit') return;
+              this.performImplicitSubmission(event);
+              return;
+            }
+            if (input.type !== 'radio') return;
+            if (event.key === 'Spacebar' || event.key === ' ') {
+              if (input.required) return;
+
+              if (this.checked) {
+                this.checked = false;
+                event.preventDefault();
+              }
+            }
+          },
+          change(event) {
+            if (this.disabledState) {
+              event.preventDefault();
+              event.stopImmediatePropagation();
+              return;
+            }
+            const input = /** @type {HTMLInputElement} */ (event.currentTarget);
+            this.checked = input.checked;
+          },
         },
       });
     }
@@ -194,7 +204,7 @@ export default function InputMixin(Base) {
       const submissionBlockers = new Set();
       for (const element of /** @type {HTMLCollectionOf<HTMLInputElement>} */ (form.elements)) {
         // Spec doesn't specify disabled, but browsers do skip them.
-        if (element.type === 'submit' && !element.disabled) {
+        if (element.type === 'submit' && !element.disabled && !element.matches(':disabled')) {
           defaultButton ??= element;
           break;
         }
@@ -232,7 +242,7 @@ export default function InputMixin(Base) {
 
     formResetCallback() {
       this.#input.value = this.defaultValue;
-      this.#input.checked = this.checked;
+      this.#input.checked = this.defaultChecked;
       this._value = this.#input.value;
       this._checked = this.#input.checked;
       this._checkedDirty = false;

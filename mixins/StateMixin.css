@@ -3,7 +3,7 @@
 :host {
   --mdw-state__hover-opacity: 0.08;
   --mdw-state__focus-opacity: 0.12;
-  --mdw-state__pressed-opacity: 0.12;
+  --mdw-state__pressed-opacity: 0;
   --mdw-state__dragged-opacity: 0.12;
   position: relative;
 
@@ -23,11 +23,11 @@
   pointer-events: none;
 
   opacity: calc(
-      var(--mdw-state__hover-opacity) +
-      var(--mdw-state__focus-opacity) +
-      var(--mdw-state__pressed-opacity) +
-      var(--mdw-state__dragged-opacity)
-    );
+    var(--mdw-state__hover-opacity) +
+    var(--mdw-state__focus-opacity) +
+    var(--mdw-state__pressed-opacity) +
+    var(--mdw-state__dragged-opacity)
+  );
   /* opacity handled by theme engine */
   background-color: currentColor;
   border-radius: inherit;
@@ -44,26 +44,27 @@
 }
 
 /* Remove Hover State */
-:host(:not(:hover)) #state,
 #state:is(
-  [disabled]:not([state-disabled~="hover"]),
-  [state-off~="hover"]) {
+:not([hovered]),
+[disabled]:not([state-disabled~="hover"]),
+[state-off~="hover"]) {
   --mdw-state__hover-opacity: 0;
 }
 
 /* Remove Focus State */
-:host(:not(:focus)) #state,
 #state:is(
-  [disabled]:not([state-disabled~="focus"]),
-  [state-off~="focus"]) {
+:not([focused]),
+[disabled]:not([state-disabled~="focus"]),
+[state-off~="focus"]) {
   --mdw-state__focus-opacity: 0;
 }
 
 /* Remove Pressed State */
-:host(:not(:active)) #state,
+
 #state:is(
-  [disabled]:not([state-disabled~="pressed"]),
-  [state-off~="pressed"]) {
+:not([pressed]),
+[disabled]:not([state-disabled~="pressed"]),
+[state-off~="pressed"]) {
   --mdw-state__pressed-opacity: 0;
 }
 

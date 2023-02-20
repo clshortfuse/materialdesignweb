@@ -1,15 +1,21 @@
 import './Icon.js';
+import Inline from '../layout/Inline.js';
 import InputMixin from '../mixins/InputMixin.js';
+import StateMixin from '../mixins/StateMixin.js';
+import SurfaceMixin from '../mixins/SurfaceMixin.js';
 
-import Container from './Container.js';
 import styles from './Switch.css' assert { type: 'css' };
 import animationStyles from './SwitchAnimations.css' assert { type: 'css' };
 
-export default Container
+export default Inline
+  .mixin(StateMixin)
+  // Switches have their own pressed animation (No ripple)
+  .mixin(SurfaceMixin)
   .mixin(InputMixin)
   .extend()
-  .define({
-    type() { return 'checkbox'; },
+  .set({
+    type: 'checkbox',
+    stateLayer: true,
   })
   .observe({
     icon: 'string',
@@ -24,14 +30,32 @@ export default Container
     animationStyles,
   )
   .on('composed', ({ $, html }) => {
+    const trackShape = $('#shape');
+    trackShape.id = 'track-shape';
+    trackShape.setAttribute('selected', '{checked}');
+    trackShape.setAttribute('disabled', '{disabledState}');
+    trackShape.setAttribute('aria-hidden', 'true');
+
+    const state = $('#state');
+    state.classList.add('moving-target');
+
+    const outline = $('#outline');
+    outline.removeAttribute('_if');
+    outline.setAttribute('selected', '{checked}');
+    const slot = $('#slot');
+    $('#slot').removeAttribute('color');
+    $('#slot').removeAttribute('ink');
     $('#label').append(html`
-      <div id=track selected={checked} aria-hidden=true>
-        <div id=thumb>
-          <mdw-icon class=icon id=icon src={src}>{icon}</mdw-icon>
-          <mdw-icon class=icon id=selected-icon src={selectedIconSrc}>{selectedIcon}</mdw-icon>
-          <mdw-icon class=icon id=unselected-icon src={unselectedIconSrc}>{unselectedIcon}</mdw-icon>
-          ${$('#state')}
-          ${$('#ripple')}
+      ${slot}
+      <div id="track" selected={checked} pressed={pressedState}>
+        ${trackShape}
+        <div id=thumb selected={checked} pressed={pressedState} disabled={disabledState}>
+          <div id=thumb-shape class=shape selected={checked}
+          icon=${({ icon, src, unselectedIcon, unselectedSrc }) => Boolean(icon || src || unselectedIcon || unselectedSrc)}></div>
+          <mdw-icon class=icon id=icon src={src} selected={checked}>{icon}</mdw-icon>
+          <mdw-icon class=icon id=selected-icon src={selectedIconSrc} selected={checked}>{selectedIcon}</mdw-icon>
+          <mdw-icon class=icon id=unselected-icon src={unselectedIconSrc} selected={checked}>{unselectedIcon}</mdw-icon>
+          ${state}
         </div>
       </div>
     `);

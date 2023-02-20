@@ -47,68 +47,6 @@
   display: none;
 }
 
-:host([position~="top"]) {
-  inset-block: 0 auto;
-}
-
-:host([position~="bottom"]) {
-  inset-block: auto 0;
-}
-
-:host([position~="vcenter"]) {
-  inset-block: 50% auto;
-}
-/** Horizontal Position */
-:host([position~="start"]) {
-  inset-inline: auto 100%;
-}
-
-:host([position~="end"]) {
-  inset-inline: 100% auto;
-}
-
-:host([position~="left"]) {
-  /* stylelint-disable-next-line liberty/use-logical-spec */
-  right: 100%;
-  /* stylelint-disable-next-line liberty/use-logical-spec */
-  left: auto;
-}
-
-:host([position~="right"]) {
-  /* stylelint-disable-next-line liberty/use-logical-spec */
-  right: auto;
-  /* stylelint-disable-next-line liberty/use-logical-spec */
-  left: 100%;
-}
-
-:host([position~="hcenter"]) {
-  inset-inline: 50% auto;
-}
-/** Vertical Direction */
-:host([direction~="down"]) {
-  /* --mdw-menu__transform-origin-y: top; */
-}
-
-:host([direction~="up"]) {
-  --mdw-menu__transform-origin-y: bottom;
-}
-/** Horizontal Direction */
-:host([direction~="normal"]) {
-  /* --mdw-menu__transform-origin-x: var(--mdw-menu__transform-origin-inline-start); */
-}
-
-:host([direction~="reverse"]) {
-  --mdw-menu__transform-origin-x: var(--mdw-menu__transform-origin-inline-end);
-}
-
-:host([mdw-direction~="ltr"]) {
-  --mdw-menu__transform-origin-x: left;
-}
-
-:host([mdw-direction~="rtl"]) {
-  --mdw-menu__transform-origin-x: right;
-}
-
 dialog {
   position: fixed;
   inset: 0;
@@ -191,31 +129,34 @@ form {
   inline-size: 200%;
 }
 
-#container {
+#surface {
   --mdw-shape__size: var(--mdw-shape__extra-small);
-  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__2);
-  --mdw-container__box-shadow: var(--mdw-container__box-shadow__2);
+  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__2);
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__2);
   position: relative;
 
   display: inline-flex;
+
+  inline-size: calc(var(--mdw-menu__size) * var(--mdw-menu__inline-base));
+  min-inline-size: calc(var(--mdw-menu__inline-base) * 2);
+  max-inline-size: 100vw;
+  flex:1;
+
+  pointer-events: auto;
+  /* background-color: rgb(var(--mdw-color__surface)); */
+  /* color: rgb(var(--mdw-color__on-surface)); */
+  will-change: inset-block-start, inset-inline-start;
+}
+
+#surface::part(shape) {
+  display: inline-flex;
   align-items: stretch;
-  flex-direction: column;
   flex-direction: column;
   overflow-y: auto;
   overscroll-behavior: none;
   overscroll-behavior: contain;
 
-  inline-size: calc(var(--mdw-menu__size) * var(--mdw-menu__inline-base));
-  min-inline-size: calc(var(--mdw-menu__inline-base) * 2);
-  max-inline-size: 100vw;
   padding-block: 8px;
-
-  pointer-events: auto;
-
-  background-color: rgb(var(--mdw-color__surface));
-  color: rgb(var(--mdw-color__on-surface));
-
-  will-change: top, left;
 }
 
 :host([modal]) #scrim {

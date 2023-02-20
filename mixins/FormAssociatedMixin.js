@@ -7,11 +7,9 @@
 const DOMString = { nullParser: String };
 
 const FORM_IPC_EVENT = 'mdw-form-associated-changed';
-const GlobalListener = new EventTarget();
 
 /**
- * @template {typeof import('../core/CustomElement.js').default} T
- * @param {T} Base
+ * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function FormAssociatedMixin(Base) {
   return Base
@@ -47,28 +45,14 @@ export default function FormAssociatedMixin(Base) {
       _invalid: 'boolean',
       _badInput: 'boolean',
       _validationMessage: 'string',
-      _disabled: {
+      _formDisabled: {
         type: 'boolean',
         reflect: true,
-        attr: 'disabled',
+        attr: 'disabled2',
       },
-      _formDisabled: 'boolean',
     })
     .observe({
-      disabled: {
-        reflect: false,
-        type: 'boolean',
-        get({ _formDisabled, _disabled }) {
-          if (_formDisabled) return true;
-          return _disabled;
-        },
-        /**
-         * @param {boolean} value
-         */
-        set(value) {
-          this._disabled = value;
-        },
-      },
+      erroredState({ _invalid }) { return _invalid; },
     })
     .define({
       form() { return this.elementInternals.form; },
@@ -87,11 +71,10 @@ export default function FormAssociatedMixin(Base) {
         },
       },
     })
-    .on({
-      constructed() {
-        if (!this.hasAttribute('tabindex')) {
-          this.tabIndex = 0;
-        }
+    .observe({
+      disabledState({ _formDisabled, disabled }) {
+        if (_formDisabled) return true;
+        return !!disabled;
       },
     })
     .methods({
@@ -122,9 +105,9 @@ export default function FormAssociatedMixin(Base) {
       },
 
       refreshFormAssociation() {
-        const newTarget = this.elementInternals.form ?? GlobalListener;
+        const newTarget = this.elementInternals.form ?? this.getRootNode();
         if (newTarget === this._ipcTarget) {
-          console.warn('Already associated?', newTarget);
+          // console.warn('Already associated?', newTarget);
           return;
         }
         if (this._ipcTarget) {
@@ -144,7 +127,6 @@ export default function FormAssociatedMixin(Base) {
        * @return {void}
        */
       formAssociatedCallback(form) {
-        console.log('formAssociatedCallback', this, form);
         this.refreshFormAssociation();
       },
 
@@ -154,11 +136,11 @@ export default function FormAssociatedMixin(Base) {
        */
 
       formIPCEvent(event) {
+        console.warn('Virtual formIPCEvent invoked.');
         // virtual
       },
 
-      // New lifecycle callback. This is called when ‘disabled’ attribute of
-      // this element or an ancestor <fieldset> is updated.
+      /** @param {boolean} disabled */
       formDisabledCallback(disabled) {
         this._formDisabled = disabled;
       },
@@ -169,12 +151,10 @@ export default function FormAssociatedMixin(Base) {
       },
 
       /**
-       *
        * @param {string|FormData} state
        * @param {'autocomplete'|'restore'} mode
        */
       formStateRestoreCallback(state, mode) {
-        console.log('formStateRestoreCallback', state);
         if (typeof state === 'string') {
           this.value = state;
         } else {
@@ -184,5 +164,16 @@ export default function FormAssociatedMixin(Base) {
     })
     .events({
       blur() { this.checkValidity(); },
+    })
+    .on({
+      constructed() {
+        if (!this.hasAttribute('tabindex')) {
+          this.tabIndex = 0;
+        }
+      },
+      connected() {
+        // Bind to global if no form is present (used by radio)
+        this.refreshFormAssociation();
+      },
     });
 }

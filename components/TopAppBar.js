@@ -1,7 +1,9 @@
+import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
 import AriaToolbarMixin from '../mixins/AriaToolbarMixin.js';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
 
 import Container from './Container.js';
+import elevationStyles from './Elevation.css' assert {type:'css'};
 import styles from './TopAppBar.css' assert { type: 'css' };
 
 export default Container
@@ -10,7 +12,7 @@ export default Container
   .extend()
   .observe({
     headline: 'string',
-    raised: 'boolean',
+    _raised: 'boolean',
     hideOnScroll: 'boolean',
     size: { value: /** @type {'small'|'medium'|'large'|null} */ (null) },
     _cssPosition: {
@@ -19,7 +21,8 @@ export default Container
     },
     _visibleStart: { type: 'float', default: 0 },
     _translateY: { type: 'float', empty: 0 },
-    _transition: { empty: 'none' },
+    _duration: { type: 'float', empty: 0 },
+    _easing: { empty: 'ease-in' },
     _headlineOpacity: { type: 'float', default: 0 },
     ariaLabel: {
       /**
@@ -60,15 +63,34 @@ export default Container
         this._translateY = this._scrollPositionY - this.refs.bar.scrollHeight;
       },
     },
+    _barStyle: {
+      ...ELEMENT_STYLER_TYPE,
+      get({ hideOnScroll, _cssPosition, _translateY, _duration, _easing }) {
+        if (!hideOnScroll) {
+          return null;
+        }
+        return {
+          target: 'bar',
+          styles: {
+            position: _cssPosition,
+            transform: `translateY(${_translateY}px)`,
+          },
+          timing: {
+            duration: _duration,
+            easing: _easing,
+          },
+        };
+      },
+    },
   })
-  .css(styles)
+  .css(elevationStyles, styles)
   .on('composed', ({ template, $, html }) => {
     const slot = $('#slot');
     slot.setAttribute('on-slotchange', '{refreshTabIndexes}');
     return template.append(
       html`
-        <div id="bar" role=toolbar aria-labelledby=headline style={computeBarStyle}>
-          ${$('#elevation')}
+        <div id="bar" role=toolbar aria-labelledby=headline>
+          <div id=elevation class=elevation raised={_raised}></div>
           <div id=leading><slot id=leading-slot name=leading on-slotchange={refreshTabIndexes}></slot></div>
           <div id=headline style={computeHeadlineStyle}>
             {headline}
@@ -82,7 +104,7 @@ export default Container
     );
   })
   .on('_scrollPositionYChanged', (oldValue, newValue, element) => {
-    element.raised = (newValue > 0);
+    element._raised = (newValue > 0);
     if (element.size === 'medium' || element.size === 'large') {
       const max = element.refs.companion.scrollHeight;
       const min = (0.5 * max);
@@ -91,7 +113,7 @@ export default Container
 
     if (!element.hideOnScroll) return;
 
-    element._transition = 'none';
+    element._duration = 0;
     if (newValue <= 0) {
       // Set at rest (top of parent, but allow overscroll)
       element._cssPosition = 'relative';
@@ -109,16 +131,6 @@ export default Container
     element._scrollDirection = newValue > oldValue ? 'down' : 'up';
   })
   .expressions({
-    computeBarStyle({ hideOnScroll, _cssPosition, _translateY, _transition }) {
-      if (!hideOnScroll) {
-        return '';
-      }
-      return `
-        position: ${_cssPosition};
-        transform: translateY(${_translateY}px);
-        transition: ${_transition};
-      `;
-    },
     computeHeadlineStyle({ size, _headlineOpacity }) {
       if (size !== 'medium' && size !== 'large') return '';
       return `opacity: ${_headlineOpacity}`;
@@ -136,14 +148,16 @@ export default Container
       if (this._scrollPositionY < (this.refs.bar.scrollHeight)) return;
       if (_visibleStart <= 0.5) {
         // Reveal all
+        this._duration = 250;
+        this._easing = 'ease-in';
         this._cssPosition = 'relative';
         this._translateY = this._scrollPositionY;
-        this._transition = 'transform 250ms ease-in';
         this._headlineOpacity = 1;
       } else {
+        this._duration = 200;
+        this._easing = 'ease-out';
         this._cssPosition = 'relative';
         this._translateY = this._scrollPositionY - this.refs.bar.scrollHeight;
-        this._transition = 'transform 200ms ease-out';
       }
     },
   })

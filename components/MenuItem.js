@@ -1,19 +1,86 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
+import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 import './Icon.js';
 
 import ListOption from './ListOption.js';
 import styles from './MenuItem.css' assert { type: 'css' };
 
 export default ListOption
+  .mixin(FormAssociatedMixin)
   .extend()
   .set({
     _cascadeTimeout: null,
     CASCADE_TIMEOUT: 500,
   })
+  .define({
+    type() {
+      if (this.radio != null) return 'radio';
+      if (this.checkbox != null) return 'checkbox';
+      return null;
+    },
+  })
   .observe({
     /** ID of menu to cascade */
     cascades: 'string',
+    /** Can be null */
+    _defaultValue: {
+      attr: 'value',
+      reflect: true,
+      nullParser: String,
+      empty: null,
+    },
+  })
+  .observe({
+    /** Never returns null */
+    defaultValue: {
+      reflect: false,
+      get() {
+        return this._defaultValue ?? '';
+      },
+      /** @param {string} value */
+      set(value) {
+        this._defaultValue = value;
+      },
+    },
+    value: {
+      reflect: false,
+      get() {
+        return this._defaultValue ?? 'on';
+      },
+      /**
+       * @param {string} value
+       * @return {void}
+       */
+      set(value) {
+        this._defaultValue = value;
+      },
+    },
+  })
+  .overrides({
+    formResetCallback() {
+      this._selected = this.defaultSelected;
+      this.super.formResetCallback();
+    },
+    formIPCEvent(event) {
+      if (event.target instanceof HTMLFormElement && event.target !== this.form) {
+        console.warn('Control.formIPCEvent: Abort from wrong form');
+        return;
+      }
+      if (this.type !== 'radio') {
+        console.warn('Control.formIPCEvent: Abort from not radio');
+        return;
+      }
+      const [name, value] = event.detail;
+      if (this.name !== name) return;
+      if (value === this.value) return;
+      if (this.value === '1') {
+        console.log('unchecking', this.name, this.value);
+        this.selected = false;
+      } else {
+        this.selected = false;
+      }
+    },
   })
   .expressions({
     computeTrailingIcon({ trailingIcon, cascades }) {
@@ -32,13 +99,30 @@ export default ListOption
     },
     cascade() {
       this.unscheduleCascade();
+      console.log('will cascade');
       document.getElementById(this.cascades)?.cascade?.(this);
     },
   })
   .css(styles)
+  .on({
+    _selectedChanged(oldValue, newValue) {
+      console.log('_selectedChanged', oldValue, newValue);
+      if (newValue) {
+        this.elementInternals.setFormValue(this.value);
+        if (this.type === 'radio') {
+          this._notifyRadioChange(this.name, this.value);
+        }
+      } else {
+        this.elementInternals.setFormValue(null);
+      }
+      if (this._selectedDirty) {
+        this.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    },
+  })
   .events({
     mouseenter() {
-      if (this.disabled) return;
+      if (this.disabledState) return;
       if (document.activeElement !== this) {
         this.focus();
       }
@@ -47,16 +131,22 @@ export default ListOption
     },
     mouseout: 'unscheduleCascade',
     '~click'() {
-      if (this.disabled) return;
-      if (this.checkbox != null || this.radio != null) {
+      if (this.disabledState) return;
+      if (this.type === 'radio') {
+        if (this.required) return;
+        this.selected = true;
+      } else if (this.type === 'checkbox') {
+        if (this.required) return;
         this.selected = !this.selected;
+        return;
       }
+
       if (this.cascades) {
         this.cascade();
       }
     },
     keydown(event) {
-      if (this.disabled) return;
+      if (this.disabledState) return;
       switch (event.key) {
         case 'Enter':
         case ' ':
@@ -80,9 +170,11 @@ export default ListOption
     blur({ relatedTarget }) {
       if (!this.cascades) return;
       if (!relatedTarget) return;
+      console.log('blurred');
       const submenuElement = document.getElementById(this.cascades);
       if (submenuElement.contains(relatedTarget)) return;
-      submenuElement.close(false);
+      console.log('close');
+      // submenuElement.close(false);
     },
   })
   .on({
@@ -115,3 +207,5 @@ export default ListOption
     },
   })
   .autoRegister('mdw-menu-item');
+
+

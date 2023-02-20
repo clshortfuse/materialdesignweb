@@ -6,11 +6,11 @@
   --mdw-container__elevation__opacity: 0;
   --mdw-button__icon__size: 24px;
   --mdw-button__icon__display: block;
-  --mdw-button__outline__opacity: 1;
+  --mdw-outline__opacity: 1;
   --mdw-button__target__size: 48px;
   --mdw-button__icon__font-variation-settings: 'FILL' 0;
   --mdw-icon-button__background-alpha: 1;
-  --mdw-button__outline__size: 0;
+  --mdw-outline__size: 0;
   --mdw-ink: var(--mdw-color__on-surface-variant);
 
   --label-bg: rgb(var(--mdw-bg));
@@ -30,20 +30,17 @@
 }
 
 :host(:focus) {
-  --mdw-button__outline__rgb: var(--mdw-color__outline);
+  --mdw-outline__rgb: var(--mdw-color__outline);
 }
 
 :host([ink]:focus) {
-  --mdw-button__outline__rgb: var(--mdw-ink);
+  --mdw-outline__rgb: var(--mdw-ink);
 }
 
-label {
+#label {
   block-size:auto;
   inline-size:auto;
-  flex: 0;
   padding: 8px;
-
-  border-radius: 50%;
 }
 
 #icon {
@@ -99,7 +96,7 @@ label {
   --mdw-bg: var(--mdw-color__inverse-surface);
   --mdw-ink: var(--mdw-color__inverse-on-surface);
   --mdw-button__icon__font-variation-settings: 'FILL' 0;
-  --mdw-button__outline__size: 1px;
+  --mdw-outline__size: 1;
   --label-bg: transparent;
   color: rgb(var(--mdw-color__on-surface-variant));
 }
@@ -111,14 +108,18 @@ label {
 
 #label:where([outlined])[selected] {
   --mdw-button__icon__font-variation-settings: 'FILL' 1;
-  --mdw-button__outline__size: 0;
+  --mdw-outline__size: 0;
   background-color: rgba(var(--mdw-bg), var(--mdw-icon-button__background-alpha));
   color: rgb(var(--mdw-ink));
 }
 
+#outline[selected] {
+  opacity: 0;
+}
+
 /** Disabled */
 #label[disabled] {
-  --mdw-button__outline__opacity: 0.12;
+  --mdw-outline__opacity: 0.12;
   --mdw-icon-button__background-alpha: 0.12;
   cursor: not-allowed;
 

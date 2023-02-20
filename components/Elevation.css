@@ -1,0 +1,15 @@
+.elevation {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: var(--mdw-elevation__opacity, 0);
+
+  background-color: rgb(var(--mdw-color__primary));
+  border-radius: inherit;
+
+  transition-delay: 1ms;
+  transition-duration: 200ms;
+  transition-property: opacity, color, background-color;
+}

@@ -1,15 +1,20 @@
-import './Icon.js';
+import './CheckboxIcon.js';
+
+import Inline from '../layout/Inline.js';
 import InputMixin from '../mixins/InputMixin.js';
+import RippleMixin from '../mixins/RippleMixin.js';
+import StateMixin from '../mixins/StateMixin.js';
 
 import styles from './Checkbox.css' assert { type: 'css' };
-import iconStyles from './CheckboxIcon.css' assert { type: 'css' };
-import Container from './Container.js';
 
-export default Container
+export default Inline
+  .mixin(StateMixin)
+  .mixin(RippleMixin)
   .mixin(InputMixin)
   .extend()
-  .define({
-    type() { return 'checkbox'; },
+  .set({
+    stateLayer: true,
+    type: 'checkbox',
   })
   .observe({
     icon: { value: 'check' },
@@ -25,23 +30,24 @@ export default Container
       return (indeterminate ? indeterminateIcon : icon);
     },
   })
-  .css(styles, iconStyles)
+  .css(styles)
   .on('composed', ({ $, html }) => {
-    $('#label').append(
-      html`
-        <div id=checkbox-box class=checkbox-box>
-          <mdw-icon id=checkbox-icon class=checkbox-icon selected={checked} indeterminate={indeterminate}>
-            {_determinateIcon}
-          </mdw-icon>
-          ${$('#ripple')}
-          ${$('#state')}
-        </div>
-      `,
-    );
+    $('#label').append(html`
+      <div id=target errored={erroredState} selected={checked}>
+        <mdw-checkbox-icon id=icon errored={erroredState} disabled={disabledState}
+          icon={_determinateIcon} selected={checked}>
+        </mdw-checkbox-icon>
+        ${$('#ripple-container')}
+        ${$('#state')}
+      </div>
+      ${$('#slot')}
+    `);
 
     const control = $('#control');
     control.setAttribute('type', 'checkbox');
     // Indeterminate must be manually expressed for ARIA
     control.setAttribute('aria-checked', '{_ariaChecked}');
+    $('#slot').removeAttribute('color');
+    $('#slot').removeAttribute('ink');
   })
   .autoRegister('mdw-checkbox');

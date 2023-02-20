@@ -32,7 +32,7 @@
   }
 }
 
-dialog {
+#dialog {
   position: fixed;
   inset-block-start: 0;
   inset-inline-start: 0;
@@ -64,13 +64,13 @@ dialog {
   will-change: opacity;
 }
 
-dialog::backdrop {
+#dialog::backdrop {
   /** Use scrim instead */
   display: none;
 }
 
-dialog[aria-hidden="false"],
-dialog:modal {
+#dialog[aria-hidden="false"],
+#dialog:modal {
   --mdw-dialog__scrim__visibility: visible;
 
   pointer-events: auto;
@@ -128,12 +128,31 @@ dialog:modal {
   }
 }
 
-#container {
+#surface {
   --mdw-shape__size: 28px;
-  --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__3);
-  --mdw-container__box-shadow: var(--mdw-container__box-shadow__3);
+  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__3);
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__3);
 
   position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+  max-block-size: 100%;
+  min-inline-size: 280px;
+  max-inline-size: 560px;
+  flex-shrink: 1;
+
+  transform: scale(1);
+  transform-origin: bottom center;
+  z-index: 24;
+
+  will-change: display, transform;
+
+}
+
+#surface::part(shape) {
   /* font: var(--mdw-typescale__body-medium__font); */
   /* letter-spacing: var(--mdw-typescale__body-medium__letter-spacing); */
   display: flex;
@@ -144,25 +163,16 @@ dialog:modal {
   overscroll-behavior: none;
   overscroll-behavior: contain;
 
-  box-sizing: border-box;
-  max-block-size: 100%;
-  min-inline-size: 280px;
-  max-inline-size: 560px;
-  flex-shrink: 1;
   padding-block-start: 8px;
 
-  transform: scale(1);
-  transform-origin: bottom center;
-  z-index: 24;
+  /* background-color: rgb(var(--mdw-color__surface)); */
+  /* color: rgb(var(--mdw-color__on-surface-variant)); */
 
-  background-color: rgb(var(--mdw-color__surface));
-  color: rgb(var(--mdw-color__on-surface-variant));
 
-  will-change: display, transform;
 }
 
-dialog[aria-hidden="false"] #container,
-dialog:modal #container {
+#dialog[aria-hidden="false"] #surface,
+#dialog:modal #surface {
   animation-name: scaleUpAnimation;
   animation-duration: var(--mdw-dialog__fade-in-duration);
   animation-direction: forwards;

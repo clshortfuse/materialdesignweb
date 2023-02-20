@@ -15,7 +15,7 @@
 #icon {
   position: absolute;
 
-  padding-inline-start: 12px;
+  /* padding-inline-start: 12px; */
 }
 
 #trailing-icon {
@@ -33,7 +33,7 @@
 
 :host([icon]) #control {
   margin-inline-start: calc(16px + 24px);
-  padding-inline-start: 12px;
+  padding-inline-start: 0;
 }
 
 option {

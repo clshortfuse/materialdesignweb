@@ -15,13 +15,12 @@ export default Chip
     trailingSrc: 'string',
   })
   .css(styles)
+  .html/* html */`
+    <mdw-icon _if={!icon} id=check-icon disabled={disabledState} selected={checked} aria-hidden="true">check</mdw-icon>
+    <mdw-icon id=trailing-icon aria-hidden="true" src={trailingSrc}>{trailingIcon}</mdw-icon>
+  `
   .on({
-    composed({ $, html }) {
-      $('#label').append(html`
-        <mdw-icon _if={!icon} id=check-icon disabled={disabled} selected={checked} aria-hidden="true">check</mdw-icon>
-        <mdw-icon id=trailing-icon aria-hidden="true" src={trailingSrc}>{trailingIcon}</mdw-icon>
-      `);
-
+    composed({ $ }) {
       $('#icon').setAttribute('_if', '{icon}');
       const control = $('#control');
       control.removeAttribute('role');

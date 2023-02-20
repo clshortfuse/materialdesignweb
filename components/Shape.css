@@ -1,0 +1,116 @@
+/** Without CSS Mixins, we have to use external attributes to tag hosts **/
+.shape {
+  --mdw-surface__will-change: none;
+  --mdw-shape__size: 0px;
+  --mdw-shape__size__top-start-size: var(--mdw-shape__size);
+  --mdw-shape__size__top-end-size: var(--mdw-shape__size);
+  --mdw-shape__size__bottom-start-size: var(--mdw-shape__size);
+  --mdw-shape__size__bottom-end-size: var(--mdw-shape__size);
+  --mdw-shape__rounded: 1;
+  --mdw-shape__mask-border-source: none;
+  --mdw-shape__mask: none;
+
+  position: relative;
+
+  display: inherit;
+  align-items: inherit;
+  flex-direction: inherit;
+  justify-content: inherit;
+  overflow: hidden;
+
+  box-sizing: border-box;
+
+  block-size:100%;
+  min-block-size: 0;
+  inline-size:100%;
+  min-inline-size: 0;
+
+  z-index: 4;
+
+  border-start-start-radius: calc(var(--mdw-shape__rounded) * var(--mdw-shape__size__top-start-size));
+  border-start-end-radius: calc(var(--mdw-shape__rounded) * var(--mdw-shape__size__top-end-size));
+  border-end-start-radius: calc(var(--mdw-shape__rounded) * var(--mdw-shape__size__bottom-start-size));
+  border-end-end-radius: calc(var(--mdw-shape__rounded) * var(--mdw-shape__size__bottom-end-size));
+
+  transition-delay: 1ms;
+  transition-duration: 100ms;
+  transition-property: background-color, color;
+  will-change: background-color, color;
+
+}
+
+.shape[color]:not[disabled] {
+  background-color: rgb(var(--mdw-bg));
+  color: rgb(var(--mdw-ink));
+}
+
+.shape[shape-style="none"] {
+  --mdw-shape__size: 0px;
+}
+
+.shape[shape-style="extra-small"] {
+  --mdw-shape__size: var(--mdw-shape__extra-small);
+}
+
+.shape[shape-style="small"] {
+  --mdw-shape__size: var(--mdw-shape__small);
+}
+
+.shape[shape-style="medium"] {
+  --mdw-shape__size: var(--mdw-shape__medium);
+}
+
+.shape[shape-style="large"] {
+  --mdw-shape__size: var(--mdw-shape__large);
+}
+
+.shape[shape-style="extra-large"] {
+  --mdw-shape__size: var(--mdw-shape__extra-large);
+}
+
+.shape[shape-style="full"] {
+  --mdw-shape__size: var(--mdw-shape__full);
+}
+
+.shape[shape-top] {
+  --mdw-shape__size__bottom-start-size: 0px;
+  --mdw-shape__size__bottom-end-size: 0px;
+  --mdw-shape__mask: linear-gradient(transparent 50%, black 50%);
+
+}
+
+.shape[shape-bottom] {
+  --mdw-shape__size__top-start-size: 0px;
+  --mdw-shape__size__top-end-size: 0px;
+  --mdw-shape__mask: linear-gradient(black 50%, transparent 50%);
+}
+
+.shape[shape-start] {
+  --mdw-shape__size__top-end-size: 0px;
+  --mdw-shape__size__bottom-end-size: 0px;
+  --mdw-shape__mask: linear-gradient(to left, black 50%, transparent 50%);
+}
+
+.shape[shape-end] {
+  --mdw-shape__size__top-start-size: 0px;
+  --mdw-shape__size__bottom-start-size: 0px;
+  --mdw-shape__mask: linear-gradient(to left, transparent 50%, black 50%);
+}
+
+@supports(-webkit-mask-box-image: none) {
+  .shape {
+    --mdw-shape__rounded: inherit;
+    --mdw-shape__mask-border-source: inherit;
+
+    -webkit-mask-box-image: var(--mdw-shape__mask-border-source)
+      8 fill /
+      var(--mdw-shape__size)
+      stretch;
+
+    -webkit-mask: var(--mdw-shape__mask);
+
+    transition-duration: 100ms, 100ms, 200ms;
+    transition-property: background-color, color, -webkit-mask-box-image-width;
+    will-change: background-color, color, -webkit-mask-box-image;
+  }
+}

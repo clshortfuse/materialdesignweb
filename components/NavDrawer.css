@@ -3,8 +3,8 @@
 :host([open]) {
   --mdw-container__elevation__opacity: var(--mdw-container__elevation__opacity__0);
   --mdw-shape__size: var(--mdw-shape__large, 16px);
-  --mdw-shape__size__top-start-size: 0;
-  --mdw-shape__size__bottom-start-size: 0;
+  --mdw-shape__size__top-start-size: 0px;
+  --mdw-shape__size__bottom-start-size: 0px;
 
   grid-template-rows: min-content;
   grid-template-columns: minmax(360px, min-content);
@@ -18,16 +18,12 @@
 }
 
 :host([open]) #slot::slotted(mdw-nav-item) {
-  --mdw-nav-item__badge__font: initial;
-  --mdw-nav-item__badge__letter-spacing: initial;
-  --mdw-nav-item__badge__background: initial;
-  --mdw-nav-item__badge__color: initial;
   --mdw-nav-item__badge__position: static;
   --mdw-nav-item__badge__transform: none;
+  --mdw-nav-item__badge__grid-area: c;
   --mdw-nav-item__label__padding-block: 18px;
   --mdw-nav-item__label__padding-inline: 52px 0;
   --mdw-nav-item__anchor__display: block;
-  --mdw-nav-item__badge__grid-area: c;
   --mdw-nav-item__indicator__grid-area: s1 / s1 / s2 / s2 ;
 
   align-self: stretch;
@@ -39,4 +35,8 @@
   justify-items: flex-start;
 
   padding-inline-end: 12px;
+}
+
+#shape {
+  grid-template-rows: min-content;
 }

@@ -2,22 +2,21 @@
   --mdw-shape__size: var(--mdw-shape__full);
   --mdw-ink: var(--mdw-color__on-error);
   --mdw-bg: var(--mdw-color__error);
+}
 
+.shape {
   box-sizing: border-box;
   min-inline-size: 16px;
   min-inline-size: 1lh; /* Clamps to circle */
   padding-inline: 4px;
   padding-inline: 0.25lh;
 
-  background-color: rgb(var(--mdw-bg));
-  color: rgb(var(--mdw-ink));
-
   font: var(--mdw-typescale__label-small__font);
   letter-spacing: var(--mdw-typescale__label-small__letter-spacing);
   text-align: center;
 }
 
-:host(:empty) {
+:host(:empty) .shape {
   min-block-size: 6px;
   min-inline-size: 6px;
   padding-inline: 0;

@@ -1,7 +1,7 @@
-import Container from './Container.js';
+import Surface from './Surface.js';
 import styles from './Tooltip.css' assert { type: 'css' };
 
-export default Container
+export default Surface
   .extend()
   .set({
     ariaRole: 'tooltip',

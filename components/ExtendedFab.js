@@ -6,5 +6,8 @@ export default Button
   .observe({
     lowered: 'boolean',
   })
+  .set({
+    elevated: true,
+  })
   .css(styles)
   .autoRegister('mdw-extended-fab');

@@ -8,9 +8,9 @@ export default Nav
   })
   .css(styles)
   .on('composed', ({ $, html }) => {
-    const nav = $('#nav');
-    nav.prepend(html`<slot id=start name=start></slot>`);
-    nav.append(html`
+    const shape = $('#shape');
+    shape.prepend(html`<slot id=start name=start></slot>`);
+    shape.append(html`
       <div id=group>${$('#slot')}</div>
     `);
   })

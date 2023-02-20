@@ -2,10 +2,10 @@
 
 import { EVENT_HANDLER_TYPE } from '../core/customTypes.js';
 
-import Container from './Container.js';
 import styles from './Snackbar.css' assert { type: 'css' };
+import Surface from './Surface.js';
 
-export default Container
+export default Surface
   .extend()
   .set({
     ariaRole: 'status',
@@ -39,21 +39,21 @@ export default Container
       this.textContent = text;
     },
   })
-  .on('composed', ({ composition, html }) => {
-    composition.append(html`
-      <mdw-button _if={action} id=action ink={actionInk} type-style={actionTypeStyle}>{action}</mdw-button>
-      <mdw-icon-button _if={closeButton} id=close icon={closeIcon} ink={closeInk}>Close</mdw-button>
-    `);
-  })
-  .events('#action', {
-    '~click'() {
-      if (!this.dispatchEvent(new Event('action', { cancelable: true }))) return;
-      this.close();
+  .html/* html */`
+    <mdw-button _if={action} id=action ink={actionInk} type-style={actionTypeStyle}>{action}</mdw-button>
+    <mdw-icon-button _if={closeButton} id=close shape-style=none icon={closeIcon} ink={closeInk}>Close</mdw-button>
+  `
+  .childEvents({
+    action: {
+      '~click'() {
+        if (!this.dispatchEvent(new Event('action', { cancelable: true }))) return;
+        this.close();
+      },
     },
-  })
-  .events('#close', {
-    '~click'() {
-      this.close();
+    close: {
+      '~click'() {
+        this.close();
+      },
     },
   })
   .css(styles)

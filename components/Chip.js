@@ -9,8 +9,7 @@ export default Button
   .css(styles)
   .on({
     composed({ $ }) {
-      $('#slot').setAttribute('disabled', '{disabled}');
-      $('#elevation').setAttribute('_if', '{elevated}');
+      $('#slot').setAttribute('disabled', '{disabledState}');
       $('#outline').setAttribute('_if', '{!elevated}');
     },
   })

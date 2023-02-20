@@ -10,7 +10,7 @@
   min-inline-size: 88px;
 
   background-color: transparent;
-  border-radius: 99px;
+  /* border-radius: 99px; */
 
   direction: var(--mdw-radio__direction, initial);
 }
@@ -28,7 +28,7 @@
 
   cursor: pointer;
 
-  border-radius: 50%;
+  /* border-radius: 50%; */
   color: rgb(var(--mdw-bg));
 }
 
@@ -132,6 +132,7 @@
   pointer-events: none;
 
   border-radius: 50%;
+  overflow: hidden;
 
   color: rgb(var(--mdw-bg));
 }

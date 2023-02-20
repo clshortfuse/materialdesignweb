@@ -7,18 +7,22 @@ export default Button
   .extend()
   .observe({
     type: { empty: 'radio' },
+    innerSegmentedButton: 'boolean',
   })
-  .setStatic({
+  .set({
     focusableOnDisabled: true,
   })
   .css(styles)
   .on({
     composed({ $, html, inline }) {
-      $('#label').append(html`
+      const shape = $('#label');
+      shape.append(html`
         <mdw-icon selected={checked} id=check-icon aria-hidden=true>check</mdw-icon>
       `);
+      shape.setAttribute('selected', '{checked}');
 
       $('#icon').setAttribute('selected', '{checked}');
+      $('#outline').setAttribute('inner-segmented-button', '{innerSegmentedButton}');
 
       const control = $('#control');
       control.setAttribute('type', 'radio');

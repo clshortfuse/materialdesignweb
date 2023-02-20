@@ -2,7 +2,6 @@
 
 import styles from './ControlMixin.css' assert { type: 'css' };
 import FormAssociatedMixin from './FormAssociatedMixin.js';
-import RippleMixin from './RippleMixin.js';
 
 /** @typedef {import('../core/CustomElement.js').default} CustomElement */
 
@@ -11,10 +10,10 @@ import RippleMixin from './RippleMixin.js';
 /** @typedef {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} HTMLControlElement */
 
 /**
- * @param {typeof import('../core/CustomElement.js').default} Base
+ * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function ControlMixin(Base) {
-  class Control extends FormAssociatedMixin(RippleMixin(Base)) {
+  class Control extends FormAssociatedMixin(Base) {
     /** @return {Iterable<string>} */
     static get observedAttributes() {
       return [
@@ -24,8 +23,6 @@ export default function ControlMixin(Base) {
         ...this.clonedContentAttributes,
       ];
     }
-
-    static focusableOnDisabled = false;
 
     static controlTagName = 'input';
 
@@ -53,30 +50,6 @@ export default function ControlMixin(Base) {
     /** @type {CustomElement['attributeChangedCallback']} */
     attributeChangedCallback(name, oldValue, newValue) {
       super.attributeChangedCallback(name, oldValue, newValue);
-      switch (name) {
-        case 'aria-label':
-          if (newValue == null) {
-            this._control.removeAttribute(name);
-            if (!this.hasAttribute('aria-labelledby')) {
-              this._control.setAttribute('aria-labelledby', 'slot');
-            }
-          } else {
-            this._control.setAttribute(name, newValue);
-            if (!this.hasAttribute('aria-labelledby')) {
-              this._control.removeAttribute('aria-labelledby');
-            }
-          }
-          break;
-        default:
-      }
-      if (name === 'aria-controls') {
-        if (newValue == null) {
-          this._control.removeAttribute(name);
-        } else {
-          this._control.setAttribute(name, newValue);
-        }
-      }
-
       if (this.static.clonedContentAttributes.includes(name)) {
         if (newValue == null) {
           this._control.removeAttribute(name);
@@ -99,7 +72,16 @@ export default function ControlMixin(Base) {
     /** @type {HTMLControlElement} */
     get _control() { return this.refs.control; }
 
-    get rippleActiveTarget() { return this._control; }
+    /**
+     * @param {Partial<this>} data
+     * @return {string}
+     */
+    computeAriaLabelledBy({ ariaLabel }) {
+      if (ariaLabel) return null;
+      return '#slot';
+    }
+
+    get stateTargetElement() { return this._control; }
 
     click() {
       /** Redirect click requests to control itself */
@@ -109,22 +91,23 @@ export default function ControlMixin(Base) {
     static {
       this.css(styles);
       this.on({
-        composed({ template, $, html }) {
-          template.append(
-            html`
-              <label id=label disabled={disabled}>
-                <${this.static.controlTagName} id=control aria-labelledby="slot"
-                  >${this.static.controlVoidElement ? '' : `</${this.static.controlTagName}>`}
-                ${$('#state')}
-                ${$('#ripple')}
-                ${$('#slot')}
-              </label>
-            `,
-          );
+        composed({ template, $, html, composition }) {
+          console.log('will change fragmentRoot');
+          /** @type {DocumentFragment} */
+          const fragment = html`
+            <label id=label disabled={disabledState}>
+              <${this.static.controlTagName} id=control aria-labelledby={computeAriaLabelledBy} aria-label={ariaLabel}
+                >${this.static.controlVoidElement ? '' : `</${this.static.controlTagName}>`}
+            </label>
+          `;
+          const label = fragment.getElementById('label');
+          label.append(...template.childNodes);
+          template.append(fragment);
+          composition.fragmentRoot = label;
         },
-        disabledChanged(oldValue, newValue) {
+        disabledStateChanged(oldValue, newValue) {
           this._control.setAttribute('aria-disabled', String(newValue));
-          if (!this.static.focusableOnDisabled) {
+          if (!this.focusableOnDisabled) {
             this._control.disabled = newValue;
             if (newValue) {
               this.tabIndex = 0;
@@ -134,25 +117,27 @@ export default function ControlMixin(Base) {
           }
         },
       });
-      this.events('#control', {
-        input({ currentTarget }) {
-          const control = /** @type {HTMLControlElement} */ (currentTarget);
-          if (this.validity.valid) {
+      this.childEvents({
+        control: {
+          input({ currentTarget }) {
+            const control = /** @type {HTMLControlElement} */ (currentTarget);
+            if (this.validity.valid) {
             // Track internally
-            control.checkValidity();
-            this._badInput = control.validity.badInput;
-          } else {
+              control.checkValidity();
+              this._badInput = control.validity.badInput;
+            } else {
             // Perform check in case user has validated
+              this.checkValidity();
+            }
+            this._value = control.value;
+          },
+          change({ currentTarget }) {
+            const control = /** @type {HTMLControlElement} */ (currentTarget);
+            this._value = control.value;
             this.checkValidity();
-          }
-          this._value = control.value;
-        },
-        change({ currentTarget }) {
-          const control = /** @type {HTMLControlElement} */ (currentTarget);
-          this._value = control.value;
-          this.checkValidity();
-          // Change event is NOT composed. Needs to escape shadow DOM
-          this.dispatchEvent(new Event('change', { bubbles: true }));
+            // Change event is NOT composed. Needs to escape shadow DOM
+            this.dispatchEvent(new Event('change', { bubbles: true }));
+          },
         },
       });
     }
@@ -224,7 +209,9 @@ export default function ControlMixin(Base) {
 
     get labels() { return this.elementInternals.labels; }
   }
+  Control.prototype.ariaLabel = Control.prop('ariaLabel');
   Control.prototype.delegatesFocus = true;
+  Control.prototype.focusableOnDisabled = false;
 
   return Control;
 }

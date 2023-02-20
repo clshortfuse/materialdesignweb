@@ -1,7 +1,8 @@
-import styles from './Divider.css' assert { type: 'css' };
-import Span from './Span.js';
+import Inline from '../layout/Inline.js';
 
-export default Span
+import styles from './Divider.css' assert { type: 'css' };
+
+export default Inline
   .extend()
   .observe({
     vertical: 'boolean',

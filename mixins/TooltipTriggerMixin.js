@@ -4,19 +4,23 @@ import { canAnchorPopup } from '../utils/popup.js';
 import styles from './TooltipTriggerMixin.css' assert { type: 'css' };
 
 /**
- * @param {typeof import('../components/Container.js').default} Base
+ * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function TooltipTriggerMixin(Base) {
   class TooltipTrigger extends Base {
     static {
       this.css(styles);
-      // eslint-disable-next-line no-unused-expressions
-      this.html/* html */`
-        <${Tooltip.elementName} role=tooltip id=tooltip
-        ><slot id=tooltip-slot
-          on-slotchange={onTooltipTriggerSlotChange} name=tooltip
-          >{tooltip}</slot></${Tooltip.elementName}>
-      `;
+
+      this.on({
+        composed({ template, html }) {
+          template.append(html`
+            <${Tooltip.elementName} role=tooltip id=tooltip
+            ><slot id=tooltip-slot
+              on-slotchange={onTooltipTriggerSlotChange} name=tooltip
+              >{tooltip}</slot></${Tooltip.elementName}>
+          `);
+        },
+      });
     }
 
     static TOOLTIP_MOUSE_IDLE_MS = 500;
@@ -46,7 +50,7 @@ export default function TooltipTriggerMixin(Base) {
     constructor(...args) {
       super(...args);
       this.#tooltip = /** @type {InstanceType<Tooltip>} */ (this.refs.tooltip.cloneNode(true));
-      this.#tooltip.id = '';
+      this.#tooltip.removeAttribute('id');
       this.#tooltip.style.setProperty('position', 'fixed');
       this.#tooltip.setAttribute('aria-hidden', 'true');
       this.#resizeObserver = new ResizeObserver((entries) => {
@@ -54,10 +58,7 @@ export default function TooltipTriggerMixin(Base) {
         if (!this.#tooltip.open) return;
         this.updateTooltipPosition();
       });
-      const threshold = [];
-      for (let i = 0; i <= 1; i += 0.01) {
-        threshold.push(i);
-      }
+      const threshold = [0, 0.49, 0.5, 0.51, 1];
       this.#intersectObserver = new IntersectionObserver((entries) => {
         // console.log('IO', entries);
         if (!this.#tooltip.open) return;
@@ -107,7 +108,7 @@ export default function TooltipTriggerMixin(Base) {
      */
     onTooltipTriggerFocus(event) {
       // console.log('getting focus', event);
-      if (this.disabled) return;
+      if (this.disabledState) return;
       if (this.matches(':active')) {
         // console.log('abort from active');
         return;
@@ -138,7 +139,7 @@ export default function TooltipTriggerMixin(Base) {
      * @return {void}
      */
     onTooltipTriggerPointer(event) {
-      if (this.disabled) return;
+      if (this.disabledState) return;
       // console.log('tooltip event', event.type);
       switch (event.type) {
         case 'touchstart':

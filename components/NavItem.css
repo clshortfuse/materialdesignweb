@@ -4,6 +4,9 @@
 
 :host {
   --mdw-badge__scale: 0;
+  --mdw-shape__size: var(--mdw-shape__full);
+  position: relative;
+
   display: grid;
   align-content: center;
   align-items: center;
@@ -21,7 +24,6 @@
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   user-select: none;
 
-  background-color: transparent;
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
@@ -37,6 +39,8 @@
 
 #slot {
   grid-row: 2;
+
+  color:inherit;
 }
 
 a {
@@ -69,7 +73,7 @@ a {
   will-change: opacity, transform;
 }
 
-#indicator {
+#shape {
   position: absolute;
   inset: 0;
 
@@ -79,7 +83,7 @@ a {
   transform: translateY(var(--mdw-nav-item__offset-y, 0));
   z-index: 0;
 
-  border-radius: 999px;
+  background-color: transparent;
 
   transition: transform 200ms;
   will-change: transform;
@@ -114,9 +118,6 @@ a {
   transform: var(--mdw-nav-item__badge__transform, translateY(-50%) translateX(4px) translateY(-8px) translateY(var(--mdw-nav-item__offset-y, 0)) scale(var(--mdw-badge__scale)));
   z-index: 4;
 
-  background: var(--mdw-nav-item__badge__background, transparent);
-  color: var(--mdw-nav-item__badge__color, inherit);
-
   transition: transform 200ms;
   will-change: transform;
 }
@@ -125,22 +126,20 @@ a {
   --mdw-badge__scale: 1;
 }
 
-#ripple-inner {
-  opacity: 1;
-
+#state,
+#ripple {
   color: rgb(var(--mdw-bg));
 }
 
-:host([active]) #ripple-inner {
-  /* Hold fade-in animation while selected */
-  animation-name: var(--mdw-ripple__fade-in-name), none;
-}
-/* Fix active ripple state */
-a:active #ripple-inner {
-  animation-name: var(--mdw-ripple__fade-in-name), none;
+#ripple-container {
+  z-index:1;
 }
 
-:host([active]) #indicator {
+#ripple {
+  opacity: 1;
+}
+
+:host([active]) #shape {
   color: rgb(var(--mdw-ink));
 }
 

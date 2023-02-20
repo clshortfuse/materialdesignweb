@@ -1,16 +1,23 @@
 import { constructHTMLOptionsCollectionProxy } from '../dom/ HTMLOptionsCollectionProxy.js';
 import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
+import StateMixin from '../mixins/StateMixin.js';
 
-import styles from './List.css' assert { type: 'css' };
 import List from './List.js';
 import ListOption from './ListOption.js';
+import styles from './ListSelect.css' assert { type: 'css' };
 
 /** @implements {HTMLSelectElement} */
-export default class ListSelect extends KeyboardNavMixin(FormAssociatedMixin(List)) {
+export default class ListSelect extends KeyboardNavMixin(FormAssociatedMixin(StateMixin(List))) {
   static {
     this.autoRegister('mdw-list-select');
     this.css(styles);
+    this.on({
+      disabledStateChanged(oldValue, newValue) {
+        this._kbdFocusable = !newValue;
+        this.tabIndex = newValue ? -1 : 0;
+      },
+    });
   }
 
   /** @type {HTMLCollectionOf<ListOption> & HTMLOptionsCollection} */
@@ -77,10 +84,11 @@ export default class ListSelect extends KeyboardNavMixin(FormAssociatedMixin(Lis
    * @return {void}
    */
   onListSelectClick(event) {
+    console.log('onListSelectClick');
     const target = event.target;
     if (!(target instanceof ListOption)) return;
     event.stopPropagation();
-    if (target.disabled) return;
+    if (target.disabledState) return;
 
     // Perform unselect
     if (target.selected) {
@@ -182,12 +190,14 @@ export default class ListSelect extends KeyboardNavMixin(FormAssociatedMixin(Lis
       yield el;
     }
   }
+
+  get kbdNavFocusableWhenDisabled() { return true; }
 }
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#htmlselectelement
 
 // [CEReactions] attribute DOMString autocomplete;
-ListSelect.prototype.disabled = ListSelect.prop('disabled', { type: 'boolean' });
+// ListSelect.prototype.disabled = ListSelect.prop('disabled', { type: 'boolean' });
 // readonly attribute HTMLFormElement? form;
 ListSelect.prototype.multiple = ListSelect.prop('multiple', { type: 'boolean' });
 // [CEReactions] attribute boolean multiple;

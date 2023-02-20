@@ -6,18 +6,29 @@
   --mdw-button__padding-inline-start: 20px;
   --mdw-button__padding-inline-end: 20px;
   --mdw-button__icon__display: none;
+  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__3);
+  --mdw-elevation__opacity__hover: var(--mdw-elevation__hover__4);
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__3);
+  --mdw-elevation__filter__hover: var(--mdw-elevation__filter__4);
+  --mdw-bg: var(--mdw-color__primary-container);
+  --mdw-ink: var(--mdw-color__on-primary-container);
+  --label-bg: rgb(var(--mdw-bg));
 
   min-block-size: 56px;
   min-inline-size: 80px;
 }
 
-:host(:not([flat])) {
-  --mdw-fab__elevation__opacity: var(--mdw-container__elevation__opacity__3);
-  --mdw-fab__box-shadow: var(--mdw-container__box-shadow__3);
-  --mdw-fab__elevation__opacity__hovered: var(--mdw-container__elevation__opacity__4);
-  --mdw-fab__box-shadow__hovered: var(--mdw-container__box-shadow__4);
-  --mdw-container__elevation__opacity: var(--mdw-fab__elevation__opacity);
-  --mdw-container__box-shadow: var(--mdw-fab__box-shadow);
+:host([flat]) {
+  --mdw-elevation__filter__resting: none;
+  --mdw-elevation__filter__hover: none;
+}
+
+#elevation:not([color*="surface"]) {
+  display: none;
+}
+
+:host([flat]) #elevation {
+  display: none;
 }
 
 :host([icon]) {
@@ -28,13 +39,8 @@
 }
 
 :host([lowered]) {
-  --mdw-fab__elevation__opacity: var(--mdw-container__elevation__opacity__1);
-  --mdw-fab__box-shadow: var(--mdw-container__box-shadow__1);
-  --mdw-fab__elevation__opacity__hovered: var(--mdw-container__elevation__opacity__2);
-  --mdw-fab__box-shadow__hovered: var(--mdw-container__box-shadow__2);
-}
-
-:host(:hover:not(:active)) {
-  --mdw-container__elevation__opacity: var(--mdw-fab__elevation__opacity__hovered);
-  --mdw-container__box-shadow: var(--mdw-fab__box-shadow__hovered);
+  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__1);
+  --mdw-elevation__opacity__hover: var(--mdw-elevation__opacity__2);
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__1);
+  --mdw-elevation__filter__hover: var(--mdw-elevation__filter__2);
 }

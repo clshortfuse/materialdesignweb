@@ -1,18 +1,22 @@
+import Block from '../layout/Block.js';
 import ControlMixin from '../mixins/ControlMixin.js';
+import StateMixin from '../mixins/StateMixin.js';
+import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import TextFieldMixin from '../mixins/TextFieldMixin.js';
 
-import Container from './Container.js';
 import styles from './TextArea.css' assert { type: 'css' };
 
 /** @implements {HTMLTextAreaElement} */
-export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
+export default class TextArea extends TextFieldMixin(SurfaceMixin(ControlMixin(StateMixin(Block)))) {
   static { this.autoRegister('mdw-textarea'); }
 
   static {
     this.css(styles);
-    this.events('#slot', { slotchange: 'onSlotChange' });
+    this.childEvents({ slot: { slotchange: 'onSlotChange' } });
     this.on('composed', ({ template, $ }) => {
       template.append($('#slot')); // Move into root (was label);
+      $('#label').setAttribute('input-prefix', '{input-prefix}');
+      $('#label').setAttribute('input-suffix', '{input-suffix}');
     });
   }
 
@@ -75,9 +79,11 @@ export default class TextArea extends TextFieldMixin(ControlMixin(Container)) {
 
   static {
     if (TextArea.supportsCSSLineHeightUnit) {
-      this.events('#control', {
-        input() {
-          this.resize();
+      this.childEvents({
+        control: {
+          input() {
+            this.resize();
+          },
         },
       });
     }

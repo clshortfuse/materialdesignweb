@@ -1,6 +1,6 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
-import './Container.js';
+import './Surface.js';
 import CustomElement from '../core/CustomElement.js';
 import { attemptFocus } from '../core/dom.js';
 import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
@@ -101,9 +101,10 @@ export default CustomElement
     <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>
       <div id=scrim aria-hidden=true></div>
       <form id=form method=dialog role=none>
-        <mdw-container id=container role=none>
+        <mdw-surface id=surface role=none>
           <slot id=slot on-slotchange={refreshTabIndexes}></slot>
-        </mdw-container>
+        </mdw-surface>
+        <slot id=submenu-slot name=submenu></slot>
       </form>
     </dialog>
   `
@@ -119,18 +120,18 @@ export default CustomElement
      * @return {void}
      */
     updateMenuPosition(anchor) {
-      const container = this.refs.container;
-      container.style.setProperty('max-height', 'none');
-      container.style.setProperty('width', 'auto');
-      const newSize = Math.ceil(container.clientWidth / 56);
-      container.style.removeProperty('width');
-      container.style.setProperty('--mdw-menu__size', newSize.toString(10));
+      const surface = this.refs.surface;
+      surface.style.setProperty('max-height', 'none');
+      surface.style.setProperty('width', 'auto');
+      const newSize = Math.ceil(surface.clientWidth / 56);
+      surface.style.removeProperty('width');
+      surface.style.setProperty('--mdw-menu__size', newSize.toString(10));
 
       /** @type {import('../utils/popup.js').CanAnchorPopUpOptions} */
       const anchorOptions = {
         anchor: anchor ?? this.getBoundingClientRect(),
-        width: container.clientWidth,
-        height: container.clientHeight,
+        width: surface.clientWidth,
+        height: surface.clientHeight,
         // margin,
       };
 
@@ -243,11 +244,11 @@ export default CustomElement
         });
       }
 
-      container.style.setProperty('top', `${anchorResult.pageY}px`);
-      container.style.setProperty('left', `${anchorResult.pageX}px`);
-      container.style.setProperty('margin', '0');
-      container.style.setProperty('transform-origin', `${anchorResult.transformOriginY} ${anchorResult.transformOriginX}`);
-      container.scrollIntoView();
+      surface.style.setProperty('top', `${anchorResult.pageY}px`);
+      surface.style.setProperty('left', `${anchorResult.pageX}px`);
+      surface.style.setProperty('margin', '0');
+      surface.style.setProperty('transform-origin', `${anchorResult.transformOriginY} ${anchorResult.transformOriginX}`);
+      surface.scrollIntoView();
     },
     /**
      * @param {MouseEvent|PointerEvent|HTMLElement|Element} [source]

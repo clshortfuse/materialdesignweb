@@ -7,44 +7,61 @@ export default Button
   .mixin(TooltipTriggerMixin)
   .extend()
   .css(styles)
-  .expressions({
-    computeAriaPressed({ type, checked }) {
-      if (type !== 'checkbox') return null;
-      return checked ? 'true' : 'false';
+  .observe({
+    _ariaPressed: {
+      get({ type, checked }) {
+        if (type !== 'checkbox') return null;
+        return checked ? 'true' : 'false';
+      },
+      /**
+       * @param {string} oldValue
+       * @param {string} newValue
+       */
+      changedCallback(oldValue, newValue) {
+        console.log('changing ariaPressed', oldValue, newValue);
+        this.elementInternals.ariaPressed = newValue;
+      },
     },
+  })
+  .expressions({
     isToggle({ type }) {
       return type === 'checkbox';
     },
   })
-  .events('#control', {
-    keydown(event) {
-      if (event.key !== 'Enter') return;
-      const input = /** @type {HTMLInputElement} */ (event.currentTarget);
-      if (input.type !== 'checkbox') return;
-      event.stopImmediatePropagation();
-      event.stopPropagation();
-      event.preventDefault();
-      if (input.disabled) return;
+  .childEvents({
+    control: {
+      keydown(event) {
+        if (event.key !== 'Enter') return;
+        const input = /** @type {HTMLInputElement} */ (event.currentTarget);
+        if (input.type !== 'checkbox') return;
+        event.stopImmediatePropagation();
+        event.stopPropagation();
+        event.preventDefault();
+        if (input.disabled) return;
 
-      // Simulate click
-      const clickEvent = new Event('click', { bubbles: true, cancelable: true, composed: true });
-      if (!input.dispatchEvent(clickEvent)) return;
+        // Simulate click
+        const clickEvent = new Event('click', { bubbles: true, cancelable: true, composed: true });
+        if (!input.dispatchEvent(clickEvent)) return;
 
-      // Toggle check and signal
-      input.checked = !input.checked;
-      input.dispatchEvent(new Event('change', { bubbles: true }));
+        // Toggle check and signal
+        input.checked = !input.checked;
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      },
     },
   })
   .on('composed', ({ $ }) => {
     $('#slot').remove();
     $('#tooltip-slot').removeAttribute('name');
-    $('label').setAttribute('toggle', '{isToggle}');
+    $('#label').setAttribute('toggle', '{isToggle}');
+    $('#label').setAttribute('selected', '{checked}');
     // icon.append($('#slot'));
     const icon = $('#icon');
     icon.setAttribute('style', '{computeIconStyle}');
 
     const control = $('#control');
-    control.setAttribute('aria-pressed', '{computeAriaPressed}');
+    control.setAttribute('aria-pressed', '{_ariaPressed}');
     control.setAttribute('aria-labelledby', 'tooltip');
+
+    $('#outline').setAttribute('selected', '{checked}');
   })
   .autoRegister('mdw-icon-button');

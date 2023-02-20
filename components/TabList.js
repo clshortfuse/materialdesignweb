@@ -277,10 +277,12 @@ export default Container
       }
     },
   })
-  .events('#slot', {
-    slotchange() {
-      this.clearCache();
-      this.updateIndicator();
+  .childEvents({
+    slot: {
+      slotchange() {
+        this.clearCache();
+        this.updateIndicator();
+      },
     },
   })
   .autoRegister('mdw-tab-list');

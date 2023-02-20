@@ -30,8 +30,8 @@ export default Nav
       const shift = rate * delta;
 
       const bottom = this.getScrollingElementScrollHeight() - this.getScrollingElementClientHeight();
-      const breakpoint = bottom - this.refs.nav.scrollHeight;
-      let max = this.refs.nav.scrollHeight;
+      const breakpoint = bottom - this.refs.shape.scrollHeight;
+      let max = this.refs.shape.scrollHeight;
       if (newValue >= breakpoint) {
       // Scrolling to bottom always shows Nav Bar (ensures content isn't occluded)
         max -= (newValue - breakpoint);
@@ -49,7 +49,7 @@ export default Nav
       this.onScrollPositionYChange(this._scrollPositionY, this._scrollPositionY);
     },
     onScrollIdle() {
-      const max = this.refs.nav.scrollHeight;
+      const max = this.refs.shape.scrollHeight;
       const visibility = (max - this._translateY) / max;
       if (visibility <= 0) return;
       if (visibility >= 1) return;
@@ -66,7 +66,7 @@ export default Nav
   .css(styles)
   .on({
     composed({ $ }) {
-      $('#nav').setAttribute('style', '{computeNavStyle}');
+      $('#shape').setAttribute('style', '{computeNavStyle}');
     },
     connected() {
       if (this.hideOnScroll) {

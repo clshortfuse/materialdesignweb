@@ -3,23 +3,17 @@
 :host {
   --mdw-ink: var(--mdw-color__on-primary);
   --mdw-bg: var(--mdw-color__primary);
-  --mdw-checkbox__container__color: rgb(var(--mdw-color__on-surface));
-  --mdw-checkbox__border-width: 2px;
   --mdw-checkbox__size: 18px;
   --mdw-checkbox__state-size: 40px;
   --mdw-checkbox__margin: calc((var(--mdw-checkbox__state-size) - var(--mdw-checkbox__size)) / 2);
+  --mdw-shape__size: 2px;
 
   gap: var(--mdw-radio__gap, calc(var(--mdw-checkbox__margin)));
 
   direction: var(--mdw-radio__direction, initial);
 }
 
-:host([color]) {
-  background-color: transparent;
-  color: inherit;
-}
-
-label {
+#label {
   display: inline-grid;
   align-items: center;
   gap: inherit;
@@ -28,8 +22,6 @@ label {
   grid-template-columns: var(--mdw-checkbox__size);
 
   cursor: pointer;
-
-  border-radius: 50%;
 
   transition: none 100ms cubic-bezier(0.4, 0.0, 1, 1);
 }
@@ -43,40 +35,48 @@ label {
 }
 
 #state,
-#ripple {
-  inset-block: calc(-1 * (var(--mdw-checkbox__margin) + var(--mdw-checkbox__border-width)));
-  /* -(2px + 11px) */
-  inset-inline: calc(-1 * (var(--mdw-checkbox__margin) + var(--mdw-checkbox__border-width)));
-  /* -(2px + 11px) */
+#ripple-container {
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
 
   block-size: var(--mdw-checkbox__state-size);
   inline-size: var(--mdw-checkbox__state-size);
 
+  transform: translateX(-50%) translateY(-50%);
+
   border-radius: 50%;
 }
 
-#label:is([selected], [indeterminate]) {
-  --mdw-checkbox__container__color: rgb(var(--mdw-bg));
-
-  transition: none 200ms cubic-bezier(0.0, 0.0, 0.2, 1)
-}
-
-#icon:is([selected], [indeterminate]) {
-  opacity: 1;
-}
-
-#label[invalid] {
-  --mdw-bg: rgb(var(--mdw-color__error));
-  --mdw-ink: rgb(var(--mdw-color__on-error));
-  --mdw-checkbox__container__color: rgb(var(--mdw-color__error));
-}
-
 #label[disabled] {
-  --mdw-bg: var(--mdw-color__on-surface);
-  --mdw-ink: var(--mdw-color__surface);
-  --mdw-checkbox__container__color: rgb(var(--mdw-color__on-surface));
-
   cursor: not-allowed;
 
   opacity: 0.38;
+}
+
+#target {
+  position: relative;
+
+  display: inline-flex;
+
+  grid-column: 1 / 1;
+
+  color: rgb(var(--mdw-color__on-surface));
+}
+
+#target[selected] {
+  color: rgb(var(--mdw-bg));
+}
+
+#target[disabled] {
+  color: rgb(var(--mdw-color__on-surface));
+}
+
+#target[errored] {
+  color: rgb(var(--mdw-color__error));
+}
+
+#icon {
+  --mdw-ink: inherit;
+  --mdw-bg: inherit;
+  --disabled-opacity: 1;
 }

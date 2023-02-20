@@ -1,7 +1,8 @@
 /* https://m3.material.io/components/lists/specs */
 
 :host {
-  --mdw-shape__size: 0;
+  --mdw-shape__size: 0px;
+  display: block;
 }
 
 :host([href]) {
@@ -151,10 +152,6 @@
   object-position: center center;
 }
 
-#checkbox {
-  border-radius: 2px;
-}
-
 #trailing {
   display: flex;
   align-items: center;
@@ -180,7 +177,7 @@
   margin-inline-end: 16px;
 }
 
-:host([disabled]) {
+#anchor[disabled] {
   opacity: 0.38;
 
   color: rgb(var(--mdw-color__on-surface));

@@ -1,8 +1,8 @@
-import Container from './Container.js';
 import styles from './Nav.css' assert { type: 'css' };
 import NavItem from './NavItem.js';
+import Surface from './Surface.js';
 
-export default Container
+export default Surface
   .extend()
   .css(styles)
   .define({
@@ -11,12 +11,9 @@ export default Container
       return (this.querySelectorAll(NavItem.elementName));
     },
   })
-  .on('composed', ({ template, $, html }) => template.append(html`
-    <nav id="nav">
-      ${$('#elevation')}
-      ${$('#slot')}
-    </nav>
-  `))
+  .set({
+    elevated: true,
+  })
   .events({
     '~click'(event) {
       // Abort if not child
