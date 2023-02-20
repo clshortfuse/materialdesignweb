@@ -1,9 +1,26 @@
+import { hasMergePatch } from '../utils/jsonMergePatch.js';
+
 import { attrNameFromPropName } from './dom.js';
 
 /** @typedef {import('./typings.js').ObserverPropertyType} ObserverPropertyType */
 
 /** @return {null} */
 const DEFAULT_NULL_PARSER = () => null;
+
+/**
+ * @template T
+ * @param {T} o
+ * @return {T}
+ */
+const DEFAULT_OBJECT_PARSER = (o) => o;
+
+/**
+ * @template T
+ * @param {T} a
+ * @param {T} b
+ * @return {boolean} true if equal
+ */
+export const DEFAULT_OBJECT_COMPARATOR = (a, b) => !hasMergePatch(a, b);
 
 /**
  * @param {ObserverPropertyType} type
@@ -22,6 +39,8 @@ function emptyFromType(type) {
       return new Set();
     case 'array':
       return [];
+    case 'object':
+      return null;
     default:
     case 'string':
       return '';
@@ -45,6 +64,8 @@ function defaultParserFromType(type) {
       return Map;
     case 'set':
       return Set;
+    case 'object':
+      return DEFAULT_OBJECT_PARSER;
     case 'array':
       return Array.from;
     default:
@@ -59,9 +80,10 @@ function defaultParserFromType(type) {
  * @template {any} [T2=import('./typings.js').ParsedObserverPropertyType<T1>]
  * @param {K} name
  * @param {T1|import('./typings.js').ObserverOptions<T1,T2>} [typeOrOptions='string']
+ * @param {any} object
  * @return {import('./typings.js').ObserverConfiguration<T1,T2,K> & import('./typings.js').ObserverOptions<T1,T2>}
  */
-export function parseObserverOptions(name, typeOrOptions) {
+export function parseObserverOptions(name, typeOrOptions, object) {
   /** @type {Partial<import('./typings.js').ObserverOptions<T1,T2>>} */
   const options = {
     ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
@@ -77,12 +99,14 @@ export function parseObserverOptions(name, typeOrOptions) {
   /** @type {ObserverPropertyType} */
   let parsedType = type;
   if (parsedType == null) {
-    if (options.value == null) {
+    // Use .value or .get() to parse type
+    const value = options.value ?? options.get?.call(object ?? {}, object ?? {});
+    if (value == null) {
       parsedType = 'string';
     } else {
-      const parsed = typeof options.value;
+      const parsed = typeof value;
       parsedType = (parsed === 'number')
-        ? (Number.isInteger(options.value) ? 'integer' : 'number')
+        ? (Number.isInteger(value) ? 'integer' : 'number')
         : parsed;
     }
   }
@@ -107,9 +131,17 @@ export function parseObserverOptions(name, typeOrOptions) {
     }
   }
 
+  let isFn = options.is;
+  if (!isFn) {
+    isFn = parsedType === 'object'
+      ? DEFAULT_OBJECT_COMPARATOR
+      : Object.is;
+  }
+
   return {
     ...options,
     type: parsedType,
+    is: isFn,
     attr,
     reflect,
     readonly: options.readonly ?? false,
@@ -212,7 +244,7 @@ export function defineObservableProperty(object, key, options) {
   /** @type {import('./typings.js').ObserverConfiguration<T1,T2,K,C>} */
   const config = {
     ...DEFAULT_OBSERVER_CONFIGURATION,
-    ...parseObserverOptions(key, options),
+    ...parseObserverOptions(key, options, object),
     changedCallback: options.changedCallback,
   };
 
@@ -314,7 +346,11 @@ export function defineObservableProperty(object, key, options) {
         return;
       }
       if (config.set) {
+        const oldValue = this[key];
         config.set.call(this, value, internalSet.bind(this));
+        const newValue = this[key];
+        // Invalidate self
+        detectChange.call(this, oldValue, newValue);
       } else {
         internalSet.call(this, value);
       }
