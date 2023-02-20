@@ -1,32 +1,15 @@
 /* eslint-disable no-bitwise */
-/** @typedef {import('./identify.js').ElementIdentifier} ElementIdentifier */
-/** @typedef {import('./identify.js').ElementIdentifierKey} ElementIdentifierKey */
-
-import { identifierFromKey } from './identify.js';
 
 /**
  * @param {Element|DocumentFragment} root
- * @param {ElementIdentifier|ElementIdentifierKey} identifierOrKey
+ * @param {string} id
  * @return {Element}
  */
-export const findElement = (root, identifierOrKey) => {
-  const identifier = typeof identifierOrKey === 'string'
-    ? identifierFromKey(identifierOrKey)
-    : identifierOrKey;
-
-  if (identifier.id) {
-    if (root instanceof DocumentFragment) {
-      return root.getElementById(identifier.id);
-    }
-    return root.querySelector(`#${identifier.id}`);
+export const findElement = (root, id) => {
+  if (root instanceof DocumentFragment) {
+    return root.getElementById(id);
   }
-  if (identifier.class) {
-    if (root instanceof DocumentFragment) {
-      return root.querySelector(`.${identifier.class}`);
-    }
-    return root.getElementsByClassName(identifier.class)[0];
-  }
-  return root.querySelector(identifier.query);
+  return root.querySelector(`#${id}`);
 };
 
 /**
@@ -132,6 +115,40 @@ export function attrNameFromPropName(name) {
 }
 
 /**
+ * @param {Element} element
+ * @return {boolean}
+ */
+export function isInLightDOM(element) {
+  return element?.getRootNode() === document;
+}
+
+/**
+ * @param {Element} element
+ * @return {boolean}
+ */
+export function isFocused(element) {
+  if (!element) return false;
+  if (document.activeElement === element) return true;
+  if (!element.isConnected) return false;
+  if (isInLightDOM(element)) return false;
+  console.debug('checking shadowdom', element);
+  return element.matches(':focus');
+}
+
+/**
+ * @param {Element} scope
+ * @return {Element|null}
+ */
+export function getActiveElement(scope) {
+  if (!scope) return document.activeElement;
+  const root = scope.getRootNode();
+  if (root instanceof ShadowRoot) {
+    return root.activeElement;
+  }
+  return null;
+}
+
+/**
  * @param {HTMLElement|Element} element
  * @param {Parameters<HTMLElement['focus']>} [options]
  * @return {boolean} Focus was successful
@@ -143,14 +160,10 @@ export function attemptFocus(element, ...options) {
     element.focus(...options);
   } catch (e) {
     console.error(e);
+    return false;
     // Ignore error.
   }
-  const focused = document.activeElement === element;
-  if (!focused) {
-    console.warn('Element was not focused', element);
-    return false;
-  }
-  return true;
+  return isFocused(element);
 }
 
 /**
