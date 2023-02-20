@@ -28,7 +28,7 @@
     "liberty/use-logical-spec": [
       "always"
     ],
-    "max-nesting-depth": null,
+    "max-nesting-depth": [0],
     "declaration-property-value-disallowed-list": null,
     "selector-no-vendor-prefix": null,
     "property-no-vendor-prefix": null,
@@ -80,7 +80,7 @@
     "no-duplicate-selectors": true,
     "max-empty-lines": 1,
     "selector-max-compound-selectors": [
-      3,
+      1,
       {
         "severity": "warning"
       }
@@ -458,6 +458,10 @@
           "border-top-right-radius",
           "border-bottom-right-radius",
           "border-bottom-left-radius",
+          "border-start-start-radius",
+          "border-start-end-radius",
+          "border-end-start-radius",
+          "border-end-end-radius",
           "box-shadow",
           "color",
           "color-adjust",
