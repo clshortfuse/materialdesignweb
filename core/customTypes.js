@@ -2,7 +2,8 @@
 const eventHandlerValues = new Map();
 
 /**
- * @type {import("./typings.js").ObserverOptions<'function',EventListener>}
+ * @see https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-attributes
+ * @type {import("./typings.js").ObserverOptions<'function',EventListener, unknown>}
  */
 export const EVENT_HANDLER_TYPE = {
   type: 'function',
@@ -10,12 +11,6 @@ export const EVENT_HANDLER_TYPE = {
   value: null,
   values: eventHandlerValues,
   parser(v) { return v; },
-  /**
-   * @see https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-attributes
-   * @param {string} name
-   * @param {string} oldValue
-   * @param {string} newValue
-   */
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue == null && newValue == null) return;
     // Must continue if oldValue === newValue;
@@ -32,12 +27,6 @@ export const EVENT_HANDLER_TYPE = {
     button.remove();
     this[name] = fn;
   },
-  /**
-   * @see https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-attributes
-   * @param {string} name
-   * @param {EventListener} oldValue
-   * @param {EventListener} newValue
-   */
   propChangedCallback(name, oldValue, newValue) {
     const eventName = name.slice(2);
     if (oldValue) {
@@ -46,5 +35,60 @@ export const EVENT_HANDLER_TYPE = {
     if (newValue) {
       this.addEventListener(eventName, newValue);
     }
+  },
+};
+
+const weakRefValues = new Map();
+
+/**
+ * @type {import("./typings.js").ObserverOptions<'object',HTMLElement>}
+ */
+export const WEAKREF_TYPE = {
+  type: 'object',
+  reflect: false,
+  value: null,
+  values: weakRefValues,
+  parser(v) { return new WeakRef(v); },
+  get() {
+    return weakRefValues.get(this)?.deref();
+  },
+};
+
+/** @type {WeakMap<any, Animation>} */
+const elementStylerLastAnimation = new WeakMap();
+
+/**
+ * @typedef {Object} ElementStylerOptions
+ * @prop {string} target Target ID
+ * @prop {Keyframe} styles
+ * @prop {EffectTiming} [timing]
+ */
+
+/** @type {import("./typings.js").ObserverOptions<'object',ElementStylerOptions, unknown>} */
+export const ELEMENT_STYLER_TYPE = {
+  type: 'object',
+  reflect: false,
+  changedCallback(oldValue, newValue) {
+    let previousAnimation = elementStylerLastAnimation.get(this);
+    if (!newValue) {
+      previousAnimation?.cancel();
+      return;
+    }
+    /** @type {HTMLElement} */
+    const el = this.refs[newValue.target];
+    const currentAnimation = el.animate(newValue.styles, {
+      ...newValue.timing,
+      fill: 'forwards',
+    });
+    currentAnimation.onremove = () => {
+      previousAnimation?.effect.updateTiming({
+        fill: 'none',
+      });
+      // Destroy previous manually to avoid leak
+      previousAnimation?.finish();
+      previousAnimation?.cancel();
+      previousAnimation = null;
+    };
+    elementStylerLastAnimation.set(this, currentAnimation);
   },
 };
