@@ -4,6 +4,7 @@
 <head>
   <title>Buttons</title>
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  
   <link rel=preconnect href="https://fonts.googleapis.com" />
   <link rel=preconnect href="https://fonts.gstatic.com" crossorigin />
   <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
@@ -19,144 +20,144 @@
       <h1 slot=heading> Common Buttons </h1>
       <demo-section>
         <h2 slot=heading> Elevated buttons </h2>
-        <mdw-layout gap=12px wrap>
-          <mdw-layout gap=12px wrap>
+        <mdw-flex gap=12px wrap>
+          <mdw-flex gap=12px wrap>
             <mdw-button elevated>Default</mdw-button>
             <mdw-button elevated icon=search ink=tertiary>Icon Tertiary</mdw-button>
             <mdw-button elevated class=mdw-custom ink=yellow>Custom Color</mdw-button>
-          </mdw-layout>
-          <mdw-layout gap=12px wrap>
+          </mdw-flex>
+          <mdw-flex gap=12px wrap>
             <mdw-button disabled elevated>Default</mdw-button>
             <mdw-button disabled elevated icon=search ink=tertiary>Icon Tertiary</mdw-button>
             <mdw-button disabled elevated class=mdw-custom ink=yellow>Custom Color</mdw-button>
-          </mdw-layout>
-        </mdw-layout>
+          </mdw-flex>
+        </mdw-flex>
       </demo-section>
       <demo-section>
         <h2 slot=heading> Filled buttons </h2>
-        <mdw-layout gap=12px wrap>
-          <mdw-layout gap=12px wrap>
+        <mdw-flex gap=12px wrap>
+          <mdw-flex gap=12px wrap>
             <mdw-button filled>Default</mdw-button>
             <mdw-button filled icon=search color=tertiary>Icon Tertiary</mdw-button>
             <mdw-button filled class=mdw-custom color=yellow>Custom Color</mdw-button>
-          </mdw-layout>
-          <mdw-layout gap=12px wrap>
+          </mdw-flex>
+          <mdw-flex gap=12px wrap>
             <mdw-button disabled filled>Default</mdw-button>
             <mdw-button disabled filled icon=search color=tertiary>Icon Tertiary</mdw-button>
             <mdw-button disabled filled class=mdw-custom color=yellow>Custom Color</mdw-button>
-          </mdw-layout>
-        </mdw-layout>
+          </mdw-flex>
+        </mdw-flex>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Filled tonal buttons</h2>
-        <mdw-layout gap=12px wrap>
-          <mdw-layout gap=12px wrap>
+        <mdw-flex gap=12px wrap>
+          <mdw-flex gap=12px wrap>
             <mdw-button filled=tonal>Default</mdw-button>
             <mdw-button filled=tonal icon=search color=tertiary-container>Icon Tertiary</mdw-button>
             <mdw-button filled=tonal class=mdw-custom color=yellow-container>Custom Color</mdw-button>
-          </mdw-layout>
-          <mdw-layout gap=12px wrap>
+          </mdw-flex>
+          <mdw-flex gap=12px wrap>
             <mdw-button disabled filled=tonal>Default</mdw-button>
             <mdw-button disabled filled=tonal icon=search color=tertiary-container>Icon Tertiary
             </mdw-button>
             <mdw-button disabled filled=tonal class=mdw-custom color=yellow-container>Custom Color
             </mdw-button>
-          </mdw-layout>
-        </mdw-layout>
+          </mdw-flex>
+        </mdw-flex>
       </demo-section>
       <demo-section>
         <h2 slot=heading> Outlined buttons </h2>
-        <mdw-layout gap=12px wrap>
-          <mdw-layout gap=12px wrap>
+        <mdw-flex gap=12px wrap>
+          <mdw-flex gap=12px wrap>
             <mdw-button outlined>Default</mdw-button>
             <mdw-button outlined color=surface-primary>Surface Primary</mdw-button>
             <mdw-button outlined icon=search ink=tertiary>Icon Tertiary</mdw-button>
             <mdw-button outlined class=mdw-custom ink=yellow>Custom Color</mdw-button>
-          </mdw-layout>
-          <mdw-layout gap=12px wrap>
+          </mdw-flex>
+          <mdw-flex gap=12px wrap>
             <mdw-button disabled outlined>Default</mdw-button>
             <mdw-button disabled outlined color=surface-primary>Surface Primary</mdw-button>
             <mdw-button disabled outlined icon=search ink=tertiary>Icon Tertiary</mdw-button>
             <mdw-button disabled outlined class=mdw-custom ink=yellow>Custom Color</mdw-button>
-          </mdw-layout>
-        </mdw-layout>
+          </mdw-flex>
+        </mdw-flex>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Text buttons</h2>
-        <mdw-layout gap=12px wrap>
-          <mdw-layout gap=12px wrap>
+        <mdw-flex gap=12px wrap>
+          <mdw-flex gap=12px wrap>
             <mdw-button>Default</mdw-button>
             <mdw-button icon=search ink=tertiary>Icon Tertiary</mdw-button>
             <mdw-button class=mdw-custom ink=yellow>Custom Color</mdw-button>
-          </mdw-layout>
-          <mdw-layout gap=12px wrap>
+          </mdw-flex>
+          <mdw-flex gap=12px wrap>
             <mdw-button disabled>Default</mdw-button>
             <mdw-button disabled icon=search ink=tertiary>Icon Tertiary</mdw-button>
             <mdw-button disabled class=mdw-custom ink=yellow>Custom Color</mdw-button>
-          </mdw-layout>
-        </mdw-layout>
+          </mdw-flex>
+        </mdw-flex>
       </demo-section>
     </demo-section>
     <demo-section>
       <h1 slot=heading> FAB </h1>
       <demo-section>
         <h2 slot=heading>Normal</h2>
-        <mdw-layout gap=12px wrap>
+        <mdw-flex gap=12px wrap>
           <mdw-fab icon="edit">Default</mdw-fab>
           <mdw-fab color=surface-primary icon="edit">Surface Primary</mdw-fab>
           <mdw-fab color=secondary-container icon="edit">Secondary Container</mdw-fab>
           <mdw-fab color=tertiary-container icon="edit">Tertiary Container</mdw-fab>
           <mdw-fab class=mdw-custom color=yellow-container icon="edit">Custom (Yellow)</mdw-fab>
-        </mdw-layout>
+        </mdw-flex>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Small</h2>
-        <mdw-layout gap=12px wrap>
+        <mdw-flex gap=12px wrap>
           <mdw-fab fab-size=small icon="edit">Default</mdw-fab>
           <mdw-fab fab-size=small color=surface-primary icon="edit">Surface Primary</mdw-fab>
           <mdw-fab fab-size=small color=secondary-container icon="edit">Secondary Container</mdw-fab>
           <mdw-fab fab-size=small color=tertiary-container icon="edit">Tertiary Container</mdw-fab>
           <mdw-fab fab-size=small class=mdw-custom color=yellow-container icon="edit">Custom (Yellow)</mdw-fab>
-        </mdw-layout>
+        </mdw-flex>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Large</h2>
-        <mdw-layout gap=12px wrap>
+        <mdw-flex gap=12px wrap>
           <mdw-fab fab-size=large icon="edit">Default</mdw-fab>
           <mdw-fab fab-size=large color=surface-primary icon="edit">Surface Primary</mdw-fab>
           <mdw-fab fab-size=large color=secondary-container icon="edit">Secondary Container</mdw-fab>
           <mdw-fab fab-size=large color=tertiary-container icon="edit">Tertiary Container</mdw-fab>
           <mdw-fab fab-size=large class=mdw-custom color=yellow-container icon="edit">Custom (Yellow)</mdw-fab>
-        </mdw-layout>
+        </mdw-flex>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Lowered</h2>
-        <mdw-layout gap=12px y=center wrap>
+        <mdw-flex gap=12px y=center wrap>
           <mdw-fab class=mdw-custom lowered fab-size=small color=surface ink=yellow icon="edit">Surface + Yellow
           </mdw-fab>
           <mdw-fab class=mdw-custom lowered fab-size=small color=orange-container icon="edit">Orange Container</mdw-fab>
           <mdw-fab class=mdw-custom lowered color=green-container icon="edit">Green Container</mdw-fab>
           <mdw-fab class=mdw-custom lowered fab-size=large color=alias-container icon="edit">Alias Container</mdw-fab>
-        </mdw-layout>
+        </mdw-flex>
       </demo-section>
     </demo-section>
     <demo-section>
       <h1 slot=heading> Extended FAB </h1>
       <demo-section>
         <h2 slot=heading>With icon</h2>
-        <mdw-layout gap=12px wrap>
+        <mdw-flex gap=12px wrap>
           <mdw-extended-fab color=surface-primary icon=edit>Compose</mdw-extended-fab>
           <mdw-extended-fab color=secondary-container icon=edit>Compose</mdw-extended-fab>
           <mdw-extended-fab color=tertiary-container icon=edit>Compose</mdw-extended-fab>
-        </mdw-layout>
+        </mdw-flex>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Without icon</h2>
-        <mdw-layout gap=12px wrap>
+        <mdw-flex gap=12px wrap>
           <mdw-extended-fab class=mdw-custom color=yellow>Compose</mdw-extended-fab>
           <mdw-extended-fab class=mdw-custom color=green>Compose</mdw-extended-fab>
           <mdw-extended-fab class=mdw-custom color=alias>Compose</mdw-extended-fab>
-        </mdw-layout>
+        </mdw-flex>
       </demo-section>
     </demo-section>
     <demo-section>
@@ -165,23 +166,23 @@
         <h2 slot=heading> Filled icon buttons </h2>
         <demo-section>
           <h3 slot=heading>No toggle</h3>
-          <mdw-layout gap=12px wrap>
-            <mdw-layout gap=12px wrap>
+          <mdw-flex gap=12px wrap>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button filled icon=settings>Settings</mdw-icon-button>
               <mdw-icon-button filled color=tertiary icon=favorite>Favorite</mdw-icon-button>
               <mdw-icon-button filled class=mdw-custom color=yellow icon=edit>Edit</mdw-icon-button>
-            </mdw-layout>
-            <mdw-layout gap=12px wrap>
+            </mdw-flex>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button disabled filled icon=settings>Settings</mdw-icon-button>
               <mdw-icon-button disabled filled color=tertiary icon=favorite>Favorite</mdw-icon-button>
               <mdw-icon-button disabled filled class=mdw-custom color=yellow icon=edit>Edit</mdw-icon-button>
-            </mdw-layout>
-          </mdw-layout>
+            </mdw-flex>
+          </mdw-flex>
         </demo-section>
         <demo-section>
           <h3 slot=heading>Toggle</h3>
-          <mdw-layout gap=12px wrap>
-            <mdw-layout gap=12px wrap>
+          <mdw-flex gap=12px wrap>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button filled type=checkbox icon="settings">Default</mdw-icon-button>
               <mdw-icon-button filled type=checkbox checked icon="settings">Default (Checked)</mdw-icon-button>
               <mdw-icon-button filled type=checkbox color=tertiary icon="favorite">Tertiary</mdw-icon-button>
@@ -190,8 +191,8 @@
               <mdw-icon-button filled type=checkbox class=mdw-custom color=yellow icon="edit">Yellow</mdw-icon-button>
               <mdw-icon-button filled type=checkbox checked class=mdw-custom color=yellow icon="edit">Yellow (Checked)
               </mdw-icon-button>
-            </mdw-layout>
-            <mdw-layout gap=12px wrap>
+            </mdw-flex>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button filled disabled type=checkbox icon="settings">Default</mdw-icon-button>
               <mdw-icon-button filled disabled type=checkbox checked icon="settings">Default (Checked)</mdw-icon-button>
               <mdw-icon-button filled disabled type=checkbox color=tertiary icon="favorite">Tertiary</mdw-icon-button>
@@ -201,35 +202,35 @@
               </mdw-icon-button>
               <mdw-icon-button filled disabled type=checkbox checked class=mdw-custom color=yellow icon="edit">Yellow
                 (Checked)</mdw-icon-button>
-            </mdw-layout>
-          </mdw-layout>
+            </mdw-flex>
+          </mdw-flex>
         </demo-section>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Filled tonal icon buttons</h2>
         <demo-section>
           <h3 slot=heading>No toggle</h3>
-          <mdw-layout gap=12px wrap>
-            <mdw-layout gap=12px wrap>
+          <mdw-flex gap=12px wrap>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button filled=tonal icon="settings">Default</mdw-icon-button>
               <mdw-icon-button filled=tonal color=tertiary-container icon="favorite">Tertiary Container
               </mdw-icon-button>
               <mdw-icon-button filled=tonal class=mdw-custom color=yellow-container icon="edit">Yellow Container
               </mdw-icon-button>
-            </mdw-layout>
-            <mdw-layout gap=12px wrap>
+            </mdw-flex>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button filled=tonal disabled icon="settings">Default</mdw-icon-button>
               <mdw-icon-button filled=tonal disabled color=tertiary-container icon="favorite">Tertiary Container
               </mdw-icon-button>
               <mdw-icon-button filled=tonal disabled class=mdw-custom color=yellow-container icon="edit">Yellow
                 Container</mdw-icon-button>
-            </mdw-layout>
-          </mdw-layout>
+            </mdw-flex>
+          </mdw-flex>
         </demo-section>
         <demo-section>
           <h3 slot=heading>Toggle</h3>
-          <mdw-layout gap=12px wrap>
-            <mdw-layout gap=12px wrap>
+          <mdw-flex gap=12px wrap>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button filled=tonal type=checkbox icon="settings">Default</mdw-icon-button>
               <mdw-icon-button filled=tonal type=checkbox checked icon="settings">Default (Checked)</mdw-icon-button>
               <mdw-icon-button filled=tonal type=checkbox color=tertiary-container icon="favorite">Tertiary Container
@@ -240,8 +241,8 @@
                 Container</mdw-icon-button>
               <mdw-icon-button filled=tonal type=checkbox checked class=mdw-custom color=yellow-container icon="edit">
                 Yellow Container (Checked)</mdw-icon-button>
-            </mdw-layout>
-            <mdw-layout gap=12px wrap>
+            </mdw-flex>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button disabled filled=tonal type=checkbox icon="settings">Default</mdw-icon-button>
               <mdw-icon-button disabled filled=tonal type=checkbox checked icon="settings">Default (Checked)
               </mdw-icon-button>
@@ -253,31 +254,31 @@
                 Yellow Container</mdw-icon-button>
               <mdw-icon-button disabled filled=tonal type=checkbox checked class=mdw-custom color=yellow-container
                 icon="edit">Yellow Container (Checked)</mdw-icon-button>
-            </mdw-layout>
-          </mdw-layout>
+            </mdw-flex>
+          </mdw-flex>
         </demo-section>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Outlined icon buttons</h2>
         <demo-section>
           <h3 slot=heading>No toggle</h3>
-          <mdw-layout gap=12px wrap>
-            <mdw-layout gap=12px wrap>
+          <mdw-flex gap=12px wrap>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button outlined icon="settings">Default</mdw-icon-button>
               <mdw-icon-button outlined ink=tertiary icon="favorite">Tertiary</mdw-icon-button>
               <mdw-icon-button outlined class=mdw-custom ink=yellow icon="edit">Yellow</mdw-icon-button>
-            </mdw-layout>
-            <mdw-layout gap=12px wrap>
+            </mdw-flex>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button disabled outlined icon="settings">Default</mdw-icon-button>
               <mdw-icon-button disabled outlined ink=tertiary icon="favorite">Tertiary</mdw-icon-button>
               <mdw-icon-button disabled outlined class=mdw-custom ink=yellow icon="edit">Yellow</mdw-icon-button>
-            </mdw-layout>
-          </mdw-layout>
+            </mdw-flex>
+          </mdw-flex>
         </demo-section>
         <demo-section>
           <h3 slot=heading>Toggle</h3>
-          <mdw-layout gap=12px wrap>
-            <mdw-layout gap=12px wrap>
+          <mdw-flex gap=12px wrap>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button outlined type=checkbox icon="settings">Default</mdw-icon-button>
               <mdw-icon-button outlined type=checkbox checked icon="settings">Default (Checked)</mdw-icon-button>
               <mdw-icon-button outlined type=checkbox color=tertiary icon="favorite">Tertiary</mdw-icon-button>
@@ -286,8 +287,8 @@
               <mdw-icon-button outlined type=checkbox class=mdw-custom color=yellow icon="edit">Yellow</mdw-icon-button>
               <mdw-icon-button outlined type=checkbox checked class=mdw-custom color=yellow icon="edit">Yellow (Checked)
               </mdw-icon-button>
-            </mdw-layout>
-            <mdw-layout gap=12px wrap>
+            </mdw-flex>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button disabled outlined type=checkbox icon="settings">Default</mdw-icon-button>
               <mdw-icon-button disabled outlined type=checkbox checked icon="settings">Default (Checked)
               </mdw-icon-button>
@@ -298,50 +299,49 @@
               </mdw-icon-button>
               <mdw-icon-button disabled outlined type=checkbox checked class=mdw-custom color=yellow icon="edit">Yellow
                 (Checked)</mdw-icon-button>
-            </mdw-layout>
-          </mdw-layout>
+            </mdw-flex>
+          </mdw-flex>
         </demo-section>
       </demo-section>
       <demo-section>
         <h2 slot=heading> Standard icon buttons </h2>
         <demo-section>
           <h3 slot=heading>No toggle</h3>
-          <mdw-layout gap=12px wrap>
-            <mdw-layout gap=12px wrap>
+          <mdw-flex gap=12px wrap>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button icon="settings">Settings</mdw-icon-button>
               <mdw-icon-button ink=tertiary icon="favorite">Tertiary</mdw-icon-button>
               <mdw-icon-button class=mdw-custom ink=yellow icon="edit">Yellow</mdw-icon-button>
-            </mdw-layout>
-            <mdw-layout gap=12px wrap>
+            </mdw-flex>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button disabled icon="settings">Settings</mdw-icon-button>
               <mdw-icon-button disabled ink=tertiary icon="favorite">Tertiary</mdw-icon-button>
               <mdw-icon-button disabled class=mdw-custom ink=yellow icon="edit">Yellow</mdw-icon-button>
-            </mdw-layout>
-          </mdw-layout>
+            </mdw-flex>
+          </mdw-flex>
         </demo-section>
         <demo-section>
           <h3 slot=heading>Toggle</h3>
-          <mdw-layout gap=12px wrap>
-            <mdw-layout gap=12px wrap>
+          <mdw-flex gap=12px wrap>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button type=checkbox icon="settings">Default</mdw-icon-button>
               <mdw-icon-button type=checkbox checked icon="settings">Default (Checked)</mdw-icon-button>
               <mdw-icon-button type=checkbox ink=tertiary icon="favorite">Tertiary</mdw-icon-button>
               <mdw-icon-button type=checkbox checked ink=tertiary icon="favorite">Tertiary (Checked)</mdw-icon-button>
               <mdw-icon-button type=checkbox class=mdw-custom ink=yellow icon="edit">Yellow</mdw-icon-button>
-              <mdw-icon-button type=checkbox checked class=mdw-custom ink=yellow icon="favorite">Yellow (Checked)
+              <mdw-icon-button type=checkbox checked class=mdw-custom ink=yellow icon="edit">Yellow (Checked)
               </mdw-icon-button>
-            </mdw-layout>
-            <mdw-layout gap=12px wrap>
+            </mdw-flex>
+            <mdw-flex gap=12px wrap>
               <mdw-icon-button disabled type=checkbox icon="settings">Default</mdw-icon-button>
               <mdw-icon-button disabled type=checkbox checked icon="settings">Default (Checked)</mdw-icon-button>
               <mdw-icon-button disabled type=checkbox ink=tertiary icon="favorite">Tertiary</mdw-icon-button>
-              <mdw-icon-button disabled type=checkbox checked ink=tertiary icon="favorite">Tertiary (Checked)
-              </mdw-icon-button>
+              <mdw-icon-button disabled type=checkbox checked ink=tertiary icon="favorite">Tertiary (Checked)</mdw-icon-button>
               <mdw-icon-button disabled type=checkbox class=mdw-custom ink=yellow icon="edit">Yellow</mdw-icon-button>
-              <mdw-icon-button disabled type=checkbox checked class=mdw-custom ink=yellow icon="favorite">Yellow
+              <mdw-icon-button disabled type=checkbox checked class=mdw-custom ink=yellow icon="edit">Yellow
                 (Checked)</mdw-icon-button>
-            </mdw-layout>
-          </mdw-layout>
+            </mdw-flex>
+          </mdw-flex>
         </demo-section>
       </demo-section>
     </demo-section>
@@ -349,7 +349,7 @@
       <h1 slot=heading> Segmented buttons </h1>
       <demo-section>
         <h2 slot=heading>Single selection</h2>
-        <mdw-layout gap=12px wrap>
+        <mdw-flex gap=12px wrap>
           <form>
             <mdw-segmented-button-group>
               <mdw-segmented-button name=segmented-demo value=favorite icon=favorite>Favorite</mdw-segmented-button>
@@ -359,11 +359,11 @@
               <mdw-segmented-button name=segmented-demo value=text>Text only</mdw-segmented-button>
             </mdw-segmented-button-group>
           </form>
-        </mdw-layout>
+        </mdw-flex>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Single selection (Required)</h2>
-        <mdw-layout gap=12px wrap>
+        <mdw-flex gap=12px wrap>
           <form>
             <mdw-segmented-button-group aria-required=true>
               <mdw-segmented-button name=segmented-demo-required required value=favorite checked icon=favorite>
@@ -376,23 +376,23 @@
               <mdw-segmented-button name=segmented-demo-required required value=text>Text only</mdw-segmented-button>
             </mdw-segmented-button-group>
           </form>
-        </mdw-layout>
+        </mdw-flex>
       </demo-section>
 
       <demo-section>
         <h2 slot=heading>Multi-selectable</h2>
-        <mdw-layout gap=12px wrap>
+        <mdw-flex gap=12px wrap>
           <mdw-segmented-button-group class=mdw-custom color=alias-container aria-multiselectable=true>
             <mdw-segmented-button type=checkbox checked icon=favorite>Favorite</mdw-segmented-button>
             <mdw-segmented-button type=checkbox checked icon=star>Enabled</mdw-segmented-button>
             <mdw-segmented-button type=checkbox icon=edit disabled>Disabled</mdw-segmented-button>
             <mdw-segmented-button type=checkbox>Text only</mdw-segmented-button>
           </mdw-segmented-button-group>
-        </mdw-layout>
+        </mdw-flex>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Text-only</h2>
-        <mdw-layout gap=12px wrap>
+        <mdw-flex gap=12px wrap>
           <form>
             <mdw-segmented-button-group color=tertiary-container>
               <mdw-segmented-button name=demo-segmented-text value="$" checked>$</mdw-segmented-button>
@@ -401,18 +401,18 @@
               <mdw-segmented-button name=demo-segmented-text value="$$$$">$$$$</mdw-segmented-button>
             </mdw-segmented-button-group>
           </form>
-        </mdw-layout>
+        </mdw-flex>
       </demo-section>
       <demo-section>
         <h2 slot=heading>Multi-selectable text-only</h2>
-        <mdw-layout gap=12px wrap>
+        <mdw-flex gap=12px wrap>
           <mdw-segmented-button-group class=mdw-custom color=alias-container aria-multiselectable=true>
             <mdw-segmented-button type=checkbox checked icon=check>$</mdw-segmented-button>
             <mdw-segmented-button type=checkbox icon=check>$$</mdw-segmented-button>
             <mdw-segmented-button type=checkbox icon=check disabled>$$$</mdw-segmented-button>
             <mdw-segmented-button type=checkbox checked icon=check>$$$$</mdw-segmented-button>
           </mdw-segmented-button-group>
-        </mdw-layout>
+        </mdw-flex>
       </demo-section>
     </demo-section>
 

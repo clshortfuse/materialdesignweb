@@ -19,7 +19,7 @@
       <h1 slot="heading">Horizontal</h1>
       <demo-section>
         <h2 slot="heading">Inside Block Layout</h2>
-        <mdw-layout block style="margin:24px" row>
+        <div style="margin:24px">
           Default
           <mdw-divider></mdw-divider>
           Custom padding
@@ -34,11 +34,11 @@
           <mdw-divider ink="inverse-surface"></mdw-divider>
           Inverse Primary
           <mdw-divider ink="inverse-primary"></mdw-divider>
-        </mdw-layout>
+        </div>
       </demo-section>
       <demo-section>
         <h2 slot="heading">Inside Flex Layout</h2>
-        <mdw-layout wrap style="margin:24px" row>
+        <mdw-flex wrap style="margin:24px" row>
           Default
           <mdw-divider></mdw-divider>
           Custom padding
@@ -53,11 +53,11 @@
           <mdw-divider ink="inverse-surface"></mdw-divider>
           Inverse Primary
           <mdw-divider ink="inverse-primary"></mdw-divider>
-        </mdw-layout>
+        </mdw-flex>
       </demo-section>
       <demo-section>
         <h2 slot="heading">Inside Block Inside Flex Layout</h2>
-        <mdw-layout wrap gap=16px style="margin:24px" row>
+        <mdw-flex wrap gap=16px style="margin:24px" row>
           <div>
             Default
             <mdw-divider></mdw-divider>
@@ -86,14 +86,14 @@
             Inverse Primary
             <mdw-divider ink="inverse-primary"></mdw-divider>
           </div>
-        </mdw-layout>
+        </mdw-flex>
       </demo-section>
     </demo-section>
     <demo-section>
       <h1 slot="heading">Vertical</h1>
       <demo-section>
         <h2 slot="heading">Inside Flex Layout</h2>
-        <mdw-layout wrap gap=4px style="margin:24px" row>
+        <mdw-flex wrap gap=4px style="margin:24px" row>
           Default
           <mdw-divider vertical></mdw-divider>
           Custom padding
@@ -108,11 +108,11 @@
           <mdw-divider vertical ink="inverse-surface"></mdw-divider>
           Inverse Primary
           <mdw-divider vertical ink="inverse-primary"></mdw-divider>
-        </mdw-layout>
+        </mdw-flex>
       </demo-section>
       <demo-section>
         <h2 slot="heading">Inside Block Inside Flex Layout</h2>
-        <mdw-layout wrap gap=4px style="margin:24px" row>
+        <mdw-flex wrap gap=4px style="margin:24px" row>
           <div>
             Default
             <mdw-divider vertical></mdw-divider>
@@ -142,7 +142,7 @@
             Inverse Primary
             <mdw-divider vertical ink="inverse-primary"></mdw-divider>
           </div>
-        </mdw-layout>
+        </mdw-flex>
       </demo-section>
     </demo-section>
 

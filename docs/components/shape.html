@@ -16,35 +16,116 @@
 <body>
   <demo-page>
     <demo-section>
-      <h1 slot=heading>Shape tokens</h1>
-      <mdw-layout gap=12px wrap>
-        <mdw-container class=box color=primary shape-style=extra-small>Extra small</mdw-container>
-        <mdw-container class=box color=primary shape-style=small>Small</mdw-container>
-        <mdw-container class=box color=primary shape-style=medium>Medium</mdw-container>
-        <mdw-container class=box color=primary shape-style=large>Large</mdw-container>
-        <mdw-container class=box color=primary shape-style=extra-large>Extra large</mdw-container>
-        <mdw-container class=box color=primary shape-style=full>Full</mdw-container>
-      </mdw-layout>
-    </demo-section>
-    <demo-section>
-      <h1 slot=heading>Shape token top modifier</h1>
-      <mdw-layout gap=12px wrap>
-        <mdw-container class=box color=secondary shape-top shape-style=extra-small>Extra small top</mdw-container>
-        <mdw-container class=box color=secondary shape-top shape-style=small>Small top</mdw-container>
-        <mdw-container class=box color=secondary shape-top shape-style=medium>Medium top</mdw-container>
-        <mdw-container class=box color=secondary shape-top shape-style=large>Large top</mdw-container>
-        <mdw-container class=box color=secondary shape-top shape-style=extra-large>Extra large top
-        </mdw-container>
-      </mdw-layout>
-    </demo-section>
-    <demo-section>
-      <h1 slot=heading>Shape token end modifier</h1>
-      <mdw-layout gap=12px wrap>
-        <mdw-container class=box color=secondary shape-end shape-style=extra-small>Extra small end</mdw-container>
-        <mdw-container class=box color=secondary shape-end shape-style=small>Small end</mdw-container>
-        <mdw-container class=box color=secondary shape-end shape-style=medium>Medium end</mdw-container>
-        <mdw-container class=box color=secondary shape-end shape-style=large>Large end</mdw-container>
-        <mdw-container class=box color=secondary shape-end shape-style=extra-large>Extra large end</mdw-container>
+      <h1 slot=heading>Shapes</h1>
+      <mdw-layout gap="24px" column >
+        <mdw-layout gap=12px wrap>
+          <mdw-surface color=primary shape-style=extra-small>
+            <div class=box>Extra small</div>
+          </mdw-surface>
+          <mdw-surface color=primary shape-style=small>
+            <div class=box>Small</div>
+          </mdw-surface>
+          <mdw-surface color=primary shape-style=medium>
+            <div class=box>Medium</div>
+          </mdw-surface>
+          <mdw-surface color=primary shape-style=large>
+            <div class=box>Large</div>
+          </mdw-surface>
+          <mdw-surface color=primary shape-style=extra-large>
+            <div class=box>Extra large</div>
+          </mdw-surface>
+          <mdw-surface color=primary shape-style=full>
+            <div class=box>Full</div>
+          </mdw-surface>
+        </mdw-layout>
+        <mdw-layout gap=12px wrap>
+          <mdw-surface outlined ink=primary shape-style=extra-small>
+            <div class="box">Extra small</div>
+          </mdw-surface>
+          <mdw-surface outlined ink=primary shape-style=small>
+            <div class="box">Small</div>
+          </mdw-surface>
+          <mdw-surface outlined ink=primary shape-style=medium>
+            <div class="box">Medium</div>
+          </mdw-surface>
+          <mdw-surface outlined ink=primary shape-style=large>
+            <div class="box">Large</div>
+          </mdw-surface>
+          <mdw-surface outlined ink=primary shape-style=extra-large>
+            <div class="box">Extra large</div>
+          </mdw-surface>
+          <mdw-surface outlined ink=primary shape-style=full>
+            <div class="box">Full</div>
+          </mdw-surface>
+        </mdw-layout>
+        <mdw-layout gap=12px wrap>
+          <mdw-surface color=secondary shape-top shape-style=extra-small>
+            <div class="box">Extra small top</div>
+          </mdw-surface>
+          <mdw-surface color=secondary shape-top shape-style=small>
+            <div class="box">Small top</div>
+          </mdw-surface>
+          <mdw-surface color=secondary shape-top shape-style=medium>
+            <div class="box">Medium top</div>
+          </mdw-surface>
+          <mdw-surface color=secondary shape-top shape-style=large>
+            <div class="box">Large top</div>
+          </mdw-surface>
+          <mdw-surface color=secondary shape-top shape-style=extra-large>
+            <div class="box">Extra large top</div>
+          </mdw-surface>
+        </mdw-layout>
+        <mdw-layout gap=12px wrap>
+          <mdw-surface outlined shape-top shape-style=extra-small>
+            <div class="box">Extra small top</div>
+          </mdw-surface>
+          <mdw-surface outlined shape-top shape-style=small>
+            <div class="box">Small top</div>
+          </mdw-surface>
+          <mdw-surface outlined shape-top shape-style=medium>
+            <div class="box">Medium top</div>
+          </mdw-surface>
+          <mdw-surface outlined shape-top shape-style=large>
+            <div class="box">Large top</div>
+          </mdw-surface>
+          <mdw-surface outlined shape-top shape-style=extra-large>
+            <div class="box">Extra large top</div>
+          </mdw-surface>
+        </mdw-layout>
+        <mdw-layout gap=12px wrap>
+          <mdw-surface color=secondary shape-end shape-style=extra-small>
+            <div class="box">Extra small end</div>
+          </mdw-surface>
+          <mdw-surface color=secondary shape-end shape-style=small>
+            <div class="box">Small end</div>
+          </mdw-surface>
+          <mdw-surface color=secondary shape-end shape-style=medium>
+            <div class="box">Medium end</div>
+          </mdw-surface>
+          <mdw-surface color=secondary shape-end shape-style=large>
+            <div class="box">Large end</div>
+          </mdw-surface>
+          <mdw-surface color=secondary shape-end shape-style=extra-large>
+            <div class="box">Extra large end</div>
+          </mdw-surface>
+        </mdw-layout>
+        <mdw-layout gap=12px wrap>
+          <mdw-surface outlined shape-end shape-style=extra-small>
+            <div class="box">Extra small end</div>
+          </mdw-surface>
+          <mdw-surface outlined shape-end shape-style=small>
+            <div class="box">Small end</div>
+          </mdw-surface>
+          <mdw-surface outlined shape-end shape-style=medium>
+            <div class="box">Medium end</div>
+          </mdw-surface>
+          <mdw-surface outlined shape-end shape-style=large>
+            <div class="box">Large end</div>
+          </mdw-surface>
+          <mdw-surface outlined shape-end shape-style=extra-large>
+            <div class="box">Extra large end</div>
+          </mdw-surface>
+        </mdw-layout>
       </mdw-layout>
     </demo-section>
   </demo-page>

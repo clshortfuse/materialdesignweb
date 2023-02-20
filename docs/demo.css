@@ -42,9 +42,8 @@ main {
   inline-size: 100%;
 }
 
-
 .box {
-  min-inline-size: 40px;
+  /* min-inline-size: 40px; */
   padding: 8px;
 
   text-align: center;

@@ -6,7 +6,7 @@ import './demo/DemoSection.js';
 import './demo/DemoScreen.js';
 import './demo/DemoPage.js';
 
-import '../components/Span.js';
+import '../components/Surface.js';
 import '../components/Container.js';
 
 import '../components/Badge.js';
@@ -36,6 +36,7 @@ import '../components/NavItem.js';
 import '../components/NavRail.js';
 import '../components/Progress.js';
 import '../components/Radio.js';
+import '../components/Select.js';
 import '../components/SegmentedButton.js';
 import '../components/SegmentedButtonGroup.js';
 import '../components/Slider.js';
@@ -48,3 +49,10 @@ import '../components/TabPanel.js';
 import '../components/TextArea.js';
 import '../components/Tooltip.js';
 import '../components/TopAppBar.js';
+
+import '../layout/Block.js';
+import '../layout/Inline.js';
+
+import '../typography/Body.js';
+import '../typography/Headline.js';
+import '../typography/Title.js';
