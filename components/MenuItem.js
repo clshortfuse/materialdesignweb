@@ -12,6 +12,7 @@ export default ListOption
   .set({
     _cascadeTimeout: null,
     CASCADE_TIMEOUT: 500,
+    _cascading: false,
   })
   .define({
     type() {
@@ -99,8 +100,9 @@ export default ListOption
     },
     cascade() {
       this.unscheduleCascade();
-      console.log('will cascade');
+      this._cascading = true;
       document.getElementById(this.cascades)?.cascade?.(this);
+      this._cascading = false;
     },
   })
   .css(styles)
@@ -167,14 +169,17 @@ export default ListOption
         default:
       }
     },
-    blur({ relatedTarget }) {
+    /**
+     * Closes submenu if focus leaves cascader to something else (sibling menu item)
+     * RelatedTarget is unreliable on Webkit
+     */
+    blur() {
       if (!this.cascades) return;
-      if (!relatedTarget) return;
-      console.log('blurred');
+      if (this._cascading) return;
       const submenuElement = document.getElementById(this.cascades);
-      if (submenuElement.contains(relatedTarget)) return;
-      console.log('close');
-      // submenuElement.close(false);
+      if (submenuElement.matches(':focus-within')) return;
+      console.debug('closing submenu via cascader blur');
+      submenuElement.close(false);
     },
   })
   .on({
@@ -207,5 +212,3 @@ export default ListOption
     },
   })
   .autoRegister('mdw-menu-item');
-
-

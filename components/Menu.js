@@ -16,6 +16,7 @@ import styles from './Menu.css' assert { type: 'css' };
  * @prop {Object} [previousState]
  * @prop {MouseEvent|PointerEvent|HTMLElement|Element} [originalEvent]
  * @prop {any} [pendingResizeOperation]
+ * @prop {window['history']['scrollRestoration']} [scrollRestoration]
  */
 
 const supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
@@ -52,6 +53,12 @@ function onPopState(event) {
     .every((key) => event.state[key] === lastOpenMenu.previousState[key])) {
     lastOpenMenu.element.close();
   }
+}
+
+/** @param {BeforeUnloadEvent} event */
+function onBeforeUnload(event) {
+  if (!OPEN_MENUS.length) return;
+  console.warn('Menu was open during page unload (refresh?).');
 }
 
 export default CustomElement
@@ -251,23 +258,23 @@ export default CustomElement
       surface.scrollIntoView();
     },
     /**
-     * @param {MouseEvent|PointerEvent|HTMLElement|Element} [source]
+     * @param {MouseEvent|PointerEvent|HTMLElement|Element} source
      * @return {boolean} handled
      */
-    showModal(source = document.activeElement) {
+    showModal(source) {
       if (this.open) return false;
       this.modal = true;
       if (supportsHTMLDialogElement) {
         this._dialog.showModal();
         this._isNativeModal = true;
       }
-      return this.show(source);
+      return this.showPopup(source);
     },
     /**
-     * @param {MouseEvent|PointerEvent|HTMLElement|Element} [source]
+     * @param {MouseEvent|PointerEvent|HTMLElement|Element} source
      * @return {boolean} handled
      */
-    show(source = document.activeElement) {
+    showPopup(source) {
       if (this.open) return false;
       this.open = true;
 
@@ -287,8 +294,13 @@ export default CustomElement
         }, document.title);
       }
       previousState = window.history.state;
+      const scrollRestoration = window.history.scrollRestoration;
+      window.history.scrollRestoration = 'manual';
       window.history.pushState(newState, document.title);
+      console.debug('Menu pushed page');
       window.addEventListener('popstate', onPopState);
+      window.addEventListener('beforeunload', onBeforeUnload);
+
       window.addEventListener('resize', onWindowResize);
       window.addEventListener('scroll', onWindowResize);
 
@@ -298,9 +310,10 @@ export default CustomElement
         state: newState,
         previousState,
         originalEvent: source,
+        scrollRestoration,
       });
 
-      if (!this.submenu) this.focus();
+      this.focus();
 
       return true;
     },
@@ -341,7 +354,14 @@ export default CustomElement
           if (entry.state && window.history && window.history.state && entry.state.hash === window.history.state.hash) {
             window.removeEventListener('popstate', onPopState);
             window.history.back();
+            // Back does not set state immediately
+            // Needed to track submenu
+            // TODO: use window.history.go(indexDelta) instead for Safari (not Wekbit) submenu support
+            window.history.replaceState(entry.previousState, document.title);
+            window.history.scrollRestoration = entry.scrollRestoration || 'auto';
             window.addEventListener('popstate', onPopState);
+          } else {
+            console.warn('Menu state mismatch?', entry, window.history.state);
           }
           if (returnFocus && entry.previousFocus instanceof HTMLElement) {
             entry.previousFocus?.focus({ preventScroll: true });
@@ -349,12 +369,16 @@ export default CustomElement
           OPEN_MENUS.splice(i, 1);
           break;
         } else if (this.contains(entry.element)) {
+          console.debug('Closing submenu first');
           entry.element.close(false);
+          console.debug('Sub menu closed. Continuing...');
         }
       }
       if (!OPEN_MENUS.length) {
         window.removeEventListener('popstate', onPopState);
+        window.removeEventListener('beforeunload', onBeforeUnload);
         window.removeEventListener('resize', onWindowResize);
+        console.debug('All menus closed');
       }
       return true;
     },
@@ -363,7 +387,19 @@ export default CustomElement
      */
     cascade(cascader) {
       this.cascader = cascader;
-      this.show(cascader);
+      this.showPopup(cascader);
+    },
+    /**
+     * @param {MouseEvent|PointerEvent|HTMLElement|Element} source
+     * @return {boolean} handled
+     */
+    show(source) {
+      // Auto-select type based on default platform convention
+      // Mac OS X / iPad does not expect clickthrough
+      if (navigator.userAgent.includes('Mac OS X')) {
+        return this.showModal(source);
+      }
+      return this.showPopup(source);
     },
   })
   .events({

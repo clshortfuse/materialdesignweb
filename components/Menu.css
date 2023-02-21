@@ -133,7 +133,7 @@ form {
   --mdw-shape__size: var(--mdw-shape__extra-small);
   --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__2);
   --mdw-elevation__filter__resting: var(--mdw-elevation__filter__2);
-  position: relative;
+  position: sticky;
 
   display: inline-flex;
 
