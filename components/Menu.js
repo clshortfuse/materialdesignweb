@@ -80,6 +80,7 @@ export default CustomElement
     delegatesFocus: true,
     /** @type {WeakRef<HTMLElement>} */
     _cascader: null,
+    _closing: false,
   })
   .define({
     kbdNavChildren() {
@@ -278,7 +279,7 @@ export default CustomElement
       if (this.open) return false;
       this.open = true;
 
-      const previousFocus = document.activeElement;
+      const previousFocus = source instanceof HTMLElement ? source : document.activeElement;
       this.updateMenuPosition(source);
       if (supportsHTMLDialogElement && !this._dialog.open) {
         this._dialog.show();
@@ -323,6 +324,8 @@ export default CustomElement
      */
     close(returnFocus = true) {
       if (!this.open) return false;
+      if (this._closing) return false;
+      this._closing = true;
       this.modal = false;
       if (this._isNativeModal) {
         this._isNativeModal = false;
@@ -363,8 +366,8 @@ export default CustomElement
           } else {
             console.warn('Menu state mismatch?', entry, window.history.state);
           }
-          if (returnFocus && entry.previousFocus instanceof HTMLElement) {
-            entry.previousFocus?.focus({ preventScroll: true });
+          if (returnFocus) {
+            entry.previousFocus?.focus?.({ preventScroll: true });
           }
           OPEN_MENUS.splice(i, 1);
           break;
@@ -380,6 +383,7 @@ export default CustomElement
         window.removeEventListener('resize', onWindowResize);
         console.debug('All menus closed');
       }
+      this._closing = false;
       return true;
     },
     /**
@@ -437,7 +441,7 @@ export default CustomElement
         case 'Esc':
           event.stopPropagation();
           event.preventDefault();
-          this.close();
+          this.close(true);
           break;
         default:
       }

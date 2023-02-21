@@ -112,7 +112,7 @@ dialog:modal {
   z-index:0;
 }
 
-form {
+#form {
   display: contents;
 }
 
@@ -145,7 +145,14 @@ form {
   pointer-events: auto;
   /* background-color: rgb(var(--mdw-color__surface)); */
   /* color: rgb(var(--mdw-color__on-surface)); */
-  will-change: inset-block-start, inset-inline-start;
+  /* stylelint-disable-next-line liberty/use-logical-spec */
+  will-change: top, left;
+}
+
+@supports(-moz-appearance: none) {
+  #surface {
+    position: absolute;
+  }
 }
 
 #surface::part(shape) {
