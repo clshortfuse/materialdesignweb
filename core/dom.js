@@ -122,12 +122,19 @@ export function isInLightDOM(element) {
   return element?.getRootNode() === document;
 }
 
+const IS_FIREFOX = globalThis?.navigator?.userAgent.includes('Firefox');
+
 /**
  * @param {Element} element
  * @return {boolean}
  */
 export function isFocused(element) {
   if (!element) return false;
+  if (IS_FIREFOX && element.constructor.formAssociated && element.hasAttribute('disabled')) {
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1818287
+    console.warn('Firefox bug 1818287: Disabled form associated custom element cannot receive focus.');
+    return false;
+  }
   if (document.activeElement === element) return true;
   if (!element.isConnected) return false;
   if (isInLightDOM(element)) return false;
