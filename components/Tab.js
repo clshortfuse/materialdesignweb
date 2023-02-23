@@ -1,5 +1,7 @@
 // https://w3c.github.io/aria/#tab
 
+import './Icon.js';
+
 import RippleMixin from '../mixins/RippleMixin.js';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
 import StateMixin from '../mixins/StateMixin.js';

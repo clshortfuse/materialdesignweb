@@ -1,5 +1,6 @@
 import './Button.js';
 import './Surface.js';
+import './Divider.js';
 import './Icon.js';
 import './DialogActions.js';
 

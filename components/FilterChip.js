@@ -1,6 +1,7 @@
+import './Icon.js';
+
 import Chip from './Chip.js';
 import styles from './FilterChip.css' assert { type: 'css' };
-import './Icon.js';
 
 export default Chip
   .extend()

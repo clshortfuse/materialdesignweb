@@ -1,4 +1,6 @@
 import './Icon.js';
+import './Ripple.js';
+import './Badge.js';
 
 import RippleMixin from '../mixins/RippleMixin.js';
 import StateMixin from '../mixins/StateMixin.js';

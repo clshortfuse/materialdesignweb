@@ -1,8 +1,8 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
 import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
-import './Icon.js';
 
+import './Icon.js';
 import ListOption from './ListOption.js';
 import styles from './MenuItem.css' assert { type: 'css' };
 

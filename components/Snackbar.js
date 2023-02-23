@@ -2,6 +2,9 @@
 
 import { EVENT_HANDLER_TYPE } from '../core/customTypes.js';
 
+import './Button.js';
+import './IconButton.js';
+
 import styles from './Snackbar.css' assert { type: 'css' };
 import Surface from './Surface.js';
 

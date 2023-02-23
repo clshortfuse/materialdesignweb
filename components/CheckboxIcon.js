@@ -1,3 +1,4 @@
+import './Icon.js';
 import CustomElement from '../core/CustomElement.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
