@@ -15,6 +15,7 @@
     "plugin/no-unsupported-browser-features": [
       true,
       {
+        "browsers": ["> 1%", "not op_mini all"],
         "ignore": [
           "css-appearance",
           "overscroll-behavior",
@@ -28,8 +29,9 @@
     "liberty/use-logical-spec": [
       "always"
     ],
-    "max-nesting-depth": [0],
-    "declaration-property-value-disallowed-list": null,
+    "max-nesting-depth": [
+      0
+    ],
     "selector-no-vendor-prefix": null,
     "property-no-vendor-prefix": null,
     "value-no-vendor-prefix": null,
@@ -69,6 +71,17 @@
     "selector-type-case": "lower",
     "selector-list-comma-space-before": "never",
     "custom-property-no-missing-var-function": true,
+    "declaration-property-value-disallowed-list": [
+      {
+        "/^margin/": "/[^0]/"
+      },
+      {
+        "message": "Elements should not set margins. Use padding, or use parent element if styling layout."
+      }
+    ],
+    "rule-selector-property-disallowed-list": {
+      "/^(?!:host)[^[]+\\[/": "/^--/"
+    },
     "indentation": [
       2,
       {
