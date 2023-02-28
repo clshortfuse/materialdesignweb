@@ -736,12 +736,19 @@ export default class CustomElement extends ICustomElement {
       /** @type {EventListener} */
       const listener = (e) => {
         e.stopImmediatePropagation();
-        console.warn('Chromium bug 1346606: Tabindex change caused blur. Giving focusing back.');
-        this.focus();
+        e.stopPropagation();
+        if (e.type === 'blur') {
+          console.warn('Chromium bug 1346606: Tabindex change caused blur. Giving focusing back.', this);
+          this.focus();
+        } else {
+          console.warn('Chromium bug 1346606: Blocking focus event.', this);
+        }
       };
       this.addEventListener('blur', listener, { capture: true, once: true });
+      this.addEventListener('focus', listener, { capture: true, once: true });
       super.tabIndex = value;
       this.removeEventListener('blur', listener, { capture: true });
+      this.removeEventListener('focus', listener, { capture: true });
       return;
     }
 
