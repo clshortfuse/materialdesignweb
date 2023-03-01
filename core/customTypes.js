@@ -94,6 +94,7 @@ function elementStylerRAFCallback() {
     previousAnimation = null;
   };
   elementStylerLastAnimation.set(this, currentAnimation);
+  elementStylerRAFHandles.delete(this);
 }
 
 /** @type {import("./typings.js").ObserverOptions<'object',ElementStylerOptions, CustomElement>} */
@@ -102,8 +103,19 @@ export const ELEMENT_STYLER_TYPE = {
   reflect: false,
   values: elementStylerValues,
   changedCallback(oldValue, newValue) {
-    cancelAnimationFrame(elementStylerRAFHandles.get(this));
-    if (!newValue) return;
+    const currentRAFHandle = elementStylerRAFHandles.get(this);
+    if (!newValue) {
+      if (!currentRAFHandle) return;
+      cancelAnimationFrame(currentRAFHandle);
+      elementStylerRAFHandles.delete(this);
+      return;
+    }
+
+    if (currentRAFHandle) {
+      // Already scheduled
+      return;
+    }
+
     // Animation styles may trickle in steps, so request an animation frame before doing any work.
     elementStylerRAFHandles.set(
       this,
