@@ -1,4 +1,6 @@
-/** @type {Map<HTMLElement, EventListener>} */
+/** @typedef {import("./CustomElement").default} CustomElement */
+
+/** @type {WeakMap<HTMLElement, EventListener>} */
 const eventHandlerValues = new Map();
 
 /**
@@ -38,7 +40,7 @@ export const EVENT_HANDLER_TYPE = {
   },
 };
 
-const weakRefValues = new Map();
+const weakRefValues = new WeakMap();
 
 /**
  * @type {import("./typings.js").ObserverOptions<'object',HTMLElement>}
@@ -56,6 +58,10 @@ export const WEAKREF_TYPE = {
 
 /** @type {WeakMap<any, Animation>} */
 const elementStylerLastAnimation = new WeakMap();
+/** @type {WeakMap<CustomElement, ElementStylerOptions>} */
+const elementStylerValues = new WeakMap();
+/** @type {WeakMap<any, number>} */
+const elementStylerRAFHandles = new WeakMap();
 
 /**
  * @typedef {Object} ElementStylerOptions
@@ -64,31 +70,44 @@ const elementStylerLastAnimation = new WeakMap();
  * @prop {EffectTiming} [timing]
  */
 
-/** @type {import("./typings.js").ObserverOptions<'object',ElementStylerOptions, unknown>} */
+/** @this {CustomElement} */
+function elementStylerRAFCallback() {
+  let previousAnimation = elementStylerLastAnimation.get(this);
+  const value = elementStylerValues.get(this);
+  if (!value) {
+    previousAnimation?.cancel();
+    return;
+  }
+  /** @type {HTMLElement} */
+  const el = value.target ? this.refs[value.target] : this;
+  const currentAnimation = el.animate(value.styles, {
+    ...value.timing,
+    fill: 'forwards',
+  });
+  currentAnimation.onremove = () => {
+    previousAnimation?.effect.updateTiming({
+      fill: 'none',
+    });
+    // Destroy previous manually to avoid leak
+    previousAnimation?.finish();
+    previousAnimation?.cancel();
+    previousAnimation = null;
+  };
+  elementStylerLastAnimation.set(this, currentAnimation);
+}
+
+/** @type {import("./typings.js").ObserverOptions<'object',ElementStylerOptions, CustomElement>} */
 export const ELEMENT_STYLER_TYPE = {
   type: 'object',
   reflect: false,
+  values: elementStylerValues,
   changedCallback(oldValue, newValue) {
-    let previousAnimation = elementStylerLastAnimation.get(this);
-    if (!newValue) {
-      previousAnimation?.cancel();
-      return;
-    }
-    /** @type {HTMLElement} */
-    const el = this.refs[newValue.target];
-    const currentAnimation = el.animate(newValue.styles, {
-      ...newValue.timing,
-      fill: 'forwards',
-    });
-    currentAnimation.onremove = () => {
-      previousAnimation?.effect.updateTiming({
-        fill: 'none',
-      });
-      // Destroy previous manually to avoid leak
-      previousAnimation?.finish();
-      previousAnimation?.cancel();
-      previousAnimation = null;
-    };
-    elementStylerLastAnimation.set(this, currentAnimation);
+    cancelAnimationFrame(elementStylerRAFHandles.get(this));
+    if (!newValue) return;
+    // Animation styles may trickle in steps, so request an animation frame before doing any work.
+    elementStylerRAFHandles.set(
+      this,
+      requestAnimationFrame(elementStylerRAFCallback.bind(this)),
+    );
   },
 };
