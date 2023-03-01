@@ -10,6 +10,19 @@
   border-radius: inherit;
 
   transition-delay: 1ms;
-  transition-duration: 200ms;
-  transition-property: opacity, color, background-color;
+  transition-duration: 100ms;
+  transition-property: opacity;
+  will-change: opacity;
+}
+
+.elevation[hovered] {
+  opacity: var(--mdw-elevation__opacity__hovered, 0);
+}
+
+.elevation[pressed] {
+  opacity: var(--mdw-elevation__opacity, 0);
+}
+
+.elevation[color]:not([color|="surface"]) {
+  display: none;
 }

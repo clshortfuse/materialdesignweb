@@ -1,63 +1,37 @@
 /* https://m3.material.io/components/chips/specs */
 
 :host {
-  --mdw-ink: var(--mdw-color__primary);
   --mdw-shape__size: 8px;
-  --mdw-button__icon__size: 18px;
-  --mdw-button__icon__display: block;
-  --mdw-button__padding-inline-start: 0;
-  --mdw-button__padding-inline-end: 16px;
-  --mdw-button__icon__margin-inline-start: 16px;
-  --mdw-outline__visibility: visible;
-
-  --mdw-chip__trailing-icon__size: 18px;
-  --mdw-chip__trailing-icon__opacity: 1;
-  --mdw-chip__trailing-icon__display: block;
-  --mdw-chip__trailing-icon__font-variation-settings: 'FILL' 1;
-  --mdw-chip__label-color: var(--mdw-color__on-surface);
-
-  min-block-size: 32px;
-
-  color: rgb(var(--mdw-chip__label-color));
-}
-
-:host([elevated]) {
-  color: rgb(var(--mdw-chip__label-color));
+  --mdw-ink: var(--mdw-color__on-surface);
 }
 
 :host(:where([suggestion])) {
   --mdw-ink: var(--mdw-color__on-surface-variant);
-  --mdw-chip__label-color: var(--mdw-ink);
 }
 
-.mdw-button__text {
-  block-size: 32px;
+#label {
+  min-block-size: 32px;
+  padding-inline: 16px;
 
-  padding-inline-start: 0;
-  padding-inline-end: 16px;
-}
-
-#outline {
-  --mdw-outline__rgb: var(--mdw-color__outline);
-}
-
-#icon {
-  --mdw-button__icon__margin-inline-start: 8px;
-  --mdw-button__icon__margin-inline-end: 8px;
   color: rgb(var(--mdw-ink));
 }
 
-#slot,
-#state,
-#ripple-container {
-  color: rgb(var(--mdw-chip__label-color));
+#label:where([icon]) {
+  gap: 8px;
+
+  padding-inline: 8px 16px;
+}
+
+#outline {
+  --mdw-ink: rgb(var(--mdw-color__on-surface-variant));
+}
+
+#outline:is([ink],[color]) {
+  /* stylelint-disable-next-line rule-selector-property-disallowed-list */
+  --mdw-ink: inherit;
 }
 
 #slot[disabled],
 #icon[disabled] {
   color: rgba(var(--mdw-color__on-surface), 0.38);
-}
-
-#icon[disabled][src] {
-  filter: saturate(0);
 }

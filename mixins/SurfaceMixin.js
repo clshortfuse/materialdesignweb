@@ -57,7 +57,7 @@ export default function SurfaceMixin(Base) {
             <div id="outline-left" class="outline-section outline-left"></div>
             <div id="outline-right" class="outline-section outline-right"></div>
           </div>
-          <div _if={showElevation} id=elevation class=elevation color={color} aria-hidden=true></div>
+          <div id=elevation _if={showElevation} hovered={hoveredState} pressed={pressedState} class=elevation color={color} aria-hidden=true></div>
         `);
       },
     })

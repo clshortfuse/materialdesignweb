@@ -5,29 +5,23 @@
 :host {
   --mdw-ink: var(--mdw-color__on-secondary-container);
   --mdw-bg: var(--mdw-color__secondary-container);
-  --label-bg: transparent;
 }
 
 :host(:focus) {
   --mdw-outline__rgb: var(--mdw-color__outline);
 }
 
-:host([elevated]) {
-  --label-bg: rgb(var(--mdw-color__surface));
-}
-
-#slot,
-#state,
-#ripple-container,
-#icon {
-  color: inherit;
+#icon[selected] {
+  font-variation-settings: 'FILL' 1;
 }
 
 #label {
-  padding: 0;
-
   background-color: transparent;
   color: rgb(var(--mdw-color__on-surface-variant));
+}
+
+#label:where([trailing-icon]) {
+  padding-inline: 8px;
 }
 
 #label[elevated] {
@@ -35,26 +29,18 @@
 }
 
 #label[selected] {
-  --mdw-button__icon__font-variation-settings: 'FILL' 1;
   background-color: rgb(var(--mdw-bg));
   color: rgb(var(--mdw-ink));
 }
 
-#label[selected] #outline {
-  color:transparent;
+#outline[selected] {
+  opacity: 0;
 }
 
 #trailing-icon {
-  --mdw-icon__size: var(--mdw-chip__trailing-icon__size);
-  --mdw-icon__opacity: var(--mdw-chip__trailing-icon__opacity);
-  --mdw-icon__display: var(--mdw-chip__trailing-icon__display);
-  --mdw-icon__font-variation-settings: var(--mdw-chip__trailing-icon__font-variation-settings);
-
   position: relative;
-  order: 1;
 
-  margin-inline-start: 8px;
-  margin-inline-end: 8px;
+  font-size: 18px;
 }
 
 .mdw-chip__checkbox {
@@ -67,24 +53,12 @@
   pointer-events: none;
 }
 
-:host(:not([trailing-icon])) #trailing-icon {
-  --mdw-chip__trailing-icon__size: 0;
-}
-
 #check-icon {
-  --mdw-icon__size: 0;
-  order: -1;
-
-  margin-inline: 8px;
-}
-
-/** Filter **/
-:host([type="checkbox"]) :is(#slot, #state, #ripple-container, #icon, #check-icon) {
-  color: inherit;
+  font-size: 0;
 }
 
 #check-icon[selected] {
-  --mdw-icon__size: 18px;
+  font-size: 18px;
 }
 
 #check-icon[disabled] {

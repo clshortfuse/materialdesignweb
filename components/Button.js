@@ -1,13 +1,15 @@
 import './Icon.js';
+import CustomElement from '../core/CustomElement.js';
 import InputMixin from '../mixins/InputMixin.js';
 import RippleMixin from '../mixins/RippleMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import styles from './Button.css' assert { type: 'css' };
-import Container from './Container.js';
 
-export default Container
+export default CustomElement
+  .mixin(ThemableMixin)
   .mixin(StateMixin)
   .mixin(InputMixin)
   .mixin(RippleMixin)
@@ -22,27 +24,32 @@ export default Container
     filled: 'string',
     outlined: 'boolean',
     icon: 'string',
+    iconInk: 'string',
     src: 'string',
     svg: 'string',
+    svgPath: 'string',
   })
-  .observe({
-    elevation: {
-      type: 'integer',
-      get({ elevated }) {
-        if (elevated) return 2;
-        return null;
-      },
+  .expressions({
+    hasIcon({ icon, svg, src, svgPath }) {
+      return icon ?? svg ?? src ?? svgPath;
     },
   })
   .css(styles)
   .html/* html */`
-    <mdw-icon id=icon disabled={disabledState} aria-hidden="true" svg={svg} src="{src}">{icon}<slot id=svg name=svg slot=svg></slot></mdw-icon>
+    <mdw-icon _if={hasIcon} id=icon ink={iconInk} disabled={disabledState} outlined={outlined} aria-hidden="true" svg={svg} src="{src}" svg-path={svgPath}>{icon}</mdw-icon>
     <div id=touch-target aria-hidden="true"></div>
+    <slot id=slot></slot>
+
   `
   .on('composed', ({ $ }) => {
     const slot = $('#slot');
+    slot.before($('#icon'));
     slot.setAttribute('disabled', '{disabledState}');
     const label = $('#label');
+    label.setAttribute('ink', '{ink}');
+    label.setAttribute('type-style', '{typeStyle}');
+    label.setAttribute('icon', '{hasIcon}');
+    label.setAttribute('color', '{color}');
     label.setAttribute('elevated', '{elevated}');
     label.setAttribute('filled', '{filled}');
     label.setAttribute('disabled', '{disabledState}');

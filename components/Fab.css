@@ -1,32 +1,31 @@
 /* https://m3.material.io/components/floating-action-button/specs */
 
-:host {
-  --mdw-shape__size: 16px;
-  --mdw-button__icon__display: block;
-  --mdw-button__icon__size: 24px;
-
+#label {
+  --mdw-shape-size: 16px;
   min-block-size: 56px;
   min-inline-size: 56px;
-}
-
-#label {
   padding: 0;
 }
 
 #icon {
-  margin: 0;
+  font-size: 24px;
 }
 
-:host([fab-size="small"]) {
+#icon[fab-size="large"] {
+  font-size: 36px;
+}
+
+#label[fab-size="small"] {
+  /* stylelint-disable-next-line rule-selector-property-disallowed-list */
   --mdw-shape__size: 12px;
 
   min-block-size: 40px;
   min-inline-size: 40px;
 }
 
-:host([fab-size="large"]) {
+#label[fab-size="large"] {
+  /* stylelint-disable-next-line rule-selector-property-disallowed-list */
   --mdw-shape__size: 28px;
-  --mdw-button__icon__size: 36px;
 
   min-block-size: 96px;
   min-inline-size: 96px;

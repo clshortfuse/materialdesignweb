@@ -17,5 +17,7 @@ export default ExtendedFab
     $('#slot').remove();
     $('#tooltip-slot').removeAttribute('name');
     $('#control').setAttribute('aria-labelledby', 'tooltip');
+    $('#label').setAttribute('fab-size', '{fabSize}');
+    $('#icon').setAttribute('fab-size', '{fabSize}');
   })
   .autoRegister('mdw-fab');

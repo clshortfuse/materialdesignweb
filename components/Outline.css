@@ -6,16 +6,15 @@
 
   border-color: currentColor;
   border-radius: inherit;
-  color: rgba(var(--mdw-outline__rgb), var(--mdw-outline__opacity));
+  color: rgb(var(--mdw-color__outline));
 }
 
-.outline[pressed]:not([disabled]),
-.outline[focused]:not([disabled]) {
-  --mdw-outline__rgb: var(--mdw-outline__rgb__focused);
+.outline:is([pressed],[focused]) {
+  color: rgb(var(--mdw-ink));
 }
 
 .outline[disabled] {
-  --mdw-outline__opacity: 0.12;
+  color: rgba(var(--mdw-color__on-surface), 0.12);
 }
 
 .outline::before {

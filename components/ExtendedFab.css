@@ -1,46 +1,31 @@
 /* https://m3.material.io/components/extended-fab/specs */
 
 :host {
-  --mdw-shape__size: 16px;
-  --mdw-button__icon__size: 24px;
-  --mdw-button__padding-inline-start: 20px;
-  --mdw-button__padding-inline-end: 20px;
-  --mdw-button__icon__display: none;
-  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__3);
-  --mdw-elevation__opacity__hover: var(--mdw-elevation__hover__4);
-  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__3);
-  --mdw-elevation__filter__hover: var(--mdw-elevation__filter__4);
+  --mdw-elevation__opacity: var(--mdw-elevation__opacity__0);
+  --mdw-elevation__opacity__hovered: var(--mdw-elevation__opacity__1);
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__0);
+  --mdw-elevation__filter__hover: var(--mdw-elevation__filter__1);
   --mdw-bg: var(--mdw-color__primary-container);
   --mdw-ink: var(--mdw-color__on-primary-container);
-  --label-bg: rgb(var(--mdw-bg));
+}
 
+#label {
+  --mdw-shape__size: 16px;
   min-block-size: 56px;
   min-inline-size: 80px;
 }
 
-:host([flat]) {
-  --mdw-elevation__filter__resting: none;
-  --mdw-elevation__filter__hover: none;
+#icon {
+  font-size: 24px;
 }
 
 #elevation:not([color*="surface"]) {
   display: none;
 }
 
-:host([flat]) #elevation {
-  display: none;
-}
-
-:host([icon]) {
-  --mdw-button__icon__display: block;
-  --mdw-button__icon__margin-inline-start: 16px;
-  --mdw-button__icon__margin-inline-end: 12px;
-  --mdw-button__padding-inline-start: 0;
-}
-
-:host([lowered]) {
-  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__1);
-  --mdw-elevation__opacity__hover: var(--mdw-elevation__opacity__2);
-  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__1);
-  --mdw-elevation__filter__hover: var(--mdw-elevation__filter__2);
+:host([elevated]) {
+  --mdw-elevation__opacity: var(--mdw-elevation__opacity__3);
+  --mdw-elevation__opacity__hovered: var(--mdw-elevation__opacity__4);
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__3);
+  --mdw-elevation__filter__hover: var(--mdw-elevation__filter__4);
 }

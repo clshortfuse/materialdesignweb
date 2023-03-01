@@ -8,9 +8,14 @@ export default Button
   })
   .css(styles)
   .on({
-    composed({ $ }) {
+    composed({ $, inline }) {
       $('#slot').setAttribute('disabled', '{disabledState}');
+      $('#slot').removeAttribute('ink');
+      $('#slot').removeAttribute('color');
       $('#outline').setAttribute('_if', '{!elevated}');
+      $('#outline').setAttribute('ink', '{ink}');
+      $('#outline').setAttribute('color', '{color}');
+      $('#icon').setAttribute('ink', inline(({ ink, iconInk }) => iconInk ?? ink ?? 'primary'));
     },
   })
   .autoRegister('mdw-chip');

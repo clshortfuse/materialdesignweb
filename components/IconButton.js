@@ -51,12 +51,14 @@ export default Button
   })
   .on('composed', ({ $ }) => {
     $('#slot').remove();
+    $('#icon').removeAttribute('_if');
     $('#tooltip-slot').removeAttribute('name');
     $('#label').setAttribute('toggle', '{isToggle}');
-    $('#label').setAttribute('selected', '{checked}');
+    // $('#label').setAttribute('selected', '{checked}');
     // icon.append($('#slot'));
-    const icon = $('#icon');
-    icon.setAttribute('style', '{computeIconStyle}');
+    $('#icon').setAttribute('toggle', '{isToggle}');
+    $('#icon').setAttribute('selected', '{checked}');
+    $('#elevation').remove();
 
     const control = $('#control');
     control.setAttribute('aria-pressed', '{_ariaPressed}');

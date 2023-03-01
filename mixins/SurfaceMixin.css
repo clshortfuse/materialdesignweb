@@ -2,6 +2,8 @@
 
   /** Filter blur is 1/2 CSS blur */
 
+  /** Reference Properties */
+  /*
   --mdw-elevation__box-shadow__1__umbra: 0px 1px 2px 0px rgba(var(--mdw-color__shadow), 0.30);
   --mdw-elevation-_box-shadow__2__umbra: 0px 1px 2px 0px rgba(var(--mdw-color__shadow), 0.30);
   --mdw-elevation-_box-shadow__3__umbra: 0px 1px 3px 0px rgba(var(--mdw-color__shadow), 0.30);
@@ -34,6 +36,15 @@
   --mdw-elevation__filter__3: var(--mdw-elevation__filter__3__umbra) var(--mdw-elevation__filter__3__penumbra);
   --mdw-elevation__filter__4: var(--mdw-elevation__filter__4__umbra) var(--mdw-elevation__filter__4__penumbra);
   --mdw-elevation__filter__5: var(--mdw-elevation__filter__5__umbra) var(--mdw-elevation__filter__5__penumbra);
+  */
+
+  /** Flatten for performance */
+  --mdw-elevation__filter__0: drop-shadow(0px 1px 001px rgba(0,0,0,000)) drop-shadow(0px 1px 2.5px rgba(0,0,0,00000));
+  --mdw-elevation__filter__1: drop-shadow(0px 1px 001px rgba(0,0,0,0.3)) drop-shadow(0px 1px 2.5px rgba(0,0,0,0.250));
+  --mdw-elevation__filter__2: drop-shadow(0px 1px 001px rgba(0,0,0,0.3)) drop-shadow(0px 2px 005px rgba(0,0,0,0.250));
+  --mdw-elevation__filter__3: drop-shadow(0px 1px 1.5px rgba(0,0,0,0.3)) drop-shadow(0px 4px 007px rgba(0,0,0,0.263));
+  --mdw-elevation__filter__4: drop-shadow(0px 2px 1.5px rgba(0,0,0,0.3)) drop-shadow(0px 6px 009px rgba(0,0,0,0.270));
+  --mdw-elevation__filter__5: drop-shadow(0px 4px 2.0px rgba(0,0,0,0.3)) drop-shadow(0px 8px 012px rgba(0,0,0,0.300));
 
   --mdw-elevation__opacity__1: 0.05;
   --mdw-elevation__opacity__2: 0.08;
@@ -49,11 +60,9 @@
   /** Configurables */
 
   --mdw-elevation__filter__resting: none;
-  --mdw-elevation__opacity__resting: 0;
-  --mdw-elevation__opacity: var(--mdw-elevation__opacity__resting);
   --mdw-elevation__filter: var(--mdw-elevation__filter__resting);
-
-  /* --mdw-elevation__opacity__hover: var(--mdw-elevation__opacity, 0); */
+  --mdw-elevation__opacity: 0;
+  --mdw-elevation__opacity__hovered: 0;
 
   /* --mdw-shape__rounded: 1; */
   /* --mdw-shape__clip-path__none: none; */
@@ -64,8 +73,9 @@
   filter: var(--mdw-elevation__filter);
 
   transition-delay: 1ms;
-  transition-duration: 200ms;
+  transition-duration: 100ms;
   transition-property: filter;
+  transition-timing-function: linear;
   will-change: filter;
 }
 
@@ -74,35 +84,43 @@
 }
 
 :host([color*="surface"][elevation="1"]) {
-  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__1);
+  --mdw-elevation__opacity: var(--mdw-elevation__opacity__1);
+  --mdw-elevation__opacity__hovered: var(--mdw-elevation__opacity__1);
   --mdw-elevation__filter__resting: var(--mdw-elevation__filter__1);
 }
 
 :host([color*="surface"][elevation="2"]) {
-  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__2);
+  --mdw-elevation__opacity: var(--mdw-elevation__opacity__2);
+  --mdw-elevation__opacity__hovered: var(--mdw-elevation__opacity__2);
   --mdw-elevation__filter__resting: var(--mdw-elevation__filter__2);
 }
 
 :host([color*="surface"][elevation="3"]) {
-  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__3);
+  --mdw-elevation__opacity: var(--mdw-elevation__opacity__3);
+  --mdw-elevation__opacity__hovered: var(--mdw-elevation__opacity__3);
   --mdw-elevation__filter__resting: var(--mdw-elevation__filter__3);
 }
 
 :host([color*="surface"][elevation="4"]) {
-  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__4);
+  --mdw-elevation__opacity: var(--mdw-elevation__opacity__4);
+  --mdw-elevation__opacity__hovered: var(--mdw-elevation__opacity__4);
   --mdw-elevation__filter__resting: var(--mdw-elevation__filter__4);
 }
 
 :host([color*="surface"][elevation="5"]) {
-  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__5);
+  --mdw-elevation__opacity: var(--mdw-elevation__opacity__5);
+  --mdw-elevation__opacity__hovered: var(--mdw-elevation__opacity__5);
   --mdw-elevation__filter__resting: var(--mdw-elevation__filter__5);
 }
 
-:host(:hover:not(:active)) {
+:host(:hover:where(:not(:active))) {
   filter: var(--mdw-elevation__filter__hover, var(--mdw-elevation__filter__resting));
 }
 
-:host(:hover:not(:active)) {
-  --mdw-elevation__opacity: var(--mdw-elevation__opacity__hover, var(--mdw-elevation__opacity__resting));
-  --mdw-elevation__filter: var(--mdw-elevation__opacity__filter, var(--mdw-elevation__filter__resting));
+:host(:is([disabled],[internals-disabled])) {
+  filter:none;
+}
+
+:host(:disabled) {
+  filter:none;
 }
