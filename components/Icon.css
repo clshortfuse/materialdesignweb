@@ -1,59 +1,64 @@
 /* https://material.io/design/iconography/system-icons.html */
 
 :host {
-  --mdw-icon__opacity: 1;
-  --mdw-icon__font-variation-settings: 'FILL' 1;
-  --mdw-icon__image__opacity: 1;
-
   display: inline-block;
   vertical-align: -11.5%;
 
-  block-size: var(--mdw-icon__size, 1em);
-  inline-size: var(--mdw-icon__size, 1em);
+  block-size: 1em;
+  inline-size: 1em;
 
   user-select: none;
 
-  font-size: var(--mdw-icon__size, inherit);
+  font-variation-settings: 'FILL' 1;
 
-  transition-duration: 100ms;
+  transition-duration: 200ms;
   /* stylelint-disable-next-line liberty/use-logical-spec -- Safari does not animate inline-size */
   transition-property: inline-size, width;
 }
 
+:host([ink]) {
+  color: rgb(var(--mdw-ink));
+}
+
 #icon {
-  position: absolute;
-
-  display: var(--mdw-icon__display, block);
-
   /* Clip bounds in case font is not ready */
+  display: inline-block;
   overflow: clip;
 
   block-size: 1em;
   inline-size: 1em;
 
-  opacity: var(--mdw-icon__opacity);
-
   font-size: inherit;
-  font-variation-settings: var(--mdw-icon__font-variation-settings);
+  font-variation-settings: inherit;
 
   transition-delay: 1ms;
-  transition-duration: 100ms;
+  transition-duration: 200ms;
 
-  transition-property: font-variation-settings, opacity;
+  transition-property: font-variation-settings;
 }
 
-#svg-slot::slotted(svg), svg, img {
-  position: absolute;
-  inset: 0;
-
-  block-size: 100%;
-  inline-size: 100%;
-
-  opacity: var(--mdw-icon__image__opacity);
+#svg {
+  block-size: inherit;
+  inline-size: inherit;
 
   fill: currentColor;
 
   object-fit: cover;
+}
+
+#img {
+  block-size: inherit;
+  inline-size: inherit;
+
+  object-fit: cover;
+
+  transition-delay: 1ms;
+  transition-duration: 200ms;
+  transition-property: filter;
+}
+
+#img[disabled] {
+  filter: grayscale();
 }
 
 .material-symbols-outlined {

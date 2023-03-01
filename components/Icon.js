@@ -1,6 +1,7 @@
 // import fontStyles from 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block' assert { type: 'css'};
 
-import Inline from '../layout/Inline.js';
+import CustomElement from '../core/CustomElement.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import styles from './Icon.css' assert { type: 'css' };
 
@@ -9,7 +10,8 @@ import styles from './Icon.css' assert { type: 'css' };
 // https://html.spec.whatwg.org/multipage/embedded-content.html#htmlimageelement
 
 /** @implements {Omit<HTMLImageElement,DeprecatedHTMLImageElementProperties>} */
-export default class Icon extends Inline
+export default class Icon extends CustomElement
+  .mixin(ThemableMixin)
   .extend()
   .define({
     _img() { return /** @type {HTMLImageElement} */ (this.refs.img); },
@@ -23,9 +25,11 @@ export default class Icon extends Inline
     decode() { return this._img.decode; },
   })
   .observe({
+    disabled: 'boolean',
     alt: 'string',
     src: 'string',
     svg: 'string',
+    svgPath: 'string',
     srcset: 'string',
     sizes: 'string',
     crossOrigin: { attr: 'crossorigin' },
@@ -40,24 +44,26 @@ export default class Icon extends Inline
     fontLibrary: { empty: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block' },
   })
   .css(styles)
+  .expressions({
+    showSVG({ svg, svgPath }) {
+      return Boolean(svg || svgPath);
+    },
+  })
   .html/* html */`
     <link rel=stylesheet href={fontLibrary} />
-    <div id=icon class={fontClass} aria-hidden="true">
-      <svg _if={svg} id=svg viewBox="0 0 24 24" id="svg">
-        <use href="{svg}" fill="currentColor"/>
-      </svg>
-      <slot id=svg-slot slot=svg name=svg></slot>
-      <img _if={src} id=img
-        alt={alt} src={src} srcset={srcset} sizes={sizes}
-        crossorigin={crossOrigin} usemap={useMap} ismap={isMap}
-        referrerpolicy={referrerPolicy} decoding={decoding} loading={loading}
-        width={width} height={height}
-      />
-    </div>
-  `
-  .on('composed', ({ $ }) => {
-    $('#icon').append($('#slot'));
-  }) {
+    <svg _if={showSVG} id=svg viewBox="0 0 24 24" id="svg">
+      <use id=use _if={svg} href="{svg}" fill="currentColor" />
+      <path id=path _if={svgPath} d={svgPath} />
+    </svg>
+    <img _if={src} id=img
+      disabled={disabled}
+      alt={alt} src={src} srcset={srcset} sizes={sizes}
+      crossorigin={crossOrigin} usemap={useMap} ismap={isMap}
+      referrerpolicy={referrerPolicy} decoding={decoding} loading={loading}
+      width={width} height={height}
+    />
+    <slot id=icon class={fontClass} aria-hidden="true"></slot>
+  ` {
   /**
    * @param {number} [width]
    * @param {number} [height]
