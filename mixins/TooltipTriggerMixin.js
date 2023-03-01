@@ -64,24 +64,27 @@ export default function TooltipTriggerMixin(Base) {
         if (!this.#tooltip.open) return;
         for (const entry of entries) {
           if (entry.intersectionRatio <= 0) {
+            console.debug('Hide tooltip due to tooltip occlusion');
             this.hideTooltip();
             return;
           }
           if (entry.target === this.#tooltip) {
+            console.debug('Reposition tooltip due to possible tooltip occlusion');
             this.updateTooltipPosition();
             return;
           }
           if (entry.target === this) {
             if (entry.intersectionRatio <= 0.5) {
-              // console.log('should hide');
+              console.debug('Hiding tooltip because target is occluded');
               this.hideTooltip();
             } else {
-              // console.log('container size given', entry);
+              console.debug('Using InsectionObserver rect to update tooltip');
               this.updateTooltipPosition(entry.boundingClientRect);
             }
             return;
           }
         }
+        console.debug('Updating tooltip position because offsetParent change.');
         this.updateTooltipPosition();
       }, { threshold });
       // this.#tooltip.remove();
@@ -231,6 +234,7 @@ export default function TooltipTriggerMixin(Base) {
       document.body.append(this.#tooltip);
       this.updateTooltipPosition();
       this.#resizeObserver.observe(this, { box: 'border-box' });
+      this.#intersectObserver.observe(this);
       this.#intersectObserver.observe(this.#tooltip);
       /** @type {HTMLElement} */
       let offsetParent = this;
