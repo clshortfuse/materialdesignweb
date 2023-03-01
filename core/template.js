@@ -83,17 +83,21 @@ export function css(array, ...substitutions) {
  * @template T1
  * @template T2
  * @param {TemplateStringsArray} strings
- * @param  {...(string|Element|((this:T1, data:T2) => any))} substitutions
+ * @param  {...(string|DocumentFragment|Element|((this:T1, data:T2) => any))} substitutions
  * @return {DocumentFragment}
  */
 export function html(strings, ...substitutions) {
-  /** @type {Map<string, Element>} */
+  /** @type {Map<string, DocumentFragment|Element>} */
   let tempSlots;
   const replacements = substitutions.map((sub) => {
     switch (typeof sub) {
       case 'string': return sub;
       case 'function': return addInlineFunction(sub);
       case 'object': {
+        if (sub == null) {
+          console.warn(sub, 'is null', strings);
+          return '';
+        }
         // Assume Element
         const tempId = generateUID();
         tempSlots ??= new Map();
