@@ -1,12 +1,12 @@
-import '../../components/Inline.js/index.js';
 import '../../components/Input.js';
 import '../../components/Slider.js';
-import '../../components/Layout.js';
 import '../../components/Divider.js';
 import '../../components/IconButton.js';
 import '../../components/Progress.js';
 
 import Card from '../../components/Card.js';
+import '../../typography/Label.js';
+import '../../layout/Flex.js';
 
 /**
  * @param {number} min
@@ -88,21 +88,21 @@ export default Card
       <div id=content busy={busy}>
         <fieldset disabled={busy}>
           <div style="padding:16px">
-            <mdw-inline type-style="title">{title}</mdw-inline>
-            <mdw-inline ink=primary type-style="label-small">{brand}</mdw-inline>
-            <mdw-inline block type-style="title-small">{description}</mdw-inline>
+            <mdw-title>{title}</mdw-title>
+            <mdw-label ink=primary size=small>{brand}</mdw-label>
+            <mdw-title size=small>{description}</mdw-title>
           </div>
           <mdw-divider></mdw-divider>
-          <mdw-layout column gap=16px style="padding:16px">
+          <mdw-flex column gap=16px style="padding:16px">
             <mdw-input outlined type=number name=price value={price} label="Price" input-prefix=$ step=0.01></mdw-input>
             <mdw-input outlined type=number name=discountPercentage value={discountPercentage} input-suffix=% label="Discount" step=0.01></mdw-input>
             <mdw-slider name=rating value={rating} min=0 max=5 step=0.1 ticks=4></mdw-slider>
-          </mdw-layout>
+          </mdw-flex>
         </fieldset>
       </div>
     </form>
     <mdw-divider></mdw-divider>
-    <mdw-layout row x=end style="padding:8px;gap:8px">
+    <mdw-flex row x=end style="padding:8px;gap:8px">
       <mdw-icon-button 
         disabled=${({ productId }) => productId === 1}
         id=previous
@@ -113,7 +113,7 @@ export default Card
         on-click=${function onClick() { this.productId++; }}
         id=next
         icon=chevron_right>Next</mdw-icon-button>
-    </mdw-layout>
+    </mdw-flex>
   `
   .methods({
     async fetch() {

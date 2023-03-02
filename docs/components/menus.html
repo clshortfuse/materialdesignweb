@@ -19,40 +19,41 @@
     <demo-section>
       <h1 slot=heading>Basic menus</h1>
       <mdw-layout wrap gap=12px style="margin:16px">
-        <mdw-button filled onclick="document.getElementById(this.ariaControls).show()" aria-haspopup=menu
+        <mdw-button filled onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
           aria-controls="menu-cascade">Cascading menu</mdw-button>
-        <mdw-button filled onclick="document.getElementById(this.ariaControls).show()" aria-haspopup=menu
+        <mdw-button filled onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
           aria-controls="menu-oversized">Oversized menu</mdw-button>
-        <mdw-icon-button filled icon="more_vert" onclick="document.getElementById(this.ariaControls).show()"
+        <mdw-icon-button filled icon="more_vert" onclick="document.getElementById(this.ariaControls).show(this)"
           aria-haspopup=menu aria-controls="menu-simple">More</mdw-icon-button>
       </mdw-layout>
     </demo-section>
     <demo-section>
       <h1 slot=heading>Modal menus</h1>
       <mdw-layout wrap gap=12px style="margin:16px">
-        <mdw-button filled onclick="document.getElementById(this.ariaControls).showModal()" aria-haspopup=menu
+        <mdw-button filled onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
           aria-controls="menu-cascade">Cascading menu modal</mdw-button>
-        <mdw-button filled onclick="document.getElementById(this.ariaControls).showModal()" aria-haspopup=menu
+        <mdw-button filled onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
           aria-controls="menu-oversized">Oversized menu modal</mdw-button>
-        <mdw-icon-button filled icon="more_vert" onclick="document.getElementById(this.ariaControls).showModal()"
+        <mdw-icon-button filled icon="more_vert" onclick="document.getElementById(this.ariaControls).showModal(this)"
           aria-haspopup=menu aria-controls="menu-simple">More</mdw-icon-button>
       </mdw-layout>
     </demo-section>
+    <demo-dummy-text></demo-dummy-text>
     <demo-section>
       <h1 slot=heading>Checkboxes menu</h1>
       <mdw-layout wrap gap=12px>
-        <mdw-button onclick="document.getElementById(this.ariaControls).show()" aria-haspopup=menu
+        <mdw-button onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
           aria-controls="menu-checkboxes">Checkboxes menu</mdw-button>
-        <mdw-button onclick="document.getElementById(this.ariaControls).showModal()" aria-haspopup=menu
+        <mdw-button onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
           aria-controls="menu-checkboxes">Checkboxes menu modal</mdw-button>
       </mdw-layout>
     </demo-section>
     <demo-section>
       <h1 slot=heading>Radio menu</h1>
       <mdw-layout wrap gap=12px>
-        <mdw-button onclick="document.getElementById(this.ariaControls).show()" aria-haspopup=menu
+        <mdw-button onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
           aria-controls="menu-radio">Radio menu</mdw-button>
-        <mdw-button onclick="document.getElementById(this.ariaControls).showModal()" aria-haspopup=menu
+        <mdw-button onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
           aria-controls="menu-radio">Radio menu modal</mdw-button>
       </mdw-layout>
     </demo-section>
@@ -63,7 +64,6 @@
       </mdw-layout>
     </demo-section>
   </demo-page>
-
   <div id=menus>
     <mdw-menu id=menu-simple>
       <mdw-menu-item>Item 1</mdw-menu-item>

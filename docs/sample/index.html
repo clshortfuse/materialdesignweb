@@ -23,15 +23,17 @@
     body {
       display: flex;
       flex-direction: column;
+      margin: 0;
+      padding: 16px;
     }
 
   </style>
 </head>
 
 <body>
-  <mdw-div column style="margin:16px">
+  <mdw-flex column x=stretch >
     <dummy-product-page></dummy-product-page>
-  </mdw-div>
+  </mdw-flex>
 
   <script type=module src="./ProductPage.js"></script>
 
