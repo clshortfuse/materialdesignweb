@@ -29,13 +29,11 @@ export default class ListOption extends ListItem
       reflect: false,
       type: 'boolean',
       get({ _selectedDirty, defaultSelected, _selected }) {
-        console.log('getting ListOption selected');
         if (!_selectedDirty) return defaultSelected;
         return _selected;
       },
       /** @param {boolean} value */
       set(value) {
-        console.log('setting ListOption selected');
         this._selectedDirty = true;
         this._selected = value;
       },
@@ -104,6 +102,9 @@ export default class ListOption extends ListItem
     }
     if (selected !== undefined) {
       this._selected = selected;
+    }
+    if (!this.hasAttribute('tabindex')) {
+      this.tabIndex = 0;
     }
   }
 }

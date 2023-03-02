@@ -45,11 +45,6 @@ export default function FormAssociatedMixin(Base) {
       _invalid: 'boolean',
       _badInput: 'boolean',
       _validationMessage: 'string',
-      _formDisabled: {
-        type: 'boolean',
-        reflect: true,
-        attr: 'disabled2',
-      },
     })
     .observe({
       erroredState({ _invalid }) { return _invalid; },
@@ -166,11 +161,6 @@ export default function FormAssociatedMixin(Base) {
       blur() { this.checkValidity(); },
     })
     .on({
-      constructed() {
-        if (!this.hasAttribute('tabindex')) {
-          this.tabIndex = 0;
-        }
-      },
       connected() {
         // Bind to global if no form is present (used by radio)
         this.refreshFormAssociation();
