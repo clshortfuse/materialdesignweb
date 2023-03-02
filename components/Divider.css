@@ -22,7 +22,6 @@
   box-sizing: border-box;
   block-size: 1px;
   inline-size: auto;
-  padding: inherit;
 
   background-color: currentcolor;
 }
