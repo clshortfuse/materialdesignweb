@@ -256,25 +256,25 @@ export default CustomElement
     ${supportsHTMLDialogElement ? 'aria-model=true' : ''}
     role=dialog aria-hidden=${({ open }) => (open ? 'false' : 'true')} 
     aria-labelledby=headline aria-describedby=slot>
-      <div id=scrim aria-hidden=true></div>
-        <mdw-surface id=surface elevated>
-          <mdw-icon _if={icon} id=icon class=content ink=secondary aria-hidden=true>{icon}</mdw-icon>
-          <slot id=headline name=headline on-slotchange={onSlotChange} role=header>{headline}</slot>
-          <slot id=fixed name=fixed class=content on-slotchange={onSlotChange}></slot>
-          <mdw-divider id=divider-top size={dividers}></mdw-divider>
-          <slot id=slot class="content" on-slotchange={onSlotChange}></slot>
-          <mdw-divider id=divider-bottom size={dividers}></mdw-divider>
-          <slot name=form id=form-slot on-slotchange={onFormSlotChange}>
-            <form id=form method=dialog role=none on-submit={onFormSubmit}>
-              <mdw-dialog-actions>
-                <mdw-button id=cancel type=submit value=cancel
-                  autofocus={cancelAutoFocus}>{cancel}</mdw-button>
-                <mdw-button id=confirm type=submit value=confirm
-                  autofocus={confirmAutoFocus}>{confirm}</mdw-button>
-              </mdw-dialog-actions>
-            </form>
-          </slot>
-        </mdw-surface>
+      <div _if={open} id=scrim aria-hidden=true></div>
+      <mdw-surface id=surface open={open} icon={icon} elevated>
+        <mdw-icon _if={icon} id=icon class=content ink=secondary aria-hidden=true>{icon}</mdw-icon>
+        <slot id=headline name=headline on-slotchange={onSlotChange} role=header>{headline}</slot>
+        <slot id=fixed name=fixed class=content on-slotchange={onSlotChange}></slot>
+        <mdw-divider id=divider-top size={dividers}></mdw-divider>
+        <slot id=slot class="content" on-slotchange={onSlotChange}></slot>
+        <mdw-divider id=divider-bottom size={dividers}></mdw-divider>
+        <slot name=form id=form-slot on-slotchange={onFormSlotChange}>
+          <form id=form method=dialog role=none on-submit={onFormSubmit}>
+            <mdw-dialog-actions>
+              <mdw-button id=cancel type=submit value=cancel
+                autofocus={cancelAutoFocus}>{cancel}</mdw-button>
+              <mdw-button id=confirm type=submit value=confirm
+                autofocus={confirmAutoFocus}>{confirm}</mdw-button>
+            </mdw-dialog-actions>
+          </form>
+        </slot>
+      </mdw-surface>
     </dialog>
   `
   .childEvents({

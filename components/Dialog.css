@@ -5,10 +5,7 @@
   --mdw-dialog__simple-duration: var(--mdw-motion-simple-duration, 100ms);
   --mdw-dialog__standard-easing: var(--mdw-motion-standard-easing, cubic-bezier(0.4, 0.0, 0.2, 1));
   --mdw-dialog__deceleration-easing: var(--mdw-motion-deceleration-easing, cubic-bezier(0.0, 0.0, 0.2, 1));
-  --mdw-dialog__align-items: flex-start;
   --mdw-dialog__fade-in-duration: var(--mdw-motion-fade-in-duration, 150ms);
-  --mdw-dialog__scrim__visibility: hidden;
-  --mdw-dialog__edge-distance: 48px;
 
   --mdw-bg: var(--mdw-color__surface);
   --mdw-ink: var(--mdw-color__on-surface);
@@ -17,19 +14,8 @@
   inset: 0;
 
   pointer-events: none;
-  /* Handled by theme */
-  /* background-color: rgba(0, 0, 0, 0.50); */
+
   z-index: 24;
-}
-
-:host([icon]) {
-  --mdw-dialog__align-items: center;
-}
-
-@media (min-width: 1440px) {
-  :host {
-    --mdw-dialog__edge-distance: 56px;
-  }
 }
 
 #dialog {
@@ -49,7 +35,7 @@
   max-inline-size: none;
   margin:0;
   border: none;
-  padding: var(--mdw-dialog__edge-distance);
+  padding: 48px;
 
   opacity: 0;
   visibility: hidden;
@@ -58,10 +44,16 @@
   background-color: transparent;
 
   transition: none;
-  transition-duration: motion.$fadeOutDuration;
-  transition-property: opacity;
-  transition-timing-function: motion.$accelerateEasing;
+  transition-duration: motion.$fadeOutDuration, 200ms;
+  transition-property: opacity, padding;
+  transition-timing-function: motion.$accelerateEasing, linear;
   will-change: opacity;
+}
+
+@media (min-width: 1440px) {
+  #dialog {
+    padding: 56px;
+  }
 }
 
 #dialog::backdrop {
@@ -71,8 +63,6 @@
 
 #dialog[aria-hidden="false"],
 #dialog:modal {
-  --mdw-dialog__scrim__visibility: visible;
-
   pointer-events: auto;
 
   opacity: 1;
@@ -100,7 +90,6 @@
   -webkit-tap-highlight-color: transparent;
 
   opacity: 0.38;
-  visibility: var(--mdw-dialog__scrim__visibility);
   z-index: 0;
 
   background-color: rgb(var(--mdw-color__scrim));
@@ -130,7 +119,8 @@
 
 #surface {
   --mdw-shape__size: 28px;
-  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__3);
+  --mdw-elevation__opacity: var(--mdw-elevation__opacity__3);
+  --mdw-elevation__opacity__hovered: var(--mdw-elevation__opacity__3);
   --mdw-elevation__filter__resting: var(--mdw-elevation__filter__3);
 
   position: relative;
@@ -156,7 +146,7 @@
   /* font: var(--mdw-typescale__body-medium__font); */
   /* letter-spacing: var(--mdw-typescale__body-medium__letter-spacing); */
   display: flex;
-  align-items: var(--mdw-dialog__align-items);
+  align-items: flex-start;
   flex-direction: column;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -167,28 +157,29 @@
 
   /* background-color: rgb(var(--mdw-color__surface)); */
   /* color: rgb(var(--mdw-color__on-surface-variant)); */
-
-
 }
 
-#dialog[aria-hidden="false"] #surface,
-#dialog:modal #surface {
+#surface[icon]::part(shape) {
+  align-items: center;
+}
+
+#surface[open] {
   animation-name: scaleUpAnimation;
   animation-duration: var(--mdw-dialog__fade-in-duration);
   animation-direction: forwards;
 }
 
 #icon {
-  --mdw-icon__size: 24px;
+  padding-block-start: 16px;
 
-  margin-block-start: 16px;
+  font-size: 24px;
 }
 
 #headline {
   display: block;
 
-  margin-block-start: 16px;
-  margin-inline: 24px;
+  padding-block-start: 16px;
+  padding-inline: 24px;
 
   color: rgb(var(--mdw-color__on-surface));
 
@@ -201,7 +192,7 @@
 }
 
 #body {
-  margin-block: 16px;
+  padding-block: 16px;
 }
 
 .content {
@@ -209,7 +200,7 @@
 }
 
 #divider-top {
-  margin-block-start: 16px;
+  padding-block-start: 16px;
 }
 
 mdw-divider:not([size]) {
@@ -223,7 +214,7 @@ mdw-divider[size="inset"] {
 #fixed {
   display:block;
 
-  margin-block-start: 16px;
+  padding-block-start: 16px;
 
   color: rgb(var(--mdw-color__on-surface-variant));
 
@@ -251,7 +242,7 @@ mdw-divider[size="inset"] {
   overflow-y: auto;
 }
 
-form {
+#form {
   display: contents;
 }
 
