@@ -334,26 +334,6 @@ export default class Composition {
               } else {
                 console.warn('Could not add', id, 'back to parent');
               }
-              const events = this.events.get(id);
-              if (events) {
-                for (const entry of events) {
-                  let eventListener;
-                  if (entry.handleEvent) {
-                    eventListener = entry.handleEvent;
-                  } else if (entry.prop?.startsWith('#')) {
-                    // console.log('binding to inline function');
-                    eventListener = inlineFunctions.get(entry.prop).fn;
-                  } else {
-                    eventListener = valueFromPropName(entry.prop, data);
-                  }
-                  if (eventListener) {
-                    // console.log('Bind event to added element', identifier, ref, eventListener, ref.isConnected);
-                    ref.addEventListener(entry.type, eventListener, entry);
-                  } else {
-                    console.warn('Could not bind event', id, entry.prop);
-                  }
-                }
-              }
             }
           } else if (!orphaned) {
             // console.log('Remove', identifier, ref.outerHTML, root.host.outerHTML);
@@ -613,6 +593,7 @@ export default class Composition {
     } else if (root instanceof ShadowRoot) {
       root.append(this.stylesFragment.cloneNode(true));
     } else {
+      // TODO: Support document styles
       // console.warn('Cannot apply styles to singular element');
     }
 
@@ -620,22 +601,17 @@ export default class Composition {
 
     // console.log('Initial render', [...root.children].map((child) => child.outerHTML).join('\n'));
 
-    const rootElement = root instanceof ShadowRoot ? root.host : root;
+    /** @type {EventTarget} */
+    const rootEventTarget = root instanceof ShadowRoot ? root.host : root;
     // Bind events in reverse order to support stopImmediatePropagation
     for (const [id, events] of [...this.events].reverse()) {
-      const element = id
-        ? this.getElement(root, id) // Bind events even if not in DOM to avoid tree-walk later
-        : rootElement;
-      if (!element) {
-        console.warn('Skip bind events for', id);
-        continue;
-      }
+      // Prepare all event listeners first
       for (const entry of [...events].reverse()) {
         let listener = entry.listener;
         if (!listener) {
           if (root instanceof ShadowRoot) {
             listener = entry.handleEvent ?? valueFromPropName(entry.prop, data);
-            if (element !== rootElement) {
+            if (id) {
               // Wrap to retarget this
               listener = buildShadowRootChildListener(listener);
             }
@@ -643,17 +619,46 @@ export default class Composition {
             entry.listener = listener;
             // console.log('caching listener', entry);
           } else {
-            console.warn('creating new listener', entry);
-            listener = entry.handleEvent ?? ((event) => {
-              valueFromPropName(entry.prop, data)(event);
-            });
+            throw new Error('Anonymous event listeners cannot be used in templates');
+            // console.warn('creating new listener', entry);
+            // listener = entry.handleEvent ?? ((event) => {
+            //   valueFromPropName(entry.prop, data)(event);
+            // });
           }
         }
-        element.addEventListener(entry.type, listener, entry);
+        const eventTarget = id
+          ? findElement(root, id) // Bind events even if not in DOM to avoid tree-walk later
+          : rootEventTarget;
+        if (!eventTarget) {
+          console.warn('Skip bind events for', id);
+          continue;
+        }
+        eventTarget.addEventListener(entry.type, listener, entry);
       }
     }
 
     this.initiallyRendered = true;
+  }
+
+  /**
+   * @param {string} id
+   * @param {Element} element
+   */
+  attachEventListeners(id, element) {
+    const events = this.events.get(id);
+    if (events) {
+      console.debug('attaching events for', id);
+    } else {
+      // console.log('no events for', id);
+      return;
+    }
+    for (const entry of [...this.events.get(id)].reverse()) {
+      const { listener } = entry;
+      if (!listener) {
+        throw new Error('Template must be interpolated before attaching events');
+      }
+      element.addEventListener(entry.type, listener, entry);
+    }
   }
 
   /**
@@ -736,11 +741,11 @@ export default class Composition {
 
         const conditionalParent = this.conditionalElementMap.get(parentId);
         if (conditionalParent) {
-          console.log('Found parent conditional element', parentId, '>', id);
+          console.debug('Found parent conditional element', parentId, '>', id);
           cloneTarget = conditionalParent;
           break;
         } else {
-          console.log('Wrong Parent', parentId, '>?', id);
+          console.debug('Wrong Parent', parentId, '>?', id);
           cloneTarget = parent;
         }
       }
@@ -755,12 +760,13 @@ export default class Composition {
       }
 
       if (nodeIdentifier) {
-        // console.log('Caching element', nodeIdentifier);
+        // console.debug('Caching element', nodeIdentifier);
         references.set(nodeIdentifier, node);
       } else {
         console.warn('Could not cache node', node);
       }
     }
+    this.attachEventListeners(id, element);
     return element;
   }
 
