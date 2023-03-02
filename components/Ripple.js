@@ -1,4 +1,5 @@
 import CustomElement from '../core/CustomElement.js';
+import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
 
 import styles from './Ripple.css' assert { type: 'css' };
 
@@ -13,6 +14,9 @@ export default CustomElement
   .observe({
     rippleState: 'string',
     keepAlive: 'boolean',
+    _positionX: 'float',
+    _positionY: 'float',
+    _radius: 'float',
     holdRipple: {
       type: 'boolean',
       changedCallback(oldValue, newValue) {
@@ -21,6 +25,22 @@ export default CustomElement
         } else {
           this.hadRippleReleased = true;
         }
+      },
+    },
+  })
+  .observe({
+    _positionStyle: {
+      ...ELEMENT_STYLER_TYPE,
+      get({ _positionX, _positionY, _radius }) {
+        return {
+          styles: {
+            minBlockSize: `${_radius}px`,
+            minInlineSize: `${_radius}px`,
+            boxShadow: `0 0 calc(0.10 * ${_radius}px) calc(0.10 * ${_radius}px) currentColor`,
+            marginLeft: `${_positionX}px`,
+            marginTop: `${_positionY}px`,
+          },
+        };
       },
     },
   })
@@ -57,16 +77,9 @@ export default CustomElement
       // this.style.marginLeft = `${x - (parentWidth / 2)}px`;
       // this.style.marginTop = `${y - (parentHeight / 2)}px`;
 
-      this.animate({
-        minBlockSize: `${hypotenuse}px`,
-        minInlineSize: `${hypotenuse}px`,
-        boxShadow: `0 0 calc(0.10 * ${hypotenuse}px) calc(0.10 * ${hypotenuse}px) currentColor`,
-        marginLeft: `${x - (parentWidth / 2)}px`,
-        marginTop: `${y - (parentHeight / 2)}px`,
-      }, {
-        duration: 0,
-        fill: 'forwards',
-      });
+      this._positionX = x - (parentWidth / 2);
+      this._positionY = y - (parentHeight / 2);
+      this._radius = hypotenuse;
     },
     handleRippleComplete() {
       if (this.keepAlive) {
@@ -79,9 +92,9 @@ export default CustomElement
   .events({
     animationstart({ animationName }) {
       if (animationName !== 'ripple-fade-in') return;
-      if (this.rippleStarted) {
+      if (this.rippleStarted && !this.keepAlive) {
         // Animation restarted. Likely from visibility change
-        this.handleRippleComplete();
+        this.remove();
         return;
       }
       this.rippleStarted = true;
