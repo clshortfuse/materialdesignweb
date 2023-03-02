@@ -31,6 +31,7 @@ import { generateFragment, inlineFunctions } from './template.js';
  * @prop {number} nodeType
  * @prop {string} node
  * @prop {boolean} [negate]
+ * @prop {boolean} [doubleNegate]
  * @prop {Function} [fn]
  * @prop {Set<keyof T & string>} props
  * @prop {T} defaultValue
@@ -57,7 +58,7 @@ function valueFromPropName(prop, source) {
 
 /**
  * Returns event listener bound to shadow root host
- * Use this function avoid generating extra closures
+ * Use this function to avoid generating extra closures
  * @this {HTMLElement}
  * @param {Function} fn
  */
@@ -88,7 +89,7 @@ function buildShadowRootChildListener(fn) {
 function propFromObject(prop, source) {
   let value = source;
   for (const child of prop.split('.')) {
-    if (!child) return null; // Invalid
+    if (!child) throw new Error(`Invalid property: ${prop}`);
     if (child in value === false) return null;
     // @ts-ignore Skip cast
     value = value[child];
@@ -149,9 +150,10 @@ export default class Composition {
   referenceCache = new WeakMap();
 
   /**
-   * Maintains a reference list of elements used by render target (root).
-   * When root is garbage collected, references are released.
-   * This includes disconnected elements.
+   * Part of interpolation phase.
+   * Maintains a reference list of conditional elements that were removed from
+   * `cloneable` due to default state. Used to reconstruct conditional elements
+   * with conditional children in default state as well (unlike `interpolation`).
    * @type {Map<string, Element>}
    */
   conditionalElementMap = new Map();
@@ -237,10 +239,14 @@ export default class Composition {
     for (const [key, entries] of this.bindings) {
       const propSearch = propFromObject(key, data);
       if (!propSearch) continue;
-      for (const { id, node, nodeType, fn, props, negate } of entries) {
+      for (const { id, node, nodeType, fn, props, negate, doubleNegate } of entries) {
         let value;
         let ref;
         if (id) {
+          // TODO: Avoid unnecessary element creation.
+          // If element can be fully reconstructed with internal properties,
+          // skip recreation of element unless it actually needs to added to DOM.
+          // Requires tracing of all properties used by conditional elements.
           ref = this.getElement(root, id);
           if (!ref) {
             console.warn('Non existent id', id);
@@ -274,7 +280,9 @@ export default class Composition {
         //   }
         // }
 
-        if (negate) {
+        if (doubleNegate) {
+          value = !!value; // Boolean(value), but faster
+        } else if (negate) {
           value = !value;
         }
         if (nodeType === Node.TEXT_NODE) {
@@ -362,27 +370,40 @@ export default class Composition {
    */
   interpolate(defaults) {
     // console.log('Template', [...this.template.children].map((child) => child.outerHTML).join('\n'));
+
+    // Copy template before working on it
+    // Store into `cloneable` to split later into `interpolation`
     this.cloneable = /** @type {DocumentFragment} */ (this.template.cloneNode(true));
 
-    /** @type {Map<string,Element>} */
+    /**
+     * Track elements to be removed before using for cloning
+     * @type {Map<string,Element>}
+     */
     const removalList = new Map();
 
+    // TODO: Split into iteration of elements and then into attribute/text nodes (revert commit).
+    // Currently loses element reference and loses state of element (has id)
+    // Can't step over elements such as `<template>`
     for (const node of iterateNodes(this.cloneable, { element: true, attribute: true, text: true })) {
       const { nodeName, nodeValue, nodeType } = node;
 
       if (nodeType === Node.ELEMENT_NODE) {
         // Processing of Element
         if (node instanceof HTMLTemplateElement) {
-          console.warn('Not supported');
-          continue;
+          console.warn('<template> elements are not stepped over');
         }
         if (node instanceof HTMLStyleElement) {
-          this.styles.push(node);
-          node.remove();
+          // Move style elements out of cloneable
+          // eslint-disable-next-line unicorn/consistent-destructuring
+          if (node.parentNode === this.cloneable) {
+            this.styles.push(node);
+            node.remove();
+          } else {
+            console.warn('<style> element not moved');
+          }
         }
         if (node instanceof HTMLScriptElement) {
-          console.warn('Not supported');
-          continue;
+          console.warn('<script> elements are not stepped over');
         }
       }
 
@@ -395,8 +416,13 @@ export default class Composition {
 
       let parsedValue = trimmed.slice(1, length - 1);
       const negate = parsedValue[0] === '!';
+      let doubleNegate = false;
       if (negate) {
         parsedValue = parsedValue.slice(1);
+        doubleNegate = parsedValue[0] === '!';
+        if (doubleNegate) {
+          parsedValue = parsedValue.slice(1);
+        }
       }
 
       /** @type {Element} */
@@ -495,7 +521,9 @@ export default class Composition {
         defaultValue = null;
       }
 
-      if (negate) {
+      if (doubleNegate) {
+        defaultValue = !!defaultValue;
+      } else if (negate) {
         defaultValue = !defaultValue;
       }
 
@@ -506,7 +534,7 @@ export default class Composition {
 
       // Bind
       const parsedNodeName = textNodeIndex ? nodeName + textNodeIndex : nodeName;
-      const entry = { id, node: parsedNodeName, fn, props, nodeType, defaultValue, negate };
+      const entry = { id, node: parsedNodeName, fn, props, nodeType, defaultValue, negate, doubleNegate };
       for (const prop of props) {
         let set = this.bindings.get(prop);
         if (!set) {
@@ -523,6 +551,7 @@ export default class Composition {
       } else if (nodeName === '_if') {
         element.removeAttribute(nodeName);
         if (defaultValue == null || defaultValue === false) {
+          // If default state is removed, mark for removal
           removalList.set(id, element);
         }
       } else if (defaultValue == null || defaultValue === false) {
@@ -532,6 +561,8 @@ export default class Composition {
       }
     }
 
+    // Ensure elements to be removed has identifiable parent
+    // TODO: Consider short-circuiting if parent is unconditional
     const reversedRemovals = [...removalList].reverse();
     for (const [key, element] of reversedRemovals) {
       let parent = element;
@@ -540,18 +571,23 @@ export default class Composition {
       }
     }
 
+    // Split into `interpolation` before removing elements
     /** @type {DocumentFragment} */
     this.interpolation = /** @type {DocumentFragment} */ (this.cloneable.cloneNode(true));
 
-    // console.log('Interpolated', [...this.interpolation.children].map((child) => child.outerHTML).join('\n'));
+    // console.debug('Interpolated', [...this.interpolation.children].map((child) => child.outerHTML).join('\n'));
 
+    // Remove elements from `cloneable` and place comment placeholders
+    // Remove in reverse so conditionals within conditionals are properly isolated
     for (const [id, element] of [...removalList].reverse()) {
       const commentText = `{#${id}}`;
       const commentPlaceholder = new Comment(commentText);
-      // console.log('Removing', commentPlaceholder);
+      // console.debug('Removing', commentPlaceholder);
       element.before(commentPlaceholder);
       element.remove();
-      this.conditionalElementMap.set(id, element.cloneNode(true));
+      // Store cloneable versions (that hold default state).
+      // Must be stored to avoid garbage collection
+      this.conditionalElementMap.set(id, element);
     }
 
     for (const watcher of this.watchers) {
@@ -619,7 +655,7 @@ export default class Composition {
             entry.listener = listener;
             // console.log('caching listener', entry);
           } else {
-            throw new Error('Anonymous event listeners cannot be used in templates');
+            throw new TypeError('Anonymous event listeners cannot be used in templates');
             // console.warn('creating new listener', entry);
             // listener = entry.handleEvent ?? ((event) => {
             //   valueFromPropName(entry.prop, data)(event);
@@ -727,13 +763,13 @@ export default class Composition {
 
         // Parent already in DOM and referenced
         if (references.has(parentId)) {
-          console.debug('Parent already in DOM and cached', parentId, '>', key);
+          console.debug('Parent already in DOM and cached', parentId, '>', id);
           break;
         }
 
         const liveElement = findElement(root, parentId);
         if (liveElement) {
-          console.debug('Parent already in DOM and not cached', parentId, '>', key);
+          console.debug('Parent already in DOM and not cached', parentId, '>', id);
           // Parent already in DOM. Cache reference
           references.set(parentId, liveElement);
           break;
