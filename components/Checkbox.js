@@ -24,7 +24,7 @@ export default Inline
   })
   .observe({
     _ariaChecked({ indeterminate, checked }) {
-      return (indeterminate ? 'mixed' : String(!!checked));
+      return (indeterminate ? 'mixed' : `${!!checked}`);
     },
     _determinateIcon({ indeterminate, indeterminateIcon, icon }) {
       return (indeterminate ? indeterminateIcon : icon);

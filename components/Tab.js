@@ -56,10 +56,10 @@ export default Surface
             aria-label={ariaLabel}
             aria-controls=${({ href }) => (href?.startsWith('#') ? href.slice(1) : null)}
             aria-selected=${({ active }) => (active ? 'true' : 'false')}
-            aria-disabled=${({ disabledState }) => String(disabledState)}
+            aria-disabled=${({ disabledState }) => `${disabledState}`}
             disabled={disabledState}
             href=${({ href }) => href ?? '#'}>
-            <mdw-icon _if=${(data) => data.icon || data.src} id=icon aria-hidden=true src={src}>{icon}</mdw-icon>
+            <mdw-icon _if=${(data) => data.icon || data.src} id=icon aria-hidden=true src={src} active={active}>{icon}</mdw-icon>
             ${$('#slot')}
           </a>
         `,

@@ -106,7 +106,7 @@ export default function ControlMixin(Base) {
           composition.fragmentRoot = label;
         },
         disabledStateChanged(oldValue, newValue) {
-          this._control.setAttribute('aria-disabled', String(newValue));
+          this._control.setAttribute('aria-disabled', `${newValue}`);
           if (!this.focusableOnDisabled) {
             this._control.disabled = newValue;
             if (newValue) {

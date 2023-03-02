@@ -30,10 +30,10 @@ export default Button
       control.setAttribute('type', 'radio');
       control.setAttribute('role', 'option');
       control.setAttribute('aria-checked', inline(
-        ({ type, checked }) => (type === 'checkbox' ? String(!!checked) : null),
+        ({ type, checked }) => (type === 'checkbox' ? `${(!!checked)}` : null),
       ));
       control.setAttribute('aria-selected', inline(
-        ({ type, checked }) => (type === 'checkbox' ? null : String(!!checked)),
+        ({ type, checked }) => (type === 'checkbox' ? null : `${!!checked}`),
       ));
 
       $('#state').setAttribute('state-disabled', 'focus');
