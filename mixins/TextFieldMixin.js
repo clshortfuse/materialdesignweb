@@ -79,7 +79,6 @@ export default function TextFieldMixin(Base) {
       `);
 
       const outline = $('#outline');
-      outline.setAttribute('focused', '{focusedState}');
       outline.setAttribute('invalid', '{invalid}');
       outline.setAttribute('errored', '{erroredState}');
       outline.append(html`

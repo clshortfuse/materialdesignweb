@@ -55,7 +55,7 @@ export default function SurfaceMixin(Base) {
         shape.setAttribute('shape-end', '{shapeEnd}');
         shape.setAttribute('shape-style', '{shapeStyle}');
         shape.append(html`
-          <div id=outline _if={outlined} class="outline" disabled={disabledState} focused={focusedState} pressed={pressedState}>
+          <div id=outline _if={outlined} class="outline" disabled={disabledState} focused={focusedState} pressed={pressedState} hovered={hoveredState}>
             <div id="outline-left" class="outline-section outline-left"></div>
             <div id="outline-right" class="outline-section outline-right"></div>
           </div>

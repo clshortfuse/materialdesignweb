@@ -11,6 +11,9 @@
 
 .outline:is([pressed],[focused]) {
   color: rgb(var(--mdw-ink));
+
+  transition-delay: 0;
+  transition-duration: 0;
 }
 
 .outline[disabled] {
