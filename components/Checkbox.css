@@ -30,8 +30,8 @@
   line-height: 0;
 }
 
-#state {
-  pointer-events: auto;
+#target {
+  pointer-events: none;
 }
 
 #state,
