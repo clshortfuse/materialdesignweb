@@ -90,8 +90,6 @@ a {
 }
 
 #icon {
-  --mdw-icon__size: 24px;
-  --mdw-icon__font-variation-settings: 'FILL' 0;
   position: relative;
   align-self: center;
 
@@ -99,6 +97,9 @@ a {
 
   transform: translateY(var(--mdw-nav-item__offset-y, 0));
   z-index: 3;
+
+  font-size: 24px;
+  font-variation-settings: 'FILL' 0;
 
   transition: transform 200ms;
   will-change: transform;

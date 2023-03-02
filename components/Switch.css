@@ -122,12 +122,12 @@
 /** Thumb Icons **/
 
 .icon {
-  --mdw-icon__size: 16px;
-
   position: absolute;
 
   opacity: 0;
   transform: scale(max(1, var(--scale)));
+
+  font-size: 18px;
 
   /* border-radius: 50%; */
 }
@@ -191,8 +191,9 @@
 }
 
 #track-shape[disabled] {
-  background-color: rgb(var(--mdw-color__surface-variant));
   opacity: calc(0.12/0.38);
+
+  background-color: rgb(var(--mdw-color__surface-variant));
 }
 
 #track-shape[disabled][selected] {

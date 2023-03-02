@@ -16,8 +16,6 @@
 
 #anchor {
   --mdw-shape__size: 0px;
-  --mdw-icon__font-variation-settings: 'FILL' 0;
-  --mdw-icon__size: 24px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -40,8 +38,10 @@
 }
 
 #icon {
-  --mdw-icon__font-variation-settings: inherit;
   padding-block: 4px;
+
+  font-size: 24px;
+  font-variation-settings: 'FILL' 0;
 
 }
 
@@ -54,8 +54,10 @@
 
 :host([active]) {
   --mdw-ink: inherit;
-  --mdw-icon__font-variation-settings: 'FILL' 1;
+}
 
+#icon[active] {
+  font-variation-settings: 'FILL' 1;
 }
 
 #slot {
