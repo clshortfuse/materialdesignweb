@@ -182,6 +182,10 @@
   opacity: 0.38;
 }
 
+#outline:is([pressed],[focused]) {
+  color: rgb(var(--mdw-color__outline));
+}
+
 #outline[disabled] {
   color: rgb(var(--mdw-color__on-surface));
 }
