@@ -21,8 +21,10 @@ export default function SurfaceMixin(Base) {
       elevation: 'integer',
     })
     .expressions({
-      showElevation({ elevated, elevation, disabledState }) {
-        return (elevated || elevation !== null) && !disabledState;
+      showElevation({ elevated, elevation, disabledState, color }) {
+        return (elevated || elevation !== null)
+          && !disabledState
+          && (!color || color.includes('surface'));
       },
     })
     .css(

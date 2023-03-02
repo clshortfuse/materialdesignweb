@@ -73,7 +73,7 @@
   filter: var(--mdw-elevation__filter);
 
   transition-delay: 1ms;
-  transition-duration: 100ms;
+  transition-duration: 200ms;
   transition-property: filter;
   transition-timing-function: linear;
   will-change: filter;
