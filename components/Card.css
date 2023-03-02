@@ -2,7 +2,11 @@
 
 :host {
   --mdw-shape__size: 12px;
-  --mdw-card__elevation__visiblity: visible;
+  --mdw-elevation__opacity: var(--mdw-elevation__opacity__0);
+  --mdw-elevation__opacity__hovered: var(--mdw-elevation__opacity);
+
+  --mdw-elevation__filter__resting: none;
+  --mdw-elevation__filter__hover: var(--mdw-elevation__filter__resting);
 
   position: relative;
 
@@ -13,42 +17,70 @@
   /* padding-inline: 12px; */
 }
 
-:host([actionable]) {
-  /** State, ripples, and box-shadows are shown by the primary action instead */
-  --mdw-card__elevation__visiblity: hidden;
-
-  box-shadow: none;
+:host(:where([filled])) {
+  --mdw-bg: var(--mdw-color__surface-variant);
+  --mdw-ink: var(--mdw-color__on-surface-variant);
 }
 
-:host([disabled]) #shape {
-  --mdw-outline__opacity: 0.12;
+:host(:where([elevated])) {
+  --mdw-bg: var(--mdw-color__surface);
+  --mdw-ink: var(--mdw-color__on-surface);
+}
 
+:host([filled]) {
+  --mdw-elevation__opacity: var(--mdw-elevation__opacity__0);
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__0);
+}
+
+:host([filled][actionable]) {
+  --mdw-elevation__opacity__hovered: var(--mdw-elevation__opacity__1);
+  --mdw-elevation__filter__hover: var(--mdw-elevation__filter__1);
+}
+
+:host([elevated]) {
+  --mdw-elevation__opacity: var(--mdw-elevation__opacity__1);
+  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__1);
+}
+
+:host([elevated][actionable]) {
+  --mdw-elevation__opacity__hovered: var(--mdw-elevation__opacity__2);
+  --mdw-elevation__filter__hover: var(--mdw-elevation__filter__2);
+}
+
+#shape[disabled] {
   cursor: not-allowed;
 
-  color: rgba(var(--mdw-color__on-surface), 0.38);
+  /* Works on images */
+  filter: grayscale();
+
+  opacity: 0.38;
+
+  color: rgb(var(--mdw-color__on-surface));
 }
 
-:host([disabled]:is([elevated],[filled])) #shape {
-  background-color: rgba(var(--mdw-color__on-surface), 0.12);
+#outline[disabled] {
+  color: rgba(var(--mdw-color__on-surface), calc(0.12/0.38));
 }
 
-:host([disabled]) #slot::slotted(:first-child) {
-  --mdw-card-action-area__pointer-events: none;
+/** Firefox and Safari do not support [inert] */
+
+#inert-blocker {
+  position: absolute;
+  inset: 0;
+
+  cursor: not-allowed;
+  pointer-events: auto;
+
+  z-index: 99;
 }
 
-:host([disabled]) #primary-action {
-  visibility: hidden;
+#shape[disabled][elevated] {
+  background-color: rgba(var(--mdw-color__surface-variant));
 }
 
-#elevation {
-  visibility: var(--mdw-card__elevation__visiblity);
-}
-
-#primary-action::slotted(:first-child) {
+#action {
   --mdw-ink: inherit;
-  --mdw-shape__size: inherit;
-  --mdw-surface__elevation__opacity: inherit;
-  --mdw-surface__box-shadow: inherit;
+  --mdw-shape__size: 0;
 
   position: absolute;
   inset: 0;
@@ -57,44 +89,5 @@
 
   z-index: 1;
 
-  background-color: transparent;
-  color: var(--mdw-ink);
-}
-
-:host(:where([elevated])) {
-  --mdw-surface__will-change: filter;
-
-  --mdw-bg: var(--mdw-color__surface);
-  --mdw-ink: var(--mdw-color__on-surface);
-}
-
-:host([elevated]) {
-  --mdw-elevation__opacity__resting: var(--mdw-elevation__opacity__1);
-  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__1);
-  --mdw-elevation__opacity__hover: var(--mdw-elevation__opacity__2);
-  --mdw-elevation__filter__hover: var(--mdw-filter__filter__2);
-}
-
-:host(:is([elevated],[filled])[color]:not([color*="surface"])) {
-  --mdw-elevation__opacity__resting: 0;
-  --mdw-elevation__opacity__hover: 0;
-}
-
-/* Filled */
-
-:host(:where([filled])) {
-  --mdw-bg: var(--mdw-color__surface-variant);
-  --mdw-ink: var(--mdw-color__on-surface-variant);
-}
-
-:host([filled]) #primary-action:hover {
-  --mdw-surface__box-shadow: var(--mdw-surface__box-shadow__1);
-}
-
-#slot {
-  overflow: hidden;
-}
-
-#fieldset {
-  display: contents;
+  color: inherit
 }
