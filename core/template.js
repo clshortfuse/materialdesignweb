@@ -105,7 +105,7 @@ export function html(strings, ...substitutions) {
         return `<div id="${tempId}"></div>`;
       }
       default:
-        throw new Error(`Unexpected substitution: ${String(sub)}`);
+        throw new Error(`Unexpected substitution: ${sub}`);
     }
   });
   const compiledString = String.raw({ raw: strings }, ...replacements);

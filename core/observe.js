@@ -8,6 +8,27 @@ import { attrNameFromPropName } from './dom.js';
 const DEFAULT_NULL_PARSER = () => null;
 
 /**
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean#boolean_coercion
+ * @param {any} v
+ * @return {boolean}
+ */
+const DEFAULT_BOOLEAN_PARSER = (v) => !!v;
+
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#number_coercion
+ * @param {any} v
+ * @return {number}
+ */
+const DEFAULT_NUMBER_PARSER = (v) => +v;
+
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion
+ * @param {any} v
+ * @return {string}
+ */
+const DEFAULT_STRING_PARSER = (v) => `${v}`;
+
+/**
  * @template T
  * @param {T} o
  * @return {T}
@@ -54,12 +75,12 @@ function emptyFromType(type) {
 function defaultParserFromType(type) {
   switch (type) {
     case 'boolean':
-      return Boolean;
+      return DEFAULT_BOOLEAN_PARSER;
     case 'integer':
       // Calls ToNumber(x)
       return Math.round;
     case 'float':
-      return Number;
+      return DEFAULT_NUMBER_PARSER;
     case 'map':
       return Map;
     case 'set':
@@ -70,7 +91,7 @@ function defaultParserFromType(type) {
       return Array.from;
     default:
     case 'string':
-      return String;
+      return DEFAULT_STRING_PARSER;
   }
 }
 

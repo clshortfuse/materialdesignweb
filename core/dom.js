@@ -92,7 +92,7 @@ export function attrValueFromDataValue(value) {
     case true:
       return '';
     default:
-      return String(value);
+      return `${value}`;
   }
 }
 
@@ -138,7 +138,7 @@ export function isFocused(element) {
   if (document.activeElement === element) return true;
   if (!element.isConnected) return false;
   if (isInLightDOM(element)) return false;
-  console.debug('checking shadowdom', element);
+  // console.debug('checking shadowdom', element, element.matches(':focus'));
   return element.matches(':focus');
 }
 
