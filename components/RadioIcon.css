@@ -8,8 +8,6 @@
   position: relative;
 
   display: inline-block;
-  align-items: center;
-  justify-content: center;
 
   block-size: 20px;
   inline-size: 20px;
@@ -37,9 +35,6 @@
 }
 
 #inner-shape {
-  position: absolute;
-  inset: 0;
-
   transform: scale(0);
 
   background-color: var(--color);
