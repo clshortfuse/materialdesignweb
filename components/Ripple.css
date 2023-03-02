@@ -3,7 +3,7 @@
   --touch-down-acceleration: 1024;
   --touch-up-acceleration: 3400;
   --mdw-ripple-expand-duration: 300ms;
-  --mdw-ripple-simple-duration: 100ms;
+  --mdw-ripple-simple-duration: 200ms;
   --mdw-ripple-fade-out-duration: 333ms;
   --mdw-ripple-standard-easing: var(--mdw-motion-standard-easing, cubic-bezier(0.4, 0.0, 0.2, 1));
   --mdw-ripple-deceleration-easing: var(--mdw-motion-deceleration-easing, cubic-bezier(0.0, 0.0, 0.2, 1));

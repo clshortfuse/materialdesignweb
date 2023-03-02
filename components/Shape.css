@@ -33,7 +33,7 @@
   border-end-end-radius: calc(var(--mdw-shape__rounded) * var(--mdw-shape__size__bottom-end-size));
 
   transition-delay: 1ms;
-  transition-duration: 100ms;
+  transition-duration: 200ms;
   transition-property: background-color, color;
   will-change: background-color, color;
 
@@ -109,7 +109,7 @@
 
     -webkit-mask: var(--mdw-shape__mask);
 
-    transition-duration: 100ms, 100ms, 200ms;
+    transition-duration: 200ms, 200ms, 200ms;
     transition-property: background-color, color, -webkit-mask-box-image-width;
     will-change: background-color, color, -webkit-mask-box-image;
   }
