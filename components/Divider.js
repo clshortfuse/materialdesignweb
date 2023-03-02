@@ -8,5 +8,9 @@ export default Inline
     vertical: 'boolean',
   })
   .css(styles)
-  .on('composed', ({ $ }) => $('#slot').remove())
+  .on({
+    composed() {
+      this.refs.slot.remove();
+    },
+  })
   .autoRegister('mdw-divider');

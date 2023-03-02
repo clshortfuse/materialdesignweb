@@ -54,10 +54,11 @@ const Select = Block
     },
   })
   .on({
-    composed({ template, $ }) {
-      template.append($('#slot'));
-      $('#prefix').remove();
-      $('#suffix').remove();
+    composed({ template }) {
+      const { slot, prefix, suffix } = this.refs;
+      template.append(slot);
+      prefix.remove();
+      suffix.remove();
     },
   })
   .setStatic({

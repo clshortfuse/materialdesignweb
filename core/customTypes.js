@@ -79,7 +79,7 @@ function elementStylerRAFCallback() {
     return;
   }
   /** @type {HTMLElement} */
-  const el = value.target ? this.refs[value.target] : this;
+  const el = value.target ? this.composition.getElement(this.shadowRoot, value.target) : this;
   const currentAnimation = el.animate(value.styles, {
     ...value.timing,
     fill: 'forwards',

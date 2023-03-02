@@ -29,39 +29,38 @@ export default Inline
     styles,
     animationStyles,
   )
-  .on('composed', ({ $, html }) => {
-    const trackShape = $('#shape');
-    trackShape.id = 'track-shape';
-    trackShape.setAttribute('selected', '{checked}');
-    trackShape.setAttribute('disabled', '{disabledState}');
-    trackShape.setAttribute('aria-hidden', 'true');
+  .on({
+    composed({ html }) {
+      const { shape: trackShape, state, outline, slot, label, control } = this.refs;
+      trackShape.id = 'track-shape';
+      trackShape.setAttribute('selected', '{checked}');
+      trackShape.setAttribute('disabled', '{disabledState}');
+      trackShape.setAttribute('aria-hidden', 'true');
 
-    const state = $('#state');
-    state.classList.add('moving-target');
+      state.classList.add('moving-target');
 
-    const outline = $('#outline');
-    outline.removeAttribute('_if');
-    outline.setAttribute('selected', '{checked}');
-    const slot = $('#slot');
-    $('#slot').removeAttribute('color');
-    $('#slot').removeAttribute('ink');
-    $('#label').append(html`
-      ${slot}
-      <div id="track" selected={checked} pressed={pressedState}>
-        ${trackShape}
-        <div id=thumb selected={checked} pressed={pressedState} disabled={disabledState}>
-          <div id=thumb-shape class=shape selected={checked}
-          icon=${({ icon, src, unselectedIcon, unselectedSrc }) => Boolean(icon || src || unselectedIcon || unselectedSrc)}></div>
-          <mdw-icon class=icon id=icon src={src} selected={checked}>{icon}</mdw-icon>
-          <mdw-icon class=icon id=selected-icon src={selectedIconSrc} selected={checked}>{selectedIcon}</mdw-icon>
-          <mdw-icon class=icon id=unselected-icon src={unselectedIconSrc} selected={checked}>{unselectedIcon}</mdw-icon>
-          ${state}
+      outline.removeAttribute('_if');
+      outline.setAttribute('selected', '{checked}');
+
+      slot.removeAttribute('color');
+      slot.removeAttribute('ink');
+      label.append(html`
+        ${slot}
+        <div id="track" selected={checked} pressed={pressedState}>
+          ${trackShape}
+          <div id=thumb selected={checked} pressed={pressedState} disabled={disabledState}>
+            <div id=thumb-shape class=shape selected={checked}
+            icon=${({ icon, src, unselectedIcon, unselectedSrc }) => Boolean(icon || src || unselectedIcon || unselectedSrc)}></div>
+            <mdw-icon class=icon id=icon src={src} selected={checked}>{icon}</mdw-icon>
+            <mdw-icon class=icon id=selected-icon src={selectedIconSrc} selected={checked}>{selectedIcon}</mdw-icon>
+            <mdw-icon class=icon id=unselected-icon src={unselectedIconSrc} selected={checked}>{unselectedIcon}</mdw-icon>
+            ${state}
+          </div>
         </div>
-      </div>
-    `);
+      `);
 
-    const control = $('#control');
-    control.setAttribute('type', 'checkbox');
-    control.setAttribute('role', 'switch');
+      control.setAttribute('type', 'checkbox');
+      control.setAttribute('role', 'switch');
+    },
   })
   .autoRegister('mdw-switch');

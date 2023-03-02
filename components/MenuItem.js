@@ -183,11 +183,11 @@ export default ListOption
     },
   })
   .on({
-    composed({ $, inline, html }) {
-      $('#checkbox').remove();
-      $('#radio').remove();
+    composed({ inline, html }) {
+      const { checkbox: checkboxRef, radio: radioRef, anchor, trailing, trailingIcon } = this.refs;
+      checkboxRef.remove();
+      radioRef.remove();
 
-      const anchor = $('#anchor');
       anchor.setAttribute('role', inline(({ checkbox, radio }) => {
         if (checkbox != null) return 'menuitemcheckbox';
         if (radio != null) return 'menuitemradio';
@@ -205,8 +205,8 @@ export default ListOption
           selected={selected}>check</mdw-icon>
       `);
 
-      $('#trailing').setAttribute('type-style', 'label-large');
-      const trailingIcon = $('#trailing-icon');
+      trailing.setAttribute('type-style', 'label-large');
+
       trailingIcon.setAttribute('_if', '{computeTrailingIcon}');
       trailingIcon.textContent = '{computeTrailingIcon}';
     },

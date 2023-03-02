@@ -84,24 +84,26 @@ export default Container
     },
   })
   .css(elevationStyles, styles)
-  .on('composed', ({ template, $, html }) => {
-    const slot = $('#slot');
-    slot.setAttribute('on-slotchange', '{refreshTabIndexes}');
-    return template.append(
-      html`
-        <div id="bar" role=toolbar aria-labelledby=headline>
-          <div id=elevation class=elevation raised={_raised}></div>
-          <div id=leading><slot id=leading-slot name=leading on-slotchange={refreshTabIndexes}></slot></div>
-          <div id=headline style={computeHeadlineStyle}>
-            {headline}
-            ${slot}
+  .on({
+    composed({ template, html }) {
+      const slot = this.refs.slot;
+      slot.setAttribute('on-slotchange', '{refreshTabIndexes}');
+      return template.append(
+        html`
+          <div id="bar" role=toolbar aria-labelledby=headline>
+            <div id=elevation class=elevation raised={_raised}></div>
+            <div id=leading><slot id=leading-slot name=leading on-slotchange={refreshTabIndexes}></slot></div>
+            <div id=headline style={computeHeadlineStyle}>
+              {headline}
+              ${slot}
+            </div>
+            <div id=trailing><slot id=trailing-slot name=trailing on-slotchange={refreshTabIndexes}></slot></div>
           </div>
-          <div id=trailing><slot id=trailing-slot name=trailing on-slotchange={refreshTabIndexes}></slot></div>
-        </div>
-        <div _if=${({ size }) => size === 'medium' || size === 'large'}
-          id=companion aria-hidden=true><span id=companion-text>{headline}</span></div>
-      `,
-    );
+          <div _if=${({ size }) => size === 'medium' || size === 'large'}
+            id=companion aria-hidden=true><span id=companion-text>{headline}</span></div>
+        `,
+      );
+    },
   })
   .on('_scrollPositionYChanged', (oldValue, newValue, element) => {
     element._raised = (newValue > 0);

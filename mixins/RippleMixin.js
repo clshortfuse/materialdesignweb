@@ -37,15 +37,15 @@ export default function RippleMixin(Base) {
        * @return {InstanceType<Ripple>}
        */
       addRipple(x, y, hold) {
-        const container = this.refs['ripple-container'];
-        if (!container.isConnected) return null; // Detached?
+        const { rippleContainer } = this.refs;
+        if (!rippleContainer.isConnected) return null; // Detached?
         const ripple = new Ripple();
         this._rippleAdded = true;
         queueMicrotask(() => {
           // Reset before next event loop;
           this._rippleAdded = false;
         });
-        this.refs['ripple-container'].appendChild(ripple);
+        rippleContainer.appendChild(ripple);
         if (hold) {
           ripple.holdRipple = true;
         }
@@ -62,9 +62,9 @@ export default function RippleMixin(Base) {
         if (event.button) return;
         if (this.disabledState) return;
 
-        const container = this.refs['ripple-container'];
-        if (!container.isConnected) return; // Detached?
-        const rect = this.refs['ripple-container'].getBoundingClientRect();
+        const { rippleContainer } = this.refs;
+        if (!rippleContainer.isConnected) return; // Detached?
+        const rect = rippleContainer.getBoundingClientRect();
         const x = event.pageX - rect.left - window.pageXOffset;
         const y = event.pageY - rect.top - window.pageYOffset;
         const lastRipple = this._lastRipple;

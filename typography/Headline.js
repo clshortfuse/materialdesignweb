@@ -22,8 +22,8 @@ export default Block
     },
   })
   .on({
-    composed({ $ }) {
-      const slot = $('#slot');
+    composed() {
+      const { slot } = this.refs;
       slot.setAttribute('role', 'heading');
       slot.setAttribute('aria-level', '{computeAriaLevel}');
       slot.setAttribute('type-style', '');

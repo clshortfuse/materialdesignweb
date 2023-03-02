@@ -2,7 +2,7 @@
 
 import Composition from './Composition.js';
 import { ICustomElement } from './ICustomElement.js';
-import { attrValueFromDataValue, findElement } from './dom.js';
+import { attrNameFromPropName, attrValueFromDataValue, findElement } from './dom.js';
 import { defineObservableProperty } from './observe.js';
 import { addInlineFunction, css, html } from './template.js';
 
@@ -683,7 +683,8 @@ export default class CustomElement extends ICustomElement {
   }
 
   /**
-   * Proxy object that returns shadow DOM elements by ID
+   * Proxy object that returns shadow DOM elements by ID.
+   * If called before interpolation (eg: on composed), returns from template
    * @return {Record<string,HTMLElement>}
    */
   get refs() {
@@ -699,11 +700,12 @@ export default class CustomElement extends ICustomElement {
           console.warn(this.static.name, 'Attempted to access references before composing!');
         }
         const composition = this.composition;
+        const formattedId = attrNameFromPropName(id);
         if (!composition.interpolated) {
-          console.warn(this.tagName, 'Returning template reference');
-          return findElement(composition.template, id);
+          // console.warn(this.tagName, 'Returning template reference');
+          return findElement(composition.template, formattedId);
         }
-        return composition.getElement(this.shadowRoot, id);
+        return composition.getElement(this.shadowRoot, formattedId);
       },
     }));
   }
@@ -766,8 +768,6 @@ export default class CustomElement extends ICustomElement {
       html: html.bind(this),
       inline: addInlineFunction,
       template: this.#template,
-      $: this.#template.querySelector.bind(this.#template),
-      $$: this.#template.querySelectorAll.bind(this.#template),
       element: this,
     };
   }

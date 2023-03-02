@@ -6,8 +6,8 @@ export default Block
   .extend()
   .css(styles)
   .on({
-    composed({ $ }) {
-      $('#slot').setAttribute('type-style', '');
+    composed() {
+      this.refs.slot.setAttribute('type-style', '');
     },
   })
   .autoRegister('mdw-body');

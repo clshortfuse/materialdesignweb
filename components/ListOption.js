@@ -70,15 +70,13 @@ export default class ListOption extends ListItem
     },
   })
   .on({
-    composed({ $, inline, html, template }) {
-      $('#headline-text').append(
-        $('#slot'),
-      );
-      const anchor = $('#anchor');
+    composed({ inline }) {
+      const { headlineText, slot, anchor, state } = this.refs;
+      headlineText.append(slot);
       anchor.setAttribute('role', 'option');
       anchor.setAttribute('aria-disabled', inline(({ disabledState }) => (disabledState ? 'true' : 'false')));
       anchor.setAttribute('tabindex', '0');
-      $('#state').setAttribute('state-disabled', 'focus');
+      state.setAttribute('state-disabled', 'focus');
     },
   }) {
   static { this.autoRegister('mdw-list-option'); }

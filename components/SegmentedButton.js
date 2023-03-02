@@ -14,19 +14,19 @@ export default Button
   })
   .css(styles)
   .on({
-    composed({ $, html, inline }) {
-      const shape = $('#label');
-      shape.append(html`
+    composed({ html, inline }) {
+      const { label, icon, outline, control, state } = this.refs;
+
+      label.append(html`
         <mdw-icon selected={checked} id=check-icon aria-hidden=true>check</mdw-icon>
       `);
-      shape.setAttribute('selected', '{checked}');
+      label.setAttribute('selected', '{checked}');
 
-      $('#icon').removeAttribute('_if');
-      $('#icon').setAttribute('has-icon', '{hasIcon}');
-      $('#icon').setAttribute('selected', '{checked}');
-      $('#outline').setAttribute('inner-segmented-button', '{innerSegmentedButton}');
+      icon.removeAttribute('_if');
+      icon.setAttribute('has-icon', '{hasIcon}');
+      icon.setAttribute('selected', '{checked}');
+      outline.setAttribute('inner-segmented-button', '{innerSegmentedButton}');
 
-      const control = $('#control');
       control.setAttribute('type', 'radio');
       control.setAttribute('role', 'option');
       control.setAttribute('aria-checked', inline(
@@ -36,7 +36,7 @@ export default Button
         ({ type, checked }) => (type === 'checkbox' ? null : `${!!checked}`),
       ));
 
-      $('#state').setAttribute('state-disabled', 'focus');
+      state.setAttribute('state-disabled', 'focus');
     },
     constructed() {
       this.outlined = true;

@@ -41,23 +41,22 @@ export default CustomElement
     <slot id=slot></slot>
 
   `
-  .on('composed', ({ $ }) => {
-    const slot = $('#slot');
-    slot.before($('#icon'));
-    slot.setAttribute('disabled', '{disabledState}');
-    const label = $('#label');
-    label.setAttribute('ink', '{ink}');
-    label.setAttribute('type-style', '{typeStyle}');
-    label.setAttribute('icon', '{hasIcon}');
-    label.setAttribute('color', '{color}');
-    label.setAttribute('elevated', '{elevated}');
-    label.setAttribute('filled', '{filled}');
-    label.setAttribute('disabled', '{disabledState}');
-    label.setAttribute('outlined', '{outlined}');
-
-    const control = $('#control');
-    control.setAttribute('role', 'button');
-    control.setAttribute('type', 'button');
+  .on({
+    composed() {
+      const { slot, icon, label, control } = this.refs;
+      slot.before(icon);
+      slot.setAttribute('disabled', '{disabledState}');
+      label.setAttribute('ink', '{ink}');
+      label.setAttribute('type-style', '{typeStyle}');
+      label.setAttribute('icon', '{hasIcon}');
+      label.setAttribute('color', '{color}');
+      label.setAttribute('elevated', '{elevated}');
+      label.setAttribute('filled', '{filled}');
+      label.setAttribute('disabled', '{disabledState}');
+      label.setAttribute('outlined', '{outlined}');
+      control.setAttribute('role', 'button');
+      control.setAttribute('type', 'button');
+    },
   })
   .childEvents({
     control: {

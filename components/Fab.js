@@ -13,11 +13,14 @@ export default ExtendedFab
     },
   })
   .css(styles)
-  .on('composed', ({ $ }) => {
-    $('#slot').remove();
-    $('#tooltip-slot').removeAttribute('name');
-    $('#control').setAttribute('aria-labelledby', 'tooltip');
-    $('#label').setAttribute('fab-size', '{fabSize}');
-    $('#icon').setAttribute('fab-size', '{fabSize}');
+  .on({
+    composed() {
+      const { slot, tooltipSlot, control, label, icon } = this.refs;
+      slot.remove();
+      tooltipSlot.removeAttribute('name');
+      control.setAttribute('aria-labelledby', 'tooltip');
+      label.setAttribute('fab-size', '{fabSize}');
+      icon.setAttribute('fab-size', '{fabSize}');
+    },
   })
   .autoRegister('mdw-fab');

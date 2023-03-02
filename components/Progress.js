@@ -56,7 +56,11 @@ export default Container
       </div>
     </div>
   `
-  .on('composed', ({ $ }) => $('#slot').remove())
+  .on({
+    composed() {
+      this.refs.slot.remove();
+    },
+  })
   .onPropChanged({
     value(oldValue, newValue, element) {
       element.valueAsFraction = (element.value / (element.max || 100));

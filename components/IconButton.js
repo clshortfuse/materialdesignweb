@@ -49,21 +49,25 @@ export default Button
       },
     },
   })
-  .on('composed', ({ $ }) => {
-    $('#slot').remove();
-    $('#icon').removeAttribute('_if');
-    $('#tooltip-slot').removeAttribute('name');
-    $('#label').setAttribute('toggle', '{isToggle}');
-    // $('#label').setAttribute('selected', '{checked}');
-    // icon.append($('#slot'));
-    $('#icon').setAttribute('toggle', '{isToggle}');
-    $('#icon').setAttribute('selected', '{checked}');
-    $('#elevation').remove();
+  .on({
+    composed() {
+      const { slot, tooltipSlot, label, icon, elevation, control, outline } = this.refs;
+      slot.remove();
+      icon.removeAttribute('_if');
+      tooltipSlot.removeAttribute('name');
+      label.setAttribute('toggle', '{isToggle}');
+      // label.setAttribute('selected', '{checked}');
 
-    const control = $('#control');
-    control.setAttribute('aria-pressed', '{_ariaPressed}');
-    control.setAttribute('aria-labelledby', 'tooltip');
+      // icon.append(slot);
+      icon.setAttribute('toggle', '{isToggle}');
+      icon.setAttribute('selected', '{checked}');
 
-    $('#outline').setAttribute('selected', '{checked}');
+      elevation.remove();
+
+      control.setAttribute('aria-pressed', '{_ariaPressed}');
+      control.setAttribute('aria-labelledby', 'tooltip');
+
+      outline.setAttribute('selected', '{checked}');
+    },
   })
   .autoRegister('mdw-icon-button');

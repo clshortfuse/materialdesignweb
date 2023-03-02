@@ -49,7 +49,8 @@ export default Surface
   })
   .css(styles)
   .on({
-    composed({ composition, $, html }) {
+    composed({ composition, html }) {
+      const { slot, state } = this.refs;
       composition.append(
         html`
           <a id=anchor role="tab"
@@ -60,11 +61,11 @@ export default Surface
             disabled={disabledState}
             href=${({ href }) => href ?? '#'}>
             <mdw-icon _if=${(data) => data.icon || data.src} id=icon aria-hidden=true src={src} active={active}>{icon}</mdw-icon>
-            ${$('#slot')}
+            ${slot}
           </a>
         `,
       );
-      $('#state').setAttribute('state-disabled', 'focus');
+      state.setAttribute('state-disabled', 'focus');
     },
   })
   .events({

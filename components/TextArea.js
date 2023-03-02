@@ -13,10 +13,13 @@ export default class TextArea extends TextFieldMixin(SurfaceMixin(ControlMixin(S
   static {
     this.css(styles);
     this.childEvents({ slot: { slotchange: 'onSlotChange' } });
-    this.on('composed', ({ template, $ }) => {
-      template.append($('#slot')); // Move into root (was label);
-      $('#label').setAttribute('input-prefix', '{input-prefix}');
-      $('#label').setAttribute('input-suffix', '{input-suffix}');
+    this.on({
+      composed({ template }) {
+        const { slot, label } = this.refs;
+        template.append(slot); // Move into root (was label);
+        label.setAttribute('input-prefix', '{input-prefix}');
+        label.setAttribute('input-suffix', '{input-suffix}');
+      },
     });
   }
 

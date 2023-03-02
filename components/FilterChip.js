@@ -25,22 +25,25 @@ export default Chip
     <mdw-icon _if={computedTrailingIcon} id=trailing-icon aria-hidden="true" src={trailingSrc}>{computedTrailingIcon}</mdw-icon>
   `
   .on({
-    composed({ $ }) {
-      $('#label').setAttribute('icon', '');
-      $('#label').setAttribute('trailing-icon', '{computedTrailingIcon}');
-      $('#icon').setAttribute('_if', '{icon}');
-      $('#icon').setAttribute('ink', '{iconInk}');
-      const control = $('#control');
+    composed() {
+      const { label, icon, control, outline, slot, trailingIcon } = this.refs;
+
+      label.setAttribute('icon', '');
+      label.setAttribute('trailing-icon', '{computedTrailingIcon}');
+      icon.setAttribute('_if', '{icon}');
+      icon.setAttribute('ink', '{iconInk}');
+
       control.removeAttribute('role');
       control.setAttribute('type', 'checkbox');
-      const outline = $('#outline');
+
       outline.removeAttribute('ink');
       outline.removeAttribute('color');
       outline.setAttribute('selected', '{checked}');
-      const slot = $('#slot');
+
       slot.removeAttribute('ink');
       slot.removeAttribute('color');
-      $('#trailing-icon').before(slot);
+
+      trailingIcon.before(slot);
     },
   })
   .autoRegister('mdw-filter-chip');

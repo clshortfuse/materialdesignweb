@@ -39,10 +39,13 @@ export default Surface
   })
   .css(styles)
   .on({
-    composed({ template, $, html }) {
-      $('#shape').append(html`
+    composed({ template, html }) {
+      const { shape, slot } = this.refs;
+      shape.append(html`
         <mdw-ripple id=ripple ripple-origin="center" keep-alive hold-ripple ripple-state=${({ active }) => ((active) ? null : 'complete')}></mdw-ripple>
       `);
+      slot.removeAttribute('color');
+      slot.removeAttribute('ink');
       template.append(html`
         <mdw-icon id=icon aria-hidden=true src={src}>{icon}</mdw-icon>
         <a id=anchor
@@ -50,12 +53,10 @@ export default Surface
           aria-describedby=badge
           aria-label={ariaLabel}
           href=${({ href }) => href ?? '#'}>
-          ${$('#slot')}
+          ${slot}
         </a>
         <mdw-badge _if={badge} id=badge aria-hidden=true>{badge}</mdw-badge>
       `);
-      $('#slot').removeAttribute('color');
-      $('#slot').removeAttribute('ink');
     },
   })
   .childEvents({

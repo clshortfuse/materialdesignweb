@@ -17,20 +17,22 @@ export default Inline
     stateLayer: true,
   })
   .css(styles)
-  .on('composed', ({ $, html }) => {
-    $('#label').append(html`
-      <div id=target errored={erroredState} selected={checked}>
-        <mdw-radio-icon id=icon errored={erroredState} disabled={disabledState}
-          selected={checked} focused={focusedState} hovered={hoveredState}></mdw-radio-icon>
-        ${$('#ripple-container')}
-        ${$('#state')}
-      </div>
-      ${$('#slot')}
-    `);
+  .on({
+    composed({ html }) {
+      const { label, rippleContainer, state, slot, control } = this.refs;
+      label.append(html`
+        <div id=target errored={erroredState} selected={checked}>
+          <mdw-radio-icon id=icon errored={erroredState} disabled={disabledState}
+            selected={checked} focused={focusedState} hovered={hoveredState}></mdw-radio-icon>
+          ${rippleContainer}
+          ${state}
+        </div>
+        ${slot}
+      `);
 
-    const control = $('#control');
-    control.setAttribute('type', 'radio');
-    $('#slot').removeAttribute('color');
-    $('#slot').removeAttribute('ink');
+      control.setAttribute('type', 'radio');
+      slot.removeAttribute('color');
+      slot.removeAttribute('ink');
+    },
   })
   .autoRegister('mdw-radio');

@@ -65,8 +65,8 @@ export default Nav
   })
   .css(styles)
   .on({
-    composed({ $ }) {
-      $('#shape').setAttribute('style', '{computeNavStyle}');
+    composed() {
+      this.refs.shape.setAttribute('style', '{computeNavStyle}');
     },
     connected() {
       if (this.hideOnScroll) {

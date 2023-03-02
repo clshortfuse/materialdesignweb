@@ -42,12 +42,12 @@ export default Surface
     <div _if={showBlocker} id=inert-blocker></div>
   `
   .on({
-    composed({ $ }) {
-      $('#shape').setAttribute('disabled', '{disabledState}');
-      $('#shape').setAttribute('filled', '{filled}');
-      const slot = $('#slot');
+    composed() {
+      const { shape, slot, action } = this.refs;
+      shape.setAttribute('disabled', '{disabledState}');
+      shape.setAttribute('filled', '{filled}');
       slot.setAttribute('inert', '{disabledState}');
-      slot.before($('#action'));
+      slot.before(action);
     },
   })
   .childEvents({

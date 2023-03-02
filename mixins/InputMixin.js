@@ -129,8 +129,8 @@ export default function InputMixin(Base) {
 
     static {
       this.on({
-        composed({ $ }) {
-          const label = $('#label');
+        composed() {
+          const { label } = this.refs;
           // Expose [selected] to .checked
           label.setAttribute('selected', '{checked}');
           label.setAttribute('invalid', '{_invalid}');
