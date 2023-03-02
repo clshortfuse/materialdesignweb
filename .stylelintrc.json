@@ -95,7 +95,8 @@
     "selector-max-compound-selectors": [
       1,
       {
-        "severity": "warning"
+        "severity": "error",
+        "message": "Avoid all invalidations sets. https://chromium.googlesource.com/chromium/src/+/master/third_party/blink/renderer/core/css/style-invalidation.md"
       }
     ],
     "no-descending-specificity": [
