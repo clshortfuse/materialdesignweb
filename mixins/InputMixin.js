@@ -139,44 +139,11 @@ export default function InputMixin(Base) {
       });
       this.childEvents({
         control: {
-        /**
-         * @param {Event & {currentTarget: HTMLInputElement}} event
-         * @type {any}
-         */
-          '~click'(event) {
-            console.log('control get click event');
-            const input = event.currentTarget;
-            if (event.defaultPrevented) return;
-            if (input.type === 'radio' || input.type === 'checkbox') {
-              console.log('Input clicked', event.composedPath());
-              /* Avoid two click events */
-              // event.stopPropagation();
-            }
-            if (input.type !== 'radio') return;
-            if (input.required) return;
-
-            if (this.checked) {
-              this.checked = false;
-            // event.preventDefault();
-            }
-          },
           keydown(event) {
             if (event.defaultPrevented) return;
-            const input = /** @type {HTMLInputElement} */ (event.currentTarget);
-            if (event.key === 'Enter') {
-              if (input.type === 'submit') return;
-              this.performImplicitSubmission(event);
-              return;
-            }
-            if (input.type !== 'radio') return;
-            if (event.key === 'Spacebar' || event.key === ' ') {
-              if (input.required) return;
-
-              if (this.checked) {
-                this.checked = false;
-                event.preventDefault();
-              }
-            }
+            if (event.key !== 'Enter') return;
+            if (/** @type {HTMLInputElement} */ (event.currentTarget).type === 'submit') return;
+            this.performImplicitSubmission(event);
           },
           change(event) {
             if (this.disabledState) {
@@ -203,7 +170,6 @@ export default function InputMixin(Base) {
       let defaultButton;
       const submissionBlockers = new Set();
       for (const element of /** @type {HTMLCollectionOf<HTMLInputElement>} */ (form.elements)) {
-        // Spec doesn't specify disabled, but browsers do skip them.
         if (element.type === 'submit' && !element.disabled && !element.matches(':disabled')) {
           defaultButton ??= element;
           break;
