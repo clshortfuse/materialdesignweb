@@ -73,12 +73,9 @@
   color: rgb(var(--mdw-color__on-surface));
 }
 
-:is(#label-text, #indicator) {
+#label-text,
+#indicator {
   color: rgb(var(--mdw-color__on-surface-variant))
-}
-
-:is(#label-text, #indicator)[hovered] {
-  /* color: rgb(var(--mdw-color__on-surface)) */
 }
 
 :is(#label-text, #indicator)[focused] {

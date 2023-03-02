@@ -67,7 +67,6 @@ export default function TextFieldMixin(Base) {
       labelElement.setAttribute('populated', '{populatedState}');
       labelElement.setAttribute('outlined', '{outlined}');
       labelElement.setAttribute('focused', '{focusedState}');
-      labelElement.setAttribute('hovered', '{hoveredState}');
       labelElement.setAttribute('label', '{label}');
       labelElement.setAttribute('shape-top', inline(({ shapeTop, filled }) => shapeTop || filled));
       labelElement.append(html`
