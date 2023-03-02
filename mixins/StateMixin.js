@@ -48,7 +48,7 @@ export default function StateMixin(Base) {
       pointerenter(event) {
         if (!event.isPrimary) return;
         this._pressed = this.stateTargetElement.matches(':active');
-        this._hovered = event.pointerType !== 'touch';
+        this._hovered = event.pointerType !== 'touch' && this.stateTargetElement.matches(':hover');
       },
       '~pointerdown'(event) {
         if (!event.isPrimary) return;
