@@ -59,6 +59,8 @@
 
   grid-column: 1 / 1;
 
+  pointer-events: none;
+
   color: rgb(var(--mdw-color__on-surface));
 }
 
