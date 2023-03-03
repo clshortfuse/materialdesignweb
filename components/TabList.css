@@ -70,12 +70,15 @@
 }
 
 #indicator-start {
-  inset-inline-start: 0;
+  /* stylelint-disable-next-line liberty/use-logical-spec */
+  left: 0;
 
   inline-size: calc(2 * 1px * var(--corner));
-  border-start-start-radius: calc(1px * var(--corner));
 
   transform: translateX(var(--offset));
+
+  /* stylelint-disable-next-line liberty/use-logical-spec */
+  border-top-left-radius: calc(1px * var(--corner));
 }
 
 #indicator-center {
@@ -83,7 +86,8 @@
   --precision: 100;
 
   position: absolute;
-  inset-inline-start: calc(1px * var(--corner));
+  /* stylelint-disable-next-line liberty/use-logical-spec */
+  left: calc(1px * var(--corner));
 
   inline-size: calc(1px * var(--precision));
 
@@ -93,15 +97,18 @@
 
 #indicator-end {
   position: absolute;
-  inset-inline-start: 0;
+  /* stylelint-disable-next-line liberty/use-logical-spec */
+  left: 0;
 
   inline-size: calc(2 * 1px * var(--corner));
-  border-start-end-radius: calc(1px * var(--corner));
 
   transform:
     translateX(var(--offset))
     translateX(calc(-2px * var(--corner)))
     translateX(calc(var(--width) * 1px));
+
+  /* stylelint-disable-next-line liberty/use-logical-spec */
+  border-top-right-radius: calc(1px * var(--corner));
 }
 
 :host([active]) #indicator {

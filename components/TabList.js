@@ -1,6 +1,7 @@
 // https://w3c.github.io/aria/#tablist
 
 import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
+import RTLObserverMixin from '../mixins/RTLObserverMixin.js';
 import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 
 import Container from './Container.js';
@@ -10,6 +11,7 @@ import styles from './TabList.css' assert { type: 'css' };
 export default Container
   .mixin(KeyboardNavMixin)
   .mixin(ResizeObserverMixin)
+  .mixin(RTLObserverMixin)
   .extend()
   .set({
     /** @type {WeakRef<HTMLElement>} */
@@ -28,6 +30,7 @@ export default Container
      * }[]}
      */
     _tabMetrics: null,
+    _isRTL: null,
   })
   .define({
     tabContent: {
@@ -228,13 +231,17 @@ export default Container
       this._indicatorStyle = `--width: ${width}; --offset: ${center - (width / 2)}px`;
       this.refs.indicator.style.setProperty('--transition-ratio', '0');
     },
-    updateIndicatorByIndex(index = this._selectedIndex) {
-      this.updateIndicatorByTab(this.tabs.item(index));
+    /** @param {number} index */
+    updateIndicatorByIndex(index) {
+      this.updateIndicatorByTab(this.tabs.item(index ?? this._selectedIndex));
     },
     observeTabContent() {
       const tabContent = this.tabContent;
       if (!tabContent) return;
-      const start = tabContent.scrollLeft;
+      let start = tabContent.scrollLeft;
+      if (this.pageIsRTL) {
+        start *= -1;
+      }
       const width = tabContent.clientWidth;
       const max = tabContent.scrollWidth - width;
       const percentage = max === 0 ? 0 : start / max;
@@ -245,17 +252,22 @@ export default Container
       this.updateIndicator();
     },
   })
-  .on('activeChanged', (oldValue, newValue, element) => {
-    if (newValue) {
-      // Update indicator position without transition
-      element.updateIndicator();
-    }
-  })
-  .on('secondaryChanged', (oldValue, newValue, element) => {
-    element.updateIndicator();
-  })
-  .on('_selectedIndexChanged', (oldValue, newValue, element) => {
-    element.updateIndicatorByIndex(newValue);
+  .onPropChanged({
+    pageIsRTL() {
+      this.updateIndicator();
+    },
+    active(oldValue, newValue) {
+      if (newValue) {
+        // Update indicator position without transition
+        this.updateIndicator();
+      }
+    },
+    secondary() {
+      this.updateIndicator();
+    },
+    _selectedIndex(oldValue, newValue) {
+      this.updateIndicatorByIndex(newValue);
+    },
   })
   .set({
     ariaRole: 'tablist',
