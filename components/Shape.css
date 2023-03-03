@@ -6,9 +6,19 @@
   --mdw-shape__size__top-end-size: var(--mdw-shape__size);
   --mdw-shape__size__bottom-start-size: var(--mdw-shape__size);
   --mdw-shape__size__bottom-end-size: var(--mdw-shape__size);
+
+  /* (1/2n + 1/2)L + (-1/2n + 1/2)R  */
+  --mdw-shape__ltr: calc(0.5 * var(--mdw-dir, 1) + 0.5); /* 1 if LTR, 0 if RTL */
+  --mdw-shape__rtl: calc(-0.5 * var(--mdw-dir, 1) + 0.5); /* 0 if LTR, 1 if RTL */
+  --mdw-shape__size__top-left-size: calc((var(--mdw-shape__ltr) * var(--mdw-shape__size__top-start-size)) + (var(--mdw-shape__rtl) * var(--mdw-shape__size__top-end-size)));
+  --mdw-shape__size__top-right-size: calc((var(--mdw-shape__rtl) * var(--mdw-shape__size__top-start-size)) + (var(--mdw-shape__ltr) * var(--mdw-shape__size__top-end-size)));
+  --mdw-shape__size__bottom-left-size: calc((var(--mdw-shape__ltr) * var(--mdw-shape__size__bottom-start-size)) + (var(--mdw-shape__rtl) * var(--mdw-shape__size__bottom-end-size)));
+  --mdw-shape__size__bottom-right-size: calc((var(--mdw-shape__rtl) * var(--mdw-shape__size__bottom-start-size)) + (var(--mdw-shape__ltr) * var(--mdw-shape__size__bottom-end-size)));
+
   --mdw-shape__rounded: 1;
   --mdw-shape__mask-border-source: none;
   --mdw-shape__mask: none;
+  --mdw-shape__inline-start-deg: calc(var(--mdw-dir, 1) * -90deg);
 
   position: relative;
 
@@ -88,13 +98,13 @@
 .shape[shape-start] {
   --mdw-shape__size__top-end-size: 0px;
   --mdw-shape__size__bottom-end-size: 0px;
-  --mdw-shape__mask: linear-gradient(to left, black 50%, transparent 50%);
+  --mdw-shape__mask: linear-gradient(var(--mdw-shape__inline-start-deg), black 50%, transparent 50%);
 }
 
 .shape[shape-end] {
   --mdw-shape__size__top-start-size: 0px;
   --mdw-shape__size__bottom-start-size: 0px;
-  --mdw-shape__mask: linear-gradient(to left, transparent 50%, black 50%);
+  --mdw-shape__mask: linear-gradient(var(--mdw-shape__inline-start-deg), transparent 50%, black 50%);
 }
 
 @supports(-webkit-mask-box-image: none) {
