@@ -364,9 +364,14 @@ mdw-icon {
 #outline {
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: 12px auto minmax(12px, 1fr);
+  grid-template-columns:
+    minmax(12px,calc((var(--mdw-shape__ltr) * 12px) + (var(--mdw-shape__rtl) * 100%)))
+    auto
+    minmax(12px,calc((var(--mdw-shape__rtl) * 12px) + (var(--mdw-shape__ltr) * 100%)));
 
   color: rgb(var(--mdw-color__outline));
+
+  direction: ltr;
 }
 
 #outline[hovered] {
@@ -383,10 +388,7 @@ mdw-icon {
 }
 
 .outline-left {
-  inline-size: 12px;
   grid-column: 1;
-  flex: none;
-  flex: none;
 }
 
 .outline-right {
