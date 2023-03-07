@@ -66,8 +66,6 @@
 #headline {
   display: block;
   overflow-x: clip;
-
-  overflow-y: hidden;
   overflow-y: hidden;
 
   grid-column: 3;
@@ -116,13 +114,10 @@
 #companion-text {
   display: block;
   overflow-x: clip;
-
-  overflow-y: hidden;
   overflow-y: hidden;
 
   text-overflow: ellipsis;
   text-transform: none;
-
   word-break: break-word;
 }
 

@@ -52,14 +52,6 @@
   letter-spacing: var(--mdw-type__letter-spacing);
 }
 
-#label:is([filled],[color]) {
-  background-color: rgb(var(--mdw-bg));
-}
-
-#label[outlined] {
-  background-color: transparent;
-}
-
 :host([icon]) {
   --padding-inline-start: 12px;
 }
@@ -71,15 +63,6 @@
 :host(:is([color], [ink])) {
   background-color: transparent;
   color: rgb(var(--mdw-color__on-surface));
-}
-
-#label-text,
-#indicator {
-  color: rgb(var(--mdw-color__on-surface-variant))
-}
-
-:is(#label-text, #indicator)[focused] {
-  color: rgb(var(--mdw-ink))
 }
 
 #label {
@@ -104,6 +87,23 @@
   letter-spacing: inherit;
 
   transition: none 200ms cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+#label:is([filled],[color]) {
+  background-color: rgb(var(--mdw-bg));
+}
+
+#label[outlined] {
+  background-color: transparent;
+}
+
+#label-text,
+#indicator {
+  color: rgb(var(--mdw-color__on-surface-variant))
+}
+
+:is(#label-text, #indicator)[focused] {
+  color: rgb(var(--mdw-ink))
 }
 
 #label[icon] {

@@ -78,7 +78,6 @@ dialog::backdrop {
 
 dialog[aria-hidden="false"],
 dialog:modal {
-  --mdw-dialog__scrim__visibility: visible;
   display: block;
 
   pointer-events: none;
@@ -167,6 +166,6 @@ dialog:modal {
   padding-block: 8px;
 }
 
-:host([modal]) #scrim {
+#scrim[modal] {
   visibility: visible;
 }

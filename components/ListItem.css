@@ -67,7 +67,6 @@
   font-size: 24px;
 }
 
-
 #divider {
   position: absolute;
   inset-block-end: 0;
@@ -199,7 +198,6 @@
   inline-size: 114px;
   max-inline-size: 114px;
 }
-
 
 #checkbox {
   /* stylelint-disable-next-line declaration-property-value-disallowed-list */

@@ -27,7 +27,7 @@
   padding-inline: 8px;
 }
 
-:host(:where([touch])) #shape {
+#shape[touch] {
   padding-block: 6px;
   padding-inline: 16px;
 

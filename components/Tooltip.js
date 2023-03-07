@@ -16,4 +16,9 @@ export default Surface
     },
     touch: 'boolean',
   })
+  .on({
+    composed() {
+      this.refs.shape.setAttribute('touch', '{touch}');
+    },
+  })
   .autoRegister('mdw-tooltip');

@@ -111,12 +111,12 @@
   border-top-right-radius: calc(1px * var(--corner));
 }
 
-:host([active]) #indicator {
+#indicator[active] {
   --visibility: 1;
   color: rgb(var(--mdw-ink));
 }
 
-:host([secondary]) #indicator {
+#indicator[secondary] {
   --corner: 0;
 }
 

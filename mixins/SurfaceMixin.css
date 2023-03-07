@@ -154,4 +154,3 @@
 .surface-tint[color]:not([color|="surface"]) {
   display: none;
 }
-

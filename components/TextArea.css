@@ -47,7 +47,7 @@
   padding-inline: 16px;
 }
 
-:host([minrows]) #control {
+#control[minrows] {
   min-block-size: calc((var(--min-rows) * var(--line-height))
     + var(--control__margin-top)
     + var(--control__padding-top)
@@ -56,7 +56,7 @@
   );
 }
 
-:host([maxrows]) #control {
+#control[maxrows] {
   max-block-size: calc((var(--max-rows) * var(--line-height))
     + var(--control__margin-top)
     + var(--control__padding-top)
@@ -65,11 +65,11 @@
   );
 }
 
-:host(:is([icon], [input-prefix])) #control {
+#control:is([icon], [input-prefix]) {
   padding-inline-start: 0;
 }
 
-:host(:is([trailing-icon], [input-suffix])) #control {
+#control:is([trailing-icon], [input-suffix]) {
   padding-inline-end: 0;
 }
 
@@ -83,7 +83,7 @@ mdw-icon {
   margin-block-start: calc((var(--expected-height) - var(--mdw-icon__size)) / 2);
 }
 
-:host([fixed]) #control {
+#control[fixed] {
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   resize: none;
 }

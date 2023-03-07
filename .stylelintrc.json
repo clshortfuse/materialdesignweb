@@ -15,7 +15,10 @@
     "plugin/no-unsupported-browser-features": [
       true,
       {
-        "browsers": ["> 1%", "not op_mini all"],
+        "browsers": [
+          "> 1%",
+          "not op_mini all"
+        ],
         "ignore": [
           "css-appearance",
           "overscroll-behavior",
@@ -53,6 +56,14 @@
         ],
         "ignore": [
           "after-comment"
+        ]
+      }
+    ],
+    "declaration-block-no-duplicate-properties": [
+      true,
+      {
+        "ignore": [
+          "consecutive-duplicates-with-different-values"
         ]
       }
     ],

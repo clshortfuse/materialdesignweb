@@ -14,10 +14,13 @@ export default class TextArea extends TextFieldMixin(ControlMixin(StateMixin(Blo
     this.childEvents({ slot: { slotchange: 'onSlotChange' } });
     this.on({
       composed({ template }) {
-        const { slot, label } = this.refs;
+        const { slot, control } = this.refs;
         template.append(slot); // Move into root (was label);
-        label.setAttribute('input-prefix', '{input-prefix}');
-        label.setAttribute('input-suffix', '{input-suffix}');
+        control.setAttribute('input-prefix', '{input-prefix}');
+        control.setAttribute('input-suffix', '{input-suffix}');
+        control.setAttribute('minrows', '{minrows}');
+        control.setAttribute('fixed', '{fixed}');
+        control.setAttribute('maxrows', '{maxrows}');
       },
     });
   }

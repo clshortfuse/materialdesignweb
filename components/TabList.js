@@ -277,7 +277,7 @@ export default CustomElement
   .css(styles)
   .html/* html */`
     <slot id=slot ink={ink} type-style={typeStyle}></slot>
-    <div id=indicator aria-hidden=true style={_indicatorStyle}>
+    <div id=indicator aria-hidden=true style={_indicatorStyle} active={active} secondary={secondary}>
       <div id=indicator-start class=indicator-piece></div>
       <div id=indicator-center class=indicator-piece></div>
       <div id=indicator-end class=indicator-piece></div>

@@ -109,7 +109,7 @@ export default CustomElement
   .css(styles)
   .html/* html */`
     <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>
-      <div id=scrim aria-hidden=true></div>
+      <div id=scrim aria-hidden=true modal={modal}></div>
       <form id=form method=dialog role=none>
         <mdw-surface id=surface role=none>
           <slot id=slot on-slotchange={refreshTabIndexes}></slot>
