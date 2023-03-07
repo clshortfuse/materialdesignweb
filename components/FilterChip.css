@@ -15,20 +15,20 @@
   font-variation-settings: 'FILL' 1;
 }
 
-#label {
+#shape {
   background-color: transparent;
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
-#label:where([trailing-icon]) {
-  padding-inline: 8px;
+#shape:where([trailing-icon]) {
+  padding-inline: calc(8px + (var(--mdw-density) * 2px));
 }
 
-#label[elevated] {
+#shape[elevated] {
   background-color: rgb(var(--mdw-color__surface));
 }
 
-#label[selected] {
+#shape[selected] {
   background-color: rgb(var(--mdw-bg));
   color: rgb(var(--mdw-ink));
 }
@@ -65,7 +65,7 @@
   color: rgba(var(--mdw-color__on-surface), 0.38);
 }
 
-#label[disabled]:is([elevated],[selected]) {
+#shape[disabled]:is([elevated],[selected]) {
   background-color: rgba(var(--mdw-color__on-surface), 0.12);
   /* color: rgba(var(--mdw-color__on-surface), 0.38); */
 }

@@ -40,14 +40,13 @@ export default Surface
   .html/* html */`
     <mdw-button _if={actionable} aria-label="{actionLabel}" id=action disabled={disabledState}></mdw-button>
     <div _if={showBlocker} id=inert-blocker></div>
+    <slot id=slot inert={disabledState}></slot>
   `
   .on({
     composed() {
-      const { shape, slot, action } = this.refs;
+      const { shape } = this.refs;
       shape.setAttribute('disabled', '{disabledState}');
       shape.setAttribute('filled', '{filled}');
-      slot.setAttribute('inert', '{disabledState}');
-      slot.before(action);
     },
   })
   .childEvents({

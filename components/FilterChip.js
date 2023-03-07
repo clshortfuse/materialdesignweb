@@ -26,10 +26,11 @@ export default Chip
   `
   .on({
     composed() {
-      const { label, icon, control, outline, slot, trailingIcon } = this.refs;
+      const { shape, icon, control, outline, slot, trailingIcon } = this.refs;
 
-      label.setAttribute('icon', '');
-      label.setAttribute('trailing-icon', '{computedTrailingIcon}');
+      shape.setAttribute('selected', '{checked}');
+      shape.setAttribute('icon', '');
+      shape.setAttribute('trailing-icon', '{computedTrailingIcon}');
       icon.setAttribute('_if', '{icon}');
       icon.setAttribute('ink', '{iconInk}');
 

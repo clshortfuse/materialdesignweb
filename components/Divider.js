@@ -1,16 +1,13 @@
-import Inline from '../layout/Inline.js';
+import CustomElement from '../core/CustomElement.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import styles from './Divider.css' assert { type: 'css' };
 
-export default Inline
+export default CustomElement
+  .mixin(ThemableMixin)
   .extend()
   .observe({
     vertical: 'boolean',
   })
   .css(styles)
-  .on({
-    composed() {
-      this.refs.slot.remove();
-    },
-  })
   .autoRegister('mdw-divider');

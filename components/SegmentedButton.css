@@ -2,7 +2,6 @@
 
 :host {
   --mdw-shape__size: var(--mdw-shape__full);
-  --mdw-button__outline__size: 1px;
   --mdw-ink: var(--mdw-color__on-surface);
   color: rgb(var(--mdw-ink));
 }
@@ -14,19 +13,34 @@
 }
 
 #outline {
-  inset-inline-end: calc(-1 * var(--mdw-button__outline__size));
+  inset-inline-end: -1px;
 }
 
-:host([shape-end]) #outline {
+#outline[shape-end] {
   inset-inline-end: 0;
 }
 
-#label[selected] {
+#shape {
+  gap: 8px;
+
+  min-inline-size: 24px;
+  padding-inline-start: max(12px, calc(16px + (var(--mdw-density) * 2px)));
+  padding-inline-end: max(20px, calc(24px + (var(--mdw-density) * 2px)));
+}
+
+#shape[selected] {
   background-color: rgb(var(--mdw-bg));
   color: rgb(var(--mdw-ink));
 }
 
+#icons {
+  position: relative;
+
+  display: inline-block;
+}
+
 #icon {
+  box-sizing: border-box;
   inline-size: 0;
 
   opacity: 1;
@@ -46,9 +60,7 @@
 
 #check-icon {
   position: absolute;
-  inset-inline-start: 16px;
-
-  order: -1;
+  inset: 0;
 
   display: block;
 
@@ -72,7 +84,7 @@
   color: rgba(var(--mdw-color__on-surface), 0.38);
 }
 
-#label[disabled][selected] {
+#shape[disabled][selected] {
   background-color: rgba(var(--mdw-color__on-surface), 0.12);
   color: rgba(var(--mdw-color__on-surface), 0.38);
 }

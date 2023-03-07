@@ -131,9 +131,9 @@ dialog:modal {
 
 #surface {
   --mdw-shape__size: var(--mdw-shape__extra-small);
-  --mdw-elevation__opacity: var(--mdw-elevation__opacity__2);
-  --mdw-elevation__opacity__hovered: var(--mdw-elevation__opacity__2);
-  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__2);
+  --mdw-surface__tint: var(--mdw-surface__tint__2);
+  --mdw-surface__tint__raised: var(--mdw-surface__tint__2);
+  --mdw-surface__shadow__resting: var(--mdw-surface__shadow__2);
   position: sticky;
 
   display: inline-flex;

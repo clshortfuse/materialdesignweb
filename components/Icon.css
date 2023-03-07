@@ -7,6 +7,7 @@
   block-size: 1em;
   inline-size: 1em;
 
+  -webkit-user-select: none;
   user-select: none;
 
   font-variation-settings: 'FILL' 1;
@@ -22,7 +23,7 @@
 
 #icon {
   /* Clip bounds in case font is not ready */
-  display: inline-block;
+  display: block;
   overflow: clip;
 
   block-size: 1em;
@@ -38,6 +39,8 @@
 }
 
 #svg {
+  display: block;
+
   block-size: inherit;
   inline-size: inherit;
 
@@ -47,6 +50,8 @@
 }
 
 #img {
+  display: block;
+
   block-size: inherit;
   inline-size: inherit;
 

@@ -7,7 +7,7 @@
   --disabled-opacity: 0.38;
   position: relative;
 
-  display: inline-flex;
+  display: inline-block;
   align-items: center;
   justify-content: center;
 
@@ -20,10 +20,13 @@
 
 #shape {
   --mdw-shape__size: inherit;
+  position: absolute;
+  inset: 0;
 }
 
 #icon {
   position: absolute;
+  inset: 0;
 
   opacity: 0;
 

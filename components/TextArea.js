@@ -1,13 +1,12 @@
 import Block from '../layout/Block.js';
 import ControlMixin from '../mixins/ControlMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
-import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import TextFieldMixin from '../mixins/TextFieldMixin.js';
 
 import styles from './TextArea.css' assert { type: 'css' };
 
 /** @implements {HTMLTextAreaElement} */
-export default class TextArea extends TextFieldMixin(SurfaceMixin(ControlMixin(StateMixin(Block)))) {
+export default class TextArea extends TextFieldMixin(ControlMixin(StateMixin(Block))) {
   static { this.autoRegister('mdw-textarea'); }
 
   static {

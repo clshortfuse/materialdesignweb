@@ -15,18 +15,22 @@ export default Button
   .css(styles)
   .on({
     composed({ html, inline }) {
-      const { label, icon, outline, control, state } = this.refs;
+      const { shape, icon, outline, control, slot, state } = this.refs;
 
-      label.append(html`
-        <mdw-icon selected={checked} id=check-icon aria-hidden=true>check</mdw-icon>
+      slot.before(html`
+        <div id=icons>
+          ${icon}
+          <mdw-icon selected={checked} id=check-icon aria-hidden=true>check</mdw-icon>
+        </div>
       `);
-      label.setAttribute('selected', '{checked}');
+      shape.setAttribute('selected', '{checked}');
 
       icon.removeAttribute('_if');
       icon.setAttribute('has-icon', '{hasIcon}');
       icon.setAttribute('selected', '{checked}');
       outline.setAttribute('inner-segmented-button', '{innerSegmentedButton}');
-
+      outline.setAttribute('shape-start', '{shapeStart}');
+      outline.setAttribute('shape-end', '{shapeEnd}');
       control.setAttribute('type', 'radio');
       control.setAttribute('role', 'option');
       control.setAttribute('aria-checked', inline(

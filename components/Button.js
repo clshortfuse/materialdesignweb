@@ -1,20 +1,29 @@
 import './Icon.js';
 import CustomElement from '../core/CustomElement.js';
+import DensityMixin from '../mixins/DensityMixin.js';
 import InputMixin from '../mixins/InputMixin.js';
 import RippleMixin from '../mixins/RippleMixin.js';
+import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
+import TouchTargetMixin from '../mixins/TouchTargetMixin.js';
 
 import styles from './Button.css' assert { type: 'css' };
 
 export default CustomElement
   .mixin(ThemableMixin)
+  .mixin(DensityMixin)
+  .mixin(InputMixin) // Label as root
+  .mixin(SurfaceMixin) // Surface as root
+  .mixin(ShapeMixin) // Surface as root
   .mixin(StateMixin)
-  .mixin(InputMixin)
   .mixin(RippleMixin)
-  .mixin(SurfaceMixin)
+  .mixin(TouchTargetMixin)
   .extend()
+  .define({
+    stateTargetElement() { return this.refs.control; },
+  })
   .set({
     stateLayer: true,
   })
@@ -37,25 +46,36 @@ export default CustomElement
   .css(styles)
   .html/* html */`
     <mdw-icon _if={hasIcon} id=icon ink={iconInk} disabled={disabledState} outlined={outlined} aria-hidden="true" svg={svg} src="{src}" svg-path={svgPath}>{icon}</mdw-icon>
-    <div id=touch-target aria-hidden="true"></div>
-    <slot id=slot></slot>
-
+    <slot id=slot disabled={disabledState}></slot>
   `
   .on({
     composed() {
-      const { slot, icon, label, control } = this.refs;
-      slot.before(icon);
-      slot.setAttribute('disabled', '{disabledState}');
-      label.setAttribute('ink', '{ink}');
-      label.setAttribute('type-style', '{typeStyle}');
-      label.setAttribute('icon', '{hasIcon}');
-      label.setAttribute('color', '{color}');
-      label.setAttribute('elevated', '{elevated}');
-      label.setAttribute('filled', '{filled}');
-      label.setAttribute('disabled', '{disabledState}');
-      label.setAttribute('outlined', '{outlined}');
+      const { label, surfaceTint, outline, surface, control, touchTarget, shape } = this.refs;
+      label.classList.add('surface');
+
+      label.setAttribute('raised', '{_raised}');
+      label.setAttribute('hovered', '{hoveredState}');
+      label.setAttribute('pressed', '{pressedState}');
+      label.append(shape);
+
+      outline.before(surfaceTint);
+
+      surface.remove();
+
+      // slot.before(icon);
+      // slot.setAttribute('disabled', '{disabledState}');
+      shape.setAttribute('ink', '{ink}');
+      shape.setAttribute('type-style', '{typeStyle}');
+      shape.setAttribute('icon', '{hasIcon}');
+      shape.setAttribute('color', '{color}');
+      // label.setAttribute('elevated', '{elevated}');
+      shape.setAttribute('filled', '{filled}');
+      shape.setAttribute('disabled', '{disabledState}');
+      shape.setAttribute('outlined', '{outlined}');
       control.setAttribute('role', 'button');
       control.setAttribute('type', 'button');
+      shape.before(touchTarget);
+      touchTarget.append(control);
     },
   })
   .childEvents({

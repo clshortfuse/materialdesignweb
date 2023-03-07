@@ -15,11 +15,11 @@ export default ExtendedFab
   .css(styles)
   .on({
     composed() {
-      const { slot, tooltipSlot, control, label, icon } = this.refs;
+      const { slot, tooltipSlot, control, shape, icon } = this.refs;
       slot.remove();
       tooltipSlot.removeAttribute('name');
       control.setAttribute('aria-labelledby', 'tooltip');
-      label.setAttribute('fab-size', '{fabSize}');
+      shape.setAttribute('fab-size', '{fabSize}');
       icon.setAttribute('fab-size', '{fabSize}');
     },
   })

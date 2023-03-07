@@ -9,17 +9,18 @@
   --mdw-ink: var(--mdw-color__on-surface-variant);
 }
 
-#label {
-  min-block-size: 32px;
-  padding-inline: 16px;
+#shape {
+  padding-block: calc(4px + (var(--mdw-density) * 2px));
+  padding-inline: calc(16px + (var(--mdw-density) * 2px));
 
   color: rgb(var(--mdw-ink));
 }
 
-#label:where([icon]) {
+#shape:where([icon]) {
   gap: 8px;
 
-  padding-inline: 8px 16px;
+  padding-inline: calc(8px + (var(--mdw-density) * 2px)) calc(16px + (var(--mdw-density) * 2px));
+
 }
 
 #outline {

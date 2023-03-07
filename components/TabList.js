@@ -1,14 +1,16 @@
 // https://w3c.github.io/aria/#tablist
 
+import CustomElement from '../core/CustomElement.js';
 import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
 import RTLObserverMixin from '../mixins/RTLObserverMixin.js';
 import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
-import Container from './Container.js';
 import Tab from './Tab.js';
 import styles from './TabList.css' assert { type: 'css' };
 
-export default Container
+export default CustomElement
+  .mixin(ThemableMixin)
   .mixin(KeyboardNavMixin)
   .mixin(ResizeObserverMixin)
   .mixin(RTLObserverMixin)
@@ -71,7 +73,6 @@ export default Container
     secondary: 'boolean',
     _indicatorStyle: { value: 'opacity: 0' },
   })
-  .set({})
   .define({
     tabs() {
       // eslint-disable-next-line no-return-assign
@@ -254,6 +255,7 @@ export default Container
   })
   .onPropChanged({
     pageIsRTL() {
+      this.clearCache();
       this.updateIndicator();
     },
     active(oldValue, newValue) {
@@ -274,6 +276,7 @@ export default Container
   })
   .css(styles)
   .html/* html */`
+    <slot id=slot ink={ink} type-style={typeStyle}></slot>
     <div id=indicator aria-hidden=true style={_indicatorStyle}>
       <div id=indicator-start class=indicator-piece></div>
       <div id=indicator-center class=indicator-piece></div>

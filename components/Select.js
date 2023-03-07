@@ -1,7 +1,6 @@
 import Block from '../layout/Block.js';
 import ControlMixin from '../mixins/ControlMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
-import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import TextFieldMixin from '../mixins/TextFieldMixin.js';
 
 import styles from './Select.css' assert { type: 'css' };
@@ -11,7 +10,6 @@ import styles from './Select.css' assert { type: 'css' };
 const Select = Block
   .mixin(StateMixin)
   .mixin(ControlMixin)
-  .mixin(SurfaceMixin)
   .mixin(TextFieldMixin)
   .extend()
   .css(styles)

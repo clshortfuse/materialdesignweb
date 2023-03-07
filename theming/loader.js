@@ -1,7 +1,7 @@
 import { css } from '../core/template.js';
 
 import {
-  generateBreakpointGlobalCSS,
+  generateLayoutGlobalCSS,
   generateThemeCSS,
   generateTypographyGlobalCSS,
   themeOptionsFromSearchParams,
@@ -10,7 +10,7 @@ import {
 const rules = [
   generateThemeCSS(themeOptionsFromSearchParams(new URL(import.meta.url).searchParams)),
   generateTypographyGlobalCSS(),
-  generateBreakpointGlobalCSS(),
+  generateLayoutGlobalCSS(),
 ].join('\n');
 
 const parsed = css`${rules}`;

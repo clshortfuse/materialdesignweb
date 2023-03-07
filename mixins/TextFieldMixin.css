@@ -27,12 +27,12 @@
   /* --mdw-shape__size: 8px; */
   /* --mdw-shape__size__bottom-start-size: var(--mdw-shape__size); */
   /* --mdw-shape__size__bottom-end-size: var(--mdw-shape__size); */
+  --mdw-text-field__ratio: calc(var(--mdw-density) * 0.125 + 1);
 
   --control__margin-top: calc(var(--mdw-typescale__body-small__line-height) / 2);
   --control__padding-top: calc((var(--mdw-text-field__ratio) * 16px) - calc(var(--mdw-typescale__body-small__line-height) / 2));
   --control__padding-bottom: calc(var(--mdw-text-field__ratio) * 16px);
   --control__margin-bottom: 0px;
-  --mdw-text-field__ratio: 1; /* Density */
 
   --inline-color: rgb(var(--mdw-color__on-surface-variant));
 
@@ -204,6 +204,8 @@ mdw-icon {
   order: -2;
 
   margin-inline-end: 16px;
+
+  font-size: 24px;
 }
 
 #prefix {
@@ -268,9 +270,9 @@ mdw-icon {
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  transition-duration: inherit;
+  transition-duration: 200ms;
   transition-property: inset-inline-start, font-size, transform;
-  transition-timing-function: inherit;
+  /* transition-timing-function: inherit; */
   /*Expand*/
 
   will-change: inset-inline-start, font-size, transform;
@@ -288,7 +290,7 @@ mdw-icon {
 }
 
 #label-text[icon] {
-  inset-inline-start: calc(24px + 12px);
+  inset-inline-start: calc(12px + 24px);
 }
 
 #label-text[trailing-icon] {
@@ -546,14 +548,7 @@ mdw-icon {
 :host([filled]) {
   --mdw-shape__size__bottom-start-size: 0px;
   --mdw-shape__size__bottom-end-size: 0px;
-}
-
-:host([dense]) {
-  --mdw-text-field__ratio: 0.75;
-}
-
-:host([filled][dense]) {
-  --mdw-text-field__ratio: 0.5;
+  --mdw-text-field__ratio: calc(var(--mdw-density) * 0.25 + 1);
 }
 
 :host(:is([filled][label])) {

@@ -1,16 +1,20 @@
 import './CheckboxIcon.js';
 
-import Inline from '../layout/Inline.js';
+import CustomElement from '../core/CustomElement.js';
 import InputMixin from '../mixins/InputMixin.js';
 import RippleMixin from '../mixins/RippleMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
+import TouchTargetMixin from '../mixins/TouchTargetMixin.js';
 
 import styles from './Checkbox.css' assert { type: 'css' };
 
-export default Inline
+export default CustomElement
+  .mixin(ThemableMixin)
   .mixin(StateMixin)
   .mixin(RippleMixin)
   .mixin(InputMixin)
+  .mixin(TouchTargetMixin)
   .extend()
   .set({
     stateLayer: true,
@@ -33,23 +37,23 @@ export default Inline
   .css(styles)
   .on({
     composed({ html }) {
-      const { label, control, slot, state, rippleContainer } = this.refs;
+      const { label, control, state, rippleContainer, touchTarget } = this.refs;
+      touchTarget.append(control);
       label.append(html`
-        <div id=target errored={erroredState} selected={checked}>
+        ${touchTarget}
+        <div id=checkbox errored={erroredState} selected={checked}>
           <mdw-checkbox-icon id=icon errored={erroredState} disabled={disabledState}
             icon={_determinateIcon} selected={checked}>
           </mdw-checkbox-icon>
           ${rippleContainer}
           ${state}
         </div>
-        ${slot}
+        <slot id=slot></slot>
       `);
 
       control.setAttribute('type', 'checkbox');
       // Indeterminate must be manually expressed for ARIA
       control.setAttribute('aria-checked', '{_ariaChecked}');
-      slot.removeAttribute('color');
-      slot.removeAttribute('ink');
     },
   })
   .autoRegister('mdw-checkbox');

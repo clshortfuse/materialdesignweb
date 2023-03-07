@@ -6,11 +6,11 @@ import RippleMixin from '../mixins/RippleMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 
 import styles from './NavItem.css' assert { type: 'css' };
-import Surface from './Surface.js';
+import Shape from './Shape.js';
 
 /** @typedef {'charset'|'coords'|'name'|'shape'} DeprecatedHTMLAnchorElementProperties */
 
-export default Surface
+export default Shape
   .mixin(StateMixin)
   .mixin(RippleMixin)
   .extend()

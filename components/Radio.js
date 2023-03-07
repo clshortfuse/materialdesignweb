@@ -1,16 +1,20 @@
 import './RadioIcon.js';
 
-import Inline from '../layout/Inline.js';
+import CustomElement from '../core/CustomElement.js';
 import InputMixin from '../mixins/InputMixin.js';
 import RippleMixin from '../mixins/RippleMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
+import TouchTargetMixin from '../mixins/TouchTargetMixin.js';
 
 import styles from './Radio.css' assert { type: 'css' };
 
-export default Inline
+export default CustomElement
+  .mixin(ThemableMixin)
   .mixin(StateMixin)
   .mixin(RippleMixin)
   .mixin(InputMixin)
+  .mixin(TouchTargetMixin)
   .extend()
   .set({
     type: 'radio',
@@ -19,20 +23,20 @@ export default Inline
   .css(styles)
   .on({
     composed({ html }) {
-      const { label, rippleContainer, state, slot, control } = this.refs;
+      const { label, rippleContainer, state, control, touchTarget } = this.refs;
+      touchTarget.append(control);
       label.append(html`
-        <div id=target errored={erroredState} selected={checked}>
+        ${touchTarget}
+        <div id=radio errored={erroredState} selected={checked}>
           <mdw-radio-icon id=icon errored={erroredState} disabled={disabledState}
             selected={checked} focused={focusedState} hovered={hoveredState}></mdw-radio-icon>
           ${rippleContainer}
           ${state}
         </div>
-        ${slot}
+        <slot id=slot></slot>
       `);
 
       control.setAttribute('type', 'radio');
-      slot.removeAttribute('color');
-      slot.removeAttribute('ink');
     },
   })
   .autoRegister('mdw-radio');

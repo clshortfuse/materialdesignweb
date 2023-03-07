@@ -30,10 +30,6 @@
   line-height: 0;
 }
 
-#target {
-  pointer-events: none;
-}
-
 #state,
 #ripple-container {
   inset-block-start: 50%;
@@ -53,25 +49,27 @@
   opacity: 0.38;
 }
 
-#target {
+#checkbox {
   position: relative;
 
   display: inline-flex;
 
   grid-column: 1 / 1;
 
+  pointer-events: none;
+
   color: rgb(var(--mdw-color__on-surface));
 }
 
-#target[selected] {
+#checkbox[selected] {
   color: rgb(var(--mdw-bg));
 }
 
-#target[disabled] {
+#checkbox[disabled] {
   color: rgb(var(--mdw-color__on-surface));
 }
 
-#target[errored] {
+#checkbox[errored] {
   color: rgb(var(--mdw-color__error));
 }
 
@@ -79,4 +77,9 @@
   --mdw-ink: inherit;
   --mdw-bg: inherit;
   --disabled-opacity: 1;
+}
+
+#touch-target {
+  min-block-size: 40px; /* Match state */
+  min-inline-size: 40px; /* Match state */
 }

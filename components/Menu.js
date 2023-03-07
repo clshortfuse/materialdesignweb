@@ -3,6 +3,7 @@
 import './Surface.js';
 import CustomElement from '../core/CustomElement.js';
 import { attemptFocus } from '../core/dom.js';
+import DensityMixin from '../mixins/DensityMixin.js';
 import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
 import { canAnchorPopup } from '../utils/popup.js';
 
@@ -62,6 +63,7 @@ function onBeforeUnload(event) {
 }
 
 export default CustomElement
+  .mixin(DensityMixin)
   .mixin(KeyboardNavMixin)
   .extend()
   .observe({
@@ -252,8 +254,8 @@ export default CustomElement
         });
       }
 
-      surface.style.setProperty('top', `${anchorResult.pageY}px`);
-      surface.style.setProperty('left', `${anchorResult.pageX}px`);
+      surface.style.setProperty('inset-block-start', `${anchorResult.pageY}px`);
+      surface.style.setProperty('inset-inline-start', `${anchorResult.pageX}px`);
       surface.style.setProperty('margin', '0');
       surface.style.setProperty('transform-origin', `${anchorResult.transformOriginY} ${anchorResult.transformOriginX}`);
       surface.scrollIntoView();

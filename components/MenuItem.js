@@ -198,7 +198,7 @@ export default ListOption
       anchor.removeAttribute('aria-selected');
       anchor.setAttribute('aria-checked', '{computeAriaSelected}');
 
-      anchor.append(html`
+      anchor.prepend(html`
         <mdw-icon id=selection
           _if=${({ checkbox, radio }) => checkbox ?? radio ?? false}
           class=${({ checkbox, radio }) => checkbox || radio || 'leading'}

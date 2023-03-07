@@ -23,9 +23,9 @@
   /* border-radius: 50%; */
 }
 
-/** Track **/
+/** Switch **/
 
-#track {
+#switch {
   position: relative;
 
   display: flex;
@@ -36,16 +36,20 @@
   inline-size: 52px;
 }
 
-/** Track Shape **/
+/** Track **/
 
-#track-shape{
+#track{
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
   z-index: 0;
 
   background-color: rgb(var(--mdw-color__surface-variant));
-
 }
 
-#track-shape[selected] {
+#track[selected] {
   background-color: rgb(var(--mdw-bg));
 }
 
@@ -194,13 +198,13 @@
   color: rgb(var(--mdw-color__on-surface));
 }
 
-#track-shape[disabled] {
+#track[disabled] {
   opacity: calc(0.12/0.38);
 
   background-color: rgb(var(--mdw-color__surface-variant));
 }
 
-#track-shape[disabled][selected] {
+#track[disabled][selected] {
   background-color: rgb(var(--mdw-color__on-surface));
 }
 

@@ -22,8 +22,8 @@
 :host(:where([filled])) {
   --mdw-ink: var(--mdw-color__on-primary);
   --mdw-bg: var(--mdw-color__primary);
-  --mdw-elevation__filter__resting: none;
-  --mdw-elevation__filter__hover: none;
+  --mdw-surface__shadow__resting: none;
+  --mdw-surface__shadow__raised: none;
 }
 
 /** Tonal | Tonal Checked */
@@ -44,51 +44,53 @@
 }
 
 #label {
-  min-block-size: 40px;
-  min-inline-size: 40px;
-  padding: 0;
+  font-size: inherit;
+}
+
+#shape {
+  padding: max(4px, calc(8px + (var(--mdw-density) * 2px)));
 
   color: inherit;
 
   font-size: inherit;
 }
 
-#label[toggle] {
+#shape[toggle] {
   background-color: transparent;
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
-#label[selected] {
+#shape[selected] {
   /* background-color: rgb(var(--mdw-bg)); */
   color: rgb(var(--mdw-ink));
 }
 
-#label[filled][toggle] {
+#shape[filled][toggle] {
   background-color: rgb(var(--mdw-color__surface-variant));
   color: rgb(var(--mdw-bg));
 }
 
-#label[filled="tonal"][toggle] {
+#shape[filled="tonal"][toggle] {
   background-color: rgb(var(--mdw-color__surface-variant));
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
-#label[filled][selected] {
+#shape[filled][selected] {
   background-color: rgb(var(--mdw-bg));
   color: rgb(var(--mdw-ink));
 }
 
-#label[outlined] {
+#shape[outlined] {
   background-color: transparent;
   color: inherit;
 }
 
-#label[outlined][toggle] {
+#shape[outlined][toggle] {
   background-color: transparent;
   color: rgb(var(--mdw-color__on-surface-variant));
 }
 
-#label[outlined][selected] {
+#shape[outlined][selected] {
   background-color: rgb(var(--mdw-bg));
   color: rgb(var(--mdw-ink));
 }
@@ -117,14 +119,14 @@
 }
 
 /** Disabled */
-#label[disabled] {
+#shape[disabled] {
   cursor: not-allowed;
 
   color: rgba(var(--mdw-color__on-surface), 0.38);
 }
 
-#label[disabled][filled],
-#label[disabled][outlined][selected] {
+#shape[disabled][filled],
+#shape[disabled][outlined][selected] {
   background-color: rgba(var(--mdw-color__on-surface), 0.12);
   color: rgba(var(--mdw-color__on-surface), 0.38);
 }

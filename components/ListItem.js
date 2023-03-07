@@ -8,13 +8,15 @@ import './Icon.js';
 
 import '../layout/Block.js';
 
-import Inline from '../layout/Inline.js';
+import CustomElement from '../core/CustomElement.js';
 import RippleMixin from '../mixins/RippleMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import styles from './ListItem.css' assert { type: 'css' };
 
-export default Inline
+export default CustomElement
+  .mixin(ThemableMixin)
   .mixin(StateMixin)
   .mixin(RippleMixin)
   .set({
@@ -28,7 +30,6 @@ export default Inline
     avatarSrc: 'string',
     src: 'string',
     alt: 'string',
-    text: { nullParser: String },
     icon: 'string',
     href: 'string',
     iconInk: 'string',
@@ -43,6 +44,9 @@ export default Inline
     trailingIconInk: 'string',
     trailingIconSrc: 'string',
     divider: 'boolean',
+    video: 'boolean',
+    lines: 'integer',
+    _supportingSlotted: 'boolean',
   })
   .observe({
     // Alias since not form-associated
@@ -60,43 +64,49 @@ export default Inline
       }
       return selected ? 'true' : 'false';
     },
+    hasSupporting() {
+      return this.supporting || this._supportingSlotted;
+    },
+    checkboxClass() {
+      return this.checkbox || 'leading';
+    },
+    radioClass() {
+      return this.radio || 'leading';
+    },
   })
   .css(styles)
+  .html/* html */`
+    <a id=anchor href={href} disabled={disabledState} role=listitem selected={selected} aria-selected={computeAriaSelected} video={video} lines={lines}>
+      <mdw-checkbox-icon id=checkbox _if={checkbox} aria-hidden="true" class={checkboxClass} color={selectionColor} disabled={disabledState} icon=check selected={selected}></mdw-checkbox-icon>
+      <mdw-radio-icon id=radio _if={radio} aria-hidden=true class={radioClass} disabled={disabledState} ink={selectionColor} selected={selected}></mdw-radio-icon>
+      <mdw-container _if={avatar} id=avatar color={avatarColor} type-style=title-medium src={AvatarSrc}
+        aria-hidden="true">{avatar}</mdw-container>
+      <mdw-icon _if={icon} id=icon ink={iconInk} src={iconSrc} aria-hidden=true>{icon}</mdw-icon>
+      <img id=img _if={src} src={src} alt={alt} video={video} />
+      <slot name=leading>{leading}</slot>
+      <div id=content has-supporting={hasSupporting} lines={lines}>
+        <slot id=slot></slot>
+        <slot id=supporting name=supporting class=text lines={lines}>{supporting}</slot>
+      </div>
+      <mdw-icon _if={trailingIcon} id=trailing-icon ink={trailingIconInk} src={trailingIconSrc} aria-hidden=true>{trailingIcon}</mdw-icon>
+      <slot id=trailing name=trailing role=note>{trailing}</slot>
+    </a>
+    <mdw-divider _if={divider} id=divider divder={divider}></mdw-divider>
+  `
   .on({
-    composed({ template, html }) {
-      const { state, rippleContainer, slot } = this.refs;
-
+    composed() {
+      const { state, rippleContainer } = this.refs;
       state.setAttribute('state-disabled', 'focus hover');
       state.setAttribute('_if', '{isInteractive}');
       rippleContainer.setAttribute('_if', '{isInteractive}');
-
-      template.append(html`
-        <a id=anchor href={href} disabled={disabledState} role=listitem aria-selected={computeAriaSelected}>
-          <mdw-checkbox-icon id=checkbox _if={checkbox} aria-hidden="true" class="leading" color={selectionColor} disabled={disabledState} icon=check selected={selected}></mdw-checkbox-icon>
-          <mdw-radio-icon id=radio _if={radio}  aria-hidden="true" class="leading" disabled={disabledState} ink={selectionColor} selected={selected}></mdw-radio-icon>
-          <mdw-container _if={avatar} class=leading id=avatar color={avatarColor} type-style=title-medium src={AvatarSrc}
-            aria-hidden="true">{avatar}</mdw-container>
-          <mdw-icon _if={icon} class="leading" id=icon ink={iconInk} src={iconSrc} aria-hidden=true>{icon}</mdw-icon>
-          <img id=img _if={src} class=leading src={src} alt={alt} />
-          <slot id=leading-slot name=leading><span _if={leading} id=leading-text class=leading>{leading}</span></slot>
-          <div id=content>
-            <mdw-block id=headline type-style=body-large ink=on-surface>
-              <slot id=headline-slot name=headline><span id=headline-text class=text>{text}${slot}</span></slot>
-            </mdw-block>
-            <mdw-block id=supporting type-style=body-medium ink=on-surface-variant>
-              <slot id=supporting-slot name=supporting><span _if={supporting} id=supporting-text class=text>{supporting}</span>
-              </slot>
-            </mdw-block>
-          </div>
-          <mdw-icon _if={trailingIcon} class="trailing" id=trailing-icon ink={trailingIconInk} src={trailingIconSrc}
-            aria-hidden=true>{trailingIcon}</mdw-icon>
-          <mdw-block id=trailing type-style=label-small ink=on-surface-variant role=note>
-            <slot id=trailing-slot name=trailing><span _if={trailing} id=trailing-text class="trailing text">{trailing}</span>
-            </slot>
-          </mdw-block>
-        </a>
-        <mdw-divider _if={divider} id=divider></mdw-divider>
-      `);
+    },
+  })
+  .childEvents({
+    supporting: {
+      /** @param {Event & {currentTarget: HTMLSlotElement}} event */
+      slotchange({ currentTarget }) {
+        this._supportingSlotted = currentTarget.assignedNodes().length !== 0;
+      },
     },
   })
   .autoRegister('mdw-list-item');

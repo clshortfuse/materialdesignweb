@@ -19,6 +19,8 @@
 
 .shape {
   --mdw-shape__size: var(--mdw-shape__full);
+  position: absolute;
+  inset: 0;
 }
 
 #outline {
@@ -35,6 +37,9 @@
 }
 
 #inner-shape {
+  position: absolute;
+  inset: 0;
+
   transform: scale(0);
 
   background-color: var(--color);

@@ -1,4 +1,6 @@
 import '../components/Icon.js';
+import DensityMixin from './DensityMixin.js';
+import ShapeMixin from './ShapeMixin.js';
 import styles from './TextFieldMixin.css' assert { type: 'css' };
 
 /** @typedef {import('../core/CustomElement.js').default} CustomElement */
@@ -8,6 +10,8 @@ import styles from './TextFieldMixin.css' assert { type: 'css' };
  */
 export default function TextFieldMixin(Base) {
   return Base
+    .mixin(DensityMixin)
+    .mixin(ShapeMixin)
     .extend()
     .css(styles)
     .set({
@@ -50,7 +54,7 @@ export default function TextFieldMixin(Base) {
     })
     .on({
       composed({ template, html, inline }) {
-        const { control, label: labelElement, outline, outlineLeft, outlineRight, state } = this.refs;
+        const { control, label: labelElement, outline, shape, outlineLeft, outlineRight, state } = this.refs;
         control.setAttribute('type', 'text');
         control.setAttribute('placeholder', '{computePlaceholder}');
         control.setAttribute('aria-label', '{label}');
@@ -59,6 +63,7 @@ export default function TextFieldMixin(Base) {
         control.removeAttribute('aria-labelledby');
         control.classList.add('inline');
 
+        labelElement.classList.add('shape');
         labelElement.setAttribute('filled', '{filled}');
         labelElement.setAttribute('color', '{color}');
         labelElement.setAttribute('icon', '{icon}');
@@ -69,6 +74,7 @@ export default function TextFieldMixin(Base) {
         labelElement.setAttribute('label', '{label}');
         labelElement.setAttribute('shape-top', inline(({ shapeTop, filled }) => shapeTop || filled));
         labelElement.append(html`
+          ${outline}
           <mdw-icon _if={icon} id=icon aria-hidden=true disabled={disabledState}>{icon}</mdw-icon>
           <span _if={inputPrefix} class=inline id=prefix aria-hidden=true focused={focusedState} populated={populatedState}>{inputPrefix}</span>
           <span _if={inputSuffix} class=inline id=suffix aria-hidden=true focused={focusedState} populated={populatedState}>{inputSuffix}</span>
@@ -88,6 +94,7 @@ export default function TextFieldMixin(Base) {
         outlineLeft.setAttribute('focused', '{focusedState}');
         outlineRight.setAttribute('focused', '{focusedState}');
 
+        shape.remove();
         state.setAttribute('_if', '{!outlined}');
 
         template.append(html`

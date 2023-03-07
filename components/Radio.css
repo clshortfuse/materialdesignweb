@@ -52,7 +52,7 @@
   opacity: 0.38;
 }
 
-#target {
+#radio {
   position: relative;
 
   display: inline-flex;
@@ -64,15 +64,15 @@
   color: rgb(var(--mdw-color__on-surface));
 }
 
-#target[selected] {
+#radio[selected] {
   color: rgb(var(--mdw-ink));
 }
 
-#target[disabled] {
+#radio[disabled] {
   color: rgb(var(--mdw-color__on-surface));
 }
 
-#target[errored] {
+#radio[errored] {
   color: rgb(var(--mdw-color__error));
 }
 

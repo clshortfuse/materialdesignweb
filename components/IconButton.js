@@ -51,18 +51,18 @@ export default Button
   })
   .on({
     composed() {
-      const { slot, tooltipSlot, label, icon, elevation, control, outline } = this.refs;
+      const { slot, shape, tooltipSlot, icon, surfaceTint, control, outline } = this.refs;
       slot.remove();
       icon.removeAttribute('_if');
       tooltipSlot.removeAttribute('name');
-      label.setAttribute('toggle', '{isToggle}');
-      // label.setAttribute('selected', '{checked}');
+      shape.setAttribute('toggle', '{isToggle}');
+      shape.setAttribute('selected', '{checked}');
 
       // icon.append(slot);
       icon.setAttribute('toggle', '{isToggle}');
       icon.setAttribute('selected', '{checked}');
 
-      elevation.remove();
+      surfaceTint.remove();
 
       control.setAttribute('aria-pressed', '{_ariaPressed}');
       control.setAttribute('aria-labelledby', 'tooltip');

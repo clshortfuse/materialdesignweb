@@ -9,5 +9,5 @@ export default CustomElement
       margin-block: 24px;
     }
   `
-  .html`<slot/>`
+  .html/* html */`<slot id=slot></slot>`
   .register('mdw-dialog-actions');

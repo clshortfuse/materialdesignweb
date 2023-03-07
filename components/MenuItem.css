@@ -2,43 +2,24 @@
 
 :host {
   cursor: pointer;
-
-  font: var(--mdw-typescale__label-large__font);
-  letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
-
-  white-space: nowrap;
 }
 
 #anchor {
-  display: flex;
-  align-items: center;
+  gap: 12px;
 
-  min-block-size: 48px;
-
-  min-block-size: 48px;
-  padding: 0;
+  padding-inline: 12px;
 
   white-space: nowrap;
 }
 
 #content {
-  padding-inline: 12px;
+  padding-block: calc(4px + (var(--mdw-density) * 2px))
 }
 
 #icon {
   transition-duration: 100ms;
   transition-property: opacity;
   will-change: opacity;
-}
-
-.leading {
-  margin: 0;
-  margin-inline-start: 12px;
-}
-
-.trailing {
-  margin-block: 0;
-  margin-inline-end: 12px;
 }
 
 #trailing,
@@ -60,10 +41,11 @@
   opacity: 1;
 }
 
-#label[selected] #icon {
-  opacity: 1;
-}
-
 :host([disabled]) {
   cursor: not-allowed;
+}
+
+#anchor[selected] {
+  background-color: transparent;
+  color: inherit;
 }

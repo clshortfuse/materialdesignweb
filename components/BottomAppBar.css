@@ -1,8 +1,8 @@
 /* https://m3.material.io/components/bottom-app-bar/specs */
 
 :host {
-  --mdw-elevation__opacity: var(--mdw-elevation__opacity__2);
-  --mdw-elevation__opacity__hovered: var(--mdw-elevation__opacity__2);
+  --mdw-surface__tint: var(--mdw-surface__tint__2);
+  --mdw-surface__tint__raised: var(--mdw-surface__tint__2);
   --mdw-bg: var(--mdw-color__surface);
   --mdw-ink: var(--mdw-color__on-surface);
 }
@@ -13,8 +13,9 @@
   gap: 8px;
   justify-content: flex-start;
 
-  box-sizing: border-box;
-  block-size: 80px;
+  box-sizing: content-box;
+  /* Don't apply density */
+  block-size: 56px;
   padding-block: 12px;
   padding-inline: 8px 16px;
 

@@ -1,6 +1,7 @@
 // https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
 
 import ListItem from './ListItem.js';
+import styles from './ListOption.css' assert {type: 'css'};
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#htmloptionelement
 
@@ -54,7 +55,7 @@ export default class ListOption extends ListItem
       },
     },
     value: {
-      get() { return this._value || this.text; },
+      get() { return this._value; },
       /** @param {string} value */
       set(value) { this._label = value; },
     },
@@ -69,12 +70,13 @@ export default class ListOption extends ListItem
       this.refs.anchor.focus(...options);
     },
   })
+  .css(styles)
   .on({
     composed({ inline }) {
-      const { headlineText, slot, anchor, state } = this.refs;
-      headlineText.append(slot);
+      const { anchor, state } = this.refs;
+      anchor.setAttribute('disabled', '{disabledState}');
       anchor.setAttribute('role', 'option');
-      anchor.setAttribute('aria-disabled', inline(({ disabledState }) => (disabledState ? 'true' : 'false')));
+      anchor.setAttribute('aria-disabled', inline(({ disabledState }) => `${disabledState}`));
       anchor.setAttribute('tabindex', '0');
       state.setAttribute('state-disabled', 'focus');
     },

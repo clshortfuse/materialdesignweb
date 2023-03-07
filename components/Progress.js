@@ -1,11 +1,14 @@
-import Container from './Container.js';
+import CustomElement from '../core/CustomElement.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
+
 import styles from './Progress.css' assert { type: 'css' };
 import circleStyles from './ProgressCircle.css' assert { type: 'css' };
 import lineStyles from './ProgressLine.css' assert { type: 'css' };
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element
 
-export default Container
+export default CustomElement
+  .mixin(ThemableMixin)
   .extend()
   .observe({
     _previousValueAsFraction: 'float',
@@ -56,11 +59,6 @@ export default Container
       </div>
     </div>
   `
-  .on({
-    composed() {
-      this.refs.slot.remove();
-    },
-  })
   .onPropChanged({
     value(oldValue, newValue, element) {
       element.valueAsFraction = (element.value / (element.max || 100));

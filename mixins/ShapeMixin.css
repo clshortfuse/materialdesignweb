@@ -1,7 +1,10 @@
+:host {
+  --mdw-shape__size: 0px;
+}
+
 /** Without CSS Mixins, we have to use external attributes to tag hosts **/
 .shape {
   --mdw-surface__will-change: none;
-  --mdw-shape__size: 0px;
   --mdw-shape__size__top-start-size: var(--mdw-shape__size);
   --mdw-shape__size__top-end-size: var(--mdw-shape__size);
   --mdw-shape__size__bottom-start-size: var(--mdw-shape__size);
@@ -22,18 +25,18 @@
 
   position: relative;
 
-  display: inherit;
+  overflow: hidden;
+
+  /* display: inherit;
   align-items: inherit;
   flex-direction: inherit;
   justify-content: inherit;
-  overflow: hidden;
+  overflow: hidden; */
 
-  box-sizing: border-box;
-
-  block-size:100%;
-  min-block-size: 0;
-  inline-size:100%;
-  min-inline-size: 0;
+  /* block-size:100%; */
+  /* min-block-size: 0; */
+  /* inline-size:100%; */
+  /* min-inline-size: 0; */
 
   z-index: 4;
 

@@ -1,31 +1,27 @@
 /* https://m3.material.io/components/extended-fab/specs */
 
 :host {
-  --mdw-elevation__opacity: var(--mdw-elevation__opacity__0);
-  --mdw-elevation__opacity__hovered: var(--mdw-elevation__opacity__1);
-  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__0);
-  --mdw-elevation__filter__hover: var(--mdw-elevation__filter__1);
+  --mdw-surface__tint: var(--mdw-surface__tint__0);
+  --mdw-surface__tint__raised: var(--mdw-surface__tint__1);
+  --mdw-surface__shadow__resting: var(--mdw-surface__shadow__0);
+  --mdw-surface__shadow__raised: var(--mdw-surface__shadow__1);
   --mdw-bg: var(--mdw-color__primary-container);
   --mdw-ink: var(--mdw-color__on-primary-container);
 }
 
-#label {
+#shape {
   --mdw-shape__size: 16px;
-  min-block-size: 56px;
-  min-inline-size: 80px;
+  min-inline-size: 48px;
+  padding: calc(16px + (var(--mdw-density) * 2px));
 }
 
 #icon {
   font-size: 24px;
 }
 
-#elevation:not([color*="surface"]) {
-  display: none;
-}
-
 :host([elevated]) {
-  --mdw-elevation__opacity: var(--mdw-elevation__opacity__3);
-  --mdw-elevation__opacity__hovered: var(--mdw-elevation__opacity__4);
-  --mdw-elevation__filter__resting: var(--mdw-elevation__filter__3);
-  --mdw-elevation__filter__hover: var(--mdw-elevation__filter__4);
+  --mdw-surface__tint: var(--mdw-surface__tint__3);
+  --mdw-surface__tint__raised: var(--mdw-surface__tint__4);
+  --mdw-surface__shadow__resting: var(--mdw-surface__shadow__3);
+  --mdw-surface__shadow__raised: var(--mdw-surface__shadow__4);
 }

@@ -1,7 +1,10 @@
-import styles from './Badge.css' assert { type: 'css'};
-import Surface from './Surface.js';
+import DensityMixin from '../mixins/DensityMixin.js';
 
-export default Surface
+import styles from './Badge.css' assert { type: 'css'};
+import Shape from './Shape.js';
+
+export default Shape
+  .mixin(DensityMixin)
   .extend()
   .css(styles)
   .autoRegister('mdw-badge');

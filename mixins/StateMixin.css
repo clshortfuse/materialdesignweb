@@ -1,8 +1,8 @@
 /* https://m3.material.io/foundations/interaction-states */
 
 :host {
-  --mdw-state__hover-opacity: 0.08;
-  --mdw-state__focus-opacity: 0.12;
+  --mdw-state__hovered-opacity: 0.08;
+  --mdw-state__focused-opacity: 0.12;
   --mdw-state__pressed-opacity: 0;
   --mdw-state__dragged-opacity: 0.12;
   position: relative;
@@ -23,8 +23,8 @@
   pointer-events: none;
 
   opacity: calc(
-    var(--mdw-state__hover-opacity) +
-    var(--mdw-state__focus-opacity) +
+    var(--mdw-state__hovered-opacity) +
+    var(--mdw-state__focused-opacity) +
     var(--mdw-state__pressed-opacity) +
     var(--mdw-state__dragged-opacity)
   );
@@ -39,8 +39,8 @@
 }
 
 #state[touched] {
-  --mdw-state__hover-opacity: 0;
-  --mdw-state__focus-opacity: 0;
+  --mdw-state__hovered-opacity: 0;
+  --mdw-state__focused-opacity: 0;
 }
 
 /* Remove Hover State */
@@ -48,7 +48,7 @@
 :not([hovered]),
 [disabled]:not([state-disabled~="hover"]),
 [state-off~="hover"]) {
-  --mdw-state__hover-opacity: 0;
+  --mdw-state__hovered-opacity: 0;
 }
 
 /* Remove Focus State */
@@ -56,7 +56,7 @@
 :not([focused]),
 [disabled]:not([state-disabled~="focus"]),
 [state-off~="focus"]) {
-  --mdw-state__focus-opacity: 0;
+  --mdw-state__focused-opacity: 0;
 }
 
 /* Remove Pressed State */

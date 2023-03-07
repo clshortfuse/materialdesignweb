@@ -156,7 +156,8 @@ const SHAPE_SQUIRCLE_DEFAULT = {
   mask: SQUIRCLE_PATH,
 };
 
-const BREAKPOINT_DEFAULT = {
+const LAYOUT_DEFAULT = {
+  density: 0,
   body: {
     0: 'calc(100% - 32px)',
     '600px': 'calc(100% - 64px)',
@@ -430,10 +431,10 @@ export function generateTypographyGlobalCSS() {
 }
 
 /**
- * @param {BREAKPOINT_DEFAULT} [config]
+ * @param {LAYOUT_DEFAULT} [config]
  * @return {string}
  */
-export function generateBreakpointGlobalCSS(config = BREAKPOINT_DEFAULT) {
+export function generateLayoutGlobalCSS(config = LAYOUT_DEFAULT) {
   /** @type {Map<string, Set<string>>} */
   const breakpoints = new Map();
   /**
@@ -464,6 +465,8 @@ export function generateBreakpointGlobalCSS(config = BREAKPOINT_DEFAULT) {
     getSet('').add(`--mdw-breakpoint__${alias}: ${value};`);
   }
 
+  getSet('').add(`--mdw-density__default: ${config.density};`);
+
   let css = '';
   for (const [breakpoint, set] of breakpoints) {
     let rules = `:root { ${[...set].join('')}}`;
@@ -472,6 +475,7 @@ export function generateBreakpointGlobalCSS(config = BREAKPOINT_DEFAULT) {
     }
     css += rules;
   }
+
   return css;
 }
 

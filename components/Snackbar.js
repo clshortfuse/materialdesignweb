@@ -1,6 +1,7 @@
 // https://w3c.github.io/aria/#status
 
 import { EVENT_HANDLER_TYPE } from '../core/customTypes.js';
+import DensityMixin from '../mixins/DensityMixin.js';
 
 import './Button.js';
 import './IconButton.js';
@@ -9,9 +10,11 @@ import styles from './Snackbar.css' assert { type: 'css' };
 import Surface from './Surface.js';
 
 export default Surface
+  .mixin(DensityMixin)
   .extend()
   .set({
     ariaRole: 'status',
+    elevated: true,
   })
   .observe({
     open: 'boolean',
@@ -43,9 +46,18 @@ export default Surface
     },
   })
   .html/* html */`
-    <mdw-button _if={action} id=action ink={actionInk} type-style={actionTypeStyle}>{action}</mdw-button>
-    <mdw-icon-button _if={closeButton} id=close shape-style=none icon={closeIcon} ink={closeInk}>Close</mdw-button>
+    <div id=content></div>
+    <div id=buttons>
+      <mdw-button _if={action} id=action class=button ink={actionInk} type-style={actionTypeStyle}>{action}</mdw-button>
+      <mdw-icon-button _if={closeButton} id=close class=button icon={closeIcon} ink={closeInk}>Close</mdw-button>
+    </div>
   `
+  .on({
+    composed() {
+      const { content, slot } = this.refs;
+      content.append(slot);
+    },
+  })
   .childEvents({
     action: {
       '~click'() {
