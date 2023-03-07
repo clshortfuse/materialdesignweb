@@ -91,7 +91,7 @@ export default function ControlMixin(Base) {
     static {
       this.css(styles);
       this.on({
-        composed({ template, $, html, composition }) {
+        composed({ template, html, composition }) {
           console.log('will change fragmentRoot');
           /** @type {DocumentFragment} */
           const fragment = html`

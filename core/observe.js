@@ -15,6 +15,7 @@ const DEFAULT_NULL_PARSER = () => null;
 const DEFAULT_BOOLEAN_PARSER = (v) => !!v;
 
 /**
+ * Doesn't support `BigInt` types
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#number_coercion
  * @param {any} v
  * @return {number}
@@ -22,6 +23,7 @@ const DEFAULT_BOOLEAN_PARSER = (v) => !!v;
 const DEFAULT_NUMBER_PARSER = (v) => +v;
 
 /**
+ * Doesn't support `Symbol` types
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion
  * @param {any} v
  * @return {string}

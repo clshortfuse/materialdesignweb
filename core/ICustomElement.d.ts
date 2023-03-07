@@ -19,8 +19,6 @@ type CallbackArguments<T1 = any, T2 = T1> = {
   html: HTMLTemplater<T1, Partial<T2>>,
   inline: InlineTemplate<T1, Partial<T2>>,
   template: DocumentFragment,
-  $: DocumentFragment['querySelector'],
-  $$: DocumentFragment['querySelectorAll'],
   element: T1
 }
 
@@ -101,6 +99,7 @@ export declare const ICustomElement: {
   html<T extends typeof ICustomElement>(
     this: T,
     string: TemplateStringsArray,
+    // eslint-disable-next-line no-shadow
     ...substitutions: (string|Element|((this:InstanceType<T>, data:InstanceType<T> & T['schema']) => any))[]
     ): T
 
@@ -235,29 +234,32 @@ export declare const ICustomElement: {
 
   onPropChanged<
     T1 extends typeof ICustomElement,
-    T2 extends keyof InstanceType<T1>
+    T2 extends InstanceType<T1>
     >
     (
       this: T1,
-      options: Record<T2, (
+      options: {
+        [P in keyof T2]? : (
         // eslint-disable-next-line no-shadow
-        this: InstanceType<T1>,
-        oldValue: InstanceType<T1>[T2],
-        newValue: InstanceType<T1>[T2],
-        element: InstanceType<T1>
-        ) => any>,
+        this: T2,
+        oldValue: T2[P],
+        newValue: T2[P],
+        element: T2
+        ) => void
+      },
     ): T1;
 
   onAttributeChanged<T extends typeof ICustomElement>
     (
       this: T,
-      options: Record<string, (
+      options: {
+        [x:string]: (
         // eslint-disable-next-line no-shadow
         this: InstanceType<T>,
         oldValue: string,
         newValue: string,
         element: InstanceType<T>
-        ) => unknown
-      >,
+        ) => void
+      },
     ): T;
 };

@@ -1,11 +1,11 @@
-/** @typedef {import("./CustomElement").default} CustomElement */
+/** @typedef {import('./CustomElement').default} CustomElement */
 
 /** @type {WeakMap<HTMLElement, EventListener>} */
 const eventHandlerValues = new Map();
 
 /**
  * @see https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-attributes
- * @type {import("./typings.js").ObserverOptions<'function',EventListener, unknown>}
+ * @type {import('./typings.js').ObserverOptions<'function',EventListener, unknown>}
  */
 export const EVENT_HANDLER_TYPE = {
   type: 'function',
@@ -43,7 +43,7 @@ export const EVENT_HANDLER_TYPE = {
 const weakRefValues = new WeakMap();
 
 /**
- * @type {import("./typings.js").ObserverOptions<'object',HTMLElement>}
+ * @type {import('./typings.js').ObserverOptions<'object',HTMLElement>}
  */
 export const WEAKREF_TYPE = {
   type: 'object',
@@ -97,7 +97,7 @@ function elementStylerRAFCallback() {
   elementStylerRAFHandles.delete(this);
 }
 
-/** @type {import("./typings.js").ObserverOptions<'object',ElementStylerOptions, CustomElement>} */
+/** @type {import('./typings.js').ObserverOptions<'object',ElementStylerOptions, CustomElement>} */
 export const ELEMENT_STYLER_TYPE = {
   type: 'object',
   reflect: false,
