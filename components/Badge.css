@@ -7,7 +7,7 @@
 #shape {
   box-sizing: border-box;
   min-inline-size: 16px;
-  padding-inline: calc(4px + (var(--mdw-density) * 2px));
+  padding-inline: max(4px, calc(4px + (var(--mdw-density) * 2px)));
 
   font: var(--mdw-typescale__label-small__font);
   letter-spacing: var(--mdw-typescale__label-small__letter-spacing);
@@ -17,7 +17,7 @@
 @supports (width: 1lh) {
   #shape {
     min-inline-size: 1lh; /* Clamps to 1:1 */
-    padding-inline: calc(0.25lh + (var(--mdw-density) * 2px));
+    padding-inline: max(4px, calc(0.25lh + (var(--mdw-density) * 2px)));
   }
 }
 
