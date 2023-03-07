@@ -105,7 +105,7 @@ export default CustomElement
       // Add to template Root
       template.append(html`
         <div _if=${({ size }) => size === 'medium' || size === 'large'} id=companion aria-hidden=true size={size}>
-           <div _if={showSurfaceTint} id=companion-tint raised={_raised} class="surface-tint" color={color}></div>
+           <div _if={showSurfaceTint} id=companion-tint raised={_raised} class=surface-tint color={color}></div>
            <span id=companion-text size={size}>{headline}</span>
         </div>
       `);

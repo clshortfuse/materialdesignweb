@@ -53,7 +53,7 @@ export default Surface
       const { slot, state } = this.refs;
       composition.append(
         html`
-          <a id=anchor role="tab"
+          <a id=anchor role=tab
             aria-label={ariaLabel}
             aria-controls=${({ href }) => (href?.startsWith('#') ? href.slice(1) : null)}
             aria-selected=${({ active }) => (active ? 'true' : 'false')}

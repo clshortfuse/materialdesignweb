@@ -87,7 +87,7 @@ export default function TextFieldMixin(Base) {
         outline.setAttribute('errored', '{erroredState}');
         outline.append(html`
           <div id=gap _if={label} label={label} populated={populatedState} focused={focusedState}>
-            <div id="gap-slot" focused={focusedState}></div>
+            <div id=gap-slot focused={focusedState}></div>
             <span id=gap-label>{label}</span>
           </div>
         `);
@@ -99,7 +99,7 @@ export default function TextFieldMixin(Base) {
         state.setAttribute('_if', '{!outlined}');
 
         template.append(html`
-          <div id="label-text" _if=${({ label, filled, outlined }) => label && (filled || outlined)} aria-hidden="true"
+          <div id=label-text _if=${({ label, filled, outlined }) => label && (filled || outlined)} aria-hidden=true
             outlined={outlined}
             populated={populatedState}
             focused={focusedState}

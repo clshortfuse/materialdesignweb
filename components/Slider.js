@@ -183,12 +183,12 @@ export default Inline
       template.append(html`
         <div id=track style={computeTrackStyle} aria-hidden=true disabled={disabledState}>
           <div _if={ticks} id=ticks></div>
-          <div id="track-active"></div>
-          <div id="thumb-anchor">
+          <div id=track-active></div>
+          <div id=thumb-anchor>
             <div id=thumb>
               ${state}
             </div>
-            <div id="thumb-label"
+            <div id=thumb-label
               hidden=${({ _isHoveringThumb, focusedState }) => (!_isHoveringThumb && !focusedState)} 
               text={_previewValue}></div>
           </div>

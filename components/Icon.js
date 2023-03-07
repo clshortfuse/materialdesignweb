@@ -51,9 +51,9 @@ export default class Icon extends CustomElement
   })
   .html/* html */`
     <link rel=stylesheet href={fontLibrary} />
-    <svg _if={showSVG} id=svg viewBox="0 0 24 24" id="svg">
-      <use id=use _if={svg} href="{svg}" fill="currentColor" />
-      <path id=path _if={svgPath} d={svgPath} />
+    <svg _if="{showSVG}" id="svg" viewBox="0 0 24 24" id="svg">
+      <use id="use" _if="{svg}" href="{svg}" fill="currentColor"/>
+      <path id="path" _if="{svgPath}" d="{svgPath}"/>
     </svg>
     <img _if={src} id=img
       disabled={disabled}
@@ -62,7 +62,7 @@ export default class Icon extends CustomElement
       referrerpolicy={referrerPolicy} decoding={decoding} loading={loading}
       width={width} height={height}
     />
-    <slot id=icon class={fontClass} aria-hidden="true"></slot>
+    <slot id=icon class={fontClass} aria-hidden=true></slot>
   ` {
   /**
    * @param {number} [width]

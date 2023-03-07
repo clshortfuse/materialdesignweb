@@ -38,7 +38,7 @@ export default Surface
   })
   .css(styles)
   .html/* html */`
-    <mdw-button _if={actionable} aria-label="{actionLabel}" id=action disabled={disabledState}></mdw-button>
+    <mdw-button _if={actionable} aria-label={actionLabel} id=action disabled={disabledState}></mdw-button>
     <div _if={showBlocker} id=inert-blocker></div>
     <slot id=slot inert={disabledState}></slot>
   `

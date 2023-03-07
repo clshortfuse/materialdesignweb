@@ -21,8 +21,8 @@ export default Chip
   })
   .css(styles)
   .html/* html */`
-    <mdw-icon _if={!icon} id=check-icon disabled={disabledState} selected={checked} aria-hidden="true">check</mdw-icon>
-    <mdw-icon _if={computedTrailingIcon} id=trailing-icon aria-hidden="true" src={trailingSrc}>{computedTrailingIcon}</mdw-icon>
+    <mdw-icon _if={!icon} id=check-icon disabled={disabledState} selected={checked} aria-hidden=true>check</mdw-icon>
+    <mdw-icon _if={computedTrailingIcon} id=trailing-icon aria-hidden=true src={trailingSrc}>{computedTrailingIcon}</mdw-icon>
   `
   .on({
     composed() {

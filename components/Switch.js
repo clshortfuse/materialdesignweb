@@ -54,7 +54,7 @@ export default CustomElement
       touchTarget.append(control);
       label.append(html`
         ${touchTarget}
-        <div id="switch" selected={checked} pressed={pressedState} icon={hasIcon}>
+        <div id=switch selected={checked} pressed={pressedState} icon={hasIcon}>
           ${track}
           <div id=thumb selected={checked} pressed={pressedState} disabled={disabledState}>
             <div id=thumb-shape class=shape selected={checked}

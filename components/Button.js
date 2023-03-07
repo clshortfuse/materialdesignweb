@@ -45,7 +45,7 @@ export default CustomElement
   })
   .css(styles)
   .html/* html */`
-    <mdw-icon _if={hasIcon} id=icon ink={iconInk} disabled={disabledState} outlined={outlined} aria-hidden="true" svg={svg} src="{src}" svg-path={svgPath}>{icon}</mdw-icon>
+    <mdw-icon _if={hasIcon} id=icon ink={iconInk} disabled={disabledState} outlined={outlined} aria-hidden=true svg={svg} src={src} svg-path={svgPath}>{icon}</mdw-icon>
     <slot id=slot disabled={disabledState}></slot>
   `
   .on({

@@ -30,5 +30,5 @@ export default Layout
       visibility: visible
     }
   `
-  .html/* html */`<slot />`
+  .html/* html */`<slot id=slot></slot>`
   .autoRegister('mdw-tab-panel');

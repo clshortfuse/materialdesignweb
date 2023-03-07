@@ -262,7 +262,7 @@ export default CustomElement
         <slot id=headline name=headline on-slotchange={onSlotChange} role=header>{headline}</slot>
         <slot id=fixed name=fixed class=content on-slotchange={onSlotChange}></slot>
         <mdw-divider id=divider-top size={dividers}></mdw-divider>
-        <slot id=slot class="content" on-slotchange={onSlotChange}></slot>
+        <slot id=slot class=content on-slotchange={onSlotChange}></slot>
         <mdw-divider id=divider-bottom size={dividers}></mdw-divider>
         <slot name=form id=form-slot on-slotchange={onFormSlotChange}>
           <form id=form method=dialog role=none on-submit={onFormSubmit}>

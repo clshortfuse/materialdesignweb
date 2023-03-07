@@ -42,7 +42,7 @@ export default Shape
     composed({ template, html }) {
       const { shape, slot } = this.refs;
       shape.append(html`
-        <mdw-ripple id=ripple ripple-origin="center" keep-alive hold-ripple ripple-state=${({ active }) => ((active) ? null : 'complete')}></mdw-ripple>
+        <mdw-ripple id=ripple ripple-origin=center keep-alive hold-ripple ripple-state=${({ active }) => ((active) ? null : 'complete')}></mdw-ripple>
       `);
       slot.removeAttribute('color');
       slot.removeAttribute('ink');

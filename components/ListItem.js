@@ -77,10 +77,10 @@ export default CustomElement
   .css(styles)
   .html/* html */`
     <a id=anchor href={href} disabled={disabledState} role=listitem selected={selected} aria-selected={computeAriaSelected} video={video} lines={lines}>
-      <mdw-checkbox-icon id=checkbox _if={checkbox} aria-hidden="true" class={checkboxClass} color={selectionColor} disabled={disabledState} icon=check selected={selected}></mdw-checkbox-icon>
+      <mdw-checkbox-icon id=checkbox _if={checkbox} aria-hidden=true class={checkboxClass} color={selectionColor} disabled={disabledState} icon=check selected={selected}></mdw-checkbox-icon>
       <mdw-radio-icon id=radio _if={radio} aria-hidden=true class={radioClass} disabled={disabledState} ink={selectionColor} selected={selected}></mdw-radio-icon>
       <mdw-container _if={avatar} id=avatar color={avatarColor} type-style=title-medium src={AvatarSrc}
-        aria-hidden="true">{avatar}</mdw-container>
+        aria-hidden=true>{avatar}</mdw-container>
       <mdw-icon _if={icon} id=icon ink={iconInk} src={iconSrc} aria-hidden=true>{icon}</mdw-icon>
       <img id=img _if={src} src={src} alt={alt} video={video} />
       <slot name=leading>{leading}</slot>
