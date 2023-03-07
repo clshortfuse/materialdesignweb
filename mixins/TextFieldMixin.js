@@ -67,6 +67,7 @@ export default function TextFieldMixin(Base) {
         labelElement.setAttribute('filled', '{filled}');
         labelElement.setAttribute('color', '{color}');
         labelElement.setAttribute('icon', '{icon}');
+        labelElement.setAttribute('shape-style', '{shapeStyle}');
         labelElement.setAttribute('trailingIcon', '{trailingIcon}');
         labelElement.setAttribute('populated', '{populatedState}');
         labelElement.setAttribute('outlined', '{outlined}');
