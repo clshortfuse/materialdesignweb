@@ -20,6 +20,9 @@ export function* generateCSSStyleSheets(styles) {
   }
 }
 
+/** @type {WeakMap<CSSStyleSheet, HTMLStyleElement>} */
+const styleElementWrappers = new WeakMap();
+
 /**
  * @param {Iterable<HTMLStyleElement|CSSStyleSheet>} styles
  * @yields composed HTMLStyleElement
@@ -34,10 +37,15 @@ export function* generateHTMLStyleElements(styles) {
       // @ts-ignore Skip cast
       yield style.ownerNode.cloneNode(true);
     } else {
-      console.warn('Manually constructing HTMLStyleElement', styles);
-      const el = document.createElement('style');
-      el.textContent = [...style.cssRules].map((r) => r.cssText).join('\n');
-      yield el;
+      let styleElement = styleElementWrappers.get(style);
+      if (!styleElement) {
+        console.warn('Manually constructing HTMLStyleElement', [...style.cssRules].map((r) => r.cssText).join('\n'));
+        styleElement = document.createElement('style');
+        styleElement.textContent = [...style.cssRules].map((r) => r.cssText).join('');
+        styleElementWrappers.set(style, styleElement);
+      }
+      // @ts-ignore Skip cast
+      yield styleElement.cloneNode(true);
     }
   }
 }
