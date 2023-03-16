@@ -60,8 +60,8 @@ export const WEAKREF_TYPE = {
 const elementStylerLastAnimation = new WeakMap();
 /** @type {WeakMap<CustomElement, ElementStylerOptions>} */
 const elementStylerValues = new WeakMap();
-/** @type {WeakMap<any, number>} */
-const elementStylerRAFHandles = new WeakMap();
+/** @type {WeakSet<any>} */
+const elementStylerHasQueue = new WeakSet();
 
 /**
  * @typedef {Object} ElementStylerOptions
@@ -94,7 +94,7 @@ function elementStylerRAFCallback() {
     previousAnimation = null;
   };
   elementStylerLastAnimation.set(this, currentAnimation);
-  elementStylerRAFHandles.delete(this);
+  elementStylerHasQueue.delete(this);
 }
 
 /** @type {import('./typings.js').ObserverOptions<'object',ElementStylerOptions, CustomElement>} */
@@ -103,23 +103,22 @@ export const ELEMENT_STYLER_TYPE = {
   reflect: false,
   values: elementStylerValues,
   changedCallback(oldValue, newValue) {
-    const currentRAFHandle = elementStylerRAFHandles.get(this);
+    const hasQueue = elementStylerHasQueue.has(this);
     if (!newValue) {
-      if (!currentRAFHandle) return;
-      cancelAnimationFrame(currentRAFHandle);
-      elementStylerRAFHandles.delete(this);
+      if (!hasQueue) return;
+      console.warn('debug needed of cancel needed');
+      elementStylerHasQueue.delete(this);
       return;
     }
 
-    if (currentRAFHandle) {
+    if (hasQueue) {
       // Already scheduled
       return;
     }
 
-    // Animation styles may trickle in steps, so request an animation frame before doing any work.
-    elementStylerRAFHandles.set(
-      this,
-      requestAnimationFrame(elementStylerRAFCallback.bind(this)),
-    );
+    // Animation styles may trickle in steps, so queue a microtask before doing any work.
+    // Using requestAnimationFrame would fire one frame too late for CSS animations already scheduled
+    queueMicrotask(elementStylerRAFCallback.bind(this));
+    elementStylerHasQueue.add(this);
   },
 };
