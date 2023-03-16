@@ -61,55 +61,44 @@
 
 }
 
-:host([color*="surface"][elevation="1"]) {
+:host([elevation="1"]) {
   --mdw-surface__tint: var(--mdw-surface__tint__1);
   --mdw-surface__tint__raised: var(--mdw-surface__tint__1);
   --mdw-surface__shadow__resting: var(--mdw-surface__shadow__1);
 }
 
-:host([color*="surface"][elevation="2"]) {
+:host([elevation="2"]) {
   --mdw-surface__tint: var(--mdw-surface__tint__2);
   --mdw-surface__tint__raised: var(--mdw-surface__tint__2);
   --mdw-surface__shadow__resting: var(--mdw-surface__shadow__2);
 }
 
-:host([color*="surface"][elevation="3"]) {
+:host([elevation="3"]) {
   --mdw-surface__tint: var(--mdw-surface__tint__3);
   --mdw-surface__tint__raised: var(--mdw-surface__tint__3);
   --mdw-surface__shadow__resting: var(--mdw-surface__shadow__3);
 }
 
-:host([color*="surface"][elevation="4"]) {
+:host([elevation="4"]) {
   --mdw-surface__tint: var(--mdw-surface__tint__4);
   --mdw-surface__tint__raised: var(--mdw-surface__tint__4);
   --mdw-surface__shadow__resting: var(--mdw-surface__shadow__4);
 }
 
-:host([color*="surface"][elevation="5"]) {
+:host([elevation="5"]) {
   --mdw-surface__tint: var(--mdw-surface__tint__5);
   --mdw-surface__tint__raised: var(--mdw-surface__tint__5);
   --mdw-surface__shadow__resting: var(--mdw-surface__shadow__5);
 }
 
 .surface {
-  position: relative;
+  position: absolute;
+  inset: 0;
 
-  display:flex;
-
-  block-size: 100%;
-
-  /* box-sizing: border-box; */
-  block-size: auto;
-  min-block-size: none;
-  max-block-size: 100%;
-  inline-size: 100%;
-  min-inline-size: none;
-  max-inline-size: 100%;
-  flex:1;
-  margin: 0;
-  border: none;
+  pointer-events: none;
 
   filter: var(--mdw-surface__shadow);
+  z-index: -1;
 
   transition-delay: 1ms;
   transition-duration: 200ms;

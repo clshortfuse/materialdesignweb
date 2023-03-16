@@ -13,7 +13,7 @@ import FormAssociatedMixin from './FormAssociatedMixin.js';
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function ControlMixin(Base) {
-  class Control extends FormAssociatedMixin(Base) {
+  class Control extends Base.mixin(FormAssociatedMixin) {
     /** @return {Iterable<string>} */
     static get observedAttributes() {
       return [
@@ -91,19 +91,14 @@ export default function ControlMixin(Base) {
     static {
       this.css(styles);
       this.on({
-        composed({ template, html, composition }) {
-          console.log('will change fragmentRoot');
-          /** @type {DocumentFragment} */
-          const fragment = html`
+        // Wait until controlTagName is settled before templating
+        composed({ template, html }) {
+          template.append(html`
             <label id=label disabled={disabledState}>
               <${this.static.controlTagName} id=control aria-labelledby={computeAriaLabelledBy} aria-label={ariaLabel}
                 >${this.static.controlVoidElement ? '' : `</${this.static.controlTagName}>`}
             </label>
-          `;
-          const label = fragment.getElementById('label');
-          label.append(...template.childNodes);
-          template.append(fragment);
-          composition.fragmentRoot = label;
+          `);
         },
         disabledStateChanged(oldValue, newValue) {
           this._control.setAttribute('aria-disabled', `${newValue}`);

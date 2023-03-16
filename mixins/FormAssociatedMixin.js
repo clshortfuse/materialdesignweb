@@ -45,6 +45,7 @@ export default function FormAssociatedMixin(Base) {
       _invalid: 'boolean',
       _badInput: 'boolean',
       _validationMessage: 'string',
+      _formDisabled: 'boolean',
     })
     .observe({
       erroredState({ _invalid }) { return _invalid; },

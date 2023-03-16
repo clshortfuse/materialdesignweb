@@ -14,7 +14,7 @@
 
   background-color: transparent;
 
-  transition: opacity 100ms;
+  transition: opacity 200ms;
 }
 
 .shape {
@@ -44,7 +44,7 @@
 
   background-color: var(--color);
 
-  transition: transform 100ms, background-color 100ms;
+  transition: transform 200ms, background-color 100ms;
 }
 
 :host([hovered]) {

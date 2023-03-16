@@ -1,3 +1,4 @@
+import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import AriaToolbarMixin from '../mixins/AriaToolbarMixin.js';
 
 import styles from './BottomAppBar.css' assert { type: 'css' };
@@ -11,14 +12,14 @@ import Surface from './Surface.js';
 
 export default Surface
   .mixin(AriaToolbarMixin)
+  .mixin(AriaReflectorMixin)
+  .extend()
   .set({
-    ariaRole: 'toolbar',
     elevated: true,
+    _ariaRole: 'toolbar',
   })
   .observe({
-    color: {
-      empty: 'surface',
-    },
+    color: { empty: 'surface' },
   })
   .css(styles)
   .autoRegister('mdw-bottom-app-bar');

@@ -11,7 +11,7 @@ import styles from './Menu.css' assert { type: 'css' };
 
 /**
  * @typedef {Object} MenuStack
- * @prop {InstanceType<import('./Menu.js').default>} element
+ * @prop {HTMLElement} element
  * @prop {Element} previousFocus
  * @prop {Object} [state]
  * @prop {Object} [previousState]
@@ -111,8 +111,10 @@ export default CustomElement
     <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>
       <div id=scrim aria-hidden=true modal={modal}></div>
       <form id=form method=dialog role=none>
-        <mdw-surface id=surface role=none>
-          <slot id=slot on-slotchange={refreshTabIndexes}></slot>
+        <mdw-surface id=surface elevation=2>
+          <div id=scroller>
+            <slot id=slot on-slotchange={refreshTabIndexes}></slot>
+          </div>
         </mdw-surface>
         <slot id=submenu-slot name=submenu></slot>
       </form>

@@ -1,5 +1,9 @@
 /* https://m3.material.io/components/floating-action-button/specs */
 
+:host {
+  min-inline-size: 24px;
+}
+
 #icon {
   font-size: 24px;
 }
@@ -8,19 +12,12 @@
   font-size: 36px;
 }
 
-#shape {
-  min-inline-size: 24px;
-}
-
-#shape[fab-size="small"] {
-  /* stylelint-disable-next-line rule-selector-property-disallowed-list */
+:host([fab-size="small"]) {
   --mdw-shape__size: 12px;
   padding: calc(8px + (var(--mdw-density) * 2px));
 }
 
-#shape[fab-size="large"] {
-  /* stylelint-disable-next-line rule-selector-property-disallowed-list */
+:host([fab-size="large"]) {
   --mdw-shape__size: 28px;
-
   padding: calc(30px + (var(--mdw-density) * 2px));
 }

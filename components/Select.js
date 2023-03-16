@@ -1,13 +1,15 @@
-import Block from '../layout/Block.js';
+import CustomElement from '../core/CustomElement.js';
 import ControlMixin from '../mixins/ControlMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import TextFieldMixin from '../mixins/TextFieldMixin.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import styles from './Select.css' assert { type: 'css' };
 
 /* @implements {HTMLSelectElement} */
 
-const Select = Block
+export default class Select extends CustomElement
+  .mixin(ThemableMixin)
   .mixin(StateMixin)
   .mixin(ControlMixin)
   .mixin(TextFieldMixin)
@@ -28,6 +30,7 @@ const Select = Block
     size: { value: 1 },
     type: { value: 'select-one' },
   })
+  .html/* html */`<slot id=slot></slot>`
   .childEvents({
     slot: {
     /** @param {Event & {currentTarget:HTMLSlotElement}} event */
@@ -45,12 +48,6 @@ const Select = Block
       },
     },
   })
-  .overrides({
-    formResetCallback() {
-      this._select.value = this.querySelector('option[selected]')?.value ?? '';
-      this.super.formResetCallback();
-    },
-  })
   .on({
     composed({ template }) {
       const { slot, prefix, suffix } = this.refs;
@@ -63,11 +60,15 @@ const Select = Block
     controlTagName: 'select',
     controlVoidElement: false,
   })
-  .autoRegister('mdw-select');
+  .autoRegister('mdw-select') {
+  /* Overrides */
+  static clonedContentAttributes = [
+    ...super.clonedContentAttributes,
+    'autocomplete', // Hint for form autofill feature
+  ];
 
-Select.clonedContentAttributes = [
-  ...Select.clonedContentAttributes,
-  'autocomplete', // Hint for form autofill feature
-];
-
-export default Select;
+  formResetCallback() {
+    this._select.value = this.querySelector('option[selected]')?.value ?? '';
+    super.formResetCallback();
+  }
+}

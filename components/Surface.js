@@ -1,31 +1,23 @@
 import CustomElement from '../core/CustomElement.js';
+import FlexableMixin from '../mixins/FlexableMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
+import styles from './Surface.css' assert {type:'css'};
+
 export default CustomElement
   .mixin(ThemableMixin)
+  .mixin(FlexableMixin)
   .mixin(SurfaceMixin)
   .mixin(ShapeMixin)
-  .css/* css */`
-    #surface {
-      display: flex;
-      box-sizing: border-box;
-      max-block-size: 100%;
-      max-inline-size: 100%;
-    }
-    #shape {
-      flex: 1;
-      display: block;
-      background-color: rgb(var(--mdw-bg));
-      color: rgb(var(--mdw-ink));
-    }
-  `
-  .html/* html */`<slot id=slot ink={ink} color={color} type-style={typeStyle}></slot>`
+  .css(styles)
   .on({
     composed() {
-      const { outline, surfaceTint } = this.refs;
-      outline.before(surfaceTint);
+      const { surface, shape, surfaceTint } = this.refs;
+      shape.append(surfaceTint);
+      surface.append(shape);
     },
   })
+  .html/* html */`<slot id=slot></slot>`
   .autoRegister('mdw-surface');

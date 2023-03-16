@@ -3,23 +3,11 @@
 :host {
   --mdw-ink: var(--mdw-color__on-primary);
   --mdw-bg: var(--mdw-color__primary);
-  --mdw-checkbox__size: 18px;
-  --mdw-checkbox__state-size: 40px;
-  --mdw-checkbox__margin: calc((var(--mdw-checkbox__state-size) - var(--mdw-checkbox__size)) / 2);
-  --mdw-shape__size: 2px;
 
-  gap: var(--mdw-radio__gap, calc(var(--mdw-checkbox__margin)));
-
-  direction: var(--mdw-radio__direction, initial);
-}
-
-#label {
   display: inline-grid;
   align-items: center;
-  gap: inherit;
+  gap: 12px;
   grid-auto-flow: column;
-  grid-template-rows: minmax(var(--mdw-checkbox__size), min-content);
-  grid-template-columns: var(--mdw-checkbox__size);
 
   cursor: pointer;
 
@@ -27,7 +15,17 @@
 }
 
 #control {
-  line-height: 0;
+  grid-column: 1/1;
+
+  cursor: inherit;
+}
+
+#label {
+  cursor: inherit;
+}
+
+#label[disabled] {
+  cursor: not-allowed;
 }
 
 #state,
@@ -35,17 +33,15 @@
   inset-block-start: 50%;
   inset-inline-start: 50%;
 
-  block-size: var(--mdw-checkbox__state-size);
-  inline-size: var(--mdw-checkbox__state-size);
+  block-size: 40px;
+  inline-size: 40px;
 
   transform: translateX(-50%) translateY(-50%);
 
   border-radius: 50%;
 }
 
-#label[disabled] {
-  cursor: not-allowed;
-
+:host([disabled]) {
   opacity: 0.38;
 }
 
@@ -77,9 +73,4 @@
   --mdw-ink: inherit;
   --mdw-bg: inherit;
   --disabled-opacity: 1;
-}
-
-#touch-target {
-  min-block-size: 40px; /* Match state */
-  min-inline-size: 40px; /* Match state */
 }

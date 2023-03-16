@@ -5,20 +5,13 @@
 :host {
   --mdw-surface__tint: var(--mdw-surface__tint__2);
   --mdw-surface__tint__raised: var(--mdw-surface__tint__2);
-
-  --mdw-bg: var(--mdw-color__surface);
   --mdw-ink: var(--mdw-color__on-surface);
-  pointer-events: none;
+  --mdw-bg: var(--mdw-color__surface);
 
   z-index:2;
 
+  color: rgb(var(--mdw-ink));
+
   font: var(--mdw-typescale__label-medium__font);
   letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
-}
-
-#shape {
-  pointer-events: auto;
-
-  /* background-color: rgb(var(--mdw-bg)); */
-  /* color: rgb(var(--mdw-ink)); */
 }

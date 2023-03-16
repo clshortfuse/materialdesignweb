@@ -8,7 +8,10 @@ import ListOption from './ListOption.js';
 import styles from './ListSelect.css' assert { type: 'css' };
 
 /** @implements {HTMLSelectElement} */
-export default class ListSelect extends KeyboardNavMixin(FormAssociatedMixin(StateMixin(List))) {
+export default class ListSelect extends List
+  .mixin(StateMixin)
+  .mixin(FormAssociatedMixin)
+  .mixin(KeyboardNavMixin) {
   static {
     this.autoRegister('mdw-list-select');
     this.css(styles);
@@ -207,5 +210,5 @@ ListSelect.prototype.multiple = ListSelect.prop('multiple', { type: 'boolean' })
 // [CEReactions] attribute DOMString name;
 // [CEReactions] attribute boolean required;
 ListSelect.prototype.size = ListSelect.prop('size', { type: 'integer', empty: 0 });
-ListSelect.prototype.ariaRole = 'listbox';
+ListSelect.prototype._ariaRole = 'listbox';
 ListSelect.prototype.delegatesFocus = true;

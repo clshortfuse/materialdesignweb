@@ -26,7 +26,7 @@ export default Chip
   `
   .on({
     composed() {
-      const { shape, icon, control, outline, slot, trailingIcon } = this.refs;
+      const { shape, icon, control, outline, slot, trailingIcon, checkIcon } = this.refs;
 
       shape.setAttribute('selected', '{checked}');
       shape.setAttribute('icon', '');
@@ -44,7 +44,8 @@ export default Chip
       slot.removeAttribute('ink');
       slot.removeAttribute('color');
 
-      trailingIcon.before(slot);
+      slot.before(checkIcon);
+      slot.after(trailingIcon);
     },
   })
   .autoRegister('mdw-filter-chip');

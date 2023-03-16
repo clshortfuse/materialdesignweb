@@ -78,6 +78,8 @@
 
   cursor: inherit;
 
+  z-index: 0;
+
   background-color: transparent;
 
   font-weight: inherit;
@@ -137,7 +139,7 @@
 
 #control {
   position: relative;
-
+  inset: auto;
   align-self: flex-start;
 
   display: inline;
@@ -145,8 +147,8 @@
   box-sizing: border-box;
 
   block-size: auto;
+  min-block-size: none;
   inline-size: 100%;
-
   min-inline-size: none;
   flex: 1;
   border-block-start: solid var(--control__margin-top) transparent;
@@ -156,6 +158,8 @@
   appearance: none;
   caret-color: rgb(var(--mdw-ink));
   cursor: auto;
+
+  transform: none;
 
   visibility: visible;
 

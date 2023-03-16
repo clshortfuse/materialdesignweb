@@ -30,25 +30,8 @@ export default CustomElement
     _duration: { type: 'float', empty: 0 },
     _easing: { empty: 'ease-in' },
     _headlineOpacity: { type: 'float', default: 0 },
-    ariaLabel: {
-      /**
-       * @param {string} oldValue
-       * @param {string} newValue
-       */
-      changedCallback(oldValue, newValue) {
-        if (newValue == null) {
-          this.refs.surface.removeAttribute('aria-label');
-          if (!this.hasAttribute('aria-labelledby')) {
-            this.refs.surface.setAttribute('aria-labelledby', 'headline');
-          }
-        } else {
-          this.refs.surface.setAttribute('aria-label', newValue);
-          if (!this.hasAttribute('aria-labelledby')) {
-            this.refs.surface.removeAttribute('aria-labelledby');
-          }
-        }
-      },
-    },
+    /** Convert to observable */
+    ariaLabel: 'string',
   })
   .observe({
     _scrollDirection: {
@@ -88,27 +71,47 @@ export default CustomElement
         };
       },
     },
+    _headlineStyle: {
+      ...ELEMENT_STYLER_TYPE,
+      get({ size, _headlineOpacity }) {
+        if (size !== 'medium' && size !== 'large') return null;
+        return {
+          target: 'headline',
+          styles: {
+            opacity: _headlineOpacity ?? 0,
+          },
+          timing: {
+            duration: 200,
+          },
+        };
+      },
+    },
   })
   .css(styles)
   .html/* html */`
-    <div id=leading><slot id=leading-slot name=leading on-slotchange={refreshTabIndexes}></div>
-    <div id=headline style={computeHeadlineStyle} size={size}>
+    <slot id=leading name=leading on-slotchange={refreshTabIndexes}></slot>
+    <div id=headline ink={ink} color={color} type-style={typeStyle} on-slotchange={refreshTabIndexes}>
       {headline}
-      <slot id=slot ink={ink} color={color} type-style={typeStyle} on-slotchange={refreshTabIndexes}></slot>
+      <slot id=headline-slot></slot>
     </div>
-    <div id=trailing><slot id=trailing-slot name=trailing on-slotchange={refreshTabIndexes}></div>
+    <slot id=trailing name=trailing on-slotchange={refreshTabIndexes}></slot>
+    <div _if=${({ size }) => size === 'medium' || size === 'large'} id=companion aria-hidden=true size={size}>
+      <div _if={showSurfaceTint} id=companion-tint raised={_raised} class=surface-tint color={color}></div>
+      <slot id=companion-slot name=companion size={size}>{headline}</span>
+    </div>
   `
   .on({
-    composed({ template, html }) {
-      this.refs.surface.setAttribute('size', '{size}');
-      this.refs.surface.setAttribute('hide-on-scroll', '{hideOnScroll}');
-      // Add to template Root
-      template.append(html`
-        <div _if=${({ size }) => size === 'medium' || size === 'large'} id=companion aria-hidden=true size={size}>
-           <div _if={showSurfaceTint} id=companion-tint raised={_raised} class=surface-tint color={color}></div>
-           <span id=companion-text size={size}>{headline}</span>
-        </div>
-      `);
+    composed({ inline }) {
+      const { surface, leading, headline, trailing } = this.refs;
+      surface.append(leading, headline, trailing);
+      surface.setAttribute('size', '{size}');
+      surface.setAttribute('hide-on-scroll', '{hideOnScroll}');
+      surface.setAttribute('role', 'toolbar');
+      surface.setAttribute('aria-label', '{ariaLabel}');
+      surface.setAttribute(
+        'aria-labelledby',
+        inline(({ ariaLabel }) => (ariaLabel ? null : 'headline')),
+      );
     },
   })
   .on('_scrollPositionYChanged', (oldValue, newValue, element) => {
@@ -137,12 +140,6 @@ export default CustomElement
     }
 
     element._scrollDirection = newValue > oldValue ? 'down' : 'up';
-  })
-  .expressions({
-    computeHeadlineStyle({ size, _headlineOpacity }) {
-      if (size !== 'medium' && size !== 'large') return '';
-      return `opacity: ${_headlineOpacity}`;
-    },
   })
   .methods({
     onScrollIdle() {

@@ -10,4 +10,7 @@ export default CustomElement
   .mixin(InputMixin)
   .mixin(TextFieldMixin)
   .extend()
+  .define({
+    stateTargetElement() { return this.refs.control; },
+  })
   .autoRegister('mdw-input');

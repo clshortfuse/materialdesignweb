@@ -37,8 +37,8 @@ export default CustomElement
             minBlockSize: `${_radius}px`,
             minInlineSize: `${_radius}px`,
             boxShadow: `0 0 calc(0.10 * ${_radius}px) calc(0.10 * ${_radius}px) currentColor`,
-            marginLeft: `${_positionX}px`,
-            marginTop: `${_positionY}px`,
+            left: `calc(50% + ${_positionX}px)`,
+            top: `calc(50% + ${_positionY}px)`,
           },
         };
       },

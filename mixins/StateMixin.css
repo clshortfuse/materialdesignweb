@@ -3,7 +3,7 @@
 :host {
   --mdw-state__hovered-opacity: 0.08;
   --mdw-state__focused-opacity: 0.12;
-  --mdw-state__pressed-opacity: 0;
+  --mdw-state__pressed-opacity: 0.12;
   --mdw-state__dragged-opacity: 0.12;
   position: relative;
 

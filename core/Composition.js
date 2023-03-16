@@ -169,9 +169,6 @@ export default class Composition {
      * Template used to build interpolation and cloneable
      */
     this.template = generateFragment();
-    /** Allows retargetting for components that use a wrapped DOM structure */
-    /** @type {Element|DocumentFragment} */
-    this.fragmentRoot = this.template;
     this.append(...parts);
   }
 
@@ -197,7 +194,7 @@ export default class Composition {
       } else if (part instanceof Composition) {
         this.append(...part);
       } else if (part instanceof DocumentFragment) {
-        this.fragmentRoot.append(part);
+        this.template.append(part);
       } else if (part instanceof CSSStyleSheet || part instanceof HTMLStyleElement) {
         this.styles.push(part);
       }
@@ -307,7 +304,7 @@ export default class Composition {
           }
           if (attached !== !orphaned) {
             console.warn('Conditional state', id, { attached, orphaned, shouldShow });
-            console.warn('Not attached and not orphaned. Should do nothing?');
+            console.warn('Not attached and not orphaned. Should do nothing?', ref, ref.parentElement);
           }
           if (shouldShow) {
             if (orphaned) {
@@ -493,7 +490,7 @@ export default class Composition {
           continue;
         }
         if (inlineFunctionOptions.props) {
-          console.log('This function has already been called. Reuse props');
+          console.log('This function has already been called. Reuse props', inlineFunctionOptions, this);
           props = inlineFunctionOptions.props;
           defaultValue = inlineFunctionOptions.defaultValue ?? null;
         } else {

@@ -23,22 +23,12 @@
   --mdw-shape__mask: none;
   --mdw-shape__inline-start-deg: calc(var(--mdw-dir, 1) * -90deg);
 
-  position: relative;
+  position: absolute;
+  inset: 0;
 
   overflow: hidden;
 
-  /* display: inherit;
-  align-items: inherit;
-  flex-direction: inherit;
-  justify-content: inherit;
-  overflow: hidden; */
-
-  /* block-size:100%; */
-  /* min-block-size: 0; */
-  /* inline-size:100%; */
-  /* min-inline-size: 0; */
-
-  z-index: 4;
+  z-index: -1;
 
   border-start-start-radius: calc(var(--mdw-shape__rounded) * var(--mdw-shape__size__top-start-size));
   border-start-end-radius: calc(var(--mdw-shape__rounded) * var(--mdw-shape__size__top-end-size));
@@ -52,7 +42,11 @@
 
 }
 
-.shape[color]:not[disabled] {
+.shape:is([outlined], [color="none"], [color="transparent"]) {
+  background-color: transparent;
+}
+
+.shape[color] {
   background-color: rgb(var(--mdw-bg));
   color: rgb(var(--mdw-ink));
 }

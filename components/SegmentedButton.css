@@ -3,6 +3,12 @@
 :host {
   --mdw-shape__size: var(--mdw-shape__full);
   --mdw-ink: var(--mdw-color__on-surface);
+  gap: 8px;
+
+  min-inline-size: 24px;
+  padding-inline-start: max(12px, calc(16px + (var(--mdw-density) * 2px)));
+  padding-inline-end: max(20px, calc(24px + (var(--mdw-density) * 2px)));
+
   color: rgb(var(--mdw-ink));
 }
 
@@ -20,23 +26,18 @@
   inset-inline-end: 0;
 }
 
-#shape {
-  gap: 8px;
-
-  min-inline-size: 24px;
-  padding-inline-start: max(12px, calc(16px + (var(--mdw-density) * 2px)));
-  padding-inline-end: max(20px, calc(24px + (var(--mdw-density) * 2px)));
-}
-
 #shape[selected] {
   background-color: rgb(var(--mdw-bg));
+}
+
+#label[selected] {
   color: rgb(var(--mdw-ink));
 }
 
 #icons {
   position: relative;
 
-  display: inline-block;
+  display: inline-flex;
 }
 
 #icon {
@@ -86,5 +87,8 @@
 
 #shape[disabled][selected] {
   background-color: rgba(var(--mdw-color__on-surface), 0.12);
+}
+
+#label[disabled][selected] {
   color: rgba(var(--mdw-color__on-surface), 0.38);
 }

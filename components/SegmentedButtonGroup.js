@@ -1,13 +1,15 @@
+import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import KeyboardNav from '../mixins/KeyboardNavMixin.js';
 
-import Container from './Container.js';
+import Box from './Box.js';
 import SegmentedButton from './SegmentedButton.js';
 import styles from './SegmentedButtonGroup.css' assert { type: 'css' };
 
 /** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
 
-export default Container
+export default Box
   .mixin(KeyboardNav)
+  .mixin(AriaReflectorMixin)
   .extend()
   .define({
     kbdNavQuery() {
@@ -15,7 +17,7 @@ export default Container
     },
   })
   .set({
-    ariaRole: 'listbox',
+    _ariaRole: 'listbox',
   })
   .childEvents({
     slot: {

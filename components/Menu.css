@@ -130,12 +130,10 @@ dialog:modal {
 
 #surface {
   --mdw-shape__size: var(--mdw-shape__extra-small);
-  --mdw-surface__tint: var(--mdw-surface__tint__2);
-  --mdw-surface__tint__raised: var(--mdw-surface__tint__2);
-  --mdw-surface__shadow__resting: var(--mdw-surface__shadow__2);
   position: sticky;
 
   display: inline-flex;
+  flex-direction: column;
 
   inline-size: calc(var(--mdw-menu__size) * var(--mdw-menu__inline-base));
   min-inline-size: calc(var(--mdw-menu__inline-base) * 2);
@@ -155,8 +153,9 @@ dialog:modal {
   }
 }
 
-#surface::part(shape) {
-  display: inline-flex;
+#scroller {
+  flex: 1;
+  display: flex;
   align-items: stretch;
   flex-direction: column;
   overflow-y: auto;

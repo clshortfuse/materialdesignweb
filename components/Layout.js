@@ -1,29 +1,12 @@
-import Container from './Container.js';
-import styles from './Layout.css' assert { type: 'css' };
+import CustomElement from '../core/CustomElement.js';
 
-export default Container
+import styles from './Layout.css' assert {type:'css'};
+
+export default CustomElement
   .extend()
-  .observe({
-    x: 'string',
-    y: 'string',
-    column: 'boolean',
-    wrap: {
-      /** @type {null|'wrap'|'reverse'} */
-      value: null,
-    },
-    gap: {
-      /**
-       * @param {string} oldValue
-       * @param {string} newValue
-       */
-      changedCallback(oldValue, newValue) {
-        if (newValue) {
-          this.style.setProperty('--mdw-layout__gap', newValue);
-        } else {
-          this.style.removeProperty('--mdw-layout__gap');
-        }
-      },
-    },
-  })
   .css(styles)
+  .html/* html */`
+    <slot id=slot-top name=top></slot>
+    <slot id=slot></slot>
+  `
   .autoRegister('mdw-layout');

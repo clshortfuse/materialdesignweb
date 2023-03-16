@@ -2,9 +2,6 @@
 
 :host {
   cursor: pointer;
-}
-
-#anchor {
   gap: 12px;
 
   padding-inline: 12px;
@@ -47,5 +44,9 @@
 
 #anchor[selected] {
   background-color: transparent;
+  color: inherit;
+}
+
+#content[selected] {
   color: inherit;
 }

@@ -1,24 +1,22 @@
+import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
+
 import Surface from './Surface.js';
 import styles from './Tooltip.css' assert { type: 'css' };
 
 export default Surface
+  .mixin(AriaReflectorMixin)
   .extend()
   .set({
-    ariaRole: 'tooltip',
+    _ariaRole: 'tooltip',
   })
   .css(styles)
   .observe({
     open: {
       type: 'boolean',
       changedCallback(oldValue, newValue) {
-        this.setAttribute('aria-hidden', newValue ? 'false' : 'true');
+        this.updateAriaProperty('ariaHidden', newValue ? 'true' : 'false');
       },
     },
     touch: 'boolean',
-  })
-  .on({
-    composed() {
-      this.refs.shape.setAttribute('touch', '{touch}');
-    },
   })
   .autoRegister('mdw-tooltip');

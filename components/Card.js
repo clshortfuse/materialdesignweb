@@ -1,22 +1,29 @@
-import './CardActionArea.js';
+import CustomElement from '../core/CustomElement.js';
 import { EVENT_HANDLER_TYPE } from '../core/customTypes.js';
+import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
+import FlexableMixin from '../mixins/FlexableMixin.js';
 import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
+import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
+import SurfaceMixin from '../mixins/SurfaceMixin.js';
 
 import styles from './Card.css' assert { type: 'css' };
-import Surface from './Surface.js';
 
 const SUPPORTS_INERT = 'inert' in HTMLElement.prototype;
 
-export default Surface
+export default CustomElement
+  .mixin(FlexableMixin)
+  .mixin(SurfaceMixin)
+  .mixin(ShapeMixin)
   .mixin(FormAssociatedMixin) // Tap into FormAssociated for disabledState
   .mixin(StateMixin)
+  .mixin(AriaReflectorMixin)
   .extend()
   .setStatic({
     delegatesFocus: true,
   })
   .set({
-    ariaRole: 'figure',
+    _ariaRole: 'figure',
   })
   .observe({
     filled: 'boolean',
@@ -36,17 +43,25 @@ export default Surface
       if (this.actionable) this.refs.action.focus();
     },
   })
-  .css(styles)
   .html/* html */`
     <mdw-button _if={actionable} aria-label={actionLabel} id=action disabled={disabledState}></mdw-button>
     <div _if={showBlocker} id=inert-blocker></div>
-    <slot id=slot inert={disabledState}></slot>
+    <slot id=slot disabled={disabledState}></slot>
   `
+  .css(styles)
   .on({
     composed() {
-      const { shape } = this.refs;
-      shape.setAttribute('disabled', '{disabledState}');
+      const { slot, surface, surfaceTint, shape, outline } = this.refs;
+      shape.append(surfaceTint);
+      surface.append(shape);
+      outline.removeAttribute('pressed');
+      outline.removeAttribute('focused');
+
       shape.setAttribute('filled', '{filled}');
+      slot.setAttribute('inert', '{disabledState}');
+      slot.setAttribute('disabled', '{disabledState}');
+      // shape.setAttribute('disabled', '{disabledState}');
+      // shape.setAttribute('filled', '{filled}');
     },
   })
   .childEvents({

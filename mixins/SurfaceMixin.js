@@ -25,14 +25,8 @@ export default function SurfaceMixin(Base) {
     })
     .css(styles)
     .html/* html */`
-      <div id=surface class=surface hovered={hoveredState} pressed={pressedState} disabled={disabledState}>
+      <div id=surface class=surface raised={_raised} disabled={disabledState} color={color}>
         <div _if={showSurfaceTint} id=surface-tint class=surface-tint raised={_raised} color={color} aria-hidden=true></div>
       </div>
-    `
-    .on({
-      composed({ composition }) {
-        // Remap as append root
-        composition.fragmentRoot = this.refs.surface;
-      },
-    });
+    `;
 }

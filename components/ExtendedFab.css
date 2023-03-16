@@ -7,9 +7,6 @@
   --mdw-surface__shadow__raised: var(--mdw-surface__shadow__1);
   --mdw-bg: var(--mdw-color__primary-container);
   --mdw-ink: var(--mdw-color__on-primary-container);
-}
-
-#shape {
   --mdw-shape__size: 16px;
   min-inline-size: 48px;
   padding: calc(16px + (var(--mdw-density) * 2px));

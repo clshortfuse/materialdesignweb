@@ -1,21 +1,21 @@
-import Block from '../layout/Block.js';
+import CustomElement from '../core/CustomElement.js';
 import ControlMixin from '../mixins/ControlMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import TextFieldMixin from '../mixins/TextFieldMixin.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import styles from './TextArea.css' assert { type: 'css' };
 
 /** @implements {HTMLTextAreaElement} */
-export default class TextArea extends TextFieldMixin(ControlMixin(StateMixin(Block))) {
+export default class TextArea extends TextFieldMixin(ControlMixin(StateMixin(ThemableMixin(CustomElement)))) {
   static { this.autoRegister('mdw-textarea'); }
 
   static {
     this.css(styles);
     this.childEvents({ slot: { slotchange: 'onSlotChange' } });
     this.on({
-      composed({ template }) {
-        const { slot, control } = this.refs;
-        template.append(slot); // Move into root (was label);
+      composed() {
+        const { control } = this.refs;
         control.setAttribute('input-prefix', '{input-prefix}');
         control.setAttribute('input-suffix', '{input-suffix}');
         control.setAttribute('minrows', '{minrows}');

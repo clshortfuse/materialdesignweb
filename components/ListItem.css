@@ -2,15 +2,8 @@
 
 :host {
   --mdw-shape__size: 0px;
-  display: block;
-}
-
-:host([href]) {
-  cursor: pointer;
-}
-
-#anchor {
   /* Grid does not auto collapse columns, leaving gaps */
+
   display: flex;
   align-items: center;
   gap: 16px;
@@ -24,13 +17,26 @@
   color: inherit;
 
   text-decoration: none;
+  cursor: auto;
 }
 
-#anchor[video] {
+:host([href]) {
+  cursor: pointer;
+}
+
+#anchor {
+  position: absolute;
+  inset: 0;
+  outline: none;
+  color: inherit;
+
+}
+
+:host([video]) {
   padding-inline-start: 0;
 }
 
-#anchor[lines="3"] {
+:host([lines="3"]) {
   align-items: flex-start;
 
   padding-block: 12px;
@@ -82,8 +88,6 @@
 
 #slot {
   max-block-size: var(--mdw-typescale__body-large__line-height) * 2;
-
-  pointer-events: none;
 
   /* background-color: rgba(255,0,0,0.10); */
 
@@ -213,7 +217,7 @@
   order: 1;
 }
 
-#anchor[disabled] {
+:host([disabled]) {
   opacity: 0.38;
 
   color: rgb(var(--mdw-color__on-surface));

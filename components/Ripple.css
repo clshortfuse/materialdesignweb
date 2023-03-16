@@ -7,11 +7,12 @@
   --mdw-ripple-fade-out-duration: 333ms;
   --mdw-ripple-standard-easing: var(--mdw-motion-standard-easing, cubic-bezier(0.4, 0.0, 0.2, 1));
   --mdw-ripple-deceleration-easing: var(--mdw-motion-deceleration-easing, cubic-bezier(0.0, 0.0, 0.2, 1));
-  --mdw-state__pressed-opacity: 0; /* Use ripple for pressed state instead */
 
   --size: 0;
   position: absolute;
+  /* stylelint-disable-next-line liberty/use-logical-spec */
   top: 50%;
+  /* stylelint-disable-next-line liberty/use-logical-spec */
   left: 50%;
 
   display: block;
@@ -24,12 +25,13 @@
   -webkit-tap-highlight-color: transparent;
 
   opacity: 0.12;
-  transform: translateX(-50%) translateY(-50%) scale(0);
+  transform: translateX(-50%) translateY(-50%) scale(1);
 
   background-color: currentColor;
   border-radius: 50%;
 
-  box-shadow: 0 0 calc(0.10 * var(--size)) calc(0.10 * var(--size)) currentColor; /* Adds feathered appeared to ripple */
+  /* Adds feathered appearance to ripple */
+  box-shadow: 0 0 calc(0.10 * var(--size)) calc(0.10 * var(--size)) currentColor;
 
   transition-delay: 0s;
   transition-duration: var(--mdw-ripple-simple-duration);
@@ -42,7 +44,7 @@
   animation-direction: normal;
   animation-fill-mode: forwards;
   /* stylelint-disable-next-line liberty/use-logical-spec */
-  will-change: transform, opacity, box-shadow;
+  will-change: transform, opacity, top, left, box-shadow;
 
   aspect-ratio: 1/1;
 }
@@ -56,26 +58,17 @@
 }
 
 :host([ripple-state="complete"]) {
-  animation-name: none;
+  animation-name: none, ripple-fade-out;
+  animation-duration: 0s;
 }
 
 @keyframes ripple-fade-in {
   from {
     transform: translateX(-50%) translateY(-50%) scale(0);
   }
-
-  to {
-    transform: translateX(-50%) translateY(-50%) scale(1);
-  }
 }
 
 @keyframes ripple-fade-out {
-  from {
-    transform: translateX(-50%) translateY(-50%) scale(1);
-  }
 
-  to {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-50%) scale(1);
-  }
+  to { opacity: 0; }
 }

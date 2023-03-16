@@ -192,6 +192,17 @@ export default class CustomElement extends ICustomElement {
   }
 
   /**
+   * Extends base class into a new class.
+   * Use to avoid mutating base class.
+   * TODO: Add constructor arguments typing
+   * @type {typeof ICustomElement.tsClassFix}
+   */
+  static tsClassFix() {
+    // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  /**
    * Assigns static values to class
    * @type {typeof ICustomElement.setStatic}
    */
@@ -545,9 +556,6 @@ export default class CustomElement extends ICustomElement {
   /** @type {Composition<?>} */
   #composition;
 
-  /** @type {this} */
-  #superProxy = null;
-
   /** @type {Map<string,null|[string,any]>} */
   _propAttributeCache;
 
@@ -560,12 +568,6 @@ export default class CustomElement extends ICustomElement {
 
     if (CustomElement.supportsElementInternals) {
       this.elementInternals = this.attachInternals();
-    }
-
-    if (CustomElement.supportsElementInternalsRole) {
-      this.elementInternals.role = this.ariaRole;
-    } else if (!this.hasAttribute('role')) {
-      this.setAttribute('role', this.ariaRole);
     }
 
     this.attachShadow({ mode: 'open', delegatesFocus: this.delegatesFocus });
@@ -797,21 +799,6 @@ export default class CustomElement extends ICustomElement {
     return this.#composition;
   }
 
-  /** @return {this} */
-
-  get super() {
-    // eslint-disable-next-line no-return-assign
-    return (this.#superProxy ??= new Proxy(superOf(this), {
-      get: (target, prop) => {
-        const value = target[prop];
-        if (typeof value === 'function') {
-          return value.bind(this);
-        }
-        return value;
-      },
-    }));
-  }
-
   connectedCallback() {
     for (const callbacks of this.static._onConnectedCallbacks) {
       callbacks.call(this, this.callbackArguments);
@@ -825,5 +812,4 @@ export default class CustomElement extends ICustomElement {
   }
 }
 
-CustomElement.prototype.ariaRole = 'none';
 CustomElement.prototype.delegatesFocus = false;

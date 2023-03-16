@@ -75,6 +75,7 @@ export default function TextFieldMixin(Base) {
         labelElement.setAttribute('label', '{label}');
         labelElement.setAttribute('shape-top', inline(({ shapeTop, filled }) => shapeTop || filled));
         labelElement.append(html`
+          ${state}
           ${outline}
           <mdw-icon _if={icon} id=icon aria-hidden=true disabled={disabledState}>{icon}</mdw-icon>
           <span _if={inputPrefix} class=inline id=prefix aria-hidden=true focused={focusedState} populated={populatedState}>{inputPrefix}</span>

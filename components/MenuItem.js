@@ -6,7 +6,7 @@ import './Icon.js';
 import ListOption from './ListOption.js';
 import styles from './MenuItem.css' assert { type: 'css' };
 
-export default ListOption
+export default class MenuItem extends ListOption
   .mixin(FormAssociatedMixin)
   .extend()
   .set({
@@ -59,10 +59,6 @@ export default ListOption
     },
   })
   .overrides({
-    formResetCallback() {
-      this._selected = this.defaultSelected;
-      this.super.formResetCallback();
-    },
     formIPCEvent(event) {
       if (event.target instanceof HTMLFormElement && event.target !== this.form) {
         console.warn('Control.formIPCEvent: Abort from wrong form');
@@ -195,10 +191,9 @@ export default ListOption
       }));
 
       // MenuItems use checked instead of selected as in list items.
-      anchor.removeAttribute('aria-selected');
-      anchor.setAttribute('aria-checked', '{computeAriaSelected}');
+      anchor.setAttribute('ariaChecked', anchor.getAttribute('aria-selected'));
 
-      anchor.prepend(html`
+      anchor.after(html`
         <mdw-icon id=selection
           _if=${({ checkbox, radio }) => checkbox ?? radio ?? false}
           class=${({ checkbox, radio }) => checkbox || radio || 'leading'}
@@ -211,4 +206,10 @@ export default ListOption
       trailingIcon.textContent = '{computeTrailingIcon}';
     },
   })
-  .autoRegister('mdw-menu-item');
+  .autoRegister('mdw-menu-item')
+  .tsClassFix() {
+  formResetCallback() {
+    this._selected = this.defaultSelected;
+    super.formResetCallback();
+  }
+}

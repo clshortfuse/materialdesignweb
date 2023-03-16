@@ -51,16 +51,16 @@ export default Button
   })
   .on({
     composed() {
-      const { slot, shape, tooltipSlot, icon, surfaceTint, control, outline } = this.refs;
+      const { slot, shape, tooltipSlot, icon, label, surfaceTint, control, outline } = this.refs;
+      shape.classList.add('colored');
+      label.classList.add('colored');
+      for (const el of [shape, label, icon]) {
+        el.setAttribute('toggle', '{isToggle}');
+        el.setAttribute('selected', '{checked}');
+      }
       slot.remove();
       icon.removeAttribute('_if');
       tooltipSlot.removeAttribute('name');
-      shape.setAttribute('toggle', '{isToggle}');
-      shape.setAttribute('selected', '{checked}');
-
-      // icon.append(slot);
-      icon.setAttribute('toggle', '{isToggle}');
-      icon.setAttribute('selected', '{checked}');
 
       surfaceTint.remove();
 

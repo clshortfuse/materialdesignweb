@@ -38,15 +38,18 @@
   padding: 48px;
 
   opacity: 0;
+
+  /* visiblity:hidden still registers events, hide from pointer with scale(0) */
+  transform: scale(0);
   visibility: hidden;
   z-index: 24;
 
   background-color: transparent;
 
-  transition: none;
-  transition-duration: motion.$fadeOutDuration, 200ms;
-  transition-property: opacity, padding;
-  transition-timing-function: motion.$accelerateEasing, linear;
+  transition-delay: 0s, 150ms, 150ms;
+  transition-duration: 150ms, 0s, 0s;
+  transition-property: opacity, transform, visibility;
+  transition-timing-function: ease-out;
   will-change: opacity;
 }
 
@@ -66,11 +69,13 @@
   pointer-events: auto;
 
   opacity: 1;
+
+  transform: none;
   visibility: visible;
 
-  transition-duration: var(--mdw-dialog__fade-in-duration);
-  transition-property: opacity;
-  transition-timing-function: var(--mdw-dialog__deceleration-easing);
+  transition-delay: 0s;
+  transition-duration: 200ms, 0s, 0s;
+  transition-timing-function: ease-in;
 }
 
 #scrim {
@@ -126,7 +131,11 @@
   position: relative;
 
   display: flex;
+  align-items: flex-start;
   flex-direction: column;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+  overscroll-behavior: contain;
 
   box-sizing: border-box;
   max-block-size: 100%;
@@ -134,32 +143,16 @@
   max-inline-size: 560px;
   flex-shrink: 1;
 
+  padding-block-start: 8px;
+
   transform: scale(1);
   transform-origin: bottom center;
   z-index: 24;
 
   will-change: display, transform;
-
 }
 
-#surface::part(shape) {
-  /* font: var(--mdw-typescale__body-medium__font); */
-  /* letter-spacing: var(--mdw-typescale__body-medium__letter-spacing); */
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: none;
-  overscroll-behavior: contain;
-
-  padding-block-start: 8px;
-
-  /* background-color: rgb(var(--mdw-color__surface)); */
-  /* color: rgb(var(--mdw-color__on-surface-variant)); */
-}
-
-#surface[icon]::part(shape) {
+#surface[icon] {
   align-items: center;
 }
 

@@ -21,17 +21,11 @@ export default function ShapeMixin(Base) {
       styles,
     )
     .html/* html */`
-      <div id=shape part=shape class=shape elevated={elevated} shape-top={shapeTop} shape-bottom={shapeBottom} shape-start={shapeStart} shape-end={shapeEnd} shape-style={shapeStyle}>
+      <div id=shape part=shape class=shape elevated={elevated} shape-top={shapeTop} shape-bottom={shapeBottom} shape-start={shapeStart} shape-end={shapeEnd} shape-style={shapeStyle} color={color} outlined={outlined} disabled={disabledState}>
         <div id=outline _if={outlined} class=outline disabled={disabledState} focused={focusedState} pressed={pressedState} hovered={hoveredState}>
           <div id=outline-left class="outline-section outline-left"></div>
           <div id=outline-right class="outline-section outline-right"></div>
         </div>
       </div>
-    `
-    .on({
-      composed({ composition }) {
-        // Remap as append root
-        composition.fragmentRoot = this.refs.shape;
-      },
-    });
+    `;
 }

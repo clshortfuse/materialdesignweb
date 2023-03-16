@@ -1,15 +1,21 @@
-import Layout from './Layout.js';
+import CustomElement from '../core/CustomElement.js';
+import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
+import FlexableMixin from '../mixins/FlexableMixin.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
-export default Layout
+export default CustomElement
+  .mixin(ThemableMixin)
+  .mixin(FlexableMixin)
+  .mixin(AriaReflectorMixin)
   .extend()
   .set({
-    ariaRole: 'tabpanel',
+    _ariaRole: 'tabpanel',
   })
   .observe({
     active: {
       type: 'boolean',
       changedCallback(oldValue, newValue) {
-        this.setAttribute('aria-expanded', newValue ? 'true' : 'false');
+        this.updateAriaProperty('ariaHidden', newValue ? 'false' : 'true');
       },
     },
     peeking: 'boolean',

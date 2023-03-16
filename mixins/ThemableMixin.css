@@ -43,7 +43,7 @@
   --mdw-ink: var(--mdw-color__on-background);
 }
 
-:host([color|="surface"]) {
+:host([color^="surface"]) {
   --mdw-bg: var(--mdw-color__surface);
   --mdw-ink: var(--mdw-color__on-surface);
 }
@@ -53,16 +53,13 @@
   --mdw-ink: var(--mdw-color__primary);
 }
 
-:host([color="surface-variant"]) {
+:host([color$="variant"]) {
   --mdw-bg: var(--mdw-color__surface-variant);
   --mdw-ink: var(--mdw-color__on-surface-variant);
 }
 
-:host([color|="inverse"]) {
+:host([color^="inverse"]) {
   --mdw-bg: var(--mdw-color__inverse-surface);
-}
-
-:host([color="inverse-surface"]) {
   --mdw-ink: var(--mdw-color__inverse-on-surface);
 }
 
@@ -83,12 +80,24 @@
   --mdw-ink: var(--mdw-color__primary);
 }
 
+:host([ink="on-primary-container"]) {
+  --mdw-ink: var(--mdw-color__on-primary-container);
+}
+
 :host([ink="secondary"]) {
   --mdw-ink: var(--mdw-color__secondary);
 }
 
+:host([ink="on-secondary-container"]) {
+  --mdw-ink: var(--mdw-color__on-secondary-container);
+}
+
 :host([ink="tertiary"]) {
   --mdw-ink: var(--mdw-color__tertiary);
+}
+
+:host([ink="on-tertiary-container"]) {
+  --mdw-ink: var(--mdw-color__on-tertiary-container);
 }
 
 :host([ink="error"]) {
@@ -101,6 +110,10 @@
 
 :host([ink="on-surface"]) {
   --mdw-ink: var(--mdw-color__on-surface);
+}
+
+:host([ink="surface-variant"]) {
+  --mdw-ink: var(--mdw-color__surface-variant);
 }
 
 :host([ink="on-surface-variant"]) {
@@ -117,7 +130,7 @@
 
 :host([type-style|="display"]) {
   --mdw-type__font: var(--mdw-typescale__display-large__font);
-  --mdw-type__letter-spacing: var(--mdw-typescale__display-large__font);
+  --mdw-type__letter-spacing: var(--mdw-typescale__display-large__letter-spacing);
 }
 
 :host([type-style="display-medium"]) {

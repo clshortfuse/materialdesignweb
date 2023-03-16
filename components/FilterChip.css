@@ -5,6 +5,12 @@
 :host {
   --mdw-ink: var(--mdw-color__on-secondary-container);
   --mdw-bg: var(--mdw-color__secondary-container);
+  gap: 8px;
+
+  color: rgb(var(--mdw-color__on-surface-variant));
+  padding-inline-start: max(4px, calc(8px + (var(--mdw-density) * 2px)));
+  padding-inline-end: max(12px, calc(16px + (var(--mdw-density) * 2px)));
+
 }
 
 :host(:focus) {
@@ -17,11 +23,10 @@
 
 #shape {
   background-color: transparent;
-  color: rgb(var(--mdw-color__on-surface-variant));
 }
 
-#shape:where([trailing-icon]) {
-  padding-inline: calc(8px + (var(--mdw-density) * 2px));
+:host(:where([trailing-icon],[dropdown],[trailing-src])) {
+  padding-inline-start: max(4px, calc(8px + (var(--mdw-density) * 2px)));
 }
 
 #shape[elevated] {
@@ -30,6 +35,9 @@
 
 #shape[selected] {
   background-color: rgb(var(--mdw-bg));
+}
+
+:host([selected]) {
   color: rgb(var(--mdw-ink));
 }
 

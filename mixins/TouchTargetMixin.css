@@ -14,11 +14,12 @@
 
   cursor: inherit;
 
-  transform: translateX(-50%) translateY(-50%);
-  visibility: visible;
-
   /* box-sizing: border-box; */
   /* border: solid 1px magenta; */
+  pointer-events: auto;
+
+  transform: translateX(-50%) translateY(-50%);
+  visibility: visible;
   z-index: 1;
 
   border-radius: inherit;

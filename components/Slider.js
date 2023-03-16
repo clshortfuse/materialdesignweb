@@ -1,4 +1,4 @@
-import Inline from '../layout/Inline.js';
+import CustomElement from '../core/CustomElement.js';
 import InputMixin from '../mixins/InputMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 
@@ -29,7 +29,7 @@ function valueAsFraction(value, min, max) {
   return (nValue - nMin) / (nMax - nMin);
 }
 
-export default Inline
+export default CustomElement
   .mixin(StateMixin)
   .mixin(InputMixin)
   .extend()
@@ -196,7 +196,6 @@ export default Inline
       `);
       label.removeAttribute('aria-labelledby');
       control.setAttribute('type', 'range');
-      slot.remove();
     },
   })
   .on('valueChanged', (oldValue, newValue, element) => {

@@ -6,11 +6,15 @@ export default CustomElement
   .mixin(ThemableMixin)
   .mixin(ShapeMixin)
   .css/* css */`
-    #shape {
-      display: block;
+    :host {
+      position: relative;
+    }
+    #shape[color] {
       background-color: rgb(var(--mdw-bg));
+    }
+    :host(:where([ink],[color])) {
       color: rgb(var(--mdw-ink));
     }
   `
-  .html/* html */`<slot id=slot ink={ink} color={color} type-style={typeStyle}></slot>`
+  .html/* html */`<slot id=slot></slot>`
   .autoRegister('mdw-shape');

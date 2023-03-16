@@ -1,6 +1,7 @@
 // https://w3c.github.io/aria/#status
 
 import { EVENT_HANDLER_TYPE } from '../core/customTypes.js';
+import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import DensityMixin from '../mixins/DensityMixin.js';
 
 import './Button.js';
@@ -11,9 +12,10 @@ import Surface from './Surface.js';
 
 export default Surface
   .mixin(DensityMixin)
+  .mixin(AriaReflectorMixin)
   .extend()
   .set({
-    ariaRole: 'status',
+    _ariaRole: 'status',
     elevated: true,
   })
   .observe({
@@ -47,10 +49,8 @@ export default Surface
   })
   .html/* html */`
     <div id=content></div>
-    <div id=buttons>
-      <mdw-button _if={action} id=action class=button ink={actionInk} type-style={actionTypeStyle}>{action}</mdw-button>
-      <mdw-icon-button _if={closeButton} id=close class=button icon={closeIcon} ink={closeInk}>Close</mdw-button>
-    </div>
+    <mdw-button _if={action} id=action class=button ink={actionInk} type-style={actionTypeStyle}>{action}</mdw-button>
+    <mdw-icon-button _if={closeButton} id=close class=button icon={closeIcon} ink={closeInk}>Close</mdw-button>
   `
   .on({
     composed() {

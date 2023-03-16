@@ -1,3 +1,7 @@
+:host {
+  --mdw-state__pressed-opacity: 0;
+}
+
 #ripple-container {
   position: absolute;
   inset: 0;

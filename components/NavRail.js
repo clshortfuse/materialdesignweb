@@ -9,9 +9,9 @@ export default Nav
   .css(styles)
   .on({
     composed({ html }) {
-      const { shape, slot } = this.refs;
-      shape.prepend(html`<slot id=start name=start></slot>`);
-      shape.append(html`<div id=group>${slot}</div>`);
+      const { slot } = this.refs;
+      slot.before(html`<slot id=start name=start></slot>`);
+      slot.setAttribute('align', '{align}');
     },
   })
   .autoRegister('mdw-nav-rail');

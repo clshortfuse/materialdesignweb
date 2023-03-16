@@ -2,11 +2,16 @@
 
 :host {
   --mdw-shape__size: var(--mdw-shape__small);
+  --mdw-surface__shadow: var(--mdw-surface__shadow__3);
   --mdw-surface__tint: var(--mdw-surface__tint__3);
   --mdw-bg: var(--mdw-color__inverse-surface);
   --mdw-ink: var(--mdw-color__inverse-on-surface);
 
   --mdw-type__line-height: var(--mdw-typescale__body-medium__line-height);
+  display: flex;
+  align-items: center;
+
+  padding-inline: 16px;
 
   opacity: 0;
   transform: translateY(25%) scaleY(0.25);
@@ -20,19 +25,22 @@
   transition: transform 200ms, opacity 200ms, visibility 200ms;
 }
 
+:host([action]) {
+  gap: 8px;
+
+  padding-inline-end: 8px;
+}
+
+:host([close-button]) {
+  gap: 4px;
+
+  padding-inline-end: 4px;
+}
+
 :host([open]) {
   opacity: 1;
   transform: scale(1);
   visibility: visible;
-}
-
-#shape {
-  display: flex;
-  align-items: stretch;
-
-  gap: 8px;
-
-  padding-inline: 16px 0;
 }
 
 #content {
@@ -41,14 +49,6 @@
 
   flex: 1;
   padding-block: max(2px, calc(14px + (var(--mdw-density) * 2px)));
-}
-
-#buttons {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  min-inline-size: 8px;
 }
 
 #slot {
@@ -77,12 +77,4 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
-}
-
-#button {
-  flex:none;
-}
-
-.button:last-child {
-  padding-inline-end: 8px;
 }

@@ -2,31 +2,34 @@
 
 :host {
   --mdw-ink: var(--mdw-color__primary);
-  --mdw-radio__size: 20px;
-  --mdw-radio__state-size: 40px;
-  --mdw-radio__margin: calc((var(--mdw-radio__state-size) - var(--mdw-radio__size)) / 2);
   --mdw-shape__size: var(--mdw-shape__full);
-
-  gap: var(--mdw-radio__gap, calc(var(--mdw-radio__margin)));
-
-  direction: var(--mdw-radio__direction, initial);
-}
-
-#label {
   display: inline-grid;
   align-items: center;
-  gap: inherit;
+
+  gap: 12px;
   grid-auto-flow: column;
-  grid-template-rows: minmax(var(--mdw-radio__size), min-content);
-  grid-template-columns: var(--mdw-radio__size);
+  grid-template-rows: minmax(20px, auto);
+  grid-template-columns: 20px;
 
   cursor: pointer;
+
+  direction: var(--mdw-radio__direction, initial);
 
   transition: none 100ms cubic-bezier(0.4, 0.0, 1, 1);
 }
 
 #control {
-  line-height: 0;
+  grid-column: 1/1;
+
+  cursor: inherit;
+}
+
+#label {
+  cursor: inherit;
+}
+
+#label[disabled] {
+  cursor: not-allowed;
 }
 
 #state {
@@ -38,15 +41,15 @@
   inset-block-start: 50%;
   inset-inline-start: 50%;
 
-  block-size: var(--mdw-radio__state-size);
-  inline-size: var(--mdw-radio__state-size);
+  block-size: 40px;
+  inline-size: 40px;
 
   transform: translateX(-50%) translateY(-50%);
 
   border-radius: 50%;
 }
 
-#label[disabled] {
+:host([disabled]) {
   cursor: not-allowed;
 
   opacity: 0.38;

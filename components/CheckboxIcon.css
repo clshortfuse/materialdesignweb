@@ -22,6 +22,10 @@
   --mdw-shape__size: inherit;
   position: absolute;
   inset: 0;
+
+  z-index: auto;
+
+  background-color: transparent;
 }
 
 #icon {
@@ -33,7 +37,7 @@
   background-color: rgb(var(--mdw-bg));
   color: rgb(var(--mdw-ink));
 
-  transition-duration: 100ms;
+  transition-duration: 200ms;
   transition-property: opacity, background-color, color;
   will-change: opacity;
 }
@@ -47,7 +51,7 @@
 
   color: rgb(var(--mdw-color__on-surface));
 
-  transition-duration: 100ms;
+  transition-duration: 200ms;
   transition-property: opacity, background-color, color;
   will-change: opacity;
 }

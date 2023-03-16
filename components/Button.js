@@ -7,25 +7,24 @@ import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
-import TouchTargetMixin from '../mixins/TouchTargetMixin.js';
 
 import styles from './Button.css' assert { type: 'css' };
 
 export default CustomElement
   .mixin(ThemableMixin)
   .mixin(DensityMixin)
-  .mixin(InputMixin) // Label as root
-  .mixin(SurfaceMixin) // Surface as root
-  .mixin(ShapeMixin) // Surface as root
+  .mixin(SurfaceMixin)
+  .mixin(ShapeMixin)
   .mixin(StateMixin)
   .mixin(RippleMixin)
-  .mixin(TouchTargetMixin)
+  .mixin(InputMixin)
   .extend()
   .define({
     stateTargetElement() { return this.refs.control; },
   })
   .set({
     stateLayer: true,
+    delegatesFocus: true,
   })
   .observe({
     type: { value: 'button' },
@@ -50,32 +49,18 @@ export default CustomElement
   `
   .on({
     composed() {
-      const { label, surfaceTint, outline, surface, control, touchTarget, shape } = this.refs;
-      label.classList.add('surface');
+      const {
+        shape, surfaceTint, state, rippleContainer,
+        surface, control, label, slot,
+        icon,
+      } = this.refs;
+      surface.append(shape);
+      shape.append(state, rippleContainer, surfaceTint);
+      label.append(icon, slot);
 
-      label.setAttribute('raised', '{_raised}');
-      label.setAttribute('hovered', '{hoveredState}');
-      label.setAttribute('pressed', '{pressedState}');
-      label.append(shape);
-
-      outline.before(surfaceTint);
-
-      surface.remove();
-
-      // slot.before(icon);
-      // slot.setAttribute('disabled', '{disabledState}');
-      shape.setAttribute('ink', '{ink}');
-      shape.setAttribute('type-style', '{typeStyle}');
-      shape.setAttribute('icon', '{hasIcon}');
-      shape.setAttribute('color', '{color}');
-      // label.setAttribute('elevated', '{elevated}');
       shape.setAttribute('filled', '{filled}');
-      shape.setAttribute('disabled', '{disabledState}');
-      shape.setAttribute('outlined', '{outlined}');
       control.setAttribute('role', 'button');
       control.setAttribute('type', 'button');
-      shape.before(touchTarget);
-      touchTarget.append(control);
     },
   })
   .childEvents({

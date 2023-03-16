@@ -3,20 +3,21 @@
 :host {
   --mdw-ink: var(--mdw-color__on-primary);
   --mdw-bg: var(--mdw-color__primary);
-  --mdw-shape__size: var(--mdw-shape__full);
+  position: relative;
 
-  flex-direction: var(--mdw-switch__direction, row);
-  gap: var(--mdw-switch__gap, 8px);
+  display: inline-flex;
+  align-items: center;
+
+  gap: 12px;
 
 }
 
-#label {
-  position: relative;
+#touch-target {
+  z-index: 0;
+}
 
-  display: flex;
-  align-items: center;
-  flex-direction: inherit;
-  gap: inherit;
+#label {
+  display: contents;
 
   cursor: pointer;
 
@@ -26,155 +27,31 @@
 /** Switch **/
 
 #switch {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-
-  box-sizing: border-box;
-  block-size: 32px;
-  inline-size: 52px;
-}
-
-/** Track **/
-
-#track{
-  position: absolute;
-  inset: 0;
-
+  flex:1;
+  --mdw-bg: inherit;
+  --mdw-ink: inherit;
   pointer-events: none;
-
-  z-index: 0;
-
-  background-color: rgb(var(--mdw-color__surface-variant));
 }
 
-#track[selected] {
-  background-color: rgb(var(--mdw-bg));
-}
 
-/** Track Outline **/
-
-#outline {
-  filter:
-    drop-shadow(1px 0px 0px currentColor)
-    drop-shadow(0px 1px 0px currentColor)
-    drop-shadow(-1px 0px 0px currentColor)
-    drop-shadow(0px -1px 0px currentColor);
-}
-
-/* #outline[selected] {
-  color: transparent;
-} */
-
-/** Thumb **/
-
-#thumb {
-  --x: 16px;
-  --scale: calc(16/24);
-  position: absolute;
-  inset-inline-start: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  /* Sized to state layer */
-  block-size: 40px;
-  inline-size: 40px;
-
-  transform: translateX(calc(var(--mdw-dir, 1) * -50%)) translateX(calc(var(--mdw-dir,1) * var(--x)));
-
-  color: rgb(var(--mdw-color__outline));
-}
-
-:dir(rtl) #thumb {
-  --mdw-dir: -1;
-}
-
-#thumb[selected] {
-  --scale: calc(24/24);
-  --x: calc(52px - 16px);
-  color: rgb(var(--mdw-ink));
-}
-
-#thumb[pressed]:not([disabled]) {
-  --scale: calc(28/24);
-}
-
-/** Thumb Shape **/
-
-#thumb-shape {
-  --mdw-shape__size: inherit;
-
-  position: absolute;
-
-  block-size: 24px;
-  inline-size: 24px;
-
-  transform: scale(var(--scale));
-  z-index: 0;
-
-  background-color: currentColor;
-  /* border-radius: 50%; */
-}
-
-#thumb-shape[icon] {
-  transform: scale(max(1, var(--scale)));
-}
-
-/** Thumb Icons **/
-
-.icon {
-  position: absolute;
-
-  opacity: 0;
-  transform: scale(max(1, var(--scale)));
-
-  font-size: 18px;
-
-  /* border-radius: 50%; */
-}
-
-.icon:not([src]):empty {
-  display: none;
-}
-
-#selected-icon {
-  color: rgb(var(--mdw-bg));
-}
-
-#icon, #unselected-icon {
-  --mdw-icon__font-variation-settings: 'FILL' 0;
-  opacity: 1;
-
-  color: rgb(var(--mdw-color__surface-variant));
-}
-
-#unselected-icon[selected] {
-  opacity: 0;
-}
-
-#selected-icon[selected] {
-  opacity: 1;
-}
-
-#icon[selected] {
-  --mdw-icon__font-variation-settings: 'FILL' 1;
-  color: rgb(var(--mdw-bg));
-}
 
 /** State **/
 
 #state {
   position: absolute;
-  inset-inline-start: 0;
+  inset: 50%;
 
-  block-size: 40px;
-  inline-size: 40px;
+  block-size: 100%;
+  min-block-size: 40px;
+  inline-size: 100%;
+  min-inline-size: 40px;
+
+  transform: translateX(-50%) translateY(-50%);
 
   border-radius: 50%;
+  pointer-events: none;
 }
+
 
 /** Disabled **/
 
@@ -184,32 +61,4 @@
   cursor: not-allowed;
 
   opacity: 0.38;
-}
-
-#outline:is([pressed],[focused]) {
-  color: rgb(var(--mdw-color__outline));
-}
-
-#outline[disabled] {
-  color: rgb(var(--mdw-color__on-surface));
-}
-
-#thumb[disabled] {
-  color: rgb(var(--mdw-color__on-surface));
-}
-
-#track[disabled] {
-  opacity: calc(0.12/0.38);
-
-  background-color: rgb(var(--mdw-color__surface-variant));
-}
-
-#track[disabled][selected] {
-  background-color: rgb(var(--mdw-color__on-surface));
-}
-
-/** Outline Selected (Enabled/Disabled) */
-
-#outline[selected] {
-  color: transparent;
 }

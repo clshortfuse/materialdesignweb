@@ -7,14 +7,22 @@
 
   --mdw-surface__shadow__resting: none;
   --mdw-surface__shadow__raised: var(--mdw-surface__shadow__resting);
+  /* padding-inline: 12px; */
 
+  --mdw-bg: var(--mdw-color__surface);
+  --mdw-ink: var(--mdw-color__on-surface);
   position: relative;
 
-  display: inline-block;
-  align-items: flex-start;
+  display: block;
 
-  box-sizing: border-box;
-  /* padding-inline: 12px; */
+  color: rgb(var(--mdw-ink));
+
+  font: var(--mdw-type__font);
+  letter-spacing: var(--mdw-type__letter-spacing);
+}
+
+#shape:is([elevated],[filled]) {
+  background-color: rgb(var(--mdw-bg));
 }
 
 :host(:where([filled])) {
@@ -48,13 +56,21 @@
 }
 
 #shape[disabled] {
-  cursor: not-allowed;
 
   /* Works on images */
   filter: grayscale();
 
-  opacity: 0.38;
+  color: rgb(var(--mdw-color__on-surface));
+}
 
+:host([disabled]) {
+  cursor: not-allowed;
+
+  filter: grayscale();
+  opacity: 0.38;
+}
+
+#slot[disabled] {
   color: rgb(var(--mdw-color__on-surface));
 }
 
@@ -80,14 +96,14 @@
 
 #action {
   --mdw-ink: inherit;
-  --mdw-shape__size: 0;
+  --mdw-shape__size: inherit;
 
   position: absolute;
   inset: 0;
 
   padding: 0;
 
-  z-index: 1;
+  z-index: 0;
 
   color: inherit
 }

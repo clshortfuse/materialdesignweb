@@ -5,13 +5,13 @@ import styles from './ListOption.css' assert {type: 'css'};
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#htmloptionelement
 
-/** @implements {HTMLOptionElement} */
 export default class ListOption extends ListItem
   .extend()
   .setStatic({
     formAssociated: true,
   })
   .set({
+    _ariaRole: 'none',
     delegatesFocus: true,
     _index: -1,
     _selectedDirty: false,
@@ -73,11 +73,23 @@ export default class ListOption extends ListItem
   .css(styles)
   .on({
     composed({ inline }) {
-      const { anchor, state } = this.refs;
+      const { anchor, state, content } = this.refs;
+
+      // Form Associated elements cannot receive focus unless using delegatesFocus
+      // Workaround by redirecting focus to an inner element
+      // Reuse HTMLAnchorElement with no HREF
+
       anchor.setAttribute('disabled', '{disabledState}');
       anchor.setAttribute('role', 'option');
       anchor.setAttribute('aria-disabled', inline(({ disabledState }) => `${disabledState}`));
       anchor.setAttribute('tabindex', '0');
+      anchor.setAttribute('aria-selected', inline(({ selected }) => `${selected}`));
+      anchor.setAttribute('selected', '{selected}');
+      anchor.removeAttribute('href');
+      anchor.removeAttribute('_if');
+
+      content.setAttribute('selected', '{selected}');
+
       state.setAttribute('state-disabled', 'focus');
     },
   }) {

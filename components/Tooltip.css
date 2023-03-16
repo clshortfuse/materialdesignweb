@@ -4,6 +4,14 @@
   --mdw-shape__size: var(--mdw-shape__extra-small);
   --mdw-ink: var(--mdw-color__on-surface-variant);
   --mdw-bg: var(--mdw-color__surface-variant);
+  display: block;
+  vertical-align: middle;
+
+  box-sizing: border-box;
+  /* stylelint-disable-next-line declaration-property-value-disallowed-list */
+  margin-inline: auto;
+  padding-block: 4px;
+  padding-inline: 8px;
 
   pointer-events: none;
 
@@ -15,19 +23,10 @@
   letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
 
   transition: transform 200ms, opacity 200ms;
+
 }
 
-#shape {
-  display: block;
-  vertical-align: middle;
-
-  box-sizing: border-box;
-  margin-inline: auto;
-  padding-block: 4px;
-  padding-inline: 8px;
-}
-
-#shape[touch] {
+:host([touch]) {
   padding-block: 6px;
   padding-inline: 16px;
 

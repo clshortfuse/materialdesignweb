@@ -38,8 +38,6 @@
   "sideEffects": [
     "./polyfills.js",
     "./components/*.js",
-    "./layout/*.js",
-    "./typography/*.js",
     "./utils/metadata.js",
     "./theming/loader.js",
     "./docs/demo/*.js"
@@ -60,17 +58,17 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-compat": "^4.0.2",
     "eslint-plugin-github": "^4.3.5",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsdoc": "^39.2.9",
     "eslint-plugin-sort-class-members": "^1.15.2",
     "eslint-plugin-unicorn": "^45.0.2",
     "http-server": "^14.1.1",
-    "stylelint": "^14.8.2",
-    "stylelint-no-unsupported-browser-features": "github:clshortfuse/stylelint-no-unsupported-browser-features",
-    "stylelint-order": "^5.0.0",
-    "stylelint-use-logical-spec": "^4.1.0",
+    "stylelint": "^15.2.0",
+    "stylelint-no-unsupported-browser-features": "github:clshortfuse/stylelint-no-unsupported-browser-features#0a51157",
+    "stylelint-order": "^6.0.2",
+    "stylelint-use-logical-spec": "^5.0.0",
     "tap": "^16.3.0",
-    "typescript": "^4.8.2",
+    "typescript": "^5.0.0-beta",
     "webdriverio": "^7.23.0"
   }
 }

@@ -51,9 +51,9 @@ export default function StateMixin(Base) {
         if (event.pointerType === 'touch') return;
         this._hovered = true;
         // Firefox lags a frame before reporting :hover
-        requestAnimationFrame(() => {
-          this._hovered = this.stateTargetElement.matches(':hover');
-        });
+        // requestAnimationFrame(() => {
+        //  this._hovered = this.stateTargetElement.matches(':hover');
+        // });
       },
       '~pointerdown'(event) {
         if (!event.isPrimary) return;

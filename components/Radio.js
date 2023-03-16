@@ -24,14 +24,14 @@ export default CustomElement
   .on({
     composed({ html }) {
       const { label, rippleContainer, state, control, touchTarget } = this.refs;
-      touchTarget.append(control);
       label.append(html`
         ${touchTarget}
+        ${control}
         <div id=radio errored={erroredState} selected={checked}>
           <mdw-radio-icon id=icon errored={erroredState} disabled={disabledState}
             selected={checked} focused={focusedState} hovered={hoveredState}></mdw-radio-icon>
-          ${rippleContainer}
           ${state}
+          ${rippleContainer}
         </div>
         <slot id=slot></slot>
       `);

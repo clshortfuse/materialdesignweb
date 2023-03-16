@@ -3,20 +3,17 @@
 :host {
   --mdw-shape__size: 8px;
   --mdw-ink: var(--mdw-color__on-surface);
-}
-
-:host(:where([suggestion])) {
-  --mdw-ink: var(--mdw-color__on-surface-variant);
-}
-
-#shape {
   padding-block: calc(4px + (var(--mdw-density) * 2px));
   padding-inline: calc(16px + (var(--mdw-density) * 2px));
 
   color: rgb(var(--mdw-ink));
 }
 
-#shape:where([icon]) {
+:host(:where([suggestion])) {
+  --mdw-ink: var(--mdw-color__on-surface-variant);
+}
+
+:host(:where([icon])) {
   gap: 8px;
 
   padding-inline: calc(8px + (var(--mdw-density) * 2px)) calc(16px + (var(--mdw-density) * 2px));

@@ -2,12 +2,14 @@
   --mdw-shape__size: 8px;
   --mdw-ink: var(--mdw-color__on-error);
   --mdw-bg: var(--mdw-color__error);
-}
+  position: relative;
 
-#shape {
   box-sizing: border-box;
-  min-inline-size: 16px;
+  min-block-size: var(--mdw-typescale__label-small__line-height);
+  min-inline-size: var(--mdw-typescale__label-small__line-height);
   padding-inline: max(4px, calc(4px + (var(--mdw-density) * 2px)));
+
+  color: rgb(var(--mdw-ink));
 
   font: var(--mdw-typescale__label-small__font);
   letter-spacing: var(--mdw-typescale__label-small__letter-spacing);
@@ -15,15 +17,16 @@
 }
 
 @supports (width: 1lh) {
-  #shape {
+  :host {
     min-inline-size: 1lh; /* Clamps to 1:1 */
-    padding-inline: max(4px, calc(0.25lh + (var(--mdw-density) * 2px)));
+    padding-inline: max(0.25lh, calc(0.25lh + (var(--mdw-density) * 2px)));
   }
 }
 
 :host(:empty) #shape {
-  --mdw-shape__size: 3px;
-  min-block-size: 6px;
-  min-inline-size: 6px;
-  padding-inline: 0;
+  inset: 5px;
+}
+
+#shape {
+  background-color: rgb(var(--mdw-bg));
 }

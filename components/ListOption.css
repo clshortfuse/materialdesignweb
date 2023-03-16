@@ -1,14 +1,30 @@
 :host {
   --mdw-bg: var(--mdw-color__secondary-container);
-  --mdw-ink: var(--mdw-color__on-secondary-container)
+  --mdw-ink: var(--mdw-color__on-secondary-container);
+}
+
+:host > * {
+  z-index: 1;
+}
+
+#content {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#content[selected] {
+  color: rgb(var(--mdw-ink));
 }
 
 #anchor {
   cursor: pointer;
+
+  z-index: 0;
 }
 
 #anchor[selected] {
   background-color: rgb(var(--mdw-bg));
+
   color: rgb(var(--mdw-ink));
 }
 
@@ -17,7 +33,3 @@
   pointer-events: none;
 }
 
-#content {
-  -webkit-user-select: none;
-  user-select: none;
-}

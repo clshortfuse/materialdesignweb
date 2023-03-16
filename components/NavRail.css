@@ -1,50 +1,47 @@
 /* https://m3.material.io/components/navigation-rail/specs */
 
 :host{
-  display: inline-block;
-}
-
-#shape {
-  display: grid;
-  align-items: stretch;
+  display: inline-grid;
+  align-content: flex-start;
   flex-direction: column;
-  grid-template-rows: minmax(auto, 1fr) minmax(0, auto) minmax(auto, 1fr);
-  grid-template-columns: minmax(80px, auto);
-  justify-items: center;
-
-  block-size: 100%;
-
-  min-inline-size: 80px;
-
-  background-color: rgb(var(--mdw-color__surface));
-  box-shadow: none;
+  grid-template-rows: auto minmax(0,1fr);
+  grid-template-columns: 80px;
+  justify-items: stretch;
 
   text-align: center;
-}
-
-:host([align="start"]) #shape {
-  grid-template-rows: min-content;
-}
-
-:host([align="end"]) #shape {
-  grid-template-rows: 1fr;
-}
-
-#group {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 12px;
-  overflow-x: hidden;
-  overflow-y: auto;
-
-  box-sizing: border-box;
-  inline-size: 100%;
-  min-inline-size: 56px;
 }
 
 #start {
   display: flex;
   align-items: center;
   flex-direction: column;
+  gap: 12px;
+
+  padding-block-start: 12px;
+
+}
+
+#slot {
+  align-self: center;
+
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  gap: 12px;
+  overflow-x: clip;
+  overflow-y: auto;
+
+  box-sizing: border-box;
+
+  inline-size: 100%;
+
+  padding-block: 12px;
+}
+
+#slot[align="start"] {
+  align-self: flex-start;
+}
+
+#slot[align="end"] {
+  align-self: flex-end;
 }

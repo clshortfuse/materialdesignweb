@@ -1,8 +1,10 @@
-import Block from '../layout/Block.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
+import Box from './Box.js';
 import styles from './Headline.css' assert { type: 'css' };
 
-export default Block
+export default Box
+  .mixin(ThemableMixin)
   .extend()
   .css(styles)
   .observe({
@@ -26,7 +28,6 @@ export default Block
       const { slot } = this.refs;
       slot.setAttribute('role', 'heading');
       slot.setAttribute('aria-level', '{computeAriaLevel}');
-      slot.setAttribute('type-style', '');
     },
   })
   .autoRegister('mdw-headline');

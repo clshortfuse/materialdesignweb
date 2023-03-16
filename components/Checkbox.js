@@ -38,15 +38,15 @@ export default CustomElement
   .on({
     composed({ html }) {
       const { label, control, state, rippleContainer, touchTarget } = this.refs;
-      touchTarget.append(control);
       label.append(html`
         ${touchTarget}
+        ${control}
         <div id=checkbox errored={erroredState} selected={checked}>
           <mdw-checkbox-icon id=icon errored={erroredState} disabled={disabledState}
             icon={_determinateIcon} selected={checked}>
           </mdw-checkbox-icon>
-          ${rippleContainer}
           ${state}
+          ${rippleContainer}
         </div>
         <slot id=slot></slot>
       `);

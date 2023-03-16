@@ -1,3 +1,4 @@
+import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
 
 import Nav from './Nav.js';
@@ -10,12 +11,17 @@ export default Nav
     _translateY: { type: 'float', empty: 0 },
     _transition: { empty: 'none' },
   })
-  .expressions({
-    computeNavStyle({ _translateY, _transition }) {
-      return `
-        transform: translateY(${_translateY}px);
-        transition: ${_transition};
-      `;
+  .observe({
+    _positioningStyle: {
+      ...ELEMENT_STYLER_TYPE,
+      get({ _translateY, _transition }) {
+        return {
+          styles: {
+            transform: `translateY(${_translateY}px)`,
+            transition: _transition,
+          },
+        };
+      },
     },
   })
   .methods({
@@ -30,8 +36,8 @@ export default Nav
       const shift = rate * delta;
 
       const bottom = this.getScrollingElementScrollHeight() - this.getScrollingElementClientHeight();
-      const breakpoint = bottom - this.refs.shape.scrollHeight;
-      let max = this.refs.shape.scrollHeight;
+      const breakpoint = bottom - this.scrollHeight;
+      let max = this.scrollHeight;
       if (newValue >= breakpoint) {
       // Scrolling to bottom always shows Nav Bar (ensures content isn't occluded)
         max -= (newValue - breakpoint);
@@ -49,7 +55,7 @@ export default Nav
       this.onScrollPositionYChange(this._scrollPositionY, this._scrollPositionY);
     },
     onScrollIdle() {
-      const max = this.refs.shape.scrollHeight;
+      const max = this.scrollHeight;
       const visibility = (max - this._translateY) / max;
       if (visibility <= 0) return;
       if (visibility >= 1) return;
@@ -65,9 +71,6 @@ export default Nav
   })
   .css(styles)
   .on({
-    composed() {
-      this.refs.shape.setAttribute('style', '{computeNavStyle}');
-    },
     connected() {
       if (this.hideOnScroll) {
         this.startScrollListener();
