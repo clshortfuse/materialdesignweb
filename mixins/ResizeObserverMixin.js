@@ -1,7 +1,7 @@
 const resizeObserver = new ResizeObserver((entries) => {
-  for (const { target } of entries) {
+  for (const entry of entries) {
     // @ts-ignore Skip cast
-    target.onResizeObserved();
+    entry.target.onResizeObserved(entry);
   }
 });
 
@@ -12,7 +12,8 @@ export default function ResizeObserverMixin(Base) {
   return Base
     .extend()
     .methods({
-      onResizeObserved() {
+      /** @param {ResizeObserverEntry} entry */
+      onResizeObserved(entry) {
         // Virtual function
       },
     })
