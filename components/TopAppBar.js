@@ -1,6 +1,7 @@
 import CustomElement from '../core/CustomElement.js';
 import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
 import AriaToolbarMixin from '../mixins/AriaToolbarMixin.js';
+import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
@@ -12,6 +13,7 @@ export default CustomElement
   .mixin(SurfaceMixin) // TopAppBars are non-shaped surfaces
   .mixin(AriaToolbarMixin)
   .mixin(ScrollListenerMixin)
+  .mixin(ResizeObserverMixin)
   .extend()
   .set({
     elevated: true,
@@ -32,6 +34,7 @@ export default CustomElement
     _headlineOpacity: { type: 'float', default: 0 },
     /** Convert to observable */
     ariaLabel: 'string',
+    color: { empty: 'surface' },
   })
   .observe({
     _scrollDirection: {
@@ -178,9 +181,12 @@ export default CustomElement
       },
     },
   })
-  .on('connected', ({ element }) => {
-    // @ts-ignore Skip cast
-    element.startScrollListener(element.refs.surface.offsetParent ?? window);
+  .overrides({
+    onResizeObserved(entry) {
+      this.startScrollListener(this.refs.surface.offsetParent ?? window);
+      this.unobserveResize();
+      this.observeResizeOnConnected = false;
+    },
   })
   .on('disconnected', ({ element }) => {
     element.clearScrollListener();

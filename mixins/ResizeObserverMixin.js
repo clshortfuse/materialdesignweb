@@ -11,18 +11,28 @@ const resizeObserver = new ResizeObserver((entries) => {
 export default function ResizeObserverMixin(Base) {
   return Base
     .extend()
+    .set({
+      observeResizeOnConnected: true,
+    })
     .methods({
       /** @param {ResizeObserverEntry} entry */
       onResizeObserved(entry) {
         // Virtual function
       },
+      observeResize() {
+        resizeObserver.observe(this);
+      },
+      unobserveResize() {
+        resizeObserver.unobserve(this);
+      },
     })
     .on({
       connected() {
-        resizeObserver.observe(this);
+        if (!this.observeResizeOnConnected) return;
+        this.observeResize();
       },
       disconnected() {
-        resizeObserver.unobserve(this);
+        this.unobserveResize();
       },
     });
 }
