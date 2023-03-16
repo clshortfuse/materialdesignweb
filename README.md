@@ -9,6 +9,15 @@ Material Design for Web
 
 A standards-focused, zero-dependency implemention of Material Design 3 (Material You).
 
+# Current status
+
+Working on:
+* Array rendering (sub templates)
+* * Nav Drawer list population
+* * Search results population
+* * Text Field Dropdown population
+* Cross-DOM-boundary custom colors
+
 # Demo
 
 https://rawcdn.githack.com/clshortfuse/materialdesignweb/3f03468/docs/
@@ -30,150 +39,129 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/3f03468/docs/
 * Unbundled: Chrome >=94
 * Bundled: >1% browsers *(polyfills not included)*
 
+# Legend
+
+* [:paintbrush:](## Background) - Background Theming
+* [:crayon:](## Ink) - Ink (Foreground) Theming	
+* [:o:](## Outline) - Outline
+* [:a:](## Font) - Font Theming	
+* [:large_blue_diamond:](## Shape) - Shape Size Theming
+* [:signal_strength:](## Density) - Density
+* [:arrow_up_down:](## Flexable) - Flexable layout
+* [:wheelchair:](## ARIA) - ARIA Role
+  
+* [:heavy_check_mark:](## Ready) - Ready
+* [:warning:](## Issues) - Issues
+* [:construction:](## Under Construction) - Under Construction
+* [:memo:](## Planned) - Planned
+* [:grey_question:](## Unknown) - Unknown
+* [:skull:](## Abandoned) - Abandoned
+
 # Components
 
-| Component                                                    | HTML                                           | Implements                                                         | Status  |
-| :----------------------------------------------------------- | :--------------------------------------------- | :----------------------------------------------------------------- | :-----: |
-| [Badge](components/Badge.js)                                 | `<mdw-badge>`                                  | `<div>`                                                            |  beta   |
-| [Bottom App Bar](components/BottomAppBar.js)                 | `<mdw-bottom-app-bar>`                         | `<menu>`                                                           |  beta   |
-| Bottom Sheet                                                 |                                                |                                                                    | planned |
-| [Button: Elevated](components/Button.md)                     | `<mdw-button elevated>`                        | `<input type=button>`                                              |  beta   |
-| [Button: Filled](components/Button.md)                       | `<mdw-button filled>`                          | `<input type=button>`                                              |  beta   |
-| [Button: Filled Tonal](components/Button.md)                 | `<mdw-button filled=tonal>`                    | `<input type=button>`                                              |  beta   |
-| [Button: Outlined](components/Button.md)                     | `<mdw-button outlined>`                        | `<input type=button>`                                              |  beta   |
-| [Button: Text](components/Button.md)                         | `<mdw-button>`                                 | `<input type=button>`                                              |  beta   |
-| [FAB](components/Fab.js)                                     | `<mdw-fab>`                                    | `<input type=button>`                                              |  beta   |
-| [FAB: Extended](components/Fab.js)                           | `<mdw-extended-fab>`                           | `<input type=button>`                                              |  beta   |
-| [Icon Button: Filled](components/IconButton.js)              | `<mdw-icon-button filled>`                     | `<input type=button>`                                              |  beta   |
-| [Icon Button: Filled Toggle](components/IconButton.js)       | `<mdw-icon-button filled type=checkbox>`       | `<input type=checkbox>`                                            |  beta   |
-| [Icon Button: Filled Tonal](components/IconButton.js)        | `<mdw-icon-button filled=tonal>`               | `<input type=button>`                                              |  beta   |
-| [Icon Button: Filled Tonal Toggle](components/Iconbutton.js) | `<mdw-icon-button filled=tonal type=checkbox>` | `<input type=checkbox>`                                            |  beta   |
-| [Icon Button: Outlined](components/IconButton.js)            | `<mdw-icon-button outlined>`                   | `<input type=button>`                                              |  beta   |
-| [Icon Button: Outlined Toggle](components/IconButton.js)     | `<mdw-icon-button outlined type=checkbox>`     | `<input type=checkbox>`                                            |  beta   |
-| [Icon Button: Standard](components/IconButton.js)            | `<mdw-icon-button>`                            | `<input type=button>`                                              |  beta   |
-| [Icon Button: Standard Toggle](components/IconButton.js)     | `<mdw-icon-button type=checkbox>`              | `<input type=checkbox>`                                            |  beta   |
-| [Segmented Button](components/SegmentedButton.js)            | `<mdw-segmented-button>`                       | `<input type=checkbox>` `<input type=radio>`                       |  beta   |
-| [Segmented Button Group](components/SegmentedButton.js)      | `<mdw-segmented-button-group>`                 | `<menu>`                                                           |  beta   |
-| [Card: Elevated](components/Card.js)                         | `<mdw-card elevated>`                          | `<figure>`                                                         |  beta   |
-| [Card: Filled](components/Card.js)                           | `<mdw-card filled>`                            | `<figure>`                                                         |  beta   |
-| [Card: Outlined](components/Card.js)                         | `<mdw-card outlined>`                          | `<figure>`                                                         |  beta   |
-| [Card Action Area](components/CardActionArea.js)             | `<mdw-card-action-area>`                       | `<div>`                                                            |  beta   |
-| [Checkbox](components/Checkbox.js)                           | `<mdw-checkbox>`                               | `<input type=checkbox>`                                            |  beta   |
-| [Chip: Assist](components/Chip.js)                           | `<mdw-chip>`                                   | `<input type=button>`                                              |  beta   |
-| [Chip: Filter](components/Chip.js)                           | `<mdw-filter-chip>`                            | `<input type=checkbox>`                                            |  beta   |
-| [Chip: Filter Dropdown](components/Chip.js)                  |                                                |                                                                    | planned |
-| [Chip: Input](components/Chip.js)                            | `<mdw-input-chip>`                             |                                                                    | planned |
-| [Chip: Suggestion](components/Chip.js)                       | `<mdw-chip suggestion>`                        | `<input type=button>`                                              |  beta   |
-| Date Picker                                                  |                                                |                                                                    | planned |
-| [Dialog: Basic](components/Dialog.js)                        | `<mdw-dialog headline=title>`                  | `<dialog>`                                                         |  beta   |
-| [Dialog: Full-screen](components/Dialog.js)                  |                                                | `<dialog>`                                                         | planned |
-| [Divider](components/Divider.js)                             | `<mdw-divider>`                                | `<div>`                                                            |  beta   |
-| [List](components/List.js)                                   | `<mdw-list>`                                   | `<ul>`                                                             |  beta   |
-| [ListItem](components/ListItem.js)                           | `<mdw-list-item>`                              | `<li>`                                                             |  beta   |
-| [ListSelect](components/ListSelect.js)                       | `<mdw-list-select>`                            | `<select>`                                                         |  beta   |
-| [ListOption](components/ListOption.js)                       | `<mdw-list-option>`                            | `<option>`                                                         |  beta   |
-| [Menu](components/Menu.js)                                   | `<mdw-menu>`                                   | `<dialog>`                                                         |  beta   |
-| [Menu Item](components/MenuItem.js)                          | `<mdw-menu-item>`                              | `<input type=button>` `<input type=checkbox>` `<input type=radio>` |  beta   |
-| [Nav Item](components/NavBarItem.js)                         | `<mdw-nav-item>`                               | `<a href=#>`                                                       |  beta   |
-| [Nav Bar](components/NavBar.js)                              | `<mdw-nav-bar>`                                | `<nav>`                                                            |  alpha  |
-| [Navigation Drawer](components/NavDrawer.js)                 | `<mdw-nav-drawer>`                             | `<nav>`                                                            |  alpha  |
-| [Navigation Rail](components/NavRail.js)                     | `<mdw-nav-rail>`                               | `<nav>`                                                            |  beta   |
-| [Progress Indicator: Linear](components/Progress.js)         | `<mdw-progress>`                               | `<progress>`                                                       |  beta   |
-| [Progress Indicator: Circular](components/Progress.js)       | `<mdw-progress circle>`                        | `<progress>`                                                       |  alpha  |
-| [Radio Button](components/Radio.js)                          | `<mdw-radio>`                                  | `<input type=radio>`                                               |  beta   |
-| [Slider: Continuous](components/Slider.js)                   | `<mdw-slider>`                                 | `<input type=range>`                                               |  beta   |
-| [Slider: Discrete](components/Slider.js)                     | `<mdw-slider ticks=10>`                        | `<input type=range>`                                               |  beta   |
-| [Snackbar](components/Snackbar.js)                           | `<mdw-snackbar>`                               | `<section>`                                                        |  beta   |
-| [Switch](components/Switch.js)                               | `<mdw-switch>`                                 | `<input type=checkbox>`                                            |  beta   |
-| [Tab](components/Tab.js)                                     | `<mdw-tab>`                                    | `<a href=#>`                                                       |  beta   |
-| [Tab List](components/TabList.js)                            | `<mdw-tab-list>`                               | `<div>`                                                            |  beta   |
-| [Tab Content](components/TabContent.js)                      | `<mdw-tab-content>`                            | `<div>`                                                            |  beta   |
-| [Tab Panel](components/TabPanel.js)                          | `<mdw-tab-panel>`                              | `<div>`                                                            |  beta   |
-| [Text fields: Bare](components/Input.js)                     | `<mdw-input>`                                  | `<input>`                                                          |  beta   |
-| [Text fields: Filled](components/Input.js)                   | `<mdw-input filled>`                           | `<input>`                                                          |  beta   |
-| [Text fields: Filled Multiline](components/TextArea.js)      | `<mdw-textarea filled>`                        | `<textarea>`                                                       |  beta   |
-| [Text fields: Filled Selection](components/Select.js)        | `<mdw-select>`                                 | `<select>`                                                         | planned |
-| [Text fields: Outlined](components/Input.js)                 | `<mdw-input outlined>`                         | `<input>`                                                          |  beta   |
-| [Text fields: Outlined Multiline](components/TextArea.js)    | `<mdw-textarea outlined>`                      | `<textarea>`                                                       |  beta   |
-| [Text fields: Outlined Selection](components/Select.js)      | `<mdw-select outlined>`                        | `<select>`                                                         | planned |
-| Time Picker                                                  |                                                |                                                                    | planned |
-| [Tooltip](components/Tooltip.js)                             | `<mdw-tooltip>`                                | `<div>`                                                            |  beta   |
-| [Top App Bar: Centered](components/TopAppBar.js)             | `<mdw-top-app-bar>`                            | `<menu>`                                                           |  beta   |
-| [Top App Bar: Small](components/TopAppBar.js)                | `<mdw-top-app-bar size=small>`                 | `<menu>`                                                           |  beta   |
-| [Top App Bar: Medium](components/TopAppBar.js)               | `<mdw-top-app-bar size=medium>`                | `<menu>`                                                           |  beta   |
-| [Top App Bar: Large](components/TopAppBar.js)                | `<mdw-top-app-bar size=medium>`                | `<menu>`                                                           |  beta   |
+| Component                                                    | Features                                                                                                                                                                                                  |            Status             |
+| :----------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------: |
+| [Badge](components/Badge.js)                                 | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape) [:signal_strength:](## Density)                                                        |      :heavy_check_mark:       |
+| [Bottom App Bar](components/BottomAppBar.js)                 | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape)  [:wheelchair:](## ARIA Toolbar)                                                       |      :heavy_check_mark:       |
+| Bottom Sheet                                                 |                                                                                                                                                                                                           |     [:memo:](## Planned)      |
+| [Button](components/Button.md)                               | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape) [:signal_strength:](## Density) [:wheelchair:](## ARIA Button)                         |      :heavy_check_mark:       |
+| [Card>](components/Card.js)                                  | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape) [:arrow_up_down:](## Flexable) [:wheelchair:](## ARIA Figure)                          |      :heavy_check_mark:       |
+| [Fab](components/Fab.js)                                     | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape) [:signal_strength:](## Density) [:wheelchair:](## ARIA Button)                         |      :heavy_check_mark:       |
+| [Fab - Extended](components/ExtendedFab.js)                  | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape) [:signal_strength:](## Density)  [:wheelchair:](## ARIA Button)                        |      :heavy_check_mark:       |
+| [Icon Button](components/IconButton.js)                      | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape) [:signal_strength:](## Density) [:wheelchair:](## ARIA Button \| Checkbox)             |      :heavy_check_mark:       |
+| [Segmented Button](components/SegmentedButton.js)            | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape) [:signal_strength:](## Density)  [:wheelchair:](## ARIA Option)                        |      :heavy_check_mark:       |
+| [Segmented Button Group](components/SegmentedButtonGroup.js) | [:crayon:](## Ink) [:wheelchair:](## ARIA Listbox)                                                                                                                                                        |      :heavy_check_mark:       |
+| [Checkbox>](components/Checkbox.js)                          | [:paintbrush:](## Background) [:crayon:](## Ink) [:a:](## Font) [:large_blue_diamond:](## Shape) [:wheelchair:](## ARIA Checkbox)                                                                         |      :heavy_check_mark:       |
+| [Chip](components/Chip.js)                                   | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape) [:signal_strength:](## Density) [:wheelchair:](## ARIA Button)                         |      :heavy_check_mark:       |
+| [Chip - Filter](components/FilterChip.js)                    | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape) [:signal_strength:](## Density) [:wheelchair:](## ARIA Checkbox \| Radio)              |      :heavy_check_mark:       |
+| Chip: Filter Dropdown                                        |                                                                                                                                                                                                           |        :construction:         |
+| Chip: Input                                                  |                                                                                                                                                                                                           |        :construction:         |
+| Date Picker                                                  |                                                                                                                                                                                                           | [:grey_question:](## Unknown) |
+| [Dialog>](components/Dialog.js)                              | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape) [:wheelchair:](## ARIA Dialog)                                                         |      :heavy_check_mark:       |
+| Dialog: Full-screen                                          |                                                                                                                                                                                                           | [:grey_question:](## Unknown) |
+| [Divider](components/Divider.js)                             | [:crayon:](## Ink)                                                                                                                                                                                        |      :heavy_check_mark:       |
+| [Icon](components/Icon.js)                                   | [:crayon:](## Ink)                                                                                                                                                                                        |      :heavy_check_mark:       |
+| [List](components/List.js)                                   | [:paintbrush:](## Background) [:crayon:](## Ink) [:signal_strength:](## Density) [:wheelchair:](## ARIA List)                                                                                             |      :heavy_check_mark:       |
+| [List Select](components/ListSelect.js)                      | [:paintbrush:](## Background) [:crayon:](## Ink) [:signal_strength:](## Density) [:wheelchair:](## ARIA Option)                                                                                           |      :heavy_check_mark:       |
+| [Menu](components/Menu.js)                                   | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:signal_strength:](## Density) [:wheelchair:](## ARIA Menu)                                                                           |      :heavy_check_mark:       |
+| [Navigation Bar](components/NavBar.js)                       | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:large_blue_diamond:](## Shape) [:wheelchair:](## ARIA Nav)                                                                           |      :heavy_check_mark:       |
+| [Navigation Drawer](components/NavDrawer.js)                 | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:large_blue_diamond:](## Shape) [:wheelchair:](## ARIA Nav)                                                                           |        :construction:         |
+| [Navigation Rail](components/NavDrawer.js)                   | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:large_blue_diamond:](## Shape) [:wheelchair:](## ARIA Nav)                                                                           |      :heavy_check_mark:       |
+| [Progress Indicators](components/Progress.js)                | [:crayon:](## Ink) [:wheelchair:](## ARIA Progress)                                                                                                                                                       |      :heavy_check_mark:       |
+| Search                                                       |                                                                                                                                                                                                           |     [:memo:](## Planned)      |
+| [Radio](components/Radio.js)                                 | [:crayon:](## Ink) [:a:](## Font) [:large_blue_diamond:](## Shape) [:wheelchair:](## ARIA Radio)                                                                                                          |      :heavy_check_mark:       |
+| [Slider](components/Slider.js)                               | [:crayon:](## Ink)  [:wheelchair:](## ARIA Slider)                                                                                                                                                        |      :heavy_check_mark:       |
+| [Snackbar](components/Snackbar.js)                           | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:large_blue_diamond:](## Shape) [:signal_strength:](## Density) [:wheelchair:](## ARIA Status)                                        |      :heavy_check_mark:       |
+| [Switch](components/Switch.js)                               | [:paintbrush:](## Background) [:crayon:](## Ink) [:a:](## Font) [:wheelchair:](## ARIA Switch)                                                                                                            |      :heavy_check_mark:       |
+| [Surface](components/Surface.js)                             | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape) [:arrow_up_down:](## Flexable)                                                         |      :heavy_check_mark:       |
+| [Tab](components/Tab.js)                                     | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:large_blue_diamond:](## Shape) [:wheelchair:](## ARIA Tab List \| Tab \| Tab Panel)                                                  |      :heavy_check_mark:       |
+| [Text Input](components/Input.js)                            | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape) [:signal_strength:](## Density) [:wheelchair:](## ARIA Textbox)                        |      :heavy_check_mark:       |
+| [Text Area](components/TextArea.js)                          | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape) [:signal_strength:](## Density) [:wheelchair:](## ARIA Textarea)                       |      :heavy_check_mark:       |
+| [Text Select](components/Select.js)                          | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape) [:signal_strength:](## Density) [:wheelchair:](## ARIA Combobox)                       |      :heavy_check_mark:       |
+| Time Picker                                                  |                                                                                                                                                                                                           | [:grey_question:](## Unknown) |
+| [Tooltip](components/Tooltip.js)                             | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:large_blue_diamond:](## Shape) [:wheelchair:](## ARIA Tooltip)                                                                       |      :heavy_check_mark:       |
+| [Top App Bar](components/TopAppBar.js)                       | [:paintbrush:](## Background) [:crayon:](## Ink) [:o:](## Outline) [:a:](## Font) [:large_blue_diamond:](## Shape) [:signal_strength:](## Density) [:arrow_up_down:](## Flexable) [:wheelchair:](## ARIA) |      :heavy_check_mark:       |
 
-# Custom Components
+# Additional
 
-| Module                               |     Extends     | Implements | Description                                    | Status |
-| :----------------------------------- | :-------------: | :--------: | :--------------------------------------------- | :----: |
-| [Span](components/Span.js)           | `CustomElement` |  `<span>`  | Applies typography and ink (foreground) colors |  beta  |
-| [Container](components/Container.js) |     `Span`      |  `<div>`   | Applies shapes, shadows, and background colors |  beta  |
-| [Icon](components/Icon.js)           |   `Container`   | `<image>`  | Adds font and image icons                      | alpha  |
+| Component                          | Description                                         |       Status       |
+| :--------------------------------- | :-------------------------------------------------- | :----------------: |
+| [Box](components/Box.js)           | Simple themeable component with Flexbox options     | :heavy_check_mark: |
+| [Layout](components/Layout.js)     | Manages page nav, and pane layouts                  |   :construction:   |
+| [Pane](components/Pane.js)         | 12-column pane layout                               |   :construction:   |
+| [Icon](components/Icon.js)         | Font-icon, SVG, and IMG support                     |   :construction:   |
+| [Body](components/Body.js)         | Box with Body typography                            | :heavy_check_mark: |
+| [Label](components/Label.js)       | Box with Label typography                           | :heavy_check_mark: |
+| [Headline](components/Headline.js) | Box with Headline typography                        | :heavy_check_mark: |
+| [Title](components/Title.js)       | Box with Title typography                           | :heavy_check_mark: |
+| [Ripple](components/Ripple.js)     | Ripple effect                                       | :heavy_check_mark: |
+| [Surface](components/Surface.js)   | Themeable, flexable, shapeable, elevateable element | :heavy_check_mark: |
 
-# Core
-
-| File                                   | Description                                                                                | Status |
-| :------------------------------------- | :----------------------------------------------------------------------------------------- | :----: |
-| [Composition](core/Composition.js)     | Class that composes templates based on styles, fragments, and watches. Renders data        |  beta  |
-| [css](core/css.js)                     | Module that includes css converters                                                        |  beta  |
-| [CustomElement](core/CustomElement.js) | Extendable that handles ShadowDOM, ElementInternals, Property attributes, and compositions |  beta  |
-| [customTypes](core/customTypes.js)     | Module that include non-primitive observable types                                         |  beta  |
-| [dom](core/dom.js)                     | Module that include common DOM functions                                                   |  beta  |
-| [indentify](core/identify.js)          | Module that includes Node identification functions                                         |  beta  |
-| [observe](core/observe.js)             | Modules that applies observable pattern to object properties                               |  beta  |
-| [template](core/template.js)           | Module that includes functions to generate HTML or CSS from templates                      | alpha  |
 
 # Mixins
 
-| Name                                                 | Description                                                                   | Status |
-| :--------------------------------------------------- | :---------------------------------------------------------------------------- | :----: |
-| [AriaToolbarMixin](mixins/AriaToolbarMixin.js)       | Sets ARIA `toolbar` role                                                      |  beta  |
-| [ControlMixin](mixins/ControlMixin.js)               | Base mixin for Form Controls                                                  |  beta  |  |
-| [FormAssociatedMixin](mixins/FormAssociatedMixin.js) | Tracks Element Internals Form Associated controls                             | alpha  |
-| [InputMixin](mixins/InputMixin.js)                   | Labelled `<input>` element                                                    |  beta  |
-| [KeyboardNavMixin](mixins/KeyboardNavMixin.js)       | Handles roving tab index and arrow key navigation                             |  beta  |
-| [ResizeObserverMixin](mixins/ResizeObserverMixin.js) | Fires callback on element resize                                              |  beta  |
-| [RippleMixin](mixins/RippleMixin.js)                 | Uses ripple for pressed state                                                 |  beta  |
-| [ScrollListenerMixin](mixins/ScrollListenerMixin.js) | Tracks window or offetParent scrolling                                        |  beta  |
-| [StateMixin](mixins/StateMixin.js)                   | Adds hover, focus, pressed, dragged, and disabled states, as interaction type |  beta  |
-| [TextFieldMixin](mixins/TextFieldMixin.js)           | Abstraction for different controls used for text fields                       |  beta  |
-| [TooltipTriggerMixin](mixins/TooltipTriggerMixin.js) | Adds focus, mouse, and touch handlers for spawning tooltips                   | alpha  |
+| Component                                        | Description                                      |       Status       |
+| :----------------------------------------------- | :----------------------------------------------- | :----------------: |
+| [ARIA Reflector](mixins/AriaReflectorMixin.js)   | Reflects ARIA Properties                         | :heavy_check_mark: |
+| [ARIA Toolbar](mixins/AriaToolbarMixin.js)       | Shared ARIA Toolbar functionality                | :heavy_check_mark: |
+| [Control](mixins/ControlMixin.js)                | HTML Control wrapper                             | :heavy_check_mark: |
+| [Density](mixins/DensityMixin.js)                | Component density options                        | :heavy_check_mark: |
+| [Flexable](mixins/FlexableMixin.js)              | Add flexbox options as attributes                | :heavy_check_mark: |
+| [Form Associated](mixins/FormAssociatedMixin.js) | Form-associated custom element support           | :heavy_check_mark: |
+| [Input](mixins/InputMixin.js)                    | HTMLInputElement wrapper                         | :heavy_check_mark: |
+| [Keyboard Nav](mixins/KeyboardNavMixin.js)       | Adds arrow key navigation and roving tab index   |     :warning:      |
+| [Resize Observer](mixins/ResizeObserverMixin.js) | Shared Eelement resize observer                  | :heavy_check_mark: |
+| [Ripple](mixins/RippleMixin.js)                  | Replaces pressed state with ripple effect        | :heavy_check_mark: |
+| [RTL Observer](mixins/RTLObserverMixin.js)       | Shared RTL paoge observer                        | :heavy_check_mark: |
+| [Scroll Listener](mixins/ScrollListenerMixin.js) | Listen for horizontal and vertical scroll events | :heavy_check_mark: |
+| [Shape](mixins/ShapeMixin.js)                    | Adds shape and outline layer to elements         |     :warning:      |
+| [Surface](mixins/ShapeMixin.js)                  | Adds elevation tint and shadows to elements      |     :warning:      |
+| [Text Field](mixins/TextFieldMixin.js)           | Shared text field functionality                  | :heavy_check_mark: |
+| [Tooltip Trigger](mixins/TooltipTriggerMixin.js) | Triggers tooltips based on events                |   :construction:   |
+| [Touch Target](mixins/TouchTargetMixin.js)       | Adds extended touch target to controls           |   :construction:   |
+
+# Core
+
+| File                                   | Description                                                                |       Status       |
+| :------------------------------------- | :------------------------------------------------------------------------- | :----------------: |
+| [Composition](core/Composition.js)     | Composes templates based on styles, fragments, and watches. Renders data   |   :construction:   |
+| [CustomElement](core/CustomElement.js) | Handles ShadowDOM, ElementInternals, Property attributes, and compositions |   :construction:   |
+| [css](core/css.js)                     | CSS, CSSStyleSheet, HTMLStyleElement functions                             | :heavy_check_mark: |
+| [customTypes](core/customTypes.js)     | Non-primitive observable types                                             |   :construction:   |
+| [dom](core/dom.js)                     | DOM functions                                                              |     :warning:      |
+| [identify](core/identify.js)           | Node identification functions                                              |   :construction:   |
+| [observe](core/observe.js)             | Observable pattern for primitives and objects                              |   :construction:   |
+| [template](core/template.js)           | Template literals for CSS (CSSStyleSheet) and HTML (DocumentFragment)      | :heavy_check_mark: |
 
 
 # Other Components
 
 These components do not have official M3 guidelines
 
-| Component    | HTML               | Extends | ARIA Role | Implements |  Status  |
-| :----------- | :----------------- | :-----: | :-------: | :--------- | :------: |
-| ~~Backdrop~~ |                    |         |           |            | no plans |
-| Banner       | `<mdw-banner>`     |         |           |            | rewrite  |
-| Data Table   |                    |         |           |            | rewrite  |
-| Image List   |                    |         |           |            | rewrite  |
-| Side Sheet   | `<mdw-side-sheet>` |         |           |            | rewrite  |
-
-# Adapter classes
-| Adapter                          | Status  |
-| :------------------------------- | :------ |
-| [datatable](adapters/datatable/) | rewrite |
-| [dom](adapters/dom/)             | rewrite |
-| [list](adapters/list/)           | rewrite |
-| [search](adapters/search/)       | rewrite |
-
-## Status Legend
-
-* no plans - No current plans to implement
-* planned - Planned for later
-* rewrite - Needs to be rewritten
-* draft - Not yet functional
-* alpha - Partially working
-* beta - Working but incomplete
-* preRC - Needs minor changes
-* RC - Needs testing as-is
-* stable - Production-ready
-
-
-* † - Required
-
-* ‡ - Apply manually
+| Component    |            Status             |
+| :----------- | :---------------------------: |
+| ~~Backdrop~~ |            :skull:            |
+| Banner       |        :construction:         |
+| Data Table   |            :memo:             |
+| Image List   | [:grey_question:](## Unknown) |
+| Side Sheet   | [:grey_question:](## Unknown) |
