@@ -86,7 +86,7 @@ export default function TextFieldMixin(Base) {
 
         outline.setAttribute('invalid', '{invalid}');
         outline.setAttribute('errored', '{erroredState}');
-        outline.append(html`
+        outlineLeft.after(html`
           <div id=gap _if={label} label={label} populated={populatedState} focused={focusedState}>
             <div id=gap-slot focused={focusedState}></div>
             <span id=gap-label>{label}</span>
