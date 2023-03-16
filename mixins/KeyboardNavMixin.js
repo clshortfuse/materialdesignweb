@@ -10,8 +10,7 @@ const DEFAULT_ELEMENT_QUERY = [
 ].join(', ');
 
 /**
- * @template {typeof import('../core/CustomElement.js').default} T
- * @param {T} Base
+ * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function KeyboardNavMixin(Base) {
   return Base

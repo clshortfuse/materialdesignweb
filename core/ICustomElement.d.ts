@@ -5,7 +5,6 @@ import {
   CompositionEventListener,
   CompositionEventListenerObject,
   HTMLTemplater,
-  InlineTemplate,
   ObserverOptions,
   ObserverPropertyType,
   ParsedObserverPropertyType,
@@ -15,28 +14,29 @@ import {
 type ClassOf<T extends { prototype: unknown; } > = T;
 
 type CallbackArguments<T1 = any, T2 = T1> = {
-  composition: Composition<T1>,
-  html: HTMLTemplater<T1, Partial<T2>>,
-  inline: InlineTemplate<T1, Partial<T2>>,
-  template: DocumentFragment,
-  element: T1
+  composition: Composition<T1>;
+  html: HTMLTemplater<T1, Partial<T2>>;
+  inline: (fn: (this:T1, data: {[K in keyof T2]?: T2[K]}) => any) => string;
+  template: DocumentFragment;
+  element: T1;
 }
 
-type IDLParameter<C> = {
+type IDLParameter<C extends object> = {
   [P in string] :
     ObserverPropertyType
     | ObserverOptions<ObserverPropertyType, unknown, C>
     | ((this:C, data:Partial<C>, fn?: () => any) => any)
 };
 
-declare type DefinedPropertiesOf<T extends abstract new (...args: any) => any, P> =
-  Omit<T, 'prototype'>
-  & (new (...args: ConstructorParameters<T>) => InstanceType<T> & P
-    // & {constructor: Partial<T>}
-  )
-  & { prototype: InstanceType<T> & P
-    // & {constructor: Partial<T>}
-  };
+type ExtendedClass<T1 extends typeof ICustomElement, T2 extends abstract new (...args: any) => any> =
+  Omit<T1, 'prototype'> & T2;
+
+type ConstructorLess<T1 extends object, T2 extends abstract new (...args: any) => any> = T1 & T2;
+
+declare type DefinedPropertiesOf<T extends ({ prototype: unknown; } & (new (...args: any) => any)), P> =
+  {[K in keyof T]: T[K]}
+  & { new(): (...args: ConstructorParameters<T>) => InstanceType<T> & P}
+  & { prototype: T['prototype'] & P };
 
 type CompositionCallback<T1, T2=T1> = {
     composed?: (this: T1, options: CallbackArguments<T1, T2>) => any,
@@ -51,13 +51,13 @@ type CompositionCallback<T1, T2=T1> = {
       element: T1
       ) => any
     },
-    attrs?: Record<string, (
+    attrs?: {[K in keyof any]: (
       this: T1,
       oldValue: string,
       newValue: string,
       element: T1
       ) => unknown
-    >,
+    },
   } & {
     [P in keyof T1 & string as `${P}Changed`]?: (
       this: T1,
@@ -96,6 +96,8 @@ export declare const ICustomElement: {
 
   extend<T extends typeof ICustomElement>(this: T): T;
 
+  tsClassFix<T extends typeof ICustomElement>(this:T): T & (new (...args:any[]) => InstanceType<T>)
+
   html<T extends typeof ICustomElement>(
     this: T,
     string: TemplateStringsArray,
@@ -112,62 +114,75 @@ export declare const ICustomElement: {
   ): T1
 
   define<
-    T1 extends typeof ICustomElement,
-    T2 extends InstanceType<T1>,
-    T3 extends {
-        [P in string] :
+    CLASS extends typeof ICustomElement,
+    ARGS extends ConstructorParameters<CLASS>,
+    INSTANCE extends InstanceType<CLASS>,
+    PROPS extends {
+        [P in keyof any] :
           {
             enumerable?: boolean;
             configurable?: boolean;
             writable?: boolean;
             value?: any;
-            get?: (this: T2) => any;
-            set?: (this: T2, value: any) => void;
-          } | ((this: T2, ...args:any[]) => any)
-      }>
-    (this: T1, props: T3): T1 & (new (...args: ConstructorParameters<T1>) => T2 & {
-          [P in keyof T3]: T3[P] extends (...args2:any[]) => infer R ? R
-            : T3[P] extends TypedPropertyDescriptor<infer R> ? R : never
-        });
+            get?: ((this: INSTANCE) => any);
+            set?: (this: INSTANCE, value: any) => void;
+          } | ((this: INSTANCE, ...args:any[]) => any)
+      },
+    VALUE extends {
+      [KEY in keyof PROPS]: PROPS[KEY] extends (...args2:any[]) => infer R ? R
+        : PROPS[KEY] extends TypedPropertyDescriptor<infer R> ? R : never
+    }>
+    (this: CLASS, props: PROPS & ThisType<PROPS & INSTANCE>): CLASS
+      & (new (...args: ARGS) => INSTANCE & VALUE)
 
   observe<
-    T1 extends typeof ICustomElement,
-    T2 extends InstanceType<T1>,
-    T3 extends IDLParameter<T2>>
-    (this: T1, props: T3): T1 & (new (...args: ConstructorParameters<T1>) => T2 & {
-        [P in keyof T3]:
-          T3[P] extends (...args2:any[]) => infer R ? R
-            : T3[P] extends ObserverPropertyType
-            ? ParsedObserverPropertyType<T3[P]>
-            : T3[P] extends {type: ObserverPropertyType}
-            ? ParsedObserverPropertyType<T3[P]['type']>
-            : T3[P] extends ObserverOptions<any, infer R>
-            ? unknown extends R ? string : R
-            : never
-      });
+    CLASS extends typeof ICustomElement,
+    ARGS extends ConstructorParameters<CLASS>,
+    INSTANCE extends InstanceType<CLASS>,
+    PROPS extends IDLParameter<INSTANCE>,
+    VALUE extends {
+      [KEY in keyof PROPS]:
+      PROPS[KEY] extends (...args2:any[]) => infer R ? R
+          : PROPS[KEY] extends ObserverPropertyType
+          ? ParsedObserverPropertyType<PROPS[KEY]>
+          : PROPS[KEY] extends {type: ObserverPropertyType}
+          ? ParsedObserverPropertyType<PROPS[KEY]['type']>
+          : PROPS[KEY] extends ObserverOptions<any, infer R>
+          ? unknown extends R ? string : R
+          : never
+    },
+    > (this: CLASS, props: PROPS)
+      : CLASS & (new (...args: ARGS) => INSTANCE & VALUE)
 
   props: typeof ICustomElement.observe;
 
-  set<T1 extends typeof ICustomElement, T2 extends object>
-    (this: T1, source: T2 & ThisType<T2 & InstanceType<T1>>, options?: Partial<PropertyDescriptor>)
-    : T1 & (new (...args: ConstructorParameters<T1>) => InstanceType<T1> & T2)
-      // & { prototype: InstanceType<T1> & T2 };
+  set<
+    CLASS extends typeof ICustomElement,
+    ARGS extends ConstructorParameters<CLASS>,
+    INSTANCE extends InstanceType<CLASS>,
+    PROPS extends object>
+    (this: CLASS, source: PROPS & ThisType<PROPS & INSTANCE>, options?: Partial<PropertyDescriptor>)
+    : CLASS & (new(...args: ARGS) => INSTANCE & PROPS)
 
   methods: typeof ICustomElement.set;
 
-  overrides<T1 extends typeof ICustomElement, T2 extends Partial<InstanceType<T1>>>
-  (this: T1, source: T2 & ThisType<T2 & InstanceType<T1>>, options?: Partial<PropertyDescriptor>)
-  : T1 & (new (...args: ConstructorParameters<T1>) => InstanceType<T1> & T2)
-    // & { prototype: InstanceType<T1> & T2 };
+  overrides<
+  CLASS extends typeof ICustomElement,
+  ARGS extends ConstructorParameters<CLASS>,
+  INSTANCE extends InstanceType<CLASS>,
+  PROPS extends Partial<INSTANCE>>
+  (this: CLASS, source: PROPS & ThisType<PROPS & INSTANCE>, options?: Partial<PropertyDescriptor>)
+  : CLASS & (new(...args: ARGS) => INSTANCE & PROPS)
 
   expressions<
-    T1 extends typeof ICustomElement,
-    T2 extends Record<
-      string,
-      ((this: InstanceType<T1>, data?: InstanceType<T1> & T1['schema']) => string|boolean|null)
-      >
-    >(this: T1, expressions: T2 & ThisType<InstanceType<T1> & T2>):
-      T1 & (new (...args: ConstructorParameters<T1>) => InstanceType<T1> & T2);
+    CLASS extends typeof ICustomElement,
+    ARGS extends ConstructorParameters<CLASS>,
+    INSTANCE extends InstanceType<CLASS>,
+    PROPS extends {
+      [K in keyof any]: ((this: INSTANCE, data?: INSTANCE & CLASS['schema']) => string|boolean|null)
+    }
+    >(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>):
+    CLASS & (new (...args: ARGS) => INSTANCE & PROPS)
 
   defineStatic<
     T1 extends typeof ICustomElement,
@@ -176,10 +191,10 @@ export declare const ICustomElement: {
 
   setStatic<
     T1 extends typeof ICustomElement,
-    T2 extends Record<string,
-      (
+    T2 extends {
+      [K in keyof any]: (
         ((this:T1, ...args:any[]) => any)
-        |string|number|boolean|any[]|object)>
+        |string|number|boolean|any[]|object)}
     >
     (this: T1, source: T2 & ThisType<T1 & T2>):T1 & T2;
 
@@ -188,7 +203,7 @@ export declare const ICustomElement: {
 
   setSchema<
     T1 extends typeof ICustomElement,
-    T2 extends Record<string, unknown>
+    T2 extends {[K in keyof any]: unknown}
     >
     (this: T1, schema: T2): T1 & {schema: T2};
 
@@ -201,13 +216,15 @@ export declare const ICustomElement: {
     (this: T, ...parts: ConstructorParameters<typeof Composition<InstanceType<T>>>): T;
 
   mixin<
-    T extends typeof ICustomElement,
-    F extends (...args:any[]) => any,
-    M extends ReturnType<F>,
-    C extends ClassOf<M>>
-    (this: T, mixin: F): C & T
-      & (new (...args: ConstructorParameters<C>) => InstanceType<C> & InstanceType<T>)
-      // & { prototype: InstanceType<C> & InstanceType<T> };
+    BASE extends typeof ICustomElement,
+    FN extends (...args:any[]) => any,
+    RETURN extends ReturnType<FN>,
+    SUBCLASS extends ClassOf<RETURN>,
+    ARGS extends ConstructorParameters<SUBCLASS>,
+    BASE_INSTANCE extends InstanceType<BASE>,
+    SUBCLASS_INSTANCE extends InstanceType<SUBCLASS>>
+    (this: BASE, mixin: FN): SUBCLASS & BASE
+      & (new (...args: ARGS) => SUBCLASS_INSTANCE & BASE_INSTANCE)
 
   events<T extends typeof ICustomElement>
     (
@@ -227,10 +244,11 @@ export declare const ICustomElement: {
 
   on<
     T1 extends typeof ICustomElement,
-    T3 extends CompositionCallback<InstanceType<T1>, InstanceType<T1> & T1['schema']>,
+    T2 extends InstanceType<T1>,
+    T3 extends CompositionCallback<T2, T2 & T1['schema']>,
     T4 extends keyof T3,
     >
-    (this: T1, name: T3|T4, callbacks?: T3[T4] & ThisType<InstanceType<T1>>): T1
+    (this: T1, name: T3|T4, callbacks?: T3[T4] & ThisType<T2>): T1
 
   onPropChanged<
     T1 extends typeof ICustomElement,

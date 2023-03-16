@@ -17,7 +17,7 @@ type ParsedObserverPropertyType<T extends ObserverPropertyType> =
 type ObserverOptions<
   T1 extends ObserverPropertyType,
   T2 = any,
-  C = any
+  C extends object = any
   > = {
   type?: T1;
   attr?: string;

@@ -23,7 +23,7 @@ const IMPLICIT_SUBMISSION_BLOCKING_TYPES = new Set([
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function InputMixin(Base) {
-  class Input extends ControlMixin(Base) {
+  class Input extends Base.mixin(ControlMixin) {
     static inputTagName = 'input';
 
     static FORM_IPC_EVENT = 'mdw-input-changed';
@@ -331,5 +331,5 @@ export default function InputMixin(Base) {
   //  [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
   Input.prototype._width = Input.prop('_width', { attr: 'width', type: 'integer' });
 
-  return Input;
+  return Input.tsClassFix();
 }
