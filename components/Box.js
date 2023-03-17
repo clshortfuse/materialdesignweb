@@ -20,5 +20,5 @@ export default CustomElement
     },
   })
   .css(styles)
-  .html`<slot id=slot type-style={typeStyle}></slot>`
+  .html/* html */`<slot id=slot type-style={typeStyle}></slot>`
   .autoRegister('mdw-box');

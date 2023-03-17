@@ -19,8 +19,7 @@
   color: rgb(var(--mdw-ink));
 }
 
-#slot[type-style] {
-  /* TODO: Work around Firefox bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1822718 */
+:host([type-style]) {
   font: var(--mdw-type__font);
   letter-spacing: var(--mdw-type__letter-spacing);
 }
