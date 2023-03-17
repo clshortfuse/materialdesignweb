@@ -18,44 +18,51 @@
   <demo-page>
     <demo-section>
       <h1 slot="heading">Without Icons</h1>
-      <mdw-layout wrap gap=12px>
+      <mdw-box flex wrap gap=24>
         <mdw-switch>Default</mdw-switch>
         <mdw-switch color=secondary checked>Secondary</mdw-switch>
         <mdw-switch color=tertiary>Tertiary</mdw-switch>
         <mdw-switch disabled>Disabled</mdw-switch>
         <mdw-switch color=secondary disabled checked>Disabled</mdw-switch>
-      </mdw-layout>
+      </mdw-box>
     </demo-section>
     <demo-section>
       <h1 slot="heading">Icon on selected switch</h1>
-      <mdw-layout wrap gap=12px>
+      <mdw-box flex wrap gap=24>
         <mdw-switch selected-icon=check>Default</mdw-switch>
         <mdw-switch color=secondary checked selected-icon=check>Secondary</mdw-switch>
         <mdw-switch color=tertiary selected-icon=edit>Tertiary</mdw-switch>
         <mdw-switch disabled selected-icon=check>Disabled</mdw-switch>
         <mdw-switch color=secondary disabled checked selected-icon=check>Disabled</mdw-switch>
-      </mdw-layout>
+      </mdw-box>
     </demo-section>
     <demo-section>
       <h1 slot="heading">Icon on selected and unselected switch</h1>
-      <mdw-layout wrap gap=12px>
+      <mdw-box flex wrap gap=12>
         <mdw-switch icon=favorite>Default</mdw-switch>
         <mdw-switch color=secondary checked unselected-icon=close selected-icon=check>Secondary</mdw-switch>
         <mdw-switch color=tertiary unselected-icon=dark_mode selected-icon=light_mode>Tertiary</mdw-switch>
         <mdw-switch disabled icon=check>Disabled</mdw-switch>
         <mdw-switch color=secondary disabled checked icon=check>Disabled</mdw-switch>
-      </mdw-layout>
+      </mdw-box>
     </demo-section>
     <demo-section>
       <h1 slot="heading">No label</h1>
-      <mdw-layout wrap gap=12px>
+      <mdw-box flex wrap gap=12>
         <mdw-switch icon=check aria-label="Default"></mdw-switch>
         <mdw-switch color=secondary checked icon=favorite aria-label="Secondary"></mdw-switch>
         <mdw-switch color=tertiary unselected-icon=dark_mode selected-icon=light_mode aria-label="Tertiary">
         </mdw-switch>
         <mdw-switch disabled icon=check aria-label="Disabled"></mdw-switch>
         <mdw-switch color=secondary disabled checked icon=check aria-label="Disabled"></mdw-switch>
-      </mdw-layout>
+      </mdw-box>
+    </demo-section>
+    <demo-section>
+      <h1 slot="heading">Custom Sized</h1>
+      <mdw-box flex wrap gap=12>
+        <mdw-switch icon=check style="width:80px" aria-label="Default"></mdw-switch>
+        <mdw-switch color=secondary checked style="width:40px" icon=favorite aria-label="Secondary"></mdw-switch>
+      </mdw-box>
     </demo-section>
   </demo-page>
   <script type=module src="../demo.min.js"></script>

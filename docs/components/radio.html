@@ -18,23 +18,25 @@
   <demo-page>
     <demo-section>
       <h1 slot=heading>Normal</h1>
-      <mdw-flex gap=12px wrap>
-        <form>
+      <form>
+        <mdw-box flex gap=24 wrap padding=8>
           <mdw-radio name=radio-demo value="1">Default</mdw-radio>
           <mdw-radio name=radio-demo ink="secondary" value="2">Secondary</mdw-radio>
           <mdw-radio name=radio-demo ink="tertiary" value="3">Tertiary</mdw-radio>
           <mdw-radio name=radio-demo ink="primary" disabled value="4">Disabled</mdw-radio>
           <mdw-radio name=radio-demo ink="primary" disabled value="5" checked>Disabled Checked</mdw-radio>
-        </form>
-      </mdw-flex>
+        </mdw-box>
+      </form>
     </demo-section>
     <demo-section>
       <h1 slot=heading>No Label</h1>
-      <mdw-flex gap=24px wrap style="margin:8px">
-        <mdw-radio name=radio-demo-blank aria-label="Default" value="1"></mdw-radio>
-        <mdw-radio name=radio-demo-blank aria-label="Secondary" ink="secondary" value="2"></mdw-radio>
-        <mdw-radio name=radio-demo-blank aria-label="Tertiary" ink="tertiary" value="3"></mdw-radio>
-      </mdw-flex>
+      <form>
+        <mdw-box flex gap=24 wrap padding=8>
+          <mdw-radio name=radio-demo-blank aria-label="Default" value="1"></mdw-radio>
+          <mdw-radio name=radio-demo-blank aria-label="Secondary" ink="secondary" value="2"></mdw-radio>
+          <mdw-radio name=radio-demo-blank aria-label="Tertiary" ink="tertiary" value="3"></mdw-radio>
+        </mdw-box>
+      </form>
     </demo-section>
   </demo-page>
   <script type=module src="../demo.min.js"></script>

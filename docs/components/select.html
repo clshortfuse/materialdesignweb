@@ -17,7 +17,7 @@
   <demo-page>
     <demo-section>
       <h1 slot=heading>Filled</h1>
-      <mdw-layout wrap gap=16px style="margin:24px" column>
+      <mdw-box flex=column wrap gap=16 padding=24>
         <mdw-select filled label="Fruits">
           <option value="Apple">Apple</option>
           <option value="Banana" selected>Banana</option>
@@ -122,11 +122,11 @@
           <option value="Grape">Grape</option>
           <option value="Pear">Pear</option>
         </mdw-select>
-      </mdw-layout>
+      </mdw-box>
     </demo-section>
     <demo-section>
       <h1 slot=heading>Outlined</h1>
-      <mdw-layout wrap gap=16px style="margin:24px" column>
+      <mdw-box flex=column wrap gap=16 padding=24>
         <mdw-select outlined label="Fruits">
           <option value="Apple">Apple</option>
           <option value="Banana" selected>Banana</option>
@@ -231,11 +231,11 @@
           <option value="Grape">Grape</option>
           <option value="Pear">Pear</option>
         </mdw-select>
-      </mdw-layout>
+      </mdw-box>
     </demo-section>
     <demo-section>
       <h1 slot=heading>Bare</h1>
-      <mdw-layout wrap gap=16px style="margin:24px" column>
+      <mdw-box flex=column wrap gap=16 padding=24>
         <mdw-select label="Fruits">
           <option value="Apple">Apple</option>
           <option value="Banana" selected>Banana</option>
@@ -340,7 +340,7 @@
           <option value="Grape">Grape</option>
           <option value="Pear">Pear</option>
         </mdw-select>
-      </mdw-layout>
+      </mdw-box>
     </demo-section>
   </demo-page>
   <script type=module src="../demo.min.js"></script>

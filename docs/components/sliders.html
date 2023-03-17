@@ -17,18 +17,18 @@
   <demo-page>
     <demo-section>
       <h1 slot=heading>Continuous</h1>
-      <mdw-layout wrap gap=8px style="margin:24px" column>
+      <mdw-box flex=column wrap gap=8 padding=24>
         <mdw-slider></mdw-slider>
         <mdw-slider color="secondary" value="2" min="-10" max="10"></mdw-slider>
         <mdw-slider color="tertiary" min="-10" value="3"></mdw-slider>
         <mdw-slider class=mdw-custom color="green" min="1" max="5"></mdw-slider>
         <mdw-slider class=mdw-custom color="custom" min=0 step=5 value=100></mdw-slider>
         <mdw-slider color=secondary value="12" disabled></mdw-slider>
-      </mdw-layout>
+      </mdw-box>
     </demo-section>
     <demo-section>
       <h1 slot=heading>Discrete</h1>
-      <mdw-layout wrap gap=8px style="margin:24px" column>
+      <mdw-box flex=column wrap gap=8 padding=24>
         <mdw-slider value="1" min=0 list="tickmarks" ticks="10" step="10"></mdw-slider>
         <mdw-slider value="8" ticks="8" min="0" max="64"></mdw-slider>
         <mdw-slider color="secondary" value="2" min="-10" max="10" ticks="4"></mdw-slider>
@@ -36,7 +36,7 @@
         <mdw-slider class=mdw-custom color="green" min="10" max="90" ticks="1"></mdw-slider>
         <mdw-slider class=mdw-custom color="custom" min=0 step=5 value=100 ticks="5"></mdw-slider>
         <mdw-slider color=secondary value="12" disabled ticks="10"></mdw-slider>
-      </mdw-layout>
+      </mdw-box>
     </demo-section>
   </demo-page>
   <script type=module src="../demo.min.js"></script>

@@ -1,14 +1,12 @@
-import Container from '../../components/Container.js';
+import Box from '../../components/Box.js';
 
-export default Container
+export default Box
   .extend()
   .css/* css */`
     :host {
       position: relative;
       max-height: 400px;
       overflow-y: auto;
-      min-width: 360px;
-      width: 90vw;
       display: flex;
       flex-direction: column;
       --mdw-bg: var(--mdw-color__background);

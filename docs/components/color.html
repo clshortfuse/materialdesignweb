@@ -17,77 +17,65 @@
   <demo-page>
     <demo-section>
       <h1 slot=heading>Core</h1>
-      <mdw-flex wrap gap=12px>
-        <mdw-container class=box color=primary>Primary</mdw-container>
-        <mdw-container class=box color=primary-container>Primary Container</mdw-container>
-        <mdw-container class=box color=secondary>Secondary</mdw-container>
-        <mdw-container class=box color=secondary-container>Secondary Container</mdw-container>
-        <mdw-container class=box color=tertiary>Tertiary</mdw-container>
-        <mdw-container class=box color=tertiary-container>Tertiary Container</mdw-container>
-        <mdw-container class=box color=error>Error</mdw-container>
-        <mdw-container class=box color=error-container>Error Container</mdw-container>
-        <mdw-container class=box color=background>Background</mdw-container>
-      </mdw-flex>
+      <mdw-box flex wrap gap=12>
+        <mdw-box class=box color=primary padding=8>Primary</mdw-box>
+        <mdw-box color=primary-container padding=8>Primary Container</mdw-box>
+        <mdw-box color=secondary padding=8>Secondary</mdw-box>
+        <mdw-box color=secondary-container padding=8>Secondary Container</mdw-box>
+        <mdw-box color=tertiary padding=8>Tertiary</mdw-box>
+        <mdw-box color=tertiary-container padding=8>Tertiary Container</mdw-box>
+        <mdw-box color=error padding=8>Error</mdw-box>
+        <mdw-box color=error-container padding=8>Error Container</mdw-box>
+        <mdw-box color=background padding=8>Background</mdw-box>
+      </mdw-box>
     </demo-section>
     <demo-section>
       <h1 slot=heading>Surface tones</h1>
-      <mdw-flex gap=12px wrap>
-        <mdw-surface color=surface>
-          <div class="box">Surface</div>
-        </mdw-surface>
-        <mdw-surface color=surface elevation=1>
-          <div class="box">Surface +1</div>
-        </mdw-surface>
-        <mdw-surface color=surface elevation=2>
-          <div class="box">Surface +2</div>
-        </mdw-surface>
-        <mdw-surface color=surface elevation=3>
-          <div class="box">Surface +3</div>
-        </mdw-surface>
-        <mdw-surface color=surface elevation=4>
-          <div class="box">Surface +4</div>
-        </mdw-surface>
-        <mdw-surface color=surface elevation=5>
-          <div class="box">Surface +5</div>
-        </mdw-surface>
-      </mdw-flex>
+      <mdw-box flex gap=12 wrap>
+        <mdw-surface padding=8>Surface</mdw-surface>
+        <mdw-surface elevation=1 padding=8>Surface +1</mdw-surface>
+        <mdw-surface elevation=2 padding=8>Surface +2</mdw-surface>
+        <mdw-surface elevation=3 padding=8>Surface +3</mdw-surface>
+        <mdw-surface elevation=4 padding=8>Surface +4</mdw-surface>
+        <mdw-surface elevation=5 padding=8>Surface +5</mdw-surface>
+      </mdw-box>
     </demo-section>
     <demo-section>
       <h1 slot=heading>Inverse</h1>
-      <mdw-flex gap=12px wrap>
-        <mdw-surface color=inverse-surface><div class="box">Inverse Surface</div></mdw-surface>
-        <mdw-surface color=inverse-surface elevation=1><div class="box">Inverse Surface +1</div></mdw-surface>
-        <mdw-surface color=inverse-surface elevation=2><div class="box">Inverse Surface +2</div></mdw-surface>
-        <mdw-surface color=inverse-surface elevation=3><div class="box">Inverse Surface +3</div></mdw-surface>
-        <mdw-surface color=inverse-surface elevation=4><div class="box">Inverse Surface +4</div></mdw-surface>
-        <mdw-surface color=inverse-surface elevation=5><div class="box">Inverse Surface +5</div></mdw-surface>
-        <mdw-surface color=inverse-primary><div class="box">Inverse Primary</div></mdw-surface>
-      </mdw-flex>
+      <mdw-box flex gap=12 wrap>
+        <mdw-surface color=inverse padding=8>Inverse Surface</mdw-surface>
+        <mdw-surface color=inverse elevation=1 padding=8>Inverse Surface +1</mdw-surface>
+        <mdw-surface color=inverse elevation=2 padding=8>Inverse Surface +2</mdw-surface>
+        <mdw-surface color=inverse elevation=3 padding=8>Inverse Surface +3</mdw-surface>
+        <mdw-surface color=inverse elevation=4 padding=8>Inverse Surface +4</mdw-surface>
+        <mdw-surface color=inverse elevation=5 padding=8>Inverse Surface +5</mdw-surface>
+        <mdw-surface color=inverse-primary padding=8>Inverse Primary</mdw-surface>
+      </mdw-box>
     </demo-section>
     <demo-section>
       <h1 slot=heading>Neutral variant</h1>
-      <mdw-flex gap=12px wrap>
-        <mdw-surface color=surface-variant><div class="box">Surface Variant</div></mdw-surface>
-        <mdw-surface color=surface-variant elevation=1><div class="box">Surface Variant +1</div></mdw-surface>
-        <mdw-surface color=surface-variant elevation=2><div class="box">Surface Variant +2</div></mdw-surface>
-        <mdw-surface color=surface-variant elevation=3><div class="box">Surface Variant +3</div></mdw-surface>
-        <mdw-surface color=surface-variant elevation=4><div class="box">Surface Variant +4</div></mdw-surface>
-        <mdw-surface color=surface-variant elevation=5><div class="box">Surface Variant +5</div></mdw-surface>
-        <mdw-surface ink=outline><div class="box">Outline</div></mdw-surface>
-      </mdw-flex>
+      <mdw-box flex gap=12 wrap>
+        <mdw-surface color=variant padding=8>Surface Variant</mdw-surface>
+        <mdw-surface color=variant elevation=1 padding=8>Surface Variant +1</mdw-surface>
+        <mdw-surface color=variant elevation=2 padding=8>Surface Variant +2</mdw-surface>
+        <mdw-surface color=variant elevation=3 padding=8>Surface Variant +3</mdw-surface>
+        <mdw-surface color=variant elevation=4 padding=8>Surface Variant +4</mdw-surface>
+        <mdw-surface color=variant elevation=5 padding=8>Surface Variant +5</mdw-surface>
+        <mdw-surface color=transparent ink=outline outlined padding=8>Outline</mdw-surface>
+      </mdw-box>
     </demo-section>
     <demo-section>
       <h1 slot=heading>Custom</h1>
-      <mdw-flex gap=12px wrap>
-        <mdw-container class="box mdw-custom" color=yellow>Yellow</mdw-container>
-        <mdw-container class="box mdw-custom" color=yellow-container>Yellow Container</mdw-container>
-        <mdw-container class="box mdw-custom" color=orange>Orange</mdw-container>
-        <mdw-container class="box mdw-custom" color=orange-container>Orange Container</mdw-container>
-        <mdw-container class="box mdw-custom" color=green>Green</mdw-container>
-        <mdw-container class="box mdw-custom" color=green-container>Green Container</mdw-container>
-        <mdw-container class="box mdw-custom" color=alias>Alias</mdw-container>
-        <mdw-container class="box mdw-custom" color=alias-container>Alias Container</mdw-container>
-      </mdw-flex>
+      <mdw-box flex gap=12 wrap>
+        <mdw-box class="mdw-custom" color=yellow padding=8>Yellow</mdw-box>
+        <mdw-box class="mdw-custom" color=yellow-container padding=8>Yellow Container</mdw-box>
+        <mdw-box class="mdw-custom" color=orange padding=8>Orange</mdw-box>
+        <mdw-box class="mdw-custom" color=orange-container padding=8>Orange Container</mdw-box>
+        <mdw-box class="mdw-custom" color=green padding=8>Green</mdw-box>
+        <mdw-box class="mdw-custom" color=green-container padding=8>Green Container</mdw-box>
+        <mdw-box class="mdw-custom" color=alias padding=8>Alias</mdw-box>
+        <mdw-box class="mdw-custom" color=alias-container padding=8>Alias Container</mdw-box>
+      </mdw-box>
     </demo-section>
 
   </demo-page>

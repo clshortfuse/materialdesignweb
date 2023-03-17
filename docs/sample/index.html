@@ -16,9 +16,6 @@
       display: none;
     }
 
-    mdw-div:not(:defined) {
-      display: none;
-    }
 
     body {
       display: flex;
@@ -31,9 +28,12 @@
 </head>
 
 <body>
-  <mdw-flex column x=stretch >
+  <mdw-box flex=column x=stretch >
     <dummy-product-page></dummy-product-page>
-  </mdw-flex>
+    <dummy-product-page></dummy-product-page>
+    <dummy-product-page></dummy-product-page>
+    <dummy-product-page></dummy-product-page>
+  </mdw-box>
 
   <script type=module src="./ProductPage.js"></script>
 

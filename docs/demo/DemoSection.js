@@ -4,7 +4,7 @@ export default CustomElement
   .extend()
   .html/* html */`
     <section aria-labelledby=slot>
-      <slot id=slot name=heading role="none"></slot>
+      <slot id=slot name=heading role=none></slot>
       <slot></slot>
     </section>
   `

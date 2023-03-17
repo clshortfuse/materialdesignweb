@@ -45,8 +45,7 @@ main {
 .box {
   /* min-inline-size: 40px; */
   padding: 8px;
-
-  text-align: center;
+  /* text-align: center; */
 }
 
 .custom-card-box {
@@ -54,11 +53,11 @@ main {
 }
 
 demo-section:not(:defined) {
-  display: none;
+  visibility: hidden;
 }
 
 demo-dummy-text:not(:defined) {
-  display: none;
+  visibility: hidden;
 }
 
 html[dir="rtl"] {

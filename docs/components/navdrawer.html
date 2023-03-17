@@ -18,24 +18,24 @@
   <demo-page>
     <demo-section>
       <h1 slot=heading>Standard</h1>
-      <mdw-layout wrap gap=12px>
+      <mdw-box flex wrap gap=12>
         <mdw-nav-drawer open style="min-height:400px">
-          <mdw-nav-item icon="edit" href="#navdrawer">Default</mdw-nav-item>
-          <mdw-nav-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-item>
-          <mdw-nav-item icon="change_history" href="#navdrawer" color=tertiary-container>Tertiary</mdw-nav-item>
+          <mdw-nav-drawer-item icon="edit" href="#navdrawer" badge="5">Default</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon="change_history" href="#navdrawer" color=tertiary-container>Tertiary</mdw-nav-drawer-item>
         </mdw-nav-drawer>
         <mdw-nav-drawer open color="tertiary-container" style="min-height:400px">
-          <mdw-nav-item icon="edit" href="#navdrawer">Default</mdw-nav-item>
-          <mdw-nav-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-item>
-          <mdw-nav-item class="mdw-custom" icon="change_history" href="#navdrawer" badge="999+" color=green-container>
-            Green Container</mdw-nav-item>
+          <mdw-nav-drawer-item icon="edit" href="#navdrawer" badge="10">Default</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item class="mdw-custom" icon="change_history" href="#navdrawer" badge="999+" color=green-container>
+            Green Container</mdw-nav-drawer-item>
         </mdw-nav-drawer>
         <mdw-nav-drawer open style="min-height:400px">
-          <mdw-nav-item icon="edit" href="#navdrawer">Default</mdw-nav-item>
-          <mdw-nav-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-item>
-          <mdw-nav-item icon="change_history" href="#navdrawer" color=tertiary-container>Tertiary</mdw-nav-item>
+          <mdw-nav-drawer-item icon="edit" href="#navdrawer">Default</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon="change_history" href="#navdrawer" color=tertiary-container>Tertiary</mdw-nav-drawer-item>
         </mdw-nav-drawer>
-      </mdw-layout>
+      </mdw-box>
     </demo-section>
   </demo-page>
   <script type=module src="../demo.min.js"></script>

@@ -24,7 +24,7 @@
       <h1 slot="heading">Single-line</h1>
       <demo-section>
         <h2 slot="heading">Options</h2>
-        <mdw-layout style="margin:24px" gap="16px">
+        <mdw-box flex=column padding=24 gap=16>
           <mdw-checkbox checked onchange="{
                 for (const el of $$('#single-line mdw-snackbar')) {
                   el.open = this.checked;
@@ -41,9 +41,9 @@
                 }
               }">Close Button?<div></div>
           </mdw-checkbox>
-        </mdw-layout>
+        </mdw-box>
       </demo-section>
-      <mdw-layout wrap gap=16px style="margin:24px" column id="single-line">
+      <mdw-box id="single-line" flex=column wrap gap=16 padding=24 >
         <mdw-snackbar open onclose="console.log('Bye')" onaction="alert('You clicked the action!')">Snackbar with inline
           events.</mdw-snackbar>
         <mdw-snackbar open>
@@ -60,7 +60,7 @@
         <mdw-snackbar open shape-style=small shape-end>Small End Shape</mdw-snackbar>
         <mdw-snackbar open>Very large piece of text that will wrap and clip due to a limit of two-lines at most.
         </mdw-snackbar>
-      </mdw-layout>
+      </mdw-box>
     </demo-section>
   </demo-page>
   <script type=module src="../demo.min.js"></script>

@@ -6,7 +6,6 @@ import '../../components/Progress.js';
 
 import Card from '../../components/Card.js';
 import '../../typography/Label.js';
-import '../../layout/Flex.js';
 
 /**
  * @param {number} min
@@ -49,6 +48,7 @@ export default Card
     lastFetchedId: null,
     /** @type {AbortController} */
     fetchAbortController: null,
+    outlined: true,
   })
   .css/* css */`
     :host() {
@@ -72,7 +72,7 @@ export default Card
       pointer-events: auto;
     }
     #content[busy] {
-      filter:blur(2px);
+      filter: blur(2px);
     }
     #form {
       position: relative;
@@ -93,16 +93,16 @@ export default Card
             <mdw-title size=small>{description}</mdw-title>
           </div>
           <mdw-divider></mdw-divider>
-          <mdw-flex column gap=16px style="padding:16px">
-            <mdw-input outlined type=number name=price value={price} label="Price" input-prefix=$ step=0.01></mdw-input>
-            <mdw-input outlined type=number name=discountPercentage value={discountPercentage} input-suffix=% label="Discount" step=0.01></mdw-input>
+          <mdw-box flex=column gap=16 padding=16>
+            <mdw-input outlined type=number name=price value={price} label=Price input-prefix=$ step=0.01></mdw-input>
+            <mdw-input outlined type=number name=discountPercentage value={discountPercentage} input-suffix=% label=Discount step=0.01></mdw-input>
             <mdw-slider name=rating value={rating} min=0 max=5 step=0.1 ticks=4></mdw-slider>
-          </mdw-flex>
+          </mdw-box>
         </fieldset>
       </div>
     </form>
     <mdw-divider></mdw-divider>
-    <mdw-flex row x=end style="padding:8px;gap:8px">
+    <mdw-box flex x=end padding=8 gap=8>
       <mdw-icon-button 
         disabled=${({ productId }) => productId === 1}
         id=previous
@@ -113,10 +113,10 @@ export default Card
         on-click=${function onClick() { this.productId++; }}
         id=next
         icon=chevron_right>Next</mdw-icon-button>
-    </mdw-flex>
+    </mdw-box>
   `
   .methods({
-    async fetch() {
+    async refresh() {
       const productId = this.productId;
       this.fetchAbortController?.abort();
       const controller = new AbortController();
@@ -139,14 +139,11 @@ export default Card
     },
   })
   .on({
-    constructed() {
-      this.outlined = true;
-    },
     connected() {
-      this.fetch();
+      this.refresh();
     },
     productIdChanged() {
-      this.fetch();
+      this.refresh();
     },
   })
   .autoRegister('dummy-product-page');

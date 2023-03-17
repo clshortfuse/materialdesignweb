@@ -18,143 +18,136 @@
   <demo-page>
     <demo-section>
       <h1 slot=heading>One-line lists</h1>
-      <mdw-layout gap=12px wrap>
-        <mdw-list color="surface" style="width:100%">
-          <mdw-list-item>Headline (textContent)</mdw-list-item>
-          <mdw-list-item disabled>Disabled (textContent)</mdw-list-item>
-          <mdw-list-item icon="person">Headline with leading icon</mdw-list-item>
-          <mdw-list-item avatar="A">Headline with leading avatar</mdw-list-item>
-          <mdw-list-item src="../imgs/gradient.svg" alt="sample">Headline with leading image thumbnail</mdw-list-item>
-          <mdw-list-item src="../imgs/gradient.svg" alt="sample" video checkbox="trailing">Headline with leading video
-            and
-            checkbox
-          </mdw-list-item>
-          <mdw-list-item checkbox>Headline with leading checkbox</mdw-list-item>
-          <mdw-list-item checkbox=trailing selected>Headline with trailing checkbox (selected)</mdw-list-item>
-          <mdw-list-item trailing="100+">Headline with trailing text</mdw-list-item>
-          <mdw-list-item trailing-icon="chevron_right">Headline with trailing icon</mdw-list-item>
-          <mdw-list-item>
-            <span slot=headline>Headline (slot)</span>
-          </mdw-list-item>
-          <mdw-list-item>
-            <mdw-inline slot=headline ink=primary>Customized headline (slot)</mdw-inline>
-          </mdw-list-item>
-          <mdw-list-item>
-            <img slot="leading" src="../imgs/gradient.svg" height="56" width="56" alt="" />
-            Headline with leading (slot)</mdw-list-item>
-        </mdw-list>
-      </mdw-layout>
+      <mdw-list color="surface">
+        <mdw-list-item>Headline (textContent)</mdw-list-item>
+        <mdw-list-item disabled>Disabled (textContent)</mdw-list-item>
+        <mdw-list-item icon="person">Headline with leading icon</mdw-list-item>
+        <mdw-list-item avatar="A">Headline with leading avatar</mdw-list-item>
+        <mdw-list-item src="../imgs/gradient.svg" alt="sample">Headline with leading image thumbnail</mdw-list-item>
+        <mdw-list-item src="../imgs/gradient.svg" alt="sample" video checkbox="trailing">Headline with leading video
+          and
+          checkbox
+        </mdw-list-item>
+        <mdw-list-item checkbox>Headline with leading checkbox</mdw-list-item>
+        <mdw-list-item checkbox=trailing selected>Headline with trailing checkbox (selected)</mdw-list-item>
+        <mdw-list-item trailing="100+">Headline with trailing text</mdw-list-item>
+        <mdw-list-item trailing-icon="chevron_right">Headline with trailing icon</mdw-list-item>
+        <mdw-list-item>
+          <span slot>Headline (slot)</span>
+        </mdw-list-item>
+        <mdw-list-item>
+          <mdw-box slot ink=primary>Customized headline (slot)</mdw-box>
+        </mdw-list-item>
+        <mdw-list-item>
+          <img slot="leading" src="../imgs/gradient.svg" height="56" width="56" alt="" />
+          Headline with leading (slot)</mdw-list-item>
+      </mdw-list>
     </demo-section>
+
     <demo-section>
       <h1 slot=heading>Two-line lists (Explicit)</h1>
-      <mdw-layout gap=12px wrap>
-        <mdw-list color="surface" style="width:100%">
-          <mdw-list-item lines=2>Headline (textContent)</mdw-list-item>
-          <mdw-list-item lines=2 supporting="With supporting text">Headline (textContent)</mdw-list-item>
-          <mdw-list-item lines=2 supporting="With leading icon" icon="person">Headline </mdw-list-item>
-          <mdw-list-item lines=2 supporting="With leading avatar" avatar="A">Headline</mdw-list-item>
-          <mdw-list-item lines=2 supporting="With leading
+      <mdw-list color="surface" style="width:100%">
+        <mdw-list-item lines=2>Headline (textContent)</mdw-list-item>
+        <mdw-list-item lines=2 supporting="With supporting text">Headline (textContent)</mdw-list-item>
+        <mdw-list-item lines=2 supporting="With leading icon" icon="person">Headline </mdw-list-item>
+        <mdw-list-item lines=2 supporting="With leading avatar" avatar="A">Headline</mdw-list-item>
+        <mdw-list-item lines=2 supporting="With leading
             image thumbnail" src="../imgs/gradient.svg" alt="sample">Headline</mdw-list-item>
-          <mdw-list-item lines=2 supporting="With leading video and checkbox" src="../imgs/gradient.svg" alt="sample"
-            video checkbox="trailing">Headline</mdw-list-item>
-          <mdw-list-item lines=2 supporting="With leading checkbox" checkbox>Headline</mdw-list-item>
-          <mdw-list-item lines=2 supporting="With trailing checkbox (selected)" checkbox=trailing selected>Headline
-          </mdw-list-item>
-          <mdw-list-item lines=2 supporting="Supporting text" trailing="100+">Headline with trailing text
-          </mdw-list-item>
-          <mdw-list-item lines=2 supporting="Supporting text" trailing-icon="chevron_right">Headline with trailing
-            icon
-          </mdw-list-item>
-          <mdw-list-item>
-            <span slot=headline>Headline (slot)</span>
-            <mdw-inline slot=supporting ink=primary>Customized supporting text (slot)</mdw-inline>
-          </mdw-list-item>
-          <mdw-list-item lines=2>
-            Headline
-            <mdw-inline type-style=body-small ink=primary slot=supporting>Custom supporting slot</mdw-inline>
-          </mdw-list-item>
-          <mdw-list-item lines=2>
-            Headline
-            <span slot="supporting">Oversized supporting *slot* that will wrap on small to medium sized
-              displays</span>
-          </mdw-list-item>
-          <mdw-list-item lines=2
-            supporting="Oversized supporting *attribute* that clips text automatically based on available space">
-            Headline</mdw-list-item>
-        </mdw-list>
-      </mdw-layout>
+        <mdw-list-item lines=2 supporting="With leading video and checkbox" src="../imgs/gradient.svg" alt="sample"
+          video checkbox="trailing">Headline</mdw-list-item>
+        <mdw-list-item lines=2 supporting="With leading checkbox" checkbox>Headline</mdw-list-item>
+        <mdw-list-item lines=2 supporting="With trailing checkbox (selected)" checkbox=trailing selected>Headline
+        </mdw-list-item>
+        <mdw-list-item lines=2 supporting="Supporting text" trailing="100+">Headline with trailing text
+        </mdw-list-item>
+        <mdw-list-item lines=2 supporting="Supporting text" trailing-icon="chevron_right">Headline with trailing
+          icon
+        </mdw-list-item>
+        <mdw-list-item>
+          <span slot>Headline (slot)</span>
+          <mdw-inline slot=supporting ink=primary>Customized supporting text (slot)</mdw-inline>
+        </mdw-list-item>
+        <mdw-list-item lines=2>
+          Headline
+          <mdw-inline type-style=body-small ink=primary slot=supporting>Custom supporting slot</mdw-inline>
+        </mdw-list-item>
+        <mdw-list-item lines=2>
+          Headline
+          <span slot="supporting">Oversized supporting *slot* that will wrap on small to medium sized
+            displays</span>
+        </mdw-list-item>
+        <mdw-list-item lines=2
+          supporting="Oversized supporting *attribute* that clips text automatically based on available space">
+          Headline</mdw-list-item>
+      </mdw-list>
     </demo-section>
+
     <demo-section>
       <h1 slot=heading>Three-line lists (Explicit)</h1>
-      <mdw-layout gap=12px wrap>
-        <mdw-list color="surface" style="width:100%">
-          <mdw-list-item lines=3>Headline (textContent)</mdw-list-item>
-          <mdw-list-item lines=3 supporting="With supporting text">Headline (textContent)</mdw-list-item>
-          <mdw-list-item lines=3 supporting="With leading icon" icon="person">Headline </mdw-list-item>
-          <mdw-list-item lines=3 supporting="With leading avatar" avatar="A">Headline</mdw-list-item>
-          <mdw-list-item lines=3 supporting="With leading
+      <mdw-list color="surface" style="width:100%">
+        <mdw-list-item lines=3>Headline (textContent)</mdw-list-item>
+        <mdw-list-item lines=3 supporting="With supporting text">Headline (textContent)</mdw-list-item>
+        <mdw-list-item lines=3 supporting="With leading icon" icon="person">Headline </mdw-list-item>
+        <mdw-list-item lines=3 supporting="With leading avatar" avatar="A">Headline</mdw-list-item>
+        <mdw-list-item lines=3 supporting="With leading
             image thumbnail" src="../imgs/gradient.svg" alt="sample">Headline</mdw-list-item>
-          <mdw-list-item lines=3 supporting="With leading video and checkbox" src="../imgs/gradient.svg" alt="sample"
-            video checkbox="trailing">Headline</mdw-list-item>
-          <mdw-list-item lines=3 supporting="With leading checkbox" checkbox>Headline</mdw-list-item>
-          <mdw-list-item lines=3 supporting="With trailing checkbox (selected)" checkbox=trailing selected>Headline
-          </mdw-list-item>
-          <mdw-list-item lines=3 supporting="Supporting text" trailing="100+">Headline with trailing text
-          </mdw-list-item>
-          <mdw-list-item lines=3 supporting="Supporting text" trailing-icon="chevron_right">Headline with trailing
-            icon
-          </mdw-list-item>
-          <mdw-list-item>
-            <span slot=headline>Headline (slot)</span>
-            <mdw-inline slot=supporting ink=primary>Customized supporting text (slot)</mdw-inline>
-          </mdw-list-item>
-          <mdw-list-item lines=3>
-            Headline
-            <mdw-inline type-style=body-small ink=primary slot=supporting>Custom supporting slot</mdw-inline>
-          </mdw-list-item>
-          <mdw-list-item lines=3>
-            Headline
-            <span slot="supporting">Oversized supporting *slot* that will wrap on small to medium sized
-              displays. When using slot, there is not clamping or maximum height placed on this element.</span>
-          </mdw-list-item>
-          <mdw-list-item lines=3
-            supporting="Oversized supporting *attribute* that clips text automatically based on available space. Instead of being clamped to only 1 line, this is now clamped to 2">
-            Headline</mdw-list-item>
-        </mdw-list>
-      </mdw-layout>
+        <mdw-list-item lines=3 supporting="With leading video and checkbox" src="../imgs/gradient.svg" alt="sample"
+          video checkbox="trailing">Headline</mdw-list-item>
+        <mdw-list-item lines=3 supporting="With leading checkbox" checkbox>Headline</mdw-list-item>
+        <mdw-list-item lines=3 supporting="With trailing checkbox (selected)" checkbox=trailing selected>Headline
+        </mdw-list-item>
+        <mdw-list-item lines=3 supporting="Supporting text" trailing="100+">Headline with trailing text
+        </mdw-list-item>
+        <mdw-list-item lines=3 supporting="Supporting text" trailing-icon="chevron_right">Headline with trailing
+          icon
+        </mdw-list-item>
+        <mdw-list-item>
+          <span slot>Headline (slot)</span>
+          <mdw-inline slot=supporting ink=primary>Customized supporting text (slot)</mdw-inline>
+        </mdw-list-item>
+        <mdw-list-item lines=3>
+          Headline
+          <mdw-inline type-style=body-small ink=primary slot=supporting>Custom supporting slot</mdw-inline>
+        </mdw-list-item>
+        <mdw-list-item lines=3>
+          Headline
+          <span slot="supporting">Oversized supporting *slot* that will wrap on small to medium sized
+            displays. Instead of being clamped to only 1 line, this is now clamped to 2</span>
+        </mdw-list-item>
+        <mdw-list-item lines=3
+          supporting="Oversized supporting *attribute* that clips text automatically based on available space. Instead of being clamped to only 1 line, this is now clamped to 2">
+          Headline</mdw-list-item>
+      </mdw-list>
     </demo-section>
+
     <demo-section>
       <h1 slot=heading>Dynamic line count</h1>
-      <mdw-layout gap=12px wrap>
-        <mdw-list color="surface" style="width:100%">
-          <mdw-list-item>Headline only</mdw-list-item>
-          <mdw-list-item supporting="With supporting text">Headline</mdw-list-item>
-          <mdw-list-item
-            supporting="With leading video and checkbox. Despite this being oversized, it will still clamp to two lines."
-            src="../imgs/gradient.svg" alt="sample" video checkbox="trailing">Headline</mdw-list-item>
-          <mdw-list-item>
-            Headline
-            <span slot="supporting">Oversized supporting *slot* that will wrap on small to medium sized
-              displays. When using slot, there is not clamping or maximum height placed on this element.</span>
-          </mdw-list-item>
-          <mdw-list-item checkbox=trailing
-            supporting="Oversized supporting *attribute* that clips text automatically based on available space. Instead of being clamped to only 1 line, this is now clamped to 2">
-            Headline</mdw-list-item>
-        </mdw-list>
-      </mdw-layout>
+      <mdw-list color="surface" style="width:100%">
+        <mdw-list-item>Headline only</mdw-list-item>
+        <mdw-list-item supporting="With supporting text">Headline</mdw-list-item>
+        <mdw-list-item
+          supporting="With leading video and checkbox. Despite this being oversized, it will still clamp to two lines."
+          src="../imgs/gradient.svg" alt="sample" video checkbox="trailing">Headline</mdw-list-item>
+        <mdw-list-item>
+          Headline
+          <span slot="supporting">Oversized supporting *slot* that will wrap on small to medium sized
+            displays. Instead of being clamped to only 1 line, this is now clamped to 2</span>
+        </mdw-list-item>
+        <mdw-list-item checkbox=trailing
+          supporting="Oversized supporting *attribute* that clips text automatically based on available space. Instead of being clamped to only 1 line, this is now clamped to 2">
+          Headline</mdw-list-item>
+      </mdw-list>
     </demo-section>
 
     <demo-section>
       <h1 slot=heading>Interactive (HTMLAnchorElement)</h1>
-      <mdw-layout gap=12px wrap>
-        <mdw-list color="surface" style="width:100%">
-          <mdw-list-item href="#" supporting="Focusable and tabbable">href=#</mdw-list-item>
-          <mdw-list-item href="#" lines=2 supporting="Supporting text" trailing-icon="chevron_right">Headline with
-            trailing icon</mdw-list-item>
-          <mdw-list-item supporting="Not focusable">No link</mdw-list-item>
-          <mdw-list-item supporting="Same as <a> element" href="./list.html">Real link</mdw-list-item>
-        </mdw-list>
-      </mdw-layout>
+      <mdw-list color="surface" style="width:100%">
+        <mdw-list-item href="#" supporting="Focusable and tabbable">href=#</mdw-list-item>
+        <mdw-list-item href="#" lines=2 supporting="Supporting text" trailing-icon="chevron_right">Headline with
+          trailing icon</mdw-list-item>
+        <mdw-list-item supporting="Not focusable">No link</mdw-list-item>
+        <mdw-list-item supporting="Same as <a> element" href="./list.html">Real link</mdw-list-item>
+      </mdw-list>
     </demo-section>
   </demo-page>
   <script type=module src="../demo.min.js"></script>
