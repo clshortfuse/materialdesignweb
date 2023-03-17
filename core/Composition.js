@@ -659,10 +659,9 @@ export default class Composition {
             // });
           }
         }
-        const eventTarget = id
-          ? findElement(root, id) // Bind events even if not in DOM to avoid tree-walk later
-          : rootEventTarget;
+        const eventTarget = id ? findElement(root, id) : rootEventTarget;
         if (!eventTarget) {
+          // Element is available yet. Bind on reference
           console.warn('Skip bind events for', id);
           continue;
         }
@@ -732,43 +731,50 @@ export default class Composition {
       return element;
     }
 
-    // Element not in DOM means part of conditional element
-    // Check interpolation (full-tree) first
-    // console.log('Searching in full-tree', id);
-    const sourceElement = findElement(this.interpolation, id);
-    if (!sourceElement) {
-      console.warn('Not in full-tree', id);
-      // Cache not in full composition
-      references.set(id, null);
-      return null;
-    }
+    // Element not in DOM means child of conditional element
+    /** @type {Element} */
+    let anchorElement;
 
-    // Find which conditional element it belongs to
-    let parent = sourceElement;
+    // Check if element is conditional
     let cloneTarget = this.conditionalElementMap.get(id);
 
     if (!cloneTarget) {
-      console.debug('Search for unconditional element', id, cloneTarget);
-      // Iterate backwards in template until used reference is found
-      while ((parent = parent.parentElement) != null) {
-        const parentId = parent.id;
+      // Check if element even exists in interpolation
+      // Check interpolation (full-tree) first
+      const interpolatedElement = this.interpolation.getElementById(id);
+      if (!interpolatedElement) {
+        console.warn('Not in full-tree', id);
+        // Cache not in full composition
+        references.set(id, null);
+        return null;
+      }
+      // Iterate backgrounds until closest conditional element
+      // const anchorElementId = this.template.findElementById(id).closest('[_if]').id;
+      // anchorElement = this.references.get(anchorElementId)  this.interpolation.getElementById(anchorElementId).cloneNode(true);
+      let parentElement = interpolatedElement;
+      while (({ parentElement } = parentElement) != null) {
+        const parentId = parentElement.id;
         if (!parentId) {
           console.warn('Parent does not have ID!');
-          cloneTarget = parent;
+          cloneTarget = parentElement;
           continue;
         }
 
-        // Parent already in DOM and referenced
-        if (references.has(parentId)) {
-          console.debug('Parent already in DOM and cached', parentId, '>', id);
+        // Parent already referenced
+        const referencedParent = references.get(parentId);
+        if (referencedParent) {
+          // Element may have been removed without ever tree-walking
+          console.debug('Parent already referenced', parentId, '>', id);
+          anchorElement = referencedParent;
           break;
         }
 
         const liveElement = findElement(root, parentId);
         if (liveElement) {
-          console.debug('Parent already in DOM and not cached', parentId, '>', id);
+          console.warn('Parent in DOM and not referenced', parentId, '>', id);
           // Parent already in DOM. Cache reference
           references.set(parentId, liveElement);
+          anchorElement = referencedParent;
           break;
         }
 
@@ -777,16 +783,16 @@ export default class Composition {
           console.debug('Found parent conditional element', parentId, '>', id);
           cloneTarget = conditionalParent;
           break;
-        } else {
-          console.debug('Wrong Parent', parentId, '>?', id);
-          cloneTarget = parent;
         }
+
+        cloneTarget = parentElement;
       }
     }
 
-    const clone = /** @type {Element} */ (cloneTarget.cloneNode(true));
+    anchorElement ??= /** @type {Element} */ (cloneTarget.cloneNode(true));
+
     // Iterate downwards and cache all references
-    for (const node of iterateNodes(clone, { element: true, self: true })) {
+    for (const node of iterateNodes(anchorElement, { element: true, self: true })) {
       const nodeIdentifier = node.id;
       if (!element && nodeIdentifier === id) {
         element = node;
@@ -795,11 +801,15 @@ export default class Composition {
       if (nodeIdentifier) {
         // console.debug('Caching element', nodeIdentifier);
         references.set(nodeIdentifier, node);
+        if (cloneTarget) {
+          // Attach events regardless of DOM state.
+          // EventTargets should still fire even if not part of live document
+          this.attachEventListeners(id, element);
+        }
       } else {
         console.warn('Could not cache node', node);
       }
     }
-    this.attachEventListeners(id, element);
     return element;
   }
 
