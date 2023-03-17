@@ -158,6 +158,7 @@
 
   #companion[size="large"] {
     min-block-size: 2lh;
+    /* stylelint-disable-next-line declaration-property-value-disallowed-list */
     margin-block-start: calc(68px - 2lh);
   }
 }

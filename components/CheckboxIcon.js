@@ -24,7 +24,7 @@ export default CustomElement
   })
   .css(outlineStyles, styles)
   .on({
-    composed({ html, template }) {
+    composed({ html }) {
       const { outline, shape } = this.refs;
       outline.removeAttribute('_if');
       outline.setAttribute('selected', '{selected}');

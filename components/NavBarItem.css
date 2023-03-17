@@ -32,7 +32,6 @@
   grid-row: 1 / 1;
 }
 
-
 #slot[show-label="never"] {
   block-size: 0;
 }

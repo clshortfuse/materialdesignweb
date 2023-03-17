@@ -66,7 +66,7 @@ export default CustomElement
   })
   .childEvents({
     action: {
-      click(e) {
+      click() {
         if (this.disabledState) return;
         this.dispatchEvent(new Event('action'));
       },

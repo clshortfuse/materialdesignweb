@@ -11,7 +11,7 @@ export default function ScrollListenerMixin(Base) {
       _scrollPositionY: { type: 'float', empty: 0 },
     })
     .set({
-      /** @type {WeakRef<HTMLElement|Window>} */
+      /** @type {WeakRef<EventTarget>} */
       _scroller: null,
       /** @type {EventListener} */
       _scrollerScrollListener: null,
@@ -53,19 +53,15 @@ export default function ScrollListenerMixin(Base) {
       onScrollerResize(event) {},
 
       /**
-       * @param {HTMLElement|Window} [scroller]
+       * @param {EventTarget} [scroller]
        * @return {boolean}
        */
       startScrollListener(scroller) {
-        if (!scroller) {
-          // eslint-disable-next-line no-param-reassign
-          scroller = this.offsetParent;
-          if (!scroller) return false;
-        }
+        scroller ??= this.offsetParent;
+        if (!scroller) return false;
 
         if (scroller === document.body) {
-        // console.log('scroller is body, attaching to window');
-          // eslint-disable-next-line no-param-reassign
+          // console.log('scroller is body, attaching to window');
           scroller = window;
         }
 
@@ -102,10 +98,11 @@ export default function ScrollListenerMixin(Base) {
       },
 
       /**
-       * @param {Element|Window} scroller
+       * @param {EventTarget} [scroller]
        * @return {boolean}
        */
-      clearScrollListener(scroller = this._scroller?.deref()) {
+      clearScrollListener(scroller) {
+        scroller ??= this._scroller?.deref();
         if (!scroller) return false;
         if (!this._scrollerScrollListener) return false;
         scroller.removeEventListener('scroll', this._scrollerScrollListener);

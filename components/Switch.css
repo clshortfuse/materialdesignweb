@@ -27,13 +27,12 @@
 /** Switch **/
 
 #switch {
-  flex:1;
   --mdw-bg: inherit;
   --mdw-ink: inherit;
+  flex:1;
+
   pointer-events: none;
 }
-
-
 
 /** State **/
 
@@ -46,12 +45,12 @@
   inline-size: 100%;
   min-inline-size: 40px;
 
+  pointer-events: none;
+
   transform: translateX(-50%) translateY(-50%);
 
   border-radius: 50%;
-  pointer-events: none;
 }
-
 
 /** Disabled **/
 

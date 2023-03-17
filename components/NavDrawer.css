@@ -29,16 +29,3 @@
 #slot {
   gap: 0;
 }
-
-:host([open]) #slot::slotted(mdw-nav-item) {
-  align-self: stretch;
-
-  display: grid;
-  align-items: center;
-  gap: 12px;
-  grid-template: "icon label badge" minmax(56px, min-content) / 24px 1fr minmax(0, min-content);
-  justify-items: flex-start;
-
-  padding-inline: 16px 24px;
-
-}

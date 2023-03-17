@@ -31,7 +31,7 @@
   cursor: inherit;
 }
 
-:host([icon]) #control {
+#control[icon] {
   margin-inline-start: calc(16px + 24px);
   padding-inline-start: 0;
 }

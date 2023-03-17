@@ -1,10 +1,11 @@
 /* https://m3.material.io/components/menus/specs */
 
 :host {
-  cursor: pointer;
   gap: 12px;
 
   padding-inline: 12px;
+
+  cursor: pointer;
 
   white-space: nowrap;
 }

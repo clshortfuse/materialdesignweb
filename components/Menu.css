@@ -154,13 +154,14 @@ dialog:modal {
 }
 
 #scroller {
-  flex: 1;
   display: flex;
   align-items: stretch;
   flex-direction: column;
   overflow-y: auto;
   overscroll-behavior: none;
   overscroll-behavior: contain;
+
+  flex: 1;
 
   padding-block: 8px;
 }

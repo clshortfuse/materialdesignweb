@@ -83,6 +83,7 @@
 }
 
 #slot {
+  text-align: center;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -100,10 +101,6 @@
 #shape[disabled]:is([elevated], [filled]) {
   background-color: rgba(var(--mdw-color__on-surface), 0.12);
   color: rgba(var(--mdw-color__on-surface), 0.38);
-}
-
-#slot {
-  text-align: center;
 }
 
 #slot[disabled] {

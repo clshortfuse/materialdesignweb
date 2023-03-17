@@ -59,7 +59,7 @@
   animation-name: l2t;
 }
 
-:host([value]) .line {
+.line[value] {
   opacity: 0;
   visibility: hidden;
 

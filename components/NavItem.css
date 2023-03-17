@@ -50,7 +50,6 @@
   flex-direction: column;
   grid-area: label;
   justify-content: center;
-  color: rgb(var(--mdw-color__on-surface-variant));
 
   grid-column: 1 /4;
 
@@ -62,6 +61,8 @@
   outline: none;
 
   transform: translateY(var(--mdw-nav-item__offset-y));
+
+  color: rgb(var(--mdw-color__on-surface-variant));
 
   transition: opacity, color, transform 200ms;
   will-change: opacity, transform;
@@ -98,13 +99,13 @@
 #icon {
   position: relative;
   align-self: center;
-  color: rgb(var(--mdw-color__on-surface-variant));
-
 
   grid-area: icon;
 
   transform: translateY(var(--mdw-nav-item__offset-y));
   z-index: 3;
+
+  color: rgb(var(--mdw-color__on-surface-variant));
 
   font-size: 24px;
   font-variation-settings: 'FILL' 0;
@@ -148,15 +149,13 @@
 }
 
 #ripple {
+  opacity: 1;
+
   color: rgb(var(--mdw-bg));
 }
 
 #ripple-container {
   z-index:1;
-}
-
-#ripple {
-  opacity: 1;
 }
 
 #shape[active] {

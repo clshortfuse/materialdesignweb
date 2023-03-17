@@ -45,11 +45,7 @@
   background-color: transparent;
 }
 
-:host([circle]) .line {
-  display: none;
-}
-
-:host([circle]) progress {
+#progress[circle] {
   visibility: hidden;
 }
 

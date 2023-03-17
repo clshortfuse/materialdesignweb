@@ -7,9 +7,10 @@
   --mdw-bg: var(--mdw-color__secondary-container);
   gap: 8px;
 
-  color: rgb(var(--mdw-color__on-surface-variant));
   padding-inline-start: max(4px, calc(8px + (var(--mdw-density) * 2px)));
   padding-inline-end: max(12px, calc(16px + (var(--mdw-density) * 2px)));
+
+  color: rgb(var(--mdw-color__on-surface-variant));
 
 }
 
