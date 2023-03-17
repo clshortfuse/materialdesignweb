@@ -20,16 +20,16 @@ Working on:
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/3f03468/docs/
+https://rawcdn.githack.com/clshortfuse/materialdesignweb/9542d1c/docs/
 
 # Getting started
 
 ````html
 <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
 
-<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/3f03468/theming/loader.js?color=6750A4&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto"></script>
+<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/9542d1c/theming/loader.js?color=6750A4&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto"></script>
 
-<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/3f03468/components/Button.js"></script>
+<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/9542d1c/components/Button.js"></script>
 
 <mdw-button>Hello World!</mdw-button>
 ````
@@ -77,7 +77,7 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/3f03468/docs/
 | Chip: Filter Dropdown                                        |                                                                                                                                                                                                                   | [:construction:](# "Under Construction") |
 | Chip: Input                                                  |                                                                                                                                                                                                                   | [:construction:](# "Under Construction") |
 | Date Picker                                                  |                                                                                                                                                                                                                   |      [:grey_question:](# "Unknown")      |
-| [Dialog>](components/Dialog.js)                              | [:paintbrush:](# "Background") [:crayon:](# "Ink") [:o:](# "Outline") [:a:](# "Font") [:large_blue_diamond:](# "Shape") [:wheelchair:](# "ARIA Dialog")                                                           |     [:heavy_check_mark:](# "Ready")      |
+| [Dialog](components/Dialog.js)                               | [:paintbrush:](# "Background") [:crayon:](# "Ink") [:o:](# "Outline") [:a:](# "Font") [:large_blue_diamond:](# "Shape") [:wheelchair:](# "ARIA Dialog")                                                           |     [:heavy_check_mark:](# "Ready")      |
 | Dialog: Full-screen                                          |                                                                                                                                                                                                                   |      [:grey_question:](# "Unknown")      |
 | [Divider](components/Divider.js)                             | [:crayon:](# "Ink")                                                                                                                                                                                               |     [:heavy_check_mark:](# "Ready")      |
 | [Icon](components/Icon.js)                                   | [:crayon:](# "Ink")                                                                                                                                                                                               |     [:heavy_check_mark:](# "Ready")      |
@@ -90,7 +90,7 @@ https://rawcdn.githack.com/clshortfuse/materialdesignweb/3f03468/docs/
 | [Progress Indicators](components/Progress.js)                | [:crayon:](# "Ink") [:wheelchair:](# "ARIA Progress")                                                                                                                                                             |     [:heavy_check_mark:](# "Ready")      |
 | Search                                                       |                                                                                                                                                                                                                   |          [:memo:](# "Planned")           |
 | [Radio](components/Radio.js)                                 | [:crayon:](# "Ink") [:a:](# "Font") [:large_blue_diamond:](# "Shape") [:wheelchair:](# "ARIA Radio")                                                                                                              |     [:heavy_check_mark:](# "Ready")      |
-| [Slider](components/Slider.js)                               | [:crayon:](# "Ink")  [:wheelchair:](# "ARIA Slider")                                                                                                                                                              |     [:heavy_check_mark:](# "Ready")      |
+| [Slider](components/Slider.js)                               | [:crayon:](# "Ink")  [:wheelchair:](# "ARIA Slider")                                                                                                                                                              |         [:warning:](# "Issues")          |
 | [Snackbar](components/Snackbar.js)                           | [:paintbrush:](# "Background") [:crayon:](# "Ink") [:o:](# "Outline") [:large_blue_diamond:](# "Shape") [:signal_strength:](# "Density") [:wheelchair:](# "ARIA Status")                                          |     [:heavy_check_mark:](# "Ready")      |
 | [Switch](components/Switch.js)                               | [:paintbrush:](# "Background") [:crayon:](# "Ink") [:a:](# "Font") [:wheelchair:](# "ARIA Switch")                                                                                                                |     [:heavy_check_mark:](# "Ready")      |
 | [Surface](components/Surface.js)                             | [:paintbrush:](# "Background") [:crayon:](# "Ink") [:o:](# "Outline") [:a:](# "Font") [:large_blue_diamond:](# "Shape") [:arrow_up_down:](# "Flexable")                                                           |     [:heavy_check_mark:](# "Ready")      |
