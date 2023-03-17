@@ -48,6 +48,10 @@ export default CustomElement
     cancel: { value: 'Cancel' },
     confirm: { value: 'Confirm' },
     _isNativeModal: 'boolean',
+    color: { empty: 'surface' },
+    ink: 'string',
+    outlined: 'boolean',
+    elevation: { empty: 3 },
   })
   .methods({
     /**
@@ -257,7 +261,7 @@ export default CustomElement
     role=dialog aria-hidden=${({ open }) => (open ? 'false' : 'true')} 
     aria-labelledby=headline aria-describedby=slot>
       <div _if={open} id=scrim aria-hidden=true></div>
-      <mdw-surface id=surface open={open} icon={icon} elevated>
+      <mdw-surface id=surface open={open} icon={icon} elevation={elevation} color={color} ink={ink} outlined={outlined}>
         <mdw-icon _if={icon} id=icon class=content ink=secondary aria-hidden=true>{icon}</mdw-icon>
         <slot id=headline name=headline on-slotchange={onSlotChange} role=header>{headline}</slot>
         <slot id=fixed name=fixed class=content on-slotchange={onSlotChange}></slot>

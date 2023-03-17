@@ -7,9 +7,6 @@
   --mdw-dialog__deceleration-easing: var(--mdw-motion-deceleration-easing, cubic-bezier(0.0, 0.0, 0.2, 1));
   --mdw-dialog__fade-in-duration: var(--mdw-motion-fade-in-duration, 150ms);
 
-  --mdw-bg: var(--mdw-color__surface);
-  --mdw-ink: var(--mdw-color__on-surface);
-
   position: fixed;
   inset: 0;
 
@@ -38,7 +35,6 @@
   padding: 48px;
 
   opacity: 0;
-
   /* visiblity:hidden still registers events, hide from pointer with scale(0) */
   transform: scale(0);
   visibility: hidden;
@@ -46,8 +42,8 @@
 
   background-color: transparent;
 
-  transition-delay: 0s, 150ms, 150ms;
-  transition-duration: 150ms, 0s, 0s;
+  transition-delay: 0s, 200ms, 200ms;
+  transition-duration: 200ms, 0s, 0s;
   transition-property: opacity, transform, visibility;
   transition-timing-function: ease-out;
   will-change: opacity;
@@ -74,7 +70,7 @@
   visibility: visible;
 
   transition-delay: 0s;
-  transition-duration: 200ms, 0s, 0s;
+  transition-duration: 0s;
   transition-timing-function: ease-in;
 }
 
@@ -114,19 +110,16 @@
 }
 @keyframes scaleUpAnimation {
   from {
-    transform: scale(0);
+    transform: scaleY(0);
   }
 
   to {
-    transform: scale(1);
+    transform: scaleY(1);
   }
 }
 
 #surface {
   --mdw-shape__size: 28px;
-  --mdw-surface__tint: var(--mdw-surface__tint__3);
-  --mdw-surface__tint__raised: var(--mdw-surface__tint__3);
-  --mdw-surface__shadow__resting: var(--mdw-surface__shadow__3);
 
   position: relative;
 
@@ -146,7 +139,7 @@
   padding-block-start: 8px;
 
   transform: scale(1);
-  transform-origin: bottom center;
+  transform-origin: top center;
   z-index: 24;
 
   will-change: display, transform;
@@ -158,7 +151,7 @@
 
 #surface[open] {
   animation-name: scaleUpAnimation;
-  animation-duration: var(--mdw-dialog__fade-in-duration);
+  animation-duration: 200ms;
   animation-direction: forwards;
 }
 
@@ -173,8 +166,6 @@
 
   padding-block-start: 16px;
   padding-inline: 24px;
-
-  color: rgb(var(--mdw-color__on-surface));
 
   font: var(--mdw-typescale__headline-small__font);
   letter-spacing: var(--mdw-typescale__headline-small__letter-spacing);
