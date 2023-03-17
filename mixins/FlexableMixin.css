@@ -63,3 +63,9 @@
 :host([wrap="reverse"]) {
   flex-wrap: wrap-reverse;
 }
+
+:host([gap="4"]) {gap: 4px;}
+:host([gap="8"]) {gap: 8px;}
+:host([gap="12"]) {gap: 12px;}
+:host([gap="16"]) {gap: 16px;}
+:host([gap="24"]) {gap: 24px;}

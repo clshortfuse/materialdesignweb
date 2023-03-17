@@ -33,11 +33,12 @@ export default function FlexableMixin(Base) {
     .observe({
       _styler: {
         ...ELEMENT_STYLER_TYPE,
-        get({ gap, padding }) {
-          if (!gap && !padding) return null;
+        get({ padding }) {
+          if (!padding) return null;
           return {
             styles: {
-              ...(gap ? { gap: `${gap}px` } : null),
+              // Safari does not support gap with Web Animations API
+              // ...(gap ? { gap: `${gap}px` } : null),
               ...(padding ? { padding: `${padding}px` } : null),
             },
           };
