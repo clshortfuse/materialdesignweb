@@ -2,14 +2,16 @@
 
 import './Icon.js';
 
+import CustomElement from '../core/CustomElement.js';
 import RippleMixin from '../mixins/RippleMixin.js';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
+import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 
-import Surface from './Surface.js';
 import styles from './Tab.css' assert { type: 'css' };
 
-export default Surface
+export default CustomElement
+  .mixin(ShapeMixin)
   .mixin(StateMixin)
   .mixin(RippleMixin)
   .mixin(ScrollListenerMixin)
@@ -48,23 +50,22 @@ export default Surface
     },
   })
   .css(styles)
+  .html/* html */`
+    <a id=anchor role=tab
+      aria-label={ariaLabel}
+      aria-controls=${({ href }) => (href?.startsWith('#') ? href.slice(1) : null)}
+      aria-selected=${({ active }) => (active ? 'true' : 'false')}
+      aria-disabled=${({ disabledState }) => `${disabledState}`}
+      disabled={disabledState}
+      href=${({ href }) => href ?? '#'}>
+      <mdw-icon _if=${(data) => data.icon || data.src} id=icon aria-hidden=true src={src} active={active}>{icon}</mdw-icon>
+      <slot id=slot></slot>
+    </a>
+  `
   .on({
-    composed({ composition, html }) {
-      const { slot, state } = this.refs;
-      composition.append(
-        html`
-          <a id=anchor role=tab
-            aria-label={ariaLabel}
-            aria-controls=${({ href }) => (href?.startsWith('#') ? href.slice(1) : null)}
-            aria-selected=${({ active }) => (active ? 'true' : 'false')}
-            aria-disabled=${({ disabledState }) => `${disabledState}`}
-            disabled={disabledState}
-            href=${({ href }) => href ?? '#'}>
-            <mdw-icon _if=${(data) => data.icon || data.src} id=icon aria-hidden=true src={src} active={active}>{icon}</mdw-icon>
-            ${slot}
-          </a>
-        `,
-      );
+    composed() {
+      const { shape, rippleContainer, state } = this.refs;
+      shape.append(state, rippleContainer);
       state.setAttribute('state-disabled', 'focus');
     },
   })

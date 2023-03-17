@@ -1,11 +1,8 @@
-import CustomElement from '../core/CustomElement.js';
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
-import FlexableMixin from '../mixins/FlexableMixin.js';
-import ThemableMixin from '../mixins/ThemableMixin.js';
 
-export default CustomElement
-  .mixin(ThemableMixin)
-  .mixin(FlexableMixin)
+import Box from './Box.js';
+
+export default Box
   .mixin(AriaReflectorMixin)
   .extend()
   .set({
@@ -28,13 +25,13 @@ export default CustomElement
       min-block-size: 100%;
       max-block-size: 100%;
       overflow-y: auto;
-      will-change: visibility, transform;
+      will-change: visibility;
 
-      visibility: hidden;
+      visibility: hidden; 
     }
     :host(:is([active],[peeking])) {
-      visibility: visible
+      /* Safari bug: Visiblity not changing without !important or layout reflow */
+      visibility: visible !important;;
     }
   `
-  .html/* html */`<slot id=slot></slot>`
   .autoRegister('mdw-tab-panel');

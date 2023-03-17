@@ -4,6 +4,7 @@ import CustomElement from '../core/CustomElement.js';
 import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
 import RTLObserverMixin from '../mixins/RTLObserverMixin.js';
 import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
+import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import Tab from './Tab.js';
@@ -14,6 +15,7 @@ export default CustomElement
   .mixin(KeyboardNavMixin)
   .mixin(ResizeObserverMixin)
   .mixin(RTLObserverMixin)
+  .mixin(ShapeMixin)
   .extend()
   .set({
     /** @type {WeakRef<HTMLElement>} */
@@ -67,11 +69,10 @@ export default CustomElement
         this.tabContent = newValue ? document.getElementById(newValue) : null;
       },
     },
-  })
-  .observe({
     active: 'boolean',
     secondary: 'boolean',
     _indicatorStyle: { value: 'opacity: 0' },
+    color: { empty: 'surface-primary' },
   })
   .define({
     tabs() {
@@ -283,6 +284,12 @@ export default CustomElement
       <div id=indicator-end class=indicator-piece></div>
     </div>
   `
+  .on({
+    composed() {
+      const { shape, indicator } = this.refs;
+      shape.append(indicator);
+    },
+  })
   .events({
     '~click'({ target }) {
       // Abort if not child

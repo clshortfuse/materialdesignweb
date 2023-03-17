@@ -1,21 +1,14 @@
 /* https://m3.material.io/components/tabs/specs */
 
 :host {
-  --mdw-shape__size: 0px;
-  --mdw-icon__font-variation-settings: 'FILL' 0;
-  --mdw-icon__size: 24px;
-  --mdw-ink: var(--mdw-color__on-surface-variant);
   display: inline-flex;
 
   min-inline-size: 64px;
 
   cursor: pointer;
-
-  color: rgb(var(--mdw-ink));
 }
 
 #anchor {
-  --mdw-shape__size: 0px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -32,7 +25,7 @@
   cursor: pointer;
   outline: none;
 
-  color: rgb(var(--mdw-ink));
+  color: inherit;
 
   text-decoration: inherit;
 }
@@ -45,6 +38,7 @@
 
 }
 
+#shape[disabled],
 #anchor[disabled] {
   cursor: not-allowed;
 
@@ -53,7 +47,7 @@
 }
 
 :host([active]) {
-  --mdw-ink: inherit;
+  color: rgb(var(--mdw-ink));
 }
 
 #icon[active] {
