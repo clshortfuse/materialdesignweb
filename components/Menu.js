@@ -76,6 +76,10 @@ export default CustomElement
     submenu: 'boolean',
     modal: 'boolean',
     _isNativeModal: 'boolean',
+    color: { empty: 'surface' },
+    ink: 'string',
+    elevation: { empty: 2 },
+    outlined: 'boolean',
   })
   .set({
     returnValue: '',
@@ -111,7 +115,7 @@ export default CustomElement
     <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>
       <div id=scrim aria-hidden=true modal={modal}></div>
       <form id=form method=dialog role=none>
-        <mdw-surface id=surface elevation=2>
+        <mdw-surface id=surface elevation={elevation} color={color} ink={ink} outlined={outlined}>
           <div id=scroller>
             <slot id=slot on-slotchange={refreshTabIndexes}></slot>
           </div>
