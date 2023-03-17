@@ -1,5 +1,7 @@
 :host {
   --mdw-shape__size: 0px;
+  --mdw-shape__bg: transparent;
+  z-index: 0;
 }
 
 /** Without CSS Mixins, we have to use external attributes to tag hosts **/
@@ -30,6 +32,8 @@
 
   z-index: -1;
 
+  background-color: var(--mdw-shape__bg, transparent);
+
   border-start-start-radius: calc(var(--mdw-shape__rounded) * var(--mdw-shape__size__top-start-size));
   border-start-end-radius: calc(var(--mdw-shape__rounded) * var(--mdw-shape__size__top-end-size));
   border-end-start-radius: calc(var(--mdw-shape__rounded) * var(--mdw-shape__size__bottom-start-size));
@@ -42,13 +46,17 @@
 
 }
 
-.shape:is([outlined], [color="none"], [color="transparent"]) {
+.shape[outlined] {
   background-color: transparent;
 }
 
 .shape[color] {
   background-color: rgb(var(--mdw-bg));
   color: rgb(var(--mdw-ink));
+}
+
+.shape:is([color="none"], [color="transparent"]) {
+  background-color: transparent;
 }
 
 .shape[shape-style="none"] {

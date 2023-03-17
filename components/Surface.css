@@ -1,5 +1,5 @@
 :host {
-  --mdw-bg: var(--mdw-color__surface);
+  --mdw-shape__bg: rgb(var(--mdw-color__surface));
   --mdw-ink: var(--mdw-color__on-surface);
   position: relative;
 
@@ -7,12 +7,4 @@
 
   font: var(--mdw-type__font);
   letter-spacing: var(--mdw-type__letter-spacing);
-}
-
-#shape {
-  background-color: rgb(var(--mdw-bg));
-}
-
-#shape:is([outlined],[color="none"], [color="transparent"]) {
-  background-color: transparent;
 }

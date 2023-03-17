@@ -4,7 +4,7 @@
   --mdw-shape__size: var(--mdw-shape__small);
   --mdw-surface__shadow: var(--mdw-surface__shadow__3);
   --mdw-surface__tint: var(--mdw-surface__tint__3);
-  --mdw-bg: var(--mdw-color__inverse-surface);
+  --mdw-shape__bg: rgb(var(--mdw-color__inverse-surface));
   --mdw-ink: var(--mdw-color__inverse-on-surface);
 
   --mdw-type__line-height: var(--mdw-typescale__body-medium__line-height);

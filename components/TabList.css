@@ -2,7 +2,7 @@
 
 :host {
   --mdw-ink: var(--mdw-color__primary);
-  --mdw-bg: var(--mdw-color__surface);
+  --mdw-shape__bg: rgb(var(--mdw-color__surface));
   position: relative;
   position: sticky;
   inset-block-start: 0;
@@ -20,7 +20,7 @@
   inline-size: 100%;
   flex:none;
 
-  background: rgb(var(--mdw-bg));
+  color: inherit;
 
   text-align: center;
 
@@ -47,7 +47,7 @@
   opacity: 1;
   transform: translateY(calc(100% * (1 - var(--visibility))));
 
-  color: rgb(var(--mdw-color__on-surface));
+  color: inherit;
 
   transition: transform 200ms;
   will-change: transform;

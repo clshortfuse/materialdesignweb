@@ -58,37 +58,42 @@
   --mdw-surface__shadow: var(--mdw-surface__shadow__resting);
   --mdw-surface__tint: 0;
   --mdw-surface__tint__raised: 0;
+  z-index: 0;
+}
 
+:host([elevation="0"]) {
+  --mdw-surface__tint: 0;
+  --mdw-surface__shadow__resting: none;
 }
 
 :host([elevation="1"]) {
   --mdw-surface__tint: var(--mdw-surface__tint__1);
-  --mdw-surface__tint__raised: var(--mdw-surface__tint__1);
   --mdw-surface__shadow__resting: var(--mdw-surface__shadow__1);
 }
 
 :host([elevation="2"]) {
   --mdw-surface__tint: var(--mdw-surface__tint__2);
-  --mdw-surface__tint__raised: var(--mdw-surface__tint__2);
   --mdw-surface__shadow__resting: var(--mdw-surface__shadow__2);
 }
 
 :host([elevation="3"]) {
   --mdw-surface__tint: var(--mdw-surface__tint__3);
-  --mdw-surface__tint__raised: var(--mdw-surface__tint__3);
   --mdw-surface__shadow__resting: var(--mdw-surface__shadow__3);
 }
 
 :host([elevation="4"]) {
   --mdw-surface__tint: var(--mdw-surface__tint__4);
-  --mdw-surface__tint__raised: var(--mdw-surface__tint__4);
   --mdw-surface__shadow__resting: var(--mdw-surface__shadow__4);
 }
 
 :host([elevation="5"]) {
   --mdw-surface__tint: var(--mdw-surface__tint__5);
-  --mdw-surface__tint__raised: var(--mdw-surface__tint__5);
   --mdw-surface__shadow__resting: var(--mdw-surface__shadow__5);
+}
+
+:host([elevation]) {
+  --mdw-surface__tint__raised: var(--mdw-surface__tint);
+  --mdw-surface__shadow__raised: var(--mdw-surface__shadow__resting);
 }
 
 .surface {
