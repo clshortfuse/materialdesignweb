@@ -1,6 +1,7 @@
 import CustomElement from '../core/CustomElement.js';
 import InputMixin from '../mixins/InputMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import styles from './Slider.css' assert { type: 'css' };
 
@@ -30,6 +31,7 @@ function valueAsFraction(value, min, max) {
 }
 
 export default CustomElement
+  .mixin(ThemableMixin)
   .mixin(StateMixin)
   .mixin(InputMixin)
   .extend()
