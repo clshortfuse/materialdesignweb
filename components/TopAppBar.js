@@ -181,14 +181,21 @@ export default CustomElement
       },
     },
   })
-  .overrides({
-    onResizeObserved(entry) {
-      this.startScrollListener(this.refs.surface.offsetParent ?? window);
-      this.unobserveResize();
-      this.observeResizeOnConnected = false;
+  .on({
+    connected() {
+      const { surface } = this.refs;
+      if (surface.offsetParent) {
+        this.startScrollListener(surface.offsetParent ?? window);
+      } else {
+        const resizeObserver = new ResizeObserver(() => {
+          this.startScrollListener(surface.offsetParent ?? window);
+          resizeObserver.disconnect();
+        });
+        resizeObserver.observe(surface);
+      }
     },
-  })
-  .on('disconnected', ({ element }) => {
-    element.clearScrollListener();
+    disconnected() {
+      this.clearScrollListener();
+    },
   })
   .autoRegister('mdw-top-app-bar');
