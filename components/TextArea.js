@@ -1,5 +1,6 @@
 import CustomElement from '../core/CustomElement.js';
 import ControlMixin from '../mixins/ControlMixin.js';
+import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import TextFieldMixin from '../mixins/TextFieldMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
@@ -7,7 +8,12 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 import styles from './TextArea.css' assert { type: 'css' };
 
 /** @implements {HTMLTextAreaElement} */
-export default class TextArea extends TextFieldMixin(ControlMixin(StateMixin(ThemableMixin(CustomElement)))) {
+export default class TextArea extends CustomElement
+  .mixin(ThemableMixin)
+  .mixin(StateMixin)
+  .mixin(ControlMixin)
+  .mixin(TextFieldMixin)
+  .mixin(ResizeObserverMixin) {
   static { this.autoRegister('mdw-textarea'); }
 
   static {
@@ -159,6 +165,7 @@ export default class TextArea extends TextFieldMixin(ControlMixin(StateMixin(The
     if (textarea.selectionEnd === textarea.value.length) {
       textarea.scrollTop = textarea.scrollHeight;
     }
+
     this.rows = textarea.rows;
     // if (this.placeholder) textarea.setAttribute('placeholder', this.placeholder);
     return this.rows;
@@ -209,8 +216,9 @@ export default class TextArea extends TextFieldMixin(ControlMixin(StateMixin(The
 
   get setSelectionRange() { return this.#textarea.setSelectionRange; }
 
-  connectedCallback() {
-    super.connectedCallback();
+  /** @param {ResizeObserverEntry} entry */
+  onResizeObserved(entry) {
+    super.onResizeObserved(entry);
     this.resize();
   }
 }
@@ -231,7 +239,7 @@ TextArea.prototype.dirName = TextArea.prop('dirName', { attr: 'dirname', ...DOMS
 TextArea.prototype.maxLength = TextArea.prop('maxLength', { attr: 'maxlength', type: 'integer', empty: 0 });
 TextArea.prototype.minLength = TextArea.prop('minLength', { attr: 'minlength', type: 'integer', empty: 0 });
 TextArea.prototype.placeholder = TextArea.prop('placeholder', DOMString);
-TextArea.prototype.rows = TextArea.prop('rows', { type: 'integer', empty: 0 });
+TextArea.prototype.rows = TextArea.prop('rows', { type: 'integer', empty: 1 });
 TextArea.prototype.wrap = TextArea.prop('wrap', DOMString);
 
 // Not in spec, but plays nice with HTML linters
