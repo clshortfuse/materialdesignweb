@@ -8,6 +8,7 @@
   align-items: center;
   gap: 12px;
   grid-auto-flow: column;
+  justify-content: flex-start;
 
   cursor: pointer;
 

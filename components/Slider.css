@@ -10,9 +10,6 @@
   min-inline-size: 88px;
 
   background-color: transparent;
-  /* border-radius: 99px; */
-
-  direction: var(--mdw-radio__direction, initial);
 }
 
 :host,

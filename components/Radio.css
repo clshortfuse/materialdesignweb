@@ -5,15 +5,13 @@
   --mdw-shape__size: var(--mdw-shape__full);
   display: inline-grid;
   align-items: center;
-
   gap: 12px;
   grid-auto-flow: column;
   grid-template-rows: minmax(20px, auto);
   grid-template-columns: 20px;
+  justify-content: flex-start;
 
   cursor: pointer;
-
-  direction: var(--mdw-radio__direction, initial);
 
   transition: none 100ms cubic-bezier(0.4, 0.0, 1, 1);
 }
