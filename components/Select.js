@@ -50,7 +50,8 @@ export default class Select extends CustomElement
   })
   .on({
     composed({ template }) {
-      const { slot, prefix, suffix } = this.refs;
+      const { slot, prefix, suffix, control } = this.refs;
+      control.setAttribute('icon', '{icon}');
       template.append(slot);
       prefix.remove();
       suffix.remove();
