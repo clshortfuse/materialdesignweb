@@ -13,14 +13,6 @@ export default Button
         if (type !== 'checkbox') return null;
         return checked ? 'true' : 'false';
       },
-      /**
-       * @param {string} oldValue
-       * @param {string} newValue
-       */
-      changedCallback(oldValue, newValue) {
-        console.log('changing ariaPressed', oldValue, newValue);
-        this.elementInternals.ariaPressed = newValue;
-      },
     },
   })
   .expressions({
