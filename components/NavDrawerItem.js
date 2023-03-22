@@ -6,9 +6,7 @@ export default NavItem
   .css(styles)
   .on({
     composed({ html }) {
-      const { badge } = this.refs;
-      badge.before(html`<span id="badge-text">{badge}</span>`);
-      badge.remove();
+      this.refs.badge.replaceWith(html`<span id="badge-text">{badge}</span>`);
     },
   })
   .autoRegister('mdw-nav-drawer-item');
