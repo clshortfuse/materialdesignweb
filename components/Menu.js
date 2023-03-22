@@ -422,9 +422,7 @@ export default CustomElement
       this.close(true);
     },
     keydown(event) {
-      if (!this || !this.open || this.getAttribute('aria-hidden') === 'true') {
-        return;
-      }
+      if (!this.open) return;
 
       switch (event.key) {
         case 'Tab':
