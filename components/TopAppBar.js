@@ -116,33 +116,33 @@ export default CustomElement
         inline(({ ariaLabel }) => (ariaLabel ? null : 'headline')),
       );
     },
-  })
-  .on('_scrollPositionYChanged', (oldValue, newValue, element) => {
-    element._raised = (newValue > 0);
-    if (element.size === 'medium' || element.size === 'large') {
-      const max = element.refs.companion.scrollHeight;
-      const min = (0.5 * max);
-      element._headlineOpacity = Math.max(0, Math.min(1, (newValue - min) / (max - min)));
-    }
+    _scrollPositionYChanged(oldValue, newValue) {
+      this._raised = (newValue > 0);
+      if (this.size === 'medium' || this.size === 'large') {
+        const max = this.refs.companion.scrollHeight;
+        const min = (0.5 * max);
+        this._headlineOpacity = Math.max(0, Math.min(1, (newValue - min) / (max - min)));
+      }
 
-    if (!element.hideOnScroll) return;
+      if (!this.hideOnScroll) return;
 
-    element._duration = 0;
-    if (newValue <= 0) {
+      this._duration = 0;
+      if (newValue <= 0) {
       // Set at rest (top of parent, but allow overscroll)
-      element._cssPosition = 'relative';
-      element._translateY = 0;
-      element._visibleStart = 0;
-    } else if (newValue < element._translateY) {
+        this._cssPosition = 'relative';
+        this._translateY = 0;
+        this._visibleStart = 0;
+      } else if (newValue < this._translateY) {
       // Align appbar.top with scroll position (top of screen)
-      element._cssPosition = 'sticky';
-      element._translateY = 0;
-      element._visibleStart = 0;
-    } else if (element._cssPosition !== 'sticky') {
-      element._visibleStart = (newValue - element._translateY) / element.refs.surface.scrollHeight;
-    }
+        this._cssPosition = 'sticky';
+        this._translateY = 0;
+        this._visibleStart = 0;
+      } else if (this._cssPosition !== 'sticky') {
+        this._visibleStart = (newValue - this._translateY) / this.refs.surface.scrollHeight;
+      }
 
-    element._scrollDirection = newValue > oldValue ? 'down' : 'up';
+      this._scrollDirection = newValue > oldValue ? 'down' : 'up';
+    },
   })
   .methods({
     onScrollIdle() {
