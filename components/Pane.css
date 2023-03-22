@@ -246,7 +246,7 @@
   grid-area: auto;
 }
 
-#slot::slotted(*) { grid-column: auto / span 12 }
+#slot::slotted(*) { grid-column: 1 / none }
 #slot::slotted([colspan="1"]) { grid-column-end: span 1; }
 #slot::slotted([colspan="2"]) { grid-column-end: span 2; }
 #slot::slotted([colspan="3"]) { grid-column-end: span 3; }
