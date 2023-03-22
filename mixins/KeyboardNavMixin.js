@@ -236,7 +236,9 @@ export default function KeyboardNavMixin(Base) {
         event.preventDefault();
       },
     })
-    .on('connected', ({ element }) => {
-      element.refreshTabIndexes();
+    .on({
+      connected() {
+        this.refreshTabIndexes();
+      },
     });
 }
