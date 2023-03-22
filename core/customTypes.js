@@ -102,6 +102,7 @@ export const ELEMENT_STYLER_TYPE = {
   type: 'object',
   reflect: false,
   values: elementStylerValues,
+  diff: null, // Skip computing entire change
   changedCallback(oldValue, newValue) {
     const hasQueue = elementStylerHasQueue.has(this);
     if (!newValue) {
