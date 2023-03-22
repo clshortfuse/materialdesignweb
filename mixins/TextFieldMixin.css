@@ -93,6 +93,7 @@
 
 #label:is([filled],[color]) {
   background-color: rgb(var(--mdw-bg));
+  color: rgb(var(--mdw-color__on-surface));
 }
 
 #label[outlined] {
