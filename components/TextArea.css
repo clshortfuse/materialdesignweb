@@ -47,6 +47,10 @@
   padding-inline: 16px;
 }
 
+#control[icon] {
+  padding-inline-start: 0;
+}
+
 #control[minrows] {
   min-block-size: calc((var(--min-rows) * var(--line-height))
     + var(--control__margin-top)
