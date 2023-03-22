@@ -87,6 +87,10 @@
   --mdw-shape__size: var(--mdw-shape__full);
 }
 
+.shape[shape-style="inherit"] {
+  --mdw-shape__size: inherit;
+}
+
 .shape[shape-top] {
   --mdw-shape__size__bottom-start-size: 0px;
   --mdw-shape__size__bottom-end-size: 0px;
