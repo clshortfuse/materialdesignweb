@@ -11,6 +11,19 @@
     "stylelint-order",
     "stylelint-use-logical-spec"
   ],
+  "overrides": [
+    {
+      "files": [
+        "*.js",
+        "**/*.js"
+      ],
+      "customSyntax": "postcss-styled",
+      "rules": {
+        "indentation": null,
+        "no-eol-whitespace": null
+      }
+    }
+  ],
   "rules": {
     "plugin/no-unsupported-browser-features": [
       true,
@@ -49,7 +62,7 @@
     "block-no-empty": true,
     "no-extra-semicolons": true,
     "rule-empty-line-before": [
-      "always",
+      "always-multi-line",
       {
         "except": [
           "first-nested"
