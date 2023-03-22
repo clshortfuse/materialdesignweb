@@ -15,7 +15,8 @@ export default class Icon extends CustomElement
   .extend()
   .define({
     _img() { return /** @type {HTMLImageElement} */ (this.refs.img); },
-  }).define({
+  })
+  .define({
     naturalWidth() { return this._img.naturalWidth; },
     naturalHeight() { return this._img.naturalHeight; },
     complete() { return this._img.complete; },

@@ -7,12 +7,10 @@ import TabPanel from './TabPanel.js';
 export default CustomElement
   .mixin(ResizeObserverMixin)
   .extend()
-  .css/* css */`
+  .css`
     :host {
       display: grid;
       grid-auto-columns: 100%;
-      grid-auto-columns: 100%;
-      grid-auto-flow: column;
       grid-auto-flow: column;
       grid-template-columns: 100%;
       overflow-x: auto;
@@ -26,6 +24,7 @@ export default CustomElement
       -webkit-scroll-snap-points-x: repeat(100%);
       scroll-snap-points-x: repeat(100%);
       overscroll-behavior-x: none;
+
       will-change: transform; /* Avoid repaint on scroll */
     }
   `
