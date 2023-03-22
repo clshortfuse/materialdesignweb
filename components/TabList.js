@@ -254,24 +254,7 @@ export default CustomElement
       this.updateIndicator();
     },
   })
-  .onPropChanged({
-    pageIsRTL() {
-      this.clearCache();
-      this.updateIndicator();
-    },
-    active(oldValue, newValue) {
-      if (newValue) {
-        // Update indicator position without transition
-        this.updateIndicator();
-      }
-    },
-    secondary() {
-      this.updateIndicator();
-    },
-    _selectedIndex(oldValue, newValue) {
-      this.updateIndicatorByIndex(newValue);
-    },
-  })
+
   .set({
     ariaRole: 'tablist',
   })
@@ -288,6 +271,22 @@ export default CustomElement
     composed() {
       const { shape, indicator } = this.refs;
       shape.append(indicator);
+    },
+    pageIsRTLChanged() {
+      this.clearCache();
+      this.updateIndicator();
+    },
+    activeChanged(oldValue, newValue) {
+      if (newValue) {
+        // Update indicator position without transition
+        this.updateIndicator();
+      }
+    },
+    secondaryChanged() {
+      this.updateIndicator();
+    },
+    _selectedIndexChanged(oldValue, newValue) {
+      this.updateIndicatorByIndex(newValue);
     },
   })
   .events({
