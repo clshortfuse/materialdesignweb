@@ -181,7 +181,7 @@ export default CustomElement
   })
   .on({
     composed({ template, html }) {
-      const { state, label, control, slot } = this.refs;
+      const { state, label, control } = this.refs;
       template.append(html`
         <div id=track style={computeTrackStyle} aria-hidden=true disabled={disabledState}>
           <div _if={ticks} id=ticks></div>
@@ -199,8 +199,8 @@ export default CustomElement
       label.removeAttribute('aria-labelledby');
       control.setAttribute('type', 'range');
     },
-  })
-  .on('valueChanged', (oldValue, newValue, element) => {
-    element._previewValue = newValue;
+    valueChanged(oldValue, newValue) {
+      this._previewValue = newValue;
+    },
   })
   .autoRegister('mdw-slider');
