@@ -23,3 +23,9 @@
   font: var(--mdw-type__font);
   letter-spacing: var(--mdw-type__letter-spacing);
 }
+
+#slot {
+  /* Passthrough from parent */
+  block-size: inherit;
+  inline-size: inherit;
+}
