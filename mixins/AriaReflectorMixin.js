@@ -18,7 +18,11 @@ export default function AriaReflectorMixin(Base) {
           this[name] = value;
         } else {
           console.warn('Unknown ARIA property', name);
-          const attrName = attrNameFromPropName(name);
+          /** @type {string} */
+          let attrName = name;
+          if (attrName.startsWith('aria')) {
+            attrName = `aria-${attrName.slice(4).toLowerCase()}`;
+          }
           if (value == null) {
             this.removeAttribute(name);
           } else {
