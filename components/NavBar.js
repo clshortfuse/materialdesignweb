@@ -25,34 +25,15 @@ export default Nav
     },
   })
   .methods({
-    /**
-     * @param {number} oldValue
-     * @param {number} newValue
-     */
-    onScrollPositionYChange(oldValue, newValue) {
-      if (!this.hideOnScroll) return;
-      const delta = newValue - oldValue;
-      const rate = 1;
-      const shift = rate * delta;
-
-      const bottom = this.getScrollingElementScrollHeight() - this.getScrollingElementClientHeight();
-      const breakpoint = bottom - this.scrollHeight;
-      let max = this.scrollHeight;
-      if (newValue >= breakpoint) {
-      // Scrolling to bottom always shows Nav Bar (ensures content isn't occluded)
-        max -= (newValue - breakpoint);
-      }
-      this._transition = 'none';
-      this._translateY = Math.max(0, Math.min(this._translateY + shift, max));
-    },
     onScrollerResize() {
+      console.log('onScrollerResize');
       // Chrome Bug: When window resizes bottom sticky needs to be recomputed
       // Force style recalculation
       this.style.setProperty('bottom', 'auto');
       // eslint-disable-next-line no-unused-expressions
       this.clientHeight;
       this.style.removeProperty('bottom');
-      this.onScrollPositionYChange(this._scrollPositionY, this._scrollPositionY);
+      this.propChangedCallback('scrollListenerPositionY', this.scrollListenerPositionY, this.scrollListenerPositionY);
     },
     onScrollIdle() {
       const max = this.scrollHeight;
@@ -73,11 +54,35 @@ export default Nav
   .on({
     connected() {
       if (this.hideOnScroll) {
-        this.startScrollListener();
+        if (this.offsetParent) {
+          this.startScrollListener(this.offsetParent ?? window);
+        } else {
+          const resizeObserver = new ResizeObserver(() => {
+            this.startScrollListener(this.offsetParent ?? window);
+            resizeObserver.disconnect();
+          });
+          resizeObserver.observe(this);
+        }
       }
     },
     disconnected() {
       this.clearScrollListener();
+    },
+    scrollListenerPositionYChanged(oldValue, newValue) {
+      if (!this.hideOnScroll) return;
+      const delta = newValue - oldValue;
+      const rate = 1;
+      const shift = rate * delta;
+
+      const bottom = this.getScrollingElementScrollHeight() - this.getScrollingElementClientHeight();
+      const breakpoint = bottom - this.scrollHeight;
+      let max = this.scrollHeight;
+      if (newValue >= breakpoint) {
+      // Scrolling to bottom always shows Nav Bar (ensures content isn't occluded)
+        max -= (newValue - breakpoint);
+      }
+      this._transition = 'none';
+      this._translateY = Math.max(0, Math.min(this._translateY + shift, max));
     },
   })
   .autoRegister('mdw-nav-bar');

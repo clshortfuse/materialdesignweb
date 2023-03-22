@@ -7,8 +7,8 @@ export default function ScrollListenerMixin(Base) {
   return Base
     .extend()
     .observe({
-      _scrollPositionX: { type: 'float', empty: 0 },
-      _scrollPositionY: { type: 'float', empty: 0 },
+      scrollListenerPositionX: { type: 'float', empty: 0, reflect: false },
+      scrollListenerPositionY: { type: 'float', empty: 0, reflect: false },
     })
     .set({
       /** @type {WeakRef<EventTarget>} */
@@ -25,29 +25,17 @@ export default function ScrollListenerMixin(Base) {
 
       /** @param {Event} event */
       onScrollerScroll(event) {
-        this._scrollPositionY = (event.currentTarget === window)
+        this.scrollListenerPositionY = (event.currentTarget === window)
           ? window.scrollY
           : /** @type {HTMLElement} */ (event.currentTarget).scrollTop;
 
-        this._scrollPositionX = (event.currentTarget === window)
+        this.scrollListenerPositionX = (event.currentTarget === window)
           ? window.scrollX
           : /** @type {HTMLElement} */ (event.currentTarget).scrollLeft;
 
         clearTimeout(this._scrollDebounce);
         this._scrollDebounce = setTimeout(() => this.onScrollIdle(), IDLE_TIMEOUT_MS);
       },
-
-      /**
-       * @param {number} oldValue
-       * @param {number} newValue
-       */
-      onScrollPositionXChange(oldValue, newValue) {},
-
-      /**
-       * @param {number} oldValue
-       * @param {number} newValue
-       */
-      onScrollPositionYChange(oldValue, newValue) {},
 
       /** @param {Event} event */
       onScrollerResize(event) {},
@@ -70,8 +58,8 @@ export default function ScrollListenerMixin(Base) {
         this._scrollerResizeListener = this.onScrollerResize.bind(this);
         scroller.addEventListener('scroll', this._scrollerScrollListener);
         scroller.addEventListener('resize', this._scrollerResizeListener);
-        this._scrollPositionX = 0;
-        this._scrollPositionY = 0;
+        this.scrollListenerPositionX = 0;
+        this.scrollListenerPositionY = 0;
         return true;
       },
 
@@ -108,11 +96,5 @@ export default function ScrollListenerMixin(Base) {
         scroller.removeEventListener('scroll', this._scrollerScrollListener);
         return true;
       },
-    })
-    .on('_scrollPositionXChanged', (oldValue, newValue, element) => {
-      element.onScrollPositionXChange(oldValue, newValue);
-    })
-    .on('_scrollPositionYChanged', (oldValue, newValue, element) => {
-      element.onScrollPositionYChange(oldValue, newValue);
     });
 }

@@ -47,12 +47,12 @@ export default CustomElement
           if (this._cssPosition !== 'sticky') return;
           // Was sticky, switch to relative and let appbar scroll away
           this._cssPosition = 'relative';
-          this._translateY = this._scrollPositionY;
+          this._translateY = this.scrollListenerPositionY;
           return;
         }
         if (this._visibleStart < 1) return;
         // Align appbar.bottom with scroll position (top of screen)
-        this._translateY = this._scrollPositionY - this.refs.surface.scrollHeight;
+        this._translateY = this.scrollListenerPositionY - this.refs.surface.scrollHeight;
       },
     },
     _surfaceStyle: {
@@ -116,7 +116,7 @@ export default CustomElement
         inline(({ ariaLabel }) => (ariaLabel ? null : 'headline')),
       );
     },
-    _scrollPositionYChanged(oldValue, newValue) {
+    scrollListenerPositionYChanged(oldValue, newValue) {
       this._raised = (newValue > 0);
       if (this.size === 'medium' || this.size === 'large') {
         const max = this.refs.companion.scrollHeight;
@@ -153,19 +153,19 @@ export default CustomElement
       }
       if (_visibleStart <= 0) return;
       if (_visibleStart >= 1) return;
-      if (this._scrollPositionY < (this.refs.surface.scrollHeight)) return;
+      if (this.scrollListenerPositionY < (this.refs.surface.scrollHeight)) return;
       if (_visibleStart <= 0.5) {
         // Reveal all
         this._duration = 250;
         this._easing = 'ease-in';
         this._cssPosition = 'relative';
-        this._translateY = this._scrollPositionY;
+        this._translateY = this.scrollListenerPositionY;
         this._headlineOpacity = 1;
       } else {
         this._duration = 200;
         this._easing = 'ease-out';
         this._cssPosition = 'relative';
-        this._translateY = this._scrollPositionY - this.refs.surface.scrollHeight;
+        this._translateY = this.scrollListenerPositionY - this.refs.surface.scrollHeight;
       }
     },
   })
