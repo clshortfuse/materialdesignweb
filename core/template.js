@@ -113,8 +113,7 @@ export function html(strings, ...substitutions) {
   if (tempSlots) {
     for (const [id, element] of tempSlots) {
       const slot = fragment.getElementById(id);
-      slot.after(element);
-      slot.remove();
+      slot.replaceWith(element);
     }
   }
 
