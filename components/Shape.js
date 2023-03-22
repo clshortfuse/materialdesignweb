@@ -1,20 +1,25 @@
-import CustomElement from '../core/CustomElement.js';
-import ShapeMixin from '../mixins/ShapeMixin.js';
-import ThemableMixin from '../mixins/ThemableMixin.js';
+import Box from './Box.js';
+import outlineStyles from './Outline.css' assert { type: 'css' };
+import styles from './Shape.css' assert { type: 'css' };
 
-export default CustomElement
-  .mixin(ThemableMixin)
-  .mixin(ShapeMixin)
-  .css/* css */`
-    :host {
-      position: relative;
-    }
-    #shape[color] {
-      background-color: rgb(var(--mdw-bg));
-    }
-    :host(:where([ink],[color])) {
-      color: rgb(var(--mdw-ink));
-    }
+export default Box
+  .extend()
+  .observe({
+    shapeTop: 'boolean',
+    shapeBottom: 'boolean',
+    shapeStart: 'boolean',
+    shapeEnd: 'boolean',
+    shapeStyle: 'string',
+    outlined: 'boolean',
+  })
+  .css(
+    outlineStyles,
+    styles,
+  )
+  .html/* html */`
+    <div id=outline _if={outlined} class=outline disabled={disabledState} focused={focusedState} pressed={pressedState} hovered={hoveredState}>
+      <div id=outline-left class="outline-section outline-left"></div>
+      <div id=outline-right class="outline-section outline-right"></div>
+    </div>
   `
-  .html/* html */`<slot id=slot></slot>`
   .autoRegister('mdw-shape');
