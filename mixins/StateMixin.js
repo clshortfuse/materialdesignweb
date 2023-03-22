@@ -106,7 +106,9 @@ export default function StateMixin(Base) {
         }
       },
     })
-    .on('disconnected', ({ element }) => {
-      element._lastInteraction = null;
+    .on({
+      disconnected() {
+        this._lastInteraction = null;
+      },
     });
 }
