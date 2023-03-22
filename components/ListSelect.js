@@ -20,6 +20,9 @@ export default class ListSelect extends List
         this._kbdFocusable = !newValue;
         this.tabIndex = newValue ? -1 : 0;
       },
+      multipleChanged(oldValue, newValue) {
+        this.updateAriaProperty('ariaMultiSelectable', newValue ? 'true' : 'false');
+      },
     });
   }
 
@@ -34,17 +37,6 @@ export default class ListSelect extends List
     this.refs.slot.addEventListener('slotchange', this.onSlotChange);
     this.addEventListener('keydown', this.onControlKeydown);
     this.addEventListener('click', this.onListSelectClick);
-  }
-
-  /** @type {InstanceType<typeof List>['propChangedCallback']} */
-  propChangedCallback(name, oldValue, newValue) {
-    super.propChangedCallback(name, oldValue, newValue);
-    switch (name) {
-      case 'multiple':
-        this.setAttribute('aria-multiselectable', newValue ? 'true' : 'false');
-        break;
-      default:
-    }
   }
 
   * _selectedOptionsGenerator() {
