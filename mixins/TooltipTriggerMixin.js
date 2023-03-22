@@ -96,12 +96,10 @@ export default function TooltipTriggerMixin(Base) {
      */
     onTooltipTriggerSlotChange(event) {
       const tooltip = this.tooltipClone;
-      while (tooltip.lastChild) {
-        tooltip.lastChild.remove();
-      }
-      for (const child of event.currentTarget.assignedNodes()) {
-        tooltip.append(child.cloneNode(true));
-      }
+      tooltip.replaceChildren(
+        ...event.currentTarget.assignedNodes()
+          .map((child) => child.cloneNode(true)),
+      );
     }
 
     /**
