@@ -26,9 +26,6 @@ export default CustomElement
     #menu-form {
       display: contents;
     }
-    main {
-      padding: 8px;
-    }
     #back-button {
       transform: scaleX(var(--mdw-dir));
     }

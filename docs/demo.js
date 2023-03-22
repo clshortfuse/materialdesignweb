@@ -1,10 +1,4 @@
-import 'element-internals-polyfill'; // Safari
-
-import './demo/DemoButton.js';
-import './demo/DemoDummy.js';
-import './demo/DemoPage.js';
-import './demo/DemoScreen.js';
-import './demo/DemoSection.js';
+// import 'element-internals-polyfill'; // Safari
 
 import '../components/Badge.js';
 import '../components/Body.js';
@@ -56,3 +50,11 @@ import '../components/TextArea.js';
 import '../components/Title.js';
 import '../components/Tooltip.js';
 import '../components/TopAppBar.js';
+
+import './demo/DemoButton.js';
+import './demo/DemoDummy.js';
+import './demo/DemoScreen.js';
+import './demo/DemoSection.js';
+
+// Load last to avoid layout shifts
+import './demo/DemoPage.js';

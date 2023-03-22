@@ -52,12 +52,8 @@ main {
   padding: 12px;
 }
 
-demo-section:not(:defined) {
-  visibility: hidden;
-}
-
-demo-dummy-text:not(:defined) {
-  visibility: hidden;
+demo-page:not(:defined) {
+  display: none;
 }
 
 html[dir="rtl"] {
