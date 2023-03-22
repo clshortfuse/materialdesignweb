@@ -36,14 +36,10 @@ export default class Select extends CustomElement
     /** @param {Event & {currentTarget:HTMLSlotElement}} event */
       slotchange(event) {
         const select = this._select;
-        // Skip redundancy check, just replace.
-        let lastChild;
-        while ((lastChild = select.lastChild) != null) {
-          lastChild.remove();
-        }
-        for (const child of event.currentTarget.assignedNodes()) {
-          select.append(child.cloneNode(true));
-        }
+        select.replaceChildren(
+          ...event.currentTarget.assignedNodes()
+            .map((child) => child.cloneNode(true)),
+        );
         this._value = select.value;
       },
     },
