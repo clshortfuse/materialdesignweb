@@ -1,6 +1,5 @@
 /* eslint-disable sort-class-members/sort-class-members */
 import { generateCSSStyleSheets, generateHTMLStyleElements } from './css.js';
-import { findElement, iterateNodes } from './dom.js';
 import { identifierFromElement } from './identify.js';
 import { observeFunction } from './observe.js';
 import { generateFragment, inlineFunctions } from './template.js';
@@ -37,27 +36,11 @@ import { generateFragment, inlineFunctions } from './template.js';
  * @prop {T} defaultValue
  */
 
-/**
- * @param {string} prop
- * @param {any} source
- * @return {any}
- */
-function valueFromPropName(prop, source) {
-  let value = source;
-  for (const child of prop.split('.')) {
-    if (!child) {
-      value = null;
-      break;
-    }
-    // @ts-ignore Skip cast
-    value = value[child];
-  }
-  if (value === source) return null;
-  return value;
-}
+/** Splits: `{template}text{template}` as `['', 'template', 'text', 'template', '']` */
+const STRING_INTERPOLATION_REGEX = /{([^}]*)}/g;
 
 /**
- * Returns event listener bound to shadow root host
+ * Returns event listener bound to shadow root host.
  * Use this function to avoid generating extra closures
  * @this {HTMLElement}
  * @param {Function} fn
@@ -71,8 +54,32 @@ function buildShadowRootChildListener(fn) {
 }
 
 /**
+ *
+ * @param {Object} object
+ * @param {'dot'|'bracket'} [syntax]
+ * @param {Object} [target]
+ * @param {string} [scope]
+ * @return {Object}
+ */
+function flattenObject(object, syntax = 'dot', target = {}, scope = '') {
+  for (const [key, value] of Object.entries(object)) {
+    if (!key) continue; // Blank keys are not supported;
+    const scopedKey = scope ? `${scope}.${key}` : key;
+    target[scopedKey] = value;
+    if (value != null && typeof value === 'object') {
+      flattenObject(value, syntax, target, scopedKey);
+    }
+  }
+  if (Array.isArray(object)) {
+    const scopedKey = scope ? `${scope}.length` : 'length';
+    target[scopedKey] = object.length;
+  }
+  return target;
+}
+
+/**
  * @example
- *  propInSource(
+ *  entryFromPropName(
  *    'address.home.houseNumber',
  *    {
  *      address: {
@@ -84,18 +91,36 @@ function buildShadowRootChildListener(fn) {
  * ) === {value:35}
  * @param {string} prop
  * @param {any} source
- * @return {null|{value:any}}
+ * @return {null|[string, any]}
  */
-function propFromObject(prop, source) {
+function entryFromPropName(prop, source) {
   let value = source;
-  for (const child of prop.split('.')) {
+  let child;
+  for (child of prop.split('.')) {
     if (!child) throw new Error(`Invalid property: ${prop}`);
     if (child in value === false) return null;
     // @ts-ignore Skip cast
     value = value[child];
   }
   if (value === source) return null;
-  return { value };
+  return [child, value];
+}
+
+/**
+ * @param {string} prop
+ * @param {any} source
+ * @return {any}
+ */
+function valueFromPropName(prop, source) {
+  let value = source;
+  for (const child of prop.split('.')) {
+    if (!child) return null;
+    // @ts-ignore Skip cast
+    value = value[child];
+    if (value == null) return null;
+  }
+  if (value === source) return null;
+  return value;
 }
 
 /** @template T */
@@ -105,6 +130,16 @@ export default class Composition {
    * @type {Map<keyof T & string, Set<NodeBindEntry<?>>>}
    */
   bindings = new Map();
+
+  /**
+   * Data of arrays used in templates
+   * Usage of a [_for] will create an ArrayLike expectation based on key
+   * Only store metadata, not actual data. Currently only needs length.
+   * TBD if more is needed later
+   * Referenced by property key (string)
+   * @type {Map<keyof T & string, ArrayMetadata<T>}
+   */
+  arrayMetadata = new Map();
 
   /**
    * Collection of events to bind.
@@ -145,7 +180,7 @@ export default class Composition {
    * Maintains a reference list of elements used by render target (root).
    * When root is garbage collected, references are released.
    * This includes disconnected elements.
-   * @type {WeakMap<Element|DocumentFragment, Map<string,HTMLElement>}
+   * @type {WeakMap<Element|DocumentFragment, Map<string,HTMLElement>>}
    */
   referenceCache = new WeakMap();
 
@@ -154,9 +189,9 @@ export default class Composition {
    * Maintains a reference list of conditional elements that were removed from
    * `cloneable` due to default state. Used to reconstruct conditional elements
    * with conditional children in default state as well (unlike `interpolation`).
-   * @type {Map<string, Element>}
+   * @type {Map<string, {element: Element, id: string, parentId: string, commentCache: WeakMap<Element|DocumentFragment,Comment>}>}
    */
-  conditionalElementMap = new Map();
+  conditionalElementMetadata = new Map();
 
   /** Flag set when template and styles have been interpolated */
   interpolated = false;
@@ -216,56 +251,46 @@ export default class Composition {
   }
 
   /**
-   * Updates component nodes based on data
+   * Updates component nodes based on data.
    * Expects data in JSON Merge Patch format
    * @see https://www.rfc-editor.org/rfc/rfc7386
-   * @param {Element|DocumentFragment} root where
-   * @param {Partial<?>} data what
+   * @param {DocumentFragment|ShadowRoot} root where
+   * @param {Partial<?>} changes what
    * @param {any} [context] who
+   * @param {Partial<?>} [store] If needed, where to grab extra props
    * @return {void}
    */
-  render(root, data, context) {
-    if (!this.initiallyRendered) this.initialRender(root, data);
+  render(root, changes, context, store) {
+    if (!this.initiallyRendered) this.initialRender(root, changes);
 
-    if (!data) return;
+    if (!changes) return;
 
     const fnResults = new WeakMap();
     /** @type {WeakMap<Element, Set<string>>} */
     const modifiedNodes = new WeakMap();
-    // TODO: Used indexed seek vs scan
-    for (const [key, entries] of this.bindings) {
-      const propSearch = propFromObject(key, data);
-      if (!propSearch) continue;
+
+    // Iterate data instead of bindings.
+    // TODO: Avoid double iteration and flatten on-the-fly
+    const flattened = flattenObject(changes);
+
+    for (const [key, rawValue] of Object.entries(flattened)) {
+      const entries = this.bindings.get(key);
+      if (!entries) continue;
       for (const { id, node, nodeType, fn, props, negate, doubleNegate } of entries) {
-        let value;
-        let ref;
-        if (id) {
-          // TODO: Avoid unnecessary element creation.
-          // If element can be fully reconstructed with internal properties,
-          // skip recreation of element unless it actually needs to added to DOM.
-          // Requires tracing of all properties used by conditional elements.
-          ref = this.getElement(root, id);
-          if (!ref) {
-            console.warn('Non existent id', id);
-            continue;
-          }
-        }
-        if (fn) {
-          if (fnResults.has(fn)) {
-            value = fnResults.get(fn);
-          } else {
-            const args = Object.fromEntries(
-              [...props].map((prop) => [prop, prop in data ? data[prop] : valueFromPropName(prop, context)]),
-            );
-            value = fn.call(context, args);
-            fnResults.set(fn, value);
-          }
-        } else {
-          value = propSearch.value;
+        /* 1. Find Element */
+
+        // TODO: Avoid unnecessary element creation.
+        // If element can be fully reconstructed with internal properties,
+        // skip recreation of element unless it actually needs to added to DOM.
+        // Requires tracing of all properties used by conditional elements.
+        const ref = this.getElement(root, id);
+        if (!ref) {
+          console.warn('Non existent id', id);
+          continue;
         }
         if (!ref) continue;
         if (modifiedNodes.get(ref)?.has(node)) {
-        // console.warn('Node already modified. Skipping', id, node);
+          // console.warn('Node already modified. Skipping', id, node);
           continue;
         }
 
@@ -277,13 +302,61 @@ export default class Composition {
         //   }
         // }
 
+        /* 2. Compute value */
+        let value;
+        if (fn) {
+          if (fnResults.has(fn)) {
+            value = fnResults.get(fn);
+          } else {
+            const args = structuredClone(changes);
+            for (const prop of props) {
+              if (prop in flattened) continue;
+              let lastIndexOfDot = prop.lastIndexOf('.');
+              if (lastIndexOfDot === -1) {
+                // console.debug('injected shallow', prop);
+                args[prop] = store[prop];
+              } else {
+                // Relying on props being sorted...
+                console.debug('need deep', prop);
+                let entry;
+                let propSearchKey = prop;
+                let lastPropSearchKey = prop;
+                while (!entry) {
+                  entry = entryFromPropName(propSearchKey, args);
+                  if (entry) {
+                    const propName = lastPropSearchKey.slice(propSearchKey.length + 1);
+                    entry[1][propName] = valueFromPropName(lastPropSearchKey, store);
+                    break;
+                  }
+                  if (lastIndexOfDot === -1) break;
+                  lastPropSearchKey = prop;
+                  propSearchKey = prop.slice(0, lastIndexOfDot);
+                  lastIndexOfDot = propSearchKey.lastIndexOf(',');
+                }
+                if (!entry) {
+                  console.warn('what do?');
+                }
+              }
+            }
+            value = fn.call(context, args);
+            fnResults.set(fn, value);
+          }
+        } else {
+          value = rawValue;
+        }
+
+        /* 3. Operate on value */
         if (doubleNegate) {
-          value = !!value; // Boolean(value), but faster
+          value = !!value;
         } else if (negate) {
           value = !value;
         }
+
+        /* 4. Find Target Node */
         if (nodeType === Node.TEXT_NODE) {
-          const index = node.slice('#text'.length + 1) || 0;
+          const index = (node === '#text')
+            ? 0
+            : Number.parseInt(node.slice('#text'.length), 10);
           let nodesFound = 0;
           for (const childNode of ref.childNodes) {
             if (childNode.nodeType !== Node.TEXT_NODE) continue;
@@ -308,50 +381,61 @@ export default class Composition {
           }
           if (shouldShow) {
             if (orphaned) {
-              const sourceElement = findElement(this.interpolation, id);
-              if (!sourceElement) {
+              const metadata = this.conditionalElementMetadata.get(id);
+              if (!metadata) {
                 console.error(id);
-                throw new Error('Could not find in source');
-              }
-              // Find DOM representation of parent;
-              const sourceParentNode = sourceElement.parentNode;
-              const parent = sourceParentNode instanceof Element
-                ? this.getElement(root, sourceParentNode.id)
-                : root;
-              if (!parent) {
-                console.error(id);
-                throw new Error('Could not find reference parent!');
+                throw new Error('Could not find conditional element metadata');
               }
 
-              let commentNode;
-              const commentText = `{#${id}}`;
-              for (const child of parent.childNodes) {
-                if (child.nodeType !== Node.COMMENT_NODE) continue;
-                if ((/** @type {Comment} */child).nodeValue === commentText) {
-                  commentNode = child;
-                  break;
+              let comment = metadata.commentCache.get(root);
+              if (!comment) {
+                console.debug('Comment not cached, building first time');
+                const parent = metadata.parentId
+                  ? this.getElement(root, metadata.parentId)
+                  : root;
+                if (!parent) {
+                  console.error(id);
+                  throw new Error('Could not find reference parent!');
                 }
+
+                const commentText = `{#${id}}`;
+                for (const child of parent.childNodes) {
+                  if (child.nodeType !== Node.COMMENT_NODE) continue;
+                  if ((/** @type {Comment} */child).nodeValue === commentText) {
+                    comment = child;
+                    break;
+                  }
+                }
+                metadata.commentCache.set(this, comment);
               }
-              if (commentNode) {
-                commentNode.after(ref);
-                // console.log('Add', identifier, 'back', ref.outerHTML);
-                commentNode.remove();
+              if (comment) {
+                console.debug('Add', id, 'back', ref.outerHTML);
+                comment.replaceWith(ref);
               } else {
                 console.warn('Could not add', id, 'back to parent');
               }
             }
           } else if (!orphaned) {
-            // console.log('Remove', identifier, ref.outerHTML, root.host.outerHTML);
-            const commentText = `{#${id}}`;
-            const commentPlaceholder = new Comment(commentText);
-            ref.before(commentPlaceholder);
-            ref.remove();
+            const metadata = this.conditionalElementMetadata.get(id);
+            if (!metadata) {
+              console.error(id);
+              throw new Error(`Could not find conditional element metadata for ${id}`);
+            }
+            let comment = metadata.commentCache.get(root);
+            if (!comment) {
+              comment = new Comment(`{#${id}}`);
+              metadata.commentCache.set(this, comment);
+            }
+            console.debug('Remove', id, ref.outerHTML);
+            ref.replaceWith(comment);
           }
         } else if (value === false || value == null) {
           ref.removeAttribute(node);
         } else {
           ref.setAttribute(node, value === true ? '' : value);
         }
+
+        /* 5. Mark Node as modified */
         let set = modifiedNodes.get(ref);
         if (!set) {
           set = new Set();
@@ -360,6 +444,202 @@ export default class Composition {
         set.add(node);
       }
     }
+  }
+
+  /**
+   * @param {Attr|Text} node
+   * @param {Element} element
+   * @param {Object} [defaults]
+   * @param {string} [parsedValue]
+   * @return {boolean} Remove node
+   */
+  #interpolateNode(node, element, defaults, parsedValue) {
+    const { nodeValue, nodeName, nodeType } = node;
+
+    if (parsedValue == null) {
+      if (!nodeValue) return false;
+      const trimmed = nodeValue.trim();
+      if (!trimmed) return false;
+      if (nodeType === Node.ATTRIBUTE_NODE) {
+        if (trimmed[0] !== '{') return false;
+        const { length } = trimmed;
+        if (trimmed[length - 1] !== '}') return false;
+        parsedValue = trimmed.slice(1, -1);
+      } else {
+        // Split text node into segments
+        // TODO: Benchmark indexOf pre-check vs regex
+
+        const segments = trimmed.split(STRING_INTERPOLATION_REGEX);
+        if (segments.length < 3) return false;
+        if (segments.length === 3 && !segments[0] && !segments[2]) {
+          parsedValue = segments[1];
+        } else {
+          segments.forEach((segment, index) => {
+            // is even = is template string
+            if (index % 2) {
+              const newNode = new Text();
+              node.before(newNode);
+              this.#interpolateNode(newNode, element, defaults, segment);
+            } else {
+              if (!segment) return; // blank
+              node.before(segment);
+            }
+          });
+          // node.remove();
+          return true;
+        }
+      }
+    }
+
+    const negate = parsedValue[0] === '!';
+    let doubleNegate = false;
+    if (negate) {
+      parsedValue = parsedValue.slice(1);
+      doubleNegate = parsedValue[0] === '!';
+      if (doubleNegate) {
+        parsedValue = parsedValue.slice(1);
+      }
+    }
+
+    let isEvent;
+    let textNodeIndex;
+
+    if (nodeType === Node.TEXT_NODE) {
+      // eslint-disable-next-line unicorn/consistent-destructuring
+      if (element !== node.parentElement) {
+        console.warn('mismatch?');
+        element = node.parentElement;
+      }
+      textNodeIndex = 0;
+      let prev = node;
+      while ((prev = prev.previousSibling)) {
+        if (prev.nodeType === Node.TEXT_NODE) {
+          textNodeIndex++;
+        }
+      }
+    } else {
+      // @ts-ignore Skip cast
+      // eslint-disable-next-line unicorn/consistent-destructuring
+      if (element !== node.ownerElement) {
+        console.warn('mismatch?');
+        element = node.ownerElement;
+      }
+      if (nodeName.startsWith('on')) {
+        // Do not interpolate inline event listeners
+        if (nodeName[2] !== '-') return false;
+        isEvent = true;
+      }
+    }
+
+    const id = identifierFromElement(element, true);
+
+    if (isEvent) {
+      const eventType = nodeName.slice(3);
+      const [, flags, type] = eventType.match(/^([*1~]+)?(.*)$/);
+      const options = {
+        once: flags?.includes('1'),
+        passive: flags?.includes('~'),
+        capture: flags?.includes('*'),
+      };
+
+      element.removeAttribute(nodeName);
+
+      let set = this.events.get(id);
+      if (!set) {
+        set = new Set();
+        this.events.set(id, set);
+      }
+      if (parsedValue.startsWith('#')) {
+        set.add({ type, handleEvent: inlineFunctions.get(parsedValue).fn, ...options });
+      } else {
+        set.add({ type, prop: parsedValue, ...options });
+      }
+      return false;
+    }
+
+    /** @type {Function} */
+    let fn;
+    /** @type {Set<string>} */
+    let props;
+
+    /** @type {any} */
+    let defaultValue;
+    let inlineFunctionOptions;
+    // Is Inline Function?
+    if (parsedValue.startsWith('#')) {
+      inlineFunctionOptions = inlineFunctions.get(parsedValue);
+      if (!inlineFunctionOptions) {
+        console.warn(`Invalid interpolation value: ${parsedValue}`);
+        return false;
+      }
+      if (inlineFunctionOptions.props) {
+        console.log('This function has already been called. Reuse props', inlineFunctionOptions, this);
+        props = inlineFunctionOptions.props;
+        defaultValue = inlineFunctionOptions.defaultValue ?? null;
+      } else {
+        defaultValue = inlineFunctionOptions.fn;
+      }
+    } else {
+      defaultValue = valueFromPropName(parsedValue, defaults);
+    }
+
+    if (!props) {
+      if (typeof defaultValue === 'function') {
+        // Value must be reinterpolated and function observed
+        const observeResult = observeFunction.call(this, defaultValue, defaults);
+        fn = defaultValue;
+        defaultValue = observeResult.defaultValue;
+        props = observeResult.props;
+        // console.log(this.static.name, fn.name || parsedValue, combinedSet);
+      } else {
+        props = new Set([parsedValue]);
+      }
+    }
+
+    if (typeof defaultValue === 'symbol') {
+      console.warn(': Invalid binding:', parsedValue);
+      defaultValue = null;
+    }
+
+    if (doubleNegate) {
+      defaultValue = !!defaultValue;
+    } else if (negate) {
+      defaultValue = !defaultValue;
+    }
+
+    if (inlineFunctionOptions) {
+      inlineFunctionOptions.defaultValue = defaultValue;
+      inlineFunctionOptions.props = props;
+    }
+
+    // Bind
+    const parsedNodeName = textNodeIndex ? nodeName + textNodeIndex : nodeName;
+    const entry = { id, node: parsedNodeName, fn, props, nodeType, defaultValue, negate, doubleNegate };
+    for (const prop of props) {
+      let set = this.bindings.get(prop);
+      if (!set) {
+        set = new Set();
+        this.bindings.set(prop, set);
+      }
+      set.add(entry);
+    }
+
+    // Mutate
+
+    if (nodeType === Node.TEXT_NODE) {
+      node.nodeValue = defaultValue ?? '';
+    } else if (nodeName === '_if') {
+      element.removeAttribute(nodeName);
+      if (defaultValue == null || defaultValue === false) {
+        // If default state is removed, mark for removal
+        return true;
+      }
+    } else if (defaultValue == null || defaultValue === false) {
+      element.removeAttribute(nodeName);
+    } else {
+      element.setAttribute(nodeName, defaultValue === true ? '' : defaultValue);
+    }
+    return false;
   }
 
   /**
@@ -374,198 +654,76 @@ export default class Composition {
 
     /**
      * Track elements to be removed before using for cloning
-     * @type {Map<string,Element>}
+     * @type {Element[]}
      */
-    const removalList = new Map();
+    const removalList = [];
 
-    // TODO: Split into iteration of elements and then into attribute/text nodes (revert commit).
-    // Currently loses element reference and loses state of element (has id)
-    // Can't step over elements such as `<template>`
-    for (const node of iterateNodes(this.cloneable, { element: true, attribute: true, text: true })) {
-      const { nodeName, nodeValue, nodeType } = node;
+    const TREE_WALKER_FILTER = 5; /* NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT */
 
-      if (nodeType === Node.ELEMENT_NODE) {
-        // Processing of Element
-        if (node instanceof HTMLTemplateElement) {
-          console.warn('<template> elements are not stepped over');
-        }
-        if (node instanceof HTMLStyleElement) {
-          // Move style elements out of cloneable
-          // eslint-disable-next-line unicorn/consistent-destructuring
-          if (node.parentNode === this.cloneable) {
-            this.styles.push(node);
-            node.remove();
-          } else {
+    const treeWalker = document.createTreeWalker(this.cloneable, TREE_WALKER_FILTER);
+    let node = treeWalker.nextNode();
+    while (node) {
+      /** @type {Element} */
+      let element = null;
+      let removeElement = false;
+      switch (node.nodeType) {
+        case Node.ELEMENT_NODE:
+          element = node;
+          if (element instanceof HTMLTemplateElement) {
+            node = treeWalker.nextSibling();
+            continue;
+          }
+          if (node instanceof HTMLStyleElement) {
+            // Move style elements out of cloneable
+            if (node.parentNode === this.cloneable) {
+              this.styles.push(node);
+              node.remove();
+              node = treeWalker.nextSibling();
+              continue;
+            }
             console.warn('<style> element not moved');
           }
-        }
-        if (node instanceof HTMLScriptElement) {
-          console.warn('<script> elements are not stepped over');
-        }
-      }
-
-      if (!nodeValue) continue;
-      const trimmed = nodeValue.trim();
-      if (!trimmed) continue;
-      if (trimmed[0] !== '{') continue;
-      const { length } = trimmed;
-      if (trimmed[length - 1] !== '}') continue;
-
-      let parsedValue = trimmed.slice(1, length - 1);
-      const negate = parsedValue[0] === '!';
-      let doubleNegate = false;
-      if (negate) {
-        parsedValue = parsedValue.slice(1);
-        doubleNegate = parsedValue[0] === '!';
-        if (doubleNegate) {
-          parsedValue = parsedValue.slice(1);
-        }
-      }
-
-      /** @type {Element} */
-      let element;
-      let isEvent;
-      let textNodeIndex;
-
-      if (nodeType === Node.TEXT_NODE) {
-      // eslint-disable-next-line unicorn/consistent-destructuring
-        element = node.parentElement;
-        textNodeIndex = 0;
-        let prev = node;
-        while ((prev = prev.previousSibling)) {
-          if (prev.nodeType === Node.TEXT_NODE) {
-            textNodeIndex++;
+          if (node instanceof HTMLScriptElement) {
+            console.warn('<script> element found.');
+            node.remove();
+            node = treeWalker.nextSibling();
+            continue;
           }
-        }
-      } else {
-      // @ts-ignore Skip cast
-      // eslint-disable-next-line unicorn/consistent-destructuring
-        element = node.ownerElement;
-        if (nodeName.startsWith('on')) {
-          // Do not interpolate inline event listeners
-          if (nodeName[2] !== '-') continue;
-          isEvent = true;
-        }
+          for (const attr of [...element.attributes].reverse()) {
+            if (attr.nodeName === '_if') {
+              // Ensure elements to be removed has identifiable parent
+              const id = identifierFromElement(element, true);
+              const parentId = element.parentElement
+                ? identifierFromElement(element.parentElement, true)
+                : null;
+              this.conditionalElementMetadata.set(id, {
+                element,
+                id,
+                parentId,
+                commentCache: new WeakMap(),
+              });
+            }
+            removeElement ||= this.#interpolateNode(attr, element, defaults);
+          }
+
+          break;
+        case Node.TEXT_NODE:
+          element = node.parentNode;
+          if (this.#interpolateNode(/** @type {Text} */ (node), element, defaults)) {
+            const nextNode = treeWalker.nextNode();
+            node.remove();
+            node = nextNode;
+            continue;
+          }
+
+          break;
+        default:
+          throw new Error(`Unexpected node type: ${node.nodeType}`);
       }
-
-      const id = identifierFromElement(element, true);
-
-      if (isEvent) {
-        const eventType = nodeName.slice(3);
-        const [, flags, type] = eventType.match(/^([*1~]+)?(.*)$/);
-        const options = {
-          once: flags?.includes('1'),
-          passive: flags?.includes('~'),
-          capture: flags?.includes('*'),
-        };
-
-        element.removeAttribute(nodeName);
-
-        let set = this.events.get(id);
-        if (!set) {
-          set = new Set();
-          this.events.set(id, set);
-        }
-        if (parsedValue.startsWith('#')) {
-          set.add({ type, handleEvent: inlineFunctions.get(parsedValue).fn, ...options });
-        } else {
-          set.add({ type, prop: parsedValue, ...options });
-        }
-        continue;
+      if (removeElement) {
+        removalList.push(element);
       }
-
-      /** @type {Function} */
-      let fn;
-      /** @type {Set<string>} */
-      let props;
-
-      /** @type {any} */
-      let defaultValue;
-      let inlineFunctionOptions;
-      // Is Inline Function?
-      if (parsedValue.startsWith('#')) {
-        inlineFunctionOptions = inlineFunctions.get(parsedValue);
-        if (!inlineFunctionOptions) {
-          console.warn(`Invalid interpolation value: ${parsedValue}`);
-          continue;
-        }
-        if (inlineFunctionOptions.props) {
-          console.log('This function has already been called. Reuse props', inlineFunctionOptions, this);
-          props = inlineFunctionOptions.props;
-          defaultValue = inlineFunctionOptions.defaultValue ?? null;
-        } else {
-          defaultValue = inlineFunctionOptions.fn;
-        }
-      } else {
-        defaultValue = valueFromPropName(parsedValue, defaults);
-      }
-
-      if (!props) {
-        if (typeof defaultValue === 'function') {
-          // Value must be reinterpolated and function observed
-          const observeResult = observeFunction.call(this, defaultValue, defaults);
-          fn = defaultValue;
-          defaultValue = observeResult.defaultValue;
-          props = observeResult.props;
-          // console.log(this.static.name, fn.name || parsedValue, combinedSet);
-        } else {
-          props = new Set([parsedValue]);
-        }
-      }
-
-      if (typeof defaultValue === 'symbol') {
-        console.warn(': Invalid binding:', parsedValue);
-        defaultValue = null;
-      }
-
-      if (doubleNegate) {
-        defaultValue = !!defaultValue;
-      } else if (negate) {
-        defaultValue = !defaultValue;
-      }
-
-      if (inlineFunctionOptions) {
-        inlineFunctionOptions.defaultValue = defaultValue;
-        inlineFunctionOptions.props = props;
-      }
-
-      // Bind
-      const parsedNodeName = textNodeIndex ? nodeName + textNodeIndex : nodeName;
-      const entry = { id, node: parsedNodeName, fn, props, nodeType, defaultValue, negate, doubleNegate };
-      for (const prop of props) {
-        let set = this.bindings.get(prop);
-        if (!set) {
-          set = new Set();
-          this.bindings.set(prop, set);
-        }
-        set.add(entry);
-      }
-
-      // Mutate
-
-      if (nodeType === Node.TEXT_NODE) {
-        node.nodeValue = defaultValue ?? '';
-      } else if (nodeName === '_if') {
-        element.removeAttribute(nodeName);
-        if (defaultValue == null || defaultValue === false) {
-          // If default state is removed, mark for removal
-          removalList.set(id, element);
-        }
-      } else if (defaultValue == null || defaultValue === false) {
-        element.removeAttribute(nodeName);
-      } else {
-        element.setAttribute(nodeName, defaultValue === true ? '' : defaultValue);
-      }
-    }
-
-    // Ensure elements to be removed has identifiable parent
-    // TODO: Consider short-circuiting if parent is unconditional
-    const reversedRemovals = [...removalList].reverse();
-    for (const [key, element] of reversedRemovals) {
-      let parent = element;
-      while ((parent = parent.parentElement)) {
-        identifierFromElement(parent, true);
-      }
+      node = treeWalker.nextNode();
     }
 
     // Split into `interpolation` before removing elements
@@ -576,15 +734,9 @@ export default class Composition {
 
     // Remove elements from `cloneable` and place comment placeholders
     // Remove in reverse so conditionals within conditionals are properly isolated
-    for (const [id, element] of [...removalList].reverse()) {
-      const commentText = `{#${id}}`;
-      const commentPlaceholder = new Comment(commentText);
-      // console.debug('Removing', commentPlaceholder);
-      element.before(commentPlaceholder);
-      element.remove();
-      // Store cloneable versions (that hold default state).
-      // Must be stored to avoid garbage collection
-      this.conditionalElementMap.set(id, element);
+    for (const element of [...removalList].reverse()) {
+      const { id } = element;
+      element.replaceWith(new Comment(`{#${id}}`));
     }
 
     for (const watcher of this.watchers) {
@@ -611,7 +763,7 @@ export default class Composition {
    * Updates component nodes based on data
    * Expects data in JSON Merge Patch format
    * @see https://www.rfc-editor.org/rfc/rfc7386
-   * @param {Element|DocumentFragment|ShadowRoot} root where
+   * @param {DocumentFragment|ShadowRoot} root where
    * @param {Partial<?>} data what
    * @return {void}
    */
@@ -659,9 +811,9 @@ export default class Composition {
             // });
           }
         }
-        const eventTarget = id ? findElement(root, id) : rootEventTarget;
+        const eventTarget = id ? root.getElementById(id) : rootEventTarget;
         if (!eventTarget) {
-          // Element is available yet. Bind on reference
+          // Element is not available yet. Bind on reference
           console.warn('Skip bind events for', id);
           continue;
         }
@@ -707,7 +859,7 @@ export default class Composition {
   }
 
   /**
-   * @param {Element|DocumentFragment} root
+   * @param {ShadowRoot|DocumentFragment} root
    * @param {string} id
    * @return {Element}
    */
@@ -723,7 +875,7 @@ export default class Composition {
     // Undefined
 
     // console.log('Search in DOM', id);
-    element = findElement(root, id);
+    element = root.getElementById(id);
 
     if (element) {
       // console.log('Found in DOM', id);
@@ -736,7 +888,7 @@ export default class Composition {
     let anchorElement;
 
     // Check if element is conditional
-    let cloneTarget = this.conditionalElementMap.get(id);
+    let cloneTarget = this.conditionalElementMetadata.get(id)?.element;
 
     if (!cloneTarget) {
       // Check if element even exists in interpolation
@@ -749,10 +901,10 @@ export default class Composition {
         return null;
       }
       // Iterate backgrounds until closest conditional element
-      // const anchorElementId = this.template.findElementById(id).closest('[_if]').id;
+      // const anchorElementId = this.template.getElementById(id).closest('[_if]').id;
       // anchorElement = this.references.get(anchorElementId)  this.interpolation.getElementById(anchorElementId).cloneNode(true);
       let parentElement = interpolatedElement;
-      while (({ parentElement } = parentElement) != null) {
+      while ((parentElement = parentElement.parentElement) != null) {
         const parentId = parentElement.id;
         if (!parentId) {
           console.warn('Parent does not have ID!');
@@ -769,7 +921,7 @@ export default class Composition {
           break;
         }
 
-        const liveElement = findElement(root, parentId);
+        const liveElement = root.getElementById(parentId);
         if (liveElement) {
           console.warn('Parent in DOM and not referenced', parentId, '>', id);
           // Parent already in DOM. Cache reference
@@ -778,7 +930,7 @@ export default class Composition {
           break;
         }
 
-        const conditionalParent = this.conditionalElementMap.get(parentId);
+        const conditionalParent = this.conditionalElementMetadata.get(parentId)?.element;
         if (conditionalParent) {
           console.debug('Found parent conditional element', parentId, '>', id);
           cloneTarget = conditionalParent;
@@ -792,7 +944,9 @@ export default class Composition {
     anchorElement ??= /** @type {Element} */ (cloneTarget.cloneNode(true));
 
     // Iterate downwards and cache all references
-    for (const node of iterateNodes(anchorElement, { element: true, self: true })) {
+    let node = anchorElement;
+    const iterator = document.createTreeWalker(anchorElement, NodeFilter.SHOW_ELEMENT);
+    do {
       const nodeIdentifier = node.id;
       if (!element && nodeIdentifier === id) {
         element = node;
@@ -809,7 +963,7 @@ export default class Composition {
       } else {
         console.warn('Could not cache node', node);
       }
-    }
+    } while ((node = iterator.nextNode()));
     return element;
   }
 

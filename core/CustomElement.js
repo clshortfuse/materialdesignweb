@@ -2,7 +2,7 @@
 
 import Composition from './Composition.js';
 import { ICustomElement } from './ICustomElement.js';
-import { attrNameFromPropName, attrValueFromDataValue, findElement } from './dom.js';
+import { attrNameFromPropName, attrValueFromDataValue } from './dom.js';
 import { defineObservableProperty } from './observe.js';
 import { addInlineFunction, css, html } from './template.js';
 
@@ -15,6 +15,8 @@ function superOf(instance) {
   const superOfStatic = Object.getPrototypeOf(staticContext);
   return superOfStatic.prototype;
 }
+
+const EVENT_PREFIX_REGEX = /^([*1~]+)?(.*)$/;
 
 /**
  * Web Component that can cache templates for minification or performance
@@ -117,9 +119,11 @@ export default class CustomElement extends ICustomElement {
    * @type {typeof ICustomElement.append}
    */
   static append(...parts) {
-    this.on('composed', ({ composition }) => {
-      // console.log('onComposed:append', ...parts);
-      composition.append(...parts);
+    this.on({
+      composed({ composition }) {
+        // console.debug('onComposed:append', ...parts);
+        composition.append(...parts);
+      },
     });
     // @ts-expect-error Can't cast T
     return this;
@@ -172,9 +176,11 @@ export default class CustomElement extends ICustomElement {
    * @type {typeof ICustomElement.html}
    */
   static html(strings, ...substitutions) {
-    this.on('composed', ({ composition }) => {
+    this.on({
+      composed({ composition }) {
       // console.log('onComposed:html', strings);
-      composition.append(html(strings, ...substitutions));
+        composition.append(html(strings, ...substitutions));
+      },
     });
     // @ts-expect-error Can't cast T
     return this;
@@ -264,7 +270,7 @@ export default class CustomElement extends ICustomElement {
    */
   static register(elementName, force = false) {
     if (this.hasOwnProperty('defined') && this.defined && !force) {
-      // console.warn(this.elementName, 'already registered.');
+      console.warn(this.elementName, 'already registered.');
       // @ts-expect-error Can't cast T
       return this;
     }
@@ -328,6 +334,7 @@ export default class CustomElement extends ICustomElement {
    * )}
    */
   static prop(name, typeOrOptions) {
+    // TODO: Cache and save configuration for reuse (mixins)
     /** @type {import('./typings.js').ObserverOptions<?,?>} */
     const options = {
       ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
@@ -337,13 +344,12 @@ export default class CustomElement extends ICustomElement {
 
     if (customCallback) {
       // Move callback to later in stack for attribute-based changes as well
-      // @ts-expect-error Skip cast
       this.onPropChanged({ [name]: customCallback });
     }
 
     // TODO: Inspect possible closure bloat
-    options.changedCallback = function wrappedChangedCallback(oldValue, newValue) {
-      this._onObserverPropertyChanged.call(this, name, oldValue, newValue);
+    options.changedCallback = function wrappedChangedCallback(oldValue, newValue, changes) {
+      this._onObserverPropertyChanged.call(this, name, oldValue, newValue, changes);
     };
 
     const config = defineObservableProperty(this.prototype, name, options);
@@ -446,27 +452,29 @@ export default class CustomElement extends ICustomElement {
 
   /** @type {typeof ICustomElement.events} */
   static events(listeners, options) {
-    this.on('composed', ({ composition }) => {
-      for (const [key, listenerOptions] of Object.entries(listeners)) {
-        const [, flags, type] = key.match(/^([*1~]+)?(.*)$/);
-        composition.addEventListener({
-          type,
-          once: flags?.includes('1'),
-          passive: flags?.includes('~'),
-          capture: flags?.includes('*'),
-          ...(
-            typeof listenerOptions === 'function'
-              ? { handleEvent: listenerOptions }
-              : (typeof listenerOptions === 'string'
-                ? { prop: listenerOptions }
-                : listenerOptions)
-          ),
-          ...(
-            options
-          )
-          ,
-        });
-      }
+    this.on({
+      composed({ composition }) {
+        for (const [key, listenerOptions] of Object.entries(listeners)) {
+          const [, flags, type] = key.match(EVENT_PREFIX_REGEX);
+          composition.addEventListener({
+            type,
+            once: flags?.includes('1'),
+            passive: flags?.includes('~'),
+            capture: flags?.includes('*'),
+            ...(
+              typeof listenerOptions === 'function'
+                ? { handleEvent: listenerOptions }
+                : (typeof listenerOptions === 'string'
+                  ? { prop: listenerOptions }
+                  : listenerOptions)
+            ),
+            ...(
+              options
+            )
+            ,
+          });
+        }
+      },
     });
 
     // @ts-expect-error Can't cast T
@@ -553,6 +561,12 @@ export default class CustomElement extends ICustomElement {
   /** @type {Record<string, HTMLElement>}} */
   #refsProxy;
 
+  /** @type {Map<string, WeakRef<HTMLElement>>}} */
+  #refsCache = new Map();
+
+  /** @type {Map<string, WeakRef<HTMLElement>>}} */
+  #refsCompositionCache = new Map();
+
   /** @type {Composition<?>} */
   #composition;
 
@@ -584,23 +598,24 @@ export default class CustomElement extends ICustomElement {
    * Expects data in JSON Merge Patch format
    * @see https://www.rfc-editor.org/rfc/rfc7386
    * @param {?} data
+   * @param {?} [store]
    * @return {void}
    */
-  render(data) {
+  render(data, store) {
     // console.log('render', data);
-    this.composition.render(this.shadowRoot, data, this);
+    this.composition.render(this.shadowRoot, data, this, store ? { ...this, store } : this);
   }
 
   /** @type {InstanceType<typeof ICustomElement>['propChangedCallback']} */
-  propChangedCallback(name, oldValue, newValue) {
+  propChangedCallback(name, oldValue, newValue, changes = newValue) {
     const callbacks = this.static.propChangedCallbacks.get(name);
     if (callbacks) {
       for (const callback of callbacks) {
-        callback.call(this, oldValue, newValue, this);
+        callback.call(this, oldValue, newValue, changes, this);
       }
     }
 
-    this.render({ [name]: newValue });
+    this.render({ [name]: changes });
   }
 
   /**
@@ -661,8 +676,9 @@ export default class CustomElement extends ICustomElement {
    * @param {string} name
    * @param {any} oldValue
    * @param {any} newValue
+   * @param {any} changes
    */
-  _onObserverPropertyChanged(name, oldValue, newValue) {
+  _onObserverPropertyChanged(name, oldValue, newValue, changes) {
     const { reflect, attr } = this.static.propList.get(name);
     if (attr && (reflect === true || reflect === 'write')) {
       const [, dataValue] = this.attributeCache.get(attr) ?? [null, null];
@@ -681,7 +697,7 @@ export default class CustomElement extends ICustomElement {
     }
 
     // Invoke change => render
-    this.propChangedCallback(name, oldValue, newValue);
+    this.propChangedCallback(name, oldValue, newValue, changes);
   }
 
   /**
@@ -702,12 +718,25 @@ export default class CustomElement extends ICustomElement {
           console.warn(this.static.name, 'Attempted to access references before composing!');
         }
         const composition = this.composition;
-        const formattedId = attrNameFromPropName(id);
         if (!composition.interpolated) {
+          let element = this.#refsCompositionCache.get(id)?.deref();
+          if (element) return element;
+          const formattedId = attrNameFromPropName(id);
           // console.warn(this.tagName, 'Returning template reference');
-          return findElement(composition.template, formattedId);
+          element = composition.template.getElementById(formattedId);
+          if (!element) return null;
+          this.#refsCompositionCache.set(id, new WeakRef(element));
+          return element;
         }
-        return composition.getElement(this.shadowRoot, formattedId);
+        let element = this.#refsCache.get(id)?.deref();
+        if (element) {
+          return element;
+        }
+        const formattedId = attrNameFromPropName(id);
+        element = composition.getElement(this.shadowRoot, formattedId);
+        if (!element) return null;
+        this.#refsCache.set(id, new WeakRef(element));
+        return element;
       },
     }));
   }

@@ -48,6 +48,7 @@ type CompositionCallback<T1, T2=T1> = {
       this: T1,
       oldValue: T1[P],
       newValue: T1[P],
+      changes:any,
       element: T1
       ) => any
     },
@@ -63,6 +64,7 @@ type CompositionCallback<T1, T2=T1> = {
       this: T1,
       oldValue: T1[P],
       newValue: T1[P],
+      changes:any,
       element: T1
       ) => any
   }
@@ -72,7 +74,11 @@ declare interface ICustomElementInstance extends HTMLElement {
   propChangedCallback<
     T extends ICustomElementInstance,
     K extends string = string,
-  >(this:T, name: K, oldValue: K extends keyof T ? T[K] : unknown, newValue: K extends keyof T ? T[K] : unknown): void;
+  >(this:T,
+      name: K,
+      oldValue: K extends keyof T ? T[K] : unknown,
+      newValue: K extends keyof T ? T[K] : unknown,
+      changes?: K extends keyof T ? T[K] extends object ? Partial<T[K]> : T[K] : unknown): void;
 
 }
 
@@ -262,6 +268,7 @@ export declare const ICustomElement: {
         this: T2,
         oldValue: T2[P],
         newValue: T2[P],
+        changes:any,
         element: T2
         ) => void
       },

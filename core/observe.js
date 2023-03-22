@@ -1,4 +1,4 @@
-import { hasMergePatch } from '../utils/jsonMergePatch.js';
+import { buildMergePatch, hasMergePatch } from '../utils/jsonMergePatch.js';
 
 import { attrNameFromPropName } from './dom.js';
 
@@ -44,6 +44,14 @@ const DEFAULT_OBJECT_PARSER = (o) => o;
  * @return {boolean} true if equal
  */
 export const DEFAULT_OBJECT_COMPARATOR = (a, b) => !hasMergePatch(a, b);
+
+/**
+ * @template T
+ * @param {T} a
+ * @param {T} b
+ * @return {boolean} true if equal
+ */
+export const DEFAULT_OBJECT_DIFF = (a, b) => buildMergePatch(a, b, 'object');
 
 /**
  * @param {ObserverPropertyType} type
@@ -115,15 +123,11 @@ export function parseObserverOptions(name, typeOrOptions, object) {
   let { enumerable, attr, reflect } = options;
   const { type, empty, changedCallback } = options;
 
-  enumerable ??= name[0] !== '_';
-  reflect ??= enumerable ? true : (attr ? 'write' : false);
-  attr ??= (reflect ? attrNameFromPropName(name) : null);
-
   /** @type {ObserverPropertyType} */
   let parsedType = type;
   if (parsedType == null) {
     // Use .value or .get() to parse type
-    const value = options.value ?? options.get?.call(object ?? {}, object ?? {});
+    const value = options.value ?? empty ?? options.get?.call(object ?? {}, object ?? {});
     if (value == null) {
       parsedType = 'string';
     } else {
@@ -133,6 +137,10 @@ export function parseObserverOptions(name, typeOrOptions, object) {
         : parsed;
     }
   }
+
+  enumerable ??= name[0] !== '_';
+  reflect ??= enumerable ? parsedType !== 'object' : (attr ? 'write' : false);
+  attr ??= (reflect ? attrNameFromPropName(name) : null);
 
   // if defined ? value
   // else if boolean ? false
@@ -161,10 +169,15 @@ export function parseObserverOptions(name, typeOrOptions, object) {
       : Object.is;
   }
 
+  const diff = 'diff' in options
+    ? options.diff
+    : ((parsedType === 'object') ? DEFAULT_OBJECT_DIFF : null);
+
   return {
     ...options,
     type: parsedType,
     is: isFn,
+    diff,
     attr,
     reflect,
     readonly: options.readonly ?? false,
@@ -212,31 +225,37 @@ export function parsePropertyValue(value) {
 export function observeFunction(fn, arg0, ...args) {
   const argPoked = new Set();
   const thisPoked = new Set();
-  // TODO: Use abstract
-  const argProxy = new Proxy(arg0, {
-    get(target, p) {
-      argPoked.add(p);
-      const value = Reflect.get(target, p);
-      return value;
-    },
-    has(target, p) {
-      argPoked.add(p);
-      const value = Reflect.has(target, p);
-      return value;
-    },
-  });
-  const thisProxy = new Proxy(this ?? arg0, {
-    get(target, p) {
-      thisPoked.add(p);
-      const value = Reflect.get(target, p);
-      return value;
-    },
-    has(target, p) {
-      thisPoked.add(p);
-      const value = Reflect.has(target, p);
-      return value;
-    },
-  });
+
+  /**
+   * @template {Object} T
+   * @param {T} proxyTarget
+   * @param {Set<string>} set
+   * @param {string} [prefix]
+   * @return {T}
+   */
+  function buildProxy(proxyTarget, set, prefix) {
+    return new Proxy(proxyTarget, {
+      get(target, p) {
+        const arg = prefix ? `${prefix}.${p}` : p;
+        set.add(arg);
+        const value = Reflect.get(target, p);
+        if (typeof value === 'object' && value != null) {
+          console.debug('tried to arg poke object get', p, value);
+          return buildProxy(value, set, arg);
+        }
+        return value;
+      },
+      has(target, p) {
+        const arg = prefix ? `${prefix}.p` : p;
+        set.add(arg);
+        const value = Reflect.has(target, p);
+        return value;
+      },
+    });
+  }
+
+  const argProxy = buildProxy(arg0, argPoked);
+  const thisProxy = buildProxy(this ?? arg0, thisPoked);
   const defaultValue = fn.call(thisProxy, argProxy, ...args);
   /* Arrow functions can reused if they don't poke `this` */
   const reusable = fn.name ? true : !thisPoked.size;
@@ -287,11 +306,16 @@ export function defineObservableProperty(object, key, options) {
       ? config.nullParser.call(this, value)
       : config.parser.call(this, newValue);
 
+    let changes = newValue;
     if (oldValue == null) {
       if (newValue == null) return false; // Both nullish
-    } else if (newValue != null && (oldValue === newValue || config.is.call(this, oldValue, newValue))) {
-      // Not null and match
-      return false;
+    } else if (newValue != null) {
+      if (oldValue === newValue) return false;
+      if (config.diff) {
+        changes = config.diff.call(this, oldValue, newValue);
+        if (changes == null) return false;
+      }
+      if (config.is.call(this, oldValue, newValue)) return false;
     }
 
     // Before changing, store old values of properties that will invalidate;
@@ -300,8 +324,8 @@ export function defineObservableProperty(object, key, options) {
 
     config.values.set(this, newValue);
     // console.log(key, 'value.set', newValue);
-    config.propChangedCallback?.call(this, key, oldValue, newValue);
-    config.changedCallback?.call(this, oldValue, newValue);
+    config.propChangedCallback?.call(this, key, oldValue, newValue, changes);
+    config.changedCallback?.call(this, oldValue, newValue, changes);
     return true;
   }
   /**

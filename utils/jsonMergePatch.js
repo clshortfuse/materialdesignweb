@@ -7,7 +7,7 @@
  * @param {T2} patch
  * @return {T1|T2|(T1 & T2)}
  */
-export function mergePatch(target, patch) {
+export function applyMergePatch(target, patch) {
   if (target === patch) return target;
   if (patch == null || typeof patch !== 'object') return patch;
   if (target != null && typeof target !== 'object') {
@@ -19,10 +19,59 @@ export function mergePatch(target, patch) {
         delete target[key];
       }
     } else {
-      target[key] = mergePatch(target[key], value);
+      target[key] = applyMergePatch(target[key], value);
     }
   }
   return target;
+}
+
+/**
+ * Creates a JSON Merge patch based
+ * Allows different strategies for arrays
+ *  - `clone`: Per spec, clones all entries with no inspection.
+ *  - `object`: Convert to flattened, array-like objects. Requires
+ *    consumer of patch to be aware of the schema beforehand.
+ * @param {object|number|string|boolean} previous
+ * @param {object|number|string|boolean} current
+ * @param {'clone'|'object'} [arrayStrategy='clone']
+ * @return {any} Patch
+ */
+export function buildMergePatch(previous, current, arrayStrategy = 'clone') {
+  if (previous === current) return null;
+  if (current == null || typeof current !== 'object') return current;
+  if (previous == null || typeof previous !== 'object') {
+    return structuredClone(current);
+  }
+  const isArray = Array.isArray(current);
+  if (isArray && arrayStrategy === 'clone') {
+    return structuredClone(current);
+  }
+
+  const patch = {};
+  const previousKeys = new Set(Object.keys(previous));
+  for (const [key, value] of Object.entries(current)) {
+    previousKeys.delete(key);
+    if (value == null) {
+      console.warn('Nullish value found at', key);
+      continue;
+    }
+    const changes = buildMergePatch(previous[key], value, arrayStrategy);
+    if (changes === null) {
+      console.log('keeping', key);
+    } else {
+      patch[key] = changes;
+    }
+  }
+  for (const key of previousKeys) {
+    patch[key] = null;
+    console.log('removing', key);
+  }
+
+  if (isArray && arrayStrategy === 'object' && current.length !== previous.length) {
+    patch.length = current.length;
+  }
+
+  return patch;
 }
 
 /**
