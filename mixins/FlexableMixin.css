@@ -68,4 +68,12 @@
 :host([gap="8"]) {gap: 8px;}
 :host([gap="12"]) {gap: 12px;}
 :host([gap="16"]) {gap: 16px;}
+:host([gap="20"]) {gap: 20px;}
 :host([gap="24"]) {gap: 24px;}
+
+:host([padding="4"]) {padding: 4px;}
+:host([padding="8"]) {padding: 8px;}
+:host([padding="12"]) {padding: 12px;}
+:host([padding="16"]) {padding: 16px;}
+:host([padding="20"]) {padding: 20px;}
+:host([padding="24"]) {padding: 24px;}

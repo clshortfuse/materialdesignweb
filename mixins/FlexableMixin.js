@@ -1,5 +1,3 @@
-import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
-
 import styles from './FlexableMixin.css' assert {type: 'css'};
 
 /**
@@ -29,21 +27,6 @@ export default function FlexableMixin(Base) {
       },
       gap: 'float',
       padding: 'float',
-    })
-    .observe({
-      _styler: {
-        ...ELEMENT_STYLER_TYPE,
-        get({ padding }) {
-          if (!padding) return null;
-          return {
-            styles: {
-              // Safari does not support gap with Web Animations API
-              // ...(gap ? { gap: `${gap}px` } : null),
-              ...(padding ? { padding: `${padding}px` } : null),
-            },
-          };
-        },
-      },
     })
     .css(styles);
 }
