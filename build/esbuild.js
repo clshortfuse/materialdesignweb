@@ -37,6 +37,7 @@ if (!isProduction && live) {
 /** @type {esbuild.BuildOptions} */
 const buildOptions = {
   entryPoints: ['docs/demo.js'],
+  entryNames: '[dir]/[name].min',
   format: 'esm',
   sourcemap: true,
   ...minify,
@@ -48,7 +49,7 @@ const buildOptions = {
   write: false,
   drop: isProduction ? ['console'] : [],
   target,
-  outfile: 'docs/demo.min.js',
+  outdir: 'docs',
   plugins: [
     CSSImportAssertionsPlugin,
     StatisticsPlugin,
@@ -65,7 +66,7 @@ if (serve) {
   /** @type {esbuild.ServeOptions} */
   const serveOptions = {
     port: 5500,
-    servedir: './',
+    servedir: './docs',
     onRequest(args) {
       const localPath = path.join(serveOptions.servedir, args.path);
       if (localPath === buildOptions.outfile) {

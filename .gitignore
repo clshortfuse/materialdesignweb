@@ -3,3 +3,8 @@ dist/*
 .test/*
 .nyc_output/*
 **/**/.DS_Store
+docs/**.min.js
+docs/**.min.css
+docs/**.min.js.*
+docs/**.min.css.*
+docs/meta.json

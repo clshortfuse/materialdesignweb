@@ -1,5 +1,5 @@
 import { writeFileSync } from 'node:fs';
-import { relative } from 'node:path';
+import { join, relative, dirname } from 'node:path';
 import { brotliCompressSync, gzipSync } from 'node:zlib';
 
 /** @type {import('esbuild').Plugin} */
@@ -18,8 +18,15 @@ export default {
           gzip: gzipSync(file.contents).length,
         };
       }
+
+      let { outdir } = build.initialOptions;
+      if (!outdir) {
+        // TODO: Match esbuild method of lowest common ancestor
+        outdir = dirname(outputFiles[0].path);
+      }
+
       if (metafile) {
-        writeFileSync('meta.json', JSON.stringify(metafile));
+        writeFileSync(join(outdir, 'meta.json'), JSON.stringify(metafile));
       }
       console.log(info);
       console.log('Build completed.');
