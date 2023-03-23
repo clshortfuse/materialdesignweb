@@ -456,7 +456,7 @@ export default class CustomElement extends ICustomElement {
       composed({ composition }) {
         for (const [key, listenerOptions] of Object.entries(listeners)) {
           const [, flags, type] = key.match(EVENT_PREFIX_REGEX);
-          composition.addEventListener({
+          composition.addCompositionEventListener({
             type,
             once: flags?.includes('1'),
             passive: flags?.includes('~'),

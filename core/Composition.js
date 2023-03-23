@@ -239,7 +239,7 @@ export default class Composition {
   }
 
   /** @param {import('./typings.js').CompositionEventListener<T>} listener */
-  addEventListener(listener) {
+  addCompositionEventListener(listener) {
     const key = listener.id ?? '';
     let set = this.events.get(key);
     if (!set) {
@@ -389,7 +389,7 @@ export default class Composition {
 
               let comment = metadata.commentCache.get(root);
               if (!comment) {
-                console.debug('Comment not cached, building first time');
+                console.debug('Composition: Comment not cached, building first time');
                 const parent = metadata.parentId
                   ? this.getElement(root, metadata.parentId)
                   : root;
@@ -409,7 +409,7 @@ export default class Composition {
                 metadata.commentCache.set(this, comment);
               }
               if (comment) {
-                console.debug('Add', id, 'back', ref.outerHTML);
+                console.debug('Composition: Add', id, 'back', ref.outerHTML);
                 comment.replaceWith(ref);
               } else {
                 console.warn('Could not add', id, 'back to parent');
@@ -426,7 +426,7 @@ export default class Composition {
               comment = new Comment(`{#${id}}`);
               metadata.commentCache.set(this, comment);
             }
-            console.debug('Remove', id, ref.outerHTML);
+            console.debug('Composition: Remove', id, ref.outerHTML);
             ref.replaceWith(comment);
           }
         } else if (value === false || value == null) {
@@ -814,7 +814,7 @@ export default class Composition {
         const eventTarget = id ? root.getElementById(id) : rootEventTarget;
         if (!eventTarget) {
           // Element is not available yet. Bind on reference
-          console.warn('Skip bind events for', id);
+          console.debug('Composition: Skip bind events for', id);
           continue;
         }
         eventTarget.addEventListener(entry.type, listener, entry);
