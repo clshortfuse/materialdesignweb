@@ -38,6 +38,10 @@
   transition-property: font-variation-settings;
 }
 
+#icon[hidden] {
+  display: none;
+}
+
 #svg {
   display: block;
 
