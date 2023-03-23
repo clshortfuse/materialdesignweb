@@ -13,20 +13,16 @@ Working on:
 * * Search results population
 * * Text Field Dropdown population
 * Cross-DOM-boundary custom colors
-* SVG Path Cache (smaller than icon fonts)
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/1f30b8a/docs/
+https://clshortfuse.github.io/materialdesignweb/
 
 # Getting started
 
 ````html
-<link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
-
-<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/1f30b8a/theming/loader.js?color=6750A4&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto"></script>
-
-<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/1f30b8a/components/Button.js"></script>
+<script type="module" src="https://unpkg.com/@shortfuse/materialdesignweb@0.7.0/theming/loader.js?color=6750A4&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto"></script>
+<script type="module" src="https://unpkg.com/@shortfuse/materialdesignweb@0.7.0/components/Button.js"></script>
 
 <mdw-button>Hello World!</mdw-button>
 ````

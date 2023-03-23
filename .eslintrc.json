@@ -7,7 +7,6 @@
     "airbnb-base",
     "plugin:@typescript-eslint/recommended",
     "plugin:jsdoc/recommended",
-    "plugin:github/recommended",
     "plugin:unicorn/recommended"
   ],
   "parser": "@typescript-eslint/parser",
@@ -47,9 +46,7 @@
       }
     }],
     "no-cond-assign": ["error", "except-parens"],
-    "no-param-reassign": ["error", {
-      "props": false
-    }],
+    "no-param-reassign": 0,
     "no-invalid-this": 0,
     "no-prototype-builtins": 0,
     "no-continue": 0,
@@ -74,7 +71,6 @@
     }],
     "class-methods-use-this": 0,
     "no-promise-executor-return": 0,
-    "github/no-then": 0,
     "@typescript-eslint/ban-ts-comment": ["warn", {
       "ts-ignore": "allow-with-description"
     }],

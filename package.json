@@ -4,12 +4,6 @@
   "description": "Material Design for Web",
   "type": "module",
   "scripts": {
-    "analyze:docs": "webpack-bundle-analyzer stats.json",
-    "build:docs": "webpack --config webpack.config.js --env target=docs",
-    "deploy:docs": "scripts/deploy-docs.sh",
-    "dist": "webpack",
-    "start:docs": "webpack serve --config webpack.config.js --env target=docs --host 0.0.0.0",
-    "stats:docs": "webpack --config webpack.config.js --env target=docs --profile --json > stats.json",
     "prebuild": "node bin/generate-css.js --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/theme.css",
     "prebuild-alt": "node bin/generate-css.js --color=a46750 --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/alt-theme.css",
     "build": "node build/esbuild.js --minify --metafile",
@@ -30,8 +24,20 @@
     "md3",
     "web-components"
   ],
+  "files": [
+    "/bin",
+    "/components",
+    "/core",
+    "/theming",
+    "/mixins",
+    "/utils"
+  ],
   "exports": {
-    "./": "./"
+    "/components": "./components",
+    "/core": "./core",
+    "/theming": "./theming",
+    "/mixins": "./mixins",
+    "/utils": "./utils"
   },
   "author": "Carlos Lopez Jr. <clshortfuse@gmail.com> (https://shortfuse.org/)",
   "license": "ISC",

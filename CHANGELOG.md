@@ -1,3 +1,11 @@
+v0.7.0
+------
+
+* Update to MD3
+* Use Web Components
+* Create custom render framework
+* Drop custom adapters
+
 v0.5.0
 ------
 
