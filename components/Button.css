@@ -72,7 +72,7 @@
   padding-inline: calc(24px + (var(--mdw-density) * 2px));
 }
 
-:host(where([icon]):where([outlined], [elevated], [filled])) {
+:host(:where([icon]):where([outlined], [elevated], [filled])) {
   gap: 8px;
 
   padding-inline: calc(16px + (var(--mdw-density) * 2px)) calc(24px + (var(--mdw-density) * 2px));
