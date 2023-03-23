@@ -1,7 +1,3 @@
-# Note
-
-`master` branch has been been soft-archived. All new work is being done at https://github.com/clshortfuse/materialdesignweb/tree/native
-
 # materialdesignweb
 Material Design for Web
 
@@ -17,19 +13,20 @@ Working on:
 * * Search results population
 * * Text Field Dropdown population
 * Cross-DOM-boundary custom colors
+* SVG Path Cache (smaller than icon fonts)
 
 # Demo
 
-https://rawcdn.githack.com/clshortfuse/materialdesignweb/9542d1c/docs/
+https://rawcdn.githack.com/clshortfuse/materialdesignweb/1f30b8a/docs/
 
 # Getting started
 
 ````html
 <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" />
 
-<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/9542d1c/theming/loader.js?color=6750A4&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto"></script>
+<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/1f30b8a/theming/loader.js?color=6750A4&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto"></script>
 
-<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/9542d1c/components/Button.js"></script>
+<script type="module" src="https://rawcdn.githack.com/clshortfuse/materialdesignweb/1f30b8a/components/Button.js"></script>
 
 <mdw-button>Hello World!</mdw-button>
 ````
@@ -165,3 +162,7 @@ These components do not have official M3 guidelines
 | Data Table   |          [:memo:](# "Planned")           |
 | Image List   |      [:grey_question:](# "Unknown")      |
 | Side Sheet   |      [:grey_question:](# "Unknown")      |
+
+# Archive
+
+The Material Design 1/2 version has been archived in the [`archive-md2`](https://github.com/clshortfuse/materialdesignweb/tree/archive-md2) branch.
