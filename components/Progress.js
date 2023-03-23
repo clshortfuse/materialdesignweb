@@ -18,7 +18,7 @@ export default CustomElement
     _determinateStyle: 'string',
   })
   .observe({
-    valueAsFraction: {
+    _valueAsFraction: {
       type: 'float',
       get({ value, max }) {
         return (value / (max || 100));
