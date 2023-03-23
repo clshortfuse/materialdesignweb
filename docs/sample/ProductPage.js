@@ -5,6 +5,7 @@ import '../../components/IconButton.js';
 import '../../components/Progress.js';
 import '../../components/Shape.js';
 import '../../components/Box.js';
+import '../../components/Checkbox.js';
 
 import Card from '../../components/Card.js';
 import '../../components/Label.js';
@@ -21,7 +22,11 @@ const SAMPLE_DATA = {
   brand: 'Apple',
   category: 'smartphones',
   thumbnail: 'https://i.dummyjson.com/data/products/1/thumbnail.jpg',
-  images: ['https://i.dummyjson.com/data/products/1/1.jpg', 'https://i.dummyjson.com/data/products/1/2.jpg', 'https://i.dummyjson.com/data/products/1/3.jpg', 'https://i.dummyjson.com/data/products/1/4.jpg', 'https://i.dummyjson.com/data/products/1/thumbnail.jpg'],
+  images: ['https://i.dummyjson.com/data/products/1/1.jpg',
+    'https://i.dummyjson.com/data/products/1/2.jpg',
+    'https://i.dummyjson.com/data/products/1/3.jpg',
+    'https://i.dummyjson.com/data/products/1/4.jpg',
+    'https://i.dummyjson.com/data/products/1/thumbnail.jpg'],
 };
 
 /**
@@ -47,10 +52,6 @@ export default Card
       empty: true,
     },
     lastObject: 'object',
-    coords: {
-      reflect: false,
-      empty: { x: 0, y: 0 },
-    },
   })
   .set({
     /** @type {number} */
@@ -88,7 +89,6 @@ export default Card
       visibility: visible;
 
       transition-delay: var(--busy-delay);
-      
     }
 
     #content {
@@ -172,6 +172,9 @@ export default Card
             <mdw-input outlined type=number name=price value={price} label=Price input-prefix=$ step=0.01></mdw-input>
             <mdw-input outlined type=number name=discountPercentage value={discountPercentage} input-suffix=% label=Discount step=0.01></mdw-input>
             <mdw-slider name=rating value={rating} min=0 max=5 step=0.1 ticks=4></mdw-slider>
+            <mdw-box flex y=center gap=8>
+                <mdw-checkbox-icon icon=check selected=${({ stock }) => stock > 0}></mdw-checkbox-icon> Stock: {stock} </div>
+            <mdw-box>
           </mdw-box>
           <mdw-divider></mdw-divider>
           <div id=images>
@@ -198,8 +201,6 @@ export default Card
           icon=chevron_right>Next</mdw-icon-button>
         </mdw-box>
     </mdw-box>
-    <!-- <p>My coords are ({coords.x}, {coords.y})</p> -->
-    <p>${({ coords }) => `My coords are (${coords.x}, ${coords.y})`}</p>
 
   `
   .methods({
@@ -237,3 +238,7 @@ export default Card
     },
   })
   .autoRegister('dummy-product-page');
+
+Icon.addSVGAlias('check', 'M382 816 154 588l57-57 171 171 367-367 57 57-424 424Z', '0 96 960 960');
+Icon.addSVGAlias('chevron_left', 'M560 816 320 576l240-240 56 56-184 184 184 184-56 56Z', '0 96 960 960');
+Icon.addSVGAlias('chevron_right', 'm376 816-56-56 184-184-184-184 56-56 240 240-240 240Z', '0 96 960 960');

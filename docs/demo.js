@@ -1,4 +1,4 @@
-// import 'element-internals-polyfill'; // Safari
+import 'element-internals-polyfill'; // Safari
 
 import '../components/Badge.js';
 import '../components/Body.js';
@@ -58,3 +58,9 @@ import './demo/DemoSection.js';
 
 // Load last to avoid layout shifts
 import './demo/DemoPage.js';
+
+import { addIconAliases, reportUnaliasedMaterialSymbols } from './icon-aliases.js';
+
+addIconAliases();
+
+console.debug(JSON.stringify(await reportUnaliasedMaterialSymbols(['chevron_left'])));
