@@ -185,8 +185,8 @@ const SP = 1 / 16;
 
 const TYPOGRAPHY_DEFAULT = {
   face: {
-    brand: '"Roboto", sans-serif',
-    plain: '"Roboto", sans-serif',
+    brand: '"Roboto Medium", Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", Helvetica, "Segoe UI", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+    plain: '"Roboto Regular", Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", Helvetica, "Segoe UI", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
     weight: {
       regular: 400,
       medium: 500,
