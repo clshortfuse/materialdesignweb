@@ -149,12 +149,10 @@ export declare const ICustomElement: {
     VALUE extends {
       [KEY in keyof PROPS]:
       PROPS[KEY] extends (...args2:any[]) => infer R ? R
-          : PROPS[KEY] extends ObserverPropertyType
-          ? ParsedObserverPropertyType<PROPS[KEY]>
-          : PROPS[KEY] extends {type: ObserverPropertyType}
-          ? ParsedObserverPropertyType<PROPS[KEY]['type']>
-          : PROPS[KEY] extends ObserverOptions<any, infer R>
-          ? unknown extends R ? string : R
+          : PROPS[KEY] extends ObserverPropertyType ? ParsedObserverPropertyType<PROPS[KEY]>
+          : PROPS[KEY] extends {type: 'object'} & ObserverOptions<any, infer R> ? (unknown extends R ? object : R)
+          : PROPS[KEY] extends {type: ObserverPropertyType} ? ParsedObserverPropertyType<PROPS[KEY]['type']>
+          : PROPS[KEY] extends ObserverOptions<any, infer R> ? (unknown extends R ? string : R)
           : never
     },
     > (this: CLASS, props: PROPS)
