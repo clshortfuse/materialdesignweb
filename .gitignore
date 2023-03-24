@@ -8,3 +8,4 @@ docs/**.min.css
 docs/**.min.js.*
 docs/**.min.css.*
 docs/meta.json
+docs/theme.css
