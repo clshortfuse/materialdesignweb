@@ -1,6 +1,6 @@
 {
   "name": "@shortfuse/materialdesignweb",
-  "version": "0.7.0",
+  "version": "0.7.1-0",
   "description": "Material Design for Web",
   "type": "module",
   "scripts": {
