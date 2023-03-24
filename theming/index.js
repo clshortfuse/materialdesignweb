@@ -10,53 +10,6 @@ import { svgToCSSURL } from '../utils/svg.js';
  * @return {string}
  */
 
-/** @return {string} */
-function cornerCutClipPath() {
-  const TOP = 0;
-  const END = '100%';
-  const BOTTOM = '100%';
-  const START = 0;
-
-  const TOP_START_SIZE = 'var(--mdw-shape__size__top-start-size)';
-  const TOP_END_SIZE = 'var(--mdw-shape__size__top-end-size)';
-  const BOTTOM_START_SIZE = 'var(--mdw-shape__size__bottom-start-size)';
-  const BOTTOM_END_SIZE = 'var(--mdw-shape__size__bottom-end-size)';
-
-  const TOP_INSET = (size) => `min(${size},50%)`;
-  const START_INSET = (size) => `min(${size},50%)`;
-  const END_INSET = (size) => `calc(100% - min(${size},50%))`;
-  const BOTTOM_INSET = (size) => `calc(100% - min(${size},50%))`;
-
-  /**
-   *     2           3
-   *   ┌──────────────┐
-   * 1 │              │ 4
-   *   │              │
-   *   │              │
-   *   │              │
-   * 8 │              │ 5
-   *   └──────────────┘
-   *    7            6
-   */
-
-  return `polygon(${
-    [
-      [START, TOP_INSET(TOP_START_SIZE)],
-      [START_INSET(TOP_START_SIZE), TOP],
-
-      [END_INSET(TOP_END_SIZE), TOP],
-      [END, TOP_INSET(TOP_END_SIZE)],
-
-      [END, BOTTOM_INSET(BOTTOM_END_SIZE)],
-      [END_INSET(BOTTOM_END_SIZE), BOTTOM],
-
-      [START_INSET(BOTTOM_START_SIZE), BOTTOM],
-      [START, BOTTOM_INSET(BOTTOM_START_SIZE)],
-
-    ].map((coordinates) => coordinates.join(' ')).join(', ')
-  })`;
-}
-
 /**
  * @param {string} shape
  * @return {string}
@@ -154,31 +107,6 @@ const SHAPE_CUT_DEFAULT = {
 const SHAPE_SQUIRCLE_DEFAULT = {
   ...SHAPE_ROUNDED_DEFAULT,
   mask: SQUIRCLE_PATH,
-};
-
-const LAYOUT_DEFAULT = {
-  density: 0,
-  body: {
-    0: 'calc(100% - 32px)',
-    '600px': 'calc(100% - 64px)',
-    '904px': '840px',
-    '1240px': 'calc(100% - 200px)',
-    '1440px': '1040px',
-  },
-  columns: {
-    '0px': 4,
-    '600px': 8,
-    '904px': 12,
-  },
-  alias: {
-    'extra-small': '0px',
-    phone: '0px',
-    small: '600px',
-    medium: '904px',
-    tablet: '600px',
-    laptop: '1240px',
-    large: '1440px',
-  },
 };
 
 const SP = 1 / 16;
@@ -428,55 +356,6 @@ export function generateTypographyGlobalCSS() {
         ].join(' ')
       };`).join('\n'))
     .join('\n')}}`;
-}
-
-/**
- * @param {LAYOUT_DEFAULT} [config]
- * @return {string}
- */
-export function generateLayoutGlobalCSS(config = LAYOUT_DEFAULT) {
-  /** @type {Map<string, Set<string>>} */
-  const breakpoints = new Map();
-  /**
-   *
-   * @param {string} breakpoint
-   * @return {Set<string>}
-   */
-  function getSet(breakpoint) {
-    let set = breakpoints.get(breakpoint);
-    if (!set) {
-      set = new Set();
-      breakpoints.set(breakpoint, set);
-    }
-    return set;
-  }
-
-  for (const [breakpoint, value] of Object.entries(config.body)) {
-    getSet((breakpoint === '0' || breakpoint === '0px') ? '' : `min-width ${breakpoint}`)
-      .add(`--mdw-breakpoint__body: ${value};`);
-  }
-
-  for (const [breakpoint, value] of Object.entries(config.columns)) {
-    getSet((breakpoint === '0' || breakpoint === '0px') ? '' : `min-width ${breakpoint}`)
-      .add(`--mdw-breakpoint__columns: ${value};`);
-  }
-
-  for (const [alias, value] of Object.entries(config.alias)) {
-    getSet('').add(`--mdw-breakpoint__${alias}: ${value};`);
-  }
-
-  getSet('').add(`--mdw-density__default: ${config.density};`);
-
-  let css = '';
-  for (const [breakpoint, set] of breakpoints) {
-    let rules = `:root { ${[...set].join('')}}`;
-    if (breakpoint) {
-      rules = `@media (min-width: ${breakpoint}) { ${rules} }`;
-    }
-    css += rules;
-  }
-
-  return css;
 }
 
 /**
