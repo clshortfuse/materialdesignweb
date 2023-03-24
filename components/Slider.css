@@ -4,7 +4,8 @@
   --mdw-ink: var(--mdw-color__on-primary);
   --mdw-bg: var(--mdw-color__primary);
 
-  display: block;
+  display: inline-block;
+  vertical-align: middle;
 
   min-block-size: 40px;
   min-inline-size: 88px;

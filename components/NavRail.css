@@ -1,7 +1,7 @@
 /* https://m3.material.io/components/navigation-rail/specs */
 
 :host{
-  display: inline-grid;
+  display: grid;
   align-content: flex-start;
   flex-direction: column;
   grid-template-rows: auto minmax(0,1fr);

@@ -4,7 +4,7 @@
   --mdw-bg: var(--mdw-color__secondary-container);
   --mdw-ink: var(--mdw-color__on-secondary-container);
 
-  display: flex;
+  display: inline-flex;
 }
 
 :host([color]) {

@@ -6,6 +6,9 @@
   --mdw-type__letter-spacing: var(--mdw-typescale__label-small__letter-spacing);
   position: relative;
 
+  display: inline-block;
+  vertical-align: middle;
+
   box-sizing: border-box;
   min-block-size: var(--mdw-typescale__label-small__line-height);
   min-inline-size: var(--mdw-typescale__label-small__line-height);
@@ -20,9 +23,14 @@
 
 @supports (width: 1lh) {
   :host {
+    min-block-size: 1lh; /* Clamps to 1:1 */
     min-inline-size: 1lh; /* Clamps to 1:1 */
     padding-inline: max(0.25lh, calc(0.25lh + (var(--mdw-density) * 2px)));
   }
+}
+
+:host(:empty) {
+  vertical-align: middle;
 }
 
 :host(:empty) #shape {

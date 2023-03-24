@@ -8,6 +8,7 @@
 
   display: inline-block;
   overflow: hidden;
+  vertical-align: middle;
 
   min-block-size: 4px;
   inline-size: 100%;

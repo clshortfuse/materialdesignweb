@@ -5,16 +5,17 @@
   --mdw-bg: var(--mdw-color__primary);
   --mdw-shape__size: var(--mdw-shape__full);
   --mdw-switch__value: 0;
-  container-type: inline-size;
-  container-name: switch-icon;
 
   position: relative;
 
   display: inline-block;
+  vertical-align: middle;
 
   box-sizing: border-box;
   block-size: 32px;
   inline-size: 52px;
+  container-type: inline-size;
+  container-name: switch-icon;
 }
 
 :host([selected]) {

@@ -4,7 +4,6 @@
   --mdw-shape__size: var(--mdw-shape__full);
   --mdw-ink: rgb(var(--mdw-color__on-surface-variant));
 
-  display: flex;
   align-items: center;
   justify-content: center;
 

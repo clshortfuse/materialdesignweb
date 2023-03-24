@@ -5,7 +5,7 @@
   --mdw-bg: var(--mdw-color__primary);
 
   display: inline-grid;
-  align-items: center;
+  align-items: baseline;
   gap: 12px;
   grid-auto-flow: column;
   justify-content: flex-start;
@@ -13,6 +13,20 @@
   cursor: pointer;
 
   transition: none 100ms cubic-bezier(0.4, 0.0, 1, 1);
+}
+
+:host([disabled]) {
+  opacity: 0.38;
+}
+
+:host(:empty) {
+  vertical-align: -11.5%;
+
+  line-height: 18px;
+}
+
+:host(:empty) #checkbox {
+  transform: none;
 }
 
 #control {
@@ -42,10 +56,6 @@
   border-radius: 50%;
 }
 
-:host([disabled]) {
-  opacity: 0.38;
-}
-
 #checkbox {
   position: relative;
 
@@ -54,6 +64,8 @@
   grid-column: 1 / 1;
 
   pointer-events: none;
+
+  transform: translateY(11.5%);
 
   color: rgb(var(--mdw-color__on-surface));
 }
