@@ -12,7 +12,7 @@
     "pretest": "eslint --ignore-path .gitignore",
     "test": "c8 tap --no-coverage"
   },
-  "main": "index.js",
+  "browser": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/clshortfuse/materialdesignweb.git"
