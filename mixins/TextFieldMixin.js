@@ -12,7 +12,6 @@ export default function TextFieldMixin(Base) {
     .mixin(DensityMixin)
     .mixin(ShapeMixin)
     .extend()
-    .css(styles)
     .set({
       stateLayer: true,
     })
