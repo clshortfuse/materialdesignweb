@@ -53,7 +53,7 @@ const buildOptions = {
   target,
   outdir: 'docs',
   plugins: [
-    minifyTemplates(), writeFiles(),
+    minifyTemplates(minify), writeFiles(),
     StatisticsPlugin,
   ],
 };
