@@ -2,15 +2,12 @@ import Ripple from '../components/Ripple.js';
 
 /** @typedef {import('../components/Ripple.js').default} Ripple */
 
-import styles from './RippleMixin.css' assert { type: 'css' };
-
 /**
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function RippleMixin(Base) {
   return Base
     .extend()
-    .css(styles)
     .set({
       /** @type {WeakRef<InstanceType<Ripple>>} */
       _lastRippleWeakRef: null,
@@ -111,5 +108,19 @@ export default function RippleMixin(Base) {
         if (ripple.hadRippleHeld) return;
         ripple.holdRipple = true;
       },
-    });
+    })
+    .css`
+      :host {
+        --mdw-state__pressed-opacity: 0;
+      }
+      
+      #ripple-container {
+        position: absolute;
+        inset: 0;
+      
+        overflow: hidden;
+      
+        pointer-events: none;
+      }
+    `;
 }

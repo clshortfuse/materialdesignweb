@@ -3,8 +3,6 @@
 import CustomElement from '../core/CustomElement.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
-import styles from './Icon.css' assert { type: 'css' };
-
 /** @type {Map<string, {path:string, viewBox:string}>} */
 const svgAliasMap = new Map();
 const unaliased = new Set();
@@ -84,7 +82,6 @@ export default class Icon extends CustomElement
       },
     },
   })
-  .css(styles)
   .expressions({
     showSVG({ svg, _computedSVGPath }) {
       return Boolean(svg || _computedSVGPath);
@@ -93,7 +90,7 @@ export default class Icon extends CustomElement
   })
   .html/* html */`
     <link _if={_showSlot} id=link rel=stylesheet href={fontLibrary} />
-    <svg _if="{showSVG}" id=svg viewBox="{_computedViewBox}">
+    <svg _if="{showSVG}" id="svg" viewBox="{_computedViewBox}">
       <use id="use" _if="{svg}" href="{svg}" fill="currentColor"/>
       <path id="path" _if="{_computedSVGPath}" d="{_computedSVGPath}"/>
     </svg>
@@ -105,6 +102,85 @@ export default class Icon extends CustomElement
       width={width} height={height}
     />
     <slot id=icon class={fontClass} hidden={!_showSlot} aria-hidden=true></slot>
+  `
+  .css`
+    /* https://material.io/design/iconography/system-icons.html */
+
+    :host {
+      display: inline-block;
+      vertical-align: -11.5%;
+
+      block-size: 1em;
+      inline-size: 1em;
+
+      -webkit-user-select: none;
+      user-select: none;
+
+      font-variation-settings: 'FILL' 1;
+
+      transition-duration: 200ms;
+      /* stylelint-disable-next-line liberty/use-logical-spec -- Safari does not animate inline-size */
+      transition-property: inline-size, width;
+    }
+
+    :host(:is([color],[ink])) {
+      color: rgb(var(--mdw-ink));
+    }
+
+    #icon {
+      /* Clip bounds in case font is not ready */
+      display: block;
+      overflow: clip;
+
+      block-size: 1em;
+      inline-size: 1em;
+
+      font-size: inherit;
+      font-variation-settings: inherit;
+
+      transition-delay: 1ms;
+      transition-duration: 200ms;
+
+      transition-property: font-variation-settings;
+    }
+
+    #icon[hidden] {
+      display: none;
+    }
+
+    #svg {
+      display: block;
+
+      block-size: inherit;
+      inline-size: inherit;
+
+      fill: currentColor;
+
+      object-fit: cover;
+    }
+
+    #img {
+      display: block;
+
+      block-size: inherit;
+      inline-size: inherit;
+
+      object-fit: cover;
+
+      transition-delay: 1ms;
+      transition-duration: 200ms;
+      transition-property: filter;
+    }
+
+    #img[disabled] {
+      filter: grayscale();
+    }
+
+    .material-symbols-outlined {
+      /* https://github.com/google/material-design-icons/issues/750 */
+      direction: inherit;
+    }
+
   `
   .childEvents({
     icon: {

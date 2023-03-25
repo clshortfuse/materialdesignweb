@@ -7,27 +7,6 @@ import TabPanel from './TabPanel.js';
 export default CustomElement
   .mixin(ResizeObserverMixin)
   .extend()
-  .css`
-    :host {
-      display: grid;
-      grid-auto-columns: 100%;
-      grid-auto-flow: column;
-      grid-template-columns: 100%;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      scroll-snap-type: x mandatory;
-      scrollbar-width: none;
-
-      flex-grow: 1;
-      -webkit-scroll-snap-type-x: mandatory;
-      scroll-snap-type-x: mandatory;
-      -webkit-scroll-snap-points-x: repeat(100%);
-      scroll-snap-points-x: repeat(100%);
-      overscroll-behavior-x: none;
-
-      will-change: transform; /* Avoid repaint on scroll */
-    }
-  `
   .set({
     /** @type {InstanceType<TabPanel>[]} */
     _panelNodes: [],
@@ -148,4 +127,25 @@ export default CustomElement
   .events({
     scroll: 'updatePanels',
   })
+  .css`
+    :host {
+      display: grid;
+      grid-auto-columns: 100%;
+      grid-auto-flow: column;
+      grid-template-columns: 100%;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+
+      flex-grow: 1;
+      -webkit-scroll-snap-type-x: mandatory;
+      scroll-snap-type-x: mandatory;
+      -webkit-scroll-snap-points-x: repeat(100%);
+      scroll-snap-points-x: repeat(100%);
+      overscroll-behavior-x: none;
+
+      will-change: transform; /* Avoid repaint on scroll */
+    }
+  `
   .autoRegister('mdw-tab-content');

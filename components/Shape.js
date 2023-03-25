@@ -1,25 +1,62 @@
+import ShapeMixin from '../mixins/ShapeMixin.js';
+
 import Box from './Box.js';
-import outlineStyles from './Outline.css' assert { type: 'css' };
-import styles from './Shape.css' assert { type: 'css' };
 
 export default Box
+  .mixin(ShapeMixin)
   .extend()
-  .observe({
-    shapeTop: 'boolean',
-    shapeBottom: 'boolean',
-    shapeStart: 'boolean',
-    shapeEnd: 'boolean',
-    shapeStyle: 'string',
-    outlined: 'boolean',
+  .on({
+    composed() {
+      const { shape, outline } = this.refs;
+      shape.before(outline);
+      shape.remove();
+    },
   })
-  .css(
-    outlineStyles,
-    styles,
-  )
-  .html/* html */`
-    <div id=outline _if={outlined} class=outline disabled={disabledState} focused={focusedState} pressed={pressedState} hovered={hoveredState}>
-      <div id=outline-left class="outline-section outline-left"></div>
-      <div id=outline-right class="outline-section outline-right"></div>
-    </div>
+  .css`
+    :host {
+      position: relative;
+
+      overflow: hidden;
+
+      z-index: auto;
+
+      background-color: var(--mdw-shape__bg, transparent);
+
+      border-start-start-radius: calc(var(--mdw-shape__rounded) * var(--mdw-shape__size__top-start-size));
+      border-start-end-radius: calc(var(--mdw-shape__rounded) * var(--mdw-shape__size__top-end-size));
+      border-end-start-radius: calc(var(--mdw-shape__rounded) * var(--mdw-shape__size__bottom-start-size));
+      border-end-end-radius: calc(var(--mdw-shape__rounded) * var(--mdw-shape__size__bottom-end-size));
+
+      transition-delay: 1ms;
+      transition-duration: 200ms;
+      transition-property: background-color, color;
+      will-change: background-color, color;
+
+    }
+
+    :host([color]) {
+      background-color: rgb(var(--mdw-bg));
+    }
+
+    :host(:where([ink],[color])) {
+      color: rgb(var(--mdw-ink));
+    }
+
+    :host([outlined]) {
+      background-color: transparent;
+    }
+
+    :host(:is([color="none"], [color="transparent"])) {
+      background-color: transparent;
+    }
+
+    
+    @supports(-webkit-mask-box-image: none) {
+      :host {
+        transition-duration: 200ms, 200ms, 200ms;
+        transition-property: background-color, color, -webkit-mask-box-image-width;
+        will-change: background-color, color, -webkit-mask-box-image;
+      }
+    }
   `
   .autoRegister('mdw-shape');

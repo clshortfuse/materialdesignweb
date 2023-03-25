@@ -1,6 +1,5 @@
 /* https://html.spec.whatwg.org/multipage/form-control-infrastructure.html */
 
-import styles from './ControlMixin.css' assert { type: 'css' };
 import FormAssociatedMixin from './FormAssociatedMixin.js';
 
 /** @typedef {import('../core/CustomElement.js').default} CustomElement */
@@ -35,6 +34,71 @@ export default function ControlMixin(Base) {
 
     /** @type {string[]} */
     static valueChangingContentAttributes = [];
+
+    static {
+      // eslint-disable-next-line no-unused-expressions
+      this.css`
+        
+        :host {
+          display: inline-flex;
+        }
+        
+        /* Remove Firefox inner */
+        :host(::-moz-focus-inner) {
+          border: 0;
+        }
+        
+        #label {
+          display: contents;
+        
+          pointer-events: none;
+        }
+        
+        #control {
+          /* Control is the touch target */
+          /* Firefox requires at least 1px "visible" for screen reading */
+          /* Safari will not allow interaction with 0 opacity */
+          /* Chrome will not focus with visibility:hidden */
+        
+          position: absolute;
+          inset: 50%;
+          /* --mdw-device-pixel-ratio: 1; */
+        
+          block-size: 100%;
+          min-block-size: 48px;
+          inline-size:100%;
+          min-inline-size: 48px;
+          margin: 0;
+          border: 0;
+          padding: 0;
+        
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+        
+          cursor: auto;
+          outline: none;
+        
+          pointer-events: auto;
+        
+          transform: translateX(-50%) translateY(-50%);
+        
+          /* Safari and Chrome will emit two click events if not at top of stack */
+          /* Allows up to 3 other layers (eg: ripple, outline) */
+          z-index: 4;
+        
+          background-color: transparent;
+        
+          border-radius: 0;
+          color: transparent;
+        }
+        
+        #control::-moz-focus-inner {
+          border: 0;
+        }
+      
+      `;
+    }
 
     /** @param {any[]} args  */
     constructor(...args) {
@@ -89,7 +153,6 @@ export default function ControlMixin(Base) {
     }
 
     static {
-      this.css(styles);
       this.on({
         // Wait until controlTagName is settled before templating
         composed({ template, html }) {

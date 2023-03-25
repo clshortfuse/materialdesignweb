@@ -1,7 +1,6 @@
 import './Icon.js';
 
 import Button from './Button.js';
-import styles from './SegmentedButton.css' assert { type: 'css' };
 
 export default Button
   .extend()
@@ -12,7 +11,6 @@ export default Button
   .set({
     focusableOnDisabled: true,
   })
-  .css(styles)
   .on({
     composed({ html, inline }) {
       const { shape, icon, outline, control, slot, state } = this.refs;
@@ -46,4 +44,101 @@ export default Button
       this.outlined = true;
     },
   })
+  .css`
+    /* https://m3.material.io/components/segmented-buttons/specs */
+
+    :host {
+      --mdw-shape__size: var(--mdw-shape__full);
+      --mdw-ink: var(--mdw-color__on-surface);
+      gap: 8px;
+
+      min-inline-size: 24px;
+      padding-inline-start: max(12px, calc(16px + (var(--mdw-density) * 2px)));
+      padding-inline-end: max(20px, calc(24px + (var(--mdw-density) * 2px)));
+
+      color: rgb(var(--mdw-ink));
+    }
+
+    :host([inner-segmented-button]) {
+      --mdw-shape__size: 0px;
+      --mdw-shape__rounded: 1;
+      --mdw-shape__mask-border-source: none;
+    }
+
+    #outline {
+      inset-inline-end: -1px;
+    }
+
+    #outline[shape-end] {
+      inset-inline-end: 0;
+    }
+
+    #shape[selected] {
+      background-color: rgb(var(--mdw-bg));
+    }
+
+    #label[selected] {
+      color: rgb(var(--mdw-ink));
+    }
+
+    #icons {
+      position: relative;
+
+      display: inline-flex;
+    }
+
+    #icon {
+      box-sizing: border-box;
+      inline-size: 0;
+
+      opacity: 1;
+    }
+
+    #icon[has-icon] {
+      inline-size: 18px;
+
+      opacity: 1;
+    }
+
+    #icon[selected] {
+      inline-size: 18px;
+
+      opacity: 0;
+    }
+
+    #check-icon {
+      position: absolute;
+      inset: 0;
+
+      display: block;
+
+      overflow: visible;
+
+      margin: 0;
+
+      opacity: 0;
+
+      font-size: 18px;
+      font-variation-settings: 'FILL' 1;
+    }
+
+    #check-icon[selected] {
+      opacity: 1;
+
+      font-size: 18px;
+    }
+
+    #icon[disabled] {
+      color: rgba(var(--mdw-color__on-surface), 0.38);
+    }
+
+    #shape[disabled][selected] {
+      background-color: rgba(var(--mdw-color__on-surface), 0.12);
+    }
+
+    #label[disabled][selected] {
+      color: rgba(var(--mdw-color__on-surface), 0.38);
+    }
+
+  `
   .autoRegister('mdw-segmented-button');

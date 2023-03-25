@@ -7,8 +7,6 @@ import DensityMixin from '../mixins/DensityMixin.js';
 import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
 import { canAnchorPopup } from '../utils/popup.js';
 
-import styles from './Menu.css' assert { type: 'css' };
-
 /**
  * @typedef {Object} MenuStack
  * @prop {HTMLElement} element
@@ -110,7 +108,6 @@ export default CustomElement
       },
     },
   })
-  .css(styles)
   .html/* html */`
     <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>
       <div id=scrim aria-hidden=true modal={modal}></div>
@@ -123,6 +120,179 @@ export default CustomElement
         <slot id=submenu-slot name=submenu></slot>
       </form>
     </dialog>
+  `
+  .css`
+    /* https://m3.material.io/components/menus/specs */
+
+    :host {
+      --mdw-menu__transform-origin-inline-start: left;
+      --mdw-menu__transform-origin-inline-end: right;
+      /* Normal */
+      --mdw-menu__transform-origin-x: var(--mdw-menu__transform-origin-inline-start);
+      /* Down */
+      --mdw-menu__transform-origin-y: top;
+      --mdw-menu__inline-base: 56px;
+      --mdw-menu__size: 2;
+      --mdw-bg: var(--mdw-color__surface);
+      --mdw-ink: var(--mdw-color__on-surface);
+      position: absolute;
+      /* Default position is bottom */
+      /* Default direction is start */
+      inset-block: 100% auto;
+      inset-inline: auto 0;
+
+      display: block;
+      /* Hide scrollbar */
+      -ms-overflow-style: none;
+      /* Scroll mask */
+      overscroll-behavior: none;
+      overscroll-behavior: contain;
+      scrollbar-width: none;
+
+      pointer-events: none;
+
+      transform-origin: var(--mdw-menu__transform-origin-x) var(--mdw-menu__transform-origin-y);
+
+      transition-duration: motion.$fadeOutDuration;
+      transition-property: none;
+      transition-timing-function: motion.$decelerateEasing;
+    }
+
+    :host(::after) {
+      content: '';
+
+      display: block;
+
+      block-size: 200%;
+      inline-size: 200%;
+    }
+
+    :host(::-webkit-scrollbar) {
+      display: none;
+    }
+
+    dialog {
+      position: fixed;
+      inset: 0;
+
+      box-sizing: border-box;
+      block-size:100%;
+      max-block-size: none;
+      inline-size:100%;
+      max-inline-size: none;
+      margin: 0;
+      border: none;
+      padding: 0;
+
+      opacity: 0;
+      visibility: hidden;
+      z-index: 24;
+
+      background-color: transparent;
+
+      transition: none;
+      transition-property: opacity;
+      will-change: opacity;
+    }
+
+    dialog::backdrop {
+      /** Use scrim instead */
+      display: none;
+    }
+
+    dialog[aria-hidden="false"],
+    dialog:modal {
+      display: block;
+
+      pointer-events: none;
+
+      opacity: 1;
+      visibility: visible;
+
+      transition-duration: var(--mdw-dialog__fade-in-duration);
+      transition-property: opacity;
+      transition-timing-function: var(--mdw-dialog__deceleration-easing);
+    }
+
+    #scrim {
+      position: fixed;
+      inset: 0;
+
+      overflow-y: scroll;
+      overscroll-behavior: none;
+      overscroll-behavior: contain;
+      scrollbar-width: none;
+
+      block-size: 100%;
+      inline-size: 100%;
+
+      cursor: default;
+      pointer-events: auto;
+      -webkit-tap-highlight-color: transparent;
+
+      visibility: hidden; /* Only show if [modal] */
+
+      z-index:0;
+    }
+
+    #form {
+      display: contents;
+    }
+
+    #scrim::-webkit-scrollbar {
+      display: none;
+    }
+
+    #scrim::after {
+      content: '';
+
+      display: block;
+
+      block-size: 200%;
+      inline-size: 200%;
+    }
+
+    #surface {
+      --mdw-shape__size: var(--mdw-shape__extra-small);
+      position: sticky;
+
+      display: inline-flex;
+      flex-direction: column;
+
+      inline-size: calc(var(--mdw-menu__size) * var(--mdw-menu__inline-base));
+      min-inline-size: calc(var(--mdw-menu__inline-base) * 2);
+      max-inline-size: 100vw;
+      flex:1;
+
+      pointer-events: auto;
+      /* background-color: rgb(var(--mdw-color__surface)); */
+      /* color: rgb(var(--mdw-color__on-surface)); */
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      will-change: top, left;
+    }
+
+    @supports(-moz-appearance: none) {
+      #surface {
+        position: absolute;
+      }
+    }
+
+    #scroller {
+      display: flex;
+      align-items: stretch;
+      flex-direction: column;
+      overflow-y: auto;
+      overscroll-behavior: none;
+      overscroll-behavior: contain;
+
+      flex: 1;
+
+      padding-block: 8px;
+    }
+
+    #scrim[modal] {
+      visibility: visible;
+    }
   `
   .methods({
     focus() {

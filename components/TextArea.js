@@ -5,8 +5,6 @@ import StateMixin from '../mixins/StateMixin.js';
 import TextFieldMixin from '../mixins/TextFieldMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
-import styles from './TextArea.css' assert { type: 'css' };
-
 /** @implements {HTMLTextAreaElement} */
 export default class TextArea extends CustomElement
   .mixin(ThemableMixin)
@@ -17,7 +15,103 @@ export default class TextArea extends CustomElement
   static { this.autoRegister('mdw-textarea'); }
 
   static {
-    this.css(styles);
+    // eslint-disable-next-line no-unused-expressions
+    this.css`
+      /* https://m3.material.io/components/text-fields/specs */
+
+      :host {
+        display: inline-grid;
+        grid-auto-flow: row;
+        grid-template-rows: minmax(0, 100%);
+      }
+
+      :host(:is([filled][label])) {
+        --control__margin-top: calc((var(--mdw-text-field__ratio) * 8px) + var(--mdw-typescale__body-small__line-height));
+        --control__padding-top: 0px;
+        --control__padding-bottom: calc((var(--mdw-text-field__ratio) * 8px) - 1px);
+        --control__margin-bottom: 1px;
+      }
+
+      #label {
+        --max-rows: none;
+        --line-height: var(--mdw-typescale__body-large__line-height);
+        --expected-height: calc((var(--control__margin-top) + var(--control__padding-top) + var(--line-height) + var(--control__padding-bottom) + var(--control__margin-bottom)));
+        max-block-size: 100%;
+        grid-row: 1 / 1;
+        padding: 0;
+      }
+
+      @supports(height: 1lh) {
+        #label {
+          --line-height: 1lh;
+        }
+      }
+
+      #slot {
+        display: none;
+      }
+
+      #control {
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+
+        box-sizing: border-box;
+        block-size: 100%;
+
+        min-block-size: var(--expected-height);
+        /* Avoid clipping on resize */
+        max-block-size: inherit;
+        inline-size: 100% !important; /* !important to override user-agent resize */
+        padding-inline: 16px;
+      }
+
+      #control[icon] {
+        padding-inline-start: 0;
+      }
+
+      #control[minrows] {
+        min-block-size: calc((var(--min-rows) * var(--line-height))
+          + var(--control__margin-top)
+          + var(--control__padding-top)
+          + var(--control__padding-bottom)
+          + var(--control__margin-bottom)
+        );
+      }
+
+      #control[maxrows] {
+        max-block-size: calc((var(--max-rows) * var(--line-height))
+          + var(--control__margin-top)
+          + var(--control__padding-top)
+          + var(--control__padding-bottom)
+          + var(--control__margin-bottom)
+        );
+      }
+
+      #control:is([icon], [input-prefix]) {
+        padding-inline-start: 0;
+      }
+
+      #control:is([trailing-icon], [input-suffix]) {
+        padding-inline-end: 0;
+      }
+
+      #suffix {
+        padding-inline-end: 16px;
+      }
+
+      mdw-icon {
+        align-self: flex-start;
+
+        margin-block-start: calc((var(--expected-height) - var(--mdw-icon__size)) / 2);
+      }
+
+      #control[fixed] {
+        /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+        resize: none;
+      }
+
+    `;
     this.childEvents({ slot: { slotchange: 'onSlotChange' } });
     this.on({
       composed() {

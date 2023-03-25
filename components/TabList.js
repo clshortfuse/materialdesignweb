@@ -8,7 +8,6 @@ import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import Tab from './Tab.js';
-import styles from './TabList.css' assert { type: 'css' };
 
 export default CustomElement
   .mixin(ThemableMixin)
@@ -258,7 +257,6 @@ export default CustomElement
   .set({
     ariaRole: 'tablist',
   })
-  .css(styles)
   .html/* html */`
     <slot id=slot ink={ink} type-style={typeStyle}></slot>
     <div id=indicator aria-hidden=true style={_indicatorStyle} active={active} secondary={secondary}>
@@ -306,4 +304,135 @@ export default CustomElement
       },
     },
   })
+  .css`
+    /* https://m3.material.io/components/tabs/specs */
+
+    :host {
+      --mdw-ink: var(--mdw-color__primary);
+      --mdw-shape__bg: rgb(var(--mdw-color__surface));
+      position: relative;
+      position: sticky;
+      inset-block-start: 0;
+      inset-inline: 0;
+
+      display: grid;
+      align-items: stretch;
+      grid-auto-columns: minmax(auto, 1fr);
+      grid-auto-flow: column;
+      justify-content: space-evenly;
+      overflow-y: hidden;
+
+      box-sizing: border-box;
+      min-block-size: 48px;
+      inline-size: 100%;
+      flex:none;
+
+      color: inherit;
+
+      text-align: center;
+
+      will-change: transform;
+    }
+
+    #indicator {
+      --corner: 3;
+      --width: 24;
+      --offset: 0;
+      --visibility: 0;
+      --transition-ratio: 1;
+      position: absolute;
+      inset-block-end: 0;
+      inset-inline: 0;
+
+      overflow-y: clip;
+
+      block-size: 3px;
+      inline-size: 100%;
+
+      pointer-events: none;
+
+      opacity: 1;
+      transform: translateY(calc(100% * (1 - var(--visibility))));
+
+      color: inherit;
+
+      transition: transform 200ms;
+      will-change: transform;
+    }
+
+    .indicator-piece {
+      position: absolute;
+      inset-block: 0;
+
+      opacity: 1;
+      /* opacity: 0.60; */
+      transform-origin: 0 0;
+      z-index:1;
+
+      background-color: currentColor;
+
+      transition: transform;
+      transition-duration: calc(200ms * var(--transition-ratio));
+      will-change: transform;
+    }
+
+    #indicator-start {
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      left: 0;
+
+      inline-size: calc(2 * 1px * var(--corner));
+
+      transform: translateX(var(--offset));
+
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      border-top-left-radius: calc(1px * var(--corner));
+    }
+
+    #indicator-center {
+      /* Chrome has rendering issues upscaling small elements */
+      --precision: 100;
+
+      position: absolute;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      left: calc(1px * var(--corner));
+
+      inline-size: calc(1px * var(--precision));
+
+      transform: translateX(var(--offset)) scaleX(calc((var(--width) - (2 * var(--corner))) / var(--precision)));
+
+    }
+
+    #indicator-end {
+      position: absolute;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      left: 0;
+
+      inline-size: calc(2 * 1px * var(--corner));
+
+      transform:
+        translateX(var(--offset))
+        translateX(calc(-2px * var(--corner)))
+        translateX(calc(var(--width) * 1px));
+
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      border-top-right-radius: calc(1px * var(--corner));
+    }
+
+    #indicator[active] {
+      --visibility: 1;
+      color: rgb(var(--mdw-ink));
+    }
+
+    #indicator[secondary] {
+      --corner: 0;
+    }
+
+    :host([scrollable]) {
+      grid-auto-columns: max-content;
+      justify-content: flex-start;
+      overflow-x: auto;
+
+      padding-inline: 48px
+    }
+  `
   .autoRegister('mdw-tab-list');

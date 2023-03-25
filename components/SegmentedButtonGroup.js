@@ -3,7 +3,6 @@ import KeyboardNav from '../mixins/KeyboardNavMixin.js';
 
 import Box from './Box.js';
 import SegmentedButton from './SegmentedButton.js';
-import styles from './SegmentedButtonGroup.css' assert { type: 'css' };
 
 /** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
 
@@ -35,7 +34,21 @@ export default Box
       },
     },
   })
-  .css(styles)
+  .css`
+    /* https://m3.material.io/components/segmented-buttons/specs */
+
+    :host {
+      --mdw-bg: var(--mdw-color__secondary-container);
+      --mdw-ink: var(--mdw-color__on-secondary-container);
+
+      display: inline-flex;
+    }
+
+    :host([color]) {
+      background-color: transparent;
+    }
+
+  `
   .on({
     constructed() {
       this.setAttribute('aria-orientation', 'horizontal');

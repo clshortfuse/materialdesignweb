@@ -7,8 +7,6 @@ import StateMixin from '../mixins/StateMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 import TouchTargetMixin from '../mixins/TouchTargetMixin.js';
 
-import styles from './Radio.css' assert { type: 'css' };
-
 export default CustomElement
   .mixin(ThemableMixin)
   .mixin(StateMixin)
@@ -20,7 +18,6 @@ export default CustomElement
     type: 'radio',
     stateLayer: true,
   })
-  .css(styles)
   .on({
     composed({ html }) {
       const { label, rippleContainer, state, control, touchTarget } = this.refs;
@@ -39,4 +36,101 @@ export default CustomElement
       control.setAttribute('type', 'radio');
     },
   })
+  .css`
+    /* https://m3.material.io/components/radio/specs */
+
+    :host {
+      --mdw-ink: var(--mdw-color__primary);
+      --mdw-shape__size: var(--mdw-shape__full);
+      display: inline-grid;
+      align-items: baseline;
+      gap: 12px;
+      grid-auto-flow: column;
+      grid-template-rows: minmax(20px, auto);
+      grid-template-columns: 20px;
+      justify-content: flex-start;
+
+      cursor: pointer;
+
+      transition: none 100ms cubic-bezier(0.4, 0.0, 1, 1);
+    }
+
+    :host(:empty) {
+      vertical-align: -11.5%;
+
+      line-height: 20px;
+    }
+
+    :host(:empty) #radio {
+      transform: none;
+    }
+
+    #control {
+      grid-column: 1/1;
+
+      cursor: inherit;
+    }
+
+    #label {
+      cursor: inherit;
+    }
+
+    #label[disabled] {
+      cursor: not-allowed;
+    }
+
+    #state {
+      pointer-events: auto;
+    }
+
+    #state,
+    #ripple-container {
+      inset-block-start: 50%;
+      inset-inline-start: 50%;
+
+      block-size: 40px;
+      inline-size: 40px;
+
+      transform: translateX(-50%) translateY(-50%);
+
+      border-radius: 50%;
+    }
+
+    :host([disabled]) {
+      cursor: not-allowed;
+
+      opacity: 0.38;
+    }
+
+    #radio {
+      position: relative;
+
+      display: inline-flex;
+
+      grid-column: 1 / 1;
+
+      pointer-events: none;
+
+      transform: translateY(11.5%);
+
+      color: rgb(var(--mdw-color__on-surface));
+    }
+
+    #radio[selected] {
+      color: rgb(var(--mdw-ink));
+    }
+
+    #radio[disabled] {
+      color: rgb(var(--mdw-color__on-surface));
+    }
+
+    #radio[errored] {
+      color: rgb(var(--mdw-color__error));
+    }
+
+    #icon {
+      --mdw-ink: inherit;
+      --disabled-opacity: 1;
+    }
+  `
   .autoRegister('mdw-radio');

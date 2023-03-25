@@ -5,7 +5,6 @@ import StateMixin from '../mixins/StateMixin.js';
 
 import List from './List.js';
 import ListOption from './ListOption.js';
-import styles from './ListSelect.css' assert { type: 'css' };
 
 /** @implements {HTMLSelectElement} */
 export default class ListSelect extends List
@@ -14,7 +13,18 @@ export default class ListSelect extends List
   .mixin(KeyboardNavMixin) {
   static {
     this.autoRegister('mdw-list-select');
-    this.css(styles);
+    // eslint-disable-next-line no-unused-expressions
+    this.css`
+      :host(:disabled) {
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      
+      :host([internals-disabled]) {
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+    `;
     this.on({
       disabledStateChanged(oldValue, newValue) {
         this._kbdFocusable = !newValue;

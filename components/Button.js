@@ -8,8 +8,6 @@ import StateMixin from '../mixins/StateMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
-import styles from './Button.css' assert { type: 'css' };
-
 export default CustomElement
   .mixin(ThemableMixin)
   .mixin(DensityMixin)
@@ -42,7 +40,6 @@ export default CustomElement
       return icon ?? svg ?? src ?? svgPath;
     },
   })
-  .css(styles)
   .html/* html */`
     <mdw-icon _if={hasIcon} id=icon ink={iconInk} disabled={disabledState} outlined={outlined} aria-hidden=true svg={svg} src={src} svg-path={svgPath}>{icon}</mdw-icon>
     <slot id=slot disabled={disabledState}></slot>
@@ -63,14 +60,154 @@ export default CustomElement
       control.setAttribute('type', 'button');
     },
   })
+  .css`
+    /* https://m3.material.io/components/buttons/specs */
+
+    :host {
+      --mdw-shape__size: var(--mdw-shape__full);
+      --mdw-ink: var(--mdw-color__primary);
+
+      --mdw-type__font: var(--mdw-typescale__label-large__font);
+      --mdw-type__letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
+
+      display: inline-flex;
+
+      align-items: center;
+      gap: 0;
+      justify-content: center;
+      vertical-align: middle;
+
+      /* box-sizing: border-box; */
+      min-block-size: 24px;
+      min-inline-size: 24px;
+
+      padding-block: calc(8px + (var(--mdw-density) * 2px));
+      padding-inline: calc(12px + (var(--mdw-density) * 2px));
+
+      -webkit-tap-highlight-color: transparent;
+      -webkit-user-select: none;
+      user-select: none;
+
+      color: rgb(var(--mdw-ink));
+
+      font: var(--mdw-type__font);
+      letter-spacing: var(--mdw-type__letter-spacing);
+    }
+
+    :host(:where([elevated],[filled])) {
+      will-change: filter;
+    }
+
+    /** Elevated Color Defaults */
+    :host(:where([elevated])) {
+      --mdw-bg: var(--mdw-color__surface);
+      --mdw-ink: var(--mdw-color__primary);
+      --mdw-surface__shadow__resting: var(--mdw-surface__shadow__1);
+      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__2);
+      --mdw-surface__tint: var(--mdw-surface__tint__1);
+      --mdw-surface__tint__raised: var(--mdw-surface__tint__2);
+    }
+    /** Filled Color Defaults */
+    :host(:where([filled])) {
+      --mdw-bg: var(--mdw-color__primary);
+      --mdw-ink: var(--mdw-color__on-primary);
+      --mdw-surface__shadow__resting: var(--mdw-surface__shadow__0);
+      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__1);
+      --mdw-surface__tint: 0;
+      --mdw-surface__tint__raised: var(--mdw-surface__tint__1);
+    }
+    /** Filled Tonal Color Defaults */
+    :host(:where([filled="tonal"])) {
+      --mdw-bg: var(--mdw-color__secondary-container);
+      --mdw-ink: var(--mdw-color__on-secondary-container);
+    }
+    /** Outlined Color Defaults */
+    :host(:where([outlined])) {
+      --mdw-ink: var(--mdw-color__primary);
+    }
+
+    :host(:where([icon])) {
+      gap: 8px;
+
+      padding-inline: calc(12px + (var(--mdw-density) * 2px)) calc(16px + (var(--mdw-density) * 2px));
+    }
+
+    :host(:where([outlined], [elevated], [filled])) {
+      padding-inline: calc(24px + (var(--mdw-density) * 2px));
+    }
+
+    :host(:where([icon]):where([outlined], [elevated], [filled])) {
+      gap: 8px;
+
+      padding-inline: calc(16px + (var(--mdw-density) * 2px)) calc(24px + (var(--mdw-density) * 2px));
+    }
+
+    #shape:where([elevated],[filled],[color]) {
+      background-color: rgb(var(--mdw-bg));
+    }
+
+    #slot {
+      text-align: center;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    #control {
+      cursor: inherit;
+    }
+
+    :host([disabled]) {
+      /* cursor: not-allowed; */
+
+      color: rgba(var(--mdw-color__on-surface), 0.38);
+    }
+
+    #shape[disabled]:is([elevated], [filled]) {
+      background-color: rgba(var(--mdw-color__on-surface), 0.12);
+      color: rgba(var(--mdw-color__on-surface), 0.38);
+    }
+
+    #slot[disabled] {
+      color: rgba(var(--mdw-color__on-surface), 0.38);
+    }
+
+    #icon {
+      font-size: calc(18/14 * 1em);
+      font-variation-settings: 'FILL' 1;
+    }
+
+    #icon[outlined] {
+      font-variation-settings: 'FILL' 0;
+    }
+
+    #icon[disabled] {
+      opacity: 0.38;
+
+      color: rgba(var(--mdw-color__on-surface));
+    }
+
+    #label {
+      cursor: pointer;
+    }
+
+    #label[disabled] {
+      cursor: not-allowed;
+    }
+
+    @media (any-pointer: coarse) {
+      #touch-target {
+        visibility: visible;
+      }
+    }
+  `
   .childEvents({
     control: {
-    /**
-     * Duplicates button for form submission
-     * @see https://github.com/WICG/webcomponents/issues/814
-     * @param {{currentTarget:HTMLInputElement}} event
-     * @type {any}
-     */
+      /**
+       * Duplicates button for form submission
+       * @see https://github.com/WICG/webcomponents/issues/814
+       * @param {{currentTarget:HTMLInputElement}} event
+       * @type {any}
+       */
       '~click'({ currentTarget }) {
         if (currentTarget.disabled) return;
         if (currentTarget.type !== 'submit') return;

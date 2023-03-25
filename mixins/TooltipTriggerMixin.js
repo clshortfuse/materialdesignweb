@@ -1,16 +1,12 @@
 import Tooltip from '../components/Tooltip.js';
 import { canAnchorPopup } from '../utils/popup.js';
 
-import styles from './TooltipTriggerMixin.css' assert { type: 'css' };
-
 /**
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function TooltipTriggerMixin(Base) {
   class TooltipTrigger extends Base {
     static {
-      this.css(styles);
-
       this.on({
         composed({ template, html }) {
           template.append(html`
@@ -21,6 +17,36 @@ export default function TooltipTriggerMixin(Base) {
           `);
         },
       });
+      // eslint-disable-next-line no-unused-expressions
+      this.css`
+        #tooltip {
+          position:absolute;
+        
+          overflow: hidden;
+        
+          box-sizing: content-box;
+        
+          block-size: 0;
+          inline-size: 0;
+          margin: 0;
+          padding: 0;
+        
+          transform: none;
+        }
+        
+        #tooltip[open] {
+          display: block;
+        
+          block-size: auto;
+          inline-size: auto;
+        
+          cursor: default;
+          pointer-events:auto;
+        
+          opacity: 0;
+          transform: none;
+        }
+      `;
     }
 
     static TOOLTIP_MOUSE_IDLE_MS = 500;

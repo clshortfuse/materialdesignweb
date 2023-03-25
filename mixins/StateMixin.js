@@ -1,5 +1,3 @@
-import styles from './StateMixin.css' assert { type: 'css' };
-
 // Globals
 
 let lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matches;
@@ -33,7 +31,6 @@ export default function StateMixin(Base) {
     .define({
       stateTargetElement() { return this; },
     })
-    .css(styles)
     .html/* html */`
       <div id=state _if={stateLayer}
         disabled={disabledState}
@@ -41,7 +38,7 @@ export default function StateMixin(Base) {
         hovered={hoveredState}
         pressed={pressedState}
         interaction={_lastInteraction}
-        touched=${({ _lastInteraction }) => _lastInteraction === 'touch'}
+        touched={touchedState}
         aria-hidden=true></div>
     `
     .events({
@@ -110,5 +107,90 @@ export default function StateMixin(Base) {
       disconnected() {
         this._lastInteraction = null;
       },
-    });
+    })
+    .css`
+      /* https://m3.material.io/foundations/interaction-states */
+
+      :host {
+        --mdw-state__hovered-opacity: 0.08;
+        --mdw-state__focused-opacity: 0.12;
+        --mdw-state__pressed-opacity: 0.12;
+        --mdw-state__dragged-opacity: 0.12;
+        position: relative;
+
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* Remove Firefox inner */
+      :host(::-moz-focus-inner) {
+        border: 0;
+      }
+
+      #state {
+        position: absolute;
+        inset: 0;
+
+        pointer-events: none;
+
+        opacity: calc(
+            var(--mdw-state__hovered-opacity) +
+            var(--mdw-state__focused-opacity) +
+            var(--mdw-state__pressed-opacity) +
+            var(--mdw-state__dragged-opacity)
+          );
+        /* opacity handled by theme engine */
+        background-color: currentColor;
+        border-radius: inherit;
+
+        transition-delay: 0ms;
+        transition-duration: 000ms;
+        transition-property: opacity, color, background-color;
+        will-change: opacity;
+      }
+
+      #state[touched] {
+        --mdw-state__hovered-opacity: 0;
+        --mdw-state__focused-opacity: 0;
+      }
+
+      /* Remove Hover State */
+      #state:is(
+      :not([hovered]),
+      [disabled]:not([state-disabled~="hover"]),
+      [state-off~="hover"]) {
+        --mdw-state__hovered-opacity: 0;
+      }
+
+      /* Remove Focus State */
+      #state:is(
+      :not([focused]),
+      [disabled]:not([state-disabled~="focus"]),
+      [state-off~="focus"]) {
+        --mdw-state__focused-opacity: 0;
+      }
+
+      /* Remove Pressed State */
+
+      #state:is(
+      :not([pressed]),
+      [disabled]:not([state-disabled~="pressed"]),
+      [state-off~="pressed"]) {
+        --mdw-state__pressed-opacity: 0;
+      }
+
+      /* Remove Dragged State */
+      :host(:not([aria-dragged="true"])) #state,
+      #state:is(
+        [disabled]:not([state-disabled~="dragged"]),
+        [state-off~="dragged"]) {
+        --mdw-state__dragged-opacity: 0;
+      }
+
+      /* Disabled */
+      #state[disabled]:not([state-disabled]) {
+        display: none;
+      }
+
+    `;
 }

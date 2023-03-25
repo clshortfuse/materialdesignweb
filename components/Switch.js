@@ -5,8 +5,6 @@ import StateMixin from '../mixins/StateMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 import TouchTargetMixin from '../mixins/TouchTargetMixin.js';
 
-import styles from './Switch.css' assert { type: 'css' };
-
 export default CustomElement
   .mixin(ThemableMixin)
   .mixin(InputMixin) // Label as root
@@ -26,8 +24,6 @@ export default CustomElement
     selectedSrc: 'string',
     unselectedSrc: 'string',
   })
-  .css(styles)
-
   .on({
     composed({ html }) {
       const { state, label, control, touchTarget } = this.refs;
@@ -124,4 +120,71 @@ export default CustomElement
       '~pointermove': 'onControlMouseOrTouch',
     },
   })
+  .css`
+    /* https://m3.material.io/components/switch/specs */
+
+    :host {
+      --mdw-ink: var(--mdw-color__on-primary);
+      --mdw-bg: var(--mdw-color__primary);
+      position: relative;
+
+      display: inline-flex;
+      align-items: center;
+
+      gap: 12px;
+      vertical-align: middle;
+
+    }
+
+    #touch-target {
+      z-index: 0;
+    }
+
+    #label {
+      display: contents;
+
+      cursor: pointer;
+
+      /* border-radius: 50%; */
+    }
+
+    /** Switch **/
+
+    #switch {
+      --mdw-bg: inherit;
+      --mdw-ink: inherit;
+      flex:1;
+
+      pointer-events: none;
+    }
+
+    /** State **/
+
+    #state {
+      position: absolute;
+      inset: 50%;
+
+      block-size: 100%;
+      min-block-size: 40px;
+      inline-size: 100%;
+      min-inline-size: 40px;
+
+      pointer-events: none;
+
+      transform: translateX(-50%) translateY(-50%);
+
+      border-radius: 50%;
+    }
+
+    /** Disabled **/
+
+    #label[disabled] {
+      --mdw-ink: var(--mdw-color__on-surface); /* selected icon */
+      --mdw-bg: var(--mdw-color__surface);
+      cursor: not-allowed;
+
+      opacity: 0.38;
+    }
+
+  `
   .autoRegister('mdw-switch');

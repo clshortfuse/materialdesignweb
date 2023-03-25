@@ -7,7 +7,6 @@ import DensityMixin from '../mixins/DensityMixin.js';
 import './Button.js';
 import './IconButton.js';
 
-import styles from './Snackbar.css' assert { type: 'css' };
 import Surface from './Surface.js';
 
 export default Surface
@@ -71,5 +70,86 @@ export default Surface
       },
     },
   })
-  .css(styles)
+  .css`
+    /* https://m3.material.io/components/snackbar/specs */
+
+    :host {
+      --mdw-shape__size: var(--mdw-shape__small);
+      --mdw-surface__shadow: var(--mdw-surface__shadow__3);
+      --mdw-surface__tint: var(--mdw-surface__tint__3);
+      --mdw-shape__bg: rgb(var(--mdw-color__inverse-surface));
+      --mdw-ink: var(--mdw-color__inverse-on-surface);
+
+      --mdw-type__line-height: var(--mdw-typescale__body-medium__line-height);
+      display: flex;
+      align-items: center;
+
+      padding-inline: 16px;
+
+      opacity: 0;
+      transform: translateY(25%) scaleY(0.25);
+      transform-origin: bottom center;
+      visibility: hidden; /* Remove from tab order */
+      z-index: 24;
+
+      font: var(--mdw-typescale__body-medium__font);
+      letter-spacing: var(--mdw-typescale__body-medium__letter-spacing);
+
+      transition: transform 200ms, opacity 200ms, visibility 200ms;
+    }
+
+    :host([action]) {
+      gap: 8px;
+
+      padding-inline-end: 8px;
+    }
+
+    :host([close-button]) {
+      gap: 4px;
+
+      padding-inline-end: 4px;
+    }
+
+    :host([open]) {
+      opacity: 1;
+      transform: scale(1);
+      visibility: visible;
+    }
+
+    #content {
+      display: flex;
+      align-items: center;
+
+      flex: 1;
+      padding-block: max(2px, calc(14px + (var(--mdw-density) * 2px)));
+    }
+
+    #slot {
+      display: block;
+      overflow-x: hidden;
+      overflow-y: hidden;
+
+      max-block-size: calc(var(--mdw-type__line-height) * 2);
+
+      text-align: start;
+      text-overflow: ellipsis;
+      text-transform: none;
+      white-space: normal;
+      word-break: break-word;
+    }
+
+    @supports(width: 1lh) {
+      #slot {
+        max-block-size: 2lh;
+      }
+    }
+
+    @supports(-webkit-line-clamp:1) {
+      #slot {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+      }
+    }
+  `
   .autoRegister('mdw-snackbar');

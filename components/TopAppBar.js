@@ -6,8 +6,6 @@ import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
-import styles from './TopAppBar.css' assert { type: 'css' };
-
 export default CustomElement
   .mixin(ThemableMixin)
   .mixin(SurfaceMixin) // TopAppBars are non-shaped surfaces
@@ -90,7 +88,6 @@ export default CustomElement
       },
     },
   })
-  .css(styles)
   .html/* html */`
     <slot id=leading name=leading on-slotchange={refreshTabIndexes}></slot>
     <div id=headline ink={ink} color={color} type-style={typeStyle} on-slotchange={refreshTabIndexes}>
@@ -198,4 +195,216 @@ export default CustomElement
       this.clearScrollListener();
     },
   })
+  .css`
+    /* https://m3.material.io/components/bottom-app-bar/specs */
+
+    :host {
+      --mdw-bg: var(--mdw-color__surface);
+      --mdw-ink: var(--mdw-color__on-surface);
+      --mdw-surface__tint: var(--mdw-surface__tint__0);
+      --mdw-surface__tint__raised: var(--mdw-surface__tint__2);
+      display: contents;
+
+      z-index:2;
+    }
+
+    #surface {
+      position: sticky;
+      inset-block-start: 0;
+
+      display: grid;
+
+      align-items: center;
+      gap: 12px;
+      grid-auto-flow: row;
+      grid-template-rows: minmax(64px,min-content);
+      grid-template-columns: minmax(auto,1fr) minmax(0,auto) minmax(auto,1fr);
+      overflow-x: clip; /* Clip oversized touch targets to avoid scroll-bars */
+      overflow-y: visible;
+
+      box-sizing: border-box;
+      inline-size: 100%;
+      max-inline-size: 100%;
+
+      /* 16px from icon */
+      /* inset = (button.width / 2) - (icon.width / 2) */
+      /* paddingInline = 16px - inset */
+      /* paddingInlineStart = 16px - ((48px / 2) - (24px / 2)) */
+      /* paddingInlineEnd = 16px - ((48px / 2) - (30px / 2)) */
+
+      padding-inline: 4px;
+
+      pointer-events: auto;
+
+      filter: none; /* Never receive shadow */
+
+      z-index: 5;
+      /* inset-inline: 0; */
+
+      background-color: rgb(var(--mdw-bg));
+      color: rgb(var(--mdw-ink));
+
+      transition: grid-template-columns 100ms;
+
+    }
+
+    #surface-tint {
+      position: 0;
+
+      z-index: 1;
+    }
+
+    #leading {
+      justify-self: flex-start;
+
+      display: flex;
+      align-items: center;
+
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    #headline {
+      display: inline-block;
+
+      overflow: clip hidden;
+
+      max-inline-size: 100%;
+
+      grid-column: 2;
+      grid-row: 1;
+
+      font: var(--mdw-typescale__title-large__font);
+      letter-spacing: var(--mdw-typescale__title-large__letter-spacing);
+
+      text-overflow: ellipsis;
+      text-transform: none;
+      white-space: nowrap;
+      word-break: break-word;
+
+      transition-duration: 200ms;
+      transition-property: transform, opacity, color, background-color;
+    }
+
+    #trailing {
+      justify-self: flex-end;
+
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: flex-end;
+
+      grid-column: 3;
+      grid-row: 1;
+
+      color: var(--mdw-color__on-surface-variant);
+    }
+
+    /* Medium */
+    #companion {
+      position: relative;
+
+      display: flex;
+      align-items: flex-end;
+
+      /**
+       * Total Height = 112px
+       * Bar = 12 + 40 + 12 (64)
+       * Companion = 112px - 64
+       * Companion Bottom = 20px
+       * Companion = 28px
+       * Shift up = 1lh - 28px
+       */
+      /* stylelint-disable-next-line declaration-property-value-disallowed-list */
+      margin-block-start: calc(28px - var(--mdw-typescale__headline-small__line-height));
+      padding-block-end: 20px;
+
+      padding-inline: 16px;
+
+      background-color: rgb(var(--mdw-bg));
+      box-shadow: none;
+
+      font: var(--mdw-typescale__headline-small__font);
+      letter-spacing: var(--mdw-typescale__headline-small__letter-spacing);
+      white-space: nowrap;
+    }
+
+    #companion[size="large"] {
+      /**
+       * Total Height = 152px
+       * Bar = 12 + 40 + 12 (64)
+       * Companion = 152px - 64
+       * Companion Bottom = 20px
+       * Companion = 68px
+       * Shift up = 2lh - 68px
+       */
+
+      min-block-size: calc(2 * var(--mdw-typescale__headline-medium__line-height));
+      /* stylelint-disable-next-line declaration-property-value-disallowed-list */
+      margin-block-start: calc(68px - (2 * var(--mdw-typescale__headline-medium__line-height)));
+
+      font: var(--mdw-typescale__headline-medium__font);
+      letter-spacing: var(--mdw-typescale__headline-medium__letter-spacing);
+      white-space: normal;
+    }
+
+    @supports(width: 1lh) {
+      #companion {
+        /* stylelint-disable-next-line declaration-property-value-disallowed-list */
+        margin-block-start: calc(28px - 1lh);
+      }
+
+      #companion[size="large"] {
+        min-block-size: 2lh;
+        /* stylelint-disable-next-line declaration-property-value-disallowed-list */
+        margin-block-start: calc(68px - 2lh);
+      }
+    }
+
+    #companion-slot {
+      display: block;
+      overflow-x: clip;
+      overflow-y: hidden;
+
+      text-overflow: ellipsis;
+      text-transform: none;
+      word-break: break-word;
+    }
+
+    #companion-slot[size="large"] {
+      max-block-size: calc(2 * var(--mdw-typescale__headline-medium__line-height));
+    }
+
+    @supports(-webkit-line-clamp: 2) {
+      #companion-slot[size="large"] {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+
+        max-block-size: none;
+      }
+    }
+
+    #surface[hide-on-scroll] {
+      position: relative;
+
+      inset-block-start: 0;
+
+      transform: translateY(0);
+
+      will-change: transform, position;
+    }
+
+    #surface[size="small"] {
+      gap: 4px;
+      grid-template-columns: auto 1fr auto;
+    }
+
+    #headline:is([size="medium"],[size="large"]) {
+      opacity: 0;
+
+      will-change: opacity;
+    }
+
+  `
   .autoRegister('mdw-top-app-bar');

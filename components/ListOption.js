@@ -1,7 +1,6 @@
 // https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
 
 import ListItem from './ListItem.js';
-import styles from './ListOption.css' assert {type: 'css'};
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#htmloptionelement
 
@@ -70,7 +69,6 @@ export default class ListOption extends ListItem
       this.refs.anchor.focus(...options);
     },
   })
-  .css(styles)
   .on({
     composed({ inline }) {
       const { anchor, state, content } = this.refs;
@@ -92,7 +90,43 @@ export default class ListOption extends ListItem
 
       state.setAttribute('state-disabled', 'focus');
     },
-  }) {
+  })
+  .css`
+    :host {
+      --mdw-bg: var(--mdw-color__secondary-container);
+      --mdw-ink: var(--mdw-color__on-secondary-container);
+      cursor: pointer;
+    
+      z-index: 0;
+    }
+    
+    :host([href]) {
+      cursor: pointer;
+    }
+    
+    :host([disabled]) {
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    
+    #content {
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    
+    #content[selected] {
+      color: rgb(var(--mdw-ink));
+    }
+    
+    #anchor {
+      z-index: -1;
+    }
+    
+    #anchor[selected] {
+      background-color: rgb(var(--mdw-bg));
+      color: rgb(var(--mdw-ink));
+    }
+  ` {
   static { this.autoRegister('mdw-list-option'); }
 
   /**

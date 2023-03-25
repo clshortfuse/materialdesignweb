@@ -1,7 +1,6 @@
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import AriaToolbarMixin from '../mixins/AriaToolbarMixin.js';
 
-import styles from './BottomAppBar.css' assert { type: 'css' };
 import Surface from './Surface.js';
 
 /**
@@ -21,5 +20,29 @@ export default Surface
   .observe({
     color: { empty: 'surface' },
   })
-  .css(styles)
+  .css`
+    /* https://m3.material.io/components/bottom-app-bar/specs */
+
+    :host {
+      --mdw-surface__tint: var(--mdw-surface__tint__2);
+      --mdw-surface__tint__raised: var(--mdw-surface__tint__2);
+      --mdw-bg: var(--mdw-color__surface);
+      --mdw-ink: var(--mdw-color__on-surface);
+
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: flex-start;
+
+      box-sizing: content-box;
+      /* Don't apply density */
+      block-size: 56px;
+      padding-block: 12px;
+      padding-inline: 8px 16px;
+
+      box-shadow: none;
+
+      direction: ltr;
+    }
+  `
   .autoRegister('mdw-bottom-app-bar');

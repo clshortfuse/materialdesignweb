@@ -49,6 +49,12 @@ export function addInlineFunction(fn) {
   return `{${internalName}}`;
 }
 
+/** @type {Map<string, CSSStyleSheet>} */
+const cssStyleSheetsCache = new Map();
+
+/** @type {Map<string, HTMLStyleElement>} */
+const styleElementCache = new Map();
+
 /**
  * @param {TemplateStringsArray} array
  * @param  {...(string)} substitutions
@@ -56,29 +62,42 @@ export function addInlineFunction(fn) {
  */
 export function css(array, ...substitutions) {
   const content = String.raw({ raw: array }, ...substitutions);
+
   if (_cssStyleSheetConstructable == null) {
     try {
       const sheet = new CSSStyleSheet();
       _cssStyleSheetConstructable = true;
       sheet.replaceSync(content);
+      cssStyleSheetsCache.set(content, sheet);
       return sheet;
     } catch {
       _cssStyleSheetConstructable = false;
     }
   }
+
   if (_cssStyleSheetConstructable) {
-    const sheet = new CSSStyleSheet();
-    _cssStyleSheetConstructable = true;
-    sheet.replaceSync(content);
+    let sheet = cssStyleSheetsCache.get(content);
+    if (!sheet) {
+      sheet = new CSSStyleSheet();
+      _cssStyleSheetConstructable = true;
+      sheet.replaceSync(content);
+      cssStyleSheetsCache.set(content, sheet);
+    }
     return sheet;
   }
 
-  _inactiveDocument ??= document.implementation.createHTMLDocument();
-  const style = _inactiveDocument.createElement('style');
-  style.textContent = content;
-  return style;
+  let style = styleElementCache.get(content);
+  if (!style) {
+    _inactiveDocument ??= document.implementation.createHTMLDocument();
+    style = _inactiveDocument.createElement('style');
+    style.textContent = content;
+    styleElementCache.set(content, style);
+  }
+  return /** @type {HTMLStyleElement} */ (style.cloneNode(true));
 }
 
+/** @type {Map<string, DocumentFragment>} */
+const fragmentCache = new Map();
 /**
  * @template T1
  * @template T2
@@ -109,13 +128,21 @@ export function html(strings, ...substitutions) {
     }
   });
   const compiledString = String.raw({ raw: strings }, ...replacements);
-  const fragment = generateFragment(compiledString);
+
   if (tempSlots) {
+    const fragment = generateFragment(compiledString);
     for (const [id, element] of tempSlots) {
       const slot = fragment.getElementById(id);
       slot.replaceWith(element);
     }
+    return fragment;
   }
 
-  return fragment;
+  let fragment = fragmentCache.get(compiledString);
+  if (!fragment) {
+    fragment = generateFragment(compiledString);
+    fragmentCache.set(compiledString, fragment);
+  }
+
+  return /** @type {DocumentFragment} */ (fragment.cloneNode(true));
 }

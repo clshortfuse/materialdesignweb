@@ -4,7 +4,6 @@ import StateMixin from '../mixins/StateMixin.js';
 import TextFieldMixin from '../mixins/TextFieldMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
-import styles from './Select.css' assert { type: 'css' };
 
 /* @implements {HTMLSelectElement} */
 
@@ -14,7 +13,6 @@ export default class Select extends CustomElement
   .mixin(ControlMixin)
   .mixin(TextFieldMixin)
   .extend()
-  .css(styles)
   .observe({
     autocomplete: 'string',
     trailingIcon: {
@@ -53,6 +51,60 @@ export default class Select extends CustomElement
       suffix.remove();
     },
   })
+  .css`
+    #slot {
+      display: none;
+    }
+    
+    #label {
+      padding: 0;
+    
+      cursor: pointer;
+    }
+    
+    #label[disabled] {
+      cursor: not-allowed;
+    }
+    
+    #icon {
+      position: absolute;
+    
+      /* padding-inline-start: 12px; */
+    }
+    
+    #trailing-icon {
+      position: absolute;
+      inset-inline-end: 16px;
+    }
+    
+    #control {
+      padding-inline-start: 16px;
+      padding-inline-end: calc(16px + 24px + 16px);
+      accent-color: rgb(var(--mdw-ink));
+    
+      cursor: inherit;
+    }
+    
+    #control[icon] {
+      margin-inline-start: calc(16px + 24px);
+      padding-inline-start: 0;
+    }
+    
+    option {
+      accent-color: rgb(var(--mdw-ink));
+    
+      min-block-size: var(--mdw-typescale__label-large__line-height);
+    
+      appearance: none;
+    
+      background-color: rgb(var(--mdw-color__surface)) !important;
+      border-radius: 0;
+      color: rgb(var(--mdw-color__on-surface)) !important;
+    
+      font: var(--mdw-typescale__label-large__font);
+      letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
+    }
+  `
   .setStatic({
     controlTagName: 'select',
     controlVoidElement: false,

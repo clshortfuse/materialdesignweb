@@ -7,8 +7,6 @@ import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
 
-import styles from './Card.css' assert { type: 'css' };
-
 const SUPPORTS_INERT = 'inert' in HTMLElement.prototype;
 
 export default CustomElement
@@ -48,7 +46,117 @@ export default CustomElement
     <div _if={showBlocker} id=inert-blocker></div>
     <slot id=slot disabled={disabledState}></slot>
   `
-  .css(styles)
+  .css`
+    /* https://m3.material.io/components/cards/specs */
+
+    :host {
+      --mdw-shape__size: 12px;
+      --mdw-surface__tint: var(--mdw-surface__tint__0);
+      --mdw-surface__tint__raised: var(--mdw-surface__tint);
+
+      --mdw-surface__shadow__resting: none;
+      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__resting);
+      /* padding-inline: 12px; */
+
+      --mdw-bg: var(--mdw-color__surface);
+      --mdw-ink: var(--mdw-color__on-surface);
+      position: relative;
+
+      display: block;
+
+      color: rgb(var(--mdw-ink));
+
+      font: var(--mdw-type__font);
+      letter-spacing: var(--mdw-type__letter-spacing);
+    }
+
+    #shape:is([elevated],[filled]) {
+      background-color: rgb(var(--mdw-bg));
+    }
+
+    :host(:where([filled])) {
+      --mdw-bg: var(--mdw-color__surface-variant);
+      --mdw-ink: var(--mdw-color__on-surface-variant);
+    }
+
+    :host(:where([elevated])) {
+      --mdw-bg: var(--mdw-color__surface);
+      --mdw-ink: var(--mdw-color__on-surface);
+    }
+
+    :host([filled]) {
+      --mdw-surface__tint: var(--mdw-surface__tint__0);
+      --mdw-surface__shadow__resting: var(--mdw-surface__shadow__0);
+    }
+
+    :host([filled][actionable]) {
+      --mdw-surface__tint__raised: var(--mdw-surface__tint__1);
+      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__1);
+    }
+
+    :host([elevated]) {
+      --mdw-surface__tint: var(--mdw-surface__tint__1);
+      --mdw-surface__shadow__resting: var(--mdw-surface__shadow__1);
+    }
+
+    :host([elevated][actionable]) {
+      --mdw-surface__tint__raised: var(--mdw-surface__tint__2);
+      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__2);
+    }
+
+    #shape[disabled] {
+
+      /* Works on images */
+      filter: grayscale();
+
+      color: rgb(var(--mdw-color__on-surface));
+    }
+
+    :host([disabled]) {
+      cursor: not-allowed;
+
+      filter: grayscale();
+      opacity: 0.38;
+    }
+
+    #slot[disabled] {
+      color: rgb(var(--mdw-color__on-surface));
+    }
+
+    #outline[disabled] {
+      color: rgba(var(--mdw-color__on-surface), calc(0.12/0.38));
+    }
+
+    /** Firefox and Safari do not support [inert] */
+
+    #inert-blocker {
+      position: absolute;
+      inset: 0;
+
+      cursor: not-allowed;
+      pointer-events: auto;
+
+      z-index: 99;
+    }
+
+    #shape[disabled][elevated] {
+      background-color: rgba(var(--mdw-color__surface-variant));
+    }
+
+    #action {
+      --mdw-ink: inherit;
+      --mdw-shape__size: inherit;
+
+      position: absolute;
+      inset: 0;
+
+      padding: 0;
+
+      z-index: 0;
+
+      color: inherit
+    }
+  `
   .on({
     composed() {
       const { slot, surface, surfaceTint, shape, outline } = this.refs;

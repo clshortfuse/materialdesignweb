@@ -4,12 +4,10 @@ import CustomElement from '../core/CustomElement.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
-import styles from './SwitchIcon.css' assert {type: 'css'};
-import animations from './SwitchIconAnimations.css' assert {type:'css'};
-
 export default CustomElement
   .mixin(ThemableMixin)
   .mixin(ShapeMixin)
+  .extend()
   .observe({
     selected: 'boolean',
     icon: 'string',
@@ -53,7 +51,6 @@ export default CustomElement
       return Boolean(icon || src || unselectedIcon || unselectedSrc);
     },
   })
-  .css(styles, animations)
   .html/* html */`
     <div id=thumb selected={checked} pressed={pressed} disabled={disabled}>
       <mdw-shape id=thumb-shape shape-style=full selected={checked} pressed={pressed} hovered={hovered} focused={focused} icon={hasIcon}
@@ -85,5 +82,275 @@ export default CustomElement
       }
     },
   })
-  .extend()
+  .css`
+    /* https://m3.material.io/components/switch/specs */
+
+    :host {
+      --mdw-ink: var(--mdw-color__on-primary);
+      --mdw-bg: var(--mdw-color__primary);
+      --mdw-shape__size: var(--mdw-shape__full);
+      --mdw-switch__value: 0;
+
+      position: relative;
+
+      display: inline-block;
+      vertical-align: middle;
+
+      box-sizing: border-box;
+      block-size: 32px;
+      inline-size: 52px;
+      container-type: inline-size;
+      container-name: switch-icon;
+    }
+
+    :host([selected]) {
+      --mdw-switch__value: 1;
+    }
+
+    :host([disabled]) {
+      opacity: 0.38;
+    }
+
+    #track{
+      position: absolute;
+      inset: 0;
+
+      background-color: rgb(var(--mdw-color__surface-variant));
+    }
+
+    #track[selected] {
+      background-color: rgb(var(--mdw-bg));
+    }
+
+    #track[disabled] {
+      opacity: calc(0.12/0.38);
+    }
+
+    #track[disabled][selected] {
+      background-color: rgb(var(--mdw-color__on-surface));
+    }
+
+    #outline {
+      filter:
+        drop-shadow(1px 0px 0px currentColor)
+        drop-shadow(0px 1px 0px currentColor)
+        drop-shadow(-1px 0px 0px currentColor)
+        drop-shadow(0px -1px 0px currentColor);
+
+      color: rgb(var(--mdw-color__outline));
+    }
+
+    #outline:is([pressed],[focused]) {
+      color: rgb(var(--mdw-color__outline));
+    }
+
+    #outline[disabled] {
+      color: rgb(var(--mdw-color__on-surface));
+    }
+
+    #outline[selected] {
+      color: transparent;
+    }
+
+    /** Thumb (state) **/
+
+    #thumb {
+      --thumb-color: var(--mdw-ink);
+      position: absolute;
+      inset-block: 0;
+      inset-inline-start: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      transform: translateX(calc(var(--mdw-dir, 1) * var(--mdw-switch__value) * (52px - 100%)));
+
+      aspect-ratio: 1/1;
+    }
+
+    :dir(rtl) #thumb {
+      --mdw-dir: -1;
+    }
+
+    @supports(width: 1cqw) {
+      #thumb {
+        transform: translateX(calc(var(--mdw-dir, 1) * var(--mdw-switch__value) * (100cqw - 100%)));
+      }
+    }
+
+    #slot {
+      color: rgb(var(--mdw-color__on-surface));
+    }
+
+    #slot[selected] {
+      color: rgb(var(--mdw-bg));
+    }
+
+    /** Thumb Shape **/
+
+    #thumb-shape {
+      --mdw-shape__size: inherit;
+
+      position: absolute;
+
+      inset: 2px;
+
+      transform: scale(calc(16/28));
+      z-index: 0;
+    }
+
+    #thumb-shape[icon] {
+      transform: scale(calc(24/28));
+    }
+
+    #thumb-shape:not([selected]) {
+      --mdw-bg: var(--mdw-color__outline);
+      --mdw-ink: var(--mdw-color__surface-variant);
+    }
+
+    #thumb-shape[selected] {
+      transform: scale(calc(24/28));
+    }
+
+    #thumb-shape[selected]:not([active]) {
+      --mdw-bg: var(--thumb-color);
+    }
+
+    #thumb-shape[pressed]:not([disabled]) {
+      transform: scale(1);
+    }
+
+    /** Thumb Icons **/
+
+    .icon {
+      position: absolute;
+      inset-block-start: 50%;
+      inset-inline-start: 50%;
+
+      opacity: 0;
+      transform: translateX(-50%) translateY(-50%);
+
+      font-size: 16px;
+
+      /* border-radius: 50%; */
+    }
+
+    .icon:not([src]):empty {
+      display: none;
+    }
+
+    #icon, #unselected-icon {
+      opacity: 1;
+
+      font-variation-settings: 'FILL' 0;
+    }
+
+    #unselected-icon[selected] {
+      opacity: 0;
+    }
+
+    #selected-icon[selected] {
+      opacity: 1;
+    }
+
+    #icon[selected] {
+      font-variation-settings: 'FILL' 1;
+    }
+
+    #thumb[disabled] {
+      color: rgb(var(--mdw-color__on-surface));
+    }
+  `
+  .css`
+    /* https://m3.material.io/components/switch/specs */
+
+    :host {
+      /*FastOutLinearInInterpolator*/
+      --mdw-switch__transition-timing__collapse: cubic-bezier(0.4, 0.0, 1, 1);
+      --mdw-switch__transition-duration__collapse: 375ms;
+      /*LinearOutSlowInInterpolator*/
+      --mdw-switch__transition-timing__expand: cubic-bezier(0.0, 0.0, 0.2, 1);
+      --mdw-switch__transition-duration__expand: 500ms;
+      --scale-delay: var(--mdw-switch__transition-duration);
+
+      --mdw-switch__transition-duration: var(--mdw-switch__transition-duration__collapse);
+      --mdw-switch__transition-timing: var(--mdw-switch__transition-timing__collapse);
+      --mdw-switch__transition-delay__color: calc(var(--mdw-switch__transition-duration) / 2);
+      --mdw-switch__transition-delay__translate: calc(var(--mdw-switch__transition-duration) / 2);
+      --mdw-switch__transition-delay__scale: calc(var(--mdw-switch__transition-duration) / 2);
+
+      transition-delay: var(--mdw-switch__transition-delay__color);
+      transition-duration: calc(var(--mdw-switch__transition-duration) / 2);
+      /* 2 legged animation */
+      transition-timing-function: var(--mdw-switch__transition-timing);
+    }
+
+    #track {
+      transition-delay: var(--mdw-switch__transition-delay__color);
+      transition-duration: inherit;
+      transition-property: background-color;
+      transition-timing-function: inherit;
+    }
+
+    #outline {
+      transition-delay: var(--mdw-switch__transition-delay__color);
+      transition-duration: inherit;
+      transition-property: background-color, color;
+      transition-timing-function: inherit;
+    }
+
+    #thumb {
+      transition-delay: var(--mdw-switch__transition-delay__translate);
+      transition-duration: inherit;
+      transition-property: transform;
+      transition-timing-function: inherit;
+    }
+
+    #thumb-shape, .icon {
+      /* (selected => unselected): stall color+scale */
+      transition-delay: var(--mdw-switch__transition-delay__scale), var(--mdw-switch__transition-delay__color), var(--mdw-switch__transition-delay__color);
+      transition-duration: inherit;
+      transition-property: transform, background-color, color;
+      transition-timing-function: inherit;
+    }
+
+    :host([icon]) {
+      --mdw-switch__transition-delay__translate: 0s;
+    }
+
+    .icon {
+      transition-property: transform, opacity, color;
+    }
+
+    /* unselected => selected  */
+    :host([selected]) {
+      --mdw-switch__transition-delay__color: 0s;
+      --mdw-switch__transition-delay__scale: 0s;
+      /* --mdw-switch__transition-delay__translate: 0s; */
+      --mdw-switch__transition-duration: var(--mdw-switch__transition-duration__expand);
+      --mdw-switch__transition-timing: var(--mdw-switch__transition-timing__expand);
+    }
+
+    /* active => selected */
+    :host([selected][pressed]) {
+      /* --mdw-switch__transition-delay__color: 0s; */
+      /* --mdw-switch__transition-delay__scale: 0s; */
+      --mdw-switch__transition-delay__translate: 0s;
+    }
+
+    /* selected => unselected */
+    :host(:not([selected])) {
+      /* --mdw-switch__transition-delay__color: 0s; */
+      /* --mdw-switch__transition-delay__scale: 0s; */
+      --mdw-switch__transition-delay__translate: 0s;
+    }
+
+    /* unselected => active */
+    :host([pressed]:not([selected])) {
+      /* --mdw-switch__transition-delay__color: 0s; */
+      --mdw-switch__transition-delay__scale: 0s;
+      /* --mdw-switch__transition-delay__translate: 0s; */
+    }
+  `
   .autoRegister('mdw-switch-icon');

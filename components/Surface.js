@@ -4,14 +4,12 @@ import ShapeMixin from '../mixins/ShapeMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
-import styles from './Surface.css' assert {type:'css'};
-
 export default CustomElement
   .mixin(ThemableMixin)
   .mixin(FlexableMixin)
   .mixin(SurfaceMixin)
   .mixin(ShapeMixin)
-  .css(styles)
+  .html/* html */`<slot id=slot></slot>`
   .on({
     composed() {
       const { surface, shape, surfaceTint } = this.refs;
@@ -19,5 +17,16 @@ export default CustomElement
       surface.append(shape);
     },
   })
-  .html/* html */`<slot id=slot></slot>`
+  .css`
+    :host {
+      --mdw-shape__bg: rgb(var(--mdw-color__surface));
+      --mdw-ink: var(--mdw-color__on-surface);
+      position: relative;
+    
+      color: rgb(var(--mdw-ink));
+    
+      font: var(--mdw-type__font);
+      letter-spacing: var(--mdw-type__letter-spacing);
+    }  
+  `
   .autoRegister('mdw-surface');

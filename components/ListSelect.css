@@ -1,9 +1,0 @@
-:host(:disabled) {
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-:host([internals-disabled]) {
-  cursor: not-allowed;
-  pointer-events: none;
-}

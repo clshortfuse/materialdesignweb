@@ -1,12 +1,10 @@
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import Box from './Box.js';
-import styles from './Headline.css' assert { type: 'css' };
 
 export default Box
   .mixin(ThemableMixin)
   .extend()
-  .css(styles)
   .observe({
     ariaLevel: 'string',
     size: {
@@ -30,4 +28,20 @@ export default Box
       slot.setAttribute('aria-level', '{computeAriaLevel}');
     },
   })
+  .css`
+    :host {
+      font: var(--mdw-typescale__headline-large__font);
+      letter-spacing: var(--mdw-typescale__headline-large__letter-spacing);
+    }
+    
+    :host([size="medium"]) {
+      font: var(--mdw-typescale__headline-medium__font);
+      letter-spacing: var(--mdw-typescale__headline-medium__letter-spacing);
+    }
+    
+    :host([size="small"]) {
+      font: var(--mdw-typescale__headline-small__font);
+      letter-spacing: var(--mdw-typescale__headline-small__letter-spacing);
+    }  
+  `
   .autoRegister('mdw-headline');

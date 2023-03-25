@@ -4,7 +4,6 @@ import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 
 import './Icon.js';
 import ListOption from './ListOption.js';
-import styles from './MenuItem.css' assert { type: 'css' };
 
 export default class MenuItem extends ListOption
   .mixin(FormAssociatedMixin)
@@ -101,7 +100,6 @@ export default class MenuItem extends ListOption
       this._cascading = false;
     },
   })
-  .css(styles)
   .on({
     _selectedChanged(oldValue, newValue) {
       console.log('_selectedChanged', oldValue, newValue);
@@ -206,6 +204,61 @@ export default class MenuItem extends ListOption
       trailingIcon.textContent = '{computeTrailingIcon}';
     },
   })
+  .css`
+    /* https://m3.material.io/components/menus/specs */
+
+    :host {
+      gap: 12px;
+
+      padding-inline: 12px;
+
+      cursor: pointer;
+
+      white-space: nowrap;
+    }
+
+    #content {
+      padding-block: calc(4px + (var(--mdw-density) * 2px))
+    }
+
+    #icon {
+      transition-duration: 100ms;
+      transition-property: opacity;
+      will-change: opacity;
+    }
+
+    #trailing,
+    #icon {
+      color: rgb(var(--mdw-color__on-surface-variant));
+    }
+
+    #selection {
+      opacity: 0;
+
+      font-size: 18px;
+    }
+
+    #selection.trailing {
+      font-size: 24px;
+    }
+
+    #selection[selected] {
+      opacity: 1;
+    }
+
+    :host([disabled]) {
+      cursor: not-allowed;
+    }
+
+    #anchor[selected] {
+      background-color: transparent;
+      color: inherit;
+    }
+
+    #content[selected] {
+      color: inherit;
+    }
+  `
   .autoRegister('mdw-menu-item')
   .tsClassFix() {
   formResetCallback() {
