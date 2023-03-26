@@ -49,6 +49,9 @@ export default function TextFieldMixin(Base) {
       populatedState({ value, _badInput }) {
         return !!value || _badInput;
       },
+      _showLabelText({ label, filled, outlined }) {
+        return label && (filled || outlined);
+      },
     })
     .on({
       composed({ template, html, inline }) {
@@ -72,15 +75,17 @@ export default function TextFieldMixin(Base) {
         labelElement.setAttribute('focused', '{focusedState}');
         labelElement.setAttribute('label', '{label}');
         labelElement.setAttribute('shape-top', inline(({ shapeTop, filled }) => shapeTop || filled));
-        labelElement.append(html`
-          ${state}
-          ${outline}
-          <mdw-icon _if={icon} id=icon aria-hidden=true disabled={disabledState}>{icon}</mdw-icon>
-          <span _if={inputPrefix} class=inline id=prefix aria-hidden=true focused={focusedState} populated={populatedState}>{inputPrefix}</span>
-          <span _if={inputSuffix} class=inline id=suffix aria-hidden=true focused={focusedState} populated={populatedState}>{inputSuffix}</span>
-          <mdw-icon _if={trailingIcon} id=trailing-icon ink={trailingIconInk} aria-hidden=true disabled={disabledState}>{trailingIcon}</mdw-icon>
-          <div id=indicator _if={filled} focused={focusedState} hovered={hoveredState} errored={erroredState} disabled={disabledState} ></div>
-        `);
+        labelElement.append(
+          state,
+          outline,
+          html`
+            <mdw-icon _if={icon} id=icon aria-hidden=true disabled={disabledState}>{icon}</mdw-icon>
+            <span _if={inputPrefix} class=inline id=prefix aria-hidden=true focused={focusedState} populated={populatedState}>{inputPrefix}</span>
+            <span _if={inputSuffix} class=inline id=suffix aria-hidden=true focused={focusedState} populated={populatedState}>{inputSuffix}</span>
+            <mdw-icon _if={trailingIcon} id=trailing-icon ink={trailingIconInk} aria-hidden=true disabled={disabledState}>{trailingIcon}</mdw-icon>
+            <div id=indicator _if={filled} focused={focusedState} hovered={hoveredState} errored={erroredState} disabled={disabledState} ></div>
+          `,
+        );
 
         outline.setAttribute('invalid', '{invalid}');
         outline.setAttribute('errored', '{erroredState}');
@@ -98,7 +103,7 @@ export default function TextFieldMixin(Base) {
         state.setAttribute('_if', '{!outlined}');
 
         template.append(html`
-          <div id=label-text _if=${({ label, filled, outlined }) => label && (filled || outlined)} aria-hidden=true
+          <div id=label-text _if={_showLabelText} aria-hidden=true
             outlined={outlined}
             populated={populatedState}
             focused={focusedState}
