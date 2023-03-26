@@ -194,7 +194,7 @@ export default class CustomElement extends ICustomElement {
    */
   static extend() {
     // @ts-expect-error Can't cast T
-    return class ExtendedClass extends this {};
+    return class extends this {};
   }
 
   /**
