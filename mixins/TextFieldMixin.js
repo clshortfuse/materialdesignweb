@@ -245,6 +245,12 @@ export default function TextFieldMixin(Base) {
         transition: none 100ms cubic-bezier(0.4, 0.0, 1, 1);
       }
 
+      #label[shape-top] {
+        --mdw-shape__size__bottom-start-size: 0px;
+        --mdw-shape__size__bottom-end-size: 0px;
+        --mdw-shape__mask: linear-gradient(transparent 50%, black 50%);
+      }
+
       #prefix,
       #suffix,
       #control::placeholder {
