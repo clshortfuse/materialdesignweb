@@ -35,7 +35,7 @@ export default CustomElement
       <mdw-top-app-bar slot=top hide-on-scroll headline=${() => document.title}>
         <mdw-icon-button id=back-button _if={!isRootPage}
           slot=leading 
-          on-click=${() => { window.location.href = '../../'; }}
+          on-click=${() => { window.location.href = '../'; }}
           icon=arrow_back
           >Back</mdw-icon-button>
         <mdw-icon-button id=settings slot=trailing icon=settings>Settings</mdw-icon-button>
