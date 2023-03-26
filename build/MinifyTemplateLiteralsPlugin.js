@@ -1,9 +1,11 @@
 import { readFile } from 'node:fs/promises';
+import { basename, relative } from 'node:path';
 
 import * as acorn from 'acorn';
 import * as walk from 'acorn-walk';
 import esbuild from 'esbuild';
 import { minify as minifyHTML } from 'html-minifier-terser';
+import MagicString from 'magic-string';
 
 /** @type {import('esbuild').Plugin} */
 export default {
@@ -17,6 +19,13 @@ export default {
 
       if (!value || value.input !== input) {
         let contents = input;
+        if (!build.initialOptions.minify && !build.initialOptions.minifyWhitespace
+          && !build.initialOptions.minifyIdentifiers
+          && !build.initialOptions.minifySyntax) {
+          return { contents };
+        }
+
+        const file = basename(args.path);
         /**
          * @type {{
          *  type: string,
@@ -27,10 +36,17 @@ export default {
          * }[]}
          */
         const transforms = [];
+        const magicString = new MagicString(contents);
         walk.simple(acorn.parse(contents, { ecmaVersion: 'latest', sourceType: 'module', locations: true }), {
           TaggedTemplateExpression(node) {
-            if (node.quasi.expressions.length) return;
-            if (node.quasi.quasis?.length !== 1) return;
+            if (node.quasi.expressions.length) {
+              console.warn(relative(process.cwd(), args.path), '- Cannot minify complex:', contents.slice(node.start, node.end));
+              return;
+            }
+            if (node.quasi.quasis?.length !== 1) {
+              console.warn(relative(process.cwd(), args.path), 'Cannot minify joined:', contents.slice(node.start, node.end));
+              return;
+            }
 
             const { tag } = node;
             let type;
@@ -84,8 +100,20 @@ export default {
           }),
         );
         for (const { data, start, end } of transformed.reverse()) {
-          contents = contents.slice(0, start) + data + contents.slice(end);
+          magicString.update(start, end, data);
         }
+
+        if (transforms.length) {
+          const map = magicString.generateMap({
+            source: file,
+            includeContent: true,
+          });
+          const sourceMapOutput = map.toString();
+
+          const base64 = Buffer.from(sourceMapOutput).toString('base64');
+          contents = `${magicString.toString()}//# sourceMappingURL=data:application/json;charset=utf-8;base64,${base64}`;
+        }
+
         value = { input, output: { contents } };
         cache.set(key, value);
       }
