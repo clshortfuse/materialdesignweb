@@ -38,9 +38,8 @@ export default function ShapeMixin(Base) {
         --mdw-shape__size__bottom-left-size: calc((var(--mdw-shape__ltr) * var(--mdw-shape__size__bottom-start-size)) + (var(--mdw-shape__rtl) * var(--mdw-shape__size__bottom-end-size)));
         --mdw-shape__size__bottom-right-size: calc((var(--mdw-shape__rtl) * var(--mdw-shape__size__bottom-start-size)) + (var(--mdw-shape__ltr) * var(--mdw-shape__size__bottom-end-size)));
       
+        /** By default, fallback to border-radius */
         --mdw-shape__rounded: 1;
-        --mdw-shape__mask-border-source: none;
-        --mdw-shape__mask: none;
         --mdw-shape__inline-start-deg: calc(var(--mdw-dir, 1) * -90deg);
         z-index: 0;
       }
@@ -104,15 +103,8 @@ export default function ShapeMixin(Base) {
       
       @supports(-webkit-mask-box-image: none) {
         :host {
+          /* Inherit all the way up to :root */
           --mdw-shape__rounded: inherit;
-          --mdw-shape__mask-border-source: inherit;
-      
-          -webkit-mask-box-image: var(--mdw-shape__mask-border-source)
-            8 fill /
-            var(--mdw-shape__size)
-            stretch;
-      
-          -webkit-mask: var(--mdw-shape__mask);
         }
       }
     `
@@ -154,6 +146,13 @@ export default function ShapeMixin(Base) {
 
       @supports(-webkit-mask-box-image: none) {
         .shape {
+          -webkit-mask-box-image: var(--mdw-shape__mask-border-source)
+            8 fill /
+            var(--mdw-shape__size)
+            stretch;
+    
+          -webkit-mask: var(--mdw-shape__mask);
+
           transition-duration: 200ms, 200ms, 200ms;
           transition-property: background-color, color, -webkit-mask-box-image-width;
           will-change: background-color, color, -webkit-mask-box-image;

@@ -61,8 +61,6 @@ export default Button
 
     :host([inner-segmented-button]) {
       --mdw-shape__size: 0px;
-      --mdw-shape__rounded: 1;
-      --mdw-shape__mask-border-source: none;
     }
 
     #outline {
