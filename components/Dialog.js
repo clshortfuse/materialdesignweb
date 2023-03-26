@@ -251,10 +251,11 @@ export default CustomElement
   .expressions({
     cancelAutoFocus({ default: d }) { return d === 'cancel'; },
     confirmAutoFocus({ default: d }) { return d === 'confirm'; },
+    _ariaHidden({ open }) { return (open ? 'false' : 'true'); },
   })
   .html/* html */`
     <dialog id=dialog aria-modal=true role=dialog
-    aria-hidden=${({ open }) => (open ? 'false' : 'true')}
+    aria-hidden={_ariaHidden}
     aria-labelledby=headline aria-describedby=slot>
       <div _if={open} id=scrim aria-hidden=true></div>
       <mdw-surface id=surface open={open} icon={icon} elevation={elevation} color={color} ink={ink} outlined={outlined}>
