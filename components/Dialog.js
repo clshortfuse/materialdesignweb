@@ -253,9 +253,8 @@ export default CustomElement
     confirmAutoFocus({ default: d }) { return d === 'confirm'; },
   })
   .html/* html */`
-    <dialog id=dialog
-    ${supportsHTMLDialogElement ? 'aria-model=true' : ''}
-    role=dialog aria-hidden=${({ open }) => (open ? 'false' : 'true')} 
+    <dialog id=dialog aria-modal=true role=dialog
+    aria-hidden=${({ open }) => (open ? 'false' : 'true')}
     aria-labelledby=headline aria-describedby=slot>
       <div _if={open} id=scrim aria-hidden=true></div>
       <mdw-surface id=surface open={open} icon={icon} elevation={elevation} color={color} ink={ink} outlined={outlined}>
