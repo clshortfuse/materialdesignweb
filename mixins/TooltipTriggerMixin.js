@@ -1,4 +1,4 @@
-import Tooltip from '../components/Tooltip.js';
+import '../components/Tooltip.js';
 import { canAnchorPopup } from '../utils/popup.js';
 
 /**
@@ -10,10 +10,9 @@ export default function TooltipTriggerMixin(Base) {
       this.on({
         composed({ template, html }) {
           template.append(html`
-            <${Tooltip.elementName} role=tooltip id=tooltip
-            ><slot id=tooltip-slot
-              on-slotchange={onTooltipTriggerSlotChange} name=tooltip
-              >{tooltip}</slot></${Tooltip.elementName}>
+            <mdw-tooltip role=tooltip id=tooltip>
+              <slot id=tooltip-slot on-slotchange={onTooltipTriggerSlotChange} name=tooltip>{tooltip}</slot>
+            </mdw-tooltip>
           `);
         },
       });
