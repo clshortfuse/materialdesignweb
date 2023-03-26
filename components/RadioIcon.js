@@ -38,6 +38,7 @@ export default CustomElement
       --mdw-ink: rgb(var(--mdw-color__primary));
       /* Use CSS Variables to force filter to reapply (Chrome Bug) */
       --color: rgb(var(--mdw-color__on-surface-variant));
+      --mdw-shape__size: var(--mdw-shape__full);
       position: relative;
 
       display: inline-block;
@@ -48,12 +49,6 @@ export default CustomElement
       background-color: transparent;
 
       transition: opacity 200ms;
-    }
-
-    .shape {
-      --mdw-shape__size: var(--mdw-shape__full);
-      position: absolute;
-      inset: 0;
     }
 
     #outline {
