@@ -50,9 +50,15 @@ export default Box
       background-color: transparent;
     }
 
-    
     @supports(-webkit-mask-box-image: none) {
       :host {
+        -webkit-mask-box-image: var(--mdw-shape__mask-border-source)
+          8 fill /
+          var(--mdw-shape__size)
+          stretch;
+
+        -webkit-mask: var(--mdw-shape__mask);
+
         transition-duration: 200ms, 200ms, 200ms;
         transition-property: background-color, color, -webkit-mask-box-image-width;
         will-change: background-color, color, -webkit-mask-box-image;
