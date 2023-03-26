@@ -4,9 +4,7 @@ import process from 'node:process';
 import browserslistToEsbuild from 'browserslist-to-esbuild';
 import esbuild from 'esbuild';
 
-// import CSSImportAssertionsPlugin from './CSSImportAssertionsPlugin.js';
-import { minifyTemplates, writeFiles } from 'esbuild-minify-templates';
-
+import MinifyTemplateLiteralsPlugin from './MinifyTemplateLiteralsPlugin.js';
 import StatisticsPlugin from './StatisticsPlugin.js';
 
 const target = browserslistToEsbuild();
@@ -53,7 +51,7 @@ const buildOptions = {
   target,
   outdir: 'docs',
   plugins: [
-    minifyTemplates(minify), writeFiles(),
+    MinifyTemplateLiteralsPlugin,
     StatisticsPlugin,
   ],
 };
