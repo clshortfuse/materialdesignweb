@@ -6,10 +6,12 @@ import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
 const SUPPORTS_INERT = 'inert' in HTMLElement.prototype;
 
 export default CustomElement
+  .mixin(ThemableMixin)
   .mixin(FlexableMixin)
   .mixin(SurfaceMixin)
   .mixin(ShapeMixin)
@@ -70,7 +72,7 @@ export default CustomElement
       letter-spacing: var(--mdw-type__letter-spacing);
     }
 
-    #shape:is([elevated],[filled]) {
+    #shape:where([elevated],[filled],[color]) {
       background-color: rgb(var(--mdw-bg));
     }
 
