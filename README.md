@@ -23,7 +23,8 @@ https://clshortfuse.github.io/materialdesignweb/
 
 ## Pre-bundled 
 ````html
-<script type="module" src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=6750A4&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto"></script>
+<script type="module"
+  src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=6750A4"></script>
 
 <mdw-button>Hello World!</mdw-button>
 ````
@@ -34,7 +35,7 @@ Includes all components and theming over URL params.
 
 ### Static Theme Generation:
 
-`npx -p @shortfuse/materialdesignweb mdw-css --color=color=6750A4 --custom=yellow,orange:orange,green:0f0,alias:aqua --lightness=auto > theme.css`
+> `npx -p @shortfuse/materialdesignweb mdw-css --color=color=6750A4 --custom=yellow,orange:orange,green:0f0,alias:aqua --lightness=auto > theme.css`
 
 ### Dynamic Theme Generation:
 
@@ -49,7 +50,7 @@ import Button from '@shortfuse/materialdesignweb/components/Button.js';
 // OR
 import Button from 'https://www.unpkg.com/@shortfuse/materialdesignweb/components/Button.js';
 // OR
-import { Button } from 'https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=6750A4&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto';
+import { Button } from 'https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=6750A4';
 
 // Components will auto register after one microtask (right before next event loop)
 // We can bypass this by registering it manually:
@@ -81,24 +82,6 @@ document.body.append(button);
 Notes:
 
 * Compatibility may be extended via polyfills (not included)
-
-# Legend
-
-* [:paintbrush:](# "Background") - Background Theming
-* [:crayon:](# "Ink") - Ink (Foreground) Theming	
-* [:o:](# "Outline") - Outline
-* [:a:](# "Font") - Font Theming	
-* [:large_blue_diamond:](# "Shape") - Shape Size Theming
-* [:signal_strength:](# "Density") - Density
-* [:arrow_up_down:](# "Flexable") - Flexable layout
-* [:wheelchair:](# "ARIA") - ARIA Role
-  
-* [:heavy_check_mark:](# "Ready") - Ready
-* [:warning:](# "Issues") - Issues
-* [:construction:](# "Under Construction") - Under Construction
-* [:memo:](# "Planned") - Planned
-* [:grey_question:](# "Unknown") - Unknown
-* [:skull:](# "Not planned") - Not planned
 
 # Components
 
@@ -208,6 +191,26 @@ These components do not have official M3 guidelines
 | Data Table   |          [:memo:](# "Planned")           |
 | Image List   |      [:grey_question:](# "Unknown")      |
 | Side Sheet   |      [:grey_question:](# "Unknown")      |
+
+
+# Legend
+
+* [:paintbrush:](# "Background") - Background Theming
+* [:crayon:](# "Ink") - Ink (Foreground) Theming	
+* [:o:](# "Outline") - Outline
+* [:a:](# "Font") - Font Theming	
+* [:large_blue_diamond:](# "Shape") - Shape Size Theming
+* [:signal_strength:](# "Density") - Density
+* [:arrow_up_down:](# "Flexable") - Flexable layout
+* [:wheelchair:](# "ARIA") - ARIA Role
+  
+* [:heavy_check_mark:](# "Ready") - Ready
+* [:warning:](# "Issues") - Issues
+* [:construction:](# "Under Construction") - Under Construction
+* [:memo:](# "Planned") - Planned
+* [:grey_question:](# "Unknown") - Unknown
+* [:skull:](# "Not planned") - Not planned
+
 
 # Archive
 
