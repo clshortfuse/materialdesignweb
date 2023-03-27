@@ -47,7 +47,7 @@ const buildOptions = {
   bundle: true,
   keepNames: false,
   legalComments: 'linked',
-  metafile: cliArgs.has('--metafile'),
+  metafile: cliArgs.has('metafile'),
   write: false,
   drop: isProduction ? ['console'] : [],
   target,
