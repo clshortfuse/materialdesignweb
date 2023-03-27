@@ -4,26 +4,28 @@ import process from 'node:process';
 import browserslistToEsbuild from 'browserslist-to-esbuild';
 import esbuild from 'esbuild';
 
+import { getSearchParams } from '../utils/cli.js';
+
 import MinifyTemplateLiteralsPlugin from './MinifyTemplateLiteralsPlugin.js';
 import StatisticsPlugin from './StatisticsPlugin.js';
 
 const target = browserslistToEsbuild();
 
-const cliArgs = new Set(process.argv.slice(2));
+const cliArgs = getSearchParams();
 
-const isProduction = (process.env.NODE_ENV === 'production') || cliArgs.has('--production');
-const minifyAll = cliArgs.has('--minify');
-const minifyWhitespace = cliArgs.has('--minify-whitespace');
-const minifyIdentifiers = cliArgs.has('--minify-identifiers');
-const minifySyntax = cliArgs.has('--minify-syntax');
-const serve = cliArgs.has('--serve');
-const watch = cliArgs.has('--watch');
-const live = cliArgs.has('--live');
+const isProduction = (process.env.NODE_ENV === 'production')
+  || cliArgs.has('production');
 
-const minify = minifyAll ? { minify: true } : {
-  minifyWhitespace,
-  minifyIdentifiers,
-  minifySyntax,
+const serve = cliArgs.has('serve');
+const watch = cliArgs.has('watch');
+const live = cliArgs.has('live');
+const outdir = cliArgs.get('outdir');
+const entryPoints = process.argv.slice(2).filter((arg) => !arg.startsWith('--'));
+
+const minify = cliArgs.has('minify') ? { minify: true } : {
+  minifyWhitespace: cliArgs.has('minify-whitespace'),
+  minifyIdentifiers: cliArgs.has('minify-identifiers'),
+  minifySyntax: cliArgs.has('minify-syntax'),
 };
 
 /** @type {esbuild.BuildOptions['banner']} */
@@ -36,7 +38,7 @@ if (!isProduction && live) {
 
 /** @type {esbuild.BuildOptions} */
 const buildOptions = {
-  entryPoints: ['docs/demo.js'],
+  entryPoints,
   entryNames: '[dir]/[name].min',
   format: 'esm',
   sourcemap: true,
@@ -49,7 +51,7 @@ const buildOptions = {
   write: false,
   drop: isProduction ? ['console'] : [],
   target,
-  outdir: 'docs',
+  outdir,
   plugins: [
     MinifyTemplateLiteralsPlugin,
     StatisticsPlugin,
