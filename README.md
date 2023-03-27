@@ -1,9 +1,9 @@
 # materialdesignweb
 Material Design for Web
 
-# About
+*A standards-focused, zero-dependency implemention of Material Design 3 (Material You).*
 
-A standards-focused, zero-dependency implemention of Material Design 3 (Material You).
+https://badgen.net/npm/v/@shortfuse/materialdesignweb
 
 # Current status
 
@@ -20,17 +20,66 @@ https://clshortfuse.github.io/materialdesignweb/
 
 # Getting started
 
+# Web Ready
 ````html
-<script type="module" src="https://unpkg.com/@shortfuse/materialdesignweb@0.7.0/theming/loader.js?color=6750A4&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto"></script>
-<script type="module" src="https://unpkg.com/@shortfuse/materialdesignweb@0.7.0/components/Button.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=6750A4&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto"></script>
 
 <mdw-button>Hello World!</mdw-button>
 ````
 
+Includes all components and supports theming over URL params.
+
+## Development
+
+### Static Theme Generation:
+
+`npx -p @shortfuse/materialdesignweb mdw-css --color=color=6750A4 --custom=yellow,orange:orange,green:0f0,alias:aqua --lightness=auto > theme.css`
+
+### Dynamic Theme Generation:
+
+See [loader.js]('./theming/loader.js') for an example.
+
+### Component Loading
+
+````js
+import { Button } from '@shortfuse/materialdesignweb';
+// OR
+import Button from '@shortfuse/materialdesignweb/components/Button.js';
+// OR
+import Button from 'https://www.unpkg.com/@shortfuse/materialdesignweb/components/Button.js';
+// OR
+import { Button } from 'https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=6750A4&custom=yellow,orange:orange,green:0f0,alias:aqua&lightness=auto';
+
+// Components will auto register after one microtask (right before next event loop)
+// We can bypass this by registering it manually:
+
+Button.register();
+const button = new Button();
+button.textContent = 'Hello World!';  
+document.body.append(button);
+
+````
+
 # Support
 
-* Unbundled: Chrome >=94
-* Bundled: >1% browsers *(polyfills not included)*
+
+| Feature                                                                                               | Chrome | Edge | Firefox | Safari |
+| ----------------------------------------------------------------------------------------------------- | -----: | ---: | ------: | -----: |
+| [ShadowRoot](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot)                             |     53 |   79 |      63 |     10 |
+| [WeakRef](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef)   |     84 |   84 |      79 |   14.1 |
+| [ElementInternals](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals)†                |     77 |   79 |      93 |   16.4 |
+| [delegatesFocus](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus)†         |     53 |   79 |      94 |     15 |
+| [AdoptedStyleSheets](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/adoptedStyleSheets)* |     73 |   79 |     101 |   16.4 |
+|                                                                                                       |        |      |         |        |
+| Supported                                                                                             |     84 |   84 |      93 |   16.4 |
+
+*Optional
+
+†Can be polyfilled
+
+Notes:
+
+* Compatibility may be extended via polyfills (not included)
 
 # Legend
 

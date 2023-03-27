@@ -1,3 +1,11 @@
+v0.7.1
+------
+
+* Drop CSS Import
+* Normalize `vertical-align` across components
+* Add CLI theme generator
+* Distribute bundle over NPM
+
 v0.7.0
 ------
 
