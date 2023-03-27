@@ -28,6 +28,7 @@
   ],
   "files": [
     "/bin",
+    "/dist",
     "/components",
     "/core",
     "/theming",
