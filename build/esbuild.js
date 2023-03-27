@@ -8,6 +8,7 @@ import { getSearchParams } from '../utils/cli.js';
 
 import MinifyTemplateLiteralsPlugin from './MinifyTemplateLiteralsPlugin.js';
 import StatisticsPlugin from './StatisticsPlugin.js';
+import WriteMetafilePlugin from './WriteMetafilePlugin.js';
 
 const target = browserslistToEsbuild();
 
@@ -55,6 +56,7 @@ const buildOptions = {
   plugins: [
     MinifyTemplateLiteralsPlugin,
     StatisticsPlugin,
+    WriteMetafilePlugin,
   ],
 };
 
