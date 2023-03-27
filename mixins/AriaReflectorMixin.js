@@ -1,5 +1,3 @@
-import { attrNameFromPropName } from '../core/dom.js';
-
 /** @param {typeof import('../core/CustomElement.js').default} Base */
 export default function AriaReflectorMixin(Base) {
   return Base
