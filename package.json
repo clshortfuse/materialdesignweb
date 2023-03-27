@@ -4,7 +4,7 @@
   "description": "Material Design for Web",
   "type": "module",
   "scripts": {
-    "build": "node build/esbuild.js index.js --outdir=dist --minify --metafile",
+    "publish": "node build/esbuild.js index.js --outdir=dist --minify --metafile --production",
     "predocs": "node bin/generate-css.js --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/theme.css",
     "predocs-alt": "node bin/generate-css.js --color=a46750 --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/alt-theme.css",
     "docs": "node build/esbuild.js docs/demo.js --outdir=docs --minify --metafile",
