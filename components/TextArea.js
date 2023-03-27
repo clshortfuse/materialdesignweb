@@ -116,12 +116,12 @@ export default class TextArea extends CustomElement
     this.on({
       composed() {
         const { control } = this.refs;
-        control.setAttribute('input-prefix', '{input-prefix}');
-        control.setAttribute('input-suffix', '{input-suffix}');
-        control.setAttribute('minrows', '{minrows}');
+        control.setAttribute('input-prefix', '{inputPrefix}');
+        control.setAttribute('input-suffix', '{inputSuffix}');
+        control.setAttribute('minrows', '{minRows}');
         control.setAttribute('fixed', '{fixed}');
         control.setAttribute('icon', '{icon}');
-        control.setAttribute('maxrows', '{maxrows}');
+        control.setAttribute('maxrows', '{maxRows}');
       },
       defaultValueAttrChanged(oldValue, newValue) {
         this.defaultValue = newValue;
