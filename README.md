@@ -39,7 +39,7 @@ Includes all components and theming over URL params.
 
 ### Dynamic Theme Generation:
 
-See [loader.js]('./theming/loader.js') for an example.
+See [loader.js](./theming/loader.js) for an example.
 
 ### Component Loading
 
