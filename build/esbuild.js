@@ -56,7 +56,14 @@ const buildOptions = {
   plugins: [
     MinifyTemplateLiteralsPlugin,
     StatisticsPlugin,
-    WriteMetafilePlugin,
+    WriteMetafilePlugin, {
+      name: 'emit completed',
+      setup(build) {
+        build.onEnd(() => {
+          console.log('Build completed.');
+        });
+      },
+    },
   ],
 };
 
