@@ -87,6 +87,7 @@ export default function TextFieldMixin(Base) {
           `,
         );
 
+        outline.setAttribute('label', '{label}');
         outline.setAttribute('invalid', '{invalid}');
         outline.setAttribute('errored', '{erroredState}');
         outlineLeft.after(html`
@@ -187,6 +188,18 @@ export default function TextFieldMixin(Base) {
       :host(:is([color], [ink])) {
         background-color: transparent;
         color: rgb(var(--mdw-color__on-surface));
+      }
+
+      /** Guard against bleed */
+      :host([label][outlined]) {
+        --mdw-shape__size__top-start-size: min(var(--mdw-shape__size), 12px);
+        --mdw-shape__size__bottom-start-size: min(var(--mdw-shape__size), 12px);
+        --mdw-shape__size__top-end-size: min(var(--mdw-shape__size), 12px);
+        --mdw-shape__size__bottom-end-size: min(var(--mdw-shape__size), 12px);
+      }
+
+      #label[label][outlined] {
+        -webkit-mask-box-image-width: min(var(--mdw-shape__size), 12px);
       }
 
       #label {
@@ -446,15 +459,6 @@ export default function TextFieldMixin(Base) {
         transform: translateY(-50%);
       }
 
-      #label[label][outlined] {
-        /** Guard against bleed */
-        --mdw-shape__size__top-start-size: min(var(--mdw-shape__size), 12px);
-        --mdw-shape__size__bottom-start-size: min(var(--mdw-shape__size), 12px);
-        --mdw-shape__size__top-end-size: min(var(--mdw-shape__size), 12px);
-        --mdw-shape__size__bottom-end-size: min(var(--mdw-shape__size), 12px);
-        -webkit-mask-box-image-width: min(var(--mdw-shape__size), 12px);
-      }
-
       :is(#prefix, #suffix):is([focused], [populated]) {
         opacity: 1;
       }
@@ -505,11 +509,13 @@ export default function TextFieldMixin(Base) {
       #outline {
         display: grid;
         grid-auto-flow: column;
-        grid-template-columns: 12px minmax(0,auto) minmax(12px, 1fr);
+        grid-template-columns: 1fr 0 1fr;
 
         color: rgb(var(--mdw-color__outline));
+      }
 
-
+      #outline[label] {
+        grid-template-columns: 12px minmax(0,auto) minmax(12px, 1fr);
       }
 
       #outline[hovered] {
