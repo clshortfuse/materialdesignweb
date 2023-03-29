@@ -189,8 +189,9 @@ export function parseObserverOptions(name, typeOrOptions, object) {
     changedCallback,
     watchers: options.watchers ?? [],
     values: options.values ?? new WeakMap(),
-    validValues: options.validValues ?? new WeakMap(),
+    computedValues: options.computedValues ?? new WeakMap(),
     attributeChangedCallback: options.attributeChangedCallback,
+    needsSelfInvalidation: options.needsSelfInvalidation ?? new WeakSet(),
   };
 }
 
@@ -293,10 +294,9 @@ export function defineObservableProperty(object, key, options) {
   /**
    * @param {T2} oldValue
    * @param {T2} value
-   * @param {boolean} [commit=false]
    * @return {boolean} changed
    */
-  function detectChange(oldValue, value, commit) {
+  function detectChange(oldValue, value) {
     if (oldValue === value) return false;
     if (config.get) {
       // TODO: Custom getter vs parser
@@ -317,10 +317,6 @@ export function defineObservableProperty(object, key, options) {
       }
       if (config.is.call(this, oldValue, newValue)) return false;
     }
-
-    // Before changing, store old values of properties that will invalidate;
-
-    // Do no set if transient (getter)
 
     config.values.set(this, newValue);
     // console.log(key, 'value.set', newValue);
@@ -344,27 +340,27 @@ export function defineObservableProperty(object, key, options) {
   function internalSet(value) {
     const oldValue = this[key];
     // console.log(key, 'internalSet', oldValue, '=>', value);
-    detectChange.call(this, oldValue, value, true);
+    detectChange.call(this, oldValue, value);
   }
 
-  /**
-   *
-   */
+  /** @return {void} */
   function onInvalidate() {
-    // console.log(key, 'onInvalidate', '???');
-    const oldValue = config.validValues.get(this);
+    // Current value is now invalidated. Recompute and check if changed
+    const oldValue = config.computedValues.get(this);
     const newValue = this[key];
-    // console.log(key, 'onInvalidate', oldValue, '=>', newValue);
+    // console.debug('observe: onInvalidate called for', key, oldValue, '=>', newValue, this);
+    config.needsSelfInvalidation.delete(this);
     detectChange.call(this, oldValue, newValue);
   }
 
   if (config.get) {
+    // Custom `get` uses computed values.
+    // Invalidate computed value when dependent `prop` changes
     const { props } = observeFunction(config.get.bind(object), object, internalGet.bind(object));
-    // Set of watchers needed
-    // console.log(key, 'invalidates with', props);
     config.watchers.push(
       ...[...props].map((prop) => [prop, onInvalidate]),
     );
+    // TODO: May be able to cache value if props are present
   }
   /** @type {Partial<PropertyDescriptor>} */
   const descriptor = {
@@ -376,8 +372,8 @@ export function defineObservableProperty(object, key, options) {
     get() {
       if (config.get) {
         const newValue = config.get.call(this, this, internalGet.bind(this));
-        // Store value internally. Used by onInvalidate to get previous value
-        config.validValues.set(this, newValue);
+        // Store computed value internally. Used by onInvalidate to get previous value
+        config.computedValues.set(this, newValue);
         return newValue;
       }
       return internalGet.call(this);
@@ -393,10 +389,12 @@ export function defineObservableProperty(object, key, options) {
         return;
       }
       if (config.set) {
+        config.needsSelfInvalidation.add(this);
         const oldValue = this[key];
         config.set.call(this, value, internalSet.bind(this));
         const newValue = this[key];
-        // Invalidate self
+        if (!config.needsSelfInvalidation.has(this)) return;
+        config.needsSelfInvalidation.delete(this);
         detectChange.call(this, oldValue, newValue);
       } else {
         internalSet.call(this, value);
