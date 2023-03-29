@@ -365,6 +365,7 @@ export default class CustomElement extends ICustomElement {
   /**
    * Define properties on instances via Object.defineProperties().
    * Automatically sets property non-enumerable if name begins with `_`.
+   * Functions will be remapped as getters
    * @type {typeof ICustomElement.define}
    */
   static define(props) {
@@ -608,14 +609,14 @@ export default class CustomElement extends ICustomElement {
 
   /** @type {InstanceType<typeof ICustomElement>['propChangedCallback']} */
   propChangedCallback(name, oldValue, newValue, changes = newValue) {
+    this.render({ [name]: changes });
+
     const callbacks = this.static.propChangedCallbacks.get(name);
     if (callbacks) {
       for (const callback of callbacks) {
         callback.call(this, oldValue, newValue, changes, this);
       }
     }
-
-    this.render({ [name]: changes });
   }
 
   /**
