@@ -337,7 +337,7 @@ export default function TextFieldMixin(Base) {
       }
 
       #state {
-        --mdw-state__focus-opacity: 0;
+        --mdw-state__focused-opacity: 0;
         --mdw-state__pressed-opacity: 0;
       }
 
