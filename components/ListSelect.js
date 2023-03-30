@@ -1,4 +1,4 @@
-import { constructHTMLOptionsCollectionProxy } from '../dom/ HTMLOptionsCollectionProxy.js';
+import { constructHTMLOptionsCollectionProxy } from '../dom/HTMLOptionsCollectionProxy.js';
 import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
