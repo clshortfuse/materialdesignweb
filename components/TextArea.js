@@ -133,7 +133,6 @@ export default CustomElement
 
     /** @param {ResizeObserverEntry} entry */
     onResizeObserved(entry) {
-      super.onResizeObserved(entry);
       if (this.matches(':active')) return;
       this.resize();
     },
@@ -173,10 +172,8 @@ export default CustomElement
       // Custom
       control.setAttribute('input-prefix', '{inputPrefix}');
       control.setAttribute('input-suffix', '{inputSuffix}');
-      control.setAttribute('minrows', '{minRows}');
       control.setAttribute('fixed', '{fixed}');
       control.setAttribute('icon', '{icon}');
-      control.setAttribute('maxrows', '{maxRows}');
     },
     defaultValueAttrChanged(oldValue, newValue) {
       this.defaultValue = newValue;
@@ -210,6 +207,8 @@ export default CustomElement
       minlength: cloneAttributeCallback('minlength', 'control'),
       maxlength: cloneAttributeCallback('maxlength', 'control'),
       placeholder: cloneAttributeCallback('placeholder', 'control'),
+      minrows: cloneAttributeCallback('minrows', 'control'),
+      maxrows: cloneAttributeCallback('maxrows', 'control'),
     },
   })
   .css`
@@ -231,7 +230,11 @@ export default CustomElement
       #label {
         --max-rows: none;
         --line-height: var(--mdw-typescale__body-large__line-height);
-        --expected-height: calc((var(--control__margin-top) + var(--control__padding-top) + var(--line-height) + var(--control__padding-bottom) + var(--control__margin-bottom)));
+        --expected-height: calc(var(--line-height)
+          + var(--control__margin-top)
+          + var(--control__padding-top)
+          + var(--control__padding-bottom)
+          + var(--control__margin-bottom));
         max-block-size: 100%;
         grid-row: 1 / 1;
         padding: 0;
