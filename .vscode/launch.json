@@ -1,12 +1,30 @@
 {
   "version": "0.2.0",
   "configurations": [
+
+  
     {
       "type": "msedge",
-      "name": "npm serve",
+      "name": "Debug MS-Edge",
       "request": "launch",
       "url": "http://127.0.0.1:5500/",
-      "preLaunchTask": "npm: serve"
-    }
+      "preLaunchTask": "npm: serve",
+      "webRoot": "${workspaceRoot}/docs"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run test on current file",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/tap",
+      "runtimeArgs": [
+        "--no-timeout",
+        "--jobs=1",
+        "${file}"
+      ],
+      "outputCapture": "std",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
   ]
 }

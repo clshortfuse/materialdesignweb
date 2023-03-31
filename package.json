@@ -14,7 +14,8 @@
     "watch": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile",
     "serve": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile --serve --live",
     "pretest": "eslint --ignore-path .gitignore",
-    "test": "c8 tap --no-coverage"
+    "test": "web-test-runner \"test/**/*.test.js\" --node-resolve",
+    "test:watch": "web-test-runner \"test/**/*.test.js\" --node-resolve --watch"
   },
   "browser": "dist/index.min.js",
   "repository": {
@@ -59,10 +60,14 @@
   },
   "homepage": "https://github.com/clshortfuse/materialdesignweb#readme",
   "devDependencies": {
+    "@esm-bundle/chai": "^4.3.4-fix.0",
     "@types/html-minifier-terser": "^7.0.0",
+    "@types/mocha": "^10.0.1",
     "@types/tap": "^15.0.7",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
+    "@web/test-runner": "^0.15.2",
+    "@web/test-runner-playwright": "^0.9.0",
     "acorn": "^8.8.2",
     "acorn-walk": "^8.2.0",
     "browserslist-to-esbuild": "^1.1.1",
@@ -86,8 +91,6 @@
     "stylelint-no-unsupported-browser-features": "github:clshortfuse/stylelint-no-unsupported-browser-features#0a51157",
     "stylelint-order": "^6.0.2",
     "stylelint-use-logical-spec": "^5.0.0",
-    "tap": "^16.3.0",
-    "typescript": "^5.0.2",
-    "webdriverio": "^7.23.0"
+    "typescript": "^5.0.2"
   }
 }
