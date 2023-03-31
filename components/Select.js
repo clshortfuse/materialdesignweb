@@ -4,20 +4,20 @@ import StateMixin from '../mixins/StateMixin.js';
 import TextFieldMixin from '../mixins/TextFieldMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
-
 /* @implements {HTMLSelectElement} */
-
-export default class Select extends CustomElement
+export default CustomElement
   .mixin(ThemableMixin)
   .mixin(StateMixin)
   .mixin(ControlMixin)
   .mixin(TextFieldMixin)
   .extend()
   .observe({
-    autocomplete: 'string',
-    trailingIcon: {
-      empty: 'arrow_drop_down',
-    },
+    trailingIcon: { empty: 'arrow_drop_down' },
+  })
+  .overrides({
+    controlTagName: 'select',
+    controlVoidElement: false,
+    type: 'select-one',
   })
   .define({
     _select() {
@@ -26,7 +26,6 @@ export default class Select extends CustomElement
     /** Readonly values */
     multiple: { value: false },
     size: { value: 1 },
-    type: { value: 'select-one' },
   })
   .html/* html */`<slot id=slot></slot>`
   .childEvents({
@@ -49,6 +48,10 @@ export default class Select extends CustomElement
       template.append(slot);
       prefix.remove();
       suffix.remove();
+    },
+    _formResetChanged(oldValue, newValue) {
+      if (!newValue) return;
+      this._select.value = this.querySelector('option[selected]')?.value ?? '';
     },
   })
   .css`
@@ -105,19 +108,4 @@ export default class Select extends CustomElement
       letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
     }
   `
-  .setStatic({
-    controlTagName: 'select',
-    controlVoidElement: false,
-  })
-  .autoRegister('mdw-select') {
-  /* Overrides */
-  static clonedContentAttributes = [
-    ...super.clonedContentAttributes,
-    'autocomplete', // Hint for form autofill feature
-  ];
-
-  formResetCallback() {
-    this._select.value = this.querySelector('option[selected]')?.value ?? '';
-    super.formResetCallback();
-  }
-}
+  .autoRegister('mdw-select');

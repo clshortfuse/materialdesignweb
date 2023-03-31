@@ -1,3 +1,5 @@
+import { cloneAttributeCallback } from '../core/CustomElement.js';
+
 import ControlMixin from './ControlMixin.js';
 
 /** @typedef {'align'|'useMap'} DeprecatedHTMLInputElementProperties */
@@ -19,317 +21,236 @@ const IMPLICIT_SUBMISSION_BLOCKING_TYPES = new Set([
   'number',
 ]);
 
+const DOMString = { nullParser: String, empty: '' };
+
 /**
+ * @see https://html.spec.whatwg.org/multipage/input.html#htmlinputelement
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function InputMixin(Base) {
-  class Input extends Base.mixin(ControlMixin) {
-    static inputTagName = 'input';
+  return Base
+    .mixin(ControlMixin)
+    .extend()
+    .observe({
+      accept: DOMString,
+      alt: DOMString,
+      dirName: { attr: 'dirname', ...DOMString },
+      _formAction: { attr: 'formaction' },
+      formEnctype: { attr: 'formenctype', ...DOMString },
+      formMethod: { attr: 'formmethod', ...DOMString },
+      formNoValidate: { attr: 'formNoValidate', type: 'boolean' },
+      formTarget: { attr: 'formtarget', ...DOMString },
+      _height: { attr: 'height', type: 'integer' },
+      indeterminate: { type: 'boolean', reflect: false },
+      max: DOMString,
+      maxLength: { attr: 'maxlength', type: 'integer', empty: -1 },
+      min: DOMString,
+      minLength: { attr: 'minlength', type: 'integer', empty: -1 },
+      multiple: 'boolean',
+      pattern: DOMString,
+      placeholder: DOMString,
+      size: { type: 'integer', empty: 20 },
+      src: DOMString,
+      step: DOMString,
+      //  [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
+      _width: { attr: 'width', type: 'integer' },
+    })
+    .define({
+      // Alias for typescript
+      _input() { return /** @type {HTMLInputElement} */ (this.refs.control); },
+    })
+    .overrides({
+      controlTagName: 'input',
+    })
+    .on({
+      composed({ inline }) {
+        const { label, control } = this.refs;
+        // Expose [selected] to .checked
+        label.setAttribute('selected', '{checked}');
+        label.setAttribute('invalid', '{_invalid}');
+        label.setAttribute('indeterminate', '{indeterminate}');
 
-    static FORM_IPC_EVENT = 'mdw-input-changed';
+        control.setAttribute('checked', '{defaultChecked}');
+        control.setAttribute('height', '{_height}');
+        control.setAttribute('width', '{_width}');
+        control.setAttribute('value', '{_defaultValue}');
+      },
 
-    static GlobalListener = new EventTarget();
-
-    static clonedContentAttributes = [
-      ...super.clonedContentAttributes,
-      'aria-controls',
-      'accept', 'alt',
-      // 'autocomplete',
-      'checked', 'dirname',
-      // 'disabled',
-      // 'form',
-      'formaction', 'formenctype', 'formmethod', 'formnovalidate', 'formTarget',
-      'height',
-      // 'list',
-      'max', 'maxlength', 'min', 'minlength',
-      'multiple',
-      // 'name',
-      'pattern', 'placeholder',
-      // 'readonly',
-      // 'required',
-      'size', 'src', 'step',
-      // 'type',
-      'value',
-      'width',
-    // 'align', 'usemap',
-    ];
-
-    static valueChangingContentAttributes = [
-      ...super.valueChangingContentAttributes,
-      'checked', 'max', 'maxlength', 'min', 'maxlength',
-      'multiple', 'pattern', 'step', 'type', 'value',
-    ];
-
-    /** @type {InstanceType<typeof CustomElement>['propChangedCallback']} */
-    propChangedCallback(name, oldValue, newValue) {
-      super.propChangedCallback(name, oldValue, newValue);
-      switch (name) {
-        case 'indeterminate':
-          this.#input.indeterminate = newValue;
-          break;
-        case 'type':
-          this.#input.type = newValue;
-          break;
-        case '_formAction':
-          this.formAction = newValue;
-          break;
-        case '_height':
-          this.height = newValue;
-          break;
-        case '_width':
-          this.width = newValue;
-          break;
-        case 'checked':
-          if (!this.type) {
-            console.warn('unknown type?', this);
+      // TODO: Bind multiple
+      typeChanged() { this.onValueChangingContentAttribute(); },
+      defaultCheckedChanged() {
+        this._checked = this._input.checked;
+      },
+      minChanged() { this.onValueChangingContentAttribute(); },
+      minLengthChanged() { this.onValueChangingContentAttribute(); },
+      maxChanged() { this.onValueChangingContentAttribute(); },
+      maxLengthChanged() { this.onValueChangingContentAttribute(); },
+      multipleChanged() { this.onValueChangingContentAttribute(); },
+      patternChanged() { this.onValueChangingContentAttribute(); },
+      stepChanged() { this.onValueChangingContentAttribute(); },
+      defaultValueChanged() { this.onValueChangingContentAttribute(); },
+      _formResetChanged(oldValue, newValue) {
+        if (!newValue) return;
+        console.log('form reset');
+        const input = this._input;
+        input.value = this.defaultValue;
+        input.checked = this.defaultChecked;
+        this._value = input.value;
+        this._checked = input.checked;
+        this._checkedDirty = false;
+      },
+      attrs: {
+        accept: cloneAttributeCallback('accept', 'control'),
+        alt: cloneAttributeCallback('alt', 'control'),
+        dirname: cloneAttributeCallback('dirname', 'control'),
+        formenctype: cloneAttributeCallback('formenctype', 'control'),
+        formmethod: cloneAttributeCallback('formmethod', 'control'),
+        formnovalidate: cloneAttributeCallback('formnovalidate', 'control'),
+        formTarget: cloneAttributeCallback('formTarget', 'control'),
+        max: cloneAttributeCallback('max', 'control'),
+        maxlength: cloneAttributeCallback('maxlength', 'control'),
+        min: cloneAttributeCallback('min', 'control'),
+        minlength: cloneAttributeCallback('minlength', 'control'),
+        multiple: cloneAttributeCallback('multiple', 'control'),
+        pattern: cloneAttributeCallback('pattern', 'control'),
+        placeholder: cloneAttributeCallback('placeholder', 'control'),
+        size: cloneAttributeCallback('size', 'control'),
+        src: cloneAttributeCallback('src', 'control'),
+        step: cloneAttributeCallback('step', 'control'),
+      },
+    })
+    .overrides({
+      _onSetChecked(checked) {
+        // Apply user value to input and read back result to apply control to parse
+        this._input.checked = checked;
+        this._checked = this._input.checked;
+      },
+      _onSetValue(value) {
+        // Apply user value to input and read back result to apply control to parse
+        this._input.value = value;
+        this._value = this._input.value;
+      },
+    })
+    .methods({
+      /**
+       * @see https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission
+       * @param {Event} event
+       * @return {void}
+       */
+      performImplicitSubmission(event) {
+        const form = this.form;
+        if (!form) return;
+        /** @type {HTMLInputElement} */
+        let defaultButton;
+        const submissionBlockers = new Set();
+        for (const element of /** @type {HTMLCollectionOf<HTMLInputElement>} */ (form.elements)) {
+          if (element.type === 'submit' && !element.disabled && !element.matches(':disabled')) {
+            defaultButton ??= element;
+            break;
           }
-          switch (this.type) {
-            case 'checkbox':
-            case 'radio':
-              if (newValue) {
-                this.elementInternals.setFormValue(this.value ?? 'on');
-                if (this.type === 'radio') {
-                  this._notifyRadioChange(this.name, this.value ?? 'on');
-                }
-              } else {
-                this.elementInternals.setFormValue(null);
-              }
-              break;
-            default:
+
+          if (IMPLICIT_SUBMISSION_BLOCKING_TYPES.has(element.type)) {
+            submissionBlockers.add(element);
           }
-          // Reinvoke change event for components tracking 'checked';
-          // this.propChangedCallback('checked', oldValue, newValue);
-          break;
-        default:
-      }
-    }
-
-    /** @type {CustomElement['attributeChangedCallback']} */
-    attributeChangedCallback(name, oldValue, newValue) {
-      super.attributeChangedCallback(name, oldValue, newValue);
-      switch (name) {
-        case 'aria-label':
-          if (newValue == null) {
-            this.#input.removeAttribute(name);
-            if (!this.hasAttribute('aria-labelledby')) {
-              this.#input.setAttribute('aria-labelledby', 'slot');
-            }
-          } else {
-            this.#input.setAttribute(name, newValue);
-            if (!this.hasAttribute('aria-labelledby')) {
-              this.#input.removeAttribute('aria-labelledby');
-            }
-          }
-          break;
-        default:
-      }
-    }
-
-    get #input() { return /** @type {HTMLInputElement} */ (this.refs.control); }
-
-    static {
-      this.on({
-        composed() {
-          const { label } = this.refs;
-          // Expose [selected] to .checked
-          label.setAttribute('selected', '{checked}');
-          label.setAttribute('invalid', '{_invalid}');
-          label.setAttribute('indeterminate', '{indeterminate}');
-        },
-      });
-      this.childEvents({
-        control: {
-          keydown(event) {
-            if (event.defaultPrevented) return;
-            if (event.key !== 'Enter') return;
-            if (/** @type {HTMLInputElement} */ (event.currentTarget).type === 'submit') return;
-            this.performImplicitSubmission(event);
-          },
-          change(event) {
-            if (this.disabledState) {
-              event.preventDefault();
-              event.stopImmediatePropagation();
-              return;
-            }
-            const input = /** @type {HTMLInputElement} */ (event.currentTarget);
-            this.checked = input.checked;
-          },
-        },
-      });
-    }
-
-    /**
-     * @see https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission
-     * @param {Event} event
-     * @return {void}
-     */
-    performImplicitSubmission(event) {
-      const form = this.form;
-      if (!form) return;
-      /** @type {HTMLInputElement} */
-      let defaultButton;
-      const submissionBlockers = new Set();
-      for (const element of /** @type {HTMLCollectionOf<HTMLInputElement>} */ (form.elements)) {
-        if (element.type === 'submit' && !element.disabled && !element.matches(':disabled')) {
-          defaultButton ??= element;
-          break;
         }
-
-        if (IMPLICIT_SUBMISSION_BLOCKING_TYPES.has(element.type)) {
-          submissionBlockers.add(element);
+        if (defaultButton) {
+          defaultButton.click();
+          return;
         }
-      }
-      if (defaultButton) {
-        defaultButton.click();
-        return;
-      }
-      if (submissionBlockers.size > 1) return;
-      this.form.submit();
-    }
+        if (submissionBlockers.size > 1) return;
+        this.form.submit();
+      },
 
-    /** @param {CustomEvent<[string, string]>} event */
-    formIPCEvent(event) {
-      if (event.target instanceof HTMLFormElement && event.target !== this.form) {
-        console.warn('Control.formIPCEvent: Abort from wrong form');
-        return;
-      }
-      if (this.type !== 'radio') {
-        console.warn('Control.formIPCEvent: Abort from not radio');
-        return;
-      }
-      const [name, value] = event.detail;
-      if (this.name !== name) return;
-      if (value === this.value) {
-      // console.log('Control.formIPCEvent: Continue match', this.name, this.value);
-      } else {
-        this.checked = false;
-      }
-    }
+    })
+    .childEvents({
+      control: {
+        keydown(event) {
+          if (event.defaultPrevented) return;
+          if (event.key !== 'Enter') return;
+          if (/** @type {HTMLInputElement} */ (event.currentTarget).type === 'submit') return;
+          this.performImplicitSubmission(event);
+        },
+        change(event) {
+          if (this.disabledState) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return;
+          }
+          const input = /** @type {HTMLInputElement} */ (event.currentTarget);
+          console.debug('InputMixin: Will fire checked via change event');
+          this._checkedDirty = true;
+          this._checked = input.checked;
+        },
+      },
+    })
+    .define({
+      files() { return this._input.files; },
 
-    formResetCallback() {
-      this.#input.value = this.defaultValue;
-      this.#input.checked = this.defaultChecked;
-      this._value = this.#input.value;
-      this._checked = this.#input.checked;
-      this._checkedDirty = false;
+      select() { return this._input.select; },
 
-      super.formResetCallback();
-    }
+      selectionDirection: {
+        get() { return this._input.selectionDirection; },
+        set(value) { this._input.selectionDirection = value; },
+      },
 
-    get files() { return this.#input.files; }
+      selectionEnd: {
+        get() { return this._input.selectionEnd; },
+        set(value) { this._input.selectionEnd = value; },
+      },
 
-    get select() { return this.#input.select; }
+      selectionStart: {
+        get() { return this._input.selectionStart; },
+        set(value) { this._input.selectionStart = value; },
+      },
 
-    get selectionDirection() { return this.#input.selectionDirection; }
+      setRangeText() { return this._input.setRangeText; },
 
-    set selectionDirection(value) { this.#input.selectionDirection = value; }
+      setSelectionRange() { return this._input.setSelectionRange; },
 
-    get selectionEnd() { return this.#input.selectionEnd; }
+      showPicker() { return this._input.showPicker; },
 
-    set selectionEnd(value) { this.#input.selectionEnd = value; }
+      stepDown() { return this._input.stepDown; },
 
-    get selectionStart() { return this.#input.selectionStart; }
+      stepUp() { return this._input.stepUp; },
 
-    set selectionStart(value) { this.#input.selectionStart = value; }
+      valueAsDate: {
+        get() { return this._input.valueAsDate; },
+        set(value) {
+          this._input.valueAsDate = value;
+          this.value = this._input.value;
+        },
+      },
 
-    get setRangeText() { return this.#input.setRangeText; }
+      valueAsNumber: {
+        get() { return this._input.valueAsNumber; },
+        set(value) {
+          this._input.valueAsNumber = value;
+          this.value = this._input.value;
+        },
+      },
 
-    get setSelectionRange() { return this.#input.setSelectionRange; }
+      height: {
+        get() { return this._input.height; },
+        set(value) {
+          this._input.height = value;
+          this._height = value;
+        },
+      },
 
-    get showPicker() { return this.#input.showPicker; }
+      formAction: {
+        get() { return this._input.formAction; },
+        set(value) {
+          this._input.formAction = value;
+          this._formAction = value;
+        },
+      },
 
-    get stepDown() { return this.#input.stepDown; }
-
-    get stepUp() { return this.#input.stepUp; }
-
-    get valueAsDate() { return this.#input.valueAsDate; }
-
-    set valueAsDate(value) {
-      this.#input.valueAsDate = value;
-      this.value = this.#input.value;
-    }
-
-    get valueAsNumber() { return this.#input.valueAsNumber; }
-
-    set valueAsNumber(value) {
-      this.#input.valueAsNumber = value;
-      this.value = this.#input.value;
-    }
-
-    get height() { return this.#input.height; }
-
-    set height(value) {
-      this.#input.height = value;
-      this._height = value;
-    }
-
-    get formAction() { return this.#input.formAction; }
-
-    set formAction(value) {
-      this.#input.formAction = value;
-      this._formAction = value;
-    }
-
-    get width() { return this.#input.width; }
-
-    set width(value) {
-      this.#input.width = value;
-      this._width = value;
-    }
-  }
-
-  Input.prototype.ariaControls = Input.prop('ariaControls');
-
-  // https://html.spec.whatwg.org/multipage/input.html#htmlinputelement
-
-  const DOMString = { nullParser: String, value: '' };
-
-  Input.prototype.accept = Input.prop('accept', DOMString);
-  Input.prototype.alt = Input.prop('alt', DOMString);
-  Input.prototype.defaultChecked = Input.prop('defaultChecked', { attr: 'checked', type: 'boolean' });
-  Input.prototype._checkedDirty = Input.prop('_checkedDirty', 'boolean');
-  //  attribute boolean checked;
-  Input.prototype._checked = Input.prop('_checked', 'boolean');
-
-  // Exposed property based other watched properties
-  Input.prototype.checked = Input.prop('checked', {
-    reflect: false,
-    type: 'boolean',
-    get({ _checkedDirty, defaultChecked, _checked }) {
-      if (!_checkedDirty) return defaultChecked;
-      return _checked;
-    },
-    set(value) {
-      this._checked = value;
-      this._checkedDirty = true;
-    },
-    changedCallback(oldValue, newValue) {
-      this.shadowRoot.getElementById('control').checked = newValue;
-    },
-  });
-
-  Input.prototype.dirName = Input.prop('dirName', { attr: 'dirname', ...DOMString });
-  Input.prototype._formAction = Input.prop('_formAction', { attr: 'formaction' });
-  Input.prototype.formEnctype = Input.prop('formEnctype', { attr: 'formenctype', ...DOMString });
-  Input.prototype.formMethod = Input.prop('formMethod', { attr: 'formmethod', ...DOMString });
-  Input.prototype.formNoValidate = Input.prop('formnovalidate', { attr: 'formNoValidate', type: 'boolean' });
-  Input.prototype.formTarget = Input.prop('formTarget', { attr: 'formtarget', ...DOMString });
-  Input.prototype._height = Input.prop('_height', { attr: 'height', type: 'integer' });
-  Input.prototype.indeterminate = Input.prop('indeterminate', { type: 'boolean', reflect: false });
-  Input.prototype.max = Input.prop('max', DOMString);
-  Input.prototype.maxLength = Input.prop('maxLength', { attr: 'maxlength', type: 'integer', empty: -1 });
-  Input.prototype.min = Input.prop('min', DOMString);
-  Input.prototype.minLength = Input.prop('minLength', { attr: 'minlength', type: 'integer', empty: -1 });
-  Input.prototype.multiple = Input.prop('multiple', 'boolean');
-  Input.prototype.pattern = Input.prop('pattern', DOMString);
-  Input.prototype.placeholder = Input.prop('placeholder', DOMString);
-  Input.prototype.size = Input.prop('size', { type: 'integer', empty: 20 });
-  Input.prototype.src = Input.prop('src', DOMString);
-  Input.prototype.step = Input.prop('step', DOMString);
-  Input.prototype.type = Input.prop('type', DOMString);
-  Input.prototype.defaultValue = Input.prop('defaultValue', { attr: 'value', ...DOMString });
-  //  [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
-  Input.prototype._width = Input.prop('_width', { attr: 'width', type: 'integer' });
-
-  return Input.tsClassFix();
+      width: {
+        get() { return this._input.width; },
+        set(value) {
+          this._input.width = value;
+          this._width = value;
+        },
+      },
+    });
 }

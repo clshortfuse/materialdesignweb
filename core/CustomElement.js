@@ -16,6 +16,22 @@ function superOf(instance) {
   return superOfStatic.prototype;
 }
 
+/**
+ * Clone attribute
+ * @param {string} name
+ * @param {string} target
+ * @return {(oldValue:string, newValue:string, element: CustomElement) => void}
+ */
+export function cloneAttributeCallback(name, target) {
+  return (oldValue, newValue, element) => {
+    if (newValue == null) {
+      element.refs[target].removeAttribute(name);
+    } else {
+      element.refs[target].setAttribute(name, newValue);
+    }
+  };
+}
+
 const EVENT_PREFIX_REGEX = /^([*1~]+)?(.*)$/;
 
 /**
@@ -547,10 +563,11 @@ export default class CustomElement extends ICustomElement {
   /** @type {typeof ICustomElement['onAttributeChanged']} */
   static onAttributeChanged(options) {
     for (const [name, callback] of Object.entries(options)) {
-      let array = this.attributeChangedCallbacks.get(name);
+      const lcName = name.toLowerCase();
+      let array = this.attributeChangedCallbacks.get(lcName);
       if (!array) {
         array = [];
-        this.attributeChangedCallbacks.set(name, array);
+        this.attributeChangedCallbacks.set(lcName, array);
       }
       array.push(callback);
     }
@@ -625,7 +642,7 @@ export default class CustomElement extends ICustomElement {
    * @param {string|null} newValue
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    const callbacks = this.static.attributeChangedCallbacks.get(name);
+    const callbacks = this.static.attributeChangedCallbacks.get(name.toLowerCase());
     if (callbacks) {
       for (const callback of callbacks) {
         callback.call(this, oldValue, newValue, this);

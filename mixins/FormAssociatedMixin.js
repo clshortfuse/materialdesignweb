@@ -4,9 +4,9 @@
 
 /** @typedef {import('../core/CustomElement.js').default} CustomElement */
 
-const DOMString = { nullParser: String };
-
 const FORM_IPC_EVENT = 'mdw-form-associated-changed';
+
+const DOMString = { nullParser: String, value: '' };
 
 /**
  * @param {ReturnType<import('./StateMixin.js').default>} Base
@@ -18,7 +18,6 @@ export default function FormAssociatedMixin(Base) {
       formAssociated: true,
     })
     .set({
-      _valueDirty: false,
       /** @type {EventListener} */
       _ipcListener: null,
       /** @type {EventTarget} */
@@ -29,26 +28,108 @@ export default function FormAssociatedMixin(Base) {
       autocomplete: DOMString,
       name: DOMString,
       readOnly: { attr: 'readonly', type: 'boolean' },
+      defaultChecked: { attr: 'checked', type: 'boolean' },
+      _checkedDirty: 'boolean',
+      /* "Checkedness" */
+      _checked: 'boolean',
       required: 'boolean',
       type: DOMString,
       //  [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
-      _value: {
-        empty: '',
-        /**
-         * @param {string} oldValue
-         * @param {string} newValue
-         */
-        changedCallback(oldValue, newValue) {
-          this.propChangedCallback('value', oldValue, newValue);
-        },
-      },
+      _defaultValue: { reflect: true, attr: 'value' },
+      _value: { empty: '' },
+      _valueDirty: 'boolean',
       _invalid: 'boolean',
       _badInput: 'boolean',
       _validationMessage: 'string',
       _formDisabled: 'boolean',
+      _formReset: 'boolean',
     })
     .observe({
       erroredState({ _invalid }) { return _invalid; },
+      defaultValue: {
+        reflect: false,
+        get({ _defaultValue }) {
+          return _defaultValue ?? '';
+        },
+        set(value) {
+          this._defaultValue = String(value);
+        },
+      },
+      _valueBehavior({ type }) {
+        switch (type) {
+          case 'radio':
+          case 'checkbox':
+            return 'default/on';
+          case 'hidden':
+          case 'button':
+          case 'submit':
+          case 'image':
+          case 'reset':
+            return 'default';
+          case 'file': return 'filename';
+          default: return 'value';
+        }
+      },
+    })
+    .methods({
+      /**
+       * Default behavior can should likely be overridden
+       * @param {string} value
+       */
+      _onSetValue(value) {
+        this._value = value;
+      },
+      /**
+       * Default behavior can should likely be overridden
+       * @param {boolean} checked
+       */
+      _onSetChecked(checked) {
+        this._checked = checked;
+      },
+    })
+    .observe({
+      value: {
+        reflect: false,
+        get({ _valueBehavior, _defaultValue, _value }) {
+          switch (_valueBehavior) {
+            default:
+              return _value;
+            case 'default':
+              return _defaultValue ?? '';
+            case 'default/on':
+              return _defaultValue ?? 'on';
+            case 'filename':
+              throw new Error('Not supported!');
+          }
+        },
+        /** @param {string} v */
+        set(v) {
+          switch (this._valueBehavior) {
+            case 'value':
+              this._valueDirty = true;
+              this._onSetValue(v);
+              break;
+            default:
+              this.defaultValue = v;
+          }
+        },
+      },
+      /**
+       * Part of FormAssociatedMixin for simplicity.
+       * Enumerability doesn't guarantee checked state will be passed or used.
+       */
+      checked: {
+        reflect: false,
+        type: 'boolean',
+        get({ _checked }) {
+          return _checked;
+        },
+        /** @param {boolean} checked */
+        set(checked) {
+          this._checkedDirty = true;
+          this._onSetChecked(checked);
+        },
+      },
     })
     .define({
       form() { return this.elementInternals.form; },
@@ -56,16 +137,6 @@ export default function FormAssociatedMixin(Base) {
       validationMessage() { return this.elementInternals.validationMessage; },
       willValidate() { return this.elementInternals.willValidate; },
       labels() { return this.elementInternals.labels; },
-      value: {
-        get() {
-          return this._value;
-        },
-        /** @param {string} v */
-        set(v) {
-          this._valueDirty = true;
-          this._value = v;
-        },
-      },
     })
     .observe({
       disabledState({ _formDisabled, disabled }) {
@@ -124,16 +195,31 @@ export default function FormAssociatedMixin(Base) {
        */
       formAssociatedCallback(form) {
         this.refreshFormAssociation();
+        console.debug('FormAssociatedMixin: formAssociatedCallback', this);
+        // Set value on association (not done by default?)
       },
 
       /**
        * @param {CustomEvent<[string, string]>} event
        * @return {void}
        */
-
       formIPCEvent(event) {
-        console.warn('Virtual formIPCEvent invoked.');
-        // virtual
+        if (event.target instanceof HTMLFormElement && event.target !== this.form) {
+          console.warn('Control.formIPCEvent: Abort from wrong form');
+          return;
+        }
+        if (this.type !== 'radio') {
+          console.warn('Control.formIPCEvent: Abort from not radio');
+          return;
+        }
+        const [name, value] = event.detail;
+        if (this.name !== name) return;
+        if (value === this.value) {
+          // console.log('Control.formIPCEvent: Continue match', this.name, this.value);
+        } else {
+          console.debug('FormAssociatedMixin: Unchecking', this);
+          this.checked = false;
+        }
       },
 
       /** @param {boolean} disabled */
@@ -142,8 +228,10 @@ export default function FormAssociatedMixin(Base) {
       },
 
       formResetCallback() {
+        this._formReset = true; // Fires Change Event
         this._valueDirty = false;
         this.checkValidity();
+        this._formReset = false;
       },
 
       /**
@@ -151,10 +239,52 @@ export default function FormAssociatedMixin(Base) {
        * @param {'autocomplete'|'restore'} mode
        */
       formStateRestoreCallback(state, mode) {
-        if (typeof state === 'string') {
-          this.value = state;
-        } else {
-          console.warn('Could not restore', state);
+        if (navigator.userAgent.includes('Edg/')) {
+          console.warn('Chromium Bug: 1429585 - Ignoring formStateRestoreCallback on Edge', { state, mode });
+          // formStateRestoreCallback is broken on Edge
+          // https://bugs.chromium.org/p/chromium/issues/detail?id=1429585
+          return;
+        }
+        if (typeof state !== 'string') {
+          console.warn('FormAssociatedMixin: (Restore) Could not restore', state);
+          return;
+        }
+        if (this.type === 'checkbox' || this.type === 'radio') {
+          console.debug('FormAssociatedMixin: (Restore) Setting Checkbox checked state.', state, this);
+          this.checked = (state === 'checked');
+          return;
+        }
+        if (this.type === 'radio') {
+          // Due to lifecycle quirks, other radio elements on the page may not have
+          // been upgraded to Custom Element yet and would not receive
+          // the 'uncheck' communication. Delay notice until then.
+          this.checked = (state === 'checked');
+          return;
+        }
+
+        console.debug('FormAssociatedMixin: (Restore) Setting value state.', state, this);
+        this.value = state;
+      },
+
+      _updateFormAssociatedValue() {
+        switch (this.type) {
+          case 'radio':
+            if (this.checked) {
+              this._notifyRadioChange(this.name, this.value || 'on');
+            }
+            // Fallthrough
+          case 'checkbox':
+            if (this.checked) {
+              console.log('FormAssociatedMixin: setFormValue', this.name, `(${this.value}, 'checked')`, this);
+              this.elementInternals.setFormValue(this.value, 'checked');
+            } else {
+              console.log('FormAssociatedMixin: setFormValue', this.name, "(null, 'unchecked')", this);
+              this.elementInternals.setFormValue(null, 'unchecked');
+            }
+            break;
+          default:
+            console.log('FormAssociatedMixin: updating form value', this.name, this.value);
+            this.elementInternals.setFormValue(this.value);
         }
       },
     })
@@ -165,6 +295,12 @@ export default function FormAssociatedMixin(Base) {
       connected() {
         // Bind to global if no form is present (used by radio)
         this.refreshFormAssociation();
+      },
+      checkedChanged() {
+        this._updateFormAssociatedValue();
+      },
+      valueChanged() {
+        this._updateFormAssociatedValue();
       },
     });
 }

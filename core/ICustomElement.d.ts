@@ -272,17 +272,20 @@ export declare const ICustomElement: {
       },
     ): T1;
 
-  onAttributeChanged<T extends typeof ICustomElement>
+  onAttributeChanged<
+    T1 extends typeof ICustomElement,
+    T2 extends InstanceType<T1>
+    >
     (
-      this: T,
+      this: T1,
       options: {
         [x:string]: (
         // eslint-disable-next-line no-shadow
-        this: InstanceType<T>,
+        this: T2,
         oldValue: string,
         newValue: string,
-        element: InstanceType<T>
+        element: T2
         ) => void
       },
-    ): T;
+    ): T1;
 };
