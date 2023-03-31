@@ -207,7 +207,7 @@ export default CustomElement
       --mdw-ink: var(--mdw-color__on-primary);
       --mdw-bg: var(--mdw-color__primary);
 
-      display: inline-block;
+      display: block;
       vertical-align: middle;
 
       min-block-size: 40px;
