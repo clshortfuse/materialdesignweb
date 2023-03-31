@@ -82,7 +82,7 @@ export default function FlexableMixin(Base) {
       }
 
       :host(:where([flex][x="stretch"], [flex="column"][y="stretch"])) {
-        justify-content: space-around;
+        justify-content: stretch;
       }
 
       :host([wrap]) {
