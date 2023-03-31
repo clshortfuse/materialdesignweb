@@ -30,7 +30,7 @@ export default function TextFieldMixin(Base) {
       placeholder: { nullParser: String }, // DOMString
     })
     .observe({
-      erroredState({ error, _invalid }) { return Boolean(error || _invalid); },
+      erroredState({ error, _invalid, _userInteracted }) { return _userInteracted && Boolean(error || _invalid); },
     })
     .expressions({
       computePlaceholder({ filled, outlined, label, placeholder }) {
@@ -38,12 +38,12 @@ export default function TextFieldMixin(Base) {
         return placeholder ?? label;
       },
 
-      shouldShowSupporting({ _invalid, error, supporting }) {
-        return _invalid || ((error ?? supporting) != null);
+      shouldShowSupporting({ erroredState, supporting }) {
+        return erroredState || (supporting != null);
       },
 
-      computeSupportingText({ error, _validationMessage, supporting }) {
-        return (error || _validationMessage || supporting) ?? '';
+      computeSupportingText({ error, erroredState, _validationMessage, supporting }) {
+        return (error || (erroredState && _validationMessage) || supporting) ?? '';
       },
 
       populatedState({ value, _badInput }) {

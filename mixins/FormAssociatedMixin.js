@@ -38,6 +38,7 @@ export default function FormAssociatedMixin(Base) {
       _defaultValue: { reflect: true, attr: 'value' },
       _value: { empty: '' },
       _valueDirty: 'boolean',
+      _userInteracted: 'boolean',
       _invalid: 'boolean',
       _badInput: 'boolean',
       _validationMessage: 'string',
@@ -45,7 +46,7 @@ export default function FormAssociatedMixin(Base) {
       _formReset: 'boolean',
     })
     .observe({
-      erroredState({ _invalid }) { return _invalid; },
+      erroredState({ _invalid, _userInteracted }) { return _userInteracted && _invalid; },
       defaultValue: {
         reflect: false,
         get({ _defaultValue }) {
@@ -196,7 +197,7 @@ export default function FormAssociatedMixin(Base) {
       formAssociatedCallback(form) {
         this.refreshFormAssociation();
         console.debug('FormAssociatedMixin: formAssociatedCallback', this);
-        // Set value on association (not done by default?)
+        this.checkValidity();
       },
 
       /**
@@ -289,7 +290,10 @@ export default function FormAssociatedMixin(Base) {
       },
     })
     .events({
-      blur() { this.checkValidity(); },
+      blur() {
+        this._userInteracted = true;
+        this.checkValidity();
+      },
     })
     .on({
       connected() {

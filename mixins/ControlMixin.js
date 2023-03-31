@@ -69,7 +69,7 @@ export default function ControlMixin(Base) {
           // @ts-ignore Skip cast
           newValidity[key] = control.validity[key];
         }
-        this.elementInternals.setValidity(newValidity, control.validationMessage);
+        this.elementInternals.setValidity(newValidity, control.validationMessage, control);
         this._invalid = !validityState;
         this._validationMessage = control.validationMessage;
         this._badInput = control.validity.badInput;
@@ -87,6 +87,14 @@ export default function ControlMixin(Base) {
       setCustomValidity(error) {
         /** @type {HTMLControlElement} */ (this.refs.control).setCustomValidity(error);
         this.checkValidity();
+        this.elementInternals.setValidity(
+          {
+            ...this.elementInternals.validity,
+            customError: !!error,
+          },
+          this.elementInternals.validationMessage || error,
+          this.refs.control,
+        );
       },
 
     })
@@ -97,6 +105,7 @@ export default function ControlMixin(Base) {
           <label id=label disabled={disabledState}>
             <${this.controlTagName} id=control 
               aria-labelledby=${({ ariaLabel }) => (ariaLabel ? null : '#slot')}
+              part=control
               aria-label={ariaLabel}
               type={type}
               >${this.controlVoidElement ? '' : `</${this.controlTagName}>`}
@@ -134,6 +143,9 @@ export default function ControlMixin(Base) {
     })
     .childEvents({
       control: {
+        invalid() {
+          console.debug('ControlMixin: invalid', this);
+        },
         input({ currentTarget }) {
           console.debug('ControlMixin: input');
           const control = /** @type {HTMLControlElement} */ (currentTarget);

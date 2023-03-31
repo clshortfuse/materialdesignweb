@@ -63,7 +63,7 @@ export default function InputMixin(Base) {
       controlTagName: 'input',
     })
     .on({
-      composed({ inline }) {
+      composed() {
         const { label, control } = this.refs;
         // Expose [selected] to .checked
         label.setAttribute('selected', '{checked}');
