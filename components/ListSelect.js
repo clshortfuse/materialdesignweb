@@ -41,12 +41,16 @@ export default class ListSelect extends List
 
   constructor() {
     super();
-    if (!this.hasAttribute('tabindex')) {
-      this.tabIndex = 0;
-    }
     this.refs.slot.addEventListener('slotchange', this.onSlotChange);
     this.addEventListener('keydown', this.onControlKeydown);
     this.addEventListener('click', this.onListSelectClick);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    if (!this.hasAttribute('tabindex')) {
+      this.tabIndex = 0;
+    }
   }
 
   * _selectedOptionsGenerator() {
