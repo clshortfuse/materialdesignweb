@@ -25,7 +25,7 @@ export default CustomElement
     delegatesFocus: true,
   })
   .observe({
-    type: { value: 'button' },
+    type: { empty: 'button' },
     elevated: 'boolean',
     filled: 'string',
     outlined: 'boolean',
@@ -57,7 +57,6 @@ export default CustomElement
 
       shape.setAttribute('filled', '{filled}');
       control.setAttribute('role', 'button');
-      control.setAttribute('type', 'button');
     },
   })
   .css`

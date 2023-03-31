@@ -98,6 +98,7 @@ export default function ControlMixin(Base) {
             <${this.controlTagName} id=control 
               aria-labelledby=${({ ariaLabel }) => (ariaLabel ? null : '#slot')}
               aria-label={ariaLabel}
+              type={type}
               >${this.controlVoidElement ? '' : `</${this.controlTagName}>`}
           </label>
         `);

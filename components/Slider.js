@@ -194,7 +194,6 @@ export default CustomElement
         </div>
       `);
       label.removeAttribute('aria-labelledby');
-      control.setAttribute('type', 'range');
     },
     valueChanged(oldValue, newValue) {
       this._previewValue = newValue;

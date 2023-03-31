@@ -29,7 +29,6 @@ export default Button
       outline.setAttribute('inner-segmented-button', '{innerSegmentedButton}');
       outline.setAttribute('shape-start', '{shapeStart}');
       outline.setAttribute('shape-end', '{shapeEnd}');
-      control.setAttribute('type', 'radio');
       control.setAttribute('role', 'option');
       control.setAttribute('aria-checked', inline(
         ({ type, checked }) => (type === 'checkbox' ? `${(!!checked)}` : null),

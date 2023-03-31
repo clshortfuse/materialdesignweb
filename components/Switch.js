@@ -43,7 +43,6 @@ export default CustomElement
         </mdw-switch-icon>
         <slot id=slot></slot>
       `);
-      control.setAttribute('type', 'checkbox');
       control.setAttribute('role', 'switch');
     },
   })

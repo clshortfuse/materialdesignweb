@@ -32,8 +32,6 @@ export default CustomElement
         </div>
         <slot id=slot></slot>
       `);
-
-      control.setAttribute('type', 'radio');
     },
   })
   .css`

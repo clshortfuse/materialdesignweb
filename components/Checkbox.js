@@ -139,7 +139,6 @@ export default CustomElement
         <slot id=slot></slot>
       `);
 
-      control.setAttribute('type', 'checkbox');
       // Indeterminate must be manually expressed for ARIA
       control.setAttribute('aria-checked', '{_ariaChecked}');
     },

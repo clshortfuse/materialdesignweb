@@ -33,7 +33,6 @@ export default Chip
       icon.setAttribute('ink', '{iconInk}');
 
       control.removeAttribute('role');
-      control.setAttribute('type', 'checkbox');
 
       outline.removeAttribute('ink');
       outline.removeAttribute('color');

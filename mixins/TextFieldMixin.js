@@ -56,7 +56,6 @@ export default function TextFieldMixin(Base) {
     .on({
       composed({ template, html, inline }) {
         const { control, label: labelElement, outline, shape, outlineLeft, outlineRight, state } = this.refs;
-        control.setAttribute('type', 'text');
         control.setAttribute('placeholder', '{computePlaceholder}');
         control.setAttribute('aria-label', '{label}');
         control.setAttribute('input-suffix', '{inputSuffix}');
