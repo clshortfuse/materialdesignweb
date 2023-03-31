@@ -149,6 +149,10 @@ export default class ListOption extends ListItem
     if (selected !== undefined) {
       this._selected = selected;
     }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
     if (!this.hasAttribute('tabindex')) {
       this.tabIndex = 0;
     }
