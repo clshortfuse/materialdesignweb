@@ -63,4 +63,4 @@ import { addIconAliases, reportUnaliasedMaterialSymbols } from './icon-aliases.j
 
 addIconAliases();
 
-console.debug(JSON.stringify(await reportUnaliasedMaterialSymbols(['chevron_left'])));
+console.debug(JSON.stringify(await reportUnaliasedMaterialSymbols([])));
