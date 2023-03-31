@@ -11,6 +11,11 @@ export default CustomElement
 
     :host {
       display: block;
+
+      /* QOL */
+      font: var(--mdw-typescale__body-large__font);
+      letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
+      
     }
 
     /* Pane Slot */
