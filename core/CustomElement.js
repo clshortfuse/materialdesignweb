@@ -175,14 +175,12 @@ export default class CustomElement extends ICustomElement {
    * @type {typeof ICustomElement['autoRegister']}
    */
   static autoRegister(elementName) {
-    if (elementName) {
-      this.elementName = elementName;
+    if (this.hasOwnProperty('defined') && this.defined) {
+      console.warn(this.elementName, 'already registered.');
+      // @ts-expect-error Can't cast T
+      return this;
     }
-    queueMicrotask(() => {
-      if (this.autoRegistration) {
-        this.register();
-      }
-    });
+    this.register(elementName);
     // @ts-expect-error Can't cast T
     return this;
   }
@@ -284,13 +282,7 @@ export default class CustomElement extends ICustomElement {
    * Registers class with window.customElements synchronously
    * @type {typeof ICustomElement['register']}
    */
-  static register(elementName, force = false) {
-    if (this.hasOwnProperty('defined') && this.defined && !force) {
-      console.warn(this.elementName, 'already registered.');
-      // @ts-expect-error Can't cast T
-      return this;
-    }
-
+  static register(elementName) {
     if (elementName) {
       this.elementName = elementName;
     }
