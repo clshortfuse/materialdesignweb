@@ -36,6 +36,7 @@ export { default as Radio } from './components/Radio.js';
 export { default as SegmentedButton } from './components/SegmentedButton.js';
 export { default as SegmentedButtonGroup } from './components/SegmentedButtonGroup.js';
 export { default as Select } from './components/Select.js';
+export { default as Shape } from './components/Shape.js';
 export { default as Slider } from './components/Slider.js';
 export { default as Snackbar } from './components/Snackbar.js';
 export { default as Surface } from './components/Surface.js';
@@ -75,3 +76,5 @@ export { default as StateMixin } from './mixins/StateMixin.js';
 export * as themeLoader from './theming/loader.js';
 
 export * as theming from './theming/index.js';
+
+export * as jsonMergePatch from './utils/jsonMergePatch.js';
