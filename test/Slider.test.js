@@ -3,8 +3,6 @@ import { assert } from '@esm-bundle/chai';
 import Slider from '../components/Slider.js';
 import '../theming/loader.js';
 
-Slider.register();
-
 /** @return {InstanceType<Slider>} */
 function makeComponent() {
   const element = new Slider();
