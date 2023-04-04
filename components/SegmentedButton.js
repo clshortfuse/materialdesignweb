@@ -74,10 +74,6 @@ export default Button
       background-color: rgb(var(--mdw-bg));
     }
 
-    #label[selected] {
-      color: rgb(var(--mdw-ink));
-    }
-
     #icons {
       position: relative;
 
@@ -132,10 +128,5 @@ export default Button
     #shape[disabled][selected] {
       background-color: rgba(var(--mdw-color__on-surface), 0.12);
     }
-
-    #label[disabled][selected] {
-      color: rgba(var(--mdw-color__on-surface), 0.38);
-    }
-
   `
   .autoRegister('mdw-segmented-button');

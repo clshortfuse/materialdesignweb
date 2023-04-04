@@ -176,24 +176,23 @@ export default CustomElement
       ].filter(Boolean).join(';') || null;
     },
   })
+  .html/* html */`
+    <div id=track style={computeTrackStyle} aria-hidden=true disabled={disabledState}>
+      <div _if={ticks} id=ticks></div>
+      <div id=track-active></div>
+      <div id=thumb-anchor>
+        <div id=thumb></div>
+        <div id=thumb-label
+          hidden=${({ _isHoveringThumb, focusedState }) => (!_isHoveringThumb && !focusedState)} 
+          text={_previewValue}></div>
+      </div>
+    </div>
+  `
   .on({
-    composed({ template, html }) {
-      const { state, label, control } = this.refs;
-      template.append(html`
-        <div id=track style={computeTrackStyle} aria-hidden=true disabled={disabledState}>
-          <div _if={ticks} id=ticks></div>
-          <div id=track-active></div>
-          <div id=thumb-anchor>
-            <div id=thumb>
-              ${state}
-            </div>
-            <div id=thumb-label
-              hidden=${({ _isHoveringThumb, focusedState }) => (!_isHoveringThumb && !focusedState)} 
-              text={_previewValue}></div>
-          </div>
-        </div>
-      `);
-      label.removeAttribute('aria-labelledby');
+    composed() {
+      const { thumb, state, control } = this.refs;
+      thumb.append(state);
+      control.removeAttribute('aria-labelledby');
     },
     valueChanged(oldValue, newValue) {
       this._previewValue = newValue;
@@ -220,20 +219,6 @@ export default CustomElement
       background-color: transparent;
     }
 
-    #label {
-      position: absolute;
-      inset: 0;
-
-      display: block;
-
-      cursor: pointer;
-
-      z-index: 1;
-
-      /* border-radius: 50%; */
-      color: rgb(var(--mdw-bg));
-    }
-
     #control {
       inset:0;
 
@@ -246,12 +231,11 @@ export default CustomElement
 
       appearance: none;
 
-      cursor: inherit;
+      cursor: pointer;
 
       transform: none;
 
       background-color: transparent;
-      color: inherit;
     }
 
     #control::-webkit-slider-runnable-track {
@@ -426,9 +410,9 @@ export default CustomElement
       align-items: flex-start;
       flex-direction: column;
 
-      inline-size: 1%;
+      inline-size: 100%;
 
-      transform: translateX(calc(var(--value) * 100 * 100%));
+      transform: translateX(calc(var(--value) * 100%));
       transform-origin: 0 0;
       z-index: 24;
 
@@ -497,15 +481,12 @@ export default CustomElement
     }
 
     #track[disabled] {
-      background-color: rgb(var(--mdw-color__on-surface), calc(0.12 / 0.38));
-    }
-
-    #label[disabled],
-    #track[disabled] {
       --mdw-bg: var(--mdw-color__on-surface);
       cursor: not-allowed;
 
       opacity: 0.38;
+
+      background-color: rgb(var(--mdw-color__on-surface), calc(0.12 / 0.38));
     }
   `
   .autoRegister('mdw-slider');

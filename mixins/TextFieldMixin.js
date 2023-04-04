@@ -53,41 +53,54 @@ export default function TextFieldMixin(Base) {
         return label && (filled || outlined);
       },
     })
+    .html/* html */`
+      <div id=label-text _if={_showLabelText} aria-hidden=true
+        outlined={outlined}
+        populated={populatedState}
+        focused={focusedState}
+        icon={icon}
+        trailing-icon={trailingIcon}
+        disabled={disabledState}
+        errored={erroredState}>{label}</div>
+      <div _if={shouldShowSupporting} id=supporting disabled={disabledState} errored={erroredState}>
+        {computeSupportingText}
+        <slot id=supporting-slot name=supporting></slot>
+      </div>
+    `
     .on({
-      composed({ template, html, inline }) {
-        const { control, label: labelElement, outline, shape, outlineLeft, outlineRight, state } = this.refs;
+      composed({ html, inline }) {
+        const { control, outline, shape, outlineLeft, outlineRight, state } = this.refs;
         control.setAttribute('placeholder', '{computePlaceholder}');
         control.setAttribute('aria-label', '{label}');
         control.setAttribute('input-suffix', '{inputSuffix}');
         control.setAttribute('errored', '{erroredState}');
+        control.setAttribute('aria-describedby', 'supporting');
         control.removeAttribute('aria-labelledby');
         control.classList.add('inline');
 
-        labelElement.classList.add('shape');
-        labelElement.setAttribute('filled', '{filled}');
-        labelElement.setAttribute('color', '{color}');
-        labelElement.setAttribute('icon', '{icon}');
-        labelElement.setAttribute('shape-style', '{shapeStyle}');
-        labelElement.setAttribute('trailingIcon', '{trailingIcon}');
-        labelElement.setAttribute('populated', '{populatedState}');
-        labelElement.setAttribute('outlined', '{outlined}');
-        labelElement.setAttribute('focused', '{focusedState}');
-        labelElement.setAttribute('label', '{label}');
-        labelElement.setAttribute('shape-top', inline(({ shapeTop, filled }) => shapeTop || filled));
-        labelElement.append(
+        state.setAttribute('_if', '{!outlined}');
+        shape.setAttribute('role', 'none');
+        shape.setAttribute('filled', '{filled}');
+        shape.setAttribute('icon', '{icon}');
+        shape.setAttribute('trailingIcon', '{trailingIcon}');
+        shape.setAttribute('populated', '{populatedState}');
+        shape.setAttribute('focused', '{focusedState}');
+        shape.setAttribute('label', '{label}');
+        shape.setAttribute('shape-top', inline(({ shapeTop, filled }) => shapeTop || filled));
+        shape.append(
           state,
           outline,
+          control,
           html`
             <mdw-icon _if={icon} id=icon aria-hidden=true disabled={disabledState}>{icon}</mdw-icon>
             <span _if={inputPrefix} class=inline id=prefix aria-hidden=true focused={focusedState} populated={populatedState}>{inputPrefix}</span>
             <span _if={inputSuffix} class=inline id=suffix aria-hidden=true focused={focusedState} populated={populatedState}>{inputSuffix}</span>
             <mdw-icon _if={trailingIcon} id=trailing-icon ink={trailingIconInk} aria-hidden=true disabled={disabledState}>{trailingIcon}</mdw-icon>
-            <div id=indicator _if={filled} focused={focusedState} hovered={hoveredState} errored={erroredState} disabled={disabledState} ></div>
+            <div _if={filled} id=indicator aria-hidden=true  focused={focusedState} hovered={hoveredState} errored={erroredState} disabled={disabledState} ></div>
           `,
         );
 
         outline.setAttribute('label', '{label}');
-        outline.setAttribute('invalid', '{invalid}');
         outline.setAttribute('errored', '{erroredState}');
         outlineLeft.after(html`
           <div id=gap _if={label} label={label} populated={populatedState} focused={focusedState}>
@@ -98,24 +111,6 @@ export default function TextFieldMixin(Base) {
 
         outlineLeft.setAttribute('focused', '{focusedState}');
         outlineRight.setAttribute('focused', '{focusedState}');
-
-        shape.remove();
-        state.setAttribute('_if', '{!outlined}');
-
-        template.append(html`
-          <div id=label-text _if={_showLabelText} aria-hidden=true
-            outlined={outlined}
-            populated={populatedState}
-            focused={focusedState}
-            icon={icon}
-            trailing-icon={trailingIcon}
-            disabled={disabledState}
-            errored={erroredState}>{label}</div>
-          <div _if={shouldShowSupporting} id=supporting disabled={disabledState} errored={erroredState}>
-            {computeSupportingText}
-            <slot id=supporting-slot name=supporting></slot>
-          </div>
-        `);
       },
       sizeChanged(oldValue, newValue) {
         this.refs.control.style.setProperty('--size', `${newValue}ch`);
@@ -197,11 +192,11 @@ export default function TextFieldMixin(Base) {
         --mdw-shape__size__bottom-end-size: min(var(--mdw-shape__size), 12px);
       }
 
-      #label[label][outlined] {
+      #shape[label][outlined] {
         -webkit-mask-box-image-width: min(var(--mdw-shape__size), 12px);
       }
 
-      #label {
+      #shape {
         position: relative;
 
         display: flex;
@@ -227,12 +222,12 @@ export default function TextFieldMixin(Base) {
         transition: none 200ms cubic-bezier(0.0, 0.0, 0.2, 1);
       }
 
-      #label:is([filled],[color]) {
+      #shape:is([filled],[color]) {
         background-color: rgb(var(--mdw-bg));
         color: rgb(var(--mdw-color__on-surface));
       }
 
-      #label[outlined] {
+      #shape[outlined] {
         background-color: transparent;
       }
 
@@ -245,19 +240,19 @@ export default function TextFieldMixin(Base) {
         color: rgb(var(--mdw-ink))
       }
 
-      #label[icon] {
+      #shape[icon] {
         padding-inline-start: 12px;
       }
 
-      #label[trailing-icon] {
+      #shape[trailing-icon] {
         padding-inline-end: 12px;
       }
 
-      #label[focused] {
+      #shape[focused] {
         transition: none 100ms cubic-bezier(0.4, 0.0, 1, 1);
       }
 
-      #label[shape-top] {
+      #shape[shape-top] {
         --mdw-shape__size__bottom-start-size: 0px;
         --mdw-shape__size__bottom-end-size: 0px;
         --mdw-shape__mask: linear-gradient(transparent 50%, black 50%);
@@ -701,7 +696,7 @@ export default function TextFieldMixin(Base) {
         padding: 0;
       }
 
-      #label[label][filled] {
+      #shape[label][filled] {
         align-items: flex-start;
       }
 
@@ -753,8 +748,8 @@ export default function TextFieldMixin(Base) {
       }
 
       /* stylelint-disable-next-line selector-max-compound-selectors */
-      #label[disabled],
-      #label[disabled] #control {
+      #shape[disabled],
+      #shape[disabled] #control {
         cursor: not-allowed;
       }
 
@@ -778,7 +773,7 @@ export default function TextFieldMixin(Base) {
         color: rgba(var(--mdw-color__on-surface), 0.38);
       }
 
-      #label[disabled] {
+      #shape[disabled] {
         background-color: rgba(var(--mdw-color__on-surface), calc(0.04));
         color: rgba(var(--mdw-color__on-surface), 0.38);
       }
@@ -787,7 +782,7 @@ export default function TextFieldMixin(Base) {
         color: rgba(var(--mdw-color__on-surface), 0.38);
       }
 
-      #label[disabled][outlined] {
+      #shape[disabled][outlined] {
         background-color: transparent;
       }
     

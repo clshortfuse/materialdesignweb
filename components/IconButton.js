@@ -41,10 +41,10 @@ export default Button
   })
   .on({
     composed() {
-      const { slot, shape, tooltipSlot, icon, label, surfaceTint, control, outline } = this.refs;
+      const { slot, shape, tooltipSlot, icon, surfaceTint, control, outline, anchor } = this.refs;
       shape.classList.add('colored');
-      label.classList.add('colored');
-      for (const el of [shape, label, icon]) {
+      icon.classList.add('colored');
+      for (const el of [shape, icon]) {
         el.setAttribute('toggle', '{isToggle}');
         el.setAttribute('selected', '{checked}');
       }
@@ -56,6 +56,7 @@ export default Button
 
       control.setAttribute('aria-pressed', '{_ariaPressed}');
       control.setAttribute('aria-labelledby', 'tooltip');
+      anchor.setAttribute('aria-labelledby', 'tooltip');
 
       outline.setAttribute('selected', '{checked}');
     },
@@ -104,11 +105,6 @@ export default Button
     :host(:where([outlined][type="checkbox"])) {
       --mdw-bg: var(--mdw-color__inverse-surface);
       --mdw-ink: var(--mdw-color__inverse-on-surface);
-    }
-
-    #label {
-      font-size: inherit;
-      letter-spacing: inherit;
     }
 
     #shape[toggle] {

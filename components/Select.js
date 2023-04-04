@@ -59,13 +59,13 @@ export default CustomElement
       display: none;
     }
     
-    #label {
+    #shape {
       padding: 0;
     
       cursor: pointer;
     }
     
-    #label[disabled] {
+    #shape[disabled] {
       cursor: not-allowed;
     }
     

@@ -102,14 +102,13 @@ export default function ControlMixin(Base) {
       // Wait until controlTagName is settled before templating
       composed({ template, html }) {
         template.append(html`
-          <label id=label disabled={disabledState}>
-            <${this.controlTagName} id=control 
-              aria-labelledby=${({ ariaLabel }) => (ariaLabel ? null : '#slot')}
-              part=control
-              aria-label={ariaLabel}
-              type={type}
-              >${this.controlVoidElement ? '' : `</${this.controlTagName}>`}
-          </label>
+          <${this.controlTagName} id=control 
+            aria-labelledby=${({ ariaLabel }) => (ariaLabel ? null : 'slot')}
+            part=control
+            aria-label={ariaLabel}
+            form-disabled={disabledState}
+            type={type}
+            >${this.controlVoidElement ? '' : `</${this.controlTagName}>`}
         `);
       },
       disabledStateChanged(oldValue, newValue) {
@@ -179,13 +178,7 @@ export default function ControlMixin(Base) {
       :host(::-moz-focus-inner) {
         border: 0;
       }
-      
-      #label {
-        display: contents;
-      
-        pointer-events: none;
-      }
-      
+
       #control {
         /* Control is the touch target */
         /* Firefox requires at least 1px "visible" for screen reading */

@@ -11,4 +11,4 @@ export default CustomElement
     }
   `
   .html/* html */`<slot id=slot></slot>`
-  .register('mdw-dialog-actions');
+  .autoRegister('mdw-dialog-actions');

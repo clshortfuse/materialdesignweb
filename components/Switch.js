@@ -24,26 +24,35 @@ export default CustomElement
     selectedSrc: 'string',
     unselectedSrc: 'string',
   })
+  .html/* html */`
+    <mdw-switch-icon id=switch
+      color={color} ink={ink} selected={checked} hovered={hoveredState}
+      focused={focusedState} pressed={pressedState} disabled={disabledState}
+      icon={icon}
+      selected-icon={selectedIcon}
+      unselected-icon={unselectedIcon}
+      src={src}
+      selected-src={selectedSrc}
+      unselected-src={unselectedSrc}
+      >
+    </mdw-switch-icon>
+    <slot id=slot></slot>
+  `
   .on({
-    composed({ html }) {
-      const { state, label, control, touchTarget } = this.refs;
-      label.append(html`
-        ${touchTarget}
-        <mdw-switch-icon id=switch
-          color={color} ink={ink} selected={checked} hovered={hoveredState} focused={focusedState} pressed={pressedState} disabled={disabledState}
-          icon={icon}
-          selected-icon={selectedIcon}
-          unselected-icon={unselectedIcon}
-          src={src}
-          selected-src={selectedSrc}
-          unselected-src={unselectedSrc}
-          >
-          ${state}
-          ${control}
-        </mdw-switch-icon>
-        <slot id=slot></slot>
-      `);
+    composed() {
+      const { switch: switchEl, state, control } = this.refs;
+      switchEl.append(state, control);
       control.setAttribute('role', 'switch');
+    },
+    connected() {
+      this.shadowRoot.addEventListener('click', (event) => {
+        const { control } = this.refs;
+        if (event.target !== control) {
+          // Label-like click
+          event.stopPropagation();
+          control.click();
+        }
+      });
     },
   })
   .methods({
@@ -177,7 +186,7 @@ export default CustomElement
 
     /** Disabled **/
 
-    #label[disabled] {
+    :host(:disabled) {
       --mdw-ink: var(--mdw-color__on-surface); /* selected icon */
       --mdw-bg: var(--mdw-color__surface);
       cursor: not-allowed;
@@ -185,5 +194,16 @@ export default CustomElement
       opacity: 0.38;
     }
 
+    :host([internals-disabled]) {
+      --mdw-ink: var(--mdw-color__on-surface); /* selected icon */
+      --mdw-bg: var(--mdw-color__surface);
+      cursor: not-allowed;
+
+      opacity: 0.38;
+    }
+
+    #switch[disabled] {
+      opacity: 1;
+    }
   `
   .autoRegister('mdw-switch');

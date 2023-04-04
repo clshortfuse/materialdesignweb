@@ -32,6 +32,33 @@ export default CustomElement
       return (indeterminate ? indeterminateIcon : icon);
     },
   })
+  .html/* html */`
+    <div id=checkbox errored={erroredState} selected={checked}>
+      <mdw-checkbox-icon id=icon errored={erroredState} disabled={disabledState}
+        icon={_determinateIcon} selected={checked}>
+      </mdw-checkbox-icon>
+    </div>
+    <slot id=slot></slot>
+  `
+  .on({
+    composed() {
+      const { control, checkbox, state, rippleContainer } = this.refs;
+      checkbox.append(state, rippleContainer);
+
+      // Indeterminate must be manually expressed for ARIA
+      control.setAttribute('aria-checked', '{_ariaChecked}');
+    },
+    connected() {
+      this.shadowRoot.addEventListener('click', (event) => {
+        const { control } = this.refs;
+        if (event.target !== control) {
+          // Label-like click
+          event.stopPropagation();
+          control.click();
+        }
+      });
+    },
+  })
   .css`
     /* https://m3.material.io/components/checkbox/specs */
 
@@ -50,7 +77,15 @@ export default CustomElement
       transition: none 100ms cubic-bezier(0.4, 0.0, 1, 1);
     }
 
-    :host([disabled]) {
+    :host(:disabled) {
+      cursor: not-allowed;
+
+      opacity: 0.38;
+    }
+
+    :host([internals-disabled]) {
+      cursor: not-allowed;
+
       opacity: 0.38;
     }
 
@@ -60,22 +95,10 @@ export default CustomElement
       line-height: 18px;
     }
 
-    :host(:empty) #checkbox {
-      transform: none;
-    }
-
     #control {
       grid-column: 1/1;
 
       cursor: inherit;
-    }
-
-    #label {
-      cursor: inherit;
-    }
-
-    #label[disabled] {
-      cursor: not-allowed;
     }
 
     #state,
@@ -117,30 +140,14 @@ export default CustomElement
       color: rgb(var(--mdw-color__error));
     }
 
+    :host(:empty) #checkbox {
+      transform: none;
+    }
+
     #icon {
       --mdw-ink: inherit;
       --mdw-bg: inherit;
       --disabled-opacity: 1;
     }
   `
-  .on({
-    composed({ html }) {
-      const { label, control, state, rippleContainer, touchTarget } = this.refs;
-      label.append(html`
-        ${touchTarget}
-        ${control}
-        <div id=checkbox errored={erroredState} selected={checked}>
-          <mdw-checkbox-icon id=icon errored={erroredState} disabled={disabledState}
-            icon={_determinateIcon} selected={checked}>
-          </mdw-checkbox-icon>
-          ${state}
-          ${rippleContainer}
-        </div>
-        <slot id=slot></slot>
-      `);
-
-      // Indeterminate must be manually expressed for ARIA
-      control.setAttribute('aria-checked', '{_ariaChecked}');
-    },
-  })
   .autoRegister('mdw-checkbox');

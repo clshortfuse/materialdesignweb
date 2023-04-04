@@ -18,20 +18,27 @@ export default CustomElement
     type: 'radio',
     stateLayer: true,
   })
+  .html/* html */`
+    <div id=radio errored={erroredState} selected={checked}>
+      <mdw-radio-icon id=icon errored={erroredState} disabled={disabledState}
+        selected={checked} focused={focusedState} hovered={hoveredState}></mdw-radio-icon>
+    </div>
+    <slot id=slot></slot>
+  `
   .on({
-    composed({ html }) {
-      const { label, rippleContainer, state, control, touchTarget } = this.refs;
-      label.append(html`
-        ${touchTarget}
-        ${control}
-        <div id=radio errored={erroredState} selected={checked}>
-          <mdw-radio-icon id=icon errored={erroredState} disabled={disabledState}
-            selected={checked} focused={focusedState} hovered={hoveredState}></mdw-radio-icon>
-          ${state}
-          ${rippleContainer}
-        </div>
-        <slot id=slot></slot>
-      `);
+    composed() {
+      const { radio, rippleContainer, state } = this.refs;
+      radio.append(state, rippleContainer);
+    },
+    connected() {
+      this.shadowRoot.addEventListener('click', (event) => {
+        const { control } = this.refs;
+        if (event.target !== control) {
+          // Label-like click
+          event.stopPropagation();
+          control.click();
+        }
+      });
     },
   })
   .css`
@@ -53,28 +60,28 @@ export default CustomElement
       transition: none 100ms cubic-bezier(0.4, 0.0, 1, 1);
     }
 
+    :host(:disabled) {
+      cursor: not-allowed;
+
+      opacity: 0.38;
+    }
+
+    :host([internals-disabled]) {
+      cursor: not-allowed;
+
+      opacity: 0.38;
+    }
+
     :host(:empty) {
       vertical-align: -11.5%;
 
       line-height: 20px;
     }
 
-    :host(:empty) #radio {
-      transform: none;
-    }
-
     #control {
       grid-column: 1/1;
 
       cursor: inherit;
-    }
-
-    #label {
-      cursor: inherit;
-    }
-
-    #label[disabled] {
-      cursor: not-allowed;
     }
 
     #state {
@@ -92,12 +99,6 @@ export default CustomElement
       transform: translateX(-50%) translateY(-50%);
 
       border-radius: 50%;
-    }
-
-    :host([disabled]) {
-      cursor: not-allowed;
-
-      opacity: 0.38;
     }
 
     #radio {
@@ -124,6 +125,10 @@ export default CustomElement
 
     #radio[errored] {
       color: rgb(var(--mdw-color__error));
+    }
+
+    :host(:empty) #radio {
+      transform: none;
     }
 
     #icon {

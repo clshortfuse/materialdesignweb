@@ -183,14 +183,14 @@ export default CustomElement
       this.resize();
     },
     _lineHeightChanged(oldValue, newValue) {
-      this.refs.label.style.setProperty('--line-height', newValue);
+      this.refs.shape.style.setProperty('--line-height', newValue);
     },
     minRowsChanged(oldValue, newValue) {
-      this.refs.label.style.setProperty('--min-rows', `${newValue || 'none'}`);
+      this.refs.shape.style.setProperty('--min-rows', `${newValue || 'none'}`);
       this.resize();
     },
     maxRowsChanged(oldValue, newValue) {
-      this.refs.label.style.setProperty('--max-rows', `${newValue || 'none'}`);
+      this.refs.shape.style.setProperty('--max-rows', `${newValue || 'none'}`);
       this.resize();
     },
     rowsChanged() {
@@ -227,7 +227,7 @@ export default CustomElement
         --control__margin-bottom: 1px;
       }
 
-      #label {
+      #shape {
         --max-rows: none;
         --line-height: var(--mdw-typescale__body-large__line-height);
         --expected-height: calc(var(--line-height)
@@ -241,7 +241,7 @@ export default CustomElement
       }
 
       @supports(height: 1lh) {
-        #label {
+        #shape {
           --line-height: 1lh;
         }
       }

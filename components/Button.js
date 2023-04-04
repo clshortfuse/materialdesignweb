@@ -28,34 +28,58 @@ export default CustomElement
     type: { empty: 'button' },
     elevated: 'boolean',
     filled: 'string',
+    href: 'string',
     outlined: 'boolean',
     icon: 'string',
     iconInk: 'string',
     src: 'string',
     svg: 'string',
     svgPath: 'string',
+    _slotInnerText: 'string',
   })
   .expressions({
     hasIcon({ icon, svg, src, svgPath }) {
       return icon ?? svg ?? src ?? svgPath;
     },
+    computedAriaLabel({ ariaLabel, _slotInnerText }) {
+      return ariaLabel?.trim() || _slotInnerText?.trim() || null;
+    },
+  })
+  .methods({
+    focus(...options) {
+      if (this.href) {
+        this.refs.anchor.focus(...options);
+      } else {
+        this.refs.control.focus(...options);
+      }
+    },
   })
   .html/* html */`
     <mdw-icon _if={hasIcon} id=icon ink={iconInk} disabled={disabledState} outlined={outlined} aria-hidden=true svg={svg} src={src} svg-path={svgPath}>{icon}</mdw-icon>
-    <slot id=slot disabled={disabledState}></slot>
+    <a _if={href} id=anchor href={href} aria-label="{computedAriaLabel}"></a>
+    <slot id=slot disabled={disabledState} aria-hidden=false></slot>
   `
+  .childEvents({
+    slot: {
+      slotchange() {
+        // Firefox and Webkit will not apply label from slots.
+        // https://bugs.webkit.org/show_bug.cgi?id=254934
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=1826194
+        // eslint-disable-next-line unicorn/prefer-dom-node-text-content
+        this._slotInnerText = this.innerText;
+      },
+    },
+  })
   .on({
     composed() {
       const {
-        shape, surfaceTint, state, rippleContainer,
-        surface, control, label, slot,
-        icon,
+        shape, surfaceTint, state, rippleContainer, surface, control,
       } = this.refs;
       surface.append(shape);
       shape.append(state, rippleContainer, surfaceTint);
-      label.append(icon, slot);
-
       shape.setAttribute('filled', '{filled}');
+      control.setAttribute('aria-label', '{computedAriaLabel}');
+      control.setAttribute('hidden', '{href}');
       control.setAttribute('role', 'button');
     },
   })
@@ -145,6 +169,8 @@ export default CustomElement
       background-color: rgb(var(--mdw-bg));
     }
 
+    
+
     #slot {
       text-align: center;
       text-decoration: none;
@@ -153,6 +179,14 @@ export default CustomElement
 
     #control {
       cursor: inherit;
+    }
+
+    #anchor {
+      position: absolute;
+      inset: 0;
+
+      cursor: pointer;
+      outline: none;
     }
 
     :host([disabled]) {
@@ -185,11 +219,11 @@ export default CustomElement
       color: rgba(var(--mdw-color__on-surface));
     }
 
-    #label {
+    #control {
       cursor: pointer;
     }
 
-    #label[disabled] {
+    #control[form-disabled] {
       cursor: not-allowed;
     }
 

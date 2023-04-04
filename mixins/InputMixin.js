@@ -64,12 +64,7 @@ export default function InputMixin(Base) {
     })
     .on({
       composed() {
-        const { label, control } = this.refs;
-        // Expose [selected] to .checked
-        label.setAttribute('selected', '{checked}');
-        label.setAttribute('invalid', '{_invalid}');
-        label.setAttribute('indeterminate', '{indeterminate}');
-
+        const { control } = this.refs;
         control.setAttribute('checked', '{defaultChecked}');
         control.setAttribute('height', '{_height}');
         control.setAttribute('width', '{_width}');
