@@ -33,16 +33,12 @@ export default CustomElement
   .html/* html */`
     <mdw-layout>
       <mdw-top-app-bar slot=top hide-on-scroll headline=${() => document.title}>
-        <mdw-icon-button id=back-button _if={!isRootPage}
-          slot=leading 
-          on-click=${() => { window.location.href = '../'; }}
+        <mdw-icon-button id=back-button _if={!isRootPage} slot=leading 
+          href="../../"
           icon=arrow_back
           >Back</mdw-icon-button>
         <mdw-icon-button id=settings slot=trailing icon=settings>Settings</mdw-icon-button>
-        <mdw-icon-button slot=trailing
-          on-click=${() => { window.location.href = 'https://github.com/clshortfuse/materialdesignweb'; }}
-          icon=invertocat
-        >GitHub Page</mdw-icon-button>
+        <mdw-icon-button slot=trailing href="https://github.com/clshortfuse/materialdesignweb" icon=invertocat>GitHub Page</mdw-icon-button>
       </mdw-top-app-bar>
       <mdw-pane>
         <main><slot></slot></main>
