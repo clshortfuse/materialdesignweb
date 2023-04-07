@@ -34,6 +34,7 @@ export default CustomElement
     iconInk: 'string',
     src: 'string',
     svg: 'string',
+    viewBox: 'string',
     svgPath: 'string',
     _slotInnerText: 'string',
   })
@@ -55,7 +56,7 @@ export default CustomElement
     },
   })
   .html/* html */`
-    <mdw-icon _if={hasIcon} id=icon ink={iconInk} disabled={disabledState} outlined={outlined} aria-hidden=true svg={svg} src={src} svg-path={svgPath}>{icon}</mdw-icon>
+    <mdw-icon _if={hasIcon} id=icon ink={iconInk} disabled={disabledState} outlined={outlined} aria-hidden=true svg={svg} src={src} svg-path={svgPath} view-box={viewBox}>{icon}</mdw-icon>
     <a _if={href} id=anchor href={href} aria-label="{computedAriaLabel}"></a>
     <slot id=slot disabled={disabledState} aria-hidden=false></slot>
   `
@@ -169,8 +170,6 @@ export default CustomElement
       background-color: rgb(var(--mdw-bg));
     }
 
-    
-
     #slot {
       text-align: center;
       text-decoration: none;
@@ -178,7 +177,7 @@ export default CustomElement
     }
 
     #control {
-      cursor: inherit;
+      cursor: pointer;
     }
 
     #anchor {
@@ -217,10 +216,6 @@ export default CustomElement
       opacity: 0.38;
 
       color: rgba(var(--mdw-color__on-surface));
-    }
-
-    #control {
-      cursor: pointer;
     }
 
     #control[form-disabled] {

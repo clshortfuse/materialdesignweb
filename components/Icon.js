@@ -48,7 +48,7 @@ export default class Icon extends CustomElement
     height: 'integer',
     forceFont: 'boolean',
     _linkLoaded: 'boolean',
-    viewBox: { attr: 'viewBox' },
+    viewBox: 'string',
     fontClass: { empty: 'material-symbols-outlined' },
     fontLibrary: { empty: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block' },
   })
