@@ -15,7 +15,7 @@ export default function AriaReflectorMixin(Base) {
         } else if (name in this) {
           this[name] = value;
         } else {
-          console.warn('Unknown ARIA property', name);
+          console.warn('Unknown ARIA property', name, this);
           /** @type {string} */
           let attrName = name;
           if (attrName.startsWith('aria')) {

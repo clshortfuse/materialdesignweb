@@ -19,19 +19,22 @@ export default Box
   })
   .css/* css */`
     :host {
+      overflow-y: auto;
       scroll-snap-align: center;
-      min-inline-size: 100%;
-      max-inline-size: 100%;
+
       min-block-size: 100%;
       max-block-size: 100%;
-      overflow-y: auto;
-      will-change: visibility;
+      min-inline-size: 100%;
+      max-inline-size: 100%;
 
-      visibility: hidden; 
+      visibility: hidden;
+
+      will-change: visibility; 
     }
+
     :host(:is([active],[peeking])) {
       /* Safari bug: Visiblity not changing without !important or layout reflow */
-      visibility: visible !important;;
+      visibility: visible !important;
     }
   `
   .autoRegister('mdw-tab-panel');

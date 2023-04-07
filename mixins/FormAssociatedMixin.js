@@ -240,9 +240,9 @@ export default function FormAssociatedMixin(Base) {
        * @param {'autocomplete'|'restore'} mode
        */
       formStateRestoreCallback(state, mode) {
-        if (navigator.userAgent.includes('Edg/')) {
-          console.warn('Chromium Bug: 1429585 - Ignoring formStateRestoreCallback on Edge', { state, mode });
-          // formStateRestoreCallback is broken on Edge
+        if (navigator.userAgent.includes('Chrome/')) {
+          console.warn('Chromium Bug: 1429585 - Ignoring formStateRestoreCallback on Chromium', { state, mode });
+          // formStateRestoreCallback is broken on Chromium
           // https://bugs.chromium.org/p/chromium/issues/detail?id=1429585
           return;
         }
@@ -276,15 +276,15 @@ export default function FormAssociatedMixin(Base) {
             // Fallthrough
           case 'checkbox':
             if (this.checked) {
-              console.log('FormAssociatedMixin: setFormValue', this.name, `(${this.value}, 'checked')`, this);
+              console.debug('FormAssociatedMixin: setFormValue', this.name, `(${this.value}, 'checked')`, this);
               this.elementInternals.setFormValue(this.value, 'checked');
             } else {
-              console.log('FormAssociatedMixin: setFormValue', this.name, "(null, 'unchecked')", this);
+              console.debug('FormAssociatedMixin: setFormValue', this.name, "(null, 'unchecked')", this);
               this.elementInternals.setFormValue(null, 'unchecked');
             }
             break;
           default:
-            console.log('FormAssociatedMixin: updating form value', this.name, this.value);
+            console.debug('FormAssociatedMixin: setFormValue', this.name, this.value, this);
             this.elementInternals.setFormValue(this.value);
         }
       },

@@ -22,15 +22,12 @@ export default Box
     slot: {
       slotchange() {
         this.refreshTabIndexes();
-        // eslint-disable-next-line github/array-foreach
-        this.kbdNavChildren.forEach((child, index, list) => {
-        /** @type {InstanceType<SegmentedButton>} */
-          (child).shapeStart = index === 0;
-          /** @type {InstanceType<SegmentedButton>} */
-          (child).innerSegmentedButton = index > 0 && index < list.length - 1;
-          /** @type {InstanceType<SegmentedButton>} */
-          (child).shapeEnd = index === list.length - 1;
-        });
+        const list = /** @type {NodeListOf<InstanceType<SegmentedButton>>} */ (this.kbdNavChildren);
+        for (const [index, child] of list.entries()) {
+          child.shapeStart = index === 0;
+          child.innerSegmentedButton = index > 0 && index < list.length - 1;
+          child.shapeEnd = index === list.length - 1;
+        }
       },
     },
   })

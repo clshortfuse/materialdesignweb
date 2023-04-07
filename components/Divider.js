@@ -1,3 +1,5 @@
+/* https://m3.material.io/components/dividers/specs */
+
 import CustomElement from '../core/CustomElement.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
@@ -8,8 +10,6 @@ export default CustomElement
     vertical: 'boolean',
   })
   .css`
-    /* https://m3.material.io/components/dividers/specs */
-
     :host {
       --mdw-ink: var(--mdw-color__outline-variant);
       position: relative;

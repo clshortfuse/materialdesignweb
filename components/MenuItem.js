@@ -203,6 +203,10 @@ export default class MenuItem extends ListOption
       trailingIcon.setAttribute('_if', '{computeTrailingIcon}');
       trailingIcon.textContent = '{computeTrailingIcon}';
     },
+    _formResetChanged(oldValue, newValue) {
+      if (!newValue) return;
+      this._selected = this.defaultSelected;
+    },
   })
   .css`
     /* https://m3.material.io/components/menus/specs */
@@ -260,9 +264,4 @@ export default class MenuItem extends ListOption
     }
   `
   .autoRegister('mdw-menu-item')
-  .tsClassFix() {
-  formResetCallback() {
-    this._selected = this.defaultSelected;
-    super.formResetCallback();
-  }
-}
+  .tsClassFix() {}

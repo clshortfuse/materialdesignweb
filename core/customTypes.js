@@ -15,7 +15,7 @@ export const EVENT_HANDLER_TYPE = {
   parser(v) { return v; },
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue == null && newValue == null) return;
-    // Must continue if oldValue === newValue;
+    // Must continue even if oldValue === newValue;
     if (newValue == null) {
       this[name] = null;
       return;

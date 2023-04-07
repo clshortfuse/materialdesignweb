@@ -42,7 +42,7 @@ export default function RippleMixin(Base) {
           // Reset before next event loop;
           this._rippleAdded = false;
         });
-        rippleContainer.appendChild(ripple);
+        rippleContainer.append(ripple);
         if (hold) {
           ripple.holdRipple = true;
         }

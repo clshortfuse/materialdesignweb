@@ -30,8 +30,9 @@ export default class NavItem extends CustomElement
     ariaLabel: 'string', // watch attribute and emit callback
   })
   .methods({
-    focus(options) {
-      this.refs.anchor.focus(options);
+    /** @type {HTMLElement['focus']} */
+    focus(...args) {
+      this.refs.anchor.focus(...args);
     },
   })
   .html/* html */`
