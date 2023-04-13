@@ -123,7 +123,8 @@ type CompositionEventListener<T, K = keyof CompositionEventMap> = {
       this: T,
       event: (K extends keyof CompositionEventMap ? CompositionEventMap[K] : Event) & {currentTarget:HTMLElement}
     ) => any;
-  prop?: keyof T & string;
+  prop?: string;
+  deepProp?: string[],
  };
 
 type CompositionEventListenerObject<T> =

@@ -36,8 +36,8 @@ import { generateUID } from './uid.js';
  * @prop {Function} [fn]
  * @prop {Function} [render] custom render function
  * @prop {string[]} props
- * @prop {string[]} deepProps
- * @prop {Composition<any>} composition // Sub composition templating (eg: array)
+ * @prop {[string, string[]][]} deepProps
+ * @prop {Composition<any>} [composition] // Sub composition templating (eg: array)
  * @prop {T} defaultValue
  */
 
@@ -66,38 +66,22 @@ function buildShadowRootChildListener(fn) {
 
 /**
  * @example
- *  entryFromPropName(
- *    'address.home.houseNumber',
- *    {
- *      address: {
- *        home: {
- *          houseNumber:35,
- *        },
- *      }
- *    }
- * ) == [houseNumber, 35]
+ *  propFromObject('foo', {foo:'bar'}) == ['foo', 'bar'];
  * @param {string} prop
  * @param {any} source
- * @return {null|[string, any]}
+ * @return {[string, any]|[]}
  */
-function entryFromPropName(prop, source) {
-  let value = source;
-  let child;
-  for (child of prop.split('.')) {
-    if (!child) throw new Error(`Invalid property: ${prop}`);
-    if (value == null) return null;
-    if (child in value === false) return null;
-    // @ts-ignore Skip cast
-    value = value[child];
+function propFromObject(prop, source) {
+  if (source && prop in source) {
+    return [prop, source[prop]];
   }
-  if (value === source) return null;
-  return [child, value];
+  return [];
 }
 
 /**
  * @example
- *  entryFromPropName(
- *    'address.home.houseNumber',
+ *  deepPropFromObject(
+ *    ['address', 'home, 'houseNumber'],
  *    {
  *      address: {
  *        home: {
@@ -106,16 +90,69 @@ function entryFromPropName(prop, source) {
  *      }
  *    }
  * ) == [houseNumber, 35]
+ * @param {string[]} nameArray
+ * @param {any} source
+ * @return {[string, any]|[]}
+ */
+function deepPropFromObject(nameArray, source) {
+  if (!source) return [];
+  let scope = source;
+  let prop;
+  for (prop of nameArray) {
+    if (typeof scope === 'object') {
+      const result = propFromObject(prop, scope);
+      if (!result.length) return [];
+      scope = result[1];
+    } else {
+      return [prop, scope[prop]];
+    }
+  }
+  return [prop, scope];
+}
+
+/**
+ * @example
+ *  deepPropFromObjects(
+ *    ['address', 'home, 'houseNumber'],
+ *    {
+ *      address: {
+ *        home: {
+ *          houseNumber:35,
+ *        },
+ *      }
+ *    }
+ * ) == [houseNumber, 35]
+ * @param {string[]} nameArray
+ * @param {any[]} sources
+ * @return {[]|[string, any]}
+ */
+function deepPropFromObjects(nameArray, ...sources) {
+  const checkedSources = new Set();
+  for (const source of sources) {
+    if (checkedSources.has(source)) continue;
+    const result = deepPropFromObject(nameArray, source);
+    if (result.length) return result;
+    checkedSources.add(source);
+  }
+  return [];
+}
+
+/**
+ * @example
+ *  propFromObject('foo', {foo:'bar'}) == ['foo', 'bar'];
  * @param {string} prop
  * @param {any[]} sources
- * @return {null|[string, any]}
+ * @return {[]|[string, any]}
  */
-function entryFromPropNameSources(prop, ...sources) {
+function propFromObjects(prop, ...sources) {
+  const checkedSources = new Set();
   for (const source of sources) {
-    const entry = entryFromPropName(prop, source);
-    if (entry) return entry;
+    if (checkedSources.has(source)) continue;
+    const result = propFromObject(prop, source);
+    if (result.length) return result;
+    checkedSources.add(source);
   }
-  return null;
+  return [];
 }
 
 /**
@@ -139,6 +176,7 @@ function valueFromPropName(prop, source) {
 export default class Composition {
   /**
    * Collection of property bindings.
+   * Bindings are likely small, so use object
    * @type {Map<keyof T & string, Set<NodeBindEntry<?>>>}
    */
   bindings = new Map();
@@ -213,7 +251,7 @@ export default class Composition {
    * Expressions results are treated as observables
    * @type {WeakMap<Element|DocumentFragment, WeakMap<Function,any>>}
    */
-  expressionCache = new WeakMap();
+  expressionCaches = new WeakMap();
 
   /**
    * Maintains a reference list of elements used by render target (root).
@@ -221,7 +259,7 @@ export default class Composition {
    * This includes disconnected elements.
    * @type {WeakMap<Element|DocumentFragment, Map<string,HTMLElement>>}
    */
-  referenceCache = new WeakMap();
+  referenceCaches = new WeakMap();
 
   /**
    * List of IDs used by template elements
@@ -391,10 +429,11 @@ export default class Composition {
      */
     let anchor;
     let references;
+    let expressionCache;
     let targetIsShadowRoot;
     let instanceFragment;
-    const needsInitialRender = !target || !this.initiallyRendered.has(target);
-    if (needsInitialRender) {
+    const isFirstRender = !target || !this.initiallyRendered.has(target);
+    if (isFirstRender) {
       targetIsShadowRoot = target instanceof ShadowRoot;
       const targetIsDocumentFragment = target instanceof DocumentFragment;
       if (target) {
@@ -410,6 +449,10 @@ export default class Composition {
       }
 
       // Create a clone of the cloneable template as a DocumentFragment
+      // TODO: Avoid unnecessary element creation.
+      // If element can be fully reconstructed with internal properties,
+      // skip recreation of element unless it actually needs to be added to DOM.
+      // Requires tracing of all properties used by conditional elements.
       instanceFragment = /** @type {DocumentFragment} */ this.cloneable.cloneNode(true);
       // Select anchor
       anchor = (!target || (targetIsDocumentFragment && !targetIsShadowRoot))
@@ -417,7 +460,9 @@ export default class Composition {
         : target;
 
       references = new Map();
-      this.referenceCache.set(anchor, references);
+      expressionCache = new WeakMap();
+      this.referenceCaches.set(anchor, references);
+      this.expressionCaches.set(anchor, expressionCache);
 
       context ??= targetIsShadowRoot ? target.host : anchor;
 
@@ -431,10 +476,9 @@ export default class Composition {
           this.hideElement(element);
         }
 
-        if (!targetIsShadowRoot || this.temporaryIds.has(id)) {
-          console.debug('blanking id for non-shadow dom / tempId', id);
-          // element.removeAttribute('id');
-          element.id = '';
+        // Remove ID if not shadowRoot
+        if (!targetIsShadowRoot) {
+          element.removeAttribute('id');
         }
 
         const subNodes = this.subnodesByTag.get(id);
@@ -443,7 +487,7 @@ export default class Composition {
           let textNodeMap;
           for (const subnode of this.subnodesByTag.get(id)) {
             if (typeof subnode === 'string') continue;
-            const textNode = /** @type {Text} */ (element.childNodes.item(subnode));
+            const textNode = /** @type {Text} */ (element.childNodes[subnode]);
             if (textNodeMap) {
               textNodeMap.set(subnode, textNode);
             } else {
@@ -455,22 +499,22 @@ export default class Composition {
         const childEvents = this.events.get(id);
         if (childEvents) {
           for (const event of childEvents) {
-            element.addEventListener(
-              event.type,
-              (event.handleEvent ?? entryFromPropNameSources(event.prop, changes, context, ...stores)[1]).bind(context),
-              event,
-            );
+            const listener = event.handleEvent
+              ?? (event.deepProp.length
+                ? deepPropFromObjects(event.deepProp, changes, context, ...stores)[1]
+                : propFromObjects(event.prop, changes, context, ...stores)[1]);
+            element.addEventListener(event.type, listener.bind(context), event);
           }
         }
       }
       const rootEvents = this.events.get('');
       if (rootEvents) {
         for (const event of rootEvents) {
-          context.addEventListener(
-            event.type,
-            (event.handleEvent ?? entryFromPropNameSources(event.prop, changes, context, ...stores)[1]),
-            event,
-          );
+          const listener = event.handleEvent
+              ?? (event.deepProp.length
+                ? deepPropFromObjects(event.deepProp, changes, context, ...stores)[1]
+                : propFromObjects(event.prop, changes, context, ...stores)[1]);
+          context.addEventListener(event.type, listener, event);
         }
       }
     }
@@ -478,12 +522,17 @@ export default class Composition {
     const fnResults = new WeakMap();
     /** @type {WeakMap<Element, Set<string|number>>} */
     const modifiedNodes = new WeakMap();
+    /** @type {Record<string, any>} */
     const args = {};
+    /** @type {Map<string, any>} */
+    const deepPropCache = new Map();
     const argKeys = new Set();
-
     anchor ??= target;
-    references = this.referenceCache.get(target);
+    expressionCache ??= this.expressionCaches.get(anchor);
+    references ??= this.referenceCaches.get(anchor);
     context ??= target instanceof ShadowRoot ? target.host : anchor;
+
+    const expressionResultEntries = [];
 
     for (const key of this.boundProps) {
       if (key in changes === false) continue;
@@ -498,30 +547,16 @@ export default class Composition {
         }
 
         /* 1. Find Element */
-
-        // TODO: Avoid unnecessary element creation.
-        // If element can be fully reconstructed with internal properties,
-        // skip recreation of element unless it actually needs to added to DOM.
-        // Requires tracing of all properties used by conditional elements.
-        references ??= this.referenceCache.get(anchor);
         const ref = references.get(tag);
         if (!ref) {
           // console.warn('Composition: Non existent tag', tag);
           continue;
         }
-        if (modifiedNodes.get(ref)?.has(subnode)) {
-          // console.warn('Node already modified. Skipping', tag, node);
-          continue;
-        }
 
-        // if (!ref.parentElement && node !== 'mdw-if') {
-        //   if (ref.parentNode === root) {
-        //     console.debug('Offscreen? root? rendering', ref, node, ref.tag, root.host.outerHTML);
-        //   } else {
-        //     console.debug('Offscreen rendering', ref, node, ref.tag, root.host.outerHTML);
-        //   }
-        // }
+        // Skip if already modified
+        if (modifiedNodes.get(ref)?.has(subnode)) continue;
 
+        let write = true;
         /* 2. Compute value */
         let value;
         if (fn) {
@@ -530,54 +565,78 @@ export default class Composition {
           } else {
             for (const prop of props) {
               if (argKeys.has(prop)) continue;
-              if (prop in changes) {
-                args[prop] = changes[prop];
-                argKeys.add(prop);
-                continue;
+              const [foundKey, v] = propFromObjects(prop, changes, ...stores);
+              if (foundKey) {
+                args[prop] = v;
               }
-              for (const store of stores) {
-                console.log('prop', prop, 'not in changes');
-                if (prop in store) {
-                  args[prop] = store[prop];
-                  argKeys.add(prop);
-                  break;
+              argKeys.add(prop);
+            }
+            // eg: pass coordinate.x when only coodinate.y has changed
+            // fn: (({coordinates}) => `Coordinates: (${coordinates.x}, ${coordinates.y})`
+            // deepProps: [
+            //    [ 'coordinates.x', ['coordinates', 'x'] ],
+            //    [ 'coordinates.y', ['coordinates', 'y'] ],
+            // ]
+            // Need to pass both in function args
+            for (const [dottedKey, deepPropKeys] of deepProps) {
+              if (argKeys.has(dottedKey)) continue;
+              let argContext = args;
+              for (const [index, deepKey] of deepPropKeys.entries()) {
+                if (!(deepKey in argContext)) {
+                  const fetchedValue = deepPropFromObjects(deepPropKeys.slice(0, index + 1), changes, ...stores);
+                  if (!fetchedValue.length) {
+                    console.warn('Failed to get required property', dottedKey);
+                    break;
+                  }
+                  argContext[deepKey] = fetchedValue[1];
                 }
+                argContext = argContext[deepKey];
               }
+              argKeys.add(dottedKey);
             }
-            if (deepProps?.length) {
-              console.warn('need deep prop', deepProps);
-            }
-            // for (const deepProp of deepProps) { // TODO: fix deep props }
-            value = fn.call(context, args);
+            value = fn.call(context, args) ?? null;
             fnResults.set(fn, value);
           }
+          if (expressionCache.get(fn) === (value)) {
+            write = false;
+          } else {
+            expressionResultEntries.push([fn, value]);
+          }
         } else if (deepProps.length) {
-          const changeEntry = entryFromPropName(deepProps[0], changes);
-          if (!changeEntry) continue;
-          value = changeEntry[1];
+          const [firstEntry] = deepProps;
+          const [dottedKey, deepPropKeys] = firstEntry;
+          if (deepPropCache.has(dottedKey)) {
+            value = deepPropCache.get(dottedKey);
+          } else {
+            value = deepPropFromObjects(deepPropKeys, changes, ...stores)[1];
+            args[deepPropKeys[0]] = value;
+            deepPropCache.set(dottedKey, value);
+          }
         } else {
           value = changes[key];
         }
 
         /* 3. Operate on value */
-        if (doubleNegate) {
-          value = !!value;
-        } else if (negate) {
-          value = !value;
-        }
-
-        if (subnode === 'mdw-if') {
-          // Node is element itself
-          this.toggleElement(ref, value !== null && value !== false);
-        } else if (typeof subnode === 'string') {
-          if (value === false || value == null) {
-            ref.removeAttribute(subnode);
-          } else {
-            ref.setAttribute(subnode, value === true ? '' : value);
+        if (write) {
+          if (doubleNegate) {
+            value = !!value;
+          } else if (negate) {
+            value = !value;
           }
-        } else {
-          const textNode = this.textNodeCache.get(ref).get(subnode);
-          textNode.nodeValue = value ?? '';
+
+          if (subnode === 'mdw-if') {
+            // Node is element itself
+            this.toggleElement(ref, value !== null && value !== false);
+          } else if (typeof subnode === 'string') {
+            if (value === false || value == null) {
+              ref.removeAttribute(subnode);
+            } else {
+              ref.setAttribute(subnode, value === true ? '' : value);
+            }
+          } else {
+            const textNode = this.textNodeCache.get(ref).get(subnode);
+            textNode.nodeValue = value ?? '';
+          }
         }
 
         /* 5. Mark Node as modified */
@@ -590,7 +649,11 @@ export default class Composition {
       }
     }
 
-    if (needsInitialRender) {
+    for (const [fn, value] of expressionResultEntries) {
+      expressionCache.set(fn, value);
+    }
+
+    if (isFirstRender) {
       // Appending will call constructor() on Web Components
       // Leave last
       if (targetIsShadowRoot) {
@@ -705,11 +768,30 @@ export default class Composition {
       const eventType = nodeName.slice(3);
       const [, flags, type] = eventType.match(/^([*1~]+)?(.*)$/);
 
+      let handleEvent;
+      /** @type {string} */
+      let prop;
+      /** @type {string[]} */
+      let deepProp = [];
+      if (parsedValue.startsWith('#')) {
+        handleEvent = inlineFunctions.get(parsedValue).fn;
+      } else {
+        const parsedProps = parsedValue.split('.');
+        if (parsedProps.length === 1) {
+          prop = parsedValue;
+          deepProp = [];
+        } else {
+          prop = parsedProps[0];
+          deepProp = parsedProps;
+        }
+      }
+
       this.addCompositionEventListener({
         tag,
         type,
-        handleEvent: parsedValue.startsWith('#') ? inlineFunctions.get(parsedValue).fn : null,
-        prop: parsedValue.startsWith('#') ? null : parsedValue,
+        handleEvent,
+        prop,
+        deepProp,
         once: flags?.includes('1'),
         passive: flags?.includes('~'),
         capture: flags?.includes('*'),
@@ -722,7 +804,7 @@ export default class Composition {
     let fn;
     /** @type {string[]} */
     let props;
-    /** @type {string[]} */
+    /** @type {[string, string[]][]} */
     let deepProps;
 
     /** @type {any} */
@@ -730,7 +812,6 @@ export default class Composition {
     let inlineFunctionOptions;
     // Is Inline Function?
     if (parsedValue.startsWith('#')) {
-      // TODO: Inline expressions are not observable
       inlineFunctionOptions = inlineFunctions.get(parsedValue);
       if (!inlineFunctionOptions) {
         console.warn(`Invalid interpolation value: ${parsedValue}`);
@@ -747,7 +828,8 @@ export default class Composition {
     } else {
       defaultValue = null;
       if (options?.defaults) {
-        defaultValue = valueFromPropName(parsedValue, options.defaults);
+        // TODO: Optimize
+        defaultValue = deepPropFromObject(parsedValue.split('.'), options.defaults)[1];
       }
       if (defaultValue == null && options?.injections) {
         defaultValue = valueFromPropName(parsedValue, options.injections);
@@ -770,13 +852,13 @@ export default class Composition {
         deepProps = observeResult.deepProps;
         // console.log(this.static.name, fn.name || parsedValue, combinedSet);
       } else {
-        const indexOfDot = parsedValue.indexOf('.');
-        if (indexOfDot === -1) {
+        const parsedProps = parsedValue.split('.');
+        if (parsedProps.length === 1) {
           props = [parsedValue];
           deepProps = [];
         } else {
-          props = [parsedValue.slice(0, indexOfDot)];
-          deepProps = [parsedValue];
+          props = [parsedProps[0]];
+          deepProps = [[parsedValue, parsedProps]];
           console.log('found deep props', parsedValue, props, deepProps);
         }
       }
@@ -837,7 +919,7 @@ export default class Composition {
   }
 
   /**
-   * @param {HTMLElement} element
+   * @param {Element} element
    * @return {string}
    */
   #tagElement(element) {
@@ -860,6 +942,7 @@ export default class Composition {
    *   - Would benefit from custom type handler for arrays
    * to avoid multi-iteration change-detection.
    *   - Could benefit from debounced/throttled render
+   *   - Consider remap of {item.prop} as {array[index].prop}
    * @param {Element} element
    * @param {InterpolateOptions} options
    * @return {?Composition<?>}
@@ -917,7 +1000,7 @@ export default class Composition {
       render: (root, changes, context, ...stores) => {
         console.debug('composition adapter render', root, changes);
         if (!newComposition.adapter) {
-          const instanceAnchorElement = this.referenceCache.get(root).get(tag);
+          const instanceAnchorElement = this.referenceCaches.get(root).get(tag);
           const commentAnchor = this.commentPlaceholders.get(instanceAnchorElement);
 
           newComposition.adapter = new CompositionAdapter({
@@ -1011,7 +1094,7 @@ export default class Composition {
         }
         if (hasOtherProperties) {
           // Iterate through ALL adapter items to invoke this partial change
-          const arrayInStoreEntry = entryFromPropNameSources(iterable, ...stores);
+          const arrayInStoreEntry = propFromObjects(iterable, ...stores);
           const storedArray = arrayInStoreEntry ? arrayInStoreEntry[1] : [];
           for (const [index, subElement] of adapter.elementRefs.entries()) {
             if (modifiedElements.has(subElement)) continue;
@@ -1068,7 +1151,7 @@ export default class Composition {
       let element = null;
       switch (node.nodeType) {
         case Node.ELEMENT_NODE:
-          element = node;
+          element = /** @type {Element} */ (node);
           if (element instanceof HTMLTemplateElement) {
             node = treeWalker.nextSibling();
             continue;
@@ -1149,6 +1232,9 @@ export default class Composition {
     // Run-once optimizations
     this.boundProps = [...this.bindings.keys()];
     this.allIds.reverse();
+    for (const id of this.allIds) {
+      this.cloneable.getElementById(id);
+    }
 
     this.interpolated = true;
 

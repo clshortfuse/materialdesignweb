@@ -79,7 +79,7 @@ function elementStylerMicrotaskCallback() {
     return;
   }
   /** @type {HTMLElement} */
-  const el = value.target ? this.composition.referenceCache.get(this.shadowRoot).get(value.target) : this;
+  const el = value.target ? this.composition.referenceCaches.get(this.shadowRoot).get(value.target) : this;
   const currentAnimation = el.animate(value.styles, {
     ...value.timing,
     fill: 'forwards',

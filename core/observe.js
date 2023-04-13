@@ -219,12 +219,16 @@ export function parsePropertyValue(value) {
  * @param {any} arg0
  * @param {...any} args
  * @this {any}
- * @return {{props:string[], deepProps:string[], defaultValue:any, reusable: boolean}}
+ * @return {{props:string[], deepProps:[string, string[]][], defaultValue:any, reusable: boolean}}
  */
 export function observeFunction(fn, arg0, ...args) {
+  /** @type {Set<string>} */
   const argPoked = new Set();
+  /** @type {Set<string>} */
   const argPokedDeep = new Set();
+  /** @type {Set<string>} */
   const thisPoked = new Set();
+  /** @type {Set<string>} */
   const thisPokedDeep = new Set();
 
   /**
@@ -238,27 +242,31 @@ export function observeFunction(fn, arg0, ...args) {
   function buildProxy(proxyTarget, set, deepSet, prefix) {
     return new Proxy(proxyTarget, {
       get(target, p) {
-        const arg = prefix ? `${prefix}.${p}` : p;
-        if (prefix) {
-          deepSet.add(arg);
-        } else {
-          set.add(arg);
-        }
         const value = Reflect.get(target, p);
-        if (typeof value === 'object' && value != null) {
-          console.debug('tried to arg poke object get', p, value);
-          return buildProxy(value, set, deepSet, arg);
+        if (typeof p !== 'symbol') {
+          const arg = prefix ? `${prefix}.${p}` : p;
+          if (prefix) {
+            deepSet.add(arg);
+          } else {
+            set.add(arg);
+          }
+          if (typeof value === 'object' && value != null) {
+            console.debug('tried to arg poke object get', p, value);
+            return buildProxy(value, set, deepSet, arg);
+          }
         }
         return value;
       },
       has(target, p) {
-        const arg = prefix ? `${prefix}.p` : p;
-        if (prefix) {
-          deepSet.add(arg);
-        } else {
-          set.add(arg);
-        }
         const value = Reflect.has(target, p);
+        if (typeof p !== 'symbol') {
+          const arg = prefix ? `${prefix}.p` : p;
+          if (prefix) {
+            deepSet.add(arg);
+          } else {
+            set.add(arg);
+          }
+        }
         return value;
       },
     });
@@ -278,7 +286,7 @@ export function observeFunction(fn, arg0, ...args) {
     deepProps: [
       ...argPokedDeep,
       ...thisPokedDeep,
-    ],
+    ].map((deepPropString) => [deepPropString, deepPropString.split('.')]),
     defaultValue,
     reusable,
   };

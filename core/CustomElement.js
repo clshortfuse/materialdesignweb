@@ -102,10 +102,7 @@ export default class CustomElement extends ICustomElement {
   /** @type {Map<string, typeof CustomElement>} */
   static registrations = new Map();
 
-  /**
-   * TODO: Expressions should be observable
-   * @type {typeof ICustomElement.expressions}
-   */
+  /** @type {typeof ICustomElement.expressions} */
   static expressions = this.set;
 
   /** @type {typeof ICustomElement.methods} */
@@ -468,6 +465,20 @@ export default class CustomElement extends ICustomElement {
       composed({ composition }) {
         for (const [key, listenerOptions] of Object.entries(listeners)) {
           const [, flags, type] = key.match(EVENT_PREFIX_REGEX);
+          // TODO: Make abstract
+          let prop;
+          /** @type {string[]} */
+          let deepProp = [];
+          if (typeof listenerOptions === 'string') {
+            const parsedProps = listenerOptions.split('.');
+            if (parsedProps.length === 1) {
+              prop = listenerOptions;
+              deepProp = [];
+            } else {
+              prop = parsedProps[0];
+              deepProp = parsedProps;
+            }
+          }
           composition.addCompositionEventListener({
             type,
             once: flags?.includes('1'),
@@ -477,7 +488,7 @@ export default class CustomElement extends ICustomElement {
               typeof listenerOptions === 'function'
                 ? { handleEvent: listenerOptions }
                 : (typeof listenerOptions === 'string'
-                  ? { prop: listenerOptions }
+                  ? { prop, deepProp }
                   : listenerOptions)
             ),
             ...(
@@ -750,7 +761,7 @@ export default class CustomElement extends ICustomElement {
           return element;
         }
         const formattedTag = attrNameFromPropName(tag);
-        element = composition.referenceCache.get(this.shadowRoot).get(formattedTag);
+        element = composition.referenceCaches.get(this.shadowRoot).get(formattedTag);
         if (!element) return null;
         this.#refsCache.set(tag, new WeakRef(element));
         return element;

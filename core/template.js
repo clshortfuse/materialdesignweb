@@ -7,7 +7,7 @@ import { generateUID } from './uid.js';
  * @typedef {Object} InlineFunctionEntry
  * @prop {(data:T) => any} fn
  * @prop {string[]} [props]
- * @prop {string[]} [deepProps]
+ * @prop {[string, string[]][]} [deepProps]
  * @prop {T} [defaultValue]
  */
 
