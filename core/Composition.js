@@ -1,8 +1,11 @@
 /* eslint-disable sort-class-members/sort-class-members */
+
+import CompositionAdapter from './CompositionAdapter.js';
 import { generateCSSStyleSheets, generateHTMLStyleElements } from './css.js';
-import { identifierFromElement } from './identify.js';
 import { observeFunction } from './observe.js';
+import { createEmptyComment, createEmptyDiv, createEmptyTextNode } from './optimizations.js';
 import { generateFragment, inlineFunctions } from './template.js';
+import { generateUID } from './uid.js';
 
 /**
  * @template T
@@ -26,14 +29,22 @@ import { generateFragment, inlineFunctions } from './template.js';
 /**
  * @template {any} T
  * @typedef {Object} NodeBindEntry
- * @prop {string} id
- * @prop {number} nodeType
- * @prop {string} node
+ * @prop {string} tag
+ * @prop {string|number} subnode Index of childNode or attrName
  * @prop {boolean} [negate]
  * @prop {boolean} [doubleNegate]
  * @prop {Function} [fn]
- * @prop {Set<keyof T & string>} props
+ * @prop {Function} [render] custom render function
+ * @prop {string[]} props
+ * @prop {string[]} deepProps
+ * @prop {Composition<any>} composition // Sub composition templating (eg: array)
  * @prop {T} defaultValue
+ */
+
+/**
+ * @typedef InterpolateOptions
+ * @prop {Object} [defaults] Default values to use for interpolation
+ * @prop {Object} [injections] Context-specific injected properties. (Experimental)
  */
 
 /** Splits: `{template}text{template}` as `['', 'template', 'text', 'template', '']` */
@@ -54,27 +65,33 @@ function buildShadowRootChildListener(fn) {
 }
 
 /**
- *
- * @param {Object} object
- * @param {'dot'|'bracket'} [syntax]
- * @param {Object} [target]
- * @param {string} [scope]
- * @return {Object}
+ * @example
+ *  entryFromPropName(
+ *    'address.home.houseNumber',
+ *    {
+ *      address: {
+ *        home: {
+ *          houseNumber:35,
+ *        },
+ *      }
+ *    }
+ * ) == [houseNumber, 35]
+ * @param {string} prop
+ * @param {any} source
+ * @return {null|[string, any]}
  */
-function flattenObject(object, syntax = 'dot', target = {}, scope = '') {
-  for (const [key, value] of Object.entries(object)) {
-    if (!key) continue; // Blank keys are not supported;
-    const scopedKey = scope ? `${scope}.${key}` : key;
-    target[scopedKey] = value;
-    if (value != null && typeof value === 'object') {
-      flattenObject(value, syntax, target, scopedKey);
-    }
+function entryFromPropName(prop, source) {
+  let value = source;
+  let child;
+  for (child of prop.split('.')) {
+    if (!child) throw new Error(`Invalid property: ${prop}`);
+    if (value == null) return null;
+    if (child in value === false) return null;
+    // @ts-ignore Skip cast
+    value = value[child];
   }
-  if (Array.isArray(object)) {
-    const scopedKey = scope ? `${scope}.length` : 'length';
-    target[scopedKey] = object.length;
-  }
-  return target;
+  if (value === source) return null;
+  return [child, value];
 }
 
 /**
@@ -88,22 +105,17 @@ function flattenObject(object, syntax = 'dot', target = {}, scope = '') {
  *        },
  *      }
  *    }
- * ) === {value:35}
+ * ) == [houseNumber, 35]
  * @param {string} prop
- * @param {any} source
+ * @param {any[]} sources
  * @return {null|[string, any]}
  */
-function entryFromPropName(prop, source) {
-  let value = source;
-  let child;
-  for (child of prop.split('.')) {
-    if (!child) throw new Error(`Invalid property: ${prop}`);
-    if (child in value === false) return null;
-    // @ts-ignore Skip cast
-    value = value[child];
+function entryFromPropNameSources(prop, ...sources) {
+  for (const source of sources) {
+    const entry = entryFromPropName(prop, source);
+    if (entry) return entry;
   }
-  if (value === source) return null;
-  return [child, value];
+  return null;
 }
 
 /**
@@ -132,21 +144,33 @@ export default class Composition {
   bindings = new Map();
 
   /**
+   * Collection of property bindings.
+   * @type {string[]}
+   */
+  boundProps = [];
+
+  /**
    * Data of arrays used in templates
-   * Usage of a [_for] will create an ArrayLike expectation based on key
+   * Usage of a [mdw-for] will create an ArrayLike expectation based on key
    * Only store metadata, not actual data. Currently only needs length.
    * TBD if more is needed later
    * Referenced by property key (string)
-   * @type {Map<keyof T & string, ArrayMetadata<T>}
+   * @type {CompositionAdapter}
    */
-  arrayMetadata = new Map();
+  adapter;
 
   /**
    * Collection of events to bind.
    * Indexed by ID
-   * @type {Map<string, Set<import('./typings.js').CompositionEventListener<any>>>}
+   * @type {Map<string, import('./typings.js').CompositionEventListener<any>[]>}
    */
   events = new Map();
+
+  /**
+   * Registered how element should be found in tree
+   * @type {Map<string, 'id'|'attr'>}
+   */
+  elementTagTypes = new Map();
 
   /**
    * Snapshot of composition at initial state.
@@ -155,6 +179,15 @@ export default class Composition {
    * @type {DocumentFragment}
    */
   cloneable;
+
+  /**
+   * LightDOM safe cloneable
+   * Snapshot of composition at initial state.
+   * This fragment can be cloned for first rendering, instead of calling
+   * of using `render()` to construct the initial DOM tree.
+   * @type {DocumentFragment}
+   */
+  cloneableUnscoped;
 
   /**
    * Result of interpolation of the composition template.
@@ -177,6 +210,12 @@ export default class Composition {
   watchers = [];
 
   /**
+   * Expressions results are treated as observables
+   * @type {WeakMap<Element|DocumentFragment, WeakMap<Function,any>>}
+   */
+  expressionCache = new WeakMap();
+
+  /**
    * Maintains a reference list of elements used by render target (root).
    * When root is garbage collected, references are released.
    * This includes disconnected elements.
@@ -185,13 +224,93 @@ export default class Composition {
   referenceCache = new WeakMap();
 
   /**
-   * Part of interpolation phase.
-   * Maintains a reference list of conditional elements that were removed from
-   * `cloneable` due to default state. Used to reconstruct conditional elements
-   * with conditional children in default state as well (unlike `interpolation`).
-   * @type {Map<string, {element: Element, id: string, parentId: string, commentCache: WeakMap<Element|DocumentFragment,Comment>}>}
+   * List of IDs used by template elements
+   * May be needed to be removed when adding to non-DocumentFragment
+   * @type {string[]}
    */
-  conditionalElementMetadata = new Map();
+  allIds = [];
+
+  /**
+   * Collection of IDs used for referencing elements
+   * Not meant for live DOM. Removed before attaching to document
+   */
+  temporaryIds = new Set();
+
+  /**
+   * IDs of elements not present by default
+   */
+  removeIDs = new Set();
+
+  /**
+   * @type {Map<string, (number|string)[]>}
+   */
+  subnodesByTag = new Map();
+
+  /**
+   * @type {WeakMap<Element, Map<number, Node>>}
+   */
+  textNodeCache = new WeakMap();
+
+  /** @param {Element} element */
+  hideElement(element) {
+    if (this.removedElements.has(element)) return;
+    let comment = this.commentPlaceholders.get(element);
+    if (!comment) {
+      comment = createEmptyComment();
+      this.commentPlaceholders.set(element, comment);
+    }
+    element.replaceWith(comment);
+    this.removedElements.add(element);
+  }
+
+  /** @param {Element} element */
+  showElement(element) {
+    if (!this.removedElements.has(element)) return;
+    // Skip check
+    const comment = this.commentPlaceholders.get(element);
+    comment.replaceWith(element);
+    this.removedElements.delete(element);
+  }
+
+  /**
+   * If force is not given, "toggles" element,
+   * removing it if it is present and adding it if it is not present.
+   * If force is true, adds qualifiedName.
+   * If force is false, removes qualifiedName.
+   *
+   * Returns true if qualifiedName is now present, and false otherwise.
+   * @param {Element} element
+   * @param {boolean} [force]
+   * @return {boolean}
+   */
+  toggleElement(element, force) {
+    if (force || (force == null && this.removedElements.has(element))) {
+      this.showElement(element);
+      return true;
+    }
+    this.hideElement(element);
+    return false;
+  }
+
+  /**
+   *
+   */
+  referenceTree = new WeakMap();
+
+  /**
+   * Flag set when root is initially rendered
+   * @type {WeakSet<Element|DocumentFragment>}
+   */
+  initiallyRendered = new WeakSet();
+
+  /** @type {WeakMap<Element, Comment>} */
+  commentPlaceholders = new WeakMap();
+
+  /** @type {WeakMap<HTMLElement, Node>} */
+  elementNodeCache = new WeakMap();
+
+  /** @type {WeakSet<Element>} */
+  removedElements = new WeakSet();
 
   /** Flag set when template and styles have been interpolated */
   interpolated = false;
@@ -240,13 +359,13 @@ export default class Composition {
 
   /** @param {import('./typings.js').CompositionEventListener<T>} listener */
   addCompositionEventListener(listener) {
-    const key = listener.id ?? '';
-    let set = this.events.get(key);
-    if (!set) {
-      set = new Set();
-      this.events.set(key, set);
+    const key = listener.tag ?? '';
+    const set = this.events.get(key);
+    if (set) {
+      set.push(listener);
+    } else {
+      this.events.set(key, [listener]);
     }
-    set.add(listener);
     return this;
   }
 
@@ -254,51 +373,166 @@ export default class Composition {
    * Updates component nodes based on data.
    * Expects data in JSON Merge Patch format
    * @see https://www.rfc-editor.org/rfc/rfc7386
-   * @param {DocumentFragment|ShadowRoot} root where
    * @param {Partial<?>} changes what
-   * @param {any} [context] who
-   * @param {Partial<?>} [store] If needed, where to grab extra props
-   * @return {void}
+   * @param {DocumentFragment|ShadowRoot|HTMLElement} [target] where
+   * @param {Object} [options]
+   * @param {any} [options.context]
+   * @param {any[]} [options.stores]
+   * @return {Element} anchor
    */
-  render(root, changes, context, store) {
-    if (!this.initiallyRendered) this.initialRender(root, changes);
+  render(changes, target, { context, stores } = {}) {
+    if (!this.interpolated) this.interpolate({ defaults: changes });
 
-    if (!changes) return;
+    /**
+     * Node used for retrieving reference cache (view holder)
+     * If target is ShadowRoot, target
+     * If target is HTMLElement, target
+     * If target is DocumentFragment or no target, firstElementChild of template
+     * @type {Element}
+     */
+    let anchor;
+    let references;
+    const needsInitialRender = !target || !this.initiallyRendered.has(target);
+    if (needsInitialRender) {
+      const targetIsShadowRoot = target instanceof ShadowRoot;
+      const targetIsDocumentFragment = target instanceof DocumentFragment;
+      if (target) {
+        // Handle styles first
+        if ('adoptedStyleSheets' in target) {
+          target.adoptedStyleSheets = [
+            ...target.adoptedStyleSheets,
+            ...this.adoptedStyleSheets,
+          ];
+        } else if (target instanceof ShadowRoot) {
+          target.append(document.importNode(this.stylesFragment, true));
+        }
+      }
+
+      // Create a clone of the cloneable template as a DocumentFragment
+      const instanceFragment = /** @type {DocumentFragment} */ document.importNode(this.cloneable, true);
+      // Select anchor
+      anchor = (!target || (targetIsDocumentFragment && !targetIsShadowRoot))
+        ? instanceFragment.firstElementChild
+        : target;
+
+      references = new Map();
+      this.referenceCache.set(anchor, references);
+
+      context ??= targetIsShadowRoot ? target.host : anchor;
+
+      // Bind all elements by IDs
+      /** @type {Element[]} */
+      const elementsToHide = [];
+      for (const id of this.allIds) {
+        // Find element by id (should be faster than walking)
+        const element = instanceFragment.getElementById(id);
+        references.set(id, element);
+
+        if (this.removeIDs.has(id)) {
+          elementsToHide.push(element);
+        }
+
+        if (!targetIsShadowRoot || this.temporaryIds.has(id)) {
+          console.debug('blanking id for non-shadow dom / tempId', id);
+          // element.removeAttribute('id');
+          element.id = '';
+        }
+
+        const subNodes = this.subnodesByTag.get(id);
+        if (subNodes) {
+          /** @type {Map<number, Text>}} */
+          let textNodeMap;
+          for (const subnode of this.subnodesByTag.get(id)) {
+            if (typeof subnode === 'string') continue;
+            const textNode = /** @type {Text} */ (element.childNodes.item(subnode));
+            if (textNodeMap) {
+              textNodeMap.set(subnode, textNode);
+            } else {
+              textNodeMap = new Map([[subnode, textNode]]);
+              this.textNodeCache.set(element, textNodeMap);
+            }
+          }
+        }
+        const childEvents = this.events.get(id);
+        if (childEvents) {
+          for (const event of childEvents) {
+            element.addEventListener(
+              event.type,
+              (event.handleEvent ?? entryFromPropNameSources(event.prop, changes, context, ...stores)[1]).bind(context),
+              event,
+            );
+          }
+        }
+      }
+      const rootEvents = this.events.get('');
+      if (rootEvents) {
+        for (const event of rootEvents) {
+          context.addEventListener(
+            event.type,
+            (event.handleEvent ?? entryFromPropNameSources(event.prop, changes, context, ...stores)[1]),
+            event,
+          );
+        }
+      }
+      for (const element of elementsToHide) {
+        this.hideElement(element);
+      }
+
+      // Appending will call constructor() on Web Components
+      // Leave last
+      if (targetIsDocumentFragment) {
+        target.append(instanceFragment);
+      } else {
+      // target.remove();
+      }
+
+      this.initiallyRendered.add(anchor);
+    }
 
     const fnResults = new WeakMap();
-    /** @type {WeakMap<Element, Set<string>>} */
+    /** @type {WeakMap<Element, Set<string|number>>} */
     const modifiedNodes = new WeakMap();
+    const args = {};
+    const argKeys = new Set();
 
-    // Iterate data instead of bindings.
-    // TODO: Avoid double iteration and flatten on-the-fly
-    const flattened = flattenObject(changes);
+    anchor ??= target;
+    references = this.referenceCache.get(target);
+    context ??= target instanceof ShadowRoot ? target.host : anchor;
 
-    for (const [key, rawValue] of Object.entries(flattened)) {
-      const entries = this.bindings.get(key);
-      if (!entries) continue;
-      for (const { id, node, nodeType, fn, props, negate, doubleNegate } of entries) {
+    for (const key of this.boundProps) {
+      if (key in changes === false) continue;
+      // console.log('using key', key);
+      for (const { tag, subnode, fn, props, deepProps, negate, doubleNegate, render } of this.bindings.get(key)) {
+        if (render) {
+          if (fnResults.has(render)) continue;
+          console.log('invoking custom render', key);
+          const result = render.call(this, anchor, changes, context, ...stores);
+          fnResults.set(render, result);
+          continue;
+        }
+
         /* 1. Find Element */
 
         // TODO: Avoid unnecessary element creation.
         // If element can be fully reconstructed with internal properties,
         // skip recreation of element unless it actually needs to added to DOM.
         // Requires tracing of all properties used by conditional elements.
-        const ref = this.getElement(root, id);
+        references ??= this.referenceCache.get(anchor);
+        const ref = references.get(tag);
         if (!ref) {
-          console.warn('Non existent id', id);
+          // console.warn('Composition: Non existent tag', tag);
           continue;
         }
-        if (!ref) continue;
-        if (modifiedNodes.get(ref)?.has(node)) {
-          // console.warn('Node already modified. Skipping', id, node);
+        if (modifiedNodes.get(ref)?.has(subnode)) {
+          // console.warn('Node already modified. Skipping', tag, node);
           continue;
         }
 
-        // if (!ref.parentElement && node !== '_if') {
+        // if (!ref.parentElement && node !== 'mdw-if') {
         //   if (ref.parentNode === root) {
-        //     console.debug('Offscreen? root? rendering', ref, node, ref.id, root.host.outerHTML);
+        //     console.debug('Offscreen? root? rendering', ref, node, ref.tag, root.host.outerHTML);
         //   } else {
-        //     console.debug('Offscreen rendering', ref, node, ref.id, root.host.outerHTML);
+        //     console.debug('Offscreen rendering', ref, node, ref.tag, root.host.outerHTML);
         //   }
         // }
 
@@ -308,41 +542,35 @@ export default class Composition {
           if (fnResults.has(fn)) {
             value = fnResults.get(fn);
           } else {
-            const args = structuredClone(changes);
             for (const prop of props) {
-              if (prop in flattened) continue;
-              let lastIndexOfDot = prop.lastIndexOf('.');
-              if (lastIndexOfDot === -1) {
-                // console.debug('injected shallow', prop);
-                args[prop] = store[prop];
-              } else {
-                // Relying on props being sorted...
-                console.debug('need deep', prop);
-                let entry;
-                let propSearchKey = prop;
-                let lastPropSearchKey = prop;
-                while (!entry) {
-                  entry = entryFromPropName(propSearchKey, args);
-                  if (entry) {
-                    const propName = lastPropSearchKey.slice(propSearchKey.length + 1);
-                    entry[1][propName] = valueFromPropName(lastPropSearchKey, store);
-                    break;
-                  }
-                  if (lastIndexOfDot === -1) break;
-                  lastPropSearchKey = prop;
-                  propSearchKey = prop.slice(0, lastIndexOfDot);
-                  lastIndexOfDot = propSearchKey.lastIndexOf(',');
-                }
-                if (!entry) {
-                  console.warn('what do?');
+              if (argKeys.has(prop)) continue;
+              if (prop in changes) {
+                args[prop] = changes[prop];
+                argKeys.add(prop);
+                continue;
+              }
+              for (const store of stores) {
+                console.log('prop', prop, 'not in changes');
+                if (prop in store) {
+                  args[prop] = store[prop];
+                  argKeys.add(prop);
+                  break;
                 }
               }
             }
+            if (deepProps?.length) {
+              console.warn('need deep prop', deepProps);
+            }
+            // for (const deepProp of deepProps) { // TODO: fix deep props }
             value = fn.call(context, args);
             fnResults.set(fn, value);
           }
+        } else if (deepProps.length) {
+          const changeEntry = entryFromPropName(deepProps[0], changes);
+          if (!changeEntry) continue;
+          value = changeEntry[1];
         } else {
-          value = rawValue;
+          value = changes[key];
         }
 
         /* 3. Operate on value */
@@ -352,119 +580,63 @@ export default class Composition {
           value = !value;
         }
 
-        /* 4. Find Target Node */
-        if (nodeType === Node.TEXT_NODE) {
-          const index = (node === '#text')
-            ? 0
-            : Number.parseInt(node.slice('#text'.length), 10);
-          let nodesFound = 0;
-          for (const childNode of ref.childNodes) {
-            if (childNode.nodeType !== Node.TEXT_NODE) continue;
-            if (index !== nodesFound++) continue;
-            childNode.nodeValue = value ?? '';
-            break;
+        if (subnode === 'mdw-if') {
+          // Node is element itself
+          this.toggleElement(ref, value !== null && value !== false);
+        } else if (typeof subnode === 'string') {
+          if (value === false || value == null) {
+            ref.removeAttribute(subnode);
+          } else {
+            ref.setAttribute(subnode, value === true ? '' : value);
           }
-          if (index > nodesFound) {
-            console.warn('Node not found, adding?');
-            ref.append(value);
-          }
-        } else if (node === '_if') {
-          const attached = root.contains(ref);
-          const orphaned = ref.parentElement == null && ref.parentNode !== root;
-          const shouldShow = value !== null && value !== false;
-          if (orphaned && ref.parentNode) {
-            console.warn('Orphaned with parent node?', id, { attached, orphaned, shouldShow }, ref.parentNode);
-          }
-          if (attached !== !orphaned) {
-            console.warn('Conditional state', id, { attached, orphaned, shouldShow });
-            console.warn('Not attached and not orphaned. Should do nothing?', ref, ref.parentElement);
-          }
-          if (shouldShow) {
-            if (orphaned) {
-              const metadata = this.conditionalElementMetadata.get(id);
-              if (!metadata) {
-                console.error(id);
-                throw new Error('Could not find conditional element metadata');
-              }
-
-              let comment = metadata.commentCache.get(root);
-              if (!comment) {
-                console.debug('Composition: Comment not cached, building first time');
-                const parent = metadata.parentId
-                  ? this.getElement(root, metadata.parentId)
-                  : root;
-                if (!parent) {
-                  console.error(id);
-                  throw new Error('Could not find reference parent!');
-                }
-
-                const commentText = `{#${id}}`;
-                for (const child of parent.childNodes) {
-                  if (child.nodeType !== Node.COMMENT_NODE) continue;
-                  if ((/** @type {Comment} */child).nodeValue === commentText) {
-                    comment = child;
-                    break;
-                  }
-                }
-                metadata.commentCache.set(this, comment);
-              }
-              if (comment) {
-                console.debug('Composition: Add', id, 'back', ref.outerHTML);
-                comment.replaceWith(ref);
-              } else {
-                console.warn('Could not add', id, 'back to parent');
-              }
-            }
-          } else if (!orphaned) {
-            const metadata = this.conditionalElementMetadata.get(id);
-            if (!metadata) {
-              console.error(id);
-              throw new Error(`Could not find conditional element metadata for ${id}`);
-            }
-            let comment = metadata.commentCache.get(root);
-            if (!comment) {
-              comment = new Comment(`{#${id}}`);
-              metadata.commentCache.set(this, comment);
-            }
-            console.debug('Composition: Remove', id, ref.outerHTML);
-            ref.replaceWith(comment);
-          }
-        } else if (value === false || value == null) {
-          ref.removeAttribute(node);
         } else {
-          ref.setAttribute(node, value === true ? '' : value);
+          const textNode = this.textNodeCache.get(ref).get(subnode);
+          textNode.nodeValue = value ?? '';
         }
 
         /* 5. Mark Node as modified */
-        let set = modifiedNodes.get(ref);
-        if (!set) {
-          set = new Set();
-          modifiedNodes.set(ref, set);
+        const set = modifiedNodes.get(ref);
+        if (set) {
+          set.add(subnode);
+        } else {
+          modifiedNodes.set(ref, new Set([subnode]));
         }
-        set.add(node);
       }
     }
+    return anchor;
   }
 
   /**
    * @param {Attr|Text} node
    * @param {Element} element
-   * @param {Object} [defaults]
+   * @param {InterpolateOptions} [options]
    * @param {string} [parsedValue]
    * @return {boolean} Remove node
    */
-  #interpolateNode(node, element, defaults, parsedValue) {
+  #interpolateNode(node, element, options, parsedValue) {
     const { nodeValue, nodeName, nodeType } = node;
 
+    /** @type {Attr} */
+    let attr;
+    /** @type {Text} */
+    let text;
+    if (nodeType === Node.ATTRIBUTE_NODE) {
+      attr = /** @type {Attr} */ (node);
+    } else {
+      text = /** @type {Text} */ (node);
+    }
+
+    // 1. Get template strings(s) in node if not passed
     if (parsedValue == null) {
       if (!nodeValue) return false;
       const trimmed = nodeValue.trim();
       if (!trimmed) return false;
-      if (nodeType === Node.ATTRIBUTE_NODE) {
+      if (attr) {
         if (trimmed[0] !== '{') return false;
         const { length } = trimmed;
         if (trimmed[length - 1] !== '}') return false;
         parsedValue = trimmed.slice(1, -1);
+        // TODO: Support segmented attribute values
       } else {
         // Split text node into segments
         // TODO: Benchmark indexOf pre-check vs regex
@@ -474,17 +646,16 @@ export default class Composition {
         if (segments.length === 3 && !segments[0] && !segments[2]) {
           parsedValue = segments[1];
         } else {
-          segments.forEach((segment, index) => {
+          for (const [index, segment] of segments.entries()) {
             // is even = is template string
             if (index % 2) {
-              const newNode = new Text();
-              node.before(newNode);
-              this.#interpolateNode(newNode, element, defaults, segment);
-            } else {
-              if (!segment) return; // blank
-              node.before(segment);
+              const newNode = createEmptyTextNode();
+              text.before(newNode);
+              this.#interpolateNode(newNode, element, options, segment);
+            } else if (segment) {
+              text.before(segment);
             }
-          });
+          }
           // node.remove();
           return true;
         }
@@ -504,25 +675,24 @@ export default class Composition {
     let isEvent;
     let textNodeIndex;
 
-    if (nodeType === Node.TEXT_NODE) {
+    if (text) {
       // eslint-disable-next-line unicorn/consistent-destructuring
-      if (element !== node.parentElement) {
+      if (element !== text.parentElement) {
         console.warn('mismatch?');
-        element = node.parentElement;
+        element = text.parentElement;
       }
       textNodeIndex = 0;
-      let prev = node;
+      /** @type {ChildNode} */
+      let prev = text;
       while ((prev = prev.previousSibling)) {
-        if (prev.nodeType === Node.TEXT_NODE) {
-          textNodeIndex++;
-        }
+        textNodeIndex++;
       }
     } else {
       // @ts-ignore Skip cast
       // eslint-disable-next-line unicorn/consistent-destructuring
-      if (element !== node.ownerElement) {
+      if (element !== attr.ownerElement) {
         console.warn('mismatch?');
-        element = node.ownerElement;
+        element = attr.ownerElement;
       }
       if (nodeName.startsWith('on')) {
         // Do not interpolate inline event listeners
@@ -531,42 +701,38 @@ export default class Composition {
       }
     }
 
-    const id = identifierFromElement(element, true);
-
     if (isEvent) {
+      element.removeAttribute(nodeName);
+      const tag = this.#tagElement(element);
       const eventType = nodeName.slice(3);
       const [, flags, type] = eventType.match(/^([*1~]+)?(.*)$/);
-      const options = {
+
+      this.addCompositionEventListener({
+        tag,
+        type,
+        handleEvent: parsedValue.startsWith('#') ? inlineFunctions.get(parsedValue).fn : null,
+        prop: parsedValue.startsWith('#') ? null : parsedValue,
         once: flags?.includes('1'),
         passive: flags?.includes('~'),
         capture: flags?.includes('*'),
-      };
+      });
 
-      element.removeAttribute(nodeName);
-
-      let set = this.events.get(id);
-      if (!set) {
-        set = new Set();
-        this.events.set(id, set);
-      }
-      if (parsedValue.startsWith('#')) {
-        set.add({ type, handleEvent: inlineFunctions.get(parsedValue).fn, ...options });
-      } else {
-        set.add({ type, prop: parsedValue, ...options });
-      }
       return false;
     }
 
     /** @type {Function} */
     let fn;
-    /** @type {Set<string>} */
+    /** @type {string[]} */
     let props;
+    /** @type {string[]} */
+    let deepProps;
 
     /** @type {any} */
-    let defaultValue;
+    let defaultValue = null;
     let inlineFunctionOptions;
     // Is Inline Function?
     if (parsedValue.startsWith('#')) {
+      // TODO: Inline expressions are not observable
       inlineFunctionOptions = inlineFunctions.get(parsedValue);
       if (!inlineFunctionOptions) {
         console.warn(`Invalid interpolation value: ${parsedValue}`);
@@ -575,29 +741,51 @@ export default class Composition {
       if (inlineFunctionOptions.props) {
         console.log('This function has already been called. Reuse props', inlineFunctionOptions, this);
         props = inlineFunctionOptions.props;
+        deepProps = inlineFunctionOptions.deepProps;
         defaultValue = inlineFunctionOptions.defaultValue ?? null;
       } else {
         defaultValue = inlineFunctionOptions.fn;
       }
     } else {
-      defaultValue = valueFromPropName(parsedValue, defaults);
+      defaultValue = null;
+      if (options?.defaults) {
+        defaultValue = valueFromPropName(parsedValue, options.defaults);
+      }
+      if (defaultValue == null && options?.injections) {
+        defaultValue = valueFromPropName(parsedValue, options.injections);
+        console.log('default value from injection', parsedValue, { defaultValue });
+      }
     }
 
     if (!props) {
       if (typeof defaultValue === 'function') {
         // Value must be reinterpolated and function observed
-        const observeResult = observeFunction.call(this, defaultValue, defaults);
+        const observeResult = observeFunction.call(this, defaultValue, options?.defaults);
+        let injectionResult;
+        if (options?.injections) {
+          injectionResult = observeFunction.call(this, defaultValue, options?.injections);
+          console.log('injection results', injectionResult);
+        }
         fn = defaultValue;
         defaultValue = observeResult.defaultValue;
         props = observeResult.props;
+        deepProps = observeResult.deepProps;
         // console.log(this.static.name, fn.name || parsedValue, combinedSet);
       } else {
-        props = new Set([parsedValue]);
+        const indexOfDot = parsedValue.indexOf('.');
+        if (indexOfDot === -1) {
+          props = [parsedValue];
+          deepProps = [];
+        } else {
+          props = [parsedValue.slice(0, indexOfDot)];
+          deepProps = [parsedValue];
+          console.log('found deep props', parsedValue, props, deepProps);
+        }
       }
     }
 
     if (typeof defaultValue === 'symbol') {
-      console.warn(': Invalid binding:', parsedValue);
+      console.warn('Invalid binding:', parsedValue);
       defaultValue = null;
     }
 
@@ -610,62 +798,276 @@ export default class Composition {
     if (inlineFunctionOptions) {
       inlineFunctionOptions.defaultValue = defaultValue;
       inlineFunctionOptions.props = props;
-    }
-
-    // Bind
-    const parsedNodeName = textNodeIndex ? nodeName + textNodeIndex : nodeName;
-    const entry = { id, node: parsedNodeName, fn, props, nodeType, defaultValue, negate, doubleNegate };
-    for (const prop of props) {
-      let set = this.bindings.get(prop);
-      if (!set) {
-        set = new Set();
-        this.bindings.set(prop, set);
-      }
-      set.add(entry);
+      inlineFunctionOptions.deepProps = deepProps;
     }
 
     // Mutate
 
-    if (nodeType === Node.TEXT_NODE) {
+    let tag;
+    let remove = false;
+    if (text) {
       node.nodeValue = defaultValue ?? '';
-    } else if (nodeName === '_if') {
+    } else if (nodeName === 'mdw-if') {
+      tag = this.#tagElement(element);
       element.removeAttribute(nodeName);
       if (defaultValue == null || defaultValue === false) {
         // If default state is removed, mark for removal
-        return true;
+        remove = true;
+        this.removeIDs.add(tag);
       }
     } else if (defaultValue == null || defaultValue === false) {
       element.removeAttribute(nodeName);
     } else {
       element.setAttribute(nodeName, defaultValue === true ? '' : defaultValue);
     }
-    return false;
+
+    tag ??= this.#tagElement(element);
+    // Bind
+    const subnode = textNodeIndex ?? nodeName;
+    const entry = { tag, subnode, fn, props, deepProps, nodeType, defaultValue, negate, doubleNegate };
+    const subnodeArray = this.subnodesByTag.get(tag);
+    if (subnodeArray) {
+      subnodeArray.push(subnode);
+    } else {
+      this.subnodesByTag.set(tag, [subnode]);
+    }
+    for (const prop of props) {
+      this.addBinding(prop, entry);
+    }
+
+    return remove;
   }
 
   /**
-   * @param {Object} [defaults]
+   * @param {HTMLElement} element
+   * @return {string}
    */
-  interpolate(defaults) {
+  #tagElement(element) {
+    let id = element.id;
+    if (id) {
+      if (!this.allIds.includes(id)) {
+        this.allIds.push(id);
+      }
+    } else {
+      id = generateUID();
+      this.temporaryIds.add(id);
+      this.allIds.push(id);
+      element.id = id;
+    }
+    return id;
+  }
+
+  /**
+   * TODO: Subtemplating lacks optimization, though functional.
+   *   - Would benefit from custom type handler for arrays
+   * to avoid multi-iteration change-detection.
+   *   - Could benefit from debounced/throttled render
+   * @param {Element} element
+   * @param {InterpolateOptions} options
+   * @return {?Composition<?>}
+   */
+  interpolateIterable(element, options) {
+    // TODO: Microbenchmark element.attributes
+    const forAttr = element.getAttribute('mdw-for');
+    const trimmed = forAttr?.trim();
+    if (!trimmed) {
+      console.warn('Malformed mdw-for found at', element);
+      return null;
+    }
+
+    if (trimmed[0] !== '{') {
+      console.warn('Malformed mdw-for found at', element);
+      return null;
+    }
+    const { length } = trimmed;
+    if (trimmed[length - 1] !== '}') {
+      console.warn('Malformed mdw-for found at', element);
+      return null;
+    }
+    const parsedValue = trimmed.slice(1, -1);
+    const [valueName, iterable] = parsedValue.split(/\s+of\s+/);
+    element.removeAttribute('mdw-for');
+    // Create a new composition targetting element as root
+
+    const elementAnchor = createEmptyDiv();
+    element.replaceWith(elementAnchor);
+    const tag = this.#tagElement(elementAnchor);
+    this.removeIDs.add(tag);
+
+    const newComposition = new Composition();
+    newComposition.template.append(element);
+    // Move uninterpolated element to new composition template.
+    const injections = {
+      ...options.injections,
+      [valueName]: null,
+    };
+
+    /** @type {NodeBindEntry<?>} */
+    const entry = {
+      tag,
+      composition: newComposition,
+      /**
+       * Updates component nodes based on data.
+       * Expects data in JSON Merge Patch format
+       * @see https://www.rfc-editor.org/rfc/rfc7386
+       * @param {DocumentFragment|ShadowRoot} root where
+       * @param {Partial<?>} changes what
+       * @param {any} [context] who
+       * @param {Partial<?>[]} [stores] If needed, where to grab extra props
+       * @return {void}
+       */
+      render: (root, changes, context, ...stores) => {
+        console.debug('composition adapter render', root, changes);
+        if (!newComposition.adapter) {
+          const instanceAnchorElement = this.referenceCache.get(root).get(tag);
+          const commentAnchor = this.commentPlaceholders.get(instanceAnchorElement);
+
+          newComposition.adapter = new CompositionAdapter({
+            anchorNode: commentAnchor,
+          });
+        }
+
+        const { adapter, bindings } = newComposition;
+        const arraySource = changes[iterable];
+        const modifiedElements = new Set();
+        let hasOtherProperties = false;
+        for (const [key] of bindings) {
+          if (key === iterable) continue;
+          if (key in changes) {
+            hasOtherProperties = true;
+            break;
+          }
+        }
+        if (arraySource) {
+          const innerChanges = { ...changes };
+          let length = null;
+          if (Array.isArray(arraySource)) {
+            console.warn('Full render of array', arraySource);
+            length = arraySource.length;
+            for (let i = adapter.domRefs.length - 1; i >= length; i--) {
+              adapter.removeByIndex(i);
+            }
+            for (const [index, item] of arraySource.entries()) {
+              if (index >= length) {
+                console.log('short-circuiting at', index);
+                break;
+              }
+              let adapterElement = adapter.elementRefs[index];
+              innerChanges[valueName] = item;
+              const renderedElement = newComposition.render(
+                innerChanges,
+                adapterElement,
+                { context, stores },
+              );
+              if (!adapterElement) {
+                adapterElement = renderedElement;
+                adapter.insertByIndex(index, adapterElement);
+              }
+
+              modifiedElements.add(adapterElement);
+            }
+          } else {
+            /** @type {number[]} */
+            const removals = [];
+            if ('length' in arraySource) {
+              console.log('length has changed');
+              length = arraySource.length;
+              for (let i = adapter.domRefs.length - 1; i >= length; i--) {
+                console.log('fast removing', i);
+                adapter.removeByIndex(i);
+              }
+            }
+
+            for (const [key, item] of Object.entries(arraySource)) {
+              if (key !== 'length') {
+                const index = Number.parseInt(key, 10);
+                if (length != null && index >= length) {
+                  console.log('short-circuiting at', index);
+                  break;
+                }
+                if (Number.isNaN(index)) {
+                  console.warn('NOT A NUMBER?', changes);
+                } else if (item == null) {
+                  console.warn('null value in object at', index);
+                  removals.push(index);
+                } else {
+                  let adapterElement = adapter.elementRefs[index];
+                  innerChanges[valueName] = item;
+                  const renderedElement = newComposition.render(
+                    innerChanges,
+                    adapterElement,
+                    { context, stores },
+                  );
+                  if (!adapterElement) {
+                    adapterElement = renderedElement;
+                    adapter.insertByIndex(index, adapterElement);
+                  }
+                  modifiedElements.add(adapterElement);
+                }
+              }
+            }
+            for (const index of removals.reverse()) {
+              adapter.removeByIndex(index);
+            }
+          }
+        }
+        if (hasOtherProperties) {
+          // Iterate through ALL adapter items to invoke this partial change
+          const arrayInStoreEntry = entryFromPropNameSources(iterable, ...stores);
+          const storedArray = arrayInStoreEntry ? arrayInStoreEntry[1] : [];
+          for (const [index, subElement] of adapter.elementRefs.entries()) {
+            if (modifiedElements.has(subElement)) continue;
+            // Item is not part of change, is part of store
+            newComposition.render(
+              changes,
+              subElement,
+              {
+                context,
+                stores: stores.concat({
+                  item: storedArray[index],
+                }),
+              },
+            );
+
+            modifiedElements.add(subElement);
+          }
+        }
+      },
+    };
+    newComposition.interpolate({
+      defaults: options.defaults,
+      injections,
+    });
+    for (const subProp of newComposition.bindings.keys()) {
+      if (subProp !== iterable) {
+        console.log('subtemplate rendering will require prop:', subProp);
+        // Add binding to parent property
+        this.addBinding(subProp, entry);
+      }
+    }
+    console.log('adding', iterable, 'bind to', this);
+    this.addBinding(iterable, entry);
+    return newComposition;
+  }
+
+  /**
+   * @param {InterpolateOptions} [options]
+   */
+  interpolate(options) {
     // console.log('Template', [...this.template.children].map((child) => child.outerHTML).join('\n'));
 
     // Copy template before working on it
     // Store into `cloneable` to split later into `interpolation`
     this.cloneable = /** @type {DocumentFragment} */ (this.template.cloneNode(true));
 
-    /**
-     * Track elements to be removed before using for cloning
-     * @type {Element[]}
-     */
-    const removalList = [];
-
     const TREE_WALKER_FILTER = 5; /* NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT */
 
     const treeWalker = document.createTreeWalker(this.cloneable, TREE_WALKER_FILTER);
+    /** Note: `node` and treeWalker.currentNode may deviate */
     let node = treeWalker.nextNode();
     while (node) {
       /** @type {Element} */
       let element = null;
-      let removeElement = false;
       switch (node.nodeType) {
         case Node.ELEMENT_NODE:
           element = node;
@@ -689,27 +1091,26 @@ export default class Composition {
             node = treeWalker.nextSibling();
             continue;
           }
-          for (const attr of [...element.attributes].reverse()) {
-            if (attr.nodeName === '_if') {
-              // Ensure elements to be removed has identifiable parent
-              const id = identifierFromElement(element, true);
-              const parentId = element.parentElement
-                ? identifierFromElement(element.parentElement, true)
-                : null;
-              this.conditionalElementMetadata.set(id, {
-                element,
-                id,
-                parentId,
-                commentCache: new WeakMap(),
-              });
+
+          if (element.hasAttribute('mdw-for')) {
+            node = treeWalker.nextSibling();
+            this.interpolateIterable(element, options);
+          } else {
+            const idAttr = element.attributes.id;
+            if (idAttr) {
+              this.#interpolateNode(idAttr, element, options);
+              this.#tagElement(element);
             }
-            removeElement ||= this.#interpolateNode(attr, element, defaults);
+            for (const attr of [...element.attributes].reverse()) {
+              if (attr.nodeName === 'id') continue; // Already handled
+              this.#interpolateNode(attr, element, options);
+            }
           }
 
           break;
         case Node.TEXT_NODE:
           element = node.parentNode;
-          if (this.#interpolateNode(/** @type {Text} */ (node), element, defaults)) {
+          if (this.#interpolateNode(/** @type {Text} */ (node), element, options)) {
             const nextNode = treeWalker.nextNode();
             node.remove();
             node = nextNode;
@@ -719,9 +1120,6 @@ export default class Composition {
           break;
         default:
           throw new Error(`Unexpected node type: ${node.nodeType}`);
-      }
-      if (removeElement) {
-        removalList.push(element);
       }
       node = treeWalker.nextNode();
     }
@@ -734,13 +1132,9 @@ export default class Composition {
 
     // Remove elements from `cloneable` and place comment placeholders
     // Remove in reverse so conditionals within conditionals are properly isolated
-    for (const element of [...removalList].reverse()) {
-      const { id } = element;
-      element.replaceWith(new Comment(`{#${id}}`));
-    }
 
     for (const watcher of this.watchers) {
-      this.bindWatcher(watcher, defaults);
+      this.bindWatcher(watcher, options?.defaults);
     }
 
     if ('adoptedStyleSheets' in document) {
@@ -760,214 +1154,6 @@ export default class Composition {
   }
 
   /**
-   * Updates component nodes based on data
-   * Expects data in JSON Merge Patch format
-   * @see https://www.rfc-editor.org/rfc/rfc7386
-   * @param {DocumentFragment|ShadowRoot} root where
-   * @param {Partial<?>} data what
-   * @return {void}
-   */
-  initialRender(root, data) {
-    if (!this.interpolated) this.interpolate(data);
-
-    if ('adoptedStyleSheets' in root) {
-      root.adoptedStyleSheets = [
-        ...root.adoptedStyleSheets,
-        ...this.adoptedStyleSheets,
-      ];
-    } else if (root instanceof ShadowRoot) {
-      root.append(this.stylesFragment.cloneNode(true));
-    } else {
-      // TODO: Support document styles
-      // console.warn('Cannot apply styles to singular element');
-    }
-
-    root.append(this.cloneable.cloneNode(true));
-
-    // console.log('Initial render', [...root.children].map((child) => child.outerHTML).join('\n'));
-
-    /** @type {EventTarget} */
-    const rootEventTarget = root instanceof ShadowRoot ? root.host : root;
-    // Bind events in reverse order to support stopImmediatePropagation
-    for (const [id, events] of [...this.events].reverse()) {
-      // Prepare all event listeners first
-      for (const entry of [...events].reverse()) {
-        let listener = entry.listener;
-        if (!listener) {
-          if (root instanceof ShadowRoot) {
-            listener = entry.handleEvent ?? valueFromPropName(entry.prop, data);
-            if (id) {
-              // Wrap to retarget this
-              listener = buildShadowRootChildListener(listener);
-            }
-            // Cache and reuse
-            entry.listener = listener;
-            // console.log('caching listener', entry);
-          } else {
-            throw new TypeError('Anonymous event listeners cannot be used in templates');
-            // console.warn('creating new listener', entry);
-            // listener = entry.handleEvent ?? ((event) => {
-            //   valueFromPropName(entry.prop, data)(event);
-            // });
-          }
-        }
-        const eventTarget = id ? root.getElementById(id) : rootEventTarget;
-        if (!eventTarget) {
-          // Element is not available yet. Bind on reference
-          console.debug('Composition: Skip bind events for', id);
-          continue;
-        }
-        eventTarget.addEventListener(entry.type, listener, entry);
-      }
-    }
-
-    this.initiallyRendered = true;
-  }
-
-  /**
-   * @param {string} id
-   * @param {Element} element
-   */
-  attachEventListeners(id, element) {
-    const events = this.events.get(id);
-    if (events) {
-      console.debug('attaching events for', id);
-    } else {
-      // console.log('no events for', id);
-      return;
-    }
-    for (const entry of [...this.events.get(id)].reverse()) {
-      const { listener } = entry;
-      if (!listener) {
-        throw new Error('Template must be interpolated before attaching events');
-      }
-      element.addEventListener(entry.type, listener, entry);
-    }
-  }
-
-  /**
-   * @param {Element|DocumentFragment} root
-   * @return {Map<string,Element>}
-   */
-  getReferences(root) {
-    let references = this.referenceCache.get(root);
-    if (!references) {
-      references = new Map();
-      this.referenceCache.set(root, references);
-    }
-    return references;
-  }
-
-  /**
-   * @param {ShadowRoot|DocumentFragment} root
-   * @param {string} id
-   * @return {Element}
-   */
-  getElement(root, id) {
-    const references = this.getReferences(root);
-    let element = references.get(id);
-    if (element) {
-      // console.log('Returning from cache', id);
-      return element;
-    }
-    if (element === null) return null; // Cached null response
-
-    // Undefined
-
-    // console.log('Search in DOM', id);
-    element = root.getElementById(id);
-
-    if (element) {
-      // console.log('Found in DOM', id);
-      references.set(id, element);
-      return element;
-    }
-
-    // Element not in DOM means child of conditional element
-    /** @type {Element} */
-    let anchorElement;
-
-    // Check if element is conditional
-    let cloneTarget = this.conditionalElementMetadata.get(id)?.element;
-
-    if (!cloneTarget) {
-      // Check if element even exists in interpolation
-      // Check interpolation (full-tree) first
-      const interpolatedElement = this.interpolation.getElementById(id);
-      if (!interpolatedElement) {
-        console.warn('Not in full-tree', id);
-        // Cache not in full composition
-        references.set(id, null);
-        return null;
-      }
-      // Iterate backgrounds until closest conditional element
-      // const anchorElementId = this.template.getElementById(id).closest('[_if]').id;
-      // anchorElement = this.references.get(anchorElementId)  this.interpolation.getElementById(anchorElementId).cloneNode(true);
-      let parentElement = interpolatedElement;
-      while ((parentElement = parentElement.parentElement) != null) {
-        const parentId = parentElement.id;
-        if (!parentId) {
-          console.warn('Parent does not have ID!');
-          cloneTarget = parentElement;
-          continue;
-        }
-
-        // Parent already referenced
-        const referencedParent = references.get(parentId);
-        if (referencedParent) {
-          // Element may have been removed without ever tree-walking
-          console.debug('Parent already referenced', parentId, '>', id);
-          anchorElement = referencedParent;
-          break;
-        }
-
-        const liveElement = root.getElementById(parentId);
-        if (liveElement) {
-          console.warn('Parent in DOM and not referenced', parentId, '>', id);
-          // Parent already in DOM. Cache reference
-          references.set(parentId, liveElement);
-          anchorElement = referencedParent;
-          break;
-        }
-
-        const conditionalParent = this.conditionalElementMetadata.get(parentId)?.element;
-        if (conditionalParent) {
-          console.debug('Found parent conditional element', parentId, '>', id);
-          cloneTarget = conditionalParent;
-          break;
-        }
-
-        cloneTarget = parentElement;
-      }
-    }
-
-    anchorElement ??= /** @type {Element} */ (cloneTarget.cloneNode(true));
-
-    // Iterate downwards and cache all references
-    let node = anchorElement;
-    const iterator = document.createTreeWalker(anchorElement, NodeFilter.SHOW_ELEMENT);
-    do {
-      const nodeIdentifier = node.id;
-      if (!element && nodeIdentifier === id) {
-        element = node;
-      }
-
-      if (nodeIdentifier) {
-        // console.debug('Caching element', nodeIdentifier);
-        references.set(nodeIdentifier, node);
-        if (cloneTarget) {
-          // Attach events regardless of DOM state.
-          // EventTargets should still fire even if not part of live document
-          this.attachEventListeners(id, element);
-        }
-      } else {
-        console.warn('Could not cache node', node);
-      }
-    } while ((node = iterator.nextNode()));
-    return element;
-  }
-
-  /**
    * @param {*} fn
    * @param {any} defaults
    * @return {boolean} reusable
@@ -976,13 +1162,27 @@ export default class Composition {
     const { props, defaultValue, reusable } = observeFunction(fn, defaults);
     const entry = { fn, props, defaultValue };
     for (const prop of props) {
-      let set = this.bindings.get(prop);
-      if (!set) {
-        set = new Set();
-        this.bindings.set(prop, set);
-      }
-      set.add(entry);
+      this.addBinding(prop, entry);
     }
     return reusable;
+  }
+
+  /**
+   * @param {string} prop
+   * @param {NodeBindEntry<?>} entry
+   * @return {Set<NodeBindEntry<?>>} Mutable set of bindings for prop
+   */
+  addBinding(prop, entry) {
+    if (!this.boundProps.includes(prop)) {
+      this.boundProps.push(prop);
+    }
+    let set = this.bindings.get(prop);
+    if (set) {
+      set.add(entry);
+    } else {
+      set = new Set([entry]);
+      this.bindings.set(prop, set);
+    }
+    return set;
   }
 }

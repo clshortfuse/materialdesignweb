@@ -32,7 +32,7 @@ export default function StateMixin(Base) {
       stateTargetElement() { return this; },
     })
     .html/* html */`
-      <div id=state _if={stateLayer}
+      <div id=state mdw-if={stateLayer}
         disabled={disabledState}
         focused={focusedState}
         hovered={hoveredState}

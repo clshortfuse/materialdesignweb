@@ -89,12 +89,12 @@ export default class Icon extends CustomElement
 
   })
   .html/* html */`
-    <link _if={_showSlot} id=link rel=stylesheet href={fontLibrary} />
-    <svg _if="{showSVG}" id="svg" viewBox="{_computedViewBox}">
-      <use id="use" _if="{svg}" href="{svg}" fill="currentColor"/>
-      <path id="path" _if="{_computedSVGPath}" d="{_computedSVGPath}"/>
+    <link mdw-if={_showSlot} id=link rel=stylesheet href={fontLibrary} />
+    <svg mdw-if="{showSVG}" id="svg" viewBox="{_computedViewBox}">
+      <use id="use" mdw-if="{svg}" href="{svg}" fill="currentColor"/>
+      <path id="path" mdw-if="{_computedSVGPath}" d="{_computedSVGPath}"/>
     </svg>
-    <img _if={src} id=img
+    <img mdw-if={src} id=img
       disabled={disabled}
       alt={alt} src={src} srcset={srcset} sizes={sizes}
       crossorigin={crossOrigin} usemap={useMap} ismap={isMap}

@@ -84,7 +84,7 @@ export default class ListOption extends ListItem
       anchor.setAttribute('aria-selected', inline(({ selected }) => `${selected}`));
       anchor.setAttribute('selected', '{selected}');
       anchor.removeAttribute('href');
-      anchor.removeAttribute('_if');
+      anchor.removeAttribute('mdw-if');
 
       content.setAttribute('selected', '{selected}');
 

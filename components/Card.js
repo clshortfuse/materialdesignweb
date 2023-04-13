@@ -44,8 +44,8 @@ export default CustomElement
     },
   })
   .html/* html */`
-    <mdw-button _if={actionable} aria-label={actionLabel} id=action disabled={disabledState}></mdw-button>
-    <div _if={showBlocker} id=inert-blocker></div>
+    <mdw-button mdw-if={actionable} aria-label={actionLabel} id=action disabled={disabledState}></mdw-button>
+    <div mdw-if={showBlocker} id=inert-blocker></div>
     <slot id=slot disabled={disabledState}></slot>
   `
   .css`

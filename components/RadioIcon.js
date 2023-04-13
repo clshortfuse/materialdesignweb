@@ -26,7 +26,7 @@ export default CustomElement
   `.on({
     composed() {
       const { outline } = this.refs;
-      outline.removeAttribute('_if');
+      outline.removeAttribute('mdw-if');
       outline.setAttribute('selected', '{selected}');
     },
   })

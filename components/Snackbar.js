@@ -48,8 +48,8 @@ export default Surface
   })
   .html/* html */`
     <div id=content></div>
-    <mdw-button _if={action} id=action class=button ink={actionInk} type-style={actionTypeStyle}>{action}</mdw-button>
-    <mdw-icon-button _if={closeButton} id=close class=button icon={closeIcon} ink={closeInk}>Close</mdw-button>
+    <mdw-button mdw-if={action} id=action class=button ink={actionInk} type-style={actionTypeStyle}>{action}</mdw-button>
+    <mdw-icon-button mdw-if={closeButton} id=close class=button icon={closeIcon} ink={closeInk}>Close</mdw-button>
   `
   .on({
     composed() {

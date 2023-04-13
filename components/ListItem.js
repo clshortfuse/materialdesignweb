@@ -69,21 +69,21 @@ export default CustomElement
     },
   })
   .html/* html */`
-    <a id=anchor _if={href} href={href} disabled={disabledState} aria-labelledby=content></a>
-    <mdw-checkbox-icon id=checkbox _if={checkbox} aria-hidden=true class={checkboxClass} color={selectionColor} disabled={disabledState} icon=check selected={selected}></mdw-checkbox-icon>
-    <mdw-radio-icon id=radio _if={radio} aria-hidden=true class={radioClass} disabled={disabledState} ink={selectionColor} selected={selected}></mdw-radio-icon>
-    <mdw-box _if={avatar} id=avatar color={avatarColor} type-style=title-medium src={AvatarSrc}
+    <a id=anchor mdw-if={href} href={href} disabled={disabledState} aria-labelledby=content></a>
+    <mdw-checkbox-icon id=checkbox mdw-if={checkbox} aria-hidden=true class={checkboxClass} color={selectionColor} disabled={disabledState} icon=check selected={selected}></mdw-checkbox-icon>
+    <mdw-radio-icon id=radio mdw-if={radio} aria-hidden=true class={radioClass} disabled={disabledState} ink={selectionColor} selected={selected}></mdw-radio-icon>
+    <mdw-box mdw-if={avatar} id=avatar color={avatarColor} type-style=title-medium src={AvatarSrc}
       aria-hidden=true>{avatar}</mdw-box>
-    <mdw-icon _if={icon} id=icon ink={iconInk} src={iconSrc} aria-hidden=true>{icon}</mdw-icon>
-    <img id=img _if={src} src={src} alt={alt} video={video} />
+    <mdw-icon mdw-if={icon} id=icon ink={iconInk} src={iconSrc} aria-hidden=true>{icon}</mdw-icon>
+    <img id=img mdw-if={src} src={src} alt={alt} video={video} />
     <slot name=leading>{leading}</slot>
     <div id=content has-supporting={hasSupporting} lines={lines}>
       <slot id=slot></slot>
       <slot id=supporting name=supporting class=text lines={lines}>{supporting}</slot>
     </div>
-    <mdw-icon _if={trailingIcon} id=trailing-icon ink={trailingIconInk} src={trailingIconSrc} aria-hidden=true>{trailingIcon}</mdw-icon>
+    <mdw-icon mdw-if={trailingIcon} id=trailing-icon ink={trailingIconInk} src={trailingIconSrc} aria-hidden=true>{trailingIcon}</mdw-icon>
     <slot id=trailing name=trailing role=note>{trailing}</slot>
-    <mdw-divider _if={divider} id=divider divder={divider}></mdw-divider>
+    <mdw-divider mdw-if={divider} id=divider divder={divider}></mdw-divider>
   `
   .on({
     composed() {

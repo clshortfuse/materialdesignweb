@@ -1,4 +1,4 @@
-import { generateUID } from './identify.js';
+import { generateUID } from './uid.js';
 
 /**
  * Property are bound to an ID+Node
@@ -6,7 +6,8 @@ import { generateUID } from './identify.js';
  * @template {any} T
  * @typedef {Object} InlineFunctionEntry
  * @prop {(data:T) => any} fn
- * @prop {Set<keyof T & string>} [props]
+ * @prop {string[]} [props]
+ * @prop {string[]} [deepProps]
  * @prop {T} [defaultValue]
  */
 

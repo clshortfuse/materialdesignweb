@@ -114,7 +114,7 @@ export default CustomElement
         if (lastOpenDialog.element.dispatchEvent(cancelEvent)) {
           lastOpenDialog.element.close();
         } else {
-        // Revert pop state by pushing state again
+          // Revert pop state by pushing state again
           window.history.pushState(lastOpenDialog.state, lastOpenDialog.state.title);
         }
       }
@@ -257,9 +257,9 @@ export default CustomElement
     <dialog id=dialog aria-modal=true role=dialog
     aria-hidden={_ariaHidden}
     aria-labelledby=headline aria-describedby=slot>
-      <div _if={open} id=scrim aria-hidden=true></div>
+      <div mdw-if={open} id=scrim aria-hidden=true></div>
       <mdw-surface id=surface open={open} icon={icon} elevation={elevation} color={color} ink={ink} outlined={outlined}>
-        <mdw-icon _if={icon} id=icon class=content ink=secondary aria-hidden=true>{icon}</mdw-icon>
+        <mdw-icon mdw-if={icon} id=icon class=content ink=secondary aria-hidden=true>{icon}</mdw-icon>
         <slot id=headline name=headline on-slotchange={onSlotChange} role=header>{headline}</slot>
         <slot id=fixed name=fixed class=content on-slotchange={onSlotChange}></slot>
         <mdw-divider id=divider-top size={dividers}></mdw-divider>

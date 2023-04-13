@@ -23,7 +23,7 @@ export default Button
       `);
       shape.setAttribute('selected', '{checked}');
 
-      icon.removeAttribute('_if');
+      icon.removeAttribute('mdw-if');
       icon.setAttribute('has-icon', '{hasIcon}');
       icon.setAttribute('selected', '{checked}');
       outline.setAttribute('inner-segmented-button', '{innerSegmentedButton}');

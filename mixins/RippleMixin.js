@@ -52,7 +52,7 @@ export default function RippleMixin(Base) {
       },
     })
     .html/* html */`
-      <div id=ripple-container _if={!disabledState} aria-hidden=true></div>
+      <div id=ripple-container mdw-if={!disabledState} aria-hidden=true></div>
     `
     .events({
       '~pointerdown'(event) {

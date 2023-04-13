@@ -19,8 +19,8 @@ export default Chip
     },
   })
   .html/* html */`
-    <mdw-icon _if={!icon} id=check-icon disabled={disabledState} selected={checked} aria-hidden=true>check</mdw-icon>
-    <mdw-icon _if={computedTrailingIcon} id=trailing-icon aria-hidden=true src={trailingSrc}>{computedTrailingIcon}</mdw-icon>
+    <mdw-icon mdw-if={!icon} id=check-icon disabled={disabledState} selected={checked} aria-hidden=true>check</mdw-icon>
+    <mdw-icon mdw-if={computedTrailingIcon} id=trailing-icon aria-hidden=true src={trailingSrc}>{computedTrailingIcon}</mdw-icon>
   `
   .on({
     composed() {
@@ -29,7 +29,7 @@ export default Chip
       shape.setAttribute('selected', '{checked}');
       shape.setAttribute('icon', '');
       shape.setAttribute('trailing-icon', '{computedTrailingIcon}');
-      icon.setAttribute('_if', '{icon}');
+      icon.setAttribute('mdw-if', '{icon}');
       icon.setAttribute('ink', '{iconInk}');
 
       control.removeAttribute('role');

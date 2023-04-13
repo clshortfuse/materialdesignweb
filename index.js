@@ -77,4 +77,4 @@ export * as themeLoader from './theming/loader.js';
 
 export * as theming from './theming/index.js';
 
-export * as jsonMergePatch from './utils/jsonMergePatch.js';
+export * as jsonMergePatch from './core/jsonMergePatch.js';

@@ -114,7 +114,7 @@ type CompositionEventMap = HTMLElementEventMap & {
 
 type CompositionEventListener<T, K = keyof CompositionEventMap> = {
   type?: K
-  id?: string,
+  tag?: string,
   capture?: boolean;
   once?: boolean;
   passive?: boolean;

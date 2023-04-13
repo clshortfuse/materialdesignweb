@@ -193,14 +193,14 @@ export default class MenuItem extends ListOption
 
       anchor.after(html`
         <mdw-icon id=selection
-          _if=${({ checkbox, radio }) => checkbox ?? radio ?? false}
+          mdw-if=${({ checkbox, radio }) => checkbox ?? radio ?? false}
           class=${({ checkbox, radio }) => checkbox || radio || 'leading'}
           selected={selected}>check</mdw-icon>
       `);
 
       trailing.setAttribute('type-style', 'label-large');
 
-      trailingIcon.setAttribute('_if', '{computeTrailingIcon}');
+      trailingIcon.setAttribute('mdw-if', '{computeTrailingIcon}');
       trailingIcon.textContent = '{computeTrailingIcon}';
     },
     _formResetChanged(oldValue, newValue) {

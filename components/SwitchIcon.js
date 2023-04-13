@@ -67,7 +67,7 @@ export default CustomElement
       track.id = 'track';
       track.setAttribute('selected', '{checked}');
       track.setAttribute('disabled', '{disabled}');
-      outline.removeAttribute('_if');
+      outline.removeAttribute('mdw-if');
       outline.setAttribute('selected', '{checked}');
       outline.setAttribute('errored', '{errored}');
       outline.setAttribute('disabled', '{disabled}');

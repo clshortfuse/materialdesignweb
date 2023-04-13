@@ -71,7 +71,7 @@ const elementStylerHasQueue = new WeakSet();
  */
 
 /** @this {CustomElement} */
-function elementStylerRAFCallback() {
+function elementStylerMicrotaskCallback() {
   let previousAnimation = elementStylerLastAnimation.get(this);
   const value = elementStylerValues.get(this);
   if (!value) {
@@ -79,7 +79,7 @@ function elementStylerRAFCallback() {
     return;
   }
   /** @type {HTMLElement} */
-  const el = value.target ? this.composition.getElement(this.shadowRoot, value.target) : this;
+  const el = value.target ? this.composition.referenceCache.get(this.shadowRoot).get(value.target) : this;
   const currentAnimation = el.animate(value.styles, {
     ...value.timing,
     fill: 'forwards',
@@ -119,7 +119,7 @@ export const ELEMENT_STYLER_TYPE = {
 
     // Animation styles may trickle in steps, so queue a microtask before doing any work.
     // Using requestAnimationFrame would fire one frame too late for CSS animations already scheduled
-    queueMicrotask(elementStylerRAFCallback.bind(this));
+    queueMicrotask(elementStylerMicrotaskCallback.bind(this));
     elementStylerHasQueue.add(this);
   },
 };

@@ -1,6 +1,5 @@
-import { buildMergePatch, hasMergePatch } from '../utils/jsonMergePatch.js';
-
 import { attrNameFromPropName } from './dom.js';
+import { buildMergePatch, hasMergePatch } from './jsonMergePatch.js';
 
 /** @typedef {import('./typings.js').ObserverPropertyType} ObserverPropertyType */
 
@@ -218,56 +217,68 @@ export function parsePropertyValue(value) {
 /**
  * @param {(data: Partial<any>) => any} fn
  * @param {any} arg0
- * @param {any} args[]
  * @param {...any} args
  * @this {any}
- * @return {{props:Set<string>, defaultValue:any, reusable: boolean}}
+ * @return {{props:string[], deepProps:string[], defaultValue:any, reusable: boolean}}
  */
 export function observeFunction(fn, arg0, ...args) {
   const argPoked = new Set();
+  const argPokedDeep = new Set();
   const thisPoked = new Set();
+  const thisPokedDeep = new Set();
 
   /**
    * @template {Object} T
    * @param {T} proxyTarget
    * @param {Set<string>} set
+   * @param {Set<string>} deepSet
    * @param {string} [prefix]
    * @return {T}
    */
-  function buildProxy(proxyTarget, set, prefix) {
+  function buildProxy(proxyTarget, set, deepSet, prefix) {
     return new Proxy(proxyTarget, {
       get(target, p) {
         const arg = prefix ? `${prefix}.${p}` : p;
-        set.add(arg);
+        if (prefix) {
+          deepSet.add(arg);
+        } else {
+          set.add(arg);
+        }
         const value = Reflect.get(target, p);
         if (typeof value === 'object' && value != null) {
           console.debug('tried to arg poke object get', p, value);
-          return buildProxy(value, set, arg);
+          return buildProxy(value, set, deepSet, arg);
         }
         return value;
       },
       has(target, p) {
         const arg = prefix ? `${prefix}.p` : p;
-        set.add(arg);
+        if (prefix) {
+          deepSet.add(arg);
+        } else {
+          set.add(arg);
+        }
         const value = Reflect.has(target, p);
         return value;
       },
     });
   }
 
-  const argProxy = buildProxy(arg0, argPoked);
-  const thisProxy = buildProxy(this ?? arg0, thisPoked);
+  const argProxy = buildProxy(arg0, argPoked, argPokedDeep);
+  const thisProxy = buildProxy(this ?? arg0, thisPoked, thisPokedDeep);
   const defaultValue = fn.call(thisProxy, argProxy, ...args);
   /* Arrow functions can reused if they don't poke `this` */
   const reusable = fn.name ? true : !thisPoked.size;
 
-  const props = new Set([
-    ...argPoked,
-    ...thisPoked,
-  ]);
-
   return {
-    props,
+    props: [
+      ...argPoked,
+      ...thisPoked,
+    ],
+    deepProps: [
+      ...argPokedDeep,
+      ...thisPokedDeep,
+    ],
     defaultValue,
     reusable,
   };
@@ -314,8 +325,7 @@ export function defineObservableProperty(object, key, options) {
       if (config.diff) {
         changes = config.diff.call(this, oldValue, newValue);
         if (changes == null) return false;
-      }
-      if (config.is.call(this, oldValue, newValue)) return false;
+      } else if (config.is.call(this, oldValue, newValue)) return false;
     }
 
     config.values.set(this, newValue);

@@ -40,17 +40,17 @@ export default CustomElement
   .html/* html */`
     <div id=determinate style="{_determinateStyle}">
       <progress id=progress value={value} max={max} circle={circle}></progress>
-      <div _if={circle} id=circle>
+      <div mdw-if={circle} id=circle>
         <div id=semi1 class=semi></div>
         <div id=semi2 class=semi></div>
       </div>
     </div>
-    <div _if={!value} id=indeterminate>
-      <div _if={!circle} id=indeterminate-line>
+    <div mdw-if={!value} id=indeterminate>
+      <div mdw-if={!circle} id=indeterminate-line>
         <div id=line1 class=line value={value}></div>
         <div id=line2 class=line value={value}></div>
       </div>
-      <div _if={circle} id=indeterminate-circle>
+      <div mdw-if={circle} id=indeterminate-circle>
         <div id=arc2 class=arc></div>
         <div id=arc3 class=arc></div>
         <div id=arc4 class=arc></div>

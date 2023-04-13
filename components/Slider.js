@@ -178,7 +178,7 @@ export default CustomElement
   })
   .html/* html */`
     <div id=track style={computeTrackStyle} aria-hidden=true disabled={disabledState}>
-      <div _if={ticks} id=ticks></div>
+      <div mdw-if={ticks} id=ticks></div>
       <div id=track-active></div>
       <div id=thumb-anchor>
         <div id=thumb></div>

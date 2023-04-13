@@ -95,8 +95,8 @@ export default CustomElement
       <slot id=headline-slot></slot>
     </div>
     <slot id=trailing name=trailing on-slotchange={refreshTabIndexes}></slot>
-    <div _if=${({ size }) => size === 'medium' || size === 'large'} id=companion aria-hidden=true size={size}>
-      <div _if={showSurfaceTint} id=companion-tint raised={_raised} class=surface-tint color={color}></div>
+    <div mdw-if=${({ size }) => size === 'medium' || size === 'large'} id=companion aria-hidden=true size={size}>
+      <div mdw-if={showSurfaceTint} id=companion-tint raised={_raised} class=surface-tint color={color}></div>
       <slot id=companion-slot name=companion size={size}>{headline}</span>
     </div>
   `

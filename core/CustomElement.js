@@ -102,7 +102,10 @@ export default class CustomElement extends ICustomElement {
   /** @type {Map<string, typeof CustomElement>} */
   static registrations = new Map();
 
-  /** @type {typeof ICustomElement.expressions} */
+  /**
+   * TODO: Expressions should be observable
+   * @type {typeof ICustomElement.expressions}
+   */
   static expressions = this.set;
 
   /** @type {typeof ICustomElement.methods} */
@@ -492,9 +495,9 @@ export default class CustomElement extends ICustomElement {
 
   /** @type {typeof ICustomElement.childEvents} */
   static childEvents(listenerMap, options) {
-    for (const [id, listeners] of Object.entries(listenerMap)) {
+    for (const [tag, listeners] of Object.entries(listenerMap)) {
       this.events(listeners, {
-        id,
+        tag,
         ...options,
       });
     }
@@ -596,7 +599,8 @@ export default class CustomElement extends ICustomElement {
 
     this.attachShadow({ mode: 'open', delegatesFocus: this.delegatesFocus });
 
-    this.composition.initialRender(this.shadowRoot, this);
+    // Render current props
+    this.render(this);
 
     for (const callback of this.static._onConstructedCallbacks) {
       callback.call(this, this.callbackArguments);
@@ -608,12 +612,15 @@ export default class CustomElement extends ICustomElement {
    * Expects data in JSON Merge Patch format
    * @see https://www.rfc-editor.org/rfc/rfc7386
    * @param {?} data
-   * @param {?} [store]
+   * @param {?} [stores]
    * @return {void}
    */
-  render(data, store) {
+  render(data, ...stores) {
     // console.log('render', data);
-    this.composition.render(this.shadowRoot, data, this, store ? { ...this, store } : this);
+    this.composition.render(data, this.shadowRoot, {
+      context: this,
+      stores: [this, ...stores],
+    });
   }
 
   /** @type {InstanceType<typeof ICustomElement>['propChangedCallback']} */
@@ -711,7 +718,7 @@ export default class CustomElement extends ICustomElement {
   }
 
   /**
-   * Proxy object that returns shadow DOM elements by ID.
+   * Proxy object that returns shadow DOM elements by tag.
    * If called before interpolation (eg: on composed), returns from template
    * @return {Record<string,HTMLElement>}
    */
@@ -720,32 +727,32 @@ export default class CustomElement extends ICustomElement {
     return (this.#refsProxy ??= new Proxy({}, {
       /**
        * @param {any} target
-       * @param {string} id
+       * @param {string} tag
        * @return {Element}
        */
-      get: (target, id) => {
+      get: (target, tag) => {
         if (!this.#composition) {
           console.warn(this.static.name, 'Attempted to access references before composing!');
         }
         const composition = this.composition;
         if (!composition.interpolated) {
-          let element = this.#refsCompositionCache.get(id)?.deref();
+          let element = this.#refsCompositionCache.get(tag)?.deref();
           if (element) return element;
-          const formattedId = attrNameFromPropName(id);
+          const formattedTag = attrNameFromPropName(tag);
           // console.warn(this.tagName, 'Returning template reference');
-          element = composition.template.getElementById(formattedId);
+          element = composition.template.getElementById(formattedTag);
           if (!element) return null;
-          this.#refsCompositionCache.set(id, new WeakRef(element));
+          this.#refsCompositionCache.set(tag, new WeakRef(element));
           return element;
         }
-        let element = this.#refsCache.get(id)?.deref();
+        let element = this.#refsCache.get(tag)?.deref();
         if (element) {
           return element;
         }
-        const formattedId = attrNameFromPropName(id);
-        element = composition.getElement(this.shadowRoot, formattedId);
+        const formattedTag = attrNameFromPropName(tag);
+        element = composition.referenceCache.get(this.shadowRoot).get(formattedTag);
         if (!element) return null;
-        this.#refsCache.set(id, new WeakRef(element));
+        this.#refsCache.set(tag, new WeakRef(element));
         return element;
       },
     }));

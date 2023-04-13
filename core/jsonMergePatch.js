@@ -42,12 +42,34 @@ export function buildMergePatch(previous, current, arrayStrategy = 'clone') {
   if (previous == null || typeof previous !== 'object') {
     return structuredClone(current);
   }
-  const isArray = Array.isArray(current);
-  if (isArray && arrayStrategy === 'clone') {
-    return structuredClone(current);
-  }
 
   const patch = {};
+  if (Array.isArray(current)) {
+    // Assume previous is array
+    if (arrayStrategy === 'clone') {
+      return structuredClone(current);
+    }
+    for (const [index, value] of current.entries()) {
+      if (value == null) {
+        console.warn('Nullish value found at', index);
+        continue;
+      }
+      const changes = buildMergePatch(previous[index], value, arrayStrategy);
+      if (changes === null) {
+        continue;
+      } else {
+        patch[index] = changes;
+      }
+    }
+    for (let i = current.length; i < previous.length; i++) {
+      patch[i] = null;
+    }
+    if (current.length !== previous.length) {
+      patch.length = current.length;
+    }
+    return patch;
+  }
+
   const previousKeys = new Set(Object.keys(previous));
   for (const [key, value] of Object.entries(current)) {
     previousKeys.delete(key);
@@ -65,10 +87,6 @@ export function buildMergePatch(previous, current, arrayStrategy = 'clone') {
   for (const key of previousKeys) {
     patch[key] = null;
     console.log('removing', key);
-  }
-
-  if (isArray && arrayStrategy === 'object' && current.length !== previous.length) {
-    patch.length = current.length;
   }
 
   return patch;

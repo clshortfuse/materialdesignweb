@@ -23,7 +23,7 @@ export default function SurfaceMixin(Base) {
     })
     .html/* html */`
       <div id=surface class=surface raised={_raised} disabled={disabledState} color={color}>
-        <div _if={showSurfaceTint} id=surface-tint class=surface-tint raised={_raised} color={color} aria-hidden=true></div>
+        <div mdw-if={showSurfaceTint} id=surface-tint class=surface-tint raised={_raised} color={color} aria-hidden=true></div>
       </div>
     `
     .css`

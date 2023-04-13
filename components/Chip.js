@@ -49,7 +49,7 @@ export default Button
       slot.setAttribute('disabled', '{disabledState}');
       slot.removeAttribute('ink');
       slot.removeAttribute('color');
-      outline.setAttribute('_if', '{!elevated}');
+      outline.setAttribute('mdw-if', '{!elevated}');
       outline.setAttribute('ink', '{ink}');
       outline.setAttribute('color', '{color}');
       icon.setAttribute('ink', inline(({ ink, iconInk }) => iconInk ?? ink ?? 'primary'));

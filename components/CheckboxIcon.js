@@ -114,7 +114,7 @@ export default CustomElement
   .on({
     composed({ html }) {
       const { outline, shape } = this.refs;
-      outline.removeAttribute('_if');
+      outline.removeAttribute('mdw-if');
       outline.setAttribute('selected', '{selected}');
       outline.setAttribute('errored', '{errored}');
       outline.setAttribute('disabled', '{disabled}');

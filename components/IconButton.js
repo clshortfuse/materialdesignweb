@@ -49,7 +49,7 @@ export default Button
         el.setAttribute('selected', '{checked}');
       }
       slot.remove();
-      icon.removeAttribute('_if');
+      icon.removeAttribute('mdw-if');
       tooltipSlot.removeAttribute('name');
 
       surfaceTint.remove();

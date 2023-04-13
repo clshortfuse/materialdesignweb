@@ -56,8 +56,8 @@ export default CustomElement
     },
   })
   .html/* html */`
-    <mdw-icon _if={hasIcon} id=icon ink={iconInk} disabled={disabledState} outlined={outlined} aria-hidden=true svg={svg} src={src} svg-path={svgPath} view-box={viewBox}>{icon}</mdw-icon>
-    <a _if={href} id=anchor href={href} aria-label="{computedAriaLabel}"></a>
+    <mdw-icon mdw-if={hasIcon} id=icon ink={iconInk} disabled={disabledState} outlined={outlined} aria-hidden=true svg={svg} src={src} svg-path={svgPath} view-box={viewBox}>{icon}</mdw-icon>
+    <a mdw-if={href} id=anchor href={href} aria-label="{computedAriaLabel}"></a>
     <slot id=slot disabled={disabledState} aria-hidden=false></slot>
   `
   .childEvents({
