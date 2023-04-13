@@ -266,7 +266,6 @@ export default class Composition {
   /** @param {Element} element */
   showElement(element) {
     if (!this.removedElements.has(element)) return;
-    // Skip check
     const comment = this.commentPlaceholders.get(element);
     comment.replaceWith(element);
     this.removedElements.delete(element);
@@ -392,9 +391,11 @@ export default class Composition {
      */
     let anchor;
     let references;
+    let targetIsShadowRoot;
+    let instanceFragment;
     const needsInitialRender = !target || !this.initiallyRendered.has(target);
     if (needsInitialRender) {
-      const targetIsShadowRoot = target instanceof ShadowRoot;
+      targetIsShadowRoot = target instanceof ShadowRoot;
       const targetIsDocumentFragment = target instanceof DocumentFragment;
       if (target) {
         // Handle styles first
@@ -404,12 +405,12 @@ export default class Composition {
             ...this.adoptedStyleSheets,
           ];
         } else if (target instanceof ShadowRoot) {
-          target.append(document.importNode(this.stylesFragment, true));
+          target.append(this.stylesFragment.cloneNode(true));
         }
       }
 
       // Create a clone of the cloneable template as a DocumentFragment
-      const instanceFragment = /** @type {DocumentFragment} */ document.importNode(this.cloneable, true);
+      instanceFragment = /** @type {DocumentFragment} */ this.cloneable.cloneNode(true);
       // Select anchor
       anchor = (!target || (targetIsDocumentFragment && !targetIsShadowRoot))
         ? instanceFragment.firstElementChild
@@ -421,15 +422,13 @@ export default class Composition {
       context ??= targetIsShadowRoot ? target.host : anchor;
 
       // Bind all elements by IDs
-      /** @type {Element[]} */
-      const elementsToHide = [];
       for (const id of this.allIds) {
         // Find element by id (should be faster than walking)
         const element = instanceFragment.getElementById(id);
         references.set(id, element);
 
         if (this.removeIDs.has(id)) {
-          elementsToHide.push(element);
+          this.hideElement(element);
         }
 
         if (!targetIsShadowRoot || this.temporaryIds.has(id)) {
@@ -474,19 +473,6 @@ export default class Composition {
           );
         }
       }
-      for (const element of elementsToHide) {
-        this.hideElement(element);
-      }
-
-      // Appending will call constructor() on Web Components
-      // Leave last
-      if (targetIsDocumentFragment) {
-        target.append(instanceFragment);
-      } else {
-      // target.remove();
-      }
-
-      this.initiallyRendered.add(anchor);
     }
 
     const fnResults = new WeakMap();
@@ -602,6 +588,18 @@ export default class Composition {
           modifiedNodes.set(ref, new Set([subnode]));
         }
       }
+    }
+
+    if (needsInitialRender) {
+      // Appending will call constructor() on Web Components
+      // Leave last
+      if (targetIsShadowRoot) {
+        target.append(instanceFragment);
+      } else {
+      // target.remove();
+      }
+
+      this.initiallyRendered.add(anchor);
     }
     return anchor;
   }
@@ -1148,6 +1146,10 @@ export default class Composition {
       );
     }
 
+    // Run-once optimizations
+    this.boundProps = [...this.bindings.keys()];
+    this.allIds.reverse();
+
     this.interpolated = true;
 
     // console.log('Cloneable', [...this.cloneable.children].map((child) => child.outerHTML).join('\n'));
@@ -1173,9 +1175,6 @@ export default class Composition {
    * @return {Set<NodeBindEntry<?>>} Mutable set of bindings for prop
    */
   addBinding(prop, entry) {
-    if (!this.boundProps.includes(prop)) {
-      this.boundProps.push(prop);
-    }
     let set = this.bindings.get(prop);
     if (set) {
       set.add(entry);
