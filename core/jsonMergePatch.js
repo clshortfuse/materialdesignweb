@@ -9,8 +9,8 @@
  */
 export function applyMergePatch(target, patch) {
   if (target === patch) return target;
-  if (patch == null || typeof patch !== 'object') return patch;
-  if (target != null && typeof target !== 'object') {
+  if (target == null || patch == null || typeof patch !== 'object') return patch;
+  if (typeof target !== 'object') {
     target = {};
   }
   for (const [key, value] of Object.entries(patch)) {
@@ -28,15 +28,16 @@ export function applyMergePatch(target, patch) {
 /**
  * Creates a JSON Merge patch based
  * Allows different strategies for arrays
- *  - `clone`: Per spec, clones all entries with no inspection.
+ *  - `reference`: Per spec, returns array as is
+ *  - `clone`: Clones all entries with no inspection.
  *  - `object`: Convert to flattened, array-like objects. Requires
  *    consumer of patch to be aware of the schema beforehand.
  * @param {object|number|string|boolean} previous
  * @param {object|number|string|boolean} current
- * @param {'clone'|'object'} [arrayStrategy='clone']
+ * @param {'clone'|'object'|'reference'} [arrayStrategy='reference']
  * @return {any} Patch
  */
-export function buildMergePatch(previous, current, arrayStrategy = 'clone') {
+export function buildMergePatch(previous, current, arrayStrategy = 'reference') {
   if (previous === current) return null;
   if (current == null || typeof current !== 'object') return current;
   if (previous == null || typeof previous !== 'object') {
@@ -45,6 +46,9 @@ export function buildMergePatch(previous, current, arrayStrategy = 'clone') {
 
   const patch = {};
   if (Array.isArray(current)) {
+    if (arrayStrategy === 'reference') {
+      return current;
+    }
     // Assume previous is array
     if (arrayStrategy === 'clone') {
       return structuredClone(current);
@@ -61,9 +65,9 @@ export function buildMergePatch(previous, current, arrayStrategy = 'clone') {
         patch[index] = changes;
       }
     }
-    for (let i = current.length; i < previous.length; i++) {
-      patch[i] = null;
-    }
+    // for (let i = current.length; i < previous.length; i++) {
+    //   patch[i] = null;
+    // }
     if (current.length !== previous.length) {
       patch.length = current.length;
     }
@@ -79,7 +83,7 @@ export function buildMergePatch(previous, current, arrayStrategy = 'clone') {
     }
     const changes = buildMergePatch(previous[key], value, arrayStrategy);
     if (changes === null) {
-      console.log('keeping', key);
+      // console.log('keeping', key);
     } else {
       patch[key] = changes;
     }

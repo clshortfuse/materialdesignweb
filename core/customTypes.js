@@ -52,7 +52,10 @@ export const WEAKREF_TYPE = {
   values: weakRefValues,
   parser(v) { return new WeakRef(v); },
   get() {
-    return weakRefValues.get(this)?.deref();
+    if (weakRefValues.has(this)) {
+      return weakRefValues.get(this).deref();
+    }
+    return undefined;
   },
 };
 
@@ -79,7 +82,7 @@ function elementStylerMicrotaskCallback() {
     return;
   }
   /** @type {HTMLElement} */
-  const el = value.target ? this.composition.referenceCaches.get(this.shadowRoot).get(value.target) : this;
+  const el = value.target ? this.shadowRoot.getElementById(value.target) : this;
   const currentAnimation = el.animate(value.styles, {
     ...value.timing,
     fill: 'forwards',

@@ -1,4 +1,4 @@
-type ObserverPropertyType = 'string' | 'boolean' | 'map' | 'set' | 'float' | 'integer' | 'object' | 'function';
+type ObserverPropertyType = 'string' | 'boolean' | 'map' | 'set' | 'float' | 'integer' | 'object' | 'function' | 'array';
 
 type InlineTemplate<T1, T2=T1> = (fn: (this:T1, data: T2) => any) => string;
 
@@ -10,6 +10,7 @@ type ParsedObserverPropertyType<T extends ObserverPropertyType> =
   T extends 'boolean' ? boolean
   : T extends 'string' ? string
   : T extends 'float' | 'integer' ? number
+  : T extends 'array' ? any[]
   : T extends 'object' ? any
   : T extends 'function' ? (...args:any) => any
   : unknown;

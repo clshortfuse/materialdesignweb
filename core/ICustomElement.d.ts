@@ -108,7 +108,7 @@ export declare const ICustomElement: {
     this: T,
     string: TemplateStringsArray,
     // eslint-disable-next-line no-shadow
-    ...substitutions: (string|Element|((this:InstanceType<T>, data:InstanceType<T> & T['schema']) => any))[]
+    ...substitutions: (string|Element|((this:InstanceType<T>, data:InstanceType<T> & T['schema'], injections?:any) => any))[]
     ): T
 
   css<

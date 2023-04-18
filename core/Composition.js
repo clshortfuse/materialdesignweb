@@ -3,13 +3,13 @@
 import CompositionAdapter from './CompositionAdapter.js';
 import { generateCSSStyleSheets, generateHTMLStyleElements } from './css.js';
 import { observeFunction } from './observe.js';
-import { createEmptyComment, createEmptyDiv, createEmptyTextNode } from './optimizations.js';
+import { createEmptyComment, createEmptyTextNode } from './optimizations.js';
 import { generateFragment, inlineFunctions } from './template.js';
 import { generateUID } from './uid.js';
 
 /**
  * @template T
- * @typedef {Composition<?>|HTMLStyleElement|CSSStyleSheet|DocumentFragment|((this:T, changes:T) => any)|string} CompositionPart
+ * @typedef {Composition<?>|HTMLStyleElement|CSSStyleSheet|DocumentFragment|string} CompositionPart
  */
 
 /**
@@ -21,30 +21,217 @@ import { generateUID } from './uid.js';
 
 /**
  * @template T
- * @typedef {Object} WatcherBindEntry
- * @prop {Function} fn
- * @prop {Set<keyof T & string>} props
+ * @typedef {Object} RenderOptions
+ * @prop {T} [store] what
+ * @prop {DocumentFragment|ShadowRoot|HTMLElement|Element} [target] where
+ * @prop {any} [context] `this` on callbacks/events
+ * @prop {any} [injections]
  */
 
 /**
  * @template {any} T
  * @typedef {Object} NodeBindEntry
+ * @prop {string} [key]
+ * @prop {number} [index]
  * @prop {string} tag
  * @prop {string|number} subnode Index of childNode or attrName
+ * @prop {string[]} props
+ * @prop {string[][]} deepProps
  * @prop {boolean} [negate]
  * @prop {boolean} [doubleNegate]
- * @prop {Function} [fn]
- * @prop {Function} [render] custom render function
- * @prop {string[]} props
- * @prop {[string, string[]][]} deepProps
+ * @prop {Function} [expression]
+ * @prop {(options: RenderOptions<?>, element: Element, changes:any, data:any) => any} [render] custom render function
+ * @prop {import('./typings.js').CompositionEventListener<T>[]} [listeners]
  * @prop {Composition<any>} [composition] // Sub composition templating (eg: array)
  * @prop {T} defaultValue
  */
 
+/** @typedef {any[]} RenderState */
+
+/**
+ * @typedef RenderGraphSearch
+ *  @prop {(state:InitializationState, changes:any, data:any) => any}  invocation
+ *  @prop {number}  cacheIndex
+ *  @prop {number}  ranFlagIndex
+ *  @prop {number}  dirtyIndex
+ *  @prop {string | Function | string[]}  query
+ *  @prop {Function}  [expression]
+ *  @prop {string}  prop
+ *  @prop {string[]}  deepProp
+ *  @prop {string[]}  propsUsed
+ *  @prop {string[][]}  deepPropsUsed
+ *  @prop {any} defaultValue
+ *  @prop {RenderGraphSearch}  [subSearch]
+ */
+
+/**
+ * @typedef RenderGraphAction
+ * @prop {(state:InitializationState, value:any, changes: any, data:any) => any} invocation
+ * @prop {number} [commentIndex]
+ * @prop {number} [nodeIndex]
+ * @prop {number} [cacheIndex]
+ * @prop {string} [attrName]
+ * @prop {any} [defaultValue]
+ * @prop {RenderGraphSearch} search
+ */
+
+/**
+ * @type {RenderGraphAction['invocation']}
+ * @this {RenderGraphAction}
+ */
+function writeDOMAttribute(state, value) {
+  const { nodeIndex, attrName } = this;
+  /** @type {Element} */
+  const element = state.nodes[nodeIndex];
+  switch (value) {
+    case undefined:
+    case null:
+    case false:
+      element.removeAttribute(attrName);
+      return false;
+    case true:
+      element.setAttribute(attrName, '');
+      return '';
+    default:
+      element.setAttribute(attrName, value);
+      return value;
+  }
+}
+
+/**
+ * @type {RenderGraphAction['invocation']}
+ * @this {RenderGraphAction}
+ */
+function writeDOMText(state, value) {
+  // @ts-ignore Skip cast
+  state.nodes[this.nodeIndex].data = value;
+}
+
+/**
+ * @type {RenderGraphAction['invocation']}
+ * @this {RenderGraphAction}
+ */
+function writeDOMElementAttachedState(state, value) {
+  const { commentIndex, nodeIndex } = this;
+  let comment = state.comments[commentIndex];
+  if (!comment) {
+    comment = createEmptyComment();
+    state.comments[commentIndex] = comment;
+  }
+  const element = state.nodes[nodeIndex];
+  const show = value != null && value !== false;
+  if (show) {
+    comment.replaceWith(element);
+  } else {
+    element.replaceWith(comment);
+  }
+  return show;
+}
+
+/**
+ * @type {RenderGraphAction['invocation']}
+ * @this {RenderGraphAction}
+ */
+function writeDOMHideElementOnInit(state) {
+  const { commentIndex, nodeIndex } = this;
+
+  const comment = createEmptyComment();
+  state.comments[commentIndex] = comment;
+
+  state.nodes[nodeIndex].replaceWith(comment);
+}
+
+/**
+ * @param {RenderGraphSearch} search
+ * @param {Parameters<RenderGraphSearch['invocation']>} args
+ */
+function executeSearch(search, ...args) {
+  const [state] = args;
+  const cachedValue = state.caches[search.cacheIndex];
+  if (state.ranFlags[search.ranFlagIndex]) {
+    // Return last result
+    return {
+      value: cachedValue,
+      dirty: state.dirtyFlags[search.dirtyIndex],
+    };
+  }
+  state.ranFlags[search.ranFlagIndex] = true;
+  let result;
+  if (search.subSearch) {
+    const subResult = executeSearch(search.subSearch, ...args);
+    // Use last cached value (if any)
+    if (!subResult.dirty && cachedValue !== undefined) {
+      state.dirtyFlags[search.dirtyIndex] = false;
+      return { value: cachedValue, dirty: false };
+    }
+    // Pass from subquery
+    result = search.invocation(subResult.value);
+  } else {
+    result = search.invocation(...args);
+  }
+  if ((result === undefined) || (cachedValue === result)) {
+    // Returnf rom cache
+    return { value: result, dirty: false };
+  }
+
+  // Overwrite cache and flag as dirty
+  state.caches[search.cacheIndex] = result;
+  state.dirtyFlags[search.dirtyIndex] = true;
+  return { value: result, dirty: true };
+}
+
+/**
+ * @type {RenderGraphSearch['invocation']}
+ * @this {RenderGraphSearch}
+ */
+function searchWithExpression(state, changes, data) {
+  return this.expression.call(
+    state.options.context,
+    state.options.store ?? data,
+    state.options.injections,
+  );
+}
+
+/**
+ * @type {RenderGraphSearch['invocation']}
+ * @this {RenderGraphSearch}
+ */
+function searchWithProp(state, changes, data) {
+  return changes[this.prop];
+}
+
+/**
+ * @type {RenderGraphSearch['invocation']}
+ * @this {RenderGraphSearch}
+ */
+function searchWithDeepProp(state, changes, data) {
+  let scope = changes;
+  for (const prop of this.deepProp) {
+    if (prop in scope === false) return undefined;
+    scope = scope[prop];
+  }
+  return scope;
+}
+
 /**
  * @typedef InterpolateOptions
  * @prop {Object} [defaults] Default values to use for interpolation
- * @prop {Object} [injections] Context-specific injected properties. (Experimental)
+ * @prop {{iterable:string} & Record<string,any>} [injections] Context-specific injected properties. (Experimental)
+ */
+
+/**
+ * @typedef InitializationState
+ * @prop {Element} lastElement
+ * @prop {boolean} isShadowRoot
+ * @prop {ChildNode} lastChildNode
+ * @prop {(Element|Text)[]} nodes
+ * @prop {any[]} caches
+ * @prop {Comment[]} comments
+ * @prop {boolean[]} ranFlags
+ * @prop {boolean[]} dirtyFlags
+ * @prop {number} lastChildNodeIndex
+ * @prop {DocumentFragment} instanceFragment
+ * @prop {RenderOptions<?>} options
  */
 
 /** Splits: `{template}text{template}` as `['', 'template', 'text', 'template', '']` */
@@ -69,13 +256,13 @@ function buildShadowRootChildListener(fn) {
  *  propFromObject('foo', {foo:'bar'}) == ['foo', 'bar'];
  * @param {string} prop
  * @param {any} source
- * @return {[string, any]|[]}
+ * @return {any}
  */
 function propFromObject(prop, source) {
-  if (source && prop in source) {
-    return [prop, source[prop]];
+  if (source) {
+    return source[prop];
   }
-  return [];
+  return undefined;
 }
 
 /**
@@ -92,7 +279,7 @@ function propFromObject(prop, source) {
  * ) == [houseNumber, 35]
  * @param {string[]} nameArray
  * @param {any} source
- * @return {[string, any]|[]}
+ * @return {any}
  */
 function deepPropFromObject(nameArray, source) {
   if (!source) return [];
@@ -100,14 +287,13 @@ function deepPropFromObject(nameArray, source) {
   let prop;
   for (prop of nameArray) {
     if (typeof scope === 'object') {
-      const result = propFromObject(prop, scope);
-      if (!result.length) return [];
-      scope = result[1];
+      if (!(prop in scope)) return undefined;
+      scope = scope[prop];
     } else {
-      return [prop, scope[prop]];
+      return scope[prop];
     }
   }
-  return [prop, scope];
+  return scope;
 }
 
 /**
@@ -127,32 +313,11 @@ function deepPropFromObject(nameArray, source) {
  * @return {[]|[string, any]}
  */
 function deepPropFromObjects(nameArray, ...sources) {
-  const checkedSources = new Set();
   for (const source of sources) {
-    if (checkedSources.has(source)) continue;
     const result = deepPropFromObject(nameArray, source);
-    if (result.length) return result;
-    checkedSources.add(source);
+    if (result !== undefined) return result;
   }
-  return [];
-}
-
-/**
- * @example
- *  propFromObject('foo', {foo:'bar'}) == ['foo', 'bar'];
- * @param {string} prop
- * @param {any[]} sources
- * @return {[]|[string, any]}
- */
-function propFromObjects(prop, ...sources) {
-  const checkedSources = new Set();
-  for (const source of sources) {
-    if (checkedSources.has(source)) continue;
-    const result = propFromObject(prop, source);
-    if (result.length) return result;
-    checkedSources.add(source);
-  }
-  return [];
+  return undefined;
 }
 
 /**
@@ -174,18 +339,60 @@ function valueFromPropName(prop, source) {
 
 /** @template T */
 export default class Composition {
-  /**
-   * Collection of property bindings.
-   * Bindings are likely small, so use object
-   * @type {Map<keyof T & string, Set<NodeBindEntry<?>>>}
-   */
-  bindings = new Map();
+  #interpolationState = {
+    nodeIndex: -1,
+    ranFlagIndex: 0,
+    cacheIndex: 0,
+    dirtyIndex: 0,
+    commentIndex: 0,
+    /** @type {this['nodesToBind'][0]} */
+    nodeEntry: null,
+  };
+
+  /** @type {{tag:string, textNodes: number[]}[]} */
+  nodesToBind = [];
+
+  /** @type {string[]} */
+  props = [];
+
+  /** @type {RenderGraphSearch[]} */
+  searches = [];
+
+  /** @type {any[]} */
+  initCache = [];
 
   /**
-   * Collection of property bindings.
+   * Index of searches by query (dotted notation for deep props)
+   * @type {Map<Function|string, RenderGraphSearch>}
+   */
+  searchByQuery = new Map();
+
+  /**
+   * Index of searches by query (dotted notation for deep props)
+   * @type {Map<string, RenderGraphAction[]>}
+   */
+  actionsByPropsUsed = new Map();
+
+  /** @type {RenderGraphAction[]} */
+  actions = [];
+
+  /** @type {RenderGraphAction[]} */
+  postInitActions = [];
+
+  /** @type {Set<string>} */
+  tagsWithBindings = new Set();
+
+  /**
+   * Array of element tags
    * @type {string[]}
    */
-  boundProps = [];
+  tags = [];
+
+  /**
+   * Array of property bindings sorted by tag/subnode
+   * @type {Set<string>}
+   */
+  watchedProps = new Set();
 
   /**
    * Data of arrays used in templates
@@ -205,35 +412,12 @@ export default class Composition {
   events = new Map();
 
   /**
-   * Registered how element should be found in tree
-   * @type {Map<string, 'id'|'attr'>}
-   */
-  elementTagTypes = new Map();
-
-  /**
    * Snapshot of composition at initial state.
    * This fragment can be cloned for first rendering, instead of calling
    * of using `render()` to construct the initial DOM tree.
    * @type {DocumentFragment}
    */
   cloneable;
-
-  /**
-   * LightDOM safe cloneable
-   * Snapshot of composition at initial state.
-   * This fragment can be cloned for first rendering, instead of calling
-   * of using `render()` to construct the initial DOM tree.
-   * @type {DocumentFragment}
-   */
-  cloneableUnscoped;
-
-  /**
-   * Result of interpolation of the composition template.
-   * Includes all DOM elements, which is used to reference for adding and
-   * removing DOM elements during render.
-   * @type {DocumentFragment}
-   */
-  interpolation;
 
   /** @type {(HTMLStyleElement|CSSStyleSheet)[]} */
   styles = [];
@@ -243,23 +427,6 @@ export default class Composition {
 
   /** @type {DocumentFragment} */
   stylesFragment;
-
-  /** @type {((this:T, changes:T) => any)[]} */
-  watchers = [];
-
-  /**
-   * Expressions results are treated as observables
-   * @type {WeakMap<Element|DocumentFragment, WeakMap<Function,any>>}
-   */
-  expressionCaches = new WeakMap();
-
-  /**
-   * Maintains a reference list of elements used by render target (root).
-   * When root is garbage collected, references are released.
-   * This includes disconnected elements.
-   * @type {WeakMap<Element|DocumentFragment, Map<string,HTMLElement>>}
-   */
-  referenceCaches = new WeakMap();
 
   /**
    * List of IDs used by template elements
@@ -273,81 +440,6 @@ export default class Composition {
    * Not meant for live DOM. Removed before attaching to document
    */
   temporaryIds = new Set();
-
-  /**
-   * IDs of elements not present by default
-   */
-  removeIDs = new Set();
-
-  /**
-   * @type {Map<string, (number|string)[]>}
-   */
-  subnodesByTag = new Map();
-
-  /**
-   * @type {WeakMap<Element, Map<number, Node>>}
-   */
-  textNodeCache = new WeakMap();
-
-  /** @param {Element} element */
-  hideElement(element) {
-    if (this.removedElements.has(element)) return;
-    let comment = this.commentPlaceholders.get(element);
-    if (!comment) {
-      comment = createEmptyComment();
-      this.commentPlaceholders.set(element, comment);
-    }
-    element.replaceWith(comment);
-    this.removedElements.add(element);
-  }
-
-  /** @param {Element} element */
-  showElement(element) {
-    if (!this.removedElements.has(element)) return;
-    const comment = this.commentPlaceholders.get(element);
-    comment.replaceWith(element);
-    this.removedElements.delete(element);
-  }
-
-  /**
-   * If force is not given, "toggles" element,
-   * removing it if it is present and adding it if it is not present.
-   * If force is true, adds qualifiedName.
-   * If force is false, removes qualifiedName.
-   *
-   * Returns true if qualifiedName is now present, and false otherwise.
-   * @param {Element} element
-   * @param {boolean} [force]
-   * @return {boolean}
-   */
-  toggleElement(element, force) {
-    if (force || (force == null && this.removedElements.has(element))) {
-      this.showElement(element);
-      return true;
-    }
-    this.hideElement(element);
-    return false;
-  }
-
-  /**
-   *
-   */
-  referenceTree = new WeakMap();
-
-  /**
-   * Flag set when root is initially rendered
-   * @type {WeakSet<Element|DocumentFragment>}
-   */
-  initiallyRendered = new WeakSet();
-
-  /** @type {WeakMap<Element, Comment>} */
-  commentPlaceholders = new WeakMap();
-
-  /** @type {WeakMap<HTMLElement, Node>} */
-  elementNodeCache = new WeakMap();
-
-  /** @type {WeakSet<Element>} */
-  removedElements = new WeakSet();
 
   /** Flag set when template and styles have been interpolated */
   interpolated = false;
@@ -368,9 +460,6 @@ export default class Composition {
       yield part;
     }
     yield this.template;
-    for (const part of this.watchers) {
-      yield part;
-    }
   }
 
   /**
@@ -380,8 +469,6 @@ export default class Composition {
     for (const part of parts) {
       if (typeof part === 'string') {
         this.append(generateFragment(part.trim()));
-      } else if (typeof part === 'function') {
-        this.watchers.push(part);
       } else if (part instanceof Composition) {
         this.append(...part);
       } else if (part instanceof DocumentFragment) {
@@ -397,9 +484,8 @@ export default class Composition {
   /** @param {import('./typings.js').CompositionEventListener<T>} listener */
   addCompositionEventListener(listener) {
     const key = listener.tag ?? '';
-    const set = this.events.get(key);
-    if (set) {
-      set.push(listener);
+    if (this.events.has(key)) {
+      this.events.get(key).push(listener);
     } else {
       this.events.set(key, [listener]);
     }
@@ -407,264 +493,176 @@ export default class Composition {
   }
 
   /**
+   * TODO: Add types and clean up closure leak
    * Updates component nodes based on data.
    * Expects data in JSON Merge Patch format
    * @see https://www.rfc-editor.org/rfc/rfc7386
-   * @param {Partial<?>} changes what
-   * @param {DocumentFragment|ShadowRoot|HTMLElement} [target] where
-   * @param {Object} [options]
-   * @param {any} [options.context]
-   * @param {any[]} [options.stores]
-   * @return {Element} anchor
+   * @template {Object} T
+   * @param {Partial<T>} changes what specifically
+   * @param {T} [data]
+   * @param {RenderOptions<T>} [options]
+   * @return {Function & {target:Element}} anchor
    */
-  render(changes, target, { context, stores } = {}) {
-    if (!this.interpolated) this.interpolate({ defaults: changes });
+  render(changes, data, options = {}) {
+    // console.log('render', changes, options);
+    if (!this.interpolated) {
+      this.interpolate({ defaults: data ?? changes, injections: options?.injections });
+    }
 
-    /**
-     * Node used for retrieving reference cache (view holder)
-     * If target is ShadowRoot, target
-     * If target is HTMLElement, target
-     * If target is DocumentFragment or no target, firstElementChild of template
-     * @type {Element}
-     */
-    let anchor;
-    let references;
-    let expressionCache;
-    let targetIsShadowRoot;
-    let instanceFragment;
-    const isFirstRender = !target || !this.initiallyRendered.has(target);
-    if (isFirstRender) {
-      targetIsShadowRoot = target instanceof ShadowRoot;
-      const targetIsDocumentFragment = target instanceof DocumentFragment;
-      if (target) {
-        // Handle styles first
-        if ('adoptedStyleSheets' in target) {
+    const instanceFragment = /** @type {DocumentFragment} */ (this.cloneable.cloneNode(true));
+
+    const target = options.target ?? instanceFragment.firstElementChild;
+
+    const isShadowRoot = target instanceof ShadowRoot;
+
+    /** @type {InitializationState} */
+    const initState = {
+      instanceFragment,
+      lastChildNode: null,
+      lastChildNodeIndex: 0,
+      lastElement: null,
+      isShadowRoot,
+      ranFlags: [],
+      comments: [],
+      nodes: [],
+      caches: this.initCache.slice(),
+      dirtyFlags: [],
+      options,
+    };
+
+    const nodes = initState.nodes;
+    for (const { tag, textNodes } of this.nodesToBind) {
+      const element = instanceFragment.getElementById(tag);
+      nodes.push(element);
+      if (this.events.has(tag)) {
+        for (const event of this.events.get(tag)) {
+          let listener;
+          if (event.handleEvent) {
+            listener = event.handleEvent;
+          } else if (event.deepProp.length) {
+            listener = deepPropFromObject(event.deepProp, this.interpolateOptions.defaults);
+          } else {
+            listener = propFromObject(event.prop, this.interpolateOptions.defaults);
+          }
+          element.addEventListener(event.type, listener.bind(options.context), event);
+        }
+      }
+
+      if (!textNodes.length) continue;
+
+      let textNode = element.firstChild;
+      let currentIndex = 0;
+      for (const index of textNodes) {
+        while (index !== currentIndex) {
+          textNode = textNode.nextSibling;
+          currentIndex++;
+        }
+        nodes.push(textNode);
+      }
+    }
+    if (this.events.has('')) {
+      for (const event of this.events.get('')) {
+        let listener;
+        if (event.handleEvent) {
+          listener = event.handleEvent;
+        } else if (event.deepProp.length) {
+          listener = deepPropFromObject(event.deepProp, this.interpolateOptions.defaults);
+        } else {
+          listener = propFromObject(event.prop, this.interpolateOptions.defaults);
+        }
+        options.context.addEventListener(event.type, listener, event);
+      }
+    }
+
+    for (const action of this.postInitActions) {
+      action.invocation(initState);
+    }
+
+    const draw = (changes, data) => {
+      let ranSearch = false;
+      for (const prop of this.props) {
+        if (!this.actionsByPropsUsed.has(prop)) continue;
+        if (!(prop in changes)) continue;
+        const actions = this.actionsByPropsUsed.get(prop);
+        for (const action of actions) {
+          ranSearch = true;
+          const result = executeSearch(action.search, initState, changes, data);
+          if (result.dirty) {
+            // console.log('dirty, updating from batch', initState.nodes[action.nodeIndex], 'with', result.value);
+            action.invocation(initState, result.value, changes, data);
+          }
+        }
+      }
+      if (!ranSearch) return;
+      initState.ranFlags.fill(false);
+      initState.dirtyFlags.fill(false);
+    };
+
+    if (isShadowRoot) {
+      options.context ??= target.host;
+      if ('adoptedStyleSheets' in target) {
+        if (this.adoptedStyleSheets.length) {
           target.adoptedStyleSheets = [
             ...target.adoptedStyleSheets,
             ...this.adoptedStyleSheets,
           ];
-        } else if (target instanceof ShadowRoot) {
-          target.append(this.stylesFragment.cloneNode(true));
         }
+      } else if (this.stylesFragment.hasChildNodes()) {
+        instanceFragment.prepend(this.stylesFragment.cloneNode(true));
       }
-
-      // Create a clone of the cloneable template as a DocumentFragment
-      // TODO: Avoid unnecessary element creation.
-      // If element can be fully reconstructed with internal properties,
-      // skip recreation of element unless it actually needs to be added to DOM.
-      // Requires tracing of all properties used by conditional elements.
-      instanceFragment = /** @type {DocumentFragment} */ this.cloneable.cloneNode(true);
-      // Select anchor
-      anchor = (!target || (targetIsDocumentFragment && !targetIsShadowRoot))
-        ? instanceFragment.firstElementChild
-        : target;
-
-      references = new Map();
-      expressionCache = new WeakMap();
-      this.referenceCaches.set(anchor, references);
-      this.expressionCaches.set(anchor, expressionCache);
-
-      context ??= targetIsShadowRoot ? target.host : anchor;
-
-      // Bind all elements by IDs
-      for (const id of this.allIds) {
-        // Find element by id (should be faster than walking)
-        const element = instanceFragment.getElementById(id);
-        references.set(id, element);
-
-        if (this.removeIDs.has(id)) {
-          this.hideElement(element);
-        }
-
-        // Remove ID if not shadowRoot
-        if (!targetIsShadowRoot) {
-          element.removeAttribute('id');
-        }
-
-        const subNodes = this.subnodesByTag.get(id);
-        if (subNodes) {
-          /** @type {Map<number, Text>}} */
-          let textNodeMap;
-          for (const subnode of this.subnodesByTag.get(id)) {
-            if (typeof subnode === 'string') continue;
-            const textNode = /** @type {Text} */ (element.childNodes[subnode]);
-            if (textNodeMap) {
-              textNodeMap.set(subnode, textNode);
-            } else {
-              textNodeMap = new Map([[subnode, textNode]]);
-              this.textNodeCache.set(element, textNodeMap);
-            }
-          }
-        }
-        const childEvents = this.events.get(id);
-        if (childEvents) {
-          for (const event of childEvents) {
-            const listener = event.handleEvent
-              ?? (event.deepProp.length
-                ? deepPropFromObjects(event.deepProp, changes, context, ...stores)[1]
-                : propFromObjects(event.prop, changes, context, ...stores)[1]);
-            element.addEventListener(event.type, listener.bind(context), event);
-          }
-        }
-      }
-      const rootEvents = this.events.get('');
-      if (rootEvents) {
-        for (const event of rootEvents) {
-          const listener = event.handleEvent
-              ?? (event.deepProp.length
-                ? deepPropFromObjects(event.deepProp, changes, context, ...stores)[1]
-                : propFromObjects(event.prop, changes, context, ...stores)[1]);
-          context.addEventListener(event.type, listener, event);
-        }
-      }
+    } else {
+      options.context ??= target;
     }
 
-    const fnResults = new WeakMap();
-    /** @type {WeakMap<Element, Set<string|number>>} */
-    const modifiedNodes = new WeakMap();
-    /** @type {Record<string, any>} */
-    const args = {};
-    /** @type {Map<string, any>} */
-    const deepPropCache = new Map();
-    const argKeys = new Set();
-    anchor ??= target;
-    expressionCache ??= this.expressionCaches.get(anchor);
-    references ??= this.referenceCaches.get(anchor);
-    context ??= target instanceof ShadowRoot ? target.host : anchor;
+    if (changes !== this.interpolateOptions.defaults) {
+      // Not default, overwrite nodes
+      draw(changes, data);
+    }
 
-    const expressionResultEntries = [];
+    if (isShadowRoot) {
+      target.append(instanceFragment);
+    }
 
-    for (const key of this.boundProps) {
-      if (key in changes === false) continue;
-      // console.log('using key', key);
-      for (const { tag, subnode, fn, props, deepProps, negate, doubleNegate, render } of this.bindings.get(key)) {
-        if (render) {
-          if (fnResults.has(render)) continue;
-          console.log('invoking custom render', key);
-          const result = render.call(this, anchor, changes, context, ...stores);
-          fnResults.set(render, result);
-          continue;
+    draw.target = target;
+    draw.byProp = (prop, value, data) => {
+      if (!this.actionsByPropsUsed.has(prop)) return;
+      let ranSearch = false;
+
+      // Update search
+      if (this.searchByQuery.has(prop)) {
+        ranSearch = true;
+        const search = this.searchByQuery.get(prop);
+        const cachedValue = initState.caches[search.cacheIndex];
+        if (cachedValue === value) {
+          return;
         }
+        initState.ranFlags[search.ranFlagIndex] = true;
+        initState.caches[search.cacheIndex] = value;
+        initState.dirtyFlags[search.dirtyIndex] = true;
+      }
 
-        /* 1. Find Element */
-        const ref = references.get(tag);
-        if (!ref) {
-          // console.warn('Composition: Non existent tag', tag);
-          continue;
-        }
-
-        // Skip if already modified
-        if (modifiedNodes.get(ref)?.has(subnode)) continue;
-
-        let write = true;
-        /* 2. Compute value */
-        let value;
-        if (fn) {
-          if (fnResults.has(fn)) {
-            value = fnResults.get(fn);
-          } else {
-            for (const prop of props) {
-              if (argKeys.has(prop)) continue;
-              const [foundKey, v] = propFromObjects(prop, changes, ...stores);
-              if (foundKey) {
-                args[prop] = v;
-              }
-              argKeys.add(prop);
-            }
-            // eg: pass coordinate.x when only coodinate.y has changed
-            // fn: (({coordinates}) => `Coordinates: (${coordinates.x}, ${coordinates.y})`
-            // deepProps: [
-            //    [ 'coordinates.x', ['coordinates', 'x'] ],
-            //    [ 'coordinates.y', ['coordinates', 'y'] ],
-            // ]
-            // Need to pass both in function args
-            for (const [dottedKey, deepPropKeys] of deepProps) {
-              if (argKeys.has(dottedKey)) continue;
-              let argContext = args;
-              for (const [index, deepKey] of deepPropKeys.entries()) {
-                if (!(deepKey in argContext)) {
-                  const fetchedValue = deepPropFromObjects(deepPropKeys.slice(0, index + 1), changes, ...stores);
-                  if (!fetchedValue.length) {
-                    console.warn('Failed to get required property', dottedKey);
-                    break;
-                  }
-                  argContext[deepKey] = fetchedValue[1];
-                }
-                argContext = argContext[deepKey];
-              }
-              argKeys.add(dottedKey);
-            }
-            value = fn.call(context, args) ?? null;
-            fnResults.set(fn, value);
-          }
-          if (expressionCache.get(fn) === (value)) {
-            write = false;
-          } else {
-            expressionResultEntries.push([fn, value]);
-          }
-        } else if (deepProps.length) {
-          const [firstEntry] = deepProps;
-          const [dottedKey, deepPropKeys] = firstEntry;
-          if (deepPropCache.has(dottedKey)) {
-            value = deepPropCache.get(dottedKey);
-          } else {
-            value = deepPropFromObjects(deepPropKeys, changes, ...stores)[1];
-            args[deepPropKeys[0]] = value;
-            deepPropCache.set(dottedKey, value);
-          }
+      let changes;
+      const actions = this.actionsByPropsUsed.get(prop);
+      for (const action of actions) {
+        if (action.search.query === prop) {
+          action.invocation(initState, value);
         } else {
-          value = changes[key];
-        }
-
-        /* 3. Operate on value */
-        if (write) {
-          if (doubleNegate) {
-            value = !!value;
-          } else if (negate) {
-            value = !value;
-          }
-
-          if (subnode === 'mdw-if') {
-            // Node is element itself
-            this.toggleElement(ref, value !== null && value !== false);
-          } else if (typeof subnode === 'string') {
-            if (value === false || value == null) {
-              ref.removeAttribute(subnode);
-            } else {
-              ref.setAttribute(subnode, value === true ? '' : value);
-            }
-          } else {
-            const textNode = this.textNodeCache.get(ref).get(subnode);
-            textNode.nodeValue = value ?? '';
+          changes ??= { [prop]: value };
+          data ??= changes;
+          ranSearch = true;
+          const result = executeSearch(action.search, initState, changes, data);
+          if (result.dirty) {
+            console.debug('dirty, updating by prop', prop, initState.nodes[action.nodeIndex], 'with', result.value);
+            action.invocation(initState, result.value, changes, data);
           }
         }
-
-        /* 5. Mark Node as modified */
-        const set = modifiedNodes.get(ref);
-        if (set) {
-          set.add(subnode);
-        } else {
-          modifiedNodes.set(ref, new Set([subnode]));
-        }
-      }
-    }
-
-    for (const [fn, value] of expressionResultEntries) {
-      expressionCache.set(fn, value);
-    }
-
-    if (isFirstRender) {
-      // Appending will call constructor() on Web Components
-      // Leave last
-      if (targetIsShadowRoot) {
-        target.append(instanceFragment);
-      } else {
-      // target.remove();
       }
 
-      this.initiallyRendered.add(anchor);
-    }
-    return anchor;
+      if (!ranSearch) return;
+      initState.ranFlags.fill(false);
+      initState.dirtyFlags.fill(false);
+    };
+    return draw;
   }
 
   /**
@@ -672,7 +670,7 @@ export default class Composition {
    * @param {Element} element
    * @param {InterpolateOptions} [options]
    * @param {string} [parsedValue]
-   * @return {boolean} Remove node
+   * @return {true|undefined} remove node
    */
   #interpolateNode(node, element, options, parsedValue) {
     const { nodeValue, nodeName, nodeType } = node;
@@ -687,15 +685,15 @@ export default class Composition {
       text = /** @type {Text} */ (node);
     }
 
-    // 1. Get template strings(s) in node if not passed
+    // Get template strings(s) in node if not passed
     if (parsedValue == null) {
-      if (!nodeValue) return false;
+      if (!nodeValue) return;
       const trimmed = nodeValue.trim();
-      if (!trimmed) return false;
+      if (!trimmed) return;
       if (attr) {
-        if (trimmed[0] !== '{') return false;
+        if (trimmed[0] !== '{') return;
         const { length } = trimmed;
-        if (trimmed[length - 1] !== '}') return false;
+        if (trimmed[length - 1] !== '}') return;
         parsedValue = trimmed.slice(1, -1);
         // TODO: Support segmented attribute values
       } else {
@@ -703,7 +701,7 @@ export default class Composition {
         // TODO: Benchmark indexOf pre-check vs regex
 
         const segments = trimmed.split(STRING_INTERPOLATION_REGEX);
-        if (segments.length < 3) return false;
+        if (segments.length < 3) return;
         if (segments.length === 3 && !segments[0] && !segments[2]) {
           parsedValue = segments[1];
         } else {
@@ -717,12 +715,15 @@ export default class Composition {
               text.before(segment);
             }
           }
-          // node.remove();
+          // eslint-disable-next-line consistent-return
           return true;
         }
       }
     }
 
+    // Check mutations
+
+    let query = parsedValue;
     const negate = parsedValue[0] === '!';
     let doubleNegate = false;
     if (negate) {
@@ -731,6 +732,12 @@ export default class Composition {
       if (doubleNegate) {
         parsedValue = parsedValue.slice(1);
       }
+    }
+
+    // mdw-if must be boolean (double-negate)
+    if (nodeName === 'mdw-if' && !negate && !doubleNegate) {
+      doubleNegate = true;
+      query = `!!${query}`;
     }
 
     let isEvent;
@@ -757,7 +764,7 @@ export default class Composition {
       }
       if (nodeName.startsWith('on')) {
         // Do not interpolate inline event listeners
-        if (nodeName[2] !== '-') return false;
+        if (nodeName[2] !== '-') return;
         isEvent = true;
       }
     }
@@ -797,125 +804,225 @@ export default class Composition {
         capture: flags?.includes('*'),
       });
 
-      return false;
+      return;
     }
 
-    /** @type {Function} */
-    let fn;
-    /** @type {string[]} */
-    let props;
-    /** @type {[string, string[]][]} */
-    let deepProps;
+    /** @type {RenderGraphSearch} */
+    let search;
 
-    /** @type {any} */
-    let defaultValue = null;
-    let inlineFunctionOptions;
-    // Is Inline Function?
-    if (parsedValue.startsWith('#')) {
-      inlineFunctionOptions = inlineFunctions.get(parsedValue);
-      if (!inlineFunctionOptions) {
-        console.warn(`Invalid interpolation value: ${parsedValue}`);
-        return false;
-      }
-      if (inlineFunctionOptions.props) {
-        console.log('This function has already been called. Reuse props', inlineFunctionOptions, this);
-        props = inlineFunctionOptions.props;
-        deepProps = inlineFunctionOptions.deepProps;
-        defaultValue = inlineFunctionOptions.defaultValue ?? null;
-      } else {
-        defaultValue = inlineFunctionOptions.fn;
-      }
+    if (this.searchByQuery.has(query)) {
+      search = this.searchByQuery.get(query);
     } else {
-      defaultValue = null;
-      if (options?.defaults) {
-        // TODO: Optimize
-        defaultValue = deepPropFromObject(parsedValue.split('.'), options.defaults)[1];
-      }
-      if (defaultValue == null && options?.injections) {
-        defaultValue = valueFromPropName(parsedValue, options.injections);
-        console.log('default value from injection', parsedValue, { defaultValue });
-      }
-    }
-
-    if (!props) {
-      if (typeof defaultValue === 'function') {
-        // Value must be reinterpolated and function observed
-        const observeResult = observeFunction.call(this, defaultValue, options?.defaults);
-        let injectionResult;
-        if (options?.injections) {
-          injectionResult = observeFunction.call(this, defaultValue, options?.injections);
-          console.log('injection results', injectionResult);
-        }
-        fn = defaultValue;
-        defaultValue = observeResult.defaultValue;
-        props = observeResult.props;
-        deepProps = observeResult.deepProps;
-        // console.log(this.static.name, fn.name || parsedValue, combinedSet);
+      // Has subquery?
+      const subquery = parsedValue;
+      const isSubquery = subquery !== query;
+      /** @type {RenderGraphSearch} */
+      let subSearch;
+      if (isSubquery && this.searchByQuery.has(subquery)) {
+        subSearch = this.searchByQuery.get(subquery);
       } else {
-        const parsedProps = parsedValue.split('.');
-        if (parsedProps.length === 1) {
-          props = [parsedValue];
-          deepProps = [];
+        // Construct subsearch, even is not subquery.
+        /** @type {Function} */
+        let expression;
+        /** @type {string[]} */
+        let propsUsed;
+        /** @type {string[][]} */
+        let deepPropsUsed;
+        let defaultValue;
+        let prop;
+        let deepProp;
+        let invocation;
+
+        let inlineFunctionOptions;
+        // Is Inline Function?
+        if (parsedValue.startsWith('#')) {
+          inlineFunctionOptions = inlineFunctions.get(parsedValue);
+          if (!inlineFunctionOptions) {
+            console.warn(`Invalid interpolation value: ${parsedValue}`);
+            return;
+          }
+          expression = inlineFunctionOptions.fn;
+          invocation = searchWithExpression;
+          if (inlineFunctionOptions.props) {
+          // console.log('This function has already been called. Reuse props', inlineFunctionOptions, this);
+            propsUsed = inlineFunctionOptions.props;
+            deepPropsUsed = inlineFunctionOptions.deepProps;
+            defaultValue = inlineFunctionOptions.defaultValue ?? null;
+          } else {
+            defaultValue = inlineFunctionOptions.fn;
+          }
         } else {
-          props = [parsedProps[0]];
-          deepProps = [[parsedValue, parsedProps]];
-          console.log('found deep props', parsedValue, props, deepProps);
+          defaultValue = null;
+          if (options?.defaults) {
+            defaultValue = deepPropFromObject(parsedValue.split('.'), options.defaults) ?? null;
+          }
+          if (defaultValue == null && options?.injections) {
+            defaultValue = valueFromPropName(parsedValue, options.injections);
+            console.log('default value from injection', parsedValue, { defaultValue });
+          }
         }
+
+        if (!propsUsed) {
+          if (typeof defaultValue === 'function') {
+          // Value must be reinterpolated and function observed
+            const observeResult = observeFunction.call(this, defaultValue, options?.defaults, options?.injections);
+            const uniqueProps = new Set([
+              ...observeResult.props.this,
+              ...observeResult.props.args[0],
+              ...observeResult.props.args[1],
+            ]);
+            const uniqueDeepProps = new Set([
+              ...observeResult.deepPropStrings.this,
+              ...observeResult.deepPropStrings.args[0],
+            ]);
+            expression = defaultValue;
+            defaultValue = observeResult.defaultValue;
+            propsUsed = [...uniqueProps];
+            deepPropsUsed = [...uniqueDeepProps].map((deepPropString) => deepPropString.split('.'));
+            invocation = searchWithExpression;
+          // console.log(this.static.name, fn.name || parsedValue, combinedSet);
+          } else {
+          // property binding
+            const parsedProps = parsedValue.split('.');
+            if (parsedProps.length === 1) {
+              prop = parsedValue;
+              propsUsed = [prop];
+              invocation = searchWithProp;
+            } else {
+              propsUsed = [parsedProps[0]];
+              deepProp = parsedProps;
+              deepPropsUsed = [parsedProps];
+              invocation = searchWithDeepProp;
+            }
+
+            // TODO: Rewrite property as deep with array index?
+          }
+        }
+
+        if (inlineFunctionOptions) {
+          inlineFunctionOptions.defaultValue = defaultValue;
+          inlineFunctionOptions.props = propsUsed;
+          inlineFunctionOptions.deepProps = deepPropsUsed;
+        }
+        subSearch = {
+          cacheIndex: this.#interpolationState.cacheIndex++,
+          dirtyIndex: this.#interpolationState.dirtyIndex++,
+          ranFlagIndex: this.#interpolationState.ranFlagIndex++,
+          query: subquery,
+          defaultValue,
+          subSearch: null,
+          prop,
+          propsUsed,
+          deepProp,
+          deepPropsUsed,
+          invocation,
+          expression,
+        };
+        this.addSearch(subSearch);
+      }
+      if (isSubquery) {
+        search = {
+          cacheIndex: this.#interpolationState.cacheIndex++,
+          dirtyIndex: this.#interpolationState.dirtyIndex++,
+          ranFlagIndex: this.#interpolationState.ranFlagIndex++,
+          query,
+          subSearch,
+          negate,
+          doubleNegate,
+          prop: subSearch.prop,
+          deepProp: subSearch.deepProp,
+          propsUsed: subSearch.propsUsed,
+          deepPropsUsed: subSearch.deepPropsUsed,
+          defaultValue: doubleNegate ? !!subSearch.defaultValue
+            : (negate ? !subSearch.defaultValue : subSearch.defaultValue),
+          invocation(value) {
+            if (this.doubleNegate) return !!value;
+            if (this.negate) return !value;
+            console.warn('Unknown query mutation', this.query);
+            return value;
+          },
+        };
+        this.addSearch(search);
+      } else {
+        // Store as search instead
+        search = subSearch;
       }
     }
 
-    if (typeof defaultValue === 'symbol') {
-      console.warn('Invalid binding:', parsedValue);
-      defaultValue = null;
-    }
-
-    if (doubleNegate) {
-      defaultValue = !!defaultValue;
-    } else if (negate) {
-      defaultValue = !defaultValue;
-    }
-
-    if (inlineFunctionOptions) {
-      inlineFunctionOptions.defaultValue = defaultValue;
-      inlineFunctionOptions.props = props;
-      inlineFunctionOptions.deepProps = deepProps;
-    }
-
-    // Mutate
-
+    // Tag
     let tag;
-    let remove = false;
+    let subnode = null;
+    let defaultValue = search.defaultValue;
     if (text) {
-      node.nodeValue = defaultValue ?? '';
+      text.data = defaultValue;
+      subnode = textNodeIndex;
     } else if (nodeName === 'mdw-if') {
       tag = this.#tagElement(element);
       element.removeAttribute(nodeName);
-      if (defaultValue == null || defaultValue === false) {
-        // If default state is removed, mark for removal
-        remove = true;
-        this.removeIDs.add(tag);
-      }
-    } else if (defaultValue == null || defaultValue === false) {
-      element.removeAttribute(nodeName);
+      defaultValue = defaultValue != null && defaultValue !== false;
     } else {
-      element.setAttribute(nodeName, defaultValue === true ? '' : defaultValue);
+      subnode = nodeName;
+      if (nodeName === 'id' || defaultValue == null || defaultValue === false) {
+        element.removeAttribute(nodeName);
+      } else {
+        element.setAttribute(nodeName, defaultValue === true ? '' : defaultValue);
+      }
     }
 
     tag ??= this.#tagElement(element);
-    // Bind
-    const subnode = textNodeIndex ?? nodeName;
-    const entry = { tag, subnode, fn, props, deepProps, nodeType, defaultValue, negate, doubleNegate };
-    const subnodeArray = this.subnodesByTag.get(tag);
-    if (subnodeArray) {
-      subnodeArray.push(subnode);
-    } else {
-      this.subnodesByTag.set(tag, [subnode]);
-    }
-    for (const prop of props) {
-      this.addBinding(prop, entry);
+
+    // Node entry
+    let nodeEntry = this.#interpolationState.nodeEntry;
+    if (!nodeEntry || nodeEntry.tag !== tag) {
+      nodeEntry = {
+        tag,
+        textNodes: [],
+      };
+      this.#interpolationState.nodeEntry = nodeEntry;
+      this.nodesToBind.push(nodeEntry);
+      this.#interpolationState.nodeIndex++;
     }
 
-    return remove;
+    /** @type {RenderGraphAction} */
+    let action;
+
+    // Node Action
+    if (text) {
+      nodeEntry.textNodes.push(textNodeIndex);
+
+      this.#interpolationState.nodeIndex++;
+      action = {
+        nodeIndex: this.#interpolationState.nodeIndex,
+        invocation: writeDOMText,
+        defaultValue,
+        search,
+      };
+    } else if (subnode) {
+      action = {
+        nodeIndex: this.#interpolationState.nodeIndex,
+        attrName: subnode,
+        defaultValue,
+        invocation: writeDOMAttribute,
+        search,
+      };
+    } else {
+      action = {
+        nodeIndex: this.#interpolationState.nodeIndex,
+        commentIndex: this.#interpolationState.commentIndex++,
+        defaultValue,
+        invocation: writeDOMElementAttachedState,
+        search,
+      };
+      if (!defaultValue) {
+        this.postInitActions.push({
+          ...action,
+          invocation: writeDOMHideElementOnInit,
+        });
+      }
+    }
+
+    this.addAction(action);
+    this.tagsWithBindings.add(tag);
   }
 
   /**
@@ -966,14 +1073,26 @@ export default class Composition {
       return null;
     }
     const parsedValue = trimmed.slice(1, -1);
-    const [valueName, iterable] = parsedValue.split(/\s+of\s+/);
+    const [valueName, iterableName] = parsedValue.split(/\s+of\s+/);
     element.removeAttribute('mdw-for');
     // Create a new composition targetting element as root
 
-    const elementAnchor = createEmptyDiv();
+    const elementAnchor = document.createElement('template');
     element.replaceWith(elementAnchor);
     const tag = this.#tagElement(elementAnchor);
-    this.removeIDs.add(tag);
+    // console.log('tagging placeholder element with', elementAnchor, tag);
+
+    let nodeEntry = this.#interpolationState.nodeEntry;
+    if (!nodeEntry || nodeEntry.tag !== tag) {
+      nodeEntry = {
+        tag,
+        textNodes: [],
+      };
+      this.#interpolationState.nodeEntry = nodeEntry;
+      this.nodesToBind.push(nodeEntry);
+      this.#interpolationState.nodeIndex++;
+      console.log('adding node entry', tag, this.#interpolationState.nodeIndex);
+    }
 
     const newComposition = new Composition();
     newComposition.template.append(element);
@@ -981,153 +1100,124 @@ export default class Composition {
     const injections = {
       ...options.injections,
       [valueName]: null,
+      index: null,
     };
 
-    /** @type {NodeBindEntry<?>} */
-    const entry = {
-      tag,
-      composition: newComposition,
-      /**
-       * Updates component nodes based on data.
-       * Expects data in JSON Merge Patch format
-       * @see https://www.rfc-editor.org/rfc/rfc7386
-       * @param {DocumentFragment|ShadowRoot} root where
-       * @param {Partial<?>} changes what
-       * @param {any} [context] who
-       * @param {Partial<?>[]} [stores] If needed, where to grab extra props
-       * @return {void}
-       */
-      render: (root, changes, context, ...stores) => {
-        console.debug('composition adapter render', root, changes);
-        if (!newComposition.adapter) {
-          const instanceAnchorElement = this.referenceCaches.get(root).get(tag);
-          const commentAnchor = this.commentPlaceholders.get(instanceAnchorElement);
-
-          newComposition.adapter = new CompositionAdapter({
-            anchorNode: commentAnchor,
-          });
-        }
-
-        const { adapter, bindings } = newComposition;
-        const arraySource = changes[iterable];
-        const modifiedElements = new Set();
-        let hasOtherProperties = false;
-        for (const [key] of bindings) {
-          if (key === iterable) continue;
-          if (key in changes) {
-            hasOtherProperties = true;
-            break;
-          }
-        }
-        if (arraySource) {
-          const innerChanges = { ...changes };
-          let length = null;
-          if (Array.isArray(arraySource)) {
-            console.warn('Full render of array', arraySource);
-            length = arraySource.length;
-            for (let i = adapter.domRefs.length - 1; i >= length; i--) {
-              adapter.removeByIndex(i);
-            }
-            for (const [index, item] of arraySource.entries()) {
-              if (index >= length) {
-                console.log('short-circuiting at', index);
-                break;
-              }
-              let adapterElement = adapter.elementRefs[index];
-              innerChanges[valueName] = item;
-              const renderedElement = newComposition.render(
-                innerChanges,
-                adapterElement,
-                { context, stores },
-              );
-              if (!adapterElement) {
-                adapterElement = renderedElement;
-                adapter.insertByIndex(index, adapterElement);
-              }
-
-              modifiedElements.add(adapterElement);
-            }
-          } else {
-            /** @type {number[]} */
-            const removals = [];
-            if ('length' in arraySource) {
-              console.log('length has changed');
-              length = arraySource.length;
-              for (let i = adapter.domRefs.length - 1; i >= length; i--) {
-                console.log('fast removing', i);
-                adapter.removeByIndex(i);
-              }
-            }
-
-            for (const [key, item] of Object.entries(arraySource)) {
-              if (key !== 'length') {
-                const index = Number.parseInt(key, 10);
-                if (length != null && index >= length) {
-                  console.log('short-circuiting at', index);
-                  break;
-                }
-                if (Number.isNaN(index)) {
-                  console.warn('NOT A NUMBER?', changes);
-                } else if (item == null) {
-                  console.warn('null value in object at', index);
-                  removals.push(index);
-                } else {
-                  let adapterElement = adapter.elementRefs[index];
-                  innerChanges[valueName] = item;
-                  const renderedElement = newComposition.render(
-                    innerChanges,
-                    adapterElement,
-                    { context, stores },
-                  );
-                  if (!adapterElement) {
-                    adapterElement = renderedElement;
-                    adapter.insertByIndex(index, adapterElement);
-                  }
-                  modifiedElements.add(adapterElement);
-                }
-              }
-            }
-            for (const index of removals.reverse()) {
-              adapter.removeByIndex(index);
-            }
-          }
-        }
-        if (hasOtherProperties) {
-          // Iterate through ALL adapter items to invoke this partial change
-          const arrayInStoreEntry = propFromObjects(iterable, ...stores);
-          const storedArray = arrayInStoreEntry ? arrayInStoreEntry[1] : [];
-          for (const [index, subElement] of adapter.elementRefs.entries()) {
-            if (modifiedElements.has(subElement)) continue;
-            // Item is not part of change, is part of store
-            newComposition.render(
-              changes,
-              subElement,
-              {
-                context,
-                stores: stores.concat({
-                  item: storedArray[index],
-                }),
-              },
-            );
-
-            modifiedElements.add(subElement);
-          }
-        }
+    const propsUsed = [iterableName];
+    /** @type {RenderGraphSearch} */
+    const search = {
+      cacheIndex: this.#interpolationState.cacheIndex++,
+      dirtyIndex: this.#interpolationState.dirtyIndex++,
+      ranFlagIndex: this.#interpolationState.ranFlagIndex++,
+      propsUsed,
+      deepPropsUsed: [[iterableName]],
+      defaultValue: {},
+      invocation(state, changes, data) {
+        // Return unique to always specify dirty
+        return {};
       },
     };
+
+    /** @type {RenderGraphAction} */
+    const action = {
+      defaultValue: null,
+      nodeIndex: this.#interpolationState.nodeIndex,
+      search,
+      commentIndex: this.#interpolationState.commentIndex++,
+      injections,
+      invocation(state, value, changes, data) {
+        if (!newComposition.adapter) {
+          // console.log({ state.options });
+          const instanceAnchorElement = state.nodes[this.nodeIndex];
+          const anchorNode = createEmptyComment();
+          // Avoid leak
+          state.nodes[this.commentIndex] = anchorNode;
+          instanceAnchorElement.replaceWith(anchorNode);
+          newComposition.adapter = new CompositionAdapter({
+            anchorNode,
+            composition: newComposition,
+            renderOptions: {
+              target: null,
+              context: state.options.context,
+              store: state.options.store,
+              injections: this.injections,
+            },
+          });
+        }
+        const { adapter } = newComposition;
+        const iterable = (data ?? state.options.store)[iterableName];
+        // Remove oversized
+        if (!iterable || iterable.length === 0) {
+          adapter.removeEntries();
+          return;
+        }
+        const changeList = changes[iterableName];
+        const innerChanges = { ...changes };
+        const needTargetAll = newComposition.props.some((prop) => prop !== iterableName && prop in changes);
+
+        adapter.startBatch();
+        if (!needTargetAll && !Array.isArray(changeList)) {
+          const iterator = Array.isArray(changeList) ? changeList.entries() : Object.entries(changeList);
+          // console.log('changeList render', iterator);
+          for (const [key, change] of iterator) {
+            if (key === 'length') continue;
+            if (change === null) {
+              // console.warn('null?', 'remove?', key);
+              continue;
+            }
+            const index = (+key);
+            const resource = iterable[index];
+            innerChanges[valueName] = change;
+            this.injections[valueName] = resource;
+            this.injections.index = index;
+
+            adapter.renderData(index, innerChanges, data, resource, change);
+          }
+        } else {
+          if (!changeList) {
+            delete innerChanges[valueName];
+          }
+          // console.log('full array render', iterable);
+          for (const [index, resource] of iterable.entries()) {
+            let change;
+            if (changeList) {
+              // console.warn('full array render has changeList?', changeList);
+              if (!needTargetAll && !(index in changeList)) {
+                console.warn('huh?');
+                continue;
+              }
+              change = changeList[index];
+              if (change === null) {
+                // console.warn('remove?');
+                continue;
+              }
+              innerChanges[valueName] = change;
+            }
+            this.injections[valueName] = resource;
+            this.injections.index = index;
+
+            adapter.renderData(index, innerChanges, data, resource, change);
+            // adapter.renderIndex(index, innerChanges, data, resource);
+          }
+        }
+        adapter.stopBatch();
+
+        adapter.removeEntries(iterable.length);
+      },
+
+    };
+
     newComposition.interpolate({
       defaults: options.defaults,
       injections,
     });
-    for (const subProp of newComposition.bindings.keys()) {
-      if (subProp !== iterable) {
-        console.log('subtemplate rendering will require prop:', subProp);
-        // Add binding to parent property
-        this.addBinding(subProp, entry);
-      }
-    }
-    console.log('adding', iterable, 'bind to', this);
-    this.addBinding(iterable, entry);
+
+    propsUsed.push(...newComposition.props);
+    this.addSearch(search);
+    this.addAction(action);
+    this.tagsWithBindings.add(tag);
+    // console.log('adding', iterable, 'bind to', this);
+    // this.addBinding(iterable, entry);
     return newComposition;
   }
 
@@ -1135,6 +1225,7 @@ export default class Composition {
    * @param {InterpolateOptions} [options]
    */
   interpolate(options) {
+    this.interpolateOptions = options;
     // console.log('Template', [...this.template.children].map((child) => child.outerHTML).join('\n'));
 
     // Copy template before working on it
@@ -1205,19 +1296,6 @@ export default class Composition {
       node = treeWalker.nextNode();
     }
 
-    // Split into `interpolation` before removing elements
-    /** @type {DocumentFragment} */
-    this.interpolation = /** @type {DocumentFragment} */ (this.cloneable.cloneNode(true));
-
-    // console.debug('Interpolated', [...this.interpolation.children].map((child) => child.outerHTML).join('\n'));
-
-    // Remove elements from `cloneable` and place comment placeholders
-    // Remove in reverse so conditionals within conditionals are properly isolated
-
-    for (const watcher of this.watchers) {
-      this.bindWatcher(watcher, options?.defaults);
-    }
-
     if ('adoptedStyleSheets' in document) {
       this.adoptedStyleSheets = [
         ...generateCSSStyleSheets(this.styles),
@@ -1229,11 +1307,15 @@ export default class Composition {
       );
     }
 
-    // Run-once optimizations
-    this.boundProps = [...this.bindings.keys()];
-    this.allIds.reverse();
+    this.props = [...this.actionsByPropsUsed.keys()];
+
     for (const id of this.allIds) {
-      this.cloneable.getElementById(id);
+      if (!this.tagsWithBindings.has(id)) {
+        this.nodesToBind.push({
+          tag: id,
+          textNodes: [],
+        });
+      }
     }
 
     this.interpolated = true;
@@ -1242,32 +1324,31 @@ export default class Composition {
   }
 
   /**
-   * @param {*} fn
-   * @param {any} defaults
-   * @return {boolean} reusable
+   * @param {RenderGraphSearch} search
+   * @return {RenderGraphSearch}
    */
-  bindWatcher(fn, defaults) {
-    const { props, defaultValue, reusable } = observeFunction(fn, defaults);
-    const entry = { fn, props, defaultValue };
-    for (const prop of props) {
-      this.addBinding(prop, entry);
+  addSearch(search) {
+    this.searches.push(search);
+    if (search.query) {
+      this.searchByQuery.set(search.query, search);
+      this.initCache[search.cacheIndex] = search.defaultValue;
     }
-    return reusable;
+    return search;
   }
 
   /**
-   * @param {string} prop
-   * @param {NodeBindEntry<?>} entry
-   * @return {Set<NodeBindEntry<?>>} Mutable set of bindings for prop
+   * @param {RenderGraphAction} action
+   * @return {RenderGraphAction}
    */
-  addBinding(prop, entry) {
-    let set = this.bindings.get(prop);
-    if (set) {
-      set.add(entry);
-    } else {
-      set = new Set([entry]);
-      this.bindings.set(prop, set);
+  addAction(action) {
+    this.actions.push(action);
+    for (const prop of action.search.propsUsed) {
+      if (this.actionsByPropsUsed.has(prop)) {
+        this.actionsByPropsUsed.get(prop).push(action);
+      } else {
+        this.actionsByPropsUsed.set(prop, [action]);
+      }
     }
-    return set;
+    return action;
   }
 }

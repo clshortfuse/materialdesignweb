@@ -3,6 +3,7 @@
 import Composition from './Composition.js';
 import { ICustomElement } from './ICustomElement.js';
 import { attrNameFromPropName, attrValueFromDataValue } from './dom.js';
+import { applyMergePatch } from './jsonMergePatch.js';
 import { defineObservableProperty } from './observe.js';
 import { addInlineFunction, css, html } from './template.js';
 
@@ -406,10 +407,10 @@ export default class CustomElement extends ICustomElement {
 
   static undefine(name) {
     Reflect.deleteProperty(this.prototype, name);
-    const config = this.propList.get(name);
-    if (config && config.watchers.length) {
-      const propWatchers = this.propChangedCallbacks.get(name);
-      if (propWatchers) {
+    if (this.propList.has(name)) {
+      const config = this.propList.get(name);
+      if (config.watchers.length && this.propChangedCallbacks.has(name)) {
+        const propWatchers = this.propChangedCallbacks.get(name);
         for (const watcher of config.watchers) {
           const index = propWatchers.indexOf(watcher);
           if (index !== -1) {
@@ -554,12 +555,11 @@ export default class CustomElement extends ICustomElement {
   /** @type {typeof ICustomElement['onPropChanged']} */
   static onPropChanged(options) {
     for (const [prop, callback] of Object.entries(options)) {
-      let array = this.propChangedCallbacks.get(prop);
-      if (!array) {
-        array = [];
-        this.propChangedCallbacks.set(prop, array);
+      if (this.propChangedCallbacks.has(prop)) {
+        this.propChangedCallbacks.get(prop).push(callback);
+      } else {
+        this.propChangedCallbacks.set(prop, [callback]);
       }
-      array.push(callback);
     }
 
     // @ts-expect-error Can't cast T
@@ -570,12 +570,11 @@ export default class CustomElement extends ICustomElement {
   static onAttributeChanged(options) {
     for (const [name, callback] of Object.entries(options)) {
       const lcName = name.toLowerCase();
-      let array = this.attributeChangedCallbacks.get(lcName);
-      if (!array) {
-        array = [];
-        this.attributeChangedCallbacks.set(lcName, array);
+      if (this.attributeChangedCallbacks.has(lcName)) {
+        this.attributeChangedCallbacks.get(lcName).push(callback);
+      } else {
+        this.attributeChangedCallbacks.set(lcName, [callback]);
       }
-      array.push(callback);
     }
 
     // @ts-expect-error Can't cast T
@@ -594,7 +593,7 @@ export default class CustomElement extends ICustomElement {
   /** @type {Composition<?>} */
   #composition;
 
-  /** @type {Map<string,null|[string,any]>} */
+  /** @type {Map<string,{stringValue:string, parsedValue:any}>} */
   _propAttributeCache;
 
   /** @type {import('./ICustomElement.js').CallbackArguments} */
@@ -610,37 +609,38 @@ export default class CustomElement extends ICustomElement {
 
     this.attachShadow({ mode: 'open', delegatesFocus: this.delegatesFocus });
 
-    // Render current props
-    this.render(this);
+    /**
+     * Updates nodes based on data
+     * Expects data in JSON Merge Patch format
+     * @see https://www.rfc-editor.org/rfc/rfc7386
+     * @param {Partial<?>} changes
+     * @param {any} data
+     * @return {void}
+     */
+    this.render = this.composition.render(
+      this,
+      this,
+      {
+        store: this,
+        target: this.shadowRoot,
+        context: this,
+      },
+    );
 
     for (const callback of this.static._onConstructedCallbacks) {
       callback.call(this, this.callbackArguments);
     }
   }
 
-  /**
-   * Updates nodes based on data
-   * Expects data in JSON Merge Patch format
-   * @see https://www.rfc-editor.org/rfc/rfc7386
-   * @param {?} data
-   * @param {?} [stores]
-   * @return {void}
-   */
-  render(data, ...stores) {
-    // console.log('render', data);
-    this.composition.render(data, this.shadowRoot, {
-      context: this,
-      stores: [this, ...stores],
-    });
-  }
-
   /** @type {InstanceType<typeof ICustomElement>['propChangedCallback']} */
   propChangedCallback(name, oldValue, newValue, changes = newValue) {
-    this.render({ [name]: changes });
+    if (!this.patching) {
+      this.render.byProp(name, changes, this);
+      // this.render({ [name]: changes });
+    }
 
-    const callbacks = this.static.propChangedCallbacks.get(name);
-    if (callbacks) {
-      for (const callback of callbacks) {
+    if (this.static._propChangedCallbacks.has(name)) {
+      for (const callback of this.static.propChangedCallbacks.get(name)) {
         callback.call(this, oldValue, newValue, changes, this);
       }
     }
@@ -652,9 +652,9 @@ export default class CustomElement extends ICustomElement {
    * @param {string|null} newValue
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    const callbacks = this.static.attributeChangedCallbacks.get(name.toLowerCase());
-    if (callbacks) {
-      for (const callback of callbacks) {
+    const lcName = name.toLowerCase();
+    if (this.static.attributeChangedCallbacks.has(lcName)) {
+      for (const callback of this.static.attributeChangedCallbacks.get(lcName)) {
         callback.call(this, oldValue, newValue, this);
       }
     }
@@ -670,10 +670,10 @@ export default class CustomElement extends ICustomElement {
         return;
       }
 
-      const [stringValue] = this.attributeCache.get(name) ?? [null, null];
-      if (stringValue === newValue) {
-        // Attribute was changed via data change event. Ignore.
-        return;
+      let cacheEntry;
+      if (this.attributeCache.has(lcName)) {
+        cacheEntry = this.attributeCache.get(lcName);
+        if (cacheEntry.stringValue === newValue) return;
       }
 
       // @ts-expect-error any
@@ -689,7 +689,14 @@ export default class CustomElement extends ICustomElement {
       }
       // "Remember" that this attrValue equates to this data value
       // Avoids rewriting attribute later on data change event
-      this.attributeCache.set(name, [newValue, parsedValue]);
+      if (cacheEntry) {
+        cacheEntry.stringValue = newValue;
+        cacheEntry.parsedValue = parsedValue;
+      } else {
+        this.attributeCache.set(lcName, {
+          stringValue: newValue, parsedValue,
+        });
+      }
       // @ts-expect-error any
       this[config.key] = parsedValue;
       return;
@@ -709,23 +716,41 @@ export default class CustomElement extends ICustomElement {
   _onObserverPropertyChanged(name, oldValue, newValue, changes) {
     const { reflect, attr } = this.static.propList.get(name);
     if (attr && (reflect === true || reflect === 'write')) {
-      const [, dataValue] = this.attributeCache.get(attr) ?? [null, null];
-      // Don't change attribute if data value is equivalent
-      // (eg: Boolean('foo') === true; Number("1.0") === 1)
-      if (dataValue !== newValue) {
-        const attrValue = attrValueFromDataValue(newValue);
+      const lcName = attr.toLowerCase();
+      /** @type {{stringValue:string, parsedValue:any}} */
+      let cacheEntry;
+      let needsWrite = false;
+      if (this.attributeCache.has(lcName)) {
+        cacheEntry = this.attributeCache.get(lcName);
+        needsWrite = (cacheEntry.parsedValue !== newValue);
+      } else {
+        // @ts-ignore skip cast
+        cacheEntry = {};
+        this.attributeCache.set(lcName, cacheEntry);
+        needsWrite = true;
+      }
+      if (needsWrite) {
+        const stringValue = attrValueFromDataValue(newValue);
+        cacheEntry.parsedValue = newValue;
+        cacheEntry.stringValue = stringValue;
         // Cache attrValue to ignore attributeChangedCallback later
-        this.attributeCache.set(attr, [attrValue, newValue]);
-        if (attrValue == null) {
+        if (stringValue == null) {
           this.removeAttribute(attr);
         } else {
-          this.setAttribute(attr, attrValue);
+          this.setAttribute(attr, stringValue);
         }
       }
     }
 
     // Invoke change => render
     this.propChangedCallback(name, oldValue, newValue, changes);
+  }
+
+  patch(patch) {
+    this.patching = true;
+    applyMergePatch(this, patch);
+    this.render(patch);
+    this.patching = false;
   }
 
   /**
@@ -746,9 +771,12 @@ export default class CustomElement extends ICustomElement {
           console.warn(this.static.name, 'Attempted to access references before composing!');
         }
         const composition = this.composition;
+        let element;
         if (!composition.interpolated) {
-          let element = this.#refsCompositionCache.get(tag)?.deref();
-          if (element) return element;
+          if (this.#refsCompositionCache.has(tag)) {
+            element = this.#refsCompositionCache.get(tag).deref();
+            if (element) return element;
+          }
           const formattedTag = attrNameFromPropName(tag);
           // console.warn(this.tagName, 'Returning template reference');
           element = composition.template.getElementById(formattedTag);
@@ -756,12 +784,15 @@ export default class CustomElement extends ICustomElement {
           this.#refsCompositionCache.set(tag, new WeakRef(element));
           return element;
         }
-        let element = this.#refsCache.get(tag)?.deref();
-        if (element) {
-          return element;
+        if (this.#refsCache.has(tag)) {
+          element = this.#refsCache.get(tag).deref();
+          if (element) {
+            return element;
+          }
         }
+
         const formattedTag = attrNameFromPropName(tag);
-        element = composition.referenceCaches.get(this.shadowRoot).get(formattedTag);
+        element = this.shadowRoot.getElementById(formattedTag);
         if (!element) return null;
         this.#refsCache.set(tag, new WeakRef(element));
         return element;

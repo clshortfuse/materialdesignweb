@@ -1,30 +1,4 @@
-/** @return {HTMLElement} */
-function AnyDomAdapterCreator() {
-  return document.createElement('div');
-}
-
-/**
- * Fastest way to find element index
- * @param {Element} element
- * @return {number}
- */
-function indexOfElement(element) {
-  return Array.prototype.indexOf.call(element.parentElement, element);
-}
-
-/**
- * Fastest way to find node index
- * @param {ChildNode} node
- * @return {number}
- */
-function indexOfNode(node) {
-  let index = 0;
-  let prev = node;
-  while ((prev = prev.previousSibling)) {
-    index++;
-  }
-  return index;
-}
+import { createEmptyComment } from './optimizations.js';
 
 /**
  * @typedef {Object} DomAdapterCreateOptions
@@ -32,133 +6,310 @@ function indexOfNode(node) {
  * @prop {(...args:any[]) => HTMLElement} [create]
  */
 
+/**
+ * @typedef {Object} ItemMetadata
+ * @prop {Element} element
+ * @prop {any} key
+ * @prop {Element|Comment} domNode
+ * @prop {Function} render
+ * @prop {boolean} [hidden]
+ * @prop {Comment} [comment]
+ */
+
 export default class CompositionAdapter {
   /** @param {DomAdapterCreateOptions} options */
   constructor(options) {
     this.anchorNode = options.anchorNode;
-    /** @type {HTMLElement[]} */
-    this.elementRefs = [];
-    /** @type {(HTMLElement|Comment)[]} */
-    this.domRefs = [];
-    /** @type {WeakMap<Element, Comment>} */
-    this.elementPlaceholders = new WeakMap();
-    this.create = options.create || AnyDomAdapterCreator;
+
+    /** @type {ItemMetadata[]} */
+    this.metadata = [];
+    /**
+     * Ordered-list of metadata keys
+     * Chrome and FireFox optimize arrays for indexOf/includes
+     * Safari is faster with WeakMap.get(), but can't use Primitive keys
+     * TODO: Add Safari path
+     * @type {any[]}
+     */
+    this.keys = [];
+
+    /**
+     * Chrome needs a hint to know we will need a fast path for array by keys.
+     */
+    this.needsArrayKeyFastPath = false;
+
+    this.composition = options.composition;
+    this.renderOptions = options.renderOptions;
+
+    this.pendingRemoves = [];
+    // Batch objects
+
+    /** @type {Map<any, ItemMetadata>} */
+    this.metadataCache = null;
+
+    /** @type {Element[]} */
+    this.queuedElements = [];
+    // this.batching = false;
+    /** @type {number|null} */
+    this.batchStartIndex = null;
+    /** @type {number|null} */
+    this.batchEndIndex = null;
   }
 
-  /**
-   * @param {number} index
-   * @param {boolean} [create]
-   * @return {HTMLElement}
-   */
-  getElementByIndex(index, create) {
-    let element = this.elementRefs[index];
-    if (!element && create) {
-      element = this.insertByIndex(index);
-      // TODO: Allow holes?
-      this.elementRefs[index] = element;
-    }
-    return element;
+  render(changes, data) {
+    return this.composition.render(changes, data, this.renderOptions);
   }
 
-  /** @param {HTMLElement} element */
-  removeByElement(element) {
-    const refIndex = this.elementRefs.indexOf(element);
-    if (refIndex !== -1) {
-      this.elementRefs.splice(refIndex, 1);
-      element.remove();
+  startBatch() {
+    this.needsArrayKeyFastPath = true;
+    // this.batching = true;
+  }
+
+  writeBatch() {
+    if (!this.queuedElements.length) return;
+    /** @type {Comment|Element} */
+    const previousSibling = this.metadata[this.batchStartIndex - 1]?.domNode ?? this.anchorNode;
+    previousSibling.after(...this.queuedElements);
+    this.queuedElements.length = 0;
+  }
+
+  stopBatch() {
+    this.writeBatch();
+
+    this.needsArrayKeyFastPath = false;
+    this.batchStartIndex = null;
+    this.batchEndIndex = null;
+    if (this.metadataCache !== null) {
+      for (const { domNode } of this.metadataCache.values()) {
+        domNode.remove();
+      }
+      this.metadataCache.clear();
     }
-    return refIndex;
   }
 
   /** @param {number} index */
   removeByIndex(index) {
-    const element = this.elementRefs[index];
-    const domRef = this.domRefs[index];
-    this.elementRefs.splice(index, 1);
-    this.domRefs.splice(index, 1);
-    element.remove();
-    if (domRef !== element) {
-      domRef.parentNode?.removeChild(domRef);
+    const [metadata] = this.metadata.splice(index, 1);
+    const { domNode, key } = metadata;
+    this.keys.splice(index, 1);
+    domNode.remove();
+
+    // Don't release in case we may need it later
+    if (this.metadataCache === null) {
+      this.metadataCache = new Map([[key, metadata]]);
+    } else {
+      this.metadataCache.set(key, metadata);
     }
   }
 
   /**
-   * @param {number} index
-   * @param {HTMLElement} element
-   * @param {boolean} [checkPosition]
-   * @return {HTMLElement}
+   * Worst case scenario
+   * @param {number} newIndex expectedIndex
+   * @param {*} changes
+   * @param {*} data
+   * @param {*} key
+   * @param {*} change
+   * @param {boolean} [skipOnMatch]
+   * JSON Merge has no way to express sort change and data change. Best
+   * performance is done via invoking render on sort change and another on
+   * inner change. Can't skip if mixing change types.
    */
-  insertByIndex(index, element, checkPosition) {
-    if (checkPosition) {
-      // Element exists, that means an insert is actually a move operation
-      const previousIndex = this.removeByElement(element);
-      if (previousIndex === -1) {
-        if (element.parentElement) {
-          console.warn('Element was not part of adapter');
+  renderData(newIndex, changes, data, key, change, skipOnMatch) {
+    if (newIndex < this.metadata.length) {
+      const metadataAtIndex = this.metadata[newIndex];
+
+      // There is an element in this slot
+
+      // Compare if different
+      const currentKey = metadataAtIndex.key;
+      const sameKey = (currentKey === key);
+      const isPartial = (change !== key);
+
+      if (sameKey) {
+        // Both reference the same key (correct spot)
+        if (isPartial) {
+          metadataAtIndex.render(changes, data);
+        } else if (skipOnMatch) {
+          // Skip overwrite. Presume no change
+          // console.warn('same key, no reason to repaint', newIndex);
         } else {
-          console.debug('Using passed element (pre-rendered?)');
+          // console.warn('no skip on match', newIndex);
+          metadataAtIndex.render(changes, data);
         }
+        return;
+      }
+
+      if (this.metadataCache === null) {
+        this.metadataCache = new Map();
+      }
+
+      // If not same key. Scan key list.
+      // Can avoid checking before current index. Will always be after current
+      let failedFastPath = false;
+      if (this.needsArrayKeyFastPath) {
+        // Invoking includes will ensure Chrome generates an internal hash map
+        failedFastPath = !this.keys.includes(key);
+        this.needsArrayFastPath = false;
+      }
+      const oldIndex = failedFastPath ? -1 : this.keys.indexOf(key, newIndex + 1);
+      if (oldIndex === -1) {
+        // New key
+        // console.log('new key?', 'should be at', newIndex);
+        // Was key removed in this batch?
+        if (this.metadataCache.has(key)) {
+          // console.log('inserting removed element', 'at', newIndex);
+          // (Optimistic insert)
+          // Key was removed and should be here instead
+          // If should have been replace, will correct next step
+          const previousMetadata = this.metadataCache.get(key);
+          this.metadata.splice(newIndex, 0, previousMetadata);
+          this.keys.splice(newIndex, 0, key);
+
+          const previousSibling = this.metadata[newIndex - 1]?.domNode ?? this.anchorNode;
+          previousSibling.after(previousMetadata.domNode);
+          this.metadataCache.delete(key);
+          return;
+        }
+
+        // (Optimistic replace)
+        // Brand new key. Cache whatever is in current and replace
+        // If should have been insert, will correct itself next step.
+        // Allows multiple inserts to batch instead of one-by-one
+
+        // console.log('completely new key', 'removing old. will replace', newIndex);
+        this.metadataCache.set(metadataAtIndex.key, metadataAtIndex);
+
+        // Continue to PUT below
       } else {
-        console.warn('Re-inserting element. Removed before insert. Index may be different');
+        // Key is in the wrong spot (guaranteed to be oldIndex > newIndex)
+        // console.warn('Found key for', newIndex, '@', oldIndex);
+        // console.warn('swapping', newIndex, '<=>', oldIndex);
+        if ((newIndex - oldIndex) === -1) {
+          // (Optimistic removal)
+          // If element should be one step sooner, remove instead to shift up.
+          // If should have been swap, will correct itself next step.
+          // console.warn('Removing', newIndex, 'instead');
+          this.removeByIndex(newIndex);
+          return;
+        }
+        // Swap with other element
+        // Arrays should be iterated sequentially.
+        // Array can never swap before current index
+
+        // Store what's later in the tree to move here
+
+        const correctMetadata = this.metadata[oldIndex];
+
+        // Move back <=
+        this.metadata[newIndex] = correctMetadata;
+        this.metadata.splice(oldIndex, 1);
+
+        const { domNode: domNodeToRemove } = metadataAtIndex;
+        domNodeToRemove.replaceWith(correctMetadata.domNode);
+
+        if (!skipOnMatch) {
+          console.warn('no skip on match on swap', newIndex);
+          correctMetadata.render(changes, data);
+        }
+
+        // Remove posterior
+
+        this.keys[newIndex] = key;
+        this.keys.splice(oldIndex, 1);
+
+        domNodeToRemove.remove();
+
+        // Don't release in case we may need it later
+        // console.debug('Caching key', key);
+        this.metadataCache.set(metadataAtIndex.key, metadataAtIndex);
+
+        return;
       }
     }
 
-    this.elementRefs[index] = element;
-    const previousSibling = this.domRefs[index - 1] ?? this.anchorNode;
-    previousSibling.after(element);
-    this.domRefs[index] = element;
+    const render = this.render(changes, data);
+    const element = render.target;
 
-    return element;
+    this.metadata[newIndex] = {
+      render,
+      element,
+      key,
+      domNode: element,
+    };
+    this.keys[newIndex] = key;
+
+    if (this.batchEndIndex === null || this.batchEndIndex !== (newIndex - 1)) {
+      this.writeBatch();
+      // Start new batch
+      this.batchStartIndex = newIndex;
+    }
+    this.batchEndIndex = newIndex;
+    this.queuedElements.push(element);
+  }
+
+  removeEntries(startIndex = 0) {
+    const { length } = this.metadata;
+    for (let index = length - 1; index >= startIndex; index--) {
+      this.metadata[index].domNode.remove();
+    }
+    this.metadata.length = startIndex;
+    this.keys.length = startIndex;
   }
 
   /**
-   * @param {HTMLElement} [element]
-   * @return {HTMLElement}
-   */
-  appendElement(element) {
-    return this.insertByIndex(this.domRefs.length, element, false);
-  }
-
-  /**
-   * @param {HTMLElement} element
+   * @param {number} [index]
+   * @param {ItemMetadata} [metadata]
+   * @param {any} [key]
    * @return {boolean} changed
    */
-  hideByElement(element) {
-    const domRefIndex = this.domRefs.indexOf(element);
-    if (domRefIndex === -1) {
-      // Already hidden?
-      return false;
+  hide(index, metadata, key) {
+    if (!metadata) {
+      if (index == null) {
+        index = this.keys.indexOf(key);
+      }
+      metadata = this.metadata[index];
+      if (!metadata) {
+        return false;
+      }
     }
-    let commentPlaceholder = this.elementPlaceholders.get(element);
-    if (!commentPlaceholder) {
-      commentPlaceholder = new Comment('{adapter-item}');
-      this.elementPlaceholders.set(element, commentPlaceholder);
+
+    if (metadata.hidden) return false;
+
+    let { comment, element } = metadata;
+    if (!comment) {
+      comment = createEmptyComment();
+      metadata.comment = comment;
     }
-    this.domRefs.splice(domRefIndex, 1, commentPlaceholder);
-    element.replaceWith(commentPlaceholder);
+
+    element.replaceWith(comment);
+    metadata.domNode = comment;
+    metadata.hidden = true;
     return true;
   }
 
   /**
-   * @param {HTMLElement} element
+   * @param {number} [index]
+   * @param {ItemMetadata} [metadata]
+   * @param {any} [key]
    * @return {boolean} changed
    */
-  showByElement(element) {
-    const index = this.elementRefs.indexOf(element);
-    if (index === -1) {
-      // Element is not part of adapter. Adding
-      console.warn('Appending element to DOM');
-      this.appendElement(element);
-      return true;
+  show(index, metadata, key) {
+    if (!metadata) {
+      if (index == null) {
+        index = this.keys.indexOf(key);
+      }
+      metadata = this.metadata[index];
+      if (!metadata) {
+        return false;
+      }
     }
 
-    const domRef = this.domRefs[index];
-    if (domRef === element) {
-      // Element already in DOM
-      return false;
-    }
-    domRef.replaceWith(element);
-    this.domRefs.splice(index, 1, element);
+    if (!metadata.hidden) return false;
+
+    const { comment, element } = metadata;
+
+    comment.replaceWith(element);
+    metadata.domNode = element;
+    metadata.hidden = false;
     return true;
   }
 }

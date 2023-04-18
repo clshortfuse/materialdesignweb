@@ -42,7 +42,16 @@ const DEFAULT_OBJECT_PARSER = (o) => o;
  * @param {T} b
  * @return {boolean} true if equal
  */
-export const DEFAULT_OBJECT_COMPARATOR = (a, b) => !hasMergePatch(a, b);
+const DEFAULT_OBJECT_COMPARATOR = (a, b) => !hasMergePatch(a, b);
+
+/**
+ * Always invoke change on set
+ * @template T
+ * @param {T} a
+ * @param {T} b
+ * @return {boolean} true if equal
+ */
+const DEFAULT_ARRAY_COMPARATOR = (a, b) => false;
 
 /**
  * @template T
@@ -50,7 +59,7 @@ export const DEFAULT_OBJECT_COMPARATOR = (a, b) => !hasMergePatch(a, b);
  * @param {T} b
  * @return {boolean} true if equal
  */
-export const DEFAULT_OBJECT_DIFF = (a, b) => buildMergePatch(a, b, 'object');
+const DEFAULT_OBJECT_DIFF = (a, b) => buildMergePatch(a, b, 'reference');
 
 /**
  * @param {ObserverPropertyType} type
@@ -78,6 +87,48 @@ function emptyFromType(type) {
 }
 
 /**
+ * @template {Object} T
+ * @param {T} proxyTarget
+ * @param {Set<string>} set
+ * @param {Set<string>} deepSet
+ * @param {string} [prefix]
+ * @return {T}
+ */
+function buildProxy(proxyTarget, set, deepSet, prefix) {
+  proxyTarget ??= {};
+  return new Proxy(proxyTarget, {
+    get(target, p) {
+      const value = target[p];
+      if (typeof p !== 'symbol') {
+        const arg = prefix ? `${prefix}.${p}` : p;
+        if (prefix) {
+          deepSet.add(arg);
+        } else {
+          set.add(arg);
+        }
+        if (typeof value === 'object' && value != null) {
+          console.debug('tried to arg poke object get', p, value);
+          return buildProxy(value, set, deepSet, arg);
+        }
+      }
+      return value;
+    },
+    has(target, p) {
+      const value = Reflect.has(target, p);
+      if (typeof p !== 'symbol') {
+        const arg = prefix ? `${prefix}.p` : p;
+        if (prefix) {
+          deepSet.add(arg);
+        } else {
+          set.add(arg);
+        }
+      }
+      return value;
+    },
+  });
+}
+
+/**
  * @param {ObserverPropertyType} type
  * @return {any}
  */
@@ -97,7 +148,7 @@ function defaultParserFromType(type) {
     case 'object':
       return DEFAULT_OBJECT_PARSER;
     case 'array':
-      return Array.from;
+      return DEFAULT_OBJECT_PARSER;
     default:
     case 'string':
       return DEFAULT_STRING_PARSER;
@@ -165,7 +216,7 @@ export function parseObserverOptions(name, typeOrOptions, object) {
   if (!isFn) {
     isFn = parsedType === 'object'
       ? DEFAULT_OBJECT_COMPARATOR
-      : Object.is;
+      : ((parsedType === 'array') ? DEFAULT_ARRAY_COMPARATOR : Object.is);
   }
 
   const diff = 'diff' in options
@@ -216,77 +267,56 @@ export function parsePropertyValue(value) {
 
 /**
  * @param {(data: Partial<any>) => any} fn
- * @param {any} arg0
  * @param {...any} args
  * @this {any}
- * @return {{props:string[], deepProps:[string, string[]][], defaultValue:any, reusable: boolean}}
+ * @return {{
+ *  props: {
+ *    this: string[],
+ *    args: string[][],
+ *  },
+ *  deepPropStrings: {
+ *   this: string[],
+ *   args: string[][],
+ *  },
+ *  deepProps: {
+ *   this: string[][],
+ *   args: string[][][],
+ *  },
+ *  defaultValue: any,
+ *  reusable: boolean,
+ * }}
  */
-export function observeFunction(fn, arg0, ...args) {
-  /** @type {Set<string>} */
-  const argPoked = new Set();
-  /** @type {Set<string>} */
-  const argPokedDeep = new Set();
+export function observeFunction(fn, ...args) {
   /** @type {Set<string>} */
   const thisPoked = new Set();
   /** @type {Set<string>} */
   const thisPokedDeep = new Set();
 
-  /**
-   * @template {Object} T
-   * @param {T} proxyTarget
-   * @param {Set<string>} set
-   * @param {Set<string>} deepSet
-   * @param {string} [prefix]
-   * @return {T}
-   */
-  function buildProxy(proxyTarget, set, deepSet, prefix) {
-    return new Proxy(proxyTarget, {
-      get(target, p) {
-        const value = Reflect.get(target, p);
-        if (typeof p !== 'symbol') {
-          const arg = prefix ? `${prefix}.${p}` : p;
-          if (prefix) {
-            deepSet.add(arg);
-          } else {
-            set.add(arg);
-          }
-          if (typeof value === 'object' && value != null) {
-            console.debug('tried to arg poke object get', p, value);
-            return buildProxy(value, set, deepSet, arg);
-          }
-        }
-        return value;
-      },
-      has(target, p) {
-        const value = Reflect.has(target, p);
-        if (typeof p !== 'symbol') {
-          const arg = prefix ? `${prefix}.p` : p;
-          if (prefix) {
-            deepSet.add(arg);
-          } else {
-            set.add(arg);
-          }
-        }
-        return value;
-      },
-    });
-  }
+  const argWatchers = args.map((arg) => {
+    const poked = new Set();
+    const pokedDeep = new Set();
+    const proxy = buildProxy(arg, poked, pokedDeep);
+    return { poked, pokedDeep, proxy };
+  });
 
-  const argProxy = buildProxy(arg0, argPoked, argPokedDeep);
-  const thisProxy = buildProxy(this ?? arg0, thisPoked, thisPokedDeep);
-  const defaultValue = fn.call(thisProxy, argProxy, ...args);
+  const thisProxy = buildProxy(this ?? {}, thisPoked, thisPokedDeep);
+  const defaultValue = fn.apply(thisProxy, argWatchers.map((watcher) => watcher.proxy));
   /* Arrow functions can reused if they don't poke `this` */
   const reusable = fn.name ? true : !thisPoked.size;
 
   return {
-    props: [
-      ...argPoked,
-      ...thisPoked,
-    ],
-    deepProps: [
-      ...argPokedDeep,
-      ...thisPokedDeep,
-    ].map((deepPropString) => [deepPropString, deepPropString.split('.')]),
+    props: {
+      this: [...thisPoked],
+      args: argWatchers.map((watcher) => [...watcher.poked]),
+    },
+    deepPropStrings: {
+      this: [...thisPokedDeep],
+      args: argWatchers.map((watcher) => [...watcher.pokedDeep]),
+    },
+    deepProps: {
+      this: [...thisPokedDeep].map((deepPropString) => deepPropString.split('.')),
+      args: argWatchers.map((watcher) => [...watcher.pokedDeep].map((deepPropString) => deepPropString.split('.'))),
+    },
     defaultValue,
     reusable,
   };
@@ -316,7 +346,6 @@ export function defineObservableProperty(object, key, options) {
    * @return {boolean} changed
    */
   function detectChange(oldValue, value) {
-    if (oldValue === value) return false;
     if (config.get) {
       // TODO: Custom getter vs parser
     }
@@ -329,7 +358,7 @@ export function defineObservableProperty(object, key, options) {
     if (oldValue == null) {
       if (newValue == null) return false; // Both nullish
     } else if (newValue != null) {
-      if (oldValue === newValue) return false;
+      // if (oldValue === newValue) return false;
       if (config.diff) {
         changes = config.diff.call(this, oldValue, newValue);
         if (changes == null) return false;
@@ -374,10 +403,16 @@ export function defineObservableProperty(object, key, options) {
   if (config.get) {
     // Custom `get` uses computed values.
     // Invalidate computed value when dependent `prop` changes
-    const { props } = observeFunction(config.get.bind(object), object, internalGet.bind(object));
-    config.watchers.push(
-      ...[...props].map((prop) => [prop, onInvalidate]),
-    );
+    const observeResult = observeFunction(config.get.bind(object), object, internalGet.bind(object));
+    const uniqueProps = new Set([
+      ...observeResult.props.this,
+      ...observeResult.props.args[0],
+    ]);
+    for (const prop of uniqueProps) {
+      // @ts-ignore keyof C
+      config.watchers.push([prop, onInvalidate]);
+    }
+
     // TODO: May be able to cache value if props are present
   }
   /** @type {Partial<PropertyDescriptor>} */

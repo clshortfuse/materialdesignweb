@@ -7,7 +7,9 @@ import { generateUID } from './uid.js';
  * @typedef {Object} InlineFunctionEntry
  * @prop {(data:T) => any} fn
  * @prop {string[]} [props]
- * @prop {[string, string[]][]} [deepProps]
+ * @prop {string[][]} [deepProps]
+ * @prop {string[]} [injectionProps]
+ * @prop {string[][]} [injectionDeepProps]
  * @prop {T} [defaultValue]
  */
 
@@ -77,18 +79,20 @@ export function css(array, ...substitutions) {
   }
 
   if (_cssStyleSheetConstructable) {
-    let sheet = cssStyleSheetsCache.get(content);
-    if (!sheet) {
-      sheet = new CSSStyleSheet();
-      _cssStyleSheetConstructable = true;
-      sheet.replaceSync(content);
-      cssStyleSheetsCache.set(content, sheet);
+    if (cssStyleSheetsCache.has(content)) {
+      return cssStyleSheetsCache.get(content);
     }
+    const sheet = new CSSStyleSheet();
+    _cssStyleSheetConstructable = true;
+    sheet.replaceSync(content);
+    cssStyleSheetsCache.set(content, sheet);
     return sheet;
   }
 
-  let style = styleElementCache.get(content);
-  if (!style) {
+  let style;
+  if (styleElementCache.has(content)) {
+    style = styleElementCache.get(content);
+  } else {
     _inactiveDocument ??= document.implementation.createHTMLDocument();
     style = _inactiveDocument.createElement('style');
     style.textContent = content;
@@ -147,3 +151,4 @@ export function html(strings, ...substitutions) {
 
   return /** @type {DocumentFragment} */ (fragment.cloneNode(true));
 }
+
