@@ -13,6 +13,7 @@
     "docs": "node build/esbuild.js docs/demo.js --outdir=docs --minify --metafile",
     "watch": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile",
     "serve": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile --serve --live",
+    "sample": "node build/esbuild.js index.js --outdir=docs --watch --metafile --serve --live",
     "pretest": "eslint --ignore-path .gitignore",
     "test": "web-test-runner \"test/**/*.test.js\" --node-resolve",
     "test:watch": "web-test-runner \"test/**/*.test.js\" --node-resolve --watch"
@@ -61,6 +62,7 @@
   "homepage": "https://github.com/clshortfuse/materialdesignweb#readme",
   "devDependencies": {
     "@esm-bundle/chai": "^4.3.4-fix.0",
+    "@playwright/test": "^1.32.3",
     "@types/html-minifier-terser": "^7.0.0",
     "@types/mocha": "^10.0.1",
     "@types/tap": "^15.0.7",
@@ -85,6 +87,7 @@
     "html-minifier-terser": "^7.1.0",
     "http-server": "^14.1.1",
     "magic-string": "^0.30.0",
+    "playwright": "^1.32.2",
     "postcss-styled": "^0.34.0",
     "postcss-styled-syntax": "^0.4.0",
     "stylelint": "^15.2.0",

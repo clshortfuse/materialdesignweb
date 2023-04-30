@@ -1,12 +1,30 @@
 {
   "version": "0.2.0",
   "configurations": [
-
-  
     {
-      "type": "msedge",
-      "name": "Debug MS-Edge",
+      "type": "chrome",
+      "name": "Debug Sample",
       "request": "launch",
+      "url": "http://127.0.0.1:5500/sample",
+      "preLaunchTask": "npm: sample",
+      "webRoot": "${workspaceRoot}/docs"
+    },
+    {
+      "type": "chrome",
+      "name": "Debug Docs",
+      "request": "launch",
+      "url": "http://127.0.0.1:5500/",
+      "preLaunchTask": "npm: serve",
+      "webRoot": "${workspaceRoot}/docs"
+    },
+    {
+      "type": "pwa-msedge",
+      "name": "Launch Microsoft Edge in headless mode",
+      "request": "launch",
+      "runtimeArgs": [
+        "--headless",
+        "--remote-debugging-port=9222"
+      ],
       "url": "http://127.0.0.1:5500/",
       "preLaunchTask": "npm: serve",
       "webRoot": "${workspaceRoot}/docs"
@@ -25,6 +43,6 @@
       "skipFiles": [
         "<node_internals>/**/*.js"
       ]
-    },
+    }
   ]
 }
