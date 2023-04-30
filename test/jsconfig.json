@@ -8,8 +8,7 @@
     "strict": false,
     "target": "esnext",
     "allowSyntheticDefaultImports": true,
-    "noErrorTruncation": true,
-    "types": []
+    "noErrorTruncation": true
   },
   
   "exclude": [

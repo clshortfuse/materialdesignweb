@@ -9,7 +9,7 @@
     "target": "esnext",
     "allowSyntheticDefaultImports": true,
     "noErrorTruncation": true,
-    "types": []
+    "types": ["mocha"]
   },
   
   "exclude": [
