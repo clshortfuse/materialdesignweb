@@ -17,6 +17,7 @@ const cliArgs = getSearchParams();
 const isProduction = (process.env.NODE_ENV === 'production')
   || cliArgs.has('production');
 
+const noConsole = cliArgs.has('no-console');
 const serve = cliArgs.has('serve');
 const watch = cliArgs.has('watch');
 const live = cliArgs.has('live');
@@ -50,7 +51,7 @@ const buildOptions = {
   legalComments: 'linked',
   metafile: cliArgs.has('metafile'),
   write: false,
-  drop: isProduction ? ['console'] : [],
+  drop: isProduction || noConsole ? ['console'] : [],
   target,
   outdir,
   plugins: [
