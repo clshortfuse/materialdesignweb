@@ -36,14 +36,15 @@ export function* generateHTMLStyleElements(styles) {
       // console.log('Cloning parent HTMLStyleElement instead');
       // @ts-ignore Skip cast
       yield style.ownerNode.cloneNode(true);
+    } else if (styleElementWrappers.has(style)) {
+      // @ts-ignore Skip cast
+      yield styleElementWrappers.get(style).cloneNode(true);
     } else {
-      let styleElement = styleElementWrappers.get(style);
-      if (!styleElement) {
-        console.warn('Manually constructing HTMLStyleElement', [...style.cssRules].map((r) => r.cssText).join('\n'));
-        styleElement = document.createElement('style');
-        styleElement.textContent = [...style.cssRules].map((r) => r.cssText).join('');
-        styleElementWrappers.set(style, styleElement);
-      }
+      console.warn('Manually constructing HTMLStyleElement', [...style.cssRules].map((r) => r.cssText).join('\n'));
+      const styleElement = document.createElement('style');
+      styleElement.textContent = [...style.cssRules].map((r) => r.cssText).join('');
+      styleElementWrappers.set(style, styleElement);
+
       // @ts-ignore Skip cast
       yield styleElement.cloneNode(true);
     }
