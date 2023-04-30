@@ -22,9 +22,5 @@ export default Box
       padding-block: 8px;
     }
 
-    :host(:focus) {
-      outline: 1px solid red;
-    }
-
   `
   .autoRegister('mdw-list');

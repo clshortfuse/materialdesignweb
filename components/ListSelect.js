@@ -217,4 +217,4 @@ ListSelect.prototype.multiple = ListSelect.prop('multiple', { type: 'boolean' })
 // [CEReactions] attribute boolean required;
 ListSelect.prototype.size = ListSelect.prop('size', { type: 'integer', empty: 0 });
 ListSelect.prototype._ariaRole = 'listbox';
-ListSelect.prototype.delegatesFocus = true;
+ListSelect.prototype.delegatesFocus = false;

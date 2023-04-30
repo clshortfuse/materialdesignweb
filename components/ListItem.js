@@ -59,7 +59,7 @@ export default CustomElement
       return href != null;
     },
     hasSupporting() {
-      return this.supporting || this._supportingSlotted;
+      return Boolean(this.supporting || this._supportingSlotted);
     },
     checkboxClass() {
       return this.checkbox || 'leading';
