@@ -66,8 +66,10 @@ export default CustomElement
         // Firefox and Webkit will not apply label from slots.
         // https://bugs.webkit.org/show_bug.cgi?id=254934
         // https://bugzilla.mozilla.org/show_bug.cgi?id=1826194
-        // eslint-disable-next-line unicorn/prefer-dom-node-text-content
-        this._slotInnerText = this.innerText;
+        if (navigator.userAgent.includes('Firefox')
+        || (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrom'))) {
+          this._slotInnerText = this.textContent;
+        }
       },
     },
   })
