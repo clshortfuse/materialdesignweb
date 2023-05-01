@@ -1,4 +1,5 @@
 import CustomElement from '../core/CustomElement.js';
+import { isRtl } from '../core/dom.js';
 import InputMixin from '../mixins/InputMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
@@ -103,6 +104,9 @@ export default CustomElement
         const nMax = parseFloat(max, 100);
         const nStep = parseFloat(step, 1);
 
+        if (isRtl(this)) {
+          position = 1 - position;
+        }
         const currentValue = position * (nMax - nMin) + nMin;
         let roundedValue = Math.round(currentValue / nStep) * nStep;
 
@@ -121,7 +125,10 @@ export default CustomElement
 
       if (isTouch) return;
 
-      const fractionalValue = valueAsFraction(this.value, this.min, this.max);
+      let fractionalValue = valueAsFraction(this.value, this.min, this.max);
+      if (isRtl(this)) {
+        fractionalValue = 1 - fractionalValue;
+      }
       const thumbOffset = fractionalValue * clientWidth;
       const thumbMin = thumbOffset - 20;
       const thumbMax = thumbOffset + 20;
@@ -395,7 +402,7 @@ export default CustomElement
       inset: 0;
 
       transform: scaleX(var(--value));
-      transform-origin: 0 0;
+      transform-origin: calc(100% * calc(-0.5 * var(--mdw-dir, 1) + 0.5)) 0;
 
       background-color: rgb(var(--mdw-bg));
 
@@ -419,8 +426,9 @@ export default CustomElement
 
     #thumb-label {
       position: absolute;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      left: 0;
       inset-block-end: 14px;
-      inset-inline: 0;
 
       display: flex;
       align-items: center;
