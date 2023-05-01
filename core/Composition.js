@@ -652,7 +652,7 @@ export default class Composition {
           ranSearch = true;
           const result = executeSearch(action.search, initState, changes, data);
           if (result.dirty) {
-            console.debug('dirty, updating by prop', prop, initState.nodes[action.nodeIndex], 'with', result.value);
+            // console.debug('dirty, updating by prop', prop, initState.nodes[action.nodeIndex], 'with', result.value);
             action.invocation(initState, result.value, changes, data);
           }
         }
@@ -723,7 +723,7 @@ export default class Composition {
 
     // Check mutations
 
-    let query = parsedValue;
+    const query = parsedValue;
     const negate = parsedValue[0] === '!';
     let doubleNegate = false;
     if (negate) {
@@ -732,12 +732,6 @@ export default class Composition {
       if (doubleNegate) {
         parsedValue = parsedValue.slice(1);
       }
-    }
-
-    // mdw-if must be boolean (double-negate)
-    if (nodeName === 'mdw-if' && !negate && !doubleNegate) {
-      doubleNegate = true;
-      query = `!!${query}`;
     }
 
     let isEvent;
