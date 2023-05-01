@@ -9,7 +9,7 @@ Material Design for Web
 # Current status
 
 Working on:
-* Array rendering (sub templates)
+* ~~Array rendering (sub templates)~~
 * * Nav Drawer list population
 * * Search results population
 * * Text Field Dropdown population
@@ -52,12 +52,8 @@ import Button from 'https://www.unpkg.com/@shortfuse/materialdesignweb/component
 // OR
 import { Button } from 'https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=6750A4';
 
-// Components will auto register after one microtask (right before next event loop)
-// We can bypass this by registering it manually:
-
-Button.register();
 const button = new Button();
-button.textContent = 'Hello World!';  
+button.textContent = 'Hello World!';
 document.body.append(button);
 
 ````
