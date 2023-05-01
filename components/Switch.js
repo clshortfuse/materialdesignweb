@@ -184,6 +184,12 @@ export default CustomElement
       border-radius: 50%;
     }
 
+    #state[touched] {
+      /* Pressed state already has an animation */
+      /* stylelint-disable-next-line rule-selector-property-disallowed-list */
+      --mdw-state__pressed-opacity: 0;
+    }
+
     /** Disabled **/
 
     :host(:disabled) {
