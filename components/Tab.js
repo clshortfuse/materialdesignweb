@@ -23,7 +23,9 @@ export default CustomElement
     labelMetrics() {
       const slot = this.refs.slot;
       let target = this.refs.slot;
-      if (!slot.clientWidth) target = this.refs.icon;
+      if (!slot.textContent) {
+        target = this.refs.icon || slot;
+      }
       return {
         width: target.clientWidth,
         left: target.offsetLeft,
