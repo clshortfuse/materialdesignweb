@@ -404,24 +404,23 @@ export default CustomElement
 
     #thumb-anchor {
       position: absolute;
-      inset-inline: 0;
+
+      inset-inline-start: calc(var(--value) * 100%);
 
       display: flex;
       align-items: flex-start;
       flex-direction: column;
 
-      inline-size: 100%;
-
-      transform: translateX(calc(var(--value) * 100%));
-      transform-origin: 0 0;
       z-index: 24;
 
-      will-change: transform;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      will-change: inset-inline-start, left, right;
     }
 
     #thumb-label {
       position: absolute;
       inset-block-end: 14px;
+      inset-inline: 0;
 
       display: flex;
       align-items: center;
