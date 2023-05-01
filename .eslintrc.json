@@ -219,7 +219,6 @@
     "unicorn/prefer-query-selector": 0,
     "unicorn/prefer-dom-node-remove": 0,
     "unicorn/no-for-loop": 0,
-    "jsdoc/newline-after-description": ["warn", "never"],
     "jsdoc/no-undefined-types": 0,
     "jsdoc/require-param-description": 0,
     "jsdoc/require-property-description": 0,
