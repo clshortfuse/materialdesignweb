@@ -45,7 +45,7 @@ export default class ListOption extends ListItem
   })
   .define({
     index() { return this._index; },
-    form() { return /** @type {import('./ListSelect.js').default} */ (this.parentElement)?.form; },
+    form() { return /** @type {import('./Listbox.js').default} */ (this.parentElement)?.form; },
     label: {
       get() { return this._label; },
       /** @param {string} value */

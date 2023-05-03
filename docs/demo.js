@@ -22,7 +22,7 @@ import '../components/Layout.js';
 import '../components/List.js';
 import '../components/ListItem.js';
 import '../components/ListOption.js';
-import '../components/ListSelect.js';
+import '../components/Listbox.js';
 import '../components/Menu.js';
 import '../components/MenuItem.js';
 import '../components/NavBar.js';

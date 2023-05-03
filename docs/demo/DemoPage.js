@@ -1,7 +1,7 @@
 import '../../components/Layout.js';
 import '../../components/IconButton.js';
 import '../../components/Menu.js';
-import '../../components/ListSelect.js';
+import '../../components/Listbox.js';
 import '../../components/MenuItem.js';
 import '../../components/TopAppBar.js';
 import '../../components/Pane.js';
@@ -46,9 +46,9 @@ export default CustomElement
       <!-- <mdw-pane fixed>
         <mdw-card color=surface elevated>
           <mdw-headline style="padding:12px">Theming Options</mdw-headline>
-          <mdw-list-select>
+          <mdw-listbox>
             <mdw-list-option checkbox name="alt-theme">Alt Theme</mdw-list-item>
-          </mdw-list-select>
+          </mdw-listbox>
         </mdw-card>
       </mdw-pane> -->
     <mdw-menu id=menu>

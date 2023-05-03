@@ -6,13 +6,13 @@ import StateMixin from '../mixins/StateMixin.js';
 import List from './List.js';
 import ListOption from './ListOption.js';
 
-/** @implements {HTMLSelectElement} */
-export default class ListSelect extends List
+/** -implements {HTMLSelectElement} */
+export default class Listbox extends List
   .mixin(StateMixin)
   .mixin(FormAssociatedMixin)
   .mixin(KeyboardNavMixin) {
   static {
-    this.autoRegister('mdw-list-select');
+    this.autoRegister('mdw-listbox');
     // eslint-disable-next-line no-unused-expressions
     this.css`
       :host(:disabled) {
@@ -43,14 +43,7 @@ export default class ListSelect extends List
     super();
     this.refs.slot.addEventListener('slotchange', this.onSlotChange);
     this.addEventListener('keydown', this.onControlKeydown);
-    this.addEventListener('click', this.onListSelectClick);
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    if (!this.hasAttribute('tabindex')) {
-      this.tabIndex = 0;
-    }
+    this.addEventListener('click', this.onListboxClick);
   }
 
   * _selectedOptionsGenerator() {
@@ -66,7 +59,7 @@ export default class ListSelect extends List
    * @return {void}
    */
   onSlotChange(event) {
-    /** @type {{host:ListSelect}} */ // @ts-ignore Coerce
+    /** @type {{host:Listbox}} */ // @ts-ignore Coerce
     const { host } = this.getRootNode();
     host.refreshTabIndexes();
     let index = 0;
@@ -77,7 +70,7 @@ export default class ListSelect extends List
 
   /**
    * @param {KeyboardEvent} event
-   * @this {ListSelect}
+   * @this {Listbox}
    * @return {void}
    */
   onControlKeydown(event) {
@@ -86,17 +79,17 @@ export default class ListSelect extends List
       if (!(target instanceof ListOption)) return;
       event.stopPropagation();
       event.preventDefault();
-      this.onListSelectClick.call(this, event);
+      this.onListboxClick.call(this, event);
     }
   }
 
   /**
    * @param {MouseEvent|KeyboardEvent} event
-   * @this {ListSelect}
+   * @this {Listbox}
    * @return {void}
    */
-  onListSelectClick(event) {
-    console.log('onListSelectClick');
+  onListboxClick(event) {
+    console.log('onListboxClick');
     const target = event.target;
     if (!(target instanceof ListOption)) return;
     event.stopPropagation();
@@ -204,17 +197,24 @@ export default class ListSelect extends List
   }
 
   get kbdNavFocusableWhenDisabled() { return true; }
+
+  connectedCallback() {
+    super.connectedCallback();
+    if (!this.hasAttribute('tabindex')) {
+      this.tabIndex = 0;
+    }
+  }
 }
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#htmlselectelement
 
 // [CEReactions] attribute DOMString autocomplete;
-// ListSelect.prototype.disabled = ListSelect.prop('disabled', { type: 'boolean' });
+// Listbox.prototype.disabled = Listbox.prop('disabled', { type: 'boolean' });
 // readonly attribute HTMLFormElement? form;
-ListSelect.prototype.multiple = ListSelect.prop('multiple', { type: 'boolean' });
+Listbox.prototype.multiple = Listbox.prop('multiple', { type: 'boolean' });
 // [CEReactions] attribute boolean multiple;
 // [CEReactions] attribute DOMString name;
 // [CEReactions] attribute boolean required;
-ListSelect.prototype.size = ListSelect.prop('size', { type: 'integer', empty: 0 });
-ListSelect.prototype._ariaRole = 'listbox';
-ListSelect.prototype.delegatesFocus = false;
+Listbox.prototype.size = Listbox.prop('size', { type: 'integer', empty: 0 });
+Listbox.prototype._ariaRole = 'listbox';
+Listbox.prototype.delegatesFocus = false;
