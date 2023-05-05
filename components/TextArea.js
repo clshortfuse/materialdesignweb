@@ -21,6 +21,7 @@ export default CustomElement
   .set({
     supportsCSSLineHeightUnit: CSS.supports('height', '1lh'),
     type: 'textarea',
+    _resizing: false,
   })
   .overrides({
     controlTagName: 'textarea',
@@ -81,11 +82,11 @@ export default CustomElement
 
   })
   .methods({
-
-    /** @return {number} */
     resize() {
+      if (this._resizing) return;
+      this._resizing = true;
       const textarea = this._textarea;
-      textarea.style.removeProperty('height');
+      let userHeight = textarea.style.getPropertyValue('height');
 
       // if (this.placeholder) textarea.removeAttribute('placeholder');
 
@@ -100,7 +101,12 @@ export default CustomElement
         textarea.rows = this.maxRows;
       }
       if (!this.fixed) {
-        while (textarea.scrollHeight > textarea.clientHeight) {
+        // Auto-grow
+        while (textarea.clientHeight < textarea.scrollHeight) {
+          if (userHeight) {
+            textarea.style.removeProperty('height');
+            userHeight = null;
+          }
           if (this.maxRows && textarea.rows === this.maxRows) break;
           const lastClientHeight = textarea.clientHeight;
           textarea.rows++;
@@ -109,7 +115,8 @@ export default CustomElement
             break;
           }
         }
-        while (textarea.scrollHeight === textarea.clientHeight) {
+        // Auto shrink
+        while (!userHeight && textarea.clientHeight >= textarea.scrollHeight) {
           if (textarea.rows === 1) break;
           if (this.minRows > 1 && textarea.rows === this.minRows) break;
           const lastClientHeight = textarea.clientHeight;
@@ -121,14 +128,12 @@ export default CustomElement
           }
         }
       }
-
       if (textarea.selectionEnd === textarea.value.length) {
         textarea.scrollTop = textarea.scrollHeight;
       }
-
       this.rows = textarea.rows;
+      this._resizing = false;
       // if (this.placeholder) textarea.setAttribute('placeholder', this.placeholder);
-      return this.rows;
     },
 
     /** @param {ResizeObserverEntry} entry */
@@ -185,6 +190,7 @@ export default CustomElement
     _lineHeightChanged(oldValue, newValue) {
       this.refs.shape.style.setProperty('--line-height', newValue);
     },
+    // Animate API does not override user-resize. Must use inline-styles
     minRowsChanged(oldValue, newValue) {
       this.refs.shape.style.setProperty('--min-rows', `${newValue || 'none'}`);
       this.resize();
@@ -255,9 +261,10 @@ export default CustomElement
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
 
-        box-sizing: content-box;
-        block-size: auto;
-        min-block-size: var(--line-height);
+        box-sizing: border-box;
+        block-size: 100%;
+
+        min-block-size: var(--expected-height);
         /* Avoid clipping on resize */
         max-block-size: inherit;
         inline-size: 100% !important; /* !important to override user-agent resize */
@@ -265,11 +272,21 @@ export default CustomElement
       }
 
       #control[minrows] {
-        min-block-size: calc((var(--min-rows) * var(--line-height)));
+        min-block-size: calc((var(--min-rows) * var(--line-height))
+          + var(--control__margin-top)
+          + var(--control__padding-top)
+          + var(--control__padding-bottom)
+          + var(--control__margin-bottom)
+        );
       }
 
       #control[maxrows] {
-        max-block-size: calc((var(--max-rows) * var(--line-height)));
+        max-block-size: calc((var(--max-rows) * var(--line-height))
+          + var(--control__margin-top)
+          + var(--control__padding-top)
+          + var(--control__padding-bottom)
+          + var(--control__margin-bottom)
+        );
       }
 
       #control[icon] {
