@@ -82,7 +82,7 @@ function elementStylerMicrotaskCallback() {
     return;
   }
   /** @type {HTMLElement} */
-  const el = value.target ? this.shadowRoot.getElementById(value.target) : this;
+  const el = value.target ? this.refs[value.target] : this;
   const currentAnimation = el.animate(value.styles, {
     ...value.timing,
     fill: 'forwards',

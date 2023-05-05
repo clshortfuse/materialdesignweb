@@ -714,30 +714,32 @@ export default class CustomElement extends ICustomElement {
    * @param {any} changes
    */
   _onObserverPropertyChanged(name, oldValue, newValue, changes) {
-    const { reflect, attr } = this.static.propList.get(name);
-    if (attr && (reflect === true || reflect === 'write')) {
-      const lcName = attr.toLowerCase();
-      /** @type {{stringValue:string, parsedValue:any}} */
-      let cacheEntry;
-      let needsWrite = false;
-      if (this.attributeCache.has(lcName)) {
-        cacheEntry = this.attributeCache.get(lcName);
-        needsWrite = (cacheEntry.parsedValue !== newValue);
-      } else {
-        // @ts-ignore skip cast
-        cacheEntry = {};
-        this.attributeCache.set(lcName, cacheEntry);
-        needsWrite = true;
-      }
-      if (needsWrite) {
-        const stringValue = attrValueFromDataValue(newValue);
-        cacheEntry.parsedValue = newValue;
-        cacheEntry.stringValue = stringValue;
-        // Cache attrValue to ignore attributeChangedCallback later
-        if (stringValue == null) {
-          this.removeAttribute(attr);
+    if (this.static.propList.has(name)) {
+      const { reflect, attr } = this.static.propList.get(name);
+      if (attr && (reflect === true || reflect === 'write')) {
+        const lcName = attr.toLowerCase();
+        /** @type {{stringValue:string, parsedValue:any}} */
+        let cacheEntry;
+        let needsWrite = false;
+        if (this.attributeCache.has(lcName)) {
+          cacheEntry = this.attributeCache.get(lcName);
+          needsWrite = (cacheEntry.parsedValue !== newValue);
         } else {
-          this.setAttribute(attr, stringValue);
+        // @ts-ignore skip cast
+          cacheEntry = {};
+          this.attributeCache.set(lcName, cacheEntry);
+          needsWrite = true;
+        }
+        if (needsWrite) {
+          const stringValue = attrValueFromDataValue(newValue);
+          cacheEntry.parsedValue = newValue;
+          cacheEntry.stringValue = stringValue;
+          // Cache attrValue to ignore attributeChangedCallback later
+          if (stringValue == null) {
+            this.removeAttribute(attr);
+          } else {
+            this.setAttribute(attr, stringValue);
+          }
         }
       }
     }
@@ -792,7 +794,9 @@ export default class CustomElement extends ICustomElement {
         }
 
         const formattedTag = attrNameFromPropName(tag);
-        element = this.shadowRoot.getElementById(formattedTag);
+        const tagIndex = this.composition.tags.indexOf(formattedTag);
+        element = this.render.state.refs[tagIndex];
+
         if (!element) return null;
         this.#refsCache.set(tag, new WeakRef(element));
         return element;

@@ -229,6 +229,7 @@ function searchWithDeepProp(state, changes, data) {
  * @prop {Comment[]} comments
  * @prop {boolean[]} ranFlags
  * @prop {boolean[]} dirtyFlags
+ * @prop {Element[]} refs
  * @prop {number} lastChildNodeIndex
  * @prop {DocumentFragment} instanceFragment
  * @prop {RenderOptions<?>} options
@@ -527,12 +528,14 @@ export default class Composition {
       nodes: [],
       caches: this.initCache.slice(),
       dirtyFlags: [],
+      refs: [],
       options,
     };
 
     const nodes = initState.nodes;
     for (const { tag, textNodes } of this.nodesToBind) {
       const element = instanceFragment.getElementById(tag);
+      initState.refs.push(element);
       nodes.push(element);
       if (this.events.has(tag)) {
         for (const event of this.events.get(tag)) {
@@ -662,6 +665,7 @@ export default class Composition {
       initState.ranFlags.fill(false);
       initState.dirtyFlags.fill(false);
     };
+    draw.state = initState;
     return draw;
   }
 
@@ -1311,6 +1315,8 @@ export default class Composition {
         });
       }
     }
+
+    this.tags = this.nodesToBind.map((n) => n.tag);
 
     this.interpolated = true;
 
