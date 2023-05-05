@@ -211,7 +211,7 @@ export default CustomElement
       maxrows: cloneAttributeCallback('maxrows', 'control'),
     },
   })
-  .css`
+  .css/* css */`
       /* https://m3.material.io/components/text-fields/specs */
 
       :host {
@@ -255,36 +255,25 @@ export default CustomElement
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
 
-        box-sizing: border-box;
-        block-size: 100%;
-
-        min-block-size: var(--expected-height);
+        box-sizing: content-box;
+        block-size: auto;
+        min-block-size: var(--line-height);
         /* Avoid clipping on resize */
         max-block-size: inherit;
         inline-size: 100% !important; /* !important to override user-agent resize */
         padding-inline: 16px;
       }
 
-      #control[icon] {
-        padding-inline-start: 0;
-      }
-
       #control[minrows] {
-        min-block-size: calc((var(--min-rows) * var(--line-height))
-          + var(--control__margin-top)
-          + var(--control__padding-top)
-          + var(--control__padding-bottom)
-          + var(--control__margin-bottom)
-        );
+        min-block-size: calc((var(--min-rows) * var(--line-height)));
       }
 
       #control[maxrows] {
-        max-block-size: calc((var(--max-rows) * var(--line-height))
-          + var(--control__margin-top)
-          + var(--control__padding-top)
-          + var(--control__padding-bottom)
-          + var(--control__margin-bottom)
-        );
+        max-block-size: calc((var(--max-rows) * var(--line-height)));
+      }
+
+      #control[icon] {
+        padding-inline-start: 0;
       }
 
       #control:is([icon], [input-prefix]) {
