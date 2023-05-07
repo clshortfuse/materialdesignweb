@@ -44,7 +44,7 @@ export default CustomElement
       switchEl.append(state, control);
       control.setAttribute('role', 'switch');
     },
-    connected() {
+    constructed() {
       this.shadowRoot.addEventListener('click', (event) => {
         const { control } = this.refs;
         if (event.target !== control) {
@@ -128,7 +128,7 @@ export default CustomElement
       '~pointermove': 'onControlMouseOrTouch',
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/switch/specs */
 
     :host {
@@ -170,7 +170,10 @@ export default CustomElement
 
     #state {
       position: absolute;
-      inset: 50%;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      top: 50%;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      left: 50%;
 
       block-size: 100%;
       min-block-size: 40px;

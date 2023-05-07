@@ -48,7 +48,7 @@ export default CustomElement
       // Indeterminate must be manually expressed for ARIA
       control.setAttribute('aria-checked', '{_ariaChecked}');
     },
-    connected() {
+    constructed() {
       this.shadowRoot.addEventListener('click', (event) => {
         const { control } = this.refs;
         if (event.target !== control) {
@@ -59,7 +59,7 @@ export default CustomElement
       });
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/checkbox/specs */
 
     :host {

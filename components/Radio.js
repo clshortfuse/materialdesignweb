@@ -30,7 +30,7 @@ export default CustomElement
       const { radio, rippleContainer, state } = this.refs;
       radio.append(state, rippleContainer);
     },
-    connected() {
+    constructed() {
       this.shadowRoot.addEventListener('click', (event) => {
         const { control } = this.refs;
         if (event.target !== control) {
