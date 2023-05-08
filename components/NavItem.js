@@ -59,7 +59,7 @@ export default class NavItem extends CustomElement
       shape.removeAttribute('color');
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/navigation-bar/specs */
     /* https://m3.material.io/components/navigation-drawer/specs */
     /* https://m3.material.io/components/navigation-rail/specs */
@@ -140,6 +140,10 @@ export default class NavItem extends CustomElement
       /* stylelint-disable-next-line liberty/use-logical-spec */
       top: 50%;
       /* stylelint-disable-next-line liberty/use-logical-spec */
+      right: auto;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      bottom: auto;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
       left: 50%;
 
       block-size: 100%;
@@ -183,8 +187,10 @@ export default class NavItem extends CustomElement
     #badge {
       --mdw-badge__scale: 0;
       position: absolute;
-      inset-block-start: 50%;
-      inset-inline-start: 50%;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      top: 50%;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      left: 50%;
 
       overflow: hidden;
 

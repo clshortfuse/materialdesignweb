@@ -103,8 +103,10 @@ export default CustomElement
 
     #state,
     #ripple-container {
-      inset-block-start: 50%;
-      inset-inline-start: 50%;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      top: 50%;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      left: 50%;
 
       block-size: 40px;
       inline-size: 40px;

@@ -82,7 +82,7 @@ export default CustomElement
       }
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/switch/specs */
 
     :host {
@@ -225,8 +225,10 @@ export default CustomElement
 
     .icon {
       position: absolute;
-      inset-block-start: 50%;
-      inset-inline-start: 50%;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      top: 50%;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      left: 50%;
 
       opacity: 0;
       transform: translateX(-50%) translateY(-50%);

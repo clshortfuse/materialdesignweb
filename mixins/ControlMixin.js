@@ -169,7 +169,7 @@ export default function ControlMixin(Base) {
         },
       },
     })
-    .css`
+    .css/* css */`
       :host {
         display: inline-flex;
       }
@@ -186,7 +186,11 @@ export default function ControlMixin(Base) {
         /* Chrome will not focus with visibility:hidden */
       
         position: absolute;
-        inset: 50%;
+        /* stylelint-disable-next-line liberty/use-logical-spec */
+        top: 50%;
+        /* stylelint-disable-next-line liberty/use-logical-spec */
+        left: 50%;
+        
         /* --mdw-device-pixel-ratio: 1; */
       
         block-size: 100%;

@@ -3,10 +3,12 @@ export default function TouchTargetMixin(Base) {
   return Base
     .extend()
     .html/* html */`<div id=touch-target class=touch-target></div>`
-    .css`
+    .css/* css */`
+        /* stylelint-disable liberty/use-logical-spec */
       .touch-target {
         position: absolute;
-        inset: 50%;
+        top: 50%;
+        left: 50%;
         /* --mdw-device-pixel-ratio: 1; */
       
         block-size: 100%;

@@ -34,8 +34,8 @@ export default CustomElement
             minBlockSize: `${_radius}px`,
             minInlineSize: `${_radius}px`,
             boxShadow: `0 0 calc(0.10 * ${_radius}px) calc(0.10 * ${_radius}px) currentColor`,
-            left: `calc(50% + ${_positionX}px)`,
             top: `calc(50% + ${_positionY}px)`,
+            left: `calc(50% + ${_positionX}px)`,
           },
         };
       },
@@ -108,7 +108,8 @@ export default CustomElement
       }
     },
   })
-  .css`
+  .css/* css */`
+    /* stylelint-disable liberty/use-logical-spec */
     :host {
       --enter-delay: 80ms;
       --touch-down-acceleration: 1024;
@@ -121,9 +122,7 @@ export default CustomElement
     
       --size: 0;
       position: absolute;
-      /* stylelint-disable-next-line liberty/use-logical-spec */
       top: 50%;
-      /* stylelint-disable-next-line liberty/use-logical-spec */
       left: 50%;
     
       display: block;

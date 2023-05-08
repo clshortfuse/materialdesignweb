@@ -57,7 +57,7 @@ export default CustomElement
       </div>
     </div>
   `
-  .css`
+  .css/* css */`
     /* Base Styles */
 
     :host {
@@ -134,7 +134,7 @@ export default CustomElement
       transform: scaleX(var(--value, 0));
     }
   `
-  .css`
+  .css/* css */`
     /* Line Styles */
 
     /* https://github.com/material-components/material-components-android/blob/ed77ab36ccac98df24e55060d58406c5981a9062/lib/java/com/google/android/material/progressindicator/ */
@@ -294,8 +294,9 @@ export default CustomElement
     }
 
   `
-  .css`
+  .css/* css */`
     /* Circle Styles */
+    /* stylelint-disable liberty/use-logical-spec */
     /** https://github.com/material-components/material-components-android/blob/ed77ab36ccac98df24e55060d58406c5981a9062/lib/java/com/google/android/material/progressindicator/CircularIndeterminateAnimatorDelegate.java */
 
     :host {
@@ -357,11 +358,11 @@ export default CustomElement
     }
 
     #semi1 {
-      inset-inline-start: 50%;
+      left: 50%;
     }
 
     #semi2 {
-      inset-inline-end: 50%;
+      right: 50%;
     }
 
     .semi::after {
@@ -384,7 +385,7 @@ export default CustomElement
 
     #semi1::after {
       --rotation: min(180deg, calc(var(--value) * 360deg));
-      inset-inline-start: -100%;
+      left: -100%;
 
       clip-path: inset(0 50% 0 0);
 
@@ -394,7 +395,7 @@ export default CustomElement
 
     #semi2::after {
       --rotation: max(0deg, calc(var(--value) * 360deg - 180deg));
-      inset-inline-end: -100%;
+      right: -100%;
 
       clip-path: inset(0 0 0 50%);
 
@@ -438,43 +439,43 @@ export default CustomElement
     }
 
     #arc2 {
-      inset-block-end: 50%;
-      inset-inline-start: 50%;
+      bottom: 50%;
+      left: 50%;
 
       transform-origin: 0 100%;
     }
 
     #arc3 {
-      inset-block-start: 50%;
-      inset-inline-end: 50%;
+      top: 50%;
+      right: 50%;
 
       transform-origin: 100% 0;
     }
 
     #arc4 {
-      inset-block-start: 50%;
-      inset-inline-start: 50%;
+      top: 50%;
+      left: 50%;
 
       transform-origin: 0 0;
     }
 
     #arc2:after {
-      inset-block-end: -100%;
-      inset-inline-start: -100%;
+      bottom: -100%;
+      left: -100%;
 
       clip-path: polygon(0% 0%, 50% 0%, 50% 50%, 100% 50%, 100% 100%, 0% 100%);
     }
 
     #arc3:after {
-      inset-block-start: -100%;
-      inset-inline-end: -100%;
+      top: -100%;
+      right: -100%;
 
       clip-path: inset(0 50% 50% 0);
     }
 
     #arc4:after {
-      inset-block-start: -100%;
-      inset-inline-start: -100%;
+      top: -100%;
+      left: -100%;
 
       clip-path: inset(0 50% 0 0);
     }

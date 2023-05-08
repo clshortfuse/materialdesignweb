@@ -1,3 +1,5 @@
+/* https://m3.material.io/components/radio/specs */
+
 import './RadioIcon.js';
 
 import CustomElement from '../core/CustomElement.js';
@@ -41,8 +43,8 @@ export default CustomElement
       });
     },
   })
-  .css`
-    /* https://m3.material.io/components/radio/specs */
+  .css/* css */`
+    /* stylelint-disable liberty/use-logical-spec */
 
     :host {
       --mdw-ink: var(--mdw-color__primary);
@@ -90,8 +92,8 @@ export default CustomElement
 
     #state,
     #ripple-container {
-      inset-block-start: 50%;
-      inset-inline-start: 50%;
+      top: 50%;
+      left: 50%;
 
       block-size: 40px;
       inline-size: 40px;
