@@ -101,8 +101,12 @@ export default class ListOption extends ListItem
         anchor.removeAttribute('aria-labelledby');
       }
     },
+    _selectedChanged(previous, current) {
+      // Used by HTMLCollection
+      this.classList.toggle('mdw-list-option__selected', current);
+    },
   })
-  .css`
+  .css/* css */`
     :host {
       --mdw-bg: var(--mdw-color__secondary-container);
       --mdw-ink: var(--mdw-color__on-secondary-container);

@@ -7,12 +7,12 @@ import List from './List.js';
 import ListOption from './ListOption.js';
 
 /** @implements {HTMLSelectElement} */
+// @ts-expect-error Can't implement index signatures (use `item()`)
 export default class Listbox extends List
   .mixin(StateMixin)
   .mixin(FormAssociatedMixin)
   .mixin(KeyboardNavMixin) {
   static {
-    this.autoRegister('mdw-listbox');
     // eslint-disable-next-line no-unused-expressions
     this.css/* css */`
       :host(:disabled) {
@@ -38,6 +38,9 @@ export default class Listbox extends List
 
   /** @type {HTMLCollectionOf<ListOption> & HTMLOptionsCollection} */
   _optionsCollection = null;
+
+  /** @type {HTMLCollectionOf<ListOption>} */
+  _selectedOptionsCollection = null;
 
   constructor() {
     super();
@@ -89,48 +92,36 @@ export default class Listbox extends List
    * @return {void}
    */
   onListboxClick(event) {
-    console.log('onListboxClick');
     const target = event.target;
     if (!(target instanceof ListOption)) return;
     event.stopPropagation();
     if (target.disabledState) return;
 
+    /** @type {string} */
+    const previousValue = this._value;
+
     // Perform unselect
     if (target.selected) {
-      if (this.multiple) {
-        const selections = [...this.selectedOptions];
-        if (this.required && selections.length === 1) return;
-        if (selections.length === 0) {
-          console.warn('impossible??');
-        }
+      // Unselect condition
+      if (!this.required || (this.multiple && this.selectedOptions.length > 1)) {
         target.selected = false;
-        let firstSelection = selections.shift();
-        if (firstSelection === target) {
-          // Get new first selection (or undefined)
-          firstSelection = selections.shift();
-        }
-        this._value = firstSelection?.value ?? '';
-        return;
       }
-      if (this.required) return;
-      target.selected = false;
-      this._value = '';
-      return;
-    }
+    } else {
+      if (!this.multiple) {
+        // Unselect all other values
+        for (const option of this.selectedOptions) {
+          option.selected = false;
+        }
+      }
 
-    if (this.multiple) {
-      // Skip ctrlKey requirement
       target.selected = true;
-      this._value = this.selectedOptions.next().value;
-      return;
     }
 
-    for (const el of this.options) {
-      el.selected = el === target;
-    }
-    const fireEvent = this._value !== target.value;
-    this._value = target.value;
-    if (fireEvent) {
+    const newValue = this.value;
+
+    if (previousValue !== newValue) {
+      // Value changed
+      this._value = newValue;
       this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
       this.dispatchEvent(new Event('change', { bubbles: true }));
     }
@@ -153,8 +144,10 @@ export default class Listbox extends List
     return this._optionsCollection;
   }
 
+  /** @return {HTMLCollectionOf<ListOption>} */
   get selectedOptions() {
-    return this._selectedOptionsGenerator();
+    // eslint-disable-next-line no-return-assign
+    return (this._selectedOptionsCollection ??= this.getElementsByClassName('mdw-list-option__selected'));
   }
 
   // @ts-ignore @override
@@ -169,24 +162,33 @@ export default class Listbox extends List
   }
 
   get selectedIndex() {
-    return this.options.selectedIndex;
+    const [selectedItem] = this.selectedOptions;
+    if (!selectedItem) return -1;
+    return Array.prototype.indexOf.call(this.options, selectedItem);
   }
 
   set selectedIndex(value) {
-    this.options.selectedIndex = value;
-    this._value = (this.options[value]?.value) ?? '';
+    const itemToSelect = this.options[value];
+    for (const option of this.options) {
+      option.selected = (option === itemToSelect);
+    }
+    this._value = this.value;
   }
 
   get value() {
-    return this._value;
+    return this.selectedOptions[0]?.value ?? '';
   }
 
   /** @param {string} v */
   set value(v) {
-    for (const el of this.options) {
-      el.selected = (el.value === v);
+    let newValue = '';
+    const vString = `${v}`;
+    for (const option of this.options) {
+      if ((option.selected = (option.value === vString))) {
+        newValue = vString;
+      }
     }
-    this._value = v;
+    this._value = newValue;
   }
 
   get add() { return this.options.add; }
@@ -238,3 +240,5 @@ Listbox.prototype.multiple = Listbox.prop('multiple', { type: 'boolean' });
 Listbox.prototype.size = Listbox.prop('size', { type: 'integer', empty: 0 });
 Listbox.prototype._ariaRole = 'listbox';
 Listbox.prototype.delegatesFocus = false;
+
+Listbox.autoRegister('mdw-listbox');
