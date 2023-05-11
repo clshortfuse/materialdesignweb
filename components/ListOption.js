@@ -18,7 +18,7 @@ export default class ListOption extends ListItem
   })
   .observe({
     // ListOption.prototype._form = ListOption.prop('_form');
-    _label: { attr: 'label', nullParser: String },
+    _label: { attr: 'label', reflect: true, nullParser: String },
     defaultSelected: { attr: 'selected', reflect: true, type: 'boolean' },
     _selected: 'boolean',
     _value: { attr: 'value', reflect: true },
@@ -47,14 +47,14 @@ export default class ListOption extends ListItem
     index() { return this._index; },
     form() { return /** @type {import('./Listbox.js').default} */ (this.parentElement)?.form; },
     label: {
-      get() { return this._label; },
+      get() { return this._label ?? this.textContent; },
       /** @param {string} value */
       set(value) {
         this._label = value;
       },
     },
     value: {
-      get() { return this._value; },
+      get() { return this._value ?? this.textContent; },
       /** @param {string} value */
       set(value) { this._label = value; },
     },
@@ -76,6 +76,7 @@ export default class ListOption extends ListItem
       // Form Associated elements cannot receive focus unless using delegatesFocus
       // Workaround by redirecting focus to an inner element
       // Reuse HTMLAnchorElement with no HREF
+      // Issues: Siblings (images) are not contained within tree
 
       anchor.setAttribute('disabled', '{disabledState}');
       anchor.setAttribute('role', 'option');
@@ -89,6 +90,16 @@ export default class ListOption extends ListItem
       content.setAttribute('selected', '{selected}');
 
       state.setAttribute('state-disabled', 'focus');
+    },
+    _labelChanged(previous, current) {
+      const { anchor } = this.refs;
+      if (current == null) {
+        anchor.setAttribute('aria-labelledby', 'content');
+        anchor.removeAttribute('aria-label');
+      } else {
+        anchor.setAttribute('aria-label', current);
+        anchor.removeAttribute('aria-labelledby');
+      }
     },
   })
   .css`
