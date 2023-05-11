@@ -115,7 +115,7 @@ export default CustomElement
             break;
           }
         }
-        // Auto shrink
+        // Auto-shrink
         while (!userHeight && textarea.clientHeight >= textarea.scrollHeight) {
           if (textarea.rows === 1) break;
           if (this.minRows > 1 && textarea.rows === this.minRows) break;
@@ -261,32 +261,29 @@ export default CustomElement
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
 
-        box-sizing: border-box;
-        block-size: 100%;
+        box-sizing: content-box;
+        block-size: min-content;
 
-        min-block-size: var(--expected-height);
-        /* Avoid clipping on resize */
-        max-block-size: inherit;
-        inline-size: 100% !important; /* !important to override user-agent resize */
+        min-block-size: var(--line-height);
+        /* Avoid clipping on manual resize */
+        max-block-size: calc(100% - (var(--control__margin-top)
+          + var(--control__padding-top)
+          + var(--control__padding-bottom)
+          + var(--control__margin-bottom)));
+        inline-size: calc(100% - 32px) !important; /* !important to override user-agent resize */
+
         padding-inline: 16px;
+
+        /* https://github.com/w3c/csswg-drafts/issues/7542 */
+        form-sizing: normal;
       }
 
       #control[minrows] {
-        min-block-size: calc((var(--min-rows) * var(--line-height))
-          + var(--control__margin-top)
-          + var(--control__padding-top)
-          + var(--control__padding-bottom)
-          + var(--control__margin-bottom)
-        );
+        min-block-size: calc((var(--min-rows) * var(--line-height)));
       }
 
       #control[maxrows] {
-        max-block-size: calc((var(--max-rows) * var(--line-height))
-          + var(--control__margin-top)
-          + var(--control__padding-top)
-          + var(--control__padding-bottom)
-          + var(--control__margin-bottom)
-        );
+        max-block-size: calc((var(--max-rows) * var(--line-height)));
       }
 
       #control[icon] {
