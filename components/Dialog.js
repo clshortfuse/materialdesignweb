@@ -1,41 +1,99 @@
 import './Button.js';
-import './Surface.js';
 import './Divider.js';
 import './Icon.js';
 import './DialogActions.js';
 
-import { handleTabKeyPress } from '../aria/modal.js';
 import CustomElement from '../core/CustomElement.js';
-
-/** @typedef {Object<string,any>} DialogStackState */
-
-/** @typedef {InstanceType<import('./Dialog.js').default>} Dialog */
+import { attemptFocus } from '../core/dom.js';
+import PopupMixin from '../mixins/PopupMixin.js';
+import ShapeMixin from '../mixins/ShapeMixin.js';
+import SurfaceMixin from '../mixins/SurfaceMixin.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
 /**
- * @typedef {Object} DialogStack
- * @prop {Dialog} element
- * @prop {Element} [previousFocus]
- * @prop {DialogStackState} [state]
- * @prop {DialogStackState} [previousState]
+ * Returns array of elements that *may* be focusable over tab
+ * @param {Node} root
+ * @return {Element[]}
  */
+function listTabbables(root) {
+  const treeWalker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
+  const focusables = [];
+  /** @type {Element} */
+  let node;
+  while ((node = treeWalker.nextNode())) {
+    if (node.tagName === 'SLOT') {
+      for (const el of (/** @type {HTMLSlotElement} */ (node)).assignedElements()) {
+        if (el.tabIndex >= 0 && !el.matches(':disabled')) {
+          focusables.push(el);
+        }
+        focusables.push(...listTabbables(el));
+      }
+    }
+    if (node.tabIndex >= 0 && !node.matches(':disabled')) {
+      focusables.push(node);
+    }
+  }
+  return focusables;
+}
 
-/** @type {DialogStack[]} */
-const OPEN_DIALOGS = [];
-
-const supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
+/**
+ * Iterate through root looking for autofocusable, or first focusable element
+ * Attempt focus on each and return true if successful
+ * @param {Node} root
+ * @param {boolean} [autofocus=true]
+ * @param {boolean} [forward=true]
+ * @return {boolean} focused
+ */
+function focusOnTree(root, autofocus, forward = true) {
+  const treeWalker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
+  const focusables = [];
+  /** @type {Element} */
+  let node;
+  while (node = treeWalker.nextNode()) {
+    if (autofocus && node.hasAttribute('autofocus')) {
+      if (attemptFocus(node)) return true;
+      continue;
+    }
+    if (node.tagName === 'SLOT') {
+      for (const el of (/** @type {HTMLSlotElement} */ (node)).assignedElements({ flatten: true })) {
+        if (autofocus && el.hasAttribute('autofocus')) {
+          if (attemptFocus(el)) return true;
+          continue;
+        }
+        if (el.tabIndex >= 0) {
+          // Can focus, add to later in case we find an autofocusable
+          if (autofocus || !forward) {
+            focusables.push(node);
+          } else if (attemptFocus(node)) return true;
+        }
+        if (focusOnTree(el, autofocus, forward)) return true;
+      }
+      // Step through
+    }
+    if (node.tabIndex >= 0) {
+      if (autofocus || !forward) {
+        focusables.push(node);
+      } else if (attemptFocus(node)) return true;
+    }
+  }
+  for (const el of forward ? focusables : focusables.reverse()) {
+    if (attemptFocus(el)) return true;
+  }
+  return false;
+}
 
 export default CustomElement
+  .mixin(ThemableMixin)
+  .mixin(SurfaceMixin)
+  .mixin(ShapeMixin)
+  .mixin(PopupMixin)
   .extend()
   .define({
-    _dialog() {
-      return /** @type {HTMLDialogElement} */ (this.refs.dialog);
-    },
     returnValue() {
       return /** @type {HTMLDialogElement} */ (this.refs.dialog).returnValue;
     },
   })
   .observe({
-    open: 'boolean',
     dividers: {
       /** @type {'full'|''|'inset'} */
       value: null,
@@ -45,23 +103,16 @@ export default CustomElement
     default: { value: 'confirm' },
     cancel: { value: 'Cancel' },
     confirm: { value: 'Confirm' },
-    _isNativeModal: 'boolean',
-    color: { empty: 'surface' },
-    ink: 'string',
-    outlined: 'boolean',
-    elevation: { empty: 3 },
+  })
+  .set({
+    _useScrim: true,
+  })
+  .overrides({
+    updatePopupPosition() {
+      // noop (keep centered);
+    },
   })
   .methods({
-    /**
-     * @param {TransitionEvent} event
-     * @return {void}
-     */
-    onTransitionEnd(event) {
-      if (event.propertyName !== 'opacity') return;
-      if (this.getAttribute('aria-hidden') !== 'true') return;
-      this.setAttribute('mdw-ready', '');
-    },
-
     /**
      * @param {Event & {currentTarget: HTMLSlotElement}} event
      * @return {void}
@@ -96,344 +147,116 @@ export default CustomElement
       const [form] = currentTarget.assignedNodes();
       form?.addEventListener('submit', (e) => this.onFormSubmit(e));
     },
-
-    /**
-     * @param {PopStateEvent} event
-     * @return {void}
-     */
-    onPopState(event) {
-      if (!event.state) return;
-
-      const lastOpenDialog = OPEN_DIALOGS.at(-1);
-      if (!lastOpenDialog || !lastOpenDialog.previousState) {
-        return;
-      }
-      if ((lastOpenDialog.previousState === event.state) || Object.entries(event.state)
-        .every(([key, value]) => value === lastOpenDialog.previousState[key])) {
-        const cancelEvent = new Event('cancel', { cancelable: true });
-        if (lastOpenDialog.element.dispatchEvent(cancelEvent)) {
-          lastOpenDialog.element.close();
-        } else {
-          // Revert pop state by pushing state again
-          window.history.pushState(lastOpenDialog.state, lastOpenDialog.state.title);
-        }
-      }
-    },
-
-    /**
-     * @param {any} returnValue
-     * @return {boolean} handled
-     */
-    close(returnValue) {
-      if (!this.open) return false;
-      if (this._isNativeModal) {
-        this._isNativeModal = false;
-      } else {
-        const main = document.querySelector('main');
-        if (main) {
-          main.removeAttribute('aria-hidden');
-        }
-      }
-      // if (this.dialogElement.getAttribute('aria-hidden') === 'true') return false;
-      if (supportsHTMLDialogElement && this._dialog.open) {
-      // Force close native dialog
-        this._dialog.close(returnValue);
-      } else {
-        this._dialog.returnValue = returnValue;
-      }
-
-      // Will invoke observed attribute change: ('aria-hidden', 'true');
-      this.open = false;
-      this.dispatchEvent(new Event('close'));
-      // .mdw-dialog__popup hidden by transitionEnd event
-      let stackIndex = -1;
-      OPEN_DIALOGS.some((stack, index) => {
-        // @ts-ignore Skip unknown
-        if (stack.element === this) {
-          stackIndex = index;
-          return true;
-        }
-        return false;
-      });
-      if (stackIndex !== -1) {
-        const stack = OPEN_DIALOGS[stackIndex];
-        if (stack.previousFocus
-        && stack.previousFocus instanceof HTMLElement
-        && document.activeElement?.closest(this.constructor.elementName) === this) {
-        // Only pop focus back when hiding a dialog with focus within itself.
-          try {
-            stack.previousFocus.focus();
-          } catch {
-          // Failed to focus
-          }
-        }
-        OPEN_DIALOGS.splice(stackIndex, 1);
-        if (stack.state && window.history && window.history.state // IE11 returns a cloned state object, not the original
-      && stack.state.hash === window.history.state.hash) {
-          window.history.back();
-        }
-      }
-      if (!OPEN_DIALOGS.length) {
-        window.removeEventListener('popstate', this.onPopState);
-      }
-      return true;
-    },
-
-    /**
-     * @param {Event} [event]
-     * @return {boolean} handled
-     */
-    showModal(event) {
-      if (this.open) return false;
-      if (supportsHTMLDialogElement) {
-        this._dialog.showModal();
-        this._isNativeModal = true;
-      }
-      return this.show(event);
-    },
-
-    /**
-     * @param {MouseEvent|PointerEvent|HTMLElement|Event} [source]
-     * @return {boolean} handled
-     */
-    show(source) {
-      if (this.open) return false;
-      this.open = true;
-
-      if (supportsHTMLDialogElement) {
-        this._dialog.show();
-        const main = document.querySelector('main');
-        if (main) {
-          main.setAttribute('aria-hidden', 'true');
-        }
-      }
-
-      const previousFocus = document.activeElement;
-      const title = this.headline || this.textContent;
-      const newState = { time: Date.now(), random: Math.random(), title };
-      let previousState = null;
-
-      if (!window.history.state) {
-        window.history.replaceState({
-          hash: Math.random().toString(36).slice(2, 18),
-        }, document.title);
-      }
-      previousState = window.history.state;
-      window.history.pushState(newState, title);
-      window.addEventListener('popstate', this.onPopState);
-
-      /** @type {DialogStack} */
-      const dialogStack = {
-        // @ts-ignore Recursive cast
-        element: this,
-        previousFocus,
-        state: newState,
-        previousState,
-      };
-      OPEN_DIALOGS.push(dialogStack);
-      const focusElement = this.querySelector('[autofocus]')
-      ?? this.shadowRoot.querySelector('[autofocus]');
-      try {
-        if (focusElement && focusElement instanceof HTMLElement) {
-          if (focusElement.scrollIntoView) {
-            focusElement.scrollIntoView();
-          }
-          focusElement.focus();
-        } else {
-          this.refs.surface.focus();
-        }
-      } catch {
-      // Failed to focus
-      }
-      return true;
+    focus() {
+      focusOnTree(this.shadowRoot, true, true);
     },
   })
   .expressions({
     cancelAutoFocus({ default: d }) { return d === 'cancel'; },
     confirmAutoFocus({ default: d }) { return d === 'confirm'; },
-    _ariaHidden({ open }) { return (open ? 'false' : 'true'); },
   })
   .html/* html */`
-    <dialog id=dialog aria-modal=true role=dialog
-    aria-hidden={_ariaHidden}
-    aria-labelledby=headline aria-describedby=slot>
-      <div mdw-if={open} id=scrim aria-hidden=true></div>
-      <mdw-surface id=surface open={open} icon={icon} elevation={elevation} color={color} ink={ink} outlined={outlined}>
-        <mdw-icon mdw-if={icon} id=icon class=content ink=secondary aria-hidden=true>{icon}</mdw-icon>
-        <slot id=headline name=headline on-slotchange={onSlotChange} role=header>{headline}</slot>
-        <slot id=fixed name=fixed class=content on-slotchange={onSlotChange}></slot>
-        <mdw-divider id=divider-top size={dividers}></mdw-divider>
-        <slot id=slot class=content on-slotchange={onSlotChange}></slot>
-        <mdw-divider id=divider-bottom size={dividers}></mdw-divider>
-        <slot name=form id=form-slot on-slotchange={onFormSlotChange}>
-          <form id=form method=dialog role=none on-submit={onFormSubmit}>
-            <mdw-dialog-actions>
-              <mdw-button id=cancel type=submit value=cancel
-                autofocus={cancelAutoFocus}>{cancel}</mdw-button>
-              <mdw-button id=confirm type=submit value=confirm
-                autofocus={confirmAutoFocus}>{confirm}</mdw-button>
-            </mdw-dialog-actions>
-          </form>
-        </slot>
-      </mdw-surface>
-    </dialog>
+    <div id=prepend>
+      <mdw-icon mdw-if={icon} id=icon class=content ink=secondary aria-hidden=true>{icon}</mdw-icon>
+      <slot id=headline name=headline on-slotchange={onSlotChange} role=header>{headline}</slot>
+      <slot id=fixed name=fixed class=content on-slotchange={onSlotChange}></slot>
+      <mdw-divider id=divider-top size={dividers}></mdw-divider>
+    </div>
+    <div id=append>
+      <mdw-divider id=divider-bottom size={dividers}></mdw-divider>
+      <slot name=form id=form-slot on-slotchange={onFormSlotChange}>
+        <form id=form method=dialog role=none on-submit={onFormSubmit}>
+          <mdw-dialog-actions>
+            <mdw-button id=cancel type=submit value=cancel
+              autofocus={cancelAutoFocus}>{cancel}</mdw-button>
+            <mdw-button id=confirm type=submit value=confirm
+              autofocus={confirmAutoFocus}>{confirm}</mdw-button>
+          </mdw-dialog-actions>
+        </form>
+      </slot>
+    </div>
   `
-  .css`
+  .on({
+    composed() {
+      const { prepend, append, surface, shape, surfaceTint, dialog, slot } = this.refs;
+      dialog.setAttribute('aria-labelledby', 'headline');
+      dialog.setAttribute('aria-describedby', 'slot');
+      shape.append(surfaceTint);
+      surface.append(shape);
+
+      slot.classList.add('content');
+
+      dialog.prepend(surface, ...prepend.childNodes);
+      dialog.append(...append.childNodes);
+      prepend.remove();
+      append.remove();
+    },
+  })
+  .css/* css */`
     /* https://m3.material.io/components/dialogs/specs */
 
     :host {
-      --mdw-dialog__expand-duration: var(--mdw-motion-expand-duration, 250ms);
-      --mdw-dialog__simple-duration: var(--mdw-motion-simple-duration, 100ms);
-      --mdw-dialog__standard-easing: var(--mdw-motion-standard-easing, cubic-bezier(0.4, 0.0, 0.2, 1));
-      --mdw-dialog__deceleration-easing: var(--mdw-motion-deceleration-easing, cubic-bezier(0.0, 0.0, 0.2, 1));
-      --mdw-dialog__fade-in-duration: var(--mdw-motion-fade-in-duration, 150ms);
-
-      position: fixed;
-      inset: 0;
-
-      pointer-events: none;
-
-      z-index: 24;
-    }
-
-    #dialog {
-      position: fixed;
-      inset-block-start: 0;
-      inset-inline-start: 0;
-
-      display: flex;
-      align-items: center;
-      flex-direction: row;
-      justify-content: center;
-
-      box-sizing: border-box;
-      block-size:100%;
-      max-block-size: none;
-      inline-size:100%;
-      max-inline-size: none;
-      margin:0;
-      border: none;
-      padding: 48px;
-
-      opacity: 0;
-      /* visiblity:hidden still registers events, hide from pointer with scale(0) */
-      transform: scale(0);
-      visibility: hidden;
-      z-index: 24;
-
-      background-color: transparent;
-
-      transition-delay: 0s, 200ms, 200ms;
-      transition-duration: 200ms, 0s, 0s;
-      transition-property: opacity, transform, visibility;
-      transition-timing-function: ease-out;
-      will-change: opacity;
-    }
-
-    @media (min-width: 1440px) {
-      #dialog {
-        padding: 56px;
-      }
-    }
-
-    #dialog::backdrop {
-      /** Use scrim instead */
-      display: none;
-    }
-
-    #dialog[aria-hidden="false"],
-    #dialog:modal {
-      pointer-events: auto;
-
-      opacity: 1;
-
-      transform: none;
-      visibility: visible;
-
-      transition-delay: 0s;
-      transition-duration: 0s;
-      transition-timing-function: ease-in;
-    }
-
-    #scrim {
-      position: fixed;
-      inset: 0;
-
-      overflow-y: scroll;
-      overscroll-behavior: none;
-      overscroll-behavior: contain;
-      scrollbar-width: none;
-
-      block-size: 100%;
-      inline-size: 100%;
-
-      cursor: default;
-      pointer-events: inherit;
-      -webkit-tap-highlight-color: transparent;
-
-      opacity: 0.38;
-      z-index: 0;
-
-      background-color: rgb(var(--mdw-color__scrim));
-    }
-
-    #scrim::-webkit-scrollbar {
-      display: none;
-    }
-
-    #scrim::after {
-      content: '';
-
-      display: block;
-
-      block-size: 200%;
-      inline-size: 200%;
-    }
-    @keyframes scaleUpAnimation {
-      from {
-        transform: scaleY(0);
-      }
-
-      to {
-        transform: scaleY(1);
-      }
-    }
-
-    #surface {
       --mdw-shape__size: 28px;
 
-      position: relative;
+      --mdw-surface__tint: var(--mdw-surface__tint__3);
+      --mdw-surface__tint__raised: var(--mdw-surface__tint);
+
+      --mdw-surface__shadow__resting: var(--mdw-surface__shadow__3);
+      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__resting);
+      /* padding-inline: 12px; */
+
+      --mdw-bg: var(--mdw-color__surface);
+      --mdw-ink: var(--mdw-color__on-surface);
+      position: fixed;
+
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      top: 50%;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      left: 50%;
 
       display: flex;
       align-items: flex-start;
       flex-direction: column;
+      justify-content: center;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: none;
       overscroll-behavior: contain;
 
       box-sizing: border-box;
-      max-block-size: 100%;
+      max-block-size: calc(100% - 40px);
+      inline-size: max-content;
       min-inline-size: 280px;
-      max-inline-size: 560px;
-      flex-shrink: 1;
+      max-inline-size: min(560px, calc(100% - 40px));
 
       padding-block-start: 8px;
 
-      transform: scale(1);
-      transform-origin: top center;
-      z-index: 24;
+      pointer-events: none;
 
-      will-change: display, transform;
+      opacity: 0;
+
+      transform: translateX(-50%) translateY(-50%) scale(0);
+      /* visiblity:hidden still registers events, hide from pointer with scale(0) */
+      transform-origin: top center;
+      visibility: hidden;
+
+      color: rgb(var(--mdw-ink));
+
+      font: var(--mdw-type__font);
+      letter-spacing: var(--mdw-type__letter-spacing);
+
+      transition-delay: 0s, 200ms, 200ms;
+      transition-duration: 200ms, 0s, 0s;
+      transition-property: opacity, transform, visibility;
+      transition-timing-function: ease-out;
+      will-change: display, transform, opacity;
     }
 
-    #surface[icon] {
+    :host([icon]) {
       align-items: center;
     }
 
-    #surface[open] {
-      animation-name: scaleUpAnimation;
-      animation-duration: 200ms;
-      animation-direction: forwards;
+    #shape {
+      background-color: rgb(var(--mdw-bg));
     }
 
     #icon {
@@ -515,6 +338,69 @@ export default CustomElement
       display: contents;
     }
   `
+  .events({
+    keydown(event) {
+      if (event.key === 'Tab') {
+        if (!this._isNativeModal) {
+          // Tab trap
+          event.preventDefault();
+          const tabbables = listTabbables(this.shadowRoot);
+          if (event.shiftKey) {
+            tabbables.reverse();
+          }
+          let focusNext = false;
+          let focused = false;
+          // Find and mark next
+          for (const el of tabbables) {
+            if (focusNext) {
+              if (attemptFocus(el)) {
+                focused = true;
+                break;
+              }
+            } else {
+              focusNext = el.matches(':focus');
+            }
+          }
+          // Loop
+          if (!focused) {
+            for (const el of tabbables) {
+              if (attemptFocus(el)) {
+                return;
+              }
+            }
+          }
+        }
+        return;
+      }
+
+      if (event.key === 'Escape' || event.key === 'Esc') {
+        event.preventDefault();
+        event.stopPropagation();
+        const cancelEvent = new Event('cancel', { cancelable: true });
+        if (this.dispatchEvent(cancelEvent)) {
+          this.close();
+        }
+      }
+    },
+    focusout(event) {
+      if (!this.open) return;
+      if (this._closing) return;
+      if (this.modal) return;
+      if (event.relatedTarget === this.refs.scrim) return;
+
+      // Wait until end of event loop cycle to see if focus really is lost
+      queueMicrotask(() => {
+        if (this.matches(':focus-within')) return;
+        const activeElement = document.activeElement;
+        if (activeElement && this.contains(activeElement)) {
+          return;
+        }
+        // Focus has left dialog (programmatic?)
+        // Invoke cancel without returning focus
+        this.close(undefined, false);
+      });
+    },
+  })
   .childEvents({
     dialog: {
       cancel(event) {
@@ -528,33 +414,15 @@ export default CustomElement
         event.stopPropagation();
         this.close(this.returnValue);
       },
-    },
-    scrim: {
-      '~click'() {
+      '~click'(event) {
+        // Track if click on backdrop
+        if (event.target !== event.currentTarget) return;
+        if (!this._isNativeModal) return;
+        if (event.offsetX >= 0 && event.offsetX < event.currentTarget.offsetWidth
+        && event.offsetY >= 0 && event.offsetY < event.currentTarget.offsetHeight) return;
         const cancelEvent = new Event('cancel', { cancelable: true });
         if (!this.dispatchEvent(cancelEvent)) return;
         this.close();
-      },
-    },
-    surface: {
-      keydown(event) {
-        if (event.key === 'Tab') {
-          const surface = /** @type {HTMLElement} */ (event.currentTarget);
-          if (!this._isNativeModal) {
-          // Move via Light or Shadow DOM, depending on target
-            const context = surface.contains(event.target) ? surface : this;
-            handleTabKeyPress.call(context, event);
-          }
-          return;
-        }
-        if (event.key === 'Escape' || event.key === 'Esc') {
-          event.preventDefault();
-          event.stopPropagation();
-          const cancelEvent = new Event('cancel', { cancelable: true });
-          if (this.dispatchEvent(cancelEvent)) {
-            this.close();
-          }
-        }
       },
     },
   })

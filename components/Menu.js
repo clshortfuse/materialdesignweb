@@ -5,86 +5,32 @@ import CustomElement from '../core/CustomElement.js';
 import { attemptFocus } from '../core/dom.js';
 import DensityMixin from '../mixins/DensityMixin.js';
 import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
-import { canAnchorPopup } from '../utils/popup.js';
-
-/**
- * @typedef {Object} MenuStack
- * @prop {HTMLElement} element
- * @prop {Element} previousFocus
- * @prop {Object} [state]
- * @prop {Object} [previousState]
- * @prop {MouseEvent|PointerEvent|HTMLElement|Element} [originalEvent]
- * @prop {any} [pendingResizeOperation]
- * @prop {window['history']['scrollRestoration']} [scrollRestoration]
- */
-
-const supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
-/** @type {MenuStack[]} */
-const OPEN_MENUS = [];
-
-/**
- * @return {void}
- */
-function onWindowResize() {
-  const lastOpenMenu = OPEN_MENUS.at(-1);
-  if (!lastOpenMenu || !lastOpenMenu.originalEvent) {
-    return;
-  }
-  if (lastOpenMenu.pendingResizeOperation) {
-    cancelAnimationFrame(lastOpenMenu.pendingResizeOperation);
-  }
-  lastOpenMenu.pendingResizeOperation = requestAnimationFrame(() => {
-    lastOpenMenu.element.updateMenuPosition(lastOpenMenu.originalEvent);
-    lastOpenMenu.pendingResizeOperation = null;
-  });
-}
-
-/**
- * @param {PopStateEvent} event
- */
-function onPopState(event) {
-  if (!event.state) return;
-  const lastOpenMenu = OPEN_MENUS.at(-1);
-  if (!lastOpenMenu || !lastOpenMenu.previousState) {
-    return;
-  }
-  if ((lastOpenMenu.previousState === event.state) || Object.keys(event.state)
-    .every((key) => event.state[key] === lastOpenMenu.previousState[key])) {
-    lastOpenMenu.element.close();
-  }
-}
-
-/** @param {BeforeUnloadEvent} event */
-function onBeforeUnload(event) {
-  if (!OPEN_MENUS.length) return;
-  console.warn('Menu was open during page unload (refresh?).');
-}
+import PopupMixin from '../mixins/PopupMixin.js';
+import ShapeMixin from '../mixins/ShapeMixin.js';
+import SurfaceMixin from '../mixins/SurfaceMixin.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
 export default CustomElement
+  .mixin(ThemableMixin)
+  .mixin(SurfaceMixin)
+  .mixin(ShapeMixin)
+  .mixin(PopupMixin)
   .mixin(DensityMixin)
   .mixin(KeyboardNavMixin)
   .extend()
   .observe({
-    open: 'boolean',
     flow: {
       type: 'string',
       /** @type {'corner'|'adjacent'|'overflow'|'vcenter'|'hcenter'|'center'} */
       value: null,
     },
     submenu: 'boolean',
-    modal: 'boolean',
-    _isNativeModal: 'boolean',
-    color: { empty: 'surface' },
-    ink: 'string',
-    elevation: { empty: 2 },
-    outlined: 'boolean',
   })
   .set({
-    returnValue: '',
-    delegatesFocus: true,
+    scrollable: true,
+    _useScrim: false,
     /** @type {WeakRef<HTMLElement>} */
     _cascader: null,
-    _closing: false,
   })
   .define({
     kbdNavChildren() {
@@ -109,189 +55,47 @@ export default CustomElement
     },
   })
   .html/* html */`
-    <dialog id=dialog role=menu aria-hidden=${({ open }) => (open ? 'false' : 'true')}>
-      <div id=scrim aria-hidden=true modal={modal}></div>
-      <form id=form method=dialog role=none>
-        <mdw-surface id=surface elevation={elevation} color={color} ink={ink} outlined={outlined}>
-          <div id=scroller>
-            <slot id=slot on-slotchange={refreshTabIndexes}></slot>
-          </div>
-        </mdw-surface>
-        <slot id=submenu-slot name=submenu></slot>
-      </form>
-    </dialog>
+    <slot id=submenu-slot name=submenu></slot>
   `
-  .css`
+  .on({
+    composed() {
+      const { submenuSlot, shape, surface, surfaceTint, dialog } = this.refs;
+      shape.append(surfaceTint);
+      surface.append(shape);
+      dialog.prepend(surface);
+      dialog.append(submenuSlot);
+
+      // Wrap slot in scroller
+    },
+  })
+  .css/* css */`
     /* https://m3.material.io/components/menus/specs */
 
     :host {
-      --mdw-menu__transform-origin-inline-start: left;
-      --mdw-menu__transform-origin-inline-end: right;
-      /* Normal */
-      --mdw-menu__transform-origin-x: var(--mdw-menu__transform-origin-inline-start);
-      /* Down */
-      --mdw-menu__transform-origin-y: top;
-      --mdw-menu__inline-base: 56px;
-      --mdw-menu__size: 2;
+      --mdw-shape__size: var(--mdw-shape__extra-small);
       --mdw-bg: var(--mdw-color__surface);
       --mdw-ink: var(--mdw-color__on-surface);
-      position: absolute;
-      /* Default position is bottom */
-      /* Default direction is start */
-      inset-block: 100% auto;
-      inset-inline: auto 0;
 
-      display: block;
-      /* Hide scrollbar */
-      -ms-overflow-style: none;
-      /* Scroll mask */
-      overscroll-behavior: none;
-      overscroll-behavior: contain;
-      scrollbar-width: none;
+      --mdw-surface__tint: var(--mdw-surface__tint__2);
+      --mdw-surface__tint__raised: var(--mdw-surface__tint);
 
-      pointer-events: none;
-
-      transform-origin: var(--mdw-menu__transform-origin-x) var(--mdw-menu__transform-origin-y);
-
-      transition-duration: motion.$fadeOutDuration;
-      transition-property: none;
-      transition-timing-function: motion.$decelerateEasing;
-    }
-
-    :host(::after) {
-      content: '';
-
+      --mdw-surface__shadow__resting: var(--mdw-surface__shadow__2);
+      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__resting);
       display: block;
 
-      block-size: 200%;
-      inline-size: 200%;
+      
+      inline-size: auto;
+      min-inline-size: calc(var(--mdw-menu__inline-base) * 2);
+      max-inline-size: 100vw;
+
     }
 
-    :host(::-webkit-scrollbar) {
-      display: none;
-    }
-
-    dialog {
-      position: fixed;
-      inset: 0;
-
-      box-sizing: border-box;
-      block-size:100%;
-      max-block-size: none;
-      inline-size:100%;
-      max-inline-size: none;
-      margin: 0;
-      border: none;
-      padding: 0;
-
-      opacity: 0;
-      visibility: hidden;
-      z-index: 24;
-
-      background-color: transparent;
-
-      transition: none;
-      transition-property: opacity;
-      will-change: opacity;
-    }
-
-    dialog::backdrop {
-      /** Use scrim instead */
-      display: none;
-    }
-
-    dialog[aria-hidden="false"],
-    dialog:modal {
-      display: block;
-
-      pointer-events: none;
-
-      opacity: 1;
-      visibility: visible;
-
-      transition-duration: var(--mdw-dialog__fade-in-duration);
-      transition-property: opacity;
-      transition-timing-function: var(--mdw-dialog__deceleration-easing);
-    }
-
-    #scrim {
-      position: fixed;
-      inset: 0;
-
-      overflow-y: scroll;
-      overscroll-behavior: none;
-      overscroll-behavior: contain;
-      scrollbar-width: none;
-
-      block-size: 100%;
-      inline-size: 100%;
-
-      cursor: default;
-      pointer-events: auto;
-      -webkit-tap-highlight-color: transparent;
-
-      visibility: hidden; /* Only show if [modal] */
-
-      z-index:0;
+    #shape {
+      background-color: rgb(var(--mdw-bg));
     }
 
     #form {
       display: contents;
-    }
-
-    #scrim::-webkit-scrollbar {
-      display: none;
-    }
-
-    #scrim::after {
-      content: '';
-
-      display: block;
-
-      block-size: 200%;
-      inline-size: 200%;
-    }
-
-    #surface {
-      --mdw-shape__size: var(--mdw-shape__extra-small);
-      position: sticky;
-
-      display: inline-flex;
-      flex-direction: column;
-
-      inline-size: calc(var(--mdw-menu__size) * var(--mdw-menu__inline-base));
-      min-inline-size: calc(var(--mdw-menu__inline-base) * 2);
-      max-inline-size: 100vw;
-      flex:1;
-
-      pointer-events: auto;
-      /* background-color: rgb(var(--mdw-color__surface)); */
-      /* color: rgb(var(--mdw-color__on-surface)); */
-      /* stylelint-disable-next-line liberty/use-logical-spec */
-      will-change: top, left;
-    }
-
-    @supports(-moz-appearance: none) {
-      #surface {
-        position: absolute;
-      }
-    }
-
-    #scroller {
-      display: flex;
-      align-items: stretch;
-      flex-direction: column;
-      overflow-y: auto;
-      overscroll-behavior: none;
-      overscroll-behavior: contain;
-
-      flex: 1;
-
-      padding-block: 8px;
-    }
-
-    #scrim[modal] {
-      visibility: visible;
     }
   `
   .methods({
@@ -302,286 +106,11 @@ export default CustomElement
       }
     },
     /**
-     * @param {DOMRect|Element} [anchor]
-     * @return {void}
-     */
-    updateMenuPosition(anchor) {
-      const surface = this.refs.surface;
-      surface.style.setProperty('max-height', 'none');
-      surface.style.setProperty('width', 'auto');
-      const newSize = Math.ceil(surface.clientWidth / 56);
-      surface.style.removeProperty('width');
-      surface.style.setProperty('--mdw-menu__size', newSize.toString(10));
-
-      /** @type {import('../utils/popup.js').CanAnchorPopUpOptions} */
-      const anchorOptions = {
-        anchor: anchor ?? this.getBoundingClientRect(),
-        width: surface.clientWidth,
-        height: surface.clientHeight,
-        // margin,
-      };
-
-      const isPageRTL = (getComputedStyle(this).direction === 'rtl');
-      const xStart = isPageRTL ? 'right' : 'left';
-      const xEnd = isPageRTL ? 'left' : 'right';
-
-      /* Automatic Positioning
-       *
-       * Positions:
-       *   3      7      4
-       *     ┌─────────┐
-       *     │         │
-       *   5 │    9    │ 6
-       *     │         │
-       *     └─────────┘
-       *   1      8      2
-       *
-       * 1: Bottom Left
-       * 2: Bottom Right
-       * 3: Top Left
-       * 4: Top Right
-       * 5: VCenter Left
-       * 6: VCenter Right
-       * 7: HCenter Top
-       * 8: HCenter Bottom
-       * 9: VCenter HCenter
-       *
-       * Directions:
-       * a - Down LTR
-       * b - Down RTL
-       * c - Up LTR
-       * d - Up RTL
-       * e - LTR
-       * f - RTL
-       * g - Down
-       * h - Up
-       * i - Center
-       *
-       *
-       * 16 total combos
-       * 1a 1b 1c 1d  └↘ └↙ └↗ └↖
-       * 2a 2b 2c 2d  ┘↘ ┘↙ ┘↗ ┘↖
-       * 3a 3b 3c 3d  ┌↘ ┌↙ ┌↗ ┌↖
-       * 4a 4b 4c 4d  ┐↘ ┐↙ ┐↗ ┐↖
-       *
-       * Avoid using opposite angle
-       *
-       * 1a XX 1c 1d  └↘ ██ └↗ └↖
-       * XX 2b 2c 2d  ██ ┘↙ ┘↗ ┘↖
-       * 1a 3b 3c XX  ┌↘ ┌↙ ┌↗ ██
-       * 4a 4b XX 4d  ┐↘ ┐↙ ██ ┐↖
-       *
-       *
-       * Preference Order:
-       * - Flow from corner           1a 2b 3c 4d    └↘ ┘↙ ┌↗ ┐↖
-       * - Open adjacent to target    4a 3b 2c 1d    ┐↘ ┌↙ ┘↗ └↖
-       * - Overlay target             3a 4b 1c 2d    ┌↘ ┐↙ └↗ ┘↖
-       * - Open from horizontal side  5e 6f          │→ │←
-       * - Open from center           9i             █·
-       */
-
-      /** @type {import('../utils/popup.js').CanAnchorPopUpOptions[]} */
-      const preferences = [
-        (!this.submenu && (this.flow ?? 'corner') === 'corner') ? [
-          { clientY: 'bottom', clientX: xStart },
-          { clientY: 'bottom', clientX: xEnd },
-          { clientY: 'top', clientX: xStart },
-          { clientY: 'top', clientX: xEnd },
-        ] : [],
-        (this.submenu || (this.flow ?? 'adjacent') === 'adjacent') ? [
-          { clientY: 'top', clientX: xEnd, directionX: xEnd, directionY: 'down' },
-          { clientY: 'top', clientX: xStart, directionX: xStart, directionY: 'down' },
-          { clientY: 'bottom', clientX: xEnd, directionX: xEnd, directionY: 'up' },
-          { clientY: 'bottom', clientX: xStart, directionX: xStart, directionY: 'up' },
-        ] : [],
-        (!this.submenu && (this.flow ?? 'overlay') === 'overlay') ? [
-          { clientY: 'top', clientX: xStart, directionX: xEnd, directionY: 'down' },
-          { clientY: 'top', clientX: xEnd, directionX: xStart, directionY: 'down' },
-          { clientY: 'bottom', clientX: xStart, directionX: xEnd, directionY: 'up' },
-          { clientY: 'bottom', clientX: xEnd, directionX: xStart, directionY: 'up' },
-        ] : [],
-        (!this.submenu && (this.flow ?? 'vcenter') === 'vcenter') ? [
-          { clientY: 'center', clientX: xEnd, directionX: xEnd, directionY: 'center' },
-          { clientY: 'center', clientX: xStart, directionX: xStart, directionY: 'center' },
-        ] : [],
-        (!this.submenu && (this.flow ?? 'hcenter') === 'hcenter') ? [
-          { clientY: 'bottom', clientX: 'center', directionX: 'center', directionY: 'down' },
-          { clientY: 'top', clientX: 'center', directionX: 'center', directionY: 'up' },
-        ] : [],
-        (!this.submenu && (this.flow ?? 'center') === 'center') ? [
-          { clientY: 'center', clientX: 'center', directionX: 'center', directionY: 'center' },
-        ] : [],
-      ].flat();
-
-      let anchorResult;
-      for (const preference of preferences) {
-        anchorResult = canAnchorPopup({
-          ...anchorOptions,
-          ...preference,
-        });
-        if (anchorResult) break;
-      }
-
-      if (!anchorResult) {
-        anchorResult = canAnchorPopup({
-          ...anchorOptions,
-          ...preferences[0],
-          force: true,
-        });
-      }
-
-      surface.style.setProperty('inset-block-start', `${anchorResult.pageY}px`);
-      surface.style.setProperty('inset-inline-start', `${anchorResult.pageX}px`);
-      surface.style.setProperty('margin', '0');
-      surface.style.setProperty('transform-origin', `${anchorResult.transformOriginY} ${anchorResult.transformOriginX}`);
-      surface.scrollIntoView();
-    },
-    /**
-     * @param {MouseEvent|PointerEvent|HTMLElement|Element} source
-     * @return {boolean} handled
-     */
-    showModal(source) {
-      if (this.open) return false;
-      this.modal = true;
-      if (supportsHTMLDialogElement) {
-        this._dialog.showModal();
-        this._isNativeModal = true;
-      }
-      return this.showPopup(source);
-    },
-    /**
-     * @param {MouseEvent|PointerEvent|HTMLElement|Element} source
-     * @return {boolean} handled
-     */
-    showPopup(source) {
-      if (this.open) return false;
-      this.open = true;
-
-      const previousFocus = source instanceof HTMLElement ? source : document.activeElement;
-      this.updateMenuPosition(source);
-      if (supportsHTMLDialogElement && !this._dialog.open) {
-        this._dialog.show();
-      }
-
-      const newState = { hash: Math.random().toString(36).slice(2, 18) };
-      let previousState = null;
-
-      if (!window.history.state) {
-      // Create new previous state
-        window.history.replaceState({
-          hash: Math.random().toString(36).slice(2, 18),
-        }, document.title);
-      }
-      previousState = window.history.state;
-      const scrollRestoration = window.history.scrollRestoration;
-      window.history.scrollRestoration = 'manual';
-      window.history.pushState(newState, document.title);
-      console.debug('Menu pushed page');
-      window.addEventListener('popstate', onPopState);
-      window.addEventListener('beforeunload', onBeforeUnload);
-
-      window.addEventListener('resize', onWindowResize);
-      window.addEventListener('scroll', onWindowResize);
-
-      OPEN_MENUS.push({
-        element: this,
-        previousFocus,
-        state: newState,
-        previousState,
-        originalEvent: source,
-        scrollRestoration,
-      });
-
-      this.focus();
-
-      return true;
-    },
-    /**
-     * @param {boolean} returnFocus Return focus to element focused during open
-     * @return {boolean} handled
-     */
-    close(returnFocus = true) {
-      if (!this.open) return false;
-      if (this._closing) return false;
-      this._closing = true;
-      this.modal = false;
-      if (this._isNativeModal) {
-        this._isNativeModal = false;
-      } else {
-        const main = document.querySelector('main');
-        if (main) {
-          main.removeAttribute('aria-hidden');
-        }
-      }
-      // if (this.dialogElement.getAttribute('aria-hidden') === 'true') return false;
-      if (supportsHTMLDialogElement && this._dialog.open) {
-        const previousFocus = document.activeElement;
-        // Closing a native dialog will return focus automatically.
-        this._dialog.close();
-        if (!attemptFocus(previousFocus, { preventScroll: true })) {
-          document.activeElement?.blur?.();
-        }
-      }
-
-      // Will invoke observed attribute change: ('aria-hidden', 'true');
-
-      this.open = false;
-      this.dispatchEvent(new Event('close'));
-
-      const len = OPEN_MENUS.length;
-      for (let i = len - 1; i >= 0; i--) {
-        const entry = OPEN_MENUS[i];
-        if (entry.element === this) {
-          if (entry.state && window.history && window.history.state && entry.state.hash === window.history.state.hash) {
-            window.removeEventListener('popstate', onPopState);
-            window.history.back();
-            // Back does not set state immediately
-            // Needed to track submenu
-            // TODO: use window.history.go(indexDelta) instead for Safari (not Wekbit) submenu support
-            window.history.replaceState(entry.previousState, document.title);
-            window.history.scrollRestoration = entry.scrollRestoration || 'auto';
-            window.addEventListener('popstate', onPopState);
-          } else {
-            console.warn('Menu state mismatch?', entry, window.history.state);
-          }
-          if (returnFocus) {
-            entry.previousFocus?.focus?.({ preventScroll: true });
-          }
-          OPEN_MENUS.splice(i, 1);
-          break;
-        } else if (this.contains(entry.element)) {
-          console.debug('Closing submenu first');
-          entry.element.close(false);
-          console.debug('Sub menu closed. Continuing...');
-        }
-      }
-      if (!OPEN_MENUS.length) {
-        window.removeEventListener('popstate', onPopState);
-        window.removeEventListener('beforeunload', onBeforeUnload);
-        window.removeEventListener('resize', onWindowResize);
-        console.debug('All menus closed');
-      }
-      this._closing = false;
-      return true;
-    },
-    /**
      * @param {HTMLElement} cascader Element that calls for submenu cascade
      */
     cascade(cascader) {
       this.cascader = cascader;
       this.showPopup(cascader);
-    },
-    /**
-     * @param {MouseEvent|PointerEvent|HTMLElement|Element} source
-     * @return {boolean} handled
-     */
-    show(source) {
-      // Auto-select type based on default platform convention
-      // Mac OS X / iPad does not expect clickthrough
-      if (navigator.userAgent.includes('Mac OS X')) {
-        return this.showModal(source);
-      }
-      return this.showPopup(source);
     },
   })
   .events({
@@ -622,7 +151,7 @@ export default CustomElement
         default:
       }
     },
-    focusout(event) {
+    focusout() {
       if (!this.open) return;
       if (this.modal) return;
       // Wait until end of event loop cycle to see if focus really is lost
