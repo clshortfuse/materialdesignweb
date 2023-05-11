@@ -207,6 +207,7 @@ function searchWithProp(state, changes, data) {
 function searchWithDeepProp(state, changes, data) {
   let scope = changes;
   for (const prop of this.deepProp) {
+    if (scope === null) return null;
     if (prop in scope === false) return undefined;
     scope = scope[prop];
   }
@@ -283,11 +284,12 @@ function propFromObject(prop, source) {
  * @return {any}
  */
 function deepPropFromObject(nameArray, source) {
-  if (!source) return [];
+  if (!source) return undefined;
   let scope = source;
   let prop;
   for (prop of nameArray) {
     if (typeof scope === 'object') {
+      if (scope === null) return null;
       if (!(prop in scope)) return undefined;
       scope = scope[prop];
     } else {
@@ -295,30 +297,6 @@ function deepPropFromObject(nameArray, source) {
     }
   }
   return scope;
-}
-
-/**
- * @example
- *  deepPropFromObjects(
- *    ['address', 'home, 'houseNumber'],
- *    {
- *      address: {
- *        home: {
- *          houseNumber:35,
- *        },
- *      }
- *    }
- * ) == [houseNumber, 35]
- * @param {string[]} nameArray
- * @param {any[]} sources
- * @return {[]|[string, any]}
- */
-function deepPropFromObjects(nameArray, ...sources) {
-  for (const source of sources) {
-    const result = deepPropFromObject(nameArray, source);
-    if (result !== undefined) return result;
-  }
-  return undefined;
 }
 
 /**
