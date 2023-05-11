@@ -6,7 +6,7 @@ import StateMixin from '../mixins/StateMixin.js';
 import List from './List.js';
 import ListOption from './ListOption.js';
 
-/** -implements {HTMLSelectElement} */
+/** @implements {HTMLSelectElement} */
 export default class Listbox extends List
   .mixin(StateMixin)
   .mixin(FormAssociatedMixin)
@@ -14,7 +14,7 @@ export default class Listbox extends List
   static {
     this.autoRegister('mdw-listbox');
     // eslint-disable-next-line no-unused-expressions
-    this.css`
+    this.css/* css */`
       :host(:disabled) {
         cursor: not-allowed;
         pointer-events: none;
@@ -128,7 +128,12 @@ export default class Listbox extends List
     for (const el of this.options) {
       el.selected = el === target;
     }
+    const fireEvent = this._value !== target.value;
     this._value = target.value;
+    if (fireEvent) {
+      this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+      this.dispatchEvent(new Event('change', { bubbles: true }));
+    }
   }
 
   formResetCallback() {
@@ -169,7 +174,7 @@ export default class Listbox extends List
 
   set selectedIndex(value) {
     this.options.selectedIndex = value;
-    this._value = (this.options.item(value)?.value) ?? '';
+    this._value = (this.options[value]?.value) ?? '';
   }
 
   get value() {
@@ -186,9 +191,24 @@ export default class Listbox extends List
 
   get add() { return this.options.add; }
 
-  get item() { return this.options.item; }
+  /**
+   * @param {number} index
+   * @return {ListOption|null}
+   */
+  item(index) { return this.options[index]; }
 
-  get namedItem() { return this.options.namedItem; }
+  /**
+   * @param {string} name ID of ListOption
+   * @return {ListOption|null}
+   */
+  namedItem(name) {
+    for (const option of this.options) {
+      if (option.id === name) {
+        return option;
+      }
+    }
+    return null;
+  }
 
   * [Symbol.iterator]() {
     for (const el of this.options) {
