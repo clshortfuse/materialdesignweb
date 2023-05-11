@@ -63,6 +63,7 @@ export function canAnchorPopup(options) {
       }
     }
   }
+
   let { width, height } = options;
   if (width == null || height == null) {
     const { popup } = options;
@@ -75,42 +76,62 @@ export function canAnchorPopup(options) {
     }
   }
 
-  // eslint-disable-next-line default-case
-  switch (directionX) {
-    case 'left':
-      pageX -= width;
-      break;
-    case 'center':
-      pageX -= width / 2;
-  }
-
-  // eslint-disable-next-line default-case
-  switch (directionY) {
-    case 'up':
-      pageY -= height;
-      break;
-    case 'center':
-      pageY -= height / 2;
-  }
+  let top;
+  let right;
+  let bottom;
+  let left;
+  const margin = options.margin ?? 0;
+  const pageTop = margin;
+  const pageBottom = document.documentElement.clientHeight - margin;
+  const pageRight = document.documentElement.clientWidth - margin;
+  const pageLeft = margin;
 
   const offsetX = options.offsetX ?? 0;
   const offsetY = options.offsetY ?? 0;
   pageX += offsetX;
   pageY += offsetY;
-  const margin = options.margin ?? 0;
-  if (!options.force) {
-    if (pageX - margin < 0) return null;
-    if (pageY - margin < 0) return null;
-    if (pageX + width > (document.documentElement.clientWidth - margin)) return null;
-    if (pageY + height > (document.documentElement.clientHeight - margin)) return null;
+
+  switch (directionY) {
+    case 'up':
+      bottom = Math.min(pageY, pageBottom);
+      top = Math.max(bottom - height, pageTop);
+      break;
+    case 'center':
+      top = Math.max(pageY - height / 2, pageTop);
+      bottom = Math.min(pageY + height / 2, pageBottom);
+      break;
+    default:
+      top = Math.max(pageY, pageTop);
+      bottom = Math.min(top + height, pageBottom);
   }
+
+  switch (directionX) {
+    case 'left':
+      right = Math.min(pageX, pageRight);
+      left = Math.max(right - width, pageLeft);
+      break;
+    case 'center':
+      left = Math.max(pageX - width / 2, pageLeft);
+      right = Math.min(pageX + width / 2, pageRight);
+      break;
+    default:
+      left = Math.max(pageX, pageLeft);
+      right = Math.min(left + width, pageRight);
+  }
+
+  // compute area
+  const fullSize = width * height;
+  const realSize = (bottom - top) * (right - left);
+
+  const visibility = realSize / fullSize;
 
   return {
     ...options,
-    offsetX,
-    offsetY,
-    pageX,
-    pageY,
+    top,
+    right,
+    bottom,
+    left,
+    visibility,
     transformOriginX: directionX === 'center' ? 'center' : (directionX === 'left' ? 'right' : 'left'),
     transformOriginY: directionY === 'center' ? 'center' : (directionY === 'up' ? 'bottom' : 'top'),
   };

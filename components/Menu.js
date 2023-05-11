@@ -18,19 +18,14 @@ export default CustomElement
   .mixin(DensityMixin)
   .mixin(KeyboardNavMixin)
   .extend()
-  .observe({
-    flow: {
-      type: 'string',
-      /** @type {'corner'|'adjacent'|'overflow'|'vcenter'|'hcenter'|'center'} */
-      value: null,
-    },
-    submenu: 'boolean',
-  })
   .set({
     scrollable: true,
+    flow: 'corner',
     _useScrim: false,
     /** @type {WeakRef<HTMLElement>} */
     _cascader: null,
+    /** @type {WeakRef<HTMLElement>} */
+    _submenu: null,
   })
   .define({
     kbdNavChildren() {
@@ -53,17 +48,25 @@ export default CustomElement
         this._cascader = value ? new WeakRef(value) : null;
       },
     },
+    submenu: {
+      get() {
+        return this._submenu?.deref();
+      },
+      /**
+       * @param {HTMLElement} value
+       */
+      set(value) {
+        this._submenu = value ? new WeakRef(value) : null;
+      },
+    },
   })
-  .html/* html */`
-    <slot id=submenu-slot name=submenu></slot>
-  `
   .on({
     composed() {
-      const { submenuSlot, shape, surface, surfaceTint, dialog } = this.refs;
+      const { shape, surface, surfaceTint, dialog, scrim } = this.refs;
       shape.append(surfaceTint);
       surface.append(shape);
       dialog.prepend(surface);
-      dialog.append(submenuSlot);
+      scrim.setAttribute('invisible', '');
 
       // Wrap slot in scroller
     },
@@ -99,6 +102,12 @@ export default CustomElement
     }
   `
   .methods({
+    showModal(...args) {
+      this._useScrim = true;
+      const result = this.showPopup(...args);
+      this._useScrim = false;
+      return result;
+    },
     focus() {
       const [firstItem] = this.kbdNavChildren;
       if (!attemptFocus(firstItem)) {
@@ -110,10 +119,30 @@ export default CustomElement
      */
     cascade(cascader) {
       this.cascader = cascader;
-      this.showPopup(cascader);
+      this.showPopup(cascader, true, 'adjacent');
     },
   })
   .events({
+    'mdw-menu-item:cascade'(event) {
+      const menuItem = event.target;
+      const subMenuId = event.detail;
+      event.stopPropagation();
+
+      const submenu = this.getRootNode().getElementById(subMenuId);
+      this.submenu = submenu;
+      submenu.cascade(menuItem);
+    },
+    'mdw-menu-item:cascader-blur'() {
+      const submenu = this.submenu;
+      // Wait for focus event (if mouse focus on sub menu item)
+      queueMicrotask(() => {
+        // Stay open if submenu is focused
+        if (submenu && submenu.matches(':focus-within,:focus')) return;
+
+        submenu.close(false);
+      });
+    },
+
     '~click'(event) {
       if (this !== event.target) return;
       // Clicked self (scrim-like)
@@ -137,7 +166,7 @@ export default CustomElement
         // Unless menu hiding is cancelled
         case 'ArrowLeft':
         case 'ArrowRight':
-          if (!this.submenu) break;
+          // if (!this.submenu) break;
           if (getComputedStyle(this).direction === 'rtl') {
             if (event.key === 'ArrowLeft') break;
           } else if (event.key === 'ArrowRight') break;
@@ -157,11 +186,11 @@ export default CustomElement
       // Wait until end of event loop cycle to see if focus really is lost
       queueMicrotask(() => {
         if (this.matches(':focus-within')) return;
-        const activeElement = document.activeElement;
-        if (activeElement
-            && (this.cascader === activeElement || this.contains(activeElement))) {
-          return;
-        }
+        const { cascader, submenu } = this;
+
+        if (cascader && cascader.matches(':focus-within,:focus')) return;
+        if (submenu && submenu.matches(':focus-within,:focus')) return;
+
         this.close(false);
       });
     },

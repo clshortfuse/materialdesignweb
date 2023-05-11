@@ -42,6 +42,10 @@ CustomElement
       animation-timing-function: ease-in;
     }
 
+    :host([invisible]) {
+      background: transparent;
+    }
+
     @keyframes fade-in {
       from {
         opacity: 0;
@@ -63,7 +67,7 @@ CustomElement
     }
   `
   .events({
-    animationend(event) {
+    animationend() {
       if (this.hidden) this.remove();
     },
   })
@@ -130,6 +134,12 @@ export default function PopupMixin(Base) {
       _isNativeModal: 'boolean',
       scrollable: 'boolean',
       matchSourceWidth: 'boolean',
+      _currentFlow: 'string',
+      flow: {
+        type: 'string',
+        /** @type {'corner'|'adjacent'|'overflow'|'vcenter'|'hcenter'|'center'} */
+        value: null,
+      },
     })
     .set({
       returnValue: '',
@@ -148,31 +158,41 @@ export default function PopupMixin(Base) {
        * @return {void}
        */
       updatePopupPosition(anchor) {
+        const flow = this._currentFlow ?? this.flow;
+        this.style.setProperty('min-width', 'none');
+        this.style.setProperty('min-height', 'none');
+        this.style.setProperty('width', 'auto');
+        this.style.setProperty('height', 'auto');
+        this.style.setProperty('max-width', 'none');
         this.style.setProperty('max-height', 'none');
         this.style.setProperty('top', '0');
         this.style.setProperty('left', '0');
         this.style.setProperty('--mdw-popup__x-offset', '0');
         this.style.setProperty('--mdw-popup__y-offset', '0');
 
-        let size;
-        if (anchor && this.matchSourceWidth) {
-          size = anchor.clientWidth;
-        } else {
-          const layoutElement = this._isNativeModal ? this._dialog : this;
-          layoutElement.style.setProperty('width', 'auto');
-          size = 56 * Math.ceil(layoutElement.clientWidth / 56);
-          layoutElement.style.removeProperty('width');
-        }
+        const layoutElement = this._isNativeModal ? this._dialog : this;
+        layoutElement.style.setProperty('width', 'auto');
+        layoutElement.style.setProperty('height', 'auto');
 
-        this.style.setProperty('width', `${size}px`);
+        const width = (anchor && this.matchSourceWidth)
+          ? anchor.clientWidth
+          : 56 * Math.ceil(layoutElement.clientWidth / 56);
+
+        this.style.setProperty('width', `${width}px`);
+
+        const height = layoutElement.clientHeight;
+        layoutElement.style.removeProperty('width');
+        layoutElement.style.removeProperty('height');
 
         const initialRect = this.getBoundingClientRect();
         /** @type {import('../utils/popup.js').CanAnchorPopUpOptions} */
         const anchorOptions = {
-          anchor: anchor ?? this.getBoundingClientRect(),
-          width: this.clientWidth,
-          height: this.clientHeight,
-        // margin,
+          anchor: anchor == null
+            ? this.getBoundingClientRect()
+            : (anchor instanceof Element ? anchor.getBoundingClientRect() : anchor),
+          width,
+          height,
+          margin: 0,
         };
 
         const isPageRTL = (getComputedStyle(this).direction === 'rtl');
@@ -236,57 +256,57 @@ export default function PopupMixin(Base) {
 
         /** @type {import('../utils/popup.js').CanAnchorPopUpOptions[]} */
         const preferences = [
-          (!this.submenu && (this.flow ?? 'corner') === 'corner') ? [
+          ((flow ?? 'corner') === 'corner') ? [
             { clientY: 'bottom', clientX: xStart },
             { clientY: 'bottom', clientX: xEnd },
             { clientY: 'top', clientX: xStart },
             { clientY: 'top', clientX: xEnd },
           ] : [],
-          (this.submenu || (this.flow ?? 'adjacent') === 'adjacent') ? [
+          ((flow ?? 'adjacent') === 'adjacent') ? [
             { clientY: 'top', clientX: xEnd, directionX: xEnd, directionY: 'down' },
             { clientY: 'top', clientX: xStart, directionX: xStart, directionY: 'down' },
             { clientY: 'bottom', clientX: xEnd, directionX: xEnd, directionY: 'up' },
             { clientY: 'bottom', clientX: xStart, directionX: xStart, directionY: 'up' },
           ] : [],
-          (!this.submenu && (this.flow ?? 'overlay') === 'overlay') ? [
+          ((flow ?? 'overlay') === 'overlay') ? [
             { clientY: 'top', clientX: xStart, directionX: xEnd, directionY: 'down' },
             { clientY: 'top', clientX: xEnd, directionX: xStart, directionY: 'down' },
             { clientY: 'bottom', clientX: xStart, directionX: xEnd, directionY: 'up' },
             { clientY: 'bottom', clientX: xEnd, directionX: xStart, directionY: 'up' },
           ] : [],
-          (!this.submenu && (this.flow ?? 'vcenter') === 'vcenter') ? [
+          ((flow ?? 'vcenter') === 'vcenter') ? [
             { clientY: 'center', clientX: xEnd, directionX: xEnd, directionY: 'center' },
             { clientY: 'center', clientX: xStart, directionX: xStart, directionY: 'center' },
           ] : [],
-          (!this.submenu && (this.flow ?? 'hcenter') === 'hcenter') ? [
+          ((flow ?? 'hcenter') === 'hcenter') ? [
             { clientY: 'bottom', clientX: 'center', directionX: 'center', directionY: 'down' },
             { clientY: 'top', clientX: 'center', directionX: 'center', directionY: 'up' },
           ] : [],
-          (!this.submenu && (this.flow ?? 'center') === 'center') ? [
+          ((flow ?? 'center') === 'center') ? [
             { clientY: 'center', clientX: 'center', directionX: 'center', directionY: 'center' },
           ] : [],
         ].flat();
 
         let anchorResult;
         for (const preference of preferences) {
-          anchorResult = canAnchorPopup({
+          const result = canAnchorPopup({
             ...anchorOptions,
             ...preference,
           });
-          if (anchorResult) break;
+          if (!anchorResult || anchorResult.visibility < result.visibility) {
+            anchorResult = result;
+          }
+          if (result.visibility === 1) break;
         }
 
-        if (!anchorResult) {
-          anchorResult = canAnchorPopup({
-            ...anchorOptions,
-            ...preferences[0],
-            force: true,
-          });
-        }
-
-        this.style.setProperty('top', `${anchorResult.pageY - initialRect.y}px`);
-        this.style.setProperty('left', `${anchorResult.pageX - initialRect.x}px`);
-        this.style.setProperty('margin', '0');
+        this.style.setProperty('top', `${anchorResult.top - initialRect.y}px`);
+        this.style.setProperty('left', `${anchorResult.left - initialRect.x}px`);
+        this.style.setProperty('min-width', `${anchorResult.right - anchorResult.left}px`);
+        this.style.setProperty('min-height', `${anchorResult.bottom - anchorResult.top}px`);
+        this.style.removeProperty('width');
+        this.style.removeProperty('height');
+        this.style.setProperty('max-width', `${anchorResult.right - anchorResult.left}px`);
+        this.style.setProperty('max-height', `${anchorResult.bottom - anchorResult.top}px`);
         this.style.setProperty('transform-origin', `${anchorResult.transformOriginY} ${anchorResult.transformOriginX}`);
         this.scrollIntoView();
       },
@@ -303,10 +323,11 @@ export default function PopupMixin(Base) {
 
       /**
        * @param {MouseEvent|PointerEvent|HTMLElement|Event} [source]
-       * @param focus
+       * @param {boolean} focus
+       * @param {string} flow
        * @return {boolean} handled
        */
-      showPopup(source, focus = true) {
+      showPopup(source, focus = true, flow = null) {
         if (this.open) return false;
         this.open = true;
 
@@ -324,6 +345,8 @@ export default function PopupMixin(Base) {
           // Calling show will force focus which is not intended for non-modals
           this._dialog.show();
         }
+
+        this._currentFlow = flow;
 
         // Short first, then move
         // Native modals can fail update bounds on Chrome
@@ -368,29 +391,33 @@ export default function PopupMixin(Base) {
         return true;
       },
       /**
-       * @param {MouseEvent|PointerEvent|HTMLElement|Element} source
+       * @param {MouseEvent|PointerEvent|HTMLElement|Event} [source]
+       * @param {boolean} [focus]
+       * @param {string} [flow]
        * @return {boolean} handled
        */
-      showModal(source) {
+      showModal(source, focus, flow) {
         if (this.open) return false;
         this.modal = true;
         if (supportsHTMLDialogElement) {
           this._dialog.showModal();
           this._isNativeModal = true;
         }
-        return this.showPopup(source);
+        return this.showPopup(source, focus, flow);
       },
       /**
-       * @param {MouseEvent|PointerEvent|HTMLElement|Element} source
+       * @param {MouseEvent|PointerEvent|HTMLElement|Event} [source]
+       * @param {boolean} [focus]
+       * @param {string} [flow]
        * @return {boolean} handled
        */
-      show(source) {
+      show(source, focus, flow) {
         // Auto-select type based on default platform convention
-      // Mac OS X / iPad does not expect clickthrough
+        // Mac OS X / iPad does not expect clickthrough
         if (navigator.userAgent.includes('Mac OS X')) {
-          return this.showModal(source);
+          return this.showModal(source, focus, flow);
         }
-        return this.showPopup(source);
+        return this.showPopup(source, focus, flow);
       },
       /**
        * @param {any} [returnValue]
@@ -428,6 +455,7 @@ export default function PopupMixin(Base) {
 
         // Will invoke observed attribute change: ('aria-hidden', 'true');
         this.open = false;
+        this._currentFlow = null;
 
         this.dispatchEvent(new Event('close'));
 
@@ -476,8 +504,8 @@ export default function PopupMixin(Base) {
     .html/* html */`
       <mdw-scrim id=scrim tabindex=-1 aria-hidden=true></mdw-scrim>
       <dialog id=dialog aria-modal=true role=dialog
-      aria-hidden={_ariaHidden}>
-        <slot id=slot scrollable={scrollable} on-slotchange={onSlotChange}></slot>
+      aria-hidden={_ariaHidden} scrollable={scrollable}>
+        <slot id=slot on-slotchange={onSlotChange}></slot>
       </dialog>
     `
     .css/* css */`
@@ -514,6 +542,7 @@ export default function PopupMixin(Base) {
       justify-self: center;
 
       display: block;
+      overflow: auto;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: none;
       overscroll-behavior: contain;
@@ -521,10 +550,10 @@ export default function PopupMixin(Base) {
       box-sizing: border-box;
       block-size: auto;
       min-block-size: none;
-      max-block-size: none;
+      max-block-size: 100vh;
       inline-size: auto;
       min-inline-size: none;
-      max-inline-size: none;
+      max-inline-size: 100vw;
   
       
       pointer-events: none;
@@ -565,6 +594,8 @@ export default function PopupMixin(Base) {
       transition-timing-function: ease-in;
     }
 
+    
+
     #dialog {
       position: static;
       inset-block-start: 0;
@@ -576,7 +607,6 @@ export default function PopupMixin(Base) {
       gap: inherit;
       justify-content: inherit;
       justify-items: inherit;
-      overflow: visible;
       place-items: inherit;
 
       box-sizing: border-box;
@@ -602,7 +632,11 @@ export default function PopupMixin(Base) {
       background-color: transparent;
 
       color:inherit;
+      
+    }
 
+    :host([scrollable]) {
+      overflow-y:auto;
     }
 
     #dialog::backdrop {
@@ -614,7 +648,6 @@ export default function PopupMixin(Base) {
       position: inherit;
       inset: inherit;
 
-      display: contents;
       display: inherit;
       align-items: inherit;
       flex-direction: inherit;
@@ -623,11 +656,11 @@ export default function PopupMixin(Base) {
       justify-items: inherit;
       place-items: inherit;
 
-      block-size: inherit;
+      block-size: auto;
       min-block-size: inherit;
       max-block-size: inherit;
 
-      inline-size:inherit;
+      inline-size:auto;
       min-inline-size: inherit;
       max-inline-size: inherit;
       flex: inherit;
@@ -637,12 +670,42 @@ export default function PopupMixin(Base) {
 
       transform: inherit;
       visibility: inherit;
-      
     }
 
-    #slot[scrollable]::slotted(*) {
-      overflow-y:auto;
+    #dialog[scrollable][open] {
+      display: inherit;
+      align-items: inherit;
+      flex-direction: inherit;
+      gap: inherit;
+      justify-content: inherit;
+      justify-items: inherit;
+      
+      place-items: inherit;
+
+      height: 100%;
+      max-height: none;
+      width: 100%;
+      max-width: none;
+
+      flex: 1;
     }
+
+    
+
+    #dialog[scrollable][open]:modal {
+      overflow:auto;
+
+      height:100%;
+      min-height: none;
+      max-height: inherit;
+      width:100%;
+      min-width: none;
+      max-width: inherit;
+      flex: inherit;
+      padding: inherit;
+    }
+
+    
   `
     .childEvents({
       dialog: {

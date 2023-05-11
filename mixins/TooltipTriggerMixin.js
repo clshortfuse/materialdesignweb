@@ -17,7 +17,7 @@ export default function TooltipTriggerMixin(Base) {
         },
       });
       // eslint-disable-next-line no-unused-expressions
-      this.css`
+      this.css/* css */`
         #tooltip {
           position:absolute;
         
@@ -321,24 +321,18 @@ export default function TooltipTriggerMixin(Base) {
 
       let anchorResult;
       for (const preference of preferences) {
-        anchorResult = canAnchorPopup({
+        const result = canAnchorPopup({
           ...anchorOptions,
           ...preference,
         });
-        if (anchorResult) break;
+        if (!anchorResult || anchorResult.visibility < result.visibility) {
+          anchorResult = result;
+        }
+        if (result.visibility === 1) break;
       }
 
-      // console.log({ anchorResult });
-      if (!anchorResult) {
-        anchorResult = canAnchorPopup({
-          ...anchorOptions,
-          ...preferences[0],
-          force: true,
-        });
-      }
-
-      this.#tooltip.style.setProperty('top', `${anchorResult.pageY}px`);
-      this.#tooltip.style.setProperty('left', `${anchorResult.pageX}px`);
+      this.#tooltip.style.setProperty('top', `${anchorResult.top}px`);
+      this.#tooltip.style.setProperty('left', `${anchorResult.left}px`);
       this.#tooltip.style.setProperty('margin', '0');
       this.#tooltip.style.setProperty('transform-origin', `${anchorResult.transformOriginY} ${anchorResult.transformOriginX}`);
 

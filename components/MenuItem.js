@@ -96,7 +96,9 @@ export default class MenuItem extends ListOption
     cascade() {
       this.unscheduleCascade();
       this._cascading = true;
-      document.getElementById(this.cascades)?.cascade?.(this);
+      // Dispatch event asking for cascade.
+      // Captured by parent mdw-menu and used to track current submenu
+      this.dispatchEvent(new CustomEvent('mdw-menu-item:cascade', { detail: this.cascades, bubbles: true }));
       this._cascading = false;
     },
   })
@@ -170,10 +172,7 @@ export default class MenuItem extends ListOption
     blur() {
       if (!this.cascades) return;
       if (this._cascading) return;
-      const submenuElement = document.getElementById(this.cascades);
-      if (submenuElement.matches(':focus-within')) return;
-      console.debug('closing submenu via cascader blur');
-      submenuElement.close(false);
+      this.dispatchEvent(new CustomEvent('mdw-menu-item:cascader-blur', { detail: this.cascades, bubbles: true }));
     },
   })
   .on({
@@ -208,7 +207,7 @@ export default class MenuItem extends ListOption
       this._selected = this.defaultSelected;
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/menus/specs */
 
     :host {
