@@ -10,6 +10,12 @@ export default function StateMixin(Base) {
     .extend()
     .observe({
       disabled: 'boolean',
+      /** Force focus state (independent of document) */
+      focused: 'boolean',
+      /** Force hover state (independent of interaction) */
+      hovered: 'boolean',
+      /** Force pressed state (independent of interaction) */
+      pressed: 'boolean',
       _lastInteraction: {
         /** @type {'mouse'|'touch'|'key'|'pen'|null} */
         value: null,
@@ -21,9 +27,9 @@ export default function StateMixin(Base) {
     })
     .observe({
       disabledState({ disabled }) { return disabled; },
-      hoveredState({ _hovered }) { return _hovered; },
-      focusedState({ _focused }) { return _focused; },
-      pressedState({ _pressed }) { return _pressed; },
+      hoveredState({ _hovered, hovered }) { return _hovered || hovered; },
+      focusedState({ _focused, focused }) { return _focused || focused; },
+      pressedState({ _pressed, pressed }) { return _pressed || pressed; },
       touchedState({ _lastInteraction }) {
         return _lastInteraction === 'touch';
       },
