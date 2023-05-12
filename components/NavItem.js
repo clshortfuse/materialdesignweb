@@ -133,6 +133,8 @@ export default class NavItem extends CustomElement
     #anchor {
       position: absolute;
       inset: 0;
+
+      outline: none;
     }
 
     #shape {
