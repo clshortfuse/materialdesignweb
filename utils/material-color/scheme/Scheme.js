@@ -76,10 +76,17 @@ export default class Scheme {
       onError: core.error.tone(100),
       errorContainer: core.error.tone(90),
       onErrorContainer: core.error.tone(10),
-      background: core.n1.tone(99),
+      background: core.n1.tone(98),
       onBackground: core.n1.tone(10),
-      surface: core.n1.tone(99),
+      surface: core.n1.tone(98),
       onSurface: core.n1.tone(10),
+      surfaceDim: core.n1.tone(87),
+      surfaceBright: core.n1.tone(98),
+      surfaceContainerLowest: core.n1.tone(100),
+      surfaceContainerLow: core.n1.tone(96),
+      surfaceContainer: core.n1.tone(94),
+      surfaceContainerHigh: core.n1.tone(92),
+      surfaceContainerHighest: core.n1.tone(90),
       surfaceVariant: core.n2.tone(90),
       onSurfaceVariant: core.n2.tone(30),
       outline: core.n2.tone(50),
@@ -115,10 +122,17 @@ export default class Scheme {
       onError: core.error.tone(20),
       errorContainer: core.error.tone(30),
       onErrorContainer: core.error.tone(90), // Fix Typo
-      background: core.n1.tone(10),
+      background: core.n1.tone(6),
       onBackground: core.n1.tone(90),
-      surface: core.n1.tone(10),
+      surface: core.n1.tone(6),
       onSurface: core.n1.tone(90),
+      surfaceDim: core.n1.tone(6),
+      surfaceBright: core.n1.tone(24),
+      surfaceContainerLowest: core.n1.tone(4),
+      surfaceContainerLow: core.n1.tone(10),
+      surfaceContainer: core.n1.tone(12),
+      surfaceContainerHigh: core.n1.tone(17),
+      surfaceContainerHighest: core.n1.tone(22),
       surfaceVariant: core.n2.tone(30),
       onSurfaceVariant: core.n2.tone(80),
       outline: core.n2.tone(60),
@@ -153,6 +167,13 @@ export default class Scheme {
    * @param {number} props.onBackground
    * @param {number} props.surface
    * @param {number} props.onSurface
+   * @param {number} props.surfaceDim
+   * @param {number} props.surfaceBright
+   * @param {number} props.surfaceContainerLowest
+   * @param {number} props.surfaceContainerLow
+   * @param {number} props.surfaceContainer
+   * @param {number} props.surfaceContainerHigh
+   * @param {number} props.surfaceContainerHighest
    * @param {number} props.surfaceVariant
    * @param {number} props.onSurfaceVariant
    * @param {number} props.outline
@@ -265,6 +286,41 @@ export default class Scheme {
   /** @return {number} */
   get onSurface() {
     return this.props.onSurface;
+  }
+
+  /** @return {number} */
+  get surfaceDim() {
+    return this.props.surfaceDim;
+  }
+
+  /** @return {number} */
+  get surfaceBright() {
+    return this.props.surfaceBright;
+  }
+
+  /** @return {number} */
+  get surfaceContainerLowest() {
+    return this.props.surfaceContainerLowest;
+  }
+
+  /** @return {number} */
+  get surfaceContainerLow() {
+    return this.props.surfaceContainerLow;
+  }
+
+  /** @return {number} */
+  get surfaceContainer() {
+    return this.props.surfaceContainer;
+  }
+
+  /** @return {number} */
+  get surfaceContainerHigh() {
+    return this.props.surfaceContainerHigh;
+  }
+
+  /** @return {number} */
+  get surfaceContainerHighest() {
+    return this.props.surfaceContainerHighest;
   }
 
   /** @return {number} */

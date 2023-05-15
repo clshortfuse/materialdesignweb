@@ -62,8 +62,7 @@ export default CustomElement
   })
   .on({
     composed() {
-      const { shape, surface, surfaceTint, dialog, scrim } = this.refs;
-      shape.append(surfaceTint);
+      const { shape, surface, dialog, scrim } = this.refs;
       surface.append(shape);
       dialog.prepend(surface);
       scrim.setAttribute('invisible', '');
@@ -76,21 +75,16 @@ export default CustomElement
 
     :host {
       --mdw-shape__size: var(--mdw-shape__extra-small);
-      --mdw-bg: var(--mdw-color__surface);
+      --mdw-bg: var(--mdw-color__surface-container);
       --mdw-ink: var(--mdw-color__on-surface);
-
-      --mdw-surface__tint: var(--mdw-surface__tint__2);
-      --mdw-surface__tint__raised: var(--mdw-surface__tint);
 
       --mdw-surface__shadow__resting: var(--mdw-surface__shadow__2);
       --mdw-surface__shadow__raised: var(--mdw-surface__shadow__resting);
       display: block;
 
-      
       inline-size: auto;
       min-inline-size: calc(var(--mdw-menu__inline-base) * 2);
       max-inline-size: 100vw;
-
     }
 
     #shape {

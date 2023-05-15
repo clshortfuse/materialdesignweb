@@ -61,7 +61,7 @@ export default CustomElement
     /* Base Styles */
 
     :host {
-      --mdw-bg: var(--mdw-color__surface-variant);
+      --mdw-bg: var(--mdw-color__surface-container-highest);
       --mdw-ink: var(--mdw-color__primary);
       --mdw-progress__opacity__duration: 500ms;
       position: relative;

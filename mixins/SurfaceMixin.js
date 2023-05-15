@@ -14,19 +14,10 @@ export default function SurfaceMixin(Base) {
         },
       },
     })
-    .expressions({
-      showSurfaceTint({ elevated, elevation, disabledState, color }) {
-        return (elevated || elevation !== null)
-          && !disabledState
-          && (!color || color.includes('surface'));
-      },
-    })
     .html/* html */`
-      <div id=surface class=surface raised={_raised} disabled={disabledState} color={color}>
-        <div mdw-if={showSurfaceTint} id=surface-tint class=surface-tint raised={_raised} color={color} aria-hidden=true></div>
-      </div>
+      <div id=surface class=surface raised={_raised} disabled={disabledState} color={color}></div>
     `
-    .css`
+    .css/* css */`
       :host {
 
         /** Filter blur is 1/2 CSS blur */
@@ -74,54 +65,39 @@ export default function SurfaceMixin(Base) {
         --mdw-surface__shadow__3: drop-shadow(0px 1px 1.5px rgba(0,0,0,0.3)) drop-shadow(0px 4px 007px rgba(0,0,0,0.263));
         --mdw-surface__shadow__4: drop-shadow(0px 2px 1.5px rgba(0,0,0,0.3)) drop-shadow(0px 6px 009px rgba(0,0,0,0.270));
         --mdw-surface__shadow__5: drop-shadow(0px 4px 2.0px rgba(0,0,0,0.3)) drop-shadow(0px 8px 012px rgba(0,0,0,0.300));
-      
-        --mdw-surface__tint__1: 0.05;
-        --mdw-surface__tint__2: 0.08;
-        --mdw-surface__tint__3: 0.11;
-        --mdw-surface__tint__4: 0.12;
-        --mdw-surface__tint__5: 0.14;
-      
+
         /** Configurables */
       
         --mdw-surface__shadow__resting: none;
         --mdw-surface__shadow: var(--mdw-surface__shadow__resting);
-        --mdw-surface__tint: 0;
-        --mdw-surface__tint__raised: 0;
         z-index: 0;
       }
       
       :host([elevation="0"]) {
-        --mdw-surface__tint: 0;
         --mdw-surface__shadow__resting: none;
       }
       
       :host([elevation="1"]) {
-        --mdw-surface__tint: var(--mdw-surface__tint__1);
         --mdw-surface__shadow__resting: var(--mdw-surface__shadow__1);
       }
       
       :host([elevation="2"]) {
-        --mdw-surface__tint: var(--mdw-surface__tint__2);
         --mdw-surface__shadow__resting: var(--mdw-surface__shadow__2);
       }
       
       :host([elevation="3"]) {
-        --mdw-surface__tint: var(--mdw-surface__tint__3);
         --mdw-surface__shadow__resting: var(--mdw-surface__shadow__3);
       }
       
       :host([elevation="4"]) {
-        --mdw-surface__tint: var(--mdw-surface__tint__4);
         --mdw-surface__shadow__resting: var(--mdw-surface__shadow__4);
       }
       
       :host([elevation="5"]) {
-        --mdw-surface__tint: var(--mdw-surface__tint__5);
         --mdw-surface__shadow__resting: var(--mdw-surface__shadow__5);
       }
       
       :host([elevation]) {
-        --mdw-surface__tint__raised: var(--mdw-surface__tint);
         --mdw-surface__shadow__raised: var(--mdw-surface__shadow__resting);
       }
       
@@ -148,34 +124,5 @@ export default function SurfaceMixin(Base) {
       .surface[disabled] {
         filter:none;
       }
-      
-      .surface-tint {
-        position: absolute;
-        inset: 0;
-      
-        pointer-events: none;
-      
-        opacity: var(--mdw-surface__tint, 0);
-      
-        background-color: rgb(var(--mdw-color__primary));
-        border-radius: inherit;
-      
-        transition-delay: 1ms;
-        transition-duration: 200ms;
-        transition-property: opacity;
-        will-change: opacity;
-      }
-      
-      .surface-tint[raised] {
-        opacity: var(--mdw-surface__tint__raised, 0);
-      }
-      
-      .surface-tint[pressed] {
-        opacity: var(--mdw-surface__tint, 0);
-      }
-      
-      .surface-tint[color]:not([color|="surface"]) {
-        display: none;
-      }    
     `;
 }

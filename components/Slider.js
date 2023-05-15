@@ -205,7 +205,7 @@ export default CustomElement
       this._previewValue = newValue;
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/sliders/specs */
 
     :host {
@@ -314,7 +314,7 @@ export default CustomElement
       pointer-events: none;
       user-select: none;
 
-      background-color: rgb(var(--mdw-color__surface-variant));
+      background-color: rgb(var(--mdw-color__surface-container-highest));
       border-radius: inherit;
     }
 

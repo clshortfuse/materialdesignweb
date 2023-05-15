@@ -48,19 +48,17 @@ export default CustomElement
     <div mdw-if={showBlocker} id=inert-blocker></div>
     <slot id=slot disabled={disabledState}></slot>
   `
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/cards/specs */
 
     :host {
       --mdw-shape__size: 12px;
-      --mdw-surface__tint: var(--mdw-surface__tint__0);
-      --mdw-surface__tint__raised: var(--mdw-surface__tint);
 
       --mdw-surface__shadow__resting: none;
       --mdw-surface__shadow__raised: var(--mdw-surface__shadow__resting);
       /* padding-inline: 12px; */
 
-      --mdw-bg: var(--mdw-color__surface);
+      --mdw-bg: var(--mdw-color__surface-container);
       --mdw-ink: var(--mdw-color__on-surface);
       position: relative;
 
@@ -77,32 +75,28 @@ export default CustomElement
     }
 
     :host(:where([filled])) {
-      --mdw-bg: var(--mdw-color__surface-variant);
+      --mdw-bg: var(--mdw-color__surface-container-highest);
       --mdw-ink: var(--mdw-color__on-surface-variant);
     }
 
     :host(:where([elevated])) {
-      --mdw-bg: var(--mdw-color__surface);
+      --mdw-bg: var(--mdw-color__surface-container-low);
       --mdw-ink: var(--mdw-color__on-surface);
     }
 
     :host([filled]) {
-      --mdw-surface__tint: var(--mdw-surface__tint__0);
       --mdw-surface__shadow__resting: var(--mdw-surface__shadow__0);
     }
 
     :host([filled][actionable]) {
-      --mdw-surface__tint__raised: var(--mdw-surface__tint__1);
       --mdw-surface__shadow__raised: var(--mdw-surface__shadow__1);
     }
 
     :host([elevated]) {
-      --mdw-surface__tint: var(--mdw-surface__tint__1);
       --mdw-surface__shadow__resting: var(--mdw-surface__shadow__1);
     }
 
     :host([elevated][actionable]) {
-      --mdw-surface__tint__raised: var(--mdw-surface__tint__2);
       --mdw-surface__shadow__raised: var(--mdw-surface__shadow__2);
     }
 
@@ -142,7 +136,7 @@ export default CustomElement
     }
 
     #shape[disabled][elevated] {
-      background-color: rgba(var(--mdw-color__surface-variant));
+      background-color: rgba(var(--mdw-color__surface-container-highest));
     }
 
     #action {
@@ -161,8 +155,7 @@ export default CustomElement
   `
   .on({
     composed() {
-      const { slot, surface, surfaceTint, shape, outline } = this.refs;
-      shape.append(surfaceTint);
+      const { slot, surface, shape, outline } = this.refs;
       surface.append(shape);
       outline.removeAttribute('pressed');
       outline.removeAttribute('focused');

@@ -18,15 +18,13 @@ export default Surface
     _ariaRole: 'toolbar',
   })
   .observe({
-    color: { empty: 'surface' },
+    color: { empty: 'surface-container' },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/bottom-app-bar/specs */
 
     :host {
-      --mdw-surface__tint: var(--mdw-surface__tint__2);
-      --mdw-surface__tint__raised: var(--mdw-surface__tint__2);
-      --mdw-bg: var(--mdw-color__surface);
+      --mdw-bg: var(--mdw-color__surface-container);
       --mdw-ink: var(--mdw-color__on-surface);
 
       display: flex;

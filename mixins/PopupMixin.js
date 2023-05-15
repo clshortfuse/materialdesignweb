@@ -522,9 +522,6 @@ export default function PopupMixin(Base) {
 
       --mdw-shape__size: 28px;
 
-      --mdw-surface__tint: var(--mdw-surface__tint__3);
-      --mdw-surface__tint__raised: var(--mdw-surface__tint);
-
       --mdw-surface__shadow__resting: var(--mdw-surface__shadow__3);
       --mdw-surface__shadow__raised: var(--mdw-surface__shadow__resting);
       /* padding-inline: 12px; */

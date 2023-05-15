@@ -17,13 +17,13 @@ export default Surface
     },
     touch: 'boolean',
   })
-  .css`
+  .css/* css */`
     /* https://m2.material.io/components/tooltips */
 
     :host {
       --mdw-shape__size: var(--mdw-shape__extra-small);
       --mdw-ink: var(--mdw-color__on-surface-variant);
-      --mdw-shape__bg: rgb(var(--mdw-color__surface-variant));
+      --mdw-shape__bg: rgb(var(--mdw-color__surface-container));
       display: block;
       vertical-align: middle;
 

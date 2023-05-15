@@ -12,12 +12,11 @@ export default CustomElement
   .html/* html */`<slot id=slot></slot>`
   .on({
     composed() {
-      const { surface, shape, surfaceTint } = this.refs;
-      shape.append(surfaceTint);
+      const { surface, shape } = this.refs;
       surface.append(shape);
     },
   })
-  .css`
+  .css/* css */`
     :host {
       --mdw-shape__bg: rgb(var(--mdw-color__surface));
       --mdw-ink: var(--mdw-color__on-surface);

@@ -178,10 +178,9 @@ export default CustomElement
   `
   .on({
     composed() {
-      const { prepend, append, surface, shape, surfaceTint, dialog, slot } = this.refs;
+      const { prepend, append, surface, shape, dialog, slot } = this.refs;
       dialog.setAttribute('aria-labelledby', 'headline');
       dialog.setAttribute('aria-describedby', 'slot');
-      shape.append(surfaceTint);
       surface.append(shape);
 
       slot.classList.add('content');
@@ -198,14 +197,11 @@ export default CustomElement
     :host {
       --mdw-shape__size: 28px;
 
-      --mdw-surface__tint: var(--mdw-surface__tint__3);
-      --mdw-surface__tint__raised: var(--mdw-surface__tint);
-
       --mdw-surface__shadow__resting: var(--mdw-surface__shadow__3);
       --mdw-surface__shadow__raised: var(--mdw-surface__shadow__resting);
       /* padding-inline: 12px; */
 
-      --mdw-bg: var(--mdw-color__surface);
+      --mdw-bg: var(--mdw-color__surface-container-high);
       --mdw-ink: var(--mdw-color__on-surface);
       position: fixed;
 
@@ -218,6 +214,7 @@ export default CustomElement
       align-items: flex-start;
       flex-direction: column;
       justify-content: center;
+      overflow: visible;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: none;
       overscroll-behavior: contain;
@@ -249,6 +246,10 @@ export default CustomElement
       transition-property: opacity, transform, visibility;
       transition-timing-function: ease-out;
       will-change: display, transform, opacity;
+    }
+
+    #dialog:modal {
+      overflow: visible;
     }
 
     :host([icon]) {

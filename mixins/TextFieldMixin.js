@@ -96,7 +96,7 @@ export default function TextFieldMixin(Base) {
             <span mdw-if={inputPrefix} class=inline id=prefix aria-hidden=true focused={focusedState} populated={populatedState}>{inputPrefix}</span>
             <span mdw-if={inputSuffix} class=inline id=suffix aria-hidden=true focused={focusedState} populated={populatedState}>{inputSuffix}</span>
             <mdw-icon mdw-if={trailingIcon} id=trailing-icon ink={trailingIconInk} aria-hidden=true disabled={disabledState}>{trailingIcon}</mdw-icon>
-            <div mdw-if={filled} id=indicator aria-hidden=true  focused={focusedState} hovered={hoveredState} errored={erroredState} disabled={disabledState} ></div>
+            <div mdw-if={filled} id=indicator aria-hidden=true focused={focusedState} hovered={hoveredState} errored={erroredState} disabled={disabledState}></div>
           `,
         );
 
@@ -116,7 +116,7 @@ export default function TextFieldMixin(Base) {
         this.refs.control.style.setProperty('--size', `${newValue}ch`);
       },
     })
-    .css`
+    .css/* css */`
       /* https://m3.material.io/components/text-fields/specs */
 
       /**
@@ -157,7 +157,7 @@ export default function TextFieldMixin(Base) {
 
         --descriptor-opacity: 0.5;
         --mdw-ink: var(--mdw-color__primary);
-        --mdw-bg: var(--mdw-color__surface-variant);
+        --mdw-bg: var(--mdw-color__surface-container-highest);
 
         --mdw-type__font: var(--mdw-typescale__body-large__font);
         --mdw-type__letter-spacing: var(--mdw-typescale__body-large__letter-spacing);

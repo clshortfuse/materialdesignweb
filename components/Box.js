@@ -17,7 +17,7 @@ export default CustomElement
       empty: true,
     },
   })
-  .css`
+  .css/* css */`
     :host {
       display: block;
     }
@@ -29,10 +29,15 @@ export default CustomElement
     :host([flex]:where([inline])) {
       display: inline-flex;
     }
-    
+
     :host([color]) {
       background-color: rgb(var(--mdw-bg));
       color: rgb(var(--mdw-ink));
+    }
+
+    :host(:is([color="none"],[color="transparent"])) {
+      background-color: transparent;
+      color: inherit;
     }
     
     :host([ink]) {

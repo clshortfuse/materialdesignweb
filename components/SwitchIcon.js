@@ -41,7 +41,7 @@ export default CustomElement
       return _active ? `${color}-container` : '';
     },
     _iconInk({ disabled, selected, color }) {
-      if (!selected) return 'surface-variant';
+      if (!selected) return 'surface-container-highest';
       if (disabled) return 'on-surface';
       return `on-${color}-container`;
     },
@@ -115,7 +115,7 @@ export default CustomElement
       position: absolute;
       inset: 0;
 
-      background-color: rgb(var(--mdw-color__surface-variant));
+      background-color: rgb(var(--mdw-color__surface-container-highest));
     }
 
     #track[selected] {
@@ -206,7 +206,7 @@ export default CustomElement
 
     #thumb-shape:not([selected]) {
       --mdw-bg: var(--mdw-color__outline);
-      --mdw-ink: var(--mdw-color__surface-variant);
+      --mdw-ink: var(--mdw-color__surface-container-highest);
     }
 
     #thumb-shape[selected] {

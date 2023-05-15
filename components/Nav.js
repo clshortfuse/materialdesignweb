@@ -3,14 +3,12 @@ import Surface from './Surface.js';
 
 export default Surface
   .extend()
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/navigation-bar/specs */
     /* https://m3.material.io/components/navigation-drawer/specs */
     /* https://m3.material.io/components/navigation-rail/specs */
 
     :host {
-      --mdw-surface__tint: var(--mdw-surface__tint__2);
-      --mdw-surface__tint__raised: var(--mdw-surface__tint__2);
       --mdw-ink: var(--mdw-color__on-surface);
       --mdw-bg: var(--mdw-color__surface);
 

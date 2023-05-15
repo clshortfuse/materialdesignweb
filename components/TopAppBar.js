@@ -95,8 +95,7 @@ export default CustomElement
       <slot id=headline-slot></slot>
     </div>
     <slot id=trailing name=trailing on-slotchange={refreshTabIndexes}></slot>
-    <div mdw-if=${({ size }) => size === 'medium' || size === 'large'} id=companion aria-hidden=true size={size}>
-      <div mdw-if={showSurfaceTint} id=companion-tint raised={_raised} class=surface-tint color={color}></div>
+    <div mdw-if=${({ size }) => size === 'medium' || size === 'large'} id=companion aria-hidden=true size={size} color={color} raised={_raised}>
       <slot id=companion-slot name=companion size={size}>{headline}</span>
     </div>
   `
@@ -195,14 +194,12 @@ export default CustomElement
       this.clearScrollListener();
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/bottom-app-bar/specs */
 
     :host {
       --mdw-bg: var(--mdw-color__surface);
       --mdw-ink: var(--mdw-color__on-surface);
-      --mdw-surface__tint: var(--mdw-surface__tint__0);
-      --mdw-surface__tint__raised: var(--mdw-surface__tint__2);
       display: contents;
 
       z-index:2;
@@ -244,14 +241,7 @@ export default CustomElement
       background-color: rgb(var(--mdw-bg));
       color: rgb(var(--mdw-ink));
 
-      transition: grid-template-columns 100ms;
-
-    }
-
-    #surface-tint {
-      position: 0;
-
-      z-index: 1;
+      transition: grid-template-columns 100ms, background-color 100ms;
     }
 
     #leading {
@@ -327,6 +317,8 @@ export default CustomElement
       font: var(--mdw-typescale__headline-small__font);
       letter-spacing: var(--mdw-typescale__headline-small__letter-spacing);
       white-space: nowrap;
+
+      transition: background-color 100ms;
     }
 
     #companion[size="large"] {
@@ -404,6 +396,16 @@ export default CustomElement
       opacity: 0;
 
       will-change: opacity;
+    }
+
+    #surface:where([color="none"], [color="transparent"]),
+    #companion:where([color="none"], [color="transparent"]) {
+      background-color: transparent;
+    }
+
+    #surface[raised]:where([color="surface"],[color="none"],[color="transparent"]),
+    #companion[raised]:where([color="surface"],[color="none"],[color="transparent"]) {
+      background-color: rgb(var(--mdw-color__surface-container));
     }
 
   `

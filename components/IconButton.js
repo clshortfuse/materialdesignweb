@@ -41,7 +41,7 @@ export default Button
   })
   .on({
     composed() {
-      const { slot, shape, tooltipSlot, icon, surfaceTint, control, outline, anchor } = this.refs;
+      const { slot, shape, tooltipSlot, icon, control, outline, anchor } = this.refs;
       shape.classList.add('colored');
       icon.classList.add('colored');
       for (const el of [shape, icon]) {
@@ -52,8 +52,6 @@ export default Button
       icon.removeAttribute('mdw-if');
       tooltipSlot.removeAttribute('name');
 
-      surfaceTint.remove();
-
       control.setAttribute('aria-pressed', '{_ariaPressed}');
       control.setAttribute('aria-labelledby', 'tooltip');
       anchor.setAttribute('aria-labelledby', 'tooltip');
@@ -61,7 +59,7 @@ export default Button
       outline.setAttribute('selected', '{checked}');
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/icon-buttons/specs */
 
     :host {
@@ -121,7 +119,7 @@ export default Button
     }
 
     #shape[filled][toggle] {
-      background-color: rgb(var(--mdw-color__surface-variant));
+      background-color: rgb(var(--mdw-color__surface-container-highest));
     }
 
     .colored[filled][toggle] {
@@ -129,7 +127,8 @@ export default Button
     }
 
     #shape[filled="tonal"][toggle] {
-      background-color: rgb(var(--mdw-color__surface-variant));
+      /* Redundant */
+      /* background-color: rgb(var(--mdw-color__surface-container-highest)); */
     }
 
     .colored[filled="tonal"][toggle] {

@@ -10,7 +10,7 @@ export default function ThemableMixin(Base) {
       block: 'boolean',
       typeStyle: 'string',
     })
-    .css`
+    .css/* css */`
       :host([color="primary"]) {
         --mdw-bg: var(--mdw-color__primary);
         --mdw-ink: var(--mdw-color__on-primary);
@@ -60,6 +60,26 @@ export default function ThemableMixin(Base) {
         --mdw-bg: var(--mdw-color__surface);
         --mdw-ink: var(--mdw-color__on-surface);
       }
+
+      :host([color="surface-container"]) {
+        --mdw-bg: var(--mdw-color__surface-container);
+      }
+
+      :host([color="surface-container-lowest"]) {
+        --mdw-bg: var(--mdw-color__surface-container-lowest);
+      }
+
+      :host([color="surface-container-low"]) {
+        --mdw-bg: var(--mdw-color__surface-container-low);
+      }
+
+      :host([color="surface-container-high"]) {
+        --mdw-bg: var(--mdw-color__surface-container-high);
+      }
+      
+      :host([color="surface-container-highest"]) {
+        --mdw-bg: var(--mdw-color__surface-container-highest);
+      }
       
       /* Quality-of-life */
       :host([color="surface-primary"]) {
@@ -67,7 +87,7 @@ export default function ThemableMixin(Base) {
       }
       
       :host([color$="variant"]) {
-        --mdw-bg: var(--mdw-color__surface-variant);
+        --mdw-bg: var(--mdw-color__surface-container-highest);
         --mdw-ink: var(--mdw-color__on-surface-variant);
       }
       
@@ -125,8 +145,8 @@ export default function ThemableMixin(Base) {
         --mdw-ink: var(--mdw-color__on-surface);
       }
       
-      :host([ink="surface-variant"]) {
-        --mdw-ink: var(--mdw-color__surface-variant);
+      :host([ink="surface-container-highest"]) {
+        --mdw-ink: var(--mdw-color__surface-container-highest);
       }
       
       :host([ink="on-surface-variant"]) {

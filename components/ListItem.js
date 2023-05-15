@@ -98,7 +98,7 @@ export default CustomElement
       this.updateAriaProperty('ariaDisabled', newValue ? 'true' : 'false');
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/lists/specs */
 
     :host {
@@ -183,7 +183,7 @@ export default CustomElement
 
       display: block;
 
-      color: rgb(var(--mdw-color__surface-variant));
+      color: rgb(var(--mdw-color__surface-container-highest));
     }
 
     #divider[divider="inset"] {

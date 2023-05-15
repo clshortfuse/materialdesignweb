@@ -25,7 +25,6 @@ export default Nav
   })
   .methods({
     onScrollerResize() {
-      console.log('onScrollerResize');
       // Chrome Bug: When window resizes bottom sticky needs to be recomputed
       // Force style recalculation
       this.style.setProperty('bottom', 'auto');
@@ -49,10 +48,12 @@ export default Nav
       }
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/navigation-bar/specs */
 
     :host {
+      --mdw-bg: var(--mdw-color__surface-container);
+      
       position: sticky;
       inset-block-end: 0;
       order:1; /* Nav Bars are at top of tab order, but bottom of page */

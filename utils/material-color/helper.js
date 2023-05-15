@@ -109,7 +109,13 @@ function cssVariablesFromScheme(scheme) {
       --mdw-color__on-background: ${cssVarFromArgb(scheme.onBackground)};
       --mdw-color__surface: ${cssVarFromArgb(scheme.surface)};
       --mdw-color__on-surface: ${cssVarFromArgb(scheme.onSurface)};
-      --mdw-color__surface-variant: ${cssVarFromArgb(scheme.surfaceVariant)};
+      --mdw-color__surface-dim: ${cssVarFromArgb(scheme.surfaceDim)};
+      --mdw-color__surface-bright: ${cssVarFromArgb(scheme.surfaceBright)};
+      --mdw-color__surface-container-lowest: ${cssVarFromArgb(scheme.surfaceContainerLowest)};
+      --mdw-color__surface-container-low: ${cssVarFromArgb(scheme.surfaceContainerLow)};
+      --mdw-color__surface-container: ${cssVarFromArgb(scheme.surfaceContainer)};
+      --mdw-color__surface-container-high: ${cssVarFromArgb(scheme.surfaceContainerHigh)};
+      --mdw-color__surface-container-highest: ${cssVarFromArgb(scheme.surfaceContainerHighest)};
       --mdw-color__on-surface-variant: ${cssVarFromArgb(scheme.onSurfaceVariant)};
       --mdw-color__outline: ${cssVarFromArgb(scheme.outline)};
       --mdw-color__outline-variant: ${cssVarFromArgb(scheme.outlineVariant)};

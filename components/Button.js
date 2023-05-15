@@ -76,17 +76,17 @@ export default CustomElement
   .on({
     composed() {
       const {
-        shape, surfaceTint, state, rippleContainer, surface, control,
+        shape, state, rippleContainer, surface, control,
       } = this.refs;
       surface.append(shape);
-      shape.append(state, rippleContainer, surfaceTint);
+      shape.append(state, rippleContainer);
       shape.setAttribute('filled', '{filled}');
       control.setAttribute('aria-label', '{computedAriaLabel}');
       control.setAttribute('hidden', '{href}');
       control.setAttribute('role', 'button');
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/buttons/specs */
 
     :host {
@@ -126,12 +126,10 @@ export default CustomElement
 
     /** Elevated Color Defaults */
     :host(:where([elevated])) {
-      --mdw-bg: var(--mdw-color__surface);
+      --mdw-bg: var(--mdw-color__surface-container-low);
       --mdw-ink: var(--mdw-color__primary);
       --mdw-surface__shadow__resting: var(--mdw-surface__shadow__1);
       --mdw-surface__shadow__raised: var(--mdw-surface__shadow__2);
-      --mdw-surface__tint: var(--mdw-surface__tint__1);
-      --mdw-surface__tint__raised: var(--mdw-surface__tint__2);
     }
     /** Filled Color Defaults */
     :host(:where([filled])) {
@@ -139,8 +137,6 @@ export default CustomElement
       --mdw-ink: var(--mdw-color__on-primary);
       --mdw-surface__shadow__resting: var(--mdw-surface__shadow__0);
       --mdw-surface__shadow__raised: var(--mdw-surface__shadow__1);
-      --mdw-surface__tint: 0;
-      --mdw-surface__tint__raised: var(--mdw-surface__tint__1);
     }
     /** Filled Tonal Color Defaults */
     :host(:where([filled="tonal"])) {

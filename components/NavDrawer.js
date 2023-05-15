@@ -8,12 +8,14 @@ export default NavRail
       empty: true,
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/navigation-drawer/specs */
 
+    :host(:where([open])) {
+      --mdw-bg: var(--mdw-color__surface-container-low);
+    }
+
     :host([open]) {
-      --mdw-surface__tint: var(--mdw-surface__tint__0);
-      --mdw-surface__tint__raised: var(--mdw-surface__tint__1);
       --mdw-shape__size: var(--mdw-shape__large, 16px);
       --mdw-shape__size__top-start-size: 0px;
       --mdw-shape__size__bottom-start-size: 0px;

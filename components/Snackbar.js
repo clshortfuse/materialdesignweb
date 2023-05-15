@@ -70,13 +70,12 @@ export default Surface
       },
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/snackbar/specs */
 
     :host {
       --mdw-shape__size: var(--mdw-shape__small);
       --mdw-surface__shadow: var(--mdw-surface__shadow__3);
-      --mdw-surface__tint: var(--mdw-surface__tint__3);
       --mdw-shape__bg: rgb(var(--mdw-color__inverse-surface));
       --mdw-ink: var(--mdw-color__inverse-on-surface);
 
