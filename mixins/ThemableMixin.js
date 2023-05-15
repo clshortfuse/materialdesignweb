@@ -61,6 +61,14 @@ export default function ThemableMixin(Base) {
         --mdw-ink: var(--mdw-color__on-surface);
       }
 
+      :host([color="surface-dim"]) {
+        --mdw-bg: var(--mdw-color__surface-dim);
+      }
+
+      :host([color="surface-bright"]) {
+        --mdw-bg: var(--mdw-color__surface-bright);
+      }
+
       :host([color="surface-container"]) {
         --mdw-bg: var(--mdw-color__surface-container);
       }
