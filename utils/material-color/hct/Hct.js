@@ -31,8 +31,10 @@
  * and a difference of 50 guarantees a contrast ratio >= 4.5.
  */
 
+import * as utils from '../utils/color.js';
+
 import Cam16 from './Cam16.js';
-import * as utils from './colorUtils.js';
+import ViewingConditions from './ViewingConditions.js';
 import * as hctSolver from './hctSolver.js';
 
 /**
@@ -50,15 +52,6 @@ export default class Hct {
    * @return HCT representation of a color in default viewing conditions.
    */
 
-  /** @type {number} */
-  internalHue;
-
-  /** @type {number} */
-  internalChroma;
-
-  /** @type {number} */
-  internalTone;
-
   /**
    * @param {number} hue
    * @param {number} chroma
@@ -75,6 +68,24 @@ export default class Hct {
    */
   static fromInt(argb) {
     return new Hct(argb);
+  }
+
+  /** @type {number} */
+  internalHue;
+
+  /** @type {number} */
+  internalChroma;
+
+  /** @type {number} */
+  internalTone;
+
+  /** @param {number} argb */
+  constructor(argb) {
+    const cam = Cam16.fromInt(argb);
+    this.internalHue = cam.hue;
+    this.internalChroma = cam.chroma;
+    this.internalTone = utils.lstarFromArgb(argb);
+    this.argb = argb;
   }
 
   /** @return {number} */
@@ -149,15 +160,6 @@ export default class Hct {
     );
   }
 
-  /** @param {number} argb */
-  constructor(argb) {
-    const cam = Cam16.fromInt(argb);
-    this.internalHue = cam.hue;
-    this.internalChroma = cam.chroma;
-    this.internalTone = utils.lstarFromArgb(argb);
-    this.argb = argb;
-  }
-
   /**
    * @private
    * @param {number} argb
@@ -168,5 +170,45 @@ export default class Hct {
     this.internalChroma = cam.chroma;
     this.internalTone = utils.lstarFromArgb(argb);
     this.argb = argb;
+  }
+
+  /**
+   * Translates a color into different [ViewingConditions].
+   *
+   * Colors change appearance. They look different with lights on versus off,
+   * the same color, as in hex code, on white looks different when on black.
+   * This is called color relativity, most famously explicated by Josef Albers
+   * in Interaction of Color.
+   *
+   * In color science, color appearance models can account for this and
+   * calculate the appearance of a color in different settings. HCT is based on
+   * CAM16, a color appearance model, and uses it to make these calculations.
+   *
+   * See [ViewingConditions.make] for parameters affecting color appearance.
+   * @param {ViewingConditions} vc
+   * @return {Hct}
+   */
+  inViewingConditions(vc) {
+    // 1. Use CAM16 to find XYZ coordinates of color in specified VC.
+    const cam = Cam16.fromInt(this.toInt());
+    const viewedInVc = cam.xyzInViewingConditions(vc);
+
+    // 2. Create CAM16 of those XYZ coordinates in default VC.
+    const recastInVc = Cam16.fromXyzInViewingConditions(
+      viewedInVc[0],
+      viewedInVc[1],
+      viewedInVc[2],
+      ViewingConditions.make(),
+    );
+
+    // 3. Create HCT from:
+    // - CAM16 using default VC with XYZ coordinates in specified VC.
+    // - L* converted from Y in XYZ coordinates in specified VC.
+    const recastHct = Hct.from(
+      recastInVc.hue,
+      recastInVc.chroma,
+      utils.lstarFromY(viewedInVc[1]),
+    );
+    return recastHct;
   }
 }

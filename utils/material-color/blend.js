@@ -15,16 +15,14 @@
  * limitations under the License.
  */
 
-// libmonet is designed to have a consistent API across platforms
-// and modular components that can be moved around easily. Using a class as a
-// namespace facilitates this.
-//
-// tslint:disable:class-as-namespace
+import Cam16 from './hct/Cam16.js';
+import Hct from './hct/Hct.js';
+import * as colorUtils from './utils/color.js';
+import * as mathUtils from './utils/math.js';
 
-import Cam16 from './Cam16.js';
-import Hct from './Hct.js';
-import * as colorUtils from './colorUtils.js';
-import * as mathUtils from './mathUtils.js';
+/**
+ * Functions for blending in HCT and CAM16.
+ */
 
 /**
  * Blend the design color's HCT hue towards the key color's HCT
@@ -43,7 +41,7 @@ export function harmonize(designColor, sourceColor) {
   const rotationDegrees = Math.min(differenceDegrees * 0.5, 15);
   const outputHue = mathUtils.sanitizeDegreesDouble(
     fromHct.hue
-        + rotationDegrees * mathUtils.rotationDirection(fromHct.hue, toHct.hue),
+      + rotationDegrees * mathUtils.rotationDirection(fromHct.hue, toHct.hue),
   );
   return Hct.from(outputHue, fromHct.chroma, fromHct.tone).toInt();
 }

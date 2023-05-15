@@ -15,19 +15,11 @@
  * limitations under the License.
  */
 
+import * as colorUtils from '../utils/color.js';
+import * as mathUtils from '../utils/math.js';
+
 import Cam16 from './Cam16.js';
 import ViewingConditions from './ViewingConditions.js';
-import * as colorUtils from './colorUtils.js';
-import * as mathUtils from './mathUtils.js';
-
-/**
- * A class that solves the HCT equation.
- */
-// libmonet is designed to have a consistent API across platforms
-// and modular components that can be moved around easily. Using a class as a
-// namespace facilitates this.
-//
-// tslint:disable-next-line:class-as-namespace
 
 export const SCALED_DISCOUNT_FROM_LINRGB = [
   [
@@ -476,9 +468,10 @@ function findResultByJ(hueRadians, chroma, y) {
     const alpha = chroma === 0 || j === 0 ? 0 : chroma / Math.sqrt(jNormalized);
     const t = (alpha * tInnerCoeff) ** (1 / 0.9);
     const ac = viewingConditions.aw
-           * jNormalized ** (1 / viewingConditions.c / viewingConditions.z);
+      * jNormalized ** (1 / viewingConditions.c / viewingConditions.z);
     const p2 = ac / viewingConditions.nbb;
-    const gamma = 23 * (p2 + 0.305) * t / (23 * p1 + 11 * t * hCos + 108 * t * hSin);
+    const gamma = (23 * (p2 + 0.305) * t)
+      / (23 * p1 + 11 * t * hCos + 108 * t * hSin);
     const a = gamma * hCos;
     const b = gamma * hSin;
     const rA = (460 * p2 + 451 * a + 288 * b) / 1403;
@@ -491,9 +484,9 @@ function findResultByJ(hueRadians, chroma, y) {
       [rCScaled, gCScaled, bCScaled],
       LINRGB_FROM_SCALED_DISCOUNT,
     );
-      // ===========================================================
-      // Operations inlined from Cam16 to avoid repeated calculation
-      // ===========================================================
+    // ===========================================================
+    // Operations inlined from Cam16 to avoid repeated calculation
+    // ===========================================================
     if (linrgb[0] < 0 || linrgb[1] < 0 || linrgb[2] < 0) {
       return 0;
     }

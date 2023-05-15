@@ -1,5 +1,5 @@
 import { COLOR_KEYWORDS } from '../utils/color_keywords.js';
-import { getScheme } from '../utils/hct/helper.js';
+import { getScheme } from '../utils/material-color/helper.js';
 import { svgToCSSURL } from '../utils/svg.js';
 
 /**

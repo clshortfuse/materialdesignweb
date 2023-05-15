@@ -1,9 +1,9 @@
-import CorePalette from './CorePalette.js';
-import Scheme from './Scheme.js';
 import { harmonize } from './blend.js';
-import * as colorUtils from './colorUtils.js';
+import CorePalette from './palettes/CorePalette.js';
+import Scheme from './scheme/Scheme.js';
+import * as colorUtils from './utils/color.js';
 
-/** @typedef {import('./TonalPalette.js').default} TonalPalette */
+/** @typedef {import("./palettes/TonalPalette.js").default} TonalPalette */
 
 /**
  * @param {string} value
@@ -146,8 +146,6 @@ function cssVariablesFromCustom(name, tonalPalette, isDark) {
     .mdw-custom[ink="${name}"] {
       --mdw-ink: var(--mdw-color__${name});
     }
-    
-    
   `;
 }
 

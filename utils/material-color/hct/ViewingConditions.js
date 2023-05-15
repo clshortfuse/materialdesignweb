@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-import * as utils from './colorUtils.js';
-import * as math from './mathUtils.js';
+import * as utils from '../utils/color.js';
+import * as math from '../utils/math.js';
 
 /**
  * In traditional color spaces, a color can be identified solely by the
@@ -85,7 +85,7 @@ export default class ViewingConditions {
     const k4 = k * k * k * k;
     const k4F = 1 - k4;
     const fl = k4 * adaptingLuminance
-         + 0.1 * k4F * k4F * Math.cbrt(5 * adaptingLuminance);
+      + 0.1 * k4F * k4F * Math.cbrt(5 * adaptingLuminance);
     const n = utils.yFromLstar(backgroundLstar) / whitePoint[1];
     const z = 1.48 + Math.sqrt(n);
     const nbb = 0.725 / n ** 0.2;

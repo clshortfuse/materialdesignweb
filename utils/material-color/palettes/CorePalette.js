@@ -15,8 +15,20 @@
  * limitations under the License.
  */
 
-import Hct from './Hct.js';
+import Hct from '../hct/Hct.js';
+
 import TonalPalette from './TonalPalette.js';
+
+/**
+ * Set of colors to generate a [CorePalette] from
+ * @typedef CorePaletteColors
+ * @prop {number} primary
+ * @prop {number} [secondary]
+ * @prop {number} [tertiary]
+ * @prop {number} [neutral]
+ * @prop {number} [neutralVariant]
+ * @prop {number} [error]
+ */
 
 /**
  * An intermediate concept between the key color for a UI theme, and a full
@@ -24,6 +36,70 @@ import TonalPalette from './TonalPalette.js';
  * as the key color, and all vary in chroma.
  */
 export default class CorePalette {
+  /**
+   * @param {boolean} content
+   * @param {CorePaletteColors} colors
+   * @return {CorePalette}
+   */
+  static #createPaletteFromColors(content, colors) {
+    const palette = new CorePalette(colors.primary, content);
+    if (colors.secondary) {
+      const p = new CorePalette(colors.secondary, content);
+      palette.a2 = p.a1;
+    }
+    if (colors.tertiary) {
+      const p = new CorePalette(colors.tertiary, content);
+      palette.a3 = p.a1;
+    }
+    if (colors.error) {
+      const p = new CorePalette(colors.error, content);
+      palette.error = p.a1;
+    }
+    if (colors.neutral) {
+      const p = new CorePalette(colors.neutral, content);
+      palette.n1 = p.n1;
+    }
+    if (colors.neutralVariant) {
+      const p = new CorePalette(colors.neutralVariant, content);
+      palette.n2 = p.n2;
+    }
+    return palette;
+  }
+
+  /**
+   * @param {number} argb ARGB representation of a color
+   * @return {CorePalette}
+   */
+  static of(argb) {
+    return new CorePalette(argb, false);
+  }
+
+  /**
+   * @param {number} argb ARGB representation of a color
+   * @return {CorePalette}
+   */
+  static contentOf(argb) {
+    return new CorePalette(argb, true);
+  }
+
+  /**
+   * Create a [CorePalette] from a set of colors
+   * @param {CorePaletteColors} colors
+   * @return {CorePalette}
+   */
+  static fromColors(colors) {
+    return CorePalette.#createPaletteFromColors(false, colors);
+  }
+
+  /**
+   * Create a content [CorePalette] from a set of colors
+   * @param {CorePaletteColors} colors
+   * @return {CorePalette}
+   */
+  static contentFromColors(colors) {
+    return CorePalette.#createPaletteFromColors(true, colors);
+  }
+
   /** @type {TonalPalette} */
   a1;
 
@@ -41,22 +117,6 @@ export default class CorePalette {
 
   /** @type {TonalPalette} */
   error;
-
-  /**
-   * @param {number} argb ARGB representation of a color
-   * @return {CorePalette}
-   */
-  static of(argb) {
-    return new CorePalette(argb, false);
-  }
-
-  /**
-   * @param {number} argb ARGB representation of a color
-   * @return {CorePalette}
-   */
-  static contentOf(argb) {
-    return new CorePalette(argb, true);
-  }
 
   /**
    * @param {number} argb

@@ -15,16 +15,13 @@
  * limitations under the License.
  */
 
-import Hct from './Hct.js';
+import Hct from '../hct/Hct.js';
 
 /**
  *  A convenience class for retrieving colors that are constant in hue and
  *  chroma, but vary in tone.
  */
 export default class TonalPalette {
-  /** @type {Map<number, number>} */
-  #cache = new Map();
-
   /**
    * @param {number} argb ARGB representation of a color
    * @return {TonalPalette} Tones matching that color's hue and chroma.
@@ -42,6 +39,9 @@ export default class TonalPalette {
   static fromHueAndChroma(hue, chroma) {
     return new TonalPalette(hue, chroma);
   }
+
+  /** @type {Map<number, number>} */
+  #cache = new Map();
 
   /**
    * @private
@@ -64,5 +64,13 @@ export default class TonalPalette {
       this.#cache.set(tone, argb);
     }
     return argb;
+  }
+
+  /**
+   * @param {number} tone HCT tone.
+   * @return {Hct} HCT representation of a color with that tone.
+   */
+  getHct(tone) {
+    return Hct.fromInt(this.tone(tone));
   }
 }
