@@ -15,7 +15,7 @@ export default CustomElement
   .html/* html */`
     <slot id=slot></slot>
   `
-  .css`
+  .css/* css */`
     /* https://m2.material.io/design/layout/responsive-layout-grid.html#columns-gutters-and-margins */
     /*
     * Window breakpoints
@@ -116,13 +116,13 @@ export default CustomElement
 
     /* Will set  8col when window is 600px + padding (2x24) + navdrawer (360)  */
     /* Will set 12col when window is 840px + padding (2x24) + navdrawer (360) */
-    @media screen and (min-width: 1008px) { :host([nav-rail]) { grid-template-columns: repeat(8, 1fr); } }
-    @media screen and (min-width: 1248px) { :host([nav-rail]) { grid-template-columns: repeat(12, 1fr); } }
+    @media screen and (min-width: 1008px) { :host([nav-drawer]) { grid-template-columns: repeat(8, 1fr); } }
+    @media screen and (min-width: 1248px) { :host([nav-drawer]) { grid-template-columns: repeat(12, 1fr); } }
 
     /* Will cap to  840px when window is 600px + padding (2x24px) + navrail (360) */
     /* Will cap to 1040px when window is 840px + padding (2x200px) + navrail (360) */
-    @media screen and (min-width: 1008px) { :host([nav-rail]) { max-inline-size: 840px } }
-    @media screen and (min-width: 1600px) { :host([nav-rail]) { max-inline-size: 1040px; } }
+    @media screen and (min-width: 1008px) { :host([nav-drawer]) { max-inline-size: 840px } }
+    @media screen and (min-width: 1600px) { :host([nav-drawer]) { max-inline-size: 1040px; } }
 
     /* FLEXIBLE */
 
