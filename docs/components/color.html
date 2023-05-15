@@ -25,14 +25,31 @@
       </mdw-box>
     </demo-section>
     <demo-section>
-      <h1 slot=heading>Surface tones</h1>
+      <h1 slot=heading>Surface</h1>
       <mdw-box flex gap=12 wrap>
+        <mdw-surface padding=8 color="surface-dim">Surface Dim</mdw-surface>
         <mdw-surface padding=8>Surface</mdw-surface>
-        <mdw-surface elevation=1 padding=8>Surface +1</mdw-surface>
-        <mdw-surface elevation=2 padding=8>Surface +2</mdw-surface>
-        <mdw-surface elevation=3 padding=8>Surface +3</mdw-surface>
-        <mdw-surface elevation=4 padding=8>Surface +4</mdw-surface>
-        <mdw-surface elevation=5 padding=8>Surface +5</mdw-surface>
+        <mdw-surface padding=8 color="surface-bright">Surface Bright</mdw-surface>
+      </mdw-box>
+    </demo-section>
+    <demo-section>
+      <h1 slot=heading>Surface Container</h1>
+      <mdw-box flex gap=12 wrap>
+        <mdw-surface padding=8 color="surface-container-lowest">Surface Container Lowest</mdw-surface>
+        <mdw-surface padding=8 color="surface-container-low">Surface Container Low</mdw-surface>
+        <mdw-surface padding=8 color="surface-container">Surface Container</mdw-surface>
+        <mdw-surface padding=8 color="surface-container-high">Surface Container High</mdw-surface>
+        <mdw-surface padding=8 color="surface-container-highest">Surface Container Highest</mdw-surface>
+      </mdw-box>
+    </demo-section>
+    <demo-section>
+      <h1 slot=heading>Elevation</h1>
+      <mdw-box flex gap=12 wrap>
+        <mdw-surface padding=8 elevation="1" color="surface-container-lowest">Elevation +1</mdw-surface>
+        <mdw-surface padding=8 elevation="2" color="surface-container-low">Elevation +2</mdw-surface>
+        <mdw-surface padding=8 elevation="3" color="surface-container">Elevation +3</mdw-surface>
+        <mdw-surface padding=8 elevation="4" color="surface-container-high">Elevation +4</mdw-surface>
+        <mdw-surface padding=8 elevation="5" color="surface-container-highest">Elevation +5</mdw-surface>
       </mdw-box>
     </demo-section>
     <demo-section>
