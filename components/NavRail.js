@@ -12,16 +12,27 @@ export default Nav
       slot.setAttribute('align', '{align}');
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/navigation-rail/specs */
 
     :host{
+      position: sticky;
+      
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      align-self: flex-start;
+
       display: grid;
       align-content: flex-start;
       flex-direction: column;
+      gap:0;
       grid-template-rows: auto minmax(0,1fr);
-      grid-template-columns: 80px;
+      grid-template-columns: 100%;
       justify-items: stretch;
+
+      max-block-size: 100vh;
+      min-inline-size: 80px;
+      max-inline-size: 80px;
 
       text-align: center;
     }
@@ -31,9 +42,6 @@ export default Nav
       align-items: center;
       flex-direction: column;
       gap: 12px;
-
-      padding-block-start: 12px;
-
     }
 
     #slot {
@@ -47,10 +55,9 @@ export default Nav
       overflow-y: auto;
 
       box-sizing: border-box;
+      max-block-size: 100%;
+      inline-size: min-content;
 
-      inline-size: 100%;
-
-      padding-block: 12px;
     }
 
     #slot[align="start"] {

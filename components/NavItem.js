@@ -72,7 +72,7 @@ export default class NavItem extends CustomElement
 
       display: grid;
       align-content: center;
-      align-items: center;
+      align-items: flex-start;
       grid-auto-flow: row;
       grid-auto-rows: minmax(20px, min-content);
       grid-template-rows: [icon] minmax(32px, 1fr);
@@ -82,7 +82,6 @@ export default class NavItem extends CustomElement
       row-gap: 4px;
 
       box-sizing: border-box;
-      min-block-size: 56px;
 
       padding-inline: 0;
 
@@ -135,6 +134,8 @@ export default class NavItem extends CustomElement
       inset: 0;
 
       outline: none;
+
+      z-index: 5;
     }
 
     #shape {

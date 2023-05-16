@@ -10,15 +10,9 @@ export default NavRail
   })
   .css/* css */`
     /* https://m3.material.io/components/navigation-drawer/specs */
-
-    :host(:where([open])) {
-      --mdw-bg: var(--mdw-color__surface-container-low);
-    }
-
-    :host([open]) {
+    :host {
       --mdw-shape__size: var(--mdw-shape__large, 16px);
       --mdw-shape__size__top-start-size: 0px;
-      --mdw-shape__size__bottom-start-size: 0px;
 
       --mdw-nav-item__badge__position: static;
       --mdw-nav-item__badge__transform: none;
@@ -27,20 +21,23 @@ export default NavRail
       --mdw-nav-item__label__padding-inline: 52px 0;
       --mdw-nav-item__anchor__display: block;
       --mdw-nav-item__indicator__grid-area: auto;
+      --mdw-bg: var(--mdw-color__surface-container-low);
 
-      display: block;
-      grid-template-rows: min-content;
-      grid-template-columns: minmax(360px, min-content);
+      display: inline-grid;
+      grid-template-columns: 1fr;
 
       min-inline-size: 360px;
-      padding-inline: 12px;
+      max-inline-size: 360px;
+      padding-inline: 0;
 
       box-shadow: none;
-
     }
 
     #slot {
       gap: 0;
+
+      inline-size: auto;
+      padding-inline: 12px;
     }
 
   `

@@ -89,20 +89,22 @@ export default CustomElement
     },
   })
   .html/* html */`
-    <slot id=leading name=leading on-slotchange={refreshTabIndexes}></slot>
-    <div id=headline ink={ink} color={color} type-style={typeStyle} on-slotchange={refreshTabIndexes}>
-      {headline}
-      <slot id=headline-slot></slot>
+    <div id=content>
+      <slot id=leading name=leading on-slotchange={refreshTabIndexes}></slot>
+      <div id=headline ink={ink} color={color} type-style={typeStyle} on-slotchange={refreshTabIndexes}>
+        {headline}
+        <slot id=headline-slot></slot>
+      </div>
+      <slot id=trailing name=trailing on-slotchange={refreshTabIndexes}></slot>
     </div>
-    <slot id=trailing name=trailing on-slotchange={refreshTabIndexes}></slot>
     <div mdw-if=${({ size }) => size === 'medium' || size === 'large'} id=companion aria-hidden=true size={size} color={color} raised={_raised}>
       <slot id=companion-slot name=companion size={size}>{headline}</span>
     </div>
   `
   .on({
     composed({ inline }) {
-      const { surface, leading, headline, trailing } = this.refs;
-      surface.append(leading, headline, trailing);
+      const { surface, content } = this.refs;
+      surface.append(content);
       surface.setAttribute('size', '{size}');
       surface.setAttribute('hide-on-scroll', '{hideOnScroll}');
       surface.setAttribute('role', 'toolbar');
@@ -209,6 +211,17 @@ export default CustomElement
       position: sticky;
       inset-block-start: 0;
 
+      filter: none; /* Never receive shadow */
+
+      z-index: 5;
+      /* inset-inline: 0; */
+
+      background-color: rgb(var(--mdw-bg));
+
+      transition: grid-template-columns 100ms, background-color 100ms;
+    }
+
+    #content{
       display: grid;
 
       align-items: center;
@@ -220,8 +233,8 @@ export default CustomElement
       overflow-y: visible;
 
       box-sizing: border-box;
-      inline-size: 100%;
-      max-inline-size: 100%;
+      max-inline-size: calc(var(--mdw-content__max-width, 100%) + (2 * var(--mdw-content__padding, 16px) -  4px));
+      margin-inline: auto;
 
       /* 16px from icon */
       /* inset = (button.width / 2) - (icon.width / 2) */
@@ -229,19 +242,14 @@ export default CustomElement
       /* paddingInlineStart = 16px - ((48px / 2) - (24px / 2)) */
       /* paddingInlineEnd = 16px - ((48px / 2) - (30px / 2)) */
 
-      padding-inline: 4px;
+      padding-inline: calc(var(--mdw-content__padding, 16px) - 8px);
 
       pointer-events: auto;
 
-      filter: none; /* Never receive shadow */
-
-      z-index: 5;
-      /* inset-inline: 0; */
-
-      background-color: rgb(var(--mdw-bg));
+      
       color: rgb(var(--mdw-ink));
 
-      transition: grid-template-columns 100ms, background-color 100ms;
+      
     }
 
     #leading {

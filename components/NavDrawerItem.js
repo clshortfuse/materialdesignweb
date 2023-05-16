@@ -2,7 +2,7 @@ import NavItem from './NavItem.js';
 
 export default NavItem
   .extend()
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/navigation-bar/specs */
     /* https://m3.material.io/components/navigation-drawer/specs */
     /* https://m3.material.io/components/navigation-rail/specs */
@@ -10,7 +10,6 @@ export default NavItem
     :host {
       align-self: stretch;
 
-      display: grid;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -18,6 +17,8 @@ export default NavItem
         "icon label badge" minmax(56px, min-content)
         / 24px 1fr minmax(0, min-content);
       justify-items: flex-start;
+
+      min-block-size: 56px; 
 
       padding-inline: 16px 24px;
     }
