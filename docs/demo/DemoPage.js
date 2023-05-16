@@ -8,6 +8,45 @@ import '../../components/Pane.js';
 
 import CustomElement from '../../core/CustomElement.js';
 
+/**
+ * @param {string} href
+ * @return {boolean}
+ */
+function isActive(href) {
+  return (new URL(href, window.location.href)).href === window.location.href;
+}
+
+const links = [
+  { icon: 'palette', href: '/components/color.html', text: 'Color' },
+  { icon: 'rounded_corner', href: '/components/shape.html', text: 'Shape' },
+  { icon: 'font_download', href: '/components/typography.html', text: 'Typography' },
+  { icon: 'exposure_plus_1', href: '/components/badge.html', text: 'Badges' },
+  { icon: 'call_to_action', href: '/components/bottomappbar.html', text: 'Bottom App Bar' },
+  { icon: 'crop_landscape', href: '/components/buttons.html', text: 'Buttons' },
+  { icon: 'view_comfy', href: '/components/cards.html', text: 'Cards' },
+  { icon: 'check_box', href: '/components/checkbox.html', text: 'Checkbox' },
+  { icon: 'edit_attributes', href: '/components/chips.html', text: 'Chips' },
+  { icon: 'select_all', href: '/components/dialogs.html', text: 'Dialogs' },
+  { icon: 'border_horizontal', href: '/components/dividers.html', text: 'Dividers' },
+  { icon: 'list', href: '/components/list.html', text: 'Lists' },
+  { icon: 'checklist', href: '/components/listbox.html', text: 'Listbox' },
+  { icon: 'picture_in_picture', href: '/components/menus.html', text: 'Menus' },
+  { icon: 'video_label', href: '/components/navbar.html', text: 'Nav Bar' },
+  { icon: 'list_alt', href: '/components/navdrawer.html', text: 'Nav Drawer' },
+  { icon: 'more_vert', href: '/components/navrail.html', text: 'Nav Rail' },
+  { icon: 'rotate_right', href: '/components/progress.html', text: 'Progress' },
+  { icon: 'radio_button_checked', href: '/components/radio.html', text: 'Radio' },
+  { icon: 'tune', href: '/components/sliders.html', text: 'Sliders' },
+  { icon: 'call_to_action', href: '/components/snackbar.html', text: 'Snackbar' },
+  { icon: 'toggle_on', href: '/components/switches.html', text: 'Switches' },
+  { icon: 'tab', href: '/components/tabs.html', text: 'Tabs' },
+  { icon: 'edit', href: '/components/textinput.html', text: 'Input' },
+  { icon: 'edit', href: '/components/select.html', text: 'Select' },
+  { icon: 'edit_note', href: '/components/textarea.html', text: 'Textarea' },
+  { icon: 'web_asset', href: '/components/tooltip.html', text: 'Tooltips' },
+  { icon: 'web_asset', href: '/components/topappbar.html', text: 'Top App Bar' },
+];
+
 export default CustomElement
   .extend()
   .expressions({
@@ -31,39 +70,48 @@ export default CustomElement
     }
   `
   .html/* html */`
-    <mdw-layout>
-      <mdw-top-app-bar slot=top hide-on-scroll headline=${() => document.title}>
-        <mdw-icon-button id=back-button mdw-if={!isRootPage} slot=leading 
-          href="../"
-          icon=arrow_back
-          >Back</mdw-icon-button>
-        <mdw-icon-button id=settings slot=trailing icon=settings>Settings</mdw-icon-button>
-        <mdw-icon-button slot=trailing href="https://github.com/clshortfuse/materialdesignweb" icon=invertocat>GitHub Page</mdw-icon-button>
-      </mdw-top-app-bar>
-      <mdw-pane>
-        <main><slot></slot></main>
-      </mdw-pane>
-      <!-- <mdw-pane fixed>
-        <mdw-card color=surface elevated>
-          <mdw-headline style="padding:12px">Theming Options</mdw-headline>
-          <mdw-listbox>
-            <mdw-list-option checkbox name="alt-theme">Alt Theme</mdw-list-item>
-          </mdw-listbox>
-        </mdw-card>
-      </mdw-pane> -->
+      <mdw-layout>
+        <!--         
+        <mdw-nav-rail>
+          <mdw-nav-rail-item mdw-for="{link of links}" active=${(data, { link }) => isActive(link?.href)} icon={link.icon} href={link.href}>{link.text}</mdw-nav-rail-item>
+        </mdw-nav-rail>
+         -->
+        <mdw-nav-drawer>
+          <mdw-nav-drawer-item mdw-for="{link of links}" active=${(data, { link }) => isActive(link?.href)} icon={link.icon} href={link.href}>{link.text}</mdw-nav-drawer-item>
+        </mdw-nav-drawer>
+        <mdw-pane>
+          <mdw-top-app-bar headline=${() => document.title} color=none sticky slot=top>
+            <mdw-icon-button color=surface id=back-button mdw-if={!isRootPage} slot=leading 
+              href="../"
+              icon=arrow_back
+              >Back</mdw-icon-button>
+            <mdw-icon-button color=surface id=settings slot=trailing icon=settings>Settings</mdw-icon-button>
+            <mdw-icon-button color=surface slot=trailing href="https://github.com/clshortfuse/materialdesignweb" icon=invertocat>GitHub Page</mdw-icon-button>
+          </mdw-top-app-bar>
+          <slot role=main></slot>
+        </mdw-pane>
+        <!-- <mdw-pane>
+          <mdw-card color=surface elevated>
+            <mdw-headline style="padding:12px">Theming Options</mdw-headline>
+            <mdw-listbox>
+              <mdw-list-option checkbox name="alt-theme">Alt Theme</mdw-list-item>
+            </mdw-listbox>
+          </mdw-card>
+        </mdw-pane> -->
+    </mdw-layout>
     <mdw-menu id=menu>
-      <mdw-menu-item checkbox name=alt-theme>Alt Theme</mdw-menu-item>
-      <mdw-divider></mdw-divider>
-      <mdw-menu-item checkbox name=rtl>RTL</mdw-menu-item>
-      <mdw-divider></mdw-divider>
-      <mdw-menu-item radio name=font-size value=0.75>75% Font-Size</mdw-menu-item>
-      <mdw-menu-item radio name=font-size value=1>100% Font-Size</mdw-menu-item>
-      <mdw-menu-item radio name=font-size value=1.5>150% Font-Size</mdw-menu-item>
-      <mdw-menu-item radio name=font-size value=2>200% Font-Size</mdw-menu-item>
-      <mdw-divider></mdw-divider>
-      <mdw-menu-item radio name=shape value="">Circle Shape</mdw-menu-item>
-      <mdw-menu-item radio name=shape value="../shape-diamond.css">Diamond Shape</mdw-menu-item>
-      <mdw-menu-item radio name=shape value="../shape-squircle.css">Squircle Shape</mdw-menu-item>
+        <mdw-menu-item checkbox name=alt-theme>Alt Theme</mdw-menu-item>
+        <mdw-divider></mdw-divider>
+        <mdw-menu-item checkbox name=rtl>RTL</mdw-menu-item>
+        <mdw-divider></mdw-divider>
+        <mdw-menu-item radio name=font-size value=0.75>75% Font-Size</mdw-menu-item>
+        <mdw-menu-item radio name=font-size value=1>100% Font-Size</mdw-menu-item>
+        <mdw-menu-item radio name=font-size value=1.5>150% Font-Size</mdw-menu-item>
+        <mdw-menu-item radio name=font-size value=2>200% Font-Size</mdw-menu-item>
+        <mdw-divider></mdw-divider>
+        <mdw-menu-item radio name=shape value="">Circle Shape</mdw-menu-item>
+        <mdw-menu-item radio name=shape value="../shape-diamond.css">Diamond Shape</mdw-menu-item>
+        <mdw-menu-item radio name=shape value="../shape-squircle.css">Squircle Shape</mdw-menu-item>
     </mdw-menu>
   `
   .methods({
@@ -88,7 +136,6 @@ export default CustomElement
       this.altThemeLinkElement.href = '../alt-theme.css';
     },
     setRTL(rtl = false) {
-      console.log('setrtl', rtl);
       document.documentElement.dir = rtl ? 'rtl' : 'ltr';
     },
     /** @param {string} href */
@@ -145,6 +192,9 @@ export default CustomElement
   .events({})
   .on({
     constructed() {
+      const data = { links };
+      this.render(data, data);
+
       const useraltTheme = sessionStorage.getItem('altTheme') ?? 'false';
       if (useraltTheme === 'true') {
         for (const el of this.shadowRoot.querySelectorAll('[name="alt-theme"]')) {
