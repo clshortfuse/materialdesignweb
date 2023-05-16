@@ -12,8 +12,7 @@ export default CustomElement
   .extend()
   .on({
     composed() {
-      const { shape, surface, surfaceTint, dialog } = this.refs;
-      shape.append(surfaceTint);
+      const { shape, surface, dialog } = this.refs;
       surface.append(shape);
       dialog.prepend(surface);
     },
