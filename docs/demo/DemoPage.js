@@ -47,6 +47,13 @@ const links = [
   { icon: 'web_asset', href: '/components/topappbar.html', text: 'Top App Bar' },
 ];
 
+for (const link of links) {
+  // Lazy link fix
+  if (window.location.hostname === 'clshortfuse.github.io') {
+    link.href = `/materialdesignweb${link.href}`;
+  }
+}
+
 export default CustomElement
   .extend()
   .expressions({
