@@ -21,11 +21,8 @@ export default CustomElement
      * Default to 24.
      */
     labelMetrics() {
-      const slot = this.refs.slot;
-      let target = this.refs.slot;
-      if (!slot.textContent) {
-        target = this.refs.icon || slot;
-      }
+      const { slot, icon } = this.refs;
+      const target = slot.clientWidth ? slot : icon;
       return {
         width: target.clientWidth,
         left: target.offsetLeft,
