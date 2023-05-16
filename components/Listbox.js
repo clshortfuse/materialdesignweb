@@ -97,13 +97,13 @@ export default class Listbox extends List
     event.stopPropagation();
     if (target.disabledState) return;
 
-    /** @type {string} */
-    const previousValue = this._value;
+    let sendUpdateNotifications = false;
 
     // Perform unselect
     if (target.selected) {
       // Unselect condition
       if (!this.required || (this.multiple && this.selectedOptions.length > 1)) {
+        sendUpdateNotifications = true;
         target.selected = false;
       }
     } else {
@@ -115,13 +115,12 @@ export default class Listbox extends List
       }
 
       target.selected = true;
+      sendUpdateNotifications = true;
     }
 
-    const newValue = this.value;
+    this._value = this.value;
 
-    if (previousValue !== newValue) {
-      // Value changed
-      this._value = newValue;
+    if (sendUpdateNotifications) {
       this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
       this.dispatchEvent(new Event('change', { bubbles: true }));
     }
