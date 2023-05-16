@@ -22,82 +22,86 @@ export default function ShapeMixin(Base) {
         </div>
       </div>
     `
-    .css`
+    .css/* css */`
       :host {
         --mdw-shape__size: 0px;
         --mdw-shape__bg: transparent;
         --mdw-surface__will-change: none;
-        --mdw-shape__size__top-start-size: var(--mdw-shape__size);
-        --mdw-shape__size__top-end-size: var(--mdw-shape__size);
-        --mdw-shape__size__bottom-start-size: var(--mdw-shape__size);
-        --mdw-shape__size__bottom-end-size: var(--mdw-shape__size);
-      
-        /* (1/2n + 1/2)L + (-1/2n + 1/2)R  */
         --mdw-shape__ltr: calc(0.5 * var(--mdw-dir, 1) + 0.5); /* 1 if LTR, 0 if RTL */
         --mdw-shape__rtl: calc(-0.5 * var(--mdw-dir, 1) + 0.5); /* 0 if LTR, 1 if RTL */
-        --mdw-shape__size__top-left-size: calc((var(--mdw-shape__ltr) * var(--mdw-shape__size__top-start-size)) + (var(--mdw-shape__rtl) * var(--mdw-shape__size__top-end-size)));
-        --mdw-shape__size__top-right-size: calc((var(--mdw-shape__rtl) * var(--mdw-shape__size__top-start-size)) + (var(--mdw-shape__ltr) * var(--mdw-shape__size__top-end-size)));
-        --mdw-shape__size__bottom-left-size: calc((var(--mdw-shape__ltr) * var(--mdw-shape__size__bottom-start-size)) + (var(--mdw-shape__rtl) * var(--mdw-shape__size__bottom-end-size)));
-        --mdw-shape__size__bottom-right-size: calc((var(--mdw-shape__rtl) * var(--mdw-shape__size__bottom-start-size)) + (var(--mdw-shape__ltr) * var(--mdw-shape__size__bottom-end-size)));
-      
+
         /** By default, fallback to border-radius */
         --mdw-shape__rounded: 1;
         --mdw-shape__inline-start-deg: calc(var(--mdw-dir, 1) * -90deg);
         z-index: 0;
       }
 
-      :host([shape-style="none"]) {
+      .shape {
+        --mdw-shape__size__top-start-size: var(--mdw-shape__size);
+        --mdw-shape__size__top-end-size: var(--mdw-shape__size);
+        --mdw-shape__size__bottom-start-size: var(--mdw-shape__size);
+        --mdw-shape__size__bottom-end-size: var(--mdw-shape__size);
+      
+        /* (1/2n + 1/2)L + (-1/2n + 1/2)R  */
+        
+        --mdw-shape__size__top-left-size: calc((var(--mdw-shape__ltr) * var(--mdw-shape__size__top-start-size)) + (var(--mdw-shape__rtl) * var(--mdw-shape__size__top-end-size)));
+        --mdw-shape__size__top-right-size: calc((var(--mdw-shape__rtl) * var(--mdw-shape__size__top-start-size)) + (var(--mdw-shape__ltr) * var(--mdw-shape__size__top-end-size)));
+        --mdw-shape__size__bottom-left-size: calc((var(--mdw-shape__ltr) * var(--mdw-shape__size__bottom-start-size)) + (var(--mdw-shape__rtl) * var(--mdw-shape__size__bottom-end-size)));
+        --mdw-shape__size__bottom-right-size: calc((var(--mdw-shape__rtl) * var(--mdw-shape__size__bottom-start-size)) + (var(--mdw-shape__ltr) * var(--mdw-shape__size__bottom-end-size)));
+      
+      }
+
+      .shape[shape-style="none"] {
         --mdw-shape__size: 0px;
       }
       
-      :host([shape-style="extra-small"]) {
+      .shape[shape-style="extra-small"] {
         --mdw-shape__size: var(--mdw-shape__extra-small);
       }
       
-      :host([shape-style="small"]) {
+      .shape[shape-style="small"] {
         --mdw-shape__size: var(--mdw-shape__small);
       }
       
-      :host([shape-style="medium"]) {
+      .shape[shape-style="medium"] {
         --mdw-shape__size: var(--mdw-shape__medium);
       }
       
-      :host([shape-style="large"]) {
+      .shape[shape-style="large"] {
         --mdw-shape__size: var(--mdw-shape__large);
       }
       
-      :host([shape-style="extra-large"]) {
+      .shape[shape-style="extra-large"] {
         --mdw-shape__size: var(--mdw-shape__extra-large);
       }
       
-      :host([shape-style="full"]) {
+      .shape[shape-style="full"] {
         --mdw-shape__size: var(--mdw-shape__full);
       }
       
-      :host([shape-style="inherit"]) {
+      .shape[shape-style="inherit"] {
         --mdw-shape__size: inherit;
       }
       
-      :host([shape-top]) {
+      .shape[shape-top] {
         --mdw-shape__size__bottom-start-size: 0px;
         --mdw-shape__size__bottom-end-size: 0px;
         --mdw-shape__mask: linear-gradient(transparent 50%, black 50%);
-      
       }
       
-      :host([shape-bottom]) {
+      .shape[shape-bottom] {
         --mdw-shape__size__top-start-size: 0px;
         --mdw-shape__size__top-end-size: 0px;
         --mdw-shape__mask: linear-gradient(black 50%, transparent 50%);
       }
       
-      :host([shape-start]) {
+      .shape[shape-start] {
         --mdw-shape__size__top-end-size: 0px;
         --mdw-shape__size__bottom-end-size: 0px;
         --mdw-shape__mask: linear-gradient(var(--mdw-shape__inline-start-deg), black 50%, transparent 50%);
       }
       
-      :host([shape-end]) {
+      .shape[shape-end] {
         --mdw-shape__size__top-start-size: 0px;
         --mdw-shape__size__bottom-start-size: 0px;
         --mdw-shape__mask: linear-gradient(var(--mdw-shape__inline-start-deg), transparent 50%, black 50%);
@@ -110,7 +114,7 @@ export default function ShapeMixin(Base) {
         }
       }
     `
-    .css`
+    .css/* css */`
       .shape {
         position: absolute;
         inset: 0;
@@ -132,7 +136,7 @@ export default function ShapeMixin(Base) {
         will-change: background-color, color;
       
       }
-      
+
       .shape[outlined] {
         background-color: transparent;
       }
@@ -161,7 +165,7 @@ export default function ShapeMixin(Base) {
         }
       }
     `
-    .css`
+    .css/* css */`
       .outline {
         position: absolute;
         inset: 0;
