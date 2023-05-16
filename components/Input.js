@@ -191,6 +191,7 @@ export default CustomElement
             }
             break;
           case 'Escape':
+            if (!this._expanded) return;
             this.closeListbox();
             break;
           case 'Tab':
