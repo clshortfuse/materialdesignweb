@@ -327,8 +327,9 @@ export default CustomElement
       /* stylelint-disable-next-line declaration-property-value-disallowed-list */
       margin-block-start: calc(28px - var(--mdw-typescale__headline-small__line-height));
       padding-block-end: 20px;
-
       padding-inline: 16px;
+
+      background-color: rgb(var(--mdw-bg));
 
       box-shadow: none;
 
