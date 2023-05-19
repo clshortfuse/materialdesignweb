@@ -185,14 +185,11 @@ export default function TextFieldMixin(Base) {
       }
 
       /** Guard against bleed */
-      :host([label][outlined]) {
+      #shape[label][outlined] {
         --mdw-shape__size__top-start-size: min(var(--mdw-shape__size), 12px);
         --mdw-shape__size__bottom-start-size: min(var(--mdw-shape__size), 12px);
         --mdw-shape__size__top-end-size: min(var(--mdw-shape__size), 12px);
         --mdw-shape__size__bottom-end-size: min(var(--mdw-shape__size), 12px);
-      }
-
-      #shape[label][outlined] {
         -webkit-mask-box-image-width: min(var(--mdw-shape__size), 12px);
       }
 
@@ -203,9 +200,6 @@ export default function TextFieldMixin(Base) {
 
         align-items: center;
         overflow: visible;
-
-        padding-inline-start: 16px;
-        padding-inline-end: 16px;
 
         cursor: inherit;
 
@@ -220,6 +214,10 @@ export default function TextFieldMixin(Base) {
         letter-spacing: inherit;
 
         transition: none 200ms cubic-bezier(0.0, 0.0, 0.2, 1);
+      }
+
+      #shape:is([filled],[outlined]) {
+        padding-inline: 16px;
       }
 
       #shape:is([filled],[color]) {
@@ -240,7 +238,7 @@ export default function TextFieldMixin(Base) {
         color: rgb(var(--mdw-ink))
       }
 
-      #shape[icon] {
+      #shape:is([filled],[outlined])[icon] {
         padding-inline-start: 12px;
       }
 
