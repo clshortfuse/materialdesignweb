@@ -33,6 +33,7 @@ export { default as NavRailItem } from './components/NavRailItem.js';
 export { default as Pane } from './components/Pane.js';
 export { default as Progress } from './components/Progress.js';
 export { default as Radio } from './components/Radio.js';
+export { default as Search } from './components/Search.js';
 export { default as SegmentedButton } from './components/SegmentedButton.js';
 export { default as SegmentedButtonGroup } from './components/SegmentedButtonGroup.js';
 export { default as Select } from './components/Select.js';
