@@ -3,12 +3,14 @@ import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
 import AriaToolbarMixin from '../mixins/AriaToolbarMixin.js';
 import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
+import ShapeMixin from '../mixins/ShapeMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 export default CustomElement
   .mixin(ThemableMixin)
-  .mixin(SurfaceMixin) // TopAppBars are non-shaped surfaces
+  .mixin(SurfaceMixin)
+  .mixin(ShapeMixin)
   .mixin(AriaToolbarMixin)
   .mixin(ScrollListenerMixin)
   .mixin(ResizeObserverMixin)
@@ -89,22 +91,21 @@ export default CustomElement
     },
   })
   .html/* html */`
-    <div id=content>
-      <slot id=leading name=leading on-slotchange={refreshTabIndexes}></slot>
-      <div id=headline ink={ink} color={color} type-style={typeStyle} on-slotchange={refreshTabIndexes}>
-        {headline}
-        <slot id=headline-slot></slot>
-      </div>
-      <slot id=trailing name=trailing on-slotchange={refreshTabIndexes}></slot>
+    <slot id=leading name=leading on-slotchange={refreshTabIndexes}></slot>
+    <div id=headline ink={ink} color={color} type-style={typeStyle} on-slotchange={refreshTabIndexes}>
+      {headline}
+      <slot id=headline-slot></slot>
     </div>
+    <slot id=trailing name=trailing on-slotchange={refreshTabIndexes}></slot>
     <div mdw-if=${({ size }) => size === 'medium' || size === 'large'} id=companion aria-hidden=true size={size} color={color} raised={_raised}>
       <slot id=companion-slot name=companion size={size}>{headline}</span>
     </div>
   `
   .on({
     composed({ inline }) {
-      const { surface, content } = this.refs;
-      surface.append(content);
+      const { surface, shape, leading, headline, trailing } = this.refs;
+      shape.append(leading, headline, trailing);
+      surface.append(shape);
       surface.setAttribute('size', '{size}');
       surface.setAttribute('hide-on-scroll', '{hideOnScroll}');
       surface.setAttribute('role', 'toolbar');
@@ -113,6 +114,8 @@ export default CustomElement
         'aria-labelledby',
         inline(({ ariaLabel }) => (ariaLabel ? null : 'headline')),
       );
+      surface.setAttribute('raised', '{_raised}');
+      shape.setAttribute('raised', '{_raised}');
     },
     scrollListenerPositionYChanged(oldValue, newValue) {
       this._raised = (newValue > 0);
@@ -211,6 +214,10 @@ export default CustomElement
       position: sticky;
       inset-block-start: 0;
 
+      margin: inherit; /** Pass through */
+
+      padding: inherit; /** Pass through */
+
       filter: none; /* Never receive shadow */
 
       z-index: 5;
@@ -221,7 +228,10 @@ export default CustomElement
       transition: grid-template-columns 100ms, background-color 100ms;
     }
 
-    #content{
+    #shape{
+      position: initial;
+      inset: initial;
+
       display: grid;
 
       align-items: center;
@@ -246,10 +256,11 @@ export default CustomElement
 
       pointer-events: auto;
 
-      
-      color: rgb(var(--mdw-ink));
+      z-index: initial;
 
-      
+      background-color: transparent;
+
+      color: rgb(var(--mdw-ink));
     }
 
     #leading {
@@ -319,14 +330,11 @@ export default CustomElement
 
       padding-inline: 16px;
 
-      background-color: rgb(var(--mdw-bg));
       box-shadow: none;
 
       font: var(--mdw-typescale__headline-small__font);
       letter-spacing: var(--mdw-typescale__headline-small__letter-spacing);
       white-space: nowrap;
-
-      transition: background-color 100ms;
     }
 
     #companion[size="large"] {
