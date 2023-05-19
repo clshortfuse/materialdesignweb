@@ -2,7 +2,7 @@ import NavItem from './NavItem.js';
 
 export default NavItem
   .extend()
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/navigation-bar/specs */
     /* https://m3.material.io/components/navigation-drawer/specs */
     /* https://m3.material.io/components/navigation-rail/specs */

@@ -5,7 +5,7 @@ export default Button
   .observe({
     suggestion: 'boolean',
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/chips/specs */
 
     :host {

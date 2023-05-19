@@ -304,7 +304,7 @@ export default CustomElement
       },
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/tabs/specs */
 
     :host {

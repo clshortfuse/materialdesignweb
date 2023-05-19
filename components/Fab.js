@@ -11,7 +11,7 @@ export default ExtendedFab
       value: null,
     },
   })
-  .css`
+  .css/* css */`
     /* https://m3.material.io/components/floating-action-button/specs */
 
     :host {
@@ -35,7 +35,6 @@ export default ExtendedFab
       --mdw-shape__size: 28px;
       padding: calc(30px + (var(--mdw-density) * 2px));
     }
-
   `
   .on({
     composed() {
