@@ -242,6 +242,7 @@ const STRING_INTERPOLATION_REGEX = /{([^}]*)}/g;
 /**
  * Returns event listener bound to shadow root host.
  * Use this function to avoid generating extra closures
+ *
  * @this {HTMLElement}
  * @param {Function} fn
  */
@@ -342,12 +343,14 @@ export default class Composition {
 
   /**
    * Index of searches by query (dotted notation for deep props)
+   *
    * @type {Map<Function|string, RenderGraphSearch>}
    */
   searchByQuery = new Map();
 
   /**
    * Index of searches by query (dotted notation for deep props)
+   *
    * @type {Map<string, RenderGraphAction[]>}
    */
   actionsByPropsUsed = new Map();
@@ -363,12 +366,14 @@ export default class Composition {
 
   /**
    * Array of element tags
+   *
    * @type {string[]}
    */
   tags = [];
 
   /**
    * Array of property bindings sorted by tag/subnode
+   *
    * @type {Set<string>}
    */
   watchedProps = new Set();
@@ -379,6 +384,7 @@ export default class Composition {
    * Only store metadata, not actual data. Currently only needs length.
    * TBD if more is needed later
    * Referenced by property key (string)
+   *
    * @type {CompositionAdapter}
    */
   adapter;
@@ -386,6 +392,7 @@ export default class Composition {
   /**
    * Collection of events to bind.
    * Indexed by ID
+   *
    * @type {Map<string, import('./typings.js').CompositionEventListener<any>[]>}
    */
   events = new Map();
@@ -394,6 +401,7 @@ export default class Composition {
    * Snapshot of composition at initial state.
    * This fragment can be cloned for first rendering, instead of calling
    * of using `render()` to construct the initial DOM tree.
+   *
    * @type {DocumentFragment}
    */
   cloneable;
@@ -410,6 +418,7 @@ export default class Composition {
   /**
    * List of IDs used by template elements
    * May be needed to be removed when adding to non-DocumentFragment
+   *
    * @type {string[]}
    */
   allIds = [];
@@ -475,6 +484,7 @@ export default class Composition {
    * TODO: Add types and clean up closure leak
    * Updates component nodes based on data.
    * Expects data in JSON Merge Patch format
+   *
    * @see https://www.rfc-editor.org/rfc/rfc7386
    * @template {Object} T
    * @param {Partial<T>} changes what specifically
@@ -740,8 +750,9 @@ export default class Composition {
       }
       if (nodeName.startsWith('on')) {
         // Do not interpolate inline event listeners
-        if (nodeName[2] !== '-') return;
-        isEvent = true;
+        const hyphenIndex = nodeName.indexOf('-');
+        if (hyphenIndex === -1) return;
+        isEvent = hyphenIndex === 2;
       }
     }
 
@@ -1026,6 +1037,7 @@ export default class Composition {
    * to avoid multi-iteration change-detection.
    *   - Could benefit from debounced/throttled render
    *   - Consider remap of {item.prop} as {array[index].prop}
+   *
    * @param {Element} element
    * @param {InterpolateOptions} options
    * @return {?Composition<?>}
