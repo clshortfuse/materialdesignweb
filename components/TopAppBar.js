@@ -21,12 +21,8 @@ export default CustomElement
   .observe({
     headline: 'string',
     _raised: 'boolean', // Change to raw value instead of computed
-    hideOnScroll: 'boolean',
+    showAlways: 'boolean',
     size: { value: /** @type {'small'|'medium'|'large'|null} */ (null) },
-    _cssPosition: {
-      /** @type {'sticky'|'relative'} */
-      empty: 'relative',
-    },
     _visibleStart: { type: 'float', default: 0 },
     _translateY: { type: 'float', empty: 0 },
     _duration: { type: 'float', empty: 0 },
@@ -43,28 +39,24 @@ export default CustomElement
        * @param {'up'|'down'} newValue
        */
       changedCallback(oldValue, newValue) {
-        if (newValue === 'down') {
-          if (this._cssPosition !== 'sticky') return;
-          // Was sticky, switch to relative and let appbar scroll away
-          this._cssPosition = 'relative';
-          this._translateY = this.scrollListenerPositionY;
-          return;
-        }
-        if (this._visibleStart < 1) return;
-        // Align appbar.bottom with scroll position (top of screen)
-        this._translateY = this.scrollListenerPositionY - this.refs.surface.scrollHeight;
+        if (this.showAlways) return;
+        if (newValue === 'down') return;
+        const delta = this.scrollListenerPositionY - this._translateY;
+        const size = this.refs.surface.scrollHeight;
+        const visibility = delta / size;
+
+        // Don't move on partial visibility
+        if (visibility < 1) return;
+
+        this._translateY = this.scrollListenerPositionY - size; // Align bottom
       },
     },
     _surfaceStyle: {
       ...ELEMENT_STYLER_TYPE,
-      get({ hideOnScroll, _cssPosition, _translateY, _duration, _easing }) {
-        if (!hideOnScroll) {
-          return null;
-        }
+      get({ _translateY, _duration, _easing }) {
         return {
           target: 'surface',
           styles: {
-            position: _cssPosition,
             transform: `translateY(${_translateY}px)`,
           },
           timing: {
@@ -107,7 +99,6 @@ export default CustomElement
       shape.append(leading, headline, trailing);
       surface.append(shape);
       surface.setAttribute('size', '{size}');
-      surface.setAttribute('hide-on-scroll', '{hideOnScroll}');
       surface.setAttribute('role', 'toolbar');
       surface.setAttribute('aria-label', '{ariaLabel}');
       surface.setAttribute(
@@ -125,21 +116,11 @@ export default CustomElement
         this._headlineOpacity = Math.max(0, Math.min(1, (newValue - min) / (max - min)));
       }
 
-      if (!this.hideOnScroll) return;
-
       this._duration = 0;
-      if (newValue <= 0) {
-      // Set at rest (top of parent, but allow overscroll)
-        this._cssPosition = 'relative';
-        this._translateY = 0;
-        this._visibleStart = 0;
-      } else if (newValue < this._translateY) {
-      // Align appbar.top with scroll position (top of screen)
-        this._cssPosition = 'sticky';
-        this._translateY = 0;
-        this._visibleStart = 0;
-      } else if (this._cssPosition !== 'sticky') {
-        this._visibleStart = (newValue - this._translateY) / this.refs.surface.scrollHeight;
+
+      if (this.showAlways || newValue < this._translateY) {
+        // Align appbar.top with scroll position (top of screen)
+        this._translateY = Math.max(0, newValue);
       }
 
       this._scrollDirection = newValue > oldValue ? 'down' : 'up';
@@ -147,26 +128,29 @@ export default CustomElement
   })
   .methods({
     onScrollIdle() {
-      const _visibleStart = this._visibleStart;
       if (this._headlineOpacity > 0) {
         // Fill in opacity on idle
         this._headlineOpacity = 1;
       }
-      if (_visibleStart <= 0) return;
-      if (_visibleStart >= 1) return;
-      if (this.scrollListenerPositionY < (this.refs.surface.scrollHeight)) return;
-      if (_visibleStart <= 0.5) {
+
+      const delta = this.scrollListenerPositionY - this._translateY;
+      if (delta === 0) return;
+      const size = this.refs.surface.scrollHeight;
+
+      const visibility = delta / this.refs.surface.scrollHeight;
+
+      if (visibility <= 0) return;
+      if (visibility >= 1) return;
+      if (visibility <= 0.5) {
         // Reveal all
         this._duration = 250;
         this._easing = 'ease-in';
-        this._cssPosition = 'relative';
         this._translateY = this.scrollListenerPositionY;
         this._headlineOpacity = 1;
       } else {
         this._duration = 200;
         this._easing = 'ease-out';
-        this._cssPosition = 'relative';
-        this._translateY = this.scrollListenerPositionY - this.refs.surface.scrollHeight;
+        this._translateY = this.scrollListenerPositionY - size;
       }
     },
   })
@@ -211,8 +195,7 @@ export default CustomElement
     }
 
     #surface {
-      position: sticky;
-      inset-block-start: 0;
+      position: relative;
 
       margin: inherit; /** Pass through */
 
@@ -220,12 +203,16 @@ export default CustomElement
 
       filter: none; /* Never receive shadow */
 
+      transform: translateY(0);
+
       z-index: 5;
       /* inset-inline: 0; */
 
       background-color: rgb(var(--mdw-bg));
 
       transition: grid-template-columns 100ms, background-color 100ms;
+
+      will-change: transform;
     }
 
     #shape{
@@ -392,16 +379,6 @@ export default CustomElement
 
         max-block-size: none;
       }
-    }
-
-    #surface[hide-on-scroll] {
-      position: relative;
-
-      inset-block-start: 0;
-
-      transform: translateY(0);
-
-      will-change: transform, position;
     }
 
     #surface[size="small"] {
