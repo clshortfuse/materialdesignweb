@@ -53,6 +53,10 @@ export default class Listbox extends List
         this._value = this.value;
         this._handlingSelectedness = false;
       },
+      focus() {
+        // Manual delegates focus because disabled items need to be focusable
+        this.focusCurrentOrFirst();
+      },
     });
   }
 
@@ -76,6 +80,10 @@ export default class Listbox extends List
       if (!el.selected) continue;
       yield el;
     }
+  }
+
+  focus() {
+    this.focusCurrentOrFirst();
   }
 
   /**
@@ -264,6 +272,6 @@ Listbox.prototype.multiple = Listbox.prop('multiple', { type: 'boolean' });
 // [CEReactions] attribute boolean required;
 Listbox.prototype.size = Listbox.prop('size', { type: 'integer', empty: 0 });
 Listbox.prototype._ariaRole = 'listbox';
-Listbox.prototype.delegatesFocus = false;
+Listbox.prototype.delegatesFocus = true;
 
 Listbox.autoRegister('mdw-listbox');
