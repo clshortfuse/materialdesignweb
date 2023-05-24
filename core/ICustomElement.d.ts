@@ -116,7 +116,7 @@ export declare const ICustomElement: {
     T2 extends TemplateStringsArray|HTMLStyleElement|CSSStyleSheet>(
     this: T1,
     array: T2,
-    ...rest: T2 extends TemplateStringsArray ? string[] : (HTMLStyleElement|CSSStyleSheet)[]
+    ...rest: T2 extends TemplateStringsArray ? any[] : (HTMLStyleElement|CSSStyleSheet)[]
   ): T1
 
   define<

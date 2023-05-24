@@ -60,7 +60,7 @@ const styleElementCache = new Map();
 
 /**
  * @param {TemplateStringsArray} array
- * @param  {...(string)} substitutions
+ * @param  {...any} substitutions
  * @return {HTMLStyleElement|CSSStyleSheet}
  */
 export function css(array, ...substitutions) {
