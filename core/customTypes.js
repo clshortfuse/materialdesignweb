@@ -1,8 +1,5 @@
 /** @typedef {import('./CustomElement').default} CustomElement */
 
-/** @type {WeakMap<HTMLElement, EventListener>} */
-const eventHandlerValues = new Map();
-
 /**
  * @see https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-attributes
  * @type {import('./typings.js').ObserverOptions<'function',EventListener, unknown>}
@@ -11,7 +8,6 @@ export const EVENT_HANDLER_TYPE = {
   type: 'function',
   reflect: 'read',
   value: null,
-  values: eventHandlerValues,
   parser(v) { return v; },
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue == null && newValue == null) return;
@@ -49,7 +45,6 @@ export const WEAKREF_TYPE = {
   type: 'object',
   reflect: false,
   value: null,
-  values: weakRefValues,
   parser(v) { return new WeakRef(v); },
   get() {
     if (weakRefValues.has(this)) {
@@ -59,13 +54,6 @@ export const WEAKREF_TYPE = {
   },
 };
 
-/** @type {WeakMap<any, Animation>} */
-const elementStylerLastAnimation = new WeakMap();
-/** @type {WeakMap<CustomElement, ElementStylerOptions>} */
-const elementStylerValues = new WeakMap();
-/** @type {WeakSet<any>} */
-const elementStylerHasQueue = new WeakSet();
-
 /**
  * @typedef {Object} ElementStylerOptions
  * @prop {string} target Target ID
@@ -73,10 +61,24 @@ const elementStylerHasQueue = new WeakSet();
  * @prop {EffectTiming} [timing]
  */
 
-/** @this {CustomElement} */
-function elementStylerMicrotaskCallback() {
-  let previousAnimation = elementStylerLastAnimation.get(this);
-  const value = elementStylerValues.get(this);
+/** @type {WeakMap<CustomElement, Set<string>} */
+const queuedPropsByElement = new WeakMap();
+
+/** @type {WeakMap<CustomElement, Map<string, Animation>>} */
+const previousAnimationsByElement = new WeakMap();
+
+/**
+ * @param {string} name
+ * @this {CustomElement}
+ */
+function elementStylerMicrotaskCallback(name) {
+  const previousAnimations = previousAnimationsByElement.get(this);
+  /** @type {Animation} */
+  let previousAnimation;
+  if (previousAnimations?.has(name)) {
+    previousAnimation = previousAnimations.get(name);
+  }
+  const value = this[name];
   if (!value) {
     previousAnimation?.cancel();
     return;
@@ -96,22 +98,32 @@ function elementStylerMicrotaskCallback() {
     previousAnimation?.cancel();
     previousAnimation = null;
   };
-  elementStylerLastAnimation.set(this, currentAnimation);
-  elementStylerHasQueue.delete(this);
+  if (previousAnimations) {
+    previousAnimations.set(name, currentAnimation);
+  } else {
+    previousAnimationsByElement.set(this, new Map([[name, currentAnimation]]));
+  }
+  queuedPropsByElement.get(this).delete(name);
 }
 
 /** @type {import('./typings.js').ObserverOptions<'object',ElementStylerOptions, CustomElement>} */
 export const ELEMENT_STYLER_TYPE = {
   type: 'object',
   reflect: false,
-  values: elementStylerValues,
   diff: null, // Skip computing entire change
-  changedCallback(oldValue, newValue) {
-    const hasQueue = elementStylerHasQueue.has(this);
+  propChangedCallback(name, oldValue, newValue) {
+    if (!this.isConnected) return;
+    const queuedProps = queuedPropsByElement.get(this);
+    let hasQueue = false;
+    if (queuedProps?.has(name)) {
+      hasQueue = true;
+    }
     if (!newValue) {
       if (!hasQueue) return;
-      console.warn('debug needed of cancel needed');
-      elementStylerHasQueue.delete(this);
+      console.warn('debug of cancel needed');
+      if (queuedProps) {
+        queuedProps.delete(name);
+      }
       return;
     }
 
@@ -120,9 +132,13 @@ export const ELEMENT_STYLER_TYPE = {
       return;
     }
 
+    if (queuedProps) {
+      queuedProps.add(name);
+    } else {
+      queuedPropsByElement.set(this, new Set([name]));
+    }
     // Animation styles may trickle in steps, so queue a microtask before doing any work.
     // Using requestAnimationFrame would fire one frame too late for CSS animations already scheduled
-    queueMicrotask(elementStylerMicrotaskCallback.bind(this));
-    elementStylerHasQueue.add(this);
+    queueMicrotask(elementStylerMicrotaskCallback.bind(this, name));
   },
 };
