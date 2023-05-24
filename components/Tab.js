@@ -87,9 +87,12 @@ export default CustomElement
           return;
         }
         if (href.startsWith('#')) {
-        /** @type {HTMLElement} */
-          const el = document.querySelector(href);
-          if (!el) { console.warn('Unknown element', href); }
+          const root = /** @type {HTMLElement} */ this.getRootNode();
+          const el = root.querySelector(href);
+          if (!el) {
+            console.warn('Unknown element', href);
+            return;
+          }
           event.preventDefault();
           el.scrollIntoView({ block: 'nearest', inline: 'start' });
         }
