@@ -19,8 +19,8 @@ const NAV_DRAWER_WIDTH = 360;
 export default CustomElement
   .extend()
   .observe({
-    _navRail: 'boolean',
-    _navDrawer: 'boolean',
+    navRail: 'boolean',
+    navDrawer: 'boolean',
     _oneFlexible: 'boolean',
     _oneFixed: 'boolean',
     _twoFlexible: 'boolean',
@@ -36,29 +36,29 @@ export default CustomElement
     },
   })
   .expressions({
-    hasNav({ _navRail, _navDrawer }) {
-      return _navRail || _navDrawer;
+    hasNav({ navRail, navDrawer }) {
+      return navRail || navDrawer;
     },
   })
   .html/* html */`
-    <slot id=slot-rail      name=rail                          nav-drawer={_navDrawer} no-two={!hasTwo} has-two={hasTwo} no-two={!hasTwo} slotted={_navRail}></slot>
-    <slot id=slot-drawer    name=drawer    nav-rail={_navRail}                                          has-two={hasTwo} no-two={!hasTwo} slotted={_navDrawer}></slot>
-    <slot id=slot                          nav-rail={_navRail} nav-drawer={_navDrawer} no-nav={!hasNav} has-two={hasTwo} no-two={!hasTwo} two-fixed={_twoFixed} two-flexible={_twoFlexible} slotted={_oneFlexible}></slot>
-    <slot id=slot-fixed     name=fixed     nav-rail={_navRail} nav-drawer={_navDrawer} no-nav={!hasNav} has-two={hasTwo} no-two={!hasTwo}                       slotted={_oneFixed}></slot>
-    <slot id=slot-two       name=two       nav-rail={_navRail} nav-drawer={_navDrawer} no-nav={!hasNav}                                   one-fixed={_oneFixed} one-flexible={_oneFlexible} slotted={_twoFlexible}></slot>
-    <slot id=slot-two-fixed name=two-fixed nav-rail={_navRail} nav-drawer={_navDrawer} no-nav={!hasNav}                                                         slotted={_twoFixed}></slot>
+    <slot id=slot-rail      name=rail                         nav-drawer={navDrawer} no-two={!hasTwo} has-two={hasTwo} no-two={!hasTwo} slotted={navRail}></slot>
+    <slot id=slot-drawer    name=drawer    nav-rail={navRail}                                         has-two={hasTwo} no-two={!hasTwo} slotted={navDrawer}></slot>
+    <slot id=slot                          nav-rail={navRail} nav-drawer={navDrawer} no-nav={!hasNav} has-two={hasTwo} no-two={!hasTwo} two-fixed={_twoFixed} two-flexible={_twoFlexible} slotted={_oneFlexible}></slot>
+    <slot id=slot-fixed     name=fixed     nav-rail={navRail} nav-drawer={navDrawer} no-nav={!hasNav} has-two={hasTwo} no-two={!hasTwo}                       slotted={_oneFixed}></slot>
+    <slot id=slot-two       name=two       nav-rail={navRail} nav-drawer={navDrawer} no-nav={!hasNav}                                   one-fixed={_oneFixed} one-flexible={_oneFlexible} slotted={_twoFlexible}></slot>
+    <slot id=slot-two-fixed name=two-fixed nav-rail={navRail} nav-drawer={navDrawer} no-nav={!hasNav}                                                         slotted={_twoFixed}></slot>
   `
   .childEvents({
     slotRail: {
       slotchange({ target }) {
         const slotElement = /** @type {HTMLSlotElement} */ (target);
-        this._navRail = slotElement.assignedElements().length > 0;
+        this.navRail = slotElement.assignedElements().length > 0;
       },
     },
     slotDrawer: {
       slotchange({ target }) {
         const slotElement = /** @type {HTMLSlotElement} */ (target);
-        this._navDrawer = slotElement.assignedElements().length > 0;
+        this.navDrawer = slotElement.assignedElements().length > 0;
       },
     },
     slot: {
@@ -284,34 +284,37 @@ export default CustomElement
     /** TWO PANE NAV RAIL */
 
     /* Flexible+Fixed+Rail Medium */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + (2 * SPACER_WIDTH) + (2 * PANE_FIXED) + NAV_RAIL_WIDTH}px) { 
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * PANE_FIXED) + NAV_RAIL_WIDTH}px) { 
       #slot-rail[has-two] {
         display: contents;
       }
+      :host([nav-rail][has-two]) {
+        padding-inline-start: 0;
+      }
     }
 
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_MEDIUM_BREAKPOINT + NAV_RAIL_WIDTH}px) { 
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_MEDIUM_BREAKPOINT + NAV_RAIL_WIDTH}px) { 
       #slot[has-two][two-fixed][nav-rail], #slot-two[one-fixed][nav-rail] {
         --mdw-pane__columns: ${WINDOW_MEDIUM_COLUMNS};
       }
     }
 
     /* Flexible+Fixed+Rail Expanded */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_EXPANDED_BREAKPOINT + NAV_RAIL_WIDTH}px) { 
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_EXPANDED_BREAKPOINT + NAV_RAIL_WIDTH}px) { 
       #slot[has-two][two-fixed][nav-rail], #slot-two[one-fixed][nav-rail] {
         --mdw-pane__columns: ${WINDOW_EXPANDED_COLUMNS};
       }
     }
 
     /* Flexible+Flexible+Rail Medium */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + (2 * SPACER_WIDTH) + (2 * WINDOW_MEDIUM_BREAKPOINT) + NAV_RAIL_WIDTH}px) { 
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_MEDIUM_BREAKPOINT) + NAV_RAIL_WIDTH}px) { 
       #slot[has-two][two-flexible][nav-rail], #slot-two[one-flexible][nav-rail] {
         --mdw-pane__columns: ${WINDOW_MEDIUM_COLUMNS};
       }
     }
 
     /* Flexible+Flexible+Rail Expanded */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + (2 * SPACER_WIDTH) + (2 * WINDOW_EXPANDED_BREAKPOINT) + NAV_RAIL_WIDTH}px) {
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_EXPANDED_BREAKPOINT) + NAV_RAIL_WIDTH}px) {
       #slot[has-two][two-flexible][nav-rail], #slot-two[one-flexible][nav-rail] {
         --mdw-pane__columns: ${WINDOW_EXPANDED_COLUMNS};
       }
@@ -320,37 +323,40 @@ export default CustomElement
     /** TWO PANE NAV DRAWER */
 
     /* Flexible+Fixed+Drawer Medium */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + (2 * SPACER_WIDTH) + (2 * PANE_FIXED) + NAV_DRAWER_WIDTH}px) { 
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * PANE_FIXED) + NAV_DRAWER_WIDTH}px) { 
       #slot-rail[has-two][nav-drawer] {
         display: none;
       }
       #slot-drawer[has-two] {
         display: contents;
       }
+      :host([nav-drawer][has-two]) {
+        padding-inline-start: 0;
+      }
     }
 
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_MEDIUM_BREAKPOINT + NAV_DRAWER_WIDTH}px) { 
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_MEDIUM_BREAKPOINT + NAV_DRAWER_WIDTH}px) { 
       #slot[has-two][two-fixed][nav-drawer], #slot-two[one-fixed][nav-drawer] {
         --mdw-pane__columns: ${WINDOW_MEDIUM_COLUMNS};
       }
     }
 
     /* Flexible+Fixed+Drawer Expanded */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_EXPANDED_BREAKPOINT + NAV_DRAWER_WIDTH}px) { 
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_EXPANDED_BREAKPOINT + NAV_DRAWER_WIDTH}px) { 
       #slot[has-two][two-fixed][nav-drawer], #slot-two[one-fixed][nav-drawer] {
         --mdw-pane__columns: ${WINDOW_EXPANDED_COLUMNS};
       }
     }
 
     /* Flexible+Flexible+Drawer Medium */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + (2 * SPACER_WIDTH) + (2 * WINDOW_MEDIUM_BREAKPOINT) + NAV_DRAWER_WIDTH}px) { 
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_MEDIUM_BREAKPOINT) + NAV_DRAWER_WIDTH}px) { 
       #slot[has-two][two-flexible][nav-drawer], #slot-two[one-flexible][nav-drawer] {
         --mdw-pane__columns: ${WINDOW_MEDIUM_COLUMNS};
       }
     }
 
     /* Flexible+Flexible+Drawer Expanded */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + (2 * SPACER_WIDTH) + (2 * WINDOW_EXPANDED_BREAKPOINT) + NAV_DRAWER_WIDTH}px) {
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_EXPANDED_BREAKPOINT) + NAV_DRAWER_WIDTH}px) {
       #slot[has-two][two-flexible][nav-drawer], #slot-two[one-flexible][nav-drawer] {
         --mdw-pane__columns: ${WINDOW_EXPANDED_COLUMNS};
       }
