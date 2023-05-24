@@ -28,6 +28,7 @@ const links = [
   { icon: 'edit_attributes', href: '/components/chips.html', text: 'Chips' },
   { icon: 'select_all', href: '/components/dialogs.html', text: 'Dialogs' },
   { icon: 'border_horizontal', href: '/components/dividers.html', text: 'Dividers' },
+  { icon: 'view_quilt', href: '/components/layout.html', text: 'Layout' },
   { icon: 'list', href: '/components/list.html', text: 'Lists' },
   { icon: 'checklist', href: '/components/listbox.html', text: 'Listbox' },
   { icon: 'picture_in_picture', href: '/components/menus.html', text: 'Menus' },
@@ -83,7 +84,7 @@ export default CustomElement
           <mdw-nav-rail-item mdw-for="{link of links}" active=${(data, { link }) => isActive(link?.href)} icon={link.icon} href={link.href}>{link.text}</mdw-nav-rail-item>
         </mdw-nav-rail>
          -->
-        <mdw-nav-drawer>
+        <mdw-nav-drawer slot=drawer>
           <mdw-nav-drawer-item mdw-for="{link of links}" active=${(data, { link }) => isActive(link?.href)} icon={link.icon} href={link.href}>{link.text}</mdw-nav-drawer-item>
         </mdw-nav-drawer>
         <mdw-pane>
