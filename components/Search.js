@@ -11,6 +11,7 @@ export default TopAppBar
     placeholder: { type: 'string', empty: 'Search' },
     color: { empty: 'surface-container-high' },
     shapeStyle: { empty: 'full' },
+    kbdNav: { empty: 'false' },
   })
   .define({
     /** @return {HTMLInputElement} */
