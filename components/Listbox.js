@@ -34,6 +34,26 @@ export default class Listbox extends List
         this.updateAriaProperty('ariaMultiSelectable', newValue ? 'true' : 'false');
       },
     });
+
+    this.events({
+      'mdw-list-option:changed'(event) {
+        event.stopPropagation();
+        if (this.multiple) return;
+        if (this._handlingSelectedness) return;
+        if (event.target.selected) return;
+        this._handingSelectedness = true;
+
+        // Programmatic selection of option means deselection of others
+        for (const option of this.selectedOptions) {
+          if (option !== event.target) {
+            option.selected = false;
+          }
+        }
+
+        this._value = this.value;
+        this._handlingSelectedness = false;
+      },
+    });
   }
 
   /** @type {HTMLCollectionOf<ListOption> & HTMLOptionsCollection} */
@@ -41,6 +61,8 @@ export default class Listbox extends List
 
   /** @type {HTMLCollectionOf<ListOption>} */
   _selectedOptionsCollection = null;
+
+  _handlingSelectedness = false;
 
   constructor() {
     super();
@@ -69,6 +91,8 @@ export default class Listbox extends List
     for (const el of host.options) {
       el._index = index++;
     }
+    // Refresh internal value
+    host._value = host.value;
   }
 
   /**
@@ -98,6 +122,7 @@ export default class Listbox extends List
     if (target.disabledState) return;
 
     let sendUpdateNotifications = false;
+    this._handlingSelectedness = true;
 
     // Perform unselect
     if (target.selected) {
@@ -119,6 +144,7 @@ export default class Listbox extends List
     }
 
     this._value = this.value;
+    this._handlingSelectedness = false;
 
     if (sendUpdateNotifications) {
       this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
