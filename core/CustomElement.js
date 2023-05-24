@@ -509,7 +509,7 @@ export default class CustomElement extends ICustomElement {
   static childEvents(listenerMap, options) {
     for (const [tag, listeners] of Object.entries(listenerMap)) {
       this.events(listeners, {
-        tag,
+        tag: attrNameFromPropName(tag),
         ...options,
       });
     }
