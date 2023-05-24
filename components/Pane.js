@@ -58,6 +58,8 @@ export default CustomElement
     :host {
       display: block;
 
+      min-inline-size: var(--mdw-pane__min-width, auto);
+      max-inline-size: var(--mdw-pane__max-width, none);
       flex: 1;
     }
 

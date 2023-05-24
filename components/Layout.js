@@ -245,9 +245,9 @@ export default CustomElement
         --mdw-content__max-width: ${PANE_FIXED}px;
       }
 
-      #slot-fixed::slotted(*), #slot-two-fixed {
-        max-inline-size: ${PANE_FIXED}px;
-        flex-basis: ${PANE_FIXED}px;
+      #slot-fixed, #slot-two-fixed {
+        --mdw-pane__min-width: ${PANE_FIXED}px;
+        --mdw-pane__max-width: ${PANE_FIXED}px;
       }
     }
 
