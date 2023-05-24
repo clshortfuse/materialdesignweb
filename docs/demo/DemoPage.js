@@ -37,6 +37,7 @@ const links = [
   { icon: 'more_vert', href: '/components/navrail.html', text: 'Nav Rail' },
   { icon: 'rotate_right', href: '/components/progress.html', text: 'Progress' },
   { icon: 'radio_button_checked', href: '/components/radio.html', text: 'Radio' },
+  { icon: 'search', href: '/components/search.html', text: 'Search' },
   { icon: 'tune', href: '/components/sliders.html', text: 'Sliders' },
   { icon: 'call_to_action', href: '/components/snackbar.html', text: 'Snackbar' },
   { icon: 'toggle_on', href: '/components/switches.html', text: 'Switches' },

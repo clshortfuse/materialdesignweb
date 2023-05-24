@@ -35,6 +35,7 @@ import '../components/NavRailItem.js';
 import '../components/Pane.js';
 import '../components/Progress.js';
 import '../components/Radio.js';
+import '../components/Search.js';
 import '../components/SegmentedButton.js';
 import '../components/SegmentedButtonGroup.js';
 import '../components/Select.js';
