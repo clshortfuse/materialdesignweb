@@ -51,14 +51,15 @@ export default CustomElement
       changedCallback(oldValue, newValue) {
         if (this.showAlways) return;
         if (newValue === 'down') return;
-        const delta = this.scrollListenerPositionY - this._translateY - this._surfaceOffset;
+        const offset = this.scrollListenerPositionY - this._surfaceOffset;
+        const delta = offset - this._translateY;
         const visibility = delta / this._surfaceSize;
 
         // Don't move on partial visibility
         if (visibility < 1) return;
 
         // Align bottom
-        this._translateY = this.scrollListenerPositionY - this._surfaceSize - this._surfaceOffset;
+        this._translateY = offset - this._surfaceSize;
       },
     },
     _surfaceStyle: {
@@ -145,11 +146,9 @@ export default CustomElement
         this._headlineOpacity = 1;
       }
 
-      const delta = this.scrollListenerPositionY - this._translateY;
-      if (delta === 0) return;
-      const size = this.refs.surface.scrollHeight;
-
-      const visibility = delta / this.refs.surface.scrollHeight;
+      const offset = this.scrollListenerPositionY - this._surfaceOffset;
+      const delta = offset - this._translateY;
+      const visibility = delta / this._surfaceSize;
 
       if (visibility <= 0) return;
       if (visibility >= 1) return;
@@ -157,12 +156,12 @@ export default CustomElement
         // Reveal all
         this._duration = 250;
         this._easing = 'ease-in';
-        this._translateY = this.scrollListenerPositionY;
+        this._translateY = offset;
         this._headlineOpacity = 1;
       } else {
         this._duration = 200;
         this._easing = 'ease-out';
-        this._translateY = this.scrollListenerPositionY - size;
+        this._translateY = offset - this._surfaceSize;
       }
     },
   })
