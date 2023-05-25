@@ -56,7 +56,7 @@ export const WEAKREF_TYPE = {
 
 /**
  * @typedef {Object} ElementStylerOptions
- * @prop {string} target Target ID
+ * @prop {string|HTMLElement|null} target tag, element or null (host)
  * @prop {Keyframe} styles
  * @prop {EffectTiming} [timing]
  */
@@ -83,10 +83,13 @@ function elementStylerMicrotaskCallback(name) {
     previousAnimation?.cancel();
     return;
   }
+  const { target, styles, timing } = value;
   /** @type {HTMLElement} */
-  const el = value.target ? this.refs[value.target] : this;
-  const currentAnimation = el.animate(value.styles, {
-    ...value.timing,
+  const el = target
+    ? (typeof target === 'string' ? this.refs[target] : target)
+    : this;
+  const currentAnimation = el.animate(styles, {
+    ...timing,
     fill: 'forwards',
   });
   currentAnimation.onremove = () => {

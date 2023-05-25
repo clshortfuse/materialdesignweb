@@ -7,8 +7,11 @@ export default function ScrollListenerMixin(Base) {
   return Base
     .extend()
     .observe({
-      scrollListenerPositionX: { type: 'float', empty: 0, reflect: false },
-      scrollListenerPositionY: { type: 'float', empty: 0, reflect: false },
+      _scrollListenerPositionX: { type: 'float', empty: 0, reflect: false },
+      _scrollListenerPositionY: { type: 'float', empty: 0, reflect: false },
+      _scrollListenerLastIdle: { type: 'float', empty: 0 },
+      _scrollListenerLastScroll: { type: 'float', empty: 0 },
+      _scrollListenerLastResize: { type: 'float', empty: 0 },
     })
     .set({
       /** @type {WeakRef<EventTarget>} */
@@ -20,25 +23,29 @@ export default function ScrollListenerMixin(Base) {
       _scrollDebounce: null,
     })
     .methods({
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onScrollIdle() {},
-
-      /** @param {Event} event */
-      onScrollerScroll(event) {
-        this.scrollListenerPositionY = (event.currentTarget === window)
-          ? window.scrollY
-          : /** @type {HTMLElement} */ (event.currentTarget).scrollTop;
-
-        this.scrollListenerPositionX = (event.currentTarget === window)
-          ? window.scrollX
-          : /** @type {HTMLElement} */ (event.currentTarget).scrollLeft;
-
-        clearTimeout(this._scrollDebounce);
-        this._scrollDebounce = setTimeout(() => this.onScrollIdle(), IDLE_TIMEOUT_MS);
+      _scrollListenerOnScrollIdle() {
+        this._scrollListenerLastIdle = performance.now();
       },
 
       /** @param {Event} event */
-      onScrollerResize(event) {},
+      _scrollListenerOnScrollerScroll(event) {
+        this._scrollListenerPositionY = (event.currentTarget === window)
+          ? window.scrollY
+          : /** @type {HTMLElement} */ (event.currentTarget).scrollTop;
+
+        this._scrollListenerPositionX = (event.currentTarget === window)
+          ? window.scrollX
+          : /** @type {HTMLElement} */ (event.currentTarget).scrollLeft;
+
+        this._scrollListenerLastScroll = performance.now();
+        clearTimeout(this._scrollDebounce);
+        this._scrollDebounce = setTimeout(() => this._scrollListenerOnScrollIdle(), IDLE_TIMEOUT_MS);
+      },
+
+      /** @param {Event} event */
+      _scrollListenerOnScrollerResize(event) {
+        this._scrollListenerLastResize = performance.now();
+      },
 
       /**
        * @param {EventTarget} [scroller]
@@ -54,42 +61,45 @@ export default function ScrollListenerMixin(Base) {
         }
 
         this._scroller = new WeakRef(scroller);
-        this._scrollerScrollListener = this.onScrollerScroll.bind(this);
-        this._scrollerResizeListener = this.onScrollerResize.bind(this);
-        scroller.addEventListener('scroll', this._scrollerScrollListener);
-        scroller.addEventListener('resize', this._scrollerResizeListener);
-        this.scrollListenerPositionX = 0;
-        this.scrollListenerPositionY = 0;
+        this._scrollerScrollListener = this._scrollListenerOnScrollerScroll.bind(this);
+        this._scrollerResizeListener = this._scrollListenerOnScrollerResize.bind(this);
+        scroller.addEventListener('scroll', this._scrollerScrollListener, { passive: true });
+        scroller.addEventListener('resize', this._scrollerResizeListener, { passive: true });
+        this._scrollListenerPositionX = 0;
+        this._scrollListenerPositionY = 0;
         return true;
       },
+    })
+    .define({
+      /** @return {Window|HTMLElement} */
+      _scrollListenerScroller() {
+        return this._scroller.deref();
+      },
+    })
+    .define({
 
-      getScrollingElementScrollHeight() {
-        const element = this.getScroller();
-        if (element === window) {
+      _scrollListenerScrollerScrollHeight() {
+        const scroller = this._scrollListenerScroller;
+        if (scroller === window) {
           return document.documentElement.scrollHeight;
         }
-        // @ts-expect-error Skip Element cast
-        return element.scrollHeight;
+        return scroller.scrollHeight;
       },
-
-      getScrollingElementClientHeight() {
-        const element = this.getScroller();
-        if (element === window) {
+      _scrollListenerScrollerClientHeight() {
+        const scroller = this._scrollListenerScroller;
+        if (scroller === window) {
           return window.innerHeight;
         }
         // @ts-expect-error Skip Element cast
-        return element.clientHeight;
+        return scroller.clientHeight;
       },
-
-      getScroller() {
-        return this._scroller.deref();
-      },
-
+    })
+    .methods({
       /**
        * @param {EventTarget} [scroller]
        * @return {boolean}
        */
-      clearScrollListener(scroller) {
+      _scrollListenerClear(scroller) {
         scroller ??= this._scroller?.deref();
         if (!scroller) return false;
         if (!this._scrollerScrollListener) return false;

@@ -1,8 +1,7 @@
 import CustomElement from '../core/CustomElement.js';
 import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
 import AriaToolbarMixin from '../mixins/AriaToolbarMixin.js';
-import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
-import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
+import SemiStickyMixin from '../mixins/SemiStickyMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
@@ -12,53 +11,24 @@ export default CustomElement
   .mixin(SurfaceMixin)
   .mixin(ShapeMixin)
   .mixin(AriaToolbarMixin)
-  .mixin(ScrollListenerMixin)
-  .mixin(ResizeObserverMixin)
+  .mixin(SemiStickyMixin)
   .extend()
   .set({
     elevated: true,
   })
   .observe({
-    headline: 'string',
-    _raised: 'boolean', // Change to raw value instead of computed
-    showAlways: 'boolean',
-    size: { value: /** @type {'small'|'medium'|'large'|null} */ (null) },
-    _visibleStart: { type: 'float', default: 0 },
-    _translateY: { type: 'float', empty: 0 },
-    _surfaceSize: { type: 'float', empty: 0 },
-    _surfaceOffset: { type: 'float', empty: 0 },
-    _duration: { type: 'float', empty: 0 },
-    _easing: { empty: 'ease-in' },
+    _raised: 'boolean',
     _headlineOpacity: { type: 'float', default: 0 },
-    /** Convert to observable */
+    headline: 'string',
+    size: { value: /** @type {'small'|'medium'|'large'|null} */ (null) },
+    /** Convert native to observable */
     ariaLabel: 'string',
     color: { empty: 'surface' },
   })
-  .methods({
-    /** Imperative call to recalculate layout */
-    refreshSurfaceMetrics() {
-      this._surfaceSize = this.refs.surface.clientHeight;
-      if (this.scrollListenerPositionY === 0) {
-        this._surfaceOffset = this.refs.surface.offsetTop;
-      }
-    },
+  .overrides({
+    _getSemiStickyElement() { return this.refs.surface; },
   })
   .observe({
-    _surfaceStyle: {
-      ...ELEMENT_STYLER_TYPE,
-      get({ _translateY, _duration, _easing }) {
-        return {
-          target: 'surface',
-          styles: {
-            transform: `translateY(${_translateY}px)`,
-          },
-          timing: {
-            duration: _duration,
-            easing: _easing,
-          },
-        };
-      },
-    },
     _headlineStyle: {
       ...ELEMENT_STYLER_TYPE,
       get({ size, _headlineOpacity }) {
@@ -101,50 +71,23 @@ export default CustomElement
       surface.setAttribute('raised', '{_raised}');
       shape.setAttribute('raised', '{_raised}');
     },
-    scrollListenerPositionYChanged(oldValue, newValue) {
-      this._raised = (newValue > this._surfaceOffset);
+    _scrollListenerPositionYChanged(oldValue, newValue) {
+      this._raised = (newValue > this._semiStickyOffsetY);
       if (this.size === 'medium' || this.size === 'large') {
         const max = this.refs.companion.scrollHeight;
         const min = (0.5 * max);
         this._headlineOpacity = Math.max(0, Math.min(1, (newValue - min) / (max - min)));
       }
-
-      const delta = newValue - oldValue;
-      this._duration = 0;
-      this._translateY = (this.showAlways || newValue < this._surfaceOffset)
-        ? 0
-        : Math.min(0, Math.max(this._translateY - delta, -this._surfaceSize));
     },
-  })
-  .methods({
-    onScrollIdle() {
-      this.refreshSurfaceMetrics();
+    _scrollListenerLastIdleChanged() {
       if (this._headlineOpacity > 0) {
         // Fill in opacity on idle
         this._headlineOpacity = 1;
       }
-
-      const { offsetTop } = this.refs.surface;
-      const offset = this.scrollListenerPositionY - offsetTop;
-      const delta = offset - this._translateY;
-      const visibility = delta / this._surfaceSize;
-
-      if (visibility <= 0) return;
-      if (visibility >= 1) return;
-      if (visibility <= 0.5 || offsetTop < this._surfaceSize) {
-        // Reveal all
-        this._duration = 250;
-        this._easing = 'ease-in';
-        this._translateY = 0;
+    },
+    _semiStickyTranslateYChanged(oldValue, newValue) {
+      if (newValue === 0) {
         this._headlineOpacity = 1;
-      } else {
-        this._duration = 200;
-        this._easing = 'ease-out';
-        // Don't hide past origin
-        this._translateY = Math.max(
-          this._surfaceOffset - this.scrollListenerPositionY,
-          -this._surfaceSize,
-        );
       }
     },
   })
@@ -160,25 +103,6 @@ export default CustomElement
       },
     },
   })
-  .on({
-    connected() {
-      const { surface } = this.refs;
-      if (surface.offsetParent) {
-        this.startScrollListener(surface.offsetParent ?? window);
-      } else {
-        const resizeObserver = new ResizeObserver(() => {
-          this.startScrollListener(surface.offsetParent ?? window);
-          resizeObserver.disconnect();
-          this.refreshSurfaceMetrics();
-        });
-        resizeObserver.observe(surface);
-      }
-      this.refreshSurfaceMetrics();
-    },
-    disconnected() {
-      this.clearScrollListener();
-    },
-  })
   .css/* css */`
     /* https://m3.material.io/components/bottom-app-bar/specs */
 
@@ -192,6 +116,7 @@ export default CustomElement
 
     #surface {
       position: sticky;
+      inset-block-end: auto; 
 
       margin: inherit; /** Pass through */
 
@@ -202,7 +127,6 @@ export default CustomElement
       transform: translateY(0);
 
       z-index: 5;
-      /* inset-inline: 0; */
 
       background-color: rgb(var(--mdw-bg));
 
