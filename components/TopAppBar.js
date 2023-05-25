@@ -25,7 +25,6 @@ export default CustomElement
     size: { value: /** @type {'small'|'medium'|'large'|null} */ (null) },
     _visibleStart: { type: 'float', default: 0 },
     _translateY: { type: 'float', empty: 0 },
-    _surfaceOffset: { type: 'float', empty: 0 },
     _surfaceSize: { type: 'float', empty: 0 },
     _duration: { type: 'float', empty: 0 },
     _easing: { empty: 'ease-in' },
@@ -37,31 +36,10 @@ export default CustomElement
   .methods({
     /** Imperative call to recalculate layout */
     refreshSurfaceMetrics() {
-      const { surface } = this.refs;
-      this._surfaceOffset = surface.offsetTop;
-      this._surfaceSize = surface.clientHeight;
+      this._surfaceSize = this.refs.surface.clientHeight;
     },
   })
   .observe({
-    _scrollDirection: {
-      /**
-       * @param {'up'|'down'} oldValue
-       * @param {'up'|'down'} newValue
-       */
-      changedCallback(oldValue, newValue) {
-        if (this.showAlways) return;
-        if (newValue === 'down') return;
-        const offset = this.scrollListenerPositionY - this._surfaceOffset;
-        const delta = offset - this._translateY;
-        const visibility = delta / this._surfaceSize;
-
-        // Don't move on partial visibility
-        if (visibility < 1) return;
-
-        // Align bottom
-        this._translateY = offset - this._surfaceSize;
-      },
-    },
     _surfaceStyle: {
       ...ELEMENT_STYLER_TYPE,
       get({ _translateY, _duration, _easing }) {
@@ -120,22 +98,18 @@ export default CustomElement
       shape.setAttribute('raised', '{_raised}');
     },
     scrollListenerPositionYChanged(oldValue, newValue) {
-      const offset = newValue - this._surfaceOffset;
-      this._raised = (offset > 0);
+      this._raised = (newValue > 0);
       if (this.size === 'medium' || this.size === 'large') {
         const max = this.refs.companion.scrollHeight;
         const min = (0.5 * max);
         this._headlineOpacity = Math.max(0, Math.min(1, (newValue - min) / (max - min)));
       }
 
+      const delta = newValue - oldValue;
       this._duration = 0;
-
-      if (this.showAlways || offset < this._translateY) {
-        // Align appbar.top with scroll position (top of screen)
-        this._translateY = Math.max(0, offset);
-      }
-
-      this._scrollDirection = newValue > oldValue ? 'down' : 'up';
+      this._translateY = this.showAlways
+        ? 0
+        : Math.min(0, Math.max(this._translateY - delta, -this._surfaceSize));
     },
   })
   .methods({
@@ -146,13 +120,14 @@ export default CustomElement
         this._headlineOpacity = 1;
       }
 
-      const offset = this.scrollListenerPositionY - this._surfaceOffset;
+      const { offsetTop } = this.refs.surface;
+      const offset = this.scrollListenerPositionY - offsetTop;
       const delta = offset - this._translateY;
       const visibility = delta / this._surfaceSize;
 
       if (visibility <= 0) return;
       if (visibility >= 1) return;
-      if (visibility <= 0.5) {
+      if (visibility <= 0.5 || offsetTop < this._surfaceSize) {
         // Reveal all
         this._duration = 250;
         this._easing = 'ease-in';
@@ -208,7 +183,7 @@ export default CustomElement
     }
 
     #surface {
-      position: relative;
+      position: sticky;
 
       margin: inherit; /** Pass through */
 
