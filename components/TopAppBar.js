@@ -26,6 +26,7 @@ export default CustomElement
     _visibleStart: { type: 'float', default: 0 },
     _translateY: { type: 'float', empty: 0 },
     _surfaceSize: { type: 'float', empty: 0 },
+    _surfaceOffset: { type: 'float', empty: 0 },
     _duration: { type: 'float', empty: 0 },
     _easing: { empty: 'ease-in' },
     _headlineOpacity: { type: 'float', default: 0 },
@@ -37,6 +38,9 @@ export default CustomElement
     /** Imperative call to recalculate layout */
     refreshSurfaceMetrics() {
       this._surfaceSize = this.refs.surface.clientHeight;
+      if (this.scrollListenerPositionY === 0) {
+        this._surfaceOffset = this.refs.surface.offsetTop;
+      }
     },
   })
   .observe({
@@ -98,7 +102,7 @@ export default CustomElement
       shape.setAttribute('raised', '{_raised}');
     },
     scrollListenerPositionYChanged(oldValue, newValue) {
-      this._raised = (newValue > 0);
+      this._raised = (newValue > this._surfaceOffset);
       if (this.size === 'medium' || this.size === 'large') {
         const max = this.refs.companion.scrollHeight;
         const min = (0.5 * max);
@@ -107,7 +111,7 @@ export default CustomElement
 
       const delta = newValue - oldValue;
       this._duration = 0;
-      this._translateY = this.showAlways
+      this._translateY = (this.showAlways || newValue < this._surfaceOffset)
         ? 0
         : Math.min(0, Math.max(this._translateY - delta, -this._surfaceSize));
     },
@@ -131,12 +135,16 @@ export default CustomElement
         // Reveal all
         this._duration = 250;
         this._easing = 'ease-in';
-        this._translateY = offset;
+        this._translateY = 0;
         this._headlineOpacity = 1;
       } else {
         this._duration = 200;
         this._easing = 'ease-out';
-        this._translateY = offset - this._surfaceSize;
+        // Don't hide past origin
+        this._translateY = Math.max(
+          this._surfaceOffset - this.scrollListenerPositionY,
+          -this._surfaceSize,
+        );
       }
     },
   })
