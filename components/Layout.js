@@ -140,7 +140,7 @@ export default CustomElement
         "nav-drawer nav-rail app-bar app-bar app-bar pane2 ."
         "nav-drawer nav-rail .       pane1   .       pane2 ."
         "nav-drawer nav-rail nav-bar nav-bar nav-bar nav-bar .";
-      overflow-x: hidden;
+      overflow-x: clip;
 
       font: var(--mdw-typescale__body-large__font);
       letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
