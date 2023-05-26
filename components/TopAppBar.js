@@ -116,7 +116,9 @@ export default CustomElement
 
     #surface {
       position: sticky;
-      inset-block-end: auto; 
+      inset-block-end: auto;
+
+      grid-area: app-bar;
 
       margin: inherit; /** Pass through */
 

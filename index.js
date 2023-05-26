@@ -30,7 +30,6 @@ export { default as NavDrawerItem } from './components/NavDrawerItem.js';
 export { default as NavItem } from './components/NavItem.js';
 export { default as NavRail } from './components/NavRail.js';
 export { default as NavRailItem } from './components/NavRailItem.js';
-export { default as Pane } from './components/Pane.js';
 export { default as Progress } from './components/Progress.js';
 export { default as Radio } from './components/Radio.js';
 export { default as Search } from './components/Search.js';

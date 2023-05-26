@@ -23,9 +23,11 @@ export default NavRail
       --mdw-nav-item__indicator__grid-area: auto;
       --mdw-bg: var(--mdw-color__surface-container-low);
 
-      display: inline-grid;
+      display: grid;
       grid-template-columns: 1fr;
 
+      min-block-size: 100vh;
+      max-block-size: 100vh;
       min-inline-size: 360px;
       max-inline-size: 360px;
       padding-inline: 0;

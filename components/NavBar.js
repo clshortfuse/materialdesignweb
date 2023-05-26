@@ -22,6 +22,8 @@ export default Nav
       align-content: flex-start;
       align-items: flex-start;
       gap: 8px;
+
+      grid-area: nav-bar;
       grid-auto-columns: minmax(48px, 1fr);
       grid-auto-flow: column;
 

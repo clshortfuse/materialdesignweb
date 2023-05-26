@@ -19,40 +19,57 @@ const NAV_DRAWER_WIDTH = 360;
 export default CustomElement
   .extend()
   .observe({
+    navBar: 'boolean',
     navRail: 'boolean',
     navDrawer: 'boolean',
-    _oneFlexible: 'boolean',
-    _oneFixed: 'boolean',
-    _twoFlexible: 'boolean',
-    _twoFixed: 'boolean',
+    oneFlexible: 'boolean',
+    oneFixed: 'boolean',
+    twoFlexible: 'boolean',
+    twoFixed: 'boolean',
+    paneTwoActive: 'boolean',
   })
   .observe({
     hasTwo: {
       type: 'boolean',
       reflect: 'write',
-      get({ _twoFlexible, _twoFixed }) {
-        return _twoFlexible || _twoFixed;
+      get({ twoFlexible, twoFixed }) {
+        return twoFlexible || twoFixed;
+      },
+    },
+    singlePane: {
+      type: 'boolean',
+      reflect: 'write',
+      get({ oneFlexible, oneFixed, twoFlexible, twoFixed }) {
+        return (oneFlexible || oneFixed) && !(twoFlexible || twoFixed);
       },
     },
   })
   .expressions({
-    hasNav({ navRail, navDrawer }) {
-      return navRail || navDrawer;
+    hasNav({ navRail, navDrawer, navBar }) {
+      return navRail || navDrawer || navBar;
     },
   })
   .html/* html */`
-    <slot id=slot-rail      name=rail                         nav-drawer={navDrawer} no-two={!hasTwo} has-two={hasTwo} no-two={!hasTwo} slotted={navRail}></slot>
-    <slot id=slot-drawer    name=drawer    nav-rail={navRail}                                         has-two={hasTwo} no-two={!hasTwo} slotted={navDrawer}></slot>
-    <slot id=slot                          nav-rail={navRail} nav-drawer={navDrawer} no-nav={!hasNav} has-two={hasTwo} no-two={!hasTwo} two-fixed={_twoFixed} two-flexible={_twoFlexible} slotted={_oneFlexible}></slot>
-    <slot id=slot-fixed     name=fixed     nav-rail={navRail} nav-drawer={navDrawer} no-nav={!hasNav} has-two={hasTwo} no-two={!hasTwo}                       slotted={_oneFixed}></slot>
-    <slot id=slot-two       name=two       nav-rail={navRail} nav-drawer={navDrawer} no-nav={!hasNav}                                   one-fixed={_oneFixed} one-flexible={_oneFlexible} slotted={_twoFlexible}></slot>
-    <slot id=slot-two-fixed name=two-fixed nav-rail={navRail} nav-drawer={navDrawer} no-nav={!hasNav}                                                         slotted={_twoFixed}></slot>
+    <slot id=slot-nav-rail  name=rail      nav-drawer={navDrawer}                  has-two={hasTwo} single-pane={singlePane}                                                 slotted={navRail}    ></slot>
+    <slot id=slot-drawer    name=drawer    nav-rail={navRail}                                         has-two={hasTwo} single-pane={singlePane}                                                 slotted={navDrawer}  ></slot>
+    <slot id=slot-app-bar   name=app-bar   nav-rail={navRail} nav-drawer={navDrawer} no-nav={!hasNav} has-two={hasTwo} single-pane={singlePane} two-fixed={twoFixed} two-flexible={twoFlexible}                      ></slot>
+    <slot id=slot                          nav-rail={navRail} nav-drawer={navDrawer} no-nav={!hasNav} has-two={hasTwo} single-pane={singlePane} two-fixed={twoFixed} two-flexible={twoFlexible} slotted={oneFlexible}></slot>
+    <slot id=slot-fixed     name=fixed     nav-rail={navRail} nav-drawer={navDrawer} no-nav={!hasNav} has-two={hasTwo} single-pane={singlePane}                                                 slotted={oneFixed}   ></slot>
+    <slot id=slot-two       name=two       nav-rail={navRail} nav-drawer={navDrawer} no-nav={!hasNav}                                           one-fixed={oneFixed} one-flexible={oneFlexible} slotted={twoFlexible}></slot>
+    <slot id=slot-two-fixed name=two-fixed nav-rail={navRail} nav-drawer={navDrawer} no-nav={!hasNav}                                                                                           slotted={twoFixed}   ></slot>
+    <slot id=slot-nav-bar   name=nav-bar   nav-rail={navRail} nav-drawer={navDrawer} no-nav={!hasNav} has-two={hasTwo} single-pane={singlePane} two-fixed={twoFixed} two-flexible={twoFlexible}></slot>
   `
   .childEvents({
-    slotRail: {
+    slotNavRail: {
       slotchange({ target }) {
         const slotElement = /** @type {HTMLSlotElement} */ (target);
         this.navRail = slotElement.assignedElements().length > 0;
+      },
+    },
+    slotNavBar: {
+      slotchange({ target }) {
+        const slotElement = /** @type {HTMLSlotElement} */ (target);
+        this.navBar = slotElement.assignedElements().length > 0;
       },
     },
     slotDrawer: {
@@ -64,25 +81,25 @@ export default CustomElement
     slot: {
       slotchange({ target }) {
         const slotElement = /** @type {HTMLSlotElement} */ (target);
-        this._oneFlexible = slotElement.assignedElements().length > 0;
+        this.oneFlexible = slotElement.assignedElements().length > 0;
       },
     },
     slotFixed: {
       slotchange({ target }) {
         const slotElement = /** @type {HTMLSlotElement} */ (target);
-        this._oneFixed = slotElement.assignedElements().length > 0;
+        this.oneFixed = slotElement.assignedElements().length > 0;
       },
     },
     slotTwo: {
       slotchange({ target }) {
         const slotElement = /** @type {HTMLSlotElement} */ (target);
-        this._twoFlexible = slotElement.assignedElements().length > 0;
+        this.twoFlexible = slotElement.assignedElements().length > 0;
       },
     },
     slotTwoFixed: {
       slotchange({ target }) {
         const slotElement = /** @type {HTMLSlotElement} */ (target);
-        this._twoFixed = slotElement.assignedElements().length > 0;
+        this.twoFixed = slotElement.assignedElements().length > 0;
       },
     },
   })
@@ -91,278 +108,443 @@ export default CustomElement
 
     /* App bars may be full width or insize panes */
 
+    /** Simple block layout on compact */
+
     :host {
-      --mdw-pane__columns: 4;
-      --mdw-content__max-width: ${WINDOW_MEDIUM_BREAKPOINT}px;
+      --mdw-grid__columns: ${WINDOW_COMPACT_COLUMNS};
+      --mdw-layout__pane1-columns: 4;
+      --mdw-layout__pane2-columns: 4;
+      --mdw-content__max-width: ${WINDOW_EXPANDED_WIDTH_MAX}px;
       --mdw-content__padding: ${WINDOW_COMPACT_PADDING}px;
-      display: flex;
-      /* QOL */
+      --mdw-layout__spacer-width: ${SPACER_WIDTH}px;
+      --mdw-layout__nav-drawer__ratio: 0;
+      --mdw-layout__nav-drawer-width: ${NAV_DRAWER_WIDTH}px;
+      --mdw-layout__nav-rail__ratio: 0;
+      --mdw-layout__nav-rail-width: ${NAV_RAIL_WIDTH}px;
+      --mdw-layout__pane1-width: 1fr;
+      --mdw-layout__pane2-width: 0;
+      --mdw-layout__pane2-visibility: hidden;
+      --mdw-layout__window-padding: ${WINDOW_COMPACT_PADDING}px;
+      --mdw-layout__nav-drawer__visibility: hidden;
+
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      grid-template-columns:
+        calc(var(--mdw-layout__nav-drawer-width) * var(--mdw-layout__nav-drawer__ratio))
+        calc(var(--mdw-layout__nav-rail-width) * var(--mdw-layout__nav-rail__ratio))
+        var(--mdw-layout__window-padding)
+        var(--mdw-layout__pane1-width)
+        var(--mdw-layout__window-padding)
+        var(--mdw-layout__pane2-width) 0;
+      grid-template-areas: 
+        "nav-drawer nav-rail app-bar app-bar app-bar pane2 ."
+        "nav-drawer nav-rail .       pane1   .       pane2 ."
+        "nav-drawer nav-rail nav-bar nav-bar nav-bar nav-bar .";
+      overflow-x: hidden;
+
       font: var(--mdw-typescale__body-large__font);
       letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
     }
 
-    #slot-rail {
-      display: none;
+    
+
+    #slot-app-bar {
+      display: contents; /* Allow sticky */
+    }
+
+    #slot-nav-bar {
+      display: var(--mdw-layout__nav-bar__display, contents);
+      grid-area: nav-bar;
+    }
+
+    #slot, #slot-fixed {
+      --mdw-grid__columns: var(--mdw-layout__pane1-columns);
+      box-sizing: content-box;
+      inline-size: 100%;
+      max-inline-size: var(--mdw-content__max-width, auto);
+      margin-inline: auto;
+      grid-area: pane1;
+    }
+
+    
+
+    #slot-nav-rail {
+      display: var(--mdw-layout__nav-rail__display, none);
+      grid-area: nav-rail;
     }
 
     #slot-drawer {
-      display: none;
+      display: block;
+      grid-area: nav-drawer;
+
+      visibility: var(--mdw-layout__nav-drawer__visibility);
+    }
+
+    #slot[slotted], #slot-fixed[slotted] {
+      display: block;
+    }
+
+    #slot-two, #slot-two-fixed {
+      --mdw-content__padding: 0;
+      --mdw-grid__columns: var(--mdw-layout__pane2-columns);
+      grid-area: pane2;
+
+      visibility: var(--mdw-layout__pane2-visibility);
+    }
+
+    :host(:where([pane-two-active])) {
+      --mdw-layout__pane2-visibility: visible;
+      grid-template-areas: 
+        "nav-drawer nav-rail app-bar app-bar app-bar pane1 ."
+        "nav-drawer nav-rail .       pane2   .       pane1 ."
+        "nav-drawer nav-rail nav-bar nav-bar nav-bar nav-bar .";
+    }
+
+    #slot-two[active], #slot-two-fixed[active] {
+      inset-inline-end: 0;
+
+      box-sizing: border-box;
+      inline-size: 100%;
+      padding-inline: var(--mdw-content__padding);
+
+      visibility: visible;
+    }
+
+    #slot-two[slotted], #slot-two-fixed[slotted] {
+      display: block;
     }
 
     /* stylelint-disable order/properties-order */
 
-    /* Page margins is based on screen size, not computed */
-    @media screen and (min-width: ${WINDOW_MEDIUM_BREAKPOINT + (2 * WINDOW_PADDING)}px) {
-      :host { --mdw-content__padding: ${WINDOW_PADDING}px; }
-    }
+    /**
+    * Prefer content to navigation (eg: Don't shrink content for nav)
+    * Prefer 2nd pane always
+    * Breakpoints ( x = 16,  | = 24 )
+    * - Nav       Pane1    Pane2    Columns             Nav Detail Content Width  Use?
+    * - Modal     4col              x 0 x                 0      0       0     0  YES
+    * - Rail      4col              80 x 360 x           80      0     360   472  NO
+    * - Modal     8col              x 600 x               0      0     600   632  YES
+    * - Modal     8col              | 600 |               0      0     600   648  YES
+    * - Rail      8col              80 | 600 |           80      0     600   728  YES
+    * - Drawer    4col              360 | 360 |         360      0     360   768  NO
+    * - Modal     4col     4col     | 360 | 360 |       360    360     720   792  YES
+    * - Modal     Fixed    4col     | 360 | 360 |       360    360     720   792  YES
+    * - Rail      4col     4col     80 | 360 | 360 |     80    360     720   872  YES
+    * - Rail      Fixed    4col     80 | 360 | 360 |     80    360     720   872  YES
+    * - Modal     12col             | 840 |               0      0     840   888  If Single Pane + No Rail
+    * - Rail      12col             80 | 840 |           80      0     840   920  If Single Pane
+    * - Drawer    8col              360 | 600 |         360      0     600  1008  NO (Loses Content)
+    * - Modal     Fixed    8col     | 360 | 600 |         0    600     960  1032  If No Rail
+    * - Rail      Fixed    8col     80 | 360 | 600 |     80    600     960  1112  YES
+    * - Drawer    4col     4col     360 | 360 | 360 |   360    360     720  1152  NO (Modal 4/4 has more content)
+    * - Drawer    Fixed    4col     360 | 360 | 360 |   360    360     720  1152  NO (Modal F/8 has more content)
+    * - Drawer    12col             360 | 840 |         360      0     840  1248  If Single Pane
+    * - Modal     8col     8col     | 600 | 600 |         0    600    1200  1272  *If No Rail
+    * - Modal     Fixed    12col    | 360 | 840 |         0    840    1200  1272  *If No Rail
+    * - Rail      8col     8col     80 | 600 | 600 |     80    600    1200  1352  YES
+    * - Rail      Fixed    12col    80 | 360 | 840 |     80    840    1200  1352  YES
+    * - Drawer    Fixed    8col     360 | 360 | 600 |   360    600     960  1392  *If No Rail
+    * - Drawer    8col     8col     360 | 600 | 600 |   360    600     720  1632  *If No Rail
+    * - Drawer    Fixed    12col    360 | 360 | 840 |   360    840    1200  1632  YES
+    * - Modal     12col    12col    | 840 | 840 |         0    840    1680  1752  If No Rail + No Nav Drawer
+    * - Rail      12col    12col    80 | 840 | 840 |     80    840    1680  1832  If No Drawer
+    * - Drawer    12col    12col    360 | 840 | 840 |   360    840    1680  2112  YES
+    */
 
-    /** SINGLE PANE **/
+    
+    /**
+    * SORTED
+    * - Nav       Pane1    Pane2    Columns             Nav Detail Content Width  Use?
+    * - Modal     4col              x 0 x                 0      0       0     0  YES
+    * - Modal     8col              x 600 x               0      0     600   632  YES
+    * - Modal     8col              | 600 |               0      0     600   648  YES
+    * - Modal     12col             | 840 |               0      0     840   888  If Single Pane + No Rail
+    * - Rail      4col              80 x 360 x           80      0     360   472  NO
+    * - Rail      8col              80 | 600 |           80      0     600   728  YES
+    * - Rail      12col             80 | 840 |           80      0     840   920  If Single Pane
+    * - Drawer    4col              360 | 360 |         360      0     360   768  NO
+    * - Drawer    8col              360 | 600 |         360      0     600  1008  NO (Loses Content)
+    * - Drawer    12col             360 | 840 |         360      0     840  1248  If Single Pane
+    * - Modal     4col     4col     | 360 | 360 |       360    360     720   792  YES
+    * - Modal     8col     8col     | 600 | 600 |         0    600    1200  1272  *If No Rail
+    * - Modal     12col    12col    | 840 | 840 |         0    840    1680  1752  If No Rail + No Nav Drawer
+    * - Modal     Fixed    4col     | 360 | 360 |       360    360     720   792  YES
+    * - Modal     Fixed    8col     | 360 | 600 |         0    600     960  1032  If No Rail
+    * - Modal     Fixed    12col    | 360 | 840 |         0    840    1200  1272  *If No Rail
+    * - Drawer    4col     4col     360 | 360 | 360 |   360    360     720  1152  NO (Modal 4/4 has more content)
+    * - Drawer    8col     8col     360 | 600 | 600 |   360    600     720  1632  *If No Rail
+    * - Drawer    Fixed    8col     360 | 360 | 600 |   360    600     960  1392  *If No Rail
+    * - Rail      4col     4col     80 | 360 | 360 |     80    360     720   872  YES
+    * - Rail      8col     8col     80 | 600 | 600 |     80    600    1200  1352  YES
+    * - Rail      12col    12col    80 | 840 | 840 |     80    840    1680  1832  If No Drawer
+    * - Rail      Fixed    4col     80 | 360 | 360 |     80    360     720   872  YES
+    * - Rail      Fixed    8col     80 | 360 | 600 |     80    600     960  1112  YES
+    * - Rail      Fixed    12col    80 | 360 | 840 |     80    840    1200  1352  YES
+    * - Drawer    12col    12col    360 | 840 | 840 |   360    840    1680  2112  YES
+    * - Drawer    Fixed    4col     360 | 360 | 360 |   360    360     720  1152  NO (Modal F/8 has more content)
+    * - Drawer    Fixed    12col    360 | 360 | 840 |   360    840    1200  1632  YES
+    */
 
-    /** In all configurations, 600px starts at 632px (600+16+16) */
+    /* Single Pane Modal */
+
+    /** Modal 8 (632) */
     @media screen and (min-width: ${WINDOW_MEDIUM_BREAKPOINT + (2 * WINDOW_COMPACT_PADDING)}px) {
-      #slot[no-two] { --mdw-pane__columns: ${WINDOW_MEDIUM_COLUMNS}; }
+      :host {
+        --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS};
+      }
     }
 
-    /** SINGLE PANE NO NAV */
-    /** Once margins hit 24px, allow growth upto 840px */
+    /* Modal 8 (648) */
     @media screen and (min-width: ${WINDOW_MEDIUM_BREAKPOINT + (2 * WINDOW_PADDING)}px) {
-      #slot[no-two][no-nav] { --mdw-content__max-width: ${WINDOW_EXPANDED_BREAKPOINT}px; }
+      :host { 
+        --mdw-layout__window-padding: ${WINDOW_PADDING}px;
+        --mdw-content__padding: ${WINDOW_PADDING}px;
+        /* --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS}; */
+      }
     }
 
-    /** 840px (12-col) at (840 + 24 + 24) */
+    /** Modal 12 (888) */
     @media screen and (min-width: ${WINDOW_EXPANDED_BREAKPOINT + (2 * WINDOW_PADDING)}px) {
-      #slot[no-two][no-nav] { --mdw-pane__columns: ${WINDOW_EXPANDED_COLUMNS}; }}
-    
-    /** Clamp at 1040px/200px margin */
-    @media screen and (min-width: ${WINDOW_EXPANDED_WIDTH_MAX + (2 * WINDOW_EXPANDED_PADDING_MAX)}px) { 
-      #slot[no-two][no-nav] {
-        --mdw-content__max-width: ${WINDOW_EXPANDED_WIDTH_MAX}px;
-        --mdw-content__padding: ${WINDOW_EXPANDED_PADDING_MAX}px;
+      :host {
+        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
       }
     }
 
-    /** SINGLE PANE + NAV RAIL */
-
-    /** If using nav-rail, don't show nav-rail until 600px pane fits (600 + 24 + 24 + 80), then allow growth */
+    /** Rail 8 (728) */
     @media screen and (min-width: ${WINDOW_MEDIUM_BREAKPOINT + (2 * WINDOW_PADDING) + NAV_RAIL_WIDTH}px) {
-      #slot-rail[no-two] {
-        display: contents;
-      }
-
-      #slot[no-two][nav-rail] {
-        --mdw-content__max-width: ${WINDOW_EXPANDED_BREAKPOINT}px;
-      }
-    }
-
-    /** If using nav-rail, 840px (12-col) is reached at (840 + 24 + 24 + 80) */
-    @media screen and (min-width: ${WINDOW_EXPANDED_BREAKPOINT + (2 * WINDOW_PADDING) + NAV_RAIL_WIDTH}px) { 
-      #slot[no-two][nav-rail] {
-        --mdw-pane__columns: ${WINDOW_EXPANDED_COLUMNS};
+      :host(:where([nav-rail])) {
+        --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS};
+        --mdw-layout__nav-bar__display: none;
+        --mdw-layout__nav-drawer__visibility: hidden;
+        --mdw-layout__nav-drawer__ratio: 0;
+        --mdw-layout__nav-rail__display: block;
+        --mdw-layout__nav-rail__ratio: 1;
       }
     }
 
-    /** SINGLE PANE + NAV DRAWER - NAV RAIL */
-
-    /** If using nav-drawer, don't show nav-drawer until 600px pane fits (600 + 24 + 24 + 360), then allow growth */
-    @media screen and (min-width: ${WINDOW_MEDIUM_BREAKPOINT + (2 * WINDOW_PADDING) + NAV_DRAWER_WIDTH}px) {
-      #slot-drawer[no-two]:not([nav-rail]) {
-        display: contents;
-      }
-
-      #slot[no-two][nav-drawer]:not([nav-rail]) {
-        --mdw-content__max-width: ${WINDOW_EXPANDED_BREAKPOINT}px;
+    /** Rail 12 (920) */
+    @media screen and (min-width: ${WINDOW_EXPANDED_BREAKPOINT + (2 * WINDOW_PADDING) + NAV_RAIL_WIDTH}px) {
+      :host(:where([nav-rail])) {
+        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
+        --mdw-layout__nav-bar__display: none;
+        --mdw-layout__nav-rail__display: block;
+        --mdw-layout__nav-rail__ratio: 1;
       }
     }
 
-    /** SINGLE PANE + NAV DRAWER + NAV RAIL */
-
-    /** If using nav-drawer+nav-rail, don't show nav-drawer until 840px pane fits (840 + 24 + 24 + 360), then allow growth */
-    @media screen and (min-width: ${WINDOW_EXPANDED_BREAKPOINT + (2 * WINDOW_PADDING) + NAV_DRAWER_WIDTH}px) { 
-      #slot-rail[no-two][nav-drawer] {
-        display: none;
-      }
-
-      #slot-drawer[no-two][nav-rail] {
-        display: contents;
-      }
-
-      #slot[no-two][nav-drawer][nav-rail] { 
-        --mdw-content__max-width: ${WINDOW_EXPANDED_BREAKPOINT}px;
+    /** Drawer 12 (1248) */
+    @media screen and (min-width: ${WINDOW_EXPANDED_BREAKPOINT + (2 * WINDOW_PADDING) + NAV_DRAWER_WIDTH}px) {
+      :host(:where([nav-drawer])) {
+        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
+        --mdw-layout__nav-bar__display: none;
+        --mdw-layout__nav-drawer__visibility: visible;
+        --mdw-layout__nav-drawer__ratio: 1;
+        --mdw-layout__nav-rail__display: none;
+        --mdw-layout__nav-rail__ratio: 0;
       }
     }
 
-    /** SINGLE PANE + NAV DRAWER +-NAV RAIL */
-
-    /** If using nav-drawer, allow  nav-drawer until 840 pane fits (840 + 24 + 24 + 360), then allow growth */
-    @media screen and (min-width: ${WINDOW_EXPANDED_BREAKPOINT + (2 * WINDOW_EXPANDED_WIDTH_MAX) + NAV_DRAWER_WIDTH}px) { 
-      #slot[no-two][nav-drawer][nav-drawer] { 
-        --mdw-content__padding: ${WINDOW_EXPANDED_PADDING_MAX}px;
-        --mdw-content__max-width: ${WINDOW_EXPANDED_WIDTH_MAX}px;
-      }
-    }
-    
-
-    /** TWO-PANE */
-
-    
-    /** Inline-end pane is stickied */
-    #slot-two, #slot-two-fixed {
-      display: none;
-      position: sticky;
-      inset: 0;
-      block-size: 100vh;
-      overflow-y: auto;
-      --mdw-content__padding: 0;
-    }
-    
-    /** TWO-PANE does not kick in until 24 + 360 + 24 + 360 + 24 */
+    /* Modal 4 / 4 (792) */
     @media screen and (min-width: ${(2 * WINDOW_PADDING) + SPACER_WIDTH + (2 * PANE_FIXED)}px) { 
       /* Apply padding+spacer to host */
-      :host([has-two]) {
-        padding-inline: ${WINDOW_PADDING}px;
-        gap: ${SPACER_WIDTH}px;
+      :host(:where([has-two])) {
+        --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS};
+        --mdw-layout__pane2-columns: ${WINDOW_COMPACT_COLUMNS};
+        --mdw-layout__nav-bar__display: contents;
+        --mdw-layout__nav-drawer__visibility: hidden;
+        --mdw-layout__nav-drawer__ratio: 0;
+        --mdw-layout__nav-rail__display: none;
+        --mdw-layout__nav-rail__ratio: 0;
+        --mdw-layout__pane2-width: 1fr;
+        --mdw-layout__pane2-visibility: visible;
+
+        grid-template-areas: 
+        "nav-drawer nav-rail app-bar app-bar app-bar pane2 ."
+        "nav-drawer nav-rail .       pane1   .       pane2 ."
+        "nav-drawer nav-rail nav-bar nav-bar nav-bar nav-bar .";
+        grid-template-columns:
+          calc(var(--mdw-layout__nav-drawer-width) * var(--mdw-layout__nav-drawer__ratio))
+          calc(var(--mdw-layout__nav-rail-width) * var(--mdw-layout__nav-rail__ratio))
+          var(--mdw-layout__window-padding)
+          var(--mdw-layout__pane1-width)
+          var(--mdw-layout__spacer-width)
+          var(--mdw-layout__pane2-width)
+          var(--mdw-layout__window-padding);
       }
 
-      /* Remove padding from pane one */
-      #slot[has-two], #slot-fixed {
-        --mdw-content__padding: 0;
+      #slot-two, #slot-two-fixed {
+        visibility: var(--mdw-layout__pane2-visibility);
+        position: sticky;
+        inset: 0;
+        block-size: 100vh;
+        overflow-y: auto;
       }
 
-      /* Stick pane two */
-      #slot-two[slotted], #slot-two-fixed[slotted] {
-        display: block;
+      /* Modal Fixed / 4 (792) */
+      :host(:where([has-two][one-fixed])) {
+        --mdw-layout__pane1-width: ${PANE_FIXED}px;
       }
 
-      /* Flexible */
-      #slot[has-two], #slot-two {
-        --mdw-content__max-width: 100vw;
-        flex: 1;
-      }
-
-      /* Fixed */
-      #slot-fixed, #slot-two-fixed {
-        --mdw-pane__columns: ${WINDOW_COMPACT_COLUMNS};
-        --mdw-content__max-width: ${PANE_FIXED}px;
-      }
-
-      #slot-fixed, #slot-two-fixed {
-        --mdw-pane__min-width: ${PANE_FIXED}px;
-        --mdw-pane__max-width: ${PANE_FIXED}px;
-      }
-    }
-
-    /** TWO-PANE NO NAV */
-
-    /* Flexible+Fixed Medium */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + SPACER_WIDTH + PANE_FIXED + WINDOW_MEDIUM_BREAKPOINT}px) { 
-      #slot[has-two][two-fixed][no-nav], #slot-two[one-fixed][no-nav] {
-        --mdw-pane__columns: ${WINDOW_MEDIUM_COLUMNS};
-      }
-    }
-
-    /* Flexible+Fixed Expanded */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + SPACER_WIDTH + PANE_FIXED + WINDOW_EXPANDED_BREAKPOINT}px) { 
-      #slot[has-two][two-fixed][no-nav], #slot-two[one-fixed][no-nav] {
-        --mdw-pane__columns: ${WINDOW_EXPANDED_COLUMNS};
+      :host(:where([has-two][two-fixed])) {
+        --mdw-layout__pane2-width: ${PANE_FIXED}px;
       }
     }
 
-    /* Flexible+Flexible Medium */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + SPACER_WIDTH + (2 * WINDOW_MEDIUM_BREAKPOINT)}px) { 
-      #slot[has-two][two-flexible][no-nav], #slot-two[one-flexible][no-nav] {
-        --mdw-pane__columns: ${WINDOW_MEDIUM_COLUMNS};
+    /* Modal 8 / 8  (1272) */
+    @media screen and (min-width: ${(2 * WINDOW_PADDING) + SPACER_WIDTH + (2 * WINDOW_MEDIUM_BREAKPOINT)}px) {
+      :host(:where([has-two])) {
+        --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS};
+        --mdw-layout__pane2-columns: ${WINDOW_MEDIUM_COLUMNS};
       }
     }
 
-    /* Flexible+Flexible Expanded */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + SPACER_WIDTH + (2 * WINDOW_EXPANDED_BREAKPOINT)}px) { 
-      #slot[has-two][two-flexible][no-nav], #slot-two[one-flexible][no-nav] {
-        --mdw-pane__columns: ${WINDOW_EXPANDED_COLUMNS};
+    /* Modal 12 / 12 (1752) */
+    @media screen and (min-width: ${(2 * WINDOW_PADDING) + SPACER_WIDTH + (2 * WINDOW_EXPANDED_BREAKPOINT)}px) {
+      :host(:where([has-two])) {
+        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
+        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
       }
     }
-
-    /** TWO PANE NAV RAIL */
-
-    /* Flexible+Fixed+Rail Medium */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * PANE_FIXED) + NAV_RAIL_WIDTH}px) { 
-      #slot-rail[has-two] {
-        display: contents;
-      }
-      :host([nav-rail][has-two]) {
-        padding-inline-start: 0;
-      }
-    }
-
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_MEDIUM_BREAKPOINT + NAV_RAIL_WIDTH}px) { 
-      #slot[has-two][two-fixed][nav-rail], #slot-two[one-fixed][nav-rail] {
-        --mdw-pane__columns: ${WINDOW_MEDIUM_COLUMNS};
-      }
-    }
-
-    /* Flexible+Fixed+Rail Expanded */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_EXPANDED_BREAKPOINT + NAV_RAIL_WIDTH}px) { 
-      #slot[has-two][two-fixed][nav-rail], #slot-two[one-fixed][nav-rail] {
-        --mdw-pane__columns: ${WINDOW_EXPANDED_COLUMNS};
-      }
-    }
-
-    /* Flexible+Flexible+Rail Medium */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_MEDIUM_BREAKPOINT) + NAV_RAIL_WIDTH}px) { 
-      #slot[has-two][two-flexible][nav-rail], #slot-two[one-flexible][nav-rail] {
-        --mdw-pane__columns: ${WINDOW_MEDIUM_COLUMNS};
-      }
-    }
-
-    /* Flexible+Flexible+Rail Expanded */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_EXPANDED_BREAKPOINT) + NAV_RAIL_WIDTH}px) {
-      #slot[has-two][two-flexible][nav-rail], #slot-two[one-flexible][nav-rail] {
-        --mdw-pane__columns: ${WINDOW_EXPANDED_COLUMNS};
-      }
-    }
-
-    /** TWO PANE NAV DRAWER */
-
-    /* Flexible+Fixed+Drawer Medium */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * PANE_FIXED) + NAV_DRAWER_WIDTH}px) { 
-      #slot-rail[has-two][nav-drawer] {
-        display: none;
-      }
-      #slot-drawer[has-two] {
-        display: contents;
-      }
-      :host([nav-drawer][has-two]) {
-        padding-inline-start: 0;
-      }
-    }
-
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_MEDIUM_BREAKPOINT + NAV_DRAWER_WIDTH}px) { 
-      #slot[has-two][two-fixed][nav-drawer], #slot-two[one-fixed][nav-drawer] {
-        --mdw-pane__columns: ${WINDOW_MEDIUM_COLUMNS};
-      }
-    }
-
-    /* Flexible+Fixed+Drawer Expanded */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_EXPANDED_BREAKPOINT + NAV_DRAWER_WIDTH}px) { 
-      #slot[has-two][two-fixed][nav-drawer], #slot-two[one-fixed][nav-drawer] {
-        --mdw-pane__columns: ${WINDOW_EXPANDED_COLUMNS};
-      }
-    }
-
-    /* Flexible+Flexible+Drawer Medium */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_MEDIUM_BREAKPOINT) + NAV_DRAWER_WIDTH}px) { 
-      #slot[has-two][two-flexible][nav-drawer], #slot-two[one-flexible][nav-drawer] {
-        --mdw-pane__columns: ${WINDOW_MEDIUM_COLUMNS};
-      }
-    }
-
-    /* Flexible+Flexible+Drawer Expanded */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_EXPANDED_BREAKPOINT) + NAV_DRAWER_WIDTH}px) {
-      #slot[has-two][two-flexible][nav-drawer], #slot-two[one-flexible][nav-drawer] {
-        --mdw-pane__columns: ${WINDOW_EXPANDED_COLUMNS};
-      }
-    }
-
     
+
+    /* Modal Fixed / 8 (1032) */
+    @media screen and (min-width: ${(2 * WINDOW_PADDING) + SPACER_WIDTH + PANE_FIXED + WINDOW_MEDIUM_BREAKPOINT}px) {
+      :host(:where([has-two][one-fixed])) {
+        --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS};
+        --mdw-layout__pane2-columns: ${WINDOW_MEDIUM_COLUMNS};
+      }
+
+      :host(:where([has-two][two-fixed])) {
+        --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS};
+        --mdw-layout__pane2-columns: ${WINDOW_COMPACT_COLUMNS};
+      }
+    }
+
+    /* Modal Fixed / 12 (1272) */
+    @media screen and (min-width: ${(2 * WINDOW_PADDING) + SPACER_WIDTH + PANE_FIXED + WINDOW_EXPANDED_BREAKPOINT}px) {
+      :host(:where([has-two][one-fixed])) {
+        /* --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS}; */
+        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
+      }
+
+      :host(:where([has-two][two-fixed])) {
+        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
+        /* --mdw-layout__pane2-columns: ${WINDOW_COMPACT_COLUMNS}; */
+      }
+    }
+
+    /* Drawer 8 / 8 (872) */
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_MEDIUM_BREAKPOINT) + NAV_DRAWER_WIDTH}px) { 
+      :host(:where([has-two][nav-drawer])) {
+        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
+        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
+        --mdw-layout__nav-bar__display: none;
+        --mdw-layout__nav-drawer__visibility: visible;
+        --mdw-layout__nav-drawer__ratio: 1;
+      }
+    }
+
+    /* Drawer Fixed / 8 (1032) */
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_MEDIUM_BREAKPOINT + NAV_DRAWER_WIDTH}px) {
+      :host(:where([has-two][one-fixed][nav-drawer])) {
+        --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS};
+        --mdw-layout__pane2-columns: ${WINDOW_MEDIUM_COLUMNS};
+      }
+
+      :host(:where([has-two][two-fixed][nav-drawer])) {
+        --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS};
+        --mdw-layout__pane2-columns: ${WINDOW_COMPACT_COLUMNS};
+      }
+    }
+
+    /* Rail 4 / 4 (872) */
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * PANE_FIXED) + NAV_RAIL_WIDTH}px) { 
+      :host(:where([has-two][nav-rail])) {
+        --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS};
+        --mdw-layout__pane2-columns: ${WINDOW_COMPACT_COLUMNS};
+        --mdw-layout__nav-bar__display: none;
+        --mdw-layout__nav-drawer__visibility: hidden;
+        --mdw-layout__nav-drawer__ratio: 0;
+        --mdw-layout__nav-rail__display: block;
+        --mdw-layout__nav-rail__ratio: 1;
+      }
+    }
+
+    /* Rail 8 / 8 (872) */
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_MEDIUM_BREAKPOINT) + NAV_RAIL_WIDTH}px) { 
+      :host(:where([has-two][nav-rail])) {
+        --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS};
+        --mdw-layout__pane2-columns: ${WINDOW_MEDIUM_COLUMNS};
+      }
+    }
+
+    /* Rail 12 / 12 (872) */
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_EXPANDED_BREAKPOINT) + NAV_RAIL_WIDTH}px) { 
+      :host(:where([has-two][nav-rail])) {
+        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
+        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
+      }
+    }
+
+    /* Rail Fixed / 8 (1032) */
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_MEDIUM_BREAKPOINT + NAV_RAIL_WIDTH}px) {
+      :host(:where([has-two][one-fixed][nav-rail])) {
+        --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS};
+        --mdw-layout__pane2-columns: ${WINDOW_MEDIUM_COLUMNS};
+      }
+
+      :host(:where([has-two][two-fixed][nav-rail])) {
+        --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS};
+        --mdw-layout__pane2-columns: ${WINDOW_COMPACT_COLUMNS};
+      }
+    }
+
+    /* Rail Fixed / 12 (1032) */
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_EXPANDED_BREAKPOINT + NAV_RAIL_WIDTH}px) {
+      :host(:where([has-two][one-fixed][nav-rail])) {
+        /* --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS}; */
+        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
+      }
+
+      :host(:where([has-two][two-fixed][nav-rail])) {
+        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
+        /* --mdw-layout__pane2-columns: ${WINDOW_COMPACT_COLUMNS}; */
+      }
+    }
+
+    /* Drawer 12 / 12 (872) */
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_EXPANDED_BREAKPOINT) + NAV_DRAWER_WIDTH}px) { 
+      :host(:where([has-two][nav-drawer])) {
+        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
+        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
+        --mdw-layout__nav-bar__display: none;
+        --mdw-layout__nav-drawer__visibility: visible;
+        --mdw-layout__nav-drawer__ratio: 1;
+        --mdw-layout__nav-rail__display: none;
+        --mdw-layout__nav-rail__ratio: 0;
+      }
+    }
+
+    /* Drawer Fixed / 12 (1032) */
+    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_EXPANDED_BREAKPOINT + NAV_DRAWER_WIDTH}px) {
+      :host(:where([has-two][nav-drawer])) {
+        --mdw-layout__nav-bar__display: none;
+        --mdw-layout__nav-drawer__visibility: visible;
+        --mdw-layout__nav-drawer__ratio: 1;
+        --mdw-layout__nav-rail__display: none;
+        --mdw-layout__nav-rail__ratio: 0;
+      }
+
+      :host(:where([has-two][one-fixed][nav-drawer])) {
+        /* --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS}; */
+        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
+      }
+
+      :host(:where([has-two][two-fixed][nav-drawer])) {
+        /* --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS}; */
+        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
+      }
+    }
 
   `
   .autoRegister('mdw-layout');

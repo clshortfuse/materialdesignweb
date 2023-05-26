@@ -4,7 +4,6 @@ import ScrollListenerMixin from './ScrollListenerMixin.js';
 
 /**
  * Hides sticky element when scrolling down
- *
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function SemiStickyMixin(Base) {
@@ -137,16 +136,13 @@ export default function SemiStickyMixin(Base) {
       },
       connected() {
         const semiStickyElement = this._getSemiStickyElement();
-        if (semiStickyElement.offsetParent) {
+        // Connect scroll when element gets first size
+        const resizeObserver = new ResizeObserver(() => {
           this.startScrollListener(semiStickyElement.offsetParent ?? window);
-        } else {
-          const resizeObserver = new ResizeObserver(() => {
-            this.startScrollListener(semiStickyElement.offsetParent ?? window);
-            resizeObserver.disconnect();
-            this._refreshSemiStickyMetrics();
-          });
-          resizeObserver.observe(semiStickyElement);
-        }
+          resizeObserver.disconnect();
+          this._refreshSemiStickyMetrics();
+        });
+        resizeObserver.observe(semiStickyElement);
         this._refreshSemiStickyMetrics();
       },
       disconnected() {

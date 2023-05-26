@@ -30,6 +30,7 @@ export default Nav
       grid-template-columns: 100%;
       justify-items: stretch;
 
+      min-block-size: 100vh;
       max-block-size: 100vh;
       min-inline-size: 80px;
       max-inline-size: 80px;
