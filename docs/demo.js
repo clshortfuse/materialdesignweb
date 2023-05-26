@@ -32,7 +32,6 @@ import '../components/NavDrawerItem.js';
 import '../components/NavItem.js';
 import '../components/NavRail.js';
 import '../components/NavRailItem.js';
-import '../components/Pane.js';
 import '../components/Progress.js';
 import '../components/Radio.js';
 import '../components/Search.js';

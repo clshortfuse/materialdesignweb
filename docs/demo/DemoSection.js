@@ -8,4 +8,5 @@ export default CustomElement
       <slot></slot>
     </section>
   `
+  .css/* css */`:host{ display: block }`
   .autoRegister('demo-section');

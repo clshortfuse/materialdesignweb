@@ -7,7 +7,10 @@
   <link rel="stylesheet" href="../theme.css" />
   <link rel="stylesheet" href="../demo.css" />
   <style>
-    html {overflow: overlay}
+    html {
+      overflow: overlay
+    }
+    
     mdw-card {
       margin-block: 8px;
     }
@@ -21,6 +24,15 @@
       <mdw-nav-rail-item icon="2k">Item 2</mdw-nav-rail-item>
       <mdw-nav-rail-item icon="3k">Item 3</mdw-nav-rail-item>
       <mdw-nav-rail-item icon="4k">Item 4</mdw-nav-rail-item>
+      <mdw-nav-rail-item icon="4k">Item 4</mdw-nav-rail-item>
+      <mdw-nav-rail-item icon="4k">Item 4</mdw-nav-rail-item>
+      <mdw-nav-rail-item icon="4k">Item 4</mdw-nav-rail-item>
+      <mdw-nav-rail-item icon="4k">Item 4</mdw-nav-rail-item>
+      <mdw-nav-rail-item icon="4k">Item 4</mdw-nav-rail-item>
+      <mdw-nav-rail-item icon="4k">Item 4</mdw-nav-rail-item>
+      <mdw-nav-rail-item icon="4k">Item 4</mdw-nav-rail-item>
+      <mdw-nav-rail-item icon="4k">Item 4</mdw-nav-rail-item>
+      <mdw-nav-rail-item icon="4k">Item 4</mdw-nav-rail-item>
     </mdw-nav-rail>
     <mdw-nav-drawer id="drawer" slot="drawer">
       <mdw-nav-drawer-item icon="1k">Item 1</mdw-nav-drawer-item>
@@ -28,8 +40,13 @@
       <mdw-nav-drawer-item icon="3k">Item 3</mdw-nav-drawer-item>
       <mdw-nav-drawer-item icon="4k">Item 4</mdw-nav-drawer-item>
     </mdw-nav-drawer>
-    <mdw-pane id="one">
-      <mdw-top-app-bar id="app-bar" color=none slot=top hide-on-scroll>Layout Sample</mdw-top-app-bar>
+
+    <mdw-top-app-bar id="app-bar" slot="app-bar" color=none>
+      <mdw-icon-button icon=menu slot=leading>Menu</mdw-icon-button>
+      Layout Sample
+      <mdw-icon-button icon=more_vert slot=trailing>More</mdw-icon-button>
+    </mdw-top-app-bar>
+    <mdw-box grid id="one">
       <mdw-card flex x=center color=tertiary-container col-span=1>1 Col</mdw-card>
       <mdw-card flex x=center color=tertiary-container col-span=2>2 Col</mdw-card>
       <mdw-card flex x=center color=tertiary-container col-span=3>3 Col</mdw-card>
@@ -42,7 +59,7 @@
       <mdw-card flex x=center color=tertiary-container col-span=10>10 Col</mdw-card>
       <mdw-card flex x=center color=tertiary-container col-span=11>11 Col</mdw-card>
       <mdw-card flex x=center color=tertiary-container col-span=12>12 Col</mdw-card>
-        
+
       <mdw-list color="tertiary-container">
         <mdw-list-item>Item 1</mdw-list-item>
         <mdw-list-item>Item 2</mdw-list-item>
@@ -65,8 +82,8 @@
         <mdw-list-item>Item 19</mdw-list-item>
         <mdw-list-item>Item 20</mdw-list-item>
       </mdw-list>
-    </mdw-pane>
-    <mdw-pane id="two" slot="two">
+    </mdw-box>
+    <mdw-box id="two" slot="two" grid>
       <mdw-card flex x=center color=secondary-container col-span=1>1 Col</mdw-card>
       <mdw-card flex x=center color=secondary-container col-span=2>2 Col</mdw-card>
       <mdw-card flex x=center color=secondary-container col-span=3>3 Col</mdw-card>
@@ -101,13 +118,19 @@
         <mdw-list-item>Item 19</mdw-list-item>
         <mdw-list-item>Item 20</mdw-list-item>
       </mdw-list>
-    </mdw-pane>
+    </mdw-box>
+    <mdw-nav-bar id=nav-bar slot=nav-bar>
+      <mdw-nav-bar-item icon=1k>Item 1</mdw-nav-bar-item>
+      <mdw-nav-bar-item icon=2k>Item 2</mdw-nav-bar-item>
+      <mdw-nav-bar-item icon=3k>Item 3</mdw-nav-bar-item>
+    </mdw-nav-bar>
   </mdw-layout>
   <script>
-    const {searchParams} = new URL(document.location);
+    const { searchParams } = new URL(document.location);
     if (!searchParams.has('rail')) document.getElementById('rail').remove();
     if (!searchParams.has('drawer')) document.getElementById('drawer').remove();
     if (!searchParams.has('appBar')) document.getElementById('app-bar').remove();
+    if (!searchParams.has('navBar')) document.getElementById('nav-bar').remove();
     switch (searchParams.get('panes')) {
       case 'fixed':
         document.getElementById('one').slot = 'fixed';

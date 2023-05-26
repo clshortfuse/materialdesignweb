@@ -4,7 +4,6 @@ import '../../components/Menu.js';
 import '../../components/Listbox.js';
 import '../../components/MenuItem.js';
 import '../../components/TopAppBar.js';
-import '../../components/Pane.js';
 
 import CustomElement from '../../core/CustomElement.js';
 
@@ -43,6 +42,7 @@ const links = [
   { icon: 'toggle_on', href: '/components/switches.html', text: 'Switches' },
   { icon: 'tab', href: '/components/tabs.html', text: 'Tabs' },
   { icon: 'edit', href: '/components/textinput.html', text: 'Input' },
+  { icon: 'search', href: '/components/search.html', text: 'Search' },
   { icon: 'edit', href: '/components/select.html', text: 'Select' },
   { icon: 'edit_note', href: '/components/textarea.html', text: 'Textarea' },
   { icon: 'web_asset', href: '/components/tooltip.html', text: 'Tooltips' },
@@ -88,8 +88,7 @@ export default CustomElement
         <mdw-nav-drawer slot=drawer>
           <mdw-nav-drawer-item mdw-for="{link of links}" active=${(data, { link }) => isActive(link?.href)} icon={link.icon} href={link.href}>{link.text}</mdw-nav-drawer-item>
         </mdw-nav-drawer>
-        <mdw-pane>
-          <mdw-top-app-bar headline=${() => document.title} color=none sticky slot=top>
+        <mdw-top-app-bar headline=${() => document.title} color=none slot=app-bar>
             <mdw-icon-button color=surface id=back-button mdw-if={!isRootPage} slot=leading 
               href="../"
               icon=arrow_back
@@ -97,8 +96,7 @@ export default CustomElement
             <mdw-icon-button color=surface id=settings slot=trailing icon=settings>Settings</mdw-icon-button>
             <mdw-icon-button color=surface slot=trailing href="https://github.com/clshortfuse/materialdesignweb" icon=invertocat>GitHub Page</mdw-icon-button>
           </mdw-top-app-bar>
-          <slot role=main></slot>
-        </mdw-pane>
+        <slot role=main></slot>
         <!-- <mdw-pane>
           <mdw-card color=surface elevated>
             <mdw-headline style="padding:12px">Theming Options</mdw-headline>
