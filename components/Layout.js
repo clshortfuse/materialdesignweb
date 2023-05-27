@@ -1,21 +1,5 @@
 import CustomElement from '../core/CustomElement.js';
 
-const WINDOW_COMPACT_COLUMNS = 4;
-const WINDOW_COMPACT_PADDING = 16;
-const WINDOW_PADDING = 24;
-const SPACER_WIDTH = 24;
-
-const WINDOW_MEDIUM_BREAKPOINT = 600;
-const WINDOW_MEDIUM_COLUMNS = 8;
-const WINDOW_EXPANDED_BREAKPOINT = 840;
-const WINDOW_EXPANDED_COLUMNS = 12;
-const WINDOW_EXPANDED_WIDTH_MAX = 1040;
-const WINDOW_EXPANDED_PADDING_MAX = 200;
-
-const PANE_FIXED = 360;
-const NAV_RAIL_WIDTH = 80;
-const NAV_DRAWER_WIDTH = 360;
-
 export default CustomElement
   .extend()
   .observe({
@@ -111,20 +95,20 @@ export default CustomElement
     /** Simple block layout on compact */
 
     :host {
-      --mdw-grid__columns: ${WINDOW_COMPACT_COLUMNS};
+      --mdw-grid__columns: 4;
       --mdw-layout__pane1-columns: 4;
       --mdw-layout__pane2-columns: 4;
-      --mdw-content__max-width: ${WINDOW_EXPANDED_WIDTH_MAX}px;
-      --mdw-content__padding: ${WINDOW_COMPACT_PADDING}px;
-      --mdw-layout__spacer-width: ${SPACER_WIDTH}px;
+      --mdw-content__max-width: 1040px;
+      --mdw-content__padding: 16px;
+      --mdw-layout__spacer-width: 24px;
       --mdw-layout__nav-drawer__ratio: 0;
-      --mdw-layout__nav-drawer-width: ${NAV_DRAWER_WIDTH}px;
+      --mdw-layout__nav-drawer-width: 360px;
       --mdw-layout__nav-rail__ratio: 0;
-      --mdw-layout__nav-rail-width: ${NAV_RAIL_WIDTH}px;
+      --mdw-layout__nav-rail-width: 80px;
       --mdw-layout__pane1-width: 1fr;
       --mdw-layout__pane2-width: 0;
       --mdw-layout__pane2-visibility: hidden;
-      --mdw-layout__window-padding: ${WINDOW_COMPACT_PADDING}px;
+      --mdw-layout__window-padding: 16px;
       --mdw-layout__nav-drawer__visibility: hidden;
 
       display: grid;
@@ -163,6 +147,7 @@ export default CustomElement
       inline-size: 100%;
       max-inline-size: var(--mdw-content__max-width, auto);
       margin-inline: auto;
+
       grid-area: pane1;
     }
 
@@ -232,7 +217,7 @@ export default CustomElement
     * - Rail      4col     4col     80 | 360 | 360 |     80    360     720   872  YES
     * - Rail      Fixed    4col     80 | 360 | 360 |     80    360     720   872  YES
     * - Modal     12col             | 840 |               0      0     840   888  If Single Pane + No Rail
-    * - Rail      12col             80 | 840 |           80      0     840   920  If Single Pane
+    * - Rail      12col             80 | 840 |           80      0     840   968  If Single Pane
     * - Drawer    8col              360 | 600 |         360      0     600  1008  NO (Loses Content)
     * - Modal     Fixed    8col     | 360 | 600 |         0    600     960  1032  If No Rail
     * - Rail      Fixed    8col     80 | 360 | 600 |     80    600     960  1112  YES
@@ -261,7 +246,7 @@ export default CustomElement
     * - Modal     12col             | 840 |               0      0     840   888  If Single Pane + No Rail
     * - Rail      4col              80 x 360 x           80      0     360   472  NO
     * - Rail      8col              80 | 600 |           80      0     600   728  YES
-    * - Rail      12col             80 | 840 |           80      0     840   920  If Single Pane
+    * - Rail      12col             80 | 840 |           80      0     840   968  If Single Pane
     * - Drawer    4col              360 | 360 |         360      0     360   768  NO
     * - Drawer    8col              360 | 600 |         360      0     600  1008  NO (Loses Content)
     * - Drawer    12col             360 | 840 |         360      0     840  1248  If Single Pane
@@ -287,33 +272,33 @@ export default CustomElement
 
     /* Single Pane Modal */
 
-    /** Modal 8 (632) */
-    @media screen and (min-width: ${WINDOW_MEDIUM_BREAKPOINT + (2 * WINDOW_COMPACT_PADDING)}px) {
+    /** Modal 8 */
+    @media screen and (min-width: 632px) {
       :host {
-        --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS};
+        --mdw-layout__pane1-columns: 8;
       }
     }
 
-    /* Modal 8 (648) */
-    @media screen and (min-width: ${WINDOW_MEDIUM_BREAKPOINT + (2 * WINDOW_PADDING)}px) {
+    /* Modal 8 */
+    @media screen and (min-width: 648px) {
       :host { 
-        --mdw-layout__window-padding: ${WINDOW_PADDING}px;
-        --mdw-content__padding: ${WINDOW_PADDING}px;
-        /* --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS}; */
+        --mdw-layout__window-padding: 24px;
+        --mdw-content__padding: 24px;
+        /* --mdw-layout__pane1-columns: 8; */
       }
     }
 
-    /** Modal 12 (888) */
-    @media screen and (min-width: ${WINDOW_EXPANDED_BREAKPOINT + (2 * WINDOW_PADDING)}px) {
+    /** Modal 12 */
+    @media screen and (min-width: 888px) {
       :host {
-        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
+        --mdw-layout__pane1-columns: 12;
       }
     }
 
-    /** Rail 8 (728) */
-    @media screen and (min-width: ${WINDOW_MEDIUM_BREAKPOINT + (2 * WINDOW_PADDING) + NAV_RAIL_WIDTH}px) {
+    /** Rail 8 */
+    @media screen and (min-width: 728px) {
       :host(:where([nav-rail])) {
-        --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS};
+        --mdw-layout__pane1-columns: 8;
         --mdw-layout__nav-bar__display: none;
         --mdw-layout__nav-drawer__visibility: hidden;
         --mdw-layout__nav-drawer__ratio: 0;
@@ -322,20 +307,20 @@ export default CustomElement
       }
     }
 
-    /** Rail 12 (920) */
-    @media screen and (min-width: ${WINDOW_EXPANDED_BREAKPOINT + (2 * WINDOW_PADDING) + NAV_RAIL_WIDTH}px) {
+    /** Rail 12 */
+    @media screen and (min-width: 968px) {
       :host(:where([nav-rail])) {
-        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
+        --mdw-layout__pane1-columns: 12;
         --mdw-layout__nav-bar__display: none;
         --mdw-layout__nav-rail__display: block;
         --mdw-layout__nav-rail__ratio: 1;
       }
     }
 
-    /** Drawer 12 (1248) */
-    @media screen and (min-width: ${WINDOW_EXPANDED_BREAKPOINT + (2 * WINDOW_PADDING) + NAV_DRAWER_WIDTH}px) {
+    /** Drawer 12 */
+    @media screen and (min-width: 1248px) {
       :host(:where([nav-drawer])) {
-        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
+        --mdw-layout__pane1-columns: 12;
         --mdw-layout__nav-bar__display: none;
         --mdw-layout__nav-drawer__visibility: visible;
         --mdw-layout__nav-drawer__ratio: 1;
@@ -344,12 +329,12 @@ export default CustomElement
       }
     }
 
-    /* Modal 4 / 4 (792) */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + SPACER_WIDTH + (2 * PANE_FIXED)}px) { 
+    /* Modal 4 / 4  */
+    @media screen and (min-width: 792px) { 
       /* Apply padding+spacer to host */
       :host(:where([has-two])) {
-        --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS};
-        --mdw-layout__pane2-columns: ${WINDOW_COMPACT_COLUMNS};
+        --mdw-layout__pane1-columns: 4;
+        --mdw-layout__pane2-columns: 4;
         --mdw-layout__nav-bar__display: contents;
         --mdw-layout__nav-drawer__visibility: hidden;
         --mdw-layout__nav-drawer__ratio: 0;
@@ -380,88 +365,88 @@ export default CustomElement
         overflow-y: auto;
       }
 
-      /* Modal Fixed / 4 (792) */
+      /* Modal Fixed / 4 */
       :host(:where([has-two][one-fixed])) {
-        --mdw-layout__pane1-width: ${PANE_FIXED}px;
+        --mdw-layout__pane1-width: 360px;
       }
 
       :host(:where([has-two][two-fixed])) {
-        --mdw-layout__pane2-width: ${PANE_FIXED}px;
+        --mdw-layout__pane2-width: 360px;
       }
     }
 
-    /* Modal 8 / 8  (1272) */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + SPACER_WIDTH + (2 * WINDOW_MEDIUM_BREAKPOINT)}px) {
+    /* Modal 8 / 8  */
+    @media screen and (min-width: 1272px) {
       :host(:where([has-two])) {
-        --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS};
-        --mdw-layout__pane2-columns: ${WINDOW_MEDIUM_COLUMNS};
+        --mdw-layout__pane1-columns: 8;
+        --mdw-layout__pane2-columns: 8;
       }
     }
 
-    /* Modal 12 / 12 (1752) */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + SPACER_WIDTH + (2 * WINDOW_EXPANDED_BREAKPOINT)}px) {
+    /* Modal 12 / 12 */
+    @media screen and (min-width: 1752px) {
       :host(:where([has-two])) {
-        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
-        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
+        --mdw-layout__pane1-columns: 12;
+        --mdw-layout__pane2-columns: 12;
       }
     }
     
 
-    /* Modal Fixed / 8 (1032) */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + SPACER_WIDTH + PANE_FIXED + WINDOW_MEDIUM_BREAKPOINT}px) {
+    /* Modal Fixed / 8 */
+    @media screen and (min-width: 1032px) {
       :host(:where([has-two][one-fixed])) {
-        --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS};
-        --mdw-layout__pane2-columns: ${WINDOW_MEDIUM_COLUMNS};
+        --mdw-layout__pane1-columns: 4;
+        --mdw-layout__pane2-columns: 8;
       }
 
       :host(:where([has-two][two-fixed])) {
-        --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS};
-        --mdw-layout__pane2-columns: ${WINDOW_COMPACT_COLUMNS};
+        --mdw-layout__pane1-columns: 8;
+        --mdw-layout__pane2-columns: 4;
       }
     }
 
-    /* Modal Fixed / 12 (1272) */
-    @media screen and (min-width: ${(2 * WINDOW_PADDING) + SPACER_WIDTH + PANE_FIXED + WINDOW_EXPANDED_BREAKPOINT}px) {
+    /* Modal Fixed / 12 */
+    @media screen and (min-width: 1272px) {
       :host(:where([has-two][one-fixed])) {
-        /* --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS}; */
-        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
+        /* --mdw-layout__pane1-columns: 4; */
+        --mdw-layout__pane2-columns: 12;
       }
 
       :host(:where([has-two][two-fixed])) {
-        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
-        /* --mdw-layout__pane2-columns: ${WINDOW_COMPACT_COLUMNS}; */
+        --mdw-layout__pane1-columns: 12;
+        /* --mdw-layout__pane2-columns: 4; */
       }
     }
 
-    /* Drawer 8 / 8 (872) */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_MEDIUM_BREAKPOINT) + NAV_DRAWER_WIDTH}px) { 
+    /* Drawer 8 / 8 */
+    @media screen and (min-width: 1632px) { 
       :host(:where([has-two][nav-drawer])) {
-        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
-        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
+        --mdw-layout__pane1-columns: 12;
+        --mdw-layout__pane2-columns: 12;
         --mdw-layout__nav-bar__display: none;
         --mdw-layout__nav-drawer__visibility: visible;
         --mdw-layout__nav-drawer__ratio: 1;
       }
     }
 
-    /* Drawer Fixed / 8 (1032) */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_MEDIUM_BREAKPOINT + NAV_DRAWER_WIDTH}px) {
+    /* Drawer Fixed / 8 */
+    @media screen and (min-width: 1392px) {
       :host(:where([has-two][one-fixed][nav-drawer])) {
-        --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS};
-        --mdw-layout__pane2-columns: ${WINDOW_MEDIUM_COLUMNS};
+        --mdw-layout__pane1-columns: 4;
+        --mdw-layout__pane2-columns: 8;
       }
 
       :host(:where([has-two][two-fixed][nav-drawer])) {
-        --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS};
-        --mdw-layout__pane2-columns: ${WINDOW_COMPACT_COLUMNS};
+        --mdw-layout__pane1-columns: 8;
+        --mdw-layout__pane2-columns: 4;
       }
     }
 
-    /* Rail 4 / 4 (872) */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * PANE_FIXED) + NAV_RAIL_WIDTH}px) { 
+    /* Rail 4 / 4 */
+    @media screen and (min-width: 872px) { 
       :host(:where([has-two][nav-rail])) {
-        --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS};
-        --mdw-layout__pane2-columns: ${WINDOW_COMPACT_COLUMNS};
+        --mdw-layout__pane1-columns: 4;
+        --mdw-layout__pane2-columns: 4;
         --mdw-layout__nav-bar__display: none;
         --mdw-layout__nav-drawer__visibility: hidden;
         --mdw-layout__nav-drawer__ratio: 0;
@@ -470,53 +455,53 @@ export default CustomElement
       }
     }
 
-    /* Rail 8 / 8 (872) */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_MEDIUM_BREAKPOINT) + NAV_RAIL_WIDTH}px) { 
+    /* Rail 8 / 8 */
+    @media screen and (min-width: 1352px) { 
       :host(:where([has-two][nav-rail])) {
-        --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS};
-        --mdw-layout__pane2-columns: ${WINDOW_MEDIUM_COLUMNS};
+        --mdw-layout__pane1-columns: 8;
+        --mdw-layout__pane2-columns: 8;
       }
     }
 
-    /* Rail 12 / 12 (872) */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_EXPANDED_BREAKPOINT) + NAV_RAIL_WIDTH}px) { 
+    /* Rail 12 / 12 */
+    @media screen and (min-width: 1832px) { 
       :host(:where([has-two][nav-rail])) {
-        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
-        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
+        --mdw-layout__pane1-columns: 12;
+        --mdw-layout__pane2-columns: 12;
       }
     }
 
-    /* Rail Fixed / 8 (1032) */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_MEDIUM_BREAKPOINT + NAV_RAIL_WIDTH}px) {
+    /* Rail Fixed / 8 */
+    @media screen and (min-width: 1112px) {
       :host(:where([has-two][one-fixed][nav-rail])) {
-        --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS};
-        --mdw-layout__pane2-columns: ${WINDOW_MEDIUM_COLUMNS};
+        --mdw-layout__pane1-columns: 4;
+        --mdw-layout__pane2-columns: 8;
       }
 
       :host(:where([has-two][two-fixed][nav-rail])) {
-        --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS};
-        --mdw-layout__pane2-columns: ${WINDOW_COMPACT_COLUMNS};
+        --mdw-layout__pane1-columns: 8;
+        --mdw-layout__pane2-columns: 4;
       }
     }
 
-    /* Rail Fixed / 12 (1032) */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_EXPANDED_BREAKPOINT + NAV_RAIL_WIDTH}px) {
+    /* Rail Fixed / 12 */
+    @media screen and (min-width: 1352px) {
       :host(:where([has-two][one-fixed][nav-rail])) {
-        /* --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS}; */
-        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
+        /* --mdw-layout__pane1-columns: 4; */
+        --mdw-layout__pane2-columns: 12;
       }
 
       :host(:where([has-two][two-fixed][nav-rail])) {
-        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
-        /* --mdw-layout__pane2-columns: ${WINDOW_COMPACT_COLUMNS}; */
+        --mdw-layout__pane1-columns: 12;
+        /* --mdw-layout__pane2-columns: 4; */
       }
     }
 
-    /* Drawer 12 / 12 (872) */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + (2 * WINDOW_EXPANDED_BREAKPOINT) + NAV_DRAWER_WIDTH}px) { 
+    /* Drawer 12 / 12 */
+    @media screen and (min-width: 2112px) {
       :host(:where([has-two][nav-drawer])) {
-        --mdw-layout__pane1-columns: ${WINDOW_EXPANDED_COLUMNS};
-        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
+        --mdw-layout__pane1-columns: 12;
+        --mdw-layout__pane2-columns: 12;
         --mdw-layout__nav-bar__display: none;
         --mdw-layout__nav-drawer__visibility: visible;
         --mdw-layout__nav-drawer__ratio: 1;
@@ -526,7 +511,7 @@ export default CustomElement
     }
 
     /* Drawer Fixed / 12 (1032) */
-    @media screen and (min-width: ${WINDOW_PADDING + (2 * SPACER_WIDTH) + PANE_FIXED + WINDOW_EXPANDED_BREAKPOINT + NAV_DRAWER_WIDTH}px) {
+    @media screen and (min-width: 1632px) {
       :host(:where([has-two][nav-drawer])) {
         --mdw-layout__nav-bar__display: none;
         --mdw-layout__nav-drawer__visibility: visible;
@@ -536,13 +521,13 @@ export default CustomElement
       }
 
       :host(:where([has-two][one-fixed][nav-drawer])) {
-        /* --mdw-layout__pane1-columns: ${WINDOW_COMPACT_COLUMNS}; */
-        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
+        /* --mdw-layout__pane1-columns: 4; */
+        --mdw-layout__pane2-columns: 12;
       }
 
       :host(:where([has-two][two-fixed][nav-drawer])) {
-        /* --mdw-layout__pane1-columns: ${WINDOW_MEDIUM_COLUMNS}; */
-        --mdw-layout__pane2-columns: ${WINDOW_EXPANDED_COLUMNS};
+        /* --mdw-layout__pane1-columns: 8; */
+        --mdw-layout__pane2-columns: 12;
       }
     }
 

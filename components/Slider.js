@@ -182,6 +182,9 @@ export default CustomElement
         `--value:${valueAsFraction(_previewValue, min, max)}`,
       ].filter(Boolean).join(';') || null;
     },
+    _thumbLabelHidden({ _isHoveringThumb, focusedState }) {
+      return (!_isHoveringThumb && !focusedState);
+    },
   })
   .html/* html */`
     <div id=track style={computeTrackStyle} aria-hidden=true disabled={disabledState}>
@@ -190,7 +193,7 @@ export default CustomElement
       <div id=thumb-anchor>
         <div id=thumb></div>
         <div id=thumb-label
-          hidden=${({ _isHoveringThumb, focusedState }) => (!_isHoveringThumb && !focusedState)} 
+          hidden={_thumbLabelHidden}
           text={_previewValue}></div>
       </div>
     </div>
