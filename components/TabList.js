@@ -257,7 +257,7 @@ export default CustomElement
   .set({
     ariaRole: 'tablist',
   })
-  .html/* html */`
+  .html`
     <slot id=slot ink={ink} type-style={typeStyle}></slot>
     <div id=indicator aria-hidden=true style={_indicatorStyle} active={active} secondary={secondary}>
       <div id=indicator-start class=indicator-piece></div>
@@ -304,7 +304,7 @@ export default CustomElement
       },
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/tabs/specs */
 
     :host {

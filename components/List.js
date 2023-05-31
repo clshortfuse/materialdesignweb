@@ -13,7 +13,7 @@ export default Box
     _ariaRole: 'list',
     color: { empty: 'surface' },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/lists/specs */
 
     :host {

@@ -2,8 +2,8 @@
 export default function TouchTargetMixin(Base) {
   return Base
     .extend()
-    .html/* html */`<div id=touch-target class=touch-target></div>`
-    .css/* css */`
+    .html`<div id=touch-target class=touch-target></div>`
+    .css`
         /* stylelint-disable liberty/use-logical-spec */
       .touch-target {
         position: absolute;

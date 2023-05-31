@@ -51,7 +51,7 @@ export default function RippleMixin(Base) {
         return ripple;
       },
     })
-    .html/* html */`
+    .html`
       <div id=ripple-container mdw-if={!disabledState} aria-hidden=true></div>
     `
     .events({

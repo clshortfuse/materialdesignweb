@@ -17,7 +17,7 @@ export default Surface
     },
     touch: 'boolean',
   })
-  .css/* css */`
+  .css`
     /* https://m2.material.io/components/tooltips */
 
     :host {

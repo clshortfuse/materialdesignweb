@@ -45,7 +45,7 @@ export default CustomElement
       },
     },
   })
-  .html/* html */`
+  .html`
     <slot id=leading name=leading on-slotchange={refreshTabIndexes}></slot>
     <div id=headline ink={ink} color={color} type-style={typeStyle} on-slotchange={refreshTabIndexes}>
       {headline}
@@ -103,7 +103,7 @@ export default CustomElement
       },
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/bottom-app-bar/specs */
 
     :host {

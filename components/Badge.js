@@ -8,7 +8,7 @@ export default CustomElement
   .mixin(DensityMixin)
   .mixin(ShapeMixin)
   .extend()
-  .html/* html */`<slot id=slot></slot>`
+  .html`<slot id=slot></slot>`
   .css`
     :host {
       --mdw-shape__size: 8px;

@@ -155,7 +155,7 @@ export default CustomElement
     cancelAutoFocus({ default: d }) { return d === 'cancel'; },
     confirmAutoFocus({ default: d }) { return d === 'confirm'; },
   })
-  .html/* html */`
+  .html`
     <div id=prepend>
       <mdw-icon mdw-if={icon} id=icon class=content ink=secondary aria-hidden=true>{icon}</mdw-icon>
       <slot id=headline name=headline on-slotchange={onSlotChange} role=header>{headline}</slot>
@@ -191,7 +191,7 @@ export default CustomElement
       append.remove();
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/dialogs/specs */
 
     :host {

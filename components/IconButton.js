@@ -59,7 +59,7 @@ export default Button
       outline.setAttribute('selected', '{checked}');
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/icon-buttons/specs */
 
     :host {

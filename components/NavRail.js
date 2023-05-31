@@ -12,7 +12,7 @@ export default Nav
       slot.setAttribute('align', '{align}');
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/navigation-rail/specs */
 
     :host{

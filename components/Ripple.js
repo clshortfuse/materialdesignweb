@@ -108,7 +108,7 @@ export default CustomElement
       }
     },
   })
-  .css/* css */`
+  .css`
     /* stylelint-disable liberty/use-logical-spec */
     :host {
       --enter-delay: 80ms;

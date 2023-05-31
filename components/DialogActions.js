@@ -10,5 +10,5 @@ export default CustomElement
       padding-inline: 24px;
     }
   `
-  .html/* html */`<slot id=slot></slot>`
+  .html`<slot id=slot></slot>`
   .autoRegister('mdw-dialog-actions');

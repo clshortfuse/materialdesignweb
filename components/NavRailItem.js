@@ -4,7 +4,7 @@ import NavItem from './NavItem.js';
 
 export default NavItem
   .extend()
-  .css/* css */`
+  .css`
     :host {
       grid-auto-flow: row;
       grid-auto-rows: minmax(20px, auto);

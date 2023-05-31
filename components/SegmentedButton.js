@@ -43,7 +43,7 @@ export default Button
       this.outlined = true;
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/segmented-buttons/specs */
 
     :host {

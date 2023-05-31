@@ -2,7 +2,7 @@ import Button from './Button.js';
 
 export default Button
   .extend()
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/extended-fab/specs */
 
     :host {

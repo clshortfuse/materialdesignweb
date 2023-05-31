@@ -46,7 +46,7 @@ export default CustomElement
       this.refs.anchor.focus(options);
     },
   })
-  .html/* html */`
+  .html`
     <a id=anchor role=tab
       aria-label={ariaLabel}
       aria-controls=${({ href }) => (href?.startsWith('#') ? href.slice(1) : null)}

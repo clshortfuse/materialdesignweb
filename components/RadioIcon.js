@@ -21,7 +21,7 @@ export default CustomElement
       set(value) { this.selected = value; },
     },
   })
-  .html/* html */`
+  .html`
     <div id=inner-shape class=shape selected={selected}></div>
   `.on({
     composed() {

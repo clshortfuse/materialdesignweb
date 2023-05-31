@@ -169,7 +169,7 @@ export default function ControlMixin(Base) {
         },
       },
     })
-    .css/* css */`
+    .css`
       :host {
         display: inline-flex;
       }

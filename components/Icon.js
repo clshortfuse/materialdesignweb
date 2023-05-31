@@ -88,7 +88,7 @@ export default class Icon extends CustomElement
     },
 
   })
-  .html/* html */`
+  .html`
     <link mdw-if={_showSlot} id=link rel=stylesheet href={fontLibrary} />
     <svg mdw-if="{showSVG}" id="svg" viewBox="{_computedViewBox}">
       <use id="use" mdw-if="{svg}" href="{svg}" fill="currentColor"/>

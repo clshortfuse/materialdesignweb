@@ -43,12 +43,12 @@ export default CustomElement
       if (this.actionable) this.refs.action.focus();
     },
   })
-  .html/* html */`
+  .html`
     <mdw-button mdw-if={actionable} aria-label={actionLabel} id=action disabled={disabledState}></mdw-button>
     <div mdw-if={showBlocker} id=inert-blocker></div>
     <slot id=slot disabled={disabledState}></slot>
   `
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/cards/specs */
 
     :host {

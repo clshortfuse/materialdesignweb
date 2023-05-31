@@ -270,13 +270,13 @@ export default CustomElement
       control.setAttribute('aria-expanded', '{ariaExpandedAttrValue}');
     },
   })
-  .html/* html */`
+  .html`
     <slot id=slot></slot>
     <div id=aria-listbox role=listbox>
       <div id=aria-active role=option aria-setsize="{_listbox.length}" aria-posinset={_focusedPosInSet} aria-label={selectedOption.label}></div>
     </div>
   `
-  .css/* css */`
+  .css`
     #slot {
       display: none;
     }

@@ -37,7 +37,7 @@ export default function StateMixin(Base) {
     .define({
       stateTargetElement() { return this; },
     })
-    .html/* html */`
+    .html`
       <div id=state mdw-if={stateLayer}
         disabled={disabledState}
         focused={focusedState}

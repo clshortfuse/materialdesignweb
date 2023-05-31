@@ -17,7 +17,7 @@ export default function TooltipTriggerMixin(Base) {
         },
       });
       // eslint-disable-next-line no-unused-expressions
-      this.css/* css */`
+      this.css`
         #tooltip {
           position:absolute;
         

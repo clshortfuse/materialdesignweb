@@ -9,14 +9,14 @@ export default CustomElement
   .mixin(FlexableMixin)
   .mixin(SurfaceMixin)
   .mixin(ShapeMixin)
-  .html/* html */`<slot id=slot></slot>`
+  .html`<slot id=slot></slot>`
   .on({
     composed() {
       const { surface, shape } = this.refs;
       surface.append(shape);
     },
   })
-  .css/* css */`
+  .css`
     :host {
       --mdw-shape__bg: rgb(var(--mdw-color__surface));
       --mdw-ink: var(--mdw-color__on-surface);

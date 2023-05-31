@@ -19,7 +19,7 @@ CustomElement
   .observe({
     hidden: 'boolean',
   })
-  .css/* css */`
+  .css`
     :host {
       position: fixed;
       inset: 0;
@@ -501,14 +501,14 @@ export default function PopupMixin(Base) {
     .expressions({
       _ariaHidden({ open }) { return (open ? 'false' : 'true'); },
     })
-    .html/* html */`
+    .html`
       <mdw-scrim id=scrim tabindex=-1 aria-hidden=true></mdw-scrim>
       <dialog id=dialog aria-modal=true role=dialog
       aria-hidden={_ariaHidden} scrollable={scrollable}>
         <slot id=slot on-slotchange={onSlotChange}></slot>
       </dialog>
     `
-    .css/* css */`
+    .css`
     /* https://m3.material.io/components/dialogs/specs */
 
     :host {

@@ -14,10 +14,10 @@ export default function SurfaceMixin(Base) {
         },
       },
     })
-    .html/* html */`
+    .html`
       <div id=surface class=surface raised={_raised} disabled={disabledState} color={color}></div>
     `
-    .css/* css */`
+    .css`
       :host {
 
         /** Filter blur is 1/2 CSS blur */

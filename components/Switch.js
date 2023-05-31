@@ -24,7 +24,7 @@ export default CustomElement
     selectedSrc: 'string',
     unselectedSrc: 'string',
   })
-  .html/* html */`
+  .html`
     <mdw-switch-icon id=switch
       color={color} ink={ink} selected={checked} hovered={hoveredState}
       focused={focusedState} pressed={pressedState} disabled={disabledState}
@@ -128,7 +128,7 @@ export default CustomElement
       '~pointermove': 'onControlMouseOrTouch',
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/switch/specs */
 
     :host {

@@ -87,7 +87,7 @@ export default CustomElement
       },
     },
   })
-  .html/* html */`<slot id=slot></slot>`
+  .html`<slot id=slot></slot>`
   .methods({
     onResizeObserved() {
       this._panelMetrics = null;

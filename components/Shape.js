@@ -12,7 +12,7 @@ export default Box
       shape.remove();
     },
   })
-  .css/* css */`
+  .css`
     :host {
       position: relative;
 

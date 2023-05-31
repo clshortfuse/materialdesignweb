@@ -2,7 +2,7 @@ import Box from '../../components/Box.js';
 
 export default Box
   .extend()
-  .css/* css */`
+  .css`
     :host {
       position: relative;
       max-height: 400px;

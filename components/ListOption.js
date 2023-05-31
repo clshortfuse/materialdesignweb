@@ -107,7 +107,7 @@ export default class ListOption extends ListItem
       this.dispatchEvent(new Event('mdw-list-option:changed', { bubbles: true, composed: true }));
     },
   })
-  .css/* css */`
+  .css`
     :host {
       --mdw-bg: var(--mdw-color__secondary-container);
       --mdw-ink: var(--mdw-color__on-secondary-container);

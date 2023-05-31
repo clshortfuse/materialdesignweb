@@ -10,7 +10,7 @@ export default function ThemableMixin(Base) {
       block: 'boolean',
       typeStyle: 'string',
     })
-    .css/* css */`
+    .css`
       :host([color="primary"]) {
         --mdw-bg: var(--mdw-color__primary);
         --mdw-ink: var(--mdw-color__on-primary);

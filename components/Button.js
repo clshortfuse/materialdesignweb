@@ -55,7 +55,7 @@ export default CustomElement
       }
     },
   })
-  .html/* html */`
+  .html`
     <mdw-icon mdw-if={hasIcon} id=icon ink={iconInk} disabled={disabledState} outlined={outlined} aria-hidden=true svg={svg} src={src} svg-path={svgPath} view-box={viewBox}>{icon}</mdw-icon>
     <a mdw-if={href} id=anchor href={href} aria-label="{computedAriaLabel}"></a>
     <slot id=slot disabled={disabledState} aria-hidden=false></slot>
@@ -86,7 +86,7 @@ export default CustomElement
       control.setAttribute('role', 'button');
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/buttons/specs */
 
     :host {

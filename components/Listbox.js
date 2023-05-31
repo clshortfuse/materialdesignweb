@@ -14,7 +14,7 @@ export default class Listbox extends List
   .mixin(KeyboardNavMixin) {
   static {
     // eslint-disable-next-line no-unused-expressions
-    this.css/* css */`
+    this.css`
       :host(:disabled) {
         cursor: not-allowed;
         pointer-events: none;

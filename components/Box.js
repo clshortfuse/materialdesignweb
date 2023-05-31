@@ -18,7 +18,7 @@ export default CustomElement
       empty: true,
     },
   })
-  .css/* css */`
+  .css`
     :host {
       display: block;
     }
@@ -80,5 +80,5 @@ export default CustomElement
     #slot[grid]::slotted([col-span="25%"]) { grid-column: auto / span max(calc(var(--mdw-grid__columns) / 4), 1); }
 
   `
-  .html/* html */`<slot id=slot type-style={typeStyle} grid={grid}></slot>`
+  .html`<slot id=slot type-style={typeStyle} grid={grid}></slot>`
   .autoRegister('mdw-box');

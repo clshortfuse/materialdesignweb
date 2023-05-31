@@ -53,7 +53,7 @@ export default function TextFieldMixin(Base) {
         return label && (filled || outlined);
       },
     })
-    .html/* html */`
+    .html`
       <div id=label-text mdw-if={_showLabelText} aria-hidden=true
         outlined={outlined}
         populated={populatedState}
@@ -116,7 +116,7 @@ export default function TextFieldMixin(Base) {
         this.refs.control.style.setProperty('--size', `${newValue}ch`);
       },
     })
-    .css/* css */`
+    .css`
       /* https://m3.material.io/components/text-fields/specs */
 
       /**

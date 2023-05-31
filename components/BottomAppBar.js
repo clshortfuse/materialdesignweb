@@ -20,7 +20,7 @@ export default Surface
   .observe({
     color: { empty: 'surface-container' },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/bottom-app-bar/specs */
 
     :host {

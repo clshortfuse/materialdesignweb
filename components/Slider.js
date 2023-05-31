@@ -186,7 +186,7 @@ export default CustomElement
       return (!_isHoveringThumb && !focusedState);
     },
   })
-  .html/* html */`
+  .html`
     <div id=track style={computeTrackStyle} aria-hidden=true disabled={disabledState}>
       <div mdw-if={ticks} id=ticks></div>
       <div id=track-active></div>
@@ -208,7 +208,7 @@ export default CustomElement
       this._previewValue = newValue;
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/sliders/specs */
 
     :host {

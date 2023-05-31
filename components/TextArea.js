@@ -217,7 +217,7 @@ export default CustomElement
       maxrows: cloneAttributeCallback('maxrows', 'control'),
     },
   })
-  .css/* css */`
+  .css`
       /* https://m3.material.io/components/text-fields/specs */
 
       :host {

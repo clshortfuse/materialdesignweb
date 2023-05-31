@@ -20,7 +20,7 @@ export default CustomElement
     type: 'radio',
     stateLayer: true,
   })
-  .html/* html */`
+  .html`
     <div id=radio errored={erroredState} selected={checked}>
       <mdw-radio-icon id=icon errored={erroredState} disabled={disabledState}
         selected={checked} focused={focusedState} hovered={hoveredState}></mdw-radio-icon>
@@ -43,7 +43,7 @@ export default CustomElement
       });
     },
   })
-  .css/* css */`
+  .css`
     /* stylelint-disable liberty/use-logical-spec */
 
     :host {

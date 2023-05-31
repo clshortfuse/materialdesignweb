@@ -70,7 +70,7 @@ export default CustomElement
       // Wrap slot in scroller
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/menus/specs */
 
     :host {

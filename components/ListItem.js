@@ -68,7 +68,7 @@ export default CustomElement
       return this.radio || 'leading';
     },
   })
-  .html/* html */`
+  .html`
     <a id=anchor mdw-if={href} href={href} disabled={disabledState} aria-labelledby=content></a>
     <mdw-checkbox-icon id=checkbox mdw-if={checkbox} aria-hidden=true class={checkboxClass} color={selectionColor} disabled={disabledState} icon=check selected={selected}></mdw-checkbox-icon>
     <mdw-radio-icon id=radio mdw-if={radio} aria-hidden=true class={radioClass} disabled={disabledState} ink={selectionColor} selected={selected}></mdw-radio-icon>
@@ -98,7 +98,7 @@ export default CustomElement
       this.updateAriaProperty('ariaDisabled', newValue ? 'true' : 'false');
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/lists/specs */
 
     :host {

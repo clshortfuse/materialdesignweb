@@ -70,7 +70,7 @@ export default CustomElement
     /** @type {HTMLLinkElement} */
     altThemeLinkElement: null,
   })
-  .css/* css */`
+  .css`
     #menu-form {
       display: contents;
     }
@@ -78,7 +78,7 @@ export default CustomElement
       transform: scaleX(var(--mdw-dir));
     }
   `
-  .html/* html */`
+  .html`
       <mdw-layout>
         <!--         
         <mdw-nav-rail>

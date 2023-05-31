@@ -17,7 +17,7 @@ export default Box
     },
     peeking: 'boolean',
   })
-  .css/* css */`
+  .css`
     :host {
       overflow-y: auto;
       scroll-snap-align: center;

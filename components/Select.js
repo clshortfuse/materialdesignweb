@@ -27,7 +27,7 @@ export default CustomElement
     multiple: { value: false },
     size: { value: 1 },
   })
-  .html/* html */`<slot id=slot></slot>`
+  .html`<slot id=slot></slot>`
   .childEvents({
     slot: {
     /** @param {Event & {currentTarget:HTMLSlotElement}} event */

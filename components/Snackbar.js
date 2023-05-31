@@ -46,7 +46,7 @@ export default Surface
       this.textContent = text;
     },
   })
-  .html/* html */`
+  .html`
     <div id=content></div>
     <mdw-button mdw-if={action} id=action class=button ink={actionInk} type-style={actionTypeStyle}>{action}</mdw-button>
     <mdw-icon-button mdw-if={closeButton} id=close class=button icon={closeIcon} ink={closeInk}>Close</mdw-button>
@@ -70,7 +70,7 @@ export default Surface
       },
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/snackbar/specs */
 
     :host {

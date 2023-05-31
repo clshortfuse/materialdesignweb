@@ -32,7 +32,7 @@ export default CustomElement
       return (indeterminate ? indeterminateIcon : icon);
     },
   })
-  .html/* html */`
+  .html`
     <div id=checkbox errored={erroredState} selected={checked}>
       <mdw-checkbox-icon id=icon errored={erroredState} disabled={disabledState}
         icon={_determinateIcon} selected={checked}>
@@ -59,7 +59,7 @@ export default CustomElement
       });
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/checkbox/specs */
 
     :host {

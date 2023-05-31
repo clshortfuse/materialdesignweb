@@ -23,10 +23,10 @@ export default TopAppBar
       },
     },
   })
-  .html/* html */`
+  .html`
     <mdw-input id=input placeholder={placeholder} aria-label={placeholder}></mdw-input>
   `
-  .css/* css */`
+  .css`
     :host {
       --mdw-bg: var(--mdw-color__surface-container-high);
       padding-block: 16px;

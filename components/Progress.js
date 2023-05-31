@@ -37,7 +37,7 @@ export default CustomElement
       return /** @type {HTMLProgressElement} */ (this.refs.progress).labels;
     },
   })
-  .html/* html */`
+  .html`
     <div id=determinate style="{_determinateStyle}">
       <progress id=progress value={value} max={max} circle={circle}></progress>
       <div mdw-if={circle} id=circle>
@@ -57,7 +57,7 @@ export default CustomElement
       </div>
     </div>
   `
-  .css/* css */`
+  .css`
     /* Base Styles */
 
     :host {
@@ -134,7 +134,7 @@ export default CustomElement
       transform: scaleX(var(--value, 0));
     }
   `
-  .css/* css */`
+  .css`
     /* Line Styles */
 
     /* https://github.com/material-components/material-components-android/blob/ed77ab36ccac98df24e55060d58406c5981a9062/lib/java/com/google/android/material/progressindicator/ */
@@ -294,7 +294,7 @@ export default CustomElement
     }
 
   `
-  .css/* css */`
+  .css`
     /* Circle Styles */
     /* stylelint-disable liberty/use-logical-spec */
     /** https://github.com/material-components/material-components-android/blob/ed77ab36ccac98df24e55060d58406c5981a9062/lib/java/com/google/android/material/progressindicator/CircularIndeterminateAnimatorDelegate.java */

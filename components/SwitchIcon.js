@@ -51,7 +51,7 @@ export default CustomElement
       return Boolean(icon || src || unselectedIcon || unselectedSrc);
     },
   })
-  .html/* html */`
+  .html`
     <div id=thumb selected={checked} pressed={pressed} disabled={disabled}>
       <mdw-shape id=thumb-shape shape-style=full selected={checked} pressed={pressed} hovered={hovered} focused={focused} icon={hasIcon}
        color={_thumbColor} active={_active} ink={_thumbInk} disabled={disabled}></mdw-shape>
@@ -82,7 +82,7 @@ export default CustomElement
       }
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/switch/specs */
 
     :host {

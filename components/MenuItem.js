@@ -207,7 +207,7 @@ export default class MenuItem extends ListOption
       this._selected = this.defaultSelected;
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/menus/specs */
 
     :host {

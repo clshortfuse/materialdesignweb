@@ -8,7 +8,7 @@ export default Nav
   .observe({
     _semiStickyAnchor: { empty: 'bottom' },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/navigation-bar/specs */
 
     :host {

@@ -12,7 +12,7 @@ export default function ShapeMixin(Base) {
       shapeStyle: 'string',
       outlined: 'boolean',
     })
-    .html/* html */`
+    .html`
       <div id=shape part=shape class=shape elevated={elevated} 
         shape-top={shapeTop} shape-bottom={shapeBottom} shape-start={shapeStart} shape-end={shapeEnd} shape-style={shapeStyle}
         color={color} outlined={outlined} disabled={disabledState}>
@@ -22,7 +22,7 @@ export default function ShapeMixin(Base) {
         </div>
       </div>
     `
-    .css/* css */`
+    .css`
       :host {
         --mdw-shape__size: 0px;
         --mdw-shape__bg: transparent;
@@ -114,7 +114,7 @@ export default function ShapeMixin(Base) {
         }
       }
     `
-    .css/* css */`
+    .css`
       .shape {
         position: absolute;
         inset: 0;
@@ -165,7 +165,7 @@ export default function ShapeMixin(Base) {
         }
       }
     `
-    .css/* css */`
+    .css`
       .outline {
         position: absolute;
         inset: 0;

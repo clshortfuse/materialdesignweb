@@ -35,7 +35,7 @@ export default class NavItem extends CustomElement
       this.refs.anchor.focus(...args);
     },
   })
-  .html/* html */`
+  .html`
     <mdw-icon id=icon aria-hidden=true src={src} active={active}>{icon}</mdw-icon>
     <a id=anchor
       aria-current=${({ active }) => (active ? 'page' : null)}
@@ -59,7 +59,7 @@ export default class NavItem extends CustomElement
       shape.removeAttribute('color');
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/navigation-bar/specs */
     /* https://m3.material.io/components/navigation-drawer/specs */
     /* https://m3.material.io/components/navigation-rail/specs */
