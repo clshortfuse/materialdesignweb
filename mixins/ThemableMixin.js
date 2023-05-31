@@ -120,8 +120,8 @@ export default function ThemableMixin(Base) {
       `--mdw-type__letter-spacing: var(--mdw-typescale__${typeStyle}-medium__letter-spacing);`,
       '}',
       `:host([type-style="${typeStyle}-small"]) {`,
-      `--mdw-type__font: var(--mdw-typescale__${typeStyle}-medium__font);`,
-      `--mdw-type__letter-spacing: var(--mdw-typescale__${typeStyle}-medium__letter-spacing);`,
+      `--mdw-type__font: var(--mdw-typescale__${typeStyle}-small__font);`,
+      `--mdw-type__letter-spacing: var(--mdw-typescale__${typeStyle}-small__letter-spacing);`,
       '}',
     ].join(''))}`;
 }
