@@ -74,7 +74,11 @@ type ParsedProps<T> = {
       : never
 };
 
-type HTMLElementCancellableEventMap = Pick<HTMLElementEventMap,
+interface HTMLElementEventMapFixed extends HTMLElementEventMap {
+  input: InputEvent;
+}
+
+type HTMLElementCancellableEventMap = Pick<HTMLElementEventMapFixed,
   'auxclick' |
   'beforeinput' |
   // 'cancel' |
@@ -109,7 +113,7 @@ type HTMLElementCancellableEventMap = Pick<HTMLElementEventMap,
   'wheel'
   >
 
-type CompositionEventMap = HTMLElementEventMap & {
+type CompositionEventMap = HTMLElementEventMapFixed & {
   [P in keyof HTMLElementCancellableEventMap as `~${P}`]: Omit<HTMLElementCancellableEventMap[P], 'preventDefault'>
 };
 
