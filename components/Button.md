@@ -41,17 +41,17 @@
 
 ## Custom
 ```html
-  <mdw-button class=mdw-custom ink=yellow>Custom text</mdw-button>
-  <mdw-button class=mdw-custom elevated ink=yellow>Custom elevated</mdw-button>
-  <mdw-button class=mdw-custom filled color=yellow>Custom filled</mdw-button>
-  <mdw-button class=mdw-custom filled=tonal icon=add color=yellow-container>Custom tonal</mdw-button>
-  <mdw-button class=mdw-custom outlined ink=yellow>Custom outlined</mdw-button>
+  <mdw-button ink=yellow>Custom text</mdw-button>
+  <mdw-button elevated ink=yellow>Custom elevated</mdw-button>
+  <mdw-button filled color=yellow>Custom filled</mdw-button>
+  <mdw-button filled=tonal icon=add color=yellow-container>Custom tonal</mdw-button>
+  <mdw-button outlined ink=yellow>Custom outlined</mdw-button>
   <mdw-button disabled outlined>Outlined (Disabled)</mdw-button>
   <mdw-button disabled outlined icon=add>Outlined icon (Disabled)</mdw-button>
-  <mdw-button disabled class=mdw-custom ink=yellow>Custom text</mdw-button>
-  <mdw-button disabled class=mdw-custom elevated=yellow>Custom elevated</mdw-button>
-  <mdw-button disabled filled class=mdw-custom color=yellow>Custom filled</mdw-button>
-  <mdw-button disabled filled=tonal class=mdw-custom icon=add color=yellow-container>Custom tonal</mdw-button>
+  <mdw-button disabled ink=yellow>Custom text</mdw-button>
+  <mdw-button disabled elevated=yellow>Custom elevated</mdw-button>
+  <mdw-button disabled filled color=yellow>Custom filled</mdw-button>
+  <mdw-button disabled filled=tonal icon=add color=yellow-container>Custom tonal</mdw-button>
 ```
 
 ```js

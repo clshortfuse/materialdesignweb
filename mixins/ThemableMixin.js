@@ -10,55 +10,21 @@ export default function ThemableMixin(Base) {
       block: 'boolean',
       typeStyle: 'string',
     })
+    .css`${
+    ThemableMixin.PALETTES.map((palette) => [
+      `:host([color="${palette}"]){`,
+      `--mdw-bg: var(--mdw-color__${palette});`,
+      `--mdw-ink: var(--mdw-color__on-${palette});`,
+      '}',
+      `:host([color="${palette}-container"]){`,
+      `--mdw-bg: var(--mdw-color__${palette}-container);`,
+      `--mdw-ink: var(--mdw-color__on-${palette}-container);`,
+      '}',
+    ].join('')).join('')}`
     .css`
-      :host([color="primary"]) {
-        --mdw-bg: var(--mdw-color__primary);
-        --mdw-ink: var(--mdw-color__on-primary);
-      }
-      
-      :host([color="primary-container"]) {
-        --mdw-bg: var(--mdw-color__primary-container);
-        --mdw-ink: var(--mdw-color__on-primary-container);
-      }
-      
-      :host([color="secondary"]) {
-        --mdw-bg: var(--mdw-color__secondary);
-        --mdw-ink: var(--mdw-color__on-secondary);
-      }
-      
-      :host([color="secondary-container"]) {
-        --mdw-bg: var(--mdw-color__secondary-container);
-        --mdw-ink: var(--mdw-color__on-secondary-container);
-      }
-      
-      :host([color="tertiary"]) {
-        --mdw-bg: var(--mdw-color__tertiary);
-        --mdw-ink: var(--mdw-color__on-tertiary);
-      }
-      
-      :host([color="tertiary-container"]) {
-        --mdw-bg: var(--mdw-color__tertiary-container);
-        --mdw-ink: var(--mdw-color__on-tertiary-container);
-      }
-      
-      :host([color="error"]) {
-        --mdw-bg: var(--mdw-color__error);
-        --mdw-ink: var(--mdw-color__on-error);
-      }
-      
-      :host([color="error-container"]) {
-        --mdw-bg: var(--mdw-color__error-container);
-        --mdw-ink: var(--mdw-color__on-error-container);
-      }
-      
       :host([color="background"]) {
         --mdw-bg: var(--mdw-color__background);
         --mdw-ink: var(--mdw-color__on-background);
-      }
-      
-      :host([color^="surface"]) {
-        --mdw-bg: var(--mdw-color__surface);
-        --mdw-ink: var(--mdw-color__on-surface);
       }
 
       :host([color="surface-dim"]) {
@@ -67,10 +33,6 @@ export default function ThemableMixin(Base) {
 
       :host([color="surface-bright"]) {
         --mdw-bg: var(--mdw-color__surface-bright);
-      }
-
-      :host([color="surface-container"]) {
-        --mdw-bg: var(--mdw-color__surface-container);
       }
 
       :host([color="surface-container-lowest"]) {
@@ -112,45 +74,23 @@ export default function ThemableMixin(Base) {
         /* background-color: rgba(var(--mdw-color__on-surface), 0.12); */
         /* color: rgba(var(--mdw-color__on-surface), 0.38); */
       }
-      
+      `
+    .css`${
+    ThemableMixin.PALETTES.map((palette) => [
+      `:host([ink="${palette}"]){`,
+      `--mdw-ink: var(--mdw-color__${palette});`,
+      '}',
+      `:host([ink="on-${palette}-container"]){`,
+      `--mdw-ink: var(--mdw-color__on-${palette}-container);`,
+      '}',
+    ].join(''))}`
+    .css`
       :host([ink="inverse-primary"]) {
         --mdw-ink: var(--mdw-color__inverse-primary);
       }
-      
-      :host([ink="primary"]) {
-        --mdw-ink: var(--mdw-color__primary);
-      }
-      
-      :host([ink="on-primary-container"]) {
-        --mdw-ink: var(--mdw-color__on-primary-container);
-      }
-      
-      :host([ink="secondary"]) {
-        --mdw-ink: var(--mdw-color__secondary);
-      }
-      
-      :host([ink="on-secondary-container"]) {
-        --mdw-ink: var(--mdw-color__on-secondary-container);
-      }
-      
-      :host([ink="tertiary"]) {
-        --mdw-ink: var(--mdw-color__tertiary);
-      }
-      
-      :host([ink="on-tertiary-container"]) {
-        --mdw-ink: var(--mdw-color__on-tertiary-container);
-      }
-      
-      :host([ink="error"]) {
-        --mdw-ink: var(--mdw-color__error);
-      }
-      
+
       :host([ink="outline"]) {
         --mdw-ink: var(--mdw-color__outline);
-      }
-      
-      :host([ink="on-surface"]) {
-        --mdw-ink: var(--mdw-color__on-surface);
       }
       
       :host([ink="surface-container-highest"]) {
@@ -168,80 +108,36 @@ export default function ThemableMixin(Base) {
       :host([ink="inherit"]) {
         --mdw-ink: inherit;
       }
-      
-      :host([type-style|="display"]) {
-        --mdw-type__font: var(--mdw-typescale__display-large__font);
-        --mdw-type__letter-spacing: var(--mdw-typescale__display-large__letter-spacing);
-      }
-      
-      :host([type-style="display-medium"]) {
-        --mdw-type__font: var(--mdw-typescale__display-medium__font);
-        --mdw-type__letter-spacing: var(--mdw-typescale__display-medium__letter-spacing);
-      }
-      
-      :host([type-style="display-small"]) {
-        --mdw-type__font: var(--mdw-typescale__display-small__font);
-        --mdw-type__letter-spacing: var(--mdw-typescale__display-small__letter-spacing);
-      }
-      
-      :host([type-style|="headline"]) {
-        --mdw-type__font: var(--mdw-typescale__headline-large__font);
-        --mdw-type__letter-spacing: var(--mdw-typescale__headline-large__letter-spacing);
-      }
-      
-      :host([type-style="headline-medium"]) {
-        --mdw-type__font: var(--mdw-typescale__headline-medium__font);
-        --mdw-type__letter-spacing: var(--mdw-typescale__headline-medium__letter-spacing);
-      }
-      
-      :host([type-style="headline-small"]) {
-        --mdw-type__font: var(--mdw-typescale__headline-small__font);
-        --mdw-type__letter-spacing: var(--mdw-typescale__headline-small__letter-spacing);
-      }
-      
-      :host([type-style|="title"]) {
-        --mdw-type__font: var(--mdw-typescale__title-large__font);
-        --mdw-type__letter-spacing: var(--mdw-typescale__title-large__letter-spacing);
-      }
-      
-      :host([type-style="title-medium"]) {
-        --mdw-type__font: var(--mdw-typescale__title-medium__font);
-        --mdw-type__letter-spacing: var(--mdw-typescale__title-medium__letter-spacing);
-      }
-      
-      :host([type-style="title-small"]) {
-        --mdw-type__font: var(--mdw-typescale__title-small__font);
-        --mdw-type__letter-spacing: var(--mdw-typescale__title-small__letter-spacing);
-      }
-      
-      :host([type-style|="label"]) {
-        --mdw-type__font: var(--mdw-typescale__label-large__font);
-        --mdw-type__letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
-      }
-      
-      :host([type-style="label-medium"]) {
-        --mdw-type__font: var(--mdw-typescale__label-medium__font);
-        --mdw-type__letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
-      }
-      
-      :host([type-style="label-small"]) {
-        --mdw-type__font: var(--mdw-typescale__label-small__font);
-        --mdw-type__letter-spacing: var(--mdw-typescale__label-small__letter-spacing);
-      }
-      
-      :host([type-style|="body"]) {
-        --mdw-type__font: var(--mdw-typescale__body-large__font);
-        --mdw-type__letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
-      }
-      
-      :host([type-style="body-medium"]) {
-        --mdw-type__font: var(--mdw-typescale__body-medium__font);
-        --mdw-type__letter-spacing: var(--mdw-typescale__body-medium__letter-spacing);
-      }
-      
-      :host([type-style="body-small"]) {
-        --mdw-type__font: var(--mdw-typescale__body-small__font);
-        --mdw-type__letter-spacing: var(--mdw-typescale__body-small__letter-spacing);
-      }    
-    `;
+    `
+    .css`${
+    ThemableMixin.TYPE_STYLES.map((typeStyle) => [
+      `:host([type-style|="${typeStyle}"]) {`,
+      `--mdw-type__font: var(--mdw-typescale__${typeStyle}-large__font);`,
+      `--mdw-type__letter-spacing: var(--mdw-typescale__${typeStyle}-large__letter-spacing);`,
+      '}',
+      `:host([type-style="${typeStyle}-medium"]) {`,
+      `--mdw-type__font: var(--mdw-typescale__${typeStyle}-medium__font);`,
+      `--mdw-type__letter-spacing: var(--mdw-typescale__${typeStyle}-medium__letter-spacing);`,
+      '}',
+      `:host([type-style="${typeStyle}-small"]) {`,
+      `--mdw-type__font: var(--mdw-typescale__${typeStyle}-medium__font);`,
+      `--mdw-type__letter-spacing: var(--mdw-typescale__${typeStyle}-medium__letter-spacing);`,
+      '}',
+    ].join(''))}`;
 }
+
+ThemableMixin.PALETTES = [
+  'primary',
+  'secondary',
+  'tertiary',
+  'error',
+  'surface',
+];
+
+ThemableMixin.TYPE_STYLES = [
+  'display',
+  'headline',
+  'title',
+  'label',
+  'body',
+];

@@ -54,6 +54,7 @@
     "./components/*.js",
     "./utils/metadata.js",
     "./theming/loader.js",
+    "./docs/custom.js",
     "./docs/demo/*.js"
   ],
   "bugs": {

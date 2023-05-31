@@ -6,15 +6,6 @@ Material Design for Web
 ![Version](https://badgen.net/npm/v/@shortfuse/materialdesignweb) ![License](https://badgen.net/npm/license/@shortfuse/materialdesignweb) ![MinZip](https://badgen.net/bundlephobia/minzip/@shortfuse/materialdesignweb) ![Dependents](https://badgen.net/npm/dependents/@shortfuse/materialdesignweb)
  
 
-# Current status
-
-Working on:
-* ~~Array rendering (sub templates)~~
-* * ~~Nav Drawer list population~~
-* * Search results population
-* * ~~Text Field Dropdown population~~
-* Cross-DOM-boundary custom colors
-
 # Demo
 
 https://clshortfuse.github.io/materialdesignweb/

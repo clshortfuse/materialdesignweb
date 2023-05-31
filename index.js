@@ -1,3 +1,5 @@
+import './theming/themableMixinLoader.js';
+
 export { default as Badge } from './components/Badge.js';
 export { default as Body } from './components/Body.js';
 export { default as BottomAppBar } from './components/BottomAppBar.js';

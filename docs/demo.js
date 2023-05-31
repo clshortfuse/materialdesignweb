@@ -1,5 +1,7 @@
 import 'element-internals-polyfill'; // Safari
 
+import './custom.js';
+
 import '../components/Badge.js';
 import '../components/Body.js';
 import '../components/BottomAppBar.js';
