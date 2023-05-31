@@ -508,6 +508,7 @@ export default class CustomElement extends ICustomElement {
   /** @type {typeof ICustomElement.childEvents} */
   static childEvents(listenerMap, options) {
     for (const [tag, listeners] of Object.entries(listenerMap)) {
+      // @ts-expect-error Can't cast T
       this.events(listeners, {
         tag: attrNameFromPropName(tag),
         ...options,
@@ -516,6 +517,15 @@ export default class CustomElement extends ICustomElement {
 
     // @ts-expect-error Can't cast T
     return this;
+  }
+
+  /** @type {typeof ICustomElement.events} */
+  static rootEvents(listeners, options) {
+    // @ts-expect-error Can't cast T
+    return this.events(listeners, {
+      tag: Composition.shadowRootTag,
+      ...options,
+    });
   }
 
   /** @type {typeof ICustomElement['on']} */

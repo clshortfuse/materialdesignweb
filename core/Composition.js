@@ -329,6 +329,9 @@ export default class Composition {
     nodeEntry: null,
   };
 
+  // eslint-disable-next-line symbol-description
+  static shadowRootTag = Symbol();
+
   /** @type {{tag:string, textNodes: number[]}[]} */
   nodesToBind = [];
 
@@ -393,7 +396,7 @@ export default class Composition {
    * Collection of events to bind.
    * Indexed by ID
    *
-   * @type {Map<string, import('./typings.js').CompositionEventListener<any>[]>}
+   * @type {Map<string|symbol, import('./typings.js').CompositionEventListener<any>[]>}
    */
   events = new Map();
 
@@ -481,6 +484,27 @@ export default class Composition {
   }
 
   /**
+   * @param {string|symbol} tag
+   * @param {EventTarget} target
+   * @param {any} [context]
+   * @return {void}
+   */
+  #bindCompositionEventListeners(tag, target, context) {
+    if (!this.events.has(tag)) return;
+    for (const event of this.events.get(tag)) {
+      let listener;
+      if (event.handleEvent) {
+        listener = event.handleEvent;
+      } else if (event.deepProp.length) {
+        listener = deepPropFromObject(event.deepProp, this.interpolateOptions.defaults);
+      } else {
+        listener = propFromObject(event.prop, this.interpolateOptions.defaults);
+      }
+      target.addEventListener(event.type, context ? listener.bind(context) : listener, event);
+    }
+  }
+
+  /**
    * TODO: Add types and clean up closure leak
    * Updates component nodes based on data.
    * Expects data in JSON Merge Patch format
@@ -525,19 +549,7 @@ export default class Composition {
       const element = instanceFragment.getElementById(tag);
       initState.refs.push(element);
       nodes.push(element);
-      if (this.events.has(tag)) {
-        for (const event of this.events.get(tag)) {
-          let listener;
-          if (event.handleEvent) {
-            listener = event.handleEvent;
-          } else if (event.deepProp.length) {
-            listener = deepPropFromObject(event.deepProp, this.interpolateOptions.defaults);
-          } else {
-            listener = propFromObject(event.prop, this.interpolateOptions.defaults);
-          }
-          element.addEventListener(event.type, listener.bind(options.context), event);
-        }
-      }
+      this.#bindCompositionEventListeners(tag, element, options.context);
 
       if (!textNodes.length) continue;
 
@@ -551,19 +563,8 @@ export default class Composition {
         nodes.push(textNode);
       }
     }
-    if (this.events.has('')) {
-      for (const event of this.events.get('')) {
-        let listener;
-        if (event.handleEvent) {
-          listener = event.handleEvent;
-        } else if (event.deepProp.length) {
-          listener = deepPropFromObject(event.deepProp, this.interpolateOptions.defaults);
-        } else {
-          listener = propFromObject(event.prop, this.interpolateOptions.defaults);
-        }
-        options.context.addEventListener(event.type, listener, event);
-      }
-    }
+    this.#bindCompositionEventListeners('', options.context);
+    this.#bindCompositionEventListeners(Composition.shadowRootTag, options.context.shadowRoot, options.context);
 
     for (const action of this.postInitActions) {
       action.invocation(initState);
