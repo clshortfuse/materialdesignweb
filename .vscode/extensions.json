@@ -2,6 +2,8 @@
   "recommendations": [
     "stylelint.vscode-stylelint",
     "dbaeumer.vscode-eslint",
-    "enhancedjs.html-in-template-string"
+    "webreflection.literally-html",
+    "heckaraddev.vscode-embedded-css-template-strings",
+    "bashmish.es6-string-css"
   ]
 }
