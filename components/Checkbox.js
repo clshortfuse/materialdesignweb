@@ -40,6 +40,16 @@ export default CustomElement
     </div>
     <slot id=slot></slot>
   `
+  .rootEvents({
+    click(event) {
+      const { control } = this.refs;
+      if (event.target !== control) {
+        // Label-like click
+        event.stopPropagation();
+        control.click();
+      }
+    },
+  })
   .on({
     composed() {
       const { control, checkbox, state, rippleContainer } = this.refs;
@@ -47,16 +57,6 @@ export default CustomElement
 
       // Indeterminate must be manually expressed for ARIA
       control.setAttribute('aria-checked', '{_ariaChecked}');
-    },
-    constructed() {
-      this.shadowRoot.addEventListener('click', (event) => {
-        const { control } = this.refs;
-        if (event.target !== control) {
-          // Label-like click
-          event.stopPropagation();
-          control.click();
-        }
-      });
     },
   })
   .css`

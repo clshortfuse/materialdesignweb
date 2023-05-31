@@ -38,21 +38,21 @@ export default CustomElement
     </mdw-switch-icon>
     <slot id=slot></slot>
   `
+  .rootEvents({
+    click(event) {
+      const { control } = this.refs;
+      if (event.target !== control) {
+        // Label-like click
+        event.stopPropagation();
+        control.click();
+      }
+    },
+  })
   .on({
     composed() {
       const { switch: switchEl, state, control } = this.refs;
       switchEl.append(state, control);
       control.setAttribute('role', 'switch');
-    },
-    constructed() {
-      this.shadowRoot.addEventListener('click', (event) => {
-        const { control } = this.refs;
-        if (event.target !== control) {
-          // Label-like click
-          event.stopPropagation();
-          control.click();
-        }
-      });
     },
   })
   .methods({

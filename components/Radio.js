@@ -27,20 +27,20 @@ export default CustomElement
     </div>
     <slot id=slot></slot>
   `
+  .rootEvents({
+    click(event) {
+      const { control } = this.refs;
+      if (event.target !== control) {
+        // Label-like click
+        event.stopPropagation();
+        control.click();
+      }
+    },
+  })
   .on({
     composed() {
       const { radio, rippleContainer, state } = this.refs;
       radio.append(state, rippleContainer);
-    },
-    constructed() {
-      this.shadowRoot.addEventListener('click', (event) => {
-        const { control } = this.refs;
-        if (event.target !== control) {
-          // Label-like click
-          event.stopPropagation();
-          control.click();
-        }
-      });
     },
   })
   .css`
