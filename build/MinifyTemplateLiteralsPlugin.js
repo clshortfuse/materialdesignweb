@@ -57,7 +57,7 @@ export default {
 
                 if (length < 50) return;
                 warnings.push({
-                  text: `Large, complex template expression over 50 characters (${length})`,
+                  text: `Large, complex template expression over 50 characters (${length}) cannot be minified.`,
                   location: {
                     file: relative(process.cwd(), args.path),
                     line: realStartLocation.line,
@@ -125,7 +125,6 @@ export default {
                   loader: 'css',
                 });
                 data = code.trim();
-                // console.log('Minified CSS', end - start, 'bytes to', code.trim().length);
               }
 
               return { data, type, raw, start, end };
