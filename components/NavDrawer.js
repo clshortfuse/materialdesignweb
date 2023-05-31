@@ -8,7 +8,7 @@ export default NavRail
       empty: true,
     },
   })
-  .css/* css */`
+  .css`
     /* https://m3.material.io/components/navigation-drawer/specs */
     :host {
       --mdw-shape__size: var(--mdw-shape__large, 16px);
@@ -28,8 +28,8 @@ export default NavRail
 
       min-block-size: 100vh;
       max-block-size: 100vh;
-      min-inline-size: 360px;
-      max-inline-size: 360px;
+      inline-size: 360px;
+      max-inline-size: calc(100vw - 56px);
       padding-inline: 0;
 
       box-shadow: none;
