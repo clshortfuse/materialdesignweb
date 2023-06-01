@@ -182,9 +182,8 @@ export default CustomElement
         if (this.matches(':focus-within')) return;
         const { cascader, submenu } = this;
 
-        if (cascader && cascader.matches(':focus-within,:focus')) return;
-        if (submenu && submenu.matches(':focus-within,:focus')) return;
-
+        if (cascader && cascader.matches(':is(:focus-within,:focus)')) return;
+        if (submenu && submenu.matches(':is(:focus-within,:focus)')) return;
         this.close(false);
       });
     },
