@@ -142,6 +142,11 @@ export default CustomElement
       gap: 12px;
       vertical-align: middle;
 
+      cursor: pointer;
+    }
+
+    #control {
+      cursor: inherit;
     }
 
     #touch-target {
