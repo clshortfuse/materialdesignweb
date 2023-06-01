@@ -40,6 +40,7 @@ export default Box
 
       display: inline-flex;
       overflow-x: auto;
+      overflow-y: hidden;
     }
 
     :host([color]) {
