@@ -51,6 +51,20 @@ export default function KeyboardNavMixin(Base) {
           ?? this.getAttribute('aria-orientation')
           ?? this.ariaOrientationDefault) === 'vertical';
       },
+      focusCurrentOrFirst() {
+        let current;
+        let first;
+        for (const candidate of this.kbdNavChildren) {
+          first = candidate;
+          if (candidate.tabIndex === 0) {
+            current = candidate;
+            break;
+          }
+        }
+        if (attemptFocus(current)) return current;
+        if (attemptFocus(first)) return first;
+        return null;
+      },
       /**
        * Focuses next element participating in roving tab index list
        * @param {HTMLElement} [current]
