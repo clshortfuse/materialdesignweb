@@ -233,7 +233,7 @@ export default CustomElement
       --mdw-layout__nav-drawer-width: 360px;
       --mdw-layout__nav-rail__ratio: 0;
       --mdw-layout__nav-rail-width: 80px;
-      --mdw-layout__pane1-width: 1fr;
+      --mdw-layout__pane1-width: minmax(0, 1fr);
       --mdw-layout__pane2-width: 0;
       --mdw-layout__window-padding: 16px;
 
@@ -300,6 +300,10 @@ export default CustomElement
 
     :host(:where([panes="2"][two-fixed])) {
       --mdw-layout__pane2-width: 360px;
+    }
+
+    .pane {
+      overflow: visible;
     }
 
     .pane[columns="8"] {
