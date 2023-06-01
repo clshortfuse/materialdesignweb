@@ -19,10 +19,19 @@ CustomElement
   .observe({
     hidden: 'boolean',
   })
+  .html`<div id=scroll-blocker></div>`
   .css`
     :host {
       position: fixed;
       inset: 0;
+
+      display: block;
+      overflow: overlay;
+
+      overscroll-behavior: none;
+      overscroll-behavior: contain;
+      scrollbar-color: transparent transparent;
+      scrollbar-width: thin;
 
       opacity: 0;
 
@@ -36,14 +45,23 @@ CustomElement
     }
 
     :host([hidden]) {
-      display: block;
-
       animation-name: fade-out;
       animation-timing-function: ease-in;
     }
 
     :host([invisible]) {
       background: transparent;
+    }
+
+    #scroll-blocker {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      display: block;
+
+      height: 200%;
+      width: 200%;
     }
 
     @keyframes fade-in {
@@ -200,59 +218,60 @@ export default function PopupMixin(Base) {
         const xEnd = isPageRTL ? 'left' : 'right';
 
         /* Automatic Positioning
-       *
-       * Positions:
-       *   3      7      4
-       *     ┌─────────┐
-       *     │         │
-       *   5 │    9    │ 6
-       *     │         │
-       *     └─────────┘
-       *   1      8      2
-       *
-       * 1: Bottom Left
-       * 2: Bottom Right
-       * 3: Top Left
-       * 4: Top Right
-       * 5: VCenter Left
-       * 6: VCenter Right
-       * 7: HCenter Top
-       * 8: HCenter Bottom
-       * 9: VCenter HCenter
-       *
-       * Directions:
-       * a - Down LTR
-       * b - Down RTL
-       * c - Up LTR
-       * d - Up RTL
-       * e - LTR
-       * f - RTL
-       * g - Down
-       * h - Up
-       * i - Center
-       *
-       *
-       * 16 total combos
-       * 1a 1b 1c 1d  └↘ └↙ └↗ └↖
-       * 2a 2b 2c 2d  ┘↘ ┘↙ ┘↗ ┘↖
-       * 3a 3b 3c 3d  ┌↘ ┌↙ ┌↗ ┌↖
-       * 4a 4b 4c 4d  ┐↘ ┐↙ ┐↗ ┐↖
-       *
-       * Avoid using opposite angle
-       *
-       * 1a XX 1c 1d  └↘ ██ └↗ └↖
-       * XX 2b 2c 2d  ██ ┘↙ ┘↗ ┘↖
-       * 1a 3b 3c XX  ┌↘ ┌↙ ┌↗ ██
-       * 4a 4b XX 4d  ┐↘ ┐↙ ██ ┐↖
-       *
-       *
-       * Preference Order:
-       * - Flow from corner           1a 2b 3c 4d    └↘ ┘↙ ┌↗ ┐↖
-       * - Open adjacent to target    4a 3b 2c 1d    ┐↘ ┌↙ ┘↗ └↖
-       * - Overlay target             3a 4b 1c 2d    ┌↘ ┐↙ └↗ ┘↖
-       * - Open from horizontal side  5e 6f          │→ │←
-       * - Open from center           9i             █·
-       */
+         *
+         * Positions:
+         *
+         *   3      7      4
+         *     ┌─────────┐
+         *     │         │
+         *   5 │    9    │ 6
+         *     │         │
+         *     └─────────┘
+         *   1      8      2
+         *
+         * 1: Bottom Left
+         * 2: Bottom Right
+         * 3: Top Left
+         * 4: Top Right
+         * 5: VCenter Left
+         * 6: VCenter Right
+         * 7: HCenter Top
+         * 8: HCenter Bottom
+         * 9: VCenter HCenter
+         *
+         * Directions:
+         * a - Down LTR
+         * b - Down RTL
+         * c - Up LTR
+         * d - Up RTL
+         * e - LTR
+         * f - RTL
+         * g - Down
+         * h - Up
+         * i - Center
+         *
+         *
+         * 16 total combos
+         * 1a 1b 1c 1d  └↘ └↙ └↗ └↖
+         * 2a 2b 2c 2d  ┘↘ ┘↙ ┘↗ ┘↖
+         * 3a 3b 3c 3d  ┌↘ ┌↙ ┌↗ ┌↖
+         * 4a 4b 4c 4d  ┐↘ ┐↙ ┐↗ ┐↖
+         *
+         * Avoid using opposite angle
+         *
+         * 1a XX 1c 1d  └↘ ██ └↗ └↖
+         * XX 2b 2c 2d  ██ ┘↙ ┘↗ ┘↖
+         * 1a 3b 3c XX  ┌↘ ┌↙ ┌↗ ██
+         * 4a 4b XX 4d  ┐↘ ┐↙ ██ ┐↖
+         *
+         *
+         * Preference Order:
+         * - Flow from corner           1a 2b 3c 4d    └↘ ┘↙ ┌↗ ┐↖
+         * - Open adjacent to target    4a 3b 2c 1d    ┐↘ ┌↙ ┘↗ └↖
+         * - Overlay target             3a 4b 1c 2d    ┌↘ ┐↙ └↗ ┘↖
+         * - Open from horizontal side  5e 6f          │→ │←
+         * - Open from center           9i             █·
+         */
 
         /** @type {import('../utils/popup.js').CanAnchorPopUpOptions[]} */
         const preferences = [
