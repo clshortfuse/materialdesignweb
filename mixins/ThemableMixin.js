@@ -83,7 +83,7 @@ export default function ThemableMixin(Base) {
       `:host([ink="on-${palette}-container"]){`,
       `--mdw-ink: var(--mdw-color__on-${palette}-container);`,
       '}',
-    ].join(''))}`
+    ].join('')).join('')}`
     .css`
       :host([ink="inverse-primary"]) {
         --mdw-ink: var(--mdw-color__inverse-primary);
