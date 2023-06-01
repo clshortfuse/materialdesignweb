@@ -39,10 +39,18 @@ export default Box
       --mdw-ink: var(--mdw-color__on-secondary-container);
 
       display: inline-flex;
+      overflow-x: auto;
     }
 
     :host([color]) {
       background-color: transparent;
+    }
+
+    #slot {
+      display: grid;
+      grid-auto-flow: column;
+
+      flex: none;
     }
 
   `
