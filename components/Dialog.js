@@ -49,7 +49,7 @@ function focusOnTree(root, autofocus, forward = true) {
   const focusables = [];
   /** @type {Element} */
   let node;
-  while (node = treeWalker.nextNode()) {
+  while ((node = treeWalker.nextNode())) {
     if (autofocus && node.hasAttribute('autofocus')) {
       if (attemptFocus(node)) return true;
       continue;

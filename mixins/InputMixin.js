@@ -172,7 +172,6 @@ export default function InputMixin(Base) {
             return;
           }
           const input = /** @type {HTMLInputElement} */ (event.currentTarget);
-          console.debug('InputMixin: Will fire checked via change event');
           this._checkedDirty = true;
           this._checked = input.checked;
         },
