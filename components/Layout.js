@@ -47,14 +47,15 @@ export default CustomElement
   })
   /* Slots should follow tab order */
   .html`
-    <slot id=slot-drawer                                     name=drawer    nav-rail={navRail}                          nav-drawer={navDrawer} has-two={hasTwo} single-pane={singlePane}                                                 slotted={navDrawer}  ></slot>
-    <slot id=slot-nav-rail                                   name=rail      nav-rail={navRail}                          nav-drawer={navDrawer} has-two={hasTwo} single-pane={singlePane}                                                 slotted={navRail}    ></slot>
-    <slot id=slot-app-bar                                    name=app-bar   nav-rail={navRail}                          nav-drawer={navDrawer} no-nav={!hasNav} has-two={hasTwo} single-pane={singlePane} two-fixed={twoFixed} two-flexible={twoFlexible}                      ></slot>
-    <slot id=slot           class="pane pane1"                              nav-rail={navRail} columns={paneOneColumns} nav-drawer={navDrawer} no-nav={!hasNav} has-two={hasTwo} single-pane={singlePane} two-fixed={twoFixed} two-flexible={twoFlexible} slotted={oneFlexible}></slot>
-    <slot id=slot-fixed     class="pane pane1"               name=fixed     nav-rail={navRail} columns={paneOneColumns} nav-drawer={navDrawer} no-nav={!hasNav} has-two={hasTwo} single-pane={singlePane}                                                 slotted={oneFixed}   ></slot>
-    <slot id=slot-two       class="pane pane2" panes={panes} name=two       nav-rail={navRail} columns={paneTwoColumns} nav-drawer={navDrawer} no-nav={!hasNav}                                           one-fixed={oneFixed} one-flexible={oneFlexible} slotted={twoFlexible}></slot>
-    <slot id=slot-two-fixed class="pane pane2" panes={panes} name=two-fixed nav-rail={navRail} columns={paneTwoColumns} nav-drawer={navDrawer} no-nav={!hasNav}                                                                                           slotted={twoFixed}   ></slot>
-    <slot id=slot-nav-bar                                    name=nav-bar   nav-rail={navRail}                          nav-drawer={navDrawer} no-nav={!hasNav} has-two={hasTwo} single-pane={singlePane} two-fixed={twoFixed} two-flexible={twoFlexible}></slot>
+    <slot id=slot-drawer                                     name=drawer    nav-rail={navRail}                          nav-drawer={navDrawer}                                                 slotted={navDrawer}  ></slot>
+    <div  id=scrim                                                                                                      nav-drawer={navDrawer}                                                 slotted={navDrawer}  ></div>
+    <slot id=slot-nav-rail                                   name=rail      nav-rail={navRail}                          nav-drawer={navDrawer}                                                 slotted={navRail}    ></slot>
+    <slot id=slot-app-bar                                    name=app-bar   nav-rail={navRail}                          nav-drawer={navDrawer} two-fixed={twoFixed} two-flexible={twoFlexible}                      ></slot>
+    <slot id=slot           class="pane pane1"                              nav-rail={navRail} columns={paneOneColumns} nav-drawer={navDrawer} two-fixed={twoFixed} two-flexible={twoFlexible} slotted={oneFlexible}></slot>
+    <slot id=slot-fixed     class="pane pane1"               name=fixed     nav-rail={navRail} columns={paneOneColumns} nav-drawer={navDrawer}                                                 slotted={oneFixed}   ></slot>
+    <slot id=slot-two       class="pane pane2" panes={panes} name=two       nav-rail={navRail} columns={paneTwoColumns} nav-drawer={navDrawer} one-fixed={oneFixed} one-flexible={oneFlexible} slotted={twoFlexible}></slot>
+    <slot id=slot-two-fixed class="pane pane2" panes={panes} name=two-fixed nav-rail={navRail} columns={paneTwoColumns} nav-drawer={navDrawer}                                                 slotted={twoFixed}   ></slot>
+    <slot id=slot-nav-bar                                    name=nav-bar   nav-rail={navRail}                          nav-drawer={navDrawer} two-fixed={twoFixed} two-flexible={twoFlexible}></slot>
   `
   .methods({
     refreshLayoutValues() {
@@ -153,12 +154,12 @@ export default CustomElement
         if (column2 && !this.hasTwo) return false;
         if (nav === 'rail') {
           if (!this.navRail) return false;
-          this.navRail = 'open';
+          this.navRail = 'fixed';
           if (this.navDrawer) this.navDrawer = 'closed';
         } else if (nav === 'drawer') {
           if (!this.navDrawer) return false;
           if (this.navRail) this.navRail = 'closed';
-          this.navDrawer = 'open';
+          this.navDrawer = 'fixed';
         } else {
           if (this.navRail) this.navRail = 'closed';
           if (this.navDrawer) this.navDrawer = 'closed';
@@ -212,6 +213,13 @@ export default CustomElement
           break;
       }
       this.refreshLayoutValues();
+    },
+  })
+  .childEvents({
+    scrim: {
+      click() {
+        this.navDrawer = 'closed';
+      },
     },
   })
   .on({
@@ -281,11 +289,11 @@ export default CustomElement
         "nav-drawer nav-rail nav-bar nav-bar nav-bar nav-bar .";
     }
 
-    :host(:where([nav-rail="open"])) {
+    :host(:where([nav-rail="fixed"])) {
       --mdw-layout__nav-rail__ratio: 1;
     }
 
-    :host(:where([nav-drawer="open"])) {
+    :host(:where([nav-drawer="fixed"])) {
       --mdw-layout__nav-drawer__ratio: 1;
     }
 
@@ -300,6 +308,26 @@ export default CustomElement
 
     :host(:where([panes="2"][two-fixed])) {
       --mdw-layout__pane2-width: 360px;
+    }
+
+    #scrim {
+      position:fixed;
+      inset: 0;
+
+      pointer-events: none;
+
+      opacity: 0;
+      z-index: 25;
+
+      background-color: rgb(var(--mdw-color__scrim));
+
+      transition: opacity 200ms;
+    }
+
+    #scrim[nav-drawer="open"] {
+      pointer-events: auto;
+
+      opacity: 0.38;
     }
 
     .pane {
@@ -372,7 +400,7 @@ export default CustomElement
       grid-area: nav-bar;
     }
 
-    #slot-nav-bar:is([nav-rail="open"],[nav-drawer="open"]) {
+    #slot-nav-bar:is([nav-rail="fixed"],[nav-drawer="fixed"]) {
       display: none;
     }
 
@@ -383,7 +411,7 @@ export default CustomElement
       z-index: 3;
     }
 
-    #slot-nav-rail[nav-rail="open"] {
+    #slot-nav-rail[nav-rail="fixed"] {
       display: block;
     }
 
@@ -396,7 +424,7 @@ export default CustomElement
       /** Initially hidden */
       transform: translateX(-100%);
       visibility: hidden;
-      z-index: 8;
+      z-index: 26;
 
       transition-delay: 0s, 200ms;
       transition-duration: 200ms, 0s;
@@ -404,7 +432,7 @@ export default CustomElement
       transition-timing-function: cubic-bezier(0.3, 0, 0.8, 0.15);
     }
 
-    #slot-drawer[nav-drawer="open"] {
+    #slot-drawer:is([nav-drawer="open"],[nav-drawer="fixed"]) {
       transform: translateX(0);
       visibility: visible;
 
