@@ -41,7 +41,7 @@ export default CustomElement
           <mdw-nav-rail-item mdw-for="{link of links}" active=${(data, { link }) => isActive(link?.href)} icon={link.icon} href={link.href}>{link.text}</mdw-nav-rail-item>
         </mdw-nav-rail>
          -->
-        <mdw-nav-drawer id=drawer slot=drawer>
+        <mdw-nav-drawer id=drawer slot=nav-drawer>
           <mdw-nav-drawer-item icon=palette href="/components/color.html">Color</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=rounded_corner href="/components/shape.html">Shape</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=font_download href="/components/typography.html">Typography</mdw-nav-drawer-item>
