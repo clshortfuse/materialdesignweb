@@ -15,47 +15,6 @@ function isActive(href) {
   return (new URL(href, window.location.href)).href === window.location.href;
 }
 
-const links = [
-  { icon: 'palette', href: '/components/color.html', text: 'Color' },
-  { icon: 'rounded_corner', href: '/components/shape.html', text: 'Shape' },
-  { icon: 'font_download', href: '/components/typography.html', text: 'Typography' },
-  { icon: 'exposure_plus_1', href: '/components/badge.html', text: 'Badges' },
-  { icon: 'call_to_action', href: '/components/bottomappbar.html', text: 'Bottom App Bar' },
-  { icon: 'crop_landscape', href: '/components/buttons.html', text: 'Buttons' },
-  { icon: 'view_comfy', href: '/components/cards.html', text: 'Cards' },
-  { icon: 'check_box', href: '/components/checkbox.html', text: 'Checkbox' },
-  { icon: 'edit_attributes', href: '/components/chips.html', text: 'Chips' },
-  { icon: 'select_all', href: '/components/dialogs.html', text: 'Dialogs' },
-  { icon: 'border_horizontal', href: '/components/dividers.html', text: 'Dividers' },
-  { icon: 'view_quilt', href: '/components/layout.html', text: 'Layout' },
-  { icon: 'list', href: '/components/list.html', text: 'Lists' },
-  { icon: 'checklist', href: '/components/listbox.html', text: 'Listbox' },
-  { icon: 'picture_in_picture', href: '/components/menus.html', text: 'Menus' },
-  { icon: 'video_label', href: '/components/navbar.html', text: 'Nav Bar' },
-  { icon: 'list_alt', href: '/components/navdrawer.html', text: 'Nav Drawer' },
-  { icon: 'more_vert', href: '/components/navrail.html', text: 'Nav Rail' },
-  { icon: 'rotate_right', href: '/components/progress.html', text: 'Progress' },
-  { icon: 'radio_button_checked', href: '/components/radio.html', text: 'Radio' },
-  { icon: 'search', href: '/components/search.html', text: 'Search' },
-  { icon: 'tune', href: '/components/sliders.html', text: 'Sliders' },
-  { icon: 'call_to_action', href: '/components/snackbar.html', text: 'Snackbar' },
-  { icon: 'toggle_on', href: '/components/switches.html', text: 'Switches' },
-  { icon: 'tab', href: '/components/tabs.html', text: 'Tabs' },
-  { icon: 'edit', href: '/components/textinput.html', text: 'Input' },
-  { icon: 'search', href: '/components/search.html', text: 'Search' },
-  { icon: 'edit', href: '/components/select.html', text: 'Select' },
-  { icon: 'edit_note', href: '/components/textarea.html', text: 'Textarea' },
-  { icon: 'web_asset', href: '/components/tooltip.html', text: 'Tooltips' },
-  { icon: 'web_asset', href: '/components/topappbar.html', text: 'Top App Bar' },
-];
-
-for (const link of links) {
-  // Lazy link fix
-  if (window.location.hostname === 'clshortfuse.github.io') {
-    link.href = `/materialdesignweb${link.href}`;
-  }
-}
-
 export default CustomElement
   .extend()
   .expressions({
@@ -74,25 +33,52 @@ export default CustomElement
     #menu-form {
       display: contents;
     }
-    #back-button {
-      transform: scaleX(var(--mdw-dir));
-    }
   `
   .html`
-      <mdw-layout>
+      <mdw-layout id=layout>
         <!--         
         <mdw-nav-rail>
           <mdw-nav-rail-item mdw-for="{link of links}" active=${(data, { link }) => isActive(link?.href)} icon={link.icon} href={link.href}>{link.text}</mdw-nav-rail-item>
         </mdw-nav-rail>
          -->
-        <mdw-nav-drawer slot=drawer>
-          <mdw-nav-drawer-item mdw-for="{link of links}" active=${(data, { link }) => isActive(link?.href)} icon={link.icon} href={link.href}>{link.text}</mdw-nav-drawer-item>
+        <mdw-nav-drawer id=drawer slot=drawer>
+          <mdw-nav-drawer-item icon=palette href="/components/color.html">Color</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=rounded_corner href="/components/shape.html">Shape</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=font_download href="/components/typography.html">Typography</mdw-nav-drawer-item>
+          <mdw-divider></mdw-divider>
+          <mdw-nav-drawer-item icon=exposure_plus_1 href="/components/badge.html">Badges</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=call_to_action href="/components/bottomappbar.html">Bottom App Bar</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=crop_landscape href="/components/buttons.html">Buttons</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=view_comfy href="/components/cards.html">Cards</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=check_box href="/components/checkbox.html">Checkbox</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=edit_attributes href="/components/chips.html">Chips</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=select_all href="/components/dialogs.html">Dialogs</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=border_horizontal href="/components/dividers.html">Dividers</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=view_quilt href="/components/layout.html">Layout</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=list href="/components/list.html">Lists</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=checklist href="/components/listbox.html">Listbox</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=picture_in_picture href="/components/menus.html">Menus</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=video_label href="/components/navbar.html">Nav Bar</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=list_alt href="/components/navdrawer.html">Nav Drawer</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=more_vert href="/components/navrail.html">Nav Rail</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=rotate_right href="/components/progress.html">Progress</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=radio_button_checked href="/components/radio.html">Radio</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=search href="/components/search.html">Search</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=tune href="/components/sliders.html">Sliders</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=call_to_action href="/components/snackbar.html">Snackbar</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=toggle_on href="/components/switches.html">Switches</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=tab href="/components/tabs.html">Tabs</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=edit href="/components/textinput.html">Input</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=search href="/components/search.html">Search</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=edit href="/components/select.html">Select</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=edit_note href="/components/textarea.html">Textarea</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=help href="/components/tooltip.html">Tooltips</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=web_asset href="/components/topappbar.html">Top App Bar</mdw-nav-drawer-item>
         </mdw-nav-drawer>
         <mdw-top-app-bar headline=${() => document.title} color=none slot=app-bar>
-            <mdw-icon-button color=surface id=back-button mdw-if={!isRootPage} slot=leading 
-              href="../"
-              icon=arrow_back
-              >Back</mdw-icon-button>
+            <mdw-icon-button color=surface id=menu-button slot=leading 
+              icon=menu
+              >Menu</mdw-icon-button>
             <mdw-icon-button color=surface id=settings slot=trailing icon=settings>Settings</mdw-icon-button>
             <mdw-icon-button color=surface slot=trailing href="https://github.com/clshortfuse/materialdesignweb" icon=invertocat>GitHub Page</mdw-icon-button>
           </mdw-top-app-bar>
@@ -120,6 +106,11 @@ export default CustomElement
         <mdw-menu-item radio name=shape value="../shape-diamond.css">Diamond Shape</mdw-menu-item>
         <mdw-menu-item radio name=shape value="../shape-squircle.css">Squircle Shape</mdw-menu-item>
     </mdw-menu>
+  `
+  .css`
+    #layout[nav-drawer="fixed"] #menu-button {
+      display: none;
+    }
   `
   .methods({
     setAltTheme(load = false) {
@@ -164,6 +155,11 @@ export default CustomElement
     },
   })
   .childEvents({
+    menuButton: {
+      click() {
+        this.refs.layout.navDrawer = 'open';
+      },
+    },
     settings: {
       click(event) {
         this.refs.menu.showModal(event.currentTarget);
@@ -199,8 +195,14 @@ export default CustomElement
   .events({})
   .on({
     constructed() {
-      const data = { links };
-      this.render(data, data);
+      for (const link of this.refs.drawer.children) {
+        if (window.location.hostname === 'clshortfuse.github.io') {
+          link.href = `/materialdesignweb${link.href}`;
+        }
+        if (isActive(link.href)) {
+          link.setAttribute('active', '');
+        }
+      }
 
       const useraltTheme = sessionStorage.getItem('altTheme') ?? 'false';
       if (useraltTheme === 'true') {
