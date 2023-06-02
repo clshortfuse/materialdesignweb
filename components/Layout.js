@@ -34,11 +34,6 @@ export default CustomElement
       },
     },
   })
-  .expressions({
-    hasNav({ navRail, navDrawer, navBar }) {
-      return Boolean(navRail || navDrawer || navBar);
-    },
-  })
   .set({
     /** @type {Map<string, MediaQueryList>} */
     registeredMediaQueries: null,
@@ -47,15 +42,15 @@ export default CustomElement
   })
   /* Slots should follow tab order */
   .html`
-    <slot id=slot-drawer                                     name=drawer    nav-rail={navRail}                          nav-drawer={navDrawer}                                                 slotted={navDrawer}  ></slot>
-    <div  id=scrim                                                                                                      nav-drawer={navDrawer}                                                 slotted={navDrawer}  ></div>
-    <slot id=slot-nav-rail                                   name=rail      nav-rail={navRail}                          nav-drawer={navDrawer}                                                 slotted={navRail}    ></slot>
-    <slot id=slot-app-bar                                    name=app-bar   nav-rail={navRail}                          nav-drawer={navDrawer} two-fixed={twoFixed} two-flexible={twoFlexible}                      ></slot>
-    <slot id=slot           class="pane pane1"                              nav-rail={navRail} columns={paneOneColumns} nav-drawer={navDrawer} two-fixed={twoFixed} two-flexible={twoFlexible} slotted={oneFlexible}></slot>
-    <slot id=slot-fixed     class="pane pane1"               name=fixed     nav-rail={navRail} columns={paneOneColumns} nav-drawer={navDrawer}                                                 slotted={oneFixed}   ></slot>
-    <slot id=slot-two       class="pane pane2" panes={panes} name=two       nav-rail={navRail} columns={paneTwoColumns} nav-drawer={navDrawer} one-fixed={oneFixed} one-flexible={oneFlexible} slotted={twoFlexible}></slot>
-    <slot id=slot-two-fixed class="pane pane2" panes={panes} name=two-fixed nav-rail={navRail} columns={paneTwoColumns} nav-drawer={navDrawer}                                                 slotted={twoFixed}   ></slot>
-    <slot id=slot-nav-bar                                    name=nav-bar   nav-rail={navRail}                          nav-drawer={navDrawer} two-fixed={twoFixed} two-flexible={twoFlexible}></slot>
+    <slot id=slot-nav-drawer name=nav-drawer state={navDrawer}></slot>
+    <div  id=scrim state={navDrawer}></div>
+    <slot id=slot-nav-rail name=nav-rail state={navRail}></slot>
+    <slot id=slot-app-bar name=app-bar></slot>
+    <slot id=slot class="pane pane1" columns={paneOneColumns} slotted={oneFlexible}></slot>
+    <slot id=slot-fixed name=fixed class="pane pane1" columns={paneOneColumns} slotted={oneFixed}   ></slot>
+    <slot id=slot-two name=two class="pane pane2" panes={panes} columns={paneTwoColumns} slotted={twoFlexible}></slot>
+    <slot id=slot-two-fixed name=two-fixed class="pane pane2" panes={panes} columns={paneTwoColumns} slotted={twoFixed}   ></slot>
+    <slot id=slot-nav-bar name=nav-bar state={navBar}></slot>
   `
   .methods({
     refreshLayoutValues() {
@@ -156,13 +151,16 @@ export default CustomElement
           if (!this.navRail) return false;
           this.navRail = 'fixed';
           if (this.navDrawer) this.navDrawer = 'closed';
+          if (this.navBar) this.navBar = 'closed';
         } else if (nav === 'drawer') {
           if (!this.navDrawer) return false;
           if (this.navRail) this.navRail = 'closed';
+          if (this.navBar) this.navBar = 'closed';
           this.navDrawer = 'fixed';
         } else {
           if (this.navRail) this.navRail = 'closed';
           if (this.navDrawer) this.navDrawer = 'closed';
+          if (this.navBar) this.navBar = 'open';
         }
         this.padding = padding;
         if (column2) {
@@ -190,13 +188,13 @@ export default CustomElement
       const slotElement = /** @type HTMLSlotElement */ (target);
       const slotted = slotElement.assignedElements().length > 0;
       switch (slotElement.name) {
-        case 'rail':
+        case 'nav-rail':
           this.navRail = slotted ? 'closed' : null;
           break;
-        case 'bar':
+        case 'nav-bar':
           this.navBar = slotted ? 'closed' : null;
           break;
-        case 'drawer':
+        case 'nav-drawer':
           this.navDrawer = slotted ? 'closed' : null;
           break;
         case 'fixed':
@@ -324,7 +322,7 @@ export default CustomElement
       transition: opacity 200ms;
     }
 
-    #scrim[nav-drawer="open"] {
+    #scrim[state="open"] {
       pointer-events: auto;
 
       opacity: 0.38;
@@ -400,7 +398,7 @@ export default CustomElement
       grid-area: nav-bar;
     }
 
-    #slot-nav-bar:is([nav-rail="fixed"],[nav-drawer="fixed"]) {
+    #slot-nav-bar[state="closed"] {
       display: none;
     }
 
@@ -411,11 +409,11 @@ export default CustomElement
       z-index: 3;
     }
 
-    #slot-nav-rail[nav-rail="fixed"] {
+    #slot-nav-rail[state="fixed"] {
       display: block;
     }
 
-    #slot-drawer {
+    #slot-nav-drawer {
       position: fixed;
 
       display: block;
@@ -432,7 +430,7 @@ export default CustomElement
       transition-timing-function: cubic-bezier(0.3, 0, 0.8, 0.15);
     }
 
-    #slot-drawer:is([nav-drawer="open"],[nav-drawer="fixed"]) {
+    #slot-nav-drawer:is([state="open"],[state="fixed"]) {
       transform: translateX(0);
       visibility: visible;
 
