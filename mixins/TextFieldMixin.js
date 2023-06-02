@@ -216,11 +216,11 @@ export default function TextFieldMixin(Base) {
         transition: none 200ms cubic-bezier(0.0, 0.0, 0.2, 1);
       }
 
-      #shape:is([filled],[outlined]) {
+      #shape:where([filled],[outlined]) {
         padding-inline: 16px;
       }
 
-      #shape:is([filled],[color]) {
+      #shape:where([filled],[color]) {
         background-color: rgb(var(--mdw-bg));
         color: rgb(var(--mdw-color__on-surface));
       }
@@ -238,7 +238,7 @@ export default function TextFieldMixin(Base) {
         color: rgb(var(--mdw-ink))
       }
 
-      #shape:is([filled],[outlined])[icon] {
+      #shape:where([filled],[outlined])[icon] {
         padding-inline-start: 12px;
       }
 
