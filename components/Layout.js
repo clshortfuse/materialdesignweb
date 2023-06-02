@@ -205,7 +205,7 @@ export default CustomElement
         return true;
       });
     },
-    checkTouchFinished() {
+    checkTouchFinished(event) {
       if (this.navDrawer !== 'open') return;
       const { _touchDeltaX, refs } = this;
       const clientWidth = refs.slotNavDrawer.clientWidth;
@@ -221,16 +221,20 @@ export default CustomElement
     '~touchstart'(event) {
       if (this.navDrawer !== 'open') return;
       if (!event.touches.length) return;
-      const [touch] = event.touches;
-      this._touchStartX = touch.clientX;
+      let [{ clientX, pageX }] = event.touches;
+      clientX ??= pageX - window.scrollX; // Safari
+      this._touchStartX = clientX;
     },
-    '~touchmove'(event) {
+    '~touchmove'({ touches }) {
       if (this.navDrawer !== 'open') return;
-      if (!event.touches.length) return;
-      const [touch] = event.touches;
-      const delta = Math.min(touch.clientX - this._touchStartX, 0);
+      if (!touches.length) return;
+      let [{ clientX, pageX }] = touches;
+      clientX ??= pageX - window.scrollX; // Safari
+      const delta = Math.min(clientX - this._touchStartX, 0);
+
       this._touchDeltaX = delta;
       this._navDrawerTranslateX = `${delta}px`;
+      this._navDrawerDuration = 0;
     },
     touchcancel: 'checkTouchFinished',
     '~touchend': 'checkTouchFinished',
