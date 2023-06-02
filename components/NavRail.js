@@ -16,7 +16,7 @@ export default Nav
     /* https://m3.material.io/components/navigation-rail/specs */
 
     :host{
-      position: sticky;
+      position: relative;
       
       inset-block-start: 0;
       inset-inline-start: 0;
