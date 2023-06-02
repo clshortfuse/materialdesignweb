@@ -65,4 +65,4 @@ import { addIconAliases, reportUnaliasedMaterialSymbols } from './icon-aliases.j
 
 addIconAliases();
 
-console.debug(JSON.stringify(await reportUnaliasedMaterialSymbols([])));
+console.debug(JSON.stringify(await reportUnaliasedMaterialSymbols()));
