@@ -44,6 +44,7 @@ export default CustomElement
     _previewValue: { nullable: false },
     _roundedValue: 'float',
     _isHoveringThumb: 'boolean',
+    _lastDispatchedChangeValue: 'string',
   })
   .methods({
     /**
@@ -150,8 +151,9 @@ export default CustomElement
       if (input.disabled) return;
       event.preventDefault();
       input.valueAsNumber = this._roundedValue;
-      if (this._value !== input.value) {
-        this._value = input.value;
+      this._value = input.value;
+      if (this._lastDispatchedChangeValue !== this._value) {
+        this._lastDispatchedChangeValue = this._value;
         input.dispatchEvent(new Event('change', { bubbles: true }));
       }
     },
