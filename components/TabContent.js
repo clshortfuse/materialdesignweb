@@ -91,7 +91,8 @@ export default CustomElement
   .methods({
     onResizeObserved() {
       this._panelMetrics = null;
-      // Resize should not change panel visibility
+      this.updatePanels();
+      // Resize should not change panel visibility (Chrome Bug?)
     },
     updatePanels() {
       const start = this.scrollLeft;
