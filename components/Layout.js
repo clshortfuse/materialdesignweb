@@ -1,6 +1,7 @@
 /* https://m3.material.io/foundations/layout/applying-layout/window-size-classes */
 
 import CustomElement from '../core/CustomElement.js';
+import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
 
 export default CustomElement
   .extend()
@@ -17,6 +18,14 @@ export default CustomElement
     paneTwoColumns: 'integer',
     padding: 'integer',
     panes: 'integer',
+    _touchDeltaX: 'integer',
+    _touchStartX: 'integer',
+    _navDrawerTranslateX: {
+      empty: '-100%',
+    },
+    _navDrawerDuration: {
+      empty: 0,
+    },
   })
   .observe({
     hasTwo: {
@@ -31,6 +40,20 @@ export default CustomElement
       reflect: 'write',
       get({ oneFlexible, oneFixed, twoFlexible, twoFixed }) {
         return (oneFlexible || oneFixed) && !(twoFlexible || twoFixed);
+      },
+    },
+    _navDrawerStyle: {
+      ...ELEMENT_STYLER_TYPE,
+      get({ _navDrawerTranslateX, _navDrawerDuration }) {
+        return {
+          target: 'slot-nav-drawer',
+          styles: {
+            transform: `translateX(${_navDrawerTranslateX})`,
+          },
+          timing: {
+            duration: _navDrawerDuration,
+          },
+        };
       },
     },
   })
@@ -182,6 +205,35 @@ export default CustomElement
         return true;
       });
     },
+    checkTouchFinished() {
+      if (this.navDrawer !== 'open') return;
+      const { _touchDeltaX, refs } = this;
+      const clientWidth = refs.slotNavDrawer.clientWidth;
+      const visibility = (_touchDeltaX + clientWidth) / clientWidth;
+      if (visibility < 0.5) {
+        this.navDrawer = 'closed';
+      } else {
+        this._navDrawerTranslateX = '0';
+      }
+    },
+  })
+  .events({
+    '~touchstart'(event) {
+      if (this.navDrawer !== 'open') return;
+      if (!event.touches.length) return;
+      const [touch] = event.touches;
+      this._touchStartX = touch.clientX;
+    },
+    '~touchmove'(event) {
+      if (this.navDrawer !== 'open') return;
+      if (!event.touches.length) return;
+      const [touch] = event.touches;
+      const delta = Math.min(touch.clientX - this._touchStartX, 0);
+      this._touchDeltaX = delta;
+      this._navDrawerTranslateX = `${delta}px`;
+    },
+    touchcancel: 'checkTouchFinished',
+    '~touchend': 'checkTouchFinished',
   })
   .rootEvents({
     slotchange({ target }) {
@@ -221,6 +273,10 @@ export default CustomElement
     },
   })
   .on({
+    navDrawerChanged(previous, current) {
+      this._navDrawerTranslateX = current === 'closed' ? '-100%' : '0';
+      this._navDrawerDuration = current === 'fixed' ? 0 : 200;
+    },
     connected() {
       this._windowResizeListener = this.refreshLayoutValues.bind(this);
       window.addEventListener('resize', this._windowResizeListener);
