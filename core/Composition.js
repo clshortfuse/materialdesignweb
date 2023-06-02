@@ -1043,7 +1043,7 @@ export default class Composition {
    * @param {InterpolateOptions} options
    * @return {?Composition<?>}
    */
-  interpolateIterable(element, options) {
+  #interpolateIterable(element, options) {
     // TODO: Microbenchmark element.attributes
     const forAttr = element.getAttribute('mdw-for');
     const trimmed = forAttr?.trim();
@@ -1255,7 +1255,7 @@ export default class Composition {
 
           if (element.hasAttribute('mdw-for')) {
             node = treeWalker.nextSibling();
-            this.interpolateIterable(element, options);
+            this.#interpolateIterable(element, options);
           } else {
             const idAttr = element.attributes.id;
             if (idAttr) {
