@@ -205,15 +205,18 @@ export default CustomElement
         return true;
       });
     },
-    checkTouchFinished(event) {
+    checkTouchFinished() {
       if (this.navDrawer !== 'open') return;
       const { _touchDeltaX, refs } = this;
       const clientWidth = refs.slotNavDrawer.clientWidth;
       const visibility = (_touchDeltaX + clientWidth) / clientWidth;
       if (visibility < 0.5) {
+        this._navDrawerTranslateX = '-100%';
+        this._navDrawerDuration = 200 * visibility;
         this.navDrawer = 'closed';
       } else {
         this._navDrawerTranslateX = '0';
+        this._navDrawerDuration = 200 * (0.5 * visibility);
       }
     },
   })
