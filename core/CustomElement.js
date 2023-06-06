@@ -213,9 +213,7 @@ export default class CustomElement extends ICustomElement {
   }
 
   /**
-   * Extends base class into a new class.
-   * Use to avoid mutating base class.
-   * TODO: Add constructor arguments typing
+   * Fix for Typescript not parsing constructor params
    * @type {typeof ICustomElement.tsClassFix}
    */
   static tsClassFix() {
@@ -249,8 +247,8 @@ export default class CustomElement extends ICustomElement {
   static set(source, options) {
     Object.defineProperties(
       this.prototype,
-      Object.fromEntries(
-        Object.entries(source).map(([name, value]) => {
+      Object.fromEntries([
+        ...Object.entries(source).map(([name, value]) => {
           // Tap into .map() to avoid double iteration
           // Property may be redefined observable
           this.undefine(name);
@@ -265,7 +263,17 @@ export default class CustomElement extends ICustomElement {
             },
           ];
         }),
-      ),
+        ...Object.getOwnPropertySymbols(source).map((symbol) => [
+          symbol,
+          {
+            enumerable: false,
+            configurable: true,
+            value: source[symbol],
+            writable: true,
+            ...options,
+          },
+        ]),
+      ]),
     );
     // @ts-expect-error Can't cast T
     return this;
