@@ -418,6 +418,7 @@ export function defineObservableProperty(object, key, options) {
   /** @type {Partial<PropertyDescriptor>} */
   const descriptor = {
     enumerable: config.enumerable,
+    configurable: true,
     /**
      * @this {C}
      * @return {T2}
