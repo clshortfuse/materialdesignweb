@@ -95,6 +95,6 @@
     "stylelint-no-unsupported-browser-features": "github:clshortfuse/stylelint-no-unsupported-browser-features#0a51157",
     "stylelint-order": "^6.0.2",
     "stylelint-use-logical-spec": "^5.0.0",
-    "typescript": "^5.0.2"
+    "typescript": "5.1"
   }
 }
