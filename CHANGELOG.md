@@ -1,3 +1,18 @@
+v0.8.0
+------
+* `Core`: Remove autoregister microtask wait
+* `Components`: Add `mdw-for`
+* `Mixins`: Add `PopupMixin`
+* `Input`: Add `Combobox` role
+* `Theme`: Add `surface-container`
+* `Surface`: Remove `surface-tint`
+* `Layout`: Add multi-pane support
+* `Components`: Add `Search`
+* `Mixins`: Add `SemiStickyMixin`
+* `Layout`: Add `nav-drawer` sliding
+* `Theme`: Add custom colors support for all trees
+* Bug fixes
+
 v0.7.1
 ------
 
