@@ -1,7 +1,6 @@
 /** @param {typeof import('../core/CustomElement.js').default} Base */
 export default function AriaReflectorMixin(Base) {
   return Base
-    .extend()
     .observe({
       _ariaRole: 'string',
     }).methods({

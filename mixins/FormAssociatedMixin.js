@@ -13,7 +13,6 @@ const DOMString = { nullParser: String, value: '' };
  */
 export default function FormAssociatedMixin(Base) {
   return Base
-    .extend()
     .setStatic({
       formAssociated: true,
     })

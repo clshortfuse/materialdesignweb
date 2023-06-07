@@ -4,6 +4,7 @@ import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(ShapeMixin)
   .observe({
@@ -125,5 +126,4 @@ export default CustomElement
       `);
     },
   })
-  .extend()
   .autoRegister('mdw-checkbox-icon');

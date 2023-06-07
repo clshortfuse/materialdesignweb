@@ -4,10 +4,10 @@ import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(DensityMixin)
   .mixin(ShapeMixin)
-  .extend()
   .html`<slot id=slot></slot>`
   .css`
     :host {

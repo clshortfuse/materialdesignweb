@@ -12,11 +12,11 @@ import StateMixin from '../mixins/StateMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(StateMixin)
   .mixin(RippleMixin)
   .mixin(AriaReflectorMixin)
-  .extend()
   .set({
     _ariaRole: 'listitem',
     delegatesFocus: false,

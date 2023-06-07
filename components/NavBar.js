@@ -3,8 +3,8 @@ import SemiStickyMixin from '../mixins/SemiStickyMixin.js';
 import Nav from './Nav.js';
 
 export default Nav
-  .mixin(SemiStickyMixin)
   .extend()
+  .mixin(SemiStickyMixin)
   .observe({
     _semiStickyAnchor: { empty: 'bottom' },
   })

@@ -145,7 +145,6 @@ function onBeforeUnload(event) {
  */
 export default function PopupMixin(Base) {
   return Base
-    .extend()
     .observe({
       open: 'boolean',
       modal: 'boolean',

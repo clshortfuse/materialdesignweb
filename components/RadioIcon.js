@@ -3,9 +3,9 @@ import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(ShapeMixin)
-  .extend()
   .observe({
     selected: 'boolean',
     icon: 'string',

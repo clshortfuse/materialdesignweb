@@ -30,10 +30,10 @@ function valueAsFraction(value, min, max) {
 }
 
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(StateMixin)
   .mixin(InputMixin)
-  .extend()
   .set({
     stateLayer: true,
     type: 'range',

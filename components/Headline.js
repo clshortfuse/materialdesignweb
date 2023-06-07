@@ -3,8 +3,8 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 import Box from './Box.js';
 
 export default Box
-  .mixin(ThemableMixin)
   .extend()
+  .mixin(ThemableMixin)
   .observe({
     ariaLevel: 'string',
     size: {

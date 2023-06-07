@@ -10,9 +10,9 @@ import './IconButton.js';
 import Surface from './Surface.js';
 
 export default Surface
+  .extend()
   .mixin(DensityMixin)
   .mixin(AriaReflectorMixin)
-  .extend()
   .set({
     _ariaRole: 'status',
     elevated: true,

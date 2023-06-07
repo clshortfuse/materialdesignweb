@@ -6,11 +6,11 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 
 /* @implements {HTMLSelectElement} */
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(StateMixin)
   .mixin(ControlMixin)
   .mixin(TextFieldMixin)
-  .extend()
   .observe({
     trailingIcon: { empty: 'arrow_drop_down' },
   })

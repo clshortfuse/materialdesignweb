@@ -3,7 +3,6 @@
  */
 export default function FlexableMixin(Base) {
   return Base
-    .extend()
     .observe({
       flex: {
         type: 'string',

@@ -7,12 +7,12 @@ import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(SurfaceMixin)
   .mixin(ShapeMixin)
   .mixin(AriaToolbarMixin)
   .mixin(SemiStickyMixin)
-  .extend()
   .set({
     elevated: true,
   })

@@ -3,7 +3,6 @@
  */
 export default function SurfaceMixin(Base) {
   return Base
-    .extend()
     .observe({
       elevated: 'boolean',
       elevation: 'integer',

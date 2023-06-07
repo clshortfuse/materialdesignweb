@@ -3,11 +3,9 @@
  */
 export default function ThemableMixin(Base) {
   return Base
-    .extend()
     .observe({
       color: 'string',
       ink: 'string',
-      block: 'boolean',
       typeStyle: 'string',
     })
     .css`${

@@ -3,8 +3,8 @@ import ShapeMixin from '../mixins/ShapeMixin.js';
 import Box from './Box.js';
 
 export default Box
-  .mixin(ShapeMixin)
   .extend()
+  .mixin(ShapeMixin)
   .on({
     composed() {
       const { shape, outline } = this.refs;

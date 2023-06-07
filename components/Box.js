@@ -7,9 +7,9 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
  * They should have simple geometry for rendering and layout.
  */
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(FlexableMixin)
-  .extend()
   .observe({
     inline: 'boolean',
     grid: 'boolean',

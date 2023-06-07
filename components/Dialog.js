@@ -83,11 +83,11 @@ function focusOnTree(root, autofocus, forward = true) {
 }
 
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(SurfaceMixin)
   .mixin(ShapeMixin)
   .mixin(PopupMixin)
-  .extend()
   .define({
     returnValue() {
       return /** @type {HTMLDialogElement} */ (this.refs.dialog).returnValue;

@@ -5,6 +5,7 @@ import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(FlexableMixin)
   .mixin(SurfaceMixin)

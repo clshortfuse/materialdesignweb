@@ -6,7 +6,6 @@ import KeyboardNavMixin from './KeyboardNavMixin.js';
 export default function AriaToolbarMixin(Base) {
   return Base
     .mixin(KeyboardNavMixin)
-    .extend()
     .set({
       ariaOrientationDefault: 'horizontal',
     });

@@ -3,7 +3,6 @@
  */
 export default function ShapeMixin(Base) {
   return Base
-    .extend()
     .observe({
       shapeTop: 'boolean',
       shapeBottom: 'boolean',

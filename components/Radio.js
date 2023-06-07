@@ -10,12 +10,12 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 import TouchTargetMixin from '../mixins/TouchTargetMixin.js';
 
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(StateMixin)
   .mixin(RippleMixin)
   .mixin(InputMixin)
   .mixin(TouchTargetMixin)
-  .extend()
   .set({
     type: 'radio',
     stateLayer: true,

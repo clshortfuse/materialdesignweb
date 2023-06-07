@@ -3,8 +3,8 @@ import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import Box from './Box.js';
 
 export default Box
-  .mixin(AriaReflectorMixin)
   .extend()
+  .mixin(AriaReflectorMixin)
   .set({
     _ariaRole: 'tabpanel',
   })

@@ -5,8 +5,8 @@ import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 import TabPanel from './TabPanel.js';
 
 export default CustomElement
-  .mixin(ResizeObserverMixin)
   .extend()
+  .mixin(ResizeObserverMixin)
   .set({
     /** @type {InstanceType<TabPanel>[]} */
     _panelNodes: [],

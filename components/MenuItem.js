@@ -6,8 +6,8 @@ import './Icon.js';
 import ListOption from './ListOption.js';
 
 export default class MenuItem extends ListOption
-  .mixin(FormAssociatedMixin)
   .extend()
+  .mixin(FormAssociatedMixin)
   .set({
     _cascadeTimeout: null,
     CASCADE_TIMEOUT: 500,

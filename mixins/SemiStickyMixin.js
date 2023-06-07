@@ -9,7 +9,6 @@ import ScrollListenerMixin from './ScrollListenerMixin.js';
 export default function SemiStickyMixin(Base) {
   return Base
     .mixin(ScrollListenerMixin)
-    .extend()
     .observe({
       _semiStickyHeight: { type: 'float', empty: 0 },
       _semiStickyOffsetY: { type: 'float', empty: 0 },

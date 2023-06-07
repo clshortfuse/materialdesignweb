@@ -6,12 +6,12 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 import TouchTargetMixin from '../mixins/TouchTargetMixin.js';
 
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(InputMixin) // Label as root
   .mixin(StateMixin)
   .mixin(TouchTargetMixin)
   // Switches have their own pressed animation (No ripple)
-  .extend()
   .set({
     type: 'checkbox',
     stateLayer: true,

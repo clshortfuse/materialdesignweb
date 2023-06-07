@@ -7,9 +7,9 @@ import SegmentedButton from './SegmentedButton.js';
 /** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
 
 export default Box
+  .extend()
   .mixin(KeyboardNav)
   .mixin(AriaReflectorMixin)
-  .extend()
   .define({
     kbdNavQuery() {
       return SegmentedButton.elementName;

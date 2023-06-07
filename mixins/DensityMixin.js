@@ -1,7 +1,6 @@
 /** @param {typeof import('../core/CustomElement.js').default} Base */
 export default function DensityMixin(Base) {
   return Base
-    .extend()
     .observe({
       density: 'integer',
     })

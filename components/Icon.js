@@ -15,8 +15,8 @@ const documentLoadedStyleSheets = new Set();
 
 /** @implements {Omit<HTMLImageElement,DeprecatedHTMLImageElementProperties>} */
 export default class Icon extends CustomElement
-  .mixin(ThemableMixin)
   .extend()
+  .mixin(ThemableMixin)
   .define({
     _img() { return /** @type {HTMLImageElement} */ (this.refs.img); },
   })

@@ -8,7 +8,6 @@ let rtlObserver;
  */
 export default function RTLObserverMixin(Base) {
   return Base
-    .extend()
     .observe({
       pageIsRTL: {
         type: 'boolean',

@@ -10,12 +10,12 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 import Tab from './Tab.js';
 
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(KeyboardNavMixin)
   .mixin(ResizeObserverMixin)
   .mixin(RTLObserverMixin)
   .mixin(ShapeMixin)
-  .extend()
   .set({
     /** @type {WeakRef<HTMLElement>} */
     _tabContentRef: null,

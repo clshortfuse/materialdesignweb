@@ -11,6 +11,7 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 const SUPPORTS_INERT = 'inert' in HTMLElement.prototype;
 
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(FlexableMixin)
   .mixin(SurfaceMixin)
@@ -18,7 +19,6 @@ export default CustomElement
   .mixin(FormAssociatedMixin) // Tap into FormAssociated for disabledState
   .mixin(StateMixin)
   .mixin(AriaReflectorMixin)
-  .extend()
   .setStatic({
     delegatesFocus: true,
   })

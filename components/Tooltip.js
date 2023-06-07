@@ -3,8 +3,8 @@ import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import Surface from './Surface.js';
 
 export default Surface
-  .mixin(AriaReflectorMixin)
   .extend()
+  .mixin(AriaReflectorMixin)
   .set({
     _ariaRole: 'tooltip',
   })

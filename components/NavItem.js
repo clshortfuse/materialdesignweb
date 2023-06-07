@@ -11,11 +11,11 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 /** @typedef {'charset'|'coords'|'name'|'shape'} DeprecatedHTMLAnchorElementProperties */
 
 export default class NavItem extends CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(StateMixin)
   .mixin(RippleMixin)
   .mixin(ShapeMixin)
-  .extend()
   .set({
     delegatesFocus: true,
     stateLayer: true,

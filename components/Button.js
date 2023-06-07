@@ -9,6 +9,7 @@ import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(DensityMixin)
   .mixin(SurfaceMixin)
@@ -16,7 +17,6 @@ export default CustomElement
   .mixin(StateMixin)
   .mixin(RippleMixin)
   .mixin(InputMixin)
-  .extend()
   .define({
     stateTargetElement() { return this.refs.control; },
   })

@@ -30,7 +30,6 @@ const DOMString = { nullParser: String, empty: '' };
 export default function InputMixin(Base) {
   return Base
     .mixin(ControlMixin)
-    .extend()
     .observe({
       accept: DOMString,
       alt: DOMString,

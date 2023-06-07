@@ -27,12 +27,12 @@ function getSharedPopup() {
 }
 
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(StateMixin)
   .mixin(InputMixin)
   .mixin(TextFieldMixin)
   .mixin(ResizeObserverMixin)
-  .extend()
   .observe({
     suggestInline: 'boolean',
     _expanded: 'boolean',

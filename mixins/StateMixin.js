@@ -7,7 +7,6 @@ let lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matc
  */
 export default function StateMixin(Base) {
   return Base
-    .extend()
     .observe({
       disabled: 'boolean',
       /** Force focus state (independent of document) */

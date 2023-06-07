@@ -6,8 +6,8 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 // https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element
 
 export default CustomElement
-  .mixin(ThemableMixin)
   .extend()
+  .mixin(ThemableMixin)
   .observe({
     circle: 'boolean',
     value: 'float',

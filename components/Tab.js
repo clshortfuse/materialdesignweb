@@ -9,11 +9,11 @@ import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 
 export default CustomElement
+  .extend()
   .mixin(ShapeMixin)
   .mixin(StateMixin)
   .mixin(RippleMixin)
   .mixin(ScrollListenerMixin)
-  .extend()
   .define({
     stateTargetElement() { return this.refs.anchor; },
     /**

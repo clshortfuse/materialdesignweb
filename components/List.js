@@ -6,9 +6,9 @@ import Box from './Box.js';
 /** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
 
 export default Box
+  .extend()
   .mixin(DensityMixin)
   .mixin(AriaReflectorMixin)
-  .extend()
   .set({
     _ariaRole: 'list',
     color: { empty: 'surface' },

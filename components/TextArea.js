@@ -12,12 +12,12 @@ const DOMString = { nullParser: String, value: '' };
  * -implements {HTMLTextAreaElement}
  */
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(StateMixin)
   .mixin(ControlMixin)
   .mixin(TextFieldMixin)
   .mixin(ResizeObserverMixin)
-  .extend()
   .set({
     supportsCSSLineHeightUnit: CSS.supports('height', '1lh'),
     type: 'textarea',

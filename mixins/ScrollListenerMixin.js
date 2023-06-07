@@ -5,7 +5,6 @@ const IDLE_TIMEOUT_MS = 500;
  */
 export default function ScrollListenerMixin(Base) {
   return Base
-    .extend()
     .observe({
       _scrollListenerPositionX: { type: 'float', empty: 0, reflect: false },
       _scrollListenerPositionY: { type: 'float', empty: 0, reflect: false },

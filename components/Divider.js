@@ -4,8 +4,8 @@ import CustomElement from '../core/CustomElement.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 export default CustomElement
-  .mixin(ThemableMixin)
   .extend()
+  .mixin(ThemableMixin)
   .observe({
     vertical: 'boolean',
   })

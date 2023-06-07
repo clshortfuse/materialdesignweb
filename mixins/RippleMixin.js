@@ -7,7 +7,6 @@ import Ripple from '../components/Ripple.js';
  */
 export default function RippleMixin(Base) {
   return Base
-    .extend()
     .set({
       /** @type {WeakRef<InstanceType<Ripple>>} */
       _lastRippleWeakRef: null,

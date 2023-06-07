@@ -10,7 +10,6 @@ const resizeObserver = new ResizeObserver((entries) => {
  */
 export default function ResizeObserverMixin(Base) {
   return Base
-    .extend()
     .set({
       observeResizeOnConnected: true,
     })

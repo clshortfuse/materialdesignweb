@@ -16,7 +16,6 @@ import FormAssociatedMixin from './FormAssociatedMixin.js';
 export default function ControlMixin(Base) {
   return Base
     .mixin(FormAssociatedMixin)
-    .extend()
     .observe({
       ariaLabel: 'string',
     })

@@ -3,8 +3,8 @@ import TooltipTriggerMixin from '../mixins/TooltipTriggerMixin.js';
 import ExtendedFab from './ExtendedFab.js';
 
 export default ExtendedFab
-  .mixin(TooltipTriggerMixin)
   .extend()
+  .mixin(TooltipTriggerMixin)
   .observe({
     fabSize: {
       /** @type {null|'small'|'large'} */

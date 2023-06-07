@@ -3,8 +3,8 @@ import TooltipTriggerMixin from '../mixins/TooltipTriggerMixin.js';
 import Button from './Button.js';
 
 export default Button
-  .mixin(TooltipTriggerMixin)
   .extend()
+  .mixin(TooltipTriggerMixin)
   .observe({
     _ariaPressed: {
       get({ type, checked }) {

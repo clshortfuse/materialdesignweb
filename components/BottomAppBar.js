@@ -10,9 +10,9 @@ import Surface from './Surface.js';
  */
 
 export default Surface
+  .extend()
   .mixin(AriaToolbarMixin)
   .mixin(AriaReflectorMixin)
-  .extend()
   .set({
     elevated: true,
     _ariaRole: 'toolbar',

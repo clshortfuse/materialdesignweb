@@ -5,11 +5,11 @@ import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 export default CustomElement
+  .extend()
   .mixin(ThemableMixin)
   .mixin(SurfaceMixin)
   .mixin(ShapeMixin)
   .mixin(PopupMixin)
-  .extend()
   .on({
     composed() {
       const { shape, surface, dialog } = this.refs;

@@ -14,7 +14,6 @@ const DEFAULT_ELEMENT_QUERY = [
  */
 export default function KeyboardNavMixin(Base) {
   return Base
-    .extend()
     .observe({
       /** Keyboard navigation attribute */
       kbdNav: { empty: 'true' },

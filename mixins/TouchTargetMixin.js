@@ -1,7 +1,6 @@
 /** @param {typeof import('../core/CustomElement.js').default} Base */
 export default function TouchTargetMixin(Base) {
   return Base
-    .extend()
     .html`<div id=touch-target class=touch-target></div>`
     .css`
         /* stylelint-disable liberty/use-logical-spec */
