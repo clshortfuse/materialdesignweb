@@ -38,7 +38,7 @@ export default CustomElement
     _expanded: 'boolean',
     _listbox: {
       type: 'object',
-      /** @type {Listbox} */
+      /** @type {InstanceType<Listbox>} */
       value: null,
     },
     _focusedValue: 'string',
@@ -69,7 +69,7 @@ export default CustomElement
      */
     onListboxChange(event) {
       const selectedItem = this._listbox.selectedOptions.item(0);
-      this.selectOption(selectedItem);
+      this.selectOption(selectedItem, true);
       this.closeListbox();
       // Revert focus back
       this.refs.control.focus();
@@ -104,9 +104,10 @@ export default CustomElement
 
     /**
      * @param {{label:string, value:string}} option
+     * @param {boolean} [force]
      * @return {void}
      */
-    selectOption(option) {
+    selectOption(option, force = false) {
       this.render({
         selectedOption: option,
       });
@@ -114,13 +115,14 @@ export default CustomElement
       const { _draftInput, _value, _input } = this;
       const { label: suggestion, value } = option;
 
-      if (_draftInput && suggestion && suggestion.toLowerCase().startsWith(_draftInput.toLowerCase())) {
+      if (!force && _draftInput && suggestion && suggestion.toLowerCase().startsWith(_draftInput.toLowerCase())) {
         _input.value = _draftInput + suggestion.slice(_draftInput.length);
         _input.setSelectionRange(_value.length, suggestion.length);
       } else {
         _input.value = suggestion;
         _input.setSelectionRange(suggestion.length, suggestion.length);
       }
+      this._draftInput = value;
       this._value = value;
     },
   })
@@ -198,6 +200,14 @@ export default CustomElement
             this.closeListbox();
             event.stopPropagation();
             return; // Don't prevent default
+          case 'Enter': {
+            if (!this._expanded) return;
+            const currentItem = this._listbox.item(this._focusedIndex);
+            if (!currentItem) return;
+            this.selectOption(currentItem, true);
+            this.closeListbox();
+            break;
+          }
           default:
             return;
         }
