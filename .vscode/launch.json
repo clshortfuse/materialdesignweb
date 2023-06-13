@@ -18,18 +18,6 @@
       "webRoot": "${workspaceRoot}/docs"
     },
     {
-      "type": "pwa-msedge",
-      "name": "Launch Microsoft Edge in headless mode",
-      "request": "launch",
-      "runtimeArgs": [
-        "--headless",
-        "--remote-debugging-port=9222"
-      ],
-      "url": "http://127.0.0.1:5500/",
-      "preLaunchTask": "npm: serve",
-      "webRoot": "${workspaceRoot}/docs"
-    },
-    {
       "type": "node",
       "request": "launch",
       "name": "Run test on current file",
@@ -43,6 +31,35 @@
       "skipFiles": [
         "<node_internals>/**/*.js"
       ]
+    },
+    {
+      "type": "pwa-msedge",
+      "name": "Launch Microsoft Edge",
+      "request": "launch",
+      "runtimeArgs": [
+        "--remote-debugging-port=9222"
+      ],
+      "url": "http://127.0.0.1:5500/",
+      "preLaunchTask": "npm: serve",
+      "webRoot": "${workspaceRoot}/docs"
+    },
+    {
+      "type": "pwa-msedge",
+      "name": "Launch Microsoft Edge in headless mode",
+      "request": "launch",
+      "runtimeArgs": [
+        "--headless",
+        "--remote-debugging-port=9222"
+      ],
+      "url": "http://127.0.0.1:5500/",
+      "preLaunchTask": "npm: serve",
+      "webRoot": "${workspaceRoot}/docs"
+    },
+    {
+      "type": "vscode-edge-devtools.debug",
+      "name": "Open Edge DevTools",
+      "request": "attach",
+      "webRoot": "${workspaceRoot}/docs"
     }
   ]
 }
