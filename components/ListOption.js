@@ -69,6 +69,14 @@ export default class ListOption extends ListItem
       this.refs.anchor.focus(...options);
     },
   })
+  .expressions({
+    anchorAriaLabelledBy({ _label }) {
+      return _label ? null : 'content';
+    },
+    anchorAriaDescribedBy({ _label }) {
+      return _label ? 'content' : null;
+    },
+  })
   .on({
     composed({ inline }) {
       const { anchor, state, content } = this.refs;
@@ -84,22 +92,16 @@ export default class ListOption extends ListItem
       anchor.setAttribute('tabindex', '0');
       anchor.setAttribute('aria-selected', inline(({ selected }) => `${selected}`));
       anchor.setAttribute('selected', '{selected}');
+      anchor.setAttribute('aria-labelledby', '{anchorAriaLabelledBy}');
+      anchor.setAttribute('aria-describedby', '{anchorAriaDescribedBy}');
+      anchor.setAttribute('aria-label', '{_label}');
       anchor.removeAttribute('href');
       anchor.removeAttribute('mdw-if');
 
+      content.setAttribute('aria-hidden', 'true');
       content.setAttribute('selected', '{selected}');
 
       state.setAttribute('state-disabled', 'focus');
-    },
-    _labelChanged(previous, current) {
-      const { anchor } = this.refs;
-      if (current == null) {
-        anchor.setAttribute('aria-labelledby', 'content');
-        anchor.removeAttribute('aria-label');
-      } else {
-        anchor.setAttribute('aria-label', current);
-        anchor.removeAttribute('aria-labelledby');
-      }
     },
     selectedChanged(previous, current) {
       // Used by HTMLCollection
