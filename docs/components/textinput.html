@@ -120,6 +120,116 @@
       </mdw-box>
     </demo-section>
     <demo-section>
+      <h2 slot="heading">Editable Combobox</h2>
+      <mdw-box flex=column wrap gap=16 padding=24>
+        <mdw-input filled label="Basic" supporting="No list-autocomplete (filtering), inline-autocomplete (appending text), or automatic selection.">
+          <mdw-listbox>
+            <mdw-list-option>Apple</mdw-list-option>
+            <mdw-list-option>Banana</mdw-list-option>
+            <mdw-list-option>Cherry</mdw-list-option>
+            <mdw-list-option>Dragon Fruit</mdw-list-option>
+            <mdw-list-option>Emblica</mdw-list-option>
+            <mdw-list-option>Fig</mdw-list-option>
+            <mdw-list-option>Grapes</mdw-list-option>
+            <mdw-list-option>Grapefruit</mdw-list-option>
+            <mdw-list-option>Honeydew Melon</mdw-list-option>
+          </mdw-listbox>
+        </mdw-input>
+        <mdw-input filled label="Inline" autocomplete-inline
+        supporting="Using [autocomplete-inline]. (Use keyboard up/down)">
+          <mdw-listbox>
+            <mdw-list-option>Apple</mdw-list-option>
+            <mdw-list-option>Banana</mdw-list-option>
+            <mdw-list-option>Cherry</mdw-list-option>
+            <mdw-list-option>Dragon Fruit</mdw-list-option>
+            <mdw-list-option>Emblica</mdw-list-option>
+            <mdw-list-option>Fig</mdw-list-option>
+            <mdw-list-option>Grapes</mdw-list-option>
+            <mdw-list-option>Grapefruit</mdw-list-option>
+            <mdw-list-option>Honeydew Melon</mdw-list-option>
+          </mdw-listbox>
+        </mdw-input>
+        <mdw-input filled label="Inline Autocomplete + Suggestion" autocomplete-inline autosuggest-inline supporting="Using [autocomplete-inline][autosuggest-inline]">
+          <mdw-listbox>
+            <mdw-list-option>Apple</mdw-list-option>
+            <mdw-list-option>Banana</mdw-list-option>
+            <mdw-list-option>Cherry</mdw-list-option>
+            <mdw-list-option>Dragon Fruit</mdw-list-option>
+            <mdw-list-option>Emblica</mdw-list-option>
+            <mdw-list-option>Fig</mdw-list-option>
+            <mdw-list-option>Grapes</mdw-list-option>
+            <mdw-list-option>Grapefruit</mdw-list-option>
+            <mdw-list-option>Honeydew Melon</mdw-list-option>
+          </mdw-listbox>
+        </mdw-input>
+        <mdw-input outlined ink=secondary label="Inline Autocomplete + Suggestion + Filter" autocomplete-inline autocomplete-list autosuggest-inline supporting="Using [autocomplete-inline][autocomplete-list][autosuggest-inline]">
+          <mdw-listbox>
+            <mdw-list-option>Apple</mdw-list-option>
+            <mdw-list-option>Banana</mdw-list-option>
+            <mdw-list-option>Cherry</mdw-list-option>
+            <mdw-list-option>Dragon Fruit</mdw-list-option>
+            <mdw-list-option>Emblica</mdw-list-option>
+            <mdw-list-option>Fig</mdw-list-option>
+            <mdw-list-option>Grapes</mdw-list-option>
+            <mdw-list-option>Grapefruit</mdw-list-option>
+            <mdw-list-option>Honeydew Melon</mdw-list-option>
+          </mdw-listbox>
+        </mdw-input>
+        <mdw-input filled ink=tertiary label="Inline Autocomplete + Suggestion + Custom Filter" autocomplete-inline autocomplete-list=custom autosuggest-inline supporting="Using [autocomplete-inline][autocomplete-list=custom][autosuggest-inline] with input event listener"
+        oninput="{
+          // Inject any custom DOM mutation here (ie: with framework).
+          // this.listbox is a QOL reference to the slotted listbox.
+          const inputRegex = new RegExp(this.value, 'gi');
+          for(const option of this.listbox) {
+            let optionText = option.textContent;
+            let fragment;
+            let lastIndex = 0;
+            for(const match of optionText.matchAll(inputRegex)) {
+              fragment ??= new DocumentFragment();
+              let {index} = match;
+              let matchStr = match.toString();
+
+              // Generate `<mdw-box inline color={ink} role=mark>{match}</mdw-box>`
+              const box = document.createElement('mdw-box')
+              box.setAttribute('role', 'mark');
+              box.color = this.ink || 'primary';
+              box.inline = true;
+              box.textContent = matchStr;
+              
+              fragment.append(
+                optionText.slice(lastIndex, index),
+                box,
+              );
+
+              lastIndex = index + matchStr.length;
+            }
+            
+            option.hidden = this.value && Boolean(!fragment);
+            if (fragment) {
+              fragment.append(optionText.slice(lastIndex));
+              option.replaceChildren(fragment);
+            } else {
+              // Element may have old mark
+              option.replaceChildren(optionText);
+            }
+
+          }
+        }">
+          <mdw-listbox>
+            <mdw-list-option>Apple</mdw-list-option>
+            <mdw-list-option>Banana</mdw-list-option>
+            <mdw-list-option>Cherry</mdw-list-option>
+            <mdw-list-option>Dragon Fruit</mdw-list-option>
+            <mdw-list-option>Emblica</mdw-list-option>
+            <mdw-list-option>Fig</mdw-list-option>
+            <mdw-list-option>Grapes</mdw-list-option>
+            <mdw-list-option>Grapefruit</mdw-list-option>
+            <mdw-list-option>Honeydew Melon</mdw-list-option>
+          </mdw-listbox>
+        </mdw-input>
+      </mdw-box>
+    </demo-section>
+    <demo-section>
       <h2 slot=heading>Bare</h2>
       <mdw-box flex=column wrap gap=16 padding=24>
         <mdw-input label="[label] only"></mdw-input>
