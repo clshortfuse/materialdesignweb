@@ -117,7 +117,11 @@ export default class ListOption extends ListItem
     
       z-index: 0;
     }
-    
+
+    :host([hidden]) {
+      display: none;
+    }
+
     :host([href]) {
       cursor: pointer;
     }
