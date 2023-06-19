@@ -176,8 +176,8 @@ export default function PopupMixin(Base) {
        */
       updatePopupPosition(anchor) {
         const flow = this._currentFlow ?? this.flow;
-        this.style.setProperty('min-width', 'none');
-        this.style.setProperty('min-height', 'none');
+        this.style.setProperty('min-width', '0');
+        this.style.setProperty('min-height', '0');
         this.style.setProperty('width', 'auto');
         this.style.setProperty('height', 'auto');
         this.style.setProperty('max-width', 'none');
