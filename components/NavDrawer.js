@@ -37,6 +37,8 @@ export default NavRail
 
     #slot {
       gap: 0;
+      overscroll-behavior: none;
+      overscroll-behavior: contain;
 
       inline-size: auto;
       padding-inline: 12px;
