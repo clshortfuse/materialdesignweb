@@ -65,8 +65,8 @@ export default CustomElement
   })
   /* Slots should follow tab order */
   .html`
-    <slot id=slot-nav-drawer name=nav-drawer state={navDrawer}></slot>
     <div  id=scrim state={navDrawer}></div>
+    <slot id=slot-nav-drawer name=nav-drawer state={navDrawer}></slot>
     <slot id=slot-nav-rail name=nav-rail state={navRail}></slot>
     <slot id=slot-app-bar name=app-bar></slot>
     <slot id=slot class="pane pane1" columns={paneOneColumns} slotted={oneFlexible}></slot>
@@ -376,19 +376,41 @@ export default CustomElement
       inset: 0;
 
       pointer-events: none;
+      overflow: overlay;
 
+      overscroll-behavior: none;
+      overscroll-behavior: contain;
+      scrollbar-color: transparent transparent;
+      scrollbar-width: none;
       opacity: 0;
       z-index: 25;
 
       background-color: rgb(var(--mdw-color__scrim));
 
       transition: opacity 200ms;
+      will-change: opacity;
+    }
+
+    #scrim::-webkit-scrollbar {
+      display: none;
     }
 
     #scrim[state="open"] {
       pointer-events: auto;
 
       opacity: 0.38;
+    }
+
+    #scrim::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      display: block;
+
+      height: 200%;
+      width: 200%;
     }
 
     .pane {
