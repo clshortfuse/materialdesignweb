@@ -23,6 +23,7 @@ function getSharedPopup() {
     sharedPopup.shapeStyle = 'extra-small';
     sharedPopup.color = 'surface';
     sharedPopup.matchSourceWidth = true;
+    sharedPopup.flow = 'corner';
   }
   return sharedPopup;
 }
@@ -222,6 +223,10 @@ export default CustomElement
       }
       this._focusedPosInSet = index + 1;
       next.focused = true;
+      next.scrollIntoView({
+        behavior: 'instant',
+        block: 'nearest',
+      });
       this.suggestOption(next);
     },
     // Traverse options to find element that may be suggested inline
@@ -251,6 +256,10 @@ export default CustomElement
       }
       this._focusedPosInSet = index + 1;
       suggestion.focused = true;
+      suggestion.scrollIntoView({
+        behavior: 'instant',
+        block: 'nearest',
+      });
       this.suggestOption(suggestion);
     },
     resetSuggestion() {
@@ -301,6 +310,10 @@ export default CustomElement
       }
       this._focusedPosInSet = index + 1;
       previous.focused = true;
+      previous.scrollIntoView({
+        behavior: 'instant',
+        block: 'nearest',
+      });
       this.suggestOption(previous);
     },
   })
