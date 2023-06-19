@@ -475,8 +475,8 @@ export default CustomElement
   .html`
     <slot id=slot></slot>
     <div id=aria-listbox role=listbox mdw-if={_hasListbox}>
-      <div id=aria-active role=option aria-setsize="{_listbox.length}"
-        aria-posinset={_focusedPosInSet} aria-label={selectedOption.label}></div>
+      <div id=aria-active role=option aria-hidden=false aria-label={selectedOption.label}
+        aria-setsize="{_listbox.length}" aria-posinset={_focusedPosInSet}></div>
     </div>
   `
   .css`
