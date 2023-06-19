@@ -72,8 +72,7 @@ export default CustomElement
   .methods({
     onResizeObserved() {
       if (!this._expanded) return;
-      const popup = getSharedPopup();
-      popup.updatePopupPosition(this.refs.shape);
+      getSharedPopup().updatePopupPosition(this.refs.shape);
     },
     /**
      * @param {Event} event
@@ -341,8 +340,14 @@ export default CustomElement
         }
         const value = event.currentTarget.value;
         this._draftInput = value;
-        if (this.autocompleteList != null && this.autocompleteList !== 'custom') {
-          this.applyAutocompleteList();
+        if (this.autocompleteList != null) {
+          if (this.autocompleteList !== 'custom') {
+            this.applyAutocompleteList();
+          }
+          if (this._expanded) {
+            // May have resized
+            getSharedPopup().updatePopupPosition(this.refs.shape);
+          }
         }
         this.resetSuggestion();
         if (value && !this._expanded && this._listbox.length) {
