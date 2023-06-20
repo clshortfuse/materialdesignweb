@@ -161,6 +161,7 @@ export default function PopupMixin(Base) {
         /** @type {'corner'|'adjacent'|'overflow'|'vcenter'|'hcenter'|'center'} */
         value: null,
       },
+      popupMargin: 'float',
     })
     .set({
       returnValue: '',
