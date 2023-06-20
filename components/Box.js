@@ -63,21 +63,45 @@ export default CustomElement
       grid-template-columns: repeat(var(--mdw-grid__columns), 1fr);
     }
 
-    #slot[grid]::slotted(*) { grid-column: auto / span calc(var(--mdw-grid__columns)) }
-    #slot[grid]::slotted([col-span="1"]) { grid-column: auto / span 1; }
-    #slot[grid]::slotted([col-span="2"]) { grid-column: auto / span min(2, var(--mdw-grid__columns)); }
-    #slot[grid]::slotted([col-span="3"]) { grid-column: auto / span min(3, var(--mdw-grid__columns)); }
-    #slot[grid]::slotted([col-span="4"]) { grid-column: auto / span min(4, var(--mdw-grid__columns)); }
-    #slot[grid]::slotted([col-span="5"]) { grid-column: auto / span min(5, var(--mdw-grid__columns)); }
-    #slot[grid]::slotted([col-span="6"]) { grid-column: auto / span min(6, var(--mdw-grid__columns)); }
-    #slot[grid]::slotted([col-span="7"]) { grid-column: auto / span min(7, var(--mdw-grid__columns)); }
-    #slot[grid]::slotted([col-span="8"]) { grid-column: auto / span min(8, var(--mdw-grid__columns)); }
-    #slot[grid]::slotted([col-span="9"]) { grid-column: auto / span min(9, var(--mdw-grid__columns)); }
-    #slot[grid]::slotted([col-span="10"]) { grid-column: auto / span min(10, var(--mdw-grid__columns)); }
-    #slot[grid]::slotted([col-span="11"]) { grid-column: auto / span min(11, var(--mdw-grid__columns)); }
-    #slot[grid]::slotted([col-span="12"]) { grid-column: auto / span min(12, var(--mdw-grid__columns)); }
-    #slot[grid]::slotted([col-span="50%"]) { grid-column: auto / span max(calc(var(--mdw-grid__columns) / 2), 1); }
-    #slot[grid]::slotted([col-span="25%"]) { grid-column: auto / span max(calc(var(--mdw-grid__columns) / 4), 1); }
+    #slot[grid]::slotted(*) {
+      --mdw-grid__column-count: var(--mdw-grid__columns);
+      --mdw-grid__column-count__4: var(--mdw-grid__column-count);
+      --mdw-grid__column-count__8: var(--mdw-grid__column-count);
+      --mdw-grid__column-count__12: var(--mdw-grid__column-count);
+      grid-column: auto / span calc(
+        (min(var(--mdw-grid__column-count__4), 4) * var(--mdw-grid__columns__4))
+        + (min(var(--mdw-grid__column-count__8), 8) * var(--mdw-grid__columns__8))
+        + (min(var(--mdw-grid__column-count__12), 12) * var(--mdw-grid__columns__12))
+      );
+    }
+    #slot[grid]::slotted([col-span="1"]) { --mdw-grid__column-count: 1; }
+    #slot[grid]::slotted([col-span="2"]) { --mdw-grid__column-count: 2; }
+    #slot[grid]::slotted([col-span="3"]) { --mdw-grid__column-count: 3; }
+    #slot[grid]::slotted([col-span="4"]) { --mdw-grid__column-count: 4; }
+    #slot[grid]::slotted([col-span="5"]) { --mdw-grid__column-count: 5; }
+    #slot[grid]::slotted([col-span="6"]) { --mdw-grid__column-count: 6; }
+    #slot[grid]::slotted([col-span="7"]) { --mdw-grid__column-count: 7; }
+    #slot[grid]::slotted([col-span="8"]) { --mdw-grid__column-count: 8; }
+    #slot[grid]::slotted([col-span="9"]) { --mdw-grid__column-count: 9; }
+    #slot[grid]::slotted([col-span="10"]) { --mdw-grid__column-count: 10; }
+    #slot[grid]::slotted([col-span="11"]) { --mdw-grid__column-count: 11; }
+    #slot[grid]::slotted([col-span="12"]) { --mdw-grid__column-count: 12; }
+    
+    #slot[grid]::slotted([col-span="25%"]) { --mdw-grid__column-count: calc(var(--mdw-grid__columns) / 4); }
+    #slot[grid]::slotted([col-span="50%"]) { --mdw-grid__column-count: calc(var(--mdw-grid__columns) / 2); }
+
+    #slot[grid]::slotted([col-span-4="1"]) { --mdw-grid__column-count__4: 1; }
+    #slot[grid]::slotted([col-span-4="2"]) { --mdw-grid__column-count__4: 2; }
+    #slot[grid]::slotted([col-span-4="3"]) { --mdw-grid__column-count__4: 3; }
+    #slot[grid]::slotted([col-span-4="4"]) { --mdw-grid__column-count__4: 4; }
+    #slot[grid]::slotted([col-span-8="1"]) { --mdw-grid__column-count__8: 1; }
+    #slot[grid]::slotted([col-span-8="2"]) { --mdw-grid__column-count__8: 2; }
+    #slot[grid]::slotted([col-span-8="3"]) { --mdw-grid__column-count__8: 3; }
+    #slot[grid]::slotted([col-span-8="4"]) { --mdw-grid__column-count__8: 4; }
+    #slot[grid]::slotted([col-span-8="5"]) { --mdw-grid__column-count__8: 5; }
+    #slot[grid]::slotted([col-span-8="6"]) { --mdw-grid__column-count__8: 6; }
+    #slot[grid]::slotted([col-span-8="7"]) { --mdw-grid__column-count__8: 7; }
+    #slot[grid]::slotted([col-span-8="8"]) { --mdw-grid__column-count__8: 8; }
 
   `
   .html`<slot id=slot type-style={typeStyle} grid={grid}></slot>`

@@ -295,6 +295,9 @@ export default CustomElement
   .css`
     :host {
       --mdw-grid__columns: 4;
+      --mdw-grid__columns__4: 1;
+      --mdw-grid__columns__8: 0;
+      --mdw-grid__columns__12: 0;
       --mdw-content__max-width: 1040px;
       --mdw-content__padding: 16px;
       --mdw-layout__spacer-width: 24px;
@@ -419,10 +422,21 @@ export default CustomElement
 
     .pane[columns="8"] {
       /* stylelint-disable-next-line rule-selector-property-disallowed-list */
+      --mdw-grid__columns__4: 0;
+      /* stylelint-disable-next-line rule-selector-property-disallowed-list */
+      --mdw-grid__columns__8: 1;
+      /* stylelint-disable-next-line rule-selector-property-disallowed-list */
       --mdw-grid__columns: 8;
+      
     }
 
     .pane[columns="12"] {
+      /* stylelint-disable-next-line rule-selector-property-disallowed-list */
+      --mdw-grid__columns__4: 0;
+      /* stylelint-disable-next-line rule-selector-property-disallowed-list */
+      --mdw-grid__columns__8: 0;
+      /* stylelint-disable-next-line rule-selector-property-disallowed-list */
+      --mdw-grid__columns__12: 1;
       /* stylelint-disable-next-line rule-selector-property-disallowed-list */
       --mdw-grid__columns: 12;
     }
