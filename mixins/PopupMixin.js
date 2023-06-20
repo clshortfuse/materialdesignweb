@@ -331,7 +331,7 @@ export default function PopupMixin(Base) {
         this.style.setProperty('max-width', `${anchorResult.right - anchorResult.left}px`);
         this.style.setProperty('max-height', `${anchorResult.bottom - anchorResult.top}px`);
         this.style.setProperty('transform-origin', `${anchorResult.transformOriginY} ${anchorResult.transformOriginX}`);
-        this.scrollIntoView();
+        // this.scrollIntoView();
       },
       /**
        * @param {Event & {currentTarget: HTMLSlotElement}} event
