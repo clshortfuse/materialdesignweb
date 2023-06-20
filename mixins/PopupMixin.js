@@ -11,7 +11,7 @@
  */
 
 import CustomElement from '../core/CustomElement.js';
-import { attemptFocus } from '../core/dom.js';
+import { attemptFocus, isRtl } from '../core/dom.js';
 import { canAnchorPopup } from '../utils/popup.js';
 
 CustomElement
@@ -31,7 +31,7 @@ CustomElement
       overscroll-behavior: none;
       overscroll-behavior: contain;
       scrollbar-color: transparent transparent;
-      scrollbar-width: thin;
+      scrollbar-width: none;
 
       opacity: 0;
 
@@ -42,6 +42,10 @@ CustomElement
       animation: fade-in 200ms forwards ease-out;
       
       will-change: opacity;
+    }
+
+    :host::-webkit-scrollbar {
+      display: none;
     }
 
     :host([hidden]) {
@@ -205,14 +209,14 @@ export default function PopupMixin(Base) {
         /** @type {import('../utils/popup.js').CanAnchorPopUpOptions} */
         const anchorOptions = {
           anchor: anchor == null
-            ? this.getBoundingClientRect()
+            ? initialRect
             : (anchor instanceof Element ? anchor.getBoundingClientRect() : anchor),
           width,
           height,
           margin: 0,
         };
 
-        const isPageRTL = (getComputedStyle(this).direction === 'rtl');
+        const isPageRTL = isRtl(this);
         const xStart = isPageRTL ? 'right' : 'left';
         const xEnd = isPageRTL ? 'left' : 'right';
 
