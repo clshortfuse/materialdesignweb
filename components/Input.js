@@ -482,7 +482,7 @@ export default CustomElement
   })
   .on({
     composed() {
-      const { control, trailingIcon, shape } = this.refs;
+      const { control, trailingIcon, shape, labelText } = this.refs;
       // Can't cross DOM boundaries
       control.setAttribute('aria-activedescendant', '{ariaActiveDescendantAttrValue}');
       control.setAttribute('aria-autocomplete', '{ariaAutocompleteAttrValue}');
@@ -491,6 +491,7 @@ export default CustomElement
       trailingIcon.setAttribute('mdw-if', '{computedTrailingIcon}');
       trailingIcon.setAttribute('icon', '{computedTrailingIcon}');
       shape.setAttribute('trailing-icon', '{computedTrailingIcon}');
+      labelText.setAttribute('trailing-icon', '{computedTrailingIcon}');
     },
   })
   .html`
