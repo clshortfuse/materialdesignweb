@@ -214,7 +214,7 @@ export default function PopupMixin(Base) {
             : (anchor instanceof Element ? anchor.getBoundingClientRect() : anchor),
           width,
           height,
-          margin: 0,
+          margin: this.popupMargin ?? (window.innerWidth < 648 ? 16 : 24),
         };
 
         const isPageRTL = isRtl(this);
@@ -395,6 +395,10 @@ export default function PopupMixin(Base) {
 
         window.addEventListener('resize', onWindowResize);
         window.addEventListener('scroll', onWindowResize);
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener('resize', onWindowResize);
+          window.visualViewport.addEventListener('scroll', onWindowResize);
+        }
 
         OPEN_POPUPS.push({
           element: this,

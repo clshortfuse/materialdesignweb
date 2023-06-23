@@ -81,10 +81,21 @@ export function canAnchorPopup(options) {
   let bottom;
   let left;
   const margin = options.margin ?? 0;
-  const pageTop = margin;
-  const pageBottom = document.documentElement.clientHeight - margin;
-  const pageRight = document.documentElement.clientWidth - margin;
-  const pageLeft = margin;
+
+  let pageTop = margin;
+  let pageBottom = -margin;
+  let pageLeft = margin;
+  let pageRight = -margin;
+
+  if (window.visualViewport) {
+    pageTop += window.visualViewport.offsetTop;
+    pageBottom += window.visualViewport.offsetTop + window.visualViewport.height;
+    pageLeft += window.visualViewport.offsetLeft;
+    pageRight += window.visualViewport.offsetLeft + window.visualViewport.width;
+  } else {
+    pageBottom += document.documentElement.clientHeight;
+    pageRight += document.documentElement.clientWidth;
+  }
 
   const offsetX = options.offsetX ?? 0;
   const offsetY = options.offsetY ?? 0;
