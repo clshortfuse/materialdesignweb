@@ -74,14 +74,14 @@ export default CustomElement
     <mdw-radio-icon id=radio mdw-if={radio} aria-hidden=true class={radioClass} disabled={disabledState} ink={selectionColor} selected={selected}></mdw-radio-icon>
     <mdw-box mdw-if={avatar} id=avatar color={avatarColor} type-style=title-medium src={AvatarSrc}
       aria-hidden=true>{avatar}</mdw-box>
-    <mdw-icon mdw-if={icon} id=icon ink={iconInk} src={iconSrc} aria-hidden=true>{icon}</mdw-icon>
+    <mdw-icon mdw-if={icon} id=icon ink={iconInk} src={iconSrc} aria-hidden=true icon={icon}></mdw-icon>
     <img id=img mdw-if={src} src={src} alt={alt} video={video} />
     <slot name=leading>{leading}</slot>
     <div id=content has-supporting={hasSupporting} lines={lines}>
       <slot id=slot></slot>
       <slot id=supporting name=supporting class=text lines={lines}>{supporting}</slot>
     </div>
-    <mdw-icon mdw-if={trailingIcon} id=trailing-icon ink={trailingIconInk} src={trailingIconSrc} aria-hidden=true>{trailingIcon}</mdw-icon>
+    <mdw-icon mdw-if={trailingIcon} id=trailing-icon ink={trailingIconInk} src={trailingIconSrc} aria-hidden=true icon={trailingIcon}></mdw-icon>
     <slot id=trailing name=trailing role=note>{trailing}</slot>
     <mdw-divider mdw-if={divider} id=divider divder={divider}></mdw-divider>
   `

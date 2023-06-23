@@ -194,7 +194,7 @@ export default class MenuItem extends ListOption
         <mdw-icon id=selection
           mdw-if=${({ checkbox, radio }) => checkbox ?? radio ?? false}
           class=${({ checkbox, radio }) => checkbox || radio || 'leading'}
-          selected={selected}>check</mdw-icon>
+          selected={selected} icon=check></mdw-icon>
       `);
 
       trailing.setAttribute('type-style', 'label-large');

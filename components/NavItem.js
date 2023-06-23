@@ -36,7 +36,7 @@ export default class NavItem extends CustomElement
     },
   })
   .html`
-    <mdw-icon id=icon aria-hidden=true src={src} active={active}>{icon}</mdw-icon>
+    <mdw-icon id=icon aria-hidden=true src={src} active={active} icon={icon}></mdw-icon>
     <a id=anchor
       aria-current=${({ active }) => (active ? 'page' : null)}
       aria-describedby=badge

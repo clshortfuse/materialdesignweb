@@ -157,7 +157,7 @@ export default CustomElement
   })
   .html`
     <div id=prepend>
-      <mdw-icon mdw-if={icon} id=icon class=content ink=secondary aria-hidden=true>{icon}</mdw-icon>
+      <mdw-icon mdw-if={icon} id=icon class=content ink=secondary aria-hidden=true icon={icon}></mdw-icon>
       <slot id=headline name=headline on-slotchange={onSlotChange} role=header>{headline}</slot>
       <slot id=fixed name=fixed class=content on-slotchange={onSlotChange}></slot>
       <mdw-divider id=divider-top size={dividers}></mdw-divider>

@@ -18,7 +18,7 @@ export default Button
       slot.before(html`
         <div id=icons>
           ${icon}
-          <mdw-icon selected={checked} id=check-icon aria-hidden=true>check</mdw-icon>
+          <mdw-icon selected={checked} id=check-icon aria-hidden=true icon=check></mdw-icon>
         </div>
       `);
       shape.setAttribute('selected', '{checked}');

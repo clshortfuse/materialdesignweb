@@ -55,9 +55,9 @@ export default CustomElement
     <div id=thumb selected={checked} pressed={pressed} disabled={disabled}>
       <mdw-shape id=thumb-shape shape-style=full selected={checked} pressed={pressed} hovered={hovered} focused={focused} icon={hasIcon}
        color={_thumbColor} active={_active} ink={_thumbInk} disabled={disabled}></mdw-shape>
-      <mdw-icon ink={_iconInk} class=icon id=icon src={src} selected={checked}>{icon}</mdw-icon>
-      <mdw-icon ink={_iconInk} class=icon id=selected-icon src={selectedIconSrc} selected={checked}>{selectedIcon}</mdw-icon>
-      <mdw-icon ink={_iconInk} class=icon id=unselected-icon src={unselectedIconSrc} selected={checked}>{unselectedIcon}</mdw-icon>
+      <mdw-icon ink={_iconInk} class=icon id=icon src={src} selected={checked} icon={icon}></mdw-icon>
+      <mdw-icon ink={_iconInk} class=icon id=selected-icon src={selectedIconSrc} selected={checked} icon={selectedIcon}></mdw-icon>
+      <mdw-icon ink={_iconInk} class=icon id=unselected-icon src={unselectedIconSrc} selected={checked} icon={unselectedIcon}></mdw-icon>
       <slot id=slot selected={checked}></slot>
     </div>
   `

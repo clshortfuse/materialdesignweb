@@ -54,7 +54,7 @@ export default CustomElement
       aria-disabled=${({ disabledState }) => `${disabledState}`}
       disabled={disabledState}
       href=${({ href }) => href ?? '#'}>
-      <mdw-icon mdw-if=${(data) => data.icon || data.src} id=icon aria-hidden=true src={src} active={active}>{icon}</mdw-icon>
+      <mdw-icon mdw-if=${(data) => data.icon || data.src} id=icon aria-hidden=true src={src} active={active} icon={icon}></mdw-icon>
       <slot id=slot></slot>
     </a>
   `

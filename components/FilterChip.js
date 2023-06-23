@@ -19,8 +19,8 @@ export default Chip
     },
   })
   .html`
-    <mdw-icon mdw-if={!icon} id=check-icon disabled={disabledState} selected={checked} aria-hidden=true>check</mdw-icon>
-    <mdw-icon mdw-if={computedTrailingIcon} id=trailing-icon aria-hidden=true src={trailingSrc}>{computedTrailingIcon}</mdw-icon>
+    <mdw-icon mdw-if={!icon} id=check-icon disabled={disabledState} selected={checked} aria-hidden=true icon=check></mdw-icon>
+    <mdw-icon mdw-if={computedTrailingIcon} id=trailing-icon aria-hidden=true src={trailingSrc} icon={computedTrailingIcon}></mdw-icon>
   `
   .on({
     composed() {

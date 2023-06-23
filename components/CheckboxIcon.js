@@ -122,7 +122,7 @@ export default CustomElement
       // outlineLeft.remove();
       // outlineRight.remove();
       shape.append(html`
-        <mdw-icon id=icon selected={selected} errored={errored} disabled={disabled}>{icon}</mdw-icon>
+        <mdw-icon id=icon selected={selected} errored={errored} disabled={disabled} icon={icon}></mdw-icon>
       `);
     },
   })

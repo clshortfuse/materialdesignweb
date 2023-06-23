@@ -2,10 +2,7 @@
 
 import CustomElement from '../core/CustomElement.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
-
-/** @type {Map<string, {path:string, viewBox:string}>} */
-const svgAliasMap = new Map();
-const unaliased = new Set();
+import { svgAliasMap, unaliased } from '../services/SVGAlias.js';
 
 const documentLoadedStyleSheets = new Set();
 
@@ -30,7 +27,7 @@ export default class Icon extends CustomElement
     decode() { return this._img.decode; },
   })
   .observe({
-    _slottedText: 'string',
+    icon: 'string',
     disabled: 'boolean',
     alt: 'string',
     src: 'string',
@@ -51,15 +48,16 @@ export default class Icon extends CustomElement
     viewBox: 'string',
     fontClass: { empty: 'material-symbols-outlined' },
     fontLibrary: { empty: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block' },
+    _isConnected: 'boolean',
   })
   .observe({
     _svgAlias: {
       type: 'object',
-      get({ _slottedText }) {
-        if (!_slottedText) return null;
-        const result = svgAliasMap.get(_slottedText.trim().toLowerCase());
+      get({ icon }) {
+        if (!icon) return null;
+        const result = svgAliasMap.get(icon.trim().toLowerCase());
         if (!result) {
-          unaliased.add(_slottedText);
+          unaliased.add(icon);
           console.warn(`Icon: No SVG alias for ${JSON.stringify([...unaliased])}`);
         }
         return result;
@@ -75,10 +73,10 @@ export default class Icon extends CustomElement
     },
   })
   .observe({
-    _showSlot: {
+    _showFontIcon: {
       type: 'boolean',
-      get({ _slottedText, svg, _computedSVGPath, src }) {
-        return _slottedText && !svg && !_computedSVGPath && !src;
+      get({ icon, svg, _computedSVGPath, src }) {
+        return icon && !svg && !_computedSVGPath && !src;
       },
     },
   })
@@ -89,7 +87,7 @@ export default class Icon extends CustomElement
 
   })
   .html`
-    <link mdw-if={_showSlot} id=link rel=stylesheet href={fontLibrary} />
+    <link mdw-if={_showFontIcon} id=link rel=stylesheet href={fontLibrary} />
     <svg mdw-if="{showSVG}" id="svg" viewBox="{_computedViewBox}">
       <use id="use" mdw-if="{svg}" href="{svg}" fill="currentColor"/>
       <path id="path" mdw-if="{_computedSVGPath}" d="{_computedSVGPath}"/>
@@ -101,7 +99,7 @@ export default class Icon extends CustomElement
       referrerpolicy={referrerPolicy} decoding={decoding} loading={loading}
       width={width} height={height}
     />
-    <slot id=icon class={fontClass} hidden={!_showSlot} aria-hidden=true></slot>
+    <span id=icon class={fontClass} hidden={!_showFontIcon} aria-hidden=true>{icon}</span>
   `
   .css`
     /* https://material.io/design/iconography/system-icons.html */
@@ -183,11 +181,6 @@ export default class Icon extends CustomElement
 
   `
   .childEvents({
-    icon: {
-      slotchange() {
-        this._slottedText = this.textContent;
-      },
-    },
     link: {
       /**
        * @param {{currentTarget: HTMLLinkElement}} event
@@ -213,24 +206,6 @@ export default class Icon extends CustomElement
       },
     },
   }) {
-  static get svgAliasMap() { return svgAliasMap; }
-
-  static get svgUnaliased() { return unaliased; }
-
-  /**
-   * @param {string} name
-   * @param {string} path
-   * @param {string} [viewBox]
-   */
-  static addSVGAlias(name, path, viewBox = '0 0 24 24') {
-    name = name.toLowerCase();
-    if (path) {
-      svgAliasMap.set(name, { path, viewBox });
-    } else {
-      svgAliasMap.delete(name);
-    }
-  }
-
   /**
    * @param {number} [width]
    * @param {number} [height]
