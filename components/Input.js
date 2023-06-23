@@ -69,6 +69,17 @@ export default CustomElement
   .define({
     stateTargetElement() { return this.refs.control; },
   })
+  .expressions({
+    computedTrailingIcon({ trailingIcon, _listbox, _expanded }) {
+      if (trailingIcon != null) {
+        return trailingIcon;
+      }
+      if (_listbox) {
+        return _expanded ? 'arrow_drop_up' : 'arrow_drop_down';
+      }
+      return null;
+    },
+  })
   .methods({
     onResizeObserved() {
       if (!this._expanded) return;
@@ -429,6 +440,13 @@ export default CustomElement
         this._listbox = listbox;
       },
     },
+    trailingIcon: {
+      '~click'() {
+        if (!this._listbox) return;
+        this.toggleListbox();
+        this.refs.control.focus();
+      },
+    },
   })
   .events({
     blur({ relatedTarget }) {
@@ -464,12 +482,15 @@ export default CustomElement
   })
   .on({
     composed() {
-      const { control } = this.refs;
+      const { control, trailingIcon, shape } = this.refs;
       // Can't cross DOM boundaries
       control.setAttribute('aria-activedescendant', '{ariaActiveDescendantAttrValue}');
       control.setAttribute('aria-autocomplete', '{ariaAutocompleteAttrValue}');
       control.setAttribute('aria-controls', '{ariaControlsAttrValue}');
       control.setAttribute('aria-expanded', '{ariaExpandedAttrValue}');
+      trailingIcon.setAttribute('mdw-if', '{computedTrailingIcon}');
+      trailingIcon.setAttribute('icon', '{computedTrailingIcon}');
+      shape.setAttribute('trailing-icon', '{computedTrailingIcon}');
     },
   })
   .html`
@@ -486,6 +507,10 @@ export default CustomElement
 
     #aria-listbox {
       display: none;
+    }
+
+    #trailing-icon {
+      align-self: center;
     }
   `
   .autoRegister('mdw-input');

@@ -94,7 +94,7 @@ export default function TextFieldMixin(Base) {
             <mdw-icon mdw-if={icon} id=icon aria-hidden=true disabled={disabledState} icon={icon}></mdw-icon>
             <span mdw-if={inputPrefix} class=inline id=prefix aria-hidden=true focused={focusedState} populated={populatedState}>{inputPrefix}</span>
             <span mdw-if={inputSuffix} class=inline id=suffix aria-hidden=true focused={focusedState} populated={populatedState}>{inputSuffix}</span>
-            <mdw-icon mdw-if={trailingIcon} id=trailing-icon ink={trailingIconInk} aria-hidden=true disabled={disabledState} icon={trailingIcon}></mdw-icon>
+            <mdw-icon-button tabindex=-1 disabled={disabledState} mdw-if={trailingIcon} id=trailing-icon ink={trailingIconInk} aria-hidden=true disabled={disabledState} icon={trailingIcon}></mdw-icon-button>
             <div mdw-if={filled} id=indicator aria-hidden=true focused={focusedState} hovered={hoveredState} errored={erroredState} disabled={disabledState}></div>
           `,
         );
@@ -170,14 +170,6 @@ export default function TextFieldMixin(Base) {
         letter-spacing: var(--mdw-type__letter-spacing);
       }
 
-      :host([icon]) {
-        --padding-inline-start: 12px;
-      }
-
-      :host([trailing-icon]) {
-        --padding-inline-end: 12px;
-      }
-
       :host(:is([color], [ink])) {
         background-color: transparent;
         color: rgb(var(--mdw-color__on-surface));
@@ -242,7 +234,7 @@ export default function TextFieldMixin(Base) {
       }
 
       #shape[trailing-icon] {
-        padding-inline-end: 12px;
+        padding-inline-end: 0;
       }
 
       #shape[focused] {
@@ -358,7 +350,8 @@ export default function TextFieldMixin(Base) {
       #trailing-icon {
         order: 2;
 
-        margin-inline-start: 16px;
+        /* stylelint-disable-next-line declaration-property-value-disallowed-list */
+        margin-inline: 8px 4px;
       }
 
       #indicator {
