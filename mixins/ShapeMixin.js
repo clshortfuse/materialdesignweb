@@ -28,6 +28,7 @@ export default function ShapeMixin(Base) {
         --mdw-surface__will-change: none;
         --mdw-shape__ltr: calc(0.5 * var(--mdw-dir, 1) + 0.5); /* 1 if LTR, 0 if RTL */
         --mdw-shape__rtl: calc(-0.5 * var(--mdw-dir, 1) + 0.5); /* 0 if LTR, 1 if RTL */
+        --mdw-shape__mask: none;
 
         /** By default, fallback to border-radius */
         --mdw-shape__rounded: 1;
@@ -40,7 +41,6 @@ export default function ShapeMixin(Base) {
         --mdw-shape__size__top-end-size: var(--mdw-shape__size);
         --mdw-shape__size__bottom-start-size: var(--mdw-shape__size);
         --mdw-shape__size__bottom-end-size: var(--mdw-shape__size);
-      
         /* (1/2n + 1/2)L + (-1/2n + 1/2)R  */
         
         --mdw-shape__size__top-left-size: calc((var(--mdw-shape__ltr) * var(--mdw-shape__size__top-start-size)) + (var(--mdw-shape__rtl) * var(--mdw-shape__size__top-end-size)));
