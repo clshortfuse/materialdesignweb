@@ -1,9 +1,8 @@
 import { assert } from '@esm-bundle/chai';
 
-import Badge from '../components/Badge.js';
-
-import '../theming/loader.js';
-import { html, makeFromConstructor, makeFromString, makeFromTagName } from './utils.js';
+import Badge from '../../components/Badge.js';
+import '../../theming/loader.js';
+import { html, makeFromConstructor, makeFromString, makeFromTagName } from '../utils.js';
 
 beforeEach(() => {
   document.body.replaceChildren();
@@ -12,17 +11,17 @@ beforeEach(() => {
 describe('mdw-badge', () => {
   it('can be created with document.createElement', () => {
     const badge = makeFromTagName('mdw-badge');
-    assert.equal(badge.constructor.elementName, 'mdw-badge');
+    assert.equal(badge.tagName.toLowerCase(), 'mdw-badge');
   });
 
   it('can be created with new ()', () => {
     const badge = makeFromConstructor(Badge);
-    assert.equal(badge.constructor.elementName, 'mdw-badge');
+    assert.equal(badge.tagName.toLowerCase(), 'mdw-badge');
   });
 
   it('can be created with fragment', () => {
     const badge = makeFromString('<mdw-badge>');
-    assert.equal(badge.constructor.elementName, 'mdw-badge');
+    assert.equal(badge.tagName.toLowerCase(), 'mdw-badge');
   });
 
   describe('layout', () => {

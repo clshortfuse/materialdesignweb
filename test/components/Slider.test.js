@@ -1,9 +1,8 @@
 import { assert } from '@esm-bundle/chai';
 
-import Slider from '../components/Slider.js';
-
-import '../theming/loader.js';
-import { html, makeFromConstructor, makeFromString, makeFromTagName } from './utils.js';
+import Slider from '../../components/Slider.js';
+import '../../theming/loader.js';
+import { html, makeFromConstructor, makeFromString, makeFromTagName } from '../utils.js';
 
 beforeEach(() => {
   document.body.replaceChildren();
@@ -12,17 +11,17 @@ beforeEach(() => {
 describe('mdw-slider', () => {
   it('can be created with document.createElement', () => {
     const slider = makeFromTagName('mdw-slider');
-    assert.equal(slider.constructor.elementName, 'mdw-slider');
+    assert.equal(slider.tagName.toLowerCase(), 'mdw-slider');
   });
 
   it('can be created with new ()', () => {
     const slider = makeFromConstructor(Slider);
-    assert.equal(slider.constructor.elementName, 'mdw-slider');
+    assert.equal(slider.tagName.toLowerCase(), 'mdw-slider');
   });
 
   it('can be created with fragment', () => {
     const slider = makeFromString('<mdw-slider>');
-    assert.equal(slider.constructor.elementName, 'mdw-slider');
+    assert.equal(slider.tagName.toLowerCase(), 'mdw-slider');
   });
 
   describe('layout', () => {

@@ -1,9 +1,8 @@
 import { assert } from '@esm-bundle/chai';
 
-import Box from '../components/Box.js';
-
-import '../theming/loader.js';
-import { html, makeFromConstructor, makeFromString, makeFromTagName } from './utils.js';
+import Box from '../../components/Box.js';
+import '../../theming/loader.js';
+import { html, makeFromConstructor, makeFromString, makeFromTagName } from '../utils.js';
 
 beforeEach(() => {
   document.body.replaceChildren();
@@ -12,17 +11,17 @@ beforeEach(() => {
 describe('mdw-box', () => {
   it('can be created with document.createElement', () => {
     const box = makeFromTagName('mdw-box');
-    assert.equal(box.constructor.elementName, 'mdw-box');
+    assert.equal(box.tagName.toLowerCase(), 'mdw-box');
   });
 
   it('can be created with new ()', () => {
     const box = makeFromConstructor(Box);
-    assert.equal(box.constructor.elementName, 'mdw-box');
+    assert.equal(box.tagName.toLowerCase(), 'mdw-box');
   });
 
   it('can be created with fragment', () => {
     const box = makeFromString('<mdw-box>');
-    assert.equal(box.constructor.elementName, 'mdw-box');
+    assert.equal(box.tagName.toLowerCase(), 'mdw-box');
   });
 
   it('should slot content', () => {
