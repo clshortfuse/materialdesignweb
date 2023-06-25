@@ -230,6 +230,51 @@
       </mdw-box>
     </demo-section>
     <demo-section>
+      <h2 slot="heading">Non-editable Combobox</h2>
+      <mdw-box flex=column wrap gap=16 padding=24>
+        <mdw-input filled label="Basic" type=select-one supporting="Uses [type=select-one]">
+          <mdw-listbox>
+            <mdw-list-option>Apple</mdw-list-option>
+            <mdw-list-option>Banana</mdw-list-option>
+            <mdw-list-option>Cherry</mdw-list-option>
+            <mdw-list-option>Dragon Fruit</mdw-list-option>
+            <mdw-list-option>Emblica</mdw-list-option>
+            <mdw-list-option>Fig</mdw-list-option>
+            <mdw-list-option>Grapes</mdw-list-option>
+            <mdw-list-option>Grapefruit</mdw-list-option>
+            <mdw-list-option>Honeydew Melon</mdw-list-option>
+          </mdw-listbox>
+        </mdw-input>
+        <mdw-input filled label="Custom Blank Text" type=select-one supporting="Uses [select-one]">
+          <mdw-listbox>
+            <mdw-list-option value="">None</mdw-list-option>
+            <mdw-list-option>Apple</mdw-list-option>
+            <mdw-list-option>Banana</mdw-list-option>
+            <mdw-list-option>Cherry</mdw-list-option>
+            <mdw-list-option>Dragon Fruit</mdw-list-option>
+            <mdw-list-option>Emblica</mdw-list-option>
+            <mdw-list-option>Fig</mdw-list-option>
+            <mdw-list-option>Grapes</mdw-list-option>
+            <mdw-list-option>Grapefruit</mdw-list-option>
+            <mdw-list-option>Honeydew Melon</mdw-list-option>
+          </mdw-listbox>
+        </mdw-input>
+        <mdw-input filled label="Preselected" type=select-one value=Banana supporting="Uses [select-one]">
+          <mdw-listbox>
+            <mdw-list-option>Apple</mdw-list-option>
+            <mdw-list-option>Banana</mdw-list-option>
+            <mdw-list-option>Cherry</mdw-list-option>
+            <mdw-list-option>Dragon Fruit</mdw-list-option>
+            <mdw-list-option>Emblica</mdw-list-option>
+            <mdw-list-option>Fig</mdw-list-option>
+            <mdw-list-option>Grapes</mdw-list-option>
+            <mdw-list-option>Grapefruit</mdw-list-option>
+            <mdw-list-option>Honeydew Melon</mdw-list-option>
+          </mdw-listbox>
+        </mdw-input>
+      </mdw-box>
+    </demo-section>
+    <demo-section>
       <h2 slot=heading>Bare</h2>
       <mdw-box flex=column wrap gap=16 padding=24>
         <mdw-input label="[label] only"></mdw-input>
