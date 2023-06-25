@@ -200,7 +200,7 @@ export default class MenuItem extends ListOption
       trailing.setAttribute('type-style', 'label-large');
 
       trailingIcon.setAttribute('mdw-if', '{computeTrailingIcon}');
-      trailingIcon.textContent = '{computeTrailingIcon}';
+      trailingIcon.setAttribute('icon', '{computeTrailingIcon}');
     },
     _formResetChanged(oldValue, newValue) {
       if (!newValue) return;
