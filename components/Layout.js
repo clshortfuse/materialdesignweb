@@ -14,9 +14,6 @@ export default CustomElement
     twoFlexible: 'boolean',
     twoFixed: 'boolean',
     paneTwoActive: 'boolean',
-    paneOneColumns: 'integer',
-    paneTwoColumns: 'integer',
-    padding: 'integer',
     panes: 'integer',
     _touchDeltaX: 'integer',
     _touchStartX: 'integer',
@@ -69,8 +66,8 @@ export default CustomElement
     <slot id=slot-nav-drawer name=nav-drawer state={navDrawer}></slot>
     <slot id=slot-nav-rail name=nav-rail state={navRail}></slot>
     <slot id=slot-app-bar name=app-bar></slot>
-    <slot id=slot class="pane pane1" columns={paneOneColumns} slotted={oneFlexible}></slot>
-    <slot id=slot-fixed name=fixed class="pane pane1" columns={paneOneColumns} slotted={oneFixed}   ></slot>
+    <slot id=slot class="pane pane1" slotted={oneFlexible}></slot>
+    <slot id=slot-fixed name=fixed class="pane pane1" slotted={oneFixed}></slot>
     <slot id=slot-two name=two class="pane pane2" panes={panes} columns={paneTwoColumns} slotted={twoFlexible}></slot>
     <slot id=slot-two-fixed name=two-fixed class="pane pane2" panes={panes} columns={paneTwoColumns} slotted={twoFixed}   ></slot>
     <slot id=slot-nav-bar name=nav-bar state={navBar}></slot>
@@ -141,35 +138,19 @@ export default CustomElement
        */
 
       const { innerWidth } = window;
-      /** @type {[number, 'modal'|'rail'|'drawer', 4|8|12|'fixed', number, number][]} */
+      /** @type {[number, 'modal'|'rail'|'drawer', 1|2][]} */
       const breakpointTable = [
-        [1632, 'drawer', 'fixed', 12, 24],
-        [2112, 'drawer', 12, 12, 24],
-        [1352, 'rail', 'fixed', 12, 24],
-        [1112, 'rail', 'fixed', 8, 24],
-        [872, 'rail', 'fixed', 4, 24],
-        [1832, 'rail', 12, 12, 24],
-        [1352, 'rail', 8, 8, 24],
-        [872, 'rail', 4, 4, 24],
-        [1392, 'drawer', 'fixed', 8, 24],
-        [1632, 'drawer', 8, 8, 24],
-        [1272, 'modal', 'fixed', 12, 24],
-        [1032, 'modal', 'fixed', 8, 24],
-        [792, 'modal', 'fixed', 4, 24],
-        [1752, 'modal', 12, 12, 24],
-        [1272, 'modal', 8, 8, 24],
-        [792, 'modal', 4, 4, 24],
-        [1248, 'drawer', 12, 0, 24],
-        [960, 'rail', 12, 0, 24],
-        [728, 'rail', 8, 0, 24],
-        [888, 'modal', 12, 0, 24],
-        [648, 'modal', 8, 0, 24],
-        [632, 'modal', 8, 0, 16],
-        [0, 'modal', 4, 0, 16],
+        [1632, 'drawer', 2], // Drawer always
+        [872, 'rail', 2], // Rail if available
+        [1392, 'drawer', 2], // Drawer if no rail
+        [792, 'modal', 2], // Modal 2-pane
+        [1248, 'drawer', 1], // Drawer 1-pane
+        [728, 'rail', 1], // Rail 1-pane
+        [0, 'modal', 1], // Modal 1-pane
       ];
-      breakpointTable.some(([minWidth, nav, column1, column2, padding]) => {
+      breakpointTable.some(([minWidth, nav, panes]) => {
         if (innerWidth < minWidth) return false;
-        if (column2 && !this.hasTwo) return false;
+        if (panes === 2 && !this.hasTwo) return false;
         if (nav === 'rail') {
           if (!this.navRail) return false;
           this.navRail = 'fixed';
@@ -185,23 +166,7 @@ export default CustomElement
           if (this.navDrawer) this.navDrawer = 'closed';
           if (this.navBar) this.navBar = 'open';
         }
-        this.padding = padding;
-        if (column2) {
-          this.panes = 2;
-          if (this.oneFixed) {
-            this.paneOneColumns = 4;
-            this.paneTwoColumns = column2;
-          } else if (this.twoFixed) {
-            this.paneOneColumns = column2;
-            this.paneTwoColumns = 4;
-          }
-        } else {
-          this.panes = 1;
-          this.paneOneColumns = /** @type {number} */ (column1);
-          this.paneTwoColumns = this.hasTwo
-            ? /** @type {number} */ (column1)
-            : null;
-        }
+        this.panes = panes;
         return true;
       });
     },
@@ -294,10 +259,6 @@ export default CustomElement
   })
   .css`
     :host {
-      --mdw-grid__columns: 4;
-      --mdw-grid__columns__4: 1;
-      --mdw-grid__columns__8: 0;
-      --mdw-grid__columns__12: 0;
       --mdw-content__max-width: 1040px;
       --mdw-content__padding: 16px;
       --mdw-layout__spacer-width: 24px;
@@ -326,6 +287,13 @@ export default CustomElement
 
       font: var(--mdw-typescale__body-large__font);
       letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
+    }
+
+    @media (min-width: 648px) {
+      :host {
+        --mdw-layout__window-padding: 24px;
+        --mdw-content__padding: 24px;
+      }
     }
 
     :host(:where([pane-two-active])) {
@@ -359,11 +327,6 @@ export default CustomElement
 
     :host(:where([nav-drawer="fixed"])) {
       --mdw-layout__nav-drawer__ratio: 1;
-    }
-
-    :host(:where([padding="24"])) {
-      --mdw-layout__window-padding: 24px;
-      --mdw-content__padding: 24px;
     }
 
     :host(:where([panes="2"][one-fixed])) {
@@ -418,27 +381,6 @@ export default CustomElement
 
     .pane {
       overflow: visible;
-    }
-
-    .pane[columns="8"] {
-      /* stylelint-disable-next-line rule-selector-property-disallowed-list */
-      --mdw-grid__columns__4: 0;
-      /* stylelint-disable-next-line rule-selector-property-disallowed-list */
-      --mdw-grid__columns__8: 1;
-      /* stylelint-disable-next-line rule-selector-property-disallowed-list */
-      --mdw-grid__columns: 8;
-      
-    }
-
-    .pane[columns="12"] {
-      /* stylelint-disable-next-line rule-selector-property-disallowed-list */
-      --mdw-grid__columns__4: 0;
-      /* stylelint-disable-next-line rule-selector-property-disallowed-list */
-      --mdw-grid__columns__8: 0;
-      /* stylelint-disable-next-line rule-selector-property-disallowed-list */
-      --mdw-grid__columns__12: 1;
-      /* stylelint-disable-next-line rule-selector-property-disallowed-list */
-      --mdw-grid__columns: 12;
     }
 
     .pane1 {
