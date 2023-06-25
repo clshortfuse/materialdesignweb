@@ -99,7 +99,7 @@ export default CustomElement
     animationend({ animationName }) {
       switch (animationName) {
         case 'ripple-fade-in':
-          this.setAttribute('ripple-state', 'filled');
+          this.rippleState = 'filled';
           break;
         case 'ripple-fade-out':
           this.handleRippleComplete();
