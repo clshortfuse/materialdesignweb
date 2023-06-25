@@ -269,7 +269,7 @@ export default function TextFieldMixin(Base) {
         inset: auto;
         align-self: flex-start;
 
-        display: inline;
+        display: inline-block;
 
         box-sizing: border-box;
 
@@ -300,6 +300,7 @@ export default function TextFieldMixin(Base) {
         line-height: inherit;
         font-family: inherit;
         letter-spacing: inherit;
+        text-align: initial;
 
         transition-duration: inherit;
         transition-property: color;

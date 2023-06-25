@@ -39,7 +39,11 @@ export default CustomElement
     autocompleteInline: 'boolean',
     autocompleteList: 'string',
     autosuggestInline: 'boolean',
+    /** If true, when listbox is open, arrow navigation will automatically select options. */
+    autoSelect: 'boolean',
     _expanded: 'boolean',
+    /** If true, when listbox is open, <ESC> accepts current suggestion, same as <Enter>. */
+    acceptOnEscape: 'boolean',
     _listbox: {
       type: 'object',
       /** @type {InstanceType<Listbox>} */
@@ -57,6 +61,9 @@ export default CustomElement
     _hasListbox({ _listbox }) {
       return !!_listbox;
     },
+    _isSelect({ type }) {
+      return type.toLowerCase() === 'select-one';
+    },
   })
   .define({
     listbox() {
@@ -68,17 +75,6 @@ export default CustomElement
   })
   .define({
     stateTargetElement() { return this.refs.control; },
-  })
-  .expressions({
-    computedTrailingIcon({ trailingIcon, _listbox, _expanded }) {
-      if (trailingIcon != null) {
-        return trailingIcon;
-      }
-      if (_listbox) {
-        return _expanded ? 'arrow_drop_up' : 'arrow_drop_down';
-      }
-      return null;
-    },
   })
   .methods({
     onResizeObserved() {
@@ -100,7 +96,6 @@ export default CustomElement
       if (!_listbox) return;
 
       const lowerCase = _draftInput.toLowerCase();
-      console.log({ lowerCase });
       for (const option of _listbox) {
         option.hidden = !option.value.toLowerCase().startsWith(lowerCase);
       }
@@ -112,14 +107,19 @@ export default CustomElement
       const { _listbox, refs } = this;
       if (!_listbox) return;
       this._expanded = true;
-      const { control, ariaListbox, shape } = refs;
-      control.setAttribute('role', 'combobox');
+      const { ariaListbox, shape } = refs;
       ariaListbox.setAttribute('aria-hidden', 'false');
       const popup = getSharedPopup();
       document.body.append(popup);
       popup.replaceChildren(_listbox);
-      _listbox.selectedIndex = -1;
       popup.showPopup(shape, false);
+      const [option] = _listbox.selectedOptions;
+      if (option) {
+        option.scrollIntoView({
+          behavior: 'instant',
+          block: 'nearest',
+        });
+      }
     },
 
     closeListbox() {
@@ -168,103 +168,143 @@ export default CustomElement
       const {
         _draftInput: currentInput,
         _input: inputElement,
+        _isSelect,
         autocompleteInline,
+        _expanded,
+        autoSelect,
       } = this;
       const { label: suggestionText, value: suggestionValue } = option;
 
       this._suggestedText = suggestionText;
       this._suggestedValue = suggestionValue;
       this._hasSuggestion = true;
-
-      if (autocompleteInline) {
-        let valueText = suggestionText;
-        let selectionStart = suggestionText.length;
-        if (suggestionText.toLowerCase().startsWith(currentInput.toLowerCase())) {
-          valueText = currentInput + suggestionText.slice(currentInput.length);
-          selectionStart = currentInput.length;
-        }
-        inputElement.value = valueText;
-        inputElement.setSelectionRange(selectionStart, suggestionText.length);
-
+      if (autoSelect) {
+        this.acceptSuggestion();
         return;
       }
-      // inputElement.value = currentInput;
-      // inputElement.setSelectionRange(currentInput.length, currentInput.length);
-      console.warn('No visual change on suggestion');
+
+      // Autocomplete Inline
+      if (_isSelect || autocompleteInline) {
+        let valueText = suggestionText;
+        let selectionStart = 0;
+        if (_expanded) {
+          if (!_isSelect && suggestionText.toLowerCase().startsWith(currentInput.toLowerCase())) {
+            valueText = currentInput + suggestionText.slice(currentInput.length);
+            selectionStart = currentInput.length;
+          } else {
+            selectionStart = suggestionText.length;
+          }
+        } else {
+          selectionStart = 0;
+        }
+        inputElement.value = valueText; // Displayed value
+        if (autocompleteInline) {
+          inputElement.setSelectionRange(selectionStart, suggestionText.length);
+        }
+        if (!_expanded) {
+          this.acceptSuggestion();
+        }
+      }
     },
     acceptSuggestion() {
       if (!this._hasSuggestion) return;
       const { _suggestedText, _suggestedValue, _input } = this;
       this.value = _suggestedValue;
       _input.value = _suggestedText;
-      _input.setSelectionRange(_suggestedText.length, _suggestedText.length);
+      this._draftInput = _suggestedText;
+      this._listbox.value = _suggestedValue;
     },
-    suggestNextItem() {
-      const _listbox = this._listbox;
-      let next;
-      let current;
-      let first;
-      let firstIndex = -1;
-      let index = -1;
-      for (const option of _listbox.options) {
-        index++;
-        if (!first && !option.hidden) {
-          first = option;
-          firstIndex = index;
-        }
-        if (current) {
-          if (!option.hidden) {
-            next = option;
-            break;
-          }
-        } else if (option.focused) {
-          current = option;
-          option.focused = false;
-        }
-      }
-      if (!next) {
-        index = firstIndex;
-        next = first;
-      }
-      if (index === -1) {
-        this._focusedPosInSet = -1;
-        this._hasSuggestion = false;
-        return;
-      }
-      this._focusedPosInSet = index + 1;
-      next.focused = true;
-      next.scrollIntoView({
-        behavior: 'instant',
-        block: 'nearest',
-      });
-      this.suggestOption(next);
-    },
-    // Traverse options to find element that may be suggested inline
-    suggestInline() {
+    /**
+     * @param {Object} options
+     * @param {boolean} [options.first] first option
+     * @param {boolean} [options.last] first option
+     * @param {boolean} [options.next] next fosuable option
+     * @param {boolean} [options.previous] previous focusable option
+     * @param {string} [options.startsWith] option label starsWith
+     * @param {string} [options.value] matches option value
+     * @param {string} [options.label] matches option label
+     */
+    changeSuggestion({ first, last, next, previous, startsWith, value, label }) {
       const _listbox = this._listbox;
       let suggestion;
-      let index = -1;
-      const lowerCase = this._draftInput.toLowerCase();
+      let suggestionIndex;
+      let current;
+      let currentIndex;
+      let backup;
+      let backupIndex = -1;
+      let optionIndex = -1;
       for (const option of _listbox.options) {
-        index++;
-        if (!suggestion && !option.hidden) {
-          if (option.label.toLowerCase().startsWith(lowerCase)) {
-            console.log('suggesting', option, lowerCase);
-            suggestion = option;
+        optionIndex++;
+        if (!current && option.focused) {
+          current = option;
+          currentIndex = optionIndex;
+          if (suggestion && (!next && !last)) {
+            break;
           }
-          if (option.focused) break;
+        }
+        if (option.hidden) continue;
+        if (last) {
+          suggestion = option;
+          suggestionIndex = optionIndex;
           continue;
         }
-        if (option.focused) {
-          option.focused = false;
+        if (first) {
+          if (!suggestion) {
+            suggestion = option;
+            suggestionIndex = optionIndex;
+          }
+          continue;
+        }
+        if (startsWith != null) {
+          if (!suggestion && option.label.toLowerCase().startsWith(startsWith)) {
+            suggestion = option;
+            suggestionIndex = optionIndex;
+          }
+          continue;
+        }
+        if (value != null) {
+          if (!suggestion && option.value === value) {
+            suggestion = option;
+            suggestionIndex = optionIndex;
+          }
+          continue;
+        }
+        if (label != null) {
+          if (!suggestion && option.label === label) {
+            suggestion = option;
+            suggestionIndex = optionIndex;
+          }
+          continue;
+        }
+        if (currentIndex === optionIndex) continue;
+        if (previous) {
+          suggestion = option;
+          suggestionIndex = optionIndex;
+        } else if (next) {
+          if (current) {
+            suggestion = option;
+            suggestionIndex = optionIndex;
+            break;
+          } else if (!backup) {
+            backup = option;
+            backupIndex = optionIndex;
+          }
         }
       }
+      if (current && current !== suggestion) {
+        current.focused = false;
+      }
       if (!suggestion) {
+        suggestionIndex = backupIndex;
+        suggestion = backup;
+        this._input.value = this._draftInput;
+      }
+      if (suggestionIndex === -1) {
         this._focusedPosInSet = -1;
         this._hasSuggestion = false;
         return;
       }
-      this._focusedPosInSet = index + 1;
+      this._focusedPosInSet = suggestionIndex + 1;
       suggestion.focused = true;
       suggestion.scrollIntoView({
         behavior: 'instant',
@@ -273,64 +313,21 @@ export default CustomElement
       this.suggestOption(suggestion);
     },
     resetSuggestion() {
-      const _listbox = this._listbox;
-      for (const option of _listbox.options) {
-        option.focused = false;
+      if (this._isSelect) {
+        this.changeSuggestion({ label: this._draftInput });
+      } else {
+        this.changeSuggestion({ value: this.value });
       }
-      this._focusedPosInSet = -1;
-      this._hasSuggestion = false;
-      this._input.value = this._draftInput;
-    },
-    suggestPreviousItem() {
-      const _listbox = this._listbox;
-      let previous;
-      let current;
-      let last;
-      let lastIndex = -1;
-      let index = -1;
-      for (const option of _listbox.options) {
-        index++;
-        if (current) {
-          // Looking for last
-          if (!option.hidden) {
-            last = option;
-            lastIndex = index;
-          }
-          // Looking for current
-        } else if (option.focused) {
-          current = option;
-          option.focused = false;
-          if (previous) {
-            index--;
-            break;
-          }
-          // Tagging as previous
-        } else if (!option.hidden) {
-          previous = option;
-        }
-      }
-      if (!previous) {
-        index = lastIndex;
-        previous = last;
-      }
-      if (index === -1) {
-        this._focusedPosInSet = -1;
-        this._hasSuggestion = false;
-        return;
-      }
-      this._focusedPosInSet = index + 1;
-      previous.focused = true;
-      previous.scrollIntoView({
-        behavior: 'instant',
-        block: 'nearest',
-      });
-      this.suggestOption(previous);
     },
   })
   .childEvents({
     control: {
+      click() {
+        if (!this._isSelect) return;
+        this.toggleListbox();
+      },
       input(event) {
-        if (!this._listbox) return;
+        if (!this._hasListbox) return;
         // Intercept event and dispatch a new one.
         // This allow authors to modify listbox (filter) and value (custom pattern)
         event.stopPropagation();
@@ -366,21 +363,29 @@ export default CustomElement
         }
         // Only inline suggest if appending characters
         if (event.data != null && this.autosuggestInline) {
-          this.suggestInline();
+          this.changeSuggestion({ startsWith: this._draftInput.toLocaleLowerCase() });
         }
       },
       keydown(event) {
         if (!this._listbox) return;
         // Calls to return will not prevent default.
         switch (event.key) {
+          case 'Home':
+            if (!this._isSelect) return;
+            this.changeSuggestion({ first: true });
+            break;
+          case 'End':
+            if (!this._isSelect) return;
+            this.changeSuggestion({ last: true });
+            break;
           case 'ArrowDown':
           case 'Down':
             if (event.altKey) {
               this.toggleListbox();
               break;
             }
-            if (!this._expanded && !this.autocompleteInline) return;
-            this.suggestNextItem();
+            if (!this._expanded && !this.autocompleteInline && !this._isSelect) return;
+            this.changeSuggestion({ next: true });
             break;
           case 'ArrowUp':
           case 'Up':
@@ -388,12 +393,16 @@ export default CustomElement
               this.toggleListbox();
               break;
             }
-            if (!this._expanded && !this.autocompleteInline) return;
-            this.suggestPreviousItem();
+            if (!this._expanded && !this.autocompleteInline && !this._isSelect) return;
+            this.changeSuggestion({ previous: true });
             break;
           case 'Escape':
             if (!this._expanded) return;
-            this.resetSuggestion();
+            if (this.acceptOnEscape) {
+              this.acceptSuggestion();
+            } else {
+              this.resetSuggestion();
+            }
             this.closeListbox();
             break;
           case 'Tab':
@@ -406,7 +415,13 @@ export default CustomElement
             this.acceptSuggestion();
             this.closeListbox();
             break;
+          case ' ':
+            return;
           default:
+            if (this._isSelect && event.key.length === 1) {
+              this.changeSuggestion({ startsWith: event.key.toLocaleLowerCase() });
+              break;
+            }
             return;
         }
         event.stopPropagation(); // Avoid kbd within kbd (sub menus)
@@ -432,12 +447,15 @@ export default CustomElement
           _listbox.removeEventListener('change', this._onListboxChangeListener);
           this._onListboxChangeListener = null;
         }
+        this._listbox = listbox;
         if (listbox) {
           // Bind and store
+          const value = this.value;
+          listbox.value = this.value;
+          this.changeSuggestion({ value });
           this._onListboxChangeListener = this.onListboxChange.bind(this);
           listbox.addEventListener('change', this._onListboxChangeListener);
         }
-        this._listbox = listbox;
       },
     },
     trailingIcon: {
@@ -457,6 +475,19 @@ export default CustomElement
     },
   })
   .expressions({
+    computedTrailingIcon({ trailingIcon, _listbox, _expanded }) {
+      if (trailingIcon != null) {
+        return trailingIcon;
+      }
+      if (_listbox) {
+        return _expanded ? 'arrow_drop_up' : 'arrow_drop_down';
+      }
+      return null;
+    },
+    controlTypeAttrValue({ _isSelect, type }) {
+      if (_isSelect) return 'button';
+      return type;
+    },
     ariaExpandedAttrValue({ _hasListbox, _expanded }) {
       if (!_hasListbox) return null;
       return `${_expanded}`;
@@ -465,19 +496,25 @@ export default CustomElement
       if (!_hasListbox) return null;
       return 'aria-listbox';
     },
-    ariaAutocompleteAttrValue({ _hasListbox, autocompleteList, autocompleteInline }) {
+    ariaAutocompleteAttrValue({ _hasListbox, autocompleteList, _isSelect }) {
       if (!_hasListbox) return null;
+      if (!_isSelect) return null;
       if (autocompleteList != null) {
-        if (autocompleteInline) return 'both';
-        return 'list';
+        return 'both';
       }
-      if (autocompleteInline) return 'inline';
-      return null;
+      return 'inline';
     },
     ariaActiveDescendantAttrValue({ _hasListbox, _expanded, _focusedValue }) {
       if (!_hasListbox) return null;
       if (_expanded && _focusedValue) return 'aria-active';
       return '';
+    },
+    controlRoleAttrValue({ _hasListbox }) {
+      if (_hasListbox) return 'combobox';
+      return null;
+    },
+    populatedState({ value, _badInput, _draftInput }) {
+      return !!value || _badInput || !!_draftInput;
     },
   })
   .on({
@@ -488,10 +525,18 @@ export default CustomElement
       control.setAttribute('aria-autocomplete', '{ariaAutocompleteAttrValue}');
       control.setAttribute('aria-controls', '{ariaControlsAttrValue}');
       control.setAttribute('aria-expanded', '{ariaExpandedAttrValue}');
+      control.setAttribute('type', '{controlTypeAttrValue}');
+      control.setAttribute('role', '{controlRoleAttrValue}');
       trailingIcon.setAttribute('mdw-if', '{computedTrailingIcon}');
       trailingIcon.setAttribute('icon', '{computedTrailingIcon}');
       shape.setAttribute('trailing-icon', '{computedTrailingIcon}');
       labelText.setAttribute('trailing-icon', '{computedTrailingIcon}');
+    },
+    valueChanged(previous, current) {
+      if (!this._hasListbox) return;
+      this._listbox.value = current;
+      this._draftInput = current;
+      this.changeSuggestion({ value: current });
     },
   })
   .html`
@@ -512,6 +557,10 @@ export default CustomElement
 
     #trailing-icon {
       align-self: center;
+    }
+
+    #control:where([type="button"]) {
+      cursor: pointer;
     }
   `
   .autoRegister('mdw-input');
