@@ -68,7 +68,7 @@ export default function RippleMixin(Base) {
           lastRipple.holdRipple = false;
         }
         console.debug('ripple from pointerdown');
-        this.addRipple(x, y);
+        this.addRipple(x, y, true);
       },
       '~click'(e) {
         if (this._rippleAdded) {
