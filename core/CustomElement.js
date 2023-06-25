@@ -827,48 +827,6 @@ export default class CustomElement extends ICustomElement {
     return this._propAttributeCache;
   }
 
-  get tabIndex() {
-    return super.tabIndex;
-  }
-
-  set tabIndex(value) {
-    if (value === super.tabIndex && value !== -1) {
-      // Non -1 value already set
-      return;
-    }
-
-    if (this.delegatesFocus && document.activeElement === this) {
-      if (this.getAttribute('tabindex') === value.toString()) {
-        // Skip if possible
-        return;
-      }
-
-      // Chrome blurs on tabindex changes with delegatesFocus
-      // Fixed in Chrome 111
-      // Remove this code ~June 2023
-      // https://bugs.chromium.org/p/chromium/issues/detail?id=1346606
-      /** @type {EventListener} */
-      const listener = (e) => {
-        e.stopImmediatePropagation();
-        e.stopPropagation();
-        if (e.type === 'blur') {
-          console.warn('Chromium bug 1346606: Tabindex change caused blur. Giving focusing back.', this);
-          this.focus();
-        } else {
-          console.warn('Chromium bug 1346606: Blocking focus event.', this);
-        }
-      };
-      this.addEventListener('blur', listener, { capture: true, once: true });
-      this.addEventListener('focus', listener, { capture: true, once: true });
-      super.tabIndex = value;
-      this.removeEventListener('blur', listener, { capture: true });
-      this.removeEventListener('focus', listener, { capture: true });
-      return;
-    }
-
-    super.tabIndex = value;
-  }
-
   get static() { return /** @type {typeof CustomElement} */ (/** @type {unknown} */ (this.constructor)); }
 
   get unique() { return false; }
