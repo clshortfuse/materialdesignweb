@@ -163,9 +163,13 @@ export default function ControlMixin(Base) {
           this._valueDirty = true;
           this._value = control.value;
           this.checkValidity();
-          // Change event is NOT composed. Needs to escape shadow DOM
-          this.dispatchEvent(new Event('change', { bubbles: true }));
         },
+      },
+    })
+    .rootEvents({
+      change() {
+        // Change event is NOT composed. Needs to escape shadow DOM
+        this.dispatchEvent(new Event('change', { bubbles: true }));
       },
     })
     .css`

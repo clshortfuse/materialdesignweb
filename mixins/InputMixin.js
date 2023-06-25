@@ -164,6 +164,16 @@ export default function InputMixin(Base) {
           if (/** @type {HTMLInputElement} */ (event.currentTarget).type === 'submit') return;
           this.performImplicitSubmission(event);
         },
+        input(event) {
+          if (this.disabledState) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return;
+          }
+          const input = /** @type {HTMLInputElement} */ (event.currentTarget);
+          this._checkedDirty = true;
+          this._checked = input.checked;
+        },
         change(event) {
           if (this.disabledState) {
             event.preventDefault();
