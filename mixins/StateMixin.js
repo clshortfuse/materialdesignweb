@@ -67,8 +67,8 @@ export default function StateMixin(Base) {
         this._lastInteraction = /** @type {'touch'|'mouse'|'pen'} */ (event.pointerType);
         this._pressed = false;
       },
-      pointercancel(e) {
-        if (!e.isPrimary) return;
+      pointercancel(event) {
+        if (!event.isPrimary) return;
         this._pressed = this.stateTargetElement.matches(':active');
       },
       pointerleave(event) {
@@ -76,9 +76,9 @@ export default function StateMixin(Base) {
         this._pressed = false;
         this._hovered = false;
       },
-      '~keydown'(e) {
+      '~keydown'(event) {
         this._lastInteraction = 'key';
-        if (e.repeat) return;
+        if (event.repeat) return;
         // console.debug('keydown', this.stateTargetElement.matches(':active'));
         requestAnimationFrame(() => {
           this._pressed = this.stateTargetElement.matches(':active');
