@@ -11,11 +11,8 @@ export default CustomElement
   .mixin(SurfaceMixin)
   .mixin(ShapeMixin)
   .html`<slot id=slot></slot>`
-  .on({
-    composed() {
-      const { surface, shape } = this.refs;
-      surface.append(shape);
-    },
+  .recompose(({ refs: { surface, shape } }) => {
+    surface.append(shape);
   })
   .css`
     :host {

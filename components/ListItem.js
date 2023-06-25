@@ -85,15 +85,14 @@ export default CustomElement
     <slot id=trailing name=trailing role=note>{trailing}</slot>
     <mdw-divider mdw-if={divider} id=divider divder={divider}></mdw-divider>
   `
+  .recompose(({ refs: { state, rippleContainer, anchor } }) => {
+    anchor.append(
+      state,
+      rippleContainer,
+    );
+    state.setAttribute('state-disabled', 'focus hover');
+  })
   .on({
-    composed() {
-      const { state, rippleContainer, anchor } = this.refs;
-      anchor.append(
-        state,
-        rippleContainer,
-      );
-      state.setAttribute('state-disabled', 'focus hover');
-    },
     disabledStateChanged(oldValue, newValue) {
       this.updateAriaProperty('ariaDisabled', newValue ? 'true' : 'false');
     },

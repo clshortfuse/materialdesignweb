@@ -47,9 +47,7 @@ export default NavItem
       z-index: 1;
     }
   `
-  .on({
-    composed({ html }) {
-      this.refs.badge.replaceWith(html`<span id="badge-text">{badge}</span>`);
-    },
+  .recompose(({ html, refs: { badge } }) => {
+    badge.replaceWith(html`<span id="badge-text">{badge}</span>`);
   })
   .autoRegister('mdw-nav-drawer-item');

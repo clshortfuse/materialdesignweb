@@ -66,51 +66,50 @@ export default function TextFieldMixin(Base) {
         <slot id=supporting-slot name=supporting></slot>
       </div>
     `
+    .recompose(({ html, inline, refs: { control, outline, shape, outlineLeft, outlineRight, state } }) => {
+      control.setAttribute('placeholder', '{computePlaceholder}');
+      control.setAttribute('aria-label', '{label}');
+      control.setAttribute('input-suffix', '{inputSuffix}');
+      control.setAttribute('errored', '{erroredState}');
+      control.setAttribute('aria-describedby', 'supporting');
+      control.removeAttribute('aria-labelledby');
+      control.classList.add('inline');
+
+      state.setAttribute('mdw-if', '{!outlined}');
+      shape.setAttribute('role', 'none');
+      shape.setAttribute('filled', '{filled}');
+      shape.setAttribute('icon', '{icon}');
+      shape.setAttribute('trailingIcon', '{trailingIcon}');
+      shape.setAttribute('populated', '{populatedState}');
+      shape.setAttribute('focused', '{focusedState}');
+      shape.setAttribute('label', '{label}');
+      shape.setAttribute('shape-top', inline(({ shapeTop, filled }) => shapeTop || filled));
+      shape.append(
+        state,
+        outline,
+        control,
+        html`
+          <mdw-icon mdw-if={icon} id=icon aria-hidden=true disabled={disabledState} icon={icon}></mdw-icon>
+          <span mdw-if={inputPrefix} class=inline id=prefix aria-hidden=true focused={focusedState} populated={populatedState}>{inputPrefix}</span>
+          <span mdw-if={inputSuffix} class=inline id=suffix aria-hidden=true focused={focusedState} populated={populatedState}>{inputSuffix}</span>
+          <mdw-icon-button tabindex=-1 disabled={disabledState} mdw-if={trailingIcon} id=trailing-icon ink={trailingIconInk} aria-hidden=true disabled={disabledState} icon={trailingIcon}></mdw-icon-button>
+          <div mdw-if={filled} id=indicator aria-hidden=true focused={focusedState} hovered={hoveredState} errored={erroredState} disabled={disabledState}></div>
+        `,
+      );
+
+      outline.setAttribute('label', '{label}');
+      outline.setAttribute('errored', '{erroredState}');
+      outlineLeft.after(html`
+        <div id=gap mdw-if={label} label={label} populated={populatedState} focused={focusedState}>
+          <div id=gap-slot focused={focusedState}></div>
+          <span id=gap-label>{label}</span>
+        </div>
+      `);
+
+      outlineLeft.setAttribute('focused', '{focusedState}');
+      outlineRight.setAttribute('focused', '{focusedState}');
+    })
     .on({
-      composed({ html, inline }) {
-        const { control, outline, shape, outlineLeft, outlineRight, state } = this.refs;
-        control.setAttribute('placeholder', '{computePlaceholder}');
-        control.setAttribute('aria-label', '{label}');
-        control.setAttribute('input-suffix', '{inputSuffix}');
-        control.setAttribute('errored', '{erroredState}');
-        control.setAttribute('aria-describedby', 'supporting');
-        control.removeAttribute('aria-labelledby');
-        control.classList.add('inline');
-
-        state.setAttribute('mdw-if', '{!outlined}');
-        shape.setAttribute('role', 'none');
-        shape.setAttribute('filled', '{filled}');
-        shape.setAttribute('icon', '{icon}');
-        shape.setAttribute('trailingIcon', '{trailingIcon}');
-        shape.setAttribute('populated', '{populatedState}');
-        shape.setAttribute('focused', '{focusedState}');
-        shape.setAttribute('label', '{label}');
-        shape.setAttribute('shape-top', inline(({ shapeTop, filled }) => shapeTop || filled));
-        shape.append(
-          state,
-          outline,
-          control,
-          html`
-            <mdw-icon mdw-if={icon} id=icon aria-hidden=true disabled={disabledState} icon={icon}></mdw-icon>
-            <span mdw-if={inputPrefix} class=inline id=prefix aria-hidden=true focused={focusedState} populated={populatedState}>{inputPrefix}</span>
-            <span mdw-if={inputSuffix} class=inline id=suffix aria-hidden=true focused={focusedState} populated={populatedState}>{inputSuffix}</span>
-            <mdw-icon-button tabindex=-1 disabled={disabledState} mdw-if={trailingIcon} id=trailing-icon ink={trailingIconInk} aria-hidden=true disabled={disabledState} icon={trailingIcon}></mdw-icon-button>
-            <div mdw-if={filled} id=indicator aria-hidden=true focused={focusedState} hovered={hoveredState} errored={erroredState} disabled={disabledState}></div>
-          `,
-        );
-
-        outline.setAttribute('label', '{label}');
-        outline.setAttribute('errored', '{erroredState}');
-        outlineLeft.after(html`
-          <div id=gap mdw-if={label} label={label} populated={populatedState} focused={focusedState}>
-            <div id=gap-slot focused={focusedState}></div>
-            <span id=gap-label>{label}</span>
-          </div>
-        `);
-
-        outlineLeft.setAttribute('focused', '{focusedState}');
-        outlineRight.setAttribute('focused', '{focusedState}');
-      },
       sizeChanged(oldValue, newValue) {
         this.refs.control.style.setProperty('--size', `${newValue}ch`);
       },

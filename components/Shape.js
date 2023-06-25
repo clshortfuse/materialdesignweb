@@ -5,12 +5,9 @@ import Box from './Box.js';
 export default Box
   .extend()
   .mixin(ShapeMixin)
-  .on({
-    composed() {
-      const { shape, outline } = this.refs;
-      shape.before(outline);
-      shape.remove();
-    },
+  .recompose(({ refs: { shape, outline } }) => {
+    shape.before(outline);
+    shape.remove();
   })
   .css`
     :host {

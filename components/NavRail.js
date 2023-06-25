@@ -5,12 +5,9 @@ export default Nav
   .observe({
     align: { value: /** @type {'start'|'center'|'end'} */ (null) },
   })
-  .on({
-    composed({ html }) {
-      const { slot } = this.refs;
-      slot.before(html`<slot id=start name=start></slot>`);
-      slot.setAttribute('align', '{align}');
-    },
+  .recompose(({ html, refs: { slot } }) => {
+    slot.before(html`<slot id=start name=start></slot>`);
+    slot.setAttribute('align', '{align}');
   })
   .css`
     /* https://m3.material.io/components/navigation-rail/specs */

@@ -22,28 +22,24 @@ export default Chip
     <mdw-icon mdw-if={!icon} id=check-icon disabled={disabledState} selected={checked} aria-hidden=true icon=check></mdw-icon>
     <mdw-icon mdw-if={computedTrailingIcon} id=trailing-icon aria-hidden=true src={trailingSrc} icon={computedTrailingIcon}></mdw-icon>
   `
-  .on({
-    composed() {
-      const { shape, icon, control, outline, slot, trailingIcon, checkIcon } = this.refs;
+  .recompose(({ refs: { shape, icon, control, outline, slot, trailingIcon, checkIcon } }) => {
+    shape.setAttribute('selected', '{checked}');
+    shape.setAttribute('icon', '');
+    shape.setAttribute('trailing-icon', '{computedTrailingIcon}');
+    icon.setAttribute('mdw-if', '{icon}');
+    icon.setAttribute('ink', '{iconInk}');
 
-      shape.setAttribute('selected', '{checked}');
-      shape.setAttribute('icon', '');
-      shape.setAttribute('trailing-icon', '{computedTrailingIcon}');
-      icon.setAttribute('mdw-if', '{icon}');
-      icon.setAttribute('ink', '{iconInk}');
+    control.removeAttribute('role');
 
-      control.removeAttribute('role');
+    outline.removeAttribute('ink');
+    outline.removeAttribute('color');
+    outline.setAttribute('selected', '{checked}');
 
-      outline.removeAttribute('ink');
-      outline.removeAttribute('color');
-      outline.setAttribute('selected', '{checked}');
+    slot.removeAttribute('ink');
+    slot.removeAttribute('color');
 
-      slot.removeAttribute('ink');
-      slot.removeAttribute('color');
-
-      slot.before(checkIcon);
-      slot.after(trailingIcon);
-    },
+    slot.before(checkIcon);
+    slot.after(trailingIcon);
   })
   .css`
     /* https://m3.material.io/components/chips/specs */

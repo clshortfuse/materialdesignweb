@@ -153,19 +153,16 @@ export default CustomElement
       color: inherit
     }
   `
-  .on({
-    composed() {
-      const { slot, surface, shape, outline } = this.refs;
-      surface.append(shape);
-      outline.removeAttribute('pressed');
-      outline.removeAttribute('focused');
+  .recompose(({ refs: { slot, surface, shape, outline } }) => {
+    surface.append(shape);
+    outline.removeAttribute('pressed');
+    outline.removeAttribute('focused');
 
-      shape.setAttribute('filled', '{filled}');
-      slot.setAttribute('inert', '{disabledState}');
-      slot.setAttribute('disabled', '{disabledState}');
-      // shape.setAttribute('disabled', '{disabledState}');
-      // shape.setAttribute('filled', '{filled}');
-    },
+    shape.setAttribute('filled', '{filled}');
+    slot.setAttribute('inert', '{disabledState}');
+    slot.setAttribute('disabled', '{disabledState}');
+    // shape.setAttribute('disabled', '{disabledState}');
+    // shape.setAttribute('filled', '{filled}');
   })
   .childEvents({
     action: {

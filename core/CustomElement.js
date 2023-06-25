@@ -147,6 +147,17 @@ export default class CustomElement extends ICustomElement {
   }
 
   /**
+   * After composition, invokes callback.
+   * May be called multiple times.
+   * @type {typeof ICustomElement.recompose}
+   */
+  static recompose(callback) {
+    this._addCallback('_onComposeCallbacks', callback);
+    // @ts-expect-error Can't cast T
+    return this;
+  }
+
+  /**
    * Appends styles to composition
    * @type {typeof ICustomElement.css}
    */
@@ -835,6 +846,7 @@ export default class CustomElement extends ICustomElement {
     // eslint-disable-next-line no-return-assign
     return this._callbackArguments ??= {
       composition: this.#composition,
+      refs: this.refs,
       html: html.bind(this),
       inline: addInlineFunction,
       template: this.#template,

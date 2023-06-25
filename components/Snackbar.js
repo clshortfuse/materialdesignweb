@@ -51,11 +51,8 @@ export default Surface
     <mdw-button mdw-if={action} id=action class=button ink={actionInk} type-style={actionTypeStyle}>{action}</mdw-button>
     <mdw-icon-button mdw-if={closeButton} id=close class=button icon={closeIcon} ink={closeInk}>Close</mdw-button>
   `
-  .on({
-    composed() {
-      const { content, slot } = this.refs;
-      content.append(slot);
-    },
+  .recompose(({ refs: { content, slot } }) => {
+    content.append(slot);
   })
   .childEvents({
     action: {

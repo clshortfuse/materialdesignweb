@@ -7,14 +7,12 @@ import { canAnchorPopup } from '../utils/popup.js';
 export default function TooltipTriggerMixin(Base) {
   class TooltipTrigger extends Base {
     static {
-      this.on({
-        composed({ template, html }) {
-          template.append(html`
-            <mdw-tooltip role=tooltip id=tooltip>
-              <slot id=tooltip-slot on-slotchange={onTooltipTriggerSlotChange} name=tooltip>{tooltip}</slot>
-            </mdw-tooltip>
-          `);
-        },
+      this.recompose(({ template, html }) => {
+        template.append(html`
+          <mdw-tooltip role=tooltip id=tooltip>
+            <slot id=tooltip-slot on-slotchange={onTooltipTriggerSlotChange} name=tooltip>{tooltip}</slot>
+          </mdw-tooltip>
+        `);
       });
       // eslint-disable-next-line no-unused-expressions
       this.css`

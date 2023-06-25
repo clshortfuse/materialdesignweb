@@ -39,25 +39,22 @@ export default Button
       },
     },
   })
-  .on({
-    composed() {
-      const { slot, shape, tooltipSlot, icon, control, outline, anchor } = this.refs;
-      shape.classList.add('colored');
-      icon.classList.add('colored');
-      for (const el of [shape, icon]) {
-        el.setAttribute('toggle', '{isToggle}');
-        el.setAttribute('selected', '{checked}');
-      }
-      slot.remove();
-      icon.removeAttribute('mdw-if');
-      tooltipSlot.removeAttribute('name');
+  .recompose(({ refs: { slot, shape, tooltipSlot, icon, control, outline, anchor } }) => {
+    shape.classList.add('colored');
+    icon.classList.add('colored');
+    for (const el of [shape, icon]) {
+      el.setAttribute('toggle', '{isToggle}');
+      el.setAttribute('selected', '{checked}');
+    }
+    slot.remove();
+    icon.removeAttribute('mdw-if');
+    tooltipSlot.removeAttribute('name');
 
-      control.setAttribute('aria-pressed', '{_ariaPressed}');
-      control.setAttribute('aria-labelledby', 'tooltip');
-      anchor.setAttribute('aria-labelledby', 'tooltip');
+    control.setAttribute('aria-pressed', '{_ariaPressed}');
+    control.setAttribute('aria-labelledby', 'tooltip');
+    anchor.setAttribute('aria-labelledby', 'tooltip');
 
-      outline.setAttribute('selected', '{checked}');
-    },
+    outline.setAttribute('selected', '{checked}');
   })
   .css`
     /* https://m3.material.io/components/icon-buttons/specs */

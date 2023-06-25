@@ -21,12 +21,9 @@ export default Box
       return '1';
     },
   })
-  .on({
-    composed() {
-      const { slot } = this.refs;
-      slot.setAttribute('role', 'heading');
-      slot.setAttribute('aria-level', '{computeAriaLevel}');
-    },
+  .recompose(({ refs: { slot } }) => {
+    slot.setAttribute('role', 'heading');
+    slot.setAttribute('aria-level', '{computeAriaLevel}');
   })
   .css`
     :host {

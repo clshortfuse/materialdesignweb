@@ -200,12 +200,11 @@ export default CustomElement
       </div>
     </div>
   `
+  .recompose(({ refs: { thumb, state, control } }) => {
+    thumb.append(state);
+    control.removeAttribute('aria-labelledby');
+  })
   .on({
-    composed() {
-      const { thumb, state, control } = this.refs;
-      thumb.append(state);
-      control.removeAttribute('aria-labelledby');
-    },
     valueChanged(oldValue, newValue) {
       this._previewValue = newValue;
     },

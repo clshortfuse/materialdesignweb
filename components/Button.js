@@ -73,18 +73,13 @@ export default CustomElement
       },
     },
   })
-  .on({
-    composed() {
-      const {
-        shape, state, rippleContainer, surface, control,
-      } = this.refs;
-      surface.append(shape);
-      shape.append(state, rippleContainer);
-      shape.setAttribute('filled', '{filled}');
-      control.setAttribute('aria-label', '{computedAriaLabel}');
-      control.setAttribute('hidden', '{href}');
-      control.setAttribute('role', 'button');
-    },
+  .recompose(({ refs: { shape, state, rippleContainer, surface, control } }) => {
+    surface.append(shape);
+    shape.append(state, rippleContainer);
+    shape.setAttribute('filled', '{filled}');
+    control.setAttribute('aria-label', '{computedAriaLabel}');
+    control.setAttribute('hidden', '{href}');
+    control.setAttribute('role', 'button');
   })
   .css`
     /* https://m3.material.io/components/buttons/specs */

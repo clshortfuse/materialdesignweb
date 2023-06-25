@@ -43,16 +43,13 @@ export default Button
     }
 
   `
-  .on({
-    composed({ inline }) {
-      const { slot, outline, icon } = this.refs;
-      slot.setAttribute('disabled', '{disabledState}');
-      slot.removeAttribute('ink');
-      slot.removeAttribute('color');
-      outline.setAttribute('mdw-if', '{!elevated}');
-      outline.setAttribute('ink', '{ink}');
-      outline.setAttribute('color', '{color}');
-      icon.setAttribute('ink', inline(({ ink, iconInk }) => iconInk ?? ink ?? 'primary'));
-    },
+  .recompose(({ inline, refs: { slot, outline, icon } }) => {
+    slot.setAttribute('disabled', '{disabledState}');
+    slot.removeAttribute('ink');
+    slot.removeAttribute('color');
+    outline.setAttribute('mdw-if', '{!elevated}');
+    outline.setAttribute('ink', '{ink}');
+    outline.setAttribute('color', '{color}');
+    icon.setAttribute('ink', inline(({ ink, iconInk }) => iconInk ?? ink ?? 'primary'));
   })
   .autoRegister('mdw-chip');

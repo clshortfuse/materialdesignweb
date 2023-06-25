@@ -60,15 +60,12 @@ export default CustomElement
       },
     },
   })
-  .on({
-    composed() {
-      const { shape, surface, dialog, scrim } = this.refs;
-      surface.append(shape);
-      dialog.prepend(surface);
-      scrim.setAttribute('invisible', '');
+  .recompose(({ refs: { shape, surface, dialog, scrim } }) => {
+    surface.append(shape);
+    dialog.prepend(surface);
+    scrim.setAttribute('invisible', '');
 
-      // Wrap slot in scroller
-    },
+    // Wrap slot in scroller
   })
   .css`
     /* https://m3.material.io/components/menus/specs */

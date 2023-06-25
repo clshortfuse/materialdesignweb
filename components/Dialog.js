@@ -176,20 +176,17 @@ export default CustomElement
       </slot>
     </div>
   `
-  .on({
-    composed() {
-      const { prepend, append, surface, shape, dialog, slot } = this.refs;
-      dialog.setAttribute('aria-labelledby', 'headline');
-      dialog.setAttribute('aria-describedby', 'slot');
-      surface.append(shape);
+  .recompose(({ refs: { prepend, append, surface, shape, dialog, slot } }) => {
+    dialog.setAttribute('aria-labelledby', 'headline');
+    dialog.setAttribute('aria-describedby', 'slot');
+    surface.append(shape);
 
-      slot.classList.add('content');
+    slot.classList.add('content');
 
-      dialog.prepend(surface, ...prepend.childNodes);
-      dialog.append(...append.childNodes);
-      prepend.remove();
-      append.remove();
-    },
+    dialog.prepend(surface, ...prepend.childNodes);
+    dialog.append(...append.childNodes);
+    prepend.remove();
+    append.remove();
   })
   .css`
     /* https://m3.material.io/components/dialogs/specs */

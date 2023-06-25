@@ -47,17 +47,14 @@ export default class NavItem extends CustomElement
     <slot id=slot active={active} show-label={showLabel} aria-hidden=true></slot>
     <mdw-badge part=badge id=badge badge={badge} show-label={showLabel} aria-hidden=true>{badge}</mdw-badge>
   `
-  .on({
-    composed({ html }) {
-      const { shape, state, rippleContainer } = this.refs;
-      shape.append(html`
-        <mdw-ripple id=ripple ripple-origin=center keep-alive hold-ripple ripple-state=${({ active }) => ((active) ? null : 'complete')}></mdw-ripple>
-        ${state}
-        ${rippleContainer}
-      `);
-      shape.setAttribute('active', '{active}');
-      shape.removeAttribute('color');
-    },
+  .recompose(({ html, refs: { shape, state, rippleContainer } }) => {
+    shape.append(html`
+      <mdw-ripple id=ripple ripple-origin=center keep-alive hold-ripple ripple-state=${({ active }) => ((active) ? null : 'complete')}></mdw-ripple>
+      ${state}
+      ${rippleContainer}
+    `);
+    shape.setAttribute('active', '{active}');
+    shape.removeAttribute('color');
   })
   .css`
     /* https://m3.material.io/components/navigation-bar/specs */

@@ -15,6 +15,7 @@ type ClassOf<T extends { prototype: unknown; } > = T;
 
 type CallbackArguments<T1 = any, T2 = T1> = {
   composition: Composition<T1>;
+  refs: Record<string, HTMLElement>;
   html: HTMLTemplater<T1, Partial<T2>>;
   inline: (fn: (this:T1, data: {[K in keyof T2]?: T2[K]}) => any) => string;
   template: DocumentFragment;
@@ -245,6 +246,13 @@ export declare const ICustomElement: {
       },
       options?: Partial<CompositionEventListener<InstanceType<T>>>,
     ): T;
+
+  recompose<
+    T1 extends typeof ICustomElement,
+    T2 extends InstanceType<T1>,
+    T3 extends CompositionCallback<T2, T2 & T1['schema']>['composed'],
+    >
+    (this: T1, callback: T3): T1
 
   on<
     T1 extends typeof ICustomElement,

@@ -167,19 +167,18 @@ export default CustomElement
       },
     },
   })
-  .on({
-    composed() {
-      const { control } = this.refs;
-      // Spec
-      control.removeAttribute('placeholder');
-      control.setAttribute('rows', '{rows}');
+  .recompose(({ refs: { control } }) => {
+    // Spec
+    control.removeAttribute('placeholder');
+    control.setAttribute('rows', '{rows}');
 
-      // Custom
-      control.setAttribute('input-prefix', '{inputPrefix}');
-      control.setAttribute('input-suffix', '{inputSuffix}');
-      control.setAttribute('fixed', '{fixed}');
-      control.setAttribute('icon', '{icon}');
-    },
+    // Custom
+    control.setAttribute('input-prefix', '{inputPrefix}');
+    control.setAttribute('input-suffix', '{inputSuffix}');
+    control.setAttribute('fixed', '{fixed}');
+    control.setAttribute('icon', '{icon}');
+  })
+  .on({
     defaultValueAttrChanged(oldValue, newValue) {
       this.defaultValue = newValue;
     },

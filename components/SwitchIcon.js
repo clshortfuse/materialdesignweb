@@ -61,17 +61,16 @@ export default CustomElement
       <slot id=slot selected={checked}></slot>
     </div>
   `
+  .recompose(({ refs: { outline, shape: track } }) => {
+    track.id = 'track';
+    track.setAttribute('selected', '{checked}');
+    track.setAttribute('disabled', '{disabled}');
+    outline.removeAttribute('mdw-if');
+    outline.setAttribute('selected', '{checked}');
+    outline.setAttribute('errored', '{errored}');
+    outline.setAttribute('disabled', '{disabled}');
+  })
   .on({
-    composed() {
-      const { outline, shape: track } = this.refs;
-      track.id = 'track';
-      track.setAttribute('selected', '{checked}');
-      track.setAttribute('disabled', '{disabled}');
-      outline.removeAttribute('mdw-if');
-      outline.setAttribute('selected', '{checked}');
-      outline.setAttribute('errored', '{errored}');
-      outline.setAttribute('disabled', '{disabled}');
-    },
     dragValueChanged(oldValue, newValue) {
       if (newValue == null) {
         this.refs.thumb.style.removeProperty('--mdw-switch__value');

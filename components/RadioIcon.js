@@ -23,12 +23,10 @@ export default CustomElement
   })
   .html`
     <div id=inner-shape class=shape selected={selected}></div>
-  `.on({
-    composed() {
-      const { outline } = this.refs;
-      outline.removeAttribute('mdw-if');
-      outline.setAttribute('selected', '{selected}');
-    },
+  `
+  .recompose(({ refs: { outline } }) => {
+    outline.removeAttribute('mdw-if');
+    outline.setAttribute('selected', '{selected}');
   })
   .css`
     /* https://m3.material.io/components/radio-button/specs */

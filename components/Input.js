@@ -517,21 +517,20 @@ export default CustomElement
       return !!value || _badInput || !!_draftInput;
     },
   })
+  .recompose(({ refs: { control, trailingIcon, shape, labelText } }) => {
+    // Can't cross DOM boundaries
+    control.setAttribute('aria-activedescendant', '{ariaActiveDescendantAttrValue}');
+    control.setAttribute('aria-autocomplete', '{ariaAutocompleteAttrValue}');
+    control.setAttribute('aria-controls', '{ariaControlsAttrValue}');
+    control.setAttribute('aria-expanded', '{ariaExpandedAttrValue}');
+    control.setAttribute('type', '{controlTypeAttrValue}');
+    control.setAttribute('role', '{controlRoleAttrValue}');
+    trailingIcon.setAttribute('mdw-if', '{computedTrailingIcon}');
+    trailingIcon.setAttribute('icon', '{computedTrailingIcon}');
+    shape.setAttribute('trailing-icon', '{computedTrailingIcon}');
+    labelText.setAttribute('trailing-icon', '{computedTrailingIcon}');
+  })
   .on({
-    composed() {
-      const { control, trailingIcon, shape, labelText } = this.refs;
-      // Can't cross DOM boundaries
-      control.setAttribute('aria-activedescendant', '{ariaActiveDescendantAttrValue}');
-      control.setAttribute('aria-autocomplete', '{ariaAutocompleteAttrValue}');
-      control.setAttribute('aria-controls', '{ariaControlsAttrValue}');
-      control.setAttribute('aria-expanded', '{ariaExpandedAttrValue}');
-      control.setAttribute('type', '{controlTypeAttrValue}');
-      control.setAttribute('role', '{controlRoleAttrValue}');
-      trailingIcon.setAttribute('mdw-if', '{computedTrailingIcon}');
-      trailingIcon.setAttribute('icon', '{computedTrailingIcon}');
-      shape.setAttribute('trailing-icon', '{computedTrailingIcon}');
-      labelText.setAttribute('trailing-icon', '{computedTrailingIcon}');
-    },
     valueChanged(previous, current) {
       if (!this._hasListbox) return;
       this._listbox.value = current;

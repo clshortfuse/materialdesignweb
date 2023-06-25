@@ -112,18 +112,15 @@ export default CustomElement
       color: rgb(var(--mdw-color__on-surface), var(--disabled-opacity));
     }
   `
-  .on({
-    composed({ html }) {
-      const { outline, shape } = this.refs;
-      outline.removeAttribute('mdw-if');
-      outline.setAttribute('selected', '{selected}');
-      outline.setAttribute('errored', '{errored}');
-      outline.setAttribute('disabled', '{disabled}');
-      // outlineLeft.remove();
-      // outlineRight.remove();
-      shape.append(html`
-        <mdw-icon id=icon selected={selected} errored={errored} disabled={disabled} icon={icon}></mdw-icon>
-      `);
-    },
+  .recompose(({ html, refs: { outline, shape } }) => {
+    outline.removeAttribute('mdw-if');
+    outline.setAttribute('selected', '{selected}');
+    outline.setAttribute('errored', '{errored}');
+    outline.setAttribute('disabled', '{disabled}');
+    // outlineLeft.remove();
+    // outlineRight.remove();
+    shape.append(html`
+      <mdw-icon id=icon selected={selected} errored={errored} disabled={disabled} icon={icon}></mdw-icon>
+    `);
   })
   .autoRegister('mdw-checkbox-icon');

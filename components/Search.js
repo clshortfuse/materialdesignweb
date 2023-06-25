@@ -73,13 +73,9 @@ export default TopAppBar
       },
     },
   })
-  .on({
-    composed() {
-      const { companion, headline, input, surface } = this.refs;
-      companion.remove();
-      headline.replaceWith(input);
-      surface.removeAttribute('aria-labelledby');
-    },
+  .recompose(({ refs: { companion, headline, input, surface } }) => {
+    companion.remove();
+    headline.replaceWith(input);
+    surface.removeAttribute('aria-labelledby');
   })
-
   .autoRegister('mdw-search');

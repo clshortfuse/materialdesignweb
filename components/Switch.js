@@ -48,12 +48,9 @@ export default CustomElement
       }
     },
   })
-  .on({
-    composed() {
-      const { switch: switchEl, state, control } = this.refs;
-      switchEl.append(state, control);
-      control.setAttribute('role', 'switch');
-    },
+  .recompose(({ refs: { switch: switchEl, state, control } }) => {
+    switchEl.append(state, control);
+    control.setAttribute('role', 'switch');
   })
   .methods({
     /**

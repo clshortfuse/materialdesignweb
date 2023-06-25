@@ -41,14 +41,13 @@ export default CustomElement
       },
     },
   })
+  .recompose(({ template, refs: { slot, prefix, suffix, control } }) => {
+    control.setAttribute('icon', '{icon}');
+    template.append(slot);
+    prefix.remove();
+    suffix.remove();
+  })
   .on({
-    composed({ template }) {
-      const { slot, prefix, suffix, control } = this.refs;
-      control.setAttribute('icon', '{icon}');
-      template.append(slot);
-      prefix.remove();
-      suffix.remove();
-    },
     _formResetChanged(oldValue, newValue) {
       if (!newValue) return;
       this._select.value = this.querySelector('option[selected]')?.value ?? '';

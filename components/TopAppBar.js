@@ -56,21 +56,20 @@ export default CustomElement
       <slot id=companion-slot name=companion size={size}>{headline}</span>
     </div>
   `
+  .recompose(({ inline, refs: { surface, shape, leading, headline, trailing } }) => {
+    shape.append(leading, headline, trailing);
+    surface.append(shape);
+    surface.setAttribute('size', '{size}');
+    surface.setAttribute('role', 'toolbar');
+    surface.setAttribute('aria-label', '{ariaLabel}');
+    surface.setAttribute(
+      'aria-labelledby',
+      inline(({ ariaLabel }) => (ariaLabel ? null : 'headline')),
+    );
+    surface.setAttribute('raised', '{_raised}');
+    shape.setAttribute('raised', '{_raised}');
+  })
   .on({
-    composed({ inline }) {
-      const { surface, shape, leading, headline, trailing } = this.refs;
-      shape.append(leading, headline, trailing);
-      surface.append(shape);
-      surface.setAttribute('size', '{size}');
-      surface.setAttribute('role', 'toolbar');
-      surface.setAttribute('aria-label', '{ariaLabel}');
-      surface.setAttribute(
-        'aria-labelledby',
-        inline(({ ariaLabel }) => (ariaLabel ? null : 'headline')),
-      );
-      surface.setAttribute('raised', '{_raised}');
-      shape.setAttribute('raised', '{_raised}');
-    },
     _scrollListenerPositionYChanged(oldValue, newValue) {
       this._raised = (newValue > this._semiStickyOffsetY);
       if (this.size === 'medium' || this.size === 'large') {

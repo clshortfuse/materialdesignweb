@@ -61,15 +61,13 @@ export default function InputMixin(Base) {
     .overrides({
       controlTagName: 'input',
     })
+    .recompose(({ refs: { control } }) => {
+      control.setAttribute('checked', '{defaultChecked}');
+      control.setAttribute('height', '{_height}');
+      control.setAttribute('width', '{_width}');
+      control.setAttribute('value', '{_defaultValue}');
+    })
     .on({
-      composed() {
-        const { control } = this.refs;
-        control.setAttribute('checked', '{defaultChecked}');
-        control.setAttribute('height', '{_height}');
-        control.setAttribute('width', '{_width}');
-        control.setAttribute('value', '{_defaultValue}');
-      },
-
       // TODO: Bind multiple
       typeChanged() { this.onValueChangingContentAttribute(); },
       defaultCheckedChanged() {

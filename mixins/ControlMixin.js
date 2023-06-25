@@ -97,19 +97,19 @@ export default function ControlMixin(Base) {
       },
 
     })
-    .on({
+    .recompose(({ template, html, element }) => {
       // Wait until controlTagName is settled before templating
-      composed({ template, html }) {
-        template.append(html`
-          <${this.controlTagName} id=control 
-            aria-labelledby=${({ ariaLabel }) => (ariaLabel ? null : 'slot')}
-            part=control
-            aria-label={ariaLabel}
-            form-disabled={disabledState}
-            type={type}
-            >${this.controlVoidElement ? '' : `</${this.controlTagName}>`}
-        `);
-      },
+      template.append(html`
+        <${element.controlTagName} id=control 
+          aria-labelledby=${({ ariaLabel }) => (ariaLabel ? null : 'slot')}
+          part=control
+          aria-label={ariaLabel}
+          form-disabled={disabledState}
+          type={type}
+          >${element.controlVoidElement ? '' : `</${element.controlTagName}>`}
+      `);
+    })
+    .on({
       disabledStateChanged(oldValue, newValue) {
         const control = /** @type {HTMLControlElement} */ (this.refs.control);
         control.setAttribute('aria-disabled', `${newValue}`);

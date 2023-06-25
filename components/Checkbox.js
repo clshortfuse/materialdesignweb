@@ -50,14 +50,11 @@ export default CustomElement
       }
     },
   })
-  .on({
-    composed() {
-      const { control, checkbox, state, rippleContainer } = this.refs;
-      checkbox.append(state, rippleContainer);
+  .recompose(({ refs: { control, checkbox, state, rippleContainer } }) => {
+    checkbox.append(state, rippleContainer);
 
-      // Indeterminate must be manually expressed for ARIA
-      control.setAttribute('aria-checked', '{_ariaChecked}');
-    },
+    // Indeterminate must be manually expressed for ARIA
+    control.setAttribute('aria-checked', '{_ariaChecked}');
   })
   .css`
     /* https://m3.material.io/components/checkbox/specs */

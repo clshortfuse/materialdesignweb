@@ -77,32 +77,30 @@ export default class ListOption extends ListItem
       return _label ? 'content' : null;
     },
   })
+  .recompose(({ inline, refs: { anchor, state, content } }) => {
+    // Form Associated elements cannot receive focus unless using delegatesFocus
+    // Workaround by redirecting focus to an inner element
+    // Reuse HTMLAnchorElement with no HREF
+    // Issues: Siblings (images) are not contained within tree
+
+    anchor.setAttribute('disabled', '{disabledState}');
+    anchor.setAttribute('role', 'option');
+    anchor.setAttribute('aria-disabled', inline(({ disabledState }) => `${disabledState}`));
+    anchor.setAttribute('tabindex', '0');
+    anchor.setAttribute('aria-selected', inline(({ selected }) => `${selected}`));
+    anchor.setAttribute('selected', '{selected}');
+    anchor.setAttribute('aria-labelledby', '{anchorAriaLabelledBy}');
+    anchor.setAttribute('aria-describedby', '{anchorAriaDescribedBy}');
+    anchor.setAttribute('aria-label', '{_label}');
+    anchor.removeAttribute('href');
+    anchor.removeAttribute('mdw-if');
+
+    content.setAttribute('aria-hidden', 'true');
+    content.setAttribute('selected', '{selected}');
+
+    state.setAttribute('state-disabled', 'focus');
+  })
   .on({
-    composed({ inline }) {
-      const { anchor, state, content } = this.refs;
-
-      // Form Associated elements cannot receive focus unless using delegatesFocus
-      // Workaround by redirecting focus to an inner element
-      // Reuse HTMLAnchorElement with no HREF
-      // Issues: Siblings (images) are not contained within tree
-
-      anchor.setAttribute('disabled', '{disabledState}');
-      anchor.setAttribute('role', 'option');
-      anchor.setAttribute('aria-disabled', inline(({ disabledState }) => `${disabledState}`));
-      anchor.setAttribute('tabindex', '0');
-      anchor.setAttribute('aria-selected', inline(({ selected }) => `${selected}`));
-      anchor.setAttribute('selected', '{selected}');
-      anchor.setAttribute('aria-labelledby', '{anchorAriaLabelledBy}');
-      anchor.setAttribute('aria-describedby', '{anchorAriaDescribedBy}');
-      anchor.setAttribute('aria-label', '{_label}');
-      anchor.removeAttribute('href');
-      anchor.removeAttribute('mdw-if');
-
-      content.setAttribute('aria-hidden', 'true');
-      content.setAttribute('selected', '{selected}');
-
-      state.setAttribute('state-disabled', 'focus');
-    },
     selectedChanged(previous, current) {
       // Used by HTMLCollection
       this.classList.toggle('mdw-list-option__selected', current);

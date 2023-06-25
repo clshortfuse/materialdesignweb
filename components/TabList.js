@@ -265,11 +265,10 @@ export default CustomElement
       <div id=indicator-end class=indicator-piece></div>
     </div>
   `
+  .recompose(({ refs: { shape, indicator } }) => {
+    shape.append(indicator);
+  })
   .on({
-    composed() {
-      const { shape, indicator } = this.refs;
-      shape.append(indicator);
-    },
     pageIsRTLChanged() {
       this.clearCache();
       this.updateIndicator();

@@ -37,11 +37,8 @@ export default CustomElement
       }
     },
   })
-  .on({
-    composed() {
-      const { radio, rippleContainer, state } = this.refs;
-      radio.append(state, rippleContainer);
-    },
+  .recompose(({ refs: { radio, rippleContainer, state } }) => {
+    radio.append(state, rippleContainer);
   })
   .css`
     /* stylelint-disable liberty/use-logical-spec */

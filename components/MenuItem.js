@@ -175,33 +175,32 @@ export default class MenuItem extends ListOption
       this.dispatchEvent(new CustomEvent('mdw-menu-item:cascader-blur', { detail: this.cascades, bubbles: true }));
     },
   })
+  .recompose(({ inline, html, refs: { checkbox: checkboxRef, radio: radioRef, anchor, trailing, trailingIcon } }) => {
+    checkboxRef.remove();
+    radioRef.remove();
+
+    anchor.setAttribute('role', inline(({ checkbox, radio }) => {
+      if (checkbox != null) return 'menuitemcheckbox';
+      if (radio != null) return 'menuitemradio';
+      return 'menuitem';
+    }));
+
+    // MenuItems use checked instead of selected as in list items.
+    anchor.setAttribute('ariaChecked', anchor.getAttribute('aria-selected'));
+
+    anchor.after(html`
+      <mdw-icon id=selection
+        mdw-if=${({ checkbox, radio }) => checkbox ?? radio ?? false}
+        class=${({ checkbox, radio }) => checkbox || radio || 'leading'}
+        selected={selected} icon=check></mdw-icon>
+    `);
+
+    trailing.setAttribute('type-style', 'label-large');
+
+    trailingIcon.setAttribute('mdw-if', '{computeTrailingIcon}');
+    trailingIcon.setAttribute('icon', '{computeTrailingIcon}');
+  })
   .on({
-    composed({ inline, html }) {
-      const { checkbox: checkboxRef, radio: radioRef, anchor, trailing, trailingIcon } = this.refs;
-      checkboxRef.remove();
-      radioRef.remove();
-
-      anchor.setAttribute('role', inline(({ checkbox, radio }) => {
-        if (checkbox != null) return 'menuitemcheckbox';
-        if (radio != null) return 'menuitemradio';
-        return 'menuitem';
-      }));
-
-      // MenuItems use checked instead of selected as in list items.
-      anchor.setAttribute('ariaChecked', anchor.getAttribute('aria-selected'));
-
-      anchor.after(html`
-        <mdw-icon id=selection
-          mdw-if=${({ checkbox, radio }) => checkbox ?? radio ?? false}
-          class=${({ checkbox, radio }) => checkbox || radio || 'leading'}
-          selected={selected} icon=check></mdw-icon>
-      `);
-
-      trailing.setAttribute('type-style', 'label-large');
-
-      trailingIcon.setAttribute('mdw-if', '{computeTrailingIcon}');
-      trailingIcon.setAttribute('icon', '{computeTrailingIcon}');
-    },
     _formResetChanged(oldValue, newValue) {
       if (!newValue) return;
       this._selected = this.defaultSelected;

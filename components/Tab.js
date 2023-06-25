@@ -58,12 +58,9 @@ export default CustomElement
       <slot id=slot></slot>
     </a>
   `
-  .on({
-    composed() {
-      const { shape, rippleContainer, state } = this.refs;
-      shape.append(state, rippleContainer);
-      state.setAttribute('state-disabled', 'focus');
-    },
+  .recompose(({ refs: { shape, rippleContainer, state } }) => {
+    shape.append(state, rippleContainer);
+    state.setAttribute('state-disabled', 'focus');
   })
   .events({
     keydown(event) {
