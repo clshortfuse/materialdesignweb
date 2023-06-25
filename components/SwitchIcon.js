@@ -239,7 +239,7 @@ export default CustomElement
     }
 
     .icon:not([src]):empty {
-      display: none;
+      /* display: none; */
     }
 
     #icon, #unselected-icon {
