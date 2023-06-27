@@ -58,7 +58,6 @@ export default class Icon extends CustomElement
         const result = svgAliasMap.get(icon.trim().toLowerCase());
         if (!result) {
           unaliased.add(icon);
-          console.warn(`Icon: No SVG alias for ${JSON.stringify([...unaliased])}`);
         }
         return result;
       },
@@ -192,15 +191,15 @@ export default class Icon extends CustomElement
           console.warn('Icon: parentNode is blank');
         }
         if (documentLoadedStyleSheets.has(href)) return;
-        console.debug('Icon: Checking if link also in document', href);
+        // console.debug('Icon: Checking if link also in document', href);
         for (const link of document.head.getElementsByTagName('link')) {
           if (link.href === href) {
-            console.debug(`Icon: Found ${href} in document.`);
+            // console.debug(`Icon: Found ${href} in document.`);
             documentLoadedStyleSheets.add(href);
             return;
           }
         }
-        console.debug(`Icon: Adding ${href} to document.`);
+        // console.debug(`Icon: Adding ${href} to document.`);
         document.head.append(currentTarget.cloneNode());
         documentLoadedStyleSheets.add(href);
       },
