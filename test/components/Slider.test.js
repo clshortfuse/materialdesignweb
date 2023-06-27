@@ -2,7 +2,7 @@ import { assert } from '@esm-bundle/chai';
 
 import Slider from '../../components/Slider.js';
 import '../../theming/loader.js';
-import { html, makeFromConstructor, makeFromString, makeFromTagName } from '../utils.js';
+import { axTree, html, iterateMeaningfulAXNodes, makeFromConstructor, makeFromString, makeFromTagName } from '../utils.js';
 
 beforeEach(() => {
   document.body.replaceChildren();
@@ -278,6 +278,22 @@ describe('mdw-slider', () => {
       assert.equal(slider.step, '10');
       assert.equal(slider.defaultValue, '1');
       assert.equal(slider.value, '0');
+    });
+  });
+
+  describe('aria', () => {
+    it('returns slider role', async () => {
+      const element = html`<mdw-slider></mdw-slider>`;
+      const results = await axTree({ selector: element.tagName });
+      const { value } = iterateMeaningfulAXNodes(results).next();
+      assert.equal(value.role, 'slider');
+    });
+
+    it('supports aria-label', async () => {
+      const element = html`<mdw-slider aria-label=foo></mdw-slider>`;
+      const results = await axTree({ selector: element.tagName });
+      const { value } = iterateMeaningfulAXNodes(results).next();
+      assert.equal(value.name, 'foo');
     });
   });
 
