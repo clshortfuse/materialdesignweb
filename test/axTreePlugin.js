@@ -17,6 +17,7 @@ export function axTreePlugin() {
       if (session.browser.type === 'playwright') {
         const launcher = /** @type {PlaywrightLauncher} */ (session.browser);
         const page = launcher.getPage(session.id);
+        await page.waitForTimeout(100); // Fixes flaky Chrome test
         return await page.accessibility.snapshot({
           interestingOnly: false,
           root: payload?.selector ? await page.$(payload.selector) : undefined,
