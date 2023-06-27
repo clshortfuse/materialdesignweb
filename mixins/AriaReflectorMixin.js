@@ -20,10 +20,18 @@ export default function AriaReflectorMixin(Base) {
           if (attrName.startsWith('aria')) {
             attrName = `aria-${attrName.slice(4).toLowerCase()}`;
           }
-          if (value == null) {
-            this.removeAttribute(name);
+          const fn = () => {
+            if (value == null) {
+              this.removeAttribute(name);
+            } else {
+              this.setAttribute(attrName, value);
+            }
+          };
+          if (this.isConnected) {
+            fn();
           } else {
-            this.setAttribute(attrName, value);
+            // Elements should not add attributes during construction
+            this.addEventListener('connected', fn);
           }
         }
       },
