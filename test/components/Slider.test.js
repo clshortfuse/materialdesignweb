@@ -244,7 +244,7 @@ describe('mdw-slider', () => {
       assert.equal(element.step, '10');
       assert.equal(element.defaultValue, '1');
       if (element.value !== '1' && navigator.userAgent.includes('Safari')) {
-        console.warn('Skipping test due to Wekbit Bug 254761');
+        console.warn('Skipping test due to Webkit Bug 254761');
         // https://bugs.webkit.org/show_bug.cgi?id=254761
         this.skip();
       } else {
