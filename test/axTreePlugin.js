@@ -17,11 +17,37 @@ export function axTreePlugin() {
       if (session.browser.type === 'playwright') {
         const launcher = /** @type {PlaywrightLauncher} */ (session.browser);
         const page = launcher.getPage(session.id);
-        await page.waitForTimeout(100); // Fixes flaky Chrome test
-        return await page.accessibility.snapshot({
+        let root;
+        switch (session.browser.name) {
+          case 'Chromium':
+            await page.waitForTimeout(100); // Fixes flaky Chrome test
+            // Fallthrough
+          case 'Webkit':
+            if (payload?.selector) {
+              root = page.locator(payload.selector);
+            }
+            break;
+          case 'Firefox':
+            if (payload?.selector) {
+              root = await page.$(payload.selector);
+            }
+            break;
+          default:
+        }
+
+        const snapshot = await page.accessibility.snapshot({
           interestingOnly: false,
-          root: payload?.selector ? await page.$(payload.selector) : undefined,
+          root,
         });
+
+        if (!snapshot) {
+          if (root) {
+            // Elements that do not expose an accessibility tree return null
+            return {};
+          }
+          throw new Error('Accessibility snapshot failed.');
+        }
+        return snapshot;
       }
 
       // handle specific behavior for puppeteer
@@ -29,10 +55,15 @@ export function axTreePlugin() {
         const launcher = /** @type {ChromeLauncher} */ (session.browser);
         const page = launcher.getPage(session.id);
 
-        return await page.accessibility.snapshot({
+        const snapshot = await page.accessibility.snapshot({
           interestingOnly: false,
           root: payload?.selector ? await page.$(payload.selector) : undefined,
         });
+
+        if (!snapshot) {
+          throw new Error('Accessibility snapshot failed.');
+        }
+        return snapshot;
       }
 
       // you might not be able to support all browser launchers
