@@ -1,5 +1,7 @@
 /* https://html.spec.whatwg.org/multipage/form-control-infrastructure.html */
 
+import { CHROME_VERSION } from '../core/dom.js';
+
 /** @typedef {HTMLElement & {value:string}} HTMLControlElement */
 
 /** @typedef {import('../core/CustomElement.js').default} CustomElement */
@@ -239,8 +241,7 @@ export default function FormAssociatedMixin(Base) {
        * @param {'autocomplete'|'restore'} mode
        */
       formStateRestoreCallback(state, mode) {
-        if (navigator.userAgent.includes('Chrome/')) {
-          // console.warn('Chromium Bug: 1429585 - Ignoring formStateRestoreCallback on Chromium', { state, mode });
+        if (CHROME_VERSION < 115) {
           // formStateRestoreCallback is broken on Chromium
           // https://bugs.chromium.org/p/chromium/issues/detail?id=1429585
           return;

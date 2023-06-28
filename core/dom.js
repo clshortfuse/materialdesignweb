@@ -35,10 +35,11 @@ export function attrNameFromPropName(name) {
   });
 }
 
-const userAgent = globalThis?.navigator?.userAgent ?? '';
-
-export const IS_FIREFOX = userAgent.includes('Firefox');
-export const IS_SAFARI = userAgent.includes('Safari') && !userAgent.includes('Chrom');
+export const CHROME_VERSION = Number.parseFloat(navigator.userAgent.match(/Chrome\/([\d.]+)/)?.[1]);
+export const FIREFOX_VERSION = Number.parseFloat(navigator.userAgent.match(/Firefox\/([\d.]+)/)?.[1]);
+export const SAFARI_VERSION = Number.isNaN(CHROME_VERSION)
+  ? Number.NaN
+  : Number.parseFloat(navigator.userAgent.match(/Version\/([\d.]+)/)?.[1]);
 
 /**
  * @param {Element} element
@@ -46,7 +47,7 @@ export const IS_SAFARI = userAgent.includes('Safari') && !userAgent.includes('Ch
  */
 export function isFocused(element) {
   if (!element) return false;
-  if (IS_FIREFOX && element.constructor.formAssociated && element.hasAttribute('disabled')) {
+  if (FIREFOX_VERSION < 113 && element.constructor.formAssociated && element.hasAttribute('disabled')) {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1818287
     console.warn('Firefox bug 1818287: Disabled form associated custom element cannot receive focus.');
     return false;

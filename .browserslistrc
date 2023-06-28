@@ -1,4 +1,6 @@
 # Browsers that we support
 
-> 1%
-not op_mini all
+Firefox >= 110
+Safari >= 16.4
+Chrome >= 106
+Edge >= 106

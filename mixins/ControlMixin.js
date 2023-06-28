@@ -1,7 +1,7 @@
 /* https://html.spec.whatwg.org/multipage/form-control-infrastructure.html */
 
 import { cloneAttributeCallback } from '../core/CustomElement.js';
-import { IS_FIREFOX } from '../core/dom.js';
+import { FIREFOX_VERSION, SAFARI_VERSION } from '../core/dom.js';
 
 import FormAssociatedMixin from './FormAssociatedMixin.js';
 
@@ -102,7 +102,7 @@ export default function ControlMixin(Base) {
     })
     .expressions({
       _computedAriaLabel({ ariaLabel, _slotInnerText }) {
-        if (IS_FIREFOX) {
+        if (FIREFOX_VERSION < 116 || SAFARI_VERSION < 17) {
           return ariaLabel?.trim() || _slotInnerText?.trim() || null;
         }
         return ariaLabel?.trim() || null;
@@ -179,10 +179,11 @@ export default function ControlMixin(Base) {
           this.checkValidity();
         },
       },
-      slot: IS_FIREFOX ? {
+      slot: (FIREFOX_VERSION < 116 || SAFARI_VERSION < 17) ? {
         slotchange({ currentTarget }) {
-          // Firefox will not apply label from slots.
+          // Firefox and Safari will not apply label from slots.
           // https://bugzilla.mozilla.org/show_bug.cgi?id=1826194
+          // https://commits.webkit.org/263644@main
           this._slotInnerText = this.textContent;
           if (!this._slotMutationObserver) {
             this._slotMutationObserver = new MutationObserver(() => {

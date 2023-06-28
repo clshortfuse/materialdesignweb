@@ -2,7 +2,7 @@
 
 import Composition from './Composition.js';
 import { ICustomElement } from './ICustomElement.js';
-import { attrNameFromPropName, attrValueFromDataValue } from './dom.js';
+import { CHROME_VERSION, attrNameFromPropName, attrValueFromDataValue } from './dom.js';
 import { applyMergePatch } from './jsonMergePatch.js';
 import { defineObservableProperty } from './observe.js';
 import { addInlineFunction, css, html } from './template.js';
@@ -346,11 +346,11 @@ export default class CustomElement extends ICustomElement {
 
   /**
    * Creates observable property on instances (via prototype)
-   * @template {import('./typings.js').ObserverPropertyType} [T1=null]
-   * @template {import('./typings.js').ObserverPropertyType} [T2=null]
-   * @template {any} [T3=null]
+   * @template {import('./typings.js').ObserverPropertyType} T1
+   * @template {import('./typings.js').ObserverPropertyType} T2
+   * @template {any} T3
    * @param {string} name
-   * @param {T1|import('./typings.js').ObserverOptions<T2,T3>} [typeOrOptions='string']
+   * @param {T1|import('./typings.js').ObserverOptions<T2,T3>} [typeOrOptions]
    * @return {(
    *    T3 extends null ?
    *        T2 extends null ?
@@ -836,6 +836,48 @@ export default class CustomElement extends ICustomElement {
   get attributeCache() {
     this._propAttributeCache ??= new Map();
     return this._propAttributeCache;
+  }
+
+  get tabIndex() {
+    return super.tabIndex;
+  }
+
+  set tabIndex(value) {
+    if (CHROME_VERSION < 111) {
+      if (value === super.tabIndex && value !== -1) {
+      // Non -1 value already set
+        return;
+      }
+
+      if (this.delegatesFocus && document.activeElement === this) {
+        if (this.getAttribute('tabindex') === value.toString()) {
+          // Skip if possible
+          return;
+        }
+
+        // Chrome blurs on tabindex changes with delegatesFocus
+        // https://bugs.chromium.org/p/chromium/issues/detail?id=1346606
+        /** @type {EventListener} */
+        const listener = (e) => {
+          e.stopImmediatePropagation();
+          e.stopPropagation();
+          if (e.type === 'blur') {
+            console.warn('Chromium bug 1346606: Tabindex change caused blur. Giving focusing back.', this);
+            this.focus();
+          } else {
+            console.warn('Chromium bug 1346606: Blocking focus event.', this);
+          }
+        };
+        this.addEventListener('blur', listener, { capture: true, once: true });
+        this.addEventListener('focus', listener, { capture: true, once: true });
+        super.tabIndex = value;
+        this.removeEventListener('blur', listener, { capture: true });
+        this.removeEventListener('focus', listener, { capture: true });
+        return;
+      }
+    }
+
+    super.tabIndex = value;
   }
 
   get static() { return /** @type {typeof CustomElement} */ (/** @type {unknown} */ (this.constructor)); }
