@@ -15,7 +15,7 @@
     "serve": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile --serve --live",
     "sample": "node build/esbuild.js index.js --outdir=docs --watch --metafile --serve --live",
     "pretest": "eslint --ignore-path .gitignore",
-    "test": "web-test-runner \"test/**/*.test.js\" --playwright --browsers chromium firefox webkit",
+    "test": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit",
     "test:custom": "web-test-runner \"test/**/*.test.js\" --node-resolve",
     "test:watch": "web-test-runner \"test/**/*.test.js\" --node-resolve --watch"
   },
