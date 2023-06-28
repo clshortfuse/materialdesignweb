@@ -4,9 +4,7 @@ import Checkbox from '../../components/Checkbox.js';
 import '../../theming/loader.js';
 import { axTree, html, iterateMeaningfulAXNodes, makeFromConstructor, makeFromString, makeFromTagName } from '../utils.js';
 
-beforeEach(() => {
-  document.body.replaceChildren();
-});
+beforeEach(() => document.body.replaceChildren());
 
 describe('mdw-checkbox', () => {
   it('can be created with document.createElement', () => {
@@ -28,36 +26,36 @@ describe('mdw-checkbox', () => {
     it('returns checkbox role', async () => {
       const element = html`<mdw-checkbox>foo</mdw-checkbox>`;
       const results = await axTree({ selector: element.tagName });
-      const { value } = iterateMeaningfulAXNodes(results).next();
-      assert.equal(value.role, 'checkbox');
+      const [{ role }] = iterateMeaningfulAXNodes(results);
+      assert.equal(role, 'checkbox');
     });
 
     it('supports aria-label', async () => {
       const element = html`<mdw-checkbox aria-label=foo></mdw-checkbox>`;
       const results = await axTree({ selector: element.tagName });
-      const { value } = iterateMeaningfulAXNodes(results).next();
-      assert.equal(value.name, 'foo');
+      const [{ name }] = iterateMeaningfulAXNodes(results);
+      assert.equal(name, 'foo');
     });
 
     it('labels based on slot', async () => {
       const element = html`<mdw-checkbox>foo</mdw-checkbox>`;
       const results = await axTree({ selector: element.tagName });
-      const { value } = iterateMeaningfulAXNodes(results).next();
-      assert.equal(value.name, 'foo');
+      const [{ name }] = iterateMeaningfulAXNodes(results);
+      assert.equal(name, 'foo');
     });
 
     it('updates aria-checked with true', async () => {
       const element = html`<mdw-checkbox checked>foo</mdw-checkbox>`;
       const results = await axTree({ selector: element.tagName });
-      const { value } = iterateMeaningfulAXNodes(results).next();
-      assert.equal(value.checked, true);
+      const [{ checked }] = iterateMeaningfulAXNodes(results);
+      assert.equal(checked, true);
     });
 
     it('updates aria-checked with mixed', async () => {
       const element = html`<mdw-checkbox checked indeterminate>foo</mdw-checkbox>`;
       const results = await axTree({ selector: element.tagName });
-      const { value } = iterateMeaningfulAXNodes(results).next();
-      assert.equal(value.checked, 'mixed');
+      const [{ checked }] = iterateMeaningfulAXNodes(results);
+      assert.equal(checked, 'mixed');
     });
   });
 });

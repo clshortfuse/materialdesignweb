@@ -4,9 +4,7 @@ import BottomAppBar from '../../components/BottomAppBar.js';
 import '../../theming/loader.js';
 import { axTree, html, iterateMeaningfulAXNodes, makeFromConstructor, makeFromString, makeFromTagName } from '../utils.js';
 
-beforeEach(() => {
-  document.body.replaceChildren();
-});
+beforeEach(() => document.body.replaceChildren());
 
 describe('mdw-bottom-app-bar', () => {
   it('can be created with document.createElement', () => {
@@ -28,15 +26,15 @@ describe('mdw-bottom-app-bar', () => {
     it('returns toolbar role', async () => {
       const element = html`<mdw-bottom-app-bar>foo</mdw-bottom-app-bar>`;
       const results = await axTree({ selector: element.tagName });
-      const { value } = iterateMeaningfulAXNodes(results).next();
-      assert.equal(value.role, 'toolbar');
+      const [{ role }] = iterateMeaningfulAXNodes(results);
+      assert.equal(role, 'toolbar');
     });
 
     it('supports aria-label', async () => {
       const element = html`<mdw-bottom-app-bar aria-label=foo></mdw-bottom-app-bar>`;
       const results = await axTree({ selector: element.tagName });
-      const { value } = iterateMeaningfulAXNodes(results).next();
-      assert.equal(value.name, 'foo');
+      const [{ name }] = iterateMeaningfulAXNodes(results);
+      assert.equal(name, 'foo');
     });
   });
 });

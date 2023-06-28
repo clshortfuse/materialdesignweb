@@ -4,9 +4,7 @@ import Box from '../../components/Box.js';
 import '../../theming/loader.js';
 import { html, makeFromConstructor, makeFromString, makeFromTagName } from '../utils.js';
 
-beforeEach(() => {
-  document.body.replaceChildren();
-});
+beforeEach(() => document.body.replaceChildren());
 
 describe('mdw-box', () => {
   it('can be created with document.createElement', () => {
