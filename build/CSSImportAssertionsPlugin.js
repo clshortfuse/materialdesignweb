@@ -18,7 +18,7 @@ export default {
       const [file] = outputFiles;
       const { text } = file;
       const jsText = text.trim()
-        .replaceAll(/`/g, '\\`')
+        .replaceAll('`', '\\`')
         .replaceAll(/\\([\da-f]+)/gi, (match, p1) => String.fromCodePoint(Number.parseInt(p1, 16)));
       const contents = /* js */ `
         let contents = \`${jsText}\`;
