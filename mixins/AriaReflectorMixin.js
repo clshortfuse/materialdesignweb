@@ -31,7 +31,7 @@ export default function AriaReflectorMixin(Base) {
             fn();
           } else {
             // Elements should not add attributes during construction
-            this.addEventListener('connected', fn);
+            setTimeout(fn);
           }
         }
       },
