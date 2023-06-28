@@ -1,4 +1,4 @@
-name: Chrome
+name: Chromium
 on:
   push:
     branches: [main]
