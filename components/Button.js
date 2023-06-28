@@ -36,14 +36,10 @@ export default CustomElement
     svg: 'string',
     viewBox: 'string',
     svgPath: 'string',
-    _slotInnerText: 'string',
   })
   .expressions({
     hasIcon({ icon, svg, src, svgPath }) {
       return icon ?? svg ?? src ?? svgPath;
-    },
-    computedAriaLabel({ ariaLabel, _slotInnerText }) {
-      return ariaLabel?.trim() || _slotInnerText?.trim() || null;
     },
   })
   .methods({
@@ -57,22 +53,9 @@ export default CustomElement
   })
   .html`
     <mdw-icon mdw-if={hasIcon} id=icon ink={iconInk} disabled={disabledState} outlined={outlined} aria-hidden=true svg={svg} src={src} svg-path={svgPath} view-box={viewBox} icon={icon}></mdw-icon>
-    <a mdw-if={href} id=anchor href={href} aria-label="{computedAriaLabel}"></a>
+    <a mdw-if={href} id=anchor href={href} aria-label="{_computedAriaLabel}"></a>
     <slot id=slot disabled={disabledState} aria-hidden=false></slot>
   `
-  .childEvents({
-    slot: {
-      slotchange() {
-        // Firefox and Webkit will not apply label from slots.
-        // https://bugs.webkit.org/show_bug.cgi?id=254934
-        // https://bugzilla.mozilla.org/show_bug.cgi?id=1826194
-        if (navigator.userAgent.includes('Firefox')
-        || (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrom'))) {
-          this._slotInnerText = this.textContent;
-        }
-      },
-    },
-  })
   .recompose(({ refs: { shape, state, rippleContainer, surface, control } }) => {
     surface.append(shape);
     shape.append(state, rippleContainer);

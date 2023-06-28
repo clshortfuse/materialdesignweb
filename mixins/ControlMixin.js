@@ -1,6 +1,7 @@
 /* https://html.spec.whatwg.org/multipage/form-control-infrastructure.html */
 
 import { cloneAttributeCallback } from '../core/CustomElement.js';
+import { IS_FIREFOX } from '../core/dom.js';
 
 import FormAssociatedMixin from './FormAssociatedMixin.js';
 
@@ -18,12 +19,14 @@ export default function ControlMixin(Base) {
     .mixin(FormAssociatedMixin)
     .observe({
       ariaLabel: 'string',
+      _slotInnerText: 'string',
     })
     .set({
       delegatesFocus: true,
       focusableOnDisabled: false,
       controlTagName: 'input',
       controlVoidElement: true,
+      _slotMutationObserver: null,
     })
     .methods({
       onValueChangingContentAttribute() {
@@ -97,13 +100,24 @@ export default function ControlMixin(Base) {
       },
 
     })
+    .expressions({
+      _computedAriaLabel({ ariaLabel, _slotInnerText }) {
+        if (IS_FIREFOX) {
+          return ariaLabel?.trim() || _slotInnerText?.trim() || null;
+        }
+        return ariaLabel?.trim() || null;
+      },
+    })
+
     .recompose(({ template, html, element }) => {
+      // Firefox will not apply label from slots.
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=1826194
       // Wait until controlTagName is settled before templating
       template.append(html`
-        <${element.controlTagName} id=control 
+        <${element.controlTagName} id=control
           aria-labelledby=${({ ariaLabel }) => (ariaLabel ? null : 'slot')}
           part=control
-          aria-label={ariaLabel}
+          aria-label={_computedAriaLabel}
           form-disabled={disabledState}
           type={type}
           >${element.controlVoidElement ? '' : `</${element.controlTagName}>`}
@@ -165,6 +179,19 @@ export default function ControlMixin(Base) {
           this.checkValidity();
         },
       },
+      slot: IS_FIREFOX ? {
+        slotchange({ currentTarget }) {
+          // Firefox will not apply label from slots.
+          // https://bugzilla.mozilla.org/show_bug.cgi?id=1826194
+          this._slotInnerText = this.textContent;
+          if (!this._slotMutationObserver) {
+            this._slotMutationObserver = new MutationObserver(() => {
+              this._slotInnerText = this.textContent;
+            });
+            this._slotMutationObserver.observe(currentTarget, { characterData: true });
+          }
+        },
+      } : {},
     })
     .rootEvents({
       change() {

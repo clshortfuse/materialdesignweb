@@ -35,7 +35,10 @@ export function attrNameFromPropName(name) {
   });
 }
 
-const IS_FIREFOX = globalThis?.navigator?.userAgent.includes('Firefox');
+const userAgent = globalThis?.navigator?.userAgent ?? '';
+
+export const IS_FIREFOX = userAgent.includes('Firefox');
+export const IS_SAFARI = userAgent.includes('Safari') && !userAgent.includes('Chrom');
 
 /**
  * @param {Element} element
