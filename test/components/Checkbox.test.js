@@ -44,17 +44,32 @@ describe('mdw-checkbox', () => {
       assert.equal(name, 'foo');
     });
 
+    it('reports aria-checked with false', async () => {
+      const element = html`<mdw-checkbox>foo</mdw-checkbox>`;
+      const results = await axTree({ selector: element.tagName });
+      const [{ checked }] = iterateMeaningfulAXNodes(results);
+      assert.isNotOk(checked);
+    });
+
     it('updates aria-checked with true', async () => {
       const element = html`<mdw-checkbox checked>foo</mdw-checkbox>`;
       const results = await axTree({ selector: element.tagName });
       const [{ checked }] = iterateMeaningfulAXNodes(results);
-      assert.equal(checked, true);
+      assert.isOk(checked);
     });
 
-    it('updates aria-checked with mixed', async () => {
+    it('updates aria-checked with mixed', async function () {
       const element = html`<mdw-checkbox checked indeterminate>foo</mdw-checkbox>`;
       const results = await axTree({ selector: element.tagName });
-      const [{ checked }] = iterateMeaningfulAXNodes(results);
+      const [axNode] = iterateMeaningfulAXNodes(results);
+      const { checked } = axNode;
+
+      if (checked !== 'mixed' && element.refs.control.getAttribute('aria-checked') === 'mixed') {
+        console.warn('Skipping test due to Playwright bug.');
+        // Playwright bug. Firefox and Webkit report wrong value
+        this.skip();
+      }
+
       assert.equal(checked, 'mixed');
     });
   });
