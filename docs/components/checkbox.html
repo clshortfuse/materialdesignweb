@@ -19,8 +19,8 @@
           <mdw-checkbox name=checkbox-demo-2 checked color="secondary" value="2">Secondary</mdw-checkbox>
           <mdw-checkbox name=checkbox-demo-2 required color=alias value="2">Alias (Required)
           </mdw-checkbox>
-          <mdw-checkbox name=checkbox-demo-3 indeterminate color="tertiary" value="3">Tertiary</mdw-checkbox>
-          <mdw-checkbox name=checkbox-demo-4 checked indeterminate color="primary" disabled value="4">Disabled
+          <mdw-checkbox name=checkbox-demo-3 color="tertiary" value="3">Tertiary</mdw-checkbox>
+          <mdw-checkbox name=checkbox-demo-4 checked color="primary" disabled value="4">Disabled
           </mdw-checkbox>
           <mdw-checkbox name=checkbox-demo-5 color="primary" disabled value="5" checked>Disabled Checked
           </mdw-checkbox>
@@ -39,6 +39,10 @@
     </demo-section>
   </demo-page>
   <script type=module src="../demo.min.js"></script>
+  <script>
+    document.querySelector('[name="checkbox-demo-3"]').indeterminate = true;
+    document.querySelector('[name="checkbox-demo-4"]').indeterminate = true;
+  </script>
 
 </body>
 
