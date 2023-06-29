@@ -23,6 +23,9 @@ const IMPLICIT_SUBMISSION_BLOCKING_TYPES = new Set([
 
 const DOMString = { nullParser: String, empty: '' };
 
+/** Flag redispatched click events to know not to block them */
+const redispatchedClickEvents = new WeakSet();
+
 /**
  * @see https://html.spec.whatwg.org/multipage/input.html#htmlinputelement
  * @param {ReturnType<import('./StateMixin.js').default>} Base
@@ -173,6 +176,14 @@ export default function InputMixin(Base) {
       },
 
     })
+    .events({
+      click(e) {
+        if (redispatchedClickEvents.has(e)) return;
+        // Support custom host.dispatchEvent(new Event('click'))
+        e.stopImmediatePropagation();
+        this.refs.control.click();
+      },
+    })
     .childEvents({
       control: {
         keydown(event) {
@@ -188,7 +199,9 @@ export default function InputMixin(Base) {
           this.checked = input.checked;
 
           // Event needs to be rethrown and preventDefault inspected
-          if (this.dispatchEvent(new Event(event.type, event))) return;
+          const newEvent = new Event(event.type, event);
+          redispatchedClickEvents.add(newEvent);
+          if (this.dispatchEvent(newEvent)) return;
           event.preventDefault();
           this._checkedDirty = _checkedDirty;
           this._checked = _checked;

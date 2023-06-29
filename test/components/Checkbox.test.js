@@ -527,5 +527,103 @@ describe('mdw-checkbox', () => {
       assert.equal(checkbox_default_value.value, 'chicken');
     });
   });
+
+  /** @see http://wpt.live/html/semantics/forms/the-input-element/checkbox-click-events.html */
+  describe('wpt - checkbox-click-events', () => {
+    it('clicking and preventDefaulting a checkbox causes the checkbox to be checked during the click handler but reverted', () => {
+      const input = /** @type {InstanceType<Checkbox>} */ (document.createElement('mdw-checkbox'));
+      // input.type = 'checkbox';
+
+      const values = [];
+
+      input.addEventListener('click', (e) => {
+        values.push(input.checked);
+        e.preventDefault();
+        values.push(input.checked);
+      });
+
+      input.click();
+
+      values.push(input.checked);
+      assert.deepEqual(values, [true, true, false]);
+    });
+
+    it('a checkbox input emits click, input, change events in order after synthetic click', () => {
+      const input = /** @type {InstanceType<Checkbox>} */ (document.createElement('mdw-checkbox'));
+      // input.type = 'checkbox';
+      document.body.appendChild(input);
+      /** @type {string[]} */
+      const events = [];
+
+      input.addEventListener('change', () => {
+        events.push('change');
+      });
+      input.addEventListener('click', () => {
+        events.push('click');
+      });
+      input.addEventListener('input', () => {
+        events.push('input');
+      });
+
+      assert.isFalse(input.checked);
+
+      input.click();
+
+      assert.isTrue(input.checked);
+      assert.deepEqual(events, ['click', 'input', 'change']);
+    });
+
+    it('a checkbox input emits click, input, change events in order after dispatching click event', () => {
+      const input = /** @type {InstanceType<Checkbox>} */ (document.createElement('mdw-checkbox'));
+      // input.type = 'checkbox';
+      document.body.appendChild(input);
+      /** @type {string[]} */
+      const events = [];
+
+      input.addEventListener('change', () => {
+        events.push('change');
+      });
+      input.addEventListener('click', () => {
+        events.push('click');
+      });
+      input.addEventListener('input', () => {
+        events.push('input');
+      });
+
+      assert.isFalse(input.checked);
+
+      const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+      input.dispatchEvent(event);
+
+      assert.isTrue(input.checked);
+      assert.deepEqual(events, ['click', 'input', 'change']);
+    });
+
+    it('checkbox input respects cancel behavior on synthetic clicks', () => {
+      const input = /** @type {InstanceType<Checkbox>} */ (document.createElement('mdw-checkbox'));
+      // input.type = 'checkbox';
+      document.body.appendChild(input);
+      /** @type {string[]} */
+      const events = [];
+
+      input.addEventListener('change', () => {
+        events.push('change');
+      });
+      input.addEventListener('click', (e) => {
+        e.preventDefault();
+        events.push('click');
+      });
+      input.addEventListener('input', () => {
+        events.push('input');
+      });
+
+      assert.isFalse(input.checked);
+
+      input.click();
+
+      assert.isFalse(input.checked);
+      assert.deepEqual(events, ['click']);
+    });
+  });
   /* eslint-enable camelcase */
 });
