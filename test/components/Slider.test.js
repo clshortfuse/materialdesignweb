@@ -309,4 +309,169 @@ describe('mdw-slider', () => {
       assert(styles.getPropertyValue('--mdw-ink'), 'var(--mdw-color__on-primary)');
     });
   });
+
+  /* eslint-disable camelcase */
+  /** @see http://wpt.live/html/semantics/forms/the-input-element/range.html */
+  describe('wpt - range.html', () => {
+    it('range type support on input element', () => {
+      /** @type {InstanceType<Slider>} */
+      const range_basic = html`<mdw-slider min=0 max=5></mdw-slider>`;
+      assert.equal(range_basic.type, 'range');
+    });
+
+    it('min attribute support on input element', () => {
+      /** @type {InstanceType<Slider>} */
+      const range_basic = html`<mdw-slider min=0 max=5></mdw-slider>`;
+      assert.equal(range_basic.min, '0');
+    });
+
+    it('max attribute support on input element', () => {
+      /** @type {InstanceType<Slider>} */
+      const range_basic = html`<mdw-slider min=0 max=5></mdw-slider>`;
+      assert.equal(range_basic.max, '5');
+    });
+
+    it('Illegal value of min attribute', () => {
+      /** @type {InstanceType<Slider>} */
+      const illegal_min_and_max = html`<mdw-slider min="ab" max="f"></mdw-slider>`;
+      assert.equal(illegal_min_and_max.min, 'ab');
+    });
+
+    it('Illegal value of max attribute', () => {
+      /** @type {InstanceType<Slider>} */
+      const illegal_min_and_max = html`<mdw-slider min="ab" max="f"></mdw-slider>`;
+      assert.equal(illegal_min_and_max.max, 'f');
+    });
+
+    it('Converting an illegal string to the default value', () => {
+      /** @type {InstanceType<Slider>} */
+      const illegal_value_and_step = html`<mdw-slider min=0 max=5 value="ppp" step="xyz"></mdw-slider>`;
+      assert.equal(illegal_value_and_step.value, '3');
+    });
+
+    it('Illegal value of step attribute', () => {
+      /** @type {InstanceType<Slider>} */
+      const illegal_value_and_step = html`<mdw-slider min=0 max=5 value="ppp" step="xyz"></mdw-slider>`;
+      assert.equal(illegal_value_and_step.step, 'xyz');
+    });
+
+    it('the value is set to min when a smaller value than min attribute is given', () => {
+      /** @type {InstanceType<Slider>} */
+      const value_smaller_than_min = html`<mdw-slider min=0 max=5 value=-10></mdw-slider>`;
+      assert.equal(value_smaller_than_min.value, '0');
+    });
+
+    it('the value is set to max when a larger value than max attribute is given', () => {
+      /** @type {InstanceType<Slider>} */
+      const value_larger_than_max = html`<mdw-slider min=0 max=5 value=7></mdw-slider>`;
+      assert.equal(value_larger_than_max.value, '5');
+    });
+
+    it('default value of min attribute in input type=range', () => {
+      /** @type {InstanceType<Slider>} */
+      const empty_attributes = html`<mdw-slider></mdw-slider>`;
+      assert.equal(empty_attributes.min, '');
+    });
+
+    it('default value of max attribute in input type=range', () => {
+      /** @type {InstanceType<Slider>} */
+      const empty_attributes = html`<mdw-slider></mdw-slider>`;
+      assert.equal(empty_attributes.max, '');
+    });
+
+    it('default value when min and max attributes are given (= min plus half the difference between min and max)', () => {
+      /** @type {InstanceType<Slider>} */
+      const value_not_specified = html`<mdw-slider min=2 max=6></mdw-slider>`;
+      assert.equal(value_not_specified.value, '4');
+    });
+
+    it('default value with step control when both min and max attributes are given', () => {
+      /** @type {InstanceType<Slider>} */
+      const control_step_mismatch = html`<mdw-slider min=0 max=7 step=2></mdw-slider>`;
+      assert.equal(control_step_mismatch.value, '4');
+    });
+
+    // Chrome would result in different value out of the range between min and max. Why?
+    it('default value when both min and max attributes are given, while min > max', () => {
+      /** @type {InstanceType<Slider>} */
+      const max_smaller_than_min = html`<mdw-slider min=2 max=-3></mdw-slider>`;
+      assert.equal(max_smaller_than_min.value, '2');
+    });
+
+    it('The default step scale factor is 1, unless min attribute has non-integer value', () => {
+      /** @type {InstanceType<Slider>} */
+      const default_step_scale_factor_1 = html`<mdw-slider min=5 max=12.6 value=6.7></mdw-slider>`;
+      assert.equal(default_step_scale_factor_1.value, '7');
+    });
+
+    it('Step scale factor behavior when min attribute has integer value but max attribute is non-integer ', () => {
+      /** @type {InstanceType<Slider>} */
+      const default_step_scale_factor_2 = html`<mdw-slider min=5.3 max=12 value=6.7></mdw-slider>`;
+      assert.equal(default_step_scale_factor_2.value, '6.3');
+    });
+
+    it('Solving the step mismatch', () => {
+      /** @type {InstanceType<Slider>} */
+      const float_step_scale_factor = html`<mdw-slider min=5.3 max=12 step=0.5 value=6.7></mdw-slider>`;
+      assert.equal(float_step_scale_factor.value, '6.8');
+    });
+
+    // Firefox Nightly (24.0a1) would result in the possible maximum value in this range... (i.e. 12)
+    it('Performing stepUp()', () => {
+      /** @type {InstanceType<Slider>} */
+      const e = html`<mdw-slider min=3 max=14 value=6 step=3></mdw-slider>`;
+      e.stepUp();
+      assert.equal(e.value, '9');
+    });
+
+    // Firefox Nightly (24.0a1) would result in the possible minimum value in this range... (i.e. 3)
+    it('Performing stepDown()', () => {
+      /** @type {InstanceType<Slider>} */
+      const e = html`<mdw-slider min=3 max=11 value=9 step=3></mdw-slider>`;
+      e.stepDown();
+      assert.equal(e.value, '6');
+    });
+
+    // Chrome and Opera would throw DOM Exception 11 (InvalidStateError)
+    // Firefox Nightly gives the correct result
+    it('Performing stepUp() beyond the value of the max attribute', () => {
+      /** @type {InstanceType<Slider>} */
+      const e = html`<mdw-slider min=3 max=14 value=9 step=3></mdw-slider>`;
+      e.stepUp(2);
+      assert.equal(e.value, '12');
+    });
+
+    // Chrome and Opera would throw DOM Exception 11 (InvalidStateError)
+    // Firefox Nightly gives the correct result
+    it('Performing stepDown() beyond the value of the min attribute', () => {
+      /** @type {InstanceType<Slider>} */
+      const e = html`<mdw-slider min=3 max=11 value=6 step=3></mdw-slider>`;
+      e.stepDown(2);
+      assert.equal(e.value, '3');
+    });
+
+    it('Input should be reset to the default value when value attribute has whitespace', () => {
+      /** @type {InstanceType<Slider>} */
+      const e = html`<mdw-slider value=" 123"></mdw-slider>`;
+      assert.equal(e.value, '50');
+    });
+
+    it('Multiply value by ten raised to the exponentth power with `e`', () => {
+      /** @type {InstanceType<Slider>} */
+      const e = html`<mdw-slider value=""></mdw-slider>`;
+      // @ts-expect-error intentionally wrong type
+      e.value = 1e2;
+      assert.equal(e.value, '100');
+    });
+
+    it('Multiply value by ten raised to the exponentth power with `E`', () => {
+      /** @type {InstanceType<Slider>} */
+      const e = html`<mdw-slider value=""></mdw-slider>`;
+      // @ts-expect-error intentionally wrong type
+      // eslint-disable-next-line unicorn/number-literal-case
+      e.value = 1E2;
+      assert.equal(e.value, '100');
+    });
+  });
+  /* eslint-enable camelcase */
 });

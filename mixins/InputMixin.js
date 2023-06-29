@@ -227,6 +227,29 @@ export default function InputMixin(Base) {
         },
       },
     })
+    .methods({
+      /** @type {HTMLInputElement['setRangeText']} */
+      // @ts-ignore Can't cast?
+      setRangeText(...args) { this._input.setRangeText(...args); },
+
+      /** @type {HTMLInputElement['setSelectionRange']} */
+      setSelectionRange(...args) { this._input.setSelectionRange(...args); },
+
+      /** @type {HTMLInputElement['showPicker']} */
+      showPicker(...args) { this._input.showPicker(...args); },
+
+      /** @type {HTMLInputElement['stepDown']} */
+      stepDown(...args) {
+        this._input.stepDown(...args);
+        this._value = this._input.value;
+      },
+
+      /** @type {HTMLInputElement['stepUp']} */
+      stepUp(...args) {
+        this._input.stepUp(...args);
+        this._value = this._input.value;
+      },
+    })
     .define({
       files() { return this._input.files; },
 
@@ -246,16 +269,6 @@ export default function InputMixin(Base) {
         get() { return this._input.selectionStart; },
         set(value) { this._input.selectionStart = value; },
       },
-
-      setRangeText() { return this._input.setRangeText; },
-
-      setSelectionRange() { return this._input.setSelectionRange; },
-
-      showPicker() { return this._input.showPicker; },
-
-      stepDown() { return this._input.stepDown; },
-
-      stepUp() { return this._input.stepUp; },
 
       valueAsDate: {
         get() { return this._input.valueAsDate; },
