@@ -67,7 +67,7 @@ export default function RippleMixin(Base) {
         if (lastRipple) {
           lastRipple.holdRipple = false;
         }
-        console.debug('ripple from pointerdown');
+        // Ripple from pointerdown
         this.addRipple(x, y, true);
       },
       '~click'(e) {
@@ -82,7 +82,7 @@ export default function RippleMixin(Base) {
         if (lastRipple) {
           lastRipple.holdRipple = false;
         }
-        console.debug('ripple from programmatic click');
+        // Ripple from programmatic click
         this.addRipple();
       },
     })
@@ -100,7 +100,7 @@ export default function RippleMixin(Base) {
             // Sometimes pointer events may be out of order
             return;
           }
-          console.debug('ripple from press state');
+          // Ripple from pressed state
           this.addRipple(null, null, true);
           return;
         }

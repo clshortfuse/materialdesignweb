@@ -47,7 +47,6 @@ export default function ControlMixin(Base) {
       },
       /** Redirect click requests to control itself */
       click() {
-        console.log('ControlMixin: Click');
         this.refs.control.click();
       },
     })
@@ -110,9 +109,6 @@ export default function ControlMixin(Base) {
     })
 
     .recompose(({ template, html, element }) => {
-      // Firefox will not apply label from slots.
-      // https://bugzilla.mozilla.org/show_bug.cgi?id=1826194
-      // Wait until controlTagName is settled before templating
       template.append(html`
         <${element.controlTagName} id=control
           aria-labelledby=${({ ariaLabel }) => (ariaLabel ? null : 'slot')}
@@ -155,11 +151,7 @@ export default function ControlMixin(Base) {
     })
     .childEvents({
       control: {
-        invalid() {
-          console.debug('ControlMixin: invalid', this);
-        },
         input({ currentTarget }) {
-          console.debug('ControlMixin: input');
           const control = /** @type {HTMLControlElement} */ (currentTarget);
           if (this.validity.valid) {
             // Track internally
@@ -172,7 +164,6 @@ export default function ControlMixin(Base) {
           this._value = control.value;
         },
         change({ currentTarget }) {
-          console.debug('ControlMixin: change');
           const control = /** @type {HTMLControlElement} */ (currentTarget);
           this._valueDirty = true;
           this._value = control.value;
