@@ -200,6 +200,38 @@ describe('mdw-checkbox', () => {
     });
   });
 
+  describe('.indeterminate', () => {
+    it('initially false', () => {
+      /** @type {InstanceType<Checkbox>} */
+      const element = html`<mdw-checkbox>foo</mdw-checkbox>`;
+      assert.isFalse(element.checked);
+      assert.isFalse(element.indeterminate);
+    });
+
+    it('can be set via property', () => {
+      /** @type {InstanceType<Checkbox>} */
+      const element = html`<mdw-checkbox>foo</mdw-checkbox>`;
+      element.indeterminate = true;
+      assert.isTrue(element.indeterminate);
+    });
+
+    it('set false on .checked change', () => {
+      /** @type {InstanceType<Checkbox>} */
+      const element = html`<mdw-checkbox>foo</mdw-checkbox>`;
+      element.indeterminate = true;
+      element.checked = true;
+      assert.isFalse(element.indeterminate);
+    });
+
+    it('not changed by .defaultChecked', () => {
+      /** @type {InstanceType<Checkbox>} */
+      const element = html`<mdw-checkbox>foo</mdw-checkbox>`;
+      element.indeterminate = true;
+      element.defaultChecked = true;
+      assert.isTrue(element.indeterminate);
+    });
+  });
+
   describe('aria', () => {
     it('returns checkbox role', async () => {
       const element = html`<mdw-checkbox>foo</mdw-checkbox>`;
@@ -243,6 +275,35 @@ describe('mdw-checkbox', () => {
       const results = await axTree({ selector: element.tagName });
       const [{ checked }] = iterateMeaningfulAXNodes(results);
       assert.equal(checked, 'mixed');
+    });
+
+    it('reports aria-checked=false on uncheck', async () => {
+      /** @type {InstanceType<Checkbox>} */
+      const element = html`<mdw-checkbox checked>foo</mdw-checkbox>`;
+      element.checked = false;
+      const results = await axTree({ selector: element.tagName });
+      const [{ checked }] = iterateMeaningfulAXNodes(results);
+      assert.isNotOk(checked);
+    });
+
+    it('reports aria-checked=false on cleared indeterminate', async () => {
+      /** @type {InstanceType<Checkbox>} */
+      const element = html`<mdw-checkbox checked>foo</mdw-checkbox>`;
+      element.indeterminate = true;
+      element.checked = false;
+      const results = await axTree({ selector: element.tagName });
+      const [{ checked }] = iterateMeaningfulAXNodes(results);
+      assert.isNotOk(checked);
+    });
+
+    it('reports aria-checked=true on cleared indeterminate', async () => {
+      /** @type {InstanceType<Checkbox>} */
+      const element = html`<mdw-checkbox>foo</mdw-checkbox>`;
+      element.indeterminate = true;
+      element.checked = true;
+      const results = await axTree({ selector: element.tagName });
+      const [{ checked }] = iterateMeaningfulAXNodes(results);
+      assert.isOk(checked);
     });
   });
 });

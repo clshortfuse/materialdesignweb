@@ -70,8 +70,12 @@ export default function InputMixin(Base) {
     .on({
       // TODO: Bind multiple
       typeChanged() { this.onValueChangingContentAttribute(); },
-      defaultCheckedChanged() {
-        this._checked = this._input.checked;
+      checkedChanged() {
+        this._input.checked = this.checked;
+        this._input.indeterminate = this.indeterminate;
+      },
+      indeterminateChanged(previous, current) {
+        this._input.indeterminate = current;
       },
       minChanged() { this.onValueChangingContentAttribute(); },
       minLengthChanged() { this.onValueChangingContentAttribute(); },
@@ -116,6 +120,7 @@ export default function InputMixin(Base) {
         // Apply user value to input and read back result to apply control to parse
         this._input.checked = checked;
         this._checked = this._input.checked;
+        this.indeterminate = false;
       },
       _onSetValue(value) {
         // Apply user value to input and read back result to apply control to parse

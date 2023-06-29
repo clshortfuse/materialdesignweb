@@ -48,11 +48,6 @@ export default CustomElement
       }
     },
   })
-  .on({
-    indeterminateChanged(previous, current) {
-      this._input.indeterminate = current;
-    },
-  })
   .recompose(({ refs: { checkbox, state, rippleContainer } }) => {
     checkbox.append(state, rippleContainer);
   })

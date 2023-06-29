@@ -123,8 +123,9 @@ export default function FormAssociatedMixin(Base) {
       checked: {
         reflect: false,
         type: 'boolean',
-        get({ _checked }) {
-          return _checked;
+        get({ _checkedDirty, defaultChecked, _checked }) {
+          if (_checkedDirty) return _checked;
+          return defaultChecked;
         },
         /** @param {boolean} checked */
         set(checked) {
