@@ -138,7 +138,10 @@ export default function FormAssociatedMixin(Base) {
       form() { return this.elementInternals.form; },
       validity() { return this.elementInternals.validity; },
       validationMessage() { return this.elementInternals.validationMessage; },
-      willValidate() { return this.elementInternals.willValidate; },
+      willValidate() {
+        if (this.type === 'button') return false;
+        return this.elementInternals.willValidate;
+      },
       labels() { return this.elementInternals.labels; },
     })
     .observe({
@@ -198,7 +201,6 @@ export default function FormAssociatedMixin(Base) {
        */
       formAssociatedCallback(form) {
         this.refreshFormAssociation();
-        console.debug('FormAssociatedMixin: formAssociatedCallback', this);
         this.checkValidity();
       },
 

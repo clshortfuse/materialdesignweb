@@ -52,14 +52,10 @@ export default function ControlMixin(Base) {
     })
     .define({
       stateTargetElement() { return this.refs.control; },
-      form() { return this.elementInternals.form; },
-      validity() { return this.elementInternals.validity; },
-      validationMessage() { return this.elementInternals.validationMessage; },
-      willValidate() { return this.elementInternals.willValidate; },
-      labels() { return this.elementInternals.labels; },
     })
     .methods({
       checkValidity() {
+        if (!this.willValidate) return true;
         const control = /** @type {HTMLControlElement} */ (this.refs.control);
         const validityState = control.checkValidity();
         /** @type {Partial<ValidityState>} */
@@ -188,7 +184,8 @@ export default function ControlMixin(Base) {
     .rootEvents({
       change(event) {
         // Change event is NOT composed. Needs to escape shadow DOM
-        this.dispatchEvent(new Event(event.type, event));
+        // @ts-ignore skip constructor cast
+        this.dispatchEvent(new event.constructor(event.type, event));
       },
     })
     .css`
