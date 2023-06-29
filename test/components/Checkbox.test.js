@@ -348,7 +348,7 @@ describe('mdw-checkbox', () => {
 
   /* eslint-disable camelcase */
   /** @see http://wpt.live/html/semantics/forms/the-input-element/checkbox.html */
-  describe('wpt', () => {
+  describe('wpt - checkbox', () => {
     it('click on mutable checkbox fires a click event, then an input event, then a change event', () => {
       /** @type {InstanceType<Checkbox>} */
       const checkbox1 = html`<mdw-checkbox></mdw-checkbox>`;
@@ -476,6 +476,55 @@ describe('mdw-checkbox', () => {
       assert.isFalse(checkbox6.checked);
       assert.isFalse(checkbox6.indeterminate);
       checkbox6.click();
+    });
+  });
+
+  /** @see http://wpt.live/html/semantics/forms/the-input-element/input-type-checkbox.html */
+  describe('wpt - input-type-checkbox', () => {
+    it('default checkbox has no checkedness state', () => {
+      /** @type {InstanceType<Checkbox>} */
+      const checkbox_default = html`<mdw-checkbox width=20></mdw-checkbox>`;
+      assert.isFalse(checkbox_default.checked);
+    });
+
+    it('checkbox with initial state set to checked has checkedness state', () => {
+      /** @type {InstanceType<Checkbox>} */
+      const checkbox_checked = html`<mdw-checkbox checked></mdw-checkbox>`;
+      assert.isTrue(checkbox_checked.checked);
+    });
+
+    it('changing the checked attribute to a string sets the checkedness state', () => {
+      /** @type {InstanceType<Checkbox>} */
+      const checkbox_default = html`<mdw-checkbox width=20></mdw-checkbox>`;
+      // @ts-expect-error intentionally wrong type
+      checkbox_default.checked = 'chicken';
+      assert.isTrue(checkbox_default.checked);
+    });
+
+    it('a checkbox has an indeterminate state set to false onload', () => {
+      /** @type {InstanceType<Checkbox>} */
+      const checkbox_indeterminate = html`<mdw-checkbox></mdw-checkbox>`;
+      assert.isFalse(checkbox_indeterminate.indeterminate);
+    });
+
+    it("on setting, a checkbox's indeterminate state must be set to the new value and returns the last value it was set to", () => {
+      /** @type {InstanceType<Checkbox>} */
+      const checkbox_indeterminate = html`<mdw-checkbox></mdw-checkbox>`;
+      checkbox_indeterminate.indeterminate = true;
+      assert.isTrue(checkbox_indeterminate.indeterminate);
+    });
+
+    it("default/on: on getting, if the element has a value attribute, it must return that attribute's value; otherwise, it must return the string 'on'", () => {
+      /** @type {InstanceType<Checkbox>} */
+      const checkbox_default_value = html`<mdw-checkbox></mdw-checkbox>`;
+      assert.equal(checkbox_default_value.value, 'on');
+    });
+
+    it("on getting, if the element has a value attribute, it must return that attribute's value", () => {
+      /** @type {InstanceType<Checkbox>} */
+      const checkbox_default_value = html`<mdw-checkbox></mdw-checkbox>`;
+      checkbox_default_value.value = 'chicken';
+      assert.equal(checkbox_default_value.value, 'chicken');
     });
   });
   /* eslint-enable camelcase */
