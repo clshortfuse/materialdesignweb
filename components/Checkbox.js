@@ -25,9 +25,6 @@ export default CustomElement
     indeterminate: 'boolean',
   })
   .observe({
-    _ariaChecked({ indeterminate, checked }) {
-      return (indeterminate ? 'mixed' : `${!!checked}`);
-    },
     _determinateIcon({ indeterminate, indeterminateIcon, icon }) {
       return (indeterminate ? indeterminateIcon : icon);
     },
@@ -50,11 +47,13 @@ export default CustomElement
       }
     },
   })
-  .recompose(({ refs: { control, checkbox, state, rippleContainer } }) => {
+  .on({
+    indeterminateChanged(previous, current) {
+      this._input.indeterminate = current;
+    },
+  })
+  .recompose(({ refs: { checkbox, state, rippleContainer } }) => {
     checkbox.append(state, rippleContainer);
-
-    // Indeterminate must be manually expressed for ARIA
-    control.setAttribute('aria-checked', '{_ariaChecked}');
   })
   .css`
     /* https://m3.material.io/components/checkbox/specs */
