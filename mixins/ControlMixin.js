@@ -195,9 +195,9 @@ export default function ControlMixin(Base) {
       } : {},
     })
     .rootEvents({
-      change() {
+      change(event) {
         // Change event is NOT composed. Needs to escape shadow DOM
-        this.dispatchEvent(new Event('change', { bubbles: true }));
+        this.dispatchEvent(new Event(event.type, event));
       },
     })
     .css`
