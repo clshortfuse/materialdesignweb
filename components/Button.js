@@ -208,10 +208,11 @@ export default CustomElement
       /**
        * Duplicates button for form submission
        * @see https://github.com/WICG/webcomponents/issues/814
-       * @param {{currentTarget:HTMLInputElement}} event
+       * @param {PointerEvent & {currentTarget:HTMLInputElement}} event
        * @type {any}
        */
-      '~click'({ currentTarget }) {
+      click(event) {
+        const { currentTarget } = event;
         if (currentTarget.disabled) return;
         if (currentTarget.type !== 'submit') return;
         if (this.disabled) return;
@@ -219,7 +220,12 @@ export default CustomElement
         const form = this.elementInternals?.form;
         if (!form) return;
         this.elementInternals.setFormValue(value);
-        if ((currentTarget.type ?? 'submit') !== 'submit') return;
+
+        if (!this._redispatchControlClickEvent(event)) {
+          event.preventDefault();
+          return;
+        }
+
         const duplicatedButton = /** @type {HTMLInputElement} */ (currentTarget.cloneNode());
         duplicatedButton.hidden = true;
         form.append(duplicatedButton);

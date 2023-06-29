@@ -99,9 +99,9 @@ describe('mdw-button', () => {
     describe('active-onblur', () => {
       it('Buttons should clear :active when the user tabs away from them while holding spacebar.', async () => {
         /** @type {InstanceType<Button>} */
-        const b1 = html`<mdw-button>button one</button>`;
+        const b1 = html`<mdw-button>button one</mdw-button>`;
         /** @type {InstanceType<Button>} */
-        const b2 = html`<mdw-button>button two</button>`;
+        const b2 = html`<mdw-button>button two</mdw-button>`;
 
         b1.focus();
 
@@ -120,13 +120,178 @@ describe('mdw-button', () => {
       });
     });
 
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-activate.html */
+    describe('button-activate', () => {
+      it('button activation behaviour submits form', (done) => {
+        const form = html`
+          <form>
+            <mdw-button type=submit>Submit</mdw-button>
+          </form>
+        `;
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          done();
+        });
+        button.click();
+      });
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-click-submits.html */
+    describe('button-click-submits', () => {
+      it('clicking a button with .click() should trigger a submit (form connected)', (done) => {
+        const form = html`<form><mdw-button type=submit>Submit</mdw-button></form>`;
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.equal(ev.target, form);
+          done();
+        });
+
+        button.click();
+      });
+
+      it('clicking a button with .click() should not trigger a submit (form disconnected)', (done) => {
+        const form = makeFromString('<form><mdw-button type=submit>Submit</mdw-button></form>', false);
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.fail('Form should not be submitted');
+        });
+
+        button.click();
+        setTimeout(done, 500);
+      });
+
+      it('clicking a button by dispatching an event should trigger a submit (form connected)', (done) => {
+        const form = html`<form><mdw-button type=submit>Submit</mdw-button></form>`;
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.equal(ev.target, form);
+          done();
+        });
+
+        const e = new MouseEvent('click');
+        button.dispatchEvent(e);
+      });
+
+      it('clicking a button by dispatching an event should not trigger a submit (form disconnected)', (done) => {
+        const form = makeFromString('<form><mdw-button type=submit>Submit</mdw-button></form>', false);
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.fail('Form should not be submitted');
+        });
+
+        const e = new MouseEvent('click');
+        button.dispatchEvent(e);
+        setTimeout(done, 500);
+      });
+
+      it('clicking a button that cancels the event should not trigger a submit', (done) => {
+        const form = makeFromString('<form><mdw-button type=submit>Submit</mdw-button></form>', false);
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+        // [sic] seems like a bad test because not part of DOM anyway
+
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.fail('Form should not be submitted');
+        });
+
+        button.addEventListener('click', ((ev) => {
+          ev.preventDefault();
+          setTimeout(done, 500);
+        }));
+        button.click();
+      });
+
+      // Custom test
+      it('clicking a button that cancels the event should not trigger a submit (connected)', (done) => {
+        const form = html`<form><mdw-button type=submit>Submit</mdw-button></form>`;
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.fail('Form should not be submitted');
+        });
+
+        button.addEventListener('click', ((ev) => {
+          ev.preventDefault();
+          setTimeout(done, 500);
+        }));
+        button.click();
+      });
+
+      it('clicking a disabled button (via disabled attribute) should not trigger submit', (done) => {
+        const form = html`<form><mdw-button type=submit disabled>Submit</mdw-button></form>`;
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+
+        form.addEventListener('submit', ((ev) => {
+          ev.preventDefault();
+          assert.fail('Form should not be submitted');
+        }));
+
+        button.click();
+        setTimeout(done, 500);
+      });
+
+      it('clicking a disabled button (via ancestor fieldset) should not trigger submit', (done) => {
+        const form = html`<form><fieldset disabled><mdw-button type=submit>hello</mdw-button></fieldset></form>`;
+        const fieldset = (form.firstElementChild);
+        const button = /** @type {InstanceType<Button>} */ (fieldset.firstElementChild);
+
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.fail('Form should not be submitted');
+        });
+
+        button.click();
+        setTimeout(done, 500);
+      });
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-activate-keyup-prevented.html */
+    describe('button-activate-keyup-prevented', () => {
+      it('Button activation submits on keyup, but not if keydown is defaultPrevented', async () => {
+        /** @type {InstanceType<Button>} */
+        const button = html`<mdw-button type=submit>The button</mdw-button>`;
+        button.focus();
+        assert.equal(document.activeElement, button, 'Button should be focused');
+        // assert.isTrue(button.focusedState, 'Button show focus state');
+
+        const clickPromise = new Promise((resolve) => {
+          button.addEventListener('click', resolve, { once: true });
+        });
+
+        await sendKeypress(' ');
+        await clickPromise;
+
+        assert.isTrue(true, 'Button should have activated');
+
+        document.addEventListener('keydown', (e) => {
+          e.preventDefault();
+        });
+
+        button.addEventListener('click', () => assert.fail('button got incorrectly activated'));
+
+        await sendKeypress(' ');
+
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        assert.isTrue(true, 'Button should not have activated');
+      });
+    });
+
     /** @see https://wpt.live/html/semantics/forms/the-button-element/button-checkvalidity.html */
     it('checkvalidity', () => {
       const form = html`
         <form method="post"
             enctype="application/x-www-form-urlencoded"
             action="">
-          <p><mdw-button>button</button></p>
+          <p><mdw-button type=submit>button</mdw-button></p>
         </form>
       `;
       const p = (form.firstElementChild);
@@ -138,124 +303,127 @@ describe('mdw-button', () => {
       }
     });
   });
-  /** @see https://wpt.live/html/semantics/forms/the-input-element/button.html */
-  describe('wpt - button', () => {
-    it('clicking on button should not submit a form', (done) => {
-      const f1 = html`<form><mdw-button name=b1></mdw-button></form>`;
-      const b1 = /** @type {InstanceType<Button>} */ (f1.firstElementChild);
-      f1.addEventListener('submit', (e) => {
-        e.preventDefault();
-        assert.fail('form has been submitted');
+
+  describe('wpt - <input type=button>', () => {
+    /** @see https://wpt.live/html/semantics/forms/the-input-element/button.html */
+    describe('button', () => {
+      it('clicking on button should not submit a form', (done) => {
+        const f1 = html`<form><mdw-button name=b1></mdw-button></form>`;
+        const b1 = /** @type {InstanceType<Button>} */ (f1.firstElementChild);
+        f1.addEventListener('submit', (e) => {
+          e.preventDefault();
+          assert.fail('form has been submitted');
+        });
+        b1.click();
+        done();
       });
-      b1.click();
-      done();
-    });
 
-    it('the element is barred from constraint validation', () => {
-      const form = html`<form><mdw-button name=b1></mdw-button></form>`;
-      const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
-      assert.isFalse(button.willValidate);
-    });
+      it('the element is barred from constraint validation', () => {
+        const form = html`<form><mdw-button name=b1></mdw-button></form>`;
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+        assert.isFalse(button.willValidate);
+      });
 
-    it('clicking on button should not reset other form fields', () => {
+      it('clicking on button should not reset other form fields', () => {
       /** @type {{children: [HTMLInputElement, InstanceType<Button>]}} */
       // @ts-ignore skip cast
-      const { children: [radio, button] } = html`
-        <form>
-          <input type=radio checked name=b3>
-          <mdw-button name=b3></mdw-button>
-        </form>
-      `;
-      radio.value = 'bar';
-      button.click();
-      assert.equal(radio.value, 'bar');
-    });
+        const { children: [radio, button] } = html`
+          <form>
+            <input type=radio checked name=b3>
+            <mdw-button name=b3></mdw-button>
+          </form>
+        `;
+        radio.value = 'bar';
+        button.click();
+        assert.equal(radio.value, 'bar');
+      });
 
-    it('clicking on button should not unchecked radio buttons', () => {
+      it('clicking on button should not unchecked radio buttons', () => {
       /** @type {{children: [HTMLInputElement, InstanceType<Button>]}} */
       // @ts-ignore skip cast
-      const { children: [radio, button] } = html`
-        <form>
-          <input type=radio checked name=b3>
-          <mdw-button name=b3></mdw-button>
-        </form>
-      `;
-      assert.isTrue(radio.checked);
-      button.click();
-      assert.isTrue(radio.checked);
-    });
+        const { children: [radio, button] } = html`
+          <form>
+            <input type=radio checked name=b3>
+            <mdw-button name=b3></mdw-button>
+          </form>
+        `;
+        assert.isTrue(radio.checked);
+        button.click();
+        assert.isTrue(radio.checked);
+      });
 
-    it('clicking on button should not change its indeterminate IDL attribute', () => {
+      it('clicking on button should not change its indeterminate IDL attribute', () => {
       /** @type {{children: [HTMLInputElement, InstanceType<Button>]}} */
       // @ts-ignore skip cast
-      const { children: [checkbox, button] } = html`
-        <form>
-          <input type=checkbox>
-          <input type=button name=b4>
-        </form>
-      `;
-      assert.isFalse(checkbox.indeterminate);
-      button.click();
-      assert.isFalse(checkbox.indeterminate);
+        const { children: [checkbox, button] } = html`
+          <form>
+            <input type=checkbox>
+            <input type=button name=b4>
+          </form>
+        `;
+        assert.isFalse(checkbox.indeterminate);
+        button.click();
+        assert.isFalse(checkbox.indeterminate);
+      });
     });
-  });
 
-  /** @see https://wpt.live/html/semantics/forms/the-input-element/input-type-button.html */
-  describe('wpt - input-type-button', () => {
-    it('default behavior', () => {
+    /** @see https://wpt.live/html/semantics/forms/the-input-element/input-type-button.html */
+    describe('wpt - input-type-button', () => {
+      it('default behavior', () => {
       /** @type {InstanceType<Button>} */
-      const button = html`<mdw-button></mdw-button>`;
-      assert.isUndefined(button.click(), 'The input element represents a button with no default behavior');
-    });
+        const button = html`<mdw-button></mdw-button>`;
+        assert.isUndefined(button.click(), 'The input element represents a button with no default behavior');
+      });
 
-    it('empty value attribute', () => {
+      it('empty value attribute', () => {
       /** @type {InstanceType<Button>} */
-      const button = html`<mdw-button></mdw-button>`;
-      assert.equal(button.value, '', 'It must be the empty string');
-    });
+        const button = html`<mdw-button></mdw-button>`;
+        assert.equal(button.value, '', 'It must be the empty string');
+      });
 
-    it('label value', () => {
+      it('label value', () => {
       /** @type {{children: InstanceType<Button>[]}} */
       // @ts-ignore skip cast
-      const { children: [button1, button2] } = html`
-        <div>
-            <mdw-button></mdw-button>
-            <mdw-button value="BUTTON"></mdw-button>
-        </div>
-      `;
-      assert.notEqual(button1.offsetWidth, button2.offsetWidth, "If the element has a value attribute, the button's label must be the value of that attribute");
-    });
-
-    it("mutable element's activation behavior is to do nothing.", () => {
-      const form = html`
-        <form action="/" method="get">
-          <mdw-button value="mutable"></mdw-button>
-        </form>
-      `;
-      const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
-      let isSubmitted = false;
-      form.addEventListener('submit', () => {
-        isSubmitted = true;
-        return false;
+        const { children: [button1, button2] } = html`
+          <div>
+              <mdw-button></mdw-button>
+              <mdw-button value="BUTTON"></mdw-button>
+          </div>
+        `;
+        assert.notEqual(button1.offsetWidth, button2.offsetWidth, "If the element has a value attribute, the button's label must be the value of that attribute");
       });
-      button.click();
-      assert.equal(isSubmitted, false, "If the element is mutable, the element's activation behavior is to do nothing.");
-    });
 
-    it('immutable element has no activation behavior.', () => {
-      const form = html`
-        <form action="/" method="get">
-          <mdw-button value="mutable"></mdw-button>
-        </form>
-      `;
-      const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
-      let isSubmitted = false;
-      form.addEventListener('submit', () => {
-        isSubmitted = true;
-        return false;
+      it("mutable element's activation behavior is to do nothing.", () => {
+        const form = html`
+          <form action="/" method="get">
+            <mdw-button value="mutable"></mdw-button>
+          </form>
+        `;
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+        let isSubmitted = false;
+        form.addEventListener('submit', () => {
+          isSubmitted = true;
+          return false;
+        });
+        button.click();
+        assert.equal(isSubmitted, false, "If the element is mutable, the element's activation behavior is to do nothing.");
       });
-      button.click();
-      assert.equal(isSubmitted, false, 'If the element is immutable, the element has no activation behavior.');
+
+      it('immutable element has no activation behavior.', () => {
+        const form = html`
+          <form action="/" method="get">
+            <mdw-button value="mutable"></mdw-button>
+          </form>
+        `;
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+        let isSubmitted = false;
+        form.addEventListener('submit', () => {
+          isSubmitted = true;
+          return false;
+        });
+        button.click();
+        assert.equal(isSubmitted, false, 'If the element is immutable, the element has no activation behavior.');
+      });
     });
   });
   /* eslint-enable camelcase */

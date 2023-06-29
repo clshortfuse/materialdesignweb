@@ -25,6 +25,8 @@ const DOMString = { nullParser: String, empty: '' };
 
 /** Flag redispatched click events to know not to block them */
 const redispatchedClickEvents = new WeakSet();
+/** Flag root click events to know not to block them */
+const rootClickEvents = new WeakSet();
 
 /**
  * @see https://html.spec.whatwg.org/multipage/input.html#htmlinputelement
@@ -176,12 +178,34 @@ export default function InputMixin(Base) {
       },
 
     })
+    .rootEvents({
+      click(event) {
+        rootClickEvents.add(event);
+      },
+    })
     .events({
-      click(e) {
-        if (redispatchedClickEvents.has(e)) return;
-        // Support custom host.dispatchEvent(new Event('click'))
-        e.stopImmediatePropagation();
-        this.refs.control.click();
+      click(event) {
+        // If click event came from own shadowRoot, let it through
+        if (rootClickEvents.has(event)) return;
+        // If click event is a redispatch, let it through
+        if (redispatchedClickEvents.has(event)) return;
+        if (event.target === this) {
+          // Support custom host.dispatchEvent(new Event('click'))
+          event.stopImmediatePropagation();
+          this.refs.control.click();
+        }
+      },
+    })
+    .methods({
+      /** @param {Event} event */
+      _redispatchControlClickEvent(event) {
+        event.stopPropagation();
+        // Use constructor to match mouse/pointer properties
+        /**  @type {Event} */
+        // @ts-ignore skip-cast
+        const newEvent = (new event.constructor(event.type, event));
+        redispatchedClickEvents.add(newEvent);
+        return this.dispatchEvent(newEvent);
       },
     })
     .childEvents({
@@ -193,18 +217,14 @@ export default function InputMixin(Base) {
           this.performImplicitSubmission(event);
         },
         click(event) {
-          event.stopPropagation();
+          const { type } = this;
+          if (type !== 'checkbox' && type !== 'radio') return;
           const input = /** @type {HTMLInputElement} */ (event.currentTarget);
           const { _checkedDirty, _checked, _indeterminate } = this;
           this.checked = input.checked;
 
           // Event needs to be rethrown and preventDefault inspected
-          // Use constructor to match mouse/pointer properties
-          /**  @type {Event} */
-          // @ts-ignore skip constructor cast
-          const newEvent = (new event.constructor(event.type, event));
-          redispatchedClickEvents.add(newEvent);
-          if (this.dispatchEvent(newEvent)) return;
+          if (this._redispatchControlClickEvent(event)) return;
           event.preventDefault();
           this._checkedDirty = _checkedDirty;
           this._checked = _checked;
