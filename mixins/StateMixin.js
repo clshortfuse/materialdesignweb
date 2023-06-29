@@ -55,10 +55,6 @@ export default function StateMixin(Base) {
         this._pointerPressed = this.stateTargetElement.matches(':active');
         if (event.pointerType === 'touch') return;
         this._hovered = true;
-        // Firefox lags a frame before reporting :hover
-        // requestAnimationFrame(() => {
-        //  this._hovered = this.stateTargetElement.matches(':hover');
-        // });
       },
       '~pointerdown'(event) {
         if (!event.isPrimary) return;
@@ -100,7 +96,6 @@ export default function StateMixin(Base) {
         this._pointerPressed = false;
         if (!this._lastInteraction) return;
         lastInteractionWasTouch = (this._lastInteraction === 'touch');
-        // this._lastInteraction = null;
       },
       focus() {
         this._focused = true;
@@ -113,6 +108,9 @@ export default function StateMixin(Base) {
     })
     .on({
       disconnected() {
+        this._focused = false;
+        this._keyPressed = false;
+        this._pointerPressed = false;
         this._lastInteraction = null;
       },
     })
