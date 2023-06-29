@@ -154,37 +154,24 @@ describe('mdw-checkbox', () => {
     it('does fire click on spacebar', async () => {
       /** @type {InstanceType<Checkbox>} */
       const element = html`<mdw-checkbox>foo</mdw-checkbox>`;
-      let firedClick = false;
-      let firedInput = false;
-      let firedChange = false;
+      let fired = false;
       element.addEventListener('click', () => {
-        firedClick = true;
-        assert.isFalse(element.checked);
-        assert.isFalse(firedInput);
-        assert.isFalse(firedChange);
-      });
-
-      element.addEventListener('input', (e) => {
-        firedInput = true;
-        assert.isTrue(element.checked);
-        assert.isFalse(firedChange);
-        assert.isTrue(e.bubbles);
-        assert.isTrue(e.composed);
-      });
-      element.addEventListener('change', (e) => {
-        firedChange = true;
-        assert.isTrue(firedInput);
-        assert.isTrue(element.checked);
-        assert.isTrue(e.bubbles);
-        assert.isFalse(e.composed);
+        fired = true;
       });
 
       element.focus();
       await sendKeypress(' ');
+      assert.isTrue(fired);
+    });
 
-      assert.isTrue(firedClick);
-      assert.isTrue(firedChange);
-      assert.isTrue(firedInput);
+    it('does fire click on .click', (done) => {
+      /** @type {InstanceType<Checkbox>} */
+      const element = html`<mdw-checkbox>foo</mdw-checkbox>`;
+      element.addEventListener('click', () => {
+        done();
+      });
+
+      element.click();
     });
 
     it('does not fire events when disabled', async () => {
@@ -197,6 +184,58 @@ describe('mdw-checkbox', () => {
       await leftClickElement(element);
 
       assert.isFalse(fired);
+    });
+
+    it('unsets checked with preventDefault on click', () => {
+      /** @type {InstanceType<Checkbox>} */
+      const element = html`<mdw-checkbox>foo</mdw-checkbox>`;
+      let firedClick = false;
+      let firedInput = false;
+      let firedChange = false;
+      element.addEventListener('click', (e) => {
+        firedClick = true;
+        e.preventDefault();
+      });
+
+      element.addEventListener('input', () => {
+        firedInput = true;
+      });
+      element.addEventListener('change', () => {
+        firedChange = true;
+      });
+
+      assert.isFalse(element.checked);
+      element.click();
+
+      assert.isTrue(firedClick);
+      assert.isFalse(firedChange);
+      assert.isFalse(firedInput);
+      assert.isFalse(element.checked);
+    });
+
+    it('preventDefault does nothing on input or change', () => {
+      /** @type {InstanceType<Checkbox>} */
+      const element = html`<mdw-checkbox>foo</mdw-checkbox>`;
+      let firedInput = false;
+      let firedChange = false;
+
+      element.addEventListener('input', (e) => {
+        firedInput = true;
+        assert.isTrue(element.checked);
+        e.preventDefault();
+      });
+      element.addEventListener('change', (e) => {
+        firedChange = true;
+        assert.isTrue(element.checked);
+        e.preventDefault();
+      });
+
+      assert.isFalse(element.checked);
+      element.click();
+
+      assert.isTrue(firedInput);
+      assert.isTrue(firedChange);
+      assert.isTrue(element.checked);
     });
   });
 
@@ -306,4 +345,138 @@ describe('mdw-checkbox', () => {
       assert.isOk(checked);
     });
   });
+
+  /* eslint-disable camelcase */
+  /** @see http://wpt.live/html/semantics/forms/the-input-element/checkbox.html */
+  describe('wpt', () => {
+    it('click on mutable checkbox fires a click event, then an input event, then a change event', () => {
+      /** @type {InstanceType<Checkbox>} */
+      const checkbox1 = html`<mdw-checkbox></mdw-checkbox>`;
+      let c1_click_fired = false;
+      let c1_input_fired = false;
+      let c1_change_fired = false;
+      checkbox1.addEventListener('click', (e) => {
+        c1_click_fired = true;
+        assert.isFalse(c1_input_fired, 'click event should fire before input event');
+        assert.isFalse(c1_change_fired, 'click event should fire before change event');
+        assert.isFalse(e.isTrusted, 'click()-initiated click event should not be trusted');
+      });
+
+      checkbox1.addEventListener('input', (e) => {
+        c1_input_fired = true;
+        assert.isTrue(c1_click_fired, 'input event should fire after click event');
+        assert.isFalse(c1_change_fired, 'input event should fire before change event');
+        assert.isTrue(e.bubbles, 'event should bubble');
+        assert.isTrue(e.isTrusted, 'click()-initiated event should be trusted');
+        assert.isFalse(e.cancelable, 'event should not be cancelable');
+        assert.isTrue(checkbox1.checked, 'checkbox is checked');
+        assert.isFalse(checkbox1.indeterminate, 'checkbox is not indeterminate');
+      });
+      checkbox1.addEventListener('change', (e) => {
+        c1_change_fired = true;
+        assert.isTrue(c1_click_fired, 'change event should fire after click event');
+        assert.isTrue(c1_input_fired, 'change event should fire after input event');
+        assert.isTrue(e.bubbles, 'event should bubble');
+        // Web Components limitation, change events must be rethrown and will lose isTrusted
+        // assert.isTrue(e.isTrusted, 'click()-initiated event should be trusted');
+        assert.isFalse(e.cancelable, 'event should not be cancelable');
+        assert.isTrue(checkbox1.checked, 'checkbox is checked');
+        assert.isFalse(checkbox1.indeterminate, 'checkbox is not indeterminate');
+      });
+
+      checkbox1.refs.control.click();
+      assert.isTrue(c1_input_fired);
+      assert.isTrue(c1_change_fired);
+    });
+
+    it("click on non-mutable checkbox doesn't fire the input or change event", (done) => {
+      /** @type {InstanceType<Checkbox>} */
+      const checkbox2 = html`<mdw-checkbox disabled></mdw-checkbox>`;
+      checkbox2.addEventListener('input', () => {
+        assert.fail('event input fired');
+      });
+
+      checkbox2.addEventListener('change', () => {
+        assert.fail('event change fired');
+      });
+
+      checkbox2.click();
+      done();
+    });
+
+    it('pre-activation steps on unchecked checkbox', () => {
+      /** @type {InstanceType<Checkbox>} */
+      const checkbox3 = html`<mdw-checkbox></mdw-checkbox>`;
+      checkbox3.indeterminate = true;
+      checkbox3.click();
+      assert.isTrue(checkbox3.checked);
+      assert.isFalse(checkbox3.indeterminate);
+    });
+
+    it('pre-activation steps on checked checkbox', () => {
+      /** @type {InstanceType<Checkbox>} */
+      const checkbox4 = html`<mdw-checkbox checked></mdw-checkbox>`;
+      checkbox4.indeterminate = true;
+      checkbox4.click();
+      assert.isFalse(checkbox4.checked);
+      assert.isFalse(checkbox4.indeterminate);
+    });
+
+    it('canceled activation steps on unchecked checkbox', (done) => {
+      /** @type {InstanceType<Checkbox>} */
+      const checkbox5 = html`<mdw-checkbox></mdw-checkbox>`;
+      checkbox5.addEventListener('click', (e) => {
+        e.preventDefault();
+        /*
+        The prevention of the click doesn't have an effect until after all the
+        click event handlers have been run.
+        */
+        assert.isTrue(checkbox5.checked);
+        assert.isFalse(checkbox5.indeterminate);
+
+        setTimeout(() => {
+          /*
+          The click event has finished being dispatched, so the checkedness and
+          determinateness have been toggled back by now because the event
+          was preventDefault-ed.
+          */
+          assert.isFalse(checkbox5.checked);
+          assert.isFalse(checkbox5.indeterminate);
+          done();
+        }, 0);
+      });
+      assert.isFalse(checkbox5.checked);
+      assert.isFalse(checkbox5.indeterminate);
+      checkbox5.click();
+    });
+
+    it('canceled activation steps on unchecked checkbox', (done) => {
+      /** @type {InstanceType<Checkbox>} */
+      const checkbox6 = html`<mdw-checkbox></mdw-checkbox>`;
+      checkbox6.addEventListener('click', (e) => {
+        checkbox6.indeterminate = true;
+        e.preventDefault();
+        /*
+        The prevention of the click doesn't have an effect until after all the
+        click event handlers have been run.
+        */
+        assert.isTrue(checkbox6.checked);
+        assert.isTrue(checkbox6.indeterminate);
+        setTimeout(() => {
+          /*
+          The click event has finished being dispatched, so the checkedness and
+          determinateness have been toggled back by now because the event
+          was preventDefault-ed.
+          */
+          assert.isFalse(checkbox6.checked);
+          assert.isFalse(checkbox6.indeterminate);
+          done();
+        }, 0);
+      });
+      assert.isFalse(checkbox6.checked);
+      assert.isFalse(checkbox6.indeterminate);
+      checkbox6.click();
+    });
+  });
+  /* eslint-enable camelcase */
 });

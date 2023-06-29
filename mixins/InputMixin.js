@@ -40,7 +40,7 @@ export default function InputMixin(Base) {
       formNoValidate: { attr: 'formNoValidate', type: 'boolean' },
       formTarget: { attr: 'formtarget', ...DOMString },
       _height: { attr: 'height', type: 'integer' },
-      indeterminate: { type: 'boolean', reflect: false },
+      _indeterminate: 'boolean',
       max: DOMString,
       maxLength: { attr: 'maxlength', type: 'integer', empty: -1 },
       min: DOMString,
@@ -54,9 +54,23 @@ export default function InputMixin(Base) {
       //  [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
       _width: { attr: 'width', type: 'integer' },
     })
+
     .define({
       // Alias for typescript
       _input() { return /** @type {HTMLInputElement} */ (this.refs.control); },
+    })
+    .observe({
+      indeterminate: {
+        type: 'boolean',
+        get({ _indeterminate }) {
+          return _indeterminate;
+        },
+        /** @param {boolean} value */
+        set(value) {
+          this._input.indeterminate = value;
+          this._indeterminate = this._input.indeterminate;
+        },
+      },
     })
     .overrides({
       controlTagName: 'input',
@@ -72,9 +86,9 @@ export default function InputMixin(Base) {
       typeChanged() { this.onValueChangingContentAttribute(); },
       checkedChanged() {
         this._input.checked = this.checked;
-        this._input.indeterminate = this.indeterminate;
+        this._input.indeterminate = this._indeterminate;
       },
-      indeterminateChanged(previous, current) {
+      _indeterminateChanged(previous, current) {
         this._input.indeterminate = current;
       },
       minChanged() { this.onValueChangingContentAttribute(); },
@@ -167,6 +181,19 @@ export default function InputMixin(Base) {
           if (/** @type {HTMLInputElement} */ (event.currentTarget).type === 'submit') return;
           this.performImplicitSubmission(event);
         },
+        click(event) {
+          event.stopPropagation();
+          const input = /** @type {HTMLInputElement} */ (event.currentTarget);
+          const { _checkedDirty, _checked, _indeterminate } = this;
+          this.checked = input.checked;
+
+          // Event needs to be rethrown and preventDefault inspected
+          if (this.dispatchEvent(new Event(event.type, event))) return;
+          event.preventDefault();
+          this._checkedDirty = _checkedDirty;
+          this._checked = _checked;
+          this._indeterminate = _indeterminate;
+        },
         input(event) {
           if (this.disabledState) {
             event.preventDefault();
@@ -174,8 +201,7 @@ export default function InputMixin(Base) {
             return;
           }
           const input = /** @type {HTMLInputElement} */ (event.currentTarget);
-          this._checkedDirty = true;
-          this._checked = input.checked;
+          this.checked = input.checked;
         },
         change(event) {
           if (this.disabledState) {
@@ -184,8 +210,7 @@ export default function InputMixin(Base) {
             return;
           }
           const input = /** @type {HTMLInputElement} */ (event.currentTarget);
-          this._checkedDirty = true;
-          this._checked = input.checked;
+          this.checked = input.checked;
         },
       },
     })
