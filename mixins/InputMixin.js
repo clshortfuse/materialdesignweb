@@ -199,7 +199,10 @@ export default function InputMixin(Base) {
           this.checked = input.checked;
 
           // Event needs to be rethrown and preventDefault inspected
-          const newEvent = new Event(event.type, event);
+          // Use constructor to match mouse/pointer properties
+          /**  @type {Event} */
+          // @ts-ignore skip constructor cast
+          const newEvent = (new event.constructor(event.type, event));
           redispatchedClickEvents.add(newEvent);
           if (this.dispatchEvent(newEvent)) return;
           event.preventDefault();
