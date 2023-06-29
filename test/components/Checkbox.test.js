@@ -164,6 +164,19 @@ describe('mdw-checkbox', () => {
       assert.isTrue(fired);
     });
 
+    it('does not fire click on enter', async () => {
+      /** @type {InstanceType<Checkbox>} */
+      const element = html`<mdw-checkbox>foo</mdw-checkbox>`;
+      let fired = false;
+      element.addEventListener('click', () => {
+        fired = true;
+      });
+
+      element.focus();
+      await sendKeypress('Enter');
+      assert.isFalse(fired);
+    });
+
     it('does fire click on .click', (done) => {
       /** @type {InstanceType<Checkbox>} */
       const element = html`<mdw-checkbox>foo</mdw-checkbox>`;
