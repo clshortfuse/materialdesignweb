@@ -2,7 +2,7 @@ import { assert } from '@esm-bundle/chai';
 
 import Button from '../../components/Button.js';
 import '../../theming/loader.js';
-import { axTree, html, iterateMeaningfulAXNodes, makeFromConstructor, makeFromString, makeFromTagName } from '../utils.js';
+import { axTree, html, iterateMeaningfulAXNodes, makeFromConstructor, makeFromString, makeFromTagName, sendKeydown, sendKeypress, sendKeyup } from '../utils.js';
 
 beforeEach(() => document.body.replaceChildren());
 
@@ -93,6 +93,51 @@ describe('mdw-button', () => {
   });
 
   /* eslint-disable camelcase */
+  /** @see https://wpt.live/html/semantics/forms/the-button-element/ */
+  describe('wpt - <button>', () => {
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/active-onblur.html */
+    describe('active-onblur', () => {
+      it('Buttons should clear :active when the user tabs away from them while holding spacebar.', async () => {
+        /** @type {InstanceType<Button>} */
+        const b1 = html`<mdw-button>button one</button>`;
+        /** @type {InstanceType<Button>} */
+        const b2 = html`<mdw-button>button two</button>`;
+
+        b1.focus();
+
+        // Hold spacebar down
+        await sendKeydown(' ');
+
+        assert.equal(b1.pressedState, true, 'Buttons should be :active while the spacebar is pressed down.');
+
+        // Press tab
+        await sendKeypress('Tab');
+        assert.equal(b1.pressedState, false, 'Buttons should not be :active after tab is used to change focus.');
+        assert.equal(b2.focusedState, true);
+
+        // Release spacebar
+        await sendKeyup(' ');
+      });
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-checkvalidity.html */
+    it('checkvalidity', () => {
+      const form = html`
+        <form method="post"
+            enctype="application/x-www-form-urlencoded"
+            action="">
+          <p><mdw-button>button</button></p>
+        </form>
+      `;
+      const p = (form.firstElementChild);
+      const button = /** @type {InstanceType<Button>} */ (p.firstElementChild);
+      try {
+        assert.equal(button.checkValidity(), true, 'calling of checkValidity method is failed.');
+      } catch {
+        assert.fail('autofocus attribute is not exist.'); // [sic]
+      }
+    });
+  });
   /** @see https://wpt.live/html/semantics/forms/the-input-element/button.html */
   describe('wpt - button', () => {
     it('clicking on button should not submit a form', (done) => {

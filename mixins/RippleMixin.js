@@ -77,7 +77,7 @@ export default function RippleMixin(Base) {
         }
         if (e.pointerType || e.detail) return;
         if (this.disabledState) return;
-        if (this._pressed) return;
+        if (this.pressedState || this._keyReleased) return;
         const lastRipple = this._lastRipple;
         if (lastRipple) {
           lastRipple.holdRipple = false;
@@ -87,7 +87,7 @@ export default function RippleMixin(Base) {
       },
     })
     .on({
-      _pressedChanged(oldValue, pressed) {
+      pressedStateChanged(oldValue, pressed) {
         const ripple = this._lastRipple;
         if (!pressed) {
           if (ripple) {

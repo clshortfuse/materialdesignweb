@@ -210,6 +210,22 @@ export async function sendKeypress(press) {
 }
 
 /**
+ * @param {string} down
+ * @return {Promise<void>}
+ */
+export async function sendKeydown(down) {
+  await sendKeys({ down });
+}
+
+/**
+ * @param {string} up
+ * @return {Promise<void>}
+ */
+export async function sendKeyup(up) {
+  await sendKeys({ up });
+}
+
+/**
  * @param {string} type
  * @return {Promise<void>}
  */

@@ -21,14 +21,17 @@ export default function StateMixin(Base) {
       },
       _hovered: 'boolean',
       _focused: 'boolean',
-      _pressed: 'boolean',
+      _keyPressed: 'boolean',
+      /** True if key was released this event loop. (Used to ignore clicks) */
+      _keyReleased: 'boolean',
+      _pointerPressed: 'boolean',
       stateLayer: 'boolean',
     })
     .observe({
       disabledState({ disabled }) { return disabled; },
       hoveredState({ _hovered, hovered }) { return _hovered || hovered; },
       focusedState({ _focused, focused }) { return _focused || focused; },
-      pressedState({ _pressed, pressed }) { return _pressed || pressed; },
+      pressedState({ _keyPressed, _pointerPressed, pressed }) { return _keyPressed || _pointerPressed || pressed; },
       touchedState({ _lastInteraction }) {
         return _lastInteraction === 'touch';
       },
@@ -49,7 +52,7 @@ export default function StateMixin(Base) {
     .events({
       pointerenter(event) {
         if (!event.isPrimary) return;
-        this._pressed = this.stateTargetElement.matches(':active');
+        this._pointerPressed = this.stateTargetElement.matches(':active');
         if (event.pointerType === 'touch') return;
         this._hovered = true;
         // Firefox lags a frame before reporting :hover
@@ -60,41 +63,41 @@ export default function StateMixin(Base) {
       '~pointerdown'(event) {
         if (!event.isPrimary) return;
         this._lastInteraction = /** @type {'touch'|'mouse'|'pen'} */ (event.pointerType);
-        this._pressed = true;
+        this._pointerPressed = true;
       },
       '~pointerup'(event) {
         if (!event.isPrimary) return;
         this._lastInteraction = /** @type {'touch'|'mouse'|'pen'} */ (event.pointerType);
-        this._pressed = false;
+        this._pointerPressed = false;
       },
       pointercancel(event) {
         if (!event.isPrimary) return;
-        this._pressed = this.stateTargetElement.matches(':active');
+        this._pointerPressed = this.stateTargetElement.matches(':active');
       },
       pointerleave(event) {
         if (!event.isPrimary) return;
-        this._pressed = false;
+        this._pointerPressed = false;
         this._hovered = false;
       },
       '~keydown'(event) {
         this._lastInteraction = 'key';
         if (event.repeat) return;
-        // console.debug('keydown', this.stateTargetElement.matches(':active'));
-        requestAnimationFrame(() => {
-          this._pressed = this.stateTargetElement.matches(':active');
-          // console.debug('pressed? after one keydown frame', this._pressed);
-        });
+        if (event.key !== ' ') return;
+        this._keyPressed = true;
       },
-      '~keyup'() {
+      '~keyup'(event) {
         this._lastInteraction = 'key';
-        // console.debug('keyup', this.stateTargetElement.matches(':active'));
-        requestAnimationFrame(() => {
-          this._pressed = this.stateTargetElement.matches(':active');
-          // console.debug('pressed? after one keyUP frame?', this._pressed);
+        if (event.key !== ' ') return;
+        this._keyPressed = false;
+        this._keyReleased = true;
+        setTimeout(() => {
+          this._keyReleased = false;
         });
       },
       blur() {
         this._focused = false;
+        this._keyPressed = false;
+        this._pointerPressed = false;
         if (!this._lastInteraction) return;
         lastInteractionWasTouch = (this._lastInteraction === 'touch');
         // this._lastInteraction = null;
