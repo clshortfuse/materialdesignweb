@@ -58,13 +58,13 @@
       <mdw-box grid>
         <mdw-label>Width: <span id="width">400</span></mdw-label>
         <mdw-slider aria-label=Width name=width value=400 min=360 max=2400 onchange="updateWidth(this)"></mdw-slider>
-        <mdw-listbox id=options multiple onchange="updateURL()" col-span="6">
+        <mdw-listbox id=options multiple onchange="updateURL()" col-span="4" col-span-12="6">
           <mdw-list-option checkbox value=appBar>Top App Bar</mdw-list-option>
           <mdw-list-option checkbox value=navBar>Nav Bar</mdw-list-option>
           <mdw-list-option checkbox value=rail  >Nav Rail</mdw-list-option>
           <mdw-list-option checkbox value=drawer>Nav Drawer</mdw-list-option>
         </mdw-listbox>
-        <mdw-listbox id=panes onchange="updateURL()" required col-span="6">
+        <mdw-listbox id=panes onchange="updateURL()" required col-span="4" col-span-12="6">
           <mdw-list-option radio value=one    selected>Single Pane</mdw-list-option>
           <mdw-list-option radio value=fixed          >Fixed/Flexible</mdw-list-option>
           <mdw-list-option radio value=flexible       >Flexible/Fixed</mdw-list-option>
