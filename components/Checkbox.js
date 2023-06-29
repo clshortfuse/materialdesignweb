@@ -21,12 +21,13 @@ export default CustomElement
   .observe({
     icon: { value: 'check' },
     indeterminateIcon: { value: 'check_indeterminate_small' },
-    /** Reflected property */
-    indeterminate: 'boolean',
   })
-  .observe({
+  .expressions({
     _determinateIcon({ indeterminate, indeterminateIcon, icon }) {
       return (indeterminate ? indeterminateIcon : icon);
+    },
+    _iconSelectedState({ checked, indeterminate }) {
+      return checked || indeterminate;
     },
   })
   .html`

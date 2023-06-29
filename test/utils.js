@@ -1,4 +1,4 @@
-import { executeServerCommand } from '@web/test-runner-commands';
+import { executeServerCommand, resetMouse, sendKeys, sendMouse } from '@web/test-runner-commands';
 
 /**
  * @param {Element} element
@@ -176,4 +176,43 @@ export function* iterateMeaningfulAXNodes(rootAXNode) {
       yield axNode;
     }
   }
+}
+
+/**
+ * @param {HTMLElement} element
+ */
+function getMiddleOfElement(element) {
+  const { x, y, width, height } = element.getBoundingClientRect();
+
+  return {
+    x: Math.floor(x + window.pageXOffset + width / 2),
+    y: Math.floor(y + window.pageYOffset + height / 2),
+  };
+}
+
+/**
+ * @param {HTMLElement} element
+ * @return {Promise<void>}
+ */
+export async function leftClickElement(element) {
+  const { x, y } = getMiddleOfElement(element);
+
+  await sendMouse({ type: 'click', position: [x, y], button: 'left' });
+  await resetMouse();
+}
+
+/**
+ * @param {string} press
+ * @return {Promise<void>}
+ */
+export async function sendKeypress(press) {
+  await sendKeys({ press });
+}
+
+/**
+ * @param {string} type
+ * @return {Promise<void>}
+ */
+export async function typeKeys(type) {
+  await sendKeys({ type });
 }
