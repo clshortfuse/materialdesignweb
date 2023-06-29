@@ -341,19 +341,22 @@ export default CustomElement
       position:fixed;
       inset: 0;
 
-      pointer-events: none;
       overflow: overlay;
 
       overscroll-behavior: none;
       overscroll-behavior: contain;
       scrollbar-color: transparent transparent;
       scrollbar-width: none;
+
+      pointer-events: none;
+
       opacity: 0;
+      visibility: hidden;
       z-index: 25;
 
       background-color: rgb(var(--mdw-color__scrim));
 
-      transition: opacity 200ms;
+      transition: opacity 200ms, visibility 0s 200s;
       will-change: opacity;
     }
 
@@ -365,18 +368,24 @@ export default CustomElement
       pointer-events: auto;
 
       opacity: 0.38;
+      visibility: visible;
+
+      transition: opacity 200ms, visibility 0s;
     }
 
     #scrim::before {
       content: '';
+
       position: absolute;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
       top: 0;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
       left: 0;
 
       display: block;
 
-      height: 200%;
-      width: 200%;
+      block-size: 200%;
+      inline-size: 200%;
     }
 
     .pane {
