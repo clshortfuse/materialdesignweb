@@ -33,7 +33,7 @@ export default CustomElement
   .html`
     <div id=checkbox errored={erroredState} selected={checked}>
       <mdw-checkbox-icon id=icon errored={erroredState} disabled={disabledState}
-        icon={_determinateIcon} selected={checked}>
+        icon={_determinateIcon} selected={_iconSelectedState}>
       </mdw-checkbox-icon>
     </div>
     <slot id=slot></slot>
