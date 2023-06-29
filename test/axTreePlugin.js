@@ -19,20 +19,19 @@ export function axTreePlugin() {
         const page = launcher.getPage(session.id);
         let root;
         switch (session.browser.name) {
-          case 'Chromium':
-            await page.waitForTimeout(100); // Fixes flaky Chrome test
-            // Fallthrough
-          case 'Webkit':
-            if (payload?.selector) {
-              root = page.locator(payload.selector);
-            }
-            break;
           case 'Firefox':
             if (payload?.selector) {
               root = await page.$(payload.selector);
             }
             break;
+          case 'Chromium':
+            await page.waitForTimeout(100); // Fixes flaky Chrome test
+            // Fallthrough
           default:
+            if (payload?.selector) {
+              root = page.locator(payload.selector);
+            }
+            break;
         }
 
         const snapshot = await page.accessibility.snapshot({
