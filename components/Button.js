@@ -203,6 +203,17 @@ export default CustomElement
       }
     }
   `
+  .rootEvents({
+    click(event) {
+      const { control } = this.refs;
+      if (event.target !== control) {
+        // Label-like click
+        if (!event.bubbles) return;
+        event.stopPropagation();
+        control.click();
+      }
+    },
+  })
   .childEvents({
     control: {
       /**

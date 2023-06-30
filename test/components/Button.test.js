@@ -252,6 +252,61 @@ describe('mdw-button', () => {
         button.click();
         setTimeout(done, 500);
       });
+
+      it("clicking a button inside a disabled fieldset's legend *should* trigger submit", (done) => {
+        const form = html`
+          <form>
+            <fieldset disabled>
+              <legend>
+                <mdw-button type=submit>hello</mdw-button>
+              </legend>
+            </fieldset>
+          </form>
+        `;
+        /** @type {InstanceType<Button>} */
+        const button = form.querySelector('mdw-button');
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.equal(ev.target, form);
+          done();
+        });
+
+        button.click();
+      });
+
+      it('clicking the child of a button with .click() should trigger a submit', (done) => {
+        const form = html`<form><mdw-button type=submit><span></span></mdw-button></form>`;
+        const span = form.querySelector('span');
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.equal(ev.target, form);
+          done();
+        });
+
+        span.click();
+      });
+
+      it('clicking the child of a button by dispatching a non-bubbling event should not trigger submit', (done) => {
+        const form = document.createElement('form');
+        const button = document.createElement('mdw-button');
+        const span = document.createElement('span');
+        button.appendChild(span);
+        form.appendChild(button);
+        document.body.appendChild(form);
+
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.fail('Form should not be submitted');
+        });
+
+        span.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          setTimeout(done, 500);
+        });
+
+        const e = new MouseEvent('click', { bubbles: false });
+        span.dispatchEvent(e);
+      });
     });
 
     /** @see https://wpt.live/html/semantics/forms/the-button-element/button-activate-keyup-prevented.html */
