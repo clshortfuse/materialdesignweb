@@ -106,7 +106,6 @@ export default function InputMixin(Base) {
       defaultValueChanged() { this.onValueChangingContentAttribute(); },
       _formResetChanged(oldValue, newValue) {
         if (!newValue) return;
-        console.log('form reset');
         const input = this._input;
         input.value = this.defaultValue;
         input.checked = this.defaultChecked;
