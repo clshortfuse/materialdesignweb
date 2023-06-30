@@ -139,7 +139,7 @@ export default function FormAssociatedMixin(Base) {
       validity() { return this.elementInternals.validity; },
       validationMessage() { return this.elementInternals.validationMessage; },
       willValidate() {
-        if (this.type === 'button') return false;
+        if (this.type === 'button' || this.type === 'reset') return false;
         return this.elementInternals.willValidate;
       },
       labels() { return this.elementInternals.labels; },

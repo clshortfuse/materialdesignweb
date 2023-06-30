@@ -186,6 +186,178 @@ describe('mdw-button', () => {
       }
     });
 
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-click-submits.html */
+    describe('button-click-submits', () => {
+      it('clicking a button with .click() should trigger a submit (form connected)', (done) => {
+        const form = html`<form><mdw-button type=submit>Submit</mdw-button></form>`;
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.equal(ev.target, form);
+          done();
+        });
+
+        button.click();
+      });
+
+      it('clicking a button with .click() should not trigger a submit (form disconnected)', (done) => {
+        const form = makeFromString('<form><mdw-button type=submit>Submit</mdw-button></form>', false);
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.fail('Form should not be submitted');
+        });
+
+        button.click();
+        setTimeout(done, 500);
+      });
+
+      it('clicking a button by dispatching an event should trigger a submit (form connected)', (done) => {
+        const form = html`<form><mdw-button type=submit>Submit</mdw-button></form>`;
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.equal(ev.target, form);
+          done();
+        });
+
+        const e = new MouseEvent('click');
+        button.dispatchEvent(e);
+      });
+
+      it('clicking a button by dispatching an event should not trigger a submit (form disconnected)', (done) => {
+        const form = makeFromString('<form><mdw-button type=submit>Submit</mdw-button></form>', false);
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.fail('Form should not be submitted');
+        });
+
+        const e = new MouseEvent('click');
+        button.dispatchEvent(e);
+        setTimeout(done, 500);
+      });
+
+      it('clicking a button that cancels the event should not trigger a submit', (done) => {
+        const form = makeFromString('<form><mdw-button type=submit>Submit</mdw-button></form>', false);
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+        // [sic] seems like a bad test because not part of DOM anyway
+
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.fail('Form should not be submitted');
+        });
+
+        button.addEventListener('click', ((ev) => {
+          ev.preventDefault();
+          setTimeout(done, 500);
+        }));
+        button.click();
+      });
+
+      // Custom test
+      it('clicking a button that cancels the event should not trigger a submit (connected)', (done) => {
+        const form = html`<form><mdw-button type=submit>Submit</mdw-button></form>`;
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.fail('Form should not be submitted');
+        });
+
+        button.addEventListener('click', ((ev) => {
+          ev.preventDefault();
+          setTimeout(done, 500);
+        }));
+        button.click();
+      });
+
+      it('clicking a disabled button (via disabled attribute) should not trigger submit', (done) => {
+        const form = html`<form><mdw-button type=submit disabled>Submit</mdw-button></form>`;
+        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
+
+        form.addEventListener('submit', ((ev) => {
+          ev.preventDefault();
+          assert.fail('Form should not be submitted');
+        }));
+
+        button.click();
+        setTimeout(done, 500);
+      });
+
+      it('clicking a disabled button (via ancestor fieldset) should not trigger submit', (done) => {
+        const form = html`<form><fieldset disabled><mdw-button type=submit>hello</mdw-button></fieldset></form>`;
+        const fieldset = (form.firstElementChild);
+        const button = /** @type {InstanceType<Button>} */ (fieldset.firstElementChild);
+
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.fail('Form should not be submitted');
+        });
+
+        button.click();
+        setTimeout(done, 500);
+      });
+
+      it("clicking a button inside a disabled fieldset's legend *should* trigger submit", (done) => {
+        const form = html`
+          <form>
+            <fieldset disabled>
+              <legend>
+                <mdw-button type=submit>hello</mdw-button>
+              </legend>
+            </fieldset>
+          </form>
+        `;
+        /** @type {InstanceType<Button>} */
+        const button = form.querySelector('mdw-button');
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.equal(ev.target, form);
+          done();
+        });
+
+        button.click();
+      });
+
+      it('clicking the child of a button with .click() should trigger a submit', (done) => {
+        const form = html`<form><mdw-button type=submit><span></span></mdw-button></form>`;
+        const span = form.querySelector('span');
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.equal(ev.target, form);
+          done();
+        });
+
+        span.click();
+      });
+
+      it('clicking the child of a button by dispatching a non-bubbling event should not trigger submit', (done) => {
+        const form = document.createElement('form');
+        const button = document.createElement('mdw-button');
+        const span = document.createElement('span');
+        button.appendChild(span);
+        form.appendChild(button);
+        document.body.appendChild(form);
+
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          assert.fail('Form should not be submitted');
+        });
+
+        span.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          setTimeout(done, 500);
+        });
+
+        const e = new MouseEvent('click', { bubbles: false });
+        span.dispatchEvent(e);
+      });
+    });
+
     /** @see https://wpt.live/html/semantics/forms/the-button-element/button-events.html */
     describe('button-events', () => {
       /** @type {HTMLFormElement} */
@@ -375,6 +547,7 @@ describe('mdw-button', () => {
           <menu id="m"></menu>
         `;
         assert.isFalse('menu' in button, 'The menu property must not exist on the button');
+        // @ts-ignore intentional
         assert.equal(button.menu, undefined, 'The value of the menu property on the button must be undefined');
       });
 
@@ -389,176 +562,332 @@ describe('mdw-button', () => {
       });
     });
 
-    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-click-submits.html */
-    describe('button-click-submits', () => {
-      it('clicking a button with .click() should trigger a submit (form connected)', (done) => {
-        const form = html`<form><mdw-button type=submit>Submit</mdw-button></form>`;
-        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
-
-        form.addEventListener('submit', (ev) => {
-          ev.preventDefault();
-          assert.equal(ev.target, form);
-          done();
-        });
-
-        button.click();
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-setcustomvalidity.html */
+    describe('button-setcustomvalidity', () => {
+      it('button setCustomValidity is correct', () => {
+        /** @type {InstanceType<Button>} */
+        const elem = html`<mdw-button></mdw-button>`;
+        assert.isFalse(elem.validity.customError);
+        elem.setCustomValidity('custom error');
+        assert.isTrue(elem.validity.customError);
       });
+    });
 
-      it('clicking a button with .click() should not trigger a submit (form disconnected)', (done) => {
-        const form = makeFromString('<form><mdw-button type=submit>Submit</mdw-button></form>', false);
-        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
-        form.addEventListener('submit', (ev) => {
-          ev.preventDefault();
-          assert.fail('Form should not be submitted');
-        });
-
-        button.click();
-        setTimeout(done, 500);
-      });
-
-      it('clicking a button by dispatching an event should trigger a submit (form connected)', (done) => {
-        const form = html`<form><mdw-button type=submit>Submit</mdw-button></form>`;
-        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
-
-        form.addEventListener('submit', (ev) => {
-          ev.preventDefault();
-          assert.equal(ev.target, form);
-          done();
-        });
-
-        const e = new MouseEvent('click');
-        button.dispatchEvent(e);
-      });
-
-      it('clicking a button by dispatching an event should not trigger a submit (form disconnected)', (done) => {
-        const form = makeFromString('<form><mdw-button type=submit>Submit</mdw-button></form>', false);
-        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
-
-        form.addEventListener('submit', (ev) => {
-          ev.preventDefault();
-          assert.fail('Form should not be submitted');
-        });
-
-        const e = new MouseEvent('click');
-        button.dispatchEvent(e);
-        setTimeout(done, 500);
-      });
-
-      it('clicking a button that cancels the event should not trigger a submit', (done) => {
-        const form = makeFromString('<form><mdw-button type=submit>Submit</mdw-button></form>', false);
-        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
-        // [sic] seems like a bad test because not part of DOM anyway
-
-        form.addEventListener('submit', (ev) => {
-          ev.preventDefault();
-          assert.fail('Form should not be submitted');
-        });
-
-        button.addEventListener('click', ((ev) => {
-          ev.preventDefault();
-          setTimeout(done, 500);
-        }));
-        button.click();
-      });
-
-      // Custom test
-      it('clicking a button that cancels the event should not trigger a submit (connected)', (done) => {
-        const form = html`<form><mdw-button type=submit>Submit</mdw-button></form>`;
-        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
-
-        form.addEventListener('submit', (ev) => {
-          ev.preventDefault();
-          assert.fail('Form should not be submitted');
-        });
-
-        button.addEventListener('click', ((ev) => {
-          ev.preventDefault();
-          setTimeout(done, 500);
-        }));
-        button.click();
-      });
-
-      it('clicking a disabled button (via disabled attribute) should not trigger submit', (done) => {
-        const form = html`<form><mdw-button type=submit disabled>Submit</mdw-button></form>`;
-        const button = /** @type {InstanceType<Button>} */ (form.firstElementChild);
-
-        form.addEventListener('submit', ((ev) => {
-          ev.preventDefault();
-          assert.fail('Form should not be submitted');
-        }));
-
-        button.click();
-        setTimeout(done, 500);
-      });
-
-      it('clicking a disabled button (via ancestor fieldset) should not trigger submit', (done) => {
-        const form = html`<form><fieldset disabled><mdw-button type=submit>hello</mdw-button></fieldset></form>`;
-        const fieldset = (form.firstElementChild);
-        const button = /** @type {InstanceType<Button>} */ (fieldset.firstElementChild);
-
-        form.addEventListener('submit', (ev) => {
-          ev.preventDefault();
-          assert.fail('Form should not be submitted');
-        });
-
-        button.click();
-        setTimeout(done, 500);
-      });
-
-      it("clicking a button inside a disabled fieldset's legend *should* trigger submit", (done) => {
-        const form = html`
-          <form>
-            <fieldset disabled>
-              <legend>
-                <mdw-button type=submit>hello</mdw-button>
-              </legend>
-            </fieldset>
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-submit-children.html */
+    describe('button-submit-children', () => {
+      it('This test will pass if a form navigation successfully occurs when'
+        + ' clicking a child element of a <button type=submit> element with a'
+        + ' onclick event handler which prevents the default form submission'
+        + ' and manually calls form.submit() instead.', (done) => {
+        const frame1 = html`
+          <iframe name=frame1 id=frame1></iframe>
+          <form id=form1 target=frame1 action="about:blank">
+            <mdw-button id=submitbutton type=submit>
+              <div id=buttonchilddiv>
+                button child div text
+              </div>
+            </mdw-button>
           </form>
         `;
-        /** @type {InstanceType<Button>} */
-        const button = form.querySelector('mdw-button');
-        form.addEventListener('submit', (ev) => {
-          ev.preventDefault();
-          assert.equal(ev.target, form);
+
+        frame1.addEventListener('load', () => done());
+
+        const submitButton = document.getElementById('submitbutton');
+        submitButton.addEventListener('click', (event) => {
+          event.preventDefault();
+          const form = /** @type {HTMLFormElement} */ (document.getElementById('form1'));
+          form.submit();
+        });
+
+        const buttonChildDiv = document.getElementById('buttonchilddiv');
+        buttonChildDiv.click();
+      });
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-submit-remove-children-jssubmit.html */
+    describe('button-submit-remove-children-jssubmit', () => {
+      it('This test will pass if a form navigation successfully occurs when'
+        + ' clicking a child element of a <button type=submit> element with a'
+        + " onclick event handler which removes the button's child and then"
+        + 'calls form.submit().', (done) => {
+        const frame1 = html`
+          <iframe name=frame1 id=frame1></iframe>
+          <form id=form1 target=frame1 action="about:blank">
+            <mdw-button id=submitbutton type=submit>
+              <span id=outerchild>
+                <span id=innerchild>submit</span>
+              </span>
+            </mdw-button>
+          </form>
+        `;
+
+        frame1.addEventListener('load', () => done());
+
+        const submitButton = document.getElementById('submitbutton');
+        submitButton.addEventListener('click', (event) => {
+          document.getElementById('outerchild').remove();
+          // @ts-ignore skip cast
+          document.getElementById('form1').submit();
+        });
+
+        document.getElementById('innerchild').click();
+      });
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-submit-remove-children.html */
+    describe('button-submit-remove-children', () => {
+      it('This test will pass if a form navigation successfully occurs when'
+        + ' clicking a child element of a <button type=submit> element with a'
+        + ' onclick event handler which removes the button\'s child.', (done) => {
+        const frame1 = html`
+          <iframe name=frame1 id=frame1></iframe>
+          <form id=form1 target=frame1 action="about:blank">
+            <mdw-button id=submitbutton type=submit>
+              <span id=outerchild>
+                <span id=innerchild>submit</span>
+              </span>
+            </mdw-button>
+          </form>
+        `;
+
+        frame1.addEventListener('load', () => done());
+
+        const submitButton = document.getElementById('submitbutton');
+        submitButton.addEventListener('click', (event) => {
+          document.getElementById('outerchild').remove();
+        });
+
+        document.getElementById('innerchild').click();
+      });
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-submit-remove-jssubmit.html */
+    describe('button-submit-remove-jssubmit', () => {
+      it('This test will pass if a form navigation successfully occurs when'
+        + ' clicking a <button type=submit> element with a onclick event'
+        + ' handler which removes the button and then calls form.submit().', function (done) {
+        /** @type {HTMLIFrameElement} */
+        const frame = html`
+          <iframe name="frame" id="frame"></iframe>
+          <form id="form" target="frame" action="does_not_exist.html">
+            <input id="input" name="name" value="foo">
+            <mdw-button id="submitbutton" type="submit">Submit</mdw-button>
+          </form>
+        `;
+
+        frame.addEventListener('load', (() => {
+          const expected = (new URL('does_not_exist.html?name=bar', window.location.href)).href;
+          if (frame.contentWindow.location.href !== expected && navigator.userAgent.includes('Firefox')) {
+            console.log('Skipping test due to Firefox bug.');
+            // Firefox bug?
+            this.skip();
+          } else {
+            assert.equal(frame.contentWindow.location.href, expected);
+          }
           done();
+        }));
+
+        const form = /** @type {HTMLFormElement} */ (document.getElementById('form'));
+        const input = /** @type {HTMLInputElement} */ (document.getElementById('input'));
+        const submitButton = document.getElementById('submitbutton');
+        submitButton.addEventListener('click', (event) => {
+          submitButton.remove();
+          form.submit();
+          input.value = 'bar';
+          form.submit();
+          input.value = 'baz';
         });
 
-        button.click();
+        submitButton.click();
+      });
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-type-enumerated-ascii-case-insensitive.html */
+    describe('button-type-enumerated-ascii-case-insensitive', () => {
+      // mdw-button's default is "button" not "submit"
+
+      it('keyword reset', () => {
+        assert.equal(html`<mdw-button type="reset">`.type, 'reset', 'lowercase valid');
+        assert.equal(html`<mdw-button type="ReSeT">`.type, 'reset', 'mixed case valid');
+        assert.equal(html`<mdw-button type="reſet">`.type, 'button', 'non-ASCII invalid');
       });
 
-      it('clicking the child of a button with .click() should trigger a submit', (done) => {
-        const form = html`<form><mdw-button type=submit><span></span></mdw-button></form>`;
-        const span = form.querySelector('span');
-        form.addEventListener('submit', (ev) => {
-          ev.preventDefault();
-          assert.equal(ev.target, form);
-          done();
-        });
+      it('keyword button', () => {
+        assert.equal(html`<mdw-button type="button">`.type, 'button', 'lowercase valid');
 
-        span.click();
+        // vacuous: the invalid value default is currently submit, so even if the UA
+        // treats this as invalid, the observable behaviour would still be correct
+        assert.equal(html`<mdw-button type="BuTtoN">`.type, 'button', 'mixed case valid');
+
+        // vacuous: the invalid value default is currently submit, so even if the UA
+        // treats this as valid, the observable behaviour would still be correct
+        assert.equal(html`<mdw-button type="ßutton">`.type, 'button', 'non-ASCII invalid');
+      });
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-type.html */
+    describe('button-type', () => {
+      // mdw-button's default is "button" not "submit"
+
+      it("a button's type should be submit by default", () => {
+        const button =/** @type {InstanceType<Button>} */ (document.createElement('mdw-button'));
+        assert.equal(button.type, 'button');
       });
 
-      it('clicking the child of a button by dispatching a non-bubbling event should not trigger submit', (done) => {
-        const form = document.createElement('form');
-        const button = document.createElement('mdw-button');
-        const span = document.createElement('span');
-        button.appendChild(span);
-        form.appendChild(button);
-        document.body.appendChild(form);
+      it("a button's type should stay within the range of valid values", () => {
+        const button =/** @type {InstanceType<Button>} */ (document.createElement('mdw-button'));
 
-        form.addEventListener('submit', (ev) => {
-          ev.preventDefault();
-          assert.fail('Form should not be submitted');
-        });
+        for (const type of ['reset', 'button', 'submit']) {
+          button.type = type;
+          assert.equal(button.type, type);
 
-        span.addEventListener('click', (ev) => {
-          ev.preventDefault();
-          setTimeout(done, 500);
-        });
+          button.type = type.toUpperCase();
+          assert.equal(button.type, type);
+        }
 
-        const e = new MouseEvent('click', { bubbles: false });
-        span.dispatchEvent(e);
+        button.type = 'reset';
+        button.type = 'asdfgdsafd';
+        assert.equal(button.type, 'button');
+
+        button.type = 'reset';
+        button.type = '';
+        assert.equal(button.type, 'button');
       });
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-untrusted-key-event.html */
+    describe('button-untrusted-key-event.html', () => {
+      beforeEach(() => {
+        // eslint-disable-next-line no-unused-expressions
+        html`
+          <form id="input_form">
+            <mdw-button name="submitButton" type="submit">Submit</mdw-button>
+            <mdw-button name="resetButton" type="reset">Reset</mdw-button>
+            <mdw-button name="buttonButton" type="button">Button</mdw-button>
+          </form>
+        `;
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          assert.fail('form should not be submitted');
+        });
+
+        for (const button of document.querySelectorAll('mdw-button')) {
+          button.addEventListener('click', (e) => {
+            assert.fail(`${button.type} button should not be clicked`);
+          });
+        }
+      });
+
+      // Create and append button elements
+      for (const button of document.querySelectorAll('button')) {
+        it(`Dispatching untrusted keypress events to ${button.type} button should not cause click event`, () => {
+          // keyCode: Enter
+          button.dispatchEvent(
+            new KeyboardEvent('keypress', {
+              keyCode: 13,
+            }),
+          );
+
+          // key: Enter
+          button.dispatchEvent(
+            new KeyboardEvent('keypress', {
+              key: 'Enter',
+            }),
+          );
+
+          // keyCode: Space
+          button.dispatchEvent(
+            new KeyboardEvent('keypress', {
+              keyCode: 32,
+            }),
+          );
+
+          // key: Space
+          button.dispatchEvent(
+            new KeyboardEvent('keypress', {
+              key: ' ',
+            }),
+          );
+        });
+
+        it(`Dispatching untrusted keyup/keydown events to ${button.type} button should not cause click event`, () => {
+          // keyCode: Enter
+          button.dispatchEvent(
+            new KeyboardEvent('keydown', {
+              keyCode: 13,
+            }),
+          );
+          button.dispatchEvent(
+            new KeyboardEvent('keyup', {
+              keyCode: 13,
+            }),
+          );
+
+          // key: Enter
+          button.dispatchEvent(
+            new KeyboardEvent('keydown', {
+              key: 'Enter',
+            }),
+          );
+          button.dispatchEvent(
+            new KeyboardEvent('keyup', {
+              key: 'Enter',
+            }),
+          );
+
+          // keyCode: Space
+          button.dispatchEvent(
+            new KeyboardEvent('keydown', {
+              keyCode: 32,
+            }),
+          );
+          button.dispatchEvent(
+            new KeyboardEvent('keyup', {
+              keyCode: 32,
+            }),
+          );
+
+          // key: Space
+          button.dispatchEvent(
+            new KeyboardEvent('keydown', {
+              key: ' ',
+            }),
+          );
+          button.dispatchEvent(
+            new KeyboardEvent('keyup', {
+              key: ' ',
+            }),
+          );
+        });
+      }
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-validation.html */
+    describe('button-validation', () => {
+      // mdw-button's default type is "button" not "submit"
+      // mdw-button's default willValidate is false (button)
+
+      /**
+       * @param {InstanceType<Button>} element
+       * @param {string} expectedType
+       * @param {boolean} willValidate
+       * @param {string} desc
+       */
+      // eslint-disable-next-line unicorn/consistent-function-scoping
+      function willValid(element, expectedType, willValidate, desc) {
+        it(desc, () => {
+          assert.equal(element.type, expectedType);
+          assert.equal(element.willValidate, willValidate);
+        });
+      }
+
+      willValid(html`<mdw-button id=btn1>button</mdw-button>`, 'button', false, 'missing type attribute');
+      willValid(html`<mdw-button id=btn2 type=submit>button</mdw-button>`, 'submit', true, 'submit type attribute');
+      willValid(html`<mdw-button id=btn3 type=reset>button</mdw-button>`, 'reset', false, 'reset type attribute');
+      willValid(html`<mdw-button id=btn4 type=button>button</mdw-button>`, 'button', false, 'button type attribute');
+      willValid(html`<mdw-button id=btn5 type=menu>button</mdw-button>`, 'button', false, 'historical menu type attribute');
+      willValid(html`<mdw-button id=btn6 type=foobar>button</mdw-button>`, 'button', false, 'invalid type attribute');
     });
   });
 
