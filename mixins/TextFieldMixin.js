@@ -92,7 +92,7 @@ export default function TextFieldMixin(Base) {
           <mdw-icon mdw-if={icon} id=icon aria-hidden=true disabled={disabledState} icon={icon}></mdw-icon>
           <span mdw-if={inputPrefix} class=inline id=prefix aria-hidden=true focused={focusedState} populated={populatedState}>{inputPrefix}</span>
           <span mdw-if={inputSuffix} class=inline id=suffix aria-hidden=true focused={focusedState} populated={populatedState}>{inputSuffix}</span>
-          <mdw-icon-button tabindex=-1 disabled={disabledState} mdw-if={trailingIcon} id=trailing-icon ink={trailingIconInk} aria-hidden=true disabled={disabledState} icon={trailingIcon}></mdw-icon-button>
+          <mdw-icon-button tabindex=-1 disabled={disabledState} mdw-if={trailingIcon} id=trailing-icon ink={trailingIconInk} disabled={disabledState} icon={trailingIcon}></mdw-icon-button>
           <div mdw-if={filled} id=indicator aria-hidden=true focused={focusedState} hovered={hoveredState} errored={erroredState} disabled={disabledState}></div>
         `,
       );
