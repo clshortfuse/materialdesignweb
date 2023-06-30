@@ -18,7 +18,7 @@ describe('mdw-button', () => {
   });
 
   it('can be created with fragment', () => {
-    const element = makeFromString('<mdw-button>');
+    const element = makeFromString('<mdw-button></mdw-button>');
     assert.equal(element.tagName.toLowerCase(), 'mdw-button');
   });
 
@@ -120,6 +120,37 @@ describe('mdw-button', () => {
       });
     });
 
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-activate-keyup-prevented.html */
+    describe('button-activate-keyup-prevented', () => {
+      it('Button activation submits on keyup, but not if keydown is defaultPrevented', async () => {
+        /** @type {InstanceType<Button>} */
+        const button = html`<mdw-button type=submit>The button</mdw-button>`;
+        button.focus();
+        assert.equal(document.activeElement, button, 'Button should be focused');
+        // assert.isTrue(button.focusedState, 'Button show focus state');
+
+        const clickPromise = new Promise((resolve) => {
+          button.addEventListener('click', resolve, { once: true });
+        });
+
+        await sendKeypress(' ');
+        await clickPromise;
+
+        assert.isTrue(true, 'Button should have activated');
+
+        document.addEventListener('keydown', (e) => {
+          e.preventDefault();
+        });
+
+        button.addEventListener('click', () => assert.fail('button got incorrectly activated'));
+
+        await sendKeypress(' ');
+
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        assert.isTrue(true, 'Button should not have activated');
+      });
+    });
+
     /** @see https://wpt.live/html/semantics/forms/the-button-element/button-activate.html */
     describe('button-activate', () => {
       it('button activation behaviour submits form', (done) => {
@@ -134,6 +165,183 @@ describe('mdw-button', () => {
           done();
         });
         button.click();
+      });
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-checkvalidity.html */
+    it('checkvalidity', () => {
+      const form = html`
+        <form method="post"
+            enctype="application/x-www-form-urlencoded"
+            action="">
+          <p><mdw-button type=submit>button</mdw-button></p>
+        </form>
+      `;
+      const p = (form.firstElementChild);
+      const button = /** @type {InstanceType<Button>} */ (p.firstElementChild);
+      try {
+        assert.equal(button.checkValidity(), true, 'calling of checkValidity method is failed.');
+      } catch {
+        assert.fail('autofocus attribute is not exist.'); // [sic]
+      }
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-events.html */
+    describe('button-events', () => {
+      /** @type {HTMLFormElement} */
+      let fm1;
+      /** @type {InstanceType<Button>} */
+      let btn;
+      /** @type {InstanceType<Button>} */
+      let menu_btn;
+      beforeEach(() => {
+        fm1 = html`
+          <form name="fm1" style="display:none">
+            <mdw-button type=submit>BUTTON</mdw-button>
+            <mdw-button type="menu" menu="menu">MENU BUTTON</mdw-button>
+          </form>
+        `;
+        [btn, menu_btn] = /** @type {HTMLCollectionOf<InstanceType<Button>>} */ (fm1.children);
+      });
+      it('The submit event must be fired when click a button in submit status', (done) => {
+        fm1.addEventListener('submit', (evt) => {
+          evt.preventDefault();
+          assert.isTrue(evt.isTrusted, 'The isTrusted attribute of the submit event should be true.');
+          assert.isTrue(evt.bubbles, 'The bubbles attribute of the submit event should be true.');
+          assert.isTrue(evt.cancelable, 'The cancelable attribute of the submit event should be true.');
+          assert.isTrue(evt instanceof Event, 'The submit event is an instance of Event interface.');
+          done();
+        });
+
+        btn.type = 'submit';
+        assert.equal(btn.type, 'submit', "The button type should be 'submit'.");
+        btn.click();
+      });
+
+      it('The reset event must be fired when click a button in reset status', (done) => {
+        fm1.addEventListener('reset', (evt) => {
+          assert.isTrue(evt.isTrusted, 'The isTrusted attribute of the reset event should be true.');
+          assert.isTrue(evt.bubbles, 'The bubbles attribute of the reset event should be true.');
+          assert.isTrue(evt.cancelable, 'The cancelable attribute of the reset event should be true.');
+          assert.isTrue(evt instanceof Event, 'The reset event is an instance of Event interface.');
+          done();
+        });
+
+        btn.type = 'reset';
+        assert.equal(btn.type, 'reset', "The button type should be 'reset'.");
+        btn.click();
+      });
+
+      it("type=button shouldn't trigger submit or reset events", (done) => {
+        btn.type = 'button';
+        assert.equal(btn.type, 'button', "The button type should be 'button'.");
+        fm1.addEventListener('submit', (evt) => {
+          assert.fail("type=button shouldn't trigger submission.");
+        });
+        fm1.addEventListener('reset', (evt) => {
+          assert.fail("type=button shouldn't reset the form.");
+        });
+        btn.click();
+        done();
+      });
+
+      it('Switching from type=button to type=submit should submit the form', (done) => {
+        btn.type = 'button';
+        btn.addEventListener('click', () => { btn.type = 'submit'; });
+        fm1.addEventListener('submit', (evt) => {
+          evt.preventDefault();
+          assert.equal(btn.type, 'submit', "The button type should be 'submit'.");
+          done();
+        });
+        btn.click();
+      });
+
+      it('Switching from type=button to type=reset should reset the form', (done) => {
+        btn.type = 'button';
+        btn.addEventListener('click', () => { btn.type = 'reset'; });
+        fm1.addEventListener('reset', (evt) => {
+          evt.preventDefault();
+          assert.equal(btn.type, 'reset', "The button type should be 'reset'.");
+          done();
+        });
+        btn.click();
+      });
+
+      it('Innermost button should submit its form', (done) => {
+        btn.type = 'submit';
+        btn.innerHTML = '';
+        const fm2 = document.createElement('form');
+        const btn2 = /** @type {InstanceType<Button>} */ (document.createElement('mdw-button'));
+        btn2.type = 'submit';
+        fm2.appendChild(btn2);
+        btn.appendChild(fm2);
+        assert.isTrue(fm1.contains(fm2), 'Should have nested forms');
+        /** @param {Event} evt */
+        function submitListener(evt) {
+          evt.preventDefault();
+          assert.equal(evt.target, fm2, 'Innermost form should have got the submit event');
+        }
+        window.addEventListener('submit', submitListener, true);
+        btn2.click();
+        window.removeEventListener('submit', submitListener, true);
+        done();
+      });
+
+      it('Innermost button should reset its form', (done) => {
+        btn.type = 'reset';
+        btn.innerHTML = '';
+        const fm2 = document.createElement('form');
+        const btn2 = document.createElement('button');
+        btn2.type = 'reset';
+        fm2.appendChild(btn2);
+        btn.appendChild(fm2);
+        assert.isTrue(fm1.contains(fm2), 'Should have nested forms');
+
+        /** @param {Event} evt */
+        function resetListener(evt) {
+          evt.currentTarget.removeEventListener(evt.type, resetListener, true);
+          evt.preventDefault();
+          assert.equal(evt.target, fm2, 'Innermost form should have got the reset event');
+          done();
+        }
+        window.addEventListener('reset', resetListener, true);
+        btn2.click();
+      });
+
+      it('Anchor inside a button should be prevent button activation', (done) => {
+        btn.type = 'submit';
+        btn.innerHTML = '';
+        const a = document.createElement('a');
+        a.href = '#';
+        btn.appendChild(a);
+        fm1.addEventListener('submit', (evt) => {
+          assert.fail("type=button shouldn't trigger submission.");
+        });
+
+        a.click();
+        done();
+      });
+
+      it('input type=submit inside a button should be prevent button activation', (done) => {
+        btn.type = 'submit';
+        btn.innerHTML = '';
+        const fm2 = document.createElement('form');
+        const btn2 = document.createElement('input');
+        btn2.type = 'submit';
+        fm2.appendChild(btn2);
+        btn.appendChild(fm2);
+        assert.isTrue(fm1.contains(fm2), 'Should have nested forms');
+
+        /** @param {Event} evt */
+        function submitListener(evt) {
+          evt.preventDefault();
+          assert.equal(evt.target, fm2, 'Innermost form should have got the submit event');
+        }
+
+        window.addEventListener('submit', submitListener, true);
+        btn2.click();
+        window.removeEventListener('submit', submitListener, true);
+        done();
       });
     });
 
@@ -307,55 +515,6 @@ describe('mdw-button', () => {
         const e = new MouseEvent('click', { bubbles: false });
         span.dispatchEvent(e);
       });
-    });
-
-    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-activate-keyup-prevented.html */
-    describe('button-activate-keyup-prevented', () => {
-      it('Button activation submits on keyup, but not if keydown is defaultPrevented', async () => {
-        /** @type {InstanceType<Button>} */
-        const button = html`<mdw-button type=submit>The button</mdw-button>`;
-        button.focus();
-        assert.equal(document.activeElement, button, 'Button should be focused');
-        // assert.isTrue(button.focusedState, 'Button show focus state');
-
-        const clickPromise = new Promise((resolve) => {
-          button.addEventListener('click', resolve, { once: true });
-        });
-
-        await sendKeypress(' ');
-        await clickPromise;
-
-        assert.isTrue(true, 'Button should have activated');
-
-        document.addEventListener('keydown', (e) => {
-          e.preventDefault();
-        });
-
-        button.addEventListener('click', () => assert.fail('button got incorrectly activated'));
-
-        await sendKeypress(' ');
-
-        await new Promise((resolve) => setTimeout(resolve, 0));
-        assert.isTrue(true, 'Button should not have activated');
-      });
-    });
-
-    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-checkvalidity.html */
-    it('checkvalidity', () => {
-      const form = html`
-        <form method="post"
-            enctype="application/x-www-form-urlencoded"
-            action="">
-          <p><mdw-button type=submit>button</mdw-button></p>
-        </form>
-      `;
-      const p = (form.firstElementChild);
-      const button = /** @type {InstanceType<Button>} */ (p.firstElementChild);
-      try {
-        assert.equal(button.checkValidity(), true, 'calling of checkValidity method is failed.');
-      } catch {
-        assert.fail('autofocus attribute is not exist.'); // [sic]
-      }
     });
   });
 

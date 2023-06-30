@@ -203,41 +203,52 @@ export default CustomElement
       }
     }
   `
-  .rootEvents({
-    click(event) {
-      const { control } = this.refs;
-      if (event.target !== control) {
-        // Label-like click
-        if (!event.bubbles) return;
-        event.stopPropagation();
-        control.click();
-      }
-    },
-  })
-  .childEvents({
-    control: {
-      /**
-       * Duplicates button for form submission
-       * @see https://github.com/WICG/webcomponents/issues/814
-       * @param {PointerEvent & {currentTarget:HTMLInputElement}} event
-       * @type {any}
-       */
-      click(event) {
-        const { currentTarget } = event;
-        if (currentTarget.disabled) return;
-        if (currentTarget.type !== 'submit') return;
-        if (this.disabled) return;
-        const { value } = currentTarget;
-        const form = this.elementInternals?.form;
-        if (!form) return;
-        this.elementInternals.setFormValue(value);
+  .methods({
+    /**
+     * @param {Event} event
+     * @return {void}
+     */
+    _handleButtonClick(event) {
+      const input = this._input;
+      if (input.disabled) return;
+      if (this.disabled) return;
+      // Buttons change change type from within the click event.
+      // Dispatch event and then check the type.
 
-        if (!this._redispatchControlClickEvent(event)) {
-          event.preventDefault();
+      if (!this._redispatchControlClickEvent(event)) {
+        event.preventDefault();
+        return;
+      }
+      const { type, value } = input;
+      if (type !== 'submit' && type !== 'reset') return;
+      // If in the composed path is another submit/reset button,
+      // Let that button take preference and ignore;
+
+      for (const target of event.composedPath()) {
+        if (target === input || target === this) break;
+        if ((target instanceof HTMLInputElement || target instanceof HTMLButtonElement)
+            && (target.type === 'submit' || target.type === 'reset')) {
+          // Inner Native Button
           return;
         }
+        if ((target instanceof HTMLElement && target.form instanceof HTMLFormElement
+            && (target.type === 'submit' || target.type === 'reset'))) {
+          // Inner FACE Button
+          return;
+        }
+        if ((target instanceof HTMLAnchorElement && target.href)) {
+          // Inner Anchor Button
+          return;
+        }
+      }
 
-        const duplicatedButton = /** @type {HTMLInputElement} */ (currentTarget.cloneNode());
+      const form = this.elementInternals?.form;
+      if (!form) return;
+
+      if (type === 'submit') {
+        this.elementInternals.setFormValue(value);
+
+        const duplicatedButton = /** @type {HTMLInputElement} */ (input.cloneNode());
         duplicatedButton.hidden = true;
         form.append(duplicatedButton);
         if ('requestSubmit' in form) {
@@ -246,7 +257,27 @@ export default CustomElement
           duplicatedButton.click();
         }
         duplicatedButton.remove();
-      },
+      } else if (type === 'reset') {
+        form.reset();
+      }
+    },
+  })
+  .rootEvents({
+    click(event) {
+      const { control } = this.refs;
+      if (event.target !== control) {
+        // Label-like click
+        if (!event.bubbles) return;
+        // Before passing up, check to see if it's a button within a button
+        event.stopPropagation();
+        this._handleButtonClick(event);
+      }
+    },
+  })
+
+  .childEvents({
+    control: {
+      click: '_handleButtonClick',
     },
   })
   .autoRegister('mdw-button');
