@@ -42,6 +42,7 @@ export default CustomElement
     click(event) {
       const { control } = this.refs;
       if (event.target !== control) {
+        if (!event.bubbles) return;
         // Label-like click
         event.stopPropagation();
         control.click();
