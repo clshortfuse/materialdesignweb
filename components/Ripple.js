@@ -53,7 +53,9 @@ export default CustomElement
       // Use offset to calculate parent size;
 
       let hypotenuse = size;
-      const { clientWidth: parentWidth, clientHeight: parentHeight } = this.offsetParent;
+      const { offsetParent } = this;
+      if (!offsetParent) return;
+      const { clientWidth: parentWidth, clientHeight: parentHeight } = offsetParent;
 
       x ??= parentWidth / 2;
       y ??= parentHeight / 2;
