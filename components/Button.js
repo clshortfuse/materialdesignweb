@@ -23,6 +23,7 @@ export default CustomElement
   .set({
     stateLayer: true,
     delegatesFocus: true,
+    _allowedTypes: ['button', 'submit', 'reset'],
   })
   .observe({
     type: {
@@ -33,15 +34,11 @@ export default CustomElement
        */
       set(value, internalSet) {
         const enumeratedValue = value?.toLowerCase() ?? 'button';
-        switch (enumeratedValue) {
-          case 'submit':
-          case 'reset':
-          case 'hidden':
-            internalSet(enumeratedValue);
-            break;
-          default:
-            internalSet('button');
-        }
+        internalSet(
+          this._allowedTypes.includes(enumeratedValue)
+            ? enumeratedValue
+            : 'button',
+        );
       },
     },
     elevated: 'boolean',

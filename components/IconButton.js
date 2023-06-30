@@ -5,6 +5,9 @@ import Button from './Button.js';
 export default Button
   .extend()
   .mixin(TooltipTriggerMixin)
+  .set({
+    _allowedTypes: ['button', 'submit', 'reset', 'checkbox'],
+  })
   .observe({
     _ariaPressed: {
       get({ type, checked }) {
