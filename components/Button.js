@@ -25,7 +25,25 @@ export default CustomElement
     delegatesFocus: true,
   })
   .observe({
-    type: { empty: 'button' },
+    type: {
+      empty: 'button',
+      /**
+       * @param {string} value
+       * @param {*} internalSet
+       */
+      set(value, internalSet) {
+        const enumeratedValue = value?.toLowerCase() ?? 'button';
+        switch (enumeratedValue) {
+          case 'submit':
+          case 'reset':
+          case 'hidden':
+            internalSet(enumeratedValue);
+            break;
+          default:
+            internalSet('button');
+        }
+      },
+    },
     elevated: 'boolean',
     filled: 'string',
     href: 'string',

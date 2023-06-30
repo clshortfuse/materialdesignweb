@@ -235,10 +235,10 @@ describe('mdw-button', () => {
       it("type=button shouldn't trigger submit or reset events", (done) => {
         btn.type = 'button';
         assert.equal(btn.type, 'button', "The button type should be 'button'.");
-        fm1.addEventListener('submit', (evt) => {
+        fm1.addEventListener('submit', () => {
           assert.fail("type=button shouldn't trigger submission.");
         });
-        fm1.addEventListener('reset', (evt) => {
+        fm1.addEventListener('reset', () => {
           assert.fail("type=button shouldn't reset the form.");
         });
         btn.click();
@@ -314,7 +314,7 @@ describe('mdw-button', () => {
         const a = document.createElement('a');
         a.href = '#';
         btn.appendChild(a);
-        fm1.addEventListener('submit', (evt) => {
+        fm1.addEventListener('submit', () => {
           assert.fail("type=button shouldn't trigger submission.");
         });
 
@@ -342,6 +342,50 @@ describe('mdw-button', () => {
         btn2.click();
         window.removeEventListener('submit', submitListener, true);
         done();
+      });
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-labels.html */
+    it('button-labels', () => {
+      const form = html`
+        <form method="post"
+            enctype="application/x-www-form-urlencoded"
+            action=""
+            id="input_form">
+          <p><label>Full name:<label>(name)<mdw-button id='button_id1'>button1</mdw-button><small>Format: First Last</small></label></label></p>
+          <p><label>Age: <mdw-button id='button_id2'>button2</mdw-button></label></p>
+        </form>
+      `;
+      /** @type {NodeListOf<InstanceType<Button>>} */
+      const [button1, button2] = form.querySelectorAll('mdw-button');
+
+      assert.isTrue(button1.labels instanceof NodeList, 'button1.labels is NodeList');
+      assert.equal(button1.labels.length, 2, 'button1.labels.length');
+
+      assert.isTrue(button2.labels instanceof NodeList, 'button2.labels is NodeList');
+      assert.equal(button2.labels.length, 1, 'button2.labels.length');
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-menu-historical.html */
+    describe('button-menu-historical', () => {
+      it('button.menu, the potentially-reflecting IDL attribute, does not exist', () => {
+        /** @type {InstanceType<Button>} */
+        const button = html`
+          <mdw-button id="b" type="menu" menu="m">button</mdw-button>
+          <menu id="m"></menu>
+        `;
+        assert.isFalse('menu' in button, 'The menu property must not exist on the button');
+        assert.equal(button.menu, undefined, 'The value of the menu property on the button must be undefined');
+      });
+
+      it('button.type reflects properly', () => {
+        /** @type {InstanceType<Button>} */
+        const button = html`
+          <mdw-button id="b" type="menu" menu="m">button</mdw-button>
+          <menu id="m"></menu>
+        `;
+        // <mdw-button> defaults to 'button', not 'submit'
+        assert.equal(button.type, 'button', 'The type property must reflect as its invalid value default of submit');
       });
     });
 
