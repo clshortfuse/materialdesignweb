@@ -264,8 +264,6 @@ export default CustomElement
       if (!form) return;
 
       if (type === 'submit') {
-        this.elementInternals.setFormValue(value);
-
         const duplicatedButton = /** @type {HTMLInputElement} */ (input.cloneNode());
         duplicatedButton.hidden = true;
         form.append(duplicatedButton);

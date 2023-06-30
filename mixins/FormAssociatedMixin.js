@@ -139,6 +139,7 @@ export default function FormAssociatedMixin(Base) {
       validity() { return this.elementInternals.validity; },
       validationMessage() { return this.elementInternals.validationMessage; },
       willValidate() {
+        if (this.type === 'submit') return true;
         if (this.type === 'button' || this.type === 'reset') return false;
         return this.elementInternals.willValidate;
       },
@@ -286,6 +287,10 @@ export default function FormAssociatedMixin(Base) {
               this.elementInternals.setFormValue(null, 'unchecked');
             }
             break;
+          case 'button':
+          case 'reset':
+            this.elementInternals.setFormValue(null);
+            break;
           default:
             // console.debug('FormAssociatedMixin: setFormValue', this.name, this.value, this);
             this.elementInternals.setFormValue(this.value);
@@ -307,6 +312,9 @@ export default function FormAssociatedMixin(Base) {
         this._updateFormAssociatedValue();
       },
       valueChanged() {
+        this._updateFormAssociatedValue();
+      },
+      typeChanged() {
         this._updateFormAssociatedValue();
       },
     });

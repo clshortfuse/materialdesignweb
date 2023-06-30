@@ -889,6 +889,82 @@ describe('mdw-button', () => {
       willValid(html`<mdw-button id=btn5 type=menu>button</mdw-button>`, 'button', false, 'historical menu type attribute');
       willValid(html`<mdw-button id=btn6 type=foobar>button</mdw-button>`, 'button', false, 'invalid type attribute');
     });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-validationmessage.html */
+    it('button-validationmessage', () => {
+      const form = html`
+        <form method="post"
+            enctype="application/x-www-form-urlencoded"
+            action=""
+            id="input_form">
+          <p><mdw-button id='button_id' type=submit>button</mdw-button></p>
+        </form>
+      `;
+
+      /** @type {InstanceType<Button>} */
+      const button = form.querySelector('mdw-button');
+
+      if (typeof (button.validationMessage) === 'string') {
+        assert.equal(button.validationMessage, '', 'validationMessage attribute is not correct.');
+      } else {
+        assert.fail('validationMessage attribute is not exist.');
+      }
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-validity.html */
+    it('button-validity', () => {
+      const form = html`
+        <form method="post"
+            enctype="application/x-www-form-urlencoded"
+            action=""
+            id="input_form">
+          <p><mdw-button id='button_id' type=submit>button</mdw-button></p>
+        </form>
+      `;
+
+      /** @type {InstanceType<Button>} */
+      const button = form.querySelector('mdw-button');
+
+      if (typeof (button.validity) === 'object') {
+        assert.equal(button.validity.valueMissing, false, 'validity attribute is not correct.');
+      } else {
+        assert.fail('validity attribute is not exist.');
+      }
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-willvalidate-readonly-attribute.html */
+    it('button-willvalidate-readonly-attribute', () => {
+      // mdw-button's default type is "button" not "submit"
+      // mdw-button's default willValidate is false (button)
+
+      /** @type {InstanceType<Button>} */
+      const implicitSubmitButton = html`<mdw-button id="implicitSubmitButton" readonly>1</mdw-button>`;
+      /** @type {InstanceType<Button>} */
+      const explicitSubmitButton = html`<mdw-button id="explicitSubmitButton" readonly type="submit">2</mdw-button>`;
+
+      // assert.isTrue(implicitSubmitButton.willValidate);
+      assert.isTrue(explicitSubmitButton.willValidate);
+    });
+
+    /** @see https://wpt.live/html/semantics/forms/the-button-element/button-willvalidate.html */
+    it('button-willvalidate', () => {
+      const form = html`
+        <form method="post"
+            enctype="application/x-www-form-urlencoded"
+            action=""
+            id="input_form">
+          <p><mdw-button id='button_id' type=submit>button</mdw-button></p>
+        </form>
+      `;
+      /** @type {InstanceType<Button>} */
+      const button = form.querySelector('mdw-button');
+
+      if (typeof (button.willValidate) === 'boolean') {
+        assert.equal(button.willValidate, true, 'willValidate attribute is not correct.');
+      } else {
+        assert.fail('willValidate attribute is not exist.');
+      }
+    });
   });
 
   describe('wpt - <input type=button>', () => {
