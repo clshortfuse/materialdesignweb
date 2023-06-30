@@ -53,9 +53,10 @@ export function makeFromTagName(tagName, appendToDOM = true) {
  * @return {HTMLElement}
  */
 export function makeFromString(fromString, appendToDOM = true) {
-  const { firstElementChild } = document.createRange().createContextualFragment(fromString);
+  const fragment = document.createRange().createContextualFragment(fromString);
+  const { firstElementChild } = fragment;
   if (appendToDOM) {
-    document.body.append(firstElementChild);
+    document.body.append(fragment);
   }
   // @ts-ignore Skip cast
   return firstElementChild;
