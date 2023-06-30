@@ -226,18 +226,18 @@ export default CustomElement
     _handleButtonClick(event) {
       const input = this._input;
       if (input.disabled) return;
-      if (this.disabled) return;
-      // Buttons change change type from within the click event.
+      if (this.disabledState) return;
+      // Buttons can change type from within the click event.
       // Dispatch event and then check the type.
 
       if (!this._redispatchControlClickEvent(event)) {
         event.preventDefault();
         return;
       }
-      const { type, value } = input;
+      const { type } = input;
       if (type !== 'submit' && type !== 'reset') return;
       // If in the composed path is another submit/reset button,
-      // Let that button take preference and ignore;
+      // Let that button take preference and ignore click.
 
       for (const target of event.composedPath()) {
         if (target === input || target === this) break;
@@ -281,7 +281,6 @@ export default CustomElement
       if (event.target !== control) {
         // Label-like click
         if (!event.bubbles) return;
-        // Before passing up, check to see if it's a button within a button
         event.stopPropagation();
         this._handleButtonClick(event);
       }

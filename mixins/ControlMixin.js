@@ -47,6 +47,7 @@ export default function ControlMixin(Base) {
       },
       /** Redirect click requests to control itself */
       click() {
+        if (this.disabledState) return;
         this.refs.control.click();
       },
     })
@@ -147,6 +148,12 @@ export default function ControlMixin(Base) {
     })
     .childEvents({
       control: {
+        click(e) {
+          if (this.focusableOnDisabled) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+          }
+        },
         input({ currentTarget }) {
           const control = /** @type {HTMLControlElement} */ (currentTarget);
           if (this.validity.valid) {
