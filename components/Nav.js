@@ -1,8 +1,11 @@
+import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
+
 import NavItem from './NavItem.js';
 import Surface from './Surface.js';
 
 export default Surface
   .extend()
+  .mixin(AriaReflectorMixin)
   .css`
     /* https://m3.material.io/components/navigation-bar/specs */
     /* https://m3.material.io/components/navigation-drawer/specs */
@@ -23,6 +26,7 @@ export default Surface
   .set({
     elevated: true,
     color: 'surface',
+    _ariaRole: 'navigation',
   })
   .events({
     '~click'(event) {
