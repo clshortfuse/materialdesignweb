@@ -1,3 +1,71 @@
+/** @type {Map<string, CSSStyleSheet>} */
+const cssStyleSheetsCache = new Map();
+
+/**
+ * @param {string} content
+ * @param {boolean} [useCache=true]
+ * @return {CSSStyleSheet}
+ */
+export function createCSSStyleSheet(content, useCache = true) {
+  if (useCache && cssStyleSheetsCache.has(content)) {
+    return cssStyleSheetsCache.get(content);
+  }
+  const sheet = new CSSStyleSheet();
+  sheet.replaceSync(content);
+  if (useCache) {
+    cssStyleSheetsCache.set(content, sheet);
+  }
+  return sheet;
+}
+
+/** @type {Map<string, HTMLStyleElement>} */
+const styleElementCache = new Map();
+
+/** @type {Document} */
+let _inactiveDocument;
+
+/**
+ * @param {string} content
+ * @param {boolean} [useCache=true]
+ * @return {HTMLStyleElement}
+ */
+export function createHTMLStyleElement(content, useCache = true) {
+  let style;
+  if (useCache && styleElementCache.has(content)) {
+    style = styleElementCache.get(content);
+  } else {
+    _inactiveDocument ??= document.implementation.createHTMLDocument();
+    style = _inactiveDocument.createElement('style');
+    style.textContent = content;
+    if (useCache) {
+      styleElementCache.set(content, style);
+    }
+  }
+  return /** @type {HTMLStyleElement} */ (style.cloneNode(true));
+}
+
+/** @type {boolean} */
+let _cssStyleSheetConstructable;
+
+/**
+ * @param {string} content
+ * @param {boolean} [useCache=true]
+ */
+export function createCSS(content, useCache = true) {
+  if (_cssStyleSheetConstructable == null) {
+    try {
+      const sheet = createCSSStyleSheet(content, useCache);
+      _cssStyleSheetConstructable = true;
+      return sheet;
+    } catch {
+      _cssStyleSheetConstructable = false;
+    }
+  }
+  return _cssStyleSheetConstructable
+    ? createCSSStyleSheet(content, useCache)
+    : createHTMLStyleElement(content, useCache);
+}
+
 /**
  * @param {Iterable<HTMLStyleElement|CSSStyleSheet>} styles
  * @yields composed CSSStyleSheet
@@ -49,4 +117,14 @@ export function* generateHTMLStyleElements(styles) {
       yield styleElement.cloneNode(true);
     }
   }
+}
+
+/**
+ * @param {TemplateStringsArray|string} array
+ * @param  {...any} substitutions
+ * @return {HTMLStyleElement|CSSStyleSheet}
+ */
+export function css(array, ...substitutions) {
+  if (typeof array === 'string') return createCSS(array);
+  return createCSS(String.raw({ raw: array }, ...substitutions));
 }

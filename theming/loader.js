@@ -1,4 +1,4 @@
-import { css } from '../core/template.js';
+import { css } from '../core/css.js';
 
 import {
   generateThemeCSS,
@@ -11,7 +11,7 @@ const rules = [
   generateTypographyGlobalCSS(),
 ].join('\n');
 
-const parsed = css`${rules}`;
+const parsed = css(rules);
 if (parsed instanceof HTMLStyleElement) {
   document.head.append(parsed);
 } else {

@@ -16,9 +16,6 @@ import { generateUID } from './uid.js';
 /** @type {Document} */
 let _inactiveDocument;
 
-/** @type {boolean} */
-let _cssStyleSheetConstructable;
-
 /**
  * @param {string} [fromString]
  * @return {DocumentFragment}
@@ -50,55 +47,6 @@ export function addInlineFunction(fn) {
   const internalName = `#${generateUID()}`;
   inlineFunctions.set(internalName, { fn });
   return `{${internalName}}`;
-}
-
-/** @type {Map<string, CSSStyleSheet>} */
-const cssStyleSheetsCache = new Map();
-
-/** @type {Map<string, HTMLStyleElement>} */
-const styleElementCache = new Map();
-
-/**
- * @param {TemplateStringsArray} array
- * @param  {...any} substitutions
- * @return {HTMLStyleElement|CSSStyleSheet}
- */
-export function css(array, ...substitutions) {
-  const content = String.raw({ raw: array }, ...substitutions);
-
-  if (_cssStyleSheetConstructable == null) {
-    try {
-      const sheet = new CSSStyleSheet();
-      _cssStyleSheetConstructable = true;
-      sheet.replaceSync(content);
-      cssStyleSheetsCache.set(content, sheet);
-      return sheet;
-    } catch {
-      _cssStyleSheetConstructable = false;
-    }
-  }
-
-  if (_cssStyleSheetConstructable) {
-    if (cssStyleSheetsCache.has(content)) {
-      return cssStyleSheetsCache.get(content);
-    }
-    const sheet = new CSSStyleSheet();
-    _cssStyleSheetConstructable = true;
-    sheet.replaceSync(content);
-    cssStyleSheetsCache.set(content, sheet);
-    return sheet;
-  }
-
-  let style;
-  if (styleElementCache.has(content)) {
-    style = styleElementCache.get(content);
-  } else {
-    _inactiveDocument ??= document.implementation.createHTMLDocument();
-    style = _inactiveDocument.createElement('style');
-    style.textContent = content;
-    styleElementCache.set(content, style);
-  }
-  return /** @type {HTMLStyleElement} */ (style.cloneNode(true));
 }
 
 /** @type {Map<string, DocumentFragment>} */
@@ -151,4 +99,3 @@ export function html(strings, ...substitutions) {
 
   return /** @type {DocumentFragment} */ (fragment.cloneNode(true));
 }
-

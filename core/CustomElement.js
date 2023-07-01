@@ -2,10 +2,11 @@
 
 import Composition from './Composition.js';
 import { ICustomElement } from './ICustomElement.js';
+import { css } from './css.js';
 import { CHROME_VERSION, attrNameFromPropName, attrValueFromDataValue } from './dom.js';
 import { applyMergePatch } from './jsonMergePatch.js';
 import { defineObservableProperty } from './observe.js';
-import { addInlineFunction, css, html } from './template.js';
+import { addInlineFunction, html } from './template.js';
 
 /**
  * @template {abstract new (...args: any) => unknown} T
@@ -162,7 +163,7 @@ export default class CustomElement extends ICustomElement {
    * @type {typeof ICustomElement.css}
    */
   static css(array, ...substitutions) {
-    if (Array.isArray(array)) {
+    if (typeof array === 'string' || Array.isArray(array)) {
       // @ts-expect-error Complex cast
       this.append(css(array, ...substitutions));
     } else {
