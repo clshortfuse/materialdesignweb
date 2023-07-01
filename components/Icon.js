@@ -2,7 +2,7 @@
 
 import CustomElement from '../core/CustomElement.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
-import { svgAliasMap, unaliased } from '../services/SVGAlias.js';
+import { svgAliasMap, unaliased } from '../services/svgAlias.js';
 
 const documentLoadedStyleSheets = new Set();
 
