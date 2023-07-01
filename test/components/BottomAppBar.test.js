@@ -1,7 +1,7 @@
 import { assert } from '@esm-bundle/chai';
 
 import BottomAppBar from '../../components/BottomAppBar.js';
-import '../../theming/loader.js';
+import '../../loaders/theme.js';
 import { axTree, html, iterateMeaningfulAXNodes, makeFromConstructor, makeFromString, makeFromTagName } from '../utils.js';
 
 beforeEach(() => document.body.replaceChildren());

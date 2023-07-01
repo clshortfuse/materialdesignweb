@@ -1,7 +1,7 @@
 import { assert } from '@esm-bundle/chai';
 
 import Badge from '../../components/Badge.js';
-import '../../theming/loader.js';
+import '../../loaders/theme.js';
 import { html, makeFromConstructor, makeFromString, makeFromTagName } from '../utils.js';
 
 beforeEach(() => document.body.replaceChildren());

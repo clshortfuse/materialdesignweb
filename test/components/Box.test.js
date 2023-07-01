@@ -1,7 +1,7 @@
 import { assert } from '@esm-bundle/chai';
 
 import Box from '../../components/Box.js';
-import '../../theming/loader.js';
+import '../../loaders/theme.js';
 import { html, makeFromConstructor, makeFromString, makeFromTagName } from '../utils.js';
 
 beforeEach(() => document.body.replaceChildren());

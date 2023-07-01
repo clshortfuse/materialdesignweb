@@ -1,7 +1,7 @@
 import { assert } from '@esm-bundle/chai';
 
 import Checkbox from '../../components/Checkbox.js';
-import '../../theming/loader.js';
+import '../../loaders/theme.js';
 import { axTree, html, iterateMeaningfulAXNodes, leftClickElement, makeFromConstructor, makeFromString, makeFromTagName, sendKeypress } from '../utils.js';
 
 beforeEach(() => document.body.replaceChildren());

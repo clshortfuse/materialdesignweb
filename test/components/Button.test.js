@@ -1,7 +1,7 @@
 import { assert } from '@esm-bundle/chai';
 
 import Button from '../../components/Button.js';
-import '../../theming/loader.js';
+import '../../loaders/theme.js';
 import { axTree, html, iterateMeaningfulAXNodes, makeFromConstructor, makeFromString, makeFromTagName, sendKeydown, sendKeypress, sendKeyup } from '../utils.js';
 
 beforeEach(() => document.body.replaceChildren());
