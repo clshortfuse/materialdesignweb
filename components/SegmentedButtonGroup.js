@@ -1,4 +1,3 @@
-import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import KeyboardNav from '../mixins/KeyboardNavMixin.js';
 
 import Box from './Box.js';
@@ -9,7 +8,6 @@ import SegmentedButton from './SegmentedButton.js';
 export default Box
   .extend()
   .mixin(KeyboardNav)
-  .mixin(AriaReflectorMixin)
   .define({
     kbdNavQuery() {
       return SegmentedButton.elementName;

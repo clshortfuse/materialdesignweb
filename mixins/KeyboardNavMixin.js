@@ -1,5 +1,7 @@
 import { attemptFocus, isRtl } from '../core/dom.js';
 
+import AriaReflectorMixin from './AriaReflectorMixin.js';
+
 const DEFAULT_ELEMENT_QUERY = [
   'button',
   '[href]',
@@ -14,6 +16,7 @@ const DEFAULT_ELEMENT_QUERY = [
  */
 export default function KeyboardNavMixin(Base) {
   return Base
+    .mixin(AriaReflectorMixin)
     .observe({
       /** Keyboard navigation attribute */
       kbdNav: { empty: 'true' },
@@ -46,8 +49,7 @@ export default function KeyboardNavMixin(Base) {
     })
     .methods({
       _ariaOrientationIsVertical() {
-        return (this.ariaOrientation
-          ?? this.getAttribute('aria-orientation')
+        return (this.readAriaProperty('ariaOrientation')
           ?? this.ariaOrientationDefault) === 'vertical';
       },
       focusCurrentOrFirst() {

@@ -1,4 +1,3 @@
-import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import AriaToolbarMixin from '../mixins/AriaToolbarMixin.js';
 
 import Surface from './Surface.js';
@@ -12,7 +11,6 @@ import Surface from './Surface.js';
 export default Surface
   .extend()
   .mixin(AriaToolbarMixin)
-  .mixin(AriaReflectorMixin)
   .set({
     elevated: true,
     _ariaRole: 'toolbar',
