@@ -230,8 +230,11 @@ export default CustomElement
         case 'two-fixed':
           this.twoFixed = slotted;
           break;
-        default:
+        case '':
           this.oneFlexible = slotted;
+          break;
+        // case 'appbar':
+        default:
           break;
       }
       this.refreshLayoutValues();
