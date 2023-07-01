@@ -7,4 +7,6 @@ ThemableMixin.PALETTES.push('yellow', 'orange', 'green', 'alias');
 
 addIconAliases();
 
-console.debug(JSON.stringify(await reportUnaliasedMaterialSymbols(...unaliased)));
+setTimeout(async () => {
+  console.debug(JSON.stringify(await reportUnaliasedMaterialSymbols(...unaliased)));
+});

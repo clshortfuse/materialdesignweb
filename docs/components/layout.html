@@ -20,9 +20,37 @@
       justify-content: center;
     }
   </style>
+  <script src="../demo.min.js"></script>
 </head>
 
 <body>
+  <demo-page>
+    <demo-section id="demo-section">
+      <h1 slot=heading>Options</h1>
+      <mdw-box grid>
+        <mdw-label>Width: <span id="width">400</span></mdw-label>
+        <mdw-slider aria-label=Width name=width value=400 min=360 max=2400 onchange="updateWidth(this)"></mdw-slider>
+        <mdw-listbox id=options multiple onchange="updateURL()" col-span="4" col-span-12="6">
+          <mdw-list-option checkbox value=appBar>Top App Bar</mdw-list-option>
+          <mdw-list-option checkbox value=navBar>Nav Bar</mdw-list-option>
+          <mdw-list-option checkbox value=rail  >Nav Rail</mdw-list-option>
+          <mdw-list-option checkbox value=drawer>Nav Drawer</mdw-list-option>
+        </mdw-listbox>
+        <mdw-listbox id=panes onchange="updateURL()" required col-span="4" col-span-12="6">
+          <mdw-list-option radio value=one    selected>Single Pane</mdw-list-option>
+          <mdw-list-option radio value=fixed          >Fixed/Flexible</mdw-list-option>
+          <mdw-list-option radio value=flexible       >Flexible/Fixed</mdw-list-option>
+          <mdw-list-option radio value=split          >Flexible/Flexible</mdw-list-option>
+        </mdw-listbox>
+      </mdw-box>
+      <demo-section>
+        <h2 slot=heading>Sample</h2>
+        <div class="iframe-wrap">
+          <iframe id="iframe" src="layout-sample.html" width=400 height=640></iframe>
+        </div>
+      </demo-section>
+    </demo-section>
+  </demo-page>
   <script>
     var sectionWidth = 0;
     var iframeWidth = 400;
@@ -51,36 +79,6 @@
       url.searchParams.append('panes', document.getElementById('panes').value);
       document.getElementById('iframe').src = url.href;
     }
-  </script>
-  <demo-page>
-    <demo-section id="demo-section">
-      <h1 slot=heading>Options</h1>
-      <mdw-box grid>
-        <mdw-label>Width: <span id="width">400</span></mdw-label>
-        <mdw-slider aria-label=Width name=width value=400 min=360 max=2400 onchange="updateWidth(this)"></mdw-slider>
-        <mdw-listbox id=options multiple onchange="updateURL()" col-span="4" col-span-12="6">
-          <mdw-list-option checkbox value=appBar>Top App Bar</mdw-list-option>
-          <mdw-list-option checkbox value=navBar>Nav Bar</mdw-list-option>
-          <mdw-list-option checkbox value=rail  >Nav Rail</mdw-list-option>
-          <mdw-list-option checkbox value=drawer>Nav Drawer</mdw-list-option>
-        </mdw-listbox>
-        <mdw-listbox id=panes onchange="updateURL()" required col-span="4" col-span-12="6">
-          <mdw-list-option radio value=one    selected>Single Pane</mdw-list-option>
-          <mdw-list-option radio value=fixed          >Fixed/Flexible</mdw-list-option>
-          <mdw-list-option radio value=flexible       >Flexible/Fixed</mdw-list-option>
-          <mdw-list-option radio value=split          >Flexible/Flexible</mdw-list-option>
-        </mdw-listbox>
-      </mdw-box>
-      <demo-section>
-        <h2 slot=heading>Sample</h2>
-        <div class="iframe-wrap">
-          <iframe id="iframe" src="layout-sample.html" width=400 height=640></iframe>
-        </div>
-      </demo-section>
-    </demo-section>
-  </demo-page>
-  <script type=module src="../demo.min.js"></script>
-  <script>
     const demoSection = document.getElementById('demo-section');
     const resizeObserver = new ResizeObserver((entries) => {
       sectionWidth = entries[0].contentRect.width;

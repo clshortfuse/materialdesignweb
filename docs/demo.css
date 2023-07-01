@@ -53,10 +53,6 @@ main {
   padding: 12px;
 }
 
-demo-page:not(:defined) {
-  display: none;
-}
-
 html[dir="rtl"] {
   --mdw-dir: -1;
 }
