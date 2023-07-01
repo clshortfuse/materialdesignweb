@@ -103,12 +103,15 @@ export default function ControlMixin(Base) {
         }
         return ariaLabel?.trim() || null;
       },
+      _computedAriaLabelledBy({ ariaLabel }) {
+        return ariaLabel ? null : 'slot';
+      },
     })
 
     .recompose(({ template, html, element }) => {
       template.append(html`
         <${element.controlTagName} id=control
-          aria-labelledby=${({ ariaLabel }) => (ariaLabel ? null : 'slot')}
+          aria-labelledby={_computedAriaLabelledBy}
           part=control
           aria-label={_computedAriaLabel}
           form-disabled={disabledState}

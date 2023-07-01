@@ -20,6 +20,9 @@ export default Button
     isToggle({ type }) {
       return type === 'checkbox';
     },
+    _computedAriaLabelledBy({ ariaLabel }) {
+      return ariaLabel ? null : 'tooltip';
+    },
   })
   .childEvents({
     control: {
@@ -42,7 +45,7 @@ export default Button
       },
     },
   })
-  .recompose(({ refs: { slot, shape, tooltipSlot, icon, control, outline, anchor } }) => {
+  .recompose(({ refs: { slot, shape, tooltipSlot, icon, control, outline } }) => {
     shape.classList.add('colored');
     icon.classList.add('colored');
     for (const el of [shape, icon]) {
@@ -54,8 +57,6 @@ export default Button
     tooltipSlot.removeAttribute('name');
 
     control.setAttribute('aria-pressed', '{_ariaPressed}');
-    control.setAttribute('aria-labelledby', 'tooltip');
-    anchor.setAttribute('aria-labelledby', 'tooltip');
 
     outline.setAttribute('selected', '{checked}');
   })
