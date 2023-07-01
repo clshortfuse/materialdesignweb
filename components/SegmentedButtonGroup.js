@@ -57,7 +57,7 @@ export default Box
   `
   .on({
     constructed() {
-      this.setAttribute('aria-orientation', 'horizontal');
+      this.updateAriaProperty('ariaOrientation', 'horizontal');
     },
   })
   .autoRegister('mdw-segmented-button-group');
