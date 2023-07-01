@@ -104,15 +104,16 @@ export default CustomElement
       // Move contents of list slot into top-layer
       // Should only have one element
 
-      const { _listbox, refs } = this;
+      const _listbox = this._listbox;
       if (!_listbox) return;
       this._expanded = true;
-      const { ariaListbox, shape } = refs;
+      const { ariaListbox, shape } = this.refs;
       ariaListbox.setAttribute('aria-hidden', 'false');
       const popup = getSharedPopup();
       document.body.append(popup);
       popup.replaceChildren(_listbox);
       popup.showPopup(shape, false);
+      _listbox.value = this.value;
       const [option] = _listbox.selectedOptions;
       if (option) {
         option.scrollIntoView({
@@ -450,9 +451,6 @@ export default CustomElement
         this._listbox = listbox;
         if (listbox) {
           // Bind and store
-          const value = this.value;
-          listbox.value = this.value;
-          this.changeSuggestion({ value });
           this._onListboxChangeListener = this.onListboxChange.bind(this);
           listbox.addEventListener('change', this._onListboxChangeListener);
         }
