@@ -175,11 +175,95 @@ export default function InputMixin(Base) {
         if (submissionBlockers.size > 1) return;
         this.form.submit();
       },
+      /** @param {Event} event */
+      _redispatchControlClickEvent(event) {
+        event.stopPropagation();
+        // Use constructor to match mouse/pointer properties
+        /**  @type {Event} */
+        // @ts-ignore skip-cast
+        const newEvent = (new event.constructor(event.type, event));
+        redispatchedClickEvents.add(newEvent);
+        return this.dispatchEvent(newEvent);
+      },
+      /** @param {MouseEvent} event */
+      _handleInputClick(event) {
+        if (this.disabledState) return;
+        const input = this._input;
+        switch (input.type) {
+          case 'checkbox':
+          case 'radio': {
+            const { _checkedDirty, _checked, _indeterminate } = this;
+            this.checked = input.checked;
+            // Event needs to be rethrown and preventDefault inspected
+            if (this._redispatchControlClickEvent(event)) return;
+            event.preventDefault();
+            this._checkedDirty = _checkedDirty;
+            this._checked = _checked;
+            this._indeterminate = _indeterminate;
+            break;
+          }
+          case 'button':
+          case 'submit':
+          case 'reset': {
+            if (!this._redispatchControlClickEvent(event)) {
+              event.preventDefault();
+              return;
+            }
+            const { type } = input;
+            if (type !== 'submit' && type !== 'reset') return;
+            // If in the composed path is another submit/reset button,
+            // Let that button take preference and ignore click.
 
+            for (const target of event.composedPath()) {
+              if (target === input || target === this) break;
+              if ((target instanceof HTMLInputElement || target instanceof HTMLButtonElement)
+                  && (target.type === 'submit' || target.type === 'reset')) {
+                // Inner Native Button
+                return;
+              }
+              if ((target instanceof HTMLElement && target.form instanceof HTMLFormElement
+                  && (target.type === 'submit' || target.type === 'reset'))) {
+                // Inner FACE Button
+                return;
+              }
+              if ((target instanceof HTMLAnchorElement && target.href)) {
+                // Inner Anchor Button
+                return;
+              }
+            }
+
+            const form = this.elementInternals?.form;
+            if (!form) return;
+
+            if (type === 'submit') {
+              const duplicatedButton = /** @type {HTMLInputElement} */ (input.cloneNode());
+              duplicatedButton.hidden = true;
+              form.append(duplicatedButton);
+              if ('requestSubmit' in form) {
+                form.requestSubmit(duplicatedButton);
+              } else {
+                duplicatedButton.click();
+              }
+              duplicatedButton.remove();
+            } else if (type === 'reset') {
+              form.reset();
+            }
+          }
+            break;
+          default:
+        }
+      },
     })
     .rootEvents({
       click(event) {
         rootClickEvents.add(event);
+        const { control } = this.refs;
+        if (event.target !== control) {
+          // Label-like click
+          if (!event.bubbles) return;
+          event.stopPropagation();
+          this._handleInputClick(event);
+        }
       },
     })
     .events({
@@ -195,18 +279,6 @@ export default function InputMixin(Base) {
         }
       },
     })
-    .methods({
-      /** @param {Event} event */
-      _redispatchControlClickEvent(event) {
-        event.stopPropagation();
-        // Use constructor to match mouse/pointer properties
-        /**  @type {Event} */
-        // @ts-ignore skip-cast
-        const newEvent = (new event.constructor(event.type, event));
-        redispatchedClickEvents.add(newEvent);
-        return this.dispatchEvent(newEvent);
-      },
-    })
     .childEvents({
       control: {
         keydown(event) {
@@ -215,20 +287,7 @@ export default function InputMixin(Base) {
           if (/** @type {HTMLInputElement} */ (event.currentTarget).type === 'submit') return;
           this.performImplicitSubmission(event);
         },
-        click(event) {
-          const { type } = this;
-          if (type !== 'checkbox' && type !== 'radio') return;
-          const input = /** @type {HTMLInputElement} */ (event.currentTarget);
-          const { _checkedDirty, _checked, _indeterminate } = this;
-          this.checked = input.checked;
-
-          // Event needs to be rethrown and preventDefault inspected
-          if (this._redispatchControlClickEvent(event)) return;
-          event.preventDefault();
-          this._checkedDirty = _checkedDirty;
-          this._checked = _checked;
-          this._indeterminate = _indeterminate;
-        },
+        click: '_handleInputClick',
         input(event) {
           if (this.disabledState) {
             event.preventDefault();

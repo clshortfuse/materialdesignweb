@@ -10,9 +10,9 @@ export default Button
   })
   .observe({
     _ariaPressed: {
-      get({ type, checked }) {
+      get({ type, checked, indeterminate }) {
         if (type !== 'checkbox') return null;
-        return checked ? 'true' : 'false';
+        return indeterminate ? 'mixed' : (checked ? 'true' : 'false');
       },
     },
   })
@@ -27,7 +27,7 @@ export default Button
   .childEvents({
     control: {
       keydown(event) {
-        if (event.key !== 'Enter') return;
+        if (event.key !== 'Enter' && event.key !== ' ') return;
         const input = /** @type {HTMLInputElement} */ (event.currentTarget);
         if (input.type !== 'checkbox') return;
         event.stopImmediatePropagation();
@@ -35,13 +35,7 @@ export default Button
         event.preventDefault();
         if (input.disabled) return;
 
-        // Simulate click
-        const clickEvent = new Event('click', { bubbles: true, cancelable: true, composed: true });
-        if (!input.dispatchEvent(clickEvent)) return;
-
-        // Toggle check and signal
-        input.checked = !input.checked;
-        input.dispatchEvent(new Event('change', { bubbles: true }));
+        input.click();
       },
     },
   })

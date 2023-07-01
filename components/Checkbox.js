@@ -38,17 +38,6 @@ export default CustomElement
     </div>
     <slot id=slot></slot>
   `
-  .rootEvents({
-    click(event) {
-      const { control } = this.refs;
-      if (event.target !== control) {
-        if (!event.bubbles) return;
-        // Label-like click
-        event.stopPropagation();
-        control.click();
-      }
-    },
-  })
   .recompose(({ refs: { checkbox, state, rippleContainer } }) => {
     checkbox.append(state, rippleContainer);
   })

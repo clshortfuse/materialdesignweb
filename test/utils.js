@@ -89,6 +89,10 @@ export function axTree(options) {
  */
 export function* iterateMeaningfulAXNodes(rootAXNode) {
   switch (rootAXNode.role) {
+    case 'toggle button':
+      // Firefox uses "toggle button" role instead
+      rootAXNode.role = 'button';
+      // Fallthrough
     case 'alert':
     case 'alertdialog':
     case 'application':
