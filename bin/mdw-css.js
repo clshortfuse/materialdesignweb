@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { generateThemeCSS, generateTypographyGlobalCSS, themeOptionsFromSearchParams } from '../theming/index.js';
+import { generateThemeCSS, generateTypographyGlobalCSS, themeOptionsFromSearchParams } from '../services/theme.js';
 import { getSearchParams } from '../utils/cli.js';
 
 process.stdout.write(

@@ -1,4 +1,5 @@
-import './theming/themableMixinLoader.js';
+import './loaders/palette.js';
+import './loaders/theme.js';
 
 export { default as Badge } from './components/Badge.js';
 export { default as Body } from './components/Body.js';
@@ -75,8 +76,7 @@ export { default as TextFieldMixin } from './mixins/TextFieldMixin.js';
 export { default as SurfaceMixin } from './mixins/SurfaceMixin.js';
 export { default as StateMixin } from './mixins/StateMixin.js';
 
-export * as themeLoader from './theming/loader.js';
-
-export * as theming from './theming/index.js';
-
 export * as jsonMergePatch from './core/jsonMergePatch.js';
+
+export * as theme from './services/theme.js';
+export * as svgAlias from './services/svgAlias.js';

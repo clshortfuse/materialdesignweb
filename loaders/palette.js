@@ -1,8 +1,8 @@
 /** Import this first to ensure ThemableMixin includes custom palettes */
 
-import ThemableMixin from '../mixins/ThemableMixin.js';
+import { PALETTES } from '../services/theme.js';
 
-ThemableMixin.PALETTES.push(
+PALETTES.push(
   ...(
     (new URL(import.meta.url).searchParams)
       .getAll('custom')

@@ -1,6 +1,24 @@
-import { COLOR_KEYWORDS } from '../utils/color_keywords.js';
+import { COLOR_KEYWORDS } from '../constants/colorKeywords.js';
+import { SHAPE_ROUNDED_DEFAULT } from '../constants/shapes.js';
+import { TYPOGRAPHY_DEFAULT } from '../constants/typography.js';
 import { getScheme } from '../utils/material-color/helper.js';
 import { svgToCSSURL } from '../utils/svg.js';
+
+export const PALETTES = [
+  'primary',
+  'secondary',
+  'tertiary',
+  'error',
+  'surface',
+];
+
+export const TYPE_STYLES = [
+  'display',
+  'headline',
+  'title',
+  'label',
+  'body',
+];
 
 /**
  * @typedef {Object} ThemeOptions
@@ -70,174 +88,6 @@ function getShapeEdgesSVGs() {
     '</svg>',
   ].join('');
 }
-
-const CIRCLE_PATH = 'M0 12A12 12 0 1012 0 12 12 0 000 12Z';
-// const SQUIRCLE_PATH = 'M12 24C17.2583 24 20.1815 24 22.0908 22.0908 24 20.1815 24 17.2583 24 12 24 6.7417 24 3.8185 22.0908 1.9092 20.1815-0 17.2583-0 12-0 6.7417-0 3.8185-0 1.9092 1.9092-0 3.8185-0 6.7417-0 12-0 17.2583-0 20.1815 1.9092 22.0908 3.8185 24 6.7417 24 12 24Z';
-const DIAMOND_PATH = 'M 0 12 12 0 24 12 12 24 Z';
-const SQUIRCLE_PATH = 'M12 24C17.2583 24 20.1815 24 22.0908 22.0908 24 20.1815 24 17.2583 24 12 24 6.7417 24 3.8185 22.0908 1.9092 20.1815-0 17.2583-0 12-0 6.7417-0 3.8185-0 1.9092 1.9092-0 3.8185-0 6.7417-0 12-0 17.2583-0 20.1815 1.9092 22.0908 3.8185 24 6.7417 24 12 24Z';
-const HALF_NOTCH_PATH = 'M0 6H6V0H18V6H24V18H18V24H6V18H0Z';
-
-const SHAPE_ROUNDED_DEFAULT = {
-  size: {
-    extraSmall: '4px',
-    small: '8px',
-    medium: '12px',
-    large: '16px',
-    extraLarge: '28px',
-    full: '32px',
-  },
-  /** @type {string?} */
-  mask: CIRCLE_PATH, // CIRCLE_PATH
-  convex: false,
-};
-
-const SHAPE_CUT_DEFAULT = {
-  ...SHAPE_ROUNDED_DEFAULT,
-  size: {
-    extraSmall: '4px',
-    small: '8px',
-    medium: '12px',
-    large: '16px',
-    extraLarge: '28px',
-    full: '32px',
-  },
-  mask: DIAMOND_PATH,
-};
-
-const SHAPE_SQUIRCLE_DEFAULT = {
-  ...SHAPE_ROUNDED_DEFAULT,
-  mask: SQUIRCLE_PATH,
-};
-
-const SP = 1 / 16;
-
-const TYPOGRAPHY_DEFAULT = {
-  face: {
-    brand: '"Roboto Medium", Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", Helvetica, "Segoe UI", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-    plain: '"Roboto Regular", Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", Helvetica, "Segoe UI", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-    weight: {
-      regular: 400,
-      medium: 500,
-    },
-  },
-  scale: {
-    display: {
-      large: {
-        fontFamily: 'var(--mdw-typeface__brand)',
-        lineHeight: 64,
-        fontSize: 57,
-        letterSpacing: 0,
-        weight: 'var(--mdw-typeface__weight-regular)',
-      },
-      medium: {
-        fontFamily: 'var(--mdw-typeface__brand)',
-        lineHeight: 52,
-        fontSize: 45,
-        letterSpacing: 0,
-        weight: 'var(--mdw-typeface__weight-regular)',
-      },
-      small: {
-        fontFamily: 'var(--mdw-typeface__brand)',
-        lineHeight: 44,
-        fontSize: 36,
-        letterSpacing: 0,
-        weight: 'var(--mdw-typeface__weight-regular)',
-      },
-    },
-    headline: {
-      large: {
-        fontFamily: 'var(--mdw-typeface__brand)',
-        lineHeight: 40,
-        fontSize: 32,
-        letterSpacing: 0,
-        weight: 'var(--mdw-typeface__weight-regular)',
-      },
-      medium: {
-        fontFamily: 'var(--mdw-typeface__brand)',
-        lineHeight: 36,
-        fontSize: 28,
-        letterSpacing: 0,
-        weight: 'var(--mdw-typeface__weight-regular)',
-      },
-      small: {
-        fontFamily: 'var(--mdw-typeface__brand)',
-        lineHeight: 32,
-        fontSize: 24,
-        letterSpacing: 0,
-        weight: 'var(--mdw-typeface__weight-regular)',
-      },
-    },
-    title: {
-      large: {
-        fontFamily: 'var(--mdw-typeface__brand)',
-        lineHeight: 28,
-        fontSize: 22,
-        letterSpacing: 0,
-        weight: 'var(--mdw-typeface__weight-medium)', // Figma style has regular
-      },
-      medium: {
-        fontFamily: 'var(--mdw-typeface__plain)',
-        lineHeight: 24,
-        fontSize: 16,
-        letterSpacing: 0.15,
-        weight: 'var(--mdw-typeface__weight-medium)',
-      },
-      small: {
-        fontFamily: 'var(--mdw-typeface__plain)',
-        lineHeight: 20,
-        fontSize: 14,
-        letterSpacing: 0.1,
-        weight: 'var(--mdw-typeface__weight-medium)',
-      },
-    },
-    label: {
-      large: {
-        fontFamily: 'var(--mdw-typeface__plain)',
-        lineHeight: 20,
-        fontSize: 14,
-        letterSpacing: 0.1,
-        weight: 'var(--mdw-typeface__weight-medium)',
-      },
-      medium: {
-        fontFamily: 'var(--mdw-typeface__plain)',
-        lineHeight: 16,
-        fontSize: 12,
-        letterSpacing: 0.5,
-        weight: 'var(--mdw-typeface__weight-medium)',
-      },
-      small: {
-        fontFamily: 'var(--mdw-typeface__plain)',
-        lineHeight: 16,
-        fontSize: 11,
-        letterSpacing: 0.5,
-        weight: 'var(--mdw-typeface__weight-medium)',
-      },
-    },
-    body: {
-      large: {
-        fontFamily: 'var(--mdw-typeface__plain)',
-        lineHeight: 24,
-        fontSize: 16,
-        letterSpacing: 0.5, // Figma text has 0.15
-        weight: 'var(--mdw-typeface__weight-regular)',
-      },
-      medium: {
-        fontFamily: 'var(--mdw-typeface__plain)',
-        lineHeight: 20,
-        fontSize: 14,
-        letterSpacing: 0.25,
-        weight: 'var(--mdw-typeface__weight-regular)',
-      },
-      small: {
-        fontFamily: 'var(--mdw-typeface__brand)',
-        lineHeight: 16,
-        fontSize: 12,
-        letterSpacing: 0.4,
-        weight: 'var(--mdw-typeface__weight-regular)',
-      },
-    },
-  },
-};
 
 /**
  * @param {typeof TYPOGRAPHY_DEFAULT} config
@@ -359,7 +209,7 @@ export function generateTypographyGlobalCSS() {
 }
 
 /**
- * @param {typeof SHAPE_ROUNDED_DEFAULT} config
+ * @param {typeof SHAPE_ROUNDED_DEFAULT} [config]
  * @return {string}
  */
 export function generateShapeCSS(config = SHAPE_ROUNDED_DEFAULT) {

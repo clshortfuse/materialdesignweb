@@ -1,10 +1,9 @@
 import { css } from '../core/css.js';
-
 import {
   generateThemeCSS,
   generateTypographyGlobalCSS,
   themeOptionsFromSearchParams,
-} from './index.js';
+} from '../services/theme.js';
 
 const rules = [
   generateThemeCSS(themeOptionsFromSearchParams(new URL(import.meta.url).searchParams)),
