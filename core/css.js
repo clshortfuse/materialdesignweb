@@ -68,20 +68,17 @@ export function createCSS(content, useCache = true) {
 
 /**
  * @param {Iterable<HTMLStyleElement|CSSStyleSheet>} styles
+ * @param {boolean} [useCache=true]
  * @yields composed CSSStyleSheet
  * @return {Generator<CSSStyleSheet>} composed CSSStyleSheet
  */
-export function* generateCSSStyleSheets(styles) {
+export function* generateCSSStyleSheets(styles, useCache = true) {
   for (const style of styles) {
     if (style instanceof HTMLStyleElement) {
-      const sheet = new CSSStyleSheet();
-      sheet.replaceSync(style.textContent);
-      yield sheet;
+      yield createCSSStyleSheet(style.textContent, useCache);
     } else if (style.ownerNode) {
       console.warn('Stylesheet is part of style');
-      const sheet = new CSSStyleSheet();
-      sheet.replaceSync([...style.cssRules].map((r) => r.cssText).join(''));
-      yield sheet;
+      yield createCSSStyleSheet([...style.cssRules].map((r) => r.cssText).join(''), useCache);
     } else {
       yield style;
     }
@@ -89,14 +86,15 @@ export function* generateCSSStyleSheets(styles) {
 }
 
 /** @type {WeakMap<CSSStyleSheet, HTMLStyleElement>} */
-const styleElementWrappers = new WeakMap();
+const styleElementFromStyleSheetCache = new WeakMap();
 
 /**
  * @param {Iterable<HTMLStyleElement|CSSStyleSheet>} styles
+ * @param {boolean} [useCache=true]
  * @yields composed HTMLStyleElement
  * @return {Generator<HTMLStyleElement>} composed CSSStyleSheet
  */
-export function* generateHTMLStyleElements(styles) {
+export function* generateHTMLStyleElements(styles, useCache = true) {
   for (const style of styles) {
     if (style instanceof HTMLStyleElement) {
       yield style;
@@ -104,14 +102,16 @@ export function* generateHTMLStyleElements(styles) {
       // console.log('Cloning parent HTMLStyleElement instead');
       // @ts-ignore Skip cast
       yield style.ownerNode.cloneNode(true);
-    } else if (styleElementWrappers.has(style)) {
+    } else if (useCache && styleElementFromStyleSheetCache.has(style)) {
       // @ts-ignore Skip cast
       yield styleElementWrappers.get(style).cloneNode(true);
     } else {
       console.warn('Manually constructing HTMLStyleElement', [...style.cssRules].map((r) => r.cssText).join('\n'));
       const styleElement = document.createElement('style');
       styleElement.textContent = [...style.cssRules].map((r) => r.cssText).join('');
-      styleElementWrappers.set(style, styleElement);
+      if (useCache) {
+        styleElementFromStyleSheetCache.set(style, styleElement);
+      }
 
       // @ts-ignore Skip cast
       yield styleElement.cloneNode(true);
