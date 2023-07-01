@@ -1,4 +1,4 @@
-import { addSVGAlias } from '../services/SVGAlias.js';
+import { addSVGAlias } from '../services/svgAlias.js';
 
 /** @type {DOMParser} */
 let domParser;

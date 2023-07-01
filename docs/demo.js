@@ -55,8 +55,6 @@ import '../components/TopAppBar.js';
 
 import './demo/DemoButton.js';
 import './demo/DemoDummy.js';
+import './demo/DemoPage.js';
 import './demo/DemoScreen.js';
 import './demo/DemoSection.js';
-
-// Load last to avoid layout shifts
-import './demo/DemoPage.js';

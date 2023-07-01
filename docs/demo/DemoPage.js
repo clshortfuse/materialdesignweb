@@ -4,6 +4,7 @@ import '../../components/Menu.js';
 import '../../components/Listbox.js';
 import '../../components/MenuItem.js';
 import '../../components/TopAppBar.js';
+import '../../components/NavDrawerItem.js';
 
 import CustomElement from '../../core/CustomElement.js';
 
