@@ -9,6 +9,7 @@ export default Button
     innerSegmentedButton: 'boolean',
   })
   .set({
+    outlined: true,
     focusableOnDisabled: true,
   })
   .recompose(({ html, inline, refs: { shape, icon, outline, control, slot, state } }) => {
@@ -35,11 +36,6 @@ export default Button
     ));
 
     state.setAttribute('state-disabled', 'focus');
-  })
-  .on({
-    constructed() {
-      this.outlined = true;
-    },
   })
   .css`
     /* https://m3.material.io/components/segmented-buttons/specs */
