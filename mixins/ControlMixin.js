@@ -152,7 +152,7 @@ export default function ControlMixin(Base) {
     .childEvents({
       control: {
         click(e) {
-          if (this.focusableOnDisabled) {
+          if (this.focusableOnDisabled && this.disabledState) {
             e.preventDefault();
             e.stopImmediatePropagation();
           }
