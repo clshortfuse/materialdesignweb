@@ -377,8 +377,6 @@ export default CustomElement
     }
 
     #scrim::before {
-      content: '';
-
       position: absolute;
       /* stylelint-disable-next-line liberty/use-logical-spec */
       top: 0;
@@ -389,6 +387,11 @@ export default CustomElement
 
       block-size: 200%;
       inline-size: 200%;
+    }
+
+    #scrim[state="open"]::before {
+      /* Chrome bug, element will trap scroll events despite visibility:hidden */
+      content: '';
     }
 
     .pane {
