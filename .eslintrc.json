@@ -225,6 +225,7 @@
     "jsdoc/require-property-description": 0,
     "jsdoc/require-returns": 0,
     "jsdoc/require-returns-description": 0,
+    "jsdoc/no-defaults": 0,
     "jsdoc/valid-types": 0,
     "max-len": ["error", 120, 2, {
       "ignoreComments": true,
