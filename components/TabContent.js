@@ -121,6 +121,7 @@ export default CustomElement
         // @ts-ignore Skip cast
         this._panelNodes = slot.assignedElements()
           .filter((el) => el.tagName === TabPanel.elementName.toUpperCase());
+        this._panelMetrics = null;
         this.updatePanels();
       },
     },

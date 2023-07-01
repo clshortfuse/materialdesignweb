@@ -58,16 +58,7 @@ export default CustomElement
     },
   })
   .observe({
-    tabContentId: {
-      /**
-       * @param {string} oldValue
-       * @param {string} newValue
-       */
-      changedCallback(oldValue, newValue) {
-        // @ts-ignore Skip cast
-        this.tabContent = newValue ? document.getElementById(newValue) : null;
-      },
-    },
+    tabContentId: 'string',
     active: 'boolean',
     secondary: 'boolean',
     _indicatorStyle: { value: 'opacity: 0' },
@@ -172,10 +163,16 @@ export default CustomElement
     clearCache() {
       this._tabMetrics = null;
     },
+    searchForTabContent() {
+      const { tabContentId, isConnected } = this;
+      if (!tabContentId) return;
+      if (!isConnected) return;
+      this.tabContent = this.getRootNode().getElementById(tabContentId);
+    },
     /** @param {InstanceType<Tab>} [tab] */
     updateIndicatorByTab(tab) {
       tab ??= this.selectedItem ?? this.tabs.item(0);
-
+      if (!tab) return;
       const width = this.secondary ? tab.clientWidth : tab.labelMetrics.width;
       const position = this.secondary ? tab.offsetLeft : tab.offsetLeft + tab.labelMetrics.left;
       this._indicatorStyle = `--width: ${width}; --offset: ${position}px`;
@@ -269,6 +266,12 @@ export default CustomElement
     shape.append(indicator);
   })
   .on({
+    constructed() {
+      document.addEventListener('DOMContentLoaded', () => this.searchForTabContent(), { once: true });
+    },
+    connected() {
+      this.searchForTabContent();
+    },
     pageIsRTLChanged() {
       this.clearCache();
       this.updateIndicator();
@@ -285,6 +288,9 @@ export default CustomElement
     _selectedIndexChanged(oldValue, newValue) {
       this.updateIndicatorByIndex(newValue);
     },
+    tabContentIdChanged() {
+      this.searchForTabContent();
+    },
   })
   .events({
     '~click'({ target }) {
@@ -300,6 +306,7 @@ export default CustomElement
       slotchange() {
         this.clearCache();
         this.updateIndicator();
+        this.searchForTabContent();
       },
     },
   })
