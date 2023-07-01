@@ -22,6 +22,12 @@ const serve = cliArgs.has('serve');
 const watch = cliArgs.has('watch');
 const live = cliArgs.has('live');
 const outdir = cliArgs.get('outdir');
+let treeShaking;
+switch (cliArgs.get('tree-shaking')) {
+  case 'true': treeShaking = true; break;
+  case 'false': treeShaking = false; break;
+  default:
+}
 const entryPoints = process.argv.slice(2).filter((arg) => !arg.startsWith('--'));
 
 const minify = cliArgs.has('minify') ? { minify: true } : {
@@ -54,6 +60,7 @@ const buildOptions = {
   drop: isProduction || noConsole ? ['console'] : [],
   target,
   outdir,
+  treeShaking,
   plugins: [
     MinifyTemplateLiteralsPlugin,
     StatisticsPlugin,

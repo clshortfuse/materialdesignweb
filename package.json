@@ -12,7 +12,7 @@
     "predocs-alt": "node bin/mdw-css.js --color=a46750 --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/alt-theme.css",
     "docs": "node build/esbuild.js docs/demo.js --outdir=docs --minify --metafile",
     "watch": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile",
-    "serve": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile --serve --live",
+    "serve": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile --serve --live --tree-shaking=true",
     "sample": "node build/esbuild.js index.js --outdir=docs --watch --metafile --serve --live",
     "pretest": "eslint --ignore-path .gitignore",
     "test": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit",
@@ -51,10 +51,9 @@
   "author": "Carlos Lopez Jr. <clshortfuse@gmail.com> (https://shortfuse.org/)",
   "license": "ISC",
   "sideEffects": [
-    "./polyfills.js",
     "./components/*.js",
+    "./loaders/*.js",
     "./utils/metadata.js",
-    "./theming/loader.js",
     "./docs/custom.js",
     "./docs/demo/*.js"
   ],
