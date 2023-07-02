@@ -13,9 +13,9 @@
   <demo-page>
     <demo-section>
       <h1 slot=heading>Type Styles</h1>
-      <mdw-box type-style=display>Display large</mdw-box>
-      <mdw-box type-style=display-medium>Display medium</mdw-box>
-      <mdw-box type-style=display-small>Display small</mdw-box>
+      <mdw-display>Display large</mdw-display>
+      <mdw-display size="medium">Display medium</mdw-display>
+      <mdw-display size="small">Display small</mdw-display>
       <mdw-headline>Headline large</mdw-headline>
       <mdw-headline size=medium>Headline medium</mdw-headline>
       <mdw-headline size=small>Headline small</mdw-headline>
@@ -30,22 +30,15 @@
       <mdw-body size=small>Body small</mdw-body>
     </demo-section>
     <demo-section>
-      <h1 slot=heading>Inline Icons</h1>
-      <mdw-box type-style=display>Display large <mdw-icon icon=edit></mdw-icon></mdw-box>
-      <mdw-box type-style=display-medium>Display medium <mdw-icon icon=edit></mdw-icon></mdw-box>
-      <mdw-box type-style=display-small>Display small <mdw-icon icon=edit></mdw-icon></mdw-box>
-      <mdw-headline>Headline large <mdw-icon icon=edit></mdw-icon></mdw-headline>
-      <mdw-headline size=medium>Headline medium <mdw-icon icon=edit></mdw-icon></mdw-headline>
-      <mdw-headline size=small>Headline small <mdw-icon icon=edit></mdw-icon></mdw-headline>
-      <mdw-title>Title large <mdw-icon icon=edit></mdw-icon></mdw-title>
-      <mdw-title size=medium>Title medium <mdw-icon icon=edit></mdw-icon></mdw-title>
-      <mdw-title size=small>Title small <mdw-icon icon=edit></mdw-icon></mdw-title>
-      <mdw-label>Label large <mdw-icon icon=edit></mdw-icon></mdw-label>
-      <mdw-label size=medium>Label medium <mdw-icon icon=edit></mdw-icon></mdw-label>
-      <mdw-label size=small>Label small <mdw-icon icon=edit></mdw-icon></mdw-label>
-      <mdw-body>Body large <mdw-icon icon=edit></mdw-icon></mdw-body>
-      <mdw-body size=medium>Body medium <mdw-icon icon=edit></mdw-icon></mdw-body>
-      <mdw-body size=small>Body small <mdw-icon icon=edit></mdw-icon></mdw-body>
+      <mdw-headline>Alignment examples</mdw-headline>
+      <mdw-divider ink="primary"></mdw-divider>
+      <mdw-title text-leading="64" text-padding-bottom="20">64sp leading and 20sp from baseline with <mdw-icon icon=edit></mdw-icon> icon.</mdw-title>
+      <mdw-divider ink="primary"></mdw-divider>
+      <mdw-body text-padding-top="20" text-padding-bottom="20">20sp padding from cap-height and 20sp from baseline. Supports text wrapping and multiple lines without affecting line-height. Uses <em>sp</em> units to scale with root font size. Also supports <em>px</em> and <em>rem</em> values.</mdw-body>
+      <mdw-divider ink="primary"></mdw-divider>
+      <mdw-divider ink="primary"></mdw-divider>
+      <mdw-body color="secondary" text-padding-top="36" text-padding-bottom="36">36sp padding from cap-height and 36sp from baseline. Bounding rectangle includes the padding to allow colored content</mdw-body>
+      <mdw-divider ink="primary"></mdw-divider>
     </demo-section>
   </demo-page>
 </body>

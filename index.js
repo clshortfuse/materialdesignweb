@@ -11,6 +11,7 @@ export { default as Checkbox } from './components/Checkbox.js';
 export { default as Chip } from './components/Chip.js';
 export { default as Dialog } from './components/Dialog.js';
 export { default as Divider } from './components/Divider.js';
+export { default as Display } from './components/Display.js';
 export { default as ExtendedFab } from './components/ExtendedFab.js';
 export { default as Fab } from './components/Fab.js';
 export { default as FilterChip } from './components/FilterChip.js';

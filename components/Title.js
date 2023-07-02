@@ -1,13 +1,13 @@
-import Headline from './Headline.js';
+import Display from './Display.js';
 
-export default Headline
+export default Display
   .extend()
   .expressions({
     computeAriaLevel({ ariaLevel, size }) {
       if (ariaLevel) return ariaLevel;
-      if (size === 'medium') return '5';
-      if (size === 'small') return '6';
-      return '4';
+      if (size === 'medium') return '8';
+      if (size === 'small') return '9';
+      return '7';
     },
   })
   .css`

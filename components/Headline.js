@@ -1,29 +1,14 @@
-import ThemableMixin from '../mixins/ThemableMixin.js';
+import Display from './Display.js';
 
-import Box from './Box.js';
-
-export default Box
+export default Display
   .extend()
-  .mixin(ThemableMixin)
-  .observe({
-    ariaLevel: 'string',
-    size: {
-      type: 'string',
-      /** @type {'large'|'medium'|'small'} */
-      empty: 'large',
-    },
-  })
   .expressions({
     computeAriaLevel({ ariaLevel, size }) {
       if (ariaLevel) return ariaLevel;
-      if (size === 'medium') return '2';
-      if (size === 'small') return '3';
-      return '1';
+      if (size === 'medium') return '5';
+      if (size === 'small') return '6';
+      return '4';
     },
-  })
-  .recompose(({ refs: { slot } }) => {
-    slot.setAttribute('role', 'heading');
-    slot.setAttribute('aria-level', '{computeAriaLevel}');
   })
   .css`
     :host {
@@ -39,6 +24,6 @@ export default Box
     :host([size="small"]) {
       font: var(--mdw-typescale__headline-small__font);
       letter-spacing: var(--mdw-typescale__headline-small__letter-spacing);
-    }  
+    }
   `
   .autoRegister('mdw-headline');

@@ -1,7 +1,10 @@
+import TypographyMixin from '../mixins/TypographyMixin.js';
+
 import Box from './Box.js';
 
 export default Box
   .extend()
+  .mixin(TypographyMixin)
   .css`
     :host {
       font: var(--mdw-typescale__body-large__font);

@@ -11,6 +11,7 @@ import '../components/Card.js';
 import '../components/Checkbox.js';
 import '../components/Chip.js';
 import '../components/Dialog.js';
+import '../components/Display.js';
 import '../components/Divider.js';
 import '../components/ExtendedFab.js';
 import '../components/Fab.js';
