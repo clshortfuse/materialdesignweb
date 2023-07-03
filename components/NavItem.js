@@ -83,7 +83,7 @@ export default class NavItem extends CustomElement
       padding-inline: 0;
 
       cursor: pointer;
-      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+
       user-select: none;
 
       font: var(--mdw-typescale__label-large__font);

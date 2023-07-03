@@ -169,7 +169,6 @@ export default CustomElement
       '~mouseout': 'onControlMouseOrTouch',
       '~touchmove': 'onControlMouseOrTouch',
       '~touchstart': 'onControlMouseOrTouch',
-      // @ts-expect-error Old spec
       '~touchleave': 'onControlMouseOrTouch',
       '~touchcancel': 'onControlMouseOrTouch',
       '~touchend': 'onControlMouseOrTouch',
@@ -368,7 +367,6 @@ export default CustomElement
       padding-inline: 10px;
 
       background-clip: content-box;
-      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
       background-image: radial-gradient(circle at center, var(--tick-color) 0, var(--tick-color) 1px, transparent 0);
       background-position: center center;
       background-repeat: repeat-x;

@@ -61,6 +61,11 @@
     "url": "https://github.com/clshortfuse/materialdesignweb/issues"
   },
   "homepage": "https://github.com/clshortfuse/materialdesignweb#readme",
+  "overrides": {
+    "stylelint-no-unsupported-browser-features": {
+      "doiuse": "^6.0.0"
+    }
+  },
   "devDependencies": {
     "@esm-bundle/chai": "^4.3.4-fix.0",
     "@playwright/test": "^1.32.3",
@@ -92,7 +97,7 @@
     "postcss-styled": "^0.34.0",
     "postcss-styled-syntax": "^0.4.0",
     "stylelint": "^15.2.0",
-    "stylelint-no-unsupported-browser-features": "github:clshortfuse/stylelint-no-unsupported-browser-features#0a51157",
+    "stylelint-no-unsupported-browser-features": "^6.1.0",
     "stylelint-order": "^6.0.2",
     "stylelint-use-logical-spec": "^5.0.0",
     "typescript": "5.1"
