@@ -72,6 +72,7 @@ export default CustomElement
   })
   .set({
     _onListboxChangeListener: null,
+    _onListboxClickListener: null,
   })
   .define({
     stateTargetElement() { return this.refs.control; },
@@ -82,13 +83,21 @@ export default CustomElement
       getSharedPopup().updatePopupPosition(this.refs.shape);
     },
     /**
+     * Listbox should close if clicking own selection
+     * @param {Event} event
+     */
+    onListboxClick(event) {
+      this.closeListbox();
+      // Revert focus back
+      this.refs.control.focus();
+    },
+    /**
      * @param {Event} event
      */
     onListboxChange(event) {
       const selectedItem = this._listbox.selectedOptions.item(0);
-      this.selectOption(selectedItem, true);
+      this.selectOption(selectedItem);
       this.closeListbox();
-      // Revert focus back
       this.refs.control.focus();
     },
     applyAutocompleteList() {
@@ -447,12 +456,17 @@ export default CustomElement
           // Unbind and release
           _listbox.removeEventListener('change', this._onListboxChangeListener);
           this._onListboxChangeListener = null;
+          _listbox.removeEventListener('click', this._onListboxClickListener);
+          this._onListboxClickListener = null;
         }
         this._listbox = listbox;
         if (listbox) {
           // Bind and store
+          listbox.required = true; // Don't allow unclick
           this._onListboxChangeListener = this.onListboxChange.bind(this);
           listbox.addEventListener('change', this._onListboxChangeListener);
+          this._onListboxChangeListener = this.onListboxClick.bind(this);
+          listbox.addEventListener('click', this._onListboxChangeListener);
         }
       },
     },
