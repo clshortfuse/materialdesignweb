@@ -1089,5 +1089,94 @@ describe('mdw-button', () => {
       });
     });
   });
+  /** @see https://wpt.live/html/semantics/links/links-created-by-a-and-area-elements */
+  describe('wpt - <a>', () => {
+    /** @see http://wpt.live/html/semantics/links/links-created-by-a-and-area-elements/htmlanchorelement_attribute-getter-setter.html */
+    describe('htmlanchorelement_attribute-getter-setter', () => {
+      // Elements for each test: [property, oldresult, newvalue, newresult, oldurl, newurl]
+      //                         [0]       [1]        [2]       [3]        [4]     [5]
+      for (const [index, [property, oldresult, newval, newresult, oldurl, newurl]] of [
+        ['hash', '#somehash', 'someother', '#someother',
+          'http://google.com/index.html#somehash',
+          'http://google.com/index.html#someother'],
+        ['hash', '#somehash', '#someother', '#someother',
+          'http://google.com/index.html#somehash',
+          'http://google.com/index.html#someother'],
+        ['host', 'google.com:1234', 'github.com:4444', 'github.com:4444',
+          'http://google.com:1234/somedir',
+          'http://github.com:4444/somedir'],
+        ['hostname', 'google.com', 'github.com', 'github.com',
+          'http://google.com:1234/somedir',
+          'http://github.com:1234/somedir'],
+        ['href', 'http://google.com:1234/somedir', 'http://goo-gle.com:1234/other/x.html', 'http://goo-gle.com:1234/other/x.html',
+          'http://google.com:1234/somedir',
+          'http://goo-gle.com:1234/other/x.html'],
+        ['password', 'flabada', 'blubb', 'blubb',
+          'https://anonymous:flabada@developer.mozilla.org/en-US/docs/',
+          'https://anonymous:blubb@developer.mozilla.org/en-US/docs/'],
+        ['pathname', '/somedir/someotherdir/index.html', '/newpath/x.txt', '/newpath/x.txt',
+          'http://google.com:1234/somedir/someotherdir/index.html',
+          'http://google.com:1234/newpath/x.txt'],
+        ['port', '1234', '4444', '4444', 'http://google.com:1234/somedir', 'http://google.com:4444/somedir'],
+        ['protocol', 'http:', 'ftp:', 'ftp:', 'http://google.com/somedir', 'ftp://google.com/somedir'],
+        ['protocol', 'http:', 'ftp', 'ftp:', 'http://google.com/somedir', 'ftp://google.com/somedir'],
+        ['search', '?ho', '?hi', '?hi', 'http://google.com/q.php?ho', 'http://google.com/q.php?hi'],
+        ['search', '?ho', 'hi', '?hi', 'http://google.com/q.php?ho', 'http://google.com/q.php?hi'],
+        ['search', '?ho', '?hi', '?hi', 'http://google.com/?ho', 'http://google.com/?hi'],
+        ['search', '?ho', 'hi', '?hi', 'http://google.com/?ho', 'http://google.com/?hi'],
+        ['username', 'anonymous', 'wellknown', 'wellknown',
+          'https://anonymous:pwd@developer.mozilla.org:1234/en-US/',
+          'https://wellknown:pwd@developer.mozilla.org:1234/en-US/'],
+      ].entries()) {
+        it(`Getter and setter for attribute of anchor element(${index}):${property}`, () => {
+          /** @type {InstanceType<Button>} */
+          const a = html`<mdw-button>anchor</mdw-button>`;
+          a.href = oldurl;
+          const r1 = a[property];
+          assert.equal(r1, oldresult);
+          a[property] = newval;
+          const r2 = a[property];
+          assert.equal(r2, newresult);
+          const r3 = a.href;
+          assert.equal(r3, newurl);
+        });
+      }
+    });
+    /** @see http://wpt.live/html/semantics/links/links-created-by-a-and-area-elements/htmlanchorelement_getter.html */
+    describe('htmlanchorelement_getter', () => {
+      const hrefs = [
+        'http://google.com?hi',
+        'http://google.com#somehash',
+        'http://google.com:1234/somedir',
+        'http://google.com:1234/somedir',
+        'http://google.com:1234/somedir',
+        'https://anonymous:flabada@developer.mozilla.org/en-US/docs/',
+        'http://google.com:1234/somedir/someotherdir/index.html',
+        'http://google.com:1234/somedir',
+        'http://google.com/somedir',
+        'https://anonymous:pwd@developer.mozilla.org:1234/en-US/',
+      ];
+
+      // Elements for each test: [property, result, id]
+      //                         [0]       [1]     [2]
+      for (const [index, [property, result, id]] of [
+        ['search', '?hi', 'a1'],
+        ['hash', '#somehash', 'a2'],
+        ['host', 'google.com:1234', 'a3'],
+        ['hostname', 'google.com', 'a4'],
+        ['href', 'http://google.com:1234/somedir', 'a5'],
+        ['password', 'flabada', 'a6'],
+        ['pathname', '/somedir/someotherdir/index.html', 'a7'],
+        ['port', '1234', 'a8'],
+        ['protocol', 'http:', 'a9'],
+        ['username', 'anonymous', 'a10'],
+      ].entries()) {
+        it(`Getter for attribute of anchor element(${index}):${property}`, () => {
+          const a = html`<mdw-button href="${hrefs[index]}"></mdw-button>`;
+          assert.equal(a[property], result);
+        });
+      }
+    });
+  });
   /* eslint-enable camelcase */
 });

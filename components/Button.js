@@ -8,6 +8,28 @@ import StateMixin from '../mixins/StateMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
+// https://html.spec.whatwg.org/multipage/links.html#dom-hyperlink-protocol-dev
+
+/**
+ * @template {keyof URL} T
+ * @param {T} name
+ * @return {ThisType<URL> & TypedPropertyDescriptor<URL[T]>}
+ */
+function buildHyperlinkDefinition(name) {
+  return {
+    get() {
+      return new URL(this.href)[name];
+    },
+    set(value) {
+      const { href } = this;
+      if (!href) return;
+      const url = new URL(href);
+      url[name] = value;
+      this.href = url.href;
+    },
+  };
+}
+
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -51,6 +73,25 @@ export default CustomElement
     svg: 'string',
     viewBox: 'string',
     svgPath: 'string',
+
+    target: 'string',
+    download: 'string',
+    ping: 'string',
+    rel: 'string',
+    hreflang: 'string',
+    referrerPolicy: { type: 'string', attr: 'referrerpolicy' },
+  })
+  .define({
+    origin() { return new URL(this.href).origin; },
+    protocol: buildHyperlinkDefinition('protocol'),
+    username: buildHyperlinkDefinition('username'),
+    password: buildHyperlinkDefinition('password'),
+    host: buildHyperlinkDefinition('host'),
+    hostname: buildHyperlinkDefinition('hostname'),
+    port: buildHyperlinkDefinition('port'),
+    pathname: buildHyperlinkDefinition('pathname'),
+    search: buildHyperlinkDefinition('search'),
+    hash: buildHyperlinkDefinition('hash'),
   })
   .expressions({
     hasIcon({ icon, svg, src, svgPath }) {
@@ -68,7 +109,15 @@ export default CustomElement
   })
   .html`
     <mdw-icon mdw-if={hasIcon} id=icon ink={iconInk} disabled={disabledState} outlined={outlined} aria-hidden=true svg={svg} src={src} svg-path={svgPath} view-box={viewBox} icon={icon}></mdw-icon>
-    <a mdw-if={href} id=anchor href={href} aria-label="{_computedAriaLabel}" aria-labelledby="{_computedAriaLabelledby}"></a>
+    <a mdw-if={href} id=anchor aria-label="{_computedAriaLabel}" aria-labelledby="{_computedAriaLabelledby}"
+      href={href}
+      target={target}
+      download={download}
+      ping={ping}
+      rel={rel}
+      hreflang={hreflang}
+      referrerpolicy={referrerPolicy}
+    ></a>
     <slot id=slot disabled={disabledState} aria-hidden=false>{value}</slot>
   `
   .recompose(({ refs: { shape, state, rippleContainer, surface, control } }) => {
