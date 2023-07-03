@@ -12,7 +12,7 @@
 <body>
   <demo-page>
     <demo-section>
-      <h1 slot=heading>Type Styles</h1>
+      <mdw-headline slot=heading text-padding-bottom="24" text-padding-top="24" ink="primary" >Type Styles</mdw-headline>
       <mdw-display>Display large</mdw-display>
       <mdw-display size="medium">Display medium</mdw-display>
       <mdw-display size="small">Display small</mdw-display>
@@ -30,14 +30,14 @@
       <mdw-body size=small>Body small</mdw-body>
     </demo-section>
     <demo-section>
-      <mdw-headline>Alignment examples</mdw-headline>
+      <mdw-headline slot=heading text-padding-bottom="24" text-padding-top="24" ink="primary" >Alignment examples</mdw-headline>
       <mdw-divider ink="primary"></mdw-divider>
       <mdw-title text-leading="64" text-padding-bottom="20">64sp leading and 20sp from baseline with <mdw-icon icon=edit></mdw-icon> icon.</mdw-title>
       <mdw-divider ink="primary"></mdw-divider>
-      <mdw-body text-padding-top="20" text-padding-bottom="20">20sp padding from cap-height and 20sp from baseline. Supports text wrapping and multiple lines without affecting line-height. Uses <em>sp</em> units to scale with root font size. Also supports <em>px</em> and <em>rem</em> values.</mdw-body>
+      <mdw-body text-padding-top="20" text-padding-bottom="20">20sp padding from cap-height and 20sp from baseline. Supports text wrapping and multiple lines without affecting line-height. Uses <em>sp</em> units to scale with root font size. Also supports CSS length values (eg: <code>16px</code>; <code>4ex</code>; <code>1em</code>).</mdw-body>
       <mdw-divider ink="primary"></mdw-divider>
       <mdw-divider ink="primary"></mdw-divider>
-      <mdw-body color="secondary" text-padding-top="36" text-padding-bottom="36">36sp padding from cap-height and 36sp from baseline. Bounding rectangle includes the padding to allow colored content</mdw-body>
+      <mdw-body color="secondary-container" text-padding-top="36" text-padding-bottom="36">36sp padding from cap-height and 36sp from baseline. Bounding rectangle includes the padding to allow colored content</mdw-body>
       <mdw-divider ink="primary"></mdw-divider>
     </demo-section>
   </demo-page>
