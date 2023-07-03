@@ -2,13 +2,8 @@ import Display from './Display.js';
 
 export default Display
   .extend()
-  .expressions({
-    computeAriaLevel({ ariaLevel, size }) {
-      if (ariaLevel) return ariaLevel;
-      if (size === 'medium') return '5';
-      if (size === 'small') return '6';
-      return '4';
-    },
+  .set({
+    _baseAriaLevel: 4,
   })
   .css`
     :host {

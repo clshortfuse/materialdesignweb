@@ -7,6 +7,10 @@ export default Box
   .extend()
   .mixin(AriaReflectorMixin)
   .mixin(TypographyMixin)
+  .set({
+    _ariaRole: 'heading',
+    _baseAriaLevel: 1,
+  })
   .observe({
     ariaLevel: 'string',
     size: {
@@ -15,20 +19,21 @@ export default Box
       empty: 'large',
     },
   })
-  .set({
-    _ariaRole: 'heading',
-  })
-  .expressions({
-    computeAriaLevel({ ariaLevel, size }) {
+  .observe({
+    _computedAriaLevel({ ariaLevel, size, _baseAriaLevel }) {
       if (ariaLevel) return ariaLevel;
-      if (size === 'medium') return '2';
-      if (size === 'small') return '3';
-      return '1';
+      if (size === 'medium') return `${_baseAriaLevel + 1}`;
+      if (size === 'small') return `${_baseAriaLevel + 2}`;
+      return `${_baseAriaLevel}`;
     },
   })
+
   .on({
-    ariaLevelChanged(oldValue, newValue) {
+    _computedAriaLevelChanged(oldValue, newValue) {
       this.updateAriaProperty('ariaLevel', newValue);
+    },
+    constructed() {
+      this.updateAriaProperty('ariaLevel', this._computedAriaLevel);
     },
   })
   .css`
