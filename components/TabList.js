@@ -4,6 +4,7 @@ import CustomElement from '../core/CustomElement.js';
 import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
 import RTLObserverMixin from '../mixins/RTLObserverMixin.js';
 import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
+import SemiStickyMixin from '../mixins/SemiStickyMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
@@ -16,6 +17,7 @@ export default CustomElement
   .mixin(ResizeObserverMixin)
   .mixin(RTLObserverMixin)
   .mixin(ShapeMixin)
+  .mixin(SemiStickyMixin)
   .set({
     /** @type {WeakRef<HTMLElement>} */
     _tabContentRef: null,
@@ -332,6 +334,8 @@ export default CustomElement
       min-block-size: 48px;
       inline-size: 100%;
       flex:none;
+
+      z-index: 4;
 
       color: inherit;
 

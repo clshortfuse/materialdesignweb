@@ -3,6 +3,7 @@
 import './Icon.js';
 
 import CustomElement from '../core/CustomElement.js';
+import { CHROME_VERSION } from '../core/dom.js';
 import RippleMixin from '../mixins/RippleMixin.js';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
@@ -84,14 +85,20 @@ export default CustomElement
           return;
         }
         if (href.startsWith('#')) {
-          const root = /** @type {HTMLElement} */ this.getRootNode();
+          const root = /** @type {HTMLElement} */ (this.getRootNode());
+          /** @type {HTMLElement} */
           const el = root.querySelector(href);
           if (!el) {
             console.warn('Unknown element', href);
             return;
           }
           event.preventDefault();
-          el.scrollIntoView({ block: 'nearest', inline: 'start' });
+          // Chrome does not support scrolling two elements at the same time
+          // https://bugs.chromium.org/p/chromium/issues/detail?id=1430426
+          const behavior = CHROME_VERSION ? 'instant' : 'smooth';
+
+          el.scrollTo({ top: 0, behavior });
+          el.scrollIntoView({ inline: 'nearest', block: 'nearest', behavior });
         }
       },
     },

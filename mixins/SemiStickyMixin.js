@@ -38,6 +38,9 @@ export default function SemiStickyMixin(Base) {
         semiStickyElement.style.position = 'sticky';
       },
     })
+    .define({
+      semiStickyTarget() { return this; },
+    })
     .observe({
       _semiStickyStyleStyle: {
         ...ELEMENT_STYLER_TYPE,
@@ -90,7 +93,7 @@ export default function SemiStickyMixin(Base) {
         if (this.stickyAlways) return;
         this._refreshSemiStickyMetrics();
         if (this._semiStickyAnchor === 'top') {
-          const { offsetTop } = this.refs.surface;
+          const { offsetTop } = this.semiStickyTarget;
           const offset = this._scrollListenerPositionY - offsetTop;
           const delta = offset - this._semiStickyTranslateY;
           const visibility = delta / this._semiStickyHeight;

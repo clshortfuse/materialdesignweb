@@ -13,6 +13,9 @@ export default CustomElement
   .mixin(ShapeMixin)
   .mixin(AriaToolbarMixin)
   .mixin(SemiStickyMixin)
+  .define({
+    semiStickyTarget() { return this.refs.surface; },
+  })
   .set({
     elevated: true,
   })
