@@ -3,7 +3,7 @@
 import './Icon.js';
 
 import CustomElement from '../core/CustomElement.js';
-import { CHROME_VERSION } from '../core/dom.js';
+import { CHROME_VERSION, isRtl } from '../core/dom.js';
 import RippleMixin from '../mixins/RippleMixin.js';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
@@ -98,7 +98,11 @@ export default CustomElement
           const behavior = CHROME_VERSION ? 'instant' : 'smooth';
 
           el.scrollTo({ top: 0, behavior });
-          el.scrollIntoView({ inline: 'nearest', block: 'nearest', behavior });
+          el.offsetParent.scrollTo({
+            // Scroll-snap will adjust with subpixel precision
+            left: el.offsetLeft,
+            behavior: 'smooth',
+          });
         }
       },
     },
