@@ -432,7 +432,7 @@ export default CustomElement
       display: block;
     }
 
-    .pane2[panes="2"] {
+    .pane2[panes="2"]::slotted(*) {
       position: sticky;
       inset: 0;
 
@@ -466,6 +466,7 @@ export default CustomElement
     }
 
     #slot-nav-rail[state="fixed"] {
+      position: fixed;
       display: block;
     }
 
