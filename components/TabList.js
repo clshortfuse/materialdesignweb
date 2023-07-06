@@ -317,7 +317,7 @@ export default CustomElement
 
     :host {
       --mdw-ink: var(--mdw-color__primary);
-      --mdw-shape__bg: rgb(var(--mdw-color__surface));
+      --mdw-bg: var(--mdw-color__surface);
       position: relative;
       position: sticky;
       inset-block-start: 0;
