@@ -46,10 +46,6 @@ export default function TooltipTriggerMixin(Base) {
       `;
     }
 
-    static TOOLTIP_MOUSE_IDLE_MS = 500;
-
-    static TOOLTIP_TOUCH_IDLE_MS = 1500;
-
     /** @type {InstanceType<Tooltip>} */
     #tooltip;
 
@@ -87,27 +83,27 @@ export default function TooltipTriggerMixin(Base) {
         if (!this.#tooltip.open) return;
         for (const entry of entries) {
           if (entry.intersectionRatio <= 0) {
-            console.debug('Hide tooltip due to tooltip occlusion');
+            // console.debug('Hide tooltip due to tooltip occlusion');
             this.hideTooltip();
             return;
           }
           if (entry.target === this.#tooltip) {
-            console.debug('Reposition tooltip due to possible tooltip occlusion');
+            // console.debug('Reposition tooltip due to possible tooltip occlusion');
             this.updateTooltipPosition();
             return;
           }
           if (entry.target === this) {
             if (entry.intersectionRatio <= 0.5) {
-              console.debug('Hiding tooltip because target is occluded');
+              // console.debug('Hiding tooltip because target is occluded');
               this.hideTooltip();
             } else {
-              console.debug('Using InsectionObserver rect to update tooltip');
+              // console.debug('Using InsectionObserver rect to update tooltip');
               this.updateTooltipPosition(entry.boundingClientRect);
             }
             return;
           }
         }
-        console.debug('Updating tooltip position because offsetParent change.');
+        // console.debug('Updating tooltip position because offsetParent change.');
         this.updateTooltipPosition();
       }, { threshold });
       // this.#tooltip.remove();
@@ -232,10 +228,10 @@ export default function TooltipTriggerMixin(Base) {
       let timeout = 0;
       switch (type) {
         case 'mouse':
-          timeout = this.constructor.TOOLTIP_MOUSE_IDLE_MS;
+          timeout = this.TOOLTIP_MOUSE_IDLE_MS;
           break;
         case 'touch':
-          timeout = this.constructor.TOOLTIP_TOUCH_IDLE_MS;
+          timeout = this.TOOLTIP_TOUCH_IDLE_MS;
           break;
         default:
       }
@@ -378,6 +374,8 @@ export default function TooltipTriggerMixin(Base) {
       super.disconnectedCallback();
     }
   }
+  TooltipTrigger.prototype.TOOLTIP_MOUSE_IDLE_MS = 500;
+  TooltipTrigger.prototype.TOOLTIP_TOUCH_IDLE_MS = 1500;
   TooltipTrigger.prototype.tooltip = TooltipTrigger.prop('tooltip');
   return TooltipTrigger;
 }
