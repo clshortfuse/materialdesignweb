@@ -15,9 +15,11 @@
     "serve": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile --serve --live --tree-shaking=true",
     "sample": "node build/esbuild.js index.js --outdir=docs --watch --metafile --serve --live",
     "pretest": "eslint --ignore-path .gitignore",
-    "test": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit",
-    "test:custom": "web-test-runner \"test/**/*.test.js\" --node-resolve",
-    "test:watch": "web-test-runner \"test/**/*.test.js\" --node-resolve --watch"
+    "test": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
+    "test:spec": "web-test-runner \"test/spec/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit",
+    "test:screenshot": "web-test-runner \"test/screenshot/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
+    "test:custom": "web-test-runner \"test/**/*.test.js\" --node-resolve --concurrency 1",
+    "test:watch": "web-test-runner \"test/**/*.test.js\" --node-resolve --concurrency 1 --watch"
   },
   "browser": "dist/index.min.js",
   "repository": {
@@ -63,12 +65,12 @@
   "homepage": "https://github.com/clshortfuse/materialdesignweb#readme",
   "overrides": {
     "stylelint-no-unsupported-browser-features": {
-      "doiuse": "^6.0.0"
+      "doiuse": "^6.0.2"
     }
   },
   "devDependencies": {
     "@esm-bundle/chai": "^4.3.4-fix.0",
-    "@playwright/test": "^1.32.3",
+    "@playwright/test": "^1.35.1",
     "@types/html-minifier-terser": "^7.0.0",
     "@types/mocha": "^10.0.1",
     "@types/tap": "^15.0.7",
@@ -97,7 +99,7 @@
     "postcss-styled": "^0.34.0",
     "postcss-styled-syntax": "^0.4.0",
     "stylelint": "^15.2.0",
-    "stylelint-no-unsupported-browser-features": "^6.1.0",
+    "stylelint-no-unsupported-browser-features": "^7.0.0",
     "stylelint-order": "^6.0.2",
     "stylelint-use-logical-spec": "^5.0.0",
     "typescript": "5.1"

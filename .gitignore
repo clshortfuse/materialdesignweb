@@ -10,6 +10,4 @@ docs/**.min.css.*
 docs/meta.json
 docs/theme.css
 coverage/**
-/test-results/
-/playwright-report/
-/playwright/.cache/
+screenshots/difference/*

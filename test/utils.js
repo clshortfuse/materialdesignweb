@@ -1,4 +1,9 @@
-import { executeServerCommand, resetMouse, sendKeys, sendMouse } from '@web/test-runner-commands';
+import { assert } from '@esm-bundle/chai';
+import { resetMouse, sendKeys, sendMouse } from '@web/test-runner-commands';
+
+import { css } from '../core/css.js';
+
+import { screenshotCompare } from './plugins/screenshotCompare.js';
 
 /**
  * @param {Element} element
@@ -64,123 +69,13 @@ export function makeFromString(fromString, appendToDOM = true) {
 
 /**
  * @template {HTMLElement} T
- * @param {TemplateStringsArray} strings
+ * @param {TemplateStringsArray|string} strings
  * @param  {...(string|number|boolean)} substitutions
  * @return {T}
  */
 export function html(strings, ...substitutions) {
-  const content = String.raw({ raw: strings }, ...substitutions);
+  const content = typeof strings === 'string' ? strings : String.raw({ raw: strings }, ...substitutions);
   return /** @type {T} */ (makeFromString(content));
-}
-
-/**
- * @param {import('./axTreePlugin.js').AxTreePayload} [options]
- * @return {Promise<ReturnType<import('playwright').Accessibility['snapshot']>>}
- */
-export function axTree(options) {
-  return executeServerCommand('ax-tree', options);
-}
-
-/**
- * @template {Awaited<ReturnType<import('playwright').Accessibility['snapshot']>>} T
- * @param {T} rootAXNode
- * @yields {T}
- * @return {Generator<T>}
- */
-export function* iterateMeaningfulAXNodes(rootAXNode) {
-  switch (rootAXNode.role) {
-    case 'toggle button':
-      // Firefox uses "toggle button" role instead
-      rootAXNode.role = 'button';
-      // Fallthrough
-    case 'alert':
-    case 'alertdialog':
-    case 'application':
-    case 'article':
-    case 'banner':
-    case 'blockquote':
-    case 'button':
-    case 'cell':
-    case 'checkbox':
-    case 'columnheader':
-    case 'combobox':
-    case 'command':
-    case 'complementary':
-    case 'composite':
-    case 'contentinfo':
-    case 'definition':
-    case 'dialog':
-    case 'directory':
-    case 'document':
-    case 'feed':
-    case 'figure':
-    case 'form':
-    case 'grid':
-    case 'gridcell':
-    case 'group':
-    case 'heading':
-    case 'img':
-    case 'input':
-    case 'landmark':
-    case 'link':
-    case 'list':
-    case 'listbox':
-    case 'listitem':
-    case 'log':
-    case 'main':
-    case 'marquee':
-    case 'math':
-    case 'meter':
-    case 'menu':
-    case 'menubar':
-    case 'menuitem':
-    case 'menuitemcheckbox':
-    case 'menuitemradio':
-    case 'navigation':
-    case 'note':
-    case 'option':
-    case 'progressbar':
-    case 'radio':
-    case 'radiogroup':
-    case 'range':
-    case 'region':
-    case 'row':
-    case 'rowgroup':
-    case 'rowheader':
-    case 'scrollbar':
-    case 'search':
-    case 'searchbox':
-    case 'sectionhead':
-    case 'select':
-    case 'separator':
-    case 'slider':
-    case 'spinbutton':
-    case 'status':
-    case 'switch':
-    case 'tab':
-    case 'table':
-    case 'tablist':
-    case 'tabpanel':
-    case 'term':
-    case 'textbox':
-    case 'time':
-    case 'timer':
-    case 'toolbar':
-    case 'tooltip':
-    case 'tree':
-    case 'treegrid':
-    case 'treeitem':
-    case 'window':
-      yield rootAXNode;
-      break;
-    default:
-  }
-  if (!rootAXNode.children) return;
-  for (const child of rootAXNode.children) {
-    for (const axNode of iterateMeaningfulAXNodes(child)) {
-      yield axNode;
-    }
-  }
 }
 
 /**
@@ -236,4 +131,129 @@ export async function sendKeyup(up) {
  */
 export async function typeKeys(type) {
   await sendKeys({ type });
+}
+
+/**
+ *
+ * @param {Array<typeof import('../core/CustomElement.js').default>} customElements
+ */
+export function disableAnimations(...customElements) {
+  for (const ElementClass of customElements) {
+    if ('__ANIMATIONS_DISABLED' in ElementClass) continue;
+    ElementClass.recompose(({ composition }) => {
+      composition.append(css`
+        :host,::before,::after,*,*::before,*::after {
+          transition-duration: 0s !important;
+          animation-duration: 0s !important;
+        }
+      `);
+    });
+    ElementClass.__ANIMATIONS_DISABLED = true;
+  }
+}
+
+/**
+ * @template T
+ * @param {Array<Record<string, T>>} array
+ * @param {number} [index=0]
+ * @return {[string, T][]}
+ */
+export function buildObjectMatrix(array, index = 0) {
+  const current = array[index];
+  const entries = Object.entries(current);
+  const next = array[index + 1];
+  if (next) {
+    const nextEntries = buildObjectMatrix(array, index + 1);
+    const newEntries = [];
+    for (const [key, value] of entries) {
+      if (nextEntries.length === 1) {
+        newEntries.push([key, Object.fromEntries([
+          ...Object.entries(value),
+          ...Object.entries(entries[1]),
+        ])]);
+      } else {
+        for (const [nextKey, nextValue] of nextEntries) {
+          newEntries.push([[key, nextKey].join('__'), Object.fromEntries([
+            ...Object.entries(value),
+            ...Object.entries(nextValue),
+          ])]);
+        }
+      }
+    }
+    return newEntries;
+  }
+  return entries;
+}
+
+/**
+ * @param {string} htmlString
+ * @param {Array<Record<string, any>>} attributeMatrix
+ * @param {number} [padding=16]
+ */
+export function generateScreenshotTests(htmlString, attributeMatrix, padding = 16) {
+  for (const [tag, attributes] of buildObjectMatrix(attributeMatrix)) {
+    const tags = tag.split('__');
+    const listOfStates = tags.slice(0, -1).join(', ');
+    const stateDescription = listOfStates ? `${listOfStates}, and ${tags.at(-1)}` : tag;
+    // eslint-disable-next-line no-loop-func
+    it(`matches screenshot when ${stateDescription}`, async function () {
+      const bounds = html`<span id=bounds style="display:inline-flex;align-items:center;justify-content:center;padding:${padding}px"></span>`;
+      const element = makeFromString(htmlString.trim(), false);
+      bounds.append(element);
+      let movedMouse = false;
+      let movedFocus = true;
+      const startTime = performance.now();
+      let animationWait = 0;
+      /* eslint-disable no-await-in-loop */
+      for (const [key, value] of Object.entries(attributes)) {
+        switch (key) {
+          case ':focus':
+            element.focus();
+            movedFocus = true;
+            break;
+          case ':hover':
+          case ':active': {
+            const { x, y } = getMiddleOfElement(element);
+            await sendMouse({ type: 'move', position: [x, y] });
+            // Firefox is buggy and can sometimes not move the mouse???
+            movedMouse = true;
+            if (key === ':active') {
+              // eslint-disable-next-line no-await-in-loop
+              await sendMouse({ type: 'down', button: 'left' });
+            }
+            break;
+          }
+          case '$wait':
+            animationWait = value;
+            break;
+          default:
+            element[key] = value;
+        }
+      }
+      /* eslint-enable no-await-in-loop */
+
+      if (animationWait) {
+        this.timeout((animationWait * 2) + 100);
+      }
+
+      const timeToWait = (startTime + animationWait) - performance.now();
+      if (timeToWait > 0) {
+        await new Promise((resolve) => setTimeout(resolve, timeToWait));
+      }
+
+      const elementTagName = element.tagName.toLowerCase();
+      const { percentage, referenceLocation, differenceLocation } = await screenshotCompare(
+        `${elementTagName}__${tag}`,
+        '#bounds',
+      );
+      if (movedMouse) {
+        await sendMouse({ type: 'move', position: [0, 0] });
+        await sendMouse({ type: 'up', button: 'left' });
+      }
+      if (movedFocus) {
+        element.blur();
+      }
+      assert.isAbove(percentage, 0.995, `Screenshot too different. Compare ${referenceLocation} with ${differenceLocation}`);
+    });
+  }
 }
