@@ -1,6 +1,8 @@
 import '../../loaders/theme.js';
 import '../../components/Box.js';
-import { generateScreenshotTests } from '../utils.js';
+import { addRobotoFont, generateScreenshotTests } from '../utils.js';
+
+addRobotoFont();
 
 beforeEach(() => document.body.replaceChildren());
 

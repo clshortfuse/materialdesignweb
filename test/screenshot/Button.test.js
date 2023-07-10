@@ -2,10 +2,10 @@ import '../../loaders/theme.js';
 import Button from '../../components/Button.js';
 import Ripple from '../../components/Ripple.js';
 import { addSVGAlias } from '../../services/svgAlias.js';
-import { disableAnimations, generateScreenshotTests } from '../utils.js';
+import { addRobotoFont, disableAnimations, generateScreenshotTests } from '../utils.js';
 
 addSVGAlias('check', 'M382 816 154 588l57-57 171 171 367-367 57 57-424 424Z', '0 96 960 960');
-
+addRobotoFont();
 disableAnimations(Button, Ripple);
 
 beforeEach(() => document.body.replaceChildren());

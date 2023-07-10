@@ -134,8 +134,8 @@ export async function typeKeys(type) {
 }
 
 /**
- *
  * @param {Array<typeof import('../core/CustomElement.js').default>} customElements
+ * @return {void}
  */
 export function disableAnimations(...customElements) {
   for (const ElementClass of customElements) {
@@ -150,6 +150,14 @@ export function disableAnimations(...customElements) {
     });
     ElementClass.__ANIMATIONS_DISABLED = true;
   }
+}
+
+/** @return {void} */
+export function addRobotoFont() {
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://fonts.googleapis.com/css?family=Roboto&display=block';
+  document.head.append(link);
 }
 
 /**
