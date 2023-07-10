@@ -247,9 +247,8 @@ export function generateScreenshotTests(htmlString, attributeMatrix, padding = 1
       }
       /* eslint-enable no-await-in-loop */
 
-      if (animationWait) {
-        this.timeout((animationWait * 2) + 100);
-      }
+      // Webkit times out sooner than 2000ms at times
+      this.timeout((Math.max(animationWait * 2), 5000));
 
       const timeToWait = (startTime + animationWait) - performance.now();
       if (timeToWait > 0) {
