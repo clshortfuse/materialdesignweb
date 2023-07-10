@@ -258,10 +258,15 @@ export default function InputMixin(Base) {
       click(event) {
         rootClickEvents.add(event);
         const { control } = this.refs;
-        if (event.target !== control) {
-          // Label-like click
-          if (!event.bubbles) return;
+        if (event.target === control) return;
+        // Label-like click
+        if (!event.bubbles) return;
+        const { disabledState, type } = this;
+        if (disabledState) return;
+        if (type === 'checkbox' || type === 'radio') {
           event.stopPropagation();
+          control.click();
+        } else {
           this._handleInputClick(event);
         }
       },
