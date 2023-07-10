@@ -21,15 +21,15 @@
       "type": "node",
       "request": "launch",
       "name": "Run test on current file",
-      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/tap",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/web-test-runner",
       "runtimeArgs": [
-        "--no-timeout",
-        "--jobs=1",
+        "--node-resolve",
+        "--playwright --browsers chromium",
+        "--concurrency=1",
         "${file}"
       ],
-      "outputCapture": "std",
       "skipFiles": [
-        "<node_internals>/**/*.js"
+        "<node_internals>/**"
       ]
     },
     {
