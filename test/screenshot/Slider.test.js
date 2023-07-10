@@ -3,8 +3,8 @@ import Ripple from '../../components/Ripple.js';
 import Slider from '../../components/Slider.js';
 import { addRobotoFont, disableAnimations, generateScreenshotTests } from '../utils.js';
 
-addRobotoFont();
 disableAnimations(Ripple, Slider);
+await addRobotoFont();
 
 beforeEach(() => document.body.replaceChildren());
 

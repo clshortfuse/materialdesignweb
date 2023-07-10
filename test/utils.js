@@ -141,23 +141,30 @@ export function disableAnimations(...customElements) {
   for (const ElementClass of customElements) {
     if ('__ANIMATIONS_DISABLED' in ElementClass) continue;
     ElementClass.recompose(({ composition }) => {
-      composition.append(css`
+      composition.append(css(`
         :host,::before,::after,*,*::before,*::after {
           transition-duration: 0s !important;
           animation-duration: 0s !important;
         }
-      `);
+      `));
     });
     ElementClass.__ANIMATIONS_DISABLED = true;
   }
 }
 
 /** @return {void} */
-export function addRobotoFont() {
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = 'https://fonts.googleapis.com/css?family=Roboto&display=block';
-  document.head.append(link);
+export async function addRobotoFont() {
+  return await new Promise((resolve, reject) => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css?family=Roboto&display=block';
+    link.addEventListener('load', async () => {
+      await document.fonts.load('16px "Roboto"');
+      requestAnimationFrame(resolve);
+    });
+    link.addEventListener('error', reject);
+    document.head.append(link);
+  });
 }
 
 /**

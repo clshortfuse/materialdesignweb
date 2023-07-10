@@ -2,7 +2,7 @@ import '../../loaders/theme.js';
 import '../../components/Box.js';
 import { addRobotoFont, generateScreenshotTests } from '../utils.js';
 
-addRobotoFont();
+await addRobotoFont();
 
 beforeEach(() => document.body.replaceChildren());
 

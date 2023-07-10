@@ -6,8 +6,8 @@ import { addRobotoFont, disableAnimations, generateScreenshotTests } from '../ut
 
 addSVGAlias('check', 'M382 816 154 588l57-57 171 171 367-367 57 57-424 424Z', '0 96 960 960');
 addSVGAlias('check_indeterminate_small', 'M280 616v-80h400v80H280Z', '0 96 960 960');
-addRobotoFont();
 disableAnimations(Ripple, Checkbox);
+await addRobotoFont();
 
 beforeEach(() => document.body.replaceChildren());
 

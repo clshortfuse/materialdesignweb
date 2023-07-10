@@ -5,8 +5,8 @@ import { addSVGAlias } from '../../services/svgAlias.js';
 import { addRobotoFont, disableAnimations, generateScreenshotTests } from '../utils.js';
 
 addSVGAlias('check', 'M382 816 154 588l57-57 171 171 367-367 57 57-424 424Z', '0 96 960 960');
-addRobotoFont();
 disableAnimations(Button, Ripple);
+await addRobotoFont();
 
 beforeEach(() => document.body.replaceChildren());
 
