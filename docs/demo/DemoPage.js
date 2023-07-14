@@ -82,10 +82,9 @@ export default CustomElement
           <mdw-nav-drawer-item icon=call_to_action href="/components/snackbar.html">Snackbar</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=toggle_on href="/components/switches.html">Switches</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=tab href="/components/tabs.html">Tabs</mdw-nav-drawer-item>
-          <mdw-nav-drawer-item icon=edit href="/components/textinput.html">Input</mdw-nav-drawer-item>
-          <mdw-nav-drawer-item icon=search href="/components/search.html">Search</mdw-nav-drawer-item>
-          <mdw-nav-drawer-item icon=edit href="/components/select.html">Select</mdw-nav-drawer-item>
-          <mdw-nav-drawer-item icon=edit_note href="/components/textarea.html">Textarea</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=edit href="/components/textinput.html">Text Input</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=edit href="/components/select.html">Text Select</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=edit_note href="/components/textarea.html">Text Area</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=help href="/components/tooltip.html">Tooltips</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=web_asset href="/components/topappbar.html">Top App Bar</mdw-nav-drawer-item>
         </mdw-nav-drawer>
