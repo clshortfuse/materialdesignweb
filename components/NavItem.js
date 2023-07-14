@@ -3,6 +3,7 @@ import './Ripple.js';
 import './Badge.js';
 
 import CustomElement from '../core/CustomElement.js';
+import HyperlinkMixin from '../mixins/HyperlinkMixin.js';
 import RippleMixin from '../mixins/RippleMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
@@ -16,6 +17,7 @@ export default class NavItem extends CustomElement
   .mixin(StateMixin)
   .mixin(RippleMixin)
   .mixin(ShapeMixin)
+  .mixin(HyperlinkMixin)
   .set({
     delegatesFocus: true,
     stateLayer: true,
@@ -25,7 +27,6 @@ export default class NavItem extends CustomElement
     active: 'boolean',
     icon: 'string',
     src: 'string',
-    href: 'string',
     badge: 'string',
     ariaLabel: 'string', // watch attribute and emit callback
   })
@@ -37,17 +38,24 @@ export default class NavItem extends CustomElement
   })
   .html`
     <mdw-icon id=icon aria-hidden=true src={src} active={active} icon={icon}></mdw-icon>
-    <a id=anchor
-      aria-current=${({ active }) => (active ? 'page' : null)}
-      aria-describedby=badge
-      aria-label={ariaLabel}
-      aria-labelledby=${({ ariaLabel }) => (ariaLabel ? null : 'slot')}
-      href=${({ href }) => href ?? '#'}>
-    </a>
     <slot id=slot active={active} show-label={showLabel} aria-hidden=true></slot>
     <mdw-badge part=badge id=badge badge={badge} show-label={showLabel} aria-hidden=true>{badge}</mdw-badge>
   `
-  .recompose(({ html, refs: { shape, state, rippleContainer } }) => {
+  .expressions({
+    _anchorAriaCurrent({ active }) {
+      return active ? 'page' : null;
+    },
+    _anchorAriaLabelledby({ ariaLabel }) {
+      return ariaLabel ? null : 'slot';
+    },
+    _anchorHref({ href }) { return href ?? '#'; },
+  })
+  .recompose(({ html, refs: { anchor, shape, state, rippleContainer } }) => {
+    anchor.setAttribute('aria-current', '{_anchorAriaCurrent}');
+    anchor.setAttribute('aria-describedby', 'badge');
+    anchor.setAttribute('aria-label', '{ariaLabel}');
+    anchor.setAttribute('aria-labelledby', '{_anchorAriaLabelledby}');
+    anchor.setAttribute('href', '{_anchorHref}');
     shape.append(html`
       <mdw-ripple id=ripple ripple-origin=center keep-alive hold-ripple ripple-state=${({ active }) => ((active) ? null : 'complete')}></mdw-ripple>
       ${state}

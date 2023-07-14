@@ -7,6 +7,7 @@ import './Icon.js';
 
 import CustomElement from '../core/CustomElement.js';
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
+import HyperlinkMixin from '../mixins/HyperlinkMixin.js';
 import RippleMixin from '../mixins/RippleMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
@@ -17,6 +18,7 @@ export default CustomElement
   .mixin(StateMixin)
   .mixin(RippleMixin)
   .mixin(AriaReflectorMixin)
+  .mixin(HyperlinkMixin)
   .set({
     _ariaRole: 'listitem',
     delegatesFocus: false,
@@ -30,7 +32,6 @@ export default CustomElement
     src: 'string',
     alt: 'string',
     icon: 'string',
-    href: 'string',
     iconInk: 'string',
     iconSrc: 'string',
     checkbox: 'string',
@@ -69,7 +70,6 @@ export default CustomElement
     },
   })
   .html`
-    <a id=anchor mdw-if={href} href={href} disabled={disabledState} aria-labelledby=content></a>
     <mdw-checkbox-icon id=checkbox mdw-if={checkbox} aria-hidden=true class={checkboxClass} color={selectionColor} disabled={disabledState} icon=check selected={selected}></mdw-checkbox-icon>
     <mdw-radio-icon id=radio mdw-if={radio} aria-hidden=true class={radioClass} disabled={disabledState} ink={selectionColor} selected={selected}></mdw-radio-icon>
     <mdw-box mdw-if={avatar} id=avatar color={avatarColor} type-style=title-medium src={AvatarSrc}
@@ -86,6 +86,8 @@ export default CustomElement
     <mdw-divider mdw-if={divider} id=divider divder={divider}></mdw-divider>
   `
   .recompose(({ refs: { state, rippleContainer, anchor } }) => {
+    anchor.setAttribute('mdw-if', '{href}');
+    anchor.setAttribute('aria-labelledby', 'content');
     anchor.append(
       state,
       rippleContainer,
