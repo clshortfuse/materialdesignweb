@@ -50,42 +50,43 @@
         </div>
       </demo-section>
     </demo-section>
+    <script>
+      var sectionWidth = 0;
+      var iframeWidth = 400;
+      var iframeHeight = 640;
+      function refreshSize() {
+        const scale = Math.min(1, sectionWidth / iframeWidth);
+        const iframe = document.getElementById('iframe');
+        iframe.width = iframeWidth;
+        if (scale === 1) {
+          iframe.style.transform = `translateX(${(sectionWidth - iframeWidth) / 2}px)`;
+        } else {
+          iframe.style.transform = `scale(${scale})`;
+        }
+        iframe.height = 640 / scale;
+      }
+      function updateWidth(controlElement) {
+        iframeWidth = parseInt(controlElement.value, 10);
+        document.getElementById('width').textContent = iframeWidth;
+        refreshSize();
+      }
+      function updateURL() {
+        let url = new URL('layout-sample.html', window.location);
+        for(const option of document.getElementById('options').selectedOptions) {
+          url.searchParams.append(option.value, '');
+        }
+        url.searchParams.append('panes', document.getElementById('panes').value);
+        document.getElementById('iframe').src = url.href;
+      }
+      const demoSection = document.getElementById('demo-section');
+      const resizeObserver = new ResizeObserver((entries) => {
+        sectionWidth = entries[0].contentRect.width;
+        refreshSize();
+      });
+      resizeObserver.observe(demoSection);
+    </script>
   </demo-page>
-  <script>
-    var sectionWidth = 0;
-    var iframeWidth = 400;
-    var iframeHeight = 640;
-    function refreshSize() {
-      const scale = Math.min(1, sectionWidth / iframeWidth);
-      const iframe = document.getElementById('iframe');
-      iframe.width = iframeWidth;
-      if (scale === 1) {
-        iframe.style.transform = `translateX(${(sectionWidth - iframeWidth) / 2}px)`;
-      } else {
-        iframe.style.transform = `scale(${scale})`;
-      }
-      iframe.height = 640 / scale;
-    }
-    function updateWidth(controlElement) {
-      iframeWidth = parseInt(controlElement.value, 10);
-      document.getElementById('width').textContent = iframeWidth;
-      refreshSize();
-    }
-    function updateURL() {
-      let url = new URL('layout-sample.html', window.location);
-      for(const option of document.getElementById('options').selectedOptions) {
-        url.searchParams.append(option.value, '');
-      }
-      url.searchParams.append('panes', document.getElementById('panes').value);
-      document.getElementById('iframe').src = url.href;
-    }
-    const demoSection = document.getElementById('demo-section');
-    const resizeObserver = new ResizeObserver((entries) => {
-      sectionWidth = entries[0].contentRect.width;
-      refreshSize();
-    });
-    resizeObserver.observe(demoSection);
-  </script>
+  
 
 </body>
 

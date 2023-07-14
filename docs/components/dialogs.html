@@ -30,52 +30,53 @@
         <demo-button aria-haspopup=dialog aria-controls="dialog-slider">Slider example</demo-button>
       </mdw-box>
     </demo-section>
+    <div id=dialogs>
+      <mdw-dialog id=dialog-simple headline="My title">Description</mdw-dialog>
+      <mdw-dialog id=dialog-oversized icon=refresh headline="Auto scrolls" dividers>
+        <demo-dummy-text></demo-dummy-text>
+      </mdw-dialog>
+      <mdw-dialog id="dialog-slotted">
+        <mdw-box ink="tertiary" slot=headline>Custom Headline</mdw-box>
+        Description text
+      </mdw-dialog>
+      <mdw-dialog id=dialog-icon icon=refresh headline="My title" description="Description (no body)."></mdw-dialog>
+      <mdw-dialog id=dialog-custom-buttons icon=refresh headline="Title" confirm="Launch" cancel="Abort"
+        default="confirm">Button text changed via [confirm] and [cancel] values.</mdw-dialog>
+      <mdw-dialog id=dialog-reset icon=refresh headline="Reset settings?" dividers=inset>
+        <div slot="fixed">This will reset your app preferences back to their default settings. The following accounts will
+          also be signed out:</div>
+        <mdw-list>
+          <mdw-list-item avatar="LV">leevillanuevanotes@gmail.com</mdw-list-item>
+          <mdw-list-item avatar="AA">alloitsalejandro@gmail.com</mdw-list-item>
+          <mdw-list-item avatar="OO">oliortega3000@gmail.com</mdw-list-item>
+        </mdw-list>
+      </mdw-dialog>
+      <mdw-dialog id=dialog-slider icon=volume_up headline="Volume Control" default="confirm">
+        <form slot="form" method="dialog">
+          <mdw-slider name="volume" autofocus></mdw-slider>
+          <mdw-dialog-actions>
+            <input type="submit" hidden value=confirm aria-hidden="true" />
+            <!-- Forms submit nearest type=submit control on ENTER key -->
+            <mdw-button type="submit" name=cancel value="cancel">Cancel</mdw-button>
+            <mdw-button type="submit" name=confirm value="confirm">Confirm</mdw-button>
+          </mdw-dialog-actions>
+        </form>
+      </mdw-dialog>
+      <mdw-dialog id=dialog-input icon=edit headline="Custom form" default="confirm">
+        <form slot="form" method="dialog">
+          <mdw-input name="sample" autofocus filled label="Label"></mdw-input>
+          <mdw-dialog-actions>
+            <input type="submit" hidden value=confirm tabindex=-1 aria-hidden="true" />
+            <!-- Forms submit nearest type=submit control on ENTER key -->
+            <mdw-button type="submit" name=cancel value="cancel">Cancel</mdw-button>
+            <mdw-button type="submit" name=confirm value="confirm">Confirm</mdw-button>
+          </mdw-dialog-actions>
+        </form>
+      </mdw-dialog>
+    </div>
   </demo-page>
 
-  <div id=dialogs>
-    <mdw-dialog id=dialog-simple headline="My title">Description</mdw-dialog>
-    <mdw-dialog id=dialog-oversized icon=refresh headline="Auto scrolls" dividers>
-      <demo-dummy-text></demo-dummy-text>
-    </mdw-dialog>
-    <mdw-dialog id="dialog-slotted">
-      <mdw-box ink="tertiary" slot=headline>Custom Headline</mdw-box>
-      Description text
-    </mdw-dialog>
-    <mdw-dialog id=dialog-icon icon=refresh headline="My title" description="Description (no body)."></mdw-dialog>
-    <mdw-dialog id=dialog-custom-buttons icon=refresh headline="Title" confirm="Launch" cancel="Abort"
-      default="confirm">Button text changed via [confirm] and [cancel] values.</mdw-dialog>
-    <mdw-dialog id=dialog-reset icon=refresh headline="Reset settings?" dividers=inset>
-      <div slot="fixed">This will reset your app preferences back to their default settings. The following accounts will
-        also be signed out:</div>
-      <mdw-list>
-        <mdw-list-item avatar="LV">leevillanuevanotes@gmail.com</mdw-list-item>
-        <mdw-list-item avatar="AA">alloitsalejandro@gmail.com</mdw-list-item>
-        <mdw-list-item avatar="OO">oliortega3000@gmail.com</mdw-list-item>
-      </mdw-list>
-    </mdw-dialog>
-    <mdw-dialog id=dialog-slider icon=volume_up headline="Volume Control" default="confirm">
-      <form slot="form" method="dialog">
-        <mdw-slider name="volume" autofocus></mdw-slider>
-        <mdw-dialog-actions>
-          <input type="submit" hidden value=confirm aria-hidden="true" />
-          <!-- Forms submit nearest type=submit control on ENTER key -->
-          <mdw-button type="submit" name=cancel value="cancel">Cancel</mdw-button>
-          <mdw-button type="submit" name=confirm value="confirm">Confirm</mdw-button>
-        </mdw-dialog-actions>
-      </form>
-    </mdw-dialog>
-    <mdw-dialog id=dialog-input icon=edit headline="Custom form" default="confirm">
-      <form slot="form" method="dialog">
-        <mdw-input name="sample" autofocus filled label="Label"></mdw-input>
-        <mdw-dialog-actions>
-          <input type="submit" hidden value=confirm tabindex=-1 aria-hidden="true" />
-          <!-- Forms submit nearest type=submit control on ENTER key -->
-          <mdw-button type="submit" name=cancel value="cancel">Cancel</mdw-button>
-          <mdw-button type="submit" name=confirm value="confirm">Confirm</mdw-button>
-        </mdw-dialog-actions>
-      </form>
-    </mdw-dialog>
-  </div>
+  
 </body>
 
 </html>

@@ -7,6 +7,8 @@ import '../../components/TopAppBar.js';
 import '../../components/NavDrawerItem.js';
 
 import CustomElement from '../../core/CustomElement.js';
+import { generateFragment } from '../../core/template.js';
+import NavigationListenerMixin from '../../mixins/NavigationListenerMixin.js';
 
 /**
  * @param {string} href
@@ -18,10 +20,21 @@ function isActive(href) {
 
 export default CustomElement
   .extend()
+  .mixin(NavigationListenerMixin)
   .expressions({
     isRootPage() {
       const { pathname } = window.location;
       return pathname.endsWith('/') || pathname.endsWith('index.html');
+    },
+  })
+  .observe({
+    _title: {
+      type: 'string',
+      value: document.title,
+    },
+    _currentLocation: {
+      type: 'string',
+      value: '',
     },
   })
   .set({
@@ -76,7 +89,7 @@ export default CustomElement
           <mdw-nav-drawer-item icon=help href="/components/tooltip.html">Tooltips</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=web_asset href="/components/topappbar.html">Top App Bar</mdw-nav-drawer-item>
         </mdw-nav-drawer>
-        <mdw-top-app-bar headline=${() => document.title} color=none slot=app-bar>
+        <mdw-top-app-bar headline={_title} color=none slot=app-bar>
             <mdw-icon-button color=surface id=menu-button slot=leading 
               icon=menu
               >Menu</mdw-icon-button>
@@ -193,17 +206,78 @@ export default CustomElement
       },
     },
   })
-  .events({})
+  .methods({
+    /**
+     * @param {URL} url
+     * @return {Promise<void>}
+     */
+    async performInternalNavigation(url) {
+      try {
+        const fetchResult = await fetch(url);
+        if (!fetchResult.ok) throw new Error(`${fetchResult.status} - ${fetchResult.statusText}`);
+        const text = await fetchResult.text();
+        console.log(text);
+        const fragment = generateFragment(text);
+        const demoPage = fragment.querySelector('demo-page');
+        if (!demoPage) throw new Error('Does not contain <demo-page> element.');
+        this.replaceChildren(...demoPage.children);
+        const title = fragment.querySelector('title')?.textContent;
+        window.history.pushState({ _DEMOPAGENAVSTATE: true, _DEMOPAGENAVCACHE: text, title }, title, url.href);
+        document.title = title;
+        this._title = title;
+        this._currentLocation = window.location.href;
+      } catch (e) {
+        console.error(e);
+        window.location.href = url.href;
+        // Fallback to normal navigation
+      }
+    },
+    /**
+     * @param {PopStateEvent} event
+     */
+    onPopState({ state }) {
+      if (!state) return;
+      console.log(state);
+      const { _DEMOPAGENAVSTATE, _DEMOPAGENAVCACHE } = state;
+      if (!_DEMOPAGENAVSTATE) return;
+      if (!_DEMOPAGENAVCACHE) {
+        // Uncached? Reload?
+        window.location.reload();
+        return;
+      }
+      const fragment = generateFragment(_DEMOPAGENAVCACHE);
+      const demoPage = fragment.querySelector('demo-page');
+      this.replaceChildren(...demoPage.children);
+      const title = fragment.querySelector('title').textContent;
+      document.title = title;
+      this.title = title;
+      this._currentLocation = window.location.href;
+    },
+  })
+  .events({
+    'mdw:hyperlink'(event) {
+      const current = new URL(window.location);
+      const destination = new URL(event.detail.href, window.location);
+      const isInternal = new URL('/', current).href === new URL('/', destination).href;
+      console.log('hyperlink event', { isInternal }, destination);
+      if (!isInternal) return;
+      event.preventDefault();
+      // Start async here
+      this.performInternalNavigation(destination);
+    },
+  })
   .on({
     constructed() {
+      window.history.replaceState({
+        _DEMOPAGENAVSTATE: true,
+      }, document.title, window.location.href);
+      window.addEventListener('popstate', this.onPopState.bind(this));
       for (const link of this.refs.drawer.children) {
         if (window.location.hostname === 'clshortfuse.github.io') {
           link.href = `/materialdesignweb${link.href}`;
         }
-        if (isActive(link.href)) {
-          link.setAttribute('active', '');
-        }
       }
+      this._currentLocation = window.location.href;
 
       const useraltTheme = sessionStorage.getItem('altTheme') ?? 'false';
       if (useraltTheme === 'true') {
@@ -237,6 +311,11 @@ export default CustomElement
         this.loadShape(userShape);
       } else {
         this.shadowRoot.querySelector('mdw-menu-item[name="font-size"][value="1"]').selected = true;
+      }
+    },
+    _currentLocationChanged() {
+      for (const link of this.refs.drawer.children) {
+        link.active = isActive(link.href);
       }
     },
   })

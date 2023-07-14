@@ -10,16 +10,16 @@
 </head>
 
 <body>
-  <script>
-    function onSearchInput(event) {
-      console.log('search input', event);
-    }
-
-    function onSearchChange(event) {
-      console.log('search change', event);
-    }
-  </script>
   <demo-page>
+    <script>
+      function onSearchInput(event) {
+        console.log('search input', event);
+      }
+  
+      function onSearchChange(event) {
+        console.log('search change', event);
+      }
+    </script>
     <demo-section>
       <h1 slot=heading> Center (Default) </h1>
       <mdw-box flex wrap gap=12>
@@ -122,7 +122,6 @@
         </demo-screen>
       </mdw-box>
     </demo-section>
-
   </demo-page>
 </body>
 </html>

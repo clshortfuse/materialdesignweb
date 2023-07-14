@@ -60,50 +60,51 @@
       </mdw-box>
     </demo-section>
     <demo-dummy-text></demo-dummy-text>
+    <div id=menus>
+      <mdw-menu id=menu-simple>
+        <mdw-menu-item>Item 1</mdw-menu-item>
+        <mdw-menu-item icon=visibility>Item 2</mdw-menu-item>
+        <mdw-menu-item icon=content_copy trailing="Ctrl+C">Item 3</mdw-menu-item>
+        <mdw-menu-item icon=content_paste trailing="⌘V">Item 4</mdw-menu-item>
+      </mdw-menu>
+      <mdw-menu id=menu-cascade>
+        <mdw-menu-item>Item 1</mdw-menu-item>
+        <mdw-menu-item disabled icon=visibility>Item 2</mdw-menu-item>
+        <mdw-menu-item icon=content_copy trailing="Ctrl+C">Item 3</mdw-menu-item>
+        <mdw-menu-item icon=content_paste trailing="⌘V">Item 4</mdw-menu-item>
+        <mdw-menu-item icon="cloud" cascades="menu-submenu">Item 5</mdw-menu-item>
+      </mdw-menu>
+      <mdw-menu id=menu-submenu submenu slot=submenu>
+        <mdw-menu-item>Item 6</mdw-menu-item>
+        <mdw-menu-item icon=visibility>Item 7</mdw-menu-item>
+        <mdw-menu-item icon=content_copy trailing="Ctrl+C">Item 8</mdw-menu-item>
+        <mdw-menu-item icon=content_paste trailing="⌘V">Item 9</mdw-menu-item>
+      </mdw-menu>
+      <mdw-menu id=menu-oversized>
+        <mdw-menu-item>Short</mdw-menu-item>
+        <mdw-menu-item icon=visibility>Icon</mdw-menu-item>
+        <mdw-menu-item icon=content_copy trailing="Ctrl+C">Icon and trailing</mdw-menu-item>
+        <mdw-menu-item icon=content_paste trailing="⌘V">Medium sized with icon and trailing</mdw-menu-item>
+        <mdw-menu-item icon=cloud>Long menu item including both icon and trailing</mdw-menu-item>
+      </mdw-menu>
+      <mdw-menu id=menu-checkboxes>
+        <mdw-menu-item>Short</mdw-menu-item>
+        <mdw-menu-item icon=visibility>Icon</mdw-menu-item>
+        <mdw-menu-item checkbox name="bold" trailing="Ctrl+B">Bold</mdw-menu-item>
+        <mdw-menu-item checkbox name="italic" trailing="Ctrl+I">Italic</mdw-menu-item>
+        <mdw-menu-item checkbox name="underline" trailing="Ctrl+U">Underline</mdw-menu-item>
+      </mdw-menu>
+      <mdw-menu id=menu-radio>
+        <mdw-menu-item>Short</mdw-menu-item>
+        <mdw-menu-item icon=visibility>Icon</mdw-menu-item>
+        <mdw-divider style="margin:8px 0"></mdw-divider>
+        <mdw-menu-item radio name="spacing" value="1" trailing="Ctrl+1">Single-line</mdw-menu-item>
+        <mdw-menu-item radio name="spacing" value="1.5">1.5 Lines</mdw-menu-item>
+        <mdw-menu-item radio name="spacing" value="2" trailing="Ctrl+2">Double-line</mdw-menu-item>
+      </mdw-menu>
+    </div>
   </demo-page>
-  <div id=menus>
-    <mdw-menu id=menu-simple>
-      <mdw-menu-item>Item 1</mdw-menu-item>
-      <mdw-menu-item icon=visibility>Item 2</mdw-menu-item>
-      <mdw-menu-item icon=content_copy trailing="Ctrl+C">Item 3</mdw-menu-item>
-      <mdw-menu-item icon=content_paste trailing="⌘V">Item 4</mdw-menu-item>
-    </mdw-menu>
-    <mdw-menu id=menu-cascade>
-      <mdw-menu-item>Item 1</mdw-menu-item>
-      <mdw-menu-item disabled icon=visibility>Item 2</mdw-menu-item>
-      <mdw-menu-item icon=content_copy trailing="Ctrl+C">Item 3</mdw-menu-item>
-      <mdw-menu-item icon=content_paste trailing="⌘V">Item 4</mdw-menu-item>
-      <mdw-menu-item icon="cloud" cascades="menu-submenu">Item 5</mdw-menu-item>
-    </mdw-menu>
-    <mdw-menu id=menu-submenu submenu slot=submenu>
-      <mdw-menu-item>Item 6</mdw-menu-item>
-      <mdw-menu-item icon=visibility>Item 7</mdw-menu-item>
-      <mdw-menu-item icon=content_copy trailing="Ctrl+C">Item 8</mdw-menu-item>
-      <mdw-menu-item icon=content_paste trailing="⌘V">Item 9</mdw-menu-item>
-    </mdw-menu>
-    <mdw-menu id=menu-oversized>
-      <mdw-menu-item>Short</mdw-menu-item>
-      <mdw-menu-item icon=visibility>Icon</mdw-menu-item>
-      <mdw-menu-item icon=content_copy trailing="Ctrl+C">Icon and trailing</mdw-menu-item>
-      <mdw-menu-item icon=content_paste trailing="⌘V">Medium sized with icon and trailing</mdw-menu-item>
-      <mdw-menu-item icon=cloud>Long menu item including both icon and trailing</mdw-menu-item>
-    </mdw-menu>
-    <mdw-menu id=menu-checkboxes>
-      <mdw-menu-item>Short</mdw-menu-item>
-      <mdw-menu-item icon=visibility>Icon</mdw-menu-item>
-      <mdw-menu-item checkbox name="bold" trailing="Ctrl+B">Bold</mdw-menu-item>
-      <mdw-menu-item checkbox name="italic" trailing="Ctrl+I">Italic</mdw-menu-item>
-      <mdw-menu-item checkbox name="underline" trailing="Ctrl+U">Underline</mdw-menu-item>
-    </mdw-menu>
-    <mdw-menu id=menu-radio>
-      <mdw-menu-item>Short</mdw-menu-item>
-      <mdw-menu-item icon=visibility>Icon</mdw-menu-item>
-      <mdw-divider style="margin:8px 0"></mdw-divider>
-      <mdw-menu-item radio name="spacing" value="1" trailing="Ctrl+1">Single-line</mdw-menu-item>
-      <mdw-menu-item radio name="spacing" value="1.5">1.5 Lines</mdw-menu-item>
-      <mdw-menu-item radio name="spacing" value="2" trailing="Ctrl+2">Double-line</mdw-menu-item>
-    </mdw-menu>
-  </div>
+ 
 </body>
 
 </html>
