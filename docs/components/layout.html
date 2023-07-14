@@ -78,8 +78,8 @@
         url.searchParams.append('panes', document.getElementById('panes').value);
         document.getElementById('iframe').src = url.href;
       }
-      const demoSection = document.getElementById('demo-section');
-      const resizeObserver = new ResizeObserver((entries) => {
+      var demoSection = document.getElementById('demo-section');
+      var resizeObserver = new ResizeObserver((entries) => {
         sectionWidth = entries[0].contentRect.width;
         refreshSize();
       });

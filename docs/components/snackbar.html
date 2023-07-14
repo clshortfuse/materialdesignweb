@@ -7,13 +7,12 @@
   <link rel="stylesheet" href="../theme.css" />
   <link rel="stylesheet" href="../demo.css" />
   <script src="../demo.min.js"></script>
-
 </head>
 <body>
   <demo-page>
     <script>
-      const $ = document.querySelector.bind(document);
-      const $$ = document.querySelectorAll.bind(document);
+      var $ = document.querySelector.bind(document);
+      var $$ = document.querySelectorAll.bind(document);
     </script>
     <demo-section>
       <h1 slot="heading">Single-line</h1>
