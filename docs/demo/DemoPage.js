@@ -215,7 +215,6 @@ export default CustomElement
         const fetchResult = await fetch(url);
         if (!fetchResult.ok) throw new Error(`${fetchResult.status} - ${fetchResult.statusText}`);
         const text = await fetchResult.text();
-        console.log(text);
         const fragment = generateFragment(text);
         const demoPage = fragment.querySelector('demo-page');
         if (!demoPage) throw new Error('Does not contain <demo-page> element.');
@@ -249,7 +248,7 @@ export default CustomElement
       this.replaceChildren(...demoPage.children);
       const title = fragment.querySelector('title').textContent;
       document.title = title;
-      this.title = title;
+      this._title = title;
       this._currentLocation = window.location.href;
     },
   })
