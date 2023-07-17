@@ -117,6 +117,16 @@ function onWindowResize() {
 }
 
 /**
+ * Prevent focus being given to elements via mouse nav back
+ * @param {MouseEvent} event
+ */
+function onNavMouseDown(event) {
+  if (event.button === 3) {
+    event.preventDefault();
+  }
+}
+
+/**
  * @param {PopStateEvent} event
  */
 function onPopState(event) {
@@ -181,20 +191,21 @@ export default function PopupMixin(Base) {
        */
       updatePopupPosition(anchor) {
         const flow = this._currentFlow ?? this.flow;
-        this.style.setProperty('min-width', '0');
-        this.style.setProperty('min-height', '0');
-        this.style.setProperty('width', 'auto');
-        this.style.setProperty('height', 'auto');
-        this.style.setProperty('max-width', 'none');
-        this.style.setProperty('max-height', 'none');
-        this.style.setProperty('top', '0');
-        this.style.setProperty('left', '0');
+        Object.assign(this.style, {
+          minWidth: '0',
+          minHeight: '0',
+          width: 'auto',
+          height: 'auto',
+          maxWidth: 'none',
+          maxHeight: 'none',
+          top: '0',
+          left: '0',
+        });
         this.style.setProperty('--mdw-popup__x-offset', '0');
         this.style.setProperty('--mdw-popup__y-offset', '0');
 
         const layoutElement = this._isNativeModal ? this._dialog : this;
-        layoutElement.style.setProperty('width', 'auto');
-        layoutElement.style.setProperty('height', 'auto');
+        Object.assign(layoutElement.style, { width: 'auto', height: 'auto' });
 
         const width = (anchor && this.matchSourceWidth)
           ? anchor.clientWidth
@@ -203,8 +214,7 @@ export default function PopupMixin(Base) {
         this.style.setProperty('width', `${width}px`);
 
         const height = layoutElement.clientHeight;
-        layoutElement.style.removeProperty('width');
-        layoutElement.style.removeProperty('height');
+        Object.assign(layoutElement.style, { width: null, height: null });
 
         const initialRect = this.getBoundingClientRect();
         /** @type {import('../utils/popup.js').CanAnchorPopUpOptions} */
@@ -322,15 +332,17 @@ export default function PopupMixin(Base) {
           if (result.visibility === 1) break;
         }
 
-        this.style.setProperty('top', `${anchorResult.top - initialRect.y}px`);
-        this.style.setProperty('left', `${anchorResult.left - initialRect.x}px`);
-        this.style.setProperty('min-width', `${anchorResult.right - anchorResult.left}px`);
-        this.style.setProperty('min-height', `${anchorResult.bottom - anchorResult.top}px`);
-        this.style.removeProperty('width');
-        this.style.removeProperty('height');
-        this.style.setProperty('max-width', `${anchorResult.right - anchorResult.left}px`);
-        this.style.setProperty('max-height', `${anchorResult.bottom - anchorResult.top}px`);
-        this.style.setProperty('transform-origin', `${anchorResult.transformOriginY} ${anchorResult.transformOriginX}`);
+        Object.assign(this.style, {
+          top: `${anchorResult.top - initialRect.y}px`,
+          left: `${anchorResult.left - initialRect.x}px`,
+          minWidth: `${anchorResult.right - anchorResult.left}px`,
+          minHeight: `${anchorResult.bottom - anchorResult.top}px`,
+          width: null,
+          height: null,
+          maxWidth: `${anchorResult.right - anchorResult.left}px`,
+          maxHeight: `${anchorResult.bottom - anchorResult.top}px`,
+          transformOrigin: `${anchorResult.transformOriginY} ${anchorResult.transformOriginX}`,
+        });
         // this.scrollIntoView();
       },
       /**
@@ -392,6 +404,7 @@ export default function PopupMixin(Base) {
         console.debug('Popup pushed page');
         window.addEventListener('popstate', onPopState);
         window.addEventListener('beforeunload', onBeforeUnload);
+        window.addEventListener('mousedown', onNavMouseDown, { capture: true });
 
         window.addEventListener('resize', onWindowResize);
         window.addEventListener('scroll', onWindowResize);
@@ -519,6 +532,7 @@ export default function PopupMixin(Base) {
           window.removeEventListener('popstate', onPopState);
           window.removeEventListener('beforeunload', onBeforeUnload);
           window.removeEventListener('resize', onWindowResize);
+          window.removeEventListener('mousedown', onNavMouseDown, { capture: true });
           console.debug('All menus closed');
         }
         this._closing = false;
