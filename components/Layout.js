@@ -467,6 +467,7 @@ export default CustomElement
 
     #slot-nav-rail[state="fixed"] {
       position: fixed;
+
       display: block;
     }
 
