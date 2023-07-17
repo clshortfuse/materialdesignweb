@@ -71,8 +71,12 @@ export default CustomElement
     },
   })
   .set({
+    /** @type {EventListener} */
     _onListboxChangeListener: null,
+    /** @type {EventListener} */
     _onListboxClickListener: null,
+    /** @type {EventListener} */
+    _onListboxBlurListener: null,
   })
   .define({
     stateTargetElement() { return this.refs.control; },
@@ -99,6 +103,17 @@ export default CustomElement
       this.selectOption(selectedItem);
       this.closeListbox();
       this.refs.control.focus();
+    },
+    /** @param {FocusEvent} Event */
+    onListboxBlur({ relatedTarget }) {
+      if (!this._expanded) return;
+      // Ignore if focus lost to pop-up (likely pointerdown).
+      if (relatedTarget) {
+        if (this === relatedTarget) return;
+        if (this.contains(relatedTarget)) return;
+        if (getSharedPopup().contains(relatedTarget)) return;
+      }
+      this.closeListbox();
     },
     applyAutocompleteList() {
       const { _listbox, _draftInput } = this;
@@ -447,7 +462,7 @@ export default CustomElement
         if (this._expanded) return;
         /** @type {InstanceType<Listbox>[]} */
         const [listbox] = currentTarget.assignedElements();
-        const { _listbox } = this;
+        const _listbox = this._listbox;
         if (_listbox === listbox) {
           // Internal already matches
           return;
@@ -455,18 +470,17 @@ export default CustomElement
         if (_listbox) {
           // Unbind and release
           _listbox.removeEventListener('change', this._onListboxChangeListener);
-          this._onListboxChangeListener = null;
           _listbox.removeEventListener('click', this._onListboxClickListener);
-          this._onListboxClickListener = null;
+          _listbox.removeEventListener('blur', this._onListboxBlurListener);
         }
         this._listbox = listbox;
         if (listbox) {
           // Bind and store
           listbox.required = true; // Don't allow unclick
-          this._onListboxChangeListener = this.onListboxChange.bind(this);
+
           listbox.addEventListener('change', this._onListboxChangeListener);
-          this._onListboxChangeListener = this.onListboxClick.bind(this);
           listbox.addEventListener('click', this._onListboxChangeListener);
+          listbox.addEventListener('blur', this._onListboxBlurListener);
         }
       },
     },
@@ -548,6 +562,11 @@ export default CustomElement
       this._listbox.value = current;
       this._draftInput = current;
       this.changeSuggestion({ value: current });
+    },
+    constructed() {
+      this._onListboxChangeListener = this.onListboxChange.bind(this);
+      this._onListboxClickListener = this.onListboxClick.bind(this);
+      this._onListboxBlurListener = this.onListboxBlur.bind(this);
     },
   })
   .html`
