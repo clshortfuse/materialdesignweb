@@ -2,6 +2,8 @@ import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 
 import Surface from './Surface.js';
 
+/* https://m2.material.io/components/tooltips */
+
 export default Surface
   .extend()
   .mixin(AriaReflectorMixin)
@@ -18,8 +20,6 @@ export default Surface
     touch: 'boolean',
   })
   .css`
-    /* https://m2.material.io/components/tooltips */
-
     :host {
       --mdw-shape__size: var(--mdw-shape__extra-small);
       --mdw-ink: var(--mdw-color__on-surface-variant);
@@ -37,7 +37,7 @@ export default Surface
 
       opacity: 0;
       transform: scale(0);
-      z-index: 24;
+      z-index: 26;
 
       font: var(--mdw-typescale__label-medium__font);
       letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
