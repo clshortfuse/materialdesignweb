@@ -42,6 +42,8 @@ export default CustomElement
     shapeLinkElement: null,
     /** @type {HTMLLinkElement} */
     altThemeLinkElement: null,
+    /** @type {string} */
+    currentPageId: null,
   })
   .css`
     #menu-form {
@@ -220,7 +222,15 @@ export default CustomElement
         if (!demoPage) throw new Error('Does not contain <demo-page> element.');
         this.replaceChildren(...demoPage.children);
         const title = fragment.querySelector('title')?.textContent;
-        window.history.pushState({ _DEMOPAGENAVSTATE: true, _DEMOPAGENAVCACHE: text, title }, title, url.href);
+        // TODO: Ensure nav bar is closed before pushing state.
+        // Allows Safari back-gesture to properly preview previous state.
+
+        this.currentPageId = Math.random().toString(36).slice(2);
+        window.history.pushState({
+          _DEMOPAGEID: this.currentPageId,
+          _DEMOPAGENAVCACHE: text,
+          title,
+        }, title, url.href);
         document.title = title;
         this._title = title;
         this._currentLocation = window.location.href;
@@ -230,19 +240,21 @@ export default CustomElement
         // Fallback to normal navigation
       }
     },
+    performInternalRefresh() {
+      document.documentElement.scrollTop = 0;
+    },
     /**
      * @param {PopStateEvent} event
      */
-    onPopState({ state }) {
+    onPopState(event) {
+      const { state } = event;
       if (!state) return;
-      console.log(state);
-      const { _DEMOPAGENAVSTATE, _DEMOPAGENAVCACHE } = state;
-      if (!_DEMOPAGENAVSTATE) return;
-      if (!_DEMOPAGENAVCACHE) {
-        // Uncached? Reload?
-        window.location.reload();
-        return;
-      }
+      const { _DEMOPAGEID, _DEMOPAGENAVCACHE } = state;
+      if (!_DEMOPAGEID) return;
+      if (this.currentPageId === _DEMOPAGEID) return;
+      if (!_DEMOPAGENAVCACHE) return;
+
+      // Handle and log trace
       const fragment = generateFragment(_DEMOPAGENAVCACHE);
       const demoPage = fragment.querySelector('demo-page');
       this.replaceChildren(...demoPage.children);
@@ -250,25 +262,26 @@ export default CustomElement
       document.title = title;
       this._title = title;
       this._currentLocation = window.location.href;
+      this.currentPageId = _DEMOPAGEID;
     },
   })
   .events({
     'mdw:hyperlink'(event) {
       const current = new URL(window.location);
       const destination = new URL(event.detail.href, window.location);
-      const isInternal = new URL('/', current).href === new URL('/', destination).href;
-      console.log('hyperlink event', { isInternal }, destination);
+      const isRefresh = current.href === destination.href;
+      const isInternal = isRefresh || new URL('/', current).href === new URL('/', destination).href;
       if (!isInternal) return;
       event.preventDefault();
-      // Start async here
-      this.performInternalNavigation(destination);
+      if (isRefresh) {
+        this.performInternalRefresh();
+      } else {
+        this.performInternalNavigation(destination);
+      }
     },
   })
   .on({
     constructed() {
-      window.history.replaceState({
-        _DEMOPAGENAVSTATE: true,
-      }, document.title, window.location.href);
       window.addEventListener('popstate', this.onPopState.bind(this));
       for (const link of this.refs.drawer.children) {
         if (window.location.hostname === 'clshortfuse.github.io') {
@@ -309,6 +322,22 @@ export default CustomElement
         this.loadShape(userShape);
       } else {
         this.shadowRoot.querySelector('mdw-menu-item[name="font-size"][value="1"]').selected = true;
+      }
+    },
+    connected() {
+      // Store initial state
+      if (this.currentPageId) return;
+      const callback = () => {
+        this.currentPageId = Math.random().toString(36).slice(2);
+        window.history.replaceState({
+          _DEMOPAGEID: this.currentPageId,
+          _DEMOPAGENAVCACHE: document.documentElement.outerHTML,
+        }, document.title, window.location.href);
+      };
+      if (document.readyState === 'complete') {
+        requestAnimationFrame(callback);
+      } else {
+        document.addEventListener('DOMContentLoaded', callback);
       }
     },
     _currentLocationChanged() {
