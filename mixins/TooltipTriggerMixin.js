@@ -17,6 +17,7 @@ export default function TooltipTriggerMixin(Base) {
       _idleDebounce: null,
       /** @type {HTMLElement[]} */
       _watchedParents: null,
+      /** @type {ResizeObserver} */
       _resizeObserver: null,
       /** @type {IntersectionObserver} */
       _intersectObserver: null,
@@ -60,17 +61,6 @@ export default function TooltipTriggerMixin(Base) {
           <slot id=tooltip-slot name=tooltip>{tooltip}</slot>
         </mdw-tooltip>
       `);
-    })
-    .childEvents({
-      tooltipSlot: {
-        slotchange(event) {
-          const currentTarget = /** @type {HTMLSlotElement} */ (event.currentTarget);
-          this._tooltipClone.replaceChildren(
-            ...currentTarget.assignedNodes()
-              .map((child) => child.cloneNode(true)),
-          );
-        },
-      },
     })
     .methods({
       cancelShowTooltip() {
@@ -133,6 +123,7 @@ export default function TooltipTriggerMixin(Base) {
         document.body.append(this._tooltipClone);
         this.updateTooltipPosition();
         this._resizeObserver.observe(this, { box: 'border-box' });
+        this._resizeObserver.observe(this._tooltipClone, { box: 'border-box' });
         this._intersectObserver.observe(this);
         this._intersectObserver.observe(this._tooltipClone);
         /** @type {HTMLElement} */
@@ -169,8 +160,8 @@ export default function TooltipTriggerMixin(Base) {
         hoverStyle.removeProperty('width');
         hoverStyle.removeProperty('height');
       },
-
       /**
+       * TODO: Throttle multiple calls
        * @param {DOMRect} [domRect]
        * @return {void}
        */
@@ -210,36 +201,33 @@ export default function TooltipTriggerMixin(Base) {
           if (result.visibility === 1) break;
         }
 
-        this._tooltipClone.style.setProperty('top', `${anchorResult.top}px`);
-        this._tooltipClone.style.setProperty('left', `${anchorResult.left}px`);
-        this._tooltipClone.style.setProperty('margin', '0');
-        this._tooltipClone.style.setProperty('transform-origin', `${anchorResult.transformOriginY} ${anchorResult.transformOriginX}`);
+        Object.assign(this._tooltipClone.style, {
+          top: `${anchorResult.top}px`,
+          left: `${anchorResult.left}px`,
+          margin: '0',
+          transformOrigin: `${anchorResult.transformOriginY} ${anchorResult.transformOriginX} 0`,
+        });
 
-        const hoverStyle = this.refs.tooltip.style;
-        hoverStyle.setProperty('width', `${anchorResult.width + (anchorResult.offsetX * 2)}px`);
-        hoverStyle.setProperty('height', `${anchorResult.height + (anchorResult.offsetY)}px`);
-        if (anchorResult.clientY === 'bottom') {
-          hoverStyle.setProperty('top', '100%');
-          hoverStyle.removeProperty('bottom');
-        } else {
-          hoverStyle.removeProperty('top');
-          hoverStyle.setProperty('height', `${anchorResult.height + (anchorResult.offsetY)}px`);
-          hoverStyle.setProperty('bottom', '100%');
-        }
-        switch (anchorResult.clientX) {
-          case 'left':
-            hoverStyle.setProperty('left', '0');
-            hoverStyle.removeProperty('right');
-            break;
-          default:
-          case 'center':
-            hoverStyle.removeProperty('left');
-            hoverStyle.removeProperty('right');
-            break;
-          case 'right':
-            hoverStyle.removeProperty('left');
-            hoverStyle.setProperty('right', '0');
-        }
+        Object.assign(this.refs.tooltip.style, {
+          width: `${anchorResult.width + (anchorResult.offsetX * 2)}px`,
+          height: `${anchorResult.height + (anchorResult.offsetY)}px`,
+          top: anchorResult.clientY === 'bottom' ? '100%' : null,
+          bottom: anchorResult.clientY === 'top' ? '100%' : null,
+          left: anchorResult.clientX === 'left' ? 0 : null,
+          right: anchorResult.clientX === 'right' ? 0 : null,
+        });
+      },
+      recloneTooltip() {
+        const slot = /** @type {HTMLSlotElement} */ (this.refs.tooltipSlot);
+        this._tooltipClone.replaceChildren(
+          ...slot.assignedNodes()
+            .map((child) => child.cloneNode(true)),
+        );
+      },
+    })
+    .childEvents({
+      tooltipSlot: {
+        slotchange: 'recloneTooltip',
       },
     })
     .events({
@@ -331,6 +319,9 @@ export default function TooltipTriggerMixin(Base) {
       },
       disconnected() {
         this.hideTooltip();
+      },
+      tooltipChanged() {
+        this.recloneTooltip();
       },
     });
 }
