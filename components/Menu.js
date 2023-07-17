@@ -125,6 +125,7 @@ export default CustomElement
     },
     'mdw-menu-item:cascader-blur'() {
       const submenu = this.submenu;
+      if (!submenu) return;
       // Wait for focus event (if mouse focus on sub menu item)
       queueMicrotask(() => {
         // Stay open if submenu is focused
