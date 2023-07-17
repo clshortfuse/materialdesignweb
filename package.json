@@ -1,97 +1,35 @@
 {
-  "name": "@shortfuse/materialdesignweb",
-  "version": "0.8.0",
-  "description": "Material Design for Web",
-  "type": "module",
+  "author": "Carlos Lopez Jr. <clshortfuse@gmail.com> (https://shortfuse.org/)",
   "bin": {
     "mdw-css": "./bin/mdw-css.js"
   },
-  "scripts": {
-    "prepublishOnly": "node build/esbuild.js index.js --outdir=dist --minify --metafile --production",
-    "predocs": "node bin/mdw-css.js --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/theme.css",
-    "predocs-alt": "node bin/mdw-css.js --color=a46750 --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/alt-theme.css",
-    "docs": "node build/esbuild.js docs/demo.js --outdir=docs --minify --metafile",
-    "watch": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile",
-    "serve": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile --serve --live --tree-shaking=true",
-    "sample": "node build/esbuild.js index.js --outdir=docs --watch --metafile --serve --live",
-    "pretest": "eslint --ignore-path .gitignore",
-    "test": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
-    "test:spec": "web-test-runner \"test/spec/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit",
-    "test:screenshot": "web-test-runner \"test/screenshot/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
-    "test:custom": "web-test-runner \"test/**/*.test.js\" --node-resolve --concurrency 1",
-    "test:watch": "web-test-runner \"test/**/*.test.js\" --node-resolve --concurrency 1 --watch"
-  },
   "browser": "dist/index.min.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/clshortfuse/materialdesignweb.git"
-  },
-  "keywords": [
-    "material",
-    "design",
-    "web",
-    "materialyou",
-    "md3",
-    "web-components"
-  ],
-  "files": [
-    "/bin",
-    "/dist",
-    "/components",
-    "/core",
-    "/theming",
-    "/mixins",
-    "/utils"
-  ],
-  "exports": {
-    "/components": "./components",
-    "/core": "./core",
-    "/theming": "./theming",
-    "/mixins": "./mixins",
-    "/utils": "./utils"
-  },
-  "author": "Carlos Lopez Jr. <clshortfuse@gmail.com> (https://shortfuse.org/)",
-  "license": "ISC",
-  "sideEffects": [
-    "./components/*.js",
-    "./loaders/*.js",
-    "./utils/metadata.js",
-    "./docs/custom.js",
-    "./docs/demo/*.js"
-  ],
   "bugs": {
     "url": "https://github.com/clshortfuse/materialdesignweb/issues"
   },
-  "homepage": "https://github.com/clshortfuse/materialdesignweb#readme",
-  "overrides": {
-    "stylelint-no-unsupported-browser-features": {
-      "doiuse": "^6.0.2"
-    }
-  },
+  "description": "Material Design for Web",
   "devDependencies": {
     "@esm-bundle/chai": "^4.3.4-fix.0",
-    "@playwright/test": "^1.35.1",
+    "@playwright/test": "^1.36.1",
     "@types/html-minifier-terser": "^7.0.0",
     "@types/mocha": "^10.0.1",
     "@types/tap": "^15.0.7",
-    "@typescript-eslint/eslint-plugin": "^5.30.7",
-    "@typescript-eslint/parser": "^5.30.7",
-    "@web/test-runner": "^0.16.1",
-    "@web/test-runner-commands": "^0.7.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@web/test-runner": "^0.17.0",
+    "@web/test-runner-commands": "^0.8.0",
     "@web/test-runner-playwright": "^0.10.0",
     "acorn": "^8.8.2",
     "acorn-walk": "^8.2.0",
     "browserslist-to-esbuild": "^1.1.1",
     "element-internals-polyfill": "^1.1.11",
     "esbuild": "^0.18.10",
-    "eslint": "^8.24.0",
+    "eslint": "^8.45.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-compat": "^4.0.2",
-    "eslint-plugin-github": "^4.3.5",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsdoc": "^46.4.0",
     "eslint-plugin-sort-class-members": "^1.15.2",
-    "eslint-plugin-unicorn": "^47.0.0",
+    "eslint-plugin-unicorn": "^48.0.0",
     "html-minifier-terser": "^7.1.0",
     "http-server": "^14.1.1",
     "magic-string": "^0.30.0",
@@ -103,5 +41,65 @@
     "stylelint-order": "^6.0.2",
     "stylelint-use-logical-spec": "^5.0.0",
     "typescript": "5.1"
-  }
+  },
+  "exports": {
+    "/components": "./components",
+    "/core": "./core",
+    "/mixins": "./mixins",
+    "/theming": "./theming",
+    "/utils": "./utils"
+  },
+  "files": [
+    "/bin",
+    "/dist",
+    "/components",
+    "/core",
+    "/theming",
+    "/mixins",
+    "/utils"
+  ],
+  "homepage": "https://github.com/clshortfuse/materialdesignweb#readme",
+  "keywords": [
+    "material",
+    "design",
+    "web",
+    "materialyou",
+    "md3",
+    "web-components"
+  ],
+  "license": "ISC",
+  "name": "@shortfuse/materialdesignweb",
+  "overrides": {
+    "stylelint-no-unsupported-browser-features": {
+      "doiuse": "^6.0.2"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clshortfuse/materialdesignweb.git"
+  },
+  "scripts": {
+    "docs": "node build/esbuild.js docs/demo.js --outdir=docs --minify --metafile",
+    "predocs": "node bin/mdw-css.js --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/theme.css",
+    "predocs-alt": "node bin/mdw-css.js --color=a46750 --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/alt-theme.css",
+    "prepublishOnly": "node build/esbuild.js index.js --outdir=dist --minify --metafile --production",
+    "pretest": "eslint --ignore-path .gitignore",
+    "sample": "node build/esbuild.js index.js --outdir=docs --watch --metafile --serve --live",
+    "serve": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile --serve --live --tree-shaking=true",
+    "test": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
+    "test:custom": "web-test-runner \"test/**/*.test.js\" --node-resolve --concurrency 1",
+    "test:screenshot": "web-test-runner \"test/screenshot/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
+    "test:spec": "web-test-runner \"test/spec/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit",
+    "test:watch": "web-test-runner \"test/**/*.test.js\" --node-resolve --concurrency 1 --watch",
+    "watch": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile"
+  },
+  "sideEffects": [
+    "./components/*.js",
+    "./loaders/*.js",
+    "./utils/metadata.js",
+    "./docs/custom.js",
+    "./docs/demo/*.js"
+  ],
+  "type": "module",
+  "version": "0.8.0"
 }
