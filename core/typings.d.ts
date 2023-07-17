@@ -113,9 +113,10 @@ type HTMLElementCancellableEventMap = Pick<HTMLElementEventMapFixed,
   'wheel'
   >
 
-type CompositionEventMap = HTMLElementEventMapFixed & {
-  [P in keyof HTMLElementCancellableEventMap as `~${P}`]: Omit<HTMLElementCancellableEventMap[P], 'preventDefault'>
-} & Record<string, Event|Omit<Event, 'preventDefault'>>;
+type CompositionEventMap =
+  HTMLElementEventMapFixed
+  & {[P in keyof HTMLElementCancellableEventMap as `~${P}`]: HTMLElementCancellableEventMap[P]}
+  & Record<string, Event|CustomEvent>
 
 type CompositionEventListener<T, K = keyof CompositionEventMap> = {
   type?: K
