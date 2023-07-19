@@ -286,14 +286,14 @@ export function setupTheme({ color = '#6750A4', custom = [], lightness = 'auto' 
  * @return {ThemeOptions}
  */
 export function themeOptionsFromSearchParams(searchParams) {
-  const color = searchParams.get('color') || '#6750A4';
+  const color = searchParams?.get('color') || '#6750A4';
 
   /** @type {[string,string?][]} */
-  const custom = searchParams.getAll('custom')
+  const custom = searchParams?.getAll('custom')
     .flatMap((c) => c.split(','))
-    .map((c) => c.split(':'));
+    .map((c) => c.split(':')) ?? [];
 
-  const lightness = searchParams.get('lightness') ?? 'auto';
+  const lightness = searchParams?.get('lightness') ?? 'auto';
   return { color, custom, lightness };
 }
 
