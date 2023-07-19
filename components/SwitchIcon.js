@@ -3,6 +3,9 @@ import './Shape.js';
 import CustomElement from '../core/CustomElement.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
+import { loadGlobalStyles } from '../services/rtl.js';
+
+loadGlobalStyles();
 
 export default CustomElement
   .extend()

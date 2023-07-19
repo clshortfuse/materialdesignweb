@@ -3,6 +3,9 @@ import { isRtl } from '../core/dom.js';
 import InputMixin from '../mixins/InputMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
+import { loadGlobalStyles } from '../services/rtl.js';
+
+loadGlobalStyles();
 
 /**
  * @param {string} value
