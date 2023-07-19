@@ -6,8 +6,7 @@ import StateMixin from '../mixins/StateMixin.js';
 import List from './List.js';
 import ListOption from './ListOption.js';
 
-/** @implements {HTMLSelectElement} */
-// @ts-expect-error Can't implement index signatures (use `item()`)
+/** -implements {HTMLSelectElement} */
 export default List
   .extend()
   .mixin(StateMixin)

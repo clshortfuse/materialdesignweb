@@ -5,7 +5,7 @@ import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 import './Icon.js';
 import ListOption from './ListOption.js';
 
-export default class MenuItem extends ListOption
+export default ListOption
   .extend()
   .mixin(FormAssociatedMixin)
   .set({
@@ -261,5 +261,4 @@ export default class MenuItem extends ListOption
       color: inherit;
     }
   `
-  .autoRegister('mdw-menu-item')
-  .tsClassFix() {}
+  .autoRegister('mdw-menu-item');

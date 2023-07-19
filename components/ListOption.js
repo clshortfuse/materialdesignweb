@@ -4,7 +4,7 @@ import ListItem from './ListItem.js';
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#htmloptionelement
 
-export default class ListOption extends ListItem
+export default ListItem
   .extend()
   .setStatic({
     formAssociated: true,
@@ -146,35 +146,35 @@ export default class ListOption extends ListItem
       background-color: rgb(var(--mdw-bg));
       color: rgb(var(--mdw-ink));
     }
-  ` {
-  static { this.autoRegister('mdw-list-option'); }
+  `
+  .extend((BaseClass) => class extends BaseClass {
+    /**
+     * @param {string} [text]
+     * @param {string} [value]
+     * @param {boolean} [defaultSelected]
+     * @param {boolean} [selected]
+     */
+    constructor(text, value, defaultSelected, selected) {
+      super();
+      if (text !== undefined) {
+        this.text = text;
+      }
+      if (value !== undefined) {
+        this._value = value;
+      }
+      if (defaultSelected !== undefined) {
+        this.defaultSelected = defaultSelected;
+      }
+      if (selected !== undefined) {
+        this._selected = selected;
+      }
+    }
 
-  /**
-   * @param {string} [text]
-   * @param {string} [value]
-   * @param {boolean} [defaultSelected]
-   * @param {boolean} [selected]
-   */
-  constructor(text, value, defaultSelected, selected) {
-    super();
-    if (text !== undefined) {
-      this.text = text;
+    connectedCallback() {
+      super.connectedCallback();
+      if (!this.hasAttribute('tabindex')) {
+        this.tabIndex = 0;
+      }
     }
-    if (value !== undefined) {
-      this._value = value;
-    }
-    if (defaultSelected !== undefined) {
-      this.defaultSelected = defaultSelected;
-    }
-    if (selected !== undefined) {
-      this._selected = selected;
-    }
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    if (!this.hasAttribute('tabindex')) {
-      this.tabIndex = 0;
-    }
-  }
-}
+  })
+  .autoRegister('mdw-list-option');

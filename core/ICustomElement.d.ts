@@ -101,9 +101,10 @@ export declare const ICustomElement: {
 
   schema: Record<string, unknown>;
 
-  extend<T extends typeof ICustomElement>(this: T): T;
-
-  tsClassFix<T extends typeof ICustomElement>(this:T): T & (new (...args:any[]) => InstanceType<T>)
+  extend<T1 extends typeof ICustomElement, T2 extends T1>(
+    this: T1,
+    customExtender?: (Base:T1) => T2
+    ): T2;
 
   html<T extends typeof ICustomElement>(
     this: T,

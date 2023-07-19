@@ -216,21 +216,11 @@ export default class CustomElement extends ICustomElement {
   /**
    * Extends base class into a new class.
    * Use to avoid mutating base class.
-   * TODO: Add constructor arguments typing
    * @type {typeof ICustomElement.extend}
    */
-  static extend() {
+  static extend(customExtender) {
     // @ts-expect-error Can't cast T
-    return class extends this {};
-  }
-
-  /**
-   * Fix for Typescript not parsing constructor params
-   * @type {typeof ICustomElement.tsClassFix}
-   */
-  static tsClassFix() {
-    // @ts-expect-error Can't cast T
-    return this;
+    return customExtender ? customExtender(this) : class extends this {};
   }
 
   /**

@@ -10,8 +10,8 @@ const documentLoadedStyleSheets = new Set();
 
 // https://html.spec.whatwg.org/multipage/embedded-content.html#htmlimageelement
 
-/** @implements {Omit<HTMLImageElement,DeprecatedHTMLImageElementProperties>} */
-export default class Icon extends CustomElement
+/** -implements {Omit<HTMLImageElement,DeprecatedHTMLImageElementProperties>} */
+export default CustomElement
   .extend()
   .mixin(ThemableMixin)
   .define({
@@ -204,21 +204,21 @@ export default class Icon extends CustomElement
         documentLoadedStyleSheets.add(href);
       },
     },
-  }) {
-  /**
-   * @param {number} [width]
-   * @param {number} [height]
-   */
-  constructor(width, height) {
-    super();
+  })
+  .extend((BaseClass) => class extends BaseClass {
+    /**
+     * @param {number} [width]
+     * @param {number} [height]
+     */
+    constructor(width, height) {
+      super();
 
-    if (width != null) {
-      this.width = width;
+      if (width != null) {
+        this.width = width;
+      }
+      if (height != null) {
+        this.height = height;
+      }
     }
-    if (height != null) {
-      this.height = height;
-    }
-  }
-}
-
-Icon.autoRegister('mdw-icon');
+  })
+  .autoRegister('mdw-icon');

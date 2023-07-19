@@ -11,7 +11,7 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 
 /** @typedef {'charset'|'coords'|'name'|'shape'} DeprecatedHTMLAnchorElementProperties */
 
-export default class NavItem extends CustomElement
+export default CustomElement
   .extend()
   .mixin(ThemableMixin)
   .mixin(StateMixin)
@@ -269,10 +269,11 @@ export default class NavItem extends CustomElement
       },
     },
   })
-  .autoRegister('mdw-nav-item')
-  .tsClassFix() {
-  addRipple(...args) {
-    if (!this.active) return null;
-    return super.addRipple(...args);
-  }
-}
+  .extend((Base) => class NavItem extends Base {
+    /** @type {InstanceType<ReturnType<RippleMixin>>['addRipple']} */
+    addRipple(...args) {
+      if (!this.active) return null;
+      return super.addRipple(...args);
+    }
+  })
+  .autoRegister('mdw-nav-item');
