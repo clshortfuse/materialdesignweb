@@ -31,6 +31,7 @@ export default CustomElement
      *  right:number,
      *  center: number,
      *  label: {left:number, width:number},
+     *  tab: InstanceType<Tab>,
      *  index: number,
      * }[]}
      */
@@ -101,14 +102,20 @@ export default CustomElement
     },
     tabMetrics() {
       // eslint-disable-next-line no-return-assign
-      return this._tabMetrics ??= [...this.tabs].map((tab, index) => ({
-        left: tab.offsetLeft,
-        width: tab.offsetWidth,
-        right: tab.offsetLeft + tab.offsetWidth,
-        center: tab.offsetLeft + (tab.offsetWidth / 2),
-        label: tab.labelMetrics,
-        index,
-      }));
+      return this._tabMetrics ??= [...this.tabs].map((tab, index) => {
+        if (!(tab instanceof Tab)) {
+          customElements.upgrade(tab);
+        }
+        return {
+          left: tab.offsetLeft,
+          width: tab.offsetWidth,
+          right: tab.offsetLeft + tab.offsetWidth,
+          center: tab.offsetLeft + (tab.offsetWidth / 2),
+          label: tab.computeLabelMetrics(),
+          tab,
+          index,
+        };
+      });
     },
     selectedIndex: {
       get() {
@@ -174,9 +181,10 @@ export default CustomElement
     /** @param {InstanceType<Tab>} [tab] */
     updateIndicatorByTab(tab) {
       tab ??= this.selectedItem ?? this.tabs.item(0);
-      if (!tab) return;
-      const width = this.secondary ? tab.clientWidth : tab.labelMetrics.width;
-      const position = this.secondary ? tab.offsetLeft : tab.offsetLeft + tab.labelMetrics.left;
+      const metrics = this.tabMetrics.find((m) => m.tab === tab);
+      if (!metrics) return;
+      const width = this.secondary ? metrics.width : metrics.label.width;
+      const position = this.secondary ? metrics.left : metrics.left + metrics.label.left;
       this._indicatorStyle = `--width: ${width}; --offset: ${position}px`;
     },
     updateIndicator(animate = false) {
@@ -207,7 +215,7 @@ export default CustomElement
       let center;
       if (leftMetrics === rightMetrics) {
         width = this.secondary ? leftMetrics.width : leftMetrics.label.width;
-        activeTab = this.tabs.item(leftIndex);
+        activeTab = leftMetrics.tab;
         center = leftMetrics.center;
       } else {
         const leftRatio = 1 - (decimalIndex - leftIndex);
@@ -217,7 +225,7 @@ export default CustomElement
         const activeIndex = leftRatio > rightRatio ? leftIndex : rightIndex;
         const distance = rightMetrics.center - leftMetrics.center;
         width = leftWidth + rightWidth;
-        activeTab = this.tabs.item(activeIndex);
+        activeTab = this.tabMetrics[activeIndex].tab;
         center = leftMetrics.center + (distance * rightRatio);
       }
 
