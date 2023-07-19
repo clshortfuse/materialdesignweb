@@ -45,13 +45,7 @@ export default class CustomElement extends ICustomElement {
 
   /** @return {Iterable<string>} */
   static get observedAttributes() {
-    const s = new Set();
-    for (const config of this.propList.values()) {
-      if (config.reflect === true || config.reflect === 'read') {
-        s.add(config.attr);
-      }
-    }
-    return s;
+    return this.attrList.keys();
   }
 
   /** @type {import('./Composition.js').Compositor<?>} */
@@ -68,6 +62,9 @@ export default class CustomElement extends ICustomElement {
 
   /** @type {Map<string, import('./typings.js').ObserverConfiguration<?,?,?>>} */
   static _props = new Map();
+
+  /** @type {Map<string, import('./typings.js').ObserverConfiguration<?,?,?>>} */
+  static _attrs = new Map();
 
   /** @type {Map<string, Function[]>} */
   static _propChangedCallbacks = new Map();
@@ -317,6 +314,13 @@ export default class CustomElement extends ICustomElement {
     return this._props;
   }
 
+  static get attrList() {
+    if (!this.hasOwnProperty('_attrs')) {
+      this._attrs = new Map(this._attrs);
+    }
+    return this._attrs;
+  }
+
   static get propChangedCallbacks() {
     if (!this.hasOwnProperty('_propChangedCallbacks')) {
       // structuredClone()
@@ -379,11 +383,18 @@ export default class CustomElement extends ICustomElement {
     const config = defineObservableProperty(this.prototype, name, options);
 
     this.propList.set(name, config);
-    for (const [prop, callback] of config.watchers) {
+
+    const { attr, reflect, watchers, INIT_SYMBOL } = config;
+
+    if (attr && (reflect === true || reflect === 'read')) {
+      this.attrList.set(attr, config);
+    }
+
+    for (const [prop, callback] of watchers) {
       this.on(`${prop}Changed`, callback);
     }
 
-    return config.INIT_SYMBOL;
+    return INIT_SYMBOL;
   }
 
   /**
@@ -422,20 +433,23 @@ export default class CustomElement extends ICustomElement {
 
   static undefine(name) {
     Reflect.deleteProperty(this.prototype, name);
-    if (this.propList.has(name)) {
-      const config = this.propList.get(name);
-      if (config.watchers.length && this.propChangedCallbacks.has(name)) {
-        const propWatchers = this.propChangedCallbacks.get(name);
-        for (const watcher of config.watchers) {
-          const index = propWatchers.indexOf(watcher);
-          if (index !== -1) {
-            console.warn('Unwatching', name);
-            propWatchers.splice(index, 1);
-          }
+    if (!this.propList.has(name)) return this;
+    const { watchers, attr, reflect } = this.propList.get(name);
+    if (watchers.length && this.propChangedCallbacks.has(name)) {
+      const propWatchers = this.propChangedCallbacks.get(name);
+      for (const watcher of watchers) {
+        const index = propWatchers.indexOf(watcher);
+        if (index !== -1) {
+          console.warn('Unwatching', name);
+          propWatchers.splice(index, 1);
         }
       }
     }
+    if (attr && (reflect === true || reflect === 'read')) {
+      this.attrList.delete(attr);
+    }
     this.propList.delete(name);
+
     return this;
   }
 
@@ -685,47 +699,45 @@ export default class CustomElement extends ICustomElement {
     }
 
     // Array.find
-    for (const config of this.static.propList.values()) {
-      if (config.attr !== name) continue;
+    const { attrList } = this.static;
+    if (!attrList.has(name)) return;
 
-      if (config.reflect !== true && config.reflect !== 'read') return;
+    const config = attrList.get(name);
 
-      if (config.attributeChangedCallback) {
-        config.attributeChangedCallback.call(this, name, oldValue, newValue);
-        return;
-      }
-
-      let cacheEntry;
-      if (this.attributeCache.has(lcName)) {
-        cacheEntry = this.attributeCache.get(lcName);
-        if (cacheEntry.stringValue === newValue) return;
-      }
-
-      // @ts-expect-error any
-      const previousDataValue = this[config.key];
-      const parsedValue = newValue === null
-        ? config.nullParser(/** @type {null} */ (newValue))
-        // Avoid Boolean('') === false
-        : (config.type === 'boolean' ? true : config.parser(newValue));
-
-      if (parsedValue === previousDataValue) {
-        // No internal value change
-        return;
-      }
-      // "Remember" that this attrValue equates to this data value
-      // Avoids rewriting attribute later on data change event
-      if (cacheEntry) {
-        cacheEntry.stringValue = newValue;
-        cacheEntry.parsedValue = parsedValue;
-      } else {
-        this.attributeCache.set(lcName, {
-          stringValue: newValue, parsedValue,
-        });
-      }
-      // @ts-expect-error any
-      this[config.key] = parsedValue;
+    if (config.attributeChangedCallback) {
+      config.attributeChangedCallback.call(this, name, oldValue, newValue);
       return;
     }
+
+    let cacheEntry;
+    if (this.attributeCache.has(lcName)) {
+      cacheEntry = this.attributeCache.get(lcName);
+      if (cacheEntry.stringValue === newValue) return;
+    }
+
+    // @ts-expect-error any
+    const previousDataValue = this[config.key];
+    const parsedValue = newValue === null
+      ? config.nullParser(/** @type {null} */ (newValue))
+    // Avoid Boolean('') === false
+      : (config.type === 'boolean' ? true : config.parser(newValue));
+
+    if (parsedValue === previousDataValue) {
+      // No internal value change
+      return;
+    }
+    // "Remember" that this attrValue equates to this data value
+    // Avoids rewriting attribute later on data change event
+    if (cacheEntry) {
+      cacheEntry.stringValue = newValue;
+      cacheEntry.parsedValue = parsedValue;
+    } else {
+      this.attributeCache.set(lcName, {
+        stringValue: newValue, parsedValue,
+      });
+    }
+    // @ts-expect-error any
+    this[config.key] = parsedValue;
   }
 
   get #template() {
