@@ -128,3 +128,30 @@ export function css(array, ...substitutions) {
   if (typeof array === 'string') return createCSS(array);
   return createCSS(String.raw({ raw: array }, ...substitutions));
 }
+
+/**
+ * @param {TemplateStringsArray|string|HTMLStyleElement|CSSStyleSheet} styles
+ * @param  {...any} substitutions
+ * @return {HTMLStyleElement|CSSStyleSheet}
+ */
+export function addGlobalCss(styles, ...substitutions) {
+  /** @type {HTMLStyleElement|CSSStyleSheet} */
+  let compiled;
+  if (typeof styles === 'string') {
+    compiled = css(styles);
+  } else if (Array.isArray(styles)) {
+    compiled = css(/** @type {TemplateStringsArray} */ (styles), ...substitutions);
+  } else {
+    compiled = /** @type {HTMLStyleElement|CSSStyleSheet} */ (styles);
+  }
+
+  if (compiled instanceof HTMLStyleElement) {
+    document.head.append(compiled);
+  } else {
+    document.adoptedStyleSheets = [
+      ...document.adoptedStyleSheets,
+      compiled,
+    ];
+  }
+  return compiled;
+}
