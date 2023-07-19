@@ -1,58 +1,9 @@
 html {
-  max-inline-size: 100%;
-  margin: 0;
-  padding: 0;
-
   background: repeating-conic-gradient(rgba(var(--mdw-color__on-background), 0.0333) 0% 25%, transparent 0% 50%) 50% / 16px 16px;
   background-color: rgb(var(--mdw-color__background));
   color: rgb(var(--mdw-color__on-background));
 }
 
 body {
-  /* max-inline-size: 100%; */
   margin: 0;
-  padding: 0;
-
-  font-weight: var(--mdw-typescale__body-large__font-weight);
-  font-size: var(--mdw-typescale__body-large__font-size);
-  line-height: var(--mdw-typescale__body-large__line-height);
-  font-family: var(--mdw-typescale__body-large__font-family);
-  letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
-}
-
-#nav {
-  position: sticky;
-
-  inset-block: 0 auto;
-
-  grid-area: navdrawer;
-
-  box-sizing: border-box;
-  block-size: 100%;
-  max-block-size: 100vh;
-  inline-size: 100px;
-
-  margin: 0;
-  border: none;
-
-  background-color: inherit;
-  box-shadow: none;
-}
-
-main {
-  inline-size: 100%;
-}
-
-.box {
-  /* min-inline-size: 40px; */
-  padding: 8px;
-  /* text-align: center; */
-}
-
-.custom-card-box {
-  padding: 12px;
-}
-
-html[dir="rtl"] {
-  --mdw-dir: -1;
 }
