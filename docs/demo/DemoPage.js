@@ -271,11 +271,16 @@ export default CustomElement
       const destination = new URL(event.detail.href, window.location);
       const isRefresh = current.href === destination.href;
       const isInternal = isRefresh || new URL('/', current).href === new URL('/', destination).href;
+      const isHash = !isRefresh
+        && isInternal
+        && current.pathname === destination.pathname && current.hash !== destination.hash;
       if (!isInternal) return;
-      event.preventDefault();
+      if (isHash) return;
       if (isRefresh) {
         this.performInternalRefresh();
       } else {
+        console.log('performing hyperlink stuff', current, destination);
+        event.preventDefault();
         this.performInternalNavigation(destination);
       }
     },
