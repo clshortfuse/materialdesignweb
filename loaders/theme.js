@@ -1,21 +1,23 @@
-import { css } from '../core/css.js';
+import { addGlobalCss } from '../core/css.js';
 import {
   generateThemeCSS,
   generateTypographyGlobalCSS,
   themeOptionsFromSearchParams,
 } from '../services/theme.js';
 
-const rules = [
-  generateThemeCSS(themeOptionsFromSearchParams(new URL(import.meta.url).searchParams)),
-  generateTypographyGlobalCSS(),
-].join('\n');
-
-const parsed = css(rules);
-if (parsed instanceof HTMLStyleElement) {
-  document.head.append(parsed);
-} else {
-  document.adoptedStyleSheets = [
-    ...document.adoptedStyleSheets,
-    parsed,
-  ];
+let url;
+try {
+  url = import.meta.url;
+} catch {}
+if (!url) {
+  try {
+    url = document.currentScript.src;
+  } catch {}
 }
+
+const searchParams = url ? new URL(url).searchParams : null;
+
+addGlobalCss([
+  generateThemeCSS(themeOptionsFromSearchParams(searchParams)),
+  generateTypographyGlobalCSS(),
+].join('\n'));
