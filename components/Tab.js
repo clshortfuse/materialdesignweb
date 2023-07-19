@@ -3,7 +3,8 @@
 import './Icon.js';
 
 import CustomElement from '../core/CustomElement.js';
-import { CHROME_VERSION, isRtl } from '../core/dom.js';
+import { CHROME_VERSION } from '../core/dom.js';
+import HyperlinkMixin from '../mixins/HyperlinkMixin.js';
 import RippleMixin from '../mixins/RippleMixin.js';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
@@ -15,20 +16,13 @@ export default CustomElement
   .mixin(StateMixin)
   .mixin(RippleMixin)
   .mixin(ScrollListenerMixin)
+  .mixin(HyperlinkMixin)
   .define({
     stateTargetElement() { return this.refs.anchor; },
     /**
      * Used to compute primary indicator size.
      * Default to 24.
      */
-    labelMetrics() {
-      const { slot, icon } = this.refs;
-      const target = slot.clientWidth ? slot : icon;
-      return {
-        width: target.clientWidth,
-        left: target.offsetLeft,
-      };
-    },
   })
   .set({
     delegatesFocus: true,
@@ -46,20 +40,45 @@ export default CustomElement
     focus(options) {
       this.refs.anchor.focus(options);
     },
+    computeLabelMetrics() {
+      const { slot, icon } = this.refs;
+      const target = slot.clientWidth ? slot : icon;
+      return {
+        width: target.clientWidth,
+        left: target.offsetLeft,
+      };
+    },
+  })
+  .expressions({
+    anchorAriaControls({ href }) {
+      return href?.startsWith('#') ? href.slice(1) : null;
+    },
+    anchorAriaSelected({ active }) {
+      return `${active}`;
+    },
+    anchorAriaDisabled({ disabledState }) {
+      return `${disabledState}`;
+    },
+    anchorHref({ href }) {
+      return href ?? '#';
+    },
+    iconIf({ icon, src }) {
+      return icon || src;
+    },
   })
   .html`
-    <a id=anchor role=tab
-      aria-label={ariaLabel}
-      aria-controls=${({ href }) => (href?.startsWith('#') ? href.slice(1) : null)}
-      aria-selected=${({ active }) => (active ? 'true' : 'false')}
-      aria-disabled=${({ disabledState }) => `${disabledState}`}
-      disabled={disabledState}
-      href=${({ href }) => href ?? '#'}>
-      <mdw-icon mdw-if=${(data) => data.icon || data.src} id=icon aria-hidden=true src={src} active={active} icon={icon}></mdw-icon>
-      <slot id=slot></slot>
-    </a>
+    <mdw-icon mdw-if={iconIf} id=icon aria-hidden=true src={src} active={active} icon={icon}></mdw-icon>
+    <slot id=slot></slot>
   `
-  .recompose(({ refs: { shape, rippleContainer, state } }) => {
+  .recompose(({ refs: { anchor, icon, slot, shape, rippleContainer, state } }) => {
+    anchor.setAttribute('role', 'tab');
+    anchor.setAttribute('aria-label', '{ariaLabel}');
+    anchor.setAttribute('aria-controls', '{anchorAriaControls}');
+    anchor.setAttribute('aria-selected', '{anchorAriaSelected}');
+    anchor.setAttribute('aria-disabled', '{anchorAriaDisabled}');
+    anchor.setAttribute('disabled', '{disabledState}');
+    anchor.append(icon, slot);
+
     shape.append(state, rippleContainer);
     state.setAttribute('state-disabled', 'focus');
   })
