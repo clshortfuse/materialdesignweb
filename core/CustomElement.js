@@ -163,13 +163,18 @@ export default class CustomElement extends ICustomElement {
    * @type {typeof ICustomElement.css}
    */
   static css(array, ...substitutions) {
-    if (typeof array === 'string' || Array.isArray(array)) {
-      // @ts-expect-error Complex cast
-      this.append(css(array, ...substitutions));
-    } else {
-      // @ts-expect-error Complex cast
-      this.append(array, ...substitutions);
-    }
+    this.on({
+      composed({ composition }) {
+        if (typeof array === 'string' || Array.isArray(array)) {
+          // @ts-expect-error Complex cast
+          composition.append(css(array, ...substitutions));
+        } else {
+          // @ts-expect-error Complex cast
+          composition.append(array, ...substitutions);
+        }
+      },
+    });
+
     // @ts-expect-error Can't cast T
     return this;
   }
