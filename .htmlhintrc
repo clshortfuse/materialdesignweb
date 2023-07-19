@@ -11,7 +11,7 @@
   "id-unique": true,
   "src-not-empty": true,
   "title-require": true,
-  "head-script-disabled": true,
+  "head-script-disabled": false,
   "alt-require": true,
   "Specification": true,
   "doctype-html5": true,
