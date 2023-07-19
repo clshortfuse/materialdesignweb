@@ -169,7 +169,10 @@ export default function InputMixin(Base) {
           }
         }
         if (defaultButton) {
-          defaultButton.click();
+          defaultButton.dispatchEvent(new PointerEvent(
+            'click',
+            { bubbles: true, cancelable: true, composed: true },
+          ));
           return;
         }
         if (submissionBlockers.size > 1) return;
