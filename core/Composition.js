@@ -601,8 +601,8 @@ export default class Composition {
     }
 
     if (isShadowRoot) {
-      customElements.upgrade(instanceFragment);
       target.append(instanceFragment);
+      customElements.upgrade(target);
     }
 
     draw.target = target;
