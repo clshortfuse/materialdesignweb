@@ -101,7 +101,15 @@ export function minifyTemplateLiterals() {
               removeComments: true,
             });
           } else {
-            data = new CleanCSS({}).minify(raw).styles;
+            data = await new Promise((resolve, reject) => {
+              new CleanCSS().minify(raw, (err, output) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  resolve(output.styles);
+                }
+              });
+            });
           }
           return { data, type, raw, start, end };
         }),

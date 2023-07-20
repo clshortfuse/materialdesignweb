@@ -63,8 +63,16 @@ const buildOptions = {
   treeShaking,
   plugins: [
     minifyTemplateLiterals({
-      cssPreprocessor(css) {
-        return new CleanCSS({}).minify(css).styles;
+      async cssPreprocessor(css) {
+        return await new Promise((resolve, reject) => {
+          new CleanCSS().minify(css, (err, output) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(output.styles);
+            }
+          });
+        });
       },
     }),
     StatisticsPlugin,
