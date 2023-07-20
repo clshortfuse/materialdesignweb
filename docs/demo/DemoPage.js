@@ -52,11 +52,6 @@ export default CustomElement
   `
   .html`
       <mdw-layout id=layout>
-        <!--         
-        <mdw-nav-rail>
-          <mdw-nav-rail-item mdw-for="{link of links}" active=${(data, { link }) => isActive(link?.href)} icon={link.icon} href={link.href}>{link.text}</mdw-nav-rail-item>
-        </mdw-nav-rail>
-         -->
         <mdw-nav-drawer id=drawer slot=nav-drawer>
           <mdw-nav-drawer-item icon=palette href="/components/color.html">Color</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=rounded_corner href="/components/shape.html">Shape</mdw-nav-drawer-item>
@@ -189,7 +184,7 @@ export default CustomElement
             sessionStorage.setItem('altTheme', target.selected ? 'true' : 'false');
             break;
           case 'font-size':
-            document.documentElement.style.setProperty('font-size', `${Number.parseFloat(value) * 100}%`);
+            document.documentElement.style.fontSize = (value === 1) ? null : `${Number.parseFloat(value) * 100}%`;
             sessionStorage.setItem('fontSize', value);
             break;
           case 'shape':
