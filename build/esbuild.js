@@ -85,7 +85,7 @@ if (serve) {
   /** @type {esbuild.ServeOptions} */
   const serveOptions = {
     port: 5500,
-    servedir: './docs',
+    servedir: outdir,
     onRequest(args) {
       const localPath = path.join(serveOptions.servedir, args.path);
       if (localPath === buildOptions.outfile) {
