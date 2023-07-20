@@ -93,14 +93,6 @@ export default CustomElement
             <mdw-icon-button color=surface slot=trailing href="https://github.com/clshortfuse/materialdesignweb" icon=invertocat>GitHub Page</mdw-icon-button>
           </mdw-top-app-bar>
         <slot role=main></slot>
-        <!-- <mdw-pane>
-          <mdw-card color=surface elevated>
-            <mdw-headline style="padding:12px">Theming Options</mdw-headline>
-            <mdw-listbox>
-              <mdw-list-option checkbox name="alt-theme">Alt Theme</mdw-list-item>
-            </mdw-listbox>
-          </mdw-card>
-        </mdw-pane> -->
     </mdw-layout>
     <mdw-menu id=menu>
         <mdw-menu-item checkbox name=alt-theme>Alt Theme</mdw-menu-item>
@@ -184,7 +176,7 @@ export default CustomElement
             sessionStorage.setItem('altTheme', target.selected ? 'true' : 'false');
             break;
           case 'font-size':
-            document.documentElement.style.fontSize = (value === 1) ? null : `${Number.parseFloat(value) * 100}%`;
+            document.documentElement.style.setProperty('font-size', `${Number.parseFloat(value) * 100}%`);
             sessionStorage.setItem('fontSize', value);
             break;
           case 'shape':
