@@ -1,4 +1,4 @@
-import { attemptFocus, isRtl } from '../core/dom.js';
+import { attemptFocus, isFocused, isRtl } from '../core/dom.js';
 
 import AriaReflectorMixin from './AriaReflectorMixin.js';
 
@@ -96,7 +96,7 @@ export default function KeyboardNavMixin(Base) {
         }
 
         if (!loop) {
-          if (document.activeElement !== current && current instanceof HTMLElement) {
+          if (!isFocused(current) && current instanceof HTMLElement) {
             current.focus();
           }
           return current;
@@ -160,7 +160,7 @@ export default function KeyboardNavMixin(Base) {
         /** @type {HTMLElement} */
         let firstFocusableChild = null;
         for (const child of this.kbdNavChildren) {
-          if (!currentlyFocusedChild && document.activeElement === child) {
+          if (!currentlyFocusedChild && isFocused(child)) {
             currentlyFocusedChild = child;
           } else if (!currentTabIndexChild && child.getAttribute('tabindex') === '0') {
             currentTabIndexChild = child;
@@ -174,7 +174,7 @@ export default function KeyboardNavMixin(Base) {
           }
           // Bind
           if (!child.hasAttribute('tabindex')) {
-            child.tabIndex = (document.activeElement === child) ? 0 : -1;
+            child.tabIndex = isFocused(child) ? 0 : -1;
           }
         // this.rtiBindChild(child);
         }
