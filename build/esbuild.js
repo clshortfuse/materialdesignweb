@@ -1,14 +1,14 @@
-import path from 'node:path';
 import process from 'node:process';
 
 import browserslistToEsbuild from 'browserslist-to-esbuild';
+import CleanCSS from 'clean-css';
 import esbuild from 'esbuild';
 
 import { getSearchParams } from '../utils/cli.js';
 
-import MinifyTemplateLiteralsPlugin from './MinifyTemplateLiteralsPlugin.js';
-import StatisticsPlugin from './StatisticsPlugin.js';
-import WriteMetafilePlugin from './WriteMetafilePlugin.js';
+import { minifyTemplateLiterals } from './esbuild/MinifyTemplateLiteralsPlugin.js';
+import StatisticsPlugin from './esbuild/StatisticsPlugin.js';
+import WriteMetafilePlugin from './esbuild/WriteMetafilePlugin.js';
 
 const target = browserslistToEsbuild();
 
@@ -62,7 +62,11 @@ const buildOptions = {
   outdir,
   treeShaking,
   plugins: [
-    MinifyTemplateLiteralsPlugin,
+    minifyTemplateLiterals({
+      cssPreprocessor(css) {
+        return new CleanCSS({}).minify(css).styles;
+      },
+    }),
     StatisticsPlugin,
     WriteMetafilePlugin, {
       name: 'emit completed',
@@ -86,12 +90,6 @@ if (serve) {
   const serveOptions = {
     port: 5500,
     servedir: outdir,
-    onRequest(args) {
-      const localPath = path.join(serveOptions.servedir, args.path);
-      if (localPath === buildOptions.outfile) {
-        // console.log('accessed outfile');
-      }
-    },
   };
 
   const server = await context.serve(serveOptions);

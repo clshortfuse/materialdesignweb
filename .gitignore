@@ -7,6 +7,7 @@ docs/**.min.js
 docs/**.min.css
 docs/**.min.js.*
 docs/**.min.css.*
+docs/rollup.*.json
 docs/meta.json
 docs/theme.css
 coverage/**
