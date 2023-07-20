@@ -155,13 +155,13 @@ function executeSearch(search, ...args) {
       dirty: state.dirtyFlags[search.dirtyIndex],
     };
   }
-  state.ranFlags[search.ranFlagIndex] = true;
+  state.ranFlags[search.ranFlagIndex] = 1;
   let result;
   if (search.subSearch) {
     const subResult = executeSearch(search.subSearch, ...args);
     // Use last cached value (if any)
     if (!subResult.dirty && cachedValue !== undefined) {
-      state.dirtyFlags[search.dirtyIndex] = false;
+      state.dirtyFlags[search.dirtyIndex] = 0;
       return { value: cachedValue, dirty: false };
     }
     // Pass from subquery
@@ -176,7 +176,7 @@ function executeSearch(search, ...args) {
 
   // Overwrite cache and flag as dirty
   state.caches[search.cacheIndex] = result;
-  state.dirtyFlags[search.dirtyIndex] = true;
+  state.dirtyFlags[search.dirtyIndex] = 1;
   return { value: result, dirty: true };
 }
 
@@ -228,8 +228,8 @@ function searchWithDeepProp(state, changes, data) {
  * @prop {(Element|Text)[]} nodes
  * @prop {any[]} caches
  * @prop {Comment[]} comments
- * @prop {boolean[]} ranFlags
- * @prop {boolean[]} dirtyFlags
+ * @prop {Uint8Array} ranFlags
+ * @prop {Uint8Array} dirtyFlags
  * @prop {Element[]} refs
  * @prop {number} lastChildNodeIndex
  * @prop {DocumentFragment} instanceFragment
@@ -318,6 +318,8 @@ function valueFromPropName(prop, source) {
 
 /** @template T */
 export default class Composition {
+  static EVENT_PREFIX_REGEX = /^([*1~]+)?(.*)$/;
+
   #interpolationState = {
     nodeIndex: -1,
     ranFlagIndex: 0,
@@ -354,9 +356,6 @@ export default class Composition {
    * @type {Map<string, RenderGraphAction[]>}
    */
   actionsByPropsUsed = new Map();
-
-  /** @type {RenderGraphAction[]} */
-  actions = [];
 
   /** @type {RenderGraphAction[]} */
   postInitActions = [];
@@ -525,19 +524,19 @@ export default class Composition {
       lastChildNodeIndex: 0,
       lastElement: null,
       isShadowRoot,
-      ranFlags: [],
+      ranFlags: new Uint8Array(this.#interpolationState.ranFlagIndex),
       comments: [],
       nodes: [],
       caches: this.initCache.slice(),
-      dirtyFlags: [],
+      dirtyFlags: new Uint8Array(this.#interpolationState.dirtyIndex),
       refs: [],
       options,
     };
 
-    const nodes = initState.nodes;
+    const { nodes, refs, ranFlags, dirtyFlags, caches } = initState;
     for (const { tag, textNodes } of this.nodesToBind) {
       const element = instanceFragment.getElementById(tag);
-      initState.refs.push(element);
+      refs.push(element);
       nodes.push(element);
       this.#bindCompositionEventListeners(tag, element, options.context);
 
@@ -568,16 +567,16 @@ export default class Composition {
         const actions = this.actionsByPropsUsed.get(prop);
         for (const action of actions) {
           ranSearch = true;
-          const result = executeSearch(action.search, initState, changes, data);
-          if (result.dirty) {
+          const { dirty, value } = executeSearch(action.search, initState, changes, data);
+          if (dirty) {
             // console.log('dirty, updating from batch', initState.nodes[action.nodeIndex], 'with', result.value);
-            action.invocation(initState, result.value, changes, data);
+            action.invocation(initState, value, changes, data);
           }
         }
       }
       if (!ranSearch) return;
-      initState.ranFlags.fill(false);
-      initState.dirtyFlags.fill(false);
+      ranFlags.fill(0);
+      dirtyFlags.fill(0);
     };
 
     if (isShadowRoot) {
@@ -615,13 +614,13 @@ export default class Composition {
       if (this.searchByQuery.has(prop)) {
         ranSearch = true;
         const search = this.searchByQuery.get(prop);
-        const cachedValue = initState.caches[search.cacheIndex];
+        const cachedValue = caches[search.cacheIndex];
         if (cachedValue === value) {
           return;
         }
-        initState.ranFlags[search.ranFlagIndex] = true;
-        initState.caches[search.cacheIndex] = value;
-        initState.dirtyFlags[search.dirtyIndex] = true;
+        ranFlags[search.ranFlagIndex] = 1;
+        caches[search.cacheIndex] = value;
+        dirtyFlags[search.dirtyIndex] = 1;
       }
 
       let changes;
@@ -642,8 +641,8 @@ export default class Composition {
       }
 
       if (!ranSearch) return;
-      initState.ranFlags.fill(false);
-      initState.dirtyFlags.fill(false);
+      ranFlags.fill(0);
+      dirtyFlags.fill(0);
     };
     draw.state = initState;
     return draw;
@@ -752,7 +751,7 @@ export default class Composition {
       element.removeAttribute(nodeName);
       const tag = this.#tagElement(element);
       const eventType = nodeName.slice(3);
-      const [, flags, type] = eventType.match(/^([*1~]+)?(.*)$/);
+      const [, flags, type] = eventType.match(Composition.EVENT_PREFIX_REGEX);
 
       let handleEvent;
       /** @type {string} */
@@ -1322,7 +1321,6 @@ export default class Composition {
    * @return {RenderGraphAction}
    */
   addAction(action) {
-    this.actions.push(action);
     for (const prop of action.search.propsUsed) {
       if (this.actionsByPropsUsed.has(prop)) {
         this.actionsByPropsUsed.get(prop).push(action);

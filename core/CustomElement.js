@@ -34,8 +34,6 @@ export function cloneAttributeCallback(name, target) {
   };
 }
 
-const EVENT_PREFIX_REGEX = /^([*1~]+)?(.*)$/;
-
 /**
  * Web Component that can cache templates for minification or performance
  */
@@ -494,7 +492,7 @@ export default class CustomElement extends ICustomElement {
     this.on({
       composed({ composition }) {
         for (const [key, listenerOptions] of Object.entries(listeners)) {
-          const [, flags, type] = key.match(EVENT_PREFIX_REGEX);
+          const [, flags, type] = key.match(Composition.EVENT_PREFIX_REGEX);
           // TODO: Make abstract
           let prop;
           /** @type {string[]} */
