@@ -1,5 +1,5 @@
 import CustomElement from '../core/CustomElement.js';
-import { isRtl } from '../core/dom.js';
+import { isFocused, isRtl } from '../core/dom.js';
 import InputMixin from '../mixins/InputMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
@@ -141,7 +141,7 @@ export default CustomElement
 
     /** @param {Event} event */
     onLeaveEvent({ currentTarget }) {
-      if (document.activeElement === currentTarget) return;
+      if (isFocused(/** @type {Element} */ (currentTarget))) return;
       this._isHoveringThumb = false;
     },
 
