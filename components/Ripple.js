@@ -31,8 +31,8 @@ export default CustomElement
       get({ _positionX, _positionY, _radius }) {
         return {
           styles: {
-            minBlockSize: `${_radius}px`,
-            minInlineSize: `${_radius}px`,
+            minHeight: `${_radius}px`,
+            minWidth: `${_radius}px`,
             boxShadow: `0 0 calc(0.10 * ${_radius}px) calc(0.10 * ${_radius}px) currentColor`,
             top: `calc(50% + ${_positionY}px)`,
             left: `calc(50% + ${_positionX}px)`,
