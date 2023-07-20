@@ -4,6 +4,7 @@ import '../../components/Menu.js';
 import '../../components/Listbox.js';
 import '../../components/MenuItem.js';
 import '../../components/TopAppBar.js';
+import '../../components/NavDrawer.js';
 import '../../components/NavDrawerItem.js';
 
 import CustomElement from '../../core/CustomElement.js';
@@ -275,8 +276,8 @@ export default CustomElement
   .on({
     constructed() {
       window.addEventListener('popstate', this.onPopState.bind(this));
-      for (const link of this.refs.drawer.children) {
-        if (window.location.hostname === 'clshortfuse.github.io') {
+      if (window.location.hostname === 'clshortfuse.github.io') {
+        for (const link of this.refs.drawer.children) {
           link.href = `/materialdesignweb${link.href}`;
         }
       }
