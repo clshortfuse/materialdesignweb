@@ -1,6 +1,6 @@
 # Browsers that we support
 
-Firefox >= 110
+Firefox >= 93
 Safari >= 16.4
-Chrome >= 106
-Edge >= 106
+Chrome >= 88
+Edge >= 88
