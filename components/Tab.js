@@ -32,7 +32,6 @@ export default CustomElement
     active: 'boolean',
     icon: 'string',
     src: 'string',
-    href: 'string',
     ariaLabel: 'string',
   })
   .methods({
