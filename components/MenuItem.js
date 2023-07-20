@@ -1,5 +1,6 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
+import { isFocused } from '../core/dom.js';
 import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 
 import './Icon.js';
@@ -121,7 +122,7 @@ export default ListOption
   .events({
     mouseenter() {
       if (this.disabledState) return;
-      if (document.activeElement !== this) {
+      if (!isFocused(this)) {
         this.focus();
       }
       if (!this.cascades) return;
