@@ -37,7 +37,7 @@ export default Surface
 
       opacity: 0;
       transform: scale(0);
-      z-index: 26;
+      z-index: 28;
 
       font: var(--mdw-typescale__label-medium__font);
       letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
