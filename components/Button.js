@@ -69,7 +69,9 @@ export default CustomElement
     },
   })
   .html`
-    <mdw-icon mdw-if={hasIcon} id=icon ink={iconInk} disabled={disabledState} outlined={outlined} aria-hidden=true svg={svg} src={src} svg-path={svgPath} view-box={viewBox} icon={icon}></mdw-icon>
+    <mdw-icon mdw-if={hasIcon} id=icon ink={iconInk} disabled={disabledState}
+      outlined={outlined} aria-hidden=true svg={svg} src={src}
+      svg-path={svgPath} view-box={viewBox} icon={icon}></mdw-icon>
     <slot id=slot disabled={disabledState} aria-hidden=false>{value}</slot>
   `
   .recompose(({ refs: { anchor, shape, state, rippleContainer, surface, control } }) => {
