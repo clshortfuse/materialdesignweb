@@ -1,4 +1,4 @@
-import 'element-internals-polyfill'; // Safari
+import '../polyfills/all.js';
 
 import './custom.js';
 

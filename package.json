@@ -109,7 +109,8 @@
     "./loaders/*.js",
     "./utils/metadata.js",
     "./docs/custom.js",
-    "./docs/demo/*.js"
+    "./docs/demo/*.js",
+    "./polyfills/*.js"
   ],
   "type": "module",
   "version": "0.8.0"
