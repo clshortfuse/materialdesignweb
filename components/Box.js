@@ -1,6 +1,9 @@
 import CustomElement from '../core/CustomElement.js';
 import FlexableMixin from '../mixins/FlexableMixin.js';
+import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
+
+const SUPPORTS_CSS_CONTAINERS = CSS.supports('container', 'x');
 
 /**
  * Containers are stateless elements that may have a color and ink.
@@ -10,12 +13,42 @@ export default CustomElement
   .extend()
   .mixin(ThemableMixin)
   .mixin(FlexableMixin)
+  .mixin(ResizeObserverMixin)
   .observe({
     inline: 'boolean',
     grid: 'boolean',
     block: {
       type: 'boolean',
       empty: true,
+    },
+    columns: 'integer',
+    _autoColumns: {
+      type: 'integer',
+      empty: SUPPORTS_CSS_CONTAINERS ? null : 4,
+    },
+  })
+  .observe({
+    _resizeObserverEnabled: {
+      type: 'boolean',
+      get({ grid, columns }) {
+        // Only use resize observer if using grid, not explicit columns
+        // and CSS containers are not supported.
+        return !SUPPORTS_CSS_CONTAINERS && grid && !columns;
+      },
+    },
+  })
+  .overrides({
+    onResizeObserved(entry) {
+      const { borderBoxSize } = entry;
+      if (!borderBoxSize.length) return;
+      const [{ inlineSize }] = borderBoxSize;
+      if (inlineSize >= 840) {
+        this._autoColumns = 12;
+      } else if (inlineSize >= 600) {
+        this._autoColumns = 8;
+      } else {
+        this._autoColumns = 4;
+      }
     },
   })
   .css`
@@ -90,6 +123,27 @@ export default CustomElement
       }
     }
 
+    #slot[columns="4"] {
+      --mdw-grid__columns: 4;
+      --mdw-grid__columns__4: 1;
+      --mdw-grid__columns__8: 0;
+      --mdw-grid__columns__12: 0;
+    }
+
+    #slot[columns="8"] {
+      --mdw-grid__columns: 8;
+      --mdw-grid__columns__4: 0;
+      --mdw-grid__columns__8: 1;
+      --mdw-grid__columns__12: 0;
+    }
+
+    #slot[columns="12"] {
+      --mdw-grid__columns: 8;
+      --mdw-grid__columns__4: 0;
+      --mdw-grid__columns__8: 1;
+      --mdw-grid__columns__12: 0;
+    }
+
     #slot[grid]::slotted(*) {
       --mdw-grid__column-count: var(--mdw-grid__columns);
       --mdw-grid__column-count__4: var(--mdw-grid__column-count);
@@ -143,5 +197,12 @@ export default CustomElement
     #slot[grid]::slotted([col-span-12="12"]) { --mdw-grid__column-count__12: 12; }
 
   `
-  .html`<slot id=slot type-style={typeStyle} grid={grid}></slot>`
+  .expressions({
+    _computedColumns({ columns, _autoColumns }) {
+      if (columns) return `${columns}`;
+      if (_autoColumns) return `${_autoColumns}`;
+      return null;
+    },
+  })
+  .html`<slot id=slot type-style={typeStyle} grid={grid} columns={_computedColumns}></slot>`
   .autoRegister('mdw-box');
