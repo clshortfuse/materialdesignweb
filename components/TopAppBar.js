@@ -31,6 +31,11 @@ export default CustomElement
   .overrides({
     _getSemiStickyElement() { return this.refs.surface; },
   })
+  .expressions({
+    _companionIf({ size }) {
+      return size === 'medium' || size === 'large';
+    },
+  })
   .observe({
     _headlineStyle: {
       ...ELEMENT_STYLER_TYPE,
@@ -55,7 +60,7 @@ export default CustomElement
       <slot id=headline-slot></slot>
     </div>
     <slot id=trailing name=trailing on-slotchange={refreshTabIndexes}></slot>
-    <div mdw-if=${({ size }) => size === 'medium' || size === 'large'} id=companion aria-hidden=true size={size} color={color} raised={_raised}>
+    <div mdw-if={_companionIf} id=companion aria-hidden=true size={size} color={color} raised={_raised}>
       <slot id=companion-slot name=companion size={size}>{headline}</span>
     </div>
   `
