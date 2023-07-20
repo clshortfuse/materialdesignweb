@@ -33,6 +33,8 @@ CustomElement
       scrollbar-color: transparent transparent;
       scrollbar-width: none;
 
+      outline: none; /* Older Chromium Builds */
+
       opacity: 0;
 
       z-index: 23;
@@ -592,6 +594,8 @@ export default function PopupMixin(Base) {
       inline-size: auto;
       min-inline-size: none;
       max-inline-size: 100vw;
+
+      outline: none; /* Older Chromium Builds */
   
       
       pointer-events: none;
