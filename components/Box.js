@@ -140,8 +140,8 @@ export default CustomElement
     #slot[columns="12"] {
       --mdw-grid__columns: 8;
       --mdw-grid__columns__4: 0;
-      --mdw-grid__columns__8: 1;
-      --mdw-grid__columns__12: 0;
+      --mdw-grid__columns__8: 0;
+      --mdw-grid__columns__12: 1;
     }
 
     #slot[grid]::slotted(*) {
