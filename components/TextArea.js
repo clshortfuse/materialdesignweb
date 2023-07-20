@@ -135,9 +135,7 @@ export default CustomElement
       this._resizing = false;
       // if (this.placeholder) textarea.setAttribute('placeholder', this.placeholder);
     },
-
-    /** @param {ResizeObserverEntry} entry */
-    onResizeObserved(entry) {
+    onResizeObserved() {
       if (this.matches(':active')) return;
       this.resize();
     },
