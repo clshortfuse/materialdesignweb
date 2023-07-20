@@ -3,7 +3,7 @@
 import Composition from './Composition.js';
 import { ICustomElement } from './ICustomElement.js';
 import { css } from './css.js';
-import { CHROME_VERSION, attrNameFromPropName, attrValueFromDataValue } from './dom.js';
+import { CHROME_VERSION, attrNameFromPropName, attrValueFromDataValue, isFocused } from './dom.js';
 import { applyMergePatch } from './jsonMergePatch.js';
 import { defineObservableProperty } from './observe.js';
 import { addInlineFunction, html } from './template.js';
@@ -855,7 +855,7 @@ export default class CustomElement extends ICustomElement {
         return;
       }
 
-      if (this.delegatesFocus && document.activeElement === this) {
+      if (this.delegatesFocus && isFocused(this)) {
         if (this.getAttribute('tabindex') === value.toString()) {
           // Skip if possible
           return;
@@ -871,14 +871,16 @@ export default class CustomElement extends ICustomElement {
             console.warn('Chromium bug 1346606: Tabindex change caused blur. Giving focusing back.', this);
             this.focus();
           } else {
-            console.warn('Chromium bug 1346606: Blocking focus event.', this);
+            console.warn(`Chromium bug 1346606: Blocking ${e.type} event.`, this);
           }
         };
-        this.addEventListener('blur', listener, { capture: true, once: true });
-        this.addEventListener('focus', listener, { capture: true, once: true });
+        for (const type of ['blur', 'focus', 'focusout', 'focusin']) {
+          this.addEventListener(type, listener, { capture: true, once: true });
+        }
         super.tabIndex = value;
-        this.removeEventListener('blur', listener, { capture: true });
-        this.removeEventListener('focus', listener, { capture: true });
+        for (const type of ['blur', 'focus', 'focusout', 'focusin']) {
+          this.removeEventListener(type, listener, { capture: true });
+        }
         return;
       }
     }
