@@ -114,6 +114,7 @@ export default {
                   collapseWhitespace: true,
                   collapseBooleanAttributes: false,
                   removeAttributeQuotes: true,
+                  removeComments: true,
                 });
               } else {
                 const { code } = await esbuild.transform(raw, {
