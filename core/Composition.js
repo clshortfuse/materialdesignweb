@@ -601,6 +601,7 @@ export default class Composition {
     }
 
     if (isShadowRoot) {
+      customElements.upgrade(instanceFragment);
       target.append(instanceFragment);
     }
 
@@ -1296,7 +1297,6 @@ export default class Composition {
     }
 
     this.tags = this.nodesToBind.map((n) => n.tag);
-    customElements.upgrade(this.cloneable);
     this.interpolated = true;
 
     // console.log('Cloneable', [...this.cloneable.children].map((child) => child.outerHTML).join('\n'));
