@@ -231,45 +231,18 @@ export default function TooltipTriggerMixin(Base) {
       },
     })
     .events({
-      focus() {
-        if (!this.disabledState && !this.matches(':active')) {
-          this.showTooltip();
-        }
-      },
-      '~touchstart'() {
-        if (!this.disabledState) {
-          this.scheduleShowTooltip('touch');
-        }
-      },
       '~mousemove'() {
-        if (!this.disabledState) {
-          this.scheduleShowTooltip('mouse');
-        }
-      },
-      '~mouseover'() {
         if (!this.disabledState) {
           this.scheduleShowTooltip('mouse');
         }
       },
       '~keydown'({ ctrlKey }) {
         if (ctrlKey) {
-          this.hideTooltip();
+          this.hideTooltip(true);
         }
-      },
-      blur() {
-        this.hideTooltip(true);
       },
       '~click'() {
         this.hideTooltip(true);
-      },
-      '~mouseout'() {
-        this.hideTooltip(true);
-      },
-      touchend() {
-        this.scheduleHideTooltip('touch');
-      },
-      touchcancel() {
-        this.scheduleHideTooltip('touch');
       },
 
     })
@@ -281,10 +254,10 @@ export default function TooltipTriggerMixin(Base) {
         this._tooltipClone.style.setProperty('position', 'fixed');
         this._tooltipClone.setAttribute('aria-hidden', 'true');
         this._parentScrollListener = this.updateTooltipPosition.bind(this, null);
-        this._resizeObserver = new ResizeObserver((entries) => {
-          // console.log('RO', entries);
-          if (!this._tooltipClone.open) return;
-          this.updateTooltipPosition();
+        this._resizeObserver = new ResizeObserver(() => {
+          if (this._tooltipClone.open) {
+            this.updateTooltipPosition();
+          }
         });
         const threshold = [0, 0.49, 0.5, 0.51, 1];
         this._intersectObserver = new IntersectionObserver((entries) => {
@@ -317,8 +290,36 @@ export default function TooltipTriggerMixin(Base) {
         }, { threshold });
         // this.#tooltip.remove();
       },
+      _focusedChanged(previous, current) {
+        if (current) {
+          if (!this._pointerPressed && !this._focusedSynthetic) {
+            this.showTooltip();
+          }
+        } else {
+          this.hideTooltip(true);
+        }
+      },
+      _hoveredChanged(previous, current) {
+        if (current) {
+          if (!this.disabledState) {
+            this.scheduleShowTooltip('mouse');
+          }
+        } else {
+          this.hideTooltip(true);
+        }
+      },
+      _pointerPressedChanged(previous, current) {
+        if (this._lastInteraction !== 'touch') return;
+        if (current) {
+          if (!this.disabledState) {
+            this.scheduleShowTooltip('touch');
+          }
+        } else {
+          this.scheduleHideTooltip('touch');
+        }
+      },
       disconnected() {
-        this.hideTooltip();
+        this.hideTooltip(true);
       },
       tooltipChanged() {
         this.recloneTooltip();
