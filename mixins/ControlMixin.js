@@ -103,7 +103,7 @@ export default function ControlMixin(Base) {
         }
         return ariaLabel?.trim() || null;
       },
-      _computedAriaLabelledBy({ ariaLabel }) {
+      _computedAriaLabelledby({ ariaLabel }) {
         return ariaLabel ? null : 'slot';
       },
     })
@@ -111,9 +111,9 @@ export default function ControlMixin(Base) {
     .recompose(({ template, html, element }) => {
       template.append(html`
         <${element.controlTagName} id=control
-          aria-labelledby={_computedAriaLabelledBy}
-          part=control
           aria-label={_computedAriaLabel}
+          aria-labelledby={_computedAriaLabelledby}
+          part=control
           form-disabled={disabledState}
           type={type}
           >${element.controlVoidElement ? '' : `</${element.controlTagName}>`}

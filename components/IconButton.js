@@ -20,7 +20,7 @@ export default Button
     isToggle({ type }) {
       return type === 'checkbox';
     },
-    _computedAriaLabelledBy({ ariaLabel }) {
+    _computedAriaLabelledby({ ariaLabel }) {
       return ariaLabel ? null : 'tooltip';
     },
   })

@@ -91,6 +91,22 @@ describe('mdw-button', () => {
       const [{ role }] = iterateMeaningfulAXNodes(results);
       assert.equal(role, 'link');
     });
+
+    it('supports aria-label with [href]', async () => {
+      const element = html`<mdw-button href=# aria-label=foo></mdw-button>`;
+      const results = await axTree({ selector: element.tagName });
+      const [{ role, name }] = iterateMeaningfulAXNodes(results);
+      assert.equal(role, 'link');
+      assert.equal(name, 'foo');
+    });
+
+    it('labels based on slot with [href]', async () => {
+      const element = html`<mdw-button href=#>foo</mdw-button>`;
+      const results = await axTree({ selector: element.tagName });
+      const [{ role, name }] = iterateMeaningfulAXNodes(results);
+      assert.equal(role, 'link');
+      assert.equal(name, 'foo');
+    });
   });
 
   /* eslint-disable camelcase */

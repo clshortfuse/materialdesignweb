@@ -9,6 +9,8 @@ import StateMixin from '../mixins/StateMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
+/* https://m3.material.io/components/buttons/specs */
+
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -72,21 +74,19 @@ export default CustomElement
     <mdw-icon mdw-if={hasIcon} id=icon ink={iconInk} disabled={disabledState}
       outlined={outlined} aria-hidden=true svg={svg} src={src}
       svg-path={svgPath} view-box={viewBox} icon={icon}></mdw-icon>
-    <slot id=slot disabled={disabledState} aria-hidden=false>{value}</slot>
+    <slot id=slot disabled={disabledState} aria-hidden=true>{value}</slot>
   `
   .recompose(({ refs: { anchor, shape, state, rippleContainer, surface, control } }) => {
     surface.append(shape);
     shape.append(state, rippleContainer);
     shape.setAttribute('filled', '{filled}');
-    control.setAttribute('hidden', '{href}');
+    control.setAttribute('mdw-if', '{!href}');
     control.setAttribute('role', 'button');
     anchor.setAttribute('mdw-if', '{href}');
     anchor.setAttribute('aria-label', '{_computedAriaLabel}');
     anchor.setAttribute('aria-labelledby', '{_computedAriaLabelledby}');
   })
   .css`
-    /* https://m3.material.io/components/buttons/specs */
-
     :host {
       --mdw-shape__size: var(--mdw-shape__full);
       --mdw-ink: var(--mdw-color__primary);
