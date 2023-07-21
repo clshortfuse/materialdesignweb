@@ -41,6 +41,7 @@
     "http-server": "^14.1.1",
     "magic-string": "^0.30.0",
     "playwright": "^1.32.2",
+    "postcss-jsx": "^0.36.4",
     "rollup-plugin-output-size": "^1.2.1",
     "rollup-plugin-serve": "^2.0.2",
     "stylelint": "^15.2.0",
