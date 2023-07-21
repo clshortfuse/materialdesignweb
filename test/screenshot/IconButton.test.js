@@ -14,8 +14,8 @@ beforeEach(() => document.body.replaceChildren());
 describe('mdw-icon-button', () => {
   generateScreenshotTests('<mdw-icon-button icon=check></mdw-icon-button>', [
     {
-      enabled: {},
-      disabled: { disabled: true },
+      enabled: { TOOLTIP_MOUSE_IDLE_MS: 0 },
+      disabled: { TOOLTIP_MOUSE_IDLE_MS: 0, disabled: true },
     },
     {
       button: {},
@@ -34,9 +34,6 @@ describe('mdw-icon-button', () => {
       hovered: { ':hover': true, textContent: 'Hovered' },
       hovered__focused: { ':hover': true, ':focus': true, textContent: 'Hovered and Focused' },
       pressed: { ':active': true, textContent: 'Pressed' },
-    },
-    {
-      overrides: { TOOLTIP_MOUSE_IDLE_MS: 0 },
     },
   ], 64);
 });
