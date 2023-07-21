@@ -93,10 +93,8 @@ export default function TooltipTriggerMixin(Base) {
 
       /** @param {'mouse'|'touch'|'keyboard'} type */
       scheduleShowTooltip(type) {
-        if (this._tooltipClone.open) {
-        // console.log('abort schedule (shown)');
-          return;
-        }
+        if (this._tooltipClone.open) return;
+
         let timeout = 0;
         switch (type) {
           case 'mouse':
@@ -107,12 +105,14 @@ export default function TooltipTriggerMixin(Base) {
             break;
           default:
         }
-        // console.log('schedule tooltiptimer');
+
         clearTimeout(this._idleDebounce);
-        this._idleDebounce = setTimeout(() => {
-        // console.log('idle');
-          this.showTooltip(type === 'touch');
-        }, timeout);
+        const job = () => this.showTooltip(type === 'touch');
+        if (timeout) {
+          this._idleDebounce = setTimeout(job, timeout);
+        } else {
+          job();
+        }
       },
 
       showTooltip(touch = false) {
