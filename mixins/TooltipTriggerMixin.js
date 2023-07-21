@@ -231,7 +231,8 @@ export default function TooltipTriggerMixin(Base) {
       },
     })
     .events({
-      '~mousemove'() {
+      '~pointermove'(event) {
+        if (event.pointerType === 'touch') return;
         if (!this.disabledState) {
           this.scheduleShowTooltip('mouse');
         }
