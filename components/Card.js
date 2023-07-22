@@ -4,6 +4,7 @@ import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import FlexableMixin from '../mixins/FlexableMixin.js';
 import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
+import HyperlinkMixin from '../mixins/HyperlinkMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
@@ -21,6 +22,7 @@ export default CustomElement
   .mixin(StateMixin)
   .mixin(AriaReflectorMixin)
   .mixin(DelegatesFocusMixin)
+  .mixin(HyperlinkMixin)
   .set({
     _ariaRole: 'figure',
   })
@@ -35,6 +37,7 @@ export default CustomElement
   })
   .expressions({
     showBlocker: ({ disabledState }) => !SUPPORTS_INERT && disabledState,
+    showButton: ({ actionable, href }) => Boolean(actionable || href),
   })
   .methods({
     focus() {
@@ -43,10 +46,17 @@ export default CustomElement
     },
   })
   .html`
-    <mdw-button mdw-if={actionable} aria-label={actionLabel} id=action disabled={disabledState}></mdw-button>
+    <mdw-button mdw-if={showButton} aria-label={actionLabel} href={href}
+      target={target}
+      download={download}
+      ping={ping}
+      rel={rel}
+      hreflang={hreflang}
+      referrerpolicy={referrerPolicy} id=action disabled={disabledState}></mdw-button>
     <div mdw-if={showBlocker} id=inert-blocker></div>
     <slot id=slot disabled={disabledState}></slot>
   `
+  .recompose(({ refs: { anchor } }) => { anchor.remove(); })
   .css`
     /* https://m3.material.io/components/cards/specs */
 
