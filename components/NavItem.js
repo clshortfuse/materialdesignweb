@@ -3,6 +3,7 @@ import './Ripple.js';
 import './Badge.js';
 
 import CustomElement from '../core/CustomElement.js';
+import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import HyperlinkMixin from '../mixins/HyperlinkMixin.js';
 import RippleMixin from '../mixins/RippleMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
@@ -18,8 +19,8 @@ export default CustomElement
   .mixin(RippleMixin)
   .mixin(ShapeMixin)
   .mixin(HyperlinkMixin)
+  .mixin(DelegatesFocusMixin)
   .set({
-    delegatesFocus: true,
     stateLayer: true,
   })
   .observe({

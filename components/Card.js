@@ -1,6 +1,7 @@
 import CustomElement from '../core/CustomElement.js';
 import { EVENT_HANDLER_TYPE } from '../core/customTypes.js';
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
+import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import FlexableMixin from '../mixins/FlexableMixin.js';
 import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
@@ -19,9 +20,7 @@ export default CustomElement
   .mixin(FormAssociatedMixin) // Tap into FormAssociated for disabledState
   .mixin(StateMixin)
   .mixin(AriaReflectorMixin)
-  .setStatic({
-    delegatesFocus: true,
-  })
+  .mixin(DelegatesFocusMixin)
   .set({
     _ariaRole: 'figure',
   })

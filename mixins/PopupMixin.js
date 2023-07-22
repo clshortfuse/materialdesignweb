@@ -13,6 +13,7 @@
 import CustomElement from '../core/CustomElement.js';
 import { attemptFocus, isRtl } from '../core/dom.js';
 import { canAnchorPopup } from '../utils/popup.js';
+import DelegatesFocusMixin from './DelegatesFocusMixin.js';
 
 CustomElement
   .extend()
@@ -161,6 +162,7 @@ function onBeforeUnload(event) {
  */
 export default function PopupMixin(Base) {
   return Base
+    .mixin(DelegatesFocusMixin)
     .observe({
       open: 'boolean',
       modal: 'boolean',
@@ -177,7 +179,6 @@ export default function PopupMixin(Base) {
     })
     .set({
       returnValue: '',
-      delegatesFocus: true,
       _closing: false,
       _useScrim: false,
     })

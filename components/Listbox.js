@@ -1,4 +1,5 @@
 import { constructHTMLOptionsCollectionProxy } from '../dom/HTMLOptionsCollectionProxy.js';
+import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
@@ -12,13 +13,13 @@ export default List
   .mixin(StateMixin)
   .mixin(FormAssociatedMixin)
   .mixin(KeyboardNavMixin)
+  .mixin(DelegatesFocusMixin)
   .observe({
     multiple: 'boolean',
     size: { type: 'integer', empty: 0 },
   })
   .set({
     _ariaRole: 'listbox',
-    delegatesFocus: true,
     /** @type {HTMLCollectionOf<ListOption> & HTMLOptionsCollection} */
     _optionsCollection: null,
     /** @type {HTMLCollectionOf<ListOption>} */

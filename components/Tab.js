@@ -4,6 +4,7 @@ import './Icon.js';
 
 import CustomElement from '../core/CustomElement.js';
 import { CHROME_VERSION } from '../core/dom.js';
+import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import HyperlinkMixin from '../mixins/HyperlinkMixin.js';
 import RippleMixin from '../mixins/RippleMixin.js';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
@@ -17,15 +18,11 @@ export default CustomElement
   .mixin(RippleMixin)
   .mixin(ScrollListenerMixin)
   .mixin(HyperlinkMixin)
+  .mixin(DelegatesFocusMixin)
   .define({
     stateTargetElement() { return this.refs.anchor; },
-    /**
-     * Used to compute primary indicator size.
-     * Default to 24.
-     */
   })
   .set({
-    delegatesFocus: true,
     stateLayer: true,
   })
   .observe({

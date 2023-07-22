@@ -21,7 +21,6 @@ export default CustomElement
   .mixin(HyperlinkMixin)
   .set({
     _ariaRole: 'listitem',
-    delegatesFocus: false,
     stateLayer: true,
   })
   .observe({

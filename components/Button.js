@@ -26,7 +26,6 @@ export default CustomElement
   })
   .set({
     stateLayer: true,
-    delegatesFocus: true,
     _allowedTypes: ['button', 'submit', 'reset'],
   })
   .observe({

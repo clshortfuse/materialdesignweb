@@ -2,6 +2,7 @@
 
 import { cloneAttributeCallback } from '../core/CustomElement.js';
 import { FIREFOX_VERSION, SAFARI_VERSION } from '../core/dom.js';
+import DelegatesFocusMixin from './DelegatesFocusMixin.js';
 
 import FormAssociatedMixin from './FormAssociatedMixin.js';
 
@@ -17,12 +18,12 @@ import FormAssociatedMixin from './FormAssociatedMixin.js';
 export default function ControlMixin(Base) {
   return Base
     .mixin(FormAssociatedMixin)
+    .mixin(DelegatesFocusMixin)
     .observe({
       ariaLabel: 'string',
       _slotInnerText: 'string',
     })
     .set({
-      delegatesFocus: true,
       focusableOnDisabled: false,
       controlTagName: 'input',
       controlVoidElement: true,

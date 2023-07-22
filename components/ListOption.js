@@ -1,17 +1,19 @@
 // https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
 
+import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
+
 import ListItem from './ListItem.js';
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#htmloptionelement
 
 export default ListItem
   .extend()
+  .mixin(DelegatesFocusMixin)
   .setStatic({
     formAssociated: true,
   })
   .set({
     _ariaRole: 'none',
-    delegatesFocus: true,
     _index: -1,
     _selectedDirty: false,
     isInteractive: true,
