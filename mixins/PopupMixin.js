@@ -1,3 +1,11 @@
+import { attemptFocus, isRtl } from '../core/dom.js';
+import { canAnchorPopup } from '../utils/popup.js';
+
+import DelegatesFocusMixin from './DelegatesFocusMixin.js';
+import '../components/Scrim.js';
+
+const supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
+
 /**
  * @typedef {Object} PopupStack
  * @prop {Element} element
@@ -10,95 +18,6 @@
  * @prop {window['history']['scrollRestoration']} [scrollRestoration]
  */
 
-import CustomElement from '../core/CustomElement.js';
-import { attemptFocus, isRtl } from '../core/dom.js';
-import { canAnchorPopup } from '../utils/popup.js';
-import DelegatesFocusMixin from './DelegatesFocusMixin.js';
-
-CustomElement
-  .extend()
-  .observe({
-    hidden: 'boolean',
-  })
-  .html`<div id=scroll-blocker></div>`
-  .css`
-    :host {
-      position: fixed;
-      inset: 0;
-
-      display: block;
-      overflow: overlay;
-
-      overscroll-behavior: none;
-      overscroll-behavior: contain;
-      scrollbar-color: transparent transparent;
-      scrollbar-width: none;
-
-      outline: none; /* Older Chromium Builds */
-
-      opacity: 0;
-
-      z-index: 23;
-
-      background-color: rgb(var(--mdw-color__scrim));
-      
-      animation: fade-in 200ms forwards ease-out;
-      
-      will-change: opacity;
-    }
-
-    :host::-webkit-scrollbar {
-      display: none;
-    }
-
-    :host([hidden]) {
-      animation-name: fade-out;
-      animation-timing-function: ease-in;
-    }
-
-    :host([invisible]) {
-      background: transparent;
-    }
-
-    #scroll-blocker {
-      position: absolute;
-      top: 0;
-      left: 0;
-
-      display: block;
-
-      height: 200%;
-      width: 200%;
-    }
-
-    @keyframes fade-in {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 0.38;
-      }
-    }
-
-    @keyframes fade-out {
-      from {
-        opacity: 0.38;
-      }
-
-      to {
-        opacity: 0;
-      }
-    }
-  `
-  .events({
-    animationend() {
-      if (this.hidden) this.remove();
-    },
-  })
-  .autoRegister('mdw-scrim');
-
-const supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
 /** @type {PopupStack[]} */
 const OPEN_POPUPS = [];
 
