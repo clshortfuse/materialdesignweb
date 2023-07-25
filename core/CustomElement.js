@@ -844,8 +844,6 @@ export default class CustomElement extends ICustomElement {
     return this._propAttributeCache;
   }
 
-  
-
   get static() { return /** @type {typeof CustomElement} */ (/** @type {unknown} */ (this.constructor)); }
 
   get unique() { return false; }
@@ -891,12 +889,14 @@ export default class CustomElement extends ICustomElement {
     for (const callbacks of this.static._onConnectedCallbacks) {
       callbacks.call(this, this.callbackArguments);
     }
+    this.dispatchEvent(new Event('mdw:connected'));
   }
 
   disconnectedCallback() {
     for (const callbacks of this.static._onDisconnectedCallbacks) {
       callbacks.call(this, this.callbackArguments);
     }
+    this.dispatchEvent(new Event('mdw:disconnected'));
   }
 }
 

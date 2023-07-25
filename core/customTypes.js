@@ -115,7 +115,6 @@ export const ELEMENT_STYLER_TYPE = {
   reflect: false,
   diff: null, // Skip computing entire change
   propChangedCallback(name, oldValue, newValue) {
-    if (!this.isConnected) return;
     const queuedProps = queuedPropsByElement.get(this);
     let hasQueue = false;
     if (queuedProps?.has(name)) {
@@ -142,6 +141,11 @@ export const ELEMENT_STYLER_TYPE = {
     }
     // Animation styles may trickle in steps, so queue a microtask before doing any work.
     // Using requestAnimationFrame would fire one frame too late for CSS animations already scheduled
-    queueMicrotask(elementStylerMicrotaskCallback.bind(this, name));
+    const callback = elementStylerMicrotaskCallback.bind(this, name);
+    if (this.isConnected) {
+      queueMicrotask(callback);
+    } else {
+      this.addEventListener('mdw:connected', callback, { once: true });
+    }
   },
 };
