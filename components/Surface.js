@@ -11,15 +11,13 @@ export default CustomElement
   .mixin(SurfaceMixin)
   .mixin(ShapeMixin)
   .html`<slot id=slot></slot>`
-  .recompose(({ refs: { surface, shape } }) => {
-    surface.append(shape);
-  })
   .css`
     :host {
-      --mdw-shape__bg: rgb(var(--mdw-color__surface));
+      --mdw-bg: var(--mdw-color__surface);
       --mdw-ink: var(--mdw-color__on-surface);
       position: relative;
     
+      background-color: rgb(var(--mdw-bg));
       color: rgb(var(--mdw-ink));
     
       font: var(--mdw-type__font);

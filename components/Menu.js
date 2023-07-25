@@ -18,8 +18,10 @@ export default CustomElement
   .mixin(PopupMixin)
   .mixin(DensityMixin)
   .mixin(KeyboardNavMixin)
+  .observe({
+    elevation: { empty: 2 },
+  })
   .set({
-    scrollable: true,
     flow: 'corner',
     _useScrim: false,
     /** @type {WeakRef<HTMLElement>} */
@@ -60,11 +62,8 @@ export default CustomElement
       },
     },
   })
-  .recompose(({ refs: { shape, surface, dialog, scrim } }) => {
-    surface.append(shape);
-    dialog.prepend(surface);
+  .recompose(({ refs: { scrim } }) => {
     scrim.setAttribute('invisible', '');
-
     // Wrap slot in scroller
   })
   .css`
@@ -82,9 +81,9 @@ export default CustomElement
       inline-size: auto;
       min-inline-size: calc(var(--mdw-menu__inline-base) * 2);
       max-inline-size: 100vw;
-    }
 
-    #shape {
+      filter: drop-shadow(0px 1px 001px rgba(0,0,0,0.3)) drop-shadow(0px 2px 005px rgba(0,0,0,0.250));
+
       background-color: rgb(var(--mdw-bg));
     }
 

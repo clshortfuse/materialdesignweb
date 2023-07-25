@@ -120,6 +120,8 @@ export default function RippleMixin(Base) {
         overflow: hidden;
       
         pointer-events: none;
+
+        border-radius: inherit;
       }
     `;
 }

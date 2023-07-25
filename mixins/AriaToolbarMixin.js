@@ -1,3 +1,4 @@
+import AriaReflectorMixin from './AriaReflectorMixin.js';
 import KeyboardNavMixin from './KeyboardNavMixin.js';
 
 /**
@@ -5,8 +6,10 @@ import KeyboardNavMixin from './KeyboardNavMixin.js';
  */
 export default function AriaToolbarMixin(Base) {
   return Base
+    .mixin(AriaReflectorMixin)
     .mixin(KeyboardNavMixin)
     .set({
       ariaOrientationDefault: 'horizontal',
+      _ariaRole: 'toolbar',
     });
 }

@@ -78,6 +78,7 @@ function elementStylerMicrotaskCallback(name) {
   if (previousAnimations?.has(name)) {
     previousAnimation = previousAnimations.get(name);
   }
+  queuedPropsByElement.get(this).delete(name);
   const value = this[name];
   if (!value) {
     previousAnimation?.cancel();
@@ -106,7 +107,6 @@ function elementStylerMicrotaskCallback(name) {
   } else {
     previousAnimationsByElement.set(this, new Map([[name, currentAnimation]]));
   }
-  queuedPropsByElement.get(this).delete(name);
 }
 
 /** @type {import('./typings.js').ObserverOptions<'object',ElementStylerOptions, CustomElement>} */
@@ -116,25 +116,9 @@ export const ELEMENT_STYLER_TYPE = {
   diff: null, // Skip computing entire change
   propChangedCallback(name, oldValue, newValue) {
     const queuedProps = queuedPropsByElement.get(this);
-    let hasQueue = false;
-    if (queuedProps?.has(name)) {
-      hasQueue = true;
-    }
-    if (!newValue) {
-      if (!hasQueue) return;
-      console.warn('debug of cancel needed');
-      if (queuedProps) {
-        queuedProps.delete(name);
-      }
-      return;
-    }
-
-    if (hasQueue) {
-      // Already scheduled
-      return;
-    }
 
     if (queuedProps) {
+      if (queuedProps.has(name)) return;
       queuedProps.add(name);
     } else {
       queuedPropsByElement.set(this, new Set([name]));

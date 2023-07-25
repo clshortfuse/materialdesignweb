@@ -17,14 +17,11 @@ export default Box
     /* https://m3.material.io/components/lists/specs */
 
     :host {
-      --mdw-bg: var(--mdw-color__surface);
-      --mdw-ink: var(--mdw-color__on-surface);
       display: flex;
       flex-direction: column;
 
       padding-block: 8px;
 
-      background-color: rgb(var(--mdw-bg));
       color: rgb(var(--mdw-ink));
     }
 

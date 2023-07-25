@@ -22,18 +22,19 @@ export default Chip
     <mdw-icon mdw-if={!icon} id=check-icon disabled={disabledState} selected={checked} aria-hidden=true icon=check></mdw-icon>
     <mdw-icon mdw-if={computedTrailingIcon} id=trailing-icon aria-hidden=true src={trailingSrc} icon={computedTrailingIcon}></mdw-icon>
   `
-  .recompose(({ refs: { shape, icon, control, outline, slot, trailingIcon, checkIcon } }) => {
-    shape.setAttribute('selected', '{checked}');
-    shape.setAttribute('icon', '');
-    shape.setAttribute('trailing-icon', '{computedTrailingIcon}');
+  .recompose(({ refs: { icon, control, outline, slot, trailingIcon, checkIcon } }) => {
     icon.setAttribute('mdw-if', '{icon}');
     icon.setAttribute('ink', '{iconInk}');
 
     control.removeAttribute('role');
 
+    outline.removeAttribute('mdw-if');
     outline.removeAttribute('ink');
     outline.removeAttribute('color');
     outline.setAttribute('selected', '{checked}');
+    outline.setAttribute('elevated', '{elevated}');
+    outline.setAttribute('icon', '');
+    outline.setAttribute('trailing-icon', '{computedTrailingIcon}');
 
     slot.removeAttribute('ink');
     slot.removeAttribute('color');
@@ -54,6 +55,8 @@ export default Chip
       padding-inline-start: max(4px, calc(8px + (var(--mdw-density) * 2px)));
       padding-inline-end: max(12px, calc(16px + (var(--mdw-density) * 2px)));
 
+      background-color: transparent;
+
       color: rgb(var(--mdw-color__on-surface-variant));
 
     }
@@ -66,7 +69,9 @@ export default Chip
       font-variation-settings: 'FILL' 1;
     }
 
-    #shape {
+    #outline {
+      z-index: -1;
+
       background-color: transparent;
     }
 
@@ -74,20 +79,18 @@ export default Chip
       padding-inline-start: max(4px, calc(8px + (var(--mdw-density) * 2px)));
     }
 
-    #shape[elevated] {
+    #outline[elevated] {
       background-color: rgb(var(--mdw-color__surface));
+      border-color: transparent;
     }
 
-    #shape[selected] {
+    #outline[selected] {
       background-color: rgb(var(--mdw-bg));
+      border-color: transparent;
     }
 
     :host([selected]) {
       color: rgb(var(--mdw-ink));
-    }
-
-    #outline[selected] {
-      opacity: 0;
     }
 
     #trailing-icon {
@@ -118,7 +121,11 @@ export default Chip
       color: rgba(var(--mdw-color__on-surface), 0.38);
     }
 
-    #shape[disabled]:is([elevated],[selected]) {
+    :host([disabled]:is([elevated], [filled])) {
+      background-color: transparent;
+    }
+
+    #outline[disabled]:is([elevated],[selected]) {
       background-color: rgba(var(--mdw-color__on-surface), 0.12);
       /* color: rgba(var(--mdw-color__on-surface), 0.38); */
     }

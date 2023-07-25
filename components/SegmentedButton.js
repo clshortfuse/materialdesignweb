@@ -2,6 +2,8 @@ import './Icon.js';
 
 import Button from './Button.js';
 
+/* https://m3.material.io/components/segmented-buttons/specs */
+
 export default Button
   .extend()
   .observe({
@@ -12,18 +14,18 @@ export default Button
     outlined: true,
     focusableOnDisabled: true,
   })
-  .recompose(({ html, inline, refs: { shape, icon, outline, control, slot, state } }) => {
+  .recompose(({ html, inline, refs: { icon, outline, control, slot, state } }) => {
     slot.before(html`
       <div id=icons>
         ${icon}
         <mdw-icon selected={checked} id=check-icon aria-hidden=true icon=check></mdw-icon>
       </div>
     `);
-    shape.setAttribute('selected', '{checked}');
 
     icon.removeAttribute('mdw-if');
     icon.setAttribute('has-icon', '{hasIcon}');
     icon.setAttribute('selected', '{checked}');
+    outline.setAttribute('selected', '{checked}');
     outline.setAttribute('inner-segmented-button', '{innerSegmentedButton}');
     outline.setAttribute('shape-start', '{shapeStart}');
     outline.setAttribute('shape-end', '{shapeEnd}');
@@ -38,8 +40,6 @@ export default Button
     state.setAttribute('state-disabled', 'focus');
   })
   .css`
-    /* https://m3.material.io/components/segmented-buttons/specs */
-
     :host {
       --mdw-shape__size: var(--mdw-shape__full);
       --mdw-ink: var(--mdw-color__on-surface);
@@ -58,13 +58,15 @@ export default Button
 
     #outline {
       inset-inline-end: -1px;
+
+      z-index: -1;
     }
 
     #outline[shape-end] {
       inset-inline-end: 0;
     }
 
-    #shape[selected] {
+    #outline[selected] {
       background-color: rgb(var(--mdw-bg));
     }
 
@@ -119,7 +121,7 @@ export default Button
       color: rgba(var(--mdw-color__on-surface), 0.38);
     }
 
-    #shape[disabled][selected] {
+    #outline[disabled][selected] {
       background-color: rgba(var(--mdw-color__on-surface), 0.12);
     }
   `

@@ -66,7 +66,7 @@ export default CustomElement
     <mdw-icon mdw-if={iconIf} id=icon aria-hidden=true src={src} active={active} icon={icon}></mdw-icon>
     <slot id=slot></slot>
   `
-  .recompose(({ refs: { anchor, icon, slot, shape, rippleContainer, state } }) => {
+  .recompose(({ refs: { anchor, icon, slot, state } }) => {
     anchor.setAttribute('role', 'tab');
     anchor.setAttribute('aria-label', '{ariaLabel}');
     anchor.setAttribute('aria-controls', '{anchorAriaControls}');
@@ -74,8 +74,6 @@ export default CustomElement
     anchor.setAttribute('aria-disabled', '{anchorAriaDisabled}');
     anchor.setAttribute('disabled', '{disabledState}');
     anchor.append(icon, slot);
-
-    shape.append(state, rippleContainer);
     state.setAttribute('state-disabled', 'focus');
   })
   .events({

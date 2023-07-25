@@ -24,6 +24,7 @@ function getSharedPopup() {
     sharedPopup.color = 'surface';
     sharedPopup.matchSourceWidth = true;
     sharedPopup.flow = 'corner';
+    sharedPopup.elevation = 2;
   }
   return sharedPopup;
 }
@@ -76,7 +77,7 @@ export default CustomElement
     /** @type {EventListener} */
     _onListboxClickListener: null,
     /** @type {EventListener} */
-    _onListboxBlurListener: null,
+    _onPopupFocusoutListener: null,
   })
   .define({
     stateTargetElement() { return this.refs.control; },
@@ -105,13 +106,12 @@ export default CustomElement
       this.refs.control.focus();
     },
     /** @param {FocusEvent} Event */
-    onListboxBlur({ relatedTarget }) {
+    onPopupFocusout({ relatedTarget }) {
       if (!this._expanded) return;
       // Ignore if focus lost to pop-up (likely pointerdown).
       if (relatedTarget) {
         if (this === relatedTarget) return;
         if (this.contains(relatedTarget)) return;
-        if (getSharedPopup().contains(relatedTarget)) return;
       }
       this.closeListbox();
     },
@@ -137,6 +137,7 @@ export default CustomElement
       document.body.append(popup);
       popup.replaceChildren(_listbox);
       popup.showPopup(shape, false);
+      popup.addEventListener('focusout', this._onPopupFocusoutListener);
       _listbox.value = this.value;
       const [option] = _listbox.selectedOptions;
       if (option) {
@@ -471,7 +472,6 @@ export default CustomElement
           // Unbind and release
           _listbox.removeEventListener('change', this._onListboxChangeListener);
           _listbox.removeEventListener('click', this._onListboxClickListener);
-          _listbox.removeEventListener('blur', this._onListboxBlurListener);
         }
         this._listbox = listbox;
         if (listbox) {
@@ -480,7 +480,6 @@ export default CustomElement
 
           listbox.addEventListener('change', this._onListboxChangeListener);
           listbox.addEventListener('click', this._onListboxChangeListener);
-          listbox.addEventListener('blur', this._onListboxBlurListener);
         }
       },
     },
@@ -496,7 +495,10 @@ export default CustomElement
     blur({ relatedTarget }) {
       if (!this._expanded) return;
       // Ignore if focus lost to pop-up (likely pointerdown).
-      if (relatedTarget && getSharedPopup().contains(relatedTarget)) return;
+      const popup = getSharedPopup();
+      if (popup === relatedTarget) return;
+      if (relatedTarget && popup.contains(relatedTarget)) return;
+      if (popup.matches(':focus-within,:focus')) return;
       this.closeListbox();
     },
   })
@@ -566,7 +568,7 @@ export default CustomElement
     constructed() {
       this._onListboxChangeListener = this.onListboxChange.bind(this);
       this._onListboxClickListener = this.onListboxClick.bind(this);
-      this._onListboxBlurListener = this.onListboxBlur.bind(this);
+      this._onPopupFocusoutListener = this.onPopupFocusout.bind(this);
     },
   })
   .html`

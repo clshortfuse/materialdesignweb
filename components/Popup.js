@@ -10,8 +10,4 @@ export default CustomElement
   .mixin(SurfaceMixin)
   .mixin(ShapeMixin)
   .mixin(PopupMixin)
-  .recompose(({ refs: { shape, surface, dialog } }) => {
-    surface.append(shape);
-    dialog.prepend(surface);
-  })
   .autoRegister('mdw-popup');

@@ -597,6 +597,16 @@ export default function PopupMixin(Base) {
       
     }
 
+    :host([color]) {
+      background-color: rgb(var(--mdw-bg));
+      color: rgb(var(--mdw-ink));
+    }
+
+    :host(:is([color="none"],[color="transparent"])) {
+      background-color: transparent;
+      color: inherit;
+    }
+
     :host([scrollable]) {
       overflow-y:auto;
     }
@@ -630,8 +640,12 @@ export default function PopupMixin(Base) {
 
       pointer-events: auto;
 
+      filter: inherit;
       transform: inherit;
       visibility: inherit;
+
+      background-color: inherit;
+      border-radius: inherit;
     }
 
     #dialog[scrollable][open] {

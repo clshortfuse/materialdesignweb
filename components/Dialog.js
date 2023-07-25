@@ -103,6 +103,7 @@ export default CustomElement
     default: { value: 'confirm' },
     cancel: { value: 'Cancel' },
     confirm: { value: 'Confirm' },
+    elevation: { empty: 3 },
   })
   .set({
     _useScrim: true,
@@ -176,14 +177,12 @@ export default CustomElement
       </slot>
     </div>
   `
-  .recompose(({ refs: { prepend, append, surface, shape, dialog, slot } }) => {
+  .recompose(({ refs: { prepend, append, dialog, slot } }) => {
     dialog.setAttribute('aria-labelledby', 'headline');
     dialog.setAttribute('aria-describedby', 'slot');
-    surface.append(shape);
-
     slot.classList.add('content');
 
-    dialog.prepend(surface, ...prepend.childNodes);
+    dialog.prepend(...prepend.childNodes);
     dialog.append(...append.childNodes);
     prepend.remove();
     append.remove();
@@ -221,11 +220,11 @@ export default CustomElement
       inline-size: max-content;
       min-inline-size: 280px;
       max-inline-size: min(560px, calc(100% - 40px));
-
       padding-block-start: 8px;
 
       pointer-events: none;
 
+      filter: drop-shadow(0px 1px 1.5px rgba(0,0,0,0.3)) drop-shadow(0px 4px 007px rgba(0,0,0,0.263));
       opacity: 0;
 
       transform: translateX(-50%) translateY(-50%) scale(0);
@@ -233,6 +232,7 @@ export default CustomElement
       transform-origin: top center;
       visibility: hidden;
 
+      background-color: rgb(var(--mdw-bg));
       color: rgb(var(--mdw-ink));
 
       font: var(--mdw-type__font);
@@ -251,10 +251,6 @@ export default CustomElement
 
     :host([icon]) {
       align-items: center;
-    }
-
-    #shape {
-      background-color: rgb(var(--mdw-bg));
     }
 
     #icon {

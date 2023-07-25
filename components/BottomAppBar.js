@@ -13,7 +13,6 @@ export default Surface
   .mixin(AriaToolbarMixin)
   .set({
     elevated: true,
-    _ariaRole: 'toolbar',
   })
   .observe({
     color: { empty: 'surface-container' },

@@ -3,6 +3,8 @@ import DensityMixin from '../mixins/DensityMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
+/* https://m3.material.io/components/badges/specs */
+
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -13,7 +15,7 @@ export default CustomElement
     :host {
       --mdw-shape__size: 8px;
       --mdw-ink: var(--mdw-color__on-error);
-      --mdw-shape__bg: rgb(var(--mdw-color__error));
+      --mdw-bg: var(--mdw-color__error);
       --mdw-type__font: var(--mdw-typescale__label-small__font);
       --mdw-type__letter-spacing: var(--mdw-typescale__label-small__letter-spacing);
       position: relative;
@@ -24,8 +26,12 @@ export default CustomElement
       box-sizing: border-box;
       min-block-size: var(--mdw-typescale__label-small__line-height);
       min-inline-size: var(--mdw-typescale__label-small__line-height);
+
+      /* Ensure 16px min-height while keeping display:block */
+      padding-block: calc(8px - var(--mdw-typescale__body-small__line-height) / 2);
       padding-inline: max(4px, calc(4px + (var(--mdw-density) * 2px)));
     
+      background-color: rgb(var(--mdw-bg));
       color: rgb(var(--mdw-ink));
     
       font: var(--mdw-type__font);
@@ -42,11 +48,12 @@ export default CustomElement
     }
     
     :host(:empty) {
-      vertical-align: middle;
+      min-block-size: 6px;
+      min-inline-size: 6px;
+      /* stylelint-disable-next-line declaration-property-value-disallowed-list */
+      margin: 5px;
+      padding: 0
     }
     
-    :host(:empty) #shape {
-      inset: 5px;
-    }
   `
   .autoRegister('mdw-badge');

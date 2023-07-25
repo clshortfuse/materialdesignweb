@@ -1,12 +1,12 @@
 import './Icon.js';
 import './Ripple.js';
 import './Badge.js';
+import './Shape.js';
 
 import CustomElement from '../core/CustomElement.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import HyperlinkMixin from '../mixins/HyperlinkMixin.js';
 import RippleMixin from '../mixins/RippleMixin.js';
-import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
@@ -17,7 +17,6 @@ export default CustomElement
   .mixin(ThemableMixin)
   .mixin(StateMixin)
   .mixin(RippleMixin)
-  .mixin(ShapeMixin)
   .mixin(HyperlinkMixin)
   .mixin(DelegatesFocusMixin)
   .set({
@@ -51,19 +50,19 @@ export default CustomElement
     },
     _anchorHref({ href }) { return href ?? '#'; },
   })
-  .recompose(({ html, refs: { anchor, shape, state, rippleContainer } }) => {
+  .recompose(({ html, refs: { anchor, state, rippleContainer } }) => {
     anchor.setAttribute('aria-current', '{_anchorAriaCurrent}');
     anchor.setAttribute('aria-describedby', 'badge');
     anchor.setAttribute('aria-label', '{ariaLabel}');
     anchor.setAttribute('aria-labelledby', '{_anchorAriaLabelledby}');
     anchor.setAttribute('href', '{_anchorHref}');
-    shape.append(html`
-      <mdw-ripple id=ripple ripple-origin=center keep-alive hold-ripple ripple-state=${({ active }) => ((active) ? null : 'complete')}></mdw-ripple>
-      ${state}
-      ${rippleContainer}
+    anchor.before(html`
+      <mdw-shape id=shape active={active} shape-style=full>
+        <mdw-ripple id=ripple ripple-origin=center keep-alive hold-ripple ripple-state=${({ active }) => ((active) ? null : 'complete')}></mdw-ripple>
+        ${state}
+        ${rippleContainer}
+      </mdw-shape>
     `);
-    shape.setAttribute('active', '{active}');
-    shape.removeAttribute('color');
   })
   .css`
     /* https://m3.material.io/components/navigation-bar/specs */
@@ -146,6 +145,7 @@ export default CustomElement
 
     #shape {
       position: absolute;
+      overflow: hidden;
       /* stylelint-disable-next-line liberty/use-logical-spec */
       top: 50%;
       /* stylelint-disable-next-line liberty/use-logical-spec */
@@ -163,7 +163,6 @@ export default CustomElement
       grid-row: 1 / 1;
 
       transform: translateX(-50%) translateY(-50%) translateY(var(--mdw-nav-item__offset-y));
-      z-index: 0;
 
       background-color: transparent;
 

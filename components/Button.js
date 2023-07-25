@@ -15,9 +15,9 @@ export default CustomElement
   .extend()
   .mixin(ThemableMixin)
   .mixin(DensityMixin)
+  .mixin(StateMixin)
   .mixin(SurfaceMixin)
   .mixin(ShapeMixin)
-  .mixin(StateMixin)
   .mixin(RippleMixin)
   .mixin(InputMixin)
   .mixin(HyperlinkMixin)
@@ -53,7 +53,25 @@ export default CustomElement
     svg: 'string',
     viewBox: 'string',
     svgPath: 'string',
-
+  })
+  .observe({
+    _elevation({ elevation, elevated, filled }) {
+      if (elevation != null) return elevation;
+      if (elevated) return 1;
+      if (filled != null) return 0;
+      return null;
+    },
+    _elevationRaised({ elevationRaised, elevated, filled }) {
+      if (elevationRaised != null) return elevationRaised;
+      if (elevated) return 2;
+      if (filled != null) return 1;
+      return null;
+    },
+  })
+  .observe({
+    _secondaryFilter({ disabledState }) {
+      return disabledState ? 'grayScale()' : null;
+    },
   })
   .expressions({
     hasIcon({ icon, svg, src, svgPath }) {
@@ -75,10 +93,7 @@ export default CustomElement
       svg-path={svgPath} view-box={viewBox} icon={icon}></mdw-icon>
     <slot id=slot disabled={disabledState} aria-hidden=true>{value}</slot>
   `
-  .recompose(({ refs: { anchor, shape, state, rippleContainer, surface, control } }) => {
-    surface.append(shape);
-    shape.append(state, rippleContainer);
-    shape.setAttribute('filled', '{filled}');
+  .recompose(({ refs: { anchor, control } }) => {
     control.setAttribute('mdw-if', '{!href}');
     control.setAttribute('role', 'button');
     anchor.setAttribute('mdw-if', '{href}');
@@ -125,15 +140,11 @@ export default CustomElement
     :host(:where([elevated])) {
       --mdw-bg: var(--mdw-color__surface-container-low);
       --mdw-ink: var(--mdw-color__primary);
-      --mdw-surface__shadow__resting: var(--mdw-surface__shadow__1);
-      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__2);
     }
     /** Filled Color Defaults */
     :host(:where([filled])) {
       --mdw-bg: var(--mdw-color__primary);
       --mdw-ink: var(--mdw-color__on-primary);
-      --mdw-surface__shadow__resting: var(--mdw-surface__shadow__0);
-      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__1);
     }
     /** Filled Tonal Color Defaults */
     :host(:where([filled="tonal"])) {
@@ -161,7 +172,7 @@ export default CustomElement
       padding-inline: calc(16px + (var(--mdw-density) * 2px)) calc(24px + (var(--mdw-density) * 2px));
     }
 
-    #shape:where([elevated],[filled],[color]) {
+    :host(:where([elevated],[filled],[color])) {
       background-color: rgb(var(--mdw-bg));
     }
 
@@ -189,7 +200,7 @@ export default CustomElement
       color: rgba(var(--mdw-color__on-surface), 0.38);
     }
 
-    #shape[disabled]:is([elevated], [filled]) {
+    :host([disabled]:is([elevated], [filled])) {
       background-color: rgba(var(--mdw-color__on-surface), 0.12);
       color: rgba(var(--mdw-color__on-surface), 0.38);
     }

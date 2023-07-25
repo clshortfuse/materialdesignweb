@@ -1,3 +1,5 @@
+import './Shape.js';
+
 import CustomElement from '../core/CustomElement.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
@@ -22,7 +24,7 @@ export default CustomElement
     },
   })
   .html`
-    <div id=inner-shape class=shape selected={selected}></div>
+    <mdw-shape id=inner-shape selected={selected}></div>
   `
   .recompose(({ refs: { outline } }) => {
     outline.removeAttribute('mdw-if');
@@ -50,16 +52,11 @@ export default CustomElement
     }
 
     #outline {
-      filter:
-        drop-shadow(1px 0px 0px var(--color))
-        drop-shadow(0px 1px 0px var(--color))
-        drop-shadow(-1px 0px 0px var(--color))
-        drop-shadow(0px -1px 0px var(--color))
-        ;
+      border-width: 2px;
 
       color: var(--color);
 
-      will-change: filter, color;
+      will-change: color;
     }
 
     #inner-shape {
@@ -69,6 +66,7 @@ export default CustomElement
       transform: scale(0);
 
       background-color: var(--color);
+      border-radius: inherit;
 
       transition: transform 200ms, background-color 100ms;
     }

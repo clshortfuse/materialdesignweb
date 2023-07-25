@@ -24,6 +24,7 @@ export default function TextFieldMixin(Base) {
       inputSuffix: 'string',
       trailingIcon: 'string',
       trailingIconInk: 'string',
+      trailingIconLabel: 'string',
       supporting: 'string',
       error: 'string',
       placeholder: { nullParser: String }, // DOMString
@@ -52,7 +53,21 @@ export default function TextFieldMixin(Base) {
         return label && (filled || outlined);
       },
     })
+    .expressions({
+      _shapeShapeTop({ shapeTop, filled }) {
+        return shapeTop || filled;
+      },
+    })
     .html`
+      <div id=shape role=none filled={filled} icon={icon} trailing-icon={trailingIcon}
+      populated={populatedState} focused={focusedState} label={label} outlined={outlined}
+      shape-top={_shapeShapeTop}>
+        <mdw-icon mdw-if={icon} id=icon aria-hidden=true disabled={disabledState} icon={icon}></mdw-icon>
+        <span mdw-if={inputPrefix} class=inline id=prefix aria-hidden=true focused={focusedState} populated={populatedState}>{inputPrefix}</span>
+        <span mdw-if={inputSuffix} class=inline id=suffix aria-hidden=true focused={focusedState} populated={populatedState}>{inputSuffix}</span>
+        <mdw-icon-button tabindex=-1 disabled={disabledState} mdw-if={trailingIcon} id=trailing-icon ink={trailingIconInk} disabled={disabledState} icon={trailingIcon}>{trailingIconLabel}</mdw-icon-button>
+        <div mdw-if={filled} id=indicator aria-hidden=true focused={focusedState} hovered={hoveredState} errored={erroredState} disabled={disabledState}></div>
+      </div>
       <div id=label-text mdw-if={_showLabelText} aria-hidden=true
         outlined={outlined}
         populated={populatedState}
@@ -65,8 +80,9 @@ export default function TextFieldMixin(Base) {
         {computeSupportingText}
         <slot id=supporting-slot name=supporting></slot>
       </div>
+      
     `
-    .recompose(({ html, inline, refs: { control, outline, shape, outlineLeft, outlineRight, state } }) => {
+    .recompose(({ html, refs: { control, outline, state, shape } }) => {
       control.setAttribute('placeholder', '{computePlaceholder}');
       control.setAttribute('aria-label', '{label}');
       control.setAttribute('input-suffix', '{inputSuffix}');
@@ -76,38 +92,19 @@ export default function TextFieldMixin(Base) {
       control.classList.add('inline');
 
       state.setAttribute('mdw-if', '{!outlined}');
-      shape.setAttribute('role', 'none');
-      shape.setAttribute('filled', '{filled}');
-      shape.setAttribute('icon', '{icon}');
-      shape.setAttribute('trailingIcon', '{trailingIcon}');
-      shape.setAttribute('populated', '{populatedState}');
-      shape.setAttribute('focused', '{focusedState}');
-      shape.setAttribute('label', '{label}');
-      shape.setAttribute('shape-top', inline(({ shapeTop, filled }) => shapeTop || filled));
-      shape.append(
-        state,
-        outline,
-        control,
-        html`
-          <mdw-icon mdw-if={icon} id=icon aria-hidden=true disabled={disabledState} icon={icon}></mdw-icon>
-          <span mdw-if={inputPrefix} class=inline id=prefix aria-hidden=true focused={focusedState} populated={populatedState}>{inputPrefix}</span>
-          <span mdw-if={inputSuffix} class=inline id=suffix aria-hidden=true focused={focusedState} populated={populatedState}>{inputSuffix}</span>
-          <mdw-icon-button tabindex=-1 disabled={disabledState} mdw-if={trailingIcon} id=trailing-icon ink={trailingIconInk} disabled={disabledState} icon={trailingIcon}></mdw-icon-button>
-          <div mdw-if={filled} id=indicator aria-hidden=true focused={focusedState} hovered={hoveredState} errored={erroredState} disabled={disabledState}></div>
-        `,
-      );
-
-      outline.setAttribute('label', '{label}');
-      outline.setAttribute('errored', '{erroredState}');
-      outlineLeft.after(html`
-        <div id=gap mdw-if={label} label={label} populated={populatedState} focused={focusedState}>
+      outline.append(html`
+        <div id=outline-left class=outline-section focused={focusedState}></div>
+        <div id=gap label={label} populated={populatedState} focused={focusedState}>
           <div id=gap-slot focused={focusedState}></div>
           <span id=gap-label>{label}</span>
         </div>
+        <div id=outline-right class=outline-section focused={focusedState}></div>
       `);
+      outline.setAttribute('label', '{label}');
+      outline.setAttribute('errored', '{erroredState}');
+      shape.prepend(outline, state, control);
 
-      outlineLeft.setAttribute('focused', '{focusedState}');
-      outlineRight.setAttribute('focused', '{focusedState}');
+      outline.after(state, control);
     })
     .on({
       sizeChanged(oldValue, newValue) {
@@ -162,6 +159,8 @@ export default function TextFieldMixin(Base) {
 
         display: inline-block;
 
+        border-radius: 0;
+
         /* State layer */
         color: rgb(var(--mdw-color__on-surface));
 
@@ -180,7 +179,6 @@ export default function TextFieldMixin(Base) {
         --mdw-shape__size__bottom-start-size: min(var(--mdw-shape__size), 12px);
         --mdw-shape__size__top-end-size: min(var(--mdw-shape__size), 12px);
         --mdw-shape__size__bottom-end-size: min(var(--mdw-shape__size), 12px);
-        -webkit-mask-box-image-width: min(var(--mdw-shape__size), 12px);
       }
 
       #shape {
@@ -196,6 +194,11 @@ export default function TextFieldMixin(Base) {
         z-index: 0;
 
         background-color: transparent;
+
+        border-start-start-radius: calc(var(--mdw-shape__size__top-start-size));
+        border-start-end-radius: calc(var(--mdw-shape__size__top-end-size));
+        border-end-start-radius: calc(var(--mdw-shape__size__bottom-start-size));
+        border-end-end-radius: calc(var(--mdw-shape__size__bottom-end-size));
 
         font-weight: inherit;
         font-size: inherit;
@@ -243,7 +246,6 @@ export default function TextFieldMixin(Base) {
       #shape[shape-top] {
         --mdw-shape__size__bottom-start-size: 0px;
         --mdw-shape__size__bottom-end-size: 0px;
-        --mdw-shape__mask: linear-gradient(transparent 50%, black 50%);
       }
 
       #prefix,
@@ -458,6 +460,31 @@ export default function TextFieldMixin(Base) {
 
       /** Outlined **/
 
+      #outline {
+        position: absolute;
+        inset: 0;
+
+        border-style: solid;
+        border-width: 0px;
+
+        pointer-events: none;
+
+        border-color: currentColor;
+        border-radius: inherit;
+        color: rgb(var(--mdw-color__outline));
+      }
+
+      #outline:is([pressed],[focused]) {
+        color: rgb(var(--mdw-ink));
+
+        transition-delay: 0;
+        transition-duration: 0;
+      }
+      
+      #outline[disabled] {
+        color: rgba(var(--mdw-color__on-surface), 0.12);
+      }
+
       #outline::before {
         content: none;
       }
@@ -592,73 +619,6 @@ export default function TextFieldMixin(Base) {
       #gap-slot[focused]::before,
       #gap-slot[focused]::after {
         border-block-start-width: 2px;
-      }
-
-      @supports(-webkit-mask-box-image: none) {
-        #outline[focused] {
-          /** Fake 2px outline */
-          filter:
-            drop-shadow(1px 0px 0px currentColor)
-            drop-shadow(0px 1px 0px currentColor)
-            drop-shadow(-1px 0px 0px currentColor)
-            drop-shadow(0px -1px 0px currentColor);
-        }
-
-        #outline::before {
-          content: '';
-
-          position: absolute;
-          inset: 0;
-
-          grid-column: calc(2 - var(--mdw-dir, 1)) / span 1;
-          /* stylelint-disable-next-line liberty/use-logical-spec */
-          margin-right: -0.99px;
-          border: none;
-
-          background-color: currentColor;
-          -webkit-mask-box-image: var(--mdw-shape__mask-image__edges)
-            8 fill /
-            auto
-            stretch;
-          -webkit-mask-box-image-width: auto 0 auto auto;
-        }
-
-        #outline::after {
-          grid-column: calc(2 + var(--mdw-dir, 1)) / span 1;
-          grid-row: 1;
-
-          /* stylelint-disable-next-line liberty/use-logical-spec */
-          margin-left: -0.99px;
-          -webkit-mask-box-image-width: auto auto auto 0;
-        }
-
-        .outline-section {
-          border: none;
-        }
-
-        #gap::after {
-          border: none;
-
-          background-color: currentColor;
-          -webkit-mask-box-image: var(--mdw-shape__mask-image__edges)
-            8 fill /
-            auto
-            stretch;
-          -webkit-mask-box-image-width: 0 0 auto 0;
-        }
-
-        #gap-slot::before,
-        #gap-slot::after {
-          border: none;
-
-          background-color: currentColor;
-
-          -webkit-mask-box-image: var(--mdw-shape__mask-image__edges)
-            8 fill /
-            auto
-            stretch;
-          -webkit-mask-box-image-width: auto 0 0 0;
-        }
       }
 
       #gap-slot::before {

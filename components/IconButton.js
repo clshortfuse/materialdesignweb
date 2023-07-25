@@ -2,6 +2,8 @@ import TooltipTriggerMixin from '../mixins/TooltipTriggerMixin.js';
 
 import Button from './Button.js';
 
+/* https://m3.material.io/components/icon-buttons/specs */
+
 export default Button
   .extend()
   .mixin(TooltipTriggerMixin)
@@ -14,6 +16,12 @@ export default Button
         if (type !== 'checkbox') return null;
         return indeterminate ? 'mixed' : (checked ? 'true' : 'false');
       },
+    },
+    _elevation({ elevation }) {
+      return elevation;
+    },
+    _elevationRaised({ elevationRaised }) {
+      return elevationRaised;
     },
   })
   .expressions({
@@ -39,12 +47,14 @@ export default Button
       },
     },
   })
-  .recompose(({ refs: { slot, shape, tooltipSlot, icon, control, outline } }) => {
-    shape.classList.add('colored');
-    icon.classList.add('colored');
-    for (const el of [shape, icon]) {
+  .recompose(({ refs: { slot, tooltipSlot, icon, control, outline, state, rippleContainer } }) => {
+    // Because selected state does not write to light DOM,
+    // it must be cloned into shadow root for styling.
+    for (const el of [state, icon, rippleContainer]) {
+      el.classList.add('colored');
       el.setAttribute('toggle', '{isToggle}');
       el.setAttribute('selected', '{checked}');
+      el.setAttribute('filled', '{filled}');
     }
     slot.remove();
     icon.removeAttribute('mdw-if');
@@ -52,17 +62,18 @@ export default Button
 
     control.setAttribute('aria-pressed', '{_ariaPressed}');
 
+    outline.setAttribute('toggle', '{isToggle}');
     outline.setAttribute('selected', '{checked}');
   })
   .css`
-    /* https://m3.material.io/components/icon-buttons/specs */
-
     :host {
       --mdw-shape__size: var(--mdw-shape__full);
       --mdw-ink: rgb(var(--mdw-color__on-surface-variant));
 
       align-items: center;
       justify-content: center;
+
+      min-inline-size: 1em;
 
       padding: max(8px, calc(8px + (var(--mdw-density) * 2px)));
 
@@ -79,8 +90,6 @@ export default Button
     :host(:where([filled])) {
       --mdw-ink: var(--mdw-color__on-primary);
       --mdw-bg: var(--mdw-color__primary);
-      --mdw-surface__shadow__resting: none;
-      --mdw-surface__shadow__raised: none;
     }
 
     /** Tonal | Tonal Checked */
@@ -100,8 +109,29 @@ export default Button
       --mdw-ink: var(--mdw-color__inverse-on-surface);
     }
 
-    #shape[toggle] {
-      background-color: transparent;
+    #icon {
+      position: absolute;
+      z-index: 0;
+      inset: 0;
+
+      padding: inherit;
+
+      pointer-events: none;
+
+      background-color: inherit;
+      border-radius: inherit;
+
+      font-size: 24px;
+
+      transition-property: background-color, color;
+    }
+
+    #state {
+      z-index:1;
+    }
+
+    #ripple-container {
+      z-index:2;
     }
 
     .colored[toggle] {
@@ -113,7 +143,11 @@ export default Button
       color: rgb(var(--mdw-ink));
     }
 
-    #shape[filled][toggle] {
+    #icon[filled] {
+      background-color: rgb(var(--mdw-bg));
+    }
+
+    #icon[filled][toggle] {
       background-color: rgb(var(--mdw-color__surface-container-highest));
     }
 
@@ -121,7 +155,7 @@ export default Button
       color: rgb(var(--mdw-bg));
     }
 
-    #shape[filled="tonal"][toggle] {
+    #icon[filled="tonal"][toggle] {
       /* Redundant */
       /* background-color: rgb(var(--mdw-color__surface-container-highest)); */
     }
@@ -130,7 +164,7 @@ export default Button
       color: rgb(var(--mdw-color__on-surface-variant));
     }
 
-    #shape[filled][selected] {
+    #icon[filled][selected] {
       background-color: rgb(var(--mdw-bg));
     }
 
@@ -138,7 +172,7 @@ export default Button
       color: rgb(var(--mdw-ink));
     }
 
-    #shape[outlined] {
+    #icon[outlined] {
       background-color: transparent;
     }
 
@@ -146,7 +180,7 @@ export default Button
       color: inherit;
     }
 
-    #shape[outlined][toggle] {
+    #icon[outlined][toggle] {
       background-color: transparent;
     }
 
@@ -154,7 +188,7 @@ export default Button
       color: rgb(var(--mdw-color__on-surface-variant));
     }
 
-    #shape[outlined][selected] {
+    #icon[outlined][selected] {
       background-color: rgb(var(--mdw-bg));
     }
 
@@ -180,6 +214,10 @@ export default Button
 
       color: inherit;
     }
+    
+    #outline[focused][toggle] {
+      color: rgb(var(--mdw-color__outline));
+    }
 
     #outline[selected] {
       opacity: 0;
@@ -192,8 +230,8 @@ export default Button
       color: rgba(var(--mdw-color__on-surface), 0.38);
     }
 
-    #shape[disabled][filled],
-    #shape[disabled][outlined][selected] {
+    #icon[disabled][filled],
+    #icon[disabled][outlined][selected] {
       background-color: rgba(var(--mdw-color__on-surface), 0.12);
     }
 

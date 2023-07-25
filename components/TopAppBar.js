@@ -3,40 +3,34 @@ import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
 import AriaToolbarMixin from '../mixins/AriaToolbarMixin.js';
 import SemiStickyMixin from '../mixins/SemiStickyMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
-import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
-  .mixin(SurfaceMixin)
   .mixin(ShapeMixin)
   .mixin(AriaToolbarMixin)
   .mixin(SemiStickyMixin)
-  .define({
-    semiStickyTarget() { return this.refs.surface; },
-  })
-  .set({
-    elevated: true,
-  })
   .observe({
     _raised: 'boolean',
     _headlineOpacity: { type: 'float', default: 0 },
     headline: 'string',
     size: { value: /** @type {'small'|'medium'|'large'|null} */ (null) },
-    /** Convert native to observable */
-    ariaLabel: 'string',
     color: { empty: 'surface' },
   })
-  .overrides({
-    _getSemiStickyElement() { return this.refs.surface; },
-  })
-  .expressions({
-    _companionIf({ size }) {
-      return size === 'medium' || size === 'large';
-    },
-  })
   .observe({
+    _hostRaisedStyle: {
+      ...ELEMENT_STYLER_TYPE,
+      get({ _raised, color }) {
+        if (!_raised) return null;
+        if (color !== 'none' && color !== 'surface') return null;
+        return {
+          styles: {
+            backgroundColor: 'rgb(var(--mdw-color__surface-container))',
+          },
+        };
+      },
+    },
     _headlineStyle: {
       ...ELEMENT_STYLER_TYPE,
       get({ size, _headlineOpacity }) {
@@ -53,6 +47,11 @@ export default CustomElement
       },
     },
   })
+  .expressions({
+    _companionIf({ size }) {
+      return size === 'medium' || size === 'large';
+    },
+  })
   .html`
     <slot id=leading name=leading on-slotchange={refreshTabIndexes}></slot>
     <div id=headline ink={ink} color={color} type-style={typeStyle} on-slotchange={refreshTabIndexes}>
@@ -64,19 +63,6 @@ export default CustomElement
       <slot id=companion-slot name=companion size={size}>{headline}</span>
     </div>
   `
-  .recompose(({ inline, refs: { surface, shape, leading, headline, trailing } }) => {
-    shape.append(leading, headline, trailing);
-    surface.append(shape);
-    surface.setAttribute('size', '{size}');
-    surface.setAttribute('role', 'toolbar');
-    surface.setAttribute('aria-label', '{ariaLabel}');
-    surface.setAttribute(
-      'aria-labelledby',
-      inline(({ ariaLabel }) => (ariaLabel ? null : 'headline')),
-    );
-    surface.setAttribute('raised', '{_raised}');
-    shape.setAttribute('raised', '{_raised}');
-  })
   .on({
     _scrollListenerPositionYChanged(oldValue, newValue) {
       this._raised = (newValue > this._semiStickyOffsetY);
@@ -98,60 +84,22 @@ export default CustomElement
       }
     },
   })
-  .define({
-    ariaActiveDescendantElement: {
-      get() {
-        // @ts-ignore Accessibility Object Model
-        return this.refs.surface.ariaActiveDescendantElement;
-      },
-      set(value) {
-        // @ts-ignore Accessibility Object Model
-        this.refs.surface.ariaActiveDescendantElement = value;
-      },
-    },
-  })
   .css`
     /* https://m3.material.io/components/bottom-app-bar/specs */
-
     :host {
+      --mdw-shape__size: 0;
       --mdw-bg: var(--mdw-color__surface);
       --mdw-ink: var(--mdw-color__on-surface);
-      display: contents;
 
-      z-index:2;
-    }
-
-    #surface {
       position: sticky;
-      inset-block-end: auto;
-
-      grid-area: app-bar;
-
-      margin: inherit; /** Pass through */
-
-      padding: inherit; /** Pass through */
-
-      filter: none; /* Never receive shadow */
-
-      transform: translateY(0);
-
-      z-index: 5;
-
-      background-color: rgb(var(--mdw-bg));
-
-      transition: grid-template-columns 100ms, background-color 100ms;
-
-      will-change: transform;
-    }
-
-    #shape{
-      position: initial;
-      inset: initial;
+      inset-block-start: 0;
 
       display: grid;
 
       align-items: center;
       gap: 12px;
+
+      grid-area: app-bar;
       grid-auto-flow: row;
       grid-template-rows: minmax(64px,min-content);
       grid-template-columns: minmax(auto,1fr) minmax(0,auto) minmax(auto,1fr);
@@ -159,8 +107,6 @@ export default CustomElement
       overflow-y: visible;
 
       box-sizing: border-box;
-      max-inline-size: calc(var(--mdw-content__max-width, 100%) + (2 * var(--mdw-content__padding, 16px) -  4px));
-      margin-inline: auto;
 
       /* 16px from icon */
       /* inset = (button.width / 2) - (icon.width / 2) */
@@ -168,15 +114,18 @@ export default CustomElement
       /* paddingInlineStart = 16px - ((48px / 2) - (24px / 2)) */
       /* paddingInlineEnd = 16px - ((48px / 2) - (30px / 2)) */
 
-      padding-inline: calc(var(--mdw-content__padding, 16px) - 8px);
+      padding-inline: max(var(--mdw-content__padding, 16px), calc((100% - var(--mdw-content__max-width, 100%)) / 2));
 
       pointer-events: auto;
 
-      z-index: initial;
+      transform: translateY(0);
+      z-index: 5;
 
-      background-color: transparent;
-
+      background-color: rgb(var(--mdw-bg));
       color: rgb(var(--mdw-ink));
+
+      transition: grid-template-columns 100ms, background-color 100ms;
+      will-change: transform;
     }
 
     #leading {
@@ -321,15 +270,13 @@ export default CustomElement
       will-change: opacity;
     }
 
-    #surface:where([color="none"], [color="transparent"]),
+    :host(:where([color="none"], [color="transparent"])),
     #companion:where([color="none"], [color="transparent"]) {
       background-color: transparent;
     }
 
-    #surface[raised]:where([color="surface"],[color="none"],[color="transparent"]),
     #companion[raised]:where([color="surface"],[color="none"],[color="transparent"]) {
       background-color: rgb(var(--mdw-color__surface-container));
     }
-
   `
   .autoRegister('mdw-top-app-bar');

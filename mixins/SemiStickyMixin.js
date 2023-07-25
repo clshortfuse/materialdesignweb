@@ -23,18 +23,26 @@ export default function SemiStickyMixin(Base) {
         empty: 'top',
       },
       stickyAlways: 'boolean',
+      stickyOffset: {
+        type: 'float',
+        nullable: false,
+      },
     })
     .methods({
       /** @return {HTMLElement} */
       _getSemiStickyElement() { return this; },
       _refreshSemiStickyMetrics() {
         const semiStickyElement = this._getSemiStickyElement();
-        this._semiStickyHeight = semiStickyElement.offsetHeight;
-        this._semiStickyWidth = semiStickyElement.offsetWidth;
+        let styles = window.getComputedStyle(semiStickyElement);
+        this._semiStickyHeight = semiStickyElement.offsetHeight
+          + Number.parseFloat(styles.marginTop) + Number.parseFloat(styles.marginBottom);
+        this._semiStickyWidth = semiStickyElement.offsetWidth
+          + Number.parseFloat(styles.marginLeft) + Number.parseFloat(styles.marginRight);
         // No way to measure offset when stickied ?
         semiStickyElement.style.position = 'relative';
-        this._semiStickyOffsetY = semiStickyElement.offsetTop;
-        this._semiStickyOffsetX = semiStickyElement.offsetLeft;
+        styles = window.getComputedStyle(semiStickyElement);
+        this._semiStickyOffsetY = semiStickyElement.offsetTop - Number.parseFloat(styles.marginTop);
+        this._semiStickyOffsetX = semiStickyElement.offsetLeft - Number.parseFloat(styles.marginLeft);
         semiStickyElement.style.position = 'sticky';
       },
     })

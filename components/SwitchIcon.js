@@ -55,19 +55,18 @@ export default CustomElement
     },
   })
   .html`
-    <div id=thumb selected={checked} pressed={pressed} disabled={disabled}>
-      <mdw-shape id=thumb-shape shape-style=full selected={checked} pressed={pressed} hovered={hovered} focused={focused} icon={hasIcon}
-       color={_thumbColor} active={_active} ink={_thumbInk} disabled={disabled}></mdw-shape>
-      <mdw-icon ink={_iconInk} class=icon id=icon src={src} selected={checked} icon={icon}></mdw-icon>
-      <mdw-icon ink={_iconInk} class=icon id=selected-icon src={selectedIconSrc} selected={checked} icon={selectedIcon}></mdw-icon>
-      <mdw-icon ink={_iconInk} class=icon id=unselected-icon src={unselectedIconSrc} selected={checked} icon={unselectedIcon}></mdw-icon>
-      <slot id=slot selected={checked}></slot>
+    <div id=track selected={checked} disabled={disabled}>
+      <div id=thumb selected={checked} pressed={pressed} disabled={disabled}>
+        <mdw-box id=thumb-shape selected={checked} pressed={pressed} hovered={hovered} focused={focused} icon={hasIcon}
+        color={_thumbColor} active={_active} ink={_thumbInk} disabled={disabled}></mdw-box>
+        <mdw-icon ink={_iconInk} class=icon id=icon src={src} selected={checked} icon={icon}></mdw-icon>
+        <mdw-icon ink={_iconInk} class=icon id=selected-icon src={selectedIconSrc} selected={checked} icon={selectedIcon}></mdw-icon>
+        <mdw-icon ink={_iconInk} class=icon id=unselected-icon src={unselectedIconSrc} selected={checked} icon={unselectedIcon}></mdw-icon>
+        <slot id=slot selected={checked}></slot>
+      </div>
     </div>
   `
-  .recompose(({ refs: { outline, shape: track } }) => {
-    track.id = 'track';
-    track.setAttribute('selected', '{checked}');
-    track.setAttribute('disabled', '{disabled}');
+  .recompose(({ refs: { outline } }) => {
     outline.removeAttribute('mdw-if');
     outline.setAttribute('selected', '{checked}');
     outline.setAttribute('errored', '{errored}');
@@ -118,6 +117,7 @@ export default CustomElement
       inset: 0;
 
       background-color: rgb(var(--mdw-color__surface-container-highest));
+      border-radius: inherit;
     }
 
     #track[selected] {
@@ -125,19 +125,17 @@ export default CustomElement
     }
 
     #track[disabled] {
-      opacity: calc(0.12/0.38);
+      background-color: rgba(var(--mdw-color__surface-container-highest), calc(0.12/0.38));
     }
 
     #track[disabled][selected] {
-      background-color: rgb(var(--mdw-color__on-surface));
+      background-color: rgba(var(--mdw-color__on-surface), calc(0.12/0.38));
     }
 
     #outline {
-      filter:
-        drop-shadow(1px 0px 0px currentColor)
-        drop-shadow(0px 1px 0px currentColor)
-        drop-shadow(-1px 0px 0px currentColor)
-        drop-shadow(0px -1px 0px currentColor);
+      border-width: 2px;
+
+      z-index: 1;
 
       color: rgb(var(--mdw-color__outline));
     }
@@ -147,7 +145,7 @@ export default CustomElement
     }
 
     #outline[disabled] {
-      color: rgb(var(--mdw-color__on-surface));
+      color: rgba(var(--mdw-color__on-surface), calc(0.12/0.38));
     }
 
     #outline[selected] {
@@ -168,6 +166,7 @@ export default CustomElement
 
       transform: translateX(calc(var(--mdw-dir, 1) * var(--mdw-switch__value) * (52px - 100%)));
 
+      border-radius: inherit;
       aspect-ratio: 1/1;
     }
 
@@ -200,6 +199,8 @@ export default CustomElement
 
       transform: scale(calc(16/28));
       z-index: 0;
+
+      border-radius:inherit;
     }
 
     #thumb-shape[icon] {
@@ -221,6 +222,14 @@ export default CustomElement
 
     #thumb-shape[pressed]:not([disabled]) {
       transform: scale(1);
+    }
+
+    #thumb-shape[disabled] {
+      background-color: rgb(var(--mdw-color__on-surface));
+    }
+
+    #thumb-shape[disabled][selected] {
+      background-color: rgb(var(--mdw-color__surface));
     }
 
     /** Thumb Icons **/

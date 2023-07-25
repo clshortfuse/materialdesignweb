@@ -26,6 +26,7 @@ export default Surface
     closeButton: 'boolean',
     closeIcon: { empty: 'close' },
     closeInk: { empty: 'inherit' },
+    elevation: { empty: 3 },
     onaction: EVENT_HANDLER_TYPE,
   })
   .methods({
@@ -72,8 +73,7 @@ export default Surface
 
     :host {
       --mdw-shape__size: var(--mdw-shape__small);
-      --mdw-surface__shadow: var(--mdw-surface__shadow__3);
-      --mdw-shape__bg: rgb(var(--mdw-color__inverse-surface));
+      --mdw-bg: var(--mdw-color__inverse-surface);
       --mdw-ink: var(--mdw-color__inverse-on-surface);
 
       --mdw-type__line-height: var(--mdw-typescale__body-medium__line-height);
@@ -81,6 +81,8 @@ export default Surface
       align-items: center;
 
       padding-inline: 16px;
+
+      filter: drop-shadow(0px 1px 1.5px rgba(0,0,0,0.3)) drop-shadow(0px 4px 007px rgba(0,0,0,0.263));
 
       opacity: 0;
       transform: translateY(25%) scaleY(0.25);

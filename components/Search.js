@@ -29,26 +29,23 @@ export default TopAppBar
   .css`
     :host {
       --mdw-bg: var(--mdw-color__surface-container-high);
-      padding-block: 16px;
-    }
+      --mdw-shape__size: var(--mdw-shape__full);
+      inset-block-start: 8px;
 
-    #surface {
-      background-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      margin-block: 16px;
+
+      padding-inline: 16px;
+
+      background-color: rgb(var(--mdw-bg));
     }
 
     #leading:not([slotted]),
     #trailing:not([slotted]) {
       display: none;
-    }
-
-    #shape {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-
-      padding-inline: 16px;
-
-      background-color: rgb(var(--mdw-bg));
     }
 
     #input {
@@ -73,9 +70,8 @@ export default TopAppBar
       },
     },
   })
-  .recompose(({ refs: { companion, headline, input, surface } }) => {
+  .recompose(({ refs: { companion, headline, input } }) => {
     companion.remove();
     headline.replaceWith(input);
-    surface.removeAttribute('aria-labelledby');
   })
   .autoRegister('mdw-search');

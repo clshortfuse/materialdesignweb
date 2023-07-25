@@ -272,9 +272,6 @@ export default CustomElement
       <div id=indicator-end class=indicator-piece></div>
     </div>
   `
-  .recompose(({ refs: { shape, indicator } }) => {
-    shape.append(indicator);
-  })
   .on({
     constructed() {
       document.addEventListener('DOMContentLoaded', () => this.searchForTabContent(), { once: true });
