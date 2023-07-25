@@ -48,5 +48,10 @@ export default Surface
         padding-block: calc(12px - 0.5lh);
       }
     }
+
+    :host([open]) {
+      opacity: 1;
+      transform: scale(1);
+    }
   `
   .autoRegister('mdw-tooltip');
