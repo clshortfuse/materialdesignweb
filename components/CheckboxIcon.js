@@ -42,16 +42,6 @@ export default CustomElement
       line-height: 18px;
     }
 
-    #shape {
-      --mdw-shape__size: inherit;
-      position: absolute;
-      inset: 0;
-
-      z-index: auto;
-
-      background-color: transparent;
-    }
-
     #icon {
       position: absolute;
       inset: 0;
@@ -59,6 +49,7 @@ export default CustomElement
       opacity: 0;
 
       background-color: rgb(var(--mdw-bg));
+      border-radius: inherit;
       color: rgb(var(--mdw-ink));
 
       transition-duration: 200ms;
@@ -67,11 +58,7 @@ export default CustomElement
     }
 
     #outline {
-      filter:
-        drop-shadow(1px 0px 0px currentColor)
-        drop-shadow(0px 1px 0px currentColor)
-        drop-shadow(-1px 0px 0px currentColor)
-        drop-shadow(0px -1px 0px currentColor);
+      border-width: 2px;
 
       color: rgb(var(--mdw-color__on-surface));
 
@@ -112,15 +99,13 @@ export default CustomElement
       color: rgb(var(--mdw-color__on-surface), var(--disabled-opacity));
     }
   `
-  .recompose(({ html, refs: { outline, shape } }) => {
+  .html`
+    <mdw-icon id=icon selected={selected} errored={errored} disabled={disabled} icon={icon}></mdw-icon>
+  `
+  .recompose(({ refs: { outline } }) => {
     outline.removeAttribute('mdw-if');
     outline.setAttribute('selected', '{selected}');
     outline.setAttribute('errored', '{errored}');
     outline.setAttribute('disabled', '{disabled}');
-    // outlineLeft.remove();
-    // outlineRight.remove();
-    shape.append(html`
-      <mdw-icon id=icon selected={selected} errored={errored} disabled={disabled} icon={icon}></mdw-icon>
-    `);
   })
   .autoRegister('mdw-checkbox-icon');

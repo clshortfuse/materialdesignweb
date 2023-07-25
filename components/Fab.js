@@ -16,13 +16,15 @@ export default ExtendedFab
 
     :host {
       min-inline-size: 24px;
-    }
 
-    #icon {
       font-size: 24px;
     }
 
-    #icon[fab-size="large"] {
+    #icon {
+      font-size: inherit;
+    }
+
+    :host([fab-size="large"]) {
       font-size: 36px;
     }
 
@@ -36,11 +38,9 @@ export default ExtendedFab
       padding: calc(30px + (var(--mdw-density) * 2px));
     }
   `
-  .recompose(({ refs: { slot, tooltipSlot, control, shape, icon } }) => {
+  .recompose(({ refs: { slot, tooltipSlot, control } }) => {
     slot.remove();
     tooltipSlot.removeAttribute('name');
     control.setAttribute('aria-labelledby', 'tooltip');
-    shape.setAttribute('fab-size', '{fabSize}');
-    icon.setAttribute('fab-size', '{fabSize}');
   })
   .autoRegister('mdw-fab');

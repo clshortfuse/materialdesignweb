@@ -10,16 +10,18 @@ import StateMixin from '../mixins/StateMixin.js';
 import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
+/* https://m3.material.io/components/cards/specs */
+
 const SUPPORTS_INERT = 'inert' in HTMLElement.prototype;
 
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
   .mixin(FlexableMixin)
+  .mixin(StateMixin)
   .mixin(SurfaceMixin)
   .mixin(ShapeMixin)
   .mixin(FormAssociatedMixin) // Tap into FormAssociated for disabledState
-  .mixin(StateMixin)
   .mixin(AriaReflectorMixin)
   .mixin(DelegatesFocusMixin)
   .mixin(HyperlinkMixin)
@@ -27,10 +29,29 @@ export default CustomElement
     _ariaRole: 'figure',
   })
   .observe({
+    elevated: 'boolean',
     filled: 'boolean',
     actionable: 'boolean',
     actionLabel: 'string',
     onaction: EVENT_HANDLER_TYPE,
+  })
+  .observe({
+    _elevation({ elevation, elevated, filled, actionable }) {
+      if (elevation != null) return elevation;
+      if (elevated) return 1;
+      if (filled && actionable) return 0;
+      return null;
+    },
+    _elevationRaised({ elevationRaised, elevated, filled, actionable }) {
+      if (!actionable) return null;
+      if (elevationRaised != null) return elevationRaised;
+      if (elevated) return 2;
+      if (filled) return 1;
+      return null;
+    },
+    _secondaryFilter({ disabledState }) {
+      return disabledState ? 'grayScale()' : null;
+    },
   })
   .define({
     stateTargetElement() { return this.actionable ? this.refs.action : this; },
@@ -58,13 +79,11 @@ export default CustomElement
   `
   .recompose(({ refs: { anchor } }) => { anchor.remove(); })
   .css`
-    /* https://m3.material.io/components/cards/specs */
+
 
     :host {
       --mdw-shape__size: 12px;
 
-      --mdw-surface__shadow__resting: none;
-      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__resting);
       /* padding-inline: 12px; */
 
       --mdw-bg: var(--mdw-color__surface-container);
@@ -79,7 +98,7 @@ export default CustomElement
       letter-spacing: var(--mdw-type__letter-spacing);
     }
 
-    #shape:where([elevated],[filled],[color]) {
+    :host(:where([elevated],[filled],[color])) {
       background-color: rgb(var(--mdw-bg));
     }
 
@@ -93,35 +112,11 @@ export default CustomElement
       --mdw-ink: var(--mdw-color__on-surface);
     }
 
-    :host([filled]) {
-      --mdw-surface__shadow__resting: var(--mdw-surface__shadow__0);
-    }
-
-    :host([filled][actionable]) {
-      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__1);
-    }
-
-    :host([elevated]) {
-      --mdw-surface__shadow__resting: var(--mdw-surface__shadow__1);
-    }
-
-    :host([elevated][actionable]) {
-      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__2);
-    }
-
-    #shape[disabled] {
-
-      /* Works on images */
+    :host([disabled]) {
       filter: grayscale();
+      opacity: 0.38;  
 
       color: rgb(var(--mdw-color__on-surface));
-    }
-
-    :host([disabled]) {
-      cursor: not-allowed;
-
-      filter: grayscale();
-      opacity: 0.38;
     }
 
     #slot[disabled] {
@@ -144,7 +139,7 @@ export default CustomElement
       z-index: 99;
     }
 
-    #shape[disabled][elevated] {
+    :host([disabled][elevated]) {
       background-color: rgba(var(--mdw-color__surface-container-highest));
     }
 
@@ -162,16 +157,13 @@ export default CustomElement
       color: inherit
     }
   `
-  .recompose(({ refs: { slot, surface, shape, outline } }) => {
-    surface.append(shape);
+  .recompose(({ refs: { slot, outline } }) => {
     outline.removeAttribute('pressed');
     outline.removeAttribute('focused');
 
-    shape.setAttribute('filled', '{filled}');
     slot.setAttribute('inert', '{disabledState}');
     slot.setAttribute('disabled', '{disabledState}');
-    // shape.setAttribute('disabled', '{disabledState}');
-    // shape.setAttribute('filled', '{filled}');
+
   })
   .childEvents({
     action: {

@@ -19,7 +19,6 @@ export default CustomElement
   .mixin(DensityMixin)
   .mixin(KeyboardNavMixin)
   .set({
-    scrollable: true,
     flow: 'corner',
     _useScrim: false,
     /** @type {WeakRef<HTMLElement>} */
@@ -60,11 +59,8 @@ export default CustomElement
       },
     },
   })
-  .recompose(({ refs: { shape, surface, dialog, scrim } }) => {
-    surface.append(shape);
-    dialog.prepend(surface);
+  .recompose(({ refs: { scrim } }) => {
     scrim.setAttribute('invisible', '');
-
     // Wrap slot in scroller
   })
   .css`

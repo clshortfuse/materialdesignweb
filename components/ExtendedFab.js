@@ -2,6 +2,17 @@ import Button from './Button.js';
 
 export default Button
   .extend()
+  .observe({
+    lowered: 'boolean',
+  })
+  .observe({
+    _elevation({ elevation, lowered }) {
+      return elevation ?? lowered ? 1 : 3;
+    },
+    _elevationRaised({ elevationRaised, lowered }) {
+      return elevationRaised ?? lowered ? 2 : 4;
+    },
+  })
   .css`
     /* https://m3.material.io/components/extended-fab/specs */
 
@@ -9,8 +20,6 @@ export default Button
       --mdw-bg: var(--mdw-color__surface-container-high);
       --mdw-ink: var(--mdw-color__primary);
       --mdw-shape__size: 16px;
-      --mdw-surface__shadow__resting: var(--mdw-surface__shadow__3);
-      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__4);
       min-inline-size: 48px;
       padding: calc(16px + (var(--mdw-density) * 2px));
     }
@@ -21,8 +30,6 @@ export default Button
 
     :host(:where([lowered])) {
       --mdw-bg: var(--mdw-color__surface-container-low);
-      --mdw-surface__shadow__resting: var(--mdw-surface__shadow__1);
-      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__2);
     }
   `
   .observe({
