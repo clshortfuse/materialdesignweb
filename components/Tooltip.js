@@ -2,7 +2,7 @@ import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 
 import Surface from './Surface.js';
 
-/* https://m2.material.io/components/tooltips */
+/* https://m3.material.io/components/tooltips/specs */
 
 export default Surface
   .extend()
@@ -17,20 +17,18 @@ export default Surface
         this.updateAriaProperty('ariaHidden', newValue ? 'true' : 'false');
       },
     },
-    touch: 'boolean',
   })
   .css`
     :host {
       --mdw-shape__size: var(--mdw-shape__extra-small);
-      --mdw-ink: var(--mdw-color__on-surface-variant);
-      --mdw-shape__bg: rgb(var(--mdw-color__surface-container));
+      --mdw-ink: var(--mdw-color__inverse-on-surface);
+      --mdw-bg: var(--mdw-color__inverse-surface);
       display: block;
-      vertical-align: middle;
 
       box-sizing: border-box;
-      /* stylelint-disable-next-line declaration-property-value-disallowed-list */
-      margin-inline: auto;
-      padding-block: 4px;
+
+      /* Ensure 24px min-height while keeping display:block */
+      padding-block: calc(12px - var(--mdw-typescale__body-small__line-height) / 2);
       padding-inline: 8px;
 
       pointer-events: none;
@@ -39,24 +37,16 @@ export default Surface
       transform: scale(0);
       z-index: 28;
 
-      font: var(--mdw-typescale__label-medium__font);
-      letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
+      font: var(--mdw-typescale__body-small__font);
+      letter-spacing: var(--mdw-typescale__body-small__letter-spacing);
 
       transition: transform 200ms, opacity 200ms;
-
     }
 
-    :host([touch]) {
-      padding-block: 6px;
-      padding-inline: 16px;
-
-      font: var(--mdw-typescale__label-large__font);
-      letter-spacing: var(--mdw-typescale__label-large__letter-spacing);
-    }
-
-    :host([open]) {
-      opacity: 1;
-      transform: scale(1);
+    @supports(width: 1lh) {
+      :host {
+        padding-block: calc(12px - 0.5lh);
+      }
     }
   `
   .autoRegister('mdw-tooltip');
