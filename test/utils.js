@@ -148,6 +148,13 @@ export function disableAnimations(...customElements) {
         }
       `));
     });
+    const animateFn = ElementClass.prototype.animate;
+    ElementClass.prototype.animate = function disabledAnimate(keyframes, options) {
+      return animateFn.call(this, keyframes, {
+        ...options,
+        duration: 0,
+      });
+    };
     ElementClass.__ANIMATIONS_DISABLED = true;
   }
 }
