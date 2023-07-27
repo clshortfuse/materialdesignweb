@@ -308,6 +308,10 @@ export default CustomElement
       border-radius: 50%;
     }
 
+    #control[disabled] {
+      cursor: not-allowed;
+    }
+
     #track {
       --value: 0.5;
       position: absolute;
