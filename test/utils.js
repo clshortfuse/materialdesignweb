@@ -6,19 +6,16 @@ import { css } from '../core/css.js';
 import { screenshotCompare } from './plugins/screenshotCompare.js';
 
 /**
- * @param {Element} element
+ * @param {HTMLElement} element
  * @return {{width:number, height:number}}
  */
-export function getElementContentSize(element) {
+export function getElementSize(element) {
   const {
-    height, width,
-    paddingTop, paddingRight, paddingBottom, paddingLeft,
-    boxSizing,
+    marginTop, marginBottom, marginLeft, marginRight,
   } = window.getComputedStyle(element);
-  if (boxSizing === 'content-box') return { height: Number.parseFloat(height), width: Number.parseFloat(width) };
   return {
-    height: Number.parseFloat(height) - Number.parseFloat(paddingTop) - Number.parseFloat(paddingBottom),
-    width: Number.parseFloat(width) - Number.parseFloat(paddingLeft) - Number.parseFloat(paddingRight),
+    height: element.offsetHeight + Number.parseFloat(marginTop) + Number.parseFloat(marginBottom),
+    width: element.offsetWidth + Number.parseFloat(marginLeft) + Number.parseFloat(marginRight),
   };
 }
 

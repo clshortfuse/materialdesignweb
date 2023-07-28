@@ -3,7 +3,7 @@ import { assert } from '@esm-bundle/chai';
 import '../../loaders/theme.js';
 
 import Badge from '../../components/Badge.js';
-import { html, makeFromConstructor, makeFromString, makeFromTagName } from '../utils.js';
+import { getElementSize, html, makeFromConstructor, makeFromString, makeFromTagName } from '../utils.js';
 
 beforeEach(() => document.body.replaceChildren());
 
@@ -34,14 +34,14 @@ describe('mdw-badge', () => {
     it('should have 16px x 16px bounds when empty', () => {
       /** @type {InstanceType<Badge>} */
       const element = html`<mdw-badge></mdw-badge>`;
-      const { width, height } = element.getBoundingClientRect();
+      const { width, height } = getElementSize(element);
       assert.equal(width, 16);
       assert.equal(height, 16);
     });
 
     it('should have 16px x 16px bounds minimum', () => {
       const element = html`<mdw-badge>x</mdw-badge>`;
-      const { width, height } = element.getBoundingClientRect();
+      const { width, height } = getElementSize(element);
       assert.equal(width, 16);
       assert.equal(height, 16);
     });
