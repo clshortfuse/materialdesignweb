@@ -61,7 +61,12 @@ export const WEAKREF_TYPE = {
  * @prop {EffectTiming} [timing]
  */
 
-/** @type {WeakMap<CustomElement, Set<string>} */
+/**
+ * @typedef {Object} QueuedPropsMetadata
+ * @prop {boolean} initial
+ */
+
+/** @type {WeakMap<CustomElement, Map<string, QueuedPropsMetadata>>} */
 const queuedPropsByElement = new WeakMap();
 
 /** @type {WeakMap<CustomElement, Map<string, Animation>>} */
@@ -78,7 +83,9 @@ function elementStylerMicrotaskCallback(name) {
   if (previousAnimations?.has(name)) {
     previousAnimation = previousAnimations.get(name);
   }
-  queuedPropsByElement.get(this).delete(name);
+  const queuedProps = queuedPropsByElement.get(this);
+  const { initial } = queuedProps.get(name);
+  queuedProps.delete(name);
   const value = this[name];
   if (!value) {
     previousAnimation?.cancel();
@@ -91,6 +98,7 @@ function elementStylerMicrotaskCallback(name) {
     : this;
   const currentAnimation = el.animate(styles, {
     ...timing,
+    ...(initial ? { duration: 0 } : null),
     fill: 'forwards',
   });
   currentAnimation.onremove = () => {
@@ -114,14 +122,15 @@ export const ELEMENT_STYLER_TYPE = {
   type: 'object',
   reflect: false,
   diff: null, // Skip computing entire change
-  propChangedCallback(name, oldValue, newValue) {
+  propChangedCallback(name) {
     const queuedProps = queuedPropsByElement.get(this);
 
+    const initial = !this.isConnected;
     if (queuedProps) {
       if (queuedProps.has(name)) return;
-      queuedProps.add(name);
+      queuedProps.set(name, { initial });
     } else {
-      queuedPropsByElement.set(this, new Set([name]));
+      queuedPropsByElement.set(this, new Map([[name, { initial }]]));
     }
     // Animation styles may trickle in steps, so queue a microtask before doing any work.
     // Using requestAnimationFrame would fire one frame too late for CSS animations already scheduled
