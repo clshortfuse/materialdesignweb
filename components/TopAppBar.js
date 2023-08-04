@@ -99,7 +99,6 @@ export default CustomElement
       align-items: center;
       gap: 12px;
 
-      grid-area: app-bar;
       grid-auto-flow: row;
       grid-template-rows: minmax(64px,min-content);
       grid-template-columns: minmax(auto,1fr) minmax(0,auto) minmax(auto,1fr);
@@ -114,7 +113,7 @@ export default CustomElement
       /* paddingInlineStart = 16px - ((48px / 2) - (24px / 2)) */
       /* paddingInlineEnd = 16px - ((48px / 2) - (30px / 2)) */
 
-      padding-inline: max(var(--mdw-content__padding, 16px), calc((100% - var(--mdw-content__max-width, 100%)) / 2));
+      padding-inline: var(--mdw-page__padding-inline, 16px);
 
       pointer-events: auto;
 
