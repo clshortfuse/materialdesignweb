@@ -37,6 +37,9 @@ export default function StateMixin(Base) {
       touchedState({ _lastInteraction }) {
         return _lastInteraction === 'touch';
       },
+      pointedState({ _lastInteraction }) {
+        return _lastInteraction === 'mouse' || _lastInteraction === 'pen';
+      },
     })
     .define({
       stateTargetElement() { return this; },
@@ -49,6 +52,7 @@ export default function StateMixin(Base) {
         pressed={pressedState}
         interaction={_lastInteraction}
         touched={touchedState}
+        pointed={pointedState}
         aria-hidden=true></div>
     `
     .events({
