@@ -20,7 +20,9 @@ export default function NavigationListenerMixin(Base) {
           },
         }));
         if (!actionAllowed) {
-          event.stopPropagation();
+          // Allow the click event to propagate
+          // event.stopPropagation();
+          // Don't perform native hyperlink action
           event.preventDefault();
         }
       },
