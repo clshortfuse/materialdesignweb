@@ -34,6 +34,9 @@ CustomElement
       :host {
         --mdw-state__hovered-opacity: 0;
         --mdw-state__pressed-opacity: 0;
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline: 0;
         align-self: stretch;
 
         display: block;
@@ -315,7 +318,7 @@ export default CustomElement
       inset-inline: 0;
 
       display: inline-block;
-      overflow-y: visible;
+      overflow-y: clip;
 
       overscroll-behavior: none;
       overscroll-behavior: contain;
@@ -326,6 +329,7 @@ export default CustomElement
       margin-block-start: auto;
       margin-block-start: 72px;
       margin-inline: auto;
+      padding-block-start: 16px;
 
       pointer-events: none;
 
@@ -353,6 +357,10 @@ export default CustomElement
       position: fixed;
 
       z-index: 24;
+    }
+
+    :host(:where([drag-handle])) {
+      padding-block-start: 48px;
     }
   `
   .autoRegister('mdw-bottom-sheet');
