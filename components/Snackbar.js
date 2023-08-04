@@ -88,7 +88,7 @@ export default Surface
       transform: translateY(25%) scaleY(0.25);
       transform-origin: bottom center;
       visibility: hidden; /* Remove from tab order */
-      z-index: 24;
+      z-index: 22;
 
       font: var(--mdw-typescale__body-medium__font);
       letter-spacing: var(--mdw-typescale__body-medium__letter-spacing);
