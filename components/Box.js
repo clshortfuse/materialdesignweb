@@ -17,6 +17,7 @@ export default CustomElement
   .observe({
     inline: 'boolean',
     grid: 'boolean',
+    contentPadding: 'boolean',
     block: {
       type: 'boolean',
       empty: true,
@@ -88,6 +89,8 @@ export default CustomElement
       block-size: inherit;
       inline-size: inherit;
     }
+
+    #slot[flex]::slotted([col-span="100%"]) { flex: 1; }
 
     :host([grid]) {
       --mdw-grid__columns: 4;
@@ -170,6 +173,7 @@ export default CustomElement
     
     #slot[grid]::slotted([col-span="25%"]) { --mdw-grid__column-count: calc(var(--mdw-grid__columns) / 4); }
     #slot[grid]::slotted([col-span="50%"]) { --mdw-grid__column-count: calc(var(--mdw-grid__columns) / 2); }
+    #slot[grid]::slotted([col-span="100%"]) { --mdw-grid__column-count: calc(var(--mdw-grid__columns)); }
 
     #slot[grid]::slotted([col-span-4="1"]) { --mdw-grid__column-count__4: 1; }
     #slot[grid]::slotted([col-span-4="2"]) { --mdw-grid__column-count__4: 2; }
