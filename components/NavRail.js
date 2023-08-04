@@ -1,9 +1,21 @@
-import Nav from './Nav.js';
+import SideSheet from './SideSheet.js';
 
-export default Nav
+export default SideSheet
   .extend()
   .observe({
     align: { value: /** @type {'start'|'center'|'end'} */ (null) },
+    autoOpen: {
+      type: 'float',
+      empty: 728,
+    },
+    autoClose: {
+      type: 'float',
+      empty: 1248,
+    },
+    modalBreakpoint: {
+      type: 'float',
+      empty: 728,
+    },
   })
   .recompose(({ html, refs: { slot } }) => {
     slot.before(html`<slot id=start name=start></slot>`);
@@ -13,24 +25,19 @@ export default Nav
     /* https://m3.material.io/components/navigation-rail/specs */
 
     :host{
-      position: relative;
-      
-      inset-block-start: 0;
-      inset-inline-start: 0;
       align-self: flex-start;
 
-      display: grid;
+      display: inline-grid;
       align-content: flex-start;
       flex-direction: column;
       gap:0;
-      grid-template-rows: auto minmax(0,1fr);
+      grid-template-rows: auto minmax(auto,1fr);
       grid-template-columns: 100%;
       justify-items: stretch;
+      overscroll-behavior: none;
+      overscroll-behavior: contain;
 
-      min-block-size: 100vh;
-      max-block-size: 100vh;
-      min-inline-size: 80px;
-      max-inline-size: 80px;
+      min-block-size: 0;
 
       text-align: center;
     }
@@ -40,6 +47,7 @@ export default Nav
       align-items: center;
       flex-direction: column;
       gap: 12px;
+      justify-content: center;
     }
 
     #slot {
@@ -49,8 +57,6 @@ export default Nav
       align-items: stretch;
       flex-direction: column;
       gap: 12px;
-      overflow-x: clip;
-      overflow-y: auto;
 
       box-sizing: border-box;
       max-block-size: 100%;
@@ -65,6 +71,5 @@ export default Nav
     #slot[align="end"] {
       align-self: flex-end;
     }
-
   `
   .autoRegister('mdw-nav-rail');
