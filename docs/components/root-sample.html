@@ -19,7 +19,7 @@
 </head>
 
 <body>
-  <mdw-window>
+  <mdw-root>
     <mdw-nav-rail id="rail" slot="start">
       <mdw-nav-rail-item icon="1k">Item 1</mdw-nav-rail-item>
       <mdw-nav-rail-item icon="2k">Item 2</mdw-nav-rail-item>
@@ -129,7 +129,7 @@
         </mdw-list>
       </mdw-box>
     </mdw-page>
-  </mdw-window>
+  </mdw-root>
   <script>
     const { searchParams } = new URL(document.location);
     if (!searchParams.has('rail')) {
