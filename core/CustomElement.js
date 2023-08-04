@@ -48,11 +48,8 @@ export default class CustomElement extends ICustomElement {
 
   /** @type {import('./Composition.js').Compositor<?>} */
   compose() {
-    if (this.#composition) {
-      console.warn('Already composed. Generating *new* composition...');
-    }
-    this.#composition = new Composition();
-    return this.#composition;
+    // eslint-disable-next-line no-return-assign
+    return (this.#composition ??= new Composition());
   }
 
   /** @type {Composition<?>} */
@@ -132,11 +129,8 @@ export default class CustomElement extends ICustomElement {
    * @type {typeof ICustomElement.append}
    */
   static append(...parts) {
-    this.on({
-      composed({ composition }) {
-        // console.debug('onComposed:append', ...parts);
-        composition.append(...parts);
-      },
+    this._addCallback('_onComposeCallbacks', ({ composition }) => {
+      composition.append(...parts);
     });
     // @ts-expect-error Can't cast T
     return this;
@@ -158,16 +152,14 @@ export default class CustomElement extends ICustomElement {
    * @type {typeof ICustomElement.css}
    */
   static css(array, ...substitutions) {
-    this.on({
-      composed({ composition }) {
-        if (typeof array === 'string' || Array.isArray(array)) {
-          // @ts-expect-error Complex cast
-          composition.append(css(array, ...substitutions));
-        } else {
-          // @ts-expect-error Complex cast
-          composition.append(array, ...substitutions);
-        }
-      },
+    this._addCallback('_onComposeCallbacks', ({ composition }) => {
+      if (typeof array === 'string' || Array.isArray(array)) {
+        // @ts-expect-error Complex cast
+        composition.append(css(array, ...substitutions));
+      } else {
+        // @ts-expect-error Complex cast
+        composition.append(array, ...substitutions);
+      }
     });
 
     // @ts-expect-error Can't cast T
@@ -203,11 +195,9 @@ export default class CustomElement extends ICustomElement {
    * @type {typeof ICustomElement.html}
    */
   static html(strings, ...substitutions) {
-    this.on({
-      composed({ composition }) {
+    this._addCallback('_onComposeCallbacks', ({ composition }) => {
       // console.log('onComposed:html', strings);
-        composition.append(html(strings, ...substitutions));
-      },
+      composition.append(html(strings, ...substitutions));
     });
     // @ts-expect-error Can't cast T
     return this;
@@ -388,9 +378,7 @@ export default class CustomElement extends ICustomElement {
       this.attrList.set(attr, config);
     }
 
-    for (const [prop, callback] of watchers) {
-      this.on(`${prop}Changed`, callback);
-    }
+    this.onPropChanged(watchers);
 
     return INIT_SYMBOL;
   }
@@ -457,14 +445,11 @@ export default class CustomElement extends ICustomElement {
    */
   static observe(props) {
     for (const [name, typeOrOptions] of Object.entries(props ?? {})) {
-      if (typeof typeOrOptions === 'function') {
-        this.prop(name, {
-          reflect: false,
-          get: typeOrOptions,
-        });
-      } else {
-        this.prop(name, typeOrOptions);
-      }
+      const options = (typeof typeOrOptions === 'function')
+        ? { reflect: false, get: typeOrOptions }
+        : typeOrOptions;
+
+      this.prop(name, options);
     }
     // @ts-expect-error Can't cast T
     return this;
@@ -591,11 +576,13 @@ export default class CustomElement extends ICustomElement {
 
   /** @type {typeof ICustomElement['onPropChanged']} */
   static onPropChanged(options) {
-    for (const [prop, callback] of Object.entries(options)) {
-      if (this.propChangedCallbacks.has(prop)) {
-        this.propChangedCallbacks.get(prop).push(callback);
+    const entries = Array.isArray(options) ? options : Object.entries(options);
+    const { propChangedCallbacks } = this;
+    for (const [prop, callback] of entries) {
+      if (propChangedCallbacks.has(prop)) {
+        propChangedCallbacks.get(prop).push(callback);
       } else {
-        this.propChangedCallbacks.set(prop, [callback]);
+        propChangedCallbacks.set(prop, [callback]);
       }
     }
 
@@ -605,12 +592,14 @@ export default class CustomElement extends ICustomElement {
 
   /** @type {typeof ICustomElement['onAttributeChanged']} */
   static onAttributeChanged(options) {
-    for (const [name, callback] of Object.entries(options)) {
+    const entries = Array.isArray(options) ? options : Object.entries(options);
+    const { attributeChangedCallbacks } = this;
+    for (const [name, callback] of entries) {
       const lcName = name.toLowerCase();
-      if (this.attributeChangedCallbacks.has(lcName)) {
-        this.attributeChangedCallbacks.get(lcName).push(callback);
+      if (attributeChangedCallbacks.has(lcName)) {
+        attributeChangedCallbacks.get(lcName).push(callback);
       } else {
-        this.attributeChangedCallbacks.set(lcName, [callback]);
+        attributeChangedCallbacks.set(lcName, [callback]);
       }
     }
 
@@ -676,8 +665,9 @@ export default class CustomElement extends ICustomElement {
       // this.render({ [name]: changes });
     }
 
-    if (this.static._propChangedCallbacks.has(name)) {
-      for (const callback of this.static.propChangedCallbacks.get(name)) {
+    const { _propChangedCallbacks } = this.static;
+    if (_propChangedCallbacks.has(name)) {
+      for (const callback of _propChangedCallbacks.get(name)) {
         callback.call(this, oldValue, newValue, changes, this);
       }
     }
@@ -690,8 +680,9 @@ export default class CustomElement extends ICustomElement {
    */
   attributeChangedCallback(name, oldValue, newValue) {
     const lcName = name.toLowerCase();
-    if (this.static.attributeChangedCallbacks.has(lcName)) {
-      for (const callback of this.static.attributeChangedCallbacks.get(lcName)) {
+    const { attributeChangedCallbacks } = this.static;
+    if (attributeChangedCallbacks.has(lcName)) {
+      for (const callback of attributeChangedCallbacks.get(lcName)) {
         callback.call(this, oldValue, newValue, this);
       }
     }
@@ -749,20 +740,22 @@ export default class CustomElement extends ICustomElement {
    * @param {any} changes
    */
   _onObserverPropertyChanged(name, oldValue, newValue, changes) {
-    if (this.static.propList.has(name)) {
-      const { reflect, attr } = this.static.propList.get(name);
+    const { propList } = this.static;
+    if (propList.has(name)) {
+      const { reflect, attr } = propList.get(name);
       if (attr && (reflect === true || reflect === 'write')) {
         const lcName = attr.toLowerCase();
         /** @type {{stringValue:string, parsedValue:any}} */
         let cacheEntry;
         let needsWrite = false;
-        if (this.attributeCache.has(lcName)) {
-          cacheEntry = this.attributeCache.get(lcName);
+        const { attributeCache } = this;
+        if (attributeCache.has(lcName)) {
+          cacheEntry = attributeCache.get(lcName);
           needsWrite = (cacheEntry.parsedValue !== newValue);
         } else {
         // @ts-ignore skip cast
           cacheEntry = {};
-          this.attributeCache.set(lcName, cacheEntry);
+          attributeCache.set(lcName, cacheEntry);
           needsWrite = true;
         }
         if (needsWrite) {
@@ -840,8 +833,8 @@ export default class CustomElement extends ICustomElement {
   }
 
   get attributeCache() {
-    this._propAttributeCache ??= new Map();
-    return this._propAttributeCache;
+    // eslint-disable-next-line no-return-assign
+    return (this._propAttributeCache ??= new Map());
   }
 
   get static() { return /** @type {typeof CustomElement} */ (/** @type {unknown} */ (this.constructor)); }
