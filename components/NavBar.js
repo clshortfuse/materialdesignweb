@@ -37,6 +37,7 @@ export default Nav
       inline-size: 100%;
 
       flex-shrink: 0;
+      margin-block-start: auto;
 
       transform: translateY(0);
 
