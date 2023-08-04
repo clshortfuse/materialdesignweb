@@ -3,14 +3,14 @@ import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import NavItem from './NavItem.js';
 import Surface from './Surface.js';
 
+/* https://m3.material.io/components/navigation-bar/specs */
+/* https://m3.material.io/components/navigation-drawer/specs */
+/* https://m3.material.io/components/navigation-rail/specs */
+
 export default Surface
   .extend()
   .mixin(AriaReflectorMixin)
   .css`
-    /* https://m3.material.io/components/navigation-bar/specs */
-    /* https://m3.material.io/components/navigation-drawer/specs */
-    /* https://m3.material.io/components/navigation-rail/specs */
-
     :host {
       --mdw-ink: var(--mdw-color__on-surface);
       --mdw-bg: var(--mdw-color__surface);
