@@ -13,18 +13,25 @@ function parseSize(input) {
 export default function TypographyMixin(Base) {
   return Base
     .observe({
+      textPadding: 'string',
       textPaddingTop: 'string',
       textLeading: 'string',
       textPaddingBottom: 'string',
     })
     .expressions({
-      slotStyle({ textPaddingTop, textLeading }) {
-        return `--text-padding-top:${parseSize(textPaddingTop)};`
+      hasTextPaddingTop({ textPaddingTop, textPadding }) {
+        return Boolean(textPaddingTop ?? textPadding);
+      },
+      hasTextPaddingBottom({ textPaddingBottom, textPadding }) {
+        return Boolean(textPaddingBottom ?? textPadding);
+      },
+      slotStyle({ textPadding, textPaddingTop, textLeading }) {
+        return `--text-padding-top:${parseSize(textPaddingTop ?? textPadding)};`
          + `--text-leading:${parseSize(textLeading)}`;
       },
-      afterStyle({ textPaddingBottom }) {
+      afterStyle({ textPadding, textPaddingBottom }) {
         return textPaddingBottom === '0' ? null
-          : `--text-padding-bottom:${parseSize(textPaddingBottom)};`;
+          : `--text-padding-bottom:${parseSize(textPaddingBottom ?? textPadding)};`;
       },
     })
     .html`
@@ -32,7 +39,7 @@ export default function TypographyMixin(Base) {
     `
     .recompose(({ refs: { slot } }) => {
       slot.setAttribute('style', '{slotStyle}');
-      slot.setAttribute('text-padding-top', '{textPaddingTop}');
+      slot.setAttribute('text-padding-top', '{hasTextPaddingTop}');
       slot.setAttribute('text-leading', '{textLeading}');
     })
     .css`
