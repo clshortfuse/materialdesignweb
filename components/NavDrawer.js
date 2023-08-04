@@ -1,11 +1,19 @@
-import NavRail from './NavRail.js';
+import SideSheet from './SideSheet.js';
 
-export default NavRail
+export default SideSheet
   .extend()
   .observe({
     shapeEnd: {
       type: 'boolean',
       empty: true,
+    },
+    autoOpen: {
+      type: 'float',
+      empty: 1248,
+    },
+    modalBreakpoint: {
+      type: 'float',
+      empty: 1248,
     },
   })
   .css`
@@ -13,6 +21,7 @@ export default NavRail
     :host {
       --mdw-shape__size: var(--mdw-shape__large, 16px);
       --mdw-shape__size__top-start-size: 0px;
+      --mdw-shape__size__bottom-start-size: 0px;
 
       --mdw-nav-item__badge__position: static;
       --mdw-nav-item__badge__transform: none;
@@ -23,25 +32,15 @@ export default NavRail
       --mdw-nav-item__indicator__grid-area: auto;
       --mdw-bg: var(--mdw-color__surface-container-low);
 
-      display: grid;
-      grid-template-columns: 1fr;
+      display:inline-block;
 
-      min-block-size: 100vh;
-      max-block-size: 100vh;
       inline-size: 360px;
       max-inline-size: calc(100vw - 56px);
-      padding-inline: 0;
-
-      box-shadow: none;
+      padding-inline: 12px;
     }
 
-    #slot {
-      gap: 0;
-      overscroll-behavior: none;
-      overscroll-behavior: contain;
-
-      inline-size: auto;
-      padding-inline: 12px;
+    ::slotted(mdw-divider) {
+      padding-inline: 16px;
     }
 
   `
