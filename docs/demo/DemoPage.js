@@ -7,6 +7,7 @@ import '../../components/TopAppBar.js';
 import '../../components/NavDrawer.js';
 import '../../components/NavDrawerItem.js';
 
+import NavItem from '../../components/NavItem.js';
 import CustomElement from '../../core/CustomElement.js';
 import { generateFragment } from '../../core/template.js';
 import NavigationListenerMixin from '../../mixins/NavigationListenerMixin.js';
@@ -279,6 +280,20 @@ export default CustomElement
         event.preventDefault();
         this.performInternalNavigation(destination);
       }
+    },
+  })
+  .childEvents({
+    drawer: {
+      '~click'(event) {
+        // eslint-disable-next-line operator-linebreak
+        const drawer = /** @type {InstanceType<import('../../components/NavDrawer.js').default>} */
+          (event.currentTarget);
+        if (!drawer.modal) return;
+        if (event.target instanceof NavItem) {
+          // Close drawer if modals
+          drawer.open = false;
+        }
+      },
     },
   })
   .on({
