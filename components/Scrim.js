@@ -19,7 +19,11 @@ export default CustomElement
       scrollbar-color: transparent transparent;
       scrollbar-width: none;
 
+      cursor:pointer;
+
       outline: none; /* Older Chromium Builds */
+      
+      -webkit-tap-highlight-color: transparent;
 
       opacity: 0;
 
@@ -28,7 +32,6 @@ export default CustomElement
       background-color: rgb(var(--mdw-color__scrim));
       
       animation: fade-in 200ms forwards ease-out;
-      
       will-change: opacity;
     }
 
