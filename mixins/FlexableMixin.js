@@ -36,51 +36,56 @@ export default function FlexableMixin(Base) {
         display:flex;
       }
 
-      :host([flex="column"]) {
-        flex-direction: column;
-      }
-
-      :host(:where([flex][y="start"], [flex="column"][x="start"])) {
+      :host(:where([flex])) {
         align-items: flex-start;
-      }
-
-      :host(:where([flex][y="end"], [flex="column"][x="end"])) {
-        align-items: flex-end;
-      }
-
-      :host(:where([flex][y="center"], [flex="column"][x="center"])) {
-        align-items: center;
-      }
-
-      :host(:where([flex][y="between"], [flex="column"][x="between"])) {
-        align-items: space-between;
-      }
-
-      :host(:where([flex][y="around"], [flex="column"][x="around"])) {
-        align-items: space-around;
-      }
-
-      :host(:where([flex][y="stretch"], [flex="column"][x="stretch"])) {
-        align-items: stretch;
-      }
-
-      :host(:where([flex][x="start"], [flex="column"][y="start"])) {
         justify-content: flex-start;
       }
 
-      :host(:where([flex][x="end"], [flex="column"][y="end"])) {
+      :host(:where([flex="column"])) {
+        flex-direction: column;
+      }
+
+      :host(:where([flex=""][y="start"], [flex="column"][x="start"])) {
+        align-items: flex-start;
+      }
+
+      :host(:where([flex=""][y="end"], [flex="column"][x="end"])) {
+        align-items: flex-end;
+      }
+
+      :host(:where([flex=""][y="center"], [flex="column"][x="center"])) {
+        align-items: center;
+      }
+
+      :host(:where([flex=""][y="between"], [flex="column"][x="between"])) {
+        align-items: space-between;
+      }
+
+      :host(:where([flex=""][y="around"], [flex="column"][x="around"])) {
+        align-items: space-around;
+      }
+
+      :host(:where([flex=""][y="stretch"], [flex="column"][x="stretch"])) {
+        align-items: stretch;
+      }
+
+      :host(:where([flex=""][x="start"], [flex="column"][y="start"])) {
+        justify-content: flex-start;
+      }
+
+      :host(:where([flex=""][x="end"], [flex="column"][y="end"])) {
         justify-content: flex-end;
       }
 
-      :host(:where([flex][x="center"], [flex="column"][y="center"])) {
+      :host(:where([flex=""][x="center"], [flex="column"][y="center"])) {
         justify-content: center;
       }
 
-      :host(:where([flex][x="between"], [flex="column"][y="between"])) {
+      :host(:where([flex=""][x="between"], [flex="column"][y="between"])) {
         justify-content: space-between;
       }
 
-      :host(:where([flex][x="stretch"], [flex="column"][y="stretch"])) {
+      :host(:where([flex=""][x="stretch"], [flex="column"][y="stretch"])) {
         justify-content: stretch;
       }
 
