@@ -572,10 +572,7 @@ export default function PopupMixin(Base) {
       place-items: inherit;
 
       box-sizing: border-box;
-
       block-size: inherit;
-      
-      
       flex: inherit;
       margin:0;
       border: none;
@@ -583,6 +580,8 @@ export default function PopupMixin(Base) {
       padding: 0;
 
       pointer-events: auto;
+
+      filter: inherit;
 
       opacity: 1;
 
