@@ -12,8 +12,8 @@
 <body>
 
   <demo-page>
-    <demo-section>
-      <h1 slot=heading>One-line lists</h1>
+    <section>
+      <mdw-headline text-padding=0.5em>One-line lists</mdw-headline>
       <mdw-list color="surface">
         <mdw-list-item>Headline (textContent)</mdw-list-item>
         <mdw-list-item disabled>Disabled (textContent)</mdw-list-item>
@@ -38,10 +38,10 @@
           <img slot="leading" src="../imgs/gradient.svg" height="56" width="56" alt="" />
           Headline with leading (slot)</mdw-list-item>
       </mdw-list>
-    </demo-section>
+    </section>
 
-    <demo-section>
-      <h1 slot=heading>Two-line lists (Explicit)</h1>
+    <section>
+      <mdw-headline text-padding=0.5em>Two-line lists (Explicit)</mdw-headline>
       <mdw-list color="surface" style="width:100%">
         <mdw-list-item lines=2>Headline (textContent)</mdw-list-item>
         <mdw-list-item lines=2 supporting="With supporting text">Headline (textContent)</mdw-list-item>
@@ -76,10 +76,10 @@
           supporting="Oversized supporting *attribute* that clips text automatically based on available space">
           Headline</mdw-list-item>
       </mdw-list>
-    </demo-section>
+    </section>
 
-    <demo-section>
-      <h1 slot=heading>Three-line lists (Explicit)</h1>
+    <section>
+      <mdw-headline text-padding=0.5em>Three-line lists (Explicit)</mdw-headline>
       <mdw-list color="surface" style="width:100%">
         <mdw-list-item lines=3>Headline (textContent)</mdw-list-item>
         <mdw-list-item lines=3 supporting="With supporting text">Headline (textContent)</mdw-list-item>
@@ -114,10 +114,10 @@
           supporting="Oversized supporting *attribute* that clips text automatically based on available space. Instead of being clamped to only 1 line, this is now clamped to 2">
           Headline</mdw-list-item>
       </mdw-list>
-    </demo-section>
+    </section>
 
-    <demo-section>
-      <h1 slot=heading>Dynamic line count</h1>
+    <section>
+      <mdw-headline text-padding=0.5em>Dynamic line count</mdw-headline>
       <mdw-list color="surface" style="width:100%">
         <mdw-list-item>Headline only</mdw-list-item>
         <mdw-list-item supporting="With supporting text">Headline</mdw-list-item>
@@ -133,10 +133,10 @@
           supporting="Oversized supporting *attribute* that clips text automatically based on available space. Instead of being clamped to only 1 line, this is now clamped to 2">
           Headline</mdw-list-item>
       </mdw-list>
-    </demo-section>
+    </section>
 
-    <demo-section>
-      <h1 slot=heading>Interactive (HTMLAnchorElement)</h1>
+    <section>
+      <mdw-headline text-padding=0.5em>Interactive (HTMLAnchorElement)</mdw-headline>
       <mdw-list color="surface" style="width:100%">
         <mdw-list-item href="#" supporting="Focusable and tabbable">href=#</mdw-list-item>
         <mdw-list-item href="#" lines=2 supporting="Supporting text" trailing-icon="chevron_right">Headline with
@@ -144,7 +144,7 @@
         <mdw-list-item supporting="Not focusable">No link</mdw-list-item>
         <mdw-list-item supporting="Same as <a> element" href="./list.html">Real link</mdw-list-item>
       </mdw-list>
-    </demo-section>
+    </section>
   </demo-page>
 </body>
 

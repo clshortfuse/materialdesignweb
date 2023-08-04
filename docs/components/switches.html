@@ -11,7 +11,7 @@
 
 <body>
   <demo-page>
-    <demo-section>
+    <section>
       <h1 slot="heading">Without Icons</h1>
       <mdw-box flex wrap gap=24>
         <mdw-switch>Default</mdw-switch>
@@ -20,8 +20,8 @@
         <mdw-switch disabled>Disabled</mdw-switch>
         <mdw-switch color=secondary disabled checked>Disabled</mdw-switch>
       </mdw-box>
-    </demo-section>
-    <demo-section>
+    </section>
+    <section>
       <h1 slot="heading">Icon on selected switch</h1>
       <mdw-box flex wrap gap=24>
         <mdw-switch selected-icon=check>Default</mdw-switch>
@@ -30,8 +30,8 @@
         <mdw-switch disabled selected-icon=check>Disabled</mdw-switch>
         <mdw-switch color=secondary disabled checked selected-icon=check>Disabled</mdw-switch>
       </mdw-box>
-    </demo-section>
-    <demo-section>
+    </section>
+    <section>
       <h1 slot="heading">Icon on selected and unselected switch</h1>
       <mdw-box flex wrap gap=12>
         <mdw-switch icon=favorite>Default</mdw-switch>
@@ -40,8 +40,8 @@
         <mdw-switch disabled unselected-icon=close selected-icon=check>Disabled</mdw-switch>
         <mdw-switch color=secondary disabled checked unselected-icon=close selected-icon=check>Disabled</mdw-switch>
       </mdw-box>
-    </demo-section>
-    <demo-section>
+    </section>
+    <section>
       <h1 slot="heading">No label</h1>
       <mdw-box flex wrap gap=12>
         <mdw-switch icon=check aria-label="Default"></mdw-switch>
@@ -51,14 +51,14 @@
         <mdw-switch disabled icon=check aria-label="Disabled"></mdw-switch>
         <mdw-switch color=secondary disabled checked icon=check aria-label="Disabled"></mdw-switch>
       </mdw-box>
-    </demo-section>
-    <demo-section>
+    </section>
+    <section>
       <h1 slot="heading">Custom Sized</h1>
       <mdw-box flex wrap gap=12>
         <mdw-switch icon=check style="width:80px" aria-label="Default"></mdw-switch>
         <mdw-switch color=secondary checked style="width:40px" icon=favorite aria-label="Secondary"></mdw-switch>
       </mdw-box>
-    </demo-section>
+    </section>
   </demo-page>
 </body>
 </html>

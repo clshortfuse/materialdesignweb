@@ -11,8 +11,8 @@
 
 <body>
   <demo-page>
-    <demo-section>
-      <h2 slot=heading>Filled</h2>
+    <section>
+      <mdw-headline size=medium text-padding=0.5em>Filled</mdw-headline>
       <mdw-box flex=column wrap gap=16 padding=24>
         <mdw-input filled label="Label"></mdw-input>
         <mdw-input filled placeholder="Placeholder only" aria-label="Blank"></mdw-input>
@@ -45,9 +45,9 @@
         <mdw-input filled color=secondary-container disabled error="Unavailable" value="filled">Disabled
         </mdw-input>
       </mdw-box>
-    </demo-section>
-    <demo-section>
-      <h2 slot=heading>Outlined</h2>
+    </section>
+    <section>
+      <mdw-headline size=medium text-padding=0.5em>Outlined</mdw-headline>
       <mdw-box flex=column wrap gap=16 padding=24>
         <mdw-input outlined label="Label"></mdw-input>
         <mdw-input outlined placeholder="Placeholder only" aria-label="Blank"></mdw-input>
@@ -80,9 +80,9 @@
         <mdw-input outlined color=secondary-container disabled error="Unavailable" value="filled">Disabled
         </mdw-input>
       </mdw-box>
-    </demo-section>
-    <demo-section>
-      <h2 slot=heading>Outlined Dense</h2>
+    </section>
+    <section>
+      <mdw-headline size=medium text-padding=0.5em>Outlined Dense</mdw-headline>
       <mdw-box flex=column wrap gap=16 padding=24>
         <mdw-input outlined density=-2 label="Label"></mdw-input>
         <mdw-input outlined density=-2 placeholder="Placeholder only" aria-label="Blank"></mdw-input>
@@ -118,8 +118,8 @@
         <mdw-input outlined density=-2 color=secondary-container disabled error="Unavailable" value="filled">Disabled
         </mdw-input>
       </mdw-box>
-    </demo-section>
-    <demo-section>
+    </section>
+    <section>
       <h2 slot="heading">Editable Combobox</h2>
       <mdw-box flex=column wrap gap=16 padding=24>
         <mdw-input filled label="Basic" supporting="No list-autocomplete (filtering), inline-autocomplete (appending text), or automatic selection.">
@@ -228,8 +228,8 @@
           </mdw-listbox>
         </mdw-input>
       </mdw-box>
-    </demo-section>
-    <demo-section>
+    </section>
+    <section>
       <h2 slot="heading">Non-editable Combobox</h2>
       <mdw-box flex=column wrap gap=16 padding=24>
         <mdw-input filled label="Basic" type=select-one supporting="Uses [type=select-one]">
@@ -273,9 +273,9 @@
           </mdw-listbox>
         </mdw-input>
       </mdw-box>
-    </demo-section>
-    <demo-section>
-      <h2 slot=heading>Bare</h2>
+    </section>
+    <section>
+      <mdw-headline size=medium text-padding=0.5em>Bare</mdw-headline>
       <mdw-box flex=column wrap gap=16 padding=24>
         <mdw-input label="[label] only"></mdw-input>
         <mdw-input placeholder="[placeholder] + [label]" label="Blank"></mdw-input>
@@ -309,7 +309,7 @@
         <mdw-input color=secondary-container disabled error="Unavailable" value="filled">Disabled
         </mdw-input>
       </mdw-box>
-    </demo-section>
+    </section>
   </demo-page>
 </body>
 </html>

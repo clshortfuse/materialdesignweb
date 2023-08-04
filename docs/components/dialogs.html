@@ -11,8 +11,8 @@
 
 <body>
   <demo-page>
-    <demo-section>
-      <h1 slot=heading>Basic</h1>
+    <section>
+      <mdw-headline text-padding=0.5em>Basic</mdw-headline>
       <mdw-box flex=column wrap gap=12 x=center>
         <demo-button aria-haspopup=dialog aria-controls="dialog-simple">Basic dialog</demo-button>
         <demo-button aria-haspopup=dialog aria-controls="dialog-no-headline" data-popup-method=showModal>
@@ -29,7 +29,7 @@
         <demo-button aria-haspopup=dialog aria-controls="dialog-input">Autofocus input</demo-button>
         <demo-button aria-haspopup=dialog aria-controls="dialog-slider">Slider example</demo-button>
       </mdw-box>
-    </demo-section>
+    </section>
     <div id=dialogs>
       <mdw-dialog id=dialog-simple headline="My title">Description</mdw-dialog>
       <mdw-dialog id=dialog-oversized icon=refresh headline="Auto scrolls" dividers>

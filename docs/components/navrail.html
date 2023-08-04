@@ -12,10 +12,10 @@
 <body>
 
   <demo-page>
-    <demo-section>
-      <h1 slot=heading>Standard</h1>
+    <section>
+      <mdw-headline text-padding=0.5em>Standard</mdw-headline>
       <mdw-box flex wrap gap=12>
-        <mdw-nav-rail style="min-height:400px">
+        <mdw-nav-rail style="min-height:400px" modal-breakpoint=0 auto-open>
           <mdw-nav-rail-item icon="edit" href="#navrail">Default</mdw-nav-rail-item>
           <mdw-nav-rail-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-rail-item>
           <mdw-nav-rail-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary</mdw-nav-rail-item>
@@ -31,18 +31,18 @@
           <mdw-nav-rail-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary</mdw-nav-rail-item>
         </mdw-nav-rail>
       </mdw-box>
-    </demo-section>
-    <demo-section>
-      <h1 slot=heading>Menu</h1>
+    </section>
+    <section>
+      <mdw-headline text-padding=0.5em>Menu</mdw-headline>
       <mdw-box flex wrap gap=12>
-        <mdw-nav-rail style="min-height:400px">
+        <mdw-nav-rail style="min-height:400px" modal-breakpoint=0 auto-open>
           <mdw-icon-button slot=start icon="menu">Menu</mdw-icon-button>
           <mdw-nav-rail-item icon="edit" href="#navrail">Default</mdw-nav-rail-item>
           <mdw-nav-rail-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-rail-item>
           <mdw-nav-rail-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary
           </mdw-nav-rail-item>
         </mdw-nav-rail>
-        <mdw-nav-rail align=start style="min-height:400px">
+        <mdw-nav-rail align=start style="min-height:400px" modal-breakpoint=0 auto-open>
           <mdw-icon-button slot=start icon="menu">Menu</mdw-icon-button>
           <mdw-nav-rail-item icon="change_history" href="#navrail" badge>Default</mdw-nav-rail-item>
           <mdw-nav-rail-item icon="change_history" href="#navrail" badge=1 color=primary-container>Primary
@@ -50,7 +50,7 @@
           <mdw-nav-rail-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container>Tertiary
           </mdw-nav-rail-item>
         </mdw-nav-rail>
-        <mdw-nav-rail align=end style="min-height:400px">
+        <mdw-nav-rail align=end style="min-height:400px" modal-breakpoint=0 auto-open>
           <mdw-icon-button slot=start icon="menu">Menu</mdw-icon-button>
           <mdw-nav-rail-item icon="change_history" href="#navrail" badge aria-label="Default"></mdw-nav-rail-item>
           <mdw-nav-rail-item icon="change_history" href="#navrail" badge=1 color=primary-container aria-label="Primary">
@@ -59,19 +59,19 @@
             aria-label="Tertiary"></mdw-nav-rail-item>
         </mdw-nav-rail>
       </mdw-box>
-    </demo-section>
-    <demo-section>
-      <h1 slot=heading>Menu and Fab</h1>
+    </section>
+    <section>
+      <mdw-headline text-padding=0.5em>Menu and Fab</mdw-headline>
       <mdw-box flex wrap gap=12>
-        <mdw-nav-rail style="min-height:400px">
-          <mdw-icon-button slot=start icon="menu">Menu</mdw-icon-button>
+        <mdw-nav-rail style="min-height:400px" modal-breakpoint=0 auto-open>
+          <mdw-icon-button nav-top icon="menu">Menu</mdw-icon-button>
           <mdw-fab slot=start icon="add" elevation=0>Add</mdw-fab>
           <mdw-nav-rail-item icon="edit" href="#navrail">Default</mdw-nav-rail-item>
           <mdw-nav-rail-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-rail-item>
           <mdw-nav-rail-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary
           </mdw-nav-rail-item>
         </mdw-nav-rail>
-        <mdw-nav-rail align=start style="min-height:400px">
+        <mdw-nav-rail align=start style="min-height:400px" modal-breakpoint=0 auto-open>
           <mdw-icon-button slot=start icon="menu">Menu</mdw-icon-button>
           <mdw-fab slot=start icon="add" elevation=0>Add</mdw-fab>
           <mdw-nav-rail-item icon="change_history" href="#navrail" badge>Default</mdw-nav-rail-item>
@@ -80,7 +80,7 @@
           <mdw-nav-rail-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container>Tertiary
           </mdw-nav-rail-item>
         </mdw-nav-rail>
-        <mdw-nav-rail align=end style="min-height:400px">
+        <mdw-nav-rail align=end style="min-height:400px" modal-breakpoint=0 auto-open>
           <mdw-icon-button slot=start icon="menu">Menu</mdw-icon-button>
           <mdw-fab slot=start icon="add" elevation=0>Add</mdw-fab>
           <mdw-nav-rail-item icon="change_history" href="#navrail" badge aria-label="Default"></mdw-nav-rail-item>
@@ -90,7 +90,7 @@
             aria-label="Tertiary"></mdw-nav-rail-item>
         </mdw-nav-rail>
       </mdw-box>
-    </demo-section>
+    </section>
   </demo-page>
 </body>
 </html>

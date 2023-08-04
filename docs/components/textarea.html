@@ -11,8 +11,8 @@
 
 <body>
   <demo-page>
-    <demo-section>
-      <h1 slot=heading>Filled</h1>
+    <section>
+      <mdw-headline text-padding=0.5em>Filled</mdw-headline>
       <mdw-box flex=column wrap gap=16 padding=24>
         <mdw-textarea filled label="Label"></mdw-textarea>
         <mdw-textarea filled label="Label" rows="2" fixed>Fixed size</mdw-textarea>
@@ -51,9 +51,9 @@ Daddy"></mdw-textarea>
         <mdw-textarea color=secondary-container disabled error="Unavailable" label="Disabled" fixed
           value="Disable and fixed sized with HTMLTextAreaElement default row count of 2"></mdw-textarea>
       </mdw-box>
-    </demo-section>
-    <demo-section>
-      <h1 slot=heading>Outlined</h1>
+    </section>
+    <section>
+      <mdw-headline text-padding=0.5em>Outlined</mdw-headline>
       <mdw-box flex=column wrap gap=16 padding=24>
         <mdw-textarea outlined label="Label"></mdw-textarea>
         <mdw-textarea outlined label="Label" rows="2" fixed>Fixed size</mdw-textarea>
@@ -99,9 +99,9 @@ Daddy"></mdw-textarea>
         <mdw-textarea outlined color=secondary-container disabled error="Unavailable" label="Disabled" fixed
           value="Disable and fixed sized with HTMLTextAreaElement default row count of 2"></mdw-textarea>
       </mdw-box>
-    </demo-section>
-    <demo-section>
-      <h1 slot=heading>Outlined Dense</h1>
+    </section>
+    <section>
+      <mdw-headline text-padding=0.5em>Outlined Dense</mdw-headline>
       <mdw-box flex=column wrap gap=16 padding=24>
         <mdw-textarea outlined density=-2 label="Label"></mdw-textarea>
         <mdw-textarea outlined density=-2 label="Label" rows="2" fixed>Fixed size</mdw-textarea>
@@ -141,7 +141,7 @@ Daddy"></mdw-textarea>
         <mdw-textarea outlined density=-2 color=secondary-container disabled error="Unavailable" label="Disabled" fixed
           value="Disable and fixed sized with HTMLTextAreaElement default row count of 2"></mdw-textarea>
       </mdw-box>
-    </demo-section>
+    </section>
   </demo-page>
 </body>
 </html>

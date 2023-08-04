@@ -12,8 +12,8 @@
 <body>
 
   <demo-page>
-    <demo-section>
-      <h1 slot=heading>Normal</h1>
+    <section>
+      <mdw-headline text-padding=0.5em>Normal</mdw-headline>
       <form>
         <mdw-box flex gap=24 wrap padding=8>
           <mdw-checkbox name=checkbox-demo-1 value="1">Default</mdw-checkbox>
@@ -27,9 +27,9 @@
           </mdw-checkbox>
         </mdw-box>
       </form>
-    </demo-section>
-    <demo-section>
-      <h1 slot=heading>No Label</h1>
+    </section>
+    <section>
+      <mdw-headline text-padding=0.5em>No Label</mdw-headline>
       <form>
         <mdw-box flex gap=24 wrap padding=8>
           <mdw-checkbox name=checkbox-demo-6 checked aria-label="Default" value="1"></mdw-checkbox>
@@ -37,7 +37,7 @@
           <mdw-checkbox name=checkbox-demo-8 disabled aria-label="Tertiary" color="tertiary" value="3"></mdw-checkbox>
         </mdw-box>
       </form>
-    </demo-section>
+    </section>
     <script>
       document.querySelector('[name="checkbox-demo-3"]').indeterminate = true;
       document.querySelector('[name="checkbox-demo-4"]').indeterminate = true;

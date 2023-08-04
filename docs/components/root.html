@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Layout</title>
+  <title>Root</title>
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <link rel="stylesheet" href="../theme.css" />
   <link rel="stylesheet" href="../demo.css" />
@@ -25,8 +25,8 @@
 
 <body>
   <demo-page>
-    <demo-section id="demo-section">
-      <h1 slot=heading>Options</h1>
+    <section id="demo-section">
+      <mdw-headline text-padding=0.5em>Options</mdw-headline>
       <mdw-box grid>
         <mdw-label>Width: <span id="width">400</span></mdw-label>
         <mdw-slider aria-label=Width name=width value=400 min=360 max=2400 onchange="updateWidth(this)"></mdw-slider>
@@ -43,13 +43,13 @@
           <mdw-list-option radio value=split          >Flexible/Flexible</mdw-list-option>
         </mdw-listbox>
       </mdw-box>
-      <demo-section>
-        <h2 slot=heading>Sample</h2>
+      <section>
+        <mdw-headline size=medium text-padding=0.5em>Sample</mdw-headline>
         <div class="iframe-wrap">
-          <iframe id="iframe" src="layout-sample.html" width=400 height=640></iframe>
+          <iframe id="iframe" src="root-sample.html" width=400 height=640></iframe>
         </div>
-      </demo-section>
-    </demo-section>
+      </section>
+    </section>
     <script>
       var sectionWidth = 0;
       var iframeWidth = 400;
@@ -71,7 +71,7 @@
         refreshSize();
       }
       function updateURL() {
-        let url = new URL('layout-sample.html', window.location);
+        let url = new URL('root-sample.html', window.location);
         for(const option of document.getElementById('options').selectedOptions) {
           url.searchParams.append(option.value, '');
         }

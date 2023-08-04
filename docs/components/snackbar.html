@@ -14,9 +14,9 @@
       var $ = document.querySelector.bind(document);
       var $$ = document.querySelectorAll.bind(document);
     </script>
-    <demo-section>
+    <section>
       <h1 slot="heading">Single-line</h1>
-      <demo-section>
+      <section>
         <h2 slot="heading">Options</h2>
         <mdw-box flex=column padding=24 gap=16>
           <mdw-checkbox checked onchange="{
@@ -36,7 +36,7 @@
               }">Close Button?<div></div>
           </mdw-checkbox>
         </mdw-box>
-      </demo-section>
+      </section>
       <mdw-box id="single-line" flex=column wrap gap=16 padding=24 >
         <mdw-snackbar open onclose="console.log('Bye')" onaction="alert('You clicked the action!')">Snackbar with inline
           events.</mdw-snackbar>
@@ -55,7 +55,7 @@
         <mdw-snackbar open>Very large piece of text that will wrap and clip due to a limit of two-lines at most.
         </mdw-snackbar>
       </mdw-box>
-    </demo-section>
+    </section>
   </demo-page>
 </body>
 </html>

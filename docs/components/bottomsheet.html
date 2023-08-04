@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Bottom App Bar</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link rel="stylesheet" href="../theme.css" />
+  <link rel="stylesheet" href="../demo.css" />
+  <script src="../demo.min.js"></script>
+</head>
+
+<body>
+  <demo-page>
+    <section>
+      <mdw-headline text-padding=0.5em>Modal</mdw-headline>
+      <mdw-box style="width:100%;height:400px;position:relative;transform:translateZ(0);overflow:clip;touch-action:none" color="primary-container" flex x=center padding="16" gap="8">
+        <mdw-button filled onclick="{this.parentElement.querySelector('mdw-bottom-sheet').toggleAttribute('open')}">Toggle Open</mdw-button>
+        <mdw-icon-button type=checkbox filled icon="drag_handle" onchange="{this.parentElement.querySelector('mdw-bottom-sheet').dragHandle = this.checked}">Toggle Handle</mdw-icon-button>
+        <mdw-bottom-sheet modal flex="column" x="center">
+          <mdw-box flex padding="24" gap="8">
+            <mdw-button icon="content_copy" outlined>Copy</mdw-button>
+            <mdw-button icon="share" outlined>Share</mdw-button>
+          </mdw-box>
+          <mdw-box flex x="center" gap=24>
+            <mdw-icon-button filled="tonal" icon="person"></mdw-icon-button>
+            <mdw-icon-button filled="tonal" icon="person"></mdw-icon-button>
+            <mdw-icon-button filled="tonal" icon="person"></mdw-icon-button>
+            <mdw-icon-button filled="tonal" icon="person"></mdw-icon-button>
+          </mdw-box>
+          <mdw-box flex x="center" padding=24 gap=24>
+            <mdw-icon-button filled="tonal" icon="person"></mdw-icon-button>
+            <mdw-icon-button filled="tonal" icon="person"></mdw-icon-button>
+            <mdw-icon-button filled="tonal" icon="person"></mdw-icon-button>
+            <mdw-icon-button filled="tonal" icon="person"></mdw-icon-button>
+          </mdw-box>
+        </mdw-bottom-sheet>
+      </mdw-box>
+    </section>
+    <section>
+      <mdw-headline text-padding=0.5em>Modal oversized</mdw-headline>
+      <mdw-box style="width:100%;height:400px;position:relative;transform:translateZ(0);overflow:clip;touch-action:none" color="primary-container" flex x=center padding="16" gap="8">
+        <mdw-button filled onclick="{this.parentElement.querySelector('mdw-bottom-sheet').toggleAttribute('open')}">Toggle Open</mdw-button>
+        <mdw-button filled onclick="{this.parentElement.querySelector('mdw-bottom-sheet').toggleAttribute('drag-handle')}">Toggle Handle</mdw-button>
+        <mdw-bottom-sheet modal open drag-handle flex="column" x="stretch">
+          <mdw-list>
+            <mdw-list-item href="#">I am a list item 1</mdw-list-item>
+            <mdw-list-item href="#">I am a list item 2</mdw-list-item>
+            <mdw-list-item href="#">I am a list item 3</mdw-list-item>
+            <mdw-list-item href="#">I am a list item 4</mdw-list-item>
+            <mdw-list-item href="#">I am a list item 5</mdw-list-item>
+            <mdw-list-item href="#">I am a list item 6</mdw-list-item>
+            <mdw-list-item href="#">I am a list item 7</mdw-list-item>
+            <mdw-list-item href="#">I am a list item 8</mdw-list-item>
+            <mdw-list-item href="#">I am a list item 9</mdw-list-item>
+            <mdw-list-item href="#">I am a list item 10</mdw-list-item>
+          </mdw-list>
+        </mdw-bottom-sheet>
+      </mdw-box>
+    </section>
+  </demo-page>
+  
+</body>
+
+</html>

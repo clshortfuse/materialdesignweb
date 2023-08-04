@@ -10,8 +10,8 @@
 </head>
 <body>
   <demo-page>
-    <demo-section>
-      <h1 slot=heading>Shapes</h1>
+    <section>
+      <mdw-headline text-padding=0.5em>Shapes</mdw-headline>
       <mdw-box flex=column gap=24 >
         <mdw-box flex gap=12 wrap>
           <mdw-surface color=primary shape-style=extra-small padding=8>Extra small</mdw-surface>
@@ -58,9 +58,9 @@
           <mdw-surface outlined shape-end shape-style=extra-large padding=8>Extra large end</mdw-surface>
         </mdw-box>
       </mdw-box>
-    </demo-section>
-    <demo-section>
-      <h1 slot=heading>Samples</h1>
+    </section>
+    <section>
+      <mdw-headline text-padding=0.5em>Samples</mdw-headline>
       <mdw-box flex gap="24" x="start" y="center" wrap>
         <mdw-button filled>Filled Button</mdw-button>
         <mdw-button outlined>Outlined Button</mdw-button>
@@ -72,7 +72,7 @@
         <mdw-input filled shape-style=full label="Filled Text Field"></mdw-input>
         <mdw-chip>Chip</mdw-chip>
       </mdw-box>
-    </demo-section>
+    </section>
   </demo-page>
 </body>
 </html>

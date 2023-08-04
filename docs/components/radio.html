@@ -11,8 +11,8 @@
 
 <body>
   <demo-page>
-    <demo-section>
-      <h1 slot=heading>Normal</h1>
+    <section>
+      <mdw-headline text-padding=0.5em>Normal</mdw-headline>
       <form>
         <mdw-box flex gap=24 wrap padding=8>
           <mdw-radio name=radio-demo value="1">Default</mdw-radio>
@@ -22,9 +22,9 @@
           <mdw-radio name=radio-demo ink="primary" disabled value="5" checked>Disabled Checked</mdw-radio>
         </mdw-box>
       </form>
-    </demo-section>
-    <demo-section>
-      <h1 slot=heading>No Label</h1>
+    </section>
+    <section>
+      <mdw-headline text-padding=0.5em>No Label</mdw-headline>
       <form>
         <mdw-box flex gap=24 wrap padding=8>
           <mdw-radio name=radio-demo-blank aria-label="Default" value="1"></mdw-radio>
@@ -32,7 +32,7 @@
           <mdw-radio name=radio-demo-blank aria-label="Tertiary" ink="tertiary" value="3"></mdw-radio>
         </mdw-box>
       </form>
-    </demo-section>
+    </section>
   </demo-page>
 </body>
 </html>

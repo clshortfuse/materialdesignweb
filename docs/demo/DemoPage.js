@@ -1,4 +1,4 @@
-import '../../components/Layout.js';
+import '../../components/Root.js';
 import '../../components/IconButton.js';
 import '../../components/Menu.js';
 import '../../components/Listbox.js';
@@ -52,21 +52,21 @@ export default CustomElement
     }
   `
   .html`
-      <mdw-layout id=layout>
-        <mdw-nav-drawer id=drawer slot=nav-drawer>
+      <mdw-root id=root>
+        <mdw-nav-drawer id=drawer auto-open slot=start>
           <mdw-nav-drawer-item icon=palette href="/components/color.html">Color</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=rounded_corner href="/components/shape.html">Shape</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=font_download href="/components/typography.html">Typography</mdw-nav-drawer-item>
           <mdw-divider></mdw-divider>
           <mdw-nav-drawer-item icon=exposure_plus_1 href="/components/badge.html">Badges</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=call_to_action href="/components/bottomappbar.html">Bottom App Bar</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=call_to_action href="/components/bottomsheet.html">Bottom Sheet</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=crop_landscape href="/components/buttons.html">Buttons</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=view_comfy href="/components/cards.html">Cards</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=check_box href="/components/checkbox.html">Checkbox</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=edit_attributes href="/components/chips.html">Chips</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=select_all href="/components/dialogs.html">Dialogs</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=border_horizontal href="/components/dividers.html">Dividers</mdw-nav-drawer-item>
-          <mdw-nav-drawer-item icon=view_quilt href="/components/layout.html">Layout</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=list href="/components/list.html">Lists</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=checklist href="/components/listbox.html">Listbox</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=picture_in_picture href="/components/menus.html">Menus</mdw-nav-drawer-item>
@@ -75,6 +75,7 @@ export default CustomElement
           <mdw-nav-drawer-item icon=more_vert href="/components/navrail.html">Nav Rail</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=rotate_right href="/components/progress.html">Progress</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=radio_button_checked href="/components/radio.html">Radio</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=view_quilt href="/components/root.html">Root</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=search href="/components/search.html">Search</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=tune href="/components/sliders.html">Sliders</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=call_to_action href="/components/snackbar.html">Snackbar</mdw-nav-drawer-item>
@@ -86,15 +87,19 @@ export default CustomElement
           <mdw-nav-drawer-item icon=help href="/components/tooltip.html">Tooltips</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=web_asset href="/components/topappbar.html">Top App Bar</mdw-nav-drawer-item>
         </mdw-nav-drawer>
-        <mdw-top-app-bar headline={_title} color=none slot=app-bar>
+        <mdw-page>
+          <mdw-top-app-bar headline={_title} color=none>
             <mdw-icon-button color=surface id=menu-button slot=leading 
               icon=menu
               >Menu</mdw-icon-button>
             <mdw-icon-button color=surface id=settings slot=trailing icon=settings>Settings</mdw-icon-button>
             <mdw-icon-button color=surface slot=trailing href="https://github.com/clshortfuse/materialdesignweb" icon=invertocat>GitHub Page</mdw-icon-button>
           </mdw-top-app-bar>
-        <slot role=main></slot>
-    </mdw-layout>
+          <div id=pane>
+            <slot role=main></slot>
+          </div>
+        </mdw-page>
+    </mdw-root>
     <mdw-menu id=menu>
         <mdw-menu-item checkbox name=alt-theme>Alt Theme</mdw-menu-item>
         <mdw-divider></mdw-divider>
@@ -111,8 +116,11 @@ export default CustomElement
     </mdw-menu>
   `
   .css`
-    #layout[nav-drawer="fixed"] #menu-button {
-      display: none;
+    #pane {
+      max-inline-size: var(--mdw-page__max-width);
+      margin-inline: auto;
+      padding: var(--mdw-page__margin);
+      padding-block-start: 0;
     }
   `
   .methods({
@@ -160,7 +168,7 @@ export default CustomElement
   .childEvents({
     menuButton: {
       click() {
-        this.refs.layout.navDrawer = 'open';
+        this.refs.drawer.toggleAttribute('open');
       },
     },
     settings: {
