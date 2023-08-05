@@ -49,6 +49,7 @@ CustomElement
         outline:none;
         pointer-events: auto;
         user-select: none;
+        touch-action: none;
 
         color: rgb(var(--mdw-color__on-surface-variant));
       }
@@ -85,6 +86,11 @@ CustomElement
         border-radius: 8px;
       }
     `
+  .events({
+    touchmove(event) {
+      event.preventDefault();
+    },
+  })
   .autoRegister('mdw-bottom-sheet-handle');
 
 export default CustomElement
@@ -103,7 +109,12 @@ export default CustomElement
     },
     modal: 'boolean',
     open: 'boolean',
+    expanded: 'boolean',
     _lastComputedBlockSize: {
+      type: 'float',
+      nullable: false,
+    },
+    _lastOffsetTop: {
       type: 'float',
       nullable: false,
     },
@@ -114,8 +125,6 @@ export default CustomElement
     _animationEasing: {
       value: 'ease-out',
     },
-    _dragDeltaY: 'float',
-    _dragStartY: 'float',
     _translateY: { value: '100%' },
     _lastChildScrollTime: 'float',
     _ariaValueNow: {
@@ -129,6 +138,11 @@ export default CustomElement
     _hasCheckedResize: false,
     /** @type {InstanceType<Scrim>} */
     _scrim: null,
+    _dragTimestamp: 0,
+    /** @type {number} */
+    _dragDeltaY: null,
+    /** @type {number} */
+    _dragStartY: null,
   })
   .observe({
     hostStyles: {
@@ -181,24 +195,31 @@ export default CustomElement
       }
     },
     checkDragFinished() {
-      const { open, _dragDeltaY, _lastComputedBlockSize, modal } = this;
+      const { open, _dragDeltaY, _lastComputedBlockSize, modal, _lastOffsetTop } = this;
       if (!open || !modal || _dragDeltaY == null) return;
-      const visibility = (_lastComputedBlockSize - _dragDeltaY) / _lastComputedBlockSize;
+      const containerHeight = _lastOffsetTop + _lastComputedBlockSize - 72;
+      const min = (_lastComputedBlockSize > containerHeight)
+        ? _lastComputedBlockSize - containerHeight
+        : 0;
+      // visiblity = (max - position) / range
+      const visibility = (_lastComputedBlockSize - _dragDeltaY) / (_lastComputedBlockSize - min);
+      this._dragStartY = null;
       if (visibility < 0.5) {
         // Should close
         this._animationDuration = 200 * visibility;
         this._animationEasing = 'ease-out';
         this._translateY = '100%';
+        this._dragDeltaY = null;
         this.open = false;
         this.dispatchEvent(new Event('close', { cancelable: false }));
       } else {
         // Should snap back to fully open
         this._animationDuration = 250 * (0.5 * visibility);
-        this._translateY = '0';
+        this._dragDeltaY = min;
+        this._translateY = `${0}px`;
         this._animationEasing = 'ease-in';
+        this.expanded = true;
       }
-      this._dragDeltaY = null;
-      this._dragStartY = null;
     },
     /** @param {PointerEvent} event */
     onDragHandleActive(event) {
@@ -220,15 +241,16 @@ export default CustomElement
     onPointerOrTouchMove(event) {
       /** @type {{clientY:number,pageY:number}} */
       let source;
-      if (event.type === 'pointermove') {
-        source = /** @type {PointerEvent} */ (event);
-        // if (!dragHandleEvent.has(event)) return;
-      } else {
+      const isTouch = (event.type === 'touchmove');
+      if (isTouch) {
         const { touches } = /** @type {TouchEvent} */ (event);
         if (!touches.length) return;
         source = touches[0];
+      } else {
+        source = /** @type {PointerEvent} */ (event);
+        // if (!dragHandleEvent.has(event)) return;
       }
-      const { open, _lastChildScrollTime, _dragStartY } = this;
+      const { open, _lastChildScrollTime, _dragStartY, _dragTimestamp, expanded } = this;
       if (!open || _dragStartY == null) return;
       if (_lastChildScrollTime && performance.now() - _lastChildScrollTime <= (SUPPORTS_SCROLLEND ? 5000 : 500)) {
         // Assume still scrolling
@@ -236,15 +258,31 @@ export default CustomElement
       }
       let { clientY, pageY } = source;
       clientY ??= pageY - window.scrollY; // Safari
-      const delta = Math.max((clientY - _dragStartY), 0);
-      this._animationDuration = 0;
+      const { _lastOffsetTop, _lastComputedBlockSize } = this;
+      const containerHeight = _lastOffsetTop + _lastComputedBlockSize - 72;
+      const min = _lastComputedBlockSize > containerHeight
+        ? _lastComputedBlockSize - containerHeight
+        : 0;
+      const delta = Math.max((clientY - _dragStartY), min);
       this._dragDeltaY = delta;
+
+      if (isTouch && expanded && performance.now() - _dragTimestamp < 100) {
+        // Store location, but don't animate until sure not scrolling
+        return;
+      }
+      if (expanded && delta !== min) {
+        // Buggy in demos
+        // this.expanded = false;
+      }
+
+      this._animationDuration = 0;
       this._translateY = `${delta}px`;
     },
   })
   .overrides({
     onResizeObserved(entry) {
       this._lastComputedBlockSize = entry.borderBoxSize[0]?.blockSize;
+      this._lastOffsetTop = this.offsetTop;
     },
   })
   .events({
@@ -257,8 +295,9 @@ export default CustomElement
       if (!this.open) return;
       let { clientY, pageY } = event;
       clientY ??= pageY - window.scrollY; // Safari
-      this._dragStartY = clientY;
+      this._dragStartY = clientY - (this._dragDeltaY ?? 0);
       this._dragDeltaY = 0;
+      this._dragTimestamp = performance.now();
     },
     '~pointermove': 'onPointerOrTouchMove',
     '~pointerup'(event) {
@@ -294,9 +333,27 @@ export default CustomElement
   })
   .on({
     openChanged(previous, open) {
+      // Refresh metrics
+      const _lastOffsetTop = this.offsetTop;
+      this._lastOffsetTop = _lastOffsetTop;
       // No longer using initial animation timing of 0
       this._animationDuration = open ? 250 : 200;
-      this._translateY = open ? '0' : '100%';
+      if (open) {
+        let y = 0;
+        if (this.modal) {
+          const { _lastComputedBlockSize } = this;
+          const containerHeight = _lastOffsetTop + _lastComputedBlockSize;
+          if (_lastComputedBlockSize > containerHeight / 2) {
+          // Bottom Sheet is oversized, clamp to 50%
+            y = _lastComputedBlockSize - (containerHeight / 2);
+          }
+        }
+        this._translateY = `${y}px`;
+        this._dragDeltaY = y;
+      } else {
+        this._translateY = '100%';
+        this.expanded = false;
+      }
       this._animationEasing = open ? 'ease-in' : 'ease-out';
       this.checkForScrim(true);
       if (open) this.focus();
@@ -324,10 +381,7 @@ export default CustomElement
       overscroll-behavior: contain;
 
       box-sizing: border-box;
-      max-block-size: calc(100% - 72px);
       max-inline-size: 640px;
-      margin-block-start: auto;
-      margin-block-start: 72px;
       margin-inline: auto;
       padding-block-start: 16px;
 
@@ -354,9 +408,17 @@ export default CustomElement
     }
 
     :host(:where([modal])) {
-      position: fixed;
+      position: fixed; 
+
+      max-block-size: calc(100% - 72px);
+      touch-action: none;
 
       z-index: 24;
+    }
+
+    :host(:where([expanded])) {
+      overflow-y:auto;
+      touch-action: auto;
     }
 
     :host(:where([drag-handle])) {
