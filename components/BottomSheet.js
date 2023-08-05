@@ -195,8 +195,8 @@ export default CustomElement
       }
     },
     checkDragFinished() {
-      const { open, _dragDeltaY, _lastComputedBlockSize, modal, _lastOffsetTop } = this;
-      if (!open || !modal || _dragDeltaY == null) return;
+      const { open, _dragStartY, _dragDeltaY, _lastComputedBlockSize, modal, _lastOffsetTop } = this;
+      if (!open || !modal || _dragStartY == null || _dragDeltaY == null) return;
       const containerHeight = _lastOffsetTop + _lastComputedBlockSize - 72;
       const min = (_lastComputedBlockSize > containerHeight)
         ? _lastComputedBlockSize - containerHeight
