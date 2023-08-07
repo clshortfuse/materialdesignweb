@@ -5,7 +5,6 @@ import './DialogActions.js';
 
 import CustomElement from '../core/CustomElement.js';
 import { attemptFocus } from '../core/dom.js';
-import ElevationMixin from '../mixins/ElevationMixin.js';
 import PopupMixin from '../mixins/PopupMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
@@ -85,7 +84,6 @@ function focusOnTree(root, autofocus, forward = true) {
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
-  .mixin(ElevationMixin)
   .mixin(ShapeMixin)
   .mixin(PopupMixin)
   .define({
@@ -103,7 +101,6 @@ export default CustomElement
     default: { value: 'confirm' },
     cancel: { value: 'Cancel' },
     confirm: { value: 'Confirm' },
-    elevation: { empty: 3 },
   })
   .set({
     _useScrim: true,
@@ -193,8 +190,6 @@ export default CustomElement
     :host {
       --mdw-shape__size: 28px;
 
-      --mdw-surface__shadow__resting: var(--mdw-surface__shadow__3);
-      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__resting);
       /* padding-inline: 12px; */
 
       --mdw-bg: var(--mdw-color__surface-container-high);
