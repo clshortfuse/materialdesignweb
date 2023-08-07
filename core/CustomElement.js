@@ -356,11 +356,19 @@ export default class CustomElement extends ICustomElement {
       ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
     };
 
-    const customCallback = options.changedCallback;
+    const { changedCallback: customSimpleCallback, propChangedCallback: customNamedCallback } = options;
 
-    if (customCallback) {
-      // Move callback to later in stack for attribute-based changes as well
-      this.onPropChanged({ [name]: customCallback });
+    const customCallbacks = [];
+    if (customSimpleCallback) {
+      customCallbacks.push([name, customSimpleCallback]);
+    }
+    if (customNamedCallback) {
+      customCallbacks.push([name, function remappedCallback(...args) {
+        customNamedCallback.call(this, name, ...args);
+      }]);
+    }
+    if (customCallbacks.length) {
+      this.onPropChanged(customCallbacks);
     }
 
     // TODO: Inspect possible closure bloat

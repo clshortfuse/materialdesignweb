@@ -13,6 +13,8 @@ import {
 
 type ClassOf<T extends { prototype: unknown; } > = T;
 
+type ObjectOrObjectEntries<T> = T | Array<[keyof T & string, T[keyof T]]>
+
 type CallbackArguments<T1 = any, T2 = T1> = {
   composition: Composition<T1>;
   refs: Record<string, HTMLElement>;
@@ -269,7 +271,7 @@ export declare const ICustomElement: {
     >
     (
       this: T1,
-      options: {
+      options: ObjectOrObjectEntries<{
         [P in keyof T2]? : (
         // eslint-disable-next-line no-shadow
         this: T2,
@@ -278,7 +280,7 @@ export declare const ICustomElement: {
         changes:any,
         element: T2
         ) => void
-      },
+      }>,
     ): T1;
 
   onAttributeChanged<
