@@ -1,13 +1,13 @@
 import CustomElement from '../core/CustomElement.js';
+import ElevationMixin from '../mixins/ElevationMixin.js';
 import PopupMixin from '../mixins/PopupMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
-import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
-  .mixin(SurfaceMixin)
+  .mixin(ElevationMixin)
   .mixin(ShapeMixin)
   .mixin(PopupMixin)
   .autoRegister('mdw-popup');

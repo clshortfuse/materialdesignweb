@@ -4,10 +4,10 @@ import './Surface.js';
 import CustomElement from '../core/CustomElement.js';
 import { attemptFocus } from '../core/dom.js';
 import DensityMixin from '../mixins/DensityMixin.js';
+import SurfaceMixin from '../mixins/ElevationMixin.js';
 import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
 import PopupMixin from '../mixins/PopupMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
-import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 export default CustomElement
@@ -82,7 +82,6 @@ export default CustomElement
       min-inline-size: calc(var(--mdw-menu__inline-base) * 2);
       max-inline-size: 100vw;
 
-      filter: drop-shadow(0px 1px 001px rgba(0,0,0,0.3)) drop-shadow(0px 2px 005px rgba(0,0,0,0.250));
 
       background-color: rgb(var(--mdw-bg));
     }

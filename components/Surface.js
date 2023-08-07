@@ -1,14 +1,14 @@
 import CustomElement from '../core/CustomElement.js';
+import ElevationMixin from '../mixins/ElevationMixin.js';
 import FlexableMixin from '../mixins/FlexableMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
-import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
   .mixin(FlexableMixin)
-  .mixin(SurfaceMixin)
+  .mixin(ElevationMixin)
   .mixin(ShapeMixin)
   .html`<slot id=slot></slot>`
   .css`

@@ -5,9 +5,9 @@ import './DialogActions.js';
 
 import CustomElement from '../core/CustomElement.js';
 import { attemptFocus } from '../core/dom.js';
+import ElevationMixin from '../mixins/ElevationMixin.js';
 import PopupMixin from '../mixins/PopupMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
-import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 /**
@@ -85,7 +85,7 @@ function focusOnTree(root, autofocus, forward = true) {
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
-  .mixin(SurfaceMixin)
+  .mixin(ElevationMixin)
   .mixin(ShapeMixin)
   .mixin(PopupMixin)
   .define({
@@ -224,7 +224,6 @@ export default CustomElement
 
       pointer-events: none;
 
-      filter: drop-shadow(0px 1px 1.5px rgba(0,0,0,0.3)) drop-shadow(0px 4px 007px rgba(0,0,0,0.263));
       opacity: 0;
 
       transform: translateX(-50%) translateY(-50%) scale(0);

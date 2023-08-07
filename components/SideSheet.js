@@ -3,10 +3,10 @@ import { ELEMENT_STYLER_TYPE, EVENT_HANDLER_TYPE } from '../core/customTypes.js'
 import { isRtl } from '../core/dom.js';
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
+import ElevationMixin from '../mixins/ElevationMixin.js';
 import FlexableMixin from '../mixins/FlexableMixin.js';
 import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
-import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import Scrim from './Scrim.js';
@@ -32,7 +32,7 @@ export default CustomElement
   .extend()
   .mixin(ThemableMixin)
   .mixin(FlexableMixin)
-  .mixin(SurfaceMixin)
+  .mixin(ElevationMixin)
   .mixin(ShapeMixin)
   .mixin(AriaReflectorMixin)
   .mixin(DelegatesFocusMixin)

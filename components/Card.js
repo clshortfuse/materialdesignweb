@@ -2,12 +2,12 @@ import CustomElement from '../core/CustomElement.js';
 import { EVENT_HANDLER_TYPE } from '../core/customTypes.js';
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
+import ElevationMixin from '../mixins/ElevationMixin.js';
 import FlexableMixin from '../mixins/FlexableMixin.js';
 import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 import HyperlinkMixin from '../mixins/HyperlinkMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
-import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 /* https://m3.material.io/components/cards/specs */
@@ -19,7 +19,7 @@ export default CustomElement
   .mixin(ThemableMixin)
   .mixin(FlexableMixin)
   .mixin(StateMixin)
-  .mixin(SurfaceMixin)
+  .mixin(ElevationMixin)
   .mixin(ShapeMixin)
   .mixin(FormAssociatedMixin) // Tap into FormAssociated for disabledState
   .mixin(AriaReflectorMixin)
@@ -163,7 +163,6 @@ export default CustomElement
 
     slot.setAttribute('inert', '{disabledState}');
     slot.setAttribute('disabled', '{disabledState}');
-
   })
   .childEvents({
     action: {

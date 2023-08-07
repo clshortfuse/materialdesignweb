@@ -3,6 +3,7 @@
 import { EVENT_HANDLER_TYPE } from '../core/customTypes.js';
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import DensityMixin from '../mixins/DensityMixin.js';
+import ElevationMixin from '../mixins/ElevationMixin.js';
 
 import './Button.js';
 import './IconButton.js';
@@ -13,6 +14,7 @@ export default Surface
   .extend()
   .mixin(DensityMixin)
   .mixin(AriaReflectorMixin)
+  .mixin(ElevationMixin)
   .set({
     _ariaRole: 'status',
     elevated: true,
@@ -81,8 +83,6 @@ export default Surface
       align-items: center;
 
       padding-inline: 16px;
-
-      filter: drop-shadow(0px 1px 1.5px rgba(0,0,0,0.3)) drop-shadow(0px 4px 007px rgba(0,0,0,0.263));
 
       opacity: 0;
       transform: translateY(25%) scaleY(0.25);

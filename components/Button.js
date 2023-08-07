@@ -1,12 +1,12 @@
 import './Icon.js';
 import CustomElement from '../core/CustomElement.js';
 import DensityMixin from '../mixins/DensityMixin.js';
+import ElevationMixin from '../mixins/ElevationMixin.js';
 import HyperlinkMixin from '../mixins/HyperlinkMixin.js';
 import InputMixin from '../mixins/InputMixin.js';
 import RippleMixin from '../mixins/RippleMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
-import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 /* https://m3.material.io/components/buttons/specs */
@@ -16,7 +16,7 @@ export default CustomElement
   .mixin(ThemableMixin)
   .mixin(DensityMixin)
   .mixin(StateMixin)
-  .mixin(SurfaceMixin)
+  .mixin(ElevationMixin)
   .mixin(ShapeMixin)
   .mixin(RippleMixin)
   .mixin(InputMixin)
