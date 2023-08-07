@@ -18,6 +18,9 @@ export default CustomElement
   .mixin(RTLObserverMixin)
   .mixin(ShapeMixin)
   .mixin(SemiStickyMixin)
+  .observe({
+    scrollable: 'boolean',
+  })
   .set({
     /** @type {WeakRef<HTMLElement>} */
     _tabContentRef: null,
@@ -265,7 +268,7 @@ export default CustomElement
     ariaRole: 'tablist',
   })
   .html`
-    <slot id=slot ink={ink} type-style={typeStyle}></slot>
+    <slot id=slot ink={ink} type-style={typeStyle} scrollable={scrollable}></slot>
     <div id=indicator aria-hidden=true style={_indicatorStyle} active={active} secondary={secondary}>
       <div id=indicator-start class=indicator-piece></div>
       <div id=indicator-center class=indicator-piece></div>
@@ -443,9 +446,15 @@ export default CustomElement
     }
 
     :host([scrollable]) {
-      grid-auto-columns: max-content;
-      justify-content: flex-start;
-      overflow-x: auto;
+      display: inline-flex;
+      justify-content: initial;
+    }
+
+    #slot[scrollable] {
+      display: grid;
+      grid-auto-flow: column;
+
+      flex: none;
 
       padding-inline: 48px
     }
