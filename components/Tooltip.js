@@ -21,6 +21,7 @@ export default CustomElement
       },
     },
   })
+  .html`<slot id=slot></slot>`
   .css`
     :host {
       --mdw-shape__size: var(--mdw-shape__extra-small);
@@ -39,6 +40,9 @@ export default CustomElement
       opacity: 0;
       transform: scale(0);
       z-index: 28;
+
+      background-color: rgb(var(--mdw-bg));
+      color: rgb(var(--mdw-ink));
 
       font: var(--mdw-typescale__body-small__font);
       letter-spacing: var(--mdw-typescale__body-small__letter-spacing);
