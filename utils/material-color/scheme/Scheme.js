@@ -137,7 +137,7 @@ export default class Scheme {
       onSurfaceVariant: core.n2.tone(80),
       outline: core.n2.tone(60),
       outlineVariant: core.n2.tone(30),
-      shadow: core.n1.tone(100), // (Underlit)
+      shadow: core.n1.tone(40), // (Underlight)
       scrim: core.n1.tone(0),
       inverseSurface: core.n1.tone(90),
       inverseOnSurface: core.n1.tone(20),
