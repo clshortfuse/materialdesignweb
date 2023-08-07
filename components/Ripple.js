@@ -29,6 +29,8 @@ export default CustomElement
     _positionStyle: {
       ...ELEMENT_STYLER_TYPE,
       get({ _positionX, _positionY, _radius }) {
+        // Skip if not measured
+        if (_radius == null) return null;
         return {
           styles: {
             minHeight: `${_radius}px`,
