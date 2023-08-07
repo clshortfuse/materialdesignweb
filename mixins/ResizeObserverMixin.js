@@ -22,7 +22,9 @@ export default function ResizeObserverMixin(Base) {
         // Virtual function
       },
       observeResize() {
-        resizeObserver.observe(this);
+        resizeObserver.observe(this, {
+          box: 'border-box',
+        });
       },
       unobserveResize() {
         resizeObserver.unobserve(this);
