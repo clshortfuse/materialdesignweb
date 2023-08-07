@@ -74,14 +74,11 @@ export default CustomElement
       --mdw-bg: var(--mdw-color__surface-container);
       --mdw-ink: var(--mdw-color__on-surface);
 
-      --mdw-surface__shadow__resting: var(--mdw-surface__shadow__2);
-      --mdw-surface__shadow__raised: var(--mdw-surface__shadow__resting);
       display: block;
 
       inline-size: auto;
       min-inline-size: calc(var(--mdw-menu__inline-base) * 2);
       max-inline-size: 100vw;
-
 
       background-color: rgb(var(--mdw-bg));
     }
