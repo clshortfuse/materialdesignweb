@@ -37,7 +37,6 @@ type ObserverOptions<
   values?: WeakMap<C, T2>;
   reflect?: boolean | 'write' | 'read';
   /** Function used when null passed */
-  changedCallback?: (this:C, oldValue:T2, newValue:T2, changes:any)=>any;
   nullParser?: (this:C, value:null|undefined)=>T2;
   parser?: (this:C, value:any)=>T2;
   /** Function used when comparing */
@@ -45,8 +44,14 @@ type ObserverOptions<
   is?: (this:C, a:T2, b:T2)=>boolean
   get?: (this:C, data:Partial<C>, fn?: () => T2) => T2
   set?: (this:C, value: T2, fn?:(value2: T2) => any) => any,
-  attributeChangedCallback?: (this:C, name:string, oldValue: string, newValue: string) => any;
+
+  /** Simple callback */
+  changedCallback?: (this:C, oldValue:T2, newValue:T2, changes:any)=>any;
+  /** Named callback */
   propChangedCallback?: (this:C, name:string, oldValue: T2, newValue: T2, changes:any) => any;
+  /** Attribute callback */
+  attributeChangedCallback?: (this:C, name:string, oldValue: string, newValue: string) => any;
+  fireChangeOnCreate?: boolean,
   computedValues?: WeakMap<C, T2>;
   watchers?: [keyof C, (this:C, ...args:any[]) => any][];
   needsSelfInvalidation?: WeakSet<C>,

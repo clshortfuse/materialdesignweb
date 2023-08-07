@@ -141,4 +141,5 @@ export const ELEMENT_STYLER_TYPE = {
       this.addEventListener('mdw:connected', callback, { once: true });
     }
   },
+  fireChangeOnCreate: true,
 };

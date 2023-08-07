@@ -22,6 +22,7 @@ import { generateUID } from './uid.js';
 /**
  * @template T
  * @typedef {Object} RenderOptions
+ * @prop {T} [defaults] what
  * @prop {T} [store] what
  * @prop {DocumentFragment|ShadowRoot|HTMLElement|Element} [target] where
  * @prop {any} [context] `this` on callbacks/events
@@ -508,7 +509,10 @@ export default class Composition {
   render(changes, data, options = {}) {
     // console.log('render', changes, options);
     if (!this.interpolated) {
-      this.interpolate({ defaults: data ?? changes, injections: options?.injections });
+      this.interpolate({
+        defaults: data ?? changes,
+        ...options,
+      });
     }
 
     const instanceFragment = /** @type {DocumentFragment} */ (this.cloneable.cloneNode(true));

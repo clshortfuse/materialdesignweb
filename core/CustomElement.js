@@ -356,7 +356,11 @@ export default class CustomElement extends ICustomElement {
       ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
     };
 
-    const { changedCallback: customSimpleCallback, propChangedCallback: customNamedCallback } = options;
+    const {
+      changedCallback: customSimpleCallback,
+      propChangedCallback: customNamedCallback,
+      fireChangeOnCreate,
+    } = options;
 
     const customCallbacks = [];
     if (customSimpleCallback) {
@@ -369,6 +373,17 @@ export default class CustomElement extends ICustomElement {
     }
     if (customCallbacks.length) {
       this.onPropChanged(customCallbacks);
+      if (fireChangeOnCreate) {
+        this._onConstructedCallbacks.push(function onCreateChangeEmitter() {
+          const value = this[name];
+          if (customSimpleCallback) {
+            customSimpleCallback.call(this, undefined, value, null);
+          }
+          if (customNamedCallback) {
+            customNamedCallback.call(this, name, undefined, value, null);
+          }
+        });
+      }
     }
 
     // TODO: Inspect possible closure bloat
@@ -655,6 +670,7 @@ export default class CustomElement extends ICustomElement {
       this,
       this,
       {
+        defaults: this.constructor.prototype,
         store: this,
         target: this.shadowRoot,
         context: this,
