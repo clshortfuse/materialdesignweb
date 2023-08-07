@@ -6,7 +6,6 @@ import FlexableMixin from '../mixins/FlexableMixin.js';
 import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
-import SurfaceMixin from '../mixins/SurfaceMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import Scrim from './Scrim.js';
@@ -97,7 +96,6 @@ export default CustomElement
   .extend()
   .mixin(ThemableMixin)
   .mixin(FlexableMixin)
-  .mixin(SurfaceMixin)
   .mixin(ShapeMixin)
   .mixin(AriaReflectorMixin)
   .mixin(DelegatesFocusMixin)
