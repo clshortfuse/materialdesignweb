@@ -16,7 +16,7 @@
       <mdw-box style="width:100%;height:400px;position:relative;transform:translateZ(0);overflow:clip;" color="primary-container" flex x=center padding="16" gap="8">
         <mdw-button filled onclick="{this.parentElement.querySelector('mdw-bottom-sheet').toggleAttribute('open')}">Toggle Open</mdw-button>
         <mdw-icon-button type=checkbox filled icon="drag_handle" onchange="{this.parentElement.querySelector('mdw-bottom-sheet').dragHandle = this.checked}">Toggle Handle</mdw-icon-button>
-        <mdw-bottom-sheet modal flex="column" x="center">
+        <mdw-bottom-sheet modal flex=column x=center>
           <mdw-box flex padding="24" gap="8">
             <mdw-button icon="content_copy" outlined>Copy</mdw-button>
             <mdw-button icon="share" outlined>Share</mdw-button>
@@ -41,7 +41,7 @@
       <mdw-box style="width:100%;height:400px;position:relative;transform:translateZ(0);overflow:clip;" color="primary-container" flex x=center padding="16" gap="8">
         <mdw-button filled onclick="{this.parentElement.querySelector('mdw-bottom-sheet').toggleAttribute('open')}">Toggle Open</mdw-button>
         <mdw-button filled onclick="{this.parentElement.querySelector('mdw-bottom-sheet').toggleAttribute('drag-handle')}">Toggle Handle</mdw-button>
-        <mdw-bottom-sheet modal drag-handle flex="column" x="stretch">
+        <mdw-bottom-sheet modal drag-handle flex=column x=stretch>
           <mdw-list>
             <mdw-list-item href="#">I am a list item 1</mdw-list-item>
             <mdw-list-item href="#">I am a list item 2</mdw-list-item>
