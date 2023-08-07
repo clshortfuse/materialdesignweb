@@ -24,18 +24,17 @@ export default CustomElement
     },
   })
   .observe({
-    twoPane: {
+    expanded: {
       type: 'boolean',
       reflect: 'write',
       get({ paneTwo, paneTwoActive, _lastComputedInlineSize, paneTwoBreakpoint }) {
-        console.log('refreshing', { paneTwo, paneTwoActive, _lastComputedInlineSize, paneTwoBreakpoint }, paneTwo && (paneTwoActive || _lastComputedInlineSize >= paneTwoBreakpoint));
         return paneTwo && (paneTwoActive || _lastComputedInlineSize >= paneTwoBreakpoint);
       },
     },
   })
   .html`
     <slot id=slot></slot>
-    <slot id=two name=two hidden={!twoPane} ></slot>
+    <slot id=two name=two hidden={!expanded} ></slot>
   `
   .css`
     :host {
@@ -56,7 +55,7 @@ export default CustomElement
       letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
     }
 
-    :host([pane-two]) {
+    :host([expanded]) {
       display: grid;
     }
     
@@ -71,7 +70,7 @@ export default CustomElement
       grid-auto-columns: 360px;
     }
 
-    :host([two-pane][pane-one="fixed"]) {
+    :host([expanded][pane-one="fixed"]) {
       grid-template-columns: 360px;
     }
 
