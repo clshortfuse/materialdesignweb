@@ -1,11 +1,14 @@
+import CustomElement from '../core/CustomElement.js';
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
-
-import Surface from './Surface.js';
+import ShapeMixin from '../mixins/ShapeMixin.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
 /* https://m3.material.io/components/tooltips/specs */
 
-export default Surface
+export default CustomElement
   .extend()
+  .mixin(ThemableMixin)
+  .mixin(ShapeMixin)
   .mixin(AriaReflectorMixin)
   .set({
     _ariaRole: 'tooltip',
