@@ -552,7 +552,7 @@ export default function PopupMixin(Base) {
       visibility: visible;
 
       transition-delay: 0s;
-      transition-duration: 0s;
+      transition-duration: 200ms, 0s, 0s;
       transition-timing-function: ease-in;
     }
 
