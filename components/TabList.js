@@ -446,17 +446,17 @@ export default CustomElement
     }
 
     :host([scrollable]) {
-      display: inline-flex;
+      display: flex;
       justify-content: initial;
     }
 
     #slot[scrollable] {
-      display: grid;
-      grid-auto-flow: column;
+      display: inline-flex;
 
-      flex: none;
+      inline-size: 0;
+      flex: 1;
 
-      padding-inline: 48px
+      padding-inline: 48px;
     }
   `
   .autoRegister('mdw-tab-list');

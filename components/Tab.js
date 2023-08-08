@@ -127,6 +127,7 @@ export default CustomElement
       display: inline-flex;
 
       min-inline-size: 64px;
+      flex: none;
 
       cursor: pointer;
     }
