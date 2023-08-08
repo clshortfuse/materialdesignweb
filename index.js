@@ -75,7 +75,7 @@ export { default as FlexableMixin } from './mixins/FlexableMixin.js';
 export { default as ThemableMixin } from './mixins/ThemableMixin.js';
 export { default as AriaToolbarMixin } from './mixins/AriaToolbarMixin.js';
 export { default as TextFieldMixin } from './mixins/TextFieldMixin.js';
-export { default as SurfaceMixin } from './mixins/SurfaceMixin.js';
+export { default as ElevationMixin } from './mixins/ElevationMixin.js';
 export { default as StateMixin } from './mixins/StateMixin.js';
 
 export * as jsonMergePatch from './core/jsonMergePatch.js';
