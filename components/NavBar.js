@@ -41,8 +41,6 @@ export default Nav
 
       transform: translateY(0);
 
-      box-shadow: none;
-
       text-align: center;
 
       will-change: transform;
