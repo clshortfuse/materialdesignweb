@@ -77,6 +77,9 @@ export default CustomElement
     hasIcon({ icon, svg, src, svgPath }) {
       return icon ?? svg ?? src ?? svgPath;
     },
+    iconVariation({ outlined }) {
+      return outlined ? null : 'filled';
+    },
   })
   .methods({
     focus(...options) {
@@ -89,7 +92,7 @@ export default CustomElement
   })
   .html`
     <mdw-icon mdw-if={hasIcon} id=icon ink={iconInk} disabled={disabledState}
-      outlined={outlined} aria-hidden=true svg={svg} src={src}
+      outlined={outlined} variation={iconVariation} aria-hidden=true svg={svg} src={src}
       svg-path={svgPath} view-box={viewBox} icon={icon}></mdw-icon>
     <slot id=slot disabled={disabledState} aria-hidden=true>{value}</slot>
   `
@@ -211,11 +214,6 @@ export default CustomElement
 
     #icon {
       font-size: calc(18/14 * 1em);
-      font-variation-settings: 'FILL' 1;
-    }
-
-    #icon[outlined] {
-      font-variation-settings: 'FILL' 0;
     }
 
     #icon[disabled] {

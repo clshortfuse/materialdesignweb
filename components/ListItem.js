@@ -33,6 +33,7 @@ export default CustomElement
     icon: 'string',
     iconInk: 'string',
     iconSrc: 'string',
+    iconVariation: 'string',
     checkbox: 'string',
     radio: 'string',
     selectionColor: { value: 'primary' },
@@ -67,13 +68,16 @@ export default CustomElement
     radioClass() {
       return this.radio || 'leading';
     },
+    computedIconVariation({ iconVariation }) {
+      return iconVariation ?? 'filled';
+    },
   })
   .html`
     <mdw-checkbox-icon id=checkbox mdw-if={checkbox} aria-hidden=true class={checkboxClass} color={selectionColor} disabled={disabledState} icon=check selected={selected}></mdw-checkbox-icon>
     <mdw-radio-icon id=radio mdw-if={radio} aria-hidden=true class={radioClass} disabled={disabledState} ink={selectionColor} selected={selected}></mdw-radio-icon>
     <mdw-box mdw-if={avatar} id=avatar color={avatarColor} type-style=title-medium src={AvatarSrc}
       aria-hidden=true>{avatar}</mdw-box>
-    <mdw-icon mdw-if={icon} id=icon ink={iconInk} src={iconSrc} aria-hidden=true icon={icon}></mdw-icon>
+    <mdw-icon mdw-if={icon} id=icon ink={iconInk} src={iconSrc} aria-hidden=true icon={icon} variation={computedIconVariation}></mdw-icon>
     <img id=img mdw-if={src} src={src} alt={alt} video={video} />
     <slot name=leading>{leading}</slot>
     <div id=content has-supporting={hasSupporting} lines={lines}>

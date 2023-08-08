@@ -53,14 +53,17 @@ export default CustomElement
     hasIcon({ icon, src, unselectedIcon, unselectedSrc }) {
       return Boolean(icon || src || unselectedIcon || unselectedSrc);
     },
+    iconVariation({ selected }) {
+      return selected ? 'filled' : null;
+    },
   })
   .html`
     <div id=track selected={checked} disabled={disabled}>
       <div id=thumb selected={checked} pressed={pressed} disabled={disabled}>
         <mdw-box id=thumb-shape selected={checked} pressed={pressed} hovered={hovered} focused={focused} icon={hasIcon}
         color={_thumbColor} active={_active} ink={_thumbInk} disabled={disabled}></mdw-box>
-        <mdw-icon ink={_iconInk} class=icon id=icon src={src} selected={checked} icon={icon}></mdw-icon>
-        <mdw-icon ink={_iconInk} class=icon id=selected-icon src={selectedIconSrc} selected={checked} icon={selectedIcon}></mdw-icon>
+        <mdw-icon ink={_iconInk} class=icon id=icon src={src} selected={checked} icon={icon} variation={iconVariation}></mdw-icon>
+        <mdw-icon ink={_iconInk} class=icon id=selected-icon src={selectedIconSrc} selected={checked} icon={selectedIcon} variation=filled></mdw-icon>
         <mdw-icon ink={_iconInk} class=icon id=unselected-icon src={unselectedIconSrc} selected={checked} icon={unselectedIcon}></mdw-icon>
         <slot id=slot selected={checked}></slot>
       </div>
@@ -255,8 +258,6 @@ export default CustomElement
 
     #icon, #unselected-icon {
       opacity: 1;
-
-      font-variation-settings: 'FILL' 0;
     }
 
     #unselected-icon[selected] {
@@ -265,10 +266,6 @@ export default CustomElement
 
     #selected-icon[selected] {
       opacity: 1;
-    }
-
-    #icon[selected] {
-      font-variation-settings: 'FILL' 1;
     }
 
     #thumb[disabled] {

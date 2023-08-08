@@ -36,11 +36,6 @@ export default CustomElement
       this.refs.anchor.focus(...args);
     },
   })
-  .html`
-    <mdw-icon id=icon aria-hidden=true src={src} active={active} icon={icon}></mdw-icon>
-    <slot id=slot active={active} show-label={showLabel} aria-hidden=true></slot>
-    <mdw-badge part=badge id=badge badge={badge} show-label={showLabel} aria-hidden=true>{badge}</mdw-badge>
-  `
   .expressions({
     _anchorAriaCurrent({ active }) {
       return active ? 'page' : null;
@@ -49,7 +44,15 @@ export default CustomElement
       return ariaLabel ? null : 'slot';
     },
     _anchorHref({ href }) { return href ?? '#'; },
+    iconVariation({ active }) {
+      return active ? 'filled' : null;
+    },
   })
+  .html`
+    <mdw-icon id=icon aria-hidden=true src={src} active={active} icon={icon} variation={iconVariation}></mdw-icon>
+    <slot id=slot active={active} show-label={showLabel} aria-hidden=true></slot>
+    <mdw-badge part=badge id=badge badge={badge} show-label={showLabel} aria-hidden=true>{badge}</mdw-badge>
+  `
   .recompose(({ html, refs: { anchor, state, rippleContainer } }) => {
     anchor.setAttribute('aria-current', '{_anchorAriaCurrent}');
     anchor.setAttribute('aria-describedby', 'badge');
@@ -145,7 +148,6 @@ export default CustomElement
 
     #shape {
       position: absolute;
-      overflow: hidden;
       /* stylelint-disable-next-line liberty/use-logical-spec */
       top: 50%;
       /* stylelint-disable-next-line liberty/use-logical-spec */
@@ -154,6 +156,8 @@ export default CustomElement
       bottom: auto;
       /* stylelint-disable-next-line liberty/use-logical-spec */
       left: 50%;
+
+      overflow: hidden;
 
       block-size: 100%;
       inline-size: 100%;
@@ -182,7 +186,6 @@ export default CustomElement
       color: rgb(var(--mdw-color__on-surface-variant));
 
       font-size: 24px;
-      font-variation-settings: 'FILL' 0;
 
       transition: transform 200ms;
       will-change: transform;
@@ -240,8 +243,6 @@ export default CustomElement
 
     #icon[active] {
       color: rgb(var(--mdw-ink));
-
-      font-variation-settings: 'FILL' 1;
     }
 
     #slot[active] {

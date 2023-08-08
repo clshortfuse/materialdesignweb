@@ -78,8 +78,12 @@ export default ListItem
     anchorAriaDescribedBy({ _label }) {
       return _label ? 'content' : null;
     },
+    computedIconVariation({ iconVariation, selected }) {
+      if (iconVariation != null) return iconVariation;
+      return selected ? 'filled' : null;
+    },
   })
-  .recompose(({ inline, refs: { anchor, state, content } }) => {
+  .recompose(({ inline, refs: { checkbox, radio, icon, anchor, state, content } }) => {
     // Form Associated elements cannot receive focus unless using delegatesFocus
     // Workaround by redirecting focus to an inner element
     // Reuse HTMLAnchorElement with no HREF
@@ -96,6 +100,12 @@ export default ListItem
     anchor.setAttribute('aria-label', '{_label}');
     anchor.removeAttribute('href');
     anchor.removeAttribute('mdw-if');
+
+    // eslint-disable-next-line no-shadow
+    checkbox.setAttribute('mdw-if', inline(({ checkbox, icon }) => !icon && checkbox));
+
+    // eslint-disable-next-line no-shadow
+    radio.setAttribute('mdw-if', inline(({ radio, icon }) => !icon && radio));
 
     content.setAttribute('aria-hidden', 'true');
     content.setAttribute('selected', '{selected}');

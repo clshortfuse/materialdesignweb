@@ -17,9 +17,12 @@ export default Chip
       if (trailingSrc) return '';
       return null;
     },
+    iconVariation({ checked }) {
+      return checked ? 'filled' : null;
+    },
   })
   .html`
-    <mdw-icon mdw-if={!icon} id=check-icon disabled={disabledState} selected={checked} aria-hidden=true icon=check></mdw-icon>
+    <mdw-icon mdw-if={!icon} id=check-icon disabled={disabledState} selected={checked} aria-hidden=true icon=check variation=filled></mdw-icon>
     <mdw-icon mdw-if={computedTrailingIcon} id=trailing-icon aria-hidden=true src={trailingSrc} icon={computedTrailingIcon}></mdw-icon>
   `
   .recompose(({ refs: { icon, control, outline, slot, trailingIcon, checkIcon } }) => {
@@ -65,10 +68,6 @@ export default Chip
       --mdw-outline__rgb: var(--mdw-color__outline);
     }
 
-    #icon[selected] {
-      font-variation-settings: 'FILL' 1;
-    }
-
     #outline {
       z-index: -1;
 
@@ -80,7 +79,7 @@ export default Chip
     }
 
     #outline[elevated] {
-      background-color: rgb(var(--mdw-color__surface));
+      background-color: rgb(var(--mdw-color__surface-container-low));
       border-color: transparent;
     }
 

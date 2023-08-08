@@ -35,6 +35,7 @@ export default CustomElement
     svgPath: 'string',
     srcset: 'string',
     sizes: 'string',
+    variation: 'string',
     crossOrigin: { attr: 'crossorigin' },
     useMap: { attr: 'usemap' },
     isMap: { type: 'boolean', attr: 'ismap' },
@@ -53,13 +54,23 @@ export default CustomElement
   .observe({
     _svgAlias: {
       type: 'object',
-      get({ icon }) {
+      get({ icon, variation }) {
         if (!icon) return null;
-        const result = svgAliasMap.get(icon.trim().toLowerCase());
-        if (!result) {
-          unaliased.add(icon);
+        const iconName = icon.trim().toLowerCase();
+        const suffix = variation ? `#${variation}` : '';
+
+        const aliasName = `${iconName}${suffix}`;
+        if (svgAliasMap.has(aliasName)) {
+          return svgAliasMap.get(aliasName);
         }
-        return result;
+        unaliased.add(aliasName);
+
+        // Fallback to base version
+        if (suffix && svgAliasMap.has(iconName)) {
+          return svgAliasMap.get(iconName);
+        }
+
+        return null;
       },
     },
   })
@@ -113,11 +124,15 @@ export default CustomElement
       -webkit-user-select: none;
       user-select: none;
 
-      font-variation-settings: 'FILL' 1;
+      font-variation-settings: 'FILL' 0;
 
       transition-duration: 200ms;
       /* stylelint-disable-next-line liberty/use-logical-spec -- Safari does not animate inline-size */
       transition-property: inline-size, width;
+    }
+
+    :host([variation="fill"]) {
+      font-variation-settings: 'FILL' 1;
     }
 
     :host(:is([color],[ink])) {

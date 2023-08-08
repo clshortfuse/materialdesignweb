@@ -5,6 +5,11 @@ export default Button
   .observe({
     suggestion: 'boolean',
   })
+  .expressions({
+    iconVariation({ elevated }) {
+      return elevated ? 'filled' : null;
+    },
+  })
   .css`
     /* https://m3.material.io/components/chips/specs */
 

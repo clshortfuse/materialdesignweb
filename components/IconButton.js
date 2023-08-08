@@ -23,10 +23,14 @@ export default Button
     _elevationRaised({ elevationRaised }) {
       return elevationRaised;
     },
+    _isToggle({ type }) {
+      return type === 'checkbox';
+    },
   })
   .expressions({
-    isToggle({ type }) {
-      return type === 'checkbox';
+    iconVariation({ checked, outlined, _isToggle }) {
+      if (!checked && (_isToggle || outlined)) return null;
+      return 'filled';
     },
     _computedAriaLabelledby({ ariaLabel }) {
       return ariaLabel ? null : 'tooltip';
@@ -52,7 +56,7 @@ export default Button
     // it must be cloned into shadow root for styling.
     for (const el of [state, icon, rippleContainer]) {
       el.classList.add('colored');
-      el.setAttribute('toggle', '{isToggle}');
+      el.setAttribute('toggle', '{_isToggle}');
       el.setAttribute('selected', '{checked}');
       el.setAttribute('filled', '{filled}');
     }
@@ -62,7 +66,7 @@ export default Button
 
     control.setAttribute('aria-pressed', '{_ariaPressed}');
 
-    outline.setAttribute('toggle', '{isToggle}');
+    outline.setAttribute('toggle', '{_isToggle}');
     outline.setAttribute('selected', '{checked}');
   })
   .css`
@@ -121,7 +125,7 @@ export default Button
       background-color: inherit;
       border-radius: inherit;
 
-      font-size: 24px;
+      font-size: inherit;
 
       transition-property: background-color, color;
     }
@@ -194,19 +198,6 @@ export default Button
 
     .colored[outlined][selected] {
       color: rgb(var(--mdw-ink));
-    }
-
-    #icon {
-      font-size: inherit;
-      font-variation-settings: 'FILL' 1;
-    }
-
-    #icon[toggle] {
-      font-variation-settings: 'FILL' 0;
-    }
-
-    #icon[selected] {
-      font-variation-settings: 'FILL' 1;
     }
 
     #outline[focused] {

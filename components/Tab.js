@@ -61,9 +61,12 @@ export default CustomElement
     iconIf({ icon, src }) {
       return icon || src;
     },
+    iconVariation({ active }) {
+      return active ? 'filled' : null;
+    },
   })
   .html`
-    <mdw-icon mdw-if={iconIf} id=icon aria-hidden=true src={src} active={active} icon={icon}></mdw-icon>
+    <mdw-icon mdw-if={iconIf} id=icon aria-hidden=true src={src} active={active} icon={icon} variation={iconVariation}></mdw-icon>
     <slot id=slot></slot>
   `
   .recompose(({ refs: { anchor, icon, slot, state } }) => {
@@ -158,8 +161,6 @@ export default CustomElement
       padding-block: 4px;
 
       font-size: 24px;
-      font-variation-settings: 'FILL' 0;
-
     }
 
     #shape[disabled],
@@ -172,10 +173,6 @@ export default CustomElement
 
     :host([active]) {
       color: rgb(var(--mdw-ink));
-    }
-
-    #icon[active] {
-      font-variation-settings: 'FILL' 1;
     }
 
     #slot {

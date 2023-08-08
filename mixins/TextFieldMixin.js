@@ -17,6 +17,7 @@ export default function TextFieldMixin(Base) {
     .observe({
       type: { empty: 'text' },
       icon: 'string',
+      iconVariation: 'string',
       label: 'string',
       filled: 'boolean',
       outlined: 'boolean',
@@ -57,12 +58,15 @@ export default function TextFieldMixin(Base) {
       _shapeShapeTop({ shapeTop, filled }) {
         return shapeTop || filled;
       },
+      computedIconVariation({ iconVariation, outlined }) {
+        return iconVariation ?? (outlined ? null : 'filled');
+      },
     })
     .html`
       <div id=shape role=none filled={filled} icon={icon} trailing-icon={trailingIcon}
       populated={populatedState} focused={focusedState} label={label} outlined={outlined}
       shape-top={_shapeShapeTop}>
-        <mdw-icon mdw-if={icon} id=icon aria-hidden=true disabled={disabledState} icon={icon}></mdw-icon>
+        <mdw-icon mdw-if={icon} id=icon aria-hidden=true disabled={disabledState} icon={icon} variation={computedIconVariation} ></mdw-icon>
         <span mdw-if={inputPrefix} class=inline id=prefix aria-hidden=true focused={focusedState} populated={populatedState}>{inputPrefix}</span>
         <span mdw-if={inputSuffix} class=inline id=suffix aria-hidden=true focused={focusedState} populated={populatedState}>{inputSuffix}</span>
         <mdw-icon-button tabindex=-1 disabled={disabledState} mdw-if={trailingIcon} id=trailing-icon ink={trailingIconInk} disabled={disabledState} icon={trailingIcon}>{trailingIconLabel}</mdw-icon-button>
