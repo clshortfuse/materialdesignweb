@@ -48,6 +48,19 @@
       </mdw-listbox>
     </section>
 
+    <section>
+      <mdw-headline text-padding=0.5em>Single-selection (custom icon)</mdw-headline>
+      <mdw-listbox color="surface" style="width:100%">
+        <mdw-list-option value="1" checkbox icon=star supporting="Listbox supports keyboard navigation">Option 1
+        </mdw-list-option>
+        <mdw-list-option value="2" checkbox icon=star disabled supporting="Disabled items are not skipped">Disabled
+        </mdw-list-option>
+        <mdw-list-option value="3" checkbox icon=star>Option3</mdw-list-option>
+        <mdw-list-option value="4" checkbox icon=star supporting="Only one check allowed, but can deselect">Option4
+        </mdw-list-option>
+      </mdw-listbox>
+    </section>
+
     <demo-dummy-text></demo-dummy-text>
   </demo-page>
 </body>
