@@ -52,7 +52,11 @@ export default function SemiStickyMixin(Base) {
     .observe({
       _semiStickyStyleStyle: {
         ...ELEMENT_STYLER_TYPE,
-        get({ _semiStickyTranslateX, _semiStickyTranslateY, _semiStickyDuration, _semiStickyEasing }) {
+        get({
+          _semiStickyHeight,
+          _semiStickyTranslateX, _semiStickyTranslateY, _semiStickyDuration, _semiStickyEasing,
+        }) {
+          if (!_semiStickyHeight) return null;
           return {
             target: this._getSemiStickyElement(),
             styles: {
@@ -145,15 +149,22 @@ export default function SemiStickyMixin(Base) {
         }
       },
       connected() {
-        const semiStickyElement = this._getSemiStickyElement();
-        // Connect scroll when element gets first size
-        const resizeObserver = new ResizeObserver(() => {
-          this.startScrollListener(semiStickyElement.offsetParent ?? window);
-          resizeObserver.disconnect();
+        const callback = () => {
+          const semiStickyElement = this._getSemiStickyElement();
+          // Connect scroll when element gets first size
+          const resizeObserver = new ResizeObserver(() => {
+            this.startScrollListener(semiStickyElement.offsetParent ?? window);
+            resizeObserver.disconnect();
+            this._refreshSemiStickyMetrics();
+          });
+          resizeObserver.observe(semiStickyElement);
           this._refreshSemiStickyMetrics();
-        });
-        resizeObserver.observe(semiStickyElement);
-        this._refreshSemiStickyMetrics();
+        };
+        if (document.readyState === 'complete') {
+          requestAnimationFrame(callback);
+        } else {
+          document.addEventListener('DOMContentLoaded', callback);
+        }
       },
       disconnected() {
         this._scrollListenerClear();
