@@ -5,9 +5,6 @@ import Nav from './Nav.js';
 export default Nav
   .extend()
   .mixin(SemiStickyMixin)
-  .define({
-    semiStickyTarget() { return this.refs.surface; },
-  })
   .observe({
     _semiStickyAnchor: { empty: 'bottom' },
   })
