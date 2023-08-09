@@ -117,6 +117,18 @@ function elementStylerMicrotaskCallback(name) {
   }
 }
 
+const pendingResizeCallbacks = new WeakMap();
+const pendingConnections = new ResizeObserver((entries) => {
+  for(const {target} of entries) {
+    if (pendingResizeCallbacks.has(target)) {
+      const callback = pendingResizeCallbacks.get(target);
+      pendingResizeCallbacks.delete(target);
+      pendingConnections.unobserve(target);
+      callback();
+    }
+  }
+});
+
 /** @type {import('./typings.js').ObserverOptions<'object',ElementStylerOptions, CustomElement>} */
 export const ELEMENT_STYLER_TYPE = {
   type: 'object',
@@ -138,7 +150,8 @@ export const ELEMENT_STYLER_TYPE = {
     if (this.isConnected) {
       queueMicrotask(callback);
     } else {
-      this.addEventListener('mdw:connected', callback, { once: true });
+      pendingResizeCallbacks.set(this, callback);
+      pendingConnections.observe(this);
     }
   },
   fireChangeOnCreate: true,

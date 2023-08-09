@@ -374,7 +374,7 @@ export default class CustomElement extends ICustomElement {
     if (customCallbacks.length) {
       this.onPropChanged(customCallbacks);
       if (fireChangeOnCreate) {
-        this._onConstructedCallbacks.push(function onCreateChangeEmitter() {
+        this._addCallback('_onConstructedCallbacks', function onCreateChangeEmitter() {
           const value = this[name];
           if (customSimpleCallback) {
             customSimpleCallback.call(this, undefined, value, null);
@@ -906,14 +906,12 @@ export default class CustomElement extends ICustomElement {
     for (const callbacks of this.static._onConnectedCallbacks) {
       callbacks.call(this, this.callbackArguments);
     }
-    this.dispatchEvent(new Event('mdw:connected'));
   }
 
   disconnectedCallback() {
     for (const callbacks of this.static._onDisconnectedCallbacks) {
       callbacks.call(this, this.callbackArguments);
     }
-    this.dispatchEvent(new Event('mdw:disconnected'));
   }
 }
 
