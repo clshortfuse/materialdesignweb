@@ -1,4 +1,5 @@
 import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
+import { CHROME_VERSION } from '../core/dom.js';
 
 import ScrollListenerMixin from './ScrollListenerMixin.js';
 
@@ -18,47 +19,38 @@ export default function SemiStickyMixin(Base) {
       _semiStickyTranslateX: { type: 'float', empty: 0 },
       _semiStickyDuration: { type: 'float', empty: 0 },
       _semiStickyEasing: { empty: 'ease-in' },
+      _semiStickyMeasured: 'boolean',
       _semiStickyAnchor: {
         /** @type {'top'|'start'|'end'|'bottom'|'left'|'right'} */
         empty: 'top',
       },
       stickyAlways: 'boolean',
-      stickyOffset: {
-        type: 'float',
-        nullable: false,
-      },
     })
     .methods({
-      /** @return {HTMLElement} */
-      _getSemiStickyElement() { return this; },
       _refreshSemiStickyMetrics() {
-        const semiStickyElement = this._getSemiStickyElement();
-        let styles = window.getComputedStyle(semiStickyElement);
-        this._semiStickyHeight = semiStickyElement.offsetHeight
+        let styles = window.getComputedStyle(this);
+        this._semiStickyHeight = this.offsetHeight
           + Number.parseFloat(styles.marginTop) + Number.parseFloat(styles.marginBottom);
-        this._semiStickyWidth = semiStickyElement.offsetWidth
+        this._semiStickyWidth = this.offsetWidth
           + Number.parseFloat(styles.marginLeft) + Number.parseFloat(styles.marginRight);
         // No way to measure offset when stickied ?
-        semiStickyElement.style.position = 'relative';
-        styles = window.getComputedStyle(semiStickyElement);
-        this._semiStickyOffsetY = semiStickyElement.offsetTop - Number.parseFloat(styles.marginTop);
-        this._semiStickyOffsetX = semiStickyElement.offsetLeft - Number.parseFloat(styles.marginLeft);
-        semiStickyElement.style.position = 'sticky';
+        this.style.position = 'relative';
+        styles = window.getComputedStyle(this);
+        this._semiStickyOffsetY = this.offsetTop - Number.parseFloat(styles.marginTop);
+        this._semiStickyOffsetX = this.offsetLeft - Number.parseFloat(styles.marginLeft);
+        this.style.position = 'sticky';
+        this._semiStickyMeasured = true;
       },
-    })
-    .define({
-      semiStickyTarget() { return this; },
     })
     .observe({
       _semiStickyStyleStyle: {
         ...ELEMENT_STYLER_TYPE,
         get({
-          _semiStickyHeight,
+          _semiStickyMeasured,
           _semiStickyTranslateX, _semiStickyTranslateY, _semiStickyDuration, _semiStickyEasing,
         }) {
-          if (!_semiStickyHeight) return null;
+          if (!_semiStickyMeasured) return null;
           return {
-            target: this._getSemiStickyElement(),
             styles: {
               transform: `translateX(${_semiStickyTranslateX}px) translateY(${_semiStickyTranslateY}px)`,
             },
@@ -72,18 +64,20 @@ export default function SemiStickyMixin(Base) {
     })
     .on({
       _scrollListenerLastResizeChanged() {
-        if (this._semiStickyAnchor !== 'bottom') return;
+        if (this._semiStickyAnchor !== 'bottom' && !CHROME_VERSION) return;
         // Chrome Bug: When window resizes bottom sticky needs to be recomputed
         // Force style recalculation
-        const semiStickyElement = this._getSemiStickyElement();
-        semiStickyElement.style.setProperty('bottom', 'auto');
+        this.style.setProperty('bottom', 'auto');
         // eslint-disable-next-line no-unused-expressions
-        semiStickyElement.clientHeight;
-        semiStickyElement.style.removeProperty('bottom');
+        this.clientHeight;
+        this.style.removeProperty('bottom');
         this.propChangedCallback('_scrollListenerPositionY', this._scrollListenerPositionY, this._scrollListenerPositionY);
       },
       _scrollListenerPositionYChanged(oldValue, newValue) {
         const delta = newValue - oldValue;
+        if (!this._semiStickyMeasured) {
+          this._refreshSemiStickyMetrics();
+        }
         if (this._semiStickyAnchor === 'top') {
           this._semiStickyDuration = 0;
           this._semiStickyTranslateY = (this.stickyAlways || newValue < this._semiStickyOffsetY)
@@ -105,7 +99,7 @@ export default function SemiStickyMixin(Base) {
         if (this.stickyAlways) return;
         this._refreshSemiStickyMetrics();
         if (this._semiStickyAnchor === 'top') {
-          const { offsetTop } = this.semiStickyTarget;
+          const offsetTop = this.offsetTop;
           const offset = this._scrollListenerPositionY - offsetTop;
           const delta = offset - this._semiStickyTranslateY;
           const visibility = delta / this._semiStickyHeight;
@@ -149,22 +143,7 @@ export default function SemiStickyMixin(Base) {
         }
       },
       connected() {
-        const callback = () => {
-          const semiStickyElement = this._getSemiStickyElement();
-          // Connect scroll when element gets first size
-          const resizeObserver = new ResizeObserver(() => {
-            this.startScrollListener(semiStickyElement.offsetParent ?? window);
-            resizeObserver.disconnect();
-            this._refreshSemiStickyMetrics();
-          });
-          resizeObserver.observe(semiStickyElement);
-          this._refreshSemiStickyMetrics();
-        };
-        if (document.readyState === 'complete') {
-          requestAnimationFrame(callback);
-        } else {
-          document.addEventListener('DOMContentLoaded', callback);
-        }
+        this.startScrollListener();
       },
       disconnected() {
         this._scrollListenerClear();
