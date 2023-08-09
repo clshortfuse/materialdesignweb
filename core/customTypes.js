@@ -117,14 +117,17 @@ function elementStylerMicrotaskCallback(name) {
   }
 }
 
+/** @type {WeakMap<Element, Function[]>} */
 const pendingResizeCallbacks = new WeakMap();
 const pendingConnections = new ResizeObserver((entries) => {
-  for(const {target} of entries) {
+  for (const { target } of entries) {
     if (pendingResizeCallbacks.has(target)) {
-      const callback = pendingResizeCallbacks.get(target);
+      const callbacks = pendingResizeCallbacks.get(target);
       pendingResizeCallbacks.delete(target);
       pendingConnections.unobserve(target);
-      callback();
+      for (const callback of callbacks) {
+        callback();
+      }
     }
   }
 });
@@ -144,13 +147,16 @@ export const ELEMENT_STYLER_TYPE = {
     } else {
       queuedPropsByElement.set(this, new Map([[name, { initial }]]));
     }
+    // TODO: Reuse callback instead constructing each tick
     // Animation styles may trickle in steps, so queue a microtask before doing any work.
     // Using requestAnimationFrame would fire one frame too late for CSS animations already scheduled
     const callback = elementStylerMicrotaskCallback.bind(this, name);
     if (this.isConnected) {
       queueMicrotask(callback);
+    } else if (pendingResizeCallbacks.has(this)) {
+      pendingResizeCallbacks.get(this).push(callback);
     } else {
-      pendingResizeCallbacks.set(this, callback);
+      pendingResizeCallbacks.set(this, [callback]);
       pendingConnections.observe(this);
     }
   },
